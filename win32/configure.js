@@ -54,7 +54,7 @@ var withSizeT = 1;
 var withLegacyCrypto = 0;
 
 /* Win32 build options. */
-var withNT4 = 1;
+var withNT4 = 0;
 var buildUnicode = 1;
 var buildDebug = 0;
 var buildWerror = 0;

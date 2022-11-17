@@ -28,7 +28,6 @@ xmlsecinc_HEADERS = \
 	templates.h \
 	transforms.h \
 	version.h \
-	x509.h \
 	xmldsig.h \
 	xmlenc.h \
 	xmlsec.h \

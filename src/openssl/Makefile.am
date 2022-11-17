@@ -20,7 +20,6 @@ libxmlsec1_openssl_la_CPPFLAGS = \
 
 libxmlsec1_openssl_la_SOURCES =\
 	app.c \
-	bn.c \
 	ciphers.c \
 	crypto.c \
 	digests.c \

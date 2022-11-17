@@ -1803,7 +1803,7 @@ xmlSecAppEncryptTmpl(void) {
         goto done;
     }
 
-    cur = xmlSecTmplEncDataCreate(doc, xmlSecTransformDes3CbcId,
+    cur = xmlSecTmplEncDataCreate(doc, xmlSecTransformAesCbcId,
                                   NULL, NULL, NULL, NULL);
     if(cur == NULL) {
         fprintf(stderr, "Error: failed to encryption template\n");

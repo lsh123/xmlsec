@@ -312,10 +312,6 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeyDataDsaAdoptEvp (xmlSecK
 XMLSEC_CRYPTO_EXPORT EVP_PKEY*          xmlSecOpenSSLKeyDataDsaGetEvp   (xmlSecKeyDataPtr data);
 
 
-XMLSEC_DEPRECATED XMLSEC_CRYPTO_EXPORT int xmlSecOpenSSLKeyDataDsaAdoptDsa (xmlSecKeyDataPtr data,
-                                                                         DSA* dsa);
-XMLSEC_DEPRECATED XMLSEC_CRYPTO_EXPORT DSA* xmlSecOpenSSLKeyDataDsaGetDsa   (xmlSecKeyDataPtr data);
-
 
 #ifndef XMLSEC_NO_SHA1
 /**
@@ -360,10 +356,6 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeyDataEcdsaAdoptEvp   (xml
                                                                              EVP_PKEY* pKey);
 XMLSEC_CRYPTO_EXPORT EVP_PKEY*          xmlSecOpenSSLKeyDataEcdsaGetEvp     (xmlSecKeyDataPtr data);
 
-
-XMLSEC_DEPRECATED XMLSEC_CRYPTO_EXPORT int xmlSecOpenSSLKeyDataEcdsaAdoptEcdsa (xmlSecKeyDataPtr data,
-                                                                             EC_KEY* ecdsa);
-XMLSEC_DEPRECATED XMLSEC_CRYPTO_EXPORT EC_KEY* xmlSecOpenSSLKeyDataEcdsaGetEcdsa   (xmlSecKeyDataPtr data);
 
 #ifndef XMLSEC_NO_SHA1
 /**
@@ -677,11 +669,6 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataRsaGetKlass (void);
 XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeyDataRsaAdoptEvp (xmlSecKeyDataPtr data,
                                                                          EVP_PKEY* pKey);
 XMLSEC_CRYPTO_EXPORT EVP_PKEY*          xmlSecOpenSSLKeyDataRsaGetEvp   (xmlSecKeyDataPtr data);
-
-
-XMLSEC_DEPRECATED XMLSEC_CRYPTO_EXPORT int  xmlSecOpenSSLKeyDataRsaAdoptRsa (xmlSecKeyDataPtr data,
-                                                                         RSA* rsa);
-XMLSEC_DEPRECATED XMLSEC_CRYPTO_EXPORT RSA* xmlSecOpenSSLKeyDataRsaGetRsa   (xmlSecKeyDataPtr data);
 
 #ifndef XMLSEC_NO_MD5
 /**

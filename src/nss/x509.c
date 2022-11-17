@@ -39,6 +39,7 @@
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/x509.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/private.h>
 #include <xmlsec/xmltree.h>
 
 #include <xmlsec/nss/crypto.h>

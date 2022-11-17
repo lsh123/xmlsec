@@ -14,7 +14,8 @@ jobs:
       matrix:
         include:
           - config_flags:
-          - config_flags: --enable-size-t=yes
+          - config_flags: --enable-size-t=no
+          - config_flags: --enable-md5 --enable-sha1 --enable-des
           - config_flags: --enable-static-linking=yes --without-nss --without-gcrypt --without-gnutls
     steps:
     - name: install dependencies
@@ -31,8 +32,7 @@ jobs:
       working-directory: build
       run: |
           ../autogen.sh --enable-werror --enable-pedantic \
-              
-              ${{ matrix.config_flags }}
+            ${{ matrix.config_flags }}
     - name: make
       working-directory: build
       run: |
@@ -49,7 +49,8 @@ jobs:
       matrix:
         include:
           - config_flags:
-          - config_flags: --enable-size-t=yes
+          - config_flags: --enable-size-t=no
+          - config_flags: --enable-md5 --enable-sha1 --enable-des
           - config_flags: --enable-static-linking=yes --without-nss --without-gcrypt --without-gnutls
     steps:
     - name: install dependencies
@@ -67,7 +68,6 @@ jobs:
       run: |
           export LD_LIBRARY_PATH="/usr/local/openssl3/lib:/usr/local/openssl3/lib64:$LD_LIBRARY_PATH"
           ../autogen.sh --enable-werror --enable-pedantic \
-              --enable-md5 --enable-sha1 --enable-des \
               ${{ matrix.config_flags }}
     - name: make
       working-directory: build
@@ -86,7 +86,8 @@ jobs:
       matrix:
         include:
           - config_flags:
-          - config_flags: --enable-size-t=yes
+          - config_flags: --enable-size-t=no
+          - config_flags: --enable-md5 --enable-sha1 --enable-des
     steps:
     - name: install dependencies
       run: |
@@ -103,7 +104,6 @@ jobs:
       run: |
           ../autogen.sh --enable-werror --enable-pedantic  \
               --without-gcrypt --without-gnutls \
-              --enable-md5 --enable-sha1 --enable-des \
               ${{ matrix.config_flags }}
     - name: make
       working-directory: build
@@ -123,13 +123,13 @@ jobs:
         include:
           - msystem: MINGW64
             arch: x86_64
-            config_flags: --enable-unicode=yes --enable-size-t=yes
+            config_flags: --enable-unicode=yes
           - msystem: MINGW64
             arch: x86_64
-            config_flags: --enable-unicode=yes --enable-size-t=no
+            config_flags: --enable-unicode=no
           - msystem: MINGW64
             arch: x86_64
-            config_flags: --enable-unicode=no --enable-size-t=no
+            config_flags: --enable-size-t=no
     defaults:
       run:
         shell: msys2 {0}  
@@ -164,7 +164,6 @@ jobs:
       run: |
           ../autogen.sh --enable-werror  --enable-pedantic \
               --enable-mscrypto --enable-mscng ${{ matrix.config_flags }} \
-              --enable-md5 --enable-sha1 --enable-des \
               --build="${{ matrix.arch }}-w64-mingw32" \
               --host="${{ matrix.arch }}-w64-mingw32"
     - name: make

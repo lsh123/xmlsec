@@ -198,9 +198,6 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformDsaSha1GetKlass(void
  *******************************************************************/
 #ifndef XMLSEC_NO_HMAC
 
-XMLSEC_DEPRECATED XMLSEC_CRYPTO_EXPORT int  xmlSecGnuTLSHmacGetMinOutputLength(void);
-XMLSEC_DEPRECATED XMLSEC_CRYPTO_EXPORT void xmlSecGnuTLSHmacSetMinOutputLength(int min_length);
-
 /**
  * xmlSecGnuTLSKeyDataHmacId:
  *

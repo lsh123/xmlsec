@@ -54,7 +54,6 @@ libxmlsec1_la_SOURCES = \
 	strings.c \
 	templates.c \
 	transforms.c \
-	x509.c \
 	xmldsig.c \
 	xmlenc.c \
 	xmlsec.c \

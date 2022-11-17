@@ -23,12 +23,6 @@ extern "C" {
 
 XMLSEC_CRYPTO_EXPORT xmlSecCryptoDLFunctionsPtr xmlSecCryptoGetFunctions_mscng(void);
 
-XMLSEC_DEPRECATED XMLSEC_CRYPTO_EXPORT LPTSTR xmlSecMSCngConvertUtf8ToTstr(const xmlChar* str);
-XMLSEC_DEPRECATED XMLSEC_CRYPTO_EXPORT LPWSTR xmlSecMSCngConvertUtf8ToUnicode(const xmlChar* str);
-XMLSEC_DEPRECATED XMLSEC_CRYPTO_EXPORT xmlChar* xmlSecMSCngConvertTstrToUtf8(LPCTSTR str);
-XMLSEC_DEPRECATED XMLSEC_CRYPTO_EXPORT xmlChar* xmlSecMSCngConvertUnicodeToUtf8(LPCWSTR str);
-
-
 XMLSEC_CRYPTO_EXPORT int xmlSecMSCngGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size);
 
 /********************************************************************

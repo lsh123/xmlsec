@@ -29,7 +29,6 @@
 #include <xmlsec/private.h>
 
 #include <xmlsec/openssl/crypto.h>
-#include <xmlsec/openssl/bn.h>
 #include <xmlsec/openssl/evp.h>
 #include "openssl_compat.h"
 
@@ -563,84 +562,6 @@ xmlSecOpenSSLKeyDataDsaGetKlass(void) {
 }
 
 /**
- * xmlSecOpenSSLKeyDataDsaAdoptDsa:
- * @data:               the pointer to DSA key data.
- * @dsa:                the pointer to OpenSSL DSA key.
- *
- * DEPRECATED. Sets the value of DSA key data.
- *
- * Returns: 0 on success or a negative value otherwise.
- */
-int
-xmlSecOpenSSLKeyDataDsaAdoptDsa(xmlSecKeyDataPtr data, DSA* dsa) {
-#ifndef XMLSEC_OPENSSL_API_300
-    EVP_PKEY* pKey = NULL;
-    int ret;
-
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataDsaId), -1);
-
-    /* construct new EVP_PKEY */
-    if(dsa != NULL) {
-        pKey = EVP_PKEY_new();
-        if(pKey == NULL) {
-            xmlSecOpenSSLError("EVP_PKEY_new",
-                               xmlSecKeyDataGetName(data));
-            return(-1);
-        }
-        ret = EVP_PKEY_assign_DSA(pKey, dsa);
-        if(ret != 1) {
-            xmlSecOpenSSLError("EVP_PKEY_assign_DSA",
-                               xmlSecKeyDataGetName(data));
-            EVP_PKEY_free(pKey);
-            return(-1);
-        }
-    }
-
-    ret = xmlSecOpenSSLKeyDataDsaAdoptEvp(data, pKey);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecOpenSSLKeyDataDsaAdoptEvp",
-                            xmlSecKeyDataGetName(data));
-        if(pKey != NULL) {
-            EVP_PKEY_free(pKey);
-        }
-        return(-1);
-    }
-    return(0);
-#else /* XMLSEC_OPENSSL_API_300 */
-    UNREFERENCED_PARAMETER(data);
-    UNREFERENCED_PARAMETER(dsa);
-    xmlSecNotImplementedError("OpenSSL 3.0 does not support direct access to DSA key");
-    return(-1);
-#endif /* XMLSEC_OPENSSL_API_300 */
-}
-
-/**
- * xmlSecOpenSSLKeyDataDsaGetDsa:
- * @data:               the pointer to DSA key data.
- *
- * DEPRECATED. Gets the OpenSSL DSA key from DSA key data.
- *
- * Returns: pointer to OpenSSL DSA key or NULL if an error occurs.
- */
-DSA*
-xmlSecOpenSSLKeyDataDsaGetDsa(xmlSecKeyDataPtr data) {
-#ifndef XMLSEC_OPENSSL_API_300
-    EVP_PKEY* pKey;
-
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataDsaId), NULL);
-
-    pKey = xmlSecOpenSSLKeyDataDsaGetEvp(data);
-    xmlSecAssert2((pKey == NULL) || (EVP_PKEY_base_id(pKey) == EVP_PKEY_DSA), NULL);
-
-    return((pKey != NULL) ? EVP_PKEY_get0_DSA(pKey) : NULL);
-#else /* XMLSEC_OPENSSL_API_300 */
-    UNREFERENCED_PARAMETER(data);
-    xmlSecNotImplementedError("OpenSSL 3.0 does not support direct access to DSA key");
-    return(NULL);
-#endif /* XMLSEC_OPENSSL_API_300 */
-}
-
-/**
  * xmlSecOpenSSLKeyDataDsaAdoptEvp:
  * @data:               the pointer to DSA key data.
  * @pKey:               the pointer to OpenSSL EVP key.
@@ -714,6 +635,54 @@ xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 }
 
 #ifndef XMLSEC_OPENSSL_API_300
+
+static int
+xmlSecOpenSSLKeyDataDsaAdoptDsa(xmlSecKeyDataPtr data, DSA* dsa) {
+    EVP_PKEY* pKey = NULL;
+    int ret;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataDsaId), -1);
+
+    /* construct new EVP_PKEY */
+    if(dsa != NULL) {
+        pKey = EVP_PKEY_new();
+        if(pKey == NULL) {
+            xmlSecOpenSSLError("EVP_PKEY_new",
+                               xmlSecKeyDataGetName(data));
+            return(-1);
+        }
+        ret = EVP_PKEY_assign_DSA(pKey, dsa);
+        if(ret != 1) {
+            xmlSecOpenSSLError("EVP_PKEY_assign_DSA",
+                               xmlSecKeyDataGetName(data));
+            EVP_PKEY_free(pKey);
+            return(-1);
+        }
+    }
+
+    ret = xmlSecOpenSSLKeyDataDsaAdoptEvp(data, pKey);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecOpenSSLKeyDataDsaAdoptEvp",
+                            xmlSecKeyDataGetName(data));
+        if(pKey != NULL) {
+            EVP_PKEY_free(pKey);
+        }
+        return(-1);
+    }
+    return(0);
+}
+
+static DSA*
+xmlSecOpenSSLKeyDataDsaGetDsa(xmlSecKeyDataPtr data) {
+    EVP_PKEY* pKey;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataDsaId), NULL);
+
+    pKey = xmlSecOpenSSLKeyDataDsaGetEvp(data);
+    xmlSecAssert2((pKey == NULL) || (EVP_PKEY_base_id(pKey) == EVP_PKEY_DSA), NULL);
+
+    return((pKey != NULL) ? EVP_PKEY_get0_DSA(pKey) : NULL);
+}
 
 static int
 xmlSecOpenSSLKeyDataDsaGetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueDsaPtr dsaKeyValue) {
@@ -1462,85 +1431,6 @@ xmlSecOpenSSLKeyDataEcdsaGetKlass(void) {
 }
 
 /**
- * xmlSecOpenSSLKeyDataEcdsaAdoptEcdsa:
- * @data:               the pointer to ECDSA key data.
- * @ecdsa:              the pointer to OpenSSL ECDSA key.
- *
- * DEPRECATED. Sets the value of ECDSA key data.
- *
- * Returns: 0 on success or a negative value otherwise.
- */
-int
-xmlSecOpenSSLKeyDataEcdsaAdoptEcdsa(xmlSecKeyDataPtr data, EC_KEY* ecdsa) {
-#ifndef XMLSEC_OPENSSL_API_300
-    EVP_PKEY* pKey = NULL;
-    int ret;
-
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcdsaId), -1);
-
-    /* construct new EVP_PKEY */
-    if(ecdsa != NULL) {
-        pKey = EVP_PKEY_new();
-        if(pKey == NULL) {
-            xmlSecOpenSSLError("EVP_PKEY_new",
-                               xmlSecKeyDataGetName(data));
-            return(-1);
-        }
-
-        ret = EVP_PKEY_assign_EC_KEY(pKey, ecdsa);
-        if(ret != 1) {
-            xmlSecOpenSSLError("EVP_PKEY_assign_EC_KEY",
-                               xmlSecKeyDataGetName(data));
-            EVP_PKEY_free(pKey);
-            return(-1);
-        }
-    }
-
-    ret = xmlSecOpenSSLKeyDataEcdsaAdoptEvp(data, pKey);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecOpenSSLKeyDataEcdsaAdoptEvp",
-                            xmlSecKeyDataGetName(data));
-        if(pKey != NULL) {
-            EVP_PKEY_free(pKey);
-        }
-        return(-1);
-    }
-    return(0);
-#else /* XMLSEC_OPENSSL_API_300 */
-    UNREFERENCED_PARAMETER(data);
-    UNREFERENCED_PARAMETER(ecdsa);
-    xmlSecNotImplementedError("OpenSSL 3.0 does not support direct access to ECDSA key");
-    return(-1);
-#endif /* XMLSEC_OPENSSL_API_300 */
-}
-
-/**
- * xmlSecOpenSSLKeyDataEcdsaGetEcdsa:
- * @data:               the pointer to ECDSA key data.
- *
- * DEPRECATED. Gets the OpenSSL ECDSA key from ECDSA key data.
- *
- * Returns: pointer to OpenSSL ECDSA key or NULL if an error occurs.
- */
-EC_KEY*
-xmlSecOpenSSLKeyDataEcdsaGetEcdsa(xmlSecKeyDataPtr data) {
-#ifndef XMLSEC_OPENSSL_API_300
-    EVP_PKEY* pKey;
-
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcdsaId), NULL);
-
-    pKey = xmlSecOpenSSLKeyDataEcdsaGetEvp(data);
-    xmlSecAssert2((pKey == NULL) || (EVP_PKEY_base_id(pKey) == EVP_PKEY_EC), NULL);
-
-    return((pKey != NULL) ? EVP_PKEY_get0_EC_KEY(pKey) : NULL);
-#else /* XMLSEC_OPENSSL_API_300 */
-    UNREFERENCED_PARAMETER(data);
-    xmlSecNotImplementedError("OpenSSL 3.0 does not support direct access to ECDSA key");
-    return(NULL);
-#endif /* XMLSEC_OPENSSL_API_300 */
-}
-
-/**
  * xmlSecOpenSSLKeyDataEcdsaAdoptEvp:
  * @data:               the pointer to ECDSA key data.
  * @pKey:               the pointer to OpenSSL EVP key.
@@ -1603,6 +1493,18 @@ xmlSecOpenSSLKeyDataEcdsaGetType(xmlSecKeyDataPtr data ATTRIBUTE_UNUSED) {
 }
 
 #ifndef XMLSEC_OPENSSL_API_300
+
+static EC_KEY*
+xmlSecOpenSSLKeyDataEcdsaGetEcdsa(xmlSecKeyDataPtr data) {
+    EVP_PKEY* pKey;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcdsaId), NULL);
+
+    pKey = xmlSecOpenSSLKeyDataEcdsaGetEvp(data);
+    xmlSecAssert2((pKey == NULL) || (EVP_PKEY_base_id(pKey) == EVP_PKEY_EC), NULL);
+
+    return((pKey != NULL) ? EVP_PKEY_get0_EC_KEY(pKey) : NULL);
+}
 
 static xmlSecSize
 xmlSecOpenSSLKeyDataEcdsaGetSize(xmlSecKeyDataPtr data) {
@@ -1875,84 +1777,7 @@ xmlSecOpenSSLKeyDataRsaGetKlass(void) {
     return(&xmlSecOpenSSLKeyDataRsaKlass);
 }
 
-/**
- * xmlSecOpenSSLKeyDataRsaAdoptRsa:
- * @data:               the pointer to RSA key data.
- * @rsa:                the pointer to OpenSSL RSA key.
- *
- * DEPRECATED. Sets the value of RSA key data.
- *
- * Returns: 0 on success or a negative value otherwise.
- */
-int
-xmlSecOpenSSLKeyDataRsaAdoptRsa(xmlSecKeyDataPtr data, RSA* rsa) {
-#ifndef XMLSEC_OPENSSL_API_300
-    EVP_PKEY* pKey = NULL;
-    int ret;
 
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataRsaId), -1);
-
-    /* construct new EVP_PKEY */
-    if(rsa != NULL) {
-        pKey = EVP_PKEY_new();
-        if(pKey == NULL) {
-            xmlSecOpenSSLError("EVP_PKEY_new",
-                               xmlSecKeyDataGetName(data));
-            return(-1);
-        }
-
-        ret = EVP_PKEY_assign_RSA(pKey, rsa);
-        if(ret != 1) {
-            xmlSecOpenSSLError("EVP_PKEY_assign_RSA",
-                               xmlSecKeyDataGetName(data));
-            EVP_PKEY_free(pKey);
-            return(-1);
-        }
-    }
-
-    ret = xmlSecOpenSSLKeyDataRsaAdoptEvp(data, pKey);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecOpenSSLKeyDataRsaAdoptEvp",
-                            xmlSecKeyDataGetName(data));
-        if(pKey != NULL) {
-            EVP_PKEY_free(pKey);
-        }
-        return(-1);
-    }
-    return(0);
-#else /* XMLSEC_OPENSSL_API_300 */
-    UNREFERENCED_PARAMETER(data);
-    UNREFERENCED_PARAMETER(rsa);
-    xmlSecNotImplementedError("OpenSSL 3.0 does not support direct access to RSA key");
-    return(-1);
-#endif /* XMLSEC_OPENSSL_API_300 */
-}
-
-/**
- * xmlSecOpenSSLKeyDataRsaGetRsa:
- * @data:               the pointer to RSA key data.
- *
- * DEPRECATED. Gets the OpenSSL RSA key from RSA key data.
- *
- * Returns: pointer to OpenSSL RSA key or NULL if an error occurs.
- */
-RSA*
-xmlSecOpenSSLKeyDataRsaGetRsa(xmlSecKeyDataPtr data) {
-#ifndef XMLSEC_OPENSSL_API_300
-    EVP_PKEY* pKey;
-
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataRsaId), NULL);
-
-    pKey = xmlSecOpenSSLKeyDataRsaGetEvp(data);
-    xmlSecAssert2((pKey == NULL) || (EVP_PKEY_base_id(pKey) == EVP_PKEY_RSA), NULL);
-
-    return((pKey != NULL) ? EVP_PKEY_get0_RSA(pKey) : NULL);
-#else /* XMLSEC_OPENSSL_API_300 */
-    UNREFERENCED_PARAMETER(data);
-    xmlSecNotImplementedError("OpenSSL 3.0 does not support direct access to RSA key");
-    return(NULL);
-#endif /* XMLSEC_OPENSSL_API_300 */
-}
 
 /**
  * xmlSecOpenSSLKeyDataRsaAdoptEvp:
@@ -2028,6 +1853,54 @@ xmlSecOpenSSLKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 }
 
 #ifndef XMLSEC_OPENSSL_API_300
+static int
+xmlSecOpenSSLKeyDataRsaAdoptRsa(xmlSecKeyDataPtr data, RSA* rsa) {
+    EVP_PKEY* pKey = NULL;
+    int ret;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataRsaId), -1);
+
+    /* construct new EVP_PKEY */
+    if(rsa != NULL) {
+        pKey = EVP_PKEY_new();
+        if(pKey == NULL) {
+            xmlSecOpenSSLError("EVP_PKEY_new",
+                               xmlSecKeyDataGetName(data));
+            return(-1);
+        }
+
+        ret = EVP_PKEY_assign_RSA(pKey, rsa);
+        if(ret != 1) {
+            xmlSecOpenSSLError("EVP_PKEY_assign_RSA",
+                               xmlSecKeyDataGetName(data));
+            EVP_PKEY_free(pKey);
+            return(-1);
+        }
+    }
+
+    ret = xmlSecOpenSSLKeyDataRsaAdoptEvp(data, pKey);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecOpenSSLKeyDataRsaAdoptEvp",
+                            xmlSecKeyDataGetName(data));
+        if(pKey != NULL) {
+            EVP_PKEY_free(pKey);
+        }
+        return(-1);
+    }
+    return(0);
+}
+
+static RSA*
+xmlSecOpenSSLKeyDataRsaGetRsa(xmlSecKeyDataPtr data) {
+    EVP_PKEY* pKey;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataRsaId), NULL);
+
+    pKey = xmlSecOpenSSLKeyDataRsaGetEvp(data);
+    xmlSecAssert2((pKey == NULL) || (EVP_PKEY_base_id(pKey) == EVP_PKEY_RSA), NULL);
+
+    return((pKey != NULL) ? EVP_PKEY_get0_RSA(pKey) : NULL);
+}
 
 static int
 xmlSecOpenSSLKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKeyDataType type ATTRIBUTE_UNUSED) {

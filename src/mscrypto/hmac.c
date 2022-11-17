@@ -55,37 +55,6 @@
  *
  *****************************************************************************/
 
-/**
- * xmlSecMSCryptoHmacGetMinOutputLength:
- *
- * DEPRECATED (use @xmlSecTransformHmacGetMinOutputBitsSize instead).
- * Gets the value of min HMAC length.
- *
- * Returns: the min HMAC output length
- */
-int xmlSecMSCryptoHmacGetMinOutputLength(void)
-{
-    xmlSecSize val = xmlSecTransformHmacGetMinOutputBitsSize();
-    int res;
-
-    XMLSEC_SAFE_CAST_SIZE_TO_INT(val, res, return(-1), NULL);
-    return res;
-}
-
-/**
- * xmlSecMSCryptoHmacSetMinOutputLength:
- * @min_length: the new min length
- *
- * DEPRECATED (use @xmlSecTransformHmacSetMinOutputBitsSize instead).
- * Sets the min HMAC output length
- */
-void xmlSecMSCryptoHmacSetMinOutputLength(int min_length)
-{
-    xmlSecSize val;
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(min_length, val, return, NULL);
-    xmlSecTransformHmacSetMinOutputBitsSize(val);
-}
-
 /******************************************************************************
  *
  * Internal MSCrypto HMAC CTX

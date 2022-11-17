@@ -44,12 +44,6 @@
 </colgroup>
 <tbody>
 <tr>
-<td class="define_keyword">#define</td>
-<td class="function_name">
-<a class="link" href="xmlsec-xmlsec.html#XMLSEC-SIZE-BAD-CAST:CAPS" title="XMLSEC_SIZE_BAD_CAST()">XMLSEC_SIZE_BAD_CAST</a><span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
 <td class="function_type">
 <font><span class="returnvalue">int</span></font>
 </td>
@@ -140,12 +134,8 @@
 <td class="function_name"><a class="link" href="xmlsec-xmlsec.html#XMLSEC-SIZE-MIN:CAPS" title="XMLSEC_SIZE_MIN">XMLSEC_SIZE_MIN</a></td>
 </tr>
 <tr>
-<td class="define_keyword">#define</td>
+<td class="typedef_keyword">typedef</td>
 <td class="function_name"><a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte">xmlSecByte</a></td>
-</tr>
-<tr>
-<td class="define_keyword">#define</td>
-<td class="function_name"><a class="link" href="xmlsec-xmlsec.html#XMLSEC-CRYPTO:CAPS" title="XMLSEC_CRYPTO">XMLSEC_CRYPTO</a></td>
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
@@ -164,29 +154,6 @@
 </div>
 <div class="refsect1">
 <a name="xmlsec-xmlsec.functions_details"></a><h2>Functions</h2>
-<div class="refsect2">
-<a name="XMLSEC-SIZE-BAD-CAST:CAPS"></a><h3>XMLSEC_SIZE_BAD_CAST()</h3>
-<pre class="programlisting">#define XMLSEC_SIZE_BAD_CAST(val)               ((xmlSecSize)(val))
-</pre>
-<p>Bad cast to xmlSecSize. This macro is deprecated and will be removed in the future
-versions of LibXMLSec.</p>
-<div class="refsect3">
-<a name="XMLSEC-SIZE-BAD-CAST.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
-<colgroup>
-<col>
-<col>
-<col>
-</colgroup>
-<tbody><tr>
-<td class="parameter_name"><p>val</p></td>
-<td class="parameter_description"><p>the value to cast</p></td>
-<td class="parameter_annotations"> </td>
-</tr></tbody>
-</table></div>
-</div>
-</div>
-<hr>
 <div class="refsect2">
 <a name="xmlSecInit"></a><h3>xmlSecInit ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
@@ -332,8 +299,7 @@ despite the fact that MSVC runtime supports it for 10+ years.</p>
 <a name="xmlSecSize"></a><h3>xmlSecSize</h3>
 <pre class="programlisting">#define xmlSecSize                              unsigned int
 </pre>
-<p>Size of something. Should be typedef instead of define
-but it will break ABI (todo).</p>
+<p>Size of something.</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -356,19 +322,10 @@ but it will break ABI (todo).</p>
 <hr>
 <div class="refsect2">
 <a name="xmlSecByte"></a><h3>xmlSecByte</h3>
-<pre class="programlisting">#define xmlSecByte                              unsigned char
+<pre class="programlisting">typedef unsigned char xmlSecByte;
+
 </pre>
-<p>One byte. Should be typedef instead of define
-but it will break ABI (todo).</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="XMLSEC-CRYPTO:CAPS"></a><h3>XMLSEC_CRYPTO</h3>
-<pre class="programlisting">#define XMLSEC_CRYPTO                          (xmlSecGetDefaultCrypto())
-</pre>
-<p>Macro. Deprecated. Defined for backward compatibility only. Do not use
-in your code and use <a class="link" href="xmlsec-xmlsec.html#xmlSecGetDefaultCrypto" title="xmlSecGetDefaultCrypto ()"><code class="function">xmlSecGetDefaultCrypto()</code></a> function instead.</p>
-<p>Returns the default crypto engine.</p>
+<p>One byte.</p>
 </div>
 <hr>
 <div class="refsect2">

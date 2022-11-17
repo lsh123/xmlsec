@@ -369,6 +369,13 @@ CFLAGS = $(CFLAGS)
 CFLAGS = $(CFLAGS) /D "XMLSEC_NO_SIZE_T"
 !endif
 
+!if "$(WITH_LEGACY_CRYPTO)" == "1"
+CFLAGS = $(CFLAGS)
+!else
+CFLAGS = $(CFLAGS)  /D "XMLSEC_NO_MD5" /D "XMLSEC_NO_SHA1"  /D "XMLSEC_NO_DES"
+!endif
+
+
 !if "$(PEDANTIC)" == "1"
 CFLAGS = $(CFLAGS) /W4
 !else

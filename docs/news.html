@@ -52,9 +52,11 @@
 		The <a href="download.html">XML Security Library 1.3.0</a> release includes the following changes:
 		<ul>
 		<li>Removed SOAP parser.</li>
-		<li>Switched xmlSecSize to use size_t by default. Use "--enable-size-t=no" configure option (size_t=no on Windows) to
+		<li>Switched xmlSecSize to use size_t by default. Use "--enable-size-t=no" configure option ("size_t=no"" on Windows) to
 			restore the old behaviour (note that this behaviour is deprecated and will be removed in the future.
 		</li>
+		<li>Disabled by default legacy insecure algorithms (MD5, SHA1, and DES3). Use "--enable-md5", "--enable-sha1", 
+			and "--enable-des" configure options ("legacy-crypto" option on Windows) to re-enable these algorithms.</li>
 		<li>Removed support for OpenSSL 1.0.0 and LibreSSL before 2.7.0.</li>
 		<li>TODO</li>
 		</ul>

@@ -51,14 +51,14 @@ typedef void*                                   xmlSecPtr;
 /**
  * xmlSecSize:
  *
- * Size of something. Should be typedef instead of define
- * but it will break ABI (todo).
+ * Size of something.
  */
 #ifdef XMLSEC_NO_SIZE_T
 #define xmlSecSize                              unsigned int
 #define XMLSEC_SIZE_MAX                         UINT_MAX
 #define XMLSEC_SIZE_FMT                         "%u"
 #else  /* XMLSEC_NO_SIZE_T */
+typedef size_t xmlSecSize;
 #define xmlSecSize                              size_t
 #define XMLSEC_SIZE_MAX                         SIZE_MAX
 #define XMLSEC_SIZE_FMT                         XMLSEC_SIZE_T_FMT
@@ -66,21 +66,11 @@ typedef void*                                   xmlSecPtr;
 #define XMLSEC_SIZE_MIN                         ((xmlSecSize)0)
 
 /**
- * XMLSEC_SIZE_BAD_CAST:
- * @val:        the value to cast
- *
- * Bad cast to xmlSecSize. This macro is deprecated and will be removed in the future
- * versions of LibXMLSec.
- */
-#define XMLSEC_SIZE_BAD_CAST(val)               ((xmlSecSize)(val))
-
-/**
  * xmlSecByte:
  *
- * One byte. Should be typedef instead of define
- * but it will break ABI (todo).
+ * One byte.
  */
-#define xmlSecByte                              unsigned char
+typedef unsigned char xmlSecByte; 
 
 /***********************************************************************
  *
@@ -109,16 +99,6 @@ XMLSEC_EXPORT int                               xmlSecShutdown          (void);
 XMLSEC_EXPORT const xmlChar *                   xmlSecGetDefaultCrypto  (void);
 XMLSEC_EXPORT void                              xmlSecSetExternalEntityLoader (xmlExternalEntityLoader);
 XMLSEC_EXPORT xmlSecSize                        xmlSecStrlen            (const xmlChar * str);
-
-/**
- * XMLSEC_CRYPTO:
- *
- * Macro. Deprecated. Defined for backward compatibility only. Do not use
- * in your code and use xmlSecGetDefaultCrypto() function instead.
- *
- * Returns the default crypto engine.
- */
-#define XMLSEC_CRYPTO                          (xmlSecGetDefaultCrypto())
 
 /*
  * XMLSEC_DEPRECATED function definition

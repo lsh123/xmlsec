@@ -51,6 +51,7 @@ var withMSCng = 0;
 var withLibXSLT = 1;
 var withIconv = 1;
 var withSizeT = 1;
+var withLegacyCrypto = 0;
 
 /* Win32 build options. */
 var withNT4 = 0;
@@ -118,6 +119,7 @@ function usage()
  	txt += "  xslt:       LibXSLT is used (" + (withLibXSLT? "yes" : "no")  + ")\n";
  	txt += "  iconv:      Use the iconv library (" + (withIconv? "yes" : "no")  + ")\n";
 	txt += "  size_t:     Use the size_t (" + (withSizeT ? "yes" : "no") + ")\n";
+	txt += "  legacy - crypto:  Use the size_t (" + (withLegacyCrypto ? "yes" : "no") + ")\n";
 	txt += "\nWin32 build options, default value given in parentheses:\n\n";
 	txt += "  nt4:        Enable NT 4.0 support (" + (withNT4 ? "yes" : "no") + ")\n";
 	txt += "  unicode:    Build Unicode version (" + (buildUnicode? "yes" : "no")  + ")\n";
@@ -190,6 +192,7 @@ function discoverVersion()
 	vf.WriteLine("WITH_LIBXSLT=" + (withLibXSLT ? "1" : "0"));
 	vf.WriteLine("WITH_ICONV=" + (withIconv ? "1" : "0"));
 	vf.WriteLine("WITH_SIZE_T=" + (withSizeT ? "1" : "0"));
+	vf.WriteLine("WITH_LEGACY_CRYPTO=" + (withLegacyCrypto ? "1" : "0"));
 	vf.WriteLine("WITH_NT4=" + (withNT4 ? "1" : "0"));
 	vf.WriteLine("UNICODE=" + (buildUnicode? "1" : "0"));
 	vf.WriteLine("DEBUG=" + (buildDebug? "1" : "0"));
@@ -325,6 +328,8 @@ for (i = 0; (i < WScript.Arguments.length) && (error == 0); i++) {
 			withIconv = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "size_t")
 			withSizeT = strToBool(arg.substring(opt.length + 1, arg.length));
+		else if (opt == "legacy-crypto")
+			withLegacyCrypto = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "nt4")
 			withNT4 = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "unicode")
@@ -460,6 +465,7 @@ txtOut += "          Use MSCng: " + boolToStr(withMSCng) + "\n";
 txtOut += "        Use LibXSLT: " + boolToStr(withLibXSLT) + "\n";
 txtOut += "          Use iconv: " + boolToStr(withIconv) + "\n";
 txtOut += "         Use size_t: " + boolToStr(withSizeT) + "\n";
+txtOut += "  Use legacy crypto: " + boolToStr(withLegacyCrypto) + "\n";
 txtOut += "\n";
 txtOut += "Win32 build configuration\n";
 txtOut += "-------------------------\n";

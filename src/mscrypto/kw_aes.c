@@ -548,4 +548,9 @@ xmlSecMSCryptoTransformKWAes256GetKlass(void) {
     return(&xmlSecMSCryptoKWAes256Klass);
 }
 
+#else /* XMLSEC_NO_AES */
+
+/* ISO C forbids an empty translation unit */
+typedef int make_iso_compilers_happy;
+
 #endif /* XMLSEC_NO_AES */

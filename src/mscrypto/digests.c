@@ -71,6 +71,7 @@ static int      xmlSecMSCryptoDigestCheckId     (xmlSecTransformPtr transform);
  *
  * MUST END with { NULL, 0 } !!!
  */
+#ifndef XMLSEC_NO_SHA1
 static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Sha1[] = {
     { XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV,                PROV_RSA_AES},
     { XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV_PROTOTYPE,      PROV_RSA_AES },
@@ -79,6 +80,7 @@ static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Sha1[] = {
     { MS_DEF_PROV,                                      PROV_RSA_FULL },
     { NULL, 0 }
 };
+#endif /* XMLSEC_NO_SHA1*/
 
 static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Sha2[] = {
     { XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV,                PROV_RSA_AES},
@@ -86,12 +88,14 @@ static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Sha2[] = {
     { NULL, 0 }
 };
 
+#ifndef XMLSEC_NO_MD5
 static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Md5[] = {
     { MS_STRONG_PROV,                                   PROV_RSA_FULL },
     { MS_ENHANCED_PROV,                                 PROV_RSA_FULL },
     { MS_DEF_PROV,                                      PROV_RSA_FULL },
     { NULL, 0 }
 };
+#endif /* XMLSEC_NO_MD5*/
 
 #ifndef XMLSEC_NO_GOST
 static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Gost[] = {

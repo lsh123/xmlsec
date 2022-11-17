@@ -151,6 +151,12 @@ if test "z$enable_development" = "zyes" ; then
     enable_manpages_build="no"
     enable_docs_build="no"
     enable_crypto_dl="no"
+
+    dnl legacy crypto
+    enable_md5="yes"
+    enable_sha1="yes"
+    enable_des="yes"
+
     AC_MSG_RESULT([yes])
 else
     AC_MSG_RESULT([disabled])

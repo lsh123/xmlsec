@@ -1455,7 +1455,7 @@ xmlSecAppSignTmpl(void) {
     }
 
     cur = xmlSecTmplSignatureCreate(doc, xmlSecTransformInclC14NId,
-                                    xmlSecTransformHmacSha1Id, NULL);
+                                    xmlSecTransformHmacSha256Id, NULL);
     if(cur == NULL) {
         fprintf(stderr, "Error: failed to create Signature node\n");
         goto done;
@@ -1474,7 +1474,7 @@ xmlSecAppSignTmpl(void) {
     }
 
     cur = xmlSecTmplSignatureAddReference(xmlDocGetRootElement(doc),
-                                    xmlSecTransformSha1Id,
+                                    xmlSecTransformSha256Id,
                                     BAD_CAST "ref1", NULL, NULL);
     if(cur == NULL) {
         fprintf(stderr, "Error: failed to add Reference node\n");

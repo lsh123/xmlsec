@@ -34,7 +34,6 @@ http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
 <!ENTITY xmlsec-templates 		"base/templates.xml">
 <!ENTITY xmlsec-transforms 		"base/transforms.xml">
 <!ENTITY xmlsec-version 		"base/version.xml">
-<!ENTITY xmlsec-x509                    "base/x509.xml">
 <!ENTITY xmlsec-xmldsig 		"base/xmldsig.xml">
 <!ENTITY xmlsec-xmlenc 			"base/xmlenc.xml">
 <!ENTITY xmlsec-xmlsec 			"base/xmlsec.xml">
@@ -239,7 +238,6 @@ http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
     <xi:include href="&xmlsec-xmlenc;"/>
     <xi:include href="&xmlsec-xmlsec;"/>
     <xi:include href="&xmlsec-xmltree;"/>
-    <xi:include href="&xmlsec-x509;"/>
     </chapter>
 
     <chapter id="xmlsec-openssl-ref">

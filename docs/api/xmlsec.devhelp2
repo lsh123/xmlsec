@@ -95,7 +95,6 @@
         <sub name="xmlenc" link="xmlsec-xmlenc.html"/>
         <sub name="xmlsec" link="xmlsec-xmlsec.html"/>
         <sub name="xmltree" link="xmlsec-xmltree.html"/>
-        <sub name="x509" link="xmlsec-x509.html"/>
       </sub>
       <sub name="XML Security Library for OpenSLL API Reference." link="xmlsec-openssl-ref.html">
         <sub name="app" link="xmlsec-openssl-app.html"/>
@@ -912,7 +911,6 @@
     <keyword type="enum" name="enum xmlEncCtxMode" link="xmlsec-xmlenc.html#xmlEncCtxMode"/>
     <keyword type="macro" name="XMLSEC_ENC_RETURN_REPLACED_NODE" link="xmlsec-xmlenc.html#XMLSEC-ENC-RETURN-REPLACED-NODE:CAPS"/>
     <keyword type="struct" name="struct xmlSecEncCtx" link="xmlsec-xmlenc.html#xmlSecEncCtx"/>
-    <keyword type="macro" name="XMLSEC_SIZE_BAD_CAST()" link="xmlsec-xmlsec.html#XMLSEC-SIZE-BAD-CAST:CAPS"/>
     <keyword type="function" name="xmlSecInit ()" link="xmlsec-xmlsec.html#xmlSecInit"/>
     <keyword type="function" name="xmlSecShutdown ()" link="xmlsec-xmlsec.html#xmlSecShutdown"/>
     <keyword type="function" name="xmlSecGetDefaultCrypto ()" link="xmlsec-xmlsec.html#xmlSecGetDefaultCrypto"/>
@@ -927,8 +925,7 @@
     <keyword type="macro" name="XMLSEC_SIZE_MAX" link="xmlsec-xmlsec.html#XMLSEC-SIZE-MAX:CAPS"/>
     <keyword type="macro" name="XMLSEC_SIZE_FMT" link="xmlsec-xmlsec.html#XMLSEC-SIZE-FMT:CAPS"/>
     <keyword type="macro" name="XMLSEC_SIZE_MIN" link="xmlsec-xmlsec.html#XMLSEC-SIZE-MIN:CAPS"/>
-    <keyword type="macro" name="xmlSecByte" link="xmlsec-xmlsec.html#xmlSecByte"/>
-    <keyword type="macro" name="XMLSEC_CRYPTO" link="xmlsec-xmlsec.html#XMLSEC-CRYPTO:CAPS"/>
+    <keyword type="typedef" name="xmlSecByte" link="xmlsec-xmlsec.html#xmlSecByte"/>
     <keyword type="macro" name="XMLSEC_DEPRECATED" link="xmlsec-xmlsec.html#XMLSEC-DEPRECATED:CAPS"/>
     <keyword type="enum" name="enum xmlSecCheckVersionMode" link="xmlsec-xmlsec.html#xmlSecCheckVersionMode"/>
     <keyword type="macro" name="xmlSecNodeGetName()" link="xmlsec-xmltree.html#xmlSecNodeGetName"/>
@@ -992,12 +989,6 @@
     <keyword type="typedef" name="xmlSecBitMask" link="xmlsec-xmltree.html#xmlSecBitMask"/>
     <keyword type="struct" name="struct xmlSecQName2BitMaskInfo" link="xmlsec-xmltree.html#xmlSecQName2BitMaskInfo"/>
     <keyword type="typedef" name="xmlSecQName2BitMaskInfoConstPtr" link="xmlsec-xmltree.html#xmlSecQName2BitMaskInfoConstPtr"/>
-    <keyword type="macro" name="XMLSEC_X509DATA_CERTIFICATE_NODE" link="xmlsec-x509.html#XMLSEC-X509DATA-CERTIFICATE-NODE:CAPS"/>
-    <keyword type="macro" name="XMLSEC_X509DATA_SUBJECTNAME_NODE" link="xmlsec-x509.html#XMLSEC-X509DATA-SUBJECTNAME-NODE:CAPS"/>
-    <keyword type="macro" name="XMLSEC_X509DATA_ISSUERSERIAL_NODE" link="xmlsec-x509.html#XMLSEC-X509DATA-ISSUERSERIAL-NODE:CAPS"/>
-    <keyword type="macro" name="XMLSEC_X509DATA_SKI_NODE" link="xmlsec-x509.html#XMLSEC-X509DATA-SKI-NODE:CAPS"/>
-    <keyword type="macro" name="XMLSEC_X509DATA_CRL_NODE" link="xmlsec-x509.html#XMLSEC-X509DATA-CRL-NODE:CAPS"/>
-    <keyword type="macro" name="XMLSEC_X509DATA_DEFAULT" link="xmlsec-x509.html#XMLSEC-X509DATA-DEFAULT:CAPS"/>
     <keyword type="function" name="xmlSecOpenSSLAppInit ()" link="xmlsec-openssl-app.html#xmlSecOpenSSLAppInit"/>
     <keyword type="function" name="xmlSecOpenSSLAppShutdown ()" link="xmlsec-openssl-app.html#xmlSecOpenSSLAppShutdown"/>
     <keyword type="function" name="xmlSecOpenSSLAppDefaultKeysMngrInit ()" link="xmlsec-openssl-app.html#xmlSecOpenSSLAppDefaultKeysMngrInit"/>
@@ -1131,10 +1122,10 @@
     <keyword type="macro" name="xmlSecOpenSSLTransformDes3CbcId" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformDes3CbcId"/>
     <keyword type="macro" name="xmlSecOpenSSLTransformKWDes3Id" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformKWDes3Id"/>
     <keyword type="macro" name="xmlSecOpenSSLKeyDataDsaId" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataDsaId"/>
-    <keyword type="macro" name="xmlSecOpenSSLTransformDsaSha1Id" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformDsaSha1Id" deprecated=""/>
+    <keyword type="macro" name="xmlSecOpenSSLTransformDsaSha1Id" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformDsaSha1Id"/>
     <keyword type="macro" name="xmlSecOpenSSLTransformDsaSha256Id" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformDsaSha256Id"/>
     <keyword type="macro" name="xmlSecOpenSSLKeyDataEcdsaId" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataEcdsaId"/>
-    <keyword type="macro" name="xmlSecOpenSSLTransformEcdsaSha1Id" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformEcdsaSha1Id" deprecated=""/>
+    <keyword type="macro" name="xmlSecOpenSSLTransformEcdsaSha1Id" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformEcdsaSha1Id"/>
     <keyword type="macro" name="xmlSecOpenSSLTransformEcdsaSha224Id" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformEcdsaSha224Id"/>
     <keyword type="macro" name="xmlSecOpenSSLTransformEcdsaSha256Id" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformEcdsaSha256Id"/>
     <keyword type="macro" name="xmlSecOpenSSLTransformEcdsaSha384Id" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformEcdsaSha384Id"/>
@@ -1148,7 +1139,7 @@
     <keyword type="macro" name="xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_512Id" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformGostR3410-2012GostR3411-2012-512Id"/>
     <keyword type="macro" name="xmlSecOpenSSLTransformGostR3411_2012_256Id" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformGostR3411-2012-256Id"/>
     <keyword type="macro" name="xmlSecOpenSSLTransformGostR3411_2012_512Id" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformGostR3411-2012-512Id"/>
-    <keyword type="macro" name="xmlSecOpenSSLKeyDataHmacId" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataHmacId" deprecated=""/>
+    <keyword type="macro" name="xmlSecOpenSSLKeyDataHmacId" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataHmacId"/>
     <keyword type="macro" name="xmlSecOpenSSLTransformHmacMd5Id" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformHmacMd5Id"/>
     <keyword type="macro" name="xmlSecOpenSSLTransformHmacRipemd160Id" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformHmacRipemd160Id"/>
     <keyword type="macro" name="xmlSecOpenSSLTransformHmacSha1Id" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformHmacSha1Id"/>
@@ -1159,7 +1150,7 @@
     <keyword type="macro" name="xmlSecOpenSSLTransformMd5Id" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformMd5Id"/>
     <keyword type="macro" name="xmlSecOpenSSLTransformRipemd160Id" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformRipemd160Id"/>
     <keyword type="macro" name="xmlSecOpenSSLKeyDataRsaId" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataRsaId"/>
-    <keyword type="macro" name="xmlSecOpenSSLTransformRsaMd5Id" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformRsaMd5Id" deprecated=""/>
+    <keyword type="macro" name="xmlSecOpenSSLTransformRsaMd5Id" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformRsaMd5Id"/>
     <keyword type="macro" name="xmlSecOpenSSLTransformRsaRipemd160Id" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformRsaRipemd160Id"/>
     <keyword type="macro" name="xmlSecOpenSSLTransformRsaSha1Id" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformRsaSha1Id"/>
     <keyword type="macro" name="xmlSecOpenSSLTransformRsaSha224Id" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformRsaSha224Id"/>
@@ -1272,7 +1263,7 @@
     <keyword type="macro" name="xmlSecGnuTLSTransformKWDes3Id" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformKWDes3Id"/>
     <keyword type="macro" name="xmlSecGnuTLSKeyDataDsaId" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSKeyDataDsaId"/>
     <keyword type="macro" name="xmlSecGnuTLSTransformDsaSha1Id" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformDsaSha1Id"/>
-    <keyword type="macro" name="xmlSecGnuTLSKeyDataHmacId" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSKeyDataHmacId" deprecated=""/>
+    <keyword type="macro" name="xmlSecGnuTLSKeyDataHmacId" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSKeyDataHmacId"/>
     <keyword type="macro" name="xmlSecGnuTLSTransformHmacMd5Id" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformHmacMd5Id"/>
     <keyword type="macro" name="xmlSecGnuTLSTransformHmacRipemd160Id" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformHmacRipemd160Id"/>
     <keyword type="macro" name="xmlSecGnuTLSTransformHmacSha1Id" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformHmacSha1Id"/>
@@ -1386,7 +1377,7 @@
     <keyword type="macro" name="xmlSecGCryptTransformKWDes3Id" link="xmlsec-gcrypt-crypto.html#xmlSecGCryptTransformKWDes3Id"/>
     <keyword type="macro" name="xmlSecGCryptKeyDataDsaId" link="xmlsec-gcrypt-crypto.html#xmlSecGCryptKeyDataDsaId"/>
     <keyword type="macro" name="xmlSecGCryptTransformDsaSha1Id" link="xmlsec-gcrypt-crypto.html#xmlSecGCryptTransformDsaSha1Id"/>
-    <keyword type="macro" name="xmlSecGCryptKeyDataHmacId" link="xmlsec-gcrypt-crypto.html#xmlSecGCryptKeyDataHmacId" deprecated=""/>
+    <keyword type="macro" name="xmlSecGCryptKeyDataHmacId" link="xmlsec-gcrypt-crypto.html#xmlSecGCryptKeyDataHmacId"/>
     <keyword type="macro" name="xmlSecGCryptTransformHmacMd5Id" link="xmlsec-gcrypt-crypto.html#xmlSecGCryptTransformHmacMd5Id"/>
     <keyword type="macro" name="xmlSecGCryptTransformHmacRipemd160Id" link="xmlsec-gcrypt-crypto.html#xmlSecGCryptTransformHmacRipemd160Id"/>
     <keyword type="macro" name="xmlSecGCryptTransformHmacSha1Id" link="xmlsec-gcrypt-crypto.html#xmlSecGCryptTransformHmacSha1Id"/>
@@ -1498,7 +1489,7 @@
     <keyword type="macro" name="xmlSecNssTransformEcdsaSha256Id" link="xmlsec-nss-crypto.html#xmlSecNssTransformEcdsaSha256Id"/>
     <keyword type="macro" name="xmlSecNssTransformEcdsaSha384Id" link="xmlsec-nss-crypto.html#xmlSecNssTransformEcdsaSha384Id"/>
     <keyword type="macro" name="xmlSecNssTransformEcdsaSha512Id" link="xmlsec-nss-crypto.html#xmlSecNssTransformEcdsaSha512Id"/>
-    <keyword type="macro" name="xmlSecNssKeyDataHmacId" link="xmlsec-nss-crypto.html#xmlSecNssKeyDataHmacId" deprecated=""/>
+    <keyword type="macro" name="xmlSecNssKeyDataHmacId" link="xmlsec-nss-crypto.html#xmlSecNssKeyDataHmacId"/>
     <keyword type="macro" name="xmlSecNssTransformHmacMd5Id" link="xmlsec-nss-crypto.html#xmlSecNssTransformHmacMd5Id"/>
     <keyword type="macro" name="xmlSecNssTransformHmacRipemd160Id" link="xmlsec-nss-crypto.html#xmlSecNssTransformHmacRipemd160Id"/>
     <keyword type="macro" name="xmlSecNssTransformHmacSha1Id" link="xmlsec-nss-crypto.html#xmlSecNssTransformHmacSha1Id"/>
@@ -1630,7 +1621,7 @@
     <keyword type="function" name="xmlSecMSCryptoTransformHmacSha256GetKlass ()" link="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoTransformHmacSha256GetKlass"/>
     <keyword type="function" name="xmlSecMSCryptoTransformHmacSha384GetKlass ()" link="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoTransformHmacSha384GetKlass"/>
     <keyword type="function" name="xmlSecMSCryptoTransformHmacSha512GetKlass ()" link="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoTransformHmacSha512GetKlass"/>
-    <keyword type="macro" name="xmlSecMSCryptoKeyDataDsaId" link="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoKeyDataDsaId" deprecated=""/>
+    <keyword type="macro" name="xmlSecMSCryptoKeyDataDsaId" link="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoKeyDataDsaId"/>
     <keyword type="macro" name="xmlSecMSCryptoTransformDsaSha1Id" link="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoTransformDsaSha1Id"/>
     <keyword type="macro" name="xmlSecMSCryptoKeyDataGost2001Id" link="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoKeyDataGost2001Id"/>
     <keyword type="macro" name="xmlSecMSCryptoTransformGost2001GostR3411_94Id" link="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoTransformGost2001GostR3411-94Id"/>
@@ -1664,7 +1655,7 @@
     <keyword type="macro" name="xmlSecMSCryptoKeyDataDesId" link="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoKeyDataDesId"/>
     <keyword type="macro" name="xmlSecMSCryptoTransformDes3CbcId" link="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoTransformDes3CbcId"/>
     <keyword type="macro" name="xmlSecMSCryptoTransformKWDes3Id" link="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoTransformKWDes3Id"/>
-    <keyword type="macro" name="xmlSecMSCryptoKeyDataHmacId" link="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoKeyDataHmacId" deprecated=""/>
+    <keyword type="macro" name="xmlSecMSCryptoKeyDataHmacId" link="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoKeyDataHmacId"/>
     <keyword type="macro" name="xmlSecMSCryptoTransformHmacMd5Id" link="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoTransformHmacMd5Id"/>
     <keyword type="macro" name="xmlSecMSCryptoTransformHmacRipemd160Id" link="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoTransformHmacRipemd160Id"/>
     <keyword type="macro" name="xmlSecMSCryptoTransformHmacSha1Id" link="xmlsec-mscrypto-crypto.html#xmlSecMSCryptoTransformHmacSha1Id"/>
@@ -1716,7 +1707,7 @@
     <keyword type="function" name="xmlSecMSCngKeyDataGetPubKey ()" link="xmlsec-mscng-certkeys.html#xmlSecMSCngKeyDataGetPubKey"/>
     <keyword type="function" name="xmlSecMSCngKeyDataGetPrivKey ()" link="xmlsec-mscng-certkeys.html#xmlSecMSCngKeyDataGetPrivKey"/>
     <keyword type="function" name="xmlSecCryptoGetFunctions_mscng ()" link="xmlsec-mscng-crypto.html#xmlSecCryptoGetFunctions-mscng"/>
-    <keyword type="function" name="xmlSecMSCngGenerateRandom ()" link="xmlsec-mscng-crypto.html#xmlSecMSCngGenerateRandom" deprecated=""/>
+    <keyword type="function" name="xmlSecMSCngGenerateRandom ()" link="xmlsec-mscng-crypto.html#xmlSecMSCngGenerateRandom"/>
     <keyword type="function" name="xmlSecMSCngInit ()" link="xmlsec-mscng-crypto.html#xmlSecMSCngInit"/>
     <keyword type="function" name="xmlSecMSCngShutdown ()" link="xmlsec-mscng-crypto.html#xmlSecMSCngShutdown"/>
     <keyword type="function" name="xmlSecMSCngKeysMngrInit ()" link="xmlsec-mscng-crypto.html#xmlSecMSCngKeysMngrInit"/>

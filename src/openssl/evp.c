@@ -1494,43 +1494,6 @@ xmlSecOpenSSLKeyDataEcdsaGetType(xmlSecKeyDataPtr data ATTRIBUTE_UNUSED) {
 
 #ifndef XMLSEC_OPENSSL_API_300
 
-static int
-xmlSecOpenSSLKeyDataEcdsaAdoptEcdsa(xmlSecKeyDataPtr data, EC_KEY* ecdsa) {
-    EVP_PKEY* pKey = NULL;
-    int ret;
-
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcdsaId), -1);
-
-    /* construct new EVP_PKEY */
-    if(ecdsa != NULL) {
-        pKey = EVP_PKEY_new();
-        if(pKey == NULL) {
-            xmlSecOpenSSLError("EVP_PKEY_new",
-                               xmlSecKeyDataGetName(data));
-            return(-1);
-        }
-
-        ret = EVP_PKEY_assign_EC_KEY(pKey, ecdsa);
-        if(ret != 1) {
-            xmlSecOpenSSLError("EVP_PKEY_assign_EC_KEY",
-                               xmlSecKeyDataGetName(data));
-            EVP_PKEY_free(pKey);
-            return(-1);
-        }
-    }
-
-    ret = xmlSecOpenSSLKeyDataEcdsaAdoptEvp(data, pKey);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecOpenSSLKeyDataEcdsaAdoptEvp",
-                            xmlSecKeyDataGetName(data));
-        if(pKey != NULL) {
-            EVP_PKEY_free(pKey);
-        }
-        return(-1);
-    }
-    return(0);
-}
-
 static EC_KEY*
 xmlSecOpenSSLKeyDataEcdsaGetEcdsa(xmlSecKeyDataPtr data) {
     EVP_PKEY* pKey;

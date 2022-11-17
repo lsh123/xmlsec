@@ -602,37 +602,37 @@ struct _xmlSecCryptoDLFunctions {
 /**
  * XMLSEC_X509DATA_CERTIFICATE_NODE:
  *
- * DEPRECATED. <dsig:X509Certificate/> node found or would be written back.
+ * <dsig:X509Certificate/> node found or would be written back.
  */
 #define XMLSEC_X509DATA_CERTIFICATE_NODE                        0x00000001
 /**
  * XMLSEC_X509DATA_SUBJECTNAME_NODE:
  *
- * DEPRECATED. <dsig:X509SubjectName/> node found or would be written back.
+ * <dsig:X509SubjectName/> node found or would be written back.
  */
 #define XMLSEC_X509DATA_SUBJECTNAME_NODE                        0x00000002
 /**
  * XMLSEC_X509DATA_ISSUERSERIAL_NODE:
  *
- * DEPRECATED. <dsig:X509IssuerSerial/> node found or would be written back.
+ * <dsig:X509IssuerSerial/> node found or would be written back.
  */
 #define XMLSEC_X509DATA_ISSUERSERIAL_NODE                       0x00000004
 /**
  * XMLSEC_X509DATA_SKI_NODE:
  *
- * DEPRECATED. <dsig:X509SKI/> node found or would be written back.
+ * <dsig:X509SKI/> node found or would be written back.
  */
 #define XMLSEC_X509DATA_SKI_NODE                                0x00000008
 /**
  * XMLSEC_X509DATA_CRL_NODE:
  *
- * DEPRECATED. <dsig:X509CRL/> node found or would be written back.
+ * <dsig:X509CRL/> node found or would be written back.
  */
 #define XMLSEC_X509DATA_CRL_NODE                                0x00000010
 /**
  * XMLSEC_X509DATA_DEFAULT:
  *
- * DEPRECATED. Default set of nodes to write in case of empty
+ * Default set of nodes to write in case of empty
  * <dsig:X509Data/> node template.
  */
 #define XMLSEC_X509DATA_DEFAULT \

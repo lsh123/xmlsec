@@ -127,9 +127,65 @@ execEncTest $res_success \
 execEncTest $res_success \
     "" \
     "aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_sha1-params" \
-    "aes256-cbc rsa-oaep-mgf1p" \
+    "aes256-cbc rsa-oaep-mgf1p sha1" \
     "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123" \
     "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123 --session-key aes-256 --enabled-key-data key-name --xml-data $topfolder/aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_sha1-params.data --node-name http://example.org/paymentv2:CreditCard"  \
+    "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123"
+
+execEncTest $res_success \
+    "" \
+    "aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_sha1" \
+    "aes256-cbc rsa-oaep-mgf1p sha1" \
+    "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123" \
+    "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123 --session-key aes-256 --enabled-key-data key-name --xml-data $topfolder/aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_sha1.data --node-name http://example.org/paymentv2:CreditCard"  \
+    "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123"
+
+execEncTest $res_success \
+    "" \
+    "aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_md5" \
+    "aes256-cbc rsa-oaep-mgf1p md5" \
+    "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123" \
+    "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123 --session-key aes-256 --enabled-key-data key-name --xml-data $topfolder/aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_md5.data --node-name http://example.org/paymentv2:CreditCard"  \
+    "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123"
+
+execEncTest $res_success \
+    "" \
+    "aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_ripemd160" \
+    "aes256-cbc rsa-oaep-mgf1p ripemd160" \
+    "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123" \
+    "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123 --session-key aes-256 --enabled-key-data key-name --xml-data $topfolder/aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_ripemd160.data --node-name http://example.org/paymentv2:CreditCard"  \
+    "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123"
+
+execEncTest $res_success \
+    "" \
+    "aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_sha224" \
+    "aes256-cbc rsa-oaep-mgf1p sha224" \
+    "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123" \
+    "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123 --session-key aes-256 --enabled-key-data key-name --xml-data $topfolder/aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_sha224.data --node-name http://example.org/paymentv2:CreditCard"  \
+    "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123"
+
+execEncTest $res_success \
+    "" \
+    "aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_sha256" \
+    "aes256-cbc rsa-oaep-mgf1p sha256" \
+    "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123" \
+    "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123 --session-key aes-256 --enabled-key-data key-name --xml-data $topfolder/aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_sha256.data --node-name http://example.org/paymentv2:CreditCard"  \
+    "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123"
+
+execEncTest $res_success \
+    "" \
+    "aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_sha384" \
+    "aes256-cbc rsa-oaep-mgf1p sha384" \
+    "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123" \
+    "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123 --session-key aes-256 --enabled-key-data key-name --xml-data $topfolder/aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_sha384.data --node-name http://example.org/paymentv2:CreditCard"  \
+    "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123"
+
+execEncTest $res_success \
+    "" \
+    "aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_sha512" \
+    "aes256-cbc rsa-oaep-mgf1p sha512" \
+    "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123" \
+    "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123 --session-key aes-256 --enabled-key-data key-name --xml-data $topfolder/aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_sha512.data --node-name http://example.org/paymentv2:CreditCard"  \
     "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123"
 
 # same test but decrypt using two different keys

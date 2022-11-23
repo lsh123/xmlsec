@@ -692,7 +692,7 @@ execDSigTest $res_success \
 execDSigTest $res_success \
     "" \
     "merlin-xmlenc-five/encsig-hmac-sha256-rsa-oaep-mgf1p" \
-    "sha1 hmac-sha256 rsa-oaep-mgf1p" \
+    "sha1 hmac-sha256 rsa-oaep-mgf1p sha1" \
     "hmac rsa" \
     "$priv_key_option $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --pwd secret $url_map_xml_stylesheet_2005"
 

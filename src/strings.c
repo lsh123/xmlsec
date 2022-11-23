@@ -429,7 +429,7 @@ const xmlChar xmlSecHrefGostR3411_2012_512[]                  = "urn:ietf:params
 
 /*************************************************************************
  *
- * SHA1 strings
+ * SHA1/2 strings
  *
  ************************************************************************/
 const xmlChar xmlSecNameSha1[]                  = "sha1";

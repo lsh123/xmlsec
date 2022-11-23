@@ -981,13 +981,17 @@ xmlSecOpenSSLRsaOaepFinalize(xmlSecTransformPtr transform) {
     memset(ctx, 0, sizeof(xmlSecOpenSSLRsaOaepCtx));
 }
 
-/* small helper macro to reduce clutter in the code */
+/* small helper macros to reduce clutter in the code */
 #ifndef XMLSEC_OPENSSL_API_300
 #define XMLSEC_OPENSSL_OAEP_DIGEST_SETUP(ctx, digestVal, digestNameVal) \
     (ctx)->md = (digestVal)
+#define XMLSEC_OPENSSL_OAEP_MGF1_DIGEST_SETUP(ctx, digestVal, digestNameVal) \
+    (ctx)->mgf1md = (digestVal)
 #else /* XMLSEC_OPENSSL_API_300 */
 #define XMLSEC_OPENSSL_OAEP_DIGEST_SETUP(ctx, digestVal, digestNameVal) \
     (ctx)->mdName = (digestNameVal)
+#define XMLSEC_OPENSSL_OAEP_MGF1_DIGEST_SETUP(ctx, digestVal, digestNameVal) \
+    (ctx)->mgf1mdName = (digestNameVal)
 #endif /* XMLSEC_OPENSSL_API_300 */
 
 static int
@@ -1076,6 +1080,24 @@ xmlSecOpenSSLRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
        xmlSecInvalidTransfromError2(transform,
             "digest algorithm=\"%s\" is not supported for rsa/oaep",
             xmlSecErrorsSafeString(oaepParams.digestAlgorithm));
+        xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
+        return(-1);
+    }
+
+    /* digest algorithm */
+    if(oaepParams.mgf1DigestAlgorithm == NULL) {
+#ifndef XMLSEC_NO_SHA1
+        XMLSEC_OPENSSL_OAEP_MGF1_DIGEST_SETUP(ctx, EVP_sha1(), OSSL_DIGEST_NAME_SHA1);
+#else  /* XMLSEC_NO_SHA1 */
+        xmlSecOtherError(XMLSEC_ERRORS_R_DISABLED, NULL, "No OAEP mgf1 digest algorithm is specified and the default SHA1 digest is disabled");
+        xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
+        return(-1);        
+#endif /* XMLSEC_NO_SHA1 */
+    } else 
+    {
+       xmlSecInvalidTransfromError2(transform,
+            "mgf1 digest algorithm=\"%s\" is not supported for rsa/oaep",
+            xmlSecErrorsSafeString(oaepParams.mgf1DigestAlgorithm));
         xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
         return(-1);
     }

@@ -35,7 +35,7 @@ XMLSEC_EXPORT int xmlSecTransformHmacReadOutputBitsSize    (xmlNodePtr node,
 struct _xmlSecTransformRsaOaepParams {
     xmlSecBuffer oaepParams;
     xmlChar *    digestAlgorithm;
-    xmlChar *    mgfAlgorithm;
+    xmlChar *    mgf1DigestAlgorithm;
 };
 typedef struct _xmlSecTransformRsaOaepParams            xmlSecTransformRsaOaepParams,
                                                         *xmlSecTransformRsaOaepParamsPtr;

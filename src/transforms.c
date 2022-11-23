@@ -2697,8 +2697,8 @@ xmlSecTransformRsaOaepParamsFinalize(xmlSecTransformRsaOaepParamsPtr oaepParams)
     if(oaepParams->digestAlgorithm != NULL) {
         xmlFree(oaepParams->digestAlgorithm);
     }
-    if(oaepParams->mgfAlgorithm != NULL) {
-        xmlFree(oaepParams->mgfAlgorithm);
+    if(oaepParams->mgf1DigestAlgorithm != NULL) {
+        xmlFree(oaepParams->mgf1DigestAlgorithm);
     }
     memset(oaepParams, 0, sizeof(xmlSecTransformRsaOaepParams));
 }
@@ -2719,7 +2719,7 @@ xmlSecTransformRsaOaepParamsRead(xmlSecTransformRsaOaepParamsPtr oaepParams, xml
     xmlSecAssert2(oaepParams != NULL, -1);
     xmlSecAssert2(xmlSecBufferGetSize(&(oaepParams->oaepParams)) == 0, -1);
     xmlSecAssert2(oaepParams->digestAlgorithm == NULL, -1);
-    xmlSecAssert2(oaepParams->mgfAlgorithm == NULL, -1);
+    xmlSecAssert2(oaepParams->mgf1DigestAlgorithm == NULL, -1);
     xmlSecAssert2(node != NULL, -1);
 
     cur = xmlSecGetNextElementNode(node->children);

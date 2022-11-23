@@ -231,7 +231,7 @@ openssl pkcs12 -export -in allcakey.pem -name CARsaKey -out cakey.p12
 rm allcakey.pem
 
 cat ca2key.pem ca2cert.pem cacert.pem  > allca2key.pem
-openssl pkcs12 -export -in allca2key.pem -name CARsaKey -out ca2key.p12
+openssl pkcs12 -export -in allca2key.pem -name CA2RsaKey -out ca2key.p12
 rm allca2key.pem
 
 cat dsakey.pem dsacert.pem ca2cert.pem cacert.pem > alldsa.pem

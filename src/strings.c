@@ -27,6 +27,7 @@
 const xmlChar xmlSecNs[]                        = "http://www.aleksey.com/xmlsec/2002";
 const xmlChar xmlSecDSigNs[]                    = "http://www.w3.org/2000/09/xmldsig#";
 const xmlChar xmlSecEncNs[]                     = "http://www.w3.org/2001/04/xmlenc#";
+const xmlChar xmlSecEnc11Ns[]                   = "http://www.w3.org/2009/xmlenc11#";
 const xmlChar xmlSecXPathNs[]                   = "http://www.w3.org/TR/1999/REC-xpath-19991116";
 const xmlChar xmlSecXPath2Ns[]                  = "http://www.w3.org/2002/06/xmldsig-filter2";
 const xmlChar xmlSecXPointerNs[]                = "http://www.w3.org/2001/04/xmldsig-more/xptr";
@@ -404,6 +405,14 @@ const xmlChar xmlSecHrefRsaPkcs1[]              = "http://www.w3.org/2001/04/xml
 const xmlChar xmlSecNameRsaOaep[]               = "rsa-oaep-mgf1p";
 const xmlChar xmlSecHrefRsaOaep[]               = "http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p";
 const xmlChar xmlSecNodeRsaOAEPparams[]         = "OAEPparams";
+const xmlChar xmlSecNodeRsaMGF[]                = "MGF";
+
+/* MGF1 urls (https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP) */
+const xmlChar xmlSecHrefMgf1Sha1[]              = "http://www.w3.org/2009/xmlenc11#mgf1sha1";
+const xmlChar xmlSecHrefMgf1Sha224[]            = "http://www.w3.org/2009/xmlenc11#mgf1sha224";
+const xmlChar xmlSecHrefMgf1Sha256[]            = "http://www.w3.org/2009/xmlenc11#mgf1sha256";
+const xmlChar xmlSecHrefMgf1Sha384[]            = "http://www.w3.org/2009/xmlenc11#mgf1sha384";
+const xmlChar xmlSecHrefMgf1Sha512[]            = "http://www.w3.org/2009/xmlenc11#mgf1sha512";
 
 /*************************************************************************
  *

@@ -458,7 +458,7 @@ xmlSecMSCryptoTransformRsaPkcs1GetKlass(void) {
 
 /**********************************************************************
  *
- * RSA/OAEP transform: only SHA1 is supported for digest and MFG1!
+ * RSA/OAEP transform: only SHA1 is supported for digest and MGF1!
  *
  **********************************************************************/
 #ifndef XMLSEC_NO_SHA1
@@ -538,7 +538,7 @@ xmlSecMSCryptoRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
         return(-1);
     }
 
-    /* digest and mfg1: only SHA1 is supported */
+    /* digest and mgf1: only SHA1 is supported */
     if ((oaepParams.digestAlgorithm != NULL) && (xmlStrcmp(oaepParams.digestAlgorithm, xmlSecHrefSha1) != 0)) {
         xmlSecInvalidTransfromError2(transform,
             "digest algorithm=\"%s\" is not supported for rsa/oaep",

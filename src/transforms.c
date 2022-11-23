@@ -2737,6 +2737,13 @@ xmlSecTransformRsaOaepParamsRead(xmlSecTransformRsaOaepParamsPtr oaepParams, xml
                 xmlSecInvalidNodeAttributeError(cur, xmlSecAttrAlgorithm, NULL, "empty");
                 return(-1);
             }
+        } else if (xmlSecCheckNodeName(cur, xmlSecNodeRsaMGF, xmlSecEnc11Ns)) {
+            /* mgf1 digest algorithm attribute is required */
+            oaepParams->mgf1DigestAlgorithm = xmlGetProp(cur, xmlSecAttrAlgorithm);
+            if (oaepParams->mgf1DigestAlgorithm == NULL) {
+                xmlSecInvalidNodeAttributeError(cur, xmlSecAttrAlgorithm, NULL, "empty");
+                return(-1);
+            }
         } else {
             /* node not recognized */
             xmlSecUnexpectedNodeError(cur, NULL);

@@ -797,7 +797,7 @@ xmlSecOpenSSLRsaOaepSetKeyImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, EVP_PKEY* pKey,
 
 // We can put all the params into one OSSL_PARAM array and setup everything at-once.
 // However, in OpenSSL <= 3.0.7 there is a bug that mixes OAEP digest and 
-// OAEP MFG1 digest (https://pullanswer.com/questions/mgf1-digest-not-set-correctly-when-configuring-rsa-evp_pkey_ctx-with-ossl_params)
+// OAEP MGf1 digest (https://pullanswer.com/questions/mgf1-digest-not-set-correctly-when-configuring-rsa-evp_pkey_ctx-with-ossl_params)
 // so we do one param at a time.
 static int
 xmlSecOpenSSSLRsaOaepSetParamsIfNeeded(xmlSecOpenSSLRsaOaepCtxPtr ctx) {
@@ -1052,7 +1052,7 @@ xmlSecOpenSSLRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
         return(-1);
     }
 
-    /* mfg1 algorithm */
+    /* mgf1 algorithm */
     if(oaepParams.mgf1DigestAlgorithm == NULL) {
 #ifndef XMLSEC_NO_SHA1
         XMLSEC_OPENSSL_OAEP_MGF1_DIGEST_SETUP(ctx, EVP_sha1(), OSSL_DIGEST_NAME_SHA1);
@@ -1062,6 +1062,35 @@ xmlSecOpenSSLRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
         return(-1);        
 #endif /* XMLSEC_NO_SHA1 */
     } else 
+#ifndef XMLSEC_NO_SHA1
+    if(xmlStrcmp(oaepParams.mgf1DigestAlgorithm, xmlSecHrefMgf1Sha1) == 0) {
+        XMLSEC_OPENSSL_OAEP_MGF1_DIGEST_SETUP(ctx, EVP_sha1(), OSSL_DIGEST_NAME_SHA1);
+    } else
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA224
+    if(xmlStrcmp(oaepParams.mgf1DigestAlgorithm, xmlSecHrefMgf1Sha224) == 0) {
+        XMLSEC_OPENSSL_OAEP_MGF1_DIGEST_SETUP(ctx, EVP_sha224(), OSSL_DIGEST_NAME_SHA2_224);
+    } else
+#endif /* XMLSEC_NO_SHA224 */
+
+#ifndef XMLSEC_NO_SHA256
+    if(xmlStrcmp(oaepParams.mgf1DigestAlgorithm, xmlSecHrefMgf1Sha256) == 0) {
+        XMLSEC_OPENSSL_OAEP_MGF1_DIGEST_SETUP(ctx, EVP_sha256(), OSSL_DIGEST_NAME_SHA2_256);
+    } else
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+    if(xmlStrcmp(oaepParams.mgf1DigestAlgorithm, xmlSecHrefMgf1Sha384) == 0) {
+        XMLSEC_OPENSSL_OAEP_MGF1_DIGEST_SETUP(ctx, EVP_sha384(), OSSL_DIGEST_NAME_SHA2_384);
+    } else
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+    if(xmlStrcmp(oaepParams.mgf1DigestAlgorithm, xmlSecHrefMgf1Sha512) == 0) {
+        XMLSEC_OPENSSL_OAEP_MGF1_DIGEST_SETUP(ctx, EVP_sha512(), OSSL_DIGEST_NAME_SHA2_512);
+    } else
+#endif /* XMLSEC_NO_SHA512 */
     {
        xmlSecInvalidTransfromError2(transform,
             "mgf1 digest algorithm=\"%s\" is not supported for rsa/oaep",

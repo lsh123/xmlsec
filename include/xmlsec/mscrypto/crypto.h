@@ -227,7 +227,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformRsaPkcs1GetKlass(v
 /**
  * xmlSecMSCryptoTransformRsaOaepId:
  *
- * The RSA OAEP key transport transform klass. MSCrypto only supports SHA1 for digest and MFG1.
+ * The RSA OAEP key transport transform klass. MSCrypto only supports SHA1 for digest and MGF1.
  */
 #ifndef XMLSEC_NO_SHA1
 #define xmlSecMSCryptoTransformRsaOaepId \

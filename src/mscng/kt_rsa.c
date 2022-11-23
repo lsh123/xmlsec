@@ -527,7 +527,7 @@ xmlSecMSCngRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
         return(-1);
     }
 
-    /* mfg1 algorithm */
+    /* mgf1 algorithm */
     if (oaepParams.mgf1DigestAlgorithm != NULL) {
         xmlSecInvalidTransfromError2(transform,
             "mgf1 digest algorithm=\"%s\" is not supported for rsa/oaep",

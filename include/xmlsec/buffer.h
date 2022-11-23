@@ -79,6 +79,8 @@ XMLSEC_EXPORT xmlSecSize        xmlSecBufferGetMaxSize          (xmlSecBufferPtr
 XMLSEC_EXPORT int               xmlSecBufferSetMaxSize          (xmlSecBufferPtr buf,
                                                                  xmlSecSize size);
 XMLSEC_EXPORT void              xmlSecBufferEmpty               (xmlSecBufferPtr buf);
+XMLSEC_EXPORT void              xmlSecBufferSwap                (xmlSecBufferPtr buf1,
+                                                                 xmlSecBufferPtr buf2);
 XMLSEC_EXPORT int               xmlSecBufferAppend              (xmlSecBufferPtr buf,
                                                                  const xmlSecByte* data,
                                                                  xmlSecSize size);

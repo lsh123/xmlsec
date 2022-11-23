@@ -31,6 +31,22 @@ XMLSEC_EXPORT int xmlSecTransformHmacReadOutputBitsSize    (xmlNodePtr node,
 
 #ifndef XMLSEC_NO_RSA
 
+/* All OAEP params in one place */
+struct _xmlSecTransformRsaOaepParams {
+    xmlSecBuffer oaepParams;
+    xmlChar *    digestAlgorithm;
+    xmlChar *    mgfAlgorithm;
+};
+typedef struct _xmlSecTransformRsaOaepParams            xmlSecTransformRsaOaepParams,
+                                                        *xmlSecTransformRsaOaepParamsPtr;
+
+XMLSEC_EXPORT int  xmlSecTransformRsaOaepParamsInitialize   (xmlSecTransformRsaOaepParamsPtr oaepParams);
+XMLSEC_EXPORT void xmlSecTransformRsaOaepParamsFinalize     (xmlSecTransformRsaOaepParamsPtr oaepParams);
+XMLSEC_EXPORT int  xmlSecTransformRsaOaepParamsRead         (xmlSecTransformRsaOaepParamsPtr oaepParams,
+                                                             xmlNodePtr node);
+
+
+/* DEPRECATED, TO REMOVE */
 XMLSEC_EXPORT int xmlSecTransformRsaOaepReadParams        (xmlNodePtr node,
                                                          xmlSecBufferPtr params,
                                                          xmlChar** algorithm);

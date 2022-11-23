@@ -2673,6 +2673,86 @@ xmlSecTransformHmacReadOutputBitsSize(xmlNodePtr node, xmlSecSize defaultSize, x
 #ifndef XMLSEC_NO_RSA
 
 int
+xmlSecTransformRsaOaepParamsInitialize(xmlSecTransformRsaOaepParamsPtr oaepParams) {
+    int ret;
+
+    xmlSecAssert2(oaepParams != NULL, -1);
+    
+    memset(oaepParams, 0, sizeof(xmlSecTransformRsaOaepParams));
+    
+    ret = xmlSecBufferInitialize(&(oaepParams->oaepParams), 0);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize", NULL);
+        return(-1);
+    }
+
+    return(0);
+}
+
+void
+xmlSecTransformRsaOaepParamsFinalize(xmlSecTransformRsaOaepParamsPtr oaepParams) {
+    xmlSecAssert(oaepParams != NULL);
+
+    xmlSecBufferFinalize(&(oaepParams->oaepParams));
+    if(oaepParams->digestAlgorithm != NULL) {
+        xmlFree(oaepParams->digestAlgorithm);
+    }
+    if(oaepParams->mgfAlgorithm != NULL) {
+        xmlFree(oaepParams->mgfAlgorithm);
+    }
+    memset(oaepParams, 0, sizeof(xmlSecTransformRsaOaepParams));
+}
+
+/** 
+ * See https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP
+ *  <EncryptionMethod Algorithm="http://www.w3.org/2009/xmlenc11#rsa-oaep">
+ *      <OAEPparams>9lWu3Q==</OAEPparams>
+ *      <xenc11:MGF Algorithm="http://www.w3.org/2001/04/xmlenc#MGF1withSHA1" />
+ *      <ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+ *  <EncryptionMethod>
+*/
+int
+xmlSecTransformRsaOaepParamsRead(xmlSecTransformRsaOaepParamsPtr oaepParams, xmlNodePtr node) {
+    xmlNodePtr cur;
+    int ret;
+
+    xmlSecAssert2(oaepParams != NULL, -1);
+    xmlSecAssert2(xmlSecBufferGetSize(&(oaepParams->oaepParams)) == 0, -1);
+    xmlSecAssert2(oaepParams->digestAlgorithm == NULL, -1);
+    xmlSecAssert2(oaepParams->mgfAlgorithm == NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+
+    cur = xmlSecGetNextElementNode(node->children);
+    while (cur != NULL) {
+        if (xmlSecCheckNodeName(cur, xmlSecNodeRsaOAEPparams, xmlSecEncNs)) {
+            ret = xmlSecBufferBase64NodeContentRead(&(oaepParams->oaepParams), cur);
+            if (ret < 0) {
+                xmlSecInternalError("xmlSecBufferBase64NodeContentRead", NULL);
+                return(-1);
+            }
+        } else if (xmlSecCheckNodeName(cur, xmlSecNodeDigestMethod, xmlSecDSigNs)) {
+            /* digest algorithm attribute is required */
+            oaepParams->digestAlgorithm = xmlGetProp(cur, xmlSecAttrAlgorithm);
+            if (oaepParams->digestAlgorithm == NULL) {
+                xmlSecInvalidNodeAttributeError(cur, xmlSecAttrAlgorithm, NULL, "empty");
+                return(-1);
+            }
+        } else {
+            /* node not recognized */
+            xmlSecUnexpectedNodeError(cur, NULL);
+                return(-1);
+        }
+
+        /* next node */
+        cur = xmlSecGetNextElementNode(cur->next);
+    }
+
+    /* done */
+    return(0);
+}
+
+/* DEPRECATED, TO REMOVE */
+int
 xmlSecTransformRsaOaepReadParams(xmlNodePtr node, xmlSecBufferPtr params, xmlChar** algorithm) {
     xmlChar* alg = NULL;
     xmlNodePtr cur;

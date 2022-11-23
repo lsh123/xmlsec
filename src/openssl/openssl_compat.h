@@ -72,6 +72,15 @@ static inline int xmlSecOpenSSLCompatRand(unsigned char *buf, xmlSecSize size) {
 #define X509_OBJECT_new()                  (calloc(1, sizeof(X509_OBJECT)))
 #define X509_OBJECT_free(x)                { X509_OBJECT_free_contents(x); free(x); }
 
+/* defined in boringssl/crypto/fipsmodule/rsa/internal.h */
+int RSA_padding_check_PKCS1_OAEP_mgf1(uint8_t *out, size_t *out_len, size_t max_out,
+                                      const uint8_t *from, size_t from_len,
+                                      const uint8_t *param, size_t param_len,
+                                      const EVP_MD *md, const EVP_MD *mgf1md);
+ int RSA_padding_add_PKCS1_OAEP_mgf1(unsigned char *to, int tlen,
+                                     const unsigned char *f, int fl,
+                                     const unsigned char *p, int pl,
+                                     const EVP_MD *md, const EVP_MD *mgf1md);
 #endif /* OPENSSL_IS_BORINGSSL */
 
 /******************************************************************************

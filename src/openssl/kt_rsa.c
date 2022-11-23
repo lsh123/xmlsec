@@ -46,39 +46,7 @@
 #include "../cast_helpers.h"
 #include "../transform_helpers.h"
 
-#ifdef OPENSSL_IS_BORINGSSL
 
-/* defined in boringssl/crypto/fipsmodule/rsa/internal.h */
-int RSA_padding_check_PKCS1_OAEP_mgf1(uint8_t *out, size_t *out_len, size_t max_out,
-                                      const uint8_t *from, size_t from_len,
-                                      const uint8_t *param, size_t param_len,
-                                      const EVP_MD *md, const EVP_MD *mgf1md);
-
-static int RSA_padding_check_PKCS1_OAEP(unsigned char *to, int to_len,
-                                  unsigned char *from, int from_len,
-                                  int rsa_len,
-                                  unsigned char *param, int param_len) {
-    size_t out_len = 0;
-    int ret;
-    int res;
-
-    ret = RSA_padding_check_PKCS1_OAEP_mgf1(to, &out_len, to_len, from, from_len, param, param_len, NULL, NULL);
-    if(!ret) {
-        return(-1);
-    }
-    XMLSEC_SAFE_CAST_SIZE_T_TO_INT(out_len, res, return(-1), NULL);
-    return(res);
-}
-
-
-int RSA_padding_add_PKCS1_OAEP(uint8_t *to, size_t to_len,
-                                              const uint8_t *from,
-                                              size_t from_len,
-                                              const uint8_t *param,
-                                              size_t param_len) {
-    return RSA_padding_add_PKCS1_OAEP_mgf1(to, to_len, from, from_len, param, param_len, NULL, NULL);
-}
-#endif /* OPENSSL_IS_BORINGSSL */
 
 
 
@@ -556,8 +524,12 @@ typedef struct _xmlSecOpenSSLRsaOaepCtx         xmlSecOpenSSLRsaOaepCtx,
 struct _xmlSecOpenSSLRsaOaepCtx {
 #ifndef XMLSEC_OPENSSL_API_300
     EVP_PKEY*           pKey;
+    const EVP_MD*       md;
+    const EVP_MD*       mgf1md;
 #else /* XMLSEC_OPENSSL_API_300 */
     EVP_PKEY_CTX*       pKeyCtx;
+    const char*         mdName;
+    const char*         mgf1mdName;
     int                 paramsInitialized;
 #endif /* XMLSEC_OPENSSL_API_300 */
     xmlSecSize          keySize;
@@ -703,10 +675,13 @@ xmlSecOpenSSLRsaOaepProcessImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, const xmlSecByte
         }
 
         /* add padding */
-        ret = RSA_padding_add_PKCS1_OAEP(xmlSecBufferGetData(&tmp), keyLen,
-            inBuf, inLen , xmlSecBufferGetData(&(ctx->oaepParams)), paramLen);
+        ret = RSA_padding_add_PKCS1_OAEP_mgf1(
+            xmlSecBufferGetData(&tmp), keyLen,
+            inBuf, inLen,
+            xmlSecBufferGetData(&(ctx->oaepParams)), paramLen,
+            ctx->md, ctx->mgf1md);
         if(ret != 1) {
-            xmlSecOpenSSLError("RSA_padding_add_PKCS1_OAEP", NULL);
+            xmlSecOpenSSLError("RSA_padding_add_PKCS1_OAEP_mgf1", NULL);
             xmlSecBufferFinalize(&tmp);
             return(-1);
         }
@@ -771,10 +746,12 @@ xmlSecOpenSSLRsaOaepProcessImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, const xmlSecByte
         BN_clear_free(bn);
 #endif /* OPENSSL_IS_BORINGSSL */
 
-        ret = RSA_padding_check_PKCS1_OAEP(outBuf, outLen, outBuf, outLen, keyLen,
-            xmlSecBufferGetData(&(ctx->oaepParams)), paramLen);
+        ret = RSA_padding_check_PKCS1_OAEP_mgf1(
+            outBuf, outLen, outBuf, outLen, keyLen,
+            xmlSecBufferGetData(&(ctx->oaepParams)), paramLen,
+            ctx->md, ctx->mgf1md);
         if(ret < 0) {
-            xmlSecOpenSSLError("RSA_padding_check_PKCS1_OAEP",  NULL);
+            xmlSecOpenSSLError("RSA_padding_check_PKCS1_OAEP_mgf1",  NULL);
             return(-1);
         }
     } else {
@@ -837,16 +814,21 @@ xmlSecOpenSSLRsaOaepSetKeyImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, EVP_PKEY* pKey,
 }
 
 static int
-xmlSecOpenSSSLRsaOaepSetParams(EVP_PKEY_CTX* pKeyCtx,
-                            const xmlSecByte* paramsBuf, xmlSecSize paramsSize) {
+xmlSecOpenSSSLRsaOaepSetParamsIfNeeded(xmlSecOpenSSLRsaOaepCtxPtr ctx) {
+    const xmlSecByte* paramsBuf;
+    xmlSecSize paramsSize;
     OSSL_PARAM_BLD* param_bld = NULL;
     OSSL_PARAM* params = NULL;
     int ret;
     int res = -1;
 
-    xmlSecAssert2(pKeyCtx != NULL, -1);
-    xmlSecAssert2(paramsBuf != NULL, -1)
-    xmlSecAssert2(paramsSize > 0, -1);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->pKeyCtx != NULL, -1);
+
+    /* check if we already initialized oaep params */
+    if(ctx->paramsInitialized != 0) {
+        return(0);
+    }
 
     param_bld = OSSL_PARAM_BLD_new();
     if(param_bld == NULL) {
@@ -854,27 +836,54 @@ xmlSecOpenSSSLRsaOaepSetParams(EVP_PKEY_CTX* pKeyCtx,
         goto done;
     }
 
-    ret = OSSL_PARAM_BLD_push_octet_string(param_bld, OSSL_ASYM_CIPHER_PARAM_OAEP_LABEL,
-        paramsBuf, paramsSize);
-    if(ret != 1) {
-        xmlSecOpenSSLError("OSSL_PARAM_BLD_push_octet_string(label)", NULL);
-        goto done;
-     }
+    /* OAEP Params */
+    paramsBuf = xmlSecBufferGetData(&(ctx->oaepParams));
+    paramsSize = xmlSecBufferGetSize(&(ctx->oaepParams));
+    if((paramsBuf != NULL) && (paramsSize > 0)) {
+        ret = OSSL_PARAM_BLD_push_octet_string(param_bld, OSSL_ASYM_CIPHER_PARAM_OAEP_LABEL,
+            paramsBuf, paramsSize);
+        if(ret != 1) {
+            xmlSecOpenSSLError("OSSL_PARAM_BLD_push_octet_string(oaep_label)", NULL);
+            goto done;
+        }
+    }
 
-     params = OSSL_PARAM_BLD_to_param(param_bld);
-     if(params == NULL) {
+    /* Digest */
+    if(ctx->mdName != NULL) {
+        ret = OSSL_PARAM_BLD_push_utf8_string(param_bld, OSSL_ASYM_CIPHER_PARAM_DIGEST,
+            ctx->mdName, strlen(ctx->mdName));
+        if(ret != 1) {
+            xmlSecOpenSSLError("OSSL_PARAM_BLD_push_utf8_string(digest)", NULL);
+            goto done;
+        }
+    }
+
+    /* MGF1 digest */
+    if(ctx->mgf1mdName != NULL) {
+        ret = OSSL_PARAM_BLD_push_utf8_string(param_bld, OSSL_ASYM_CIPHER_PARAM_MGF1_DIGEST,
+            ctx->mgf1mdName, strlen(ctx->mgf1mdName));
+        if(ret != 1) {
+            xmlSecOpenSSLError("OSSL_PARAM_BLD_push_utf8_string(mgf1_digest)", NULL);
+            goto done;
+        }
+    }
+
+    /* convert to params and set in the key */
+    params = OSSL_PARAM_BLD_to_param(param_bld);
+    if(params == NULL) {
         xmlSecOpenSSLError("OSSL_PARAM_BLD_to_param", NULL);
         goto done;
-     }
+    }
 
-     ret = EVP_PKEY_CTX_set_params(pKeyCtx, params);
-     if(ret <= 0) {
+    ret = EVP_PKEY_CTX_set_params(ctx->pKeyCtx, params);
+    if(ret <= 0) {
         xmlSecOpenSSLError("EVP_PKEY_CTX_set_params", NULL);
         goto done;
-     }
+    }
 
-     /* success */
-     res = 0;
+    /* success */
+    ctx->paramsInitialized = 1;
+    res = 0;
 
 done:
     if(params != NULL) {
@@ -889,7 +898,6 @@ done:
 static int
 xmlSecOpenSSLRsaOaepProcessImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, const xmlSecByte* inBuf, xmlSecSize inSize,
                             xmlSecByte* outBuf, xmlSecSize* outSize, int encrypt) {
-    xmlSecSize paramsSize;
     size_t outSizeT;
     int ret;
 
@@ -900,15 +908,10 @@ xmlSecOpenSSLRsaOaepProcessImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, const xmlSecByte
     xmlSecAssert2(outBuf != NULL, -1);
     xmlSecAssert2(outSize != NULL, -1);
 
-    paramsSize = xmlSecBufferGetSize(&(ctx->oaepParams));
-    if((paramsSize > 0) && (ctx->paramsInitialized == 0)){
-        ret = xmlSecOpenSSSLRsaOaepSetParams(ctx->pKeyCtx,
-            xmlSecBufferGetData(&(ctx->oaepParams)), paramsSize);
-        if(ret != 0) {
-            xmlSecInternalError("xmlSecOpenSSSLRsaOaepSetParams", NULL);
-            return(-1);
-        }
-        ctx->paramsInitialized = 1;
+    ret = xmlSecOpenSSSLRsaOaepSetParamsIfNeeded(ctx);
+    if(ret != 0) {
+        xmlSecInternalError("xmlSecOpenSSSLRsaOaepSetParamsIfNeeded", NULL);
+        return(-1);
     }
 
     outSizeT = (*outSize);
@@ -978,11 +981,20 @@ xmlSecOpenSSLRsaOaepFinalize(xmlSecTransformPtr transform) {
     memset(ctx, 0, sizeof(xmlSecOpenSSLRsaOaepCtx));
 }
 
+/* small helper macro to reduce clutter in the code */
+#ifndef XMLSEC_OPENSSL_API_300
+#define XMLSEC_OPENSSL_OAEP_DIGEST_SETUP(ctx, digestVal, digestNameVal) \
+    (ctx)->md = (digestVal)
+#else /* XMLSEC_OPENSSL_API_300 */
+#define XMLSEC_OPENSSL_OAEP_DIGEST_SETUP(ctx, digestVal, digestNameVal) \
+    (ctx)->mdName = (digestNameVal)
+#endif /* XMLSEC_OPENSSL_API_300 */
+
 static int
 xmlSecOpenSSLRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
                              xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
     xmlSecOpenSSLRsaOaepCtxPtr ctx;
-    xmlChar* algorithm = NULL;
+    xmlSecTransformRsaOaepParams oaepParams;
     int ret;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaOaepId), -1);
@@ -993,25 +1005,86 @@ xmlSecOpenSSLRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     ctx = xmlSecOpenSSLRsaOaepGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(xmlSecBufferGetSize(&(ctx->oaepParams)) == 0, -1);
-
-    ret = xmlSecTransformRsaOaepReadParams(node, &(ctx->oaepParams), &algorithm);
+    
+    ret = xmlSecTransformRsaOaepParamsInitialize(&oaepParams);
     if (ret < 0) {
-        xmlSecInternalError("xmlSecTransformRsaOaepReadParams",
+        xmlSecInternalError("xmlSecTransformRsaOaepParamsInitialize",
             xmlSecTransformGetName(transform));
         return(-1);
     }
 
-    /* for now we support only sha1 */
-    if ((algorithm != NULL) && (xmlStrcmp(algorithm, xmlSecHrefSha1) != 0)) {
-        xmlSecInvalidTransfromError2(transform,
-            "digest algorithm=\"%s\" is not supported for rsa/oaep",
-            xmlSecErrorsSafeString(algorithm));
-        xmlFree(algorithm);
+    ret = xmlSecTransformRsaOaepParamsRead(&oaepParams, node);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecTransformRsaOaepReadParams",
+            xmlSecTransformGetName(transform));
+        xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
         return(-1);
     }
-    xmlFree(algorithm);
 
-    /* done */
+    /* digest algorithm */
+    if(oaepParams.digestAlgorithm == NULL) {
+#ifndef XMLSEC_NO_SHA1
+        XMLSEC_OPENSSL_OAEP_DIGEST_SETUP(ctx, EVP_sha1(), OSSL_DIGEST_NAME_SHA1);
+#else  /* XMLSEC_NO_SHA1 */
+        xmlSecOtherError(XMLSEC_ERRORS_R_DISABLED, NULL, "No OAEP digest algorithm is specified and the default SHA1 digest is disabled");
+        xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
+        return(-1);        
+#endif /* XMLSEC_NO_SHA1 */
+    } else 
+#ifndef XMLSEC_NO_MD5
+    if(xmlStrcmp(oaepParams.digestAlgorithm, xmlSecHrefMd5) == 0) {
+        XMLSEC_OPENSSL_OAEP_DIGEST_SETUP(ctx, EVP_md5(), OSSL_DIGEST_NAME_MD5);
+    } else
+#endif /* XMLSEC_NO_MD5 */
+
+#ifndef XMLSEC_NO_RIPEMD160
+    if(xmlStrcmp(oaepParams.digestAlgorithm, xmlSecHrefRipemd160) == 0) {
+        XMLSEC_OPENSSL_OAEP_DIGEST_SETUP(ctx, EVP_ripemd160(), OSSL_DIGEST_NAME_RIPEMD160);
+    } else
+#endif /* XMLSEC_NO_RIPEMD160 */
+
+#ifndef XMLSEC_NO_SHA1
+    if(xmlStrcmp(oaepParams.digestAlgorithm, xmlSecHrefSha1) == 0) {
+        XMLSEC_OPENSSL_OAEP_DIGEST_SETUP(ctx, EVP_sha1(), OSSL_DIGEST_NAME_SHA1);
+    } else
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA224
+    if(xmlStrcmp(oaepParams.digestAlgorithm, xmlSecHrefSha224) == 0) {
+        XMLSEC_OPENSSL_OAEP_DIGEST_SETUP(ctx, EVP_sha224(), OSSL_DIGEST_NAME_SHA2_224);
+    } else
+#endif /* XMLSEC_NO_SHA224 */
+
+#ifndef XMLSEC_NO_SHA256
+    if(xmlStrcmp(oaepParams.digestAlgorithm, xmlSecHrefSha256) == 0) {
+        XMLSEC_OPENSSL_OAEP_DIGEST_SETUP(ctx, EVP_sha256(), OSSL_DIGEST_NAME_SHA2_256);
+    } else
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+    if(xmlStrcmp(oaepParams.digestAlgorithm, xmlSecHrefSha384) == 0) {
+        XMLSEC_OPENSSL_OAEP_DIGEST_SETUP(ctx, EVP_sha384(), OSSL_DIGEST_NAME_SHA2_384);
+    } else
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+    if(xmlStrcmp(oaepParams.digestAlgorithm, xmlSecHrefSha512) == 0) {
+        XMLSEC_OPENSSL_OAEP_DIGEST_SETUP(ctx, EVP_sha512(), OSSL_DIGEST_NAME_SHA2_512);
+    } else
+#endif /* XMLSEC_NO_SHA512 */
+    {
+       xmlSecInvalidTransfromError2(transform,
+            "digest algorithm=\"%s\" is not supported for rsa/oaep",
+            xmlSecErrorsSafeString(oaepParams.digestAlgorithm));
+        xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
+        return(-1);
+    }
+
+    /* put oaep params buffer into ctx */
+    xmlSecBufferSwap(&(oaepParams.oaepParams), &(ctx->oaepParams));
+
+    /* cleanup */
+    xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
     return(0);
 }
 

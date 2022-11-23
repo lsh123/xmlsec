@@ -226,6 +226,14 @@ keys into PKCS12 form that is suitable for not only NSS but all crypto engines (
 password is `secret123`):
 
 ```
+cat cakey.pem cacert.pem  > allcakey.pem
+openssl pkcs12 -export -in allcakey.pem -name CARsaKey -out cakey.p12
+rm allcakey.pem
+
+cat ca2key.pem ca2cert.pem cacert.pem  > allca2key.pem
+openssl pkcs12 -export -in allca2key.pem -name CA2RsaKey -out ca2key.p12
+rm allca2key.pem
+
 cat dsakey.pem dsacert.pem ca2cert.pem cacert.pem > alldsa.pem
 openssl pkcs12 -export -in alldsa.pem -name TestDsaKey -out dsakey.p12
 

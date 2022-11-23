@@ -95,6 +95,17 @@ xmlSecEncCtxDestroy(xmlSecEncCtxPtr encCtx) {
     xmlFree(encCtx);
 }
 
+static void
+xmlSecEncCtxSetDefaults(xmlSecEncCtxPtr encCtx) {
+    xmlSecAssert(encCtx != NULL);
+
+    encCtx->keyInfoReadCtx.mode = xmlSecKeyInfoModeRead;
+
+    /* it's not wise to write private key :) */
+    encCtx->keyInfoWriteCtx.mode = xmlSecKeyInfoModeWrite;
+    encCtx->keyInfoWriteCtx.keyReq.keyType = xmlSecKeyDataTypePublic;
+}
+
 /**
  * xmlSecEncCtxInitialize:
  * @encCtx:             the pointer to <enc:EncryptedData/> processing context.
@@ -120,16 +131,12 @@ xmlSecEncCtxInitialize(xmlSecEncCtxPtr encCtx, xmlSecKeysMngrPtr keysMngr) {
         xmlSecInternalError("xmlSecKeyInfoCtxInitialize", NULL);
         return(-1);
     }
-    encCtx->keyInfoReadCtx.mode = xmlSecKeyInfoModeRead;
 
     ret = xmlSecKeyInfoCtxInitialize(&(encCtx->keyInfoWriteCtx), keysMngr);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeyInfoCtxInitialize", NULL);
         return(-1);
     }
-    encCtx->keyInfoWriteCtx.mode = xmlSecKeyInfoModeWrite;
-    /* it's not wise to write private key :) */
-    encCtx->keyInfoWriteCtx.keyReq.keyType = xmlSecKeyDataTypePublic;
 
     /* initializes transforms encCtx */
     ret = xmlSecTransformCtxInitialize(&(encCtx->transformCtx));
@@ -138,6 +145,7 @@ xmlSecEncCtxInitialize(xmlSecEncCtxPtr encCtx, xmlSecKeysMngrPtr keysMngr) {
         return(-1);
     }
 
+    xmlSecEncCtxSetDefaults(encCtx);
     return(0);
 }
 
@@ -222,6 +230,8 @@ xmlSecEncCtxReset(xmlSecEncCtxPtr encCtx) {
 
     encCtx->encDataNode = encCtx->encMethodNode =
         encCtx->keyInfoNode = encCtx->cipherValueNode = NULL;
+
+    xmlSecEncCtxSetDefaults(encCtx);
 }
 
 /**

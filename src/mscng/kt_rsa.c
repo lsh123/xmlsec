@@ -33,6 +33,7 @@
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/private.h>
 #include <xmlsec/transforms.h>
+#include <xmlsec/xmltree.h>
 
 #include <xmlsec/mscng/crypto.h>
 #include <xmlsec/mscng/certkeys.h>
@@ -455,6 +456,7 @@ xmlSecMSCngRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
                            xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
     xmlSecMSCngRsaPkcs1OaepCtxPtr ctx;
     xmlSecTransformRsaOaepParams oaepParams;
+    LPCWSTR mgf1AlgId = NULL;
     int ret;
 
     xmlSecAssert2(xmlSecMSCngRsaPkcs1OaepCheckId(transform), -1);
@@ -528,11 +530,58 @@ xmlSecMSCngRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     }
 
     /* mgf1 algorithm */
-    if (oaepParams.mgf1DigestAlgorithm != NULL) {
+    if (oaepParams.mgf1DigestAlgorithm == NULL) {
+#ifndef XMLSEC_NO_SHA1
+        mgf1AlgId = BCRYPT_SHA1_ALGORITHM;
+#else  /* XMLSEC_NO_SHA1 */
+        xmlSecOtherError(XMLSEC_ERRORS_R_DISABLED, NULL, "No OAEP mgf1 digest algorithm is specified and the default SHA1 digest is disabled");
+        xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
+        return(-1);
+#endif /* XMLSEC_NO_SHA1 */
+    } else
+#ifndef XMLSEC_NO_SHA1
+    if (xmlStrcmp(oaepParams.mgf1DigestAlgorithm, xmlSecHrefMgf1Sha1) == 0) {
+        mgf1AlgId = BCRYPT_SHA1_ALGORITHM;
+    } else
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA256
+    if (xmlStrcmp(oaepParams.mgf1DigestAlgorithm, xmlSecHrefMgf1Sha256) == 0) {
+        mgf1AlgId = BCRYPT_SHA256_ALGORITHM;
+    } else
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+    if (xmlStrcmp(oaepParams.mgf1DigestAlgorithm, xmlSecHrefMgf1Sha384) == 0) {
+        mgf1AlgId = BCRYPT_SHA384_ALGORITHM;
+    } else
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+    if (xmlStrcmp(oaepParams.mgf1DigestAlgorithm, xmlSecHrefMgf1Sha512) == 0) {
+        mgf1AlgId = BCRYPT_SHA512_ALGORITHM;
+    } else
+#endif /* XMLSEC_NO_SHA512 */
+    {
         xmlSecInvalidTransfromError2(transform,
             "mgf1 digest algorithm=\"%s\" is not supported for rsa/oaep",
             xmlSecErrorsSafeString(oaepParams.mgf1DigestAlgorithm));
         xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
+        return(-1);
+    }
+
+    /* MSCNG only supports *same* algorithms for digest and mgf1 */
+    if ((mgf1AlgId != NULL) && (ctx->pszDigestAlgId != NULL) && (lstrcmpW(ctx->pszDigestAlgId, mgf1AlgId) != 0)) {
+        xmlChar* digestAlg = xmlSecWin32ConvertUnicodeToUtf8(ctx->pszDigestAlgId);
+        xmlChar* mgf1Alg = xmlSecWin32ConvertUnicodeToUtf8(mgf1AlgId);
+
+        xmlSecInvalidTransfromError3(transform,
+            "for mscng, rsa/oaep mgf1 algorithm=\"%s\" must be the same as digest algorithm=\"%s\"",
+            xmlSecErrorsSafeString(digestAlg),
+            xmlSecErrorsSafeString(mgf1Alg));
+        xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
+        xmlFree(digestAlg);
+        xmlFree(mgf1Alg);
         return(-1);
     }
 

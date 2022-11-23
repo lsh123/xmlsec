@@ -140,53 +140,58 @@ execEncTest $res_success \
     "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123 --session-key aes-256 --enabled-key-data key-name --xml-data $topfolder/aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_sha1.data --node-name http://example.org/paymentv2:CreditCard"  \
     "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123"
 
-execEncTest $res_success \
-    "" \
-    "aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_md5" \
-    "aes256-cbc rsa-oaep-mgf1p md5 sha1" \
-    "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123" \
-    "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123 --session-key aes-256 --enabled-key-data key-name --xml-data $topfolder/aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_md5.data --node-name http://example.org/paymentv2:CreditCard"  \
-    "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123"
+# Advanced RSA OAEP modes:
+# - MSCrypto only supports SHA1 for digest and mfg1
+# - MSCng only supoprts the *same* algorithm for *both* digest and mfg1
+if [ "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" ] ; then
+    execEncTest $res_success \
+        "" \
+        "aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_md5" \
+        "aes256-cbc rsa-oaep-mgf1p md5 sha1" \
+        "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123" \
+        "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123 --session-key aes-256 --enabled-key-data key-name --xml-data $topfolder/aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_md5.data --node-name http://example.org/paymentv2:CreditCard"  \
+        "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123"
 
-execEncTest $res_success \
-    "" \
-    "aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_ripemd160" \
-    "aes256-cbc rsa-oaep-mgf1p ripemd160 sha1" \
-    "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123" \
-    "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123 --session-key aes-256 --enabled-key-data key-name --xml-data $topfolder/aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_ripemd160.data --node-name http://example.org/paymentv2:CreditCard"  \
-    "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123"
+    execEncTest $res_success \
+        "" \
+        "aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_ripemd160" \
+        "aes256-cbc rsa-oaep-mgf1p ripemd160 sha1" \
+        "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123" \
+        "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123 --session-key aes-256 --enabled-key-data key-name --xml-data $topfolder/aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_ripemd160.data --node-name http://example.org/paymentv2:CreditCard"  \
+        "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123"
 
-execEncTest $res_success \
-    "" \
-    "aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_sha224" \
-    "aes256-cbc rsa-oaep-mgf1p sha224 sha1" \
-    "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123" \
-    "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123 --session-key aes-256 --enabled-key-data key-name --xml-data $topfolder/aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_sha224.data --node-name http://example.org/paymentv2:CreditCard"  \
-    "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123"
+    execEncTest $res_success \
+        "" \
+        "aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_sha224" \
+        "aes256-cbc rsa-oaep-mgf1p sha224 sha1" \
+        "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123" \
+        "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123 --session-key aes-256 --enabled-key-data key-name --xml-data $topfolder/aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_sha224.data --node-name http://example.org/paymentv2:CreditCard"  \
+        "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123"
 
-execEncTest $res_success \
-    "" \
-    "aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_sha256" \
-    "aes256-cbc rsa-oaep-mgf1p sha256 sha1" \
-    "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123" \
-    "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123 --session-key aes-256 --enabled-key-data key-name --xml-data $topfolder/aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_sha256.data --node-name http://example.org/paymentv2:CreditCard"  \
-    "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123"
+    execEncTest $res_success \
+        "" \
+        "aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_sha256" \
+        "aes256-cbc rsa-oaep-mgf1p sha256 sha1" \
+        "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123" \
+        "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123 --session-key aes-256 --enabled-key-data key-name --xml-data $topfolder/aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_sha256.data --node-name http://example.org/paymentv2:CreditCard"  \
+        "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123"
 
-execEncTest $res_success \
-    "" \
-    "aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_sha384" \
-    "aes256-cbc rsa-oaep-mgf1p sha384 sha1" \
-    "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123" \
-    "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123 --session-key aes-256 --enabled-key-data key-name --xml-data $topfolder/aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_sha384.data --node-name http://example.org/paymentv2:CreditCard"  \
-    "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123"
+    execEncTest $res_success \
+        "" \
+        "aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_sha384" \
+        "aes256-cbc rsa-oaep-mgf1p sha384 sha1" \
+        "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123" \
+        "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123 --session-key aes-256 --enabled-key-data key-name --xml-data $topfolder/aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_sha384.data --node-name http://example.org/paymentv2:CreditCard"  \
+        "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123"
 
-execEncTest $res_success \
-    "" \
-    "aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_sha512" \
-    "aes256-cbc rsa-oaep-mgf1p sha512 sha1" \
-    "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123" \
-    "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123 --session-key aes-256 --enabled-key-data key-name --xml-data $topfolder/aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_sha512.data --node-name http://example.org/paymentv2:CreditCard"  \
-    "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123"
+    execEncTest $res_success \
+        "" \
+        "aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_sha512" \
+        "aes256-cbc rsa-oaep-mgf1p sha512 sha1" \
+        "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123" \
+        "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123 --session-key aes-256 --enabled-key-data key-name --xml-data $topfolder/aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_sha512.data --node-name http://example.org/paymentv2:CreditCard"  \
+        "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123"
+fi
 
 # same test but decrypt using two different keys
 execEncTest $res_success \
@@ -256,13 +261,18 @@ execEncTest $res_success \
     "--keys-file $topfolder/merlin-xmlenc-five/keys.xml --session-key des-192 $priv_key_option $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --binary-data $topfolder/merlin-xmlenc-five/encrypt-data-tripledes-cbc-rsa-oaep-mgf1p.data --pwd secret"  \
     "$priv_key_option $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --pwd secret"
 
-execEncTest $res_success \
-    "" \
-    "merlin-xmlenc-five/encrypt-data-tripledes-cbc-rsa-oaep-mgf1p-sha256" \
-    "tripledes-cbc rsa-oaep-mgf1p sha256 sha1" \
-    "$priv_key_option $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --pwd secret" \
-    "--keys-file $topfolder/merlin-xmlenc-five/keys.xml --session-key des-192 $priv_key_option $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --binary-data $topfolder/merlin-xmlenc-five/encrypt-data-tripledes-cbc-rsa-oaep-mgf1p-sha256.data --pwd secret"  \
-    "$priv_key_option $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --pwd secret"
+# Advanced RSA OAEP modes:
+# - MSCrypto only supports SHA1 for digest and mfg1
+# - MSCng only supoprts the *same* algorithm for *both* digest and mfg1
+if [ "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" ] ; then
+    execEncTest $res_success \
+        "" \
+        "merlin-xmlenc-five/encrypt-data-tripledes-cbc-rsa-oaep-mgf1p-sha256" \
+        "tripledes-cbc rsa-oaep-mgf1p sha256 sha1" \
+        "$priv_key_option $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --pwd secret" \
+        "--keys-file $topfolder/merlin-xmlenc-five/keys.xml --session-key des-192 $priv_key_option $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --binary-data $topfolder/merlin-xmlenc-five/encrypt-data-tripledes-cbc-rsa-oaep-mgf1p-sha256.data --pwd secret"  \
+        "$priv_key_option $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --pwd secret"
+fi
 
 execEncTest $res_success \
     "" \
@@ -334,21 +344,26 @@ execEncTest $res_success \
     "--session-key des-192 --keys-file $topfolder/01-phaos-xmlenc-3/keys.xml --enabled-key-data key-name --xml-data $topfolder/01-phaos-xmlenc-3/enc-element-3des-kt-rsa_oaep_sha1.data --node-name http://example.org/paymentv2:CreditCard"  \
     "$priv_key_option $topfolder/01-phaos-xmlenc-3/rsa-priv-key.$priv_key_format --pwd secret"
 
-execEncTest $res_success \
-    "" \
-    "01-phaos-xmlenc-3/enc-element-3des-kt-rsa_oaep_sha256" \
-    "tripledes-cbc rsa-oaep-mgf1p sha256 sha1" \
-    "$priv_key_option $topfolder/01-phaos-xmlenc-3/rsa-priv-key.$priv_key_format --pwd secret" \
-    "--session-key des-192 --keys-file $topfolder/01-phaos-xmlenc-3/keys.xml --enabled-key-data key-name --xml-data $topfolder/01-phaos-xmlenc-3/enc-element-3des-kt-rsa_oaep_sha256.data --node-name http://example.org/paymentv2:CreditCard"  \
-    "$priv_key_option $topfolder/01-phaos-xmlenc-3/rsa-priv-key.$priv_key_format --pwd secret"
+# Advanced RSA OAEP modes:
+# - MSCrypto only supports SHA1 for digest and mfg1
+# - MSCng only supoprts the *same* algorithm for *both* digest and mfg1
+if [ "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" ] ; then
+    execEncTest $res_success \
+        "" \
+        "01-phaos-xmlenc-3/enc-element-3des-kt-rsa_oaep_sha256" \
+        "tripledes-cbc rsa-oaep-mgf1p sha256 sha1" \
+        "$priv_key_option $topfolder/01-phaos-xmlenc-3/rsa-priv-key.$priv_key_format --pwd secret" \
+        "--session-key des-192 --keys-file $topfolder/01-phaos-xmlenc-3/keys.xml --enabled-key-data key-name --xml-data $topfolder/01-phaos-xmlenc-3/enc-element-3des-kt-rsa_oaep_sha256.data --node-name http://example.org/paymentv2:CreditCard"  \
+        "$priv_key_option $topfolder/01-phaos-xmlenc-3/rsa-priv-key.$priv_key_format --pwd secret"
 
-execEncTest $res_success \
-    "" \
-    "01-phaos-xmlenc-3/enc-element-3des-kt-rsa_oaep_sha512" \
-    "tripledes-cbc rsa-oaep-mgf1p sha512 sha1" \
-    "$priv_key_option $topfolder/01-phaos-xmlenc-3/rsa-priv-key.$priv_key_format --pwd secret" \
-    "--session-key des-192 --keys-file $topfolder/01-phaos-xmlenc-3/keys.xml --enabled-key-data key-name --xml-data $topfolder/01-phaos-xmlenc-3/enc-element-3des-kt-rsa_oaep_sha512.data --node-name http://example.org/paymentv2:CreditCard"  \
-    "$priv_key_option $topfolder/01-phaos-xmlenc-3/rsa-priv-key.$priv_key_format --pwd secret"
+    execEncTest $res_success \
+        "" \
+        "01-phaos-xmlenc-3/enc-element-3des-kt-rsa_oaep_sha512" \
+        "tripledes-cbc rsa-oaep-mgf1p sha512 sha1" \
+        "$priv_key_option $topfolder/01-phaos-xmlenc-3/rsa-priv-key.$priv_key_format --pwd secret" \
+        "--session-key des-192 --keys-file $topfolder/01-phaos-xmlenc-3/keys.xml --enabled-key-data key-name --xml-data $topfolder/01-phaos-xmlenc-3/enc-element-3des-kt-rsa_oaep_sha512.data --node-name http://example.org/paymentv2:CreditCard"  \
+        "$priv_key_option $topfolder/01-phaos-xmlenc-3/rsa-priv-key.$priv_key_format --pwd secret"
+fi
 
 execEncTest $res_success \
     "" \

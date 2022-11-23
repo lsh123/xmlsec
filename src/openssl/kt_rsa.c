@@ -987,7 +987,7 @@ xmlSecOpenSSLRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 
     ret = xmlSecTransformRsaOaepParamsRead(&oaepParams, node);
     if (ret < 0) {
-        xmlSecInternalError("xmlSecTransformRsaOaepReadParams",
+        xmlSecInternalError("xmlSecTransformRsaOaepParamsRead",
             xmlSecTransformGetName(transform));
         xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
         return(-1);
@@ -1052,7 +1052,7 @@ xmlSecOpenSSLRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
         return(-1);
     }
 
-    /* digest algorithm */
+    /* mfg1 algorithm */
     if(oaepParams.mgf1DigestAlgorithm == NULL) {
 #ifndef XMLSEC_NO_SHA1
         XMLSEC_OPENSSL_OAEP_MGF1_DIGEST_SETUP(ctx, EVP_sha1(), OSSL_DIGEST_NAME_SHA1);

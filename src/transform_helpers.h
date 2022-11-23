@@ -45,11 +45,6 @@ XMLSEC_EXPORT void xmlSecTransformRsaOaepParamsFinalize     (xmlSecTransformRsaO
 XMLSEC_EXPORT int  xmlSecTransformRsaOaepParamsRead         (xmlSecTransformRsaOaepParamsPtr oaepParams,
                                                              xmlNodePtr node);
 
-
-/* DEPRECATED, TO REMOVE */
-XMLSEC_EXPORT int xmlSecTransformRsaOaepReadParams        (xmlNodePtr node,
-                                                         xmlSecBufferPtr params,
-                                                         xmlChar** algorithm);
 #endif /* XMLSEC_NO_RSA */
 
 #endif /* __XMLSEC_TRASNFORMS_HELPERS_H__ */

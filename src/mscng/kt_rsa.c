@@ -50,7 +50,7 @@ typedef struct _xmlSecMSCngRsaPkcs1OaepCtx xmlSecMSCngRsaPkcs1OaepCtx, *xmlSecMS
 struct _xmlSecMSCngRsaPkcs1OaepCtx {
     xmlSecKeyDataPtr data;
     xmlSecBuffer oaepParams;
-
+    LPCWSTR pszDigestAlgId;
 };
 
 /*********************************************************************
@@ -263,8 +263,7 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
             BCRYPT_OAEP_PADDING_INFO paddingInfo;
             xmlSecSize oaepParamsSize;
 
-
-            paddingInfo.pszAlgId = BCRYPT_SHA1_ALGORITHM;
+            paddingInfo.pszAlgId = ctx->pszDigestAlgId;
             paddingInfo.pbLabel = xmlSecBufferGetData(&(ctx->oaepParams));
 
             oaepParamsSize = xmlSecBufferGetSize(&(ctx->oaepParams));
@@ -323,7 +322,7 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
             BCRYPT_OAEP_PADDING_INFO paddingInfo;
             xmlSecSize oaepParamsSize;
 
-            paddingInfo.pszAlgId = BCRYPT_SHA1_ALGORITHM;
+            paddingInfo.pszAlgId = ctx->pszDigestAlgId;
             paddingInfo.pbLabel = xmlSecBufferGetData(&(ctx->oaepParams));
 
             oaepParamsSize = xmlSecBufferGetSize(&(ctx->oaepParams));
@@ -455,7 +454,7 @@ static int
 xmlSecMSCngRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
                            xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
     xmlSecMSCngRsaPkcs1OaepCtxPtr ctx;
-    xmlChar* algorithm = NULL;
+    xmlSecTransformRsaOaepParams oaepParams;
     int ret;
 
     xmlSecAssert2(xmlSecMSCngRsaPkcs1OaepCheckId(transform), -1);
@@ -466,24 +465,82 @@ xmlSecMSCngRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     ctx = xmlSecMSCngRsaPkcs1OaepGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    ret = xmlSecTransformRsaOaepReadParams(node, &(ctx->oaepParams), &algorithm);
+    ret = xmlSecTransformRsaOaepParamsInitialize(&oaepParams);
     if (ret < 0) {
-        xmlSecInternalError("xmlSecTransformRsaOaepReadParams",
+        xmlSecInternalError("xmlSecTransformRsaOaepParamsInitialize",
             xmlSecTransformGetName(transform));
         return(-1);
     }
 
-    /* for now we support only sha1 */
-    if ((algorithm != NULL) && (xmlStrcmp(algorithm, xmlSecHrefSha1) != 0)) {
-        xmlSecInvalidTransfromError2(transform,
-            "digest algorithm=\"%s\" is not supported for rsa/oaep",
-            xmlSecErrorsSafeString(algorithm));
-        xmlFree(algorithm);
+    ret = xmlSecTransformRsaOaepParamsRead(&oaepParams, node);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecTransformRsaOaepParamsRead",
+            xmlSecTransformGetName(transform));
+        xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
         return(-1);
     }
-    xmlFree(algorithm);
 
-    /* done */
+    /* digest algorithm */
+    if (oaepParams.digestAlgorithm == NULL) {
+#ifndef XMLSEC_NO_SHA1
+        ctx->pszDigestAlgId = BCRYPT_SHA1_ALGORITHM;
+#else  /* XMLSEC_NO_SHA1 */
+        xmlSecOtherError(XMLSEC_ERRORS_R_DISABLED, NULL, "No OAEP digest algorithm is specified and the default SHA1 digest is disabled");
+        xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
+        return(-1);
+#endif /* XMLSEC_NO_SHA1 */
+    } else
+#ifndef XMLSEC_NO_MD5
+    if (xmlStrcmp(oaepParams.digestAlgorithm, xmlSecHrefMd5) == 0) {
+        ctx->pszDigestAlgId = BCRYPT_MD5_ALGORITHM;
+    } else
+#endif /* XMLSEC_NO_MD5 */
+
+#ifndef XMLSEC_NO_SHA1
+    if (xmlStrcmp(oaepParams.digestAlgorithm, xmlSecHrefSha1) == 0) {
+        ctx->pszDigestAlgId = BCRYPT_SHA1_ALGORITHM;
+    } else
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA256
+    if (xmlStrcmp(oaepParams.digestAlgorithm, xmlSecHrefSha256) == 0) {
+        ctx->pszDigestAlgId = BCRYPT_SHA256_ALGORITHM;
+    } else
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+    if (xmlStrcmp(oaepParams.digestAlgorithm, xmlSecHrefSha384) == 0) {
+        ctx->pszDigestAlgId = BCRYPT_SHA384_ALGORITHM;
+    } else
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+    if (xmlStrcmp(oaepParams.digestAlgorithm, xmlSecHrefSha512) == 0) {
+        ctx->pszDigestAlgId = BCRYPT_SHA512_ALGORITHM;
+    } else
+#endif /* XMLSEC_NO_SHA512 */
+    {
+        xmlSecInvalidTransfromError2(transform,
+            "digest algorithm=\"%s\" is not supported for rsa/oaep",
+            xmlSecErrorsSafeString(oaepParams.digestAlgorithm));
+        xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
+        return(-1);
+    }
+
+    /* mfg1 algorithm */
+    if (oaepParams.mgf1DigestAlgorithm != NULL) {
+        xmlSecInvalidTransfromError2(transform,
+            "mgf1 digest algorithm=\"%s\" is not supported for rsa/oaep",
+            xmlSecErrorsSafeString(oaepParams.mgf1DigestAlgorithm));
+        xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
+        return(-1);
+    }
+
+    /* put oaep params buffer into ctx */
+    xmlSecBufferSwap(&(oaepParams.oaepParams), &(ctx->oaepParams));
+
+    /* cleanup */
+    xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
     return(0);
 }
 

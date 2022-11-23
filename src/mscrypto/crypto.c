@@ -219,7 +219,11 @@ xmlSecCryptoGetFunctions_mscrypto(void) {
 #endif /* XMLSEC_NO_SHA512 */
 
     gXmlSecMSCryptoFunctions->transformRsaPkcs1GetKlass         = xmlSecMSCryptoTransformRsaPkcs1GetKlass;
+
+#ifndef XMLSEC_NO_SHA1
     gXmlSecMSCryptoFunctions->transformRsaOaepGetKlass          = xmlSecMSCryptoTransformRsaOaepGetKlass;
+#endif /* XMLSEC_NO_SHA1 */
+
 #endif /* XMLSEC_NO_RSA */
 
     /******************************* SHA ********************************/

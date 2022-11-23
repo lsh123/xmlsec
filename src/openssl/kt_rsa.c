@@ -795,12 +795,14 @@ xmlSecOpenSSLRsaOaepSetKeyImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, EVP_PKEY* pKey,
     return(0);
 }
 
+// We can put all the params into one OSSL_PARAM array and setup everything at-once.
+// However, in OpenSSL <= 3.0.7 there is a bug that mixes OAEP digest and 
+// OAEP MFG1 digest (https://pullanswer.com/questions/mgf1-digest-not-set-correctly-when-configuring-rsa-evp_pkey_ctx-with-ossl_params)
+// so we do one param at a time.
 static int
 xmlSecOpenSSSLRsaOaepSetParamsIfNeeded(xmlSecOpenSSLRsaOaepCtxPtr ctx) {
-    const xmlSecByte* paramsBuf;
-    xmlSecSize paramsSize;
-    OSSL_PARAM_BLD* param_bld = NULL;
-    OSSL_PARAM* params = NULL;
+    xmlSecByte* label;
+    xmlSecSize labelSize;
     int ret;
     int res = -1;
 
@@ -812,55 +814,45 @@ xmlSecOpenSSSLRsaOaepSetParamsIfNeeded(xmlSecOpenSSLRsaOaepCtxPtr ctx) {
         return(0);
     }
 
-    param_bld = OSSL_PARAM_BLD_new();
-    if(param_bld == NULL) {
-        xmlSecOpenSSLError("OSSL_PARAM_BLD_new", NULL);
-        goto done;
-    }
+    /* OAEP label */
+    label = xmlSecBufferGetData(&(ctx->oaepParams));
+    labelSize = xmlSecBufferGetSize(&(ctx->oaepParams));
+    if((label != NULL) && (labelSize > 0)) {
+        OSSL_PARAM params[2];
+        params[0] = OSSL_PARAM_construct_octet_string(OSSL_ASYM_CIPHER_PARAM_OAEP_LABEL, label, labelSize);
+        params[1] = OSSL_PARAM_construct_end();
 
-    /* OAEP Params */
-    paramsBuf = xmlSecBufferGetData(&(ctx->oaepParams));
-    paramsSize = xmlSecBufferGetSize(&(ctx->oaepParams));
-    if((paramsBuf != NULL) && (paramsSize > 0)) {
-        ret = OSSL_PARAM_BLD_push_octet_string(param_bld, OSSL_ASYM_CIPHER_PARAM_OAEP_LABEL,
-            paramsBuf, paramsSize);
-        if(ret != 1) {
-            xmlSecOpenSSLError("OSSL_PARAM_BLD_push_octet_string(oaep_label)", NULL);
+        ret = EVP_PKEY_CTX_set_params(ctx->pKeyCtx, params);
+        if(ret <= 0) {
+            xmlSecOpenSSLError("EVP_PKEY_CTX_set_params", NULL);
             goto done;
         }
     }
 
     /* Digest */
     if(ctx->mdName != NULL) {
-        ret = OSSL_PARAM_BLD_push_utf8_string(param_bld, OSSL_ASYM_CIPHER_PARAM_DIGEST,
-            ctx->mdName, strlen(ctx->mdName));
-        if(ret != 1) {
-            xmlSecOpenSSLError("OSSL_PARAM_BLD_push_utf8_string(digest)", NULL);
+        OSSL_PARAM params[2];
+        params[0] = OSSL_PARAM_construct_utf8_string(OSSL_ASYM_CIPHER_PARAM_OAEP_DIGEST, (char*)ctx->mdName, 0);
+        params[1] = OSSL_PARAM_construct_end();
+
+        ret = EVP_PKEY_CTX_set_params(ctx->pKeyCtx, params);
+        if(ret <= 0) {
+            xmlSecOpenSSLError("EVP_PKEY_CTX_set_params", NULL);
             goto done;
         }
     }
 
     /* MGF1 digest */
     if(ctx->mgf1mdName != NULL) {
-        ret = OSSL_PARAM_BLD_push_utf8_string(param_bld, OSSL_ASYM_CIPHER_PARAM_MGF1_DIGEST,
-            ctx->mgf1mdName, strlen(ctx->mgf1mdName));
-        if(ret != 1) {
-            xmlSecOpenSSLError("OSSL_PARAM_BLD_push_utf8_string(mgf1_digest)", NULL);
+        OSSL_PARAM params[2];
+        params[0] = OSSL_PARAM_construct_utf8_string(OSSL_ASYM_CIPHER_PARAM_MGF1_DIGEST, (char*)ctx->mgf1mdName, 0);
+        params[1] = OSSL_PARAM_construct_end();
+
+        ret = EVP_PKEY_CTX_set_params(ctx->pKeyCtx, params);
+        if(ret <= 0) {
+            xmlSecOpenSSLError("EVP_PKEY_CTX_set_params", NULL);
             goto done;
         }
-    }
-
-    /* convert to params and set in the key */
-    params = OSSL_PARAM_BLD_to_param(param_bld);
-    if(params == NULL) {
-        xmlSecOpenSSLError("OSSL_PARAM_BLD_to_param", NULL);
-        goto done;
-    }
-
-    ret = EVP_PKEY_CTX_set_params(ctx->pKeyCtx, params);
-    if(ret <= 0) {
-        xmlSecOpenSSLError("EVP_PKEY_CTX_set_params", NULL);
-        goto done;
     }
 
     /* success */
@@ -868,12 +860,6 @@ xmlSecOpenSSSLRsaOaepSetParamsIfNeeded(xmlSecOpenSSLRsaOaepCtxPtr ctx) {
     res = 0;
 
 done:
-    if(params != NULL) {
-        OSSL_PARAM_free(params);
-    }
-    if(param_bld != NULL) {
-        OSSL_PARAM_BLD_free(param_bld);
-    }
     return(res);
 }
 

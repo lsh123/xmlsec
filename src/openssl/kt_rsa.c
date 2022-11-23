@@ -1292,7 +1292,8 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform) {
 
     ret = xmlSecBufferRemoveHead(in, inSize);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferRemoveHead",
+        xmlSecInternalError2("xmlSecBufferRemoveHead",<li>Added support for <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP">MGF1 algorithms</a> 
+			to xmlsec-openssl and xmlsec-mscng (see <a href="xmlenc.html">Interoperability report</a> for more details).</li>
             xmlSecTransformGetName(transform),
             "size=" XMLSEC_SIZE_FMT, inSize);
         return(-1);

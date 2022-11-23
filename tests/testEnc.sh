@@ -29,6 +29,22 @@ echo "--------- Positive Testing ----------"
 #
 ##########################################################################
 
+# same file is encrypted with two keys, test both
+execEncTest $res_success \
+    "" \
+    "aleksey-xmlenc-01/enc-two-enc-keys" \
+    "aes256-cbc rsa-1_5" \
+    "$priv_key_option:key1 $topfolder/keys/cakey.$priv_key_format --pwd secret123" \
+    "--session-key aes-256 --xml-data $topfolder/aleksey-xmlenc-01/enc-two-enc-keys.data --pubkey-cert-$cert_format:key1 $topfolder/keys/cacert.$cert_format --pubkey-cert-$cert_format:key2 $topfolder/keys/ca2cert.$cert_format" \
+    "$priv_key_option:key1 $topfolder/keys/cakey.$priv_key_format --pwd secret123"
+
+execEncTest $res_success \
+    "" \
+    "aleksey-xmlenc-01/enc-two-enc-keys" \
+    "aes256-cbc rsa-1_5" \
+    "$priv_key_option:key2 $topfolder/keys/ca2key.$priv_key_format --pwd secret123" \
+    "--session-key aes-256 --xml-data $topfolder/aleksey-xmlenc-01/enc-two-enc-keys.data --pubkey-cert-$cert_format:key1 $topfolder/keys/cacert.$cert_format --pubkey-cert-$cert_format:key2 $topfolder/keys/ca2cert.$cert_format" \
+    "$priv_key_option:key2 $topfolder/keys/ca2key.$priv_key_format --pwd secret123"
 
 execEncTest $res_success \
     "" \

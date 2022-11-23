@@ -633,9 +633,10 @@ xmlSecOpenSSLRsaOaepSetKeyImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, EVP_PKEY* pKey,
 static int
 xmlSecOpenSSLRsaOaepProcessImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, const xmlSecByte* inBuf, xmlSecSize inSize,
                             xmlSecByte* outBuf, xmlSecSize* outSize, int encrypt) {
-    xmlSecSize paramsSize;
+    xmlSecByte* oaepLabel;
+    xmlSecSize oaepLabelSize;
     RSA* rsa;
-    int inLen;
+    int inLen, keyLen, oaepLabelLen;
     int ret;
 
     xmlSecAssert2(ctx != NULL, -1);
@@ -649,22 +650,16 @@ xmlSecOpenSSLRsaOaepProcessImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, const xmlSecByte
     rsa = EVP_PKEY_get0_RSA(ctx->pKey);
     xmlSecAssert2(rsa != NULL, -1);
 
-    paramsSize = xmlSecBufferGetSize(&(ctx->oaepParams));
-    XMLSEC_SAFE_CAST_SIZE_TO_INT(inSize, inLen, return(-1), NULL);
-    if((encrypt != 0) && (paramsSize == 0)) {
-        /* encode w/o OAEPParams --> simple */
-        ret = RSA_public_encrypt(inLen, inBuf, outBuf, rsa, RSA_PKCS1_OAEP_PADDING);
-        if(ret <= 0) {
-            xmlSecOpenSSLError("RSA_public_encrypt(RSA_PKCS1_OAEP_PADDING)", NULL);
-            return(-1);
-        }
-    } else if((encrypt != 0) && (paramsSize != 0)) {
-        xmlSecBuffer tmp;
-        int keyLen, paramLen;
+    oaepLabel = xmlSecBufferGetData(&(ctx->oaepParams));
+    oaepLabelSize = xmlSecBufferGetSize(&(ctx->oaepParams));
 
-        xmlSecAssert2(xmlSecBufferGetData(&(ctx->oaepParams)) != NULL, -1);
-        XMLSEC_SAFE_CAST_SIZE_TO_INT(ctx->keySize, keyLen, return(-1), NULL);
-        XMLSEC_SAFE_CAST_SIZE_TO_INT(paramsSize, paramLen, return(-1), NULL);
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(inSize, inLen, return(-1), NULL);
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(ctx->keySize, keyLen, return(-1), NULL);
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(oaepLabelSize, oaepLabelLen, return(-1), NULL);
+
+    if(encrypt != 0) {
+        /* encrypt */
+        xmlSecBuffer tmp;
 
         /* allocate space for temp buffer */
         ret = xmlSecBufferInitialize(&tmp, ctx->keySize);
@@ -678,7 +673,7 @@ xmlSecOpenSSLRsaOaepProcessImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, const xmlSecByte
         ret = RSA_padding_add_PKCS1_OAEP_mgf1(
             xmlSecBufferGetData(&tmp), keyLen,
             inBuf, inLen,
-            xmlSecBufferGetData(&(ctx->oaepParams)), paramLen,
+            oaepLabel, oaepLabelLen,
             ctx->md, ctx->mgf1md);
         if(ret != 1) {
             xmlSecOpenSSLError("RSA_padding_add_PKCS1_OAEP_mgf1", NULL);
@@ -695,19 +690,10 @@ xmlSecOpenSSLRsaOaepProcessImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, const xmlSecByte
             return(-1);
         }
         xmlSecBufferFinalize(&tmp);
-    } else if((encrypt == 0) && (paramsSize == 0)) {
-        ret = RSA_private_decrypt(inLen, inBuf, outBuf, rsa, RSA_PKCS1_OAEP_PADDING);
-        if(ret <= 0) {
-            xmlSecOpenSSLError("RSA_private_decrypt(RSA_PKCS1_OAEP_PADDING)", NULL);
-            return(-1);
-        }
-    } else if((encrypt == 0) && (paramsSize != 0)) {
+    } else {
+        /* decrypt */
         BIGNUM * bn;
-        int outLen, keyLen, paramLen;
-
-        xmlSecAssert2(xmlSecBufferGetData(&(ctx->oaepParams)) != NULL, -1);
-        XMLSEC_SAFE_CAST_SIZE_TO_INT(ctx->keySize, keyLen, return(-1), NULL);
-        XMLSEC_SAFE_CAST_SIZE_TO_INT(paramsSize, paramLen, return(-1), NULL);
+        int outLen;
 
         ret = RSA_private_decrypt(inLen, inBuf, outBuf, rsa, RSA_NO_PADDING);
         if(ret <= 0) {
@@ -748,16 +734,12 @@ xmlSecOpenSSLRsaOaepProcessImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, const xmlSecByte
 
         ret = RSA_padding_check_PKCS1_OAEP_mgf1(
             outBuf, outLen, outBuf, outLen, keyLen,
-            xmlSecBufferGetData(&(ctx->oaepParams)), paramLen,
+            oaepLabel, oaepLabelLen,
             ctx->md, ctx->mgf1md);
         if(ret < 0) {
             xmlSecOpenSSLError("RSA_padding_check_PKCS1_OAEP_mgf1",  NULL);
             return(-1);
         }
-    } else {
-        xmlSecInternalError3("Impossible to be here",  NULL,
-            "encrypt=%d; paramsSize=" XMLSEC_SIZE_FMT, encrypt, paramsSize);
-        return(-1);
     }
 
     /* success */

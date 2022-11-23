@@ -2342,7 +2342,7 @@ if test "z$enable_pedantic" = "zyes" ; then
     CFLAGS="$CFLAGS -fno-inline -Wnull-dereference -Wdouble-promotion"
     CFLAGS="$CFLAGS -Wformat=2 -Wformat-security -Wformat-nonliteral"
     CFLAGS="$CFLAGS -Wconversion -Wunused -Wshadow -Wpointer-arith -Wcast-align"
-    CFLAGS="$CFLAGS -Wwrite-strings -Waggregate-return -Wmissing-prototypes"
+    CFLAGS="$CFLAGS -Wwrite-strings -Wmissing-prototypes"
     CFLAGS="$CFLAGS -Wnested-externs -Wredundant-decls"
     
     if test "z$build_on_mac" = "zno" ; then

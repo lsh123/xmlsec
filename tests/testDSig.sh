@@ -689,13 +689,17 @@ execDSigTest $res_success \
     "hmac rsa" \
     "$priv_key_option $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --pwd secret $url_map_xml_stylesheet_2005"
 
-execDSigTest $res_success \
-    "" \
-    "merlin-xmlenc-five/encsig-hmac-sha256-rsa-oaep-mgf1p" \
-    "sha1 hmac-sha256 rsa-oaep-mgf1p" \
-    "hmac rsa" \
-    "$priv_key_option $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --pwd secret $url_map_xml_stylesheet_2005"
-
+# Advanced RSA OAEP modes:
+# - MSCrypto only supports SHA1 for digest and mgf1
+# - MSCng only supoprts the *same* algorithm for *both* digest and mgf1
+if [ "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" ] ; then
+    execDSigTest $res_success \
+        "" \
+        "merlin-xmlenc-five/encsig-hmac-sha256-rsa-oaep-mgf1p" \
+        "sha1 hmac-sha256 rsa-oaep-mgf1p sha1  sha1" \
+        "hmac rsa" \
+        "$priv_key_option $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --pwd secret $url_map_xml_stylesheet_2005"
+fi
 
 
 ##########################################################################

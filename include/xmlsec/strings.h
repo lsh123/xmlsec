@@ -28,6 +28,7 @@ extern "C" {
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNs[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecDSigNs[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecEncNs[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecEnc11Ns[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecXPathNs[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecXPath2Ns[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecXPointerNs[];
@@ -409,6 +410,14 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRsaPkcs1[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameRsaOaep[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRsaOaep[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeRsaOAEPparams[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeRsaMGF[];
+
+/* MGF1 urls (https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP) */
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefMgf1Sha1[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefMgf1Sha224[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefMgf1Sha256[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefMgf1Sha384[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefMgf1Sha512[];
 
 /*************************************************************************
  *

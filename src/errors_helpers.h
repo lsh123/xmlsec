@@ -807,6 +807,26 @@ extern "C" {
         );                                            \
     }
 
+ /**
+  * xmlSecInvalidTransfromError3:
+  * @transform:          the transform.
+  * @msg:                the extra message.
+  * @param1:             the extra message param.
+  * @param2:             the extra message param.
+  *
+  *
+  * Macro. The XMLSec library macro for reporting an invalid transform errors.
+  */
+#define xmlSecInvalidTransfromError3(transform, msg, param1, param2) \
+    {                                                 \
+        xmlSecError(XMLSEC_ERRORS_HERE,               \
+                   (const char*)xmlSecTransformGetName(transform), \
+                   NULL,                              \
+                   XMLSEC_ERRORS_R_INVALID_TRANSFORM, \
+                   (msg), (param1), (param2)          \
+        );                                            \
+    }
+
 /**
  * xmlSecInvalidTransfromStatusError:
  * @transform:          the transform.

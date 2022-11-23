@@ -315,6 +315,26 @@ xmlSecBufferSetMaxSize(xmlSecBufferPtr buf, xmlSecSize size) {
     return(0);
 }
 
+#define SWAP(type, a, b) do { type tmp = (a); (a) = (b); (b) = tmp; } while (0)
+
+/**
+ * xmlSecBuffexmlSecBufferSwaprAppend:
+ * @buf1:               the pointer to the first buffer object.
+ * @buf2:               the pointer to the second buffer object.
+ *
+ * Swaps the content of the two buffers.
+ */
+void
+xmlSecBufferSwap(xmlSecBufferPtr buf1, xmlSecBufferPtr buf2) {
+    xmlSecAssert(buf1 != NULL);
+    xmlSecAssert(buf2 != NULL);
+
+    SWAP(xmlSecByte*,       buf1->data, buf2->data);
+    SWAP(xmlSecSize,        buf1->size, buf2->size);
+    SWAP(xmlSecSize,        buf1->maxSize, buf2->maxSize);
+    SWAP(xmlSecAllocMode,   buf1->allocMode, buf2->allocMode);
+}
+
 /**
  * xmlSecBufferAppend:
  * @buf:                the pointer to buffer object.

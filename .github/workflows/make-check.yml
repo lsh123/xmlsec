@@ -182,6 +182,10 @@ jobs:
       matrix:
         include:
           - crypto: mscrypto
+            config_flags: unicode=yes with-dl=yes legacy-crypto=yes
+          - crypto: mscng
+            config_flags: unicode=yes with-dl=yes legacy-crypto=yes
+          - crypto: mscrypto
             config_flags: unicode=yes with-dl=yes
           - crypto: mscng
             config_flags: unicode=yes with-dl=yes
@@ -192,7 +196,7 @@ jobs:
           - crypto: mscrypto
             config_flags: unicode=no with-dl=no
           - crypto: mscng
-            config_flags: unicode=no with-dl=no
+            config_flags: unicode=no with-dl=no 
     env:
       VISUAL_STUDIO_ROOT: "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise"
       EXTRAS_FOLDER: C:\extras

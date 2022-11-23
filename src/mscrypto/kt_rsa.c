@@ -78,9 +78,11 @@ xmlSecMSCryptoRsaPkcs1OaepCheckId(xmlSecTransformPtr transform) {
         return(1);
     } else
 
+#ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaOaepId)) {
         return(1);
     } else
+#endif /* XMLSEC_NO_SHA1 */
 
     /* not found */
     {
@@ -113,9 +115,11 @@ xmlSecMSCryptoRsaPkcs1OaepInitialize(xmlSecTransformPtr transform) {
         ctx->dwFlags = 0;
     } else
 
+#ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaOaepId)) {
         ctx->dwFlags = CRYPT_OAEP;
     } else
+#endif /* XMLSEC_NO_SHA1 */
 
     /* not found */
     {
@@ -307,6 +311,8 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
         outBuf = xmlSecBufferGetData(out);
         xmlSecAssert2(outBuf != NULL, -1);
 
+
+#ifndef XMLSEC_NO_SHA1
         /* set OAEP parameter for the key
          *
          * aleksey: I don't understand how this would work in multi-threaded
@@ -326,6 +332,7 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
                 return (-1);
             }
         }
+#endif /* XMLSEC_NO_SHA1 */
 
         /* encrypt */
         if (!CryptEncrypt(hKey, 0, TRUE, ctx->dwFlags, outBuf, &dwInLen, dwBufLen)) {
@@ -353,6 +360,7 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
             return (-1);
         }
 
+#ifndef XMLSEC_NO_SHA1
         /* set OAEP parameter for the key
          *
          * aleksey: I don't understand how this would work in multi-threaded
@@ -372,6 +380,7 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
                 return (-1);
             }
         }
+#endif /* XMLSEC_NO_SHA1 */
 
         /* decrypt */
         if (!CryptDecrypt(hKey, 0, TRUE, ctx->dwFlags, outBuf, &dwOutLen)) {
@@ -449,9 +458,11 @@ xmlSecMSCryptoTransformRsaPkcs1GetKlass(void) {
 
 /**********************************************************************
  *
- * RSA/OAEP transform
+ * RSA/OAEP transform: only SHA1 is supported for digest and MGF1!
  *
  **********************************************************************/
+#ifndef XMLSEC_NO_SHA1
+
 static int          xmlSecMSCryptoRsaOaepNodeRead               (xmlSecTransformPtr transform,
                                                                  xmlNodePtr node,
                                                                  xmlSecTransformCtxPtr transformCtx);
@@ -500,7 +511,7 @@ static int
 xmlSecMSCryptoRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
                               xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
     xmlSecMSCryptoRsaPkcs1OaepCtxPtr ctx;
-    xmlChar* algorithm = NULL;
+    xmlSecTransformRsaOaepParams oaepParams;
     int ret;
 
     xmlSecAssert2(xmlSecMSCryptoRsaPkcs1OaepCheckId(transform), -1);
@@ -512,25 +523,37 @@ xmlSecMSCryptoRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(xmlSecBufferGetSize(&(ctx->oaepParams)) == 0, -1);
 
-    ret = xmlSecTransformRsaOaepReadParams(node, &(ctx->oaepParams), &algorithm);
+    ret = xmlSecTransformRsaOaepParamsInitialize(&oaepParams);
     if (ret < 0) {
-        xmlSecInternalError("xmlSecTransformRsaOaepReadParams",
+        xmlSecInternalError("xmlSecTransformRsaOaepParamsInitialize",
             xmlSecTransformGetName(transform));
         return(-1);
     }
 
-    /* for now we support only sha1 */
-    if ((algorithm != NULL) && (xmlStrcmp(algorithm, xmlSecHrefSha1) != 0)) {
-        xmlSecInvalidTransfromError2(transform,
-            "digest algorithm=\"%s\" is not supported for rsa/oaep",
-            xmlSecErrorsSafeString(algorithm));
-        xmlFree(algorithm);
+    ret = xmlSecTransformRsaOaepParamsRead(&oaepParams, node);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecTransformRsaOaepParamsRead",
+            xmlSecTransformGetName(transform));
+        xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
         return(-1);
     }
-    xmlFree(algorithm);
 
-    /* done */
+    /* digest and mgf1: only SHA1 is supported */
+    if ((oaepParams.digestAlgorithm != NULL) && (xmlStrcmp(oaepParams.digestAlgorithm, xmlSecHrefSha1) != 0)) {
+        xmlSecInvalidTransfromError2(transform,
+            "digest algorithm=\"%s\" is not supported for rsa/oaep",
+            xmlSecErrorsSafeString(oaepParams.digestAlgorithm));
+        xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
+        return(-1);
+    }
+
+    /* put oaep params buffer into ctx */
+    xmlSecBufferSwap(&(oaepParams.oaepParams), &(ctx->oaepParams));
+
+    /* cleanup */
+    xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
     return(0);
 }
+#endif /* XMLSEC_NO_SHA1 */
 
 #endif /* XMLSEC_NO_RSA */

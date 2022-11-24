@@ -154,8 +154,7 @@ if test "z$enable_development" = "zyes" ; then
 
     dnl legacy crypto
     enable_md5="yes"
-    enable_sha1="yes"
-    enable_des="yes"
+    enable_ripemd160="yes"
 
     AC_MSG_RESULT([yes])
 else
@@ -1882,14 +1881,14 @@ dnl ==========================================================================
 dnl See do we need RIPEMD-160 support
 dnl ==========================================================================
 AC_MSG_CHECKING(for RIPEMD-160 support)
-AC_ARG_ENABLE([ripemd160], [AS_HELP_STRING([--enable-ripemd160],[enable RIPEMD-160 support (yes)])])
-if test "z$enable_ripemd160" = "zno" ; then
+AC_ARG_ENABLE([ripemd160], [AS_HELP_STRING([--enable-ripemd160],[enable RIPEMD-160 support (no, deprecated)])])
+if test "z$enable_ripemd160" = "zyes" ; then
+    XMLSEC_NO_RIPEMD160="0"
+    AC_MSG_RESULT([yes (deprecated)])
+else
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_RIPEMD160=1"
     XMLSEC_NO_RIPEMD160="1"
     AC_MSG_RESULT([disabled])
-else
-    XMLSEC_NO_RIPEMD160="0"
-    AC_MSG_RESULT([yes])
 fi
 AM_CONDITIONAL(XMLSEC_NO_RIPEMD160, test "z$XMLSEC_NO_RIPEMD160" = "z1")
 AC_SUBST(XMLSEC_NO_RIPEMD160)
@@ -1898,14 +1897,14 @@ dnl ==========================================================================
 dnl See do we need SHA1 support
 dnl ==========================================================================
 AC_MSG_CHECKING(for SHA1 support)
-AC_ARG_ENABLE([sha1], [AS_HELP_STRING([--enable-sha1],[enable SHA1 support (no, deprecated)])])
-if test "z$enable_sha1" = "zyes" ; then
-    XMLSEC_NO_SHA1="0"
-    AC_MSG_RESULT([yes (deprecated)])
-else
+AC_ARG_ENABLE([sha1], [AS_HELP_STRING([--enable-sha1],[enable SHA1 support (yes, deprecated)])])
+if test "z$enable_sha1" = "zno" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_SHA1=1"
     XMLSEC_NO_SHA1="1"
     AC_MSG_RESULT([disabled])
+else
+    XMLSEC_NO_SHA1="0"
+    AC_MSG_RESULT([yes (deprecated)])
 fi
 AM_CONDITIONAL(XMLSEC_NO_SHA1, test "z$XMLSEC_NO_SHA1" = "z1")
 AC_SUBST(XMLSEC_NO_SHA1)
@@ -2043,14 +2042,14 @@ dnl ==========================================================================
 dnl See do we need DES support
 dnl ==========================================================================
 AC_MSG_CHECKING(for DES support)
-AC_ARG_ENABLE([des], [AS_HELP_STRING([--enable-des],[enable DES support (no, deprecated)])])
-if test "z$enable_des" = "zyes" ; then
-    XMLSEC_NO_DES="0"
-    AC_MSG_RESULT([yes (deprecated)])
-else
+AC_ARG_ENABLE([des], [AS_HELP_STRING([--enable-des],[enable DES support (yes, deprecated)])])
+if test "z$enable_des" = "zno" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_DES=1"
     XMLSEC_NO_DES="1"
     AC_MSG_RESULT([disabled])
+else
+    XMLSEC_NO_DES="0"
+    AC_MSG_RESULT([yes (deprecated)])
 fi
 AM_CONDITIONAL(XMLSEC_NO_DES, test "z$XMLSEC_NO_DES" = "z1")
 AC_SUBST(XMLSEC_NO_DES)

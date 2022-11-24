@@ -15,7 +15,7 @@ jobs:
         include:
           - config_flags:
           - config_flags: --enable-size-t=no
-          - config_flags: --enable-md5 --enable-sha1 --enable-des
+          - config_flags: --enable-md5 --enable-ripemd160
           - config_flags: --enable-static-linking=yes --without-nss --without-gcrypt --without-gnutls
     steps:
     - name: install dependencies
@@ -50,7 +50,7 @@ jobs:
         include:
           - config_flags:
           - config_flags: --enable-size-t=no
-          - config_flags: --enable-md5 --enable-sha1 --enable-des
+          - config_flags: --enable-md5 --enable-ripemd160
           - config_flags: --enable-static-linking=yes --without-nss --without-gcrypt --without-gnutls
     steps:
     - name: install dependencies
@@ -87,7 +87,7 @@ jobs:
         include:
           - config_flags:
           - config_flags: --enable-size-t=no
-          - config_flags: --enable-md5 --enable-sha1 --enable-des
+          - config_flags: --enable-md5 --enable-ripemd160
     steps:
     - name: install dependencies
       run: |

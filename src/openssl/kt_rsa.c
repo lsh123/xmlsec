@@ -47,9 +47,6 @@
 #include "../transform_helpers.h"
 
 
-
-
-
 /**************************************************************************
  *
  * Internal OpenSSL RSA PKCS1 CTX

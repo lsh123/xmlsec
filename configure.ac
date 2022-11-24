@@ -925,6 +925,9 @@ dnl
 dnl   2 overrides 1
 dnl
 dnl ==========================================================================
+
+dnl After upgrading min ver >= 3.59, remove the MD5 check in include/nss/crypto.h (search for NSS_VMAJOR)
+dnl After upgrading min ver >= 3.59, remove the RSA OAEP check in include/nss/crypto.h (search for NSS_VMAJOR)
 NSS_MIN_VERSION="3.49"
 NSPR_MIN_VERSION="4.25.0"
 SEAMONKEY_MIN_VERSION="1.0"

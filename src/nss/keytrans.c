@@ -27,6 +27,7 @@
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
+#include <xmlsec/private.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
 
@@ -34,6 +35,7 @@
 #include <xmlsec/nss/pkikeys.h>
 
 #include "../cast_helpers.h"
+#include "../transform_helpers.h"
 
 /*********************************************************************
  *
@@ -49,6 +51,13 @@ struct _xmlSecNssKeyTransportCtx {
         SECKEYPrivateKey*               prikey;
         xmlSecKeyDataId                 keyId;
         xmlSecBufferPtr                 material; /* to be encrypted/decrypted material */
+
+#ifdef XMLSEC_NSS_RSA_OAEP_ENABLED
+        /* RSA OAEP */
+        CK_MECHANISM_TYPE               oaepHashAlg;
+        CK_RSA_PKCS_MGF_TYPE            oaepMgf;
+        xmlSecBuffer                    oaepParams;
+#endif /* XMLSEC_NSS_RSA_OAEP_ENABLED */
 };
 
 /*********************************************************************
@@ -78,18 +87,17 @@ xmlSecNssKeyTransportCheckId(xmlSecTransformPtr transform) {
     }
 #endif /* XMLSEC_NO_RSA */
 
-/* aleksey, April 2010: NSS 3.12.6 has CKM_RSA_PKCS_OAEP algorithm but
-   it doesn't implement the SHA1 OAEP PKCS we need
-
-   https://bugzilla.mozilla.org/show_bug.cgi?id=158747
-*/
-#ifdef XMLSEC_NSS_RSA_OAEP_TODO
 #ifndef XMLSEC_NO_RSA
+#ifdef XMLSEC_NSS_RSA_OAEP_ENABLED
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformRsaOaepId)) {
         return (1);
     }
+
+    if(xmlSecTransformCheckId(transform, xmlSecNssTransformRsaOaepEnc11Id)) {
+        return (1);
+    }
+#endif /* XMLSEC_NSS_RSA_OAEP_ENABLED */
 #endif /* XMLSEC_NO_RSA */
-#endif /* XMLSEC_NSS_RSA_OAEP_TODO */
 
     /* not found */
     return(0);
@@ -98,6 +106,8 @@ xmlSecNssKeyTransportCheckId(xmlSecTransformPtr transform) {
 static int
 xmlSecNssKeyTransportInitialize(xmlSecTransformPtr transform) {
     xmlSecNssKeyTransportCtxPtr context;
+    int ret;
+
     xmlSecAssert2(xmlSecNssKeyTransportCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssKeyTransportSize), -1);
 
@@ -114,25 +124,32 @@ xmlSecNssKeyTransportInitialize(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_RSA */
 
-/* aleksey, April 2010: NSS 3.12.6 has CKM_RSA_PKCS_OAEP algorithm but
-   it doesn't implement the SHA1 OAEP PKCS we need
-
-   https://bugzilla.mozilla.org/show_bug.cgi?id=158747
-*/
-#ifdef XMLSEC_NSS_RSA_OAEP_TODO
 #ifndef XMLSEC_NO_RSA
+#ifdef XMLSEC_NSS_RSA_OAEP_ENABLED
     if(transform->id == xmlSecNssTransformRsaOaepId) {
         context->cipher = CKM_RSA_PKCS_OAEP;
         context->keyId = xmlSecNssKeyDataRsaId;
+    } else if(transform->id == xmlSecNssTransformRsaOaepEnc11Id) {
+        context->cipher = CKM_RSA_PKCS_OAEP;
+        context->keyId = xmlSecNssKeyDataRsaId;
     } else
+#endif /* XMLSEC_NSS_RSA_OAEP_ENABLED */
 #endif /* XMLSEC_NO_RSA */
-#endif /* XMLSEC_NSS_RSA_OAEP_TODO */
 
     /* not found */
     {
         xmlSecNotImplementedError(xmlSecErrorsSafeString(xmlSecTransformGetName(transform)));
         return(-1);
     }
+
+#ifdef XMLSEC_NSS_RSA_OAEP_ENABLED
+    ret = xmlSecBufferInitialize(&(context->oaepParams), 0);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize",
+            xmlSecTransformGetName(transform));
+        return(-1);
+    }
+#endif /* XMLSEC_NSS_RSA_OAEP_ENABLED */
 
     return(0);
 }
@@ -161,6 +178,10 @@ xmlSecNssKeyTransportFinalize(xmlSecTransformPtr transform) {
         xmlSecBufferDestroy(context->material);
         context->material = NULL;
     }
+
+#ifdef XMLSEC_NSS_RSA_OAEP_ENABLED
+    xmlSecBufferFinalize(&(context->oaepParams));
+#endif /* XMLSEC_NSS_RSA_OAEP_ENABLED */
 }
 
 static int
@@ -321,15 +342,76 @@ xmlSecNssKeyTransportCtxUpdate(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr 
     return(0);
 }
 
+#ifdef XMLSEC_NSS_RSA_OAEP_ENABLED
+static int
+xmlSecNssKeyTransportSetOaepParams(xmlSecNssKeyTransportCtxPtr ctx, CK_RSA_PKCS_OAEP_PARAMS* oaepParams) {
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(oaepParams != NULL, -1);
+
+    oaepParams->hashAlg = ctx->oaepHashAlg;
+    oaepParams->mgf     = ctx->oaepMgf ;
+    oaepParams->source  = CKZ_DATA_SPECIFIED;
+    oaepParams->pSourceData      = xmlSecBufferGetData(&(ctx->oaepParams));
+    oaepParams->ulSourceDataLen  = xmlSecBufferGetSize(&(ctx->oaepParams));
+
+    return(0);
+}
+#endif /* XMLSEC_NSS_RSA_OAEP_ENABLED */
+
+static PK11SymKey*
+xmlSecNssKeyTransportLoadSymKeyUsingPublicKeySlot(xmlSecNssKeyTransportCtxPtr ctx, SECItem* oriskv) {
+    PK11SlotInfo* slot = NULL;
+    PK11SymKey* symKey = NULL;
+    CK_OBJECT_HANDLE id;
+
+    xmlSecAssert2(ctx != NULL, NULL);
+    xmlSecAssert2(ctx->pubkey != NULL, NULL);
+    xmlSecAssert2(oriskv != NULL, NULL);
+
+    if(ctx->pubkey->pkcs11Slot == NULL) {
+        slot = PK11_GetBestSlot(ctx->cipher, NULL);
+        if(slot == NULL) {
+            xmlSecNssError("PK11_GetBestSlot", NULL);
+            return(NULL);
+        }
+
+        id = PK11_ImportPublicKey(slot, ctx->pubkey, PR_FALSE);
+        if(id == CK_INVALID_HANDLE) {
+            xmlSecNssError("PK11_ImportPublicKey", NULL);
+            PK11_FreeSlot(slot);
+            return(NULL);
+        }
+    }
+
+    /* pay attention to mechanism */
+    symKey = PK11_ImportSymKey(
+        ctx->pubkey->pkcs11Slot != NULL ? ctx->pubkey->pkcs11Slot : slot, 
+        ctx->cipher,
+        PK11_OriginUnwrap,
+        CKA_WRAP, 
+        oriskv,
+        NULL);
+    if(symKey == NULL) {
+        xmlSecNssError("PK11_ImportSymKey", NULL);
+        PK11_FreeSlot(slot);
+        return(NULL);
+    }
+
+    PK11_FreeSlot(slot);
+    return(symKey);
+}
+
 static int
 xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr in, xmlSecBufferPtr out,
                               int encrypt, xmlSecTransformCtxPtr transformCtx) {
-    PK11SymKey*  symKey;
-    PK11SlotInfo* slot;
+    PK11SymKey* symKey = NULL;
     SECItem oriskv;
     xmlSecSize blockSize, materialSize, resultSize;
     unsigned int resultLen;
     xmlSecBufferPtr result;
+    int ret;
+    SECStatus rv;
+    int res = -1;
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->cipher != CKM_INVALID_MECHANISM, -1);
@@ -383,114 +465,132 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
         return(-1);
     }
     resultSize = xmlSecBufferGetMaxSize(result);
-    XMLSEC_SAFE_CAST_SIZE_TO_UINT(resultSize, resultLen, return(-1), NULL);
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(resultSize, resultLen, goto done, NULL);
 
     oriskv.type = siBuffer;
     oriskv.data = xmlSecBufferGetData(ctx->material);
-    XMLSEC_SAFE_CAST_SIZE_TO_UINT(materialSize, oriskv.len, return(-1), NULL);
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(materialSize, oriskv.len, goto done, NULL);
 
     if(encrypt != 0) {
-        CK_OBJECT_HANDLE id;
         SECItem wrpskv;
 
-        /* Create template symmetric key from material */
-        slot = ctx->pubkey->pkcs11Slot;
-        if(slot == NULL) {
-            slot = PK11_GetBestSlot(ctx->cipher, NULL);
-            if(slot == NULL) {
-                xmlSecNssError("PK11_GetBestSlot", NULL);
-                xmlSecBufferDestroy(result);
-                return(-1);
-            }
-
-            id = PK11_ImportPublicKey(slot, ctx->pubkey, PR_FALSE);
-            if(id == CK_INVALID_HANDLE) {
-                xmlSecNssError("PK11_ImportPublicKey", NULL);
-                xmlSecBufferDestroy(result);
-                PK11_FreeSlot(slot);
-                return(-1);
-            }
+        /* Create template symmetric key from material if needed */
+        symKey = xmlSecNssKeyTransportLoadSymKeyUsingPublicKeySlot(ctx, &oriskv);
+        if (symKey == NULL) {
+            xmlSecInternalError("xmlSecNssKeyTransportLoadSymKeyFromPublicKey", NULL);
+            goto done;
         }
-
-        /* pay attention to mechanism */
-        symKey = PK11_ImportSymKey(slot, ctx->cipher, PK11_OriginUnwrap, CKA_WRAP, &oriskv, NULL);
-        if(symKey == NULL) {
-            xmlSecNssError("PK11_ImportSymKey", NULL);
-            xmlSecBufferDestroy(result);
-            PK11_FreeSlot(slot);
-            return(-1);
-        }
-
+        
         wrpskv.type = siBuffer;
         wrpskv.data = xmlSecBufferGetData(result);
         wrpskv.len  = resultLen;
 
-        if(PK11_PubWrapSymKey(ctx->cipher, ctx->pubkey, symKey, &wrpskv) != SECSuccess) {
-            xmlSecNssError("PK11_PubWrapSymKey", NULL);
-            PK11_FreeSymKey(symKey);
-            xmlSecBufferDestroy(result);
-            PK11_FreeSlot(slot);
-            return(-1);
+        if(ctx->cipher == CKM_RSA_PKCS) {
+            rv = PK11_PubWrapSymKey(CKM_RSA_PKCS, ctx->pubkey, symKey, &wrpskv);
+            if (rv != SECSuccess) {
+                xmlSecNssError("PK11_PubWrapSymKey", NULL);
+                goto done;
+            }
+        } else 
+
+#ifdef XMLSEC_NSS_RSA_OAEP_ENABLED
+        if(ctx->cipher == CKM_RSA_PKCS_OAEP) {
+            CK_RSA_PKCS_OAEP_PARAMS oaep_params;
+            SECItem param = {siBuffer, (unsigned char*)&oaep_params, sizeof(oaep_params)};
+
+            ret = xmlSecNssKeyTransportSetOaepParams(ctx, &oaep_params);
+            if (ret < 0) {
+                xmlSecInternalError("xmlSecNssKeyTransportSetOaepParams", NULL);
+                goto done;
+            }
+            rv = PK11_PubWrapSymKeyWithMechanism(ctx->pubkey, CKM_RSA_PKCS_OAEP, &param, symKey, &wrpskv);
+            if (rv != SECSuccess) {
+                xmlSecNssError("PK11_PubWrapSymKeyWithMechanism", NULL);
+                goto done;
+            }             
+        } else 
+#endif /* XMLSEC_NSS_RSA_OAEP_ENABLED */
+        {
+            xmlSecInvalidTypeError("Invalid keywrap algorithm", NULL);
+            goto done;
         }
 
         if(xmlSecBufferSetSize(result, wrpskv.len) < 0) {
             xmlSecInternalError2("xmlSecBufferSetSize", NULL,
                 "size=%u", wrpskv.len);
-            PK11_FreeSymKey(symKey);
-            xmlSecBufferDestroy(result);
-            PK11_FreeSlot(slot);
-            return(-1);
+            goto done;
         }
-        PK11_FreeSymKey(symKey);
-        PK11_FreeSlot(slot);
     } else {
-        SECItem*                        keyItem;
+        SECItem* keyItem;
 
         /* pay attention to mechanism */
-        symKey = PK11_PubUnwrapSymKey(ctx->prikey, &oriskv, ctx->cipher, CKA_UNWRAP, 0);
-        if(symKey == NULL) {
-            xmlSecNssError("PK11_PubUnwrapSymKey", NULL);
-            xmlSecBufferDestroy(result);
-            return(-1);
+        if(ctx->cipher == CKM_RSA_PKCS) {
+            symKey = PK11_PubUnwrapSymKey(ctx->prikey, &oriskv, CKM_RSA_PKCS, CKA_UNWRAP, 0);
+            if(symKey == NULL) {
+                xmlSecNssError("PK11_PubUnwrapSymKey", NULL);
+                goto done;
+            }
+        } else 
+        
+#ifdef XMLSEC_NSS_RSA_OAEP_ENABLED        
+        if(ctx->cipher == CKM_RSA_PKCS_OAEP) {
+            CK_RSA_PKCS_OAEP_PARAMS oaep_params;
+            SECItem param = {siBuffer, (unsigned char*)&oaep_params, sizeof(oaep_params)};
+
+            ret = xmlSecNssKeyTransportSetOaepParams(ctx, &oaep_params);
+            if (ret < 0) {
+                xmlSecInternalError("xmlSecNssKeyTransportSetOaepParams", NULL);
+                goto done;
+            }
+
+            symKey = PK11_PubUnwrapSymKeyWithMechanism(ctx->prikey, CKM_RSA_PKCS_OAEP, &param, &oriskv, 0, CKA_UNWRAP, 0);
+            if(symKey == NULL) {
+                xmlSecNssError("PK11_PubUnwrapSymKeyWithMechanism", NULL);
+                goto done;
+            }            
+        } else 
+#endif /* XMLSEC_NSS_RSA_OAEP_ENABLED */
+        {
+            xmlSecInvalidTypeError("Invalid keywrap algorithm", NULL);
+            goto done;
         }
 
         /* Extract raw data from symmetric key */
         if(PK11_ExtractKeyValue(symKey) != SECSuccess) {
             xmlSecNssError("PK11_ExtractKeyValue", NULL);
-            PK11_FreeSymKey(symKey);
-            xmlSecBufferDestroy(result);
-            return(-1);
+            goto done;
         }
 
         keyItem = PK11_GetKeyData(symKey);
         if(keyItem == NULL) {
             xmlSecNssError("PK11_GetKeyData", NULL);
-            PK11_FreeSymKey(symKey);
-            xmlSecBufferDestroy(result);
-            return(-1);
+            goto done;
         }
 
         if(xmlSecBufferSetData(result, keyItem->data, keyItem->len) < 0) {
             xmlSecInternalError2("xmlSecBufferSetData", NULL,
                 "size=%u", keyItem->len);
-            PK11_FreeSymKey(symKey);
-            xmlSecBufferDestroy(result);
-            return(-1);
+            goto done;
         }
-        PK11_FreeSymKey(symKey);
     }
 
     /* Write output */
     if(xmlSecBufferAppend(out, xmlSecBufferGetData(result), xmlSecBufferGetSize(result)) < 0) {
         xmlSecInternalError2("xmlSecBufferAppend", NULL,
             "size=" XMLSEC_SIZE_FMT, xmlSecBufferGetSize(result));
-        xmlSecBufferDestroy(result);
-        return(-1);
+       goto done;
     }
 
-    /* done */
+    /* success */
+    res = 0;
+
+done:
+    /* cleanup*/
     xmlSecBufferDestroy(result);
-    return(0);
+    if(symKey != NULL) {
+        PK11_FreeSymKey(symKey);
+    }
+    return(res);
 }
 
 static int
@@ -570,6 +670,7 @@ xmlSecNssKeyTransportExecute(xmlSecTransformPtr transform, int last, xmlSecTrans
 
 
 #ifndef XMLSEC_NO_RSA
+
 static xmlSecTransformKlass xmlSecNssRsaPkcs1Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -610,13 +711,14 @@ xmlSecNssTransformRsaPkcs1GetKlass(void) {
 }
 #endif /* XMLSEC_NO_RSA */
 
-/* aleksey, April 2010: NSS 3.12.6 has CKM_RSA_PKCS_OAEP algorithm but
-   it doesn't implement the SHA1 OAEP PKCS we need
-
-   https://bugzilla.mozilla.org/show_bug.cgi?id=158747
-*/
-#ifdef XMLSEC_NSS_RSA_OAEP_TODO
 #ifndef XMLSEC_NO_RSA
+
+#ifdef XMLSEC_NSS_RSA_OAEP_ENABLED 
+
+static int xmlSecNssRsaOaepNodeRead             (xmlSecTransformPtr transform,
+                                                xmlNodePtr node,
+                                                xmlSecTransformCtxPtr transformCtx);
+
 static xmlSecTransformKlass xmlSecNssRsaOaepKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -628,7 +730,7 @@ static xmlSecTransformKlass xmlSecNssRsaOaepKlass = {
 
     xmlSecNssKeyTransportInitialize,            /* xmlSecTransformInitializeMethod initialize; */
     xmlSecNssKeyTransportFinalize,              /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    xmlSecNssRsaOaepNodeRead,                 /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
     xmlSecNssKeyTransportSetKeyReq,             /* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecNssKeyTransportSetKey,                /* xmlSecTransformSetKeyMethod setKey; */
@@ -647,7 +749,7 @@ static xmlSecTransformKlass xmlSecNssRsaOaepKlass = {
 /**
  * xmlSecNssTransformRsaOaepGetKlass:
  *
- * The RSA-PKCS1 key transport transform klass.
+ * The RSA-PKCS1 key transport transform klass (XMLEnc 1.0).
  *
  * Returns: RSA-PKCS1 key transport transform klass.
  */
@@ -655,6 +757,178 @@ xmlSecTransformId
 xmlSecNssTransformRsaOaepGetKlass(void) {
     return(&xmlSecNssRsaOaepKlass);
 }
-#endif /* XMLSEC_NO_RSA */
-#endif /* XMLSEC_NSS_RSA_OAEP_TODO */
 
+static xmlSecTransformKlass xmlSecNssRsaOaepEnc11Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecNssKeyTransportSize,                  /* xmlSecSize objSize */
+
+    xmlSecNameRsaOaepEnc11,                     /* const xmlChar* name; */
+    xmlSecHrefRsaOaepEnc11,                     /* const xmlChar* href; */
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
+
+    xmlSecNssKeyTransportInitialize,            /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecNssKeyTransportFinalize,              /* xmlSecTransformFinalizeMethod finalize; */
+    xmlSecNssRsaOaepNodeRead,                   /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecNssKeyTransportSetKeyReq,             /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecNssKeyTransportSetKey,                /* xmlSecTransformSetKeyMethod setKey; */
+    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecNssKeyTransportExecute,               /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecNssTransformRsaOaepGetKlass:
+ *
+ * The RSA-PKCS1 key transport transform klass (XMLEnc 1.1).
+ *
+ * Returns: RSA-PKCS1 key transport transform klass.
+ */
+xmlSecTransformId
+xmlSecNssTransformRsaOaepEnc11GetKlass(void) {
+    return(&xmlSecNssRsaOaepEnc11Klass);
+}
+
+static int
+xmlSecNssRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
+                         xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
+    xmlSecNssKeyTransportCtxPtr ctx;
+    xmlSecTransformRsaOaepParams oaepParams;
+    int ret;
+
+    xmlSecAssert2(xmlSecNssKeyTransportCheckId(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssKeyTransportSize), -1);
+    xmlSecAssert2(node != NULL, -1);
+    UNREFERENCED_PARAMETER(transformCtx);
+
+    ctx = xmlSecNssKeyTransportGetCtx(transform);
+    xmlSecAssert2(ctx != NULL, -1);
+
+    ret = xmlSecTransformRsaOaepParamsInitialize(&oaepParams);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecTransformRsaOaepParamsInitialize",
+            xmlSecTransformGetName(transform));
+        return(-1);
+    }
+
+    ret = xmlSecTransformRsaOaepParamsRead(&oaepParams, node);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecTransformRsaOaepParamsRead",
+            xmlSecTransformGetName(transform));
+        xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
+        return(-1);
+    }
+
+    /* digest algorithm */
+    if (oaepParams.digestAlgorithm == NULL) {
+#ifndef XMLSEC_NO_SHA1
+        ctx->oaepHashAlg = CKM_SHA_1;
+#else  /* XMLSEC_NO_SHA1 */
+        xmlSecOtherError(XMLSEC_ERRORS_R_DISABLED, NULL, "No OAEP digest algorithm is specified and the default SHA1 digest is disabled");
+        xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
+        return(-1);
+#endif /* XMLSEC_NO_SHA1 */
+    } else
+
+#ifndef XMLSEC_NO_SHA1
+    if (xmlStrcmp(oaepParams.digestAlgorithm, xmlSecHrefSha1) == 0) {
+        ctx->oaepHashAlg = CKM_SHA_1;
+    } else
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA224
+    if (xmlStrcmp(oaepParams.digestAlgorithm, xmlSecHrefSha224) == 0) {
+        ctx->oaepHashAlg = CKM_SHA224;
+    } else
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA256
+    if (xmlStrcmp(oaepParams.digestAlgorithm, xmlSecHrefSha256) == 0) {
+        ctx->oaepHashAlg = CKM_SHA256;
+    } else
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+    if (xmlStrcmp(oaepParams.digestAlgorithm, xmlSecHrefSha384) == 0) {
+        ctx->oaepHashAlg = CKM_SHA384;
+    } else
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+    if (xmlStrcmp(oaepParams.digestAlgorithm, xmlSecHrefSha512) == 0) {
+        ctx->oaepHashAlg = CKM_SHA512;
+    } else
+#endif /* XMLSEC_NO_SHA512 */
+    {
+        xmlSecInvalidTransfromError2(transform,
+            "digest algorithm=\"%s\" is not supported for rsa/oaep",
+            xmlSecErrorsSafeString(oaepParams.digestAlgorithm));
+        xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
+        return(-1);
+    }
+
+    /* mgf1 algorithm */
+    if (oaepParams.mgf1DigestAlgorithm == NULL) {
+#ifndef XMLSEC_NO_SHA1
+        ctx->oaepMgf = CKG_MGF1_SHA1;
+#else  /* XMLSEC_NO_SHA1 */
+        xmlSecOtherError(XMLSEC_ERRORS_R_DISABLED, NULL, "No OAEP mgf1 digest algorithm is specified and the default SHA1 digest is disabled");
+        xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
+        return(-1);
+#endif /* XMLSEC_NO_SHA1 */
+    } else
+#ifndef XMLSEC_NO_SHA1
+    if (xmlStrcmp(oaepParams.mgf1DigestAlgorithm, xmlSecHrefMgf1Sha1) == 0) {
+        ctx->oaepMgf = CKG_MGF1_SHA1;
+    } else
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA224
+    if (xmlStrcmp(oaepParams.mgf1DigestAlgorithm, xmlSecHrefMgf1Sha224) == 0) {
+        ctx->oaepMgf = CKG_MGF1_SHA224;
+    } else
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA256
+    if (xmlStrcmp(oaepParams.mgf1DigestAlgorithm, xmlSecHrefMgf1Sha256) == 0) {
+        ctx->oaepMgf = CKG_MGF1_SHA256;
+    } else
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+    if (xmlStrcmp(oaepParams.mgf1DigestAlgorithm, xmlSecHrefMgf1Sha384) == 0) {
+        ctx->oaepMgf = CKG_MGF1_SHA384;
+    } else
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+    if (xmlStrcmp(oaepParams.mgf1DigestAlgorithm, xmlSecHrefMgf1Sha512) == 0) {
+        ctx->oaepMgf = CKG_MGF1_SHA512;
+    } else
+#endif /* XMLSEC_NO_SHA512 */
+    {
+        xmlSecInvalidTransfromError2(transform,
+            "mgf1 digest algorithm=\"%s\" is not supported for rsa/oaep",
+            xmlSecErrorsSafeString(oaepParams.mgf1DigestAlgorithm));
+        xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
+        return(-1);
+    }
+
+    /* put oaep params buffer into ctx */
+    xmlSecBufferSwap(&(oaepParams.oaepParams), &(ctx->oaepParams));
+
+    /* cleanup */
+    xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
+    return(0);
+}
+#endif /* XMLSEC_NSS_RSA_OAEP_ENABLED */
+
+#endif /* XMLSEC_NO_RSA */

@@ -22,9 +22,9 @@
 
 
 /* MD5 was removed from NSS */
-#if (NSS_VMAJOR > 3) || ((NSS_VMAJOR == 3) && (NSS_VMINOR > 58))
+#if (NSS_VMAJOR > 3) || ((NSS_VMAJOR == 3) && (NSS_VMINOR >= 59))
 #define XMLSEC_NO_MD5 1
-#endif /* (NSS_VMAJOR > 3) || ((NSS_VMAJOR == 3) && (NSS_VMINOR > 58)) */
+#endif /* (NSS_VMAJOR > 3) || ((NSS_VMAJOR == 3) && (NSS_VMINOR >= 59)) */
 
 #ifdef __cplusplus
 extern "C" {
@@ -475,21 +475,33 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformRsaSha512GetKlass(void)
         xmlSecNssTransformRsaPkcs1GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformRsaPkcs1GetKlass(void);
 
-/* aleksey, April 2010: NSS 3.12.6 has CKM_RSA_PKCS_OAEP algorithm but
-   it doesn't implement the SHA1 OAEP PKCS we need
+/**
+ * RSA OAEP requires https://bugzilla.mozilla.org/show_bug.cgi?id=1666891
+ * which was fixed in NSS 3.59 (https://firefox-source-docs.mozilla.org/security/nss/legacy/nss_releases/nss_3.59_release_notes/index.html)
+ */
+#if (NSS_VMAJOR > 3) || ((NSS_VMAJOR == 3) && (NSS_VMINOR >= 59))
 
-   https://bugzilla.mozilla.org/show_bug.cgi?id=158747
-*/
-#ifdef XMLSEC_NSS_RSA_OAEP_TODO
+#define XMLSEC_NSS_RSA_OAEP_ENABLED   1
+
 /**
  * xmlSecNssTransformRsaOaepId:
  *
- * The RSA OAEP key transport transform klass.
+ * The RSA OAEP key transport transform klass (XMLEnc 1.0).
  */
 #define xmlSecNssTransformRsaOaepId \
         xmlSecNssTransformRsaOaepGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformRsaOaepGetKlass(void);
-#endif /* XMLSEC_NSS_RSA_OAEP_TODO */
+
+/**
+ * xmlSecNssTransformRsaOaepEnc11Id:
+ *
+ * The RSA OAEP key transport transform klass (XMLEnc 1.1).
+ */
+#define xmlSecNssTransformRsaOaepEnc11Id \
+        xmlSecNssTransformRsaOaepEnc11GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformRsaOaepEnc11GetKlass(void);
+
+#endif /*  (NSS_VMAJOR > 3) || ((NSS_VMAJOR == 3) && (NSS_VMINOR >= 59)) */
 
 #endif /* XMLSEC_NO_RSA */
 

@@ -67,9 +67,9 @@ xmlSecMSCngRsaPkcs1OaepCheckId(xmlSecTransformPtr transform) {
 
     if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaPkcs1Id)) {
         return(1);
-    }
-
-    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaOaepId)) {
+    } else if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaOaepId)) {
+        return(1);
+    } else if (xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaOaepEnc11Id)) {
         return(1);
     }
 
@@ -260,7 +260,7 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
                     xmlSecTransformGetName(transform), status);
                 return(-1);
             }
-        } else if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaOaepId)) {
+        } else if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaOaepId) || xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaOaepEnc11Id)) {
             BCRYPT_OAEP_PADDING_INFO paddingInfo;
             xmlSecSize oaepParamsSize;
 
@@ -319,7 +319,7 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
                     xmlSecTransformGetName(transform), securityStatus);
                 return(-1);
             }
-        } else if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaOaepId)) {
+        } else if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaOaepId) || xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaOaepEnc11Id)) {
             BCRYPT_OAEP_PADDING_INFO paddingInfo;
             xmlSecSize oaepParamsSize;
 
@@ -450,6 +450,7 @@ xmlSecTransformId
 xmlSecMSCngTransformRsaPkcs1GetKlass(void) {
     return(&xmlSecMSCngRsaPkcs1Klass);
 }
+
 
 static int
 xmlSecMSCngRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
@@ -623,13 +624,53 @@ static xmlSecTransformKlass xmlSecMSCngRsaOaepKlass = {
 /**
  * xmlSecMSCngTransformRsaOaepGetKlass:
  *
- * The RSA-OAEP key transport transform klass.
+ * The RSA-OAEP key transport transform klass (XMLEnc 1.0).
  *
  * Returns: RSA-OAEP key transport transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformRsaOaepGetKlass(void) {
     return(&xmlSecMSCngRsaOaepKlass);
+}
+
+
+static xmlSecTransformKlass xmlSecMSCngRsaOaepEnc11Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSeccMSCngRsaPkcs1OaepSize,               /* xmlSecSize objSize */
+
+    xmlSecNameRsaOaepEnc11,                     /* const xmlChar* name; */
+    xmlSecHrefRsaOaepEnc11,                     /* const xmlChar* href; */
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
+
+    xmlSecMSCngRsaPkcs1OaepInitialize,          /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecMSCngRsaPkcs1OaepFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
+    xmlSecMSCngRsaOaepNodeRead,                 /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecMSCngRsaPkcs1OaepSetKeyReq,           /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecMSCngRsaPkcs1OaepSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
+    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecMSCngRsaPkcs1OaepExecute,             /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecMSCngTransformRsaOaepEnc11GetKlass:
+ *
+ * The RSA-OAEP key transport transform klass (XMLEnc 1.1).
+ *
+ * Returns: RSA-OAEP key transport transform klass.
+ */
+xmlSecTransformId
+xmlSecMSCngTransformRsaOaepEnc11GetKlass(void) {
+    return(&xmlSecMSCngRsaOaepEnc11Klass);
 }
 
 #endif /* XMLSEC_NO_RSA */

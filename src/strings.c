@@ -404,6 +404,10 @@ const xmlChar xmlSecHrefRsaPkcs1[]              = "http://www.w3.org/2001/04/xml
 
 const xmlChar xmlSecNameRsaOaep[]               = "rsa-oaep-mgf1p";
 const xmlChar xmlSecHrefRsaOaep[]               = "http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p";
+
+const xmlChar xmlSecNameRsaOaepEnc11[]          = "rsa-oaep-enc11";
+const xmlChar xmlSecHrefRsaOaepEnc11[]          = "http://www.w3.org/2009/xmlenc11#rsa-oaep";
+
 const xmlChar xmlSecNodeRsaOAEPparams[]         = "OAEPparams";
 const xmlChar xmlSecNodeRsaMGF[]                = "MGF";
 

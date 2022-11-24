@@ -409,6 +409,10 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRsaPkcs1[];
 
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameRsaOaep[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRsaOaep[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameRsaOaepEnc11[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRsaOaepEnc11[];
+
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeRsaOAEPparams[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeRsaMGF[];
 

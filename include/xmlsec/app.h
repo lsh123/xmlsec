@@ -415,10 +415,17 @@ XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformRsaPkcs1GetKlass 
 /**
  * xmlSecTransformRsaOaepId:
  *
- * The RSA PKCS1 key transport transform klass.
+ * The RSA PKCS1 key transport transform klass (XMLEnc 1.0).
  */
 #define xmlSecTransformRsaOaepId                xmlSecTransformRsaOaepGetKlass()
 XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformRsaOaepGetKlass  (void);
+/**
+ * xmlSecTransformRsaOaepEnc11Id:
+ *
+ * The RSA PKCS1 key transport transform klass (XMLEnc 1.1).
+ */
+#define xmlSecTransformRsaOaepEnc11Id           xmlSecTransformRsaOaepEnc11GetKlass()
+XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformRsaOaepEnc11GetKlass  (void);
 /**
  * xmlSecTransformGostR3411_94Id:
  *

@@ -224,10 +224,10 @@ xmlSecCryptoGetFunctions_nss(void) {
 
     gXmlSecNssFunctions->transformRsaPkcs1GetKlass      = xmlSecNssTransformRsaPkcs1GetKlass;
 
-#ifdef XMLSEC_NSS_RSA_OAEP_ENABLED
+#ifndef XMLSEC_NO_RSA_OAEP
     gXmlSecNssFunctions->transformRsaOaepGetKlass       = xmlSecNssTransformRsaOaepGetKlass;
     gXmlSecNssFunctions->transformRsaOaepEnc11GetKlass  = xmlSecNssTransformRsaOaepEnc11GetKlass;
-#endif /* XMLSEC_NSS_RSA_OAEP_ENABLED */
+#endif /* XMLSEC_NO_RSA_OAEP */
 
 #endif /* XMLSEC_NO_RSA */
 

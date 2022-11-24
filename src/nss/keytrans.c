@@ -52,12 +52,12 @@ struct _xmlSecNssKeyTransportCtx {
         xmlSecKeyDataId                 keyId;
         xmlSecBufferPtr                 material; /* to be encrypted/decrypted material */
 
-#ifdef XMLSEC_NSS_RSA_OAEP_ENABLED
+#ifndef XMLSEC_NO_RSA_OAEP
         /* RSA OAEP */
         CK_MECHANISM_TYPE               oaepHashAlg;
         CK_RSA_PKCS_MGF_TYPE            oaepMgf;
         xmlSecBuffer                    oaepParams;
-#endif /* XMLSEC_NSS_RSA_OAEP_ENABLED */
+#endif /* XMLSEC_NO_RSA_OAEP */
 };
 
 /*********************************************************************
@@ -88,7 +88,7 @@ xmlSecNssKeyTransportCheckId(xmlSecTransformPtr transform) {
 #endif /* XMLSEC_NO_RSA */
 
 #ifndef XMLSEC_NO_RSA
-#ifdef XMLSEC_NSS_RSA_OAEP_ENABLED
+#ifndef XMLSEC_NO_RSA_OAEP
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformRsaOaepId)) {
         return (1);
     }
@@ -96,7 +96,7 @@ xmlSecNssKeyTransportCheckId(xmlSecTransformPtr transform) {
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformRsaOaepEnc11Id)) {
         return (1);
     }
-#endif /* XMLSEC_NSS_RSA_OAEP_ENABLED */
+#endif /* XMLSEC_NO_RSA_OAEP */
 #endif /* XMLSEC_NO_RSA */
 
     /* not found */
@@ -125,7 +125,7 @@ xmlSecNssKeyTransportInitialize(xmlSecTransformPtr transform) {
 #endif /* XMLSEC_NO_RSA */
 
 #ifndef XMLSEC_NO_RSA
-#ifdef XMLSEC_NSS_RSA_OAEP_ENABLED
+#ifndef XMLSEC_NO_RSA_OAEP
     if(transform->id == xmlSecNssTransformRsaOaepId) {
         context->cipher = CKM_RSA_PKCS_OAEP;
         context->keyId = xmlSecNssKeyDataRsaId;
@@ -133,7 +133,7 @@ xmlSecNssKeyTransportInitialize(xmlSecTransformPtr transform) {
         context->cipher = CKM_RSA_PKCS_OAEP;
         context->keyId = xmlSecNssKeyDataRsaId;
     } else
-#endif /* XMLSEC_NSS_RSA_OAEP_ENABLED */
+#endif /* XMLSEC_NO_RSA_OAEP */
 #endif /* XMLSEC_NO_RSA */
 
     /* not found */
@@ -142,14 +142,14 @@ xmlSecNssKeyTransportInitialize(xmlSecTransformPtr transform) {
         return(-1);
     }
 
-#ifdef XMLSEC_NSS_RSA_OAEP_ENABLED
+#ifndef XMLSEC_NO_RSA_OAEP
     ret = xmlSecBufferInitialize(&(context->oaepParams), 0);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferInitialize",
             xmlSecTransformGetName(transform));
         return(-1);
     }
-#endif /* XMLSEC_NSS_RSA_OAEP_ENABLED */
+#endif /* XMLSEC_NO_RSA_OAEP */
 
     return(0);
 }
@@ -179,9 +179,9 @@ xmlSecNssKeyTransportFinalize(xmlSecTransformPtr transform) {
         context->material = NULL;
     }
 
-#ifdef XMLSEC_NSS_RSA_OAEP_ENABLED
+#ifndef XMLSEC_NO_RSA_OAEP
     xmlSecBufferFinalize(&(context->oaepParams));
-#endif /* XMLSEC_NSS_RSA_OAEP_ENABLED */
+#endif /* XMLSEC_NO_RSA_OAEP */
 }
 
 static int
@@ -342,7 +342,7 @@ xmlSecNssKeyTransportCtxUpdate(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr 
     return(0);
 }
 
-#ifdef XMLSEC_NSS_RSA_OAEP_ENABLED
+#ifndef XMLSEC_NO_RSA_OAEP
 static int
 xmlSecNssKeyTransportSetOaepParams(xmlSecNssKeyTransportCtxPtr ctx, CK_RSA_PKCS_OAEP_PARAMS* oaepParams) {
     xmlSecAssert2(ctx != NULL, -1);
@@ -356,7 +356,7 @@ xmlSecNssKeyTransportSetOaepParams(xmlSecNssKeyTransportCtxPtr ctx, CK_RSA_PKCS_
 
     return(0);
 }
-#endif /* XMLSEC_NSS_RSA_OAEP_ENABLED */
+#endif /* XMLSEC_NO_RSA_OAEP */
 
 static PK11SymKey*
 xmlSecNssKeyTransportLoadSymKeyUsingPublicKeySlot(xmlSecNssKeyTransportCtxPtr ctx, SECItem* oriskv) {
@@ -493,7 +493,7 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
             }
         } else 
 
-#ifdef XMLSEC_NSS_RSA_OAEP_ENABLED
+#ifndef XMLSEC_NO_RSA_OAEP
         if(ctx->cipher == CKM_RSA_PKCS_OAEP) {
             CK_RSA_PKCS_OAEP_PARAMS oaep_params;
             SECItem param = {siBuffer, (unsigned char*)&oaep_params, sizeof(oaep_params)};
@@ -509,7 +509,7 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
                 goto done;
             }             
         } else 
-#endif /* XMLSEC_NSS_RSA_OAEP_ENABLED */
+#endif /* XMLSEC_NO_RSA_OAEP */
         {
             xmlSecInvalidTypeError("Invalid keywrap algorithm", NULL);
             goto done;
@@ -532,7 +532,7 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
             }
         } else 
         
-#ifdef XMLSEC_NSS_RSA_OAEP_ENABLED        
+#ifndef XMLSEC_NO_RSA_OAEP        
         if(ctx->cipher == CKM_RSA_PKCS_OAEP) {
             CK_RSA_PKCS_OAEP_PARAMS oaep_params;
             SECItem param = {siBuffer, (unsigned char*)&oaep_params, sizeof(oaep_params)};
@@ -549,7 +549,7 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
                 goto done;
             }            
         } else 
-#endif /* XMLSEC_NSS_RSA_OAEP_ENABLED */
+#endif /* XMLSEC_NO_RSA_OAEP */
         {
             xmlSecInvalidTypeError("Invalid keywrap algorithm", NULL);
             goto done;
@@ -713,7 +713,7 @@ xmlSecNssTransformRsaPkcs1GetKlass(void) {
 
 #ifndef XMLSEC_NO_RSA
 
-#ifdef XMLSEC_NSS_RSA_OAEP_ENABLED 
+#ifndef XMLSEC_NO_RSA_OAEP 
 
 static int xmlSecNssRsaOaepNodeRead             (xmlSecTransformPtr transform,
                                                 xmlNodePtr node,
@@ -929,6 +929,6 @@ xmlSecNssRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
     return(0);
 }
-#endif /* XMLSEC_NSS_RSA_OAEP_ENABLED */
+#endif /* XMLSEC_NO_RSA_OAEP */
 
 #endif /* XMLSEC_NO_RSA */

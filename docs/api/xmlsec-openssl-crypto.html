@@ -623,6 +623,14 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
+<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformRsaOaepEnc11GetKlass" title="xmlSecOpenSSLTransformRsaOaepEnc11GetKlass ()">xmlSecOpenSSLTransformRsaOaepEnc11GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
 <a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformSha1GetKlass" title="xmlSecOpenSSLTransformSha1GetKlass ()">xmlSecOpenSSLTransformSha1GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
@@ -956,6 +964,10 @@
 <tr>
 <td class="define_keyword">#define</td>
 <td class="function_name"><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformRsaOaepId" title="xmlSecOpenSSLTransformRsaOaepId">xmlSecOpenSSLTransformRsaOaepId</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformRsaOaepEnc11Id" title="xmlSecOpenSSLTransformRsaOaepEnc11Id">xmlSecOpenSSLTransformRsaOaepEnc11Id</a></td>
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
@@ -2115,9 +2127,21 @@ xmlSecOpenSSLTransformRsaPkcs1GetKlass
 <a name="xmlSecOpenSSLTransformRsaOaepGetKlass"></a><h3>xmlSecOpenSSLTransformRsaOaepGetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecOpenSSLTransformRsaOaepGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>The RSA-OAEP key transport transform klass.</p>
+<p>The RSA-OAEP key transport transform klass (XMLEnc 1.0).</p>
 <div class="refsect3">
 <a name="xmlSecOpenSSLTransformRsaOaepGetKlass.returns"></a><h4>Returns</h4>
+<p> RSA-OAEP key transport transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLTransformRsaOaepEnc11GetKlass"></a><h3>xmlSecOpenSSLTransformRsaOaepEnc11GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecOpenSSLTransformRsaOaepEnc11GetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The RSA-OAEP key transport transform klass (XMLEnc 1.1).</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLTransformRsaOaepEnc11GetKlass.returns"></a><h4>Returns</h4>
 <p> RSA-OAEP key transport transform klass.</p>
 </div>
 </div>
@@ -2654,7 +2678,13 @@ xmlSecOpenSSLErrorsDefaultCallback (<em class="parameter"><code>const <font><spa
 <div class="refsect2">
 <a name="xmlSecOpenSSLTransformRsaOaepId"></a><h3>xmlSecOpenSSLTransformRsaOaepId</h3>
 <pre class="programlisting">#define             xmlSecOpenSSLTransformRsaOaepId</pre>
-<p>The RSA PKCS1 key transport transform klass.</p>
+<p>The RSA PKCS1 key transport transform klass (XMLEnc 1.0).</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLTransformRsaOaepEnc11Id"></a><h3>xmlSecOpenSSLTransformRsaOaepEnc11Id</h3>
+<pre class="programlisting">#define             xmlSecOpenSSLTransformRsaOaepEnc11Id</pre>
+<p>The RSA PKCS1 key transport transform klass (XMLEnc 1.1).</p>
 </div>
 <hr>
 <div class="refsect2">

@@ -71,12 +71,20 @@ extern "C" {
 #define xmlSecTransformHmacMd5Id                xmlSecNssTransformHmacMd5Id
 #define xmlSecTransformHmacRipemd160Id          xmlSecNssTransformHmacRipemd160Id
 #define xmlSecTransformHmacSha1Id               xmlSecNssTransformHmacSha1Id
+#define xmlSecTransformHmacSha224Id             xmlSecNssTransformHmacSha224Id
+#define xmlSecTransformHmacSha256Id             xmlSecNssTransformHmacSha256Id
+#define xmlSecTransformHmacSha384Id             xmlSecNssTransformHmacSha384Id
+#define xmlSecTransformHmacSha512Id             xmlSecNssTransformHmacSha512Id
 #define xmlSecTransformRipemd160Id              xmlSecNssTransformRipemd160Id
 #define xmlSecTransformRsaSha1Id                xmlSecNssTransformRsaSha1Id
 #define xmlSecTransformRsaPkcs1Id               xmlSecNssTransformRsaPkcs1Id
 #define xmlSecTransformRsaOaepId                xmlSecNssTransformRsaOaepId
 #define xmlSecTransformRsaOaepEnc11Id           xmlSecNssTransformRsaOaepEnc11Id
 #define xmlSecTransformSha1Id                   xmlSecNssTransformSha1Id
+#define xmlSecTransformSha224Id                 xmlSecNssTransformSha224Id
+#define xmlSecTransformSha256Id                 xmlSecNssTransformSha256Id
+#define xmlSecTransformSha384Id                 xmlSecNssTransformSha384Id
+#define xmlSecTransformSha512Id                 xmlSecNssTransformSha512Id
 
 /********************************************************************
  *

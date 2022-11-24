@@ -20,11 +20,17 @@
 #include <xmlsec/transforms.h>
 #include <xmlsec/dl.h>
 
-
-/* MD5 was removed from NSS */
-#if (NSS_VMAJOR > 3) || ((NSS_VMAJOR == 3) && (NSS_VMINOR >= 59))
+/**
+ * MD5 was removed (https://bugs.gentoo.org/764437)
+ *
+ * RSA OAEP requires https://bugzilla.mozilla.org/show_bug.cgi?id=1666891
+ * which was fixed in NSS 3.59 (https://firefox-source-docs.mozilla.org/security/nss/legacy/nss_releases/nss_3.59_release_notes/index.html)
+ */
+#if (NSS_VMAJOR < 3) || ((NSS_VMAJOR == 3) && (NSS_VMINOR < 59))
+#define XMLSEC_NO_RSA_OAEP 1
+#else  /* (NSS_VMAJOR < 3) || ((NSS_VMAJOR == 3) && (NSS_VMINOR < 59)) */
 #define XMLSEC_NO_MD5 1
-#endif /* (NSS_VMAJOR > 3) || ((NSS_VMAJOR == 3) && (NSS_VMINOR >= 59)) */
+#endif /* (NSS_VMAJOR < 3) || ((NSS_VMAJOR == 3) && (NSS_VMINOR < 59)) */
 
 #ifdef __cplusplus
 extern "C" {
@@ -475,14 +481,8 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformRsaSha512GetKlass(void)
         xmlSecNssTransformRsaPkcs1GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformRsaPkcs1GetKlass(void);
 
-/**
- * RSA OAEP requires https://bugzilla.mozilla.org/show_bug.cgi?id=1666891
- * which was fixed in NSS 3.59 (https://firefox-source-docs.mozilla.org/security/nss/legacy/nss_releases/nss_3.59_release_notes/index.html)
- */
-#if (NSS_VMAJOR > 3) || ((NSS_VMAJOR == 3) && (NSS_VMINOR >= 59))
 
-#define XMLSEC_NSS_RSA_OAEP_ENABLED   1
-
+#ifndef XMLSEC_NO_RSA_OAEP
 /**
  * xmlSecNssTransformRsaOaepId:
  *
@@ -501,7 +501,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformRsaOaepGetKlass(void);
         xmlSecNssTransformRsaOaepEnc11GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformRsaOaepEnc11GetKlass(void);
 
-#endif /*  (NSS_VMAJOR > 3) || ((NSS_VMAJOR == 3) && (NSS_VMINOR >= 59)) */
+#endif /* XMLSEC_NO_RSA_OAEP */
 
 #endif /* XMLSEC_NO_RSA */
 

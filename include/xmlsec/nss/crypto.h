@@ -28,6 +28,7 @@
  */
 #if (NSS_VMAJOR < 3) || ((NSS_VMAJOR == 3) && (NSS_VMINOR < 59))
 #define XMLSEC_NO_RSA_OAEP 1
+#else  /* (NSS_VMAJOR < 3) || ((NSS_VMAJOR == 3) && (NSS_VMINOR < 59)) */
 #define XMLSEC_NO_MD5 1
 #endif /* (NSS_VMAJOR < 3) || ((NSS_VMAJOR == 3) && (NSS_VMINOR < 59)) */
 

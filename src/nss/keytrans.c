@@ -358,17 +358,60 @@ xmlSecNssKeyTransportSetOaepParams(xmlSecNssKeyTransportCtxPtr ctx, CK_RSA_PKCS_
 }
 #endif /* XMLSEC_NSS_RSA_OAEP_ENABLED */
 
+static PK11SymKey*
+xmlSecNssKeyTransportLoadSymKeyUsingPublicKeySlot(xmlSecNssKeyTransportCtxPtr ctx, SECItem* oriskv) {
+    PK11SlotInfo* slot = NULL;
+    PK11SymKey* symKey = NULL;
+    CK_OBJECT_HANDLE id;
+
+    xmlSecAssert2(ctx != NULL, NULL);
+    xmlSecAssert2(ctx->pubkey != NULL, NULL);
+    xmlSecAssert2(oriskv != NULL, NULL);
+
+    if(ctx->pubkey->pkcs11Slot == NULL) {
+        slot = PK11_GetBestSlot(ctx->cipher, NULL);
+        if(slot == NULL) {
+            xmlSecNssError("PK11_GetBestSlot", NULL);
+            return(NULL);
+        }
+
+        id = PK11_ImportPublicKey(slot, ctx->pubkey, PR_FALSE);
+        if(id == CK_INVALID_HANDLE) {
+            xmlSecNssError("PK11_ImportPublicKey", NULL);
+            PK11_FreeSlot(slot);
+            return(NULL);
+        }
+    }
+
+    /* pay attention to mechanism */
+    symKey = PK11_ImportSymKey(
+        ctx->pubkey->pkcs11Slot != NULL ? ctx->pubkey->pkcs11Slot : slot, 
+        ctx->cipher,
+        PK11_OriginUnwrap,
+        CKA_WRAP, 
+        oriskv,
+        NULL);
+    if(symKey == NULL) {
+        xmlSecNssError("PK11_ImportSymKey", NULL);
+        PK11_FreeSlot(slot);
+        return(NULL);
+    }
+
+    PK11_FreeSlot(slot);
+    return(symKey);
+}
+
 static int
 xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr in, xmlSecBufferPtr out,
                               int encrypt, xmlSecTransformCtxPtr transformCtx) {
-    PK11SymKey*  symKey;
-    PK11SlotInfo* slot;
+    PK11SymKey* symKey = NULL;
     SECItem oriskv;
     xmlSecSize blockSize, materialSize, resultSize;
     unsigned int resultLen;
     xmlSecBufferPtr result;
     int ret;
     SECStatus rv;
+    int res = -1;
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->cipher != CKM_INVALID_MECHANISM, -1);
@@ -422,44 +465,22 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
         return(-1);
     }
     resultSize = xmlSecBufferGetMaxSize(result);
-    XMLSEC_SAFE_CAST_SIZE_TO_UINT(resultSize, resultLen, return(-1), NULL);
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(resultSize, resultLen, goto done, NULL);
 
     oriskv.type = siBuffer;
     oriskv.data = xmlSecBufferGetData(ctx->material);
-    XMLSEC_SAFE_CAST_SIZE_TO_UINT(materialSize, oriskv.len, return(-1), NULL);
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(materialSize, oriskv.len, goto done, NULL);
 
     if(encrypt != 0) {
-        CK_OBJECT_HANDLE id;
         SECItem wrpskv;
 
-        /* Create template symmetric key from material */
-        slot = ctx->pubkey->pkcs11Slot;
-        if(slot == NULL) {
-            slot = PK11_GetBestSlot(ctx->cipher, NULL);
-            if(slot == NULL) {
-                xmlSecNssError("PK11_GetBestSlot", NULL);
-                xmlSecBufferDestroy(result);
-                return(-1);
-            }
-
-            id = PK11_ImportPublicKey(slot, ctx->pubkey, PR_FALSE);
-            if(id == CK_INVALID_HANDLE) {
-                xmlSecNssError("PK11_ImportPublicKey", NULL);
-                xmlSecBufferDestroy(result);
-                PK11_FreeSlot(slot);
-                return(-1);
-            }
+        /* Create template symmetric key from material if needed */
+        symKey = xmlSecNssKeyTransportLoadSymKeyUsingPublicKeySlot(ctx, &oriskv);
+        if (symKey == NULL) {
+            xmlSecInternalError("xmlSecNssKeyTransportLoadSymKeyFromPublicKey", NULL);
+            goto done;
         }
-
-        /* pay attention to mechanism */
-        symKey = PK11_ImportSymKey(slot, ctx->cipher, PK11_OriginUnwrap, CKA_WRAP, &oriskv, NULL);
-        if(symKey == NULL) {
-            xmlSecNssError("PK11_ImportSymKey", NULL);
-            xmlSecBufferDestroy(result);
-            PK11_FreeSlot(slot);
-            return(-1);
-        }
-
+        
         wrpskv.type = siBuffer;
         wrpskv.data = xmlSecBufferGetData(result);
         wrpskv.len  = resultLen;
@@ -468,10 +489,7 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
             rv = PK11_PubWrapSymKey(CKM_RSA_PKCS, ctx->pubkey, symKey, &wrpskv);
             if (rv != SECSuccess) {
                 xmlSecNssError("PK11_PubWrapSymKey", NULL);
-                PK11_FreeSymKey(symKey);
-                xmlSecBufferDestroy(result);
-                PK11_FreeSlot(slot);
-                return(-1);
+                goto done;
             }
         } else 
 
@@ -483,35 +501,25 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
             ret = xmlSecNssKeyTransportSetOaepParams(ctx, &oaep_params);
             if (ret < 0) {
                 xmlSecInternalError("xmlSecNssKeyTransportSetOaepParams", NULL);
-                PK11_FreeSymKey(symKey);
-                xmlSecBufferDestroy(result);
-                PK11_FreeSlot(slot);
-                return(-1);
+                goto done;
             }
             rv = PK11_PubWrapSymKeyWithMechanism(ctx->pubkey, CKM_RSA_PKCS_OAEP, &param, symKey, &wrpskv);
             if (rv != SECSuccess) {
                 xmlSecNssError("PK11_PubWrapSymKeyWithMechanism", NULL);
-                PK11_FreeSymKey(symKey);
-                xmlSecBufferDestroy(result);
-                PK11_FreeSlot(slot);
-                return(-1);
+                goto done;
             }             
         } else 
 #endif /* XMLSEC_NSS_RSA_OAEP_ENABLED */
         {
-            /* TODO: unsupported */
+            xmlSecInvalidTypeError("Invalid keywrap algorithm", NULL);
+            goto done;
         }
 
         if(xmlSecBufferSetSize(result, wrpskv.len) < 0) {
             xmlSecInternalError2("xmlSecBufferSetSize", NULL,
                 "size=%u", wrpskv.len);
-            PK11_FreeSymKey(symKey);
-            xmlSecBufferDestroy(result);
-            PK11_FreeSlot(slot);
-            return(-1);
+            goto done;
         }
-        PK11_FreeSymKey(symKey);
-        PK11_FreeSlot(slot);
     } else {
         SECItem* keyItem;
 
@@ -520,8 +528,7 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
             symKey = PK11_PubUnwrapSymKey(ctx->prikey, &oriskv, CKM_RSA_PKCS, CKA_UNWRAP, 0);
             if(symKey == NULL) {
                 xmlSecNssError("PK11_PubUnwrapSymKey", NULL);
-                xmlSecBufferDestroy(result);
-                return(-1);
+                goto done;
             }
         } else 
         
@@ -533,60 +540,57 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
             ret = xmlSecNssKeyTransportSetOaepParams(ctx, &oaep_params);
             if (ret < 0) {
                 xmlSecInternalError("xmlSecNssKeyTransportSetOaepParams", NULL);
-                xmlSecBufferDestroy(result);
-                return(-1);
+                goto done;
             }
 
             symKey = PK11_PubUnwrapSymKeyWithMechanism(ctx->prikey, CKM_RSA_PKCS_OAEP, &param, &oriskv, 0, CKA_UNWRAP, 0);
             if(symKey == NULL) {
                 xmlSecNssError("PK11_PubUnwrapSymKeyWithMechanism", NULL);
-                xmlSecBufferDestroy(result);
-                return(-1);
+                goto done;
             }            
         } else 
 #endif /* XMLSEC_NSS_RSA_OAEP_ENABLED */
-
         {
-            /* TODO: unsupported */
+            xmlSecInvalidTypeError("Invalid keywrap algorithm", NULL);
+            goto done;
         }
 
         /* Extract raw data from symmetric key */
         if(PK11_ExtractKeyValue(symKey) != SECSuccess) {
             xmlSecNssError("PK11_ExtractKeyValue", NULL);
-            PK11_FreeSymKey(symKey);
-            xmlSecBufferDestroy(result);
-            return(-1);
+            goto done;
         }
 
         keyItem = PK11_GetKeyData(symKey);
         if(keyItem == NULL) {
             xmlSecNssError("PK11_GetKeyData", NULL);
-            PK11_FreeSymKey(symKey);
-            xmlSecBufferDestroy(result);
-            return(-1);
+            goto done;
         }
 
         if(xmlSecBufferSetData(result, keyItem->data, keyItem->len) < 0) {
             xmlSecInternalError2("xmlSecBufferSetData", NULL,
                 "size=%u", keyItem->len);
-            PK11_FreeSymKey(symKey);
-            xmlSecBufferDestroy(result);
-            return(-1);
+            goto done;
         }
-        PK11_FreeSymKey(symKey);
     }
 
     /* Write output */
     if(xmlSecBufferAppend(out, xmlSecBufferGetData(result), xmlSecBufferGetSize(result)) < 0) {
         xmlSecInternalError2("xmlSecBufferAppend", NULL,
             "size=" XMLSEC_SIZE_FMT, xmlSecBufferGetSize(result));
-        xmlSecBufferDestroy(result);
-        return(-1);
+       goto done;
     }
 
-    /* done */
+    /* success */
+    res = 0;
+
+done:
+    /* cleanup*/
     xmlSecBufferDestroy(result);
-    return(0);
+    if(symKey != NULL) {
+        PK11_FreeSymKey(symKey);
+    }
+    return(res);
 }
 
 static int
@@ -790,7 +794,7 @@ static xmlSecTransformKlass xmlSecNssRsaOaepEnc11Klass = {
  */
 xmlSecTransformId
 xmlSecNssTransformRsaOaepEnc11GetKlass(void) {
-    return(&xmlSecNssRsaOaepKlass);
+    return(&xmlSecNssRsaOaepEnc11Klass);
 }
 
 static int

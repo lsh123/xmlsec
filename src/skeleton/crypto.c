@@ -207,6 +207,7 @@ xmlSecCryptoGetFunctions_skeleton(void) {
     gXmlSecSkeletonFunctions->transformRsaSha1GetKlass          = xmlSecSkeletonTransformRsaSha1GetKlass;
     gXmlSecSkeletonFunctions->transformRsaPkcs1GetKlass         = xmlSecSkeletonTransformRsaPkcs1GetKlass;
     gXmlSecSkeletonFunctions->transformRsaOaepGetKlass          = xmlSecSkeletonTransformRsaOaepGetKlass;
+    gXmlSecSkeletonFunctions->transformRsaOaepEnc11GetKlass     = xmlSecSkeletonTransformRsaOaepEnc11GetKlass;
 #endif /* XMLSEC_NO_RSA */
 
     /******************************* SHA1 ********************************/

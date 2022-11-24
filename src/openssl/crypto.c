@@ -286,6 +286,7 @@ xmlSecCryptoGetFunctions_openssl(void) {
 
     gXmlSecOpenSSLFunctions->transformRsaPkcs1GetKlass          = xmlSecOpenSSLTransformRsaPkcs1GetKlass;
     gXmlSecOpenSSLFunctions->transformRsaOaepGetKlass           = xmlSecOpenSSLTransformRsaOaepGetKlass;
+    gXmlSecOpenSSLFunctions->transformRsaOaepEnc11GetKlass      = xmlSecOpenSSLTransformRsaOaepEnc11GetKlass;
 #endif /* XMLSEC_NO_RSA */
 
     /******************************* SHA ********************************/

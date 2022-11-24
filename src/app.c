@@ -1064,7 +1064,7 @@ xmlSecTransformRsaPkcs1GetKlass(void) {
 /**
  * xmlSecTransformRsaOaepGetKlass:
  *
- * The RSA-OAEP key transport transform klass.
+ * The RSA-OAEP key transport transform klass (XMLEnc 1.0).
  *
  * Returns: RSA-OAEP key transport transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
@@ -1079,6 +1079,26 @@ xmlSecTransformRsaOaepGetKlass(void) {
 
     return(xmlSecCryptoDLGetFunctions()->transformRsaOaepGetKlass());
 }
+
+/**
+ * xmlSecTransformRsaOaepEnc11GetKlass:
+ *
+ * The RSA-OAEP key transport transform klass (XMLEnc 1.1).
+ *
+ * Returns: RSA-OAEP key transport transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
+xmlSecTransformId
+xmlSecTransformRsaOaepEnc11GetKlass(void) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformRsaOaepEnc11GetKlass == NULL)) {
+        xmlSecNotImplementedError("transformRsaOaepEnc11GetKlass");
+        return(xmlSecTransformIdUnknown);
+    }
+
+    return(xmlSecCryptoDLGetFunctions()->transformRsaOaepEnc11GetKlass());
+}
+
 
 /**
  * xmlSecTransformGostR3411_94GetKlass:

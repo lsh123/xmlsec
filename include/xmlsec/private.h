@@ -390,7 +390,8 @@ typedef int                     (*xmlSecCryptoAppKeyCertLoadMemoryMethod)(xmlSec
  * @transformRsaSha384GetKlass: the method to get pointer to RSA-SHA384 signature transform.
  * @transformRsaSha512GetKlass: the method to get pointer to RSA-SHA512 signature transform.
  * @transformRsaPkcs1GetKlass:  the method to get pointer to RSA-PKCS1_5 key transport transform.
- * @transformRsaOaepGetKlass:   the method to get pointer to RSA-OAEP key transport transform.
+ * @transformRsaOaepGetKlass:   the method to get pointer to RSA-OAEP key transport transform (XMLEnc 1.0).
+ * @transformRsaOaepEnc11GetKlass: the method to get pointer to RSA-OAEP key transport transform (XMLEnc 1.1).
  * @transformGostR3411_94GetKlass: the method to get pointer to GOST R3411 transform.
  * @transformGostR3411_2012_256GetKlass: the method to get pointer to GOST R 34.11-2012 256 bit transform.
  * @transformGostR3411_2012_512GetKlass: the method to get pointer to GOST R 34.11-2012 512 bit transform.
@@ -479,6 +480,7 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoTransformGetKlassMethod          transformRsaSha512GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformRsaPkcs1GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformRsaOaepGetKlass;
+    xmlSecCryptoTransformGetKlassMethod          transformRsaOaepEnc11GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformGostR3411_94GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformGostR3411_2012_256GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformGostR3411_2012_512GetKlass;

@@ -165,6 +165,14 @@
 </tr>
 <tr>
 <td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformRsaOaepEnc11GetKlass" title="xmlSecMSCngTransformRsaOaepEnc11GetKlass ()">xmlSecMSCngTransformRsaOaepEnc11GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
 <font><span class="returnvalue">xmlSecKeyDataId</span></font>
 </td>
 <td class="function_name">
@@ -445,6 +453,10 @@
 <tr>
 <td class="define_keyword">#define</td>
 <td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformRsaOaepId" title="xmlSecMSCngTransformRsaOaepId">xmlSecMSCngTransformRsaOaepId</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformRsaOaepEnc11Id" title="xmlSecMSCngTransformRsaOaepEnc11Id">xmlSecMSCngTransformRsaOaepEnc11Id</a></td>
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
@@ -770,9 +782,21 @@ xmlSecMSCngTransformRsaPkcs1GetKlass (<em class="parameter"><code><span class="t
 <a name="xmlSecMSCngTransformRsaOaepGetKlass"></a><h3>xmlSecMSCngTransformRsaOaepGetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecMSCngTransformRsaOaepGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>The RSA-OAEP key transport transform klass.</p>
+<p>The RSA-OAEP key transport transform klass (XMLEnc 1.0).</p>
 <div class="refsect3">
 <a name="xmlSecMSCngTransformRsaOaepGetKlass.returns"></a><h4>Returns</h4>
+<p> RSA-OAEP key transport transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformRsaOaepEnc11GetKlass"></a><h3>xmlSecMSCngTransformRsaOaepEnc11GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecMSCngTransformRsaOaepEnc11GetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The RSA-OAEP key transport transform klass (XMLEnc 1.1).</p>
+<div class="refsect3">
+<a name="xmlSecMSCngTransformRsaOaepEnc11GetKlass.returns"></a><h4>Returns</h4>
 <p> RSA-OAEP key transport transform klass.</p>
 </div>
 </div>
@@ -1161,7 +1185,13 @@ xmlSecMSCngTransformKWAes256GetKlass (<em class="parameter"><code><span class="t
 <div class="refsect2">
 <a name="xmlSecMSCngTransformRsaOaepId"></a><h3>xmlSecMSCngTransformRsaOaepId</h3>
 <pre class="programlisting">#define             xmlSecMSCngTransformRsaOaepId</pre>
-<p>The RSA OAEP key transport transform klass.</p>
+<p>The RSA OAEP key transport transform klass (XMLEnc 1.0).</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformRsaOaepEnc11Id"></a><h3>xmlSecMSCngTransformRsaOaepEnc11Id</h3>
+<pre class="programlisting">#define             xmlSecMSCngTransformRsaOaepEnc11Id</pre>
+<p>The RSA OAEP key transport transform klass (XMLEnc 1.1).</p>
 </div>
 <hr>
 <div class="refsect2">

@@ -1468,6 +1468,7 @@
     <keyword type="function" name="xmlSecNssTransformRsaSha512GetKlass ()" link="xmlsec-nss-crypto.html#xmlSecNssTransformRsaSha512GetKlass"/>
     <keyword type="function" name="xmlSecNssTransformRsaPkcs1GetKlass ()" link="xmlsec-nss-crypto.html#xmlSecNssTransformRsaPkcs1GetKlass"/>
     <keyword type="function" name="xmlSecNssTransformRsaOaepGetKlass ()" link="xmlsec-nss-crypto.html#xmlSecNssTransformRsaOaepGetKlass"/>
+    <keyword type="function" name="xmlSecNssTransformRsaOaepEnc11GetKlass ()" link="xmlsec-nss-crypto.html#xmlSecNssTransformRsaOaepEnc11GetKlass"/>
     <keyword type="function" name="xmlSecNssTransformSha1GetKlass ()" link="xmlsec-nss-crypto.html#xmlSecNssTransformSha1GetKlass"/>
     <keyword type="function" name="xmlSecNssTransformSha224GetKlass ()" link="xmlsec-nss-crypto.html#xmlSecNssTransformSha224GetKlass"/>
     <keyword type="function" name="xmlSecNssTransformSha256GetKlass ()" link="xmlsec-nss-crypto.html#xmlSecNssTransformSha256GetKlass"/>
@@ -1510,7 +1511,9 @@
     <keyword type="macro" name="xmlSecNssTransformRsaSha384Id" link="xmlsec-nss-crypto.html#xmlSecNssTransformRsaSha384Id"/>
     <keyword type="macro" name="xmlSecNssTransformRsaSha512Id" link="xmlsec-nss-crypto.html#xmlSecNssTransformRsaSha512Id"/>
     <keyword type="macro" name="xmlSecNssTransformRsaPkcs1Id" link="xmlsec-nss-crypto.html#xmlSecNssTransformRsaPkcs1Id"/>
+    <keyword type="macro" name="XMLSEC_NSS_RSA_OAEP_ENABLED" link="xmlsec-nss-crypto.html#XMLSEC-NSS-RSA-OAEP-ENABLED:CAPS"/>
     <keyword type="macro" name="xmlSecNssTransformRsaOaepId" link="xmlsec-nss-crypto.html#xmlSecNssTransformRsaOaepId"/>
+    <keyword type="macro" name="xmlSecNssTransformRsaOaepEnc11Id" link="xmlsec-nss-crypto.html#xmlSecNssTransformRsaOaepEnc11Id"/>
     <keyword type="macro" name="xmlSecNssTransformSha1Id" link="xmlsec-nss-crypto.html#xmlSecNssTransformSha1Id"/>
     <keyword type="macro" name="xmlSecNssTransformSha224Id" link="xmlsec-nss-crypto.html#xmlSecNssTransformSha224Id"/>
     <keyword type="macro" name="xmlSecNssTransformSha256Id" link="xmlsec-nss-crypto.html#xmlSecNssTransformSha256Id"/>

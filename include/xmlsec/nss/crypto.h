@@ -21,11 +21,14 @@
 #include <xmlsec/dl.h>
 
 /**
+ * MD5 was removed (https://bugs.gentoo.org/764437)
+ *
  * RSA OAEP requires https://bugzilla.mozilla.org/show_bug.cgi?id=1666891
  * which was fixed in NSS 3.59 (https://firefox-source-docs.mozilla.org/security/nss/legacy/nss_releases/nss_3.59_release_notes/index.html)
  */
 #if (NSS_VMAJOR < 3) || ((NSS_VMAJOR == 3) && (NSS_VMINOR < 59))
 #define XMLSEC_NO_RSA_OAEP 1
+#define XMLSEC_NO_MD5 1
 #endif /* (NSS_VMAJOR < 3) || ((NSS_VMAJOR == 3) && (NSS_VMINOR < 59)) */
 
 #ifdef __cplusplus

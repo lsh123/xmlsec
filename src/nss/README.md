@@ -49,42 +49,37 @@ in src/nss/x509.c needs to be implemented. Also see:
     - [NSS bug](http://bugzilla.mozilla.org/show_bug.cgi?id=212864)
     - [xmlsec bug](http://bugzilla.gnome.org/show_bug.cgi?id=118633)
 
-2) RSA Encryption/Decryption using PKCS#1 v1.5 padding not currently exposed
-in NSS. This causes some tests to fail. Also see:
-    - [NSS bug](http://bugzilla.mozilla.org/show_bug.cgi?id=214236)
-    - [xmlsec bug](https://github.com/lsh123/xmlsec/issues/1)
-
-3) `CERT_FindCertByNameString` does not work in all cases. Also see:
+2) `CERT_FindCertByNameString` does not work in all cases. Also see:
     - [NSS bug](http://bugzilla.mozilla.org/show_bug.cgi?id=210709)
     - [xmlsec bug](https://github.com/lsh123/xmlsec/issues/3)
 
-4) `CERT_FindCertBySubjectKeyID` does not work in all cases. Also see:
+3) `CERT_FindCertBySubjectKeyID` does not work in all cases. Also see:
     - [NSS bug](http://bugzilla.mozilla.org/show_bug.cgi?id=211051)
     - [xmlsec bug](https://github.com/lsh123/xmlsec/issues/4)
 
-5) Finding a cert by Issuer & Serial Number needs the ability to
+4) Finding a cert by Issuer & Serial Number needs the ability to
 convert an ASCII decimal string to a DER integer string. Filed
 an RFE against NSS. Once fixed, `xmlSecNssNumToItem` in `nss/x509vfy.c`
 needs to be changed to use the new function(s) provided. Also see:
     - [NSS bug](http://bugzilla.mozilla.org/show_bug.cgi?id=212864)
     - [xmlsec bug](http://bugzilla.gnome.org/show_bug.cgi?id=118633)
 
-6) RIPEMD160 Digest and RIPEMD160 HMAC is not supported by NSS. These
+5) RIPEMD160 Digest and RIPEMD160 HMAC is not supported by NSS. These
 algorithms are obsolete and there are no plans to support those in xmlsec.
 Also see:
     - [xmlsec bug](https://github.com/lsh123/xmlsec/issues/5)
 
-7) AES Key wrap algorithm is implemented in NSS but not exposed due to
+6) AES Key wrap algorithm is implemented in NSS but not exposed due to
 some bug src/nss/kw_aes.c uses a workaround which should be removed
 when the bug is fixed. Also see:
     - [NSS bug](http://bugzilla.mozilla.org/show_bug.cgi?id=213795)
     - [xmlsec bug](https://github.com/lsh123/xmlsec/issues/6)
 
-8) AES-GCM algorithms are not supported properly in NSS. Also see:
+7) AES-GCM algorithms are not supported properly in NSS. Also see:
     - [NSS bug](https://bugzilla.mozilla.org/show_bug.cgi?id=1501854)
     - [xmlsec bug](https://github.com/lsh123/xmlsec/issues/233)
 
-9) Not all file formats are supported
+8) Not all file formats are supported
     - `xmlSecNssAppKeyLoad()`: This function loads a PKI key from a file.
         - `xmlSecKeyDataFormatDer`: supported (note that `xmlsec-nss` expects
         private key in DER file to be in PrivateKeyInfo format and private keys
@@ -97,17 +92,17 @@ when the bug is fixed. Also see:
         - `xmlSecKeyDataFormatDer`: supported
         - `xmlSecKeyDataFormatPem`: NOT supported
 
-10) The distinction between "trusted" and "untrusted" certificates in
+9) The distinction between "trusted" and "untrusted" certificates in
 xmlsec-openssl is maintained because the OPENSSL application (and
 not the OPENSSL library) has to maintain a cert store and verify
 certificates. With NSS, no such distinction is necessary in the
 application. (Note from Aleksey: Not sure that I understand this point but thats
 what Tej wrote).
 
-11) NSS doesn't support `emailAddress` in the cert subject. There is a hack
+10) NSS doesn't support `emailAddress` in the cert subject. There is a hack
 that needs to be removed in `xmlSecNssX509FindCert` function (`nss/x509vfy.c`).
  Also see:
     - [NSS bug](https://bugzilla.mozilla.org/show_bug.cgi?id=561689)
 
-12) CRLs from xml document support is not working at all.
+11) CRLs from xml document support is not working at all.
 

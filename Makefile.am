@@ -175,6 +175,7 @@ memcheck-res:
 	@grep -i 'indirectly lost:' /tmp/*.log | sed 's/.*==.*== *//' | sort -u
 	@grep -i 'possibly lost:' /tmp/*.log | sed 's/.*==.*== *//' | sort -u
 	@grep -i 'still reachable:' /tmp/*.log | sed 's/.*==.*== *//' | sort -u
+	@grep -i 'used_suppression:' /tmp/*.log | sed 's/.*--.*-- *//' | sort -u
 
 memcheck: $(TEST_APP)
 	@(export DEBUG_MEMORY=1 && $(MAKE) check && $(MAKE) memcheck-res)

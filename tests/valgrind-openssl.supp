@@ -59,7 +59,18 @@
    Memcheck:Cond
    fun:RSA_padding_add_PKCS1_type_2
    fun:RSA_eay_public_encrypt
+   ...
 }
+
+{
+   EVP_DecryptFinal_ex
+   Memcheck:Cond
+   ...
+   fun:EVP_DecryptFinal_ex
+   fun:xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock
+   ...
+}
+
 {
    ossl_provider_set_operation_bit->malloc
    Memcheck:Leak

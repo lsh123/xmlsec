@@ -64,6 +64,10 @@ extern "C" {
 #define xmlSecTransformKWDes3Id                 xmlSecGnuTLSTransformKWDes3Id
 #define xmlSecTransformDsaSha1Id                xmlSecGnuTLSTransformDsaSha1Id
 #define xmlSecTransformHmacMd5Id                xmlSecGnuTLSTransformHmacMd5Id
+#define xmlSecTransformHmacSha224Id             xmlSecGnuTLSTransformHmacSha224Id
+#define xmlSecTransformHmacSha256Id             xmlSecGnuTLSTransformHmacSha256Id
+#define xmlSecTransformHmacSha384Id             xmlSecGnuTLSTransformHmacSha384Id
+#define xmlSecTransformHmacSha512Id             xmlSecGnuTLSTransformHmacSha512Id
 #define xmlSecTransformHmacRipemd160Id          xmlSecGnuTLSTransformHmacRipemd160Id
 #define xmlSecTransformHmacSha1Id               xmlSecGnuTLSTransformHmacSha1Id
 #define xmlSecTransformRipemd160Id              xmlSecGnuTLSTransformRipemd160Id
@@ -71,6 +75,10 @@ extern "C" {
 #define xmlSecTransformRsaPkcs1Id               xmlSecGnuTLSTransformRsaPkcs1Id
 #define xmlSecTransformRsaOaepId                xmlSecGnuTLSTransformRsaOaepId
 #define xmlSecTransformSha1Id                   xmlSecGnuTLSTransformSha1Id
+#define xmlSecTransformSha224Id                 xmlSecGnuTLSTransformSha224Id
+#define xmlSecTransformSha256Id                 xmlSecGnuTLSTransformSha256Id
+#define xmlSecTransformSha384Id                 xmlSecGnuTLSTransformSha384Id
+#define xmlSecTransformSha512Id                 xmlSecGnuTLSTransformSha512Id
 
 /********************************************************************
  *

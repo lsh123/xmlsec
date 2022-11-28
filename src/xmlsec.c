@@ -130,7 +130,7 @@ xmlSecInit(void) {
  */
 int
 xmlSecShutdown(void) {
-    int res = 0;
+    int res = -1;
 
     xmlSecTransformIdsShutdown();
     xmlSecKeyDataIdsShutdown();
@@ -138,8 +138,15 @@ xmlSecShutdown(void) {
 #ifndef XMLSEC_NO_CRYPTO_DYNAMIC_LOADING
     if(xmlSecCryptoDLShutdown() < 0) {
         xmlSecInternalError("xmlSecCryptoDLShutdown", NULL);
-        res = -1;
+        goto done;
     }
+#endif /* XMLSEC_NO_CRYPTO_DYNAMIC_LOADING */
+
+    /* success */
+    res = 0;
+
+#ifndef XMLSEC_NO_CRYPTO_DYNAMIC_LOADING
+done:
 #endif /* XMLSEC_NO_CRYPTO_DYNAMIC_LOADING */
 
     xmlSecIOShutdown();

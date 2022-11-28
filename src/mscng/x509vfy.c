@@ -65,6 +65,7 @@ xmlSecMSCngX509StoreFinalize(xmlSecKeyDataStorePtr store) {
         ret = CertCloseStore(ctx->trusted, CERT_CLOSE_STORE_CHECK_FLAG);
         if(ret == FALSE) {
             xmlSecMSCngLastError("CertCloseStore", xmlSecKeyDataStoreGetName(store));
+            /* ignore error */
         }
     }
 
@@ -72,6 +73,7 @@ xmlSecMSCngX509StoreFinalize(xmlSecKeyDataStorePtr store) {
         ret = CertCloseStore(ctx->trustedMemStore, CERT_CLOSE_STORE_CHECK_FLAG);
         if(ret == FALSE) {
             xmlSecMSCngLastError("CertCloseStore", xmlSecKeyDataStoreGetName(store));
+            /* ignore error */
         }
     }
 
@@ -79,6 +81,7 @@ xmlSecMSCngX509StoreFinalize(xmlSecKeyDataStorePtr store) {
         ret = CertCloseStore(ctx->untrusted, CERT_CLOSE_STORE_CHECK_FLAG);
         if(ret == FALSE) {
             xmlSecMSCngLastError("CertCloseStore", xmlSecKeyDataStoreGetName(store));
+            /* ignore error */
         }
     }
 
@@ -86,7 +89,8 @@ xmlSecMSCngX509StoreFinalize(xmlSecKeyDataStorePtr store) {
         ret = CertCloseStore(ctx->untrustedMemStore, CERT_CLOSE_STORE_CHECK_FLAG);
         if(ret == FALSE) {
             xmlSecMSCngLastError("CertCloseStore", xmlSecKeyDataStoreGetName(store));
-        }
+            /* ignore error */
+         }
     }
 
     memset(ctx, 0, sizeof(xmlSecMSCngX509StoreCtx));

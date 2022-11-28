@@ -223,6 +223,7 @@ xmlSecCryptoDLLibraryDestroy(xmlSecCryptoDLLibraryPtr lib) {
         ret = lt_dlclose(lib->handle);
         if(ret != 0) {
             xmlSecIOError("lt_dlclose", NULL, NULL);
+            /* ignore error */
         }
     }
 #endif /* XMLSEC_DL_LIBLTDL */
@@ -234,6 +235,7 @@ xmlSecCryptoDLLibraryDestroy(xmlSecCryptoDLLibraryPtr lib) {
         res = FreeLibrary(lib->handle);
         if(!res) {
             xmlSecIOError("FreeLibrary", NULL, NULL);
+            /* ignore error */
         }
         }
 #endif /* defined(XMLSEC_WINDOWS) && defined(XMLSEC_DL_WIN32)*/
@@ -395,6 +397,7 @@ xmlSecCryptoDLShutdown(void) {
     ret = lt_dlexit ();
     if(ret != 0) {
         xmlSecIOError("lt_dlexit", NULL, NULL);
+        /* ignore error */
     }
 #else  /* XMLSEC_DL_LIBLTDL */
     UNREFERENCED_PARAMETER(ret);

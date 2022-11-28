@@ -408,7 +408,7 @@ static int xmlSecMSCryptoSignatureVerify(xmlSecTransformPtr transform,
         dwError = GetLastError();
         if (NTE_BAD_SIGNATURE == HRESULT_FROM_WIN32(dwError)) {
             xmlSecOtherError(XMLSEC_ERRORS_R_DATA_NOT_MATCH, xmlSecTransformGetName(transform),
-                "CryptVerifySignature: signature does not verify");
+                "CryptVerifySignature: signature verification failed");
             transform->status = xmlSecTransformStatusFail;
             goto done;
         } else {

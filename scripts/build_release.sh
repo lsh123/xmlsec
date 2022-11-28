@@ -17,6 +17,7 @@ tar_file="xmlsec1-$version.tar.gz"
 sig_file="xmlsec1-$version.sig"
 rc_tar_file="xmlsec1-$version-$rc.tar.gz"
 rc_sig_file="xmlsec1-$version-$rc.sig"
+git_1_2_x_branch="xmlsec-1_2_x"
 git_release_branch=`echo "xmlsec-$version" | sed 's/\./_/g'`
 git_version_tag=`echo $version | sed 's/\./_/g'`
 
@@ -36,6 +37,9 @@ cd xmlsec
 if [ x"$rc" != x ]; then
     echo "============== Switching to release branch '$git_release_branch' for RC build '$rc'"
     git checkout $git_release_branch
+else
+    echo "============== Switching to 1.2.x branch '$git_1_2_x_branch'"
+    git checkout $git_1_2_x_branch
 fi
 find . -name ".git" | xargs rm -r
 

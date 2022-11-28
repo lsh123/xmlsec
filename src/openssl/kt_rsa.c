@@ -490,6 +490,7 @@ xmlSecOpenSSLRsaPkcs1Process(xmlSecTransformPtr transform) {
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLRsaPkcs1ProcessImpl",
             xmlSecTransformGetName(transform));
+        return(-1);
     }
 
     ret = xmlSecBufferSetSize(out, outSize);

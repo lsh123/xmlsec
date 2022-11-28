@@ -2,9 +2,13 @@ name: Make Check
 
 on:
   push:
-    branches: [ master ]
+    branches: 
+	- master
+	- xmlsec-1_2_x
   pull_request:
-    branches: [ master ]
+    branches:
+	- master
+	- xmlsec-1_2_x
 
 jobs:
   check-ubuntu-openssl300:

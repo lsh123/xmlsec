@@ -135,12 +135,14 @@ xmlSecMSCngKeyDataX509Finalize(xmlSecKeyDataPtr data) {
     if(ctx->cert != NULL) {
         if(!CertFreeCertificateContext(ctx->cert)) {
             xmlSecMSCngLastError("CertFreeCertificateContext", NULL);
+            /* ignore error */
         }
     }
 
     if(ctx->hMemStore != 0) {
         if(!CertCloseStore(ctx->hMemStore, 0)) {
             xmlSecMSCngLastError("CertCloseStore", NULL);
+            /* ignore error */
         }
     }
 
@@ -821,6 +823,7 @@ xmlSecMSCngKeyDataX509DebugDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(output != NULL);
 
     xmlSecNotImplementedError(NULL);
+    /* ignore error */
 }
 
 static void
@@ -829,6 +832,7 @@ xmlSecMSCngKeyDataX509DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(output != NULL);
 
     xmlSecNotImplementedError(NULL);
+    /* ignore error */
 }
 
 static xmlSecKeyDataKlass xmlSecMSCngKeyDataX509Klass = {

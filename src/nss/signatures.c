@@ -459,7 +459,7 @@ xmlSecNssSignatureVerify(xmlSecTransformPtr transform,
         if (PORT_GetError() == SEC_ERROR_PKCS7_BAD_SIGNATURE) {
             xmlSecOtherError(XMLSEC_ERRORS_R_DATA_NOT_MATCH,
                              xmlSecTransformGetName(transform),
-                             "VFY_EndWithSignature: signature does not verify");
+                             "VFY_EndWithSignature: signature verification failed");
             transform->status = xmlSecTransformStatusFail;
         } else {
             xmlSecNssError("VFY_EndWithSignature",

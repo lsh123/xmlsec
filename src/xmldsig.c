@@ -655,6 +655,7 @@ xmlSecDSigCtxProcessSignedInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node, xm
         if(dsigCtx->preSignMemBufMethod == NULL) {
             xmlSecInternalError("xmlSecTransformCtxCreateAndAppend",
                                 xmlSecTransformKlassGetName(xmlSecTransformMemBufId));
+            return(-1);
         }
     }
 

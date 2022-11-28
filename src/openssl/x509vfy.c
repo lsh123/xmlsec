@@ -250,7 +250,6 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
     xmlSecAssert2(ctx != NULL, NULL);
     xmlSecAssert2(ctx->xst != NULL, NULL);
 
-    /* dup certs */
     certs2 = sk_X509_dup(certs);
     if(certs2 == NULL) {
         xmlSecOpenSSLError("sk_X509_dup",
@@ -391,6 +390,7 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
                                   xmlSecKeyDataStoreGetName(store),
                                   "X509_verify_cert: subject=%s; issuer=%s; err=%d; msg=%s",
                                   subject, issuer, err, xmlSecErrorsSafeString(err_msg));
+                /* ignore error */
             }
         }
     }
@@ -410,27 +410,30 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
                               xmlSecKeyDataStoreGetName(store),
                               "subject=%s; issuer=%s; err=%d; msg=%s",
                               subject, issuer, err, xmlSecErrorsSafeString(err_msg));
-            break;
+            goto done;
+
         case X509_V_ERR_CERT_NOT_YET_VALID:
         case X509_V_ERR_ERROR_IN_CERT_NOT_BEFORE_FIELD:
             xmlSecOtherError5(XMLSEC_ERRORS_R_CERT_NOT_YET_VALID,
                               xmlSecKeyDataStoreGetName(store),
                               "subject=%s; issuer=%s; err=%d; msg=%s",
                               subject, issuer, err, xmlSecErrorsSafeString(err_msg));
-            break;
+            goto done;
+
         case X509_V_ERR_CERT_HAS_EXPIRED:
         case X509_V_ERR_ERROR_IN_CERT_NOT_AFTER_FIELD:
             xmlSecOtherError5(XMLSEC_ERRORS_R_CERT_HAS_EXPIRED,
                               xmlSecKeyDataStoreGetName(store),
                               "subject=%s; issuer=%s; err=%d; msg=%s",
                               subject, issuer, err, xmlSecErrorsSafeString(err_msg));
-            break;
+            goto done;
+
         default:
             xmlSecOtherError5(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
                               xmlSecKeyDataStoreGetName(store),
                               "subject=%s; issuer=%s; err=%d; msg=%s",
                               subject, issuer, err, xmlSecErrorsSafeString(err_msg));
-            break;
+            goto done;
         }
     }
 

@@ -501,7 +501,7 @@ xmlSecOpenSSLSignatureVerify(xmlSecTransformPtr transform,
     } else {
         xmlSecOtherError(XMLSEC_ERRORS_R_DATA_NOT_MATCH,
                          xmlSecTransformGetName(transform),
-                         "ctx->verifyCallback: signature does not verify");
+                         "ctx->verifyCallback: signature verification failed");
         transform->status = xmlSecTransformStatusFail;
     }
 

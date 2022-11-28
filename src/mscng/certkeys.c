@@ -304,6 +304,7 @@ xmlSecMSCngKeyDataFinalize(xmlSecKeyDataPtr data) {
         status = NCryptFreeObject(ctx->privkey);
         if(status != STATUS_SUCCESS) {
             xmlSecMSCngNtError("BCryptDestroyKey", NULL, status);
+            /* ignore error */
         }
     }
 
@@ -311,6 +312,7 @@ xmlSecMSCngKeyDataFinalize(xmlSecKeyDataPtr data) {
         status = BCryptDestroyKey(ctx->pubkey);
         if(status != STATUS_SUCCESS) {
             xmlSecMSCngNtError("BCryptDestroyKey", NULL, status);
+            /* ignore error */
         }
     }
 

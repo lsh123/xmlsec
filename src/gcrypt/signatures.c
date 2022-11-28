@@ -388,16 +388,16 @@ xmlSecGCryptPkSignatureVerify(xmlSecTransformPtr transform,
     }
 
     /* check result */
-    if(ret == 1) {
-        transform->status = xmlSecTransformStatusOk;
-    } else {
+    if(ret != 1) {
         xmlSecOtherError(XMLSEC_ERRORS_R_DATA_NOT_MATCH,
                          xmlSecTransformGetName(transform),
-                         "ctx->verify: signature does not verify");
+                         "ctx->verify: signature verification failed");
         transform->status = xmlSecTransformStatusFail;
+        return(0);
     }
 
-    /* done */
+    /* success */
+    transform->status = xmlSecTransformStatusOk;
     return(0);
 }
 

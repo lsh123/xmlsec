@@ -406,12 +406,12 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
         }
         if(err != GNUTLS_E_SUCCESS) {
             xmlSecGnuTLSError("gnutls_x509_crt_list_verify", err, NULL);
-            /* don't stop, continue! */
+            /* ignore error, don't stop, continue! */
             continue;
         } else if(verify != 0) {
             xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED, NULL,
                 "gnutls_x509_crt_list_verify: verification failed: status=%u", verify);
-            /* don't stop, continue! */
+            /* ignore error, don't stop, continue! */
             continue;
         }
 
@@ -420,7 +420,7 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
         ret = xmlSecGnuTLSX509CheckTime(cert_list, cert_list_cur_size, verification_time);
         if(ret != 1) {
             xmlSecInternalError("xmlSecGnuTLSX509CheckTime", NULL);
-            /* don't stop, continue! */
+            /* ignore error, don't stop, continue! */
             continue;
         }
 

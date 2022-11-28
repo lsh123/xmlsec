@@ -452,7 +452,7 @@ xmlSecOpenSSLEvpSignatureVerify(xmlSecTransformPtr transform,
     } else if(ret != 1) {
         xmlSecOtherError(XMLSEC_ERRORS_R_DATA_NOT_MATCH,
                          xmlSecTransformGetName(transform),
-                         "EVP_VerifyFinal: signature does not verify");
+                         "EVP_VerifyFinal: signature verification failed");
         transform->status = xmlSecTransformStatusFail;
         return(0);
     }

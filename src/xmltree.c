@@ -768,6 +768,7 @@ xmlSecAddIDs(xmlDocPtr doc, xmlNodePtr cur, const xmlChar** ids) {
                             xmlAddID(NULL, doc, name, attr);
                         } else if(tmp != attr) {
                             xmlSecInvalidStringDataError("id", name, "unique id (id already defined)", NULL);
+                            /* ignore error */
                         }
                         xmlFree(name);
                     }

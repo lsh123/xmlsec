@@ -94,6 +94,11 @@ else
   XMLSEC_SHLIBSFX="$shrext_cmds"
 fi
 
+#
+# prevent weird behaviour on gcc (see https://news.ycombinator.com/item?id=33770277)
+#
+CFLAGS="$CFLAGS -fno-strict-overflow -fno-strict-aliasing"
+
 case "${host}" in
   *aix* )
     CFLAGS="${CFLAGS} -D_ALL_SOURCE"
@@ -2337,8 +2342,10 @@ dnl ==========================================================================
 dnl Pedantic compilation
 dnl ==========================================================================
 AC_MSG_CHECKING(for pedantic)
-AC_ARG_ENABLE([pedantic], [AS_HELP_STRING([--enable-pedantic],[enable pedantic compilation flags (no)])])
-if test "z$enable_pedantic" = "zyes" ; then
+AC_ARG_ENABLE([pedantic], [AS_HELP_STRING([--enable-pedantic],[enable pedantic compilation flags (yes)])])
+if test "z$enable_pedantic" = "zno" ; then
+    AC_MSG_RESULT([disabled])
+else
     CFLAGS="$CFLAGS -O -std=c99 -pedantic -pedantic-errors -W -Wall -Wextra"
     CFLAGS="$CFLAGS -fno-inline -Wnull-dereference -Wdouble-promotion"
     CFLAGS="$CFLAGS -Wformat=2 -Wformat-security -Wformat-nonliteral"
@@ -2350,8 +2357,6 @@ if test "z$enable_pedantic" = "zyes" ; then
         CFLAGS="$CFLAGS -Wformat-overflow=2 -Wformat-signedness"
     fi
     AC_MSG_RESULT([yes])
-else
-    AC_MSG_RESULT([disabled])
 fi
 
 dnl ==========================================================================

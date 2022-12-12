@@ -28,9 +28,9 @@ rm ca2req.pem
 
 ### Generate and sign DSA keys with second level CA
 
-DSA 1024 bits:
+DSA 2048 bits (OU="Test Third Level DSA Certificate"):
 ```
-openssl dsaparam -out dsakey.pem -genkey 1024
+openssl dsaparam -out dsakey.pem -genkey 2048
 openssl req -config ./openssl.cnf -new -key dsakey.pem -out dsareq.pem
 openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem \
         -out dsacert.pem -infiles dsareq.pem
@@ -38,7 +38,7 @@ openssl verify -CAfile cacert.pem -untrusted ca2cert.pem dsacert.pem
 rm dsareq.pem
 ```
 
-DSA 2048 bits:
+Second DSA 2048 bits:
 ```
 openssl dsaparam -out dsa2048key.pem -genkey 2048
 openssl req -config ./openssl.cnf -new -key dsa2048key.pem -out dsa2048req.pem

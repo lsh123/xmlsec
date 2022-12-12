@@ -85,9 +85,16 @@ int RSA_padding_check_PKCS1_OAEP_mgf1(uint8_t *out, size_t *out_len, size_t max_
 
 /******************************************************************************
  *
- * LibreSSL 2.7 compatibility (implements most of OpenSSL 1.1 API)
+ * LibreSSL compatibility (implements most of OpenSSL 1.1 API)
  *
  *****************************************************************************/
+#if defined(LIBRESSL_VERSION_NUMBER)
+
+/* Needed for Engine initialization */
+#define UI_null()                          NULL
+
+#endif /* defined(LIBRESSL_VERSION_NUMBER) */
+
 #if defined(LIBRESSL_VERSION_NUMBER) && (LIBRESSL_VERSION_NUMBER < 0x30500000L)
 /* EVP_CIPHER_CTX stuff */
 #define EVP_CIPHER_CTX_encrypting(x)       ((x)->encrypt)

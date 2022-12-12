@@ -17,12 +17,12 @@
         <DigestValue>3om1gINPzaogcdLuDdjIQlls4NE=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>bPeH+F5P1fFrmg+BdugarbH6jJQ/ho5DNCBuazOYQTSfCNKhRHyl+SXn5qRB1FVn
-2jlkKgE6e3/pJl4sRXo32TGKi8OU7lIR5eK7iyzIIooO0MONq2S5LOhvVeDR4kSM
-dyDdjAWbE/Px7D9Yx0T5Op9IXNc8BABQt0GlDk0kni0lmTThM4rWIbVRJx/RtCXL
-k/T8b0vfLivf7EEug8t2WIJwqpfcWzKpezehX6xk5RlHL4Otr40+M6rKjw91mfMj
-9nl26iScQ9d1js7pkYfkfuMab7ewAxUuOXpZWDJwKJ306zLoAdCTQ7EmI5Ce5F/f
-6IhKIR/txEZutozq0+AB6A==</SignatureValue>
+    <SignatureValue>X/W6AuFxAJ2ptVFSpVR1Z1hMyn3Ss9wRDjlJlB1xC9XmUD42ZrAGsUPoNc7Ye97k
+qu9lPZa7GnQEFWDjE/tNzT/G9zZBcDs0VnXr14y5/h1kDoOPNDDTFPGhKqzirLw8
+QUpgVXyR8+aMAGtSHAO74cnB0usdg0wK3c4zh1LwnCbZ0aHKySyhzG/HhH03ErMq
+XMLgfJUCpT/J8RYMyXMWDeb/bKOsOtiGhnLzJC1WhtzKKN0P1oEJ2jUxa98ZBeea
+aND8AoD1K5x0a5CvU/KA3Pwgo+zIAk60tSzjO7/qC9Qz2ULsm2lIq/JEXghp+Y//
+yQaKF4+whsEadEc7wAtQzQ==</SignatureValue>
     <KeyInfo>
       <X509Data>
         <X509IssuerSerial>
@@ -35,7 +35,7 @@ k/T8b0vfLivf7EEug8t2WIJwqpfcWzKpezehX6xk5RlHL4Otr40+M6rKjw91mfMj
 </X509IssuerSerial>
 <X509IssuerSerial>
 <X509IssuerName>emailAddress=xmlsec@aleksey.com,CN=Aleksey Sanin,O=XML Security Library (http://www.aleksey.com/xmlsec),ST=California,C=US</X509IssuerName>
-<X509SerialNumber>12655831530416757434</X509SerialNumber>
+<X509SerialNumber>12655831530416757433</X509SerialNumber>
 </X509IssuerSerial>
       </X509Data>
     </KeyInfo>

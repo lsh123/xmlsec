@@ -59,9 +59,9 @@ rm dsa3072req.pem
 ```
 
 ### Generate and sign RSA keys with second level CA
-RSA 512 bits:
+RSA 2048 bits (OU="Test Third Level RSA Certificate"):
 ```
-openssl genrsa -out rsakey.pem 512
+openssl genrsa -out rsakey.pem 2048
 openssl req -config ./openssl.cnf -new -key rsakey.pem -out rsareq.pem
 openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem \
         -out rsacert.pem -infiles rsareq.pem
@@ -133,7 +133,7 @@ rm gost2012_512req.pem
 
 ## Converting key and certs between PEM and DER formats
 
-### Convert PEM private key file to DER file
+### Convert PEM private key file to DER file (IMPORTANT: use OpenSSL 1.x for generating DER files!!!)
 RSA keys:
 ```
 openssl rsa -inform PEM -outform DER -in rsakey.pem -out rsakey.der
@@ -153,7 +153,7 @@ ECDSA keys:
 openssl ec -inform PEM -outform DER -in ecdsa-secp256r1-key.pem -out ecdsa-secp256r1-key.der
 ```
 
-### Convert PEM cert file to DER file
+### Convert PEM cert file to DER file (IMPORTANT: use OpenSSL 1.x for generating DER files!!!)
 ```
 openssl x509 -outform DER -in cacert.pem -out cacert.der
 openssl x509 -outform DER -in ca2cert.pem -out ca2cert.der

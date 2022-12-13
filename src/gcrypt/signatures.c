@@ -598,6 +598,8 @@ xmlSecGCryptAppendMpi(gcry_mpi_t a, xmlSecBufferPtr out, xmlSecSize min_size) {
  * <SignatureValue>i6watmQQQ1y3GB+VsWq5fJKzQcBB4jRfH1bfJFj0JtFVtLotttzYyA==</SignatureValue>
  *
  ***************************************************************************/
+#define XMLSEC_GCRYPT_DSA_SIG_SIZE  20
+
 static int
 xmlSecGCryptDsaPkSign(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
                       const xmlSecByte* dgst, xmlSecSize dgstSize,
@@ -686,15 +688,15 @@ xmlSecGCryptDsaPkSign(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
     }
 
     /* write out: r + s */
-    ret = xmlSecGCryptAppendMpi(m_r, out, 20);
-    if((ret < 0) || (xmlSecBufferGetSize(out) != 20)) {
+    ret = xmlSecGCryptAppendMpi(m_r, out, XMLSEC_GCRYPT_DSA_SIG_SIZE);
+    if((ret < 0) || (xmlSecBufferGetSize(out) != XMLSEC_GCRYPT_DSA_SIG_SIZE)) {
         xmlSecInternalError2("xmlSecGCryptAppendMpi", NULL,
             "outSize=" XMLSEC_SIZE_FMT, xmlSecBufferGetSize(out));
         goto done;
     }
 
-    ret = xmlSecGCryptAppendMpi(m_s, out, 20);
-    if((ret < 0) || (xmlSecBufferGetSize(out) != (20 + 20))) {
+    ret = xmlSecGCryptAppendMpi(m_s, out, XMLSEC_GCRYPT_DSA_SIG_SIZE);
+    if((ret < 0) || (xmlSecBufferGetSize(out) != (XMLSEC_GCRYPT_DSA_SIG_SIZE + XMLSEC_GCRYPT_DSA_SIG_SIZE))) {
         xmlSecInternalError2("xmlSecGCryptAppendMpi", NULL,
             "outSize=" XMLSEC_SIZE_FMT, xmlSecBufferGetSize(out));
         goto done;
@@ -765,12 +767,12 @@ xmlSecGCryptDsaPkVerify(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
     }
 
     /* get the existing signature */
-    err = gcry_mpi_scan(&m_sig_r, GCRYMPI_FMT_USG, data, 20, NULL);
+    err = gcry_mpi_scan(&m_sig_r, GCRYMPI_FMT_USG, data, XMLSEC_GCRYPT_DSA_SIG_SIZE, NULL);
     if((err != GPG_ERR_NO_ERROR) || (m_sig_r == NULL)) {
         xmlSecGCryptError("gcry_mpi_scan(r)", err, NULL);
         goto done;
     }
-    err = gcry_mpi_scan(&m_sig_s, GCRYMPI_FMT_USG, data + 20, 20, NULL);
+    err = gcry_mpi_scan(&m_sig_s, GCRYMPI_FMT_USG, data + XMLSEC_GCRYPT_DSA_SIG_SIZE, XMLSEC_GCRYPT_DSA_SIG_SIZE, NULL);
     if((err != GPG_ERR_NO_ERROR) || (m_sig_s == NULL)) {
         xmlSecGCryptError("gcry_mpi_scan(s)", err, NULL);
         goto done;

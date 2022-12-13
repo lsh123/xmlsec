@@ -26,14 +26,14 @@ openssl verify -CAfile cacert.pem ca2cert.pem
 rm ca2req.pem
 ```
 
-### Generate and sign DSA keys with second level CA
+### Generate and sign DSA keys with second level CA (IMPORTANT: use OpenSSL 1.x for generating DSA keys!!!)
 
-DSA 1024 bits:
+
+DSA 1024 bits (OU = Test Third Level DSA Certificate) :
 ```
 openssl dsaparam -out dsakey.pem -genkey 1024
 openssl req -config ./openssl.cnf -new -key dsakey.pem -out dsareq.pem
-openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem \
-        -out dsacert.pem -infiles dsareq.pem
+openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem -out dsacert.pem -infiles dsareq.pem
 openssl verify -CAfile cacert.pem -untrusted ca2cert.pem dsacert.pem
 rm dsareq.pem
 ```
@@ -79,13 +79,11 @@ openssl verify -CAfile cacert.pem -untrusted ca2cert.pem largersacert.pem
 rm largersareq.pem
 ```
 
-### Generate and sign short-live RSA cert for "expired cert" test
+### Generate and sign short-live RSA cert for "expired cert" test (OU = "Test Expired RSA Certificate")
 ```
-openssl genrsa -out expiredkey.pem
-openssl req -config ./openssl.cnf -new -days 1 -key expiredkey.pem \
-        -out expiredreq.pem
-openssl ca -config ./openssl.cnf -days 1 -cert ca2cert.pem \
-        -keyfile ca2key.pem -out expiredcert.pem -infiles expiredreq.pem
+openssl genrsa -out expiredkey.pem 2048
+openssl req -config ./openssl.cnf -new -days 1 -key expiredkey.pem -out expiredreq.pem
+openssl ca -config ./openssl.cnf -days 1 -cert ca2cert.pem -keyfile ca2key.pem -out expiredcert.pem -infiles expiredreq.pem
 openssl verify -CAfile cacert.pem -untrusted ca2cert.pem expiredcert.pem
 rm expiredreq.pem
 ```
@@ -205,6 +203,10 @@ is `secret123`):
  openssl pkcs8 -in dsa3072key.der -inform der -out dsa3072key.p8-der -outform der -topk8
  openssl pkcs8 -in rsakey.pem -inform pem -out rsakey.p8-pem -outform pem -topk8
  openssl pkcs8 -in rsakey.der -inform der -out rsakey.p8-der -outform der -topk8
+
+ openssl pkcs8 -in expiredkey.pem -inform pem -out expiredkey.p8-pem -outform pem -topk8
+ openssl pkcs8 -in expiredkey.der -inform der -out expiredkey.p8-der -outform der -topk8
+
  openssl pkcs8 -in largersakey.pem -inform pem -out largersakey.p8-pem \
         -outform pem -topk8
  openssl pkcs8 -in largersakey.der -inform der -out largersakey.p8-der \
@@ -346,6 +348,10 @@ openssl pkcs12 -export -in alllargersa.pem -name TestLargeRsaKey -out largersake
 openssl pkcs12 -export -in alllargersa.pem -name TestLargeRsaKey -out largersakey-win.p12 -CSP "Microsoft Enhanced RSA and AES Cryptographic Provider"
 rm alllargersa.pem
 
+cat dsakey.pem dsacert.pem ca2cert.pem cacert.pem > alldsa.pem
+openssl pkcs12 -export -in alldsa.pem -name TestDsaKey -out alldsa-win.p12 -CSP "Microsoft Enhanced RSA and AES Cryptographic Provider"
+rm alldsa.pem
+
 cat dsa2048key.pem dsa2048cert.pem ca2cert.pem cacert.pem > alldsa2048.pem
 openssl pkcs12 -export -in alldsa2048.pem -name TestDsa2048Key -out dsa2048key-win.p12 -CSP "Microsoft Enhanced RSA and AES Cryptographic Provider"
 rm alldsa2048.pem
@@ -353,5 +359,10 @@ rm alldsa2048.pem
 cat dsa3072key.pem dsa3072cert.pem ca2cert.pem cacert.pem > alldsa3072.pem
 openssl pkcs12 -export -in alldsa3072.pem -name TestDsa3072Key -out dsa3072key-win.p12 -CSP "Microsoft Enhanced RSA and AES Cryptographic Provider"
 rm alldsa3072.pem
+
+
+cat expiredkey.pem expiredcert.pem ca2cert.pem cacert.pem > allexpired.pem
+openssl pkcs12 -export -in allexpired.pem -name TestExpiredRsaKey -out expiredkey-win.p12 -CSP "Microsoft Enhanced RSA and AES Cryptographic Provider"
+rm allexpired.pem
 ```
 

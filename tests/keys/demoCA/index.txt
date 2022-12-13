@@ -12,3 +12,4 @@ V	21220529223446Z		AFA28BB933ADDAB6	unknown	/C=US/ST=California/O=XML Security L
 V	21220529224030Z		AFA28BB933ADDAB7	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/OU=Test Third Level GOST2012 512 bits Certificate/CN=Aleksey Sanin/emailAddress=xmlsec@aleksey.com
 V	21220529235043Z		AFA28BB933ADDAB8	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/OU=Test Third Level GOST2001 Certificate/CN=Aleksey Sanin/emailAddress=xmlsec@aleksey.com
 V	21221118201448Z		AFA28BB933ADDAB9	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/OU=Test Third Level RSA Certificate/CN=Aleksey Sanin/emailAddress=xmlsec@aleksey.com
+V	221214013642Z		AFA28BB933ADDABA	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/OU=Test Expired RSA Certificate/CN=Aleksey Sanin/emailAddress=xmlsec@aleksey.com

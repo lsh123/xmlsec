@@ -6,6 +6,7 @@ TARGET_DIR=@XMLSEC_DOCDIR@
 
 EXTRA_DIST=\
 	$(builddir)/images     \
+	$(builddir)/css        \
 	$(builddir)/*.html     \
 	$(builddir)/*.ico      \
 	$(builddir)/xmlsec.xsl \

@@ -3038,6 +3038,7 @@ xmlSecAppGetOutputFilename(const char* inputFileName, const char* outputFileName
     size_t resSize;
     char* res = NULL;
 #if !defined(_MSC_VER)
+    char* tmp2;
 #else /* !defined(_MSC_VER) */
     errno_t err;
 #endif /* !defined(_MSC_VER) */
@@ -3065,10 +3066,10 @@ xmlSecAppGetOutputFilename(const char* inputFileName, const char* outputFileName
         fprintf(stderr, "Error: failed to get basename for input filename \"%s\"\n", inputFileName);
         goto done;
     }
-    tmp = strrchr(inputBasename, '.');
-    if(tmp != NULL) {
+    tmp2 = strrchr(inputBasename, '.');
+    if(tmp2 != NULL) {
         // remove extension if any
-        (*tmp) = '\0';
+        (*tmp2) = '\0';
     }
 #else /* !defined(_MSC_VER) */
     inputBasename = inputFileNameCopy;

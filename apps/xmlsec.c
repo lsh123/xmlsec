@@ -9,9 +9,13 @@
 #include <string.h>
 #include <time.h>
 
+#if !defined(_MSC_VER)
+#include <libgen.h>
+#endif /* defined(_MSC_VER) */
+
 #if defined(_MSC_VER) && _MSC_VER < 1900
 #define snprintf _snprintf
-#endif
+#endif /* defined(_MSC_VER) && _MSC_VER < 1900 */
 
 #include <libxml/tree.h>
 #include <libxml/xmlmemory.h>
@@ -430,7 +434,9 @@ static xmlSecAppCmdLineParam outputParam = {
     "--output",
     "-o",
     "--output <filename>"
-    "\n\twrite result document to file <filename>",
+    "\n\twrite result document to file <filename>; the <filename> can"
+    "\n\tbe a template and include '{inputfile}' which will be repaced"
+    "\n\twith the input filename",
     xmlSecAppCmdLineParamTypeString,
     xmlSecAppCmdLineParamFlagNone,
     NULL
@@ -941,20 +947,23 @@ static int                      xmlSecAppLoadKeys               (void);
 static int                      xmlSecAppPrepareKeyInfoReadCtx  (xmlSecKeyInfoCtxPtr ctx);
 
 #ifndef XMLSEC_NO_XMLDSIG
-static int                      xmlSecAppSignFile               (const char* filename);
-static int                      xmlSecAppVerifyFile             (const char* filename);
+static int                      xmlSecAppSignFile               (const char* inputFileName,
+                                                                 const char* outputFileNameTmpl);
+static int                      xmlSecAppVerifyFile             (const char* inputFileName);
 #ifndef XMLSEC_NO_TMPL_TEST
-static int                      xmlSecAppSignTmpl               (void);
+static int                      xmlSecAppSignTmpl               (const char* outputFileNameTmpl);
 #endif /* XMLSEC_NO_TMPL_TEST */
 static int                      xmlSecAppPrepareDSigCtx         (xmlSecDSigCtxPtr dsigCtx);
 static void                     xmlSecAppPrintDSigCtx           (xmlSecDSigCtxPtr dsigCtx);
 #endif /* XMLSEC_NO_XMLDSIG */
 
 #ifndef XMLSEC_NO_XMLENC
-static int                      xmlSecAppEncryptFile            (const char* filename);
-static int                      xmlSecAppDecryptFile            (const char* filename);
+static int                      xmlSecAppEncryptFile            (const char* inputFileName,
+                                                                 const char* outputFileNameTmpl);
+static int                      xmlSecAppDecryptFile            (const char* inputFileName,
+                                                                 const char* outputFileNameTmpl);
 #ifndef XMLSEC_NO_TMPL_TEST
-static int                      xmlSecAppEncryptTmpl            (void);
+static int                      xmlSecAppEncryptTmpl            (const char* outputFileNameTmpl);
 #endif /* XMLSEC_NO_TMPL_TEST */
 static int                      xmlSecAppPrepareEncCtx          (xmlSecEncCtxPtr encCtx);
 static void                     xmlSecAppPrintEncCtx            (xmlSecEncCtxPtr encCtx);
@@ -968,7 +977,9 @@ static int                      xmlSecAppCheckTransform     (const char * name);
 static xmlSecTransformUriType   xmlSecAppGetUriType             (const char* string);
 static FILE*                    xmlSecAppOpenFile               (const char* filename);
 static void                     xmlSecAppCloseFile              (FILE* file);
-static int                      xmlSecAppWriteResult            (xmlDocPtr doc,
+static int                      xmlSecAppWriteResult            (const char* inputFileName,
+                                                                 const char* outputFileNameTmpl,
+                                                                 xmlDocPtr doc,
                                                                  xmlSecBufferPtr buffer);
 static int                      xmlSecAppAddIDAttr              (xmlNodePtr cur,
                                                                  const xmlChar* attr,
@@ -995,6 +1006,7 @@ int block_network_io = 0;
 clock_t total_time = 0;
 const char* xmlsec_crypto = NULL;
 const char* tmp = NULL;
+const char* output = NULL;
 
 #if defined(XMLSEC_WINDOWS) && defined(UNICODE)
 int wmain(int argc, wchar_t *argv[]) {
@@ -1125,6 +1137,9 @@ int main(int argc, const char **argv) {
         repeats = xmlSecAppCmdLineParamGetInt(&repeatParam, 1);
     }
 
+    /* get the output file */
+    output = xmlSecAppCmdLineParamGetString(&outputParam);
+
     /* execute requested number of times */
     for(; repeats > 0; --repeats) {
         switch(command) {
@@ -1165,7 +1180,7 @@ int main(int argc, const char **argv) {
 #ifndef XMLSEC_NO_XMLDSIG
         case xmlSecAppCommandSign:
             for(ii = pos; ii < argc; ++ii) {
-                if(xmlSecAppSignFile(utf8_argv[ii]) < 0) {
+                if(xmlSecAppSignFile(utf8_argv[ii], output) < 0) {
                     fprintf(stderr, "Error: failed to sign file \"%s\"\n", utf8_argv[ii]);
                     goto fail;
                 }
@@ -1181,7 +1196,7 @@ int main(int argc, const char **argv) {
             break;
 #ifndef XMLSEC_NO_TMPL_TEST
         case xmlSecAppCommandSignTmpl:
-            if(xmlSecAppSignTmpl() < 0) {
+            if(xmlSecAppSignTmpl(output) < 0) {
                 fprintf(stderr, "Error: failed to create and sign template\n");
                 goto fail;
             }
@@ -1192,7 +1207,7 @@ int main(int argc, const char **argv) {
 #ifndef XMLSEC_NO_XMLENC
         case xmlSecAppCommandEncrypt:
             for(ii = pos; ii < argc; ++ii) {
-                if(xmlSecAppEncryptFile(utf8_argv[ii]) < 0) {
+                if(xmlSecAppEncryptFile(utf8_argv[ii], output) < 0) {
                     fprintf(stderr, "Error: failed to encrypt file with template \"%s\"\n", utf8_argv[ii]);
                     goto fail;
                 }
@@ -1200,7 +1215,7 @@ int main(int argc, const char **argv) {
             break;
         case xmlSecAppCommandDecrypt:
             for(ii = pos; ii < argc; ++ii) {
-                if(xmlSecAppDecryptFile(utf8_argv[ii]) < 0) {
+                if(xmlSecAppDecryptFile(utf8_argv[ii], output) < 0) {
                     fprintf(stderr, "Error: failed to decrypt file \"%s\"\n", utf8_argv[ii]);
                     goto fail;
                 }
@@ -1208,7 +1223,7 @@ int main(int argc, const char **argv) {
             break;
 #ifndef XMLSEC_NO_TMPL_TEST
         case xmlSecAppCommandEncryptTmpl:
-            if(xmlSecAppEncryptTmpl() < 0) {
+            if(xmlSecAppEncryptTmpl(output) < 0) {
                 fprintf(stderr, "Error: failed to create and encrypt template\n");
                 goto fail;
             }
@@ -1261,13 +1276,14 @@ fail:
 
 #ifndef XMLSEC_NO_XMLDSIG
 static int
-xmlSecAppSignFile(const char* filename) {
+xmlSecAppSignFile(const char* inputFileName, const char* outputFileNameTmpl) {
     xmlSecAppXmlDataPtr data = NULL;
     xmlSecDSigCtx dsigCtx;
     clock_t start_time;
     int res = -1;
 
-    if(filename == NULL) {
+    if(inputFileName == NULL) {
+        fprintf(stderr, "Error: input filename is not specified\n");
         return(-1);
     }
 
@@ -1282,9 +1298,9 @@ xmlSecAppSignFile(const char* filename) {
     }
 
     /* parse template and select start node */
-    data = xmlSecAppXmlDataCreate(filename, xmlSecNodeSignature, xmlSecDSigNs);
+    data = xmlSecAppXmlDataCreate(inputFileName, xmlSecNodeSignature, xmlSecDSigNs);
     if(data == NULL) {
-        fprintf(stderr, "Error: failed to load template \"%s\"\n", filename);
+        fprintf(stderr, "Error: failed to load template \"%s\"\n", inputFileName);
         goto done;
     }
 
@@ -1298,16 +1314,12 @@ xmlSecAppSignFile(const char* filename) {
     total_time += clock() - start_time;
 
     if(repeats <= 1) {
-        FILE* f;
+        int ret;
 
-        f = xmlSecAppOpenFile(xmlSecAppCmdLineParamGetString(&outputParam));
-        if(f == NULL) {
-            fprintf(stderr,"Error: failed to open output file \"%s\"\n",
-                    xmlSecAppCmdLineParamGetString(&outputParam));
+        ret = xmlSecAppWriteResult(inputFileName, outputFileNameTmpl, data->doc, NULL);
+        if(ret < 0) {
             goto done;
         }
-        xmlDocDump(f, data->doc);
-        xmlSecAppCloseFile(f);
     }
 
     res = 0;
@@ -1324,13 +1336,14 @@ done:
 }
 
 static int
-xmlSecAppVerifyFile(const char* filename) {
+xmlSecAppVerifyFile(const char* inputFileName) {
     xmlSecAppXmlDataPtr data = NULL;
     xmlSecDSigCtx dsigCtx;
     clock_t start_time;
     int res = -1;
 
-    if(filename == NULL) {
+    if(inputFileName == NULL) {
+        fprintf(stderr, "Error: input filename is not specified\n");
         return(-1);
     }
 
@@ -1344,9 +1357,9 @@ xmlSecAppVerifyFile(const char* filename) {
     }
 
     /* parse template and select start node */
-    data = xmlSecAppXmlDataCreate(filename, xmlSecNodeSignature, xmlSecDSigNs);
+    data = xmlSecAppXmlDataCreate(inputFileName, xmlSecNodeSignature, xmlSecDSigNs);
     if(data == NULL) {
-        fprintf(stderr, "Error: failed to load document \"%s\"\n", filename);
+        fprintf(stderr, "Error: failed to load document \"%s\"\n", inputFileName);
         goto done;
     }
 
@@ -1369,15 +1382,6 @@ done:
     if(repeats <= 1) {
         xmlSecDSigReferenceCtxPtr dsigRefCtx;
         xmlSecSize good, i, size;
-        FILE* f;
-
-        f = xmlSecAppOpenFile(xmlSecAppCmdLineParamGetString(&outputParam));
-        if(f == NULL) {
-            fprintf(stderr,"Error: failed to open output file \"%s\"\n",
-                    xmlSecAppCmdLineParamGetString(&outputParam));
-            goto done;
-        }
-        xmlSecAppCloseFile(f);
 
         switch(dsigCtx.status) {
             case xmlSecDSigStatusUnknown:
@@ -1431,7 +1435,7 @@ done:
 
 #ifndef XMLSEC_NO_TMPL_TEST
 static int
-xmlSecAppSignTmpl(void) {
+xmlSecAppSignTmpl(const char* outputFileNameTmpl) {
     xmlDocPtr doc = NULL;
     xmlNodePtr cur;
     xmlSecDSigCtx dsigCtx;
@@ -1521,16 +1525,12 @@ xmlSecAppSignTmpl(void) {
     total_time += clock() - start_time;
 
     if(repeats <= 1) {
-        FILE* f;
+        int ret;
 
-        f = xmlSecAppOpenFile(xmlSecAppCmdLineParamGetString(&outputParam));
-        if(f == NULL) {
-            fprintf(stderr,"Error: failed to open output file \"%s\"\n",
-                    xmlSecAppCmdLineParamGetString(&outputParam));
+        ret = xmlSecAppWriteResult(NULL, outputFileNameTmpl, doc, NULL);
+        if(ret < 0) {
             goto done;
         }
-        xmlDocDump(f, doc);
-        xmlSecAppCloseFile(f);
     }
 
     res = 0;
@@ -1620,7 +1620,7 @@ xmlSecAppPrintDSigCtx(xmlSecDSigCtxPtr dsigCtx) {
 
 #ifndef XMLSEC_NO_XMLENC
 static int
-xmlSecAppEncryptFile(const char* filename) {
+xmlSecAppEncryptFile(const char* inputFileName, const char* outputFileNameTmpl) {
     xmlSecAppXmlDataPtr data = NULL;
     xmlSecEncCtx encCtx;
     xmlDocPtr doc = NULL;
@@ -1628,7 +1628,8 @@ xmlSecAppEncryptFile(const char* filename) {
     clock_t start_time;
     int res = -1;
 
-    if(filename == NULL) {
+    if(inputFileName == NULL) {
+        fprintf(stderr, "Error: input filename is not specified\n");
         return(-1);
     }
 
@@ -1642,10 +1643,10 @@ xmlSecAppEncryptFile(const char* filename) {
     }
 
     /* parse doc and find template node */
-    doc = xmlSecParseFile(filename);
+    doc = xmlSecParseFile(inputFileName);
     if(doc == NULL) {
         fprintf(stderr, "Error: failed to parse xml file \"%s\"\n",
-                filename);
+                inputFileName);
         goto done;
     }
     startTmplNode = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeEncryptedData, xmlSecEncNs);
@@ -1689,11 +1690,11 @@ xmlSecAppEncryptFile(const char* filename) {
     /* print out result only once per execution */
     if(repeats <= 1) {
         if(encCtx.resultReplaced) {
-            if(xmlSecAppWriteResult((data != NULL) ? data->doc : doc, NULL) < 0) {
+            if(xmlSecAppWriteResult(inputFileName, outputFileNameTmpl, (data != NULL) ? data->doc : doc, NULL) < 0) {
                 goto done;
             }
         } else {
-            if(xmlSecAppWriteResult(NULL, encCtx.result) < 0) {
+            if(xmlSecAppWriteResult(inputFileName, outputFileNameTmpl, NULL, encCtx.result) < 0) {
                 goto done;
             }
         }
@@ -1717,13 +1718,14 @@ done:
 }
 
 static int
-xmlSecAppDecryptFile(const char* filename) {
+xmlSecAppDecryptFile(const char* inputFileName, const char* outputFileNameTmpl) {
     xmlSecAppXmlDataPtr data = NULL;
     xmlSecEncCtx encCtx;
     clock_t start_time;
     int res = -1;
 
-    if(filename == NULL) {
+    if(inputFileName == NULL) {
+        fprintf(stderr, "Error: input filename is not specified\n");
         return(-1);
     }
 
@@ -1737,9 +1739,9 @@ xmlSecAppDecryptFile(const char* filename) {
     }
 
     /* parse template and select start node */
-    data = xmlSecAppXmlDataCreate(filename, xmlSecNodeEncryptedData, xmlSecEncNs);
+    data = xmlSecAppXmlDataCreate(inputFileName, xmlSecNodeEncryptedData, xmlSecEncNs);
     if(data == NULL) {
-        fprintf(stderr, "Error: failed to load template \"%s\"\n", filename);
+        fprintf(stderr, "Error: failed to load template \"%s\"\n", inputFileName);
         goto done;
     }
 
@@ -1753,11 +1755,11 @@ xmlSecAppDecryptFile(const char* filename) {
     /* print out result only once per execution */
     if(repeats <= 1) {
         if(encCtx.resultReplaced) {
-            if(xmlSecAppWriteResult(data->doc, NULL) < 0) {
+            if(xmlSecAppWriteResult(inputFileName, outputFileNameTmpl, data->doc, NULL) < 0) {
                 goto done;
             }
         } else {
-            if(xmlSecAppWriteResult(NULL, encCtx.result) < 0) {
+            if(xmlSecAppWriteResult(inputFileName, outputFileNameTmpl, NULL, encCtx.result) < 0) {
                 goto done;
             }
         }
@@ -1779,7 +1781,7 @@ done:
 
 #ifndef XMLSEC_NO_TMPL_TEST
 static int
-xmlSecAppEncryptTmpl(void) {
+xmlSecAppEncryptTmpl(const char* outputFileNameTmpl) {
     const xmlChar data[] = "Hello, World!";
     xmlSecEncCtx encCtx;
     xmlDocPtr doc = NULL;
@@ -1839,11 +1841,11 @@ xmlSecAppEncryptTmpl(void) {
     /* print out result only once per execution */
     if(repeats <= 1) {
         if(encCtx.resultReplaced) {
-            if(xmlSecAppWriteResult(doc, NULL) < 0) {
+            if(xmlSecAppWriteResult(NULL, outputFileNameTmpl, doc, NULL) < 0) {
                 goto done;
             }
         } else {
-            if(xmlSecAppWriteResult(NULL, encCtx.result) < 0) {
+            if(xmlSecAppWriteResult(NULL, outputFileNameTmpl, NULL, encCtx.result) < 0) {
                 goto done;
             }
         }
@@ -3026,14 +3028,135 @@ xmlSecAppCloseFile(FILE* file) {
     fclose(file);
 }
 
+
+#define XMLSEC_OUTPUT_TMPL_PARAM  "{inputfile}"
+static char*
+xmlSecAppGetOutputFilename(const char* inputFileName, const char* outputFileNameTmpl) {
+    char* inputFileNameCopy = NULL;
+    char* inputBasename;
+    char* outputFileNameTmplPointer;
+    size_t resSize;
+    char* res = NULL;
+#if !defined(_MSC_VER)
+    char* tmp2;
+#else /* !defined(_MSC_VER) */
+    errno_t err;
+#endif /* !defined(_MSC_VER) */
+
+    if((inputFileName == NULL) || (outputFileNameTmpl == NULL)) {
+        return(NULL);
+    }
+
+    /* is there something to replace? */
+    outputFileNameTmplPointer = strstr(outputFileNameTmpl, XMLSEC_OUTPUT_TMPL_PARAM);
+    if(outputFileNameTmplPointer == NULL) {
+        return((char*)xmlStrdup(BAD_CAST outputFileNameTmpl));
+    }
+
+    /* get input file */
+    inputFileNameCopy = (char*)xmlStrdup(BAD_CAST inputFileName);
+    if (inputFileNameCopy == NULL) {
+        fprintf(stderr, "Error: failed to duplicate input filename \"%s\"\n", inputFileName);
+        goto done;
+    }
+
+#if !defined(_MSC_VER)
+    inputBasename = basename(inputFileNameCopy);
+    if(inputBasename == NULL) {
+        fprintf(stderr, "Error: failed to get basename for input filename \"%s\"\n", inputFileName);
+        goto done;
+    }
+    tmp2 = strrchr(inputBasename, '.');
+    if(tmp2 != NULL) {
+        // remove extension if any
+        (*tmp2) = '\0';
+    }
+#else /* !defined(_MSC_VER) */
+    inputBasename = inputFileNameCopy;
+    err = _splitpath_s(inputFileName, NULL, 0, NULL, 0, inputBasename, strlen(inputBasename), NULL, 0);
+    if(err != 0) {
+        fprintf(stderr, "Error: failed to split the input filename \"%s\": %d\n", inputFileName, (int)err);
+        goto done;
+    }
+#endif /* !defined(_MSC_VER) */
+
+    /* create output filename */
+    resSize = strlen(outputFileNameTmpl) + strlen(inputBasename) + 1;
+    res = (char*)malloc(resSize);
+    if(res == NULL) {
+        fprintf(stderr, "Error: cannot allocate %d bytes for the output filename\n", (int)resSize);
+        goto done;
+    }
+    memset(res, 0, resSize);
+
+    /* prefix */
+    if ((outputFileNameTmplPointer - outputFileNameTmpl) > 0) {
+        memcpy(res, outputFileNameTmpl, (size_t)(outputFileNameTmplPointer - outputFileNameTmpl));
+    }
+    outputFileNameTmplPointer += strlen(XMLSEC_OUTPUT_TMPL_PARAM);
+
+    /* input filename */
+#if !defined(_MSC_VER)
+    tmp = strcat(res, inputBasename);
+    if(tmp == NULL) {
+        fprintf(stderr, "Error: failed to append input basemame\n");
+        goto done;
+    }
+#else /* !defined(_MSC_VER) */
+    err = strcat_s(res, resSize, inputBasename);
+    if(err != 0) {
+        fprintf(stderr, "Error: failed to append input basemame: %d\n", (int)err);
+        goto done;
+    }
+#endif /* !defined(_MSC_VER) */
+
+    /* suffix */
+#if !defined(_MSC_VER)
+    tmp = strcat(res, outputFileNameTmplPointer);
+    if(tmp == NULL) {
+        fprintf(stderr, "Error: failed to append  output template suffix\n");
+        goto done;
+    }
+#else /* !defined(_MSC_VER) */
+    err = strcat_s(res, resSize, outputFileNameTmplPointer);
+    if(err != 0) {
+        fprintf(stderr, "Error: failed to append output template suffix: %d\n", (int)err);
+        goto done;
+    }
+#endif /* !defined(_MSC_VER) */
+
+    /* done */
+done:
+    if(inputFileNameCopy != NULL) {
+        xmlFree(inputFileNameCopy);
+    }
+    return(res);
+}
+
 static int
-xmlSecAppWriteResult(xmlDocPtr doc, xmlSecBufferPtr buffer) {
+xmlSecAppWriteResult(const char* inputFileName, const char* outputFileNameTmpl, xmlDocPtr doc, xmlSecBufferPtr buffer) {
+    char* outputFileName = NULL;
     FILE* f;
 
-    f = xmlSecAppOpenFile(xmlSecAppCmdLineParamGetString(&outputParam));
+    /* get output filename by replacing '{inputfile}' with input file name */
+    if((inputFileName != NULL) && (outputFileNameTmpl != NULL)) {
+        outputFileName = xmlSecAppGetOutputFilename(inputFileName, outputFileNameTmpl);
+        if(outputFileName == NULL) {
+            fprintf(stderr, "Error: can't create output filename\n");
+            return(-1);
+        }
+    }
+
+    /* write file */
+    f = xmlSecAppOpenFile(outputFileName != NULL ? outputFileName : outputFileNameTmpl);
     if(f == NULL) {
+        free(outputFileName);
         return(-1);
     }
+    if((outputFileName != NULL) && (outputFileName != outputFileNameTmpl)) {
+        free(outputFileName);
+    }
+
     if(doc != NULL) {
         xmlDocDump(f, doc);
     } else if((buffer != NULL) && (xmlSecBufferGetData(buffer) != NULL)) {

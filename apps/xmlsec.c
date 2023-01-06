@@ -8,11 +8,14 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+
+#if !defined(_MSC_VER)
 #include <libgen.h>
+#endif /* defined(_MSC_VER) */
 
 #if defined(_MSC_VER) && _MSC_VER < 1900
 #define snprintf _snprintf
-#endif
+#endif /* defined(_MSC_VER) && _MSC_VER < 1900 */
 
 #include <libxml/tree.h>
 #include <libxml/xmlmemory.h>
@@ -3031,10 +3034,13 @@ static char*
 xmlSecAppGetOutputFilename(const char* inputFileName, const char* outputFileNameTmpl) {
     char* inputFileNameCopy = NULL;
     char* inputBasename;
-    char* inputBasenameExt;
     char* outputFileNameTmplPointer;
     size_t resSize;
     char* res = NULL;
+#if !defined(_MSC_VER)
+#else /* !defined(_MSC_VER) */
+    errno_t err;
+#endif /* !defined(_MSC_VER) */
 
     if((inputFileName == NULL) || (outputFileNameTmpl == NULL)) {
         return(NULL);
@@ -3048,20 +3054,30 @@ xmlSecAppGetOutputFilename(const char* inputFileName, const char* outputFileName
 
     /* get input file */
     inputFileNameCopy = (char*)xmlStrdup(BAD_CAST inputFileName);
-    if(inputFileNameCopy == NULL) {
+    if (inputFileNameCopy == NULL) {
         fprintf(stderr, "Error: failed to duplicate input filename \"%s\"\n", inputFileName);
         goto done;
     }
+
+#if !defined(_MSC_VER)
     inputBasename = basename(inputFileNameCopy);
     if(inputBasename == NULL) {
         fprintf(stderr, "Error: failed to get basename for input filename \"%s\"\n", inputFileName);
         goto done;
     }
-    inputBasenameExt = strrchr(inputBasename, '.');
-    if(inputBasenameExt != NULL) {
+    tmp = strrchr(inputBasename, '.');
+    if(tmp != NULL) {
         // remove extension if any
-        (*inputBasenameExt) = '\0';
+        (*tmp) = '\0';
     }
+#else /* !defined(_MSC_VER) */
+    inputBasename = inputFileNameCopy;
+    err = _splitpath_s(inputFileName, NULL, 0, NULL, 0, inputBasename, strlen(inputBasename), NULL, 0);
+    if(err != 0) {
+        fprintf(stderr, "Error: failed to split the input filename \"%s\": %d\n", inputFileName, (int)err);
+        goto done;
+    }
+#endif /* !defined(_MSC_VER) */
 
     /* create output filename */
     resSize = strlen(outputFileNameTmpl) + strlen(inputBasename) + 1;
@@ -3073,21 +3089,45 @@ xmlSecAppGetOutputFilename(const char* inputFileName, const char* outputFileName
     memset(res, 0, resSize);
 
     /* prefix */
-    if((outputFileNameTmplPointer - outputFileNameTmpl) > 0) {
-        strncpy(res, outputFileNameTmpl, (size_t)(outputFileNameTmplPointer - outputFileNameTmpl));
+    if ((outputFileNameTmplPointer - outputFileNameTmpl) > 0) {
+        memcpy(res, outputFileNameTmpl, (size_t)(outputFileNameTmplPointer - outputFileNameTmpl));
     }
     outputFileNameTmplPointer += strlen(XMLSEC_OUTPUT_TMPL_PARAM);
 
     /* input filename */
-    strcat(res, inputBasename);
+#if !defined(_MSC_VER)
+    tmp = strcat(res, inputBasename);
+    if(tmp == NULL) {
+        fprintf(stderr, "Error: failed to append input basemame\n");
+        goto done;
+    }
+#else /* !defined(_MSC_VER) */
+    err = strcat_s(res, resSize, inputBasename);
+    if(err != 0) {
+        fprintf(stderr, "Error: failed to append input basemame: %d\n", (int)err);
+        goto done;
+    }
+#endif /* !defined(_MSC_VER) */
 
     /* suffix */
-    strcat(res, outputFileNameTmplPointer);
-    
+#if !defined(_MSC_VER)
+    tmp = strcat(res, outputFileNameTmplPointer);
+    if(tmp == NULL) {
+        fprintf(stderr, "Error: failed to append  output template suffix\n");
+        goto done;
+    }
+#else /* !defined(_MSC_VER) */
+    err = strcat_s(res, resSize, outputFileNameTmplPointer);
+    if(err != 0) {
+        fprintf(stderr, "Error: failed to append output template suffix: %d\n", (int)err);
+        goto done;
+    }
+#endif /* !defined(_MSC_VER) */
+
     /* done */
 done:
     if(inputFileNameCopy != NULL) {
-        free(inputFileNameCopy);
+        xmlFree(inputFileNameCopy);
     }
     return(res);
 }

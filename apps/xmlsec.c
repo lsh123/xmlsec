@@ -433,7 +433,7 @@ static xmlSecAppCmdLineParam outputParam = {
     "--output <filename>"
     "\n\twrite result document to file <filename>; the <filename> can"
     "\n\tbe a template and include '{inputfile}' which will be repaced"
-    "\n\twith ",
+    "\n\twith the input filename",
     xmlSecAppCmdLineParamTypeString,
     xmlSecAppCmdLineParamFlagNone,
     NULL

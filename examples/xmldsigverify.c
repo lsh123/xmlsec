@@ -25,6 +25,7 @@
 #include <xmlsec/xmldsig.h>
 #include <xmlsec/crypto.h>
 
+#include <xmlsec/parser.h>
 /* #define XMLDSIGVERIFY_DEFAULT_TRUSTED_CERTS_FOLDER   "/etc/httpd/conf/ssl.crt" */
 #define XMLDSIGVERIFY_DEFAULT_TRUSTED_CERTS_FOLDER      "/var/www/cgi-bin/keys-certs.def"
 #define XMLDSIGVERIFY_KEY_AND_CERTS_FOLDER              "/var/www/cgi-bin/keys-certs"
@@ -36,7 +37,7 @@ int verify_request(xmlSecKeysMngrPtr mngr);
 int url_decode(char *buf, size_t size);
 
 int
-main(int , char **) {
+main() {
     xmlSecKeysMngrPtr mngr;
 #ifndef XMLSEC_NO_XSLT
     xsltSecurityPrefsPtr xsltSecPrefs = NULL;

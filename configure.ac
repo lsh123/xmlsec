@@ -2375,6 +2375,14 @@ fi
 dnl ==========================================================================
 dnl Final steps: xmlsec config
 dnl ==========================================================================
+
+dnl Cannot test all libraries when dynamic loading is disabled
+if test "z$XMLSEC_NO_APPS_CRYPTO_DYNAMIC_LOADING" = "z1" ; then
+    XMLSEC_CHECK_CRYPTO_LIST="$XMLSEC_DEFAULT_CRYPTO"
+else
+    XMLSEC_CHECK_CRYPTO_LIST="$XMLSEC_CRYPTO_LIST"
+fi
+
 XMLSEC_CORE_CFLAGS="$XMLSEC_DEFINES -I${includedir}/xmlsec1  $XMLSEC_DL_INCLUDES"
 XMLSEC_CORE_LIBS="-lxmlsec1 $XMLSEC_DL_LIBS "
 AC_SUBST(XMLSEC_CORE_CFLAGS)
@@ -2432,6 +2440,7 @@ AC_SUBST(XMLSEC_CRYPTO_EXTRA_LDFLAGS)
 
 AC_SUBST(XMLSEC_DEFAULT_CRYPTO)
 AC_SUBST(XMLSEC_CRYPTO_LIST)
+AC_SUBST(XMLSEC_CHECK_CRYPTO_LIST)
 AC_SUBST(XMLSEC_CRYPTO_DISABLED_LIST)
 AC_SUBST(XMLSEC_CRYPTO_LIB)
 AC_SUBST(XMLSEC_CRYPTO_CFLAGS)

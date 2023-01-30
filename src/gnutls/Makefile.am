@@ -42,6 +42,7 @@ libxmlsec1_gnutls_la_LIBADD = \
 	$(LIBXSLT_LIBS) \
 	$(LIBXML_LIBS) \
 	../libxmlsec1.la \
+	$(GCRYPT_LIBS) \
 	../gcrypt/libxmlsec1-gcrypt.la \
 	$(NULL)
 

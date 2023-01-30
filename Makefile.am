@@ -80,14 +80,14 @@ else
 PRECHECK_COMMANDS= \
 	export XMLSEC_OPENSSL_TEST_CONFIG="$(XMLSEC_OPENSSL_TEST_CONFIG)" && \
 	export LD_LIBRARY_PATH="$(ABS_BUILDDIR)/src/.libs:$$LD_LIBRARY_PATH" && \
-	for i in $(XMLSEC_CRYPTO_LIST) ; do \
+	for i in $(XMLSEC_CHECK_CRYPTO_LIST) ; do \
 		export LTDL_LIBRARY_PATH="$(ABS_BUILDDIR)/src/$$i/.libs:$$LTDL_LIBRARY_PATH" ; \
 	done && \
 	cd $(ABS_SRCDIR) \
 	$(NULL)
 endif
 CHECK_CRYPTO_LIST = \
-	$(XMLSEC_CRYPTO_LIST) \
+	$(XMLSEC_CHECK_CRYPTO_LIST) \
 	$(NULL)
 
 docs: docs-man

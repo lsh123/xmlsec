@@ -422,14 +422,111 @@ xmlSecOpenSSLEvpSignatureSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPt
     return(0);
 }
 
+static int
+xmlSecOpenSSLEvpSignatureCalculateDigest(xmlSecTransformPtr transform, xmlSecOpenSSLEvpSignatureCtxPtr ctx, xmlSecByte* dgst, unsigned int* dgstSize) {
+    unsigned int dgstLen;
+    int ret;
+
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->digest != NULL, -1);
+    xmlSecAssert2(dgst != NULL, -1);
+    xmlSecAssert2(dgstSize != NULL, -1);
+    xmlSecAssert2((*dgstSize) > 0, -1);
+
+    ret = EVP_MD_size(ctx->digest);
+    if (ret <= 0) {
+        xmlSecOpenSSLError("EVP_MD_size", xmlSecTransformGetName(transform));
+        return(-1);
+    }
+    XMLSEC_SAFE_CAST_INT_TO_UINT(ret, dgstLen,  return(-1), xmlSecTransformGetName(transform));
+    xmlSecAssert2(dgstLen > 0, -1);
+    xmlSecAssert2(dgstLen <= (*dgstSize), -1);
+
+    ret = EVP_DigestFinal(ctx->digestCtx, dgst, &dgstLen);
+    if(ret != 1) {
+        xmlSecOpenSSLError("EVP_DigestFinal", xmlSecTransformGetName(transform));
+        return(-1);
+    }
+    xmlSecAssert2(dgstLen > 0, -1);
+
+    /* success */
+    (*dgstSize) = dgstLen;
+    return(0);
+}
+
+static EVP_PKEY_CTX*
+xmlSecOpenSSLEvpSignatureCreatePkeyCtx(xmlSecTransformPtr transform, xmlSecOpenSSLEvpSignatureCtxPtr ctx) {
+    EVP_PKEY_CTX *pKeyCtx = NULL;
+    int ret;
+
+    xmlSecAssert2(ctx != NULL, NULL);
+    xmlSecAssert2(ctx->digest != NULL, NULL);
+    xmlSecAssert2(ctx->pKey != NULL, NULL);
+
+#ifndef XMLSEC_OPENSSL_API_300
+    pKeyCtx = EVP_PKEY_CTX_new(ctx->pKey, NULL)
+    if (pKeyCtx == NULL) {
+        xmlSecOpenSSLError("EVP_PKEY_CTX_new", xmlSecTransformGetName(transform));
+        goto error;
+    }
+#else  /* XMLSEC_OPENSSL_API_300 */
+    pKeyCtx = EVP_PKEY_CTX_new_from_pkey(xmlSecOpenSSLGetLibCtx(), ctx->pKey, NULL);
+    if (pKeyCtx == NULL) {
+        xmlSecOpenSSLError("EVP_PKEY_CTX_new_from_pkey", xmlSecTransformGetName(transform));
+        goto error;
+    }
+#endif /* XMLSEC_OPENSSL_API_300 */
+
+    if(transform->operation == xmlSecTransformOperationSign) {
+        ret = EVP_PKEY_sign_init(pKeyCtx);
+        if(ret <= 0) {
+            xmlSecOpenSSLError2("EVP_PKEY_sign_init", xmlSecTransformGetName(transform),
+                "ret=%d", ret);
+            goto error;
+        }
+    } else {
+        ret = EVP_PKEY_verify_init(pKeyCtx);
+        if(ret <= 0) {
+            xmlSecOpenSSLError2("EVP_PKEY_verify_init", xmlSecTransformGetName(transform),
+                "ret=%d", ret);
+            goto error;
+        }
+    }
+    ret = EVP_PKEY_CTX_set_signature_md(pKeyCtx, ctx->digest);
+    if(ret <= 0) {
+        xmlSecOpenSSLError2("EVP_PKEY_CTX_set_signature_md", xmlSecTransformGetName(transform),
+            "ret=%d", ret);
+        goto error;
+    }
+    ret = EVP_PKEY_CTX_set_rsa_padding(pKeyCtx, RSA_PKCS1_PADDING);
+    if(ret <= 0) {
+        xmlSecOpenSSLError2("EVP_PKEY_CTX_set_rsa_padding", xmlSecTransformGetName(transform),
+            "ret=%d", ret);
+        goto error;
+    }
+
+    /* success */
+    return (pKeyCtx);
+
+error:
+    if(pKeyCtx != NULL) {
+        EVP_PKEY_CTX_free(pKeyCtx);
+    }
+    return(NULL);    
+}
+
 
 static int
 xmlSecOpenSSLEvpSignatureVerify(xmlSecTransformPtr transform,
                         const xmlSecByte* data, xmlSecSize dataSize,
                         xmlSecTransformCtxPtr transformCtx) {
     xmlSecOpenSSLEvpSignatureCtxPtr ctx;
+    xmlSecByte dgst[EVP_MAX_MD_SIZE];
+    unsigned int dgstSize = sizeof(dgst);
+    EVP_PKEY_CTX *pKeyCtx = NULL;
     unsigned int dataLen;
     int ret;
+    int res = -1;
 
     xmlSecAssert2(xmlSecOpenSSLEvpSignatureCheckId(transform), -1);
     xmlSecAssert2(transform->operation == xmlSecTransformOperationVerify, -1);
@@ -440,25 +537,119 @@ xmlSecOpenSSLEvpSignatureVerify(xmlSecTransformPtr transform,
 
     ctx = xmlSecOpenSSLEvpSignatureGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->digest != NULL, -1);
     xmlSecAssert2(ctx->digestCtx != NULL, -1);
+    xmlSecAssert2(ctx->pKey != NULL, -1);
 
-    XMLSEC_SAFE_CAST_SIZE_TO_UINT(dataSize, dataLen, return(-1), xmlSecTransformGetName(transform));
-
-    ret = EVP_VerifyFinal_ex(ctx->digestCtx, (xmlSecByte*)data, dataLen, ctx->pKey, xmlSecOpenSSLGetLibCtx(), NULL);
-    if(ret < 0) {
-        xmlSecOpenSSLError("EVP_VerifyFinal_ex",
-                           xmlSecTransformGetName(transform));
-        return(-1);
-    } else if(ret != 1) {
-        xmlSecOtherError(XMLSEC_ERRORS_R_DATA_NOT_MATCH,
-                         xmlSecTransformGetName(transform),
-                         "EVP_VerifyFinal: signature verification failed");
-        transform->status = xmlSecTransformStatusFail;
-        return(0);
+    /* calculate digest */
+    ret = xmlSecOpenSSLEvpSignatureCalculateDigest(transform, ctx, dgst, &dgstSize);
+    if(ret != 0) {
+        xmlSecInternalError("xmlSecOpenSSLEvpSignatureCalculateDigest", xmlSecTransformGetName(transform));
+        goto done;
     }
 
-    transform->status = xmlSecTransformStatusOk;
-    return(0);
+    /* create and setup verification context */
+    pKeyCtx = xmlSecOpenSSLEvpSignatureCreatePkeyCtx(transform, ctx);
+    if(pKeyCtx == NULL) {
+        xmlSecInternalError("xmlSecOpenSSLEvpSignatureCreatePkeyCtx", xmlSecTransformGetName(transform));
+        goto done;
+    }
+
+    /* Verify: ret == 1 is sucess, ret == 0 is verification failed, ret < 0 is an error  */
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(dataSize, dataLen, goto done, xmlSecTransformGetName(transform));
+    ret = EVP_PKEY_verify(pKeyCtx, (xmlSecByte*)data, dataLen, dgst, dgstSize);
+    if(ret < 0) {
+        /* error */
+        xmlSecOpenSSLError("EVP_PKEY_verify", xmlSecTransformGetName(transform));
+        goto done;
+    }
+    if(ret == 1) {
+        /* verification succeeded */
+        transform->status = xmlSecTransformStatusOk;
+    } else {
+        /* verification failed */
+        xmlSecOtherError(XMLSEC_ERRORS_R_DATA_NOT_MATCH, xmlSecTransformGetName(transform), "Signature verification failed");
+        transform->status = xmlSecTransformStatusFail;
+    }
+    res = 0;
+
+done:
+    if(pKeyCtx != NULL) {
+        EVP_PKEY_CTX_free(pKeyCtx);
+    }
+
+    return(res);
+}
+
+static int
+xmlSecOpenSSLEvpSignatureSign(xmlSecTransformPtr transform, xmlSecOpenSSLEvpSignatureCtxPtr ctx, xmlSecBufferPtr out) {
+    xmlSecByte dgst[EVP_MAX_MD_SIZE];
+    unsigned int dgstSize = sizeof(dgst);
+    EVP_PKEY_CTX *pKeyCtx = NULL;
+    size_t signLen = 0;
+    xmlSecSize signSize = 0;
+    int ret;
+    int res = -1;
+
+    xmlSecAssert2(transform != NULL, -1);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(out != NULL, -1);
+    
+    /* calculate digest */
+    ret = xmlSecOpenSSLEvpSignatureCalculateDigest(transform, ctx, dgst, &dgstSize);
+    if(ret != 0) {
+        xmlSecInternalError("xmlSecOpenSSLEvpSignatureCalculateDigest", xmlSecTransformGetName(transform));
+        goto done;
+    }
+
+    /* create and setup signature context */
+    pKeyCtx = xmlSecOpenSSLEvpSignatureCreatePkeyCtx(transform, ctx);
+    if(pKeyCtx == NULL) {
+        xmlSecInternalError("xmlSecOpenSSLEvpSignatureCreatePkeyCtx", xmlSecTransformGetName(transform));
+        goto done;
+    }
+
+    /* get output signature length */
+    ret = EVP_PKEY_sign(pKeyCtx, NULL, &signLen, dgst, dgstSize);
+    if(ret <= 0) {
+        xmlSecOpenSSLError2("EVP_PKEY_sign", xmlSecTransformGetName(transform),
+            "ret=%d", ret);
+        goto done;
+    }
+    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(signLen, signSize, goto done, xmlSecTransformGetName(transform));
+
+    ret = xmlSecBufferSetMaxSize(out, signSize);
+    if(ret < 0) {
+        xmlSecInternalError2("xmlSecBufferSetMaxSize", xmlSecTransformGetName(transform),
+                "size=" XMLSEC_SIZE_FMT, signSize);
+        goto done;
+    }
+
+    /* create signature */
+    ret = EVP_PKEY_sign(pKeyCtx, xmlSecBufferGetData(out), &signLen, dgst, dgstSize);
+    if(ret <= 0) {
+        xmlSecOpenSSLError2("EVP_PKEY_sign", xmlSecTransformGetName(transform),
+            "ret=%d", ret);
+        goto done;
+    }
+    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(signLen, signSize, goto done, xmlSecTransformGetName(transform));
+
+    ret = xmlSecBufferSetSize(out, signSize);
+    if(ret < 0) {
+        xmlSecInternalError2("xmlSecBufferSetSize", xmlSecTransformGetName(transform),
+                "size=" XMLSEC_SIZE_FMT, signSize);
+        goto done;
+    }
+
+    /* success */
+    res = 0;
+
+done:
+    if(pKeyCtx != NULL) {
+        EVP_PKEY_CTX_free(pKeyCtx);
+    }
+
+    return(res);
 }
 
 static int
@@ -491,82 +682,40 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
     if(transform->status == xmlSecTransformStatusNone) {
         xmlSecAssert2(outSize == 0, -1);
 
-        if(transform->operation == xmlSecTransformOperationSign) {
-            ret = EVP_SignInit(ctx->digestCtx, ctx->digest);
-            if(ret != 1) {
-                xmlSecOpenSSLError("EVP_SignInit",
-                                   xmlSecTransformGetName(transform));
-                return(-1);
-            }
-        } else {
-            ret = EVP_VerifyInit(ctx->digestCtx, ctx->digest);
-            if(ret != 1) {
-                xmlSecOpenSSLError("EVP_VerifyInit",
-                                   xmlSecTransformGetName(transform));
-                return(-1);
-            }
+        ret = EVP_DigestInit(ctx->digestCtx, ctx->digest);
+        if(ret != 1) {
+            xmlSecOpenSSLError("EVP_DigestInit", xmlSecTransformGetName(transform));
+            return(-1);
         }
         transform->status = xmlSecTransformStatusWorking;
     }
 
+    /* update digest */
     if((transform->status == xmlSecTransformStatusWorking) && (inSize > 0)) {
         xmlSecAssert2(outSize == 0, -1);
 
-        if(transform->operation == xmlSecTransformOperationSign) {
-            ret = EVP_SignUpdate(ctx->digestCtx, xmlSecBufferGetData(in), inSize);
-            if(ret != 1) {
-                xmlSecOpenSSLError("EVP_SignUpdate",
-                                   xmlSecTransformGetName(transform));
-                return(-1);
-            }
-        } else {
-            ret = EVP_VerifyUpdate(ctx->digestCtx, xmlSecBufferGetData(in), inSize);
-            if(ret != 1) {
-                xmlSecOpenSSLError("EVP_VerifyUpdate", xmlSecTransformGetName(transform));
-                return(-1);
-            }
+        ret = EVP_DigestUpdate(ctx->digestCtx, xmlSecBufferGetData(in), inSize);
+        if(ret != 1) {
+            xmlSecOpenSSLError2("EVP_DigestUpdate", xmlSecTransformGetName(transform),
+                "size=" XMLSEC_SIZE_FMT, inSize);
+            return(-1);
         }
 
         ret = xmlSecBufferRemoveHead(in, inSize);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecBufferRemoveHead", xmlSecTransformGetName(transform));
+            xmlSecInternalError2("xmlSecBufferRemoveHead", xmlSecTransformGetName(transform),
+                "size=" XMLSEC_SIZE_FMT, inSize);
             return(-1);
         }
     }
 
     if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
+        /* sign */
         xmlSecAssert2(outSize == 0, -1);
         if(transform->operation == xmlSecTransformOperationSign) {
-            int signLen;
-            unsigned int signSize;
-
-            /* for rsa signatures we get size from EVP_PKEY_size() */
-            signLen = EVP_PKEY_size(ctx->pKey);
-            if(signLen <= 0) {
-                xmlSecOpenSSLError("EVP_PKEY_size", xmlSecTransformGetName(transform));
-                return(-1);
-            }
-            // XMLSEC_SAFE_CAST_INT_TO_UINT(signLen, signSize, return(-1), xmlSecTransformGetName(transform));
-            XMLSEC_SAFE_CAST_INT_TO_UINT(signLen, signSize, return(-1), xmlSecTransformGetName(transform));
-
-            ret = xmlSecBufferSetMaxSize(out, signSize);
+            ret = xmlSecOpenSSLEvpSignatureSign(transform, ctx, out);
             if(ret < 0) {
-                xmlSecInternalError2("xmlSecBufferSetMaxSize", xmlSecTransformGetName(transform),
-                        "size=%u", signSize);
-                return(-1);
-            }
-
-            ret = EVP_SignFinal_ex(ctx->digestCtx, xmlSecBufferGetData(out), &signSize, ctx->pKey,
-                               xmlSecOpenSSLGetLibCtx(), NULL);
-            if(ret != 1) {
-                xmlSecOpenSSLError("EVP_SignFinal", xmlSecTransformGetName(transform));
-                return(-1);
-            }
-
-            ret = xmlSecBufferSetSize(out, signSize);
-            if(ret < 0) {
-                xmlSecInternalError2("xmlSecBufferSetSize", xmlSecTransformGetName(transform),
-                        "size=%u", signSize);
+                xmlSecInternalError("xmlSecOpenSSLEvpSignatureSign", xmlSecTransformGetName(transform));
                 return(-1);
             }
         }

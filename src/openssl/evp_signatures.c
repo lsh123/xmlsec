@@ -464,7 +464,7 @@ xmlSecOpenSSLEvpSignatureCreatePkeyCtx(xmlSecTransformPtr transform, xmlSecOpenS
     xmlSecAssert2(ctx->pKey != NULL, NULL);
 
 #ifndef XMLSEC_OPENSSL_API_300
-    pKeyCtx = EVP_PKEY_CTX_new(ctx->pKey, NULL)
+    pKeyCtx = EVP_PKEY_CTX_new(ctx->pKey, NULL);
     if (pKeyCtx == NULL) {
         xmlSecOpenSSLError("EVP_PKEY_CTX_new", xmlSecTransformGetName(transform));
         goto error;

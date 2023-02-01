@@ -199,7 +199,7 @@ function (can be used to implement enveloped signature)</td>
                   <td valign="top">Y</td>
 </tr>
 <tr>
-<td style="width: 40%;" align="left" valign="top">SHA1 DEPRECATED</td>
+<td style="width: 40%;" align="left" valign="top">SHA1</td>
                   <td valign="top">Y</td>
                   <td valign="top">Y</td>
                   <td valign="top">Y</td>
@@ -217,7 +217,7 @@ function (can be used to implement enveloped signature)</td>
                   <td valign="top">Y</td>
 </tr>
 <tr>
-<td style="width: 40%;" align="left" valign="top">HMAC-SHA1 (DEPRECATED)</td>
+<td style="width: 40%;" align="left" valign="top">HMAC-SHA1</td>
                   <td valign="top">Y</td>
                   <td valign="top">Y</td>
                   <td valign="top">Y</td>
@@ -226,7 +226,7 @@ function (can be used to implement enveloped signature)</td>
                   <td valign="top">Y</td>
 </tr>
 <tr>
-<td style="width: 40%;" align="left" valign="top">DSA with SHA1 (DSS, DEPRECATED) <a href="#dsa-sha1"><sup>(1)</sup></a>
+<td style="width: 40%;" align="left" valign="top">DSA-SHA1 (DSS) <a href="#dsa-sha1"><sup>(1)</sup></a>
 </td>
                   <td valign="top">Y</td>
                   <td valign="top">Y</td>
@@ -236,7 +236,7 @@ function (can be used to implement enveloped signature)</td>
                   <td valign="top">Y</td>
 </tr>
 <tr>
-<td style="width: 40%;" align="left" valign="top">RSA with SHA1 (DEPRECATED)</td>
+<td style="width: 40%;" align="left" valign="top">RSA-SHA1</td>
                   <td valign="top">Y</td>
                   <td valign="top">Y</td>
                   <td valign="top">Y</td>
@@ -315,7 +315,7 @@ function (can be used to implement enveloped signature)</td>
 </tr>
 </tbody></table>
 <div align="left"> <br><h4 style="text-align: center;">Additional XML Security
-Algorithms (<a href="http://www.ietf.org/rfc/rfc4051.txt">RFC 4051</a>)</h4>
+Algorithms (<a href="https://www.rfc-editor.org/rfc/rfc9231.txt">RFC 9231</a>)</h4>
             <table style="width: 85%; text-align: left; margin-left: auto; margin-right: auto;" border="1" cellpadding="2" cellspacing="2"><tbody>
 <tr>
 <td style="width: 40%;" align="left" valign="top"><b>Features and algorithms<br></b></td>
@@ -426,6 +426,15 @@ Algorithms (<a href="http://www.ietf.org/rfc/rfc4051.txt">RFC 4051</a>)</h4>
                   <td valign="top">N</td>
 </tr>
 <tr>
+    <td style="vertical-align: top; width: 40%;">RSA-RIPEMD160 (DEPRECATED)</td>
+                      <td valign="top">Y</td>
+                      <td valign="top">Y</td>
+                      <td valign="top">Y</td>
+                      <td valign="top">N</td>
+                      <td valign="top">N</td>
+                      <td valign="top">N</td>
+    </tr>
+<tr>
 <td style="vertical-align: top; width: 40%;">RSA-MD5 (DEPRECATED)</td>
                   <td valign="top">Y</td>
                   <td valign="top">Y</td>
@@ -471,16 +480,52 @@ Algorithms (<a href="http://www.ietf.org/rfc/rfc4051.txt">RFC 4051</a>)</h4>
                   <td valign="top">Y</td>
 </tr>
 <tr>
-<td style="vertical-align: top; width: 40%;">RSA-RIPEMD160 (DEPRECATED)</td>
-                  <td valign="top">Y</td>
-                  <td valign="top">Y</td>
-                  <td valign="top">Y</td>
-                  <td valign="top">N</td>
-                  <td valign="top">N</td>
-                  <td valign="top">N</td>
+<td style="vertical-align: top; width: 40%;">RSA-PSS-SHA1 (with defaul parameters)</td>
+                    <td valign="top">Y</td>
+                    <td valign="top">N</td>
+                    <td valign="top">N</td>
+                    <td valign="top">N</td>
+                    <td valign="top">N</td>
+                    <td valign="top">N</td>
 </tr>
 <tr>
-<td style="vertical-align: top; width: 40%;">ECDSA-SHA1 (DEPRECATED)</td>
+<td style="vertical-align: top; width: 40%;">RSA-PSS-SHA224 (with defaul parameters)</td>
+                    <td valign="top">Y</td>
+                    <td valign="top">N</td>
+                    <td valign="top">N</td>
+                    <td valign="top">N</td>
+                    <td valign="top">N</td>
+                    <td valign="top">N</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 40%;">RSA-PSS-SHA256 (with defaul parameters)</td>
+                    <td valign="top">Y</td>
+                    <td valign="top">N</td>
+                    <td valign="top">N</td>
+                    <td valign="top">N</td>
+                    <td valign="top">N</td>
+                    <td valign="top">N</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 40%;">RSA-PSS-SHA384 (with defaul parameters)</td>
+                    <td valign="top">Y</td>
+                    <td valign="top">N</td>
+                    <td valign="top">N</td>
+                    <td valign="top">N</td>
+                    <td valign="top">N</td>
+                    <td valign="top">N</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 40%;">RSA-PSS-SHA512 (with defaul parameters)</td>
+                    <td valign="top">Y</td>
+                    <td valign="top">N</td>
+                    <td valign="top">N</td>
+                    <td valign="top">N</td>
+                    <td valign="top">N</td>
+                    <td valign="top">N</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 40%;">ECDSA-SHA1</td>
                   <td valign="top">Y</td>
                   <td valign="top">N</td>
                   <td valign="top">N</td>
@@ -525,7 +570,7 @@ Algorithms (<a href="http://www.ietf.org/rfc/rfc4051.txt">RFC 4051</a>)</h4>
                   <td valign="top">Y</td>
 </tr>
 <tr>
-<td style="vertical-align: top; width: 40%;">ESIGN-SHA1 (DEPRECATED)</td>
+<td style="vertical-align: top; width: 40%;">ESIGN-SHA1</td>
                   <td valign="top">N</td>
                   <td valign="top">N</td>
                   <td valign="top">N</td>

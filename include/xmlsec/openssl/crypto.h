@@ -774,6 +774,60 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformRsaOaepGetKlass(voi
         xmlSecOpenSSLTransformRsaOaepEnc11GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformRsaOaepEnc11GetKlass(void);
 
+#ifndef XMLSEC_NO_SHA1
+/**
+ * xmlSecOpenSSLTransformRsaPssSha1Id:
+ *
+ * The RSA-PSS-SHA1 signature transform klass (https://www.rfc-editor.org/rfc/rfc9231.txt).
+ */
+#define xmlSecOpenSSLTransformRsaPssSha1Id \
+        xmlSecOpenSSLTransformRsaPssSha1GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformRsaPssSha1GetKlass(void);
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA224
+/**
+ * xmlSecOpenSSLTransformRsaPssSha224Id:
+ *
+ * The RSA-PSS-SHA224 signature transform klass (https://www.rfc-editor.org/rfc/rfc9231.txt).
+ */
+#define xmlSecOpenSSLTransformRsaPssSha224Id       \
+        xmlSecOpenSSLTransformRsaPssSha224GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformRsaPssSha224GetKlass(void);
+#endif /* XMLSEC_NO_SHA224 */
+
+#ifndef XMLSEC_NO_SHA256
+/**
+ * xmlSecOpenSSLTransformRsaPssSha256Id:
+ *
+ * The RSA-PSS-SHA256 signature transform klass (https://www.rfc-editor.org/rfc/rfc9231.txt).
+ */
+#define xmlSecOpenSSLTransformRsaPssSha256Id       \
+        xmlSecOpenSSLTransformRsaPssSha256GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformRsaPssSha256GetKlass(void);
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+/**
+ * xmlSecOpenSSLTransformRsaPssSha384Id:
+ *
+ * The RSA-PSS-SHA384 signature transform klass (https://www.rfc-editor.org/rfc/rfc9231.txt).
+ */
+#define xmlSecOpenSSLTransformRsaPssSha384Id       \
+        xmlSecOpenSSLTransformRsaPssSha384GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformRsaPssSha384GetKlass(void);
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+/**
+ * xmlSecOpenSSLTransformRsaPssSha512Id:
+ *
+ * The RSA-PSS-SHA512 signature transform klass (https://www.rfc-editor.org/rfc/rfc9231.txt).
+ */
+#define xmlSecOpenSSLTransformRsaPssSha512Id       \
+        xmlSecOpenSSLTransformRsaPssSha512GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformRsaPssSha512GetKlass(void);
+#endif /* XMLSEC_NO_SHA512 */
 
 #endif /* XMLSEC_NO_RSA */
 

@@ -389,6 +389,11 @@ typedef int                     (*xmlSecCryptoAppKeyCertLoadMemoryMethod)(xmlSec
  * @transformRsaSha256GetKlass: the method to get pointer to RSA-SHA256 signature transform.
  * @transformRsaSha384GetKlass: the method to get pointer to RSA-SHA384 signature transform.
  * @transformRsaSha512GetKlass: the method to get pointer to RSA-SHA512 signature transform.
+ * @transformRsaPssSha1GetKlass:   the method to get pointer to RSA-PSS-HA1 signature transform.
+ * @transformRsaPssSha224GetKlass: the method to get pointer to RSA-PSS-SHA224 signature transform.
+ * @transformRsaPssSha256GetKlass: the method to get pointer to RSA-PSS-SHA256 signature transform.
+ * @transformRsaPssSha384GetKlass: the method to get pointer to RSA-PSS-SHA384 signature transform.
+ * @transformRsaPssSha512GetKlass: the method to get pointer to RSA-PSS-SHA512 signature transform.
  * @transformRsaPkcs1GetKlass:  the method to get pointer to RSA-PKCS1_5 key transport transform.
  * @transformRsaOaepGetKlass:   the method to get pointer to RSA-OAEP key transport transform (XMLEnc 1.0).
  * @transformRsaOaepEnc11GetKlass: the method to get pointer to RSA-OAEP key transport transform (XMLEnc 1.1).
@@ -473,11 +478,19 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoTransformGetKlassMethod          transformRipemd160GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformRsaMd5GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformRsaRipemd160GetKlass;
+
     xmlSecCryptoTransformGetKlassMethod          transformRsaSha1GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformRsaSha224GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformRsaSha256GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformRsaSha384GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformRsaSha512GetKlass;
+
+    xmlSecCryptoTransformGetKlassMethod          transformRsaPssSha1GetKlass;
+    xmlSecCryptoTransformGetKlassMethod          transformRsaPssSha224GetKlass;
+    xmlSecCryptoTransformGetKlassMethod          transformRsaPssSha256GetKlass;
+    xmlSecCryptoTransformGetKlassMethod          transformRsaPssSha384GetKlass;
+    xmlSecCryptoTransformGetKlassMethod          transformRsaPssSha512GetKlass;
+
     xmlSecCryptoTransformGetKlassMethod          transformRsaPkcs1GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformRsaOaepGetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformRsaOaepEnc11GetKlass;

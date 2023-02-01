@@ -400,6 +400,51 @@ execDSigTest $res_success \
 
 execDSigTest $res_success \
     "" \
+    "aleksey-xmldsig-01/enveloping-rsa-pss-sha1" \
+    "sha1 rsa-pss-sha1" \
+    "rsa x509" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+    "$priv_key_option $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloping-rsa-pss-sha224" \
+    "sha224 rsa-pss-sha224" \
+    "rsa x509" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+    "$priv_key_option $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloping-rsa-pss-sha256" \
+    "sha256 rsa-pss-sha256" \
+    "rsa x509" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+    "$priv_key_option $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloping-rsa-pss-sha384" \
+    "sha384 rsa-pss-sha384" \
+    "rsa x509" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+    "$priv_key_option $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloping-rsa-pss-sha512" \
+    "sha512 rsa-pss-sha512" \
+    "rsa x509" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+    "$priv_key_option $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+
+execDSigTest $res_success \
+    "" \
     "aleksey-xmldsig-01/enveloping-sha256-dsa2048-sha256" \
     "sha256 dsa-sha256" \
     "dsa x509" \

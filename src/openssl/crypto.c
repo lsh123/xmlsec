@@ -264,6 +264,7 @@ xmlSecCryptoGetFunctions_openssl(void) {
     gXmlSecOpenSSLFunctions->transformRsaRipemd160GetKlass      = xmlSecOpenSSLTransformRsaRipemd160GetKlass;
 #endif /* XMLSEC_NO_RIPEMD160 */
 
+
 #ifndef XMLSEC_NO_SHA1
     gXmlSecOpenSSLFunctions->transformRsaSha1GetKlass           = xmlSecOpenSSLTransformRsaSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
@@ -283,6 +284,28 @@ xmlSecCryptoGetFunctions_openssl(void) {
 #ifndef XMLSEC_NO_SHA512
     gXmlSecOpenSSLFunctions->transformRsaSha512GetKlass         = xmlSecOpenSSLTransformRsaSha512GetKlass;
 #endif /* XMLSEC_NO_SHA512 */
+
+
+#ifndef XMLSEC_NO_SHA1
+    gXmlSecOpenSSLFunctions->transformRsaPssSha1GetKlass       = xmlSecOpenSSLTransformRsaPssSha1GetKlass;
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA224
+    gXmlSecOpenSSLFunctions->transformRsaPssSha224GetKlass     = xmlSecOpenSSLTransformRsaPssSha224GetKlass;
+#endif /* XMLSEC_NO_SHA224 */
+
+#ifndef XMLSEC_NO_SHA256
+    gXmlSecOpenSSLFunctions->transformRsaPssSha256GetKlass     = xmlSecOpenSSLTransformRsaPssSha256GetKlass;
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+    gXmlSecOpenSSLFunctions->transformRsaPssSha384GetKlass     = xmlSecOpenSSLTransformRsaPssSha384GetKlass;
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+    gXmlSecOpenSSLFunctions->transformRsaPssSha512GetKlass     = xmlSecOpenSSLTransformRsaPssSha512GetKlass;
+#endif /* XMLSEC_NO_SHA512 */
+
 
     gXmlSecOpenSSLFunctions->transformRsaPkcs1GetKlass          = xmlSecOpenSSLTransformRsaPkcs1GetKlass;
     gXmlSecOpenSSLFunctions->transformRsaOaepGetKlass           = xmlSecOpenSSLTransformRsaOaepGetKlass;

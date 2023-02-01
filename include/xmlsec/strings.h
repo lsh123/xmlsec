@@ -423,6 +423,24 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefMgf1Sha256[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefMgf1Sha384[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefMgf1Sha512[];
 
+
+/* RSS PSS https://www.rfc-editor.org/rfc/rfc9231.txt */
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameRsaPssSha1[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRsaPssSha1[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameRsaPssSha224[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRsaPssSha224[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameRsaPssSha256[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRsaPssSha256[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameRsaPssSha384[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRsaPssSha384[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameRsaPssSha512[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRsaPssSha512[];
+
+
 /*************************************************************************
  *
  * GOSTR3411_94 strings

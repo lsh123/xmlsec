@@ -852,6 +852,38 @@ xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(struct _xmlSecCryptoDLFuncti
         return(-1);
     }
 
+
+    if((functions->transformRsaPssSha1GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformRsaPssSha1GetKlass()) < 0) {
+        xmlSecInternalError("xmlSecTransformIdsRegister",
+                            xmlSecTransformKlassGetName(functions->transformRsaPssSha1GetKlass()));
+        return(-1);
+    }
+
+    if((functions->transformRsaPssSha224GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformRsaPssSha224GetKlass()) < 0) {
+        xmlSecInternalError("xmlSecTransformIdsRegister",
+                            xmlSecTransformKlassGetName(functions->transformRsaPssSha224GetKlass()));
+        return(-1);
+    }
+
+    if((functions->transformRsaPssSha256GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformRsaPssSha256GetKlass()) < 0) {
+        xmlSecInternalError("xmlSecTransformIdsRegister",
+                            xmlSecTransformKlassGetName(functions->transformRsaPssSha256GetKlass()));
+        return(-1);
+    }
+
+    if((functions->transformRsaPssSha384GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformRsaPssSha384GetKlass()) < 0) {
+        xmlSecInternalError("xmlSecTransformIdsRegister",
+                            xmlSecTransformKlassGetName(functions->transformRsaPssSha384GetKlass()));
+        return(-1);
+    }
+
+    if((functions->transformRsaPssSha512GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformRsaPssSha512GetKlass()) < 0) {
+        xmlSecInternalError("xmlSecTransformIdsRegister",
+                            xmlSecTransformKlassGetName(functions->transformRsaPssSha512GetKlass()));
+        return(-1);
+    }
+
+
     if((functions->transformRsaPkcs1GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformRsaPkcs1GetKlass()) < 0) {
         xmlSecInternalError("xmlSecTransformIdsRegister",
                             xmlSecTransformKlassGetName(functions->transformRsaPkcs1GetKlass()));

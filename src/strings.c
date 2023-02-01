@@ -418,6 +418,22 @@ const xmlChar xmlSecHrefMgf1Sha256[]            = "http://www.w3.org/2009/xmlenc
 const xmlChar xmlSecHrefMgf1Sha384[]            = "http://www.w3.org/2009/xmlenc11#mgf1sha384";
 const xmlChar xmlSecHrefMgf1Sha512[]            = "http://www.w3.org/2009/xmlenc11#mgf1sha512";
 
+/* RSS PSS https://www.rfc-editor.org/rfc/rfc9231.txt */
+const xmlChar xmlSecNameRsaPssSha1[]            = "rsa-pss-sha1";
+const xmlChar xmlSecHrefRsaPssSha1[]            = "http://www.w3.org/2007/05/xmldsig-more#sha1-rsa-MGF1";
+
+const xmlChar xmlSecNameRsaPssSha224[]          = "rsa-pss-sha224";
+const xmlChar xmlSecHrefRsaPssSha224[]          = "http://www.w3.org/2007/05/xmldsig-more#sha224-rsa-MGF1";
+
+const xmlChar xmlSecNameRsaPssSha256[]          = "rsa-pss-sha256";
+const xmlChar xmlSecHrefRsaPssSha256[]          = "http://www.w3.org/2007/05/xmldsig-more#sha256-rsa-MGF1";
+
+const xmlChar xmlSecNameRsaPssSha384[]          = "rsa-pss-sha384";
+const xmlChar xmlSecHrefRsaPssSha384[]          = "http://www.w3.org/2007/05/xmldsig-more#sha384-rsa-MGF1";
+
+const xmlChar xmlSecNameRsaPssSha512[]          = "rsa-pss-sha512";
+const xmlChar xmlSecHrefRsaPssSha512[]          = "http://www.w3.org/2007/05/xmldsig-more#sha512-rsa-MGF1";
+
 /*************************************************************************
  *
  * GOSTR3411_94 strings

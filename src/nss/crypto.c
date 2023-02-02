@@ -222,6 +222,28 @@ xmlSecCryptoGetFunctions_nss(void) {
     gXmlSecNssFunctions->transformRsaSha512GetKlass     = xmlSecNssTransformRsaSha512GetKlass;
 #endif /* XMLSEC_NO_SHA512 */
 
+
+#ifndef XMLSEC_NO_SHA1
+    gXmlSecNssFunctions->transformRsaPssSha1GetKlass    = xmlSecNssTransformRsaPssSha1GetKlass;
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA224
+    gXmlSecNssFunctions->transformRsaPssSha224GetKlass  = xmlSecNssTransformRsaPssSha224GetKlass;
+#endif /* XMLSEC_NO_SHA224 */
+
+#ifndef XMLSEC_NO_SHA256
+    gXmlSecNssFunctions->transformRsaPssSha256GetKlass  = xmlSecNssTransformRsaPssSha256GetKlass;
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+    gXmlSecNssFunctions->transformRsaPssSha384GetKlass  = xmlSecNssTransformRsaPssSha384GetKlass;
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+    gXmlSecNssFunctions->transformRsaPssSha512GetKlass  = xmlSecNssTransformRsaPssSha512GetKlass;
+#endif /* XMLSEC_NO_SHA512 */
+
+
     gXmlSecNssFunctions->transformRsaPkcs1GetKlass      = xmlSecNssTransformRsaPkcs1GetKlass;
 
 #ifndef XMLSEC_NO_RSA_OAEP

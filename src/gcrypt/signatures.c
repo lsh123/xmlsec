@@ -1155,7 +1155,6 @@ xmlSecGCryptRsaPssSign(int digest, xmlSecKeyDataPtr key_data,
     gcry_sexp_t s_tmp;
     gpg_error_t err;
     int dgstLen;
-    size_t dgstSizeT;
     int ret;
     int res = -1;
 
@@ -1167,10 +1166,9 @@ xmlSecGCryptRsaPssSign(int digest, xmlSecKeyDataPtr key_data,
 
     /* get the current digest */
     XMLSEC_SAFE_CAST_SIZE_TO_INT(dgstSize, dgstLen, return(-1), xmlSecGCryptKeyDataRsaGetPrivateKey(key_data));
-    XMLSEC_SAFE_CAST_SIZE_TO_SIZE_T(dgstSize, dgstSizeT, return(-1), xmlSecGCryptKeyDataRsaGetPrivateKey(key_data));
     err = gcry_sexp_build (&s_data, NULL,
                            "(data (flags pss)(salt-length %u)(hash %s %b))",
-                           dgstSizeT,  /* The default salt length is the length of the hash function */
+                           dgstSize,  /* The default salt length is the length of the hash function */
                            gcry_md_algo_name(digest),
                            dgstLen, dgst);
     if((err != GPG_ERR_NO_ERROR) || (s_data == NULL)) {
@@ -1250,7 +1248,6 @@ xmlSecGCryptRsaPssVerify(int digest, xmlSecKeyDataPtr key_data,
     gcry_sexp_t s_sig = NULL;
     gpg_error_t err;
     int dgstLen;
-    size_t dgstSizeT;
     int res = -1;
 
     xmlSecAssert2(key_data != NULL, -1);
@@ -1262,10 +1259,9 @@ xmlSecGCryptRsaPssVerify(int digest, xmlSecKeyDataPtr key_data,
 
     /* get the current digest */
     XMLSEC_SAFE_CAST_SIZE_TO_INT(dgstSize, dgstLen, return(-1), NULL);
-    XMLSEC_SAFE_CAST_SIZE_TO_SIZE_T(dgstSize, dgstSizeT, return(-1), xmlSecGCryptKeyDataRsaGetPrivateKey(key_data));
     err = gcry_sexp_build (&s_data, NULL,
                            "(data (flags pss)(salt-length %u)(hash %s %b))",
-                           dgstSizeT,  /* The default salt length is the length of the hash function */
+                           dgstSize,  /* The default salt length is the length of the hash function */
                            gcry_md_algo_name(digest),
                            dgstLen, dgst);
     if((err != GPG_ERR_NO_ERROR) || (s_data == NULL)) {

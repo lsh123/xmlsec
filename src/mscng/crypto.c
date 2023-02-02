@@ -251,6 +251,24 @@ xmlSecCryptoGetFunctions_mscng(void) {
     gXmlSecMSCngFunctions->transformRsaSha512GetKlass       = xmlSecMSCngTransformRsaSha512GetKlass;
 #endif /* XMLSEC_NO_SHA512 */
 
+
+#ifndef XMLSEC_NO_SHA1
+    gXmlSecMSCngFunctions->transformRsaPssSha1GetKlass = xmlSecMSCngTransformRsaPssSha1GetKlass;
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA256
+    gXmlSecMSCngFunctions->transformRsaPssSha256GetKlass = xmlSecMSCngTransformRsaPssSha256GetKlass;
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+    gXmlSecMSCngFunctions->transformRsaPssSha384GetKlass = xmlSecMSCngTransformRsaPssSha384GetKlass;
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+    gXmlSecMSCngFunctions->transformRsaPssSha512GetKlass = xmlSecMSCngTransformRsaPssSha512GetKlass;
+#endif /* XMLSEC_NO_SHA512 */
+
+
     gXmlSecMSCngFunctions->transformRsaPkcs1GetKlass            = xmlSecMSCngTransformRsaPkcs1GetKlass;
     gXmlSecMSCngFunctions->transformRsaOaepGetKlass             = xmlSecMSCngTransformRsaOaepGetKlass;
     gXmlSecMSCngFunctions->transformRsaOaepEnc11GetKlass        = xmlSecMSCngTransformRsaOaepEnc11GetKlass;

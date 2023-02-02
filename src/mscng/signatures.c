@@ -123,30 +123,6 @@ static int xmlSecMSCngSignatureCheckId(xmlSecTransformPtr transform) {
 #endif /* XMLSEC_NO_SHA512 */
 
 #ifndef XMLSEC_NO_SHA1
-    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaSha1Id)) {
-       return(1);
-    } else
-#endif /* XMLSEC_NO_SHA1 */
-
-#ifndef XMLSEC_NO_SHA256
-    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaSha256Id)) {
-       return(1);
-    } else
-#endif /* XMLSEC_NO_SHA256 */
-
-#ifndef XMLSEC_NO_SHA384
-    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaSha384Id)) {
-       return(1);
-    } else
-#endif /* XMLSEC_NO_SHA384 */
-
-#ifndef XMLSEC_NO_SHA512
-    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaSha512Id)) {
-       return(1);
-    } else
-#endif /* XMLSEC_NO_SHA512 */
-
-#ifndef XMLSEC_NO_SHA1
     if (xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaPssSha1Id)) {
         return(1);
     } else
@@ -476,7 +452,6 @@ static int xmlSecMSCngSignatureVerify(xmlSecTransformPtr transform,
         pssPadingInfo.pszAlgId = ctx->pszHashAlgId;
         pssPadingInfo.cbSalt = ctx->dwRsaPssSaltSize;
         pPaddingInfo = &pssPadingInfo;
-
     }
 
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(dataSize, dwDataSize, return(-1), xmlSecTransformGetName(transform));
@@ -516,7 +491,7 @@ xmlSecMSCngSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
     DWORD cbHashObject = 0;
     BCRYPT_PKCS1_PADDING_INFO pkcs1PaddingInfo;
     BCRYPT_PSS_PADDING_INFO pssPadingInfo;
-    BCRYPT_PKCS1_PADDING_INFO* pPaddingInfo = NULL;
+    VOID* pPaddingInfo = NULL;
     int ret;
 
     xmlSecAssert2(xmlSecMSCngSignatureCheckId(transform), -1);

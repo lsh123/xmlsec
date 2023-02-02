@@ -20,5 +20,5 @@ echo "============== Starting memcheck for ${crypto} with source root: '${top_di
 rm -f /tmp/*.log
 make distclean
 ${top_dir}/autogen.sh --enable-development --with-default-crypto=${crypto} "$@"
-make
+make -j12
 make memcheck-crypto-${crypto}

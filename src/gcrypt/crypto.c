@@ -188,6 +188,23 @@ xmlSecCryptoGetFunctions_gcrypt(void) {
     gXmlSecGCryptFunctions->transformRsaSha512GetKlass         = xmlSecGCryptTransformRsaSha512GetKlass;
 #endif /* XMLSEC_NO_SHA512 */
 
+#ifndef XMLSEC_NO_SHA1
+    gXmlSecGCryptFunctions->transformRsaPssSha1GetKlass        = xmlSecGCryptTransformRsaPssSha1GetKlass;
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA256
+    gXmlSecGCryptFunctions->transformRsaPssSha256GetKlass      = xmlSecGCryptTransformRsaPssSha256GetKlass;
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+    gXmlSecGCryptFunctions->transformRsaPssSha384GetKlass      = xmlSecGCryptTransformRsaPssSha384GetKlass;
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+    gXmlSecGCryptFunctions->transformRsaPssSha512GetKlass      = xmlSecGCryptTransformRsaPssSha512GetKlass;
+#endif /* XMLSEC_NO_SHA512 */
+
+
 #endif /* XMLSEC_NO_RSA */
 
     /******************************* SHA ********************************/

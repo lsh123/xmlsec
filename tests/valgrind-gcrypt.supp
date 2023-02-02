@@ -74,27 +74,27 @@
 }
 
 {
-   xmlSecGCryptDsaPkSign -> do_randomize -> malloc
+   xmlSecGCryptDsaSign -> do_randomize -> malloc
    Memcheck:Leak
    match-leak-kinds: reachable
    fun:malloc
    ...
    fun:do_randomize
    ...
-   fun:xmlSecGCryptDsaPkSign
+   fun:xmlSecGCryptDsaSign
    ...
    fun:main
 }
 
 {
-   xmlSecGCryptRsaPkcs1PkSign -> _gcry_mpi_randomize -> malloc
+   xmlSecGCryptRsaPkcs1Sign -> _gcry_mpi_randomize -> malloc
    Memcheck:Leak
    match-leak-kinds: reachable
    fun:malloc
    ...
    fun:_gcry_mpi_randomize
    ...
-   fun:xmlSecGCryptRsaPkcs1PkSign
+   fun:xmlSecGCryptRsaPkcs1Sign
    ...
    fun:main
 }

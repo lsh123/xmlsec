@@ -196,6 +196,23 @@ xmlSecCryptoGetFunctions_gnutls(void) {
     gXmlSecGnuTLSFunctions->transformRsaSha512GetKlass         = xmlSecGnuTLSTransformRsaSha512GetKlass;
 #endif /* XMLSEC_NO_SHA512 */
 
+
+#ifndef XMLSEC_NO_SHA1
+    gXmlSecGnuTLSFunctions->transformRsaPssSha1GetKlass        = xmlSecGnuTLSTransformRsaPssSha1GetKlass;
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA256
+    gXmlSecGnuTLSFunctions->transformRsaPssSha256GetKlass      = xmlSecGnuTLSTransformRsaPssSha256GetKlass;
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+    gXmlSecGnuTLSFunctions->transformRsaPssSha384GetKlass      = xmlSecGnuTLSTransformRsaPssSha384GetKlass;
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+    gXmlSecGnuTLSFunctions->transformRsaPssSha512GetKlass      = xmlSecGnuTLSTransformRsaPssSha512GetKlass;
+#endif /* XMLSEC_NO_SHA512 */
+
 #endif /* XMLSEC_NO_RSA */
 
     /******************************* SHA ********************************/

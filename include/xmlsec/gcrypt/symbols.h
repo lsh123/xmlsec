@@ -57,23 +57,39 @@ extern "C" {
 #define xmlSecTransformAes128CbcId              xmlSecGCryptTransformAes128CbcId
 #define xmlSecTransformAes192CbcId              xmlSecGCryptTransformAes192CbcId
 #define xmlSecTransformAes256CbcId              xmlSecGCryptTransformAes256CbcId
+
 #define xmlSecTransformKWAes128Id               xmlSecGCryptTransformKWAes128Id
 #define xmlSecTransformKWAes192Id               xmlSecGCryptTransformKWAes192Id
 #define xmlSecTransformKWAes256Id               xmlSecGCryptTransformKWAes256Id
+
 #define xmlSecTransformDes3CbcId                xmlSecGCryptTransformDes3CbcId
 #define xmlSecTransformKWDes3Id                 xmlSecGCryptTransformKWDes3Id
+
 #define xmlSecTransformDsaSha1Id                xmlSecGCryptTransformDsaSha1Id
+
 #define xmlSecTransformHmacMd5Id                xmlSecGCryptTransformHmacMd5Id
+#define xmlSecTransformRipemd160Id              xmlSecGCryptTransformRipemd160Id
+
 #define xmlSecTransformHmacSha224Id             xmlSecGCryptTransformHmacSha224Id
 #define xmlSecTransformHmacSha256Id             xmlSecGCryptTransformHmacSha256Id
 #define xmlSecTransformHmacSha384Id             xmlSecGCryptTransformHmacSha384Id
 #define xmlSecTransformHmacSha512Id             xmlSecGCryptTransformHmacSha512Id
 #define xmlSecTransformHmacRipemd160Id          xmlSecGCryptTransformHmacRipemd160Id
 #define xmlSecTransformHmacSha1Id               xmlSecGCryptTransformHmacSha1Id
-#define xmlSecTransformRipemd160Id              xmlSecGCryptTransformRipemd160Id
+
 #define xmlSecTransformRsaSha1Id                xmlSecGCryptTransformRsaSha1Id
+#define xmlSecTransformRsaSha256Id              xmlSecGCryptTransformRsaSha256Id
+#define xmlSecTransformRsaSha384Id              xmlSecGCryptTransformRsaSha384Id
+#define xmlSecTransformRsaSha512Id              xmlSecGCryptTransformRsaSha512Id
+
+#define xmlSecTransformRsaPssSha1Id             xmlSecGCryptTransformRsaPssSha1Id
+#define xmlSecTransformRsaPssSha256Id           xmlSecGCryptTransformRsaPssSha256Id
+#define xmlSecTransformRsaPssSha384Id           xmlSecGCryptTransformRsaPssSha384Id
+#define xmlSecTransformRsaPssSha512Id           xmlSecGCryptTransformRsaSha512Id
+
 #define xmlSecTransformRsaPkcs1Id               xmlSecGCryptTransformRsaPkcs1Id
 #define xmlSecTransformRsaOaepId                xmlSecGCryptTransformRsaOaepId
+
 #define xmlSecTransformSha1Id                   xmlSecGCryptTransformSha1Id
 #define xmlSecTransformSha224Id                 xmlSecGCryptTransformSha224Id
 #define xmlSecTransformSha256Id                 xmlSecGCryptTransformSha256Id

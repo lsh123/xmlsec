@@ -150,6 +150,68 @@ xmlSecGnuTLSTransformRsaSha512GetKlass(void) {
 
 #endif /* XMLSEC_NO_SHA512 */
 
+#ifndef XMLSEC_NO_SHA1
+/**
+ * xmlSecGnuTLSTransformRsaPssSha1GetKlass:
+ *
+ * The RSA-PSS-SHA1 signature transform klass.
+ *
+ * Returns: RSA-PSS-SHA1 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecGnuTLSTransformRsaPssSha1GetKlass(void) {
+    return (xmlSecGCryptTransformRsaPssSha1GetKlass());
+}
+
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA256
+
+/**
+ * xmlSecGnuTLSTransformRsaPssSha256GetKlass:
+ *
+ * The RSA-PSS-SHA256 signature transform klass.
+ *
+ * Returns: RSA-PSS-SHA256 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecGnuTLSTransformRsaPssSha256GetKlass(void) {
+    return (xmlSecGCryptTransformRsaPssSha256GetKlass());
+}
+
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+
+/**
+ * xmlSecGnuTLSTransformRsaPssSha384GetKlass:
+ *
+ * The RSA-PSS-SHA384 signature transform klass.
+ *
+ * Returns: RSA-PSS-SHA384 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecGnuTLSTransformRsaPssSha384GetKlass(void) {
+      return (xmlSecGCryptTransformRsaPssSha384GetKlass());
+}
+
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+/**
+ * xmlSecGnuTLSTransformRsaPssSha512GetKlass:
+ *
+ * The RSA-PSS-SHA512 signature transform klass.
+ *
+ * Returns: RSA-PSS-SHA512 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecGnuTLSTransformRsaPssSha512GetKlass(void) {
+    return (xmlSecGCryptTransformRsaPssSha512GetKlass());
+}
+
+#endif /* XMLSEC_NO_SHA512 */
+
 #endif /* XMLSEC_NO_RSA */
 
 

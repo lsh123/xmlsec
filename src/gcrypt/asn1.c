@@ -187,9 +187,14 @@ xmlSecGCryptAsn1ParseTag (xmlSecByte const **buffer, unsigned long *buflen, stru
     return(0);
 }
 
+#define XMLSEC_GCRYPT_ASN1_MAX_OBJECT_ID_SIZE    8
+typedef xmlSecByte xmlSecGCryptAsn1ObjectId[XMLSEC_GCRYPT_ASN1_MAX_OBJECT_ID_SIZE];
+
 static int
-xmlSecGCryptAsn1ParseIntegerSequence(xmlSecByte const **buffer, xmlSecSize* buflen,
-                                     gcry_mpi_t * params, int params_size) {
+xmlSecGCryptAsn1ParseIntegerSequence(int level, xmlSecByte const **buffer, xmlSecSize* buflen,
+    gcry_mpi_t * integers, xmlSecSize integers_size, xmlSecSize * integers_out_size,
+    xmlSecGCryptAsn1ObjectId * objectids, xmlSecSize objectids_size, xmlSecSize * objectids_out_size)
+{
     const xmlSecByte *buf;
     unsigned long length;
     struct tag_info ti;
@@ -200,8 +205,12 @@ xmlSecGCryptAsn1ParseIntegerSequence(xmlSecByte const **buffer, xmlSecSize* bufl
     xmlSecAssert2(buffer != NULL, -1);
     xmlSecAssert2((*buffer) != NULL, -1);
     xmlSecAssert2(buflen != NULL, -1);
-    xmlSecAssert2(params != NULL, -1);
-    xmlSecAssert2(params_size > 0, -1);
+    xmlSecAssert2(integers != NULL, -1);
+    xmlSecAssert2(integers_size > 0, -1);
+    xmlSecAssert2(integers_out_size != NULL, -1);
+    xmlSecAssert2(objectids != NULL, -1);
+    xmlSecAssert2(objectids_size > 0, -1);
+    xmlSecAssert2(objectids_out_size != NULL, -1);
 
     /* initialize */
     buf = *buffer;
@@ -209,44 +218,139 @@ xmlSecGCryptAsn1ParseIntegerSequence(xmlSecByte const **buffer, xmlSecSize* bufl
 
     /* read SEQUENCE */
     memset(&ti, 0, sizeof(ti));
-    ret = xmlSecGCryptAsn1ParseTag (&buf, &length, &ti);
-    if((ret != 0)  || (ti.tag != TAG_SEQUENCE) || ti.class || !ti.cons || ti.ndef) {
-        xmlSecInternalError2("xmlSecGCryptAsn1ParseTag", NULL,
-            "TAG_SEQUENCE is expected: tag=%lu", ti.tag);
-        return(-1);
+
+    if(level == 0) {
+        ret = xmlSecGCryptAsn1ParseTag (&buf, &length, &ti);
+        if((ret != 0)  || (ti.tag != TAG_SEQUENCE) || ti.class || !ti.cons || ti.ndef) {
+            xmlSecInternalError2("xmlSecGCryptAsn1ParseTag", NULL,
+                "TAG_SEQUENCE is expected: tag=%lu", ti.tag);
+            return(-1);
+        }
     }
 
-    /* read INTEGERs */
-    for (idx = 0; ((idx < params_size) && (length > 0)); idx++) {
+    /* read sequence */
+    for (idx = 0;  (length > 0); idx++) {
         memset(&ti, 0, sizeof(ti));
         ret = xmlSecGCryptAsn1ParseTag (&buf, &length, &ti);
-        if((ret != 0) || (ti.tag != TAG_INTEGER) || ti.class || ti.cons || ti.ndef)
-        {
-            xmlSecInternalError3("xmlSecGCryptAsn1ParseTag", NULL,
-                "TAG_INTEGER is expected - index=%d, tag=%lu", idx, ti.tag);
+        if((ret != 0) || (ti.ndef != 0)) {
+            xmlSecInternalError2("xmlSecGCryptAsn1ParseTag", NULL, "index=%d", idx);
             return(-1);
         }
 
-        err = gcry_mpi_scan(&(params[idx]), GCRYMPI_FMT_USG, buf, ti.length, NULL);
-        if((err != GPG_ERR_NO_ERROR) || (params[idx] == NULL)) {
-            xmlSecGCryptError("gcry_mpi_scan", err, NULL);
-            return(-1);
+        if(ti.cons != 0) {
+            const xmlSecByte* buf2 = buf;
+            xmlSecSize buf2len = ti.length;
+
+            ret = xmlSecGCryptAsn1ParseIntegerSequence(
+                    level + 1, &buf2, &buf2len,
+                    integers, integers_size, integers_out_size,
+                    objectids, objectids_size, objectids_out_size);
+            if(ret != 0) {
+                xmlSecInternalError3("xmlSecGCryptAsn1ParseIntegerSequence", NULL, "level=%d, index=%d", level, idx);
+                return(-1);
+            }
+        } else {
+            switch(ti.tag) {
+                case TAG_INTEGER:
+                case TAG_BIT_STRING:
+                case TAG_OCTET_STRING:
+                    if((*integers_out_size) >= integers_size) {
+                        xmlSecInternalError2("xmlSecGCryptAsn1ParseTag", NULL, "sequence too long, integers_size=" XMLSEC_SIZE_FMT, integers_size);
+                        return(-1);
+                    }
+
+                    err = gcry_mpi_scan(&(integers[(*integers_out_size)]), GCRYMPI_FMT_USG, buf, ti.length, NULL);
+                    if((err != GPG_ERR_NO_ERROR) || (integers[(*integers_out_size)] == NULL)) {
+                        xmlSecGCryptError("gcry_mpi_scan", err, NULL);
+                        return(-1);
+                    }
+                    ++(*integers_out_size);
+                    break;
+
+                case TAG_OBJECT_ID:
+                    if((*objectids_out_size) >= objectids_size) {
+                        xmlSecInternalError2("xmlSecGCryptAsn1ParseTag", NULL, "sequence too long, objectids_size=" XMLSEC_SIZE_FMT, objectids_size);
+                        return(-1);
+                    }
+                    if(ti.length > XMLSEC_GCRYPT_ASN1_MAX_OBJECT_ID_SIZE) {
+                        xmlSecInternalError2("xmlSecGCryptAsn1ParseTag", NULL, "object id too long, len=%lu", ti.length);
+                        return(-1);
+                    }
+                    memcpy(objectids[(*objectids_out_size)], buf, ti.length);
+                    ++(*objectids_out_size);
+                    break;
+
+                default:
+                    xmlSecInternalError3("xmlSecGCryptAsn1ParseTag", NULL,
+                        "Unexpected ASN1 tag=%lu at index=%d", ti.tag, idx);
+                    return(-1);
+            }
         }
+
         buf += ti.length;
         length -= ti.length;
-    }
-
-    /* did we parse everything? */
-    if(length > 0) {
-        xmlSecInternalError3("xmlSecGCryptAsn1ParseTag", NULL,
-            "too many params - cur=%d, expected=%d", (idx - 1), params_size);
-        return(-1);
     }
 
     /* done */
     *buffer = buf;
     XMLSEC_SAFE_CAST_ULONG_TO_SIZE(length, (*buflen), return(-1), NULL);
-    return(idx);
+    return(0);
+}
+
+typedef struct _xmlSecGCryptAsn1EcdsaObjectIdToCurve {
+    char curve[20];
+    xmlSecGCryptAsn1ObjectId objectId;
+} xmlSecGCryptAsn1EcdsaObjectIdToCurve;
+
+static xmlSecGCryptAsn1EcdsaObjectIdToCurve g_xmlSecGCryptAsn1EcdsaObjectIdToCurves[] = {
+    { "prime192v1",     { 0x2A,0x86,0x48,0xCE,0x3D,0x03,0x01,0x01 } }, /* OBJ_X9_62_prime192v1 */
+    { "secp224r1",      { 0x2B,0x81,0x04,0x00,0x21,0x00,0x00,0x00 } }, /* OBJ_secp224r1 */
+    { "prime256v1",     { 0x2A,0x86,0x48,0xCE,0x3D,0x03,0x01,0x07 } }, /* OBJ_X9_62_prime256v1 */
+    { "secp384r1",      { 0x2B,0x81,0x04,0x00,0x22,0x00,0x00,0x00 } }, /* OBJ_secp384r1 */
+    { "secp521r1",      { 0x2B,0x81,0x04,0x00,0x23,0x00,0x00,0x00 } }, /* OBJ_secp521r1 */
+};
+
+static const char*
+xmlSecGCryptAsn1GetCurveFromObjectId(xmlSecGCryptAsn1ObjectId objectid) {
+    int size = sizeof(g_xmlSecGCryptAsn1EcdsaObjectIdToCurves) / sizeof(g_xmlSecGCryptAsn1EcdsaObjectIdToCurves[0]);
+    int ii;
+    for(ii = 0; ii < size; ++ii) {
+        if(memcmp(objectid, g_xmlSecGCryptAsn1EcdsaObjectIdToCurves[ii].objectId, XMLSEC_GCRYPT_ASN1_MAX_OBJECT_ID_SIZE) == 0) {
+            return(g_xmlSecGCryptAsn1EcdsaObjectIdToCurves[ii].curve);
+        }
+    }
+    return(NULL);
+}
+
+static enum xmlSecGCryptDerKeyType
+xmlSecGCryptAsn1GuessKeyType(gcry_mpi_t * integers, xmlSecSize integers_num, xmlSecGCryptAsn1ObjectId * objectids, xmlSecSize objectids_num) {
+    xmlSecAssert2(integers != NULL, xmlSecGCryptDerKeyTypeAuto);
+    xmlSecAssert2(objectids != NULL, xmlSecGCryptDerKeyTypeAuto);
+
+    /* ecdsa key should have the curve object id */
+    if(objectids_num > 0) {
+        switch(integers_num) {
+        case 2U:
+            return(xmlSecGCryptDerKeyTypePublicEcdsa);
+        case 3U:
+            return(xmlSecGCryptDerKeyTypePrivateEcdsa);
+        default:
+            return(xmlSecGCryptDerKeyTypeAuto);
+        }
+    } else {
+        switch(integers_num) {
+        case 3U:
+            return(xmlSecGCryptDerKeyTypePublicRsa);
+        case 5U:
+            return(xmlSecGCryptDerKeyTypePublicDsa);
+        case 6U:
+            return(xmlSecGCryptDerKeyTypePrivateDsa);
+        case 9U:
+            return(xmlSecGCryptDerKeyTypePrivateRsa);
+        default:
+            return(xmlSecGCryptDerKeyTypeAuto);
+        }
+    }
 }
 
 xmlSecKeyDataPtr
@@ -256,55 +360,43 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
     gcry_sexp_t s_pub_key = NULL;
     gcry_sexp_t s_priv_key = NULL;
     gcry_error_t err;
-    gcry_mpi_t keyparms[20];
-    xmlSecSize keyparms_num;
+    gcry_mpi_t integers[20];
+    xmlSecSize integers_num = 0;
+    xmlSecGCryptAsn1ObjectId objectids[20];
+    xmlSecSize objectids_num = 0;
     unsigned int idx;
+    const char* ecdsaCurve;
     int ret;
 
     xmlSecAssert2(der != NULL, NULL);
     xmlSecAssert2(derlen > 0, NULL);
 
     /* Parse the ASN.1 structure.  */
-    memset(&keyparms, 0, sizeof(keyparms));
+    memset(&integers, 0, sizeof(integers));
+    memset(&objectids, 0, sizeof(objectids));
     ret = xmlSecGCryptAsn1ParseIntegerSequence(
-        &der, &derlen,
-        keyparms,  sizeof(keyparms) / sizeof(keyparms[0])
+        0, &der, &derlen,
+        integers,  sizeof(integers) / sizeof(integers[0]), &integers_num,
+        objectids,  sizeof(objectids) / sizeof(objectids[0]), &objectids_num
     );
     if(ret < 0) {
         xmlSecInternalError("xmlSecGCryptAsn1ParseIntegerSequence", NULL);
         goto done;
     }
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, keyparms_num, goto done, NULL);
 
-    /* The value of the first integer should be 0. */
-    if ((keyparms_num < 1) || (gcry_mpi_cmp_ui(keyparms[0], 0) != 0)) {
-        xmlSecInternalError2("xmlSecGCryptAsn1ParseTag", NULL,
-            "num=" XMLSEC_SIZE_FMT, keyparms_num);
+    /* The value of the first integer is ignored. */
+    if (integers_num < 1) {
+        xmlSecInternalError2("xmlSecGCryptAsn1ParseIntegerSequence", NULL,
+            "integers_num=" XMLSEC_SIZE_FMT, integers_num);
         goto done;
     }
 
     /* do we need to guess the key type? not robust but the best we can do */
     if(type == xmlSecGCryptDerKeyTypeAuto) {
-        switch(keyparms_num) {
-        case 3U:
-            /* Public RSA */
-            type = xmlSecGCryptDerKeyTypePublicRsa;
-            break;
-        case 5U:
-            /* Public DSA */
-            type = xmlSecGCryptDerKeyTypePublicDsa;
-            break;
-        case 6U:
-            /* Private DSA */
-            type = xmlSecGCryptDerKeyTypePrivateDsa;
-            break;
-        case 9U:
-            /* Private RSA */
-            type = xmlSecGCryptDerKeyTypePrivateRsa;
-            break;
-        default:
+        type = xmlSecGCryptAsn1GuessKeyType(integers, integers_num, objectids, objectids_num);
+        if(type == xmlSecGCryptDerKeyTypeAuto) {
             /* unknown */
-            xmlSecInvalidSizeDataError("keyparms_num", keyparms_num,
+            xmlSecInvalidSizeDataError("integers_num", integers_num,
                 "the number of parameters matching key type", NULL);
             goto done;
         }
@@ -313,23 +405,23 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
     switch(type) {
 #ifndef XMLSEC_NO_DSA
     case xmlSecGCryptDerKeyTypePrivateDsa:
-        /* check we have enough params */
-        if(keyparms_num != 6U) {
+        /* check we have enough integers */
+        if(integers_num != 6U) {
             xmlSecInvalidSizeError("Private DSA key params",
-                keyparms_num, (xmlSecSize)6U, NULL);
+                integers_num, (xmlSecSize)6U, NULL);
             goto done;
         }
 
         /* Convert from OpenSSL parameter ordering to the OpenPGP order. */
         /* First check that x < y; if not swap x and y  */
-        if (gcry_mpi_cmp (keyparms[4], keyparms[5]) > 0) {
-            gcry_mpi_swap (keyparms[4], keyparms[5]);
+        if (gcry_mpi_cmp (integers[4], integers[5]) > 0) {
+            gcry_mpi_swap (integers[4], integers[5]);
         }
 
         /* Build the S-expressions  */
         err = gcry_sexp_build (&s_priv_key, NULL,
                 "(private-key(dsa(p%m)(q%m)(g%m)(x%m)(y%m)))",
-                keyparms[1], keyparms[2], keyparms[3], keyparms[4], keyparms[5]
+                integers[1], integers[2], integers[3], integers[4], integers[5]
         );
         if((err != GPG_ERR_NO_ERROR) || (s_priv_key == NULL)) {
             xmlSecGCryptError("gcry_sexp_build(private-key/dsa)", err, NULL);
@@ -338,7 +430,7 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
 
         err = gcry_sexp_build (&s_pub_key, NULL,
                 "(public-key(dsa(p%m)(q%m)(g%m)(y%m)))",
-                keyparms[1], keyparms[2], keyparms[3], keyparms[5]
+                integers[1], integers[2], integers[3], integers[5]
         );
         if((err != GPG_ERR_NO_ERROR) || (s_pub_key == NULL)) {
             xmlSecGCryptError("gcry_sexp_build(public-key/dsa)", err, NULL);
@@ -364,17 +456,17 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
         break;
 
     case xmlSecGCryptDerKeyTypePublicDsa:
-        /* check we have enough params */
-        if(keyparms_num != 5U) {
+        /* check we have enough integers */
+        if(integers_num != 5U) {
             xmlSecInvalidSizeError("Public DSA key params",
-                keyparms_num, (xmlSecSize)5U, NULL);
+                integers_num, (xmlSecSize)5U, NULL);
             goto done;
         }
 
         /* Build the S-expression.  */
         err = gcry_sexp_build (&s_pub_key, NULL,
                 "(public-key(dsa(p%m)(q%m)(g%m)(y%m)))",
-                keyparms[2], keyparms[3], keyparms[4], keyparms[1]
+                integers[2], integers[3], integers[4], integers[1]
         );
         if((err != GPG_ERR_NO_ERROR) || (s_pub_key == NULL)) {
             xmlSecGCryptError("gcry_sexp_build(public-key/dsa)", err, NULL);
@@ -401,10 +493,10 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
 
 #ifndef XMLSEC_NO_RSA
     case xmlSecGCryptDerKeyTypePrivateRsa:
-        /* check we have enough params */
-        if(keyparms_num < 4U) {
+        /* check we have enough integers */
+        if(integers_num < 4U) {
             xmlSecInvalidSizeError("Private RSA key params",
-                (xmlSecSize)keyparms_num, (xmlSecSize)4U, NULL);
+                (xmlSecSize)integers_num, (xmlSecSize)4U, NULL);
             goto done;
         }
 
@@ -414,16 +506,16 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
         /* (http://gnupg.10057.n7.nabble.com/RSA-PKCS-1-signing-differs-from-OpenSSL-s-td27920.html) */
         /* First check that p < q; if not swap p and q and recompute u.  */
         /** 
-        if (gcry_mpi_cmp (keyparms[4], keyparms[5]) > 0) {
-            gcry_mpi_swap (keyparms[4], keyparms[5]);
-            gcry_mpi_invm (keyparms[8], keyparms[4], keyparms[5]);
+        if (gcry_mpi_cmp (integers[4], integers[5]) > 0) {
+            gcry_mpi_swap (integers[4], integers[5]);
+            gcry_mpi_invm (integers[8], integers[4], integers[5]);
         }
         */
 
         /* Build the S-expression.  */
         err = gcry_sexp_build (&s_priv_key, NULL,
                          "(private-key(rsa(n%m)(e%m)(d%m)))",
-                         keyparms[1], keyparms[2], keyparms[3]
+                         integers[1], integers[2], integers[3]
         );
         if((err != GPG_ERR_NO_ERROR) || (s_priv_key == NULL)) {
             xmlSecGCryptError("gcry_sexp_build(private-key/rsa)", err, NULL);
@@ -432,7 +524,7 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
 
         err = gcry_sexp_build (&s_pub_key, NULL,
                          "(public-key(rsa(n%m)(e%m)))",
-                         keyparms[1], keyparms[2]
+                         integers[1], integers[2]
         );
         if((err != GPG_ERR_NO_ERROR) || (s_pub_key == NULL)) {
             xmlSecGCryptError("gcry_sexp_build(public-key/rsa)", err, NULL);
@@ -458,17 +550,17 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
         break;
 
     case xmlSecGCryptDerKeyTypePublicRsa:
-        /* check we have enough params */
-        if(keyparms_num != 3U) {
+        /* check we have enough integers */
+        if(integers_num != 3U) {
             xmlSecInvalidSizeError("Public RSA key params",
-                keyparms_num, (xmlSecSize)3U, NULL);
+                integers_num, (xmlSecSize)3U, NULL);
             goto done;
         }
 
         /* Build the S-expression.  */
         err = gcry_sexp_build (&s_pub_key, NULL,
                          "(public-key(rsa(n%m)(e%m)))",
-                         keyparms[1], keyparms[2]
+                         integers[1], integers[2]
         );
         if((err != GPG_ERR_NO_ERROR) || (s_pub_key == NULL)) {
             xmlSecGCryptError("gcry_sexp_build(public-key/rsa)", err, NULL);
@@ -493,6 +585,123 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
         break;
 #endif /* XMLSEC_NO_RSA */
 
+#ifndef XMLSEC_NO_ECDSA
+    case xmlSecGCryptDerKeyTypePrivateEcdsa:
+        /* check we have object id and enough integers */
+        if(objectids_num < 1U) {
+            xmlSecInvalidSizeError("Private ECDSA requires object ID for curve",
+                (xmlSecSize)objectids_num, (xmlSecSize)1U, NULL);
+            goto done;
+        }
+        if(integers_num < 3U) {
+            xmlSecInvalidSizeError("Private ECDSA key params",
+                (xmlSecSize)integers_num, (xmlSecSize)3U, NULL);
+            goto done;
+        }
+
+        ecdsaCurve = xmlSecGCryptAsn1GetCurveFromObjectId(objectids[0]);
+        if(ecdsaCurve == NULL) {
+            xmlSecInvalidDataError("Unknown ECDSA curve Object ID", NULL);
+            goto done;
+        }
+
+        /* Build the S-expression.  */
+        err = gcry_sexp_build (&s_priv_key, NULL,
+            "(private-key"
+            " (ecdsa"
+            " (curve %s)"
+            " (d %m)"
+            " (q %m)"
+            " ))",
+            ecdsaCurve, integers[1], integers[2]
+        );
+        if((err != GPG_ERR_NO_ERROR) || (s_priv_key == NULL)) {
+            xmlSecGCryptError("gcry_sexp_build(private-key/ecdsa)", err, NULL);
+            goto done;
+        }
+
+        err = gcry_sexp_build (&s_pub_key, NULL,
+            "(public-key"
+            " (ecdsa"
+            " (curve %s)"
+            " (q %m)"
+            " ))",
+            ecdsaCurve, integers[2]
+        );
+        if((err != GPG_ERR_NO_ERROR) || (s_pub_key == NULL)) {
+            xmlSecGCryptError("gcry_sexp_build(public-key/ecdsa)", err, NULL);
+            goto done;
+        }
+
+        /* construct key and key data */
+        key_data = xmlSecKeyDataCreate(xmlSecGCryptKeyDataEcdsaId);
+        if(key_data == NULL) {
+            xmlSecInternalError("xmlSecKeyDataCreate(xmlSecGCryptKeyDataEcdsaId)", NULL);
+            goto done;
+        }
+
+        ret = xmlSecGCryptKeyDataEcdsaAdoptKeyPair(key_data, s_pub_key, s_priv_key);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecGCryptKeyDataEcdsaAdoptKeyPair(xmlSecGCryptKeyDataEcdsaId)", NULL);
+            xmlSecKeyDataDestroy(key_data);
+            key_data = NULL;
+            goto done;
+        }
+        s_pub_key = NULL; /* owned by key_data now */
+        s_priv_key = NULL; /* owned by key_data now */
+        break;
+
+    case xmlSecGCryptDerKeyTypePublicEcdsa:
+        /* check we have object id and enough integers */
+        if(objectids_num < 1U) {
+            xmlSecInvalidSizeError("Public ECDSA requires object ID for curve",
+                (xmlSecSize)objectids_num, (xmlSecSize)1U, NULL);
+            goto done;
+        }
+        if(integers_num < 2U) {
+            xmlSecInvalidSizeError("Public ECDSA key params",
+                (xmlSecSize)integers_num, (xmlSecSize)3U, NULL);
+            goto done;
+        }
+
+        ecdsaCurve = xmlSecGCryptAsn1GetCurveFromObjectId(objectids[0]);
+        if(ecdsaCurve == NULL) {
+            xmlSecInvalidDataError("Unknown ECDSA curve Object ID", NULL);
+            goto done;
+        }
+
+        /* Build the S-expression.  */
+        err = gcry_sexp_build (&s_pub_key, NULL,
+            "(public-key"
+            " (ecdsa"
+            " (curve %s)"
+            " (q %m)"
+            " ))",
+            ecdsaCurve, integers[1]
+        );
+        if((err != GPG_ERR_NO_ERROR) || (s_pub_key == NULL)) {
+            xmlSecGCryptError("gcry_sexp_build(public-key/ecdsa)", err, NULL);
+            goto done;
+        }
+
+        /* construct key and key data */
+        key_data = xmlSecKeyDataCreate(xmlSecGCryptKeyDataEcdsaId);
+        if(key_data == NULL) {
+            xmlSecInternalError("xmlSecKeyDataCreate(xmlSecGCryptKeyDataEcdsaId)", NULL);
+            goto done;
+        }
+
+        ret = xmlSecGCryptKeyDataEcdsaAdoptKeyPair(key_data, s_pub_key, NULL);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecGCryptKeyDataEcdsaAdoptKeyPair(xmlSecGCryptKeyDataEcdsaId)", NULL);
+            xmlSecKeyDataDestroy(key_data);
+            key_data = NULL;
+            goto done;
+        }
+        s_pub_key = NULL; /* owned by key_data now */
+        break;
+#endif /* XMLSEC_NO_ECDSA */
+
     default:
         xmlSecUnsupportedEnumValueError("key_type", type, NULL);
         goto done;
@@ -506,9 +715,9 @@ done:
     if(s_pub_key != NULL) {
         gcry_sexp_release(s_pub_key);
     }
-    for (idx = 0; idx < sizeof(keyparms) / sizeof(keyparms[0]); idx++) {
-        if(keyparms[idx] != NULL) {
-            gcry_mpi_release (keyparms[idx]);
+    for (idx = 0; idx < sizeof(integers) / sizeof(integers[0]); idx++) {
+        if(integers[idx] != NULL) {
+            gcry_mpi_release (integers[idx]);
         }
     }
 

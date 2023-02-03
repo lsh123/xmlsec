@@ -23,8 +23,10 @@ enum xmlSecGCryptDerKeyType {
     xmlSecGCryptDerKeyTypeAuto = 0,
     xmlSecGCryptDerKeyTypePublicDsa,
     xmlSecGCryptDerKeyTypePublicRsa,
+    xmlSecGCryptDerKeyTypePublicEcdsa,
     xmlSecGCryptDerKeyTypePrivateDsa,
-    xmlSecGCryptDerKeyTypePrivateRsa
+    xmlSecGCryptDerKeyTypePrivateRsa,
+    xmlSecGCryptDerKeyTypePrivateEcdsa
 };
 
 xmlSecKeyDataPtr        xmlSecGCryptParseDer            (const xmlSecByte * der,

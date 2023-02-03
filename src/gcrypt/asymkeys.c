@@ -54,7 +54,7 @@ struct _xmlSecGCryptAsymKeyDataCtx {
 
 /******************************************************************************
  *
- * GCrypt asym key data (dsa/rsa)
+ * GCrypt asym key data (dsa/rsa/ecdsa)
  *
  *****************************************************************************/
 XMLSEC_KEY_DATA_DECLARE(GCryptAsymKeyData, xmlSecGCryptAsymKeyDataCtx)
@@ -1487,3 +1487,202 @@ done:
     return(res);
 }
 #endif /* XMLSEC_NO_RSA */
+
+
+
+#ifndef XMLSEC_NO_ECDSA
+/**************************************************************************
+ *
+ * ECDSA XML key representation processing.
+ *
+ * http://csrc.nist.gov/publications/PubsNISTIRs.html#NIST-IR-7802
+ *
+ * RFC 4050 [RFC4050] describes a possible <dsig:KeyValue> representation
+ * for an ECDSA key. The representation and processing instructions
+ * described in [RFC4050] are not completely compatible with [XMLDSIG-11];
+ * therefore, ECDSA keys SHOULD NOT be provided through a <dsig:KeyValue>
+ * element.
+ *
+ *************************************************************************/
+
+static int              xmlSecGCryptKeyDataEcdsaInitialize       (xmlSecKeyDataPtr data);
+static int              xmlSecGCryptKeyDataEcdsaDuplicate        (xmlSecKeyDataPtr dst,
+                                                                 xmlSecKeyDataPtr src);
+static void             xmlSecGCryptKeyDataEcdsaFinalize         (xmlSecKeyDataPtr data);
+
+static xmlSecKeyDataType xmlSecGCryptKeyDataEcdsaGetType         (xmlSecKeyDataPtr data);
+static xmlSecSize       xmlSecGCryptKeyDataEcdsaGetSize          (xmlSecKeyDataPtr data);
+static void             xmlSecGCryptKeyDataEcdsaDebugDump        (xmlSecKeyDataPtr data,
+                                                                 FILE* output);
+static void             xmlSecGCryptKeyDataEcdsaDebugXmlDump     (xmlSecKeyDataPtr data,
+                                                                 FILE* output);
+
+static xmlSecKeyDataKlass xmlSecGCryptKeyDataEcdsaKlass = {
+    sizeof(xmlSecKeyDataKlass),
+    xmlSecGCryptAsymKeyDataSize,
+
+    /* data */
+    xmlSecNameECDSAKeyValue,
+    xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+                                                /* xmlSecKeyDataUsage usage; */
+    xmlSecHrefECDSAKeyValue,                    /* const xmlChar* href; */
+    xmlSecNodeECDSAKeyValue,                    /* const xmlChar* dataNodeName; */
+    xmlSecDSigNs,                               /* const xmlChar* dataNodeNs; */
+
+    /* constructors/destructor */
+    xmlSecGCryptKeyDataEcdsaInitialize,          /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecGCryptKeyDataEcdsaDuplicate,           /* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecGCryptKeyDataEcdsaFinalize,            /* xmlSecKeyDataFinalizeMethod finalize; */
+    NULL,                                        /* xmlSecKeyDataGenerateMethod generate; */
+
+    /* get info */
+    xmlSecGCryptKeyDataEcdsaGetType,             /* xmlSecKeyDataGetTypeMethod getType; */
+    xmlSecGCryptKeyDataEcdsaGetSize,             /* xmlSecKeyDataGetSizeMethod getSize; */
+    NULL,                                        /* xmlSecKeyDataGetIdentifier getIdentifier; */
+
+    /* read/write */
+    NULL,                                        /* xmlSecKeyDataXmlReadMethod xmlRead; */
+    NULL,                                        /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    NULL,                                        /* xmlSecKeyDataBinReadMethod binRead; */
+    NULL,                                        /* xmlSecKeyDataBinWriteMethod binWrite; */
+
+    /* debug */
+    xmlSecGCryptKeyDataEcdsaDebugDump,           /* xmlSecKeyDataDebugDumpMethod debugDump; */
+    xmlSecGCryptKeyDataEcdsaDebugXmlDump,        /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+
+    /* reserved for the future */
+    NULL,                                         /* void* reserved0; */
+    NULL,                                         /* void* reserved1; */
+};
+
+/**
+ * xmlSecGCryptKeyDataEcdsaGetKlass:
+ *
+ * The GCrypt ECDSA key data klass.
+ *
+ * Returns: pointer to GCrypt ECDSA key data klass.
+ */
+xmlSecKeyDataId
+xmlSecGCryptKeyDataEcdsaGetKlass(void) {
+    return(&xmlSecGCryptKeyDataEcdsaKlass);
+}
+
+/**
+ * xmlSecGCryptKeyDataEcdsaAdoptKey:
+ * @data:               the pointer to ECDSA key data.
+ * @ecdsa_key:            the pointer to GCrypt ECDSA key.
+ *
+ * Sets the value of ECDSA key data.
+ *
+ * Returns: 0 on success or a negative value otherwise.
+ */
+int
+xmlSecGCryptKeyDataEcdsaAdoptKey(xmlSecKeyDataPtr data, gcry_sexp_t ecdsa_key) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataEcdsaId), -1);
+    xmlSecAssert2(ecdsa_key != NULL, -1);
+
+    return xmlSecGCryptAsymKeyDataAdoptKey(data, ecdsa_key);
+}
+
+
+/**
+ * xmlSecGCryptKeyDataEcdsaAdoptKeyPair:
+ * @data:               the pointer to ECDSA key data.
+ * @pub_key:            the pointer to GCrypt ECDSA pub key.
+ * @priv_key:           the pointer to GCrypt ECDSA priv key.
+ *
+ * Sets the value of ECDSA key data.
+ *
+ * Returns: 0 on success or a negative value otherwise.
+ */
+int
+xmlSecGCryptKeyDataEcdsaAdoptKeyPair(xmlSecKeyDataPtr data, gcry_sexp_t pub_key, gcry_sexp_t priv_key) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataEcdsaId), -1);
+    xmlSecAssert2(pub_key != NULL, -1);
+
+    return xmlSecGCryptAsymKeyDataAdoptKeyPair(data, pub_key, priv_key);
+}
+
+/**
+ * xmlSecGCryptKeyDataEcdsaGetPublicKey:
+ * @data:               the pointer to ECDSA key data.
+ *
+ * Gets the GCrypt ECDSA public key from ECDSA key data.
+ *
+ * Returns: pointer to GCrypt public ECDSA key or NULL if an error occurs.
+ */
+gcry_sexp_t
+xmlSecGCryptKeyDataEcdsaGetPublicKey(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataEcdsaId), NULL);
+    return xmlSecGCryptAsymKeyDataGetPublicKey(data);
+}
+
+/**
+ * xmlSecGCryptKeyDataEcdsaGetPrivateKey:
+ * @data:               the pointer to ECDSA key data.
+ *
+ * Gets the GCrypt ECDSA private key from ECDSA key data.
+ *
+ * Returns: pointer to GCrypt private ECDSA key or NULL if an error occurs.
+ */
+gcry_sexp_t
+xmlSecGCryptKeyDataEcdsaGetPrivateKey(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataEcdsaId), NULL);
+    return xmlSecGCryptAsymKeyDataGetPrivateKey(data);
+}
+
+static int
+xmlSecGCryptKeyDataEcdsaInitialize(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataEcdsaId), -1);
+
+    return(xmlSecGCryptAsymKeyDataInitialize(data));
+}
+
+static int
+xmlSecGCryptKeyDataEcdsaDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecGCryptKeyDataEcdsaId), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecGCryptKeyDataEcdsaId), -1);
+
+    return(xmlSecGCryptAsymKeyDataDuplicate(dst, src));
+}
+
+static void
+xmlSecGCryptKeyDataEcdsaFinalize(xmlSecKeyDataPtr data) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataEcdsaId));
+
+    xmlSecGCryptAsymKeyDataFinalize(data);
+}
+
+static xmlSecKeyDataType
+xmlSecGCryptKeyDataEcdsaGetType(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataEcdsaId), xmlSecKeyDataTypeUnknown);
+
+    return xmlSecGCryptAsymKeyDataGetType(data);
+}
+
+static xmlSecSize
+xmlSecGCryptKeyDataEcdsaGetSize(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataEcdsaId), 0);
+
+    return xmlSecGCryptAsymKeyDataGetSize(data);
+}
+
+static void
+xmlSecGCryptKeyDataEcdsaDebugDump(xmlSecKeyDataPtr data, FILE* output) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataEcdsaId));
+    xmlSecAssert(output != NULL);
+
+    fprintf(output, "=== ecdsa key: size = " XMLSEC_SIZE_FMT "\n",
+            xmlSecGCryptKeyDataEcdsaGetSize(data));
+}
+
+static void
+xmlSecGCryptKeyDataEcdsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataEcdsaId));
+    xmlSecAssert(output != NULL);
+
+    fprintf(output, "<ECDSAKeyValue size=\"" XMLSEC_SIZE_FMT "\" />\n",
+            xmlSecGCryptKeyDataEcdsaGetSize(data));
+}
+
+#endif /* XMLSEC_NO_ECDSA */

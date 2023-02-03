@@ -150,7 +150,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGCryptTransformKWDes3GetKlass(void)
 
 /********************************************************************
  *
- * DSA transform
+ * DSA key and transforms
  *
  *******************************************************************/
 #ifndef XMLSEC_NO_DSA
@@ -185,6 +185,31 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGCryptTransformDsaSha1GetKlass(void
 #endif /* XMLSEC_NO_DSA */
 
 
+/********************************************************************
+ *
+ * ECDSA transform
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_ECDSA
+
+/**
+ * xmlSecGCryptKeyDataEcdsaId:
+ *
+ * The ECDSA key klass.
+ */
+#define xmlSecGCryptKeyDataEcdsaId \
+        xmlSecGCryptKeyDataEcdsaGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecGCryptKeyDataEcdsaGetKlass        (void);
+XMLSEC_CRYPTO_EXPORT int                xmlSecGCryptKeyDataEcdsaAdoptKey        (xmlSecKeyDataPtr data,
+                                                                                 gcry_sexp_t ecdsa_key);
+XMLSEC_CRYPTO_EXPORT int                xmlSecGCryptKeyDataEcdsaAdoptKeyPair    (xmlSecKeyDataPtr data,
+                                                                                 gcry_sexp_t pub_key,
+                                                                                 gcry_sexp_t priv_key);
+XMLSEC_CRYPTO_EXPORT gcry_sexp_t        xmlSecGCryptKeyDataEcdsaGetPublicKey    (xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT gcry_sexp_t        xmlSecGCryptKeyDataEcdsaGetPrivateKey   (xmlSecKeyDataPtr data);
+
+
+#endif /* XMLSEC_NO_ECDSA */
 
 /********************************************************************
  *

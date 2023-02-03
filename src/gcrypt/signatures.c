@@ -996,7 +996,7 @@ xmlSecGCryptRsaPkcs1Sign(int digest, xmlSecKeyDataPtr key_data,
     xmlSecAssert2(out != NULL, -1);
 
     /* get the current digest */
-    XMLSEC_SAFE_CAST_SIZE_TO_INT(dgstSize, dgstLen, return(-1), xmlSecGCryptKeyDataRsaGetPrivateKey(key_data));
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(dgstSize, dgstLen, return(-1), NULL);
     err = gcry_sexp_build (&s_data, NULL,
                            "(data (flags pkcs1)(hash %s %b))",
                            gcry_md_algo_name(digest),
@@ -1051,7 +1051,7 @@ xmlSecGCryptRsaPkcs1Sign(int digest, xmlSecKeyDataPtr key_data,
         goto done;
     }
 
-    /* done */
+    /* success */
     res = 0;
 
 done:
@@ -1140,7 +1140,7 @@ done:
     return(res);
 }
 
-/****************************************************************************
+/****************************************************pkcs1************************
  * 
  * RSA-PSS
  * 

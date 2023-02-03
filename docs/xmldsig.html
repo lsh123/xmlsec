@@ -85,7 +85,7 @@ and get detailed report on what and how was signed. </p>
                   <td valign="top">Y</td>
 </tr>
 <tr>
-<td style="width: 40%;" align="left" valign="top">Enveloping Signature: 
+<td style="width: 40%;" align="left" valign="top">Enveloping Signature:
 same document reference with fragment (URI="#Object1")</td>
                   <td valign="top">Y</td>
                   <td valign="top">Y</td>
@@ -95,7 +95,7 @@ same document reference with fragment (URI="#Object1")</td>
                   <td valign="top">Y</td>
 </tr>
 <tr>
-<td style="width: 40%;" align="left" valign="top">Enveloped Signature: 
+<td style="width: 40%;" align="left" valign="top">Enveloped Signature:
 same document reference (URI="") with Enveloped Signature Transform</td>
                   <td valign="top">Y</td>
                   <td valign="top">Y</td>
@@ -105,7 +105,7 @@ same document reference (URI="") with Enveloped Signature Transform</td>
                   <td valign="top">Y</td>
 </tr>
 <tr>
-<td style="width: 40%;" align="left" valign="top">SignatureValue 
+<td style="width: 40%;" align="left" valign="top">SignatureValue
 generation/validation</td>
                   <td valign="top">Y</td>
                   <td valign="top">Y</td>
@@ -115,7 +115,7 @@ generation/validation</td>
                   <td valign="top">Y</td>
 </tr>
 <tr>
-<td style="width: 40%;" align="left" valign="top">Manifest DigestValue 
+<td style="width: 40%;" align="left" valign="top">Manifest DigestValue
 generation/valdiation</td>
                   <td valign="top">Y</td>
                   <td valign="top">Y</td>
@@ -125,7 +125,7 @@ generation/valdiation</td>
                   <td valign="top">Y</td>
 </tr>
 <tr>
-<td style="width: 40%;" align="left" valign="top">Laxly schema valid Signature 
+<td style="width: 40%;" align="left" valign="top">Laxly schema valid Signature
 element generation</td>
                   <td valign="top">Y</td>
                   <td valign="top">Y</td>
@@ -171,7 +171,7 @@ element generation</td>
                   <td valign="top">Y</td>
 </tr>
 <tr>
-<td style="width: 40%;" align="left" valign="top">the dsig XPath 'here()' 
+<td style="width: 40%;" align="left" valign="top">the dsig XPath 'here()'
 function (can be used to implement enveloped signature)</td>
                   <td valign="top">Y</td>
                   <td valign="top">Y</td>
@@ -528,8 +528,8 @@ Algorithms (<a href="https://www.rfc-editor.org/rfc/rfc9231.txt">RFC 9231</a>)</
 <td style="vertical-align: top; width: 40%;">ECDSA-SHA1</td>
                   <td valign="top">Y</td>
                   <td valign="top">N</td>
-                  <td valign="top">N</td>
-                  <td valign="top">N</td>
+                  <td valign="top">Y</td>
+                  <td valign="top">Y</td>
                   <td valign="top">N</td>
                   <td valign="top">Y</td>
 </tr>
@@ -538,7 +538,7 @@ Algorithms (<a href="https://www.rfc-editor.org/rfc/rfc9231.txt">RFC 9231</a>)</
                   <td valign="top">Y</td>
                   <td valign="top">N</td>
                   <td valign="top">N</td>
-                  <td valign="top">N</td>
+                  <td valign="top">Y</td>
                   <td valign="top">N</td>
                   <td valign="top">Y</td>
 </tr>
@@ -546,8 +546,8 @@ Algorithms (<a href="https://www.rfc-editor.org/rfc/rfc9231.txt">RFC 9231</a>)</
 <td style="vertical-align: top; width: 40%;">ECDSA-SHA256</td>
                   <td valign="top">Y</td>
                   <td valign="top">N</td>
-                  <td valign="top">N</td>
-                  <td valign="top">N</td>
+                  <td valign="top">Y</td>
+                  <td valign="top">Y</td>
                   <td valign="top">N</td>
                   <td valign="top">Y</td>
 </tr>
@@ -555,8 +555,8 @@ Algorithms (<a href="https://www.rfc-editor.org/rfc/rfc9231.txt">RFC 9231</a>)</
 <td style="vertical-align: top; width: 40%;">ECDSA-SHA384</td>
                   <td valign="top">Y</td>
                   <td valign="top">N</td>
-                  <td valign="top">N</td>
-                  <td valign="top">N</td>
+                  <td valign="top">Y</td>
+                  <td valign="top">Y</td>
                   <td valign="top">N</td>
                   <td valign="top">Y</td>
 </tr>
@@ -564,8 +564,8 @@ Algorithms (<a href="https://www.rfc-editor.org/rfc/rfc9231.txt">RFC 9231</a>)</
 <td style="vertical-align: top; width: 40%;">ECDSA-SHA512</td>
                   <td valign="top">Y</td>
                   <td valign="top">N</td>
-                  <td valign="top">N</td>
-                  <td valign="top">N</td>
+                  <td valign="top">Y</td>
+                  <td valign="top">Y</td>
                   <td valign="top">N</td>
                   <td valign="top">Y</td>
 </tr>
@@ -738,7 +738,7 @@ Algorithms (<a href="https://www.rfc-editor.org/rfc/rfc9231.txt">RFC 9231</a>)</
 </tbody></table>
 <br><br><a name="dsa-sha1"></a><sup>(1)</sup> Defining <a href="http://www.w3.org/TR/xmldsig-core/#sec-DSAKeyValue"> DSA key</a>
 with Seed and PgenCounter is not supported.
-<br><a name="gost-mscrypto"></a><sup>(2)</sup> Requires installation of a CSP 
+<br><a name="gost-mscrypto"></a><sup>(2)</sup> Requires installation of a CSP
 providing these algorithms.<br><p>Test vectors (from <a href="http://www.w3.org/Signature/2001/04/05-xmldsig-interop.html">IETF/W3C
 XML Signature WG: XML Signature Interoperability page</a>): <br><a href="http://lists.w3.org/Archives/Public/w3c-ietf-xmldsig/2002AprJun/att-0016/01-merlin-xmldsig-twenty-three.tar.gz">merlin-xmldsig-twenty-three.tar.gz</a>
             <br><a href="http://lists.w3.org/Archives/Public/w3c-ietf-xmldsig/2001AprJun/att-00%2033/01-merlin-xmldsig-sixteen.tar.gz">merlin-xmldsig-sixteen.tar.gz</a>

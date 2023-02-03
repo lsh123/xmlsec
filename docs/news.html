@@ -52,18 +52,20 @@
 		April ?? 2023<br>
 		The <a href="download.html">XML Security Library 1.3.0</a> release includes the following changes:
 		<ul>
-			<li>Added support for <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP">MGF1 algorithms</a> 
+			<li>Added support for <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP">MGF1 algorithms</a>
 				to xmlsec-openssl and xmlsec-mscng (see <a href="xmlenc.html">Interoperability report</a> for more details).
 			</li>
 			<li>Added support for RSA OAEP including  <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP">MGF1 algorithms</a>
                 to xmlsec-nss, xmlsec-gcrypt, and xmlsec-gnutls (see <a href="xmlenc.html">Interoperability report</a> for more details).
             </li>
-			<li>Added support for <a href="https://www.rfc-editor.org/rfc/rfc9231.html#name-rsassa-pss-without-paramete">RSA PSS withtout parameters algorithms</a> 
+			<li>Added support for <a href="https://www.rfc-editor.org/rfc/rfc9231.html#name-rsassa-pss-without-paramete">RSA PSS withtout parameters algorithms</a>
 				to xmlsec-openssl, xmlsec-nss, xmlsec-gcrypt, xmlsec-gnutls, and xmlsec-mscng (see <a href="xmldsig.html">Interoperability report</a> for more details).
 			</li>
-			<li>Added support for RSA PKCS 1.5 key transport to to xmlsec-gcrypt and xmlsec-gnutls 
+			<li>Added support for RSA PKCS 1.5 key transport to to xmlsec-gcrypt and xmlsec-gnutls
 				(see <a href="xmlenc.html">Interoperability report</a> for more details).
-			</li>			
+			</li>
+			<li>Added support for ECDSA signatures to to xmlsec-gcrypt (see <a href="xmldsig.html">Interoperability report</a> for more details).
+			</li>
 			<li>
 				Switched xmlSecSize to use size_t by default (breaks ABI compatibility). Use "--enable-size-t=no" configure option ("size_t=no"" on Windows) to
 				restore the old behaviour (note that this behaviour is deprecated and will be removed in the future.

@@ -137,6 +137,7 @@ RSA keys:
 openssl rsa -inform PEM -outform DER -traditional -in rsakey.pem -out rsakey.der
 openssl rsa -inform PEM -outform DER -traditional -in largersakey.pem -out largersakey.der
 openssl rsa -inform PEM -outform DER -traditional -in expiredkey.pem -out expiredkey.der
+openssl rsa -inform PEM -outform DER -traditional -in ca2key.pem -out ca2key.der
 ```
 
 DSA keys:

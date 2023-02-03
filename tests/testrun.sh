@@ -380,10 +380,11 @@ execEncTest() {
     folder="$2"
     filename="$3"
     req_transforms="$4"
-    params1="$5"
-    params2="$6"
-    params3="$7"
-    outputTransform="$8"
+    req_key_data="$5"
+    params1="$6"
+    params2="$7"
+    params3="$8"
+    outputTransform="$9"
     failures=0
 
     if [ -n "$XMLSEC_TEST_NAME" -a "$XMLSEC_TEST_NAME" != "$filename" ]; then
@@ -422,6 +423,20 @@ execEncTest() {
         res=$?
         if [ $res -ne 0 ]; then
 	    cat $curlogfile >> $logfile
+	    cd $old_pwd
+            return
+        fi
+    fi
+
+    # check key data
+    if [ -n "$req_key_data" ] ; then
+        printf "    Checking required key data                           "
+        echo "$extra_vars $xmlsec_app check-key-data $xmlsec_params $req_key_data" >> $curlogfile
+        $xmlsec_app check-key-data $xmlsec_params $req_key_data >> $curlogfile 2>> $curlogfile
+        printCheckStatus $?
+        res=$?
+        if [ $res -ne 0 ]; then
+            cat $curlogfile >> $logfile
 	    cd $old_pwd
             return
         fi

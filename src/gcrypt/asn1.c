@@ -402,25 +402,28 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
 #ifndef XMLSEC_NO_RSA
     case xmlSecGCryptDerKeyTypePrivateRsa:
         /* check we have enough params */
-        if(keyparms_num != 9U) {
+        if(keyparms_num < 4U) {
             xmlSecInvalidSizeError("Private RSA key params",
-                (xmlSecSize)keyparms_num, (xmlSecSize)9U, NULL);
+                (xmlSecSize)keyparms_num, (xmlSecSize)4U, NULL);
             goto done;
         }
 
+        /** Ignore p, q, u completely because optimized RSA encryption/decryption looks broken */
+        
         /* Convert from OpenSSL parameter ordering to the OpenPGP order. */
         /* (http://gnupg.10057.n7.nabble.com/RSA-PKCS-1-signing-differs-from-OpenSSL-s-td27920.html) */
         /* First check that p < q; if not swap p and q and recompute u.  */
+        /** 
         if (gcry_mpi_cmp (keyparms[4], keyparms[5]) > 0) {
             gcry_mpi_swap (keyparms[4], keyparms[5]);
             gcry_mpi_invm (keyparms[8], keyparms[4], keyparms[5]);
         }
+        */
 
         /* Build the S-expression.  */
         err = gcry_sexp_build (&s_priv_key, NULL,
-                         "(private-key(rsa(n%m)(e%m)(d%m)(p%m)(q%m)(u%m)))",
-                         keyparms[1], keyparms[2], keyparms[3],
-                         keyparms[4], keyparms[5], keyparms[8]
+                         "(private-key(rsa(n%m)(e%m)(d%m)))",
+                         keyparms[1], keyparms[2], keyparms[3]
         );
         if((err != GPG_ERR_NO_ERROR) || (s_priv_key == NULL)) {
             xmlSecGCryptError("gcry_sexp_build(private-key/rsa)", err, NULL);

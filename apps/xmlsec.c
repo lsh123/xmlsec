@@ -813,7 +813,7 @@ static xmlSecAppCmdLineParam X509SkipStrictChecksParam = {
 };
 
 static xmlSecAppCmdLineParam X509DontVerifyCerts = {
-    xmlSecAppCmdLineTopicDSigCommon,
+    xmlSecAppCmdLineTopicX509Certs,
     "--insecure",
     NULL,
     "--insecure"

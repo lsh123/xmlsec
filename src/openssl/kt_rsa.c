@@ -636,7 +636,6 @@ xmlSecOpenSSLTransformRsaOaepEnc11GetKlass(void) {
     return(&xmlSecOpenSSLRsaOaepEnc11Klass);
 }
 
-
 static int
 xmlSecOpenSSLRsaOaepCheckId(xmlSecTransformPtr transform) {
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaOaepId)) {

@@ -89,6 +89,7 @@ extern "C" {
 
 #define xmlSecTransformRsaPkcs1Id               xmlSecGCryptTransformRsaPkcs1Id
 #define xmlSecTransformRsaOaepId                xmlSecGCryptTransformRsaOaepId
+#define xmlSecTransformRsaOaepEnc11Id           xmlSecGCryptTransformRsaOaepEnc11Id
 
 #define xmlSecTransformSha1Id                   xmlSecGCryptTransformSha1Id
 #define xmlSecTransformSha224Id                 xmlSecGCryptTransformSha224Id

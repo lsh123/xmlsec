@@ -410,6 +410,33 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformRsaPssSha384GetKlass
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformRsaPssSha512GetKlass(void);
 #endif /* XMLSEC_NO_SHA512 */
 
+/**
+ * xmlSecGnuTLSTransformRsaPkcs1Id:
+ *
+ * The RSA PKCS1 key transport transform klass.
+ */
+#define xmlSecGnuTLSTransformRsaPkcs1Id \
+        xmlSecGnuTLSTransformRsaPkcs1GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformRsaPkcs1GetKlass(void);
+
+/**
+ * xmlSecGnuTLSTransformRsaOaepId:
+ *
+ * The RSA OAEP key transport transform klass (XMLEnc 1.0).
+ */
+#define xmlSecGnuTLSTransformRsaOaepId \
+        xmlSecGnuTLSTransformRsaOaepGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformRsaOaepGetKlass(void);
+
+/**
+ * xmlSecGnuTLSTransformRsaOaepEnc11Id:
+ *
+ * The RSA OAEP key transport transform klass (XMLEnc 1.1).
+ */
+#define xmlSecGnuTLSTransformRsaOaepEnc11Id \
+        xmlSecGnuTLSTransformRsaOaepEnc11GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformRsaOaepEnc11GetKlass(void);
+
 #endif /* XMLSEC_NO_RSA */
 
 

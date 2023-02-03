@@ -205,6 +205,7 @@ xmlSecCryptoGetFunctions_gcrypt(void) {
 #endif /* XMLSEC_NO_SHA512 */
 
     gXmlSecGCryptFunctions->transformRsaPkcs1GetKlass          = xmlSecGCryptTransformRsaPkcs1GetKlass;
+    gXmlSecGCryptFunctions->transformRsaOaepGetKlass           = xmlSecGCryptTransformRsaOaepGetKlass;
 
 #endif /* XMLSEC_NO_RSA */
 

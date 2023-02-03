@@ -142,8 +142,8 @@ execEncTest $res_success \
 
 # Advanced RSA OAEP modes:
 # - MSCrypto only supports SHA1 for digest and mgf1
-# - MSCng only supoprts the *same* algorithm for *both* digest and mgf1
-if [ "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" ] ; then
+# - GCrypt/GnuTLS and MSCng only supoprts the *same* algorithm for *both* digest and mgf1
+if [ "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" -a "z$crypto" != "zgcrypt" -a "z$crypto" != "zgnutls"] ; then
     # various digest and default mgf1 (sha1)
     execEncTest $res_success \
         "" \
@@ -400,8 +400,8 @@ execEncTest $res_success \
 
 # Advanced RSA OAEP modes:
 # - MSCrypto only supports SHA1 for digest and mgf1
-# - MSCng only supoprts the *same* algorithm for *both* digest and mgf1
-if [ "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" ] ; then
+# - GCrypt/GnuTLS and MSCng only supoprts the *same* algorithm for *both* digest and mgf1
+if [ "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" -a "z$crypto" != "zgcrypt" -a "z$crypto" != "zgnutls"] ; then
     execEncTest $res_success \
         "" \
         "merlin-xmlenc-five/encrypt-data-tripledes-cbc-rsa-oaep-mgf1p-sha256" \
@@ -483,8 +483,8 @@ execEncTest $res_success \
 
 # Advanced RSA OAEP modes:
 # - MSCrypto only supports SHA1 for digest and mgf1
-# - MSCng only supoprts the *same* algorithm for *both* digest and mgf1
-if [ "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" ] ; then
+# - GCrypt/GnuTLS and MSCng only supoprts the *same* algorithm for *both* digest and mgf1
+if [ "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" -a "z$crypto" != "zgcrypt"  -a "z$crypto" != "zgnutls" ] ; then
     execEncTest $res_success \
         "" \
         "01-phaos-xmlenc-3/enc-element-3des-kt-rsa_oaep_sha256" \

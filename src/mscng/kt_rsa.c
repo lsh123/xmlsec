@@ -581,8 +581,6 @@ xmlSecMSCngRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
             xmlSecErrorsSafeString(digestAlg),
             xmlSecErrorsSafeString(mgf1Alg));
         xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
-        xmlFree(digestAlg);
-        xmlFree(mgf1Alg);
         return(-1);
     }
 

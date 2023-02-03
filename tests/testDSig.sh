@@ -736,8 +736,8 @@ execDSigTest $res_success \
 
 # Advanced RSA OAEP modes:
 # - MSCrypto only supports SHA1 for digest and mgf1
-# - MSCng only supoprts the *same* algorithm for *both* digest and mgf1
-if [ "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" ] ; then
+# - GCrypt/GnuTLS and MSCng only supoprts the *same* algorithm for *both* digest and mgf1
+if [ "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" -a "z$crypto" != "zgcrypt" -a "z$crypto" != "zgnutls"] ; then
     execDSigTest $res_success \
         "" \
         "merlin-xmlenc-five/encsig-hmac-sha256-rsa-oaep-mgf1p" \

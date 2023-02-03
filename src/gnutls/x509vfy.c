@@ -228,9 +228,8 @@ xmlSecGnuTLSX509CheckTime(const gnutls_x509_crt_t * cert_list,
                 "cert expiration time is invalid: %.lf",
                 difftime(notValidAfter, (time_t)0));
             return(-1);
-       }
-       printf("ts=%ld, notValidBefore=%ld, notValidAfter=%ld\n", ts, notValidBefore, notValidAfter);
-
+        }
+        
         /* check */
         if(ts < notValidBefore) {
             xmlSecOtherError(XMLSEC_ERRORS_R_CERT_NOT_YET_VALID, NULL, NULL);

@@ -37,6 +37,141 @@
 
 /**************************************************************************
  *
+ * Helper functions for GCrypt RSA encrypt/decrypt KT
+ *
+ *************************************************************************/
+static int
+xmlSecGCryptRsaExtractData(gcry_sexp_t s_data, const char* name, xmlSecBufferPtr out) {
+    gcry_sexp_t s_tmp;
+    const void *data;
+    size_t dataLen = 0;
+    xmlSecSize dataSize;
+    int ret;
+    int res = -1;
+
+    xmlSecAssert2(s_data != NULL, -1);
+    xmlSecAssert2(name != NULL, -1);
+    xmlSecAssert2(out != NULL, -1);
+    
+    s_tmp = gcry_sexp_find_token(s_data, name, 0);
+    if(s_tmp == NULL) {
+        xmlSecGCryptError2("gcry_sexp_find_token()", (gcry_error_t)GPG_ERR_NO_ERROR, NULL,
+            "name=%s", xmlSecErrorsSafeString(name));
+        goto done;
+    }
+
+    data = gcry_sexp_nth_data (s_tmp, 1, &dataLen);
+    if(data == NULL) {
+        xmlSecGCryptError("gcry_sexp_nth_data()", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
+        goto done;
+    }
+    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(dataLen, dataSize, goto done, NULL);
+
+    ret = xmlSecBufferSetData(out, data, dataSize);
+    if(ret != 0) {
+        xmlSecInternalError("xmlSecBufferSetData", NULL);
+        goto done;
+    }
+
+    /* success */
+    res = 0;
+
+done:
+    /* cleanup */
+    if(s_tmp != NULL) {
+        gcry_sexp_release(s_tmp);
+    }
+
+    /* done */
+    return(res);
+}
+
+static int
+xmlSecGCryptRsaKtEncrypt(gcry_sexp_t s_plaintext_data, gcry_sexp_t s_pub_key, xmlSecBufferPtr out) {
+    xmlSecSize outSize;
+    gcry_sexp_t s_encrypted_data = NULL;
+    gpg_error_t err;
+    int ret;
+    int res = -1;
+
+    xmlSecAssert2(s_plaintext_data != NULL, -1);
+    xmlSecAssert2(s_pub_key != NULL, -1);
+    xmlSecAssert2(out != NULL, -1);
+
+    outSize = xmlSecBufferGetSize(out);
+    xmlSecAssert2(outSize == 0, -1);
+
+    /* encrypt */
+    err = gcry_pk_encrypt(&s_encrypted_data, s_plaintext_data, s_pub_key);
+    if((err != GPG_ERR_NO_ERROR) || (s_encrypted_data == NULL)) {
+        xmlSecGCryptError("gcry_pk_encrypt()", err, NULL);
+        goto done;
+    }
+
+    /* extract data */
+    ret = xmlSecGCryptRsaExtractData(s_encrypted_data, "a", out);
+    if(ret != 0) {
+        xmlSecInternalError("xmlSecGCryptRsaExtractData", NULL);
+        goto done;
+    }
+
+    /* success */
+    res = 0;
+
+done:
+    /* cleanup */
+    if(s_encrypted_data != NULL) {
+        gcry_sexp_release(s_encrypted_data);
+    }
+
+    /* done */
+    return(res);
+}
+
+static int
+xmlSecGCryptRsaKtDecrypt(gcry_sexp_t s_encrypted_data, gcry_sexp_t s_priv_key, xmlSecBufferPtr out) {
+    xmlSecSize outSize;
+    gcry_sexp_t s_decrypted_data = NULL;
+    gpg_error_t err;
+    int ret;
+    int res = -1;
+
+    xmlSecAssert2(s_encrypted_data != NULL, -1);
+    xmlSecAssert2(s_priv_key != NULL, -1);
+    xmlSecAssert2(out != NULL, -1);
+
+    outSize = xmlSecBufferGetSize(out);
+    xmlSecAssert2(outSize == 0, -1);
+
+    /* decrypt */
+    err = gcry_pk_decrypt(&s_decrypted_data, s_encrypted_data, s_priv_key);
+    if((err != GPG_ERR_NO_ERROR) || (s_decrypted_data == NULL)) {
+        xmlSecGCryptError("gcry_pk_decrypt()", err, NULL);
+        goto done;
+    }
+
+    /* extract data */
+    ret = xmlSecGCryptRsaExtractData(s_decrypted_data, "value", out);
+    if(ret != 0) {
+        xmlSecInternalError("xmlSecGCryptRsaExtractData", NULL);
+        goto done;
+    }
+
+    /* success */
+    res = 0;
+
+done:
+    /* cleanup */
+    if(s_decrypted_data != NULL) {
+        gcry_sexp_release(s_decrypted_data);
+    }
+
+    /* done */
+    return(res);
+}
+
+/**************************************************************************
+ *
  * Internal GCrypt RSA PKCS1 CTX
  *
  *************************************************************************/
@@ -190,58 +325,10 @@ xmlSecGCryptRsaPkcs1SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 }
 
 static int
-xmlSecGCryptRsaExtractData(gcry_sexp_t s_data, const char* name, xmlSecBufferPtr out) {
-    gcry_sexp_t s_tmp;
-    const void *data;
-    size_t dataLen = 0;
-    xmlSecSize dataSize;
-    int ret;
-    int res = -1;
-
-    xmlSecAssert2(s_data != NULL, -1);
-    xmlSecAssert2(name != NULL, -1);
-    xmlSecAssert2(out != NULL, -1);
-    
-    s_tmp = gcry_sexp_find_token(s_data, name, 0);
-    if(s_tmp == NULL) {
-        xmlSecGCryptError2("gcry_sexp_find_token()", (gcry_error_t)GPG_ERR_NO_ERROR, NULL,
-            "name=%s", xmlSecErrorsSafeString(name));
-        goto done;
-    }
-
-    data = gcry_sexp_nth_data (s_tmp, 1, &dataLen);
-    if(data == NULL) {
-        xmlSecGCryptError("gcry_sexp_nth_data()", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
-        goto done;
-    }
-    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(dataLen, dataSize, goto done, NULL);
-
-    ret = xmlSecBufferSetData(out, data, dataSize);
-    if(ret != 0) {
-        xmlSecInternalError("xmlSecBufferSetData", NULL);
-        goto done;
-    }
-
-    /* success */
-    res = 0;
-
-done:
-    /* cleanup */
-    if(s_tmp != NULL) {
-        gcry_sexp_release(s_tmp);
-    }
-
-    /* done */
-    return(res);
-}
-
-static int
 xmlSecGCryptRsaPkcs1Encrypt(xmlSecGCryptRsaPkcs1CtxPtr ctx, xmlSecBufferPtr in, xmlSecBufferPtr out) {
-    xmlSecSize inSize, outSize;
+    xmlSecSize inSize;
     int inLen;
-    gcry_sexp_t s_encrypted_data = NULL;
-    gcry_sexp_t s_decrypted_data = NULL;
-    gcry_sexp_t s_key;
+    gcry_sexp_t s_plaintext_data = NULL;
     gpg_error_t err;
     int ret;
     int res = -1;
@@ -251,35 +338,26 @@ xmlSecGCryptRsaPkcs1Encrypt(xmlSecGCryptRsaPkcs1CtxPtr ctx, xmlSecBufferPtr in, 
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
 
-    inSize = xmlSecBufferGetSize(in);
-    outSize = xmlSecBufferGetSize(out);
-    xmlSecAssert2(outSize == 0, -1);
-
-    s_key = xmlSecGCryptKeyDataRsaGetPublicKey(ctx->key_data);
-    xmlSecAssert2(s_key != NULL, -1);
-    
     /* setup plain text data */
+    inSize = xmlSecBufferGetSize(in);
     XMLSEC_SAFE_CAST_SIZE_TO_INT(inSize, inLen, return(-1), NULL);
-    err = gcry_sexp_build(&s_decrypted_data, NULL,
+
+    err = gcry_sexp_build(&s_plaintext_data, NULL,
             "(data (flags pkcs1)(hash-algo sha1)"
             "(value %b))",
             inLen, xmlSecBufferGetData(in));
-    if((err != GPG_ERR_NO_ERROR) || (s_decrypted_data == NULL)) {
+    if((err != GPG_ERR_NO_ERROR) || (s_plaintext_data == NULL)) {
         xmlSecGCryptError("gcry_sexp_build(data)", err, NULL);
         goto done;
     }
 
     /* encrypt */
-    err = gcry_pk_encrypt(&s_encrypted_data, s_decrypted_data, s_key);
-    if((err != GPG_ERR_NO_ERROR) || (s_encrypted_data == NULL)) {
-        xmlSecGCryptError("gcry_pk_encrypt()", err, NULL);
-        goto done;
-    }
-
-    /* extract data */
-    ret = xmlSecGCryptRsaExtractData(s_encrypted_data, "a", out);
+    ret = xmlSecGCryptRsaKtEncrypt(
+        s_plaintext_data,
+        xmlSecGCryptKeyDataRsaGetPublicKey(ctx->key_data),
+        out);
     if(ret != 0) {
-        xmlSecInternalError("xmlSecGCryptRsaExtractData", NULL);
+        xmlSecInternalError("xmlSecGCryptRsaKtEncrypt", NULL);
         goto done;
     }
 
@@ -296,11 +374,8 @@ xmlSecGCryptRsaPkcs1Encrypt(xmlSecGCryptRsaPkcs1CtxPtr ctx, xmlSecBufferPtr in, 
 
 done:
     /* cleanup */
-    if(s_decrypted_data != NULL) {
-        gcry_sexp_release(s_decrypted_data);
-    }
-    if(s_encrypted_data != NULL) {
-        gcry_sexp_release(s_encrypted_data);
+    if(s_plaintext_data != NULL) {
+        gcry_sexp_release(s_plaintext_data);
     }
 
     /* done */
@@ -309,11 +384,9 @@ done:
 
 static int
 xmlSecGCryptRsaPkcs1Decrypt(xmlSecGCryptRsaPkcs1CtxPtr ctx, xmlSecBufferPtr in, xmlSecBufferPtr out) {
-    xmlSecSize inSize, outSize;
+    xmlSecSize inSize;
     int inLen;
     gcry_sexp_t s_encrypted_data = NULL;
-    gcry_sexp_t s_decrypted_data = NULL;
-    gcry_sexp_t s_key;
     gpg_error_t err;
     int ret;
     int res = -1;
@@ -323,15 +396,10 @@ xmlSecGCryptRsaPkcs1Decrypt(xmlSecGCryptRsaPkcs1CtxPtr ctx, xmlSecBufferPtr in, 
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
 
-    inSize = xmlSecBufferGetSize(in);
-    outSize = xmlSecBufferGetSize(out);
-    xmlSecAssert2(outSize == 0, -1);
-
-    s_key = xmlSecGCryptKeyDataRsaGetPrivateKey(ctx->key_data);
-    xmlSecAssert2(s_key != NULL, -1);
-
     /* setup encrypted data */
+    inSize = xmlSecBufferGetSize(in);
     XMLSEC_SAFE_CAST_SIZE_TO_INT(inSize, inLen, return(-1), NULL);
+
     err = gcry_sexp_build(&s_encrypted_data, NULL,
             "(enc-val (flags pkcs1)(hash-algo sha1)"
             "(rsa (a %b)))",
@@ -342,16 +410,12 @@ xmlSecGCryptRsaPkcs1Decrypt(xmlSecGCryptRsaPkcs1CtxPtr ctx, xmlSecBufferPtr in, 
     }
 
     /* decrypt */
-    err = gcry_pk_decrypt(&s_decrypted_data, s_encrypted_data, s_key);
-    if((err != GPG_ERR_NO_ERROR) || (s_decrypted_data == NULL)) {
-        xmlSecGCryptError("gcry_pk_decrypt()", err, NULL);
-        goto done;
-    }
-
-    /* extract data */
-    ret = xmlSecGCryptRsaExtractData(s_decrypted_data, "value", out);
+    ret = xmlSecGCryptRsaKtDecrypt(
+        s_encrypted_data,
+        xmlSecGCryptKeyDataRsaGetPrivateKey(ctx->key_data),
+        out);
     if(ret != 0) {
-        xmlSecInternalError("xmlSecGCryptRsaExtractData", NULL);
+        xmlSecInternalError("xmlSecGCryptRsaKtEncrypt", NULL);
         goto done;
     }
 
@@ -368,9 +432,6 @@ xmlSecGCryptRsaPkcs1Decrypt(xmlSecGCryptRsaPkcs1CtxPtr ctx, xmlSecBufferPtr in, 
 
 done:
     /* cleanup */
-    if(s_decrypted_data != NULL) {
-        gcry_sexp_release(s_decrypted_data);
-    }
     if(s_encrypted_data != NULL) {
         gcry_sexp_release(s_encrypted_data);
     }

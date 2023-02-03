@@ -608,8 +608,7 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
 
         /* Build the S-expression.  */
         err = gcry_sexp_build (&s_priv_key, NULL,
-            "(private-key"
-            " (ecdsa"
+            "(private-key (ecdsa"
             " (curve %s)"
             " (d %m)"
             " (q %m)"
@@ -622,8 +621,7 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
         }
 
         err = gcry_sexp_build (&s_pub_key, NULL,
-            "(public-key"
-            " (ecdsa"
+            "(public-key (ecdsa"
             " (curve %s)"
             " (q %m)"
             " ))",

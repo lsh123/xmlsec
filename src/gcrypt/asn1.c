@@ -239,8 +239,9 @@ xmlSecGCryptAsn1ParseIntegerSequence(int level, xmlSecByte const **buffer, xmlSe
 
         if(ti.cons != 0) {
             const xmlSecByte* buf2 = buf;
-            xmlSecSize buf2len = ti.length;
+            xmlSecSize buf2len;
 
+            XMLSEC_SAFE_CAST_ULONG_TO_SIZE(ti.length, buf2len, return(-1), NULL);
             ret = xmlSecGCryptAsn1ParseIntegerSequence(
                     level + 1, &buf2, &buf2len,
                     integers, integers_size, integers_out_size,
@@ -501,11 +502,11 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
         }
 
         /** Ignore p, q, u completely because optimized RSA encryption/decryption looks broken */
-        
+
         /* Convert from OpenSSL parameter ordering to the OpenPGP order. */
         /* (http://gnupg.10057.n7.nabble.com/RSA-PKCS-1-signing-differs-from-OpenSSL-s-td27920.html) */
         /* First check that p < q; if not swap p and q and recompute u.  */
-        /** 
+        /**
         if (gcry_mpi_cmp (integers[4], integers[5]) > 0) {
             gcry_mpi_swap (integers[4], integers[5]);
             gcry_mpi_invm (integers[8], integers[4], integers[5]);

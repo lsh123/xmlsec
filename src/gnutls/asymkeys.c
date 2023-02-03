@@ -307,18 +307,20 @@ xmlSecGnuTLSKeyDataRsaAdoptPrivateKey(xmlSecKeyDataPtr data, gnutls_x509_privkey
     }
     xmlSecGnuTLSDestroyParams(params, sizeof(params)/sizeof(params[0]));
 
+    /** Ignore p, q, u completely because optimized RSA encryption/decryption looks broken */
     /* Convert from OpenSSL parameter ordering to the OpenPGP order. */
     /* (http://gnupg.10057.n7.nabble.com/RSA-PKCS-1-signing-differs-from-OpenSSL-s-td27920.html) */
     /* First check that p < q; if not swap p and q and recompute u.  */
+    /* 
     if (gcry_mpi_cmp(mpis[3], mpis[4]) > 0) {
         gcry_mpi_swap(mpis[3], mpis[4]);
         gcry_mpi_invm(mpis[5], mpis[3], mpis[4]);
     }
+    */
 
     /* build expressions */
-    rc = gcry_sexp_build(&(priv_key), NULL, "(private-key(rsa((n%m)(e%m)(d%m)(p%m)(q%m)(u%m))))",
-                        mpis[0], mpis[1], mpis[2],
-                        mpis[3], mpis[4], mpis[5]);
+    rc = gcry_sexp_build(&(priv_key), NULL, "(private-key(rsa((n%m)(e%m)(d%m))))",
+                        mpis[0], mpis[1], mpis[2]);
     if((rc != GPG_ERR_NO_ERROR) || (priv_key == NULL)) {
         xmlSecGnuTLSGCryptError("gcry_sexp_build(private/rsa)", rc, NULL);
         xmlSecGnuTLSDestroyMpis(mpis, sizeof(mpis)/sizeof(mpis[0]));

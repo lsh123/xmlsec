@@ -93,7 +93,7 @@ pub_key_format=$file_format
 cert_format=$file_format
 
 #
-# GCrypt/GnuTLS only supports DER format for now, others are good to go with PKCS12
+# GCrypt only supports DER format for now, others are good to go with PKCS12
 #
 if [ "z$crypto" != "zgcrypt" ] ; then
     priv_key_option="--pkcs12"

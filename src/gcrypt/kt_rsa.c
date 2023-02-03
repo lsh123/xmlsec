@@ -513,7 +513,7 @@ struct _xmlSecGCryptRsaOaepCtx {
 
 /*********************************************************************
  *
- * RSA OAEP key transport transform
+ * RSA OAEP key transport transform (both XMLEnc 1.0 and XMLEnc 1.1)
  *
  ********************************************************************/
 XMLSEC_TRANSFORM_DECLARE(GCryptRsaOaep, xmlSecGCryptRsaOaepCtx)
@@ -562,7 +562,7 @@ static xmlSecTransformKlass xmlSecGCryptRsaOaepKlass = {
 /**
  * xmlSecGCryptTransformRsaOaepGetKlass:
  *
- * The RSA-OAEP key transport transform klass.
+ * The RSA-OAEP key transport transform klass (XMLEnc 1.0).
  *
  * Returns: RSA-OAEP key transport transform klass.
  */
@@ -571,13 +571,63 @@ xmlSecGCryptTransformRsaOaepGetKlass(void) {
     return(&xmlSecGCryptRsaOaepKlass);
 }
 
+static xmlSecTransformKlass xmlSecGCryptRsaOaepEnc11Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecGCryptRsaOaepSize,                   /* xmlSecSize objSize */
+
+    xmlSecNameRsaOaepEnc11,                     /* const xmlChar* name; */
+    xmlSecHrefRsaOaepEnc11,                     /* const xmlChar* href; */
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
+
+    xmlSecGCryptRsaOaepInitialize,             /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecGCryptRsaOaepFinalize,               /* xmlSecTransformFinalizeMethod finalize; */
+    xmlSecGCryptRsaOaepNodeRead,               /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecGCryptRsaOaepSetKeyReq,              /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecGCryptRsaOaepSetKey,                 /* xmlSecTransformSetKeyMethod setKey; */
+    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecGCryptRsaOaepExecute,                /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecGCryptTransformRsaOaepEnc11GetKlass:
+ *
+ * The RSA-OAEP key transport transform klass (XMLEnc 1.1).
+ *
+ * Returns: RSA-OAEP key transport transform klass.
+ */
+xmlSecTransformId
+xmlSecGCryptTransformRsaOaepEnc11GetKlass(void) {
+    return(&xmlSecGCryptRsaOaepEnc11Klass);
+}
+
+static int
+xmlSecGCryptRsaOaepCheckId(xmlSecTransformPtr transform) {
+    if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformRsaOaepId)) {
+        return(1);
+    } else if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformRsaOaepEnc11Id)) {
+        return(1);
+    }
+
+    /* not found */
+    return(0);
+}
 
 static int
 xmlSecGCryptRsaOaepInitialize(xmlSecTransformPtr transform) {
     xmlSecGCryptRsaOaepCtxPtr ctx;
     int ret;
 
-    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecGCryptTransformRsaOaepId), -1);
+    xmlSecAssert2(xmlSecGCryptRsaOaepCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGCryptRsaOaepSize), -1);
 
     ctx = xmlSecGCryptRsaOaepGetCtx(transform);
@@ -598,7 +648,7 @@ static void
 xmlSecGCryptRsaOaepFinalize(xmlSecTransformPtr transform) {
     xmlSecGCryptRsaOaepCtxPtr ctx;
 
-    xmlSecAssert(xmlSecTransformCheckId(transform, xmlSecGCryptTransformRsaOaepId));
+    xmlSecAssert(xmlSecGCryptRsaOaepCheckId(transform));
     xmlSecAssert(xmlSecTransformCheckSize(transform, xmlSecGCryptRsaOaepSize));
 
     ctx = xmlSecGCryptRsaOaepGetCtx(transform);
@@ -621,7 +671,7 @@ xmlSecGCryptRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     const char* mgf1Alg = NULL;
     int ret;
 
-    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecGCryptTransformRsaOaepId), -1);
+    xmlSecAssert2(xmlSecGCryptRsaOaepCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGCryptRsaOaepSize), -1);
     xmlSecAssert2(node != NULL, -1);
     UNREFERENCED_PARAMETER(transformCtx);
@@ -762,7 +812,7 @@ static int
 xmlSecGCryptRsaOaepSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
     xmlSecGCryptRsaOaepCtxPtr ctx;
 
-    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecGCryptTransformRsaOaepId), -1);
+    xmlSecAssert2(xmlSecGCryptRsaOaepCheckId(transform), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGCryptRsaOaepSize), -1);
     xmlSecAssert2(keyReq != NULL, -1);
@@ -786,7 +836,7 @@ xmlSecGCryptRsaOaepSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecGCryptRsaOaepCtxPtr ctx;
     xmlSecKeyDataPtr keyData;
 
-    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecGCryptTransformRsaOaepId), -1);
+    xmlSecAssert2(xmlSecGCryptRsaOaepCheckId(transform), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGCryptRsaOaepSize), -1);
     xmlSecAssert2(key != NULL, -1);
@@ -962,7 +1012,7 @@ xmlSecGCryptRsaOaepExecute(xmlSecTransformPtr transform, int last,
     xmlSecGCryptRsaOaepCtxPtr ctx;
     int ret;
 
-    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecGCryptTransformRsaOaepId), -1);
+    xmlSecAssert2(xmlSecGCryptRsaOaepCheckId(transform), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGCryptRsaOaepSize), -1);
     UNREFERENCED_PARAMETER(transformCtx);

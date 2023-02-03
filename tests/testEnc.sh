@@ -143,7 +143,7 @@ execEncTest $res_success \
 # Advanced RSA OAEP modes:
 # - MSCrypto only supports SHA1 for digest and mgf1
 # - GCrypt/GnuTLS and MSCng only supoprts the *same* algorithm for *both* digest and mgf1
-if [ "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" -a "z$crypto" != "zgcrypt" -a "z$crypto" != "zgnutls"] ; then
+if [ "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" -a "z$crypto" != "zgcrypt"  -a "z$crypto" != "zgnutls" ] ; then
     # various digest and default mgf1 (sha1)
     execEncTest $res_success \
         "" \
@@ -386,7 +386,7 @@ execEncTest $res_success \
     "" \
     "merlin-xmlenc-five/encrypt-element-aes128-cbc-rsa-1_5" \
     "aes128-cbc rsa-1_5" \
-    "$priv_key_option $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --pwd secret" \
+    "$priv_key_option $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --pwd secret --verification-gmt-time 2003-01-01+10:00:00" \
     "--keys-file $topfolder/merlin-xmlenc-five/keys.xml --session-key aes-128 $priv_key_option $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --xml-data $topfolder/merlin-xmlenc-five/encrypt-element-aes128-cbc-rsa-1_5.data --node-id Purchase --pwd secret"  \
     "$priv_key_option $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --pwd secret"
 
@@ -401,7 +401,7 @@ execEncTest $res_success \
 # Advanced RSA OAEP modes:
 # - MSCrypto only supports SHA1 for digest and mgf1
 # - GCrypt/GnuTLS and MSCng only supoprts the *same* algorithm for *both* digest and mgf1
-if [ "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" -a "z$crypto" != "zgcrypt" -a "z$crypto" != "zgnutls"] ; then
+if [ "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" -a "z$crypto" != "zgcrypt" -a "z$crypto" != "zgnutls" ] ; then
     execEncTest $res_success \
         "" \
         "merlin-xmlenc-five/encrypt-data-tripledes-cbc-rsa-oaep-mgf1p-sha256" \

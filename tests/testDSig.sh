@@ -463,6 +463,24 @@ execDSigTest $res_success \
 
 execDSigTest $res_success \
     "" \
+    "aleksey-xmldsig-01/enveloped-sha1-ecdsa-sha1" \
+    "sha1 ecdsa-sha1" \
+    "ecdsa" \
+    "$priv_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
+    "$priv_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
+    "$priv_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123"
+
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloped-sha256-ecdsa-sha256" \
+    "sha256 ecdsa-sha256" \
+    "ecdsa" \
+    "$priv_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
+    "$priv_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
+    "$priv_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123"
+
+execDSigTest $res_success \
+    "" \
     "aleksey-xmldsig-01/enveloping-sha1-ecdsa-sha1" \
     "sha1 ecdsa-sha1" \
     "ecdsa x509" \
@@ -1116,4 +1134,3 @@ echo "--- testDSig finished"
 if [ -z "$XMLSEC_TEST_REPRODUCIBLE" ]; then
     echo "--- detailed log is written to  $logfile"
 fi
-

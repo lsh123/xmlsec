@@ -76,6 +76,10 @@ xmlSecCryptoGetFunctions_gcrypt(void) {
     gXmlSecGCryptFunctions->keyDataDsaGetKlass          = xmlSecGCryptKeyDataDsaGetKlass;
 #endif /* XMLSEC_NO_DSA */
 
+#ifndef XMLSEC_NO_ECDSA
+    gXmlSecGCryptFunctions->keyDataEcdsaGetKlass        = xmlSecGCryptKeyDataEcdsaGetKlass;
+#endif /* XMLSEC_NO_ECDSA */
+
 #ifndef XMLSEC_NO_HMAC
     gXmlSecGCryptFunctions->keyDataHmacGetKlass         = xmlSecGCryptKeyDataHmacGetKlass;
 #endif /* XMLSEC_NO_HMAC */
@@ -121,6 +125,28 @@ xmlSecCryptoGetFunctions_gcrypt(void) {
 #endif /* XMLSEC_NO_SHA1 */
 
 #endif /* XMLSEC_NO_DSA */
+
+    /******************************* ECDSA ********************************/
+#ifndef XMLSEC_NO_ECDSA
+
+#ifndef XMLSEC_NO_SHA1
+    gXmlSecGCryptFunctions->transformEcdsaSha1GetKlass        = xmlSecGCryptTransformEcdsaSha1GetKlass;
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA256
+    gXmlSecGCryptFunctions->transformEcdsaSha256GetKlass      = xmlSecGCryptTransformEcdsaSha256GetKlass;
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+    gXmlSecGCryptFunctions->transformEcdsaSha384GetKlass      = xmlSecGCryptTransformEcdsaSha384GetKlass;
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+    gXmlSecGCryptFunctions->transformEcdsaSha512GetKlass      = xmlSecGCryptTransformEcdsaSha512GetKlass;
+#endif /* XMLSEC_NO_SHA512 */
+
+#endif /* XMLSEC_NO_ECDSA */
+
 
     /******************************* HMAC ********************************/
 #ifndef XMLSEC_NO_HMAC

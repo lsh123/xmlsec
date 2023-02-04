@@ -37,6 +37,7 @@ extern "C" {
 #define xmlSecKeyDataAesId                      xmlSecGCryptKeyDataAesId
 #define xmlSecKeyDataDesId                      xmlSecGCryptKeyDataDesId
 #define xmlSecKeyDataDsaId                      xmlSecGCryptKeyDataDsaId
+#define xmlSecKeyDataEcdsaId                    xmlSecGCryptKeyDataEcdsaId
 #define xmlSecKeyDataHmacId                     xmlSecGCryptKeyDataHmacId
 #define xmlSecKeyDataRsaId                      xmlSecGCryptKeyDataRsaId
 #define xmlSecKeyDataX509Id                     xmlSecGCryptKeyDataX509Id
@@ -66,6 +67,11 @@ extern "C" {
 #define xmlSecTransformKWDes3Id                 xmlSecGCryptTransformKWDes3Id
 
 #define xmlSecTransformDsaSha1Id                xmlSecGCryptTransformDsaSha1Id
+
+#define xmlSecTransformEcdsaSha1Id              xmlSecGCryptTransformEcdsaSha1Id
+#define xmlSecTransformEcdsaSha256Id            xmlSecGCryptTransformEcdsaSha256Id
+#define xmlSecTransformEcdsaSha384Id            xmlSecGCryptTransformEcdsaSha384Id
+#define xmlSecTransformEcdsaSha512Id            xmlSecGCryptTransformRsaSha512Id
 
 #define xmlSecTransformHmacMd5Id                xmlSecGCryptTransformHmacMd5Id
 #define xmlSecTransformRipemd160Id              xmlSecGCryptTransformRipemd160Id

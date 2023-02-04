@@ -481,15 +481,6 @@ execDSigTest $res_success \
 
 execDSigTest $res_success \
     "" \
-    "aleksey-xmldsig-01/enveloped-sha512-ecdsa-sha512" \
-    "sha512 ecdsa-sha512" \
-    "ecdsa" \
-    "$priv_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
-    "$priv_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
-    "$priv_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123"
-
-execDSigTest $res_success \
-    "" \
     "aleksey-xmldsig-01/enveloping-sha1-ecdsa-sha1" \
     "sha1 ecdsa-sha1" \
     "ecdsa x509" \

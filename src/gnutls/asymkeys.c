@@ -82,6 +82,7 @@ static int xmlSecGnuTLSConvertParamsToMpis(gnutls_datum_t * params, xmlSecSize p
     return(0);
 }
 
+
 #ifndef XMLSEC_NO_DSA
 
 /**
@@ -311,7 +312,7 @@ xmlSecGnuTLSKeyDataRsaAdoptPrivateKey(xmlSecKeyDataPtr data, gnutls_x509_privkey
     /* Convert from OpenSSL parameter ordering to the OpenPGP order. */
     /* (http://gnupg.10057.n7.nabble.com/RSA-PKCS-1-signing-differs-from-OpenSSL-s-td27920.html) */
     /* First check that p < q; if not swap p and q and recompute u.  */
-    /* 
+    /*
     if (gcry_mpi_cmp(mpis[3], mpis[4]) > 0) {
         gcry_mpi_swap(mpis[3], mpis[4]);
         gcry_mpi_invm(mpis[5], mpis[3], mpis[4]);
@@ -411,3 +412,194 @@ xmlSecGnuTLSKeyDataRsaAdoptPublicKey(xmlSecKeyDataPtr data,
     return(0);
 }
 #endif /* XMLSEC_NO_RSA */
+
+
+#ifndef XMLSEC_NO_ECDSA
+
+static const char *
+xmlSecGnuTLSKeyDataEcdsaGetGCryptCurveName(gnutls_ecc_curve_t curve) {
+    switch(curve) {
+	case GNUTLS_ECC_CURVE_SECP224R1:
+        return "secp224r1";
+    case GNUTLS_ECC_CURVE_SECP256R1:
+        return "secp256r1";
+    case GNUTLS_ECC_CURVE_SECP384R1:
+        return "secp384r1";
+    case GNUTLS_ECC_CURVE_SECP521R1:
+        return "secp521r1";
+	case GNUTLS_ECC_CURVE_SECP192R1:
+        return "secp192r1";
+    default:
+        xmlSecInvalidDataError("Unknown ECDSA curve", NULL);
+        return(NULL);
+    }
+}
+
+/**
+ * xmlSecGnuTLSKeyDataEcdsaGetKlass:
+ *
+ * The ECDSA key data klass.
+ *
+ * Returns: pointer to ECDSA key data klass.
+ */
+xmlSecKeyDataId
+xmlSecGnuTLSKeyDataEcdsaGetKlass(void) {
+    return (xmlSecGCryptKeyDataEcdsaGetKlass());
+}
+
+/**
+ * xmlSecGnuTLSKeyDataEcdsaAdoptPrivateKey:
+ * @data:               the pointer to ECDSA key data.
+ * @dsa_key:            the pointer to GnuTLS ECDSA private key.
+ *
+ * Sets the value of ECDSA key data.
+ *
+ * Returns: 0 on success or a negative value otherwise.
+ */
+int
+xmlSecGnuTLSKeyDataEcdsaAdoptPrivateKey(xmlSecKeyDataPtr data, gnutls_x509_privkey_t ecdsa_key) {
+    gnutls_ecc_curve_t curve = GNUTLS_ECC_CURVE_INVALID;
+    gnutls_datum_t params[3];
+    gcry_mpi_t mpis[3];
+    gcry_sexp_t priv_key = NULL;
+    gcry_sexp_t pub_key = NULL;
+    gcry_error_t rc;
+    int err;
+    int ret;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataEcdsaId), -1);
+    xmlSecAssert2(ecdsa_key != NULL, -1);
+    xmlSecAssert2(gnutls_x509_privkey_get_pk_algorithm(ecdsa_key) == GNUTLS_PK_ECDSA, -1);
+
+    /* get raw values */
+    err = gnutls_x509_privkey_export_ecc_raw(ecdsa_key, &curve,
+        &(params[0]), &(params[1]), &(params[2]));
+    if(err != GNUTLS_E_SUCCESS) {
+        xmlSecGnuTLSError("gnutls_x509_privkey_export_ecc_raw", err, NULL);
+        return(-1);
+    }
+
+#ifdef TODO
+    /* convert to mpis */
+    ret = xmlSecGnuTLSConvertParamsToMpis(
+            params, sizeof(params)/sizeof(params[0]),
+            mpis, sizeof(mpis)/sizeof(mpis[0]));
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecGnuTLSConvertParamsToMpis", NULL);
+        xmlSecGnuTLSDestroyParams(params, sizeof(params)/sizeof(params[0]));
+        return(-1);
+    }
+    xmlSecGnuTLSDestroyParams(params, sizeof(params)/sizeof(params[0]));
+
+    /* Convert from OpenSSL parameter ordering to the OpenPGP order. */
+    /* First check that x < y; if not swap x and y  */
+    if (gcry_mpi_cmp (mpis[4], mpis[3]) > 0) {
+        gcry_mpi_swap (mpis[3], mpis[4]);
+    }
+
+    /* build expressions */
+    rc = gcry_sexp_build(&(priv_key), NULL, "(private-key(dsa(p%m)(q%m)(g%m)(y%m)(x%m)))",
+                        mpis[0], mpis[1], mpis[2], mpis[3], mpis[4]);
+    if((rc != GPG_ERR_NO_ERROR) || (priv_key == NULL)) {
+        xmlSecGnuTLSGCryptError("gcry_sexp_build(private/dsa)", rc, NULL);
+        xmlSecGnuTLSDestroyMpis(mpis, sizeof(mpis)/sizeof(mpis[0]));
+        return(-1);
+    }
+    rc = gcry_sexp_build(&(pub_key), NULL, "(public-key(dsa(p%m)(q%m)(g%m)(y%m)))",
+                        mpis[0], mpis[1], mpis[2], mpis[3]);
+    if((rc != GPG_ERR_NO_ERROR) || (pub_key == NULL)) {
+        xmlSecGnuTLSGCryptError("gcry_sexp_build(public/dsa)", rc, NULL);
+        gcry_sexp_release(priv_key);
+        xmlSecGnuTLSDestroyMpis(mpis, sizeof(mpis)/sizeof(mpis[0]));
+        return(-1);
+    }
+    xmlSecGnuTLSDestroyMpis(mpis, sizeof(mpis)/sizeof(mpis[0]));
+
+    ret = xmlSecGCryptKeyDataEcdsaAdoptKeyPair(data, pub_key, priv_key);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecGCryptKeyDataEcdsaAdoptKeyPair", NULL);
+        gcry_sexp_release(pub_key);
+        gcry_sexp_release(priv_key);
+        return(-1);
+    }
+#endif
+
+    /* done, we "adopted" the key - destroy it! */
+    gnutls_x509_privkey_deinit(ecdsa_key);
+    return(0);
+}
+
+/**
+ * xmlSecGnuTLSKeyDataEcdsaAdoptPublicKey:
+ * @data:               the pointer to ECDSA key data.
+ * @curve:              the ECDSA curve.
+ * @pubkey:                  the pointer to pub key component of the ECDSA public key
+ *
+ * Sets the value of ECDSA key data.
+ *
+ * Returns: 0 on success or a negative value otherwise.
+ */
+int
+xmlSecGnuTLSKeyDataEcdsaAdoptPublicKey(xmlSecKeyDataPtr data, gnutls_ecc_curve_t curve, gnutls_datum_t * pubkey)
+{
+    const char* curveName;
+    gnutls_datum_t params[1];
+    gcry_mpi_t mpis[1];
+    gcry_sexp_t pub_key = NULL;
+    gcry_error_t rc;
+    int ret;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataEcdsaId), -1);
+    xmlSecAssert2(curve != GNUTLS_ECC_CURVE_INVALID, -1);
+    xmlSecAssert2(pubkey != NULL, -1);
+
+    curveName = xmlSecGnuTLSKeyDataEcdsaGetGCryptCurveName(curve);
+    if(curveName == NULL) {
+        xmlSecInternalError2("xmlSecGnuTLSKeyDataEcdsaGetGCryptCurveName", NULL,
+            "curve=%d", (int)curve);
+        /* don't destroy params - we got them from outside !!! */
+        return(-1);
+    }
+
+    /* copy */
+    memcpy(&(params[0]), pubkey, sizeof(*pubkey));
+
+    /* convert to mpis */
+    ret = xmlSecGnuTLSConvertParamsToMpis(
+            params, sizeof(params)/sizeof(params[0]),
+            mpis, sizeof(mpis)/sizeof(mpis[0]));
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecGnuTLSConvertParamsToMpis", NULL);
+        /* don't destroy params - we got them from outside !!! */
+        return(-1);
+    }
+    /* don't destroy params - we got them from outside !!! */
+
+    /* build expressions */
+    rc = gcry_sexp_build (&pub_key, NULL,
+        "(public-key (ecdsa"
+        " (curve %s)"
+        " (q %m)"
+        " ))",
+        curveName, mpis[0]
+    );
+    if((rc != GPG_ERR_NO_ERROR) || (pub_key == NULL)) {
+        xmlSecGnuTLSGCryptError("gcry_sexp_build(public/ecdsa)", rc, NULL);
+        xmlSecGnuTLSDestroyMpis(mpis, sizeof(mpis)/sizeof(mpis[0]));
+        return(-1);
+    }
+    xmlSecGnuTLSDestroyMpis(mpis, sizeof(mpis)/sizeof(mpis[0]));
+
+    ret = xmlSecGCryptKeyDataEcdsaAdoptKeyPair(data, pub_key, NULL);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecGCryptKeyDataEcdsaAdoptKeyPair", NULL);
+        gcry_sexp_release(pub_key);
+        return(-1);
+    }
+
+    /* done, we "adopted" the key - destroy it! */
+    gnutls_free(pubkey->data);
+    return(0);
+}
+
+#endif /* XMLSEC_NO_ECDSA */

@@ -1074,6 +1074,34 @@ xmlSecGnuTLSX509CertGetKey(gnutls_x509_crt_t cert) {
         break;
 #endif /* XMLSEC_NO_DSA */
 
+#ifndef XMLSEC_NO_ECDSA
+    case GNUTLS_PK_ECDSA:
+        {
+            gnutls_ecc_curve_t curve = GNUTLS_ECC_CURVE_INVALID;
+            gnutls_datum_t x;
+
+            data = xmlSecKeyDataCreate(xmlSecGnuTLSKeyDataEcdsaId);
+            if(data == NULL) {
+                xmlSecInternalError("xmlSecKeyDataCreate(KeyDataEcdsaId)", NULL);
+                return(NULL);
+            }
+            err = gnutls_x509_crt_get_pk_ecc_raw(cert, &curve, &x, NULL);
+            if((err != GNUTLS_E_SUCCESS) || (curve == GNUTLS_ECC_CURVE_INVALID)) {
+                xmlSecGnuTLSError("gnutls_x509_crt_get_pk_ecc_raw", err, NULL);
+                return(NULL);
+            }
+
+            ret = xmlSecGnuTLSKeyDataEcdsaAdoptPublicKey(data, curve, &x);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecGnuTLSKeyDataEcdsaAdoptPublicKey", NULL);
+                gnutls_free(x.data);
+                return(NULL);
+            }
+            /* x and y are owned by data now */
+        }
+        break;
+#endif /* XMLSEC_NO_ECDSA */
+
     default:
         {
             xmlSecInvalidIntegerTypeError("key_alg", alg, "supported algorithm", NULL);

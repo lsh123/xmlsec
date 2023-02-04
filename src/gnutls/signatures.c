@@ -54,6 +54,26 @@ xmlSecGnuTLSTransformDsaSha1GetKlass(void) {
 
 #endif /* XMLSEC_NO_DSA */
 
+#ifndef XMLSEC_NO_ECDSA
+
+#ifndef XMLSEC_NO_SHA1
+
+/**
+ * xmlSecGnuTLSTransformEcdsaSha1GetKlass:
+ *
+ * The ECDSA-SHA1 signature transform klass.
+ *
+ * Returns: ECDSA-SHA1 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecGnuTLSTransformEcdsaSha1GetKlass(void) {
+    return (xmlSecGCryptTransformEcdsaSha1GetKlass());
+}
+
+#endif /* XMLSEC_NO_SHA1 */
+
+#endif /* XMLSEC_NO_ECDSA */
+
 #ifndef XMLSEC_NO_RSA
 
 #ifndef XMLSEC_NO_MD5
@@ -213,6 +233,3 @@ xmlSecGnuTLSTransformRsaPssSha512GetKlass(void) {
 #endif /* XMLSEC_NO_SHA512 */
 
 #endif /* XMLSEC_NO_RSA */
-
-
-

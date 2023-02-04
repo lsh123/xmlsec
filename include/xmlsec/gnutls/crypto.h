@@ -155,7 +155,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformKWDes3GetKlass(void)
 
 /********************************************************************
  *
- * DSA transform
+ * DSA key and transforms
  *
  *******************************************************************/
 #ifndef XMLSEC_NO_DSA
@@ -189,6 +189,39 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformDsaSha1GetKlass(void
 
 #endif /* XMLSEC_NO_DSA */
 
+/********************************************************************
+ *
+ * ECDSA key and transforms
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_ECDSA
+
+/**
+ * xmlSecGnuTLSKeyDataEcdsaId:
+ *
+ * The ECDSA key klass.
+ */
+#define xmlSecGnuTLSKeyDataEcdsaId \
+        xmlSecGnuTLSKeyDataEcdsaGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecGnuTLSKeyDataEcdsaGetKlass        (void);
+XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataEcdsaAdoptPrivateKey (xmlSecKeyDataPtr data,
+                                                                                 gnutls_x509_privkey_t dsa_key);
+XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataEcdsaAdoptPublicKey  (xmlSecKeyDataPtr data,
+                                                                                 gnutls_ecc_curve_t curve,
+                                                                                 gnutls_datum_t * pubkey);
+
+#ifndef XMLSEC_NO_SHA1
+/**
+ * xmlSecGnuTLSTransformEcdsaSha1Id:
+ *
+ * The ECDSA SHA1 signature transform klass.
+ */
+#define xmlSecGnuTLSTransformEcdsaSha1Id \
+        xmlSecGnuTLSTransformEcdsaSha1GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformEcdsaSha1GetKlass(void);
+#endif /* XMLSEC_NO_SHA1 */
+
+#endif /* XMLSEC_NO_DSA */
 
 
 /********************************************************************

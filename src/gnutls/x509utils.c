@@ -957,7 +957,7 @@ xmlSecGnuTLSCreateKeyDataAndAdoptPrivKey(gnutls_x509_privkey_t priv_key) {
 
         ret = xmlSecGnuTLSKeyDataRsaAdoptPrivateKey(res, priv_key);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecGnuTLSKeyDataRsaAdoptPrivateKey(KeyDataRsaId)", NULL);
+            xmlSecInternalError("xmlSecGnuTLSKeyDataRsaAdoptPrivateKey()", NULL);
             xmlSecKeyDataDestroy(res);
             return(NULL);
         }
@@ -974,12 +974,30 @@ xmlSecGnuTLSCreateKeyDataAndAdoptPrivKey(gnutls_x509_privkey_t priv_key) {
 
         ret = xmlSecGnuTLSKeyDataDsaAdoptPrivateKey(res, priv_key);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecGnuTLSKeyDataDsaAdoptPrivateKey(KeyDataDsaId)", NULL);
+            xmlSecInternalError("xmlSecGnuTLSKeyDataDsaAdoptPrivateKey()", NULL);
             xmlSecKeyDataDestroy(res);
             return(NULL);
         }
         break;
 #endif /* XMLSEC_NO_DSA */
+
+#ifndef XMLSEC_NO_ECDSA
+    case GNUTLS_PK_ECDSA:
+        res = xmlSecKeyDataCreate(xmlSecGnuTLSKeyDataEcdsaId);
+        if(res == NULL) {
+            xmlSecInternalError("xmlSecKeyDataCreate(KeyDataEcdsaId)", NULL);
+            return(NULL);
+        }
+
+        ret = xmlSecGnuTLSKeyDataEcdsaAdoptPrivateKey(res, priv_key);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecGnuTLSKeyDataEcdsaAdoptPrivateKey()", NULL);
+            xmlSecKeyDataDestroy(res);
+            return(NULL);
+        }
+        break;
+#endif /* XMLSEC_NO_ECDSA */
+
     default:
         xmlSecInvalidIntegerTypeError("key_alg", key_alg, "supported algorithm", NULL);
         return(NULL);
@@ -1340,6 +1358,3 @@ done:
 
 
 #endif /* XMLSEC_NO_X509 */
-
-
-

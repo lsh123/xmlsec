@@ -77,6 +77,10 @@ xmlSecCryptoGetFunctions_gnutls(void) {
     gXmlSecGnuTLSFunctions->keyDataDsaGetKlass          = xmlSecGnuTLSKeyDataDsaGetKlass;
 #endif /* XMLSEC_NO_DSA */
 
+#ifndef XMLSEC_NO_ECDSA
+    gXmlSecGnuTLSFunctions->keyDataEcdsaGetKlass        = xmlSecGnuTLSKeyDataEcdsaGetKlass;
+#endif /* XMLSEC_NO_ECDSA */
+
 #ifndef XMLSEC_NO_HMAC
     gXmlSecGnuTLSFunctions->keyDataHmacGetKlass         = xmlSecGnuTLSKeyDataHmacGetKlass;
 #endif /* XMLSEC_NO_HMAC */
@@ -129,6 +133,15 @@ xmlSecCryptoGetFunctions_gnutls(void) {
 #endif /* XMLSEC_NO_SHA1 */
 
 #endif /* XMLSEC_NO_DSA */
+
+    /******************************* ECDSA ********************************/
+#ifndef XMLSEC_NO_ECDSA
+
+#ifndef XMLSEC_NO_SHA1
+    gXmlSecGnuTLSFunctions->transformEcdsaSha1GetKlass          = xmlSecGnuTLSTransformEcdsaSha1GetKlass;
+#endif /* XMLSEC_NO_SHA1 */
+
+#endif /* XMLSEC_NO_ECDSA */
 
     /******************************* HMAC ********************************/
 #ifndef XMLSEC_NO_HMAC

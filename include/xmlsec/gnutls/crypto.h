@@ -438,40 +438,6 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformSha384GetKlass(void)
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformSha512GetKlass(void);
 #endif /* XMLSEC_NO_SHA512 */
 
-/********************************************************************
- *
- * Md5 transforms
- *
- *******************************************************************/
-#ifndef XMLSEC_NO_MD5
-/**
- * xmlSecGnuTLSTransformMd5Id:
- *
- * The MD5 digest transform klass.
- */
-#define xmlSecGnuTLSTransformMd5Id \
-        xmlSecGnuTLSTransformMd5GetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformMd5GetKlass(void);
-#endif /* XMLSEC_NO_MD5 */
-
-
-/********************************************************************
- *
- * RipeMD160 transforms
- *
- *******************************************************************/
-#ifndef XMLSEC_NO_RIPEMD160
-/**
- * xmlSecGnuTLSTransformRipemd160Id:
- *
- * The RIPEMD160 digest transform klass.
- */
-#define xmlSecGnuTLSTransformRipemd160Id \
-        xmlSecGnuTLSTransformRipemd160GetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformRipemd160GetKlass(void);
-#endif /* XMLSEC_NO_RIPEMD160 */
-
-
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

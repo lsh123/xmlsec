@@ -38,7 +38,6 @@
  * Internal NSS signatures ctx
  *
  *****************************************************************************/
-#define XMLSEC_GNUTLS_MAX_HASH_SIZE 128
 #define XMLSEC_GNUTLS_DSA_SIZE      20
 
 typedef gnutls_pubkey_t     (*xmlSecGnuTLSKeyDataGetPublicKeyMethod)      (xmlSecKeyDataPtr data);
@@ -51,16 +50,16 @@ struct _xmlSecGnuTLSSignatureCtx {
     xmlSecGnuTLSKeyDataGetPublicKeyMethod   getPubKey;
     xmlSecGnuTLSKeyDataGetPrivateKeyMethod  getPrivKey;
 
+    gnutls_digest_algorithm_t   dgstAlgo;
+    unsigned int                dgstSize;
+    gnutls_hash_hd_t            hash;
+    xmlSecByte                  dgst[XMLSEC_GNUTLS_MAX_DIGEST_SIZE];
+
     xmlSecKeyDataId             keyId;
-    gnutls_digest_algorithm_t   hashAlgo;
-    unsigned int                hashOutputSize;
+    xmlSecKeyDataPtr            keyData;
     gnutls_sign_algorithm_t     signAlgo;
     unsigned int                signFlags;
     unsigned int                verifyFlags;
-
-    xmlSecKeyDataPtr            keyData;
-    gnutls_hash_hd_t            hash;
-    xmlSecByte                  hashOutput[XMLSEC_GNUTLS_MAX_HASH_SIZE];
 };
 
 /******************************************************************************
@@ -164,7 +163,7 @@ xmlSecGnuTLSSignatureInitialize(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformDsaSha1Id)) {
         ctx->keyId      = xmlSecGnuTLSKeyDataDsaId;
-        ctx->hashAlgo   = GNUTLS_DIG_SHA1;
+        ctx->dgstAlgo   = GNUTLS_DIG_SHA1;
         ctx->signAlgo   = GNUTLS_SIGN_DSA_SHA1;
         ctx->getPubKey  = xmlSecGnuTLSKeyDataDsaGetPublicKey;
         ctx->getPrivKey = xmlSecGnuTLSKeyDataDsaGetPrivateKey;
@@ -178,7 +177,7 @@ xmlSecGnuTLSSignatureInitialize(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformRsaSha1Id)) {
         ctx->keyId      = xmlSecGnuTLSKeyDataRsaId;
-        ctx->hashAlgo   = GNUTLS_DIG_SHA1;
+        ctx->dgstAlgo   = GNUTLS_DIG_SHA1;
         ctx->signAlgo   = GNUTLS_SIGN_RSA_SHA1;
         ctx->getPubKey  = xmlSecGnuTLSKeyDataRsaGetPublicKey;
         ctx->getPrivKey = xmlSecGnuTLSKeyDataRsaGetPrivateKey;
@@ -188,7 +187,7 @@ xmlSecGnuTLSSignatureInitialize(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_NO_SHA256
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformRsaSha256Id)) {
         ctx->keyId      = xmlSecGnuTLSKeyDataRsaId;
-        ctx->hashAlgo   = GNUTLS_DIG_SHA256;
+        ctx->dgstAlgo   = GNUTLS_DIG_SHA256;
         ctx->signAlgo   = GNUTLS_SIGN_RSA_SHA256;
         ctx->getPubKey  = xmlSecGnuTLSKeyDataRsaGetPublicKey;
         ctx->getPrivKey = xmlSecGnuTLSKeyDataRsaGetPrivateKey;
@@ -198,7 +197,7 @@ xmlSecGnuTLSSignatureInitialize(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_NO_SHA384
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformRsaSha384Id)) {
         ctx->keyId      = xmlSecGnuTLSKeyDataRsaId;
-        ctx->hashAlgo   = GNUTLS_DIG_SHA384;
+        ctx->dgstAlgo   = GNUTLS_DIG_SHA384;
         ctx->signAlgo   = GNUTLS_SIGN_RSA_SHA384;
         ctx->getPubKey  = xmlSecGnuTLSKeyDataRsaGetPublicKey;
         ctx->getPrivKey = xmlSecGnuTLSKeyDataRsaGetPrivateKey;
@@ -208,7 +207,7 @@ xmlSecGnuTLSSignatureInitialize(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_NO_SHA512
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformRsaSha512Id)) {
         ctx->keyId      = xmlSecGnuTLSKeyDataRsaId;
-        ctx->hashAlgo   = GNUTLS_DIG_SHA512;
+        ctx->dgstAlgo   = GNUTLS_DIG_SHA512;
         ctx->signAlgo   = GNUTLS_SIGN_RSA_SHA512;
         ctx->getPubKey  = xmlSecGnuTLSKeyDataRsaGetPublicKey;
         ctx->getPrivKey = xmlSecGnuTLSKeyDataRsaGetPrivateKey;
@@ -218,7 +217,7 @@ xmlSecGnuTLSSignatureInitialize(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_NO_SHA256
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformRsaPssSha256Id)) {
         ctx->keyId      = xmlSecGnuTLSKeyDataRsaId;
-        ctx->hashAlgo   = GNUTLS_DIG_SHA256;
+        ctx->dgstAlgo   = GNUTLS_DIG_SHA256;
         ctx->signAlgo   = GNUTLS_SIGN_RSA_PSS_SHA256;
         ctx->getPubKey  = xmlSecGnuTLSKeyDataRsaGetPublicKey;
         ctx->getPrivKey = xmlSecGnuTLSKeyDataRsaGetPrivateKey;
@@ -228,7 +227,7 @@ xmlSecGnuTLSSignatureInitialize(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_NO_SHA384
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformRsaPssSha384Id)) {
         ctx->keyId      = xmlSecGnuTLSKeyDataRsaId;
-        ctx->hashAlgo   = GNUTLS_DIG_SHA384;
+        ctx->dgstAlgo   = GNUTLS_DIG_SHA384;
         ctx->signAlgo   = GNUTLS_SIGN_RSA_PSS_SHA384;
         ctx->getPubKey  = xmlSecGnuTLSKeyDataRsaGetPublicKey;
         ctx->getPrivKey = xmlSecGnuTLSKeyDataRsaGetPrivateKey;
@@ -238,7 +237,7 @@ xmlSecGnuTLSSignatureInitialize(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_NO_SHA512
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformRsaPssSha512Id)) {
         ctx->keyId      = xmlSecGnuTLSKeyDataRsaId;
-        ctx->hashAlgo   = GNUTLS_DIG_SHA512;
+        ctx->dgstAlgo   = GNUTLS_DIG_SHA512;
         ctx->signAlgo   = GNUTLS_SIGN_RSA_PSS_SHA512;
         ctx->getPubKey  = xmlSecGnuTLSKeyDataRsaGetPublicKey;
         ctx->getPrivKey = xmlSecGnuTLSKeyDataRsaGetPrivateKey;
@@ -253,15 +252,15 @@ xmlSecGnuTLSSignatureInitialize(xmlSecTransformPtr transform) {
     }
 
     /* check hash output size */
-    ctx->hashOutputSize = gnutls_hash_get_len(ctx->hashAlgo);
-    if(ctx->hashOutputSize <= 0) {
+    ctx->dgstSize = gnutls_hash_get_len(ctx->dgstAlgo);
+    if(ctx->dgstSize <= 0) {
         xmlSecGnuTLSError("gnutls_hash_get_len", 0, NULL);
         return(-1);
     }
-    xmlSecAssert2(ctx->hashOutputSize < XMLSEC_GNUTLS_MAX_HASH_SIZE, -1);
+    xmlSecAssert2(ctx->dgstSize < XMLSEC_GNUTLS_MAX_DIGEST_SIZE, -1);
 
     /* create hash */
-    err =  gnutls_hash_init(&(ctx->hash), ctx->hashAlgo);
+    err =  gnutls_hash_init(&(ctx->hash), ctx->dgstAlgo);
     if(err != GNUTLS_E_SUCCESS) {
         xmlSecGnuTLSError("gnutls_hash_init", err, NULL);
         return(-1);
@@ -559,9 +558,9 @@ xmlSecGnuTLSSignatureVerify(xmlSecTransformPtr transform,
     }
 
     /* get hash */
-    gnutls_hash_output(ctx->hash, ctx->hashOutput);
-    hash.data = ctx->hashOutput;
-    hash.size = ctx->hashOutputSize;
+    gnutls_hash_output(ctx->hash, ctx->dgst);
+    hash.data = ctx->dgst;
+    hash.size = ctx->dgstSize;
 
     /* verify */
     signature.data = (xmlSecByte*)data;
@@ -632,9 +631,9 @@ xmlSecGnuTLSSignatureSign(xmlSecTransformPtr transform, xmlSecGnuTLSSignatureCtx
     }
 
     /* get hash */
-    gnutls_hash_output(ctx->hash, ctx->hashOutput);
-    hash.data = ctx->hashOutput;
-    hash.size = ctx->hashOutputSize;
+    gnutls_hash_output(ctx->hash, ctx->dgst);
+    hash.data = ctx->dgst;
+    hash.size = ctx->dgstSize;
 
     err = gnutls_privkey_sign_hash2(privkey, ctx->signAlgo, ctx->signFlags, &hash, &signature);
     if((err != GNUTLS_E_SUCCESS) || (signature.data == NULL)) {
@@ -724,6 +723,7 @@ xmlSecGnuTLSSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTrans
                 "size=" XMLSEC_SIZE_FMT, inSize);
             return(-1);
         }
+        inSize = 0;
     }
 
     if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {

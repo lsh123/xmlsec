@@ -85,6 +85,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecGnuTLSTransformAes192CbcGetKlass(v
         xmlSecGnuTLSTransformAes256CbcGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecGnuTLSTransformAes256CbcGetKlass(void);
 
+
 /**
  * xmlSecGnuTLSTransformKWAes128Id:
  *

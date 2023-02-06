@@ -47,8 +47,7 @@ struct _xmlSecMSCngHmacCtx {
     BCRYPT_ALG_HANDLE hAlg;
     PBYTE hash;
     DWORD hashLength;
-    /* truncation length in bits */
-    xmlSecSize dgstSize;
+    xmlSecSize dgstSizeInBits; /* truncation length in bits */
     BCRYPT_HASH_HANDLE hHash;
 };
 
@@ -187,7 +186,7 @@ xmlSecMSCngHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     ctx = xmlSecMSCngHmacGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    ret = xmlSecTransformHmacReadOutputBitsSize(node, ctx->dgstSize, &ctx->dgstSize);
+    ret = xmlSecTransformHmacReadOutputBitsSize(node, ctx->dgstSizeInBits, &ctx->dgstSizeInBits);
     if (ret < 0) {
         xmlSecInternalError("xmlSecTransformHmacReadOutputBitsSize()",
             xmlSecTransformGetName(transform));
@@ -289,9 +288,9 @@ xmlSecMSCngHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
         return(-1);
     }
 
-    if (ctx->dgstSize == 0) {
+    if (ctx->dgstSizeInBits == 0) {
         /* no custom value is requested, then default to the full length */
-        ctx->dgstSize = ctx->hashLength * 8;
+        ctx->dgstSizeInBits = ctx->hashLength * 8;
     }
 
     ctx->initialized = 1;
@@ -302,10 +301,7 @@ static int
 xmlSecMSCngHmacVerify(xmlSecTransformPtr transform, const xmlSecByte* data,
         xmlSecSize dataSize, xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
     xmlSecMSCngHmacCtxPtr ctx;
-    xmlSecSize truncationBytes;
-    static xmlSecByte lastByteMasks[] = { 0xFF, 0x80, 0xC0, 0xE0, 0xF0, 0xF8,
-        0xFC, 0xFE };
-    xmlSecByte mask;
+    int ret;
 
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngHmacSize), -1);
@@ -317,41 +313,20 @@ xmlSecMSCngHmacVerify(xmlSecTransformPtr transform, const xmlSecByte* data,
 
     ctx = xmlSecMSCngHmacGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->dgstSize > 0, -1);
+    xmlSecAssert2(ctx->dgstSizeInBits > 0, -1);
 
-    /* round up */
-    truncationBytes = (ctx->dgstSize + 7) / 8;
-
-    /* compare the digest size in bytes */
-    if(dataSize != truncationBytes) {
-        xmlSecInvalidSizeError("HMAC digest",
-                               dataSize, truncationBytes,
-                               xmlSecTransformGetName(transform));
-        transform->status = xmlSecTransformStatusFail;
-        return(0);
+    /* Returns 1 for match, 0 for no match, <0 for errors. */
+    ret = xmlSecTransformHmacVerify(data, dataSize, ctx->hash, ctx->dgstSizeInBits, ctx->hashLength);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecTransformHmacVerify", xmlSecTransformGetName(transform));
+        return(-1);
     }
-
-    /* we check the last byte separately as possibly not all bits should be
-     * compared */
-    mask = lastByteMasks[ctx->dgstSize % 8];
-    if((ctx->hash[dataSize - 1] & mask) != (data[dataSize - 1]  & mask)) {
-        xmlSecOtherError(XMLSEC_ERRORS_R_DATA_NOT_MATCH,
-            xmlSecTransformGetName(transform),
-            "data and digest do not match (last byte)");
-        transform->status = xmlSecTransformStatusFail;
-        return(0);
+    if (ret == 1) {
+        transform->status = xmlSecTransformStatusOk;
     }
-
-    /* now check the rest of the digest */
-    if((dataSize > 1) && (memcmp(ctx->hash, data, dataSize - 1) != 0)) {
-        xmlSecOtherError(XMLSEC_ERRORS_R_DATA_NOT_MATCH,
-                         xmlSecTransformGetName(transform),
-                         "data and digest do not match");
+    else {
         transform->status = xmlSecTransformStatusFail;
-        return(0);
     }
-
-    transform->status = xmlSecTransformStatusOk;
     return(0);
 }
 
@@ -414,15 +389,11 @@ xmlSecMSCngHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
                 return(-1);
             }
 
-            /* copy result to output */
-            if(transform->operation == xmlSecTransformOperationSign) {
-                /* round up */
-                xmlSecSize truncationBytes = (ctx->dgstSize + 7) / 8;
-
-                ret = xmlSecBufferAppend(out, ctx->hash, truncationBytes);
-                if(ret < 0) {
-                    xmlSecInternalError2("xmlSecBufferAppend", xmlSecTransformGetName(transform),
-                        "size=" XMLSEC_SIZE_FMT, truncationBytes);
+            /* write results if needed */
+            if (transform->operation == xmlSecTransformOperationSign) {
+                ret = xmlSecTransformHmacWriteOutput(ctx->hash, ctx->dgstSizeInBits, ctx->hashLength, out);
+                if (ret < 0) {
+                    xmlSecInternalError("xmlSecTransformHmacWriteOutput", xmlSecTransformGetName(transform));
                     return(-1);
                 }
             }

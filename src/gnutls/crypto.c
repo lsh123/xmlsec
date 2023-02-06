@@ -159,16 +159,6 @@ xmlSecCryptoGetFunctions_gnutls(void) {
 
 #endif /* XMLSEC_NO_HMAC */
 
-    /******************************* MD5 ********************************/
-#ifndef XMLSEC_NO_MD5
-    gXmlSecGnuTLSFunctions->transformMd5GetKlass                = xmlSecGnuTLSTransformMd5GetKlass;
-#endif /* XMLSEC_NO_MD5 */
-
-    /******************************* RIPEMD160 ********************************/
-#ifndef XMLSEC_NO_RIPEMD160
-    gXmlSecGnuTLSFunctions->transformRipemd160GetKlass          = xmlSecGnuTLSTransformRipemd160GetKlass;
-#endif /* XMLSEC_NO_RIPEMD160 */
-
     /******************************* RSA ********************************/
 #ifndef XMLSEC_NO_RSA
 

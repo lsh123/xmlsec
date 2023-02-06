@@ -755,7 +755,7 @@ execDSigTest $res_success \
 # Advanced RSA OAEP modes:
 # - MSCrypto only supports SHA1 for digest and mgf1
 # - GCrypt/GnuTLS and MSCng only supoprts the *same* algorithm for *both* digest and mgf1
-if [ "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" -a "z$crypto" != "zgcrypt" -a "z$crypto" != "zgnutls" ] ; then
+if [ "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" -a "z$crypto" != "zgcrypt" ] ; then
     execDSigTest $res_success \
         "" \
         "merlin-xmlenc-five/encsig-hmac-sha256-rsa-oaep-mgf1p" \
@@ -896,15 +896,15 @@ execDSigTest $res_success \
 
 execDSigTest $res_success \
     "phaos-xmldsig-three" \
-    "signature-rsa-detached-b64-transform" \
-    "base64 sha1 rsa-sha1" \
+    "signature-rsa-detached" \
+    "sha1 rsa-sha1" \
     "rsa x509" \
     "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00  $url_map_rfc3161"
 
 execDSigTest $res_success \
     "phaos-xmldsig-three" \
-    "signature-rsa-detached" \
-    "sha1 rsa-sha1" \
+    "signature-rsa-detached-b64-transform" \
+    "base64 sha1 rsa-sha1" \
     "rsa x509" \
     "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00  $url_map_rfc3161"
 
@@ -928,6 +928,7 @@ execDSigTest $res_success \
     "xslt sha1 rsa-sha1" \
     "rsa x509" \
     "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00  $url_map_rfc3161"
+
 
 execDSigTest $res_success \
     "phaos-xmldsig-three" \

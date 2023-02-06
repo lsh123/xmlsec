@@ -374,7 +374,7 @@ static int              xmlSecGnuTLSKeyDataDsaWrite             (xmlSecKeyDataId
                                                                  xmlSecKeyValueDsaPtr dsaValue,
                                                                  int writePrivateKey);
 
-static gnutls_pubkey_t  xmlSecGnuTLSKeyDataPubKeyFromPrivKey    (gnutls_privkey_t privkey);
+static gnutls_pubkey_t  xmlSecGnuTLSKeyDataDsaPubKeyFromPrivKey (gnutls_privkey_t privkey);
 
 static xmlSecKeyDataKlass xmlSecGnuTLSKeyDataDsaKlass = {
     sizeof(xmlSecKeyDataKlass),
@@ -460,9 +460,9 @@ xmlSecGnuTLSKeyDataDsaAdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, gn
 
     /* create pub key if needed */
     if((privkey != NULL) && (pubkey == NULL)) {
-        pubkey = xmlSecGnuTLSKeyDataPubKeyFromPrivKey(privkey);
+        pubkey = xmlSecGnuTLSKeyDataDsaPubKeyFromPrivKey(privkey);
         if(pubkey == NULL) {
-            xmlSecInternalError("xmlSecGnuTLSKeyDataPubKeyFromPrivKey", NULL);
+            xmlSecInternalError("xmlSecGnuTLSKeyDataDsaPubKeyFromPrivKey", NULL);
             return(-1);
         }
     }
@@ -808,7 +808,7 @@ done:
 }
 
 static gnutls_pubkey_t
-xmlSecGnuTLSKeyDataPubKeyFromPrivKey(gnutls_privkey_t privkey) {
+xmlSecGnuTLSKeyDataDsaPubKeyFromPrivKey(gnutls_privkey_t privkey) {
     gnutls_pubkey_t pubkey = NULL;
 	gnutls_datum_t p = { NULL, 0 };
     gnutls_datum_t q = { NULL, 0 };
@@ -862,218 +862,509 @@ done:
 
 #endif /* XMLSEC_NO_DSA */
 
-/**** OLD_CODE */
-
-
-/**************************************************************************
- *
- * We use xmlsec-gcrypt for all the basic crypto ops
- *
- *****************************************************************************/
-#include <xmlsec/gcrypt/crypto.h>
-#include <gcrypt.h>
-
-static void xmlSecGnuTLSDestroyParams(gnutls_datum_t * params, xmlSecSize num) {
-    xmlSecSize ii;
-
-    xmlSecAssert(params != NULL);
-    for(ii = 0; ii < num; ++ii) {
-        gnutls_free(params[ii].data);
-    }
-}
-
-static void xmlSecGnuTLSDestroyMpis(gcry_mpi_t * mpis, xmlSecSize num) {
-    xmlSecSize ii;
-
-    xmlSecAssert(mpis != NULL);
-    for(ii = 0; ii < num; ++ii) {
-        gcry_mpi_release(mpis[ii]);
-    }
-}
-
-static int xmlSecGnuTLSConvertParamsToMpis(gnutls_datum_t * params, xmlSecSize paramsNum,
-                                           gcry_mpi_t * mpis, xmlSecSize mpisNum) {
-
-    xmlSecSize ii;
-    gcry_error_t rc;
-
-    xmlSecAssert2(params != NULL, -1);
-    xmlSecAssert2(mpis != NULL, -1);
-    xmlSecAssert2(paramsNum == mpisNum, -1);
-
-    for(ii = 0; ii < paramsNum; ++ii) {
-        mpis[ii] = NULL;
-        rc = gcry_mpi_scan(&(mpis[ii]), GCRYMPI_FMT_USG, params[ii].data, params[ii].size, NULL);
-        if((rc != GPG_ERR_NO_ERROR) || (mpis[ii] == NULL)) {
-            xmlSecGnuTLSGCryptError("gcry_mpi_scan", rc, NULL);
-            xmlSecGnuTLSDestroyMpis(mpis, ii); /* destroy up to now */
-            return(-1);
-        }
-    }
-
-    /* done */
-    return(0);
-}
-
 
 #ifndef XMLSEC_NO_RSA
+/**************************************************************************
+ *
+ * <dsig:RSAKeyValue> processing
+ *
+ *
+ * The RSAKeyValue Element (http://www.w3.org/TR/xmldsig-core/#sec-RSAKeyValue)
+ *
+ **************************************************************************/
+
+static int              xmlSecGnuTLSKeyDataRsaInitialize        (xmlSecKeyDataPtr data);
+static void             xmlSecGnuTLSKeyDataRsaFinalize          (xmlSecKeyDataPtr data);
+static int              xmlSecGnuTLSKeyDataRsaGenerate          (xmlSecKeyDataPtr data,
+                                                                 xmlSecSize sizeBits,
+                                                                 xmlSecKeyDataType type);
+static int              xmlSecGnuTLSKeyDataRsaDuplicate         (xmlSecKeyDataPtr dst,
+                                                                 xmlSecKeyDataPtr src);
+
+
+static xmlSecKeyDataType xmlSecGnuTLSKeyDataRsaGetType          (xmlSecKeyDataPtr data);
+static xmlSecSize       xmlSecGnuTLSKeyDataRsaGetSize           (xmlSecKeyDataPtr data);
+static void             xmlSecGnuTLSKeyDataRsaDebugDump         (xmlSecKeyDataPtr data,
+                                                                 FILE* output);
+static void             xmlSecGnuTLSKeyDataRsaDebugXmlDump      (xmlSecKeyDataPtr data,
+                                                                 FILE* output);
+
+static int              xmlSecGnuTLSKeyDataRsaXmlRead           (xmlSecKeyDataId id,
+                                                                 xmlSecKeyPtr key,
+                                                                 xmlNodePtr node,
+                                                                 xmlSecKeyInfoCtxPtr keyInfoCtx);
+static int              xmlSecGnuTLSKeyDataRsaXmlWrite          (xmlSecKeyDataId id,
+                                                                 xmlSecKeyPtr key,
+                                                                 xmlNodePtr node,
+                                                                 xmlSecKeyInfoCtxPtr keyInfoCtx);
+
+static xmlSecKeyDataPtr xmlSecGnuTLSKeyDataRsaRead              (xmlSecKeyDataId id,
+                                                                 xmlSecKeyValueRsaPtr rsaValue);
+static int              xmlSecGnuTLSKeyDataRsaWrite             (xmlSecKeyDataId id,
+                                                                 xmlSecKeyDataPtr data,
+                                                                 xmlSecKeyValueRsaPtr rsaValue,
+                                                                 int writePrivateKey);
+
+static gnutls_pubkey_t  xmlSecGnuTLSKeyDataRsaPubKeyFromPrivKey  (gnutls_privkey_t privkey);
+
+static xmlSecKeyDataKlass xmlSecGnuTLSKeyDataRsaKlass = {
+    sizeof(xmlSecKeyDataKlass),
+    xmlSecGnuTLSAsymKeyDataSize,
+
+    /* data */
+    xmlSecNameRSAKeyValue,
+    xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+                                                /* xmlSecKeyDataUsage usage; */
+    xmlSecHrefRSAKeyValue,                      /* const xmlChar* href; */
+    xmlSecNodeRSAKeyValue,                      /* const xmlChar* dataNodeName; */
+    xmlSecDSigNs,                               /* const xmlChar* dataNodeNs; */
+
+    /* constructors/destructor */
+    xmlSecGnuTLSKeyDataRsaInitialize,          /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecGnuTLSKeyDataRsaDuplicate,           /* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecGnuTLSKeyDataRsaFinalize,            /* xmlSecKeyDataFinalizeMethod finalize; */
+    xmlSecGnuTLSKeyDataRsaGenerate,            /* xmlSecKeyDatavMethod generate; */
+
+    /* get info */
+    xmlSecGnuTLSKeyDataRsaGetType,              /* xmlSecKeyDataGetTypeMethod getType; */
+    xmlSecGnuTLSKeyDataRsaGetSize,              /* xmlSecKeyDataGetSizeMethod getSize; */
+    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
+
+    /* read/write */
+    xmlSecGnuTLSKeyDataRsaXmlRead,             /* xmlSecKeyDataXmlReadMethod xmlRead; */
+    xmlSecGnuTLSKeyDataRsaXmlWrite,            /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    NULL,                                       /* xmlSecKeyDataBinReadMethod binRead; */
+    NULL,                                       /* xmlSecKeyDataBinWriteMethod binWrite; */
+
+    /* debug */
+    xmlSecGnuTLSKeyDataRsaDebugDump,           /* xmlSecKeyDataDebugDumpMethod debugDump; */
+    xmlSecGnuTLSKeyDataRsaDebugXmlDump,        /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+
+    /* reserved for the future */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
 
 /**
  * xmlSecGnuTLSKeyDataRsaGetKlass:
  *
- * The GnuTLS RSA key data klass.
+ * The RSA key data klass.
  *
- * Returns: pointer to GnuTLS RSA key data klass.
+ * Returns: pointer to RSA key data klass.
  */
 xmlSecKeyDataId
 xmlSecGnuTLSKeyDataRsaGetKlass(void) {
-    return (xmlSecGCryptKeyDataRsaGetKlass());
+    return(&xmlSecGnuTLSKeyDataRsaKlass);
 }
 
 /**
- * xmlSecGnuTLSKeyDataRsaAdoptPrivateKey:
+ * xmlSecGnuTLSKeyDataRsaAdoptKey:
  * @data:               the pointer to RSA key data.
- * @rsa_key:            the pointer to GnuTLS RSA private key.
+ * @pubkey:             the pointer to GnuTLS RSA key.
+ * @privkey:            the pointer to GnuTLS RSA key.
  *
- * Sets the value of RSA key data.
+ * Sets the value of RSA key data. The @pubkey and @privkey will be owned by the @data on success.
  *
  * Returns: 0 on success or a negative value otherwise.
  */
 int
-xmlSecGnuTLSKeyDataRsaAdoptPrivateKey(xmlSecKeyDataPtr data, gnutls_x509_privkey_t rsa_key) {
-    gnutls_datum_t params[6];
-    gcry_mpi_t mpis[6];
-    gcry_sexp_t privkey = NULL;
-    gcry_sexp_t pubkey = NULL;
-    gcry_error_t rc;
+xmlSecGnuTLSKeyDataRsaAdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, gnutls_privkey_t privkey) {
+    int ret;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataRsaId), -1);
+
+    /* verify key type */
+    if(pubkey != NULL) {
+        ret = gnutls_pubkey_get_pk_algorithm(pubkey, NULL);
+        if(ret != GNUTLS_PK_RSA) {
+            xmlSecInternalError2("Invalid pubkey algorithm", NULL, "type=%d", ret);
+            return(-1);
+        }
+    }
+    if(privkey != NULL) {
+        ret = gnutls_privkey_get_pk_algorithm(privkey, NULL);
+        if(ret != GNUTLS_PK_RSA) {
+            xmlSecInternalError2("Invalid privkey algorithm", NULL, "type=%d", ret);
+            return(-1);
+        }
+    }
+
+    /* create pub key if needed */
+    if((privkey != NULL) && (pubkey == NULL)) {
+        pubkey = xmlSecGnuTLSKeyDataRsaPubKeyFromPrivKey(privkey);
+        if(pubkey == NULL) {
+            xmlSecInternalError("xmlSecGnuTLSKeyDataRsaPubKeyFromPrivKey", NULL);
+            return(-1);
+        }
+    }
+
+    /* do the work */
+    return xmlSecGnuTLSAsymKeyDataAdoptKey(data, pubkey, privkey);
+}
+
+/**
+ * xmlSecGnuTLSKeyDataRsaGetPublicKey:
+ * @data:               the pointer to RSA key data.
+ *
+ * Gets the GnuTLS RSA public key from RSA key data.
+ *
+ * Returns: pointer to GnuTLS public RSA key or NULL if an error occurs.
+ */
+gnutls_pubkey_t
+xmlSecGnuTLSKeyDataRsaGetPublicKey(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataRsaId), NULL);
+    return xmlSecGnuTLSAsymKeyDataGetPublicKey(data);
+}
+
+/**
+ * xmlSecGnuTLSKeyDataRsaGetPrivateKey:
+ * @data:               the pointer to RSA key data.
+ *
+ * Gets the GnuTLS RSA private key from RSA key data.
+ *
+ * Returns: pointer to GnuTLS private RSA key or NULL if an error occurs.
+ */
+gnutls_privkey_t
+xmlSecGnuTLSKeyDataRsaGetPrivateKey(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataRsaId), NULL);
+    return xmlSecGnuTLSAsymKeyDataGetPrivateKey(data);
+}
+
+static int
+xmlSecGnuTLSKeyDataRsaInitialize(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataRsaId), -1);
+
+    return(xmlSecGnuTLSAsymKeyDataInitialize(data));
+}
+
+static void
+xmlSecGnuTLSKeyDataRsaFinalize(xmlSecKeyDataPtr data) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataRsaId));
+
+    xmlSecGnuTLSAsymKeyDataFinalize(data);
+}
+
+static int
+xmlSecGnuTLSKeyDataRsaDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecGnuTLSKeyDataRsaId), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecGnuTLSKeyDataRsaId), -1);
+
+    return(xmlSecGnuTLSAsymKeyDataDuplicate(dst, src));
+}
+
+static int
+xmlSecGnuTLSKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataRsaId), -1);
+    xmlSecAssert2(sizeBits > 0, -1);
+
+    return xmlSecGnuTLSAsymKeyDataGenerate(data, GNUTLS_PK_RSA, sizeBits);
+}
+
+static xmlSecKeyDataType
+xmlSecGnuTLSKeyDataRsaGetType(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataRsaId), xmlSecKeyDataTypeUnknown);
+
+    return xmlSecGnuTLSAsymKeyDataGetType(data);
+}
+
+static xmlSecSize
+xmlSecGnuTLSKeyDataRsaGetSize(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataRsaId), 0);
+
+    return xmlSecGnuTLSAsymKeyDataGetSize(data);
+}
+
+static void
+xmlSecGnuTLSKeyDataRsaDebugDump(xmlSecKeyDataPtr data, FILE* output) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataRsaId));
+    xmlSecAssert(output != NULL);
+
+    fprintf(output, "=== rsa key: size = " XMLSEC_SIZE_FMT "\n",
+            xmlSecGnuTLSKeyDataRsaGetSize(data));
+}
+
+static void
+xmlSecGnuTLSKeyDataRsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataRsaId));
+    xmlSecAssert(output != NULL);
+
+    fprintf(output, "<RSAKeyValue size=\"" XMLSEC_SIZE_FMT "\" />\n",
+            xmlSecGnuTLSKeyDataRsaGetSize(data));
+}
+
+static int
+xmlSecGnuTLSKeyDataRsaXmlRead(xmlSecKeyDataId id,
+                              xmlSecKeyPtr key,
+                              xmlNodePtr node,
+                              xmlSecKeyInfoCtxPtr keyInfoCtx)
+{
+    xmlSecAssert2(id == xmlSecGnuTLSKeyDataRsaId, -1);
+    return(xmlSecKeyDataRsaXmlRead(id, key, node, keyInfoCtx,
+        xmlSecGnuTLSKeyDataRsaRead));
+}
+
+static int
+xmlSecGnuTLSKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
+                                xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlSecAssert2(id == xmlSecGnuTLSKeyDataRsaId, -1);
+    return(xmlSecKeyDataRsaXmlWrite(id, key, node, keyInfoCtx,
+        xmlSecBase64GetDefaultLineSize(), 1, /* add line breaks */
+        xmlSecGnuTLSKeyDataRsaWrite));
+}
+
+static xmlSecKeyDataPtr
+xmlSecGnuTLSKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
+    xmlSecKeyDataPtr data = NULL;
+    xmlSecKeyDataPtr res = NULL;
+    xmlSecSize size;
+	gnutls_datum_t modulus, publicExponent;
+    gnutls_privkey_t privkey = NULL;
+    gnutls_pubkey_t pubkey = NULL;
     int err;
     int ret;
 
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataRsaId), -1);
-    xmlSecAssert2(rsa_key != NULL, -1);
-    xmlSecAssert2(gnutls_x509_privkey_get_pk_algorithm(rsa_key) == GNUTLS_PK_RSA, -1);
+    xmlSecAssert2(id == xmlSecGnuTLSKeyDataRsaId, NULL);
+    xmlSecAssert2(rsaValue != NULL, NULL);
 
-    /* get raw values */
-    err = gnutls_x509_privkey_export_rsa_raw(rsa_key,
-            &(params[0]), &(params[1]), &(params[2]),
-            &(params[3]), &(params[4]), &(params[5]));
+    /*** modulus ***/
+    size = xmlSecBufferGetSize(&(rsaValue->modulus));
+    modulus.data = xmlSecBufferGetData(&(rsaValue->modulus));
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, modulus.size,  goto done, xmlSecKeyDataKlassGetName(id));
+
+    /*** publicExponent ***/
+    size = xmlSecBufferGetSize(&(rsaValue->publicExponent));
+    publicExponent.data = xmlSecBufferGetData(&(rsaValue->publicExponent));
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, publicExponent.size,  goto done, xmlSecKeyDataKlassGetName(id));
+
+    /*** privateExponent (only for private key) ***/
+    size = xmlSecBufferGetSize(&(rsaValue->privateExponent));
+    if(size > 0) {
+        gnutls_datum_t privateExponent;
+
+        privateExponent.data = xmlSecBufferGetData(&(rsaValue->privateExponent));
+        XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, privateExponent.size, goto done, xmlSecKeyDataKlassGetName(id));
+
+        err = gnutls_privkey_init(&privkey);
+        if(err != GNUTLS_E_SUCCESS) {
+            xmlSecGnuTLSError("gnutls_privkey_init", err, xmlSecKeyDataKlassGetName(id));
+            goto done;
+        }
+
+        err = gnutls_privkey_import_rsa_raw(privkey,
+            &modulus,           /* m */
+            &publicExponent,    /* e */
+            &privateExponent,   /* d */
+            NULL,               /* p */
+            NULL,               /* q */
+            NULL,               /* u */
+            NULL,               /* e1 */
+            NULL                /* e2 */
+        );
+        if(err != GNUTLS_E_SUCCESS) {
+            xmlSecGnuTLSError("gnutls_privkey_import_rsa_raw", err, xmlSecKeyDataKlassGetName(id));
+            goto done;
+        }
+    }
+
+    /* pub key */
+    err = gnutls_pubkey_init(&pubkey);
     if(err != GNUTLS_E_SUCCESS) {
-        xmlSecGnuTLSError("gnutls_x509_privkey_export_rsa_raw", err, NULL);
-        return(-1);
+        xmlSecGnuTLSError("gnutls_pubkey_init", err, xmlSecKeyDataKlassGetName(id));
+        goto done;
     }
 
-    /* convert to mpis */
-    ret = xmlSecGnuTLSConvertParamsToMpis(
-            params, sizeof(params)/sizeof(params[0]),
-            mpis, sizeof(mpis)/sizeof(mpis[0]));
+    err = gnutls_pubkey_import_rsa_raw(pubkey,
+            &modulus,           /* m */
+            &publicExponent     /* e */
+    );
+    if(err != GNUTLS_E_SUCCESS) {
+        xmlSecGnuTLSError("gnutls_pubkey_import_rsa_raw", err, xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+
+    /* create key data */
+    data = xmlSecKeyDataCreate(id);
+    if(data == NULL ) {
+        xmlSecInternalError("xmlSecKeyDataCreate", xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+
+    ret = xmlSecGnuTLSKeyDataRsaAdoptKey(data, pubkey, privkey);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecGnuTLSConvertParamsToMpis", NULL);
-        xmlSecGnuTLSDestroyParams(params, sizeof(params)/sizeof(params[0]));
-        return(-1);
+        xmlSecInternalError("xmlSecGnuTLSKeyDataRsaAdoptKey", xmlSecKeyDataKlassGetName(id));
+        goto done;
     }
-    xmlSecGnuTLSDestroyParams(params, sizeof(params)/sizeof(params[0]));
+    pubkey = NULL; /* pubkey is owned by data now */
+    privkey = NULL; /* privkey is owned by data now */
 
-    /** Ignore p, q, u completely because optimized RSA encryption/decryption looks broken */
-    /* Convert from OpenSSL parameter ordering to the OpenPGP order. */
-    /* (http://gnupg.10057.n7.nabble.com/RSA-PKCS-1-signing-differs-from-OpenSSL-s-td27920.html) */
-    /* First check that p < q; if not swap p and q and recompute u.  */
-    /*
-    if (gcry_mpi_cmp(mpis[3], mpis[4]) > 0) {
-        gcry_mpi_swap(mpis[3], mpis[4]);
-        gcry_mpi_invm(mpis[5], mpis[3], mpis[4]);
-    }
-    */
+    /* success */
+    res = data;
+    data = NULL;
 
-    /* build expressions */
-    rc = gcry_sexp_build(&(privkey), NULL, "(private-key(rsa((n%m)(e%m)(d%m))))",
-                        mpis[0], mpis[1], mpis[2]);
-    if((rc != GPG_ERR_NO_ERROR) || (privkey == NULL)) {
-        xmlSecGnuTLSGCryptError("gcry_sexp_build(private/rsa)", rc, NULL);
-        xmlSecGnuTLSDestroyMpis(mpis, sizeof(mpis)/sizeof(mpis[0]));
-        return(-1);
+done:
+    /* cleanup */
+    if(privkey != NULL) {
+        gnutls_privkey_deinit(privkey);
     }
-    rc = gcry_sexp_build(&(pubkey), NULL, "(public-key(rsa((n%m)(e%m))))",
-                        mpis[0], mpis[1]);
-    if((rc != GPG_ERR_NO_ERROR) || (pubkey == NULL)) {
-        xmlSecGnuTLSGCryptError("gcry_sexp_build(public/rsa)", rc, NULL);
-        gcry_sexp_release(privkey);
-        xmlSecGnuTLSDestroyMpis(mpis, sizeof(mpis)/sizeof(mpis[0]));
-        return(-1);
+    if(pubkey != NULL) {
+        gnutls_pubkey_deinit(pubkey);
     }
-    xmlSecGnuTLSDestroyMpis(mpis, sizeof(mpis)/sizeof(mpis[0]));
-
-    ret = xmlSecGCryptKeyDataRsaAdoptKeyPair(data, pubkey, privkey);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecGCryptKeyDataRsaAdoptKeyPair", NULL);
-        gcry_sexp_release(pubkey);
-        gcry_sexp_release(privkey);
-        return(-1);
+    if(data != NULL) {
+        xmlSecKeyDataDestroy(data);
     }
-
-    /* done, we "adopted" the key - destroy it! */
-    gnutls_x509_privkey_deinit(rsa_key);
-    return(0);
+    return(res);
 }
 
-
-/**
- * xmlSecGnuTLSKeyDataRsaAdoptPublicKey:
- * @data:               the pointer to RSA key data.
- * @m:                  the pointer to m component of the RSA public key
- * @e:                  the pointer to e component of the RSA public key
- *
- * Sets the value of RSA key data.
- *
- * Returns: 0 on success or a negative value otherwise.
- */
-int
-xmlSecGnuTLSKeyDataRsaAdoptPublicKey(xmlSecKeyDataPtr data,
-                                     gnutls_datum_t * m, gnutls_datum_t * e) {
-    gnutls_datum_t params[2];
-    gcry_mpi_t mpis[2];
-    gcry_sexp_t pubkey = NULL;
-    gcry_error_t rc;
+static int
+xmlSecGnuTLSKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
+    xmlSecKeyValueRsaPtr rsaValue, int writePrivateKey)
+{
+    gnutls_privkey_t privkey = NULL;
+    gnutls_pubkey_t pubkey = NULL;
+	gnutls_datum_t modulus = { NULL, 0 };
+    gnutls_datum_t publicExponent = { NULL, 0 };
+    gnutls_datum_t privateExponent = { NULL, 0 };
     int ret;
+    int err;
+    int res = -1;
 
+    xmlSecAssert2(id == xmlSecGnuTLSKeyDataRsaId, -1);
+    xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataRsaId), -1);
-    xmlSecAssert2(m != NULL, -1);
-    xmlSecAssert2(e != NULL, -1);
+    xmlSecAssert2(rsaValue != NULL, -1);
 
-    /* copy */
-    memcpy(&(params[0]), m, sizeof(*m));
-    memcpy(&(params[1]), e, sizeof(*e));
+    /* get components */
+    privkey = xmlSecGnuTLSKeyDataRsaGetPrivateKey(data);
+    pubkey = xmlSecGnuTLSKeyDataRsaGetPublicKey(data);
+    if(privkey != NULL) {
+        err = gnutls_privkey_export_rsa_raw2(privkey,
+                    &modulus,           /* m */
+                    &publicExponent,    /* e */
+                    &privateExponent,   /* d */
+                    NULL,               /* p */
+                    NULL,               /* q */
+                    NULL,               /* u */
+                    NULL,               /* e1 */
+                    NULL,               /* e2 */
+                    GNUTLS_EXPORT_FLAG_NO_LZ);
+        if(err != GNUTLS_E_SUCCESS) {
+            xmlSecGnuTLSError("gnutls_privkey_export_rsa_raw2", err, xmlSecKeyDataKlassGetName(id));
+            goto done;
+        }
+    } else if(pubkey != NULL) {
+        err = gnutls_pubkey_export_rsa_raw2(pubkey,
+                    &modulus,           /* m */
+                    &publicExponent,    /* e */
+                   GNUTLS_EXPORT_FLAG_NO_LZ);
+        if(err != GNUTLS_E_SUCCESS) {
+            xmlSecGnuTLSError("gnutls_pubkey_export_rsa_raw2", err, xmlSecKeyDataKlassGetName(id));
+            goto done;
+        }
+    } else {
+        xmlSecInternalError("Neither private or public keys are available", xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
 
-    /* convert to mpis */
-    ret = xmlSecGnuTLSConvertParamsToMpis(
-            params, sizeof(params)/sizeof(params[0]),
-            mpis, sizeof(mpis)/sizeof(mpis[0]));
+    /* modulus */
+    if((modulus.data == NULL) || (modulus.size <= 0)) {
+        xmlSecInternalError("RSA modulus parameter is NULL", xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+    ret = xmlSecBufferAppend(&(rsaValue->modulus), modulus.data, modulus.size);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecGnuTLSConvertParamsToMpis", NULL);
-        /* don't destroy params - we got them from outside !!! */
-        return(-1);
+        xmlSecInternalError("xmlSecBufferAppend(modulus)", xmlSecKeyDataKlassGetName(id));
+        goto done;
     }
-    /* don't destroy params - we got them from outside !!! */
 
-    /* build expressions */
-    rc = gcry_sexp_build(&(pubkey), NULL, "(public-key(rsa((n%m)(e%m))))",
-                        mpis[0], mpis[1]);
-    if((rc != GPG_ERR_NO_ERROR) || (pubkey == NULL)) {
-        xmlSecGnuTLSGCryptError("gcry_sexp_build(public/rsa)", rc, NULL);
-        xmlSecGnuTLSDestroyMpis(mpis, sizeof(mpis)/sizeof(mpis[0]));
-        return(-1);
+    /* publicExponent */
+    if((publicExponent.data == NULL) || (publicExponent.size <= 0)) {
+        xmlSecInternalError("RSA publicExponent parameter is NULL", xmlSecKeyDataKlassGetName(id));
+        goto done;
     }
-    xmlSecGnuTLSDestroyMpis(mpis, sizeof(mpis)/sizeof(mpis[0]));
-
-    ret = xmlSecGCryptKeyDataRsaAdoptKeyPair(data, pubkey, NULL);
+    ret = xmlSecBufferAppend(&(rsaValue->publicExponent), publicExponent.data, publicExponent.size);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecGCryptKeyDataRsaAdoptKeyPair", NULL);
-        gcry_sexp_release(pubkey);
-        return(-1);
+        xmlSecInternalError("xmlSecBufferAppend(publicExponent)", xmlSecKeyDataKlassGetName(id));
+        goto done;
     }
 
-    /* done, we "adopted" the key - destroy it! */
-    gnutls_free(m->data);
-    gnutls_free(e->data);
-    return(0);
+    /*** privateExponent (only if available and requested) ***/
+    if((writePrivateKey != 0) && (privkey != NULL)) {
+        if((privateExponent.data == NULL) || (privateExponent.size <= 0)) {
+            xmlSecInternalError("RSA privateExponent parameter is NULL", xmlSecKeyDataKlassGetName(id));
+            goto done;
+        }
+        ret = xmlSecBufferAppend(&(rsaValue->privateExponent), privateExponent.data, privateExponent.size);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecBufferAppend(privateExponent)", xmlSecKeyDataKlassGetName(id));
+            goto done;
+        }
+    }
+
+    /* success */
+    res = 0;
+
+done:
+    if(modulus.data != NULL) {
+        gnutls_free(modulus.data);
+    }
+    if(publicExponent.data != NULL) {
+        gnutls_free(publicExponent.data);
+    }
+    if(privateExponent.data != NULL) {
+        gnutls_free(privateExponent.data);
+    }
+
+    return(res);
 }
+
+static gnutls_pubkey_t
+xmlSecGnuTLSKeyDataRsaPubKeyFromPrivKey(gnutls_privkey_t privkey) {
+    gnutls_pubkey_t pubkey = NULL;
+	gnutls_datum_t modulus = { NULL, 0 };
+    gnutls_datum_t publicExponent = { NULL, 0 };
+    int err;
+
+    xmlSecAssert2(privkey != NULL, NULL);
+
+    err = gnutls_privkey_export_rsa_raw2(privkey,
+                &modulus,           /* m */
+                &publicExponent,    /* e */
+                NULL,               /* d */
+                NULL,               /* p */
+                NULL,               /* q */
+                NULL,               /* u */
+                NULL,               /* e1 */
+                NULL,               /* e2 */
+                0);
+    if(err != GNUTLS_E_SUCCESS) {
+        xmlSecGnuTLSError("gnutls_privkey_export_rsa_raw2", err, NULL);
+        goto done;
+    }
+
+    err = gnutls_pubkey_init(&pubkey);
+    if(err != GNUTLS_E_SUCCESS) {
+        xmlSecGnuTLSError("gnutls_pubkey_init", err, NULL);
+        goto done;
+    }
+
+    err = gnutls_pubkey_import_rsa_raw(pubkey,
+                &modulus,           /* m */
+                &publicExponent     /* e */
+    );
+    if(err != GNUTLS_E_SUCCESS) {
+        xmlSecGnuTLSError("gnutls_pubkey_import_rsa_raw", err, NULL);
+        gnutls_pubkey_deinit(pubkey);
+        goto done;
+    }
+
+done:
+    if(modulus.data != NULL) {
+        gnutls_free(modulus.data);
+    }
+    if(publicExponent.data != NULL) {
+        gnutls_free(publicExponent.data);
+    }
+    return(pubkey);
+}
+
 #endif /* XMLSEC_NO_RSA */

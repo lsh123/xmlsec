@@ -292,11 +292,11 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformHmacSha512GetKlass(v
 #define xmlSecGnuTLSKeyDataRsaId \
         xmlSecGnuTLSKeyDataRsaGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecGnuTLSKeyDataRsaGetKlass          (void);
-XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataRsaAdoptPrivateKey   (xmlSecKeyDataPtr data,
-                                                                                 gnutls_x509_privkey_t rsa_key);
-XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataRsaAdoptPublicKey    (xmlSecKeyDataPtr data,
-                                                                                 gnutls_datum_t * m,
-                                                                                 gnutls_datum_t * e);
+XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataRsaAdoptKey          (xmlSecKeyDataPtr data,
+                                                                                 gnutls_pubkey_t pubkey,
+                                                                                 gnutls_privkey_t privkey);
+XMLSEC_CRYPTO_EXPORT gnutls_pubkey_t    xmlSecGnuTLSKeyDataRsaGetPublicKey      (xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT gnutls_privkey_t   xmlSecGnuTLSKeyDataRsaGetPrivateKey     (xmlSecKeyDataPtr data);
 
 #ifndef XMLSEC_NO_MD5
 /**

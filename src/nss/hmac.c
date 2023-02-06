@@ -54,7 +54,7 @@ struct _xmlSecNssHmacCtx {
     CK_MECHANISM_TYPE   digestType;
     PK11Context*        digestCtx;
     xmlSecByte          dgst[XMLSEC_TRASNFORM_HMAC_MAX_OUTPUT_SIZE];
-    xmlSecSize          dgstSize;       /* dgst size in bits */
+    xmlSecSize          dgstSizeInBits;       /* dgst size in bits */
 };
 
 /******************************************************************************
@@ -229,12 +229,13 @@ xmlSecNssHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     ctx = xmlSecNssHmacGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    ret = xmlSecTransformHmacReadOutputBitsSize(node, ctx->dgstSize, &ctx->dgstSize);
+    ret = xmlSecTransformHmacReadOutputBitsSize(node, ctx->dgstSizeInBits, &ctx->dgstSizeInBits);
     if (ret < 0) {
         xmlSecInternalError("xmlSecTransformHmacReadOutputBitsSize()",
             xmlSecTransformGetName(transform));
         return(-1);
     }
+    xmlSecAssert2(XMLSEC_TRASNFORM_HMAC_BITS_TO_BYTES(ctx->dgstSizeInBits) <= XMLSEC_TRASNFORM_HMAC_MAX_OUTPUT_SIZE, -1);
 
     return(0);
 }
@@ -332,11 +333,8 @@ static int
 xmlSecNssHmacVerify(xmlSecTransformPtr transform,
                         const xmlSecByte* data, xmlSecSize dataSize,
                         xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
-    static xmlSecByte last_byte_masks[] =
-                { 0xFF, 0x80, 0xC0, 0xE0, 0xF0, 0xF8, 0xFC, 0xFE };
-
     xmlSecNssHmacCtxPtr ctx;
-    xmlSecByte mask;
+    int ret;
 
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
     xmlSecAssert2(transform->operation == xmlSecTransformOperationVerify, -1);
@@ -348,38 +346,21 @@ xmlSecNssHmacVerify(xmlSecTransformPtr transform,
     ctx = xmlSecNssHmacGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->digestCtx != NULL, -1);
-    xmlSecAssert2(ctx->dgstSize > 0, -1);
+    xmlSecAssert2(ctx->dgstSizeInBits > 0, -1);
 
-    /* compare the digest size in bytes */
-    if(dataSize != ((ctx->dgstSize + 7) / 8)){
-        xmlSecInvalidSizeError("HMAC digest",
-                               dataSize, ((ctx->dgstSize + 7) / 8),
-                               xmlSecTransformGetName(transform));
+    /* Returns 1 for match, 0 for no match, <0 for errors. */
+    ret = xmlSecTransformHmacVerify(data, dataSize, ctx->dgst, ctx->dgstSizeInBits, sizeof(ctx->dgst));
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecTransformHmacVerify", xmlSecTransformGetName(transform));
+        return(-1);
+    }
+    if(ret == 1) {
+        transform->status = xmlSecTransformStatusOk;
+    } else {
         transform->status = xmlSecTransformStatusFail;
-        return(0);
     }
 
-    /* we check the last byte separately */
-    xmlSecAssert2(dataSize > 0, -1);
-    mask = last_byte_masks[ctx->dgstSize % 8];
-    if((ctx->dgst[dataSize - 1] & mask) != (data[dataSize - 1]  & mask)) {
-        xmlSecOtherError(XMLSEC_ERRORS_R_DATA_NOT_MATCH,
-                         xmlSecTransformGetName(transform),
-                         "data and digest do not match (last byte)");
-        transform->status = xmlSecTransformStatusFail;
-        return(0);
-    }
-
-    /* now check the rest of the digest */
-    if((dataSize > 1) && (memcmp(ctx->dgst, data, dataSize - 1) != 0)) {
-        xmlSecOtherError(XMLSEC_ERRORS_R_DATA_NOT_MATCH,
-                         xmlSecTransformGetName(transform),
-                         "data and digest do not match");
-        transform->status = xmlSecTransformStatusFail;
-        return(0);
-    }
-
-    transform->status = xmlSecTransformStatusOk;
+    /* done */
     return(0);
 }
 
@@ -446,23 +427,15 @@ xmlSecNssHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxP
             XMLSEC_SAFE_CAST_UINT_TO_SIZE(dgstLen, dgstSize, return(-1), xmlSecTransformGetName(transform));
 
             /* check/set the result digest size */
-            if(ctx->dgstSize == 0) {
-                ctx->dgstSize = dgstSize * 8; /* no dgst size specified, use all we have */
-            } else if(ctx->dgstSize <= 8 * dgstSize) {
-                xmlSecSize adjustedDigestSize = ((ctx->dgstSize + 7) / 8); /* we need to truncate result digest */
-                XMLSEC_SAFE_CAST_SIZE_TO_UINT(adjustedDigestSize, dgstSize, return(-1), xmlSecTransformGetName(transform));
-            } else {
-                xmlSecInvalidSizeLessThanError("HMAC digest (bits)",
-                                        8 * dgstSize, ctx->dgstSize,
-                                        xmlSecTransformGetName(transform));
-                return(-1);
+            if(ctx->dgstSizeInBits == 0) {
+                ctx->dgstSizeInBits = dgstSize * 8; /* no dgst size specified, use all we have */
             }
 
+            /* write results if needed */
             if(transform->operation == xmlSecTransformOperationSign) {
-                ret = xmlSecBufferAppend(out, ctx->dgst, dgstSize);
+                ret = xmlSecTransformHmacWriteOutput(ctx->dgst, ctx->dgstSizeInBits, dgstSize, out);
                 if(ret < 0) {
-                    xmlSecInternalError2("xmlSecBufferAppend", xmlSecTransformGetName(transform),
-                        "size=" XMLSEC_SIZE_FMT, dgstSize);
+                    xmlSecInternalError("xmlSecTransformHmacWriteOutput", xmlSecTransformGetName(transform));
                     return(-1);
                 }
             }
@@ -803,5 +776,3 @@ xmlSecNssTransformHmacSha512GetKlass(void) {
 #endif /* XMLSEC_NO_SHA512 */
 
 #endif /* XMLSEC_NO_HMAC */
-
-

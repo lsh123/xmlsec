@@ -52,34 +52,58 @@
 		April ?? 2023<br>
 		The <a href="download.html">XML Security Library 1.3.0</a> release includes the following changes:
 		<ul>
-			<li>Added support for <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP">MGF1 algorithms</a>
-				to xmlsec-openssl and xmlsec-mscng (see <a href="xmlenc.html">Interoperability report</a> for more details).
+			<li><b>core xmlsec and all xmlsec-crypto libraries:</b>
+				<ul>
+					<li>Switched xmlSecSize to use size_t by default (breaks ABI compatibility). Use "--enable-size-t=no" configure option ("size_t=no"" on Windows) to
+						restore the old behaviour (note that this behaviour is deprecated and will be removed in the future.</li>
+					<li>Disabled by default legacy insecure algorithms (MD5 and RIPEMD160). Use "--enable-md5" and "--enable-ripemd160"
+						configure options ("legacy-crypto" option on Windows) to re-enable these algorithms.</li>
+					<li>Fixed all potentially unsafe integer conversions and all the other warnings.</li>
+					<li>Removed deprecated functions.</li>
+					<li>Enabled templatized output filenames in xmlsec utility application.</li>
+				</ul>
 			</li>
-			<li>Added support for RSA OAEP including  <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP">MGF1 algorithms</a>
-                to xmlsec-nss and xmlsec-gcrypt (see <a href="xmlenc.html">Interoperability report</a> for more details).
-            </li>
-			<li>Added support for <a href="https://www.rfc-editor.org/rfc/rfc9231.html#name-rsassa-pss-without-paramete">RSA PSS withtout parameters algorithms</a>
-				to xmlsec-openssl, xmlsec-nss, xmlsec-gcrypt, xmlsec-gnutls, and xmlsec-mscng (see <a href="xmldsig.html">Interoperability report</a> for more details).
+			<li><b>xmlsec-openssl library:</b>
+				<ul>
+					<li>Added support for <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP">RSA OAEP MGF1 algorithms</a>.</li>
+					<li>Added support for <a href="https://www.rfc-editor.org/rfc/rfc9231.html#name-rsassa-pss-without-paramete">RSA PSS withtout parameters algorithms</a>.</li>
+					<li>Removed support for OpenSSL 1.0.0 and LibreSSL before 2.7.0.</li>
+				</ul>
 			</li>
-			<li>Added support for RSA PKCS 1.5 key transport to to xmlsec-gcrypt and xmlsec-gnutls
-				(see <a href="xmlenc.html">Interoperability report</a> for more details).
+			<li><b>xmlsec-nss library:</b>
+				<ul>
+					<li>Added support for <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP">RSA OAEP including MGF1 algorithms</a>.</li>
+					<li>Added support for <a href="https://www.rfc-editor.org/rfc/rfc9231.html#name-rsassa-pss-without-paramete">RSA PSS withtout parameters algorithms</a>.</li>
+				</ul>
 			</li>
-			<li>Added support for ECDSA signatures to to xmlsec-gcrypt (see <a href="xmldsig.html">Interoperability report</a> for more details).
+			<li><b>xmlsec-gnutls library:</b>
+				<ul>
+					<li>Added support for <a href="https://www.rfc-editor.org/rfc/rfc9231.html#name-rsassa-pss-without-paramete">RSA PSS withtout parameters algorithms</a>.</li>
+					<li>Added support for <a href="https://www.rfc-editor.org/rfc/rfc9231.html#name-signaturemethod-public-key-">RSA PKCS 1.5 key transport</a>.</li>
+				</ul>
 			</li>
-			<li>
-				Switched xmlSecSize to use size_t by default (breaks ABI compatibility). Use "--enable-size-t=no" configure option ("size_t=no"" on Windows) to
-				restore the old behaviour (note that this behaviour is deprecated and will be removed in the future.
+			<li><b>xmlsec-gcrypt library:</b>
+				<ul>
+					<li>Added support for <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP">RSA OAEP including MGF1 algorithms</a>.</li>
+					<li>Added support for <a href="https://www.rfc-editor.org/rfc/rfc9231.html#name-rsassa-pss-without-paramete">RSA PSS withtout parameters algorithms</a>.</li>
+					<li>Added support for <a href="https://www.rfc-editor.org/rfc/rfc9231.html#name-signaturemethod-public-key-">RSA PKCS 1.5 key transport</a>.</li>
+					<li>Added support for <a href="https://www.rfc-editor.org/rfc/rfc9231.html#name-ecdsa-sha-ecdsa-ripemd160-e">ECDSA signatures</a>.</li>
+				</ul>
 			</li>
-			<li>
-				Disabled by default legacy insecure algorithms (MD5 and RIPEMD160). Use "--enable-md5" and "--enable-ripemd160"
-				configure options ("legacy-crypto" option on Windows) to re-enable these algorithms.
+			<li><b>xmlsec-mscng library:</b>
+				<ul>
+					<li>Added support for <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP">RSA OAEP MGF1 algorithms</a>.</li>
+					<li>Added support for <a href="https://www.rfc-editor.org/rfc/rfc9231.html#name-rsassa-pss-without-paramete">RSA PSS withtout parameters algorithms</a>.</li>
+					<li>Disabled by default  support for NT4. Use "nt4=yes" configure option on Windows to re-enable it.</li>
+				</ul>
 			</li>
-			<li>Removed support for OpenSSL 1.0.0 and LibreSSL before 2.7.0.</li>
-			<li>Removed deprecated functions.</li>
-			<li>Disabled by default  support for NT4. Use "nt4=yes" configure option on Windows to re-enable it.</li>
-			<li>Enabled templatized output filenames.</li>
-			<li>TODO</li>
+			<li><b>xmlsec-mscrypto library:</b>
+				<ul>
+					<li>Disabled by default  support for NT4. Use "nt4=yes" configure option on Windows to re-enable it.</li>
+				</ul>
+			</li>
 		</ul>
+		<p>Detailed information about supported algorithms can be found here: <a href="xmldsig.html">XMLDsig</a> and <a href="xmlenc.html">XMLEnc</a>.</p>
 	</li>
 	<br>
         <li>November 30 2022<br>

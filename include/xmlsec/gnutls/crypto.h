@@ -168,13 +168,11 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformKWDes3GetKlass(void)
 #define xmlSecGnuTLSKeyDataDsaId \
         xmlSecGnuTLSKeyDataDsaGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecGnuTLSKeyDataDsaGetKlass          (void);
-XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataDsaAdoptPrivateKey   (xmlSecKeyDataPtr data,
-                                                                                 gnutls_x509_privkey_t dsa_key);
-XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataDsaAdoptPublicKey    (xmlSecKeyDataPtr data,
-                                                                                 gnutls_datum_t * p,
-                                                                                 gnutls_datum_t * q,
-                                                                                 gnutls_datum_t * g,
-                                                                                 gnutls_datum_t * y);
+XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataDsaAdoptKey          (xmlSecKeyDataPtr data,
+                                                                                 gnutls_pubkey_t pubkey,
+                                                                                 gnutls_privkey_t privkey);
+XMLSEC_CRYPTO_EXPORT gnutls_pubkey_t    xmlSecGnuTLSKeyDataDsaGetPublicKey      (xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT gnutls_privkey_t   xmlSecGnuTLSKeyDataDsaGetPrivateKey     (xmlSecKeyDataPtr data);
 
 #ifndef XMLSEC_NO_SHA1
 /**

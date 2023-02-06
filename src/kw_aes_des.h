@@ -94,6 +94,8 @@ typedef const struct _xmlSecKWDes3Klass              xmlSecKWDes3Klass,
  * Triple DES Key Wrap transform
  *
  ********************************************************************/
+#define XMLSEC_KW_DES_KEY_SIZE                  ((xmlSecSize)8)
+
 typedef struct _xmlSecTransformKWDes3Ctx     xmlSecTransformKWDes3Ctx,
                                             *xmlSecTransformKWDes3CtxPtr;
 struct _xmlSecTransformKWDes3Ctx {

@@ -37,14 +37,11 @@ libxmlsec1_gnutls_la_SOURCES =\
 	globals.h \
 	$(NULL)
 
-# xmlsec-gnutls library requires xmlsec-gcrypt
 libxmlsec1_gnutls_la_LIBADD = \
 	$(GNUTLS_LIBS) \
 	$(LIBXSLT_LIBS) \
 	$(LIBXML_LIBS) \
 	../libxmlsec1.la \
-	$(GCRYPT_LIBS) \
-	../gcrypt/libxmlsec1-gcrypt.la \
 	$(NULL)
 
 libxmlsec1_gnutls_la_DEPENDENCIES = \

@@ -1417,7 +1417,7 @@ AC_SUBST(GCRYPT_MIN_VERSION)
 dnl ==========================================================================
 dnl See if we can find GnuTLS
 dnl ==========================================================================
-GNUTLS_MIN_VERSION="2.8.0"
+GNUTLS_MIN_VERSION="3.6.0"
 GNUTLS_INCLUDE_DIR="$COMMON_INCLUDE_DIR /usr/local/gnutls/include"
 GNUTLS_LIB_DIR="$COMMON_LIB_DIR /usr/local/gnutls/lib"
 GNUTLS_INCLUDE_MARKER="gnutls/gnutls.h"
@@ -1489,9 +1489,9 @@ dnl Priority 5: Just try to compile/link and hope for the best
 if test "z$GNUTLS_FOUND" = "zno" ; then
     AC_MSG_CHECKING(for gnutls library installation)
     OLD_CPPFLAGS=$CPPFLAGS
-    CPPFLAGS="$CPPFLAGS $GCRYPT_CFLAGS $GNUTLS_CFLAGS"
+    CPPFLAGS="$CPPFLAGS $GNUTLS_CFLAGS"
     OLD_LIBS=$LIBS
-    LIBS="$LIBS $GNUTLS_LIBS $GCRYPT_LIBS $GNUTLS_LIBS_LIST"
+    LIBS="$LIBS $GNUTLS_LIBS $GNUTLS_LIBS_LIST"
     AC_LINK_IFELSE([
         AC_LANG_PROGRAM([[
             #include <gnutls/gnutls.h>
@@ -1544,12 +1544,6 @@ if test "z$GNUTLS_FOUND" = "zyes" ; then
     CPPFLAGS=$OLD_CPPFLAGS
 fi
 AC_MSG_RESULT([$GNUTLS_FOUND])
-
-dnl Check that we have found gcrypt
-if test "z$GNUTLS_FOUND" = "zyes" -a "z$GCRYPT_FOUND" != "zyes" ; then
-    GNUTLS_FOUND="no"
-    AC_MSG_RESULT([xmlsec-gnutls library requires xmlsec-gcrypt library which is disabled or missing, ignoring libgnutls library we have found])
-fi
 
 dnl Finally set all the flags
 if test "z$GNUTLS_FOUND" = "zyes" ; then
@@ -2352,7 +2346,7 @@ else
     CFLAGS="$CFLAGS -Wconversion -Wunused -Wshadow -Wpointer-arith -Wcast-align"
     CFLAGS="$CFLAGS -Wwrite-strings -Wmissing-prototypes"
     CFLAGS="$CFLAGS -Wnested-externs -Wredundant-decls"
-    
+
     if test "z$build_on_mac" = "zno" ; then
         CFLAGS="$CFLAGS -Wformat-overflow=2 -Wformat-signedness"
     fi
@@ -2402,9 +2396,8 @@ XMLSEC_GCRYPT_LIBS="-L${libdir} -l$GCRYPT_CRYPTO_LIB $XMLSEC_CORE_LIBS $GCRYPT_L
 AC_SUBST(XMLSEC_GCRYPT_CFLAGS)
 AC_SUBST(XMLSEC_GCRYPT_LIBS)
 
-# xmlsec-gnutls is using xmlsec-gcrypt
 XMLSEC_GNUTLS_CFLAGS="$XMLSEC_CORE_CFLAGS $GNUTLS_CFLAGS"
-XMLSEC_GNUTLS_LIBS="-L${libdir} -l$GNUTLS_CRYPTO_LIB -l$GCRYPT_CRYPTO_LIB $XMLSEC_CORE_LIBS $GNUTLS_LIBS"
+XMLSEC_GNUTLS_LIBS="-L${libdir} -l$GNUTLS_CRYPTO_LIB $XMLSEC_CORE_LIBS $GNUTLS_LIBS"
 AC_SUBST(XMLSEC_GNUTLS_CFLAGS)
 AC_SUBST(XMLSEC_GNUTLS_LIBS)
 
@@ -2507,4 +2500,3 @@ xmlsec1.spec:xmlsec.spec.in
 AC_CONFIG_FILES([xmlsec1Conf.sh:xmlsecConf.sh.in], [chmod +x xmlsec1Conf.sh])
 AC_CONFIG_FILES([xmlsec1-config:xmlsec-config.in], [chmod +x xmlsec1-config])
 AC_OUTPUT
-

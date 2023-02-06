@@ -931,8 +931,8 @@ static xmlSecKeyDataKlass xmlSecGnuTLSKeyDataRsaKlass = {
     NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
 
     /* read/write */
-    xmlSecGnuTLSKeyDataRsaXmlRead,             /* xmlSecKeyDataXmlReadMethod xmlRead; */
-    xmlSecGnuTLSKeyDataRsaXmlWrite,            /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    NULL,                                       /* xmlSecKeyDataXmlReadMethod xmlRead; */
+    NULL,                                       /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
     NULL,                                       /* xmlSecKeyDataBinReadMethod binRead; */
     NULL,                                       /* xmlSecKeyDataBinWriteMethod binWrite; */
 
@@ -1118,6 +1118,8 @@ xmlSecGnuTLSKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
     xmlSecKeyDataPtr res = NULL;
     xmlSecSize size;
 	gnutls_datum_t modulus, publicExponent;
+    gnutls_datum_t p = { NULL, 0 };
+    gnutls_datum_t q = { NULL, 0 };
     gnutls_privkey_t privkey = NULL;
     gnutls_pubkey_t pubkey = NULL;
     int err;
@@ -1154,8 +1156,8 @@ xmlSecGnuTLSKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
             &modulus,           /* m */
             &publicExponent,    /* e */
             &privateExponent,   /* d */
-            NULL,               /* p */
-            NULL,               /* q */
+            &p,                 /* p */
+            &q,                 /* q */
             NULL,               /* u */
             NULL,               /* e1 */
             NULL                /* e2 */
@@ -1322,6 +1324,9 @@ xmlSecGnuTLSKeyDataRsaPubKeyFromPrivKey(gnutls_privkey_t privkey) {
     gnutls_pubkey_t pubkey = NULL;
 	gnutls_datum_t modulus = { NULL, 0 };
     gnutls_datum_t publicExponent = { NULL, 0 };
+    gnutls_datum_t privateExponent = { NULL, 0 };
+    gnutls_datum_t p = { NULL, 0 };
+    gnutls_datum_t q = { NULL, 0 };
     int err;
 
     xmlSecAssert2(privkey != NULL, NULL);
@@ -1329,9 +1334,9 @@ xmlSecGnuTLSKeyDataRsaPubKeyFromPrivKey(gnutls_privkey_t privkey) {
     err = gnutls_privkey_export_rsa_raw2(privkey,
                 &modulus,           /* m */
                 &publicExponent,    /* e */
-                NULL,               /* d */
-                NULL,               /* p */
-                NULL,               /* q */
+                &privateExponent,   /* d */
+                &p,                 /* p */
+                &q,                 /* q */
                 NULL,               /* u */
                 NULL,               /* e1 */
                 NULL,               /* e2 */
@@ -1363,6 +1368,15 @@ done:
     }
     if(publicExponent.data != NULL) {
         gnutls_free(publicExponent.data);
+    }
+    if(privateExponent.data != NULL) {
+        gnutls_free(privateExponent.data);
+    }
+    if(p.data != NULL) {
+        gnutls_free(p.data);
+    }
+    if(q.data != NULL) {
+        gnutls_free(q.data);
     }
     return(pubkey);
 }

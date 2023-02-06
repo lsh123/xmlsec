@@ -34,10 +34,13 @@ execKeysTest $res_success \
     "test-hmac-sha1" \
     "hmac-192"
 
-execKeysTest $res_success \
-    "rsa " \
-    "test-rsa      " \
-    "rsa-1024"
+# gnutls requires more data to construct RSA keys than available in XMLDsig spec
+if [ "z$crypto" != "zgnutls" ] ; then
+    execKeysTest $res_success \
+        "rsa " \
+        "test-rsa      " \
+        "rsa-1024"
+fi
 
 execKeysTest $res_success \
     "dsa " \

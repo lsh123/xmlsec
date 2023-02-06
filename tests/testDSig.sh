@@ -615,17 +615,14 @@ execDSigTest $res_success \
     "--hmackey $topfolder/keys/hmackey.bin" \
     "--hmackey $topfolder/keys/hmackey.bin"
 
-# gnutls requires more data to construct RSA keys than available in RSAKeyValue
-if [ "z$crypto" != "zgnutls" ] ; then
-    execDSigTest $res_success \
-        "" \
-        "merlin-xmldsig-twenty-three/signature-enveloping-rsa" \
-        "sha1 rsa-sha1" \
-        "rsa" \
-        " " \
-        "$priv_key_option $topfolder/keys/rsakey.$priv_key_format --pwd secret123" \
-        " "
-fi
+execDSigTest $res_success \
+    "" \
+    "merlin-xmldsig-twenty-three/signature-enveloping-rsa" \
+    "sha1 rsa-sha1" \
+    "rsa" \
+    " " \
+    "$priv_key_option $topfolder/keys/rsakey.$priv_key_format --pwd secret123" \
+    " "
 
 execDSigTest $res_success \
     "" \
@@ -758,7 +755,7 @@ execDSigTest $res_success \
 # Advanced RSA OAEP modes:
 # - MSCrypto only supports SHA1 for digest and mgf1
 # - GCrypt/GnuTLS and MSCng only supoprts the *same* algorithm for *both* digest and mgf1
-if [ "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" -a "z$crypto" != "zgcrypt" -a "z$crypto" != "zgnutls" ] ; then
+if [ "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" -a "z$crypto" != "zgcrypt" ] ; then
     execDSigTest $res_success \
         "" \
         "merlin-xmlenc-five/encsig-hmac-sha256-rsa-oaep-mgf1p" \
@@ -904,36 +901,34 @@ execDSigTest $res_success \
     "rsa x509" \
     "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00  $url_map_rfc3161"
 
-# gnutls requires more data to construct RSA keys than available in RSAKeyValue
-if [ "z$crypto" != "zgnutls" ] ; then
-    execDSigTest $res_success \
-        "phaos-xmldsig-three" \
-        "signature-rsa-detached-b64-transform" \
-        "base64 sha1 rsa-sha1" \
-        "rsa x509" \
-        "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00  $url_map_rfc3161"
+execDSigTest $res_success \
+    "phaos-xmldsig-three" \
+    "signature-rsa-detached-b64-transform" \
+    "base64 sha1 rsa-sha1" \
+    "rsa x509" \
+    "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00  $url_map_rfc3161"
 
-    execDSigTest $res_success \
-        "phaos-xmldsig-three" \
-        "signature-rsa-detached-xpath-transform" \
-        "xpath sha1 rsa-sha1" \
-        "rsa x509" \
-        "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00  $url_map_rfc3161"
+execDSigTest $res_success \
+    "phaos-xmldsig-three" \
+    "signature-rsa-detached-xpath-transform" \
+    "xpath sha1 rsa-sha1" \
+    "rsa x509" \
+    "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00  $url_map_rfc3161"
 
-    execDSigTest $res_success \
-        "phaos-xmldsig-three" \
-        "signature-rsa-detached-xslt-transform-retrieval-method" \
-        "xslt sha1 rsa-sha1" \
-        "rsa x509" \
-        "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00  $url_map_rfc3161"
+execDSigTest $res_success \
+    "phaos-xmldsig-three" \
+    "signature-rsa-detached-xslt-transform-retrieval-method" \
+    "xslt sha1 rsa-sha1" \
+    "rsa x509" \
+    "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00  $url_map_rfc3161"
 
-    execDSigTest $res_success \
-        "phaos-xmldsig-three" \
-        "signature-rsa-detached-xslt-transform" \
-        "xslt sha1 rsa-sha1" \
-        "rsa x509" \
-        "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00  $url_map_rfc3161"
-fi
+execDSigTest $res_success \
+    "phaos-xmldsig-three" \
+    "signature-rsa-detached-xslt-transform" \
+    "xslt sha1 rsa-sha1" \
+    "rsa x509" \
+    "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00  $url_map_rfc3161"
+
 
 execDSigTest $res_success \
     "phaos-xmldsig-three" \
@@ -984,15 +979,12 @@ execDSigTest $res_success \
     "rsa x509" \
     "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --untrusted-$cert_format certs/rsa-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00 $url_map_rfc3161"
 
-# gnutls requires more data to construct RSA keys than available in RSAKeyValue
-if [ "z$crypto" != "zgnutls" ] ; then
-    execDSigTest $res_success \
-        "phaos-xmldsig-three" \
-        "signature-rsa-manifest" \
-        "sha1 rsa-sha1" \
-        "rsa x509" \
-        "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00 $url_map_rfc3161"
-fi
+execDSigTest $res_success \
+    "phaos-xmldsig-three" \
+    "signature-rsa-manifest" \
+    "sha1 rsa-sha1" \
+    "rsa x509" \
+    "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00 $url_map_rfc3161"
 
 execDSigTest $res_success \
     "phaos-xmldsig-three" \

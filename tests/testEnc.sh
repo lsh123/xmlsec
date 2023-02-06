@@ -157,7 +157,7 @@ execEncTest $res_success \
 # Advanced RSA OAEP modes:
 # - MSCrypto only supports SHA1 for digest and mgf1
 # - GCrypt/GnuTLS and MSCng only supoprts the *same* algorithm for *both* digest and mgf1
-if [ "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" -a "z$crypto" != "zgcrypt"  -a "z$crypto" != "zgnutls" ] ; then
+if [ "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" -a "z$crypto" != "zgcrypt" ] ; then
     # various digest and default mgf1 (sha1)
     execEncTest $res_success \
         "" \
@@ -303,7 +303,7 @@ if [ "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" -a "z$crypto" != "zgcry
         "" \
         "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123" \
         "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123 --session-key aes-256 --enabled-key-data key-name --xml-data $topfolder/aleksey-xmlenc-01/enc-aes256-kt-rsa_oaep_sha512_mgf1_sha384.data --node-name http://example.org/paymentv2:CreditCard"  \
-        "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123"        
+        "$priv_key_option:my-rsa-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123"
 fi
 
 # Advanced RSA OAEP modes:
@@ -445,7 +445,7 @@ execEncTest $res_success \
 # Advanced RSA OAEP modes:
 # - MSCrypto only supports SHA1 for digest and mgf1
 # - GCrypt/GnuTLS and MSCng only supoprts the *same* algorithm for *both* digest and mgf1
-if [ "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" -a "z$crypto" != "zgcrypt" -a "z$crypto" != "zgnutls" ] ; then
+if [ "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" -a "z$crypto" != "zgcrypt" ] ; then
     execEncTest $res_success \
         "" \
         "merlin-xmlenc-five/encrypt-data-tripledes-cbc-rsa-oaep-mgf1p-sha256" \
@@ -536,7 +536,7 @@ execEncTest $res_success \
 # Advanced RSA OAEP modes:
 # - MSCrypto only supports SHA1 for digest and mgf1
 # - GCrypt/GnuTLS and MSCng only supoprts the *same* algorithm for *both* digest and mgf1
-if [ "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" -a "z$crypto" != "zgcrypt"  -a "z$crypto" != "zgnutls" ] ; then
+if [ "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" -a "z$crypto" != "zgcrypt" ] ; then
     execEncTest $res_success \
         "" \
         "01-phaos-xmlenc-3/enc-element-3des-kt-rsa_oaep_sha256" \
@@ -810,4 +810,3 @@ echo "--- testEnc finished"
 if [ -z "$XMLSEC_TEST_REPRODUCIBLE" ]; then
     echo "--- detailed log is written to  $logfile"
 fi
-

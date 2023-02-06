@@ -931,8 +931,8 @@ static xmlSecKeyDataKlass xmlSecGnuTLSKeyDataRsaKlass = {
     NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
 
     /* read/write */
-    NULL,                                       /* xmlSecKeyDataXmlReadMethod xmlRead; */
-    NULL,                                       /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    xmlSecGnuTLSKeyDataRsaXmlRead,              /* xmlSecKeyDataXmlReadMethod xmlRead; */
+    xmlSecGnuTLSKeyDataRsaXmlWrite,             /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
     NULL,                                       /* xmlSecKeyDataBinReadMethod binRead; */
     NULL,                                       /* xmlSecKeyDataBinWriteMethod binWrite; */
 
@@ -1118,9 +1118,6 @@ xmlSecGnuTLSKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
     xmlSecKeyDataPtr res = NULL;
     xmlSecSize size;
 	gnutls_datum_t modulus, publicExponent;
-    gnutls_datum_t p = { NULL, 0 };
-    gnutls_datum_t q = { NULL, 0 };
-    gnutls_privkey_t privkey = NULL;
     gnutls_pubkey_t pubkey = NULL;
     int err;
     int ret;
@@ -1141,31 +1138,8 @@ xmlSecGnuTLSKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
     /*** privateExponent (only for private key) ***/
     size = xmlSecBufferGetSize(&(rsaValue->privateExponent));
     if(size > 0) {
-        gnutls_datum_t privateExponent;
-
-        privateExponent.data = xmlSecBufferGetData(&(rsaValue->privateExponent));
-        XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, privateExponent.size, goto done, xmlSecKeyDataKlassGetName(id));
-
-        err = gnutls_privkey_init(&privkey);
-        if(err != GNUTLS_E_SUCCESS) {
-            xmlSecGnuTLSError("gnutls_privkey_init", err, xmlSecKeyDataKlassGetName(id));
-            goto done;
-        }
-
-        err = gnutls_privkey_import_rsa_raw(privkey,
-            &modulus,           /* m */
-            &publicExponent,    /* e */
-            &privateExponent,   /* d */
-            &p,                 /* p */
-            &q,                 /* q */
-            NULL,               /* u */
-            NULL,               /* e1 */
-            NULL                /* e2 */
-        );
-        if(err != GNUTLS_E_SUCCESS) {
-            xmlSecGnuTLSError("gnutls_privkey_import_rsa_raw", err, xmlSecKeyDataKlassGetName(id));
-            goto done;
-        }
+        xmlSecGnuTLSError("GnuTLS doesn't support reading private keys from RSAKeyValue", GNUTLS_E_SUCCESS, xmlSecKeyDataKlassGetName(id));
+        goto done;
     }
 
     /* pub key */
@@ -1191,13 +1165,12 @@ xmlSecGnuTLSKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
         goto done;
     }
 
-    ret = xmlSecGnuTLSKeyDataRsaAdoptKey(data, pubkey, privkey);
+    ret = xmlSecGnuTLSKeyDataRsaAdoptKey(data, pubkey, NULL);
     if(ret < 0) {
         xmlSecInternalError("xmlSecGnuTLSKeyDataRsaAdoptKey", xmlSecKeyDataKlassGetName(id));
         goto done;
     }
     pubkey = NULL; /* pubkey is owned by data now */
-    privkey = NULL; /* privkey is owned by data now */
 
     /* success */
     res = data;
@@ -1205,9 +1178,6 @@ xmlSecGnuTLSKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
 
 done:
     /* cleanup */
-    if(privkey != NULL) {
-        gnutls_privkey_deinit(privkey);
-    }
     if(pubkey != NULL) {
         gnutls_pubkey_deinit(pubkey);
     }
@@ -1289,17 +1259,9 @@ xmlSecGnuTLSKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
         goto done;
     }
 
-    /*** privateExponent (only if available and requested) ***/
+    /*** GnuTLS doesn't support private exponent  ***/
     if((writePrivateKey != 0) && (privkey != NULL)) {
-        if((privateExponent.data == NULL) || (privateExponent.size <= 0)) {
-            xmlSecInternalError("RSA privateExponent parameter is NULL", xmlSecKeyDataKlassGetName(id));
-            goto done;
-        }
-        ret = xmlSecBufferAppend(&(rsaValue->privateExponent), privateExponent.data, privateExponent.size);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecBufferAppend(privateExponent)", xmlSecKeyDataKlassGetName(id));
-            goto done;
-        }
+        /* do nothing */
     }
 
     /* success */

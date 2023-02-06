@@ -27,6 +27,7 @@
 #include <time.h>
 
 #include <gnutls/gnutls.h>
+#include <gnutls/abstract.h>
 #include <gnutls/x509.h>
 #include <gnutls/pkcs12.h>
 
@@ -933,15 +934,17 @@ done:
 }
 
 xmlSecKeyDataPtr
-xmlSecGnuTLSCreateKeyDataAndAdoptPrivKey(gnutls_x509_privkey_t priv_key) {
+xmlSecGnuTLSCreateKeyDataAndAdoptPrivKey(gnutls_x509_privkey_t x509_privkey) {
     xmlSecKeyDataPtr res = NULL;
+    gnutls_privkey_t privkey;
     int key_alg;
+    int err;
     int ret;
 
-    xmlSecAssert2(priv_key != NULL, NULL);
+    xmlSecAssert2(x509_privkey != NULL, NULL);
 
     /* create key value data */
-    key_alg = gnutls_x509_privkey_get_pk_algorithm(priv_key);
+    key_alg = gnutls_x509_privkey_get_pk_algorithm(x509_privkey);
     if(key_alg < 0) {
         xmlSecGnuTLSError("gnutls_x509_privkey_get_pk_algorithm", key_alg < 0, NULL);
         return (NULL);
@@ -955,7 +958,7 @@ xmlSecGnuTLSCreateKeyDataAndAdoptPrivKey(gnutls_x509_privkey_t priv_key) {
             return(NULL);
         }
 
-        ret = xmlSecGnuTLSKeyDataRsaAdoptPrivateKey(res, priv_key);
+        ret = xmlSecGnuTLSKeyDataRsaAdoptPrivateKey(res, x509_privkey);
         if(ret < 0) {
             xmlSecInternalError("xmlSecGnuTLSKeyDataRsaAdoptPrivateKey(KeyDataRsaId)", NULL);
             xmlSecKeyDataDestroy(res);
@@ -966,18 +969,36 @@ xmlSecGnuTLSCreateKeyDataAndAdoptPrivKey(gnutls_x509_privkey_t priv_key) {
 
 #ifndef XMLSEC_NO_DSA
     case GNUTLS_PK_DSA:
-        res = xmlSecKeyDataCreate(xmlSecGnuTLSKeyDataDsaId);
-        if(res == NULL) {
-            xmlSecInternalError("xmlSecKeyDataCreate(KeyDataDsaId)", NULL);
+        err = gnutls_privkey_init(&privkey);
+        if(err != GNUTLS_E_SUCCESS) {
+            xmlSecGnuTLSError("gnutls_privkey_init", err, NULL);
             return(NULL);
         }
 
-        ret = xmlSecGnuTLSKeyDataDsaAdoptPrivateKey(res, priv_key);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecGnuTLSKeyDataDsaAdoptPrivateKey(KeyDataDsaId)", NULL);
-            xmlSecKeyDataDestroy(res);
+        err = gnutls_privkey_import_x509(privkey, x509_privkey, GNUTLS_PRIVKEY_IMPORT_AUTO_RELEASE);
+        if (err != GNUTLS_E_SUCCESS) {
+            xmlSecGnuTLSError("gnutls_privkey_import_x509", err, NULL);
+            gnutls_privkey_deinit(privkey);
             return(NULL);
         }
+        x509_privkey = NULL; /* owned by privkey now */
+
+        res = xmlSecKeyDataCreate(xmlSecGnuTLSKeyDataDsaId);
+        if(res == NULL) {
+            xmlSecInternalError("xmlSecKeyDataCreate(KeyDataDsaId)", NULL);
+            gnutls_privkey_deinit(privkey);
+            return(NULL);
+        }
+
+        ret = xmlSecGnuTLSKeyDataDsaAdoptKey(res, NULL, privkey);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecGnuTLSKeyDataDsaAdoptKey(KeyDataDsaId)", NULL);
+            xmlSecKeyDataDestroy(res);
+            gnutls_privkey_deinit(privkey);
+            return(NULL);
+        }
+        privkey = NULL; /* owned by res now */
+
         break;
 #endif /* XMLSEC_NO_DSA */
     default:
@@ -1340,6 +1361,3 @@ done:
 
 
 #endif /* XMLSEC_NO_X509 */
-
-
-

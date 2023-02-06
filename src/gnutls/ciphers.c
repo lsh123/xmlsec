@@ -30,6 +30,7 @@
 #include <xmlsec/gnutls/crypto.h>
 
 #include "../cast_helpers.h"
+#include "../kw_aes_des.h"
 
 #define XMLSEC_GNUTLS_MAX_BLOCK_SIZE            32
 #define XMLSEC_GNUTLS_MAX_IV_SIZE               32
@@ -401,6 +402,7 @@ xmlSecGnuTLSCipherInitialize(xmlSecTransformPtr transform) {
     if(transform->id == xmlSecGnuTLSTransformDes3CbcId) {
         ctx->keyId      = xmlSecGnuTLSKeyDataDesId;
         ctx->algorithm  = GNUTLS_CIPHER_3DES_CBC;
+        ctx->keySize    = XMLSEC_KW_DES3_KEY_LENGTH;
     } else
 #endif /* XMLSEC_NO_DES */
 
@@ -408,12 +410,15 @@ xmlSecGnuTLSCipherInitialize(xmlSecTransformPtr transform) {
     if(transform->id == xmlSecGnuTLSTransformAes128CbcId) {
         ctx->keyId      = xmlSecGnuTLSKeyDataAesId;
         ctx->algorithm  = GNUTLS_CIPHER_AES_128_CBC;
+        ctx->keySize    = XMLSEC_KW_AES128_KEY_SIZE;
     } else if(transform->id == xmlSecGnuTLSTransformAes192CbcId) {
         ctx->keyId      = xmlSecGnuTLSKeyDataAesId;
         ctx->algorithm  = GNUTLS_CIPHER_AES_192_CBC;
+        ctx->keySize    = XMLSEC_KW_AES192_KEY_SIZE;
     } else if(transform->id == xmlSecGnuTLSTransformAes256CbcId) {
         ctx->keyId      = xmlSecGnuTLSKeyDataAesId;
         ctx->algorithm  = GNUTLS_CIPHER_AES_256_CBC;
+        ctx->keySize    = XMLSEC_KW_AES256_KEY_SIZE;
     } else
 #endif /* XMLSEC_NO_AES */
 
@@ -436,8 +441,6 @@ xmlSecGnuTLSCipherInitialize(xmlSecTransformPtr transform) {
         return(-1);
     }
     xmlSecAssert2(ctx->ivSize < XMLSEC_GNUTLS_MAX_IV_SIZE, -1);
-
-    ctx->keySize = ctx->blockSize; /* we assume key size == block size */
 
     /* done */
     return(0);

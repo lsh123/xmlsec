@@ -887,7 +887,7 @@ xmlSecKWAesDecode(xmlSecKWAesId kwAesId, xmlSecTransformPtr transform,
             }
         }
     }
-    /* do not left data in memory */
+    /* do not keep data in memory */
     memset(block, 0, sizeof(block));
 
     /* check the output */
@@ -903,4 +903,3 @@ xmlSecKWAesDecode(xmlSecKWAesId kwAesId, xmlSecTransformPtr transform,
 }
 
 #endif /* XMLSEC_NO_AES */
-

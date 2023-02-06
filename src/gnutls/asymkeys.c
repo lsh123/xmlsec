@@ -145,7 +145,7 @@ xmlSecGnuTLSAsymKeyDataGenerate(xmlSecKeyDataPtr data, gnutls_pk_algorithm_t alg
     ctx = xmlSecGnuTLSAsymKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
 
-    XMLSEC_SAFE_CAST_SIZE_T_TO_UINT(key_size, bits, return(-1), NULL);
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(key_size, bits, return(-1), NULL);
 
     err = gnutls_privkey_init(&privkey);
     if(err != GNUTLS_E_SUCCESS) {

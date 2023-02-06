@@ -208,29 +208,6 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataHmacSet      (xmlSecK
                                                                          const xmlSecByte* buf,
                                                                          xmlSecSize bufSize);
 
-#ifndef XMLSEC_NO_MD5
-/**
- * xmlSecGnuTLSTransformHmacMd5Id:
- *
- * The HMAC with MD5 signature transform klass.
- */
-#define xmlSecGnuTLSTransformHmacMd5Id \
-        xmlSecGnuTLSTransformHmacMd5GetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformHmacMd5GetKlass(void);
-
-#endif /* XMLSEC_NO_MD5 */
-
-#ifndef XMLSEC_NO_RIPEMD160
-/**
- * xmlSecGnuTLSTransformHmacRipemd160Id:
- *
- * The HMAC with RipeMD160 signature transform klass.
- */
-#define xmlSecGnuTLSTransformHmacRipemd160Id \
-        xmlSecGnuTLSTransformHmacRipemd160GetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformHmacRipemd160GetKlass(void);
-#endif /* XMLSEC_NO_RIPEMD160 */
-
 #ifndef XMLSEC_NO_SHA1
 /**
  * xmlSecGnuTLSTransformHmacSha1Id:

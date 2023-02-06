@@ -133,14 +133,6 @@ xmlSecCryptoGetFunctions_gnutls(void) {
     /******************************* HMAC ********************************/
 #ifndef XMLSEC_NO_HMAC
 
-#ifndef XMLSEC_NO_MD5
-    gXmlSecGnuTLSFunctions->transformHmacMd5GetKlass            = xmlSecGnuTLSTransformHmacMd5GetKlass;
-#endif /* XMLSEC_NO_MD5 */
-
-#ifndef XMLSEC_NO_RIPEMD160
-    gXmlSecGnuTLSFunctions->transformHmacRipemd160GetKlass      = xmlSecGnuTLSTransformHmacRipemd160GetKlass;
-#endif /* XMLSEC_NO_RIPEMD160 */
-
 #ifndef XMLSEC_NO_SHA1
     gXmlSecGnuTLSFunctions->transformHmacSha1GetKlass           = xmlSecGnuTLSTransformHmacSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */

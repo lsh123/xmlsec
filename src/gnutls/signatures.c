@@ -441,7 +441,7 @@ xmlSecGnuTLSToDer(const gnutls_datum_t* src, gnutls_datum_t* dst, xmlSecSize siz
     length = 2 + size + 2 + size + 2;
 
     /* allocate memory */
-    XMLSEC_SAFE_CAST_SIZE_T_TO_UINT(length, dst->size, return(-1), NULL);
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(length, dst->size, return(-1), NULL);
     dst->data = gnutls_malloc(dst->size);
     if(dst->data == NULL) {
         xmlSecGnuTLSError("gnutls_malloc", 0, NULL);
@@ -482,7 +482,7 @@ xmlSecGnuTLSFromDer(const gnutls_datum_t* src, gnutls_datum_t* dst, xmlSecSize s
 
     /* allocate memory */
     len = 2 * size;
-    XMLSEC_SAFE_CAST_SIZE_T_TO_UINT(len, dst->size, return(-1), NULL);
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(len, dst->size, return(-1), NULL);
     dst->data = gnutls_malloc(dst->size);
     if(dst->data == NULL) {
         xmlSecGnuTLSError("gnutls_malloc", 0, NULL);

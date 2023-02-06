@@ -205,7 +205,7 @@ xmlSecGnuTLSKeyTransportEncrypt(xmlSecGnuTLSKeyTransportCtxPtr ctx, xmlSecBuffer
         return(-1);
     }
 
-    /* encrypt */
+    /* encrypt: only PKCS 1.5 is currently supported by gnutls */
     plaintext.data = xmlSecBufferGetData(inBuf);
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(inSize, plaintext.size, return(-1), NULL)
     err = gnutls_pubkey_encrypt_data(pubkey,
@@ -254,7 +254,7 @@ xmlSecGnuTLSKeyTransportDecrypt(xmlSecGnuTLSKeyTransportCtxPtr ctx, xmlSecBuffer
         return(-1);
     }
 
-    /* decrypt */
+    /* decrypt: only PKCS 1.5 is currently supported by gnutls */
     ciphertext.data = xmlSecBufferGetData(inBuf);
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(inSize, ciphertext.size, return(-1), NULL)
     err = gnutls_privkey_decrypt_data(privkey,

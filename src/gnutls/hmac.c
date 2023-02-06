@@ -46,7 +46,7 @@ struct _xmlSecGnuTLSHmacCtx {
     gnutls_hmac_hd_t            hmac;
     gnutls_mac_algorithm_t      hmacAlgo;
     xmlSecSize                  hmacSizeInBits;
-    xmlSecByte                  hmacOutput[XMLSEC_GNUTLS_MAX_DIGEST_SIZE];
+    xmlSecByte                  hmacOutput[XMLSEC_TRASNFORM_HMAC_MAX_OUTPUT_SIZE];
 };
 
 /******************************************************************************
@@ -158,7 +158,7 @@ xmlSecGnuTLSHmacInitialize(xmlSecTransformPtr transform) {
         xmlSecGnuTLSError("gnutls_hmac_get_len", 0, NULL);
         return(-1);
     }
-    xmlSecAssert2(hmacSize < XMLSEC_GNUTLS_MAX_DIGEST_SIZE, -1);
+    xmlSecAssert2(hmacSize < XMLSEC_TRASNFORM_HMAC_MAX_OUTPUT_SIZE, -1);
     ctx->hmacSizeInBits = 8 * hmacSize;
 
     /* done */
@@ -204,7 +204,7 @@ xmlSecGnuTLSHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
             xmlSecTransformGetName(transform));
         return(-1);
     }
-    xmlSecAssert2((ctx->hmacSizeInBits + 7) / 8 <= XMLSEC_GNUTLS_MAX_DIGEST_SIZE, -1);
+    xmlSecAssert2(XMLSEC_TRASNFORM_HMAC_BITS_TO_BYTES(ctx->hmacSizeInBits) <= XMLSEC_TRASNFORM_HMAC_MAX_OUTPUT_SIZE, -1);
 
     return(0);
 }
@@ -277,11 +277,8 @@ static int
 xmlSecGnuTLSHmacVerify(xmlSecTransformPtr transform,
                         const xmlSecByte* data, xmlSecSize dataSize,
                         xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
-    static xmlSecByte last_byte_masks[] =
-                { 0xFF, 0x80, 0xC0, 0xE0, 0xF0, 0xF8, 0xFC, 0xFE };
-
     xmlSecGnuTLSHmacCtxPtr ctx;
-    xmlSecByte mask;
+    int ret;
 
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
     xmlSecAssert2(transform->operation == xmlSecTransformOperationVerify, -1);
@@ -294,36 +291,19 @@ xmlSecGnuTLSHmacVerify(xmlSecTransformPtr transform,
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->hmacSizeInBits > 0, -1);
 
-    /* compare the digest size in bytes */
-    if(dataSize != ((ctx->hmacSizeInBits + 7) / 8)){
-        xmlSecInvalidSizeError("HMAC digest",
-                               dataSize, ((ctx->hmacSizeInBits + 7) / 8),
-                               xmlSecTransformGetName(transform));
+    /* Returns 1 for match, 0 for no match, <0 for errors. */
+    ret = xmlSecTransformHmacVerify(data, dataSize, ctx->hmacOutput, ctx->hmacSizeInBits, XMLSEC_TRASNFORM_HMAC_MAX_OUTPUT_SIZE);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecTransformHmacVerify", xmlSecTransformGetName(transform));
+        return(-1);
+    }
+    if(ret == 1) {
+        transform->status = xmlSecTransformStatusOk;
+    } else {
         transform->status = xmlSecTransformStatusFail;
-        return(0);
     }
 
-    /* we check the last byte separately */
-    xmlSecAssert2(dataSize > 0, -1);
-    mask = last_byte_masks[ctx->hmacSizeInBits % 8];
-    if((ctx->hmacOutput[dataSize - 1] & mask) != (data[dataSize - 1]  & mask)) {
-        xmlSecOtherError(XMLSEC_ERRORS_R_DATA_NOT_MATCH,
-                         xmlSecTransformGetName(transform),
-                         "data and digest do not match (last byte)");
-        transform->status = xmlSecTransformStatusFail;
-        return(0);
-    }
-
-    /* now check the rest of the digest */
-    if((dataSize > 1) && (memcmp(ctx->hmacOutput, data, dataSize - 1) != 0)) {
-        xmlSecOtherError(XMLSEC_ERRORS_R_DATA_NOT_MATCH,
-                         xmlSecTransformGetName(transform),
-                         "data and digest do not match");
-        transform->status = xmlSecTransformStatusFail;
-        return(0);
-    }
-
-    transform->status = xmlSecTransformStatusOk;
+    /* done */
     return(0);
 }
 
@@ -380,15 +360,9 @@ xmlSecGnuTLSHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformC
 
         /* write results if needed */
         if(transform->operation == xmlSecTransformOperationSign) {
-            xmlSecSize hmacSize;
-
-            hmacSize = (ctx->hmacSizeInBits + 7) / 8;
-            xmlSecAssert2(hmacSize < XMLSEC_GNUTLS_MAX_DIGEST_SIZE, -1);
-
-            ret = xmlSecBufferAppend(out, ctx->hmacOutput, hmacSize);
+            ret = xmlSecTransformHmacWriteOutput(ctx->hmacOutput, ctx->hmacSizeInBits, XMLSEC_TRASNFORM_HMAC_MAX_OUTPUT_SIZE, out);
             if(ret < 0) {
-                xmlSecInternalError2("xmlSecBufferAppend", xmlSecTransformGetName(transform),
-                    "size=" XMLSEC_SIZE_FMT, hmacSize);
+                xmlSecInternalError("xmlSecTransformHmacWriteOutput", xmlSecTransformGetName(transform));
                 return(-1);
             }
         }

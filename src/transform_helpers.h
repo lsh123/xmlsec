@@ -23,9 +23,20 @@
 /* max HMAC output size in bytes */
 #define XMLSEC_TRASNFORM_HMAC_MAX_OUTPUT_SIZE       128U
 
-XMLSEC_EXPORT int xmlSecTransformHmacReadOutputBitsSize    (xmlNodePtr node,
+#define XMLSEC_TRASNFORM_HMAC_BITS_TO_BYTES(bits)   (((bits) + 7) / 8)
+
+XMLSEC_EXPORT int xmlSecTransformHmacReadOutputBitsSize (xmlNodePtr node,
                                                          xmlSecSize defaultSize,
                                                          xmlSecSize* res);
+XMLSEC_EXPORT int xmlSecTransformHmacWriteOutput        (const xmlSecByte * hmac,
+                                                         xmlSecSize hmacSizeInBits,
+                                                         xmlSecSize hmacMaxSizeInBytes,
+                                                         xmlSecBufferPtr out);
+XMLSEC_EXPORT int xmlSecTransformHmacVerify             (const xmlSecByte* data,
+                                                         xmlSecSize dataSize,
+                                                         const xmlSecByte * hmac,
+                                                         xmlSecSize hmacSizeInBits,
+                                                         xmlSecSize hmacMaxSizeInBytes);
 
 #endif /* XMLSEC_NO_HMAC */
 

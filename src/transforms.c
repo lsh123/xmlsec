@@ -2668,6 +2668,85 @@ xmlSecTransformHmacReadOutputBitsSize(xmlNodePtr node, xmlSecSize defaultSize, x
     return(0);
 }
 
+static xmlSecByte g_hmac_last_byte_masks[] = { 0xFF, 0x80, 0xC0, 0xE0, 0xF0, 0xF8, 0xFC, 0xFE };
+
+int
+xmlSecTransformHmacWriteOutput(const xmlSecByte * hmac, xmlSecSize hmacSizeInBits, xmlSecSize hmacMaxSizeInBytes, xmlSecBufferPtr out)
+{
+    xmlSecSize hmacSize;
+    xmlSecByte lastByteMask;
+    xmlSecByte* outData;
+    int ret;
+
+    xmlSecAssert2(hmac != NULL, -1);
+    xmlSecAssert2(hmacSizeInBits > 0, -1);
+    xmlSecAssert2(out != NULL, -1);
+
+    hmacSize = (hmacSizeInBits + 7) / 8;
+    xmlSecAssert2(hmacSize > 0, -1);
+    xmlSecAssert2(hmacSize <= hmacMaxSizeInBytes, -1);
+
+    ret = xmlSecBufferAppend(out, hmac, hmacSize);
+    if(ret < 0) {
+        xmlSecInternalError2("xmlSecBufferAppend", NULL, "size=" XMLSEC_SIZE_FMT, hmacSize);
+        return(-1);
+    }
+
+    /* fix up last byte */
+    lastByteMask = g_hmac_last_byte_masks[hmacSizeInBits % 8];
+    outData = xmlSecBufferGetData(out);
+    if(outData == NULL) {
+        xmlSecInternalError("xmlSecBufferGetData", NULL);
+        return(-1);
+    }
+    outData[hmacSize - 1] &= lastByteMask;
+
+    /* success */
+    return(0);
+}
+
+/**
+ * Returns 1 for match, 0 for no match, <0 for errors.
+ */
+int
+xmlSecTransformHmacVerify(const xmlSecByte* data, xmlSecSize dataSize,
+    const xmlSecByte * hmac, xmlSecSize hmacSizeInBits, xmlSecSize hmacMaxSizeInBytes)
+{
+    xmlSecSize hmacSize;
+    xmlSecByte lastByteMask;
+
+    xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(dataSize > 0, -1);
+    xmlSecAssert2(hmac != NULL, -1);
+    xmlSecAssert2(hmacSizeInBits > 0, -1);
+
+    hmacSize = (hmacSizeInBits + 7) / 8;
+    xmlSecAssert2(hmacSize > 0, -1);
+    xmlSecAssert2(hmacSize <= hmacMaxSizeInBytes, -1);
+
+    if(dataSize != hmacSize){
+        xmlSecInvalidSizeError("HMAC digest", dataSize, hmacSize, NULL);
+        return(0);
+    }
+
+    /* we check the last byte separately */
+    lastByteMask = g_hmac_last_byte_masks[hmacSizeInBits % 8];
+    if((hmac[hmacSize - 1] & lastByteMask) != (data[dataSize - 1] & lastByteMask)) {
+        xmlSecOtherError(XMLSEC_ERRORS_R_DATA_NOT_MATCH, NULL, "data and digest do not match (last byte)");
+        return(0);
+    }
+
+    /* now check the rest of the digest */
+    if((hmacSize > 1) && (memcmp(hmac, data, hmacSize - 1) != 0)) {
+        xmlSecOtherError(XMLSEC_ERRORS_R_DATA_NOT_MATCH, NULL, "data and digest do not match");
+        return(0);
+    }
+
+    /* success */
+    return(1);
+}
+
+
 #endif /* XMLSEC_NO_HMAC */
 
 #ifndef XMLSEC_NO_RSA
@@ -2677,9 +2756,9 @@ xmlSecTransformRsaOaepParamsInitialize(xmlSecTransformRsaOaepParamsPtr oaepParam
     int ret;
 
     xmlSecAssert2(oaepParams != NULL, -1);
-    
+
     memset(oaepParams, 0, sizeof(xmlSecTransformRsaOaepParams));
-    
+
     ret = xmlSecBufferInitialize(&(oaepParams->oaepParams), 0);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferInitialize", NULL);
@@ -2703,7 +2782,7 @@ xmlSecTransformRsaOaepParamsFinalize(xmlSecTransformRsaOaepParamsPtr oaepParams)
     memset(oaepParams, 0, sizeof(xmlSecTransformRsaOaepParams));
 }
 
-/** 
+/**
  * See https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP
  *  <EncryptionMethod Algorithm="http://www.w3.org/2009/xmlenc11#rsa-oaep">
  *      <OAEPparams>9lWu3Q==</OAEPparams>

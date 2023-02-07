@@ -54,12 +54,12 @@
 		<ul>
 			<li><b>core xmlsec and all xmlsec-crypto libraries:</b>
 				<ul>
-					<li>Switched xmlSecSize to use size_t by default (breaks ABI compatibility). Use "--enable-size-t=no" configure option ("size_t=no"" on Windows) to
+					<li>(<b>ABI breaking change</b>) Switched xmlSecSize to use size_t by default. Use "--enable-size-t=no" configure option ("size_t=no" on Windows) to
 						restore the old behaviour (note that this behaviour is deprecated and will be removed in the future.</li>
 					<li>Disabled by default legacy insecure algorithms (MD5 and RIPEMD160). Use "--enable-md5" and "--enable-ripemd160"
 						configure options ("legacy-crypto" option on Windows) to re-enable these algorithms.</li>
 					<li>Fixed all potentially unsafe integer conversions and all the other warnings.</li>
-					<li>Removed deprecated functions.</li>
+					<li>(<b>ABI breaking change</b>) Removed deprecated functions.</li>
 				</ul>
 			</li>
 			<li><b>xmlsec-openssl library:</b>
@@ -78,31 +78,32 @@
 			<li><b>xmlsec-gnutls library:</b>
 				<ul>
                     <li>Bumped minimal GnuTLS version to 3.6.0.</li>
-                    <li>Remove dependency on xmlsec-gcrypt and libgcrypt libraries to enable support for different GnuTLS backends.</li>
+                    <li>(<b>ABI breaking change</b>) Remove dependency on xmlsec-gcrypt and libgcrypt libraries (including API functions) to enable support for different GnuTLS backends.</li>
 					<li>Added support for <a href="https://www.rfc-editor.org/rfc/rfc9231.html#name-rsassa-pss-without-paramete">RSA PSS withtout parameters algorithms</a>.</li>
 					<li>Added support for <a href="https://www.rfc-editor.org/rfc/rfc9231.html#name-signaturemethod-public-key-">RSA PKCS 1.5 key transport</a>.</li>
 					<li>Added support for <a href="https://www.rfc-editor.org/rfc/rfc9231.html#name-ecdsa-sha-ecdsa-ripemd160-e">ECDSA signatures</a>.</li>
-				</ul>
-			</li>
-			<li><b>xmlsec-gcrypt library:</b>
-				<ul>
-					<li>Added support for <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP">RSA OAEP including MGF1 algorithms</a>.</li>
-					<li>Added support for <a href="https://www.rfc-editor.org/rfc/rfc9231.html#name-rsassa-pss-without-paramete">RSA PSS withtout parameters algorithms</a>.</li>
-					<li>Added support for <a href="https://www.rfc-editor.org/rfc/rfc9231.html#name-signaturemethod-public-key-">RSA PKCS 1.5 key transport</a>.</li>
-					<li>Added support for <a href="https://www.rfc-editor.org/rfc/rfc9231.html#name-ecdsa-sha-ecdsa-ripemd160-e">ECDSA signatures</a>.</li>
-					<li>Added support for <a href="https://www.w3.org/TR/xmlenc-core1/#sec-AES-GCM">AES GCM ciphers</a>.</li>
 				</ul>
 			</li>
 			<li><b>xmlsec-mscng library:</b>
 				<ul>
 					<li>Added support for <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP">RSA OAEP MGF1 algorithms</a>.</li>
 					<li>Added support for <a href="https://www.rfc-editor.org/rfc/rfc9231.html#name-rsassa-pss-without-paramete">RSA PSS withtout parameters algorithms</a>.</li>
-					<li>Disabled by default  support for NT4. Use "nt4=yes" configure option on Windows to re-enable it.</li>
 				</ul>
 			</li>
 			<li><b>xmlsec-mscrypto library:</b>
 				<ul>
-					<li>Disabled by default  support for NT4. Use "nt4=yes" configure option on Windows to re-enable it.</li>
+					<li>In maintenance mode starting from this release.</li>
+					<li>Disabled by default support for NT4. Use "nt4=yes" configure option on Windows to re-enable it.</li>
+				</ul>
+			</li>
+			<li><b>xmlsec-gcrypt library:</b>
+				<ul>
+					<li>In maintenance mode starting from this release.</li>
+					<li>Added support for <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP">RSA OAEP including MGF1 algorithms</a>.</li>
+					<li>Added support for <a href="https://www.rfc-editor.org/rfc/rfc9231.html#name-rsassa-pss-without-paramete">RSA PSS withtout parameters algorithms</a>.</li>
+					<li>Added support for <a href="https://www.rfc-editor.org/rfc/rfc9231.html#name-signaturemethod-public-key-">RSA PKCS 1.5 key transport</a>.</li>
+					<li>Added support for <a href="https://www.rfc-editor.org/rfc/rfc9231.html#name-ecdsa-sha-ecdsa-ripemd160-e">ECDSA signatures</a>.</li>
+					<li>Added support for <a href="https://www.w3.org/TR/xmlenc-core1/#sec-AES-GCM">AES GCM ciphers</a>.</li>
 				</ul>
 			</li>
 			<li><b>xmlsec command line utility:</b>

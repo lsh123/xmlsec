@@ -216,10 +216,6 @@ xmlSecGnuTLSGcmCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     return(0);
 }
 
-#define XMLSEC_GNUTLS_GCM_CIPHER_MAX_BLOCK_SIZE             32
-#define XMLSEC_GNUTLS_GCM_CIPHER_IV_SIZE                    12
-#define XMLSEC_GNUTLS_GCM_CIPHER_TAG_SIZE                   16
-
 static int
 xmlSecGnuTLSGcmCipherEncrypt(xmlSecGnuTLSGcmCipherCtxPtr ctx, xmlSecBufferPtr in, xmlSecBufferPtr out) {
     xmlSecSize inSize, outSize;

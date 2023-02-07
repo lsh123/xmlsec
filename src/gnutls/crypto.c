@@ -118,6 +118,10 @@ xmlSecCryptoGetFunctions_gnutls(void) {
     gXmlSecGnuTLSFunctions->transformAes192CbcGetKlass          = xmlSecGnuTLSTransformAes192CbcGetKlass;
     gXmlSecGnuTLSFunctions->transformAes256CbcGetKlass          = xmlSecGnuTLSTransformAes256CbcGetKlass;
 
+    gXmlSecGnuTLSFunctions->transformAes128GcmGetKlass          = xmlSecGnuTLSTransformAes128GcmGetKlass;
+    gXmlSecGnuTLSFunctions->transformAes192GcmGetKlass          = xmlSecGnuTLSTransformAes192GcmGetKlass;
+    gXmlSecGnuTLSFunctions->transformAes256GcmGetKlass          = xmlSecGnuTLSTransformAes256GcmGetKlass;
+
     gXmlSecGnuTLSFunctions->transformKWAes128GetKlass           = xmlSecGnuTLSTransformKWAes128GetKlass;
     gXmlSecGnuTLSFunctions->transformKWAes192GetKlass           = xmlSecGnuTLSTransformKWAes192GetKlass;
     gXmlSecGnuTLSFunctions->transformKWAes256GetKlass           = xmlSecGnuTLSTransformKWAes256GetKlass;

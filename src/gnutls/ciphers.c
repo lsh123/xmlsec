@@ -30,9 +30,9 @@
 #include "../cast_helpers.h"
 #include "../kw_aes_des.h"
 
-#define XMLSEC_GNUTLS_MAX_BLOCK_SIZE            32
-#define XMLSEC_GNUTLS_MAX_IV_SIZE               32
-#define XMLSEC_GNUTLS_EVP_CIPHER_PAD_SIZE       (2 * XMLSEC_GNUTLS_MAX_BLOCK_SIZE)
+#define XMLSEC_GNUTLS_CIPHER_MAX_BLOCK_SIZE             32
+#define XMLSEC_GNUTLS_CIPHER_MAX_IV_SIZE                32
+#define XMLSEC_GNUTLS_CIPHER_PAD_SIZE                   (2 * XMLSEC_GNUTLS_CIPHER_MAX_BLOCK_SIZE)
 
 /**************************************************************************
  *
@@ -50,8 +50,8 @@ struct _xmlSecGnuTLSCipherCtx {
 
     gnutls_cipher_hd_t          cipher;
     int                         ctxInitialized;
-    xmlSecByte                  iv[XMLSEC_GNUTLS_MAX_IV_SIZE];
-    xmlSecByte                  pad[XMLSEC_GNUTLS_EVP_CIPHER_PAD_SIZE];
+    xmlSecByte                  iv[XMLSEC_GNUTLS_CIPHER_MAX_IV_SIZE];
+    xmlSecByte                  pad[XMLSEC_GNUTLS_CIPHER_PAD_SIZE];
 };
 
 static int      xmlSecGnuTLSCipherCtxInit           (xmlSecGnuTLSCipherCtxPtr ctx,
@@ -272,7 +272,7 @@ xmlSecGnuTLSCipherCtxFinal(xmlSecGnuTLSCipherCtxPtr ctx, xmlSecBufferPtr in,
         }
         outSize = inSize + padSize;
         xmlSecAssert2(padSize > 0, -1);
-        xmlSecAssert2(outSize <= XMLSEC_GNUTLS_EVP_CIPHER_PAD_SIZE, -1);
+        xmlSecAssert2(outSize <= XMLSEC_GNUTLS_CIPHER_PAD_SIZE, -1);
 
         /* we can have inSize == 0 if there were no data at all, otherwise -- copy the data */
         if(inSize > 0) {
@@ -431,14 +431,14 @@ xmlSecGnuTLSCipherInitialize(xmlSecTransformPtr transform) {
         xmlSecGnuTLSError("gnutls_cipher_get_block_size", 0, NULL);
         return(-1);
     }
-    xmlSecAssert2(ctx->blockSize < XMLSEC_GNUTLS_MAX_BLOCK_SIZE, -1);
+    xmlSecAssert2(ctx->blockSize < XMLSEC_GNUTLS_CIPHER_MAX_BLOCK_SIZE, -1);
 
     ctx->ivSize = gnutls_cipher_get_iv_size(ctx->algorithm);
     if(ctx->ivSize <= 0) {
         xmlSecGnuTLSError("gnutls_cipher_get_iv_size", 0, NULL);
         return(-1);
     }
-    xmlSecAssert2(ctx->ivSize < XMLSEC_GNUTLS_MAX_IV_SIZE, -1);
+    xmlSecAssert2(ctx->ivSize < XMLSEC_GNUTLS_CIPHER_MAX_IV_SIZE, -1);
 
     /* done */
     return(0);

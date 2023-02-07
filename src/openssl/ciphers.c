@@ -248,6 +248,7 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
         int outLen2 = 0;
 
         if(ctx->cbcMode == 0) {
+            xmlSecAssert2(tagData != NULL, -1);
             if(!EVP_CIPHER_CTX_encrypting(ctx->cipherCtx)) {
                 ret = EVP_CIPHER_CTX_ctrl(ctx->cipherCtx, EVP_CTRL_GCM_SET_TAG,
                     XMLSEC_OPENSSL_AES_GCM_TAG_SIZE, tagData);
@@ -265,6 +266,7 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
         }
 
         if(ctx->cbcMode == 0) {
+            xmlSecAssert2(tagData != NULL, -1);
             if(EVP_CIPHER_CTX_encrypting(ctx->cipherCtx)) {
                 ret = EVP_CIPHER_CTX_ctrl(ctx->cipherCtx, EVP_CTRL_GCM_GET_TAG,
                     XMLSEC_OPENSSL_AES_GCM_TAG_SIZE, tagData);

@@ -40,6 +40,62 @@ echo "--------- Positive Testing ----------"
 
 ##########################################################################
 #
+# xmldsig11-interop-2012
+#
+##########################################################################
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-hmac-sha1-truncated40" \
+    "c14n sha1 hmac-sha1" \
+    "" \
+    "--hmackey keys/hmackey.bin --hmac-min-out-len 40"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-hmac-sha1-truncated160" \
+    "c14n sha1 hmac-sha1" \
+    "" \
+    "--hmackey keys/hmackey.bin"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-hmac-sha224" \
+    "c14n sha1 hmac-sha224" \
+    "" \
+    "--hmackey keys/hmackey.bin"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-hmac-sha224" \
+    "c14n sha1 hmac-sha224" \
+    "" \
+    "--hmackey keys/hmackey.bin"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-hmac-sha256" \
+    "c14n sha1 hmac-sha256" \
+    "" \
+    "--hmackey keys/hmackey.bin"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-hmac-sha384" \
+    "c14n sha1 hmac-sha384" \
+    "" \
+    "--hmackey keys/hmackey.bin"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-hmac-sha512" \
+    "c14n sha1 hmac-sha512" \
+    "" \
+    "--hmackey keys/hmackey.bin"
+
+exit(1);
+
+##########################################################################
+#
 # xmldsig2ed-tests
 #
 # http://www.w3.org/TR/xmldsig2ed-tests/

@@ -357,6 +357,17 @@ static xmlSecAppCmdLineParam hmackeyParam = {
     xmlSecAppCmdLineParamFlagParamNameValue | xmlSecAppCmdLineParamFlagMultipleValues,
     NULL
 };
+
+static xmlSecAppCmdLineParam hmacMinOutputLenParam = {
+    xmlSecAppCmdLineTopicKeysMngr,
+    "--hmac-min-out-len",
+    NULL,
+    "--hmac-min-out-len <bits>"
+    "\n\tsets minimum HMAC output length to <bits>",
+    xmlSecAppCmdLineParamTypeNumber,
+    xmlSecAppCmdLineParamFlagParamNameValue,
+    NULL
+};
 #endif /* XMLSEC_NO_HMAC */
 
 static xmlSecAppCmdLineParam pwdParam = {
@@ -832,6 +843,11 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
     &storeSignaturesParam,
     &enabledRefUrisParam,
     &enableVisa3DHackParam,
+
+#ifndef XMLSEC_NO_HMAC
+    &hmacMinOutputLenParam,
+#endif  /* XMLSEC_NO_HMAC */
+
 #endif /* XMLSEC_NO_XMLDSIG */
 
     /* enc params */
@@ -1586,6 +1602,15 @@ xmlSecAppPrepareDSigCtx(xmlSecDSigCtxPtr dsigCtx) {
     if(xmlSecAppCmdLineParamIsSet(&enableVisa3DHackParam)) {
         dsigCtx->flags |= XMLSEC_DSIG_FLAGS_USE_VISA3D_HACK;
     }
+
+#ifndef XMLSEC_NO_HMAC
+    if(xmlSecAppCmdLineParamIsSet(&hmacMinOutputLenParam)) {
+        int minHmacOutLen =  (int)xmlSecTransformHmacGetMinOutputBitsSize();
+
+        minHmacOutLen = xmlSecAppCmdLineParamGetInt(&hmacMinOutputLenParam, minHmacOutLen);
+        xmlSecTransformHmacSetMinOutputBitsSize((xmlSecSize)minHmacOutLen);
+    }
+#endif  /* XMLSEC_NO_HMAC */
 
     if(xmlSecAppCmdLineParamGetStringList(&enabledRefUrisParam) != NULL) {
         dsigCtx->enabledReferenceUris = xmlSecAppGetUriType(
@@ -3227,6 +3252,3 @@ xmlSecAppAddIDAttr(xmlNodePtr node, const xmlChar* attrName, const xmlChar* node
     xmlFree(id);
     return(0);
 }
-
-
-

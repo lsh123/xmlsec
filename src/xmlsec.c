@@ -12,6 +12,7 @@
  * @Short_description: Utility functions.
  * @Stability: Stable
  *
+ * Various utility functions.
  */
 
 #include "globals.h"

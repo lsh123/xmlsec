@@ -4,6 +4,70 @@
     <sub name="XML Security Library Tutorial" link="xmlsec-notes.html">
       <sub name="Overview." link="xmlsec-notes-overview.html"/>
       <sub name="XML Security Library Structure." link="xmlsec-notes-structure.html"/>
+      <sub name="Building the application with XML Security Library." link="xmlsec-notes-compiling.html">
+        <sub name="Overview." link="xmlsec-notes-compiling.html#xmlsec-notes-compiling-overview"/>
+        <sub name="Include files." link="xmlsec-notes-include-files.html"/>
+        <sub name="Compiling and linking on Unix." link="xmlsec-notes-compiling-unix.html"/>
+        <sub name="Compiling and linking on Windows." link="xmlsec-notes-compiling-windows.html"/>
+        <sub name="Compiling and linking on other systems." link="xmlsec-notes-compiling-others.html"/>
+      </sub>
+      <sub name="Initialization and shutdown." link="xmlsec-notes-init-shutdown.html"/>
+      <sub name="Signing and encrypting documents." link="xmlsec-notes-sign-encrypt.html">
+        <sub name="Overview." link="xmlsec-notes-sign-encrypt.html#xmlsec-notes-sign-encrypt-overview"/>
+        <sub name="Signing a document." link="xmlsec-notes-sign.html"/>
+        <sub name="Encrypting data." link="xmlsec-notes-encrypt.html"/>
+      </sub>
+      <sub name="Creating dynamic templates." link="xmlsec-notes-templates.html">
+        <sub name="Overview." link="xmlsec-notes-templates.html#xmlsec-notes-templates-overview"/>
+        <sub name="Creating dynamic signature templates." link="xmlsec-notes-dynamic-signature-templates.html"/>
+        <sub name="Creating dynamic encryption templates." link="xmlsec-notes-dynamic-encryption-templates.html"/>
+      </sub>
+      <sub name="Verifing and decrypting documents." link="xmlsec-notes-verify-decrypt.html">
+        <sub name="Overview." link="xmlsec-notes-verify-decrypt.html#xmlsec-notes-verify-decrypt-overview"/>
+        <sub name="Verifying a signed document" link="xmlsec-notes-verify.html"/>
+        <sub name="Decrypting an encrypted document" link="xmlsec-notes-decrypt.html"/>
+      </sub>
+      <sub name="Keys." link="xmlsec-notes-keys.html"/>
+      <sub name="Keys manager." link="xmlsec-notes-keysmngr.html">
+        <sub name="Overview." link="xmlsec-notes-keysmngr.html#xmlsec-notes-keysmngr-overview"/>
+        <sub name="Simple keys store." link="xmlsec-notes-simple-keys-store.html"/>
+        <sub name="Using keys manager for signatures/encryption." link="xmlsec-notes-keys-manager-sign-enc.html"/>
+        <sub name="Using keys manager for verification/decryption." link="xmlsec-notes-keys-mngr-verify-decrypt.html"/>
+        <sub name="Implementing a custom keys store." link="xmlsec-notes-custom-keys-store.html"/>
+      </sub>
+      <sub name="Using X509 Certificates." link="xmlsec-notes-x509.html">
+        <sub name="Overview." link="xmlsec-notes-x509.html#xmlsec-notes-x509-overview"/>
+        <sub name="Signing data with X509 certificate." link="xmlsec-notes-sign-x509.html"/>
+        <sub name="Verifing document signed with X509 certificates." link="xmlsec-notes-verify-x509.html"/>
+      </sub>
+      <sub name="Transforms and transforms chain." link="xmlsec-notes-transforms.html"/>
+      <sub name="Using context objects." link="xmlsec-notes-contexts.html"/>
+      <sub name="Adding support for new cryptographic library." link="xmlsec-notes-new-crypto.html">
+        <sub name="Overview." link="xmlsec-notes-new-crypto.html#xmlsec-notes-new-crypto-overview"/>
+        <sub name="Creating a framework from the skeleton." link="xmlsec-notes-new-crypto-skeleton.html"/>
+        <sub name="xmlSecCryptoApp* functions." link="xmlsec-notes-new-crypto-functions.html"/>
+        <sub name="Klasses and objects." link="xmlsec-notes-new-crypto-klasses.html"/>
+        <sub name="Cryptographic transforms." link="xmlsec-notes-new-crypto-transforms.html"/>
+        <sub name="Keys data and keys data stores." link="xmlsec-notes-new-crypto-keys.html"/>
+        <sub name="Default keys manager." link="xmlsec-notes-new-crypto-simple-keys-mngr.html"/>
+        <sub name="Sharing the results." link="xmlsec-notes-new-crypto-sharing-results.html"/>
+      </sub>
+      <sub name="Examples." link="xmlsec-examples.html">
+        <sub name="XML Security Library Examples." link="xmlsec-examples.html#xmlsec-examples-overview"/>
+        <sub name="Signing a template file." link="xmlsec-examples-sign-template-file.html"/>
+        <sub name="Signing a dynamicaly created template." link="xmlsec-examples-sign-dynamimc-template.html"/>
+        <sub name="Signing with X509 certificate." link="xmlsec-examples-sign-x509.html"/>
+        <sub name="Verifying a signature with a single key." link="xmlsec-verify-with-key.html"/>
+        <sub name="Verifying a signature with keys manager." link="xmlsec-verify-with-keys-mngr.html"/>
+        <sub name="Verifying a signature with X509 certificates." link="xmlsec-verify-with-x509.html"/>
+        <sub name="Verifying a signature with additional restrictions." link="xmlsec-verify-with-restrictions.html"/>
+        <sub name="Encrypting data with a template file." link="xmlsec-encrypt-template-file.html"/>
+        <sub name="Encrypting data with a dynamicaly created template." link="xmlsec-encrypt-dynamic-template.html"/>
+        <sub name="Encrypting data with a session key." link="xmlsec-encrypt-with-session-key.html"/>
+        <sub name="Decrypting data with a single key." link="xmlsec-decrypt-with-signle-key.html"/>
+        <sub name="Decrypting data with keys manager." link="xmlsec-decrypt-with-keys-mngr.html"/>
+        <sub name="Writing a custom keys manager." link="xmlsec-custom-keys-manager.html"/>
+      </sub>
       <sub name="APPENDIX A. XML Security Library Signature Klasses." link="xmlsec-signature-klasses.html"/>
       <sub name="APPENDIX B. XML Security Library Encryption Klasses." link="xmlsec-encryption-klasses.html"/>
     </sub>

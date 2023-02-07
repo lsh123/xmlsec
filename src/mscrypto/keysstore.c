@@ -11,7 +11,7 @@
 /**
  * SECTION:keysstore
  * @Short_description: Keys store implementation for Microsoft Crypto API.
- * @Stability: Private
+ * @Stability: Stable
  *
  * MSCrypto keys store that uses Simple Keys Store under the hood. Uses the
  * MS Certificate store as a backing store for the finding keys, but the

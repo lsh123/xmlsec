@@ -10,7 +10,7 @@
 /**
  * SECTION:strings
  * @Short_description: The strings constants.
- * @Stability: Private
+ * @Stability: Stable
  *
  */
 #include "globals.h"
@@ -563,5 +563,3 @@ const xmlChar xmlSecHrefXslt[]                  = "http://www.w3.org/TR/1999/REC
  ************************************************************************/
 const xmlChar xmlSecStringEmpty[]               = "";
 const xmlChar xmlSecStringCR[]                  = "\n";
-
-

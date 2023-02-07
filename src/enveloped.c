@@ -10,7 +10,7 @@
 /**
  * SECTION:transforms
  * @Short_description:
- * @Stability: Private
+ * @Stability: Stable
  *
  */
 #include "globals.h"

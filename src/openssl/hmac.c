@@ -11,7 +11,7 @@
 /**
  * SECTION:crypto
  * @Short_description:
- * @Stability: Private
+ * @Stability: Stable
  */
 
 #ifndef XMLSEC_NO_HMAC

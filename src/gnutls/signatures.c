@@ -442,9 +442,39 @@ xmlSecGnuTLSSignatureSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr ke
 #define XMLSEC_GNUTLS_ASN1_TAG_SEQUENCE 0x30
 #define XMLSEC_GNUTLS_ASN1_TAG_INTEGER  0x02
 
+#define XMLSEC_GNUTLS_GET_SIZE_OF_SIZE(size, sizeOfSize) \
+    if((size) <= 0x78) {                                 \
+        (sizeOfSize) = 1;                                \
+    } else if((size) <= 0xFF) {                          \
+        (sizeOfSize) = 2;                                \
+    } else if((size) <= 0xFFFF) {                        \
+        (sizeOfSize) = 3;                                \
+    } else {                                             \
+        xmlSecInvalidSizeMoreThanError("ASN1 value length", (size), (xmlSecSize)(0xFFFF), NULL); \
+        return(-1);                                      \
+    }
+
+
+#define XMLSEC_GNUTLS_PUT_LENGTH(pp, size)               \
+    if((size) <= 0x78) {                                 \
+        (*(pp)++) = (xmlSecByte)(size);                  \
+    } else if((size) <= 0xFF) {                          \
+        (*(pp)++) = (xmlSecByte)(0x81);                  \
+        (*(pp)++) = (xmlSecByte)((size) & 0xFF);         \
+    } else if((size) <= 0xFFFF) {                        \
+        (*(pp)++) = (xmlSecByte)(0x82);                  \
+        (*(pp)++) = (xmlSecByte)(((size) >> 8) & 0xFF);  \
+        (*(pp)++) = (xmlSecByte)((size) & 0xFF);         \
+    } else {                                             \
+        xmlSecInvalidSizeMoreThanError("ASN1 value length", (size), (xmlSecSize)(0xFFFF), NULL); \
+        return(-1);                                      \
+    }
+
 static int
 xmlSecGnuTLSToDer(const gnutls_datum_t* src, gnutls_datum_t* dst, xmlSecSize size) {
     xmlSecByte * pp;
+    xmlSecSize sizeOfSize;
+    xmlSecSize seqSize, sizeOfSeqSize;
     xmlSecSize length;
 
     xmlSecAssert2(src != NULL, -1);
@@ -452,7 +482,6 @@ xmlSecGnuTLSToDer(const gnutls_datum_t* src, gnutls_datum_t* dst, xmlSecSize siz
     xmlSecAssert2(dst != NULL, -1);
     xmlSecAssert2(dst->data == NULL, -1);
     xmlSecAssert2(size > 0, -1);
-    xmlSecAssert2(size < 120, -1); /* we assume total length fits into 1 byte*/
 
     /* check signature size */
     if(src->size != 2 * size) {
@@ -461,8 +490,11 @@ xmlSecGnuTLSToDer(const gnutls_datum_t* src, gnutls_datum_t* dst, xmlSecSize siz
         return(-1);
     }
 
-    /* total length for 2 bytes (sequence) + 2 integers plus 2 bytes for type+length each */
-    length = 2 + size + 2 + size + 2;
+    XMLSEC_GNUTLS_GET_SIZE_OF_SIZE(size, sizeOfSize);
+    seqSize = 2 * (size + sizeOfSize + 1); /* 2 integers: 2 * (int tag + int len + int val)*/
+
+    XMLSEC_GNUTLS_GET_SIZE_OF_SIZE(seqSize, sizeOfSeqSize);
+    length = 1 + sizeOfSeqSize + seqSize; /* sequence: sqn tag + sqn len + sqn val */
 
     /* allocate memory */
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(length, dst->size, return(-1), NULL);
@@ -475,19 +507,99 @@ xmlSecGnuTLSToDer(const gnutls_datum_t* src, gnutls_datum_t* dst, xmlSecSize siz
 
     /* sequence */
     (*pp++) = XMLSEC_GNUTLS_ASN1_TAG_SEQUENCE;
-    (*pp++) = (xmlSecByte)(length - 2); /* don't count sequence header */
+    XMLSEC_GNUTLS_PUT_LENGTH(pp, seqSize);
 
     /* r */
     (*pp++) = XMLSEC_GNUTLS_ASN1_TAG_INTEGER;
-    (*pp++) = (xmlSecByte)size;
+    XMLSEC_GNUTLS_PUT_LENGTH(pp, size);
     memcpy(pp, src->data, size);
     pp += size;
 
     /* s */
     (*pp++) = XMLSEC_GNUTLS_ASN1_TAG_INTEGER;
-    (*pp++) = (xmlSecByte)size;
+    XMLSEC_GNUTLS_PUT_LENGTH(pp, size);
     memcpy(pp, src->data + size, size);
     pp += size;
+
+    /* success */
+    return(0);
+}
+
+#define XMLSEC_GNUTLS_GET_BYTE(data, dataSize, ii, cc)      \
+    if((*(ii)) >= (dataSize)) {                             \
+        return(-1);                                         \
+    }                                                       \
+    (cc) = (data)[(*(ii))++];                               \
+
+
+static int
+xmlSecGnuTLSReadDerLength(const xmlSecByte * data, xmlSecSize dataSize, xmlSecSize * ii, xmlSecSize * res) {
+    xmlSecSize cc;
+
+    xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(ii != NULL, -1);
+    xmlSecAssert2(res != NULL, -1);
+
+    XMLSEC_GNUTLS_GET_BYTE(data, dataSize, ii, cc);
+    if((cc & 0x80) == 0) {
+        (*res) = cc;
+    } else if (cc == 0x80) {
+        /* indefinite length not supported */
+        return(-1);
+    } else if (cc == 0xff) {
+        /* forbidden length value.  */
+        return(-1);
+    } else {
+        xmlSecSize length = 0;
+        for(xmlSecSize count = cc & 0x7f; count; count--) {
+            XMLSEC_GNUTLS_GET_BYTE(data, dataSize, ii, cc);
+            length <<= 8;
+            length |= (cc & 0xff);
+        }
+        (*res) = length;
+    }
+
+    /* success */
+    return(0);
+}
+
+static int
+xmlSecGnuTLSReadDerInteger(const xmlSecByte * data, xmlSecSize dataSize, xmlSecSize * ii, xmlSecByte * res, xmlSecSize resSize) {
+    xmlSecSize cc;
+    xmlSecSize len;
+    int ret;
+
+    xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(ii != NULL, -1);
+    xmlSecAssert2(res != NULL, -1);
+
+    /* tag */
+    XMLSEC_GNUTLS_GET_BYTE(data, dataSize, ii, cc);
+    if(cc != XMLSEC_GNUTLS_ASN1_TAG_INTEGER) {
+        return(-1);
+    }
+
+    /* len */
+    ret = xmlSecGnuTLSReadDerLength(data, dataSize, ii, &len);
+    if(ret < 0) {
+        return(-1);
+    }
+
+    /* val */
+    if(dataSize < (*ii) + len) {
+        return(-1);
+    }
+    /* skip zeros if any */
+    while((data[(*ii)] == 0) && (len > 0)) {
+        ++(*ii);
+        --len;
+    }
+    if(len > resSize) {
+        return(-1);
+    }
+    /* add 0s at the beginning if needed */
+    memcpy(res + (resSize - len), data + (*ii), len);
+    (*ii) += len;
 
     /* success */
     return(0);
@@ -497,6 +609,7 @@ static int
 xmlSecGnuTLSFromDer(const gnutls_datum_t* src, gnutls_datum_t* dst, xmlSecSize size) {
     xmlSecSize ii = 0;
     xmlSecSize len, srcSize;
+    int ret;
 
     xmlSecAssert2(src != NULL, -1);
     xmlSecAssert2(src->data != NULL, -1);
@@ -516,9 +629,9 @@ xmlSecGnuTLSFromDer(const gnutls_datum_t* src, gnutls_datum_t* dst, xmlSecSize s
 
     XMLSEC_SAFE_CAST_UINT_TO_SIZE(src->size, srcSize, return(-1), NULL);
 
-    /* sequence */
-    if(srcSize < ii + 2) {
-        xmlSecInvalidSizeLessThanError("Expected asn1 sequence tag + length",
+    /* sequence tag */
+    if(srcSize < ii + 1) {
+        xmlSecInvalidSizeLessThanError("Expected asn1 sequence tag",
                     srcSize, ii + 2, NULL);
         return(-1);
     }
@@ -526,85 +639,28 @@ xmlSecGnuTLSFromDer(const gnutls_datum_t* src, gnutls_datum_t* dst, xmlSecSize s
         xmlSecInvalidDataError("Expected asn1 sequence tag", NULL);
         return(-1);
     }
-    if((src->data[ii + 1] & 0x80) != 0) {
-        xmlSecInvalidDataError("Only single byte length is supported", NULL);
-        return(-1);
-    }
-    ii += 2;
+    ++ii;
 
-    /* r */
-    if(srcSize < ii + 2) {
-        xmlSecInvalidSizeLessThanError("Expected asn1 integer tag + length (r)",
-                    srcSize, ii + 2, NULL);
-        return(-1);
-    }
-    if(src->data[ii] != XMLSEC_GNUTLS_ASN1_TAG_INTEGER) {
-        xmlSecInvalidDataError("Expected asn1 integer tag (r)", NULL);
-        return(-1);
-    }
-    if((src->data[ii + 1] & 0x80) != 0) {
-        xmlSecInvalidDataError("Only single byte length is supported", NULL);
-        return(-1);
-    }
-    len = src->data[ii + 1];
-    ii += 2;
-
-    if(srcSize < ii + len) {
-        xmlSecInvalidSizeLessThanError("Expected asn1 integer value (r)",
-                    srcSize, ii + 2, NULL);
+    /* sequence len */
+    ret = xmlSecGnuTLSReadDerLength(src->data, srcSize, &ii, &len);
+    if(ret < 0) {
+        xmlSecInvalidDataError("Invalid DER sequence length", NULL);
         return(-1);
     }
 
-    /* skip zeros if any */
-    while((src->data[ii] == 0) && (len > 0)) {
-        ++ii;
-        --len;
-    }
-    if(len > size) {
-        xmlSecInvalidSizeMoreThanError("Signature size",
-                    len, size, NULL);
-        return(-1);
-    }
-    /* add 0s at the beginning if needed */
-    memcpy(dst->data + (size - len), src->data + ii, len);
-    ii += len;
-
-    /* s */
-    if(srcSize < ii + 2) {
-        xmlSecInvalidSizeLessThanError("Expected asn1 integer tag + length (s)",
-                    srcSize, ii + 2, NULL);
-        return(-1);
-    }
-    if(src->data[ii] != XMLSEC_GNUTLS_ASN1_TAG_INTEGER) {
-        xmlSecInvalidDataError("Expected asn1 integer tag (r)", NULL);
-        return(-1);
-    }
-    if((src->data[ii + 1] & 0x80) != 0) {
-        xmlSecInvalidDataError("Only single byte length is supported", NULL);
-        return(-1);
-    }
-    len = src->data[ii + 1];
-    ii += 2;
-
-    if(srcSize < ii + len) {
-        xmlSecInvalidSizeLessThanError("Expected asn1 integer value (s)",
-                    srcSize, ii + 2, NULL);
+    /* r */
+    ret = xmlSecGnuTLSReadDerInteger(src->data, srcSize, &ii, dst->data, size);
+    if(ret < 0) {
+        xmlSecInvalidDataError("Cannot read DER integer r", NULL);
         return(-1);
     }
 
-    /* skip zeros if any */
-    while((src->data[ii] == 0) && (len > 0)) {
-        ++ii;
-        --len;
-    }
-    if(len > size) {
-        xmlSecInvalidSizeMoreThanError("Signature size",
-                    len, size, NULL);
+    /* s */
+    ret = xmlSecGnuTLSReadDerInteger(src->data, srcSize, &ii, dst->data + size, size);
+    if(ret < 0) {
+        xmlSecInvalidDataError("Cannot read DER integer s", NULL);
         return(-1);
     }
-    /* add 0s at the beginning if needed */
-    memcpy(dst->data + size + (size - len), src->data + ii, len);
-    ii += len;
 
     /* check leftovers */
     if(ii != srcSize) {

@@ -481,6 +481,24 @@ execDSigTest $res_success \
 
 execDSigTest $res_success \
     "" \
+    "aleksey-xmldsig-01/enveloped-sha384-ecdsa-sha384" \
+    "sha384 ecdsa-sha384" \
+    "ecdsa" \
+    "$priv_key_option:EcdsaSecp521r1 $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
+    "$priv_key_option:EcdsaSecp521r1 $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
+    "$priv_key_option:EcdsaSecp521r1 $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123"
+
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloped-sha512-ecdsa-sha512" \
+    "sha512 ecdsa-sha512" \
+    "ecdsa" \
+    "$priv_key_option:EcdsaSecp521r1 $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
+    "$priv_key_option:EcdsaSecp521r1 $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
+    "$priv_key_option:EcdsaSecp521r1 $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123"
+
+execDSigTest $res_success \
+    "" \
     "aleksey-xmldsig-01/enveloping-sha1-ecdsa-sha1" \
     "sha1 ecdsa-sha1" \
     "ecdsa x509" \
@@ -503,7 +521,7 @@ execDSigTest $res_success \
     "sha384 ecdsa-sha384" \
     "ecdsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
+    "$priv_key_option $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -512,7 +530,7 @@ execDSigTest $res_success \
     "sha512 ecdsa-sha512" \
     "ecdsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
+    "$priv_key_option $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 # MSCNG and GnuTLS doesn't support signatures with removed leading zeros (e.g. from Java)

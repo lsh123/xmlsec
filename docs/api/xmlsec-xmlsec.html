@@ -170,10 +170,10 @@ xmlSecInit (<em class="parameter"><code><span class="type">void</span></code></e
 <a name="xmlSecShutdown"></a><h3>xmlSecShutdown ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecShutdown (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>Gets the default crypto engine ("openssl", "nss", etc.) for the XML Security Library.</p>
+<p>Clean ups the XML Security Library.</p>
 <div class="refsect3">
 <a name="xmlSecShutdown.returns"></a><h4>Returns</h4>
-<p> the default crypto engine ("openssl", "nss", etc.).</p>
+<p> 0 on success or a negative value otherwise.</p>
 </div>
 </div>
 <hr>
@@ -181,12 +181,33 @@ xmlSecShutdown (<em class="parameter"><code><span class="type">void</span></code
 <a name="xmlSecGetDefaultCrypto"></a><h3>xmlSecGetDefaultCrypto ()</h3>
 <pre class="programlisting">const <font><span class="returnvalue">xmlChar</span></font> *
 xmlSecGetDefaultCrypto (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Gets the default crypto engine ("openssl", "nss", etc.) for the XML Security Library.</p>
+<div class="refsect3">
+<a name="xmlSecGetDefaultCrypto.returns"></a><h4>Returns</h4>
+<p> the default crypto engine ("openssl", "nss", etc.).</p>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecSetExternalEntityLoader"></a><h3>xmlSecSetExternalEntityLoader ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
-xmlSecSetExternalEntityLoader (<em class="parameter"><code><font><span class="type">xmlExternalEntityLoader</span></font> Param1</code></em>);</pre>
+xmlSecSetExternalEntityLoader (<em class="parameter"><code><font><span class="type">xmlExternalEntityLoader</span></font> entityLoader</code></em>);</pre>
+<p>Wrapper for xmlSetExternalEntityLoader.</p>
+<div class="refsect3">
+<a name="xmlSecSetExternalEntityLoader.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>entityLoader</p></td>
+<td class="parameter_description"><p>the new entity resolver function, or NULL to restore libxml2's default handler</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
 </div>
 <hr>
 <div class="refsect2">
@@ -323,7 +344,6 @@ despite the fact that MSVC runtime supports it for 10+ years.</p>
 <div class="refsect2">
 <a name="xmlSecByte"></a><h3>xmlSecByte</h3>
 <pre class="programlisting">typedef unsigned char xmlSecByte;
-
 </pre>
 <p>One byte.</p>
 </div>
@@ -332,6 +352,7 @@ despite the fact that MSVC runtime supports it for 10+ years.</p>
 <a name="XMLSEC-DEPRECATED:CAPS"></a><h3>XMLSEC_DEPRECATED</h3>
 <pre class="programlisting">#define XMLSEC_DEPRECATED __attribute__((deprecated))
 </pre>
+<p>Marks function as deprecated.</p>
 </div>
 <hr>
 <div class="refsect2">

@@ -1,6 +1,7 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * Signatures implementation for GnuTLS.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -8,10 +9,7 @@
  * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:signatures
- * @Short_description: Signatures implementation for GnuTLS.
- * @Stability: Private
- *
+ * SECTION:crypto
  */
 
 #include "globals.h"
@@ -341,7 +339,7 @@ xmlSecGnuTLSSignatureSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr ke
     return(0);
 }
 
-/**
+/*
  * https://www.w3.org/TR/xmldsig-core1/#sec-DSA
  *
  * The output of the DSA algorithm consists of a pair of integers usually referred by the pair (r, s).

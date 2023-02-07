@@ -63,10 +63,9 @@ xmlSecNoXxeExternalEntityLoader(const char *URL, const char *ID,
     return(NULL);
 }
 
-/*
+/**
  * xmlSecSetExternalEntityLoader:
- * @entityLoader:       the new entity resolver function, or NULL to restore
- *                      libxml2's default handler
+ * @entityLoader:       the new entity resolver function, or NULL to restore libxml2's default handler
  *
  * Wrapper for xmlSetExternalEntityLoader.
  */
@@ -155,7 +154,7 @@ done:
 }
 
 /**
- * xmlSecShutdown:
+ * xmlSecGetDefaultCrypto:
  *
  * Gets the default crypto engine ("openssl", "nss", etc.) for the XML Security Library.
  *

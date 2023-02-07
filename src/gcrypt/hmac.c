@@ -1,6 +1,7 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * HMAC transforms implementation for GCrypt.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -8,10 +9,7 @@
  * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:hmac
- * @Short_description: HMAC transforms implementation for GCrypt.
- * @Stability: Private
- *
+ * SECTION:crypto
  */
 
 #ifndef XMLSEC_NO_HMAC
@@ -211,9 +209,6 @@ xmlSecGCryptHmacFinalize(xmlSecTransformPtr transform) {
     memset(ctx, 0, sizeof(xmlSecGCryptHmacCtx));
 }
 
-/**
- * xmlSecGCryptHmacNodeRead:
- */
 static int
 xmlSecGCryptHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
                          xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {

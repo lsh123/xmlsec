@@ -1,10 +1,12 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * X509 certificates implementation for NSS.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
 /**
@@ -12,6 +14,7 @@
  * @Short_description: X509 certificates implementation for NSS.
  * @Stability: Stable
  *
+ * X509 certificates implementation for NSS.
  */
 
 #include "globals.h"

@@ -8,10 +8,7 @@
  * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:kw_aes
- * @Short_description: AES Key Transport transforms implementation for GCrypt.
- * @Stability: Private
- *
+ * SECTION:crypto
  */
 
 #ifndef XMLSEC_NO_AES

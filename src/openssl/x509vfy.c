@@ -1,6 +1,7 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * X509 certificates verification support functions for OpenSSL.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -8,10 +9,7 @@
  * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:x509vfy
- * @Short_description: X509 certificates verification support functions for OpenSSL.
- * @Stability: Private
- *
+ * SECTION:x509
  */
 
 #include "globals.h"
@@ -1369,5 +1367,3 @@ xmlSecOpenSSLX509_NAME_ENTRY_cmp(const X509_NAME_ENTRY * const *a, const X509_NA
 }
 
 #endif /* XMLSEC_NO_X509 */
-
-

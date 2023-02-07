@@ -1,6 +1,7 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * Private/public keys implementation for GCrypt.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -8,10 +9,7 @@
  * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:asymkeys
- * @Short_description: Asymmetric keys implementation for GCrypt.
- * @Stability: Private
- *
+ * SECTION:crypto
  */
 
 #include "globals.h"

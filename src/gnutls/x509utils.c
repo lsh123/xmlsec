@@ -1,7 +1,7 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- *
+ * X509 certificates support functions for GnuTLS.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -9,10 +9,7 @@
  * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:x509utils
- * @Short_description: X509 certificates support functions for GnuTLS.
- * @Stability: Private
- *
+ * SECTION:x509
  */
 
 #include "globals.h"

@@ -8,10 +8,7 @@
  * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:symkeys
- * @Short_description: Symmetric keys implementation for GCrypt.
- * @Stability: Private
- *
+ * SECTION:crypto
  */
 
 #include "globals.h"
@@ -443,4 +440,3 @@ xmlSecGCryptKeyDataHmacSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecS
 }
 
 #endif /* XMLSEC_NO_HMAC */
-

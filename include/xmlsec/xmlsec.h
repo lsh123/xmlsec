@@ -70,7 +70,7 @@ typedef size_t xmlSecSize;
  *
  * One byte.
  */
-typedef unsigned char xmlSecByte; 
+typedef unsigned char xmlSecByte;
 
 /***********************************************************************
  *
@@ -97,11 +97,13 @@ typedef struct _xmlSecEncCtx                    xmlSecEncCtx, *xmlSecEncCtxPtr;
 XMLSEC_EXPORT int                               xmlSecInit              (void);
 XMLSEC_EXPORT int                               xmlSecShutdown          (void);
 XMLSEC_EXPORT const xmlChar *                   xmlSecGetDefaultCrypto  (void);
-XMLSEC_EXPORT void                              xmlSecSetExternalEntityLoader (xmlExternalEntityLoader);
+XMLSEC_EXPORT void                              xmlSecSetExternalEntityLoader (xmlExternalEntityLoader entityLoader);
 XMLSEC_EXPORT xmlSecSize                        xmlSecStrlen            (const xmlChar * str);
 
-/*
- * XMLSEC_DEPRECATED function definition
+/**
+ * XMLSEC_DEPRECATED:
+ *
+ * Marks function as deprecated.
  */
 #if !defined(IN_XMLSEC) && !defined(IN_XMLSEC_CRYPTO)
 #if defined(__GNUC__)
@@ -165,5 +167,3 @@ XMLSEC_EXPORT int       xmlSecCheckVersionExt   (int major,
 #endif /* __cplusplus */
 
 #endif /* __XMLSEC_H__ */
-
-

@@ -20,7 +20,7 @@
 #include <xmlsec/transforms.h>
 #include <xmlsec/dl.h>
 
-/**
+/*
  * MD5 was removed (https://bugs.gentoo.org/764437)
  *
  * RSA OAEP requires https://bugzilla.mozilla.org/show_bug.cgi?id=1666891

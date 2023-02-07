@@ -1,17 +1,16 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * RSA Key Transport transforms implementation for Microsoft Crypto API.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  * Copyright (C) 2003 Cordys R&D BV, All rights reserved.
  */
 /**
- * SECTION:kt_rsa
- * @Short_description: RSA Key Transport transforms implementation for Microsoft Crypto API.
- * @Stability: Private
- *
+ * SECTION:crypto
  */
 
 #include "globals.h"

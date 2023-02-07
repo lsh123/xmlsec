@@ -1,6 +1,7 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * X509 certificates verification support functions for NSS.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -8,10 +9,7 @@
  * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
 /**
- * SECTION:x509vfy
- * @Short_description: X509 certificates verification support functions for NSS.
- * @Stability: Private
- *
+ * SECTION:x509
  */
 
 #include "globals.h"
@@ -811,5 +809,3 @@ xmlSecNssNumToItem(SECItem *it, PRUint64 ui)
     return(res);
 }
 #endif /* XMLSEC_NO_X509 */
-
-

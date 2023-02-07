@@ -1,6 +1,9 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * XSLT transform implementation.
+ *
+ * [XSLT Transform](http://www.w3.org/TR/xmldsig-core/#sec-XSLT) implementation.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -8,11 +11,7 @@
  * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:xslt
- * @Short_description: XSLT transform implementation.
- * @Stability: Private
- *
- * [XSLT Transform](http://www.w3.org/TR/xmldsig-core/#sec-XSLT) implementation.
+ * SECTION:transforms
  */
 
 #include "globals.h"
@@ -556,4 +555,3 @@ done:
 
 
 #endif /* XMLSEC_NO_XSLT */
-

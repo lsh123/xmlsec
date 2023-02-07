@@ -27,7 +27,7 @@
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="xmlsec-transforms.top_of_page"></a>transforms</span></h2>
-<p>transforms — Transform object functions.</p>
+<p>transforms — XMLDsig and XMLEnc transforms.</p>
 </td>
 <td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
@@ -1001,36 +1001,6 @@
 </div>
 <div class="refsect1">
 <a name="xmlsec-transforms.description"></a><h2>Description</h2>
-<p>The <a class="ulink" href="http://www.w3.org/TR/xmldsig-core/#sec-Transforms" target="_top">Transforms Element</a>
-contains an ordered list of Transform elements; these describe how the signer
-obtained the data object that was digested.</p>
-<p>Schema Definition:</p>
-<div class="informalexample"><pre class="programlisting">
- &lt;element name="Transforms" type="ds:TransformsType"/&gt;
- &lt;complexType name="TransformsType"&gt;
-   &lt;sequence&gt;
-     &lt;element ref="ds:Transform" maxOccurs="unbounded"/&gt;
-   &lt;/sequence&gt;
-  &lt;/complexType&gt;
-
- &lt;element name="Transform" type="ds:TransformType"/&gt;
- &lt;complexType name="TransformType" mixed="true"&gt;
-   &lt;choice minOccurs="0" maxOccurs="unbounded"&gt;
-     &lt;any namespace="##other" processContents="lax"/&gt;
-     &lt;!-- (1,1) elements from (0,unbounded) namespaces --&gt;
-     &lt;element name="XPath" type="string"/&gt;
-   &lt;/choice&gt;
-   &lt;attribute name="Algorithm" type="anyURI" use="required"/&gt;
- &lt;/complexType&gt;
-</pre></div>
-<p></p>
-<p>DTD:</p>
-<div class="informalexample"><pre class="programlisting">
- &lt;!ELEMENT Transforms (Transform+)&gt;
- &lt;!ELEMENT Transform (#PCDATA|XPath %Transform.ANY;)* &gt;
- &lt;!ATTLIST Transform Algorithm    CDATA    #REQUIRED &gt;
- &lt;!ELEMENT XPath (#PCDATA) &gt;
-</pre></div>
 <p></p>
 </div>
 <div class="refsect1">
@@ -3975,6 +3945,11 @@ xmlSecTransformXPointerSetExpr (<em class="parameter"><code><a class="link" href
 <a name="xmlSecTransformRelationshipGetKlass"></a><h3>xmlSecTransformRelationshipGetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformRelationshipGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Gets the Relationship transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecTransformRelationshipGetKlass.returns"></a><h4>Returns</h4>
+<p> Relationship transform klass.</p>
+</div>
 </div>
 <hr>
 <div class="refsect2">

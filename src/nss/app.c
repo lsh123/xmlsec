@@ -1,6 +1,7 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * Application support functions for NSS.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -13,6 +14,7 @@
  * @Short_description: Application support functions for NSS.
  * @Stability: Stable
  *
+ * Common functions for xmlsec1 command line utility tool for NSS.
  */
 
 #include "globals.h"
@@ -1313,4 +1315,3 @@ void*
 xmlSecNssAppGetDefaultPwdCallback(void) {
     return(NULL);
 }
-

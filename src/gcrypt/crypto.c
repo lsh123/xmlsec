@@ -9,9 +9,11 @@
  */
 /**
  * SECTION:crypto
- * @Short_description: Crypto transforms implementation for GCrypt.
+ * @Short_description: Core crypto functions for GCrypt.
  * @Stability: Stable
  *
+ *
+ * Core crypto functions for GCrypt.
  */
 
 #include "globals.h"

@@ -27,7 +27,7 @@
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="xmlsec-mscng-x509.top_of_page"></a>x509</span></h2>
-<p>x509 — X509 certificates implementation for Microsoft Cryptography API: Next Generation (CNG).</p>
+<p>x509 — X509 certificates implementation for MSCng.</p>
 </td>
 <td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
@@ -225,6 +225,37 @@ xmlSecMSCngX509StoreGetKlass (<em class="parameter"><code><span class="type">voi
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecMSCngKeyDataX509AdoptKeyCert (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
                                     <em class="parameter"><code><font><span class="type">PCCERT_CONTEXT</span></font> cert</code></em>);</pre>
+<p>Adds <em class="parameter"><code>cert</code></em>
+ to <em class="parameter"><code>data</code></em>
+ as primary key. On success, <em class="parameter"><code>data</code></em>
+ owns the <em class="parameter"><code>cert</code></em>
+.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngKeyDataX509AdoptKeyCert.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>data</p></td>
+<td class="parameter_description"><p>the pointer to key data.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>cert</p></td>
+<td class="parameter_description"><p>the pointer to certificates.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecMSCngKeyDataX509AdoptKeyCert.returns"></a><h4>Returns</h4>
+<p> 0 on success or a negative value otherwise.</p>
+</div>
 </div>
 <hr>
 <div class="refsect2">
@@ -232,6 +263,37 @@ xmlSecMSCngKeyDataX509AdoptKeyCert (<em class="parameter"><code><a class="link" 
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecMSCngKeyDataX509AdoptCert (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
                                  <em class="parameter"><code><font><span class="type">PCCERT_CONTEXT</span></font> cert</code></em>);</pre>
+<p>Adds <em class="parameter"><code>cert</code></em>
+ to <em class="parameter"><code>data</code></em>
+ as a certificate. On success, <em class="parameter"><code>data</code></em>
+ owns the <em class="parameter"><code>cert</code></em>
+.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngKeyDataX509AdoptCert.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>data</p></td>
+<td class="parameter_description"><p>the pointer to key data.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>cert</p></td>
+<td class="parameter_description"><p>the pointer to certificates.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecMSCngKeyDataX509AdoptCert.returns"></a><h4>Returns</h4>
+<p> 0 on success or a negative value otherwise.</p>
+</div>
 </div>
 <hr>
 <div class="refsect2">

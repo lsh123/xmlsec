@@ -1,6 +1,7 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * AES Key Transport transforms implementation for MSCng.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -8,12 +9,8 @@
  * Copyright (C) 2018 Miklos Vajna. All Rights Reserved.
  */
 /**
- * SECTION:kw_aes
- * @Short_description: AES Key Transport transforms implementation for Microsoft Cryptography API: Next Generation (CNG).
- * @Stability: Private
- *
+ * SECTION:crypto
  */
-
 #include "globals.h"
 
 #ifndef XMLSEC_NO_AES

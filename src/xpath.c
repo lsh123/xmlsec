@@ -1,6 +1,7 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * XPath transform implementation.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -8,11 +9,7 @@
  * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:xpath
- * @Short_description: XPath transform implementation.
- * @Stability: Private
- *
- *
+ * SECTION:transforms
  */
 
 #include "globals.h"

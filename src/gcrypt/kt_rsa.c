@@ -1,6 +1,7 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * RSA Key Transport transforms implementation for GCrypt.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -8,10 +9,7 @@
  * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:kt_rsa
- * @Short_description: RSA Key Transport transforms implementation for GCrypt.
- * @Stability: Private
- *
+ * SECTION:crypto
  */
 
 #ifndef XMLSEC_NO_RSA
@@ -52,7 +50,7 @@ xmlSecGCryptRsaExtractData(gcry_sexp_t s_data, const char* name, xmlSecBufferPtr
     xmlSecAssert2(s_data != NULL, -1);
     xmlSecAssert2(name != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
-    
+
     s_tmp = gcry_sexp_find_token(s_data, name, 0);
     if(s_tmp == NULL) {
         xmlSecGCryptError2("gcry_sexp_find_token()", (gcry_error_t)GPG_ERR_NO_ERROR, NULL,
@@ -679,7 +677,7 @@ xmlSecGCryptRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     ctx = xmlSecGCryptRsaOaepGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(xmlSecBufferGetSize(&(ctx->oaepParams)) == 0, -1);
-    
+
     ret = xmlSecTransformRsaOaepParamsInitialize(&oaepParams);
     if (ret < 0) {
         xmlSecInternalError("xmlSecTransformRsaOaepParamsInitialize",
@@ -798,7 +796,7 @@ xmlSecGCryptRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
             xmlSecErrorsSafeString(mgf1Alg));
         xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
         return(-1);
-    }    
+    }
 
     /* put oaep params buffer into ctx */
     xmlSecBufferSwap(&(oaepParams.oaepParams), &(ctx->oaepParams));
@@ -955,7 +953,7 @@ xmlSecGCryptRsaOaepDecrypt(xmlSecGCryptRsaOaepCtxPtr ctx, xmlSecBufferPtr in, xm
     oaepParamSize =  xmlSecBufferGetSize(&(ctx->oaepParams));
     XMLSEC_SAFE_CAST_SIZE_TO_INT(oaepParamSize, oaepParamLen, return(-1), NULL);
 
-    if(oaepParamLen > 0) {   
+    if(oaepParamLen > 0) {
         err = gcry_sexp_build(&s_encrypted_data, NULL,
                 "(enc-val (flags oaep)(hash-algo %s)"
                 "(label %b)"

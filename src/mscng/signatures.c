@@ -1,6 +1,7 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * Signatures implementation for MSCng.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -8,10 +9,7 @@
  * Copyright (C) 2018 Miklos Vajna. All Rights Reserved.
  */
 /**
- * SECTION:signatures
- * @Short_description: Signatures implementation for Microsoft Cryptography API: Next Generation (CNG).
- * @Stability: Private
- *
+ * SECTION:crypto
  */
 
 #include "globals.h"
@@ -145,7 +143,7 @@ static int xmlSecMSCngSignatureCheckId(xmlSecTransformPtr transform) {
         return(1);
     } else
 #endif /* XMLSEC_NO_SHA512 */
- 
+
 #endif /* XMLSEC_NO_RSA */
 
 #ifndef XMLSEC_NO_ECDSA
@@ -664,7 +662,7 @@ xmlSecMSCngSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
                     pssPadingInfo.cbSalt = ctx->dwRsaPssSaltSize;
                     pPaddingInfo = &pssPadingInfo;
                 }
-                
+
                 /* sign the hash */
                 status = NCryptSignHash(
                     privkey,

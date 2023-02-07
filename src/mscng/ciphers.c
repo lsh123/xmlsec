@@ -1,6 +1,7 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * Ciphers transforms implementation for MSCng.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -8,10 +9,7 @@
  * Copyright (C) 2018 Miklos Vajna. All Rights Reserved.
  */
 /**
- * SECTION:ciphers
- * @Short_description: Ciphers transforms implementation for Microsoft Cryptography API: Next Generation (CNG).
- * @Stability: Private
- *
+ * SECTION:crypto
  */
 #include "globals.h"
 

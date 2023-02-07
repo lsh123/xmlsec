@@ -2,6 +2,7 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * X509 certificates implementation for GnuTLS.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -13,6 +14,7 @@
  * @Short_description: X509 certificates implementation for GnuTLS.
  * @Stability: Stable
  *
+ * X509 certificates implementation for GnuTLS.
  */
 
 #include "globals.h"

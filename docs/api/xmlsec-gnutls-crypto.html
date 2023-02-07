@@ -192,15 +192,23 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-gnutls-crypto.html#xmlSecGnuTLSKeyDataDsaAdoptPrivateKey" title="xmlSecGnuTLSKeyDataDsaAdoptPrivateKey ()">xmlSecGnuTLSKeyDataDsaAdoptPrivateKey</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-gnutls-crypto.html#xmlSecGnuTLSKeyDataDsaAdoptKey" title="xmlSecGnuTLSKeyDataDsaAdoptKey ()">xmlSecGnuTLSKeyDataDsaAdoptKey</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
 <td class="function_type">
-<font><span class="returnvalue">int</span></font>
+<font><span class="returnvalue">gnutls_pubkey_t</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-gnutls-crypto.html#xmlSecGnuTLSKeyDataDsaAdoptPublicKey" title="xmlSecGnuTLSKeyDataDsaAdoptPublicKey ()">xmlSecGnuTLSKeyDataDsaAdoptPublicKey</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-gnutls-crypto.html#xmlSecGnuTLSKeyDataDsaGetPublicKey" title="xmlSecGnuTLSKeyDataDsaGetPublicKey ()">xmlSecGnuTLSKeyDataDsaGetPublicKey</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">gnutls_privkey_t</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-gnutls-crypto.html#xmlSecGnuTLSKeyDataDsaGetPrivateKey" title="xmlSecGnuTLSKeyDataDsaGetPrivateKey ()">xmlSecGnuTLSKeyDataDsaGetPrivateKey</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -225,22 +233,6 @@
 </td>
 <td class="function_name">
 <a class="link" href="xmlsec-gnutls-crypto.html#xmlSecGnuTLSKeyDataHmacSet" title="xmlSecGnuTLSKeyDataHmacSet ()">xmlSecGnuTLSKeyDataHmacSet</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
-<font><span class="returnvalue">xmlSecTransformId</span></font>
-</td>
-<td class="function_name">
-<a class="link" href="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformHmacMd5GetKlass" title="xmlSecGnuTLSTransformHmacMd5GetKlass ()">xmlSecGnuTLSTransformHmacMd5GetKlass</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
-<font><span class="returnvalue">xmlSecTransformId</span></font>
-</td>
-<td class="function_name">
-<a class="link" href="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformHmacRipemd160GetKlass" title="xmlSecGnuTLSTransformHmacRipemd160GetKlass ()">xmlSecGnuTLSTransformHmacRipemd160GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -288,31 +280,23 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-gnutls-crypto.html#xmlSecGnuTLSKeyDataRsaAdoptPrivateKey" title="xmlSecGnuTLSKeyDataRsaAdoptPrivateKey ()">xmlSecGnuTLSKeyDataRsaAdoptPrivateKey</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-gnutls-crypto.html#xmlSecGnuTLSKeyDataRsaAdoptKey" title="xmlSecGnuTLSKeyDataRsaAdoptKey ()">xmlSecGnuTLSKeyDataRsaAdoptKey</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
 <td class="function_type">
-<font><span class="returnvalue">int</span></font>
+<font><span class="returnvalue">gnutls_pubkey_t</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-gnutls-crypto.html#xmlSecGnuTLSKeyDataRsaAdoptPublicKey" title="xmlSecGnuTLSKeyDataRsaAdoptPublicKey ()">xmlSecGnuTLSKeyDataRsaAdoptPublicKey</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-gnutls-crypto.html#xmlSecGnuTLSKeyDataRsaGetPublicKey" title="xmlSecGnuTLSKeyDataRsaGetPublicKey ()">xmlSecGnuTLSKeyDataRsaGetPublicKey</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
 <td class="function_type">
-<font><span class="returnvalue">xmlSecTransformId</span></font>
+<font><span class="returnvalue">gnutls_privkey_t</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformRsaMd5GetKlass" title="xmlSecGnuTLSTransformRsaMd5GetKlass ()">xmlSecGnuTLSTransformRsaMd5GetKlass</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
-<font><span class="returnvalue">xmlSecTransformId</span></font>
-</td>
-<td class="function_name">
-<a class="link" href="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformRsaRipemd160GetKlass" title="xmlSecGnuTLSTransformRsaRipemd160GetKlass ()">xmlSecGnuTLSTransformRsaRipemd160GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-gnutls-crypto.html#xmlSecGnuTLSKeyDataRsaGetPrivateKey" title="xmlSecGnuTLSKeyDataRsaGetPrivateKey ()">xmlSecGnuTLSKeyDataRsaGetPrivateKey</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -352,6 +336,38 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
+<a class="link" href="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformRsaPssSha256GetKlass" title="xmlSecGnuTLSTransformRsaPssSha256GetKlass ()">xmlSecGnuTLSTransformRsaPssSha256GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformRsaPssSha384GetKlass" title="xmlSecGnuTLSTransformRsaPssSha384GetKlass ()">xmlSecGnuTLSTransformRsaPssSha384GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformRsaPssSha512GetKlass" title="xmlSecGnuTLSTransformRsaPssSha512GetKlass ()">xmlSecGnuTLSTransformRsaPssSha512GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformRsaPkcs1GetKlass" title="xmlSecGnuTLSTransformRsaPkcs1GetKlass ()">xmlSecGnuTLSTransformRsaPkcs1GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
 <a class="link" href="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformSha1GetKlass" title="xmlSecGnuTLSTransformSha1GetKlass ()">xmlSecGnuTLSTransformSha1GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
@@ -377,22 +393,6 @@
 </td>
 <td class="function_name">
 <a class="link" href="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformSha512GetKlass" title="xmlSecGnuTLSTransformSha512GetKlass ()">xmlSecGnuTLSTransformSha512GetKlass</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
-<font><span class="returnvalue">xmlSecTransformId</span></font>
-</td>
-<td class="function_name">
-<a class="link" href="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformMd5GetKlass" title="xmlSecGnuTLSTransformMd5GetKlass ()">xmlSecGnuTLSTransformMd5GetKlass</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
-<font><span class="returnvalue">xmlSecTransformId</span></font>
-</td>
-<td class="function_name">
-<a class="link" href="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformRipemd160GetKlass" title="xmlSecGnuTLSTransformRipemd160GetKlass ()">xmlSecGnuTLSTransformRipemd160GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 </tbody>
@@ -460,14 +460,6 @@
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
-<td class="function_name"><a class="link" href="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformHmacMd5Id" title="xmlSecGnuTLSTransformHmacMd5Id">xmlSecGnuTLSTransformHmacMd5Id</a></td>
-</tr>
-<tr>
-<td class="define_keyword">#define</td>
-<td class="function_name"><a class="link" href="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformHmacRipemd160Id" title="xmlSecGnuTLSTransformHmacRipemd160Id">xmlSecGnuTLSTransformHmacRipemd160Id</a></td>
-</tr>
-<tr>
-<td class="define_keyword">#define</td>
 <td class="function_name"><a class="link" href="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformHmacSha1Id" title="xmlSecGnuTLSTransformHmacSha1Id">xmlSecGnuTLSTransformHmacSha1Id</a></td>
 </tr>
 <tr>
@@ -488,14 +480,6 @@
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
-<td class="function_name"><a class="link" href="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformRsaMd5Id" title="xmlSecGnuTLSTransformRsaMd5Id">xmlSecGnuTLSTransformRsaMd5Id</a></td>
-</tr>
-<tr>
-<td class="define_keyword">#define</td>
-<td class="function_name"><a class="link" href="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformRsaRipemd160Id" title="xmlSecGnuTLSTransformRsaRipemd160Id">xmlSecGnuTLSTransformRsaRipemd160Id</a></td>
-</tr>
-<tr>
-<td class="define_keyword">#define</td>
 <td class="function_name"><a class="link" href="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformRsaSha1Id" title="xmlSecGnuTLSTransformRsaSha1Id">xmlSecGnuTLSTransformRsaSha1Id</a></td>
 </tr>
 <tr>
@@ -512,6 +496,22 @@
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformRsaPssSha256Id" title="xmlSecGnuTLSTransformRsaPssSha256Id">xmlSecGnuTLSTransformRsaPssSha256Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformRsaPssSha384Id" title="xmlSecGnuTLSTransformRsaPssSha384Id">xmlSecGnuTLSTransformRsaPssSha384Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformRsaPssSha512Id" title="xmlSecGnuTLSTransformRsaPssSha512Id">xmlSecGnuTLSTransformRsaPssSha512Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformRsaPkcs1Id" title="xmlSecGnuTLSTransformRsaPkcs1Id">xmlSecGnuTLSTransformRsaPkcs1Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
 <td class="function_name"><a class="link" href="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformSha1Id" title="xmlSecGnuTLSTransformSha1Id">xmlSecGnuTLSTransformSha1Id</a></td>
 </tr>
 <tr>
@@ -525,14 +525,6 @@
 <tr>
 <td class="define_keyword">#define</td>
 <td class="function_name"><a class="link" href="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformSha512Id" title="xmlSecGnuTLSTransformSha512Id">xmlSecGnuTLSTransformSha512Id</a></td>
-</tr>
-<tr>
-<td class="define_keyword">#define</td>
-<td class="function_name"><a class="link" href="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformMd5Id" title="xmlSecGnuTLSTransformMd5Id">xmlSecGnuTLSTransformMd5Id</a></td>
-</tr>
-<tr>
-<td class="define_keyword">#define</td>
-<td class="function_name"><a class="link" href="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformRipemd160Id" title="xmlSecGnuTLSTransformRipemd160Id">xmlSecGnuTLSTransformRipemd160Id</a></td>
 </tr>
 </tbody>
 </table></div>
@@ -843,13 +835,17 @@ xmlSecGnuTLSKeyDataDsaGetKlass (<em class="parameter"><code><span class="type">v
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecGnuTLSKeyDataDsaAdoptPrivateKey"></a><h3>xmlSecGnuTLSKeyDataDsaAdoptPrivateKey ()</h3>
+<a name="xmlSecGnuTLSKeyDataDsaAdoptKey"></a><h3>xmlSecGnuTLSKeyDataDsaAdoptKey ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecGnuTLSKeyDataDsaAdoptPrivateKey (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
-                                       <em class="parameter"><code><font><span class="type">gnutls_x509_privkey_t</span></font> dsa_key</code></em>);</pre>
-<p>Sets the value of DSA key data.</p>
+xmlSecGnuTLSKeyDataDsaAdoptKey (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
+                                <em class="parameter"><code><font><span class="type">gnutls_pubkey_t</span></font> pubkey</code></em>,
+                                <em class="parameter"><code><font><span class="type">gnutls_privkey_t</span></font> privkey</code></em>);</pre>
+<p>Sets the value of DSA key data. The <em class="parameter"><code>pubkey</code></em>
+ and <em class="parameter"><code>privkey</code></em>
+ will be owned by the <em class="parameter"><code>data</code></em>
+ on success.</p>
 <div class="refsect3">
-<a name="xmlSecGnuTLSKeyDataDsaAdoptPrivateKey.parameters"></a><h4>Parameters</h4>
+<a name="xmlSecGnuTLSKeyDataDsaAdoptKey.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col>
@@ -863,68 +859,73 @@ xmlSecGnuTLSKeyDataDsaAdoptPrivateKey (<em class="parameter"><code><a class="lin
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
-<td class="parameter_name"><p>dsa_key</p></td>
-<td class="parameter_description"><p>the pointer to GnuTLS DSA private key.</p></td>
+<td class="parameter_name"><p>pubkey</p></td>
+<td class="parameter_description"><p>the pointer to GnuTLS DSA key.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>privkey</p></td>
+<td class="parameter_description"><p>the pointer to GnuTLS DSA key.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="xmlSecGnuTLSKeyDataDsaAdoptPrivateKey.returns"></a><h4>Returns</h4>
+<a name="xmlSecGnuTLSKeyDataDsaAdoptKey.returns"></a><h4>Returns</h4>
 <p> 0 on success or a negative value otherwise.</p>
 </div>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecGnuTLSKeyDataDsaAdoptPublicKey"></a><h3>xmlSecGnuTLSKeyDataDsaAdoptPublicKey ()</h3>
-<pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecGnuTLSKeyDataDsaAdoptPublicKey (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
-                                      <em class="parameter"><code><font><span class="type">gnutls_datum_t</span></font> *p</code></em>,
-                                      <em class="parameter"><code><font><span class="type">gnutls_datum_t</span></font> *q</code></em>,
-                                      <em class="parameter"><code><font><span class="type">gnutls_datum_t</span></font> *g</code></em>,
-                                      <em class="parameter"><code><font><span class="type">gnutls_datum_t</span></font> *y</code></em>);</pre>
-<p>Sets the value of DSA key data.</p>
+<a name="xmlSecGnuTLSKeyDataDsaGetPublicKey"></a><h3>xmlSecGnuTLSKeyDataDsaGetPublicKey ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">gnutls_pubkey_t</span></font>
+xmlSecGnuTLSKeyDataDsaGetPublicKey (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
+<p>Gets the GnuTLS DSA public key from DSA key data.</p>
 <div class="refsect3">
-<a name="xmlSecGnuTLSKeyDataDsaAdoptPublicKey.parameters"></a><h4>Parameters</h4>
+<a name="xmlSecGnuTLSKeyDataDsaGetPublicKey.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col>
 <col>
 <col>
 </colgroup>
-<tbody>
-<tr>
+<tbody><tr>
 <td class="parameter_name"><p>data</p></td>
 <td class="parameter_description"><p>the pointer to DSA key data.</p></td>
 <td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>p</p></td>
-<td class="parameter_description"><p>the pointer to p component of the DSA public key</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>q</p></td>
-<td class="parameter_description"><p>the pointer to q component of the DSA public key</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>g</p></td>
-<td class="parameter_description"><p>the pointer to g component of the DSA public key</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>y</p></td>
-<td class="parameter_description"><p>the pointer to y component of the DSA public key</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
+</tr></tbody>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="xmlSecGnuTLSKeyDataDsaAdoptPublicKey.returns"></a><h4>Returns</h4>
-<p> 0 on success or a negative value otherwise.</p>
+<a name="xmlSecGnuTLSKeyDataDsaGetPublicKey.returns"></a><h4>Returns</h4>
+<p> pointer to GnuTLS public DSA key or NULL if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecGnuTLSKeyDataDsaGetPrivateKey"></a><h3>xmlSecGnuTLSKeyDataDsaGetPrivateKey ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">gnutls_privkey_t</span></font>
+xmlSecGnuTLSKeyDataDsaGetPrivateKey (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
+<p>Gets the GnuTLS DSA private key from DSA key data.</p>
+<div class="refsect3">
+<a name="xmlSecGnuTLSKeyDataDsaGetPrivateKey.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>data</p></td>
+<td class="parameter_description"><p>the pointer to DSA key data.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecGnuTLSKeyDataDsaGetPrivateKey.returns"></a><h4>Returns</h4>
+<p> pointer to GnuTLS private DSA key or NULL if an error occurs.</p>
 </div>
 </div>
 <hr>
@@ -991,29 +992,6 @@ xmlSecGnuTLSKeyDataHmacSet (<em class="parameter"><code><a class="link" href="xm
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecGnuTLSTransformHmacMd5GetKlass"></a><h3>xmlSecGnuTLSTransformHmacMd5GetKlass ()</h3>
-<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
-xmlSecGnuTLSTransformHmacMd5GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>The HMAC-MD5 transform klass.</p>
-<div class="refsect3">
-<a name="xmlSecGnuTLSTransformHmacMd5GetKlass.returns"></a><h4>Returns</h4>
-<p> the HMAC-MD5 transform klass.</p>
-</div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="xmlSecGnuTLSTransformHmacRipemd160GetKlass"></a><h3>xmlSecGnuTLSTransformHmacRipemd160GetKlass ()</h3>
-<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
-xmlSecGnuTLSTransformHmacRipemd160GetKlass
-                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>The HMAC-RIPEMD160 transform klass.</p>
-<div class="refsect3">
-<a name="xmlSecGnuTLSTransformHmacRipemd160GetKlass.returns"></a><h4>Returns</h4>
-<p> the HMAC-RIPEMD160 transform klass.</p>
-</div>
-</div>
-<hr>
-<div class="refsect2">
 <a name="xmlSecGnuTLSTransformHmacSha1GetKlass"></a><h3>xmlSecGnuTLSTransformHmacSha1GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecGnuTLSTransformHmacSha1GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
@@ -1064,21 +1042,25 @@ xmlSecGnuTLSTransformHmacSha512GetKlass
 <a name="xmlSecGnuTLSKeyDataRsaGetKlass"></a><h3>xmlSecGnuTLSKeyDataRsaGetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
 xmlSecGnuTLSKeyDataRsaGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>The GnuTLS RSA key data klass.</p>
+<p>The RSA key data klass.</p>
 <div class="refsect3">
 <a name="xmlSecGnuTLSKeyDataRsaGetKlass.returns"></a><h4>Returns</h4>
-<p> pointer to GnuTLS RSA key data klass.</p>
+<p> pointer to RSA key data klass.</p>
 </div>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecGnuTLSKeyDataRsaAdoptPrivateKey"></a><h3>xmlSecGnuTLSKeyDataRsaAdoptPrivateKey ()</h3>
+<a name="xmlSecGnuTLSKeyDataRsaAdoptKey"></a><h3>xmlSecGnuTLSKeyDataRsaAdoptKey ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecGnuTLSKeyDataRsaAdoptPrivateKey (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
-                                       <em class="parameter"><code><font><span class="type">gnutls_x509_privkey_t</span></font> rsa_key</code></em>);</pre>
-<p>Sets the value of RSA key data.</p>
+xmlSecGnuTLSKeyDataRsaAdoptKey (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
+                                <em class="parameter"><code><font><span class="type">gnutls_pubkey_t</span></font> pubkey</code></em>,
+                                <em class="parameter"><code><font><span class="type">gnutls_privkey_t</span></font> privkey</code></em>);</pre>
+<p>Sets the value of RSA key data. The <em class="parameter"><code>pubkey</code></em>
+ and <em class="parameter"><code>privkey</code></em>
+ will be owned by the <em class="parameter"><code>data</code></em>
+ on success.</p>
 <div class="refsect3">
-<a name="xmlSecGnuTLSKeyDataRsaAdoptPrivateKey.parameters"></a><h4>Parameters</h4>
+<a name="xmlSecGnuTLSKeyDataRsaAdoptKey.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col>
@@ -1092,79 +1074,73 @@ xmlSecGnuTLSKeyDataRsaAdoptPrivateKey (<em class="parameter"><code><a class="lin
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
-<td class="parameter_name"><p>rsa_key</p></td>
-<td class="parameter_description"><p>the pointer to GnuTLS RSA private key.</p></td>
+<td class="parameter_name"><p>pubkey</p></td>
+<td class="parameter_description"><p>the pointer to GnuTLS RSA key.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>privkey</p></td>
+<td class="parameter_description"><p>the pointer to GnuTLS RSA key.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="xmlSecGnuTLSKeyDataRsaAdoptPrivateKey.returns"></a><h4>Returns</h4>
+<a name="xmlSecGnuTLSKeyDataRsaAdoptKey.returns"></a><h4>Returns</h4>
 <p> 0 on success or a negative value otherwise.</p>
 </div>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecGnuTLSKeyDataRsaAdoptPublicKey"></a><h3>xmlSecGnuTLSKeyDataRsaAdoptPublicKey ()</h3>
-<pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecGnuTLSKeyDataRsaAdoptPublicKey (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
-                                      <em class="parameter"><code><font><span class="type">gnutls_datum_t</span></font> *m</code></em>,
-                                      <em class="parameter"><code><font><span class="type">gnutls_datum_t</span></font> *e</code></em>);</pre>
-<p>Sets the value of RSA key data.</p>
+<a name="xmlSecGnuTLSKeyDataRsaGetPublicKey"></a><h3>xmlSecGnuTLSKeyDataRsaGetPublicKey ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">gnutls_pubkey_t</span></font>
+xmlSecGnuTLSKeyDataRsaGetPublicKey (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
+<p>Gets the GnuTLS RSA public key from RSA key data.</p>
 <div class="refsect3">
-<a name="xmlSecGnuTLSKeyDataRsaAdoptPublicKey.parameters"></a><h4>Parameters</h4>
+<a name="xmlSecGnuTLSKeyDataRsaGetPublicKey.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col>
 <col>
 <col>
 </colgroup>
-<tbody>
-<tr>
+<tbody><tr>
 <td class="parameter_name"><p>data</p></td>
 <td class="parameter_description"><p>the pointer to RSA key data.</p></td>
 <td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>m</p></td>
-<td class="parameter_description"><p>the pointer to m component of the RSA public key</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>e</p></td>
-<td class="parameter_description"><p>the pointer to e component of the RSA public key</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
+</tr></tbody>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="xmlSecGnuTLSKeyDataRsaAdoptPublicKey.returns"></a><h4>Returns</h4>
-<p> 0 on success or a negative value otherwise.</p>
+<a name="xmlSecGnuTLSKeyDataRsaGetPublicKey.returns"></a><h4>Returns</h4>
+<p> pointer to GnuTLS public RSA key or NULL if an error occurs.</p>
 </div>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecGnuTLSTransformRsaMd5GetKlass"></a><h3>xmlSecGnuTLSTransformRsaMd5GetKlass ()</h3>
-<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
-xmlSecGnuTLSTransformRsaMd5GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>The RSA-MD5 signature transform klass.</p>
+<a name="xmlSecGnuTLSKeyDataRsaGetPrivateKey"></a><h3>xmlSecGnuTLSKeyDataRsaGetPrivateKey ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">gnutls_privkey_t</span></font>
+xmlSecGnuTLSKeyDataRsaGetPrivateKey (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
+<p>Gets the GnuTLS RSA private key from RSA key data.</p>
 <div class="refsect3">
-<a name="xmlSecGnuTLSTransformRsaMd5GetKlass.returns"></a><h4>Returns</h4>
-<p> RSA-MD5 signature transform klass.</p>
+<a name="xmlSecGnuTLSKeyDataRsaGetPrivateKey.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>data</p></td>
+<td class="parameter_description"><p>the pointer to RSA key data.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
 </div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="xmlSecGnuTLSTransformRsaRipemd160GetKlass"></a><h3>xmlSecGnuTLSTransformRsaRipemd160GetKlass ()</h3>
-<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
-xmlSecGnuTLSTransformRsaRipemd160GetKlass
-                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>The RSA-RIPEMD160 signature transform klass.</p>
 <div class="refsect3">
-<a name="xmlSecGnuTLSTransformRsaRipemd160GetKlass.returns"></a><h4>Returns</h4>
-<p> RSA-RIPEMD160 signature transform klass.</p>
+<a name="xmlSecGnuTLSKeyDataRsaGetPrivateKey.returns"></a><h4>Returns</h4>
+<p> pointer to GnuTLS private RSA key or NULL if an error occurs.</p>
 </div>
 </div>
 <hr>
@@ -1216,6 +1192,53 @@ xmlSecGnuTLSTransformRsaSha512GetKlass
 </div>
 <hr>
 <div class="refsect2">
+<a name="xmlSecGnuTLSTransformRsaPssSha256GetKlass"></a><h3>xmlSecGnuTLSTransformRsaPssSha256GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecGnuTLSTransformRsaPssSha256GetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The RSA-PSS-SHA256 signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecGnuTLSTransformRsaPssSha256GetKlass.returns"></a><h4>Returns</h4>
+<p> RSA-PSS-SHA256 signature transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecGnuTLSTransformRsaPssSha384GetKlass"></a><h3>xmlSecGnuTLSTransformRsaPssSha384GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecGnuTLSTransformRsaPssSha384GetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The RSA-PSS-SHA384 signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecGnuTLSTransformRsaPssSha384GetKlass.returns"></a><h4>Returns</h4>
+<p> RSA-PSS-SHA384 signature transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecGnuTLSTransformRsaPssSha512GetKlass"></a><h3>xmlSecGnuTLSTransformRsaPssSha512GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecGnuTLSTransformRsaPssSha512GetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The RSA-PSS-SHA512 signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecGnuTLSTransformRsaPssSha512GetKlass.returns"></a><h4>Returns</h4>
+<p> RSA-PSS-SHA512 signature transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecGnuTLSTransformRsaPkcs1GetKlass"></a><h3>xmlSecGnuTLSTransformRsaPkcs1GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecGnuTLSTransformRsaPkcs1GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The RSA-PKCS1 key transport transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecGnuTLSTransformRsaPkcs1GetKlass.returns"></a><h4>Returns</h4>
+<p> RSA-PKCS1 key transport transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
 <a name="xmlSecGnuTLSTransformSha1GetKlass"></a><h3>xmlSecGnuTLSTransformSha1GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecGnuTLSTransformSha1GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
@@ -1256,29 +1279,6 @@ xmlSecGnuTLSTransformSha512GetKlass (<em class="parameter"><code><span class="ty
 <div class="refsect3">
 <a name="xmlSecGnuTLSTransformSha512GetKlass.returns"></a><h4>Returns</h4>
 <p> pointer to SHA512 digest transform klass.</p>
-</div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="xmlSecGnuTLSTransformMd5GetKlass"></a><h3>xmlSecGnuTLSTransformMd5GetKlass ()</h3>
-<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
-xmlSecGnuTLSTransformMd5GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>MD5 digest transform klass.</p>
-<div class="refsect3">
-<a name="xmlSecGnuTLSTransformMd5GetKlass.returns"></a><h4>Returns</h4>
-<p> pointer to MD5 digest transform klass.</p>
-</div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="xmlSecGnuTLSTransformRipemd160GetKlass"></a><h3>xmlSecGnuTLSTransformRipemd160GetKlass ()</h3>
-<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
-xmlSecGnuTLSTransformRipemd160GetKlass
-                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>RIPEMD160 digest transform klass.</p>
-<div class="refsect3">
-<a name="xmlSecGnuTLSTransformRipemd160GetKlass.returns"></a><h4>Returns</h4>
-<p> pointer to RIPEMD160 digest transform klass.</p>
 </div>
 </div>
 </div>
@@ -1363,18 +1363,6 @@ xmlSecGnuTLSTransformRipemd160GetKlass
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecGnuTLSTransformHmacMd5Id"></a><h3>xmlSecGnuTLSTransformHmacMd5Id</h3>
-<pre class="programlisting">#define             xmlSecGnuTLSTransformHmacMd5Id</pre>
-<p>The HMAC with MD5 signature transform klass.</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="xmlSecGnuTLSTransformHmacRipemd160Id"></a><h3>xmlSecGnuTLSTransformHmacRipemd160Id</h3>
-<pre class="programlisting">#define             xmlSecGnuTLSTransformHmacRipemd160Id</pre>
-<p>The HMAC with RipeMD160 signature transform klass.</p>
-</div>
-<hr>
-<div class="refsect2">
 <a name="xmlSecGnuTLSTransformHmacSha1Id"></a><h3>xmlSecGnuTLSTransformHmacSha1Id</h3>
 <pre class="programlisting">#define             xmlSecGnuTLSTransformHmacSha1Id</pre>
 <p>The HMAC with SHA1 signature transform klass.</p>
@@ -1405,18 +1393,6 @@ xmlSecGnuTLSTransformRipemd160GetKlass
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecGnuTLSTransformRsaMd5Id"></a><h3>xmlSecGnuTLSTransformRsaMd5Id</h3>
-<pre class="programlisting">#define             xmlSecGnuTLSTransformRsaMd5Id</pre>
-<p>The RSA-MD5 signature transform klass.</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="xmlSecGnuTLSTransformRsaRipemd160Id"></a><h3>xmlSecGnuTLSTransformRsaRipemd160Id</h3>
-<pre class="programlisting">#define             xmlSecGnuTLSTransformRsaRipemd160Id</pre>
-<p>The RSA-RIPEMD160 signature transform klass.</p>
-</div>
-<hr>
-<div class="refsect2">
 <a name="xmlSecGnuTLSTransformRsaSha1Id"></a><h3>xmlSecGnuTLSTransformRsaSha1Id</h3>
 <pre class="programlisting">#define             xmlSecGnuTLSTransformRsaSha1Id</pre>
 <p>The RSA-SHA1 signature transform klass.</p>
@@ -1441,6 +1417,30 @@ xmlSecGnuTLSTransformRipemd160GetKlass
 </div>
 <hr>
 <div class="refsect2">
+<a name="xmlSecGnuTLSTransformRsaPssSha256Id"></a><h3>xmlSecGnuTLSTransformRsaPssSha256Id</h3>
+<pre class="programlisting">#define             xmlSecGnuTLSTransformRsaPssSha256Id</pre>
+<p>The RSA-SHA256 signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecGnuTLSTransformRsaPssSha384Id"></a><h3>xmlSecGnuTLSTransformRsaPssSha384Id</h3>
+<pre class="programlisting">#define             xmlSecGnuTLSTransformRsaPssSha384Id</pre>
+<p>The RSA-SHA384 signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecGnuTLSTransformRsaPssSha512Id"></a><h3>xmlSecGnuTLSTransformRsaPssSha512Id</h3>
+<pre class="programlisting">#define             xmlSecGnuTLSTransformRsaPssSha512Id</pre>
+<p>The RSA-SHA512 signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecGnuTLSTransformRsaPkcs1Id"></a><h3>xmlSecGnuTLSTransformRsaPkcs1Id</h3>
+<pre class="programlisting">#define             xmlSecGnuTLSTransformRsaPkcs1Id</pre>
+<p>The RSA PKCS1 key transport transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
 <a name="xmlSecGnuTLSTransformSha1Id"></a><h3>xmlSecGnuTLSTransformSha1Id</h3>
 <pre class="programlisting">#define             xmlSecGnuTLSTransformSha1Id</pre>
 <p>The HMAC with SHA1 signature transform klass.</p>
@@ -1462,18 +1462,6 @@ xmlSecGnuTLSTransformRipemd160GetKlass
 <a name="xmlSecGnuTLSTransformSha512Id"></a><h3>xmlSecGnuTLSTransformSha512Id</h3>
 <pre class="programlisting">#define             xmlSecGnuTLSTransformSha512Id</pre>
 <p>The HMAC with SHA512 signature transform klass.</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="xmlSecGnuTLSTransformMd5Id"></a><h3>xmlSecGnuTLSTransformMd5Id</h3>
-<pre class="programlisting">#define             xmlSecGnuTLSTransformMd5Id</pre>
-<p>The MD5 digest transform klass.</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="xmlSecGnuTLSTransformRipemd160Id"></a><h3>xmlSecGnuTLSTransformRipemd160Id</h3>
-<pre class="programlisting">#define             xmlSecGnuTLSTransformRipemd160Id</pre>
-<p>The RIPEMD160 digest transform klass.</p>
 </div>
 </div>
 </div>

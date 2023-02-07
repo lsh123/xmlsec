@@ -1,6 +1,7 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * RSA Key Transport transforms implementation for OpenSSL.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -8,10 +9,7 @@
  * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:kt_rsa
- * @Short_description: RSA Key Transport transforms implementation for OpenSSL.
- * @Stability: Private
- *
+ * SECTION:crypto
  */
 
 #include "globals.h"
@@ -848,7 +846,7 @@ xmlSecOpenSSLRsaOaepSetKeyImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, EVP_PKEY* pKey,
 }
 
 // We can put all the params into one OSSL_PARAM array and setup everything at-once.
-// However, in OpenSSL <= 3.0.7 there is a bug that mixes OAEP digest and 
+// However, in OpenSSL <= 3.0.7 there is a bug that mixes OAEP digest and
 // OAEP MGf1 digest (https://pullanswer.com/questions/mgf1-digest-not-set-correctly-when-configuring-rsa-evp_pkey_ctx-with-ossl_params)
 // so we do one param at a time.
 static int
@@ -1029,7 +1027,7 @@ xmlSecOpenSSLRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     ctx = xmlSecOpenSSLRsaOaepGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(xmlSecBufferGetSize(&(ctx->oaepParams)) == 0, -1);
-    
+
     ret = xmlSecTransformRsaOaepParamsInitialize(&oaepParams);
     if (ret < 0) {
         xmlSecInternalError("xmlSecTransformRsaOaepParamsInitialize",
@@ -1052,9 +1050,9 @@ xmlSecOpenSSLRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 #else  /* XMLSEC_NO_SHA1 */
         xmlSecOtherError(XMLSEC_ERRORS_R_DISABLED, NULL, "No OAEP digest algorithm is specified and the default SHA1 digest is disabled");
         xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
-        return(-1);        
+        return(-1);
 #endif /* XMLSEC_NO_SHA1 */
-    } else 
+    } else
 #ifndef XMLSEC_NO_MD5
     if(xmlStrcmp(oaepParams.digestAlgorithm, xmlSecHrefMd5) == 0) {
         XMLSEC_OPENSSL_OAEP_DIGEST_SETUP(ctx, EVP_md5(), OSSL_DIGEST_NAME_MD5);
@@ -1111,9 +1109,9 @@ xmlSecOpenSSLRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 #else  /* XMLSEC_NO_SHA1 */
         xmlSecOtherError(XMLSEC_ERRORS_R_DISABLED, NULL, "No OAEP mgf1 digest algorithm is specified and the default SHA1 digest is disabled");
         xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
-        return(-1);        
+        return(-1);
 #endif /* XMLSEC_NO_SHA1 */
-    } else 
+    } else
 #ifndef XMLSEC_NO_SHA1
     if(xmlStrcmp(oaepParams.mgf1DigestAlgorithm, xmlSecHrefMgf1Sha1) == 0) {
         XMLSEC_OPENSSL_OAEP_MGF1_DIGEST_SETUP(ctx, EVP_sha1(), OSSL_DIGEST_NAME_SHA1);
@@ -1354,4 +1352,3 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform) {
 }
 
 #endif /* XMLSEC_NO_RSA */
-

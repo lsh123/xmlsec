@@ -1,6 +1,7 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * Transform object functions.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -9,7 +10,7 @@
  */
 /**
  * SECTION:transforms
- * @Short_description: Transform object functions.
+ * @Short_description: XMLDsig and XMLEnc transforms.
  * @Stability: Stable
  *
  * The [Transforms Element](http://www.w3.org/TR/xmldsig-core/#sec-Transforms)
@@ -2605,9 +2606,7 @@ void xmlSecTransformHmacSetMinOutputBitsSize(xmlSecSize val) {
     g_xmlsec_transform_hmac_min_output_bits_size = val;
 }
 
-/**
- * xmlSecTransformHmacReadOutputDigestSize:
- *
+/*
  * HMAC (http://www.w3.org/TR/xmldsig-core/#sec-HMAC):
  *
  * The HMAC algorithm (RFC2104 [HMAC]) takes the truncation length in bits
@@ -2705,9 +2704,7 @@ xmlSecTransformHmacWriteOutput(const xmlSecByte * hmac, xmlSecSize hmacSizeInBit
     return(0);
 }
 
-/**
- * Returns 1 for match, 0 for no match, <0 for errors.
- */
+/* Returns 1 for match, 0 for no match, <0 for errors. */
 int
 xmlSecTransformHmacVerify(const xmlSecByte* data, xmlSecSize dataSize,
     const xmlSecByte * hmac, xmlSecSize hmacSizeInBits, xmlSecSize hmacMaxSizeInBytes)
@@ -2782,7 +2779,7 @@ xmlSecTransformRsaOaepParamsFinalize(xmlSecTransformRsaOaepParamsPtr oaepParams)
     memset(oaepParams, 0, sizeof(xmlSecTransformRsaOaepParams));
 }
 
-/**
+/*
  * See https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP
  *  <EncryptionMethod Algorithm="http://www.w3.org/2009/xmlenc11#rsa-oaep">
  *      <OAEPparams>9lWu3Q==</OAEPparams>

@@ -1,6 +1,7 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * HMAC transforms implementation for NSS.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -9,10 +10,7 @@
  * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
 /**
- * SECTION:hmac
- * @Short_description: HMAC transforms implementation for NSS.
- * @Stability: Private
- *
+ * SECTION:crypto
  */
 
 #ifndef XMLSEC_NO_HMAC
@@ -212,9 +210,6 @@ xmlSecNssHmacFinalize(xmlSecTransformPtr transform) {
     memset(ctx, 0, sizeof(xmlSecNssHmacCtx));
 }
 
-/**
- * xmlSecNssHmacNodeRead:
- */
 static int
 xmlSecNssHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
                       xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {

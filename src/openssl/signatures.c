@@ -1,6 +1,7 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * Signatures implementation for OpenSSL.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -8,10 +9,7 @@
  * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:signatures
- * @Short_description: Signatures implementation for OpenSSL.
- * @Stability: Private
- *
+ * SECTION:crypto
  */
 
 #include "globals.h"
@@ -1800,7 +1798,3 @@ xmlSecOpenSSLTransformEcdsaSha512GetKlass(void) {
 #endif /* XMLSEC_NO_SHA512 */
 
 #endif /* XMLSEC_NO_ECDSA */
-
-
-
-

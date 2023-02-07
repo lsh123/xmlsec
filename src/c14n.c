@@ -1,6 +1,7 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * C14N transform implementation.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -8,10 +9,7 @@
  * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:c14n
- * @Short_description: C14N transform implementation.
- * @Stability: Private
- *
+ * SECTION:transforms
  */
 #include "globals.h"
 
@@ -734,4 +732,3 @@ xmlSecTransformId
 xmlSecTransformRemoveXmlTagsC14NGetKlass(void) {
     return(&xmlSecTransformRemoveXmlTagsC14NKlass);
 }
-

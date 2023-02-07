@@ -1,6 +1,7 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ *  Private/public (EVP) signatures implementation for OpenSSL.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -8,10 +9,7 @@
  * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:evp_signatures
- * @Short_description: Private/public (EVP) signatures implementation for OpenSSL.
- * @Stability: Private
- *
+ * SECTION:crypto
  */
 
 #include "globals.h"
@@ -593,7 +591,7 @@ xmlSecOpenSSLEvpSignatureCreatePkeyCtx(xmlSecTransformPtr transform, xmlSecOpenS
             "ret=%d", ret);
         goto error;
     }
-    
+
     if(ctx->padding == RSA_PKCS1_PSS_PADDING) {
         int saltlen;
 
@@ -620,7 +618,7 @@ error:
     if(pKeyCtx != NULL) {
         EVP_PKEY_CTX_free(pKeyCtx);
     }
-    return(NULL);    
+    return(NULL);
 }
 
 
@@ -702,7 +700,7 @@ xmlSecOpenSSLEvpSignatureSign(xmlSecTransformPtr transform, xmlSecOpenSSLEvpSign
     xmlSecAssert2(transform != NULL, -1);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
-    
+
     /* calculate digest */
     ret = xmlSecOpenSSLEvpSignatureCalculateDigest(transform, ctx, dgst, &dgstSize);
     if(ret != 0) {
@@ -1497,7 +1495,7 @@ static xmlSecTransformKlass xmlSecOpenSSLGostR3410_2012GostR3411_2012_256Klass =
 };
 
 /**
- * xmlSecOpenSSLTransformGost3410_2012GostR3411_2012_256GetKlass:
+ * xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_256GetKlass:
  *
  * The GOST R 34.10-2012 - GOST R 34.11-2012 256 bit signature transform klass.
  *
@@ -1543,7 +1541,7 @@ static xmlSecTransformKlass xmlSecOpenSSLGostR3410_2012GostR3411_2012_512Klass =
 };
 
 /**
- * xmlSecOpenSSLTransformGost3410_2012GostR3411_2012_512GetKlass:
+ * xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_512GetKlass:
  *
  * The GOST R 34.10-2012 - GOST R 34.11-2012 512 bit signature transform klass.
  *
@@ -1555,5 +1553,3 @@ xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_512GetKlass(void) {
 }
 
 #endif /* XMLSEC_NO_GOST2012 */
-
-

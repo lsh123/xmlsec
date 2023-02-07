@@ -2069,7 +2069,13 @@ xmlSecGCryptEcdsaVerify(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
 
     keySize = xmlSecKeyDataGetSize(key_data) / 8;
     xmlSecAssert2(keySize > 0, -1);
-    xmlSecAssert2(dataSize == (keySize + keySize), -1);
+
+    /* check signature size */
+    if(dataSize != 2 * keySize) {
+        xmlSecInternalError3("Invalid signature size", NULL,
+            "actual=" XMLSEC_SIZE_FMT "; expected=" XMLSEC_SIZE_FMT, dataSize, 2 * keySize);
+        return(-1);
+    }
 
     /* get the current digest, can't use "hash" :( */
     err = gcry_mpi_scan(&m_hash, GCRYMPI_FMT_USG, dgst, dgstSize, NULL);

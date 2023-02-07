@@ -861,6 +861,261 @@ done:
 #endif /* XMLSEC_NO_DSA */
 
 
+
+#ifndef XMLSEC_NO_ECDSA
+/**************************************************************************
+ *
+ * ECDSA XML key representation processing.
+ *
+ * http://csrc.nist.gov/publications/PubsNISTIRs.html#NIST-IR-7802
+ *
+ * RFC 4050 [RFC4050] describes a possible <dsig:KeyValue> representation
+ * for an ECDSA key. The representation and processing instructions
+ * described in [RFC4050] are not completely compatible with [XMLDSIG-11];
+ * therefore, ECDSA keys SHOULD NOT be provided through a <dsig:KeyValue>
+ * element.
+ *
+ *************************************************************************/
+
+static int              xmlSecGnuTLSKeyDataEcdsaInitialize       (xmlSecKeyDataPtr data);
+static int              xmlSecGnuTLSKeyDataEcdsaDuplicate        (xmlSecKeyDataPtr dst,
+                                                                 xmlSecKeyDataPtr src);
+static void             xmlSecGnuTLSKeyDataEcdsaFinalize         (xmlSecKeyDataPtr data);
+
+static xmlSecKeyDataType xmlSecGnuTLSKeyDataEcdsaGetType         (xmlSecKeyDataPtr data);
+static xmlSecSize       xmlSecGnuTLSKeyDataEcdsaGetSize          (xmlSecKeyDataPtr data);
+static void             xmlSecGnuTLSKeyDataEcdsaDebugDump        (xmlSecKeyDataPtr data,
+                                                                 FILE* output);
+static void             xmlSecGnuTLSKeyDataEcdsaDebugXmlDump     (xmlSecKeyDataPtr data,
+                                                                 FILE* output);
+static gnutls_pubkey_t  xmlSecGnuTLSKeyDataEcdsaPubKeyFromPrivKey(gnutls_privkey_t privkey);
+
+static xmlSecKeyDataKlass xmlSecGnuTLSKeyDataEcdsaKlass = {
+    sizeof(xmlSecKeyDataKlass),
+    xmlSecGnuTLSAsymKeyDataSize,
+
+    /* data */
+    xmlSecNameECDSAKeyValue,
+    xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+                                                /* xmlSecKeyDataUsage usage; */
+    xmlSecHrefECDSAKeyValue,                    /* const xmlChar* href; */
+    xmlSecNodeECDSAKeyValue,                    /* const xmlChar* dataNodeName; */
+    xmlSecDSigNs,                               /* const xmlChar* dataNodeNs; */
+
+    /* constructors/destructor */
+    xmlSecGnuTLSKeyDataEcdsaInitialize,          /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecGnuTLSKeyDataEcdsaDuplicate,           /* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecGnuTLSKeyDataEcdsaFinalize,            /* xmlSecKeyDataFinalizeMethod finalize; */
+    NULL,                                        /* xmlSecKeyDataGenerateMethod generate; */
+
+    /* get info */
+    xmlSecGnuTLSKeyDataEcdsaGetType,             /* xmlSecKeyDataGetTypeMethod getType; */
+    xmlSecGnuTLSKeyDataEcdsaGetSize,             /* xmlSecKeyDataGetSizeMethod getSize; */
+    NULL,                                        /* xmlSecKeyDataGetIdentifier getIdentifier; */
+
+    /* read/write */
+    NULL,                                        /* xmlSecKeyDataXmlReadMethod xmlRead; */
+    NULL,                                        /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    NULL,                                        /* xmlSecKeyDataBinReadMethod binRead; */
+    NULL,                                        /* xmlSecKeyDataBinWriteMethod binWrite; */
+
+    /* debug */
+    xmlSecGnuTLSKeyDataEcdsaDebugDump,           /* xmlSecKeyDataDebugDumpMethod debugDump; */
+    xmlSecGnuTLSKeyDataEcdsaDebugXmlDump,        /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+
+    /* reserved for the future */
+    NULL,                                         /* void* reserved0; */
+    NULL,                                         /* void* reserved1; */
+};
+
+/**
+ * xmlSecGnuTLSKeyDataEcdsaGetKlass:
+ *
+ * The GnuTLS ECDSA key data klass.
+ *
+ * Returns: pointer to GnuTLS ECDSA key data klass.
+ */
+xmlSecKeyDataId
+xmlSecGnuTLSKeyDataEcdsaGetKlass(void) {
+    return(&xmlSecGnuTLSKeyDataEcdsaKlass);
+}
+
+/**
+ * xmlSecGnuTLSKeyDataEcdsaAdoptKey:
+ * @data:               the pointer to ECDSA key data.
+ * @pubkey:             the pointer to GnuTLS ECDSA key.
+ * @privkey:            the pointer to GnuTLS ECDSA key.
+ *
+ * Sets the value of ECDSA key data. The @pubkey and @privkey will be owned by the @data on success.
+ *
+ * Returns: 0 on success or a negative value otherwise.
+ */
+int
+xmlSecGnuTLSKeyDataEcdsaAdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, gnutls_privkey_t privkey) {
+    int ret;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataEcdsaId), -1);
+
+    /* verify key type */
+    if(pubkey != NULL) {
+        ret = gnutls_pubkey_get_pk_algorithm(pubkey, NULL);
+        if(ret != GNUTLS_PK_ECDSA) {
+            xmlSecInternalError2("Invalid pubkey algorithm", NULL, "type=%d", ret);
+            return(-1);
+        }
+    }
+    if(privkey != NULL) {
+        ret = gnutls_privkey_get_pk_algorithm(privkey, NULL);
+        if(ret != GNUTLS_PK_ECDSA) {
+            xmlSecInternalError2("Invalid privkey algorithm", NULL, "type=%d", ret);
+            return(-1);
+        }
+    }
+
+    /* create pub key if needed */
+    if((privkey != NULL) && (pubkey == NULL)) {
+        pubkey = xmlSecGnuTLSKeyDataEcdsaPubKeyFromPrivKey(privkey);
+        if(pubkey == NULL) {
+            xmlSecInternalError("xmlSecGnuTLSKeyDataEcdsaPubKeyFromPrivKey", NULL);
+            return(-1);
+        }
+    }
+
+    /* do the work */
+    return xmlSecGnuTLSAsymKeyDataAdoptKey(data, pubkey, privkey);
+}
+
+/**
+ * xmlSecGnuTLSKeyDataEcdsaGetPublicKey:
+ * @data:               the pointer to ECDSA key data.
+ *
+ * Gets the GnuTLS ECDSA public key from ECDSA key data.
+ *
+ * Returns: pointer to GnuTLS public ECDSA key or NULL if an error occurs.
+ */
+gnutls_pubkey_t
+xmlSecGnuTLSKeyDataEcdsaGetPublicKey(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataEcdsaId), NULL);
+    return xmlSecGnuTLSAsymKeyDataGetPublicKey(data);
+}
+
+/**
+ * xmlSecGnuTLSKeyDataEcdsaGetPrivateKey:
+ * @data:               the pointer to ECDSA key data.
+ *
+ * Gets the GnuTLS ECDSA private key from ECDSA key data.
+ *
+ * Returns: pointer to GnuTLS private ECDSA key or NULL if an error occurs.
+ */
+gnutls_privkey_t
+xmlSecGnuTLSKeyDataEcdsaGetPrivateKey(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataEcdsaId), NULL);
+    return xmlSecGnuTLSAsymKeyDataGetPrivateKey(data);
+}
+
+static int
+xmlSecGnuTLSKeyDataEcdsaInitialize(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataEcdsaId), -1);
+
+    return(xmlSecGnuTLSAsymKeyDataInitialize(data));
+}
+
+static int
+xmlSecGnuTLSKeyDataEcdsaDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecGnuTLSKeyDataEcdsaId), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecGnuTLSKeyDataEcdsaId), -1);
+
+    return(xmlSecGnuTLSAsymKeyDataDuplicate(dst, src));
+}
+
+static void
+xmlSecGnuTLSKeyDataEcdsaFinalize(xmlSecKeyDataPtr data) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataEcdsaId));
+
+    xmlSecGnuTLSAsymKeyDataFinalize(data);
+}
+
+static xmlSecKeyDataType
+xmlSecGnuTLSKeyDataEcdsaGetType(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataEcdsaId), xmlSecKeyDataTypeUnknown);
+
+    return xmlSecGnuTLSAsymKeyDataGetType(data);
+}
+
+static xmlSecSize
+xmlSecGnuTLSKeyDataEcdsaGetSize(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataEcdsaId), 0);
+
+    return xmlSecGnuTLSAsymKeyDataGetSize(data);
+}
+
+static void
+xmlSecGnuTLSKeyDataEcdsaDebugDump(xmlSecKeyDataPtr data, FILE* output) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataEcdsaId));
+    xmlSecAssert(output != NULL);
+
+    fprintf(output, "=== ecdsa key: size = " XMLSEC_SIZE_FMT "\n",
+            xmlSecGnuTLSKeyDataEcdsaGetSize(data));
+}
+
+static void
+xmlSecGnuTLSKeyDataEcdsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataEcdsaId));
+    xmlSecAssert(output != NULL);
+
+    fprintf(output, "<ECDSAKeyValue size=\"" XMLSEC_SIZE_FMT "\" />\n",
+            xmlSecGnuTLSKeyDataEcdsaGetSize(data));
+}
+
+
+static gnutls_pubkey_t
+xmlSecGnuTLSKeyDataEcdsaPubKeyFromPrivKey(gnutls_privkey_t privkey) {
+    gnutls_pubkey_t pubkey = NULL;
+    gnutls_ecc_curve_t curve = GNUTLS_ECC_CURVE_INVALID;
+	gnutls_datum_t x = { NULL, 0 };
+    gnutls_datum_t y = { NULL, 0 };
+    gnutls_datum_t k = { NULL, 0 };
+    int err;
+
+    xmlSecAssert2(privkey != NULL, NULL);
+
+    err = gnutls_privkey_export_ecc_raw2(privkey,
+                &curve, &x, &y, &k,
+                0);
+    if((err != GNUTLS_E_SUCCESS) && (curve != GNUTLS_ECC_CURVE_INVALID)) {
+        xmlSecGnuTLSError("gnutls_privkey_export_ecc_raw2", err, NULL);
+        goto done;
+    }
+
+    err = gnutls_pubkey_init(&pubkey);
+    if(err != GNUTLS_E_SUCCESS) {
+        xmlSecGnuTLSError("gnutls_pubkey_init", err, NULL);
+        goto done;
+    }
+
+    err = gnutls_pubkey_import_ecc_raw(pubkey, curve, &x, &y);
+    if(err != GNUTLS_E_SUCCESS) {
+        xmlSecGnuTLSError("gnutls_pubkey_import_ecc_raw", err, NULL);
+        gnutls_pubkey_deinit(pubkey);
+        goto done;
+    }
+
+done:
+    if(x.data != NULL) {
+        gnutls_free(x.data);
+    }
+    if(y.data != NULL) {
+        gnutls_free(y.data);
+    }
+    if(k.data != NULL) {
+        gnutls_free(k.data);
+    }
+    return(pubkey);
+}
+
+#endif /* XMLSEC_NO_ECDSA */
+
+
 #ifndef XMLSEC_NO_RSA
 /**************************************************************************
  *

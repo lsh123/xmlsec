@@ -189,6 +189,74 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformDsaSha1GetKlass(void
 #endif /* XMLSEC_NO_DSA */
 
 
+/********************************************************************
+ *
+ * ECDSA key and transforms
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_ECDSA
+
+/**
+ * xmlSecGnuTLSKeyDataEcdsaId:
+ *
+ * The ECDSA key klass.
+ */
+#define xmlSecGnuTLSKeyDataEcdsaId \
+        xmlSecGnuTLSKeyDataEcdsaGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecGnuTLSKeyDataEcdsaGetKlass        (void);
+XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataEcdsaAdoptKey        (xmlSecKeyDataPtr data,
+                                                                                 gnutls_pubkey_t pubkey,
+                                                                                 gnutls_privkey_t privkey);
+XMLSEC_CRYPTO_EXPORT gnutls_pubkey_t    xmlSecGnuTLSKeyDataEcdsaGetPublicKey    (xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT gnutls_privkey_t   xmlSecGnuTLSKeyDataEcdsaGetPrivateKey   (xmlSecKeyDataPtr data);
+
+
+#ifndef XMLSEC_NO_SHA1
+/**
+ * xmlSecGnuTLSTransformEcdsaSha1Id:
+ *
+ * The ECDSA-SHA1 signature transform klass.
+ */
+#define xmlSecGnuTLSTransformEcdsaSha1Id \
+        xmlSecGnuTLSTransformEcdsaSha1GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformEcdsaSha1GetKlass(void);
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA256
+/**
+ * xmlSecGnuTLSTransformEcdsaSha256Id:
+ *
+ * The ECDSA-SHA256 signature transform klass.
+ */
+#define xmlSecGnuTLSTransformEcdsaSha256Id       \
+        xmlSecGnuTLSTransformEcdsaSha256GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformEcdsaSha256GetKlass(void);
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+/**
+ * xmlSecGnuTLSTransformEcdsaSha384Id:
+ *
+ * The ECDSA-SHA384 signature transform klass.
+ */
+#define xmlSecGnuTLSTransformEcdsaSha384Id       \
+        xmlSecGnuTLSTransformEcdsaSha384GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformEcdsaSha384GetKlass(void);
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+/**
+ * xmlSecGnuTLSTransformEcdsaSha512Id:
+ *
+ * The ECDSA-SHA512 signature transform klass.
+ */
+#define xmlSecGnuTLSTransformEcdsaSha512Id       \
+        xmlSecGnuTLSTransformEcdsaSha512GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformEcdsaSha512GetKlass(void);
+#endif /* XMLSEC_NO_SHA512 */
+
+
+#endif /* XMLSEC_NO_ECDSA */
 
 /********************************************************************
  *

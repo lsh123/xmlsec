@@ -1,5 +1,8 @@
 # XMLSec Library: XMLSEC-MSCRYPTO
 
+## Announcement
+In maintenance mode starting from xmlsec 1.3.0, April 2023.
+
 ## What version of MS Windows?
 
 The MS Crypto API has been evolving a lot with the new releases of MS Windows.
@@ -7,6 +10,7 @@ Full functionality will only be achieved on MS Windows XP or greater (e.g. AES i
 not supported on pre Windows XP versions of Windows).
 
 ## Keys Manager with MS Certificate store support.
+
 The default xmlsec-mscrypto keys manager is based upon the XMLSEC Simple Keys
 Store,. If keys are not found in the XMLSEC Simple Keys Store, than MS Certificate store is
 used to lookup keys. The certificate store is only used on a READONLY base, so it is
@@ -26,5 +30,3 @@ and keys lookup. With the keyname now two types of values can be given:
 
 2) The only supported file formats are PKCS#12 and DER certificates (also see
 [xmlsec bug](https://github.com/lsh123/xmlsec/issues/9)).
-
-

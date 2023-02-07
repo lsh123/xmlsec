@@ -88,7 +88,7 @@ openssl verify -CAfile cacert.pem -untrusted ca2cert.pem expiredcert.pem
 rm expiredreq.pem
 ```
 
-### Generate ECDSA key with second level CA
+### Generate ECDSA secp256r1 key with second level CA
 ```
 openssl ecparam -list_curves
 openssl ecparam -name secp256r1 -genkey -noout -out ecdsa-secp256r1-key.pem
@@ -98,6 +98,18 @@ openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem \
         -out ecdsa-secp256r1-cert.pem -infiles ecdsa-secp256r1-req.pem
  openssl verify -CAfile cacert.pem -untrusted ca2cert.pem ecdsa-secp256r1-cert.pem
  rm ecdsa-secp256r1-req.pem
+```
+
+### Generate ECDSA 512 key with second level CA
+```
+openssl ecparam -list_curves
+openssl ecparam -name secp521r1 -genkey -noout -out ecdsa-secp521r1-key.pem
+    Here use 'ECDSA secp521r1 Key' for Common Name:
+openssl req -config ./openssl.cnf -new -key ecdsa-secp521r1-key.pem -out ecdsa-secp521r1-req.pem
+openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem \
+        -out ecdsa-secp521r1-cert.pem -infiles ecdsa-secp521r1-req.pem
+ openssl verify -CAfile cacert.pem -untrusted ca2cert.pem ecdsa-secp521r1-cert.pem
+ rm ecdsa-secp521r1-req.pem
 ```
 
 ### Generate and sign GOST2012 key with second level CA
@@ -150,6 +162,7 @@ openssl dsa -inform PEM -outform DER -in dsa3072key.pem -out dsa3072key.der
 ECDSA keys:
 ```
 openssl ec -inform PEM -outform DER -in ecdsa-secp256r1-key.pem -out ecdsa-secp256r1-key.der
+openssl ec -inform PEM -outform DER -in ecdsa-secp521r1-key.pem -out ecdsa-secp521r1-key.der
 ```
 
 ### Convert PEM cert file to DER file (IMPORTANT: use OpenSSL 1.x for generating DER files!!!)
@@ -163,6 +176,7 @@ openssl x509 -outform DER -in rsacert.pem -out rsacert.der
 openssl x509 -outform DER -in largersacert.pem -out largersacert.der
 openssl x509 -outform DER -in expiredcert.pem -out expiredcert.der
 openssl x509 -outform DER -in ecdsa-secp256r1-cert.pem -out ecdsa-secp256r1-cert.der
+openssl x509 -outform DER -in ecdsa-secp521r1-cert.pem -out ecdsa-secp521r1-cert.der
 ```
 
 Certs for GOST keys (see above the instructions to configure GOST engine):
@@ -214,6 +228,8 @@ is `secret123`):
         -outform der -topk8
  openssl pkcs8 -in ecdsa-secp256r1-key.der -inform der -out ecdsa-secp256r1-key.p8-der \
         -outform der -topk8
+ openssl pkcs8 -in ecdsa-secp521r1-key.der -inform der -out ecdsa-secp521r1-key.p8-der \
+        -outform der -topk8
 ```
 
 GOST keys (see above the instructions to configure GOST engine):
@@ -258,6 +274,10 @@ openssl pkcs12 -export -in allexpired.pem -name TestExpiredRsaKey -out expiredke
 cat ecdsa-secp256r1-key.pem ecdsa-secp256r1-cert.pem ca2cert.pem cacert.pem > all-ecdsa-secp256r1.pem
 openssl pkcs12 -export -in all-ecdsa-secp256r1.pem -name TestEcdsaSecp256r1Key -out ecdsa-secp256r1-key.p12
 rm all-ecdsa-secp256r1.pem
+
+cat ecdsa-secp521r1-key.pem ecdsa-secp521r1-cert.pem ca2cert.pem cacert.pem > all-ecdsa-secp521r1.pem
+openssl pkcs12 -export -in all-ecdsa-secp521r1.pem -name TestEcdsaSecp521r1Key -out ecdsa-secp521r1-key.p12
+rm all-ecdsa-secp521r1.pem
 ```
 
 GOST keys (see above the instructions to configure GOST engine):
@@ -276,7 +296,7 @@ rm all-gost2012_512.pem
 ```
 
 ### Creating self-signed cert for DSA/RSA private keys and loading it into NSS store
-The following process takes a DSA/RSA private key in PEM or DER format and 
+The following process takes a DSA/RSA private key in PEM or DER format and
 creates a PKCS12 file containing the private key, and a self-signed
 certificate with the corresponding public key.
 
@@ -302,8 +322,8 @@ openssl pkcs12 -export -in cert.pem -inkey key.pem -name <nickname> -out keycert
 pk12util -d <nss_config_dir> -i keycert.p12
 ```
 
-### Creating certs chain for DSA/RSA private keys and loading it into NSS store 
-The following process takes a DSA/RSA private key in PEM or DER format 
+### Creating certs chain for DSA/RSA private keys and loading it into NSS store
+The following process takes a DSA/RSA private key in PEM or DER format
 plus all certs in the chain and creates a PKCS12 file containing the private key
 and certs chain.
 
@@ -335,7 +355,7 @@ pk12util -d <nss_config_dir> -i keycert.p12
 
 ## Add Crypto Service Provider (CSP) for Windows
 On Windows, one needs to specify Crypto Service Provider (CSP) in the pkcs12 file
-to ensure it is loaded correctly to be used with SHA2 algorithms. Worse, the CSP is 
+to ensure it is loaded correctly to be used with SHA2 algorithms. Worse, the CSP is
 different for XP and older versions.
 
 ```

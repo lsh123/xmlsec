@@ -1,6 +1,7 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * AES Key Transport transforms implementation for GnuTLS.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -8,10 +9,7 @@
  * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:kw_aes
- * @Short_description: AES Key Transport transforms implementation for GnuTLS.
- * @Stability: Private
- *
+ * SECTION:crypto
  */
 #ifndef XMLSEC_NO_AES
 #include "globals.h"

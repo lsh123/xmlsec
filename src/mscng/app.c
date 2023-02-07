@@ -12,6 +12,7 @@
  * @Short_description: Application support functions for Microsoft Cryptography API: Next Generation (CNG).
  * @Stability: Stable
  *
+ * Common functions for xmlsec1 command line utility tool for Microsoft Cryptography API: Next Generation (CNG).
  */
 
 #include "globals.h"
@@ -827,4 +828,3 @@ xmlSecMSCngAppGetDefaultPwdCallback(void) {
     /* TODO */
     return(NULL);
 }
-

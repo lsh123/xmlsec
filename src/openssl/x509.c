@@ -1,6 +1,7 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * X509 certificates implementation for OpenSSL.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -12,6 +13,7 @@
  * @Short_description: X509 certificates implementation for OpenSSL.
  * @Stability: Stable
  *
+ *  X509 key data implementation.
  */
 
 #include "globals.h"

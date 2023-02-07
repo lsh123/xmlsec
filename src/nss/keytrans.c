@@ -1,6 +1,7 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * RSA Key Transport transforms implementation for NSS.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -8,10 +9,7 @@
  * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
 /**
- * SECTION:keytrans
- * @Short_description: RSA Key Transport transforms implementation for NSS.
- * @Stability: Private
- *
+ * SECTION:crypto
  */
 
 #include "globals.h"
@@ -385,10 +383,10 @@ xmlSecNssKeyTransportLoadSymKeyUsingPublicKeySlot(xmlSecNssKeyTransportCtxPtr ct
 
     /* pay attention to mechanism */
     symKey = PK11_ImportSymKey(
-        ctx->pubkey->pkcs11Slot != NULL ? ctx->pubkey->pkcs11Slot : slot, 
+        ctx->pubkey->pkcs11Slot != NULL ? ctx->pubkey->pkcs11Slot : slot,
         ctx->cipher,
         PK11_OriginUnwrap,
-        CKA_WRAP, 
+        CKA_WRAP,
         oriskv,
         NULL);
     if(symKey == NULL) {
@@ -480,7 +478,7 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
             xmlSecInternalError("xmlSecNssKeyTransportLoadSymKeyFromPublicKey", NULL);
             goto done;
         }
-        
+
         wrpskv.type = siBuffer;
         wrpskv.data = xmlSecBufferGetData(result);
         wrpskv.len  = resultLen;
@@ -491,7 +489,7 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
                 xmlSecNssError("PK11_PubWrapSymKey", NULL);
                 goto done;
             }
-        } else 
+        } else
 
 #ifndef XMLSEC_NO_RSA_OAEP
         if(ctx->cipher == CKM_RSA_PKCS_OAEP) {
@@ -507,8 +505,8 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
             if (rv != SECSuccess) {
                 xmlSecNssError("PK11_PubWrapSymKeyWithMechanism", NULL);
                 goto done;
-            }             
-        } else 
+            }
+        } else
 #endif /* XMLSEC_NO_RSA_OAEP */
         {
             xmlSecInvalidTypeError("Invalid keywrap algorithm", NULL);
@@ -530,9 +528,9 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
                 xmlSecNssError("PK11_PubUnwrapSymKey", NULL);
                 goto done;
             }
-        } else 
-        
-#ifndef XMLSEC_NO_RSA_OAEP        
+        } else
+
+#ifndef XMLSEC_NO_RSA_OAEP
         if(ctx->cipher == CKM_RSA_PKCS_OAEP) {
             CK_RSA_PKCS_OAEP_PARAMS oaep_params;
             SECItem param = {siBuffer, (unsigned char*)&oaep_params, sizeof(oaep_params)};
@@ -547,8 +545,8 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
             if(symKey == NULL) {
                 xmlSecNssError("PK11_PubUnwrapSymKeyWithMechanism", NULL);
                 goto done;
-            }            
-        } else 
+            }
+        } else
 #endif /* XMLSEC_NO_RSA_OAEP */
         {
             xmlSecInvalidTypeError("Invalid keywrap algorithm", NULL);
@@ -713,7 +711,7 @@ xmlSecNssTransformRsaPkcs1GetKlass(void) {
 
 #ifndef XMLSEC_NO_RSA
 
-#ifndef XMLSEC_NO_RSA_OAEP 
+#ifndef XMLSEC_NO_RSA_OAEP
 
 static int xmlSecNssRsaOaepNodeRead             (xmlSecTransformPtr transform,
                                                 xmlNodePtr node,
@@ -786,7 +784,7 @@ static xmlSecTransformKlass xmlSecNssRsaOaepEnc11Klass = {
 };
 
 /**
- * xmlSecNssTransformRsaOaepGetKlass:
+ * xmlSecNssTransformRsaOaepEnc11GetKlass:
  *
  * The RSA-PKCS1 key transport transform klass (XMLEnc 1.1).
  *

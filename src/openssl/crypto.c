@@ -1,6 +1,7 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * Crypto transforms implementation for OpenSSL.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -9,9 +10,10 @@
  */
 /**
  * SECTION:crypto
- * @Short_description: Crypto transforms implementation for OpenSSL.
+ * @Short_description: Crypto key dat and transforms implementation for OpenSSL.
  * @Stability: Stable
  *
+ * Implementation of keys and tranforms for OpenSSL.
  */
 
 #include "globals.h"
@@ -700,4 +702,3 @@ xmlSecOpenSSLCreateReadFileBio(const char* path) {
     }
     return(bio);
 }
-

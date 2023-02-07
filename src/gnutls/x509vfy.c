@@ -1,6 +1,7 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * X509 certificates verification support functions for GnuTLS.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -8,10 +9,7 @@
  * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:x509vfy
- * @Short_description: X509 certificates verification support functions for GnuTLS.
- * @Stability: Private
- *
+ * SECTION:x509
  */
 
 #include "globals.h"
@@ -229,7 +227,7 @@ xmlSecGnuTLSX509CheckTime(const gnutls_x509_crt_t * cert_list,
                 difftime(notValidAfter, (time_t)0));
             return(-1);
         }
-        
+
         /* check */
         if(ts < notValidBefore) {
             xmlSecOtherError(XMLSEC_ERRORS_R_CERT_NOT_YET_VALID, NULL, NULL);
@@ -837,5 +835,3 @@ done:
 }
 
 #endif /* XMLSEC_NO_X509 */
-
-

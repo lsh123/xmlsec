@@ -1,6 +1,9 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ *
+ * Application support functions for OpenSSL.
+ *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
@@ -11,6 +14,7 @@
  * @Short_description: Application support functions for OpenSSL.
  * @Stability: Stable
  *
+ * Common functions for xmlsec1 command line utility tool for OpenSSL.
  */
 
 #include "globals.h"
@@ -1558,4 +1562,3 @@ xmlSecOpenSSLDummyPasswordCallback(char *buf, int bufLen,
 
     return (passwordLen);
 }
-

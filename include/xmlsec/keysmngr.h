@@ -242,13 +242,11 @@ struct _xmlSecKeyStoreKlass {
 
 
 /**
- * xmlSecKeyDataDsaWrite:
- * @id:                 the key data data.
- * @data:               the pointer to input @xmlSecKeyData.
- * @dsaValue:            the pointer to input @xmlSecKeyValueDsa.
- * @writePrivateKey:    the flag indicating if private key component should be output or not.
+ * xmlSecSimpleKeysStoreAdoptKeyFunc:
+ * @store:              the pointer to key store.
+ * @key:                the pointer to key.
  *
- * Writes @xmlSecKeyData to @xmlSecKeyValueDsa.
+ * Adds @key to the @store. On success, the @store owns the @key.
  *
  * Returns: 0 on success or a negative value if an error occurs.
  */
@@ -283,4 +281,3 @@ XMLSEC_EXPORT xmlSecPtrListPtr          xmlSecSimpleKeysStoreGetKeys    (xmlSecK
 #endif /* __cplusplus */
 
 #endif /* __XMLSEC_KEYSMGMR_H__ */
-

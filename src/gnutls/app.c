@@ -12,6 +12,7 @@
  * @Short_description: Application support functions for GnuTLS.
  * @Stability: Stable
  *
+ * Common functions for xmlsec1 command line utility tool for GnuTLS.
  */
 
 #include "globals.h"

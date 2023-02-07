@@ -1,17 +1,16 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * Signatures implementation for NSS.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
 /**
- * SECTION:signatures
- * @Short_description: Signatures implementation for NSS.
- * @Stability: Private
- *
+ * SECTION:crypto
  */
 
 #include "globals.h"
@@ -52,7 +51,7 @@ struct _xmlSecNssSignatureCtx {
     SECOidTag           pssMaskAlgTag;
     long                pssSaltLength;
 
-    union { 
+    union {
         struct {
             SGNContext         *sigctx;
             SECKEYPrivateKey   *privkey;
@@ -433,7 +432,7 @@ xmlSecNssSignatureCreatePssParams(xmlSecNssSignatureCtxPtr ctx) {
     xmlSecAssert2(ctx->pssSaltLength > 0, NULL);
 
     PORT_Memset(&params, 0, sizeof(SECKEYRSAPSSParams));
-    
+
     /* pss hash algorithm */
     params.hashAlg = (SECAlgorithmID *)PORT_ArenaZAlloc(ctx->arena, sizeof(SECAlgorithmID));
     if(params.hashAlg == NULL) {
@@ -443,7 +442,7 @@ xmlSecNssSignatureCreatePssParams(xmlSecNssSignatureCtxPtr ctx) {
     rv = SECOID_SetAlgorithmID(ctx->arena, params.hashAlg, ctx->pssHashAlgTag, NULL);
     if(rv != SECSuccess) {
         xmlSecNssError("SECOID_SetAlgorithmID(hashAlg)", NULL);
-        return(NULL);  
+        return(NULL);
     }
 
     /* pss mask mgf1 hash algorithm */
@@ -451,7 +450,7 @@ xmlSecNssSignatureCreatePssParams(xmlSecNssSignatureCtxPtr ctx) {
     rv = SECOID_SetAlgorithmID(ctx->arena, &maskHashAlg, ctx->pssMaskAlgTag, NULL);
     if(rv != SECSuccess) {
         xmlSecNssError("SECOID_SetAlgorithmID(maskHashAlg)", NULL);
-        return(NULL);  
+        return(NULL);
     }
     maskHashAlgItem = SEC_ASN1EncodeItem(ctx->arena, NULL, &maskHashAlg, SEC_ASN1_GET(SECOID_AlgorithmIDTemplate));
     if(maskHashAlgItem == NULL) {
@@ -467,14 +466,14 @@ xmlSecNssSignatureCreatePssParams(xmlSecNssSignatureCtxPtr ctx) {
     rv = SECOID_SetAlgorithmID(ctx->arena, params.maskAlg, SEC_OID_PKCS1_MGF1, maskHashAlgItem);
     if(rv != SECSuccess) {
         xmlSecNssError("SECOID_SetAlgorithmID(maskAlg)", NULL);
-        return(NULL);  
+        return(NULL);
     }
 
     /* salt length */
     saltLengthItem = SEC_ASN1EncodeInteger(ctx->arena, &(params.saltLength), ctx->pssSaltLength);
     if(saltLengthItem != &(params.saltLength)) {
         xmlSecNssError("SEC_ASN1EncodeInteger(saltLength)", NULL);
-        return(NULL);  
+        return(NULL);
     }
 
     /* done */
@@ -495,7 +494,7 @@ xmlSecNssSignatureCreatePssAlgId(xmlSecNssSignatureCtxPtr ctx) {
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->arena != NULL, -1);
-    
+
     params = xmlSecNssSignatureCreatePssParams(ctx);
     if (params == NULL) {
         xmlSecInternalError("xmlSecNssSignatureCreatePssParams", NULL);
@@ -506,7 +505,7 @@ xmlSecNssSignatureCreatePssAlgId(xmlSecNssSignatureCtxPtr ctx) {
     rv = SECOID_SetAlgorithmID(ctx->arena, &(ctx->algId), ctx->alg, params);
     if (rv != SECSuccess) {
         xmlSecNssError("SECOID_SetAlgorithmID", NULL);
-        return(-1); 
+        return(-1);
     }
 
     /* success */
@@ -549,7 +548,7 @@ xmlSecNssSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
                 xmlSecInternalError("xmlSecNssSignatureCreatePssAlgId", xmlSecTransformGetName(transform));
                 return(-1);
             }
-            
+
             ctx->u.sig.sigctx = SGN_NewContextWithAlgorithmID(&(ctx->algId), ctx->u.sig.privkey);
             if (ctx->u.sig.sigctx == NULL) {
                 xmlSecNssError("SGN_NewContextWithAlgorithmID", xmlSecTransformGetName(transform));
@@ -579,7 +578,7 @@ xmlSecNssSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
                 xmlSecInternalError("xmlSecNssSignatureCreatePssAlgId", xmlSecTransformGetName(transform));
                 return(-1);
             }
-            
+
             ctx->u.vfy.vfyctx = VFY_CreateContextWithAlgorithmID(
                 ctx->u.vfy.pubkey,
                 NULL,
@@ -1756,5 +1755,3 @@ xmlSecNssTransformRsaPssSha512GetKlass(void) {
 
 
 #endif /* XMLSEC_NO_RSA */
-
-

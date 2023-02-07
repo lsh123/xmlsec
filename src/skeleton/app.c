@@ -1,6 +1,7 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * Application support functions for Skeleton.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -12,6 +13,7 @@
  * @Short_description: Application support functions for Skeleton.
  * @Stability: Stable
  *
+ * Common functions for xmlsec1 command line utility tool for Skeleton.
  */
 
 #include "globals.h"
@@ -438,4 +440,3 @@ xmlSecSkeletonAppGetDefaultPwdCallback(void) {
     /* TODO */
     return(NULL);
 }
-

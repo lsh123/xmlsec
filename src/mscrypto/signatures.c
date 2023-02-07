@@ -1,19 +1,17 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * Signatures implementation for Microsoft Crypto API.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2003 Cordys R&D BV, All rights reserved.
  * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2003 Cordys R&D BV, All rights reserved.
  * Copyright (c) 2005-2006 Cryptocom LTD (http://www.cryptocom.ru).
  */
 /**
- * SECTION:signatures
- * @Short_description: Signatures implementation for Microsoft Crypto API.
- * @Stability: Private
- *
+ * SECTION:crypto
  */
 
 #include "globals.h"
@@ -1037,7 +1035,7 @@ static xmlSecTransformKlass xmlSecMSCryptoGost2012_256Klass = {
 };
 
 /**
- * xmlSecMSCryptoTransformGost2012GostR3411_94GetKlass:
+ * xmlSecMSCryptoTransformGost2012_256GetKlass:
  *
  * The GOST R 34.10-2012 signature transform klass.
  *
@@ -1082,7 +1080,7 @@ static xmlSecTransformKlass xmlSecMSCryptoGost2012_512Klass = {
 };
 
 /**
- * xmlSecMSCryptoTransformGost2012GostR3411_94GetKlass:
+ * xmlSecMSCryptoTransformGost2012_512GetKlass:
  *
  * The GOST R 34.10-2012 signature transform klass.
  *
@@ -1094,4 +1092,3 @@ xmlSecMSCryptoTransformGost2012_512GetKlass(void) {
 }
 
 #endif /* XMLSEC_NO_GOST2012*/
-

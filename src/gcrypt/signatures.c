@@ -1,6 +1,7 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * Signatures implementation for GCrypt.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -8,10 +9,7 @@
  * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:signatures
- * @Short_description: Signatures implementation for GCrypt.
- * @Stability: Private
- *
+ * SECTION:crypto
  */
 
 #include "globals.h"
@@ -1896,7 +1894,7 @@ xmlSecGCryptTransformRsaPssSha512GetKlass(void) {
 #endif /* XMLSEC_NO_RSA */
 
 #ifndef XMLSEC_NO_ECDSA
-/**
+/*
  * https://www.w3.org/TR/xmldsig-core1/#sec-ECDSA
  *
  * The output of the ECDSA algorithm consists of a pair of integers usually referred by the pair (r, s).

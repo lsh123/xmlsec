@@ -1,6 +1,8 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * Private/public (EVP) keys implementation for OpenSSL.
+ *
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -8,10 +10,7 @@
  * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:evp
- * @Short_description: Private/public (EVP) keys implementation for OpenSSL.
- * @Stability: Stable
- *
+ * SECTION:crypto
  */
 #include "globals.h"
 
@@ -364,7 +363,7 @@ xmlSecOpenSSLEvpKeyAdopt(EVP_PKEY *pKey) {
 
 #ifndef XMLSEC_NO_DSA
 
-/**
+/*
  * @xmlSecOpenSSLKeyValueDsa: holds the parts of OpenSSL DSA key
  */
 typedef struct _xmlSecOpenSSLKeyValueDsa {
@@ -1620,7 +1619,7 @@ xmlSecOpenSSLKeyDataEcdsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
 
 #ifndef XMLSEC_NO_RSA
 
-/**
+/*
  * @xmlSecOpenSSLKeyValueRsa: holds the parts of OpenSSL RSA key
  */
 typedef struct _xmlSecOpenSSLKeyValueRsa {
@@ -2916,4 +2915,3 @@ xmlSecOpenSSLKeyDataGostR3410_2012_512DebugXmlDump(xmlSecKeyDataPtr data, FILE* 
 }
 
 #endif /* XMLSEC_NO_GOST2012 */
-

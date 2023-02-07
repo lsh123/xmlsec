@@ -1,6 +1,7 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * DES Key Transport transforms implementation for NSS.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -9,10 +10,7 @@
  * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:kw_des
- * @Short_description: DES Key Transport transforms implementation for NSS.
- * @Stability: Private
- *
+ * SECTION:crypto
  */
 
 #ifndef XMLSEC_NO_DES
@@ -510,4 +508,3 @@ done:
 typedef int make_iso_compilers_happy;
 
 #endif /* XMLSEC_NO_DES */
-

@@ -1,6 +1,7 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * Keys store implementation for NSS.
  *
  * This is free software; see Copyright file in the source
  * distribution for precise wording.

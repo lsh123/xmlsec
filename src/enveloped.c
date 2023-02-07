@@ -1,16 +1,16 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- *
+ * Enveloped transform implementation.
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
  * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:enveloped
- * @Short_description: Enveloped transform implementation.
- * @Stability: Private
+ * SECTION:transforms
+ * @Short_description:
+ * @Stability: Stable
  *
  */
 #include "globals.h"
@@ -146,4 +146,3 @@ xmlSecTransformEnvelopedExecute(xmlSecTransformPtr transform, int last,
 
     return(0);
 }
-

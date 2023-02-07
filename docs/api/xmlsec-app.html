@@ -464,6 +464,46 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
+<a class="link" href="xmlsec-app.html#xmlSecTransformRsaPssSha1GetKlass" title="xmlSecTransformRsaPssSha1GetKlass ()">xmlSecTransformRsaPssSha1GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-app.html#xmlSecTransformRsaPssSha224GetKlass" title="xmlSecTransformRsaPssSha224GetKlass ()">xmlSecTransformRsaPssSha224GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-app.html#xmlSecTransformRsaPssSha256GetKlass" title="xmlSecTransformRsaPssSha256GetKlass ()">xmlSecTransformRsaPssSha256GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-app.html#xmlSecTransformRsaPssSha384GetKlass" title="xmlSecTransformRsaPssSha384GetKlass ()">xmlSecTransformRsaPssSha384GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-app.html#xmlSecTransformRsaPssSha512GetKlass" title="xmlSecTransformRsaPssSha512GetKlass ()">xmlSecTransformRsaPssSha512GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
 <a class="link" href="xmlsec-app.html#xmlSecTransformRsaPkcs1GetKlass" title="xmlSecTransformRsaPkcs1GetKlass ()">xmlSecTransformRsaPkcs1GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
@@ -873,6 +913,26 @@
 <tr>
 <td class="define_keyword">#define</td>
 <td class="function_name"><a class="link" href="xmlsec-app.html#xmlSecTransformRsaSha512Id" title="xmlSecTransformRsaSha512Id">xmlSecTransformRsaSha512Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-app.html#xmlSecTransformRsaPssSha1Id" title="xmlSecTransformRsaPssSha1Id">xmlSecTransformRsaPssSha1Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-app.html#xmlSecTransformRsaPssSha224Id" title="xmlSecTransformRsaPssSha224Id">xmlSecTransformRsaPssSha224Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-app.html#xmlSecTransformRsaPssSha256Id" title="xmlSecTransformRsaPssSha256Id">xmlSecTransformRsaPssSha256Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-app.html#xmlSecTransformRsaPssSha384Id" title="xmlSecTransformRsaPssSha384Id">xmlSecTransformRsaPssSha384Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-app.html#xmlSecTransformRsaPssSha512Id" title="xmlSecTransformRsaPssSha512Id">xmlSecTransformRsaPssSha512Id</a></td>
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
@@ -1612,6 +1672,71 @@ xmlSecTransformRsaSha512GetKlass (<em class="parameter"><code><span class="type"
 <div class="refsect3">
 <a name="xmlSecTransformRsaSha512GetKlass.returns"></a><h4>Returns</h4>
 <p> RSA-SHA512 signature transform klass or NULL if an error
+occurs (the xmlsec-crypto library is not loaded or this transform is not
+implemented).</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformRsaPssSha1GetKlass"></a><h3>xmlSecTransformRsaPssSha1GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecTransformRsaPssSha1GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The RSA-PSS-SHA1 signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecTransformRsaPssSha1GetKlass.returns"></a><h4>Returns</h4>
+<p> RSA-PSS-SHA1 signature transform klass or NULL if an error
+occurs (the xmlsec-crypto library is not loaded or this transform is not
+implemented).</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformRsaPssSha224GetKlass"></a><h3>xmlSecTransformRsaPssSha224GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecTransformRsaPssSha224GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The RSA-PSS-SHA224 signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecTransformRsaPssSha224GetKlass.returns"></a><h4>Returns</h4>
+<p> RSA-PSS-SHA224 signature transform klass or NULL if an error
+occurs (the xmlsec-crypto library is not loaded or this transform is not
+implemented).</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformRsaPssSha256GetKlass"></a><h3>xmlSecTransformRsaPssSha256GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecTransformRsaPssSha256GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The RSA-PSS-SHA256 signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecTransformRsaPssSha256GetKlass.returns"></a><h4>Returns</h4>
+<p> RSA-PSS-SHA256 signature transform klass or NULL if an error
+occurs (the xmlsec-crypto library is not loaded or this transform is not
+implemented).</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformRsaPssSha384GetKlass"></a><h3>xmlSecTransformRsaPssSha384GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecTransformRsaPssSha384GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The RSA-PSS-SHA384 signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecTransformRsaPssSha384GetKlass.returns"></a><h4>Returns</h4>
+<p> RSA-PSS-SHA384 signature transform klass or NULL if an error
+occurs (the xmlsec-crypto library is not loaded or this transform is not
+implemented).</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformRsaPssSha512GetKlass"></a><h3>xmlSecTransformRsaPssSha512GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecTransformRsaPssSha512GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The RSA-PSS-SHA512 signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecTransformRsaPssSha512GetKlass.returns"></a><h4>Returns</h4>
+<p> RSA-PSS-SHA512 signature transform klass or NULL if an error
 occurs (the xmlsec-crypto library is not loaded or this transform is not
 implemented).</p>
 </div>
@@ -2707,6 +2832,41 @@ xmlSecCryptoAppGetDefaultPwdCallback (<em class="parameter"><code><span class="t
 <pre class="programlisting">#define xmlSecTransformRsaSha512Id              xmlSecTransformRsaSha512GetKlass()
 </pre>
 <p>The RSA-SHA512 signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformRsaPssSha1Id"></a><h3>xmlSecTransformRsaPssSha1Id</h3>
+<pre class="programlisting">#define xmlSecTransformRsaPssSha1Id             xmlSecTransformRsaPssSha1GetKlass()
+</pre>
+<p>The RSA-PSS-SHA1 signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformRsaPssSha224Id"></a><h3>xmlSecTransformRsaPssSha224Id</h3>
+<pre class="programlisting">#define xmlSecTransformRsaPssSha224Id           xmlSecTransformRsaPssSha224GetKlass()
+</pre>
+<p>The RSA-PSS-SHA224 signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformRsaPssSha256Id"></a><h3>xmlSecTransformRsaPssSha256Id</h3>
+<pre class="programlisting">#define xmlSecTransformRsaPssSha256Id           xmlSecTransformRsaPssSha256GetKlass()
+</pre>
+<p>The RSA-PSS-SHA256 signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformRsaPssSha384Id"></a><h3>xmlSecTransformRsaPssSha384Id</h3>
+<pre class="programlisting">#define xmlSecTransformRsaPssSha384Id           xmlSecTransformRsaPssSha384GetKlass()
+</pre>
+<p>The RSA-PSS-SHA384 signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformRsaPssSha512Id"></a><h3>xmlSecTransformRsaPssSha512Id</h3>
+<pre class="programlisting">#define xmlSecTransformRsaPssSha512Id              xmlSecTransformRsaPssSha512GetKlass()
+</pre>
+<p>The RSA-PSS-SHA512 signature transform klass.</p>
 </div>
 <hr>
 <div class="refsect2">

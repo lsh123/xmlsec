@@ -1,6 +1,7 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * HMAC transforms implementation for Microsoft Crypto API.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -8,20 +9,7 @@
  * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:hmac
- * @Short_description: HMAC transforms implementation for Microsoft Crypto API.
- * @Stability: Private
- *
- * [HMAC Algorithm support](http://www.w3.org/TR/xmldsig-core/#sec-HMAC):
- * The HMAC algorithm (RFC2104 [HMAC]) takes the truncation length in bits
- * as a parameter; if the parameter is not specified then all the bits of the
- * hash are output. An example of an HMAC SignatureMethod element:
- *
- * |[<!-- language="XML" -->
- * <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#hmac-sha1">
- *   <HMACOutputLength>128</HMACOutputLength>
- * </SignatureMethod>
- * |]
+ * SECTION:crypto
  */
 
 
@@ -59,6 +47,17 @@
  *
  * Internal MSCrypto HMAC CTX
  *
+ * [HMAC Algorithm support](http://www.w3.org/TR/xmldsig-core/#sec-HMAC):
+ * The HMAC algorithm (RFC2104 [HMAC]) takes the truncation length in bits
+ * as a parameter; if the parameter is not specified then all the bits of the
+ * hash are output. An example of an HMAC SignatureMethod element:
+ *
+ * |[<!-- language="XML" -->
+ * <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#hmac-sha1">
+ *   <HMACOutputLength>128</HMACOutputLength>
+ * </SignatureMethod>
+ * |]
+
  *****************************************************************************/
 typedef struct _xmlSecMSCryptoHmacCtx            xmlSecMSCryptoHmacCtx, *xmlSecMSCryptoHmacCtxPtr;
 struct _xmlSecMSCryptoHmacCtx {
@@ -488,7 +487,7 @@ xmlSecMSCryptoHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
                     xmlSecInternalError("xmlSecTransformHmacWriteOutput", xmlSecTransformGetName(transform));
                     return(-1);
                 }
-            }            
+            }
             transform->status = xmlSecTransformStatusFinished;
         }
     } else if(transform->status == xmlSecTransformStatusFinished) {
@@ -833,4 +832,3 @@ xmlSecMSCryptoTransformHmacSha512GetKlass(void) {
 
 
 #endif /* XMLSEC_NO_HMAC */
-

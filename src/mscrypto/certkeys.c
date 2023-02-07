@@ -2413,7 +2413,7 @@ static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Gost2012_256[] = {
 };
 
 /**
- * xmlSecMSCryptoKeyDataGost2001GetKlass:
+ * xmlSecMSCryptoKeyDataGost2012_256GetKlass:
  *
  * The GOST2012_256 key data klass.
  *
@@ -2568,7 +2568,7 @@ static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Gost2012_512[] = {
 };
 
 /**
- * xmlSecMSCryptoKeyDataGost2001GetKlass:
+ * xmlSecMSCryptoKeyDataGost2012_512GetKlass:
  *
  * The GOST2012_512 key data klass.
  *

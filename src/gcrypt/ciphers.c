@@ -1,6 +1,7 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * Ciphers transforms implementation for GCrypt.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -8,10 +9,7 @@
  * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:ciphers
- * @Short_description: Ciphers transforms implementation for GCrypt.
- * @Stability: Private
- *
+ * SECTION:crypto
  */
 
 #include "globals.h"
@@ -763,4 +761,3 @@ xmlSecGCryptTransformDes3CbcGetKlass(void) {
     return(&xmlSecGCryptDes3CbcKlass);
 }
 #endif /* XMLSEC_NO_DES */
-

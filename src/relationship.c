@@ -1,6 +1,7 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * Relationship transform implementation
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -8,11 +9,33 @@
  * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:relationship
- * @Short_description: Relationship transform implementation
- * @Stability: Private
+ * SECTION:transforms
+ */
+
+#include "globals.h"
+
+#include <stdlib.h>
+#include <string.h>
+
+#include <libxml/tree.h>
+#include <libxml/xpointer.h>
+#include <libxml/c14n.h>
+
+#include <xmlsec/xmlsec.h>
+#include <xmlsec/xmltree.h>
+#include <xmlsec/keys.h>
+#include <xmlsec/list.h>
+#include <xmlsec/transforms.h>
+#include <xmlsec/errors.h>
+
+#include "cast_helpers.h"
+
+
+/**************************************************************************
  *
- * [Relationship transform](http://standards.iso.org/ittf/PubliclyAvailableStandards/c061796_ISO_IEC_29500-2_2012.zip)
+ * XML Relationshi transform
+ *
+ *  * [Relationship transform](http://standards.iso.org/ittf/PubliclyAvailableStandards/c061796_ISO_IEC_29500-2_2012.zip)
  *
  * The relationships transform takes the XML document from the Relationships part and converts
  * it to another XML document.
@@ -72,30 +95,6 @@
  *     when there will be such an input, then it'll be easy to add support for that. But I didn't want to clutter
  *     the current implementation with details that doesn't seem to be used in practice
  *
- */
-#include "globals.h"
-
-#include <stdlib.h>
-#include <string.h>
-
-#include <libxml/tree.h>
-#include <libxml/xpointer.h>
-#include <libxml/c14n.h>
-
-#include <xmlsec/xmlsec.h>
-#include <xmlsec/xmltree.h>
-#include <xmlsec/keys.h>
-#include <xmlsec/list.h>
-#include <xmlsec/transforms.h>
-#include <xmlsec/errors.h>
-
-#include "cast_helpers.h"
-
-
-/**************************************************************************
- *
- * XML Relationshi transform
- *
  * xmlSecTransform + xmlSecRelationshipCtx
  *
  ***************************************************************************/
@@ -154,6 +153,13 @@ static xmlSecTransformKlass xmlSecRelationshipKlass = {
     NULL,                                       /* void* reserved1; */
 };
 
+/**
+ * xmlSecTransformRelationshipGetKlass:
+ *
+ * Gets the Relationship transform klass.
+ *
+ * Returns: Relationship transform klass.
+ */
 xmlSecTransformId
 xmlSecTransformRelationshipGetKlass(void) {
     return(&xmlSecRelationshipKlass);

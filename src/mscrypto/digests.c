@@ -1,6 +1,7 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * Digests transforms implementation for Microsoft Crypto API.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -9,10 +10,7 @@
  * Copyright (c) 2005-2006 Cryptocom LTD (http://www.cryptocom.ru).
  */
 /**
- * SECTION:digests
- * @Short_description: Digests transforms implementation for Microsoft Crypto API.
- * @Stability: Private
- *
+ * SECTION:crypto
  */
 
 #include "globals.h"
@@ -748,4 +746,3 @@ xmlSecMSCryptoTransformGostR3411_2012_512GetKlass(void) {
     return(&xmlSecMSCryptoGostR3411_2012_512Klass);
 }
 #endif /* XMLSEC_NO_GOST*/
-

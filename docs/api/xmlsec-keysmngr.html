@@ -883,6 +883,37 @@ the returned key using <a class="link" href="xmlsec-keys.html#xmlSecKeyDestroy" 
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 <span class="c_punctuation">(</span>*xmlSecSimpleKeysStoreAdoptKeyFunc<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeyStore" title="struct xmlSecKeyStore"><span class="type">xmlSecKeyStorePtr</span></a> store</code></em>,
                                       <em class="parameter"><code><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="type">xmlSecKeyPtr</span></a> key</code></em>);</pre>
+<p>Adds <em class="parameter"><code>key</code></em>
+ to the <em class="parameter"><code>store</code></em>
+. On success, the <em class="parameter"><code>store</code></em>
+ owns the <em class="parameter"><code>key</code></em>
+.</p>
+<div class="refsect3">
+<a name="xmlSecSimpleKeysStoreAdoptKeyFunc.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>store</p></td>
+<td class="parameter_description"><p>the pointer to key store.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>key</p></td>
+<td class="parameter_description"><p>the pointer to key.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecSimpleKeysStoreAdoptKeyFunc.returns"></a><h4>Returns</h4>
+<p> 0 on success or a negative value if an error occurs.</p>
+</div>
 </div>
 <hr>
 <div class="refsect2">

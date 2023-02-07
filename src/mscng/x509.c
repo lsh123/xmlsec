@@ -1,17 +1,20 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * X509 certificates implementation for MSCng.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
+* Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  * Copyright (C) 2018 Miklos Vajna. All Rights Reserved.
  */
 /**
  * SECTION:x509
- * @Short_description: X509 certificates implementation for Microsoft Cryptography API: Next Generation (CNG).
+ * @Short_description: X509 certificates implementation for MSCng.
  * @Stability: Stable
  *
+ * X509 certificates implementation for MSCng.
  */
 
 #include "globals.h"
@@ -186,6 +189,15 @@ xmlSecMSCngX509CertDerRead(const xmlSecByte* buf, xmlSecSize size) {
     return(cert);
 }
 
+/**
+ * xmlSecMSCngKeyDataX509AdoptKeyCert:
+ * @data:    the pointer to key data.
+ * @cert:    the pointer to certificates.
+ *
+ * Adds @cert to @data as primary key. On success, @data owns the @cert.
+ *
+ * Returns: 0 on success or a negative value otherwise.
+ */
 int
 xmlSecMSCngKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert) {
     xmlSecMSCngX509DataCtxPtr ctx;
@@ -204,6 +216,15 @@ xmlSecMSCngKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert) {
     return(0);
 }
 
+/**
+ * xmlSecMSCngKeyDataX509AdoptCert:
+ * @data:    the pointer to key data.
+ * @cert:    the pointer to certificates.
+ *
+ * Adds @cert to @data as a certificate. On success, @data owns the @cert.
+ *
+ * Returns: 0 on success or a negative value otherwise.
+ */
 int
 xmlSecMSCngKeyDataX509AdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert) {
     xmlSecMSCngX509DataCtxPtr ctx;

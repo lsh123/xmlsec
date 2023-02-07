@@ -1,6 +1,7 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * X509 certificates implementation for Microsoft Crypto API.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -13,6 +14,7 @@
  * @Short_description: X509 certificates implementation for Microsoft Crypto API.
  * @Stability: Stable
  *
+ * X509 certificates implementation for Microsoft Crypto API.
  */
 
 #include "globals.h"

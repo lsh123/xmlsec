@@ -1,6 +1,7 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * Crypto key dat and transforms implementation for NSS.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -10,9 +11,10 @@
  */
 /**
  * SECTION:crypto
- * @Short_description: Crypto transforms implementation for NSS.
+ * @Short_description: Crypto key dat and transforms implementation for NSS.
  * @Stability: Stable
  *
+ * Implementation of keys and tranforms for NSS.
  */
 
 #include "globals.h"

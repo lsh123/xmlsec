@@ -1,6 +1,7 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * Private/public keys implementation for NSS.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -12,6 +13,7 @@
  * @Short_description: Private/public keys implementation for NSS.
  * @Stability: Stable
  *
+ * Private/public keys implementation for NSS.
  */
 
 #include "globals.h"

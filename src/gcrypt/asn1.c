@@ -1,6 +1,7 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * ASN1 support functions for GCrypt.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -8,10 +9,7 @@
  * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:asn1
- * @Short_description: ASN1 support functions for GCrypt.
- * @Stability: Private
- *
+ * SECTION:crypto
  */
 
 #include "globals.h"
@@ -506,7 +504,7 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
         /* Convert from OpenSSL parameter ordering to the OpenPGP order. */
         /* (http://gnupg.10057.n7.nabble.com/RSA-PKCS-1-signing-differs-from-OpenSSL-s-td27920.html) */
         /* First check that p < q; if not swap p and q and recompute u.  */
-        /**
+        /*
         if (gcry_mpi_cmp (integers[4], integers[5]) > 0) {
             gcry_mpi_swap (integers[4], integers[5]);
             gcry_mpi_invm (integers[8], integers[4], integers[5]);

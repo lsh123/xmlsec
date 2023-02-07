@@ -1,6 +1,7 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * Digests transforms implementation for NSS.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -9,10 +10,7 @@
  * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
 /**
- * SECTION:digests
- * @Short_description: Digests transforms implementation for NSS.
- * @Stability: Private
- *
+ * SECTION:crypto
  */
 
 #include "globals.h"
@@ -603,4 +601,3 @@ xmlSecNssTransformSha512GetKlass(void) {
     return(&xmlSecNssSha512Klass);
 }
 #endif /* XMLSEC_NO_SHA512 */
-

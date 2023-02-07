@@ -27,7 +27,7 @@
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="xmlsec-nss-crypto.top_of_page"></a>crypto</span></h2>
-<p>crypto — Crypto transforms implementation for NSS.</p>
+<p>crypto — Crypto key dat and transforms implementation for NSS.</p>
 </td>
 <td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
@@ -400,6 +400,46 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
+<a class="link" href="xmlsec-nss-crypto.html#xmlSecNssTransformRsaPssSha1GetKlass" title="xmlSecNssTransformRsaPssSha1GetKlass ()">xmlSecNssTransformRsaPssSha1GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-nss-crypto.html#xmlSecNssTransformRsaPssSha224GetKlass" title="xmlSecNssTransformRsaPssSha224GetKlass ()">xmlSecNssTransformRsaPssSha224GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-nss-crypto.html#xmlSecNssTransformRsaPssSha256GetKlass" title="xmlSecNssTransformRsaPssSha256GetKlass ()">xmlSecNssTransformRsaPssSha256GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-nss-crypto.html#xmlSecNssTransformRsaPssSha384GetKlass" title="xmlSecNssTransformRsaPssSha384GetKlass ()">xmlSecNssTransformRsaPssSha384GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-nss-crypto.html#xmlSecNssTransformRsaPssSha512GetKlass" title="xmlSecNssTransformRsaPssSha512GetKlass ()">xmlSecNssTransformRsaPssSha512GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
 <a class="link" href="xmlsec-nss-crypto.html#xmlSecNssTransformRsaPkcs1GetKlass" title="xmlSecNssTransformRsaPkcs1GetKlass ()">xmlSecNssTransformRsaPkcs1GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
@@ -478,6 +518,10 @@
 <col>
 </colgroup>
 <tbody>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-nss-crypto.html#XMLSEC-NO-RSA-OAEP:CAPS" title="XMLSEC_NO_RSA_OAEP">XMLSEC_NO_RSA_OAEP</a></td>
+</tr>
 <tr>
 <td class="define_keyword">#define</td>
 <td class="function_name"><a class="link" href="xmlsec-openssl-crypto.html#XMLSEC-NO-MD5:CAPS" title="XMLSEC_NO_MD5">XMLSEC_NO_MD5</a></td>
@@ -620,11 +664,27 @@
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
-<td class="function_name"><a class="link" href="xmlsec-nss-crypto.html#xmlSecNssTransformRsaPkcs1Id" title="xmlSecNssTransformRsaPkcs1Id">xmlSecNssTransformRsaPkcs1Id</a></td>
+<td class="function_name"><a class="link" href="xmlsec-nss-crypto.html#xmlSecNssTransformRsaPssSha1Id" title="xmlSecNssTransformRsaPssSha1Id">xmlSecNssTransformRsaPssSha1Id</a></td>
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
-<td class="function_name"><a class="link" href="xmlsec-nss-crypto.html#XMLSEC-NSS-RSA-OAEP-ENABLED:CAPS" title="XMLSEC_NSS_RSA_OAEP_ENABLED">XMLSEC_NSS_RSA_OAEP_ENABLED</a></td>
+<td class="function_name"><a class="link" href="xmlsec-nss-crypto.html#xmlSecNssTransformRsaPssSha224Id" title="xmlSecNssTransformRsaPssSha224Id">xmlSecNssTransformRsaPssSha224Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-nss-crypto.html#xmlSecNssTransformRsaPssSha256Id" title="xmlSecNssTransformRsaPssSha256Id">xmlSecNssTransformRsaPssSha256Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-nss-crypto.html#xmlSecNssTransformRsaPssSha384Id" title="xmlSecNssTransformRsaPssSha384Id">xmlSecNssTransformRsaPssSha384Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-nss-crypto.html#xmlSecNssTransformRsaPssSha512Id" title="xmlSecNssTransformRsaPssSha512Id">xmlSecNssTransformRsaPssSha512Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-nss-crypto.html#xmlSecNssTransformRsaPkcs1Id" title="xmlSecNssTransformRsaPkcs1Id">xmlSecNssTransformRsaPkcs1Id</a></td>
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
@@ -1329,6 +1389,65 @@ xmlSecNssTransformRsaSha512GetKlass (<em class="parameter"><code><span class="ty
 </div>
 <hr>
 <div class="refsect2">
+<a name="xmlSecNssTransformRsaPssSha1GetKlass"></a><h3>xmlSecNssTransformRsaPssSha1GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecNssTransformRsaPssSha1GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The RSA-PSS-SHA1 signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecNssTransformRsaPssSha1GetKlass.returns"></a><h4>Returns</h4>
+<p> RSA-PSS-SHA1 signature transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecNssTransformRsaPssSha224GetKlass"></a><h3>xmlSecNssTransformRsaPssSha224GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecNssTransformRsaPssSha224GetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The RSA-PSS-SHA224 signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecNssTransformRsaPssSha224GetKlass.returns"></a><h4>Returns</h4>
+<p> RSA-PSS-SHA224 signature transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecNssTransformRsaPssSha256GetKlass"></a><h3>xmlSecNssTransformRsaPssSha256GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecNssTransformRsaPssSha256GetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The RSA-PSS-SHA256 signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecNssTransformRsaPssSha256GetKlass.returns"></a><h4>Returns</h4>
+<p> RSA-PSS-SHA256 signature transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecNssTransformRsaPssSha384GetKlass"></a><h3>xmlSecNssTransformRsaPssSha384GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecNssTransformRsaPssSha384GetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The RSA-PSS-SHA384 signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecNssTransformRsaPssSha384GetKlass.returns"></a><h4>Returns</h4>
+<p> RSA-PSS-SHA384 signature transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecNssTransformRsaPssSha512GetKlass"></a><h3>xmlSecNssTransformRsaPssSha512GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecNssTransformRsaPssSha512GetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The RSA-PSS-SHA512 signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecNssTransformRsaPssSha512GetKlass.returns"></a><h4>Returns</h4>
+<p> RSA-PSS-SHA512 signature transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
 <a name="xmlSecNssTransformRsaPkcs1GetKlass"></a><h3>xmlSecNssTransformRsaPkcs1GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecNssTransformRsaPkcs1GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
@@ -1343,7 +1462,7 @@ xmlSecNssTransformRsaPkcs1GetKlass (<em class="parameter"><code><span class="typ
 <a name="xmlSecNssTransformRsaOaepGetKlass"></a><h3>xmlSecNssTransformRsaOaepGetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecNssTransformRsaOaepGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>The RSA-PKCS1 key transport transform klass (XMLEnc 1.1).</p>
+<p>The RSA-PKCS1 key transport transform klass (XMLEnc 1.0).</p>
 <div class="refsect3">
 <a name="xmlSecNssTransformRsaOaepGetKlass.returns"></a><h4>Returns</h4>
 <p> RSA-PKCS1 key transport transform klass.</p>
@@ -1355,6 +1474,11 @@ xmlSecNssTransformRsaOaepGetKlass (<em class="parameter"><code><span class="type
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecNssTransformRsaOaepEnc11GetKlass
                                (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The RSA-PKCS1 key transport transform klass (XMLEnc 1.1).</p>
+<div class="refsect3">
+<a name="xmlSecNssTransformRsaOaepEnc11GetKlass.returns"></a><h4>Returns</h4>
+<p> RSA-PKCS1 key transport transform klass.</p>
+</div>
 </div>
 <hr>
 <div class="refsect2">
@@ -1425,6 +1549,12 @@ xmlSecNssTransformMd5GetKlass (<em class="parameter"><code><span class="type">vo
 </div>
 <div class="refsect1">
 <a name="xmlsec-nss-crypto.other_details"></a><h2>Types and Values</h2>
+<div class="refsect2">
+<a name="XMLSEC-NO-RSA-OAEP:CAPS"></a><h3>XMLSEC_NO_RSA_OAEP</h3>
+<pre class="programlisting">#define XMLSEC_NO_RSA_OAEP 1
+</pre>
+</div>
+<hr>
 <div class="refsect2">
 <a name="XMLSEC-NO-MD5:CAPS"></a><h3>XMLSEC_NO_MD5</h3>
 <pre class="programlisting">#define XMLSEC_NO_MD5 1
@@ -1642,15 +1772,39 @@ xmlSecNssTransformMd5GetKlass (<em class="parameter"><code><span class="type">vo
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecNssTransformRsaPkcs1Id"></a><h3>xmlSecNssTransformRsaPkcs1Id</h3>
-<pre class="programlisting">#define             xmlSecNssTransformRsaPkcs1Id</pre>
-<p>The RSA PKCS1 key transport transform klass.</p>
+<a name="xmlSecNssTransformRsaPssSha1Id"></a><h3>xmlSecNssTransformRsaPssSha1Id</h3>
+<pre class="programlisting">#define             xmlSecNssTransformRsaPssSha1Id</pre>
+<p>The RSA-PSS-SHA1 signature transform klass.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="XMLSEC-NSS-RSA-OAEP-ENABLED:CAPS"></a><h3>XMLSEC_NSS_RSA_OAEP_ENABLED</h3>
-<pre class="programlisting">#define XMLSEC_NSS_RSA_OAEP_ENABLED   1
-</pre>
+<a name="xmlSecNssTransformRsaPssSha224Id"></a><h3>xmlSecNssTransformRsaPssSha224Id</h3>
+<pre class="programlisting">#define             xmlSecNssTransformRsaPssSha224Id</pre>
+<p>The RSA-PSS-SHA224 signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecNssTransformRsaPssSha256Id"></a><h3>xmlSecNssTransformRsaPssSha256Id</h3>
+<pre class="programlisting">#define             xmlSecNssTransformRsaPssSha256Id</pre>
+<p>The RSA-PSS-SHA256 signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecNssTransformRsaPssSha384Id"></a><h3>xmlSecNssTransformRsaPssSha384Id</h3>
+<pre class="programlisting">#define             xmlSecNssTransformRsaPssSha384Id</pre>
+<p>The RSA-PSS-SHA384 signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecNssTransformRsaPssSha512Id"></a><h3>xmlSecNssTransformRsaPssSha512Id</h3>
+<pre class="programlisting">#define             xmlSecNssTransformRsaPssSha512Id</pre>
+<p>The RSA-PSS-SHA512 signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecNssTransformRsaPkcs1Id"></a><h3>xmlSecNssTransformRsaPkcs1Id</h3>
+<pre class="programlisting">#define             xmlSecNssTransformRsaPkcs1Id</pre>
+<p>The RSA PKCS1 key transport transform klass.</p>
 </div>
 <hr>
 <div class="refsect2">

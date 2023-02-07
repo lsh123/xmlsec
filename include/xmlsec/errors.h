@@ -369,7 +369,7 @@ extern "C" {
 #define XMLSEC_ERRORS_R_ASSERTION                       100
 
 /**
- * XMLSEC_ERRORS_R_CAST_IMPOSSIBLE:
+ * XMLSEC_ERROR_R_CAST_IMPOSSIBLE:
  *
  * Impossible to cast from one type to another.
  */
@@ -527,5 +527,3 @@ XMLSEC_EXPORT void xmlSecError                          (const char* file,
 #endif /* __cplusplus */
 
 #endif /* __XMLSEC_ERRORS_H__ */
-
-

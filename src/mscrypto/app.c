@@ -13,6 +13,7 @@
  * @Short_description: Application support functions for Microsoft Crypto API.
  * @Stability: Stable
  *
+* Common functions for xmlsec1 command line utility tool for MSCrypto.
  */
 
 #include "globals.h"
@@ -1066,4 +1067,3 @@ void*
 xmlSecMSCryptoAppGetDefaultPwdCallback(void) {
     return(NULL);
 }
-

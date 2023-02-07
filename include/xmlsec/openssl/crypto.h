@@ -460,7 +460,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformGostR3411_94GetKlas
  *******************************************************************/
 
 /**
- * xmlSecOpenSSLKeyDataGostR4310_2012_256Id:
+ * xmlSecOpenSSLKeyDataGostR3410_2012_256Id:
  *
  * The GOST R 34.10-2012 256 key klass.
  */
@@ -470,7 +470,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataGostR3410_2012_256Ge
 
 
 /**
- * xmlSecOpenSSLKeyDataGostR4310_2012_512Id:
+ * xmlSecOpenSSLKeyDataGostR3410_2012_512Id:
  *
  * The GOST R 34.10-2012 512 key klass.
  */

@@ -1,6 +1,7 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * X509 certificates verification support functions for Microsoft Crypto API.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -9,10 +10,7 @@
  * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:x509vfy
- * @Short_description: X509 certificates verification support functions for Microsoft Crypto API.
- * @Stability: Private
- *
+ * SECTION:x509
  */
 
 #include "globals.h"
@@ -1311,5 +1309,3 @@ xmlSecMSCryptoX509GetNameString(PCCERT_CONTEXT pCertContext, DWORD dwType, DWORD
 }
 
 #endif /* XMLSEC_NO_X509 */
-
-

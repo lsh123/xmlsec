@@ -1,6 +1,7 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * Ciphers transforms implementation for NSS.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -9,10 +10,7 @@
  * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
 /**
- * SECTION:ciphers
- * @Short_description: Ciphers transforms implementation for NSS.
- * @Stability: Private
- *
+ * SECTION:crypto
  */
 
 #include "globals.h"
@@ -784,4 +782,3 @@ xmlSecNssTransformDes3CbcGetKlass(void) {
     return(&xmlSecNssDes3CbcKlass);
 }
 #endif /* XMLSEC_NO_DES */
-

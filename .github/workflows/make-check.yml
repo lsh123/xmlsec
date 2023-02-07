@@ -106,9 +106,7 @@ jobs:
     - name: configure
       working-directory: build
       run: |
-          ../autogen.sh --enable-werror --enable-pedantic  \
-              --without-gcrypt --without-gnutls \
-              ${{ matrix.config_flags }}
+          ../autogen.sh --enable-werror --enable-pedantic ${{ matrix.config_flags }}
     - name: make
       working-directory: build
       run: |
@@ -154,6 +152,8 @@ jobs:
           mingw-w64-${{ matrix.arch }}-libxslt
           mingw-w64-${{ matrix.arch }}-libltdl
           mingw-w64-${{ matrix.arch }}-openssl
+          mingw-w64-${{ matrix.arch }}-libgcrypt
+          mingw-w64-${{ matrix.arch }}-gnutls
     - name: configure-git
       run: |
           git config --global core.autocrlf input

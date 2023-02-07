@@ -1136,5 +1136,4 @@ xmlSecGnuTLSTransformRsaPssSha512GetKlass(void) {
 }
 #endif /* XMLSEC_NO_SHA512 */
 
-
 #endif /* XMLSEC_NO_RSA */

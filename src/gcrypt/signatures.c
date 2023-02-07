@@ -2074,7 +2074,7 @@ xmlSecGCryptEcdsaVerify(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
     if(dataSize != 2 * keySize) {
         xmlSecInternalError3("Invalid signature size", NULL,
             "actual=" XMLSEC_SIZE_FMT "; expected=" XMLSEC_SIZE_FMT, dataSize, 2 * keySize);
-        return(-1);
+        goto done;
     }
 
     /* get the current digest, can't use "hash" :( */

@@ -40,6 +40,47 @@ execEncTest $res_success \
     "--aeskey:TestAesGcmKey $topfolder/xmlenc11-interop-2012/xenc11-example-AES128-GCM.key"
 
 
+# Advanced RSA OAEP modes:
+# - MSCrypto only supports SHA1 for digest and mgf1
+# - GCrypt/GnuTLS and MSCng only supoprts the *same* algorithm for *both* digest and mgf1
+if [ "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" -a "z$crypto" != "zgcrypt" ] ; then
+    execEncTest $res_success \
+        "" \
+        "xmlenc11-interop-2012/cipherText__RSA-2048__aes128-gcm__rsa-oaep-mgf1p" \
+        "aes128-gcm rsa-oaep-mgf1p sha256 sha1" \
+        "" \
+        "$priv_key_option:TestRsa2048Key $topfolder/xmlenc11-interop-2012/RSA-2048_SHA256WithRSA.$priv_key_format --pwd passwd" \
+        "$priv_key_option:TestRsa2048Key $topfolder/xmlenc11-interop-2012/RSA-2048_SHA256WithRSA.$priv_key_format --pwd passwd --session-key aes-128 --xml-data $topfolder/xmlenc11-interop-2012/cipherText__RSA-2048__aes128-gcm__rsa-oaep-mgf1p.data"  \
+        "$priv_key_option:TestRsa2048Key $topfolder/xmlenc11-interop-2012/RSA-2048_SHA256WithRSA.$priv_key_format --pwd passwd"
+
+    execEncTest $res_success \
+        "" \
+        "xmlenc11-interop-2012/cipherText__RSA-3072__aes192-gcm__rsa-oaep-mgf1p__Sha256" \
+        "aes192-gcm rsa-oaep-mgf1p sha256 sha1" \
+        "" \
+        "$priv_key_option:TestRsa3072Key $topfolder/xmlenc11-interop-2012/RSA-3072_SHA256WithRSA.$priv_key_format --pwd passwd" \
+        "$priv_key_option:TestRsa3072Key $topfolder/xmlenc11-interop-2012/RSA-3072_SHA256WithRSA.$priv_key_format --pwd passwd --session-key aes-192 --xml-data $topfolder/xmlenc11-interop-2012/cipherText__RSA-3072__aes192-gcm__rsa-oaep-mgf1p__Sha256.data"  \
+        "$priv_key_option:TestRsa3072Key $topfolder/xmlenc11-interop-2012/RSA-3072_SHA256WithRSA.$priv_key_format --pwd passwd"
+
+    execEncTest $res_success \
+        "" \
+        "xmlenc11-interop-2012/cipherText__RSA-3072__aes256-gcm__rsa-oaep__Sha384-MGF_Sha1" \
+        "aes256-gcm rsa-oaep-mgf1p sha384 sha1" \
+        "" \
+        "$priv_key_option:TestRsa3072Key $topfolder/xmlenc11-interop-2012/RSA-3072_SHA256WithRSA.$priv_key_format --pwd passwd" \
+        "$priv_key_option:TestRsa3072Key $topfolder/xmlenc11-interop-2012/RSA-3072_SHA256WithRSA.$priv_key_format --pwd passwd --session-key aes-256 --xml-data $topfolder/xmlenc11-interop-2012/cipherText__RSA-3072__aes256-gcm__rsa-oaep__Sha384-MGF_Sha1.data"  \
+        "$priv_key_option:TestRsa3072Key $topfolder/xmlenc11-interop-2012/RSA-3072_SHA256WithRSA.$priv_key_format --pwd passwd"
+
+    execEncTest $res_success \
+        "" \
+        "xmlenc11-interop-2012/cipherText__RSA-4096__aes256-gcm__rsa-oaep__Sha512-MGF_Sha1_PSource" \
+        "aes256-gcm rsa-oaep-mgf1p sha512 sha1" \
+        "" \
+        "$priv_key_option:TestRsa3072Key $topfolder/xmlenc11-interop-2012/RSA-4096_SHA256WithRSA.$priv_key_format --pwd passwd" \
+        "$priv_key_option:TestRsa3072Key $topfolder/xmlenc11-interop-2012/RSA-4096_SHA256WithRSA.$priv_key_format --pwd passwd --session-key aes-256 --xml-data $topfolder/xmlenc11-interop-2012/cipherText__RSA-4096__aes256-gcm__rsa-oaep__Sha512-MGF_Sha1_PSource.data"  \
+        "$priv_key_option:TestRsa3072Key $topfolder/xmlenc11-interop-2012/RSA-4096_SHA256WithRSA.$priv_key_format --pwd passwd"
+fi
+
 ##########################################################################
 #
 # aleksey-xmlenc-01

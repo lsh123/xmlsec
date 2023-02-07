@@ -1,534 +1,446 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>XML Security Library: XML Encryption</title>
-<link rel="stylesheet" href="css/main.css">
+  <meta name="generator" content="HTML Tidy for HTML5 for Linux version 5.6.0">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>XML Security Library: XML Encryption</title>
+  <link rel="stylesheet" href="css/main.css">
 </head>
-<body><table width="100%" valign="top"><tr valign="top">
-<td valign="top" align="left" width="210">
-<img src="images/logo.gif" alt="XML Security Library" border="0"><p></p>
-<ul>
-<li><a href="index.html">Home</a></li>
-<li><a href="download.html">Download</a></li>
-<li><a href="news.html">News</a></li>
-<li><a href="documentation.html">Documentation</a></li>
-<ul>
-<li><a href="faq.html">FAQ</a></li>
-<li><a href="api/xmlsec-notes.html">Tutorial</a></li>
-<li><a href="api/xmlsec-reference.html">API reference</a></li>
-<li><a href="api/xmlsec-examples.html">Examples</a></li>
-</ul>
-<li><a href="xmldsig.html">XML Digital Signature</a></li>
-<li><a href="xmlenc.html">XML Encryption</a></li>
-<li><a href="c14n.html">XML Canonicalization</a></li>
-<li><a href="bugs.html">Reporting Bugs</a></li>
-<li><a href="mailing-list.html">Mailing list</a></li>
-<li><a href="related.html">Related</a></li>
-<li><a href="authors.html">Authors</a></li>
-</ul>
-<table width="100%">
-<tr>
-<td width="15"></td>
-<td><a href="http://xmlsoft.org/"><img src="images/libxml2-logo.png" alt="LibXML2" border="0"></a></td>
-</tr>
-<tr>
-<td width="15"></td>
-<td><a href="http://xmlsoft.org/XSLT"><img src="images/libxslt-logo.png" alt="LibXSLT" border="0"></a></td>
-</tr>
-<tr>
-<td width="15"></td>
-<td><a href="http://www.openssl.org/"><img src="images/openssl-logo.png" alt="OpenSSL" border="0"></a></td>
-</tr>
-<!--Links - start--><!--Links - end-->
-</table>
-</td>
-<td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent"><div align="center">
-            <h2> XML Encryption </h2>
-<div align="left">
-<a href="http://www.w3.org/TR/xmlenc-core">XML Encryption 1.0</a> standard
-specifies
-the process for encryptind data and representing the result in XML
-document.
-The data may be an XML element, or an XML element content, or any
-arbitrary
-data (including XML document). </div>
-            <div align="center">
-            <h3>XML Security Library Interoperability Report</h3>
-            <h4 style="text-align: center;">XML Encryption 1.0 (<a href="http://www.w3.org/TR/xmlenc-core/">W3C Recommendation</a>)</h4>
-            </div>
-            <div align="center">
-            <p> </p>
-            <table style="width: 85%;" border="1" cellpadding="2" cellspacing="2"><tbody>
-<tr>
-<td style="width: 40%;" align="left" valign="top"><b>Features and algorithms</b></td>
-    <td valign="top"><b>XMLSec with OpenSSL</b></td>
-    <td valign="top"><b>XMLSec with GnuTLS</b></td>
-    <td valign="top"><b>XMLSec with GCrypt</b></td>
-    <td valign="top"><b>XMLSec with NSS</b></td>
-    <td valign="top"><b>XMLSec with MSCrypto</b></td>
-    <td valign="top"><b>XMLSec with MSNG</b></td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">Laxly valid schema
-    generation of EncryptedData/EncryptedKey</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">
-    <ul><li>Normalized Form C generations.</li></ul>
-</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">Type, MimeType, and Encoding</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">CipherReference URI derefencing</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">
-    <ul><li>Transforms </li></ul>
-</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">
-    <ul><li>ds:KeyInfo</li></ul>
-</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">
-    <ul><li>enc:DHKeyValue</li></ul>
-</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">
-    <ul><li>ds:KeyName</li></ul>
-</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">
-    <ul><li>ds:RetrievalMethod</li></ul>
-</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">ReferenceList</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">EncryptionProperties</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">Satisfactory Performance</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">Required Type support: Element and Content.</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">Encryption</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">
-    <ul><li>Serialization of XML Element and Content
-    (NFC conversion from non-Unicode encodings).
-    </li></ul>
-</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">
-    <ul><li>Encryptor returns EncryptedData structure. </li></ul>
-</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">
-    <ul><li> Encryptor replaces EncryptedData into source
-    document (when Type is Element or Content).</li></ul>
-</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">Decryption</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">
-    <ul><li>The decryptor returns the data and its Type to
-    the application (be it an octet sequence or key value).</li></ul>
-</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">
-    <ul><li>If data is Element or Content the decryptor
-    return the UTF-8 encoding XML character data.</li></ul>
-</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">
-    <ul><li>If data is Element or Content the decryptor
-    replaces the EncryptedData in the source document with the decrypted
-    data.</li></ul>
-</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">TRIPLEDES</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">AES-128 (CBC)</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-    <td style="width: 40%;" align="left" valign="top">AES-192 (CBC)</td>
-        <td valign="top">Y</td>
-        <td valign="top">Y</td>
-        <td valign="top">Y</td>
-        <td valign="top">Y</td>
-        <td valign="top">Y</td>
-        <td valign="top">Y</td>
+<body>
+  <table width="100%" valign="top">
+    <tr valign="top">
+      <td valign="top" align="left" width="210">
+        <img src="images/logo.gif" alt="XML Security Library" border="0">
+        <ul>
+          <li>
+            <a href="index.html">Home</a>
+          </li>
+          <li>
+            <a href="download.html">Download</a>
+          </li>
+          <li>
+            <a href="news.html">News</a>
+          </li>
+          <li>
+            <a href="documentation.html">Documentation</a>
+          </li>
+          <ul>
+            <li>
+              <a href="faq.html">FAQ</a>
+            </li>
+            <li>
+              <a href="api/xmlsec-notes.html">Tutorial</a>
+            </li>
+            <li>
+              <a href="api/xmlsec-reference.html">API reference</a>
+            </li>
+            <li>
+              <a href="api/xmlsec-examples.html">Examples</a>
+            </li>
+          </ul>
+          <li>
+            <a href="xmldsig.html">XML Digital Signature</a>
+          </li>
+          <li>
+            <a href="xmlenc.html">XML Encryption</a>
+          </li>
+          <li>
+            <a href="c14n.html">XML Canonicalization</a>
+          </li>
+          <li>
+            <a href="bugs.html">Reporting Bugs</a>
+          </li>
+          <li>
+            <a href="mailing-list.html">Mailing list</a>
+          </li>
+          <li>
+            <a href="related.html">Related</a>
+          </li>
+          <li>
+            <a href="authors.html">Authors</a>
+          </li>
+        </ul>
+        <table width="100%">
+          <tr>
+            <td width="15"></td>
+            <td>
+              <a href="http://xmlsoft.org/"><img src="images/libxml2-logo.png" alt="LibXML2" border="0"></a>
+            </td>
+          </tr>
+          <tr>
+            <td width="15"></td>
+            <td>
+              <a href="http://xmlsoft.org/XSLT"><img src="images/libxslt-logo.png" alt="LibXSLT" border="0"></a>
+            </td>
+          </tr>
+          <tr>
+            <td width="15"></td>
+            <td>
+              <a href="http://www.openssl.org/"><img src="images/openssl-logo.png" alt="OpenSSL" border="0"></a>
+            </td>
+          </tr><!--Links - start--><!--Links - end-->
+        </table>
+      </td>
+      <td valign="top">
+        <table width="100%" valign="top">
+          <tr>
+            <td valign="top" align="left" id="xmlsecContent">
+              <div align="center">
+                <h2>XML Encryption Interoperability Report</h2>
+                <p>The following report summarizes the XML Security library support for XML Encryptopn (see <a href="https://www.w3.org/TR/xmlenc-core1/">XML Encryption 1.1</a>).</p>
+              </div>
+              <div align="center" id="core">
+                <h3>XMLSec Library core features</h3>
+                <table style="width: 85%;" border="1" cellpadding="2" cellspacing="2">
+                  <tbody>
+                    <tr>
+                      <td style="width: 40%;" align="left" valign="top">
+                        <a href="https://www.w3.org/TR/xmlenc-core1/#sec-EncryptedType">The EncryptedType Element</a>
+                      </td>
+                      <td valign="top">Yes</td>
+                    </tr>
+                    <tr>
+                      <td style="width: 40%;" align="left" valign="top">
+                        <a href="https://www.w3.org/TR/xmlenc-core1/#sec-EncryptionMethod"></a>The EncryptionMethod Element
+                      </td>
+                      <td valign="top">Yes</td>
+                    </tr>
+                    <tr>
+                      <td style="width: 40%;" align="left" valign="top">
+                        <a href="https://www.w3.org/TR/xmlenc-core1/#sec-CipherData">The CipherData Element</a>
+                      </td>
+                      <td valign="top">Yes</td>
+                    </tr>
+                    <tr>
+                      <td style="width: 40%;" align="left" valign="top">
+                        <a href="https://www.w3.org/TR/xmlenc-core1/#sec-CipherReference">The CipherReference Element</a>
+                      </td>
+                      <td valign="top">Yes</td>
+                    </tr>
+                    <tr>
+                      <td style="width: 40%;" align="left" valign="top">
+                        <a href="https://www.w3.org/TR/xmlenc-core1/#sec-EncryptedData">The EncryptedData Element</a>
+                      </td>
+                      <td valign="top">Yes</td>
+                    </tr>
+                    <tr>
+                      <td style="width: 40%;" align="left" valign="top">
+                        <a href="https://www.w3.org/TR/xmlenc-core1/#sec-EncryptedKey">Extensions to ds:KeyInfo Element: The EncryptedKey Element</a>
+                      </td>
+                      <td valign="top">Yes</td>
+                    </tr>
+                    <tr>
+                      <td style="width: 40%;" align="left" valign="top">
+                        <a href="https://www.w3.org/TR/xmlenc-core1/#sec-DerivedKey">Extensions to ds:KeyInfo Element: The DerivedKey Element</a>
+                      </td>
+                      <td valign="top">No</td>
+                    </tr>
+                    <tr>
+                      <td style="width: 40%;" align="left" valign="top">
+                        <a href="https://www.w3.org/TR/xmlenc-core1/#sec-ds-RetrievalMethod">Extensions to ds:KeyInfo Element: The ds:RetrievalMethod Element</a>
+                      </td>
+                      <td valign="top">Yes</td>
+                    </tr>
+                    <tr>
+                      <td style="width: 40%;" align="left" valign="top">
+                        <a href="https://www.w3.org/TR/xmlenc-core1/#sec-ReferenceList">The ReferenceList Element</a>
+                      </td>
+                      <td valign="top">Yes</td>
+                    </tr>
+                    <tr>
+                      <td style="width: 40%;" align="left" valign="top">
+                        <a href="https://www.w3.org/TR/xmlenc-core1/#sec-EncryptionProperties">The EncryptionProperties Element</a>
+                      </td>
+                      <td valign="top">Yes</td>
+                    </tr>
+                    <tr>
+                      <td style="width: 40%;" align="left" valign="top">
+                        <a href=""></a>
+                      </td>
+                      <td valign="top">Yes</td>
+                    </tr>
+                    <tr>
+                      <td style="width: 40%;" align="left" valign="top">
+                        <a href=""></a>
+                      </td>
+                      <td valign="top">Yes</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div align="center" id="algorithms">
+                <h3>Cryptographic algorithms</h3>
+                <table style="width: 85%;" border="1" cellpadding="2" cellspacing="2">
+                  <tbody>
+                    <tr>
+                      <td style="width: 40%;" align="left" valign="top">&nbsp;</td>
+                      <td valign="top"><b>XMLSec with OpenSSL</b></td>
+                      <td valign="top"><b>XMLSec with NSS</b></td>
+                      <td valign="top"><b>XMLSec with GnuTLS</b></td>
+                      <td valign="top"><b>XMLSec with MSCng</b></td>
+                      <td valign="top"><b>XMLSec with MSCrypto</b></td>
+                      <td valign="top"><b>XMLSec with GCrypt</b></td>
+                    </tr>
+                    <tr>
+                      <td style="width: 40%;" align="left" valign="top" colspan="7"><b>Block Encryption Algorithms</b></td>
+                    </tr>
+                    <tr>
+                      <td style="width: 40%;" align="left" valign="top">
+                        <a href="https://www.w3.org/TR/xmlenc-core1/#sec-tripledes-cbc">Triple DES (DES3)</a>
+                      </td>
+                      <td valign="top">Yes</td><!-- OpenSSL-->
+                      <td valign="top">Yes</td><!-- NSS -->
+                      <td valign="top">Yes</td><!-- GnuTLS -->
+                      <td valign="top">Yes</td><!-- MSCng -->
+                      <td valign="top">Yes</td><!-- MSCrypto -->
+                      <td valign="top">Yes</td><!-- GCrypt -->
+                    </tr>
+                    <tr>
+                      <td style="width: 40%;" align="left" valign="top">
+                        <a href="https://www.w3.org/TR/xmlenc-core1/#sec-AES">AES-CBC-128, AES-CBC-192, AES-CBC-256</a>
+                      </td>
+                      <td valign="top">Yes</td><!-- OpenSSL-->
+                      <td valign="top">Yes</td><!-- NSS -->
+                      <td valign="top">Yes</td><!-- GnuTLS -->
+                      <td valign="top">Yes</td><!-- MSCng -->
+                      <td valign="top">Yes</td><!-- MSCrypto -->
+                      <td valign="top">Yes</td><!-- GCrypt -->
+                    </tr>
+                    <tr>
+                      <td style="width: 40%;" align="left" valign="top">
+                        <a href="https://www.w3.org/TR/xmlenc-core1/#sec-AES-GCM">AES-GCM-128, AES-GCM-192, AES-GCM-256</a>
+                      </td>
+                      <td valign="top">Yes</td><!-- OpenSSL-->
+                      <td valign="top">No</td><!-- NSS -->
+                      <td valign="top">Yes</td><!-- GnuTLS -->
+                      <td valign="top">Yes</td><!-- MSCng -->
+                      <td valign="top">Yes</td><!-- MSCrypto -->
+                      <td valign="top">No</td><!-- GCrypt -->
+                    </tr>
+                    <tr>
+                      <td style="width: 40%;" align="left" valign="top" colspan="7"><b>Key Derivation</b></td>
+                    </tr>
+                    <tr>
+                      <td style="width: 40%;" align="left" valign="top">
+                        <a href="https://www.w3.org/TR/xmlenc-core1/#sec-ConcatKDF">ConcatKDF</a>
+                      </td>
+                      <td valign="top">No</td><!-- OpenSSL-->
+                      <td valign="top">No</td><!-- NSS -->
+                      <td valign="top">No</td><!-- GnuTLS -->
+                      <td valign="top">No</td><!-- MSCng -->
+                      <td valign="top">No</td><!-- MSCrypto -->
+                      <td valign="top">No</td><!-- GCrypt -->
+                    </tr>
+                    <tr>
+                      <td style="width: 40%;" align="left" valign="top">
+                        <a href="https://www.w3.org/TR/xmlenc-core1/#sec-PBKDF2">PBKDF2</a>
+                      </td>
+                      <td valign="top">No</td><!-- OpenSSL-->
+                      <td valign="top">No</td><!-- NSS -->
+                      <td valign="top">No</td><!-- GnuTLS -->
+                      <td valign="top">No</td><!-- MSCng -->
+                      <td valign="top">No</td><!-- MSCrypto -->
+                      <td valign="top">No</td><!-- GCrypt -->
+                    </tr>
+                    <tr>
+                      <td style="width: 40%;" align="left" valign="top" colspan="7"><b>Key Transport</b></td>
+                    </tr>
+                    <tr>
+                      <td style="width: 40%;" align="left" valign="top">
+                        <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-1_5">RSA PKCS1 v1.5</a>
+                      </td>
+                      <td valign="top">Yes</td><!-- OpenSSL-->
+                      <td valign="top">Yes</td><!-- NSS -->
+                      <td valign="top">Yes</td><!-- GnuTLS -->
+                      <td valign="top">Yes</td><!-- MSCng -->
+                      <td valign="top">Yes</td><!-- MSCrypto -->
+                      <td valign="top">Yes</td><!-- GCrypt -->
+                    </tr>
+                    <tr>
+                      <td style="width: 40%;" align="left" valign="top">
+                        <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP">RSA-OAEP (MGF1 with SHA1)</a>
+                      </td>
+                      <td valign="top">Yes</td><!-- OpenSSL-->
+                      <td valign="top">Yes</td><!-- NSS -->
+                      <td valign="top">No</td><!-- GnuTLS -->
+                      <td valign="top">Yes</td><!-- MSCng -->
+                      <td valign="top">Yes</td><!-- MSCrypto -->
+                      <td valign="top">Yes</td><!-- GCrypt -->
+                    </tr>
+                    <tr>
+                      <td style="width: 40%;" align="left" valign="top">
+                        <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP">RSA-OAEP</a>
+                      </td>
+                      <td valign="top">
+                        <a href="xmldsig.html#algorithms">All supported digests</a> and MGF1-SHA1, MGF1-SHA224, MGF1-SHA256, MGF1-SHA384, MGF1-SHA512
+                      </td><!-- OpenSSL-->
+                      <td valign="top">
+                        <a href="xmldsig.html#algorithms">All supported digests</a> and MGF1-SHA1, MGF1-SHA224, MGF1-SHA256, MGF1-SHA384, MGF1-SHA512
+                      </td><!-- NSS -->
+                      <td valign="top">No</td><!-- GnuTLS -->
+                      <td valign="top">MGF1-SHA1, MGF1-SHA256, MGF1-SHA384, MGF1-SHA512 (digest and MGF1 must be the same)</td><!-- MSCng -->
+                      <td valign="top">No</td><!-- MSCrypto -->
+                      <td valign="top">MGF1-SHA1, MGF1-SHA224, MGF1-SHA256, MGF1-SHA384, MGF1-SHA512 (digest and MGF1 must be the same)</td><!-- GCrypt -->
+                    </tr>
+                    <tr>
+                      <td style="width: 40%;" align="left" valign="top" colspan="7"><b>Key Transport</b></td>
+                    </tr>
+                    <tr>
+                      <td style="width: 40%;" align="left" valign="top">
+                        <a href="https://www.w3.org/TR/xmlenc-core1/#sec-DHKeyAgreement">Diffie-Hellman</a>
+                      </td>
+                      <td valign="top">No</td><!-- OpenSSL-->
+                      <td valign="top">No</td><!-- NSS -->
+                      <td valign="top">No</td><!-- GnuTLS -->
+                      <td valign="top">No</td><!-- MSCng -->
+                      <td valign="top">No</td><!-- MSCrypto -->
+                      <td valign="top">No</td><!-- GCrypt -->
+                    </tr>
+                    <tr>
+                      <td style="width: 40%;" align="left" valign="top">
+                        <a href="https://www.w3.org/TR/xmlenc-core1/#sec-ECDH-ES">Elliptic Curve Diffie-Hellman (ECDH)</a>
+                      </td>
+                      <td valign="top">No</td><!-- OpenSSL-->
+                      <td valign="top">No</td><!-- NSS -->
+                      <td valign="top">No</td><!-- GnuTLS -->
+                      <td valign="top">No</td><!-- MSCng -->
+                      <td valign="top">No</td><!-- MSCrypto -->
+                      <td valign="top">No</td><!-- GCrypt -->
+                    </tr>
+                    <tr>
+                      <td style="width: 40%;" align="left" valign="top" colspan="7"><b>Symmetric Key Wrap</b></td>
+                    </tr>
+                    <tr>
+                      <td style="width: 40%;" align="left" valign="top">
+                        <a href="https://www.w3.org/TR/xmlenc-core1/#sec-kw-tripledes">Triple DES Key Wrap</a>
+                      </td>
+                      <td valign="top">Yes</td><!-- OpenSSL-->
+                      <td valign="top">Yes</td><!-- NSS -->
+                      <td valign="top">Yes</td><!-- GnuTLS -->
+                      <td valign="top">Yes</td><!-- MSCng -->
+                      <td valign="top">Yes</td><!-- MSCrypto -->
+                      <td valign="top">Yes</td><!-- GCrypt -->
+                    </tr>
+                    <tr>
+                      <td style="width: 40%;" align="left" valign="top">
+                        <a href="https://www.w3.org/TR/xmlenc-core1/#sec-kw-aes">AES KeyWrap (AES-128, AES-192, AES-256)</a>
+                      </td>
+                      <td valign="top">Yes</td><!-- OpenSSL-->
+                      <td valign="top">Yes</td><!-- NSS -->
+                      <td valign="top">Yes</td><!-- GnuTLS -->
+                      <td valign="top">Yes</td><!-- MSCng -->
+                      <td valign="top">Yes</td><!-- MSCrypto -->
+                      <td valign="top">Yes</td><!-- GCrypt -->
+                    </tr>
+                    <tr>
+                      <td style="width: 40%;" align="left" valign="top" colspan="7"><b>Message Digest</b></td>
+                    </tr>
+                    <tr>
+                      <td style="width: 40%;" align="left" valign="top">
+                        <a href="https://www.w3.org/TR/xmlenc-core1/#sec-Alg-MessageDigest">Message Digest Algorithms</a>
+                      </td>
+                      <td valign="top">
+                        See <a href="xmldsig.html">XMLDsig Report</a>
+                      </td><!-- OpenSSL-->
+                      <td valign="top">
+                        See <a href="xmldsig.html">XMLDsig Report</a>
+                      </td><!-- NSS -->
+                      <td valign="top">
+                        See <a href="xmldsig.html">XMLDsig Report</a>
+                      </td><!-- GnuTLS -->
+                      <td valign="top">
+                        See <a href="xmldsig.html">XMLDsig Report</a>
+                      </td><!-- MSCng -->
+                      <td valign="top">
+                        See <a href="xmldsig.html">XMLDsig Report</a>
+                      </td><!-- MSCrypto -->
+                      <td valign="top">
+                        See <a href="xmldsig.html">XMLDsig Report</a>
+                      </td><!-- GCrypt -->
+                    </tr>
+                    <tr>
+                      <td style="width: 40%;" align="left" valign="top" colspan="7"><b>Canonicalization</b></td>
+                    </tr>
+                    <tr>
+                      <td style="width: 40%;" align="left" valign="top">
+                        <a href="https://www.w3.org/TR/xmlenc-core1/#sec-Alg-Canonicalition">Canonicalization Algorithms</a>
+                      </td>
+                      <td valign="top">
+                        See <a href="xmldsig.html">XMLDsig Report</a>
+                      </td><!-- OpenSSL-->
+                      <td valign="top">
+                        See <a href="xmldsig.html">XMLDsig Report</a>
+                      </td><!-- NSS -->
+                      <td valign="top">
+                        See <a href="xmldsig.html">XMLDsig Report</a>
+                      </td><!-- GnuTLS -->
+                      <td valign="top">
+                        See <a href="xmldsig.html">XMLDsig Report</a>
+                      </td><!-- MSCng -->
+                      <td valign="top">
+                        See <a href="xmldsig.html">XMLDsig Report</a>
+                      </td><!-- MSCrypto -->
+                      <td valign="top">
+                        See <a href="xmldsig.html">XMLDsig Report</a>
+                      </td><!-- GCrypt -->
+                    </tr>
+                    <tr>
+                      <td style="width: 40%;" align="left" valign="top">
+                        <a href=""></a>
+                      </td>
+                      <td valign="top">Yes</td><!-- OpenSSL-->
+                      <td valign="top">Yes</td><!-- NSS -->
+                      <td valign="top">Yes</td><!-- GnuTLS -->
+                      <td valign="top">Yes</td><!-- MSCng -->
+                      <td valign="top">Yes</td><!-- MSCrypto -->
+                      <td valign="top">Yes</td><!-- GCrypt -->
+                    </tr>
+                    <tr>
+                      <td style="width: 40%;" align="left" valign="top" colspan="7"><b>Key Values</b></td>
+                    </tr>
+                    <tr>
+                      <td style="width: 40%;" align="left" valign="top">
+                        <a href="https://www.w3.org/TR/xmlenc-core1/#sec-DHKeyValue">Diffie-Hellman</a>
+                      </td>
+                      <td valign="top">No</td><!-- OpenSSL-->
+                      <td valign="top">No</td><!-- NSS -->
+                      <td valign="top">No</td><!-- GnuTLS -->
+                      <td valign="top">No</td><!-- MSCng -->
+                      <td valign="top">No</td><!-- MSCrypto -->
+                      <td valign="top">No</td><!-- GCrypt -->
+                    </tr>
+                    <tr>
+                      <td style="width: 40%;" align="left" valign="top">
+                        <a href="https://www.w3.org/TR/xmlenc-core1/#sec-ECCKeyValue">Elliptic Curve Diffie-Hellman (ECDH)</a>
+                      </td>
+                      <td valign="top">No</td><!-- OpenSSL-->
+                      <td valign="top">No</td><!-- NSS -->
+                      <td valign="top">No</td><!-- GnuTLS -->
+                      <td valign="top">No</td><!-- MSCng -->
+                      <td valign="top">No</td><!-- MSCrypto -->
+                      <td valign="top">No</td><!-- GCrypt -->
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div align="center">
+                <h3>Test vectors (<a href="http://www.w3.org/Encryption/2002/02-xenc-interop.html">XML Encryption Interoperability page</a>)</h3>
+                <div align="left" style="width: 85%;">
+                  <ul>
+                    <li>
+                      <a href="http://lists.w3.org/Archives/Public/xml-encryption/2002Mar/0008.html">merlin-xmlenc-five.tar.gz</a>
+                    </li>
+                    <li>
+                      <a href="http://lists.w3.org/Archives/Public/xml-encryption/2002Mar/att-0052/01-phaos-xmlenc-3.zip">phaos-xmlenc-3.zip</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </td>
     </tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">AES-256 (CBC)</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-    <td style="width: 40%;" align="left" valign="top">AES-128 (GCM)</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-    <td style="width: 40%;" align="left" valign="top">AES-192 (GCM)</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-    <td valign="top">Y</td>
-</tr>
-    <tr>
-    <td style="width: 40%;" align="left" valign="top">AES-256 (GCM)</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">RSA PKCS v1.5 (192 bit keys for AES or DES) </td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">RSA-OAEP (128 and 256 bit keys for AES)</td>
-    <td valign="top">Y (all digests and all <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP">MGF1 algorithms</a>)</td>
-    <td valign="top">N</td>
-    <td valign="top">Y (most digests and most <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP">MGF1 algorithms</a> but digest and MGF1 algorithms MUST be the same)</td>
-    <td valign="top">Y (most digests and all <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP">MGF1 algorithms</a>)</td>
-    <td valign="top">Y (only default SHA1 algorithm for digest and SHA1)</td>
-    <td valign="top">Y (all <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP">MGF1 algorithms</a> but digest and MGF1 algorithms MUST be the same)</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">Diffie-Hellman Key Agreement</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">TRIPLEDES Key Wrap (deprecated)</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">AES-128 Key Wrap (128 bit keys)</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">AES-192 Key Wrap</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">AES-256 Key Wrap (256 bit keys)</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">SHA1</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">SHA256</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">SHA512</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">RIPEMD-160 (DEPRECATED)</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">XML Digital Signature</td>
-    <td valign="top">Y </td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">Decryption Transform</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">
-    <ul><li>XPointer support in <code>Except URI</code>
-</li></ul>
-</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top"><a href="http://www.w3.org/TR/xml-c14n">Canonical XML 1.0</a></td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top"><a href="http://www.w3.org/TR/xml-exc-c14n">Exlusive Canonical XML 1.0</a></td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top"><a href="http://www.w3.org/TR/xml-c14n11/">Canonical XML 1.1</a></td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">Base64 Encoding</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-</tbody></table>
-<div align="left">
-<p><b>Test vectors (from <a href="http://www.w3.org/Encryption/2002/02-xenc-interop.html">W3C XML Encryption
-interop page</a>): </b>
-<ul>
-    <li><a href="http://lists.w3.org/Archives/Public/xml-encryption/2002Mar/0008.html">merlin-xmlenc-five.tar.gz</a></li>
-    <li><a href="http://lists.w3.org/Archives/Public/xml-encryption/2002Mar/att-0052/01-phaos-xmlenc-3.zip">phaos-xmlenc-3.zip</a></li>
-</ul>
-</p>
-</div>
-</div>
-</div></td></tr></table></td>
-</tr></table></body>
+  </table>
+</body>
 </html>

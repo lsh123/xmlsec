@@ -89,7 +89,7 @@
                 <h2>XML Digital Signature Interoperability Report</h2>
                 <p>The following report summarizes the XML Security library support for XML Digital Signatures (see <a href="https://www.ietf.org/rfc/rfc3275.html">RFC 3275</a>, <a href="https://www.ietf.org/rfc/rfc3741.html">RFC 3741</a>, and <a href="https://www.ietf.org/rfc/rfc9231.html">RFC 9231</a>).</p>
               </div>
-              <div align="center" id="rfc3275-core">
+              <div align="center" id="core">
                 <h3>XMLSec Library core features</h3>
                 <table style="width: 85%;" border="1" cellpadding="2" cellspacing="2">
                   <tbody>
@@ -184,6 +184,12 @@
                       <td valign="top">Yes</td>
                     </tr>
                     <tr>
+                        <td style="width: 40%;" align="left" valign="top">
+                            <a href="https://www.w3.org/TR/xmlenc-core1/#sec-Extensions-to-KeyInfo">XML Encryption Extensions to ds:KeyInfo Element</a>
+                        </td>
+                        <td valign="top">See <a href="xmlenc.htm">XML Encryption report</a></td>
+                    </tr>
+                    <tr>
                       <td style="width: 40%;" align="left" valign="top">
                         <a href="https://www.ietf.org/rfc/rfc3275.html#section-4.4.1">The KeyName Element</a>
                       </td>
@@ -193,9 +199,7 @@
                       <td style="width: 40%;" align="left" valign="top">
                         <a href="https://www.ietf.org/rfc/rfc3275.html#section-4.4.2">The KeyValue Element</a>
                       </td>
-                      <td valign="top">
-                        Yes (see <a href="#rfc3275-algorithms">algorithms</a> section for more details)
-                      </td>
+                      <td valign="top">See <a href="#algorithms">Algorithsm section</a></td>
                     </tr>
                     <tr>
                       <td style="width: 40%;" align="left" valign="top">
@@ -282,6 +286,12 @@
                       <td valign="top">Yes</td>
                     </tr>
                     <tr>
+                        <td style="width: 40%;" align="left" valign="top">
+                          <a href="https://www.w3.org/TR/xmlenc-decrypt/">Decryption Transform</a>
+                        </td>
+                        <td valign="top">Yes</td>
+                      </tr>
+                    <tr>
                       <td style="width: 40%;" align="left" valign="top">Detached Signature</td>
                       <td valign="top">Yes</td>
                     </tr>
@@ -292,7 +302,8 @@
                   </tbody>
                 </table>
               </div>
-              <div align="center" id="rfc3275-algorithms">
+
+              <div align="center" id="algorithms">
                 <h3>Cryptographic algorithms</h3>
                 <table style="width: 85%;" border="1" cellpadding="2" cellspacing="2">
                   <tbody>
@@ -815,7 +826,7 @@
                 </table>
               </div>
               <div align="center">
-                <div align="left">
+                <div align="left" style="width: 85%;">
                   <ul>
                     <li>
                       <a name="gost-openssl" id="gost-openssl"></a><sup>(1)</sup> Requires installation of the <a href="https://github.com/gost-engine/engine">GOST OpenSSL Engine</a>.
@@ -831,7 +842,7 @@
               </div>
               <div align="center">
                 <h3>Test vectors (<a href="http://www.w3.org/Signature/2001/04/05-xmldsig-interop.html">XML Signature Interoperability page</a>)</h3>
-                <div align="left">
+                <div align="left" style="width: 85%;">
                   <ul>
                     <li>
                       <a href="http://lists.w3.org/Archives/Public/w3c-ietf-xmldsig/2002AprJun/att-0016/01-merlin-xmldsig-twenty-three.tar.gz">merlin-xmldsig-twenty-three.tar.gz</a>

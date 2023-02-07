@@ -23,6 +23,23 @@ echo "--- LTDL_LIBRARY_PATH=$LTDL_LIBRARY_PATH" >> $logfile
 ##########################################################################
 echo "--------- Positive Testing ----------"
 
+
+##########################################################################
+#
+# xmlenc11-interop-2012:
+# https://www.w3.org/TR/2012/NOTE-xmlenc-core1-interop-20121113/
+#
+##########################################################################
+execEncTest $res_success \
+    "" \
+    "xmlenc11-interop-2012/xenc11-example-AES128-GCM" \
+    "aes128-gcm" \
+    "" \
+    "--aeskey $topfolder/xmlenc11-interop-2012/xenc11-example-AES128-GCM.key" \
+    "--aeskey:TestAesGcmKey $topfolder/xmlenc11-interop-2012/xenc11-example-AES128-GCM.key --binary-data $topfolder/xmlenc11-interop-2012/xenc11-example-AES128-GCM.data" \
+    "--aeskey:TestAesGcmKey $topfolder/xmlenc11-interop-2012/xenc11-example-AES128-GCM.key"
+
+
 ##########################################################################
 #
 # aleksey-xmlenc-01

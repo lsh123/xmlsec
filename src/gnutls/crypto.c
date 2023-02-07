@@ -18,7 +18,10 @@
 
 #include <string.h>
 
-#include <gcrypt.h>
+#include <gnutls/gnutls.h>
+#include <gnutls/abstract.h>
+#include <gnutls/crypto.h>
+
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
@@ -310,7 +313,9 @@ xmlSecGnuTLSKeysMngrInit(xmlSecKeysMngrPtr mngr) {
  */
 int
 xmlSecGnuTLSGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
+    xmlSecByte * data;
     int ret;
+    int err;
 
     xmlSecAssert2(buffer != NULL, -1);
     xmlSecAssert2(size > 0, -1);
@@ -322,7 +327,15 @@ xmlSecGnuTLSGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
         return(-1);
     }
 
+    data = xmlSecBufferGetData(buffer);
+    xmlSecAssert2(data != NULL, -1);
+
     /* get random data */
-    gcry_randomize(xmlSecBufferGetData(buffer), size, GCRY_STRONG_RANDOM);
+    err = gnutls_rnd(GNUTLS_RND_KEY, data, size);
+    if(err != GNUTLS_E_SUCCESS) {
+        xmlSecGnuTLSError("gnutls_rnd", err, NULL);
+        return(-1);
+    }
+
     return(0);
 }

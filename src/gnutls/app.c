@@ -30,14 +30,6 @@
 #include "../cast_helpers.h"
 #include "x509utils.h"
 
-/**************************************************************************
- *
- * We use xmlsec-gcrypt for all the basic crypto ops
- *
- *****************************************************************************/
-#include <xmlsec/gcrypt/crypto.h>
-#include <xmlsec/gcrypt/app.h>
-
 static xmlSecKeyPtr     xmlSecGnuTLSAppKeyFromCertLoad          (const char *filename,
                                                                  xmlSecKeyDataFormat format);
 static xmlSecKeyPtr     xmlSecGnuTLSAppKeyFromCertLoadMemory    (const xmlSecByte* data,
@@ -55,7 +47,7 @@ static xmlSecKeyPtr     xmlSecGnuTLSAppKeyFromCertLoadMemory    (const xmlSecByt
  * Returns: 0 on success or a negative value otherwise.
  */
 int
-xmlSecGnuTLSAppInit(const char* config) {
+xmlSecGnuTLSAppInit(const char* config ATTRIBUTE_UNUSED) {
     int err;
 
     err = gnutls_global_init();
@@ -64,7 +56,7 @@ xmlSecGnuTLSAppInit(const char* config) {
         return(-1);
     }
 
-    return(xmlSecGCryptAppInit(config));
+    return(0);
 }
 
 /**
@@ -79,8 +71,7 @@ xmlSecGnuTLSAppInit(const char* config) {
 int
 xmlSecGnuTLSAppShutdown(void) {
     gnutls_global_deinit();
-
-    return(xmlSecGCryptAppShutdown());
+    return(0);
 }
 
 /**
@@ -116,8 +107,9 @@ xmlSecGnuTLSAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
         break;
 #endif /* XMLSEC_NO_X509 */
     default:
-        key = xmlSecGCryptAppKeyLoad(filename, format, pwd, pwdCallback, pwdCallbackCtx);
-        break;
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
+            "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
+        return(NULL);
     }
 
     return(key);
@@ -156,8 +148,9 @@ xmlSecGnuTLSAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
         break;
 #endif /* XMLSEC_NO_X509 */
     default:
-        key = xmlSecGCryptAppKeyLoadMemory(data, dataSize, format, pwd, pwdCallback, pwdCallbackCtx);
-        break;
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
+            "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
+        return(NULL);
     }
     return(key);
 }
@@ -833,4 +826,3 @@ void*
 xmlSecGnuTLSAppGetDefaultPwdCallback(void) {
     return(NULL);
 }
-

@@ -733,7 +733,8 @@ xmlSecGnuTLSSignatureVerify(xmlSecTransformPtr transform,
     {
             xmlSecSize keySize;
 
-            keySize = xmlSecKeyDataGetSize(ctx->keyData) / 8;
+            keySize = xmlSecKeyDataGetSize(ctx->keyData);
+            keySize = (keySize + 7) / 8;
             xmlSecAssert2(keySize > 0, -1);
 
             ret = xmlSecGnuTLSToDer(&signature, &der_signature, keySize);
@@ -831,7 +832,8 @@ xmlSecGnuTLSSignatureSign(xmlSecTransformPtr transform, xmlSecGnuTLSSignatureCtx
     {
             xmlSecSize keySize;
 
-            keySize = xmlSecKeyDataGetSize(ctx->keyData) / 8;
+            keySize = xmlSecKeyDataGetSize(ctx->keyData);
+            keySize = (keySize + 7) / 8;
             xmlSecAssert2(keySize > 0, -1);
 
             ret = xmlSecGnuTLSFromDer(&signature, &xmldsig_signature, keySize);

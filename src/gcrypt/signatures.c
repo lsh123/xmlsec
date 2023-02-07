@@ -1930,7 +1930,8 @@ xmlSecGCryptEcdsaSign(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
     s_key = xmlSecGCryptKeyDataEcdsaGetPrivateKey(key_data);
     xmlSecAssert2(s_key != NULL, -1);
 
-    keySize = xmlSecKeyDataGetSize(key_data) / 8;
+    keySize = xmlSecKeyDataGetSize(key_data);
+    keySize = (keySize + 7) / 8;
     xmlSecAssert2(keySize > 0, -1);
 
     /* get the current digest, can't use "hash" :( */
@@ -2067,7 +2068,8 @@ xmlSecGCryptEcdsaVerify(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
     s_key = xmlSecGCryptKeyDataEcdsaGetPublicKey(key_data);
     xmlSecAssert2(s_key != NULL, -1);
 
-    keySize = xmlSecKeyDataGetSize(key_data) / 8;
+    keySize = xmlSecKeyDataGetSize(key_data);
+    keySize = (keySize + 7) / 8;
     xmlSecAssert2(keySize > 0, -1);
 
     /* check signature size */

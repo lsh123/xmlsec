@@ -24,6 +24,7 @@
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/private.h>
 
 #include <xmlsec/gcrypt/crypto.h>
 
@@ -339,8 +340,12 @@ xmlSecGCryptAsymKeyDataGetSize(xmlSecKeyDataPtr data) {
     ctx = xmlSecGCryptAsymKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, 0);
 
-    /* use pub key since it is more often you have it than not */
-    return (ctx->pub_key != NULL) ? gcry_pk_get_nbits(ctx->pub_key) : 0;
+    if(ctx->priv_key != NULL) {
+        return gcry_pk_get_nbits(ctx->priv_key);
+    } else if(ctx->pub_key != NULL) {
+        return gcry_pk_get_nbits(ctx->pub_key);
+    }
+    return(0);
 }
 
 /******************************************************************************
@@ -1660,9 +1665,27 @@ xmlSecGCryptKeyDataEcdsaGetType(xmlSecKeyDataPtr data) {
 
 static xmlSecSize
 xmlSecGCryptKeyDataEcdsaGetSize(xmlSecKeyDataPtr data) {
+    xmlSecGCryptAsymKeyDataCtxPtr ctx;
+    gcry_sexp_t key;
+    unsigned int nbits = 0;
+    const char *curve;
+
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataEcdsaId), 0);
 
-    return xmlSecGCryptAsymKeyDataGetSize(data);
+    ctx = xmlSecGCryptAsymKeyDataGetCtx(data);
+    xmlSecAssert2(ctx != NULL, 0);
+
+    if(ctx->priv_key != NULL) {
+        key = ctx->priv_key;
+    } else if(ctx->pub_key != NULL) {
+        key = ctx->pub_key;
+    } else {
+        return(0);
+    }
+
+    curve = gcry_pk_get_curve(key, 0, &nbits);
+    UNREFERENCED_PARAMETER(curve);
+    return(nbits);
 }
 
 static void

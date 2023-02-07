@@ -57,9 +57,15 @@ extern "C" {
 #define xmlSecTransformAes128CbcId              xmlSecGnuTLSTransformAes128CbcId
 #define xmlSecTransformAes192CbcId              xmlSecGnuTLSTransformAes192CbcId
 #define xmlSecTransformAes256CbcId              xmlSecGnuTLSTransformAes256CbcId
+
+#define xmlSecTransformAes128GcmId              xmlSecGnuTLSTransformAes128GcmId
+#define xmlSecTransformAes192GcmId              xmlSecGnuTLSTransformAes192GcmId
+#define xmlSecTransformAes256GcmId              xmlSecGnuTLSTransformAes256GcmId
+
 #define xmlSecTransformKWAes128Id               xmlSecGnuTLSTransformKWAes128Id
 #define xmlSecTransformKWAes192Id               xmlSecGnuTLSTransformKWAes192Id
 #define xmlSecTransformKWAes256Id               xmlSecGnuTLSTransformKWAes256Id
+
 #define xmlSecTransformDes3CbcId                xmlSecGnuTLSTransformDes3CbcId
 #define xmlSecTransformKWDes3Id                 xmlSecGnuTLSTransformKWDes3Id
 #define xmlSecTransformDsaSha1Id                xmlSecGnuTLSTransformDsaSha1Id

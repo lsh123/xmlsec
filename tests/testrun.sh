@@ -103,15 +103,16 @@ else
 fi
 
 #
-# NSS and GnuTLS doesn't supports DER format for public keys
+# GCrypt only supports DER format for now, others are good to go with certs for public keys
 #
-if [ "z$crypto" != "znss" -a "z$crypto" != "zgnutls" ] ; then
-    pub_key_option="--pubkey-der"
-    pub_key_format="der"
-else
+if [ "z$crypto" != "zgcrypt" ] ; then
     pub_key_option="--pubkey-cert-der"
     pub_key_format="crt"
+else
+    pub_key_option="--pubkey-der"
+    pub_key_format="der"
 fi
+
 
 
 #
@@ -177,11 +178,11 @@ printRes() {
     # check
     if [ "z$expected_res" = "z$actual_res_str" ] ; then
         count_success=`expr $count_success + 1`
-	actual_res="0"
+	    actual_res="0"
         echo "   OK"
     else
         count_fail=`expr $count_fail + 1`
-	actual_res="1"
+	    actual_res="1"
         echo " Fail"
     fi
 

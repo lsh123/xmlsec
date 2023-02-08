@@ -92,10 +92,19 @@ fi
 cert_format=$file_format
 
 #
+# Need to force persistence for mscrypto and mscng
+#
+pkcs12_key_extra_options=""
+if [ "z$crypto" = "zmscrypto" -o "z$crypto" = "zmscng" ] ; then
+    pkcs12_key_extra_options="--pkcs12-persist $pkcs12_key_extra_options"
+fi
+
+
+#
 # GCrypt only supports DER format for now, others are good to go with PKCS12 for private keys
 #
 if [ "z$crypto" != "zgcrypt" ] ; then
-    priv_key_option="--pkcs12"
+    priv_key_option="$pkcs12_key_extra_options --pkcs12"
     priv_key_format="p12"
 else
     priv_key_option="--privkey-der"
@@ -113,14 +122,6 @@ else
     pub_key_format="der"
 fi
 
-
-
-#
-# Need to force persistence for mscrypto and mscng
-#
-if [ "z$crypto" = "zmscrypto" -o "z$crypto" = "zmscng" ] ; then
-    priv_key_option="--pkcs12-persist $priv_key_option"
-fi
 
 # On Windows, one needs to specify Crypto Service Provider (CSP)
 # in the pkcs12 file to ensure it is loaded correctly to be used
@@ -272,16 +273,13 @@ execKeysTest() {
 
     # test reading private keys
     if [ -n "$privkey_file" -a -n "$asym_key_test" ]; then
-
         # gcrypt doesn't support pkcs12
-        # mscrypt needs fixing (https://github.com/lsh123/xmlsec/issues/505)
-        # mscng needs fixing (https://github.com/lsh123/xmlsec/issues/506)
-        if [ "z$crypto" != "zgcrypt" -a "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" ] ; then
+        if [ "z$crypto" != "zgcrypt" ] ; then
             printf "    Reading private key from pkcs12 file                  "
             rm -f $tmpfile
-            params="--pkcs12 $privkey_file.p12 $key_test_options --output $tmpfile $asym_key_test.tmpl"
+            params="--pkcs12 $privkey_file.p12 $pkcs12_key_extra_options $key_test_options --output $tmpfile $asym_key_test.tmpl"
             echo "$extra_vars $VALGRIND $xmlsec_app sign $xmlsec_params $params" >>  $curlogfile
-            $VALGRIND $xmlsec_app  sign $xmlsec_params $params >> $curlogfile 2>> $curlogfile
+            $VALGRIND $xmlsec_app sign $xmlsec_params $params >> $curlogfile 2>> $curlogfile
             printRes $expected_res $?
             if [ $? -ne 0 ]; then
                 failures=`expr $failures + 1`

@@ -385,7 +385,7 @@ openssl pkcs12 -export -in alllargersa.pem -name TestLargeRsaKey -out largersake
 rm alllargersa.pem
 
 cat dsakey.pem dsacert.pem ca2cert.pem cacert.pem > alldsa.pem
-openssl pkcs12 -export -in alldsa.pem -name TestDsaKey -out alldsa-win.p12 -CSP "Microsoft Enhanced RSA and AES Cryptographic Provider"
+openssl pkcs12 -export -in alldsa.pem -name TestDsaKey -out dsakey-win.p12 -CSP "Microsoft Enhanced RSA and AES Cryptographic Provider"
 rm alldsa.pem
 
 cat dsa2048key.pem dsa2048cert.pem ca2cert.pem cacert.pem > alldsa2048.pem

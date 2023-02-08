@@ -38,7 +38,7 @@ execKeysTest $res_success       \
     "rsa"                       \
     "test-rsa"                  \
     "rsa-1024"                  \
-    "$topfolder/keys/largersakey"    \
+    "$topfolder/keys/largersakey$priv_key_suffix"    \
     "$topfolder/keys/largersapubkey" \
     "$topfolder/keys/largersacert"   \
     "$topfolder/aleksey-xmldsig-01/enveloped-sha1-rsa-sha1" \
@@ -52,7 +52,7 @@ execKeysTest $res_success       \
     "dsa"                       \
     "test-dsa"                  \
     "dsa-1024"                  \
-    "$topfolder/keys/dsakey"    \
+    "$topfolder/keys/dsakey$priv_key_suffix"    \
     ""                          \
     "$topfolder/keys/dsacert"   \
     "$topfolder/aleksey-xmldsig-01/enveloped-sha1-dsa-sha1" \

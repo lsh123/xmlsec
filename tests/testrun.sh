@@ -535,7 +535,7 @@ fi
 if [ "z$crypto" = "zopenssl" ] ; then
     min_percent_success=90
 elif [ "z$crypto" = "znss" ] ; then
-    min_percent_success=40
+    min_percent_success=90
 elif [ "z$crypto" = "zgnutls" ] ; then
     min_percent_success=80
 elif [ "z$crypto" = "zmscng" ] ; then

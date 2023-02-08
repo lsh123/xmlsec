@@ -274,7 +274,9 @@ execKeysTest() {
     if [ -n "$privkey_file" -a -n "$asym_key_test" ]; then
 
         # gcrypt doesn't support pkcs12
-        if [ "z$crypto" != "zgcrypt" ] ; then
+        # mscrypt needs fixing (https://github.com/lsh123/xmlsec/issues/505)
+        # mscng needs fixing (https://github.com/lsh123/xmlsec/issues/506)
+        if [ "z$crypto" != "zgcrypt" -a "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" ] ; then
             printf "    Reading private key from pkcs12 file                  "
             rm -f $tmpfile
             params="--pkcs12 $privkey_file.p12 $key_test_options --output $tmpfile $asym_key_test.tmpl"
@@ -288,7 +290,9 @@ execKeysTest() {
 
         # gcrypt doesn't support pem
         # nss doesn't like private keys in pem / der
-        if [ "z$crypto" != "zgcrypt" -a "z$crypto" != "znss" ] ; then
+        # mscrypt needs fixing (https://github.com/lsh123/xmlsec/issues/505)
+        # mscng needs fixing (https://github.com/lsh123/xmlsec/issues/506)
+        if [ "z$crypto" != "zgcrypt" -a "z$crypto" != "znss" -a "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" ] ; then
             printf "    Reading private key from pem file                     "
             rm -f $tmpfile
             params="--privkey-pem $privkey_file.pem $key_test_options --output $tmpfile $asym_key_test.tmpl"
@@ -301,7 +305,9 @@ execKeysTest() {
         fi
 
         # nss doesn't like private keys in pem / der
-        if [ "z$crypto" != "znss" ] ; then
+        # mscrypt needs fixing (https://github.com/lsh123/xmlsec/issues/505)
+        # mscng needs fixing (https://github.com/lsh123/xmlsec/issues/506)
+        if [ "z$crypto" != "znss"  -a "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" ] ; then
             printf "    Reading private key from der file                     "
             rm -f $tmpfile
             params="--privkey-der $privkey_file.der $key_test_options --output $tmpfile $asym_key_test.tmpl"
@@ -318,7 +324,9 @@ execKeysTest() {
     # test reading public keys
     if [ -n "$pubkey_file" -a -n "$asym_key_test" ]; then
         # nss, gcrypt doesn't support pem
-        if [ "z$crypto" != "zgcrypt" -a "z$crypto" != "znss" ] ; then
+        # mscrypt needs fixing (https://github.com/lsh123/xmlsec/issues/505)
+        # mscng needs fixing (https://github.com/lsh123/xmlsec/issues/506)
+        if [ "z$crypto" != "zgcrypt" -a "z$crypto" != "znss" -a "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" ] ; then
             printf "    Reading public key from pem file                      "
             rm -f $tmpfile
             params="--pubkey-pem $pubkey_file.pem $key_test_options --output $tmpfile $asym_key_test.xml"
@@ -335,20 +343,26 @@ execKeysTest() {
             pubkey_file="$pubkey_file-gcrypt"
         fi
 
-        printf "    Reading public key from der file                      "
-        rm -f $tmpfile
-        params="--pubkey-der $pubkey_file.der $key_test_options --output $tmpfile $asym_key_test.xml"
-        echo "$extra_vars $VALGRIND $xmlsec_app verify $xmlsec_params $params" >>  $curlogfile
-        $VALGRIND $xmlsec_app verify $xmlsec_params $params >> $curlogfile 2>> $curlogfile
-        printRes $expected_res $?
-        if [ $? -ne 0 ]; then
-            failures=`expr $failures + 1`
+        # mscrypt needs fixing (https://github.com/lsh123/xmlsec/issues/505)
+        # mscng needs fixing (https://github.com/lsh123/xmlsec/issues/506)
+        if [ "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" ] ; then
+            printf "    Reading public key from der file                      "
+            rm -f $tmpfile
+            params="--pubkey-der $pubkey_file.der $key_test_options --output $tmpfile $asym_key_test.xml"
+            echo "$extra_vars $VALGRIND $xmlsec_app verify $xmlsec_params $params" >>  $curlogfile
+            $VALGRIND $xmlsec_app verify $xmlsec_params $params >> $curlogfile 2>> $curlogfile
+            printRes $expected_res $?
+            if [ $? -ne 0 ]; then
+                failures=`expr $failures + 1`
+            fi
         fi
     fi
 
     if [ -n "$certkey_file" -a -n "$asym_key_test" ]; then
         # nss, gcrypt doesn't support pem
-        if [ "z$crypto" != "zgcrypt" -a "z$crypto" != "znss" ] ; then
+        # mscrypt needs fixing (https://github.com/lsh123/xmlsec/issues/505)
+        # mscng needs fixing (https://github.com/lsh123/xmlsec/issues/506)
+        if [ "z$crypto" != "zgcrypt" -a "z$crypto" != "znss" -a  "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" ] ; then
             printf "    Reading public key from pem cert file                 "
             rm -f $tmpfile
             params="--pubkey-cert-pem $certkey_file.pem $key_test_options --output $tmpfile $asym_key_test.xml"

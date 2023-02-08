@@ -32,51 +32,51 @@
 #include "../cast_helpers.h"
 #include "../keysdata_helpers.h"
 
-#define XMLSEC_NSS_MAX_KEY_SIZE         32
-#define XMLSEC_NSS_MAX_IV_SIZE          32
-#define XMLSEC_NSS_MAX_BLOCK_SIZE       32
+#define XMLSEC_NSS_CBC_CIPHER_MAX_KEY_SIZE         32
+#define XMLSEC_NSS_CBC_CIPHER_MAX_IV_SIZE          32
+#define XMLSEC_NSS_CBC_CIPHER_MAX_BLOCK_SIZE       32
 
 /**************************************************************************
  *
  * Internal Nss Block cipher CTX
  *
  *****************************************************************************/
-typedef struct _xmlSecNssBlockCipherCtx         xmlSecNssBlockCipherCtx,
-                                                        *xmlSecNssBlockCipherCtxPtr;
-struct _xmlSecNssBlockCipherCtx {
+typedef struct _xmlSecNssCbcCipherCtx                   xmlSecNssCbcCipherCtx,
+                                                        *xmlSecNssCbcCipherCtxPtr;
+struct _xmlSecNssCbcCipherCtx {
     CK_MECHANISM_TYPE   cipher;
     PK11Context*        cipherCtx;
     xmlSecKeyDataId     keyId;
     int                 keyInitialized;
     int                 ctxInitialized;
-    xmlSecByte          key[XMLSEC_NSS_MAX_KEY_SIZE];
+    xmlSecByte          key[XMLSEC_NSS_CBC_CIPHER_MAX_KEY_SIZE];
     xmlSecSize          keySize;
-    xmlSecByte          iv[XMLSEC_NSS_MAX_IV_SIZE];
+    xmlSecByte          iv[XMLSEC_NSS_CBC_CIPHER_MAX_IV_SIZE];
 };
-static int      xmlSecNssBlockCipherCtxInit             (xmlSecNssBlockCipherCtxPtr ctx,
+static int      xmlSecNssCbcCipherCtxInit               (xmlSecNssCbcCipherCtxPtr ctx,
                                                          xmlSecBufferPtr in,
                                                          xmlSecBufferPtr out,
                                                          int encrypt,
                                                          const xmlChar* cipherName,
                                                          xmlSecTransformCtxPtr transformCtx);
-static int      xmlSecNssBlockCipherCtxUpdate   (xmlSecNssBlockCipherCtxPtr ctx,
+static int      xmlSecNssCbcCipherCtxUpdate             (xmlSecNssCbcCipherCtxPtr ctx,
                                                          xmlSecBufferPtr in,
                                                          xmlSecBufferPtr out,
                                                          int encrypt,
                                                          const xmlChar* cipherName,
                                                          xmlSecTransformCtxPtr transformCtx);
-static int      xmlSecNssBlockCipherCtxFinal            (xmlSecNssBlockCipherCtxPtr ctx,
+static int      xmlSecNssCbcCipherCtxFinal              (xmlSecNssCbcCipherCtxPtr ctx,
                                                          xmlSecBufferPtr in,
                                                          xmlSecBufferPtr out,
                                                          int encrypt,
                                                          const xmlChar* cipherName,
                                                          xmlSecTransformCtxPtr transformCtx);
 static int
-xmlSecNssBlockCipherCtxInit(xmlSecNssBlockCipherCtxPtr ctx,
-                            xmlSecBufferPtr in, xmlSecBufferPtr out,
-                            int encrypt,
-                            const xmlChar* cipherName,
-                            xmlSecTransformCtxPtr transformCtx) {
+xmlSecNssCbcCipherCtxInit(xmlSecNssCbcCipherCtxPtr ctx,
+    xmlSecBufferPtr in, xmlSecBufferPtr out,
+    int encrypt, const xmlChar* cipherName,
+    xmlSecTransformCtxPtr transformCtx)
+{
     SECItem keyItem;
     SECItem ivItem;
     PK11SlotInfo* slot;
@@ -174,11 +174,11 @@ xmlSecNssBlockCipherCtxInit(xmlSecNssBlockCipherCtxPtr ctx,
 }
 
 static int
-xmlSecNssBlockCipherCtxUpdate(xmlSecNssBlockCipherCtxPtr ctx,
-                                  xmlSecBufferPtr in, xmlSecBufferPtr out,
-                                  int encrypt,
-                                  const xmlChar* cipherName,
-                                  xmlSecTransformCtxPtr transformCtx) {
+xmlSecNssCbcCipherCtxUpdate(xmlSecNssCbcCipherCtxPtr ctx,
+    xmlSecBufferPtr in, xmlSecBufferPtr out,
+    int encrypt, const xmlChar* cipherName,
+    xmlSecTransformCtxPtr transformCtx)
+{
     xmlSecSize inSize, inBlocks, blockSize, outSize, outSize2;
     int blockLen, maxOutLen, inLen;
     int outLen = 0;
@@ -254,12 +254,11 @@ xmlSecNssBlockCipherCtxUpdate(xmlSecNssBlockCipherCtxPtr ctx,
 }
 
 static int
-xmlSecNssBlockCipherCtxFinal(xmlSecNssBlockCipherCtxPtr ctx,
-                                 xmlSecBufferPtr in,
-                                 xmlSecBufferPtr out,
-                                 int encrypt,
-                                 const xmlChar* cipherName,
-                                 xmlSecTransformCtxPtr transformCtx) {
+xmlSecNssCbcCipherCtxFinal(xmlSecNssCbcCipherCtxPtr ctx,
+    xmlSecBufferPtr in, xmlSecBufferPtr out,
+    int encrypt, const xmlChar* cipherName,
+    xmlSecTransformCtxPtr transformCtx)
+{
     xmlSecSize inSize, outSize, outSize2, blockSize;
     int blockLen, maxOutLen, inLen;
     int outLen = 0;
@@ -382,27 +381,27 @@ xmlSecNssBlockCipherCtxFinal(xmlSecNssBlockCipherCtxPtr ctx,
  *
  * EVP Block Cipher transforms
  *
- * xmlSecTransform + xmlSecNssBlockCipherCtx
+ * xmlSecTransform + xmlSecNssCbcCipherCtx
  *
  *****************************************************************************/
-XMLSEC_TRANSFORM_DECLARE(NssBlockCipher, xmlSecNssBlockCipherCtx)
-#define xmlSecNssBlockCipherSize XMLSEC_TRANSFORM_SIZE(NssBlockCipher)
+XMLSEC_TRANSFORM_DECLARE(NssCbcCipher, xmlSecNssCbcCipherCtx)
+#define xmlSecNssCbcCipherSize XMLSEC_TRANSFORM_SIZE(NssCbcCipher)
 
-static int      xmlSecNssBlockCipherInitialize  (xmlSecTransformPtr transform);
-static void     xmlSecNssBlockCipherFinalize            (xmlSecTransformPtr transform);
-static int      xmlSecNssBlockCipherSetKeyReq   (xmlSecTransformPtr transform,
-                                                         xmlSecKeyReqPtr keyReq);
-static int      xmlSecNssBlockCipherSetKey              (xmlSecTransformPtr transform,
-                                                         xmlSecKeyPtr key);
-static int      xmlSecNssBlockCipherExecute             (xmlSecTransformPtr transform,
-                                                         int last,
-                                                         xmlSecTransformCtxPtr transformCtx);
-static int      xmlSecNssBlockCipherCheckId             (xmlSecTransformPtr transform);
+static int      xmlSecNssCbcCipherInitialize        (xmlSecTransformPtr transform);
+static void     xmlSecNssCbcCipherFinalize          (xmlSecTransformPtr transform);
+static int      xmlSecNssCbcCipherSetKeyReq         (xmlSecTransformPtr transform,
+                                                     xmlSecKeyReqPtr keyReq);
+static int      xmlSecNssCbcCipherSetKey            (xmlSecTransformPtr transform,
+                                                     xmlSecKeyPtr key);
+static int      xmlSecNssCbcCipherExecute           (xmlSecTransformPtr transform,
+                                                     int last,
+                                                     xmlSecTransformCtxPtr transformCtx);
+static int      xmlSecNssCbcCipherCheckId            (xmlSecTransformPtr transform);
 
 
 
 static int
-xmlSecNssBlockCipherCheckId(xmlSecTransformPtr transform) {
+xmlSecNssCbcCipherCheckId(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_NO_DES
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformDes3CbcId)) {
         return(1);
@@ -422,16 +421,16 @@ xmlSecNssBlockCipherCheckId(xmlSecTransformPtr transform) {
 }
 
 static int
-xmlSecNssBlockCipherInitialize(xmlSecTransformPtr transform) {
-    xmlSecNssBlockCipherCtxPtr ctx;
+xmlSecNssCbcCipherInitialize(xmlSecTransformPtr transform) {
+    xmlSecNssCbcCipherCtxPtr ctx;
 
-    xmlSecAssert2(xmlSecNssBlockCipherCheckId(transform), -1);
-    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssBlockCipherSize), -1);
+    xmlSecAssert2(xmlSecNssCbcCipherCheckId(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssCbcCipherSize), -1);
 
-    ctx = xmlSecNssBlockCipherGetCtx(transform);
+    ctx = xmlSecNssCbcCipherGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    memset(ctx, 0, sizeof(xmlSecNssBlockCipherCtx));
+    memset(ctx, 0, sizeof(xmlSecNssCbcCipherCtx));
 
 #ifndef XMLSEC_NO_DES
     if(transform->id == xmlSecNssTransformDes3CbcId) {
@@ -466,32 +465,32 @@ xmlSecNssBlockCipherInitialize(xmlSecTransformPtr transform) {
 }
 
 static void
-xmlSecNssBlockCipherFinalize(xmlSecTransformPtr transform) {
-    xmlSecNssBlockCipherCtxPtr ctx;
+xmlSecNssCbcCipherFinalize(xmlSecTransformPtr transform) {
+    xmlSecNssCbcCipherCtxPtr ctx;
 
-    xmlSecAssert(xmlSecNssBlockCipherCheckId(transform));
-    xmlSecAssert(xmlSecTransformCheckSize(transform, xmlSecNssBlockCipherSize));
+    xmlSecAssert(xmlSecNssCbcCipherCheckId(transform));
+    xmlSecAssert(xmlSecTransformCheckSize(transform, xmlSecNssCbcCipherSize));
 
-    ctx = xmlSecNssBlockCipherGetCtx(transform);
+    ctx = xmlSecNssCbcCipherGetCtx(transform);
     xmlSecAssert(ctx != NULL);
 
     if(ctx->cipherCtx != NULL) {
         PK11_DestroyContext(ctx->cipherCtx, PR_TRUE);
     }
 
-    memset(ctx, 0, sizeof(xmlSecNssBlockCipherCtx));
+    memset(ctx, 0, sizeof(xmlSecNssCbcCipherCtx));
 }
 
 static int
-xmlSecNssBlockCipherSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
-    xmlSecNssBlockCipherCtxPtr ctx;
+xmlSecNssCbcCipherSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
+    xmlSecNssCbcCipherCtxPtr ctx;
 
-    xmlSecAssert2(xmlSecNssBlockCipherCheckId(transform), -1);
+    xmlSecAssert2(xmlSecNssCbcCipherCheckId(transform), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
-    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssBlockCipherSize), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssCbcCipherSize), -1);
     xmlSecAssert2(keyReq != NULL, -1);
 
-    ctx = xmlSecNssBlockCipherGetCtx(transform);
+    ctx = xmlSecNssCbcCipherGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->keyId != NULL, -1);
 
@@ -507,16 +506,16 @@ xmlSecNssBlockCipherSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr key
 }
 
 static int
-xmlSecNssBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
-    xmlSecNssBlockCipherCtxPtr ctx;
+xmlSecNssCbcCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
+    xmlSecNssCbcCipherCtxPtr ctx;
     xmlSecBufferPtr buffer;
 
-    xmlSecAssert2(xmlSecNssBlockCipherCheckId(transform), -1);
+    xmlSecAssert2(xmlSecNssCbcCipherCheckId(transform), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
-    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssBlockCipherSize), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssCbcCipherSize), -1);
     xmlSecAssert2(key != NULL, -1);
 
-    ctx = xmlSecNssBlockCipherGetCtx(transform);
+    ctx = xmlSecNssCbcCipherGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->cipher != 0, -1);
     xmlSecAssert2(ctx->keyInitialized == 0, -1);
@@ -543,20 +542,20 @@ xmlSecNssBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 }
 
 static int
-xmlSecNssBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
-    xmlSecNssBlockCipherCtxPtr ctx;
+xmlSecNssCbcCipherExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
+    xmlSecNssCbcCipherCtxPtr ctx;
     xmlSecBufferPtr in, out;
     int ret;
 
-    xmlSecAssert2(xmlSecNssBlockCipherCheckId(transform), -1);
+    xmlSecAssert2(xmlSecNssCbcCipherCheckId(transform), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
-    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssBlockCipherSize), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssCbcCipherSize), -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
     in = &(transform->inBuf);
     out = &(transform->outBuf);
 
-    ctx = xmlSecNssBlockCipherGetCtx(transform);
+    ctx = xmlSecNssCbcCipherGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
     if(transform->status == xmlSecTransformStatusNone) {
@@ -565,11 +564,11 @@ xmlSecNssBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
 
     if(transform->status == xmlSecTransformStatusWorking) {
         if(ctx->ctxInitialized == 0) {
-            ret = xmlSecNssBlockCipherCtxInit(ctx, in, out,
+            ret = xmlSecNssCbcCipherCtxInit(ctx, in, out,
                         (transform->operation == xmlSecTransformOperationEncrypt) ? 1 : 0,
                         xmlSecTransformGetName(transform), transformCtx);
             if(ret < 0) {
-                xmlSecInternalError("xmlSecNssBlockCipherCtxInit",
+                xmlSecInternalError("xmlSecNssCbcCipherCtxInit",
                                     xmlSecTransformGetName(transform));
                 return(-1);
             }
@@ -581,22 +580,22 @@ xmlSecNssBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
         }
 
         if(ctx->ctxInitialized != 0) {
-            ret = xmlSecNssBlockCipherCtxUpdate(ctx, in, out,
+            ret = xmlSecNssCbcCipherCtxUpdate(ctx, in, out,
                         (transform->operation == xmlSecTransformOperationEncrypt) ? 1 : 0,
                         xmlSecTransformGetName(transform), transformCtx);
             if(ret < 0) {
-                xmlSecInternalError("xmlSecNssBlockCipherCtxUpdate",
+                xmlSecInternalError("xmlSecNssCbcCipherCtxUpdate",
                                     xmlSecTransformGetName(transform));
                 return(-1);
             }
         }
 
         if(last) {
-            ret = xmlSecNssBlockCipherCtxFinal(ctx, in, out,
+            ret = xmlSecNssCbcCipherCtxFinal(ctx, in, out,
                         (transform->operation == xmlSecTransformOperationEncrypt) ? 1 : 0,
                         xmlSecTransformGetName(transform), transformCtx);
             if(ret < 0) {
-                xmlSecInternalError("xmlSecNssBlockCipherCtxFinal",
+                xmlSecInternalError("xmlSecNssCbcCipherCtxFinal",
                                     xmlSecTransformGetName(transform));
                 return(-1);
             }
@@ -626,25 +625,25 @@ xmlSecNssBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
 static xmlSecTransformKlass xmlSecNssAes128CbcKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecNssBlockCipherSize,           /* xmlSecSize objSize */
+    xmlSecNssCbcCipherSize,                     /* xmlSecSize objSize */
 
     xmlSecNameAes128Cbc,                        /* const xmlChar* name; */
     xmlSecHrefAes128Cbc,                        /* const xmlChar* href; */
     xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
 
-    xmlSecNssBlockCipherInitialize,             /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecNssBlockCipherFinalize,               /* xmlSecTransformFinalizeMethod finalize; */
+    xmlSecNssCbcCipherInitialize,               /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecNssCbcCipherFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecNssBlockCipherSetKeyReq,              /* xmlSecTransformSetKeyMethod setKeyReq; */
-    xmlSecNssBlockCipherSetKey,         /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecNssCbcCipherSetKeyReq,                /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecNssCbcCipherSetKey,                   /* xmlSecTransformSetKeyMethod setKey; */
     NULL,                                       /* xmlSecTransformValidateMethod validate; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
     NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
     NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecNssBlockCipherExecute,                /* xmlSecTransformExecuteMethod execute; */
+    xmlSecNssCbcCipherExecute,                  /* xmlSecTransformExecuteMethod execute; */
 
     NULL,                                       /* void* reserved0; */
     NULL,                                       /* void* reserved1; */
@@ -665,25 +664,25 @@ xmlSecNssTransformAes128CbcGetKlass(void) {
 static xmlSecTransformKlass xmlSecNssAes192CbcKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecNssBlockCipherSize,           /* xmlSecSize objSize */
+    xmlSecNssCbcCipherSize,                     /* xmlSecSize objSize */
 
     xmlSecNameAes192Cbc,                        /* const xmlChar* name; */
     xmlSecHrefAes192Cbc,                        /* const xmlChar* href; */
     xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
 
-    xmlSecNssBlockCipherInitialize,             /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecNssBlockCipherFinalize,               /* xmlSecTransformFinalizeMethod finalize; */
+    xmlSecNssCbcCipherInitialize,               /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecNssCbcCipherFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecNssBlockCipherSetKeyReq,              /* xmlSecTransformSetKeyMethod setKeyReq; */
-    xmlSecNssBlockCipherSetKey,         /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecNssCbcCipherSetKeyReq,                /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecNssCbcCipherSetKey,                   /* xmlSecTransformSetKeyMethod setKey; */
     NULL,                                       /* xmlSecTransformValidateMethod validate; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
     NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
     NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecNssBlockCipherExecute,                /* xmlSecTransformExecuteMethod execute; */
+    xmlSecNssCbcCipherExecute,                  /* xmlSecTransformExecuteMethod execute; */
 
     NULL,                                       /* void* reserved0; */
     NULL,                                       /* void* reserved1; */
@@ -704,25 +703,25 @@ xmlSecNssTransformAes192CbcGetKlass(void) {
 static xmlSecTransformKlass xmlSecNssAes256CbcKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecNssBlockCipherSize,           /* xmlSecSize objSize */
+    xmlSecNssCbcCipherSize,                     /* xmlSecSize objSize */
 
     xmlSecNameAes256Cbc,                        /* const xmlChar* name; */
     xmlSecHrefAes256Cbc,                        /* const xmlChar* href; */
     xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
 
-    xmlSecNssBlockCipherInitialize,             /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecNssBlockCipherFinalize,               /* xmlSecTransformFinalizeMethod finalize; */
+    xmlSecNssCbcCipherInitialize,               /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecNssCbcCipherFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecNssBlockCipherSetKeyReq,              /* xmlSecTransformSetKeyMethod setKeyReq; */
-    xmlSecNssBlockCipherSetKey,         /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecNssCbcCipherSetKeyReq,                /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecNssCbcCipherSetKey,                   /* xmlSecTransformSetKeyMethod setKey; */
     NULL,                                       /* xmlSecTransformValidateMethod validate; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
     NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
     NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecNssBlockCipherExecute,                /* xmlSecTransformExecuteMethod execute; */
+    xmlSecNssCbcCipherExecute,                  /* xmlSecTransformExecuteMethod execute; */
 
     NULL,                                       /* void* reserved0; */
     NULL,                                       /* void* reserved1; */
@@ -746,25 +745,25 @@ xmlSecNssTransformAes256CbcGetKlass(void) {
 static xmlSecTransformKlass xmlSecNssDes3CbcKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecNssBlockCipherSize,           /* xmlSecSize objSize */
+    xmlSecNssCbcCipherSize,                     /* xmlSecSize objSize */
 
     xmlSecNameDes3Cbc,                          /* const xmlChar* name; */
     xmlSecHrefDes3Cbc,                          /* const xmlChar* href; */
     xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
 
-    xmlSecNssBlockCipherInitialize,             /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecNssBlockCipherFinalize,               /* xmlSecTransformFinalizeMethod finalize; */
+    xmlSecNssCbcCipherInitialize,               /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecNssCbcCipherFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecNssBlockCipherSetKeyReq,              /* xmlSecTransformSetKeyMethod setKeyReq; */
-    xmlSecNssBlockCipherSetKey,         /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecNssCbcCipherSetKeyReq,                /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecNssCbcCipherSetKey,                   /* xmlSecTransformSetKeyMethod setKey; */
     NULL,                                       /* xmlSecTransformValidateMethod validate; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
     NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
     NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecNssBlockCipherExecute,                /* xmlSecTransformExecuteMethod execute; */
+    xmlSecNssCbcCipherExecute,                  /* xmlSecTransformExecuteMethod execute; */
 
     NULL,                                       /* void* reserved0; */
     NULL,                                       /* void* reserved1; */

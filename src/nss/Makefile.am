@@ -20,7 +20,8 @@ libxmlsec1_nss_la_CPPFLAGS = \
 
 libxmlsec1_nss_la_SOURCES =\
 	app.c \
-	ciphers.c \
+	ciphers_cbc.c \
+	ciphers_gcm.c \
 	crypto.c \
 	digests.c \
 	hmac.c \

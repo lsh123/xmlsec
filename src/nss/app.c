@@ -236,18 +236,38 @@ xmlSecNssAppAscii2UCS2Conv(PRBool toUnicode,
                                     outBuf, maxOutBufLen, outBufLen));
 }
 
+/* rename certificate if needed */
 static SECItem *
 xmlSecNssAppNicknameCollisionCallback(SECItem *old_nick ATTRIBUTE_UNUSED,
                                       PRBool *cancel,
                                       void *wincx ATTRIBUTE_UNUSED)
 {
-    if (cancel == NULL) {
-        return (NULL);
+    CERTCertificate *cert = (CERTCertificate *)wincx;
+    char *nick = NULL;
+    SECItem *ret_nick = NULL;
+
+    if((cancel  == NULL) || (cert == NULL)) {
+        xmlSecNssError("cert is missing", NULL);
+        return(NULL);
     }
 
-    /* XXX not handled yet  */
-    *cancel = PR_TRUE;
-    return (NULL);
+    nick = CERT_MakeCANickname(cert);
+    if (!nick) {
+        xmlSecNssError("CERT_MakeCANickname", NULL);
+        return(NULL);
+    }
+
+    ret_nick = PORT_ZNew(SECItem);
+    if (ret_nick == NULL) {
+        xmlSecNssError("PORT_ZNew", NULL);
+        PORT_Free(nick);
+        return NULL;
+    }
+
+    /* done */
+    ret_nick->data = (unsigned char *)nick;
+    ret_nick->len = (unsigned int)PORT_Strlen(nick);
+    return ret_nick;
 }
 
 /**

@@ -52,7 +52,7 @@ execKeysTest $res_success       \
     "dsa"                       \
     "test-dsa"                  \
     "dsa-1024"                  \
-    "$topfolder/keys/dsakey$priv_key_suffix"    \
+    "$topfolder/keys/dsakey"    \
     ""                          \
     "$topfolder/keys/dsacert"   \
     "$topfolder/aleksey-xmldsig-01/enveloped-sha1-dsa-sha1" \

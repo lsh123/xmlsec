@@ -99,7 +99,6 @@ if [ "z$crypto" = "zmscrypto" -o "z$crypto" = "zmscng" ] ; then
     pkcs12_key_extra_options="--pkcs12-persist $pkcs12_key_extra_options"
 fi
 
-
 #
 # GCrypt only supports DER format for now, others are good to go with PKCS12 for private keys
 #

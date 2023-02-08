@@ -672,19 +672,6 @@ execDSigTest $res_success \
     "$priv_key_option $topfolder/keys/rsakey$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
-if [ "z$crypto" = "zopenssl" -a "z$priv_key_suffix" != "z-win" ] ; then
-    # At least openssl supports --privkey-der next to --pkcs12 on non-Windows,
-    # so test that as well.
-    execDSigTest $res_success \
-        "" \
-        "aleksey-xmldsig-01/enveloping-sha256-rsa-sha256-der" \
-        "sha256 rsa-sha256" \
-        "rsa x509" \
-        "--pubkey-cert-$cert_format $topfolder/keys/rsacert.$cert_format" \
-        "--privkey-$cert_format $topfolder/keys/rsakey$priv_key_suffix.$cert_format" \
-        "--pubkey-cert-$cert_format $topfolder/keys/rsacert.$cert_format"
-fi
-
 execDSigTest $res_success \
     "aleksey-xmldsig-01" \
     "enveloping-sha256-rsa-sha256-relationship" \

@@ -48,6 +48,9 @@ echo "--------- Positive Testing ----------"
 # signature-enveloping-derencoded-ec.xml
 # signature-enveloping-derencoded-rsa.xml
 
+# x509digest not supported
+# signature-enveloping-x509digest-rsa.xml
+
 # HMAC
 execDSigTest $res_success \
     "xmldsig11-interop-2012" \
@@ -288,7 +291,62 @@ execDSigTest $res_success \
     "" \
     "--enabled-key-data key-name --pubkey-der ./keys/p521-key.der"
 
-exit(1);
+# RSA
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-rsa-sha224" \
+    "c14n sha1 rsa-sha224" \
+    "" \
+    "--enabled-key-data key-name --pubkey-der ./keys/rsa-key.der"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-rsa-sha256" \
+    "c14n sha1 rsa-sha256" \
+    "" \
+    "--enabled-key-data key-name --pubkey-der ./keys/rsa-key.der"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-rsa_sha384" \
+    "c14n sha1 rsa-sha256" \
+    "" \
+    "--enabled-key-data key-name --pubkey-der ./keys/rsa-key.der"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-rsa_sha512" \
+    "c14n sha1 rsa-sha512" \
+    "" \
+    "--enabled-key-data key-name --pubkey-der ./keys/rsa-key.der"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-sha224-rsa_sha256" \
+    "c14n sha224 rsa-sha256" \
+    "" \
+    "--enabled-key-data key-name --pubkey-der ./keys/rsa-key.der"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-sha256-rsa-sha256" \
+    "c14n sha256 rsa-sha256" \
+    "" \
+    "--enabled-key-data key-name --pubkey-der ./keys/rsa-key.der"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-sha384-rsa_sha256" \
+    "c14n sha384 rsa-sha256" \
+    "" \
+    "--enabled-key-data key-name --pubkey-der ./keys/rsa-key.der"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-sha512-rsa_sha256" \
+    "c14n sha512 rsa-sha256" \
+    "" \
+    "--enabled-key-data key-name --pubkey-der ./keys/rsa-key.der"
 
 ##########################################################################
 #

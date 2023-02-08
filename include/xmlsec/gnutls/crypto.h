@@ -40,7 +40,6 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeysMngrInit        (xmlSecK
 XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSGenerateRandom      (xmlSecBufferPtr buffer,
                                                                          xmlSecSize size);
 
-
 /********************************************************************
  *
  * AES transforms

@@ -24,6 +24,7 @@
 /* Include common error helper macros. */
 #include "../errors_helpers.h"
 
+
 /** Max digest size */
 #define XMLSEC_GNUTLS_MAX_DIGEST_SIZE 128
 

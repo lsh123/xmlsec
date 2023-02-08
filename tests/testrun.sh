@@ -89,11 +89,10 @@ fi
 #
 # Setup keys config
 #
-pub_key_format=$file_format
 cert_format=$file_format
 
 #
-# GCrypt only supports DER format for now, others are good to go with PKCS12
+# GCrypt only supports DER format for now, others are good to go with PKCS12 for private keys
 #
 if [ "z$crypto" != "zgcrypt" ] ; then
     priv_key_option="--pkcs12"
@@ -101,8 +100,20 @@ if [ "z$crypto" != "zgcrypt" ] ; then
 else
     priv_key_option="--privkey-der"
     priv_key_format="der"
+fi
+
+#
+# GCrypt only supports DER format for now, others are good to go with certs for public keys
+#
+if [ "z$crypto" != "zgcrypt" ] ; then
+    pub_key_option="--pubkey-cert-der"
+    pub_key_format="crt"
+else
+    pub_key_option="--pubkey-der"
     pub_key_format="der"
 fi
+
+
 
 #
 # Need to force persistence for mscrypto and mscng
@@ -167,11 +178,11 @@ printRes() {
     # check
     if [ "z$expected_res" = "z$actual_res_str" ] ; then
         count_success=`expr $count_success + 1`
-	actual_res="0"
+	    actual_res="0"
         echo "   OK"
     else
         count_fail=`expr $count_fail + 1`
-	actual_res="1"
+	    actual_res="1"
         echo " Fail"
     fi
 

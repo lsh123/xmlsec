@@ -27,3 +27,33 @@ Example:
 ```
 make check-crypto-nss XMLSEC_TEST_REPRODUCIBLE=y
 ```
+
+## Statitistics
+
+The tests are run with legacy algorithms enabled but without GOST. Note that skipped
+tests report is lower than actual because when a test case is skipped, it might include
+multiple subtests (that will be counted in the total successful number).
+
+- OpenSSL:
+  - xmldsig: TOTAL OK: 293; TOTAL FAILED: 0; TOTAL SKIPPED: 3
+  - xmlenc:  TOTAL OK: 590; TOTAL FAILED: 0; TOTAL SKIPPED: 0
+
+- NSS:
+   - xmldsig: TOTAL OK: 268; TOTAL FAILED: 0; TOTAL SKIPPED: 11
+   - xmlenc:  TOTAL OK: 195; TOTAL FAILED: 0; TOTAL SKIPPED: 189
+
+- GnuTLS:
+   - xmldsig: TOTAL OK: 238; TOTAL FAILED: 0; TOTAL SKIPPED: 26
+   - xmlenc:  TOTAL OK: 482; TOTAL FAILED: 0; TOTAL SKIPPED: 36
+
+- MSCng:
+   - xmldsig: TOTAL OK: 251; TOTAL FAILED: 0; TOTAL SKIPPED: 20
+   - xmlenc:  TOTAL OK: 518; TOTAL FAILED: 0; TOTAL SKIPPED: 1
+
+- MSCrypto:
+   - xmldsig: TOTAL OK: 191; TOTAL FAILED: 0; TOTAL SKIPPED: 57
+   - xmlenc:  TOTAL OK: 132; TOTAL FAILED: 0; TOTAL SKIPPED: 181
+
+- GCrypt:
+   - xmldsig: TOTAL OK: 115; TOTAL FAILED: 0; TOTAL SKIPPED: 70
+   - xmlenc:  TOTAL OK: 135; TOTAL FAILED: 0; TOTAL SKIPPED: 186

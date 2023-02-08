@@ -43,6 +43,12 @@ echo "--------- Positive Testing ----------"
 # xmldsig11-interop-2012
 #
 ##########################################################################
+
+# derencoded (not supported)
+# signature-enveloping-derencoded-ec.xml
+# signature-enveloping-derencoded-rsa.xml
+
+# HMAC
 execDSigTest $res_success \
     "xmldsig11-interop-2012" \
     "signature-enveloping-hmac-sha1-truncated40" \
@@ -91,6 +97,196 @@ execDSigTest $res_success \
     "c14n sha1 hmac-sha512" \
     "" \
     "--hmackey keys/hmackey.bin"
+
+# ECDSA
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-p256_sha1" \
+    "c14n sha1 ecdsa-sha1" \
+    "" \
+    "--enabled-key-data key-name --pubkey-der ./keys/p256-key.der"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-p256_sha1_4050" \
+    "c14n sha1 ecdsa-sha1" \
+    "" \
+    "--enabled-key-data key-name --pubkey-der ./keys/p256-key.der"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-p256_sha224" \
+    "c14n sha1 ecdsa-sha224" \
+    "" \
+    "--enabled-key-data key-name --pubkey-der ./keys/p256-key.der"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-p256_sha256" \
+    "c14n sha1 ecdsa-sha256" \
+    "" \
+    "--enabled-key-data key-name --pubkey-der ./keys/p256-key.der"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-p256_sha256_4050" \
+    "c14n sha1 ecdsa-sha256" \
+    "" \
+    "--enabled-key-data key-name --pubkey-der ./keys/p256-key.der"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-p256_sha384" \
+    "c14n sha1 ecdsa-sha384" \
+    "" \
+    "--enabled-key-data key-name --pubkey-der ./keys/p256-key.der"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-p256_sha384_4050" \
+    "c14n sha1 ecdsa-sha384" \
+    "" \
+    "--enabled-key-data key-name --pubkey-der ./keys/p256-key.der"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-p256_sha512" \
+    "c14n sha1 ecdsa-sha512" \
+    "" \
+    "--enabled-key-data key-name --pubkey-der ./keys/p256-key.der"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-p256_sha512_4050" \
+    "c14n sha1 ecdsa-sha512" \
+    "" \
+    "--enabled-key-data key-name --pubkey-der ./keys/p256-key.der"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-p384_sha1" \
+    "c14n sha1 ecdsa-sha1" \
+    "" \
+    "--enabled-key-data key-name --pubkey-der ./keys/p384-key.der"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-p384_sha1_4050" \
+    "c14n sha1 ecdsa-sha1" \
+    "" \
+    "--enabled-key-data key-name --pubkey-der ./keys/p384-key.der"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-p384_sha224" \
+    "c14n sha1 ecdsa-sha224" \
+    "" \
+    "--enabled-key-data key-name --pubkey-der ./keys/p384-key.der"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-p384_sha256" \
+    "c14n sha1 ecdsa-sha256" \
+    "" \
+    "--enabled-key-data key-name --pubkey-der ./keys/p384-key.der"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-p384_sha256_4050" \
+    "c14n sha1 ecdsa-sha256" \
+    "" \
+    "--enabled-key-data key-name --pubkey-der ./keys/p384-key.der"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-p384_sha384" \
+    "c14n sha1 ecdsa-sha384" \
+    "" \
+    "--enabled-key-data key-name --pubkey-der ./keys/p384-key.der"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-p384_sha384_4050" \
+    "c14n sha1 ecdsa-sha384" \
+    "" \
+    "--enabled-key-data key-name --pubkey-der ./keys/p384-key.der"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-p384_sha512" \
+    "c14n sha1 ecdsa-sha512" \
+    "" \
+    "--enabled-key-data key-name --pubkey-der ./keys/p384-key.der"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-p384_sha512_4050" \
+    "c14n sha1 ecdsa-sha512" \
+    "" \
+    "--enabled-key-data key-name --pubkey-der ./keys/p384-key.der"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-p521_sha1" \
+    "c14n sha1 ecdsa-sha1" \
+    "" \
+    "--enabled-key-data key-name --pubkey-der ./keys/p521-key.der"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-p521_sha1_4050" \
+    "c14n sha1 ecdsa-sha1" \
+    "" \
+    "--enabled-key-data key-name --pubkey-der ./keys/p521-key.der"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-p521_sha224" \
+    "c14n sha1 ecdsa-sha224" \
+    "" \
+    "--enabled-key-data key-name --pubkey-der ./keys/p521-key.der"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-p521_sha256" \
+    "c14n sha1 ecdsa-sha256" \
+    "" \
+    "--enabled-key-data key-name --pubkey-der ./keys/p521-key.der"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-p521_sha256_4050" \
+    "c14n sha1 ecdsa-sha256" \
+    "" \
+    "--enabled-key-data key-name --pubkey-der ./keys/p521-key.der"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-p521_sha384" \
+    "c14n sha1 ecdsa-sha384" \
+    "" \
+    "--enabled-key-data key-name --pubkey-der ./keys/p521-key.der"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-p521_sha384_4050" \
+    "c14n sha1 ecdsa-sha384" \
+    "" \
+    "--enabled-key-data key-name --pubkey-der ./keys/p521-key.der"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-p521_sha512" \
+    "c14n sha1 ecdsa-sha512" \
+    "" \
+    "--enabled-key-data key-name --pubkey-der ./keys/p521-key.der"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-p521_sha512_4050" \
+    "c14n sha1 ecdsa-sha512" \
+    "" \
+    "--enabled-key-data key-name --pubkey-der ./keys/p521-key.der"
 
 exit(1);
 

@@ -25,7 +25,18 @@ is useful to see the output before and after a change to understand its impact.
 Example:
 
 ```
-make check-crypto-nss XMLSEC_TEST_REPRODUCIBLE=y
+make check XMLSEC_TEST_REPRODUCIBLE=y
+```
+
+## Running tests after disabling features
+
+If you disabled some features and tests are failing because there are too many
+skipped tests, then you can disable this check by setting XMLSEC_TEST_IGNORE_PERCENT_SUCCESS
+environment variable:
+
+
+```
+make check XMLSEC_TEST_IGNORE_PERCENT_SUCCESS=y
 ```
 
 ## Statitistics

@@ -525,15 +525,48 @@ rm -rf $tmpfile $tmpfile.2 tmpfile.3
 # run tests
 source "$testfile"
 
+# calculate success
+percent_success=0
+count_total=`expr $count_success + $count_fail + $count_skip`
+if [ $count_total -gt 0 ] ; then
+    percent_success=`expr 100 \* $count_success / $count_total`
+fi
+
+if [ "z$crypto" = "zopenssl" ] ; then
+    min_percent_success=90
+elif [ "z$crypto" = "znss" ] ; then
+    min_percent_success=40
+elif [ "z$crypto" = "zgnutls" ] ; then
+    min_percent_success=80
+elif [ "z$crypto" = "zmscng" ] ; then
+    min_percent_success=80
+elif [ "z$crypto" = "zmscrypto" ] ; then
+    min_percent_success=40
+elif [ "z$crypto" = "zgcrypt" ] ; then
+    min_percent_success=40
+else
+    min_percent_success=50
+fi
+
+
 # print results
-echo "--- TOTAL OK: $count_success; TOTAL FAILED: $count_fail; TOTAL SKIPPED: $count_skip" >> $logfile
-echo "--- TOTAL OK: $count_success; TOTAL FAILED: $count_fail; TOTAL SKIPPED: $count_skip"
+echo "--- TOTAL OK: $count_success; OK (percent): $percent_success; TOTAL FAILED: $count_fail; TOTAL SKIPPED: $count_skip" >> $logfile
+echo "--- TOTAL OK: $count_success; OK (percent): $percent_success; TOTAL FAILED: $count_fail; TOTAL SKIPPED: $count_skip"
 
 # print log file if failed (we have to have at least some good tests)
 if [ $count_fail -ne 0 ] ; then
     cat $failedlogfile
     exit_code=$count_fail
 elif [ $count_success -eq 0 ] ; then
+    cat $logfile
+    exit_code=1
+elif [ -z "$XMLSEC_TEST_IGNORE_PERCENT_SUCCESS" -a $min_percent_success -gt $percent_success ]; then
+    echo "--- SUCCESS PERCENT $percent_success IS LOWER THAN THE EXPECTED $min_percent_success PERCENT, FAILING TESTS"  >> $logfile
+    echo "--- If you disabled some features and expect lower success percent then set environment variable 'XMLSEC_TEST_IGNORE_PERCENT_SUCCESS' before running the test" >> $logfile
+
+    echo "--- SUCCESS PERCENT $percent_success IS LOWER THAN THE EXPECTED $min_percent_success PERCENT, FAILING TESTS"
+    echo "--- If you disabled some features and expect lower success percent then set environment variable 'XMLSEC_TEST_IGNORE_PERCENT_SUCCESS' before running the test"
+
     cat $logfile
     exit_code=1
 fi

@@ -19,6 +19,9 @@
 
 #include <string.h>
 
+#include <gnutls/abstract.h>
+#include <gnutls/gnutls.h>
+
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
@@ -31,8 +34,10 @@
 #include "../cast_helpers.h"
 #include "x509utils.h"
 
-static xmlSecKeyPtr     xmlSecGnuTLSAppKeyFromCertLoad          (const char *filename,
-                                                                 xmlSecKeyDataFormat format);
+static xmlSecKeyPtr     xmlSecGnuTLSAppPemDerKeyLoadMemory      (const xmlSecByte * data,
+                                                                 xmlSecSize dataSize,
+                                                                 gnutls_x509_crt_fmt_t fmt);
+
 static xmlSecKeyPtr     xmlSecGnuTLSAppKeyFromCertLoadMemory    (const xmlSecByte* data,
                                                                  xmlSecSize dataSize,
                                                                  xmlSecKeyDataFormat format);
@@ -93,26 +98,47 @@ xmlSecGnuTLSAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
                         void* pwdCallback,
                         void* pwdCallbackCtx) {
     xmlSecKeyPtr key;
+    xmlSecBuffer buffer;
+    xmlSecByte * data;
+    xmlSecSize dataSize;
+    int ret;
 
     xmlSecAssert2(filename != NULL, NULL);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
 
-    switch(format) {
-#ifndef XMLSEC_NO_X509
-    case xmlSecKeyDataFormatPkcs12:
-        key = xmlSecGnuTLSAppPkcs12Load(filename, pwd, pwdCallback, pwdCallbackCtx);
-        break;
-    case xmlSecKeyDataFormatCertPem:
-    case xmlSecKeyDataFormatCertDer:
-        key = xmlSecGnuTLSAppKeyFromCertLoad(filename, format);
-        break;
-#endif /* XMLSEC_NO_X509 */
-    default:
-        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
-            "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
+    /* read file into memory */
+    ret = xmlSecBufferInitialize(&buffer, 4*1024);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize", NULL);
+        return(NULL);
+    }
+    ret = xmlSecBufferReadFile(&buffer, filename);
+    if(ret < 0) {
+        xmlSecInternalError2("xmlSecBufferReadFile", NULL,
+            "filename=%s", xmlSecErrorsSafeString(filename));
+        xmlSecBufferFinalize(&buffer);
+        return(NULL);
+    }
+    data = xmlSecBufferGetData(&buffer);
+    dataSize = xmlSecBufferGetSize(&buffer);
+    if((data == NULL) || (dataSize <= 0)) {
+        xmlSecInternalError2("xmlSecBufferReadFile", NULL,
+            "filename=%s", xmlSecErrorsSafeString(filename));
+        xmlSecBufferFinalize(&buffer);
         return(NULL);
     }
 
+    /* read key */
+    key = xmlSecGnuTLSAppKeyLoadMemory(data, dataSize, format, pwd, pwdCallback, pwdCallbackCtx);
+    if(key == NULL) {
+        xmlSecInternalError2("xmlSecGnuTLSAppKeyLoadMemory", NULL,
+            "filename=%s", xmlSecErrorsSafeString(filename));
+        xmlSecBufferFinalize(&buffer);
+        return(NULL);
+    }
+
+    /* success */
+    xmlSecBufferFinalize(&buffer);
     return(key);
 }
 
@@ -139,6 +165,14 @@ xmlSecGnuTLSAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
 
     switch(format) {
+    case xmlSecKeyDataFormatPem:
+        key = xmlSecGnuTLSAppPemDerKeyLoadMemory(data, dataSize, GNUTLS_X509_FMT_PEM);
+        break;
+
+    case xmlSecKeyDataFormatDer:
+        key = xmlSecGnuTLSAppPemDerKeyLoadMemory(data, dataSize, GNUTLS_X509_FMT_DER);
+        break;
+
 #ifndef XMLSEC_NO_X509
     case xmlSecKeyDataFormatPkcs12:
         key = xmlSecGnuTLSAppPkcs12LoadMemory(data, dataSize, pwd, pwdCallback, pwdCallbackCtx);
@@ -153,6 +187,8 @@ xmlSecGnuTLSAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
             "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
         return(NULL);
     }
+
+    /* done */
     return(key);
 }
 
@@ -272,39 +308,7 @@ xmlSecGnuTLSAppPkcs12Load(const char *filename,
                           const char *pwd,
                           void* pwdCallback,
                           void* pwdCallbackCtx) {
-    xmlSecKeyPtr key;
-    xmlSecBuffer buffer;
-    int ret;
-
-    xmlSecAssert2(filename != NULL, NULL);
-
-    ret = xmlSecBufferInitialize(&buffer, 4*1024);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecBufferInitialize", NULL);
-        return(NULL);
-    }
-
-    ret = xmlSecBufferReadFile(&buffer, filename);
-    if((ret < 0) || (xmlSecBufferGetData(&buffer) == NULL) || (xmlSecBufferGetSize(&buffer) <= 0)) {
-        xmlSecInternalError2("xmlSecBufferReadFile", NULL,
-                            "filename=%s", xmlSecErrorsSafeString(filename));
-        xmlSecBufferFinalize(&buffer);
-        return(NULL);
-    }
-
-    key = xmlSecGnuTLSAppPkcs12LoadMemory(xmlSecBufferGetData(&buffer),
-                    xmlSecBufferGetSize(&buffer),
-                    pwd, pwdCallback, pwdCallbackCtx);
-    if(key == NULL) {
-        xmlSecInternalError2("xmlSecGnuTLSAppPkcs12LoadMemory", NULL,
-                            "filename=%s", xmlSecErrorsSafeString(filename));
-        xmlSecBufferFinalize(&buffer);
-        return(NULL);
-    }
-
-    /* cleanup */
-    xmlSecBufferFinalize(&buffer);
-    return(key);
+    return(xmlSecGnuTLSAppKeyLoad(filename, xmlSecKeyDataFormatPkcs12, pwd, pwdCallback, pwdCallbackCtx));
 }
 
 /**
@@ -448,50 +452,226 @@ done:
     return(res);
 }
 
-static xmlSecKeyPtr
-xmlSecGnuTLSAppKeyFromCertLoad(const char *filename,
-                               xmlSecKeyDataFormat format)
-{
-    xmlSecKeyPtr key;
-    xmlSecBuffer buffer;
+
+static gnutls_privkey_t
+xmlSecGnuTLSAppPemDerPrivKeyLoadMemory(const gnutls_datum_t * datum, gnutls_x509_crt_fmt_t fmt) {
+    gnutls_x509_privkey_t x509_privkey = NULL;
+    gnutls_privkey_t privkey = NULL;
+    int err;
+
+    xmlSecAssert2(datum != NULL, NULL);
+
+    err = gnutls_x509_privkey_init(&x509_privkey);
+    if(err != GNUTLS_E_SUCCESS) {
+        xmlSecGnuTLSError("gnutls_x509_privkey_init", err, NULL);
+        return(NULL);
+    }
+
+    err = gnutls_x509_privkey_import(x509_privkey, datum, fmt);
+    if(err != GNUTLS_E_SUCCESS) {
+        xmlSecGnuTLSError("gnutls_x509_privkey_init", err, NULL);
+        gnutls_x509_privkey_deinit(x509_privkey);
+        return(NULL);
+    }
+
+    err = gnutls_privkey_init(&privkey);
+    if (err != GNUTLS_E_SUCCESS) {
+        xmlSecGnuTLSError("gnutls_privkey_init", err, NULL);
+        gnutls_x509_privkey_deinit(x509_privkey);
+        return(NULL);
+    }
+
+    err = gnutls_privkey_import_x509(privkey, x509_privkey, GNUTLS_PRIVKEY_IMPORT_AUTO_RELEASE);
+    if (err != GNUTLS_E_SUCCESS) {
+        xmlSecGnuTLSError("gnutls_privkey_import_x509", err, NULL);
+        gnutls_x509_privkey_deinit(x509_privkey);
+        gnutls_privkey_deinit(privkey);
+        return(NULL);
+    }
+    x509_privkey = NULL; /* owned by privkey now */
+
+    /* success */
+    return(privkey);
+}
+
+static gnutls_pubkey_t
+xmlSecGnuTLSAppPemDerPubKeyLoadMemory(const gnutls_datum_t * datum, gnutls_x509_crt_fmt_t fmt) {
+    gnutls_pubkey_t pubkey = NULL;
+    int err;
+
+    xmlSecAssert2(datum != NULL, NULL);
+
+	err = gnutls_pubkey_init(&pubkey);
+	if(err < 0) {
+        xmlSecGnuTLSError("gnutls_pubkey_init", err, NULL);
+        return(NULL);
+	}
+
+	// Convert our raw public-key to a gnutls_pubkey_t structure
+	err = gnutls_pubkey_import(pubkey, datum, fmt);
+	if(err < 0) {
+        xmlSecGnuTLSError("gnutls_pubkey_init", err, NULL);
+        gnutls_pubkey_deinit(pubkey);
+        return(NULL);
+	}
+
+    /* done! */
+    return(pubkey);
+}
+
+static xmlSecKeyDataPtr
+xmlSecGnuTLSAsymKeyDataCreate(gnutls_pubkey_t pubkey, gnutls_privkey_t privkey) {
+    int pubkey_algo = GNUTLS_PK_UNKNOWN;
+    int privkey_algo = GNUTLS_PK_UNKNOWN;
+    int algo = GNUTLS_PK_UNKNOWN;
+    xmlSecKeyDataPtr keyData;
     int ret;
 
-    xmlSecAssert2(filename != NULL, NULL);
-
-    ret = xmlSecBufferInitialize(&buffer, 4*1024);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecBufferInitialize", NULL);
+    /* if we have 2 keys, figure out if algo is the same */
+    if(pubkey != NULL) {
+        pubkey_algo = gnutls_pubkey_get_pk_algorithm(pubkey, NULL);
+    }
+    if(privkey != NULL) {
+        privkey_algo = gnutls_privkey_get_pk_algorithm(privkey, NULL);
+    }
+    if(pubkey_algo == GNUTLS_PK_UNKNOWN) {
+        algo = privkey_algo;
+    } else if(privkey_algo == GNUTLS_PK_UNKNOWN) {
+        algo = pubkey_algo;
+    } else if(pubkey_algo == privkey_algo) {
+        algo = pubkey_algo;
+    } else {
+        xmlSecGnuTLSError("diffeerent algorithms for public and private key", GNUTLS_E_SUCCESS, NULL);
+        return(NULL);
+    }
+    if(algo == GNUTLS_PK_UNKNOWN) {
+        xmlSecGnuTLSError("cant determine algorithm for public and private key", GNUTLS_E_SUCCESS, NULL);
         return(NULL);
     }
 
-    ret = xmlSecBufferReadFile(&buffer, filename);
-    if((ret < 0) || (xmlSecBufferGetData(&buffer) == NULL) || (xmlSecBufferGetSize(&buffer) <= 0)) {
-        xmlSecInternalError2("xmlSecBufferReadFile", NULL,
-                             "filename=%s", xmlSecErrorsSafeString(filename));
-        xmlSecBufferFinalize(&buffer);
-        return(NULL);
+    switch(algo) {
+#ifndef XMLSEC_NO_DSA
+    case GNUTLS_PK_DSA:
+        keyData = xmlSecKeyDataCreate(xmlSecGnuTLSKeyDataDsaId);
+        if(keyData == NULL) {
+            xmlSecInternalError("xmlSecKeyDataCreate(DsaId)", NULL);
+            return(NULL);
+        }
+
+        ret = xmlSecGnuTLSKeyDataDsaAdoptKey(keyData, pubkey, privkey);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecGnuTLSKeyDataDsaAdoptKey", NULL);
+            xmlSecKeyDataDestroy(keyData);
+            return(NULL);
+        }
+
+        break;
+#endif /* XMLSEC_NO_DSA */
+
+#ifndef XMLSEC_NO_RSA
+    case GNUTLS_PK_RSA:
+        keyData = xmlSecKeyDataCreate(xmlSecGnuTLSKeyDataRsaId);
+        if(keyData == NULL) {
+            xmlSecInternalError("xmlSecKeyDataCreate(RsaId)", NULL);
+            return(NULL);
+        }
+
+        ret = xmlSecGnuTLSKeyDataRsaAdoptKey(keyData, pubkey, privkey);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecGnuTLSKeyDataRsaAdoptKey", NULL);
+            xmlSecKeyDataDestroy(keyData);
+            return(NULL);
+        }
+
+        break;
+#endif /* XMLSEC_NO_RSA */
+
+#ifndef XMLSEC_NO_ECDSA
+    case GNUTLS_PK_ECDSA:
+        keyData = xmlSecKeyDataCreate(xmlSecGnuTLSKeyDataEcdsaId);
+        if(keyData == NULL) {
+            xmlSecInternalError("xmlSecKeyDataCreate(EcdsaId)", NULL);
+            return(NULL);
+        }
+
+        ret = xmlSecGnuTLSKeyDataEcdsaAdoptKey(keyData, pubkey, privkey);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecGnuTLSKeyDataEcdsaAdoptKey", NULL);
+            xmlSecKeyDataDestroy(keyData);
+            return(NULL);
+        }
+
+        break;
+#endif /* XMLSEC_NO_RSA */
+
+        default:
+            xmlSecInternalError2("Public / private key algorithm is not supported", NULL,
+                "algo=%d", (int)algo);
+            return(NULL);
     }
 
-    key = xmlSecGnuTLSAppKeyFromCertLoadMemory(
-                    xmlSecBufferGetData(&buffer),
-                    xmlSecBufferGetSize(&buffer),
-                    format);
+    /* done */
+    return(keyData);
+}
+
+static xmlSecKeyPtr
+xmlSecGnuTLSAppPemDerKeyLoadMemory(const xmlSecByte * data, xmlSecSize dataSize, gnutls_x509_crt_fmt_t fmt) {
+    gnutls_privkey_t privkey = NULL;
+    gnutls_pubkey_t pubkey = NULL;
+    xmlSecKeyPtr key = NULL;
+    xmlSecKeyDataPtr keyData = NULL;
+    gnutls_datum_t datum;
+    int ret;
+
+    xmlSecAssert2(data != NULL, NULL);
+    xmlSecAssert2(dataSize > 0, NULL);
+
+    datum.data = (xmlSecByte*)data; /* for const */
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(dataSize, datum.size, return(NULL), NULL);
+
+    /* try private key first */
+    privkey = xmlSecGnuTLSAppPemDerPrivKeyLoadMemory(&datum, fmt);
+    if(privkey == NULL) {
+        pubkey = xmlSecGnuTLSAppPemDerPubKeyLoadMemory(&datum, fmt);
+        if(pubkey == NULL) {
+            xmlSecInternalError3("xmlSecGnuTLSAppPemDerPubKeyLoadMemory", NULL,
+                "format=%d; keySize=" XMLSEC_SIZE_FMT, (int)fmt, dataSize);
+            return(NULL);
+        }
+    }
+
+    keyData = xmlSecGnuTLSAsymKeyDataCreate(pubkey, privkey);
+    if(keyData == NULL) {
+        xmlSecInternalError("xmlSecGnuTLSAsymKeyDataCreate", NULL);
+        gnutls_privkey_deinit(privkey);
+        gnutls_pubkey_deinit(pubkey);
+        return(NULL);
+    }
+    privkey = NULL; /* owned by keyData */
+    pubkey = NULL;  /* owned by keyData */
+
+    key = xmlSecKeyCreate();
     if(key == NULL) {
-        xmlSecInternalError2("xmlSecGnuTLSAppKeyFromCertLoadMemory", NULL,
-                             "filename=%s", xmlSecErrorsSafeString(filename));
-        xmlSecBufferFinalize(&buffer);
+        xmlSecInternalError("xmlSecKeyCreate", NULL);
+        xmlSecKeyDataDestroy(keyData);
         return(NULL);
     }
 
-    /* cleanup */
-    xmlSecBufferFinalize(&buffer);
+    ret = xmlSecKeySetValue(key, keyData);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeySetValue", NULL);
+        xmlSecKeyDataDestroy(keyData);
+        xmlSecKeyDestroy(key);
+        return(NULL);
+    }
+    keyData = NULL; /* owned by key now */
+
+    /* done */
     return(key);
 }
 
 static xmlSecKeyPtr
-xmlSecGnuTLSAppKeyFromCertLoadMemory(const xmlSecByte* data,
-                                     xmlSecSize dataSize,
-                                     xmlSecKeyDataFormat format)
+xmlSecGnuTLSAppKeyFromCertLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlSecKeyDataFormat format)
 {
     xmlSecKeyPtr key = NULL;
     xmlSecKeyDataPtr keyData = NULL;

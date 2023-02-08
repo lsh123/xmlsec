@@ -32,6 +32,7 @@
 #include "../cast_helpers.h"
 #include "../keysdata_helpers.h"
 
+
 /**************************************************************************
  *
  * Internal GnuTLS asym key CTX
@@ -328,7 +329,6 @@ xmlSecGnuTLSAsymKeyDataGetSize(xmlSecKeyDataPtr data) {
     xmlSecInternalError("Neither public nor private keys are set", NULL);
     return(0);
 }
-
 
 #ifndef XMLSEC_NO_DSA
 /**************************************************************************

@@ -252,7 +252,7 @@ xmlSecGnuTLSGcmCipherEncrypt(xmlSecGnuTLSGcmCipherCtxPtr ctx, xmlSecBufferPtr in
         return(-1);
     }
     outData = iv + XMLSEC_GNUTLS_GCM_CIPHER_IV_SIZE;
-    outSizeT = outSize;
+    outSizeT = outSize - XMLSEC_GNUTLS_GCM_CIPHER_IV_SIZE;
 
     /* encrypt */
     err = gnutls_aead_cipher_encrypt(ctx->cipher,

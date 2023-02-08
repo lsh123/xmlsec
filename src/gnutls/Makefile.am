@@ -20,8 +20,8 @@ libxmlsec1_gnutls_la_CPPFLAGS = \
 
 libxmlsec1_gnutls_la_SOURCES =\
 	app.c \
-	ciphers.c \
-	ciphers_aead.c \
+	ciphers_cbc.c \
+	ciphers_gcm.c \
 	crypto.c \
 	digests.c \
 	hmac.c \

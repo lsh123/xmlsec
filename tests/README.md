@@ -51,7 +51,7 @@ multiple subtests (that will be counted in the total successful number).
 
 - NSS:
    - xmldsig: TOTAL OK: 268; TOTAL FAILED: 0; TOTAL SKIPPED: 11
-   - xmlenc:  TOTAL OK: 195; TOTAL FAILED: 0; TOTAL SKIPPED: 189
+   - xmlenc:  TOTAL OK: 578; TOTAL FAILED: 0; TOTAL SKIPPED: 4
 
 - GnuTLS:
    - xmldsig: TOTAL OK: 238; TOTAL FAILED: 0; TOTAL SKIPPED: 26

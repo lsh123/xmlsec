@@ -36,6 +36,9 @@ openssl req -config ./openssl.cnf -new -key dsakey.pem -out dsareq.pem
 openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem -out dsacert.pem -infiles dsareq.pem
 openssl verify -CAfile cacert.pem -untrusted ca2cert.pem dsacert.pem
 rm dsareq.pem
+
+openssl pkey -inform DER -in dsakey.der --outform DER --pubout --out dsapubkey.der
+openssl pkey -inform DER -in dsakey.der --outform PEM --pubout --out dsapubkey.pem
 ```
 
 DSA 2048 bits:
@@ -77,6 +80,9 @@ openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem \
         -out largersacert.pem -infiles largersareq.pem
 openssl verify -CAfile cacert.pem -untrusted ca2cert.pem largersacert.pem
 rm largersareq.pem
+
+openssl pkey -inform DER -in largersakey.der --outform DER --pubout --out largersapubkey.der
+openssl pkey -inform DER -in largersakey.der --outform PEM --pubout --out largersapubkey.pem
 ```
 
 ### Generate and sign short-live RSA cert for "expired cert" test (OU = "Test Expired RSA Certificate")
@@ -96,8 +102,11 @@ openssl ecparam -name secp256r1 -genkey -noout -out ecdsa-secp256r1-key.pem
 openssl req -config ./openssl.cnf -new -key ecdsa-secp256r1-key.pem -out ecdsa-secp256r1-req.pem
 openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem \
         -out ecdsa-secp256r1-cert.pem -infiles ecdsa-secp256r1-req.pem
- openssl verify -CAfile cacert.pem -untrusted ca2cert.pem ecdsa-secp256r1-cert.pem
- rm ecdsa-secp256r1-req.pem
+openssl verify -CAfile cacert.pem -untrusted ca2cert.pem ecdsa-secp256r1-cert.pem
+rm ecdsa-secp256r1-req.pem
+
+openssl pkey -inform DER -in ecdsa-secp256r1-key.der --outform DER --pubout --out  ecdsa-secp256r1-pubkey.der
+openssl pkey -inform DER -in ecdsa-secp256r1-key.der --outform PEM --pubout --out  ecdsa-secp256r1-pubkey.pem
 ```
 
 ### Generate ECDSA 512 key with second level CA
@@ -143,11 +152,16 @@ rm gost2012_512req.pem
 
 ## Converting key and certs between PEM and DER formats
 
-### Convert PEM private key file to DER file (IMPORTANT: use OpenSSL 1.x for generating DER files!!!)
+### Convert PEM private key file to DER file
+
+Some libraries (e.g GCrypt) don't like the newer versions of DER formats. So we use
+old (traditional, ASN1, etc) formats instead
+
 RSA keys:
 ```
 openssl rsa -inform PEM -outform DER -traditional -in rsakey.pem -out rsakey.der
 openssl rsa -inform PEM -outform DER -traditional -in largersakey.pem -out largersakey.der
+openssl rsa -inform PEM -outform DER -traditional -pubin -RSAPublicKey_out -in largersapubkey.pem -out largersapubkey-gcrypt.der
 openssl rsa -inform PEM -outform DER -traditional -in expiredkey.pem -out expiredkey.der
 openssl rsa -inform PEM -outform DER -traditional -in ca2key.pem -out ca2key.der
 ```
@@ -155,6 +169,7 @@ openssl rsa -inform PEM -outform DER -traditional -in ca2key.pem -out ca2key.der
 DSA keys:
 ```
 openssl dsa -inform PEM -outform DER -in dsakey.pem -out dsakey.der
+openssl dsa --inform PEM -in dsapubkey.pem -pubin -outform D -out dsapubkey.der
 openssl dsa -inform PEM -outform DER -in dsa2048key.pem -out dsa2048key.der
 openssl dsa -inform PEM -outform DER -in dsa3072key.pem -out dsa3072key.der
 ```
@@ -370,7 +385,7 @@ openssl pkcs12 -export -in alllargersa.pem -name TestLargeRsaKey -out largersake
 rm alllargersa.pem
 
 cat dsakey.pem dsacert.pem ca2cert.pem cacert.pem > alldsa.pem
-openssl pkcs12 -export -in alldsa.pem -name TestDsaKey -out alldsa-win.p12 -CSP "Microsoft Enhanced RSA and AES Cryptographic Provider"
+openssl pkcs12 -export -in alldsa.pem -name TestDsaKey -out dsakey-win.p12 -CSP "Microsoft Enhanced RSA and AES Cryptographic Provider"
 rm alldsa.pem
 
 cat dsa2048key.pem dsa2048cert.pem ca2cert.pem cacert.pem > alldsa2048.pem

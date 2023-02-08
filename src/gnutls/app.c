@@ -469,7 +469,7 @@ xmlSecGnuTLSAppPemDerPrivKeyLoadMemory(const gnutls_datum_t * datum, gnutls_x509
 
     err = gnutls_x509_privkey_import(x509_privkey, datum, fmt);
     if(err != GNUTLS_E_SUCCESS) {
-        xmlSecGnuTLSError("gnutls_x509_privkey_init", err, NULL);
+        xmlSecGnuTLSError("gnutls_x509_privkey_import", err, NULL);
         gnutls_x509_privkey_deinit(x509_privkey);
         return(NULL);
     }

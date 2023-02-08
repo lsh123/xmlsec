@@ -103,6 +103,7 @@ execDSigTest $res_success \
 
 # ECDSA
 # GCrypt has problems with reading RSA and ECDSA der keys
+# https://github.com/lsh123/xmlsec/issues/504
 if [ "z$crypto" != "zgcrypt" ] ; then
     execDSigTest $res_success \
         "xmldsig11-interop-2012" \
@@ -671,19 +672,6 @@ execDSigTest $res_success \
     "$priv_key_option $topfolder/keys/rsakey$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
-if [ "z$crypto" = "zopenssl" -a "z$priv_key_suffix" != "z-win" ] ; then
-    # At least openssl supports --privkey-der next to --pkcs12 on non-Windows,
-    # so test that as well.
-    execDSigTest $res_success \
-        "" \
-        "aleksey-xmldsig-01/enveloping-sha256-rsa-sha256-der" \
-        "sha256 rsa-sha256" \
-        "rsa x509" \
-        "--pubkey-cert-$cert_format $topfolder/keys/rsacert.$cert_format" \
-        "--privkey-$cert_format $topfolder/keys/rsakey$priv_key_suffix.$cert_format" \
-        "--pubkey-cert-$cert_format $topfolder/keys/rsacert.$cert_format"
-fi
-
 execDSigTest $res_success \
     "aleksey-xmldsig-01" \
     "enveloping-sha256-rsa-sha256-relationship" \
@@ -776,12 +764,33 @@ execDSigTest $res_success \
 
 execDSigTest $res_success \
     "" \
+    "aleksey-xmldsig-01/enveloped-sha1-dsa-sha1" \
+    "sha1 dsa-sha1" \
+    "" \
+    "$priv_key_option:DsaKey $topfolder/keys/dsakey.$priv_key_format --pwd secret123" \
+    "$priv_key_option:DsaKey $topfolder/keys/dsakey.$priv_key_format --pwd secret123" \
+    "$priv_key_option:DsaKey $topfolder/keys/dsakey.$priv_key_format --pwd secret123"
+
+
+execDSigTest $res_success \
+    "" \
     "aleksey-xmldsig-01/enveloped-sha1-ecdsa-sha1" \
     "sha1 ecdsa-sha1" \
-    "ecdsa" \
+    "" \
     "$priv_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
     "$priv_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
     "$priv_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123"
+
+
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloped-sha1-rsa-sha1" \
+    "sha1 rsa-sha1" \
+    "" \
+    "$priv_key_option:LargeRsaKey $topfolder/keys/largersakey.$priv_key_format --pwd secret123" \
+    "$priv_key_option:LargeRsaKey $topfolder/keys/largersakey.$priv_key_format --pwd secret123" \
+    "$priv_key_option:LargeRsaKey $topfolder/keys/largersakey.$priv_key_format --pwd secret123"
+
 
 execDSigTest $res_success \
     "" \

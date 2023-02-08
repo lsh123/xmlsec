@@ -89,11 +89,10 @@ fi
 #
 # Setup keys config
 #
-pub_key_format=$file_format
 cert_format=$file_format
 
 #
-# GCrypt only supports DER format for now, others are good to go with PKCS12
+# GCrypt only supports DER format for now, others are good to go with PKCS12 for private keys
 #
 if [ "z$crypto" != "zgcrypt" ] ; then
     priv_key_option="--pkcs12"
@@ -101,8 +100,19 @@ if [ "z$crypto" != "zgcrypt" ] ; then
 else
     priv_key_option="--privkey-der"
     priv_key_format="der"
-    pub_key_format="der"
 fi
+
+#
+# NSS and GnuTLS doesn't supports DER format for public keys
+#
+if [ "z$crypto" != "znss" -a "z$crypto" != "zgnutls" ] ; then
+    pub_key_option="--pubkey-der"
+    pub_key_format="der"
+else
+    pub_key_option="--pubkey-cert-der"
+    pub_key_format="crt"
+fi
+
 
 #
 # Need to force persistence for mscrypto and mscng

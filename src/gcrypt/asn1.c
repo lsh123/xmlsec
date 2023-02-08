@@ -185,7 +185,7 @@ xmlSecGCryptAsn1ParseTag (xmlSecByte const **buffer, unsigned long *buflen, stru
     return(0);
 }
 
-#define XMLSEC_GCRYPT_ASN1_MAX_OBJECT_ID_SIZE    8
+#define XMLSEC_GCRYPT_ASN1_MAX_OBJECT_ID_SIZE    32
 typedef xmlSecByte xmlSecGCryptAsn1ObjectId[XMLSEC_GCRYPT_ASN1_MAX_OBJECT_ID_SIZE];
 
 static int
@@ -279,6 +279,10 @@ xmlSecGCryptAsn1ParseIntegerSequence(int level, xmlSecByte const **buffer, xmlSe
                     ++(*objectids_out_size);
                     break;
 
+                case TAG_NULL:
+                    /* do nothing */
+                    break;
+
                 default:
                     xmlSecInternalError3("xmlSecGCryptAsn1ParseTag", NULL,
                         "Unexpected ASN1 tag=%lu at index=%d", ti.tag, idx);
@@ -364,7 +368,7 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
     xmlSecGCryptAsn1ObjectId objectids[20];
     xmlSecSize objectids_num = 0;
     unsigned int idx;
-    const char* ecdsaCurve;
+    const char* ecdsaCurve = NULL;
     int ret;
 
     xmlSecAssert2(der != NULL, NULL);
@@ -598,7 +602,10 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
             goto done;
         }
 
-        ecdsaCurve = xmlSecGCryptAsn1GetCurveFromObjectId(objectids[0]);
+        /* search through all object ids to find the curve name */
+        for(xmlSecSize ii = 0; (ii < objectids_num) && (ecdsaCurve == NULL); ++ii) {
+            ecdsaCurve = xmlSecGCryptAsn1GetCurveFromObjectId(objectids[ii]);
+        }
         if(ecdsaCurve == NULL) {
             xmlSecInvalidDataError("Unknown ECDSA curve Object ID", NULL);
             goto done;
@@ -661,7 +668,10 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
             goto done;
         }
 
-        ecdsaCurve = xmlSecGCryptAsn1GetCurveFromObjectId(objectids[0]);
+        /* search through all object ids to find the curve name */
+        for(xmlSecSize ii = 0; (ii < objectids_num) && (ecdsaCurve == NULL); ++ii) {
+            ecdsaCurve = xmlSecGCryptAsn1GetCurveFromObjectId(objectids[ii]);
+        }
         if(ecdsaCurve == NULL) {
             xmlSecInvalidDataError("Unknown ECDSA curve Object ID", NULL);
             goto done;

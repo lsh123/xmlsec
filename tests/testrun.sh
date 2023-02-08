@@ -206,13 +206,18 @@ printCheckStatus() {
 }
 
 #
-# Keys Manager test function
+# Keys test function
 #
 execKeysTest() {
     expected_res="$1"
     req_key_data="$2"
     key_name="$3"
     alg_name="$4"
+    privkey_file="$5"
+    pubkey_file="$6"
+    certkey_file="$7"
+    asym_key_test="$8"
+    key_test_options="$9"
     failures=0
 
     if [ -n "$XMLSEC_TEST_NAME" -a "$XMLSEC_TEST_NAME" != "$key_name" ]; then
@@ -242,23 +247,122 @@ execKeysTest() {
         printCheckStatus $?
         res=$?
         if [ $res -ne 0 ]; then
-	    cat $curlogfile >> $logfile
-	    cd $old_pwd
+	        cat $curlogfile >> $logfile
+	        cd $old_pwd
             return
         fi
     fi
 
     # run tests
-    printf "    Creating new key                                      "
-    params="--gen-key:$key_name $alg_name"
-    if [ -f $keysfile ] ; then
-        params="$params --keys-file $keysfile"
+
+    # generate key
+    if [ -n "$alg_name" -a -n "$key_name" ]; then
+        printf "    Creating new key                                      "
+        params="--gen-key:$key_name $alg_name"
+        if [ -f $keysfile ] ; then
+            params="$params --keys-file $keysfile"
+        fi
+        echo "$extra_vars $VALGRIND $xmlsec_app keys $params $xmlsec_params $keysfile" >>  $curlogfile
+        $VALGRIND $xmlsec_app keys $params $xmlsec_params $keysfile >> $curlogfile 2>> $curlogfile
+        printRes $expected_res $?
+        if [ $? -ne 0 ]; then
+            failures=`expr $failures + 1`
+        fi
     fi
-    echo "$extra_vars $VALGRIND $xmlsec_app keys $params $xmlsec_params $keysfile" >>  $curlogfile
-    $VALGRIND $xmlsec_app keys $params $xmlsec_params $keysfile >> $curlogfile 2>> $curlogfile
-    printRes $expected_res $?
-    if [ $? -ne 0 ]; then
-        failures=`expr $failures + 1`
+
+    # test reading private keys
+    if [ -n "$privkey_file" -a -n "$asym_key_test" ]; then
+
+        # gcrypt doesn't support pkcs12
+        if [ "z$crypto" != "zgcrypt" ] ; then
+            printf "    Reading private key from pkcs12 file                  "
+            rm -f $tmpfile
+            params="--pkcs12 $privkey_file.p12 $key_test_options --output $tmpfile $asym_key_test.tmpl"
+            echo "$extra_vars $VALGRIND $xmlsec_app sign $xmlsec_params $params" >>  $curlogfile
+            $VALGRIND $xmlsec_app  sign $xmlsec_params $params >> $curlogfile 2>> $curlogfile
+            printRes $expected_res $?
+            if [ $? -ne 0 ]; then
+                failures=`expr $failures + 1`
+            fi
+        fi
+
+        # gcrypt doesn't support pem
+        if [ "z$crypto" != "zgcrypt" ] ; then
+            printf "    Reading private key from pem file                     "
+            rm -f $tmpfile
+            params="--privkey-pem $privkey_file.pem $key_test_options --output $tmpfile $asym_key_test.tmpl"
+            echo "$extra_vars $VALGRIND $xmlsec_app sign $xmlsec_params $params" >>  $curlogfile
+            $VALGRIND $xmlsec_app  sign $xmlsec_params $params >> $curlogfile 2>> $curlogfile
+            printRes $expected_res $?
+            if [ $? -ne 0 ]; then
+                failures=`expr $failures + 1`
+            fi
+        fi
+
+        printf "    Reading private key from der file                     "
+        rm -f $tmpfile
+        params="--privkey-der $privkey_file.der $key_test_options --output $tmpfile $asym_key_test.tmpl"
+        echo "$extra_vars $VALGRIND $xmlsec_app sign $xmlsec_params $params" >>  $curlogfile
+        $VALGRIND $xmlsec_app  sign $xmlsec_params $params >> $curlogfile 2>> $curlogfile
+        printRes $expected_res $?
+        if [ $? -ne 0 ]; then
+            failures=`expr $failures + 1`
+        fi
+    fi
+    # TODO: add pkcs8 keys here
+
+    # test reading public keys
+    if [ -n "$pubkey_file" -a -n "$asym_key_test" ]; then
+        # gcrypt doesn't support pem
+        if [ "z$crypto" != "zgcrypt" ] ; then
+            printf "    Reading public key from pem file                      "
+            rm -f $tmpfile
+            params="--pubkey-pem $pubkey_file.pem $key_test_options --output $tmpfile $asym_key_test.xml"
+            echo "$extra_vars $VALGRIND $xmlsec_app verify $xmlsec_params $params" >>  $curlogfile
+            $VALGRIND $xmlsec_app verify $xmlsec_params $params >> $curlogfile 2>> $curlogfile
+            printRes $expected_res $?
+            if [ $? -ne 0 ]; then
+                failures=`expr $failures + 1`
+            fi
+        fi
+
+        printf "    Reading public key from der file                      "
+        rm -f $tmpfile
+        params="--pubkey-der $pubkey_file.der $key_test_options --output $tmpfile $asym_key_test.xml"
+        echo "$extra_vars $VALGRIND $xmlsec_app verify $xmlsec_params $params" >>  $curlogfile
+        $VALGRIND $xmlsec_app verify $xmlsec_params $params >> $curlogfile 2>> $curlogfile
+        printRes $expected_res $?
+        if [ $? -ne 0 ]; then
+            failures=`expr $failures + 1`
+        fi
+    fi
+
+    if [ -n "$certkey_file" -a -n "$asym_key_test" ]; then
+        # gcrypt doesn't support certs
+        if [ "z$crypto" != "zgcrypt" ] ; then
+            printf "    Reading public key from pem cert file                 "
+            rm -f $tmpfile
+            params="--pubkey-cert-pem $certkey_file.pem $key_test_options --output $tmpfile $asym_key_test.xml"
+            echo "$extra_vars $VALGRIND $xmlsec_app verify $xmlsec_params $params" >>  $curlogfile
+            $VALGRIND $xmlsec_app verify $xmlsec_params $params >> $curlogfile 2>> $curlogfile
+            printRes $expected_res $?
+            if [ $? -ne 0 ]; then
+                failures=`expr $failures + 1`
+            fi
+        fi
+
+        # gcrypt doesn't support cert
+        if [ "z$crypto" != "zgcrypt" ] ; then
+            printf "    Reading public key from der cert file                 "
+            rm -f $tmpfile
+            params="--pubkey-cert-der $certkey_file.der $key_test_options --output $tmpfile $asym_key_test.xml"
+            echo "$extra_vars $VALGRIND $xmlsec_app verify $xmlsec_params $params" >>  $curlogfile
+            $VALGRIND $xmlsec_app verify $xmlsec_params $params >> $curlogfile 2>> $curlogfile
+            printRes $expected_res $?
+            if [ $? -ne 0 ]; then
+                failures=`expr $failures + 1`
+            fi
+        fi
     fi
 
     # save logs

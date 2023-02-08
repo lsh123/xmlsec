@@ -776,12 +776,33 @@ execDSigTest $res_success \
 
 execDSigTest $res_success \
     "" \
+    "aleksey-xmldsig-01/enveloped-sha1-dsa-sha1" \
+    "sha1 dsa-sha1" \
+    "" \
+    "$priv_key_option:DsaKey $topfolder/keys/dsakey.$priv_key_format --pwd secret123" \
+    "$priv_key_option:DsaKey $topfolder/keys/dsakey.$priv_key_format --pwd secret123" \
+    "$priv_key_option:DsaKey $topfolder/keys/dsakey.$priv_key_format --pwd secret123"
+
+
+execDSigTest $res_success \
+    "" \
     "aleksey-xmldsig-01/enveloped-sha1-ecdsa-sha1" \
     "sha1 ecdsa-sha1" \
-    "ecdsa" \
+    "" \
     "$priv_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
     "$priv_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
     "$priv_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123"
+
+
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloped-sha1-rsa-sha1" \
+    "sha1 rsa-sha1" \
+    "" \
+    "$priv_key_option:LargeRsaKey $topfolder/keys/largersakey.$priv_key_format --pwd secret123" \
+    "$priv_key_option:LargeRsaKey $topfolder/keys/largersakey.$priv_key_format --pwd secret123" \
+    "$priv_key_option:LargeRsaKey $topfolder/keys/largersakey.$priv_key_format --pwd secret123"
+
 
 execDSigTest $res_success \
     "" \

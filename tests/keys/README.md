@@ -77,6 +77,9 @@ openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem \
         -out largersacert.pem -infiles largersareq.pem
 openssl verify -CAfile cacert.pem -untrusted ca2cert.pem largersacert.pem
 rm largersareq.pem
+
+openssl pkey -inform DER -in largersakey.der --outform DER --pubout --out largersapubkey.der
+openssl pkey -inform DER -in largersakey.der --outform PEM --pubout --out largersapubkey.pem
 ```
 
 ### Generate and sign short-live RSA cert for "expired cert" test (OU = "Test Expired RSA Certificate")
@@ -96,8 +99,11 @@ openssl ecparam -name secp256r1 -genkey -noout -out ecdsa-secp256r1-key.pem
 openssl req -config ./openssl.cnf -new -key ecdsa-secp256r1-key.pem -out ecdsa-secp256r1-req.pem
 openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem \
         -out ecdsa-secp256r1-cert.pem -infiles ecdsa-secp256r1-req.pem
- openssl verify -CAfile cacert.pem -untrusted ca2cert.pem ecdsa-secp256r1-cert.pem
- rm ecdsa-secp256r1-req.pem
+openssl verify -CAfile cacert.pem -untrusted ca2cert.pem ecdsa-secp256r1-cert.pem
+rm ecdsa-secp256r1-req.pem
+
+openssl pkey -inform DER -in ecdsa-secp256r1-key.der --outform DER --pubout --out  ecdsa-secp256r1-pubkey.der
+openssl pkey -inform DER -in ecdsa-secp256r1-key.der --outform PEM --pubout --out  ecdsa-secp256r1-pubkey.pem
 ```
 
 ### Generate ECDSA 512 key with second level CA
@@ -148,6 +154,7 @@ RSA keys:
 ```
 openssl rsa -inform PEM -outform DER -traditional -in rsakey.pem -out rsakey.der
 openssl rsa -inform PEM -outform DER -traditional -in largersakey.pem -out largersakey.der
+openssl rsa -inform PEM -outform DER -traditional -in largerspubkey.pem -out largerspubkey.der
 openssl rsa -inform PEM -outform DER -traditional -in expiredkey.pem -out expiredkey.der
 openssl rsa -inform PEM -outform DER -traditional -in ca2key.pem -out ca2key.der
 ```

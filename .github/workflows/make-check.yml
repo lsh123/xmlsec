@@ -2,7 +2,7 @@ name: Make Check
 
 on:
   push:
-    branches: 
+    branches:
           - master
           - xmlsec-1_2_x
   pull_request:
@@ -19,7 +19,7 @@ jobs:
         include:
           - config_flags:
           - config_flags: --enable-size-t=no
-          - config_flags: --enable-md5 --enable-ripemd160
+          - config_flags: --enable-md5
           - config_flags: --enable-static-linking=yes --without-nss --without-gcrypt --without-gnutls
     steps:
     - name: install dependencies
@@ -54,7 +54,7 @@ jobs:
         include:
           - config_flags:
           - config_flags: --enable-size-t=no
-          - config_flags: --enable-md5 --enable-ripemd160
+          - config_flags: --enable-md5
           - config_flags: --enable-static-linking=yes --without-nss --without-gcrypt --without-gnutls
     steps:
     - name: install dependencies
@@ -91,14 +91,14 @@ jobs:
         include:
           - config_flags:
           - config_flags: --enable-size-t=no
-          - config_flags: --enable-md5 --enable-ripemd160
+          - config_flags: --enable-md5
     steps:
     - name: install dependencies
       run: |
           brew update
           brew install automake autoconf libtool
           # brew install libxml2 libxslt libgcrypt
-          brew install openssl nspr nss        
+          brew install openssl nspr nss
     - uses: actions/checkout@v2
     - name: create-build-dirs
       run: |
@@ -134,12 +134,12 @@ jobs:
             config_flags: --enable-size-t=no
     defaults:
       run:
-        shell: msys2 {0}  
+        shell: msys2 {0}
     steps:
     - uses: msys2/setup-msys2@v2
       with:
         msystem: ${{ matrix.msystem }}
-        release: false  
+        release: false
         update: false
         install: >-
           autoconf
@@ -200,7 +200,7 @@ jobs:
           - crypto: mscrypto
             config_flags: unicode=no with-dl=no
           - crypto: mscng
-            config_flags: unicode=no with-dl=no 
+            config_flags: unicode=no with-dl=no
     env:
       VISUAL_STUDIO_ROOT: "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise"
       EXTRAS_FOLDER: C:\extras

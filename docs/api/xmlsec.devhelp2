@@ -44,7 +44,6 @@
       <sub name="Using context objects." link="xmlsec-notes-contexts.html"/>
       <sub name="Adding support for new cryptographic library." link="xmlsec-notes-new-crypto.html">
         <sub name="Overview." link="xmlsec-notes-new-crypto.html#xmlsec-notes-new-crypto-overview"/>
-        <sub name="Creating a framework from the skeleton." link="xmlsec-notes-new-crypto-skeleton.html"/>
         <sub name="xmlSecCryptoApp* functions." link="xmlsec-notes-new-crypto-functions.html"/>
         <sub name="Klasses and objects." link="xmlsec-notes-new-crypto-klasses.html"/>
         <sub name="Cryptographic transforms." link="xmlsec-notes-new-crypto-transforms.html"/>
@@ -1242,6 +1241,9 @@
     <keyword type="function" name="xmlSecGnuTLSTransformAes128CbcGetKlass ()" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformAes128CbcGetKlass"/>
     <keyword type="function" name="xmlSecGnuTLSTransformAes192CbcGetKlass ()" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformAes192CbcGetKlass"/>
     <keyword type="function" name="xmlSecGnuTLSTransformAes256CbcGetKlass ()" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformAes256CbcGetKlass"/>
+    <keyword type="function" name="xmlSecGnuTLSTransformAes128GcmGetKlass ()" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformAes128GcmGetKlass"/>
+    <keyword type="function" name="xmlSecGnuTLSTransformAes192GcmGetKlass ()" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformAes192GcmGetKlass"/>
+    <keyword type="function" name="xmlSecGnuTLSTransformAes256GcmGetKlass ()" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformAes256GcmGetKlass"/>
     <keyword type="function" name="xmlSecGnuTLSTransformKWAes128GetKlass ()" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformKWAes128GetKlass"/>
     <keyword type="function" name="xmlSecGnuTLSTransformKWAes192GetKlass ()" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformKWAes192GetKlass"/>
     <keyword type="function" name="xmlSecGnuTLSTransformKWAes256GetKlass ()" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformKWAes256GetKlass"/>
@@ -1254,6 +1256,14 @@
     <keyword type="function" name="xmlSecGnuTLSKeyDataDsaGetPublicKey ()" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSKeyDataDsaGetPublicKey"/>
     <keyword type="function" name="xmlSecGnuTLSKeyDataDsaGetPrivateKey ()" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSKeyDataDsaGetPrivateKey"/>
     <keyword type="function" name="xmlSecGnuTLSTransformDsaSha1GetKlass ()" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformDsaSha1GetKlass"/>
+    <keyword type="function" name="xmlSecGnuTLSKeyDataEcdsaGetKlass ()" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSKeyDataEcdsaGetKlass"/>
+    <keyword type="function" name="xmlSecGnuTLSKeyDataEcdsaAdoptKey ()" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSKeyDataEcdsaAdoptKey"/>
+    <keyword type="function" name="xmlSecGnuTLSKeyDataEcdsaGetPublicKey ()" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSKeyDataEcdsaGetPublicKey"/>
+    <keyword type="function" name="xmlSecGnuTLSKeyDataEcdsaGetPrivateKey ()" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSKeyDataEcdsaGetPrivateKey"/>
+    <keyword type="function" name="xmlSecGnuTLSTransformEcdsaSha1GetKlass ()" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformEcdsaSha1GetKlass"/>
+    <keyword type="function" name="xmlSecGnuTLSTransformEcdsaSha256GetKlass ()" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformEcdsaSha256GetKlass"/>
+    <keyword type="function" name="xmlSecGnuTLSTransformEcdsaSha384GetKlass ()" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformEcdsaSha384GetKlass"/>
+    <keyword type="function" name="xmlSecGnuTLSTransformEcdsaSha512GetKlass ()" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformEcdsaSha512GetKlass"/>
     <keyword type="function" name="xmlSecGnuTLSKeyDataHmacGetKlass ()" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSKeyDataHmacGetKlass"/>
     <keyword type="function" name="xmlSecGnuTLSKeyDataHmacSet ()" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSKeyDataHmacSet"/>
     <keyword type="function" name="xmlSecGnuTLSTransformHmacSha1GetKlass ()" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformHmacSha1GetKlass"/>
@@ -1280,6 +1290,9 @@
     <keyword type="macro" name="xmlSecGnuTLSTransformAes128CbcId" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformAes128CbcId"/>
     <keyword type="macro" name="xmlSecGnuTLSTransformAes192CbcId" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformAes192CbcId"/>
     <keyword type="macro" name="xmlSecGnuTLSTransformAes256CbcId" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformAes256CbcId"/>
+    <keyword type="macro" name="xmlSecGnuTLSTransformAes128GcmId" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformAes128GcmId"/>
+    <keyword type="macro" name="xmlSecGnuTLSTransformAes192GcmId" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformAes192GcmId"/>
+    <keyword type="macro" name="xmlSecGnuTLSTransformAes256GcmId" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformAes256GcmId"/>
     <keyword type="macro" name="xmlSecGnuTLSTransformKWAes128Id" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformKWAes128Id"/>
     <keyword type="macro" name="xmlSecGnuTLSTransformKWAes192Id" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformKWAes192Id"/>
     <keyword type="macro" name="xmlSecGnuTLSTransformKWAes256Id" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformKWAes256Id"/>
@@ -1288,6 +1301,11 @@
     <keyword type="macro" name="xmlSecGnuTLSTransformKWDes3Id" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformKWDes3Id"/>
     <keyword type="macro" name="xmlSecGnuTLSKeyDataDsaId" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSKeyDataDsaId"/>
     <keyword type="macro" name="xmlSecGnuTLSTransformDsaSha1Id" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformDsaSha1Id"/>
+    <keyword type="macro" name="xmlSecGnuTLSKeyDataEcdsaId" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSKeyDataEcdsaId"/>
+    <keyword type="macro" name="xmlSecGnuTLSTransformEcdsaSha1Id" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformEcdsaSha1Id"/>
+    <keyword type="macro" name="xmlSecGnuTLSTransformEcdsaSha256Id" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformEcdsaSha256Id"/>
+    <keyword type="macro" name="xmlSecGnuTLSTransformEcdsaSha384Id" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformEcdsaSha384Id"/>
+    <keyword type="macro" name="xmlSecGnuTLSTransformEcdsaSha512Id" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformEcdsaSha512Id"/>
     <keyword type="macro" name="xmlSecGnuTLSKeyDataHmacId" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSKeyDataHmacId"/>
     <keyword type="macro" name="xmlSecGnuTLSTransformHmacSha1Id" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformHmacSha1Id"/>
     <keyword type="macro" name="xmlSecGnuTLSTransformHmacSha256Id" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformHmacSha256Id"/>

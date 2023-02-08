@@ -21,7 +21,6 @@ EXTRA_DIST = \
 	globals.h \
 	kw_aes_des.h \
 	xslt.h \
-	skeleton \
 	mscrypto \
 	$(XMLSEC_CRYPTO_DISABLED_LIST) \
 	$(NULL)
@@ -72,4 +71,3 @@ libxmlsec1_la_LDFLAGS = \
 	@XMLSEC_EXTRA_LDFLAGS@ \
 	-version-info @XMLSEC_VERSION_INFO@ \
 	$(NULL)
-

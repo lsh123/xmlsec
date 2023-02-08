@@ -287,7 +287,8 @@ execKeysTest() {
         fi
 
         # gcrypt doesn't support pem
-        if [ "z$crypto" != "zgcrypt" ] ; then
+        # nss doesn't like private keys in pem / der
+        if [ "z$crypto" != "zgcrypt" -a "z$crypto" != "znss" ] ; then
             printf "    Reading private key from pem file                     "
             rm -f $tmpfile
             params="--privkey-pem $privkey_file.pem $key_test_options --output $tmpfile $asym_key_test.tmpl"
@@ -299,22 +300,25 @@ execKeysTest() {
             fi
         fi
 
-        printf "    Reading private key from der file                     "
-        rm -f $tmpfile
-        params="--privkey-der $privkey_file.der $key_test_options --output $tmpfile $asym_key_test.tmpl"
-        echo "$extra_vars $VALGRIND $xmlsec_app sign $xmlsec_params $params" >>  $curlogfile
-        $VALGRIND $xmlsec_app  sign $xmlsec_params $params >> $curlogfile 2>> $curlogfile
-        printRes $expected_res $?
-        if [ $? -ne 0 ]; then
-            failures=`expr $failures + 1`
+        # nss doesn't like private keys in pem / der
+        if [ "z$crypto" != "znss" ] ; then
+            printf "    Reading private key from der file                     "
+            rm -f $tmpfile
+            params="--privkey-der $privkey_file.der $key_test_options --output $tmpfile $asym_key_test.tmpl"
+            echo "$extra_vars $VALGRIND $xmlsec_app sign $xmlsec_params $params" >>  $curlogfile
+            $VALGRIND $xmlsec_app  sign $xmlsec_params $params >> $curlogfile 2>> $curlogfile
+            printRes $expected_res $?
+            if [ $? -ne 0 ]; then
+                failures=`expr $failures + 1`
+            fi
         fi
     fi
     # TODO: add pkcs8 keys here
 
     # test reading public keys
     if [ -n "$pubkey_file" -a -n "$asym_key_test" ]; then
-        # gcrypt doesn't support pem
-        if [ "z$crypto" != "zgcrypt" ] ; then
+        # nss, gcrypt doesn't support pem
+        if [ "z$crypto" != "zgcrypt" -a "z$crypto" != "znss" ] ; then
             printf "    Reading public key from pem file                      "
             rm -f $tmpfile
             params="--pubkey-pem $pubkey_file.pem $key_test_options --output $tmpfile $asym_key_test.xml"
@@ -324,6 +328,11 @@ execKeysTest() {
             if [ $? -ne 0 ]; then
                 failures=`expr $failures + 1`
             fi
+        fi
+
+        # gcrypt DER format is very basic
+        if [ "z$crypto" = "zgcrypt" -a "z$req_key_data" = "zrsa" ] ; then
+            pubkey_file="$pubkey_file-gcrypt"
         fi
 
         printf "    Reading public key from der file                      "
@@ -338,8 +347,8 @@ execKeysTest() {
     fi
 
     if [ -n "$certkey_file" -a -n "$asym_key_test" ]; then
-        # gcrypt doesn't support certs
-        if [ "z$crypto" != "zgcrypt" ] ; then
+        # nss, gcrypt doesn't support pem
+        if [ "z$crypto" != "zgcrypt" -a "z$crypto" != "znss" ] ; then
             printf "    Reading public key from pem cert file                 "
             rm -f $tmpfile
             params="--pubkey-cert-pem $certkey_file.pem $key_test_options --output $tmpfile $asym_key_test.xml"

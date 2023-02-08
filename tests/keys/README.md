@@ -36,6 +36,9 @@ openssl req -config ./openssl.cnf -new -key dsakey.pem -out dsareq.pem
 openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem -out dsacert.pem -infiles dsareq.pem
 openssl verify -CAfile cacert.pem -untrusted ca2cert.pem dsacert.pem
 rm dsareq.pem
+
+openssl pkey -inform DER -in dsakey.der --outform DER --pubout --out dsapubkey.der
+openssl pkey -inform DER -in dsakey.der --outform PEM --pubout --out dsapubkey.pem
 ```
 
 DSA 2048 bits:
@@ -149,12 +152,16 @@ rm gost2012_512req.pem
 
 ## Converting key and certs between PEM and DER formats
 
-### Convert PEM private key file to DER file (IMPORTANT: use OpenSSL 1.x for generating DER files!!!)
+### Convert PEM private key file to DER file
+
+Some libraries (e.g GCrypt) don't like the newer versions of DER formats. So we use
+old (traditional, ASN1, etc) formats instead
+
 RSA keys:
 ```
 openssl rsa -inform PEM -outform DER -traditional -in rsakey.pem -out rsakey.der
 openssl rsa -inform PEM -outform DER -traditional -in largersakey.pem -out largersakey.der
-openssl rsa -inform PEM -outform DER -traditional -in largerspubkey.pem -out largerspubkey.der
+openssl rsa -inform PEM -outform DER -traditional -pubin -RSAPublicKey_out -in largersapubkey.pem -out largersapubkey-gcrypt.der
 openssl rsa -inform PEM -outform DER -traditional -in expiredkey.pem -out expiredkey.der
 openssl rsa -inform PEM -outform DER -traditional -in ca2key.pem -out ca2key.der
 ```
@@ -162,6 +169,7 @@ openssl rsa -inform PEM -outform DER -traditional -in ca2key.pem -out ca2key.der
 DSA keys:
 ```
 openssl dsa -inform PEM -outform DER -in dsakey.pem -out dsakey.der
+openssl dsa --inform PEM -in dsapubkey.pem -pubin -outform D -out dsapubkey.der
 openssl dsa -inform PEM -outform DER -in dsa2048key.pem -out dsa2048key.der
 openssl dsa -inform PEM -outform DER -in dsa3072key.pem -out dsa3072key.der
 ```

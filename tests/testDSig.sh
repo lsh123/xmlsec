@@ -103,6 +103,7 @@ execDSigTest $res_success \
 
 # ECDSA
 # GCrypt has problems with reading RSA and ECDSA der keys
+# https://github.com/lsh123/xmlsec/issues/504
 if [ "z$crypto" != "zgcrypt" ] ; then
     execDSigTest $res_success \
         "xmldsig11-interop-2012" \

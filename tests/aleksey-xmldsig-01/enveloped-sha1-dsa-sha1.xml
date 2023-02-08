@@ -18,9 +18,9 @@
         <DigestValue>9H/rQr2Axe9hYTV2n/tCp+3UIQQ=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>cjP0SYeKg6ls2MhzW69/tgax+RREIFyGwpdgVkWd3eV/XnNYBGlebg==</SignatureValue>
+    <SignatureValue>PaqfuCl8L6U0vKZswrGN0xj29mkBxAS4XlCw5vxMgBdv+Xon0Xf77w==</SignatureValue>
     <KeyInfo>
-      <KeyName/>
+      <KeyName>DsaKey</KeyName>
     </KeyInfo>
   </Signature>
 </Envelope>

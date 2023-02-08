@@ -35,7 +35,7 @@ execKeysTest $res_success   \
     "hmac-192"
 
 execKeysTest $res_success       \
-    "rsa "                      \
+    "rsa"                       \
     "test-rsa"                  \
     "rsa-1024"                  \
     "$topfolder/keys/largersakey"    \
@@ -45,18 +45,21 @@ execKeysTest $res_success       \
     "--pwd secret123 --enabled-key-data key-name"
 
 
+# Reading DSA pubkeys is broken:
+# https://github.com/lsh123/xmlsec/issues/504
+# "$topfolder/keys/dsapubkey"
 execKeysTest $res_success       \
-    "dsa "                      \
+    "dsa"                       \
     "test-dsa"                  \
     "dsa-1024"                  \
     "$topfolder/keys/dsakey"    \
-    "$topfolder/keys/dsapubkey" \
-    "$topfolder/keys/dsacert" \
+    ""                          \
+    "$topfolder/keys/dsacert"   \
     "$topfolder/aleksey-xmldsig-01/enveloped-sha1-dsa-sha1" \
     "--pwd secret123 --enabled-key-data key-name"
 
 execKeysTest $res_success   \
-    "ecdsa "                \
+    "ecdsa"                 \
     ""                      \
     "ecdsa"                 \
     "$topfolder/keys/ecdsa-secp256r1-key" \
@@ -66,24 +69,24 @@ execKeysTest $res_success   \
     "--pwd secret123 --enabled-key-data key-name"
 
 execKeysTest $res_success   \
-    "des "                  \
-    "test-des      "        \
-    "des-192 "
+    "des"                   \
+    "test-des"              \
+    "des-192"
 
 execKeysTest $res_success   \
-    "aes "                  \
-    "test-aes128   "        \
-    "aes-128 "
+    "aes"                   \
+    "test-aes128"           \
+    "aes-128"
 
 execKeysTest $res_success   \
-    "aes "                  \
-    "test-aes192   "        \
-    "aes-192 "
+    "aes"                   \
+    "test-aes192"           \
+    "aes-192"
 
 execKeysTest $res_success   \
-    "aes "                  \
-    "test-aes256   " \
-    "aes-256 "
+    "aes"                   \
+    "test-aes256"           \
+    "aes-256"
 
 ##########################################################################
 ##########################################################################

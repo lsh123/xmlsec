@@ -448,6 +448,7 @@ xmlSecNssAppDerKeyLoadSECItem(SECItem* secItem) {
         spki = SECKEY_DecodeDERSubjectPublicKeyInfo(secItem);
         if (spki == NULL) {
             xmlSecNssError("SECKEY_DecodeDERSubjectPublicKeyInfo", NULL);
+            goto done;
         }
 
         pubkey = SECKEY_ExtractPublicKey(spki);

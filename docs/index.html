@@ -85,32 +85,33 @@ see the Copyright file in the distribution  for details.<br><br></p>
 			</li>
 			<li><b>xmlsec-openssl library:</b>
 				<ul>
-					<li>Added support for <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP">RSA OAEP MGF1 algorithms</a>.</li>
-					<li>Added support for <a href="https://www.rfc-editor.org/rfc/rfc9231.html#name-rsassa-pss-without-paramete">RSA PSS withtout parameters algorithms</a>.</li>
+					<li>Added support for <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP">MGF1 algorithm to RSA OAEP key transport</a>.</li>
+					<li>Added support for <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.3.10">RSA PSS signatures (withtout parameters)</a>.</li>
 					<li>Removed support for OpenSSL 1.0.0 and LibreSSL before 2.7.0.</li>
 				</ul>
 			</li>
 			<li><b>xmlsec-nss library:</b>
 				<ul>
-					<li>Added support for <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP">RSA OAEP including MGF1 algorithms</a>.</li>
-					<li>Added support for <a href="https://www.rfc-editor.org/rfc/rfc9231.html#name-rsassa-pss-without-paramete">RSA PSS withtout parameters algorithms</a>.</li>
+					<li>Added support for <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.3.10">RSA PSS signatures (withtout parameters)</a>.</li>
+					<li>Added support for <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP">RSA OAEP key transport including MGF1 algorithms</a>.</li>
                     <li>Added support for <a href="https://www.w3.org/TR/xmlenc-core1/#sec-AES-GCM">AES GCM ciphers</a>.</li>
 				</ul>
 			</li>
 			<li><b>xmlsec-gnutls library:</b>
 				<ul>
-                    <li>Bumped minimal GnuTLS version to 3.6.0.</li>
                     <li>(<b>ABI breaking change</b>) Remove dependency on xmlsec-gcrypt and libgcrypt libraries (including API functions) to enable support for different GnuTLS backends.</li>
-					<li>Added support for <a href="https://www.rfc-editor.org/rfc/rfc9231.html#name-rsassa-pss-without-paramete">RSA PSS withtout parameters algorithms</a>.</li>
-					<li>Added support for <a href="https://www.rfc-editor.org/rfc/rfc9231.html#name-signaturemethod-public-key-">RSA PKCS 1.5 key transport</a>.</li>
-					<li>Added support for <a href="https://www.rfc-editor.org/rfc/rfc9231.html#name-ecdsa-sha-ecdsa-ripemd160-e">ECDSA signatures</a>.</li>
+                    <li>Bumped minimal GnuTLS version to 3.6.0.</li>
+					<li>Added support for <a href="https://www.w3.org/TR/xmldsig-core1/#sec-ECDSA">ECDSA signatures</a>.</li>
+                    <li>Added support for <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP">DSA-SHA256 signatures</a>.</li>
+					<li>Added support for <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.3.10">RSA PSS signatures (withtout parameters)</a>.</li>
+					<li>Added support for <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-1_5">RSA PKCS 1.5 key transport</a>.</li>
 					<li>Added support for <a href="https://www.w3.org/TR/xmlenc-core1/#sec-AES-GCM">AES GCM ciphers</a>.</li>
 				</ul>
 			</li>
 			<li><b>xmlsec-mscng library:</b>
 				<ul>
-					<li>Added support for <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP">RSA OAEP MGF1 algorithms</a>.</li>
-					<li>Added support for <a href="https://www.rfc-editor.org/rfc/rfc9231.html#name-rsassa-pss-without-paramete">RSA PSS withtout parameters algorithms</a>.</li>
+					<li>Added support for <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.3.10">RSA PSS signatures (withtout parameters)</a>.</li>
+					<li>Added support for <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP">MGF1 algorithm to RSA OAEP key transport</a>.</li>
 				</ul>
 			</li>
 			<li><b>xmlsec-mscrypto library:</b>
@@ -122,10 +123,10 @@ see the Copyright file in the distribution  for details.<br><br></p>
 			<li><b>xmlsec-gcrypt library:</b>
 				<ul>
 					<li>In maintenance mode starting from this release.</li>
-					<li>Added support for <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP">RSA OAEP including MGF1 algorithms</a>.</li>
-					<li>Added support for <a href="https://www.rfc-editor.org/rfc/rfc9231.html#name-rsassa-pss-without-paramete">RSA PSS withtout parameters algorithms</a>.</li>
-					<li>Added support for <a href="https://www.rfc-editor.org/rfc/rfc9231.html#name-signaturemethod-public-key-">RSA PKCS 1.5 key transport</a>.</li>
-					<li>Added support for <a href="https://www.rfc-editor.org/rfc/rfc9231.html#name-ecdsa-sha-ecdsa-ripemd160-e">ECDSA signatures</a>.</li>
+					<li>Added support for <a href="https://www.w3.org/TR/xmldsig-core1/#sec-ECDSA">ECDSA signatures</a>.</li>
+					<li>Added support for <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.3.10">RSA PSS signatures (withtout parameters)</a>.</li>
+					<li>Added support for <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-1_5">RSA PKCS 1.5 key transport</a>.</li>
+					<li>Added support for <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP">RSA OAEP key transport including MGF1 algorithms</a>.</li>
 				</ul>
 			</li>
 			<li><b>xmlsec command line utility:</b>

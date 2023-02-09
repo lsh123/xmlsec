@@ -30,14 +30,20 @@
 
 #include "../cast_helpers.h"
 
+/* https://www.w3.org/TR/xmldsig-core1/#sec-DSA
+ * The output of the DSA algorithm consists of a pair of integers usually referred by the pair (r, s).
+ * DSA-SHA1: Integer to octet-stream conversion must be done according to the I2OSP operation defined
+ *           in the RFC 3447 [PKCS1] specification with a l parameter equal to 20
+ * DSA-SHA256: The pairs (2048, 256) and (3072, 256) correspond to the algorithm DSAwithSHA256
+ */
+#define XMLSEC_GNUTLS_SIGNATURE_DSA_SHA1_HALF_LEN              20
+#define XMLSEC_GNUTLS_SIGNATURE_DSA_SHA256_HALF_LEN            (256 / 8)
 
 /**************************************************************************
  *
  * Internal NSS signatures ctx
  *
  *****************************************************************************/
-#define XMLSEC_GNUTLS_DSA_SIZE      20
-
 typedef gnutls_pubkey_t     (*xmlSecGnuTLSKeyDataGetPublicKeyMethod)      (xmlSecKeyDataPtr data);
 typedef gnutls_privkey_t    (*xmlSecGnuTLSKeyDataGetPrivateKeyMethod)     (xmlSecKeyDataPtr data);
 
@@ -95,6 +101,12 @@ xmlSecGnuTLSSignatureCheckId(xmlSecTransformPtr transform) {
         return(1);
     }
 #endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA256
+    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformDsaSha256Id)) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_SHA256 */
 
 #endif /* XMLSEC_NO_DSA */
 
@@ -202,6 +214,16 @@ xmlSecGnuTLSSignatureInitialize(xmlSecTransformPtr transform) {
         ctx->getPrivKey = xmlSecGnuTLSKeyDataDsaGetPrivateKey;
     } else
 #endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA256
+    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformDsaSha256Id)) {
+        ctx->keyId      = xmlSecGnuTLSKeyDataDsaId;
+        ctx->dgstAlgo   = GNUTLS_DIG_SHA256;
+        ctx->signAlgo   = GNUTLS_SIGN_DSA_SHA256;
+        ctx->getPubKey  = xmlSecGnuTLSKeyDataDsaGetPublicKey;
+        ctx->getPrivKey = xmlSecGnuTLSKeyDataDsaGetPrivateKey;
+    } else
+#endif /* XMLSEC_NO_SHA256 */
 
 #endif /* XMLSEC_NO_DSA */
 
@@ -672,14 +694,56 @@ xmlSecGnuTLSFromDer(const gnutls_datum_t* src, gnutls_datum_t* dst, xmlSecSize s
     return(0);
 }
 
+/* returns res = 0 if no der conversion is expected or the half size of the resulting signature
+(i.e. size of each r and s integers)
+*/
+static int
+xmlSecGnuTLSSignatureGetDerHalfSize(gnutls_sign_algorithm_t algo, xmlSecSize keySize, xmlSecSize * res) {
+    xmlSecAssert2(res != 0, -1);
+
+    switch(algo) {
+        /********************************* Fixed length (DSA-SHA*) *******************************/
+#ifndef XMLSEC_NO_DSA
+    case GNUTLS_SIGN_DSA_SHA1:
+        (*res) = XMLSEC_GNUTLS_SIGNATURE_DSA_SHA1_HALF_LEN;
+        break;
+    case GNUTLS_SIGN_DSA_SHA256:
+        (*res) = XMLSEC_GNUTLS_SIGNATURE_DSA_SHA256_HALF_LEN;
+        break;
+#endif /* XMLSEC_NO_DSA */
+
+        /********************************* Key length (ECDSA-SHA*) *******************************/
+#ifndef XMLSEC_NO_ECDSA
+    case GNUTLS_SIGN_ECDSA_SHA1:
+    case GNUTLS_SIGN_ECDSA_SHA256:
+    case GNUTLS_SIGN_ECDSA_SHA384:
+    case GNUTLS_SIGN_ECDSA_SHA512:
+        if(keySize < 8) {
+            xmlSecInvalidSizeDataError("keySize", keySize, "ECDSA key size", NULL);
+            return(-1);
+        }
+        (*res) = (keySize + 7) / 8;
+        break;
+#endif /* XMLSEC_NO_ECDSA */
+
+    default:
+        /* don't convert to DER */
+        (*res) = 0;
+        break;
+    }
+
+    /* done */
+    return(0);
+}
+
 static int
 xmlSecGnuTLSSignatureVerify(xmlSecTransformPtr transform,
                         const xmlSecByte* data, xmlSecSize dataSize,
                         xmlSecTransformCtxPtr transformCtx) {
     xmlSecGnuTLSSignatureCtxPtr ctx;
     gnutls_datum_t hash, signature;
-    gnutls_datum_t der_signature = { NULL, 0 };
     gnutls_pubkey_t pubkey;
+    xmlSecSize keySize, signHalfSize = 0;
     int err;
     int ret;
 
@@ -702,6 +766,18 @@ xmlSecGnuTLSSignatureVerify(xmlSecTransformPtr transform,
         return(-1);
     }
 
+    /* do we need to convert signature to DER? */
+    keySize = xmlSecKeyDataGetSize(ctx->keyData);
+    if(keySize <= 0) {
+        xmlSecInternalError("keySize", xmlSecTransformGetName(transform));
+        return(-1);
+    }
+    ret = xmlSecGnuTLSSignatureGetDerHalfSize(ctx->signAlgo, keySize, &signHalfSize);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecGnuTLSSignatureGetDerHalfSize", xmlSecTransformGetName(transform));
+        return(-1);
+    }
+
     /* get hash */
     gnutls_hash_output(ctx->hash, ctx->dgst);
     hash.data = ctx->dgst;
@@ -711,48 +787,16 @@ xmlSecGnuTLSSignatureVerify(xmlSecTransformPtr transform,
     signature.data = (xmlSecByte*)data;
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(dataSize, signature.size, return(-1), xmlSecTransformGetName(transform));
 
-    /* convert signature to DER if needed */
-    switch(ctx->signAlgo) {
-        /********************************* DSA *******************************/
-#ifndef XMLSEC_NO_DSA
-    case GNUTLS_SIGN_DSA_SHA1:
-        ret = xmlSecGnuTLSToDer(&signature, &der_signature, XMLSEC_GNUTLS_DSA_SIZE);
+    /* conver if neeeded and verify */
+    if(signHalfSize > 0) {
+        gnutls_datum_t der_signature = { NULL, 0 };
+
+        ret = xmlSecGnuTLSToDer(&signature, &der_signature, signHalfSize);
         if((ret < 0) || (der_signature.data == NULL)) {
             xmlSecInternalError("xmlSecGnuTLSToDer", xmlSecTransformGetName(transform));
             return(-1);
         }
-        break;
-#endif /* XMLSEC_NO_DSA */
 
-        /********************************* ECDSA *******************************/
-#ifndef XMLSEC_NO_ECDSA
-    case GNUTLS_SIGN_ECDSA_SHA1:
-    case GNUTLS_SIGN_ECDSA_SHA256:
-    case GNUTLS_SIGN_ECDSA_SHA384:
-    case GNUTLS_SIGN_ECDSA_SHA512:
-    {
-            xmlSecSize keySize;
-
-            keySize = xmlSecKeyDataGetSize(ctx->keyData);
-            keySize = (keySize + 7) / 8;
-            xmlSecAssert2(keySize > 0, -1);
-
-            ret = xmlSecGnuTLSToDer(&signature, &der_signature, keySize);
-            if((ret < 0) || (der_signature.data == NULL)) {
-                xmlSecInternalError("xmlSecGnuTLSToDer", xmlSecTransformGetName(transform));
-                return(-1);
-            }
-            break;
-    }
-#endif /* XMLSEC_NO_ECDSA */
-
-    default:
-        /* do nothing */
-        break;
-    }
-
-    /* verify */
-    if(der_signature.data != NULL) {
         err = gnutls_pubkey_verify_hash2(pubkey, ctx->signAlgo, ctx->verifyFlags, &hash, &der_signature);
         gnutls_free(der_signature.data);
     } else {
@@ -780,8 +824,8 @@ xmlSecGnuTLSSignatureVerify(xmlSecTransformPtr transform,
 static int
 xmlSecGnuTLSSignatureSign(xmlSecTransformPtr transform, xmlSecGnuTLSSignatureCtxPtr ctx, xmlSecBufferPtr out) {
     gnutls_datum_t hash, signature = { NULL, 0 };
-    gnutls_datum_t xmldsig_signature = { NULL, 0 };
     gnutls_privkey_t privkey;
+    xmlSecSize keySize, signHalfSize = 0;
     int err;
     int ret;
 
@@ -798,6 +842,18 @@ xmlSecGnuTLSSignatureSign(xmlSecTransformPtr transform, xmlSecGnuTLSSignatureCtx
         return(-1);
     }
 
+    /* do we need to convert signature from DER? */
+    keySize = xmlSecKeyDataGetSize(ctx->keyData);
+    if(keySize <= 0) {
+        xmlSecInternalError("keySize", xmlSecTransformGetName(transform));
+        return(-1);
+    }
+    ret = xmlSecGnuTLSSignatureGetDerHalfSize(ctx->signAlgo, keySize, &signHalfSize);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecGnuTLSSignatureGetDerHalfSize", xmlSecTransformGetName(transform));
+        return(-1);
+    }
+
     /* get hash */
     gnutls_hash_output(ctx->hash, ctx->dgst);
     hash.data = ctx->dgst;
@@ -809,48 +865,18 @@ xmlSecGnuTLSSignatureSign(xmlSecTransformPtr transform, xmlSecGnuTLSSignatureCtx
         return(-1);
     }
 
-    /* convert from DER if needed */
-    switch(ctx->signAlgo) {
-        /********************************* DSA *******************************/
-#ifndef XMLSEC_NO_DSA
-    case GNUTLS_SIGN_DSA_SHA1:
-        ret = xmlSecGnuTLSFromDer(&signature, &xmldsig_signature, XMLSEC_GNUTLS_DSA_SIZE);
+    /* conver if neeeded */
+    if(signHalfSize > 0) {
+        gnutls_datum_t xmldsig_signature = { NULL, 0 };
+
+        ret = xmlSecGnuTLSFromDer(&signature, &xmldsig_signature, signHalfSize);
         if((ret < 0) || (xmldsig_signature.data == NULL)) {
             xmlSecInternalError("xmlSecGnuTLSFromDer", xmlSecTransformGetName(transform));
             gnutls_free(signature.data);
             return(-1);
         }
-        break;
-#endif /* XMLSEC_NO_DSA */
 
-        /********************************* ECDSA *******************************/
-#ifndef XMLSEC_NO_ECDSA
-    case GNUTLS_SIGN_ECDSA_SHA1:
-    case GNUTLS_SIGN_ECDSA_SHA256:
-    case GNUTLS_SIGN_ECDSA_SHA384:
-    case GNUTLS_SIGN_ECDSA_SHA512:
-    {
-            xmlSecSize keySize;
-
-            keySize = xmlSecKeyDataGetSize(ctx->keyData);
-            keySize = (keySize + 7) / 8;
-            xmlSecAssert2(keySize > 0, -1);
-
-            ret = xmlSecGnuTLSFromDer(&signature, &xmldsig_signature, keySize);
-            if((ret < 0) || (xmldsig_signature.data == NULL)) {
-                xmlSecInternalError("xmlSecGnuTLSFromDer", xmlSecTransformGetName(transform));
-                return(-1);
-            }
-            break;
-    }
-#endif /* XMLSEC_NO_ECDSA */
-    default:
-        /* do nothing */
-        break;
-    }
-
-    /* xmldsig_signature -> signature */
-    if(xmldsig_signature.data != NULL) {
+        /* xmldsig_signature -> signature */
         gnutls_free(signature.data);
         signature.data = xmldsig_signature.data;
         signature.size = xmldsig_signature.size;
@@ -989,6 +1015,54 @@ xmlSecGnuTLSTransformDsaSha1GetKlass(void) {
     return(&xmlSecGnuTLSDsaSha1Klass);
 }
 #endif /* XMLSEC_NO_SHA1 */
+
+
+#ifndef XMLSEC_NO_SHA256
+/****************************************************************************
+ *
+ * DSA-SHA256 signature transform
+ *
+ ***************************************************************************/
+
+static xmlSecTransformKlass xmlSecGnuTLSDsaSha256Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecGnuTLSSignatureSize,                  /* xmlSecSize objSize */
+
+    xmlSecNameDsaSha256,                        /* const xmlChar* name; */
+    xmlSecHrefDsaSha256,                        /* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
+
+    xmlSecGnuTLSSignatureInitialize,            /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecGnuTLSSignatureFinalize,              /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecGnuTLSSignatureSetKeyReq,             /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGnuTLSSignatureSetKey,                /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecGnuTLSSignatureVerify,                /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecGnuTLSSignatureExecute,               /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecGnuTLSTransformDsaSha256GetKlass:
+ *
+ * The DSA-SHA256 signature transform klass.
+ *
+ * Returns: DSA-SHA256 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecGnuTLSTransformDsaSha256GetKlass(void) {
+    return(&xmlSecGnuTLSDsaSha256Klass);
+}
+#endif /* XMLSEC_NO_SHA256 */
 
 #endif /* XMLSEC_NO_DSA */
 

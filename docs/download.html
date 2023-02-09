@@ -141,53 +141,74 @@
                                         <tr valign="top">
                                             <th width="20%">XMLSec library</th>
                                             <th>Cryptographic library</th>
-                                            <th>Minimum version</th>
+                                            <th>Supported private / public key formats</th>
                                             <th>Notes</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr valign="top">
                                             <td><b>xmlsec-openssl</b></td>
-                                            <td><a href="http://www.openssl.org/">OpenSSL</a></td>
                                             <td>
                                                 <ul>
-                                                    <li>OpenSSL 1.1.0 (deprecated in xmlsec 1.3.0, April 2023)</li>
-                                                    <li>OpenSSL 1.1.1</li>
-                                                    <li>OpenSSL 3.0.0</li>
-                                                    <li>LibreSSL 2.7</li>
-                                                    <li>BoringSSL 1.1.0 (unstable)</li>
+                                                    <li><a href="http://www.openssl.org/">OpenSSL</a> 1.1.1 or above, 3.0.0 or above is recommended</li>
+                                                    <li><a href="https://www.libressl.org/">LibreSSL</a> 2.7 or above</li>
+                                                    <li><a href="https://boringssl.googlesource.com/boringssl/">BoringSSL</a> 1.1.0</li>
                                                 </ul>
                                             </td>
-                                            <td>OpenSSL 3.x.x is recommended.</td>
+                                            <!-- key formats -->
+                                            <td>
+                                                <ul>
+                                                    <li>Private keys: pkcs12, pkcs8 (pem/der), unencrypted keys (pem/der)</li>
+                                                    <li>Public keys: x509 certificates (pem/der), standalone keys (pem/der)</li>
+                                                </ul>
+                                            </td>
+                                            <!-- notes -->
+                                            <td>BoringSSL API is unstable and the latest versions might not work with XMLSec Library.</td>
+                                        </tr>
+                                        <tr valign="top">
+                                            <td><b>xmlsec-gnutls</b></td>
+                                            <td><a href="http://www.gnu.org/software/gnutls/">GnuTLS</a> 3.6.0 or above</td>
+                                            <!-- key formats -->
+                                            <td>
+                                                <ul>
+                                                    <li>Private keys: pkcs12, pkcs8 (pem/der), unencrypted keys (pem/der)</li>
+                                                    <li>Public keys: x509 certificates (pem/der), standalone keys (pem/der)</li>
+                                                </ul>
+                                            </td>
+                                            <!-- notes -->
+                                            <td>Supports multiple cryptographic backends, the exact features set for xmlsec-gnutls
+                                                depends on the backend in use.</td>
                                         </tr>
                                         <tr valign="top">
                                             <td><b>xmlsec-nss</b></td>
                                             <td><a href="http://www.mozilla.org/projects/security/pki/nss/">NSS</a>
-                                                (Mozilla cryptographic library)</td>
-                                            <td>
-                                                <ul><li>NSS 3.49 and NSPR 4.25.0</li></ul>
+                                                (Mozilla cryptographic library) 3.49 or above
                                             </td>
-                                            <td>Requires <a href="https://firefox-source-docs.mozilla.org/nspr/index.html">NSPR</a></td>
-                                        </tr>
-                                        <tr valign="top">
-                                            <td><b>xmlsec-gnutls</b></td>
-                                            <td><a href="http://www.gnu.org/software/gnutls/">GnuTLS</a></td>
-                                            <td><ul><li>GnuTLS 3.6.0</li></ul></td>
-                                            <td>Supports multiple cryptographic backends.</td>
+                                            <!-- key formats -->
+                                            <td>
+                                                <ul>
+                                                    <li>Private keys: pkcs12</li>
+                                                    <li>Public keys: x509 certificates (der), standalone keys (der)</li>
+                                                </ul>
+                                            </td>
+                                            <!-- notes -->
+                                            <td>Requires <a href="https://firefox-source-docs.mozilla.org/nspr/index.html">NSPR</a> 4.25.0 or above</td>
                                         </tr>
                                         <tr valign="top">
                                             <td><b>xmlsec-mscng</b></td>
                                             <td>
                                                 <a
                                                     href="https://learn.microsoft.com/en-us/windows/win32/seccng/cng-portal">Microsoft
-                                                    Cryptography API: Next Generation</a>
+                                                    Cryptography API: Next Generation</a> (requires Windows 7, Windows Server 2008 R2, or above)
                                             </td>
+                                            <!-- key formats -->
                                             <td>
                                                 <ul>
-                                                    <li>Windows 7</li>
-                                                    <li>Windows Server 2008 R2</li>
+                                                    <li>Private keys: pkcs12</li>
+                                                    <li>Public keys: x509 certificates (der)</li>
                                                 </ul>
                                             </td>
+                                            <!-- notes -->
                                             <td>
                                                 xmlsec-mscng is the recommended version on Windows platform.
                                             </td>
@@ -195,26 +216,34 @@
                                         <tr valign="top">
                                             <td><b>xmlsec-mscrypto</b></td>
                                             <td>
-                                                <a
-                                                    href="https://learn.microsoft.com/en-us/windows/win32/seccrypto/cryptography--cryptoapi--and-capicom">Microsoft
-                                                    CryptogAPI: (MSCrypto)</a>
+                                                <a href="https://learn.microsoft.com/en-us/windows/win32/seccrypto/cryptography--cryptoapi--and-capicom">Microsoft
+                                                    CryptogAPI: (MSCrypto)</a> (requires Windows XP, Windows Server 2003, or above)
                                             </td>
+                                            <!-- key formats -->
                                             <td>
                                                 <ul>
-                                                    <li>Windows XP</li>
-                                                    <li>Windows NT4 (deprecated)</li>
-                                                    <li>Windows Server 2003</li>
+                                                    <li>Private keys: pkcs12</li>
+                                                    <li>Public keys: x509 certificates (der)</li>
                                                 </ul>
                                             </td>
+                                            <!-- notes -->
                                             <td>In maintenance mode starting from xmlsec 1.3.0, April 2023.</td>
                                         </tr>
                                         <tr valign="top">
                                             <td><b>xmlsec-gcrypt</b></td>
                                             <td>
-                                                <a href="http://www.gnu.org/directory/security/libgcrypt.html">LibGCrypt</a>
+                                                <a href="http://www.gnu.org/directory/security/libgcrypt.html">LibGCrypt</a> 1.4.0 or above
                                             </td>
-                                            <td><ul><li>LibGCrypt 1.4.0</li></ul></td>
-                                            <td>Limited functionality without built-in x509 certificates support in LibGCrypt. In maintenance mode starting from xmlsec 1.3.0, April 2023.</td>
+                                            <!-- key formats -->
+                                            <td>
+                                                <ul>
+                                                    <li>Private keys: limited unencrypted keys (der)</li>
+                                                    <li>Public keys: limited standalone keys (der)</li>
+                                                </ul>
+                                            </td>
+                                            <!-- notes -->
+                                            <td>Limited functionality without built-in x509 certificates support in LibGCrypt. In maintenance
+                                                mode starting from xmlsec 1.3.0, April 2023.</td>
                                         </tr>
                                     </tbody>
                                 </table>

@@ -191,11 +191,13 @@ xmlSecAppCmdLineMatchParam(const char* argvParam, const char* paramName,
 
     if(canHaveNameString != 0) {
         size_t len = strlen(paramName);
-        if((strncmp(argvParam, paramName, len) == 0) &&
-           ((argvParam[len] == '\0') || (argvParam[len] == ':'))) {
-
-           return(1);
+        if(strncmp(argvParam, paramName, len) != 0) {
+            return(0);
         }
+        if((argvParam[len] != '\0') && (argvParam[len] != ':')) {
+            return(0);
+        }
+        return(1);
     } else if(strcmp(argvParam, paramName) == 0) {
         return(1);
     }
@@ -215,18 +217,16 @@ xmlSecAppCmdLineParamsListFind(xmlSecAppCmdLineParamPtr* params, xmlSecAppCmdLin
         if((params[i]->topics & topics) == 0) {
             continue;
         }
-
         canHaveNameString = ((params[i]->flags & xmlSecAppCmdLineParamFlagParamNameValue) != 0) ? 1 : 0;
-        if((params[i]->fullName != NULL) &&
-           (xmlSecAppCmdLineMatchParam(name, params[i]->fullName, canHaveNameString) == 1)) {
-
-            return(params[i]);
+        if(params[i]->fullName != NULL) {
+            if(xmlSecAppCmdLineMatchParam(name, params[i]->fullName, canHaveNameString) == 1) {
+                return(params[i]);
+            }
         }
-
-        if((params[i]->shortName != NULL) &&
-           (xmlSecAppCmdLineMatchParam(name, params[i]->shortName, canHaveNameString) == 1)) {
-
-            return(params[i]);
+        if(params[i]->shortName != NULL) {
+            if(xmlSecAppCmdLineMatchParam(name, params[i]->shortName, canHaveNameString) == 1) {
+                return(params[i]);
+            }
         }
     }
 

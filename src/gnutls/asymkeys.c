@@ -31,7 +31,7 @@
 
 #include "../cast_helpers.h"
 #include "../keysdata_helpers.h"
-
+#include "private.h"
 
 /**************************************************************************
  *
@@ -1597,3 +1597,104 @@ done:
 }
 
 #endif /* XMLSEC_NO_RSA */
+
+
+/**************************************************************************
+ *
+ * Internal helper functions
+ *
+ **************************************************************************/
+xmlSecKeyDataPtr
+xmlSecGnuTLSAsymKeyDataCreate(gnutls_pubkey_t pubkey, gnutls_privkey_t privkey) {
+    int pubkey_algo = GNUTLS_PK_UNKNOWN;
+    int privkey_algo = GNUTLS_PK_UNKNOWN;
+    int algo = GNUTLS_PK_UNKNOWN;
+    xmlSecKeyDataPtr keyData;
+    int ret;
+
+    /* if we have 2 keys, figure out if algo is the same */
+    if(pubkey != NULL) {
+        pubkey_algo = gnutls_pubkey_get_pk_algorithm(pubkey, NULL);
+    }
+    if(privkey != NULL) {
+        privkey_algo = gnutls_privkey_get_pk_algorithm(privkey, NULL);
+    }
+    if(pubkey_algo == GNUTLS_PK_UNKNOWN) {
+        algo = privkey_algo;
+    } else if(privkey_algo == GNUTLS_PK_UNKNOWN) {
+        algo = pubkey_algo;
+    } else if(pubkey_algo == privkey_algo) {
+        algo = pubkey_algo;
+    } else {
+        xmlSecGnuTLSError("diffeerent algorithms for public and private key", GNUTLS_E_SUCCESS, NULL);
+        return(NULL);
+    }
+    if(algo == GNUTLS_PK_UNKNOWN) {
+        xmlSecGnuTLSError("cant determine algorithm for public and private key", GNUTLS_E_SUCCESS, NULL);
+        return(NULL);
+    }
+
+    switch(algo) {
+#ifndef XMLSEC_NO_DSA
+    case GNUTLS_PK_DSA:
+        keyData = xmlSecKeyDataCreate(xmlSecGnuTLSKeyDataDsaId);
+        if(keyData == NULL) {
+            xmlSecInternalError("xmlSecKeyDataCreate(DsaId)", NULL);
+            return(NULL);
+        }
+
+        ret = xmlSecGnuTLSKeyDataDsaAdoptKey(keyData, pubkey, privkey);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecGnuTLSKeyDataDsaAdoptKey", NULL);
+            xmlSecKeyDataDestroy(keyData);
+            return(NULL);
+        }
+
+        break;
+#endif /* XMLSEC_NO_DSA */
+
+#ifndef XMLSEC_NO_RSA
+    case GNUTLS_PK_RSA:
+        keyData = xmlSecKeyDataCreate(xmlSecGnuTLSKeyDataRsaId);
+        if(keyData == NULL) {
+            xmlSecInternalError("xmlSecKeyDataCreate(RsaId)", NULL);
+            return(NULL);
+        }
+
+        ret = xmlSecGnuTLSKeyDataRsaAdoptKey(keyData, pubkey, privkey);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecGnuTLSKeyDataRsaAdoptKey", NULL);
+            xmlSecKeyDataDestroy(keyData);
+            return(NULL);
+        }
+
+        break;
+#endif /* XMLSEC_NO_RSA */
+
+#ifndef XMLSEC_NO_ECDSA
+    case GNUTLS_PK_ECDSA:
+        keyData = xmlSecKeyDataCreate(xmlSecGnuTLSKeyDataEcdsaId);
+        if(keyData == NULL) {
+            xmlSecInternalError("xmlSecKeyDataCreate(EcdsaId)", NULL);
+            return(NULL);
+        }
+
+        ret = xmlSecGnuTLSKeyDataEcdsaAdoptKey(keyData, pubkey, privkey);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecGnuTLSKeyDataEcdsaAdoptKey", NULL);
+            xmlSecKeyDataDestroy(keyData);
+            return(NULL);
+        }
+
+        break;
+#endif /* XMLSEC_NO_RSA */
+
+        default:
+            xmlSecInternalError2("Public / private key algorithm is not supported", NULL,
+                "algo=%d", (int)algo);
+            return(NULL);
+    }
+
+    /* done */
+    return(keyData);
+}

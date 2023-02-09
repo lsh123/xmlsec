@@ -315,6 +315,33 @@ execKeysTest() {
                 failures=`expr $failures + 1`
             fi
         fi
+
+        # gcrypt, mscrypto, mscng don't support pkcs8
+        # nss doesn't support pem
+        if [ "z$crypto" != "zgcrypt" -a "z$crypto" != "znss" -a "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" ] ; then
+            printf "    Reading private key from pkcs8 pem file               "
+            rm -f $tmpfile
+            params="--pkcs8-pem $privkey_file.p8-pem $key_test_options --output $tmpfile $asym_key_test.tmpl"
+            echo "$extra_vars $VALGRIND $xmlsec_app sign $xmlsec_params $params" >>  $curlogfile
+            $VALGRIND $xmlsec_app  sign $xmlsec_params $params >> $curlogfile 2>> $curlogfile
+            printRes $expected_res $?
+            if [ $? -ne 0 ]; then
+                failures=`expr $failures + 1`
+            fi
+        fi
+
+        # gcrypt, mscrypto, mscng don't support pkcs8
+        if [ "z$crypto" != "zgcrypt" -a "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" ] ; then
+            printf "    Reading private key from pkcs8 der file               "
+            rm -f $tmpfile
+            params="--pkcs8-der $privkey_file.p8-der $key_test_options --output $tmpfile $asym_key_test.tmpl"
+            echo "$extra_vars $VALGRIND $xmlsec_app sign $xmlsec_params $params" >>  $curlogfile
+            $VALGRIND $xmlsec_app  sign $xmlsec_params $params >> $curlogfile 2>> $curlogfile
+            printRes $expected_res $?
+            if [ $? -ne 0 ]; then
+                failures=`expr $failures + 1`
+            fi
+        fi
     fi
     # TODO: add pkcs8 keys here
 

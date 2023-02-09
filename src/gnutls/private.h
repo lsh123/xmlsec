@@ -9,16 +9,28 @@
  *
  * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
-#ifndef __XMLSEC_GNUTLS_X509UTILS_H__
-#define __XMLSEC_GNUTLS_X509UTILS_H__
+#ifndef __XMLSEC_GNUTLS_PRIVATE_H__
+#define __XMLSEC_GNUTLS_PRIVATE_H__
 
 #ifndef XMLSEC_PRIVATE
-#error "gnutls/x509utils.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-$crypto libraries"
+#error "gnutls/private.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-$crypto libraries"
 #endif /* XMLSEC_PRIVATE */
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
+
+
+
+/**************************************************************************
+ *
+ * Keys
+ *
+ *****************************************************************************/
+xmlSecKeyDataPtr        xmlSecGnuTLSAsymKeyDataCreate           (gnutls_pubkey_t pubkey,
+                                                                 gnutls_privkey_t privkey);
+
+
 
 #ifndef XMLSEC_NO_X509
 
@@ -103,14 +115,6 @@ int                     xmlSecGnuTLSPkcs12LoadMemory            (const xmlSecByt
 
 /*************************************************************************
  *
- * keydata utils/helpers
- *
- ************************************************************************/
-xmlSecKeyDataPtr        xmlSecGnuTLSCreateKeyDataAndAdoptPrivKey(gnutls_x509_privkey_t priv_key);
-
-
-/*************************************************************************
- *
  * LDAP DN parser
  *
  ************************************************************************/
@@ -139,5 +143,4 @@ int                     xmlSecGnuTLSDnAttrsParse                (const xmlChar *
 }
 #endif /* __cplusplus */
 
-
-#endif /* ! __XMLSEC_GNUTLS_X509UTILS_H__ */
+#endif /* ! __XMLSEC_GNUTLS_PRIVATE_H__ */

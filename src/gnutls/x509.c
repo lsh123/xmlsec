@@ -45,7 +45,7 @@
 #include <xmlsec/gnutls/crypto.h>
 #include <xmlsec/gnutls/x509.h>
 
-#include "x509utils.h"
+#include "private.h"
 #include "../cast_helpers.h"
 #include "../keysdata_helpers.h"
 
@@ -1006,18 +1006,9 @@ xmlSecKeyDataPtr
 xmlSecGnuTLSX509CertGetKey(gnutls_x509_crt_t cert) {
     xmlSecKeyDataPtr data;
     gnutls_pubkey_t pubkey;
-    int alg;
-    unsigned int bits;
     int err;
-    int ret;
 
     xmlSecAssert2(cert != NULL, NULL);
-
-    alg = gnutls_x509_crt_get_pk_algorithm(cert, &bits);
-    if(alg < 0) {
-        xmlSecGnuTLSError("gnutls_x509_crt_get_pk_algorithm", alg, NULL);
-        return(NULL);
-    }
 
     err = gnutls_pubkey_init(&pubkey);
     if (err != GNUTLS_E_SUCCESS) {
@@ -1032,78 +1023,15 @@ xmlSecGnuTLSX509CertGetKey(gnutls_x509_crt_t cert) {
         return(NULL);
     }
 
-    switch(alg) {
-#ifndef XMLSEC_NO_RSA
-    case GNUTLS_PK_RSA:
-        data = xmlSecKeyDataCreate(xmlSecGnuTLSKeyDataRsaId);
-        if(data == NULL) {
-            xmlSecInternalError("xmlSecKeyDataCreate(KeyDataRsaId)", NULL);
-            gnutls_pubkey_deinit(pubkey);
-            return(NULL);
-        }
-
-        ret = xmlSecGnuTLSKeyDataRsaAdoptKey(data, pubkey, NULL);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecGnuTLSKeyDataRsaAdoptKey", NULL);
-            xmlSecKeyDataDestroy(data);
-            gnutls_pubkey_deinit(pubkey);
-            return(NULL);
-        }
-        pubkey = NULL; /* owned by data now */
-
-        break;
-#endif /* XMLSEC_NO_RSA */
-
-#ifndef XMLSEC_NO_DSA
-    case GNUTLS_PK_DSA:
-        data = xmlSecKeyDataCreate(xmlSecGnuTLSKeyDataDsaId);
-        if(data == NULL) {
-            xmlSecInternalError("xmlSecKeyDataCreate(KeyDataDsaId)", NULL);
-            gnutls_pubkey_deinit(pubkey);
-            return(NULL);
-        }
-
-        ret = xmlSecGnuTLSKeyDataDsaAdoptKey(data, pubkey, NULL);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecGnuTLSKeyDataDsaAdoptKey", NULL);
-            xmlSecKeyDataDestroy(data);
-            gnutls_pubkey_deinit(pubkey);
-            return(NULL);
-        }
-        pubkey = NULL; /* owned by data now */
-
-        break;
-#endif /* XMLSEC_NO_DSA */
-
-#ifndef XMLSEC_NO_ECDSA
-    case GNUTLS_PK_ECDSA:
-        data = xmlSecKeyDataCreate(xmlSecGnuTLSKeyDataEcdsaId);
-        if(data == NULL) {
-            xmlSecInternalError("xmlSecKeyDataCreate(KeyDataEcdsaId)", NULL);
-            gnutls_pubkey_deinit(pubkey);
-            return(NULL);
-        }
-
-        ret = xmlSecGnuTLSKeyDataEcdsaAdoptKey(data, pubkey, NULL);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecGnuTLSKeyDataEcdsaAdoptKey", NULL);
-            xmlSecKeyDataDestroy(data);
-            gnutls_pubkey_deinit(pubkey);
-            return(NULL);
-        }
-        pubkey = NULL; /* owned by data now */
-
-        break;
-#endif /* XMLSEC_NO_ECDSA */
-
-    default:
-        {
-            xmlSecInvalidIntegerTypeError("key_alg", alg, "supported algorithm", NULL);
-            return(NULL);
-        }
+    data = xmlSecGnuTLSAsymKeyDataCreate(pubkey, NULL);
+    if(data == NULL) {
+        xmlSecInternalError("xmlSecGnuTLSAsymKeyDataCreate", NULL);
+        gnutls_pubkey_deinit(pubkey);
+        return(NULL);
     }
+    pubkey = NULL; /* owned by data */
 
-    /* data */
+    /* done */
     return(data);
 }
 

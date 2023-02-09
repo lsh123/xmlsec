@@ -188,6 +188,45 @@ xmlSecGCryptAsn1ParseTag (xmlSecByte const **buffer, unsigned long *buflen, stru
 #define XMLSEC_GCRYPT_ASN1_MAX_OBJECT_ID_SIZE    32
 typedef xmlSecByte xmlSecGCryptAsn1ObjectId[XMLSEC_GCRYPT_ASN1_MAX_OBJECT_ID_SIZE];
 
+
+typedef struct _xmlSecGCryptAsn1EcdsaObjectIdToCurve {
+    char curve[20];
+    xmlSecGCryptAsn1ObjectId objectId;
+} xmlSecGCryptAsn1EcdsaObjectIdToCurve;
+
+static xmlSecGCryptAsn1EcdsaObjectIdToCurve g_xmlSecGCryptAsn1EcdsaObjectIdToCurves[] = {
+    { "prime192v1",     { 0x2A,0x86,0x48,0xCE,0x3D,0x03,0x01,0x01 } }, /* OBJ_X9_62_prime192v1 */
+    { "secp224r1",      { 0x2B,0x81,0x04,0x00,0x21,0x00,0x00,0x00 } }, /* OBJ_secp224r1 */
+    { "prime256v1",     { 0x2A,0x86,0x48,0xCE,0x3D,0x03,0x01,0x07 } }, /* OBJ_X9_62_prime256v1 */
+    { "secp384r1",      { 0x2B,0x81,0x04,0x00,0x22,0x00,0x00,0x00 } }, /* OBJ_secp384r1 */
+    { "secp521r1",      { 0x2B,0x81,0x04,0x00,0x23,0x00,0x00,0x00 } }, /* OBJ_secp521r1 */
+};
+
+static const char*
+xmlSecGCryptAsn1GetCurveFromObjectId(xmlSecGCryptAsn1ObjectId objectid) {
+    int size = sizeof(g_xmlSecGCryptAsn1EcdsaObjectIdToCurves) / sizeof(g_xmlSecGCryptAsn1EcdsaObjectIdToCurves[0]);
+    int ii;
+    for(ii = 0; ii < size; ++ii) {
+        if(memcmp(objectid, g_xmlSecGCryptAsn1EcdsaObjectIdToCurves[ii].objectId, XMLSEC_GCRYPT_ASN1_MAX_OBJECT_ID_SIZE) == 0) {
+            return(g_xmlSecGCryptAsn1EcdsaObjectIdToCurves[ii].curve);
+        }
+    }
+    return(NULL);
+}
+
+static int
+xmlSecGCryptAsn1IsECKey(xmlSecGCryptAsn1ObjectId * objectids, xmlSecSize objectids_num) {
+    const char* ecdsaCurve = NULL;
+    xmlSecAssert2(objectids != NULL, xmlSecGCryptDerKeyTypeAuto);
+
+    /* ecdsa key should have the curve object id */
+    for(xmlSecSize ii = 0; (ii < objectids_num) && (ecdsaCurve == NULL); ++ii) {
+        ecdsaCurve = xmlSecGCryptAsn1GetCurveFromObjectId(objectids[ii]);
+    }
+    return(ecdsaCurve != NULL ? 1 : 0);
+}
+
+
 static int
 xmlSecGCryptAsn1ParseIntegerSequence(int level, xmlSecByte const **buffer, xmlSecSize* buflen,
     gcry_mpi_t * integers, xmlSecSize integers_size, xmlSecSize * integers_out_size,
@@ -258,6 +297,14 @@ xmlSecGCryptAsn1ParseIntegerSequence(int level, xmlSecByte const **buffer, xmlSe
                         return(-1);
                     }
 
+                    /* HACK HACK HACK: DSA pubkey has a TAG_BIT_STRING for public exp (y) that has 4 bytes in front
+                     * this is likely going to break something. Note that EC keys also use BIT_STRING but there is no prefixes
+                     */
+                    if((ti.tag == TAG_BIT_STRING) && (ti.length >= 4) && (xmlSecGCryptAsn1IsECKey(objectids, *objectids_out_size) == 0)) {
+                        ti.length -= 4;
+                        length -= 4;
+                        buf += 4;
+                    }
                     err = gcry_mpi_scan(&(integers[(*integers_out_size)]), GCRYMPI_FMT_USG, buf, ti.length, NULL);
                     if((err != GPG_ERR_NO_ERROR) || (integers[(*integers_out_size)] == NULL)) {
                         xmlSecGCryptError("gcry_mpi_scan", err, NULL);
@@ -300,31 +347,6 @@ xmlSecGCryptAsn1ParseIntegerSequence(int level, xmlSecByte const **buffer, xmlSe
     return(0);
 }
 
-typedef struct _xmlSecGCryptAsn1EcdsaObjectIdToCurve {
-    char curve[20];
-    xmlSecGCryptAsn1ObjectId objectId;
-} xmlSecGCryptAsn1EcdsaObjectIdToCurve;
-
-static xmlSecGCryptAsn1EcdsaObjectIdToCurve g_xmlSecGCryptAsn1EcdsaObjectIdToCurves[] = {
-    { "prime192v1",     { 0x2A,0x86,0x48,0xCE,0x3D,0x03,0x01,0x01 } }, /* OBJ_X9_62_prime192v1 */
-    { "secp224r1",      { 0x2B,0x81,0x04,0x00,0x21,0x00,0x00,0x00 } }, /* OBJ_secp224r1 */
-    { "prime256v1",     { 0x2A,0x86,0x48,0xCE,0x3D,0x03,0x01,0x07 } }, /* OBJ_X9_62_prime256v1 */
-    { "secp384r1",      { 0x2B,0x81,0x04,0x00,0x22,0x00,0x00,0x00 } }, /* OBJ_secp384r1 */
-    { "secp521r1",      { 0x2B,0x81,0x04,0x00,0x23,0x00,0x00,0x00 } }, /* OBJ_secp521r1 */
-};
-
-static const char*
-xmlSecGCryptAsn1GetCurveFromObjectId(xmlSecGCryptAsn1ObjectId objectid) {
-    int size = sizeof(g_xmlSecGCryptAsn1EcdsaObjectIdToCurves) / sizeof(g_xmlSecGCryptAsn1EcdsaObjectIdToCurves[0]);
-    int ii;
-    for(ii = 0; ii < size; ++ii) {
-        if(memcmp(objectid, g_xmlSecGCryptAsn1EcdsaObjectIdToCurves[ii].objectId, XMLSEC_GCRYPT_ASN1_MAX_OBJECT_ID_SIZE) == 0) {
-            return(g_xmlSecGCryptAsn1EcdsaObjectIdToCurves[ii].curve);
-        }
-    }
-    return(NULL);
-}
-
 /* expected number of integers for various keys */
 #define XMLSEC_GNUTLS_ASN1_DSA_PUB_NUM          4U
 #define XMLSEC_GNUTLS_ASN1_DSA_PRIV_NUM         6U
@@ -337,23 +359,17 @@ xmlSecGCryptAsn1GetCurveFromObjectId(xmlSecGCryptAsn1ObjectId objectid) {
 
 static enum xmlSecGCryptDerKeyType
 xmlSecGCryptAsn1GuessKeyType(gcry_mpi_t * integers, xmlSecSize integers_num, xmlSecGCryptAsn1ObjectId * objectids, xmlSecSize objectids_num) {
-    const char* ecdsaCurve = NULL;
     xmlSecAssert2(integers != NULL, xmlSecGCryptDerKeyTypeAuto);
     xmlSecAssert2(objectids != NULL, xmlSecGCryptDerKeyTypeAuto);
 
     /* ecdsa key should have the curve object id */
-    for(xmlSecSize ii = 0; (ii < objectids_num) && (ecdsaCurve == NULL); ++ii) {
-        ecdsaCurve = xmlSecGCryptAsn1GetCurveFromObjectId(objectids[ii]);
-    }
-    if(ecdsaCurve != NULL) {
-        switch(integers_num) {
-        case XMLSEC_GNUTLS_ASN1_EDCSA_PUB_NUM:
-            return(xmlSecGCryptDerKeyTypePublicEcdsa);
-        case XMLSEC_GNUTLS_ASN1_EDCSA_PRIV_NUM:
+    if(xmlSecGCryptAsn1IsECKey(objectids, objectids_num) != 0) {
+        if(integers_num >= XMLSEC_GNUTLS_ASN1_EDCSA_PRIV_NUM) {
             return(xmlSecGCryptDerKeyTypePrivateEcdsa);
-        default:
-            /* ignore, try other keys */
-            break;
+        } else if(integers_num >= XMLSEC_GNUTLS_ASN1_EDCSA_PUB_NUM) {
+            return(xmlSecGCryptDerKeyTypePublicEcdsa);
+        } else {
+            return(xmlSecGCryptDerKeyTypeAuto);
         }
     }
 
@@ -483,7 +499,7 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
         /* order in the DER file: p, q, g, y */
         err = gcry_sexp_build (&s_pub_key, NULL,
                 "(public-key(dsa(p%m)(q%m)(g%m)(y%m)))",
-                integers[1], integers[2], integers[3], integers[0]
+                integers[0], integers[1], integers[2], integers[3]
         );
         if((err != GPG_ERR_NO_ERROR) || (s_pub_key == NULL)) {
             xmlSecGCryptError("gcry_sexp_build(public-key/dsa)", err, NULL);
@@ -684,13 +700,14 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
         }
 
         /* Build the S-expression.  */
+        /* the q parameter is always the last one */
         err = gcry_sexp_build (&s_pub_key, NULL,
             "(public-key"
             " (ecdsa"
             " (curve %s)"
             " (q %m)"
             " ))",
-            ecdsaCurve, integers[0]
+            ecdsaCurve, integers[integers_num - 1]
         );
         if((err != GPG_ERR_NO_ERROR) || (s_pub_key == NULL)) {
             xmlSecGCryptError("gcry_sexp_build(public-key/ecdsa)", err, NULL);

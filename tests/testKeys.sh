@@ -44,16 +44,12 @@ execKeysTest $res_success       \
     "$topfolder/aleksey-xmldsig-01/enveloped-sha1-rsa-sha1" \
     "--pwd secret123 --enabled-key-data key-name"
 
-
-# Reading DSA pubkeys is broken:
-# https://github.com/lsh123/xmlsec/issues/504
-# "$topfolder/keys/dsapubkey"
 execKeysTest $res_success       \
     "dsa"                       \
     "test-dsa"                  \
     "dsa-1024"                  \
     "$topfolder/keys/dsakey"    \
-    ""                          \
+    "$topfolder/keys/dsapubkey" \
     "$topfolder/keys/dsacert"   \
     "$topfolder/aleksey-xmldsig-01/enveloped-sha1-dsa-sha1" \
     "--pwd secret123 --enabled-key-data key-name"

@@ -95,6 +95,10 @@ struct _xmlSecOpenSSLSignatureCtx {
     EVP_PKEY*                            pKey;
     unsigned char                        dgst[EVP_MAX_MD_SIZE];
     unsigned int                         dgstSize;
+
+#ifndef XMLSEC_NO_DSA
+    int                                 dsaOutputLen; /* expected DSA output length */
+#endif /* XMLSEC_NO_DSA */
 };
 
 
@@ -111,9 +115,9 @@ static int      xmlSecOpenSSLSignatureCheckId                (xmlSecTransformPtr
 static int      xmlSecOpenSSLSignatureInitialize             (xmlSecTransformPtr transform);
 static void     xmlSecOpenSSLSignatureFinalize               (xmlSecTransformPtr transform);
 static int      xmlSecOpenSSLSignatureSetKeyReq              (xmlSecTransformPtr transform,
-                                                                 xmlSecKeyReqPtr keyReq);
+                                                              xmlSecKeyReqPtr keyReq);
 static int      xmlSecOpenSSLSignatureSetKey                 (xmlSecTransformPtr transform,
-                                                                 xmlSecKeyPtr key);
+                                                              xmlSecKeyPtr key);
 static int      xmlSecOpenSSLSignatureVerify                 (xmlSecTransformPtr transform,
                                                                  const xmlSecByte* data,
                                                                  xmlSecSize dataSize,
@@ -201,6 +205,12 @@ xmlSecOpenSSLSignatureInitialize(xmlSecTransformPtr transform) {
 
     memset(ctx, 0, sizeof(xmlSecOpenSSLSignatureCtx));
 
+    /* https://www.w3.org/TR/xmldsig-core1/#sec-DSA
+     * The output of the DSA algorithm consists of a pair of integers usually referred by the pair (r, s).
+     * DSA-SHA1: Integer to octet-stream conversion must be done according to the I2OSP operation defined
+     *           in the RFC 3447 [PKCS1] specification with a l parameter equal to 20
+     * DSA-SHA256: The pairs (2048, 256) and (3072, 256) correspond to the algorithm DSAwithSHA256
+     */
 #ifndef XMLSEC_NO_DSA
 
 #ifndef XMLSEC_NO_SHA1
@@ -209,6 +219,7 @@ xmlSecOpenSSLSignatureInitialize(xmlSecTransformPtr transform) {
         ctx->keyId          = xmlSecOpenSSLKeyDataDsaId;
         ctx->signCallback   = xmlSecOpenSSLSignatureDsaSign;
         ctx->verifyCallback = xmlSecOpenSSLSignatureDsaVerify;
+        ctx->dsaOutputLen   = 2 * 20;
     } else
 #endif /* XMLSEC_NO_SHA1 */
 
@@ -218,6 +229,7 @@ xmlSecOpenSSLSignatureInitialize(xmlSecTransformPtr transform) {
         ctx->keyId          = xmlSecOpenSSLKeyDataDsaId;
         ctx->signCallback   = xmlSecOpenSSLSignatureDsaSign;
         ctx->verifyCallback = xmlSecOpenSSLSignatureDsaVerify;
+        ctx->dsaOutputLen   = 2 * 256 / 8;
     } else
 #endif /* XMLSEC_NO_SHA256 */
 
@@ -559,33 +571,6 @@ xmlSecOpenSSLSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTran
 
 #ifndef XMLSEC_OPENSSL_API_300
 
-static int
-xmlSecOpenSSLSignatureDsaGetKeyLen(EVP_PKEY* pKey) {
-    DSA* dsaKey = NULL;
-    int res = -1;
-
-    xmlSecAssert2(pKey != NULL, -1);
-
-    dsaKey = EVP_PKEY_get1_DSA(pKey);
-    if(dsaKey == NULL) {
-        xmlSecOpenSSLError("EVP_PKEY_get1_DSA", NULL);
-        goto done;
-    }
-
-    res = DSA_size(dsaKey);
-    if(res <= 0) {
-        xmlSecOpenSSLError("DSA_size", NULL);
-        goto done;
-    }
-
-done:
-    /* cleanup */
-    if(dsaKey != NULL) {
-        DSA_free(dsaKey);
-    }
-    return(res);
-}
-
 static DSA_SIG*
 xmlSecOpenSSLSignatureDsaSignImpl(EVP_PKEY* pKey, const xmlSecByte* buf, xmlSecSize bufSize) {
     DSA* dsaKey = NULL;
@@ -653,13 +638,6 @@ done:
 }
 
 #else /* XMLSEC_OPENSSL_API_300 */
-
-static int
-xmlSecOpenSSLSignatureDsaGetKeyLen(EVP_PKEY* pKey) {
-    xmlSecAssert2(pKey != NULL, -1);
-
-    return(EVP_PKEY_get_size(pKey));
-}
 
 static DSA_SIG*
 xmlSecOpenSSLSignatureDsaSignImpl(EVP_PKEY* pKey, const xmlSecByte* buf, xmlSecSize bufSize) {
@@ -785,7 +763,7 @@ xmlSecOpenSSLSignatureDsaSign(xmlSecOpenSSLSignatureCtxPtr ctx, xmlSecBufferPtr 
     const BIGNUM* ss = NULL;
     xmlSecByte* outData = NULL;
     xmlSecSize outSize;
-    int dsaKeyLen = 0, signHalfLen;
+    int signHalfLen;
     int rLen, sLen;
     int res = -1;
     int ret;
@@ -793,6 +771,7 @@ xmlSecOpenSSLSignatureDsaSign(xmlSecOpenSSLSignatureCtxPtr ctx, xmlSecBufferPtr 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->pKey != NULL, -1);
     xmlSecAssert2(ctx->dgstSize > 0, -1);
+    xmlSecAssert2(ctx->dsaOutputLen > 0, -1);
     xmlSecAssert2(ctx->dgstSize <= sizeof(ctx->dgst), -1);
     xmlSecAssert2(out != NULL, -1);
 
@@ -802,22 +781,8 @@ xmlSecOpenSSLSignatureDsaSign(xmlSecOpenSSLSignatureCtxPtr ctx, xmlSecBufferPtr 
         xmlSecInternalError("xmlSecOpenSSLSignatureDsaSignImpl", NULL);
         goto done;
     }
-
-    /* get key len */
-    dsaKeyLen = xmlSecOpenSSLSignatureDsaGetKeyLen(ctx->pKey);
-    if(dsaKeyLen <= 0) {
-        xmlSecInternalError("xmlSecOpenSSLSignatureDsaGetKeyLen", NULL);
-        goto done;
-    }
-
-    /* signature size = r + s + 8 bytes, we just need r+s */
-    if(dsaKeyLen < 8) {
-        xmlSecOpenSSLError2("DSA key len", NULL,
-            "dsaKeyLen=%d", dsaKeyLen);
-        goto done;
-    }
-    signHalfLen = (dsaKeyLen - 8) /  2;
-    if(signHalfLen < 4) {
+    signHalfLen = ctx->dsaOutputLen / 2;
+    if(signHalfLen <= 0) {
         xmlSecOpenSSLError2("DSA signature half len", NULL,
             "signHalfLen=%d", signHalfLen);
         goto done;
@@ -872,7 +837,7 @@ done:
 
 static int
 xmlSecOpenSSLSignatureDsaVerify(xmlSecOpenSSLSignatureCtxPtr ctx, const xmlSecByte* signData, xmlSecSize signSize) {
-    int dsaKeyLen, signLen, signHalfLen;
+    int signLen, signHalfLen;
     DSA_SIG* sig = NULL;
     BIGNUM* rr = NULL;
     BIGNUM* ss = NULL;
@@ -885,20 +850,8 @@ xmlSecOpenSSLSignatureDsaVerify(xmlSecOpenSSLSignatureCtxPtr ctx, const xmlSecBy
     xmlSecAssert2(signData != NULL, -1);
 
     /* get key len */
-    dsaKeyLen = xmlSecOpenSSLSignatureDsaGetKeyLen(ctx->pKey);
-    if(dsaKeyLen <= 0) {
-        xmlSecInternalError("xmlSecOpenSSLSignatureDsaGetKeyLen", NULL);
-        goto done;
-    }
-
-    /* signature size = r + s + 8 bytes, we just need r+s */
-    if(dsaKeyLen < 8) {
-        xmlSecOpenSSLError2("DSA key len", NULL,
-            "dsaKeyLen=%d", dsaKeyLen);
-        goto done;
-    }
-    signHalfLen = (dsaKeyLen - 8) /  2;
-    if(signHalfLen < 4) {
+    signHalfLen = ctx->dsaOutputLen / 2;
+    if(signHalfLen <= 0) {
         xmlSecOpenSSLError2("DSA signature half len", NULL,
             "signHalfLen=%d", signHalfLen);
         goto done;

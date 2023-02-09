@@ -138,6 +138,7 @@ xmlSecCryptoGetFunctions_gnutls(void) {
 
 #ifndef XMLSEC_NO_SHA1
     gXmlSecGnuTLSFunctions->transformDsaSha1GetKlass            = xmlSecGnuTLSTransformDsaSha1GetKlass;
+    gXmlSecGnuTLSFunctions->transformDsaSha256GetKlass          = xmlSecGnuTLSTransformDsaSha256GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
 
 #endif /* XMLSEC_NO_DSA */

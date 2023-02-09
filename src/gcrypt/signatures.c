@@ -1904,7 +1904,7 @@ xmlSecGCryptTransformRsaPssSha512GetKlass(void) {
  * to the size of the base point order of the curve in bytes (e.g. 32 for the P-256 curve and 66 for the P-521 curve).
  */
 static int
-xmlSecGCryptEcdsaSign(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
+xmlSecGCryptEcdsaSign(int digest, xmlSecKeyDataPtr key_data,
     const xmlSecByte* dgst, xmlSecSize dgstSize,
     xmlSecBufferPtr out)
 {
@@ -1918,6 +1918,7 @@ xmlSecGCryptEcdsaSign(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
     gcry_sexp_t s_key;
     gcry_sexp_t s_tmp;
     gpg_error_t err;
+    const char * algo_name;
     xmlSecSize keySize;
     int ret;
     int res = -1;
@@ -1934,6 +1935,13 @@ xmlSecGCryptEcdsaSign(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
     keySize = (keySize + 7) / 8;
     xmlSecAssert2(keySize > 0, -1);
 
+    algo_name = gcry_md_algo_name(digest);
+    if(algo_name == NULL) {
+        xmlSecGCryptError2("gcry_md_algo_name", (gpg_error_t)GPG_ERR_NO_ERROR, NULL,
+            "digest=%d", digest);
+        goto done;
+    }
+
     /* get the current digest, can't use "hash" :( */
     err = gcry_mpi_scan(&m_hash, GCRYMPI_FMT_USG, dgst, dgstSize, NULL);
     if((err != GPG_ERR_NO_ERROR) || (m_hash == NULL)) {
@@ -1943,8 +1951,8 @@ xmlSecGCryptEcdsaSign(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
 
     err = gcry_sexp_build (&s_data, NULL,
                            "(data (flags raw)"
-                           "(value %m))",
-                           m_hash);
+                           "(hash %s %m))",
+                           algo_name, m_hash);
     if((err != GPG_ERR_NO_ERROR) || (s_data == NULL)) {
         xmlSecGCryptError("gcry_sexp_build(data)", err, NULL);
         goto done;
@@ -2046,7 +2054,7 @@ done:
 }
 
 static int
-xmlSecGCryptEcdsaVerify(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
+xmlSecGCryptEcdsaVerify(int digest, xmlSecKeyDataPtr key_data,
     const xmlSecByte* dgst, xmlSecSize dgstSize,
     const xmlSecByte* data, xmlSecSize dataSize)
 {
@@ -2056,6 +2064,7 @@ xmlSecGCryptEcdsaVerify(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
     gcry_mpi_t m_sig_s = NULL;
     gcry_sexp_t s_sig = NULL;
     gcry_sexp_t s_key;
+    const char * algo_name;
     xmlSecSize keySize;
     gpg_error_t err;
     int res = -1;
@@ -2079,6 +2088,13 @@ xmlSecGCryptEcdsaVerify(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
         goto done;
     }
 
+    algo_name = gcry_md_algo_name(digest);
+    if(algo_name == NULL) {
+        xmlSecGCryptError2("gcry_md_algo_name", (gpg_error_t)GPG_ERR_NO_ERROR, NULL,
+            "digest=%d", digest);
+        goto done;
+    }
+
     /* get the current digest, can't use "hash" :( */
     err = gcry_mpi_scan(&m_hash, GCRYMPI_FMT_USG, dgst, dgstSize, NULL);
     if((err != GPG_ERR_NO_ERROR) || (m_hash == NULL)) {
@@ -2088,8 +2104,8 @@ xmlSecGCryptEcdsaVerify(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
 
     err = gcry_sexp_build (&s_data, NULL,
                            "(data (flags raw)"
-                           "(value %m))",
-                           m_hash);
+                           "(hash %s %m))",
+                           algo_name, m_hash);
     if((err != GPG_ERR_NO_ERROR) || (s_data == NULL)) {
         xmlSecGCryptError("gcry_sexp_build(data)", err, NULL);
         goto done;

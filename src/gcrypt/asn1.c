@@ -364,14 +364,12 @@ xmlSecGCryptAsn1GuessKeyType(gcry_mpi_t * integers, xmlSecSize integers_num, xml
 
     /* ecdsa key should have the curve object id */
     if(xmlSecGCryptAsn1IsECKey(objectids, objectids_num) != 0) {
-        switch(integers_num) {
-        case XMLSEC_GNUTLS_ASN1_EDCSA_PUB_NUM:
-            return(xmlSecGCryptDerKeyTypePublicEcdsa);
-        case XMLSEC_GNUTLS_ASN1_EDCSA_PRIV_NUM:
+        if(integers_num >= XMLSEC_GNUTLS_ASN1_EDCSA_PRIV_NUM) {
             return(xmlSecGCryptDerKeyTypePrivateEcdsa);
-        default:
-            /* ignore, try other keys */
-            break;
+        } else if(integers_num >= XMLSEC_GNUTLS_ASN1_EDCSA_PUB_NUM) {
+            return(xmlSecGCryptDerKeyTypePublicEcdsa);
+        } else {
+            return(xmlSecGCryptDerKeyTypeAuto);
         }
     }
 
@@ -702,13 +700,14 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
         }
 
         /* Build the S-expression.  */
+        /* the q parameter is always the last one */
         err = gcry_sexp_build (&s_pub_key, NULL,
             "(public-key"
             " (ecdsa"
             " (curve %s)"
             " (q %m)"
             " ))",
-            ecdsaCurve, integers[0]
+            ecdsaCurve, integers[integers_num - 1]
         );
         if((err != GPG_ERR_NO_ERROR) || (s_pub_key == NULL)) {
             xmlSecGCryptError("gcry_sexp_build(public-key/ecdsa)", err, NULL);

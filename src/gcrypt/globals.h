@@ -43,9 +43,9 @@
                     (const char*)(errorObject),             \
                     (errorFunction),                        \
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,          \
-                    "gcrypt error: %u: %s: %s",          \
+                    "gcrypt error: %u: %s: %s",             \
                     (errCode),                              \
-                    xmlSecErrorsSafeString(source),        \
+                    xmlSecErrorsSafeString(source),         \
                     xmlSecErrorsSafeString(message)         \
         );                                                  \
     }
@@ -68,7 +68,7 @@
                     (const char*)(errorObject),             \
                     (errorFunction),                        \
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,          \
-                    msg "; gcrypt error: %u: %s:  %s",      \
+                    msg "; gcrypt error: %u: %s: %s",       \
                     (param),                                \
                     (errCode),                              \
                     xmlSecErrorsSafeString(source),         \

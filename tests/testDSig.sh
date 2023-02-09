@@ -293,64 +293,64 @@ if [ "z$crypto" != "zgcrypt" ] ; then
         "c14n sha1 ecdsa-sha512" \
         "" \
         "--enabled-key-data key-name $pub_key_option ./keys/p521-key.$pub_key_format"
-
-    # RSA
-    execDSigTest $res_success \
-        "xmldsig11-interop-2012" \
-        "signature-enveloping-rsa-sha224" \
-        "c14n sha1 rsa-sha224" \
-        "" \
-        "--enabled-key-data key-name $pub_key_option ./keys/rsa-key.$pub_key_format"
-
-    execDSigTest $res_success \
-        "xmldsig11-interop-2012" \
-        "signature-enveloping-rsa-sha256" \
-        "c14n sha1 rsa-sha256" \
-        "" \
-        "--enabled-key-data key-name $pub_key_option ./keys/rsa-key.$pub_key_format"
-
-    execDSigTest $res_success \
-        "xmldsig11-interop-2012" \
-        "signature-enveloping-rsa_sha384" \
-        "c14n sha1 rsa-sha256" \
-        "" \
-        "--enabled-key-data key-name $pub_key_option ./keys/rsa-key.$pub_key_format"
-
-    execDSigTest $res_success \
-        "xmldsig11-interop-2012" \
-        "signature-enveloping-rsa_sha512" \
-        "c14n sha1 rsa-sha512" \
-        "" \
-        "--enabled-key-data key-name $pub_key_option ./keys/rsa-key.$pub_key_format"
-
-    execDSigTest $res_success \
-        "xmldsig11-interop-2012" \
-        "signature-enveloping-sha224-rsa_sha256" \
-        "c14n sha224 rsa-sha256" \
-        "" \
-        "--enabled-key-data key-name $pub_key_option ./keys/rsa-key.$pub_key_format"
-
-    execDSigTest $res_success \
-        "xmldsig11-interop-2012" \
-        "signature-enveloping-sha256-rsa-sha256" \
-        "c14n sha256 rsa-sha256" \
-        "" \
-        "--enabled-key-data key-name $pub_key_option ./keys/rsa-key.$pub_key_format"
-
-    execDSigTest $res_success \
-        "xmldsig11-interop-2012" \
-        "signature-enveloping-sha384-rsa_sha256" \
-        "c14n sha384 rsa-sha256" \
-        "" \
-        "--enabled-key-data key-name $pub_key_option ./keys/rsa-key.$pub_key_format"
-
-    execDSigTest $res_success \
-        "xmldsig11-interop-2012" \
-        "signature-enveloping-sha512-rsa_sha256" \
-        "c14n sha512 rsa-sha256" \
-        "" \
-        "--enabled-key-data key-name $pub_key_option ./keys/rsa-key.$pub_key_format"
 fi
+
+# RSA
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-rsa-sha224" \
+    "c14n sha1 rsa-sha224" \
+    "" \
+    "--enabled-key-data key-name $pub_key_option ./keys/rsa-key.$pub_key_format"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-rsa-sha256" \
+    "c14n sha1 rsa-sha256" \
+    "" \
+    "--enabled-key-data key-name $pub_key_option ./keys/rsa-key.$pub_key_format"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-rsa_sha384" \
+    "c14n sha1 rsa-sha256" \
+    "" \
+    "--enabled-key-data key-name $pub_key_option ./keys/rsa-key.$pub_key_format"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-rsa_sha512" \
+    "c14n sha1 rsa-sha512" \
+    "" \
+    "--enabled-key-data key-name $pub_key_option ./keys/rsa-key.$pub_key_format"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-sha224-rsa_sha256" \
+    "c14n sha224 rsa-sha256" \
+    "" \
+    "--enabled-key-data key-name $pub_key_option ./keys/rsa-key.$pub_key_format"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-sha256-rsa-sha256" \
+    "c14n sha256 rsa-sha256" \
+    "" \
+    "--enabled-key-data key-name $pub_key_option ./keys/rsa-key.$pub_key_format"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-sha384-rsa_sha256" \
+    "c14n sha384 rsa-sha256" \
+    "" \
+    "--enabled-key-data key-name $pub_key_option ./keys/rsa-key.$pub_key_format"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-sha512-rsa_sha256" \
+    "c14n sha512 rsa-sha256" \
+    "" \
+    "--enabled-key-data key-name $pub_key_option ./keys/rsa-key.$pub_key_format"
 
 ##########################################################################
 #

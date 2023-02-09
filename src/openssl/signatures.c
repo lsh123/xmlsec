@@ -36,6 +36,16 @@
 
 #include "../cast_helpers.h"
 
+
+/* https://www.w3.org/TR/xmldsig-core1/#sec-DSA
+ * The output of the DSA algorithm consists of a pair of integers usually referred by the pair (r, s).
+ * DSA-SHA1: Integer to octet-stream conversion must be done according to the I2OSP operation defined
+ *           in the RFC 3447 [PKCS1] specification with a l parameter equal to 20
+ * DSA-SHA256: The pairs (2048, 256) and (3072, 256) correspond to the algorithm DSAwithSHA256
+ */
+#define XMLSEC_OPENSSL_SIGNATURE_DSA_SHA1_HALF_LEN              20
+#define XMLSEC_OPENSSL_SIGNATURE_DSA_SHA256_HALF_LEN            (256 / 8)
+
 /**************************************************************************
  *
  * Internal OpenSSL signatures ctx: forward declarations
@@ -205,12 +215,6 @@ xmlSecOpenSSLSignatureInitialize(xmlSecTransformPtr transform) {
 
     memset(ctx, 0, sizeof(xmlSecOpenSSLSignatureCtx));
 
-    /* https://www.w3.org/TR/xmldsig-core1/#sec-DSA
-     * The output of the DSA algorithm consists of a pair of integers usually referred by the pair (r, s).
-     * DSA-SHA1: Integer to octet-stream conversion must be done according to the I2OSP operation defined
-     *           in the RFC 3447 [PKCS1] specification with a l parameter equal to 20
-     * DSA-SHA256: The pairs (2048, 256) and (3072, 256) correspond to the algorithm DSAwithSHA256
-     */
 #ifndef XMLSEC_NO_DSA
 
 #ifndef XMLSEC_NO_SHA1
@@ -219,7 +223,7 @@ xmlSecOpenSSLSignatureInitialize(xmlSecTransformPtr transform) {
         ctx->keyId          = xmlSecOpenSSLKeyDataDsaId;
         ctx->signCallback   = xmlSecOpenSSLSignatureDsaSign;
         ctx->verifyCallback = xmlSecOpenSSLSignatureDsaVerify;
-        ctx->dsaOutputLen   = 2 * 20;
+        ctx->dsaOutputLen   = 2 * XMLSEC_OPENSSL_SIGNATURE_DSA_SHA1_HALF_LEN;
     } else
 #endif /* XMLSEC_NO_SHA1 */
 
@@ -229,7 +233,7 @@ xmlSecOpenSSLSignatureInitialize(xmlSecTransformPtr transform) {
         ctx->keyId          = xmlSecOpenSSLKeyDataDsaId;
         ctx->signCallback   = xmlSecOpenSSLSignatureDsaSign;
         ctx->verifyCallback = xmlSecOpenSSLSignatureDsaVerify;
-        ctx->dsaOutputLen   = 2 * 256 / 8;
+        ctx->dsaOutputLen   = 2 * XMLSEC_OPENSSL_SIGNATURE_DSA_SHA256_HALF_LEN;
     } else
 #endif /* XMLSEC_NO_SHA256 */
 

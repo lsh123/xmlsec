@@ -30,14 +30,20 @@
 
 #include "../cast_helpers.h"
 
+/* https://www.w3.org/TR/xmldsig-core1/#sec-DSA
+ * The output of the DSA algorithm consists of a pair of integers usually referred by the pair (r, s).
+ * DSA-SHA1: Integer to octet-stream conversion must be done according to the I2OSP operation defined
+ *           in the RFC 3447 [PKCS1] specification with a l parameter equal to 20
+ * DSA-SHA256: The pairs (2048, 256) and (3072, 256) correspond to the algorithm DSAwithSHA256
+ */
+#define XMLSEC_GNUTLS_SIGNATURE_DSA_SHA1_HALF_LEN              20
+#define XMLSEC_GNUTLS_SIGNATURE_DSA_SHA256_HALF_LEN            (256 / 8)
 
 /**************************************************************************
  *
  * Internal NSS signatures ctx
  *
  *****************************************************************************/
-#define XMLSEC_GNUTLS_DSA_SIZE      20
-
 typedef gnutls_pubkey_t     (*xmlSecGnuTLSKeyDataGetPublicKeyMethod)      (xmlSecKeyDataPtr data);
 typedef gnutls_privkey_t    (*xmlSecGnuTLSKeyDataGetPrivateKeyMethod)     (xmlSecKeyDataPtr data);
 
@@ -696,32 +702,17 @@ xmlSecGnuTLSSignatureGetDerHalfSize(gnutls_sign_algorithm_t algo, xmlSecSize key
     xmlSecAssert2(res != 0, -1);
 
     switch(algo) {
-        /********************************* Fixed length (DSA-SHA1) *******************************/
+        /********************************* Fixed length (DSA-SHA*) *******************************/
 #ifndef XMLSEC_NO_DSA
     case GNUTLS_SIGN_DSA_SHA1:
-        (*res) = XMLSEC_GNUTLS_DSA_SIZE;
+        (*res) = XMLSEC_GNUTLS_SIGNATURE_DSA_SHA1_HALF_LEN;
         break;
-#endif /* XMLSEC_NO_DSA */
-
-        /********************************* Based on key length (DSA-SHA256) *******************************/
-#ifndef XMLSEC_NO_DSA
     case GNUTLS_SIGN_DSA_SHA256:
-        /* https://www.w3.org/TR/xmldsig-core1/#sec-DSA
-         * The pairs (2048, 256) and (3072, 256) correspond to the algorithm DSAwithSHA256.
-         */
-        switch(keySize) {
-        case 2048:
-        case 3072:
-            (*res) = 256 / 8;
-            break;
-        default:
-            xmlSecInvalidSizeDataError("keySize", keySize, "Unexpected DSA-SHA256 key size", NULL);
-            return(-1);
-        }
+        (*res) = XMLSEC_GNUTLS_SIGNATURE_DSA_SHA256_HALF_LEN;
         break;
 #endif /* XMLSEC_NO_DSA */
 
-        /********************************* Key length (DSA-SHA256, ECDSA-*) *******************************/
+        /********************************* Key length (ECDSA-SHA*) *******************************/
 #ifndef XMLSEC_NO_ECDSA
     case GNUTLS_SIGN_ECDSA_SHA1:
     case GNUTLS_SIGN_ECDSA_SHA256:

@@ -348,7 +348,7 @@ CPPFLAGS = /nologo
 # The compiler and its options.
 #
 CFLAGS = $(CFLAGS) /nologo /D "WIN32" /D "_WINDOWS" /D inline=__inline
-CFLAGS = $(CFLAGS) /D "_MBCS" /D "_REENTRANT" 
+CFLAGS = $(CFLAGS) /D "_MBCS" /D "_REENTRANT"
 CFLAGS = $(CFLAGS) /D PACKAGE=\"$(XMLSEC_NAME)\"
 CFLAGS = $(CFLAGS) /D "HAVE_STDIO_H" /D "HAVE_STDLIB_H"
 CFLAGS = $(CFLAGS) /D "HAVE_STRING_H" /D "HAVE_CTYPE_H"
@@ -366,7 +366,7 @@ CFLAGS = $(CFLAGS) /D "XMLSEC_NO_SIZE_T"
 !if "$(WITH_LEGACY_CRYPTO)" == "1"
 CFLAGS = $(CFLAGS)
 !else
-CFLAGS = $(CFLAGS)  /D "XMLSEC_NO_MD5" /D "XMLSEC_NO_RIPEMD160"
+CFLAGS = $(CFLAGS)  /D "XMLSEC_NO_MD5"
 !endif
 
 
@@ -642,7 +642,7 @@ install : all
 	if not exist $(LIBPREFIX) mkdir $(LIBPREFIX)
 
 	:: include files
-	if exist $(BASEDIR)\include\$(XMLSEC_NAME) copy $(BASEDIR)\include\$(XMLSEC_NAME)\*.h $(INCPREFIX)\$(XMLSEC_NAME)	
+	if exist $(BASEDIR)\include\$(XMLSEC_NAME) copy $(BASEDIR)\include\$(XMLSEC_NAME)\*.h $(INCPREFIX)\$(XMLSEC_NAME)
 	if exist $(BINDIR)\$(XMLSEC_OPENSSL_SO) if not exist $(INCPREFIX)\$(XMLSEC_NAME)\openssl mkdir $(INCPREFIX)\$(XMLSEC_NAME)\openssl
 	if exist $(BINDIR)\$(XMLSEC_OPENSSL_A) if not exist $(INCPREFIX)\$(XMLSEC_NAME)\openssl mkdir $(INCPREFIX)\$(XMLSEC_NAME)\opensslmsvc if exists
 	if exist $(BINDIR)\$(XMLSEC_OPENSSL_SO) copy $(BASEDIR)\include\$(XMLSEC_NAME)\openssl\*.h $(INCPREFIX)\$(XMLSEC_NAME)\openssl

@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta name="generator" content="HTML Tidy for HTML5 for Linux version 5.6.0">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <title>XML Security Library: XML Digital Signature</title>
   <link rel="stylesheet" href="css/main.css">
 </head>
+
 <body>
   <table width="100%" valign="top">
     <tr valign="top">
@@ -84,797 +86,953 @@
       <td valign="top">
         <table width="100%" valign="top">
           <tr>
-            <td valign="top" align="left" id="xmlsecContent">
+            <td align="center" valign="top" id="xmlsecContent">
               <div align="center">
                 <h2>XML Digital Signature Interoperability Report</h2>
-                <p>The following report summarizes the XML Security library support for XML Digital Signatures (see <a href="https://www.ietf.org/rfc/rfc3275.html">RFC 3275</a>, <a href="https://www.ietf.org/rfc/rfc3741.html">RFC 3741</a>, and <a href="https://www.ietf.org/rfc/rfc9231.html">RFC 9231</a>).</p>
               </div>
-              <div align="center" id="core">
-                <h3>XMLSec Library core features</h3>
-                <table style="width: 85%;" border="1" cellpadding="2" cellspacing="2">
-                  <tbody>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc3275.html#section-3.1.1">Reference Generation</a>
-                      </td>
-                      <td valign="top">Yes</td>
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc3275.html#section-3.1.2">Signature Generation</a>
-                      </td>
-                      <td valign="top">Yes</td>
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc3275.html#section-3.2.1">Reference Validation</a>
-                      </td>
-                      <td valign="top">Yes</td>
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc3275.html#section-3.2.2">Signature Validation</a>
-                      </td>
-                      <td valign="top">Yes</td>
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc3275.html#section-4.1">The Signature element</a>
-                      </td>
-                      <td valign="top">Yes</td>
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc3275.html#section-4.2">The SignatureValue Element</a>
-                      </td>
-                      <td valign="top">Yes</td>
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc3275.html#section-4.3">The SignedInfo Element</a>
-                      </td>
-                      <td valign="top">Yes</td>
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc3275.html#section-4.3.1">The CanonicalizationMethod Element</a>
-                      </td>
-                      <td valign="top">Yes</td>
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc3275.html#section-4.3.2">The SignatureMethod Element</a>
-                      </td>
-                      <td valign="top">Yes</td>
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc3275.html#section-4.3.3">The Reference Element</a>
-                      </td>
-                      <td valign="top">Yes</td>
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc3275.html#section-4.3.3.1">The Reference Element: URI Attribute</a>
-                      </td>
-                      <td valign="top">Yes</td>
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc3275.html#section-4.3.3.3">The Reference Element: Same-Document URI-Referencese (including XPointers)</a>
-                      </td>
-                      <td valign="top">Yes</td>
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc3275.html#section-4.3.3.4">The Transforms Element</a>
-                      </td>
-                      <td valign="top">Yes</td>
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc3275.html#section-4.3.3.5">The DigestValue Element</a>
-                      </td>
-                      <td valign="top">Yes</td>
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc3275.html#section-4.4">The KeyInfo Element</a>
-                      </td>
-                      <td valign="top">Yes</td>
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.w3.org/TR/2012/WD-xmldsig-core1-20121018/#sec-KeyInfoReference">The KeyInfoReference Element</a>
-                      </td>
-                      <td valign="top">No</td>
-                    </tr>
-                    <tr>
-                        <td style="width: 40%;" align="left" valign="top">
-                            <a href="https://www.w3.org/TR/xmlenc-core1/#sec-Extensions-to-KeyInfo">XML Encryption Extensions to ds:KeyInfo Element</a>
+              <div style="width: 85%;" align="left">
+                <div>
+                  XML Security library supports the following features as defined in
+                  <a href="https://www.w3.org/TR/xmldsig-core1/">XML Signature Syntax and Processing 1.1</a>
+                  (also see <a href="https://www.ietf.org/rfc/rfc9231.html">RFC 9231</a>):
+                </div>
+                <div id="core">
+                  <h3>XMLSec Library core features</h3>
+                  <table width="100%" border="1" cellpadding="2" cellspacing="2">
+                    <tbody>
+                      <tr>
+                        <td style="width: 40%;" valign="top">&nbsp;</td>
+                        <td style="width: 20%;" valign="top">
+                          <b><a href="https://www.w3.org/TR/xmldsig-core/#sec-AlgID">Requirements</a></b>
                         </td>
-                        <td valign="top">See <a href="xmlenc.htm">XML Encryption report</a></td>
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc3275.html#section-4.4.1">The KeyName Element</a>
-                      </td>
-                      <td valign="top">Yes</td>
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc3275.html#section-4.4.2">The KeyValue Element</a>
-                      </td>
-                      <td valign="top">See <a href="#algorithms">Algorithsm section</a></td>
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc3275.html#section-4.4.3">The RetrievalMethod Element</a>
-                      </td>
-                      <td valign="top">Yes</td>
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc3275.html#section-4.4.7">The MgmtData Element</a>
-                      </td>
-                      <td valign="top">Yes</td>
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc3275.html#section-4.4.8">The Object Element</a>
-                      </td>
-                      <td valign="top">Partial (only the Manifest element is supported)</td>
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc3275.html#section-5.1">The Manifest Element</a>
-                      </td>
-                      <td valign="top">Yes</td>
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc3275.html#section-5.2">The SignatureProperties Element</a>
-                      </td>
-                      <td valign="top">Yes</td>
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc3275.html#section-6.6.4">Enveloped Signature Transform</a>
-                      </td>
-                      <td valign="top">Yes</td>
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc3275.html#section-6.5.1">Canonical XML 1.0 (C14N)</a>
-                      </td>
-                      <td valign="top">Yes</td>
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc3741.html">Exlusive Canonical XML 1.0 (EXC-C14N)</a>
-                      </td>
-                      <td valign="top">Yes</td>
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.w3.org/TR/xml-c14n11/">Canonical XML 1.1 (C14N11)</a>
-                      </td>
-                      <td valign="top">Yes</td>
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.4">Minimal Canonicalization Transform</a>
-                      </td>
-                      <td valign="top">No</td>
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc3275.html#section-6.6.2">Base64 Transform</a>
-                      </td>
-                      <td valign="top">Yes</td>
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc3275.html#section-6.6.3">XPath Filtering</a>
-                      </td>
-                      <td valign="top">Yes</td>
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc3275.html#section-6.6.5">XSLT Transform</a>
-                      </td>
-                      <td valign="top">Yes</td>
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.5.1">XPointer Transform</a>
-                      </td>
-                      <td valign="top">Yes</td>
-                    </tr>
-                    <tr>
-                        <td style="width: 40%;" align="left" valign="top">
-                          <a href="https://www.w3.org/TR/xmlenc-decrypt/">Decryption Transform</a>
+                        <td valign="top"><b>Status</b></td>
+                      </tr>
+                      <tr>
+                        <td colspan="3"><b>Processing rules</b></td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-ReferenceGeneration">Reference Generation</a>
                         </td>
+                        <td valign="top">Required</td><!--Requirements -->
                         <td valign="top">Yes</td>
                       </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">Detached Signature</td>
-                      <td valign="top">Yes</td>
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">Enveloping Signature</td>
-                      <td valign="top">Yes</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-
-              <div align="center" id="algorithms">
-                <h3>Cryptographic algorithms</h3>
-                <table style="width: 85%;" border="1" cellpadding="2" cellspacing="2">
-                  <tbody>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">&nbsp;</td>
-                      <td valign="top"><b>XMLSec with OpenSSL</b></td>
-                      <td valign="top"><b>XMLSec with NSS</b></td>
-                      <td valign="top"><b>XMLSec with GnuTLS</b></td>
-                      <td valign="top"><b>XMLSec with MSCng</b></td>
-                      <td valign="top"><b>XMLSec with MSCrypto</b></td>
-                      <td valign="top"><b>XMLSec with GCrypt</b></td>
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top" colspan="7"><b>Message Digests</b></td>
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc3275.html#section-6.2.1">SHA-1</a>
-                      </td>
-                      <td valign="top">Yes</td><!-- OpenSSL-->
-                      <td valign="top">Yes</td><!-- NSS -->
-                      <td valign="top">Yes</td><!-- GnuTLS -->
-                      <td valign="top">Yes</td><!-- MSCng -->
-                      <td valign="top">Yes</td><!-- MSCrypto -->
-                      <td valign="top">Yes</td><!-- GCrypt -->
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.1.2">SHA-224</a>
-                      </td>
-                      <td valign="top">Yes</td><!-- OpenSSL-->
-                      <td valign="top">Yes</td><!-- NSS -->
-                      <td valign="top">No</td><!-- GnuTLS -->
-                      <td valign="top">No</td><!-- MSCng -->
-                      <td valign="top">No</td><!-- MSCrypto -->
-                      <td valign="top">No</td><!-- GCrypt -->
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.w3.org/TR/xmlenc-core1/#sec-SHA256">SHA-256</a>
-                      </td>
-                      <td valign="top">Yes</td><!-- OpenSSL-->
-                      <td valign="top">Yes</td><!-- NSS -->
-                      <td valign="top">Yes</td><!-- GnuTLS -->
-                      <td valign="top">Yes</td><!-- MSCng -->
-                      <td valign="top">Yes</td><!-- MSCrypto -->
-                      <td valign="top">Yes</td><!-- GCrypt -->
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.1.3">SHA-384</a>
-                      </td>
-                      <td valign="top">Yes</td><!-- OpenSSL-->
-                      <td valign="top">Yes</td><!-- NSS -->
-                      <td valign="top">Yes</td><!-- GnuTLS -->
-                      <td valign="top">Yes</td><!-- MSCng -->
-                      <td valign="top">Yes</td><!-- MSCrypto -->
-                      <td valign="top">Yes</td><!-- GCrypt -->
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.w3.org/TR/xmlenc-core1/#sec-SHA512">SHA-512</a>
-                      </td>
-                      <td valign="top">Yes</td><!-- OpenSSL-->
-                      <td valign="top">Yes</td><!-- NSS -->
-                      <td valign="top">Yes</td><!-- GnuTLS -->
-                      <td valign="top">Yes</td><!-- MSCng -->
-                      <td valign="top">Yes</td><!-- MSCrypto -->
-                      <td valign="top">Yes</td><!-- GCrypt -->
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.1.4">Whirlpool</a>
-                      </td>
-                      <td valign="top">No</td><!-- OpenSSL-->
-                      <td valign="top">No</td><!-- NSS -->
-                      <td valign="top">No</td><!-- GnuTLS -->
-                      <td valign="top">No</td><!-- MSCng -->
-                      <td valign="top">No</td><!-- MSCrypto -->
-                      <td valign="top">No</td><!-- GCrypt -->
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.1.5">SHA-3</a>
-                      </td>
-                      <td valign="top">No</td><!-- OpenSSL-->
-                      <td valign="top">No</td><!-- NSS -->
-                      <td valign="top">No</td><!-- GnuTLS -->
-                      <td valign="top">No</td><!-- MSCng -->
-                      <td valign="top">No</td><!-- MSCrypto -->
-                      <td valign="top">No</td><!-- GCrypt -->
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">GOST-R3411-94</td>
-                      <td valign="top">
-                        Yes <a href="#gost-openssl"><sup>(1)</sup></a>
-                      </td><!-- OpenSSL-->
-                      <td valign="top">No</td><!-- NSS -->
-                      <td valign="top">No</td><!-- GnuTLS -->
-                      <td valign="top">No</td><!-- MSCng -->
-                      <td valign="top">
-                        Yes <a href="#gost-mscrypto"><sup>(2)</sup></a>
-                      </td><!-- MSCrypto -->
-                      <td valign="top">No</td><!-- GCrypt -->
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">GOST-R3411-2012</td>
-                      <td valign="top">
-                        Yes <a href="#gost-openssl"><sup>(1)</sup></a>
-                      </td><!-- OpenSSL-->
-                      <td valign="top">No</td><!-- NSS -->
-                      <td valign="top">No</td><!-- GnuTLS -->
-                      <td valign="top">No</td><!-- MSCng -->
-                      <td valign="top">
-                        Yes <a href="#gost-mscrypto"><sup>(2)</sup></a>
-                      </td><!-- MSCrypto -->
-                      <td valign="top">No</td><!-- GCrypt -->
-                    </tr>
-                    <tr>
-                        <td style="width: 40%;" align="left" valign="top">
-                          <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.1.1">MD5</a> (DEPRECATED)
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-SignatureGeneration">Signature Generation</a>
                         </td>
+                        <td valign="top">Required</td><!--Requirements -->
+                        <td valign="top">Yes</td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-ReferenceValidation">Reference Validation</a>
+                        </td>
+                        <td valign="top">Required</td><!--Requirements -->
+                        <td valign="top">Yes</td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-SignatureValidation">Signature Validation</a>
+                        </td>
+                        <td valign="top">Required</td><!--Requirements -->
+                        <td valign="top">Yes</td>
+                      </tr>
+                      <tr>
+                        <td colspan="3"><b>Syntax</b></td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-CryptoBinary">The ds:CryptoBinary Simple
+                            Type</a>
+                        </td>
+                        <td valign="top">Required</td><!--Requirements -->
+                        <td valign="top">Yes</td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-Signature">The Signature Element</a>
+                        </td>
+                        <td valign="top">Required</td><!--Requirements -->
+                        <td valign="top">Yes</td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-SignatureValue">The SignatureValue
+                            Element</a>
+                        </td>
+                        <td valign="top">Required</td><!--Requirements -->
+                        <td valign="top">Yes</td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-SignedInfo">The SignedInfo Element</a>
+                        </td>
+                        <td valign="top">Required</td><!--Requirements -->
+                        <td valign="top">Yes</td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-CanonicalizationMethod">The
+                            CanonicalizationMethod Element</a>
+                        </td>
+                        <td valign="top">Required</td><!--Requirements -->
+                        <td valign="top">Yes</td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-SignatureMethod">The SignatureMethod
+                            Element</a>
+                        </td>
+                        <td valign="top">Required</td><!--Requirements -->
+                        <td valign="top">Yes</td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-Reference">The Reference Element</a>
+                        </td>
+                        <td valign="top">Required</td><!--Requirements -->
+                        <td valign="top">Yes</td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-URI">The Reference Element: URI
+                            Attribute</a>
+                        </td>
+                        <td valign="top">Required</td><!--Requirements -->
+                        <td valign="top">Yes</td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-Transforms">The Transforms Element</a>
+                        </td>
+                        <td valign="top">Optional</td><!--Requirements -->
+                        <td valign="top">Yes</td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-DigestMethod">The DigestMethod Element</a>
+                        </td>
+                        <td valign="top">Required</td><!--Requirements -->
+                        <td valign="top">Yes</td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-DigestValue">The DigestValue Element</a>
+                        </td>
+                        <td valign="top">Required</td><!--Requirements -->
+                        <td valign="top">Yes</td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-KeyInfo">The KeyInfo Element</a>
+                        </td>
+                        <td valign="top">Optional</td><!--Requirements -->
+                        <td valign="top">Yes</td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-KeyName">The KeyName Element</a>
+                        </td>
+                        <td valign="top">Optional</td><!--Requirements -->
+                        <td valign="top">Yes</td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-KeyValue">The KeyValue Element</a>
+                        </td>
+                        <td valign="top">Optional</td><!--Requirements -->
+                        <td valign="top">Yes, also see <a href="#algorithms">algorithms section</a></td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-RetrievalMethod">The RetrievalMethod
+                            Element</a>
+                        </td>
+                        <td valign="top">Optional</td><!--Requirements -->
+                        <td valign="top">Yes</td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-MgmtData">The MgmtData Element</a>
+                        </td>
+                        <td valign="top">NOT RECOMMENDED and SHOULD NOT be used</td><!--Requirements -->
+                        <td valign="top">Yes</td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmlenc-core1/#sec-Extensions-to-KeyInfo">XML Encryption
+                            EncryptedKey and DerivedKey Elements</a>
+                        </td>
+                        <td valign="top">Optional</td><!--Requirements -->
+                        <td valign="top">See <a href="xmlenc.html">XML Encryption report</a></td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/2012/WD-xmldsig-core1-20121018/#sec-KeyInfoReference">The
+                            KeyInfoReference Element</a>
+                        </td>
+                        <td valign="top">Optional</td><!--Requirements -->
+                        <td valign="top">No</td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-Object">The Object Element</a>
+                        </td>
+                        <td valign="top">Optional</td><!--Requirements -->
+                        <td valign="top">Partial (only the Manifest element is supported)</td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-Manifest">The Manifest Element</a>
+                        </td>
+                        <td valign="top">Optional</td><!--Requirements -->
+                        <td valign="top">Yes</td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-SignatureProperties">The SignatureProperties Element</a>
+                        < >
+                        <td valign="top">Optional</td><!--Requirements -->
+                        <td valign="top">Yes (ignored)</td>
+                      </tr>
+
+                      <tr>
+                        <td colspan="3"><b>Transforms</b></td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-Canonical">Canonical XML 1.0 (C14N) omit
+                            comments</a>
+                        </td>
+                        <td valign="top">Required</td><!--Requirements -->
+                        <td valign="top">Yes</td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-Canonical">Canonical XML 1.0 (C14N) with
+                            comments</a>
+                        </td>
+                        <td valign="top">Recommended</td><!--Requirements -->
+                        <td valign="top">Yes</td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-Canonical11">Canonical XML 1.1 (C14N11) omit
+                            comments</a>
+                        </td>
+                        <td valign="top">Required</td><!--Requirements -->
+                        <td valign="top">Yes</td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-Canonical11">Canonical XML 1.1 (C14N11) with
+                            comments</a>
+                        </td>
+                        <td valign="top">Recommended</td><!--Requirements -->
+                        <td valign="top">Yes</td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-ExcC14N10">Exlusive Canonical XML 1.0
+                            (EXC-C14N) omit comments</a>
+                        </td>
+                        <td valign="top">Required</td><!--Requirements -->
+                        <td valign="top">Yes</td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-ExcC14N10">Exlusive Canonical XML 1.0
+                            (EXC-C14N) with comments</a>
+                        </td>
+                        <td valign="top">Recommended</td><!--Requirements -->
+                        <td valign="top">Yes</td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-Base-64">Base64 Transform</a>
+                        </td>
+                        <td valign="top">Required</td><!--Requirements -->
+                        <td valign="top">Yes</td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-XPath">XPath Filtering</a>
+                        </td>
+                        <td valign="top">Recommended</td><!--Requirements -->
+                        <td valign="top">Yes</td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/2002/REC-xmldsig-filter2-20021108/">XPath Filter 2.0</a>
+                        </td>
+                        <td valign="top">Recommended</td><!--Requirements -->
+                        <td valign="top">Yes</td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-EnvelopedSignature">Enveloped Signature
+                            Transform</a>
+                        </td>
+                        <td valign="top">Required</td><!--Requirements -->
+                        <td valign="top">Yes</td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-XSLT">XSLT Transform</a>
+                        </td>
+                        <td valign="top">Optional</td><!--Requirements -->
+                        <td valign="top">Yes</td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmlenc-decrypt/">Decryption Transform</a>
+                        </td>
+                        <td valign="top">Optional</td><!--Requirements -->
+                        <td valign="top">Yes</td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.5.1">XPointer Transform</a>
+                        </td>
+                        <td valign="top">Optional</td><!--Requirements -->
+                        <td valign="top">Yes</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div id="algorithms">
+                  <h3>XMLSec Cryptographic Libraries features</h3>
+                  <table width="100%" border="1" cellpadding="2" cellspacing="2">
+                    <tbody>
+                      <tr>
+                        <td style="width: 40%;" valign="top">&nbsp;</td>
+                        <td style="width: 20%;" valign="top">
+                          <b><a href="https://www.w3.org/TR/xmldsig-core/#sec-AlgID">Requirements</a></b>
+                        </td>
+                        <td valign="top"><b>XMLSec with OpenSSL</b></td>
+                        <td valign="top"><b>XMLSec with NSS</b></td>
+                        <td valign="top"><b>XMLSec with GnuTLS</b></td>
+                        <td valign="top"><b>XMLSec with MSCng</b></td>
+                        <td valign="top"><b>XMLSec with MSCrypto</b></td>
+                        <td valign="top"><b>XMLSec with GCrypt</b></td>
+                      </tr>
+                      <tr>
+                        <td valign="top" colspan="8"><b>Message Digests</b></td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-SHA-1">SHA-1</a>
+                        </td>
+                        <td valign="top">Required (use is DISCOURAGED)</td><!-- Requirements-->
                         <td valign="top">Yes</td><!-- OpenSSL-->
                         <td valign="top">Yes</td><!-- NSS -->
                         <td valign="top">Yes</td><!-- GnuTLS -->
                         <td valign="top">Yes</td><!-- MSCng -->
                         <td valign="top">Yes</td><!-- MSCrypto -->
                         <td valign="top">Yes</td><!-- GCrypt -->
-                    </tr>
-                    <tr>
-                        <td style="width: 40%;" align="left" valign="top">
-                          <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RIPEMD-160">RIPEMD160</a> (DEPRECATED)
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-SHA-224">SHA-224</a>
                         </td>
+                        <td valign="top">Optional</td><!-- Requirements-->
+                        <td valign="top">Yes</td><!-- OpenSSL-->
+                        <td valign="top">Yes</td><!-- NSS -->
+                        <td valign="top">No</td><!-- GnuTLS -->
+                        <td valign="top">No</td><!-- MSCng -->
+                        <td valign="top">No</td><!-- MSCrypto -->
+                        <td valign="top">No</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-SHA-256">SHA-256</a>
+                        </td>
+                        <td valign="top">Required</td><!-- Requirements-->
+                        <td valign="top">Yes</td><!-- OpenSSL-->
+                        <td valign="top">Yes</td><!-- NSS -->
+                        <td valign="top">Yes</td><!-- GnuTLS -->
+                        <td valign="top">Yes</td><!-- MSCng -->
+                        <td valign="top">Yes</td><!-- MSCrypto -->
+                        <td valign="top">Yes</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-SHA-384">SHA-384</a>
+                        </td>
+                        <td valign="top">Optional</td><!-- Requirements-->
+                        <td valign="top">Yes</td><!-- OpenSSL-->
+                        <td valign="top">Yes</td><!-- NSS -->
+                        <td valign="top">Yes</td><!-- GnuTLS -->
+                        <td valign="top">Yes</td><!-- MSCng -->
+                        <td valign="top">Yes</td><!-- MSCrypto -->
+                        <td valign="top">Yes</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-SHA-512">SHA-512</a>
+                        </td>
+                        <td valign="top">Optional</td><!-- Requirements-->
+                        <td valign="top">Yes</td><!-- OpenSSL-->
+                        <td valign="top">Yes</td><!-- NSS -->
+                        <td valign="top">Yes</td><!-- GnuTLS -->
+                        <td valign="top">Yes</td><!-- MSCng -->
+                        <td valign="top">Yes</td><!-- MSCrypto -->
+                        <td valign="top">Yes</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RIPEMD-160">RIPEMD160</a>
+                        </td>
+                        <td valign="top">Optional</td><!-- Requirements-->
                         <td valign="top">Yes</td><!-- OpenSSL-->
                         <td valign="top">No</td><!-- NSS -->
                         <td valign="top">No</td><!-- GnuTLS -->
                         <td valign="top">No</td><!-- MSCng -->
                         <td valign="top">No</td><!-- MSCrypto -->
                         <td valign="top">Yes</td><!-- GCrypt -->
-                    </tr>
-
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top" colspan="7"><b>Message Authentication Codes</b></td>
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc3275.html#section-6.3.1">HMAC-SHA1</a>
-                      </td>
-                      <td valign="top">Yes</td><!-- OpenSSL-->
-                      <td valign="top">Yes</td><!-- NSS -->
-                      <td valign="top">Yes</td><!-- GnuTLS -->
-                      <td valign="top">Yes</td><!-- MSCng -->
-                      <td valign="top">Yes</td><!-- MSCrypto -->
-                      <td valign="top">Yes</td><!-- GCrypt -->
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.2.2">HMAC-SHA2 Variations</a>
-                      </td>
-                      <td valign="top">Yes</td><!-- OpenSSL-->
-                      <td valign="top">Yes</td><!-- NSS -->
-                      <td valign="top">Yes (except HMAC-SHA224)</td><!-- GnuTLS -->
-                      <td valign="top">Yes (except HMAC-SHA224)</td><!-- MSCng -->
-                      <td valign="top">Yes</td><!-- MSCrypto -->
-                      <td valign="top">Yes (except HMAC-SHA224)</td><!-- GCrypt -->
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.2.4">Poly1305</a>
-                      </td>
-                      <td valign="top">No</td><!-- OpenSSL-->
-                      <td valign="top">No</td><!-- NSS -->
-                      <td valign="top">No</td><!-- GnuTLS -->
-                      <td valign="top">No</td><!-- MSCng -->
-                      <td valign="top">No</td><!-- MSCrypto -->
-                      <td valign="top">No</td><!-- GCrypt -->
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.2.5">SipHash-2-4</a>
-                      </td>
-                      <td valign="top">No</td><!-- OpenSSL-->
-                      <td valign="top">No</td><!-- NSS -->
-                      <td valign="top">No</td><!-- GnuTLS -->
-                      <td valign="top">No</td><!-- MSCng -->
-                      <td valign="top">No</td><!-- MSCrypto -->
-                      <td valign="top">No</td><!-- GCrypt -->
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.2.6">XMSS and XMSSMT</a>
-                      </td>
-                      <td valign="top">No</td><!-- OpenSSL-->
-                      <td valign="top">No</td><!-- NSS -->
-                      <td valign="top">No</td><!-- GnuTLS -->
-                      <td valign="top">No</td><!-- MSCng -->
-                      <td valign="top">No</td><!-- MSCrypto -->
-                      <td valign="top">No</td><!-- GCrypt -->
-                    </tr>
-                    <tr>
-                        <td style="width: 40%;" align="left" valign="top">
-                          <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.2.1">HMAC-MD5</a> (DEPRECATED)
+                      </tr>
+                      <tr>
+                        <td valign="top">GOST-R3411-94</td>
+                        <td valign="top">Optional</td><!-- Requirements-->
+                        <td valign="top">Yes <a href="#gost-openssl"><sup>(1)</sup></a></td><!-- OpenSSL-->
+                        <td valign="top">No</td><!-- NSS -->
+                        <td valign="top">No</td><!-- GnuTLS -->
+                        <td valign="top">No</td><!-- MSCng -->
+                        <td valign="top">Yes <a href="#gost-mscrypto"><sup>(2)</sup></a></td><!-- MSCrypto -->
+                        <td valign="top">No</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">GOST-R3411-2012</td>
+                        <td valign="top">Optional</td><!-- Requirements-->
+                        <td valign="top">Yes <a href="#gost-openssl"><sup>(1)</sup></a></td><!-- OpenSSL-->
+                        <td valign="top">No</td><!-- NSS -->
+                        <td valign="top">No</td><!-- GnuTLS -->
+                        <td valign="top">No</td><!-- MSCng -->
+                        <td valign="top">Yes <a href="#gost-mscrypto"><sup>(2)</sup></a></td><!-- MSCrypto -->
+                        <td valign="top">No</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.1.1">MD5</a>
                         </td>
+                        <td valign="top">DEPRECATED</td><!-- Requirements-->
                         <td valign="top">Yes</td><!-- OpenSSL-->
                         <td valign="top">Yes</td><!-- NSS -->
-                        <td valign="top">No</td><!-- GnuTLS -->
+                        <td valign="top">Yes</td><!-- GnuTLS -->
                         <td valign="top">Yes</td><!-- MSCng -->
                         <td valign="top">Yes</td><!-- MSCrypto -->
                         <td valign="top">Yes</td><!-- GCrypt -->
-                    </tr>
-                    <tr>
-                        <td style="width: 40%;" align="left" valign="top">
-                          <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.2.3">HMAC-RIPEMD160</a> (DEPRECATED)
+                      </tr>
+                      <tr>
+                        <td valign="top" colspan="8"><b>Message Authentication Codes</b>
                         </td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-HMAC">HMAC-SHA1</a>
+                        </td>
+                        <td valign="top">Required (use is DISCOURAGED)</td><!-- Requirements-->
+                        <td valign="top">Yes</td><!-- OpenSSL-->
+                        <td valign="top">Yes</td><!-- NSS -->
+                        <td valign="top">Yes</td><!-- GnuTLS -->
+                        <td valign="top">Yes</td><!-- MSCng -->
+                        <td valign="top">Yes</td><!-- MSCrypto -->
+                        <td valign="top">Yes</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-HMAC">HMAC-SHA224</a>
+                        </td>
+                        <td valign="top">Optional</td><!-- Requirements-->
+                        <td valign="top">Yes</td><!-- OpenSSL-->
+                        <td valign="top">Yes</td><!-- NSS -->
+                        <td valign="top">No</td><!-- GnuTLS -->
+                        <td valign="top">No</td><!-- MSCng -->
+                        <td valign="top">Yes</td><!-- MSCrypto -->
+                        <td valign="top">No</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-HMAC">HMAC-SHA256</a>
+                        </td>
+                        <td valign="top">Required</td><!-- Requirements-->
+                        <td valign="top">Yes</td><!-- OpenSSL-->
+                        <td valign="top">Yes</td><!-- NSS -->
+                        <td valign="top">Yes</td><!-- GnuTLS -->
+                        <td valign="top">Yes</td><!-- MSCng -->
+                        <td valign="top">Yes</td><!-- MSCrypto -->
+                        <td valign="top">Yes</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-HMAC">HMAC-SHA384</a>
+                        </td>
+                        <td valign="top">Recommended</td><!-- Requirements-->
+                        <td valign="top">Yes</td><!-- OpenSSL-->
+                        <td valign="top">Yes</td><!-- NSS -->
+                        <td valign="top">Yes</td><!-- GnuTLS -->
+                        <td valign="top">Yes</td><!-- MSCng -->
+                        <td valign="top">Yes</td><!-- MSCrypto -->
+                        <td valign="top">Yes</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-HMAC">HMAC-SHA512</a>
+                        </td>
+                        <td valign="top">Recommended</td><!-- Requirements-->
+                        <td valign="top">Yes</td><!-- OpenSSL-->
+                        <td valign="top">Yes</td><!-- NSS -->
+                        <td valign="top">Yes</td><!-- GnuTLS -->
+                        <td valign="top">Yes</td><!-- MSCng -->
+                        <td valign="top">Yes</td><!-- MSCrypto -->
+                        <td valign="top">Yes</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.2.3">HMAC-RIPEMD160</a>
+                        </td>
+                        <td valign="top">Optional</td><!-- Requirements-->
                         <td valign="top">Yes</td><!-- OpenSSL-->
                         <td valign="top">Yes</td><!-- NSS -->
                         <td valign="top">No</td><!-- GnuTLS -->
                         <td valign="top">No</td><!-- MSCng -->
                         <td valign="top">No</td><!-- MSCrypto -->
                         <td valign="top">Yes</td><!-- GCrypt -->
-                    </tr>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.2.1">HMAC-MD5</a>
+                        </td>
+                        <td valign="top">DEPRECATED</td><!-- Requirements-->
+                        <td valign="top">Yes</td><!-- OpenSSL-->
+                        <td valign="top">Yes</td><!-- NSS -->
+                        <td valign="top">No</td><!-- GnuTLS -->
+                        <td valign="top">Yes</td><!-- MSCng -->
+                        <td valign="top">Yes</td><!-- MSCrypto -->
+                        <td valign="top">Yes</td><!-- GCrypt -->
+                      </tr>
 
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top" colspan="7"><b>Signatures</b></td>
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc3275.html#section-6.4.1">DSA-SHA1</a>
-                      </td>
-                      <td valign="top">Yes</td><!-- OpenSSL-->
-                      <td valign="top">Yes</td><!-- NSS -->
-                      <td valign="top">Yes</td><!-- GnuTLS -->
-                      <td valign="top">Yes</td><!-- MSCng -->
-                      <td valign="top">Yes</td><!-- MSCrypto -->
-                      <td valign="top">Yes</td><!-- GCrypt -->
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc3275.html#section-6.4.2">PKCS1 RSA-SHA1</a>
-                      </td>
-                      <td valign="top">Yes</td><!-- OpenSSL-->
-                      <td valign="top">Yes</td><!-- NSS -->
-                      <td valign="top">Yes</td><!-- GnuTLS -->
-                      <td valign="top">Yes</td><!-- MSCng -->
-                      <td valign="top">Yes</td><!-- MSCrypto -->
-                      <td valign="top">Yes</td><!-- GCrypt -->
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.3.11">PKCS1 RSA-SHA224</a>
-                      </td>
-                      <td valign="top">Yes</td><!-- OpenSSL-->
-                      <td valign="top">Yes</td><!-- NSS -->
-                      <td valign="top">No</td><!-- GnuTLS -->
-                      <td valign="top">No</td><!-- MSCng -->
-                      <td valign="top">No</td><!-- MSCrypto -->
-                      <td valign="top">No</td><!-- GCrypt -->
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.3.2">PKCS1 RSA-SHA256</a>
-                      </td>
-                      <td valign="top">Yes</td><!-- OpenSSL-->
-                      <td valign="top">Yes</td><!-- NSS -->
-                      <td valign="top">Yes</td><!-- GnuTLS -->
-                      <td valign="top">Yes</td><!-- MSCng -->
-                      <td valign="top">Yes</td><!-- MSCrypto -->
-                      <td valign="top">Yes</td><!-- GCrypt -->
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.3.3">PKCS1 RSA-SHA384</a>
-                      </td>
-                      <td valign="top">Yes</td><!-- OpenSSL-->
-                      <td valign="top">Yes</td><!-- NSS -->
-                      <td valign="top">Yes</td><!-- GnuTLS -->
-                      <td valign="top">Yes</td><!-- MSCng -->
-                      <td valign="top">Yes</td><!-- MSCrypto -->
-                      <td valign="top">Yes</td><!-- GCrypt -->
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.3.4">PKCS1 RSA-SHA512</a>
-                      </td>
-                      <td valign="top">Yes</td><!-- OpenSSL-->
-                      <td valign="top">Yes</td><!-- NSS -->
-                      <td valign="top">Yes</td><!-- GnuTLS -->
-                      <td valign="top">Yes</td><!-- MSCng -->
-                      <td valign="top">Yes</td><!-- MSCrypto -->
-                      <td valign="top">Yes</td><!-- GCrypt -->
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.3.6">ECDSA-SHA1</a>
-                      </td>
-                      <td valign="top">Yes</td><!-- OpenSSL-->
-                      <td valign="top">Yes</td><!-- NSS -->
-                      <td valign="top">Yes</td><!-- GnuTLS -->
-                      <td valign="top">Yes</td><!-- MSCng -->
-                      <td valign="top">Yes</td><!-- MSCrypto -->
-                      <td valign="top">Yes</td><!-- GCrypt -->
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.3.6">ECDSA-SHA2 Variations</a>
-                      </td>
-                      <td valign="top">Yes</td><!-- OpenSSL-->
-                      <td valign="top">Yes</td><!-- NSS -->
-                      <td valign="top">Yes (except ECDSA-SHA224)</td><!-- GnuTLS -->
-                      <td valign="top">Yes (except ECDSA-SHA224)</td><!-- MSCng -->
-                      <td valign="top">Yes</td><!-- MSCrypto -->
-                      <td valign="top">Yes (except ECDSA-SHA224)</td><!-- GCrypt -->
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.3.6">ECDSA-Whirlpool</a>
-                      </td>
-                      <td valign="top">No</td><!-- OpenSSL-->
-                      <td valign="top">No</td><!-- NSS -->
-                      <td valign="top">No</td><!-- GnuTLS -->
-                      <td valign="top">No</td><!-- MSCng -->
-                      <td valign="top">No</td><!-- MSCrypto -->
-                      <td valign="top">No</td><!-- GCrypt -->
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.3.7">ESIGN-SHA1</a>
-                      </td>
-                      <td valign="top">No</td><!-- OpenSSL-->
-                      <td valign="top">No</td><!-- NSS -->
-                      <td valign="top">No</td><!-- GnuTLS -->
-                      <td valign="top">No</td><!-- MSCng -->
-                      <td valign="top">No</td><!-- MSCrypto -->
-                      <td valign="top">No</td><!-- GCrypt -->
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.3.7">ESIGN-SHA Variations</a>
-                      </td>
-                      <td valign="top">No</td><!-- OpenSSL-->
-                      <td valign="top">No</td><!-- NSS -->
-                      <td valign="top">No</td><!-- GnuTLS -->
-                      <td valign="top">No</td><!-- MSCng -->
-                      <td valign="top">No</td><!-- MSCrypto -->
-                      <td valign="top">No</td><!-- GCrypt -->
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.3.8">PKCS1 RSA-Whirlpool</a>
-                      </td>
-                      <td valign="top">No</td><!-- OpenSSL-->
-                      <td valign="top">No</td><!-- NSS -->
-                      <td valign="top">No</td><!-- GnuTLS -->
-                      <td valign="top">No</td><!-- MSCng -->
-                      <td valign="top">No</td><!-- MSCrypto -->
-                      <td valign="top">No</td><!-- GCrypt -->
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.3.9">RSASSA-PSS with Parameters</a>
-                      </td>
-                      <td valign="top">No</td><!-- OpenSSL-->
-                      <td valign="top">No</td><!-- NSS -->
-                      <td valign="top">No</td><!-- GnuTLS -->
-                      <td valign="top">No</td><!-- MSCng -->
-                      <td valign="top">No</td><!-- MSCrypto -->
-                      <td valign="top">No</td><!-- GCrypt -->
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.3.10">RSASSA-PSS without Parameters</a>
-                      </td>
-                      <td valign="top">RSASSA-PSS-SHA1, RSASSA-PSS-SHA224, RSASSA-PSS-SHA256, RSASSA-PSS-SHA384, RSASSA-PSS-SHA512</td><!-- OpenSSL-->
-                      <td valign="top">RSASSA-PSS-SHA1, RSASSA-PSS-SHA224, RSASSA-PSS-SHA256, RSASSA-PSS-SHA384, RSASSA-PSS-SHA512</td><!-- NSS -->
-                      <td valign="top">RSASSA-PSS-SHA256, RSASSA-PSS-SHA384, RSASSA-PSS-SHA512</td><!-- GnuTLS -->
-                      <td valign="top">RSASSA-PSS-SHA1, RSASSA-PSS-SHA256, RSASSA-PSS-SHA384, RSASSA-PSS-SHA512</td><!-- MSCng -->
-                      <td valign="top">No</td><!-- MSCrypto -->
-                      <td valign="top">RSASSA-PSS-SHA1, RSASSA-PSS-SHA256, RSASSA-PSS-SHA384, RSASSA-PSS-SHA512</td><!-- GCrypt -->
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.3.12">Edwards-Curve</a>
-                      </td>
-                      <td valign="top">No</td><!-- OpenSSL-->
-                      <td valign="top">No</td><!-- NSS -->
-                      <td valign="top">No</td><!-- GnuTLS -->
-                      <td valign="top">No</td><!-- MSCng -->
-                      <td valign="top">No</td><!-- MSCrypto -->
-                      <td valign="top">No</td><!-- GCrypt -->
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">GOST-2001</td>
-                      <td valign="top">Yes <a href="#gost-openssl"><sup>(1)</sup></a></td><!-- OpenSSL-->
-                      <td valign="top">No</td><!-- NSS -->
-                      <td valign="top">No</td><!-- GnuTLS -->
-                      <td valign="top">No</td><!-- MSCng -->
-                      <td valign="top">Yes <a href="#gost-mscrypto"><sup>(2)</sup></a></td><!-- MSCrypto -->
-                      <td valign="top">No</td><!-- GCrypt -->
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">GOST-R3410-2012</td>
-                      <td valign="top">Yes <a href="#gost-openssl"><sup>(1)</sup></a></td><!-- OpenSSL-->
-                      <td valign="top">No</td><!-- NSS -->
-                      <td valign="top">No</td><!-- GnuTLS -->
-                      <td valign="top">No</td><!-- MSCng -->
-                      <td valign="top">Yes <a href="#gost-mscrypto"><sup>(2)</sup></a></td><!-- MSCrypto -->
-                      <td valign="top">No</td><!-- GCrypt -->
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">GOST-R3411-2012</td>
-                      <td valign="top">Yes <a href="#gost-openssl"><sup>(1)</sup></a></td><!-- OpenSSL-->
-                      <td valign="top">No</td><!-- NSS -->
-                      <td valign="top">No</td><!-- GnuTLS -->
-                      <td valign="top">No</td><!-- MSCng -->
-                      <td valign="top">Yes <a href="#gost-mscrypto"><sup>(2)</sup></a></td><!-- MSCrypto -->
-                      <td valign="top">No</td><!-- GCrypt -->
-                    </tr>
-                    <tr>
-                        <td style="width: 40%;" align="left" valign="top">
-                          <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.3.1">PKCS1 RSA-MD5</a>(DEPRECATED)
+                      <tr>
+                        <td valign="top" colspan="8"><b>Signatures</b></td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-DSA">DSA-SHA1</a>
                         </td>
+                        <td valign="top">Required (use is DISCOURAGED for signature generation)</td><!-- Requirements-->
+                        <td valign="top">Yes</td><!-- OpenSSL-->
+                        <td valign="top">Yes</td><!-- NSS -->
+                        <td valign="top">Yes</td><!-- GnuTLS -->
+                        <td valign="top">Yes</td><!-- MSCng -->
+                        <td valign="top">Yes</td><!-- MSCrypto -->
+                        <td valign="top">Yes</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-DSA">DSA-SHA256</a>
+                        </td>
+                        <td valign="top">Optional</td><!-- Requirements-->
+                        <td valign="top">Yes</td><!-- OpenSSL-->
+                        <td valign="top">Yes</td><!-- NSS -->
+                        <td valign="top">No</td><!-- GnuTLS -->
+                        <td valign="top">No</td><!-- MSCng -->
+                        <td valign="top">No</td><!-- MSCrypto -->
+                        <td valign="top">No</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-PKCS1">PKCS1 RSA-SHA1</a>
+                        </td>
+                        <td valign="top">Recommended (use is DISCOURAGED for signature generation)</td>
+                        <!-- Requirements-->
+                        <td valign="top">Yes</td><!-- OpenSSL-->
+                        <td valign="top">Yes</td><!-- NSS -->
+                        <td valign="top">Yes</td><!-- GnuTLS -->
+                        <td valign="top">Yes</td><!-- MSCng -->
+                        <td valign="top">Yes</td><!-- MSCrypto -->
+                        <td valign="top">Yes</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-PKCS1">PKCS1 RSA-SHA224</a>
+                        </td>
+                        <td valign="top">Optional</td><!-- Requirements-->
+                        <td valign="top">Yes</td><!-- OpenSSL-->
+                        <td valign="top">Yes</td><!-- NSS -->
+                        <td valign="top">No</td><!-- GnuTLS -->
+                        <td valign="top">No</td><!-- MSCng -->
+                        <td valign="top">No</td><!-- MSCrypto -->
+                        <td valign="top">No</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-PKCS1">PKCS1 RSA-SHA256</a>
+                        </td>
+                        <td valign="top">Required</td><!-- Requirements-->
+                        <td valign="top">Yes</td><!-- OpenSSL-->
+                        <td valign="top">Yes</td><!-- NSS -->
+                        <td valign="top">Yes</td><!-- GnuTLS -->
+                        <td valign="top">Yes</td><!-- MSCng -->
+                        <td valign="top">Yes</td><!-- MSCrypto -->
+                        <td valign="top">Yes</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-PKCS1">PKCS1 RSA-SHA384</a>
+                        </td>
+                        <td valign="top">Optional</td><!-- Requirements-->
+                        <td valign="top">Yes</td><!-- OpenSSL-->
+                        <td valign="top">Yes</td><!-- NSS -->
+                        <td valign="top">Yes</td><!-- GnuTLS -->
+                        <td valign="top">Yes</td><!-- MSCng -->
+                        <td valign="top">Yes</td><!-- MSCrypto -->
+                        <td valign="top">Yes</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-PKCS1">PKCS1 RSA-SHA512</a>
+                        </td>
+                        <td valign="top">Optional</td><!-- Requirements-->
+                        <td valign="top">Yes</td><!-- OpenSSL-->
+                        <td valign="top">Yes</td><!-- NSS -->
+                        <td valign="top">Yes</td><!-- GnuTLS -->
+                        <td valign="top">Yes</td><!-- MSCng -->
+                        <td valign="top">Yes</td><!-- MSCrypto -->
+                        <td valign="top">Yes</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.3.5">PKCS1 RSA-RIPEMD160</a>
+                        </td>
+                        <td valign="top">Optional</td><!-- Requirements-->
+                        <td valign="top">Yes</td><!-- OpenSSL-->
+                        <td valign="top">No</td><!-- NSS -->
+                        <td valign="top">No</td><!-- GnuTLS -->
+                        <td valign="top">No</td><!-- MSCng -->
+                        <td valign="top">No</td><!-- MSCrypto -->
+                        <td valign="top">Ye</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.3.1">PKCS1 RSA-MD5</a>
+                        </td>
+                        <td valign="top">DEPRECATED</td><!-- Requirements-->
                         <td valign="top">Yes</td><!-- OpenSSL-->
                         <td valign="top">Yes</td><!-- NSS -->
                         <td valign="top">No</td><!-- GnuTLS -->
                         <td valign="top">Yes</td><!-- MSCng -->
                         <td valign="top">Yes</td><!-- MSCrypto -->
                         <td valign="top">Yes</td><!-- GCrypt -->
-                    </tr>
-                    <tr>
-                    <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.3.5">PKCS1 RSA-RIPEMD160</a>(DEPRECATED)
-                    </td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-ECDSA">ECDSA-SHA1</a>
+                        </td>
+                        <td valign="top">Optional (use is DISCOURAGED)</td><!-- Requirements-->
                         <td valign="top">Yes</td><!-- OpenSSL-->
                         <td valign="top">Yes</td><!-- NSS -->
-                        <td valign="top">No</td><!-- GnuTLS -->
+                        <td valign="top">Yes</td><!-- GnuTLS -->
                         <td valign="top">Yes</td><!-- MSCng -->
                         <td valign="top">Yes</td><!-- MSCrypto -->
                         <td valign="top">Yes</td><!-- GCrypt -->
-                    </tr>
-                    <tr>
-                        <td style="width: 40%;" align="left" valign="top">
-                          <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.3.6">ECDSA-RIPEMD160</a>(DEPRECATED)
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-ECDSA">ECDSA-SHA224</a>
                         </td>
+                        <td valign="top">Optional</td><!-- Requirements-->
+                        <td valign="top">Yes</td><!-- OpenSSL-->
+                        <td valign="top">Yes</td><!-- NSS -->
+                        <td valign="top">No</td><!-- GnuTLS -->
+                        <td valign="top">No</td><!-- MSCng -->
+                        <td valign="top">Yes</td><!-- MSCrypto -->
+                        <td valign="top">No</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-ECDSA">ECDSA-SHA256</a>
+                        </td>
+                        <td valign="top">Required</td><!-- Requirements-->
+                        <td valign="top">Yes</td><!-- OpenSSL-->
+                        <td valign="top">Yes</td><!-- NSS -->
+                        <td valign="top">Yes</td><!-- GnuTLS -->
+                        <td valign="top">Yes</td><!-- MSCng -->
+                        <td valign="top">Yes</td><!-- MSCrypto -->
+                        <td valign="top">Yes</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-ECDSA">ECDSA-SHA384</a>
+                        </td>
+                        <td valign="top">Optional</td><!-- Requirements-->
+                        <td valign="top">Yes</td><!-- OpenSSL-->
+                        <td valign="top">Yes</td><!-- NSS -->
+                        <td valign="top">Yes</td><!-- GnuTLS -->
+                        <td valign="top">Yes</td><!-- MSCng -->
+                        <td valign="top">Yes</td><!-- MSCrypto -->
+                        <td valign="top">Yes</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-ECDSA">ECDSA-SHA512</a>
+                        </td>
+                        <td valign="top">Optional</td><!-- Requirements-->
+                        <td valign="top">Yes</td><!-- OpenSSL-->
+                        <td valign="top">Yes</td><!-- NSS -->
+                        <td valign="top">Yes</td><!-- GnuTLS -->
+                        <td valign="top">Yes</td><!-- MSCng -->
+                        <td valign="top">Yes</td><!-- MSCrypto -->
+                        <td valign="top">Yes</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.3.6">ECDSA-RIPEMD160</a>
+                        </td>
+                        <td valign="top">Optional</td><!-- Requirements-->
                         <td valign="top">No</td><!-- OpenSSL-->
                         <td valign="top">No</td><!-- NSS -->
                         <td valign="top">No</td><!-- GnuTLS -->
                         <td valign="top">No</td><!-- MSCng -->
                         <td valign="top">No</td><!-- MSCrypto -->
                         <td valign="top">No</td><!-- GCrypt -->
-                    </tr>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.3.10">RSASSA-PSS-SHA1 without
+                            Parameters</a>
+                        </td>
+                        <td valign="top">Optional (use is DISCOURAGED)</td><!-- Requirements-->
+                        <td valign="top">Yes</td><!-- OpenSSL-->
+                        <td valign="top">Yes</td><!-- NSS -->
+                        <td valign="top">No</td><!-- GnuTLS -->
+                        <td valign="top">Yes</td><!-- MSCng -->
+                        <td valign="top">No</td><!-- MSCrypto -->
+                        <td valign="top">Yes</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.3.10">RSASSA-PSS-SHA224 without
+                            Parameters</a>
+                        </td>
+                        <td valign="top">Optional</td><!-- Requirements-->
+                        <td valign="top">Yes</td><!-- OpenSSL-->
+                        <td valign="top">Yes</td><!-- NSS -->
+                        <td valign="top">No</td><!-- GnuTLS -->
+                        <td valign="top">No</td><!-- MSCng -->
+                        <td valign="top">No</td><!-- MSCrypto -->
+                        <td valign="top">No</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.3.10">RSASSA-PSS-SHA256 without
+                            Parameters</a>
+                        </td>
+                        <td valign="top">Optional</td><!-- Requirements-->
+                        <td valign="top">Yes</td><!-- OpenSSL-->
+                        <td valign="top">Yes</td><!-- NSS -->
+                        <td valign="top">Yes</td><!-- GnuTLS -->
+                        <td valign="top">Yes</td><!-- MSCng -->
+                        <td valign="top">No</td><!-- MSCrypto -->
+                        <td valign="top">Yes</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.3.10">RSASSA-PSS-SHA384 without
+                            Parameters</a>
+                        </td>
+                        <td valign="top">Optional</td><!-- Requirements-->
+                        <td valign="top">Yes</td><!-- OpenSSL-->
+                        <td valign="top">Yes</td><!-- NSS -->
+                        <td valign="top">Yes</td><!-- GnuTLS -->
+                        <td valign="top">Yes</td><!-- MSCng -->
+                        <td valign="top">No</td><!-- MSCrypto -->
+                        <td valign="top">Yes</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.3.10">RSASSA-PSS-SHA512 without
+                            Parameters</a>
+                        </td>
+                        <td valign="top">Optional</td><!-- Requirements-->
+                        <td valign="top">Yes</td><!-- OpenSSL-->
+                        <td valign="top">Yes</td><!-- NSS -->
+                        <td valign="top">Yes</td><!-- GnuTLS -->
+                        <td valign="top">Yes</td><!-- MSCng -->
+                        <td valign="top">No</td><!-- MSCrypto -->
+                        <td valign="top">Yes</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">GOST-2001</td>
+                        <td valign="top">Optional</td><!-- Requirements-->
+                        <td valign="top">Yes <a href="#gost-openssl"><sup>(1)</sup></a></td><!-- OpenSSL-->
+                        <td valign="top">No</td><!-- NSS -->
+                        <td valign="top">No</td><!-- GnuTLS -->
+                        <td valign="top">No</td><!-- MSCng -->
+                        <td valign="top">Yes <a href="#gost-mscrypto"><sup>(2)</sup></a></td><!-- MSCrypto -->
+                        <td valign="top">No</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">GOST-R3410-2012</td>
+                        <td valign="top">Optional</td><!-- Requirements-->
+                        <td valign="top">Yes <a href="#gost-openssl"><sup>(1)</sup></a></td><!-- OpenSSL-->
+                        <td valign="top">No</td><!-- NSS -->
+                        <td valign="top">No</td><!-- GnuTLS -->
+                        <td valign="top">No</td><!-- MSCng -->
+                        <td valign="top">Yes <a href="#gost-mscrypto"><sup>(2)</sup></a></td><!-- MSCrypto -->
+                        <td valign="top">No</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">GOST-R3411-2012</td>
+                        <td valign="top">Optional</td><!-- Requirements-->
+                        <td valign="top">Yes <a href="#gost-openssl"><sup>(1)</sup></a></td><!-- OpenSSL-->
+                        <td valign="top">No</td><!-- NSS -->
+                        <td valign="top">No</td><!-- GnuTLS -->
+                        <td valign="top">No</td><!-- MSCng -->
+                        <td valign="top">Yes <a href="#gost-mscrypto"><sup>(2)</sup></a></td><!-- MSCrypto -->
+                        <td valign="top">No</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top" colspan="8"><b>The KeyInfo Element</b></td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-DSAKeyValue">The DSAKeyValue Element</a>
+                        </td>
+                        <td valign="top">Optional</td><!-- Requirements-->
+                        <td valign="top">Yes <a href="#dsa-key-value"><sup>(3)</sup></a></td><!-- OpenSSL-->
+                        <td valign="top">Yes <a href="#dsa-key-value"><sup>(3)</sup></a></td><!-- NSS -->
+                        <td valign="top">Yes <a href="#dsa-key-value"><sup>(3)</sup></a></td><!-- GnuTLS -->
+                        <td valign="top">Yes <a href="#dsa-key-value"><sup>(3)</sup></a></td><!-- MSCng -->
+                        <td valign="top">Yes <a href="#dsa-key-value"><sup>(3)</sup></a></td><!-- MSCrypto -->
+                        <td valign="top">Yes <a href="#dsa-key-value"><sup>(3)</sup></a></td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-RSAKeyValue">The RSAKeyValue Element</a>
+                        </td>
+                        <td valign="top">Optional</td><!-- Requirements-->
+                        <td valign="top">Yes</td><!-- OpenSSL-->
+                        <td valign="top">Yes</td><!-- NSS -->
+                        <td valign="top">Yes</td><!-- GnuTLS -->
+                        <td valign="top">Yes</td><!-- MSCng -->
+                        <td valign="top">Yes</td><!-- MSCrypto -->
+                        <td valign="top">Yes</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core/#sec-ECKeyValue">The ECKeyValue Element</a>
+                        </td>
+                        <td valign="top">Optional</td><!-- Requirements-->
+                        <td valign="top">No</td><!-- OpenSSL-->
+                        <td valign="top">No</td><!-- NSS -->
+                        <td valign="top">No</td><!-- GnuTLS -->
+                        <td valign="top">No</td><!-- MSCng -->
+                        <td valign="top">No</td><!-- MSCrypto -->
+                        <td valign="top">No</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-X509Data">The X509Data Element</a>
+                        </td>
+                        <td valign="top">Optional</td><!-- Requirements-->
+                        <td valign="top">Yes</td><!-- OpenSSL-->
+                        <td valign="top">Yes</td><!-- NSS -->
+                        <td valign="top">Yes</td><!-- GnuTLS -->
+                        <td valign="top">Yes</td><!-- MSCng -->
+                        <td valign="top">Yes</td><!-- MSCrypto -->
+                        <td valign="top">No</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-X509Data">The X509Digest Element</a>
+                        </td>
+                        <td valign="top">Optional</td><!-- Requirements-->
+                        <td valign="top">No</td><!-- OpenSSL-->
+                        <td valign="top">No</td><!-- NSS -->
+                        <td valign="top">No</td><!-- GnuTLS -->
+                        <td valign="top">No</td><!-- MSCng -->
+                        <td valign="top">No</td><!-- MSCrypto -->
+                        <td valign="top">No</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-PGPData">The PGPData Element</a>
+                        </td>
+                        <td valign="top">Optional</td><!-- Requirements-->
+                        <td valign="top">No</td><!-- OpenSSL-->
+                        <td valign="top">No</td><!-- NSS -->
+                        <td valign="top">No</td><!-- GnuTLS -->
+                        <td valign="top">No</td><!-- MSCng -->
+                        <td valign="top">No</td><!-- MSCrypto -->
+                        <td valign="top">No</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmldsig-core1/#sec-SPKIData">The SPKIData Element</a>
+                        </td>
+                        <td valign="top">Optional</td><!-- Requirements-->
+                        <td valign="top">No</td><!-- OpenSSL-->
+                        <td valign="top">No</td><!-- NSS -->
+                        <td valign="top">No</td><!-- GnuTLS -->
+                        <td valign="top">No</td><!-- MSCng -->
+                        <td valign="top">No</td><!-- MSCrypto -->
+                        <td valign="top">No</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">GOST-2001</td>
+                        <td valign="top">Optional</td><!-- Requirements-->
+                        <td valign="top">Yes <a href="#gost-openssl"><sup>(1)</sup></a></td><!-- OpenSSL-->
+                        <td valign="top">No</td><!-- NSS -->
+                        <td valign="top">No</td><!-- GnuTLS -->
+                        <td valign="top">No</td><!-- MSCng -->
+                        <td valign="top">Yes <a href="#gost-mscrypto"><sup>(2)</sup></a></td><!-- MSCrypto -->
+                        <td valign="top">No</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/2012/WD-xmldsig-core1-20121018/#sec-DEREncodedKeyValue">The
+                            DEREncodedKeyValue Element</a>
+                        </td>
+                        <td valign="top">Optional</td><!-- Requirements-->
+                        <td valign="top">No</td><!-- OpenSSL-->
+                        <td valign="top">No</td><!-- NSS -->
+                        <td valign="top">No</td><!-- GnuTLS -->
+                        <td valign="top">No</td><!-- MSCng -->
+                        <td valign="top">No</td><!-- MSCrypto -->
+                        <td valign="top">No</td><!-- GCrypt -->
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
 
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top" colspan="7"><b>The KeyValue element</b></td>
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc3275.html#section-4.4.2.1">The DSAKeyValue Element</a>
-                      </td>
-                      <td valign="top">Yes <a href="#dsa-key-value"><sup>(3)</sup></a></td><!-- OpenSSL-->
-                      <td valign="top">Yes <a href="#dsa-key-value"><sup>(3)</sup></a></td><!-- NSS -->
-                      <td valign="top">Yes <a href="#dsa-key-value"><sup>(3)</sup></a></td><!-- GnuTLS -->
-                      <td valign="top">Yes <a href="#dsa-key-value"><sup>(3)</sup></a></td><!-- MSCng -->
-                      <td valign="top">Yes <a href="#dsa-key-value"><sup>(3)</sup></a></td><!-- MSCrypto -->
-                      <td valign="top">Yes <a href="#dsa-key-value"><sup>(3)</sup></a></td><!-- GCrypt -->
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc3275.html#section-4.4.2.2">The RSAKeyValue Element</a>
-                      </td>
-                      <td valign="top">Yes</td><!-- OpenSSL-->
-                      <td valign="top">Yes</td><!-- NSS -->
-                      <td valign="top">Yes</td><!-- GnuTLS -->
-                      <td valign="top">Yes</td><!-- MSCng -->
-                      <td valign="top">Yes</td><!-- MSCrypto -->
-                      <td valign="top">Yes</td><!-- GCrypt -->
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc3275.html#section-4.4.4">The X509Data Element</a>
-                      </td>
-                      <td valign="top">Yes</td><!-- OpenSSL-->
-                      <td valign="top">Yes</td><!-- NSS -->
-                      <td valign="top">Yes</td><!-- GnuTLS -->
-                      <td valign="top">Yes</td><!-- MSCng -->
-                      <td valign="top">Yes</td><!-- MSCrypto -->
-                      <td valign="top">No</td><!-- GCrypt -->
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.w3.org/TR/xmldsig-core1/#sec-X509Data">The X509Digest Element</a>
-                      </td>
-                      <td valign="top">No</td><!-- OpenSSL-->
-                      <td valign="top">No</td><!-- NSS -->
-                      <td valign="top">No</td><!-- GnuTLS -->
-                      <td valign="top">No</td><!-- MSCng -->
-                      <td valign="top">No</td><!-- MSCrypto -->
-                      <td valign="top">No</td><!-- GCrypt -->
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc3275.html#section-4.4.5">The PGPData Element</a>
-                      </td>
-                      <td valign="top">No</td><!-- OpenSSL-->
-                      <td valign="top">No</td><!-- NSS -->
-                      <td valign="top">No</td><!-- GnuTLS -->
-                      <td valign="top">No</td><!-- MSCng -->
-                      <td valign="top">No</td><!-- MSCrypto -->
-                      <td valign="top">No</td><!-- GCrypt -->
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.ietf.org/rfc/rfc3275.html#section-4.4.6">The SPKIData Element</a>
-                      </td>
-                      <td valign="top">No</td><!-- OpenSSL-->
-                      <td valign="top">No</td><!-- NSS -->
-                      <td valign="top">No</td><!-- GnuTLS -->
-                      <td valign="top">No</td><!-- MSCng -->
-                      <td valign="top">No</td><!-- MSCrypto -->
-                      <td valign="top">No</td><!-- GCrypt -->
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">GOST-2001</td>
-                      <td valign="top">Yes <a href="#gost-openssl"><sup>(1)</sup></a></td><!-- OpenSSL-->
-                      <td valign="top">No</td><!-- NSS -->
-                      <td valign="top">No</td><!-- GnuTLS -->
-                      <td valign="top">No</td><!-- MSCng -->
-                      <td valign="top">Yes <a href="#gost-mscrypto"><sup>(2)</sup></a></td><!-- MSCrypto -->
-                      <td valign="top">No</td><!-- GCrypt -->
-                    </tr>
-                    <tr>
-                      <td style="width: 40%;" align="left" valign="top">
-                        <a href="https://www.w3.org/TR/2012/WD-xmldsig-core1-20121018/#sec-DEREncodedKeyValue">The DEREncodedKeyValue Element</a>
-                      </td>
-                      <td valign="top">No</td><!-- OpenSSL-->
-                      <td valign="top">No</td><!-- NSS -->
-                      <td valign="top">No</td><!-- GnuTLS -->
-                      <td valign="top">No</td><!-- MSCng -->
-                      <td valign="top">No</td><!-- MSCrypto -->
-                      <td valign="top">No</td><!-- GCrypt -->
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div align="center">
-                <div align="left" style="width: 85%;">
+                <div id="notes">
                   <ul>
                     <li>
-                      <a name="gost-openssl" id="gost-openssl"></a><sup>(1)</sup> Requires installation of the <a href="https://github.com/gost-engine/engine">GOST OpenSSL Engine</a>.
+                      <a name="gost-openssl" id="gost-openssl"></a><sup>(1)</sup> Requires installation of the <a
+                        href="https://github.com/gost-engine/engine">GOST OpenSSL Engine</a>.
                     </li>
                     <li>
-                      <a name="gost-mscrypto" id="gost-mscrypto"></a><sup>(2)</sup> Requires installation of a CSP providing these algorithms.
+                      <a name="gost-mscrypto" id="gost-mscrypto"></a><sup>(2)</sup> Requires installation of a GOST CSP.
                     </li>
                     <li>
-                      <a name="dsa-ke-value" id="dsa-ke-value"></a><sup>(3)</sup> Seed and PgenCounter are not supported.
+                      <a name="dsa-ke-value" id="dsa-ke-value"></a><sup>(3)</sup> Seed and PgenCounter are not
+                      supported.
                     </li>
                   </ul>
                 </div>
-              </div>
-              <div align="center">
-                <h3>Test vectors</h3>
-                <div align="left" style="width: 85%;">
-                  <ul>
-                    <li><a href="http://www.w3.org/Signature/2001/04/05-xmldsig-interop.html">XML Signature 1.0 interop (2001)</a></li>
-                    <li><a href="https://www.w3.org/TR/2012/NOTE-xmldsig-core1-interop-20121113/">XML Signature 1.1 interop (2012)</a></li>
-                  </ul>
+
+                <div id="test-vectores">
+                  <h3>Test vectors</h3>
+                  <div>
+                    <ul>
+                      <li><a href="http://www.w3.org/Signature/2001/04/05-xmldsig-interop.html">XML Signature 1.0 interop
+                          (2001)</a></li>
+                      <li><a href="https://www.w3.org/TR/2012/NOTE-xmldsig-core1-interop-20121113/">XML Signature 1.1
+                          interop (2012)</a></li>
+                    </ul>
+                  </div>
                 </div>
               </div>
             </td>

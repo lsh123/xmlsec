@@ -316,8 +316,7 @@ execKeysTest() {
             fi
         fi
 
-        # gcrypt, mscrypto, mscng don't support pkcs8
-        # nss doesn't support pem
+        # gcrypt, mscrypto, mscng, nss don't support pkcs8
         if [ "z$crypto" != "zgcrypt" -a "z$crypto" != "znss" -a "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" ] ; then
             printf "    Reading private key from pkcs8 pem file               "
             rm -f $tmpfile
@@ -330,8 +329,8 @@ execKeysTest() {
             fi
         fi
 
-        # gcrypt, mscrypto, mscng don't support pkcs8
-        if [ "z$crypto" != "zgcrypt" -a "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" ] ; then
+        # gcrypt, mscrypto, mscng, nss don't support pkcs8
+        if [ "z$crypto" != "zgcrypt" -a "z$crypto" != "znss" -a "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" ] ; then
             printf "    Reading private key from pkcs8 der file               "
             rm -f $tmpfile
             params="--pkcs8-der $privkey_file.p8-der $key_test_options --output $tmpfile $asym_key_test.tmpl"

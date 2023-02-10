@@ -276,6 +276,7 @@ jobs:
           nmake check
     - name: make install
       working-directory: win32
+      shell: cmd
       run: |
           nmake install
       

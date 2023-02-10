@@ -197,10 +197,12 @@ jobs:
             config_flags: unicode=yes with-dl=yes
           - crypto: openssl-110
             config_flags: unicode=yes with-dl=yes
+          - crypto: openssl-300
+            config_flags: unicode=no with-dl=no static=yes
           - crypto: mscrypto
-            config_flags: unicode=no with-dl=no
+            config_flags: unicode=no with-dl=no static=yes
           - crypto: mscng
-            config_flags: unicode=no with-dl=no
+            config_flags: unicode=no with-dl=no static=yes
     env:
       VISUAL_STUDIO_ROOT: "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise"
       EXTRAS_FOLDER: C:\extras

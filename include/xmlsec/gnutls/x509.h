@@ -54,7 +54,6 @@ XMLSEC_CRYPTO_EXPORT gnutls_x509_crl_t  xmlSecGnuTLSKeyDataX509GetCrl           
                                                                                  xmlSecSize pos);
 XMLSEC_CRYPTO_EXPORT xmlSecSize         xmlSecGnuTLSKeyDataX509GetCrlsSize      (xmlSecKeyDataPtr data);
 
-
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataPtr   xmlSecGnuTLSX509CertGetKey              (gnutls_x509_crt_t cert);
 
 /**************************************************************************

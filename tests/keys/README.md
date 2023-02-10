@@ -237,14 +237,12 @@ is `secret123`):
  openssl pkcs8 -in expiredkey.pem -inform pem -out expiredkey.p8-pem -outform pem -topk8
  openssl pkcs8 -in expiredkey.der -inform der -out expiredkey.p8-der -outform der -topk8
 
- openssl pkcs8 -in largersakey.pem -inform pem -out largersakey.p8-pem \
-        -outform pem -topk8
- openssl pkcs8 -in largersakey.der -inform der -out largersakey.p8-der \
-        -outform der -topk8
- openssl pkcs8 -in ecdsa-secp256r1-key.der -inform der -out ecdsa-secp256r1-key.p8-der \
-        -outform der -topk8
- openssl pkcs8 -in ecdsa-secp521r1-key.der -inform der -out ecdsa-secp521r1-key.p8-der \
-        -outform der -topk8
+ openssl pkcs8 -in largersakey.pem -inform pem -out largersakey.p8-pem -outform pem -topk8
+ openssl pkcs8 -in largersakey.der -inform der -out largersakey.p8-der -outform der -topk8
+ openssl pkcs8 -in ecdsa-secp256r1-key.der -inform der -out ecdsa-secp256r1-key.p8-der -outform der -topk8
+ openssl pkcs8 -in ecdsa-secp256r1-key.der -inform der -out ecdsa-secp256r1-key.p8-pem -outform pem -topk8
+ openssl pkcs8 -in ecdsa-secp521r1-key.der -inform der -out ecdsa-secp521r1-key.p8-der -outform der -topk8
+ openssl pkcs8 -in ecdsa-secp521r1-key.der -inform der -out ecdsa-secp521r1-key.p8-pem -outform pem -topk8
 ```
 
 GOST keys (see above the instructions to configure GOST engine):

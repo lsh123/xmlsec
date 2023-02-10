@@ -9,6 +9,9 @@
 #ifndef __XMLSEC_GNUTLS_APP_H__
 #define __XMLSEC_GNUTLS_APP_H__
 
+#include <gnutls/abstract.h>
+#include <gnutls/gnutls.h>
+
 #include <xmlsec/exports.h>
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
@@ -58,6 +61,11 @@ XMLSEC_CRYPTO_EXPORT int        xmlSecGnuTLSAppKeysMngrCertLoadMemory   (xmlSecK
  * Keys
  *
  ********************************************************************/
+
+XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecGCryptAppPubKeyCreate           (gnutls_pubkey_t pubkey);
+XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecGCryptAppPrivKeyCreate          (gnutls_privkey_t privkey);
+
+
 XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecGnuTLSAppKeyLoad                (const char *filename,
                                                                          xmlSecKeyDataFormat format,
                                                                          const char *pwd,
@@ -94,4 +102,3 @@ XMLSEC_CRYPTO_EXPORT void*      xmlSecGnuTLSAppGetDefaultPwdCallback    (void);
 #endif /* __cplusplus */
 
 #endif /* __XMLSEC_GNUTLS_APP_H__ */
-

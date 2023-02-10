@@ -32,11 +32,18 @@
 #include <xmlsec/gnutls/x509.h>
 
 #include "../cast_helpers.h"
-#include "x509utils.h"
+#include "private.h"
 
 static xmlSecKeyPtr     xmlSecGnuTLSAppPemDerKeyLoadMemory      (const xmlSecByte * data,
                                                                  xmlSecSize dataSize,
                                                                  gnutls_x509_crt_fmt_t fmt);
+
+static xmlSecKeyPtr     xmlSecGnuTLSAppPkcs8KeyLoadMemory       (const xmlSecByte * data,
+                                                                 xmlSecSize dataSize,
+                                                                 gnutls_x509_crt_fmt_t fmt,
+                                                                 const char *pwd,
+                                                                 void* pwdCallback,
+                                                                 void* pwdCallbackCtx);
 
 static xmlSecKeyPtr     xmlSecGnuTLSAppKeyFromCertLoadMemory    (const xmlSecByte* data,
                                                                  xmlSecSize dataSize,
@@ -156,21 +163,28 @@ xmlSecGnuTLSAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
  * Returns: pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
-xmlSecGnuTLSAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
-                        xmlSecKeyDataFormat format, const char *pwd,
-                        void* pwdCallback, void* pwdCallbackCtx) {
+xmlSecGnuTLSAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,  xmlSecKeyDataFormat format,
+    const char *pwd, void* pwdCallback, void* pwdCallbackCtx)
+{
     xmlSecKeyPtr key;
 
     xmlSecAssert2(data != NULL, NULL);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
 
     switch(format) {
+    /* "raw" pem / der keys */
     case xmlSecKeyDataFormatPem:
         key = xmlSecGnuTLSAppPemDerKeyLoadMemory(data, dataSize, GNUTLS_X509_FMT_PEM);
         break;
-
     case xmlSecKeyDataFormatDer:
         key = xmlSecGnuTLSAppPemDerKeyLoadMemory(data, dataSize, GNUTLS_X509_FMT_DER);
+        break;
+
+    case xmlSecKeyDataFormatPkcs8Pem:
+        key = xmlSecGnuTLSAppPkcs8KeyLoadMemory(data, dataSize, GNUTLS_X509_FMT_PEM, pwd, pwdCallback, pwdCallbackCtx);
+        break;
+    case xmlSecKeyDataFormatPkcs8Der:
+        key = xmlSecGnuTLSAppPkcs8KeyLoadMemory(data, dataSize, GNUTLS_X509_FMT_DER, pwd, pwdCallback, pwdCallbackCtx);
         break;
 
 #ifndef XMLSEC_NO_X509
@@ -191,6 +205,96 @@ xmlSecGnuTLSAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     /* done */
     return(key);
 }
+
+/**
+ * xmlSecGCryptAppPubKeyCreate:
+ * @pubkey:             the pointer to GnuTLS public key.
+ *
+ * Creates XMLSec key from GnuTLS public key.
+ *
+ * Returns: 0 on success or a negative value otherwise.
+ */
+xmlSecKeyPtr
+xmlSecGCryptAppPubKeyCreate(gnutls_pubkey_t pubkey) {
+    xmlSecKeyDataPtr keyData;
+    xmlSecKeyPtr key;
+    int ret;
+
+    xmlSecAssert2(pubkey != NULL, NULL);
+
+    key = xmlSecKeyCreate();
+    if(key == NULL) {
+        xmlSecInternalError("xmlSecKeyCreate", NULL);
+        return(NULL);
+    }
+
+    keyData = xmlSecGnuTLSAsymKeyDataCreate(pubkey, NULL);
+    if(keyData == NULL) {
+        xmlSecInternalError("xmlSecGnuTLSAsymKeyDataCreate", NULL);
+        xmlSecKeyDestroy(key);
+        return(NULL);
+    }
+
+    /* this call should never fail, otherwise we might
+     * "double free" pubkey (it's owned by keyData and then caller)
+     */
+    ret = xmlSecKeySetValue(key, keyData);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeySetValue", NULL);
+        xmlSecKeyDataDestroy(keyData);
+        xmlSecKeyDestroy(key);
+        return(NULL);
+    }
+
+    /* done */
+    return(key);
+}
+
+
+/**
+ * xmlSecGCryptAppPrivKeyCreate:
+ * @pubkey:             the pointer to GnuTLS private key.
+ *
+ * Creates XMLSec key from GnuTLS private key.
+ *
+ * Returns: 0 on success or a negative value otherwise.
+ */
+xmlSecKeyPtr
+xmlSecGCryptAppPrivKeyCreate(gnutls_privkey_t privkey) {
+    xmlSecKeyDataPtr keyData;
+    xmlSecKeyPtr key;
+    int ret;
+
+    xmlSecAssert2(privkey != NULL, NULL);
+
+    key = xmlSecKeyCreate();
+    if(key == NULL) {
+        xmlSecInternalError("xmlSecKeyCreate", NULL);
+        return(NULL);
+    }
+
+    keyData = xmlSecGnuTLSAsymKeyDataCreate(NULL, privkey);
+    if(keyData == NULL) {
+        xmlSecInternalError("xmlSecGnuTLSAsymKeyDataCreate", NULL);
+        xmlSecKeyDestroy(key);
+        return(NULL);
+    }
+
+    /* this call should never fail, otherwise we might
+     * "double free" privkey (it's owned by keyData and then caller)
+     */
+    ret = xmlSecKeySetValue(key, keyData);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeySetValue", NULL);
+        xmlSecKeyDataDestroy(keyData);
+        xmlSecKeyDestroy(key);
+        return(NULL);
+    }
+
+    /* done */
+    return(key);
+}
+
 
 #ifndef XMLSEC_NO_X509
 /**
@@ -334,11 +438,12 @@ xmlSecGnuTLSAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     xmlSecKeyPtr key = NULL;
     xmlSecKeyPtr res = NULL;
     xmlSecPtrList certsList;
-    xmlSecKeyDataPtr keyData = NULL;
     xmlSecKeyDataPtr x509Data = NULL;
-    gnutls_x509_privkey_t priv_key = NULL;
+    gnutls_x509_privkey_t x509_privkey = NULL;
+    gnutls_privkey_t privkey = NULL;
     gnutls_x509_crt_t key_cert = NULL;
     xmlSecSize certsSize;
+    int err;
     int ret;
 
     xmlSecAssert2(data != NULL, NULL);
@@ -352,35 +457,34 @@ xmlSecGnuTLSAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     }
 
     /* load pkcs12 */
-    ret = xmlSecGnuTLSPkcs12LoadMemory(data, dataSize, pwd, &priv_key, &key_cert, &certsList);
-    if((ret < 0) || (priv_key == NULL)) {
+    ret = xmlSecGnuTLSPkcs12LoadMemory(data, dataSize, pwd, &x509_privkey, &key_cert, &certsList);
+    if((ret < 0) || (x509_privkey == NULL)) {
         xmlSecInternalError("xmlSecGnuTLSPkcs12LoadMemory", NULL);
         goto done;
     }
 
+    /* convert x509 privkey to privkey */
+    err = gnutls_privkey_init(&privkey);
+    if (err != GNUTLS_E_SUCCESS) {
+        xmlSecGnuTLSError("gnutls_privkey_init", err, NULL);
+        goto done;
+    }
+
+    err = gnutls_privkey_import_x509(privkey, x509_privkey, GNUTLS_PRIVKEY_IMPORT_AUTO_RELEASE);
+    if (err != GNUTLS_E_SUCCESS) {
+        xmlSecGnuTLSError("gnutls_privkey_import_x509", err, NULL);
+       goto done;
+    }
+    x509_privkey = NULL; /* owned by privkey now */
+
+
     /* create key */
-    key = xmlSecKeyCreate();
+    key = xmlSecGCryptAppPrivKeyCreate(privkey);
     if(key == NULL) {
-        xmlSecInternalError("xmlSecKeyCreate", NULL);
+        xmlSecInternalError("xmlSecGCryptAppPrivKeyCreate", NULL);
         goto done;
     }
-
-    /* create key value data */
-    keyData = xmlSecGnuTLSCreateKeyDataAndAdoptPrivKey(priv_key);
-    if(keyData == NULL) {
-        xmlSecInternalError("xmlSecGnuTLSCreateKeyDataAndAdoptPrivKey", NULL);
-        goto done;
-    }
-    priv_key = NULL; /* owned by keyData now */
-
-    ret = xmlSecKeySetValue(key, keyData);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecKeySetValue",
-                            xmlSecKeyDataGetName(x509Data));
-        goto done;
-    }
-    keyData = NULL; /* owned by key now */
-
+    privkey = NULL; /* owned by key now */
 
     /* create x509 certs data */
     certsSize = xmlSecPtrListGetSize(&certsList);
@@ -436,11 +540,11 @@ done:
     if(key_cert != NULL) {
         gnutls_x509_crt_deinit(key_cert);
     }
-    if(priv_key != NULL) {
-        gnutls_x509_privkey_deinit(priv_key);
+    if(x509_privkey != NULL) {
+        gnutls_x509_privkey_deinit(x509_privkey);
     }
-    if(keyData != NULL) {
-        xmlSecKeyDataDestroy(keyData);
+    if(privkey != NULL) {
+        gnutls_privkey_deinit(privkey);
     }
     if(x509Data != NULL) {
         xmlSecKeyDataDestroy(x509Data);
@@ -469,7 +573,8 @@ xmlSecGnuTLSAppPemDerPrivKeyLoadMemory(const gnutls_datum_t * datum, gnutls_x509
 
     err = gnutls_x509_privkey_import(x509_privkey, datum, fmt);
     if(err != GNUTLS_E_SUCCESS) {
-        xmlSecGnuTLSError("gnutls_x509_privkey_import", err, NULL);
+        /* ignore this error so we don't pollute logs when trying to read public keys */
+        /* xmlSecGnuTLSError("gnutls_x509_privkey_import", err, NULL); */
         gnutls_x509_privkey_deinit(x509_privkey);
         return(NULL);
     }
@@ -507,7 +612,7 @@ xmlSecGnuTLSAppPemDerPubKeyLoadMemory(const gnutls_datum_t * datum, gnutls_x509_
         return(NULL);
 	}
 
-	// Convert our raw public-key to a gnutls_pubkey_t structure
+	/* Convert our raw public-key to a gnutls_pubkey_t structure */
 	err = gnutls_pubkey_import(pubkey, datum, fmt);
 	if(err < 0) {
         xmlSecGnuTLSError("gnutls_pubkey_init", err, NULL);
@@ -519,109 +624,13 @@ xmlSecGnuTLSAppPemDerPubKeyLoadMemory(const gnutls_datum_t * datum, gnutls_x509_
     return(pubkey);
 }
 
-static xmlSecKeyDataPtr
-xmlSecGnuTLSAsymKeyDataCreate(gnutls_pubkey_t pubkey, gnutls_privkey_t privkey) {
-    int pubkey_algo = GNUTLS_PK_UNKNOWN;
-    int privkey_algo = GNUTLS_PK_UNKNOWN;
-    int algo = GNUTLS_PK_UNKNOWN;
-    xmlSecKeyDataPtr keyData;
-    int ret;
-
-    /* if we have 2 keys, figure out if algo is the same */
-    if(pubkey != NULL) {
-        pubkey_algo = gnutls_pubkey_get_pk_algorithm(pubkey, NULL);
-    }
-    if(privkey != NULL) {
-        privkey_algo = gnutls_privkey_get_pk_algorithm(privkey, NULL);
-    }
-    if(pubkey_algo == GNUTLS_PK_UNKNOWN) {
-        algo = privkey_algo;
-    } else if(privkey_algo == GNUTLS_PK_UNKNOWN) {
-        algo = pubkey_algo;
-    } else if(pubkey_algo == privkey_algo) {
-        algo = pubkey_algo;
-    } else {
-        xmlSecGnuTLSError("diffeerent algorithms for public and private key", GNUTLS_E_SUCCESS, NULL);
-        return(NULL);
-    }
-    if(algo == GNUTLS_PK_UNKNOWN) {
-        xmlSecGnuTLSError("cant determine algorithm for public and private key", GNUTLS_E_SUCCESS, NULL);
-        return(NULL);
-    }
-
-    switch(algo) {
-#ifndef XMLSEC_NO_DSA
-    case GNUTLS_PK_DSA:
-        keyData = xmlSecKeyDataCreate(xmlSecGnuTLSKeyDataDsaId);
-        if(keyData == NULL) {
-            xmlSecInternalError("xmlSecKeyDataCreate(DsaId)", NULL);
-            return(NULL);
-        }
-
-        ret = xmlSecGnuTLSKeyDataDsaAdoptKey(keyData, pubkey, privkey);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecGnuTLSKeyDataDsaAdoptKey", NULL);
-            xmlSecKeyDataDestroy(keyData);
-            return(NULL);
-        }
-
-        break;
-#endif /* XMLSEC_NO_DSA */
-
-#ifndef XMLSEC_NO_RSA
-    case GNUTLS_PK_RSA:
-        keyData = xmlSecKeyDataCreate(xmlSecGnuTLSKeyDataRsaId);
-        if(keyData == NULL) {
-            xmlSecInternalError("xmlSecKeyDataCreate(RsaId)", NULL);
-            return(NULL);
-        }
-
-        ret = xmlSecGnuTLSKeyDataRsaAdoptKey(keyData, pubkey, privkey);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecGnuTLSKeyDataRsaAdoptKey", NULL);
-            xmlSecKeyDataDestroy(keyData);
-            return(NULL);
-        }
-
-        break;
-#endif /* XMLSEC_NO_RSA */
-
-#ifndef XMLSEC_NO_ECDSA
-    case GNUTLS_PK_ECDSA:
-        keyData = xmlSecKeyDataCreate(xmlSecGnuTLSKeyDataEcdsaId);
-        if(keyData == NULL) {
-            xmlSecInternalError("xmlSecKeyDataCreate(EcdsaId)", NULL);
-            return(NULL);
-        }
-
-        ret = xmlSecGnuTLSKeyDataEcdsaAdoptKey(keyData, pubkey, privkey);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecGnuTLSKeyDataEcdsaAdoptKey", NULL);
-            xmlSecKeyDataDestroy(keyData);
-            return(NULL);
-        }
-
-        break;
-#endif /* XMLSEC_NO_RSA */
-
-        default:
-            xmlSecInternalError2("Public / private key algorithm is not supported", NULL,
-                "algo=%d", (int)algo);
-            return(NULL);
-    }
-
-    /* done */
-    return(keyData);
-}
 
 static xmlSecKeyPtr
 xmlSecGnuTLSAppPemDerKeyLoadMemory(const xmlSecByte * data, xmlSecSize dataSize, gnutls_x509_crt_fmt_t fmt) {
     gnutls_privkey_t privkey = NULL;
     gnutls_pubkey_t pubkey = NULL;
     xmlSecKeyPtr key = NULL;
-    xmlSecKeyDataPtr keyData = NULL;
     gnutls_datum_t datum;
-    int ret;
 
     xmlSecAssert2(data != NULL, NULL);
     xmlSecAssert2(dataSize > 0, NULL);
@@ -631,40 +640,83 @@ xmlSecGnuTLSAppPemDerKeyLoadMemory(const xmlSecByte * data, xmlSecSize dataSize,
 
     /* try private key first */
     privkey = xmlSecGnuTLSAppPemDerPrivKeyLoadMemory(&datum, fmt);
-    if(privkey == NULL) {
-        pubkey = xmlSecGnuTLSAppPemDerPubKeyLoadMemory(&datum, fmt);
-        if(pubkey == NULL) {
-            xmlSecInternalError3("xmlSecGnuTLSAppPemDerPubKeyLoadMemory", NULL,
-                "format=%d; keySize=" XMLSEC_SIZE_FMT, (int)fmt, dataSize);
-            return(NULL);
+    if(privkey != NULL) {
+        key = xmlSecGCryptAppPrivKeyCreate(privkey);
+        if(key == NULL) {
+            xmlSecInternalError("xmlSecGCryptAppPrivKeyCreate", NULL);
+            gnutls_privkey_deinit(privkey);
         }
+        return(key);
     }
 
-    keyData = xmlSecGnuTLSAsymKeyDataCreate(pubkey, privkey);
-    if(keyData == NULL) {
-        xmlSecInternalError("xmlSecGnuTLSAsymKeyDataCreate", NULL);
+    /* then public key */
+    pubkey = xmlSecGnuTLSAppPemDerPubKeyLoadMemory(&datum, fmt);
+    if(pubkey != NULL) {
+        key = xmlSecGCryptAppPubKeyCreate(pubkey);
+        if(key == NULL) {
+            xmlSecInternalError("xmlSecGCryptAppPubKeyCreate", NULL);
+            gnutls_pubkey_deinit(pubkey);
+        }
+        return(key);
+    }
+
+    xmlSecInternalError3("Cannt read private or public keys", NULL,
+            "format=%d; keySize=" XMLSEC_SIZE_FMT, (int)fmt, dataSize);
+    return(NULL);
+}
+
+static xmlSecKeyPtr
+xmlSecGnuTLSAppPkcs8KeyLoadMemory(const xmlSecByte * data, xmlSecSize dataSize, gnutls_x509_crt_fmt_t fmt,
+    const char *pwd, void* pwdCallback ATTRIBUTE_UNUSED, void* pwdCallbackCtx ATTRIBUTE_UNUSED)
+{
+    gnutls_x509_privkey_t x509_privkey = NULL;
+    gnutls_privkey_t privkey = NULL;
+    xmlSecKeyPtr key = NULL;
+    gnutls_datum_t datum;
+    int err;
+
+    xmlSecAssert2(data != NULL, NULL);
+    xmlSecAssert2(dataSize > 0, NULL);
+
+    datum.data = (xmlSecByte*)data; /* for const */
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(dataSize, datum.size, return(NULL), NULL);
+
+    /* read the private key from pkcs8 */
+    err = gnutls_x509_privkey_init(&x509_privkey);
+    if(err != GNUTLS_E_SUCCESS) {
+        xmlSecGnuTLSError("gnutls_x509_privkey_init", err, NULL);
+        return(NULL);
+    }
+    err = gnutls_x509_privkey_import_pkcs8(x509_privkey, &datum, fmt, pwd, 0);
+    if(err != GNUTLS_E_SUCCESS) {
+        xmlSecGnuTLSError("gnutls_x509_privkey_import_pkcs8", err, NULL);
+        gnutls_x509_privkey_deinit(x509_privkey);
+        return(NULL);
+    }
+
+    /* create privkey from x509 privkey */
+    err = gnutls_privkey_init(&privkey);
+    if (err != GNUTLS_E_SUCCESS) {
+        xmlSecGnuTLSError("gnutls_privkey_init", err, NULL);
+        gnutls_x509_privkey_deinit(x509_privkey);
+        return(NULL);
+    }
+
+    err = gnutls_privkey_import_x509(privkey, x509_privkey, GNUTLS_PRIVKEY_IMPORT_AUTO_RELEASE);
+    if (err != GNUTLS_E_SUCCESS) {
+        xmlSecGnuTLSError("gnutls_privkey_import_x509", err, NULL);
+        gnutls_x509_privkey_deinit(x509_privkey);
         gnutls_privkey_deinit(privkey);
-        gnutls_pubkey_deinit(pubkey);
         return(NULL);
     }
-    privkey = NULL; /* owned by keyData */
-    pubkey = NULL;  /* owned by keyData */
+    x509_privkey = NULL; /* owned by privkey now */
 
-    key = xmlSecKeyCreate();
+    key = xmlSecGCryptAppPrivKeyCreate(privkey);
     if(key == NULL) {
-        xmlSecInternalError("xmlSecKeyCreate", NULL);
-        xmlSecKeyDataDestroy(keyData);
+        xmlSecInternalError("xmlSecGCryptAppPrivKeyCreate", NULL);
+        gnutls_privkey_deinit(privkey);
         return(NULL);
     }
-
-    ret = xmlSecKeySetValue(key, keyData);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecKeySetValue", NULL);
-        xmlSecKeyDataDestroy(keyData);
-        xmlSecKeyDestroy(key);
-        return(NULL);
-    }
-    keyData = NULL; /* owned by key now */
 
     /* done */
     return(key);

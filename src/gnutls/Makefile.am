@@ -28,10 +28,10 @@ libxmlsec1_gnutls_la_SOURCES =\
 	kt_rsa.c \
 	kw_aes.c \
 	kw_des.c \
+	private.h \
 	symkeys.c \
 	asymkeys.c \
 	signatures.c \
-	x509utils.h \
 	x509utils.c \
 	x509.c \
 	x509vfy.c \

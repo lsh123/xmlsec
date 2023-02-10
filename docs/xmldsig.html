@@ -292,7 +292,7 @@
                       <tr>
                         <td valign="top">
                           <a href="https://www.w3.org/TR/xmldsig-core1/#sec-SignatureProperties">The SignatureProperties Element</a>
-                        < >
+                        </td>
                         <td valign="top">Optional</td><!--Requirements -->
                         <td valign="top">Yes (ignored)</td>
                       </tr>
@@ -382,7 +382,7 @@
                           <a href="https://www.w3.org/TR/xmldsig-core1/#sec-XSLT">XSLT Transform</a>
                         </td>
                         <td valign="top">Optional</td><!--Requirements -->
-                        <td valign="top">Yes</td>
+                        <td valign="top">Yes <a href="#xslt"><sup>(1)</sup></a></td>
                       </tr>
                       <tr>
                         <td valign="top">
@@ -496,21 +496,21 @@
                       <tr>
                         <td valign="top">GOST-R3411-94</td>
                         <td valign="top">Optional</td><!-- Requirements-->
-                        <td valign="top">Yes <a href="#gost-openssl"><sup>(1)</sup></a></td><!-- OpenSSL-->
+                        <td valign="top">Yes <a href="#gost-openssl"><sup>(2)</sup></a></td><!-- OpenSSL-->
                         <td valign="top">No</td><!-- NSS -->
                         <td valign="top">No</td><!-- GnuTLS -->
                         <td valign="top">No</td><!-- MSCng -->
-                        <td valign="top">Yes <a href="#gost-mscrypto"><sup>(2)</sup></a></td><!-- MSCrypto -->
+                        <td valign="top">Yes <a href="#gost-mscrypto"><sup>(3)</sup></a></td><!-- MSCrypto -->
                         <td valign="top">No</td><!-- GCrypt -->
                       </tr>
                       <tr>
                         <td valign="top">GOST-R3411-2012</td>
                         <td valign="top">Optional</td><!-- Requirements-->
-                        <td valign="top">Yes <a href="#gost-openssl"><sup>(1)</sup></a></td><!-- OpenSSL-->
+                        <td valign="top">Yes <a href="#gost-openssl"><sup>(2)</sup></a></td><!-- OpenSSL-->
                         <td valign="top">No</td><!-- NSS -->
                         <td valign="top">No</td><!-- GnuTLS -->
                         <td valign="top">No</td><!-- MSCng -->
-                        <td valign="top">Yes <a href="#gost-mscrypto"><sup>(2)</sup></a></td><!-- MSCrypto -->
+                        <td valign="top">Yes <a href="#gost-mscrypto"><sup>(3)</sup></a></td><!-- MSCrypto -->
                         <td valign="top">No</td><!-- GCrypt -->
                       </tr>
                       <tr>
@@ -866,31 +866,31 @@
                       <tr>
                         <td valign="top">GOST-2001</td>
                         <td valign="top">Optional</td><!-- Requirements-->
-                        <td valign="top">Yes <a href="#gost-openssl"><sup>(1)</sup></a></td><!-- OpenSSL-->
+                        <td valign="top">Yes <a href="#gost-openssl"><sup>(2)</sup></a></td><!-- OpenSSL-->
                         <td valign="top">No</td><!-- NSS -->
                         <td valign="top">No</td><!-- GnuTLS -->
                         <td valign="top">No</td><!-- MSCng -->
-                        <td valign="top">Yes <a href="#gost-mscrypto"><sup>(2)</sup></a></td><!-- MSCrypto -->
+                        <td valign="top">Yes <a href="#gost-mscrypto"><sup>(3)</sup></a></td><!-- MSCrypto -->
                         <td valign="top">No</td><!-- GCrypt -->
                       </tr>
                       <tr>
                         <td valign="top">GOST-R3410-2012</td>
                         <td valign="top">Optional</td><!-- Requirements-->
-                        <td valign="top">Yes <a href="#gost-openssl"><sup>(1)</sup></a></td><!-- OpenSSL-->
+                        <td valign="top">Yes <a href="#gost-openssl"><sup>(2)</sup></a></td><!-- OpenSSL-->
                         <td valign="top">No</td><!-- NSS -->
                         <td valign="top">No</td><!-- GnuTLS -->
                         <td valign="top">No</td><!-- MSCng -->
-                        <td valign="top">Yes <a href="#gost-mscrypto"><sup>(2)</sup></a></td><!-- MSCrypto -->
+                        <td valign="top">Yes <a href="#gost-mscrypto"><sup>(3)</sup></a></td><!-- MSCrypto -->
                         <td valign="top">No</td><!-- GCrypt -->
                       </tr>
                       <tr>
                         <td valign="top">GOST-R3411-2012</td>
                         <td valign="top">Optional</td><!-- Requirements-->
-                        <td valign="top">Yes <a href="#gost-openssl"><sup>(1)</sup></a></td><!-- OpenSSL-->
+                        <td valign="top">Yes <a href="#gost-openssl"><sup>(2)</sup></a></td><!-- OpenSSL-->
                         <td valign="top">No</td><!-- NSS -->
                         <td valign="top">No</td><!-- GnuTLS -->
                         <td valign="top">No</td><!-- MSCng -->
-                        <td valign="top">Yes <a href="#gost-mscrypto"><sup>(2)</sup></a></td><!-- MSCrypto -->
+                        <td valign="top">Yes <a href="#gost-mscrypto"><sup>(3)</sup></a></td><!-- MSCrypto -->
                         <td valign="top">No</td><!-- GCrypt -->
                       </tr>
                       <tr>
@@ -901,12 +901,12 @@
                           <a href="https://www.w3.org/TR/xmldsig-core1/#sec-DSAKeyValue">The DSAKeyValue Element</a>
                         </td>
                         <td valign="top">Optional</td><!-- Requirements-->
-                        <td valign="top">Yes <a href="#dsa-key-value"><sup>(3)</sup></a></td><!-- OpenSSL-->
-                        <td valign="top">Yes <a href="#dsa-key-value"><sup>(3)</sup></a></td><!-- NSS -->
-                        <td valign="top">Yes <a href="#dsa-key-value"><sup>(3)</sup></a></td><!-- GnuTLS -->
-                        <td valign="top">Yes <a href="#dsa-key-value"><sup>(3)</sup></a></td><!-- MSCng -->
-                        <td valign="top">Yes <a href="#dsa-key-value"><sup>(3)</sup></a></td><!-- MSCrypto -->
-                        <td valign="top">Yes <a href="#dsa-key-value"><sup>(3)</sup></a></td><!-- GCrypt -->
+                        <td valign="top">Yes <a href="#dsa-key-value"><sup>(4)</sup></a></td><!-- OpenSSL-->
+                        <td valign="top">Yes <a href="#dsa-key-value"><sup>(4)</sup></a></td><!-- NSS -->
+                        <td valign="top">Yes <a href="#dsa-key-value"><sup>(4)</sup></a></td><!-- GnuTLS -->
+                        <td valign="top">Yes <a href="#dsa-key-value"><sup>(4)</sup></a></td><!-- MSCng -->
+                        <td valign="top">Yes <a href="#dsa-key-value"><sup>(4)</sup></a></td><!-- MSCrypto -->
+                        <td valign="top">Yes <a href="#dsa-key-value"><sup>(4)</sup></a></td><!-- GCrypt -->
                       </tr>
                       <tr>
                         <td valign="top">
@@ -983,11 +983,11 @@
                       <tr>
                         <td valign="top">GOST-2001</td>
                         <td valign="top">Optional</td><!-- Requirements-->
-                        <td valign="top">Yes <a href="#gost-openssl"><sup>(1)</sup></a></td><!-- OpenSSL-->
+                        <td valign="top">Yes <a href="#gost-openssl"><sup>(2)</sup></a></td><!-- OpenSSL-->
                         <td valign="top">No</td><!-- NSS -->
                         <td valign="top">No</td><!-- GnuTLS -->
                         <td valign="top">No</td><!-- MSCng -->
-                        <td valign="top">Yes <a href="#gost-mscrypto"><sup>(2)</sup></a></td><!-- MSCrypto -->
+                        <td valign="top">Yes <a href="#gost-mscrypto"><sup>(3)</sup></a></td><!-- MSCrypto -->
                         <td valign="top">No</td><!-- GCrypt -->
                       </tr>
                       <tr>
@@ -1010,14 +1010,17 @@
                 <div id="notes">
                   <ul>
                     <li>
-                      <a name="gost-openssl" id="gost-openssl"></a><sup>(1)</sup> Requires installation of the <a
+                      <a name="xslt" id="xslt"></a><sup>(2)</sup> Requires <a href="http://xmlsoft.org/XSLT/downloads.html">LibXSLT</a> library.
+                    </li>
+                    <li>
+                      <a name="gost-openssl" id="gost-openssl"></a><sup>(2)</sup> Requires installation of the <a
                         href="https://github.com/gost-engine/engine">GOST OpenSSL Engine</a>.
                     </li>
                     <li>
-                      <a name="gost-mscrypto" id="gost-mscrypto"></a><sup>(2)</sup> Requires installation of a GOST CSP.
+                      <a name="gost-mscrypto" id="gost-mscrypto"></a><sup>(3)</sup> Requires installation of a GOST CSP.
                     </li>
                     <li>
-                      <a name="dsa-ke-value" id="dsa-ke-value"></a><sup>(3)</sup> Seed and PgenCounter are not
+                      <a name="dsa-ke-value" id="dsa-ke-value"></a><sup>(4)</sup> Seed and PgenCounter are not
                       supported.
                     </li>
                   </ul>

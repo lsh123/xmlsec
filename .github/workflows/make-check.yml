@@ -275,7 +275,7 @@ jobs:
           set OPENSSL_MODULES=${{ env.INSTALL_FOLDER }}\lib\ossl-modules
           nmake check
     - name: make install
-      working-directory: build
+      working-directory: win32
       run: |
           nmake install
       

@@ -173,10 +173,10 @@ const xmlChar xmlSecAttrPrefixList[]            = "PrefixList";
  * ConcatKDF strings
  *
  ************************************************************************/
-const xmlChar xmlSecNameConcatKDFKeyValue[]             = "concatkdf";
+const xmlChar xmlSecNameConcatKdfKeyValue[]     = "concatkdf";
 
-const xmlChar xmlSecNameConcatKDF[]                     = "concatkdf";
-const xmlChar xmlSecHrxmlSecHrefConcatKDFefDes3Cbc[]    = "http://www.w3.org/2009/xmlenc11#ConcatKDF";
+const xmlChar xmlSecNameConcatKdf[]             = "concatkdf";
+const xmlChar xmlSecHrefConcatKdf[]             = "http://www.w3.org/2009/xmlenc11#ConcatKDF";
 
 
 /*************************************************************************

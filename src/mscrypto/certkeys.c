@@ -1026,7 +1026,7 @@ static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataRsaKlass = {
 
     /* data */
     xmlSecNameRSAKeyValue,
-    xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
                                                 /* xmlSecKeyDataUsage usage; */
     xmlSecHrefRSAKeyValue,                      /* const xmlChar* href; */
     xmlSecNodeRSAKeyValue,                      /* const xmlChar* dataNodeName; */
@@ -1619,7 +1619,7 @@ static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataDsaKlass = {
 
     /* data */
     xmlSecNameDSAKeyValue,
-    xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
                                         /* xmlSecKeyDataUsage usage; */
     xmlSecHrefDSAKeyValue,              /* const xmlChar* href; */
     xmlSecNodeDSAKeyValue,              /* const xmlChar* dataNodeName; */
@@ -2210,7 +2210,7 @@ static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataGost2001Klass = {
 
     /* data */
     xmlSecNameGOST2001KeyValue,
-    xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
                                         /* xmlSecKeyDataUsage usage; */
     xmlSecHrefGOST2001KeyValue,         /* const xmlChar* href; */
     xmlSecNodeGOST2001KeyValue,         /* const xmlChar* dataNodeName; */
@@ -2370,7 +2370,7 @@ static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataGost2012_256Klass = {
 
     /* data */
     xmlSecNameGostR3410_2012_256KeyValue,
-    xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
                                         /* xmlSecKeyDataUsage usage; */
     xmlSecHrefGostR3410_2012_256KeyValue,         /* const xmlChar* href; */
     xmlSecNodeGostR3410_2012_256KeyValue,         /* const xmlChar* dataNodeName; */
@@ -2525,7 +2525,7 @@ static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataGost2012_512Klass = {
 
     /* data */
     xmlSecNameGostR3410_2012_512KeyValue,
-    xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
                                         /* xmlSecKeyDataUsage usage; */
     xmlSecHrefGostR3410_2012_512KeyValue,         /* const xmlChar* href; */
     xmlSecNodeGostR3410_2012_512KeyValue,         /* const xmlChar* dataNodeName; */

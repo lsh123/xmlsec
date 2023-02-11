@@ -1263,6 +1263,7 @@ xmlSecEncCxDerivedKeyGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xml
         xmlSecInternalError("xmlSecTransformCtxNodeRead", xmlSecNodeGetName(cur));
         goto done;
     }
+    encCtx->encMethod->operation = encCtx->operation;
 
     /* set key requirements for this DK transform */
     ret = xmlSecTransformSetKeyReq(encCtx->encMethod, &(encCtx->keyInfoReadCtx.keyReq));

@@ -25,6 +25,7 @@ libxmlsec1_openssl_la_SOURCES =\
 	digests.c \
 	evp.c \
 	evp_signatures.c \
+	kdf.c \
 	hmac.c \
 	kw_aes.c \
 	kw_des.c \

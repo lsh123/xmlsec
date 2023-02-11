@@ -258,8 +258,7 @@ xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad(xmlSecKeysMngrPtr mngr, const char* k
     xmlSecAssert2(filename != NULL, -1);
 
     /* find requested data */
-    dataId = xmlSecKeyDataIdListFindByName(xmlSecKeyDataIdsGet(), BAD_CAST keyKlass,
-                                           xmlSecKeyDataUsageAny);
+    dataId = xmlSecKeyDataIdListFindByName(xmlSecKeyDataIdsGet(), BAD_CAST keyKlass, xmlSecKeyDataUsageReadFromFile);
     if(dataId == xmlSecKeyDataIdUnknown) {
         fprintf(stderr, "Error: xmlSecKeyDataIdListFindByName failed keyKlass=%s\n",
                 xmlSecErrorsSafeString(keyKlass));

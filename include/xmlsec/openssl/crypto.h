@@ -102,6 +102,10 @@ XMLSEC_CRYPTO_EXPORT BIO*               xmlSecOpenSSLCreateReadFileBio (const ch
 #define XMLSEC_NO_AES       1
 #endif /* OPENSSL_NO_AES */
 
+#ifdef OPENSSL_NO_KDF
+#define XMLSEC_NO_CONCATKDF  1
+#endif /* OPENSSL_NO_KDF */
+
 #ifdef OPENSSL_NO_DES
 #define XMLSEC_NO_DES       1
 #endif /* OPENSSL_NO_DES */
@@ -254,6 +258,37 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecOpenSSLTransformKWAes192GetKlass(v
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecOpenSSLTransformKWAes256GetKlass(void);
 
 #endif /* XMLSEC_NO_AES */
+
+/********************************************************************
+ *
+ * ConcatKDF key derivation transforms
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_CONCATKDF
+
+/**
+ * xmlSecOpenSSLKeyDataConcatKdfId:
+ *
+ * The ConcatKDF key derivation key klass.
+ */
+#define xmlSecOpenSSLKeyDataConcatKdfId \
+        xmlSecOpenSSLKeyDataConcatKdfGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataConcatKdfGetKlass(void);
+XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeyDataConcatKdfSet(xmlSecKeyDataPtr data,
+                                                                         const xmlSecByte* buf,
+                                                                         xmlSecSize bufSize);
+
+/**
+ * xmlSecOpenSSLTransformConcatKdfId:
+ *
+ * The ConcatKDF key derivation transform klass.
+ */
+#define xmlSecOpenSSLTransformConcatKdfId \
+        xmlSecOpenSSLTransformConcatKdfGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformConcatKdfGetKlass(void);
+
+#endif /* XMLSEC_NO_CONCATKDF */
+
 
 /********************************************************************
  *
@@ -530,7 +565,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformGostR3411_2012_512G
 /**
  * xmlSecOpenSSLKeyDataHmacId:
  *
- * The DHMAC key klass.
+ * The HMAC key klass.
  */
 #define xmlSecOpenSSLKeyDataHmacId \
         xmlSecOpenSSLKeyDataHmacGetKlass()

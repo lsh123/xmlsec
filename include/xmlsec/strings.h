@@ -173,10 +173,10 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrPrefixList[];
  * ConcatKDF strings
  *
  ************************************************************************/
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNameConcatKDFKeyValue[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameConcatKdfKeyValue[];
 
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNameConcatKDF[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefConcatKDF[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameConcatKdf[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefConcatKdf[];
 
 /*************************************************************************
  *

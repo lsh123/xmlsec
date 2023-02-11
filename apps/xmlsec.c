@@ -2223,7 +2223,7 @@ xmlSecAppLoadKeys(void) {
                     hmacKeyParam.fullName);
             return(-1);
         } else if(xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad(gKeysMngr,
-                    (const char*)xmlSecNameConcatKDFKeyValue, value->strValue, value->paramNameValue) < 0) {
+                    (const char*)xmlSecNameConcatKdfKeyValue, value->strValue, value->paramNameValue) < 0) {
             fprintf(stderr, "Error: failed to load ConcatKDF key from \"%s\".\n",
                     value->strValue);
             return(-1);

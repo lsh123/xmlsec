@@ -330,7 +330,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformEcdsaSha512GetKlass(voi
 /**
  * xmlSecNssKeyDataHmacId:
  *
- * The DHMAC key data klass.
+ * The HMAC key data klass.
  */
 #define xmlSecNssKeyDataHmacId \
         xmlSecNssKeyDataHmacGetKlass()

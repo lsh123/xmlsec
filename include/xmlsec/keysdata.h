@@ -99,11 +99,18 @@ typedef unsigned int                                    xmlSecKeyDataUsage;
 #define xmlSecKeyDataUsageRetrievalMethodNodeBin        0x00020
 
 /**
+ * xmlSecKeyDataUsageReadFromFile:
+ *
+ * The key data could be read from a file.
+ */
+#define xmlSecKeyDataUsageReadFromFile                   0x00040
+
+/**
  * xmlSecKeyDataUsageAny:
  *
  * Any key data usage.
  */
-#define xmlSecKeyDataUsageAny                           0xFFFFF
+#define xmlSecKeyDataUsageAny                            0xFFFFF
 
 /**
  * xmlSecKeyDataUsageKeyInfoNode:

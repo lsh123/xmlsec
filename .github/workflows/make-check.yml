@@ -31,20 +31,23 @@ jobs:
     - uses: actions/checkout@v2
     - name: create-build-dirs
       run: |
-          mkdir build
+          mkdir build.dir install.dir
     - name: configure
-      working-directory: build
+      working-directory: build.dir
       run: |
-          ../autogen.sh --enable-werror --enable-pedantic \
-            ${{ matrix.config_flags }}
+          ../autogen.sh --prefix=${GITHUB_WORKSPACE}/install.dir --enable-werror --enable-pedantic ${{ matrix.config_flags }}
     - name: make
-      working-directory: build
+      working-directory: build.dir
       run: |
           make
     - name: make check
-      working-directory: build
+      working-directory: build.dir
       run: |
           make check
+    - name: make install
+      working-directory: build.dir
+      run: |
+          make install
 
   check-ubuntu-openssl110:
     runs-on: ubuntu-20.04
@@ -66,22 +69,25 @@ jobs:
     - uses: actions/checkout@v2
     - name: create-build-dirs
       run: |
-          mkdir build
+          mkdir build.dir install.dir
     - name: configure
-      working-directory: build
+      working-directory: build.dir
       run: |
           export LD_LIBRARY_PATH="/usr/local/openssl3/lib:/usr/local/openssl3/lib64:$LD_LIBRARY_PATH"
-          ../autogen.sh --enable-werror --enable-pedantic \
-              ${{ matrix.config_flags }}
+          ../autogen.sh --prefix=${GITHUB_WORKSPACE}/install.dir --enable-werror --enable-pedantic ${{ matrix.config_flags }}
     - name: make
-      working-directory: build
+      working-directory: build.dir
       run: |
           make
     - name: make check
-      working-directory: build
+      working-directory: build.dir
       run: |
           export LD_LIBRARY_PATH="/usr/local/openssl3/lib:/usr/local/openssl3/lib64:$LD_LIBRARY_PATH"
           make check
+    - name: make install
+      working-directory: build.dir
+      run: |
+          make install
 
   check-osx:
     runs-on: macos-12
@@ -102,20 +108,23 @@ jobs:
     - uses: actions/checkout@v2
     - name: create-build-dirs
       run: |
-          mkdir build
+          mkdir build.dir install.dir
     - name: configure
-      working-directory: build
+      working-directory: build.dir
       run: |
-          ../autogen.sh --enable-werror --enable-pedantic ${{ matrix.config_flags }}
+          ../autogen.sh --prefix=${GITHUB_WORKSPACE}/install.dir  --enable-werror --enable-pedantic ${{ matrix.config_flags }}
     - name: make
-      working-directory: build
+      working-directory: build.dir
       run: |
           make
     - name: make check
-      working-directory: build
+      working-directory: build.dir
       run: |
           make check
-
+    - name: make install
+      working-directory: build.dir
+      run: |
+          make install
 
   check-mingw:
     runs-on: windows-2022
@@ -159,25 +168,29 @@ jobs:
           git config --global core.autocrlf input
       shell: bash
     - uses: actions/checkout@v2
-    - name: create-build-dirs
+    - name: create-dirs
       run: |
-          mkdir build
+          mkdir build.dir install.dir
       shell: bash
     - name: configure
-      working-directory: build
+      working-directory: build.dir
       run: |
-          ../autogen.sh --enable-werror  --enable-pedantic \
+          ../autogen.sh --prefix=`cygpath -u "${GITHUB_WORKSPACE}/install.dir"` --enable-werror  --enable-pedantic \
               --enable-mscrypto --enable-mscng ${{ matrix.config_flags }} \
               --build="${{ matrix.arch }}-w64-mingw32" \
               --host="${{ matrix.arch }}-w64-mingw32"
     - name: make
-      working-directory: build
+      working-directory: build.dir
       run: |
           make
     - name: make check
-      working-directory: build
+      working-directory: build.dir
       run: |
           make check
+    - name: make install
+      working-directory: build.dir
+      run: |
+          make install
 
   check-msvc:
     runs-on: windows-2022
@@ -197,13 +210,15 @@ jobs:
             config_flags: unicode=yes with-dl=yes
           - crypto: openssl-110
             config_flags: unicode=yes with-dl=yes
+          - crypto: openssl-300
+            config_flags: unicode=no with-dl=no static=yes
           - crypto: mscrypto
-            config_flags: unicode=no with-dl=no
+            config_flags: unicode=no with-dl=no static=yes
           - crypto: mscng
-            config_flags: unicode=no with-dl=no
+            config_flags: unicode=no with-dl=no static=yes
     env:
       VISUAL_STUDIO_ROOT: "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise"
-      EXTRAS_FOLDER: C:\extras
+      INSTALL_FOLDER: c:\install.dir
       EXTRAS_URL: https://www.aleksey.com/xmlsec/download/extras
       LIBXML2_FILE: libxml2-2.9.8-noiconv-win-x64.7z
       LIBXSLT_FILE: libxslt-1.1.32-noiconv-win-x64.7z
@@ -212,10 +227,10 @@ jobs:
     steps:
     - name: create-dirs
       run: |
-          mkdir ${{ env.EXTRAS_FOLDER }}
+          mkdir ${{ env.INSTALL_FOLDER }}
     - name: install dependencies
       shell: pwsh
-      working-directory: ${{ env.EXTRAS_FOLDER }}
+      working-directory: ${{ env.INSTALL_FOLDER }}
       run: |
           Invoke-WebRequest ${{ env.EXTRAS_URL }}/${{ env.LIBXML2_FILE }} -O ${{ env.LIBXML2_FILE }}
           7z x ${{ env.LIBXML2_FILE }}
@@ -238,24 +253,31 @@ jobs:
       shell: cmd
       run: |
           call "${{ env.VISUAL_STUDIO_ROOT }}\VC\Auxiliary\Build\vcvars64.bat"
-          set PATH=${{ env.EXTRAS_FOLDER }}\bin;${{ env.EXTRAS_FOLDER }}\lib;;%PATH%
+          set PATH=${{ env.INSTALL_FOLDER }}\bin;${{ env.INSTALL_FOLDER }}\lib;;%PATH%
           cscript configure.js pedantic=yes werror=yes static=yes iconv=no ^
               crypto=${{ matrix.crypto }} ${{ matrix.config_flags }} ^
-              prefix=${{ env.EXTRAS_FOLDER }} ^
-              include=${{ env.EXTRAS_FOLDER }}\include;${{ env.EXTRAS_FOLDER }}\include\libxml2;%MSSDK_INCLUDE% ^
-              lib=${{ env.EXTRAS_FOLDER }}\bin;${{ env.EXTRAS_FOLDER }}\lib;%MSSDK_LIB%
+              prefix=${{ env.INSTALL_FOLDER }} ^
+              include=${{ env.INSTALL_FOLDER }}\include;${{ env.INSTALL_FOLDER }}\include\libxml2;%MSSDK_INCLUDE% ^
+              lib=${{ env.INSTALL_FOLDER }}\bin;${{ env.INSTALL_FOLDER }}\lib;%MSSDK_LIB%
     - name: make
       working-directory: win32
       shell: cmd
       run: |
           call "${{ env.VISUAL_STUDIO_ROOT }}\VC\Auxiliary\Build\vcvars64.bat"
-          set PATH=${{ env.EXTRAS_FOLDER }}\bin;${{ env.EXTRAS_FOLDER }}\lib;;%PATH%
+          set PATH=${{ env.INSTALL_FOLDER }}\bin;${{ env.INSTALL_FOLDER }}\lib;;%PATH%
           nmake
     - name: make check
       working-directory: win32
       shell: cmd
       run: |
           call "${{ env.VISUAL_STUDIO_ROOT }}\VC\Auxiliary\Build\vcvars64.bat"
-          set PATH=${{ env.EXTRAS_FOLDER }}\bin;${{ env.EXTRAS_FOLDER }}\lib;%PATH%
-          set OPENSSL_MODULES=${{ env.EXTRAS_FOLDER }}\lib\ossl-modules
+          set PATH=${{ env.INSTALL_FOLDER }}\bin;${{ env.INSTALL_FOLDER }}\lib;%PATH%
+          set OPENSSL_MODULES=${{ env.INSTALL_FOLDER }}\lib\ossl-modules
           nmake check
+    - name: make install
+      working-directory: win32
+      shell: cmd
+      run: |
+          call "${{ env.VISUAL_STUDIO_ROOT }}\VC\Auxiliary\Build\vcvars64.bat"
+          nmake install
+      

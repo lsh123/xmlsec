@@ -126,42 +126,51 @@ XMLSEC_EXPORT int               xmlSecPrintXmlString    (FILE * fd,
 
 /**
  * xmlSecGetHex:
- * @c:                  the character,
+ * @ch:                 the character,
  *
- * Deprecated. Macro. Returns the hex value of the @c.
+ * Deprecated. Macro. Returns the hex value of the @ch.
  */
-#define xmlSecGetHex(c)         xmlSecFromHex(c)
+#define xmlSecGetHex(ch)         xmlSecFromHex(ch)
 
 /**
  * xmlSecFromHex:
- * @c:                  the character,
+ * @ch:                  the character,
  *
- * Macro. Returns the hex value of the @c.
+ * Macro. Returns the hex value of the @ch.
  */
-#define xmlSecFromHex(c)                                                    \
-        (                                                                   \
-            (('0' <= (c)) && ((c) <= '9')) ? (c) - '0' :                    \
-                (                                                           \
-                    (('a' <= (c)) && ((c) <= 'f')) ? (c) - 'a' + 10 :       \
-                    (                                                       \
-                        (('A' <= (c)) && ((c) <= 'F')) ? (c) - 'A' + 10 : 0 \
-                    )                                                       \
-                )                                                           \
-        )
+#define xmlSecFromHex(ch)                                                       \
+        ((xmlSecByte)(                                                          \
+            (('0' <= (ch)) && ((ch) <= '9')) ? (ch) - '0' :                     \
+                (                                                               \
+                    (('a' <= (ch)) && ((ch) <= 'f')) ? (ch) - 'a' + 10 :        \
+                    (                                                           \
+                        (('A' <= (ch)) && ((ch) <= 'F')) ? (ch) - 'A' + 10 : 0  \
+                    )                                                           \
+                )                                                               \
+        ))
+
+/**
+ * xmlSecFromHex2:
+ * @ch1:                  the first character,
+ * @ch2:                  the second character,
+ *
+ * Macro. Returns the hex value of the pair (@c1 @c2).
+ */
+#define xmlSecFromHex2(ch1, ch2)    ((xmlSecFromHex(ch1) << 4) | (xmlSecFromHex(ch2)))
 
 /**
  * xmlSecToHex:
- * @c:                  the character,
+ * @vv:                  the value,
  *
- * Macro. Returns the hex value of the @c.
+ * Macro. Returns the hex character of the @vv.
  */
 #define xmlSecToHex(vv)                                                 \
-        (                                                               \
+        ((xmlChar)(                                                     \
             ((0 <= (vv)) && ((vv) <= 9)) ? (vv) + '0' :                 \
                 (                                                       \
                     ((10 <= (vv)) && ((vv) <= 15)) ? (vv) + 'A' : 0     \
                 )                                                       \
-        )
+        ))
 
 
 

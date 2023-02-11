@@ -214,6 +214,7 @@ XMLSEC_OPENSSL_OBJS = \
 	$(XMLSEC_OPENSSL_INTDIR)\evp.obj \
 	$(XMLSEC_OPENSSL_INTDIR)\evp_signatures.obj \
 	$(XMLSEC_OPENSSL_INTDIR)\hmac.obj \
+	$(XMLSEC_OPENSSL_INTDIR)\kdf.obj \
 	$(XMLSEC_OPENSSL_INTDIR)\kt_rsa.obj \
 	$(XMLSEC_OPENSSL_INTDIR)\kw_aes.obj \
 	$(XMLSEC_OPENSSL_INTDIR)\kw_des.obj \
@@ -230,6 +231,7 @@ XMLSEC_OPENSSL_OBJS_A = \
 	$(XMLSEC_OPENSSL_INTDIR_A)\evp.obj \
 	$(XMLSEC_OPENSSL_INTDIR_A)\evp_signatures.obj \
 	$(XMLSEC_OPENSSL_INTDIR_A)\hmac.obj \
+	$(XMLSEC_OPENSSL_INTDIR_A)\kdf.obj \
 	$(XMLSEC_OPENSSL_INTDIR_A)\kt_rsa.obj \
 	$(XMLSEC_OPENSSL_INTDIR_A)\kw_aes.obj \
 	$(XMLSEC_OPENSSL_INTDIR_A)\kw_des.obj \

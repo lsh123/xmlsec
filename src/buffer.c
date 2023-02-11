@@ -684,7 +684,7 @@ xmlSecBufferHexRead(xmlSecBufferPtr buf, const xmlChar* hexStr) {
             xmlSecInvalidDataError("Unexpected character (not hex)", NULL);
             return (-1);
         }
-        (*data) = ((xmlSecByte)xmlSecFromHex(ch1) << 4) | (xmlSecByte)xmlSecFromHex(ch2);
+        (*data) = xmlSecFromHex2(ch1, ch2);
     }
 
     /* sucess */

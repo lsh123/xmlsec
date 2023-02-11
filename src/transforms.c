@@ -2716,9 +2716,9 @@ xmlSecTransformConcatKdfParamsRead(xmlSecTransformConcatKdfParamsPtr params, xml
         xmlSecInvalidNodeError(cur, xmlSecNodeDigestMethod, NULL);
         return(-1);
     }
-    params->digestMethod = xmlGetProp(node, xmlSecAttrAlgorithm);
+    params->digestMethod = xmlGetProp(cur, xmlSecAttrAlgorithm);
     if(params->digestMethod == NULL) {
-        xmlSecInvalidNodeAttributeError(node, xmlSecAttrAlgorithm, NULL, "empty");
+        xmlSecInvalidNodeAttributeError(cur, xmlSecAttrAlgorithm, NULL, "empty");
         return(-1);
     }
     cur = xmlSecGetNextElementNode(cur->next);

@@ -1247,7 +1247,8 @@ xmlSecEncCxDerivedKeyGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xml
     /* first read the children */
     cur = xmlSecGetNextElementNode(node->children);
 
-    /* TODO: read the Type attribute as a hint for the desired key type / size */
+    /* TODO: read the Type attribute as a hint for the desired key type / size
+     * (https://github.com/lsh123/xmlsec/issues/515) */
 
     /* KeyDerivationMethod is an optional element that describes the key derivation algorithm applied to the master (underlying)
      * key material. If the element is absent, the key derivation algorithm must be known by the recipient or the recipient's key

@@ -1568,7 +1568,8 @@ xmlSecKeyDataDerivedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr 
 
     /* TODO: store derived keys in keyInfoCtx so one can reference
      * the key by name from ds:KeyName
-     * BTW this should happen even if the key doesn't match the current request!
+     * BTW this should happen even if the key doesn't match the current request
+     * (https://github.com/lsh123/xmlsec/issues/515)
      */
     if(xmlSecKeyReqMatchKey(&(keyInfoCtx->keyReq), derivedKey) != 1) {
         /* we are not allowed to use  this key, ignore and continue */

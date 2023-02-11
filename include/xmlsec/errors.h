@@ -241,7 +241,6 @@ extern "C" {
  */
 #define XMLSEC_ERRORS_R_TRANSFORM_DISABLED              35
 
-
 /**
  * XMLSEC_ERRORS_R_INVALID_ALGORITHM:
  *

@@ -1238,6 +1238,7 @@ xmlSecEncCxDerivedKeyGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xml
     xmlSecAssert2(encCtx != NULL, NULL);
     xmlSecAssert2(encCtx->encMethod == NULL, NULL);
     xmlSecAssert2(node != NULL, NULL);
+    xmlSecAssert2(keyInfoCtx != NULL, NULL);
 
     /* initialize context and add ID atributes to the list of known ids */
     encCtx->operation = xmlSecTransformOperationDecrypt;
@@ -1245,6 +1246,8 @@ xmlSecEncCxDerivedKeyGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xml
 
     /* first read the children */
     cur = xmlSecGetNextElementNode(node->children);
+
+    /* TODO: read the Type attribute as a hint for the desired key type / size */
 
     /* KeyDerivationMethod is an optional element that describes the key derivation algorithm applied to the master (underlying)
      * key material. If the element is absent, the key derivation algorithm must be known by the recipient or the recipient's key
@@ -1263,6 +1266,8 @@ xmlSecEncCxDerivedKeyGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xml
         xmlSecInternalError("xmlSecTransformCtxNodeRead", xmlSecNodeGetName(cur));
         goto done;
     }
+    /* expected key size is determined by the requirements from the uplevel key info */
+    encCtx->encMethod->expectedOutputSize = keyInfoCtx->keyReq.keyBitsSize / 8;
     encCtx->encMethod->operation = encCtx->operation;
 
     /* set key requirements for this DK transform */

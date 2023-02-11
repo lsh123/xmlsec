@@ -421,6 +421,9 @@ struct _xmlSecTransform {
     xmlSecNodeSetPtr                    inNodes;
     xmlSecNodeSetPtr                    outNodes;
 
+    /* used for some transform (e.g. KDF) to determine the desired output size */
+    xmlSecSize                          expectedOutputSize;
+
     /* reserved for the future */
     void*                               reserved0;
     void*                               reserved1;

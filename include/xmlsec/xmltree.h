@@ -156,7 +156,7 @@ XMLSEC_EXPORT int               xmlSecPrintXmlString    (FILE * fd,
  *
  * Macro. Returns the hex value of the pair (@c1 @c2).
  */
-#define xmlSecFromHex2(ch1, ch2)    ((xmlSecFromHex(ch1) << 4) | (xmlSecFromHex(ch2)))
+#define xmlSecFromHex2(ch1, ch2)   ((xmlSecByte)((xmlSecFromHex(ch1) << 4) | (xmlSecFromHex(ch2))))
 
 /**
  * xmlSecToHex:

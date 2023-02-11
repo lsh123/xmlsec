@@ -16,8 +16,34 @@
 #error "private.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-$crypto libraries"
 #endif /* XMLSEC_PRIVATE */
 
+#include <xmlsec/buffer.h>
 #include <xmlsec/transforms.h>
 
+
+/**************************** ConcatKDF ********************************/
+#ifndef XMLSEC_NO_CONCATKDF
+
+struct _xmlSecTransformConcatKdfParams {
+    xmlChar* digestMethod;
+    xmlSecBuffer bufAlgorithmID;
+    xmlSecBuffer bufPartyUInfo;
+    xmlSecBuffer bufPartyVInfo;
+    xmlSecBuffer bufSuppPubInfo;
+    xmlSecBuffer bufSuppPrivInfo;
+};
+typedef struct _xmlSecTransformConcatKdfParams   xmlSecTransformConcatKdfParams, *xmlSecTransformConcatKdfParamsPtr;
+
+XMLSEC_EXPORT int   xmlSecTransformConcatKdfParamsInitialize    (xmlSecTransformConcatKdfParamsPtr params);
+XMLSEC_EXPORT void  xmlSecTransformConcatKdfParamsFinalize      (xmlSecTransformConcatKdfParamsPtr params);
+XMLSEC_EXPORT int   xmlSecTransformConcatKdfParamsRead          (xmlSecTransformConcatKdfParamsPtr params,
+                                                                 xmlNodePtr node);
+XMLSEC_EXPORT int   xmlSecTransformConcatKdfParamsGetFixedInfo  (xmlSecTransformConcatKdfParamsPtr params,
+                                                                 xmlSecBufferPtr bufFixedInfo);
+
+#endif /* XMLSEC_NO_CONCATKDF */
+
+
+/********************************** HMAC *******************************/
 #ifndef XMLSEC_NO_HMAC
 
 /* max HMAC output size in bytes */
@@ -40,6 +66,8 @@ XMLSEC_EXPORT int xmlSecTransformHmacVerify             (const xmlSecByte* data,
 
 #endif /* XMLSEC_NO_HMAC */
 
+
+/********************************** RSA *******************************/
 #ifndef XMLSEC_NO_RSA
 
 /* All OAEP params in one place */

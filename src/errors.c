@@ -73,6 +73,7 @@ static xmlSecErrorDescription xmlSecErrorsTable[XMLSEC_ERRORS_MAX_NUMBER + 1] = 
   { XMLSEC_ERRORS_R_INVALID_URI_TYPE,           "invalid URI type" },
   { XMLSEC_ERRORS_R_TRANSFORM_SAME_DOCUMENT_REQUIRED,   "same document is required for transform" },
   { XMLSEC_ERRORS_R_TRANSFORM_DISABLED,         "transform is disabled" },
+  { XMLSEC_ERRORS_R_INVALID_ALGORITHM,          "invalid or unsupported algorithm" },
   { XMLSEC_ERRORS_R_INVALID_KEY_DATA,           "invalid key data" },
   { XMLSEC_ERRORS_R_KEY_DATA_NOT_FOUND,         "key data is not found" },
   { XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST,     "key data already exist" },

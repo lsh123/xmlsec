@@ -191,6 +191,13 @@ XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformAes192GcmGetKlass
 #define xmlSecTransformAes256GcmId              xmlSecTransformAes256GcmGetKlass()
 XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformAes256GcmGetKlass(void);
 /**
+* xmlSecTransformConcatKdfId:
+*
+* The ConcatKDF key derivation transform klass.
+*/
+#define xmlSecTransformConcatKdfId              xmlSecTransformConcatKdfGetKlass()
+XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformConcatKdfGetKlass(void);
+/**
  * xmlSecTransformKWAes128Id:
  *
  * The AES 128 key wrap transform klass.

@@ -341,6 +341,7 @@ typedef int                     (*xmlSecCryptoAppKeyCertLoadMemoryMethod)(xmlSec
  * @cryptoShutdown:             the xmlsec-crypto library shutdown method.
  * @cryptoKeysMngrInit:         the xmlsec-crypto library keys manager init method.
  * @keyDataAesGetKlass:         the method to get pointer to AES key data klass.
+ * @keyDataConcatKdfGetKlass:   the method to get pointer to ConcatKDF key data klass.
  * @keyDataDesGetKlass:         the method to get pointer to DES key data klass.
  * @keyDataDsaGetKlass:         the method to get pointer to DSA key data klass.
  * @keyDataEcdsaGetKlass:       the method to get pointer to ECDSA key data klass.
@@ -358,6 +359,7 @@ typedef int                     (*xmlSecCryptoAppKeyCertLoadMemoryMethod)(xmlSec
  * @transformAes128GcmGetKlass: the method to get pointer to AES 128 GCM encryption transform.
  * @transformAes192GcmGetKlass: the method to get pointer to AES 192 GCM encryption transform.
  * @transformAes256GcmGetKlass: the method to get pointer to AES 256 GCM encryption transform.
+ * @transformConcatKdfGetKlass: the method to get pointer to ConcatKDF KDF transform.
  * @transformKWAes128GetKlass:  the method to get pointer to AES 128 key wrapper transform.
  * @transformKWAes192GetKlass:  the method to get pointer to AES 192 key wrapper transform.
  * @transformKWAes256GetKlass:  the method to get pointer to AES 256 key wrapper transform.
@@ -431,6 +433,7 @@ struct _xmlSecCryptoDLFunctions {
 
     /* Key data ids */
     xmlSecCryptoKeyDataGetKlassMethod            keyDataAesGetKlass;
+    xmlSecCryptoKeyDataGetKlassMethod            keyDataConcatKdfGetKlass;
     xmlSecCryptoKeyDataGetKlassMethod            keyDataDesGetKlass;
     xmlSecCryptoKeyDataGetKlassMethod            keyDataDsaGetKlass;
     xmlSecCryptoKeyDataGetKlassMethod            keyDataEcdsaGetKlass;
@@ -452,6 +455,7 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoTransformGetKlassMethod          transformAes128GcmGetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformAes192GcmGetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformAes256GcmGetKlass;
+    xmlSecCryptoTransformGetKlassMethod          transformConcatKdfGetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformKWAes128GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformKWAes192GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformKWAes256GetKlass;
@@ -659,4 +663,3 @@ struct _xmlSecCryptoDLFunctions {
 #endif /* __cplusplus */
 
 #endif /* __XMLSEC_PRIVATE_H__ */
-

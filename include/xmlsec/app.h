@@ -53,6 +53,13 @@ XMLSEC_EXPORT int                               xmlSecCryptoKeysMngrInit        
 #define xmlSecKeyDataAesId                      xmlSecKeyDataAesGetKlass()
 XMLSEC_EXPORT xmlSecKeyDataId                   xmlSecKeyDataAesGetKlass        (void);
 /**
+ * xmlSecKeyDataConcatKdfId:
+ *
+ * The ConcatKDF key klass.
+ */
+#define xmlSecKeyDataConcatKdfId                xmlSecKeyDataConcatKdfGetKlass()
+XMLSEC_EXPORT xmlSecKeyDataId                   xmlSecKeyDataConcatKdfGetKlass       (void);
+/**
  * xmlSecKeyDataDesId:
  *
  * The DES key klass.
@@ -97,7 +104,7 @@ XMLSEC_EXPORT xmlSecKeyDataId                   xmlSecKeyDataGostR3410_2012_512G
 /**
  * xmlSecKeyDataHmacId:
  *
- * The DHMAC key klass.
+ * The HMAC key klass.
  */
 #define xmlSecKeyDataHmacId                     xmlSecKeyDataHmacGetKlass()
 XMLSEC_EXPORT xmlSecKeyDataId                   xmlSecKeyDataHmacGetKlass       (void);
@@ -580,4 +587,3 @@ XMLSEC_EXPORT void*                             xmlSecCryptoAppGetDefaultPwdCall
 #endif /* XMLSEC_NO_CRYPTO_DYNAMIC_LOADING */
 
 #endif /* __XMLSEC_APP_H__ */
-

@@ -933,8 +933,6 @@ xmlSecTransformCtxBinaryExecute(xmlSecTransformCtxPtr ctx,
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->result == NULL, -1);
     xmlSecAssert2(ctx->status == xmlSecTransformStatusNone, -1);
-    xmlSecAssert2(data != NULL, -1);
-    xmlSecAssert2(dataSize > 0, -1);
 
     /* we should not have uri stored in ctx */
     xmlSecAssert2(ctx->uri == NULL, -1);

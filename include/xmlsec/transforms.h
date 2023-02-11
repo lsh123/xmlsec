@@ -249,6 +249,14 @@ typedef unsigned int                            xmlSecTransformUsage;
 #define xmlSecTransformUsageEncryptionMethod    0x0010
 
 /**
+ * xmlSecTransformUsageKeyDerivationMethod:
+ *
+ * Transform could be used in <enc11:KeyDerivationMethod>.
+ */
+#define xmlSecTransformUsageKeyDerivationMethod 0x0020
+
+
+/**
  * xmlSecTransformUsageAny:
  *
  * Transform could be used for operation.
@@ -1017,4 +1025,3 @@ XMLSEC_EXPORT void              xmlSecTransformHmacSetMinOutputBitsSize(xmlSecSi
 #endif /* __cplusplus */
 
 #endif /* __XMLSEC_TRANSFORMS_H__ */
-

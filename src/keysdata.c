@@ -149,6 +149,10 @@ xmlSecKeyDataIdsRegisterDefault(void) {
         xmlSecInternalError("xmlSecKeyDataIdsRegister(xmlSecKeyDataEncryptedKeyId)", NULL);
         return(-1);
     }
+    if(xmlSecKeyDataIdsRegister(xmlSecKeyDataDerivedKeyId) < 0) {
+        xmlSecInternalError("xmlSecKeyDataIdsRegister(xmlSecKeyDataDerivedKeyId)", NULL);
+        return(-1);
+    }
 #endif /* XMLSEC_NO_XMLENC */
 
     return(0);
@@ -2860,4 +2864,3 @@ void xmlSecImportSetPersistKey(void) {
 int xmlSecImportGetPersistKey(void) {
     return xmlSecImportPersistKey;
 }
-

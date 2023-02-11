@@ -185,7 +185,7 @@ typedef enum {
  * @pgpReserved:        reserved for PGP.
  * @curRetrievalMethodLevel: the current <dsig:RetrievalMethod /> element
  *                      processing level (see @maxRetrievalMethodLevel).
- * @curEncryptedKeyLevel: the current <enc:EncryptedKey /> element
+ * @curEncryptedKeyLevel: the current <enc:EncryptedKey /> or <enc11:DerivedKey> element
  *                      processing level (see @maxEncryptedKeyLevel).
  * @keyReq:             the current key requirements.
  * @reserved0:          reserved for the future.
@@ -207,7 +207,7 @@ struct _xmlSecKeyInfoCtx {
     int                                 maxRetrievalMethodLevel;
 
 #ifndef XMLSEC_NO_XMLENC
-    /* EncryptedKey */
+    /* EncryptedKey or DerivedKey */
     xmlSecEncCtxPtr                     encCtx;
     int                                 maxEncryptedKeyLevel;
 #endif /* XMLSEC_NO_XMLENC */
@@ -276,6 +276,17 @@ XMLSEC_EXPORT xmlSecKeyDataId           xmlSecKeyDataRetrievalMethodGetKlass(voi
  */
 #define xmlSecKeyDataEncryptedKeyId     xmlSecKeyDataEncryptedKeyGetKlass()
 XMLSEC_EXPORT xmlSecKeyDataId           xmlSecKeyDataEncryptedKeyGetKlass(void);
+
+
+/**
+ * xmlSecKeyDataDerivedKeyId
+ *
+ * The <enc11:DerivedKey> processing class.
+ */
+#define xmlSecKeyDataDerivedKeyId       xmlSecKeyDataDerivedKeyGetKlass()
+XMLSEC_EXPORT xmlSecKeyDataId           xmlSecKeyDataDerivedKeyGetKlass(void);
+
+
 #endif /* XMLSEC_NO_XMLENC */
 
 #ifdef __cplusplus
@@ -283,4 +294,3 @@ XMLSEC_EXPORT xmlSecKeyDataId           xmlSecKeyDataEncryptedKeyGetKlass(void);
 #endif /* __cplusplus */
 
 #endif /* __XMLSEC_KEYINFO_H__ */
-

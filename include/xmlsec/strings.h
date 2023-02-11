@@ -273,7 +273,6 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefGostR3410_2012GostR3411_2012_256[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameGostR3410_2012GostR3411_2012_512[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefGostR3410_2012GostR3411_2012_512[];
 
-
 /*************************************************************************
  *
  * EncryptedKey
@@ -282,6 +281,19 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefGostR3410_2012GostR3411_2012_512[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameEncryptedKey[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeEncryptedKey[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEncryptedKey[];
+
+/*************************************************************************
+ *
+ * DerivedKey
+ *
+ ************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameDerivedKey[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeDerivedKey[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefDerivedKey[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeKeyDerivationMethod[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeDerivedKeyName[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeMasterKeyName[];
 
 /*************************************************************************
  *
@@ -572,5 +584,3 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecStringCR[];
 #endif /* __cplusplus */
 
 #endif /* __XMLSEC_STRINGS_H__ */
-
-

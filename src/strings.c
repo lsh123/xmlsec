@@ -281,6 +281,20 @@ const xmlChar xmlSecHrefEncryptedKey[]          = "http://www.w3.org/2001/04/xml
 
 /*************************************************************************
  *
+ * DerivedKey
+ *
+ ************************************************************************/
+const xmlChar xmlSecNameDerivedKey[]            = "derived-key";
+const xmlChar xmlSecNodeDerivedKey[]            = "DerivedKey";
+const xmlChar xmlSecHrefDerivedKey[]            = "http://www.w3.org/2009/xmlenc11#DerivedKey";
+
+const xmlChar xmlSecNodeKeyDerivationMethod[]   = "KeyDerivationMethod";
+const xmlChar xmlSecNodeDerivedKeyName[]        = "DerivedKeyName";
+const xmlChar xmlSecNodeMasterKeyName[]         = "MasterKeyName";
+
+
+/*************************************************************************
+ *
  * Enveloped transform strings
  *
  ************************************************************************/

@@ -1055,7 +1055,7 @@ xmlSecKeyDataRetrievalMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNod
                 "retrieval type is unknown");
             goto done;
         }
-        
+
         res = 0;
         goto done;
     }
@@ -1233,6 +1233,7 @@ xmlSecKeyDataRetrievalMethodReadXmlResult(xmlSecKeyDataId typeId, xmlSecKeyPtr k
 
 
 #ifndef XMLSEC_NO_XMLENC
+
 /**************************************************************************
  *
  * <enc:EncryptedKey/> processing
@@ -1440,5 +1441,165 @@ done:
     return(res);
 }
 
-#endif /* XMLSEC_NO_XMLENC */
 
+/**************************************************************************
+ *
+ * <enc11:DerivedKey/> processing
+ *
+ *************************************************************************/
+static int      xmlSecKeyDataDerivedKeyXmlRead          (xmlSecKeyDataId id,
+                                                         xmlSecKeyPtr key,
+                                                         xmlNodePtr node,
+                                                         xmlSecKeyInfoCtxPtr keyInfoCtx);
+static int      xmlSecKeyDataDerivedKeyXmlWrite         (xmlSecKeyDataId id,
+                                                         xmlSecKeyPtr key,
+                                                         xmlNodePtr node,
+                                                         xmlSecKeyInfoCtxPtr keyInfoCtx);
+
+
+
+static xmlSecKeyDataKlass xmlSecKeyDataDerivedKeyKlass = {
+    sizeof(xmlSecKeyDataKlass),
+    sizeof(xmlSecKeyData),
+
+    /* data */
+    xmlSecNameDerivedKey,
+    xmlSecKeyDataUsageKeyInfoNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+                                                /* xmlSecKeyDataUsage usage; */
+    xmlSecHrefDerivedKey,                       /* const xmlChar* href; */
+    xmlSecNodeDerivedKey,                       /* const xmlChar* dataNodeName; */
+    xmlSecEnc11Ns,                              /* const xmlChar* dataNodeNs; */
+
+    /* constructors/destructor */
+    NULL,                                       /* xmlSecKeyDataInitializeMethod initialize; */
+    NULL,                                       /* xmlSecKeyDataDuplicateMethod duplicate; */
+    NULL,                                       /* xmlSecKeyDataFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecKeyDataGenerateMethod generate; */
+
+    /* get info */
+    NULL,                                       /* xmlSecKeyDataGetTypeMethod getType; */
+    NULL,                                       /* xmlSecKeyDataGetSizeMethod getSize; */
+    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
+
+    /* read/write */
+    xmlSecKeyDataDerivedKeyXmlRead,             /* xmlSecKeyDataXmlReadMethod xmlRead; */
+    xmlSecKeyDataDerivedKeyXmlWrite,            /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    NULL,                                       /* xmlSecKeyDataBinReadMethod binRead; */
+    NULL,                                       /* xmlSecKeyDataBinWriteMethod binWrite; */
+
+    /* debug */
+    NULL,                                       /* xmlSecKeyDataDebugDumpMethod debugDump; */
+    NULL,                                       /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+
+    /* reserved for the future */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecKeyDataDerivedKeyGetKlass:
+ *
+ * The <enc11:DerivedKey/> element key data klass
+ * (https://www.w3.org/TR/xmlenc-core1/#sec-DerivedKey)
+ *
+ * The DerivedKey element is used to transport information about
+ * a derived key from the originator to recipient(s). It may be
+ * used as a stand-alone XML document, be placed within an application
+ * document, or appear inside an EncryptedData or Signature element as
+ * a child of a ds:KeyInfo element. The key value itself is never sent
+ * by the originator. Rather, the originator provides information to
+ * the recipient(s) by which the recipient(s) can derive the same key value.
+ * When the key has been derived the resulting octets are made available
+ * to the EncryptionMethod or SignatureMethod algorithm without
+ * any additional processing.
+ *
+ * Returns: the <enc11:DerivedKey/> element processing key data klass.
+ */
+xmlSecKeyDataId
+xmlSecKeyDataDerivedKeyGetKlass(void) {
+    return(&xmlSecKeyDataDerivedKeyKlass);
+}
+
+static int
+xmlSecKeyDataDerivedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlSecKeyPtr derivedKey;
+    int ret;
+
+    xmlSecAssert2(id == xmlSecKeyDataDerivedKeyId, -1);
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+    xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeRead, -1);
+
+    /* check the enc level */
+    if(keyInfoCtx->curEncryptedKeyLevel >= keyInfoCtx->maxEncryptedKeyLevel) {
+        xmlSecOtherError3(XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL, xmlSecKeyDataKlassGetName(id),
+            "cur=%d;max=%d", keyInfoCtx->curEncryptedKeyLevel, keyInfoCtx->maxEncryptedKeyLevel);
+        return(-1);
+    }
+
+    /* init enc context */
+    if(keyInfoCtx->encCtx != NULL) {
+        xmlSecEncCtxReset(keyInfoCtx->encCtx);
+    } else {
+        ret = xmlSecKeyInfoCtxCreateEncCtx(keyInfoCtx);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecKeyInfoCtxCreateEncCtx", xmlSecKeyDataKlassGetName(id));
+            return(-1);
+        }
+    }
+    xmlSecAssert2(keyInfoCtx->encCtx != NULL, -1);
+
+    ++keyInfoCtx->curEncryptedKeyLevel;
+    derivedKey = xmlSecEncCxDerivedKeyGenerate(keyInfoCtx->encCtx, keyInfoCtx->keyReq.keyId, node, keyInfoCtx);
+    --keyInfoCtx->curEncryptedKeyLevel;
+
+    if(derivedKey == NULL) {
+        /* We might have multiple DerivedKey elements, encrypted
+         * for different recipients but application can enforce
+         * correct enc key.
+         */
+        if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_ENCKEY_DONT_STOP_ON_FAILED_DECRYPTION) != 0) {
+            xmlSecInternalError("xmlSecEncCtxDeriveKeyToBuffer", xmlSecKeyDataKlassGetName(id));
+            return(-1);
+        }
+        return(0);
+    }
+
+    /* TODO: store derived keys in keyInfoCtx so one can reference
+     * the key by name from ds:KeyName
+     * BTW this should happen even if the key doesn't match the current request
+     * (https://github.com/lsh123/xmlsec/issues/515)
+     */
+    if(xmlSecKeyReqMatchKey(&(keyInfoCtx->keyReq), derivedKey) != 1) {
+        /* we are not allowed to use  this key, ignore and continue */
+        xmlSecKeyDestroy(derivedKey);
+        return(0);
+    }
+
+    ret = xmlSecKeyCopy(key, derivedKey);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeyCopy", xmlSecKeyDataKlassGetName(id));
+        xmlSecKeyDestroy(derivedKey);
+        return(-1);
+    }
+
+    /* success */
+    xmlSecKeyDestroy(derivedKey);
+    return(0);
+}
+
+static int
+xmlSecKeyDataDerivedKeyXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlSecAssert2(id == xmlSecKeyDataDerivedKeyId, -1);
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(xmlSecKeyIsValid(key), -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+    xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeWrite, -1);
+
+    /* do nothing, the template should already have all the necesary data to derive the key correctly */
+    return(0);
+}
+
+#endif /* XMLSEC_NO_XMLENC */

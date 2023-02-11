@@ -716,8 +716,8 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
 
     /* check uri */
     if(xmlSecTransformUriTypeCheck(ctx->enabledUris, uri) != 1) {
-        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_URI_TYPE, NULL,
-                          "uri=%s", xmlSecErrorsSafeString(uri));
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_KEY_DATA_SIZE, NULL,
+                "ConcatKDF output keuuri=%s", xmlSecErrorsSafeString(uri));
         return(-1);
     }
 
@@ -933,8 +933,6 @@ xmlSecTransformCtxBinaryExecute(xmlSecTransformCtxPtr ctx,
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->result == NULL, -1);
     xmlSecAssert2(ctx->status == xmlSecTransformStatusNone, -1);
-    xmlSecAssert2(data != NULL, -1);
-    xmlSecAssert2(dataSize > 0, -1);
 
     /* we should not have uri stored in ctx */
     xmlSecAssert2(ctx->uri == NULL, -1);
@@ -2578,6 +2576,259 @@ xmlSecTransformIOBufferClose(xmlSecTransformIOBufferPtr buffer) {
  *
  ********************************************************************/
 
+#ifndef XMLSEC_NO_CONCATKDF
+
+#define XMLSEC_TRANSFORM_CONCATKDF_DEFAULT_BUF_SIZE       64
+
+/* reads optional attribute and decodes it as bit string (https://www.w3.org/TR/xmlenc-core1/#sec-ConcatKDF):
+ *
+ * 1/ The bitstring is divided into octets using big-endian encoding. If the length of the bitstring is not
+ *    a multiple of 8 then add padding bits (value 0) as necessary to the last octet to make it a multiple of 8.
+ * 2/ Prepend one octet to the octets string from step 1. This octet shall identify (in a big-endian representation)
+ *    the number of padding bits added to the last octet in step 1.
+ * 3/ Encode the octet string resulting from step 2 as a hexBinary string.
+ *
+ * Example: the bitstring 11011, which is 5 bits long, gets 3 additional padding bits to become the bitstring
+ * 11011000 (or D8 in hex). This bitstring is then prepended with one octet identifying the number of padding bits
+ * to become the octet string (in hex) 03D8, which then finally is encoded as a hexBinary string value of "03D8".
+ *
+ * While any bit string can be used with ConcatKDF, it is RECOMMENDED to keep byte aligned for greatest interoperability.
+ *
+ * TODO: only bit aligned bit strings are supported (https://github.com/lsh123/xmlsec/issues/514)
+ */
+static int
+xmlSecTransformConcatKdfParamsReadsBitsAttr(xmlSecBufferPtr buf, xmlNodePtr node, const xmlChar* attrName) {
+    xmlChar * attrValue;
+    xmlSecByte* data;
+    xmlSecSize size;
+    int ret;
+
+    xmlSecAssert2(buf != NULL, -1);
+    xmlSecAssert2(node!= NULL, -1);
+    xmlSecAssert2(attrName != NULL, -1);
+
+    attrValue = xmlGetProp(node, attrName);
+    if(attrValue == NULL) {
+        xmlSecBufferEmpty(buf);
+        return(0);
+    }
+
+    ret = xmlSecBufferHexRead(buf, attrValue);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferHexRead", NULL);
+        xmlFree(attrValue);
+        return(-1);
+    }
+    xmlFree(attrValue);
+
+    data = xmlSecBufferGetData(buf);
+    size = xmlSecBufferGetSize(buf);
+    if((data == NULL) || (size <= 0)) {
+        xmlSecInvalidSizeDataError("size", size, "at least one byte is expected", NULL);
+    }
+
+    /* only byte aligned bit strings are supported */
+    if(data[0] != 0) {
+        xmlSecInvalidDataError("First bit string byte should be 0 (only byte aligned bit strings are supported)", NULL);
+        return (-1);
+    }
+
+    ret = xmlSecBufferRemoveHead(buf, 1);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferHexRead", NULL);
+        return(-1);
+    }
+
+    /* done */
+    return(0);
+}
+
+
+int
+xmlSecTransformConcatKdfParamsInitialize(xmlSecTransformConcatKdfParamsPtr params) {
+    int ret;
+
+    xmlSecAssert2(params != NULL, -1);
+    memset(params, 0, sizeof(*params));
+
+    ret = xmlSecBufferInitialize(&(params->bufAlgorithmID), XMLSEC_TRANSFORM_CONCATKDF_DEFAULT_BUF_SIZE);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize(bufAlgorithmID)", NULL);
+        xmlSecTransformConcatKdfParamsFinalize(params);
+        return(-1);
+    }
+    ret = xmlSecBufferInitialize(&(params->bufPartyUInfo), XMLSEC_TRANSFORM_CONCATKDF_DEFAULT_BUF_SIZE);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize(bufPartyUInfo)", NULL);
+        xmlSecTransformConcatKdfParamsFinalize(params);
+        return(-1);
+    }
+    ret = xmlSecBufferInitialize(&(params->bufPartyVInfo), XMLSEC_TRANSFORM_CONCATKDF_DEFAULT_BUF_SIZE);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize(bufPartyVInfo)", NULL);
+        xmlSecTransformConcatKdfParamsFinalize(params);
+        return(-1);
+    }
+    ret = xmlSecBufferInitialize(&(params->bufSuppPubInfo), XMLSEC_TRANSFORM_CONCATKDF_DEFAULT_BUF_SIZE);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize(bufSuppPubInfo)", NULL);
+        xmlSecTransformConcatKdfParamsFinalize(params);
+        return(-1);
+    }
+    ret = xmlSecBufferInitialize(&(params->bufSuppPrivInfo), XMLSEC_TRANSFORM_CONCATKDF_DEFAULT_BUF_SIZE);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize(bufSuppPrivInfo)", NULL);
+        xmlSecTransformConcatKdfParamsFinalize(params);
+        return(-1);
+    }
+
+    /* done */
+    return(0);
+}
+
+void
+xmlSecTransformConcatKdfParamsFinalize(xmlSecTransformConcatKdfParamsPtr params) {
+    xmlSecAssert(params != NULL);
+
+    if(params->digestMethod != NULL) {
+        xmlFree(params->digestMethod);
+    }
+    xmlSecBufferFinalize(&(params->bufAlgorithmID));
+    xmlSecBufferFinalize(&(params->bufPartyUInfo));
+    xmlSecBufferFinalize(&(params->bufPartyVInfo));
+    xmlSecBufferFinalize(&(params->bufSuppPubInfo));
+    xmlSecBufferFinalize(&(params->bufSuppPrivInfo));
+
+    memset(params, 0, sizeof(*params));
+}
+
+int
+xmlSecTransformConcatKdfParamsRead(xmlSecTransformConcatKdfParamsPtr params, xmlNodePtr node) {
+    xmlNodePtr cur;
+    int ret;
+
+    xmlSecAssert2(params != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+
+    /* first (and only) node is required DigestMethod */
+    cur  = xmlSecGetNextElementNode(node->children);
+    if((cur != NULL) && (!xmlSecCheckNodeName(cur, xmlSecNodeDigestMethod, xmlSecDSigNs))) {
+        xmlSecInvalidNodeError(cur, xmlSecNodeDigestMethod, NULL);
+        return(-1);
+    }
+    params->digestMethod = xmlGetProp(cur, xmlSecAttrAlgorithm);
+    if(params->digestMethod == NULL) {
+        xmlSecInvalidNodeAttributeError(cur, xmlSecAttrAlgorithm, NULL, "empty");
+        return(-1);
+    }
+    cur = xmlSecGetNextElementNode(cur->next);
+
+    /* if we have something else then it's an error */
+    if(cur != NULL) {
+        xmlSecUnexpectedNodeError(cur,  NULL);
+        return(-1);
+    }
+
+    /* now read all attributes */
+    ret = xmlSecTransformConcatKdfParamsReadsBitsAttr(&(params->bufAlgorithmID), node, xmlSecNodeConcatKDFAttrAlgorithmID);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecTransformConcatKdfParamsReadsBitsAttr(AlgorithmID)", NULL);
+        return(-1);
+    }
+    ret = xmlSecTransformConcatKdfParamsReadsBitsAttr(&(params->bufPartyUInfo), node, xmlSecNodeConcatKDFAttrPartyUInfo);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecTransformConcatKdfParamsReadsBitsAttr(PartyUInfo)", NULL);
+        return(-1);
+    }
+    ret = xmlSecTransformConcatKdfParamsReadsBitsAttr(&(params->bufPartyVInfo), node, xmlSecNodeConcatKDFAttrPartyVInfo);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecTransformConcatKdfParamsReadsBitsAttr(PartyVInfo)", NULL);
+        return(-1);
+    }
+    ret = xmlSecTransformConcatKdfParamsReadsBitsAttr(&(params->bufSuppPubInfo), node, xmlSecNodeConcatKDFAttrSuppPubInfo);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecTransformConcatKdfParamsReadsBitsAttr(SuppPubInfo)", NULL);
+        return(-1);
+    }
+    ret = xmlSecTransformConcatKdfParamsReadsBitsAttr(&(params->bufSuppPrivInfo), node, xmlSecNodeConcatKDFAttrSuppPrivInfo);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecTransformConcatKdfParamsReadsBitsAttr(ASuppPrivInfo)", NULL);
+        return(-1);
+    }
+
+    /* done! */
+    return(0);
+}
+
+/* https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-56Ar3.pdf
+ * For this format, FixedInfo is a bit string equal to the following concatenation:
+ *
+ * AlgorithmID || PartyUInfo || PartyVInfo {|| SuppPubInfo }{|| SuppPrivInfo }
+ */
+int
+xmlSecTransformConcatKdfParamsGetFixedInfo(xmlSecTransformConcatKdfParamsPtr params, xmlSecBufferPtr bufFixedInfo) {
+    xmlSecSize size;
+    int ret;
+
+    xmlSecAssert2(params != NULL, -1);
+    xmlSecAssert2(bufFixedInfo != NULL, -1);
+
+    size = xmlSecBufferGetSize(&(params->bufAlgorithmID)) +
+        xmlSecBufferGetSize(&(params->bufPartyUInfo)) +
+        xmlSecBufferGetSize(&(params->bufPartyVInfo)) +
+        xmlSecBufferGetSize(&(params->bufSuppPubInfo)) +
+        xmlSecBufferGetSize(&(params->bufSuppPrivInfo));
+
+    ret = xmlSecBufferSetMaxSize(bufFixedInfo, size);
+    if(ret < 0) {
+        xmlSecInternalError2("xmlSecBufferSetMaxSize", NULL,
+            "size=" XMLSEC_SIZE_FMT, size);
+        return (-1);
+    }
+
+    ret = xmlSecBufferSetData(bufFixedInfo,
+        xmlSecBufferGetData(&(params->bufAlgorithmID)),
+        xmlSecBufferGetSize(&(params->bufAlgorithmID)));
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferSetData(AlgorithmID)", NULL);
+        return (-1);
+    }
+    ret = xmlSecBufferAppend(bufFixedInfo,
+        xmlSecBufferGetData(&(params->bufPartyUInfo)),
+        xmlSecBufferGetSize(&(params->bufPartyUInfo)));
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferAppend(PartyUInfo)", NULL);
+        return (-1);
+    }
+    ret = xmlSecBufferAppend(bufFixedInfo,
+        xmlSecBufferGetData(&(params->bufPartyVInfo)),
+        xmlSecBufferGetSize(&(params->bufPartyVInfo)));
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferAppend(PartyVInfo)", NULL);
+        return (-1);
+    }
+    ret = xmlSecBufferAppend(bufFixedInfo,
+        xmlSecBufferGetData(&(params->bufSuppPubInfo)),
+        xmlSecBufferGetSize(&(params->bufSuppPubInfo)));
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferAppend(SuppPubInfo)", NULL);
+        return (-1);
+    }
+    ret = xmlSecBufferAppend(bufFixedInfo,
+        xmlSecBufferGetData(&(params->bufSuppPrivInfo)),
+        xmlSecBufferGetSize(&(params->bufSuppPrivInfo)));
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferAppend(SuppPrivInfo)", NULL);
+        return (-1);
+    }
+
+    /* done */
+    return(0);
+}
+
+#endif /* XMLSEC_NO_CONCATKDF */
+
+
 #ifndef XMLSEC_NO_HMAC
 
 /* min output for hmac transform in bits */
@@ -2747,7 +2998,6 @@ xmlSecTransformHmacVerify(const xmlSecByte* data, xmlSecSize dataSize,
 #endif /* XMLSEC_NO_HMAC */
 
 #ifndef XMLSEC_NO_RSA
-
 int
 xmlSecTransformRsaOaepParamsInitialize(xmlSecTransformRsaOaepParamsPtr oaepParams) {
     int ret;

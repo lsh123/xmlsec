@@ -490,7 +490,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformKWDes3GetKlass(voi
 /**
  * xmlSecMSCryptoKeyDataHmacId:
  *
- * The DHMAC key klass.
+ * The HMAC key klass.
  */
 #define xmlSecMSCryptoKeyDataHmacId \
         xmlSecMSCryptoKeyDataHmacGetKlass()

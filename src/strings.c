@@ -167,6 +167,18 @@ const xmlChar xmlSecNsExcC14NWithComments[]     = "http://www.w3.org/2001/10/xml
 const xmlChar xmlSecNodeInclusiveNamespaces[]   = "InclusiveNamespaces";
 const xmlChar xmlSecAttrPrefixList[]            = "PrefixList";
 
+
+/*************************************************************************
+ *
+ * ConcatKDF strings
+ *
+ ************************************************************************/
+const xmlChar xmlSecNameConcatKdfKeyValue[]     = "concatkdf";
+
+const xmlChar xmlSecNameConcatKdf[]             = "concatkdf";
+const xmlChar xmlSecHrefConcatKdf[]             = "http://www.w3.org/2009/xmlenc11#ConcatKDF";
+
+
 /*************************************************************************
  *
  * DES strings
@@ -278,6 +290,32 @@ const xmlChar xmlSecHrefEcdsaSha512[]           = "http://www.w3.org/2001/04/xml
 const xmlChar xmlSecNameEncryptedKey[]          = "enc-key";
 const xmlChar xmlSecNodeEncryptedKey[]          = "EncryptedKey";
 const xmlChar xmlSecHrefEncryptedKey[]          = "http://www.w3.org/2001/04/xmlenc#EncryptedKey";
+
+/*************************************************************************
+ *
+ * DerivedKey
+ *
+ ************************************************************************/
+const xmlChar xmlSecNameDerivedKey[]            = "derived-key";
+const xmlChar xmlSecNodeDerivedKey[]            = "DerivedKey";
+const xmlChar xmlSecHrefDerivedKey[]            = "http://www.w3.org/2009/xmlenc11#DerivedKey";
+
+const xmlChar xmlSecNodeKeyDerivationMethod[]   = "KeyDerivationMethod";
+const xmlChar xmlSecNodeDerivedKeyName[]        = "DerivedKeyName";
+const xmlChar xmlSecNodeMasterKeyName[]         = "MasterKeyName";
+
+/*************************************************************************
+ *
+ * ConcatKDF
+ *
+ ************************************************************************/
+const xmlChar xmlSecNodeConcatKDFParams[]           = "ConcatKDFParams";
+const xmlChar xmlSecNodeConcatKDFAttrAlgorithmID[]  = "AlgorithmID";
+const xmlChar xmlSecNodeConcatKDFAttrPartyUInfo[]   = "PartyUInfo";
+const xmlChar xmlSecNodeConcatKDFAttrPartyVInfo[]   = "PartyVInfo";
+const xmlChar xmlSecNodeConcatKDFAttrSuppPubInfo[]  = "SuppPubInfo";
+const xmlChar xmlSecNodeConcatKDFAttrSuppPrivInfo[] = "SuppPrivInfo";
+
 
 /*************************************************************************
  *

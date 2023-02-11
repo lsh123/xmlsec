@@ -2068,6 +2068,22 @@ AM_CONDITIONAL(XMLSEC_NO_AES, test "z$XMLSEC_NO_AES" = "z1")
 AC_SUBST(XMLSEC_NO_AES)
 
 dnl ==========================================================================
+dnl See do we need ConcatKDF support
+dnl ==========================================================================
+AC_MSG_CHECKING(for ConcatKDF support)
+AC_ARG_ENABLE([hmac], [AS_HELP_STRING([--enable-concatkdf],[enable ConcatKDF support (yes)])])
+if test "z$enable_concatkdf" = "zno" ; then
+    XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_CONCATKDF=1"
+    XMLSEC_NO_CONCATKDF="1"
+    AC_MSG_RESULT([disabled])
+else
+    XMLSEC_NO_CONCATKDF="0"
+    AC_MSG_RESULT([yes])
+fi
+AM_CONDITIONAL(XMLSEC_NO_CONCATKDF, test "z$XMLSEC_NO_CONCATKDF" = "z1")
+AC_SUBST(XMLSEC_NO_CONCATKDF)
+
+dnl ==========================================================================
 dnl See do we need GOST support
 dnl ==========================================================================
 AC_MSG_CHECKING(for GOST support)

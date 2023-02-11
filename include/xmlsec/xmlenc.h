@@ -149,11 +149,16 @@ XMLSEC_EXPORT int               xmlSecEncCtxUriEncrypt          (xmlSecEncCtxPtr
 XMLSEC_EXPORT int               xmlSecEncCtxDecrypt             (xmlSecEncCtxPtr encCtx,
                                                                  xmlNodePtr node);
 XMLSEC_EXPORT xmlSecBufferPtr   xmlSecEncCtxDecryptToBuffer     (xmlSecEncCtxPtr encCtx,
-                                                                 xmlNodePtr node                );
+                                                                 xmlNodePtr node);
 XMLSEC_EXPORT void              xmlSecEncCtxDebugDump           (xmlSecEncCtxPtr encCtx,
                                                                  FILE* output);
 XMLSEC_EXPORT void              xmlSecEncCtxDebugXmlDump        (xmlSecEncCtxPtr encCtx,
                                                                  FILE* output);
+
+XMLSEC_EXPORT xmlSecKeyPtr      xmlSecEncCxDerivedKeyGenerate   (xmlSecEncCtxPtr encCtx,
+                                                                 xmlSecKeyDataId keyId,
+                                                                 xmlNodePtr node,
+                                                                 xmlSecKeyInfoCtxPtr keyInfoCtx);
 
 #ifdef __cplusplus
 }
@@ -162,4 +167,3 @@ XMLSEC_EXPORT void              xmlSecEncCtxDebugXmlDump        (xmlSecEncCtxPtr
 #endif /* XMLSEC_NO_XMLENC */
 
 #endif /* __XMLSEC_XMLENC_H__ */
-

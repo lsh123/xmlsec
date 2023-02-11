@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xenc:EncryptedData xmlns:xenc="http://www.w3.org/2001/04/xmlenc#" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:xenc11="http://www.w3.org/2009/xmlenc11#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <xenc:EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#aes256-cbc"/>
+  <ds:KeyInfo>
+    <xenc11:DerivedKey>
+      <xenc11:KeyDerivationMethod Algorithm="http://www.w3.org/2009/xmlenc11#ConcatKDF">
+        <xenc11:ConcatKDFParams AlgorithmID="00123456789ABCDEF0" PartyUInfo="00414C494345313233" PartyVInfo="00424F424259343536">
+          <ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+        </xenc11:ConcatKDFParams>
+      </xenc11:KeyDerivationMethod>
+      <xenc11:MasterKeyName>dkey3</xenc11:MasterKeyName>
+    </xenc11:DerivedKey>
+  </ds:KeyInfo>
+  <xenc:CipherData>
+    <xenc:CipherValue></xenc:CipherValue>
+  </xenc:CipherData>
+</xenc:EncryptedData>

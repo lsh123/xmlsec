@@ -93,6 +93,10 @@ xmlSecCryptoGetFunctions_openssl(void) {
     gXmlSecOpenSSLFunctions->keyDataAesGetKlass         = xmlSecOpenSSLKeyDataAesGetKlass;
 #endif /* XMLSEC_NO_AES */
 
+#ifndef XMLSEC_NO_CONCATKDF
+    gXmlSecOpenSSLFunctions->keyDataConcatKdfGetKlass   = xmlSecOpenSSLKeyDataConcatKdfGetKlass;
+#endif /* XMLSEC_NO_CONCATKDF */
+
 #ifndef XMLSEC_NO_DES
     gXmlSecOpenSSLFunctions->keyDataDesGetKlass         = xmlSecOpenSSLKeyDataDesGetKlass;
 #endif /* XMLSEC_NO_DES */
@@ -154,6 +158,10 @@ xmlSecCryptoGetFunctions_openssl(void) {
     gXmlSecOpenSSLFunctions->transformKWAes192GetKlass          = xmlSecOpenSSLTransformKWAes192GetKlass;
     gXmlSecOpenSSLFunctions->transformKWAes256GetKlass          = xmlSecOpenSSLTransformKWAes256GetKlass;
 #endif /* XMLSEC_NO_AES */
+
+#ifndef XMLSEC_NO_CONCATKDF
+    gXmlSecOpenSSLFunctions->transformConcatKdfGetKlass         = xmlSecOpenSSLTransformConcatKdfGetKlass;
+#endif /* XMLSEC_NO_CONCATKDF */
 
     /******************************* DES ********************************/
 #ifndef XMLSEC_NO_DES

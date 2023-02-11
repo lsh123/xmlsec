@@ -99,8 +99,14 @@ XMLSEC_EXPORT int               xmlSecBufferBase64NodeContentRead(xmlSecBufferPt
 XMLSEC_EXPORT int               xmlSecBufferBase64NodeContentWrite(xmlSecBufferPtr buf,
                                                                  xmlNodePtr node,
                                                                  int columns);
+XMLSEC_EXPORT int               xmlSecBufferHexRead             (xmlSecBufferPtr buf,
+                                                                 const xmlChar* hexStr);
+XMLSEC_EXPORT xmlChar*          xmlSecBufferHexWrite            (xmlSecBufferPtr buf);
+
 
 XMLSEC_EXPORT xmlOutputBufferPtr xmlSecBufferCreateOutputBuffer (xmlSecBufferPtr buf);
+
+
 
 
 #ifdef __cplusplus
@@ -108,4 +114,3 @@ XMLSEC_EXPORT xmlOutputBufferPtr xmlSecBufferCreateOutputBuffer (xmlSecBufferPtr
 #endif /* __cplusplus */
 
 #endif /* __XMLSEC_BUFFER_H__ */
-

@@ -118,6 +118,25 @@ xmlSecKeyDataAesGetKlass(void) {
 }
 
 /**
+ * xmlSecKeyDataConcatKdfGetKlass:
+ *
+ * The ConcatKDF key data klass.
+ *
+ * Returns: ConcatKDF key data klass or NULL if an error occurs
+ * (xmlsec-crypto library is not loaded or the HMAC key data
+ * klass is not implemented).
+ */
+xmlSecKeyDataId
+xmlSecKeyDataConcatKdfGetKlass(void) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->keyDataConcatKdfGetKlass == NULL)) {
+        xmlSecNotImplementedError("keyDataConcatKdfGetKlass");
+        return(xmlSecKeyDataIdUnknown);
+    }
+
+    return(xmlSecCryptoDLGetFunctions()->keyDataConcatKdfGetKlass());
+}
+
+/**
  * xmlSecKeyDataDesGetKlass:
  *
  * The DES key data klass.
@@ -452,6 +471,27 @@ xmlSecTransformAes256GcmGetKlass(void)
 
     return(xmlSecCryptoDLGetFunctions()->transformAes256GcmGetKlass());
 }
+
+/**
+* xmlSecTransformConcatKdfGetKlass:
+*
+* ConcatKDF key derivaton transform klass.
+*
+* Returns: pointer toConcatKDF key derivaton transform or NULL if an error
+* occurs (the xmlsec-crypto library is not loaded or this transform is not
+* implemented).
+*/
+xmlSecTransformId
+xmlSecTransformConcatKdfGetKlass(void)
+{
+    if ((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformConcatKdfGetKlass == NULL)) {
+        xmlSecNotImplementedError("transformConcatKdfGetKlass");
+        return(xmlSecTransformIdUnknown);
+    }
+
+    return(xmlSecCryptoDLGetFunctions()->transformConcatKdfGetKlass());
+}
+
 
 /**
  * xmlSecTransformKWAes128GetKlass:
@@ -1680,4 +1720,3 @@ xmlSecCryptoAppGetDefaultPwdCallback(void) {
 }
 
 #endif /* XMLSEC_NO_CRYPTO_DYNAMIC_LOADING */
-

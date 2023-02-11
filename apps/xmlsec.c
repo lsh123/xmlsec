@@ -321,11 +321,11 @@ static xmlSecAppCmdLineParam pubkeyDerParam = {
 
 
 #ifndef XMLSEC_NO_AES
-static xmlSecAppCmdLineParam aeskeyParam = {
+static xmlSecAppCmdLineParam aesKeyParam = {
     xmlSecAppCmdLineTopicKeysMngr,
+    "--aes-key",
     "--aeskey",
-    NULL,
-    "--aeskey[:<name>] <file>"
+    "--aes-key[:<name>] <file>"
     "\n\tload AES key from binary file <file>",
     xmlSecAppCmdLineParamTypeString,
     xmlSecAppCmdLineParamFlagParamNameValue | xmlSecAppCmdLineParamFlagMultipleValues,
@@ -333,12 +333,25 @@ static xmlSecAppCmdLineParam aeskeyParam = {
 };
 #endif /* XMLSEC_NO_AES */
 
-#ifndef XMLSEC_NO_DES
-static xmlSecAppCmdLineParam deskeyParam = {
+#ifndef XMLSEC_NO_CONCATKDF
+static xmlSecAppCmdLineParam concatKdfKeyParam = {
     xmlSecAppCmdLineTopicKeysMngr,
+    "--concatkdfkey",
+    "--concatkdf-key",
+    "--concatkdf-key[:<name>] <file>"
+    "\n\tload ConcatKDF key from binary file <file>",
+    xmlSecAppCmdLineParamTypeString,
+    xmlSecAppCmdLineParamFlagParamNameValue | xmlSecAppCmdLineParamFlagMultipleValues,
+    NULL
+};
+#endif /* XMLSEC_NO_CONCATKDF */
+
+#ifndef XMLSEC_NO_DES
+static xmlSecAppCmdLineParam desKeyParam = {
+    xmlSecAppCmdLineTopicKeysMngr,
+    "--des-key",
     "--deskey",
-    NULL,
-    "--deskey[:<name>] <file>"
+    "--des-key[:<name>] <file>"
     "\n\tload DES key from binary file <file>",
     xmlSecAppCmdLineParamTypeString,
     xmlSecAppCmdLineParamFlagParamNameValue | xmlSecAppCmdLineParamFlagMultipleValues,
@@ -347,11 +360,11 @@ static xmlSecAppCmdLineParam deskeyParam = {
 #endif /* XMLSEC_NO_DES */
 
 #ifndef XMLSEC_NO_HMAC
-static xmlSecAppCmdLineParam hmackeyParam = {
+static xmlSecAppCmdLineParam hmacKeyParam = {
     xmlSecAppCmdLineTopicKeysMngr,
+    "--hmac-key",
     "--hmackey",
-    NULL,
-    "--hmackey[:<name>] <file>"
+    "--hmac-key[:<name>] <file>"
     "\n\tload HMAC key from binary file <file>",
     xmlSecAppCmdLineParamTypeString,
     xmlSecAppCmdLineParamFlagParamNameValue | xmlSecAppCmdLineParamFlagMultipleValues,
@@ -879,16 +892,25 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
     &pkcs8DerParam,
     &pubkeyParam,
     &pubkeyDerParam,
-#ifndef XMLSEC_NO_AES
-    &aeskeyParam,
-#endif  /* XMLSEC_NO_AES */
-#ifndef XMLSEC_NO_DES
-    &deskeyParam,
-#endif  /* XMLSEC_NO_DES */
-#ifndef XMLSEC_NO_HMAC
-    &hmackeyParam,
-#endif  /* XMLSEC_NO_HMAC */
     &pwdParam,
+    &privkeyOpensslEngineParam,
+
+#ifndef XMLSEC_NO_AES
+    &aesKeyParam,
+#endif  /* XMLSEC_NO_AES */
+
+#ifndef XMLSEC_NO_CONCATKDF
+    &concatKdfKeyParam,
+#endif  /* XMLSEC_NO_CONCATKDF */
+
+#ifndef XMLSEC_NO_DES
+    &desKeyParam,
+#endif  /* XMLSEC_NO_DES */
+
+#ifndef XMLSEC_NO_HMAC
+    &hmacKeyParam,
+#endif  /* XMLSEC_NO_HMAC */
+
 #ifndef XMLSEC_NO_X509
     &pkcs12Param,
     &pkcs12PersistParam,
@@ -904,7 +926,7 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
     &X509SkipStrictChecksParam,
     &X509DontVerifyCerts,
 #endif /* XMLSEC_NO_X509 */
-    &privkeyOpensslEngineParam,
+
 
     /* General configuration params */
     &cryptoParam,
@@ -2179,13 +2201,13 @@ xmlSecAppLoadKeys(void) {
 
 #ifndef XMLSEC_NO_AES
     /* read all AES keys */
-    for(value = aeskeyParam.value; value != NULL; value = value->next) {
+    for(value = aesKeyParam.value; value != NULL; value = value->next) {
         if(value->strValue == NULL) {
             fprintf(stderr, "Error: invalid value for option \"%s\".\n",
-                    aeskeyParam.fullName);
+                    aesKeyParam.fullName);
             return(-1);
         } else if(xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad(gKeysMngr,
-                    "aes", value->strValue, value->paramNameValue) < 0) {
+                    (const char*)xmlSecNameAESKeyValue, value->strValue, value->paramNameValue) < 0) {
             fprintf(stderr, "Error: failed to load aes key from \"%s\".\n",
                     value->strValue);
             return(-1);
@@ -2193,15 +2215,31 @@ xmlSecAppLoadKeys(void) {
     }
 #endif /* XMLSEC_NO_AES */
 
-#ifndef XMLSEC_NO_DES
-    /* read all des keys */
-    for(value = deskeyParam.value; value != NULL; value = value->next) {
+#ifndef XMLSEC_NO_CONCATKDF
+    /* read all ConcatKDF keys */
+    for(value = concatKdfKeyParam.value; value != NULL; value = value->next) {
         if(value->strValue == NULL) {
             fprintf(stderr, "Error: invalid value for option \"%s\".\n",
-                    deskeyParam.fullName);
+                    hmacKeyParam.fullName);
             return(-1);
         } else if(xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad(gKeysMngr,
-                    "des", value->strValue, value->paramNameValue) < 0) {
+                    (const char*)xmlSecNameConcatKdfKeyValue, value->strValue, value->paramNameValue) < 0) {
+            fprintf(stderr, "Error: failed to load ConcatKDF key from \"%s\".\n",
+                    value->strValue);
+            return(-1);
+        }
+    }
+#endif /* XMLSEC_NO_CONCATKDF */
+
+#ifndef XMLSEC_NO_DES
+    /* read all des keys */
+    for(value = desKeyParam.value; value != NULL; value = value->next) {
+        if(value->strValue == NULL) {
+            fprintf(stderr, "Error: invalid value for option \"%s\".\n",
+                    desKeyParam.fullName);
+            return(-1);
+        } else if(xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad(gKeysMngr,
+                    (const char*)xmlSecNameDESKeyValue, value->strValue, value->paramNameValue) < 0) {
             fprintf(stderr, "Error: failed to load des key from \"%s\".\n",
                     value->strValue);
             return(-1);
@@ -2211,13 +2249,13 @@ xmlSecAppLoadKeys(void) {
 
 #ifndef XMLSEC_NO_HMAC
     /* read all hmac keys */
-    for(value = hmackeyParam.value; value != NULL; value = value->next) {
+    for(value = hmacKeyParam.value; value != NULL; value = value->next) {
         if(value->strValue == NULL) {
             fprintf(stderr, "Error: invalid value for option \"%s\".\n",
-                    hmackeyParam.fullName);
+                    hmacKeyParam.fullName);
             return(-1);
         } else if(xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad(gKeysMngr,
-                    "hmac", value->strValue, value->paramNameValue) < 0) {
+                   (const char*)xmlSecNameHMACKeyValue, value->strValue, value->paramNameValue) < 0) {
             fprintf(stderr, "Error: failed to load hmac key from \"%s\".\n",
                     value->strValue);
             return(-1);

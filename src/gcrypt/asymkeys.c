@@ -600,7 +600,7 @@ static xmlSecKeyDataKlass xmlSecGCryptKeyDataDsaKlass = {
 
     /* data */
     xmlSecNameDSAKeyValue,
-    xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
                                                 /* xmlSecKeyDataUsage usage; */
     xmlSecHrefDSAKeyValue,                      /* const xmlChar* href; */
     xmlSecNodeDSAKeyValue,                      /* const xmlChar* dataNodeName; */
@@ -1114,7 +1114,7 @@ static xmlSecKeyDataKlass xmlSecGCryptKeyDataRsaKlass = {
 
     /* data */
     xmlSecNameRSAKeyValue,
-    xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
                                                 /* xmlSecKeyDataUsage usage; */
     xmlSecHrefRSAKeyValue,                      /* const xmlChar* href; */
     xmlSecNodeRSAKeyValue,                      /* const xmlChar* dataNodeName; */
@@ -1526,7 +1526,7 @@ static xmlSecKeyDataKlass xmlSecGCryptKeyDataEcdsaKlass = {
 
     /* data */
     xmlSecNameECDSAKeyValue,
-    xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
                                                 /* xmlSecKeyDataUsage usage; */
     xmlSecHrefECDSAKeyValue,                    /* const xmlChar* href; */
     xmlSecNodeECDSAKeyValue,                    /* const xmlChar* dataNodeName; */

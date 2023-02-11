@@ -202,8 +202,8 @@
                         <td valign="top">
                           <a href="https://www.w3.org/TR/xmlenc-core1/#sec-DerivedKey">The DerivedKey Element</a>
                         </td>
-                        <td valign="top">Optional</td><!--Requirements -->
-                        <td valign="top">No</td>
+                        <td valign="top">Required</td><!--Requirements -->
+                        <td valign="top">Yes <a href="#derived-key"><sup>(1)</sup></a></td>
                       </tr>
                       <tr>
                         <td valign="top">
@@ -363,7 +363,7 @@
                           <a href="https://www.w3.org/TR/xmlenc-core1/#sec-ConcatKDF">ConcatKDF</a>
                         </td>
                         <td valign="top">Required</td><!--Requirements -->
-                        <td valign="top">No</td><!-- OpenSSL-->
+                        <td valign="top">Yes <a href="#concatkdf"><sup>(2)</sup></a></td><!-- OpenSSL-->
                         <td valign="top">No</td><!-- NSS -->
                         <td valign="top">No</td><!-- GnuTLS -->
                         <td valign="top">No</td><!-- MSCng -->
@@ -417,9 +417,9 @@
                         <td valign="top">Yes</td><!-- OpenSSL-->
                         <td valign="top">Yes</td><!-- NSS -->
                         <td valign="top">No</td><!-- GnuTLS -->
-                        <td valign="top">Yes <a href="#rsa-oaep-same-algo"><sup>(1)</sup></a></td><!-- MSCng -->
+                        <td valign="top">Yes <a href="#rsa-oaep-same-algo"><sup>(3)</sup></a></td><!-- MSCng -->
                         <td valign="top">No</td><!-- MSCrypto -->
-                        <td valign="top">Yes <a href="#rsa-oaep-same-algo"><sup>(1)</sup></a></td><!-- GCrypt -->
+                        <td valign="top">Yes <a href="#rsa-oaep-same-algo"><sup>(3)</sup></a></td><!-- GCrypt -->
                       </tr>
                       <tr>
                         <td valign="top">
@@ -432,7 +432,7 @@
                         <td valign="top">No</td><!-- GnuTLS -->
                         <td valign="top">No</td><!-- MSCng -->
                         <td valign="top">No</td><!-- MSCrypto -->
-                        <td valign="top">Yes <a href="#rsa-oaep-same-algo"><sup>(1)</sup></a></td><!-- GCrypt -->
+                        <td valign="top">Yes <a href="#rsa-oaep-same-algo"><sup>(3)</sup></a></td><!-- GCrypt -->
                       </tr>
                       <tr>
                         <td valign="top">
@@ -443,9 +443,9 @@
                           <a href="xmldsig.html#algorithms">Yes</td><!-- OpenSSL-->
                         <td valign="top">Yes</td><!-- NSS -->
                         <td valign="top">No</td><!-- GnuTLS -->
-                        <td valign="top">Yes <a href="#rsa-oaep-same-algo"><sup>(1)</sup></a></td><!-- MSCng -->
+                        <td valign="top">Yes <a href="#rsa-oaep-same-algo"><sup>(3)</sup></a></td><!-- MSCng -->
                         <td valign="top">No</td><!-- MSCrypto -->
-                        <td valign="top">Yes <a href="#rsa-oaep-same-algo"><sup>(1)</sup></a></td><!-- GCrypt -->
+                        <td valign="top">Yes <a href="#rsa-oaep-same-algo"><sup>(3)</sup></a></td><!-- GCrypt -->
                       </tr>
                       <tr>
                         <td valign="top">
@@ -456,9 +456,9 @@
                           <a href="xmldsig.html#algorithms">Yes</td><!-- OpenSSL-->
                         <td valign="top">Yes</td><!-- NSS -->
                         <td valign="top">No</td><!-- GnuTLS -->
-                        <td valign="top">Yes <a href="#rsa-oaep-same-algo"><sup>(1)</sup></a></td><!-- MSCng -->
+                        <td valign="top">Yes <a href="#rsa-oaep-same-algo"><sup>(3)</sup></a></td><!-- MSCng -->
                         <td valign="top">No</td><!-- MSCrypto -->
-                        <td valign="top">Yes <a href="#rsa-oaep-same-algo"><sup>(1)</sup></a></td><!-- GCrypt -->
+                        <td valign="top">Yes <a href="#rsa-oaep-same-algo"><sup>(3)</sup></a></td><!-- GCrypt -->
                       </tr>
                       <tr>
                         <td valign="top">
@@ -469,9 +469,9 @@
                           <a href="xmldsig.html#algorithms">Yes</td><!-- OpenSSL-->
                         <td valign="top">Yes</td><!-- NSS -->
                         <td valign="top">No</td><!-- GnuTLS -->
-                        <td valign="top">Yes <a href="#rsa-oaep-same-algo"><sup>(1)</sup></a></td><!-- MSCng -->
+                        <td valign="top">Yes <a href="#rsa-oaep-same-algo"><sup>(3)</sup></a></td><!-- MSCng -->
                         <td valign="top">No</td><!-- MSCrypto -->
-                        <td valign="top">Yes <a href="#rsa-oaep-same-algo"><sup>(1)</sup></a></td><!-- GCrypt -->
+                        <td valign="top">Yes <a href="#rsa-oaep-same-algo"><sup>(3)</sup></a></td><!-- GCrypt -->
                       </tr>
 
                       <tr>
@@ -580,7 +580,16 @@
                 <div id="notes">
                   <ul>
                     <li>
-                      <a name="rsa-oaep-same-algo" id="rsa-oaep-same-algo"><sup>(1)</sup> RSA-OAEP digest algorithm and MGF1 algorithm must be the same</a>.
+                      <a name="derived-key" id="derived-key"><sup>(1)</sup></a> Some optional features in DerivedKey element are not supported
+                      (<a href="https://github.com/lsh123/xmlsec/issues/515">more details</a>).
+                    </li>
+                    <li>
+                      <a name="concatkdf" id="concatkdf"><sup>(2)</sup></a> Only byte-aligned bit strings in ConcatKDFParams element are supported
+                      (<a href="https://github.com/lsh123/xmlsec/issues/514">more details</a>).
+                    </li>
+                    <li>
+                      <a name="rsa-oaep-same-algo" id="rsa-oaep-same-algo"><sup>(3)</sup></a> RSA-OAEP digest algorithm and MGF1 algorithm
+                      must be the same.
                     </li>
                   </ul>
                 </div>
@@ -589,10 +598,8 @@
                   <h3>Test vectors</h3>
                   <div>
                     <ul>
-                      <li><a href="http://www.w3.org/Encryption/2002/02-xenc-interop.html">XML Encryption 1.0 interop
-                          (2002)</a></li>
-                      <li><a href="https://www.w3.org/TR/2012/NOTE-xmlenc-core1-interop-20121113/">XML Encryption 1.1
-                          interop (2012)</a></li>
+                      <li><a href="http://www.w3.org/Encryption/2002/02-xenc-interop.html">XML Encryption 1.0 interop (2002)</a></li>
+                      <li><a href="https://www.w3.org/TR/2012/NOTE-xmlenc-core1-interop-20121113/">XML Encryption 1.1 interop (2012)</a></li>
                     </ul>
                   </div>
                 </div>

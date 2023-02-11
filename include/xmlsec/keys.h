@@ -65,6 +65,13 @@ typedef unsigned int                    xmlSecKeyUsage;
 #define xmlSecKeyUsageKeyExchange       0x00000010
 
 /**
+ * xmlSecKeyUsageKeyDerive:
+ *
+ * The key is used for key derivation.
+ */
+#define xmlSecKeyUsageKeyDerive         0x00000020
+
+/**
  * xmlSecKeyUsageAny:
  *
  * Key can be used in any way.
@@ -274,4 +281,3 @@ XMLSEC_EXPORT xmlSecPtrListId   xmlSecKeyPtrListGetKlass                (void);
 #endif /* __cplusplus */
 
 #endif /* __XMLSEC_KEYS_H__ */
-

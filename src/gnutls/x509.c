@@ -126,7 +126,7 @@ static xmlSecKeyDataKlass xmlSecGnuTLSKeyDataX509Klass = {
 
     /* data */
     xmlSecNameX509Data,
-    xmlSecKeyDataUsageKeyInfoNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyInfoNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
                                                 /* xmlSecKeyDataUsage usage; */
     xmlSecHrefX509Data,                         /* const xmlChar* href; */
     xmlSecNodeX509Data,                         /* const xmlChar* dataNodeName; */
@@ -1054,7 +1054,7 @@ static xmlSecKeyDataKlass xmlSecGnuTLSKeyDataRawX509CertKlass = {
 
     /* data */
     xmlSecNameRawX509Cert,
-    xmlSecKeyDataUsageRetrievalMethodNodeBin,
+    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageRetrievalMethodNodeBin,
                                                 /* xmlSecKeyDataUsage usage; */
     xmlSecHrefRawX509Cert,                      /* const xmlChar* href; */
     NULL,                                       /* const xmlChar* dataNodeName; */

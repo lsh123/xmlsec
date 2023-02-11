@@ -212,7 +212,7 @@ static xmlSecKeyDataKlass xmlSecGnuTLSKeyDataAesKlass = {
 
     /* data */
     xmlSecNameAESKeyValue,
-    xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
                                                 /* xmlSecKeyDataUsage usage; */
     xmlSecHrefAESKeyValue,                      /* const xmlChar* href; */
     xmlSecNodeAESKeyValue,                      /* const xmlChar* dataNodeName; */
@@ -293,7 +293,7 @@ static xmlSecKeyDataKlass xmlSecGnuTLSKeyDataDesKlass = {
 
     /* data */
     xmlSecNameDESKeyValue,
-    xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
                                                 /* xmlSecKeyDataUsage usage; */
     xmlSecHrefDESKeyValue,                      /* const xmlChar* href; */
     xmlSecNodeDESKeyValue,                      /* const xmlChar* dataNodeName; */
@@ -375,7 +375,7 @@ static xmlSecKeyDataKlass xmlSecGnuTLSKeyDataHmacKlass = {
 
     /* data */
     xmlSecNameHMACKeyValue,
-    xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
                                                 /* xmlSecKeyDataUsage usage; */
     xmlSecHrefHMACKeyValue,                     /* const xmlChar* href; */
     xmlSecNodeHMACKeyValue,                     /* const xmlChar* dataNodeName; */

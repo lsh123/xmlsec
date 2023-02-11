@@ -27,8 +27,13 @@
  *
  * OpenSSL 3.0.0 compatibility
  *
- *****************************************************************************/ 
+ *****************************************************************************/
 #if !defined(XMLSEC_OPENSSL_API_300)
+
+/* ConcatKDF (SSKDF) key derivation algorithm is only available on OpenSSL 3.0.0 or above
+ * (https://www.openssl.org/docs/man3.0/man7/EVP_KDF-SS.html)
+ */
+#define XMLSEC_NO_CONCATKDF     1
 
 #define BIO_new_ex(libctx,type)                                     BIO_new((type))
 #define PEM_read_bio_PrivateKey_ex(bp,x,cb,u,libctx,propq)          PEM_read_bio_PrivateKey((bp),(x),(cb),(u))

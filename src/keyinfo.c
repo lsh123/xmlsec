@@ -1570,7 +1570,7 @@ xmlSecKeyDataDerivedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr 
      * the key by name from ds:KeyName
      * BTW this should happen even if the key doesn't match the current request!
      */
-    if(xmlSecKeyReqMatchKey(&(keyInfoCtx->keyReq), key) != 1) {
+    if(xmlSecKeyReqMatchKey(&(keyInfoCtx->keyReq), derivedKey) != 1) {
         /* we are not allowed to use  this key, ignore and continue */
         xmlSecKeyDestroy(derivedKey);
         return(0);

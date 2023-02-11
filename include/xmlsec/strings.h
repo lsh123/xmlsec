@@ -307,6 +307,20 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeMasterKeyName[];
 
 /*************************************************************************
  *
+ * ConcatKDF
+ *
+ ************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeConcatKDFParams[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeConcatKDFAttrAlgorithmID[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeConcatKDFAttrPartyUInfo[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeConcatKDFAttrPartyVInfo[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeConcatKDFAttrSuppPubInfo[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeConcatKDFAttrSuppPrivInfo[];
+
+
+
+/*************************************************************************
+ *
  * Enveloped transform strings
  *
  ************************************************************************/

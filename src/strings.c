@@ -304,6 +304,18 @@ const xmlChar xmlSecNodeKeyDerivationMethod[]   = "KeyDerivationMethod";
 const xmlChar xmlSecNodeDerivedKeyName[]        = "DerivedKeyName";
 const xmlChar xmlSecNodeMasterKeyName[]         = "MasterKeyName";
 
+/*************************************************************************
+ *
+ * ConcatKDF
+ *
+ ************************************************************************/
+const xmlChar xmlSecNodeConcatKDFParams[]           = "ConcatKDFParams";
+const xmlChar xmlSecNodeConcatKDFAttrAlgorithmID[]  = "AlgorithmID";
+const xmlChar xmlSecNodeConcatKDFAttrPartyUInfo[]   = "PartyUInfo";
+const xmlChar xmlSecNodeConcatKDFAttrPartyVInfo[]   = "PartyVInfo";
+const xmlChar xmlSecNodeConcatKDFAttrSuppPubInfo[]  = "SuppPubInfo";
+const xmlChar xmlSecNodeConcatKDFAttrSuppPrivInfo[] = "SuppPrivInfo";
+
 
 /*************************************************************************
  *

@@ -128,12 +128,42 @@ XMLSEC_EXPORT int               xmlSecPrintXmlString    (FILE * fd,
  * xmlSecGetHex:
  * @c:                  the character,
  *
+ * Deprecated. Macro. Returns the hex value of the @c.
+ */
+#define xmlSecGetHex(c)         xmlSecFromHex(c)
+
+/**
+ * xmlSecFromHex:
+ * @c:                  the character,
+ *
  * Macro. Returns the hex value of the @c.
  */
-#define xmlSecGetHex(c) \
-        ( (('0' <= (c)) && ((c) <= '9')) ? (c) - '0' : \
-        ( (('a' <= (c)) && ((c) <= 'f')) ? (c) - 'a' + 10 :  \
-        ( (('A' <= (c)) && ((c) <= 'F')) ? (c) - 'A' + 10 : 0 )))
+#define xmlSecFromHex(c)                                                    \
+        (                                                                   \
+            (('0' <= (c)) && ((c) <= '9')) ? (c) - '0' :                    \
+                (                                                           \
+                    (('a' <= (c)) && ((c) <= 'f')) ? (c) - 'a' + 10 :       \
+                    (                                                       \
+                        (('A' <= (c)) && ((c) <= 'F')) ? (c) - 'A' + 10 : 0 \
+                    )                                                       \
+                )                                                           \
+        )
+
+/**
+ * xmlSecToHex:
+ * @c:                  the character,
+ *
+ * Macro. Returns the hex value of the @c.
+ */
+#define xmlSecToHex(vv)                                                 \
+        (                                                               \
+            ((0 <= (vv)) && ((vv) <= 9)) ? (vv) + '0' :                 \
+                (                                                       \
+                    ((10 <= (vv)) && ((vv) <= 15)) ? (vv) + 'A' : 0     \
+                )                                                       \
+        )
+
+
 
 /*************************************************************************
  *
@@ -301,4 +331,3 @@ XMLSEC_EXPORT LPTSTR             xmlSecWin32ConvertUtf8ToTstr     (const xmlChar
 #endif /* __cplusplus */
 
 #endif /* __XMLSEC_TREE_H__ */
-

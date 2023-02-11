@@ -633,6 +633,102 @@ xmlSecBufferBase64NodeContentWrite(xmlSecBufferPtr buf, xmlNodePtr node, int col
     return(0);
 }
 
+
+/**
+ * xmlSecBufferHexRead:
+ * @buf:                the pointer to buffer object.
+ * @hexStr:             the hex string.
+ *
+ * Reads content of hex encoded @hexStr into @buf.
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecBufferHexRead(xmlSecBufferPtr buf, const xmlChar* hexStr) {
+    xmlSecSize hexStrSize, bufSize;
+    xmlSecByte * data;
+    xmlChar ch1, ch2;
+    int ret;
+
+    xmlSecAssert2(buf != NULL, -1);
+    xmlSecAssert2(hexStr != NULL, -1);
+
+    /* trivial case */
+    hexStrSize = xmlSecStrlen(hexStr);
+    if(hexStrSize <= 0) {
+        xmlSecBufferEmpty(buf);
+        return(0);
+    }
+
+    /* we expect each byte to be represented by 2 chars */
+    if((hexStrSize % 2) != 0) {
+        xmlSecInvalidSizeDataError("hexStrSize", hexStrSize, "even", NULL);
+        return(-1);
+    }
+    bufSize = hexStrSize / 2;
+
+    ret = xmlSecBufferSetSize(buf, bufSize);
+    if(ret < 0) {
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL,
+            "bufSize=" XMLSEC_SIZE_FMT, bufSize);
+        return (-1);
+    }
+
+    data = xmlSecBufferGetData(buf);
+    xmlSecAssert2(data != NULL, -1);
+
+    for( ; (*hexStr) != '\0'; ++data) {
+        ch1 = *(hexStr++);
+        ch2 = *(hexStr++);
+        if(!xmlSecIsHex(ch1) || !xmlSecIsHex(ch2)) {
+            xmlSecInvalidDataError("Unexpected character (not hex)", NULL);
+            return (-1);
+        }
+        (*data) = ((xmlSecByte)xmlSecFromHex(ch1) << 4) | (xmlSecByte)xmlSecFromHex(ch2);
+    }
+
+    /* sucess */
+    return(0);
+}
+
+/**
+ * xmlSecBufferHexWrite:
+ * @buf:                the pointer to buffer object.
+ *
+ * Wirtes hex encoded content of @buf into a newly allocated string.
+ * The caller is responsible for deallocating returned string with xmlFree().
+ *
+ * Returns: hex encoded string on success or NULL if an error occurs.
+ */
+xmlChar*
+xmlSecBufferHexWrite(xmlSecBufferPtr buf) {
+    const xmlSecByte* data;
+    xmlSecSize ii, size;
+    xmlSecByte bb;
+    xmlChar* res, *pp;
+
+    xmlSecAssert2(buf != NULL, NULL);
+
+    data = xmlSecBufferGetData(buf);
+    size = xmlSecBufferGetSize(buf);
+    xmlSecAssert2(data != NULL, NULL);
+
+    res = (xmlChar* )xmlMalloc(size + 1);
+    if(res == NULL) {
+        xmlSecMallocError(size + 1, NULL);
+        return(NULL);
+    }
+
+    for(pp = res, ii = 0; ii < size; ++ii) {
+        bb = data[ii];
+        *(pp++) = xmlSecToHex((bb >> 4) & 0x0F);
+        *(pp++) = xmlSecToHex((bb) & 0x0F);
+    }
+    *(pp) = '\0';
+    return(res);
+}
+
+
 /************************************************************************
  *
  * IO buffer

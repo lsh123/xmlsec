@@ -1192,7 +1192,7 @@ xmlSecOpenSSLX509NameStringRead(const xmlChar **in, xmlSecSize *inSize,
                     xmlSecInvalidDataError("two hex digits expected", NULL);
                     return(-1);
                 }
-                outCh = (xmlSecByte)(xmlSecGetHex(inCh) * 16 + xmlSecGetHex(inCh2));
+                outCh = (xmlSecByte)(xmlSecFromHex(inCh) * 16 + xmlSecFromHex(inCh2));
             } else {
                 outCh = inCh;
             }

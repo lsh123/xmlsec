@@ -106,11 +106,11 @@ xmlSecCryptoGetFunctions_openssl(void) {
 #endif /* XMLSEC_NO_DSA */
 
 #ifndef XMLSEC_NO_EC
-    gXmlSecOpenSSLFunctions->keyDataEcGetKlass       = xmlSecOpenSSLkeyDataEcGetKlass;
+    gXmlSecOpenSSLFunctions->keyDataEcGetKlass          = xmlSecOpenSSLKeyDataEcGetKlass;
 #endif /* XMLSEC_NO_EC */
 
 #ifndef XMLSEC_NO_GOST
-    gXmlSecOpenSSLFunctions->keyDataGost2001GetKlass           = xmlSecOpenSSLKeyDataGost2001GetKlass;
+    gXmlSecOpenSSLFunctions->keyDataGost2001GetKlass    = xmlSecOpenSSLKeyDataGost2001GetKlass;
 #endif /* XMLSEC_NO_GOST */
 
 #ifndef XMLSEC_NO_GOST2012

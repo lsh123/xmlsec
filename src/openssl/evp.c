@@ -1436,14 +1436,14 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataEcKlass = {
 };
 
 /**
- * xmlSecOpenSSLkeyDataEcGetKlass:
+ * xmlSecOpenSSLKeyDataEcGetKlass:
  *
  * The EC key data klass.
  *
  * Returns: pointer to EC key data klass.
  */
 xmlSecKeyDataId
-xmlSecOpenSSLkeyDataEcGetKlass(void) {
+xmlSecOpenSSLKeyDataEcGetKlass(void) {
     return(&xmlSecOpenSSLKeyDataEcKlass);
 }
 
@@ -1461,7 +1461,6 @@ xmlSecOpenSSLKeyDataEcAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcId), -1);
     xmlSecAssert2(pKey != NULL, -1);
     xmlSecAssert2(EVP_PKEY_base_id(pKey) == EVP_PKEY_EC, -1);
-
     return(xmlSecOpenSSLEvpKeyDataAdoptEvp(data, pKey));
 }
 
@@ -1476,7 +1475,6 @@ xmlSecOpenSSLKeyDataEcAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
 EVP_PKEY*
 xmlSecOpenSSLKeyDataEcGetEvp(xmlSecKeyDataPtr data) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcId), NULL);
-
     return(xmlSecOpenSSLEvpKeyDataGetEvp(data));
 }
 
@@ -1489,7 +1487,7 @@ xmlSecOpenSSLKeyDataEcGetEvp(xmlSecKeyDataPtr data) {
  */
 xmlSecKeyDataId
 xmlSecOpenSSLkeyDataEcdsaGetKlass(void) {
-    return(xmlSecOpenSSLkeyDataEcGetKlass());
+    return(xmlSecOpenSSLKeyDataEcGetKlass());
 }
 
 /**

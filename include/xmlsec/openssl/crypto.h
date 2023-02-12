@@ -382,11 +382,10 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformDsaSha256GetKlass(v
 /**
  * xmlSecOpenSSLKeyDataEcdsaId:
  *
- * Deorecated. The ECDSA key klass.
+ * Deprecated. The ECDSA key klass.
  */
-#define xmlSecOpenSSLKeyDataEcdsaId \
-        xmlSecOpenSSLkeyDataEcGetKlass()
-XMLSEC_DEPRECATED XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLkeyDataEcGetKlass        (void);
+#define xmlSecOpenSSLKeyDataEcdsaId xmlSecOpenSSLKeyDataEcId
+XMLSEC_DEPRECATED XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataEcdsaGetKlass     (void);
 XMLSEC_DEPRECATED XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeyDataEcdsaAdoptEvp     (xmlSecKeyDataPtr data,
                                                                                                  EVP_PKEY* pKey);
 XMLSEC_DEPRECATED XMLSEC_CRYPTO_EXPORT EVP_PKEY*          xmlSecOpenSSLKeyDataEcdsaGetEvp       (xmlSecKeyDataPtr data);
@@ -397,8 +396,8 @@ XMLSEC_DEPRECATED XMLSEC_CRYPTO_EXPORT EVP_PKEY*          xmlSecOpenSSLKeyDataEc
  *
  * The EC key klass.
  */
-#define xmlSecOpenSSLKeyDataEcId \
-        xmlSecOpenSSLKeyDataEcGetKlass()
+#define xmlSecOpenSSLKeyDataEcId        xmlSecOpenSSLKeyDataEcGetKlass()
+
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataEcGetKlass      (void);
 XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeyDataEcAdoptEvp      (xmlSecKeyDataPtr data,
                                                                              EVP_PKEY* pKey);

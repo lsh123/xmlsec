@@ -1493,7 +1493,7 @@ done:
 
 
 
-#ifndef XMLSEC_NO_ECDSA
+#ifndef XMLSEC_NO_EC
 /**************************************************************************
  *
  * ECDSA XML key representation processing.
@@ -1525,11 +1525,11 @@ static xmlSecKeyDataKlass xmlSecGCryptKeyDataEcdsaKlass = {
     xmlSecGCryptAsymKeyDataSize,
 
     /* data */
-    xmlSecNameECDSAKeyValue,
+    xmlSecNameECKeyValue,
     xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
                                                 /* xmlSecKeyDataUsage usage; */
-    xmlSecHrefECDSAKeyValue,                    /* const xmlChar* href; */
-    xmlSecNodeECDSAKeyValue,                    /* const xmlChar* dataNodeName; */
+    xmlSecHrefECKeyValue,                    /* const xmlChar* href; */
+    xmlSecNodeECKeyValue,                    /* const xmlChar* dataNodeName; */
     xmlSecDSigNs,                               /* const xmlChar* dataNodeNs; */
 
     /* constructors/destructor */
@@ -1559,14 +1559,14 @@ static xmlSecKeyDataKlass xmlSecGCryptKeyDataEcdsaKlass = {
 };
 
 /**
- * xmlSecGCryptKeyDataEcdsaGetKlass:
+ * xmlSecGCryptkeyDataEcGetKlass:
  *
  * The GCrypt ECDSA key data klass.
  *
  * Returns: pointer to GCrypt ECDSA key data klass.
  */
 xmlSecKeyDataId
-xmlSecGCryptKeyDataEcdsaGetKlass(void) {
+xmlSecGCryptkeyDataEcGetKlass(void) {
     return(&xmlSecGCryptKeyDataEcdsaKlass);
 }
 
@@ -1702,8 +1702,8 @@ xmlSecGCryptKeyDataEcdsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataEcdsaId));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "<ECDSAKeyValue size=\"" XMLSEC_SIZE_FMT "\" />\n",
+    fprintf(output, "<ECKeyValue size=\"" XMLSEC_SIZE_FMT "\" />\n",
             xmlSecGCryptKeyDataEcdsaGetSize(data));
 }
 
-#endif /* XMLSEC_NO_ECDSA */
+#endif /* XMLSEC_NO_EC */

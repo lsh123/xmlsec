@@ -241,7 +241,7 @@ xmlSecNssPKIAdoptKey(SECKEYPrivateKey *privkey,
         }
         break;
 #endif /* XMLSEC_NO_DSA */
-#ifndef XMLSEC_NO_ECDSA
+#ifndef XMLSEC_NO_EC
     case ecKey:
         data = xmlSecKeyDataCreate(xmlSecNssKeyDataEcdsaId);
         if(data == NULL) {
@@ -249,7 +249,7 @@ xmlSecNssPKIAdoptKey(SECKEYPrivateKey *privkey,
             return(NULL);
         }
         break;
-#endif /* XMLSEC_NO_ECDSA */
+#endif /* XMLSEC_NO_EC */
     default:
         xmlSecUnsupportedEnumValueError("pubType", pubType, NULL);
         return(NULL);
@@ -1339,7 +1339,7 @@ done:
 
 #endif /* XMLSEC_NO_RSA */
 
-#ifndef XMLSEC_NO_ECDSA
+#ifndef XMLSEC_NO_EC
 static int xmlSecNssKeyDataEcdsaInitialize(xmlSecKeyDataPtr data);
 static int xmlSecNssKeyDataEcdsaDuplicate(xmlSecKeyDataPtr dst,
                                           xmlSecKeyDataPtr src);
@@ -1357,11 +1357,11 @@ static xmlSecKeyDataKlass xmlSecNssKeyDataEcdsaKlass = {
     xmlSecNssPKIKeyDataSize,
 
     /* data */
-    xmlSecNameECDSAKeyValue,
+    xmlSecNameECKeyValue,
     xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
                                                 /* xmlSecKeyDataUsage usage; */
-    xmlSecHrefECDSAKeyValue,                    /* const xmlChar* href; */
-    xmlSecNodeECDSAKeyValue,                    /* const xmlChar* dataNodeName; */
+    xmlSecHrefECKeyValue,                    /* const xmlChar* href; */
+    xmlSecNodeECKeyValue,                    /* const xmlChar* dataNodeName; */
     xmlSecDSigNs,                               /* const xmlChar* dataNodeNs; */
 
     /* constructors/destructor */
@@ -1391,14 +1391,14 @@ static xmlSecKeyDataKlass xmlSecNssKeyDataEcdsaKlass = {
 };
 
 /**
- * xmlSecNssKeyDataEcdsaGetKlass:
+ * xmlSecNsskeyDataEcGetKlass:
  *
  * The ECDSA key data klass.
  *
  * Returns: pointer to ECDSA key data klass.
  */
 xmlSecKeyDataId
-xmlSecNssKeyDataEcdsaGetKlass(void) {
+xmlSecNsskeyDataEcGetKlass(void) {
     return(&xmlSecNssKeyDataEcdsaKlass);
 }
 
@@ -1469,7 +1469,7 @@ xmlSecNssKeyDataEcdsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecNssKeyDataEcdsaId));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "<ECDSAKeyValue size=\"" XMLSEC_SIZE_FMT "\" />\n",
+    fprintf(output, "<ECKeyValue size=\"" XMLSEC_SIZE_FMT "\" />\n",
         xmlSecNssKeyDataEcdsaGetSize(data));
 }
-#endif /* XMLSEC_NO_ECDSA */
+#endif /* XMLSEC_NO_EC */

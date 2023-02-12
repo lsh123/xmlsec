@@ -26,6 +26,7 @@
  ************************************************************************/
 const xmlChar xmlSecNs[]                        = "http://www.aleksey.com/xmlsec/2002";
 const xmlChar xmlSecDSigNs[]                    = "http://www.w3.org/2000/09/xmldsig#";
+const xmlChar xmlSecDSig11Ns[]                  = "http://www.w3.org/2009/xmldsig11#";
 const xmlChar xmlSecEncNs[]                     = "http://www.w3.org/2001/04/xmlenc#";
 const xmlChar xmlSecEnc11Ns[]                   = "http://www.w3.org/2009/xmlenc11#";
 const xmlChar xmlSecXPathNs[]                   = "http://www.w3.org/TR/1999/REC-xpath-19991116";
@@ -254,18 +255,12 @@ const xmlChar xmlSecHrefDsaSha256[]             = "http://www.w3.org/2009/xmldsi
  * ECDSA strings
  *
  ************************************************************************/
-/* XXX-MAK: More constants will be needed later. */
-const xmlChar xmlSecNameECDSAKeyValue[]         = "ecdsa";
-const xmlChar xmlSecNodeECDSAKeyValue[]         = "ECDSAKeyValue";
-const xmlChar xmlSecHrefECDSAKeyValue[]         = "http://scap.nist.gov/specifications/tmsad/#resource-1.0";
-const xmlChar xmlSecNodeECDSAP[]                = "P";
-const xmlChar xmlSecNodeECDSAQ[]                = "Q";
-const xmlChar xmlSecNodeECDSAG[]                = "G";
-const xmlChar xmlSecNodeECDSAJ[]                = "J";
-const xmlChar xmlSecNodeECDSAX[]                = "X";
-const xmlChar xmlSecNodeECDSAY[]                = "Y";
-const xmlChar xmlSecNodeECDSASeed[]             = "Seed";
-const xmlChar xmlSecNodeECDSAPgenCounter[]      = "PgenCounter";
+const xmlChar xmlSecNameECKeyValue[]            = "ec";
+const xmlChar xmlSecNodeECKeyValue[]            = "ECKeyValue";
+const xmlChar xmlSecHrefECKeyValue[]            = "http://www.w3.org/2009/xmldsig11#ECKeyValue";
+
+const xmlChar xmlSecNodeNamedCurve[]            = "NamedCurve";
+const xmlChar xmlSecNodePublicKey[]             = "PublicKey";
 
 const xmlChar xmlSecNameEcdsaSha1[]             = "ecdsa-sha1";
 const xmlChar xmlSecHrefEcdsaSha1[]             = "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha1";

@@ -175,22 +175,42 @@ xmlSecKeyDataDsaGetKlass(void) {
 }
 
 /**
- * xmlSecKeyDataEcdsaGetKlass:
+ * xmlSeckeyDataEcGetKlass:
  *
- * The ECDSA key data klass.
+ * Deprecated. The ECDSA key data klass.
  *
  * Returns: ECDSA key data klass or NULL if an error occurs
  * (xmlsec-crypto library is not loaded or the ECDSA key data
  * klass is not implemented).
  */
 xmlSecKeyDataId
-xmlSecKeyDataEcdsaGetKlass(void) {
-    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->keyDataEcdsaGetKlass == NULL)) {
-        xmlSecNotImplementedError("keyDataEcdsaGetKlass");
+xmlSeckeyDataEcGetKlass(void) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->keyDataEcGetKlass == NULL)) {
+        xmlSecNotImplementedError("keyDataEcGetKlass");
         return(xmlSecKeyDataIdUnknown);
     }
 
-    return(xmlSecCryptoDLGetFunctions()->keyDataEcdsaGetKlass());
+    return(xmlSecCryptoDLGetFunctions()->keyDataEcGetKlass());
+}
+
+
+/**
+ * xmlSecKeyDataEcGetKlass:
+ *
+ * The ECDSA key data klass.
+ *
+ * Returns: EC key data klass or NULL if an error occurs
+ * (xmlsec-crypto library is not loaded or the ECDSA key data
+ * klass is not implemented).
+ */
+xmlSecKeyDataId
+xmlSecKeyDataEcGetKlass(void) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->keyDataEcGetKlass == NULL)) {
+        xmlSecNotImplementedError("keyDataEcGetKlass");
+        return(xmlSecKeyDataIdUnknown);
+    }
+
+    return(xmlSecCryptoDLGetFunctions()->keyDataEcGetKlass());
 }
 
 /**

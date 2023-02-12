@@ -87,7 +87,7 @@ static int      xmlSecGCryptRsaPssVerify        (int digest,
 #endif  /* XMLSEC_NO_RSA */
 
 
-#ifndef XMLSEC_NO_ECDSA
+#ifndef XMLSEC_NO_EC
 static int      xmlSecGCryptEcdsaSign           (int digest,
                                                  xmlSecKeyDataPtr key_data,
                                                  const xmlSecByte* dgst,
@@ -99,7 +99,7 @@ static int      xmlSecGCryptEcdsaVerify         (int digest,
                                                  xmlSecSize dgstSize,
                                                  const xmlSecByte* data,
                                                  xmlSecSize dataSize);
-#endif  /* XMLSEC_NO_ECDSA */
+#endif  /* XMLSEC_NO_EC */
 
 
 
@@ -228,7 +228,7 @@ xmlSecGCryptPkSignatureCheckId(xmlSecTransformPtr transform) {
 
 #endif /* XMLSEC_NO_RSA */
 
-#ifndef XMLSEC_NO_ECDSA
+#ifndef XMLSEC_NO_EC
 
 #ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformEcdsaSha1Id)) {
@@ -255,7 +255,7 @@ xmlSecGCryptPkSignatureCheckId(xmlSecTransformPtr transform) {
 #endif /* XMLSEC_NO_SHA512 */
 
 
-#endif /* XMLSEC_NO_ECDSA */
+#endif /* XMLSEC_NO_EC */
 
     {
         return(0);
@@ -385,7 +385,7 @@ xmlSecGCryptPkSignatureInitialize(xmlSecTransformPtr transform) {
 
 #endif /* XMLSEC_NO_RSA */
 
-#ifndef XMLSEC_NO_ECDSA
+#ifndef XMLSEC_NO_EC
 
 #ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformEcdsaSha1Id)) {
@@ -423,7 +423,7 @@ xmlSecGCryptPkSignatureInitialize(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_SHA512 */
 
-#endif /* XMLSEC_NO_ECDSA */
+#endif /* XMLSEC_NO_EC */
 
     if(1) {
         xmlSecInvalidTransfromError(transform)
@@ -1893,7 +1893,7 @@ xmlSecGCryptTransformRsaPssSha512GetKlass(void) {
 
 #endif /* XMLSEC_NO_RSA */
 
-#ifndef XMLSEC_NO_ECDSA
+#ifndef XMLSEC_NO_EC
 /*
  * https://www.w3.org/TR/xmldsig-core1/#sec-ECDSA
  *
@@ -2353,4 +2353,4 @@ xmlSecGCryptTransformEcdsaSha512GetKlass(void) {
 
 #endif /* XMLSEC_NO_SHA512 */
 
-#endif /* XMLSEC_NO_ECDSA */
+#endif /* XMLSEC_NO_EC */

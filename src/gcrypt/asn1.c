@@ -608,7 +608,7 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
         break;
 #endif /* XMLSEC_NO_RSA */
 
-#ifndef XMLSEC_NO_ECDSA
+#ifndef XMLSEC_NO_EC
     case xmlSecGCryptDerKeyTypePrivateEcdsa:
         /* check we have object id and enough integers */
         if(objectids_num < 1U) {
@@ -730,7 +730,7 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
         }
         s_pub_key = NULL; /* owned by key_data now */
         break;
-#endif /* XMLSEC_NO_ECDSA */
+#endif /* XMLSEC_NO_EC */
 
     default:
         xmlSecUnsupportedEnumValueError("key_type", type, NULL);

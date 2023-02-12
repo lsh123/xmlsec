@@ -102,7 +102,7 @@ xmlSecNssSignatureCheckId(xmlSecTransformPtr transform) {
 #endif /* XMLSEC_NO_SHA256 */
 #endif /* XMLSEC_NO_DSA */
 
-#ifndef XMLSEC_NO_ECDSA
+#ifndef XMLSEC_NO_EC
 #ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformEcdsaSha1Id)) {
         return(1);
@@ -128,7 +128,7 @@ xmlSecNssSignatureCheckId(xmlSecTransformPtr transform) {
         return(1);
     }
 #endif /* XMLSEC_NO_SHA512 */
-#endif /* XMLSEC_NO_ECDSA */
+#endif /* XMLSEC_NO_EC */
 
 #ifndef XMLSEC_NO_RSA
 
@@ -231,7 +231,7 @@ xmlSecNssSignatureInitialize(xmlSecTransformPtr transform) {
 #endif /* XMLSEC_NO_SHA256 */
 #endif /* XMLSEC_NO_DSA */
 
-#ifndef XMLSEC_NO_ECDSA
+#ifndef XMLSEC_NO_EC
 #ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformEcdsaSha1Id)) {
         ctx->keyId = xmlSecNssKeyDataEcdsaId;
@@ -267,7 +267,7 @@ xmlSecNssSignatureInitialize(xmlSecTransformPtr transform) {
         ctx->alg = SEC_OID_ANSIX962_ECDSA_SHA512_SIGNATURE;
     } else
 #endif /* XMLSEC_NO_SHA512 */
-#endif /* XMLSEC_NO_ECDSA */
+#endif /* XMLSEC_NO_EC */
 
 #ifndef XMLSEC_NO_RSA
 
@@ -995,7 +995,7 @@ xmlSecNssTransformDsaSha256GetKlass(void) {
 
 #endif /* XMLSEC_NO_DSA */
 
-#ifndef XMLSEC_NO_ECDSA
+#ifndef XMLSEC_NO_EC
 #ifndef XMLSEC_NO_SHA1
 /****************************************************************************
  *
@@ -1231,7 +1231,7 @@ xmlSecNssTransformEcdsaSha512GetKlass(void) {
 }
 
 #endif /* XMLSEC_NO_SHA512 */
-#endif /* XMLSEC_NO_ECDSA */
+#endif /* XMLSEC_NO_EC */
 
 #ifndef XMLSEC_NO_RSA
 

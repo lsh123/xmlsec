@@ -73,6 +73,55 @@ XMLSEC_EXPORT void              xmlSecKeyDataBinaryValueDebugXmlDump    (xmlSecK
                                                                          FILE* output);
 
 
+#if !defined(XMLSEC_NO_EC)
+
+typedef struct _xmlSecKeyValueEc {
+    xmlChar* curve;
+    xmlSecBuffer pubkey;
+} xmlSecKeyValueEc, *xmlSecKeyValueEcPtr;
+
+/**
+ * xmlSecKeyDataEcRead:
+ * @id:                 the key data data.
+ * @ecdsaValue:         the pointer to input @xmlSecKeyValueEc.
+ *
+ * Creates xmlSecKeyData from @dsaValue
+ *
+ * Returns: the poitner to xmlSecKeyData or NULL if an error occurs.
+ */
+typedef xmlSecKeyDataPtr       (*xmlSecKeyDataEcRead)                   (xmlSecKeyDataId id,
+                                                                         xmlSecKeyValueEcPtr ecdsaValue);
+
+/**
+ * xmlSecKeyDataEcWrite:
+ * @id:                 the key data data.
+ * @data:               the pointer to input @xmlSecKeyData.
+ * @c:                  the pointer to input @xmlSecKeyValueEc.
+ *
+ * Writes @xmlSecKeyData to @xmlSecKeyValueEc.
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+typedef int                    (*xmlSecKeyDataEcWrite)                  (xmlSecKeyDataId id,
+                                                                         xmlSecKeyDataPtr data,
+                                                                         xmlSecKeyValueEcPtr ecdsaValue);
+
+XMLSEC_EXPORT int               xmlSecKeyDataEcXmlRead                  (xmlSecKeyDataId id,
+                                                                         xmlSecKeyPtr key,
+                                                                         xmlNodePtr node,
+                                                                         xmlSecKeyInfoCtxPtr keyInfoCtx,
+                                                                         xmlSecKeyDataEcRead readFunc);
+XMLSEC_EXPORT int               xmlSecKeyDataEcXmlWrite                 (xmlSecKeyDataId id,
+                                                                         xmlSecKeyPtr key,
+                                                                         xmlNodePtr node,
+                                                                         xmlSecKeyInfoCtxPtr keyInfoCtx,
+                                                                         int base64LineSize,
+                                                                         int addLineBreaks,
+                                                                         xmlSecKeyDataEcWrite writeFunc);
+
+#endif /* !defined(XMLSEC_NO_EC) */
+
+
 #if !defined(XMLSEC_NO_DSA)
 /**************************************************************************
  *

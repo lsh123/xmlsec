@@ -588,7 +588,7 @@ xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(struct _xmlSecCryptoDLFuncti
     XMLSEC_REGISTER_KEY_DATA(ConcatKdf);            // keyDataConcatKdfGetKlass
     XMLSEC_REGISTER_KEY_DATA(Des);                  // keyDataDesGetKlass
     XMLSEC_REGISTER_KEY_DATA(Dsa);                  // keyDataDsaGetKlass
-    XMLSEC_REGISTER_KEY_DATA(Ecdsa);                // keyDataEcdsaGetKlass
+    XMLSEC_REGISTER_KEY_DATA(Ec);                   // keyDataEcGetKlass
     XMLSEC_REGISTER_KEY_DATA(Gost2001);             // keyDataGost2001GetKlass
     XMLSEC_REGISTER_KEY_DATA(GostR3410_2012_256);   // keyDataGostR3410_2012_256GetKlass
     XMLSEC_REGISTER_KEY_DATA(GostR3410_2012_512);   // keyDataGetKlass

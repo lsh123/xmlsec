@@ -83,9 +83,9 @@ xmlSecCryptoGetFunctions_mscng(void) {
     gXmlSecMSCngFunctions->keyDataDsaGetKlass           = xmlSecMSCngKeyDataDsaGetKlass;
 #endif /* XMLSEC_NO_DSA */
 
-#ifndef XMLSEC_NO_ECDSA
-    gXmlSecMSCngFunctions->keyDataEcdsaGetKlass         = xmlSecMSCngKeyDataEcdsaGetKlass;
-#endif /* XMLSEC_NO_ECDSA */
+#ifndef XMLSEC_NO_EC
+    gXmlSecMSCngFunctions->keyDataEcGetKlass         = xmlSecMSCngkeyDataEcGetKlass;
+#endif /* XMLSEC_NO_EC */
 
 #ifdef XMLSEC_MSCNG_TODO
     gXmlSecMSCngFunctions->keyDataGost2001GetKlass      = xmlSecMSCngKeyDataGost2001GetKlass;
@@ -153,7 +153,7 @@ xmlSecCryptoGetFunctions_mscng(void) {
 #endif /* XMLSEC_NO_DSA */
 
     /******************************* ECDSA ********************************/
-#ifndef XMLSEC_NO_ECDSA
+#ifndef XMLSEC_NO_EC
 
 #ifndef XMLSEC_NO_SHA1
     gXmlSecMSCngFunctions->transformEcdsaSha1GetKlass           = xmlSecMSCngTransformEcdsaSha1GetKlass;
@@ -175,7 +175,7 @@ xmlSecCryptoGetFunctions_mscng(void) {
     gXmlSecMSCngFunctions->transformEcdsaSha512GetKlass         = xmlSecMSCngTransformEcdsaSha512GetKlass;
 #endif /* XMLSEC_NO_SHA512 */
 
-#endif /* XMLSEC_NO_ECDSA */
+#endif /* XMLSEC_NO_EC */
 
     /******************************* GOST ********************************/
 #ifdef XMLSEC_MSCNG_TODO

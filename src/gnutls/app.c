@@ -624,7 +624,6 @@ xmlSecGnuTLSAppPemDerPubKeyLoadMemory(const gnutls_datum_t * datum, gnutls_x509_
     return(pubkey);
 }
 
-
 static xmlSecKeyPtr
 xmlSecGnuTLSAppPemDerKeyLoadMemory(const xmlSecByte * data, xmlSecSize dataSize, gnutls_x509_crt_fmt_t fmt) {
     gnutls_privkey_t privkey = NULL;
@@ -660,7 +659,7 @@ xmlSecGnuTLSAppPemDerKeyLoadMemory(const xmlSecByte * data, xmlSecSize dataSize,
         return(key);
     }
 
-    xmlSecInternalError3("Cannt read private or public keys", NULL,
+    xmlSecInternalError3("Cannot read private or public keys", NULL,
             "format=%d; keySize=" XMLSEC_SIZE_FMT, (int)fmt, dataSize);
     return(NULL);
 }

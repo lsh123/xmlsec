@@ -102,8 +102,8 @@ execDSigTest $res_success \
     "--hmackey keys/hmackey.bin"
 
 # ECDSA
-if [ "z$crypto" != "zopenssl" ] ; then
-    # OpenSSL supports ECKeyValue, others dont so we need to pass the key
+if [ "z$crypto" != "zopenssl" -a "z$crypto" != "zgnutls" ] ; then
+    # OpenSSL/GnuTLS supports ECKeyValue, others dont so we need to pass the key
     execDSigTest $res_success \
         "xmldsig11-interop-2012" \
         "signature-enveloping-p256_sha1" \
@@ -301,9 +301,9 @@ if [ "z$crypto" != "zopenssl" ] ; then
         "" \
         "--enabled-key-data key-name $pub_key_option ./keys/p521-key.$pub_key_format"
 else
-    # OpenSSL supports ECKeyValue -> we don't pass key
+    # OpenSSL/GnuTLS supports ECKeyValue -> we don't pass key
 
-    # Diabled tests with PublcKey X,Y components (not part of spec):
+    # Diabled tests with PublicKey X,Y components (RFC4050, not part XMLDSig 1.1 spec):
     #   signature-enveloping-p256_sha1_4050.xml
     #   signature-enveloping-p256_sha512_4050.xml
     #   signature-enveloping-p384_sha384_4050.xml
@@ -323,8 +323,9 @@ else
         "c14n sha1 ecdsa-sha1" \
         "key-value ec" \
         "--enabled-key-data key-value,ec" \
-        "--enabled-key-data key-value,ec --privkey-der ./keys/p256-key-orig.der" \
+        "--enabled-key-data key-value,ec $priv_key_option:key-p256 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
         "--enabled-key-data key-value,ec"
+
 
     execDSigTest $res_success \
         "xmldsig11-interop-2012" \
@@ -332,7 +333,7 @@ else
         "c14n sha1 ecdsa-sha224" \
         "key-value ec" \
         "--enabled-key-data key-value,ec" \
-        "--enabled-key-data key-value,ec --privkey-der ./keys/p256-key-orig.der" \
+        "--enabled-key-data key-value,ec $priv_key_option:key-p256 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
         "--enabled-key-data key-value,ec"
 
     execDSigTest $res_success \
@@ -341,7 +342,7 @@ else
         "c14n sha1 ecdsa-sha256" \
         "key-value ec" \
         "--enabled-key-data key-value,ec" \
-        "--enabled-key-data key-value,ec --privkey-der ./keys/p256-key-orig.der" \
+        "--enabled-key-data key-value,ec $priv_key_option:key-p256 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
         "--enabled-key-data key-value,ec"
 
     execDSigTest $res_success \
@@ -350,7 +351,7 @@ else
         "c14n sha1 ecdsa-sha384" \
         "key-value ec" \
         "--enabled-key-data key-value,ec" \
-        "--enabled-key-data key-value,ec --privkey-der ./keys/p256-key-orig.der" \
+        "--enabled-key-data key-value,ec $priv_key_option:key-p256 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
         "--enabled-key-data key-value,ec"
 
     execDSigTest $res_success \
@@ -359,7 +360,7 @@ else
         "c14n sha1 ecdsa-sha512" \
         "key-value ec" \
         "--enabled-key-data key-value,ec" \
-        "--enabled-key-data key-value,ec --privkey-der ./keys/p256-key-orig.der" \
+        "--enabled-key-data key-value,ec $priv_key_option:key-p256 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
         "--enabled-key-data key-value,ec"
 
     execDSigTest $res_success \
@@ -368,7 +369,7 @@ else
         "c14n sha1 ecdsa-sha1" \
         "key-value ec" \
         "--enabled-key-data key-value,ec" \
-        "--enabled-key-data key-value,ec --privkey-der ./keys/p384-key-orig.der" \
+        "--enabled-key-data key-value,ec $priv_key_option:key-p384 $topfolder/keys/ecdsa-secp384r1-key.$priv_key_format --pwd secret123" \
         "--enabled-key-data key-value,ec"
 
     execDSigTest $res_success \
@@ -377,7 +378,7 @@ else
         "c14n sha1 ecdsa-sha224" \
         "key-value ec" \
         "--enabled-key-data key-value,ec" \
-        "--enabled-key-data key-value,ec --privkey-der ./keys/p384-key-orig.der" \
+        "--enabled-key-data key-value,ec $priv_key_option:key-p384 $topfolder/keys/ecdsa-secp384r1-key.$priv_key_format --pwd secret123" \
         "--enabled-key-data key-value,ec"
 
     execDSigTest $res_success \
@@ -386,7 +387,7 @@ else
         "c14n sha1 ecdsa-sha256" \
         "key-value ec" \
         "--enabled-key-data key-value,ec" \
-        "--enabled-key-data key-value,ec --privkey-der ./keys/p384-key-orig.der" \
+        "--enabled-key-data key-value,ec $priv_key_option:key-p384 $topfolder/keys/ecdsa-secp384r1-key.$priv_key_format --pwd secret123" \
         "--enabled-key-data key-value,ec"
 
     execDSigTest $res_success \
@@ -395,7 +396,7 @@ else
         "c14n sha1 ecdsa-sha384" \
         "key-value ec" \
         "--enabled-key-data key-value,ec" \
-        "--enabled-key-data key-value,ec --privkey-der ./keys/p384-key-orig.der" \
+        "--enabled-key-data key-value,ec $priv_key_option:key-p384 $topfolder/keys/ecdsa-secp384r1-key.$priv_key_format --pwd secret123" \
         "--enabled-key-data key-value,ec"
 
     execDSigTest $res_success \
@@ -404,7 +405,7 @@ else
         "c14n sha1 ecdsa-sha512" \
         "key-value ec" \
         "--enabled-key-data key-value,ec" \
-        "--enabled-key-data key-value,ec --privkey-der ./keys/p384-key-orig.der" \
+        "--enabled-key-data key-value,ec $priv_key_option:key-p384 $topfolder/keys/ecdsa-secp384r1-key.$priv_key_format --pwd secret123" \
         "--enabled-key-data key-value,ec"
 
     execDSigTest $res_success \
@@ -413,7 +414,7 @@ else
         "c14n sha1 ecdsa-sha1" \
         "key-value ec" \
         "--enabled-key-data key-value,ec" \
-        "--enabled-key-data key-value,ec --privkey-der ./keys/p521-key-orig.der" \
+        "--enabled-key-data key-value,ec $priv_key_option:key-p521 $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
         "--enabled-key-data key-value,ec"
 
     execDSigTest $res_success \
@@ -422,7 +423,7 @@ else
         "c14n sha1 ecdsa-sha224" \
         "key-value ec" \
         "--enabled-key-data key-value,ec" \
-        "--enabled-key-data key-value,ec --privkey-der ./keys/p521-key-orig.der" \
+        "--enabled-key-data key-value,ec $priv_key_option:key-p521 $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
         "--enabled-key-data key-value,ec"
 
     execDSigTest $res_success \
@@ -431,7 +432,7 @@ else
         "c14n sha1 ecdsa-sha256" \
         "key-value ec" \
         "--enabled-key-data key-value,ec" \
-        "--enabled-key-data key-value,ec --privkey-der ./keys/p521-key-orig.der" \
+        "--enabled-key-data key-value,ec $priv_key_option:key-p521 $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
         "--enabled-key-data key-value,ec"
 
     execDSigTest $res_success \
@@ -440,7 +441,7 @@ else
         "c14n sha1 ecdsa-sha384" \
         "key-value ec" \
         "--enabled-key-data key-value,ec" \
-        "--enabled-key-data key-value,ec --privkey-der ./keys/p521-key-orig.der" \
+        "--enabled-key-data key-value,ec $priv_key_option:key-p521 $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
         "--enabled-key-data key-value,ec"
 
     execDSigTest $res_success \
@@ -449,7 +450,7 @@ else
         "c14n sha1 ecdsa-sha512" \
         "key-value ec" \
         "--enabled-key-data key-value,ec" \
-        "--enabled-key-data key-value,ec --privkey-der ./keys/p521-key-orig.der" \
+        "--enabled-key-data key-value,ec $priv_key_option:key-p521 $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
         "--enabled-key-data key-value,ec"
 fi
 

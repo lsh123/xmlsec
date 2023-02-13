@@ -229,24 +229,31 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformDsaSha256GetKlass(vo
 
 /********************************************************************
  *
- * ECDSA key and transforms
+ * EC key and transforms
  *
  *******************************************************************/
 #ifndef XMLSEC_NO_EC
 
 /**
- * xmlSecGnuTLSKeyDataEcdsaId:
+ * xmlSecGnuTLSKeyDataEcId:
  *
- * The ECDSA key klass.
+ * The EC key klass.
  */
-#define xmlSecGnuTLSKeyDataEcdsaId \
-        xmlSecGnuTLSkeyDataEcGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecGnuTLSkeyDataEcGetKlass        (void);
-XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataEcdsaAdoptKey        (xmlSecKeyDataPtr data,
+#define xmlSecGnuTLSKeyDataEcId         xmlSecGnuTLSKeyDataEcGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecGnuTLSKeyDataEcGetKlass           (void);
+XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataEcAdoptKey           (xmlSecKeyDataPtr data,
                                                                                  gnutls_pubkey_t pubkey,
                                                                                  gnutls_privkey_t privkey);
-XMLSEC_CRYPTO_EXPORT gnutls_pubkey_t    xmlSecGnuTLSKeyDataEcdsaGetPublicKey    (xmlSecKeyDataPtr data);
-XMLSEC_CRYPTO_EXPORT gnutls_privkey_t   xmlSecGnuTLSKeyDataEcdsaGetPrivateKey   (xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT gnutls_pubkey_t    xmlSecGnuTLSKeyDataEcGetPublicKey       (xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT gnutls_privkey_t   xmlSecGnuTLSKeyDataEcGetPrivateKey      (xmlSecKeyDataPtr data);
+
+/**
+ * xmlSecGnuTLSKeyDataEcdsaId:
+ *
+ * Deprecated. The ECDSA key klass.
+ */
+#define xmlSecGnuTLSKeyDataEcdsaId      xmlSecGnuTLSKeyDataEcId
+XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED xmlSecKeyDataId    xmlSecGnuTLSKeyDataEdsaGetKlass(void);
 
 
 #ifndef XMLSEC_NO_SHA1

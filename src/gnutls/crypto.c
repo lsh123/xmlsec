@@ -81,7 +81,7 @@ xmlSecCryptoGetFunctions_gnutls(void) {
 #endif /* XMLSEC_NO_DSA */
 
 #ifndef XMLSEC_NO_EC
-    gXmlSecGnuTLSFunctions->keyDataEcGetKlass        = xmlSecGnuTLSkeyDataEcGetKlass;
+    gXmlSecGnuTLSFunctions->keyDataEcGetKlass        = xmlSecGnuTLSKeyDataEcGetKlass;
 #endif /* XMLSEC_NO_EC */
 
 #ifndef XMLSEC_NO_HMAC

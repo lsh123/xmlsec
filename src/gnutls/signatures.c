@@ -230,41 +230,41 @@ xmlSecGnuTLSSignatureInitialize(xmlSecTransformPtr transform) {
     /********************************* ECDSA *******************************/
 #ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformEcdsaSha1Id)) {
-        ctx->keyId      = xmlSecGnuTLSKeyDataEcdsaId;
+        ctx->keyId      = xmlSecGnuTLSKeyDataEcId;
         ctx->dgstAlgo   = GNUTLS_DIG_SHA1;
         ctx->signAlgo   = GNUTLS_SIGN_ECDSA_SHA1;
-        ctx->getPubKey  = xmlSecGnuTLSKeyDataEcdsaGetPublicKey;
-        ctx->getPrivKey = xmlSecGnuTLSKeyDataEcdsaGetPrivateKey;
+        ctx->getPubKey  = xmlSecGnuTLSKeyDataEcGetPublicKey;
+        ctx->getPrivKey = xmlSecGnuTLSKeyDataEcGetPrivateKey;
     } else
 #endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_SHA256
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformEcdsaSha256Id)) {
-        ctx->keyId      = xmlSecGnuTLSKeyDataEcdsaId;
+        ctx->keyId      = xmlSecGnuTLSKeyDataEcId;
         ctx->dgstAlgo   = GNUTLS_DIG_SHA256;
         ctx->signAlgo   = GNUTLS_SIGN_ECDSA_SHA256;
-        ctx->getPubKey  = xmlSecGnuTLSKeyDataEcdsaGetPublicKey;
-        ctx->getPrivKey = xmlSecGnuTLSKeyDataEcdsaGetPrivateKey;
+        ctx->getPubKey  = xmlSecGnuTLSKeyDataEcGetPublicKey;
+        ctx->getPrivKey = xmlSecGnuTLSKeyDataEcGetPrivateKey;
     } else
 #endif /* XMLSEC_NO_SHA256 */
 
 #ifndef XMLSEC_NO_SHA384
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformEcdsaSha384Id)) {
-        ctx->keyId      = xmlSecGnuTLSKeyDataEcdsaId;
+        ctx->keyId      = xmlSecGnuTLSKeyDataEcId;
         ctx->dgstAlgo   = GNUTLS_DIG_SHA384;
         ctx->signAlgo   = GNUTLS_SIGN_ECDSA_SHA384;
-        ctx->getPubKey  = xmlSecGnuTLSKeyDataEcdsaGetPublicKey;
-        ctx->getPrivKey = xmlSecGnuTLSKeyDataEcdsaGetPrivateKey;
+        ctx->getPubKey  = xmlSecGnuTLSKeyDataEcGetPublicKey;
+        ctx->getPrivKey = xmlSecGnuTLSKeyDataEcGetPrivateKey;
     } else
 #endif /* XMLSEC_NO_SHA384 */
 
 #ifndef XMLSEC_NO_SHA512
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformEcdsaSha512Id)) {
-        ctx->keyId      = xmlSecGnuTLSKeyDataEcdsaId;
+        ctx->keyId      = xmlSecGnuTLSKeyDataEcId;
         ctx->dgstAlgo   = GNUTLS_DIG_SHA512;
         ctx->signAlgo   = GNUTLS_SIGN_ECDSA_SHA512;
-        ctx->getPubKey  = xmlSecGnuTLSKeyDataEcdsaGetPublicKey;
-        ctx->getPrivKey = xmlSecGnuTLSKeyDataEcdsaGetPrivateKey;
+        ctx->getPubKey  = xmlSecGnuTLSKeyDataEcGetPublicKey;
+        ctx->getPrivKey = xmlSecGnuTLSKeyDataEcGetPrivateKey;
     } else
 #endif /* XMLSEC_NO_SHA512 */
 

@@ -72,6 +72,12 @@
         xmlSecByte, (dstVal), "%d", 0, 255,                                    \
         errorAction, (errorObject))
 
+/* Safe cast with limits check: unsigned int -> xmlSecByte (assume unsigned int > 0) */
+#define XMLSEC_SAFE_CAST_UINT_TO_BYTE(srcVal, dstVal, errorAction, errorObject) \
+    XMLSEC_SAFE_CAST_MAX_CHECK(unsigned int, (srcVal), "%u",                    \
+        xmlSecByte, (dstVal), "%d", 0, 255,                                     \
+        errorAction, (errorObject))
+
 /* Safe cast with limits check: xmlSecSize -> xmlSecByte (assume xmlSecSize > 0) */
 #define XMLSEC_SAFE_CAST_SIZE_TO_BYTE(srcVal, dstVal, errorAction, errorObject) \
     XMLSEC_SAFE_CAST_MAX_CHECK(xmlSecSize, (srcVal), XMLSEC_SIZE_FMT,           \

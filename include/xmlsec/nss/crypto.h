@@ -250,12 +250,20 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformDsaSha256GetKlass(void)
 #ifndef XMLSEC_NO_EC
 
 /**
+ * xmlSecNssKeyDataEcId:
+ *
+ * The EC key klass.
+ */
+#define xmlSecNssKeyDataEcId            xmlSecNsskeyDataEcGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecNsskeyDataEcGetKlass(void);
+
+/**
  * xmlSecNssKeyDataEcdsaId:
  *
- * The ECDSA key klass.
+ * Deprecated. The EC key klass.
  */
-#define xmlSecNssKeyDataEcdsaId xmlSecNsskeyDataEcGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId xmlSecNsskeyDataEcGetKlass(void);
+#define xmlSecNssKeyDataEcdsaId         xmlSecNssKeyDataEcId
+XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED xmlSecKeyDataId    xmlSecNsskeyDataEcdsaGetKlass(void);
 
 #ifndef XMLSEC_NO_SHA1
 

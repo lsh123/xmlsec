@@ -1565,7 +1565,7 @@ static const xmlSecOpenSSLKeyDataEcCurveNameAndOID g_xmlSecOpenSSLKeyDataEcCurve
     { NID_X9_62_prime256v1, SN_X9_62_prime256v1, "1.2.840.10045.3.1.7" }, /* prime256v1 */
     { NID_secp224r1, SN_secp224r1, "1.3.132.0.33" }, /* secp224r1 */
     { NID_secp384r1, SN_secp384r1, "1.3.132.0.34" }, /* secp384r1 */
-    { NID_secp521r1, SN_secp521r1, "1.3.132.0.35" }  /* OBJ_secp521r1 */
+    { NID_secp521r1, SN_secp521r1, "1.3.132.0.35" }  /* secp521r1 */
 };
 
 

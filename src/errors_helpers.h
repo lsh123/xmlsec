@@ -390,6 +390,7 @@ extern "C" {
                     xmlSecErrorsSafeString(msg)             \
         )
 
+
 /**
  * xmlSecInvalidStringDataError:
  * @name:               the name of the variable, parameter, etc.

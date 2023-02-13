@@ -1530,7 +1530,7 @@ static xmlSecKeyDataKlass xmlSecGCryptKeyDataEcdsaKlass = {
                                                 /* xmlSecKeyDataUsage usage; */
     xmlSecHrefECKeyValue,                    /* const xmlChar* href; */
     xmlSecNodeECKeyValue,                    /* const xmlChar* dataNodeName; */
-    xmlSecDSigNs,                               /* const xmlChar* dataNodeNs; */
+    xmlSecDSig11Ns,                               /* const xmlChar* dataNodeNs; */
 
     /* constructors/destructor */
     xmlSecGCryptKeyDataEcdsaInitialize,          /* xmlSecKeyDataInitializeMethod initialize; */

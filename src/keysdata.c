@@ -1149,13 +1149,18 @@ xmlSecKeyValueEcInitialize(xmlSecKeyValueEcPtr data) {
     xmlSecAssert2(data != NULL, -1);
     memset(data, 0, sizeof(xmlSecKeyValueEc));
 
-    ret = xmlSecBufferInitialize(&(data->pubkey), XMLSEC_KEY_DATA_EC_INIT_BUF_SIZE);
+    ret = xmlSecBufferInitialize(&(data->pub_x), XMLSEC_KEY_DATA_EC_INIT_BUF_SIZE);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecBufferInitialize(p)", NULL);
+        xmlSecInternalError("xmlSecBufferInitialize(pub_x)", NULL);
         xmlSecKeyValueEcFinalize(data);
         return(-1);
     }
-
+    ret = xmlSecBufferInitialize(&(data->pub_y), XMLSEC_KEY_DATA_EC_INIT_BUF_SIZE);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize(pub_y)", NULL);
+        xmlSecKeyValueEcFinalize(data);
+        return(-1);
+    }
     return(0);
 }
 
@@ -1163,11 +1168,84 @@ static void
 xmlSecKeyValueEcFinalize(xmlSecKeyValueEcPtr data) {
     xmlSecAssert(data != NULL);
 
-    xmlSecBufferFinalize(&(data->pubkey));
+    xmlSecBufferFinalize(&(data->pub_x));
+    xmlSecBufferFinalize(&(data->pub_y));
     if(data->curve != NULL) {
         xmlFree(data->curve);
     }
     memset(data, 0, sizeof(xmlSecKeyValueEc));
+}
+
+
+/*
+ * The PublicKey element contains a Base64 encoding of a binary representation of the x and y coordinates of
+ * the point. Its value is computed as follows:
+ *  1/ Convert the elliptic curve point (x,y) to an octet string by first converting the field elements
+ *     x and y to octet strings as specified in Section 6.2 of [ECC-ALGS] (note), and then prepend the
+ *     concatenated result of the conversion with 0x04. Support for Elliptic-Curve-Point-to-Octet-String
+ *     conversion without point compression is REQUIRED.
+ *  2/ Base64 encode the octet string resulting from the conversion in Step 1.
+ */
+#define XMLSEC_ECKEYVALYU_ECPOINT_MAGIC_BYTE        0x04
+
+static int
+xmlSecKeyValueEcXmlReadPublicKey(xmlSecKeyValueEcPtr ecData, xmlNodePtr node) {
+    xmlSecBuffer tmp;
+    xmlSecSize size;
+    xmlSecByte* data;
+    int ret;
+
+    xmlSecAssert2(ecData != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+
+    ret = xmlSecBufferInitialize(&tmp, 128);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize", NULL);
+        return(-1);
+    }
+
+    ret = xmlSecBufferBase64NodeContentRead(&tmp, node);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferBase64NodeContentRead(pubkey)", NULL);
+        xmlSecBufferFinalize(&tmp);
+        return(-1);
+    }
+
+    /* check size and magic number */
+    data = xmlSecBufferGetData(&tmp);
+    size = xmlSecBufferGetSize(&tmp);
+    if((data == NULL) || (size <= 1) || ((size % 2) != 1)) {
+        xmlSecInvalidSizeDataError("PublicKey", size, "ECPoint data should have an odd size > 1 ", NULL);
+        xmlSecBufferFinalize(&tmp);
+        return(-1);
+    }
+    if(data[0] != XMLSEC_ECKEYVALYU_ECPOINT_MAGIC_BYTE) {
+        xmlSecInvalidDataError("PublicKey must start from a magic number", NULL);
+        xmlSecBufferFinalize(&tmp);
+        return(-1);
+    }
+    ++data;
+    size = (size - 1) / 2;
+
+    /* set pub_y */
+    ret = xmlSecBufferSetData(&(ecData->pub_x), data, size);
+    if(ret < 0) {
+        xmlSecInternalError2("xmlSecBufferSetData(pub_x)", NULL, "size=" XMLSEC_SIZE_FMT, size);
+        xmlSecBufferFinalize(&tmp);
+        return(-1);
+    }
+
+    /* set pub_y */
+    ret = xmlSecBufferSetData(&(ecData->pub_y), data + size, size);
+    if(ret < 0) {
+        xmlSecInternalError2("xmlSecBufferSetData(pub_y)", NULL, "size=" XMLSEC_SIZE_FMT, size);
+        xmlSecBufferFinalize(&tmp);
+        return(-1);
+    }
+
+    /* done */
+    xmlSecBufferFinalize(&tmp);
+    return(0);
 }
 
 /* See https://www.w3.org/TR/xmldsig-core/#sec-ECKeyValue
@@ -1196,6 +1274,7 @@ xmlSecKeyValueEcFinalize(xmlSecKeyValueEcPtr data) {
  * </simpleType>
  *
  * Note that ECParameters node is not supported for now (https://github.com/lsh123/xmlsec/issues/516).
+ *
 */
 static int
 xmlSecKeyValueEcXmlRead(xmlSecKeyValueEcPtr data, xmlNodePtr node) {
@@ -1218,15 +1297,18 @@ xmlSecKeyValueEcXmlRead(xmlSecKeyValueEcPtr data, xmlNodePtr node) {
         xmlSecInvalidNodeAttributeError(cur, xmlSecAttrURI, NULL, "empty");
         return(-1);
     }
+    cur = xmlSecGetNextElementNode(cur->next);
 
     /* second node is PublicKey node */
     if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodePublicKey, xmlSecDSig11Ns))) {
         xmlSecInvalidNodeError(cur, xmlSecNodePublicKey, NULL);
         return(-1);
     }
-    ret = xmlSecBufferBase64NodeContentRead(&(data->pubkey), cur);
+
+    /* read both pub_x and pub_y */
+    ret = xmlSecKeyValueEcXmlReadPublicKey(data, cur);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecBufferBase64NodeContentRead(pubkey)", NULL);
+        xmlSecInternalError("xmlSecKeyValueEcXmlReadPublicKey", NULL);
         return(-1);
     }
     cur = xmlSecGetNextElementNode(cur->next);
@@ -1269,6 +1351,8 @@ xmlSecKeyValueEcXmlWrite(xmlSecKeyValueEcPtr data, xmlNodePtr node,  int base64L
     } else {
         xmlNodeSetContent(cur, xmlSecStringEmpty);
     }
+
+    /* TODO
     ret = xmlSecBufferBase64NodeContentWrite(&(data->pubkey), cur, base64LineSize);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferBase64NodeContentWrite(q)", NULL);
@@ -1277,6 +1361,7 @@ xmlSecKeyValueEcXmlWrite(xmlSecKeyValueEcPtr data, xmlNodePtr node,  int base64L
     if(addLineBreaks) {
         xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed());
     }
+    */
 
     /* done */
     return(0);

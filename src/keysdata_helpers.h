@@ -77,6 +77,7 @@ XMLSEC_EXPORT void              xmlSecKeyDataBinaryValueDebugXmlDump    (xmlSecK
 
 typedef struct _xmlSecKeyValueEc {
     xmlChar* curve;
+    xmlSecBuffer pubkey; /* */
     xmlSecBuffer pub_x;
     xmlSecBuffer pub_y;
 } xmlSecKeyValueEc, *xmlSecKeyValueEcPtr;

@@ -1149,6 +1149,12 @@ xmlSecKeyValueEcInitialize(xmlSecKeyValueEcPtr data) {
     xmlSecAssert2(data != NULL, -1);
     memset(data, 0, sizeof(xmlSecKeyValueEc));
 
+    ret = xmlSecBufferInitialize(&(data->pubkey), XMLSEC_KEY_DATA_EC_INIT_BUF_SIZE);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize(pubkey)", NULL);
+        xmlSecKeyValueEcFinalize(data);
+        return(-1);
+    }
     ret = xmlSecBufferInitialize(&(data->pub_x), XMLSEC_KEY_DATA_EC_INIT_BUF_SIZE);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferInitialize(pub_x)", NULL);
@@ -1168,11 +1174,13 @@ static void
 xmlSecKeyValueEcFinalize(xmlSecKeyValueEcPtr data) {
     xmlSecAssert(data != NULL);
 
-    xmlSecBufferFinalize(&(data->pub_x));
-    xmlSecBufferFinalize(&(data->pub_y));
     if(data->curve != NULL) {
         xmlFree(data->curve);
     }
+    xmlSecBufferFinalize(&(data->pubkey));
+    xmlSecBufferFinalize(&(data->pub_x));
+    xmlSecBufferFinalize(&(data->pub_y));
+
     memset(data, 0, sizeof(xmlSecKeyValueEc));
 }
 
@@ -1190,7 +1198,6 @@ xmlSecKeyValueEcFinalize(xmlSecKeyValueEcPtr data) {
 
 static int
 xmlSecKeyValueEcXmlReadPublicKey(xmlSecKeyValueEcPtr ecData, xmlNodePtr node) {
-    xmlSecBuffer tmp;
     xmlSecSize size;
     xmlSecByte* data;
     int ret;
@@ -1198,30 +1205,21 @@ xmlSecKeyValueEcXmlReadPublicKey(xmlSecKeyValueEcPtr ecData, xmlNodePtr node) {
     xmlSecAssert2(ecData != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
 
-    ret = xmlSecBufferInitialize(&tmp, 128);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecBufferInitialize", NULL);
-        return(-1);
-    }
-
-    ret = xmlSecBufferBase64NodeContentRead(&tmp, node);
+    ret = xmlSecBufferBase64NodeContentRead(&(ecData->pubkey), node);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferBase64NodeContentRead(pubkey)", NULL);
-        xmlSecBufferFinalize(&tmp);
         return(-1);
     }
 
     /* check size and magic number */
-    data = xmlSecBufferGetData(&tmp);
-    size = xmlSecBufferGetSize(&tmp);
+    data = xmlSecBufferGetData(&(ecData->pubkey));
+    size = xmlSecBufferGetSize(&(ecData->pubkey));
     if((data == NULL) || (size <= 1) || ((size % 2) != 1)) {
         xmlSecInvalidSizeDataError("PublicKey", size, "ECPoint data should have an odd size > 1 ", NULL);
-        xmlSecBufferFinalize(&tmp);
         return(-1);
     }
     if(data[0] != XMLSEC_ECKEYVALYU_ECPOINT_MAGIC_BYTE) {
         xmlSecInvalidDataError("PublicKey must start from a magic number", NULL);
-        xmlSecBufferFinalize(&tmp);
         return(-1);
     }
     ++data;
@@ -1231,7 +1229,6 @@ xmlSecKeyValueEcXmlReadPublicKey(xmlSecKeyValueEcPtr ecData, xmlNodePtr node) {
     ret = xmlSecBufferSetData(&(ecData->pub_x), data, size);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetData(pub_x)", NULL, "size=" XMLSEC_SIZE_FMT, size);
-        xmlSecBufferFinalize(&tmp);
         return(-1);
     }
 
@@ -1239,12 +1236,10 @@ xmlSecKeyValueEcXmlReadPublicKey(xmlSecKeyValueEcPtr ecData, xmlNodePtr node) {
     ret = xmlSecBufferSetData(&(ecData->pub_y), data + size, size);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetData(pub_y)", NULL, "size=" XMLSEC_SIZE_FMT, size);
-        xmlSecBufferFinalize(&tmp);
         return(-1);
     }
 
     /* done */
-    xmlSecBufferFinalize(&tmp);
     return(0);
 }
 

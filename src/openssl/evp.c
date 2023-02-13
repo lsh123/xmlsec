@@ -1556,16 +1556,16 @@ typedef struct _xmlSecOpenSSLKeyDataEcCurveNameAndOID {
 } xmlSecOpenSSLKeyDataEcCurveNameAndOID;
 
 static const xmlSecOpenSSLKeyDataEcCurveNameAndOID g_xmlSecOpenSSLKeyDataEcCurveNameAndOID[] = {
-    { NID_X9_62_prime192v1, SN_X9_62_prime192v1, "urn:oid:1.2.840.10045.3.1.1" }, /* "prime192v1" */
-    { NID_X9_62_prime192v2, SN_X9_62_prime192v2, "urn:oid:1.2.840.10045.3.1.2" },
-    { NID_X9_62_prime192v3, SN_X9_62_prime192v3, "urn:oid:1.2.840.10045.3.1.3" },
-    { NID_X9_62_prime239v1, SN_X9_62_prime239v1, "urn:oid:1.2.840.10045.3.1.4" },
-    { NID_X9_62_prime239v2, SN_X9_62_prime239v2, "urn:oid:1.2.840.10045.3.1.5" },
-    { NID_X9_62_prime239v3, SN_X9_62_prime239v3, "urn:oid:1.2.840.10045.3.1.6" },
-    { NID_X9_62_prime256v1, SN_X9_62_prime256v1, "urn:oid:1.2.840.10045.3.1.7" }, /* prime256v1 */
-    { NID_secp224r1, SN_secp224r1, "urn:oid:1.3.132.0.33" }, /* secp224r1 */
-    { NID_secp384r1, SN_secp384r1, "urn:oid:1.3.132.0.34" }, /* secp384r1 */
-    { NID_secp521r1, SN_secp521r1, "urn:oid:1.3.132.0.35" }  /* OBJ_secp521r1 */
+    { NID_X9_62_prime192v1, SN_X9_62_prime192v1, "1.2.840.10045.3.1.1" }, /* "prime192v1" */
+    { NID_X9_62_prime192v2, SN_X9_62_prime192v2, "1.2.840.10045.3.1.2" },
+    { NID_X9_62_prime192v3, SN_X9_62_prime192v3, "1.2.840.10045.3.1.3" },
+    { NID_X9_62_prime239v1, SN_X9_62_prime239v1, "1.2.840.10045.3.1.4" },
+    { NID_X9_62_prime239v2, SN_X9_62_prime239v2, "1.2.840.10045.3.1.5" },
+    { NID_X9_62_prime239v3, SN_X9_62_prime239v3, "1.2.840.10045.3.1.6" },
+    { NID_X9_62_prime256v1, SN_X9_62_prime256v1, "1.2.840.10045.3.1.7" }, /* prime256v1 */
+    { NID_secp224r1, SN_secp224r1, "1.3.132.0.33" }, /* secp224r1 */
+    { NID_secp384r1, SN_secp384r1, "1.3.132.0.34" }, /* secp384r1 */
+    { NID_secp521r1, SN_secp521r1, "1.3.132.0.35" }  /* OBJ_secp521r1 */
 };
 
 

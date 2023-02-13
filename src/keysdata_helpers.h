@@ -88,12 +88,12 @@ typedef struct _xmlSecKeyValueEc {
  * @id:                 the key data data.
  * @ecdsaValue:         the pointer to input @xmlSecKeyValueEc.
  *
- * Creates xmlSecKeyData from @dsaValue
+ * Creates xmlSecKeyData from @ecValue
  *
  * Returns: the poitner to xmlSecKeyData or NULL if an error occurs.
  */
 typedef xmlSecKeyDataPtr       (*xmlSecKeyDataEcRead)                   (xmlSecKeyDataId id,
-                                                                         xmlSecKeyValueEcPtr ecdsaValue);
+                                                                         xmlSecKeyValueEcPtr ecValue);
 
 /**
  * xmlSecKeyDataEcWrite:
@@ -107,7 +107,12 @@ typedef xmlSecKeyDataPtr       (*xmlSecKeyDataEcRead)                   (xmlSecK
  */
 typedef int                    (*xmlSecKeyDataEcWrite)                  (xmlSecKeyDataId id,
                                                                          xmlSecKeyDataPtr data,
-                                                                         xmlSecKeyValueEcPtr ecdsaValue);
+                                                                         xmlSecKeyValueEcPtr ecValue);
+
+
+XMLSEC_EXPORT int               xmlSecKeyDataEcPublicKeySplitComponents (xmlSecKeyValueEcPtr ecValue);
+XMLSEC_EXPORT int               xmlSecKeyDataEcPublicKeyCombineComponents (xmlSecKeyValueEcPtr ecValue);
+
 
 XMLSEC_EXPORT int               xmlSecKeyDataEcXmlRead                  (xmlSecKeyDataId id,
                                                                          xmlSecKeyPtr key,

@@ -660,7 +660,7 @@ xmlSecGnuTLSAppPemDerKeyLoadMemory(const xmlSecByte * data, xmlSecSize dataSize,
         return(key);
     }
 
-    xmlSecInternalError3("Cannt read private or public keys", NULL,
+    xmlSecInternalError3("Cannot read private or public keys", NULL,
             "format=%d; keySize=" XMLSEC_SIZE_FMT, (int)fmt, dataSize);
     return(NULL);
 }

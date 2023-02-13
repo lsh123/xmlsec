@@ -66,7 +66,7 @@
                     (const char*)(errorObject),             \
                     (errorFunction),                        \
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,          \
-                    msg  "gnutls error: %d: %s",            \
+                    msg  "; gnutls error: %d: %s",          \
                     (param),                                \
                     (errCode),                              \
                     xmlSecErrorsSafeString(message)         \

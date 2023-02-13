@@ -1196,24 +1196,17 @@ xmlSecKeyValueEcFinalize(xmlSecKeyValueEcPtr data) {
  */
 #define XMLSEC_ECKEYVALYU_ECPOINT_MAGIC_BYTE        0x04
 
-static int
-xmlSecKeyValueEcXmlReadPublicKey(xmlSecKeyValueEcPtr ecData, xmlNodePtr node) {
+int
+xmlSecKeyDataEcPublicKeySplitComponents (xmlSecKeyValueEcPtr ecValue) {
     xmlSecSize size;
     xmlSecByte* data;
     int ret;
 
-    xmlSecAssert2(ecData != NULL, -1);
-    xmlSecAssert2(node != NULL, -1);
-
-    ret = xmlSecBufferBase64NodeContentRead(&(ecData->pubkey), node);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecBufferBase64NodeContentRead(pubkey)", NULL);
-        return(-1);
-    }
+    xmlSecAssert2(ecValue != NULL, -1);
 
     /* check size and magic number */
-    data = xmlSecBufferGetData(&(ecData->pubkey));
-    size = xmlSecBufferGetSize(&(ecData->pubkey));
+    data = xmlSecBufferGetData(&(ecValue->pubkey));
+    size = xmlSecBufferGetSize(&(ecValue->pubkey));
     if((data == NULL) || (size <= 1) || ((size % 2) != 1)) {
         xmlSecInvalidSizeDataError("PublicKey", size, "ECPoint data should have an odd size > 1 ", NULL);
         return(-1);
@@ -1226,22 +1219,65 @@ xmlSecKeyValueEcXmlReadPublicKey(xmlSecKeyValueEcPtr ecData, xmlNodePtr node) {
     size = (size - 1) / 2;
 
     /* set pub_y */
-    ret = xmlSecBufferSetData(&(ecData->pub_x), data, size);
+    ret = xmlSecBufferSetData(&(ecValue->pub_x), data, size);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetData(pub_x)", NULL, "size=" XMLSEC_SIZE_FMT, size);
+        xmlSecInternalError2("xmlSecBufferSetData(pub_x)", NULL,
+            "size=" XMLSEC_SIZE_FMT, size);
         return(-1);
     }
 
     /* set pub_y */
-    ret = xmlSecBufferSetData(&(ecData->pub_y), data + size, size);
+    ret = xmlSecBufferSetData(&(ecValue->pub_y), data + size, size);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetData(pub_y)", NULL, "size=" XMLSEC_SIZE_FMT, size);
+        xmlSecInternalError2("xmlSecBufferSetData(pub_y)", NULL,
+            "size=" XMLSEC_SIZE_FMT, size);
         return(-1);
     }
 
     /* done */
     return(0);
 }
+
+int
+xmlSecKeyDataEcPublicKeyCombineComponents (xmlSecKeyValueEcPtr ecValue) {
+    xmlSecByte * dataX, * dataY, * data;
+    xmlSecSize sizeX, sizeY, sizeKey, size;
+    int ret;
+
+    xmlSecAssert2(ecValue != NULL, -1);
+
+    dataX = xmlSecBufferGetData(&(ecValue->pub_x));
+    sizeX = xmlSecBufferGetSize(&(ecValue->pub_x));
+    dataY = xmlSecBufferGetData(&(ecValue->pub_y));
+    sizeY = xmlSecBufferGetSize(&(ecValue->pub_y));
+
+    xmlSecAssert2(dataX != NULL, -1);
+    xmlSecAssert2(dataY != NULL, -1);
+    xmlSecAssert2(sizeX > 0, -1);
+    xmlSecAssert2(sizeY > 0, -1);
+
+    /* max of the two sizes (prepend 0s if needed) */
+    sizeKey = (sizeX >= sizeY) ? sizeX : sizeY;
+    size = 1 + 2 * sizeKey; /* <magic byte> || x || y */
+    ret = xmlSecBufferSetSize(&(ecValue->pubkey), size);
+    if(ret < 0) {
+        xmlSecInternalError2("xmlSecBufferSetSize(pubkeyy)", NULL,
+            "size=" XMLSEC_SIZE_FMT, size);
+        return(-1);
+    }
+    data = xmlSecBufferGetData(&(ecValue->pubkey));
+    xmlSecAssert2(data != NULL, -1);
+
+    /*  <magic byte> || x || y,  prepend 0s if needed */
+    memset(data, 0, size);
+    data[0] = XMLSEC_ECKEYVALYU_ECPOINT_MAGIC_BYTE;
+    memcpy(data + 1 + sizeKey - sizeX, dataX, sizeX);
+    memcpy(data + 1 + sizeKey + sizeKey - sizeY, dataY, sizeY);
+
+    /* done */
+    return(0);
+}
+
 
 /* See https://www.w3.org/TR/xmldsig-core/#sec-ECKeyValue
  *
@@ -1271,6 +1307,8 @@ xmlSecKeyValueEcXmlReadPublicKey(xmlSecKeyValueEcPtr ecData, xmlNodePtr node) {
  * Note that ECParameters node is not supported for now (https://github.com/lsh123/xmlsec/issues/516).
  *
 */
+#define XMLSEC_KEYVALUE_EC_OID_PREFIX   (BAD_CAST "urn:oid:")
+
 static int
 xmlSecKeyValueEcXmlRead(xmlSecKeyValueEcPtr data, xmlNodePtr node) {
     xmlNodePtr cur;
@@ -1292,18 +1330,27 @@ xmlSecKeyValueEcXmlRead(xmlSecKeyValueEcPtr data, xmlNodePtr node) {
         xmlSecInvalidNodeAttributeError(cur, xmlSecAttrURI, NULL, "empty");
         return(-1);
     }
+    /* remove the oid prefix if needed */
+    if((xmlStrncmp(data->curve, XMLSEC_KEYVALUE_EC_OID_PREFIX, xmlStrlen(XMLSEC_KEYVALUE_EC_OID_PREFIX)) == 0)) {
+        xmlChar * curve = xmlStrdup(data->curve + xmlStrlen(XMLSEC_KEYVALUE_EC_OID_PREFIX));
+        if(curve == NULL) {
+            xmlSecStrdupError(data->curve, NULL);
+            return(-1);
+        }
+        xmlFree(data->curve);
+        data->curve = curve;
+    }
     cur = xmlSecGetNextElementNode(cur->next);
 
-    /* second node is PublicKey node */
+    /* second node is PublicKey node: read the "combined" public key only since many
+     * crypto libraries don't need a split into (x, y) pair */
     if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodePublicKey, xmlSecDSig11Ns))) {
         xmlSecInvalidNodeError(cur, xmlSecNodePublicKey, NULL);
         return(-1);
     }
-
-    /* read both pub_x and pub_y */
-    ret = xmlSecKeyValueEcXmlReadPublicKey(data, cur);
+    ret = xmlSecBufferBase64NodeContentRead(&(data->pubkey), node);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecKeyValueEcXmlReadPublicKey", NULL);
+        xmlSecInternalError("xmlSecBufferBase64NodeContentRead(pubkey)", NULL);
         return(-1);
     }
     cur = xmlSecGetNextElementNode(cur->next);
@@ -1333,7 +1380,32 @@ xmlSecKeyValueEcXmlWrite(xmlSecKeyValueEcPtr data, xmlNodePtr node,  int base64L
         xmlSecInternalError("xmlSecAddChild(NamedCurve)", NULL);
         return(-1);
     }
-    xmlSetProp(cur, xmlSecAttrURI, data->curve);
+    /* add the oid prefix if needed */
+    if((xmlStrncmp(data->curve, XMLSEC_KEYVALUE_EC_OID_PREFIX, xmlStrlen(XMLSEC_KEYVALUE_EC_OID_PREFIX)) != 0)) {
+        xmlSecSize size;
+        xmlChar * curve;
+        int len;
+
+        len = xmlStrlen(XMLSEC_KEYVALUE_EC_OID_PREFIX) + xmlStrlen(data->curve) + 1;
+        XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, return(-1), NULL);
+
+        curve = (xmlChar *)xmlMalloc(size);
+        if(curve == NULL) {
+            xmlSecMallocError(size, NULL);
+            return(-1);
+        }
+
+        ret = xmlStrPrintf(curve, len, "%s%s", XMLSEC_KEYVALUE_EC_OID_PREFIX, data->curve);
+        if(ret < 0) {
+            xmlSecXmlError("xmlStrPrintf", NULL);
+            xmlFree(curve);
+            return(-1);
+        }
+        xmlSetProp(cur, xmlSecAttrURI, curve);
+        xmlFree(curve);
+    } else {
+        xmlSetProp(cur, xmlSecAttrURI, data->curve);
+    }
 
     /* second node is PublicKey node */
     cur = xmlSecAddChild(node, xmlSecNodePublicKey, xmlSecDSig11Ns);

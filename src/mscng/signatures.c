@@ -285,28 +285,28 @@ static int xmlSecMSCngSignatureInitialize(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformEcdsaSha1Id)) {
         ctx->pszHashAlgId = BCRYPT_SHA1_ALGORITHM;
-        ctx->keyId = xmlSecMSCngKeyDataEcdsaId;
+        ctx->keyId = xmlSecMSCngKeyDataEcId;
     } else
 #endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_SHA256
     if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformEcdsaSha256Id)) {
         ctx->pszHashAlgId = BCRYPT_SHA256_ALGORITHM;
-        ctx->keyId = xmlSecMSCngKeyDataEcdsaId;
+        ctx->keyId = xmlSecMSCngKeyDataEcId;
     } else
 #endif /* XMLSEC_NO_SHA256 */
 
 #ifndef XMLSEC_NO_SHA384
     if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformEcdsaSha384Id)) {
         ctx->pszHashAlgId = BCRYPT_SHA384_ALGORITHM;
-        ctx->keyId = xmlSecMSCngKeyDataEcdsaId;
+        ctx->keyId = xmlSecMSCngKeyDataEcId;
     } else
 #endif /* XMLSEC_NO_SHA384 */
 
 #ifndef XMLSEC_NO_SHA512
     if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformEcdsaSha512Id)) {
         ctx->pszHashAlgId = BCRYPT_SHA512_ALGORITHM;
-        ctx->keyId = xmlSecMSCngKeyDataEcdsaId;
+        ctx->keyId = xmlSecMSCngKeyDataEcId;
     } else
 #endif /* XMLSEC_NO_SHA512 */
 

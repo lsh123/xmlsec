@@ -204,7 +204,7 @@ xmlSecMSCngCertAdopt(PCCERT_CONTEXT pCert, xmlSecKeyDataType type) {
 
 #ifndef XMLSEC_NO_EC
     if(!strcmp(pCert->pCertInfo->SubjectPublicKeyInfo.Algorithm.pszObjId, szOID_ECC_PUBLIC_KEY)) {
-        data = xmlSecKeyDataCreate(xmlSecMSCngKeyDataEcdsaId);
+        data = xmlSecKeyDataCreate(xmlSecMSCngKeyDataEcId);
         if(data == NULL) {
             xmlSecInternalError("xmlSecKeyDataCreate(KeyDataEcdsaId)", NULL);
             return(NULL);
@@ -1389,18 +1389,18 @@ xmlSecMSCngKeyDataRsaGetKlass(void) {
 
 #ifndef XMLSEC_NO_EC
 static int
-xmlSecMSCngKeyDataEcdsaDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecMSCngKeyDataEcdsaId), -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecMSCngKeyDataEcdsaId), -1);
+xmlSecMSCngKeyDataEcDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecMSCngKeyDataEcId), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecMSCngKeyDataEcId), -1);
 
     return(xmlSecMSCngKeyDataDuplicate(dst, src));
 }
 
 static xmlSecKeyDataType
-xmlSecMSCngKeyDataEcdsaGetType(xmlSecKeyDataPtr data) {
+xmlSecMSCngKeyDataEcGetType(xmlSecKeyDataPtr data) {
     xmlSecMSCngKeyDataCtxPtr ctx;
 
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataEcdsaId), xmlSecKeyDataTypeUnknown);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataEcId), xmlSecKeyDataTypeUnknown);
 
     ctx = xmlSecMSCngKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, xmlSecKeyDataTypeUnknown);
@@ -1413,31 +1413,31 @@ xmlSecMSCngKeyDataEcdsaGetType(xmlSecKeyDataPtr data) {
 }
 
 static xmlSecSize
-xmlSecMSCngKeyDataEcdsaGetSize(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataEcdsaId), 0);
+xmlSecMSCngKeyDataEcGetSize(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataEcId), 0);
 
     return(xmlSecMSCngKeyDataGetSize(data));
 }
 
 
 static void
-xmlSecMSCngKeyDataEcdsaDebugDump(xmlSecKeyDataPtr data, FILE* output) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataEcdsaId));
+xmlSecMSCngKeyDataEcDebugDump(xmlSecKeyDataPtr data, FILE* output) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataEcId));
     xmlSecAssert(output != NULL);
 
     fprintf(output, "=== rsa key: size = " XMLSEC_SIZE_FMT "\n",
-        xmlSecMSCngKeyDataEcdsaGetSize(data));
+        xmlSecMSCngKeyDataEcGetSize(data));
 }
 
-static void xmlSecMSCngKeyDataEcdsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataEcdsaId));
+static void xmlSecMSCngKeyDataEcDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataEcId));
     xmlSecAssert(output != NULL);
 
     fprintf(output, "<ECKeyValue size=\"" XMLSEC_SIZE_FMT "\" />\n",
-        xmlSecMSCngKeyDataEcdsaGetSize(data));
+        xmlSecMSCngKeyDataEcGetSize(data));
 }
 
-static xmlSecKeyDataKlass xmlSecMSCngKeyDataEcdsaKlass = {
+static xmlSecKeyDataKlass xmlSecMSCngKeyDataEcKlass = {
     sizeof(xmlSecKeyDataKlass),
     xmlSecMSCngKeyDataSize,
 
@@ -1451,13 +1451,13 @@ static xmlSecKeyDataKlass xmlSecMSCngKeyDataEcdsaKlass = {
 
     /* constructors/destructor */
     xmlSecMSCngKeyDataInitialize,               /* xmlSecKeyDataInitializeMethod initialize; */
-    xmlSecMSCngKeyDataEcdsaDuplicate,           /* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecMSCngKeyDataEcDuplicate,           /* xmlSecKeyDataDuplicateMethod duplicate; */
     xmlSecMSCngKeyDataFinalize,                 /* xmlSecKeyDataFinalizeMethod finalize; */
     NULL,                                       /* xmlSecKeyDataGenerateMethod generate; */
 
     /* get info */
-    xmlSecMSCngKeyDataEcdsaGetType,             /* xmlSecKeyDataGetTypeMethod getType; */
-    xmlSecMSCngKeyDataEcdsaGetSize,             /* xmlSecKeyDataGetSizeMethod getSize; */
+    xmlSecMSCngKeyDataEcGetType,             /* xmlSecKeyDataGetTypeMethod getType; */
+    xmlSecMSCngKeyDataEcGetSize,             /* xmlSecKeyDataGetSizeMethod getSize; */
     NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
 
     /* read/write */
@@ -1467,8 +1467,8 @@ static xmlSecKeyDataKlass xmlSecMSCngKeyDataEcdsaKlass = {
     NULL,                                       /* xmlSecKeyDataBinWriteMethod binWrite; */
 
     /* debug */
-    xmlSecMSCngKeyDataEcdsaDebugDump,           /* xmlSecKeyDataDebugDumpMethod debugDump; */
-    xmlSecMSCngKeyDataEcdsaDebugXmlDump,        /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+    xmlSecMSCngKeyDataEcDebugDump,           /* xmlSecKeyDataDebugDumpMethod debugDump; */
+    xmlSecMSCngKeyDataEcDebugXmlDump,        /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
 
     /* reserved for the future */
     NULL,                                       /* void* reserved0; */
@@ -1476,14 +1476,26 @@ static xmlSecKeyDataKlass xmlSecMSCngKeyDataEcdsaKlass = {
 };
 
 /**
- * xmlSecMSCngkeyDataEcGetKlass:
+ * xmlSecMSCngKeyDataEcGetKlass:
  *
- * The MSCng ECDSA CertKey data klass.
+ * The MSCng EC CertKey data klass.
  *
- * Returns: pointer to MSCng ECDSA key data klass.
+ * Returns: pointer to MSCng EC key data klass.
  */
 xmlSecKeyDataId
-xmlSecMSCngkeyDataEcGetKlass(void) {
-    return(&xmlSecMSCngKeyDataEcdsaKlass);
+xmlSecMSCngKeyDataEcGetKlass(void) {
+    return(&xmlSecMSCngKeyDataEcKlass);
+}
+
+/**
+ * xmlSecMSCngKeyDataEcdsaGetKlass:
+ *
+ * Deprecated. The MSCng EC CertKey data klass.
+ *
+ * Returns: pointer to MSCng EC key data klass.
+ */
+xmlSecKeyDataId
+xmlSecMSCngKeyDataEcdsaGetKlass(void) {
+    return(xmlSecMSCngKeyDataEcGetKlass());
 }
 #endif /* XMLSEC_NO_EC */

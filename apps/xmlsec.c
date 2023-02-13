@@ -2031,7 +2031,7 @@ xmlSecAppPrepareKeyInfoReadCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
             return(-1);
         }
 
-        for(p = value->strListValue; (p != NULL) && ((*p) != '\0'); p += strlen(p)) {
+        for(p = value->strListValue; (p != NULL) && ((*p) != '\0'); p += strlen(p) + 1) {
             dataId = xmlSecKeyDataIdListFindByName(xmlSecKeyDataIdsGet(), BAD_CAST p, xmlSecKeyDataUsageAny);
             if(dataId == xmlSecKeyDataIdUnknown) {
                 fprintf(stderr, "Error: key data \"%s\" is unknown.\n", p);

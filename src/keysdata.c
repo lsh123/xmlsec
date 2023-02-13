@@ -1347,7 +1347,6 @@ xmlSecKeyValueEcXmlWrite(xmlSecKeyValueEcPtr data, xmlNodePtr node,  int base64L
         xmlNodeSetContent(cur, xmlSecStringEmpty);
     }
 
-    /* TODO
     ret = xmlSecBufferBase64NodeContentWrite(&(data->pubkey), cur, base64LineSize);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferBase64NodeContentWrite(q)", NULL);
@@ -1356,7 +1355,6 @@ xmlSecKeyValueEcXmlWrite(xmlSecKeyValueEcPtr data, xmlNodePtr node,  int base64L
     if(addLineBreaks) {
         xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed());
     }
-    */
 
     /* done */
     return(0);

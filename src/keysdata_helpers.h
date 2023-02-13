@@ -75,9 +75,10 @@ XMLSEC_EXPORT void              xmlSecKeyDataBinaryValueDebugXmlDump    (xmlSecK
 
 #if !defined(XMLSEC_NO_EC)
 
+/* TODO: do we even need pub_x and pub_y? */
 typedef struct _xmlSecKeyValueEc {
     xmlChar* curve;
-    xmlSecBuffer pubkey; /* */
+    xmlSecBuffer pubkey;
     xmlSecBuffer pub_x;
     xmlSecBuffer pub_y;
 } xmlSecKeyValueEc, *xmlSecKeyValueEcPtr;

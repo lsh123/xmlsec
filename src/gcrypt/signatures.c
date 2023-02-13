@@ -390,7 +390,7 @@ xmlSecGCryptPkSignatureInitialize(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformEcdsaSha1Id)) {
         ctx->digest     = GCRY_MD_SHA1;
-        ctx->keyId      = xmlSecGCryptKeyDataEcdsaId;
+        ctx->keyId      = xmlSecGCryptKeyDataEcId;
         ctx->sign       = xmlSecGCryptEcdsaSign;
         ctx->verify     = xmlSecGCryptEcdsaVerify;
     } else
@@ -399,7 +399,7 @@ xmlSecGCryptPkSignatureInitialize(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_NO_SHA256
     if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformEcdsaSha256Id)) {
         ctx->digest     = GCRY_MD_SHA256;
-        ctx->keyId      = xmlSecGCryptKeyDataEcdsaId;
+        ctx->keyId      = xmlSecGCryptKeyDataEcId;
         ctx->sign       = xmlSecGCryptEcdsaSign;
         ctx->verify     = xmlSecGCryptEcdsaVerify;
     } else
@@ -408,7 +408,7 @@ xmlSecGCryptPkSignatureInitialize(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_NO_SHA384
     if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformEcdsaSha384Id)) {
         ctx->digest     = GCRY_MD_SHA384;
-        ctx->keyId      = xmlSecGCryptKeyDataEcdsaId;
+        ctx->keyId      = xmlSecGCryptKeyDataEcId;
         ctx->sign       = xmlSecGCryptEcdsaSign;
         ctx->verify     = xmlSecGCryptEcdsaVerify;
     } else
@@ -417,7 +417,7 @@ xmlSecGCryptPkSignatureInitialize(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_NO_SHA512
     if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformEcdsaSha512Id)) {
         ctx->digest     = GCRY_MD_SHA512;
-        ctx->keyId      = xmlSecGCryptKeyDataEcdsaId;
+        ctx->keyId      = xmlSecGCryptKeyDataEcId;
         ctx->sign       = xmlSecGCryptEcdsaSign;
         ctx->verify     = xmlSecGCryptEcdsaVerify;
     } else
@@ -1928,7 +1928,7 @@ xmlSecGCryptEcdsaSign(int digest, xmlSecKeyDataPtr key_data,
     xmlSecAssert2(dgstSize > 0, -1);
     xmlSecAssert2(out != NULL, -1);
 
-    s_key = xmlSecGCryptKeyDataEcdsaGetPrivateKey(key_data);
+    s_key = xmlSecGCryptKeyDataEcGetPrivateKey(key_data);
     xmlSecAssert2(s_key != NULL, -1);
 
     keySize = xmlSecKeyDataGetSize(key_data);
@@ -2074,7 +2074,7 @@ xmlSecGCryptEcdsaVerify(int digest, xmlSecKeyDataPtr key_data,
     xmlSecAssert2(dgstSize > 0, -1);
     xmlSecAssert2(data != NULL, -1);
 
-    s_key = xmlSecGCryptKeyDataEcdsaGetPublicKey(key_data);
+    s_key = xmlSecGCryptKeyDataEcGetPublicKey(key_data);
     xmlSecAssert2(s_key != NULL, -1);
 
     keySize = xmlSecKeyDataGetSize(key_data);

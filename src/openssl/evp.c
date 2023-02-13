@@ -1953,6 +1953,7 @@ xmlSecOpenSSLKeyDataEcWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKey
     size_t curve_name_len = 0;
     unsigned char *pubkey_data = NULL;
     size_t pubkey_len = 0;
+    xmlSecSize pubkey_size;
     int ret;
 
     xmlSecAssert2(id == xmlSecOpenSSLKeyDataEcId, -1);
@@ -1993,7 +1994,8 @@ xmlSecOpenSSLKeyDataEcWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKey
     }
     xmlSecAssert2(pubkey_data != NULL, -1);
 
-    ret = xmlSecBufferSetData(&(ecValue->pubkey), pubkey_data, pubkey_len);
+    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(pubkey_len, pubkey_size, return(-1), xmlSecKeyDataGetName(data));
+    ret = xmlSecBufferSetData(&(ecValue->pubkey), pubkey_data, pubkey_size);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferSetData(pubkey)", xmlSecKeyDataGetName(data));
         OPENSSL_free(pubkey_data);

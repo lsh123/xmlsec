@@ -202,7 +202,7 @@ xmlSecMSCngCertAdopt(PCCERT_CONTEXT pCert, xmlSecKeyDataType type) {
     }
 #endif /* XMLSEC_NO_RSA */
 
-#ifndef XMLSEC_NO_ECDSA
+#ifndef XMLSEC_NO_EC
     if(!strcmp(pCert->pCertInfo->SubjectPublicKeyInfo.Algorithm.pszObjId, szOID_ECC_PUBLIC_KEY)) {
         data = xmlSecKeyDataCreate(xmlSecMSCngKeyDataEcdsaId);
         if(data == NULL) {
@@ -210,7 +210,7 @@ xmlSecMSCngCertAdopt(PCCERT_CONTEXT pCert, xmlSecKeyDataType type) {
             return(NULL);
         }
     }
-#endif /* XMLSEC_NO_ECDSA */
+#endif /* XMLSEC_NO_EC */
 
     if(data == NULL) {
         xmlSecInvalidStringTypeError("PCCERT_CONTEXT key type",
@@ -1387,7 +1387,7 @@ xmlSecMSCngKeyDataRsaGetKlass(void) {
 }
 #endif /* XMLSEC_NO_RSA */
 
-#ifndef XMLSEC_NO_ECDSA
+#ifndef XMLSEC_NO_EC
 static int
 xmlSecMSCngKeyDataEcdsaDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecMSCngKeyDataEcdsaId), -1);
@@ -1433,7 +1433,7 @@ static void xmlSecMSCngKeyDataEcdsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* out
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataEcdsaId));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "<ECDSAKeyValue size=\"" XMLSEC_SIZE_FMT "\" />\n",
+    fprintf(output, "<ECKeyValue size=\"" XMLSEC_SIZE_FMT "\" />\n",
         xmlSecMSCngKeyDataEcdsaGetSize(data));
 }
 
@@ -1442,12 +1442,12 @@ static xmlSecKeyDataKlass xmlSecMSCngKeyDataEcdsaKlass = {
     xmlSecMSCngKeyDataSize,
 
     /* data */
-    xmlSecNameECDSAKeyValue,
+    xmlSecNameECKeyValue,
     xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
                                                 /* xmlSecKeyDataUsage usage; */
-    xmlSecHrefECDSAKeyValue,                    /* const xmlChar* href; */
-    xmlSecNodeECDSAKeyValue,                    /* const xmlChar* dataNodeName; */
-    xmlSecDSigNs,                               /* const xmlChar* dataNodeNs; */
+    xmlSecHrefECKeyValue,                    /* const xmlChar* href; */
+    xmlSecNodeECKeyValue,                    /* const xmlChar* dataNodeName; */
+    xmlSecDSig11Ns,                               /* const xmlChar* dataNodeNs; */
 
     /* constructors/destructor */
     xmlSecMSCngKeyDataInitialize,               /* xmlSecKeyDataInitializeMethod initialize; */
@@ -1476,14 +1476,14 @@ static xmlSecKeyDataKlass xmlSecMSCngKeyDataEcdsaKlass = {
 };
 
 /**
- * xmlSecMSCngKeyDataEcdsaGetKlass:
+ * xmlSecMSCngkeyDataEcGetKlass:
  *
  * The MSCng ECDSA CertKey data klass.
  *
  * Returns: pointer to MSCng ECDSA key data klass.
  */
 xmlSecKeyDataId
-xmlSecMSCngKeyDataEcdsaGetKlass(void) {
+xmlSecMSCngkeyDataEcGetKlass(void) {
     return(&xmlSecMSCngKeyDataEcdsaKlass);
 }
-#endif /* XMLSEC_NO_ECDSA */
+#endif /* XMLSEC_NO_EC */

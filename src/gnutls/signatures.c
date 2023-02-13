@@ -111,7 +111,7 @@ xmlSecGnuTLSSignatureCheckId(xmlSecTransformPtr transform) {
 #endif /* XMLSEC_NO_DSA */
 
     /********************************* ECDSA *******************************/
-#ifndef XMLSEC_NO_ECDSA
+#ifndef XMLSEC_NO_EC
 
 #ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformEcdsaSha1Id)) {
@@ -138,7 +138,7 @@ xmlSecGnuTLSSignatureCheckId(xmlSecTransformPtr transform) {
 #endif /* XMLSEC_NO_SHA512 */
 
 
-#endif /* XMLSEC_NO_ECDSA */
+#endif /* XMLSEC_NO_EC */
 
     /********************************* RSA *******************************/
 #ifndef XMLSEC_NO_RSA
@@ -713,7 +713,7 @@ xmlSecGnuTLSSignatureGetDerHalfSize(gnutls_sign_algorithm_t algo, xmlSecSize key
 #endif /* XMLSEC_NO_DSA */
 
         /********************************* Key length (ECDSA-SHA*) *******************************/
-#ifndef XMLSEC_NO_ECDSA
+#ifndef XMLSEC_NO_EC
     case GNUTLS_SIGN_ECDSA_SHA1:
     case GNUTLS_SIGN_ECDSA_SHA256:
     case GNUTLS_SIGN_ECDSA_SHA384:
@@ -724,7 +724,7 @@ xmlSecGnuTLSSignatureGetDerHalfSize(gnutls_sign_algorithm_t algo, xmlSecSize key
         }
         (*res) = (keySize + 7) / 8;
         break;
-#endif /* XMLSEC_NO_ECDSA */
+#endif /* XMLSEC_NO_EC */
 
     default:
         /* don't convert to DER */
@@ -1067,7 +1067,7 @@ xmlSecGnuTLSTransformDsaSha256GetKlass(void) {
 #endif /* XMLSEC_NO_DSA */
 
 /********************************* DSA *******************************/
-#ifndef XMLSEC_NO_ECDSA
+#ifndef XMLSEC_NO_EC
 /*
  * https://www.w3.org/TR/xmldsig-core1/#sec-ECDSA
  *
@@ -1267,7 +1267,7 @@ xmlSecGnuTLSTransformEcdsaSha512GetKlass(void) {
 
 #endif /* XMLSEC_NO_SHA512 */
 
-#endif /* XMLSEC_NO_ECDSA */
+#endif /* XMLSEC_NO_EC */
 
 /********************************* RSA *******************************/
 

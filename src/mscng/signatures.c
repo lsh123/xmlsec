@@ -146,7 +146,7 @@ static int xmlSecMSCngSignatureCheckId(xmlSecTransformPtr transform) {
 
 #endif /* XMLSEC_NO_RSA */
 
-#ifndef XMLSEC_NO_ECDSA
+#ifndef XMLSEC_NO_EC
 
 #ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformEcdsaSha1Id)) {
@@ -172,7 +172,7 @@ static int xmlSecMSCngSignatureCheckId(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_SHA512 */
 
-#endif /* XMLSEC_NO_ECDSA */
+#endif /* XMLSEC_NO_EC */
 
     /* not found */
     return(0);
@@ -280,7 +280,7 @@ static int xmlSecMSCngSignatureInitialize(xmlSecTransformPtr transform) {
 
 #endif /* XMLSEC_NO_RSA */
 
-#ifndef XMLSEC_NO_ECDSA
+#ifndef XMLSEC_NO_EC
 
 #ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformEcdsaSha1Id)) {
@@ -310,7 +310,7 @@ static int xmlSecMSCngSignatureInitialize(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_SHA512 */
 
-#endif /* XMLSEC_NO_ECDSA */
+#endif /* XMLSEC_NO_EC */
 
     /* not found */
     {
@@ -1163,7 +1163,7 @@ xmlSecMSCngTransformRsaPssSha512GetKlass(void) {
 
 #endif /* XMLSEC_NO_RSA */
 
-#ifndef XMLSEC_NO_ECDSA
+#ifndef XMLSEC_NO_EC
 
 #ifndef XMLSEC_NO_SHA1
 /****************************************************************************
@@ -1349,4 +1349,4 @@ xmlSecMSCngTransformEcdsaSha512GetKlass(void) {
 }
 #endif /* XMLSEC_NO_SHA512 */
 
-#endif /* XMLSEC_NO_ECDSA */
+#endif /* XMLSEC_NO_EC */

@@ -102,202 +102,356 @@ execDSigTest $res_success \
     "--hmackey keys/hmackey.bin"
 
 # ECDSA
-execDSigTest $res_success \
-    "xmldsig11-interop-2012" \
-    "signature-enveloping-p256_sha1" \
-    "c14n sha1 ecdsa-sha1" \
-    "" \
-    "--enabled-key-data key-name $pub_key_option ./keys/p256-key.$pub_key_format"
+if [ "z$crypto" != "zopenssl" ] ; then
+    # OpenSSL supports ECKeyValue, others dont so we need to pass the key
+    execDSigTest $res_success \
+        "xmldsig11-interop-2012" \
+        "signature-enveloping-p256_sha1" \
+        "c14n sha1 ecdsa-sha1" \
+        "" \
+        "--enabled-key-data key-name $pub_key_option ./keys/p256-key.$pub_key_format"
 
-execDSigTest $res_success \
-    "xmldsig11-interop-2012" \
-    "signature-enveloping-p256_sha1_4050" \
-    "c14n sha1 ecdsa-sha1" \
-    "" \
-    "--enabled-key-data key-name $pub_key_option ./keys/p256-key.$pub_key_format"
+    execDSigTest $res_success \
+        "xmldsig11-interop-2012" \
+        "signature-enveloping-p256_sha1_4050" \
+        "c14n sha1 ecdsa-sha1" \
+        "" \
+        "--enabled-key-data key-name $pub_key_option ./keys/p256-key.$pub_key_format"
 
-execDSigTest $res_success \
-    "xmldsig11-interop-2012" \
-    "signature-enveloping-p256_sha224" \
-    "c14n sha1 ecdsa-sha224" \
-    "" \
-    "--enabled-key-data key-name $pub_key_option ./keys/p256-key.$pub_key_format"
+    execDSigTest $res_success \
+        "xmldsig11-interop-2012" \
+        "signature-enveloping-p256_sha224" \
+        "c14n sha1 ecdsa-sha224" \
+        "" \
+        "--enabled-key-data key-name $pub_key_option ./keys/p256-key.$pub_key_format"
 
-execDSigTest $res_success \
-    "xmldsig11-interop-2012" \
-    "signature-enveloping-p256_sha256" \
-    "c14n sha1 ecdsa-sha256" \
-    "" \
-    "--enabled-key-data key-name $pub_key_option ./keys/p256-key.$pub_key_format"
+    execDSigTest $res_success \
+        "xmldsig11-interop-2012" \
+        "signature-enveloping-p256_sha256" \
+        "c14n sha1 ecdsa-sha256" \
+        "" \
+        "--enabled-key-data key-name $pub_key_option ./keys/p256-key.$pub_key_format"
 
-execDSigTest $res_success \
-    "xmldsig11-interop-2012" \
-    "signature-enveloping-p256_sha256_4050" \
-    "c14n sha1 ecdsa-sha256" \
-    "" \
-    "--enabled-key-data key-name $pub_key_option ./keys/p256-key.$pub_key_format"
+    execDSigTest $res_success \
+        "xmldsig11-interop-2012" \
+        "signature-enveloping-p256_sha256_4050" \
+        "c14n sha1 ecdsa-sha256" \
+        "" \
+        "--enabled-key-data key-name $pub_key_option ./keys/p256-key.$pub_key_format"
 
-# GCrypt has problems with ECDSA-sha384 signatures if hash is longer than key
-# https://github.com/lsh123/xmlsec/issues/504
-if [ "z$crypto" != "zgcrypt" ] ; then
+    # GCrypt has problems with ECDSA-sha384 signatures if hash is longer than key
+    # https://github.com/lsh123/xmlsec/issues/504
+    if [ "z$crypto" != "zgcrypt" ] ; then
+        execDSigTest $res_success \
+            "xmldsig11-interop-2012" \
+            "signature-enveloping-p256_sha384" \
+            "c14n sha1 ecdsa-sha384" \
+            "" \
+            "--enabled-key-data key-name $pub_key_option ./keys/p256-key.$pub_key_format"
+
+        execDSigTest $res_success \
+            "xmldsig11-interop-2012" \
+            "signature-enveloping-p256_sha384_4050" \
+            "c14n sha1 ecdsa-sha384" \
+            "" \
+            "--enabled-key-data key-name $pub_key_option ./keys/p256-key.$pub_key_format"
+    fi
+
+    execDSigTest $res_success \
+        "xmldsig11-interop-2012" \
+        "signature-enveloping-p256_sha512" \
+        "c14n sha1 ecdsa-sha512" \
+        "" \
+        "--enabled-key-data key-name $pub_key_option ./keys/p256-key.$pub_key_format"
+
+    execDSigTest $res_success \
+        "xmldsig11-interop-2012" \
+        "signature-enveloping-p256_sha512_4050" \
+        "c14n sha1 ecdsa-sha512" \
+        "" \
+        "--enabled-key-data key-name $pub_key_option ./keys/p256-key.$pub_key_format"
+
+    execDSigTest $res_success \
+        "xmldsig11-interop-2012" \
+        "signature-enveloping-p384_sha1" \
+        "c14n sha1 ecdsa-sha1" \
+        "" \
+        "--enabled-key-data key-name $pub_key_option ./keys/p384-key.$pub_key_format"
+
+    execDSigTest $res_success \
+        "xmldsig11-interop-2012" \
+        "signature-enveloping-p384_sha1_4050" \
+        "c14n sha1 ecdsa-sha1" \
+        "" \
+        "--enabled-key-data key-name $pub_key_option ./keys/p384-key.$pub_key_format"
+
+    execDSigTest $res_success \
+        "xmldsig11-interop-2012" \
+        "signature-enveloping-p384_sha224" \
+        "c14n sha1 ecdsa-sha224" \
+        "" \
+        "--enabled-key-data key-name $pub_key_option ./keys/p384-key.$pub_key_format"
+
+    execDSigTest $res_success \
+        "xmldsig11-interop-2012" \
+        "signature-enveloping-p384_sha256" \
+        "c14n sha1 ecdsa-sha256" \
+        "" \
+        "--enabled-key-data key-name $pub_key_option ./keys/p384-key.$pub_key_format"
+
+    execDSigTest $res_success \
+        "xmldsig11-interop-2012" \
+        "signature-enveloping-p384_sha256_4050" \
+        "c14n sha1 ecdsa-sha256" \
+        "" \
+        "--enabled-key-data key-name $pub_key_option ./keys/p384-key.$pub_key_format"
+
+    # GCrypt has problems with ECDSA-sha384 signatures if hash is longer than key
+    # https://github.com/lsh123/xmlsec/issues/504
+    if [ "z$crypto" != "zgcrypt" ] ; then
+        execDSigTest $res_success \
+            "xmldsig11-interop-2012" \
+            "signature-enveloping-p384_sha384" \
+            "c14n sha1 ecdsa-sha384" \
+            "" \
+            "--enabled-key-data key-name $pub_key_option ./keys/p384-key.$pub_key_format"
+
+        execDSigTest $res_success \
+            "xmldsig11-interop-2012" \
+            "signature-enveloping-p384_sha384_4050" \
+            "c14n sha1 ecdsa-sha384" \
+            "" \
+            "--enabled-key-data key-name $pub_key_option ./keys/p384-key.$pub_key_format"
+    fi
+
+    execDSigTest $res_success \
+        "xmldsig11-interop-2012" \
+        "signature-enveloping-p384_sha512" \
+        "c14n sha1 ecdsa-sha512" \
+        "" \
+        "--enabled-key-data key-name $pub_key_option ./keys/p384-key.$pub_key_format"
+
+    execDSigTest $res_success \
+        "xmldsig11-interop-2012" \
+        "signature-enveloping-p384_sha512_4050" \
+        "c14n sha1 ecdsa-sha512" \
+        "" \
+        "--enabled-key-data key-name $pub_key_option ./keys/p384-key.$pub_key_format"
+
+    execDSigTest $res_success \
+        "xmldsig11-interop-2012" \
+        "signature-enveloping-p521_sha1" \
+        "c14n sha1 ecdsa-sha1" \
+        "" \
+        "--enabled-key-data key-name $pub_key_option ./keys/p521-key.$pub_key_format"
+
+    execDSigTest $res_success \
+        "xmldsig11-interop-2012" \
+        "signature-enveloping-p521_sha1_4050" \
+        "c14n sha1 ecdsa-sha1" \
+        "" \
+        "--enabled-key-data key-name $pub_key_option ./keys/p521-key.$pub_key_format"
+
+    execDSigTest $res_success \
+        "xmldsig11-interop-2012" \
+        "signature-enveloping-p521_sha224" \
+        "c14n sha1 ecdsa-sha224" \
+        "" \
+        "--enabled-key-data key-name $pub_key_option ./keys/p521-key.$pub_key_format"
+
+    execDSigTest $res_success \
+        "xmldsig11-interop-2012" \
+        "signature-enveloping-p521_sha256" \
+        "c14n sha1 ecdsa-sha256" \
+        "" \
+        "--enabled-key-data key-name $pub_key_option ./keys/p521-key.$pub_key_format"
+
+    execDSigTest $res_success \
+        "xmldsig11-interop-2012" \
+        "signature-enveloping-p521_sha256_4050" \
+        "c14n sha1 ecdsa-sha256" \
+        "" \
+        "--enabled-key-data key-name $pub_key_option ./keys/p521-key.$pub_key_format"
+
+    execDSigTest $res_success \
+        "xmldsig11-interop-2012" \
+        "signature-enveloping-p521_sha384" \
+        "c14n sha1 ecdsa-sha384" \
+        "" \
+        "--enabled-key-data key-name $pub_key_option ./keys/p521-key.$pub_key_format"
+
+    execDSigTest $res_success \
+        "xmldsig11-interop-2012" \
+        "signature-enveloping-p521_sha384_4050" \
+        "c14n sha1 ecdsa-sha384" \
+        "" \
+        "--enabled-key-data key-name $pub_key_option ./keys/p521-key.$pub_key_format"
+
+    execDSigTest $res_success \
+        "xmldsig11-interop-2012" \
+        "signature-enveloping-p521_sha512" \
+        "c14n sha1 ecdsa-sha512" \
+        "" \
+        "--enabled-key-data key-name $pub_key_option ./keys/p521-key.$pub_key_format"
+
+    execDSigTest $res_success \
+        "xmldsig11-interop-2012" \
+        "signature-enveloping-p521_sha512_4050" \
+        "c14n sha1 ecdsa-sha512" \
+        "" \
+        "--enabled-key-data key-name $pub_key_option ./keys/p521-key.$pub_key_format"
+else
+    # OpenSSL supports ECKeyValue -> we don't pass key
+
+    # Diabled tests with PublcKey X,Y components (not part of spec):
+    #   signature-enveloping-p256_sha1_4050.xml
+    #   signature-enveloping-p256_sha512_4050.xml
+    #   signature-enveloping-p384_sha384_4050.xml
+    #   signature-enveloping-p521_sha256_4050.xml
+    #   signature-enveloping-p256_sha256_4050.xml
+    #   signature-enveloping-p384_sha1_4050.xml
+    #   signature-enveloping-p384_sha512_4050.xml
+    #   signature-enveloping-p521_sha384_4050.xml
+    #   signature-enveloping-p256_sha384_4050.xml
+    #   signature-enveloping-p384_sha256_4050.xml
+    #   signature-enveloping-p521_sha1_4050.xml
+    #   signature-enveloping-p521_sha512_4050.xml
+
+    execDSigTest $res_success \
+        "xmldsig11-interop-2012" \
+        "signature-enveloping-p256_sha1" \
+        "c14n sha1 ecdsa-sha1" \
+        "key-value ec" \
+        "--enabled-key-data key-value,ec" \
+        "--enabled-key-data key-value,ec --privkey-der ./keys/p256-key-orig.der" \
+        "--enabled-key-data key-value,ec"
+
+    execDSigTest $res_success \
+        "xmldsig11-interop-2012" \
+        "signature-enveloping-p256_sha224" \
+        "c14n sha1 ecdsa-sha224" \
+        "key-value ec" \
+        "--enabled-key-data key-value,ec" \
+        "--enabled-key-data key-value,ec --privkey-der ./keys/p256-key-orig.der" \
+        "--enabled-key-data key-value,ec"
+
+    execDSigTest $res_success \
+        "xmldsig11-interop-2012" \
+        "signature-enveloping-p256_sha256" \
+        "c14n sha1 ecdsa-sha256" \
+        "key-value ec" \
+        "--enabled-key-data key-value,ec" \
+        "--enabled-key-data key-value,ec --privkey-der ./keys/p256-key-orig.der" \
+        "--enabled-key-data key-value,ec"
+
     execDSigTest $res_success \
         "xmldsig11-interop-2012" \
         "signature-enveloping-p256_sha384" \
         "c14n sha1 ecdsa-sha384" \
-        "" \
-        "--enabled-key-data key-name $pub_key_option ./keys/p256-key.$pub_key_format"
+        "key-value ec" \
+        "--enabled-key-data key-value,ec" \
+        "--enabled-key-data key-value,ec --privkey-der ./keys/p256-key-orig.der" \
+        "--enabled-key-data key-value,ec"
 
     execDSigTest $res_success \
         "xmldsig11-interop-2012" \
-        "signature-enveloping-p256_sha384_4050" \
-        "c14n sha1 ecdsa-sha384" \
-        "" \
-        "--enabled-key-data key-name $pub_key_option ./keys/p256-key.$pub_key_format"
-fi
+        "signature-enveloping-p256_sha512" \
+        "c14n sha1 ecdsa-sha512" \
+        "key-value ec" \
+        "--enabled-key-data key-value,ec" \
+        "--enabled-key-data key-value,ec --privkey-der ./keys/p256-key-orig.der" \
+        "--enabled-key-data key-value,ec"
 
-execDSigTest $res_success \
-    "xmldsig11-interop-2012" \
-    "signature-enveloping-p256_sha512" \
-    "c14n sha1 ecdsa-sha512" \
-    "" \
-    "--enabled-key-data key-name $pub_key_option ./keys/p256-key.$pub_key_format"
+    execDSigTest $res_success \
+        "xmldsig11-interop-2012" \
+        "signature-enveloping-p384_sha1" \
+        "c14n sha1 ecdsa-sha1" \
+        "key-value ec" \
+        "--enabled-key-data key-value,ec" \
+        "--enabled-key-data key-value,ec --privkey-der ./keys/p384-key-orig.der" \
+        "--enabled-key-data key-value,ec"
 
-execDSigTest $res_success \
-    "xmldsig11-interop-2012" \
-    "signature-enveloping-p256_sha512_4050" \
-    "c14n sha1 ecdsa-sha512" \
-    "" \
-    "--enabled-key-data key-name $pub_key_option ./keys/p256-key.$pub_key_format"
+    execDSigTest $res_success \
+        "xmldsig11-interop-2012" \
+        "signature-enveloping-p384_sha224" \
+        "c14n sha1 ecdsa-sha224" \
+        "key-value ec" \
+        "--enabled-key-data key-value,ec" \
+        "--enabled-key-data key-value,ec --privkey-der ./keys/p384-key-orig.der" \
+        "--enabled-key-data key-value,ec"
 
-execDSigTest $res_success \
-    "xmldsig11-interop-2012" \
-    "signature-enveloping-p384_sha1" \
-    "c14n sha1 ecdsa-sha1" \
-    "" \
-    "--enabled-key-data key-name $pub_key_option ./keys/p384-key.$pub_key_format"
+    execDSigTest $res_success \
+        "xmldsig11-interop-2012" \
+        "signature-enveloping-p384_sha256" \
+        "c14n sha1 ecdsa-sha256" \
+        "key-value ec" \
+        "--enabled-key-data key-value,ec" \
+        "--enabled-key-data key-value,ec --privkey-der ./keys/p384-key-orig.der" \
+        "--enabled-key-data key-value,ec"
 
-execDSigTest $res_success \
-    "xmldsig11-interop-2012" \
-    "signature-enveloping-p384_sha1_4050" \
-    "c14n sha1 ecdsa-sha1" \
-    "" \
-    "--enabled-key-data key-name $pub_key_option ./keys/p384-key.$pub_key_format"
-
-execDSigTest $res_success \
-    "xmldsig11-interop-2012" \
-    "signature-enveloping-p384_sha224" \
-    "c14n sha1 ecdsa-sha224" \
-    "" \
-    "--enabled-key-data key-name $pub_key_option ./keys/p384-key.$pub_key_format"
-
-execDSigTest $res_success \
-    "xmldsig11-interop-2012" \
-    "signature-enveloping-p384_sha256" \
-    "c14n sha1 ecdsa-sha256" \
-    "" \
-    "--enabled-key-data key-name $pub_key_option ./keys/p384-key.$pub_key_format"
-
-execDSigTest $res_success \
-    "xmldsig11-interop-2012" \
-    "signature-enveloping-p384_sha256_4050" \
-    "c14n sha1 ecdsa-sha256" \
-    "" \
-    "--enabled-key-data key-name $pub_key_option ./keys/p384-key.$pub_key_format"
-
-# GCrypt has problems with ECDSA-sha384 signatures if hash is longer than key
-# https://github.com/lsh123/xmlsec/issues/504
-if [ "z$crypto" != "zgcrypt" ] ; then
     execDSigTest $res_success \
         "xmldsig11-interop-2012" \
         "signature-enveloping-p384_sha384" \
         "c14n sha1 ecdsa-sha384" \
-        "" \
-        "--enabled-key-data key-name $pub_key_option ./keys/p384-key.$pub_key_format"
+        "key-value ec" \
+        "--enabled-key-data key-value,ec" \
+        "--enabled-key-data key-value,ec --privkey-der ./keys/p384-key-orig.der" \
+        "--enabled-key-data key-value,ec"
 
     execDSigTest $res_success \
         "xmldsig11-interop-2012" \
-        "signature-enveloping-p384_sha384_4050" \
+        "signature-enveloping-p384_sha512" \
+        "c14n sha1 ecdsa-sha512" \
+        "key-value ec" \
+        "--enabled-key-data key-value,ec" \
+        "--enabled-key-data key-value,ec --privkey-der ./keys/p384-key-orig.der" \
+        "--enabled-key-data key-value,ec"
+
+    execDSigTest $res_success \
+        "xmldsig11-interop-2012" \
+        "signature-enveloping-p521_sha1" \
+        "c14n sha1 ecdsa-sha1" \
+        "key-value ec" \
+        "--enabled-key-data key-value,ec" \
+        "--enabled-key-data key-value,ec --privkey-der ./keys/p521-key-orig.der" \
+        "--enabled-key-data key-value,ec"
+
+    execDSigTest $res_success \
+        "xmldsig11-interop-2012" \
+        "signature-enveloping-p521_sha224" \
+        "c14n sha1 ecdsa-sha224" \
+        "key-value ec" \
+        "--enabled-key-data key-value,ec" \
+        "--enabled-key-data key-value,ec --privkey-der ./keys/p521-key-orig.der" \
+        "--enabled-key-data key-value,ec"
+
+    execDSigTest $res_success \
+        "xmldsig11-interop-2012" \
+        "signature-enveloping-p521_sha256" \
+        "c14n sha1 ecdsa-sha256" \
+        "key-value ec" \
+        "--enabled-key-data key-value,ec" \
+        "--enabled-key-data key-value,ec --privkey-der ./keys/p521-key-orig.der" \
+        "--enabled-key-data key-value,ec"
+
+    execDSigTest $res_success \
+        "xmldsig11-interop-2012" \
+        "signature-enveloping-p521_sha384" \
         "c14n sha1 ecdsa-sha384" \
-        "" \
-        "--enabled-key-data key-name $pub_key_option ./keys/p384-key.$pub_key_format"
+        "key-value ec" \
+        "--enabled-key-data key-value,ec" \
+        "--enabled-key-data key-value,ec --privkey-der ./keys/p521-key-orig.der" \
+        "--enabled-key-data key-value,ec"
+
+    execDSigTest $res_success \
+        "xmldsig11-interop-2012" \
+        "signature-enveloping-p521_sha512" \
+        "c14n sha1 ecdsa-sha512" \
+        "key-value ec" \
+        "--enabled-key-data key-value,ec" \
+        "--enabled-key-data key-value,ec --privkey-der ./keys/p521-key-orig.der" \
+        "--enabled-key-data key-value,ec"
 fi
-
-execDSigTest $res_success \
-    "xmldsig11-interop-2012" \
-    "signature-enveloping-p384_sha512" \
-    "c14n sha1 ecdsa-sha512" \
-    "" \
-    "--enabled-key-data key-name $pub_key_option ./keys/p384-key.$pub_key_format"
-
-execDSigTest $res_success \
-    "xmldsig11-interop-2012" \
-    "signature-enveloping-p384_sha512_4050" \
-    "c14n sha1 ecdsa-sha512" \
-    "" \
-    "--enabled-key-data key-name $pub_key_option ./keys/p384-key.$pub_key_format"
-
-execDSigTest $res_success \
-    "xmldsig11-interop-2012" \
-    "signature-enveloping-p521_sha1" \
-    "c14n sha1 ecdsa-sha1" \
-    "" \
-    "--enabled-key-data key-name $pub_key_option ./keys/p521-key.$pub_key_format"
-
-execDSigTest $res_success \
-    "xmldsig11-interop-2012" \
-    "signature-enveloping-p521_sha1_4050" \
-    "c14n sha1 ecdsa-sha1" \
-    "" \
-    "--enabled-key-data key-name $pub_key_option ./keys/p521-key.$pub_key_format"
-
-execDSigTest $res_success \
-    "xmldsig11-interop-2012" \
-    "signature-enveloping-p521_sha224" \
-    "c14n sha1 ecdsa-sha224" \
-    "" \
-    "--enabled-key-data key-name $pub_key_option ./keys/p521-key.$pub_key_format"
-
-execDSigTest $res_success \
-    "xmldsig11-interop-2012" \
-    "signature-enveloping-p521_sha256" \
-    "c14n sha1 ecdsa-sha256" \
-    "" \
-    "--enabled-key-data key-name $pub_key_option ./keys/p521-key.$pub_key_format"
-
-execDSigTest $res_success \
-    "xmldsig11-interop-2012" \
-    "signature-enveloping-p521_sha256_4050" \
-    "c14n sha1 ecdsa-sha256" \
-    "" \
-    "--enabled-key-data key-name $pub_key_option ./keys/p521-key.$pub_key_format"
-
-execDSigTest $res_success \
-    "xmldsig11-interop-2012" \
-    "signature-enveloping-p521_sha384" \
-    "c14n sha1 ecdsa-sha384" \
-    "" \
-    "--enabled-key-data key-name $pub_key_option ./keys/p521-key.$pub_key_format"
-
-execDSigTest $res_success \
-    "xmldsig11-interop-2012" \
-    "signature-enveloping-p521_sha384_4050" \
-    "c14n sha1 ecdsa-sha384" \
-    "" \
-    "--enabled-key-data key-name $pub_key_option ./keys/p521-key.$pub_key_format"
-
-execDSigTest $res_success \
-    "xmldsig11-interop-2012" \
-    "signature-enveloping-p521_sha512" \
-    "c14n sha1 ecdsa-sha512" \
-    "" \
-    "--enabled-key-data key-name $pub_key_option ./keys/p521-key.$pub_key_format"
-
-execDSigTest $res_success \
-    "xmldsig11-interop-2012" \
-    "signature-enveloping-p521_sha512_4050" \
-    "c14n sha1 ecdsa-sha512" \
-    "" \
-    "--enabled-key-data key-name $pub_key_option ./keys/p521-key.$pub_key_format"
 
 # RSA
 execDSigTest $res_success \

@@ -862,7 +862,7 @@ done:
 
 
 
-#ifndef XMLSEC_NO_ECDSA
+#ifndef XMLSEC_NO_EC
 /**************************************************************************
  *
  * ECDSA XML key representation processing.
@@ -895,12 +895,12 @@ static xmlSecKeyDataKlass xmlSecGnuTLSKeyDataEcdsaKlass = {
     xmlSecGnuTLSAsymKeyDataSize,
 
     /* data */
-    xmlSecNameECDSAKeyValue,
+    xmlSecNameECKeyValue,
     xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
                                                 /* xmlSecKeyDataUsage usage; */
-    xmlSecHrefECDSAKeyValue,                    /* const xmlChar* href; */
-    xmlSecNodeECDSAKeyValue,                    /* const xmlChar* dataNodeName; */
-    xmlSecDSigNs,                               /* const xmlChar* dataNodeNs; */
+    xmlSecHrefECKeyValue,                    /* const xmlChar* href; */
+    xmlSecNodeECKeyValue,                    /* const xmlChar* dataNodeName; */
+    xmlSecDSig11Ns,                               /* const xmlChar* dataNodeNs; */
 
     /* constructors/destructor */
     xmlSecGnuTLSKeyDataEcdsaInitialize,          /* xmlSecKeyDataInitializeMethod initialize; */
@@ -929,14 +929,14 @@ static xmlSecKeyDataKlass xmlSecGnuTLSKeyDataEcdsaKlass = {
 };
 
 /**
- * xmlSecGnuTLSKeyDataEcdsaGetKlass:
+ * xmlSecGnuTLSkeyDataEcGetKlass:
  *
  * The GnuTLS ECDSA key data klass.
  *
  * Returns: pointer to GnuTLS ECDSA key data klass.
  */
 xmlSecKeyDataId
-xmlSecGnuTLSKeyDataEcdsaGetKlass(void) {
+xmlSecGnuTLSkeyDataEcGetKlass(void) {
     return(&xmlSecGnuTLSKeyDataEcdsaKlass);
 }
 
@@ -1063,7 +1063,7 @@ xmlSecGnuTLSKeyDataEcdsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataEcdsaId));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "<ECDSAKeyValue size=\"" XMLSEC_SIZE_FMT "\" />\n",
+    fprintf(output, "<ECKeyValue size=\"" XMLSEC_SIZE_FMT "\" />\n",
             xmlSecGnuTLSKeyDataEcdsaGetSize(data));
 }
 
@@ -1113,7 +1113,7 @@ done:
     return(pubkey);
 }
 
-#endif /* XMLSEC_NO_ECDSA */
+#endif /* XMLSEC_NO_EC */
 
 
 #ifndef XMLSEC_NO_RSA
@@ -1671,7 +1671,7 @@ xmlSecGnuTLSAsymKeyDataCreate(gnutls_pubkey_t pubkey, gnutls_privkey_t privkey) 
         break;
 #endif /* XMLSEC_NO_RSA */
 
-#ifndef XMLSEC_NO_ECDSA
+#ifndef XMLSEC_NO_EC
     case GNUTLS_PK_ECDSA:
         keyData = xmlSecKeyDataCreate(xmlSecGnuTLSKeyDataEcdsaId);
         if(keyData == NULL) {

@@ -305,15 +305,15 @@ xmlSecOpenSSLEvpKeyAdopt(EVP_PKEY *pKey) {
         }
         break;
 #endif /* XMLSEC_NO_DSA */
-#ifndef XMLSEC_NO_ECDSA
+#ifndef XMLSEC_NO_EC
     case EVP_PKEY_EC:
-        data = xmlSecKeyDataCreate(xmlSecOpenSSLKeyDataEcdsaId);
+        data = xmlSecKeyDataCreate(xmlSecOpenSSLKeyDataEcId);
         if(data == NULL) {
-            xmlSecInternalError("xmlSecKeyDataCreate(xmlSecOpenSSLKeyDataEcdsaId)", NULL);
+            xmlSecInternalError("xmlSecKeyDataCreate(xmlSecOpenSSLKeyDataEcId)", NULL);
             return(NULL);
         }
         break;
-#endif /* XMLSEC_NO_ECDSA */
+#endif /* XMLSEC_NO_EC */
 
 #ifndef XMLSEC_NO_GOST
     case NID_id_GostR3410_2001:
@@ -1353,64 +1353,83 @@ done:
 
 #endif /* XMLSEC_NO_DSA */
 
-#ifndef XMLSEC_NO_ECDSA
+#ifndef XMLSEC_NO_EC
 /**************************************************************************
  *
- * ECDSA XML key representation processing.
+ * EC XML key representation processing.
  *
  * http://csrc.nist.gov/publications/PubsNISTIRs.html#NIST-IR-7802
  *
  * RFC 4050 [RFC4050] describes a possible <dsig:KeyValue> representation
- * for an ECDSA key. The representation and processing instructions
+ * for an EC key. The representation and processing instructions
  * described in [RFC4050] are not completely compatible with [XMLDSIG-11];
- * therefore, ECDSA keys SHOULD NOT be provided through a <dsig:KeyValue>
+ * therefore, EC keys SHOULD NOT be provided through a <dsig:KeyValue>
  * element.
  *
  *************************************************************************/
-static int              xmlSecOpenSSLKeyDataEcdsaInitialize(xmlSecKeyDataPtr data);
-static int              xmlSecOpenSSLKeyDataEcdsaDuplicate(xmlSecKeyDataPtr dst,
-                                                           xmlSecKeyDataPtr src);
-static void             xmlSecOpenSSLKeyDataEcdsaFinalize(xmlSecKeyDataPtr data);
 
-static xmlSecKeyDataType xmlSecOpenSSLKeyDataEcdsaGetType(xmlSecKeyDataPtr data);
-static xmlSecSize        xmlSecOpenSSLKeyDataEcdsaGetSize(xmlSecKeyDataPtr data);
-static void              xmlSecOpenSSLKeyDataEcdsaDebugDump(xmlSecKeyDataPtr data,
-                                                         FILE* output);
-static void             xmlSecOpenSSLKeyDataEcdsaDebugXmlDump(xmlSecKeyDataPtr data,
-                                                         FILE* output);
+static int              xmlSecOpenSSLKeyDataEcInitialize        (xmlSecKeyDataPtr data);
+static int              xmlSecOpenSSLKeyDataEcDuplicate         (xmlSecKeyDataPtr dst,
+                                                                 xmlSecKeyDataPtr src);
+static void             xmlSecOpenSSLKeyDataEcFinalize          (xmlSecKeyDataPtr data);
 
-static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataEcdsaKlass = {
+static xmlSecKeyDataType xmlSecOpenSSLKeyDataEcGetType          (xmlSecKeyDataPtr data);
+static xmlSecSize        xmlSecOpenSSLKeyDataEcGetSize          (xmlSecKeyDataPtr data);
+
+static int              xmlSecOpenSSLKeyDataEcXmlRead           (xmlSecKeyDataId id,
+                                                                 xmlSecKeyPtr key,
+                                                                 xmlNodePtr node,
+                                                                 xmlSecKeyInfoCtxPtr keyInfoCtx);
+static int              xmlSecOpenSSLKeyDataEcXmlWrite          (xmlSecKeyDataId id,
+                                                                 xmlSecKeyPtr key,
+                                                                 xmlNodePtr node,
+                                                                 xmlSecKeyInfoCtxPtr keyInfoCtx);
+
+static void              xmlSecOpenSSLKeyDataEcDebugDump        (xmlSecKeyDataPtr data,
+                                                                 FILE* output);
+static void             xmlSecOpenSSLKeyDataEcDebugXmlDump      (xmlSecKeyDataPtr data,
+                                                                 FILE* output);
+
+
+static xmlSecKeyDataPtr xmlSecOpenSSLKeyDataEcRead               (xmlSecKeyDataId id,
+                                                                  xmlSecKeyValueEcPtr ecValue);
+static int              xmlSecOpenSSLKeyDataEcWrite              (xmlSecKeyDataId id,
+                                                                 xmlSecKeyDataPtr data,
+                                                                 xmlSecKeyValueEcPtr ecValue);
+
+
+static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataEcKlass = {
     sizeof(xmlSecKeyDataKlass),
     xmlSecOpenSSLEvpKeyDataSize,
 
     /* data */
-    xmlSecNameECDSAKeyValue,
+    xmlSecNameECKeyValue,
     xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
                                                 /* xmlSecKeyDataUsage usage; */
-    xmlSecHrefECDSAKeyValue,                    /* const xmlChar* href; */
-    xmlSecNodeECDSAKeyValue,                    /* const xmlChar* dataNodeName; */
-    xmlSecDSigNs,                               /* const xmlChar* dataNodeNs; */
+    xmlSecHrefECKeyValue,                    /* const xmlChar* href; */
+    xmlSecNodeECKeyValue,                    /* const xmlChar* dataNodeName; */
+    xmlSecDSig11Ns,                           /* const xmlChar* dataNodeNs; */
 
     /* constructors/destructor */
-    xmlSecOpenSSLKeyDataEcdsaInitialize,        /* xmlSecKeyDataInitializeMethod initialize; */
-    xmlSecOpenSSLKeyDataEcdsaDuplicate,         /* xmlSecKeyDataDuplicateMethod duplicate; */
-    xmlSecOpenSSLKeyDataEcdsaFinalize,          /* xmlSecKeyDataFinalizeMethod finalize; */
+    xmlSecOpenSSLKeyDataEcInitialize,        /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecOpenSSLKeyDataEcDuplicate,         /* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecOpenSSLKeyDataEcFinalize,          /* xmlSecKeyDataFinalizeMethod finalize; */
     NULL,                                       /* xmlSecKeyDataGenerateMethod generate; */
 
     /* get info */
-    xmlSecOpenSSLKeyDataEcdsaGetType,           /* xmlSecKeyDataGetTypeMethod getType; */
-    xmlSecOpenSSLKeyDataEcdsaGetSize,           /* xmlSecKeyDataGetSizeMethod getSize; */
+    xmlSecOpenSSLKeyDataEcGetType,           /* xmlSecKeyDataGetTypeMethod getType; */
+    xmlSecOpenSSLKeyDataEcGetSize,           /* xmlSecKeyDataGetSizeMethod getSize; */
     NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
 
     /* read/write */
-    NULL,                                       /* xmlSecKeyDataXmlReadMethod xmlRead; */
-    NULL,                                       /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    xmlSecOpenSSLKeyDataEcXmlRead,           /* xmlSecKeyDataXmlReadMethod xmlRead; */
+    xmlSecOpenSSLKeyDataEcXmlWrite,          /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
     NULL,                                       /* xmlSecKeyDataBinReadMethod binRead; */
     NULL,                                       /* xmlSecKeyDataBinWriteMethod binWrite; */
 
     /* debug */
-    xmlSecOpenSSLKeyDataEcdsaDebugDump,         /* xmlSecKeyDataDebugDumpMethod debugDump; */
-    xmlSecOpenSSLKeyDataEcdsaDebugXmlDump,      /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+    xmlSecOpenSSLKeyDataEcDebugDump,         /* xmlSecKeyDataDebugDumpMethod debugDump; */
+    xmlSecOpenSSLKeyDataEcDebugXmlDump,      /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
 
     /* reserved for the future */
     NULL,                                       /* void* reserved0; */
@@ -1418,110 +1437,236 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataEcdsaKlass = {
 };
 
 /**
+ * xmlSecOpenSSLKeyDataEcGetKlass:
+ *
+ * The EC key data klass.
+ *
+ * Returns: pointer to EC key data klass.
+ */
+xmlSecKeyDataId
+xmlSecOpenSSLKeyDataEcGetKlass(void) {
+    return(&xmlSecOpenSSLKeyDataEcKlass);
+}
+
+/**
+ * xmlSecOpenSSLKeyDataEcAdoptEvp:
+ * @data:               the pointer to EC key data.
+ * @pKey:               the pointer to OpenSSL EVP key.
+ *
+ * Sets the EC key data value to OpenSSL EVP key.
+ *
+ * Returns: 0 on success or a negative value otherwise.
+ */
+int
+xmlSecOpenSSLKeyDataEcAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcId), -1);
+    xmlSecAssert2(pKey != NULL, -1);
+    xmlSecAssert2(EVP_PKEY_base_id(pKey) == EVP_PKEY_EC, -1);
+    return(xmlSecOpenSSLEvpKeyDataAdoptEvp(data, pKey));
+}
+
+/**
+ * xmlSecOpenSSLKeyDataEcGetEvp:
+ * @data:               the pointer to EC key data.
+ *
+ * Gets the OpenSSL EVP key from EC key data.
+ *
+ * Returns: pointer to OpenSSL EVP key or NULL if an error occurs.
+ */
+EVP_PKEY*
+xmlSecOpenSSLKeyDataEcGetEvp(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcId), NULL);
+    return(xmlSecOpenSSLEvpKeyDataGetEvp(data));
+}
+
+/**
  * xmlSecOpenSSLKeyDataEcdsaGetKlass:
  *
- * The ECDSA key data klass.
+ * Deprecated. The EC key data klass.
  *
- * Returns: pointer to ECDSA key data klass.
+ * Returns: pointer to EC key data klass.
  */
 xmlSecKeyDataId
 xmlSecOpenSSLKeyDataEcdsaGetKlass(void) {
-    return(&xmlSecOpenSSLKeyDataEcdsaKlass);
+    return(xmlSecOpenSSLKeyDataEcGetKlass());
 }
 
 /**
  * xmlSecOpenSSLKeyDataEcdsaAdoptEvp:
- * @data:               the pointer to ECDSA key data.
+ * @data:               the pointer to EC key data.
  * @pKey:               the pointer to OpenSSL EVP key.
  *
- * Sets the ECDSA key data value to OpenSSL EVP key.
+ * Deprecated. Sets the EC key data value to OpenSSL EVP key.
  *
  * Returns: 0 on success or a negative value otherwise.
  */
 int
 xmlSecOpenSSLKeyDataEcdsaAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcdsaId), -1);
-    xmlSecAssert2(pKey != NULL, -1);
-    xmlSecAssert2(EVP_PKEY_base_id(pKey) == EVP_PKEY_EC, -1);
-
-    return(xmlSecOpenSSLEvpKeyDataAdoptEvp(data, pKey));
+    return(xmlSecOpenSSLKeyDataEcAdoptEvp(data, pKey));
 }
 
 /**
  * xmlSecOpenSSLKeyDataEcdsaGetEvp:
- * @data:               the pointer to ECDSA key data.
+ * @data:               the pointer to EC key data.
  *
- * Gets the OpenSSL EVP key from ECDSA key data.
+ * Deprecated. Gets the OpenSSL EVP key from EC key data.
  *
  * Returns: pointer to OpenSSL EVP key or NULL if an error occurs.
  */
 EVP_PKEY*
 xmlSecOpenSSLKeyDataEcdsaGetEvp(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcdsaId), NULL);
-
-    return(xmlSecOpenSSLEvpKeyDataGetEvp(data));
+    return(xmlSecOpenSSLKeyDataEcGetEvp(data));
 }
 
+
+
 static int
-xmlSecOpenSSLKeyDataEcdsaInitialize(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcdsaId), -1);
+xmlSecOpenSSLKeyDataEcInitialize(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcId), -1);
 
     return(xmlSecOpenSSLEvpKeyDataInitialize(data));
 }
 
 static int
-xmlSecOpenSSLKeyDataEcdsaDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecOpenSSLKeyDataEcdsaId), -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecOpenSSLKeyDataEcdsaId), -1);
+xmlSecOpenSSLKeyDataEcDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecOpenSSLKeyDataEcId), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecOpenSSLKeyDataEcId), -1);
 
     return(xmlSecOpenSSLEvpKeyDataDuplicate(dst, src));
 }
 
 static void
-xmlSecOpenSSLKeyDataEcdsaFinalize(xmlSecKeyDataPtr data) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcdsaId));
+xmlSecOpenSSLKeyDataEcFinalize(xmlSecKeyDataPtr data) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcId));
 
     xmlSecOpenSSLEvpKeyDataFinalize(data);
 }
 
 static xmlSecKeyDataType
-xmlSecOpenSSLKeyDataEcdsaGetType(xmlSecKeyDataPtr data ATTRIBUTE_UNUSED) {
+xmlSecOpenSSLKeyDataEcGetType(xmlSecKeyDataPtr data ATTRIBUTE_UNUSED) {
     UNREFERENCED_PARAMETER(data);
     /* XXX-MAK: Fix this. */
     return(xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate);
 }
 
+typedef struct _xmlSecOpenSSLKeyDataEcCurveNameAndOID {
+    int nid;
+    xmlChar name[128];
+    xmlChar oid[128];
+} xmlSecOpenSSLKeyDataEcCurveNameAndOID;
+
+static const xmlSecOpenSSLKeyDataEcCurveNameAndOID g_xmlSecOpenSSLKeyDataEcCurveNameAndOID[] = {
+    { NID_X9_62_prime192v1, SN_X9_62_prime192v1, "urn:oid:1.2.840.10045.3.1.1" }, /* "prime192v1" */
+    { NID_X9_62_prime192v2, SN_X9_62_prime192v2, "urn:oid:1.2.840.10045.3.1.2" },
+    { NID_X9_62_prime192v3, SN_X9_62_prime192v3, "urn:oid:1.2.840.10045.3.1.3" },
+    { NID_X9_62_prime239v1, SN_X9_62_prime239v1, "urn:oid:1.2.840.10045.3.1.4" },
+    { NID_X9_62_prime239v2, SN_X9_62_prime239v2, "urn:oid:1.2.840.10045.3.1.5" },
+    { NID_X9_62_prime239v3, SN_X9_62_prime239v3, "urn:oid:1.2.840.10045.3.1.6" },
+    { NID_X9_62_prime256v1, SN_X9_62_prime256v1, "urn:oid:1.2.840.10045.3.1.7" }, /* prime256v1 */
+    { NID_secp224r1, SN_secp224r1, "urn:oid:1.3.132.0.33" }, /* secp224r1 */
+    { NID_secp384r1, SN_secp384r1, "urn:oid:1.3.132.0.34" }, /* secp384r1 */
+    { NID_secp521r1, SN_secp521r1, "urn:oid:1.3.132.0.35" }  /* OBJ_secp521r1 */
+};
+
+
+
 #ifndef XMLSEC_OPENSSL_API_300
 
-static EC_KEY*
-xmlSecOpenSSLKeyDataEcdsaGetEcdsa(xmlSecKeyDataPtr data) {
+static const xmlChar*
+xmlSecOpenSSLKeyDataEcGetOidFromNid(int nid) {
+    xmlSecSize size = sizeof(g_xmlSecOpenSSLKeyDataEcCurveNameAndOID) / sizeof(g_xmlSecOpenSSLKeyDataEcCurveNameAndOID[0]);
+
+    xmlSecAssert2(nid != NID_undef, NULL);
+
+    for(xmlSecSize ii = 0; ii < size; ++ii) {
+        if(nid == g_xmlSecOpenSSLKeyDataEcCurveNameAndOID[ii].nid) {
+            return(g_xmlSecOpenSSLKeyDataEcCurveNameAndOID[ii].oid);
+        }
+    }
+    return(NULL);
+}
+
+static int
+xmlSecOpenSSLKeyDataEcGetNidFromOid(const xmlChar * oid) {
+    xmlSecSize size = sizeof(g_xmlSecOpenSSLKeyDataEcCurveNameAndOID) / sizeof(g_xmlSecOpenSSLKeyDataEcCurveNameAndOID[0]);
+
+    xmlSecAssert2(oid != NULL, NID_undef);
+
+    for(xmlSecSize ii = 0; ii < size; ++ii) {
+        if(xmlStrcmp(oid, g_xmlSecOpenSSLKeyDataEcCurveNameAndOID[ii].oid) == 0) {
+            return(g_xmlSecOpenSSLKeyDataEcCurveNameAndOID[ii].nid);
+        }
+    }
+    return(NID_undef);
+}
+
+static const EC_KEY*
+xmlSecOpenSSLKeyDataEcGetEcKey(xmlSecKeyDataPtr data) {
     EVP_PKEY* pKey;
 
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcdsaId), NULL);
+    xmlSecAssert2(data != NULL, NULL);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcId), NULL);
 
-    pKey = xmlSecOpenSSLKeyDataEcdsaGetEvp(data);
+    pKey = xmlSecOpenSSLKeyDataEcGetEvp(data);
     xmlSecAssert2((pKey == NULL) || (EVP_PKEY_base_id(pKey) == EVP_PKEY_EC), NULL);
 
     return((pKey != NULL) ? EVP_PKEY_get0_EC_KEY(pKey) : NULL);
 }
 
+static int
+xmlSecOpenSSLKeyDataEcSetEcKey(xmlSecKeyDataPtr data,  EC_KEY* ecKey) {
+    EVP_PKEY* pKey;
+    int ret;
+
+    xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcId), -1);
+    xmlSecAssert2(ecKey != NULL, -1);
+
+    pKey = xmlSecOpenSSLKeyDataEcGetEvp(data);
+    xmlSecAssert2(pKey == NULL, -1);
+
+    pKey = EVP_PKEY_new();
+    if(pKey == NULL) {
+        xmlSecOpenSSLError("EVP_PKEY_new", xmlSecKeyDataGetName(data));
+        return(-1);
+    }
+
+    ret = EVP_PKEY_set1_EC_KEY(pKey, ecKey);
+    if(ret != 1) {
+        xmlSecOpenSSLError("EVP_PKEY_new", xmlSecKeyDataGetName(data));
+        EVP_PKEY_free(pKey);
+        return(-1);
+    }
+
+    ret = xmlSecOpenSSLKeyDataEcAdoptEvp(data, pKey);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecOpenSSLKeyDataEcAdoptEvp", xmlSecKeyDataGetName(data));
+        EVP_PKEY_free(pKey);
+        return(-1);
+    }
+    pKey = NULL; /* owned by data */
+    return(0);
+}
+
+
 static xmlSecSize
-xmlSecOpenSSLKeyDataEcdsaGetSize(xmlSecKeyDataPtr data) {
+xmlSecOpenSSLKeyDataEcGetSize(xmlSecKeyDataPtr data) {
     const EC_GROUP *group;
-    const EC_KEY *ecdsa;
+    const EC_KEY *ecKey;
     BIGNUM * order = NULL;
     int numBits;
     int ret;
     xmlSecSize res = 0;
 
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcdsaId), 0);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcId), 0);
 
-    ecdsa = xmlSecOpenSSLKeyDataEcdsaGetEcdsa(data);
-    if(ecdsa == NULL) {
+    ecKey = xmlSecOpenSSLKeyDataEcGetEcKey(data);
+    if(ecKey == NULL) {
+        xmlSecInternalError("xmlSecOpenSSLKeyDataEcGetEcKey", xmlSecKeyDataGetName(data));
         goto done;
     }
 
-    group = EC_KEY_get0_group(ecdsa);
+    group = EC_KEY_get0_group(ecKey);
     if(group == NULL) {
         xmlSecOpenSSLError("EC_KEY_get0_group", xmlSecKeyDataGetName(data));
         goto done;
@@ -1544,30 +1689,234 @@ xmlSecOpenSSLKeyDataEcdsaGetSize(xmlSecKeyDataPtr data) {
         xmlSecOpenSSLError("BN_num_bits", xmlSecKeyDataGetName(data));
         goto done;
     }
-
-    /* success */
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(numBits, res, goto done, xmlSecKeyDataGetName(data));
-
 done:
     if(order != NULL) {
         BN_clear_free(order);
     }
     return(res);
 }
+static int
+xmlSecOpenSSLKeyDataEcWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKeyValueEcPtr ecValue)
+{
+    const EC_KEY * ecKey;
+    const EC_GROUP * group;
+    const EC_POINT * pubkey;
+    const xmlChar * curve_oid;
+    xmlSecByte * pubkeyData;
+    xmlSecSize pubkeySize;
+    size_t pubkeyLen;
+    int nid;
+    int ret;
 
+    xmlSecAssert2(id == xmlSecOpenSSLKeyDataEcId, -1);
+    xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcId), -1);
+    xmlSecAssert2(ecValue != NULL, -1);
+    xmlSecAssert2(ecValue->curve == NULL, -1);
+
+    ecKey = xmlSecOpenSSLKeyDataEcGetEcKey(data);
+    if(ecKey == NULL) {
+        xmlSecInternalError("xmlSecOpenSSLKeyDataEcGetEcKey", xmlSecKeyDataGetName(data));
+        return(-1);
+    }
+
+    group = EC_KEY_get0_group(ecKey);
+    if(group == NULL) {
+        xmlSecOpenSSLError("EC_KEY_get0_group", xmlSecKeyDataGetName(data));
+        return(-1);
+    }
+
+    /* curve oid  */
+    nid = EC_GROUP_get_curve_name(group);
+    if(nid == NID_undef) {
+        xmlSecOpenSSLError("EC_GROUP_get_curve_name", xmlSecKeyDataGetName(data));
+        return(-1);
+    }
+    curve_oid = xmlSecOpenSSLKeyDataEcGetOidFromNid(nid);
+    if(curve_oid == NULL) {
+        xmlSecInternalError2("xmlSecOpenSSLKeyDataEcGetOidFromNid",  xmlSecKeyDataGetName(data),
+            "curve_nid=%d", nid);
+        return(-1);
+    }
+    ecValue->curve = xmlStrdup(curve_oid);
+    if(ecValue->curve == NULL) {
+        xmlSecStrdupError(curve_oid, xmlSecKeyDataGetName(data));
+        return(-1);
+    }
+
+    /* public key */
+    pubkey = EC_KEY_get0_public_key(ecKey);
+    if(pubkey == NULL) {
+        xmlSecOpenSSLError("EC_KEY_get0_public_key",  xmlSecKeyDataGetName(data));
+        return(-1);
+    }
+
+    /* the point is encoded as z||x||y, where z is the octet 0x04  */
+    pubkeyLen = EC_POINT_point2oct(group, pubkey, POINT_CONVERSION_UNCOMPRESSED, NULL, 0, NULL);
+    if(pubkeyLen <= 0) {
+        xmlSecOpenSSLError("EC_POINT_point2oct(1)",  xmlSecKeyDataGetName(data));
+        return(-1);
+    }
+    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(pubkeyLen, pubkeySize, return(-1), xmlSecKeyDataGetName(data));
+
+    ret = xmlSecBufferSetSize(&(ecValue->pubkey), pubkeySize);
+    if(ret < 0) {
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL,
+            "bufSize=" XMLSEC_SIZE_FMT, pubkeySize);
+        return (-1);
+    }
+    pubkeyData = xmlSecBufferGetData(&(ecValue->pubkey));
+    xmlSecAssert2(pubkeyData != NULL, -1);
+
+    pubkeyLen = EC_POINT_point2oct(group, pubkey, POINT_CONVERSION_UNCOMPRESSED, pubkeyData, pubkeyLen, NULL);
+    if(pubkeyLen <= 0) {
+        xmlSecOpenSSLError("EC_POINT_point2oct(2)",  xmlSecKeyDataGetName(data));
+        return(-1);
+    }
+
+    /* just in case, reset the size again */
+    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(pubkeyLen, pubkeySize, return(-1), xmlSecKeyDataGetName(data));
+    ret = xmlSecBufferSetSize(&(ecValue->pubkey), pubkeySize);
+    if(ret < 0) {
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL,
+            "bufSize=" XMLSEC_SIZE_FMT, pubkeySize);
+        return (-1);
+    }
+
+    /* done */
+    return(0);
+}
+
+static int
+xmlSecOpenSSLKeyDataEcSetValue(xmlSecKeyDataPtr data, const xmlChar* curveOid, xmlSecBufferPtr pubkey) {
+    EC_KEY *eckey = NULL;
+    EC_GROUP * group = NULL;
+    EC_POINT *point = NULL;
+    xmlSecByte * pubkeyData;
+    xmlSecSize pubkeySize;
+    int nid;
+    int ret;
+    int res = -1;
+
+    xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcId), -1);
+    xmlSecAssert2(curveOid != NULL, -1);
+    xmlSecAssert2(pubkey != NULL, -1);
+
+    pubkeyData = xmlSecBufferGetData(pubkey);
+    pubkeySize = xmlSecBufferGetSize(pubkey);
+    xmlSecAssert2(pubkeyData != NULL, -1);
+    xmlSecAssert2(pubkeySize > 0, -1);
+
+    /* create group from curve oid */
+    nid = xmlSecOpenSSLKeyDataEcGetNidFromOid(curveOid);
+    if(nid == NID_undef) {
+        xmlSecInternalError2("xmlSecOpenSSLKeyDataEcGetNidFromOid",  xmlSecKeyDataGetName(data),
+            "curve_oid=%s", xmlSecErrorsSafeString(curveOid));
+        goto done;
+    }
+
+    group = EC_GROUP_new_by_curve_name(nid);
+    if (group == NULL) {
+        xmlSecOpenSSLError2("EC_GROUP_new_by_curve_name",  xmlSecKeyDataGetName(data),
+            "nid=%d", nid);
+        goto done;
+    }
+
+    /* get public key (point) */
+    point = EC_POINT_new(group);
+    if(point == NULL) {
+        xmlSecOpenSSLError("EC_POINT_new",  xmlSecKeyDataGetName(data));
+        goto done;
+    }
+    ret = EC_POINT_oct2point(group, point, pubkeyData, pubkeySize, NULL);
+    if(ret != 1) {
+        xmlSecOpenSSLError("EC_POINT_oct2point",  xmlSecKeyDataGetName(data));
+        goto done;
+    }
+
+    /* finally create key */
+    eckey = EC_KEY_new();
+    if(eckey == NULL) {
+        xmlSecOpenSSLError("EC_KEY_new",  xmlSecKeyDataGetName(data));
+        goto done;
+    }
+
+    ret = EC_KEY_set_group(eckey, group);
+    if(ret != 1) {
+        xmlSecOpenSSLError("EC_KEY_set_group",  xmlSecKeyDataGetName(data));
+        goto done;
+    }
+
+    ret = EC_KEY_set_public_key(eckey, point);
+    if(ret != 1) {
+        xmlSecOpenSSLError("EC_KEY_set_public_key",  xmlSecKeyDataGetName(data));
+        goto done;
+    }
+
+    /* and set in the data */
+    ret = xmlSecOpenSSLKeyDataEcSetEcKey(data, eckey);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecOpenSSLKeyDataEcSetEcKey", xmlSecKeyDataGetName(data));
+        goto done;
+    }
+
+    /* success */
+    res = 0;
+
+done:
+    if(point != NULL) {
+        EC_POINT_free(point);
+    }
+    if(group != NULL) {
+        EC_GROUP_free(group);
+    }
+    if(eckey!= NULL) {
+        EC_KEY_free(eckey);
+    }
+    return(res);
+}
 #else /* XMLSEC_OPENSSL_API_300 */
 
+static const xmlChar*
+xmlSecOpenSSLKeyDataEcGetOidFromName(const xmlChar* name) {
+    xmlSecSize size = sizeof(g_xmlSecOpenSSLKeyDataEcCurveNameAndOID) / sizeof(g_xmlSecOpenSSLKeyDataEcCurveNameAndOID[0]);
+
+    xmlSecAssert2(name != NULL, NULL);
+
+    for(xmlSecSize ii = 0; ii < size; ++ii) {
+        if(xmlStrcmp(name, g_xmlSecOpenSSLKeyDataEcCurveNameAndOID[ii].name) == 0) {
+            return(g_xmlSecOpenSSLKeyDataEcCurveNameAndOID[ii].oid);
+        }
+    }
+    return(NULL);
+}
+
+static const xmlChar*
+xmlSecOpenSSLKeyDataEcGetNameFromOid(const xmlChar* oid) {
+    xmlSecSize size = sizeof(g_xmlSecOpenSSLKeyDataEcCurveNameAndOID) / sizeof(g_xmlSecOpenSSLKeyDataEcCurveNameAndOID[0]);
+
+    xmlSecAssert2(oid != NULL, NULL);
+
+    for(xmlSecSize ii = 0; ii < size; ++ii) {
+        if(xmlStrcmp(oid, g_xmlSecOpenSSLKeyDataEcCurveNameAndOID[ii].oid) == 0) {
+            return(g_xmlSecOpenSSLKeyDataEcCurveNameAndOID[ii].name);
+        }
+    }
+    return(NULL);
+}
+
 static xmlSecSize
-xmlSecOpenSSLKeyDataEcdsaGetSize(xmlSecKeyDataPtr data) {
+xmlSecOpenSSLKeyDataEcGetSize(xmlSecKeyDataPtr data) {
     const EVP_PKEY* pKey;
     BIGNUM * order = NULL;
     int numBits;
-    int ret;
     xmlSecSize res = 0;
+    int ret;
 
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcdsaId), 0);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcId), 0);
 
-    pKey = xmlSecOpenSSLKeyDataEcdsaGetEvp(data);
+    pKey = xmlSecOpenSSLKeyDataEcGetEvp(data);
     xmlSecAssert2(pKey != NULL, 0);
 
     ret = EVP_PKEY_get_bn_param(pKey, OSSL_PKEY_PARAM_EC_ORDER, &order);
@@ -1587,35 +1936,230 @@ xmlSecOpenSSLKeyDataEcdsaGetSize(xmlSecKeyDataPtr data) {
     /* success */
     XMLSEC_SAFE_CAST_INT_TO_SIZE(numBits, res,  goto done, xmlSecKeyDataGetName(data));
 
- done:
+done:
     if(order != NULL) {
         BN_clear_free(order);
     }
     return(res);
 }
 
+static int
+xmlSecOpenSSLKeyDataEcWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKeyValueEcPtr ecValue)
+{
+
+    EVP_PKEY* pKey = NULL;
+    const xmlChar* curve_oid;
+    char curve_name[128];
+    size_t curve_name_len = 0;
+    unsigned char *pubkey_data = NULL;
+    size_t pubkey_len = 0;
+    xmlSecSize pubkey_size;
+    int ret;
+
+    xmlSecAssert2(id == xmlSecOpenSSLKeyDataEcId, -1);
+    xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcId), -1);
+    xmlSecAssert2(ecValue != NULL, -1);
+    xmlSecAssert2(ecValue->curve == NULL, -1);
+
+    pKey = xmlSecOpenSSLKeyDataEcGetEvp(data);
+    xmlSecAssert2(pKey != NULL, -1);
+
+    /* curve name first */
+    ret = EVP_PKEY_get_utf8_string_param(pKey, OSSL_PKEY_PARAM_GROUP_NAME,
+            curve_name, sizeof(curve_name), &curve_name_len);
+    if((ret != 1) || (curve_name_len <= 0) || (curve_name_len >= sizeof(curve_name))) {
+        xmlSecOpenSSLError("EVP_PKEY_get_utf8_string_param(GROUP_NAME)", xmlSecKeyDataGetName(data));
+        return(-1);
+    }
+    /* just in case */
+    curve_name[curve_name_len] = '\0';
+    curve_oid = xmlSecOpenSSLKeyDataEcGetOidFromName(BAD_CAST curve_name);
+    if(curve_oid == NULL) {
+        xmlSecInternalError2("xmlSecOpenSSLKeyDataEcGetOidFromName",  xmlSecKeyDataGetName(data),
+            "curve_name=%s", xmlSecErrorsSafeString(curve_name));
+        return(-1);
+    }
+    ecValue->curve = xmlStrdup(curve_oid);
+    if(ecValue->curve == NULL) {
+        xmlSecStrdupError(curve_oid, xmlSecKeyDataGetName(data));
+        return(-1);
+    }
+
+    /* pubkey */
+    pubkey_len = EVP_PKEY_get1_encoded_public_key(pKey, &pubkey_data);
+    if(pubkey_len == 0) {
+        xmlSecOpenSSLError("EVP_PKEY_get1_encoded_public_key", xmlSecKeyDataGetName(data));
+        return(-1);
+    }
+    xmlSecAssert2(pubkey_data != NULL, -1);
+
+    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(pubkey_len, pubkey_size, return(-1), xmlSecKeyDataGetName(data));
+    ret = xmlSecBufferSetData(&(ecValue->pubkey), pubkey_data, pubkey_size);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferSetData(pubkey)", xmlSecKeyDataGetName(data));
+        OPENSSL_free(pubkey_data);
+        return (-1);
+    }
+
+    /* done */
+    OPENSSL_free(pubkey_data);
+    return(0);
+}
+
+static int
+xmlSecOpenSSLKeyDataEcSetValue(xmlSecKeyDataPtr data, const xmlChar* curveOid, xmlSecBufferPtr pubkey) {
+    EVP_PKEY* pKey = NULL;
+    EVP_PKEY_CTX* ctx = NULL;
+    const xmlChar* curve_name;
+    xmlSecByte * pubkeyData;
+    xmlSecSize pubkeyDataSize;
+    int ret;
+    int res = -1;
+
+    xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcId), -1);
+    xmlSecAssert2(curveOid != NULL, -1);
+    xmlSecAssert2(pubkey != NULL, -1);
+
+    pubkeyData = xmlSecBufferGetData(pubkey);
+    pubkeyDataSize = xmlSecBufferGetSize(pubkey);
+    xmlSecAssert2(pubkeyData != NULL, -1);
+    xmlSecAssert2(pubkeyDataSize > 0, -1);
+
+    /* curve name */
+    curve_name = xmlSecOpenSSLKeyDataEcGetNameFromOid(curveOid);
+    if(curve_name == NULL) {
+        xmlSecInternalError2("xmlSecOpenSSLKeyDataEcGetNameFromOid", xmlSecKeyDataGetName(data),
+            "curve_oid=%s", xmlSecErrorsSafeString(curveOid));
+        goto done;
+    }
+
+    /* create pkey ctx */
+    ctx = EVP_PKEY_CTX_new_from_name(xmlSecOpenSSLGetLibCtx(), "ec", NULL);
+    if(ctx == NULL) {
+        xmlSecOpenSSLError("EVP_PKEY_CTX_new_from_name", xmlSecKeyDataGetName(data));
+        goto done;
+    }
+    ret = EVP_PKEY_paramgen_init(ctx);
+    if(ret != 1) {
+        xmlSecOpenSSLError("EVP_PKEY_paramgen_init", xmlSecKeyDataGetName(data));
+        goto done;
+    }
+    ret = EVP_PKEY_CTX_set_group_name(ctx, (const char*)curve_name);
+    if(ret != 1) {
+        xmlSecOpenSSLError("EVP_PKEY_CTX_set_group_name", xmlSecKeyDataGetName(data));
+        goto done;
+    }
+
+    /* create pkey */
+    ret = EVP_PKEY_paramgen(ctx, &pKey);
+    if(ret != 1) {
+        xmlSecOpenSSLError("EVP_PKEY_paramgen", xmlSecKeyDataGetName(data));
+        goto done;
+    }
+    ret = EVP_PKEY_set1_encoded_public_key(pKey, pubkeyData, pubkeyDataSize);
+    if(ret != 1) {
+        xmlSecOpenSSLError("EVP_PKEY_set1_encoded_public_key", xmlSecKeyDataGetName(data));
+        goto done;
+    }
+
+    /* set pkey into data */
+    ret = xmlSecOpenSSLKeyDataEcAdoptEvp(data, pKey);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecOpenSSLKeyDataEcAdoptEvp", xmlSecKeyDataGetName(data));
+        goto done;
+    }
+    pKey = NULL;
+
+    /* success */
+    res = 0;
+
+done:
+    if(pKey != NULL) {
+        EVP_PKEY_free(pKey);
+    }
+    if(ctx != NULL) {
+        EVP_PKEY_CTX_free(ctx);
+    }
+    return(res);
+}
+
 #endif /* XMLSEC_OPENSSL_API_300 */
 
+static int
+xmlSecOpenSSLKeyDataEcXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
+                               xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
 
-static void
-xmlSecOpenSSLKeyDataEcdsaDebugDump(xmlSecKeyDataPtr data, FILE* output) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcdsaId));
-    xmlSecAssert(output != NULL);
+    xmlSecAssert2(id == xmlSecOpenSSLKeyDataEcId, -1);
+    return(xmlSecKeyDataEcXmlRead(id, key, node, keyInfoCtx,
+        xmlSecOpenSSLKeyDataEcRead));
+}
 
-    fprintf(output, "=== ecdsa key: size = " XMLSEC_SIZE_FMT "\n",
-        xmlSecOpenSSLKeyDataEcdsaGetSize(data));
+static int
+xmlSecOpenSSLKeyDataEcXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
+                                xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlSecAssert2(id == xmlSecOpenSSLKeyDataEcId, -1);
+    return(xmlSecKeyDataEcXmlWrite(id, key, node, keyInfoCtx,
+        xmlSecBase64GetDefaultLineSize(), 1, /* add line breaks */
+        xmlSecOpenSSLKeyDataEcWrite));
 }
 
 static void
-xmlSecOpenSSLKeyDataEcdsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcdsaId));
+xmlSecOpenSSLKeyDataEcDebugDump(xmlSecKeyDataPtr data, FILE* output) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcId));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "<ECDSAKeyValue size=\"" XMLSEC_SIZE_FMT "\" />\n",
-        xmlSecOpenSSLKeyDataEcdsaGetSize(data));
+    fprintf(output, "=== ec key: size = " XMLSEC_SIZE_FMT "\n",
+        xmlSecOpenSSLKeyDataEcGetSize(data));
 }
 
-#endif /* XMLSEC_NO_ECDSA */
+static void
+xmlSecOpenSSLKeyDataEcDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcId));
+    xmlSecAssert(output != NULL);
+
+    fprintf(output, "<ECKeyValue size=\"" XMLSEC_SIZE_FMT "\" />\n",
+        xmlSecOpenSSLKeyDataEcGetSize(data));
+}
+
+
+xmlSecKeyDataPtr
+xmlSecOpenSSLKeyDataEcRead(xmlSecKeyDataId id, xmlSecKeyValueEcPtr ecValue) {
+    xmlSecKeyDataPtr data = NULL;
+    xmlSecKeyDataPtr res = NULL;
+    int ret;
+
+    xmlSecAssert2(id == xmlSecOpenSSLKeyDataEcId, NULL);
+    xmlSecAssert2(ecValue != NULL, NULL);
+    xmlSecAssert2(ecValue->curve != NULL, NULL);
+
+    /* create key data */
+    data = xmlSecKeyDataCreate(id);
+    if(data == NULL) {
+        xmlSecInternalError("xmlSecKeyDataCreate", xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+
+    ret = xmlSecOpenSSLKeyDataEcSetValue(data, ecValue->curve, &(ecValue->pubkey));
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecOpenSSLKeyDataEcSetValue()", xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+
+    /* success */
+    res = data;
+    data = NULL;
+
+done:
+    if(data != NULL) {
+        xmlSecKeyDataDestroy(data);
+    }
+    return(res);
+}
+
+
+#endif /* XMLSEC_NO_EC */
 
 #ifndef XMLSEC_NO_RSA
 

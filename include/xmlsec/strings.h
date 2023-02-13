@@ -27,6 +27,7 @@ extern "C" {
  ************************************************************************/
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNs[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecDSigNs[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecDSig11Ns[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecEncNs[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecEnc11Ns[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecXPathNs[];
@@ -220,22 +221,15 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefDsaSha256[];
 
 /*************************************************************************
  *
- * ECDSA strings
+ * EC strings
  *
  ************************************************************************/
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNameECDSAKeyValue[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeECDSAKeyValue[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefECDSAKeyValue[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameECKeyValue[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeECKeyValue[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefECKeyValue[];
 
-/* XXX-MAK: More constants will be needed later. */
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeECDSAP[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeECDSAQ[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeECDSAG[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeECDSAJ[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeECDSAX[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeECDSAY[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeECDSASeed[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeECDSAPgenCounter[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeNamedCurve[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodePublicKey[];
 
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameEcdsaSha1[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEcdsaSha1[];

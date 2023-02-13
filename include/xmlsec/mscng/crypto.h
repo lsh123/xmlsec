@@ -216,7 +216,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformRsaOaepEnc11GetKlass(
  * ECDSA transforms
  *
  *******************************************************************/
-#ifndef XMLSEC_NO_ECDSA
+#ifndef XMLSEC_NO_EC
 
 /**
  * xmlSecMSCngKeyDataEcdsaId:
@@ -224,8 +224,8 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformRsaOaepEnc11GetKlass(
  * The ECDSA key klass.
  */
 #define xmlSecMSCngKeyDataEcdsaId \
-        xmlSecMSCngKeyDataEcdsaGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId xmlSecMSCngKeyDataEcdsaGetKlass(void);
+        xmlSecMSCngkeyDataEcGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId xmlSecMSCngkeyDataEcGetKlass(void);
 
 #ifndef XMLSEC_NO_SHA1
 /**
@@ -271,7 +271,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformEcdsaSha384GetKlass(v
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformEcdsaSha512GetKlass(void);
 #endif /* XMLSEC_NO_SHA512 */
 
-#endif /* XMLSEC_NO_ECDSA */
+#endif /* XMLSEC_NO_EC */
 
 /********************************************************************
  *

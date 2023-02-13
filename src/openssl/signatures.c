@@ -63,7 +63,7 @@ static int  xmlSecOpenSSLSignatureDsaVerify                  (xmlSecOpenSSLSigna
                                                               xmlSecSize signSize);
 #endif /* XMLSEC_NO_DSA */
 
-#ifndef XMLSEC_NO_ECDSA
+#ifndef XMLSEC_NO_EC
 
 static int  xmlSecOpenSSLSignatureEcdsaSign                  (xmlSecOpenSSLSignatureCtxPtr ctx,
                                                               xmlSecBufferPtr out);
@@ -72,7 +72,7 @@ static int  xmlSecOpenSSLSignatureEcdsaVerify                (xmlSecOpenSSLSigna
                                                               xmlSecSize signSize);
 
 
-#endif /* XMLSEC_NO_ECDSA */
+#endif /* XMLSEC_NO_EC */
 
 
 /**************************************************************************
@@ -154,7 +154,7 @@ xmlSecOpenSSLSignatureCheckId(xmlSecTransformPtr transform) {
 
 #endif /* XMLSEC_NO_DSA */
 
-#ifndef XMLSEC_NO_ECDSA
+#ifndef XMLSEC_NO_EC
 
 #ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformEcdsaSha1Id)) {
@@ -186,7 +186,7 @@ xmlSecOpenSSLSignatureCheckId(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_SHA512 */
 
-#endif /* XMLSEC_NO_ECDSA */
+#endif /* XMLSEC_NO_EC */
 
     {
         return(0);
@@ -239,12 +239,12 @@ xmlSecOpenSSLSignatureInitialize(xmlSecTransformPtr transform) {
 
 #endif /* XMLSEC_NO_DSA */
 
-#ifndef XMLSEC_NO_ECDSA
+#ifndef XMLSEC_NO_EC
 
 #ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformEcdsaSha1Id)) {
         XMLSEC_OPENSSL_SIGNATURE_SET_DIGEST(ctx, EVP_sha1(), OSSL_DIGEST_NAME_SHA1);
-        ctx->keyId          = xmlSecOpenSSLKeyDataEcdsaId;
+        ctx->keyId          = xmlSecOpenSSLKeyDataEcId;
         ctx->signCallback   = xmlSecOpenSSLSignatureEcdsaSign;
         ctx->verifyCallback = xmlSecOpenSSLSignatureEcdsaVerify;
     } else
@@ -253,7 +253,7 @@ xmlSecOpenSSLSignatureInitialize(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_NO_SHA224
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformEcdsaSha224Id)) {
         XMLSEC_OPENSSL_SIGNATURE_SET_DIGEST(ctx, EVP_sha224(), OSSL_DIGEST_NAME_SHA2_224);
-        ctx->keyId          = xmlSecOpenSSLKeyDataEcdsaId;
+        ctx->keyId          = xmlSecOpenSSLKeyDataEcId;
         ctx->signCallback   = xmlSecOpenSSLSignatureEcdsaSign;
         ctx->verifyCallback = xmlSecOpenSSLSignatureEcdsaVerify;
     } else
@@ -262,7 +262,7 @@ xmlSecOpenSSLSignatureInitialize(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_NO_SHA256
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformEcdsaSha256Id)) {
         XMLSEC_OPENSSL_SIGNATURE_SET_DIGEST(ctx, EVP_sha256(), OSSL_DIGEST_NAME_SHA2_256);
-        ctx->keyId          = xmlSecOpenSSLKeyDataEcdsaId;
+        ctx->keyId          = xmlSecOpenSSLKeyDataEcId;
         ctx->signCallback   = xmlSecOpenSSLSignatureEcdsaSign;
         ctx->verifyCallback = xmlSecOpenSSLSignatureEcdsaVerify;
     } else
@@ -271,7 +271,7 @@ xmlSecOpenSSLSignatureInitialize(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_NO_SHA384
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformEcdsaSha384Id)) {
         XMLSEC_OPENSSL_SIGNATURE_SET_DIGEST(ctx, EVP_sha384(), OSSL_DIGEST_NAME_SHA2_384);
-        ctx->keyId          = xmlSecOpenSSLKeyDataEcdsaId;
+        ctx->keyId          = xmlSecOpenSSLKeyDataEcId;
         ctx->signCallback   = xmlSecOpenSSLSignatureEcdsaSign;
         ctx->verifyCallback = xmlSecOpenSSLSignatureEcdsaVerify;
     } else
@@ -280,13 +280,13 @@ xmlSecOpenSSLSignatureInitialize(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_NO_SHA512
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformEcdsaSha512Id)) {
         XMLSEC_OPENSSL_SIGNATURE_SET_DIGEST(ctx, EVP_sha512(), OSSL_DIGEST_NAME_SHA2_512);
-        ctx->keyId          = xmlSecOpenSSLKeyDataEcdsaId;
+        ctx->keyId          = xmlSecOpenSSLKeyDataEcId;
         ctx->signCallback   = xmlSecOpenSSLSignatureEcdsaSign;
         ctx->verifyCallback = xmlSecOpenSSLSignatureEcdsaVerify;
     } else
 #endif /* XMLSEC_NO_SHA512 */
 
-#endif /* XMLSEC_NO_ECDSA */
+#endif /* XMLSEC_NO_EC */
 
     if(1) {
         xmlSecInvalidTransfromError(transform)
@@ -1023,7 +1023,7 @@ xmlSecOpenSSLTransformDsaSha256GetKlass(void) {
 
 #endif /* XMLSEC_NO_DSA */
 
-#ifndef XMLSEC_NO_ECDSA
+#ifndef XMLSEC_NO_EC
 /****************************************************************************
  *
  * ECDSA EVP
@@ -1754,4 +1754,4 @@ xmlSecOpenSSLTransformEcdsaSha512GetKlass(void) {
 
 #endif /* XMLSEC_NO_SHA512 */
 
-#endif /* XMLSEC_NO_ECDSA */
+#endif /* XMLSEC_NO_EC */

@@ -26,10 +26,10 @@
 #include <openssl/evp.h>
 #endif /* XMLSEC_NO_DSA */
 
-#ifndef XMLSEC_NO_ECDSA
+#ifndef XMLSEC_NO_EC
 #include <openssl/ecdsa.h>
 #include <openssl/evp.h>
-#endif /* XMLSEC_NO_ECDSA */
+#endif /* XMLSEC_NO_EC */
 
 #ifndef XMLSEC_NO_RSA
 #include <openssl/rsa.h>
@@ -115,7 +115,7 @@ XMLSEC_CRYPTO_EXPORT BIO*               xmlSecOpenSSLCreateReadFileBio (const ch
 #endif /* OPENSSL_NO_DSA */
 
 #ifdef OPENSSL_NO_ECDSA
-#define XMLSEC_NO_ECDSA     1
+#define XMLSEC_NO_EC     1
 #endif /* OPENSSL_NO_ECDSA */
 
 #ifdef OPENSSL_NO_GOST
@@ -377,19 +377,31 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformDsaSha256GetKlass(v
  * ECDSA transforms
  *
  *******************************************************************/
-#ifndef XMLSEC_NO_ECDSA
+#ifndef XMLSEC_NO_EC
 
 /**
  * xmlSecOpenSSLKeyDataEcdsaId:
  *
- * The ECDSA key klass.
+ * Deprecated. The ECDSA key klass.
  */
-#define xmlSecOpenSSLKeyDataEcdsaId \
-        xmlSecOpenSSLKeyDataEcdsaGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataEcdsaGetKlass   (void);
-XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeyDataEcdsaAdoptEvp   (xmlSecKeyDataPtr data,
+#define xmlSecOpenSSLKeyDataEcdsaId xmlSecOpenSSLKeyDataEcId
+XMLSEC_DEPRECATED XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataEcdsaGetKlass     (void);
+XMLSEC_DEPRECATED XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeyDataEcdsaAdoptEvp     (xmlSecKeyDataPtr data,
+                                                                                                 EVP_PKEY* pKey);
+XMLSEC_DEPRECATED XMLSEC_CRYPTO_EXPORT EVP_PKEY*          xmlSecOpenSSLKeyDataEcdsaGetEvp       (xmlSecKeyDataPtr data);
+
+
+/**
+ * xmlSecOpenSSLKeyDataEcId:
+ *
+ * The EC key klass.
+ */
+#define xmlSecOpenSSLKeyDataEcId        xmlSecOpenSSLKeyDataEcGetKlass()
+
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataEcGetKlass      (void);
+XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeyDataEcAdoptEvp      (xmlSecKeyDataPtr data,
                                                                              EVP_PKEY* pKey);
-XMLSEC_CRYPTO_EXPORT EVP_PKEY*          xmlSecOpenSSLKeyDataEcdsaGetEvp     (xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT EVP_PKEY*          xmlSecOpenSSLKeyDataEcGetEvp        (xmlSecKeyDataPtr data);
 
 
 #ifndef XMLSEC_NO_SHA1
@@ -447,7 +459,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformEcdsaSha384GetKlass
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformEcdsaSha512GetKlass(void);
 #endif /* XMLSEC_NO_SHA512 */
 
-#endif /* XMLSEC_NO_ECDSA */
+#endif /* XMLSEC_NO_EC */
 
 #ifndef XMLSEC_NO_GOST
 

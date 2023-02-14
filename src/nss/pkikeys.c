@@ -1420,14 +1420,14 @@ xmlSecNsskeyDataEcGetKlass(void) {
 
 
 /**
- * xmlSecNsskeyDataEcdsaGetKlass:
+ * xmlSecNssKeyDataEcdsaGetKlass:
  *
- * The EC key data klass.
+ * Deprecated. The EC key data klass.
  *
  * Returns: pointer to EC key data klass.
  */
 xmlSecKeyDataId
-xmlSecNsskeyDataEcdsaGetKlass(void) {
+xmlSecNssKeyDataEcdsaGetKlass(void) {
     return(xmlSecNsskeyDataEcGetKlass());
 }
 

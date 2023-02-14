@@ -188,12 +188,12 @@ xmlSecGCryptAsn1ParseTag (xmlSecByte const **buffer, unsigned long *buflen, stru
 #define XMLSEC_GCRYPT_ASN1_MAX_OBJECT_ID_SIZE    32
 typedef xmlSecByte xmlSecGCryptAsn1ObjectId[XMLSEC_GCRYPT_ASN1_MAX_OBJECT_ID_SIZE];
 
-typedef struct _xmlSecGCryptAsn1EcdsaObjectIdToCurve {
+typedef struct _xmlSecGCryptAsn1EcObjectIdToCurve {
     char curve[20];
     xmlSecGCryptAsn1ObjectId objectId;
-} xmlSecGCryptAsn1EcdsaObjectIdToCurve;
+} xmlSecGCryptAsn1EcObjectIdToCurve;
 
-static xmlSecGCryptAsn1EcdsaObjectIdToCurve g_xmlSecGCryptAsn1EcdsaObjectIdToCurves[] = {
+static xmlSecGCryptAsn1EcObjectIdToCurve g_xmlSecGCryptAsn1EcObjectIdToCurves[] = {
     { "prime192v1",     { 0x2A,0x86,0x48,0xCE,0x3D,0x03,0x01,0x01 } }, /* OBJ_X9_62_prime192v1 */
     { "secp224r1",      { 0x2B,0x81,0x04,0x00,0x21,0x00,0x00,0x00 } }, /* OBJ_secp224r1 */
     { "prime256v1",     { 0x2A,0x86,0x48,0xCE,0x3D,0x03,0x01,0x07 } }, /* OBJ_X9_62_prime256v1 */
@@ -203,11 +203,11 @@ static xmlSecGCryptAsn1EcdsaObjectIdToCurve g_xmlSecGCryptAsn1EcdsaObjectIdToCur
 
 static const char*
 xmlSecGCryptAsn1GetCurveFromObjectId(xmlSecGCryptAsn1ObjectId objectid) {
-    int size = sizeof(g_xmlSecGCryptAsn1EcdsaObjectIdToCurves) / sizeof(g_xmlSecGCryptAsn1EcdsaObjectIdToCurves[0]);
+    int size = sizeof(g_xmlSecGCryptAsn1EcObjectIdToCurves) / sizeof(g_xmlSecGCryptAsn1EcObjectIdToCurves[0]);
     int ii;
     for(ii = 0; ii < size; ++ii) {
-        if(memcmp(objectid, g_xmlSecGCryptAsn1EcdsaObjectIdToCurves[ii].objectId, XMLSEC_GCRYPT_ASN1_MAX_OBJECT_ID_SIZE) == 0) {
-            return(g_xmlSecGCryptAsn1EcdsaObjectIdToCurves[ii].curve);
+        if(memcmp(objectid, g_xmlSecGCryptAsn1EcObjectIdToCurves[ii].objectId, XMLSEC_GCRYPT_ASN1_MAX_OBJECT_ID_SIZE) == 0) {
+            return(g_xmlSecGCryptAsn1EcObjectIdToCurves[ii].curve);
         }
     }
     return(NULL);
@@ -215,14 +215,14 @@ xmlSecGCryptAsn1GetCurveFromObjectId(xmlSecGCryptAsn1ObjectId objectid) {
 
 static int
 xmlSecGCryptAsn1IsECKey(xmlSecGCryptAsn1ObjectId * objectids, xmlSecSize objectids_num) {
-    const char* ecdsaCurve = NULL;
+    const char* ecCurve = NULL;
     xmlSecAssert2(objectids != NULL, xmlSecGCryptDerKeyTypeAuto);
 
-    /* ecdsa key should have the curve object id */
-    for(xmlSecSize ii = 0; (ii < objectids_num) && (ecdsaCurve == NULL); ++ii) {
-        ecdsaCurve = xmlSecGCryptAsn1GetCurveFromObjectId(objectids[ii]);
+    /* EC key should have the curve object id */
+    for(xmlSecSize ii = 0; (ii < objectids_num) && (ecCurve == NULL); ++ii) {
+        ecCurve = xmlSecGCryptAsn1GetCurveFromObjectId(objectids[ii]);
     }
-    return(ecdsaCurve != NULL ? 1 : 0);
+    return(ecCurve != NULL ? 1 : 0);
 }
 
 
@@ -361,12 +361,12 @@ xmlSecGCryptAsn1GuessKeyType(gcry_mpi_t * integers, xmlSecSize integers_num, xml
     xmlSecAssert2(integers != NULL, xmlSecGCryptDerKeyTypeAuto);
     xmlSecAssert2(objectids != NULL, xmlSecGCryptDerKeyTypeAuto);
 
-    /* ecdsa key should have the curve object id */
+    /* EC key should have the curve object id */
     if(xmlSecGCryptAsn1IsECKey(objectids, objectids_num) != 0) {
         if(integers_num >= XMLSEC_GNUTLS_ASN1_EDCSA_PRIV_NUM) {
-            return(xmlSecGCryptDerKeyTypePrivateEcdsa);
+            return(xmlSecGCryptDerKeyTypePrivateEc);
         } else if(integers_num >= XMLSEC_GNUTLS_ASN1_EDCSA_PUB_NUM) {
-            return(xmlSecGCryptDerKeyTypePublicEcdsa);
+            return(xmlSecGCryptDerKeyTypePublicEc);
         } else {
             return(xmlSecGCryptDerKeyTypeAuto);
         }
@@ -400,7 +400,7 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
     xmlSecGCryptAsn1ObjectId objectids[20];
     xmlSecSize objectids_num = 0;
     unsigned int idx;
-    const char* ecdsaCurve = NULL;
+    const char* ecCurve = NULL;
     int ret;
 
     xmlSecAssert2(der != NULL, NULL);
@@ -608,15 +608,15 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
 #endif /* XMLSEC_NO_RSA */
 
 #ifndef XMLSEC_NO_EC
-    case xmlSecGCryptDerKeyTypePrivateEcdsa:
+    case xmlSecGCryptDerKeyTypePrivateEc:
         /* check we have object id and enough integers */
         if(objectids_num < 1U) {
-            xmlSecInvalidSizeError("Private ECDSA requires object ID for curve",
+            xmlSecInvalidSizeError("Private EC requires object ID for curve",
                 (xmlSecSize)objectids_num, (xmlSecSize)1U, NULL);
             goto done;
         }
         if(integers_num < XMLSEC_GNUTLS_ASN1_EDCSA_PRIV_NUM) {
-            xmlSecInvalidSizeError("Private ECDSA key params",
+            xmlSecInvalidSizeError("Private EC key params",
                 (xmlSecSize)integers_num, (xmlSecSize)XMLSEC_GNUTLS_ASN1_EDCSA_PRIV_NUM, NULL);
             goto done;
         }
@@ -624,11 +624,11 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
         /* first integer is 0, just skip it */
 
         /* search through all object ids to find the curve name */
-        for(xmlSecSize ii = 0; (ii < objectids_num) && (ecdsaCurve == NULL); ++ii) {
-            ecdsaCurve = xmlSecGCryptAsn1GetCurveFromObjectId(objectids[ii]);
+        for(xmlSecSize ii = 0; (ii < objectids_num) && (ecCurve == NULL); ++ii) {
+            ecCurve = xmlSecGCryptAsn1GetCurveFromObjectId(objectids[ii]);
         }
-        if(ecdsaCurve == NULL) {
-            xmlSecInvalidDataError("Unknown ECDSA curve Object ID", NULL);
+        if(ecCurve == NULL) {
+            xmlSecInvalidDataError("Unknown EC curve Object ID", NULL);
             goto done;
         }
 
@@ -639,7 +639,7 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
             " (d %m)"
             " (q %m)"
             " ))",
-            ecdsaCurve, integers[1], integers[2]
+            ecCurve, integers[1], integers[2]
         );
         if((err != GPG_ERR_NO_ERROR) || (s_priv_key == NULL)) {
             xmlSecGCryptError("gcry_sexp_build(private-key/ecdsa)", err, NULL);
@@ -651,7 +651,7 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
             " (curve %s)"
             " (q %m)"
             " ))",
-            ecdsaCurve, integers[2]
+            ecCurve, integers[2]
         );
         if((err != GPG_ERR_NO_ERROR) || (s_pub_key == NULL)) {
             xmlSecGCryptError("gcry_sexp_build(public-key/ecdsa)", err, NULL);
@@ -676,25 +676,25 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
         s_priv_key = NULL; /* owned by key_data now */
         break;
 
-    case xmlSecGCryptDerKeyTypePublicEcdsa:
+    case xmlSecGCryptDerKeyTypePublicEc:
         /* check we have object id and enough integers */
         if(objectids_num < 1U) {
-            xmlSecInvalidSizeError("Public ECDSA requires object ID for curve",
+            xmlSecInvalidSizeError("Public EC requires object ID for curve",
                 (xmlSecSize)objectids_num, (xmlSecSize)1U, NULL);
             goto done;
         }
         if(integers_num < XMLSEC_GNUTLS_ASN1_EDCSA_PUB_NUM) {
-            xmlSecInvalidSizeError("Public ECDSA key params",
+            xmlSecInvalidSizeError("Public EC key params",
                 (xmlSecSize)integers_num, (xmlSecSize)XMLSEC_GNUTLS_ASN1_EDCSA_PUB_NUM, NULL);
             goto done;
         }
 
         /* search through all object ids to find the curve name */
-        for(xmlSecSize ii = 0; (ii < objectids_num) && (ecdsaCurve == NULL); ++ii) {
-            ecdsaCurve = xmlSecGCryptAsn1GetCurveFromObjectId(objectids[ii]);
+        for(xmlSecSize ii = 0; (ii < objectids_num) && (ecCurve == NULL); ++ii) {
+            ecCurve = xmlSecGCryptAsn1GetCurveFromObjectId(objectids[ii]);
         }
-        if(ecdsaCurve == NULL) {
-            xmlSecInvalidDataError("Unknown ECDSA curve Object ID", NULL);
+        if(ecCurve == NULL) {
+            xmlSecInvalidDataError("Unknown EC curve Object ID", NULL);
             goto done;
         }
 
@@ -706,7 +706,7 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
             " (curve %s)"
             " (q %m)"
             " ))",
-            ecdsaCurve, integers[integers_num - 1]
+            ecCurve, integers[integers_num - 1]
         );
         if((err != GPG_ERR_NO_ERROR) || (s_pub_key == NULL)) {
             xmlSecGCryptError("gcry_sexp_build(public-key/ecdsa)", err, NULL);

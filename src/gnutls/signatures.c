@@ -719,7 +719,7 @@ xmlSecGnuTLSSignatureGetDerHalfSize(gnutls_sign_algorithm_t algo, xmlSecSize key
     case GNUTLS_SIGN_ECDSA_SHA384:
     case GNUTLS_SIGN_ECDSA_SHA512:
         if(keySize < 8) {
-            xmlSecInvalidSizeDataError("keySize", keySize, "ECDSA key size", NULL);
+            xmlSecInvalidSizeDataError("keySize", keySize, "EC key size", NULL);
             return(-1);
         }
         (*res) = (keySize + 7) / 8;

@@ -206,7 +206,7 @@ xmlSecMSCngCertAdopt(PCCERT_CONTEXT pCert, xmlSecKeyDataType type) {
     if(!strcmp(pCert->pCertInfo->SubjectPublicKeyInfo.Algorithm.pszObjId, szOID_ECC_PUBLIC_KEY)) {
         data = xmlSecKeyDataCreate(xmlSecMSCngKeyDataEcId);
         if(data == NULL) {
-            xmlSecInternalError("xmlSecKeyDataCreate(KeyDataEcdsaId)", NULL);
+            xmlSecInternalError("xmlSecKeyDataCreate(KeyDataEcId)", NULL);
             return(NULL);
         }
     }
@@ -1723,7 +1723,7 @@ xmlSecMSCngKeyDataEcWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKeyVa
             "bufLen=%lu", bufLen);
         goto done;
     }
-    
+
     /* dont reverse blobs as both the XML and CNG works with big-endian */
 
     /* success */

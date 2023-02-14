@@ -86,7 +86,7 @@ typedef struct _xmlSecKeyValueEc {
 /**
  * xmlSecKeyDataEcRead:
  * @id:                 the key data data.
- * @ecdsaValue:         the pointer to input @xmlSecKeyValueEc.
+ * @ecValue:            the pointer to input @xmlSecKeyValueEc.
  *
  * Creates xmlSecKeyData from @ecValue
  *

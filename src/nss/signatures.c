@@ -234,35 +234,35 @@ xmlSecNssSignatureInitialize(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_NO_EC
 #ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformEcdsaSha1Id)) {
-        ctx->keyId = xmlSecNssKeyDataEcdsaId;
+        ctx->keyId = xmlSecNssKeyDataEcId;
         /* This creates a signature which is ASN1 encoded */
         ctx->alg = SEC_OID_ANSIX962_ECDSA_SHA1_SIGNATURE;
     } else
 #endif /* XMLSEC_NO_SHA1 */
 #ifndef XMLSEC_NO_SHA224
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformEcdsaSha224Id)) {
-        ctx->keyId = xmlSecNssKeyDataEcdsaId;
+        ctx->keyId = xmlSecNssKeyDataEcId;
         /* This creates a signature which is ASN1 encoded */
         ctx->alg = SEC_OID_ANSIX962_ECDSA_SHA224_SIGNATURE;
     } else
 #endif /* XMLSEC_NO_SHA24 */
 #ifndef XMLSEC_NO_SHA256
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformEcdsaSha256Id)) {
-        ctx->keyId = xmlSecNssKeyDataEcdsaId;
+        ctx->keyId = xmlSecNssKeyDataEcId;
         /* This creates a signature which is ASN1 encoded */
         ctx->alg = SEC_OID_ANSIX962_ECDSA_SHA256_SIGNATURE;
     } else
 #endif /* XMLSEC_NO_SHA256 */
 #ifndef XMLSEC_NO_SHA384
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformEcdsaSha384Id)) {
-        ctx->keyId = xmlSecNssKeyDataEcdsaId;
+        ctx->keyId = xmlSecNssKeyDataEcId;
         /* This creates a signature which is ASN1 encoded */
         ctx->alg = SEC_OID_ANSIX962_ECDSA_SHA384_SIGNATURE;
     } else
 #endif /* XMLSEC_NO_SHA384 */
 #ifndef XMLSEC_NO_SHA512
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformEcdsaSha512Id)) {
-        ctx->keyId = xmlSecNssKeyDataEcdsaId;
+        ctx->keyId = xmlSecNssKeyDataEcId;
         /* This creates a signature which is ASN1 encoded */
         ctx->alg = SEC_OID_ANSIX962_ECDSA_SHA512_SIGNATURE;
     } else

@@ -47,7 +47,7 @@ struct _xmlSecGnuTLSAsymKeyDataCtx {
 
 /******************************************************************************
  *
- * GnuTLS asym key data (dsa/rsa/ecdsa)
+ * GnuTLS asym key data (dsa/rsa/ec)
  *
  *****************************************************************************/
 XMLSEC_KEY_DATA_DECLARE(GnuTLSAsymKeyData, xmlSecGnuTLSAsymKeyDataCtx)
@@ -952,7 +952,7 @@ xmlSecGnuTLSKeyDataEcGetKlass(void) {
 /**
  * xmlSecGnuTLSKeyDataEdsaGetKlass:
  *
- * Deprecated. The GnuTLS ECDSA key data klass.
+ * Deprecated. The GnuTLS EC key data klass.
  *
  * Returns: pointer to GnuTLS EC key data klass.
  */
@@ -1075,7 +1075,7 @@ xmlSecGnuTLSKeyDataEcDebugDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataEcId));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "=== ecdsa key: size = " XMLSEC_SIZE_FMT "\n",
+    fprintf(output, "=== EC key: size = " XMLSEC_SIZE_FMT "\n",
             xmlSecGnuTLSKeyDataEcGetSize(data));
 }
 

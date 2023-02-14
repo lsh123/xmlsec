@@ -250,7 +250,7 @@ XMLSEC_CRYPTO_EXPORT gnutls_privkey_t   xmlSecGnuTLSKeyDataEcGetPrivateKey      
 /**
  * xmlSecGnuTLSKeyDataEcdsaId:
  *
- * Deprecated. The ECDSA key klass.
+ * Deprecated. The EC key klass.
  */
 #define xmlSecGnuTLSKeyDataEcdsaId      xmlSecGnuTLSKeyDataEcId
 XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED xmlSecKeyDataId    xmlSecGnuTLSKeyDataEdsaGetKlass(void);

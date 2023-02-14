@@ -39,6 +39,7 @@ extern "C" {
 #define xmlSecKeyDataDsaId                      xmlSecGCryptKeyDataDsaId
 #define xmlSecKeyDataEcdId                      xmlSecGCryptKeyDataEcId
 #define xmlSecKeyDataEcdsaId                    xmlSecGCryptKeyDataEcId
+#define xmlSecKeyDataEcId                       xmlSecGCryptKeyDataEcId
 #define xmlSecKeyDataHmacId                     xmlSecGCryptKeyDataHmacId
 #define xmlSecKeyDataRsaId                      xmlSecGCryptKeyDataRsaId
 #define xmlSecKeyDataX509Id                     xmlSecGCryptKeyDataX509Id

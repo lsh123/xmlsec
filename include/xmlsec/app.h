@@ -76,7 +76,7 @@ XMLSEC_EXPORT xmlSecKeyDataId                   xmlSecKeyDataDsaGetKlass        
 /**
  * xmlSecKeyDataEcdsaId:
  *
- * Deprecated. The ECDSA key klass.
+ * Deprecated. The EC key klass.
  */
 #define xmlSecKeyDataEcdsaId                    xmlSeckeyDataEcGetKlass()
 XMLSEC_EXPORT XMLSEC_DEPRECATED xmlSecKeyDataId xmlSeckeyDataEcGetKlass      (void);

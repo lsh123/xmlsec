@@ -1639,14 +1639,14 @@ xmlSecGCryptKeyDataEcGetPrivateKey(xmlSecKeyDataPtr data) {
 }
 
 /**
- * xmlSecGCryptkeyDataEcdsaGetKlass:
+ * xmlSecGCryptKeyDataEcdsaGetKlass:
  *
  * Deprecated. The GCrypt EC key data klass.
  *
  * Returns: pointer to GCrypt EC key data klass.
  */
 xmlSecKeyDataId
-xmlSecGCryptkeyDataEcdsaGetKlass(void) {
+xmlSecGCryptKeyDataEcdsaGetKlass(void) {
     return(xmlSecGCryptkeyDataEcGetKlass());
 }
 

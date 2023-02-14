@@ -22,11 +22,11 @@ extern "C" {
 enum xmlSecGCryptDerKeyType {
     xmlSecGCryptDerKeyTypeAuto = 0,
     xmlSecGCryptDerKeyTypePublicDsa,
-    xmlSecGCryptDerKeyTypePublicRsa,
-    xmlSecGCryptDerKeyTypePublicEcdsa,
     xmlSecGCryptDerKeyTypePrivateDsa,
+    xmlSecGCryptDerKeyTypePublicRsa,
     xmlSecGCryptDerKeyTypePrivateRsa,
-    xmlSecGCryptDerKeyTypePrivateEcdsa
+    xmlSecGCryptDerKeyTypePublicEc,
+    xmlSecGCryptDerKeyTypePrivateEc
 };
 
 xmlSecKeyDataPtr        xmlSecGCryptParseDer            (const xmlSecByte * der,

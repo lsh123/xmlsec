@@ -177,10 +177,10 @@ xmlSecKeyDataDsaGetKlass(void) {
 /**
  * xmlSeckeyDataEcGetKlass:
  *
- * Deprecated. The ECDSA key data klass.
+ * Deprecated. The EC key data klass.
  *
- * Returns: ECDSA key data klass or NULL if an error occurs
- * (xmlsec-crypto library is not loaded or the ECDSA key data
+ * Returns: EC key data klass or NULL if an error occurs
+ * (xmlsec-crypto library is not loaded or the EC key data
  * klass is not implemented).
  */
 xmlSecKeyDataId
@@ -197,10 +197,10 @@ xmlSeckeyDataEcGetKlass(void) {
 /**
  * xmlSecKeyDataEcGetKlass:
  *
- * The ECDSA key data klass.
+ * The EC key data klass.
  *
  * Returns: EC key data klass or NULL if an error occurs
- * (xmlsec-crypto library is not loaded or the ECDSA key data
+ * (xmlsec-crypto library is not loaded or the EC key data
  * klass is not implemented).
  */
 xmlSecKeyDataId

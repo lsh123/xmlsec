@@ -382,7 +382,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformDsaSha256GetKlass(v
 /**
  * xmlSecOpenSSLKeyDataEcdsaId:
  *
- * Deprecated. The ECDSA key klass.
+ * Deprecated. The EC key klass.
  */
 #define xmlSecOpenSSLKeyDataEcdsaId xmlSecOpenSSLKeyDataEcId
 XMLSEC_DEPRECATED XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataEcdsaGetKlass     (void);

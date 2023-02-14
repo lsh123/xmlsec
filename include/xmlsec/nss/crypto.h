@@ -263,7 +263,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecNsskeyDataEcGetKlass(void);
  * Deprecated. The EC key klass.
  */
 #define xmlSecNssKeyDataEcdsaId         xmlSecNssKeyDataEcId
-XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED xmlSecKeyDataId    xmlSecNsskeyDataEcdsaGetKlass(void);
+XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED xmlSecKeyDataId    xmlSecNssKeyDataEcdsaGetKlass(void);
 
 #ifndef XMLSEC_NO_SHA1
 

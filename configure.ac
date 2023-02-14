@@ -2019,6 +2019,23 @@ fi
 AM_CONDITIONAL(XMLSEC_NO_RSA, test "z$XMLSEC_NO_RSA" = "z1")
 AC_SUBST(XMLSEC_NO_RSA)
 
+
+dnl ==========================================================================
+dnl See do we need EC (Eliptic Curve) support
+dnl ==========================================================================
+AC_MSG_CHECKING(for Eliptic Curve support)
+AC_ARG_ENABLE([ec], [AS_HELP_STRING([--enable-ec],[enable EC support (yes)])])
+if test "z$enable_ec" = "zno" ; then
+    XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_EC=1"
+    XMLSEC_NO_EC="1"
+    AC_MSG_RESULT([disabled])
+else
+    XMLSEC_NO_EC="0"
+    AC_MSG_RESULT([yes])
+fi
+AM_CONDITIONAL(XMLSEC_NO_EC, test "z$XMLSEC_NO_EC" = "z1")
+AC_SUBST(XMLSEC_NO_EC)
+
 dnl ==========================================================================
 dnl See do we need x509 support
 dnl ==========================================================================

@@ -497,7 +497,7 @@ xmlSecTransformAes256GcmGetKlass(void)
 *
 * ConcatKDF key derivaton transform klass.
 *
-* Returns: pointer toConcatKDF key derivaton transform or NULL if an error
+* Returns: pointer to ConcatKDF key derivaton transform or NULL if an error
 * occurs (the xmlsec-crypto library is not loaded or this transform is not
 * implemented).
 */
@@ -645,6 +645,27 @@ xmlSecTransformDsaSha256GetKlass(void) {
 
     return(xmlSecCryptoDLGetFunctions()->transformDsaSha256GetKlass());
 }
+
+/**
+* xmlSecTransformEcdhGetKlass:
+*
+* ECDH key agreement transform klass.
+*
+* Returns: pointer to ECDH key agreement transform or NULL if an error
+* occurs (the xmlsec-crypto library is not loaded or this transform is not
+* implemented).
+*/
+xmlSecTransformId
+xmlSecTransformEcdhGetKlass(void)
+{
+    if ((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformEcdhGetKlass == NULL)) {
+        xmlSecNotImplementedError("transformEcdhGetKlass");
+        return(xmlSecTransformIdUnknown);
+    }
+
+    return(xmlSecCryptoDLGetFunctions()->transformEcdhGetKlass());
+}
+
 
 /**
  * xmlSecTransformEcdsaSha1GetKlass:

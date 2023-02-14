@@ -221,7 +221,7 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefDsaSha256[];
 
 /*************************************************************************
  *
- * EC strings
+ * EC key strings
  *
  ************************************************************************/
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameECKeyValue[];
@@ -231,6 +231,20 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefECKeyValue[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeNamedCurve[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodePublicKey[];
 
+
+/*************************************************************************
+ *
+ * ECDH key agreement strings
+ *
+ ************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameEcdh[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEcdh[];
+
+/*************************************************************************
+ *
+ * ECDSA sigantures strings
+ *
+ ************************************************************************/
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameEcdsaSha1[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEcdsaSha1[];
 

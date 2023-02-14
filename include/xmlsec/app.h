@@ -254,6 +254,13 @@ XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformDsaSha1GetKlass  
 #define xmlSecTransformDsaSha256Id              xmlSecTransformDsaSha256GetKlass()
 XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformDsaSha256GetKlass  (void);
 /**
+* xmlSecTransformEcdhId:
+*
+* The ECDH key agreement transform klass.
+*/
+#define xmlSecTransformEcdhId                   xmlSecTransformEcdhGetKlass()
+XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformEcdhGetKlass(void);
+/**
  * xmlSecTransformEcdsaSha1Id:
  *
  * The ECDSA-SHA1 signature transform klass.

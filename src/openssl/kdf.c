@@ -64,8 +64,8 @@
 
 #define XMLSEC_OPENSSL_CONCATKDF_DEFAULT_BUF_SIZE 64
 
-typedef struct _xmlSecOpenSSLConcatKdftx    xmlSecOpenSSLConcatKdftx, *xmlSecOpenSSLConcatKdftxPtr;
-struct _xmlSecOpenSSLConcatKdftx {
+typedef struct _xmlSecOpenSSLConcatKdfCtx    xmlSecOpenSSLConcatKdfCtx, *xmlSecOpenSSLConcatKdfCtxPtr;
+struct _xmlSecOpenSSLConcatKdfCtx {
     EVP_KDF_CTX *kctx;
     OSSL_PARAM params[6];
 
@@ -80,7 +80,7 @@ struct _xmlSecOpenSSLConcatKdftx {
  * ConcatKDF transforms
  *
  *****************************************************************************/
-XMLSEC_TRANSFORM_DECLARE(OpenSSLConcatKdf, xmlSecOpenSSLConcatKdftx)
+XMLSEC_TRANSFORM_DECLARE(OpenSSLConcatKdf, xmlSecOpenSSLConcatKdfCtx)
 #define xmlSecOpenSSLConcatKdfSize XMLSEC_TRANSFORM_SIZE(OpenSSLConcatKdf)
 
 static int      xmlSecOpenSSLConcatKdfInitialize                (xmlSecTransformPtr transform);
@@ -98,7 +98,7 @@ static int      xmlSecOpenSSLConcatKdfExecute                   (xmlSecTransform
 
 static int
 xmlSecOpenSSLConcatKdfInitialize(xmlSecTransformPtr transform) {
-    xmlSecOpenSSLConcatKdftxPtr ctx;
+    xmlSecOpenSSLConcatKdfCtxPtr ctx;
     EVP_KDF *kdf;
     int ret;
 
@@ -109,7 +109,7 @@ xmlSecOpenSSLConcatKdfInitialize(xmlSecTransformPtr transform) {
     xmlSecAssert2(ctx != NULL, -1);
 
     /* initialize context */
-    memset(ctx, 0, sizeof(xmlSecOpenSSLConcatKdftx));
+    memset(ctx, 0, sizeof(xmlSecOpenSSLConcatKdfCtx));
 
     ret = xmlSecBufferInitialize(&(ctx->bufFixedInfo), XMLSEC_OPENSSL_CONCATKDF_DEFAULT_BUF_SIZE);
     if(ret < 0) {
@@ -141,7 +141,7 @@ xmlSecOpenSSLConcatKdfInitialize(xmlSecTransformPtr transform) {
 
 static void
 xmlSecOpenSSLConcatKdfFinalize(xmlSecTransformPtr transform) {
-    xmlSecOpenSSLConcatKdftxPtr ctx;
+    xmlSecOpenSSLConcatKdfCtxPtr ctx;
 
     xmlSecAssert(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformConcatKdfId));
     xmlSecAssert(xmlSecTransformCheckSize(transform, xmlSecOpenSSLConcatKdfSize));
@@ -157,7 +157,7 @@ xmlSecOpenSSLConcatKdfFinalize(xmlSecTransformPtr transform) {
     }
     xmlSecBufferFinalize(&(ctx->bufFixedInfo));
 
-    memset(ctx, 0, sizeof(xmlSecOpenSSLConcatKdftx));
+    memset(ctx, 0, sizeof(xmlSecOpenSSLConcatKdfCtx));
 }
 
 
@@ -176,7 +176,7 @@ xmlSecOpenSSLConcatKdfSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr k
 
 static int
 xmlSecOpenSSLConcatKdfSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
-    xmlSecOpenSSLConcatKdftxPtr ctx;
+    xmlSecOpenSSLConcatKdfCtxPtr ctx;
     xmlSecKeyDataPtr value;
     xmlSecBufferPtr buffer;
     xmlSecByte * keyData, * fixedInfoData;
@@ -226,7 +226,7 @@ xmlSecOpenSSLConcatKdfSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
 /* convert DigestMethod to OpenSSL algo */
 static int
-xmlSecOpenSSLConcatKdfSetDigestNameFromHref(xmlSecOpenSSLConcatKdftxPtr ctx, const xmlChar* href) {
+xmlSecOpenSSLConcatKdfSetDigestNameFromHref(xmlSecOpenSSLConcatKdfCtxPtr ctx, const xmlChar* href) {
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->digestAlgo == NULL, -1);
 
@@ -280,7 +280,7 @@ xmlSecOpenSSLConcatKdfSetDigestNameFromHref(xmlSecOpenSSLConcatKdftxPtr ctx, con
 static int
 xmlSecOpenSSLConcatKdfNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
                           xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
-    xmlSecOpenSSLConcatKdftxPtr ctx;
+    xmlSecOpenSSLConcatKdfCtxPtr ctx;
     xmlSecTransformConcatKdfParams params;
     xmlNodePtr cur;
     int ret;
@@ -345,7 +345,7 @@ xmlSecOpenSSLConcatKdfNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 
 static int
 xmlSecOpenSSLConcatKdfExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
-    xmlSecOpenSSLConcatKdftxPtr ctx;
+    xmlSecOpenSSLConcatKdfCtxPtr ctx;
     xmlSecBufferPtr in, out;
     int ret;
 

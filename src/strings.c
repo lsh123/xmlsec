@@ -250,9 +250,10 @@ const xmlChar xmlSecHrefDsaSha1[]               = "http://www.w3.org/2000/09/xml
 const xmlChar xmlSecNameDsaSha256[]             = "dsa-sha256";
 const xmlChar xmlSecHrefDsaSha256[]             = "http://www.w3.org/2009/xmldsig11#dsa-sha256";
 
+
 /*************************************************************************
  *
- * ECDSA strings
+ * EC key strings
  *
  ************************************************************************/
 const xmlChar xmlSecNameECKeyValue[]            = "ec";
@@ -262,6 +263,19 @@ const xmlChar xmlSecHrefECKeyValue[]            = "http://www.w3.org/2009/xmldsi
 const xmlChar xmlSecNodeNamedCurve[]            = "NamedCurve";
 const xmlChar xmlSecNodePublicKey[]             = "PublicKey";
 
+/*************************************************************************
+ *
+ * ECDH key agreement strings
+ *
+ ************************************************************************/
+const xmlChar xmlSecNameEcdh[]                  = "ecdh";
+const xmlChar xmlSecHrefEcdh[]                  = "http://www.w3.org/2009/xmlenc11#ECDH-ES";
+
+/*************************************************************************
+ *
+ * ECDSA sigantures strings
+ *
+ ************************************************************************/
 const xmlChar xmlSecNameEcdsaSha1[]             = "ecdsa-sha1";
 const xmlChar xmlSecHrefEcdsaSha1[]             = "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha1";
 

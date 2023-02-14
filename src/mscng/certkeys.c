@@ -1573,7 +1573,6 @@ xmlSecMSCngKeyDataEcRead(xmlSecKeyDataId id, xmlSecKeyValueEcPtr ecValue) {
         goto done;
     }
 
-    // printf("DEBUG: hello %ls\n", blobType);
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(blobSize, dwBlobSize, goto done, xmlSecKeyDataKlassGetName(id));
     status = BCryptImportKeyPair(
         hAlg,

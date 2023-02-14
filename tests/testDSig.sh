@@ -102,7 +102,7 @@ execDSigTest $res_success \
     "--hmackey keys/hmackey.bin"
 
 # ECDSA
-if [ "z$crypto" != "zopenssl" -a "z$crypto" != "zgnutls" -a "z$crypto" != "znss" ] ; then
+if [ "z$crypto" != "zopenssl" -a "z$crypto" != "zgnutls" -a "z$crypto" != "znss" -a "z$crypto" != "zgcrypt" ] ; then
     # OpenSSL/GnuTLS/NSS support ECKeyValue, others dont so we need to pass the key
     execDSigTest $res_success \
         "xmldsig11-interop-2012" \
@@ -345,14 +345,18 @@ else
         "--enabled-key-data key-value,ec $priv_key_option:key-p256 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
         "--enabled-key-data key-value,ec"
 
-    execDSigTest $res_success \
-        "xmldsig11-interop-2012" \
-        "signature-enveloping-p256_sha384" \
-        "c14n sha1 ecdsa-sha384" \
-        "key-value ec" \
-        "--enabled-key-data key-value,ec" \
-        "--enabled-key-data key-value,ec $priv_key_option:key-p256 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
-        "--enabled-key-data key-value,ec"
+    # GCrypt has problems with ECDSA-sha384 signatures if hash is longer than key
+    # https://github.com/lsh123/xmlsec/issues/504
+    if [ "z$crypto" != "zgcrypt" ] ; then
+        execDSigTest $res_success \
+            "xmldsig11-interop-2012" \
+            "signature-enveloping-p256_sha384" \
+            "c14n sha1 ecdsa-sha384" \
+            "key-value ec" \
+            "--enabled-key-data key-value,ec" \
+            "--enabled-key-data key-value,ec $priv_key_option:key-p256 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
+            "--enabled-key-data key-value,ec"
+    fi
 
     execDSigTest $res_success \
         "xmldsig11-interop-2012" \
@@ -390,14 +394,18 @@ else
         "--enabled-key-data key-value,ec $priv_key_option:key-p384 $topfolder/keys/ecdsa-secp384r1-key.$priv_key_format --pwd secret123" \
         "--enabled-key-data key-value,ec"
 
-    execDSigTest $res_success \
-        "xmldsig11-interop-2012" \
-        "signature-enveloping-p384_sha384" \
-        "c14n sha1 ecdsa-sha384" \
-        "key-value ec" \
-        "--enabled-key-data key-value,ec" \
-        "--enabled-key-data key-value,ec $priv_key_option:key-p384 $topfolder/keys/ecdsa-secp384r1-key.$priv_key_format --pwd secret123" \
-        "--enabled-key-data key-value,ec"
+    # GCrypt has problems with ECDSA-sha384 signatures if hash is longer than key
+    # https://github.com/lsh123/xmlsec/issues/504
+    if [ "z$crypto" != "zgcrypt" ] ; then
+        execDSigTest $res_success \
+            "xmldsig11-interop-2012" \
+            "signature-enveloping-p384_sha384" \
+            "c14n sha1 ecdsa-sha384" \
+            "key-value ec" \
+            "--enabled-key-data key-value,ec" \
+            "--enabled-key-data key-value,ec $priv_key_option:key-p384 $topfolder/keys/ecdsa-secp384r1-key.$priv_key_format --pwd secret123" \
+            "--enabled-key-data key-value,ec"
+    fi
 
     execDSigTest $res_success \
         "xmldsig11-interop-2012" \

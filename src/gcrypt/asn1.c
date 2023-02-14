@@ -188,7 +188,6 @@ xmlSecGCryptAsn1ParseTag (xmlSecByte const **buffer, unsigned long *buflen, stru
 #define XMLSEC_GCRYPT_ASN1_MAX_OBJECT_ID_SIZE    32
 typedef xmlSecByte xmlSecGCryptAsn1ObjectId[XMLSEC_GCRYPT_ASN1_MAX_OBJECT_ID_SIZE];
 
-
 typedef struct _xmlSecGCryptAsn1EcdsaObjectIdToCurve {
     char curve[20];
     xmlSecGCryptAsn1ObjectId objectId;
@@ -660,15 +659,15 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
         }
 
         /* construct key and key data */
-        key_data = xmlSecKeyDataCreate(xmlSecGCryptKeyDataEcdsaId);
+        key_data = xmlSecKeyDataCreate(xmlSecGCryptKeyDataEcId);
         if(key_data == NULL) {
-            xmlSecInternalError("xmlSecKeyDataCreate(xmlSecGCryptKeyDataEcdsaId)", NULL);
+            xmlSecInternalError("xmlSecKeyDataCreate(xmlSecGCryptKeyDataEcId)", NULL);
             goto done;
         }
 
-        ret = xmlSecGCryptKeyDataEcdsaAdoptKeyPair(key_data, s_pub_key, s_priv_key);
+        ret = xmlSecGCryptKeyDataEcAdoptKeyPair(key_data, s_pub_key, s_priv_key);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecGCryptKeyDataEcdsaAdoptKeyPair(xmlSecGCryptKeyDataEcdsaId)", NULL);
+            xmlSecInternalError("xmlSecGCryptKeyDataEcAdoptKeyPair(xmlSecGCryptKeyDataEcId)", NULL);
             xmlSecKeyDataDestroy(key_data);
             key_data = NULL;
             goto done;
@@ -715,15 +714,15 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
         }
 
         /* construct key and key data */
-        key_data = xmlSecKeyDataCreate(xmlSecGCryptKeyDataEcdsaId);
+        key_data = xmlSecKeyDataCreate(xmlSecGCryptKeyDataEcId);
         if(key_data == NULL) {
-            xmlSecInternalError("xmlSecKeyDataCreate(xmlSecGCryptKeyDataEcdsaId)", NULL);
+            xmlSecInternalError("xmlSecKeyDataCreate(xmlSecGCryptKeyDataEcId)", NULL);
             goto done;
         }
 
-        ret = xmlSecGCryptKeyDataEcdsaAdoptKeyPair(key_data, s_pub_key, NULL);
+        ret = xmlSecGCryptKeyDataEcAdoptKeyPair(key_data, s_pub_key, NULL);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecGCryptKeyDataEcdsaAdoptKeyPair(xmlSecGCryptKeyDataEcdsaId)", NULL);
+            xmlSecInternalError("xmlSecGCryptKeyDataEcAdoptKeyPair(xmlSecGCryptKeyDataEcId)", NULL);
             xmlSecKeyDataDestroy(key_data);
             key_data = NULL;
             goto done;

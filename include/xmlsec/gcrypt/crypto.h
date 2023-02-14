@@ -187,26 +187,42 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGCryptTransformDsaSha1GetKlass(void
 
 /********************************************************************
  *
- * ECDSA key and transforms
+ * EC key and transforms
  *
  *******************************************************************/
 #ifndef XMLSEC_NO_EC
 
 /**
- * xmlSecGCryptKeyDataEcdsaId:
+ * xmlSecGCryptKeyDataEcId:
  *
- * The ECDSA key klass.
+ * The EC key klass.
  */
-#define xmlSecGCryptKeyDataEcdsaId \
-        xmlSecGCryptkeyDataEcGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecGCryptkeyDataEcGetKlass        (void);
-XMLSEC_CRYPTO_EXPORT int                xmlSecGCryptKeyDataEcdsaAdoptKey        (xmlSecKeyDataPtr data,
+#define xmlSecGCryptKeyDataEcId         xmlSecGCryptkeyDataEcGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecGCryptkeyDataEcGetKlass           (void);
+XMLSEC_CRYPTO_EXPORT int                xmlSecGCryptKeyDataEcAdoptKey           (xmlSecKeyDataPtr data,
                                                                                  gcry_sexp_t ecdsa_key);
-XMLSEC_CRYPTO_EXPORT int                xmlSecGCryptKeyDataEcdsaAdoptKeyPair    (xmlSecKeyDataPtr data,
+XMLSEC_CRYPTO_EXPORT int                xmlSecGCryptKeyDataEcAdoptKeyPair       (xmlSecKeyDataPtr data,
                                                                                  gcry_sexp_t pub_key,
                                                                                  gcry_sexp_t priv_key);
-XMLSEC_CRYPTO_EXPORT gcry_sexp_t        xmlSecGCryptKeyDataEcdsaGetPublicKey    (xmlSecKeyDataPtr data);
-XMLSEC_CRYPTO_EXPORT gcry_sexp_t        xmlSecGCryptKeyDataEcdsaGetPrivateKey   (xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT gcry_sexp_t        xmlSecGCryptKeyDataEcGetPublicKey       (xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT gcry_sexp_t        xmlSecGCryptKeyDataEcGetPrivateKey      (xmlSecKeyDataPtr data);
+
+
+/**
+ * xmlSecGCryptKeyDataEcdsaId:
+ *
+ * Deprecated. The EC key klass.
+ */
+#define xmlSecGCryptKeyDataEcdsaId     xmlSecGCryptKeyDataEcId
+XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED xmlSecKeyDataId    xmlSecGCryptkeyDataEcdsaGetKlass        (void);
+XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED int                xmlSecGCryptKeyDataEcdsaAdoptKey        (xmlSecKeyDataPtr data,
+                                                                                                    gcry_sexp_t ecdsa_key);
+XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED int                xmlSecGCryptKeyDataEcdsaAdoptKeyPair    (xmlSecKeyDataPtr data,
+                                                                                                    gcry_sexp_t pub_key,
+                                                                                                    gcry_sexp_t priv_key);
+XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED gcry_sexp_t        xmlSecGCryptKeyDataEcdsaGetPublicKey    (xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED gcry_sexp_t        xmlSecGCryptKeyDataEcdsaGetPrivateKey   (xmlSecKeyDataPtr data);
+
 
 
 #ifndef XMLSEC_NO_SHA1

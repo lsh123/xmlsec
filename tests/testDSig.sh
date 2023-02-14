@@ -102,7 +102,7 @@ execDSigTest $res_success \
     "--hmackey keys/hmackey.bin"
 
 # ECDSA
-if [ "z$crypto" != "zopenssl" -a "z$crypto" != "zgnutls" -a "z$crypto" != "znss" -a "z$crypto" != "zgcrypt" ] ; then
+if [ "z$crypto" != "zopenssl" -a "z$crypto" != "zgnutls" -a "z$crypto" != "znss" -a "z$crypto" != "zgcrypt" -a "z$crypto" != "zmscng" ] ; then
     # OpenSSL/GnuTLS/NSS support ECKeyValue, others dont so we need to pass the key
     execDSigTest $res_success \
         "xmldsig11-interop-2012" \

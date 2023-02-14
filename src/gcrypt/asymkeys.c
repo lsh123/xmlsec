@@ -53,7 +53,7 @@ struct _xmlSecGCryptAsymKeyDataCtx {
 
 /******************************************************************************
  *
- * GCrypt asym key data (dsa/rsa/ecdsa)
+ * GCrypt asym key data (dsa/rsa/ec)
  *
  *****************************************************************************/
 XMLSEC_KEY_DATA_DECLARE(GCryptAsymKeyData, xmlSecGCryptAsymKeyDataCtx)
@@ -1496,31 +1496,38 @@ done:
 #ifndef XMLSEC_NO_EC
 /**************************************************************************
  *
- * ECDSA XML key representation processing.
- *
- * http://csrc.nist.gov/publications/PubsNISTIRs.html#NIST-IR-7802
- *
- * RFC 4050 [RFC4050] describes a possible <dsig:KeyValue> representation
- * for an ECDSA key. The representation and processing instructions
- * described in [RFC4050] are not completely compatible with [XMLDSIG-11];
- * therefore, ECDSA keys SHOULD NOT be provided through a <dsig:KeyValue>
- * element.
+ * EC Keys.
  *
  *************************************************************************/
 
-static int              xmlSecGCryptKeyDataEcdsaInitialize       (xmlSecKeyDataPtr data);
-static int              xmlSecGCryptKeyDataEcdsaDuplicate        (xmlSecKeyDataPtr dst,
+static int              xmlSecGCryptKeyDataEcInitialize         (xmlSecKeyDataPtr data);
+static int              xmlSecGCryptKeyDataEcDuplicate          (xmlSecKeyDataPtr dst,
                                                                  xmlSecKeyDataPtr src);
-static void             xmlSecGCryptKeyDataEcdsaFinalize         (xmlSecKeyDataPtr data);
+static void             xmlSecGCryptKeyDataEcFinalize           (xmlSecKeyDataPtr data);
 
-static xmlSecKeyDataType xmlSecGCryptKeyDataEcdsaGetType         (xmlSecKeyDataPtr data);
-static xmlSecSize       xmlSecGCryptKeyDataEcdsaGetSize          (xmlSecKeyDataPtr data);
-static void             xmlSecGCryptKeyDataEcdsaDebugDump        (xmlSecKeyDataPtr data,
+static xmlSecKeyDataType xmlSecGCryptKeyDataEcGetType           (xmlSecKeyDataPtr data);
+static xmlSecSize       xmlSecGCryptKeyDataEcGetSize            (xmlSecKeyDataPtr data);
+static void             xmlSecGCryptKeyDataEcDebugDump          (xmlSecKeyDataPtr data,
                                                                  FILE* output);
-static void             xmlSecGCryptKeyDataEcdsaDebugXmlDump     (xmlSecKeyDataPtr data,
+static void             xmlSecGCryptKeyDataEcDebugXmlDump       (xmlSecKeyDataPtr data,
                                                                  FILE* output);
 
-static xmlSecKeyDataKlass xmlSecGCryptKeyDataEcdsaKlass = {
+static int              xmlSecGCryptKeyDataEcXmlRead            (xmlSecKeyDataId id,
+                                                                 xmlSecKeyPtr key,
+                                                                 xmlNodePtr node,
+                                                                 xmlSecKeyInfoCtxPtr keyInfoCtx);
+static int              xmlSecGCryptKeyDataEcXmlWrite           (xmlSecKeyDataId id,
+                                                                 xmlSecKeyPtr key,
+                                                                 xmlNodePtr node,
+                                                                 xmlSecKeyInfoCtxPtr keyInfoCtx);
+
+static xmlSecKeyDataPtr xmlSecGCryptKeyDataEcRead               (xmlSecKeyDataId id,
+                                                                 xmlSecKeyValueEcPtr ecValue);
+static int              xmlSecGCryptKeyDataEcWrite              (xmlSecKeyDataId id,
+                                                                 xmlSecKeyDataPtr data,
+                                                                 xmlSecKeyValueEcPtr ecValue);
+
+static xmlSecKeyDataKlass xmlSecGCryptKeyDataEcKlass = {
     sizeof(xmlSecKeyDataKlass),
     xmlSecGCryptAsymKeyDataSize,
 
@@ -1528,149 +1535,213 @@ static xmlSecKeyDataKlass xmlSecGCryptKeyDataEcdsaKlass = {
     xmlSecNameECKeyValue,
     xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
                                                 /* xmlSecKeyDataUsage usage; */
-    xmlSecHrefECKeyValue,                    /* const xmlChar* href; */
-    xmlSecNodeECKeyValue,                    /* const xmlChar* dataNodeName; */
-    xmlSecDSig11Ns,                               /* const xmlChar* dataNodeNs; */
+    xmlSecHrefECKeyValue,                       /* const xmlChar* href; */
+    xmlSecNodeECKeyValue,                       /* const xmlChar* dataNodeName; */
+    xmlSecDSig11Ns,                             /* const xmlChar* dataNodeNs; */
 
     /* constructors/destructor */
-    xmlSecGCryptKeyDataEcdsaInitialize,          /* xmlSecKeyDataInitializeMethod initialize; */
-    xmlSecGCryptKeyDataEcdsaDuplicate,           /* xmlSecKeyDataDuplicateMethod duplicate; */
-    xmlSecGCryptKeyDataEcdsaFinalize,            /* xmlSecKeyDataFinalizeMethod finalize; */
-    NULL,                                        /* xmlSecKeyDataGenerateMethod generate; */
+    xmlSecGCryptKeyDataEcInitialize,            /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecGCryptKeyDataEcDuplicate,             /* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecGCryptKeyDataEcFinalize,              /* xmlSecKeyDataFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecKeyDataGenerateMethod generate; */
 
     /* get info */
-    xmlSecGCryptKeyDataEcdsaGetType,             /* xmlSecKeyDataGetTypeMethod getType; */
-    xmlSecGCryptKeyDataEcdsaGetSize,             /* xmlSecKeyDataGetSizeMethod getSize; */
-    NULL,                                        /* xmlSecKeyDataGetIdentifier getIdentifier; */
+    xmlSecGCryptKeyDataEcGetType,               /* xmlSecKeyDataGetTypeMethod getType; */
+    xmlSecGCryptKeyDataEcGetSize,               /* xmlSecKeyDataGetSizeMethod getSize; */
+    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
 
     /* read/write */
-    NULL,                                        /* xmlSecKeyDataXmlReadMethod xmlRead; */
-    NULL,                                        /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
-    NULL,                                        /* xmlSecKeyDataBinReadMethod binRead; */
-    NULL,                                        /* xmlSecKeyDataBinWriteMethod binWrite; */
+    xmlSecGCryptKeyDataEcXmlRead,               /* xmlSecKeyDataXmlReadMethod xmlRead; */
+    xmlSecGCryptKeyDataEcXmlWrite,              /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    NULL,                                       /* xmlSecKeyDataBinReadMethod binRead; */
+    NULL,                                       /* xmlSecKeyDataBinWriteMethod binWrite; */
 
     /* debug */
-    xmlSecGCryptKeyDataEcdsaDebugDump,           /* xmlSecKeyDataDebugDumpMethod debugDump; */
-    xmlSecGCryptKeyDataEcdsaDebugXmlDump,        /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+    xmlSecGCryptKeyDataEcDebugDump,             /* xmlSecKeyDataDebugDumpMethod debugDump; */
+    xmlSecGCryptKeyDataEcDebugXmlDump,          /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
 
     /* reserved for the future */
-    NULL,                                         /* void* reserved0; */
-    NULL,                                         /* void* reserved1; */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
 };
 
 /**
  * xmlSecGCryptkeyDataEcGetKlass:
  *
- * The GCrypt ECDSA key data klass.
+ * The GCrypt EC key data klass.
  *
- * Returns: pointer to GCrypt ECDSA key data klass.
+ * Returns: pointer to GCrypt EC key data klass.
  */
 xmlSecKeyDataId
 xmlSecGCryptkeyDataEcGetKlass(void) {
-    return(&xmlSecGCryptKeyDataEcdsaKlass);
+    return(&xmlSecGCryptKeyDataEcKlass);
 }
 
 /**
- * xmlSecGCryptKeyDataEcdsaAdoptKey:
- * @data:               the pointer to ECDSA key data.
- * @ecdsa_key:            the pointer to GCrypt ECDSA key.
+ * xmlSecGCryptKeyDataEcAdoptKey:
+ * @data:               the pointer to EC key data.
+ * @ec_key:            the pointer to GCrypt EC key.
  *
- * Sets the value of ECDSA key data.
+ * Sets the value of EC key data.
  *
  * Returns: 0 on success or a negative value otherwise.
  */
 int
-xmlSecGCryptKeyDataEcdsaAdoptKey(xmlSecKeyDataPtr data, gcry_sexp_t ecdsa_key) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataEcdsaId), -1);
-    xmlSecAssert2(ecdsa_key != NULL, -1);
-
-    return xmlSecGCryptAsymKeyDataAdoptKey(data, ecdsa_key);
+xmlSecGCryptKeyDataEcAdoptKey(xmlSecKeyDataPtr data, gcry_sexp_t ec_key) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataEcId), -1);
+    xmlSecAssert2(ec_key != NULL, -1);
+    return(xmlSecGCryptAsymKeyDataAdoptKey(data, ec_key));
 }
 
+/**
+ * xmlSecGCryptKeyDataEcAdoptKeyPair:
+ * @data:               the pointer to EC key data.
+ * @pub_key:            the pointer to GCrypt EC pub key.
+ * @priv_key:           the pointer to GCrypt EC priv key.
+ *
+ * Sets the value of EC key data.
+ *
+ * Returns: 0 on success or a negative value otherwise.
+ */
+int
+xmlSecGCryptKeyDataEcAdoptKeyPair(xmlSecKeyDataPtr data, gcry_sexp_t pub_key, gcry_sexp_t priv_key) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataEcId), -1);
+    xmlSecAssert2(pub_key != NULL, -1);
+    return(xmlSecGCryptAsymKeyDataAdoptKeyPair(data, pub_key, priv_key));
+}
+
+/**
+ * xmlSecGCryptKeyDataEcGetPublicKey:
+ * @data:               the pointer to EC key data.
+ *
+ * Gets the GCrypt EC public key from EC key data.
+ *
+ * Returns: pointer to GCrypt public EC key or NULL if an error occurs.
+ */
+gcry_sexp_t
+xmlSecGCryptKeyDataEcGetPublicKey(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataEcId), NULL);
+    return(xmlSecGCryptAsymKeyDataGetPublicKey(data));
+}
+
+/**
+ * xmlSecGCryptKeyDataEcGetPrivateKey:
+ * @data:               the pointer to EC key data.
+ *
+ * Gets the GCrypt EC private key from EC key data.
+ *
+ * Returns: pointer to GCrypt private EC key or NULL if an error occurs.
+ */
+gcry_sexp_t
+xmlSecGCryptKeyDataEcGetPrivateKey(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataEcId), NULL);
+    return(xmlSecGCryptAsymKeyDataGetPrivateKey(data));
+}
+
+/**
+ * xmlSecGCryptkeyDataEcdsaGetKlass:
+ *
+ * Deprecated. The GCrypt EC key data klass.
+ *
+ * Returns: pointer to GCrypt EC key data klass.
+ */
+xmlSecKeyDataId
+xmlSecGCryptkeyDataEcdsaGetKlass(void) {
+    return(xmlSecGCryptkeyDataEcGetKlass());
+}
+
+/**
+ * xmlSecGCryptKeyDataEcdsaAdoptKey:
+ * @data:               the pointer to EC key data.
+ * @ec_key:            the pointer to GCrypt EC key.
+ *
+ * Deprecated. Sets the value of EC key data.
+ *
+ * Returns: 0 on success or a negative value otherwise.
+ */
+int
+xmlSecGCryptKeyDataEcdsaAdoptKey(xmlSecKeyDataPtr data, gcry_sexp_t ec_key) {
+    return(xmlSecGCryptKeyDataEcAdoptKey(data, ec_key));
+}
 
 /**
  * xmlSecGCryptKeyDataEcdsaAdoptKeyPair:
- * @data:               the pointer to ECDSA key data.
- * @pub_key:            the pointer to GCrypt ECDSA pub key.
- * @priv_key:           the pointer to GCrypt ECDSA priv key.
+ * @data:               the pointer to EC key data.
+ * @pub_key:            the pointer to GCrypt EC pub key.
+ * @priv_key:           the pointer to GCrypt EC priv key.
  *
- * Sets the value of ECDSA key data.
+ * Deprecated. Sets the value of EC key data.
  *
  * Returns: 0 on success or a negative value otherwise.
  */
 int
 xmlSecGCryptKeyDataEcdsaAdoptKeyPair(xmlSecKeyDataPtr data, gcry_sexp_t pub_key, gcry_sexp_t priv_key) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataEcdsaId), -1);
-    xmlSecAssert2(pub_key != NULL, -1);
-
-    return xmlSecGCryptAsymKeyDataAdoptKeyPair(data, pub_key, priv_key);
+    return(xmlSecGCryptKeyDataEcAdoptKeyPair(data, pub_key, priv_key));
 }
 
 /**
  * xmlSecGCryptKeyDataEcdsaGetPublicKey:
- * @data:               the pointer to ECDSA key data.
+ * @data:               the pointer to EC key data.
  *
- * Gets the GCrypt ECDSA public key from ECDSA key data.
+ * Deprecated. Gets the GCrypt EC public key from EC key data.
  *
- * Returns: pointer to GCrypt public ECDSA key or NULL if an error occurs.
+ * Returns: pointer to GCrypt public EC key or NULL if an error occurs.
  */
 gcry_sexp_t
 xmlSecGCryptKeyDataEcdsaGetPublicKey(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataEcdsaId), NULL);
-    return xmlSecGCryptAsymKeyDataGetPublicKey(data);
+    return(xmlSecGCryptKeyDataEcGetPublicKey(data));
 }
 
 /**
  * xmlSecGCryptKeyDataEcdsaGetPrivateKey:
- * @data:               the pointer to ECDSA key data.
+ * @data:               the pointer to EC key data.
  *
- * Gets the GCrypt ECDSA private key from ECDSA key data.
+ * Deprecated. Gets the GCrypt EC private key from EC key data.
  *
- * Returns: pointer to GCrypt private ECDSA key or NULL if an error occurs.
+ * Returns: pointer to GCrypt private EC key or NULL if an error occurs.
  */
 gcry_sexp_t
 xmlSecGCryptKeyDataEcdsaGetPrivateKey(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataEcdsaId), NULL);
-    return xmlSecGCryptAsymKeyDataGetPrivateKey(data);
+    return(xmlSecGCryptKeyDataEcGetPrivateKey(data));
 }
 
 static int
-xmlSecGCryptKeyDataEcdsaInitialize(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataEcdsaId), -1);
+xmlSecGCryptKeyDataEcInitialize(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataEcId), -1);
 
     return(xmlSecGCryptAsymKeyDataInitialize(data));
 }
 
 static int
-xmlSecGCryptKeyDataEcdsaDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecGCryptKeyDataEcdsaId), -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecGCryptKeyDataEcdsaId), -1);
+xmlSecGCryptKeyDataEcDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecGCryptKeyDataEcId), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecGCryptKeyDataEcId), -1);
 
     return(xmlSecGCryptAsymKeyDataDuplicate(dst, src));
 }
 
 static void
-xmlSecGCryptKeyDataEcdsaFinalize(xmlSecKeyDataPtr data) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataEcdsaId));
+xmlSecGCryptKeyDataEcFinalize(xmlSecKeyDataPtr data) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataEcId));
 
     xmlSecGCryptAsymKeyDataFinalize(data);
 }
 
 static xmlSecKeyDataType
-xmlSecGCryptKeyDataEcdsaGetType(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataEcdsaId), xmlSecKeyDataTypeUnknown);
+xmlSecGCryptKeyDataEcGetType(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataEcId), xmlSecKeyDataTypeUnknown);
 
     return xmlSecGCryptAsymKeyDataGetType(data);
 }
 
 static xmlSecSize
-xmlSecGCryptKeyDataEcdsaGetSize(xmlSecKeyDataPtr data) {
+xmlSecGCryptKeyDataEcGetSize(xmlSecKeyDataPtr data) {
     xmlSecGCryptAsymKeyDataCtxPtr ctx;
     gcry_sexp_t key;
     unsigned int nbits = 0;
     const char *curve;
 
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataEcdsaId), 0);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataEcId), 0);
 
     ctx = xmlSecGCryptAsymKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, 0);
@@ -1689,21 +1760,254 @@ xmlSecGCryptKeyDataEcdsaGetSize(xmlSecKeyDataPtr data) {
 }
 
 static void
-xmlSecGCryptKeyDataEcdsaDebugDump(xmlSecKeyDataPtr data, FILE* output) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataEcdsaId));
+xmlSecGCryptKeyDataEcDebugDump(xmlSecKeyDataPtr data, FILE* output) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataEcId));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "=== ecdsa key: size = " XMLSEC_SIZE_FMT "\n",
-            xmlSecGCryptKeyDataEcdsaGetSize(data));
+    fprintf(output, "=== ec key: size = " XMLSEC_SIZE_FMT "\n",
+            xmlSecGCryptKeyDataEcGetSize(data));
 }
 
 static void
-xmlSecGCryptKeyDataEcdsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataEcdsaId));
+xmlSecGCryptKeyDataEcDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataEcId));
     xmlSecAssert(output != NULL);
 
     fprintf(output, "<ECKeyValue size=\"" XMLSEC_SIZE_FMT "\" />\n",
-            xmlSecGCryptKeyDataEcdsaGetSize(data));
+            xmlSecGCryptKeyDataEcGetSize(data));
+}
+
+static int
+xmlSecGCryptKeyDataEcXmlRead(xmlSecKeyDataId id,
+                              xmlSecKeyPtr key,
+                              xmlNodePtr node,
+                              xmlSecKeyInfoCtxPtr keyInfoCtx)
+{
+    xmlSecAssert2(id == xmlSecGCryptKeyDataEcId, -1);
+    return(xmlSecKeyDataEcXmlRead(id, key, node, keyInfoCtx,
+        xmlSecGCryptKeyDataEcRead));
+}
+
+static int
+xmlSecGCryptKeyDataEcXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
+                                xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlSecAssert2(id == xmlSecGCryptKeyDataEcId, -1);
+    return(xmlSecKeyDataEcXmlWrite(id, key, node, keyInfoCtx,
+        xmlSecBase64GetDefaultLineSize(), 1, /* add line breaks */
+        xmlSecGCryptKeyDataEcWrite));
+}
+
+
+typedef struct _xmlSecGCryptKeyDataEcCurveOidToName {
+    char curveName[20];
+    xmlChar curveOid[64];
+} xmlSecGCryptKeyDataEcCurveOidToName;
+
+static xmlSecGCryptKeyDataEcCurveOidToName g_xmlSecGCryptKeyDataEcCurveOidToName[] = {
+    { "prime192v1",  "1.2.840.10045.3.1.1" },
+    { "prime256v1",  "1.2.840.10045.3.1.7" },
+    { "secp224r1",   "1.3.132.0.33" },
+    { "secp384r1",   "1.3.132.0.34" },
+    { "secp521r1",   "1.3.132.0.35" }
+};
+
+static const char*
+xmlSecGCryptKeyDataEcCurveGetNameFromOid(const xmlChar * curveOid) {
+    xmlSecSize size = sizeof(g_xmlSecGCryptKeyDataEcCurveOidToName) / sizeof(g_xmlSecGCryptKeyDataEcCurveOidToName[0]);
+
+    xmlSecAssert2(curveOid != NULL, NULL);
+    for(xmlSecSize ii = 0; ii < size; ++ii) {
+        if(xmlStrcmp(curveOid, g_xmlSecGCryptKeyDataEcCurveOidToName[ii].curveOid) == 0) {
+            return(g_xmlSecGCryptKeyDataEcCurveOidToName[ii].curveName);
+        }
+    }
+    return(NULL);
+}
+
+static const xmlChar*
+xmlSecGCryptKeyDataEcCurveGetOidFromName(const char * curveName) {
+    xmlSecSize size = sizeof(g_xmlSecGCryptKeyDataEcCurveOidToName) / sizeof(g_xmlSecGCryptKeyDataEcCurveOidToName[0]);
+
+    xmlSecAssert2(curveName != NULL, NULL);
+    for(xmlSecSize ii = 0; ii < size; ++ii) {
+        if(strcmp(curveName, g_xmlSecGCryptKeyDataEcCurveOidToName[ii].curveName) == 0) {
+            return(g_xmlSecGCryptKeyDataEcCurveOidToName[ii].curveOid);
+        }
+    }
+    return(NULL);
+}
+
+static xmlSecKeyDataPtr
+xmlSecGCryptKeyDataEcRead(xmlSecKeyDataId id, xmlSecKeyValueEcPtr ecValue) {
+    xmlSecKeyDataPtr data = NULL;
+    xmlSecKeyDataPtr res = NULL;
+    gcry_mpi_t pubkey = NULL;
+    gcry_sexp_t s_pub_key = NULL;
+    gcry_error_t err;
+    const char* curveName;
+    int ret;
+
+    xmlSecAssert2(id == xmlSecGCryptKeyDataEcId, NULL);
+    xmlSecAssert2(ecValue != NULL, NULL);
+    xmlSecAssert2(ecValue->curve != NULL, NULL);
+
+    /* get curve name */
+    curveName = xmlSecGCryptKeyDataEcCurveGetNameFromOid(ecValue->curve);
+    if(curveName == NULL) {
+        xmlSecInternalError2("xmlSecGCryptKeyDataEcCurveGetNameFromOid",  xmlSecKeyDataGetName(data),
+            "curveOid=%s", xmlSecErrorsSafeString(ecValue->curve));
+        goto done;
+    }
+
+    /* pubkey */
+    err = gcry_mpi_scan(&pubkey, GCRYMPI_FMT_USG,
+        xmlSecBufferGetData(&(ecValue->pubkey)), xmlSecBufferGetSize(&(ecValue->pubkey)),
+        NULL);
+    if((err != GPG_ERR_NO_ERROR) || (pubkey == NULL)) {
+        xmlSecGCryptError("gcry_mpi_scan(pubkey)", err, xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+
+    /* construct pub key */
+    err = gcry_sexp_build (&s_pub_key, NULL,
+        "(public-key"
+        " (ecdsa"
+        " (curve %s)"
+        " (q %m)"
+        " ))",
+        curveName, pubkey
+    );
+    if((err != GPG_ERR_NO_ERROR) || (s_pub_key == NULL)) {
+        xmlSecGCryptError("gcry_sexp_build(public)", err, xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+
+    /* create key data */
+    data = xmlSecKeyDataCreate(id);
+    if(data == NULL ) {
+        xmlSecInternalError("xmlSecKeyDataCreate", xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+
+    ret = xmlSecGCryptKeyDataEcAdoptKeyPair(data, s_pub_key, NULL);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecGCryptKeyDataEcAdoptKeyPair", xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+    s_pub_key = NULL; /* pub_key is owned by data now */
+
+    /* success */
+    res = data;
+    data = NULL;
+
+done:
+    /* cleanup */
+    if(pubkey != NULL) {
+        gcry_mpi_release(pubkey);
+    }
+    if(s_pub_key != NULL) {
+        gcry_sexp_release(s_pub_key);
+    }
+    if(data != NULL) {
+        xmlSecKeyDataDestroy(data);
+    }
+    return(res);
+}
+
+/* use gcry_free() to deallocate returned string */
+static char*
+xmlSecGCryptGetStringFromSExp(const gcry_sexp_t sexp, const char * tok)
+{
+    gcry_sexp_t val = NULL;
+    char* res = NULL;
+
+    xmlSecAssert2(sexp != NULL, NULL);
+    xmlSecAssert2(tok != NULL, NULL);
+
+    val = gcry_sexp_find_token(sexp, tok, 0);
+    if(val == NULL) {
+        xmlSecGCryptError2("gcry_sexp_find_token", (gcry_error_t)GPG_ERR_NO_ERROR, NULL,
+            "tok=%s", xmlSecErrorsSafeString(tok));
+        goto done;
+    }
+
+    res = gcry_sexp_nth_string(val, 1);
+    if(res == NULL) {
+        xmlSecGCryptError2("gcry_sexp_nth_string", (gcry_error_t)GPG_ERR_NO_ERROR, NULL,
+            "tok=%s", xmlSecErrorsSafeString(tok));
+        goto done;
+    }
+
+done:
+    return(res);
+}
+
+
+static int
+xmlSecGCryptKeyDataEcWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKeyValueEcPtr ecValue) {
+    gcry_sexp_t s_pub_key;
+    gcry_sexp_t s_ecdsa = NULL;
+    char* curveName = NULL;
+    const xmlChar* curveOid;
+    int res = -1;
+    int ret;
+
+    xmlSecAssert2(id == xmlSecGCryptKeyDataEcId, -1);
+    xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataEcId), -1);
+    xmlSecAssert2(ecValue != NULL, -1);
+
+    /* find the private or public key */
+    s_pub_key = xmlSecGCryptKeyDataEcGetPublicKey(data);
+    if(s_pub_key == NULL) {
+        xmlSecInternalError("xmlSecGCryptKeyDataEcGetPublicKey()", xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+
+    s_ecdsa = gcry_sexp_find_token(s_pub_key, "ecdsa", 0);
+    if(s_ecdsa == NULL) {
+        xmlSecGCryptError("gcry_sexp_find_token(ecdsa)", (gcry_error_t)GPG_ERR_NO_ERROR,
+            xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+
+    /* curve */
+    curveName = xmlSecGCryptGetStringFromSExp(s_ecdsa,  "curve");
+    if(curveName == NULL) {
+        xmlSecInternalError("xmlSecGCryptGetStringFromSExp(curve)", xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+    curveOid = xmlSecGCryptKeyDataEcCurveGetOidFromName(curveName);
+    if(curveOid == NULL) {
+        xmlSecInternalError2("xmlSecGCryptKeyDataEcCurveGetNameFromOid",  xmlSecKeyDataKlassGetName(id),
+            "curveName=%s", xmlSecErrorsSafeString(curveName));
+        goto done;
+    }
+    ecValue->curve = xmlStrdup(curveOid);
+    if(ecValue->curve == NULL) {
+        xmlSecStrdupError(curveOid, xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+
+    /* pubkey */
+    ret = xmlSecGCryptSetSExpTokValue(s_ecdsa, "q", &(ecValue->pubkey));
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecGCryptSetSExpTokValue(q)", xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+
+    /* success */
+    res = 0;
+
+done:
+    if(curveName != NULL) {
+        gcry_free(curveName);
+    }
+    if(s_ecdsa != NULL) {
+        gcry_sexp_release(s_ecdsa);
+    }
+
+    return(res);
 }
 
 #endif /* XMLSEC_NO_EC */

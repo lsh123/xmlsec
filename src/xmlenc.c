@@ -1399,16 +1399,9 @@ xmlSecEncCtxAgreementMethodGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyI
     encCtx->encMethod->expectedOutputSize = keyInfoCtx->keyReq.keyBitsSize / 8;
     encCtx->encMethod->operation = encCtx->operation;
 
-    /* set key requirements for this transform */
-    ret = xmlSecTransformSetKeyReq(encCtx->encMethod, &(encCtx->keyInfoReadCtx.keyReq));
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformSetKeyReq", xmlSecTransformGetName(encCtx->encMethod));
-        return(NULL);
-    }
+    /* ecdh transform doesn't require a key, skip SetKeyReq(), FindKey(), and SetKey() */
 
-    /* TODO: xmlSecTransformSetKey? */
-
-    /* let's get the key! */
+    /* let's generate the key! */
     key = xmlSecEncCtxGenerateKey(encCtx, keyId, keyInfoCtx);
     if(key == NULL) {
         xmlSecInternalError("xmlSecEncCtxGenerateKey", NULL);

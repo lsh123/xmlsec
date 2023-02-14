@@ -901,7 +901,7 @@ xmlSecTransformCtxPrepare(xmlSecTransformCtxPtr ctx, xmlSecTransformDataType inp
         }
     }
 
-    /* finally let application a chance to verify that it's ok to execte
+    /* finally let application a chance to verify that it's ok to execute
      * this transforms chain */
     if(ctx->preExecCallback != NULL) {
         ret = (ctx->preExecCallback)(ctx);
@@ -2828,6 +2828,82 @@ xmlSecTransformConcatKdfParamsGetFixedInfo(xmlSecTransformConcatKdfParamsPtr par
 
 #endif /* XMLSEC_NO_CONCATKDF */
 
+/**************************** ECDH ********************************/
+#ifndef XMLSEC_NO_EC
+
+int
+xmlSecTransformEcdhParamsInitialize(xmlSecTransformEcdhParamsPtr params) {
+    xmlSecAssert2(params != NULL, -1);
+
+    memset(params, 0, sizeof(*params));
+
+    /* done */
+    return(0);
+}
+
+void
+xmlSecTransformEcdhParamsFinalize(xmlSecTransformEcdhParamsPtr params) {
+    xmlSecAssert(params != NULL);
+
+    if(params->keyDerivationTranform != NULL) {
+        xmlSecTransformDestroy(params->keyDerivationTranform);
+    }
+    memset(params, 0, sizeof(*params));
+}
+
+int
+xmlSecTransformEcdhParamsRead(xmlSecTransformEcdhParamsPtr params, xmlNodePtr node, xmlSecTransformCtxPtr transformCtx) {
+    xmlNodePtr cur;
+    int res = -1;
+
+    xmlSecAssert2(params != NULL, -1);
+    xmlSecAssert2(params->keyDerivationTranform == NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
+
+    /* first is required KeyDerivationMethod */
+    cur = xmlSecGetNextElementNode(node->children);
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeKeyDerivationMethod, xmlSecEnc11Ns))) {
+        xmlSecInvalidNodeError(cur, xmlSecNodeKeyDerivationMethod, NULL);
+        goto done;
+    }
+    params->keyDerivationTranform = xmlSecTransformNodeRead(cur, xmlSecTransformUsageKeyDerivationMethod, transformCtx);
+    if(params->keyDerivationTranform  == NULL) {
+        xmlSecInternalError("xmlSecTransformNodeRead(", xmlSecNodeGetName(cur));
+        goto done;
+    }
+
+    /* next node is required OriginatorKeyInfo */
+    cur = xmlSecGetNextElementNode(cur->next);
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeOriginatorKeyInfo, xmlSecEncNs))) {
+        xmlSecInvalidNodeError(cur, xmlSecNodeOriginatorKeyInfo, NULL);
+        goto done;
+    }
+    /* TODO: read the node */
+
+    /* next node is required RecipientKeyInfo */
+    cur = xmlSecGetNextElementNode(cur->next);
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeRecipientKeyInfo, xmlSecEncNs))) {
+        xmlSecInvalidNodeError(cur, xmlSecNodeRecipientKeyInfo, NULL);
+        goto done;
+    }
+    /* TODO: read the node */
+
+    /* if there is something left than it's an error */
+    cur = xmlSecGetNextElementNode(cur->next);
+    if(cur != NULL) {
+        xmlSecUnexpectedNodeError(cur,  NULL);
+        goto done;
+    }
+
+    /* success */
+    res = 0;
+
+done:
+    return(res);
+}
+
+#endif /* XMLSEC_NO_EC */
 
 #ifndef XMLSEC_NO_HMAC
 

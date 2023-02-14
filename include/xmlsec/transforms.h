@@ -255,6 +255,12 @@ typedef unsigned int                            xmlSecTransformUsage;
  */
 #define xmlSecTransformUsageKeyDerivationMethod 0x0020
 
+/**
+ * xmlSecTransformUsageAgreementMethod:
+ *
+ * Transform could be used in <enc11:AgreementMethod>.
+ */
+#define xmlSecTransformUsageAgreementMethod 0x0040
 
 /**
  * xmlSecTransformUsageAny:

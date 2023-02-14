@@ -155,7 +155,13 @@ XMLSEC_EXPORT void              xmlSecEncCtxDebugDump           (xmlSecEncCtxPtr
 XMLSEC_EXPORT void              xmlSecEncCtxDebugXmlDump        (xmlSecEncCtxPtr encCtx,
                                                                  FILE* output);
 
-XMLSEC_EXPORT xmlSecKeyPtr      xmlSecEncCxDerivedKeyGenerate   (xmlSecEncCtxPtr encCtx,
+XMLSEC_EXPORT xmlSecKeyPtr      xmlSecEncCtxDerivedKeyGenerate  (xmlSecEncCtxPtr encCtx,
+                                                                 xmlSecKeyDataId keyId,
+                                                                 xmlNodePtr node,
+                                                                 xmlSecKeyInfoCtxPtr keyInfoCtx);
+
+
+XMLSEC_EXPORT xmlSecKeyPtr      xmlSecEncCtxAgreementMethodGenerate(xmlSecEncCtxPtr encCtx,
                                                                  xmlSecKeyDataId keyId,
                                                                  xmlNodePtr node,
                                                                  xmlSecKeyInfoCtxPtr keyInfoCtx);

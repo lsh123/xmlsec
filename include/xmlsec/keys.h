@@ -60,7 +60,7 @@ typedef unsigned int                    xmlSecKeyUsage;
 /**
  * xmlSecKeyUsageKeyExchange:
  *
- * The key is used for key exchange.
+ * Deprecated. The key is used for key exchange.
  */
 #define xmlSecKeyUsageKeyExchange       0x00000010
 
@@ -70,6 +70,13 @@ typedef unsigned int                    xmlSecKeyUsage;
  * The key is used for key derivation.
  */
 #define xmlSecKeyUsageKeyDerive         0x00000020
+
+/**
+ * xmlSecKeyUsageKeyAgreement:
+ *
+ * The key is used for key agreement.
+ */
+#define xmlSecKeyUsageKeyAgreement      0x00000040
 
 /**
  * xmlSecKeyUsageAny:

@@ -277,6 +277,13 @@ XMLSEC_EXPORT xmlSecKeyDataId           xmlSecKeyDataRetrievalMethodGetKlass(voi
 #define xmlSecKeyDataEncryptedKeyId     xmlSecKeyDataEncryptedKeyGetKlass()
 XMLSEC_EXPORT xmlSecKeyDataId           xmlSecKeyDataEncryptedKeyGetKlass(void);
 
+/**
+ * xmlSecKeyDataAgreementMethodId
+ *
+ * The <enc:AgreementMethod> processing class.
+ */
+#define xmlSecKeyDataAgreementMethodId  xmlSecKeyDataAgreementMethodGetKlass()
+XMLSEC_EXPORT xmlSecKeyDataId           xmlSecKeyDataAgreementMethodGetKlass(void);
 
 /**
  * xmlSecKeyDataDerivedKeyId

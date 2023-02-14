@@ -301,6 +301,18 @@ const xmlChar xmlSecNodeMasterKeyName[]         = "MasterKeyName";
 
 /*************************************************************************
  *
+ * AgreementMethod
+ *
+ ************************************************************************/
+const xmlChar xmlSecNameAgreementMethod[]       = "agreement-method";
+const xmlChar xmlSecNodeAgreementMethod[]       = "AgreementMethod";
+const xmlChar xmlSecHrefAgreementMethod[]       = "http://www.w3.org/2000/09/xmldsig#AgreementMethod";
+
+const xmlChar xmlSecNodeOriginatorKeyInfo[]     = "OriginatorKeyInfo";
+const xmlChar xmlSecNodeRecipientKeyInfo[]      = "RecipientKeyInfo";
+
+/*************************************************************************
+ *
  * ConcatKDF
  *
  ************************************************************************/

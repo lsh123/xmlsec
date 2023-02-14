@@ -301,6 +301,17 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeMasterKeyName[];
 
 /*************************************************************************
  *
+ * AgreementMethod
+ *
+ ************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameAgreementMethod[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeAgreementMethod[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefAgreementMethod[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeOriginatorKeyInfo[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeRecipientKeyInfo[];
+/*************************************************************************
+ *
  * ConcatKDF
  *
  ************************************************************************/

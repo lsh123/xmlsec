@@ -1148,25 +1148,6 @@ xmlSecEncCtxGenerateKey(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xmlSecKey
     xmlSecAssert2(encCtx->encMethod != NULL, NULL);
     xmlSecAssert2(encCtx->result == NULL, NULL);
 
-    /* if we have no master key yet, then just see if we can find anything in the keys manager */
-    if((encCtx->encKey == NULL) && (encCtx->keyInfoReadCtx.keysMngr != NULL)) {
-        encCtx->encKey = xmlSecKeysMngrFindKey(encCtx->keyInfoReadCtx.keysMngr, NULL, &(encCtx->keyInfoReadCtx));
-    }
-
-    /* check that we have exactly what we want */
-    if((encCtx->encKey == NULL) || (!xmlSecKeyMatch(encCtx->encKey, NULL, &(encCtx->keyInfoReadCtx.keyReq)))) {
-        xmlSecOtherError2(XMLSEC_ERRORS_R_KEY_NOT_FOUND, NULL,
-            "encMethod=%s", xmlSecErrorsSafeString(xmlSecTransformGetName(encCtx->encMethod)));
-        return(NULL);
-    }
-
-    /* set the key to the transform */
-    ret = xmlSecTransformSetKey(encCtx->encMethod, encCtx->encKey);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformSetKey", xmlSecTransformGetName(encCtx->encMethod));
-        return(NULL);
-    }
-
     /* we only support binary keys for now */
     ret = xmlSecTransformCtxBinaryExecute(&(encCtx->transformCtx), NULL, 0);
     if((ret < 0) || (encCtx->transformCtx.result == NULL)) {
@@ -1230,6 +1211,7 @@ xmlSecEncCtxGenerateKey(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xmlSecKey
 xmlSecKeyPtr
 xmlSecEncCtxDerivedKeyGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlNodePtr cur;
+    xmlChar* masterKeyName = NULL;
     xmlChar* derivedKeyName = NULL;
     xmlSecKeyPtr key = NULL;
     xmlSecKeyPtr res = NULL;
@@ -1271,13 +1253,6 @@ xmlSecEncCtxDerivedKeyGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xm
     encCtx->encMethod->expectedOutputSize = keyInfoCtx->keyReq.keyBitsSize / 8;
     encCtx->encMethod->operation = encCtx->operation;
 
-    /* set key requirements for this transform */
-    ret = xmlSecTransformSetKeyReq(encCtx->encMethod, &(encCtx->keyInfoReadCtx.keyReq));
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformSetKeyReq", xmlSecTransformGetName(encCtx->encMethod));
-        goto done;
-    }
-
     /* next node */
     cur = xmlSecGetNextElementNode(cur->next);
 
@@ -1289,9 +1264,9 @@ xmlSecEncCtxDerivedKeyGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xm
 
     /* third node is optional DerivedKeyName */
     if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeDerivedKeyName, xmlSecEnc11Ns))) {
-        derivedKeyName = xmlNodeGetContent(node);
+        derivedKeyName = xmlNodeGetContent(cur);
         if(derivedKeyName == NULL) {
-            xmlSecInvalidNodeContentError(node, NULL, "empty");
+            xmlSecInvalidNodeContentError(cur, NULL, "empty");
             goto done;
         }
 
@@ -1301,20 +1276,11 @@ xmlSecEncCtxDerivedKeyGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xm
 
     /* forth node is optional MasterKeyName */
     if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeMasterKeyName, xmlSecEnc11Ns))) {
-        /* should we atempt to find master key in the key manager? */
-        if((encCtx->encKey == NULL) && (encCtx->keyInfoReadCtx.keysMngr != NULL)) {
-            xmlChar* masterKeyName = NULL;
-
-            masterKeyName = xmlNodeGetContent(node);
-            if(masterKeyName == NULL) {
-                xmlSecInvalidNodeContentError(node, NULL, "empty");
-                goto done;
-            }
-
-            encCtx->encKey = xmlSecKeysMngrFindKey(encCtx->keyInfoReadCtx.keysMngr, masterKeyName, &(encCtx->keyInfoReadCtx));
-            xmlFree(masterKeyName);
+        masterKeyName = xmlNodeGetContent(cur);
+        if(masterKeyName == NULL) {
+            xmlSecInvalidNodeContentError(cur, NULL, "empty");
+            goto done;
         }
-
         /* next node */
         cur = xmlSecGetNextElementNode(cur->next);
     }
@@ -1325,7 +1291,27 @@ xmlSecEncCtxDerivedKeyGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xm
         goto done;
     }
 
-    /* let's get the key! */
+    /* get master key */
+    ret = xmlSecTransformSetKeyReq(encCtx->encMethod, &(encCtx->keyInfoReadCtx.keyReq));
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecTransformSetKeyReq", xmlSecTransformGetName(encCtx->encMethod));
+        goto done;
+    }
+    if((encCtx->encKey == NULL) && (encCtx->keyInfoReadCtx.keysMngr != NULL)) {
+        encCtx->encKey = xmlSecKeysMngrFindKey(encCtx->keyInfoReadCtx.keysMngr, masterKeyName, &(encCtx->keyInfoReadCtx));
+    }
+    if((encCtx->encKey == NULL) || (!xmlSecKeyMatch(encCtx->encKey, NULL, &(encCtx->keyInfoReadCtx.keyReq)))) {
+        xmlSecOtherError2(XMLSEC_ERRORS_R_KEY_NOT_FOUND, NULL,
+            "encMethod=%s", xmlSecErrorsSafeString(xmlSecTransformGetName(encCtx->encMethod)));
+        return(NULL);
+    }
+    ret = xmlSecTransformSetKey(encCtx->encMethod, encCtx->encKey);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecTransformSetKey", xmlSecTransformGetName(encCtx->encMethod));
+        return(NULL);
+    }
+
+    /* let's get the derive key! */
     key = xmlSecEncCtxGenerateKey(encCtx, keyId, keyInfoCtx);
     if(key == NULL) {
         xmlSecInternalError("xmlSecEncCtxGenerateKey", NULL);
@@ -1346,6 +1332,9 @@ xmlSecEncCtxDerivedKeyGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xm
     key = NULL;
 
 done:
+    if(masterKeyName != NULL) {
+        xmlFree(masterKeyName);
+    }
     if(derivedKeyName != NULL) {
         xmlFree(derivedKeyName);
     }
@@ -1409,6 +1398,8 @@ xmlSecEncCtxAgreementMethodGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyI
         xmlSecInternalError("xmlSecTransformSetKeyReq", xmlSecTransformGetName(encCtx->encMethod));
         return(NULL);
     }
+
+    /* TODO: xmlSecTransformSetKey? */
 
     /* let's get the key! */
     key = xmlSecEncCtxGenerateKey(encCtx, keyId, keyInfoCtx);

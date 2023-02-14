@@ -99,8 +99,8 @@ execEncTest $res_success \
     "aes256-cbc concatkdf" \
     "derived-key" \
     "--concatkdf-key $topfolder/xmlenc11-interop-2012/dkey3-concatkdf.bin" \
-    "--concatkdf-key:dkey $topfolder/xmlenc11-interop-2012/dkey3-concatkdf.bin --binary $topfolder/xmlenc11-interop-2012/dkey3-example-ConcatKDF-crypto.data" \
-    "--concatkdf-key:dkey $topfolder/xmlenc11-interop-2012/dkey3-concatkdf.bin"
+    "--concatkdf-key:dkey3 $topfolder/xmlenc11-interop-2012/dkey3-concatkdf.bin --binary $topfolder/xmlenc11-interop-2012/dkey3-example-ConcatKDF-crypto.data" \
+    "--concatkdf-key:dkey3 $topfolder/xmlenc11-interop-2012/dkey3-concatkdf.bin"
 
 ##########################################################################
 #

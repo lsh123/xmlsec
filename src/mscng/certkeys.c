@@ -1690,7 +1690,7 @@ xmlSecMSCngKeyDataEcWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKeyVa
     }
     eckey = (BCRYPT_ECCKEY_BLOB*)bufData;
     bufData += sizeof(BCRYPT_ECCKEY_BLOB);
-    bufLen  -= sizeof(BCRYPT_ECCKEY_BLOB);
+    bufLen  -= (DWORD)sizeof(BCRYPT_ECCKEY_BLOB);
     if (bufLen != 2 * eckey->cbKey) {
         xmlSecMSCngNtError3("BCRYPT_ECCKEY_BLOB", xmlSecKeyDataKlassGetName(id),
             STATUS_SUCCESS, "bufLen=%lu, eckey->cbKey=%lu", bufLen, eckey->cbKey);
@@ -1714,7 +1714,7 @@ xmlSecMSCngKeyDataEcWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKeyVa
     ret = xmlSecBufferSetData(&(ecValue->pubkey), magic, sizeof(magic));
     if (ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetData(pubkey)", xmlSecKeyDataKlassGetName(id),
-            "magic size=%lu", sizeof(magic));
+            "magic size=%d", (int)sizeof(magic));
         goto done;
     }
     ret = xmlSecBufferAppend(&(ecValue->pubkey), bufData, bufLen);

@@ -204,7 +204,7 @@ xmlSecMSCngCertAdopt(PCCERT_CONTEXT pCert, xmlSecKeyDataType type) {
 
 #ifndef XMLSEC_NO_EC
     if(!strcmp(pCert->pCertInfo->SubjectPublicKeyInfo.Algorithm.pszObjId, szOID_ECC_PUBLIC_KEY)) {
-        data = xmlSecKeyDataCreate(xmlSecMSCngKeyDataEcdsaId);
+        data = xmlSecKeyDataCreate(xmlSecMSCngKeyDataEcId);
         if(data == NULL) {
             xmlSecInternalError("xmlSecKeyDataCreate(KeyDataEcdsaId)", NULL);
             return(NULL);
@@ -411,9 +411,22 @@ xmlSecMSCngKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
                 pszAlgId = BCRYPT_DSA_ALGORITHM;
                 break;
 #endif
+
 #ifndef XMLSEC_NO_RSA
             case BCRYPT_RSAPUBLIC_MAGIC:
                 pszAlgId = BCRYPT_RSA_ALGORITHM;
+                break;
+#endif
+
+#ifndef XMLSEC_NO_EC
+            case BCRYPT_ECDSA_PUBLIC_P256_MAGIC:
+                pszAlgId = BCRYPT_ECDSA_P256_ALGORITHM;
+                break;
+            case BCRYPT_ECDSA_PUBLIC_P384_MAGIC:
+                pszAlgId = BCRYPT_ECDSA_P384_ALGORITHM;
+                break;
+            case BCRYPT_ECDSA_PUBLIC_P521_MAGIC:
+                pszAlgId = BCRYPT_ECDSA_P521_ALGORITHM;
                 break;
 #endif
             default:
@@ -1389,18 +1402,18 @@ xmlSecMSCngKeyDataRsaGetKlass(void) {
 
 #ifndef XMLSEC_NO_EC
 static int
-xmlSecMSCngKeyDataEcdsaDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecMSCngKeyDataEcdsaId), -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecMSCngKeyDataEcdsaId), -1);
+xmlSecMSCngKeyDataEcDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecMSCngKeyDataEcId), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecMSCngKeyDataEcId), -1);
 
     return(xmlSecMSCngKeyDataDuplicate(dst, src));
 }
 
 static xmlSecKeyDataType
-xmlSecMSCngKeyDataEcdsaGetType(xmlSecKeyDataPtr data) {
+xmlSecMSCngKeyDataEcGetType(xmlSecKeyDataPtr data) {
     xmlSecMSCngKeyDataCtxPtr ctx;
 
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataEcdsaId), xmlSecKeyDataTypeUnknown);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataEcId), xmlSecKeyDataTypeUnknown);
 
     ctx = xmlSecMSCngKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, xmlSecKeyDataTypeUnknown);
@@ -1413,31 +1426,335 @@ xmlSecMSCngKeyDataEcdsaGetType(xmlSecKeyDataPtr data) {
 }
 
 static xmlSecSize
-xmlSecMSCngKeyDataEcdsaGetSize(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataEcdsaId), 0);
+xmlSecMSCngKeyDataEcGetSize(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataEcId), 0);
 
     return(xmlSecMSCngKeyDataGetSize(data));
 }
 
 
 static void
-xmlSecMSCngKeyDataEcdsaDebugDump(xmlSecKeyDataPtr data, FILE* output) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataEcdsaId));
+xmlSecMSCngKeyDataEcDebugDump(xmlSecKeyDataPtr data, FILE* output) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataEcId));
     xmlSecAssert(output != NULL);
 
     fprintf(output, "=== rsa key: size = " XMLSEC_SIZE_FMT "\n",
-        xmlSecMSCngKeyDataEcdsaGetSize(data));
+        xmlSecMSCngKeyDataEcGetSize(data));
 }
 
-static void xmlSecMSCngKeyDataEcdsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataEcdsaId));
+static void xmlSecMSCngKeyDataEcDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataEcId));
     xmlSecAssert(output != NULL);
 
     fprintf(output, "<ECKeyValue size=\"" XMLSEC_SIZE_FMT "\" />\n",
-        xmlSecMSCngKeyDataEcdsaGetSize(data));
+        xmlSecMSCngKeyDataEcGetSize(data));
 }
 
-static xmlSecKeyDataKlass xmlSecMSCngKeyDataEcdsaKlass = {
+typedef struct _xmlSecMSCngKeyDataEccCurveNameAndMagic {
+    ULONG magic;
+    LPCWSTR blobType;
+    xmlChar oid[128];
+} xmlSecMSCngKeyDataEccCurveNameAndMagic;
+
+/* https://learn.microsoft.com/en-us/windows/win32/api/bcrypt/ns-bcrypt-bcrypt_ecckey_blob */
+static const xmlSecMSCngKeyDataEccCurveNameAndMagic g_xmlSecMSCngKeyDataEccCurveNameAndMagic[] = {
+    { BCRYPT_ECDSA_PUBLIC_P256_MAGIC, BCRYPT_ECDSA_P256_ALGORITHM, "1.2.840.10045.3.1.7" }, /* prime256v1 */
+    { BCRYPT_ECDSA_PUBLIC_P384_MAGIC, BCRYPT_ECDSA_P384_ALGORITHM, "1.3.132.0.34" }, /* secp384r1 */
+    { BCRYPT_ECDSA_PUBLIC_P521_MAGIC, BCRYPT_ECDSA_P521_ALGORITHM, "1.3.132.0.35" }  /* secp521r1 */
+};
+
+
+static const xmlChar*
+xmlSecOpenSSLKeyDataEcGetOidFromMagic(ULONG magic) {
+    xmlSecSize size = sizeof(g_xmlSecMSCngKeyDataEccCurveNameAndMagic) / sizeof(g_xmlSecMSCngKeyDataEccCurveNameAndMagic[0]);
+
+    xmlSecAssert2(magic != 0, NULL);
+
+    for (xmlSecSize ii = 0; ii < size; ++ii) {
+        if (magic == g_xmlSecMSCngKeyDataEccCurveNameAndMagic[ii].magic) {
+            return(g_xmlSecMSCngKeyDataEccCurveNameAndMagic[ii].oid);
+        }
+    }
+    return(NULL);
+}
+
+static LPCWSTR
+xmlSecOpenSSLKeyDataEcGetTypeAndMagicFromOid(const xmlChar* oid, ULONG * magic) {
+    xmlSecSize size = sizeof(g_xmlSecMSCngKeyDataEccCurveNameAndMagic) / sizeof(g_xmlSecMSCngKeyDataEccCurveNameAndMagic[0]);
+
+    xmlSecAssert2(oid != NULL, 0);
+    xmlSecAssert2(magic != NULL, 0);
+
+    for (xmlSecSize ii = 0; ii < size; ++ii) {
+        if (xmlStrcmp(oid, g_xmlSecMSCngKeyDataEccCurveNameAndMagic[ii].oid) == 0) {
+            (*magic) = g_xmlSecMSCngKeyDataEccCurveNameAndMagic[ii].magic;
+            return(g_xmlSecMSCngKeyDataEccCurveNameAndMagic[ii].blobType);
+        }
+    }
+    return(0);
+}
+
+static xmlSecKeyDataPtr
+xmlSecMSCngKeyDataEcRead(xmlSecKeyDataId id, xmlSecKeyValueEcPtr ecValue) {
+    xmlSecKeyDataPtr data = NULL;
+    xmlSecKeyDataPtr res = NULL;
+    xmlSecBuffer blob;
+    int blobInitialized = 0;
+    xmlSecByte* blobData;
+    xmlSecByte* pubkeyData;
+    xmlSecSize pubkeySize;
+    xmlSecSize offset, blobSize;
+    DWORD dwBlobSize;
+    BCRYPT_ECCKEY_BLOB* eckey;
+    LPCWSTR blobType;
+    BCRYPT_KEY_HANDLE hKey = NULL;
+    NTSTATUS status;
+    BCRYPT_ALG_HANDLE hAlg = NULL;
+    int ret;
+
+    xmlSecAssert2(id == xmlSecMSCngKeyDataEcId, NULL);
+    xmlSecAssert2(ecValue != NULL, NULL);
+    xmlSecAssert2(ecValue->curve != NULL, NULL);
+
+    /* first byte in ecValue->pubkey is the magical byte, we don't need it */
+    pubkeyData = xmlSecBufferGetData(&(ecValue->pubkey));
+    pubkeySize = xmlSecBufferGetSize(&(ecValue->pubkey));
+    xmlSecAssert2(pubkeyData != NULL, NULL);
+    xmlSecAssert2(pubkeySize > 1, NULL);
+    pubkeyData += 1;
+    pubkeySize -= 1;
+
+    /* turn the read data into a public key blob, as documented at
+     * https://learn.microsoft.com/en-us/windows/win32/api/bcrypt/ns-bcrypt-bcrypt_ecckey_blob>
+     *
+     * dont reverse blobs as both the XML and CNG works with big-endian
+     *
+     */
+    offset = sizeof(BCRYPT_ECCKEY_BLOB);
+    blobSize = offset + pubkeySize;
+
+    ret = xmlSecBufferInitialize(&blob, blobSize);
+    if (ret < 0) {
+        xmlSecInternalError2("xmlSecBufferSetSize", xmlSecKeyDataKlassGetName(id),
+            "size=" XMLSEC_SIZE_FMT, blobSize);
+        goto done;
+    }
+    blobInitialized = 1;
+
+    ret = xmlSecBufferSetSize(&blob, blobSize);
+    if (ret < 0) {
+        xmlSecInternalError2("xmlSecBufferSetSize", xmlSecKeyDataKlassGetName(id),
+            "size=" XMLSEC_SIZE_FMT, blobSize);
+        goto done;
+    }
+    memset(xmlSecBufferGetData(&blob), 0, blobSize); // ensure all padding with 0s work
+
+    blobData = xmlSecBufferGetData(&blob);
+    eckey = (BCRYPT_ECCKEY_BLOB*)blobData;
+    blobType = xmlSecOpenSSLKeyDataEcGetTypeAndMagicFromOid(ecValue->curve, &(eckey->dwMagic));
+    if ((blobType == NULL) || (eckey->dwMagic == 0)) {
+        xmlSecInternalError2("xmlSecOpenSSLKeyDataEcGetOidFromNid", xmlSecKeyDataKlassGetName(id),
+            "curve=%s", xmlSecErrorsSafeString(ecValue->curve));
+        goto done;
+    }
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(pubkeySize / 2, eckey->cbKey, goto done, xmlSecKeyDataKlassGetName(id));
+
+    /* pubkey */
+    memcpy(blobData + offset, pubkeyData, pubkeySize);
+
+    /* import the key blob */
+    status = BCryptOpenAlgorithmProvider(
+        &hAlg,
+        blobType,
+        NULL,
+        0);
+    if (status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptOpenAlgorithmProvider", xmlSecKeyDataKlassGetName(id), status);
+        goto done;
+    }
+
+    // printf("DEBUG: hello %ls\n", blobType);
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(blobSize, dwBlobSize, goto done, xmlSecKeyDataKlassGetName(id));
+    status = BCryptImportKeyPair(
+        hAlg,
+        NULL,
+        BCRYPT_ECCPUBLIC_BLOB,
+        &hKey,
+        blobData,
+        dwBlobSize,
+        0);
+    if (status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptImportKeyPair", xmlSecKeyDataKlassGetName(id), status);
+        goto done;
+    }
+
+    data = xmlSecKeyDataCreate(id);
+    if (data == NULL) {
+        xmlSecInternalError("xmlSecKeyDataCreate", xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+
+    ret = xmlSecMSCngKeyDataAdoptKey(data, hKey);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecMSCngKeyDataAdoptKey", xmlSecKeyDataGetName(data));
+        goto done;
+    }
+    hKey = 0; /* now owned by data */
+
+    /* success */
+    res = data;
+    data = NULL;
+
+done:
+    if (data != NULL) {
+        xmlSecKeyDataDestroy(data);
+    }
+    if (hAlg != 0) {
+        BCryptCloseAlgorithmProvider(hAlg, 0);
+    }
+    if (hKey != 0) {
+        BCryptDestroyKey(hKey);
+    }
+    if (blobInitialized != 0) {
+        xmlSecBufferFinalize(&blob);
+    }
+    return(res);
+}
+
+static int
+xmlSecMSCngKeyDataEcWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKeyValueEcPtr ecValue)
+{
+    xmlSecMSCngKeyDataCtxPtr ctx;
+    NTSTATUS status;
+    xmlSecBuffer buf;
+    int bufInitialized = 0;
+    xmlSecByte* bufData;
+    DWORD bufLen = 0;
+    BCRYPT_ECCKEY_BLOB* eckey;
+    const xmlChar* curve;
+    int ret;
+    int res = -1;
+
+    xmlSecAssert2(id == xmlSecMSCngKeyDataEcId, -1);
+    xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataEcId), -1);
+    xmlSecAssert2(ecValue != NULL, -1);
+
+    ctx = xmlSecMSCngKeyDataGetCtx(data);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->pubkey, -1);
+
+    /* turn ctx->pubkey into eckey */
+    status = BCryptExportKey(ctx->pubkey,
+        NULL,
+        BCRYPT_ECCPUBLIC_BLOB,
+        NULL,
+        0,
+        &bufLen,
+        0);
+    if ((status != STATUS_SUCCESS) || (bufLen <= 0)) {
+        xmlSecMSCngNtError2("BCryptExportKey", xmlSecKeyDataKlassGetName(id),
+            status, "bufLen=%lu", bufLen);
+        goto done;
+    }
+
+    ret = xmlSecBufferInitialize(&buf, bufLen);
+    if (ret < 0) {
+        xmlSecInternalError2("xmlSecBufferInitialize", xmlSecKeyDataKlassGetName(id),
+            "size=%lu", bufLen);
+        goto done;
+    }
+    bufInitialized = 1;
+
+    bufData = xmlSecBufferGetData(&buf);
+    xmlSecAssert2(bufData != NULL, -1);
+
+    status = BCryptExportKey(ctx->pubkey,
+        NULL,
+        BCRYPT_ECCPUBLIC_BLOB,
+        bufData,
+        bufLen,
+        &bufLen,
+        0);
+    if ((status != STATUS_SUCCESS) || (bufLen <= 0)) {
+        xmlSecMSCngNtError2("BCryptExportKey", xmlSecKeyDataKlassGetName(id),
+            status, "bufLen=%lu", bufLen);
+        goto done;
+    }
+
+    /* check BCRYPT_ECCKEY_BLOB */
+    if (bufLen < sizeof(BCRYPT_ECCKEY_BLOB)) {
+        xmlSecMSCngNtError2("BCRYPT_ECCKEY_BLOB", xmlSecKeyDataKlassGetName(id),
+            STATUS_SUCCESS, "dwBlobLen=%lu", bufLen);
+        goto done;
+    }
+    eckey = (BCRYPT_ECCKEY_BLOB*)bufData;
+    bufData += sizeof(BCRYPT_ECCKEY_BLOB);
+    bufLen  -= (DWORD)sizeof(BCRYPT_ECCKEY_BLOB);
+    if (bufLen != 2 * eckey->cbKey) {
+        xmlSecMSCngNtError3("BCRYPT_ECCKEY_BLOB", xmlSecKeyDataKlassGetName(id),
+            STATUS_SUCCESS, "bufLen=%lu, eckey->cbKey=%lu", bufLen, eckey->cbKey);
+        goto done;
+    }
+    /* curve */
+    curve = xmlSecOpenSSLKeyDataEcGetOidFromMagic(eckey->dwMagic);
+    if (curve == NULL) {
+        xmlSecInternalError2("xmlSecOpenSSLKeyDataEcGetOidFromMagic", xmlSecKeyDataKlassGetName(id),
+            "magic=%lu", eckey->dwMagic);
+        goto done;
+    }
+    ecValue->curve = xmlStrdup(curve);
+    if (ecValue->curve == NULL) {
+        xmlSecStrdupError(curve, xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+
+    /* public key is prefixed with magic 0x04 */
+    xmlSecByte magic[] = { 0x04 };
+    ret = xmlSecBufferSetData(&(ecValue->pubkey), magic, sizeof(magic));
+    if (ret < 0) {
+        xmlSecInternalError2("xmlSecBufferSetData(pubkey)", xmlSecKeyDataKlassGetName(id),
+            "magic size=%d", (int)sizeof(magic));
+        goto done;
+    }
+    ret = xmlSecBufferAppend(&(ecValue->pubkey), bufData, bufLen);
+    if (ret < 0) {
+        xmlSecInternalError2("xmlSecBufferAppend(pubkey)", xmlSecKeyDataKlassGetName(id),
+            "bufLen=%lu", bufLen);
+        goto done;
+    }
+    
+    /* dont reverse blobs as both the XML and CNG works with big-endian */
+
+    /* success */
+    res = 0;
+
+done:
+    if (bufInitialized != 0) {
+        xmlSecBufferFinalize(&buf);
+    }
+    return(res);
+}
+
+
+static int
+xmlSecMSCngKeyDataEcXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
+    xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlSecAssert2(id == xmlSecMSCngKeyDataEcId, -1);
+    return(xmlSecKeyDataEcXmlRead(id, key, node, keyInfoCtx,
+        xmlSecMSCngKeyDataEcRead));
+}
+
+static int
+xmlSecMSCngKeyDataEcXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
+    xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlSecAssert2(id == xmlSecMSCngKeyDataEcId, -1);
+    return(xmlSecKeyDataEcXmlWrite(id, key, node, keyInfoCtx,
+        xmlSecBase64GetDefaultLineSize(), 1, /* add line breaks */
+        xmlSecMSCngKeyDataEcWrite));
+}
+
+static xmlSecKeyDataKlass xmlSecMSCngKeyDataEcKlass = {
     sizeof(xmlSecKeyDataKlass),
     xmlSecMSCngKeyDataSize,
 
@@ -1445,30 +1762,30 @@ static xmlSecKeyDataKlass xmlSecMSCngKeyDataEcdsaKlass = {
     xmlSecNameECKeyValue,
     xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
                                                 /* xmlSecKeyDataUsage usage; */
-    xmlSecHrefECKeyValue,                    /* const xmlChar* href; */
-    xmlSecNodeECKeyValue,                    /* const xmlChar* dataNodeName; */
-    xmlSecDSig11Ns,                               /* const xmlChar* dataNodeNs; */
+    xmlSecHrefECKeyValue,                       /* const xmlChar* href; */
+    xmlSecNodeECKeyValue,                       /* const xmlChar* dataNodeName; */
+    xmlSecDSig11Ns,                             /* const xmlChar* dataNodeNs; */
 
     /* constructors/destructor */
     xmlSecMSCngKeyDataInitialize,               /* xmlSecKeyDataInitializeMethod initialize; */
-    xmlSecMSCngKeyDataEcdsaDuplicate,           /* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecMSCngKeyDataEcDuplicate,              /* xmlSecKeyDataDuplicateMethod duplicate; */
     xmlSecMSCngKeyDataFinalize,                 /* xmlSecKeyDataFinalizeMethod finalize; */
     NULL,                                       /* xmlSecKeyDataGenerateMethod generate; */
 
     /* get info */
-    xmlSecMSCngKeyDataEcdsaGetType,             /* xmlSecKeyDataGetTypeMethod getType; */
-    xmlSecMSCngKeyDataEcdsaGetSize,             /* xmlSecKeyDataGetSizeMethod getSize; */
+    xmlSecMSCngKeyDataEcGetType,                /* xmlSecKeyDataGetTypeMethod getType; */
+    xmlSecMSCngKeyDataEcGetSize,                /* xmlSecKeyDataGetSizeMethod getSize; */
     NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
 
     /* read/write */
-    NULL,                                       /* xmlSecKeyDataXmlReadMethod xmlRead; */
-    NULL,                                       /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    xmlSecMSCngKeyDataEcXmlRead,                /* xmlSecKeyDataXmlReadMethod xmlRead; */
+    xmlSecMSCngKeyDataEcXmlWrite,               /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
     NULL,                                       /* xmlSecKeyDataBinReadMethod binRead; */
     NULL,                                       /* xmlSecKeyDataBinWriteMethod binWrite; */
 
     /* debug */
-    xmlSecMSCngKeyDataEcdsaDebugDump,           /* xmlSecKeyDataDebugDumpMethod debugDump; */
-    xmlSecMSCngKeyDataEcdsaDebugXmlDump,        /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+    xmlSecMSCngKeyDataEcDebugDump,              /* xmlSecKeyDataDebugDumpMethod debugDump; */
+    xmlSecMSCngKeyDataEcDebugXmlDump,           /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
 
     /* reserved for the future */
     NULL,                                       /* void* reserved0; */
@@ -1476,14 +1793,26 @@ static xmlSecKeyDataKlass xmlSecMSCngKeyDataEcdsaKlass = {
 };
 
 /**
- * xmlSecMSCngkeyDataEcGetKlass:
+ * xmlSecMSCngKeyDataEcGetKlass:
  *
- * The MSCng ECDSA CertKey data klass.
+ * The MSCng EC CertKey data klass.
  *
- * Returns: pointer to MSCng ECDSA key data klass.
+ * Returns: pointer to MSCng EC key data klass.
  */
 xmlSecKeyDataId
-xmlSecMSCngkeyDataEcGetKlass(void) {
-    return(&xmlSecMSCngKeyDataEcdsaKlass);
+xmlSecMSCngKeyDataEcGetKlass(void) {
+    return(&xmlSecMSCngKeyDataEcKlass);
+}
+
+/**
+ * xmlSecMSCngKeyDataEcdsaGetKlass:
+ *
+ * Deprecated. The MSCng EC CertKey data klass.
+ *
+ * Returns: pointer to MSCng EC key data klass.
+ */
+xmlSecKeyDataId
+xmlSecMSCngKeyDataEcdsaGetKlass(void) {
+    return(xmlSecMSCngKeyDataEcGetKlass());
 }
 #endif /* XMLSEC_NO_EC */

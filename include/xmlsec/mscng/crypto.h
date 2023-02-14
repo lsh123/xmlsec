@@ -213,19 +213,26 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformRsaOaepEnc11GetKlass(
 
 /********************************************************************
  *
- * ECDSA transforms
+ * EC key and transforms
  *
  *******************************************************************/
 #ifndef XMLSEC_NO_EC
 
 /**
+ * xmlSecMSCngKeyDataEcId:
+ *
+ * The EC key klass.
+ */
+#define xmlSecMSCngKeyDataEcId          xmlSecMSCngKeyDataEcGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecMSCngKeyDataEcGetKlass(void);
+
+/**
  * xmlSecMSCngKeyDataEcdsaId:
  *
- * The ECDSA key klass.
+ * Deprecated. The EC key klass.
  */
-#define xmlSecMSCngKeyDataEcdsaId \
-        xmlSecMSCngkeyDataEcGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId xmlSecMSCngkeyDataEcGetKlass(void);
+#define xmlSecMSCngKeyDataEcdsaId       xmlSecMSCngKeyDataEcId
+XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED  xmlSecKeyDataId xmlSecMSCngKeyDataEcdsaGetKlass(void);
 
 #ifndef XMLSEC_NO_SHA1
 /**

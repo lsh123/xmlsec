@@ -84,7 +84,7 @@ xmlSecCryptoGetFunctions_mscng(void) {
 #endif /* XMLSEC_NO_DSA */
 
 #ifndef XMLSEC_NO_EC
-    gXmlSecMSCngFunctions->keyDataEcGetKlass         = xmlSecMSCngkeyDataEcGetKlass;
+    gXmlSecMSCngFunctions->keyDataEcGetKlass             = xmlSecMSCngKeyDataEcGetKlass;
 #endif /* XMLSEC_NO_EC */
 
 #ifdef XMLSEC_MSCNG_TODO

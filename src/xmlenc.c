@@ -1142,6 +1142,8 @@ xmlSecEncCtxDebugXmlDump(xmlSecEncCtxPtr encCtx, FILE* output) {
 static xmlSecKeyPtr
 xmlSecEncCtxGenerateKey(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecKeyPtr key;
+    xmlSecByte * keyData;
+    xmlSecSize keySize;
     int ret;
 
     xmlSecAssert2(encCtx != NULL, NULL);
@@ -1156,15 +1158,20 @@ xmlSecEncCtxGenerateKey(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xmlSecKey
     }
     encCtx->result = encCtx->transformCtx.result;
 
+    keyData = xmlSecBufferGetData(encCtx->result);
+    keySize = xmlSecBufferGetSize(encCtx->result);
+    if((keyData == NULL) || (keySize <= 0)) {
+        xmlSecInternalError("xmlSecTransformCtxBinaryExecute", xmlSecTransformGetName(encCtx->encMethod));
+        return(NULL);
+    }
+
     key = xmlSecKeyCreate();
     if(key == NULL) {
         xmlSecInternalError("xmlSecKeyCreate", xmlSecTransformGetName(encCtx->encMethod));
         return(NULL);
     }
 
-    ret = xmlSecKeyDataBinRead(keyId, key,
-        xmlSecBufferGetData(encCtx->result), xmlSecBufferGetSize(encCtx->result),
-        keyInfoCtx);
+    ret = xmlSecKeyDataBinRead(keyId, key, keyData, keySize, keyInfoCtx);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeyDataBinRead",
                             xmlSecKeyDataKlassGetName(keyId));

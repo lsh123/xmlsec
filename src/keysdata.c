@@ -149,6 +149,10 @@ xmlSecKeyDataIdsRegisterDefault(void) {
         xmlSecInternalError("xmlSecKeyDataIdsRegister(xmlSecKeyDataEncryptedKeyId)", NULL);
         return(-1);
     }
+    if(xmlSecKeyDataIdsRegister(xmlSecKeyDataAgreementMethodId) < 0) {
+        xmlSecInternalError("xmlSecKeyDataIdsRegister(xmlSecKeyDataAgreementMethodId)", NULL);
+        return(-1);
+    }
     if(xmlSecKeyDataIdsRegister(xmlSecKeyDataDerivedKeyId) < 0) {
         xmlSecInternalError("xmlSecKeyDataIdsRegister(xmlSecKeyDataDerivedKeyId)", NULL);
         return(-1);

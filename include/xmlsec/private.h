@@ -367,6 +367,7 @@ typedef int                     (*xmlSecCryptoAppKeyCertLoadMemoryMethod)(xmlSec
  * @transformKWDes3GetKlass:    the method to get pointer to Triple DES key wrapper transform.
  * @transformDsaSha1GetKlass:   the method to get pointer to DSA-SHA1 signature transform.
  * @transformDsaSha256GetKlass: the method to get pointer to DSA-SHA256 signature transform.
+ * @transformEcdhGetKlass:      the method to get pointer to ECDH key agreement transform.
  * @transformEcdsaSha1GetKlass: the method to get pointer to ECDSA-SHA1 signature transform.
  * @transformEcdsaSha224GetKlass: the method to get pointer to ECDSA-SHA224 signature transform.
  * @transformEcdsaSha256GetKlass: the method to get pointer to ECDSA-SHA256 signature transform.
@@ -463,6 +464,7 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoTransformGetKlassMethod          transformKWDes3GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformDsaSha1GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformDsaSha256GetKlass;
+    xmlSecCryptoTransformGetKlassMethod          transformEcdhGetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformEcdsaSha1GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformEcdsaSha224GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformEcdsaSha256GetKlass;

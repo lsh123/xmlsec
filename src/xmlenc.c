@@ -765,6 +765,7 @@ xmlSecEncCtxEncDataNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
         return(-1);
     }
     encCtx->encMethod->operation = encCtx->operation;
+    encCtx->keyInfoReadCtx.operation = encCtx->operation;
 
     /* we have encryption method, find key */
     ret = xmlSecTransformSetKeyReq(encCtx->encMethod, &(encCtx->keyInfoReadCtx.keyReq));
@@ -1135,37 +1136,20 @@ xmlSecEncCtxDebugXmlDump(xmlSecEncCtxPtr encCtx, FILE* output) {
 
 /****************************************************************************************
  *
- * Derived keys
+ * Generate key (used in DerivedKey and AgreementMethod nodes processing)
  *
  ***************************************************************************************/
 
 static xmlSecKeyPtr
-xmlSecEncCxDerivedKeyExecute(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+xmlSecEncCtxGenerateKey(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecKeyPtr key;
+    xmlSecByte * keyData;
+    xmlSecSize keySize;
     int ret;
 
     xmlSecAssert2(encCtx != NULL, NULL);
     xmlSecAssert2(encCtx->encMethod != NULL, NULL);
     xmlSecAssert2(encCtx->result == NULL, NULL);
-
-    /* if we have no master key yet, then just see if we can find anything in the keys manager */
-    if((encCtx->encKey == NULL) && (encCtx->keyInfoReadCtx.keysMngr != NULL)) {
-        encCtx->encKey = xmlSecKeysMngrFindKey(encCtx->keyInfoReadCtx.keysMngr, NULL, &(encCtx->keyInfoReadCtx));
-    }
-
-    /* check that we have exactly what we want */
-    if((encCtx->encKey == NULL) || (!xmlSecKeyMatch(encCtx->encKey, NULL, &(encCtx->keyInfoReadCtx.keyReq)))) {
-        xmlSecOtherError2(XMLSEC_ERRORS_R_KEY_NOT_FOUND, NULL,
-            "encMethod=%s", xmlSecErrorsSafeString(xmlSecTransformGetName(encCtx->encMethod)));
-        return(NULL);
-    }
-
-    /* set the key to the transform */
-    ret = xmlSecTransformSetKey(encCtx->encMethod, encCtx->encKey);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformSetKey", xmlSecTransformGetName(encCtx->encMethod));
-        return(NULL);
-    }
 
     /* we only support binary keys for now */
     ret = xmlSecTransformCtxBinaryExecute(&(encCtx->transformCtx), NULL, 0);
@@ -1175,15 +1159,20 @@ xmlSecEncCxDerivedKeyExecute(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xmlS
     }
     encCtx->result = encCtx->transformCtx.result;
 
+    keyData = xmlSecBufferGetData(encCtx->result);
+    keySize = xmlSecBufferGetSize(encCtx->result);
+    if((keyData == NULL) || (keySize <= 0)) {
+        xmlSecInternalError("xmlSecTransformCtxBinaryExecute(no data)", xmlSecTransformGetName(encCtx->encMethod));
+        return(NULL);
+    }
+
     key = xmlSecKeyCreate();
     if(key == NULL) {
         xmlSecInternalError("xmlSecKeyCreate", xmlSecTransformGetName(encCtx->encMethod));
         return(NULL);
     }
 
-    ret = xmlSecKeyDataBinRead(keyId, key,
-        xmlSecBufferGetData(encCtx->result), xmlSecBufferGetSize(encCtx->result),
-        keyInfoCtx);
+    ret = xmlSecKeyDataBinRead(keyId, key, keyData, keySize, keyInfoCtx);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeyDataBinRead",
                             xmlSecKeyDataKlassGetName(keyId));
@@ -1196,7 +1185,7 @@ xmlSecEncCxDerivedKeyExecute(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xmlS
 }
 
 /**
- * xmlSecEncCxDerivedKeyGenerate:
+ * xmlSecEncCtxDerivedKeyGenerate:
  * @encCtx:             the pointer to encryption processing context.
  * @keyId:              the expected key id, the actual derived key might have a different id.
  * @node:               the pointer to <enc11:DerivedKey> node.
@@ -1228,8 +1217,9 @@ xmlSecEncCxDerivedKeyExecute(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xmlS
  * Returns: the derived key on success or NULL  if an error occurs.
  */
 xmlSecKeyPtr
-xmlSecEncCxDerivedKeyGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+xmlSecEncCtxDerivedKeyGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlNodePtr cur;
+    xmlChar* masterKeyName = NULL;
     xmlChar* derivedKeyName = NULL;
     xmlSecKeyPtr key = NULL;
     xmlSecKeyPtr res = NULL;
@@ -1241,7 +1231,7 @@ xmlSecEncCxDerivedKeyGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xml
     xmlSecAssert2(keyInfoCtx != NULL, NULL);
 
     /* initialize context and add ID atributes to the list of known ids */
-    encCtx->operation = xmlSecTransformOperationDecrypt;
+    encCtx->operation = keyInfoCtx->operation;
     xmlSecAddIDs(node->doc, node, xmlSecEncIds);
 
     /* first read the children */
@@ -1270,13 +1260,7 @@ xmlSecEncCxDerivedKeyGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xml
     /* expected key size is determined by the requirements from the uplevel key info */
     encCtx->encMethod->expectedOutputSize = keyInfoCtx->keyReq.keyBitsSize / 8;
     encCtx->encMethod->operation = encCtx->operation;
-
-    /* set key requirements for this DK transform */
-    ret = xmlSecTransformSetKeyReq(encCtx->encMethod, &(encCtx->keyInfoReadCtx.keyReq));
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformSetKeyReq", xmlSecTransformGetName(encCtx->encMethod));
-        goto done;
-    }
+    encCtx->keyInfoReadCtx.operation = encCtx->operation;
 
     /* next node */
     cur = xmlSecGetNextElementNode(cur->next);
@@ -1289,9 +1273,9 @@ xmlSecEncCxDerivedKeyGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xml
 
     /* third node is optional DerivedKeyName */
     if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeDerivedKeyName, xmlSecEnc11Ns))) {
-        derivedKeyName = xmlNodeGetContent(node);
+        derivedKeyName = xmlNodeGetContent(cur);
         if(derivedKeyName == NULL) {
-            xmlSecInvalidNodeContentError(node, NULL, "empty");
+            xmlSecInvalidNodeContentError(cur, NULL, "empty");
             goto done;
         }
 
@@ -1301,20 +1285,11 @@ xmlSecEncCxDerivedKeyGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xml
 
     /* forth node is optional MasterKeyName */
     if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeMasterKeyName, xmlSecEnc11Ns))) {
-        /* should we atempt to find master key in the key manager? */
-        if((encCtx->encKey == NULL) && (encCtx->keyInfoReadCtx.keysMngr != NULL)) {
-            xmlChar* masterKeyName = NULL;
-
-            masterKeyName = xmlNodeGetContent(node);
-            if(masterKeyName == NULL) {
-                xmlSecInvalidNodeContentError(node, NULL, "empty");
-                goto done;
-            }
-
-            encCtx->encKey = xmlSecKeysMngrFindKey(encCtx->keyInfoReadCtx.keysMngr, masterKeyName, &(encCtx->keyInfoReadCtx));
-            xmlFree(masterKeyName);
+        masterKeyName = xmlNodeGetContent(cur);
+        if(masterKeyName == NULL) {
+            xmlSecInvalidNodeContentError(cur, NULL, "empty");
+            goto done;
         }
-
         /* next node */
         cur = xmlSecGetNextElementNode(cur->next);
     }
@@ -1325,13 +1300,34 @@ xmlSecEncCxDerivedKeyGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xml
         goto done;
     }
 
-    /* finally let's get the key! */
-    key = xmlSecEncCxDerivedKeyExecute(encCtx, keyId, keyInfoCtx);
+    /* get master key */
+    ret = xmlSecTransformSetKeyReq(encCtx->encMethod, &(encCtx->keyInfoReadCtx.keyReq));
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecTransformSetKeyReq", xmlSecTransformGetName(encCtx->encMethod));
+        goto done;
+    }
+    if((encCtx->encKey == NULL) && (encCtx->keyInfoReadCtx.keysMngr != NULL)) {
+        encCtx->encKey = xmlSecKeysMngrFindKey(encCtx->keyInfoReadCtx.keysMngr, masterKeyName, &(encCtx->keyInfoReadCtx));
+    }
+    if((encCtx->encKey == NULL) || (!xmlSecKeyMatch(encCtx->encKey, NULL, &(encCtx->keyInfoReadCtx.keyReq)))) {
+        xmlSecOtherError2(XMLSEC_ERRORS_R_KEY_NOT_FOUND, NULL,
+            "encMethod=%s", xmlSecErrorsSafeString(xmlSecTransformGetName(encCtx->encMethod)));
+        return(NULL);
+    }
+    ret = xmlSecTransformSetKey(encCtx->encMethod, encCtx->encKey);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecTransformSetKey", xmlSecTransformGetName(encCtx->encMethod));
+        return(NULL);
+    }
+
+    /* let's get the derive key! */
+    key = xmlSecEncCtxGenerateKey(encCtx, keyId, keyInfoCtx);
     if(key == NULL) {
-        xmlSecInternalError("xmlSecEncCxDerivedKeyExecute", NULL);
+        xmlSecInternalError("xmlSecEncCtxGenerateKey", NULL);
         goto done;
     }
 
+    /* set the key name if we have one */
     if(derivedKeyName != NULL) {
         ret = xmlSecKeySetName(key, derivedKeyName);
         if(ret < 0) {
@@ -1344,8 +1340,10 @@ xmlSecEncCxDerivedKeyGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xml
     res = key;
     key = NULL;
 
-
 done:
+    if(masterKeyName != NULL) {
+        xmlFree(masterKeyName);
+    }
     if(derivedKeyName != NULL) {
         xmlFree(derivedKeyName);
     }
@@ -1353,6 +1351,101 @@ done:
         xmlSecKeyDestroy(key);
     }
     return(res);
+}
+
+/**
+ * xmlSecEncCtxAgreementMethodGenerate:
+ * @encCtx:             the pointer to encryption processing context.
+ * @keyId:              the expected key id, the actual derived key might have a different id.
+ * @node:               the pointer to <enc:AgreementMethod> node.
+ * @keyInfoCtx:         the pointer to the "parent" key info context.
+ *
+ * Generates (derives) key from @node (https://www.w3.org/TR/xmlenc-core1/#sec-AgreementMethod):
+ *
+ *  <element name="AgreementMethod" type="xenc:AgreementMethodType"/>
+ *  <complexType name="AgreementMethodType" mixed="true">
+ *      <sequence>
+ *          <element name="KA-Nonce" minOccurs="0" type="base64Binary"/>
+ *          <!-- <element ref="ds:DigestMethod" minOccurs="0"/> -->
+ *          <any namespace="##other" minOccurs="0" maxOccurs="unbounded"/>
+ *          <element name="OriginatorKeyInfo" minOccurs="0" type="ds:KeyInfoType"/>
+ *          <element name="RecipientKeyInfo" minOccurs="0" type="ds:KeyInfoType"/>
+ *      </sequence>
+ *      <attribute name="Algorithm" type="anyURI" use="required"/>
+ *  </complexType>
+ *
+ * Returns: the generated key on success or NULL if an error occurs.
+ */
+xmlSecKeyPtr
+xmlSecEncCtxAgreementMethodGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlSecKeyPtr key;
+
+    xmlSecAssert2(encCtx != NULL, NULL);
+    xmlSecAssert2(encCtx->encMethod == NULL, NULL);
+    xmlSecAssert2(node != NULL, NULL);
+    xmlSecAssert2(keyInfoCtx != NULL, NULL);
+
+    /* initialize context and add ID atributes to the list of known ids */
+    encCtx->operation = keyInfoCtx->operation;
+    xmlSecAddIDs(node->doc, node, xmlSecEncIds);
+
+    /* the AgreementMethod node is the transform node itself */
+    encCtx->transformCtx.parentKeyInfoCtx = keyInfoCtx;
+    encCtx->encMethod = xmlSecTransformCtxNodeRead(&(encCtx->transformCtx), node, xmlSecTransformUsageAgreementMethod);
+    if(encCtx->encMethod == NULL) {
+        xmlSecInternalError("xmlSecTransformCtxNodeRead", xmlSecNodeGetName(node));
+        return(NULL);
+    }
+
+    /* expected key size is determined by the requirements from the uplevel key info */
+    encCtx->encMethod->expectedOutputSize = keyInfoCtx->keyReq.keyBitsSize / 8;
+    encCtx->encMethod->operation = encCtx->operation;
+    encCtx->keyInfoReadCtx.operation = encCtx->operation;
+
+    /* ecdh transform doesn't require a key, skip SetKeyReq(), FindKey(), and SetKey() */
+
+    /* let's generate the key! */
+    key = xmlSecEncCtxGenerateKey(encCtx, keyId, keyInfoCtx);
+    if(key == NULL) {
+        xmlSecInternalError("xmlSecEncCtxGenerateKey", NULL);
+        return(NULL);
+    }
+
+    /* success */
+    return(key);
+}
+
+int
+xmlSecEncCtxAgreementMethodXmlWrite(xmlSecEncCtxPtr encCtx, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    int ret;
+
+    xmlSecAssert2(encCtx != NULL, -1);
+    xmlSecAssert2(encCtx->encMethod == NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+
+    /* initialize context and add ID atributes to the list of known ids */
+    encCtx->operation = keyInfoCtx->operation;
+    xmlSecAddIDs(node->doc, node, xmlSecEncIds);
+
+    /* the AgreementMethod node is the transform node itself */
+    encCtx->transformCtx.parentKeyInfoCtx = keyInfoCtx;
+    encCtx->encMethod = xmlSecTransformCtxNodeRead(&(encCtx->transformCtx), node, xmlSecTransformUsageAgreementMethod);
+    if(encCtx->encMethod == NULL) {
+        xmlSecInternalError("xmlSecTransformCtxNodeRead", xmlSecNodeGetName(node));
+        return(-1);
+    }
+
+    /* write */
+    if(encCtx->encMethod->id->writeNode != NULL) {
+        ret = encCtx->encMethod->id->writeNode(encCtx->encMethod, node, &(encCtx->transformCtx));
+        if(ret < 0) {
+            xmlSecInternalError("writeNode", xmlSecNodeGetName(node));
+            return(-1);
+        }
+    }
+
+    return(0);
 }
 
 #endif /* XMLSEC_NO_XMLENC */

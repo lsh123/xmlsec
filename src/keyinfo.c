@@ -332,12 +332,13 @@ xmlSecKeyInfoCtxReset(xmlSecKeyInfoCtxPtr keyInfoCtx) {
 
     xmlSecTransformCtxReset(&(keyInfoCtx->retrievalMethodCtx));
     keyInfoCtx->curRetrievalMethodLevel = 0;
+    keyInfoCtx->curEncryptedKeyLevel = 0;
+    keyInfoCtx->operation = xmlSecTransformOperationNone;
 
 #ifndef XMLSEC_NO_XMLENC
     if(keyInfoCtx->encCtx != NULL) {
         xmlSecEncCtxReset(keyInfoCtx->encCtx);
     }
-    keyInfoCtx->curEncryptedKeyLevel = 0;
 #endif /* XMLSEC_NO_XMLENC */
 
     xmlSecKeyReqReset(&(keyInfoCtx->keyReq));
@@ -389,6 +390,8 @@ xmlSecKeyInfoCtxCreateEncCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
             break;
     }
     keyInfoCtx->encCtx = tmp;
+    tmp->keyInfoReadCtx.operation = keyInfoCtx->operation;
+    tmp->keyInfoWriteCtx.operation = keyInfoCtx->operation;
 
     return(0);
 #else /* XMLSEC_NO_XMLENC */
@@ -1522,7 +1525,7 @@ xmlSecKeyDataDerivedKeyGetKlass(void) {
 
 static int
 xmlSecKeyDataDerivedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    xmlSecKeyPtr derivedKey;
+    xmlSecKeyPtr generatedKey;
     int ret;
 
     xmlSecAssert2(id == xmlSecKeyDataDerivedKeyId, -1);
@@ -1551,16 +1554,16 @@ xmlSecKeyDataDerivedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr 
     xmlSecAssert2(keyInfoCtx->encCtx != NULL, -1);
 
     ++keyInfoCtx->curEncryptedKeyLevel;
-    derivedKey = xmlSecEncCxDerivedKeyGenerate(keyInfoCtx->encCtx, keyInfoCtx->keyReq.keyId, node, keyInfoCtx);
+    generatedKey = xmlSecEncCtxDerivedKeyGenerate(keyInfoCtx->encCtx, keyInfoCtx->keyReq.keyId, node, keyInfoCtx);
     --keyInfoCtx->curEncryptedKeyLevel;
 
-    if(derivedKey == NULL) {
+    if(generatedKey == NULL) {
         /* We might have multiple DerivedKey elements, encrypted
          * for different recipients but application can enforce
          * correct enc key.
          */
         if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_ENCKEY_DONT_STOP_ON_FAILED_DECRYPTION) != 0) {
-            xmlSecInternalError("xmlSecEncCtxDeriveKeyToBuffer", xmlSecKeyDataKlassGetName(id));
+            xmlSecInternalError("xmlSecEncCtxDerivedKeyGenerate", xmlSecKeyDataKlassGetName(id));
             return(-1);
         }
         return(0);
@@ -1571,21 +1574,21 @@ xmlSecKeyDataDerivedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr 
      * BTW this should happen even if the key doesn't match the current request
      * (https://github.com/lsh123/xmlsec/issues/515)
      */
-    if(xmlSecKeyReqMatchKey(&(keyInfoCtx->keyReq), derivedKey) != 1) {
+    if(xmlSecKeyReqMatchKey(&(keyInfoCtx->keyReq), generatedKey) != 1) {
         /* we are not allowed to use  this key, ignore and continue */
-        xmlSecKeyDestroy(derivedKey);
+        xmlSecKeyDestroy(generatedKey);
         return(0);
     }
 
-    ret = xmlSecKeyCopy(key, derivedKey);
+    ret = xmlSecKeyCopy(key, generatedKey);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeyCopy", xmlSecKeyDataKlassGetName(id));
-        xmlSecKeyDestroy(derivedKey);
+        xmlSecKeyDestroy(generatedKey);
         return(-1);
     }
 
     /* success */
-    xmlSecKeyDestroy(derivedKey);
+    xmlSecKeyDestroy(generatedKey);
     return(0);
 }
 
@@ -1598,8 +1601,192 @@ xmlSecKeyDataDerivedKeyXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr
     xmlSecAssert2(keyInfoCtx != NULL, -1);
     xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeWrite, -1);
 
-    /* do nothing, the template should already have all the necesary data to derive the key correctly */
+    /* do nothing, the template should already have all the necesary data to generate the key correctly */
     return(0);
 }
+
+
+/**************************************************************************
+ *
+ * <enc:AgreementMethod/> processing
+ *
+ *************************************************************************/
+static int      xmlSecKeyDataAgreementMethodXmlRead     (xmlSecKeyDataId id,
+                                                         xmlSecKeyPtr key,
+                                                         xmlNodePtr node,
+                                                         xmlSecKeyInfoCtxPtr keyInfoCtx);
+static int      xmlSecKeyDataAgreementMethodXmlWrite    (xmlSecKeyDataId id,
+                                                         xmlSecKeyPtr key,
+                                                         xmlNodePtr node,
+                                                         xmlSecKeyInfoCtxPtr keyInfoCtx);
+
+
+
+static xmlSecKeyDataKlass xmlSecKeyDataAgreementMethodKlass = {
+    sizeof(xmlSecKeyDataKlass),
+    sizeof(xmlSecKeyData),
+
+    /* data */
+    xmlSecNameAgreementMethod,
+    xmlSecKeyDataUsageKeyInfoNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+                                                /* xmlSecKeyDataUsage usage; */
+    xmlSecHrefAgreementMethod,                  /* const xmlChar* href; */
+    xmlSecNodeAgreementMethod,                  /* const xmlChar* dataNodeName; */
+    xmlSecEncNs,                                /* const xmlChar* dataNodeNs; */
+
+    /* constructors/destructor */
+    NULL,                                       /* xmlSecKeyDataInitializeMethod initialize; */
+    NULL,                                       /* xmlSecKeyDataDuplicateMethod duplicate; */
+    NULL,                                       /* xmlSecKeyDataFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecKeyDataGenerateMethod generate; */
+
+    /* get info */
+    NULL,                                       /* xmlSecKeyDataGetTypeMethod getType; */
+    NULL,                                       /* xmlSecKeyDataGetSizeMethod getSize; */
+    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
+
+    /* read/write */
+    xmlSecKeyDataAgreementMethodXmlRead,        /* xmlSecKeyDataXmlReadMethod xmlRead; */
+    xmlSecKeyDataAgreementMethodXmlWrite,       /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    NULL,                                       /* xmlSecKeyDataBinReadMethod binRead; */
+    NULL,                                       /* xmlSecKeyDataBinWriteMethod binWrite; */
+
+    /* debug */
+    NULL,                                       /* xmlSecKeyDataDebugDumpMethod debugDump; */
+    NULL,                                       /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+
+    /* reserved for the future */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecKeyDataAgreementMethodGetKlass:
+ *
+ * The <enc:AgreementMethod/> element key data klass
+ * (hhttps://www.w3.org/TR/xmlenc-core1/#sec-Alg-KeyAgreement)
+ *
+ * A Key Agreement algorithm provides for the derivation of a shared secret key based on
+ * a shared secret computed from certain types of compatible public keys from both the sender
+ * and the recipient. Information from the originator to determine the secret is indicated by
+ * an optional OriginatorKeyInfo parameter child of an AgreementMethod element while that associated
+ * with the recipient is indicated by an optional RecipientKeyInfo. A shared key is derived from
+ * this shared secret by a method determined by the Key Agreement algorithm.
+ *
+ * Returns: the <enc:AgreementMethod/> element processing key data klass.
+ */
+xmlSecKeyDataId
+xmlSecKeyDataAgreementMethodGetKlass(void) {
+    return(&xmlSecKeyDataAgreementMethodKlass);
+}
+
+static int
+xmlSecKeyDataAgreementMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlSecKeyPtr generatedKey;
+    int ret;
+
+    xmlSecAssert2(id == xmlSecKeyDataAgreementMethodId, -1);
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+    xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeRead, -1);
+
+    /* check the enc level */
+    if(keyInfoCtx->curEncryptedKeyLevel >= keyInfoCtx->maxEncryptedKeyLevel) {
+        xmlSecOtherError3(XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL, xmlSecKeyDataKlassGetName(id),
+            "cur=%d;max=%d", keyInfoCtx->curEncryptedKeyLevel, keyInfoCtx->maxEncryptedKeyLevel);
+        return(-1);
+    }
+
+    /* init enc context */
+    if(keyInfoCtx->encCtx != NULL) {
+        xmlSecEncCtxReset(keyInfoCtx->encCtx);
+    } else {
+        ret = xmlSecKeyInfoCtxCreateEncCtx(keyInfoCtx);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecKeyInfoCtxCreateEncCtx", xmlSecKeyDataKlassGetName(id));
+            return(-1);
+        }
+    }
+    xmlSecAssert2(keyInfoCtx->encCtx != NULL, -1);
+
+    ++keyInfoCtx->curEncryptedKeyLevel;
+    generatedKey = xmlSecEncCtxAgreementMethodGenerate(keyInfoCtx->encCtx, keyInfoCtx->keyReq.keyId, node, keyInfoCtx);
+    --keyInfoCtx->curEncryptedKeyLevel;
+
+    if(generatedKey == NULL) {
+        /* We might have multiple AgreementMethod elements, encrypted
+         * for different recipients but application can enforce
+         * correct enc key.
+         */
+        if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_ENCKEY_DONT_STOP_ON_FAILED_DECRYPTION) != 0) {
+            xmlSecInternalError("xmlSecEncCtxAgreementMethodGenerate", xmlSecKeyDataKlassGetName(id));
+            return(-1);
+        }
+        return(0);
+    }
+
+    if(xmlSecKeyReqMatchKey(&(keyInfoCtx->keyReq), generatedKey) != 1) {
+        /* we are not allowed to use  this key, ignore and continue */
+        xmlSecKeyDestroy(generatedKey);
+        return(0);
+    }
+
+    ret = xmlSecKeyCopy(key, generatedKey);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeyCopy", xmlSecKeyDataKlassGetName(id));
+        xmlSecKeyDestroy(generatedKey);
+        return(-1);
+    }
+
+    /* success */
+    xmlSecKeyDestroy(generatedKey);
+    return(0);
+}
+
+static int
+xmlSecKeyDataAgreementMethodXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    int ret;
+
+    xmlSecAssert2(id == xmlSecKeyDataAgreementMethodId, -1);
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(xmlSecKeyIsValid(key), -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+    xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeWrite, -1);
+
+    /* there might be several nodes that can re-use encCtx, we need to re-read the node before writing it  */
+
+    /* check the enc level */
+    if(keyInfoCtx->curEncryptedKeyLevel >= keyInfoCtx->maxEncryptedKeyLevel) {
+        xmlSecOtherError3(XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL, xmlSecKeyDataKlassGetName(id),
+            "cur=%d;max=%d", keyInfoCtx->curEncryptedKeyLevel, keyInfoCtx->maxEncryptedKeyLevel);
+        return(-1);
+    }
+
+    /* init enc context */
+    if(keyInfoCtx->encCtx != NULL) {
+        xmlSecEncCtxReset(keyInfoCtx->encCtx);
+    } else {
+        ret = xmlSecKeyInfoCtxCreateEncCtx(keyInfoCtx);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecKeyInfoCtxCreateEncCtx", xmlSecKeyDataKlassGetName(id));
+            return(-1);
+        }
+    }
+    xmlSecAssert2(keyInfoCtx->encCtx != NULL, -1);
+
+    ++keyInfoCtx->curEncryptedKeyLevel;
+    ret = xmlSecEncCtxAgreementMethodXmlWrite(keyInfoCtx->encCtx, node, keyInfoCtx);
+    --keyInfoCtx->curEncryptedKeyLevel;
+
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecEncCtxAgreementMethodXmlWrite", xmlSecKeyDataKlassGetName(id));
+        return(-1);
+    }
+
+    return(0);
+}
+
 
 #endif /* XMLSEC_NO_XMLENC */

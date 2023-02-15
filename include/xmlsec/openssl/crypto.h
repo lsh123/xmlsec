@@ -374,7 +374,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformDsaSha256GetKlass(v
 
 /********************************************************************
  *
- * ECDSA transforms
+ * EC keys and transforms
  *
  *******************************************************************/
 #ifndef XMLSEC_NO_EC
@@ -458,6 +458,16 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformEcdsaSha384GetKlass
         xmlSecOpenSSLTransformEcdsaSha512GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformEcdsaSha512GetKlass(void);
 #endif /* XMLSEC_NO_SHA512 */
+
+
+/**
+ * xmlSecOpenSSLTransformEcdhId:
+ *
+ * The ECDH key agreement transform klass.
+ */
+#define xmlSecOpenSSLTransformEcdhId \
+        xmlSecOpenSSLTransformEcdhGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformEcdhGetKlass(void);
 
 #endif /* XMLSEC_NO_EC */
 

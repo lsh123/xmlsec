@@ -185,6 +185,8 @@ xmlSecCryptoGetFunctions_openssl(void) {
     /******************************* ECDSA ********************************/
 #ifndef XMLSEC_NO_EC
 
+    gXmlSecOpenSSLFunctions->transformEcdhGetKlass              = xmlSecOpenSSLTransformEcdhGetKlass;
+
 #ifndef XMLSEC_NO_SHA1
     gXmlSecOpenSSLFunctions->transformEcdsaSha1GetKlass         = xmlSecOpenSSLTransformEcdsaSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */

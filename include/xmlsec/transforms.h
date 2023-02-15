@@ -255,6 +255,12 @@ typedef unsigned int                            xmlSecTransformUsage;
  */
 #define xmlSecTransformUsageKeyDerivationMethod 0x0020
 
+/**
+ * xmlSecTransformUsageAgreementMethod:
+ *
+ * Transform could be used in <enc11:AgreementMethod>.
+ */
+#define xmlSecTransformUsageAgreementMethod 0x0040
 
 /**
  * xmlSecTransformUsageAny:
@@ -327,6 +333,9 @@ struct _xmlSecTransformCtx {
     xmlSecTransformUriType                      enabledUris;
     xmlSecPtrList                               enabledTransforms;
     xmlSecTransformCtxPreExecuteCallback        preExecCallback;
+
+    /* used by Key Agreement transforms */
+    xmlSecKeyInfoCtxPtr                         parentKeyInfoCtx;
 
     /* results */
     xmlSecBufferPtr                             result;

@@ -268,7 +268,7 @@ const xmlChar xmlSecNodePublicKey[]             = "PublicKey";
  * ECDH key agreement strings
  *
  ************************************************************************/
-const xmlChar xmlSecNameEcdh[]                  = "ecdh";
+const xmlChar xmlSecNameEcdh[]                  = "ecdh-es";
 const xmlChar xmlSecHrefEcdh[]                  = "http://www.w3.org/2009/xmlenc11#ECDH-ES";
 
 /*************************************************************************

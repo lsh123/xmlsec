@@ -87,7 +87,7 @@ fi
 execEncTest $res_success \
     "" \
     "xmlenc11-interop-2012/dkey-example-ConcatKDF-crypto" \
-    "aes256-cbc concatkdf" \
+    "aes256-cbc concatkdf sha256" \
     "derived-key" \
     "--concatkdf-key:Secret1 $topfolder/xmlenc11-interop-2012/dkey-concatkdf.bin" \
     "--concatkdf-key:dkey $topfolder/xmlenc11-interop-2012/dkey-concatkdf.bin --binary $topfolder/xmlenc11-interop-2012/dkey-example-ConcatKDF-crypto.data" \
@@ -96,11 +96,33 @@ execEncTest $res_success \
 execEncTest $res_success \
     "" \
     "xmlenc11-interop-2012/dkey3-example-ConcatKDF-crypto" \
-    "aes256-cbc concatkdf" \
+    "aes256-cbc concatkdf sha256" \
     "derived-key" \
     "--concatkdf-key $topfolder/xmlenc11-interop-2012/dkey3-concatkdf.bin" \
     "--concatkdf-key:dkey3 $topfolder/xmlenc11-interop-2012/dkey3-concatkdf.bin --binary $topfolder/xmlenc11-interop-2012/dkey3-example-ConcatKDF-crypto.data" \
     "--concatkdf-key:dkey3 $topfolder/xmlenc11-interop-2012/dkey3-concatkdf.bin"
+
+# ECDH-ES
+execEncTest $res_success \
+    "" \
+    "xmlenc11-interop-2012/cipherText__EC-P256__aes128-gcm__kw-aes128__ECDH-ES__ConcatKDF" \
+    "aes128-gcm kw-aes128 concatkdf ecdh-es sha256" \
+    "agreement-method ec" \
+    "$priv_key_option:EC-P256 $topfolder/xmlenc11-interop-2012/EC-P256_SHA256WithECDSA.$priv_key_format --pwd passwd"
+
+execEncTest $res_success \
+    "" \
+    "xmlenc11-interop-2012/cipherText__EC-P384__aes192-gcm__kw-aes192__ECDH-ES__ConcatKDF" \
+    "aes192-gcm kw-aes192 concatkdf ecdh-es sha256" \
+    "agreement-method ec" \
+    "$priv_key_option:EC-P384 $topfolder/xmlenc11-interop-2012/EC-P384_SHA256WithECDSA.$priv_key_format --pwd passwd"
+
+execEncTest $res_success \
+    "" \
+    "xmlenc11-interop-2012/cipherText__EC-P521__aes256-gcm__kw-aes256__ECDH-ES__ConcatKDF" \
+    "aes256-gcm kw-aes256 concatkdf ecdh-es sha256" \
+    "agreement-method ec" \
+    "$priv_key_option:EC-P521 $topfolder/xmlenc11-interop-2012/EC-P521_SHA256WithECDSA.$priv_key_format --pwd passwd"
 
 ##########################################################################
 #

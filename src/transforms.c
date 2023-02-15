@@ -718,7 +718,7 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
     /* check uri */
     if(xmlSecTransformUriTypeCheck(ctx->enabledUris, uri) != 1) {
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_KEY_DATA_SIZE, NULL,
-                "ConcatKDF output keuuri=%s", xmlSecErrorsSafeString(uri));
+                "uri=%s", xmlSecErrorsSafeString(uri));
         return(-1);
     }
 
@@ -3308,8 +3308,78 @@ xmlSecTransformHmacVerify(const xmlSecByte* data, xmlSecSize dataSize,
     return(1);
 }
 
-
 #endif /* XMLSEC_NO_HMAC */
+
+
+#ifndef XMLSEC_NO_PBKDF2
+
+#define XMLSEC_TRANSFORM_PBKDF2_DEFAULT_BUF_SIZE       64
+
+int
+xmlSecTransformPbkdf2ParamsInitialize(xmlSecTransformPbkdf2ParamsPtr params) {
+    int ret;
+
+    xmlSecAssert2(params != NULL, -1);
+    memset(params, 0, sizeof(*params));
+
+    ret = xmlSecBufferInitialize(&(params->salt), XMLSEC_TRANSFORM_PBKDF2_DEFAULT_BUF_SIZE);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize(bufAlgorithmID)", NULL);
+        xmlSecTransformPbkdf2ParamsFinalize(params);
+        return(-1);
+    }
+
+    /* done */
+    return(0);
+}
+
+void
+xmlSecTransformPbkdf2ParamsFinalize(xmlSecTransformPbkdf2ParamsPtr params) {
+    xmlSecAssert(params != NULL);
+
+    if(params->prfMethod != NULL) {
+        xmlFree(params->prfMethod);
+    }
+    xmlSecBufferFinalize(&(params->salt));
+
+    memset(params, 0, sizeof(*params));
+}
+
+int
+xmlSecTransformPbkdf2ParamsRead(xmlSecTransformPbkdf2ParamsPtr params, xmlNodePtr node) {
+    xmlNodePtr cur;
+    int ret;
+
+    xmlSecAssert2(params != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+
+#ifdef TODO
+    /* first (and only) node is required DigestMethod */
+    cur  = xmlSecGetNextElementNode(node->children);
+    if((cur != NULL) && (!xmlSecCheckNodeName(cur, xmlSecNodeDigestMethod, xmlSecDSigNs))) {
+        xmlSecInvalidNodeError(cur, xmlSecNodeDigestMethod, NULL);
+        return(-1);
+    }
+    params->digestMethod = xmlGetProp(cur, xmlSecAttrAlgorithm);
+    if(params->digestMethod == NULL) {
+        xmlSecInvalidNodeAttributeError(cur, xmlSecAttrAlgorithm, NULL, "empty");
+        return(-1);
+    }
+    cur = xmlSecGetNextElementNode(cur->next);
+
+    /* if we have something else then it's an error */
+    if(cur != NULL) {
+        xmlSecUnexpectedNodeError(cur,  NULL);
+        return(-1);
+    }
+#endif /* TODO */
+
+    /* done! */
+    return(0);
+}
+
+#endif /* XMLSEC_NO_CONCATKDF */
+
 
 #ifndef XMLSEC_NO_RSA
 int

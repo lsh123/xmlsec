@@ -176,9 +176,15 @@ const xmlChar xmlSecAttrPrefixList[]            = "PrefixList";
  ************************************************************************/
 const xmlChar xmlSecNameConcatKdfKeyValue[]     = "concatkdf";
 
-const xmlChar xmlSecNameConcatKdf[]             = "concatkdf";
+const xmlChar xmlSecNameConcatKdf[]             = "ConcatKDFKeyValue";
 const xmlChar xmlSecHrefConcatKdf[]             = "http://www.w3.org/2009/xmlenc11#ConcatKDF";
 
+const xmlChar xmlSecNodeConcatKDFParams[]           = "ConcatKDFParams";
+const xmlChar xmlSecNodeConcatKDFAttrAlgorithmID[]  = "AlgorithmID";
+const xmlChar xmlSecNodeConcatKDFAttrPartyUInfo[]   = "PartyUInfo";
+const xmlChar xmlSecNodeConcatKDFAttrPartyVInfo[]   = "PartyVInfo";
+const xmlChar xmlSecNodeConcatKDFAttrSuppPubInfo[]  = "SuppPubInfo";
+const xmlChar xmlSecNodeConcatKDFAttrSuppPrivInfo[] = "SuppPrivInfo";
 
 /*************************************************************************
  *
@@ -325,18 +331,6 @@ const xmlChar xmlSecHrefAgreementMethod[]       = "http://www.w3.org/2000/09/xml
 const xmlChar xmlSecNodeOriginatorKeyInfo[]     = "OriginatorKeyInfo";
 const xmlChar xmlSecNodeRecipientKeyInfo[]      = "RecipientKeyInfo";
 
-/*************************************************************************
- *
- * ConcatKDF
- *
- ************************************************************************/
-const xmlChar xmlSecNodeConcatKDFParams[]           = "ConcatKDFParams";
-const xmlChar xmlSecNodeConcatKDFAttrAlgorithmID[]  = "AlgorithmID";
-const xmlChar xmlSecNodeConcatKDFAttrPartyUInfo[]   = "PartyUInfo";
-const xmlChar xmlSecNodeConcatKDFAttrPartyVInfo[]   = "PartyVInfo";
-const xmlChar xmlSecNodeConcatKDFAttrSuppPubInfo[]  = "SuppPubInfo";
-const xmlChar xmlSecNodeConcatKDFAttrSuppPrivInfo[] = "SuppPrivInfo";
-
 
 /*************************************************************************
  *
@@ -408,6 +402,23 @@ const xmlChar xmlSecNameMemBuf[]                = "membuf-transform";
  ************************************************************************/
 const xmlChar xmlSecNameMd5[]                   = "md5";
 const xmlChar xmlSecHrefMd5[]                   = "http://www.w3.org/2001/04/xmldsig-more#md5";
+
+/*************************************************************************
+ *
+ * PBKDF2
+ *
+ ************************************************************************/
+const xmlChar xmlSecNamePbkdf2KeyValue[]        = "pbkdf2";
+
+const xmlChar xmlSecNamePbkdf2[]                = "PBKDF2KeyValue";
+const xmlChar xmlSecHrefPbkdf2[]                = "http://www.w3.org/2009/xmlenc11#pbkdf2";
+
+const xmlChar xmlSecNodePbkdf2Params[]          = "PBKDF2-params";
+const xmlChar xmlSecNodePbkdf2Salt[]            = "Salt";
+const xmlChar xmlSecNodePbkdf2SaltSpecified[]   = "Specified";
+const xmlChar xmlSecNodePbkdf2IterationCount[]  = "IterationCount";
+const xmlChar xmlSecNodePbkdf2KeyLength[]       = "KeyLength";
+const xmlChar xmlSecNodePbkdf2PRF[]             = "PRF";
 
 /*************************************************************************
  *

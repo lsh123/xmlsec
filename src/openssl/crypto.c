@@ -122,6 +122,10 @@ xmlSecCryptoGetFunctions_openssl(void) {
     gXmlSecOpenSSLFunctions->keyDataHmacGetKlass        = xmlSecOpenSSLKeyDataHmacGetKlass;
 #endif /* XMLSEC_NO_HMAC */
 
+#ifndef XMLSEC_NO_PBKDF2
+    gXmlSecOpenSSLFunctions->keyDataPbkdf2GetKlass      = xmlSecOpenSSLKeyDataPbkdf2GetKlass;
+#endif /* XMLSEC_NO_PBKDF2 */
+
 #ifndef XMLSEC_NO_RSA
     gXmlSecOpenSSLFunctions->keyDataRsaGetKlass         = xmlSecOpenSSLKeyDataRsaGetKlass;
 #endif /* XMLSEC_NO_RSA */
@@ -159,6 +163,8 @@ xmlSecCryptoGetFunctions_openssl(void) {
     gXmlSecOpenSSLFunctions->transformKWAes256GetKlass          = xmlSecOpenSSLTransformKWAes256GetKlass;
 #endif /* XMLSEC_NO_AES */
 
+
+    /******************************* CONCATKDF ********************************/
 #ifndef XMLSEC_NO_CONCATKDF
     gXmlSecOpenSSLFunctions->transformConcatKdfGetKlass         = xmlSecOpenSSLTransformConcatKdfGetKlass;
 #endif /* XMLSEC_NO_CONCATKDF */
@@ -259,6 +265,11 @@ xmlSecCryptoGetFunctions_openssl(void) {
 #ifndef XMLSEC_NO_MD5
     gXmlSecOpenSSLFunctions->transformMd5GetKlass               = xmlSecOpenSSLTransformMd5GetKlass;
 #endif /* XMLSEC_NO_MD5 */
+
+    /******************************* PBKDF2 ********************************/
+#ifndef XMLSEC_NO_PBKDF2
+    gXmlSecOpenSSLFunctions->transformPbkdf2GetKlass            = xmlSecOpenSSLTransformPbkdf2GetKlass;
+#endif /* XMLSEC_NO_PBKDF2 */
 
     /******************************* RIPEMD160 ********************************/
 #ifndef XMLSEC_NO_RIPEMD160

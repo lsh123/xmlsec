@@ -383,6 +383,21 @@ static xmlSecAppCmdLineParam hmacMinOutputLenParam = {
 };
 #endif /* XMLSEC_NO_HMAC */
 
+
+#ifndef XMLSEC_NO_PBKDF2
+static xmlSecAppCmdLineParam pbkdf2KeyParam = {
+    xmlSecAppCmdLineTopicKeysMngr,
+    "--pbkdf2key",
+    "--pbkdf2-key",
+    "--pbkdf2-key[:<name>] <file>"
+    "\n\tload Pbkdf2 key from binary file <file>",
+    xmlSecAppCmdLineParamTypeString,
+    xmlSecAppCmdLineParamFlagParamNameValue | xmlSecAppCmdLineParamFlagMultipleValues,
+    NULL
+};
+#endif /* XMLSEC_NO_PBKDF2 */
+
+
 static xmlSecAppCmdLineParam pwdParam = {
     xmlSecAppCmdLineTopicKeysMngr,
     "--pwd",
@@ -910,6 +925,10 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
 #ifndef XMLSEC_NO_HMAC
     &hmacKeyParam,
 #endif  /* XMLSEC_NO_HMAC */
+
+#ifndef XMLSEC_NO_PBKDF2
+    &pbkdf2KeyParam,
+#endif  /* XMLSEC_NO_PBKDF2 */
 
 #ifndef XMLSEC_NO_X509
     &pkcs12Param,
@@ -2262,6 +2281,22 @@ xmlSecAppLoadKeys(void) {
         }
     }
 #endif /* XMLSEC_NO_HMAC */
+
+#ifndef XMLSEC_NO_PBKDF2
+    /* read all Pbkdf2 keys */
+    for(value = pbkdf2KeyParam.value; value != NULL; value = value->next) {
+        if(value->strValue == NULL) {
+            fprintf(stderr, "Error: invalid value for option \"%s\".\n",
+                    hmacKeyParam.fullName);
+            return(-1);
+        } else if(xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad(gKeysMngr,
+                    (const char*)xmlSecNamePbkdf2KeyValue, value->strValue, value->paramNameValue) < 0) {
+            fprintf(stderr, "Error: failed to load Pbkdf2 key from \"%s\".\n",
+                    value->strValue);
+            return(-1);
+        }
+    }
+#endif /* XMLSEC_NO_PBKDF2 */
 
 #ifndef XMLSEC_NO_X509
     /* read all pkcs12 files */

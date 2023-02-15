@@ -199,13 +199,17 @@ xmlSecOpenSSLSymKeyDataKlassCheck(xmlSecKeyDataKlass* klass) {
     }
 #endif /* XMLSEC_NO_DES */
 
-
 #ifndef XMLSEC_NO_HMAC
     if(klass == xmlSecOpenSSLKeyDataHmacId) {
         return(1);
     }
 #endif /* XMLSEC_NO_HMAC */
 
+#ifndef XMLSEC_NO_PBKDF2
+    if(klass == xmlSecOpenSSLKeyDataPbkdf2Id) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_PBKDF2 */
     return(0);
 }
 
@@ -535,3 +539,83 @@ xmlSecOpenSSLKeyDataHmacSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSec
 }
 
 #endif /* XMLSEC_NO_HMAC */
+
+#ifndef XMLSEC_NO_PBKDF2
+/**************************************************************************
+ *
+ * The PBKDF2 key derivation key
+ *
+ *************************************************************************/
+static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataPbkdf2Klass = {
+    sizeof(xmlSecKeyDataKlass),
+    xmlSecKeyDataBinarySize,
+
+    /* data */
+    xmlSecNamePbkdf2KeyValue,
+    xmlSecKeyDataUsageReadFromFile,             /* xmlSecKeyDataUsage usage; */
+    NULL,                                       /* const xmlChar* href; */
+    NULL,                                       /* const xmlChar* dataNodeName; */
+    xmlSecNs,                                   /* const xmlChar* dataNodeNs; */
+
+    /* constructors/destructor */
+    xmlSecOpenSSLSymKeyDataInitialize,          /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecOpenSSLSymKeyDataDuplicate,           /* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecOpenSSLSymKeyDataFinalize,            /* xmlSecKeyDataFinalizeMethod finalize; */
+    xmlSecOpenSSLSymKeyDataGenerate,            /* xmlSecKeyDataGenerateMethod generate; */
+
+    /* get info */
+    xmlSecOpenSSLSymKeyDataGetType,             /* xmlSecKeyDataGetTypeMethod getType; */
+    xmlSecOpenSSLSymKeyDataGetSize,             /* xmlSecKeyDataGetSizeMethod getSize; */
+    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
+
+    /* read/write */
+    NULL,                                       /* xmlSecKeyDataXmlReadMethod xmlRead; */
+    NULL,                                       /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    xmlSecOpenSSLSymKeyDataBinRead,             /* xmlSecKeyDataBinReadMethod binRead; */
+    xmlSecOpenSSLSymKeyDataBinWrite,            /* xmlSecKeyDataBinWriteMethod binWrite; */
+
+    /* debug */
+    xmlSecOpenSSLSymKeyDataDebugDump,           /* xmlSecKeyDataDebugDumpMethod debugDump; */
+    xmlSecOpenSSLSymKeyDataDebugXmlDump,        /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+
+    /* reserved for the future */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecOpenSSLKeyDataPbkdf2GetKlass:
+ *
+ * The PBKDF2 key data klass.
+ *
+ * Returns: PBKDF2 key data klass.
+ */
+xmlSecKeyDataId
+xmlSecOpenSSLKeyDataPbkdf2GetKlass(void) {
+    return(&xmlSecOpenSSLKeyDataPbkdf2Klass);
+}
+
+/**
+ * xmlSecOpenSSLKeyDataPbkdf2Set:
+ * @data:               the pointer to Pbkdf2 key data.
+ * @buf:                the pointer to key value.
+ * @bufSize:            the key value size (in bytes).
+ *
+ * Sets the value of PBKDF2 key data.
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecOpenSSLKeyDataPbkdf2Set(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSize bufSize) {
+    xmlSecBufferPtr buffer;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataPbkdf2Id), -1);
+    xmlSecAssert2(buf != NULL, -1);
+    xmlSecAssert2(bufSize > 0, -1);
+
+    buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
+    xmlSecAssert2(buffer != NULL, -1);
+
+    return(xmlSecBufferSetData(buffer, buf, bufSize));
+}
+#endif /* XMLSEC_NO_PBKDF2 */

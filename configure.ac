@@ -2088,7 +2088,7 @@ dnl ==========================================================================
 dnl See do we need ConcatKDF support
 dnl ==========================================================================
 AC_MSG_CHECKING(for ConcatKDF support)
-AC_ARG_ENABLE([hmac], [AS_HELP_STRING([--enable-concatkdf],[enable ConcatKDF support (yes)])])
+AC_ARG_ENABLE([concatkdf], [AS_HELP_STRING([--enable-concatkdf],[enable ConcatKDF support (yes)])])
 if test "z$enable_concatkdf" = "zno" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_CONCATKDF=1"
     XMLSEC_NO_CONCATKDF="1"
@@ -2099,6 +2099,22 @@ else
 fi
 AM_CONDITIONAL(XMLSEC_NO_CONCATKDF, test "z$XMLSEC_NO_CONCATKDF" = "z1")
 AC_SUBST(XMLSEC_NO_CONCATKDF)
+
+dnl ==========================================================================
+dnl See do we need PBKDF2 support
+dnl ==========================================================================
+AC_MSG_CHECKING(for PBKDF2 support)
+AC_ARG_ENABLE([pbkdf2], [AS_HELP_STRING([--enable-pbkdf2],[enable PBKDF2 support (yes)])])
+if test "z$enable_pbkdf2" = "zno" ; then
+    XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_PBKDF2=1"
+    XMLSEC_NO_PBKDF2="1"
+    AC_MSG_RESULT([disabled])
+else
+    XMLSEC_NO_PBKDF2="0"
+    AC_MSG_RESULT([yes])
+fi
+AM_CONDITIONAL(XMLSEC_NO_PBKDF2, test "z$XMLSEC_NO_PBKDF2" = "z1")
+AC_SUBST(XMLSEC_NO_PBKDF2)
 
 dnl ==========================================================================
 dnl See do we need GOST support

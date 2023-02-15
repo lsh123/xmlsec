@@ -93,6 +93,25 @@ XMLSEC_EXPORT int xmlSecTransformHmacVerify             (const xmlSecByte* data,
 #endif /* XMLSEC_NO_HMAC */
 
 
+/**************************** PBKDF2 ********************************/
+#ifndef XMLSEC_NO_PBKDF2
+
+struct _xmlSecTransformPbkdf2Params {
+    xmlSecBuffer salt;
+    xmlSecSize iterationCount;
+    xmlSecSize keyLength;
+    xmlChar* prfMethod;
+};
+typedef struct _xmlSecTransformPbkdf2Params   xmlSecTransformPbkdf2Params, *xmlSecTransformPbkdf2ParamsPtr;
+
+XMLSEC_EXPORT int   xmlSecTransformPbkdf2ParamsInitialize    (xmlSecTransformPbkdf2ParamsPtr params);
+XMLSEC_EXPORT void  xmlSecTransformPbkdf2ParamsFinalize      (xmlSecTransformPbkdf2ParamsPtr params);
+XMLSEC_EXPORT int   xmlSecTransformPbkdf2ParamsRead          (xmlSecTransformPbkdf2ParamsPtr params,
+                                                              xmlNodePtr node);
+
+#endif /* XMLSEC_NO_PBKDF2 */
+
+
 /********************************** RSA *******************************/
 #ifndef XMLSEC_NO_RSA
 

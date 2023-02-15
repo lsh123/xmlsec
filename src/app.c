@@ -290,6 +290,24 @@ xmlSecKeyDataHmacGetKlass(void) {
 }
 
 /**
+ * xmlSecKeyDataPbkdf2GetKlass:
+ *
+ * The PBKDF2 key data klass.
+ *
+ * Returns: PBKDF2 key data klass or NULL if an error occurs
+ * (xmlsec-crypto library is not loaded or the HMAC key data
+ * klass is not implemented).
+ */
+xmlSecKeyDataId
+xmlSecKeyDataPbkdf2GetKlass(void) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->keyDataPbkdf2GetKlass == NULL)) {
+        xmlSecNotImplementedError("keyDataPbkdf2GetKlass");
+        return(xmlSecKeyDataIdUnknown);
+    }
+
+    return(xmlSecCryptoDLGetFunctions()->keyDataPbkdf2GetKlass());
+}
+/**
  * xmlSecKeyDataRsaGetKlass:
  *
  * The RSA key data klass.
@@ -511,7 +529,6 @@ xmlSecTransformConcatKdfGetKlass(void)
 
     return(xmlSecCryptoDLGetFunctions()->transformConcatKdfGetKlass());
 }
-
 
 /**
  * xmlSecTransformKWAes128GetKlass:
@@ -970,6 +987,27 @@ xmlSecTransformMd5GetKlass(void) {
 
     return(xmlSecCryptoDLGetFunctions()->transformMd5GetKlass());
 }
+
+/**
+* xmlSecTransformPbkdf2GetKlass:
+*
+* PBKDF2 key derivaton transform klass.
+*
+* Returns: pointer to PBKDF2 key derivaton transform or NULL if an error
+* occurs (the xmlsec-crypto library is not loaded or this transform is not
+* implemented).
+*/
+xmlSecTransformId
+xmlSecTransformPbkdf2GetKlass(void)
+{
+    if ((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformPbkdf2GetKlass == NULL)) {
+        xmlSecNotImplementedError("transformPbkdf2GetKlass");
+        return(xmlSecTransformIdUnknown);
+    }
+
+    return(xmlSecCryptoDLGetFunctions()->transformPbkdf2GetKlass());
+}
+
 
 /**
  * xmlSecTransformRipemd160GetKlass:

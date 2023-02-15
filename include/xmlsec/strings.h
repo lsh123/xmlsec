@@ -179,6 +179,14 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecNameConcatKdfKeyValue[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameConcatKdf[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefConcatKdf[];
 
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeConcatKDFParams[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeConcatKDFAttrAlgorithmID[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeConcatKDFAttrPartyUInfo[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeConcatKDFAttrPartyVInfo[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeConcatKDFAttrSuppPubInfo[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeConcatKDFAttrSuppPrivInfo[];
+
+
 /*************************************************************************
  *
  * DES strings
@@ -324,17 +332,6 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefAgreementMethod[];
 
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeOriginatorKeyInfo[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeRecipientKeyInfo[];
-/*************************************************************************
- *
- * ConcatKDF
- *
- ************************************************************************/
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeConcatKDFParams[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeConcatKDFAttrAlgorithmID[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeConcatKDFAttrPartyUInfo[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeConcatKDFAttrPartyVInfo[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeConcatKDFAttrSuppPubInfo[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeConcatKDFAttrSuppPrivInfo[];
 
 
 
@@ -408,6 +405,24 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecNameMemBuf[];
  ************************************************************************/
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameMd5[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefMd5[];
+
+/*************************************************************************
+ *
+ * PBKDF2 strings
+ *
+ ************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNamePbkdf2KeyValue[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNamePbkdf2[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefPbkdf2[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodePbkdf2Params[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodePbkdf2Salt[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodePbkdf2SaltSpecified[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodePbkdf2IterationCount[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodePbkdf2KeyLength[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodePbkdf2PRFt[];
+
 
 /*************************************************************************
  *

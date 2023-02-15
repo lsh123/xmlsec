@@ -35,86 +35,60 @@
 #include "../keysdata_helpers.h"
 #include "../transform_helpers.h"
 
-
-#ifndef XMLSEC_NO_CONCATKDF
-
 #include <openssl/kdf.h>
 #include <openssl/core_names.h>
 #include <openssl/param_build.h>
 
-/**************************************************************************
+/***********************************************************************************************************
  *
- * Internal OpenSSL ConcatKDF CTX (https://www.w3.org/TR/xmlenc-core1/#sec-ConcatKDF)
+ * Internal KDF CTX FOR OpenSSL 3.0 or above (https://www.openssl.org/docs/man3.0/man3/EVP_KDF_CTX_new.html)
  *
- *  <element name="ConcatKDFParams" type="xenc11:ConcatKDFParamsType"/>
- *  <complexType name="ConcatKDFParamsType">
- *      <sequence>
- *          <element ref="ds:DigestMethod"/>
- *      </sequence>
- *      <attribute name="AlgorithmID" type="hexBinary"/>
- *      <attribute name="PartyUInfo" type="hexBinary"/>
- *      <attribute name="PartyVInfo" type="hexBinary"/>
- *      <attribute name="SuppPubInfo" type="hexBinary"/>
- *      <attribute name="SuppPrivInfo" type="hexBinary"/>
- *  </complexType>
- *
- * OpenSSL 3.3.0 or above https://www.openssl.org/docs/man3.0/man7/EVP_KDF-SS.html
- *
- *****************************************************************************/
+ **********************************************************************************************************/
 
-#define XMLSEC_OPENSSL_CONCATKDF_DEFAULT_BUF_SIZE 64
+#define XMLSEC_OPENSSL_KDF_DEFAULT_BUF_SIZE     64
+#define XMLSEC_OPENSSL_KDF_MAX_PARAMS           16
 
-typedef struct _xmlSecOpenSSLConcatKdfCtx    xmlSecOpenSSLConcatKdfCtx, *xmlSecOpenSSLConcatKdfCtxPtr;
-struct _xmlSecOpenSSLConcatKdfCtx {
+typedef struct _xmlSecOpenSSLKdfCtx    xmlSecOpenSSLKdfCtx, *xmlSecOpenSSLKdfCtxPtr;
+struct _xmlSecOpenSSLKdfCtx {
     EVP_KDF_CTX *kctx;
-    OSSL_PARAM params[6];
+    OSSL_PARAM params[XMLSEC_OPENSSL_KDF_MAX_PARAMS];
 
     xmlSecBuffer bufFixedInfo;
     xmlChar * digestAlgo;
     int ctxInitialized;
 };
+XMLSEC_TRANSFORM_DECLARE(OpenSSLKdf, xmlSecOpenSSLKdfCtx)
+#define xmlSecOpenSSLKdfCtxSize XMLSEC_TRANSFORM_SIZE(OpenSSLKdf)
 
-
-/**************************************************************************
- *
- * ConcatKDF transforms
- *
- *****************************************************************************/
-XMLSEC_TRANSFORM_DECLARE(OpenSSLConcatKdf, xmlSecOpenSSLConcatKdfCtx)
-#define xmlSecOpenSSLConcatKdfSize XMLSEC_TRANSFORM_SIZE(OpenSSLConcatKdf)
-
-static int      xmlSecOpenSSLConcatKdfInitialize                (xmlSecTransformPtr transform);
-static void     xmlSecOpenSSLConcatKdfFinalize                  (xmlSecTransformPtr transform);
-static int      xmlSecOpenSSLConcatKdfNodeRead                  (xmlSecTransformPtr transform,
-                                                                 xmlNodePtr node,
-                                                                 xmlSecTransformCtxPtr transformCtx);
-static int      xmlSecOpenSSLConcatKdfSetKeyReq                 (xmlSecTransformPtr transform,
-                                                                 xmlSecKeyReqPtr keyReq);
-static int      xmlSecOpenSSLConcatKdfSetKey                    (xmlSecTransformPtr transform,
-                                                                 xmlSecKeyPtr key);
-static int      xmlSecOpenSSLConcatKdfExecute                   (xmlSecTransformPtr transform,
-                                                                 int last,
-                                                                 xmlSecTransformCtxPtr transformCtx);
+static int      xmlSecOpenSSLKdfInitialize                (xmlSecTransformPtr transform);
+static void     xmlSecOpenSSLKdfFinalize                  (xmlSecTransformPtr transform);
+static int      xmlSecOpenSSLKdfSetKeyReq                 (xmlSecTransformPtr transform,
+                                                           xmlSecKeyReqPtr keyReq);
+static int      xmlSecOpenSSLKdfSetKey                    (xmlSecTransformPtr transform,
+                                                           xmlSecKeyPtr key);
+static int      xmlSecOpenSSLKdfExecute                   (xmlSecTransformPtr transform,
+                                                           int last,
+                                                           xmlSecTransformCtxPtr transformCtx);
 
 static int
-xmlSecOpenSSLConcatKdfInitialize(xmlSecTransformPtr transform) {
-    xmlSecOpenSSLConcatKdfCtxPtr ctx;
+xmlSecOpenSSLKdfInitialize(xmlSecTransformPtr transform) {
+    xmlSecOpenSSLKdfCtxPtr ctx;
     EVP_KDF *kdf;
     int ret;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformConcatKdfId), -1);
-    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLConcatKdfSize), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLKdfCtxSize), -1);
 
-    ctx = xmlSecOpenSSLConcatKdfGetCtx(transform);
+    ctx = xmlSecOpenSSLKdfGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
     /* initialize context */
-    memset(ctx, 0, sizeof(xmlSecOpenSSLConcatKdfCtx));
+    memset(ctx, 0, sizeof(xmlSecOpenSSLKdfCtx));
 
-    ret = xmlSecBufferInitialize(&(ctx->bufFixedInfo), XMLSEC_OPENSSL_CONCATKDF_DEFAULT_BUF_SIZE);
+    ret = xmlSecBufferInitialize(&(ctx->bufFixedInfo), XMLSEC_OPENSSL_KDF_DEFAULT_BUF_SIZE);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferInitialize", NULL);
-        xmlSecOpenSSLConcatKdfFinalize(transform);
+        xmlSecOpenSSLKdfFinalize(transform);
         return(-1);
     }
 
@@ -122,14 +96,14 @@ xmlSecOpenSSLConcatKdfInitialize(xmlSecTransformPtr transform) {
     kdf = EVP_KDF_fetch(NULL, "SSKDF", NULL);
     if(kdf == NULL) {
         xmlSecOpenSSLError("EVP_KDF_fetch(SSKDF)", NULL);
-        xmlSecOpenSSLConcatKdfFinalize(transform);
+        xmlSecOpenSSLKdfFinalize(transform);
         return(-1);
     }
 
     ctx->kctx = EVP_KDF_CTX_new(kdf);
     if(ctx->kctx == NULL) {
         xmlSecOpenSSLError("EVP_KDF_CTX_new(SSKDF)", NULL);
-        xmlSecOpenSSLConcatKdfFinalize(transform);
+        xmlSecOpenSSLKdfFinalize(transform);
         EVP_KDF_free(kdf);
         return(-1);
     }
@@ -139,14 +113,15 @@ xmlSecOpenSSLConcatKdfInitialize(xmlSecTransformPtr transform) {
     return(0);
 }
 
+
 static void
-xmlSecOpenSSLConcatKdfFinalize(xmlSecTransformPtr transform) {
-    xmlSecOpenSSLConcatKdfCtxPtr ctx;
+xmlSecOpenSSLKdfFinalize(xmlSecTransformPtr transform) {
+    xmlSecOpenSSLKdfCtxPtr ctx;
 
     xmlSecAssert(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformConcatKdfId));
-    xmlSecAssert(xmlSecTransformCheckSize(transform, xmlSecOpenSSLConcatKdfSize));
+    xmlSecAssert(xmlSecTransformCheckSize(transform, xmlSecOpenSSLKdfCtxSize));
 
-    ctx = xmlSecOpenSSLConcatKdfGetCtx(transform);
+    ctx = xmlSecOpenSSLKdfGetCtx(transform);
     xmlSecAssert(ctx != NULL);
 
     if(ctx->kctx != NULL) {
@@ -157,14 +132,14 @@ xmlSecOpenSSLConcatKdfFinalize(xmlSecTransformPtr transform) {
     }
     xmlSecBufferFinalize(&(ctx->bufFixedInfo));
 
-    memset(ctx, 0, sizeof(xmlSecOpenSSLConcatKdfCtx));
+    memset(ctx, 0, sizeof(xmlSecOpenSSLKdfCtx));
 }
 
 
 static int
-xmlSecOpenSSLConcatKdfSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
+xmlSecOpenSSLKdfSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformConcatKdfId), -1);
-    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLConcatKdfSize), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLKdfCtxSize), -1);
     xmlSecAssert2(keyReq != NULL, -1);
 
     keyReq->keyId       = xmlSecOpenSSLKeyDataConcatKdfId;
@@ -174,8 +149,8 @@ xmlSecOpenSSLConcatKdfSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr k
 }
 
 static int
-xmlSecOpenSSLConcatKdfSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
-    xmlSecOpenSSLConcatKdfCtxPtr ctx;
+xmlSecOpenSSLKdfSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
+    xmlSecOpenSSLKdfCtxPtr ctx;
     xmlSecKeyDataPtr value;
     xmlSecBufferPtr buffer;
     xmlSecByte * keyData, * fixedInfoData;
@@ -184,10 +159,10 @@ xmlSecOpenSSLConcatKdfSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformConcatKdfId), -1);
     xmlSecAssert2(((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt)), -1);
-    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLConcatKdfSize), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLKdfCtxSize), -1);
     xmlSecAssert2(key != NULL, -1);
 
-    ctx = xmlSecOpenSSLConcatKdfGetCtx(transform);
+    ctx = xmlSecOpenSSLKdfGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->digestAlgo != NULL, -1);
     xmlSecAssert2(ctx->ctxInitialized == 0, -1);
@@ -223,9 +198,87 @@ xmlSecOpenSSLConcatKdfSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     return(0);
 }
 
+
+static int
+xmlSecOpenSSLKdfExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
+    xmlSecOpenSSLKdfCtxPtr ctx;
+    xmlSecBufferPtr in, out;
+    int ret;
+
+    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+    xmlSecAssert2(((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt)), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLKdfCtxSize), -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
+
+    in = &(transform->inBuf);
+    out = &(transform->outBuf);
+
+    ctx = xmlSecOpenSSLKdfGetCtx(transform);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->kctx != NULL, -1);
+    xmlSecAssert2(ctx->ctxInitialized != 0, -1);
+
+    if(transform->status == xmlSecTransformStatusNone) {
+        /* we should be already initialized when we set key */
+        transform->status = xmlSecTransformStatusWorking;
+    }
+
+    if((transform->status == xmlSecTransformStatusWorking) && (last == 0)) {
+        /* do nothing */
+    } else if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
+        xmlSecByte * outData;
+
+        if(transform->expectedOutputSize <= 0) {
+            xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL, "ConcactKDF output key size is not specified");
+            return(-1);
+        }
+
+        ret = xmlSecBufferSetSize(out, transform->expectedOutputSize);
+        if(ret < 0) {
+            xmlSecInternalError2("xmlSecBufferSetSize", NULL,
+                "size=" XMLSEC_SIZE_FMT, transform->expectedOutputSize);
+            return(-1);
+        }
+        outData = xmlSecBufferGetData(out);
+        xmlSecAssert2(outData != NULL, -1);
+
+        ret = EVP_KDF_derive(ctx->kctx, outData, transform->expectedOutputSize, ctx->params);
+        if(ret <= 0) {
+            xmlSecOpenSSLError("EVP_KDF_derive", xmlSecTransformGetName(transform));
+            return(-1);
+        }
+
+        transform->status = xmlSecTransformStatusFinished;
+        return(0);
+    } else if(transform->status == xmlSecTransformStatusFinished) {
+        /* the only way we can get here is if there is no input */
+        xmlSecAssert2(xmlSecBufferGetSize(in) == 0, -1);
+    } else {
+        xmlSecInvalidTransfromStatusError(transform);
+        return(-1);
+    }
+
+    return(0);
+}
+
+#ifndef XMLSEC_NO_CONCATKDF
+
+/**************************************************************************
+ *
+ * ConcatKDF (SSKDF) transform (https://www.openssl.org/docs/man3.0/man7/EVP_KDF-SS.html)
+ *
+ *****************************************************************************/
+
+
+static int      xmlSecOpenSSLConcatKdfNodeRead           (xmlSecTransformPtr transform,
+                                                          xmlNodePtr node,
+                                                          xmlSecTransformCtxPtr transformCtx);
+
+
+
 /* convert DigestMethod to OpenSSL algo */
 static int
-xmlSecOpenSSLConcatKdfSetDigestNameFromHref(xmlSecOpenSSLConcatKdfCtxPtr ctx, const xmlChar* href) {
+xmlSecOpenSSLConcatKdfSetDigestNameFromHref(xmlSecOpenSSLKdfCtxPtr ctx, const xmlChar* href) {
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->digestAlgo == NULL, -1);
 
@@ -279,17 +332,17 @@ xmlSecOpenSSLConcatKdfSetDigestNameFromHref(xmlSecOpenSSLConcatKdfCtxPtr ctx, co
 static int
 xmlSecOpenSSLConcatKdfNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
                           xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
-    xmlSecOpenSSLConcatKdfCtxPtr ctx;
+    xmlSecOpenSSLKdfCtxPtr ctx;
     xmlSecTransformConcatKdfParams params;
     xmlNodePtr cur;
     int ret;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformConcatKdfId), -1);
-    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLConcatKdfSize), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLKdfCtxSize), -1);
     xmlSecAssert2(node!= NULL, -1);
     UNREFERENCED_PARAMETER(transformCtx);
 
-    ctx = xmlSecOpenSSLConcatKdfGetCtx(transform);
+    ctx = xmlSecOpenSSLKdfGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
     ret = xmlSecTransformConcatKdfParamsInitialize(&params);
@@ -342,68 +395,6 @@ xmlSecOpenSSLConcatKdfNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     return(0);
 }
 
-static int
-xmlSecOpenSSLConcatKdfExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
-    xmlSecOpenSSLConcatKdfCtxPtr ctx;
-    xmlSecBufferPtr in, out;
-    int ret;
-
-    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
-    xmlSecAssert2(((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt)), -1);
-    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLConcatKdfSize), -1);
-    xmlSecAssert2(transformCtx != NULL, -1);
-
-    in = &(transform->inBuf);
-    out = &(transform->outBuf);
-
-    ctx = xmlSecOpenSSLConcatKdfGetCtx(transform);
-    xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->kctx != NULL, -1);
-    xmlSecAssert2(ctx->ctxInitialized != 0, -1);
-
-    if(transform->status == xmlSecTransformStatusNone) {
-        /* we should be already initialized when we set key */
-        transform->status = xmlSecTransformStatusWorking;
-    }
-
-    if((transform->status == xmlSecTransformStatusWorking) && (last == 0)) {
-        /* do nothing */
-    } else if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
-        xmlSecByte * outData;
-
-        if(transform->expectedOutputSize <= 0) {
-            xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL, "ConcactKDF output key size is not specified");
-            return(-1);
-        }
-
-        ret = xmlSecBufferSetSize(out, transform->expectedOutputSize);
-        if(ret < 0) {
-            xmlSecInternalError2("xmlSecBufferSetSize", NULL,
-                "size=" XMLSEC_SIZE_FMT, transform->expectedOutputSize);
-            return(-1);
-        }
-        outData = xmlSecBufferGetData(out);
-        xmlSecAssert2(outData != NULL, -1);
-
-        ret = EVP_KDF_derive(ctx->kctx, outData, transform->expectedOutputSize, ctx->params);
-        if(ret <= 0) {
-            xmlSecOpenSSLError("EVP_KDF_derive", xmlSecTransformGetName(transform));
-            return(-1);
-        }
-
-        transform->status = xmlSecTransformStatusFinished;
-        return(0);
-    } else if(transform->status == xmlSecTransformStatusFinished) {
-        /* the only way we can get here is if there is no input */
-        xmlSecAssert2(xmlSecBufferGetSize(in) == 0, -1);
-    } else {
-        xmlSecInvalidTransfromStatusError(transform);
-        return(-1);
-    }
-
-    return(0);
-}
-
 /********************************************************************
  *
  * ConcatKDF key derivation algorithm
@@ -412,25 +403,25 @@ xmlSecOpenSSLConcatKdfExecute(xmlSecTransformPtr transform, int last, xmlSecTran
 static xmlSecTransformKlass xmlSecOpenSSLConcatKdfKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),                   /* xmlSecSize klassSize */
-    xmlSecOpenSSLConcatKdfSize,                     /* xmlSecSize objSize */
+    xmlSecOpenSSLKdfCtxSize,                     /* xmlSecSize objSize */
 
     xmlSecNameConcatKdf,                            /* const xmlChar* name; */
     xmlSecHrefConcatKdf,                            /* const xmlChar* href; */
     xmlSecTransformUsageKeyDerivationMethod,        /* xmlSecTransformUsage usage; */
 
-    xmlSecOpenSSLConcatKdfInitialize,               /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecOpenSSLConcatKdfFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */
+    xmlSecOpenSSLKdfInitialize,               /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecOpenSSLKdfFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */
     xmlSecOpenSSLConcatKdfNodeRead,                 /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                           /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecOpenSSLConcatKdfSetKeyReq,                /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    xmlSecOpenSSLConcatKdfSetKey,                   /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecOpenSSLKdfSetKeyReq,                /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecOpenSSLKdfSetKey,                   /* xmlSecTransformSetKeyMethod setKey; */
     NULL,                                           /* xmlSecTransformValidateMethod validate; */
     xmlSecTransformDefaultGetDataType,              /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,                  /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,                   /* xmlSecTransformPopBinMethod popBin; */
     NULL,                                           /* xmlSecTransformPushXmlMethod pushXml; */
     NULL,                                           /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecOpenSSLConcatKdfExecute,                  /* xmlSecTransformExecuteMethod execute; */
+    xmlSecOpenSSLKdfExecute,                  /* xmlSecTransformExecuteMethod execute; */
 
     NULL,                                           /* void* reserved0; */
     NULL,                                           /* void* reserved1; */
@@ -449,3 +440,188 @@ xmlSecOpenSSLTransformConcatKdfGetKlass(void) {
 }
 
 #endif /* XMLSEC_NO_CONCATKDF */
+
+
+
+
+#ifndef XMLSEC_NO_PBKDF2
+
+/**************************************************************************
+ *
+ * Pbkdf2 (SSKDF) transform (https://www.openssl.org/docs/man3.0/man7/EVP_KDF-SS.html)
+ *
+ *****************************************************************************/
+
+
+static int      xmlSecOpenSSLPbkdf2NodeRead           (xmlSecTransformPtr transform,
+                                                          xmlNodePtr node,
+                                                          xmlSecTransformCtxPtr transformCtx);
+
+
+
+/* convert DigestMethod to OpenSSL algo */
+static int
+xmlSecOpenSSLPbkdf2SetDigestNameFromHref(xmlSecOpenSSLKdfCtxPtr ctx, const xmlChar* href) {
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->digestAlgo == NULL, -1);
+
+    /* use SHA256 by default */
+    if(href == NULL) {
+        ctx->digestAlgo = xmlStrdup(BAD_CAST SN_sha256);
+        if(ctx->digestAlgo == NULL) {
+            xmlSecStrdupError(BAD_CAST SN_sha256, NULL);
+            return(-1);
+        }
+    } else if(xmlStrcmp(href, xmlSecHrefSha1) == 0) {
+        ctx->digestAlgo = xmlStrdup(BAD_CAST SN_sha1);
+        if(ctx->digestAlgo == NULL) {
+            xmlSecStrdupError(BAD_CAST SN_sha1, NULL);
+            return(-1);
+        }
+    } else if(xmlStrcmp(href, xmlSecHrefSha224) == 0) {
+        ctx->digestAlgo = xmlStrdup(BAD_CAST SN_sha224);
+        if(ctx->digestAlgo == NULL) {
+            xmlSecStrdupError(BAD_CAST SN_sha224, NULL);
+            return(-1);
+        }
+    } else if(xmlStrcmp(href, xmlSecHrefSha256) == 0) {
+        ctx->digestAlgo = xmlStrdup(BAD_CAST SN_sha256);
+        if(ctx->digestAlgo == NULL) {
+            xmlSecStrdupError(BAD_CAST SN_sha256, NULL);
+            return(-1);
+        }
+    } else if(xmlStrcmp(href, xmlSecHrefSha384) == 0) {
+        ctx->digestAlgo = xmlStrdup(BAD_CAST SN_sha384);
+        if(ctx->digestAlgo == NULL) {
+            xmlSecStrdupError(BAD_CAST SN_sha384, NULL);
+            return(-1);
+        }
+    } else if(xmlStrcmp(href, xmlSecHrefSha512) == 0) {
+        ctx->digestAlgo = xmlStrdup(BAD_CAST SN_sha512);
+        if(ctx->digestAlgo == NULL) {
+            xmlSecStrdupError(BAD_CAST SN_sha512, NULL);
+            return(-1);
+        }
+    } else {
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
+            "href=%s", xmlSecErrorsSafeString(href));
+        return(-1);
+    }
+
+    /* done */
+    return(0);
+}
+
+static int
+xmlSecOpenSSLPbkdf2NodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
+                          xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
+    xmlSecOpenSSLKdfCtxPtr ctx;
+    xmlSecTransformPbkdf2Params params;
+    xmlNodePtr cur;
+    int ret;
+
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformPbkdf2Id), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLKdfCtxSize), -1);
+    xmlSecAssert2(node!= NULL, -1);
+    UNREFERENCED_PARAMETER(transformCtx);
+
+    ctx = xmlSecOpenSSLKdfGetCtx(transform);
+    xmlSecAssert2(ctx != NULL, -1);
+
+    ret = xmlSecTransformPbkdf2ParamsInitialize(&params);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecTransformPbkdf2ParamsInitialize", NULL);
+        return(-1);
+    }
+
+#ifdef TODO
+    /* first (and only) node is required Pbkdf2Params */
+    cur  = xmlSecGetNextElementNode(node->children);
+    if((cur != NULL) && (!xmlSecCheckNodeName(cur, xmlSecNodePbkdf2Params, xmlSecEnc11Ns))) {
+        xmlSecInvalidNodeError(cur, xmlSecNodePbkdf2Params, NULL);
+        xmlSecTransformPbkdf2ParamsFinalize(&params);
+        return(-1);
+    }
+
+    ret = xmlSecTransformPbkdf2ParamsRead(&params, cur);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecTransformPbkdf2ParamsRead", NULL);
+        xmlSecTransformPbkdf2ParamsFinalize(&params);
+        return(-1);
+    }
+    cur = xmlSecGetNextElementNode(cur->next);
+
+    /* if we have something else then it's an error */
+    if(cur != NULL) {
+        xmlSecUnexpectedNodeError(cur,  NULL);
+        xmlSecTransformPbkdf2ParamsFinalize(&params);
+        return(-1);
+    }
+
+    /* get fixedinfo from params */
+    ret = xmlSecTransformPbkdf2ParamsGetFixedInfo(&params, &(ctx->bufFixedInfo));
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecTransformPbkdf2ParamsGetFixedInfo", NULL);
+        xmlSecTransformPbkdf2ParamsFinalize(&params);
+        return (-1);
+    }
+
+    /* get openssl digest algorithm name from params */
+    ret = xmlSecOpenSSLPbkdf2SetDigestNameFromHref(ctx, params.digestMethod);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecOpenSSLPbkdf2SetDigestNameFromHref", NULL);
+        xmlSecTransformPbkdf2ParamsFinalize(&params);
+        return (-1);
+    }
+#endif /* TODO */
+
+    /* done */
+    xmlSecTransformPbkdf2ParamsFinalize(&params);
+    return(0);
+}
+
+/********************************************************************
+ *
+ * PBKDF2 key derivation algorithm
+ *
+ ********************************************************************/
+static xmlSecTransformKlass xmlSecOpenSSLPbkdf2Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),                   /* xmlSecSize klassSize */
+    xmlSecOpenSSLKdfCtxSize,                        /* xmlSecSize objSize */
+
+    xmlSecNamePbkdf2,                               /* const xmlChar* name; */
+    xmlSecHrefPbkdf2,                               /* const xmlChar* href; */
+    xmlSecTransformUsageKeyDerivationMethod,        /* xmlSecTransformUsage usage; */
+
+    xmlSecOpenSSLKdfInitialize,                     /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecOpenSSLKdfFinalize,                        /* xmlSecTransformFinalizeMethod finalize; */
+    xmlSecOpenSSLPbkdf2NodeRead,                    /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                           /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecOpenSSLKdfSetKeyReq,                      /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecOpenSSLKdfSetKey,                         /* xmlSecTransformSetKeyMethod setKey; */
+    NULL,                                           /* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,              /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,                  /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,                   /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                           /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                           /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecOpenSSLKdfExecute,                        /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                           /* void* reserved0; */
+    NULL,                                           /* void* reserved1; */
+};
+
+/**
+ * xmlSecOpenSSLTransformPbkdf2GetKlass:
+ *
+ * The PBKDF2 key derivation  transform klass.
+ *
+ * Returns: the PBKDF2 key derivation transform klass.
+ */
+xmlSecTransformId
+xmlSecOpenSSLTransformPbkdf2GetKlass(void) {
+    return(&xmlSecOpenSSLPbkdf2Klass);
+}
+
+#endif /* XMLSEC_NO_PBKDF2 */

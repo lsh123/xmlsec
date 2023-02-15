@@ -35,6 +35,11 @@
  */
 #define XMLSEC_NO_CONCATKDF     1
 
+/* PBKDF2 key derivation algorithm is only available on OpenSSL 3.0.0 or above
+ * (https://www.openssl.org/docs/man3.0/man7/EVP_KDF-PBKDF2.html)
+ */
+#define XMLSEC_NO_PBKDF2        1
+
 #define BIO_new_ex(libctx,type)                                     BIO_new((type))
 #define PEM_read_bio_PrivateKey_ex(bp,x,cb,u,libctx,propq)          PEM_read_bio_PrivateKey((bp),(x),(cb),(u))
 #define PEM_read_bio_PUBKEY_ex(bp,x,cb,u,libctx,propq)              PEM_read_bio_PUBKEY((bp),(x),(cb),(u))

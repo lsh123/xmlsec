@@ -63,7 +63,7 @@ static int      xmlSecOpenSSLSymKeyDataGenerate         (xmlSecKeyDataPtr data,
                                                          xmlSecKeyDataType type);
 
 static xmlSecKeyDataType xmlSecOpenSSLSymKeyDataGetType (xmlSecKeyDataPtr data);
-static xmlSecSize       xmlSecOpenSSLSymKeyDataGetSize          (xmlSecKeyDataPtr data);
+static xmlSecSize       xmlSecOpenSSLSymKeyDataGetSize  (xmlSecKeyDataPtr data);
 static void     xmlSecOpenSSLSymKeyDataDebugDump        (xmlSecKeyDataPtr data,
                                                          FILE* output);
 static void     xmlSecOpenSSLSymKeyDataDebugXmlDump     (xmlSecKeyDataPtr data,

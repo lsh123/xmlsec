@@ -47,7 +47,13 @@ XMLSEC_EXPORT int   xmlSecTransformConcatKdfParamsGetFixedInfo  (xmlSecTransform
 #ifndef XMLSEC_NO_EC
 
 struct _xmlSecTransformEcdhParams {
-    xmlSecTransformPtr keyDerivationTranform; /* owned by transformCtx */
+    xmlSecTransformPtr  kdfTransform;
+    xmlSecKeyInfoCtx    kdfKeyInfoCtx;
+
+    xmlSecTransformPtr  memBufTransform;
+
+    xmlSecKeyPtr        keyOriginator;
+    xmlSecKeyPtr        keyRecipient;
 };
 typedef struct _xmlSecTransformEcdhParams xmlSecTransformEcdhParams, *xmlSecTransformEcdhParamsPtr;
 
@@ -55,6 +61,7 @@ XMLSEC_EXPORT int   xmlSecTransformEcdhParamsInitialize    (xmlSecTransformEcdhP
 XMLSEC_EXPORT void  xmlSecTransformEcdhParamsFinalize      (xmlSecTransformEcdhParamsPtr params);
 XMLSEC_EXPORT int   xmlSecTransformEcdhParamsRead          (xmlSecTransformEcdhParamsPtr params,
                                                             xmlNodePtr node,
+                                                            xmlSecTransformPtr ecdhTransform,
                                                             xmlSecTransformCtxPtr transformCtx);
 
 #endif /* XMLSEC_NO_EC */

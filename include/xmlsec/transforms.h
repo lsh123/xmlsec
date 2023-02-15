@@ -334,6 +334,9 @@ struct _xmlSecTransformCtx {
     xmlSecPtrList                               enabledTransforms;
     xmlSecTransformCtxPreExecuteCallback        preExecCallback;
 
+    /* used by Key Agreement transforms */
+    xmlSecKeyInfoCtxPtr                         parentKeyInfoCtx;
+
     /* results */
     xmlSecBufferPtr                             result;
     xmlSecTransformStatus                       status;

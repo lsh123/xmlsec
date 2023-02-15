@@ -1161,7 +1161,7 @@ xmlSecEncCtxGenerateKey(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xmlSecKey
     keyData = xmlSecBufferGetData(encCtx->result);
     keySize = xmlSecBufferGetSize(encCtx->result);
     if((keyData == NULL) || (keySize <= 0)) {
-        xmlSecInternalError("xmlSecTransformCtxBinaryExecute", xmlSecTransformGetName(encCtx->encMethod));
+        xmlSecInternalError("xmlSecTransformCtxBinaryExecute(no data)", xmlSecTransformGetName(encCtx->encMethod));
         return(NULL);
     }
 
@@ -1377,7 +1377,6 @@ done:
 xmlSecKeyPtr
 xmlSecEncCtxAgreementMethodGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecKeyPtr key;
-    int ret;
 
     xmlSecAssert2(encCtx != NULL, NULL);
     xmlSecAssert2(encCtx->encMethod == NULL, NULL);
@@ -1388,7 +1387,8 @@ xmlSecEncCtxAgreementMethodGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyI
     encCtx->operation = xmlSecTransformOperationDecrypt;
     xmlSecAddIDs(node->doc, node, xmlSecEncIds);
 
-    /* the AgreementMethod needs the transform right away */
+    /* the AgreementMethod node is the transform node itself */
+    encCtx->transformCtx.parentKeyInfoCtx = keyInfoCtx;
     encCtx->encMethod = xmlSecTransformCtxNodeRead(&(encCtx->transformCtx), node, xmlSecTransformUsageAgreementMethod);
     if(encCtx->encMethod == NULL) {
         xmlSecInternalError("xmlSecTransformCtxNodeRead", xmlSecNodeGetName(node));

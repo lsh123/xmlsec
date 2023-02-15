@@ -164,7 +164,6 @@ xmlSecOpenSSLConcatKdfFinalize(xmlSecTransformPtr transform) {
 static int
 xmlSecOpenSSLConcatKdfSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformConcatKdfId), -1);
-    xmlSecAssert2(((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt)), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLConcatKdfSize), -1);
     xmlSecAssert2(keyReq != NULL, -1);
 

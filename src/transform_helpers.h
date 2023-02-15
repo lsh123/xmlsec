@@ -100,7 +100,7 @@ struct _xmlSecTransformPbkdf2Params {
     xmlSecBuffer salt;
     xmlSecSize iterationCount;
     xmlSecSize keyLength;
-    xmlChar* prfMethod;
+    xmlChar* prfAlgorithmHref;
 };
 typedef struct _xmlSecTransformPbkdf2Params   xmlSecTransformPbkdf2Params, *xmlSecTransformPbkdf2ParamsPtr;
 

@@ -421,7 +421,7 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecNodePbkdf2Salt[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodePbkdf2SaltSpecified[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodePbkdf2IterationCount[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodePbkdf2KeyLength[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNodePbkdf2PRFt[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodePbkdf2PRF[];
 
 
 /*************************************************************************

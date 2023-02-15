@@ -64,9 +64,14 @@ XMLSEC_TRANSFORM_DECLARE(OpenSSLEcdh, xmlSecOpenSSLEcdhCtx)
 
 static int      xmlSecOpenSSLEcdhInitialize                (xmlSecTransformPtr transform);
 static void     xmlSecOpenSSLEcdhFinalize                  (xmlSecTransformPtr transform);
+
 static int      xmlSecOpenSSLEcdhNodeRead                  (xmlSecTransformPtr transform,
                                                             xmlNodePtr node,
                                                             xmlSecTransformCtxPtr transformCtx);
+static int     xmlSecOpenSSLEcdhNodeWrite                  (xmlSecTransformPtr transform,
+                                                            xmlNodePtr node,
+                                                            xmlSecTransformCtxPtr transformCtx);
+
 static int      xmlSecOpenSSLEcdhSetKeyReq                 (xmlSecTransformPtr transform,
                                                             xmlSecKeyReqPtr keyReq);
 static int      xmlSecOpenSSLEcdhSetKey                    (xmlSecTransformPtr transform,
@@ -176,12 +181,33 @@ xmlSecOpenSSLEcdhNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecT
     return(0);
 }
 
+static int
+xmlSecOpenSSLEcdhNodeWrite(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransformCtxPtr transformCtx) {
+    xmlSecOpenSSLEcdhCtxPtr ctx;
+    int ret;
+
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformEcdhId), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLEcdhSize), -1);
+    xmlSecAssert2(node!= NULL, -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
+
+    ctx = xmlSecOpenSSLEcdhGetCtx(transform);
+    xmlSecAssert2(ctx != NULL, -1);
+
+    ret = xmlSecTransformEcdhParamsWrite(&(ctx->params), node, transform, transformCtx);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecTransformEcdhParamsWrite", NULL);
+        return(-1);
+    }
+
+    return(0);
+}
 
 /* https://wiki.openssl.org/index.php/Elliptic_Curve_Diffie_Hellman */
 static int
-xmlSecOpenSSLEcdhGenerateSecret(xmlSecOpenSSLEcdhCtxPtr ctx, xmlSecBufferPtr secret) {
+xmlSecOpenSSLEcdhGenerateSecret(xmlSecOpenSSLEcdhCtxPtr ctx, xmlSecTransformOperation operation, xmlSecBufferPtr secret) {
     EVP_PKEY_CTX *pKeyCtx = NULL;
-    xmlSecKeyDataPtr value;
+    xmlSecKeyDataPtr myKeyValue, otherKeyValue;
     EVP_PKEY *myPrivKey;
     EVP_PKEY *otherPubKey;
     size_t secret_len = 0;
@@ -195,26 +221,43 @@ xmlSecOpenSSLEcdhGenerateSecret(xmlSecOpenSSLEcdhCtxPtr ctx, xmlSecBufferPtr sec
     xmlSecAssert2(ctx->params.keyOriginator != NULL, -1);
     xmlSecAssert2(secret != NULL, -1);
 
-    /* get pkeys */
-    value = xmlSecKeyGetValue(ctx->params.keyRecipient);
-    if(value == NULL) {
-        xmlSecInternalError("xmlSecKeyGetValue(keyRecipient)", NULL);
-        goto done;
-    }
-    myPrivKey = xmlSecOpenSSLEvpKeyDataGetEvp(value);
-    if(myPrivKey == NULL) {
-        xmlSecInternalError("xmlSecOpenSSLEvpKeyDataGetEvp(keyRecipient)", NULL);
-        goto done;
+    /* get key values */
+    if(operation == xmlSecTransformOperationEncrypt) {
+        /* encrypting on originator side who needs priv key */
+        myKeyValue = xmlSecKeyGetValue(ctx->params.keyOriginator);
+        if(myKeyValue == NULL) {
+            xmlSecInternalError("xmlSecKeyGetValue(keyOriginator)", NULL);
+            goto done;
+        }
+        otherKeyValue = xmlSecKeyGetValue(ctx->params.keyRecipient);
+        if(otherKeyValue == NULL) {
+            xmlSecInternalError("xmlSecKeyGetValue(keyRecipient)", NULL);
+            goto done;
+        }
+
+    } else {
+        /* decrypting on recipient side who needs priv key */
+        myKeyValue = xmlSecKeyGetValue(ctx->params.keyRecipient);
+        if(myKeyValue == NULL) {
+            xmlSecInternalError("xmlSecKeyGetValue(keyRecipient)", NULL);
+            goto done;
+        }
+        otherKeyValue = xmlSecKeyGetValue(ctx->params.keyOriginator);
+        if(otherKeyValue == NULL) {
+            xmlSecInternalError("xmlSecKeyGetValue(keyOriginator)", NULL);
+            goto done;
+        }
     }
 
-    value = xmlSecKeyGetValue(ctx->params.keyOriginator);
-    if(value == NULL) {
-        xmlSecInternalError("xmlSecKeyGetValue(keyOriginator)", NULL);
+    /* get pkeys */
+    myPrivKey = xmlSecOpenSSLEvpKeyDataGetEvp(myKeyValue);
+    if(myPrivKey == NULL) {
+        xmlSecInternalError("xmlSecOpenSSLEvpKeyDataGetEvp(myKey)", NULL);
         goto done;
     }
-    otherPubKey = xmlSecOpenSSLEvpKeyDataGetEvp(value);
+    otherPubKey = xmlSecOpenSSLEvpKeyDataGetEvp(otherKeyValue);
     if(otherPubKey == NULL) {
-        xmlSecInternalError("xmlSecOpenSSLEvpKeyDataGetEvp(keyOriginator)", NULL);
+        xmlSecInternalError("xmlSecOpenSSLEvpKeyDataGetEvp(otherKey)", NULL);
         goto done;
     }
 
@@ -387,7 +430,7 @@ xmlSecOpenSSLEcdhExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
         }
 
         /* step 1: generate secret with ecdh */
-        ret = xmlSecOpenSSLEcdhGenerateSecret(ctx, &secret);
+        ret = xmlSecOpenSSLEcdhGenerateSecret(ctx, transform->operation, &secret);
         if(ret < 0) {
             xmlSecInternalError("xmlSecBufferInitialize", xmlSecTransformGetName(transform));
             xmlSecBufferFinalize(&secret);
@@ -435,7 +478,7 @@ static xmlSecTransformKlass xmlSecOpenSSLEcdhKlass = {
     xmlSecOpenSSLEcdhInitialize,                /* xmlSecTransformInitializeMethod initialize; */
     xmlSecOpenSSLEcdhFinalize,                  /* xmlSecTransformFinalizeMethod finalize; */
     xmlSecOpenSSLEcdhNodeRead,                  /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecOpenSSLEcdhNodeWrite,                 /* xmlSecTransformNodeWriteMethod writeNode; */
     xmlSecOpenSSLEcdhSetKeyReq,                 /* xmlSecTransformSetKeyReqMethod setKeyReq; */
     xmlSecOpenSSLEcdhSetKey,                    /* xmlSecTransformSetKeyMethod setKey; */
     NULL,                                       /* xmlSecTransformValidateMethod validate; */

@@ -98,10 +98,7 @@ applications/libraries<br>
 </td>
                 </tr>
 <tr>
-<td style="vertical-align: top;">xmlsec-openssl (also
-requires
-xmlsec-core library)<br>
-</td>
+<td style="vertical-align: top;">xmlsec-openssl</td>
                   <td style="vertical-align: top;"><a href="http://www.openssl.org">OpenSSL<br></a></td>
                   <td style="vertical-align: top;">OpenSSL License<br>
 </td>
@@ -117,9 +114,7 @@ and <a href="http://lists.debian.org/debian-legal/2002/debian-legal-200205/msg00
                   </td>
                 </tr>
 <tr>
-<td style="vertical-align: top;">xmlsec-gnutls (also
-requires
-xmlsec-core library) </td>
+<td style="vertical-align: top;">xmlsec-gnutls</td>
                   <td style="vertical-align: top;">
 <a href="http://www.gnu.org/software/gnutls/">GnuTLS</a><br>
 </td>
@@ -133,9 +128,7 @@ xmlsec-core library) </td>
 </td>
                 </tr>
 <tr>
-<td style="vertical-align: top;">xmlsec-gcrypt (also
-requires
-xmlsec-core library) </td>
+<td style="vertical-align: top;">xmlsec-gcrypt</td>
                   <td style="vertical-align: top;">
 <a href="http://www.gnupg.org/">LibGCrypt</a><br>
 </td>
@@ -149,7 +142,7 @@ xmlsec-core library) </td>
 </td>
                 </tr>
 <tr>
-<td style="vertical-align: top;">xmlsec-nss (also requires xmlsec-core library) </td>
+<td style="vertical-align: top;">xmlsec-nss</td>
                   <td style="vertical-align: top;">
 <a href="http://www.mozilla.org/projects/security/pki/nss/">NSS</a><br>
 </td>
@@ -162,23 +155,16 @@ Public License</a> and <a href="http://www.opensource.org/licenses/gpl-license.p
 </td>
                 </tr>
 <tr>
-<td style="vertical-align: top;">xmlsec-mscrypto
-(also requires
-xmlsec-core library) </td>
-                  <td style="vertical-align: top;">
-<a href="http://msdn.microsoft.com/security/">MSCrypto API</a><br>
-</td>
-                  <td style="vertical-align: top;">Microsoft licensing:
-The libraries are part of MS Windows, and are also distributed with
-Internet Explorer.</td>
-                  <td style="vertical-align: top;">Unknown.<br>
-</td>
+<td style="vertical-align: top;">xmlsec-mscrypto and xmlsec-mscng</td>
+                  <td style="vertical-align: top;">Windows OS</td>
+                  <td style="vertical-align: top;">Microsoft licensing, part of Windows OS.</td>
+                  <td style="vertical-align: top;">Unknown.</td>
                   <td style="vertical-align: top;">Unknown.</td>
                   <td style="vertical-align: top;">Unknown.</td>
                 </tr>
 </tbody></table>
 <p>If you have questions about XML Security Library
-licensing then feel free to send these questions to the <a href="bugs.html">mailing list</a>.<br></p>
+licensing then feel free to send these questions to the <a href="mailing-list.html">mailing list</a>.<br></p>
 <h3>2. Installation.</h3>
 <h4> <a name="section_2_1"></a>2.1. Where can I get xmlsec?</h4>
 <p> The original distribution comes from <a href="http://www.aleksey.com/xmlsec/">XML Security Library page</a>.
@@ -195,27 +181,8 @@ On Windows the process is more complicated. Please check readme file in
 are
 needed to compile/install
 xmlsec?</h4>
-<p> The XML Security Library requires: </p>
-<ul>
-<li><a href="http://xmlsoft.org/downloads.html">LibXML</a></li>
-              <li>
-<a href="http://xmlsoft.org/XSLT/downloads.html">LibXSLT</a>
-(optional)</li>
-            </ul>
-<ul>
-<li> <a href="http://www.openssl.org/">OpenSSL</a> version 1.0.0 (or later).</li>
-<li>
-<a href="http://www.gnu.org/software/gnutls/">GnuTLS</a>
-</li>
+<p>See <a href="download.html">Download page</a> for details.</p>
 
-<li>
-<a href="http://www.gnu.org/directory/security/libgcrypt.html">Libgcrypt</a>
-</li>
-
-<li>
-<a href="http://www.mozilla.org/projects/security/pki/nss/">NSS</a> -
-Mozilla cryptographic library. </li>
-            </ul>
 <h4> <a name="section_2_4"></a>2.4. Why does make check
 fail
 for some tests?</h4>
@@ -253,7 +220,7 @@ msvcrt.dll and can only be linked to dynamically. The first one occurs
 in its single-threaded and multithreaded variant, which gives three
 different runtimes. These three then live in their debug and release
 incarnations, which results in six C runtimes. Worse, different versions
-of Microsoft Visual C/C++ have different runtimes (e.g. MSVC 6.0 
+of Microsoft Visual C/C++ have different runtimes (e.g. MSVC 6.0
 runtime is not compatible with .NET 2003 runtime). The rule is simple:
 exactly the same runtime must be used throughout the application.
 Client code must use the same runtime as XMLSec, LibXML, LibXSLT,

@@ -1574,13 +1574,7 @@ static const xmlSecOpenSSLKeyDataEcCurveNameAndOID g_xmlSecOpenSSLKeyDataEcCurve
 
 static const xmlChar*
 xmlSecOpenSSLKeyDataEcGetOidFromNid(int nid) {
-    xmlSecSize size = sizeof(g_xmlSecOpenSSLKeyDataEcCurveNameAndOID) / sizeof(g_xmlSecOpenSSLKeyDataEcCurveNameAndOID[0]);
-
-    xmlSecAssert2(nid != NID_undef, NULL);
-
-    for(xmlSecSize ii = 0; ii < size; ++ii) {
-        if(nid == g_xmlSecOpenSSLKeyDataEcCurveNameAndOID[ii].nid) {
-            return(g_xmlSecOpenSSLKeyDataEcCurveNameAndOID[ii].oid);
+    xmlSecSize size = sizeof(g_xmlSecOpenSSLKeyDataEcCurveNameAndOID) / sizeof(g_xmlSecOpenSSLKeyDreturn(-1);
         }
     }
     return(NULL);

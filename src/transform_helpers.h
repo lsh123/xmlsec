@@ -63,7 +63,10 @@ XMLSEC_EXPORT int   xmlSecTransformEcdhParamsRead          (xmlSecTransformEcdhP
                                                             xmlNodePtr node,
                                                             xmlSecTransformPtr ecdhTransform,
                                                             xmlSecTransformCtxPtr transformCtx);
-
+XMLSEC_EXPORT int   xmlSecTransformEcdhParamsWrite         (xmlSecTransformEcdhParamsPtr params,
+                                                            xmlNodePtr node,
+                                                            xmlSecTransformPtr ecdhTransform,
+                                                            xmlSecTransformCtxPtr transformCtx);
 #endif /* XMLSEC_NO_EC */
 
 /********************************** HMAC *******************************/

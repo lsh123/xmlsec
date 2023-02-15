@@ -166,6 +166,10 @@ XMLSEC_EXPORT xmlSecKeyPtr      xmlSecEncCtxAgreementMethodGenerate(xmlSecEncCtx
                                                                  xmlNodePtr node,
                                                                  xmlSecKeyInfoCtxPtr keyInfoCtx);
 
+XMLSEC_EXPORT int               xmlSecEncCtxAgreementMethodXmlWrite(xmlSecEncCtxPtr encCtx,
+                                                                 xmlNodePtr node,
+                                                                 xmlSecKeyInfoCtxPtr keyInfoCtx);
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

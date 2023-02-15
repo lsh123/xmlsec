@@ -482,7 +482,7 @@
                           <a href="https://www.w3.org/TR/xmlenc-core1/#sec-ECDH-ES">Elliptic Curve Diffie-Hellman (ECDH)</a>
                         </td>
                         <td valign="top">Required</td><!--Requirements -->
-                        <td valign="top">No</td><!-- OpenSSL-->
+                        <td valign="top">Yes <a href="#openssl-ecdh"><sup>(4)</sup></a></td><!-- OpenSSL-->
                         <td valign="top">No</td><!-- NSS -->
                         <td valign="top">No</td><!-- GnuTLS -->
                         <td valign="top">No</td><!-- MSCng -->
@@ -590,6 +590,9 @@
                     <li>
                       <a name="rsa-oaep-same-algo" id="rsa-oaep-same-algo"><sup>(3)</sup></a> RSA-OAEP digest algorithm and MGF1 algorithm
                       must be the same.
+                    </li>
+                    <li>
+                      <a name="openssl-ecdh" id="openssl-ecdh"><sup>(4)</sup></a> Requires OpenSSL 3.0.0 or greater.
                     </li>
                   </ul>
                 </div>

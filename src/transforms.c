@@ -2938,11 +2938,58 @@ done:
     return(res);
 }
 
+
+static int
+xmlSecTransformEcdhWriteKey(xmlSecKeyPtr key, xmlNodePtr node,
+    xmlSecTransformPtr ecdhTransform, xmlSecTransformCtxPtr transformCtx)
+{
+    xmlSecKeyInfoCtx keyInfoCtx;
+    int ret;
+    int res = -1;
+
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(ecdhTransform != NULL, -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
+    xmlSecAssert2(transformCtx->parentKeyInfoCtx != NULL, -1);
+
+
+     /* create keyinfo ctx */
+    ret = xmlSecKeyInfoCtxInitialize(&keyInfoCtx, NULL);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeyInfoCtxInitialize(recipient)", xmlSecNodeGetName(node));
+        return(-1);
+    }
+    ret = xmlSecKeyInfoCtxCopyUserPref(&keyInfoCtx, transformCtx->parentKeyInfoCtx);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeyInfoCtxCopyUserPref(recipient)", xmlSecNodeGetName(node));
+        goto done;
+    }
+    keyInfoCtx.mode = xmlSecKeyInfoModeWrite;
+    keyInfoCtx.keyReq.keyType = xmlSecKeyDataTypePublic; /* write public keys only */
+
+    /* write node */
+    ret = xmlSecKeyInfoNodeWrite(node, key, &(keyInfoCtx));
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeyInfoNodeWrite", NULL);
+        goto done;
+    }
+
+    /* success */
+    res = 0;
+
+done:
+    xmlSecKeyInfoCtxFinalize(&keyInfoCtx);
+    return(res);
+}
+
+
 int
-xmlSecTransformEcdhParamsRead(xmlSecTransformEcdhParamsPtr params,  xmlNodePtr node,
+xmlSecTransformEcdhParamsRead(xmlSecTransformEcdhParamsPtr params, xmlNodePtr node,
     xmlSecTransformPtr ecdhTransform, xmlSecTransformCtxPtr transformCtx)
 {
     xmlNodePtr cur;
+    xmlSecKeyDataType originatorKeyType, recipientKeyType;
     int ret;
     int res = -1;
 
@@ -2955,6 +3002,16 @@ xmlSecTransformEcdhParamsRead(xmlSecTransformEcdhParamsPtr params,  xmlNodePtr n
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
     xmlSecAssert2(transformCtx->parentKeyInfoCtx != NULL, -1);
+
+    if(transformCtx->parentKeyInfoCtx->mode == xmlSecKeyInfoModeWrite) {
+        /* we are encrypting on originator side which needs private key */
+        originatorKeyType = xmlSecKeyDataTypePublic;
+        recipientKeyType = xmlSecKeyDataTypePrivate;
+    } else {
+        /* we are decrypting on recipient side which needs private key */
+        originatorKeyType = xmlSecKeyDataTypePublic;
+        recipientKeyType = xmlSecKeyDataTypePrivate;
+    }
 
     /* first is required KeyDerivationMethod */
     cur = xmlSecGetNextElementNode(node->children);
@@ -2979,7 +3036,7 @@ xmlSecTransformEcdhParamsRead(xmlSecTransformEcdhParamsPtr params,  xmlNodePtr n
         xmlSecInvalidNodeError(cur, xmlSecNodeOriginatorKeyInfo, NULL);
         goto done;
     }
-    params->keyOriginator = xmlSecTransformEcdhReadKey(xmlSecKeyDataTypePublic, cur, ecdhTransform, transformCtx);
+    params->keyOriginator = xmlSecTransformEcdhReadKey(originatorKeyType, cur, ecdhTransform, transformCtx);
     if(params->keyOriginator  == NULL) {
         xmlSecInternalError("xmlSecTransformEcdhReadKey(OriginatorKeyInfo)", xmlSecNodeGetName(node));
         goto done;
@@ -2991,7 +3048,7 @@ xmlSecTransformEcdhParamsRead(xmlSecTransformEcdhParamsPtr params,  xmlNodePtr n
         xmlSecInvalidNodeError(cur, xmlSecNodeRecipientKeyInfo, NULL);
         goto done;
     }
-    params->keyRecipient = xmlSecTransformEcdhReadKey(xmlSecKeyDataTypePrivate, cur, ecdhTransform, transformCtx);
+    params->keyRecipient = xmlSecTransformEcdhReadKey(recipientKeyType, cur, ecdhTransform, transformCtx);
     if(params->keyRecipient  == NULL) {
         xmlSecInternalError("xmlSecTransformEcdhReadKey(RecipientKeyInfo)", xmlSecNodeGetName(node));
         goto done;
@@ -3012,6 +3069,70 @@ xmlSecTransformEcdhParamsRead(xmlSecTransformEcdhParamsPtr params,  xmlNodePtr n
     }
     params->kdfTransform->next = params->memBufTransform;
     params->memBufTransform->prev = params->kdfTransform;
+
+    /* success */
+    res = 0;
+
+done:
+    return(res);
+}
+
+int
+xmlSecTransformEcdhParamsWrite(xmlSecTransformEcdhParamsPtr params, xmlNodePtr node,
+    xmlSecTransformPtr ecdhTransform, xmlSecTransformCtxPtr transformCtx)
+{
+    xmlNodePtr cur;
+    int ret;
+    int res = -1;
+
+    xmlSecAssert2(params != NULL, -1);
+    xmlSecAssert2(ecdhTransform != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
+    xmlSecAssert2(transformCtx->parentKeyInfoCtx != NULL, -1);
+
+    /* first is required KeyDerivationMethod */
+    cur = xmlSecGetNextElementNode(node->children);
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeKeyDerivationMethod, xmlSecEnc11Ns))) {
+        xmlSecInvalidNodeError(cur, xmlSecNodeKeyDerivationMethod, NULL);
+        goto done;
+    }
+    /* do nothing for KeyDerivationMethod for now */
+
+    /* next node is required OriginatorKeyInfo (we need public key)*/
+    cur = xmlSecGetNextElementNode(cur->next);
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeOriginatorKeyInfo, xmlSecEncNs))) {
+        xmlSecInvalidNodeError(cur, xmlSecNodeOriginatorKeyInfo, NULL);
+        goto done;
+    }
+    if(params->keyOriginator != NULL) {
+        ret = xmlSecTransformEcdhWriteKey(params->keyOriginator, cur, ecdhTransform, transformCtx);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecTransformEcdhWriteKey(OriginatorKeyInfo)", xmlSecNodeGetName(node));
+            goto done;
+        }
+    }
+
+    /* next node is required RecipientKeyInfo (we need private key)*/
+    cur = xmlSecGetNextElementNode(cur->next);
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeRecipientKeyInfo, xmlSecEncNs))) {
+        xmlSecInvalidNodeError(cur, xmlSecNodeRecipientKeyInfo, NULL);
+        goto done;
+    }
+    if(params->keyRecipient != NULL) {
+        ret = xmlSecTransformEcdhWriteKey(params->keyRecipient, cur, ecdhTransform, transformCtx);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecTransformEcdhWriteKey(RecipientKeyInfo)", xmlSecNodeGetName(node));
+            goto done;
+        }
+    }
+
+    /* if there is something left than it's an error */
+    cur = xmlSecGetNextElementNode(cur->next);
+    if(cur != NULL) {
+        xmlSecUnexpectedNodeError(cur,  NULL);
+        goto done;
+    }
 
     /* success */
     res = 0;

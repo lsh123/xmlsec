@@ -1730,7 +1730,7 @@ xmlSecAppEncryptFile(const char* inputFileName, const char* outputFileNameTmpl) 
         }
         total_time += clock() - start_time;
     } else {
-        fprintf(stderr, "Error: encryption data not specified (use \"--xml\" or \"--binary\" options)\n");
+        fprintf(stderr, "Error: encryption data not specified (use \"--xml-data\" or \"--binary-data\" options)\n");
         goto done;
     }
 

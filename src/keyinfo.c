@@ -332,12 +332,13 @@ xmlSecKeyInfoCtxReset(xmlSecKeyInfoCtxPtr keyInfoCtx) {
 
     xmlSecTransformCtxReset(&(keyInfoCtx->retrievalMethodCtx));
     keyInfoCtx->curRetrievalMethodLevel = 0;
+    keyInfoCtx->curEncryptedKeyLevel = 0;
+    keyInfoCtx->operation = xmlSecTransformOperationNone;
 
 #ifndef XMLSEC_NO_XMLENC
     if(keyInfoCtx->encCtx != NULL) {
         xmlSecEncCtxReset(keyInfoCtx->encCtx);
     }
-    keyInfoCtx->curEncryptedKeyLevel = 0;
 #endif /* XMLSEC_NO_XMLENC */
 
     xmlSecKeyReqReset(&(keyInfoCtx->keyReq));
@@ -389,6 +390,8 @@ xmlSecKeyInfoCtxCreateEncCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
             break;
     }
     keyInfoCtx->encCtx = tmp;
+    tmp->keyInfoReadCtx.operation = keyInfoCtx->operation;
+    tmp->keyInfoWriteCtx.operation = keyInfoCtx->operation;
 
     return(0);
 #else /* XMLSEC_NO_XMLENC */
@@ -1743,6 +1746,8 @@ xmlSecKeyDataAgreementMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNod
 
 static int
 xmlSecKeyDataAgreementMethodXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    int ret;
+
     xmlSecAssert2(id == xmlSecKeyDataAgreementMethodId, -1);
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(xmlSecKeyIsValid(key), -1);
@@ -1750,7 +1755,36 @@ xmlSecKeyDataAgreementMethodXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNo
     xmlSecAssert2(keyInfoCtx != NULL, -1);
     xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeWrite, -1);
 
-    /* do nothing, the template should already have all the necesary data to generate the key correctly */
+    /* there might be several nodes that can re-use encCtx, we need to re-read the node before writing it  */
+
+    /* check the enc level */
+    if(keyInfoCtx->curEncryptedKeyLevel >= keyInfoCtx->maxEncryptedKeyLevel) {
+        xmlSecOtherError3(XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL, xmlSecKeyDataKlassGetName(id),
+            "cur=%d;max=%d", keyInfoCtx->curEncryptedKeyLevel, keyInfoCtx->maxEncryptedKeyLevel);
+        return(-1);
+    }
+
+    /* init enc context */
+    if(keyInfoCtx->encCtx != NULL) {
+        xmlSecEncCtxReset(keyInfoCtx->encCtx);
+    } else {
+        ret = xmlSecKeyInfoCtxCreateEncCtx(keyInfoCtx);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecKeyInfoCtxCreateEncCtx", xmlSecKeyDataKlassGetName(id));
+            return(-1);
+        }
+    }
+    xmlSecAssert2(keyInfoCtx->encCtx != NULL, -1);
+
+    ++keyInfoCtx->curEncryptedKeyLevel;
+    ret = xmlSecEncCtxAgreementMethodXmlWrite(keyInfoCtx->encCtx, node, keyInfoCtx);
+    --keyInfoCtx->curEncryptedKeyLevel;
+
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecEncCtxAgreementMethodXmlWrite", xmlSecKeyDataKlassGetName(id));
+        return(-1);
+    }
+
     return(0);
 }
 

@@ -224,6 +224,7 @@ struct _xmlSecKeyInfoCtx {
     /* internal data */
     int                                 curRetrievalMethodLevel;
     int                                 curEncryptedKeyLevel;
+    xmlSecTransformOperation            operation;
     xmlSecKeyReq                        keyReq;
 
     /* for the future */

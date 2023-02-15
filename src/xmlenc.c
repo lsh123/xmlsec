@@ -765,6 +765,7 @@ xmlSecEncCtxEncDataNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
         return(-1);
     }
     encCtx->encMethod->operation = encCtx->operation;
+    encCtx->keyInfoReadCtx.operation = encCtx->operation;
 
     /* we have encryption method, find key */
     ret = xmlSecTransformSetKeyReq(encCtx->encMethod, &(encCtx->keyInfoReadCtx.keyReq));
@@ -1230,7 +1231,7 @@ xmlSecEncCtxDerivedKeyGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xm
     xmlSecAssert2(keyInfoCtx != NULL, NULL);
 
     /* initialize context and add ID atributes to the list of known ids */
-    encCtx->operation = xmlSecTransformOperationDecrypt;
+    encCtx->operation = keyInfoCtx->operation;
     xmlSecAddIDs(node->doc, node, xmlSecEncIds);
 
     /* first read the children */
@@ -1259,6 +1260,7 @@ xmlSecEncCtxDerivedKeyGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xm
     /* expected key size is determined by the requirements from the uplevel key info */
     encCtx->encMethod->expectedOutputSize = keyInfoCtx->keyReq.keyBitsSize / 8;
     encCtx->encMethod->operation = encCtx->operation;
+    encCtx->keyInfoReadCtx.operation = encCtx->operation;
 
     /* next node */
     cur = xmlSecGetNextElementNode(cur->next);
@@ -1384,7 +1386,7 @@ xmlSecEncCtxAgreementMethodGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyI
     xmlSecAssert2(keyInfoCtx != NULL, NULL);
 
     /* initialize context and add ID atributes to the list of known ids */
-    encCtx->operation = xmlSecTransformOperationDecrypt;
+    encCtx->operation = keyInfoCtx->operation;
     xmlSecAddIDs(node->doc, node, xmlSecEncIds);
 
     /* the AgreementMethod node is the transform node itself */
@@ -1398,6 +1400,7 @@ xmlSecEncCtxAgreementMethodGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyI
     /* expected key size is determined by the requirements from the uplevel key info */
     encCtx->encMethod->expectedOutputSize = keyInfoCtx->keyReq.keyBitsSize / 8;
     encCtx->encMethod->operation = encCtx->operation;
+    encCtx->keyInfoReadCtx.operation = encCtx->operation;
 
     /* ecdh transform doesn't require a key, skip SetKeyReq(), FindKey(), and SetKey() */
 
@@ -1410,6 +1413,39 @@ xmlSecEncCtxAgreementMethodGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyI
 
     /* success */
     return(key);
+}
+
+int
+xmlSecEncCtxAgreementMethodXmlWrite(xmlSecEncCtxPtr encCtx, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    int ret;
+
+    xmlSecAssert2(encCtx != NULL, -1);
+    xmlSecAssert2(encCtx->encMethod == NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+
+    /* initialize context and add ID atributes to the list of known ids */
+    encCtx->operation = keyInfoCtx->operation;
+    xmlSecAddIDs(node->doc, node, xmlSecEncIds);
+
+    /* the AgreementMethod node is the transform node itself */
+    encCtx->transformCtx.parentKeyInfoCtx = keyInfoCtx;
+    encCtx->encMethod = xmlSecTransformCtxNodeRead(&(encCtx->transformCtx), node, xmlSecTransformUsageAgreementMethod);
+    if(encCtx->encMethod == NULL) {
+        xmlSecInternalError("xmlSecTransformCtxNodeRead", xmlSecNodeGetName(node));
+        return(-1);
+    }
+
+    /* write */
+    if(encCtx->encMethod->id->writeNode != NULL) {
+        ret = encCtx->encMethod->id->writeNode(encCtx->encMethod, node, &(encCtx->transformCtx));
+        if(ret < 0) {
+            xmlSecInternalError("writeNode", xmlSecNodeGetName(node));
+            return(-1);
+        }
+    }
+
+    return(0);
 }
 
 #endif /* XMLSEC_NO_XMLENC */

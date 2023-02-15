@@ -363,7 +363,7 @@
                           <a href="https://www.w3.org/TR/xmlenc-core1/#sec-ConcatKDF">ConcatKDF</a>
                         </td>
                         <td valign="top">Required</td><!--Requirements -->
-                        <td valign="top">Yes <a href="#concatkdf"><sup>(2)</sup></a></td><!-- OpenSSL-->
+                        <td valign="top">Yes <a href="#concatkdf"><sup>(2)</sup></a> <a href="#openssl-ecdh"><sup>(3)</sup></a></td><!-- OpenSSL-->
                         <td valign="top">No</td><!-- NSS -->
                         <td valign="top">No</td><!-- GnuTLS -->
                         <td valign="top">No</td><!-- MSCng -->
@@ -417,61 +417,57 @@
                         <td valign="top">Yes</td><!-- OpenSSL-->
                         <td valign="top">Yes</td><!-- NSS -->
                         <td valign="top">No</td><!-- GnuTLS -->
-                        <td valign="top">Yes <a href="#rsa-oaep-same-algo"><sup>(3)</sup></a></td><!-- MSCng -->
+                        <td valign="top">Yes <a href="#rsa-oaep-same-algo"><sup>(4)</sup></a></td><!-- MSCng -->
                         <td valign="top">No</td><!-- MSCrypto -->
-                        <td valign="top">Yes <a href="#rsa-oaep-same-algo"><sup>(3)</sup></a></td><!-- GCrypt -->
+                        <td valign="top">Yes <a href="#rsa-oaep-same-algo"><sup>(4)</sup></a></td><!-- GCrypt -->
                       </tr>
                       <tr>
                         <td valign="top">
                           <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP">RSA-OAEP with MGF1-SHA224</a>
                         </td>
                         <td valign="top">Optional</td><!--Requirements -->
-                        <td valign="top">
-                          <a href="xmldsig.html#algorithms">Yes</td><!-- OpenSSL-->
+                        <td valign="top">Yes</td><!-- OpenSSL-->
                         <td valign="top">Yes</td><!-- NSS -->
                         <td valign="top">No</td><!-- GnuTLS -->
                         <td valign="top">No</td><!-- MSCng -->
                         <td valign="top">No</td><!-- MSCrypto -->
-                        <td valign="top">Yes <a href="#rsa-oaep-same-algo"><sup>(3)</sup></a></td><!-- GCrypt -->
+                        <td valign="top">Yes <a href="#rsa-oaep-same-algo"><sup>(4)</sup></a></td><!-- GCrypt -->
                       </tr>
                       <tr>
                         <td valign="top">
                           <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP">RSA-OAEP with MGF1-SHA256</a>
                         </td>
                         <td valign="top">Optional</td><!--Requirements -->
-                        <td valign="top">
-                          <a href="xmldsig.html#algorithms">Yes</td><!-- OpenSSL-->
+                        <td valign="top">Yes</td><!-- OpenSSL-->
                         <td valign="top">Yes</td><!-- NSS -->
                         <td valign="top">No</td><!-- GnuTLS -->
-                        <td valign="top">Yes <a href="#rsa-oaep-same-algo"><sup>(3)</sup></a></td><!-- MSCng -->
+                        <td valign="top">Yes <a href="#rsa-oaep-same-algo"><sup>(4)</sup></a></td><!-- MSCng -->
                         <td valign="top">No</td><!-- MSCrypto -->
-                        <td valign="top">Yes <a href="#rsa-oaep-same-algo"><sup>(3)</sup></a></td><!-- GCrypt -->
+                        <td valign="top">Yes <a href="#rsa-oaep-same-algo"><sup>(4)</sup></a></td><!-- GCrypt -->
                       </tr>
                       <tr>
                         <td valign="top">
                           <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP">RSA-OAEP with MGF1-SHA384</a>
                         </td>
                         <td valign="top">Optional</td><!--Requirements -->
-                        <td valign="top">
-                          <a href="xmldsig.html#algorithms">Yes</td><!-- OpenSSL-->
+                        <td valign="top">Yes</td><!-- OpenSSL-->
                         <td valign="top">Yes</td><!-- NSS -->
                         <td valign="top">No</td><!-- GnuTLS -->
-                        <td valign="top">Yes <a href="#rsa-oaep-same-algo"><sup>(3)</sup></a></td><!-- MSCng -->
+                        <td valign="top">Yes <a href="#rsa-oaep-same-algo"><sup>(4)</sup></a></td><!-- MSCng -->
                         <td valign="top">No</td><!-- MSCrypto -->
-                        <td valign="top">Yes <a href="#rsa-oaep-same-algo"><sup>(3)</sup></a></td><!-- GCrypt -->
+                        <td valign="top">Yes <a href="#rsa-oaep-same-algo"><sup>(4)</sup></a></td><!-- GCrypt -->
                       </tr>
                       <tr>
                         <td valign="top">
                           <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP">RSA-OAEP with MGF1-SHA512</a>
                         </td>
                         <td valign="top">Optional</td><!--Requirements -->
-                        <td valign="top">
-                          <a href="xmldsig.html#algorithms">Yes</td><!-- OpenSSL-->
+                        <td valign="top">Yes</td><!-- OpenSSL-->
                         <td valign="top">Yes</td><!-- NSS -->
                         <td valign="top">No</td><!-- GnuTLS -->
-                        <td valign="top">Yes <a href="#rsa-oaep-same-algo"><sup>(3)</sup></a></td><!-- MSCng -->
+                        <td valign="top">Yes <a href="#rsa-oaep-same-algo"><sup>(4)</sup></a></td><!-- MSCng -->
                         <td valign="top">No</td><!-- MSCrypto -->
-                        <td valign="top">Yes <a href="#rsa-oaep-same-algo"><sup>(3)</sup></a></td><!-- GCrypt -->
+                        <td valign="top">Yes <a href="#rsa-oaep-same-algo"><sup>(4)</sup></a></td><!-- GCrypt -->
                       </tr>
 
                       <tr>
@@ -482,7 +478,7 @@
                           <a href="https://www.w3.org/TR/xmlenc-core1/#sec-ECDH-ES">Elliptic Curve Diffie-Hellman (ECDH)</a>
                         </td>
                         <td valign="top">Required</td><!--Requirements -->
-                        <td valign="top">Yes <a href="#openssl-ecdh"><sup>(4)</sup></a></td><!-- OpenSSL-->
+                        <td valign="top">Yes <a href="#openssl-ecdh"><sup>(3)</sup></a></td><!-- OpenSSL-->
                         <td valign="top">No</td><!-- NSS -->
                         <td valign="top">No</td><!-- GnuTLS -->
                         <td valign="top">No</td><!-- MSCng -->
@@ -588,11 +584,11 @@
                       (<a href="https://github.com/lsh123/xmlsec/issues/514">more details</a>).
                     </li>
                     <li>
-                      <a name="rsa-oaep-same-algo" id="rsa-oaep-same-algo"><sup>(3)</sup></a> RSA-OAEP digest algorithm and MGF1 algorithm
-                      must be the same.
+                      <a name="openssl-ecdh" id="openssl-ecdh"><sup>(3)</sup></a> Requires OpenSSL 3.0.0 or greater.
                     </li>
                     <li>
-                      <a name="openssl-ecdh" id="openssl-ecdh"><sup>(4)</sup></a> Requires OpenSSL 3.0.0 or greater.
+                      <a name="rsa-oaep-same-algo" id="rsa-oaep-same-algo"><sup>(4)</sup></a> RSA-OAEP digest algorithm and MGF1 algorithm
+                      must be the same.
                     </li>
                   </ul>
                 </div>

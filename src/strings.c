@@ -174,9 +174,9 @@ const xmlChar xmlSecAttrPrefixList[]            = "PrefixList";
  * ConcatKDF strings
  *
  ************************************************************************/
-const xmlChar xmlSecNameConcatKdfKeyValue[]     = "concatkdf";
+const xmlChar xmlSecNameConcatKdfKeyValue[]     = "ConcatKDFKeyValue";
 
-const xmlChar xmlSecNameConcatKdf[]             = "ConcatKDFKeyValue";
+const xmlChar xmlSecNameConcatKdf[]             = "concatkdf";
 const xmlChar xmlSecHrefConcatKdf[]             = "http://www.w3.org/2009/xmlenc11#ConcatKDF";
 
 const xmlChar xmlSecNodeConcatKDFParams[]           = "ConcatKDFParams";
@@ -408,9 +408,9 @@ const xmlChar xmlSecHrefMd5[]                   = "http://www.w3.org/2001/04/xml
  * PBKDF2
  *
  ************************************************************************/
-const xmlChar xmlSecNamePbkdf2KeyValue[]        = "pbkdf2";
+const xmlChar xmlSecNamePbkdf2KeyValue[]        = "PBKDF2KeyValue";
 
-const xmlChar xmlSecNamePbkdf2[]                = "PBKDF2KeyValue";
+const xmlChar xmlSecNamePbkdf2[]                = "pbkdf2";
 const xmlChar xmlSecHrefPbkdf2[]                = "http://www.w3.org/2009/xmlenc11#pbkdf2";
 
 const xmlChar xmlSecNodePbkdf2Params[]          = "PBKDF2-params";

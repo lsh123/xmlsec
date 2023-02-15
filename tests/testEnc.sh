@@ -102,6 +102,26 @@ execEncTest $res_success \
     "--concatkdf-key:dkey3 $topfolder/xmlenc11-interop-2012/dkey3-concatkdf.bin --binary $topfolder/xmlenc11-interop-2012/dkey3-example-ConcatKDF-crypto.data" \
     "--concatkdf-key:dkey3 $topfolder/xmlenc11-interop-2012/dkey3-concatkdf.bin"
 
+# PBKDF2
+execEncTest $res_success \
+    "" \
+    "xmlenc11-interop-2012/dkey-example-PBKDF2-crypto" \
+    "aes256-cbc pbkdf2 sha256" \
+    "derived-key" \
+    "--pbkdf2-key:dkey-pbkdf2 $topfolder/xmlenc11-interop-2012/dkey-pbkdf2.bin" \
+    "--pbkdf2-key:dkey-pbkdf2 $topfolder/xmlenc11-interop-2012/dkey-pbkdf2.bin --binary $topfolder/xmlenc11-interop-2012/dkey-example-PBKDF2-crypto.data" \
+    "--pbkdf2-key:dkey-pbkdf2 $topfolder/xmlenc11-interop-2012/dkey-pbkdf2.bin"
+
+execEncTest $res_success \
+    "" \
+    "xmlenc11-interop-2012/dkey3-example-PBKDF2-crypto" \
+    "aes256-cbc pbkdf2 sha256" \
+    "derived-key" \
+    "--pbkdf2-key:dkey3-pbkdf2 $topfolder/xmlenc11-interop-2012/dkey3-pbkdf2.bin" \
+    "--pbkdf2-key:dkey3-pbkdf2 $topfolder/xmlenc11-interop-2012/dkey3-pbkdf2.bin --binary $topfolder/xmlenc11-interop-2012/dkey3-example-PBKDF2-crypto.data" \
+    "--pbkdf2-key:dkey3-pbkdf2 $topfolder/xmlenc11-interop-2012/dkey3-pbkdf2.bin"
+
+
 # ECDH-ES
 execEncTest $res_success \
     "" \

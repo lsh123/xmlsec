@@ -60,6 +60,7 @@ struct _xmlSecOpenSSLKdfCtx {
     OSSL_PARAM params[XMLSEC_OPENSSL_KDF_MAX_PARAMS];
     xmlSecSize paramsPos;
     int paramsInitialized;
+    const char * keyParamName;
 
     /* buffers to hold data for params (kdf specific) */
     xmlChar* digest;
@@ -125,15 +126,17 @@ xmlSecOpenSSLKdfInitialize(xmlSecTransformPtr transform) {
 
 #ifndef XMLSEC_NO_CONCATKDF
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformConcatKdfId)) {
-        ctx->kdfName = OSSL_KDF_NAME_SSKDF;
         ctx->keyId = xmlSecOpenSSLKeyDataConcatKdfId;
+        ctx->kdfName = OSSL_KDF_NAME_SSKDF;
+        ctx->keyParamName = OSSL_KDF_PARAM_SECRET;
     } else
 #endif /* XMLSEC_NO_CONCATKDF */
 
 #ifndef XMLSEC_NO_PBKDF2
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformPbkdf2Id)) {
-        ctx->kdfName = OSSL_KDF_NAME_PBKDF2;
         ctx->keyId = xmlSecOpenSSLKeyDataPbkdf2Id;
+        ctx->kdfName = OSSL_KDF_NAME_PBKDF2;
+        ctx->keyParamName = OSSL_KDF_PARAM_PASSWORD;
     } else
 #endif /* XMLSEC_NO_PBKDF2 */
 
@@ -230,6 +233,7 @@ xmlSecOpenSSLKdfSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     ctx = xmlSecOpenSSLKdfGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->keyId != NULL, -1);
+    xmlSecAssert2(ctx->keyParamName != NULL, -1);
     xmlSecAssert2(xmlSecKeyCheckId(key, ctx->keyId), -1);
     xmlSecAssert2(ctx->paramsInitialized == 0, -1);
 
@@ -251,7 +255,7 @@ xmlSecOpenSSLKdfSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
         xmlSecInvalidSizeDataError("Kdf Params Number", ctx->paramsPos, "too big", xmlSecTransformGetName(transform));
         return(-1);
     }
-    ctx->params[ctx->paramsPos++] = OSSL_PARAM_construct_octet_string(OSSL_KDF_PARAM_SECRET, keyData, keySize);
+    ctx->params[ctx->paramsPos++] = OSSL_PARAM_construct_octet_string(ctx->keyParamName, keyData, keySize);
 
     /* done with params! */
     if(ctx->paramsPos >= XMLSEC_OPENSSL_KDF_MAX_PARAMS) {
@@ -353,7 +357,7 @@ xmlSecOpenSSLConcatKdfSetDigestNameFromHref(xmlSecOpenSSLKdfCtxPtr ctx, const xm
     const char * digestName = NULL;
 
     xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->digest != NULL, -1);
+    xmlSecAssert2(ctx->digest == NULL, -1);
 
     /* use SHA256 by default */
     if(href == NULL) {
@@ -545,8 +549,8 @@ xmlSecOpenSSLPbkdf2SetDigestNameFromHref(xmlSecOpenSSLKdfCtxPtr ctx, const xmlCh
     const char * digestName = NULL;
 
     xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->digest != NULL, -1);
-    xmlSecAssert2(ctx->mac != NULL, -1);
+    xmlSecAssert2(ctx->digest == NULL, -1);
+    xmlSecAssert2(ctx->mac == NULL, -1);
 
     /* use SHA256 by default */
     if(href == NULL) {

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xenc:EncryptedData
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
+  xmlns:xenc="http://www.w3.org/2001/04/xmlenc#"
+  xmlns:xenc11="http://www.w3.org/2009/xmlenc11#"
+  xsi:schemaLocation="
+     http://www.w3.org/2000/09/xmldsig#  ../W3C/xmldsig-core-schema.xsd
+     http://www.w3.org/2001/04/xmlenc#  ../W3C/xenc-schema.xsd
+     http://www.w3.org/2009/xmlenc11#  ../W3C/xenc-schema-11.xsd">
+  <xenc:EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#aes256-cbc"/>
+  <ds:KeyInfo>
+    <xenc11:DerivedKey>
+      <xenc11:KeyDerivationMethod Algorithm="http://www.w3.org/2009/xmlenc11#pbkdf2">
+        <xenc11:PBKDF2-params>
+          <xenc11:Salt>
+            <xenc11:Specified>U0FMVFNBTFQ=</xenc11:Specified>
+          </xenc11:Salt>
+          <xenc11:IterationCount>1024</xenc11:IterationCount>
+          <xenc11:KeyLength>32</xenc11:KeyLength>
+          <xenc11:PRF Algorithm="http://www.w3.org/2001/04/xmldsig-more#hmac-sha256"/>
+        </xenc11:PBKDF2-params>
+      </xenc11:KeyDerivationMethod>
+      <xenc11:MasterKeyName>dkey-pbkdf2</xenc11:MasterKeyName>
+    </xenc11:DerivedKey>
+  </ds:KeyInfo>
+  <xenc:CipherData>
+    <xenc:CipherValue>Hoc86jjd8cj+IlJxpg+r8xrqhDcPZrqGSD33OmFWqF8HFcXzmQGor1Bi23wKL90xiAACK7C20TBqzL9/A3r47wmi0pr9GV9uu6gtU9UhM+MEItfeBJHykaTVTCrpQ+PbaJQ//105jnXUbzPZCJimJhEH2T6tbHZCJ7bVmzlfY2fZlo6DucrmlAbNBS6m22o+0+OFNuCznapCS1wOTVH0D6qkznDG7BEx3F9JkzELhaBpoX2tlB5IbyO78Cfi/QM7FcVkrGQ+/fGyFpb1pmx/vNo1PgcFjsSIVAcszMNDHxA9k6PpvBequlaiJEIodcu1w/V8fvGQWKq9ZneNMw8qMyOQVaCBJvBgOFEi6rB+FTkneVjbd2tSj1k3UnufcVFn0nhQlQ2NWqUoB7Ql2vpNhD6VvSmPV1+2j3pnPgLEefmIEO0CaQH7zvqk6xT+aZfW
+    </xenc:CipherValue>
+  </xenc:CipherData>
+</xenc:EncryptedData>

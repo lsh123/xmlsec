@@ -102,7 +102,7 @@ jobs:
     - name: install dependencies
       run: |
           brew update
-          brew install automake autoconf libtool
+          brew install automake autoconf pkgconf libtool
           # brew install libxml2 libxslt libgcrypt
           brew install openssl nspr nss
     - uses: actions/checkout@v2

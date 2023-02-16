@@ -331,7 +331,7 @@ xmlSecNssPbkdf2Derive(xmlSecNssPbkdf2CtxPtr ctx, xmlSecBufferPtr out) {
         xmlSecNssError("PK11_GetInternalSlot", NULL);
         goto done;
     }
-    symKey = PK11_PBEKeyGen(slot, pbkdf2AlgId, &passItem, false, NULL);
+    symKey = PK11_PBEKeyGen(slot, pbkdf2AlgId, &passItem, PR_FALSE, NULL);
     if(symKey == NULL) {
         xmlSecNssError("PK11_PBEKeyGen", NULL);
         goto done;

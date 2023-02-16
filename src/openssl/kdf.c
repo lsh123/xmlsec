@@ -13,7 +13,6 @@
  * @Short_description:
  * @Stability: Stable
  */
-
 #include "globals.h"
 
 #include <stdlib.h>
@@ -34,6 +33,9 @@
 #include "../cast_helpers.h"
 #include "../keysdata_helpers.h"
 #include "../transform_helpers.h"
+
+/* KDF is only supported in OpenSSL 3.0.0+ */
+#if defined(XMLSEC_OPENSSL_API_300)
 
 #include <openssl/kdf.h>
 #include <openssl/core_names.h>
@@ -96,15 +98,10 @@ xmlSecOpenSSLKdfCheckId(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_NO_PBKDF2
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformPbkdf2Id)) {
         return(1);
-    } else
+    }
 #endif /* XMLSEC_NO_PBKDF2 */
 
     /* not found */
-    {
-        return(0);
-    }
-
-    /* just in case */
     return(0);
 }
 
@@ -742,3 +739,10 @@ xmlSecOpenSSLTransformPbkdf2GetKlass(void) {
 }
 
 #endif /* XMLSEC_NO_PBKDF2 */
+
+#else /* defined(XMLSEC_OPENSSL_API_300) */
+
+/* ISO C forbids an empty translation unit */
+typedef int make_iso_compilers_happy;
+
+#endif /* defined(XMLSEC_OPENSSL_API_300) */

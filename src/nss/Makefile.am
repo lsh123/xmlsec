@@ -24,17 +24,18 @@ libxmlsec1_nss_la_SOURCES =\
 	ciphers_gcm.c \
 	crypto.c \
 	digests.c \
+	globals.h \
 	hmac.c \
+	keysstore.c \
+	keytrans.c \
+	kw_des.c \
+	kw_aes.c \
+	pbkdf2.c \
 	pkikeys.c \
 	signatures.c \
 	symkeys.c \
 	x509.c \
 	x509vfy.c \
-	keysstore.c \
-	keytrans.c \
-	kw_des.c \
-	kw_aes.c \
-	globals.h \
 	$(NULL)
 
 libxmlsec1_nss_la_LIBADD = \

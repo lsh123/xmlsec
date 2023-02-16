@@ -555,7 +555,7 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataPbkdf2Klass = {
     xmlSecKeyDataUsageReadFromFile,             /* xmlSecKeyDataUsage usage; */
     NULL,                                       /* const xmlChar* href; */
     NULL,                                       /* const xmlChar* dataNodeName; */
-    xmlSecNs,                                   /* const xmlChar* dataNodeNs; */
+    NULL,                                       /* const xmlChar* dataNodeNs; */
 
     /* constructors/destructor */
     xmlSecOpenSSLSymKeyDataInitialize,          /* xmlSecKeyDataInitializeMethod initialize; */

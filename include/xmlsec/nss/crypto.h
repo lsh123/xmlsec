@@ -429,6 +429,36 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformHmacSha512GetKlass(void
 
 /********************************************************************
  *
+ * PBKDF2 key and transform
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_PBKDF2
+
+/**
+ * xmlSecNssKeyDataPbkdf2Id:
+ *
+ * The PBKDF2 key data klass.
+ */
+#define xmlSecNssKeyDataPbkdf2Id \
+        xmlSecNssKeyDataPbkdf2GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecNssKeyDataPbkdf2GetKlass  (void);
+XMLSEC_CRYPTO_EXPORT int                xmlSecNssKeyDataPbkdf2Set       (xmlSecKeyDataPtr data,
+                                                                         const xmlSecByte* buf,
+                                                                         xmlSecSize bufSize);
+/**
+ * xmlSecNssTransformPbkdf2Id:
+ *
+ * The PBKDF2 key derivation transform klass.
+ */
+#define xmlSecNssTransformPbkdf2Id \
+        xmlSecNssTransformPbkdf2GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformPbkdf2GetKlass(void);
+
+#endif /* XMLSEC_NO_PBKDF2 */
+
+
+/********************************************************************
+ *
  * RSA transforms
  *
  *******************************************************************/

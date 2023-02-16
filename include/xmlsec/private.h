@@ -349,6 +349,7 @@ typedef int                     (*xmlSecCryptoAppKeyCertLoadMemoryMethod)(xmlSec
  * @keyDataGostR3410_2012_256GetKlass: the method to get pointer to GOST R 34.10-2012 256 bit key data klass.
  * @keyDataGostR3410_2012_512GetKlass: the method to get pointer to GOST R 34.10-2012 512 bit key data klass.
  * @keyDataHmacGetKlass:        the method to get pointer to HMAC key data klass.
+ * @keyDataPbkdf2GetKlass:      the method to get pointer to PBKDF2 key data klass.
  * @keyDataRsaGetKlass:         the method to get pointer to RSA key data klass.
  * @keyDataX509GetKlass:        the method to get pointer to X509 key data klass.
  * @keyDataRawX509CertGetKlass: the method to get pointer to raw X509 cert key data klass.
@@ -359,7 +360,7 @@ typedef int                     (*xmlSecCryptoAppKeyCertLoadMemoryMethod)(xmlSec
  * @transformAes128GcmGetKlass: the method to get pointer to AES 128 GCM encryption transform.
  * @transformAes192GcmGetKlass: the method to get pointer to AES 192 GCM encryption transform.
  * @transformAes256GcmGetKlass: the method to get pointer to AES 256 GCM encryption transform.
- * @transformConcatKdfGetKlass: the method to get pointer to ConcatKDF KDF transform.
+ * @transformConcatKdfGetKlass: the method to get pointer to PBKDF2 KDF transform.
  * @transformKWAes128GetKlass:  the method to get pointer to AES 128 key wrapper transform.
  * @transformKWAes192GetKlass:  the method to get pointer to AES 192 key wrapper transform.
  * @transformKWAes256GetKlass:  the method to get pointer to AES 256 key wrapper transform.
@@ -384,6 +385,7 @@ typedef int                     (*xmlSecCryptoAppKeyCertLoadMemoryMethod)(xmlSec
  * @transformHmacSha384GetKlass: the method to get pointer to HMAC-SHA384 transform.
  * @transformHmacSha512GetKlass: the method to get pointer to HMAC-SHA512 transform.
  * @transformMd5GetKlass:       the method to get pointer to MD5 digest transform.
+ * @transformPbkdf2GetKlass: the method to get pointer to Pbkdf2 KDF transform.
  * @transformRipemd160GetKlass: the method to get pointer to RIPEMD160 digest transform.
  * @transformRsaMd5GetKlass:    the method to get pointer to RSA-MD5 signature transform.
  * @transformRsaRipemd160GetKlass: the method to get pointer to RSA-RIPEMD160 signature transform.
@@ -442,6 +444,7 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoKeyDataGetKlassMethod            keyDataGostR3410_2012_256GetKlass;
     xmlSecCryptoKeyDataGetKlassMethod            keyDataGostR3410_2012_512GetKlass;
     xmlSecCryptoKeyDataGetKlassMethod            keyDataHmacGetKlass;
+    xmlSecCryptoKeyDataGetKlassMethod            keyDataPbkdf2GetKlass;
     xmlSecCryptoKeyDataGetKlassMethod            keyDataRsaGetKlass;
     xmlSecCryptoKeyDataGetKlassMethod            keyDataX509GetKlass;
     xmlSecCryptoKeyDataGetKlassMethod            keyDataRawX509CertGetKlass;
@@ -481,6 +484,7 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoTransformGetKlassMethod          transformHmacSha384GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformHmacSha512GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformMd5GetKlass;
+    xmlSecCryptoTransformGetKlassMethod          transformPbkdf2GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformRipemd160GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformRsaMd5GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformRsaRipemd160GetKlass;

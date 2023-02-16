@@ -593,6 +593,7 @@ xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(struct _xmlSecCryptoDLFuncti
     XMLSEC_REGISTER_KEY_DATA(GostR3410_2012_256);   // keyDataGostR3410_2012_256GetKlass
     XMLSEC_REGISTER_KEY_DATA(GostR3410_2012_512);   // keyDataGetKlass
     XMLSEC_REGISTER_KEY_DATA(Hmac);                 // keyDataHmacGetKlass
+    XMLSEC_REGISTER_KEY_DATA(Pbkdf2);               // keyDataPbkdf2GetKlass
     XMLSEC_REGISTER_KEY_DATA(Rsa);                  // keyDataRsaGetKlass
     XMLSEC_REGISTER_KEY_DATA(X509);                 // keyDataX509GetKlass
     XMLSEC_REGISTER_KEY_DATA(RawX509Cert);          // keyDataRawX509CertGetKlass
@@ -634,6 +635,7 @@ xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(struct _xmlSecCryptoDLFuncti
     XMLSEC_REGISTER_TRANSFORM(HmacSha384);                          // transformHmacSha384GetKlass
     XMLSEC_REGISTER_TRANSFORM(HmacSha512);                          // transformHmacSha512GetKlass
     XMLSEC_REGISTER_TRANSFORM(Md5);                                 // transformMd5GetKlass
+    XMLSEC_REGISTER_TRANSFORM(Pbkdf2);                              // transformPbkdf2GetKlass
     XMLSEC_REGISTER_TRANSFORM(Ripemd160);                           // transformRipemd160GetKlass
     XMLSEC_REGISTER_TRANSFORM(RsaMd5);                              // transformRsaMd5GetKlass
     XMLSEC_REGISTER_TRANSFORM(RsaRipemd160);                        // transformRsaRipemd160GetKlass

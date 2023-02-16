@@ -718,7 +718,7 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
     /* check uri */
     if(xmlSecTransformUriTypeCheck(ctx->enabledUris, uri) != 1) {
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_KEY_DATA_SIZE, NULL,
-                "ConcatKDF output keuuri=%s", xmlSecErrorsSafeString(uri));
+                "uri=%s", xmlSecErrorsSafeString(uri));
         return(-1);
     }
 
@@ -3308,8 +3308,182 @@ xmlSecTransformHmacVerify(const xmlSecByte* data, xmlSecSize dataSize,
     return(1);
 }
 
-
 #endif /* XMLSEC_NO_HMAC */
+
+
+#ifndef XMLSEC_NO_PBKDF2
+
+#define XMLSEC_TRANSFORM_PBKDF2_DEFAULT_BUF_SIZE       64
+
+int
+xmlSecTransformPbkdf2ParamsInitialize(xmlSecTransformPbkdf2ParamsPtr params) {
+    int ret;
+
+    xmlSecAssert2(params != NULL, -1);
+    memset(params, 0, sizeof(*params));
+
+    ret = xmlSecBufferInitialize(&(params->salt), XMLSEC_TRANSFORM_PBKDF2_DEFAULT_BUF_SIZE);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize(bufAlgorithmID)", NULL);
+        xmlSecTransformPbkdf2ParamsFinalize(params);
+        return(-1);
+    }
+
+    /* done */
+    return(0);
+}
+
+void
+xmlSecTransformPbkdf2ParamsFinalize(xmlSecTransformPbkdf2ParamsPtr params) {
+    xmlSecAssert(params != NULL);
+
+    if(params->prfAlgorithmHref != NULL) {
+        xmlFree(params->prfAlgorithmHref);
+    }
+    xmlSecBufferFinalize(&(params->salt));
+
+    memset(params, 0, sizeof(*params));
+}
+
+/**
+ * https://www.w3.org/TR/xmlenc-core1/#sec-PBKDF2
+ *
+ *  <element name="PBKDF2-params" type="xenc11:PBKDF2ParameterType"/>
+ *  <complexType name="PBKDF2ParameterType">
+ *      <sequence>
+ *          <element name="Salt">
+ *              <complexType>
+ *                  <choice>
+ *                      <element name="Specified" type="base64Binary"/>
+ *                      <element name="OtherSource" type="xenc11:AlgorithmIdentifierType"/>
+ *                  </choice>
+ *              </complexType>
+ *          </element>
+ *          <element name="IterationCount" type="positiveInteger"/>
+ *          <element name="KeyLength" type="positiveInteger"/>
+ *          <element name="PRF" type="xenc11:PRFAlgorithmIdentifierType"/>
+ *      </sequence>
+ *  </complexType>
+ *
+ *  <complexType name="AlgorithmIdentifierType">
+ *      <sequence>
+ *          <element name="Parameters" type="anyType" minOccurs="0"/>
+ *      </sequence>
+ *      <attribute name="Algorithm" type="anyURI"/>
+ *  </complexType>
+ *
+ *  <complexType name="PRFAlgorithmIdentifierType">
+ *      <complexContent>
+ *          <restriction base="xenc11:AlgorithmIdentifierType">
+ *              <attribute name="Algorithm" type="anyURI"/>
+ *          </restriction>
+ *      </complexContent>
+ * </complexType>
+ *
+ * - Salt / OtherSource is not supported
+ * - PRF algorithm parameters are not supported
+*/
+static int
+xmlSecTransformPbkdf2ParamsReadSalt(xmlSecTransformPbkdf2ParamsPtr params, xmlNodePtr node) {
+    xmlNodePtr cur;
+    int ret;
+
+    xmlSecAssert2(params != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+
+    /* first and onluy node is required Salt / Specified (Salt / OtherSource is not supported)*/
+    cur  = xmlSecGetNextElementNode(node->children);
+    if((cur != NULL) && (!xmlSecCheckNodeName(cur, xmlSecNodePbkdf2SaltSpecified, xmlSecEnc11Ns))) {
+        xmlSecInvalidNodeError(cur, xmlSecNodePbkdf2SaltSpecified, NULL);
+        return(-1);
+    }
+    ret = xmlSecBufferBase64NodeContentRead(&(params->salt), cur);
+    if((ret < 0) || (xmlSecBufferGetSize(&(params->salt)) <= 0)) {
+        xmlSecInternalError("xmlSecBufferBase64NodeContentRead(Salt)", NULL);
+        return(-1);
+    }
+
+    /* if we have something else then it's an error */
+    cur = xmlSecGetNextElementNode(cur->next);
+    if(cur != NULL) {
+        xmlSecUnexpectedNodeError(cur,  NULL);
+        return(-1);
+    }
+
+    /* done! */
+    return(0);
+}
+
+int
+xmlSecTransformPbkdf2ParamsRead(xmlSecTransformPbkdf2ParamsPtr params, xmlNodePtr node) {
+    xmlNodePtr cur;
+    int ret;
+
+    xmlSecAssert2(params != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+
+    /* first node is required Salt */
+    cur  = xmlSecGetNextElementNode(node->children);
+    if((cur != NULL) && (!xmlSecCheckNodeName(cur, xmlSecNodePbkdf2Salt, xmlSecEnc11Ns))) {
+        xmlSecInvalidNodeError(cur, xmlSecNodePbkdf2Salt, NULL);
+        return(-1);
+    }
+    ret = xmlSecTransformPbkdf2ParamsReadSalt(params, cur);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecTransformPbkdf2ParamsReadSalt", NULL);
+        return(-1);
+    }
+
+    /* next is required IterationCount */
+    cur = xmlSecGetNextElementNode(cur->next);
+    if((cur != NULL) && (!xmlSecCheckNodeName(cur, xmlSecNodePbkdf2IterationCount, xmlSecEnc11Ns))) {
+        xmlSecInvalidNodeError(cur, xmlSecNodePbkdf2IterationCount, NULL);
+        return(-1);
+    }
+    ret = xmlSecGetNodeContentAsSize(cur, 0, &(params->iterationCount));
+    if((ret < 0) || (params->iterationCount <= 0)) {
+        xmlSecInternalError("xmlSecGetNodeContentAsSize(iterationCount)", NULL);
+        return(-1);
+    }
+
+    /* next is required KeyLength */
+    cur = xmlSecGetNextElementNode(cur->next);
+    if((cur != NULL) && (!xmlSecCheckNodeName(cur, xmlSecNodePbkdf2KeyLength, xmlSecEnc11Ns))) {
+        xmlSecInvalidNodeError(cur, xmlSecNodePbkdf2KeyLength, NULL);
+        return(-1);
+    }
+    ret = xmlSecGetNodeContentAsSize(cur, 0, &(params->keyLength));
+    if((ret < 0) || (params->keyLength <= 0)) {
+        xmlSecInternalError("xmlSecGetNodeContentAsSize(keyLength)", NULL);
+        return(-1);
+    }
+
+    /* next is required PRF */
+    cur = xmlSecGetNextElementNode(cur->next);
+    if((cur != NULL) && (!xmlSecCheckNodeName(cur, xmlSecNodePbkdf2PRF, xmlSecEnc11Ns))) {
+        xmlSecInvalidNodeError(cur, xmlSecNodePbkdf2PRF, NULL);
+        return(-1);
+    }
+    params->prfAlgorithmHref = xmlGetProp(cur, xmlSecAttrAlgorithm);
+    if(params->prfAlgorithmHref == NULL) {
+        xmlSecInvalidNodeAttributeError(cur, xmlSecAttrAlgorithm, NULL, "empty");
+        return(-1);
+    }
+    /* PRF algorithm parameters are not supported */
+
+    /* if we have something else then it's an error */
+    cur = xmlSecGetNextElementNode(cur->next);
+    if(cur != NULL) {
+        xmlSecUnexpectedNodeError(cur,  NULL);
+        return(-1);
+    }
+
+    /* done! */
+    return(0);
+}
+
+#endif /* XMLSEC_NO_CONCATKDF */
+
 
 #ifndef XMLSEC_NO_RSA
 int

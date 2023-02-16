@@ -116,6 +116,13 @@ XMLSEC_EXPORT xmlSecKeyDataId                   xmlSecKeyDataGostR3410_2012_512G
 #define xmlSecKeyDataHmacId                     xmlSecKeyDataHmacGetKlass()
 XMLSEC_EXPORT xmlSecKeyDataId                   xmlSecKeyDataHmacGetKlass       (void);
 /**
+ * xmlSecKeyDataPbkdf2Id:
+ *
+ * The PBKDF2 key klass.
+ */
+#define xmlSecKeyDataPbkdf2Id                   xmlSecKeyDataPbkdf2GetKlass()
+XMLSEC_EXPORT xmlSecKeyDataId                   xmlSecKeyDataPbkdf2GetKlass     (void);
+/**
  * xmlSecKeyDataRsaId:
  *
  * The RSA key klass.
@@ -198,13 +205,6 @@ XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformAes192GcmGetKlass
 #define xmlSecTransformAes256GcmId              xmlSecTransformAes256GcmGetKlass()
 XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformAes256GcmGetKlass(void);
 /**
-* xmlSecTransformConcatKdfId:
-*
-* The ConcatKDF key derivation transform klass.
-*/
-#define xmlSecTransformConcatKdfId              xmlSecTransformConcatKdfGetKlass()
-XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformConcatKdfGetKlass(void);
-/**
  * xmlSecTransformKWAes128Id:
  *
  * The AES 128 key wrap transform klass.
@@ -225,6 +225,13 @@ XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformKWAes192GetKlass 
  */
 #define xmlSecTransformKWAes256Id               xmlSecTransformKWAes256GetKlass()
 XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformKWAes256GetKlass (void);
+/**
+* xmlSecTransformConcatKdfId:
+*
+* The ConcatKDF key derivation transform klass.
+*/
+#define xmlSecTransformConcatKdfId              xmlSecTransformConcatKdfGetKlass()
+XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformConcatKdfGetKlass(void);
 /**
  * xmlSecTransformDes3CbcId:
  *
@@ -376,6 +383,13 @@ XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformHmacSha512GetKlas
  */
 #define xmlSecTransformMd5Id                    xmlSecTransformMd5GetKlass()
 XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformMd5GetKlass(void);
+/**
+* xmlSecTransformPbkdf2Id:
+*
+* The PBKDF2 key derivation transform klass.
+*/
+#define xmlSecTransformPbkdf2Id                 xmlSecTransformPbkdf2GetKlass()
+XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformPbkdf2GetKlass(void);
 /**
  * xmlSecTransformRipemd160Id:
  *

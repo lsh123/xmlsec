@@ -45,15 +45,13 @@
  * PBKDF2 transform (https://gnutls.org/reference/gnutls-crypto.html#gnutls-pbkdf2)
  *
  *****************************************************************************/
-#define XMLSEC_GnuTLS_KDF_DEFAULT_BUF_SIZE 64
+#define XMLSEC_GNUTLS_KDF_DEFAULT_BUF_SIZE 64
 
 typedef struct _xmlSecGnuTLSPbkdf2Ctx    xmlSecGnuTLSPbkdf2Ctx, *xmlSecGnuTLSPbkdf2CtxPtr;
 struct _xmlSecGnuTLSPbkdf2Ctx {
+    xmlSecTransformPbkdf2Params params;
     gnutls_mac_algorithm_t mac;
     xmlSecBuffer key;
-    xmlSecBuffer salt;
-    xmlSecSize iterCount;
-    xmlSecSize expectedOutputSize;
 };
 XMLSEC_TRANSFORM_DECLARE(GnuTLSPbkdf2, xmlSecGnuTLSPbkdf2Ctx)
 #define xmlSecGnuTLSPbkdf2CtxSize XMLSEC_TRANSFORM_SIZE(GnuTLSPbkdf2)
@@ -101,15 +99,15 @@ xmlSecGnuTLSPbkdf2Initialize(xmlSecTransformPtr transform) {
     /* initialize context */
     memset(ctx, 0, sizeof(xmlSecGnuTLSPbkdf2Ctx));
 
-    ret = xmlSecBufferInitialize(&(ctx->key), XMLSEC_GnuTLS_KDF_DEFAULT_BUF_SIZE);
+    ret = xmlSecBufferInitialize(&(ctx->key), XMLSEC_GNUTLS_KDF_DEFAULT_BUF_SIZE);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferInitialize", NULL);
         xmlSecGnuTLSPbkdf2Finalize(transform);
         return(-1);
     }
-    ret = xmlSecBufferInitialize(&(ctx->salt), XMLSEC_GnuTLS_KDF_DEFAULT_BUF_SIZE);
+    ret = xmlSecTransformPbkdf2ParamsInitialize(&(ctx->params));
     if(ret < 0) {
-        xmlSecInternalError("xmlSecBufferInitialize", NULL);
+        xmlSecInternalError("xmlSecTransformPbkdf2ParamsInitialize", NULL);
         xmlSecGnuTLSPbkdf2Finalize(transform);
         return(-1);
     }
@@ -129,7 +127,7 @@ xmlSecGnuTLSPbkdf2Finalize(xmlSecTransformPtr transform) {
     xmlSecAssert(ctx != NULL);
 
     xmlSecBufferFinalize(&(ctx->key));
-    xmlSecBufferFinalize(&(ctx->salt));
+    xmlSecTransformPbkdf2ParamsFinalize(&(ctx->params));
 
     memset(ctx, 0, sizeof(xmlSecGnuTLSPbkdf2Ctx));
 }
@@ -215,11 +213,8 @@ static int
 xmlSecGnuTLSPbkdf2NodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
                           xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
     xmlSecGnuTLSPbkdf2CtxPtr ctx;
-    xmlSecTransformPbkdf2Params params;
-    int paramsInitialized = 0;
     xmlNodePtr cur;
     int ret;
-    int res = -1;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformPbkdf2Id), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGnuTLSPbkdf2CtxSize), -1);
@@ -229,63 +224,85 @@ xmlSecGnuTLSPbkdf2NodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     ctx = xmlSecGnuTLSPbkdf2GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    ret = xmlSecTransformPbkdf2ParamsInitialize(&params);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformPbkdf2ParamsInitialize", NULL);
-        goto done;
-    }
-    paramsInitialized = 1;
-
     /* first (and only) node is required Pbkdf2Params */
     cur  = xmlSecGetNextElementNode(node->children);
     if((cur != NULL) && (!xmlSecCheckNodeName(cur, xmlSecNodePbkdf2Params, xmlSecEnc11Ns))) {
         xmlSecInvalidNodeError(cur, xmlSecNodePbkdf2Params, NULL);
-        goto done;
+        return(-1);
     }
-    ret = xmlSecTransformPbkdf2ParamsRead(&params, cur);
+    ret = xmlSecTransformPbkdf2ParamsRead(&(ctx->params), cur);
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformPbkdf2ParamsRead", NULL);
-       goto done;
+        return(-1);
     }
-
-    /* if we have something else then it's an error */
-    cur = xmlSecGetNextElementNode(cur->next);
-    if(cur != NULL) {
-        xmlSecUnexpectedNodeError(cur,  NULL);
-        goto done;
-    }
-
-    /* set output key length */
-    ctx->expectedOutputSize = params.keyLength;
-
-    /* set iterations count */
-    ctx->iterCount = params.iterationCount;
-
-    /* set salt */
-    xmlSecBufferSwap(&(ctx->salt), &(params.salt));
 
     /* set mac */
-    ctx->mac = xmlSecGnuTLSPbkdf2GetMacFromHref(params.prfAlgorithmHref);
+    ctx->mac = xmlSecGnuTLSPbkdf2GetMacFromHref(ctx->params.prfAlgorithmHref);
     if(ctx->mac == GNUTLS_MAC_UNKNOWN) {
         xmlSecInternalError("xmlSecGnuTLSPbkdf2GetMacFromHref", xmlSecTransformGetName(transform));
-        goto done;
+        return(-1);
     }
 
     /* success */
-    res = 0;
+    return(0);
+}
 
-done:
-    if(paramsInitialized != 1) {
-        xmlSecTransformPbkdf2ParamsFinalize(&params);
+static int
+xmlSecGnuTLSPbkdf2GenerateKey(xmlSecGnuTLSPbkdf2CtxPtr ctx, xmlSecBufferPtr out) {
+    xmlSecSize size;
+    xmlSecByte * outData;
+    unsigned iterCount;
+    gnutls_datum_t key;
+    gnutls_datum_t salt;
+    int err;
+    int ret;
+
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->mac != GNUTLS_MAC_UNKNOWN, -1);
+    xmlSecAssert(ctx->params.keyLength > 0, -1);
+    xmlSecAssert2(out != NULL, -1);
+
+    ret = xmlSecBufferSetSize(out, ctx->params.keyLength);
+    if(ret < 0) {
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL,
+            "size=" XMLSEC_SIZE_FMT, transform->expectedOutputSize);
+        return(-1);
     }
-    return(res);
+    outData = xmlSecBufferGetData(out);
+    xmlSecAssert2(outData != NULL, -1);
+
+    /* prep params */
+    size = xmlSecBufferGetSize(&(ctx->key));
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, key.size, return(-1), xmlSecTransformGetName(transform));
+    key.data = xmlSecBufferGetData(&(ctx->key));
+    xmlSecAssert2(key.data != NULL, -1);
+    xmlSecAssert2(key.size > 0, -1);
+
+    size = xmlSecBufferGetSize(&(ctx->params.salt));
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, salt.size, return(-1), xmlSecTransformGetName(transform));
+    salt.data = xmlSecBufferGetData(&(ctx->params.salt));
+    xmlSecAssert2(salt.data != NULL, -1);
+    xmlSecAssert2(salt.size > 0, -1);
+
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(ctx->params.iterationCount, iterCount, return(-1), xmlSecTransformGetName(transform));
+    xmlSecAssert2(iterCount > 0, -1);
+
+    /* do the work! */
+    err = gnutls_pbkdf2(ctx->mac, &key, &salt, iterCount, outData, ctx->params.keyLength);
+    if(err != GNUTLS_E_SUCCESS) {
+        xmlSecGnuTLSError("gnutls_pbkdf2", err, xmlSecTransformGetName(transform));
+        return(-1);
+    }
+
+    /* success */
+    return(0);
 }
 
 static int
 xmlSecGnuTLSPbkdf2Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
     xmlSecGnuTLSPbkdf2CtxPtr ctx;
     xmlSecBufferPtr in, out;
-    int ret;
+    int ret;expectedOutputSize
 
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
     xmlSecAssert2(((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt)), -1);
@@ -297,7 +314,6 @@ xmlSecGnuTLSPbkdf2Execute(xmlSecTransformPtr transform, int last, xmlSecTransfor
 
     ctx = xmlSecGnuTLSPbkdf2GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->mac != GNUTLS_MAC_UNKNOWN, -1);
 
     if(transform->status == xmlSecTransformStatusNone) {
         /* we should be already initialized when we set key */
@@ -307,55 +323,26 @@ xmlSecGnuTLSPbkdf2Execute(xmlSecTransformPtr transform, int last, xmlSecTransfor
     if((transform->status == xmlSecTransformStatusWorking) && (last == 0)) {
         /* do nothing */
     } else if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
-        xmlSecSize size;
-        xmlSecByte * outData;
-        unsigned iterCount;
-        gnutls_datum_t key;
-        gnutls_datum_t salt;
-        int err;
-
+        /* verify output size */
         if(transform->expectedOutputSize <= 0) {
             xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL, "KDF output key size is not specified");
             return(-1);
         }
-        if((ctx->expectedOutputSize > 0) && (ctx->expectedOutputSize != transform->expectedOutputSize)){
+        if((ctx->params.keyLength > 0) && (ctx->params.keyLength != transform->expectedOutputSize)){
             xmlSecInvalidSizeError("Output kdf size doesn't match expected",
-                transform->expectedOutputSize, ctx->expectedOutputSize, xmlSecTransformGetName(transform));
+                transform->expectedOutputSize, ctx->params.keyLength, xmlSecTransformGetName(transform));
             return(-1);
         }
+        ctx->params.keyLength = transform->expectedOutputSize;
 
-        ret = xmlSecBufferSetSize(out, transform->expectedOutputSize);
+        /* generate key */
+        ret = xmlSecGnuTLSPbkdf2GenerateKey(ctx, out);
         if(ret < 0) {
-            xmlSecInternalError2("xmlSecBufferSetSize", NULL,
-                "size=" XMLSEC_SIZE_FMT, transform->expectedOutputSize);
-            return(-1);
-        }
-        outData = xmlSecBufferGetData(out);
-        xmlSecAssert2(outData != NULL, -1);
-
-        /* prep params */
-        size = xmlSecBufferGetSize(&(ctx->key));
-        XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, key.size, return(-1), xmlSecTransformGetName(transform));
-        key.data = xmlSecBufferGetData(&(ctx->key));
-        xmlSecAssert2(key.data != NULL, -1);
-        xmlSecAssert2(key.size > 0, -1);
-
-        size = xmlSecBufferGetSize(&(ctx->salt));
-        XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, salt.size, return(-1), xmlSecTransformGetName(transform));
-        salt.data = xmlSecBufferGetData(&(ctx->salt));
-        xmlSecAssert2(salt.data != NULL, -1);
-        xmlSecAssert2(salt.size > 0, -1);
-
-        XMLSEC_SAFE_CAST_SIZE_TO_UINT(ctx->iterCount, iterCount, return(-1), xmlSecTransformGetName(transform));
-        xmlSecAssert2(iterCount > 0, -1);
-
-        /* do the work! */
-        err = gnutls_pbkdf2(ctx->mac, &key, &salt, iterCount, outData, transform->expectedOutputSize);
-        if(err != GNUTLS_E_SUCCESS) {
-            xmlSecGnuTLSError("gnutls_pbkdf2", err, xmlSecTransformGetName(transform));
+            xmlSecInternalError("xmlSecGnuTLSPbkdf2GenerateKey", xmlSecTransformGetName(transform));
             return(-1);
         }
 
+        /* done */
         transform->status = xmlSecTransformStatusFinished;
         return(0);
     } else if(transform->status == xmlSecTransformStatusFinished) {

@@ -265,7 +265,7 @@ xmlSecGnuTLSPbkdf2GenerateKey(xmlSecGnuTLSPbkdf2CtxPtr ctx, xmlSecBufferPtr out)
     ret = xmlSecBufferSetSize(out, ctx->params.keyLength);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize", NULL,
-            "size=" XMLSEC_SIZE_FMT, transform->expectedOutputSize);
+            "size=" XMLSEC_SIZE_FMT, ctx->params.keyLength);
         return(-1);
     }
     outData = xmlSecBufferGetData(out);
@@ -273,24 +273,24 @@ xmlSecGnuTLSPbkdf2GenerateKey(xmlSecGnuTLSPbkdf2CtxPtr ctx, xmlSecBufferPtr out)
 
     /* prep params */
     size = xmlSecBufferGetSize(&(ctx->key));
-    XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, key.size, return(-1), xmlSecTransformGetName(transform));
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, key.size, return(-1), NULL);
     key.data = xmlSecBufferGetData(&(ctx->key));
     xmlSecAssert2(key.data != NULL, -1);
     xmlSecAssert2(key.size > 0, -1);
 
     size = xmlSecBufferGetSize(&(ctx->params.salt));
-    XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, salt.size, return(-1), xmlSecTransformGetName(transform));
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, salt.size, return(-1), NULL);
     salt.data = xmlSecBufferGetData(&(ctx->params.salt));
     xmlSecAssert2(salt.data != NULL, -1);
     xmlSecAssert2(salt.size > 0, -1);
 
-    XMLSEC_SAFE_CAST_SIZE_TO_UINT(ctx->params.iterationCount, iterCount, return(-1), xmlSecTransformGetName(transform));
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(ctx->params.iterationCount, iterCount, return(-1), NULL);
     xmlSecAssert2(iterCount > 0, -1);
 
     /* do the work! */
     err = gnutls_pbkdf2(ctx->mac, &key, &salt, iterCount, outData, ctx->params.keyLength);
     if(err != GNUTLS_E_SUCCESS) {
-        xmlSecGnuTLSError("gnutls_pbkdf2", err, xmlSecTransformGetName(transform));
+        xmlSecGnuTLSError("gnutls_pbkdf2", err, NULL);
         return(-1);
     }
 
@@ -302,7 +302,7 @@ static int
 xmlSecGnuTLSPbkdf2Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
     xmlSecGnuTLSPbkdf2CtxPtr ctx;
     xmlSecBufferPtr in, out;
-    int ret;expectedOutputSize
+    int ret;
 
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
     xmlSecAssert2(((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt)), -1);

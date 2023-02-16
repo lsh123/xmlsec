@@ -40,6 +40,7 @@ extern "C" {
 #define xmlSecKeyDataEcdsaId                    xmlSecMSCngKeyDataEcId
 #define xmlSecKeyDataEcId                       xmlSecMSCngKeyDataEcId
 #define xmlSecKeyDataHmacId                     xmlSecMSCngKeyDataHmacId
+#define xmlSecKeyDataPbkdf2Id                   xmlSecMSCngKeyDataPbkdf2Id
 #define xmlSecKeyDataRsaId                      xmlSecMSCngKeyDataRsaId
 #define xmlSecKeyDataX509Id                     xmlSecMSCngKeyDataX509Id
 #define xmlSecKeyDataRawX509CertId              xmlSecMSCngKeyDataRawX509CertId
@@ -67,13 +68,16 @@ extern "C" {
 #define xmlSecTransformKWAes256Id               xmlSecMSCngTransformKWAes256Id
 #define xmlSecTransformDes3CbcId                xmlSecMSCngTransformDes3CbcId
 #define xmlSecTransformKWDes3Id                 xmlSecMSCngTransformKWDes3Id
+
 #define xmlSecTransformDsaSha1Id                xmlSecMSCngTransformDsaSha1Id
 #define xmlSecTransformDsaSha256Id              xmlSecMSCngTransformDsaSha256Id
+
 #define xmlSecTransformEcdsaSha1Id              xmlSecMSCngTransformEcdsaSha1Id
 #define xmlSecTransformEcdsaSha224Id            xmlSecMSCngTransformEcdsaSha224Id
 #define xmlSecTransformEcdsaSha256Id            xmlSecMSCngTransformEcdsaSha256Id
 #define xmlSecTransformEcdsaSha384Id            xmlSecMSCngTransformEcdsaSha384Id
 #define xmlSecTransformEcdsaSha512Id            xmlSecMSCngTransformEcdsaSha512Id
+
 #define xmlSecTransformHmacMd5Id                xmlSecMSCngTransformHmacMd5Id
 #define xmlSecTransformHmacRipemd160Id          xmlSecMSCngTransformHmacRipemd160Id
 #define xmlSecTransformHmacSha1Id               xmlSecMSCngTransformHmacSha1Id
@@ -81,16 +85,23 @@ extern "C" {
 #define xmlSecTransformHmacSha256Id             xmlSecMSCngTransformHmacSha256Id
 #define xmlSecTransformHmacSha384Id             xmlSecMSCngTransformHmacSha384Id
 #define xmlSecTransformHmacSha512Id             xmlSecMSCngTransformHmacSha512Id
+
 #define xmlSecTransformMd5Id                    xmlSecMSCngTransformMd5Id
+
 #define xmlSecTransformRipemd160Id              xmlSecMSCngTransformRipemd160Id
+
+#define xmlSecTransformPbkdf2Id                 xmlSecMSCngTransformPbkdf2Id
+
 #define xmlSecTransformRsaSha1Id                xmlSecMSCngTransformRsaSha1Id
 #define xmlSecTransformRsaSha224Id              xmlSecMSCngTransformRsaSha224Id
 #define xmlSecTransformRsaSha256Id              xmlSecMSCngTransformRsaSha256Id
 #define xmlSecTransformRsaSha384Id              xmlSecMSCngTransformRsaSha384Id
 #define xmlSecTransformRsaSha512Id              xmlSecMSCngTransformRsaSha512Id
+
 #define xmlSecTransformRsaPkcs1Id               xmlSecMSCngTransformRsaPkcs1Id
 #define xmlSecTransformRsaOaepId                xmlSecMSCngTransformRsaOaepId
 #define xmlSecTransformRsaOaepEnc11Id           xmlSecMSCngTransformRsaOaepEnc11Id
+
 #define xmlSecTransformSha1Id                   xmlSecMSCngTransformSha1Id
 #define xmlSecTransformSha224Id                 xmlSecMSCngTransformSha224Id
 #define xmlSecTransformSha256Id                 xmlSecMSCngTransformSha256Id

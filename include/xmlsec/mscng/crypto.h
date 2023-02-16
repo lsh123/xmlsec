@@ -407,6 +407,32 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformMd5GetKlass(void);
 
 /********************************************************************
  *
+ * PBKDF2 key and transform
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_PBKDF2
+
+/**
+* xmlSecMSCngKeyDataPbkdf2Id:
+*
+* The PBKDF2 key klass.
+*/
+#define xmlSecMSCngKeyDataPbkdf2Id \
+        xmlSecMSCngKeyDataPbkdf2GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId xmlSecMSCngKeyDataPbkdf2GetKlass(void);
+
+/**
+ * xmlSecMSCngTransformPbkdf2Id:
+ *
+ * The PBDKF2 key derivation transform klass.
+ */
+#define xmlSecMSCngTransformPbkdf2Id \
+       xmlSecMSCngTransformPbkdf2GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformPbkdf2GetKlass(void);
+#endif /* XMLSEC_NO_PBKDF2 */
+
+/********************************************************************
+ *
  * SHA1 transform
  *
  *******************************************************************/

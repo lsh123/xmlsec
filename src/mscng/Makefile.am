@@ -30,6 +30,7 @@ libxmlsec1_mscng_la_SOURCES =\
 	kt_rsa.c \
 	kw_aes.c \
 	kw_des.c \
+	pbkdf2.c \
 	signatures.c \
 	symkeys.c \
 	x509.c \

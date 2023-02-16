@@ -467,8 +467,7 @@ static xmlSecKeyDataKlass xmlSecGnuTLSKeyDataPbkdf2Klass = {
     xmlSecKeyDataUsageReadFromFile,             /* xmlSecKeyDataUsage usage; */
     NULL,                                       /* const xmlChar* href; */
     NULL,                                       /* const xmlChar* dataNodeName; */
-    xmlSecNs,                                   /* const xmlChar* dataNodeNs; */
-
+    NULL,                                       /* const xmlChar* dataNodeNs; */
 
     /* constructors/destructor */
     xmlSecGnuTLSSymKeyDataInitialize,          /* xmlSecKeyDataInitializeMethod initialize; */

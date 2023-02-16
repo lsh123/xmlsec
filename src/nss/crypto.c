@@ -95,6 +95,10 @@ xmlSecCryptoGetFunctions_nss(void) {
     gXmlSecNssFunctions->keyDataHmacGetKlass            = xmlSecNssKeyDataHmacGetKlass;
 #endif /* XMLSEC_NO_HMAC */
 
+#ifndef XMLSEC_NO_PBKDF2
+    gXmlSecNssFunctions->keyDataPbkdf2GetKlass          = xmlSecNssKeyDataPbkdf2GetKlass;
+#endif /* XMLSEC_NO_PBKDF2 */
+
 #ifndef XMLSEC_NO_RSA
     gXmlSecNssFunctions->keyDataRsaGetKlass             = xmlSecNssKeyDataRsaGetKlass;
 #endif /* XMLSEC_NO_RSA */
@@ -201,6 +205,11 @@ xmlSecCryptoGetFunctions_nss(void) {
 #endif /* XMLSEC_NO_SHA512 */
 
 #endif /* XMLSEC_NO_HMAC */
+
+    /******************************* PBKDF2 ********************************/
+#ifndef XMLSEC_NO_PBKDF2
+    gXmlSecNssFunctions->transformPbkdf2GetKlass       = xmlSecNssTransformPbkdf2GetKlass;
+#endif /* XMLSEC_NO_PBKDF2 */
 
     /******************************* RSA ********************************/
 #ifndef XMLSEC_NO_RSA

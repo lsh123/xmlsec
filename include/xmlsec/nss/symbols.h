@@ -40,6 +40,7 @@ extern "C" {
 #define xmlSecKeyDataDesId                      xmlSecNssKeyDataDesId
 #define xmlSecKeyDataDsaId                      xmlSecNssKeyDataDsaId
 #define xmlSecKeyDataHmacId                     xmlSecNssKeyDataHmacId
+#define xmlSecKeyDataPbkdf2Id                   xmlSecNssKeyDataPbkdf2Id
 #define xmlSecKeyDataRsaId                      xmlSecNssKeyDataRsaId
 #define xmlSecKeyDataX509Id                     xmlSecNssKeyDataX509Id
 #define xmlSecKeyDataRawX509CertId              xmlSecNssKeyDataRawX509CertId
@@ -84,6 +85,8 @@ extern "C" {
 #define xmlSecTransformHmacSha256Id             xmlSecNssTransformHmacSha256Id
 #define xmlSecTransformHmacSha384Id             xmlSecNssTransformHmacSha384Id
 #define xmlSecTransformHmacSha512Id             xmlSecNssTransformHmacSha512Id
+
+#define xmlSecTransformPbkdf2Id                 xmlSecNssTransformPbkdf2Id
 
 #define xmlSecTransformRipemd160Id              xmlSecNssTransformRipemd160Id
 

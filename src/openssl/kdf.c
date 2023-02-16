@@ -165,6 +165,7 @@ xmlSecOpenSSLKdfInitialize(xmlSecTransformPtr transform) {
     ret = xmlSecBufferInitialize(&(ctx->buffer), XMLSEC_OPENSSL_KDF_DEFAULT_BUF_SIZE);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBufferInitialize", NULL);
+        xmlSecOpenSSLKdfFinalize(transform);
         return(-1);
     }
 

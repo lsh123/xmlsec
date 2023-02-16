@@ -16,7 +16,9 @@
 #error "private.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-$crypto libraries"
 #endif /* XMLSEC_PRIVATE */
 
+#include <xmlsec/xmlsec.h>
 #include <xmlsec/buffer.h>
+#include <xmlsec/keyinfo.h>
 #include <xmlsec/transforms.h>
 
 

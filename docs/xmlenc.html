@@ -363,7 +363,7 @@
                           <a href="https://www.w3.org/TR/xmlenc-core1/#sec-ConcatKDF">ConcatKDF</a>
                         </td>
                         <td valign="top">Required</td><!--Requirements -->
-                        <td valign="top">Yes <a href="#openssl-ecdh"><sup>(2)</sup></a> <a href="#concatkdf"><sup>(3)</sup></a></td><!-- OpenSSL-->
+                        <td valign="top">Yes <a href="#openssl3-required"><sup>(2)</sup></a> <a href="#concatkdf"><sup>(3)</sup></a></td><!-- OpenSSL-->
                         <td valign="top">No</td><!-- NSS -->
                         <td valign="top">No</td><!-- GnuTLS -->
                         <td valign="top">No</td><!-- MSCng -->
@@ -375,9 +375,9 @@
                           <a href="https://www.w3.org/TR/xmlenc-core1/#sec-PBKDF2">PBKDF2</a>
                         </td>
                         <td valign="top">Optional</td><!--Requirements -->
-                        <td valign="top">Yes <a href="#openssl-ecdh"><sup>(2)</sup></a> <a href="#pbkdf2"><sup>(4)</sup></a></td><!-- OpenSSL-->
+                        <td valign="top">Yes <a href="#openssl3-required"><sup>(2)</sup></a> <a href="#pbkdf2"><sup>(4)</sup></a></td><!-- OpenSSL-->
                         <td valign="top">No</td><!-- NSS -->
-                        <td valign="top">No</td><!-- GnuTLS -->
+                        <td valign="top">Yes <a href="#pbkdf2"><sup>(4)</sup></a><</td><!-- GnuTLS -->
                         <td valign="top">No</td><!-- MSCng -->
                         <td valign="top">No</td><!-- MSCrypto -->
                         <td valign="top">No</td><!-- GCrypt -->
@@ -478,7 +478,7 @@
                           <a href="https://www.w3.org/TR/xmlenc-core1/#sec-ECDH-ES">Elliptic Curve Diffie-Hellman (ECDH)</a>
                         </td>
                         <td valign="top">Required</td><!--Requirements -->
-                        <td valign="top">Yes <a href="#openssl-ecdh"><sup>(2)</sup></a></td><!-- OpenSSL-->
+                        <td valign="top">Yes <a href="#openssl3-required"><sup>(2)</sup></a></td><!-- OpenSSL-->
                         <td valign="top">No</td><!-- NSS -->
                         <td valign="top">No</td><!-- GnuTLS -->
                         <td valign="top">No</td><!-- MSCng -->
@@ -580,7 +580,7 @@
                       (<a href="https://github.com/lsh123/xmlsec/issues/515">more details</a>).
                     </li>
                     <li>
-                      <a name="openssl-ecdh" id="openssl-ecdh"><sup>(2)</sup></a> Requires OpenSSL 3.0.0 or greater.
+                      <a name="openssl3-required" id="openssl3-required"><sup>(2)</sup></a> Requires OpenSSL 3.0.0 or greater.
                     </li>
                     <li>
                       <a name="concatkdf" id="concatkdf"><sup>(3)</sup></a> Only byte-aligned bit strings in ConcatKDFParams element are supported

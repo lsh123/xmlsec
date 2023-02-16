@@ -197,6 +197,12 @@ xmlSecGnuTLSSymKeyDataKlassCheck(xmlSecKeyDataKlass* klass) {
     }
 #endif /* XMLSEC_NO_HMAC */
 
+#ifndef XMLSEC_NO_PBKDF2
+    if(klass == xmlSecGnuTLSKeyDataPbkdf2Id) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_PBKDF2 */
+
     return(0);
 }
 
@@ -444,3 +450,86 @@ xmlSecGnuTLSKeyDataHmacSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecS
 }
 
 #endif /* XMLSEC_NO_HMAC */
+
+
+#ifndef XMLSEC_NO_PBKDF2
+/**************************************************************************
+ *
+ * PBDKF2 key klass
+ *
+ *************************************************************************/
+static xmlSecKeyDataKlass xmlSecGnuTLSKeyDataPbkdf2Klass = {
+   sizeof(xmlSecKeyDataKlass),
+    xmlSecKeyDataBinarySize,
+
+    /* data */
+    xmlSecNamePbkdf2KeyValue,
+    xmlSecKeyDataUsageReadFromFile,             /* xmlSecKeyDataUsage usage; */
+    NULL,                                       /* const xmlChar* href; */
+    NULL,                                       /* const xmlChar* dataNodeName; */
+    xmlSecNs,                                   /* const xmlChar* dataNodeNs; */
+
+
+    /* constructors/destructor */
+    xmlSecGnuTLSSymKeyDataInitialize,          /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecGnuTLSSymKeyDataDuplicate,           /* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecGnuTLSSymKeyDataFinalize,            /* xmlSecKeyDataFinalizeMethod finalize; */
+    xmlSecGnuTLSSymKeyDataGenerate,            /* xmlSecKeyDataGenerateMethod generate; */
+
+    /* get info */
+    xmlSecGnuTLSSymKeyDataGetType,             /* xmlSecKeyDataGetTypeMethod getType; */
+    xmlSecGnuTLSSymKeyDataGetSize,             /* xmlSecKeyDataGetSizeMethod getSize; */
+    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
+
+    /* read/write */
+    xmlSecGnuTLSSymKeyDataXmlRead,             /* xmlSecKeyDataXmlReadMethod xmlRead; */
+    xmlSecGnuTLSSymKeyDataXmlWrite,            /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    xmlSecGnuTLSSymKeyDataBinRead,             /* xmlSecKeyDataBinReadMethod binRead; */
+    xmlSecGnuTLSSymKeyDataBinWrite,            /* xmlSecKeyDataBinWriteMethod binWrite; */
+
+    /* debug */
+    xmlSecGnuTLSSymKeyDataDebugDump,           /* xmlSecKeyDataDebugDumpMethod debugDump; */
+    xmlSecGnuTLSSymKeyDataDebugXmlDump,        /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+
+    /* reserved for the future */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecGnuTLSKeyDataPbkdf2GetKlass:
+ *
+ * The PBKDF2 key data klass.
+ *
+ * Returns: PBKDF2 key data klass.
+ */
+xmlSecKeyDataId
+xmlSecGnuTLSKeyDataPbkdf2GetKlass(void) {
+    return(&xmlSecGnuTLSKeyDataPbkdf2Klass);
+}
+
+/**
+ * xmlSecGnuTLSKeyDataPbkdf2Set:
+ * @data:               the pointer to PBKDF2 key data.
+ * @buf:                the pointer to key value.
+ * @bufSize:            the key value size (in bytes).
+ *
+ * Sets the value of PBKDF2 key data.
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecGnuTLSKeyDataPbkdf2Set(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSize bufSize) {
+    xmlSecBufferPtr buffer;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataPbkdf2Id), -1);
+    xmlSecAssert2(buf != NULL, -1);
+    xmlSecAssert2(bufSize > 0, -1);
+
+    buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
+    xmlSecAssert2(buffer != NULL, -1);
+
+    return(xmlSecBufferSetData(buffer, buf, bufSize));
+}
+
+#endif /* XMLSEC_NO_PBKDF2 */

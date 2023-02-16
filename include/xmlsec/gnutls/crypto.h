@@ -368,6 +368,37 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformHmacSha512GetKlass(v
 
 #endif /* XMLSEC_NO_HMAC */
 
+
+/********************************************************************
+ *
+ * PBKDF2 transforms
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_PBKDF2
+
+/**
+ * xmlSecGnuTLSKeyDataPbkdf2Id:
+ *
+ * The PBKDF2 key klass.
+ */
+#define xmlSecGnuTLSKeyDataPbkdf2Id \
+        xmlSecGnuTLSKeyDataPbkdf2GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecGnuTLSKeyDataPbkdf2GetKlass (void);
+XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataPbkdf2Set      (xmlSecKeyDataPtr data,
+                                                                           const xmlSecByte* buf,
+                                                                           xmlSecSize bufSize);
+
+/**
+ * xmlSecGnuTLSTransformPbkdf2Id:
+ *
+ * The PBKDF2 key derivation transform klass.
+ */
+#define xmlSecGnuTLSTransformPbkdf2Id \
+        xmlSecGnuTLSTransformPbkdf2GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformPbkdf2GetKlass(void);
+
+#endif /* XMLSEC_NO_PBKDF2 */
+
 /********************************************************************
  *
  * RSA transforms

@@ -1416,7 +1416,7 @@ AC_SUBST(GCRYPT_MIN_VERSION)
 dnl ==========================================================================
 dnl See if we can find GnuTLS
 dnl ==========================================================================
-GNUTLS_MIN_VERSION="3.6.0"
+GNUTLS_MIN_VERSION="3.6.13"
 GNUTLS_INCLUDE_DIR="$COMMON_INCLUDE_DIR /usr/local/gnutls/include"
 GNUTLS_LIB_DIR="$COMMON_LIB_DIR /usr/local/gnutls/lib"
 GNUTLS_INCLUDE_MARKER="gnutls/gnutls.h"

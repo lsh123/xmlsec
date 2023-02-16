@@ -259,7 +259,7 @@ xmlSecGnuTLSPbkdf2GenerateKey(xmlSecGnuTLSPbkdf2CtxPtr ctx, xmlSecBufferPtr out)
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->mac != GNUTLS_MAC_UNKNOWN, -1);
-    xmlSecAssert(ctx->params.keyLength > 0, -1);
+    xmlSecAssert2(ctx->params.keyLength > 0, -1);
     xmlSecAssert2(out != NULL, -1);
 
     ret = xmlSecBufferSetSize(out, ctx->params.keyLength);

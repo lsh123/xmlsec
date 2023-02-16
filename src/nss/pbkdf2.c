@@ -281,6 +281,99 @@ done:
 }
 
 static int
+xmlSecNssPbkdf2Derive(xmlSecNssPbkdf2CtxPtr ctx, xmlSecBufferPtr out) {
+    SECItem passItem = {siBuffer, NULL, 0 };
+    SECItem saltItem = {siBuffer, NULL, 0 };
+    xmlSecSize size;
+    int keyLength, iterCount;
+    SECAlgorithmID* pbkdf2AlgId = NULL;
+    PK11SlotInfo* slot = NULL;
+    PK11SymKey* symKey = NULL;
+    SECItem* keyItem;
+    SECStatus rv;
+    int ret;
+    int res = -1;
+
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->hashAlgo != SEC_OID_UNKNOWN, -1);
+    xmlSecAssert2(out != NULL, -1);
+
+    /* create algo */
+    size = xmlSecBufferGetSize(&(ctx->key));
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, passItem.len, goto done, NULL);
+    passItem.data = xmlSecBufferGetData(&(ctx->key));
+    xmlSecAssert2(passItem.data != NULL, -1);
+    xmlSecAssert2(passItem.len > 0, -1);
+
+    size = xmlSecBufferGetSize(&(ctx->salt));
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, saltItem.len, goto done, NULL);
+    saltItem.data = xmlSecBufferGetData(&(ctx->salt));
+    xmlSecAssert2(saltItem.data != NULL, -1);
+    xmlSecAssert2(saltItem.len > 0, -1);
+
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(ctx->iterCount, iterCount, goto done, NULL);
+    xmlSecAssert2(iterCount > 0, -1);
+
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(ctx->expectedOutputSize, keyLength, goto done, NULL);
+    xmlSecAssert2(keyLength > 0, -1);
+
+    pbkdf2AlgId = PK11_CreatePBEV2AlgorithmID(SEC_OID_PKCS5_PBKDF2,
+                    ctx->hashAlgo, ctx->hashAlgo,
+                    keyLength, iterCount, &saltItem);
+    if(pbkdf2AlgId == NULL) {
+        xmlSecNssError("PK11_CreatePBEV2AlgorithmID", NULL);
+        goto done;
+    }
+
+    /* derive key */
+    slot = PK11_GetInternalSlot();
+    if(slot == NULL) {
+        xmlSecNssError("PK11_GetInternalSlot", NULL);
+        goto done;
+    }
+    symKey = PK11_PBEKeyGen(slot, pbkdf2AlgId, &passItem, false, NULL);
+    if(symKey == NULL) {
+        xmlSecNssError("PK11_PBEKeyGen", NULL);
+        goto done;
+    }
+
+    /* Extract raw data from symmetric key */
+    rv = PK11_ExtractKeyValue(symKey);
+    if(rv != SECSuccess) {
+        xmlSecNssError("PK11_ExtractKeyValue", NULL);
+        goto done;
+    }
+
+    keyItem = PK11_GetKeyData(symKey);
+    if(keyItem == NULL) {
+        xmlSecNssError("PK11_GetKeyData", NULL);
+        goto done;
+    }
+
+    ret = xmlSecBufferSetData(out, keyItem->data, keyItem->len);
+    if(ret < 0) {
+        xmlSecInternalError2("xmlSecBufferSetData", NULL,
+            "size=%u", keyItem->len);
+        goto done;
+    }
+
+    /* success! */
+    res = 0;
+
+done:
+    if(symKey != NULL) {
+        PK11_FreeSymKey(symKey);
+    }
+    if(slot != NULL) {
+        PK11_FreeSlot(slot);
+    }
+    if(pbkdf2AlgId != NULL) {
+        SECOID_DestroyAlgorithmID(pbkdf2AlgId, PR_TRUE);
+    }
+    return(res);
+}
+
+static int
 xmlSecNssPbkdf2Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
     xmlSecNssPbkdf2CtxPtr ctx;
     xmlSecBufferPtr in, out;
@@ -306,14 +399,7 @@ xmlSecNssPbkdf2Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
     if((transform->status == xmlSecTransformStatusWorking) && (last == 0)) {
         /* do nothing */
     } else if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
-#ifdef TODO
-        xmlSecSize size;
-        xmlSecByte * outData;
-        unsigned iterCount;
-        nss_datum_t key;
-        nss_datum_t salt;
-        int err;
-
+        /* verify params */
         if(transform->expectedOutputSize <= 0) {
             xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL, "KDF output key size is not specified");
             return(-1);
@@ -323,40 +409,16 @@ xmlSecNssPbkdf2Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
                 transform->expectedOutputSize, ctx->expectedOutputSize, xmlSecTransformGetName(transform));
             return(-1);
         }
+        ctx->expectedOutputSize = transform->expectedOutputSize;
 
-        ret = xmlSecBufferSetSize(out, transform->expectedOutputSize);
+        /* derive */
+        ret = xmlSecNssPbkdf2Derive(ctx, out);
         if(ret < 0) {
-            xmlSecInternalError2("xmlSecBufferSetSize", NULL,
-                "size=" XMLSEC_SIZE_FMT, transform->expectedOutputSize);
+            xmlSecInternalError("xmlSecNssPbkdf2Derive", xmlSecTransformGetName(transform));
             return(-1);
         }
-        outData = xmlSecBufferGetData(out);
-        xmlSecAssert2(outData != NULL, -1);
 
-        /* prep params */
-        size = xmlSecBufferGetSize(&(ctx->key));
-        XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, key.size, return(-1), xmlSecTransformGetName(transform));
-        key.data = xmlSecBufferGetData(&(ctx->key));
-        xmlSecAssert2(key.data != NULL, -1);
-        xmlSecAssert2(key.size > 0, -1);
-
-        size = xmlSecBufferGetSize(&(ctx->salt));
-        XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, salt.size, return(-1), xmlSecTransformGetName(transform));
-        salt.data = xmlSecBufferGetData(&(ctx->salt));
-        xmlSecAssert2(salt.data != NULL, -1);
-        xmlSecAssert2(salt.size > 0, -1);
-
-        XMLSEC_SAFE_CAST_SIZE_TO_UINT(ctx->iterCount, iterCount, return(-1), xmlSecTransformGetName(transform));
-        xmlSecAssert2(iterCount > 0, -1);
-
-        /* do the work! */
-        err = nss_pbkdf2(ctx->mac, &key, &salt, iterCount, outData, transform->expectedOutputSize);
-        if(err != NSS_E_SUCCESS) {
-            xmlSecNssError("nss_pbkdf2", err, xmlSecTransformGetName(transform));
-            return(-1);
-        }
-#endif /* TODO */
-
+        /* done */
         transform->status = xmlSecTransformStatusFinished;
         return(0);
     } else if(transform->status == xmlSecTransformStatusFinished) {

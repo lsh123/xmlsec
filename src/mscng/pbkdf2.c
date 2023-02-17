@@ -279,7 +279,7 @@ xmlSecMSCngPbkdf2PeformKeyDerivation(
             (PBYTE)&cbIterationCount,
         },
         {
-            (ULONG)wcslen(pszHashAlgo) * sizeof(WCHAR),
+            ((ULONG)wcslen(pszHashAlgo) + 1) * sizeof(WCHAR),
             KDF_HASH_ALGORITHM,
             (LPWSTR)pszHashAlgo,
         }

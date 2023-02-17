@@ -21,8 +21,20 @@
 #define IN_XMLSEC_CRYPTO
 #define XMLSEC_PRIVATE
 
-/* Include common error helper macros. */
+ /* Include common error helper macros. */
 #include "../errors_helpers.h"
+
+
+/* Mingw has old version of bcrypt.h file */
+#define WIN32_NO_STATUS
+#include <windows.h>
+#undef WIN32_NO_STATUS
+#include <ntstatus.h>
+#include <bcrypt.h>
+
+#if !defined(KDF_SALT) || !defined(KDF_ITERATION_COUNT)
+#define XMLSEC_NO_PBDF2   1
+#endif /*  !defined(KDF_SALT) || !defined(KDF_ITERATION_COUNT) */
 
 /**
  * xmlSecMSCngLastError:

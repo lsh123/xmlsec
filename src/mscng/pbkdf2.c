@@ -255,19 +255,110 @@ xmlSecMSCngPbkdf2NodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 }
 
 static int
+xmlSecMSCngPbkdf2PeformKeyDerivation(
+    PBYTE pbSecret, ULONG cbSecret, 
+    PBYTE pbSalt, ULONG cbSalt,
+    ULONGLONG cbIterationCount,
+    PBYTE pbOut, ULONG cbOut
+) {
+    NTSTATUS status;
+    BCRYPT_ALG_HANDLE hKdfAlg = NULL;
+    BCRYPT_KEY_HANDLE hKey= NULL;
+    DWORD cbResultLength = 0;
+    BCryptBuffer paramBufferPBKDF2[] =
+    {
+         {
+            cbSalt,
+            KDF_SALT,
+            pbSalt,
+        },
+        {
+            sizeof(cbIterationCount),
+            KDF_ITERATION_COUNT,
+            (PBYTE)&cbIterationCount,
+        },
+        {
+            sizeof(BCRYPT_SHA256_ALGORITHM),
+            KDF_HASH_ALGORITHM,
+            BCRYPT_SHA256_ALGORITHM,
+        }
+    };
+    BCryptBufferDesc paramsPBKDF2 =
+    {
+            BCRYPTBUFFER_VERSION,
+            3,
+            paramBufferPBKDF2
+    };
+    int res = -1;
+
+    /* get algo provider */
+    status = BCryptOpenAlgorithmProvider(
+        &hKdfAlg,
+        BCRYPT_PBKDF2_ALGORITHM,
+        NULL,
+        0);
+    if(status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptOpenAlgorithmProvider", NULL, status);
+        goto done;
+    }
+
+    /* create key for pbkdf2 */
+    status = BCryptGenerateSymmetricKey(
+        hKdfAlg,
+        &hKey,
+        NULL,
+        0,
+        pbSecret,
+        cbSecret,
+        0);
+    if(status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptGenerateSymmetricKey", NULL, status);
+        goto done;
+    }
+
+    /* generate the output key */
+    status = BCryptKeyDerivation(
+        hKey,
+        &paramsPBKDF2,
+        pbOut,
+        cbOut,
+        &cbResultLength,
+        0);
+    if(status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptKeyDerivation", NULL, status);
+        goto done;
+    }
+    if (cbResultLength != cbOut) {
+        xmlSecInvalidSizeError("Derived key length doesn't match requested",
+            (xmlSecSize)cbResultLength, (xmlSecSize)cbOut, NULL);
+        goto done;
+    }
+
+    /* success */
+    res = 0;
+
+done:
+    if(NULL != hKey) {
+        BCryptDestroyKey(hKey);
+    }
+
+    if(NULL != hKdfAlg) {
+        BCryptCloseAlgorithmProvider(hKdfAlg, 0);
+    }
+    return(res);
+}
+
+static int
 xmlSecMSCngPbkdf2Derive(xmlSecMSCngPbkdf2CtxPtr ctx, xmlSecBufferPtr out) {
-    BCRYPT_ALG_HANDLE hAlg = NULL;
-    xmlSecByte* outData;
-    ULONG outLen;
     xmlSecByte* passData;
     xmlSecSize passSize;
     ULONG passLen;
     xmlSecByte* saltData;
     xmlSecSize saltSize;
     ULONG saltLen;
-    NTSTATUS status;
+    xmlSecByte* outData;
+    ULONG outLen;
     int ret;
-    int res = -1;
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->pszAlgId != NULL, -1);
@@ -278,7 +369,7 @@ xmlSecMSCngPbkdf2Derive(xmlSecMSCngPbkdf2CtxPtr ctx, xmlSecBufferPtr out) {
     passData = xmlSecBufferGetData(&(ctx->key));
     passSize = xmlSecBufferGetSize(&(ctx->key));
     xmlSecAssert2(passData != NULL, -1);
-    xmlSecAssert2(passSize  > 0, -1);
+    xmlSecAssert2(passSize > 0, -1);
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(passSize, passLen, return(-1), NULL);
 
     saltData = xmlSecBufferGetData(&(ctx->params.salt));
@@ -298,34 +389,20 @@ xmlSecMSCngPbkdf2Derive(xmlSecMSCngPbkdf2CtxPtr ctx, xmlSecBufferPtr out) {
     xmlSecAssert2(outData != NULL, -1);
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(ctx->params.keyLength, outLen, return(-1), NULL);
 
-
-    /* create hmac algo */
-    status = BCryptOpenAlgorithmProvider(&hAlg,
-        ctx->pszAlgId,
-        NULL,
-        BCRYPT_ALG_HANDLE_HMAC_FLAG);
-    if ((status != STATUS_SUCCESS) || (hAlg == NULL)) {
-        xmlSecMSCngNtError("BCryptOpenAlgorithmProvider", NULL, status);
-        goto done;
-    }
-
-    /* generate key */
-    status = BCryptDeriveKeyPBKDF2(hAlg, passData, passLen,
-        saltData, saltLen, ctx->params.iterationCount,
-        outData, outLen, 0);
-    if (status != STATUS_SUCCESS) {
-        xmlSecMSCngNtError("BCryptDeriveKeyPBKDF2", NULL, status);
-        goto done;
+    ret = xmlSecMSCngPbkdf2PeformKeyDerivation(
+        passData, passLen,
+        saltData, saltLen,
+        ctx->params.iterationCount,
+        outData, outLen
+    );
+    if (ret < 0) {
+        xmlSecInternalError2("xmlSecMSCngPbkdf2PeformKeyDerivation", NULL,
+            "size=" XMLSEC_SIZE_FMT, ctx->params.keyLength);
+        return(-1);
     }
 
     /* success */
-    res = 0;
-
-done:
-    if (hAlg != NULL) {
-        BCryptCloseAlgorithmProvider(hAlg, 0);
-    }
-    return(res);
+    return(0);
 }
 
 static int

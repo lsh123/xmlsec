@@ -52,7 +52,7 @@
 typedef struct _xmlSecMSCngPbkdf2Ctx    xmlSecMSCngPbkdf2Ctx, *xmlSecMSCngPbkdf2CtxPtr;
 struct _xmlSecMSCngPbkdf2Ctx {
     xmlSecTransformPbkdf2Params params;
-    BCRYPT_ALG_HANDLE hashAlgo;
+    LPCWSTR pszAlgId;
     xmlSecBuffer key;
 };
 XMLSEC_TRANSFORM_DECLARE(MSCngPbkdf2, xmlSecMSCngPbkdf2Ctx)
@@ -128,9 +128,6 @@ xmlSecMSCngPbkdf2Finalize(xmlSecTransformPtr transform) {
     ctx = xmlSecMSCngPbkdf2GetCtx(transform);
     xmlSecAssert(ctx != NULL);
 
-    if (ctx->hashAlgo != NULL) {
-        BCryptCloseAlgorithmProvider(ctx->hashAlgo, 0);
-    }
     xmlSecBufferFinalize(&(ctx->key));
     xmlSecTransformPbkdf2ParamsFinalize(&(ctx->params));
 
@@ -192,29 +189,24 @@ xmlSecMSCngPbkdf2SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 }
 
 /* convert PRF algorithm href to MSCng mac algo */
-static BCRYPT_ALG_HANDLE
+static LPCWSTR
 xmlSecMSCngPbkdf2GetMacFromHref(const xmlChar* href) {
-#ifdef TODO
     /* use SHA256 by default */
     if(href == NULL) {
-        return(SEC_OID_HMAC_SHA256);
+        return(BCRYPT_SHA256_ALGORITHM);
     } else if(xmlStrcmp(href, xmlSecHrefHmacSha1) == 0) {
-        return(SEC_OID_HMAC_SHA1);
-    } else if(xmlStrcmp(href, xmlSecHrefHmacSha224) == 0) {
-        return(SEC_OID_HMAC_SHA224);
+        return(BCRYPT_SHA1_ALGORITHM);
     } else if(xmlStrcmp(href, xmlSecHrefHmacSha256) == 0) {
-        return(SEC_OID_HMAC_SHA256);
+        return(BCRYPT_SHA256_ALGORITHM);
     } else if(xmlStrcmp(href, xmlSecHrefHmacSha384) == 0) {
-        return(SEC_OID_HMAC_SHA384);
+        return(BCRYPT_SHA384_ALGORITHM);
     } else if(xmlStrcmp(href, xmlSecHrefHmacSha512) == 0) {
-        return(SEC_OID_HMAC_SHA512);
+        return(BCRYPT_SHA512_ALGORITHM);
     } else {
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
             "href=%s", xmlSecErrorsSafeString(href));
-        return(SEC_OID_UNKNOWN);
+        return(NULL);
     }
-#endif /* TODO */
-    return(NULL);
 }
 
 static int
@@ -252,8 +244,8 @@ xmlSecMSCngPbkdf2NodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     }
 
     /* set mac */
-    ctx->hashAlgo = xmlSecMSCngPbkdf2GetMacFromHref(ctx->params.prfAlgorithmHref);
-    if(ctx->hashAlgo == NULL) {
+    ctx->pszAlgId = xmlSecMSCngPbkdf2GetMacFromHref(ctx->params.prfAlgorithmHref);
+    if(ctx->pszAlgId == NULL) {
         xmlSecInternalError("xmlSecMSCngPbkdf2GetMacFromHref", xmlSecTransformGetName(transform));
         return(-1);
     }
@@ -264,101 +256,76 @@ xmlSecMSCngPbkdf2NodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 
 static int
 xmlSecMSCngPbkdf2Derive(xmlSecMSCngPbkdf2CtxPtr ctx, xmlSecBufferPtr out) {
-#ifdef TODO
-
-    SECItem passItem = {siBuffer, NULL, 0 };
-    SECItem saltItem = {siBuffer, NULL, 0 };
-    xmlSecSize size;
-    int keyLength, iterCount;
-    SECAlgorithmID* pbkdf2AlgId = NULL;
-    PK11SlotInfo* slot = NULL;
-    PK11SymKey* symKey = NULL;
-    SECItem* keyItem;
-    SECStatus rv;
+    BCRYPT_ALG_HANDLE hAlg = NULL;
+    xmlSecByte* outData;
+    ULONG outLen;
+    xmlSecByte* passData;
+    xmlSecSize passSize;
+    ULONG passLen;
+    xmlSecByte* saltData;
+    xmlSecSize saltSize;
+    ULONG saltLen;
+    NTSTATUS status;
     int ret;
     int res = -1;
 
     xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->hashAlgo != SEC_OID_UNKNOWN, -1);
+    xmlSecAssert2(ctx->pszAlgId != NULL, -1);
     xmlSecAssert2(ctx->params.keyLength > 0, -1);
     xmlSecAssert2(out != NULL, -1);
 
-    /* create algo */
-    size = xmlSecBufferGetSize(&(ctx->key));
-    XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, passItem.len, goto done, NULL);
-    passItem.data = xmlSecBufferGetData(&(ctx->key));
-    xmlSecAssert2(passItem.data != NULL, -1);
-    xmlSecAssert2(passItem.len > 0, -1);
+    /* get data */
+    passData = xmlSecBufferGetData(&(ctx->key));
+    passSize = xmlSecBufferGetSize(&(ctx->key));
+    xmlSecAssert2(passData != NULL, -1);
+    xmlSecAssert2(passSize  > 0, -1);
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(passSize, passLen, return(-1), NULL);
 
-    size = xmlSecBufferGetSize(&(ctx->params.salt));
-    XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, saltItem.len, goto done, NULL);
-    saltItem.data = xmlSecBufferGetData(&(ctx->params.salt));
-    xmlSecAssert2(saltItem.data != NULL, -1);
-    xmlSecAssert2(saltItem.len > 0, -1);
+    saltData = xmlSecBufferGetData(&(ctx->params.salt));
+    saltSize = xmlSecBufferGetSize(&(ctx->params.salt));
+    xmlSecAssert2(saltData != NULL, -1);
+    xmlSecAssert2(saltSize > 0, -1);
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(saltSize, saltLen, return(-1), NULL);
 
-    XMLSEC_SAFE_CAST_SIZE_TO_INT(ctx->params.iterationCount, iterCount, goto done, NULL);
-    xmlSecAssert2(iterCount > 0, -1);
+    /* allocate output buffer */
+    ret = xmlSecBufferSetSize(out, ctx->params.keyLength);
+    if (ret < 0) {
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL,
+            "size=" XMLSEC_SIZE_FMT, ctx->params.keyLength);
+        return(-1);
+    }
+    outData = xmlSecBufferGetData(out);
+    xmlSecAssert2(outData != NULL, -1);
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(ctx->params.keyLength, outLen, return(-1), NULL);
 
-    XMLSEC_SAFE_CAST_SIZE_TO_INT(ctx->params.keyLength, keyLength, goto done, NULL);
-    xmlSecAssert2(keyLength > 0, -1);
 
-    pbkdf2AlgId = PK11_CreatePBEV2AlgorithmID(SEC_OID_PKCS5_PBKDF2,
-                    ctx->hashAlgo, ctx->hashAlgo,
-                    keyLength, iterCount, &saltItem);
-    if(pbkdf2AlgId == NULL) {
-        xmlSecMSCngError("PK11_CreatePBEV2AlgorithmID", NULL);
+    /* create hmac algo */
+    status = BCryptOpenAlgorithmProvider(&hAlg,
+        ctx->pszAlgId,
+        NULL,
+        BCRYPT_ALG_HANDLE_HMAC_FLAG);
+    if ((status != STATUS_SUCCESS) || (hAlg == NULL)) {
+        xmlSecMSCngNtError("BCryptOpenAlgorithmProvider", NULL, status);
         goto done;
     }
 
-    /* derive key */
-    slot = PK11_GetInternalSlot();
-    if(slot == NULL) {
-        xmlSecMSCngError("PK11_GetInternalSlot", NULL);
-        goto done;
-    }
-    symKey = PK11_PBEKeyGen(slot, pbkdf2AlgId, &passItem, PR_FALSE, NULL);
-    if(symKey == NULL) {
-        xmlSecMSCngError("PK11_PBEKeyGen", NULL);
+    /* generate key */
+    status = BCryptDeriveKeyPBKDF2(hAlg, passData, passLen,
+        saltData, saltLen, ctx->params.iterationCount,
+        outData, outLen, 0);
+    if (status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptDeriveKeyPBKDF2", NULL, status);
         goto done;
     }
 
-    /* Extract raw data from symmetric key */
-    rv = PK11_ExtractKeyValue(symKey);
-    if(rv != SECSuccess) {
-        xmlSecMSCngError("PK11_ExtractKeyValue", NULL);
-        goto done;
-    }
-
-    keyItem = PK11_GetKeyData(symKey);
-    if(keyItem == NULL) {
-        xmlSecMSCngError("PK11_GetKeyData", NULL);
-        goto done;
-    }
-
-    ret = xmlSecBufferSetData(out, keyItem->data, keyItem->len);
-    if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetData", NULL,
-            "size=%u", keyItem->len);
-        goto done;
-    }
-
-    /* success! */
+    /* success */
     res = 0;
 
 done:
-    if(symKey != NULL) {
-        PK11_FreeSymKey(symKey);
-    }
-    if(slot != NULL) {
-        PK11_FreeSlot(slot);
-    }
-    if(pbkdf2AlgId != NULL) {
-        SECOID_DestroyAlgorithmID(pbkdf2AlgId, PR_TRUE);
+    if (hAlg != NULL) {
+        BCryptCloseAlgorithmProvider(hAlg, 0);
     }
     return(res);
-
-#endif /* TODO */ 
-    return(-1);
 }
 
 static int
@@ -377,7 +344,6 @@ xmlSecMSCngPbkdf2Execute(xmlSecTransformPtr transform, int last, xmlSecTransform
 
     ctx = xmlSecMSCngPbkdf2GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->hashAlgo != NULL, -1);
 
     if(transform->status == xmlSecTransformStatusNone) {
         /* we should be already initialized when we set key */

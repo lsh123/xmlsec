@@ -75,6 +75,10 @@ xmlSecCryptoGetFunctions_mscng(void) {
     gXmlSecMSCngFunctions->keyDataAesGetKlass           = xmlSecMSCngKeyDataAesGetKlass;
 #endif /* XMLSEC_NO_AES */
 
+#ifndef XMLSEC_NO_CONCATKDF
+    gXmlSecMSCngFunctions->keyDataConcatKdfGetKlass     = xmlSecMSCngKeyDataConcatKdfGetKlass;
+#endif /* XMLSEC_NO_CONCATKDF */
+
 #ifndef XMLSEC_NO_DES
     gXmlSecMSCngFunctions->keyDataDesGetKlass           = xmlSecMSCngKeyDataDesGetKlass;
 #endif /* XMLSEC_NO_DES */
@@ -131,6 +135,11 @@ xmlSecCryptoGetFunctions_mscng(void) {
     gXmlSecMSCngFunctions->transformKWAes192GetKlass            = xmlSecMSCngTransformKWAes192GetKlass;
     gXmlSecMSCngFunctions->transformKWAes256GetKlass            = xmlSecMSCngTransformKWAes256GetKlass;
 #endif /* XMLSEC_NO_AES */
+
+    /******************************* ConcatKDF ********************************/
+#ifndef XMLSEC_NO_CONCATKDF
+    gXmlSecMSCngFunctions->transformConcatKdfGetKlass = xmlSecMSCngTransformConcatKdfGetKlass;
+#endif /* XMLSEC_NO_CONCATKDF */
 
     /******************************* DES ********************************/
 #ifndef XMLSEC_NO_DES

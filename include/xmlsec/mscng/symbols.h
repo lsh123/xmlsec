@@ -35,6 +35,7 @@ extern "C" {
  *
  ********************************************************************/
 #define xmlSecKeyDataAesId                      xmlSecMSCngKeyDataAesId
+#define xmlSecKeyDataConcatKdfId                xmlSecMSCngKeyDataConcatKdfId
 #define xmlSecKeyDataDesId                      xmlSecMSCngKeyDataDesId
 #define xmlSecKeyDataDsaId                      xmlSecMSCngKeyDataDsaId
 #define xmlSecKeyDataEcdsaId                    xmlSecMSCngKeyDataEcId
@@ -60,13 +61,18 @@ extern "C" {
 #define xmlSecTransformAes128CbcId              xmlSecMSCngTransformAes128CbcId
 #define xmlSecTransformAes192CbcId              xmlSecMSCngTransformAes192CbcId
 #define xmlSecTransformAes256CbcId              xmlSecMSCngTransformAes256CbcId
+
 #define xmlSecTransformAes128GcmId              xmlSecMSCngTransformAes128GcmId
 #define xmlSecTransformAes192GcmId              xmlSecMSCngTransformAes192GcmId
 #define xmlSecTransformAes256GcmId              xmlSecMSCngTransformAes256GcmId
+
 #define xmlSecTransformKWAes128Id               xmlSecMSCngTransformKWAes128Id
 #define xmlSecTransformKWAes192Id               xmlSecMSCngTransformKWAes192Id
 #define xmlSecTransformKWAes256Id               xmlSecMSCngTransformKWAes256Id
 #define xmlSecTransformDes3CbcId                xmlSecMSCngTransformDes3CbcId
+
+#define xmlSecTransformConcatKdfId              xmlSecMSCngTransformConcatKdfId
+
 #define xmlSecTransformKWDes3Id                 xmlSecMSCngTransformKWDes3Id
 
 #define xmlSecTransformDsaSha1Id                xmlSecMSCngTransformDsaSha1Id

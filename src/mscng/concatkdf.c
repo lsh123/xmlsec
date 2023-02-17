@@ -13,7 +13,7 @@
  * @Short_description:
  * @Stability: Stable
  */
-#ifndef XMLSEC_NO_PBKDF2
+#ifndef XMLSEC_NO_CONCATKDF2
 
 #include "globals.h"
 
@@ -44,73 +44,80 @@
 
 /**************************************************************************
  *
- * PBKDF2 transform
+ * CONCATKDF2 transform
  *
  *****************************************************************************/
 #define XMLSEC_MSCNG_KDF_DEFAULT_BUF_SIZE 64
 
-typedef struct _xmlSecMSCngPbkdf2Ctx    xmlSecMSCngPbkdf2Ctx, *xmlSecMSCngPbkdf2CtxPtr;
-struct _xmlSecMSCngPbkdf2Ctx {
-    xmlSecTransformPbkdf2Params params;
+typedef struct _xmlSecMSCngConcatKdfCtx    xmlSecMSCngConcatKdfCtx, *xmlSecMSCngConcatKdfCtxPtr;
+struct _xmlSecMSCngConcatKdfCtx {
+    xmlSecTransformConcatKdfParams params;
     LPCWSTR pszAlgId;
     xmlSecBuffer key;
+    xmlSecBuffer fixedInfo;
 };
-XMLSEC_TRANSFORM_DECLARE(MSCngPbkdf2, xmlSecMSCngPbkdf2Ctx)
-#define xmlSecMSCngPbkdf2CtxSize XMLSEC_TRANSFORM_SIZE(MSCngPbkdf2)
+XMLSEC_TRANSFORM_DECLARE(MSCngConcatKdf, xmlSecMSCngConcatKdfCtx)
+#define xmlSecMSCngConcatKdfCtxSize XMLSEC_TRANSFORM_SIZE(MSCngConcatKdf)
 
-static int      xmlSecMSCngPbkdf2CheckId                   (xmlSecTransformPtr transform);
-static int      xmlSecMSCngPbkdf2Initialize                (xmlSecTransformPtr transform);
-static void     xmlSecMSCngPbkdf2Finalize                  (xmlSecTransformPtr transform);
-static int      xmlSecMSCngPbkdf2SetKeyReq                 (xmlSecTransformPtr transform,
-                                                             xmlSecKeyReqPtr keyReq);
-static int      xmlSecMSCngPbkdf2SetKey                   (xmlSecTransformPtr transform,
-                                                             xmlSecKeyPtr key);
+static int      xmlSecMSCngConcatKdfCheckId             (xmlSecTransformPtr transform);
+static int      xmlSecMSCngConcatKdfInitialize          (xmlSecTransformPtr transform);
+static void     xmlSecMSCngConcatKdfFinalize            (xmlSecTransformPtr transform);
+static int      xmlSecMSCngConcatKdfSetKeyReq           (xmlSecTransformPtr transform,
+                                                         xmlSecKeyReqPtr keyReq);
+static int      xmlSecMSCngConcatKdfSetKey              (xmlSecTransformPtr transform,
+                                                         xmlSecKeyPtr key);
 
-static int      xmlSecMSCngPbkdf2NodeRead                 (xmlSecTransformPtr transform,
-                                                            xmlNodePtr node,
-                                                            xmlSecTransformCtxPtr transformCtx);
+static int      xmlSecMSCngConcatKdfNodeRead            (xmlSecTransformPtr transform,
+                                                         xmlNodePtr node,
+                                                         xmlSecTransformCtxPtr transformCtx);
 
-static int      xmlSecMSCngPbkdf2Execute                   (xmlSecTransformPtr transform,
-                                                            int last,
-                                                            xmlSecTransformCtxPtr transformCtx);
+static int      xmlSecMSCngConcatKdfExecute              (xmlSecTransformPtr transform,
+                                                          int last,
+                                                          xmlSecTransformCtxPtr transformCtx);
 
 
 static int
-xmlSecMSCngPbkdf2CheckId(xmlSecTransformPtr transform) {
-#ifndef XMLSEC_NO_PBKDF2
-    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformPbkdf2Id)) {
+xmlSecMSCngConcatKdfCheckId(xmlSecTransformPtr transform) {
+#ifndef XMLSEC_NO_CONCATKDF2
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformConcatKdfId)) {
         return(1);
     }
-#endif /* XMLSEC_NO_PBKDF2 */
+#endif /* XMLSEC_NO_CONCATKDF2 */
 
     /* not found */
     return(0);
 }
 
 static int
-xmlSecMSCngPbkdf2Initialize(xmlSecTransformPtr transform) {
-    xmlSecMSCngPbkdf2CtxPtr ctx;
+xmlSecMSCngConcatKdfInitialize(xmlSecTransformPtr transform) {
+    xmlSecMSCngConcatKdfCtxPtr ctx;
     int ret;
 
-    xmlSecAssert2(xmlSecMSCngPbkdf2CheckId(transform), -1);
-    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngPbkdf2CtxSize), -1);
+    xmlSecAssert2(xmlSecMSCngConcatKdfCheckId(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngConcatKdfCtxSize), -1);
 
-    ctx = xmlSecMSCngPbkdf2GetCtx(transform);
+    ctx = xmlSecMSCngConcatKdfGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
     /* initialize context */
-    memset(ctx, 0, sizeof(xmlSecMSCngPbkdf2Ctx));
+    memset(ctx, 0, sizeof(xmlSecMSCngConcatKdfCtx));
 
     ret = xmlSecBufferInitialize(&(ctx->key), XMLSEC_MSCNG_KDF_DEFAULT_BUF_SIZE);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecBufferInitialize", NULL);
-        xmlSecMSCngPbkdf2Finalize(transform);
+        xmlSecInternalError("xmlSecBufferInitialize(key)", NULL);
+        xmlSecMSCngConcatKdfFinalize(transform);
         return(-1);
     }
-    ret = xmlSecTransformPbkdf2ParamsInitialize(&(ctx->params));
+    ret = xmlSecBufferInitialize(&(ctx->fixedInfo), XMLSEC_MSCNG_KDF_DEFAULT_BUF_SIZE);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize(fixedInfo)", NULL);
+        xmlSecMSCngConcatKdfFinalize(transform);
+        return(-1);
+    }
+    ret = xmlSecTransformConcatKdfParamsInitialize(&(ctx->params));
     if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformPbkdf2ParamsInitialize", NULL);
-        xmlSecMSCngPbkdf2Finalize(transform);
+        xmlSecInternalError("xmlSecTransformConcatKdfParamsInitialize", NULL);
+        xmlSecMSCngConcatKdfFinalize(transform);
         return(-1);
     }
 
@@ -119,51 +126,52 @@ xmlSecMSCngPbkdf2Initialize(xmlSecTransformPtr transform) {
 }
 
 static void
-xmlSecMSCngPbkdf2Finalize(xmlSecTransformPtr transform) {
-    xmlSecMSCngPbkdf2CtxPtr ctx;
+xmlSecMSCngConcatKdfFinalize(xmlSecTransformPtr transform) {
+    xmlSecMSCngConcatKdfCtxPtr ctx;
 
-    xmlSecAssert(xmlSecMSCngPbkdf2CheckId(transform));
-    xmlSecAssert(xmlSecTransformCheckSize(transform, xmlSecMSCngPbkdf2CtxSize));
+    xmlSecAssert(xmlSecMSCngConcatKdfCheckId(transform));
+    xmlSecAssert(xmlSecTransformCheckSize(transform, xmlSecMSCngConcatKdfCtxSize));
 
-    ctx = xmlSecMSCngPbkdf2GetCtx(transform);
+    ctx = xmlSecMSCngConcatKdfGetCtx(transform);
     xmlSecAssert(ctx != NULL);
 
     xmlSecBufferFinalize(&(ctx->key));
-    xmlSecTransformPbkdf2ParamsFinalize(&(ctx->params));
+    xmlSecBufferFinalize(&(ctx->fixedInfo));
+    xmlSecTransformConcatKdfParamsFinalize(&(ctx->params));
 
-    memset(ctx, 0, sizeof(xmlSecMSCngPbkdf2Ctx));
+    memset(ctx, 0, sizeof(xmlSecMSCngConcatKdfCtx));
 }
 
 
 static int
-xmlSecMSCngPbkdf2SetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
-    xmlSecAssert2(xmlSecMSCngPbkdf2CheckId(transform), -1);
-    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngPbkdf2CtxSize), -1);
+xmlSecMSCngConcatKdfSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
+    xmlSecAssert2(xmlSecMSCngConcatKdfCheckId(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngConcatKdfCtxSize), -1);
     xmlSecAssert2(keyReq != NULL, -1);
 
-    keyReq->keyId       = xmlSecMSCngKeyDataPbkdf2Id;
+    keyReq->keyId       = xmlSecMSCngKeyDataConcatKdfId;
     keyReq->keyType     = xmlSecKeyDataTypeSymmetric;
     keyReq->keyUsage    = xmlSecKeyUsageKeyDerive;
     return(0);
 }
 
 static int
-xmlSecMSCngPbkdf2SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
-    xmlSecMSCngPbkdf2CtxPtr ctx;
+xmlSecMSCngConcatKdfSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
+    xmlSecMSCngConcatKdfCtxPtr ctx;
     xmlSecKeyDataPtr keyValue;
     xmlSecBufferPtr keyBuffer;
     xmlSecByte * keyData;
     xmlSecSize keySize;
     int ret;
 
-    xmlSecAssert2(xmlSecMSCngPbkdf2CheckId(transform), -1);
+    xmlSecAssert2(xmlSecMSCngConcatKdfCheckId(transform), -1);
     xmlSecAssert2(((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt)), -1);
-    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngPbkdf2CtxSize), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngConcatKdfCtxSize), -1);
     xmlSecAssert2(key != NULL, -1);
 
-    ctx = xmlSecMSCngPbkdf2GetCtx(transform);
+    ctx = xmlSecMSCngConcatKdfGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(xmlSecKeyCheckId(key, xmlSecMSCngKeyDataPbkdf2Id), -1);
+    xmlSecAssert2(xmlSecKeyCheckId(key, xmlSecMSCngKeyDataConcatKdfId), -1);
 
     keyValue = xmlSecKeyGetValue(key);
     xmlSecAssert2(keyValue != NULL, -1);
@@ -188,19 +196,19 @@ xmlSecMSCngPbkdf2SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     return(0);
 }
 
-/* convert PRF algorithm href to MSCng mac algo */
+/* convert algorithm href to MSCng mac algo */
 static LPCWSTR
-xmlSecMSCngPbkdf2GetMacFromHref(const xmlChar* href) {
+xmlSecMSCngConcatKdfGetDigestFromHref(const xmlChar* href) {
     /* use SHA256 by default */
     if(href == NULL) {
         return(BCRYPT_SHA256_ALGORITHM);
-    } else if(xmlStrcmp(href, xmlSecHrefHmacSha1) == 0) {
+    } else if(xmlStrcmp(href, xmlSecHrefSha1) == 0) {
         return(BCRYPT_SHA1_ALGORITHM);
-    } else if(xmlStrcmp(href, xmlSecHrefHmacSha256) == 0) {
+    } else if(xmlStrcmp(href, xmlSecHrefSha256) == 0) {
         return(BCRYPT_SHA256_ALGORITHM);
-    } else if(xmlStrcmp(href, xmlSecHrefHmacSha384) == 0) {
+    } else if(xmlStrcmp(href, xmlSecHrefSha384) == 0) {
         return(BCRYPT_SHA384_ALGORITHM);
-    } else if(xmlStrcmp(href, xmlSecHrefHmacSha512) == 0) {
+    } else if(xmlStrcmp(href, xmlSecHrefSha512) == 0) {
         return(BCRYPT_SHA512_ALGORITHM);
     } else {
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
@@ -210,29 +218,29 @@ xmlSecMSCngPbkdf2GetMacFromHref(const xmlChar* href) {
 }
 
 static int
-xmlSecMSCngPbkdf2NodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
+xmlSecMSCngConcatKdfNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
                           xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
-    xmlSecMSCngPbkdf2CtxPtr ctx;
+    xmlSecMSCngConcatKdfCtxPtr ctx;
     xmlNodePtr cur;
     int ret;
 
-    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecMSCngTransformPbkdf2Id), -1);
-    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngPbkdf2CtxSize), -1);
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecMSCngTransformConcatKdfId), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngConcatKdfCtxSize), -1);
     xmlSecAssert2(node!= NULL, -1);
     UNREFERENCED_PARAMETER(transformCtx);
 
-    ctx = xmlSecMSCngPbkdf2GetCtx(transform);
+    ctx = xmlSecMSCngConcatKdfGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    /* first (and only) node is required Pbkdf2Params */
+    /* first (and only) node is required ConcatKDFParams */
     cur  = xmlSecGetNextElementNode(node->children);
-    if((cur != NULL) && (!xmlSecCheckNodeName(cur, xmlSecNodePbkdf2Params, xmlSecEnc11Ns))) {
-        xmlSecInvalidNodeError(cur, xmlSecNodePbkdf2Params, NULL);
+    if((cur != NULL) && (!xmlSecCheckNodeName(cur, xmlSecNodeConcatKDFParams, xmlSecEnc11Ns))) {
+        xmlSecInvalidNodeError(cur, xmlSecNodeConcatKDFParams, NULL);
         return(-1);
     }
-    ret = xmlSecTransformPbkdf2ParamsRead(&(ctx->params), cur);
+    ret = xmlSecTransformConcatKdfParamsRead(&(ctx->params), cur);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformPbkdf2ParamsRead", NULL);
+        xmlSecInternalError("xmlSecTransformConcatKdfParamsRead", NULL);
         return(-1);
     }
 
@@ -244,9 +252,9 @@ xmlSecMSCngPbkdf2NodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     }
 
     /* set mac */
-    ctx->pszAlgId = xmlSecMSCngPbkdf2GetMacFromHref(ctx->params.prfAlgorithmHref);
+    ctx->pszAlgId = xmlSecMSCngConcatKdfGetDigestFromHref(ctx->params.digestMethod);
     if(ctx->pszAlgId == NULL) {
-        xmlSecInternalError("xmlSecMSCngPbkdf2GetMacFromHref", xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecMSCngConcatKdfGetDigestFromHref", xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -255,28 +263,22 @@ xmlSecMSCngPbkdf2NodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 }
 
 static int
-xmlSecMSCngPbkdf2PeformKeyDerivation(
+xmlSecMSCngConcatKdfPeformKeyDerivation(
     LPCWSTR pszHashAlgo,
-    PBYTE pbSecret, ULONG cbSecret, 
-    PBYTE pbSalt, ULONG cbSalt,
-    ULONGLONG cbIterationCount,
+    PBYTE pbSecret, ULONG cbSecret,
+    PBYTE pbFixedInfo, ULONG cbFixedInfo,
     PBYTE pbOut, ULONG cbOut
 ) {
     NTSTATUS status;
     BCRYPT_ALG_HANDLE hKdfAlg = NULL;
     BCRYPT_KEY_HANDLE hKey= NULL;
     DWORD cbResultLength = 0;
-    BCryptBuffer paramBufferPBKDF2[] =
+    BCryptBuffer paramBufferCONCATKDF2[] =
     {
          {
-            cbSalt,
-            KDF_SALT,
-            pbSalt,
-        },
-        {
-            sizeof(cbIterationCount),
-            KDF_ITERATION_COUNT,
-            (PBYTE)&cbIterationCount,
+            cbFixedInfo,
+            KDF_GENERIC_PARAMETER,
+            pbFixedInfo,
         },
         {
             (ULONG)wcslen(pszHashAlgo) * sizeof(WCHAR),
@@ -284,18 +286,18 @@ xmlSecMSCngPbkdf2PeformKeyDerivation(
             (LPWSTR)pszHashAlgo,
         }
     };
-    BCryptBufferDesc paramsPBKDF2 =
+    BCryptBufferDesc paramsCONCATKDF2 =
     {
             BCRYPTBUFFER_VERSION,
-            3,
-            paramBufferPBKDF2
+            2,
+            paramBufferCONCATKDF2
     };
     int res = -1;
 
     /* get algo provider */
     status = BCryptOpenAlgorithmProvider(
         &hKdfAlg,
-        BCRYPT_PBKDF2_ALGORITHM,
+        BCRYPT_SP80056A_CONCAT_ALGORITHM,
         NULL,
         0);
     if(status != STATUS_SUCCESS) {
@@ -303,7 +305,7 @@ xmlSecMSCngPbkdf2PeformKeyDerivation(
         goto done;
     }
 
-    /* create key for pbkdf2 */
+    /* create key for concatKdf */
     status = BCryptGenerateSymmetricKey(
         hKdfAlg,
         &hKey,
@@ -320,7 +322,7 @@ xmlSecMSCngPbkdf2PeformKeyDerivation(
     /* generate the output key */
     status = BCryptKeyDerivation(
         hKey,
-        &paramsPBKDF2,
+        &paramsCONCATKDF2,
         pbOut,
         cbOut,
         &cbResultLength,
@@ -350,21 +352,21 @@ done:
 }
 
 static int
-xmlSecMSCngPbkdf2Derive(xmlSecMSCngPbkdf2CtxPtr ctx, xmlSecBufferPtr out) {
+xmlSecMSCngConcatKdfDerive(xmlSecMSCngConcatKdfCtxPtr ctx, xmlSecBufferPtr out, xmlSecSize outSize) {
     xmlSecByte* passData;
     xmlSecSize passSize;
     ULONG passLen;
-    xmlSecByte* saltData;
-    xmlSecSize saltSize;
-    ULONG saltLen;
+    xmlSecByte* fixedInfoData;
+    xmlSecSize fixedInfoSize;
+    ULONG fixedInfoLen;
     xmlSecByte* outData;
     ULONG outLen;
     int ret;
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->pszAlgId != NULL, -1);
-    xmlSecAssert2(ctx->params.keyLength > 0, -1);
     xmlSecAssert2(out != NULL, -1);
+    xmlSecAssert2(outSize > 0, -1);
 
     /* get data */
     passData = xmlSecBufferGetData(&(ctx->key));
@@ -373,33 +375,39 @@ xmlSecMSCngPbkdf2Derive(xmlSecMSCngPbkdf2CtxPtr ctx, xmlSecBufferPtr out) {
     xmlSecAssert2(passSize > 0, -1);
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(passSize, passLen, return(-1), NULL);
 
-    saltData = xmlSecBufferGetData(&(ctx->params.salt));
-    saltSize = xmlSecBufferGetSize(&(ctx->params.salt));
-    xmlSecAssert2(saltData != NULL, -1);
-    xmlSecAssert2(saltSize > 0, -1);
-    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(saltSize, saltLen, return(-1), NULL);
+    ret = xmlSecTransformConcatKdfParamsGetFixedInfo(&(ctx->params), &(ctx->fixedInfo));
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecTransformConcatKdfParamsGetFixedInfo", NULL);
+        return(-1);
+    }
+    fixedInfoData = xmlSecBufferGetData(&(ctx->fixedInfo));
+    fixedInfoSize = xmlSecBufferGetSize(&(ctx->fixedInfo));
+    if ((fixedInfoData == NULL) || (fixedInfoSize == 0)) {
+        xmlSecInvalidSizeDataError("fixedInfoSize", fixedInfoSize, "> 0", NULL);
+        return(-1);
+    }
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(fixedInfoSize, fixedInfoLen, return(-1), NULL);
 
     /* allocate output buffer */
-    ret = xmlSecBufferSetSize(out, ctx->params.keyLength);
+    ret = xmlSecBufferSetSize(out, outSize);
     if (ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize", NULL,
-            "size=" XMLSEC_SIZE_FMT, ctx->params.keyLength);
+            "size=" XMLSEC_SIZE_FMT, outSize);
         return(-1);
     }
     outData = xmlSecBufferGetData(out);
     xmlSecAssert2(outData != NULL, -1);
-    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(ctx->params.keyLength, outLen, return(-1), NULL);
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(outSize, outLen, return(-1), NULL);
 
-    ret = xmlSecMSCngPbkdf2PeformKeyDerivation(
+    ret = xmlSecMSCngConcatKdfPeformKeyDerivation(
         ctx->pszAlgId,
         passData, passLen,
-        saltData, saltLen,
-        ctx->params.iterationCount,
+        fixedInfoData, fixedInfoLen,
         outData, outLen
     );
     if (ret < 0) {
-        xmlSecInternalError2("xmlSecMSCngPbkdf2PeformKeyDerivation", NULL,
-            "size=" XMLSEC_SIZE_FMT, ctx->params.keyLength);
+        xmlSecInternalError2("xmlSecMSCngConcatKdfPeformKeyDerivation", NULL,
+            "size=" XMLSEC_SIZE_FMT, outSize);
         return(-1);
     }
 
@@ -408,20 +416,20 @@ xmlSecMSCngPbkdf2Derive(xmlSecMSCngPbkdf2CtxPtr ctx, xmlSecBufferPtr out) {
 }
 
 static int
-xmlSecMSCngPbkdf2Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
-    xmlSecMSCngPbkdf2CtxPtr ctx;
+xmlSecMSCngConcatKdfExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
+    xmlSecMSCngConcatKdfCtxPtr ctx;
     xmlSecBufferPtr in, out;
     int ret;
 
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
     xmlSecAssert2(((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt)), -1);
-    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngPbkdf2CtxSize), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngConcatKdfCtxSize), -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
     in = &(transform->inBuf);
     out = &(transform->outBuf);
 
-    ctx = xmlSecMSCngPbkdf2GetCtx(transform);
+    ctx = xmlSecMSCngConcatKdfGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
     if(transform->status == xmlSecTransformStatusNone) {
@@ -437,17 +445,11 @@ xmlSecMSCngPbkdf2Execute(xmlSecTransformPtr transform, int last, xmlSecTransform
             xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL, "KDF output key size is not specified");
             return(-1);
         }
-        if((ctx->params.keyLength > 0) && (ctx->params.keyLength != transform->expectedOutputSize)){
-            xmlSecInvalidSizeError("Output kdf size doesn't match expected",
-                transform->expectedOutputSize, ctx->params.keyLength, xmlSecTransformGetName(transform));
-            return(-1);
-        }
-        ctx->params.keyLength = transform->expectedOutputSize;
 
         /* derive */
-        ret = xmlSecMSCngPbkdf2Derive(ctx, out);
+        ret = xmlSecMSCngConcatKdfDerive(ctx, out, transform->expectedOutputSize);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecMSCngPbkdf2Derive", xmlSecTransformGetName(transform));
+            xmlSecInternalError("xmlSecMSCngConcatKdfDerive", xmlSecTransformGetName(transform));
             return(-1);
         }
 
@@ -467,52 +469,52 @@ xmlSecMSCngPbkdf2Execute(xmlSecTransformPtr transform, int last, xmlSecTransform
 
 /********************************************************************
  *
- * PBKDF2 key derivation algorithm
+ * CONCATKDF2 key derivation algorithm
  *
  ********************************************************************/
-static xmlSecTransformKlass xmlSecMSCngPbkdf2Klass = {
+static xmlSecTransformKlass xmlSecMSCngConcatKdfKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),                   /* xmlSecSize klassSize */
-    xmlSecMSCngPbkdf2CtxSize,                      /* xmlSecSize objSize */
+    xmlSecMSCngConcatKdfCtxSize,                      /* xmlSecSize objSize */
 
     /* data */
-    xmlSecNamePbkdf2,                               /* const xmlChar* name; */
-    xmlSecHrefPbkdf2,                               /* const xmlChar* href; */
+    xmlSecNameConcatKdf,                               /* const xmlChar* name; */
+    xmlSecHrefConcatKdf,                               /* const xmlChar* href; */
     xmlSecTransformUsageKeyDerivationMethod,        /* xmlSecTransformUsage usage; */
 
-    xmlSecMSCngPbkdf2Initialize,                   /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecMSCngPbkdf2Finalize,                     /* xmlSecTransformFinalizeMethod finalize; */
-    xmlSecMSCngPbkdf2NodeRead,                     /* xmlSecTransformNodeReadMethod readNode; */
+    xmlSecMSCngConcatKdfInitialize,                   /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecMSCngConcatKdfFinalize,                     /* xmlSecTransformFinalizeMethod finalize; */
+    xmlSecMSCngConcatKdfNodeRead,                     /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                           /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCngPbkdf2SetKeyReq,                    /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    xmlSecMSCngPbkdf2SetKey,                       /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecMSCngConcatKdfSetKeyReq,                    /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecMSCngConcatKdfSetKey,                       /* xmlSecTransformSetKeyMethod setKey; */
     NULL,                                           /* xmlSecTransformValidateMethod validate; */
     xmlSecTransformDefaultGetDataType,              /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,                  /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,                   /* xmlSecTransformPopBinMethod popBin; */
     NULL,                                           /* xmlSecTransformPushXmlMethod pushXml; */
     NULL,                                           /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecMSCngPbkdf2Execute,                        /* xmlSecTransformExecuteMethod execute; */
+    xmlSecMSCngConcatKdfExecute,                        /* xmlSecTransformExecuteMethod execute; */
 
     NULL,                                           /* void* reserved0; */
     NULL,                                           /* void* reserved1; */
 };
 
 /**
- * xmlSecMSCngTransformPbkdf2GetKlass:
+ * xmlSecMSCngTransformConcatKdfGetKlass:
  *
- * The PBKDF2 key derivation  transform klass.
+ * The CONCATKDF2 key derivation  transform klass.
  *
- * Returns: the PBKDF2 key derivation transform klass.
+ * Returns: the CONCATKDF2 key derivation transform klass.
  */
 xmlSecTransformId
-xmlSecMSCngTransformPbkdf2GetKlass(void) {
-    return(&xmlSecMSCngPbkdf2Klass);
+xmlSecMSCngTransformConcatKdfGetKlass(void) {
+    return(&xmlSecMSCngConcatKdfKlass);
 }
 
-#else /* defined(XMLSEC_NO_PBKDF2) */
+#else /* defined(XMLSEC_NO_CONCATKDF2) */
 
 /* ISO C forbids an empty translation unit */
 typedef int make_iso_compilers_happy;
 
-#endif /* XMLSEC_NO_PBKDF2 */
+#endif /* XMLSEC_NO_CONCATKDF2 */

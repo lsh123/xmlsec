@@ -42,6 +42,15 @@
 #include "../keysdata_helpers.h"
 #include "../transform_helpers.h"
 
+/* Mingw has old version of bcrypt.h file */
+#if !defined(KDF_SALT)
+#define KDF_SALT                0xF
+#endif /*  !defined(KDF_SALT)*/
+#if !defined(KDF_ITERATION_COUNT)
+#define KDF_ITERATION_COUNT     0x10
+#endif /*  !defined(KDF_ITERATION_COUNT) */
+
+
 /**************************************************************************
  *
  * PBKDF2 transform
@@ -77,11 +86,9 @@ static int      xmlSecMSCngPbkdf2Execute                   (xmlSecTransformPtr t
 
 static int
 xmlSecMSCngPbkdf2CheckId(xmlSecTransformPtr transform) {
-#ifndef XMLSEC_NO_PBKDF2
     if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformPbkdf2Id)) {
         return(1);
     }
-#endif /* XMLSEC_NO_PBKDF2 */
 
     /* not found */
     return(0);

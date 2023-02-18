@@ -1,7 +1,7 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * KDF (key derivation) transforms implementation for OpenSSL.
+ * Key agreement transforms implementation for OpenSSL.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.

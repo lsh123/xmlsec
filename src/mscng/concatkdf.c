@@ -42,6 +42,11 @@
 #include "../keysdata_helpers.h"
 #include "../transform_helpers.h"
 
+/* Mingw has old version of bcrypt.h file */
+#if !defined(KDF_GENERIC_PARAMETER)
+#define KDF_GENERIC_PARAMETER 0x11
+#endif /* !defined(KDF_GENERIC_PARAMETER) */
+
 /**************************************************************************
  *
  * CONCATKDF2 transform

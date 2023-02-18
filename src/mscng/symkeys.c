@@ -49,6 +49,14 @@ xmlSecMSCngSymKeyDataKlassCheck(xmlSecKeyDataKlass* klass) {
     } else
 #endif /* XMLSEC_NO_AES */
 
+#ifndef XMLSEC_NO_CONCATKDF
+    if (klass == xmlSecMSCngKeyDataConcatKdfId) {
+        return(1);
+    }
+    else
+#endif /* XMLSEC_NO_CONCATKDF */
+
+
 #ifndef XMLSEC_NO_DES
     if(klass == xmlSecMSCngKeyDataDesId) {
         return(1);
@@ -193,34 +201,34 @@ static xmlSecKeyDataKlass xmlSecMSCngKeyDataAesKlass = {
     xmlSecNameAESKeyValue,
     xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
     /* xmlSecKeyDataUsage usage; */
-xmlSecHrefAESKeyValue,                      /* const xmlChar* href; */
-xmlSecNodeAESKeyValue,                      /* const xmlChar* dataNodeName; */
-xmlSecNs,                                   /* const xmlChar* dataNodeNs; */
+    xmlSecHrefAESKeyValue,                      /* const xmlChar* href; */
+    xmlSecNodeAESKeyValue,                      /* const xmlChar* dataNodeName; */
+    xmlSecNs,                                   /* const xmlChar* dataNodeNs; */
 
-/* constructors/destructor */
-xmlSecMSCngSymKeyDataInitialize,            /* xmlSecKeyDataInitializeMethod initialize; */
-xmlSecMSCngSymKeyDataDuplicate,             /* xmlSecKeyDataDuplicateMethod duplicate; */
-xmlSecMSCngSymKeyDataFinalize,              /* xmlSecKeyDataFinalizeMethod finalize; */
-xmlSecMSCngSymKeyDataGenerate,              /* xmlSecKeyDataGenerateMethod generate; */
+    /* constructors/destructor */
+    xmlSecMSCngSymKeyDataInitialize,            /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecMSCngSymKeyDataDuplicate,             /* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecMSCngSymKeyDataFinalize,              /* xmlSecKeyDataFinalizeMethod finalize; */
+    xmlSecMSCngSymKeyDataGenerate,              /* xmlSecKeyDataGenerateMethod generate; */
 
-/* get info */
-xmlSecMSCngSymKeyDataGetType,               /* xmlSecKeyDataGetTypeMethod getType; */
-xmlSecMSCngSymKeyDataGetSize,               /* xmlSecKeyDataGetSizeMethod getSize; */
-NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
+    /* get info */
+    xmlSecMSCngSymKeyDataGetType,               /* xmlSecKeyDataGetTypeMethod getType; */
+    xmlSecMSCngSymKeyDataGetSize,               /* xmlSecKeyDataGetSizeMethod getSize; */
+    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
 
-/* read/write */
-xmlSecMSCngSymKeyDataXmlRead,               /* xmlSecKeyDataXmlReadMethod xmlRead; */
-xmlSecMSCngSymKeyDataXmlWrite,              /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
-xmlSecMSCngSymKeyDataBinRead,               /* xmlSecKeyDataBinReadMethod binRead; */
-xmlSecMSCngSymKeyDataBinWrite,              /* xmlSecKeyDataBinWriteMethod binWrite; */
+    /* read/write */
+    xmlSecMSCngSymKeyDataXmlRead,               /* xmlSecKeyDataXmlReadMethod xmlRead; */
+    xmlSecMSCngSymKeyDataXmlWrite,              /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    xmlSecMSCngSymKeyDataBinRead,               /* xmlSecKeyDataBinReadMethod binRead; */
+    xmlSecMSCngSymKeyDataBinWrite,              /* xmlSecKeyDataBinWriteMethod binWrite; */
 
-/* debug */
-xmlSecMSCngSymKeyDataDebugDump,             /* xmlSecKeyDataDebugDumpMethod debugDump; */
-xmlSecMSCngSymKeyDataDebugXmlDump,          /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+    /* debug */
+    xmlSecMSCngSymKeyDataDebugDump,             /* xmlSecKeyDataDebugDumpMethod debugDump; */
+    xmlSecMSCngSymKeyDataDebugXmlDump,          /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
 
-/* reserved for the future */
-NULL,                                       /* void* reserved0; */
-NULL,                                       /* void* reserved1; */
+    /* reserved for the future */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
 };
 
 /**
@@ -235,6 +243,66 @@ xmlSecMSCngKeyDataAesGetKlass(void) {
     return(&xmlSecMSCngKeyDataAesKlass);
 }
 #endif /* XMLSEC_NO_AES */
+
+
+#ifndef XMLSEC_NO_CONCATKDF
+
+/**************************************************************************
+ *
+ * ConcatKdf klass
+ *
+ *************************************************************************/
+static xmlSecKeyDataKlass xmlSecMSCngKeyDataConcatKdfKlass = {
+    sizeof(xmlSecKeyDataKlass),
+    xmlSecKeyDataBinarySize,
+
+    /* data */
+    xmlSecNameConcatKdfKeyValue,
+    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+    /* xmlSecKeyDataUsage usage; */
+    NULL,                               /* const xmlChar* href; */
+    NULL,                               /* const xmlChar* dataNodeName; */
+    NULL,                               /* const xmlChar* dataNodeNs; */
+
+    /* constructors/destructor */
+    xmlSecMSCngSymKeyDataInitialize,    /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecMSCngSymKeyDataDuplicate,     /* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecMSCngSymKeyDataFinalize,      /* xmlSecKeyDataFinalizeMethod finalize; */
+    xmlSecMSCngSymKeyDataGenerate,      /* xmlSecKeyDataGenerateMethod generate; */
+
+    /* get info */
+    xmlSecMSCngSymKeyDataGetType,       /* xmlSecKeyDataGetTypeMethod getType; */
+    xmlSecMSCngSymKeyDataGetSize,       /* xmlSecKeyDataGetSizeMethod getSize; */
+    NULL,                               /* xmlSecKeyDataGetIdentifier getIdentifier; */
+
+    /* read/write */
+    xmlSecMSCngSymKeyDataXmlRead,       /* xmlSecKeyDataXmlReadMethod xmlRead; */
+    xmlSecMSCngSymKeyDataXmlWrite,      /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    xmlSecMSCngSymKeyDataBinRead,       /* xmlSecKeyDataBinReadMethod binRead; */
+    xmlSecMSCngSymKeyDataBinWrite,      /* xmlSecKeyDataBinWriteMethod binWrite; */
+
+    /* debug */
+    xmlSecMSCngSymKeyDataDebugDump,     /* xmlSecKeyDataDebugDumpMethod debugDump; */
+    xmlSecMSCngSymKeyDataDebugXmlDump,  /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+
+    /* reserved for the future */
+    NULL,                               /* void* reserved0; */
+    NULL,                               /* void* reserved1; */
+};
+
+/**
+ * xmlSecMSCngKeyDataConcatKdfGetKlass:
+ *
+ * The ConcatKdf key data klass.
+ *
+ * Returns: ConcatKdf key data klass.
+ */
+xmlSecKeyDataId
+xmlSecMSCngKeyDataConcatKdfGetKlass(void) {
+    return(&xmlSecMSCngKeyDataConcatKdfKlass);
+}
+#endif /* XMLSEC_NO_CONCATKDF */
+
 
 #ifndef XMLSEC_NO_DES
 
@@ -251,34 +319,34 @@ static xmlSecKeyDataKlass xmlSecMSCngKeyDataDesKlass = {
     xmlSecNameDESKeyValue,
     xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
     /* xmlSecKeyDataUsage usage; */
-xmlSecHrefDESKeyValue,                      /* const xmlChar* href; */
-xmlSecNodeDESKeyValue,                      /* const xmlChar* dataNodeName; */
-xmlSecNs,                                   /* const xmlChar* dataNodeNs; */
+    xmlSecHrefDESKeyValue,                      /* const xmlChar* href; */
+    xmlSecNodeDESKeyValue,                      /* const xmlChar* dataNodeName; */
+    xmlSecNs,                                   /* const xmlChar* dataNodeNs; */
 
-/* constructors/destructor */
-xmlSecMSCngSymKeyDataInitialize,            /* xmlSecKeyDataInitializeMethod initialize; */
-xmlSecMSCngSymKeyDataDuplicate,             /* xmlSecKeyDataDuplicateMethod duplicate; */
-xmlSecMSCngSymKeyDataFinalize,              /* xmlSecKeyDataFinalizeMethod finalize; */
-xmlSecMSCngSymKeyDataGenerate,              /* xmlSecKeyDataGenerateMethod generate; */
+    /* constructors/destructor */
+    xmlSecMSCngSymKeyDataInitialize,            /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecMSCngSymKeyDataDuplicate,             /* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecMSCngSymKeyDataFinalize,              /* xmlSecKeyDataFinalizeMethod finalize; */
+    xmlSecMSCngSymKeyDataGenerate,              /* xmlSecKeyDataGenerateMethod generate; */
 
-/* get info */
-xmlSecMSCngSymKeyDataGetType,               /* xmlSecKeyDataGetTypeMethod getType; */
-xmlSecMSCngSymKeyDataGetSize,               /* xmlSecKeyDataGetSizeMethod getSize; */
-    NULL,                                   /* xmlSecKeyDataGetIdentifier getIdentifier; */
+    /* get info */
+    xmlSecMSCngSymKeyDataGetType,               /* xmlSecKeyDataGetTypeMethod getType; */
+    xmlSecMSCngSymKeyDataGetSize,               /* xmlSecKeyDataGetSizeMethod getSize; */
+        NULL,                                   /* xmlSecKeyDataGetIdentifier getIdentifier; */
 
-/* read/write */
-xmlSecMSCngSymKeyDataXmlRead,               /* xmlSecKeyDataXmlReadMethod xmlRead; */
-xmlSecMSCngSymKeyDataXmlWrite,              /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
-xmlSecMSCngSymKeyDataBinRead,               /* xmlSecKeyDataBinReadMethod binRead; */
-xmlSecMSCngSymKeyDataBinWrite,              /* xmlSecKeyDataBinWriteMethod binWrite; */
+    /* read/write */
+    xmlSecMSCngSymKeyDataXmlRead,               /* xmlSecKeyDataXmlReadMethod xmlRead; */
+    xmlSecMSCngSymKeyDataXmlWrite,              /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    xmlSecMSCngSymKeyDataBinRead,               /* xmlSecKeyDataBinReadMethod binRead; */
+    xmlSecMSCngSymKeyDataBinWrite,              /* xmlSecKeyDataBinWriteMethod binWrite; */
 
-/* debug */
-xmlSecMSCngSymKeyDataDebugDump,             /* xmlSecKeyDataDebugDumpMethod debugDump; */
-xmlSecMSCngSymKeyDataDebugXmlDump,          /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+    /* debug */
+    xmlSecMSCngSymKeyDataDebugDump,             /* xmlSecKeyDataDebugDumpMethod debugDump; */
+    xmlSecMSCngSymKeyDataDebugXmlDump,          /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
 
-/* reserved for the future */
-NULL,                                       /* void* reserved0; */
-NULL,                                       /* void* reserved1; */
+    /* reserved for the future */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
 };
 
 /**

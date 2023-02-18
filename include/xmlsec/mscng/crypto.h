@@ -37,6 +37,32 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecMSCngKeysMngrInit      (xmlSecKeys
 
 /********************************************************************
  *
+ * ConcatKDF key and transform
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_CONCATKDF
+
+ /**
+ * xmlSecMSCngKeyDataConcatKdfId:
+ *
+ * The ConcatKDF key klass.
+ */
+#define xmlSecMSCngKeyDataConcatKdfId \
+        xmlSecMSCngKeyDataConcatKdfGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId xmlSecMSCngKeyDataConcatKdfGetKlass(void);
+
+/**
+ * xmlSecMSCngTransformConcatKdfId:
+ *
+ * The ConcatKDF key derivation transform klass.
+ */
+#define xmlSecMSCngTransformConcatKdfId \
+       xmlSecMSCngTransformConcatKdfGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformConcatKdfGetKlass(void);
+#endif /* XMLSEC_NO_CONCATKDF */
+
+/********************************************************************
+ *
  * DSA transforms
  *
  *******************************************************************/
@@ -178,8 +204,6 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformRsaPssSha384GetKlass(
        xmlSecMSCngTransformRsaPssSha512GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformRsaPssSha512GetKlass(void);
 #endif /* XMLSEC_NO_SHA512 */
-
-
 
 /**
  * xmlSecMSCngTransformRsaPkcs1Id:

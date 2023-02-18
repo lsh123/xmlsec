@@ -22,6 +22,7 @@ libxmlsec1_mscng_la_SOURCES =\
 	app.c \
 	certkeys.c \
 	ciphers.c \
+	concatkdf.c \
 	crypto.c \
 	digests.c \
 	globals.h \

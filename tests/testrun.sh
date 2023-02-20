@@ -70,6 +70,10 @@ if [ "z$XMLSEC_DEFAULT_CRYPTO" != "z" ] ; then
 elif [ "z$crypto" != "z" ] ; then
     xmlsec_params="$xmlsec_params --crypto $crypto"
 fi
+# see https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certopensystemstorea
+if [ "z$crypto" = "zmscng" ] ; then
+    crypto_config="MY"
+fi
 xmlsec_params="$xmlsec_params --crypto-config $crypto_config"
 
 #

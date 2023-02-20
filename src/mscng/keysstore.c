@@ -102,8 +102,8 @@ xmlSecMSCngKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
 
     hStore = CertOpenSystemStore(0, storeName);
     if(hStore == NULL) {
-        xmlSecMSCngLastError("CertOpenSystemStore",
-                             xmlSecKeyStoreGetName(store));
+        xmlSecMSCngLastError2("CertOpenSystemStore", xmlSecKeyStoreGetName(store),
+            "name=%s", xmlSecErrorsSafeString(storeName));
         return(NULL);
     }
 

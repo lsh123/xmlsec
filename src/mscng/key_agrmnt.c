@@ -427,8 +427,7 @@ xmlSecMSCngEcdhGenerateSecret(xmlSecMSCngEcdhCtxPtr ctx, xmlSecTransformOperatio
         goto done;
     }
 
-    /* Counter to all the other data in the BCrypt APIs, the raw secret is
-     * returned to us in host byte order, so we need to swap it to big
+    /* the raw secret is returned to us in host byte order, so we need to swap it to big
      * endian order. */
     start = secretData;
     end = secretData + dwSecretLen - 1;
@@ -439,14 +438,6 @@ xmlSecMSCngEcdhGenerateSecret(xmlSecMSCngEcdhCtxPtr ctx, xmlSecTransformOperatio
         start++;
         end--;
     }
-
-    /*
-    printf("DONE: len=%d\n", (int)secretSize);
-    for (xmlSecSize ii = 0; ii < secretSize; ++ii) {
-        printf("%02x ", secretData[ii]);
-    }
-    printf("\n");
-    */
 
     /* success */
     res = 0;

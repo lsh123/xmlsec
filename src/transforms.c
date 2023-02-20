@@ -3003,10 +3003,10 @@ xmlSecTransformEcdhParamsRead(xmlSecTransformEcdhParamsPtr params, xmlNodePtr no
     xmlSecAssert2(transformCtx != NULL, -1);
     xmlSecAssert2(transformCtx->parentKeyInfoCtx != NULL, -1);
 
-    if(transformCtx->parentKeyInfoCtx->mode == xmlSecKeyInfoModeWrite) {
+    if(transformCtx->parentKeyInfoCtx->operation == xmlSecTransformOperationEncrypt) {
         /* we are encrypting on originator side which needs private key */
-        originatorKeyType = xmlSecKeyDataTypePublic;
-        recipientKeyType = xmlSecKeyDataTypePrivate;
+        originatorKeyType = xmlSecKeyDataTypePrivate;
+        recipientKeyType = xmlSecKeyDataTypePublic;
     } else {
         /* we are decrypting on recipient side which needs private key */
         originatorKeyType = xmlSecKeyDataTypePublic;

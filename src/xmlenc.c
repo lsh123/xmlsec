@@ -766,6 +766,7 @@ xmlSecEncCtxEncDataNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
     }
     encCtx->encMethod->operation = encCtx->operation;
     encCtx->keyInfoReadCtx.operation = encCtx->operation;
+    encCtx->keyInfoWriteCtx.operation = encCtx->operation;
 
     /* we have encryption method, find key */
     ret = xmlSecTransformSetKeyReq(encCtx->encMethod, &(encCtx->keyInfoReadCtx.keyReq));
@@ -1261,6 +1262,7 @@ xmlSecEncCtxDerivedKeyGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xm
     encCtx->encMethod->expectedOutputSize = keyInfoCtx->keyReq.keyBitsSize / 8;
     encCtx->encMethod->operation = encCtx->operation;
     encCtx->keyInfoReadCtx.operation = encCtx->operation;
+    encCtx->keyInfoWriteCtx.operation = encCtx->operation;
 
     /* next node */
     cur = xmlSecGetNextElementNode(cur->next);
@@ -1401,6 +1403,7 @@ xmlSecEncCtxAgreementMethodGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyI
     encCtx->encMethod->expectedOutputSize = keyInfoCtx->keyReq.keyBitsSize / 8;
     encCtx->encMethod->operation = encCtx->operation;
     encCtx->keyInfoReadCtx.operation = encCtx->operation;
+    encCtx->keyInfoWriteCtx.operation = encCtx->operation;
 
     /* ecdh transform doesn't require a key, skip SetKeyReq(), FindKey(), and SetKey() */
 

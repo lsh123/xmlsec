@@ -1409,7 +1409,7 @@ execDSigTest $res_fail \
 # since it automaticall stores trusted certs
 if [ "z$crypto" = "znss" ] ;
 then
-    certutil  -D -n "$NSS_TEST_CERT_NICKNAME" -d "$crypto_config"
+    certutil  -D -n "$NSS_TEST_CERT_NICKNAME" -d "$crypto_config_folder"
     if [ $? -ne 0 ]; then
         echo "--- FAILED TO DELETE TRUSTED TEST CERTIFICATE FROM NSS CERT DB. THE NEXT TEST MIGHT FAIL" >> $logfile
         echo "--- FAILED TO DELETE TRUSTED TEST CERTIFICATE FROM NSS CERT DB. THE NEXT TEST MIGHT FAIL"

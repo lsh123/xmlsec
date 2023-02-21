@@ -453,7 +453,7 @@ xmlSecMSCngAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, cons
         goto cleanup;
     }
 
-    DWORD flags = CRYPT_EXPORTABLE;
+    DWORD flags = CRYPT_EXPORTABLE | PKCS12_PREFER_CNG_KSP;
     if (!xmlSecImportGetPersistKey()) {
         flags |= PKCS12_NO_PERSIST_KEY;
     }
@@ -808,7 +808,7 @@ xmlSecMSCngAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename, 
 
     ret = xmlSecMSCngKeysStoreSave(store, filename, type);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecMSCngKeysStoreSave", NULL, "filename%s",
+        xmlSecInternalError2("xmlSecMSCngKeysStoreSave", NULL, "filename=%s",
             xmlSecErrorsSafeString(filename));
         return(-1);
     }

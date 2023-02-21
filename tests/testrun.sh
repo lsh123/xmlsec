@@ -61,14 +61,26 @@ if [ -n "$DEBUG_MEMORY" ] ; then
 fi
 
 #
+# Setup crypto config folder
+#
+crypto_config_folder=$TMPFOLDER/xmlsec-crypto-config
+keysfile=$crypto_config_folder/keys.xml
+mkdir -p $crypto_config_folder
+
+#
 # Setup crypto engine
 #
-crypto_config=$TMPFOLDER/xmlsec-crypto-config
-keysfile=$crypto_config/keys.xml
 if [ "z$XMLSEC_DEFAULT_CRYPTO" != "z" ] ; then
     xmlsec_params="$xmlsec_params --crypto $XMLSEC_DEFAULT_CRYPTO"
 elif [ "z$crypto" != "z" ] ; then
     xmlsec_params="$xmlsec_params --crypto $crypto"
+fi
+
+# see https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certopensystemstorea
+if [ "z$crypto" = "zmscng" ] ; then
+    crypto_config="MY"
+else
+    crypto_config="$crypto_config_folder"
 fi
 xmlsec_params="$xmlsec_params --crypto-config $crypto_config"
 

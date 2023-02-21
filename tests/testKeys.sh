@@ -19,8 +19,8 @@ echo "--- LD_LIBRARY_PATH=$LD_LIBRARY_PATH" >> $logfile
 echo "--- LTDL_LIBRARY_PATH=$LTDL_LIBRARY_PATH" >> $logfile
 
 # cleanup crypto config folder
-mkdir -p $crypto_config
-rm -rf $crypto_config/*
+mkdir -p $crypto_config_folder
+rm -rf $crypto_config_folder/*
 
 # remove old keys file
 rm -rf $keysfile

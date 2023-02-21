@@ -39,7 +39,29 @@
                     (const char*)(errorObject),          \
                     (errorFunction),                     \
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,       \
-                    "MSCng last error: 0x%08lx",         \
+                    "mscng last error: 0x%08lx",         \
+                    (dwError)                            \
+        );                                               \
+    }
+
+ /**
+  * xmlSecMSCngLastError2:
+  * @errorFunction:      the failed function name.
+  * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+  * @msg:                the extra message.
+  * @param:              the extra message param.
+  *
+  * Macro. The XMLSec library macro for reporting crypro errors from GetLastError().
+  */
+#define xmlSecMSCngLastError2(errorFunction, errorObject, msg, param) \
+    {                                                    \
+        DWORD dwError = GetLastError();                  \
+        xmlSecError(XMLSEC_ERRORS_HERE,                  \
+                    (const char*)(errorObject),          \
+                    (errorFunction),                     \
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,       \
+                    msg  "; mscng last error: 0x%08lx",  \
+                    (param),                             \
                     (dwError)                            \
         );                                               \
     }

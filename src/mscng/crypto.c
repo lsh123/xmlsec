@@ -175,6 +175,8 @@ xmlSecCryptoGetFunctions_mscng(void) {
     gXmlSecMSCngFunctions->transformEcdsaSha512GetKlass         = xmlSecMSCngTransformEcdsaSha512GetKlass;
 #endif /* XMLSEC_NO_SHA512 */
 
+    gXmlSecMSCngFunctions->transformEcdhGetKlass                = xmlSecMSCngTransformEcdhGetKlass;
+
 #endif /* XMLSEC_NO_EC */
 
 

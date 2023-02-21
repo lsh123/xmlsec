@@ -302,6 +302,15 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformEcdsaSha384GetKlass(v
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformEcdsaSha512GetKlass(void);
 #endif /* XMLSEC_NO_SHA512 */
 
+/**
+ * xmlSecMSCngTransformEcdhId:
+ *
+ * The ECDH key agreement transform klass.
+ */
+#define xmlSecMSCngTransformEcdhId \
+       xmlSecMSCngTransformEcdhGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformEcdhGetKlass(void);
+
 #endif /* XMLSEC_NO_EC */
 
 /********************************************************************

@@ -27,6 +27,7 @@ libxmlsec1_mscng_la_SOURCES =\
 	digests.c \
 	globals.h \
 	hmac.c \
+	key_agrmnt.c \
 	keysstore.c \
 	kt_rsa.c \
 	kw_aes.c \

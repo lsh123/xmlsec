@@ -71,11 +71,11 @@ static int      xmlSecMSCngPbkdf2CheckId                   (xmlSecTransformPtr t
 static int      xmlSecMSCngPbkdf2Initialize                (xmlSecTransformPtr transform);
 static void     xmlSecMSCngPbkdf2Finalize                  (xmlSecTransformPtr transform);
 static int      xmlSecMSCngPbkdf2SetKeyReq                 (xmlSecTransformPtr transform,
-                                                             xmlSecKeyReqPtr keyReq);
-static int      xmlSecMSCngPbkdf2SetKey                   (xmlSecTransformPtr transform,
-                                                             xmlSecKeyPtr key);
+                                                            xmlSecKeyReqPtr keyReq);
+static int      xmlSecMSCngPbkdf2SetKey                    (xmlSecTransformPtr transform,
+                                                            xmlSecKeyPtr key);
 
-static int      xmlSecMSCngPbkdf2NodeRead                 (xmlSecTransformPtr transform,
+static int      xmlSecMSCngPbkdf2NodeRead                  (xmlSecTransformPtr transform,
                                                             xmlNodePtr node,
                                                             xmlSecTransformCtxPtr transformCtx);
 

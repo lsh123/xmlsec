@@ -46,6 +46,14 @@
 
 #ifndef XMLSEC_NO_EC
 
+/* Mingw has old version of bcrypt.h file */
+#ifndef BCRYPT_ECDSA_PUBLIC_GENERIC_MAGIC
+#define BCRYPT_ECDSA_PUBLIC_GENERIC_MAGIC   0x50444345  // ECDP
+#endif /* BCRYPT_ECDSA_PUBLIC_GENERIC_MAGIC */
+#ifndef BCRYPT_ECDSA_PRIVATE_GENERIC_MAGIC
+#define BCRYPT_ECDSA_PRIVATE_GENERIC_MAGIC  0x56444345  // ECDV
+#endif /* BCRYPT_ECDSA_PRIVATE_GENERIC_MAGIC */
+
 /**************************************************************************
  *
  * ECDH KeyAgreement context.

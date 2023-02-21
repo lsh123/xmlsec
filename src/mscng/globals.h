@@ -60,7 +60,7 @@
                     (const char*)(errorObject),          \
                     (errorFunction),                     \
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,       \
-                    msg  "; mscng error: 0x%08lx",       \
+                    msg  "; mscng last error: 0x%08lx",  \
                     (param),                             \
                     (dwError)                            \
         );                                               \

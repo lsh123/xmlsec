@@ -808,7 +808,7 @@ xmlSecMSCngAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename, 
 
     ret = xmlSecMSCngKeysStoreSave(store, filename, type);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecMSCngKeysStoreSave", NULL, "filename%s",
+        xmlSecInternalError2("xmlSecMSCngKeysStoreSave", NULL, "filename=%s",
             xmlSecErrorsSafeString(filename));
         return(-1);
     }

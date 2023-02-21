@@ -209,18 +209,22 @@ xmlSecMSCngEcdhNodeWrite(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTr
 }
 
 static NCRYPT_KEY_HANDLE
-xmlSecMSCngEcdhGetPublicKey(xmlSecKeyDataPtr keyValue) {
+xmlSecMSCngEcdhGetPublicKey(xmlSecMSCngEcdhCtxPtr ctx, xmlSecKeyDataPtr keyValue, NCRYPT_KEY_HANDLE hPrivKey) {
     BCRYPT_KEY_HANDLE hBCryptKey = 0;
-    NCRYPT_KEY_HANDLE hNCryptKey = 0;
     NCRYPT_PROV_HANDLE hProvider = 0;
+    NCRYPT_KEY_HANDLE hNCryptKey = 0;
+    BCRYPT_KEY_BLOB* pKeyBlob;
     LPCWSTR pszBlobId;
     DWORD cbBlob = 0;
     PUCHAR pbBlob = NULL;
+    DWORD size = 0;
     NTSTATUS status;
 
+    xmlSecAssert2(ctx != NULL, 0);
     xmlSecAssert2(keyValue != NULL, 0);
+    xmlSecAssert2(hPrivKey != 0, 0);
 
-    /* export key */
+    /* export bcrypt key */
     hBCryptKey = xmlSecMSCngKeyDataGetPubKey(keyValue);
     if (hBCryptKey == 0) {
         xmlSecInternalError("keyValue", NULL);
@@ -237,13 +241,11 @@ xmlSecMSCngEcdhGetPublicKey(xmlSecKeyDataPtr keyValue) {
         xmlSecMSCngNtError("BCryptExportKey", NULL, status);
         goto done;
     }
-
     pbBlob = (PUCHAR)xmlMalloc(cbBlob);
     if (pbBlob == NULL) {
         xmlSecMallocError(cbBlob, NULL);
         goto done;
     }
-
     status = BCryptExportKey(hBCryptKey,
         NULL,
         BCRYPT_PUBLIC_KEY_BLOB,
@@ -256,38 +258,46 @@ xmlSecMSCngEcdhGetPublicKey(xmlSecKeyDataPtr keyValue) {
         goto done;
     }
 
-    switch (((BCRYPT_KEY_BLOB*)pbBlob)->Magic) {
-#ifndef XMLSEC_NO_DSA
-    case BCRYPT_DSA_PUBLIC_MAGIC:
-        pszBlobId = BCRYPT_DSA_PUBLIC_BLOB;
-        break;
-#endif
-
-#ifndef XMLSEC_NO_RSA
-    case BCRYPT_RSAPUBLIC_MAGIC:
-        pszBlobId = BCRYPT_RSAPUBLIC_BLOB;
-        break;
-#endif
-
+    /* only support EC keys for now */
+    pKeyBlob = (BCRYPT_KEY_BLOB*)pbBlob;
+    switch (pKeyBlob->Magic) {
 #ifndef XMLSEC_NO_EC
     case BCRYPT_ECDSA_PUBLIC_P256_MAGIC:
+    case BCRYPT_ECDH_PUBLIC_P256_MAGIC:
         pszBlobId = BCRYPT_ECCPUBLIC_BLOB;
+        ((BCRYPT_KEY_BLOB*)pbBlob)->Magic = BCRYPT_ECDH_PUBLIC_P256_MAGIC;
         break;
     case BCRYPT_ECDSA_PUBLIC_P384_MAGIC:
+    case BCRYPT_ECDH_PUBLIC_P384_MAGIC:
         pszBlobId = BCRYPT_ECCPUBLIC_BLOB;
+        ((BCRYPT_KEY_BLOB*)pbBlob)->Magic = BCRYPT_ECDH_PUBLIC_P384_MAGIC;
         break;
     case BCRYPT_ECDSA_PUBLIC_P521_MAGIC:
+    case BCRYPT_ECDH_PUBLIC_P521_MAGIC:
         pszBlobId = BCRYPT_ECCPUBLIC_BLOB;
+        ((BCRYPT_KEY_BLOB*)pbBlob)->Magic = BCRYPT_ECDH_PUBLIC_P521_MAGIC;
         break;
-#endif
+    case BCRYPT_ECDSA_PUBLIC_GENERIC_MAGIC:
+    case BCRYPT_ECDH_PUBLIC_GENERIC_MAGIC:
+        pszBlobId = BCRYPT_ECCPUBLIC_BLOB;
+        ((BCRYPT_KEY_BLOB*)pbBlob)->Magic = BCRYPT_ECDH_PUBLIC_GENERIC_MAGIC;
+        break;
+#endif /* XMLSEC_NO_EC */
     default:
         xmlSecNotImplementedError(NULL);
         goto done;
     }
 
-    status = NCryptOpenStorageProvider(&hProvider, MS_KEY_STORAGE_PROVIDER, 0);
-    if ((status != STATUS_SUCCESS) || (hProvider == 0)) {
-        xmlSecMSCngNtError("NCryptOpenStorageProvider",
+    /* use same provider as the one for private key */
+    status = NCryptGetProperty(
+        hPrivKey,
+        NCRYPT_PROVIDER_HANDLE_PROPERTY,
+        (PBYTE) &(hProvider),
+        sizeof(hProvider),
+        &size,
+        0);
+    if ((status != STATUS_SUCCESS) || (hProvider == 0) || (size != sizeof(hProvider))) {
+        xmlSecMSCngNtError("NCryptGetProperty(provider handle)",
             NULL, status);
         goto done;
     }
@@ -305,6 +315,8 @@ xmlSecMSCngEcdhGetPublicKey(xmlSecKeyDataPtr keyValue) {
             NULL, status);
         goto done;
     }
+
+    /* success! */
 
 done:
     if (pbBlob != NULL) {
@@ -369,13 +381,13 @@ xmlSecMSCngEcdhGenerateSecret(xmlSecMSCngEcdhCtxPtr ctx, xmlSecTransformOperatio
         return(-1);
     }
     /* pubkey is BCRYPT handle, we need to convert it to NCRYPT handle */
-    hOtherPubKey = xmlSecMSCngEcdhGetPublicKey(otherKeyValue);
+    hOtherPubKey = xmlSecMSCngEcdhGetPublicKey(ctx, otherKeyValue, hMyPrivKey);
     if (hOtherPubKey == 0) {
         xmlSecInternalError("xmlSecMSCngEcdhGetPublicKey", NULL);
         return(-1);
     }
-
-    status = NCryptSecretAgreement(hMyPrivKey, hMyPrivKey, &hSecret, NCRYPT_SILENT_FLAG);
+ 
+    status = NCryptSecretAgreement(hMyPrivKey, hOtherPubKey, &hSecret, NCRYPT_SILENT_FLAG);
     if ((status != STATUS_SUCCESS) || (hSecret == 0)) {
         xmlSecMSCngNtError("NCryptSecretAgreement", NULL, status);
         goto done;
@@ -571,7 +583,7 @@ xmlSecMSCngEcdhExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
         /* step 1: generate secret with ecdh */
         ret = xmlSecMSCngEcdhGenerateSecret(ctx, transform->operation, &secret);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecBufferInitialize", xmlSecTransformGetName(transform));
+            xmlSecInternalError("xmlSecMSCngEcdhGenerateSecret", xmlSecTransformGetName(transform));
             xmlSecBufferFinalize(&secret);
             return(-1);
         }

@@ -191,7 +191,8 @@ xmlSecMSCngKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
 
 static xmlSecKeyPtr
 xmlSecMSCngKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
-        xmlSecKeyInfoCtxPtr keyInfoCtx) {
+        xmlSecKeyInfoCtxPtr keyInfoCtx)
+{
     xmlSecKeyStorePtr* ss;
     xmlSecKeyPtr key = NULL;
     xmlSecKeyReqPtr keyReq = NULL;

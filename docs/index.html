@@ -103,7 +103,7 @@ see the Copyright file in the distribution  for details.<br><br></p>
 			</li>
 			<li><b>xmlsec-gnutls library:</b>
 				<ul>
-                    <li>(<b>ABI breaking change</b>) Remove dependency on xmlsec-gcrypt and libgcrypt libraries (including API functions) to enable support for different GnuTLS backends.</li>
+                    <li>(<b>API/ABI breaking change</b>) Removed dependency on xmlsec-gcrypt and libgcrypt libraries (including API functions) to enable support for different GnuTLS backends.</li>
                     <li>Bumped minimal GnuTLS version to 3.6.13.</li>
 					<li>Added support for <a href="https://www.w3.org/TR/xmldsig-core1/#sec-ECDSA">ECDSA signatures</a>.</li>
                     <li>Added support for <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP">DSA-SHA256 signatures</a>.</li>
@@ -117,6 +117,7 @@ see the Copyright file in the distribution  for details.<br><br></p>
                 <ul>
                     <li>Added support for <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.3.10">RSA PSS signatures (withtout parameters)</a>.</li>
                     <li>Added support for <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP">MGF1 algorithm to RSA OAEP key transport</a>.</li>
+                    <li>Added support for <a href="https://www.w3.org/TR/xmlenc-core1/#sec-ECDH-ES">ECDH-ES Key Agreement algorithm</a>.</li>
                     <li>
                         Added support for <a href="https://www.w3.org/TR/xmlenc-core1/#sec-ConcatKDF">ConcatKDF key</a> and
                         <a href="https://www.w3.org/TR/xmlenc-core1/#sec-PBKDF2">PBKDF2</a> derivation algorithms.

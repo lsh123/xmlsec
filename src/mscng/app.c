@@ -453,7 +453,7 @@ xmlSecMSCngAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, cons
         goto cleanup;
     }
 
-    DWORD flags = CRYPT_EXPORTABLE;
+    DWORD flags = CRYPT_EXPORTABLE | PKCS12_PREFER_CNG_KSP;
     if (!xmlSecImportGetPersistKey()) {
         flags |= PKCS12_NO_PERSIST_KEY;
     }

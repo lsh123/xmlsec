@@ -628,6 +628,10 @@ xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(struct _xmlSecCryptoDLFuncti
     XMLSEC_REGISTER_TRANSFORM(EcdsaSha256);                         // transformEcdsaSha256GetKlass
     XMLSEC_REGISTER_TRANSFORM(EcdsaSha384);                         // transformEcdsaSha384GetKlass
     XMLSEC_REGISTER_TRANSFORM(EcdsaSha512);                         // transformEcdsaSha512GetKlass
+    XMLSEC_REGISTER_TRANSFORM(EcdsaSha3_224);                       // transformEcdsaSha3_224GetKlass
+    XMLSEC_REGISTER_TRANSFORM(EcdsaSha3_256);                       // transformEcdsaSha3_256GetKlass
+    XMLSEC_REGISTER_TRANSFORM(EcdsaSha3_384);                       // transformEcdsaSha3_384GetKlass
+    XMLSEC_REGISTER_TRANSFORM(EcdsaSha3_512);                       // transformEcdsaSha3_512GetKlass
     XMLSEC_REGISTER_TRANSFORM(HmacMd5);                             // transformHmacMd5GetKlass
     XMLSEC_REGISTER_TRANSFORM(HmacRipemd160);                       // transformHmacRipemd160GetKlass
     XMLSEC_REGISTER_TRANSFORM(HmacSha1);                            // transformHmacSha1GetKlass
@@ -661,6 +665,10 @@ xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(struct _xmlSecCryptoDLFuncti
     XMLSEC_REGISTER_TRANSFORM(Sha256);                              // transformSha256GetKlass
     XMLSEC_REGISTER_TRANSFORM(Sha384);                              // transformSha384GetKlass
     XMLSEC_REGISTER_TRANSFORM(Sha512);                              // transformSha512GetKlass
+    XMLSEC_REGISTER_TRANSFORM(Sha3_224);                            // transformSha3_224GetKlass
+    XMLSEC_REGISTER_TRANSFORM(Sha3_256);                            // transformSha3_256GetKlass
+    XMLSEC_REGISTER_TRANSFORM(Sha3_384);                            // transformSha3_384GetKlass
+    XMLSEC_REGISTER_TRANSFORM(Sha3_512);                            // transformSha3_512GetKlass
 
     /* done */
     return(0);

@@ -217,6 +217,14 @@ xmlSecCryptoGetFunctions_openssl(void) {
     gXmlSecOpenSSLFunctions->transformEcdsaSha512GetKlass       = xmlSecOpenSSLTransformEcdsaSha512GetKlass;
 #endif /* XMLSEC_NO_SHA512 */
 
+
+#ifndef XMLSEC_NO_SHA3
+    gXmlSecOpenSSLFunctions->transformEcdsaSha3_224GetKlass     = xmlSecOpenSSLTransformEcdsaSha3_224GetKlass;
+    gXmlSecOpenSSLFunctions->transformEcdsaSha3_256GetKlass     = xmlSecOpenSSLTransformEcdsaSha3_256GetKlass;
+    gXmlSecOpenSSLFunctions->transformEcdsaSha3_384GetKlass     = xmlSecOpenSSLTransformEcdsaSha3_384GetKlass;
+    gXmlSecOpenSSLFunctions->transformEcdsaSha3_512GetKlass     = xmlSecOpenSSLTransformEcdsaSha3_512GetKlass;
+#endif /* XMLSEC_NO_SHA3 */
+
 #endif /* XMLSEC_NO_EC */
 
     /******************************* GOST ********************************/
@@ -359,6 +367,14 @@ xmlSecCryptoGetFunctions_openssl(void) {
 #ifndef XMLSEC_NO_SHA512
     gXmlSecOpenSSLFunctions->transformSha512GetKlass            = xmlSecOpenSSLTransformSha512GetKlass;
 #endif /* XMLSEC_NO_SHA512 */
+
+
+#ifndef XMLSEC_NO_SHA3
+    gXmlSecOpenSSLFunctions->transformSha3_224GetKlass          = xmlSecOpenSSLTransformSha3_224GetKlass;
+    gXmlSecOpenSSLFunctions->transformSha3_256GetKlass          = xmlSecOpenSSLTransformSha3_256GetKlass;
+    gXmlSecOpenSSLFunctions->transformSha3_384GetKlass          = xmlSecOpenSSLTransformSha3_384GetKlass;
+    gXmlSecOpenSSLFunctions->transformSha3_512GetKlass          = xmlSecOpenSSLTransformSha3_512GetKlass;
+#endif /* XMLSEC_NO_SHA3 */
 
     /********************************************************************
      *

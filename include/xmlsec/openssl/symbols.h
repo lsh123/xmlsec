@@ -73,12 +73,19 @@ extern "C" {
 #define xmlSecTransformDsaSha1Id                xmlSecOpenSSLTransformDsaSha1Id
 #define xmlSecTransformDsaSha256Id              xmlSecOpenSSLTransformDsaSha256Id
 
+#define xmlSecTransformEcdsaRipemd160Id         xmlSecOpenSSLTransformEcdsaRipemd160Id
+
 #define xmlSecTransformEcdsaSha1Id              xmlSecOpenSSLTransformEcdsaSha1Id
+
 #define xmlSecTransformEcdsaSha224Id            xmlSecOpenSSLTransformEcdsaSha224Id
 #define xmlSecTransformEcdsaSha256Id            xmlSecOpenSSLTransformEcdsaSha256Id
 #define xmlSecTransformEcdsaSha384Id            xmlSecOpenSSLTransformEcdsaSha384Id
 #define xmlSecTransformEcdsaSha512Id            xmlSecOpenSSLTransformEcdsaSha512Id
-#define xmlSecTransformEcdsaRipemd160Id         xmlSecOpenSSLTransformEcdsaRipemd160Id
+
+#define xmlSecTransformEcdsaSha3_224Id          xmlSecOpenSSLTransformEcdsaSha3_224Id
+#define xmlSecTransformEcdsaSha3_256Id          xmlSecOpenSSLTransformEcdsaSha3_256Id
+#define xmlSecTransformEcdsaSha3_384Id          xmlSecOpenSSLTransformEcdsaSha3_384Id
+#define xmlSecTransformEcdsaSha3_512Id          xmlSecOpenSSLTransformEcdsaSha3_512Id
 
 #define xmlSecTransformHmacMd5Id                xmlSecOpenSSLTransformHmacMd5Id
 #define xmlSecTransformHmacRipemd160Id          xmlSecOpenSSLTransformHmacRipemd160Id
@@ -111,10 +118,16 @@ extern "C" {
 #define xmlSecTransformRsaOaepEnc11Id           xmlSecOpenSSLTransformRsaOaepEnc11Id
 
 #define xmlSecTransformSha1Id                   xmlSecOpenSSLTransformSha1Id
+
 #define xmlSecTransformSha224Id                 xmlSecOpenSSLTransformSha224Id
 #define xmlSecTransformSha256Id                 xmlSecOpenSSLTransformSha256Id
 #define xmlSecTransformSha384Id                 xmlSecOpenSSLTransformSha384Id
 #define xmlSecTransformSha512Id                 xmlSecOpenSSLTransformSha512Id
+
+#define xmlSecTransformSha3_224Id               xmlSecOpenSSLTransformSha3_224Id
+#define xmlSecTransformSha3_256Id               xmlSecOpenSSLTransformSha3_256Id
+#define xmlSecTransformSha3_384Id               xmlSecOpenSSLTransformSha3_384Id
+#define xmlSecTransformSha3_512Id               xmlSecOpenSSLTransformSha3_512Id
 
 #define xmlSecTransformGost2001GostR3411_94Id   xmlSecOpenSSLTransformGost2001GostR3411_94Id
 #define xmlSecTransformGostR3411_94Id           xmlSecOpenSSLTransformGostR3411_94Id

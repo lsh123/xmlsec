@@ -282,6 +282,9 @@ const xmlChar xmlSecHrefEcdh[]                  = "http://www.w3.org/2009/xmlenc
  * ECDSA sigantures strings
  *
  ************************************************************************/
+const xmlChar xmlSecNameEcdsaRipemd160[]        = "ecdsa-ripemd160";
+const xmlChar xmlSecHrefEcdsaRipemd160[]        = "http://www.w3.org/2001/04/xmldsig-more#ecdsa-ripemd160";
+
 const xmlChar xmlSecNameEcdsaSha1[]             = "ecdsa-sha1";
 const xmlChar xmlSecHrefEcdsaSha1[]             = "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha1";
 
@@ -297,8 +300,18 @@ const xmlChar xmlSecHrefEcdsaSha384[]           = "http://www.w3.org/2001/04/xml
 const xmlChar xmlSecNameEcdsaSha512[]           = "ecdsa-sha512";
 const xmlChar xmlSecHrefEcdsaSha512[]           = "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha512";
 
-const xmlChar xmlSecNameEcdsaRipemd160[]        = "ecdsa-ripemd160";
-const xmlChar xmlSecHrefEcdsaRipemd160[]        = "http://www.w3.org/2001/04/xmldsig-more#ecdsa-ripemd160";
+const xmlChar xmlSecNameEcdsaSha3_224[]         = "ecdsa-sha3-224";
+const xmlChar xmlSecHrefEcdsaSha3_224[]         = "http://www.w3.org/2021/04/xmldsig-more#ecdsa-sha3-224";
+
+const xmlChar xmlSecNameEcdsaSha3_256[]         = "ecdsa-sha3-256";
+const xmlChar xmlSecHrefEcdsaSha3_256[]         = "http://www.w3.org/2021/04/xmldsig-more#ecdsa-sha3-256";
+
+const xmlChar xmlSecNameEcdsaSha3_384[]         = "ecdsa-sha3-384";
+const xmlChar xmlSecHrefEcdsaSha3_384[]         = "http://www.w3.org/2021/04/xmldsig-more#ecdsa-sha3-384";
+
+const xmlChar xmlSecNameEcdsaSha3_512[]         = "ecdsa-sha3-512";
+const xmlChar xmlSecHrefEcdsaSha3_512[]         = "http://www.w3.org/2021/04/xmldsig-more#ecdsa-sha3-512";
+
 
 /*************************************************************************
  *
@@ -531,12 +544,17 @@ const xmlChar xmlSecHrefGostR3411_2012_512[]                  = "urn:ietf:params
 
 /*************************************************************************
  *
- * SHA1/2 strings
+ * SHA1 strings
  *
  ************************************************************************/
 const xmlChar xmlSecNameSha1[]                  = "sha1";
 const xmlChar xmlSecHrefSha1[]                  = "http://www.w3.org/2000/09/xmldsig#sha1";
 
+/*************************************************************************
+ *
+ * SHA2 strings
+ *
+ ************************************************************************/
 const xmlChar xmlSecNameSha224[]                = "sha224";
 const xmlChar xmlSecHrefSha224[]                = "http://www.w3.org/2001/04/xmldsig-more#sha224";
 
@@ -548,6 +566,23 @@ const xmlChar xmlSecHrefSha384[]                = "http://www.w3.org/2001/04/xml
 
 const xmlChar xmlSecNameSha512[]                = "sha512";
 const xmlChar xmlSecHrefSha512[]                = "http://www.w3.org/2001/04/xmlenc#sha512";
+
+/*************************************************************************
+ *
+ * SHA3 strings
+ *
+ ************************************************************************/
+const xmlChar xmlSecNameSha3_224[]              = "sha3-224";
+const xmlChar xmlSecHrefSha3_224[]              = "http://www.w3.org/2007/05/xmldsig-more#sha3-224";
+
+const xmlChar xmlSecNameSha3_256[]              = "sha3-256";
+const xmlChar xmlSecHrefSha3_256[]              = "http://www.w3.org/2007/05/xmldsig-more#sha3-256";
+
+const xmlChar xmlSecNameSha3_384[]              = "sha3-384";
+const xmlChar xmlSecHrefSha3_384[]              = "http://www.w3.org/2007/05/xmldsig-more#sha3-384";
+
+const xmlChar xmlSecNameSha3_512[]              = "sha3-512";
+const xmlChar xmlSecHrefSha3_512[]              = "http://www.w3.org/2007/05/xmldsig-more#sha3-512";
 
 /*************************************************************************
  *

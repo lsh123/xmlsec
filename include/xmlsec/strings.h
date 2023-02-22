@@ -253,6 +253,9 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEcdh[];
  * ECDSA sigantures strings
  *
  ************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameEcdsaRipemd160[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEcdsaRipemd160[];
+
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameEcdsaSha1[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEcdsaSha1[];
 
@@ -268,8 +271,17 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEcdsaSha384[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameEcdsaSha512[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEcdsaSha512[];
 
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNameEcdsaRipemd160[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEcdsaRipemd160[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameEcdsaSha3_224[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEcdsaSha3_224[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameEcdsaSha3_256[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEcdsaSha3_256[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameEcdsaSha3_384[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEcdsaSha3_384[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameEcdsaSha3_512[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEcdsaSha3_512[];
 
 /*************************************************************************
  *
@@ -377,6 +389,7 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefHmacSha384[];
 
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameHmacSha512[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefHmacSha512[];
+
 
 /*************************************************************************
  *
@@ -540,6 +553,11 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefGostR3411_2012_512[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameSha1[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefSha1[];
 
+/*************************************************************************
+ *
+ * SHA2 strings
+ *
+ ************************************************************************/
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameSha224[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefSha224[];
 
@@ -551,6 +569,24 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefSha384[];
 
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameSha512[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefSha512[];
+
+/*************************************************************************
+ *
+ * SHA3 strings
+ *
+ ************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameSha3_224[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefSha3_224[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameSha3_256[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefSha3_256[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameSha3_384[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefSha3_384[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameSha3_512[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefSha3_512[];
+
 
 /*************************************************************************
  *

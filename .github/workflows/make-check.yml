@@ -102,9 +102,10 @@ jobs:
     - name: install dependencies
       run: |
           brew update
+          brew unlink pkg-config
           brew install automake autoconf pkgconf libtool
-          # brew install libxml2 libxslt libgcrypt
-          brew install openssl nspr nss
+          # brew install libxml2 libxslt
+          brew install openssl nspr nss libgcrypt gnutls
     - uses: actions/checkout@v2
     - name: create-build-dirs
       run: |
@@ -280,4 +281,3 @@ jobs:
       run: |
           call "${{ env.VISUAL_STUDIO_ROOT }}\VC\Auxiliary\Build\vcvars64.bat"
           nmake install
-      

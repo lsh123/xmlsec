@@ -193,6 +193,10 @@ ECDSA keys:
 openssl ec -inform PEM -outform DER -in ecdsa-secp256r1-key.pem -out ecdsa-secp256r1-key.der
 openssl ec -inform PEM -outform DER -in ecdsa-secp384r1-key.pem -out ecdsa-secp384r1-key.der
 openssl ec -inform PEM -outform DER -in ecdsa-secp521r1-key.pem -out ecdsa-secp521r1-key.der
+
+openssl ec -inform PEM -outform DER -in ecdsa-secp256r1-key.pem -pubout -out ecdsa-secp256r1-pubkey.der
+openssl ec -inform PEM -outform DER -in ecdsa-secp384r1-key.pem -pubout -out ecdsa-secp384r1-pubkey.der
+openssl ec -inform PEM -outform DER -in ecdsa-secp521r1-key.pem -pubout -out ecdsa-secp521r1-pubkey.der
 ```
 
 ### Convert PEM cert file to DER file (IMPORTANT: use OpenSSL 1.x for generating DER files!!!)

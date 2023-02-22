@@ -268,6 +268,9 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEcdsaSha384[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameEcdsaSha512[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEcdsaSha512[];
 
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameEcdsaRipemd160[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEcdsaRipemd160[];
+
 /*************************************************************************
  *
  * GOST2001 strings

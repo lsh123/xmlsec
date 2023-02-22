@@ -297,6 +297,9 @@ const xmlChar xmlSecHrefEcdsaSha384[]           = "http://www.w3.org/2001/04/xml
 const xmlChar xmlSecNameEcdsaSha512[]           = "ecdsa-sha512";
 const xmlChar xmlSecHrefEcdsaSha512[]           = "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha512";
 
+const xmlChar xmlSecNameEcdsaRipemd160[]        = "ecdsa-ripemd160";
+const xmlChar xmlSecHrefEcdsaRipemd160[]        = "http://www.w3.org/2001/04/xmldsig-more#ecdsa-ripemd160";
+
 /*************************************************************************
  *
  * EncryptedKey

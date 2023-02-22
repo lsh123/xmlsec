@@ -193,6 +193,10 @@ xmlSecCryptoGetFunctions_openssl(void) {
 
     gXmlSecOpenSSLFunctions->transformEcdhGetKlass              = xmlSecOpenSSLTransformEcdhGetKlass;
 
+#ifndef XMLSEC_NO_RIPEMD160
+    gXmlSecOpenSSLFunctions->transformEcdsaRipemd160GetKlass     = xmlSecOpenSSLTransformEcdsaRipemd160GetKlass;
+#endif /* XMLSEC_NO_RIPEMD160 */
+
 #ifndef XMLSEC_NO_SHA1
     gXmlSecOpenSSLFunctions->transformEcdsaSha1GetKlass         = xmlSecOpenSSLTransformEcdsaSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */

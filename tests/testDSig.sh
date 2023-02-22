@@ -710,6 +710,44 @@ execDSigTest $res_success \
     "$priv_key_option $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
+
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloping-rsa-pss-sha3_224" \
+    "sha3-224 rsa-pss-sha3-224" \
+    "rsa x509" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+    "$priv_key_option $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloping-rsa-pss-sha3_256" \
+    "sha3-256 rsa-pss-sha3-256" \
+    "rsa x509" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+    "$priv_key_option $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloping-rsa-pss-sha3_384" \
+    "sha3-384 rsa-pss-sha3-384" \
+    "rsa x509" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+    "$priv_key_option $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloping-rsa-pss-sha3_512" \
+    "sha3-512 rsa-pss-sha3-512" \
+    "rsa x509" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+    "$priv_key_option $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+
+
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloping-sha256-dsa2048-sha256" \
@@ -767,33 +805,81 @@ execDSigTest $res_success \
     "$priv_key_option:LargeRsaKey $topfolder/keys/largersakey.$priv_key_format --pwd secret123" \
     "$priv_key_option:LargeRsaKey $topfolder/keys/largersakey.$priv_key_format --pwd secret123"
 
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloped-sha224-ecdsa-sha224" \
+    "sha224 ecdsa-sha224" \
+    "ec" \
+    "$pub_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-pubkey.$pub_key_format" \
+    "$priv_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
+    "$pub_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-pubkey.$pub_key_format"
+
 
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloped-sha256-ecdsa-sha256" \
     "sha256 ecdsa-sha256" \
     "ec" \
+    "$pub_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-pubkey.$pub_key_format" \
     "$priv_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
-    "$priv_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
-    "$priv_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123"
+    "$pub_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-pubkey.$pub_key_format"
+
 
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloped-sha384-ecdsa-sha384" \
     "sha384 ecdsa-sha384" \
     "ec" \
+    "$pub_key_option:EcdsaSecp521r1 $topfolder/keys/ecdsa-secp521r1-pubkey.$pub_key_format" \
     "$priv_key_option:EcdsaSecp521r1 $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
-    "$priv_key_option:EcdsaSecp521r1 $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
-    "$priv_key_option:EcdsaSecp521r1 $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123"
+    "$pub_key_option:EcdsaSecp521r1 $topfolder/keys/ecdsa-secp521r1-pubkey.$pub_key_format"
 
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloped-sha512-ecdsa-sha512" \
     "sha512 ecdsa-sha512" \
     "ec" \
+    "$pub_key_option:EcdsaSecp521r1 $topfolder/keys/ecdsa-secp521r1-pubkey.$pub_key_format" \
     "$priv_key_option:EcdsaSecp521r1 $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
+    "$pub_key_option:EcdsaSecp521r1 $topfolder/keys/ecdsa-secp521r1-pubkey.$pub_key_format"
+
+
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloped-sha3_224-ecdsa-sha3_224" \
+    "sha3-224 ecdsa-sha3-224" \
+    "ec" \
+    "$pub_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-pubkey.$pub_key_format" \
+    "$priv_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
+    "$pub_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-pubkey.$pub_key_format"
+
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloped-sha3_256-ecdsa-sha3_256" \
+    "sha3-256 ecdsa-sha3-256" \
+    "ec" \
+    "$pub_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-pubkey.$pub_key_format" \
+    "$priv_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
+    "$pub_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-pubkey.$pub_key_format"
+
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloped-sha3_384-ecdsa-sha3_384" \
+    "sha3-384 ecdsa-sha3-384" \
+    "ec" \
+    "$pub_key_option:EcdsaSecp521r1 $topfolder/keys/ecdsa-secp521r1-pubkey.$pub_key_format" \
     "$priv_key_option:EcdsaSecp521r1 $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
-    "$priv_key_option:EcdsaSecp521r1 $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123"
+    "$pub_key_option:EcdsaSecp521r1 $topfolder/keys/ecdsa-secp521r1-pubkey.$pub_key_format"
+
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloped-sha3_512-ecdsa-sha3_512" \
+    "sha3-512 ecdsa-sha3-512" \
+    "ec" \
+    "$pub_key_option:EcdsaSecp521r1 $topfolder/keys/ecdsa-secp521r1-pubkey.$pub_key_format" \
+    "$priv_key_option:EcdsaSecp521r1 $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
+    "$pub_key_option:EcdsaSecp521r1 $topfolder/keys/ecdsa-secp521r1-pubkey.$pub_key_format"
+
 
 execDSigTest $res_success \
     "" \

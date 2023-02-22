@@ -1970,6 +1970,21 @@ fi
 AM_CONDITIONAL(XMLSEC_NO_SHA512, test "z$XMLSEC_NO_SHA512" = "z1")
 AC_SUBST(XMLSEC_NO_SHA512)
 
+dnl ==========================================================================
+dnl See do we need SHA3 support
+dnl ==========================================================================
+AC_MSG_CHECKING(for SHA3 support)
+AC_ARG_ENABLE([sha3], [AS_HELP_STRING([--enable-sha3],[enable SHA3 support (yes)])])
+if test "z$enable_sha3" = "zno" ; then
+    XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_SHA3=1"
+    XMLSEC_NO_SHA3="1"
+    AC_MSG_RESULT([disabled])
+else
+    XMLSEC_NO_SHA3="0"
+    AC_MSG_RESULT([yes])
+fi
+AM_CONDITIONAL(XMLSEC_NO_SHA3, test "z$XMLSEC_NO_SHA3" = "z1")
+AC_SUBST(XMLSEC_NO_SHA3)
 
 dnl ==========================================================================
 dnl See do we need HMAC support

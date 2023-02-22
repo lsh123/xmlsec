@@ -371,10 +371,14 @@ typedef int                     (*xmlSecCryptoAppKeyCertLoadMemoryMethod)(xmlSec
  * @transformEcdhGetKlass:      the method to get pointer to ECDH key agreement transform.
  * @transformEcdsaRipemd160GetKlass: the method to get pointer to ECDSA-RIPEMD160 signature transform.
  * @transformEcdsaSha1GetKlass: the method to get pointer to ECDSA-SHA1 signature transform.
- * @transformEcdsaSha224GetKlass: the method to get pointer to ECDSA-SHA224 signature transform.
- * @transformEcdsaSha256GetKlass: the method to get pointer to ECDSA-SHA256 signature transform.
- * @transformEcdsaSha384GetKlass: the method to get pointer to ECDSA-SHA384 signature transform.
- * @transformEcdsaSha512GetKlass: the method to get pointer to ECDSA-SHA512 signature transform.
+ * @transformEcdsaSha224GetKlass: the method to get pointer to ECDSA-SHA2-224 signature transform.
+ * @transformEcdsaSha256GetKlass: the method to get pointer to ECDSA-SHA2-256 signature transform.
+ * @transformEcdsaSha384GetKlass: the method to get pointer to ECDSA-SHA2-384 signature transform.
+ * @transformEcdsaSha512GetKlass: the method to get pointer to ECDSA-SHA2-512 signature transform.
+ * @transformEcdsaSha3_224GetKlass: the method to get pointer to ECDSA-SHA3-224 signature transform.
+ * @transformEcdsaSha3_256GetKlass: the method to get pointer to ECDSA-SHA3-256 signature transform.
+ * @transformEcdsaSha3_384GetKlass: the method to get pointer to ECDSA-SHA3-384 signature transform.
+ * @transformEcdsaSha3_512GetKlass: the method to get pointer to ECDSA-SHA3-512 signature transform.
  * @transformGost2001GostR3411_94GetKlass: the method to get pointer to GOST2001 transform.
  * @transformGostR3410_2012GostR3411_2012_256GetKlass: the method to get pointer to GOST R 34.10-2012 - GOST R 34.11-2012 256bit transform.
  * @transformGostR3410_2012GostR3411_2012_512GetKlass: the method to get pointer to GOST R 34.10-2012 - GOST R 34.11_2012 512bit transform.
@@ -400,6 +404,10 @@ typedef int                     (*xmlSecCryptoAppKeyCertLoadMemoryMethod)(xmlSec
  * @transformRsaPssSha256GetKlass: the method to get pointer to RSA-PSS-SHA256 signature transform.
  * @transformRsaPssSha384GetKlass: the method to get pointer to RSA-PSS-SHA384 signature transform.
  * @transformRsaPssSha512GetKlass: the method to get pointer to RSA-PSS-SHA512 signature transform.
+ * @transformRsaPssSha3_224GetKlass: the method to get pointer to RSA-PSS-SHA224 signature transform.
+ * @transformRsaPssSha3_256GetKlass: the method to get pointer to RSA-PSS-SHA256 signature transform.
+ * @transformRsaPssSha3_384GetKlass: the method to get pointer to RSA-PSS-SHA384 signature transform.
+ * @transformRsaPssSha3_512GetKlass: the method to get pointer to RSA-PSS-SHA512 signature transform.
  * @transformRsaPkcs1GetKlass:  the method to get pointer to RSA-PKCS1_5 key transport transform.
  * @transformRsaOaepGetKlass:   the method to get pointer to RSA-OAEP key transport transform (XMLEnc 1.0).
  * @transformRsaOaepEnc11GetKlass: the method to get pointer to RSA-OAEP key transport transform (XMLEnc 1.1).
@@ -407,10 +415,14 @@ typedef int                     (*xmlSecCryptoAppKeyCertLoadMemoryMethod)(xmlSec
  * @transformGostR3411_2012_256GetKlass: the method to get pointer to GOST R 34.11-2012 256 bit transform.
  * @transformGostR3411_2012_512GetKlass: the method to get pointer to GOST R 34.11-2012 512 bit transform.
  * @transformSha1GetKlass:      the method to get pointer to SHA1 digest transform.
- * @transformSha224GetKlass:    the method to get pointer to SHA224 digest transform.
- * @transformSha256GetKlass:    the method to get pointer to SHA256 digest transform.
- * @transformSha384GetKlass:    the method to get pointer to SHA384 digest transform.
- * @transformSha512GetKlass:    the method to get pointer to SHA512 digest transform.
+ * @transformSha224GetKlass:    the method to get pointer to SHA2-224 digest transform.
+ * @transformSha256GetKlass:    the method to get pointer to SHA2-256 digest transform.
+ * @transformSha384GetKlass:    the method to get pointer to SHA2-384 digest transform.
+ * @transformSha512GetKlass:    the method to get pointer to SHA2-512 digest transform.
+ * @transformSha3_224GetKlass:    the method to get pointer to SHA3-224 digest transform.
+ * @transformSha3_256GetKlass:    the method to get pointer to SHA3-256 digest transform.
+ * @transformSha3_384GetKlass:    the method to get pointer to SHA3-384 digest transform.
+ * @transformSha3_512GetKlass:    the method to get pointer to SHA3-512 digest transform.
  * @cryptoAppInit:              the default crypto engine initialization method.
  * @cryptoAppShutdown:          the default crypto engine shutdown method.
  * @cryptoAppDefaultKeysMngrInit:       the default keys manager init method.
@@ -475,6 +487,10 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoTransformGetKlassMethod          transformEcdsaSha256GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformEcdsaSha384GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformEcdsaSha512GetKlass;
+    xmlSecCryptoTransformGetKlassMethod          transformEcdsaSha3_224GetKlass;
+    xmlSecCryptoTransformGetKlassMethod          transformEcdsaSha3_256GetKlass;
+    xmlSecCryptoTransformGetKlassMethod          transformEcdsaSha3_384GetKlass;
+    xmlSecCryptoTransformGetKlassMethod          transformEcdsaSha3_512GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformGost2001GostR3411_94GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformGostR3410_2012GostR3411_2012_256GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformGostR3410_2012GostR3411_2012_512GetKlass;
@@ -498,10 +514,16 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoTransformGetKlassMethod          transformRsaSha512GetKlass;
 
     xmlSecCryptoTransformGetKlassMethod          transformRsaPssSha1GetKlass;
+
     xmlSecCryptoTransformGetKlassMethod          transformRsaPssSha224GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformRsaPssSha256GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformRsaPssSha384GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformRsaPssSha512GetKlass;
+
+    xmlSecCryptoTransformGetKlassMethod          transformRsaPssSha3_224GetKlass;
+    xmlSecCryptoTransformGetKlassMethod          transformRsaPssSha3_256GetKlass;
+    xmlSecCryptoTransformGetKlassMethod          transformRsaPssSha3_384GetKlass;
+    xmlSecCryptoTransformGetKlassMethod          transformRsaPssSha3_512GetKlass;
 
     xmlSecCryptoTransformGetKlassMethod          transformRsaPkcs1GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformRsaOaepGetKlass;
@@ -509,11 +531,18 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoTransformGetKlassMethod          transformGostR3411_94GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformGostR3411_2012_256GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformGostR3411_2012_512GetKlass;
+
     xmlSecCryptoTransformGetKlassMethod          transformSha1GetKlass;
+
     xmlSecCryptoTransformGetKlassMethod          transformSha224GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformSha256GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformSha384GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformSha512GetKlass;
+
+    xmlSecCryptoTransformGetKlassMethod          transformSha3_224GetKlass;
+    xmlSecCryptoTransformGetKlassMethod          transformSha3_256GetKlass;
+    xmlSecCryptoTransformGetKlassMethod          transformSha3_384GetKlass;
+    xmlSecCryptoTransformGetKlassMethod          transformSha3_512GetKlass;
 
     /* High level routines form xmlsec command line utility */
     xmlSecCryptoAppInitMethod                    cryptoAppInit;

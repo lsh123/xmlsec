@@ -116,6 +116,21 @@ xmlSecOpenSSLEvpDigestCheckId(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_SHA512 */
 
+#ifndef XMLSEC_NO_SHA3
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSha3_224Id)) {
+        return(1);
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSha3_256Id)) {
+        return(1);
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSha3_384Id)) {
+        return(1);
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSha3_512Id)) {
+        return(1);
+    } else
+#endif /* XMLSEC_NO_SHA3 */
+
 #ifndef XMLSEC_NO_GOST
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformGostR3411_94Id)) {
         return(1);
@@ -234,6 +249,21 @@ xmlSecOpenSSLEvpDigestInitialize(xmlSecTransformPtr transform) {
         XMLSEC_OPENSSL_EVP_DIGEST_SETUP(ctx, EVP_sha512(), OSSL_DIGEST_NAME_SHA2_512);
     } else
 #endif /* XMLSEC_NO_SHA512 */
+
+#ifndef XMLSEC_NO_SHA3
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSha3_224Id)) {
+        XMLSEC_OPENSSL_EVP_DIGEST_SETUP(ctx, EVP_sha3_224(), OSSL_DIGEST_NAME_SHA3_224);
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSha3_256Id)) {
+        XMLSEC_OPENSSL_EVP_DIGEST_SETUP(ctx, EVP_sha3_256(), OSSL_DIGEST_NAME_SHA3_256);
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSha3_384Id)) {
+        XMLSEC_OPENSSL_EVP_DIGEST_SETUP(ctx, EVP_sha3_384(), OSSL_DIGEST_NAME_SHA3_384);
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSha3_512Id)) {
+        XMLSEC_OPENSSL_EVP_DIGEST_SETUP(ctx, EVP_sha3_512(), OSSL_DIGEST_NAME_SHA3_512);
+    } else
+#endif /* XMLSEC_NO_SHA3 */
 
 #ifndef XMLSEC_NO_GOST
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformGostR3411_94Id)) {
@@ -601,7 +631,7 @@ xmlSecOpenSSLTransformSha1GetKlass(void) {
 #ifndef XMLSEC_NO_SHA224
 /******************************************************************************
  *
- * SHA224
+ * SHA2-224
  *
  *****************************************************************************/
 static xmlSecTransformKlass xmlSecOpenSSLSha224Klass = {
@@ -634,9 +664,9 @@ static xmlSecTransformKlass xmlSecOpenSSLSha224Klass = {
 /**
  * xmlSecOpenSSLTransformSha224GetKlass:
  *
- * SHA-224 digest transform klass.
+ * SHA2-224 digest transform klass.
  *
- * Returns: pointer to SHA-224 digest transform klass.
+ * Returns: pointer to SHA2-224 digest transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformSha224GetKlass(void) {
@@ -647,7 +677,7 @@ xmlSecOpenSSLTransformSha224GetKlass(void) {
 #ifndef XMLSEC_NO_SHA256
 /******************************************************************************
  *
- * SHA256
+ * SHA2-256
  *
  *****************************************************************************/
 static xmlSecTransformKlass xmlSecOpenSSLSha256Klass = {
@@ -680,9 +710,9 @@ static xmlSecTransformKlass xmlSecOpenSSLSha256Klass = {
 /**
  * xmlSecOpenSSLTransformSha256GetKlass:
  *
- * SHA-256 digest transform klass.
+ * SHA2-256 digest transform klass.
  *
- * Returns: pointer to SHA-256 digest transform klass.
+ * Returns: pointer to SHA2-256 digest transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformSha256GetKlass(void) {
@@ -693,7 +723,7 @@ xmlSecOpenSSLTransformSha256GetKlass(void) {
 #ifndef XMLSEC_NO_SHA384
 /******************************************************************************
  *
- * SHA384
+ * SHA2-384
  *
  *****************************************************************************/
 static xmlSecTransformKlass xmlSecOpenSSLSha384Klass = {
@@ -726,9 +756,9 @@ static xmlSecTransformKlass xmlSecOpenSSLSha384Klass = {
 /**
  * xmlSecOpenSSLTransformSha384GetKlass:
  *
- * SHA-384 digest transform klass.
+ * SHA2-384 digest transform klass.
  *
- * Returns: pointer to SHA-384 digest transform klass.
+ * Returns: pointer to SHA2-384 digest transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformSha384GetKlass(void) {
@@ -739,7 +769,7 @@ xmlSecOpenSSLTransformSha384GetKlass(void) {
 #ifndef XMLSEC_NO_SHA512
 /******************************************************************************
  *
- * SHA512
+ * SHA2-512
  *
  *****************************************************************************/
 static xmlSecTransformKlass xmlSecOpenSSLSha512Klass = {
@@ -772,15 +802,194 @@ static xmlSecTransformKlass xmlSecOpenSSLSha512Klass = {
 /**
  * xmlSecOpenSSLTransformSha512GetKlass:
  *
- * SHA-512 digest transform klass.
+ * SHA2-512 digest transform klass.
  *
- * Returns: pointer to SHA-512 digest transform klass.
+ * Returns: pointer to SHA2-512 digest transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformSha512GetKlass(void) {
     return(&xmlSecOpenSSLSha512Klass);
 }
 #endif /* XMLSEC_NO_SHA512 */
+
+
+#ifndef XMLSEC_NO_SHA3
+/******************************************************************************
+ *
+ * SHA3-224
+ *
+ *****************************************************************************/
+static xmlSecTransformKlass xmlSecOpenSSLSha3_224Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecOpenSSLEvpDigestSize,                 /* xmlSecSize objSize */
+
+    xmlSecNameSha3_224,                         /* const xmlChar* name; */
+    xmlSecHrefSha3_224,                         /* const xmlChar* href; */
+    xmlSecTransformUsageDigestMethod,           /* xmlSecTransformUsage usage; */
+
+    xmlSecOpenSSLEvpDigestInitialize,           /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecOpenSSLEvpDigestFinalize,             /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecOpenSSLEvpDigestVerify,               /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecOpenSSLEvpDigestExecute,              /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecOpenSSLTransformSha3_224GetKlass:
+ *
+ * SHA3-224 digest transform klass.
+ *
+ * Returns: pointer to SHA3-224 digest transform klass.
+ */
+xmlSecTransformId
+xmlSecOpenSSLTransformSha3_224GetKlass(void) {
+    return(&xmlSecOpenSSLSha3_224Klass);
+}
+
+/******************************************************************************
+ *
+ * SHA3-256
+ *
+ *****************************************************************************/
+static xmlSecTransformKlass xmlSecOpenSSLSha3_256Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecOpenSSLEvpDigestSize,                 /* xmlSecSize objSize */
+
+    xmlSecNameSha3_256,                         /* const xmlChar* name; */
+    xmlSecHrefSha3_256,                         /* const xmlChar* href; */
+    xmlSecTransformUsageDigestMethod,           /* xmlSecTransformUsage usage; */
+
+    xmlSecOpenSSLEvpDigestInitialize,           /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecOpenSSLEvpDigestFinalize,             /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecOpenSSLEvpDigestVerify,               /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecOpenSSLEvpDigestExecute,              /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecOpenSSLTransformSha3_256GetKlass:
+ *
+ * SHA3-256 digest transform klass.
+ *
+ * Returns: pointer to SHA3-256 digest transform klass.
+ */
+xmlSecTransformId
+xmlSecOpenSSLTransformSha3_256GetKlass(void) {
+    return(&xmlSecOpenSSLSha3_256Klass);
+}
+
+/******************************************************************************
+ *
+ * SHA3-384
+ *
+ *****************************************************************************/
+static xmlSecTransformKlass xmlSecOpenSSLSha3_384Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecOpenSSLEvpDigestSize,                 /* xmlSecSize objSize */
+
+    xmlSecNameSha3_384,                         /* const xmlChar* name; */
+    xmlSecHrefSha3_384,                         /* const xmlChar* href; */
+    xmlSecTransformUsageDigestMethod,           /* xmlSecTransformUsage usage; */
+
+    xmlSecOpenSSLEvpDigestInitialize,           /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecOpenSSLEvpDigestFinalize,             /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecOpenSSLEvpDigestVerify,               /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecOpenSSLEvpDigestExecute,              /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecOpenSSLTransformSha3_384GetKlass:
+ *
+ * SHA3-384 digest transform klass.
+ *
+ * Returns: pointer to SHA3-384 digest transform klass.
+ */
+xmlSecTransformId
+xmlSecOpenSSLTransformSha3_384GetKlass(void) {
+    return(&xmlSecOpenSSLSha3_384Klass);
+}
+
+/******************************************************************************
+ *
+ * SHA3-512
+ *
+ *****************************************************************************/
+static xmlSecTransformKlass xmlSecOpenSSLSha3_512Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecOpenSSLEvpDigestSize,                 /* xmlSecSize objSize */
+
+    xmlSecNameSha3_512,                         /* const xmlChar* name; */
+    xmlSecHrefSha3_512,                         /* const xmlChar* href; */
+    xmlSecTransformUsageDigestMethod,           /* xmlSecTransformUsage usage; */
+
+    xmlSecOpenSSLEvpDigestInitialize,           /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecOpenSSLEvpDigestFinalize,             /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecOpenSSLEvpDigestVerify,               /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecOpenSSLEvpDigestExecute,              /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecOpenSSLTransformSha3_512GetKlass:
+ *
+ * SHA3-512 digest transform klass.
+ *
+ * Returns: pointer to SHA3-512 digest transform klass.
+ */
+xmlSecTransformId
+xmlSecOpenSSLTransformSha3_512GetKlass(void) {
+    return(&xmlSecOpenSSLSha3_512Klass);
+}
+#endif /* XMLSEC_NO_SHA3 */
 
 #ifndef XMLSEC_NO_GOST
 /******************************************************************************

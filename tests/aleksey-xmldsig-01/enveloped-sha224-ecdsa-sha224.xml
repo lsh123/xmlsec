@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Envelope xmlns="urn:envelope">
+  <Data>
+	Hello, World!
+  </Data>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+      <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha224"/>
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
+	        <Transform Algorithm="http://www.w3.org/TR/1999/REC-xpath-19991116">
+	          <XPath xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">not(ancestor-or-self::dsig:Signature)</XPath>
+	        </Transform>
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#sha224"/>
+        <DigestValue>4eFM4tAZ1DS8K31g9ylGlRdmBSe/j8sbFbmgYQ==</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>qHnEErVV20YeEpZnUHIXddwNzm6j+5mhS5a0xrR2/Y2kXKX6geQMkR+FiXCZfPVs
+jCuANoo8fv4iyL9fZ+eXVw==</SignatureValue>
+    <KeyInfo>
+      <KeyName>EcdsaSecp256r1</KeyName>
+    </KeyInfo>
+  </Signature>
+</Envelope>

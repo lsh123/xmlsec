@@ -685,6 +685,25 @@ xmlSecTransformEcdhGetKlass(void)
 
 
 /**
+ * xmlSecTransformEcdsaRipemd160GetKlass:
+ *
+ * The ECDSA-RIPEMD160 signature transform klass.
+ *
+ * Returns: ECDSA-RIPEMD160 signature transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
+xmlSecTransformId
+xmlSecTransformEcdsaRipemd160GetKlass(void) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformEcdsaRipemd160GetKlass == NULL)) {
+        xmlSecNotImplementedError("transformEcdsaRipemd160GetKlass");
+        return(xmlSecTransformIdUnknown);
+    }
+
+    return(xmlSecCryptoDLGetFunctions()->transformEcdsaRipemd160GetKlass());
+}
+
+/**
  * xmlSecTransformEcdsaSha1GetKlass:
  *
  * The ECDSA-SHA1 signature transform klass.
@@ -778,6 +797,7 @@ xmlSecTransformEcdsaSha512GetKlass(void) {
 
     return(xmlSecCryptoDLGetFunctions()->transformEcdsaSha512GetKlass());
 }
+
 
 /**
  * xmlSecTransformGost2001GostR3411_94GetKlass:

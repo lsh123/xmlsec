@@ -750,6 +750,16 @@ execDSigTest $res_success \
 
 execDSigTest $res_success \
     "" \
+    "aleksey-xmldsig-01/enveloped-ripemd160-ecdsa-ripemd160" \
+    "ripemd160 ecdsa-ripemd160" \
+    "ec" \
+    "$priv_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
+    "$priv_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
+    "$priv_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123"
+
+
+execDSigTest $res_success \
+    "" \
     "aleksey-xmldsig-01/enveloped-sha1-rsa-sha1" \
     "sha1 rsa-sha1" \
     "" \
@@ -762,7 +772,7 @@ execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloped-sha256-ecdsa-sha256" \
     "sha256 ecdsa-sha256" \
-    "ecdsa" \
+    "ec" \
     "$priv_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
     "$priv_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
     "$priv_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123"
@@ -771,7 +781,7 @@ execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloped-sha384-ecdsa-sha384" \
     "sha384 ecdsa-sha384" \
-    "ecdsa" \
+    "ec" \
     "$priv_key_option:EcdsaSecp521r1 $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
     "$priv_key_option:EcdsaSecp521r1 $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
     "$priv_key_option:EcdsaSecp521r1 $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123"
@@ -780,7 +790,7 @@ execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloped-sha512-ecdsa-sha512" \
     "sha512 ecdsa-sha512" \
-    "ecdsa" \
+    "ec" \
     "$priv_key_option:EcdsaSecp521r1 $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
     "$priv_key_option:EcdsaSecp521r1 $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
     "$priv_key_option:EcdsaSecp521r1 $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123"
@@ -789,7 +799,7 @@ execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloping-sha1-ecdsa-sha1" \
     "sha1 ecdsa-sha1" \
-    "ecdsa x509" \
+    "ec x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
     "$priv_key_option $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
@@ -798,7 +808,7 @@ execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloping-sha256-ecdsa-sha256" \
     "sha256 ecdsa-sha256" \
-    "ecdsa x509" \
+    "ec x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
     "$priv_key_option $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
@@ -807,7 +817,7 @@ execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloping-sha384-ecdsa-sha384" \
     "sha384 ecdsa-sha384" \
-    "ecdsa x509" \
+    "ec x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
     "$priv_key_option $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
@@ -816,7 +826,7 @@ execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloping-sha512-ecdsa-sha512" \
     "sha512 ecdsa-sha512" \
-    "ecdsa x509" \
+    "ec x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
     "$priv_key_option $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
@@ -828,7 +838,7 @@ execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloped-ecdsa-java-bug" \
     "sha512 ecdsa-sha512" \
-    "ecdsa x509" \
+    "ec x509" \
     "--trusted-$cert_format $topfolder/keys/enveloped-ecdsa-java-bug-cert.$cert_format --enabled-key-data x509 --verification-gmt-time 2019-01-01+00:00:00"
 fi
 

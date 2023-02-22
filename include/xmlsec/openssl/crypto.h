@@ -461,6 +461,18 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformEcdsaSha512GetKlass
 #endif /* XMLSEC_NO_SHA512 */
 
 
+#ifndef XMLSEC_NO_RIPEMD160
+/**
+ * xmlSecOpenSSLTransformEcdsaRipemd160Id:
+ *
+ * The ECDSA-RIPEMD160 signature transform klass.
+ */
+#define xmlSecOpenSSLTransformEcdsaRipemd160Id \
+        xmlSecOpenSSLTransformEcdsaRipemd160GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformEcdsaRipemd160GetKlass(void);
+#endif /* XMLSEC_NO_RIPEMD160 */
+
+
 /**
  * xmlSecOpenSSLTransformEcdhId:
  *

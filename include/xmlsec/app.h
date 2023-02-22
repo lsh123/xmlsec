@@ -302,7 +302,13 @@ XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformEcdsaSha384GetKla
  */
 #define xmlSecTransformEcdsaSha512Id            xmlSecTransformEcdsaSha512GetKlass()
 XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformEcdsaSha512GetKlass  (void);
-
+/**
+ * xmlSecTransformEcdsaRipemd160Id:
+ *
+ * The ECDSA-RIPEMD160 signature transform klass.
+ */
+#define xmlSecTransformEcdsaRipemd160Id         xmlSecTransformEcdsaRipemd160GetKlass()
+XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformEcdsaRipemd160GetKlass  (void);
 /**
  * xmlSecTransformGost2001GostR3411_94Id:
  *

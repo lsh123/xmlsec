@@ -132,7 +132,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformRsaSha1GetKlass(void)
 /**
  * xmlSecMSCngTransformRsaSha256Id:
  *
- * The RSA-SHA256 signature transform klass.
+ * The RSA-SHA2-256 signature transform klass.
  */
 #define xmlSecMSCngTransformRsaSha256Id     \
        xmlSecMSCngTransformRsaSha256GetKlass()
@@ -143,7 +143,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformRsaSha256GetKlass(voi
 /**
  * xmlSecMSCngTransformRsaSha384Id:
  *
- * The RSA-SHA384 signature transform klass.
+ * The RSA-SHA2-384 signature transform klass.
  */
 #define xmlSecMSCngTransformRsaSha384Id     \
        xmlSecMSCngTransformRsaSha384GetKlass()
@@ -154,7 +154,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformRsaSha384GetKlass(voi
 /**
  * xmlSecMSCngTransformRsaSha512Id:
  *
- * The RSA-SHA512 signature transform klass.
+ * The RSA-SHA2-512 signature transform klass.
  */
 #define xmlSecMSCngTransformRsaSha512Id     \
        xmlSecMSCngTransformRsaSha512GetKlass()
@@ -176,7 +176,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformRsaPssSha1GetKlass(vo
 /**
  * xmlSecMSCngTransformRsaPssSha256Id:
  *
- * The RSA-PSS-SHA256 signature transform klass.
+ * The RSA-PSS-SHA2-256 signature transform klass.
  */
 #define xmlSecMSCngTransformRsaPssSha256Id     \
        xmlSecMSCngTransformRsaPssSha256GetKlass()
@@ -187,7 +187,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformRsaPssSha256GetKlass(
 /**
  * xmlSecMSCngTransformRsaPssSha384Id:
  *
- * The RSA-PSS-SHA384 signature transform klass.
+ * The RSA-PSS-SHA2-384 signature transform klass.
  */
 #define xmlSecMSCngTransformRsaPssSha384Id     \
        xmlSecMSCngTransformRsaPssSha384GetKlass()
@@ -198,7 +198,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformRsaPssSha384GetKlass(
 /**
  * xmlSecMSCngTransformRsaPssSha512Id:
  *
- * The RSA-PSS-SHA512 signature transform klass.
+ * The RSA-PSS-SHA2-512 signature transform klass.
  */
 #define xmlSecMSCngTransformRsaPssSha512Id     \
        xmlSecMSCngTransformRsaPssSha512GetKlass()
@@ -273,7 +273,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformEcdsaSha1GetKlass(voi
 /**
  * xmlSecMSCngTransformEcdsaSha256Id:
  *
- * The ECDSA-SHA256 signature transform klass.
+ * The ECDSA-SHA2-256 signature transform klass.
  */
 #define xmlSecMSCngTransformEcdsaSha256Id     \
        xmlSecMSCngTransformEcdsaSha256GetKlass()
@@ -284,7 +284,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformEcdsaSha256GetKlass(v
 /**
  * xmlSecMSCngTransformEcdsaSha384Id:
  *
- * The ECDSA-SHA384 signature transform klass.
+ * The ECDSA-SHA2-384 signature transform klass.
  */
 #define xmlSecMSCngTransformEcdsaSha384Id     \
        xmlSecMSCngTransformEcdsaSha384GetKlass()
@@ -295,7 +295,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformEcdsaSha384GetKlass(v
 /**
  * xmlSecMSCngTransformEcdsaSha512Id:
  *
- * The ECDSA-SHA512 signature transform klass.
+ * The ECDSA-SHA2-512 signature transform klass.
  */
 #define xmlSecMSCngTransformEcdsaSha512Id     \
        xmlSecMSCngTransformEcdsaSha512GetKlass()
@@ -391,7 +391,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformHmacSha1GetKlass(void
 /**
  * xmlSecMSCngTransformHmacSha256Id:
  *
- * The HMAC-SHA256 signature transform klass.
+ * The HMAC-SHA2-256 signature transform klass.
  */
 #define xmlSecMSCngTransformHmacSha256Id     \
        xmlSecMSCngTransformHmacSha256GetKlass()
@@ -402,7 +402,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformHmacSha256GetKlass(vo
 /**
  * xmlSecMSCngTransformHmacSha384Id:
  *
- * The HMAC-SHA384 signature transform klass.
+ * The HMAC-SHA2-384 signature transform klass.
  */
 #define xmlSecMSCngTransformHmacSha384Id     \
        xmlSecMSCngTransformHmacSha384GetKlass()
@@ -413,7 +413,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformHmacSha384GetKlass(vo
 /**
  * xmlSecMSCngTransformHmacSha512Id:
  *
- * The HMAC-SHA512 signature transform klass.
+ * The HMAC-SHA2-512 signature transform klass.
  */
 #define xmlSecMSCngTransformHmacSha512Id     \
        xmlSecMSCngTransformHmacSha512GetKlass()
@@ -489,7 +489,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformSha1GetKlass(void);
 /**
  * xmlSecMSCngTransformSha256Id:
  *
- * The SHA256 digest transform klass.
+ * The SHA2-256 digest transform klass.
  */
 #define xmlSecMSCngTransformSha256Id \
        xmlSecMSCngTransformSha256GetKlass()
@@ -505,7 +505,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformSha256GetKlass(void);
 /**
  * xmlSecMSCngTransformSha384Id:
  *
- * The SHA384 digest transform klass.
+ * The SHA2-384 digest transform klass.
  */
 #define xmlSecMSCngTransformSha384Id \
        xmlSecMSCngTransformSha384GetKlass()
@@ -521,7 +521,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformSha384GetKlass(void);
 /**
  * xmlSecMSCngTransformSha512Id:
  *
- * The SHA512 digest transform klass.
+ * The SHA2-512 digest transform klass.
  */
 #define xmlSecMSCngTransformSha512Id \
        xmlSecMSCngTransformSha512GetKlass()

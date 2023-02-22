@@ -647,9 +647,9 @@ xmlSecTransformDsaSha1GetKlass(void) {
 /**
  * xmlSecTransformDsaSha256GetKlass:
  *
- * The DSA-SHA256 signature transform klass.
+ * The DSA-SHA2-256 signature transform klass.
  *
- * Returns: DSA-SHA256 signature transform klass or NULL if an error
+ * Returns: DSA-SHA2-256 signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1184,9 +1184,9 @@ xmlSecTransformRsaSha1GetKlass(void) {
 /**
  * xmlSecTransformRsaSha224GetKlass:
  *
- * The RSA-SHA224 signature transform klass.
+ * The RSA-SHA2-224 signature transform klass.
  *
- * Returns: RSA-SHA224 signature transform klass or NULL if an error
+ * Returns: RSA-SHA2-224 signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1203,9 +1203,9 @@ xmlSecTransformRsaSha224GetKlass(void) {
 /**
  * xmlSecTransformRsaSha256GetKlass:
  *
- * The RSA-SHA256 signature transform klass.
+ * The RSA-SHA2-256 signature transform klass.
  *
- * Returns: RSA-SHA256 signature transform klass or NULL if an error
+ * Returns: RSA-SHA2-256 signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1222,9 +1222,9 @@ xmlSecTransformRsaSha256GetKlass(void) {
 /**
  * xmlSecTransformRsaSha384GetKlass:
  *
- * The RSA-SHA384 signature transform klass.
+ * The RSA-SHA2-384 signature transform klass.
  *
- * Returns: RSA-SHA384 signature transform klass or NULL if an error
+ * Returns: RSA-SHA2-384 signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1241,9 +1241,9 @@ xmlSecTransformRsaSha384GetKlass(void) {
 /**
  * xmlSecTransformRsaSha512GetKlass:
  *
- * The RSA-SHA512 signature transform klass.
+ * The RSA-SHA2-512 signature transform klass.
  *
- * Returns: RSA-SHA512 signature transform klass or NULL if an error
+ * Returns: RSA-SHA2-512 signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */

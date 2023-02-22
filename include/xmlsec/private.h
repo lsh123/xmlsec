@@ -367,7 +367,7 @@ typedef int                     (*xmlSecCryptoAppKeyCertLoadMemoryMethod)(xmlSec
  * @transformDes3CbcGetKlass:   the method to get pointer to Triple DES encryption transform.
  * @transformKWDes3GetKlass:    the method to get pointer to Triple DES key wrapper transform.
  * @transformDsaSha1GetKlass:   the method to get pointer to DSA-SHA1 signature transform.
- * @transformDsaSha256GetKlass: the method to get pointer to DSA-SHA256 signature transform.
+ * @transformDsaSha256GetKlass: the method to get pointer to DSA-SHA2-256 signature transform.
  * @transformEcdhGetKlass:      the method to get pointer to ECDH key agreement transform.
  * @transformEcdsaRipemd160GetKlass: the method to get pointer to ECDSA-RIPEMD160 signature transform.
  * @transformEcdsaSha1GetKlass: the method to get pointer to ECDSA-SHA1 signature transform.
@@ -395,19 +395,19 @@ typedef int                     (*xmlSecCryptoAppKeyCertLoadMemoryMethod)(xmlSec
  * @transformRsaMd5GetKlass:    the method to get pointer to RSA-MD5 signature transform.
  * @transformRsaRipemd160GetKlass: the method to get pointer to RSA-RIPEMD160 signature transform.
  * @transformRsaSha1GetKlass:   the method to get pointer to RSA-SHA1 signature transform.
- * @transformRsaSha224GetKlass: the method to get pointer to RSA-SHA224 signature transform.
- * @transformRsaSha256GetKlass: the method to get pointer to RSA-SHA256 signature transform.
- * @transformRsaSha384GetKlass: the method to get pointer to RSA-SHA384 signature transform.
- * @transformRsaSha512GetKlass: the method to get pointer to RSA-SHA512 signature transform.
+ * @transformRsaSha224GetKlass: the method to get pointer to RSA-SHA2-224 signature transform.
+ * @transformRsaSha256GetKlass: the method to get pointer to RSA-SHA2-256 signature transform.
+ * @transformRsaSha384GetKlass: the method to get pointer to RSA-SHA2-384 signature transform.
+ * @transformRsaSha512GetKlass: the method to get pointer to RSA-SHA2-512 signature transform.
  * @transformRsaPssSha1GetKlass:   the method to get pointer to RSA-PSS-HA1 signature transform.
- * @transformRsaPssSha224GetKlass: the method to get pointer to RSA-PSS-SHA224 signature transform.
- * @transformRsaPssSha256GetKlass: the method to get pointer to RSA-PSS-SHA256 signature transform.
- * @transformRsaPssSha384GetKlass: the method to get pointer to RSA-PSS-SHA384 signature transform.
- * @transformRsaPssSha512GetKlass: the method to get pointer to RSA-PSS-SHA512 signature transform.
- * @transformRsaPssSha3_224GetKlass: the method to get pointer to RSA-PSS-SHA224 signature transform.
- * @transformRsaPssSha3_256GetKlass: the method to get pointer to RSA-PSS-SHA256 signature transform.
- * @transformRsaPssSha3_384GetKlass: the method to get pointer to RSA-PSS-SHA384 signature transform.
- * @transformRsaPssSha3_512GetKlass: the method to get pointer to RSA-PSS-SHA512 signature transform.
+ * @transformRsaPssSha224GetKlass: the method to get pointer to RSA-PSS-SHA2-224 signature transform.
+ * @transformRsaPssSha256GetKlass: the method to get pointer to RSA-PSS-SHA2-256 signature transform.
+ * @transformRsaPssSha384GetKlass: the method to get pointer to RSA-PSS-SHA2-384 signature transform.
+ * @transformRsaPssSha512GetKlass: the method to get pointer to RSA-PSS-SHA2-512 signature transform.
+ * @transformRsaPssSha3_224GetKlass: the method to get pointer to RSA-PSS-SHA2-224 signature transform.
+ * @transformRsaPssSha3_256GetKlass: the method to get pointer to RSA-PSS-SHA2-256 signature transform.
+ * @transformRsaPssSha3_384GetKlass: the method to get pointer to RSA-PSS-SHA2-384 signature transform.
+ * @transformRsaPssSha3_512GetKlass: the method to get pointer to RSA-PSS-SHA2-512 signature transform.
  * @transformRsaPkcs1GetKlass:  the method to get pointer to RSA-PKCS1_5 key transport transform.
  * @transformRsaOaepGetKlass:   the method to get pointer to RSA-OAEP key transport transform (XMLEnc 1.0).
  * @transformRsaOaepEnc11GetKlass: the method to get pointer to RSA-OAEP key transport transform (XMLEnc 1.1).

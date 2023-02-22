@@ -226,6 +226,20 @@ xmlSecGCryptPkSignatureCheckId(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_SHA512 */
 
+
+#ifndef XMLSEC_NO_SHA3
+    if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformRsaPssSha3_256Id)) {
+        return(1);
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformRsaPssSha3_384Id)) {
+        return(1);
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformRsaPssSha3_512Id)) {
+        return(1);
+    } else
+#endif /* XMLSEC_NO_SHA3 */
+
+
 #endif /* XMLSEC_NO_RSA */
 
 #ifndef XMLSEC_NO_EC
@@ -254,6 +268,17 @@ xmlSecGCryptPkSignatureCheckId(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_SHA512 */
 
+#ifndef XMLSEC_NO_SHA3
+    if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformEcdsaSha3_256Id)) {
+        return(1);
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformEcdsaSha3_384Id)) {
+        return(1);
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformEcdsaSha3_512Id)) {
+        return(1);
+    } else
+#endif /* XMLSEC_NO_SHA3 */
 
 #endif /* XMLSEC_NO_EC */
 
@@ -383,6 +408,28 @@ xmlSecGCryptPkSignatureInitialize(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_SHA512 */
 
+
+#ifndef XMLSEC_NO_SHA3
+    if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformRsaPssSha3_256Id)) {
+        ctx->digest     = GCRY_MD_SHA3_256;
+        ctx->keyId      = xmlSecGCryptKeyDataRsaId;
+        ctx->sign       = xmlSecGCryptRsaPssSign;
+        ctx->verify     = xmlSecGCryptRsaPssVerify;
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformRsaPssSha3_384Id)) {
+        ctx->digest     = GCRY_MD_SHA3_384;
+        ctx->keyId      = xmlSecGCryptKeyDataRsaId;
+        ctx->sign       = xmlSecGCryptRsaPssSign;
+        ctx->verify     = xmlSecGCryptRsaPssVerify;
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformRsaPssSha3_512Id)) {
+        ctx->digest     = GCRY_MD_SHA3_512;
+        ctx->keyId      = xmlSecGCryptKeyDataRsaId;
+        ctx->sign       = xmlSecGCryptRsaPssSign;
+        ctx->verify     = xmlSecGCryptRsaPssVerify;
+    } else
+#endif /* XMLSEC_NO_SHA3 */
+
 #endif /* XMLSEC_NO_RSA */
 
 #ifndef XMLSEC_NO_EC
@@ -422,6 +469,28 @@ xmlSecGCryptPkSignatureInitialize(xmlSecTransformPtr transform) {
         ctx->verify     = xmlSecGCryptEcdsaVerify;
     } else
 #endif /* XMLSEC_NO_SHA512 */
+
+
+#ifndef XMLSEC_NO_SHA3
+    if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformEcdsaSha3_256Id)) {
+        ctx->digest     = GCRY_MD_SHA3_256;
+        ctx->keyId      = xmlSecGCryptKeyDataEcId;
+        ctx->sign       = xmlSecGCryptEcdsaSign;
+        ctx->verify     = xmlSecGCryptEcdsaVerify;
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformEcdsaSha3_384Id)) {
+        ctx->digest     = GCRY_MD_SHA3_384;
+        ctx->keyId      = xmlSecGCryptKeyDataEcId;
+        ctx->sign       = xmlSecGCryptEcdsaSign;
+        ctx->verify     = xmlSecGCryptEcdsaVerify;
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformEcdsaSha3_512Id)) {
+        ctx->digest     = GCRY_MD_SHA3_512;
+        ctx->keyId      = xmlSecGCryptKeyDataEcId;
+        ctx->sign       = xmlSecGCryptEcdsaSign;
+        ctx->verify     = xmlSecGCryptEcdsaVerify;
+    } else
+#endif /* XMLSEC_NO_SHA3 */
 
 #endif /* XMLSEC_NO_EC */
 
@@ -1563,7 +1632,7 @@ xmlSecGCryptTransformRsaSha1GetKlass(void) {
 #ifndef XMLSEC_NO_SHA256
 /****************************************************************************
  *
- * RSA-SHA256 signature transform
+ * RSA-SHA2-256 signature transform
  *
  ***************************************************************************/
 static xmlSecTransformKlass xmlSecGCryptRsaSha256Klass = {
@@ -1596,9 +1665,9 @@ static xmlSecTransformKlass xmlSecGCryptRsaSha256Klass = {
 /**
  * xmlSecGCryptTransformRsaSha256GetKlass:
  *
- * The RSA-SHA256 signature transform klass.
+ * The RSA-SHA2-256 signature transform klass.
  *
- * Returns: RSA-SHA256 signature transform klass.
+ * Returns: RSA-SHA2-256 signature transform klass.
  */
 xmlSecTransformId
 xmlSecGCryptTransformRsaSha256GetKlass(void) {
@@ -1610,7 +1679,7 @@ xmlSecGCryptTransformRsaSha256GetKlass(void) {
 #ifndef XMLSEC_NO_SHA384
 /****************************************************************************
  *
- * RSA-SHA384 signature transform
+ * RSA-SHA2-384 signature transform
  *
  ***************************************************************************/
 static xmlSecTransformKlass xmlSecGCryptRsaSha384Klass = {
@@ -1643,9 +1712,9 @@ static xmlSecTransformKlass xmlSecGCryptRsaSha384Klass = {
 /**
  * xmlSecGCryptTransformRsaSha384GetKlass:
  *
- * The RSA-SHA384 signature transform klass.
+ * The RSA-SHA2-384 signature transform klass.
  *
- * Returns: RSA-SHA384 signature transform klass.
+ * Returns: RSA-SHA2-384 signature transform klass.
  */
 xmlSecTransformId
 xmlSecGCryptTransformRsaSha384GetKlass(void) {
@@ -1657,7 +1726,7 @@ xmlSecGCryptTransformRsaSha384GetKlass(void) {
 #ifndef XMLSEC_NO_SHA512
 /****************************************************************************
  *
- * RSA-SHA512 signature transform
+ * RSA-SHA2-512 signature transform
  *
  ***************************************************************************/
 static xmlSecTransformKlass xmlSecGCryptRsaSha512Klass = {
@@ -1690,9 +1759,9 @@ static xmlSecTransformKlass xmlSecGCryptRsaSha512Klass = {
 /**
  * xmlSecGCryptTransformRsaSha512GetKlass:
  *
- * The RSA-SHA512 signature transform klass.
+ * The RSA-SHA2-512 signature transform klass.
  *
- * Returns: RSA-SHA512 signature transform klass.
+ * Returns: RSA-SHA2-512 signature transform klass.
  */
 xmlSecTransformId
 xmlSecGCryptTransformRsaSha512GetKlass(void) {
@@ -1753,7 +1822,7 @@ xmlSecGCryptTransformRsaPssSha1GetKlass(void) {
 #ifndef XMLSEC_NO_SHA256
 /****************************************************************************
  *
- * RSA-PSS-SHA256 signature transform
+ * RSA-PSS-SHA2-256 signature transform
  *
  ***************************************************************************/
 static xmlSecTransformKlass xmlSecGCryptRsaPssSha256Klass = {
@@ -1786,9 +1855,9 @@ static xmlSecTransformKlass xmlSecGCryptRsaPssSha256Klass = {
 /**
  * xmlSecGCryptTransformRsaPssSha256GetKlass:
  *
- * The RSA-PSS-SHA256 signature transform klass.
+ * The RSA-PSS-SHA2-256 signature transform klass.
  *
- * Returns: RSA-PSS-SHA256 signature transform klass.
+ * Returns: RSA-PSS-SHA2-256 signature transform klass.
  */
 xmlSecTransformId
 xmlSecGCryptTransformRsaPssSha256GetKlass(void) {
@@ -1800,7 +1869,7 @@ xmlSecGCryptTransformRsaPssSha256GetKlass(void) {
 #ifndef XMLSEC_NO_SHA384
 /****************************************************************************
  *
- * RSA-PSS-SHA384 signature transform
+ * RSA-PSS-SHA2-384 signature transform
  *
  ***************************************************************************/
 static xmlSecTransformKlass xmlSecGCryptRsaPssSha384Klass = {
@@ -1833,9 +1902,9 @@ static xmlSecTransformKlass xmlSecGCryptRsaPssSha384Klass = {
 /**
  * xmlSecGCryptTransformRsaPssSha384GetKlass:
  *
- * The RSA-PSS-SHA384 signature transform klass.
+ * The RSA-PSS-SHA2-384 signature transform klass.
  *
- * Returns: RSA-PSS-SHA384 signature transform klass.
+ * Returns: RSA-PSS-SHA2-384 signature transform klass.
  */
 xmlSecTransformId
 xmlSecGCryptTransformRsaPssSha384GetKlass(void) {
@@ -1847,7 +1916,7 @@ xmlSecGCryptTransformRsaPssSha384GetKlass(void) {
 #ifndef XMLSEC_NO_SHA512
 /****************************************************************************
  *
- * RSA-PSS-SHA512 signature transform
+ * RSA-PSS-SHA2-512 signature transform
  *
  ***************************************************************************/
 static xmlSecTransformKlass xmlSecGCryptRsaPssSha512Klass = {
@@ -1880,9 +1949,9 @@ static xmlSecTransformKlass xmlSecGCryptRsaPssSha512Klass = {
 /**
  * xmlSecGCryptTransformRsaPssSha512GetKlass:
  *
- * The RSA-PSS-SHA512 signature transform klass.
+ * The RSA-PSS-SHA2-512 signature transform klass.
  *
- * Returns: RSA-PSS-SHA512 signature transform klass.
+ * Returns: RSA-PSS-SHA2-512 signature transform klass.
  */
 xmlSecTransformId
 xmlSecGCryptTransformRsaPssSha512GetKlass(void) {
@@ -1890,6 +1959,144 @@ xmlSecGCryptTransformRsaPssSha512GetKlass(void) {
 }
 
 #endif /* XMLSEC_NO_SHA512 */
+
+
+
+#ifndef XMLSEC_NO_SHA3
+/****************************************************************************
+ *
+ * RSA-PSS-SHA3-256 signature transform
+ *
+ ***************************************************************************/
+static xmlSecTransformKlass xmlSecGCryptRsaPssSha3_256Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecGCryptPkSignatureSize,                /* xmlSecSize objSize */
+
+    xmlSecNameRsaPssSha3_256,                   /* const xmlChar* name; */
+    xmlSecHrefRsaPssSha3_256,                   /* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
+
+    xmlSecGCryptPkSignatureInitialize,          /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecGCryptPkSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGCryptPkSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecGCryptPkSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecGCryptPkSignatureExecute,             /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecGCryptTransformRsaPssSha3_256GetKlass:
+ *
+ * The RSA-PSS-SHA3-256 signature transform klass.
+ *
+ * Returns: RSA-PSS-SHA3-256 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecGCryptTransformRsaPssSha3_256GetKlass(void) {
+    return(&xmlSecGCryptRsaPssSha3_256Klass);
+}
+
+/****************************************************************************
+ *
+ * RSA-PSS-SHA3-384 signature transform
+ *
+ ***************************************************************************/
+static xmlSecTransformKlass xmlSecGCryptRsaPssSha3_384Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecGCryptPkSignatureSize,                /* xmlSecSize objSize */
+
+    xmlSecNameRsaPssSha3_384,                   /* const xmlChar* name; */
+    xmlSecHrefRsaPssSha3_384,                   /* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
+
+    xmlSecGCryptPkSignatureInitialize,          /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecGCryptPkSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGCryptPkSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecGCryptPkSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecGCryptPkSignatureExecute,             /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecGCryptTransformRsaPssSha3_384GetKlass:
+ *
+ * The RSA-PSS-SHA3-384 signature transform klass.
+ *
+ * Returns: RSA-PSS-SHA3-384 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecGCryptTransformRsaPssSha3_384GetKlass(void) {
+    return(&xmlSecGCryptRsaPssSha3_384Klass);
+}
+
+/****************************************************************************
+ *
+ * RSA-PSS-SHA3-512 signature transform
+ *
+ ***************************************************************************/
+static xmlSecTransformKlass xmlSecGCryptRsaPssSha3_512Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecGCryptPkSignatureSize,                /* xmlSecSize objSize */
+
+    xmlSecNameRsaPssSha3_512,                   /* const xmlChar* name; */
+    xmlSecHrefRsaPssSha3_512,                   /* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
+
+    xmlSecGCryptPkSignatureInitialize,          /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecGCryptPkSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGCryptPkSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecGCryptPkSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecGCryptPkSignatureExecute,             /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecGCryptTransformRsaPssSha3_512GetKlass:
+ *
+ * The RSA-PSS-SHA3-512 signature transform klass.
+ *
+ * Returns: RSA-PSS-SHA3-512 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecGCryptTransformRsaPssSha3_512GetKlass(void) {
+    return(&xmlSecGCryptRsaPssSha3_512Klass);
+}
+
+#endif /* XMLSEC_NO_SHA3 */
+
 
 #endif /* XMLSEC_NO_RSA */
 
@@ -2215,7 +2422,7 @@ xmlSecGCryptTransformEcdsaSha1GetKlass(void) {
 #ifndef XMLSEC_NO_SHA256
 /****************************************************************************
  *
- * ECDSA-SHA256 signature transform
+ * ECDSA-SHA2-256 signature transform
  *
  ***************************************************************************/
 static xmlSecTransformKlass xmlSecGCryptEcdsaSha256Klass = {
@@ -2248,9 +2455,9 @@ static xmlSecTransformKlass xmlSecGCryptEcdsaSha256Klass = {
 /**
  * xmlSecGCryptTransformEcdsaSha256GetKlass:
  *
- * The ECDSA-SHA256 signature transform klass.
+ * The ECDSA-SHA2-256 signature transform klass.
  *
- * Returns: ECDSA-SHA256 signature transform klass.
+ * Returns: ECDSA-SHA2-256 signature transform klass.
  */
 xmlSecTransformId
 xmlSecGCryptTransformEcdsaSha256GetKlass(void) {
@@ -2262,7 +2469,7 @@ xmlSecGCryptTransformEcdsaSha256GetKlass(void) {
 #ifndef XMLSEC_NO_SHA384
 /****************************************************************************
  *
- * ECDSA-SHA384 signature transform
+ * ECDSA-SHA2-384 signature transform
  *
  ***************************************************************************/
 static xmlSecTransformKlass xmlSecGCryptEcdsaSha384Klass = {
@@ -2295,9 +2502,9 @@ static xmlSecTransformKlass xmlSecGCryptEcdsaSha384Klass = {
 /**
  * xmlSecGCryptTransformEcdsaSha384GetKlass:
  *
- * The ECDSA-SHA384 signature transform klass.
+ * The ECDSA-SHA2-384 signature transform klass.
  *
- * Returns: ECDSA-SHA384 signature transform klass.
+ * Returns: ECDSA-SHA2-384 signature transform klass.
  */
 xmlSecTransformId
 xmlSecGCryptTransformEcdsaSha384GetKlass(void) {
@@ -2309,7 +2516,7 @@ xmlSecGCryptTransformEcdsaSha384GetKlass(void) {
 #ifndef XMLSEC_NO_SHA512
 /****************************************************************************
  *
- * ECDSA-SHA512 signature transform
+ * ECDSA-SHA2-512 signature transform
  *
  ***************************************************************************/
 static xmlSecTransformKlass xmlSecGCryptEcdsaSha512Klass = {
@@ -2342,9 +2549,9 @@ static xmlSecTransformKlass xmlSecGCryptEcdsaSha512Klass = {
 /**
  * xmlSecGCryptTransformEcdsaSha512GetKlass:
  *
- * The ECDSA-SHA512 signature transform klass.
+ * The ECDSA-SHA2-512 signature transform klass.
  *
- * Returns: ECDSA-SHA512 signature transform klass.
+ * Returns: ECDSA-SHA2-512 signature transform klass.
  */
 xmlSecTransformId
 xmlSecGCryptTransformEcdsaSha512GetKlass(void) {
@@ -2352,5 +2559,144 @@ xmlSecGCryptTransformEcdsaSha512GetKlass(void) {
 }
 
 #endif /* XMLSEC_NO_SHA512 */
+
+
+
+
+#ifndef XMLSEC_NO_SHA3
+/****************************************************************************
+ *
+ * ECDSA-SHA3-256 signature transform
+ *
+ ***************************************************************************/
+static xmlSecTransformKlass xmlSecGCryptEcdsaSha3_256Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecGCryptPkSignatureSize,                /* xmlSecSize objSize */
+
+    xmlSecNameEcdsaSha3_256,                     /* const xmlChar* name; */
+    xmlSecHrefEcdsaSha3_256,                     /* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
+
+    xmlSecGCryptPkSignatureInitialize,          /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecGCryptPkSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGCryptPkSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecGCryptPkSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecGCryptPkSignatureExecute,             /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecGCryptTransformEcdsaSha3_256GetKlass:
+ *
+ * The ECDSA-SHA3-256 signature transform klass.
+ *
+ * Returns: ECDSA-SHA3-256 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecGCryptTransformEcdsaSha3_256GetKlass(void) {
+    return(&xmlSecGCryptEcdsaSha3_256Klass);
+}
+
+/****************************************************************************
+ *
+ * ECDSA-SHA3-384 signature transform
+ *
+ ***************************************************************************/
+static xmlSecTransformKlass xmlSecGCryptEcdsaSha3_384Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecGCryptPkSignatureSize,                /* xmlSecSize objSize */
+
+    xmlSecNameEcdsaSha3_384,                     /* const xmlChar* name; */
+    xmlSecHrefEcdsaSha3_384,                     /* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
+
+    xmlSecGCryptPkSignatureInitialize,          /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecGCryptPkSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGCryptPkSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecGCryptPkSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecGCryptPkSignatureExecute,             /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecGCryptTransformEcdsaSha3_384GetKlass:
+ *
+ * The ECDSA-SHA3-384 signature transform klass.
+ *
+ * Returns: ECDSA-SHA3-384 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecGCryptTransformEcdsaSha3_384GetKlass(void) {
+    return(&xmlSecGCryptEcdsaSha3_384Klass);
+}
+
+/****************************************************************************
+ *
+ * ECDSA-SHA3-512 signature transform
+ *
+ ***************************************************************************/
+static xmlSecTransformKlass xmlSecGCryptEcdsaSha3_512Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecGCryptPkSignatureSize,                /* xmlSecSize objSize */
+
+    xmlSecNameEcdsaSha3_512,                     /* const xmlChar* name; */
+    xmlSecHrefEcdsaSha3_512,                     /* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
+
+    xmlSecGCryptPkSignatureInitialize,          /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecGCryptPkSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGCryptPkSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecGCryptPkSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecGCryptPkSignatureExecute,             /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecGCryptTransformEcdsaSha3_512GetKlass:
+ *
+ * The ECDSA-SHA3-512 signature transform klass.
+ *
+ * Returns: ECDSA-SHA3-512 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecGCryptTransformEcdsaSha3_512GetKlass(void) {
+    return(&xmlSecGCryptEcdsaSha3_512Klass);
+}
+
+#endif /* XMLSEC_NO_SHA3 */
+
 
 #endif /* XMLSEC_NO_EC */

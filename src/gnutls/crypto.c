@@ -166,6 +166,12 @@ xmlSecCryptoGetFunctions_gnutls(void) {
     gXmlSecGnuTLSFunctions->transformEcdsaSha512GetKlass      = xmlSecGnuTLSTransformEcdsaSha512GetKlass;
 #endif /* XMLSEC_NO_SHA512 */
 
+#ifndef XMLSEC_NO_SHA3
+    gXmlSecGnuTLSFunctions->transformEcdsaSha3_256GetKlass    = xmlSecGnuTLSTransformEcdsaSha3_256GetKlass;
+    gXmlSecGnuTLSFunctions->transformEcdsaSha3_384GetKlass    = xmlSecGnuTLSTransformEcdsaSha3_384GetKlass;
+    gXmlSecGnuTLSFunctions->transformEcdsaSha3_512GetKlass    = xmlSecGnuTLSTransformEcdsaSha3_512GetKlass;
+#endif /* XMLSEC_NO_SHA3 */
+
 #endif /* XMLSEC_NO_EC */
 
     /******************************* HMAC ********************************/
@@ -245,6 +251,11 @@ xmlSecCryptoGetFunctions_gnutls(void) {
     gXmlSecGnuTLSFunctions->transformSha512GetKlass             = xmlSecGnuTLSTransformSha512GetKlass;
 #endif /* XMLSEC_NO_SHA512 */
 
+#ifndef XMLSEC_NO_SHA3
+    gXmlSecGnuTLSFunctions->transformSha3_256GetKlass           = xmlSecGnuTLSTransformSha3_256GetKlass;
+    gXmlSecGnuTLSFunctions->transformSha3_384GetKlass           = xmlSecGnuTLSTransformSha3_384GetKlass;
+    gXmlSecGnuTLSFunctions->transformSha3_512GetKlass           = xmlSecGnuTLSTransformSha3_512GetKlass;
+#endif /* XMLSEC_NO_SHA3 */
 
     /********************************************************************
      *

@@ -90,10 +90,17 @@ extern "C" {
 #define xmlSecTransformRsaOaepId                xmlSecGnuTLSTransformRsaOaepId
 
 #define xmlSecTransformSha1Id                   xmlSecGnuTLSTransformSha1Id
+
 #define xmlSecTransformSha224Id                 xmlSecGnuTLSTransformSha224Id
 #define xmlSecTransformSha256Id                 xmlSecGnuTLSTransformSha256Id
 #define xmlSecTransformSha384Id                 xmlSecGnuTLSTransformSha384Id
 #define xmlSecTransformSha512Id                 xmlSecGnuTLSTransformSha512Id
+
+#define xmlSecTransformSha3_224Id               xmlSecGnuTLSTransformSha3_224Id
+#define xmlSecTransformSha3_256Id               xmlSecGnuTLSTransformSha3_256Id
+#define xmlSecTransformSha3_384Id               xmlSecGnuTLSTransformSha3_384Id
+#define xmlSecTransformSha3_512Id               xmlSecGnuTLSTransformSha3_512Id
+
 
 /********************************************************************
  *

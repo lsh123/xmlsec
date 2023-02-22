@@ -453,7 +453,7 @@ xmlSecGnuTLSTransformSha384GetKlass(void) {
 #ifndef XMLSEC_NO_SHA512
 /******************************************************************************
  *
- * SHA512 Digest transforms
+ * SHA2-512 digest transforms
  *
  *****************************************************************************/
 static xmlSecTransformKlass xmlSecGnuTLSSha512Klass = {

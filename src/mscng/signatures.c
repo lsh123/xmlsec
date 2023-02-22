@@ -841,7 +841,7 @@ xmlSecMSCngTransformRsaSha1GetKlass(void) {
 #ifndef XMLSEC_NO_SHA256
 /****************************************************************************
  *
- * RSA-SHA256 signature transform
+ * RSA-SHA2-256 signature transform
  *
  ***************************************************************************/
 static xmlSecTransformKlass xmlSecMSCngRsaSha256Klass = {
@@ -874,9 +874,9 @@ static xmlSecTransformKlass xmlSecMSCngRsaSha256Klass = {
 /**
  * xmlSecMSCngTransformRsaSha256GetKlass:
  *
- * The RSA-SHA256 signature transform klass.
+ * The RSA-SHA2-256 signature transform klass.
  *
- * Returns: RSA-SHA256 signature transform klass.
+ * Returns: RSA-SHA2-256 signature transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformRsaSha256GetKlass(void) {
@@ -887,7 +887,7 @@ xmlSecMSCngTransformRsaSha256GetKlass(void) {
 #ifndef XMLSEC_NO_SHA384
 /****************************************************************************
  *
- * RSA-SHA384 signature transform
+ * RSA-SHA2-384 signature transform
  *
  ***************************************************************************/
 static xmlSecTransformKlass xmlSecMSCngRsaSha384Klass = {
@@ -920,9 +920,9 @@ static xmlSecTransformKlass xmlSecMSCngRsaSha384Klass = {
 /**
  * xmlSecMSCngTransformRsaSha384GetKlass:
  *
- * The RSA-SHA384 signature transform klass.
+ * The RSA-SHA2-384 signature transform klass.
  *
- * Returns: RSA-SHA384 signature transform klass.
+ * Returns: RSA-SHA2-384 signature transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformRsaSha384GetKlass(void) {
@@ -933,7 +933,7 @@ xmlSecMSCngTransformRsaSha384GetKlass(void) {
 #ifndef XMLSEC_NO_SHA512
 /****************************************************************************
  *
- * RSA-SHA512 signature transform
+ * RSA-SHA2-512 signature transform
  *
  ***************************************************************************/
 static xmlSecTransformKlass xmlSecMSCngRsaSha512Klass = {
@@ -966,9 +966,9 @@ static xmlSecTransformKlass xmlSecMSCngRsaSha512Klass = {
 /**
  * xmlSecMSCngTransformRsaSha512GetKlass:
  *
- * The RSA-SHA512 signature transform klass.
+ * The RSA-SHA2-512 signature transform klass.
  *
- * Returns: RSA-SHA512 signature transform klass.
+ * Returns: RSA-SHA2-512 signature transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformRsaSha512GetKlass(void) {
@@ -1026,7 +1026,7 @@ xmlSecMSCngTransformRsaPssSha1GetKlass(void) {
 #ifndef XMLSEC_NO_SHA256
 /****************************************************************************
  *
- * RSA-PSS-SHA256 signature transform
+ * RSA-PSS-SHA2-256 signature transform
  *
  ***************************************************************************/
 static xmlSecTransformKlass xmlSecMSCngRsaPssSha256Klass = {
@@ -1059,9 +1059,9 @@ static xmlSecTransformKlass xmlSecMSCngRsaPssSha256Klass = {
 /**
  * xmlSecMSCngTransformRsaPssSha256GetKlass:
  *
- * The RSA-PSS-SHA256 signature transform klass.
+ * The RSA-PSS-SHA2-256 signature transform klass.
  *
- * Returns: RSA-PSS-SHA256 signature transform klass.
+ * Returns: RSA-PSS-SHA2-256 signature transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformRsaPssSha256GetKlass(void) {
@@ -1072,7 +1072,7 @@ xmlSecMSCngTransformRsaPssSha256GetKlass(void) {
 #ifndef XMLSEC_NO_SHA384
 /****************************************************************************
  *
- * RSA-PSS-SHA384 signature transform
+ * RSA-PSS-SHA2-384 signature transform
  *
  ***************************************************************************/
 static xmlSecTransformKlass xmlSecMSCngRsaPssSha384Klass = {
@@ -1105,9 +1105,9 @@ static xmlSecTransformKlass xmlSecMSCngRsaPssSha384Klass = {
 /**
  * xmlSecMSCngTransformRsaPssSha384GetKlass:
  *
- * The RSA-PSS-SHA384 signature transform klass.
+ * The RSA-PSS-SHA2-384 signature transform klass.
  *
- * Returns: RSA-PSS-SHA384 signature transform klass.
+ * Returns: RSA-PSS-SHA2-384 signature transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformRsaPssSha384GetKlass(void) {
@@ -1118,7 +1118,7 @@ xmlSecMSCngTransformRsaPssSha384GetKlass(void) {
 #ifndef XMLSEC_NO_SHA512
 /****************************************************************************
  *
- * RSA-PSS-SHA512 signature transform
+ * RSA-PSS-SHA2-512 signature transform
  *
  ***************************************************************************/
 static xmlSecTransformKlass xmlSecMSCngRsaPssSha512Klass = {
@@ -1151,9 +1151,9 @@ static xmlSecTransformKlass xmlSecMSCngRsaPssSha512Klass = {
 /**
  * xmlSecMSCngTransformRsaPssSha512GetKlass:
  *
- * The RSA-PSS-SHA512 signature transform klass.
+ * The RSA-PSS-SHA2-512 signature transform klass.
  *
- * Returns: RSA-PSS-SHA512 signature transform klass.
+ * Returns: RSA-PSS-SHA2-512 signature transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformRsaPssSha512GetKlass(void) {
@@ -1214,7 +1214,7 @@ xmlSecMSCngTransformEcdsaSha1GetKlass(void) {
 #ifndef XMLSEC_NO_SHA256
 /****************************************************************************
  *
- * ECDSA-SHA256 signature transform
+ * ECDSA-SHA2-256 signature transform
  *
  ***************************************************************************/
 static xmlSecTransformKlass xmlSecMSCngEcdsaSha256Klass = {
@@ -1247,9 +1247,9 @@ static xmlSecTransformKlass xmlSecMSCngEcdsaSha256Klass = {
 /**
  * xmlSecMSCngTransformEcdsaSha256GetKlass:
  *
- * The ECDSA-SHA256 signature transform klass.
+ * The ECDSA-SHA2-256 signature transform klass.
  *
- * Returns: ECDSA-SHA256 signature transform klass.
+ * Returns: ECDSA-SHA2-256 signature transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformEcdsaSha256GetKlass(void) {
@@ -1260,7 +1260,7 @@ xmlSecMSCngTransformEcdsaSha256GetKlass(void) {
 #ifndef XMLSEC_NO_SHA384
 /****************************************************************************
  *
- * ECDSA-SHA384 signature transform
+ * ECDSA-SHA2-384 signature transform
  *
  ***************************************************************************/
 static xmlSecTransformKlass xmlSecMSCngEcdsaSha384Klass = {
@@ -1293,9 +1293,9 @@ static xmlSecTransformKlass xmlSecMSCngEcdsaSha384Klass = {
 /**
  * xmlSecMSCngTransformEcdsaSha384GetKlass:
  *
- * The ECDSA-SHA384 signature transform klass.
+ * The ECDSA-SHA2-384 signature transform klass.
  *
- * Returns: ECDSA-SHA384 signature transform klass.
+ * Returns: ECDSA-SHA2-384 signature transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformEcdsaSha384GetKlass(void) {
@@ -1306,7 +1306,7 @@ xmlSecMSCngTransformEcdsaSha384GetKlass(void) {
 #ifndef XMLSEC_NO_SHA512
 /****************************************************************************
  *
- * ECDSA-SHA512 signature transform
+ * ECDSA-SHA2-512 signature transform
  *
  ***************************************************************************/
 static xmlSecTransformKlass xmlSecMSCngEcdsaSha512Klass = {
@@ -1339,9 +1339,9 @@ static xmlSecTransformKlass xmlSecMSCngEcdsaSha512Klass = {
 /**
  * xmlSecMSCngTransformEcdsaSha512GetKlass:
  *
- * The ECDSA-SHA512 signature transform klass.
+ * The ECDSA-SHA2-512 signature transform klass.
  *
- * Returns: ECDSA-SHA512 signature transform klass.
+ * Returns: ECDSA-SHA2-512 signature transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformEcdsaSha512GetKlass(void) {

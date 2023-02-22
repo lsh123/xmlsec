@@ -364,7 +364,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformDsaSha1GetKlass(voi
 /**
  * xmlSecOpenSSLTransformDsaSha256Id:
  *
- * The DSA SHA256 signature transform klass.
+ * The DSA SHA2-256 signature transform klass.
  */
 #define xmlSecOpenSSLTransformDsaSha256Id \
         xmlSecOpenSSLTransformDsaSha256GetKlass()
@@ -688,7 +688,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformHmacSha1GetKlass(vo
 /**
  * xmlSecOpenSSLTransformHmacSha224Id:
  *
- * The HMAC with SHA224 signature transform klass.
+ * The HMAC with SHA2-224 signature transform klass.
  */
 #define xmlSecOpenSSLTransformHmacSha224Id \
         xmlSecOpenSSLTransformHmacSha224GetKlass()
@@ -699,7 +699,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformHmacSha224GetKlass(
 /**
  * xmlSecOpenSSLTransformHmacSha256Id:
  *
- * The HMAC with SHA256 signature transform klass.
+ * The HMAC with SHA2-256 signature transform klass.
  */
 #define xmlSecOpenSSLTransformHmacSha256Id \
         xmlSecOpenSSLTransformHmacSha256GetKlass()
@@ -710,7 +710,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformHmacSha256GetKlass(
 /**
  * xmlSecOpenSSLTransformHmacSha384Id:
  *
- * The HMAC with SHA384 signature transform klass.
+ * The HMAC with SHA2-384 signature transform klass.
  */
 #define xmlSecOpenSSLTransformHmacSha384Id \
         xmlSecOpenSSLTransformHmacSha384GetKlass()
@@ -721,7 +721,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformHmacSha384GetKlass(
 /**
  * xmlSecOpenSSLTransformHmacSha512Id:
  *
- * The HMAC with SHA512 signature transform klass.
+ * The HMAC with SHA2-512 signature transform klass.
  */
 #define xmlSecOpenSSLTransformHmacSha512Id \
         xmlSecOpenSSLTransformHmacSha512GetKlass()
@@ -848,7 +848,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformRsaSha1GetKlass(voi
 /**
  * xmlSecOpenSSLTransformRsaSha224Id:
  *
- * The RSA-SHA224 signature transform klass.
+ * The RSA-SHA2-224 signature transform klass.
  */
 #define xmlSecOpenSSLTransformRsaSha224Id       \
         xmlSecOpenSSLTransformRsaSha224GetKlass()
@@ -859,7 +859,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformRsaSha224GetKlass(v
 /**
  * xmlSecOpenSSLTransformRsaSha256Id:
  *
- * The RSA-SHA256 signature transform klass.
+ * The RSA-SHA2-256 signature transform klass.
  */
 #define xmlSecOpenSSLTransformRsaSha256Id       \
         xmlSecOpenSSLTransformRsaSha256GetKlass()
@@ -870,7 +870,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformRsaSha256GetKlass(v
 /**
  * xmlSecOpenSSLTransformRsaSha384Id:
  *
- * The RSA-SHA384 signature transform klass.
+ * The RSA-SHA2-384 signature transform klass.
  */
 #define xmlSecOpenSSLTransformRsaSha384Id       \
         xmlSecOpenSSLTransformRsaSha384GetKlass()
@@ -881,7 +881,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformRsaSha384GetKlass(v
 /**
  * xmlSecOpenSSLTransformRsaSha512Id:
  *
- * The RSA-SHA512 signature transform klass.
+ * The RSA-SHA2-512 signature transform klass.
  */
 #define xmlSecOpenSSLTransformRsaSha512Id       \
         xmlSecOpenSSLTransformRsaSha512GetKlass()

@@ -132,7 +132,11 @@ else
     pub_key_option="--pubkey-der"
     pub_key_format="der"
 fi
-
+if [ "z$crypto" = "zgcrypt" ] ; then
+    pub_key_suffix="-gcrypt"
+else
+    pub_key_suffix=""
+fi
 
 # On Windows, we needs to specify Crypto Service Provider (CSP)
 # in the pkcs12 file to ensure it is loaded correctly to be used

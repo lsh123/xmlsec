@@ -1035,7 +1035,7 @@ xmlSecOpenSSLTransformDsaSha1GetKlass(void) {
 #ifndef XMLSEC_NO_SHA256
 /****************************************************************************
  *
- * DSA-SHA256 signature transform
+ * DSA-SHA2-256 signature transform
  *
  ***************************************************************************/
 
@@ -1069,9 +1069,9 @@ static xmlSecTransformKlass xmlSecOpenSSLDsaSha256Klass = {
 /**
  * xmlSecOpenSSLTransformDsaSha256GetKlass:
  *
- * The DSA-SHA256 signature transform klass.
+ * The DSA-SHA2-256 signature transform klass.
  *
- * Returns: DSA-SHA256 signature transform klass.
+ * Returns: DSA-SHA2-256 signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformDsaSha256GetKlass(void) {

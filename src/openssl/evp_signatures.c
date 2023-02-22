@@ -1025,7 +1025,7 @@ xmlSecOpenSSLTransformRsaSha1GetKlass(void) {
 #ifndef XMLSEC_NO_SHA224
 /****************************************************************************
  *
- * RSA-SHA224 signature transform
+ * RSA-SHA2-224 signature transform
  *
  ***************************************************************************/
 static xmlSecTransformKlass xmlSecOpenSSLRsaSha224Klass = {
@@ -1058,9 +1058,9 @@ static xmlSecTransformKlass xmlSecOpenSSLRsaSha224Klass = {
 /**
  * xmlSecOpenSSLTransformRsaSha224GetKlass:
  *
- * The RSA-SHA224 signature transform klass.
+ * The RSA-SHA2-224 signature transform klass.
  *
- * Returns: RSA-SHA224 signature transform klass.
+ * Returns: RSA-SHA2-224 signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformRsaSha224GetKlass(void) {
@@ -1072,7 +1072,7 @@ xmlSecOpenSSLTransformRsaSha224GetKlass(void) {
 #ifndef XMLSEC_NO_SHA256
 /****************************************************************************
  *
- * RSA-SHA256 signature transform
+ * RSA-SHA2-256 signature transform
  *
  ***************************************************************************/
 static xmlSecTransformKlass xmlSecOpenSSLRsaSha256Klass = {
@@ -1105,9 +1105,9 @@ static xmlSecTransformKlass xmlSecOpenSSLRsaSha256Klass = {
 /**
  * xmlSecOpenSSLTransformRsaSha256GetKlass:
  *
- * The RSA-SHA256 signature transform klass.
+ * The RSA-SHA2-256 signature transform klass.
  *
- * Returns: RSA-SHA256 signature transform klass.
+ * Returns: RSA-SHA2-256 signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformRsaSha256GetKlass(void) {
@@ -1119,7 +1119,7 @@ xmlSecOpenSSLTransformRsaSha256GetKlass(void) {
 #ifndef XMLSEC_NO_SHA384
 /****************************************************************************
  *
- * RSA-SHA384 signature transform
+ * RSA-SHA2-384 signature transform
  *
  ***************************************************************************/
 static xmlSecTransformKlass xmlSecOpenSSLRsaSha384Klass = {
@@ -1152,9 +1152,9 @@ static xmlSecTransformKlass xmlSecOpenSSLRsaSha384Klass = {
 /**
  * xmlSecOpenSSLTransformRsaSha384GetKlass:
  *
- * The RSA-SHA384 signature transform klass.
+ * The RSA-SHA2-384 signature transform klass.
  *
- * Returns: RSA-SHA384 signature transform klass.
+ * Returns: RSA-SHA2-384 signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformRsaSha384GetKlass(void) {
@@ -1166,7 +1166,7 @@ xmlSecOpenSSLTransformRsaSha384GetKlass(void) {
 #ifndef XMLSEC_NO_SHA512
 /****************************************************************************
  *
- * RSA-SHA512 signature transform
+ * RSA-SHA2-512 signature transform
  *
  ***************************************************************************/
 static xmlSecTransformKlass xmlSecOpenSSLRsaSha512Klass = {
@@ -1199,9 +1199,9 @@ static xmlSecTransformKlass xmlSecOpenSSLRsaSha512Klass = {
 /**
  * xmlSecOpenSSLTransformRsaSha512GetKlass:
  *
- * The RSA-SHA512 signature transform klass.
+ * The RSA-SHA2-512 signature transform klass.
  *
- * Returns: RSA-SHA512 signature transform klass.
+ * Returns: RSA-SHA2-512 signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformRsaSha512GetKlass(void) {

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Envelope xmlns="urn:envelope">
+  <Data>
+	Hello, World!
+  </Data>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+      <SignatureMethod Algorithm="http://www.w3.org/2007/05/xmldsig-more#sha512-rsa-MGF1"/>
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
+	        <Transform Algorithm="http://www.w3.org/TR/1999/REC-xpath-19991116">
+	          <XPath xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">not(ancestor-or-self::dsig:Signature)</XPath>
+	        </Transform>
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/>
+        <DigestValue>j12SN+LRqX4RricEwl5iEpjyand0nCMO8T5dNYR5P661F2ZrUS5wSbyMdu826KrG
+IQbvvjmkI+9+QmCrcJyXXA==</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>7gOGNnBZvmkdOnL1CrNXXPNyJqM8Y42C5Ngn+sWZNwbid1uxgI/gRF5MdoHSThtA
+73b5I+cMTPWhnfT94bZFAhJUMwkAxYzsNNFpG0O9uCcx1d8sRsAxNyxli/oglCAA
+KXjLh7lAZyj3UH3s1D1Z6gVsuGM+TbU5CsTbAHjXelgVyiJy2d05o52BHc7PbDhw
+FwSxo0NyoM7v4y2wxHO1xdlGqklW84aQjq2fIDO8UU7cjYti8q9nvDv0BfHj7BjE
+WHrV3LNgwjvmwOIW4776WCiGrJw0TNXRWxG7+VyKTSP9yRxVeKDJiWDJEXn79LSM
+BuTWkkDuGRarl9/y1m5dmwX/nXeWkJuRpt46UM+44E3TLmagsY7TQBWKDwxHZ6Bm
+x42K/TI75hPms20E8RNtqNWdbj/uJAfFL/Nya7GLr20eUbJaOrODO10XaufR9Oh6
+9fS2qta07YywYQYUqWG6Re7bDzbV3uxWPoMgarDF6hV6QF+fROeKaAnhFTIw12jR
+9LEQqWOGzG8c5viskOEtBl5QM2jcKDNzZ/ZW8SfiTMO6rcoyS1OhhMFoojfN7Yke
+Gy4XLxhCQWH7orQOCyC1NnCMYw/vLNtL+QIvNXRBuYfvur3tEVU+ro0ganNTnvyE
+ao7n1SXIYPAK0aWS0oRDIgZiFlxf0geBIcyfdeutjuA=</SignatureValue>
+    <KeyInfo>
+      <KeyName>largersakey</KeyName>
+    </KeyInfo>
+  </Signature>
+</Envelope>

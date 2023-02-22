@@ -147,6 +147,13 @@ xmlSecCryptoGetFunctions_gcrypt(void) {
     gXmlSecGCryptFunctions->transformEcdsaSha512GetKlass      = xmlSecGCryptTransformEcdsaSha512GetKlass;
 #endif /* XMLSEC_NO_SHA512 */
 
+
+#ifndef XMLSEC_NO_SHA256
+    gXmlSecGCryptFunctions->transformEcdsaSha3_256GetKlass      = xmlSecGCryptTransformEcdsaSha3_256GetKlass;
+    gXmlSecGCryptFunctions->transformEcdsaSha3_384GetKlass      = xmlSecGCryptTransformEcdsaSha3_384GetKlass;
+    gXmlSecGCryptFunctions->transformEcdsaSha3_512GetKlass      = xmlSecGCryptTransformEcdsaSha3_512GetKlass;
+#endif /* XMLSEC_NO_SHA512 */
+
 #endif /* XMLSEC_NO_EC */
 
 
@@ -232,6 +239,13 @@ xmlSecCryptoGetFunctions_gcrypt(void) {
     gXmlSecGCryptFunctions->transformRsaPssSha512GetKlass      = xmlSecGCryptTransformRsaPssSha512GetKlass;
 #endif /* XMLSEC_NO_SHA512 */
 
+#ifndef XMLSEC_NO_SHA3
+    gXmlSecGCryptFunctions->transformRsaPssSha3_256GetKlass    = xmlSecGCryptTransformRsaPssSha3_256GetKlass;
+    gXmlSecGCryptFunctions->transformRsaPssSha3_384GetKlass    = xmlSecGCryptTransformRsaPssSha3_384GetKlass;
+    gXmlSecGCryptFunctions->transformRsaPssSha3_512GetKlass    = xmlSecGCryptTransformRsaPssSha3_512GetKlass;
+#endif /* XMLSEC_NO_SHA3 */
+
+
     gXmlSecGCryptFunctions->transformRsaPkcs1GetKlass          = xmlSecGCryptTransformRsaPkcs1GetKlass;
     gXmlSecGCryptFunctions->transformRsaOaepGetKlass           = xmlSecGCryptTransformRsaOaepGetKlass;
     gXmlSecGCryptFunctions->transformRsaOaepEnc11GetKlass      = xmlSecGCryptTransformRsaOaepEnc11GetKlass;
@@ -255,6 +269,11 @@ xmlSecCryptoGetFunctions_gcrypt(void) {
     gXmlSecGCryptFunctions->transformSha512GetKlass             = xmlSecGCryptTransformSha512GetKlass;
 #endif /* XMLSEC_NO_SHA512 */
 
+#ifndef XMLSEC_NO_SHA3
+    gXmlSecGCryptFunctions->transformSha3_256GetKlass           = xmlSecGCryptTransformSha3_256GetKlass;
+    gXmlSecGCryptFunctions->transformSha3_384GetKlass           = xmlSecGCryptTransformSha3_384GetKlass;
+    gXmlSecGCryptFunctions->transformSha3_512GetKlass           = xmlSecGCryptTransformSha3_512GetKlass;
+#endif /* XMLSEC_NO_SHA3 */
 
     /********************************************************************
      *

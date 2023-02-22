@@ -145,7 +145,7 @@ execDSigTest $res_success \
     "--enabled-key-data key-value,ec $priv_key_option:key-p256 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
     "--enabled-key-data key-value,ec"
 
-# GCrypt has problems with ECDSA-sha384 signatures if hash is longer than key
+# GCrypt has problems with ECDSA-sha2-384 signatures if hash is longer than key
 # https://github.com/lsh123/xmlsec/issues/504
 if [ "z$crypto" != "zgcrypt" ] ; then
     execDSigTest $res_success \
@@ -194,7 +194,7 @@ execDSigTest $res_success \
     "--enabled-key-data key-value,ec $priv_key_option:key-p384 $topfolder/keys/ecdsa-secp384r1-key.$priv_key_format --pwd secret123" \
     "--enabled-key-data key-value,ec"
 
-# GCrypt has problems with ECDSA-sha384 signatures if hash is longer than key
+# GCrypt has problems with ECDSA-sha2-384 signatures if hash is longer than key
 # https://github.com/lsh123/xmlsec/issues/504
 if [ "z$crypto" != "zgcrypt" ] ; then
     execDSigTest $res_success \
@@ -667,6 +667,80 @@ execDSigTest $res_success \
 
 execDSigTest $res_success \
     "" \
+    "aleksey-xmldsig-01/enveloped-sha224-rsa-pss-sha224" \
+    "sha224 rsa-pss-sha224" \
+    "rsa" \
+    "$pub_key_option:largersakey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format" \
+    "$priv_key_option:largersakey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$pub_key_option:largersakey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format"
+
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloped-sha256-rsa-pss-sha256" \
+    "sha256 rsa-pss-sha256" \
+    "rsa" \
+    "$pub_key_option:largersakey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format" \
+    "$priv_key_option:largersakey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$pub_key_option:largersakey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format"
+
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloped-sha384-rsa-pss-sha384" \
+    "sha384 rsa-pss-sha384" \
+    "rsa" \
+    "$pub_key_option:largersakey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format" \
+    "$priv_key_option:largersakey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$pub_key_option:largersakey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format"
+
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloped-sha512-rsa-pss-sha512" \
+    "sha512 rsa-pss-sha512" \
+    "rsa" \
+    "$pub_key_option:largersakey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format" \
+    "$priv_key_option:largersakey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$pub_key_option:largersakey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format"
+
+
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloped-sha3_224-rsa-pss-sha3_224" \
+    "sha3-224 rsa-pss-sha3-224" \
+    "rsa" \
+    "$pub_key_option:largersakey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format" \
+    "$priv_key_option:largersakey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$pub_key_option:largersakey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format"
+
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloped-sha3_256-rsa-pss-sha3_256" \
+    "sha3-256 rsa-pss-sha3-256" \
+    "rsa" \
+    "$pub_key_option:largersakey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format" \
+    "$priv_key_option:largersakey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$pub_key_option:largersakey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format"
+
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloped-sha3_384-rsa-pss-sha3_384" \
+    "sha3-384 rsa-pss-sha3-384" \
+    "rsa" \
+    "$pub_key_option:largersakey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format" \
+    "$priv_key_option:largersakey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$pub_key_option:largersakey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format"
+
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloped-sha3_512-rsa-pss-sha3_512" \
+    "sha3-512 rsa-pss-sha3-512" \
+    "rsa" \
+    "$pub_key_option:largersakey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format" \
+    "$priv_key_option:largersakey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$pub_key_option:largersakey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format"
+
+
+execDSigTest $res_success \
+    "" \
     "aleksey-xmldsig-01/enveloping-rsa-pss-sha1" \
     "sha1 rsa-pss-sha1" \
     "rsa x509" \
@@ -920,13 +994,16 @@ execDSigTest $res_success \
 # MSCNG and GnuTLS doesn't support signatures with removed leading zeros (e.g. from Java)
 # https://github.com/lsh123/xmlsec/issues/228
 if [ "z$crypto" != "zmscng" -a "z$crypto" != "zgnutls" ] ; then
-execDSigTest $res_success \
-    "" \
-    "aleksey-xmldsig-01/enveloped-ecdsa-java-bug" \
-    "sha512 ecdsa-sha512" \
-    "ec x509" \
-    "--trusted-$cert_format $topfolder/keys/enveloped-ecdsa-java-bug-cert.$cert_format --enabled-key-data x509 --verification-gmt-time 2019-01-01+00:00:00"
+    execDSigTest $res_success \
+        "" \
+        "aleksey-xmldsig-01/enveloped-ecdsa-java-bug" \
+        "sha512 ecdsa-sha512" \
+        "ec x509" \
+        "--trusted-$cert_format $topfolder/keys/enveloped-ecdsa-java-bug-cert.$cert_format --enabled-key-data x509 --verification-gmt-time 2019-01-01+00:00:00"
 fi
+
+
+
 
 #
 # To generate output with an expired cert run the following command

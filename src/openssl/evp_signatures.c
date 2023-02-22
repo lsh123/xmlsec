@@ -363,17 +363,17 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
         ctx->padding = RSA_PKCS1_PSS_PADDING;
     } else
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaPssSha3_256Id)) {
-        XMLSEC_OPENSSL_EVP_SIGNATURE_SET_DIGEST(ctx, EVP_sha_256(), OSSL_DIGEST_NAME_SHA3_256);
+        XMLSEC_OPENSSL_EVP_SIGNATURE_SET_DIGEST(ctx, EVP_sha3_256(), OSSL_DIGEST_NAME_SHA3_256);
         ctx->keyId   = xmlSecOpenSSLKeyDataRsaId;
         ctx->padding = RSA_PKCS1_PSS_PADDING;
     } else
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaPssSha3_384Id)) {
-        XMLSEC_OPENSSL_EVP_SIGNATURE_SET_DIGEST(ctx, EVP_sha_384(), OSSL_DIGEST_NAME_SHA3_384);
+        XMLSEC_OPENSSL_EVP_SIGNATURE_SET_DIGEST(ctx, EVP_sha3_384(), OSSL_DIGEST_NAME_SHA3_384);
         ctx->keyId   = xmlSecOpenSSLKeyDataRsaId;
         ctx->padding = RSA_PKCS1_PSS_PADDING;
     } else
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaPssSha3_512Id)) {
-        XMLSEC_OPENSSL_EVP_SIGNATURE_SET_DIGEST(ctx, EVP_sha_512(), OSSL_DIGEST_NAME_SHA3_512);
+        XMLSEC_OPENSSL_EVP_SIGNATURE_SET_DIGEST(ctx, EVP_sha3_512(), OSSL_DIGEST_NAME_SHA3_512);
         ctx->keyId   = xmlSecOpenSSLKeyDataRsaId;
         ctx->padding = RSA_PKCS1_PSS_PADDING;
     } else

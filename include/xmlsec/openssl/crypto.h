@@ -930,7 +930,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformRsaPssSha1GetKlass(
 /**
  * xmlSecOpenSSLTransformRsaPssSha224Id:
  *
- * The RSA-PSS-SHA224 signature transform klass (https://www.rfc-editor.org/rfc/rfc9231.txt).
+ * The RSA-PSS-SHA2-224 signature transform klass (https://www.rfc-editor.org/rfc/rfc9231.txt).
  */
 #define xmlSecOpenSSLTransformRsaPssSha224Id       \
         xmlSecOpenSSLTransformRsaPssSha224GetKlass()
@@ -941,7 +941,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformRsaPssSha224GetKlas
 /**
  * xmlSecOpenSSLTransformRsaPssSha256Id:
  *
- * The RSA-PSS-SHA256 signature transform klass (https://www.rfc-editor.org/rfc/rfc9231.txt).
+ * The RSA-PSS-SHA2-256 signature transform klass (https://www.rfc-editor.org/rfc/rfc9231.txt).
  */
 #define xmlSecOpenSSLTransformRsaPssSha256Id       \
         xmlSecOpenSSLTransformRsaPssSha256GetKlass()
@@ -952,7 +952,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformRsaPssSha256GetKlas
 /**
  * xmlSecOpenSSLTransformRsaPssSha384Id:
  *
- * The RSA-PSS-SHA384 signature transform klass (https://www.rfc-editor.org/rfc/rfc9231.txt).
+ * The RSA-PSS-SHA2-384 signature transform klass (https://www.rfc-editor.org/rfc/rfc9231.txt).
  */
 #define xmlSecOpenSSLTransformRsaPssSha384Id       \
         xmlSecOpenSSLTransformRsaPssSha384GetKlass()
@@ -963,12 +963,51 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformRsaPssSha384GetKlas
 /**
  * xmlSecOpenSSLTransformRsaPssSha512Id:
  *
- * The RSA-PSS-SHA512 signature transform klass (https://www.rfc-editor.org/rfc/rfc9231.txt).
+ * The RSA-PSS-SHA2-512 signature transform klass (https://www.rfc-editor.org/rfc/rfc9231.txt).
  */
 #define xmlSecOpenSSLTransformRsaPssSha512Id       \
         xmlSecOpenSSLTransformRsaPssSha512GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformRsaPssSha512GetKlass(void);
 #endif /* XMLSEC_NO_SHA512 */
+
+
+#ifndef XMLSEC_NO_SHA3
+/**
+ * xmlSecOpenSSLTransformRsaPssSha3_224Id:
+ *
+ * The RSA-PSS-SHA3-224 signature transform klass (https://www.rfc-editor.org/rfc/rfc9231.txt).
+ */
+#define xmlSecOpenSSLTransformRsaPssSha3_224Id       \
+        xmlSecOpenSSLTransformRsaPssSha3_224GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformRsaPssSha3_224GetKlass(void);
+
+/**
+ * xmlSecOpenSSLTransformRsaPssSha3_256Id:
+ *
+ * The RSA-PSS-SHA3-256 signature transform klass (https://www.rfc-editor.org/rfc/rfc9231.txt).
+ */
+#define xmlSecOpenSSLTransformRsaPssSha3_256Id       \
+        xmlSecOpenSSLTransformRsaPssSha3_256GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformRsaPssSha3_256GetKlass(void);
+
+/**
+ * xmlSecOpenSSLTransformRsaPssSha3_384Id:
+ *
+ * The RSA-PSS-SHA3-384 signature transform klass (https://www.rfc-editor.org/rfc/rfc9231.txt).
+ */
+#define xmlSecOpenSSLTransformRsaPssSha3_384Id       \
+        xmlSecOpenSSLTransformRsaPssSha3_384GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformRsaPssSha3_384GetKlass(void);
+
+/**
+ * xmlSecOpenSSLTransformRsaPssSha3_512Id:
+ *
+ * The RSA-PSS-SHA3-512 signature transform klass (https://www.rfc-editor.org/rfc/rfc9231.txt).
+ */
+#define xmlSecOpenSSLTransformRsaPssSha3_512Id       \
+        xmlSecOpenSSLTransformRsaPssSha3_512GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformRsaPssSha3_512GetKlass(void);
+#endif /* XMLSEC_NO_SHA3 */
 
 #endif /* XMLSEC_NO_RSA */
 

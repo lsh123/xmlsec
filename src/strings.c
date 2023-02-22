@@ -520,6 +520,18 @@ const xmlChar xmlSecHrefRsaPssSha384[]          = "http://www.w3.org/2007/05/xml
 const xmlChar xmlSecNameRsaPssSha512[]          = "rsa-pss-sha512";
 const xmlChar xmlSecHrefRsaPssSha512[]          = "http://www.w3.org/2007/05/xmldsig-more#sha512-rsa-MGF1";
 
+const xmlChar xmlSecNameRsaPssSha3_224[]        = "rsa-pss-sha3-224";
+const xmlChar xmlSecHrefRsaPssSha3_224[]        = "http://www.w3.org/2007/05/xmldsig-more#sha3-224-rsa-MGF1";
+
+const xmlChar xmlSecNameRsaPssSha3_256[]        = "rsa-pss-sha3-256";
+const xmlChar xmlSecHrefRsaPssSha3_256[]        = "http://www.w3.org/2007/05/xmldsig-more#sha3-256-rsa-MGF1";
+
+const xmlChar xmlSecNameRsaPssSha3_384[]        = "rsa-pss-sha3-384";
+const xmlChar xmlSecHrefRsaPssSha3_384[]        = "http://www.w3.org/2007/05/xmldsig-more#sha3-384-rsa-MGF1";
+
+const xmlChar xmlSecNameRsaPssSha3_512[]        = "rsa-pss-sha3-512";
+const xmlChar xmlSecHrefRsaPssSha3_512[]        = "http://www.w3.org/2007/05/xmldsig-more#sha3-512-rsa-MGF1";
+
 /*************************************************************************
  *
  * GOSTR3411_94 strings

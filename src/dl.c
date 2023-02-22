@@ -607,64 +607,100 @@ xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(struct _xmlSecCryptoDLFuncti
     XMLSEC_REGISTER_TRANSFORM(Aes192Cbc);                           // transformAes192CbcGetKlass
     XMLSEC_REGISTER_TRANSFORM(Aes192Cbc);                           // transformAes192CbcGetKlass
     XMLSEC_REGISTER_TRANSFORM(Aes256Cbc);                           // transformAes256CbcGetKlass
+
     XMLSEC_REGISTER_TRANSFORM(Aes128Gcm);                           // transformAes128GcmGetKlass
     XMLSEC_REGISTER_TRANSFORM(Aes192Gcm);                           // transformAes192GcmGetKlass
     XMLSEC_REGISTER_TRANSFORM(Aes256Gcm);                           // transformAes256GcmGetKlass
+
     XMLSEC_REGISTER_TRANSFORM(ConcatKdf);                           // transformConcatKdfGetKlass
+
     XMLSEC_REGISTER_TRANSFORM(KWAes128);                            // transformKWAes128GetKlass
     XMLSEC_REGISTER_TRANSFORM(KWAes192);                            // transformKWAes192GetKlass
     XMLSEC_REGISTER_TRANSFORM(KWAes256);                            // transformKWAes256GetKlass
+
     XMLSEC_REGISTER_TRANSFORM(Des3Cbc);                             // transformDes3CbcGetKlass
+
     XMLSEC_REGISTER_TRANSFORM(KWDes3);                              // transformKWDes3GetKlass
+
     XMLSEC_REGISTER_TRANSFORM(Gost2001GostR3411_94);                // transformGost2001GostR3411_94GetKlass
     XMLSEC_REGISTER_TRANSFORM(GostR3410_2012GostR3411_2012_256);    // transformGostR3410_2012GostR3411_2012_256GetKlass
     XMLSEC_REGISTER_TRANSFORM(GostR3410_2012GostR3411_2012_512);    // transformGostR3410_2012GostR3411_2012_512GetKlass
+
     XMLSEC_REGISTER_TRANSFORM(DsaSha1);                             // transformDsaSha1GetKlass
     XMLSEC_REGISTER_TRANSFORM(DsaSha256);                           // transformDsaSha256GetKlass
+
     XMLSEC_REGISTER_TRANSFORM(Ecdh);                                // transformEcdhGetKlass
+
     XMLSEC_REGISTER_TRANSFORM(EcdsaRipemd160);                      // transformEcdsaRipemd160GetKlass
+
     XMLSEC_REGISTER_TRANSFORM(EcdsaSha1);                           // transformEcdsaSha1GetKlass
+
     XMLSEC_REGISTER_TRANSFORM(EcdsaSha224);                         // transformEcdsaSha224GetKlass
     XMLSEC_REGISTER_TRANSFORM(EcdsaSha256);                         // transformEcdsaSha256GetKlass
     XMLSEC_REGISTER_TRANSFORM(EcdsaSha384);                         // transformEcdsaSha384GetKlass
     XMLSEC_REGISTER_TRANSFORM(EcdsaSha512);                         // transformEcdsaSha512GetKlass
+
     XMLSEC_REGISTER_TRANSFORM(EcdsaSha3_224);                       // transformEcdsaSha3_224GetKlass
     XMLSEC_REGISTER_TRANSFORM(EcdsaSha3_256);                       // transformEcdsaSha3_256GetKlass
     XMLSEC_REGISTER_TRANSFORM(EcdsaSha3_384);                       // transformEcdsaSha3_384GetKlass
     XMLSEC_REGISTER_TRANSFORM(EcdsaSha3_512);                       // transformEcdsaSha3_512GetKlass
+
     XMLSEC_REGISTER_TRANSFORM(HmacMd5);                             // transformHmacMd5GetKlass
+
     XMLSEC_REGISTER_TRANSFORM(HmacRipemd160);                       // transformHmacRipemd160GetKlass
+
     XMLSEC_REGISTER_TRANSFORM(HmacSha1);                            // transformHmacSha1GetKlass
+
     XMLSEC_REGISTER_TRANSFORM(HmacSha224);                          // transformHmacSha224GetKlass
     XMLSEC_REGISTER_TRANSFORM(HmacSha256);                          // transformHmacSha256GetKlass
     XMLSEC_REGISTER_TRANSFORM(HmacSha384);                          // transformHmacSha384GetKlass
     XMLSEC_REGISTER_TRANSFORM(HmacSha512);                          // transformHmacSha512GetKlass
+
     XMLSEC_REGISTER_TRANSFORM(Md5);                                 // transformMd5GetKlass
+
     XMLSEC_REGISTER_TRANSFORM(Pbkdf2);                              // transformPbkdf2GetKlass
+
     XMLSEC_REGISTER_TRANSFORM(Ripemd160);                           // transformRipemd160GetKlass
+
     XMLSEC_REGISTER_TRANSFORM(RsaMd5);                              // transformRsaMd5GetKlass
+
     XMLSEC_REGISTER_TRANSFORM(RsaRipemd160);                        // transformRsaRipemd160GetKlass
+
     XMLSEC_REGISTER_TRANSFORM(RsaSha1);                             // transformRsaSha1GetKlass
+
     XMLSEC_REGISTER_TRANSFORM(RsaSha224);                           // transformRsaSha224GetKlass
     XMLSEC_REGISTER_TRANSFORM(RsaSha256);                           // transformRsaSha256GetKlass
     XMLSEC_REGISTER_TRANSFORM(RsaSha384);                           // transformRsaSha384GetKlass
     XMLSEC_REGISTER_TRANSFORM(RsaSha512);                           // transformRsaSha512GetKlass
-    XMLSEC_REGISTER_TRANSFORM(RsaPssSha1);                          // transformRsaPssSSha1GetKlass
-    XMLSEC_REGISTER_TRANSFORM(RsaPssSha224);                        // transformRsaPssSSha224GetKlass
-    XMLSEC_REGISTER_TRANSFORM(RsaPssSha256);                        // transformRsaPssSSha256GetKlass
-    XMLSEC_REGISTER_TRANSFORM(RsaPssSha384);                        // transformRsaPssSSha384GetKlass
-    XMLSEC_REGISTER_TRANSFORM(RsaPssSha512);                        // transformRsaPssSSha512GetKlass
+
+    XMLSEC_REGISTER_TRANSFORM(RsaPssSha1);                          // transformRsaPssSha1GetKlass
+
+    XMLSEC_REGISTER_TRANSFORM(RsaPssSha224);                        // transformRsaPssSha224GetKlass
+    XMLSEC_REGISTER_TRANSFORM(RsaPssSha256);                        // transformRsaPssSha256GetKlass
+    XMLSEC_REGISTER_TRANSFORM(RsaPssSha384);                        // transformRsaPssSha384GetKlass
+    XMLSEC_REGISTER_TRANSFORM(RsaPssSha512);                        // transformRsaPssSha512GetKlass
+
+    XMLSEC_REGISTER_TRANSFORM(RsaPssSha3_224);                      // transformRsaPssSha3_224GetKlass
+    XMLSEC_REGISTER_TRANSFORM(RsaPssSha3_256);                      // transformRsaPssSha3_256GetKlass
+    XMLSEC_REGISTER_TRANSFORM(RsaPssSha3_384);                      // transformRsaPssSha3_384GetKlass
+    XMLSEC_REGISTER_TRANSFORM(RsaPssSha3_512);                      // transformRsaPssSha3_512GetKlass
+
     XMLSEC_REGISTER_TRANSFORM(RsaPkcs1);                            // transformRsaPkcs1GetKlass
+
     XMLSEC_REGISTER_TRANSFORM(RsaOaep);                             // transformRsaOaepGetKlass
     XMLSEC_REGISTER_TRANSFORM(RsaOaepEnc11);                        // transformRsaOaepEnc11GetKlass
+
     XMLSEC_REGISTER_TRANSFORM(GostR3411_94);                        // transformGostR3411_94GetKlass
     XMLSEC_REGISTER_TRANSFORM(GostR3411_2012_256);                  // transformGostR3411_2012_256GetKlass
     XMLSEC_REGISTER_TRANSFORM(GostR3411_2012_512);                  // transformGostR3411_2012_512GetKlass
+
     XMLSEC_REGISTER_TRANSFORM(Sha1);                                // transformSha1GetKlass
+
     XMLSEC_REGISTER_TRANSFORM(Sha224);                              // transformSha224GetKlass
     XMLSEC_REGISTER_TRANSFORM(Sha256);                              // transformSha256GetKlass
     XMLSEC_REGISTER_TRANSFORM(Sha384);                              // transformSha384GetKlass
     XMLSEC_REGISTER_TRANSFORM(Sha512);                              // transformSha512GetKlass
+
     XMLSEC_REGISTER_TRANSFORM(Sha3_224);                            // transformSha3_224GetKlass
     XMLSEC_REGISTER_TRANSFORM(Sha3_256);                            // transformSha3_256GetKlass
     XMLSEC_REGISTER_TRANSFORM(Sha3_384);                            // transformSha3_384GetKlass

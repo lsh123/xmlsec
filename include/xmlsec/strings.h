@@ -527,6 +527,18 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecNameRsaPssSha512[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRsaPssSha512[];
 
 
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameRsaPssSha3_224[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRsaPssSha3_224[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameRsaPssSha3_256[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRsaPssSha3_256[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameRsaPssSha3_384[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRsaPssSha3_384[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameRsaPssSha3_512[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRsaPssSha3_512[];
+
 /*************************************************************************
  *
  * GOSTR3411_94 strings

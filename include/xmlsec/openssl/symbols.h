@@ -107,10 +107,16 @@ extern "C" {
 #define xmlSecTransformRsaSha512Id              xmlSecOpenSSLTransformRsaSha512Id
 
 #define xmlSecTransformRsaPssSha1Id             xmlSecOpenSSLTransformRsaPssSha1Id
+
 #define xmlSecTransformRsaPssSha224Id           xmlSecOpenSSLTransformRsaPssSha224Id
 #define xmlSecTransformRsaPssSha256Id           xmlSecOpenSSLTransformRsaPssSha256Id
 #define xmlSecTransformRsaPssSha384Id           xmlSecOpenSSLTransformRsaPssSha384Id
 #define xmlSecTransformRsaPssSha512Id           xmlSecOpenSSLTransformRsaPssSha512Id
+
+#define xmlSecTransformRsaPssSha3_224Id         xmlSecOpenSSLTransformRsaPssSha3_224Id
+#define xmlSecTransformRsaPssSha3_256Id         xmlSecOpenSSLTransformRsaPssSha3_256Id
+#define xmlSecTransformRsaPssSha3_384Id         xmlSecOpenSSLTransformRsaPssSha3_384Id
+#define xmlSecTransformRsaPssSha3_512Id         xmlSecOpenSSLTransformRsaPssSha3_512Id
 
 #define xmlSecTransformRsaPkcs1Id               xmlSecOpenSSLTransformRsaPkcs1Id
 

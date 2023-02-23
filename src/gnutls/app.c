@@ -270,38 +270,64 @@ xmlSecGnuTLSAppKeyCertLoad(xmlSecKeyPtr key, const char* filename,
  */
 int
 xmlSecGnuTLSAppKeyCertLoadMemory(xmlSecKeyPtr key,
-                                 const xmlSecByte* data,
-                                 xmlSecSize dataSize,
-                                 xmlSecKeyDataFormat format) {
-    gnutls_x509_crt_t cert;
+    const xmlSecByte* data, xmlSecSize dataSize, xmlSecKeyDataFormat format)
+{
+    gnutls_x509_crt_t cert = NULL;
+    gnutls_x509_crt_t keyCert = NULL;
     xmlSecKeyDataPtr keyData;
     int ret;
+    int res = -1;
 
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(dataSize > 0, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
-    keyData = xmlSecKeyEnsureData(key, xmlSecGnuTLSKeyDataX509Id);
-    if(keyData == NULL) {
-        xmlSecInternalError("xmlSecKeyEnsureData", NULL);
-        return(-1);
-    }
-
+    /* read cert and make a copy for the keyCert */
     cert = xmlSecGnuTLSX509CertRead(data, dataSize, format);
     if(cert == NULL) {
         xmlSecInternalError("xmlSecGnuTLSX509CertRead", NULL);
-        return(-1);
+        goto done;
     }
+
+    keyCert = xmlSecGnuTLSX509CertDup(cert);
+    if(keyCert == NULL) {
+        xmlSecInternalError("xmlSecGnuTLSX509CertDup", NULL);
+        goto done;
+    }
+
+    /* add both cert and keyCert to the keyData */
+    keyData = xmlSecKeyEnsureData(key, xmlSecGnuTLSKeyDataX509Id);
+    if(keyData == NULL) {
+        xmlSecInternalError("xmlSecKeyEnsureData", NULL);
+        goto done;
+    }
+
+    ret = xmlSecGnuTLSKeyDataX509AdoptKeyCert(keyData, keyCert);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecGnuTLSKeyDataX509AdoptKeyCert", NULL);
+        goto done;
+    }
+    keyCert = NULL; /* owned by keyData now */
 
     ret = xmlSecGnuTLSKeyDataX509AdoptCert(keyData, cert);
     if(ret < 0) {
         xmlSecInternalError("xmlSecGnuTLSKeyDataX509AdoptCert", NULL);
-        gnutls_x509_crt_deinit(cert);
-        return(-1);
+        goto done;
     }
+    cert = NULL; /* owned by key data now */
 
-    return(0);
+    /* success */
+    res = 0;
+
+done:
+    if(cert != NULL) {
+        gnutls_x509_crt_deinit(cert);
+    }
+    if(keyCert != NULL) {
+        gnutls_x509_crt_deinit(keyCert);
+    }
+    return(res);
 }
 
 /**
@@ -640,6 +666,7 @@ xmlSecGnuTLSAppKeyFromCertLoadMemory(const xmlSecByte* data, xmlSecSize dataSize
     xmlSecKeyDataPtr keyData = NULL;
     xmlSecKeyDataPtr x509Data = NULL;
     gnutls_x509_crt_t cert = NULL;
+    gnutls_x509_crt_t keyCert = NULL;
     xmlSecKeyPtr res = NULL;
     int ret;
 
@@ -647,10 +674,16 @@ xmlSecGnuTLSAppKeyFromCertLoadMemory(const xmlSecByte* data, xmlSecSize dataSize
     xmlSecAssert2(dataSize > 0, NULL);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
 
-    /* read cert */
+    /* read cert and make a copy for keyCert */
     cert = xmlSecGnuTLSX509CertRead(data, dataSize, format);
     if(cert == NULL) {
         xmlSecInternalError("xmlSecGnuTLSX509CertRead", NULL);
+        goto done;
+    }
+
+    keyCert = xmlSecGnuTLSX509CertDup(cert);
+    if(keyCert == NULL) {
+        xmlSecInternalError("xmlSecGnuTLSX509CertDup", NULL);
         goto done;
     }
 
@@ -682,9 +715,18 @@ xmlSecGnuTLSAppKeyFromCertLoadMemory(const xmlSecByte* data, xmlSecSize dataSize
         xmlSecInternalError("xmlSecKeyEnsureData", NULL);
         goto done;
     }
-    ret = xmlSecGnuTLSKeyDataX509AdoptKeyCert(x509Data, cert);
+
+    /* add cert and key cert */
+    ret = xmlSecGnuTLSKeyDataX509AdoptKeyCert(x509Data, keyCert);
     if(ret < 0) {
         xmlSecInternalError("xmlSecGnuTLSKeyDataX509AdoptKeyCert", NULL);
+        goto done;
+    }
+    keyCert = NULL; /* owned by x509Data now */
+
+    ret = xmlSecGnuTLSKeyDataX509AdoptCert(x509Data, cert);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecGnuTLSKeyDataX509AdoptCert", NULL);
         goto done;
     }
     cert = NULL; /* owned by x509Data now */
@@ -696,6 +738,9 @@ xmlSecGnuTLSAppKeyFromCertLoadMemory(const xmlSecByte* data, xmlSecSize dataSize
 done:
     if(cert != NULL) {
         gnutls_x509_crt_deinit(cert);
+    }
+    if(keyCert != NULL) {
+        gnutls_x509_crt_deinit(keyCert);
     }
     if(keyData != NULL) {
         xmlSecKeyDataDestroy(keyData);

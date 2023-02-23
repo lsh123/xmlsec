@@ -728,6 +728,18 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformMd5GetKlass(void);
 
 
 
+/********************************************************************
+ *
+ * DEREncodedKeyValue
+ *
+ *******************************************************************/
+/**
+ * xmlSecNssKeyDataDEREncodedKeyValueId:
+ *
+ * The Nss DEREncodedKeyValue data klass.
+ */
+#define xmlSecNssKeyDataDEREncodedKeyValueId    xmlSecNssKeyDataDEREncodedKeyValueGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId             xmlSecNssKeyDataDEREncodedKeyValueGetKlass(void);
 
 #ifdef __cplusplus
 }

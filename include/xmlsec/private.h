@@ -354,6 +354,7 @@ typedef int                     (*xmlSecCryptoAppKeyCertLoadMemoryMethod)(xmlSec
  * @keyDataX509GetKlass:        the method to get pointer to X509 key data klass.
  * @keyDataRawX509CertGetKlass: the method to get pointer to raw X509 cert key data klass.
  * @x509StoreGetKlass:          the method to get pointer to X509 key data store.
+ * @keyDataDEREncodedKeyValueGetKlass:        the method to get pointer to X509 key data klass.
  * @transformAes128CbcGetKlass: the method to get pointer to AES 128 CBC encryption transform.
  * @transformAes192CbcGetKlass: the method to get pointer to AES 192 CBC encryption transform.
  * @transformAes256CbcGetKlass: the method to get pointer to AES 256 CBC encryption transform.
@@ -461,6 +462,7 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoKeyDataGetKlassMethod            keyDataRsaGetKlass;
     xmlSecCryptoKeyDataGetKlassMethod            keyDataX509GetKlass;
     xmlSecCryptoKeyDataGetKlassMethod            keyDataRawX509CertGetKlass;
+    xmlSecCryptoKeyDataGetKlassMethod            keyDataDEREncodedKeyValueGetKlass;
 
     /* Key data store ids */
     xmlSecCryptoKeyDataStoreGetKlassMethod       x509StoreGetKlass;

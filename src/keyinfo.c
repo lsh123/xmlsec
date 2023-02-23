@@ -616,7 +616,7 @@ static xmlSecKeyDataKlass xmlSecKeyDataNameKlass = {
 
     /* data */
     xmlSecNameKeyName,
-    xmlSecKeyDataUsageKeyInfoNode,              /* xmlSecKeyDataUsage usage; */
+    xmlSecKeyDataUsageKeyInfoNode | xmlSecKeyDataUsageRetrievalMethodNodeXml, /* xmlSecKeyDataUsage usage; */
     NULL,                                       /* const xmlChar* href; */
     xmlSecNodeKeyName,                          /* const xmlChar* dataNodeName; */
     xmlSecDSigNs,                               /* const xmlChar* dataNodeNs; */
@@ -800,7 +800,7 @@ static xmlSecKeyDataKlass xmlSecKeyDataValueKlass = {
 
     /* data */
     xmlSecNameKeyValue,
-    xmlSecKeyDataUsageKeyInfoNode,              /* xmlSecKeyDataUsage usage; */
+    xmlSecKeyDataUsageKeyInfoNode | xmlSecKeyDataUsageRetrievalMethodNodeXml, /* xmlSecKeyDataUsage usage; */
     NULL,                                       /* const xmlChar* href; */
     xmlSecNodeKeyValue,                         /* const xmlChar* dataNodeName; */
     xmlSecDSigNs,                               /* const xmlChar* dataNodeNs; */
@@ -985,7 +985,7 @@ static xmlSecKeyDataKlass xmlSecKeyDataRetrievalMethodKlass = {
 
     /* data */
     xmlSecNameRetrievalMethod,
-    xmlSecKeyDataUsageKeyInfoNode,              /* xmlSecKeyDataUsage usage; */
+    xmlSecKeyDataUsageKeyInfoNode | xmlSecKeyDataUsageRetrievalMethodNodeXml, /* xmlSecKeyDataUsage usage; */
     NULL,                                       /* const xmlChar* href; */
     xmlSecNodeRetrievalMethod,                  /* const xmlChar* dataNodeName; */
     xmlSecDSigNs,                               /* const xmlChar* dataNodeNs; */
@@ -1287,7 +1287,7 @@ static xmlSecKeyDataKlass xmlSecKeyDataKeyInfoReferenceKlass = {
 
     /* data */
     xmlSecNameKeyInfoReference,
-    xmlSecKeyDataUsageKeyInfoNode,              /* xmlSecKeyDataUsage usage; */
+    xmlSecKeyDataUsageKeyInfoNode | xmlSecKeyDataUsageRetrievalMethodNodeXml, /* xmlSecKeyDataUsage usage; */
     NULL,                                       /* const xmlChar* href; */
     xmlSecNodeKeyInfoReference,                 /* const xmlChar* dataNodeName; */
     xmlSecDSig11Ns,                             /* const xmlChar* dataNodeNs; */

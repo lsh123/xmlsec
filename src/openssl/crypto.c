@@ -21,18 +21,20 @@
 #include <string.h>
 
 #include <xmlsec/xmlsec.h>
+#include <xmlsec/dl.h>
+#include <xmlsec/errors.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keysmngr.h>
-#include <xmlsec/transforms.h>
-#include <xmlsec/errors.h>
-#include <xmlsec/dl.h>
 #include <xmlsec/private.h>
+#include <xmlsec/transforms.h>
 
 #include <openssl/x509.h>
 #include <openssl/evp.h>
 #include <openssl/rand.h>
+
 #include <xmlsec/openssl/app.h>
 #include <xmlsec/openssl/crypto.h>
+#include <xmlsec/openssl/evp.h>
 #include <xmlsec/openssl/x509.h>
 
 #include "openssl_compat.h"
@@ -134,6 +136,8 @@ xmlSecCryptoGetFunctions_openssl(void) {
     gXmlSecOpenSSLFunctions->keyDataX509GetKlass        = xmlSecOpenSSLKeyDataX509GetKlass;
     gXmlSecOpenSSLFunctions->keyDataRawX509CertGetKlass = xmlSecOpenSSLKeyDataRawX509CertGetKlass;
 #endif /* XMLSEC_NO_X509 */
+
+    gXmlSecOpenSSLFunctions->keyDataDEREncodedKeyValueGetKlass = xmlSecOpenSSLKeyDataDEREncodedKeyValueGetKlass;
 
     /********************************************************************
      *

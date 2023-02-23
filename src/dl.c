@@ -597,6 +597,7 @@ xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(struct _xmlSecCryptoDLFuncti
     XMLSEC_REGISTER_KEY_DATA(Rsa);                  // keyDataRsaGetKlass
     XMLSEC_REGISTER_KEY_DATA(X509);                 // keyDataX509GetKlass
     XMLSEC_REGISTER_KEY_DATA(RawX509Cert);          // keyDataRawX509CertGetKlass
+    XMLSEC_REGISTER_KEY_DATA(DEREncodedKeyValue);   // keyDataDEREncodedKeyValueGetKlass
 
     /****************************************************************************
      *

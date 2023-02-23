@@ -189,6 +189,15 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeConcatKDFAttrSuppPrivInfo[];
 
 /*************************************************************************
  *
+ * DEREncodedKeyValue strings
+ *
+ ************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameDEREncodedKeyValue[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeDEREncodedKeyValue[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefDEREncodedKeyValue[];
+
+/*************************************************************************
+ *
  * DES strings
  *
  ************************************************************************/

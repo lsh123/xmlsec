@@ -188,6 +188,15 @@ const xmlChar xmlSecNodeConcatKDFAttrSuppPrivInfo[] = "SuppPrivInfo";
 
 /*************************************************************************
  *
+ * DEREncodedKeyValue strings
+ *
+ ************************************************************************/
+const xmlChar xmlSecNameDEREncodedKeyValue[]        = "der-encoded-key-value";
+const xmlChar xmlSecNodeDEREncodedKeyValue[]        = "DEREncodedKeyValue";
+const xmlChar xmlSecHrefDEREncodedKeyValue[]        = "http://www.w3.org/2009/xmldsig11#DEREncodedKeyValue";
+
+/*************************************************************************
+ *
  * DES strings
  *
  ************************************************************************/

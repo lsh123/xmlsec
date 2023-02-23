@@ -44,9 +44,6 @@ echo "--------- Positive Testing ----------"
 #
 ##########################################################################
 
-# derencoded (not supported)
-# signature-enveloping-derencoded-ec.xml
-# signature-enveloping-derencoded-rsa.xml
 
 # x509digest not supported
 # signature-enveloping-x509digest-rsa.xml
@@ -327,6 +324,27 @@ execDSigTest $res_success \
     "--enabled-key-data key-info-reference,key-value,rsa" \
     "$priv_key_option:largersakey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--enabled-key-data key-info-reference,key-value,rsa $pub_key_option:largersakey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format"
+
+
+# DEREncodedKeyValue
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-derencoded-rsa" \
+    "c14n sha256 rsa-sha256" \
+    "der-encoded-key-value rsa" \
+    "--enabled-key-data der-encoded-key-value,rsa" \
+    "$priv_key_option $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-key-data der-encoded-key-value,rsa"
+
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-derencoded-ec" \
+    "c14n sha256 ecdsa-sha256" \
+    "der-encoded-key-value ec" \
+    "--enabled-key-data der-encoded-key-value,ec" \
+    "$priv_key_option $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
+    "--enabled-key-data der-encoded-key-value,ec"
+
 
 ##########################################################################
 #

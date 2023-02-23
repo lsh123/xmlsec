@@ -26,6 +26,8 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLEvpKeyDataAdoptEvp (xmlSecK
                                                                          EVP_PKEY* pKey);
 XMLSEC_CRYPTO_EXPORT EVP_PKEY*          xmlSecOpenSSLEvpKeyDataGetEvp   (xmlSecKeyDataPtr data);
 
+
+
 /******************************************************************************
  *
  * EVP helper functions
@@ -35,10 +37,16 @@ XMLSEC_CRYPTO_EXPORT EVP_PKEY*          xmlSecOpenSSLEvpKeyDup          (EVP_PKE
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataPtr   xmlSecOpenSSLEvpKeyAdopt        (EVP_PKEY *pKey);
 
 
+/**
+ * xmlSecOpenSSLKeyDataDEREncodedKeyValueId:
+ *
+ * The OpenSSL DEREncodedKeyValue data klass.
+ */
+#define xmlSecOpenSSLKeyDataDEREncodedKeyValueId xmlSecOpenSSLKeyDataDEREncodedKeyValueGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId             xmlSecOpenSSLKeyDataDEREncodedKeyValueGetKlass(void);
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
 
 #endif /* __XMLSEC_OPENSSL_EVP_H__ */
-
-

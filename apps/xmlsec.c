@@ -426,7 +426,7 @@ static xmlSecAppCmdLineParam enabledRetrievalMethodUrisParam = {
     xmlSecAppCmdLineTopicKeysMngr,
     "--enabled-retrieval-method-uris",
     NULL,
-    "--enabled-retrieval-uris <list>"
+    "--enabled-retrieval-method-uris <list>"
     "\n\tcomma separated list of of the following values:"
     "\n\t\"empty\", \"same-doc\", \"local\",\"remote\" to restrict possible URI"
     "\n\tattribute values for the <dsig:RetrievalMethod> element.",
@@ -434,6 +434,20 @@ static xmlSecAppCmdLineParam enabledRetrievalMethodUrisParam = {
     xmlSecAppCmdLineParamFlagNone,
     NULL
 };
+
+static xmlSecAppCmdLineParam enabledKeyInfoReferenceUrisParam = {
+    xmlSecAppCmdLineTopicKeysMngr,
+    "--enabled-key-info-reference-uris",
+    NULL,
+    "--enabled-key-info-reference-uris <list>"
+    "\n\tcomma separated list of of the following values:"
+    "\n\t\"empty\", \"same-doc\", \"local\",\"remote\" to restrict possible URI"
+    "\n\tattribute values for the <dsig11:KeyInfoReference> element.",
+    xmlSecAppCmdLineParamTypeStringList,
+    xmlSecAppCmdLineParamFlagNone,
+    NULL
+};
+
 
 static xmlSecAppCmdLineParam privkeyOpensslEngineParam = {
     xmlSecAppCmdLineTopicKeysMngr,
@@ -899,6 +913,7 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
     /* Keys Manager params */
     &enabledKeyDataParam,
     &enabledRetrievalMethodUrisParam,
+    &enabledKeyInfoReferenceUrisParam,
     &genKeyParam,
     &keysFileParam,
     &privkeyParam,
@@ -2071,6 +2086,18 @@ xmlSecAppPrepareKeyInfoReadCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
         if(keyInfoCtx->retrievalMethodCtx.enabledUris == xmlSecTransformUriTypeNone) {
             fprintf(stderr, "Error: failed to parse \"%s\"\n",
                     xmlSecAppCmdLineParamGetStringList(&enabledRetrievalMethodUrisParam));
+            return(-1);
+        }
+    }
+
+
+    /* read enabled KeyInfoReference uris */
+    if(xmlSecAppCmdLineParamGetStringList(&enabledKeyInfoReferenceUrisParam) != NULL) {
+        keyInfoCtx->keyInfoReferenceCtx.enabledUris = xmlSecAppGetUriType(
+                    xmlSecAppCmdLineParamGetStringList(&enabledKeyInfoReferenceUrisParam));
+        if(keyInfoCtx->keyInfoReferenceCtx.enabledUris == xmlSecTransformUriTypeNone) {
+            fprintf(stderr, "Error: failed to parse \"%s\"\n",
+                    xmlSecAppCmdLineParamGetStringList(&enabledKeyInfoReferenceUrisParam));
             return(-1);
         }
     }

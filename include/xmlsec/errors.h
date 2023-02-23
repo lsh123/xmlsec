@@ -306,6 +306,13 @@ extern "C" {
 #define XMLSEC_ERRORS_R_MAX_RETRIEVAL_TYPE_MISMATCH     52
 
 /**
+ * XMLSEC_ERRORS_R_MAX_KEYINFOREFERENCE_LEVEL:
+ *
+ * Max allowed KeyInfoReference level reached.
+ */
+#define XMLSEC_ERRORS_R_MAX_KEYINFOREFERENCE_LEVEL            51
+
+/**
  * XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL:
  *
  * Max EncryptedKey level reached.

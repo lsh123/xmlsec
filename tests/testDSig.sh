@@ -318,6 +318,16 @@ execDSigTest $res_success \
     "" \
     "--enabled-key-data key-name $pub_key_option ./keys/rsa-key.$pub_key_format"
 
+# KeyInfoReference
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-keyinforeference-rsa" \
+    "c14n sha256 rsa-sha256" \
+    "key-info-reference key-value rsa" \
+    "--enabled-key-data key-info-reference,key-value,rsa" \
+    "$priv_key_option:largersakey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-info-reference,key-value,rsa $pub_key_option:largersakey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format"
+
 ##########################################################################
 #
 # xmldsig2ed-tests

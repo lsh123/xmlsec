@@ -62,9 +62,6 @@ XMLSEC_CRYPTO_EXPORT int        xmlSecGnuTLSAppKeysMngrCertLoadMemory   (xmlSecK
  *
  ********************************************************************/
 
-XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecGCryptAppPubKeyCreate           (gnutls_pubkey_t pubkey);
-XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecGCryptAppPrivKeyCreate          (gnutls_privkey_t privkey);
-
 
 XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecGnuTLSAppKeyLoad                (const char *filename,
                                                                          xmlSecKeyDataFormat format,

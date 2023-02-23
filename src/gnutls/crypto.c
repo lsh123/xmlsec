@@ -101,6 +101,8 @@ xmlSecCryptoGetFunctions_gnutls(void) {
     gXmlSecGnuTLSFunctions->keyDataRawX509CertGetKlass  = xmlSecGnuTLSKeyDataRawX509CertGetKlass;
 #endif /* XMLSEC_NO_X509 */
 
+    gXmlSecGnuTLSFunctions->keyDataDEREncodedKeyValueGetKlass = xmlSecGnuTLSKeyDataDEREncodedKeyValueGetKlass;
+
     /********************************************************************
      *
      * Key data store ids

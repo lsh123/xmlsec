@@ -21,11 +21,12 @@
 #include <gnutls/x509.h>
 
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/keys.h>
 #include <xmlsec/base64.h>
-#include <xmlsec/keyinfo.h>
-#include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/keyinfo.h>
+#include <xmlsec/keys.h>
+#include <xmlsec/transforms.h>
+#include <xmlsec/xmltree.h>
 
 #include <xmlsec/gnutls/crypto.h>
 
@@ -329,6 +330,370 @@ xmlSecGnuTLSAsymKeyDataGetSize(xmlSecKeyDataPtr data) {
     xmlSecInternalError("Neither public nor private keys are set", NULL);
     return(0);
 }
+
+/********************************************************************
+ *
+ * Asymetric keys helpers
+ *
+ *******************************************************************/
+
+/**
+ * xmlSecGCryptAsymetricKeyCreatePub:
+ * @pubkey:             the pointer to GnuTLS public key.
+ *
+ * Creates XMLSec key from GnuTLS public key.
+ *
+ * Returns: 0 on success or a negative value otherwise.
+ */
+xmlSecKeyPtr
+xmlSecGCryptAsymetricKeyCreatePub(gnutls_pubkey_t pubkey) {
+    xmlSecKeyDataPtr keyData;
+    xmlSecKeyPtr key;
+    int ret;
+
+    xmlSecAssert2(pubkey != NULL, NULL);
+
+    key = xmlSecKeyCreate();
+    if(key == NULL) {
+        xmlSecInternalError("xmlSecKeyCreate", NULL);
+        return(NULL);
+    }
+
+    keyData = xmlSecGnuTLSAsymKeyDataCreate(pubkey, NULL);
+    if(keyData == NULL) {
+        xmlSecInternalError("xmlSecGnuTLSAsymKeyDataCreate", NULL);
+        xmlSecKeyDestroy(key);
+        return(NULL);
+    }
+
+    /* this call should never fail, otherwise we might
+     * "double free" pubkey (it's owned by keyData and then caller)
+     */
+    ret = xmlSecKeySetValue(key, keyData);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeySetValue", NULL);
+        xmlSecKeyDataDestroy(keyData);
+        xmlSecKeyDestroy(key);
+        return(NULL);
+    }
+
+    /* done */
+    return(key);
+}
+
+
+/**
+ * xmlSecGCryptAsymetricKeyCreatePriv:
+ * @pubkey:             the pointer to GnuTLS private key.
+ *
+ * Creates XMLSec key from GnuTLS private key.
+ *
+ * Returns: 0 on success or a negative value otherwise.
+ */
+xmlSecKeyPtr
+xmlSecGCryptAsymetricKeyCreatePriv(gnutls_privkey_t privkey) {
+    xmlSecKeyDataPtr keyData;
+    xmlSecKeyPtr key;
+    int ret;
+
+    xmlSecAssert2(privkey != NULL, NULL);
+
+    key = xmlSecKeyCreate();
+    if(key == NULL) {
+        xmlSecInternalError("xmlSecKeyCreate", NULL);
+        return(NULL);
+    }
+
+    keyData = xmlSecGnuTLSAsymKeyDataCreate(NULL, privkey);
+    if(keyData == NULL) {
+        xmlSecInternalError("xmlSecGnuTLSAsymKeyDataCreate", NULL);
+        xmlSecKeyDestroy(key);
+        return(NULL);
+    }
+
+    /* this call should never fail, otherwise we might
+     * "double free" privkey (it's owned by keyData and then caller)
+     */
+    ret = xmlSecKeySetValue(key, keyData);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeySetValue", NULL);
+        xmlSecKeyDataDestroy(keyData);
+        xmlSecKeyDestroy(key);
+        return(NULL);
+    }
+
+    /* done */
+    return(key);
+}
+
+
+/**
+ * xmlSecGCryptAsymetricKeyGetPub:
+ * @key:             the pointer to XMLSec key.
+ *
+ * Gets GnuTLS public key from an XMLSec @key .
+ *
+ * Returns: GnuTLS public key on success or a NULL value otherwise.
+ */
+gnutls_pubkey_t
+xmlSecGCryptAsymetricKeyGetPub(xmlSecKeyPtr key) {
+    xmlSecKeyDataPtr keyData;
+
+    xmlSecAssert2(key != NULL, NULL);
+
+    keyData = xmlSecKeyGetValue(key);
+    if(keyData == NULL) {
+        xmlSecInternalError("xmlSecKeyGetValue", NULL);
+        return(NULL);
+    }
+
+    return(xmlSecGnuTLSAsymKeyDataGetPublicKey(keyData));
+}
+
+/**
+ * xmlSecGCryptAsymetricKeyGetPriv:
+ * @key:             the pointer to XMLSec key.
+ *
+ * Gets GnuTLS private key from an XMLSec @key .
+ *
+ * Returns: GnuTLS private key on success or a NULL value otherwise.
+ */
+gnutls_privkey_t
+xmlSecGCryptAsymetricKeyGetPriv(xmlSecKeyPtr key) {
+    xmlSecKeyDataPtr keyData;
+
+    xmlSecAssert2(key != NULL, NULL);
+
+    keyData = xmlSecKeyGetValue(key);
+    if(keyData == NULL) {
+        xmlSecInternalError("xmlSecKeyGetValue", NULL);
+        return(NULL);
+    }
+
+    return(xmlSecGnuTLSAsymKeyDataGetPrivateKey(keyData));
+}
+
+
+
+/**************************************************************************
+ *
+ * <dsig11:DEREncodedKeyValue /> processing
+ *
+ *************************************************************************/
+static int                      xmlSecGnuTLSKeyDataDEREncodedKeyValueXmlRead(xmlSecKeyDataId id,
+                                                                 xmlSecKeyPtr key,
+                                                                 xmlNodePtr node,
+                                                                 xmlSecKeyInfoCtxPtr keyInfoCtx);
+static int                      xmlSecGnuTLSKeyDataDEREncodedKeyValueXmlWrite(xmlSecKeyDataId id,
+                                                                 xmlSecKeyPtr key,
+                                                                 xmlNodePtr node,
+                                                                 xmlSecKeyInfoCtxPtr keyInfoCtx);
+
+
+
+static xmlSecKeyDataKlass xmlSecGnuTLSKeyDataDEREncodedKeyValueKlass = {
+    sizeof(xmlSecKeyDataKlass),
+    sizeof(xmlSecKeyData),
+
+    /* data */
+    xmlSecNameDEREncodedKeyValue,
+    xmlSecKeyDataUsageKeyInfoNode | xmlSecKeyDataUsageRetrievalMethodNodeXml, /* xmlSecKeyDataUsage usage; */
+    NULL,                                       /* const xmlChar* href; */
+    xmlSecNodeDEREncodedKeyValue,               /* const xmlChar* dataNodeName; */
+    xmlSecDSig11Ns,                             /* const xmlChar* dataNodeNs; */
+
+    /* constructors/destructor */
+    NULL,                                       /* xmlSecKeyDataInitializeMethod initialize; */
+    NULL,                                       /* xmlSecKeyDataDuplicateMethod duplicate; */
+    NULL,                                       /* xmlSecKeyDataFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecKeyDataGenerateMethod generate; */
+
+    /* get info */
+    NULL,                                       /* xmlSecKeyDataGetTypeMethod getType; */
+    NULL,                                       /* xmlSecKeyDataGetSizeMethod getSize; */
+    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
+
+    /* read/write */
+    xmlSecGnuTLSKeyDataDEREncodedKeyValueXmlRead,     /* xmlSecKeyDataXmlReadMethod xmlRead; */
+    xmlSecGnuTLSKeyDataDEREncodedKeyValueXmlWrite,    /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    NULL,                                       /* xmlSecKeyDataBinReadMethod binRead; */
+    NULL,                                       /* xmlSecKeyDataBinWriteMethod binWrite; */
+
+    /* debug */
+    NULL,                                       /* xmlSecKeyDataDebugDumpMethod debugDump; */
+    NULL,                                       /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+
+    /* reserved for the future */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecGnuTLSKeyDataDEREncodedKeyValueGetKlass:
+ * The public key algorithm and value are DER-encoded in accordance with the value that would be used
+ * in the Subject Public Key Info field of an X.509 certificate, per section 4.1.2.7 of [RFC5280].
+ * The DER-encoded value is then base64-encoded.
+ *
+ * https://www.w3.org/TR/xmldsig-core1/#sec-DEREncodedKeyValue
+ *
+ *      <!-- targetNamespace="http://www.w3.org/2009/xmldsig11#" -->
+ *      <element name="DEREncodedKeyValue" type="dsig11:DEREncodedKeyValueType" />
+ *      <complexType name="DEREncodedKeyValueType">
+ *          <simpleContent>
+ *              <extension base="base64Binary">
+ *                  <attribute name="Id" type="ID" use="optional"/>
+ *              </extension>
+ *          </simpleContent>
+ *      </complexType>
+ *
+ * Returns: the <dsig11:DEREncodedKeyValue/> element processing key data klass.
+ */
+xmlSecKeyDataId
+xmlSecGnuTLSKeyDataDEREncodedKeyValueGetKlass(void) {
+    return(&xmlSecGnuTLSKeyDataDEREncodedKeyValueKlass);
+}
+
+static int
+xmlSecGnuTLSKeyDataDEREncodedKeyValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlSecBuffer buffer;
+    const xmlSecByte * data;
+    xmlSecSize dataSize;
+    gnutls_datum_t datum;
+    gnutls_pubkey_t pubkey = NULL;
+    xmlSecKeyDataPtr keyData = NULL;
+    xmlNodePtr cur;
+    int res = -1;
+    int err;
+    int ret;
+
+    xmlSecAssert2(id == xmlSecGnuTLSKeyDataDEREncodedKeyValueId, -1);
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(node->doc != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+    xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeRead, -1);
+
+    ret = xmlSecBufferInitialize(&buffer, 256);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize", xmlSecKeyDataKlassGetName(id));
+        return(-1);
+    }
+
+    /* no children are expected */
+    cur = xmlSecGetNextElementNode(node->children);
+    if(cur != NULL) {
+        xmlSecUnexpectedNodeError(cur, xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+
+    /* read base64 node content */
+    ret = xmlSecBufferBase64NodeContentRead(&buffer, node);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferBase64NodeContentRead", xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+    data = xmlSecBufferGetData(&buffer);
+    dataSize = xmlSecBufferGetSize(&buffer);
+    if((data == NULL) || (dataSize <= 0)) {
+        /* this is not an error if we are reading a doc to be encrypted or signed */
+        res = 0;
+        goto done;
+    }
+
+    /* read pubkey */
+	err = gnutls_pubkey_init(&pubkey);
+	if(err < 0) {
+        xmlSecGnuTLSError("gnutls_pubkey_init", err, xmlSecKeyDataKlassGetName(id));
+        goto done;
+	}
+
+    datum.data = (xmlSecByte*)data; /* for const */
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(dataSize, datum.size, goto done, xmlSecKeyDataKlassGetName(id));
+
+	err = gnutls_pubkey_import(pubkey, &datum, GNUTLS_X509_FMT_DER);
+	if(err != GNUTLS_E_SUCCESS) {
+        xmlSecGnuTLSError("gnutls_pubkey_init", err, xmlSecKeyDataKlassGetName(id));
+        goto done;
+	}
+
+    /* add to key */
+    keyData = xmlSecGnuTLSAsymKeyDataCreate(pubkey, NULL);
+    if(keyData == NULL) {
+        xmlSecInternalError("xmlSecGnuTLSAsymKeyDataCreate", xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+    pubkey = NULL; /* owned by key data now */
+
+    ret = xmlSecKeySetValue(key, keyData);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeySetValue", xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+    keyData = NULL; /* owned by key now */
+
+    /* success! */
+    res = 0;
+
+done:
+    if(keyData != NULL) {
+        xmlSecKeyDataDestroy(keyData);
+    }
+    if(pubkey != NULL) {
+        gnutls_pubkey_deinit(pubkey);
+    }
+    xmlSecBufferFinalize(&buffer);
+    return(res);
+}
+
+static int
+xmlSecGnuTLSKeyDataDEREncodedKeyValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    gnutls_pubkey_t pubkey;
+    gnutls_datum_t datum = { NULL, 0 };
+    xmlChar* content = NULL;
+    int err;
+    int res = -1;
+
+    xmlSecAssert2(id == xmlSecGnuTLSKeyDataDEREncodedKeyValueId, -1);
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+    xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeWrite, -1);
+
+    /* get pubkey */
+    pubkey = xmlSecGCryptAsymetricKeyGetPub(key);
+    if(pubkey == NULL) {
+        xmlSecInternalError("xmlSecGCryptAsymetricKeyGetPub", xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+
+    /* encode it */
+    err = gnutls_pubkey_export2(pubkey, GNUTLS_X509_FMT_DER, &datum);
+	if((err != GNUTLS_E_SUCCESS) || (datum.data == NULL) || (datum.size <= 0)) {
+        xmlSecGnuTLSError("gnutls_pubkey_export2", err, xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+
+    /* write to XML */
+    content = xmlSecBase64Encode(datum.data, datum.size, xmlSecBase64GetDefaultLineSize());
+    if(content == NULL) {
+        xmlSecInternalError("xmlSecBase64Encode", xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+    xmlNodeAddContent(node, content);
+
+    /* success */
+    res = 0;
+
+done:
+    if(content != NULL) {
+        xmlFree(content);
+    }
+    if(datum.data != NULL) {
+        gnutls_free(datum.data);
+    }
+    return(res);
+}
+
 
 #ifndef XMLSEC_NO_DSA
 /**************************************************************************

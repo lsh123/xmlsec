@@ -364,6 +364,25 @@ xmlSecKeyDataRawX509CertGetKlass(void) {
     return(xmlSecCryptoDLGetFunctions()->keyDataRawX509CertGetKlass());
 }
 
+
+/**
+ * xmlSecKeyDataDEREncodedKeyValueGetKlass:
+ *
+ * The DEREncodedKeyValue key data klass.
+ *
+ * Returns: X5DEREncodedKeyValue09 key data klass or NULL if an error occurs
+ * (xmlsec-crypto library is not loaded or the DEREncodedKeyValue key data
+ * klass is not implemented).
+ */
+xmlSecKeyDataId
+xmlSecKeyDataDEREncodedKeyValueGetKlass(void) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->keyDataDEREncodedKeyValueGetKlass == NULL)) {
+        xmlSecNotImplementedError("keyDataDEREncodedKeyValueGetKlass");
+        return(xmlSecKeyDataIdUnknown);
+    }
+
+    return(xmlSecCryptoDLGetFunctions()->keyDataDEREncodedKeyValueGetKlass());
+}
 /******************************************************************************
  *
  * Key data store ids

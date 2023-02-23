@@ -143,6 +143,13 @@ XMLSEC_EXPORT xmlSecKeyDataId                   xmlSecKeyDataX509GetKlass(void);
  */
 #define xmlSecKeyDataRawX509CertId              xmlSecKeyDataRawX509CertGetKlass()
 XMLSEC_EXPORT xmlSecKeyDataId                   xmlSecKeyDataRawX509CertGetKlass(void);
+/**
+ * xmlSecKeyDataDEREncodedKeyValueId:
+ *
+ * The DEREncodedKeyValue data klass.
+ */
+#define xmlSecKeyDataDEREncodedKeyValueId       xmlSecKeyDataDEREncodedKeyValueGetKlass()
+XMLSEC_EXPORT xmlSecKeyDataId                   xmlSecKeyDataDEREncodedKeyValueGetKlass(void);
 
 /*********************************************************************
  *

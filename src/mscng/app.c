@@ -217,15 +217,13 @@ xmlSecMSCngAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlSecK
 
     pCertChain = CertDuplicateCertificateContext(pCert);
     if(pCertChain == NULL) {
-        xmlSecMSCngLastError("CertDuplicateCertificateContext",
-            xmlSecKeyDataGetName(x509Data));
+        xmlSecMSCngLastError("CertDuplicateCertificateContext", NULL);
         goto done;
     }
 
     pKeyCert = CertDuplicateCertificateContext(pCert);
     if(pKeyCert == NULL) {
-        xmlSecMSCngLastError("CertDuplicateCertificateContext",
-            xmlSecKeyDataGetName(x509Data));
+        xmlSecMSCngLastError("CertDuplicateCertificateContext", NULL);
         goto done;
     }
 
@@ -239,16 +237,14 @@ xmlSecMSCngAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlSecK
 
     keyData = xmlSecMSCngCertAdopt(pCert, xmlSecKeyDataTypePublic);
     if(keyData == NULL) {
-        xmlSecInternalError("xmlSecMSCngCertAdopt",
-            xmlSecKeyDataGetName(x509Data));
+        xmlSecInternalError("xmlSecMSCngCertAdopt", NULL);
         goto done;
     }
     pCert = NULL;  /* owned by keyData now */
 
     ret = xmlSecKeySetValue(key, keyData);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecKeySetValue",
-            xmlSecKeyDataGetName(x509Data));
+        xmlSecInternalError("xmlSecKeySetValue", NULL);
         goto done;
     }
     keyData = NULL;
@@ -262,24 +258,21 @@ xmlSecMSCngAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlSecK
 
     ret = xmlSecMSCngKeyDataX509AdoptKeyCert(x509Data, pKeyCert);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptKeyCert",
-            xmlSecKeyDataGetName(x509Data));
+        xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptKeyCert", NULL);
         goto done;
     }
     pKeyCert = NULL; /* owned by x509Data data now */
 
     ret = xmlSecMSCngKeyDataX509AdoptCert(x509Data, pCertChain);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptCert",
-            xmlSecKeyDataGetName(x509Data));
+        xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptCert", NULL);
         goto done;
     }
-    pKepCertChainyCert = NULL; /* owned by x509Data data now */
+    pCertChain = NULL; /* owned by x509Data data now */
 
     ret = xmlSecKeyAdoptData(key, x509Data);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecKeyAdoptData",
-            xmlSecKeyDataGetName(x509Data));
+        xmlSecInternalError("xmlSecKeyAdoptData", NULL);
         goto done;
     }
     x509Data = NULL;
@@ -287,6 +280,7 @@ xmlSecMSCngAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlSecK
     /* success */
     res = key;
     key = NULL;
+
 done:
     if(pCert != NULL) {
         CertFreeCertificateContext(pCert);

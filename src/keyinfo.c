@@ -275,7 +275,14 @@ xmlSecKeyInfoCtxInitialize(xmlSecKeyInfoCtxPtr keyInfoCtx, xmlSecKeysMngrPtr key
     keyInfoCtx->maxRetrievalMethodLevel = 1;
     ret = xmlSecTransformCtxInitialize(&(keyInfoCtx->retrievalMethodCtx));
     if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformCtxInitialize", NULL);
+        xmlSecInternalError("xmlSecTransformCtxInitialize(retrievalMethodCtx)", NULL);
+        return(-1);
+    }
+
+    keyInfoCtx->maxKeyInfoReferenceLevel = 1;
+    ret = xmlSecTransformCtxInitialize(&(keyInfoCtx->keyInfoReferenceCtx));
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecTransformCtxInitialize(keyInfoReferenceCtx)", NULL);
         return(-1);
     }
 
@@ -309,6 +316,7 @@ xmlSecKeyInfoCtxFinalize(xmlSecKeyInfoCtxPtr keyInfoCtx) {
 
     xmlSecPtrListFinalize(&(keyInfoCtx->enabledKeyData));
     xmlSecTransformCtxFinalize(&(keyInfoCtx->retrievalMethodCtx));
+    xmlSecTransformCtxFinalize(&(keyInfoCtx->keyInfoReferenceCtx));
     xmlSecKeyReqFinalize(&(keyInfoCtx->keyReq));
 
 #ifndef XMLSEC_NO_XMLENC
@@ -332,7 +340,12 @@ xmlSecKeyInfoCtxReset(xmlSecKeyInfoCtxPtr keyInfoCtx) {
 
     xmlSecTransformCtxReset(&(keyInfoCtx->retrievalMethodCtx));
     keyInfoCtx->curRetrievalMethodLevel = 0;
+
+    xmlSecTransformCtxReset(&(keyInfoCtx->keyInfoReferenceCtx));
+    keyInfoCtx->curKeyInfoReferenceLevel = 0;
+
     keyInfoCtx->curEncryptedKeyLevel = 0;
+
     keyInfoCtx->operation = xmlSecTransformOperationNone;
 
 #ifndef XMLSEC_NO_XMLENC
@@ -432,12 +445,20 @@ xmlSecKeyInfoCtxCopyUserPref(xmlSecKeyInfoCtxPtr dst, xmlSecKeyInfoCtxPtr src) {
 
     /* <dsig:RetrievalMethod/> */
     dst->maxRetrievalMethodLevel= src->maxRetrievalMethodLevel;
-    ret = xmlSecTransformCtxCopyUserPref(&(dst->retrievalMethodCtx),
-                                         &(src->retrievalMethodCtx));
+    ret = xmlSecTransformCtxCopyUserPref(&(dst->retrievalMethodCtx), &(src->retrievalMethodCtx));
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformCtxCopyUserPref(enabledKeyData)", NULL);
         return(-1);
     }
+
+    /* <dsig:KeyInfoReference/> */
+    dst->maxKeyInfoReferenceLevel = src->maxKeyInfoReferenceLevel;
+    ret = xmlSecTransformCtxCopyUserPref(&(dst->keyInfoReferenceCtx), &(src->keyInfoReferenceCtx));
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecTransformCtxCopyUserPref(enabledKeyData)", NULL);
+        return(-1);
+    }
+
 
     /* <enc:EncryptedContext /> */
 #ifndef XMLSEC_NO_XMLENC
@@ -497,9 +518,14 @@ xmlSecKeyInfoCtxDebugDump(xmlSecKeyInfoCtxPtr keyInfoCtx, FILE* output) {
     } else {
         fprintf(output, "== enabled key data: all\n");
     }
+
     fprintf(output, "== RetrievalMethod level (cur/max): %d/%d\n",
             keyInfoCtx->curRetrievalMethodLevel, keyInfoCtx->maxRetrievalMethodLevel);
     xmlSecTransformCtxDebugDump(&(keyInfoCtx->retrievalMethodCtx), output);
+
+    fprintf(output, "== KeyInfoReference level (cur/max): %d/%d\n",
+            keyInfoCtx->curKeyInfoReferenceLevel, keyInfoCtx->maxKeyInfoReferenceLevel);
+    xmlSecTransformCtxDebugDump(&(keyInfoCtx->keyInfoReferenceCtx), output);
 
 #ifndef XMLSEC_NO_XMLENC
     fprintf(output, "== EncryptedKey level (cur/max): %d/%d\n",
@@ -546,6 +572,10 @@ xmlSecKeyInfoCtxDebugXmlDump(xmlSecKeyInfoCtxPtr keyInfoCtx, FILE* output) {
     fprintf(output, "<RetrievalMethodLevel cur=\"%d\" max=\"%d\" />\n",
         keyInfoCtx->curEncryptedKeyLevel, keyInfoCtx->maxEncryptedKeyLevel);
     xmlSecTransformCtxDebugXmlDump(&(keyInfoCtx->retrievalMethodCtx), output);
+
+    fprintf(output, "<KeyInfoReferenceLevel cur=\"%d\" max=\"%d\" />\n",
+        keyInfoCtx->curEncryptedKeyLevel, keyInfoCtx->maxEncryptedKeyLevel);
+    xmlSecTransformCtxDebugXmlDump(&(keyInfoCtx->keyInfoReferenceCtx), output);
 
 #ifndef XMLSEC_NO_XMLENC
     fprintf(output, "<EncryptedKeyLevel cur=\"%d\" max=\"%d\" />\n",
@@ -1034,7 +1064,7 @@ xmlSecKeyDataRetrievalMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNod
     /* check retrieval level */
     if(keyInfoCtx->curRetrievalMethodLevel >= keyInfoCtx->maxRetrievalMethodLevel) {
         xmlSecOtherError3(XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL, xmlSecKeyDataKlassGetName(id),
-            "cur=%d;max=%d",keyInfoCtx->curEncryptedKeyLevel, keyInfoCtx->maxEncryptedKeyLevel);
+            "cur=%d;max=%d",keyInfoCtx->curRetrievalMethodLevel, keyInfoCtx->maxRetrievalMethodLevel);
         goto done;
     }
     ++keyInfoCtx->curRetrievalMethodLevel;
@@ -1230,6 +1260,236 @@ xmlSecKeyDataRetrievalMethodReadXmlResult(xmlSecKeyDataId typeId, xmlSecKeyPtr k
         return(-1);
     }
 
+    xmlFreeDoc(doc);
+    return(0);
+}
+
+
+/**************************************************************************
+ *
+ * <dsig11:KeyInfoReference /> processing
+ *
+ *************************************************************************/
+static int                      xmlSecKeyDataKeyInfoReferenceXmlRead(xmlSecKeyDataId id,
+                                                                 xmlSecKeyPtr key,
+                                                                 xmlNodePtr node,
+                                                                 xmlSecKeyInfoCtxPtr keyInfoCtx);
+static int                      xmlSecKeyDataKeyInfoReferenceXmlWrite(xmlSecKeyDataId id,
+                                                                 xmlSecKeyPtr key,
+                                                                 xmlNodePtr node,
+                                                                 xmlSecKeyInfoCtxPtr keyInfoCtx);
+
+
+
+static xmlSecKeyDataKlass xmlSecKeyDataKeyInfoReferenceKlass = {
+    sizeof(xmlSecKeyDataKlass),
+    sizeof(xmlSecKeyData),
+
+    /* data */
+    xmlSecNameKeyInfoReference,
+    xmlSecKeyDataUsageKeyInfoNode,              /* xmlSecKeyDataUsage usage; */
+    NULL,                                       /* const xmlChar* href; */
+    xmlSecNodeKeyInfoReference,                 /* const xmlChar* dataNodeName; */
+    xmlSecDSig11Ns,                             /* const xmlChar* dataNodeNs; */
+
+    /* constructors/destructor */
+    NULL,                                       /* xmlSecKeyDataInitializeMethod initialize; */
+    NULL,                                       /* xmlSecKeyDataDuplicateMethod duplicate; */
+    NULL,                                       /* xmlSecKeyDataFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecKeyDataGenerateMethod generate; */
+
+    /* get info */
+    NULL,                                       /* xmlSecKeyDataGetTypeMethod getType; */
+    NULL,                                       /* xmlSecKeyDataGetSizeMethod getSize; */
+    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
+
+    /* read/write */
+    xmlSecKeyDataKeyInfoReferenceXmlRead,        /* xmlSecKeyDataXmlReadMethod xmlRead; */
+    xmlSecKeyDataKeyInfoReferenceXmlWrite,       /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    NULL,                                       /* xmlSecKeyDataBinReadMethod binRead; */
+    NULL,                                       /* xmlSecKeyDataBinWriteMethod binWrite; */
+
+    /* debug */
+    NULL,                                       /* xmlSecKeyDataDebugDumpMethod debugDump; */
+    NULL,                                       /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+
+    /* reserved for the future */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+static int                      xmlSecKeyDataKeyInfoReferenceReadXmlResult(xmlSecKeyDataId typeId,
+                                                                 xmlSecKeyPtr key,
+                                                                 const xmlChar* buffer,
+                                                                 xmlSecSize bufferSize,
+                                                                 xmlSecKeyInfoCtxPtr keyInfoCtx);
+
+/**
+ * xmlSecKeyDataKeyInfoReferenceGetKlass:
+ *
+ * A KeyInfoReference element within KeyInfo is used to convey a reference to
+ * a KeyInfo element at another location in the same or different document.
+ *
+ * KeyInfoReference uses the same syntax and dereferencing behavior as Reference's URI
+ * and the Reference Processing Model except that there are no child elements and
+ * the presence of the URI attribute is mandatory.
+ *
+ * The result of dereferencing a KeyInfoReference MUST be a KeyInfo element, or an XML
+ * document with a KeyInfo element as the root.
+ *
+ *      <!-- targetNamespace="http://www.w3.org/2009/xmldsig11#" -->
+ *      <element name="KeyInfoReference" type="dsig11:KeyInfoReferenceType"/>
+ *      <complexType name="KeyInfoReferenceType">
+ *          <attribute name="URI" type="anyURI" use="required"/>
+ *          <attribute name="Id" type="ID" use="optional"/>
+ *      </complexType>
+ *
+ * https://www.w3.org/TR/xmldsig-core1/#sec-KeyInfoReference
+ *
+ * Returns: the <dsig11:KeyInfoReference/> element processing key data klass.
+ */
+xmlSecKeyDataId
+xmlSecKeyDataKeyInfoReferenceGetKlass(void) {
+    return(&xmlSecKeyDataKeyInfoReferenceKlass);
+}
+
+static int
+xmlSecKeyDataKeyInfoReferenceXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlSecKeyDataId dataId = xmlSecKeyDataIdUnknown;
+    xmlChar *uri = NULL;
+    xmlNodePtr cur;
+    int res = -1;
+    int ret;
+
+    xmlSecAssert2(id == xmlSecKeyDataKeyInfoReferenceId, -1);
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(node->doc != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+    xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeRead, -1);
+
+    /* check retrieval level */
+    if(keyInfoCtx->curKeyInfoReferenceLevel >= keyInfoCtx->maxKeyInfoReferenceLevel) {
+        xmlSecOtherError3(XMLSEC_ERRORS_R_MAX_KEYINFOREFERENCE_LEVEL, xmlSecKeyDataKlassGetName(id),
+            "cur=%d;max=%d",keyInfoCtx->curKeyInfoReferenceLevel, keyInfoCtx->maxKeyInfoReferenceLevel);
+        goto done;
+    }
+    ++keyInfoCtx->curKeyInfoReferenceLevel;
+
+    /* uri attribute is required */
+    uri = xmlGetProp(node, xmlSecAttrURI);
+    if(uri == NULL) {
+        xmlSecInvalidNodeAttributeError(node, xmlSecAttrURI, xmlSecKeyDataKlassGetName(id), "empty");
+        goto done;
+    }
+
+    /* destroy prev retrieval method context if any and set start URI */
+    xmlSecTransformCtxReset(&(keyInfoCtx->keyInfoReferenceCtx));
+    ret = xmlSecTransformCtxSetUri(&(keyInfoCtx->keyInfoReferenceCtx), uri, node);
+    if(ret < 0) {
+        xmlSecInternalError2("xmlSecTransformCtxSetUri", xmlSecKeyDataKlassGetName(id),
+            "uri=%s", xmlSecErrorsSafeString(uri));
+        goto done;
+    }
+
+    /* no children are expected */
+    cur = xmlSecGetNextElementNode(node->children);
+    if(cur != NULL) {
+        xmlSecUnexpectedNodeError(cur, xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+
+    /* get transforms results */
+    ret = xmlSecTransformCtxExecute(&(keyInfoCtx->keyInfoReferenceCtx), node->doc);
+    if(
+        (ret < 0) ||
+        (keyInfoCtx->keyInfoReferenceCtx.result == NULL) ||
+        (xmlSecBufferGetData(keyInfoCtx->keyInfoReferenceCtx.result) == NULL)
+    ) {
+
+        xmlSecInternalError("xmlSecTransformCtxExecute", xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+
+    /* The result of dereferencing a KeyInfoReference MUST be a KeyInfo element,
+     * or an XML document with a KeyInfo element as the root */
+    ret = xmlSecKeyDataKeyInfoReferenceReadXmlResult(dataId, key,
+                    xmlSecBufferGetData(keyInfoCtx->keyInfoReferenceCtx.result),
+                    xmlSecBufferGetSize(keyInfoCtx->keyInfoReferenceCtx.result),
+                    keyInfoCtx);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeyDataKeyInfoReferenceReadXmlResult", xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+
+    --keyInfoCtx->curKeyInfoReferenceLevel;
+    res = 0;
+
+done:
+    if(uri != NULL) {
+        xmlFree(uri);
+    }
+    return(res);
+}
+
+static int
+xmlSecKeyDataKeyInfoReferenceXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlSecAssert2(id == xmlSecKeyDataKeyInfoReferenceId, -1);
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+    xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeWrite, -1);
+
+    /* just do nothing */
+    return(0);
+}
+
+static int
+xmlSecKeyDataKeyInfoReferenceReadXmlResult(xmlSecKeyDataId typeId, xmlSecKeyPtr key,
+                                          const xmlChar* buffer, xmlSecSize bufferSize,
+                                          xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlDocPtr doc;
+    xmlNodePtr cur;
+    int bufferLen;
+    int ret;
+
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(buffer != NULL, -1);
+    xmlSecAssert2(bufferSize > 0, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+    xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeRead, -1);
+
+
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(bufferSize, bufferLen, return(-1), NULL);
+    doc = xmlRecoverMemory((const char*)buffer, bufferLen);
+    if(doc == NULL) {
+        xmlSecXmlError("xmlRecoverMemory", xmlSecKeyDataKlassGetName(typeId));
+        return(-1);
+    }
+
+    cur = xmlDocGetRootElement(doc);
+    if(cur == NULL) {
+        xmlSecXmlError("xmlDocGetRootElement", xmlSecKeyDataKlassGetName(typeId));
+        xmlFreeDoc(doc);
+        return(-1);
+    }
+
+    /* The result of dereferencing a KeyInfoReference MUST be a KeyInfo element, or
+     * an XML document with a KeyInfo element as the root */
+    if(!xmlSecCheckNodeName(cur, xmlSecNodeKeyInfo, xmlSecDSigNs)) {
+        xmlSecInvalidNodeError(cur, xmlSecNodeKeyInfo, xmlSecKeyDataKlassGetName(typeId));
+        xmlFreeDoc(doc);
+        return(-1);
+    }
+
+    ret = xmlSecKeyInfoNodeRead(cur, key, keyInfoCtx);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeyInfoNodeRead", xmlSecKeyDataKlassGetName(typeId));
+        xmlFreeDoc(doc);
+        return(-1);
+    }
+
+    /* success */
     xmlFreeDoc(doc);
     return(0);
 }

@@ -393,6 +393,14 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefHmacSha512[];
 
 /*************************************************************************
  *
+ * KeyInfoReference
+ *
+ ************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameKeyInfoReference[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeKeyInfoReference[];
+
+/*************************************************************************
+ *
  * KeyName strings
  *
  ************************************************************************/

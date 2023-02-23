@@ -388,6 +388,16 @@ const xmlChar xmlSecHrefHmacSha384[]            = "http://www.w3.org/2001/04/xml
 const xmlChar xmlSecNameHmacSha512[]            = "hmac-sha512";
 const xmlChar xmlSecHrefHmacSha512[]            = "http://www.w3.org/2001/04/xmldsig-more#hmac-sha512";
 
+
+/*************************************************************************
+ *
+ * KeyInfoReference
+ *
+ ************************************************************************/
+const xmlChar xmlSecNameKeyInfoReference[]      = "key-info-reference";
+const xmlChar xmlSecNodeKeyInfoReference[]      = "KeyInfoReference";
+
+
 /*************************************************************************
  *
  * KeyName strings

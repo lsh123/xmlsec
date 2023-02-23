@@ -171,6 +171,11 @@ typedef enum {
  * @maxRetrievalMethodLevel: the max recursion level when processing
  *                      <dsig:RetrievalMethod /> element; default level is 1
  *                      (see also @curRetrievalMethodLevel).
+ * @keyInfoReferenceCtx: the transforms context for <dsig11:KeyInfoReference />
+ *                      element processing.
+ * @maxKeyInfoReferenceLevel: the max recursion level when processing
+ *                      <dsig11:KeyInfoReference  /> element; default level is 1
+ *                      (see also @curKeyInfoReferenceLevel).
  * @encCtx:             the encryption context for <dsig:EncryptedKey /> element
  *                      processing.
  * @maxEncryptedKeyLevel: the max recursion level when processing
@@ -185,6 +190,8 @@ typedef enum {
  * @pgpReserved:        reserved for PGP.
  * @curRetrievalMethodLevel: the current <dsig:RetrievalMethod /> element
  *                      processing level (see @maxRetrievalMethodLevel).
+ * @curKeyInfoReferenceLevel: the current <dsig11:KeyInfoReference /> element
+ *                      processing level (see @maxKeyInfoReferenceLevel).
  * @curEncryptedKeyLevel: the current <enc:EncryptedKey /> or <enc11:DerivedKey> element
  *                      processing level (see @maxEncryptedKeyLevel).
  * @keyReq:             the current key requirements.
@@ -206,6 +213,10 @@ struct _xmlSecKeyInfoCtx {
     xmlSecTransformCtx                  retrievalMethodCtx;
     int                                 maxRetrievalMethodLevel;
 
+    /* KeyInfoReference */
+    xmlSecTransformCtx                  keyInfoReferenceCtx;
+    int                                 maxKeyInfoReferenceLevel;
+
 #ifndef XMLSEC_NO_XMLENC
     /* EncryptedKey or DerivedKey */
     xmlSecEncCtxPtr                     encCtx;
@@ -223,6 +234,7 @@ struct _xmlSecKeyInfoCtx {
 
     /* internal data */
     int                                 curRetrievalMethodLevel;
+    int                                 curKeyInfoReferenceLevel;
     int                                 curEncryptedKeyLevel;
     xmlSecTransformOperation            operation;
     xmlSecKeyReq                        keyReq;
@@ -268,6 +280,14 @@ XMLSEC_EXPORT xmlSecKeyDataId           xmlSecKeyDataValueGetKlass      (void);
  */
 #define xmlSecKeyDataRetrievalMethodId  xmlSecKeyDataRetrievalMethodGetKlass()
 XMLSEC_EXPORT xmlSecKeyDataId           xmlSecKeyDataRetrievalMethodGetKlass(void);
+
+/**
+ * xmlSecKeyDataKeyInfoReferenceId
+ *
+ * The <dsig11:KeyInfoReference> processing class.
+ */
+#define xmlSecKeyDataKeyInfoReferenceId xmlSecKeyDataKeyInfoReferenceGetKlass()
+XMLSEC_EXPORT xmlSecKeyDataId           xmlSecKeyDataKeyInfoReferenceGetKlass(void);
 
 #ifndef XMLSEC_NO_XMLENC
 /**

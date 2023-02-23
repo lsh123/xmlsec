@@ -144,6 +144,11 @@ xmlSecKeyDataIdsRegisterDefault(void) {
         return(-1);
     }
 
+    if(xmlSecKeyDataIdsRegister(xmlSecKeyDataKeyInfoReferenceId) < 0) {
+        xmlSecInternalError("xmlSecKeyDataIdsRegister(xmlSecKeyDataKeyInfoReferenceId", NULL);
+        return(-1);
+    }
+
 #ifndef XMLSEC_NO_XMLENC
     if(xmlSecKeyDataIdsRegister(xmlSecKeyDataEncryptedKeyId) < 0) {
         xmlSecInternalError("xmlSecKeyDataIdsRegister(xmlSecKeyDataEncryptedKeyId)", NULL);

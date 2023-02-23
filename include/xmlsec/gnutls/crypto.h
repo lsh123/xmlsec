@@ -40,6 +40,20 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeysMngrInit        (xmlSecK
 XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSGenerateRandom      (xmlSecBufferPtr buffer,
                                                                          xmlSecSize size);
 
+
+
+/********************************************************************
+ *
+ * Asymetric keys helpers
+ *
+ *******************************************************************/
+
+XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr       xmlSecGCryptAsymetricKeyCreatePub       (gnutls_pubkey_t pubkey);
+XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr       xmlSecGCryptAsymetricKeyCreatePriv      (gnutls_privkey_t privkey);
+
+XMLSEC_CRYPTO_EXPORT gnutls_pubkey_t    xmlSecGCryptAsymetricKeyGetPub          (xmlSecKeyPtr key);
+XMLSEC_CRYPTO_EXPORT gnutls_privkey_t   xmlSecGCryptAsymetricKeyGetPriv         (xmlSecKeyPtr key);
+
 /********************************************************************
  *
  * AES transforms
@@ -246,6 +260,8 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataEcAdoptKey           
                                                                                  gnutls_privkey_t privkey);
 XMLSEC_CRYPTO_EXPORT gnutls_pubkey_t    xmlSecGnuTLSKeyDataEcGetPublicKey       (xmlSecKeyDataPtr data);
 XMLSEC_CRYPTO_EXPORT gnutls_privkey_t   xmlSecGnuTLSKeyDataEcGetPrivateKey      (xmlSecKeyDataPtr data);
+
+
 
 /**
  * xmlSecGnuTLSKeyDataEcdsaId:
@@ -619,6 +635,15 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformSha3_384GetKlass(voi
         xmlSecGnuTLSTransformSha3_512GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformSha3_512GetKlass(void);
 #endif /* XMLSEC_NO_SHA3 */
+
+
+/**
+ * xmlSecGnuTLSKeyDataDEREncodedKeyValueId:
+ *
+ * The GnuTLS DEREncodedKeyValue data klass.
+ */
+#define xmlSecGnuTLSKeyDataDEREncodedKeyValueId  xmlSecGnuTLSKeyDataDEREncodedKeyValueGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId             xmlSecGnuTLSKeyDataDEREncodedKeyValueGetKlass(void);
 
 #ifdef __cplusplus
 }

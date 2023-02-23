@@ -28,14 +28,15 @@
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/base64.h>
-#include <xmlsec/keys.h>
-#include <xmlsec/keyinfo.h>
-#include <xmlsec/transforms.h>
-#include <xmlsec/errors.h>
 #include <xmlsec/bn.h>
+#include <xmlsec/errors.h>
+#include <xmlsec/keyinfo.h>
+#include <xmlsec/keys.h>
+#include <xmlsec/transforms.h>
+#include <xmlsec/xmltree.h>
 
-#include <xmlsec/mscng/crypto.h>
 #include <xmlsec/mscng/certkeys.h>
+#include <xmlsec/mscng/crypto.h>
 
 #include "../cast_helpers.h"
 #include "../keysdata_helpers.h"
@@ -164,6 +165,53 @@ xmlSecMSCngKeyDataAdoptKey(xmlSecKeyDataPtr data, BCRYPT_KEY_HANDLE hPubKey) {
     return(0);
 }
 
+static xmlSecKeyDataPtr
+xmlSecMSCngKeyDataFromAlgorithm(LPSTR pszObjId) {
+    xmlSecKeyDataPtr data = NULL;
+
+    xmlSecAssert2(pszObjId != NULL, NULL);
+
+#ifndef XMLSEC_NO_DSA
+    if (!strcmp(pszObjId, szOID_X957_DSA)) {
+        data = xmlSecKeyDataCreate(xmlSecMSCngKeyDataDsaId);
+        if (data == NULL) {
+            xmlSecInternalError("xmlSecKeyDataCreate(KeyDataDsaId)", NULL);
+            return(NULL);
+        }
+    }
+#endif /* XMLSEC_NO_DSA */
+
+#ifndef XMLSEC_NO_RSA
+    if (!strcmp(pszObjId, szOID_RSA_RSA)) {
+        data = xmlSecKeyDataCreate(xmlSecMSCngKeyDataRsaId);
+        if (data == NULL) {
+            xmlSecInternalError("xmlSecKeyDataCreate(KeyDataRsaId)", NULL);
+            return(NULL);
+        }
+    }
+#endif /* XMLSEC_NO_RSA */
+
+#ifndef XMLSEC_NO_EC
+    if (!strcmp(pszObjId, szOID_ECC_PUBLIC_KEY)) {
+        data = xmlSecKeyDataCreate(xmlSecMSCngKeyDataEcId);
+        if (data == NULL) {
+            xmlSecInternalError("xmlSecKeyDataCreate(KeyDataEcId)", NULL);
+            return(NULL);
+        }
+    }
+#endif /* XMLSEC_NO_EC */
+
+    if (data == NULL) {
+        xmlSecInvalidStringTypeError("Algorithm",
+            pszObjId,
+            "unsupported keytype",
+            NULL);
+        return(NULL);
+    }
+
+    return(data);
+}
+
 /**
  * xmlSecMSCngCertAdopt:
  * @pCert:              the pointer to cert.
@@ -182,41 +230,9 @@ xmlSecMSCngCertAdopt(PCCERT_CONTEXT pCert, xmlSecKeyDataType type) {
     xmlSecAssert2(pCert->pCertInfo != NULL, NULL);
     xmlSecAssert2(pCert->pCertInfo->SubjectPublicKeyInfo.Algorithm.pszObjId != NULL, NULL);
 
-#ifndef XMLSEC_NO_DSA
-    if(!strcmp(pCert->pCertInfo->SubjectPublicKeyInfo.Algorithm.pszObjId, szOID_X957_DSA)) {
-        data = xmlSecKeyDataCreate(xmlSecMSCngKeyDataDsaId);
-        if(data == NULL) {
-            xmlSecInternalError("xmlSecKeyDataCreate(KeyDataDsaId)", NULL);
-            return(NULL);
-        }
-    }
-#endif /* XMLSEC_NO_DSA */
-
-#ifndef XMLSEC_NO_RSA
-    if(!strcmp(pCert->pCertInfo->SubjectPublicKeyInfo.Algorithm.pszObjId, szOID_RSA_RSA)) {
-        data = xmlSecKeyDataCreate(xmlSecMSCngKeyDataRsaId);
-        if(data == NULL) {
-            xmlSecInternalError("xmlSecKeyDataCreate(KeyDataRsaId)", NULL);
-            return(NULL);
-        }
-    }
-#endif /* XMLSEC_NO_RSA */
-
-#ifndef XMLSEC_NO_EC
-    if(!strcmp(pCert->pCertInfo->SubjectPublicKeyInfo.Algorithm.pszObjId, szOID_ECC_PUBLIC_KEY)) {
-        data = xmlSecKeyDataCreate(xmlSecMSCngKeyDataEcId);
-        if(data == NULL) {
-            xmlSecInternalError("xmlSecKeyDataCreate(KeyDataEcId)", NULL);
-            return(NULL);
-        }
-    }
-#endif /* XMLSEC_NO_EC */
-
-    if(data == NULL) {
-        xmlSecInvalidStringTypeError("PCCERT_CONTEXT key type",
-            pCert->pCertInfo->SubjectPublicKeyInfo.Algorithm.pszObjId,
-            "unsupported keytype",
-            NULL);
+    data = xmlSecMSCngKeyDataFromAlgorithm(pCert->pCertInfo->SubjectPublicKeyInfo.Algorithm.pszObjId);
+    if (data == NULL) {
+        xmlSecInternalError("xmlSecMSCngKeyDataAdoptCert", NULL);
         return(NULL);
     }
 
@@ -419,12 +435,15 @@ xmlSecMSCngKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
 #endif
 
 #ifndef XMLSEC_NO_EC
+            case BCRYPT_ECDH_PUBLIC_P256_MAGIC:
             case BCRYPT_ECDSA_PUBLIC_P256_MAGIC:
                 pszAlgId = BCRYPT_ECDSA_P256_ALGORITHM;
                 break;
+            case BCRYPT_ECDH_PUBLIC_P384_MAGIC:
             case BCRYPT_ECDSA_PUBLIC_P384_MAGIC:
                 pszAlgId = BCRYPT_ECDSA_P384_ALGORITHM;
                 break;
+            case BCRYPT_ECDH_PUBLIC_P521_MAGIC:
             case BCRYPT_ECDSA_PUBLIC_P521_MAGIC:
                 pszAlgId = BCRYPT_ECDSA_P521_ALGORITHM;
                 break;
@@ -469,6 +488,305 @@ xmlSecMSCngKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
 
     return(0);
 }
+
+
+
+/**************************************************************************
+ *
+ * <dsig11:DEREncodedKeyValue /> processing
+ *
+ *************************************************************************/
+static int                      xmlSecMSCngKeyDataDEREncodedKeyValueXmlRead(xmlSecKeyDataId id,
+    xmlSecKeyPtr key,
+    xmlNodePtr node,
+    xmlSecKeyInfoCtxPtr keyInfoCtx);
+static int                      xmlSecMSCngKeyDataDEREncodedKeyValueXmlWrite(xmlSecKeyDataId id,
+    xmlSecKeyPtr key,
+    xmlNodePtr node,
+    xmlSecKeyInfoCtxPtr keyInfoCtx);
+
+
+
+static xmlSecKeyDataKlass xmlSecMSCngKeyDataDEREncodedKeyValueKlass = {
+    sizeof(xmlSecKeyDataKlass),
+    sizeof(xmlSecKeyData),
+
+    /* data */
+    xmlSecNameDEREncodedKeyValue,
+    xmlSecKeyDataUsageKeyInfoNode | xmlSecKeyDataUsageRetrievalMethodNodeXml, /* xmlSecKeyDataUsage usage; */
+    NULL,                                       /* const xmlChar* href; */
+    xmlSecNodeDEREncodedKeyValue,               /* const xmlChar* dataNodeName; */
+    xmlSecDSig11Ns,                             /* const xmlChar* dataNodeNs; */
+
+    /* constructors/destructor */
+    NULL,                                       /* xmlSecKeyDataInitializeMethod initialize; */
+    NULL,                                       /* xmlSecKeyDataDuplicateMethod duplicate; */
+    NULL,                                       /* xmlSecKeyDataFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecKeyDataGenerateMethod generate; */
+
+    /* get info */
+    NULL,                                       /* xmlSecKeyDataGetTypeMethod getType; */
+    NULL,                                       /* xmlSecKeyDataGetSizeMethod getSize; */
+    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
+
+    /* read/write */
+    xmlSecMSCngKeyDataDEREncodedKeyValueXmlRead,     /* xmlSecKeyDataXmlReadMethod xmlRead; */
+    xmlSecMSCngKeyDataDEREncodedKeyValueXmlWrite,    /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    NULL,                                       /* xmlSecKeyDataBinReadMethod binRead; */
+    NULL,                                       /* xmlSecKeyDataBinWriteMethod binWrite; */
+
+    /* debug */
+    NULL,                                       /* xmlSecKeyDataDebugDumpMethod debugDump; */
+    NULL,                                       /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+
+    /* reserved for the future */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecMSCngKeyDataDEREncodedKeyValueGetKlass:
+ * The public key algorithm and value are DER-encoded in accordance with the value that would be used
+ * in the Subject Public Key Info field of an X.509 certificate, per section 4.1.2.7 of [RFC5280].
+ * The DER-encoded value is then base64-encoded.
+ *
+ * https://www.w3.org/TR/xmldsig-core1/#sec-DEREncodedKeyValue
+ *
+ *      <!-- targetNamespace="http://www.w3.org/2009/xmldsig11#" -->
+ *      <element name="DEREncodedKeyValue" type="dsig11:DEREncodedKeyValueType" />
+ *      <complexType name="DEREncodedKeyValueType">
+ *          <simpleContent>
+ *              <extension base="base64Binary">
+ *                  <attribute name="Id" type="ID" use="optional"/>
+ *              </extension>
+ *          </simpleContent>
+ *      </complexType>
+ *
+ * Returns: the <dsig11:DEREncodedKeyValue/> element processing key data klass.
+ */
+xmlSecKeyDataId
+xmlSecMSCngKeyDataDEREncodedKeyValueGetKlass(void) {
+    return(&xmlSecMSCngKeyDataDEREncodedKeyValueKlass);
+}
+
+static int
+xmlSecMSCngKeyDataDEREncodedKeyValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlSecBuffer buffer;
+    const xmlSecByte* data;
+    xmlSecSize dataSize;
+    DWORD dataLen;
+    LPVOID keyInfo = NULL;
+    DWORD keyInfoLen = 0;
+    BCRYPT_KEY_HANDLE hPubkey = 0;
+    xmlSecKeyDataPtr keyData = NULL;
+    xmlNodePtr cur;
+    BOOL status;
+    int res = -1;
+    int ret;
+
+    xmlSecAssert2(id == xmlSecMSCngKeyDataDEREncodedKeyValueId, -1);
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(node->doc != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+    xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeRead, -1);
+
+    ret = xmlSecBufferInitialize(&buffer, 256);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize", xmlSecKeyDataKlassGetName(id));
+        return(-1);
+    }
+
+    /* no children are expected */
+    cur = xmlSecGetNextElementNode(node->children);
+    if (cur != NULL) {
+        xmlSecUnexpectedNodeError(cur, xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+
+    /* read base64 node content */
+    ret = xmlSecBufferBase64NodeContentRead(&buffer, node);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecBufferBase64NodeContentRead", xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+    data = xmlSecBufferGetData(&buffer);
+    dataSize = xmlSecBufferGetSize(&buffer);
+    if ((data == NULL) || (dataSize <= 0)) {
+        /* this is not an error if we are reading a doc to be encrypted or signed */
+        res = 0;
+        goto done;
+    }
+
+    /* read pubkey */
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(dataSize, dataLen, goto done, xmlSecKeyDataKlassGetName(id));
+    status = CryptDecodeObjectEx(
+        X509_ASN_ENCODING,
+        X509_PUBLIC_KEY_INFO,
+        data,
+        dataLen,
+        CRYPT_DECODE_ALLOC_FLAG,
+        NULL,
+        &keyInfo, 
+        &keyInfoLen
+    );
+    if ((status != TRUE) || (keyInfo == NULL) || (keyInfoLen <= 0)) {
+        xmlSecMSCngNtError("CryptDecodeObjectEx", xmlSecKeyDataKlassGetName(id), STATUS_SUCCESS);
+        goto done;
+    }
+
+    status = CryptImportPublicKeyInfoEx2(
+        X509_ASN_ENCODING,
+        (PCERT_PUBLIC_KEY_INFO)keyInfo,
+        0,
+        NULL,
+        &hPubkey
+    );
+    if ((status != TRUE) || (hPubkey == 0)) {
+        xmlSecMSCngNtError("CryptDecodeObjectEx", xmlSecKeyDataKlassGetName(id), STATUS_SUCCESS);
+        goto done;
+    }
+
+    /* add to key */
+    keyData = xmlSecMSCngKeyDataFromAlgorithm(((PCERT_PUBLIC_KEY_INFO)keyInfo)->Algorithm.pszObjId);
+    if (keyData == NULL) {
+        xmlSecInternalError("xmlSecMSCngKeyDataFromAlgorithm", xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+
+    ret = xmlSecMSCngKeyDataAdoptKey(keyData, hPubkey);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecMSCngKeyDataAdoptKey", xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+    hPubkey = 0; /* owned by key data now */
+
+    ret = xmlSecKeySetValue(key, keyData);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecKeySetValue", xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+    keyData = NULL; /* owned by key now */
+
+    /* success! */
+    res = 0;
+
+done:
+
+    if (keyData != NULL) {
+        xmlSecKeyDataDestroy(keyData);
+    }
+    if (hPubkey != 0) {
+        BCryptDestroyKey(hPubkey);
+    }
+    if (keyInfo != NULL) {
+        LocalFree(keyInfo);
+    }
+    xmlSecBufferFinalize(&buffer);
+    return(res);
+}
+
+static int
+xmlSecMSCngKeyDataDEREncodedKeyValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlSecKeyDataPtr keyData;
+    BCRYPT_KEY_HANDLE hPubkey;
+    PUCHAR pInfo = NULL;
+    DWORD cbInfo = 0;
+    LPVOID keyDer = NULL;
+    DWORD keyDerLen = 0;
+    xmlChar* content = NULL;
+    BOOL status;
+    int res = -1;
+
+    xmlSecAssert2(id == xmlSecMSCngKeyDataDEREncodedKeyValueId, -1);
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+    xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeWrite, -1);
+
+    /* get pubkey */
+    keyData = xmlSecKeyGetValue(key);
+    if (keyData == NULL) {
+        xmlSecInternalError("xmlSecKeyGetValue", xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+    hPubkey = xmlSecMSCngKeyDataGetPubKey(keyData);
+    if (hPubkey == 0) {
+        xmlSecInternalError("xmlSecMSCngKeyDataGetPubKey", xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+
+    /* encode it */
+    status = CryptExportPublicKeyInfoFromBCryptKeyHandle(
+        hPubkey,
+        X509_ASN_ENCODING,
+        NULL,
+        0,
+        NULL,
+        NULL,
+        &cbInfo
+    );
+    if ((status != TRUE) || (cbInfo <= 0)) {
+        xmlSecMSCngNtError("CryptExportPublicKeyInfoFromBCryptKeyHandle", xmlSecKeyDataKlassGetName(id), STATUS_SUCCESS);
+        goto done;
+    }
+    pInfo = (PUCHAR)xmlMalloc(cbInfo);
+    if (pInfo == NULL) {
+        xmlSecMallocError(cbInfo, xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+    status = CryptExportPublicKeyInfoFromBCryptKeyHandle(
+        hPubkey,
+        X509_ASN_ENCODING,
+        NULL,
+        0,
+        NULL,
+        (PCERT_PUBLIC_KEY_INFO )pInfo,
+        &cbInfo
+    );
+    if ((status != TRUE) || (cbInfo <= 0)) {
+        xmlSecMSCngNtError("CryptExportPublicKeyInfoFromBCryptKeyHandle", xmlSecKeyDataKlassGetName(id), STATUS_SUCCESS);
+        goto done;
+    }
+
+    status = CryptEncodeObjectEx(
+        X509_ASN_ENCODING,
+        X509_PUBLIC_KEY_INFO,
+        pInfo,
+        CRYPT_ENCODE_ALLOC_FLAG,
+        NULL,
+        &keyDer,
+        &keyDerLen
+    );
+    if ((status != TRUE) || (keyDer == NULL) || (keyDerLen <= 0)) {
+        xmlSecMSCngNtError("CryptEncodeObjectEx", xmlSecKeyDataKlassGetName(id), STATUS_SUCCESS);
+        goto done;
+    }
+
+    /* write to XML */
+    content = xmlSecBase64Encode(keyDer, keyDerLen, xmlSecBase64GetDefaultLineSize());
+    if (content == NULL) {
+        xmlSecInternalError("xmlSecBase64Encode", xmlSecKeyDataKlassGetName(id));
+        goto done;
+    }
+    xmlNodeAddContent(node, content);
+
+    /* success */
+    res = 0;
+
+done:
+    if (pInfo != NULL) {
+        xmlFree(pInfo);
+    }
+    if (keyDer != NULL) {
+        LocalFree(keyDer);
+    }
+    if (content != NULL) {
+        xmlFree(content);
+    }
+    return(res);
+}
+
 
 #ifndef XMLSEC_NO_DSA
 

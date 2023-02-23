@@ -108,6 +108,8 @@ xmlSecCryptoGetFunctions_nss(void) {
     gXmlSecNssFunctions->keyDataRawX509CertGetKlass     = xmlSecNssKeyDataRawX509CertGetKlass;
 #endif /* XMLSEC_NO_X509 */
 
+    gXmlSecNssFunctions->keyDataDEREncodedKeyValueGetKlass = xmlSecNssKeyDataDEREncodedKeyValueGetKlass;
+
     /********************************************************************
      *
      * Key data store ids

@@ -190,7 +190,8 @@ xmlSecKeyPtr
 xmlSecMSCngAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlSecKeyDataFormat format,
                             const char *pwd, void* pwdCallback, void* pwdCallbackCtx) {
     PCCERT_CONTEXT pCert = NULL;
-    PCCERT_CONTEXT tmpcert = NULL;
+    PCCERT_CONTEXT pCertChain = NULL;
+    PCCERT_CONTEXT pKeyCert = NULL;
     xmlSecKeyDataPtr x509Data = NULL;
     xmlSecKeyDataPtr keyData = NULL;
     xmlSecKeyPtr key = NULL;
@@ -205,6 +206,7 @@ xmlSecMSCngAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlSecK
     UNREFERENCED_PARAMETER(pwdCallback);
     UNREFERENCED_PARAMETER(pwdCallbackCtx);
 
+    /* read cert and make a copy for cert chain and keyCert */
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(dataSize, dwDataSize, goto done, NULL);
     pCert = CertCreateCertificateContext(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, data, dwDataSize);
     if(pCert == NULL) {
@@ -212,35 +214,19 @@ xmlSecMSCngAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlSecK
         goto done;
     }
 
-    x509Data = xmlSecKeyDataCreate(xmlSecMSCngKeyDataX509Id);
-    if(x509Data == NULL) {
-        xmlSecInternalError("xmlSecKeyDataCreate", NULL);
+    pCertChain = CertDuplicateCertificateContext(pCert);
+    if(pCertChain == NULL) {
+        xmlSecMSCngLastError("CertDuplicateCertificateContext", NULL);
         goto done;
     }
 
-    tmpcert = CertDuplicateCertificateContext(pCert);
-    if(tmpcert == NULL) {
-        xmlSecMSCngLastError("CertDuplicateCertificateContext",
-            xmlSecKeyDataGetName(x509Data));
+    pKeyCert = CertDuplicateCertificateContext(pCert);
+    if(pKeyCert == NULL) {
+        xmlSecMSCngLastError("CertDuplicateCertificateContext", NULL);
         goto done;
     }
 
-    ret = xmlSecMSCngKeyDataX509AdoptKeyCert(x509Data, tmpcert);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptKeyCert",
-            xmlSecKeyDataGetName(x509Data));
-        goto done;
-    }
-    tmpcert = NULL;
-
-    keyData = xmlSecMSCngCertAdopt(pCert, xmlSecKeyDataTypePublic);
-    if(keyData == NULL) {
-        xmlSecInternalError("xmlSecMSCngCertAdopt",
-            xmlSecKeyDataGetName(x509Data));
-        goto done;
-    }
-    pCert = NULL;
-
+    /* create key */
     key = xmlSecKeyCreate();
     if(key == NULL) {
         xmlSecInternalError("xmlSecKeyCreate",
@@ -248,18 +234,44 @@ xmlSecMSCngAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlSecK
         goto done;
     }
 
+    keyData = xmlSecMSCngCertAdopt(pCert, xmlSecKeyDataTypePublic);
+    if(keyData == NULL) {
+        xmlSecInternalError("xmlSecMSCngCertAdopt", NULL);
+        goto done;
+    }
+    pCert = NULL;  /* owned by keyData now */
+
     ret = xmlSecKeySetValue(key, keyData);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecKeySetValue",
-            xmlSecKeyDataGetName(x509Data));
+        xmlSecInternalError("xmlSecKeySetValue", NULL);
         goto done;
     }
     keyData = NULL;
 
+   /* add cert and keyCert to x509 data and add it to the key */
+    x509Data = xmlSecKeyDataCreate(xmlSecMSCngKeyDataX509Id);
+    if(x509Data == NULL) {
+        xmlSecInternalError("xmlSecKeyDataCreate", NULL);
+        goto done;
+    }
+
+    ret = xmlSecMSCngKeyDataX509AdoptKeyCert(x509Data, pKeyCert);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptKeyCert", NULL);
+        goto done;
+    }
+    pKeyCert = NULL; /* owned by x509Data data now */
+
+    ret = xmlSecMSCngKeyDataX509AdoptCert(x509Data, pCertChain);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptCert", NULL);
+        goto done;
+    }
+    pCertChain = NULL; /* owned by x509Data data now */
+
     ret = xmlSecKeyAdoptData(key, x509Data);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecKeyAdoptData",
-            xmlSecKeyDataGetName(x509Data));
+        xmlSecInternalError("xmlSecKeyAdoptData", NULL);
         goto done;
     }
     x509Data = NULL;
@@ -267,12 +279,16 @@ xmlSecMSCngAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlSecK
     /* success */
     res = key;
     key = NULL;
+
 done:
     if(pCert != NULL) {
         CertFreeCertificateContext(pCert);
     }
-    if(tmpcert != NULL) {
-        CertFreeCertificateContext(tmpcert);
+    if(pCertChain != NULL) {
+        CertFreeCertificateContext(pCertChain);
+    }
+    if(pKeyCert != NULL) {
+        CertFreeCertificateContext(pKeyCert);
     }
     if(x509Data != NULL) {
         xmlSecKeyDataDestroy(x509Data);

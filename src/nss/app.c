@@ -572,9 +572,11 @@ xmlSecNssAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSecSi
  */
 int
 xmlSecNssAppKeyCertLoadSECItem(xmlSecKeyPtr key, SECItem* secItem, xmlSecKeyDataFormat format) {
-    CERTCertificate *cert=NULL;
+    CERTCertificate *cert = NULL;
+    CERTCertificate *keyCert = NULL;
     xmlSecKeyDataPtr data;
     int ret;
+    int res = -1;
 
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(secItem != NULL, -1);
@@ -583,9 +585,10 @@ xmlSecNssAppKeyCertLoadSECItem(xmlSecKeyPtr key, SECItem* secItem, xmlSecKeyData
     data = xmlSecKeyEnsureData(key, xmlSecNssKeyDataX509Id);
     if(data == NULL) {
         xmlSecInternalError("xmlSecKeyEnsureData(xmlSecNssKeyDataX509Id)", NULL);
-        return(-1);
+        goto done;
     }
 
+    /* read cert */
     switch(format) {
     case xmlSecKeyDataFormatPkcs8Der:
     case xmlSecKeyDataFormatDer:
@@ -594,24 +597,49 @@ xmlSecNssAppKeyCertLoadSECItem(xmlSecKeyPtr key, SECItem* secItem, xmlSecKeyData
         if(cert == NULL) {
             xmlSecNssError2("__CERT_NewTempCertificate", xmlSecKeyDataGetName(data),
                 "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
-            return(-1);
+            goto done;
         }
         break;
     default:
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, xmlSecKeyDataGetName(data),
             "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
-        return(-1);
+        goto done;
+    }
+    xmlSecAssert2(cert != NULL, -1);
+
+    /* make a copy for key cert */
+    keyCert = CERT_DupCertificate(cert);
+    if(keyCert == NULL) {
+        xmlSecNssError("CERT_DupCertificate", xmlSecKeyDataGetName(data));
+        goto done;
     }
 
-    xmlSecAssert2(cert != NULL, -1);
+    /* add both cert and key cert in the data */
     ret = xmlSecNssKeyDataX509AdoptCert(data, cert);
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssKeyDataX509AdoptCert", xmlSecKeyDataGetName(data));
-        CERT_DestroyCertificate(cert);
-        return(-1);
+        goto done;
     }
+    cert = NULL; /* owned by data now */
 
-    return(0);
+    ret = xmlSecNssKeyDataX509AdoptKeyCert(data, keyCert);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecNssKeyDataX509AdoptKeyCert", xmlSecKeyDataGetName(data));
+        goto done;
+    }
+    keyCert = NULL; /* owned by data now */
+
+    /* success */
+    res = 0;
+
+done:
+    if(cert != NULL) {
+        CERT_DestroyCertificate(cert);
+    }
+    if(keyCert != NULL) {
+        CERT_DestroyCertificate(keyCert);
+    }
+    return(res);
 }
 
 /**
@@ -941,11 +969,13 @@ done:
  */
 xmlSecKeyPtr
 xmlSecNssAppKeyFromCertLoadSECItem(SECItem* secItem, xmlSecKeyDataFormat format) {
-    xmlSecKeyPtr key;
-    xmlSecKeyDataPtr keyData;
+    xmlSecKeyPtr key = NULL;
+    xmlSecKeyDataPtr keyData = NULL;
     xmlSecKeyDataPtr certData;
-    CERTCertificate *cert=NULL;
+    CERTCertificate *cert = NULL;
+    CERTCertificate *keyCert = NULL;
     int ret;
+    xmlSecKeyPtr res = NULL;
 
     xmlSecAssert2(secItem != NULL, NULL);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
@@ -954,65 +984,90 @@ xmlSecNssAppKeyFromCertLoadSECItem(SECItem* secItem, xmlSecKeyDataFormat format)
     switch(format) {
     case xmlSecKeyDataFormatCertDer:
         cert = __CERT_NewTempCertificate(CERT_GetDefaultCertDB(),
-                                         secItem, NULL, PR_FALSE, PR_TRUE);
+                    secItem, NULL, PR_FALSE, PR_TRUE);
         if(cert == NULL) {
             xmlSecNssError2("__CERT_NewTempCertificate", NULL,
                 "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
-            return(NULL);
+            goto done;
         }
         break;
     default:
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
             "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
-        return(NULL);
+        goto done;
     }
 
     /* get key value */
     keyData = xmlSecNssX509CertGetKey(cert);
     if(keyData == NULL) {
         xmlSecInternalError("xmlSecNssX509CertGetKey", NULL);
-        CERT_DestroyCertificate(cert);
-        return(NULL);
+        goto done;
     }
 
     /* create key */
     key = xmlSecKeyCreate();
     if(key == NULL) {
         xmlSecInternalError("xmlSecKeyCreate", NULL);
-        xmlSecKeyDataDestroy(keyData);
-        CERT_DestroyCertificate(cert);
-        return(NULL);
+        goto done;
+    }
+
+    /* make a copy for key cert */
+    keyCert = CERT_DupCertificate(cert);
+    if(keyCert == NULL) {
+        xmlSecNssError("CERT_DupCertificate", NULL);
+        goto done;
     }
 
     /* set key value */
     ret = xmlSecKeySetValue(key, keyData);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeySetValue", NULL);
-        xmlSecKeyDestroy(key);
-        xmlSecKeyDataDestroy(keyData);
-        CERT_DestroyCertificate(cert);
-        return(NULL);
+        goto done;
     }
+    keyData = NULL; /* owned by key now */
 
     /* create cert data */
     certData = xmlSecKeyEnsureData(key, xmlSecNssKeyDataX509Id);
     if(certData == NULL) {
         xmlSecInternalError("xmlSecKeyEnsureData", NULL);
-        xmlSecKeyDestroy(key);
-        CERT_DestroyCertificate(cert);
-        return(NULL);
+        goto done;
     }
 
-    /* put cert in the cert data */
+    /* put cert and key cert in the cert data */
     ret = xmlSecNssKeyDataX509AdoptCert(certData, cert);
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssKeyDataX509AdoptCert", NULL);
+        goto done;
+    }
+    cert = NULL; /* owned by data now */
+
+    ret = xmlSecNssKeyDataX509AdoptKeyCert(certData, keyCert);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecNssKeyDataX509AdoptKeyCert", NULL);
+        goto done;
+    }
+    keyCert = NULL; /* owned by data now */
+
+    /* success */
+    res = key;
+    key = NULL;
+
+
+done:
+    if(key != NULL) {
         xmlSecKeyDestroy(key);
+    }
+    if(keyData != NULL) {
+        xmlSecKeyDataDestroy(keyData);
+    }
+    if(cert != NULL) {
         CERT_DestroyCertificate(cert);
-        return(NULL);
+    }
+    if(keyCert != NULL) {
+        CERT_DestroyCertificate(keyCert);
     }
 
-    return(key);
+    return(res);
 }
 
 

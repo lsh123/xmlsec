@@ -367,7 +367,7 @@ xmlSecMSCryptoAppKeyCertLoad(xmlSecKeyPtr key, const char* filename,
 int
 xmlSecMSCryptoAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSecSize dataSize,
                                    xmlSecKeyDataFormat format) {
-    PCCERT_CONTEXT pCert;
+    PCCERT_CONTEXT pCert, pKeyCert;
     xmlSecKeyDataPtr kdata;
     DWORD dwDataSize;
     int ret;
@@ -388,19 +388,39 @@ xmlSecMSCryptoAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xml
     case xmlSecKeyDataFormatDer:
     case xmlSecKeyDataFormatCertDer:
         XMLSEC_SAFE_CAST_SIZE_TO_ULONG(dataSize, dwDataSize, return(-1), NULL);
+
+        /* read cert and make a copy for key cert */
         pCert = CertCreateCertificateContext(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, data, dwDataSize);
         if (NULL == pCert) {
             xmlSecInternalError2("CertCreateCertificateContext", xmlSecKeyDataGetName(kdata),
                 "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
             return(-1);
         }
+        pKeyCert = CertDuplicateCertificateContext(pCert);
+        if(pKeyCert == NULL) {
+            xmlSecMSCryptoError("CertDuplicateCertificateContext", xmlSecKeyDataGetName(kdata));
+            CertFreeCertificateContext(pCert);
+            return(-1);
+        }
 
+        /* add cert and key cert */
         ret = xmlSecMSCryptoKeyDataX509AdoptCert(kdata, pCert);
         if(ret < 0) {
             xmlSecInternalError("xmlSecMSCryptoKeyDataX509AdoptCert", xmlSecKeyDataGetName(kdata));
             CertFreeCertificateContext(pCert);
+            CertFreeCertificateContext(pKeyCert);
             return(-1);
         }
+        pCert = NULL; /* owned by kdata */
+
+        ret = xmlSecMSCryptoKeyDataX509AdoptKeyCert(kdata, pKeyCert);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecMSCryptoKeyDataX509AdoptKeyCert", xmlSecKeyDataGetName(kdata));
+            CertFreeCertificateContext(pKeyCert);
+            return(-1);
+        }
+        pKeyCert = NULL; /* owned by kdata */
+
         break;
     default:
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, xmlSecKeyDataGetName(kdata),

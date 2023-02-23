@@ -658,22 +658,17 @@ int
 xmlSecOpenSSLAppKeyCertLoadBIO(xmlSecKeyPtr key, BIO* bio, xmlSecKeyDataFormat format) {
 
     xmlSecKeyDataFormat certFormat;
-    xmlSecKeyDataPtr data;
-    X509 *cert;
+    xmlSecKeyDataPtr data = NULL;
+    X509 *cert = NULL;
+    X509 *keyCert = NULL;
     int ret;
+    int res = -1;
 
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(bio != NULL, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
-    data = xmlSecKeyEnsureData(key, xmlSecOpenSSLKeyDataX509Id);
-    if(data == NULL) {
-        xmlSecInternalError("xmlSecKeyEnsureData",
-                            xmlSecTransformKlassGetName(xmlSecOpenSSLKeyDataX509Id));
-        return(-1);
-    }
-
-    /* adjust cert format */
+    /* adjust cert format if needed */
     switch(format) {
     case xmlSecKeyDataFormatPkcs8Pem:
         certFormat = xmlSecKeyDataFormatPem;
@@ -685,22 +680,50 @@ xmlSecOpenSSLAppKeyCertLoadBIO(xmlSecKeyPtr key, BIO* bio, xmlSecKeyDataFormat f
         certFormat = format;
     }
 
+    /* read cert and make a copy for key cert */
     cert = xmlSecOpenSSLAppCertLoadBIO(bio, certFormat);
     if(cert == NULL) {
-        xmlSecInternalError("xmlSecOpenSSLAppCertLoad",
-                            xmlSecKeyDataGetName(data));
-        return(-1);
+        xmlSecInternalError("xmlSecOpenSSLAppCertLoad", NULL);
+        goto done;
+    }
+    keyCert = X509_dup(cert);
+    if(keyCert == NULL) {
+        xmlSecOpenSSLError("X509_dup", NULL);
+        goto done;
+    }
+
+    /* add both cert and key cert to the key */
+    data = xmlSecKeyEnsureData(key, xmlSecOpenSSLKeyDataX509Id);
+    if(data == NULL) {
+        xmlSecInternalError("xmlSecKeyEnsureData", NULL);
+        goto done;
     }
 
     ret = xmlSecOpenSSLKeyDataX509AdoptCert(data, cert);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecOpenSSLKeyDataX509AdoptCert",
-                            xmlSecKeyDataGetName(data));
-        X509_free(cert);
-        return(-1);
+        xmlSecInternalError("xmlSecOpenSSLKeyDataX509AdoptCert", NULL);
+        goto done;
     }
+    cert = NULL; /* owned by data now */
 
-    return(0);
+    ret = xmlSecOpenSSLKeyDataX509AdoptKeyCert(data, keyCert);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecOpenSSLKeyDataX509AdoptKeyCert", NULL);
+        goto done;
+    }
+    keyCert = NULL; /* owned by data now */
+
+    /* success */
+    res = 0;
+
+done:
+    if(cert != NULL) {
+        X509_free(cert);
+    }
+    if(keyCert != NULL) {
+        X509_free(keyCert);
+    }
+    return(res);
 }
 
 /**
@@ -999,68 +1022,91 @@ done:
  */
 xmlSecKeyPtr
 xmlSecOpenSSLAppKeyFromCertLoadBIO(BIO* bio, xmlSecKeyDataFormat format) {
-    xmlSecKeyPtr key;
-    xmlSecKeyDataPtr keyData;
+    xmlSecKeyPtr key = NULL;
+    xmlSecKeyDataPtr keyData = NULL;
     xmlSecKeyDataPtr certData;
-    X509 *cert;
+    X509 * cert = NULL;
+    X509 * keyCert = NULL;
     int ret;
+    xmlSecKeyPtr res = NULL;
 
     xmlSecAssert2(bio != NULL, NULL);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
 
-    /* load cert */
+    /* load cert and make a copy for keyCert */
     cert = xmlSecOpenSSLAppCertLoadBIO(bio, format);
     if(cert == NULL) {
         xmlSecInternalError("xmlSecOpenSSLAppCertLoadBIO", NULL);
-        return(NULL);
+        goto done;
+    }
+    keyCert = X509_dup(cert);
+    if(keyCert == NULL) {
+        xmlSecOpenSSLError("X509_dup", NULL);
+        goto done;
     }
 
     /* get key value */
     keyData = xmlSecOpenSSLX509CertGetKey(cert);
     if(keyData == NULL) {
         xmlSecInternalError("xmlSecOpenSSLX509CertGetKey", NULL);
-        X509_free(cert);
-        return(NULL);
+        goto done;
     }
 
     /* create key */
     key = xmlSecKeyCreate();
     if(key == NULL) {
         xmlSecInternalError("xmlSecKeyCreate", NULL);
-        xmlSecKeyDataDestroy(keyData);
-        X509_free(cert);
-        return(NULL);
+        goto done;
     }
 
     /* set key value */
     ret = xmlSecKeySetValue(key, keyData);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeySetValue", NULL);
-        xmlSecKeyDestroy(key);
-        xmlSecKeyDataDestroy(keyData);
-        X509_free(cert);
-        return(NULL);
+        goto done;
     }
+    keyData = NULL; /* owned by key now */
 
     /* create cert data */
     certData = xmlSecKeyEnsureData(key, xmlSecOpenSSLKeyDataX509Id);
     if(certData == NULL) {
         xmlSecInternalError("xmlSecKeyEnsureData", NULL);
-        xmlSecKeyDestroy(key);
-        X509_free(cert);
-        return(NULL);
+        goto done;
     }
 
-    /* put cert in the cert data */
+    /* put cert and key cert in the cert data */
     ret = xmlSecOpenSSLKeyDataX509AdoptCert(certData, cert);
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLKeyDataX509AdoptCert", NULL);
-        xmlSecKeyDestroy(key);
-        X509_free(cert);
-        return(NULL);
+        goto done;
     }
+    cert = NULL; /* owned by certData now */
 
-    return(key);
+    ret = xmlSecOpenSSLKeyDataX509AdoptKeyCert(certData, keyCert);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecOpenSSLKeyDataX509AdoptKeyCert", NULL);
+        goto done;
+    }
+    keyCert = NULL; /* owned by certData now */
+
+    /* success */
+    res = key;
+    key = NULL;
+
+done:
+    if(key != NULL) {
+        xmlSecKeyDestroy(key);
+    }
+    if(keyData != NULL) {
+        xmlSecKeyDataDestroy(keyData);
+    }
+    if(cert != NULL) {
+         X509_free(cert);
+    }
+    if(keyCert != NULL) {
+         X509_free(keyCert);
+    }
+    return(res);
 }
 
 

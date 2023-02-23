@@ -625,6 +625,16 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformKWAes192GetKlass(void
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformKWAes256GetKlass(void);
 #endif /* XMLSEC_NO_AES */
 
+
+/**
+ * xmlSecMSCngKeyDataDEREncodedKeyValueId:
+ *
+ * The MSCng DEREncodedKeyValue data klass.
+ */
+#define xmlSecMSCngKeyDataDEREncodedKeyValueId   xmlSecMSCngKeyDataDEREncodedKeyValueGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId             xmlSecMSCngKeyDataDEREncodedKeyValueGetKlass(void);
+
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

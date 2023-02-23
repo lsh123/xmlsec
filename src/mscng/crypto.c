@@ -104,9 +104,11 @@ xmlSecCryptoGetFunctions_mscng(void) {
 #endif /* XMLSEC_NO_RSA */
 
 #ifndef XMLSEC_NO_X509
-    gXmlSecMSCngFunctions->keyDataX509GetKlass                  = xmlSecMSCngKeyDataX509GetKlass;
-    gXmlSecMSCngFunctions->keyDataRawX509CertGetKlass           = xmlSecMSCngKeyDataRawX509CertGetKlass;
+    gXmlSecMSCngFunctions->keyDataX509GetKlass          = xmlSecMSCngKeyDataX509GetKlass;
+    gXmlSecMSCngFunctions->keyDataRawX509CertGetKlass   = xmlSecMSCngKeyDataRawX509CertGetKlass;
 #endif /* XMLSEC_NO_X509 */
+
+    gXmlSecMSCngFunctions->keyDataDEREncodedKeyValueGetKlass = xmlSecMSCngKeyDataDEREncodedKeyValueGetKlass;
 
     /********************************************************************
      *

@@ -2003,6 +2003,23 @@ AM_CONDITIONAL(XMLSEC_NO_HMAC, test "z$XMLSEC_NO_HMAC" = "z1")
 AC_SUBST(XMLSEC_NO_HMAC)
 
 dnl ==========================================================================
+dnl See do we need DH support
+dnl ==========================================================================
+AC_MSG_CHECKING(for DH support)
+AC_ARG_ENABLE([dh], [AS_HELP_STRING([--enable-dh],[enable DH support (yes)])])
+if test "z$enable_dh" = "zno" ; then
+    XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_DH=1"
+    XMLSEC_NO_DH="1"
+    AC_MSG_RESULT([disabled])
+else
+    XMLSEC_NO_DH="0"
+    AC_MSG_RESULT([yes])
+fi
+AM_CONDITIONAL(XMLSEC_NO_DH, test "z$XMLSEC_NO_DH" = "z1")
+AC_SUBST(XMLSEC_NO_DH)
+
+
+dnl ==========================================================================
 dnl See do we need DSA support
 dnl ==========================================================================
 AC_MSG_CHECKING(for DSA support)

@@ -67,6 +67,13 @@ XMLSEC_EXPORT xmlSecKeyDataId                   xmlSecKeyDataConcatKdfGetKlass(v
 #define xmlSecKeyDataDesId                      xmlSecKeyDataDesGetKlass()
 XMLSEC_EXPORT xmlSecKeyDataId                   xmlSecKeyDataDesGetKlass(void);
 /**
+ * xmlSecKeyDataDhId:
+ *
+ * The DH key klass.
+ */
+#define xmlSecKeyDataDhId                       xmlSecKeyDataDhGetKlass()
+XMLSEC_EXPORT xmlSecKeyDataId                   xmlSecKeyDataDhGetKlass(void);
+/**
  * xmlSecKeyDataDsaId:
  *
  * The DSA key klass.
@@ -253,6 +260,13 @@ XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformDes3CbcGetKlass(v
  */
 #define xmlSecTransformKWDes3Id                 xmlSecTransformKWDes3GetKlass()
 XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformKWDes3GetKlass(void);
+/**
+* xmlSecTransformDhEsId:
+*
+* The DH-ES key agreement transform klass.
+*/
+#define xmlSecTransformDhEsId                   xmlSecTransformDhEsGetKlass()
+XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformDhEsGetKlass(void);
 /**
  * xmlSecTransformDsaSha1Id:
  *

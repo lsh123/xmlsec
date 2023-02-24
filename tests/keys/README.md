@@ -121,8 +121,6 @@ openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem \
  rm ecdsa-secp384r1-req.pem
 ```
 
-
-
 ### Generate ECDSA 512 key with second level CA
 ```
 openssl ecparam -list_curves
@@ -133,6 +131,32 @@ openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem \
         -out ecdsa-secp521r1-cert.pem -infiles ecdsa-secp521r1-req.pem
  openssl verify -CAfile cacert.pem -untrusted ca2cert.pem ecdsa-secp521r1-cert.pem
  rm ecdsa-secp521r1-req.pem
+```
+
+### Generate and sign DHX keys with second level CA
+```
+openssl genpkey -algorithm DHX -genparam -pkeyopt dh_paramgen_prime_len:1024 -pkeyopt dh_paramgen_type:1 -pkeyopt dh_rfc5114:1 -out dh1024-params.pem
+openssl genpkey -paramfile dh1024-params.pem -out dh1024-first-key.pem
+openssl genpkey -paramfile dh1024-params.pem -out dh1024-second-key.pem
+rm dh1024-params.pem
+
+openssl pkey -inform PEM -in dh1024-first-key.pem --outform DER --out dh1024-first-key.der
+openssl pkey -inform PEM -in dh1024-first-key.pem --outform DER --pubout --out dh1024-first-pubkey.der
+openssl pkey -inform PEM -in dh1024-first-key.pem --outform PEM --pubout --out dh1024-first-pubkey.pem
+
+openssl pkey -inform PEM -in dh1024-second-key.pem --outform DER --out dh1024-second-key.der
+openssl pkey -inform PEM -in dh1024-second-key.pem --outform DER --pubout --out dh1024-second-pubkey.der
+openssl pkey -inform PEM -in dh1024-second-key.pem --outform PEM --pubout --out dh1024-second-pubkey.pem
+```
+
+
+DH 1024 bits (OU = First DHX-1024 Certificate)
+X509 req failed with error "operation not supported for this keytype":
+```
+openssl req -config ./openssl.cnf -new -key dh1024-first-key.pem -out dh1024-first-req.pem
+openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem -out dh1024-first-pubkey.crt -infiles dh1024-first-req.pem
+openssl verify -CAfile cacert.pem -untrusted ca2cert.pem dh1024-first-pubkey.crt
+rm dh1024-first-req.pem
 ```
 
 ### Generate and sign GOST2012 key with second level CA

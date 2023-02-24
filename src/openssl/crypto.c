@@ -103,6 +103,10 @@ xmlSecCryptoGetFunctions_openssl(void) {
     gXmlSecOpenSSLFunctions->keyDataDesGetKlass         = xmlSecOpenSSLKeyDataDesGetKlass;
 #endif /* XMLSEC_NO_DES */
 
+#ifndef XMLSEC_NO_DH
+    gXmlSecOpenSSLFunctions->keyDataDhGetKlass          = xmlSecOpenSSLKeyDataDhGetKlass;
+#endif /* XMLSEC_NO_DH */
+
 #ifndef XMLSEC_NO_DSA
     gXmlSecOpenSSLFunctions->keyDataDsaGetKlass         = xmlSecOpenSSLKeyDataDsaGetKlass;
 #endif /* XMLSEC_NO_DSA */
@@ -179,6 +183,12 @@ xmlSecCryptoGetFunctions_openssl(void) {
     gXmlSecOpenSSLFunctions->transformKWDes3GetKlass            = xmlSecOpenSSLTransformKWDes3GetKlass;
 #endif /* XMLSEC_NO_DES */
 
+
+    /******************************* DH ********************************/
+#ifndef XMLSEC_NO_DH
+    gXmlSecOpenSSLFunctions->transformDhEsGetKlass              = xmlSecOpenSSLTransformDhEsGetKlass;
+#endif /* XMLSEC_NO_DH */
+
     /******************************* DSA ********************************/
 #ifndef XMLSEC_NO_DSA
 
@@ -194,7 +204,6 @@ xmlSecCryptoGetFunctions_openssl(void) {
 
     /******************************* ECDSA ********************************/
 #ifndef XMLSEC_NO_EC
-
     gXmlSecOpenSSLFunctions->transformEcdhGetKlass              = xmlSecOpenSSLTransformEcdhGetKlass;
 
 #ifndef XMLSEC_NO_RIPEMD160

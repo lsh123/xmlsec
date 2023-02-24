@@ -213,6 +213,30 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefKWDes3[];
 
 /*************************************************************************
  *
+ * DH key strings
+ *
+ ************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameDHKeyValue[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeDHKeyValue[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefDHKeyValue[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeDHP[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeDHQ[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeDHGenerator[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeDHPublic[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeDHSeed[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeDHPgenCounter[];
+
+/*************************************************************************
+ *
+ * DH-ES key agreement strings
+ *
+ ************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameDhEs[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefDhEs[];
+
+/*************************************************************************
+ *
  * DSA strings
  *
  ************************************************************************/

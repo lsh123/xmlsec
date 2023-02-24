@@ -129,6 +129,118 @@ XMLSEC_EXPORT int               xmlSecKeyDataEcXmlWrite                 (xmlSecK
 
 #endif /* !defined(XMLSEC_NO_EC) */
 
+#if !defined(XMLSEC_NO_RSA)
+/**************************************************************************
+ *
+ * Helper functions to read/write RSA keys
+ *
+ *************************************************************************/
+typedef struct _xmlSecKeyValueRsa {
+    xmlSecBuffer   modulus;
+    xmlSecBuffer   publicExponent;
+    xmlSecBuffer   privateExponent;
+} xmlSecKeyValueRsa, *xmlSecKeyValueRsaPtr;
+
+/**
+ * xmlSecKeyDataRsaRead:
+ * @id:                 the key data data.
+ * @dsaValue:            the pointer to input @xmlSecKeyValueRsa.
+ *
+ * Creates xmlSecKeyData from @dsaValue
+ *
+ * Returns: the poitner to xmlSecKeyData or NULL if an error occurs.
+ */
+typedef xmlSecKeyDataPtr       (*xmlSecKeyDataRsaRead)                  (xmlSecKeyDataId id,
+                                                                         xmlSecKeyValueRsaPtr rsaValue);
+
+/**
+ * xmlSecKeyDataRsaWrite:
+ * @id:                 the key data data.
+ * @data:               the pointer to input @xmlSecKeyData.
+ * @dsaValue:            the pointer to input @xmlSecKeyValueRsa.
+ * @writePrivateKey:    the flag indicating if private key component should be output or not.
+ *
+ * Writes @xmlSecKeyData to @xmlSecKeyValueRsa.
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+typedef int                    (*xmlSecKeyDataRsaWrite)                 (xmlSecKeyDataId id,
+                                                                         xmlSecKeyDataPtr data,
+                                                                         xmlSecKeyValueRsaPtr rsaValue,
+                                                                         int writePrivateKey);
+
+
+XMLSEC_EXPORT int               xmlSecKeyDataRsaXmlRead                 (xmlSecKeyDataId id,
+                                                                         xmlSecKeyPtr key,
+                                                                         xmlNodePtr node,
+                                                                         xmlSecKeyInfoCtxPtr keyInfoCtx,
+                                                                         xmlSecKeyDataRsaRead readFunc);
+XMLSEC_EXPORT int               xmlSecKeyDataRsaXmlWrite                (xmlSecKeyDataId id,
+                                                                         xmlSecKeyPtr key,
+                                                                         xmlNodePtr node,
+                                                                         xmlSecKeyInfoCtxPtr keyInfoCtx,
+                                                                         int base64LineSize,
+                                                                         int addLineBreaks,
+                                                                         xmlSecKeyDataRsaWrite writeFunc);
+#endif /* !defined(XMLSEC_NO_RSA) */
+
+#if !defined(XMLSEC_NO_DH)
+/**************************************************************************
+ *
+ * Helper functions to read/write DH keys
+ *
+ *************************************************************************/
+typedef struct _xmlSecKeyValueDh {
+    xmlSecBuffer p;
+    xmlSecBuffer q;
+    xmlSecBuffer generator;
+    xmlSecBuffer public;
+    xmlSecBuffer seed;
+    xmlSecBuffer pgenCounter;
+} xmlSecKeyValueDh, *xmlSecKeyValueDhPtr;
+
+/**
+ * xmlSecKeyDataDhRead:
+ * @id:                 the key data data.
+ * @dhValue:            the pointer to input @xmlSecKeyValueDh.
+ *
+ * Creates xmlSecKeyData from @dhValue
+ *
+ * Returns: the poitner to xmlSecKeyData or NULL if an error occurs.
+ */
+typedef xmlSecKeyDataPtr       (*xmlSecKeyDataDhRead)                  (xmlSecKeyDataId id,
+                                                                         xmlSecKeyValueDhPtr dhValue);
+
+/**
+ * xmlSecKeyDataDhWrite:
+ * @id:                 the key data data.
+ * @data:               the pointer to input @xmlSecKeyData.
+ * @dhValue:            the pointer to input @xmlSecKeyValueDh.
+ * @writePrivateKey:    the flag indicating if private key component should be output or not.
+ *
+ * Writes @xmlSecKeyData to @xmlSecKeyValueDh.
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+typedef int                    (*xmlSecKeyDataDhWrite)                  (xmlSecKeyDataId id,
+                                                                         xmlSecKeyDataPtr data,
+                                                                         xmlSecKeyValueDhPtr dhValue,
+                                                                         int writePrivateKey);
+
+XMLSEC_EXPORT int               xmlSecKeyDataDhXmlRead                  (xmlSecKeyDataId id,
+                                                                         xmlSecKeyPtr key,
+                                                                         xmlNodePtr node,
+                                                                         xmlSecKeyInfoCtxPtr keyInfoCtx,
+                                                                         xmlSecKeyDataDhRead readFunc);
+XMLSEC_EXPORT int               xmlSecKeyDataDhXmlWrite                 (xmlSecKeyDataId id,
+                                                                         xmlSecKeyPtr key,
+                                                                         xmlNodePtr node,
+                                                                         xmlSecKeyInfoCtxPtr keyInfoCtx,
+                                                                         int base64LineSize,
+                                                                         int addLineBreaks,
+                                                                         xmlSecKeyDataDhWrite writeFunc);
+#endif /* !defined(XMLSEC_NO_DH) */
+
 
 #if !defined(XMLSEC_NO_DSA)
 /**************************************************************************
@@ -185,61 +297,6 @@ XMLSEC_EXPORT int               xmlSecKeyDataDsaXmlWrite                (xmlSecK
                                                                          int addLineBreaks,
                                                                          xmlSecKeyDataDsaWrite writeFunc);
 #endif /* !defined(XMLSEC_NO_DSA) */
-
-#if !defined(XMLSEC_NO_RSA)
-/**************************************************************************
- *
- * Helper functions to read/write RSA keys
- *
- *************************************************************************/
-typedef struct _xmlSecKeyValueRsa {
-    xmlSecBuffer   modulus;
-    xmlSecBuffer   publicExponent;
-    xmlSecBuffer   privateExponent;
-} xmlSecKeyValueRsa, *xmlSecKeyValueRsaPtr;
-
-/**
- * xmlSecKeyDataRsaRead:
- * @id:                 the key data data.
- * @dsaValue:            the pointer to input @xmlSecKeyValueRsa.
- *
- * Creates xmlSecKeyData from @dsaValue
- *
- * Returns: the poitner to xmlSecKeyData or NULL if an error occurs.
- */
-typedef xmlSecKeyDataPtr       (*xmlSecKeyDataRsaRead)                  (xmlSecKeyDataId id,
-                                                                         xmlSecKeyValueRsaPtr rsaValue);
-
-/**
- * xmlSecKeyDataRsaWrite:
- * @id:                 the key data data.
- * @data:               the pointer to input @xmlSecKeyData.
- * @dsaValue:            the pointer to input @xmlSecKeyValueRsa.
- * @writePrivateKey:    the flag indicating if private key component should be output or not.
- *
- * Writes @xmlSecKeyData to @xmlSecKeyValueRsa.
- *
- * Returns: 0 on success or a negative value if an error occurs.
- */
-typedef int                    (*xmlSecKeyDataRsaWrite)                 (xmlSecKeyDataId id,
-                                                                         xmlSecKeyDataPtr data,
-                                                                         xmlSecKeyValueRsaPtr rsaValue,
-                                                                         int writePrivateKey);
-
-
-XMLSEC_EXPORT int               xmlSecKeyDataRsaXmlRead                 (xmlSecKeyDataId id,
-                                                                         xmlSecKeyPtr key,
-                                                                         xmlNodePtr node,
-                                                                         xmlSecKeyInfoCtxPtr keyInfoCtx,
-                                                                         xmlSecKeyDataRsaRead readFunc);
-XMLSEC_EXPORT int               xmlSecKeyDataRsaXmlWrite                (xmlSecKeyDataId id,
-                                                                         xmlSecKeyPtr key,
-                                                                         xmlNodePtr node,
-                                                                         xmlSecKeyInfoCtxPtr keyInfoCtx,
-                                                                         int base64LineSize,
-                                                                         int addLineBreaks,
-                                                                         xmlSecKeyDataRsaWrite writeFunc);
-#endif /* !defined(XMLSEC_NO_RSA) */
 
 #if !defined(XMLSEC_NO_X509)
 /**************************************************************************

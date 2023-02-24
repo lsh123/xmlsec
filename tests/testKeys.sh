@@ -64,6 +64,12 @@ execKeysTest $res_success   \
     "$topfolder/aleksey-xmldsig-01/enveloped-sha1-ecdsa-sha1" \
     "--pwd secret123 --enabled-key-data key-name"
 
+# generating large dh keys takes forever
+execKeysTest $res_success   \
+    "dh"                    \
+    ""                      \
+    "dh"
+
 execKeysTest $res_success   \
     "des"                   \
     "test-des"              \

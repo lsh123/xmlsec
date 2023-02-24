@@ -330,7 +330,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformKWDes3GetKlass(void
 
 /********************************************************************
  *
- * DSA transform
+ * DSA key and transforms
  *
  *******************************************************************/
 #ifndef XMLSEC_NO_DSA
@@ -372,6 +372,39 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformDsaSha256GetKlass(v
 #endif /* XMLSEC_NO_SHA256 */
 
 #endif /* XMLSEC_NO_DSA */
+
+/********************************************************************
+ *
+ * DH key and key agreement transform
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_DH
+
+/**
+ * xmlSecOpenSSLKeyDataDhId:
+ *
+ * The DH key klass.
+ */
+#define xmlSecOpenSSLKeyDataDhId \
+        xmlSecOpenSSLKeyDataDhGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataDhGetKlass (void);
+XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeyDataDhAdoptEvp (xmlSecKeyDataPtr data,
+                                                                         EVP_PKEY* pKey);
+XMLSEC_CRYPTO_EXPORT EVP_PKEY*          xmlSecOpenSSLKeyDataDhGetEvp   (xmlSecKeyDataPtr data);
+
+
+
+/**
+ * xmlSecOpenSSLTransformDhEsId:
+ *
+ * The DH key agreement transform klass.
+ */
+#define xmlSecOpenSSLTransformDhEsId \
+        xmlSecOpenSSLTransformDhEsGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformDhEsGetKlass(void);
+
+#endif /* XMLSEC_NO_DH */
+
 
 /********************************************************************
  *
@@ -474,7 +507,6 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformEcdsaSha512GetKlass
 #endif /* XMLSEC_NO_SHA512 */
 
 
-
 #ifndef XMLSEC_NO_SHA3
 /**
  * xmlSecOpenSSLTransformEcdsaSha3_224Id:
@@ -512,8 +544,6 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformEcdsaSha3_384GetKla
         xmlSecOpenSSLTransformEcdsaSha3_512GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformEcdsaSha3_512GetKlass(void);
 #endif /* XMLSEC_NO_SHA3 */
-
-
 
 /**
  * xmlSecOpenSSLTransformEcdhId:

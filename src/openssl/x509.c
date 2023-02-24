@@ -64,9 +64,9 @@
  * X509 utility functions
  *
  ************************************************************************/
-static int              xmlSecOpenSSLKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data,
-                                                                xmlSecKeyPtr key,
-                                                                xmlSecKeyInfoCtxPtr keyInfoCtx);
+static int              xmlSecOpenSSLVerifyAndAdoptX509KeyData  (xmlSecKeyPtr key,
+                                                                 xmlSecKeyDataPtr data,
+                                                                 xmlSecKeyInfoCtxPtr keyInfoCtx);
 static X509*            xmlSecOpenSSLX509CertDerRead            (const xmlSecByte* buf,
                                                                  xmlSecSize size);
 static X509_CRL*        xmlSecOpenSSLX509CrlDerRead             (xmlSecByte* buf,
@@ -557,26 +557,28 @@ xmlSecOpenSSLKeyDataX509XmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     xmlSecAssert2(id == xmlSecOpenSSLKeyDataX509Id, -1);
     xmlSecAssert2(key != NULL, -1);
 
-    data = xmlSecKeyEnsureData(key, id);
+    data = xmlSecKeyDataCreate(id);
     if(data == NULL) {
-        xmlSecInternalError("xmlSecKeyEnsureData",
-            xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecKeyDataCreate(xmlSecOpenSSLKeyDataX509Id)", xmlSecKeyDataKlassGetName(id));
         return(-1);
     }
 
     ret = xmlSecKeyDataX509XmlRead(data, node, keyInfoCtx, xmlSecOpenSSLKeyDataX509Read);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecKeyDataX509XmlRead",
-            xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecKeyDataX509XmlRead", xmlSecKeyDataKlassGetName(id));
+        xmlSecKeyDataDestroy(data);
         return(-1);
     }
 
-    ret = xmlSecOpenSSLKeyDataX509VerifyAndExtractKey(data, key, keyInfoCtx);
+    ret = xmlSecOpenSSLVerifyAndAdoptX509KeyData(key, data, keyInfoCtx);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecOpenSSLKeyDataX509VerifyAndExtractKey",
-            xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecOpenSSLVerifyAndAdoptX509KeyData", xmlSecKeyDataKlassGetName(id));
+        xmlSecKeyDataDestroy(data);
         return(-1);
     }
+    data = NULL; /* owned by data now */
+
+    /* success */
     return(0);
 }
 
@@ -1326,10 +1328,11 @@ xmlSecOpenSSLX509CertGetTime(ASN1_TIME * t, time_t* res) {
 #endif /* !defined(OPENSSL_IS_BORINGSSL) */
 
 static int
-xmlSecOpenSSLKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr key,
-                                    xmlSecKeyInfoCtxPtr keyInfoCtx) {
+xmlSecOpenSSLVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecOpenSSLX509DataCtxPtr ctx;
     xmlSecKeyDataStorePtr x509Store;
+    xmlSecKeyDataPtr keyValue;
+    X509* cert;
     int ret;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataX509Id), -1);
@@ -1339,73 +1342,81 @@ xmlSecOpenSSLKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr 
 
     ctx = xmlSecOpenSSLX509DataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->keyCert == NULL, -1);
 
-    x509Store = xmlSecKeysMngrGetDataStore(keyInfoCtx->keysMngr, xmlSecOpenSSLX509StoreId);
-    if(x509Store == NULL) {
-        xmlSecInternalError("xmlSecKeysMngrGetDataStore",
-                            xmlSecKeyDataGetName(data));
-        return(-1);
+    if((ctx->certsList == NULL) || (xmlSecKeyGetValue(key) != NULL)) {
+        /* no certs or key was already found -> nothing to do (this shouldn't really happen) */
+        return(0);
     }
 
-    if((ctx->keyCert == NULL) && (ctx->certsList != NULL) && (xmlSecKeyGetValue(key) == NULL)) {
-        X509* cert;
-
-        cert = xmlSecOpenSSLX509StoreVerify(x509Store, ctx->certsList, ctx->crlsList, keyInfoCtx);
-        if(cert != NULL) {
-            xmlSecKeyDataPtr keyValue;
-
-            ctx->keyCert = X509_dup(cert);
-            if(ctx->keyCert == NULL) {
-                xmlSecOpenSSLError("X509_dup",
-                                   xmlSecKeyDataGetName(data));
-                return(-1);
-            }
-
-            keyValue = xmlSecOpenSSLX509CertGetKey(ctx->keyCert);
-            if(keyValue == NULL) {
-                xmlSecInternalError("xmlSecOpenSSLX509CertGetKey",
-                                    xmlSecKeyDataGetName(data));
-                return(-1);
-            }
-
-            /* verify that the key matches our expectations */
-            if(xmlSecKeyReqMatchKeyValue(&(keyInfoCtx->keyReq), keyValue) != 1) {
-                xmlSecInternalError("xmlSecKeyReqMatchKeyValue",
-                                    xmlSecKeyDataGetName(data));
-                xmlSecKeyDataDestroy(keyValue);
-                return(-1);
-            }
-
-            ret = xmlSecKeySetValue(key, keyValue);
-            if(ret < 0) {
-                xmlSecInternalError("xmlSecKeySetValue",
-                                    xmlSecKeyDataGetName(data));
-                xmlSecKeyDataDestroy(keyValue);
-                return(-1);
-            }
-
-            if((X509_get0_notBefore(ctx->keyCert) != NULL) && (X509_get0_notAfter(ctx->keyCert) != NULL)) {
-                ret = xmlSecOpenSSLX509CertGetTime(X509_get0_notBefore(ctx->keyCert), &(key->notValidBefore));
-                if(ret < 0) {
-                    xmlSecInternalError("xmlSecOpenSSLX509CertGetTime(notAfter)",
-                                        xmlSecKeyDataGetName(data));
-                    return(-1);
-                }
-                ret = xmlSecOpenSSLX509CertGetTime(X509_get0_notAfter(ctx->keyCert), &(key->notValidAfter));
-                if(ret < 0) {
-                    xmlSecInternalError("xmlSecOpenSSLX509CertGetTime(notBefore)",
-                                        xmlSecKeyDataGetName(data));
-                    return(-1);
-                }
-            } else {
-                key->notValidBefore = key->notValidAfter = 0;
-            }
-        } else if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_INVALID_CERT) != 0) {
+    /* lets find a cert we can verify */
+    x509Store = xmlSecKeysMngrGetDataStore(keyInfoCtx->keysMngr, xmlSecOpenSSLX509StoreId);
+    if(x509Store == NULL) {
+        xmlSecInternalError("xmlSecKeysMngrGetDataStore", xmlSecKeyDataGetName(data));
+        return(-1);
+    }
+    cert = xmlSecOpenSSLX509StoreVerify(x509Store, ctx->certsList, ctx->crlsList, keyInfoCtx);
+    if(cert == NULL) {
+        /* check if we want to fail if cert is not found */
+        if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_INVALID_CERT) != 0) {
             xmlSecOtherError(XMLSEC_ERRORS_R_CERT_NOT_FOUND, xmlSecKeyDataGetName(data), NULL);
             return(-1);
         }
+        return(0);
     }
 
+    /* extract key from cert and verify that the key matches our expectations */
+    keyValue = xmlSecOpenSSLX509CertGetKey(cert);
+    if(keyValue == NULL) {
+        xmlSecInternalError("xmlSecOpenSSLX509CertGetKey", xmlSecKeyDataGetName(data));
+        return(-1);
+    }
+    if(xmlSecKeyReqMatchKeyValue(&(keyInfoCtx->keyReq), keyValue) != 1) {
+        xmlSecInternalError("xmlSecKeyReqMatchKeyValue", xmlSecKeyDataGetName(data));
+        xmlSecKeyDataDestroy(keyValue);
+        return(-1);
+    }
+    ret = xmlSecKeySetValue(key, keyValue);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeySetValue", xmlSecKeyDataGetName(data));
+        xmlSecKeyDataDestroy(keyValue);
+        return(-1);
+    }
+    keyValue = NULL; /* owned by key now */
+
+    /* copy cert not before / not after times from the cert */
+    if(X509_get0_notBefore(cert) != NULL) {
+        ret = xmlSecOpenSSLX509CertGetTime(X509_get0_notBefore(cert), &(key->notValidBefore));
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecOpenSSLX509CertGetTime(notValidBefore)", xmlSecKeyDataGetName(data));
+            return(-1);
+        }
+    } else {
+        key->notValidBefore = 0;
+    }
+    if(X509_get0_notAfter(cert) != NULL) {
+        ret = xmlSecOpenSSLX509CertGetTime(X509_get0_notAfter(cert), &(key->notValidAfter));
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecOpenSSLX509CertGetTime(notValidAfter)", xmlSecKeyDataGetName(data));
+            return(-1);
+        }
+    } else {
+        key->notValidAfter = 0;
+    }
+
+    /* finally setup x509 data and add to the key */
+    ctx->keyCert = X509_dup(cert);
+    if(ctx->keyCert == NULL) {
+        xmlSecOpenSSLError("X509_dup", xmlSecKeyDataGetName(data));
+        return(-1);
+    }
+    ret = xmlSecKeyAdoptData(key, data);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeyAdoptData", NULL);
+        return(-1);
+    }
+
+    /* success */
     return(0);
 }
 
@@ -1642,8 +1653,8 @@ xmlSecOpenSSLKeyDataRawX509CertGetKlass(void) {
 
 static int
 xmlSecOpenSSLKeyDataRawX509CertBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
-                                    const xmlSecByte* buf, xmlSecSize bufSize,
-                                    xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    const xmlSecByte* buf, xmlSecSize bufSize, xmlSecKeyInfoCtxPtr keyInfoCtx
+) {
     xmlSecKeyDataPtr data;
     X509* cert;
     int ret;
@@ -1660,28 +1671,31 @@ xmlSecOpenSSLKeyDataRawX509CertBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         return(-1);
     }
 
-    data = xmlSecKeyEnsureData(key, xmlSecOpenSSLKeyDataX509Id);
+    data = xmlSecKeyDataCreate(xmlSecOpenSSLKeyDataX509Id);
     if(data == NULL) {
-        xmlSecInternalError("xmlSecKeyEnsureData",
-                            xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecKeyDataCreate(xmlSecOpenSSLKeyDataX509Id)", xmlSecKeyDataKlassGetName(id));
         X509_free(cert);
         return(-1);
     }
 
     ret = xmlSecOpenSSLKeyDataX509AdoptCert(data, cert);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecOpenSSLKeyDataX509AdoptCert",
-                            xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecOpenSSLKeyDataX509AdoptCert", xmlSecKeyDataKlassGetName(id));
         X509_free(cert);
+        xmlSecKeyDataDestroy(data);
         return(-1);
     }
+    cert = NULL; /* owned by data now */
 
-    ret = xmlSecOpenSSLKeyDataX509VerifyAndExtractKey(data, key, keyInfoCtx);
+    ret = xmlSecOpenSSLVerifyAndAdoptX509KeyData(key, data, keyInfoCtx);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecOpenSSLKeyDataX509VerifyAndExtractKey",
-                            xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecOpenSSLVerifyAndAdoptX509KeyData", xmlSecKeyDataKlassGetName(id));
+        xmlSecKeyDataDestroy(data);
         return(-1);
     }
+    data = NULL; /* owned by data now */
+
+    /* success */
     return(0);
 }
 

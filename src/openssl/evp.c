@@ -2450,6 +2450,7 @@ xmlSecOpenSSLKeyDataDhWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKey
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataDhId), -1);
     xmlSecAssert2(dhValue != NULL, -1);
+    UNREFERENCED_PARAMETER(writePrivateKey);
 
     /* first, get all values */
     ret = xmlSecOpenSSLKeyValueDhInitialize(&dhKeyValue);

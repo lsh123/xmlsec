@@ -1365,8 +1365,16 @@ xmlSecOpenSSLVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data, 
         return(0);
     }
 
+    /* set cert into the x509 data */
+    ctx->keyCert = X509_dup(cert);
+    if(ctx->keyCert == NULL) {
+        xmlSecOpenSSLError("X509_dup", xmlSecKeyDataGetName(data));
+        return(-1);
+    }
+    cert = NULL; /* we should be using ctx->keyCert for everything */
+
     /* extract key from cert and verify that the key matches our expectations */
-    keyValue = xmlSecOpenSSLX509CertGetKey(cert);
+    keyValue = xmlSecOpenSSLX509CertGetKey(ctx->keyCert);
     if(keyValue == NULL) {
         xmlSecInternalError("xmlSecOpenSSLX509CertGetKey", xmlSecKeyDataGetName(data));
         return(-1);
@@ -1385,8 +1393,8 @@ xmlSecOpenSSLVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data, 
     keyValue = NULL; /* owned by key now */
 
     /* copy cert not before / not after times from the cert */
-    if(X509_get0_notBefore(cert) != NULL) {
-        ret = xmlSecOpenSSLX509CertGetTime(X509_get0_notBefore(cert), &(key->notValidBefore));
+    if(X509_get0_notBefore(ctx->keyCert) != NULL) {
+        ret = xmlSecOpenSSLX509CertGetTime(X509_get0_notBefore(ctx->keyCert), &(key->notValidBefore));
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLX509CertGetTime(notValidBefore)", xmlSecKeyDataGetName(data));
             return(-1);
@@ -1394,8 +1402,8 @@ xmlSecOpenSSLVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data, 
     } else {
         key->notValidBefore = 0;
     }
-    if(X509_get0_notAfter(cert) != NULL) {
-        ret = xmlSecOpenSSLX509CertGetTime(X509_get0_notAfter(cert), &(key->notValidAfter));
+    if(X509_get0_notAfter(ctx->keyCert) != NULL) {
+        ret = xmlSecOpenSSLX509CertGetTime(X509_get0_notAfter(ctx->keyCert), &(key->notValidAfter));
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLX509CertGetTime(notValidAfter)", xmlSecKeyDataGetName(data));
             return(-1);
@@ -1404,15 +1412,12 @@ xmlSecOpenSSLVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data, 
         key->notValidAfter = 0;
     }
 
-    /* finally setup x509 data and add to the key */
-    ctx->keyCert = X509_dup(cert);
-    if(ctx->keyCert == NULL) {
-        xmlSecOpenSSLError("X509_dup", xmlSecKeyDataGetName(data));
-        return(-1);
-    }
+    /* THIS MUST BE THE LAST THING WE DO: add data to the key
+     * if we do it sooner and fail later then both the caller and the key will free data
+     * which would lead to double free */
     ret = xmlSecKeyAdoptData(key, data);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecKeyAdoptData", NULL);
+        xmlSecInternalError("xmlSecKeyAdoptData", xmlSecKeyDataGetName(data));
         return(-1);
     }
 

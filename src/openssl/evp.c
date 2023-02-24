@@ -2072,6 +2072,8 @@ xmlSecOpenSSLKeyDataDhGetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueDhPtr
         xmlSecOpenSSLError("EVP_PKEY_get_bn_param(public)", xmlSecKeyDataGetName(data));
         return(-1);
     }
+
+    /* Ignore seed and pgenCounter
     ret = EVP_PKEY_get_bn_param(pKey, OSSL_PKEY_PARAM_FFC_SEED, &(dhKeyValue->seed));
     if((ret != 1) || (dhKeyValue->seed == NULL)) {
         xmlSecOpenSSLError("EVP_PKEY_get_bn_param(seed)", xmlSecKeyDataGetName(data));
@@ -2079,9 +2081,10 @@ xmlSecOpenSSLKeyDataDhGetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueDhPtr
     }
     ret = EVP_PKEY_get_bn_param(pKey, OSSL_PKEY_PARAM_FFC_PCOUNTER, &(dhKeyValue->pgenCounter));
     if((ret != 1) || (dhKeyValue->pgenCounter == NULL)) {
-        xmlSecOpenSSLError("EVP_PKEY_get_bn_param(seed)", xmlSecKeyDataGetName(data));
+        xmlSecOpenSSLError("EVP_PKEY_get_bn_param(pgenCounter)", xmlSecKeyDataGetName(data));
         return(-1);
     }
+    */
 
     /* success */
     return(0);

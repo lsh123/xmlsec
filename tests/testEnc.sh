@@ -156,7 +156,11 @@ execEncTest $res_success \
     "xmlenc11-interop-2012/cipherText__DH-1024__aes128-gcm__kw-aes128__dh-es__ConcatKDF" \
     "aes128-gcm kw-aes128 concatkdf dh-es sha256" \
     "agreement-method dh" \
-    "$priv_key_option:DH-1024 $topfolder/xmlenc11-interop-2012/DH-1024_SHA256WithDSA.$priv_key_format --pwd passwd"
+    "$priv_key_option:DH-1024 $topfolder/xmlenc11-interop-2012/DH-1024_SHA256WithDSA.$priv_key_format --pwd passwd" \
+    "--session-key aes-128 --privkey-pem:dh1024-first $topfolder/keys/dh1024-first-key.pem --pubkey-pem:dh1024-second $topfolder/keys/dh1024-second-pubkey.pem --xml-data $topfolder/xmlenc11-interop-2012/cipherText__DH-1024__aes128-gcm__kw-aes128__dh-es__ConcatKDF.data" \
+    "--privkey-pem:dh1024-second $topfolder/keys/dh1024-second-key.pem"
+
+
 
 ##########################################################################
 #

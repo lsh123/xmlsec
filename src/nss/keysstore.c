@@ -72,10 +72,10 @@ static xmlSecKeyStoreKlass xmlSecNssKeysStoreKlass = {
     xmlSecNssKeysStoreInitialize,       /* xmlSecKeyStoreInitializeMethod initialize; */
     xmlSecNssKeysStoreFinalize,         /* xmlSecKeyStoreFinalizeMethod finalize; */
     xmlSecNssKeysStoreFindKey,          /* xmlSecKeyStoreFindKeyMethod findKey; */
+    NULL,                               /* xmlSecKeyStoreFindKeyFromX509DataMethod findKeyFromX509Data; */
 
     /* reserved for the future */
     NULL,                               /* void* reserved0; */
-    NULL,                               /* void* reserved1; */
 };
 
 /**

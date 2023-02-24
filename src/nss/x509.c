@@ -144,11 +144,11 @@ typedef struct _xmlSecNssKeyDataX509Context {
 } xmlSecNssDataX509Context;
 
 static int              xmlSecNssKeyDataX509Read        (xmlSecKeyDataPtr data,
-                                                         xmlSecKeyValueX509Ptr x509Value,
+                                                         xmlSecKeyX509DataValuePtr x509Value,
                                                          xmlSecKeysMngrPtr keysMngr,
                                                          unsigned int flags);
 static int              xmlSecNssKeyDataX509Write        (xmlSecKeyDataPtr data,
-                                                         xmlSecKeyValueX509Ptr x509Value,
+                                                         xmlSecKeyX509DataValuePtr x509Value,
                                                          int content,
                                                          void* context);
 
@@ -577,7 +577,7 @@ xmlSecNssKeyDataX509XmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         return(-1);
     }
 
-    ret = xmlSecKeyDataX509XmlRead(key, data, node, keyInfoCtx, xmlSecNssKeyDataX509Read, NULL);
+    ret = xmlSecKeyDataX509XmlRead(key, data, node, keyInfoCtx, xmlSecNssKeyDataX509Read);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeyDataX509XmlRead", xmlSecKeyDataKlassGetName(id));
         return(-1);
@@ -713,7 +713,7 @@ xmlSecNssKeyDataX509DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
 
 /* xmlSecKeyDataX509Read: 0 on success and a negative value otherwise */
 static int
-xmlSecNssKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyValueX509Ptr x509Value,
+xmlSecNssKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x509Value,
                          xmlSecKeysMngrPtr keysMngr, unsigned int flags) {
     xmlSecKeyDataStorePtr x509Store;
     CERTCertificate* cert = NULL;
@@ -818,7 +818,7 @@ done:
  * or a negative value if an error occurs.
  */
 static int
-xmlSecNssKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyValueX509Ptr x509Value,
+xmlSecNssKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x509Value,
                           int content, void* context) {
     xmlSecNssDataX509Context* ctx;
     int ret;

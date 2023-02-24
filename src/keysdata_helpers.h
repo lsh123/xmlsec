@@ -17,6 +17,8 @@
 #endif /* XMLSEC_PRIVATE */
 
 #include <xmlsec/keysdata.h>
+#include <xmlsec/keysmngr.h>
+#include <xmlsec/x509.h>
 
 /**************************************************************************
  *
@@ -304,19 +306,12 @@ XMLSEC_EXPORT int               xmlSecKeyDataDsaXmlWrite                (xmlSecK
  * Helper functions to read/write X509 Keys
  *
  *************************************************************************/
-typedef struct _xmlSecKeyValueX509 {
-    xmlSecBuffer cert;
-    xmlSecBuffer crl;
-    xmlSecBuffer ski;
-    xmlChar* subject;
-    xmlChar* issuerName;
-    xmlChar* issuerSerial;
-} xmlSecKeyValueX509, *xmlSecKeyValueX509Ptr;
+
 
 /**
  * xmlSecKeyDataX509Read:
  * @data:               the pointer to X509 key data
- * @x509Value:          the pointer to input @xmlSecKeyValueX509.
+ * @x509Value:          the pointer to input @xmlSecKeyX509DataValue.
  * @keysMngr:           the pointer to @xmlSecKeysMngr.
  * @flags:              the flags for certs processing.
  *
@@ -324,31 +319,14 @@ typedef struct _xmlSecKeyValueX509 {
  * Returns: 0 on success and a negative value otherwise.
  */
 typedef int                    (*xmlSecKeyDataX509Read)                 (xmlSecKeyDataPtr data,
-                                                                         xmlSecKeyValueX509Ptr x509Value,
-                                                                         xmlSecKeysMngrPtr keysMngr,
-                                                                         unsigned int flags);
-
-
-/**
- * xmlSecKeyDataX509FindKey:
- * @key:                the pointer to key
- * @x509Value:          the pointer to input @xmlSecKeyValueX509.
- * @keysMngr:           the pointer to @xmlSecKeysMngr.
- * @flags:              the flags for certs processing.
- *
- *
- * Returns: 1 if key is found and copied to @key, 0 if key is not found, or a negative
- * value if an error occurs.
- */
-typedef int                    (*xmlSecKeyDataX509FindKey)              (xmlSecKeyPtr key,
-                                                                         xmlSecKeyValueX509Ptr x509Value,
+                                                                         xmlSecKeyX509DataValuePtr x509Value,
                                                                          xmlSecKeysMngrPtr keysMngr,
                                                                          unsigned int flags);
 
 /**
  * xmlSecKeyDataX509Write:
  * @data:               the pointer to result @xmlSecKeyData.
- * @x509Value:          the pointer to result @xmlSecKeyValueX509.
+ * @x509Value:          the pointer to result @xmlSecKeyX509DataValue.
  * @content:            the bitmask of what should be output to @x509Value.
  * @context:            the writer function context.
  *
@@ -358,7 +336,7 @@ typedef int                    (*xmlSecKeyDataX509FindKey)              (xmlSecK
  * value if an error occurs.
  */
 typedef int                    (*xmlSecKeyDataX509Write)                (xmlSecKeyDataPtr data,
-                                                                         xmlSecKeyValueX509Ptr x509Value,
+                                                                         xmlSecKeyX509DataValuePtr x509Value,
                                                                          int content,
                                                                          void* context);
 
@@ -366,8 +344,7 @@ XMLSEC_EXPORT int               xmlSecKeyDataX509XmlRead                (xmlSecK
                                                                          xmlSecKeyDataPtr data,
                                                                          xmlNodePtr node,
                                                                          xmlSecKeyInfoCtxPtr keyInfoCtx,
-                                                                         xmlSecKeyDataX509Read readFunc,
-                                                                         xmlSecKeyDataX509FindKey findKeyFunc);
+                                                                         xmlSecKeyDataX509Read readFunc);
 XMLSEC_EXPORT int               xmlSecKeyDataX509XmlWrite               (xmlSecKeyDataPtr data,
                                                                          xmlNodePtr node,
                                                                          xmlSecKeyInfoCtxPtr keyInfoCtx,

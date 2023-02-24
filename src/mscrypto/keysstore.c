@@ -79,10 +79,10 @@ static xmlSecKeyStoreKlass xmlSecMSCryptoKeysStoreKlass = {
     xmlSecMSCryptoKeysStoreInitialize,          /* xmlSecKeyStoreInitializeMethod initialize; */
     xmlSecMSCryptoKeysStoreFinalize,            /* xmlSecKeyStoreFinalizeMethod finalize; */
     xmlSecMSCryptoKeysStoreFindKey,             /* xmlSecKeyStoreFindKeyMethod findKey; */
+    NULL,                                       /* xmlSecKeyStoreFindKeyFromX509DataMethod findKeyFromX509Data; */
 
     /* reserved for the future */
     NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
 };
 
 /**

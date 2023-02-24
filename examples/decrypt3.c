@@ -291,10 +291,10 @@ static xmlSecKeyStoreKlass files_keys_store_klass = {
     NULL,                               /* xmlSecKeyStoreInitializeMethod initialize; */
     NULL,                               /* xmlSecKeyStoreFinalizeMethod finalize; */
     files_keys_store_find_key,          /* xmlSecKeyStoreFindKeyMethod findKey; */
+    NULL,                               /* xmlSecKeyStoreFindKeyFromX509DataMethod findKeyFromX509Data; */
 
     /* reserved for the future */
     NULL,                               /* void* reserved0; */
-    NULL,                               /* void* reserved1; */
 };
 
 /**
@@ -370,4 +370,3 @@ files_keys_store_find_key(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
 
     return(key);
 }
-

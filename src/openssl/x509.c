@@ -126,11 +126,12 @@ typedef struct _xmlSecOpenSSLKeyDataX509Context {
 } xmlSecOpenSSLKeyDataX509Context;
 
 static int              xmlSecOpenSSLKeyDataX509Read            (xmlSecKeyDataPtr data,
-                                                                 xmlSecKeyValueX509Ptr x509Value,
+                                                                 xmlSecKeyX509DataValuePtr x509Value,
                                                                  xmlSecKeysMngrPtr keysMngr,
                                                                  unsigned int flags);
+
 static int              xmlSecOpenSSLKeyDataX509Write           (xmlSecKeyDataPtr data,
-                                                                  xmlSecKeyValueX509Ptr x509Value,
+                                                                  xmlSecKeyX509DataValuePtr x509Value,
                                                                   int content,
                                                                   void* context);
 
@@ -562,7 +563,7 @@ xmlSecOpenSSLKeyDataX509XmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr
         return(-1);
     }
 
-    ret = xmlSecKeyDataX509XmlRead(key, data, node, keyInfoCtx, xmlSecOpenSSLKeyDataX509Read, NULL);
+    ret = xmlSecKeyDataX509XmlRead(key, data, node, keyInfoCtx, xmlSecOpenSSLKeyDataX509Read);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeyDataX509XmlRead", xmlSecKeyDataKlassGetName(id));
         xmlSecKeyDataDestroy(data);
@@ -709,8 +710,9 @@ xmlSecOpenSSLKeyDataX509DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
 
 /* xmlSecKeyDataX509Read: 0 on success and a negative value otherwise */
 static int
-xmlSecOpenSSLKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyValueX509Ptr x509Value,
-                             xmlSecKeysMngrPtr keysMngr, unsigned int flags) {
+xmlSecOpenSSLKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x509Value,
+    xmlSecKeysMngrPtr keysMngr, unsigned int flags
+) {
     xmlSecKeyDataStorePtr x509Store;
     int stopOnUnknownCert = 0;
     X509* cert = NULL;
@@ -1073,7 +1075,7 @@ xmlSecOpenSSLASN1IntegerWrite(ASN1_INTEGER *asni) {
  * or a negative value if an error occurs.
  */
 static int
-xmlSecOpenSSLKeyDataX509Write(xmlSecKeyDataPtr data,  xmlSecKeyValueX509Ptr x509Value,
+xmlSecOpenSSLKeyDataX509Write(xmlSecKeyDataPtr data,  xmlSecKeyX509DataValuePtr x509Value,
                               int content, void* context) {
     xmlSecOpenSSLKeyDataX509Context* ctx;
     int ret;

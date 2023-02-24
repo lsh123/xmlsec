@@ -9,6 +9,24 @@
 #ifndef __XMLSEC_X509_H__
 #define __XMLSEC_X509_H__
 
+/**
+ * xmlSecKeyX509DataValue:
+ * @cert:              the certificate from <dsig:X509Certificate/> node.
+ * @crl:               the crl from <dsig:X509CRL/> node.
+ * @ski:               the ski from <dsig:X509SKI/> node.
+ * @subject:           the subject name from <dsig:X509SubjectName /> node.
+ * @issuerName:        the ski from <dsig:X509IssuerSerial/> node.
+ * @issuerSerial:      the ski from <dsig:X509IssuerSerial/> node.
+ *
+ * The content of a child of <X509Data/> node. Not all values will be set!
+ */
+struct _xmlSecKeyX509DataValue {
+    xmlSecBuffer cert;
+    xmlSecBuffer crl;
+    xmlSecBuffer ski;
+    xmlChar* subject;
+    xmlChar* issuerName;
+    xmlChar* issuerSerial;
+};
 
 #endif /* __XMLSEC_X509_H__ */
-

@@ -236,7 +236,7 @@ xmlSecOpenSSLX509StoreFindCert_ex(xmlSecKeyDataStorePtr store,
 }
 
 X509*
-xmlSecOpenSSLX509StoreFindCertByValue(xmlSecKeyDataStorePtr store, xmlSecKeyValueX509Ptr x509Value) {
+xmlSecOpenSSLX509StoreFindCertByValue(xmlSecKeyDataStorePtr store, xmlSecKeyX509DataValuePtr x509Value) {
    xmlSecOpenSSLX509StoreCtxPtr ctx;
     xmlSecOpenSSLX509FindCertCtx findCertsCtx;
     x509_size_t ii;
@@ -900,7 +900,7 @@ int xmlSecOpenSSLX509FindCertCtxInitialize(xmlSecOpenSSLX509FindCertCtxPtr ctx,
 }
 
 int
-xmlSecOpenSSLX509FindCertCtxInitializeFromValue(xmlSecOpenSSLX509FindCertCtxPtr ctx, xmlSecKeyValueX509Ptr x509Value) {
+xmlSecOpenSSLX509FindCertCtxInitializeFromValue(xmlSecOpenSSLX509FindCertCtxPtr ctx, xmlSecKeyX509DataValuePtr x509Value) {
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(x509Value != NULL, -1);
 

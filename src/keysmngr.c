@@ -120,6 +120,35 @@ xmlSecKeysMngrFindKey(xmlSecKeysMngrPtr mngr, const xmlChar* name, xmlSecKeyInfo
 }
 
 /**
+ * xmlSecKeysMngrFindKeyFromX509Data:
+ * @mngr:               the pointer to keys manager.
+ * @x509Data:           the X509 data to use for searching the keys.
+ * @keyInfoCtx:         the pointer to <dsig:KeyInfo/> node processing context.
+ *
+ * Lookups key in the keys manager keys store. The caller is responsible
+ * for destroying the returned key using #xmlSecKeyDestroy method.
+ *
+ * Returns: the pointer to a key or NULL if key is not found or an error occurs.
+ */
+xmlSecKeyPtr
+xmlSecKeysMngrFindKeyFromX509Data(xmlSecKeysMngrPtr mngr, xmlSecKeyX509DataValuePtr x509Data, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlSecKeyStorePtr store;
+
+    xmlSecAssert2(mngr != NULL, NULL);
+    xmlSecAssert2(x509Data != NULL, NULL);
+    xmlSecAssert2(keyInfoCtx != NULL, NULL);
+
+    store = xmlSecKeysMngrGetKeysStore(mngr);
+    if(store == NULL) {
+        /* no store. is it an error? */
+        return(NULL);
+    }
+
+    return(xmlSecKeyStoreFindKeyFromX509Data(store, x509Data, keyInfoCtx));
+}
+
+
+/**
  * xmlSecKeysMngrAdoptKeysStore:
  * @mngr:               the pointer to keys manager.
  * @store:              the pointer to keys store.
@@ -292,10 +321,35 @@ xmlSecKeyStoreDestroy(xmlSecKeyStorePtr store) {
 xmlSecKeyPtr
 xmlSecKeyStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecAssert2(xmlSecKeyStoreIsValid(store), NULL);
-    xmlSecAssert2(store->id->findKey != NULL, NULL);
     xmlSecAssert2(keyInfoCtx != NULL, NULL);
 
+    if(store->id->findKey == NULL) {
+        return(NULL);
+    }
     return(store->id->findKey(store, name, keyInfoCtx));
+}
+
+/**
+ * xmlSecKeyStoreFindKeyFromX509Data:
+ * @store:              the pointer to keys store.
+ * @x509Data:           the X509 data to use for search.
+ * @keyInfoCtx:         the pointer to <dsig:KeyInfo/> node processing context.
+ *
+ * Lookups key in the store. The caller is responsible for destroying
+ * the returned key using #xmlSecKeyDestroy method.
+ *
+ * Returns: the pointer to a key or NULL if key is not found or an error occurs.
+ */
+xmlSecKeyPtr
+xmlSecKeyStoreFindKeyFromX509Data(xmlSecKeyStorePtr store, xmlSecKeyX509DataValuePtr x509Data, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlSecAssert2(xmlSecKeyStoreIsValid(store), NULL);
+    xmlSecAssert2(x509Data != NULL, NULL);
+    xmlSecAssert2(keyInfoCtx != NULL, NULL);
+
+    if(store->id->findKeyFromX509Data == NULL) {
+        return(NULL);
+    }
+    return(store->id->findKeyFromX509Data(store, x509Data, keyInfoCtx));
 }
 
 /****************************************************************************
@@ -325,10 +379,10 @@ static xmlSecKeyStoreKlass xmlSecSimpleKeysStoreKlass = {
     xmlSecSimpleKeysStoreInitialize,            /* xmlSecKeyStoreInitializeMethod initialize; */
     xmlSecSimpleKeysStoreFinalize,              /* xmlSecKeyStoreFinalizeMethod finalize; */
     xmlSecSimpleKeysStoreFindKey,               /* xmlSecKeyStoreFindKeyMethod findKey; */
+    NULL,                                       /* xmlSecKeyStoreFindKeyFromX509DataMethod findKeyFromX509Data; */
 
     /* reserved for the future */
     NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
 };
 
 /**
@@ -685,8 +739,7 @@ xmlSecSimpleKeysStoreFinalize(xmlSecKeyStorePtr store) {
 }
 
 static xmlSecKeyPtr
-xmlSecSimpleKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
-                            xmlSecKeyInfoCtxPtr keyInfoCtx) {
+xmlSecSimpleKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecPtrListPtr list;
     xmlSecKeyPtr key;
     xmlSecSize pos, size;
@@ -706,4 +759,3 @@ xmlSecSimpleKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
     }
     return(NULL);
 }
-

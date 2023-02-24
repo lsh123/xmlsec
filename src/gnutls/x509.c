@@ -109,11 +109,11 @@ typedef struct _xmlSecGnuTLSKeyDataX509Context {
 } xmlSecGnuTLSKeyDataX509Context;
 
 static int              xmlSecGnuTLSKeyDataX509Read             (xmlSecKeyDataPtr data,
-                                                                 xmlSecKeyValueX509Ptr x509Value,
+                                                                 xmlSecKeyX509DataValuePtr x509Value,
                                                                  xmlSecKeysMngrPtr keysMngr,
                                                                  unsigned int flags);
 static int              xmlSecGnuTLSKeyDataX509Write            (xmlSecKeyDataPtr data,
-                                                                  xmlSecKeyValueX509Ptr x509Value,
+                                                                  xmlSecKeyX509DataValuePtr x509Value,
                                                                   int content,
                                                                   void* context);
 
@@ -473,7 +473,7 @@ xmlSecGnuTLSKeyDataX509XmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         return(-1);
     }
 
-    ret = xmlSecKeyDataX509XmlRead(key, data, node, keyInfoCtx, xmlSecGnuTLSKeyDataX509Read, NULL);
+    ret = xmlSecKeyDataX509XmlRead(key, data, node, keyInfoCtx, xmlSecGnuTLSKeyDataX509Read);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeyDataX509XmlRead", xmlSecKeyDataKlassGetName(id));
         return(-1);
@@ -655,7 +655,7 @@ xmlSecGnuTLSKeyDataX509DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
 
 /* xmlSecKeyDataX509Read: 0 on success and a negative value otherwise */
 static int
-xmlSecGnuTLSKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyValueX509Ptr x509Value,
+xmlSecGnuTLSKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x509Value,
                              xmlSecKeysMngrPtr keysMngr, unsigned int flags) {
     xmlSecKeyDataStorePtr x509Store;
     int stopOnUnknownCert = 0;
@@ -770,7 +770,7 @@ done:
  * or a negative value if an error occurs.
  */
 static int
-xmlSecGnuTLSKeyDataX509Write(xmlSecKeyDataPtr data,  xmlSecKeyValueX509Ptr x509Value,
+xmlSecGnuTLSKeyDataX509Write(xmlSecKeyDataPtr data,  xmlSecKeyX509DataValuePtr x509Value,
                             int content, void* context) {
     xmlSecGnuTLSKeyDataX509Context* ctx;
     int ret;

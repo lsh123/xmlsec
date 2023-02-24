@@ -127,11 +127,11 @@ typedef struct _xmlSecMSCryptoKeyDataX509Context {
 } xmlSecMSCryptoKeyDataX509Context;
 
 static int              xmlSecMSCryptoKeyDataX509Read          (xmlSecKeyDataPtr data,
-                                                                xmlSecKeyValueX509Ptr x509Value,
+                                                                xmlSecKeyX509DataValuePtr x509Value,
                                                                 xmlSecKeysMngrPtr keysMngr,
                                                                 unsigned int flags);
 static int              xmlSecMSCryptoKeyDataX509Write         (xmlSecKeyDataPtr data,
-                                                                xmlSecKeyValueX509Ptr x509Value,
+                                                                xmlSecKeyX509DataValuePtr x509Value,
                                                                 int content,
                                                                 void* context);
 
@@ -547,7 +547,7 @@ xmlSecMSCryptoKeyDataX509XmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         return(-1);
     }
 
-    ret = xmlSecKeyDataX509XmlRead(key, data, node, keyInfoCtx, xmlSecMSCryptoKeyDataX509Read, NULL);
+    ret = xmlSecKeyDataX509XmlRead(key, data, node, keyInfoCtx, xmlSecMSCryptoKeyDataX509Read);
     if (ret < 0) {
         xmlSecInternalError("xmlSecKeyDataX509XmlRead", xmlSecKeyDataKlassGetName(id));
         return(-1);
@@ -681,7 +681,7 @@ xmlSecMSCryptoKeyDataX509DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
 
 /* xmlSecKeyDataX509Read: 0 on success and a negative value otherwise */
 static int
-xmlSecMSCryptoKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyValueX509Ptr x509Value,
+xmlSecMSCryptoKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x509Value,
     xmlSecKeysMngrPtr keysMngr, unsigned int flags) {
     xmlSecKeyDataStorePtr x509Store;
     int stopOnUnknownCert = 0;
@@ -790,7 +790,7 @@ done:
  * or a negative value if an error occurs.
  */
 static int
-xmlSecMSCryptoKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyValueX509Ptr x509Value,
+xmlSecMSCryptoKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x509Value,
     int content, void* context) {
     xmlSecMSCryptoKeyDataX509Context* ctx;
     int ret;

@@ -52,7 +52,7 @@ XMLSEC_CRYPTO_EXPORT int        xmlSecOpenSSLX509FindCertCtxInitialize      (xml
                                                                              const xmlSecByte * ski,
                                                                              xmlSecSize skiSize);
 XMLSEC_CRYPTO_EXPORT int        xmlSecOpenSSLX509FindCertCtxInitializeFromValue(xmlSecOpenSSLX509FindCertCtxPtr ctx,
-                                                                             xmlSecKeyValueX509Ptr x509Value);
+                                                                             xmlSecKeyX509DataValuePtr x509Value);
 XMLSEC_CRYPTO_EXPORT void       xmlSecOpenSSLX509FindCertCtxFinalize        (xmlSecOpenSSLX509FindCertCtxPtr ctx);
 
 XMLSEC_CRYPTO_EXPORT int        xmlSecOpenSSLX509FindCertCtxMatch          (xmlSecOpenSSLX509FindCertCtxPtr ctx,
@@ -61,7 +61,7 @@ XMLSEC_CRYPTO_EXPORT int        xmlSecOpenSSLX509FindCertCtxMatch          (xmlS
 
 
 XMLSEC_CRYPTO_EXPORT X509*              xmlSecOpenSSLX509StoreFindCertByValue(xmlSecKeyDataStorePtr store,
-                                                                              xmlSecKeyValueX509Ptr x509Value);
+                                                                              xmlSecKeyX509DataValuePtr x509Value);
 #endif /* XMLSEC_NO_X509 */
 
 #ifdef __cplusplus

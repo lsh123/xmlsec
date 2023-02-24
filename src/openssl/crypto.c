@@ -103,6 +103,10 @@ xmlSecCryptoGetFunctions_openssl(void) {
     gXmlSecOpenSSLFunctions->keyDataDesGetKlass         = xmlSecOpenSSLKeyDataDesGetKlass;
 #endif /* XMLSEC_NO_DES */
 
+#ifndef XMLSEC_NO_DH
+    gXmlSecOpenSSLFunctions->keyDataDhGetKlass          = xmlSecOpenSSLKeyDataDhGetKlass;
+#endif /* XMLSEC_NO_DH */
+
 #ifndef XMLSEC_NO_DSA
     gXmlSecOpenSSLFunctions->keyDataDsaGetKlass         = xmlSecOpenSSLKeyDataDsaGetKlass;
 #endif /* XMLSEC_NO_DSA */

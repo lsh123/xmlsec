@@ -36,6 +36,7 @@ extern "C" {
  ********************************************************************/
 #define xmlSecKeyDataAesId                      xmlSecOpenSSLKeyDataAesId
 #define xmlSecKeyDataDesId                      xmlSecOpenSSLKeyDataDesId
+#define xmlSecKeyDataDhId                       xmlSecOpenSSLKeyDataDhId
 #define xmlSecKeyDataDsaId                      xmlSecOpenSSLKeyDataDsaId
 #define xmlSecKeyDataEcdsaId                    xmlSecOpenSSLKeyDataEcId
 #define xmlSecKeyDataEcId                       xmlSecOpenSSLKeyDataEcId

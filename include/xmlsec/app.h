@@ -67,6 +67,13 @@ XMLSEC_EXPORT xmlSecKeyDataId                   xmlSecKeyDataConcatKdfGetKlass(v
 #define xmlSecKeyDataDesId                      xmlSecKeyDataDesGetKlass()
 XMLSEC_EXPORT xmlSecKeyDataId                   xmlSecKeyDataDesGetKlass(void);
 /**
+ * xmlSecKeyDataDhId:
+ *
+ * The DH key klass.
+ */
+#define xmlSecKeyDataDhId                       xmlSecKeyDataDhGetKlass()
+XMLSEC_EXPORT xmlSecKeyDataId                   xmlSecKeyDataDhGetKlass(void);
+/**
  * xmlSecKeyDataDsaId:
  *
  * The DSA key klass.

@@ -343,6 +343,7 @@ typedef int                     (*xmlSecCryptoAppKeyCertLoadMemoryMethod)(xmlSec
  * @keyDataAesGetKlass:         the method to get pointer to AES key data klass.
  * @keyDataConcatKdfGetKlass:   the method to get pointer to ConcatKDF key data klass.
  * @keyDataDesGetKlass:         the method to get pointer to DES key data klass.
+ * @keyDataDhGetKlass:          the method to get pointer to DH key data klass.
  * @keyDataDsaGetKlass:         the method to get pointer to DSA key data klass.
  * @keyDataEcGetKlass:          the method to get pointer to EC key data klass.
  * @keyDataGost2001GetKlass:    the method to get pointer to GOST 2001 key data klass.
@@ -452,6 +453,7 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoKeyDataGetKlassMethod            keyDataAesGetKlass;
     xmlSecCryptoKeyDataGetKlassMethod            keyDataConcatKdfGetKlass;
     xmlSecCryptoKeyDataGetKlassMethod            keyDataDesGetKlass;
+    xmlSecCryptoKeyDataGetKlassMethod            keyDataDhGetKlass;
     xmlSecCryptoKeyDataGetKlassMethod            keyDataDsaGetKlass;
     xmlSecCryptoKeyDataGetKlassMethod            keyDataEcGetKlass;
     xmlSecCryptoKeyDataGetKlassMethod            keyDataGost2001GetKlass;

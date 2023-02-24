@@ -156,6 +156,25 @@ xmlSecKeyDataDesGetKlass(void) {
 }
 
 /**
+ * xmlSecKeyDataDhGetKlass:
+ *
+ * The DH key data klass.
+ *
+ * Returns: DH key data klass or NULL if an error occurs
+ * (xmlsec-crypto library is not loaded or the DH key data
+ * klass is not implemented).
+ */
+xmlSecKeyDataId
+xmlSecKeyDataDhGetKlass(void) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->keyDataDhGetKlass == NULL)) {
+        xmlSecNotImplementedError("keyDataDhGetKlass");
+        return(xmlSecKeyDataIdUnknown);
+    }
+
+    return(xmlSecCryptoDLGetFunctions()->keyDataDhGetKlass());
+}
+
+/**
  * xmlSecKeyDataDsaGetKlass:
  *
  * The DSA key data klass.
@@ -173,6 +192,7 @@ xmlSecKeyDataDsaGetKlass(void) {
 
     return(xmlSecCryptoDLGetFunctions()->keyDataDsaGetKlass());
 }
+
 
 /**
  * xmlSeckeyDataEcGetKlass:

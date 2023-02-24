@@ -40,6 +40,7 @@
 #include <xmlsec/openssl/app.h>
 #include <xmlsec/openssl/crypto.h>
 #include <xmlsec/openssl/evp.h>
+#include <xmlsec/openssl/keysstore.h>
 #include <xmlsec/openssl/x509.h>
 
 #include "openssl_compat.h"
@@ -1340,7 +1341,7 @@ done:
  * xmlSecOpenSSLAppDefaultKeysMngrInit:
  * @mngr:               the pointer to keys manager.
  *
- * Initializes @mngr with simple keys store #xmlSecSimpleKeysStoreId
+ * Initializes @mngr with openssl keys store #xmlSecOpenSSLKeysStoreId
  * and a default OpenSSL crypto key data stores.
  *
  * Returns: 0 on success or a negative value otherwise.
@@ -1355,9 +1356,9 @@ xmlSecOpenSSLAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
     if(xmlSecKeysMngrGetKeysStore(mngr) == NULL) {
         xmlSecKeyStorePtr keysStore;
 
-        keysStore = xmlSecKeyStoreCreate(xmlSecSimpleKeysStoreId);
+        keysStore = xmlSecKeyStoreCreate(xmlSecOpenSSLKeysStoreId);
         if(keysStore == NULL) {
-            xmlSecInternalError("xmlSecKeyStoreCreate(xmlSecSimpleKeysStoreId)", NULL);
+            xmlSecInternalError("xmlSecKeyStoreCreate(xmlSecOpenSSLKeysStoreId)", NULL);
             return(-1);
         }
 
@@ -1404,9 +1405,9 @@ xmlSecOpenSSLAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key
         return(-1);
     }
 
-    ret = xmlSecSimpleKeysStoreAdoptKey(store, key);
+    ret = xmlSecOpenSSLKeysStoreAdoptKey(store, key);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecSimpleKeysStoreAdoptKey", NULL);
+        xmlSecInternalError("xmlSecOpenSSLKeysStoreAdoptKey", NULL);
         return(-1);
     }
 
@@ -1437,9 +1438,9 @@ xmlSecOpenSSLAppDefaultKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
         return(-1);
     }
 
-    ret = xmlSecSimpleKeysStoreLoad(store, uri, mngr);
+    ret = xmlSecOpenSSLKeysStoreLoad(store, uri, mngr);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecSimpleKeysStoreLoad", NULL,
+        xmlSecInternalError2("xmlSecOpenSSLKeysStoreLoad", NULL,
                              "uri=%s", xmlSecErrorsSafeString(uri));
         return(-1);
     }
@@ -1472,9 +1473,9 @@ xmlSecOpenSSLAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename
         return(-1);
     }
 
-    ret = xmlSecSimpleKeysStoreSave(store, filename, type);
+    ret = xmlSecOpenSSLKeysStoreSave(store, filename, type);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecSimpleKeysStoreSave", NULL,
+        xmlSecInternalError2("xmlSecOpenSSLKeysStoreSave", NULL,
                              "filename=%s", xmlSecErrorsSafeString(filename));
         return(-1);
     }

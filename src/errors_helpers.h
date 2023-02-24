@@ -13,7 +13,7 @@
 #define __XMLSEC_ERROR_HELPERS_H__
 
 #ifndef XMLSEC_PRIVATE
-#error "private.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-$crypto libraries"
+#error "errors_helpers.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-$crypto libraries"
 #endif /* XMLSEC_PRIVATE */
 
 #include <errno.h>

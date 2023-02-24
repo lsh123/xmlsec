@@ -156,6 +156,19 @@ xmlSecBufferEmpty(xmlSecBufferPtr buf) {
 }
 
 /**
+ * xmlSecBufferIsEmpty:
+ * @buf:                the pointer to buffer object.
+ *
+ * Checks if the @buf is empty (@buf is null or @buf's data is null or @buf's size is zero).
+ *
+ * Returns: 1 if buffer is empty or 0 otherwise.
+ */
+int
+xmlSecBufferIsEmpty(xmlSecBufferPtr buf) {
+    return (((buf == NULL) || (buf->data == NULL) || (buf->size <= 0)) ? 1 : 0);
+}
+
+/**
  * xmlSecBufferGetData:
  * @buf:                the pointer to buffer object.
  *

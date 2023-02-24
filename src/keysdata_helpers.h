@@ -13,7 +13,7 @@
 
 
 #ifndef XMLSEC_PRIVATE
-#error "private.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-$crypto libraries"
+#error "keysdata_helpers.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-$crypto libraries"
 #endif /* XMLSEC_PRIVATE */
 
 #include <xmlsec/keysdata.h>

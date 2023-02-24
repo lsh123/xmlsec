@@ -56,6 +56,7 @@
 #include "../cast_helpers.h"
 #include "../keysdata_helpers.h"
 
+#include "private.h"
 #include "openssl_compat.h"
 
 /*************************************************************************
@@ -740,32 +741,10 @@ xmlSecOpenSSLKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyValueX509Ptr x509Va
             xmlSecInternalError("xmlSecOpenSSLX509CertDerRead", xmlSecKeyDataGetName(data));
             goto done;
         }
-    } else if(xmlSecBufferGetSize(&(x509Value->ski)) > 0) {
-        storeCert = xmlSecOpenSSLX509StoreFindCert_ex(x509Store, NULL,  NULL, NULL,
-            xmlSecBufferGetData(&(x509Value->ski)), xmlSecBufferGetSize(&(x509Value->ski)),
-            NULL /* unused */);
+    } else {
+        storeCert = xmlSecOpenSSLX509StoreFindCertByValue(x509Store, x509Value);
         if((storeCert == NULL) && (stopOnUnknownCert != 0)) {
-            xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_NOT_FOUND, xmlSecKeyDataGetName(data),
-                "skiSize=" XMLSEC_SIZE_FMT, xmlSecBufferGetSize(&(x509Value->ski)));
-            goto done;
-        }
-    } else if(x509Value->subject != NULL) {
-        storeCert = xmlSecOpenSSLX509StoreFindCert_ex(x509Store, x509Value->subject,
-            NULL, NULL, NULL, 0, NULL /* unused */);
-        if((storeCert == NULL) && (stopOnUnknownCert != 0)) {
-            xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_NOT_FOUND, xmlSecKeyDataGetName(data),
-                "subject=%s", xmlSecErrorsSafeString(x509Value->subject));
-            goto done;
-        }
-    } else if((x509Value->issuerName != NULL) && (x509Value->issuerSerial != NULL)) {
-        storeCert = xmlSecOpenSSLX509StoreFindCert_ex(x509Store, NULL,
-            x509Value->issuerName, x509Value->issuerSerial,
-            NULL, 0, NULL /* unused */);
-        if((storeCert == NULL) && (stopOnUnknownCert != 0)) {
-            xmlSecOtherError3(XMLSEC_ERRORS_R_CERT_NOT_FOUND, xmlSecKeyDataGetName(data),
-                "issuerName=%s;issuerSerial=%s",
-                xmlSecErrorsSafeString(x509Value->issuerName),
-                xmlSecErrorsSafeString(x509Value->issuerSerial));
+            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_NOT_FOUND, xmlSecKeyDataGetName(data), "cert lookup");
             goto done;
         }
     }

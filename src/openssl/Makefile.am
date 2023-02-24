@@ -36,6 +36,7 @@ libxmlsec1_openssl_la_SOURCES =\
 	x509.c \
 	x509vfy.c \
 	globals.h \
+	private.h \
 	openssl_compat.h \
 	$(NULL)
 

@@ -66,7 +66,7 @@
 
 typedef struct _xmlSecMSCngEcdhCtx    xmlSecMSCngEcdhCtx, *xmlSecMSCngEcdhCtxPtr;
 struct _xmlSecMSCngEcdhCtx {
-    xmlSecTransformEcdhParams params;
+    xmlSecTransformKeyAgreementParams params;
     xmlSecKeyPtr secretKey;
 };
 
@@ -110,9 +110,9 @@ xmlSecMSCngEcdhInitialize(xmlSecTransformPtr transform) {
     /* initialize context */
     memset(ctx, 0, sizeof(xmlSecMSCngEcdhCtx));
 
-    ret = xmlSecTransformEcdhParamsInitialize(&(ctx->params));
+    ret = xmlSecTransformKeyAgreementParamsInitialize(&(ctx->params));
     if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformEcdhParamsInitialize", NULL);
+        xmlSecInternalError("xmlSecTransformKeyAgreementParamsInitialize", NULL);
         xmlSecMSCngEcdhFinalize(transform);
         return(-1);
     }
@@ -134,7 +134,7 @@ xmlSecMSCngEcdhFinalize(xmlSecTransformPtr transform) {
     if(ctx->secretKey != NULL) {
         xmlSecKeyDestroy(ctx->secretKey);
     }
-    xmlSecTransformEcdhParamsFinalize(&(ctx->params));
+    xmlSecTransformKeyAgreementParamsFinalize(&(ctx->params));
     memset(ctx, 0, sizeof(xmlSecMSCngEcdhCtx));
 }
 
@@ -187,9 +187,9 @@ xmlSecMSCngEcdhNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTra
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->params.kdfTransform == NULL, -1);
 
-    ret = xmlSecTransformEcdhParamsRead(&(ctx->params), node, transform, transformCtx);
+    ret = xmlSecTransformKeyAgreementParamsRead(&(ctx->params), node, transform, transformCtx);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformEcdhParamsRead", NULL);
+        xmlSecInternalError("xmlSecTransformKeyAgreementParamsRead", NULL);
         return(-1);
     }
 
@@ -210,9 +210,9 @@ xmlSecMSCngEcdhNodeWrite(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTr
     ctx = xmlSecMSCngEcdhGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    ret = xmlSecTransformEcdhParamsWrite(&(ctx->params), node, transform, transformCtx);
+    ret = xmlSecTransformKeyAgreementParamsWrite(&(ctx->params), node, transform, transformCtx);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformEcdhParamsWrite", NULL);
+        xmlSecInternalError("xmlSecTransformKeyAgreementParamsWrite", NULL);
         return(-1);
     }
 
@@ -397,7 +397,7 @@ xmlSecMSCngEcdhGenerateSecret(xmlSecMSCngEcdhCtxPtr ctx, xmlSecTransformOperatio
         xmlSecInternalError("xmlSecMSCngEcdhGetPublicKey", NULL);
         return(-1);
     }
- 
+
     status = NCryptSecretAgreement(hMyPrivKey, hOtherPubKey, &hSecret, NCRYPT_SILENT_FLAG);
     if ((status != STATUS_SUCCESS) || (hSecret == 0)) {
         xmlSecMSCngNtError("NCryptSecretAgreement", NULL, status);

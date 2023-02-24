@@ -213,7 +213,7 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefKWDes3[];
 
 /*************************************************************************
  *
- * DH strings
+ * DH key strings
  *
  ************************************************************************/
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameDHKeyValue[];
@@ -226,6 +226,14 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeDHGenerator[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeDHPublic[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeDHSeed[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeDHPgenCounter[];
+
+/*************************************************************************
+ *
+ * DH-ES key agreement strings
+ *
+ ************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameDhEs[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefDhEs[];
 
 /*************************************************************************
  *

@@ -12,5 +12,5 @@ As the result, XMLSec Library produces the output 8 bytes shorter than
 test vectors (last decrypted byte in the decrypted data is 07). The original
 test expected outputs are saved in the corresponding *-orig.data files.
 
-- The ECDH-ES tests were adjusted to use KeyName for the private key
+- The ECDH-ES and DH-ES tests were adjusted to use KeyName for the private key
 lookup instead of X509Data

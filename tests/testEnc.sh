@@ -150,6 +150,14 @@ execEncTest $res_success \
     "--session-key aes-256 $priv_key_option:EC-P521 $topfolder/xmlenc11-interop-2012/EC-P521_SHA256WithECDSA.$priv_key_format $pub_key_option:ecdsa-secp521r1 $topfolder/keys/ecdsa-secp521r1-cert.$pub_key_format --pwd secret123 --xml-data $topfolder/xmlenc11-interop-2012/cipherText__EC-P521__aes256-gcm__kw-aes256__ECDH-ES__ConcatKDF.data" \
     "$priv_key_option:ecdsa-secp521r1 $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format  --pwd secret123"
 
+# DH-ES
+execEncTest $res_success \
+    "" \
+    "xmlenc11-interop-2012/cipherText__DH-1024__aes128-gcm__kw-aes128__dh-es__ConcatKDF" \
+    "aes128-gcm kw-aes128 concatkdf dh-es sha256" \
+    "agreement-method dh" \
+    "$priv_key_option:DH-1024 $topfolder/xmlenc11-interop-2012/DH-1024_SHA256WithDSA.$priv_key_format --pwd passwd"
+
 ##########################################################################
 #
 # aleksey-xmlenc-01

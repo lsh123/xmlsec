@@ -1706,7 +1706,7 @@ xmlSecKeyValueDhXmlRead(xmlSecKeyValueDhPtr data, xmlNodePtr node) {
     cur = xmlSecGetNextElementNode(node->children);
 
     /* first is P node. It is OPTIONAL */
-    if((cur != NULL) && (xmlSecCheckNodeName(cur,  xmlSecNodeDHP, xmlSecEnc11Ns))) {
+    if((cur != NULL) && (xmlSecCheckNodeName(cur,  xmlSecNodeDHP, xmlSecEncNs))) {
         ret = xmlSecBufferBase64NodeContentRead(&(data->p), cur);
         if(ret < 0) {
             xmlSecInternalError("xmlSecBufferBase64NodeContentRead(p)", NULL);
@@ -1715,7 +1715,7 @@ xmlSecKeyValueDhXmlRead(xmlSecKeyValueDhPtr data, xmlNodePtr node) {
         cur = xmlSecGetNextElementNode(cur->next);
     }
     /* next is Q node. It is OPTIONAL */
-    if((cur != NULL) && (xmlSecCheckNodeName(cur,  xmlSecNodeDHQ, xmlSecEnc11Ns))) {
+    if((cur != NULL) && (xmlSecCheckNodeName(cur,  xmlSecNodeDHQ, xmlSecEncNs))) {
         ret = xmlSecBufferBase64NodeContentRead(&(data->q), cur);
         if(ret < 0) {
             xmlSecInternalError("xmlSecBufferBase64NodeContentRead(q)", NULL);
@@ -1724,7 +1724,7 @@ xmlSecKeyValueDhXmlRead(xmlSecKeyValueDhPtr data, xmlNodePtr node) {
         cur = xmlSecGetNextElementNode(cur->next);
     }
     /* next is Generator node. It is OPTIONAL */
-    if((cur != NULL) && (xmlSecCheckNodeName(cur,  xmlSecNodeDHGenerator, xmlSecEnc11Ns))) {
+    if((cur != NULL) && (xmlSecCheckNodeName(cur,  xmlSecNodeDHGenerator, xmlSecEncNs))) {
         ret = xmlSecBufferBase64NodeContentRead(&(data->generator), cur);
         if(ret < 0) {
             xmlSecInternalError("xmlSecBufferBase64NodeContentRead(generator)", NULL);
@@ -1734,7 +1734,7 @@ xmlSecKeyValueDhXmlRead(xmlSecKeyValueDhPtr data, xmlNodePtr node) {
     }
 
     /* next is Public node. It is REQUIRED */
-    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeDHPublic, xmlSecEnc11Ns))) {
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeDHPublic, xmlSecEncNs))) {
         xmlSecInvalidNodeError(cur, xmlSecNodeDHPublic, NULL);
         return(-1);
     }
@@ -1746,7 +1746,7 @@ xmlSecKeyValueDhXmlRead(xmlSecKeyValueDhPtr data, xmlNodePtr node) {
     cur = xmlSecGetNextElementNode(cur->next);
 
     /* next is seed node. It is OPTIONAL */
-    if((cur != NULL) && (xmlSecCheckNodeName(cur,  xmlSecNodeDHSeed, xmlSecEnc11Ns))) {
+    if((cur != NULL) && (xmlSecCheckNodeName(cur,  xmlSecNodeDHSeed, xmlSecEncNs))) {
         ret = xmlSecBufferBase64NodeContentRead(&(data->seed), cur);
         if(ret < 0) {
             xmlSecInternalError("xmlSecBufferBase64NodeContentRead(seed)", NULL);
@@ -1756,7 +1756,7 @@ xmlSecKeyValueDhXmlRead(xmlSecKeyValueDhPtr data, xmlNodePtr node) {
     }
 
     /* next is pgenCounter node. It is OPTIONAL */
-    if((cur != NULL) && (xmlSecCheckNodeName(cur,  xmlSecNodeDHPgenCounter, xmlSecEnc11Ns))) {
+    if((cur != NULL) && (xmlSecCheckNodeName(cur,  xmlSecNodeDHPgenCounter, xmlSecEncNs))) {
         ret = xmlSecBufferBase64NodeContentRead(&(data->pgenCounter), cur);
         if(ret < 0) {
             xmlSecInternalError("xmlSecBufferBase64NodeContentRead(pgenCounter)", NULL);
@@ -1785,7 +1785,7 @@ xmlSecKeyValueDhXmlWrite(xmlSecKeyValueDhPtr data, xmlNodePtr node, int base64Li
 
     /* first is optional P node */
     if(xmlSecBufferGetSize(&(data->p)) > 0) {
-        cur = xmlSecAddChild(node, xmlSecNodeDHP, xmlSecEnc11Ns);
+        cur = xmlSecAddChild(node, xmlSecNodeDHP, xmlSecEncNs);
         if(cur == NULL) {
             xmlSecInternalError("xmlSecAddChild(NodeDHP)", NULL);
             return(-1);
@@ -1807,7 +1807,7 @@ xmlSecKeyValueDhXmlWrite(xmlSecKeyValueDhPtr data, xmlNodePtr node, int base64Li
 
     /* next is optional Q node. */
     if(xmlSecBufferGetSize(&(data->q)) > 0) {
-        cur = xmlSecAddChild(node, xmlSecNodeDHQ, xmlSecEnc11Ns);
+        cur = xmlSecAddChild(node, xmlSecNodeDHQ, xmlSecEncNs);
         if(cur == NULL) {
             xmlSecInternalError("xmlSecAddChild(NodeDHQ)", NULL);
             return(-1);
@@ -1829,7 +1829,7 @@ xmlSecKeyValueDhXmlWrite(xmlSecKeyValueDhPtr data, xmlNodePtr node, int base64Li
 
     /* next is optional Generator node. */
     if(xmlSecBufferGetSize(&(data->generator)) > 0) {
-        cur = xmlSecAddChild(node, xmlSecNodeDHGenerator, xmlSecEnc11Ns);
+        cur = xmlSecAddChild(node, xmlSecNodeDHGenerator, xmlSecEncNs);
         if(cur == NULL) {
             xmlSecInternalError("xmlSecAddChild(NodeDHGenerator)", NULL);
             return(-1);
@@ -1850,7 +1850,7 @@ xmlSecKeyValueDhXmlWrite(xmlSecKeyValueDhPtr data, xmlNodePtr node, int base64Li
     }
 
     /* next is required Public node. */
-    cur = xmlSecAddChild(node, xmlSecNodeDHPublic, xmlSecEnc11Ns);
+    cur = xmlSecAddChild(node, xmlSecNodeDHPublic, xmlSecEncNs);
     if(cur == NULL) {
         xmlSecInternalError("xmlSecAddChild(xmlSecNodeDHPublic)", NULL);
         return(-1);
@@ -1871,7 +1871,7 @@ xmlSecKeyValueDhXmlWrite(xmlSecKeyValueDhPtr data, xmlNodePtr node, int base64Li
 
     /* next is optional seed node. */
     if(xmlSecBufferGetSize(&(data->seed)) > 0) {
-        cur = xmlSecAddChild(node, xmlSecNodeDHSeed, xmlSecEnc11Ns);
+        cur = xmlSecAddChild(node, xmlSecNodeDHSeed, xmlSecEncNs);
         if(cur == NULL) {
             xmlSecInternalError("xmlSecAddChild(xmlSecNodeDHSeed)", NULL);
             return(-1);
@@ -1893,7 +1893,7 @@ xmlSecKeyValueDhXmlWrite(xmlSecKeyValueDhPtr data, xmlNodePtr node, int base64Li
 
     /* next is optional pgenCounter node. */
     if(xmlSecBufferGetSize(&(data->pgenCounter)) > 0) {
-        cur = xmlSecAddChild(node, xmlSecNodeDHPgenCounter, xmlSecEnc11Ns);
+        cur = xmlSecAddChild(node, xmlSecNodeDHPgenCounter, xmlSecEncNs);
         if(cur == NULL) {
             xmlSecInternalError("xmlSecAddChild(xmlSecNodeDHPgenCounter)", NULL);
             return(-1);
@@ -3570,6 +3570,12 @@ xmlSecKeyDataIdListFindByNode(xmlSecPtrListPtr list, const xmlChar* nodeName,
         dataId = (xmlSecKeyDataId)xmlSecPtrListGetItem(list, i);
         xmlSecAssert2(dataId != xmlSecKeyDataIdUnknown, xmlSecKeyDataIdUnknown);
 
+        /*
+        printf("DEBUG: nodeName=%s,  nodeNs=%s, usage=%d, dataId->dataNodeName=%s, dataId->dataNodeNs=%s, dataId->usage=%d\n",
+            (char*)nodeName, (char*)nodeNs, (int)usage,
+            (char*)dataId->dataNodeName, (char*)dataId->dataNodeNs, (int)dataId->usage
+        );
+        */
         if(((usage & dataId->usage) != 0) &&
            xmlStrEqual(nodeName, dataId->dataNodeName) &&
            xmlStrEqual(nodeNs, dataId->dataNodeNs)) {

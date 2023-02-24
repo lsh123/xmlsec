@@ -2831,11 +2831,9 @@ xmlSecTransformConcatKdfParamsGetFixedInfo(xmlSecTransformConcatKdfParamsPtr par
 
 #endif /* XMLSEC_NO_CONCATKDF */
 
-/**************************** ECDH ********************************/
-#ifndef XMLSEC_NO_EC
-
+/**************************** Common Key Agreement Params ********************************/
 int
-xmlSecTransformEcdhParamsInitialize(xmlSecTransformEcdhParamsPtr params) {
+xmlSecTransformKeyAgreementParamsInitialize(xmlSecTransformKeyAgreementParamsPtr params) {
     int ret;
 
     xmlSecAssert2(params != NULL, -1);
@@ -2845,7 +2843,7 @@ xmlSecTransformEcdhParamsInitialize(xmlSecTransformEcdhParamsPtr params) {
     ret = xmlSecKeyInfoCtxInitialize(&(params->kdfKeyInfoCtx), NULL); /* no keys manager needed */
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeyInfoCtxInitialize", NULL);
-        xmlSecTransformEcdhParamsFinalize(params);
+        xmlSecTransformKeyAgreementParamsFinalize(params);
         return(-1);
     }
 
@@ -2854,7 +2852,7 @@ xmlSecTransformEcdhParamsInitialize(xmlSecTransformEcdhParamsPtr params) {
 }
 
 void
-xmlSecTransformEcdhParamsFinalize(xmlSecTransformEcdhParamsPtr params) {
+xmlSecTransformKeyAgreementParamsFinalize(xmlSecTransformKeyAgreementParamsPtr params) {
     xmlSecAssert(params != NULL);
 
 
@@ -2878,8 +2876,8 @@ xmlSecTransformEcdhParamsFinalize(xmlSecTransformEcdhParamsPtr params) {
 }
 
 static xmlSecKeyPtr
-xmlSecTransformEcdhReadKey(xmlSecKeyDataType keyType, xmlNodePtr node,
-    xmlSecTransformPtr ecdhTransform, xmlSecTransformCtxPtr transformCtx)
+xmlSecTransformKeyAgreementReadKey(xmlSecKeyDataType keyType, xmlNodePtr node,
+    xmlSecTransformPtr kaTransform, xmlSecTransformCtxPtr transformCtx)
 {
     xmlSecKeyInfoCtx keyInfoCtx;
     xmlSecKeysMngrPtr keysMngr;
@@ -2888,7 +2886,7 @@ xmlSecTransformEcdhReadKey(xmlSecKeyDataType keyType, xmlNodePtr node,
     int ret;
 
     xmlSecAssert2(node != NULL, NULL);
-    xmlSecAssert2(ecdhTransform != NULL, NULL);
+    xmlSecAssert2(kaTransform != NULL, NULL);
     xmlSecAssert2(transformCtx != NULL, NULL);
     xmlSecAssert2(transformCtx->parentKeyInfoCtx != NULL, NULL);
 
@@ -2909,7 +2907,7 @@ xmlSecTransformEcdhReadKey(xmlSecKeyDataType keyType, xmlNodePtr node,
     }
     keyInfoCtx.mode = xmlSecKeyInfoModeRead;
 
-    ret = xmlSecTransformSetKeyReq(ecdhTransform, &(keyInfoCtx.keyReq));
+    ret = xmlSecTransformSetKeyReq(kaTransform, &(keyInfoCtx.keyReq));
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformSetKeyReq(originator)", xmlSecNodeGetName(node));
         goto done;
@@ -2940,8 +2938,8 @@ done:
 
 
 static int
-xmlSecTransformEcdhWriteKey(xmlSecKeyPtr key, xmlNodePtr node,
-    xmlSecTransformPtr ecdhTransform, xmlSecTransformCtxPtr transformCtx)
+xmlSecTransformKeyAgreementWriteKey(xmlSecKeyPtr key, xmlNodePtr node,
+    xmlSecTransformPtr kaTransform, xmlSecTransformCtxPtr transformCtx)
 {
     xmlSecKeyInfoCtx keyInfoCtx;
     int ret;
@@ -2949,7 +2947,7 @@ xmlSecTransformEcdhWriteKey(xmlSecKeyPtr key, xmlNodePtr node,
 
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
-    xmlSecAssert2(ecdhTransform != NULL, -1);
+    xmlSecAssert2(kaTransform != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
     xmlSecAssert2(transformCtx->parentKeyInfoCtx != NULL, -1);
 
@@ -2985,8 +2983,8 @@ done:
 
 
 int
-xmlSecTransformEcdhParamsRead(xmlSecTransformEcdhParamsPtr params, xmlNodePtr node,
-    xmlSecTransformPtr ecdhTransform, xmlSecTransformCtxPtr transformCtx)
+xmlSecTransformKeyAgreementParamsRead(xmlSecTransformKeyAgreementParamsPtr params, xmlNodePtr node,
+    xmlSecTransformPtr kaTransform, xmlSecTransformCtxPtr transformCtx)
 {
     xmlNodePtr cur;
     xmlSecKeyDataType originatorKeyType, recipientKeyType;
@@ -2998,7 +2996,7 @@ xmlSecTransformEcdhParamsRead(xmlSecTransformEcdhParamsPtr params, xmlNodePtr no
     xmlSecAssert2(params->memBufTransform == NULL, -1);
     xmlSecAssert2(params->keyOriginator == NULL, -1);
     xmlSecAssert2(params->keyRecipient == NULL, -1);
-    xmlSecAssert2(ecdhTransform != NULL, -1);
+    xmlSecAssert2(kaTransform != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
     xmlSecAssert2(transformCtx->parentKeyInfoCtx != NULL, -1);
@@ -3036,9 +3034,9 @@ xmlSecTransformEcdhParamsRead(xmlSecTransformEcdhParamsPtr params, xmlNodePtr no
         xmlSecInvalidNodeError(cur, xmlSecNodeOriginatorKeyInfo, NULL);
         goto done;
     }
-    params->keyOriginator = xmlSecTransformEcdhReadKey(originatorKeyType, cur, ecdhTransform, transformCtx);
+    params->keyOriginator = xmlSecTransformKeyAgreementReadKey(originatorKeyType, cur, kaTransform, transformCtx);
     if(params->keyOriginator  == NULL) {
-        xmlSecInternalError("xmlSecTransformEcdhReadKey(OriginatorKeyInfo)", xmlSecNodeGetName(node));
+        xmlSecInternalError("xmlSecTransformKeyAgreementReadKey(OriginatorKeyInfo)", xmlSecNodeGetName(node));
         goto done;
     }
 
@@ -3048,9 +3046,9 @@ xmlSecTransformEcdhParamsRead(xmlSecTransformEcdhParamsPtr params, xmlNodePtr no
         xmlSecInvalidNodeError(cur, xmlSecNodeRecipientKeyInfo, NULL);
         goto done;
     }
-    params->keyRecipient = xmlSecTransformEcdhReadKey(recipientKeyType, cur, ecdhTransform, transformCtx);
+    params->keyRecipient = xmlSecTransformKeyAgreementReadKey(recipientKeyType, cur, kaTransform, transformCtx);
     if(params->keyRecipient  == NULL) {
-        xmlSecInternalError("xmlSecTransformEcdhReadKey(RecipientKeyInfo)", xmlSecNodeGetName(node));
+        xmlSecInternalError("xmlSecTransformKeyAgreementReadKey(RecipientKeyInfo)", xmlSecNodeGetName(node));
         goto done;
     }
 
@@ -3078,15 +3076,15 @@ done:
 }
 
 int
-xmlSecTransformEcdhParamsWrite(xmlSecTransformEcdhParamsPtr params, xmlNodePtr node,
-    xmlSecTransformPtr ecdhTransform, xmlSecTransformCtxPtr transformCtx)
+xmlSecTransformKeyAgreementParamsWrite(xmlSecTransformKeyAgreementParamsPtr params, xmlNodePtr node,
+    xmlSecTransformPtr kaTransform, xmlSecTransformCtxPtr transformCtx)
 {
     xmlNodePtr cur;
     int ret;
     int res = -1;
 
     xmlSecAssert2(params != NULL, -1);
-    xmlSecAssert2(ecdhTransform != NULL, -1);
+    xmlSecAssert2(kaTransform != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
     xmlSecAssert2(transformCtx->parentKeyInfoCtx != NULL, -1);
@@ -3106,9 +3104,9 @@ xmlSecTransformEcdhParamsWrite(xmlSecTransformEcdhParamsPtr params, xmlNodePtr n
         goto done;
     }
     if(params->keyOriginator != NULL) {
-        ret = xmlSecTransformEcdhWriteKey(params->keyOriginator, cur, ecdhTransform, transformCtx);
+        ret = xmlSecTransformKeyAgreementWriteKey(params->keyOriginator, cur, kaTransform, transformCtx);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecTransformEcdhWriteKey(OriginatorKeyInfo)", xmlSecNodeGetName(node));
+            xmlSecInternalError("xmlSecTransformKeyAgreementWriteKey(OriginatorKeyInfo)", xmlSecNodeGetName(node));
             goto done;
         }
     }
@@ -3120,9 +3118,9 @@ xmlSecTransformEcdhParamsWrite(xmlSecTransformEcdhParamsPtr params, xmlNodePtr n
         goto done;
     }
     if(params->keyRecipient != NULL) {
-        ret = xmlSecTransformEcdhWriteKey(params->keyRecipient, cur, ecdhTransform, transformCtx);
+        ret = xmlSecTransformKeyAgreementWriteKey(params->keyRecipient, cur, kaTransform, transformCtx);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecTransformEcdhWriteKey(RecipientKeyInfo)", xmlSecNodeGetName(node));
+            xmlSecInternalError("xmlSecTransformKeyAgreementWriteKey(RecipientKeyInfo)", xmlSecNodeGetName(node));
             goto done;
         }
     }
@@ -3140,8 +3138,6 @@ xmlSecTransformEcdhParamsWrite(xmlSecTransformEcdhParamsPtr params, xmlNodePtr n
 done:
     return(res);
 }
-
-#endif /* XMLSEC_NO_EC */
 
 #ifndef XMLSEC_NO_HMAC
 

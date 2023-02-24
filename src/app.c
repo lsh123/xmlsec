@@ -665,6 +665,26 @@ xmlSecTransformKWDes3GetKlass(void) {
 }
 
 /**
+* xmlSecTransformDhEsGetKlass:
+*
+* DH-ES key agreement transform klass.
+*
+* Returns: pointer to DH-ES key agreement transform or NULL if an error
+* occurs (the xmlsec-crypto library is not loaded or this transform is not
+* implemented).
+*/
+xmlSecTransformId
+xmlSecTransformDhEsGetKlass(void)
+{
+    if ((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformDhEsGetKlass == NULL)) {
+        xmlSecNotImplementedError("transformDhEsGetKlass");
+        return(xmlSecTransformIdUnknown);
+    }
+
+    return(xmlSecCryptoDLGetFunctions()->transformDhEsGetKlass());
+}
+
+/**
  * xmlSecTransformDsaSha1GetKlass:
  *
  * The DSA-SHA1 signature transform klass.
@@ -721,7 +741,6 @@ xmlSecTransformEcdhGetKlass(void)
 
     return(xmlSecCryptoDLGetFunctions()->transformEcdhGetKlass());
 }
-
 
 /**
  * xmlSecTransformEcdsaRipemd160GetKlass:

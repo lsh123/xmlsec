@@ -392,6 +392,17 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeyDataDhAdoptEvp (xmlSecKe
                                                                          EVP_PKEY* pKey);
 XMLSEC_CRYPTO_EXPORT EVP_PKEY*          xmlSecOpenSSLKeyDataDhGetEvp   (xmlSecKeyDataPtr data);
 
+
+
+/**
+ * xmlSecOpenSSLTransformDhEsId:
+ *
+ * The DH key agreement transform klass.
+ */
+#define xmlSecOpenSSLTransformDhEsId \
+        xmlSecOpenSSLTransformDhEsGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformDhEsGetKlass(void);
+
 #endif /* XMLSEC_NO_DH */
 
 
@@ -496,7 +507,6 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformEcdsaSha512GetKlass
 #endif /* XMLSEC_NO_SHA512 */
 
 
-
 #ifndef XMLSEC_NO_SHA3
 /**
  * xmlSecOpenSSLTransformEcdsaSha3_224Id:
@@ -534,8 +544,6 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformEcdsaSha3_384GetKla
         xmlSecOpenSSLTransformEcdsaSha3_512GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformEcdsaSha3_512GetKlass(void);
 #endif /* XMLSEC_NO_SHA3 */
-
-
 
 /**
  * xmlSecOpenSSLTransformEcdhId:

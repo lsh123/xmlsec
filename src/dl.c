@@ -628,6 +628,8 @@ xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(struct _xmlSecCryptoDLFuncti
     XMLSEC_REGISTER_TRANSFORM(GostR3410_2012GostR3411_2012_256);    // transformGostR3410_2012GostR3411_2012_256GetKlass
     XMLSEC_REGISTER_TRANSFORM(GostR3410_2012GostR3411_2012_512);    // transformGostR3410_2012GostR3411_2012_512GetKlass
 
+    XMLSEC_REGISTER_TRANSFORM(DhEs);                                // transformDhEsGetKlass
+
     XMLSEC_REGISTER_TRANSFORM(DsaSha1);                             // transformDsaSha1GetKlass
     XMLSEC_REGISTER_TRANSFORM(DsaSha256);                           // transformDsaSha256GetKlass
 

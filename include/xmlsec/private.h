@@ -368,6 +368,7 @@ typedef int                     (*xmlSecCryptoAppKeyCertLoadMemoryMethod)(xmlSec
  * @transformKWAes256GetKlass:  the method to get pointer to AES 256 key wrapper transform.
  * @transformDes3CbcGetKlass:   the method to get pointer to Triple DES encryption transform.
  * @transformKWDes3GetKlass:    the method to get pointer to Triple DES key wrapper transform.
+ * @transformDhEsGetKlass:      the method to get pointer to DH-ES key agreement transform.
  * @transformDsaSha1GetKlass:   the method to get pointer to DSA-SHA1 signature transform.
  * @transformDsaSha256GetKlass: the method to get pointer to DSA-SHA2-256 signature transform.
  * @transformEcdhGetKlass:      the method to get pointer to ECDH key agreement transform.
@@ -476,14 +477,21 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoTransformGetKlassMethod          transformAes128GcmGetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformAes192GcmGetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformAes256GcmGetKlass;
-    xmlSecCryptoTransformGetKlassMethod          transformConcatKdfGetKlass;
+
     xmlSecCryptoTransformGetKlassMethod          transformKWAes128GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformKWAes192GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformKWAes256GetKlass;
+
+    xmlSecCryptoTransformGetKlassMethod          transformConcatKdfGetKlass;
+
     xmlSecCryptoTransformGetKlassMethod          transformDes3CbcGetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformKWDes3GetKlass;
+
+    xmlSecCryptoTransformGetKlassMethod          transformDhEsGetKlass;
+
     xmlSecCryptoTransformGetKlassMethod          transformDsaSha1GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformDsaSha256GetKlass;
+
     xmlSecCryptoTransformGetKlassMethod          transformEcdhGetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformEcdsaRipemd160GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformEcdsaSha1GetKlass;

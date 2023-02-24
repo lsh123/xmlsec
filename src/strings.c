@@ -244,7 +244,7 @@ const xmlChar xmlSecHrefGostR3410_2012GostR3411_2012_512[]    = "urn:ietf:params
 
 /*************************************************************************
  *
- * DH strings
+ * DH key strings
  *
  ************************************************************************/
 const xmlChar xmlSecNameDHKeyValue[]            = "dh";
@@ -252,10 +252,18 @@ const xmlChar xmlSecNodeDHKeyValue[]            = "DHKeyValue";
 const xmlChar xmlSecHrefDHKeyValue[]            = "http://www.w3.org/2001/04/xmlenc#DHKeyValue";
 const xmlChar xmlSecNodeDHP[]                   = "P";
 const xmlChar xmlSecNodeDHQ[]                   = "Q";
-const xmlChar xmlSecNodeDHGenerator[]           = "GGenerator";
+const xmlChar xmlSecNodeDHGenerator[]           = "Generator";
 const xmlChar xmlSecNodeDHPublic[]              = "Public";
 const xmlChar xmlSecNodeDHSeed[]                = "Seed";
 const xmlChar xmlSecNodeDHPgenCounter[]         = "pgenCounter";
+
+/*************************************************************************
+ *
+ * DH-ES key agreement strings
+ *
+ ************************************************************************/
+const xmlChar xmlSecNameDhEs[]                  = "dh-es";
+const xmlChar xmlSecHrefDhEs[]                  = "http://www.w3.org/2009/xmlenc11#dh-es";
 
 /*************************************************************************
  *

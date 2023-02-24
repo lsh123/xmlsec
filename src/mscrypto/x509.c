@@ -543,23 +543,19 @@ xmlSecMSCryptoKeyDataX509XmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     data = xmlSecKeyEnsureData(key, id);
     if (data == NULL) {
-        xmlSecInternalError("xmlSecKeyEnsureData",
-            xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecKeyEnsureData", xmlSecKeyDataKlassGetName(id));
         return(-1);
     }
 
-    ret = xmlSecKeyDataX509XmlRead(data, node, keyInfoCtx,
-        xmlSecMSCryptoKeyDataX509Read);
+    ret = xmlSecKeyDataX509XmlRead(key, data, node, keyInfoCtx, xmlSecMSCryptoKeyDataX509Read, NULL);
     if (ret < 0) {
-        xmlSecInternalError("xmlSecKeyDataX509XmlRead",
-            xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecKeyDataX509XmlRead", xmlSecKeyDataKlassGetName(id));
         return(-1);
     }
 
     ret = xmlSecMSCryptoKeyDataX509VerifyAndExtractKey(data, key, keyInfoCtx);
     if (ret < 0) {
-        xmlSecInternalError("xmlSecMSCryptoKeyDataX509VerifyAndExtractKey",
-            xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecMSCryptoKeyDataX509VerifyAndExtractKey", xmlSecKeyDataKlassGetName(id));
         return(-1);
     }
     return(0);
@@ -683,9 +679,7 @@ xmlSecMSCryptoKeyDataX509DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     fprintf(output, "</X509Data>\n");
 }
 
-/* xmlSecKeyDataX509Read: returns 1 if key is found and copied to @key, 0 if key is not found,
- * or a negative value if an error occurs.
- */
+/* xmlSecKeyDataX509Read: 0 on success and a negative value otherwise */
 static int
 xmlSecMSCryptoKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyValueX509Ptr x509Value,
     xmlSecKeysMngrPtr keysMngr, unsigned int flags) {

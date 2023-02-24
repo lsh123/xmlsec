@@ -549,8 +549,7 @@ xmlSecOpenSSLKeyDataX509Finalize(xmlSecKeyDataPtr data) {
 }
 
 static int
-xmlSecOpenSSLKeyDataX509XmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
-                                xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+xmlSecOpenSSLKeyDataX509XmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecKeyDataPtr data;
     int ret;
 
@@ -563,13 +562,20 @@ xmlSecOpenSSLKeyDataX509XmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         return(-1);
     }
 
-    ret = xmlSecKeyDataX509XmlRead(data, node, keyInfoCtx, xmlSecOpenSSLKeyDataX509Read);
+    ret = xmlSecKeyDataX509XmlRead(key, data, node, keyInfoCtx, xmlSecOpenSSLKeyDataX509Read, NULL);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeyDataX509XmlRead", xmlSecKeyDataKlassGetName(id));
         xmlSecKeyDataDestroy(data);
         return(-1);
     }
 
+    /* did we find the key already? */
+    if(xmlSecKeyGetValue(key) != NULL) {
+        xmlSecKeyDataDestroy(data);
+        return(0);
+    }
+
+    /* if not, then try to extract the key from certificates */
     ret = xmlSecOpenSSLVerifyAndAdoptX509KeyData(key, data, keyInfoCtx);
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLVerifyAndAdoptX509KeyData", xmlSecKeyDataKlassGetName(id));
@@ -701,9 +707,7 @@ xmlSecOpenSSLKeyDataX509DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     fprintf(output, "</X509Data>\n");
 }
 
-/* xmlSecKeyDataX509Read: returns 1 if key is found and copied to @key, 0 if key is not found,
- * or a negative value if an error occurs.
- */
+/* xmlSecKeyDataX509Read: 0 on success and a negative value otherwise */
 static int
 xmlSecOpenSSLKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyValueX509Ptr x509Value,
                              xmlSecKeysMngrPtr keysMngr, unsigned int flags) {

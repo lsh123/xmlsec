@@ -321,10 +321,26 @@ typedef struct _xmlSecKeyValueX509 {
  * @flags:              the flags for certs processing.
  *
  *
+ * Returns: 0 on success and a negative value otherwise.
+ */
+typedef int                    (*xmlSecKeyDataX509Read)                 (xmlSecKeyDataPtr data,
+                                                                         xmlSecKeyValueX509Ptr x509Value,
+                                                                         xmlSecKeysMngrPtr keysMngr,
+                                                                         unsigned int flags);
+
+
+/**
+ * xmlSecKeyDataX509FindKey:
+ * @key:                the pointer to key
+ * @x509Value:          the pointer to input @xmlSecKeyValueX509.
+ * @keysMngr:           the pointer to @xmlSecKeysMngr.
+ * @flags:              the flags for certs processing.
+ *
+ *
  * Returns: 1 if key is found and copied to @key, 0 if key is not found, or a negative
  * value if an error occurs.
  */
-typedef int                    (*xmlSecKeyDataX509Read)                 (xmlSecKeyDataPtr data,
+typedef int                    (*xmlSecKeyDataX509FindKey)              (xmlSecKeyPtr key,
                                                                          xmlSecKeyValueX509Ptr x509Value,
                                                                          xmlSecKeysMngrPtr keysMngr,
                                                                          unsigned int flags);
@@ -346,10 +362,12 @@ typedef int                    (*xmlSecKeyDataX509Write)                (xmlSecK
                                                                          int content,
                                                                          void* context);
 
-XMLSEC_EXPORT int               xmlSecKeyDataX509XmlRead                (xmlSecKeyDataPtr data,
+XMLSEC_EXPORT int               xmlSecKeyDataX509XmlRead                (xmlSecKeyPtr key,
+                                                                         xmlSecKeyDataPtr data,
                                                                          xmlNodePtr node,
                                                                          xmlSecKeyInfoCtxPtr keyInfoCtx,
-                                                                         xmlSecKeyDataX509Read readFunc);
+                                                                         xmlSecKeyDataX509Read readFunc,
+                                                                         xmlSecKeyDataX509FindKey findKeyFunc);
 XMLSEC_EXPORT int               xmlSecKeyDataX509XmlWrite               (xmlSecKeyDataPtr data,
                                                                          xmlNodePtr node,
                                                                          xmlSecKeyInfoCtxPtr keyInfoCtx,

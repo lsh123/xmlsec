@@ -2826,23 +2826,27 @@ static int                      xmlSecKeyValueX509XmlWrite              (xmlSecK
 
 /**
  * xmlSecKeyDataX509XmlRead:
+ * @key:                the resulting key
  * @data:               the X509 key data.
  * @node:               the pointer to data's value XML node.
  * @keyInfoCtx:         the <dsig:KeyInfo/> node processing context.
  * @readFunc:           the pointer to the function that converts
  *                      @xmlSecKeyValueX509 to @xmlSecKeyData.
+ * @findKeyFunc:        the pointer to the function that searches they
+ *                      key using @xmlSecKeyValueX509.
  *
  * X509 Key data method for reading XML node.
  *
  * Returns: 0 on success or a negative value if an error occurs.
  */
 int
-xmlSecKeyDataX509XmlRead(xmlSecKeyDataPtr data, xmlNodePtr node,
-                         xmlSecKeyInfoCtxPtr keyInfoCtx,
-                         xmlSecKeyDataX509Read readFunc) {
+xmlSecKeyDataX509XmlRead(xmlSecKeyPtr key, xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx,
+    xmlSecKeyDataX509Read readFunc, xmlSecKeyDataX509FindKey findKeyFunc
+) {
     xmlSecKeyValueX509 x509Value;
     int x509ValueInitialized = 0;
     xmlNodePtr cur;
+    int keyFound = 0;
     int res = -1;
     int ret;
 
@@ -2850,7 +2854,6 @@ xmlSecKeyDataX509XmlRead(xmlSecKeyDataPtr data, xmlNodePtr node,
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
     xmlSecAssert2(keyInfoCtx->keysMngr != NULL, -1);
-    xmlSecAssert2(readFunc != NULL, -1);
 
     ret = xmlSecKeyValueX509Initialize(&x509Value);
     if(ret < 0) {
@@ -2866,15 +2869,27 @@ xmlSecKeyDataX509XmlRead(xmlSecKeyDataPtr data, xmlNodePtr node,
             goto done;
         }
 
-        /* xmlSecKeyDataX509Read: returns 1 if key is found and copied to @key, 0 if key is not found,
-         * or a negative value if an error occurs.
-         */
-        ret = readFunc(data, &x509Value, keyInfoCtx->keysMngr, keyInfoCtx->flags);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecKeyDataX509Read", NULL);
-            goto done;
-        } else if(ret == 1) {
-            break;
+        if((keyFound == 0) && (findKeyFunc != NULL)) {
+             /* xmlSecKeyDataX509FindKey: returns 1 if key is found and copied to @key, 0 if key is not found
+              * or a negative value if an error occurs.
+              */
+            ret = findKeyFunc(key, &x509Value, keyInfoCtx->keysMngr, keyInfoCtx->flags);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecKeyDataX509FindKey", NULL);
+                goto done;
+            } else if((ret == 1) && (xmlSecKeyGetValue(key) != NULL)) {
+                /* key was found but we want to keep reading X509Data node to ensure it is valid */
+                keyFound = 1;
+            }
+        }
+
+        if((keyFound == 0) && (readFunc != NULL)) {
+            /* xmlSecKeyDataX509Read: 0 on success and a negative value otherwise */
+            ret = readFunc(data, &x509Value, keyInfoCtx->keysMngr, keyInfoCtx->flags);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecKeyDataX509Read", NULL);
+                goto done;
+            }
         }
 
         /* cleanup for the next node */

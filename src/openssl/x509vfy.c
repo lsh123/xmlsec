@@ -237,7 +237,7 @@ xmlSecOpenSSLX509StoreFindCert_ex(xmlSecKeyDataStorePtr store,
 
 X509*
 xmlSecOpenSSLX509StoreFindCertByValue(xmlSecKeyDataStorePtr store, xmlSecKeyX509DataValuePtr x509Value) {
-   xmlSecOpenSSLX509StoreCtxPtr ctx;
+    xmlSecOpenSSLX509StoreCtxPtr ctx;
     xmlSecOpenSSLX509FindCertCtx findCertsCtx;
     x509_size_t ii;
     int ret;
@@ -271,6 +271,60 @@ xmlSecOpenSSLX509StoreFindCertByValue(xmlSecKeyDataStorePtr store, xmlSecKeyX509
             return(NULL);
         } else if(ret == 1) {
             res = cert;
+            break;
+        }
+    }
+
+    /* done */
+    xmlSecOpenSSLX509FindCertCtxFinalize(&findCertsCtx);
+    return(res);
+}
+
+xmlSecKeyPtr
+xmlSecOpenSSLX509FindKeyByValue(xmlSecPtrListPtr keysList, xmlSecKeyX509DataValuePtr x509Value) {
+    xmlSecOpenSSLX509FindCertCtx findCertsCtx;
+    xmlSecSize keysListSize, ii;
+    xmlSecKeyPtr res = NULL;
+    int ret;
+
+    xmlSecAssert2(keysList != NULL, NULL);
+    xmlSecAssert2(x509Value != NULL, NULL);
+
+    ret = xmlSecOpenSSLX509FindCertCtxInitializeFromValue(&findCertsCtx, x509Value);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecOpenSSLX509FindCertCtxInitializeFromValue", NULL);
+        xmlSecOpenSSLX509FindCertCtxFinalize(&findCertsCtx);
+        return(NULL);
+    }
+
+    keysListSize = xmlSecPtrListGetSize(keysList);
+    for(ii = 0; ii < keysListSize; ++ii) {
+        xmlSecKeyPtr key;
+        xmlSecKeyDataPtr keyData;
+        X509* keyCert;
+
+        /* get key's cert from x509 key data */
+        key = (xmlSecKeyPtr)xmlSecPtrListGetItem(keysList, ii);
+        if(key == NULL) {
+            continue;
+        }
+        keyData = xmlSecKeyGetData(key, xmlSecOpenSSLKeyDataX509Id);
+        if(keyData == NULL) {
+            continue;
+        }
+        keyCert = xmlSecOpenSSLKeyDataX509GetKeyCert(keyData);
+        if(keyCert == NULL) {
+            continue;
+        }
+
+        /* does it match? */
+        ret = xmlSecOpenSSLX509FindCertCtxMatch(&findCertsCtx, keyCert);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecOpenSSLX509FindCertCtxMatch", NULL);
+            xmlSecOpenSSLX509FindCertCtxFinalize(&findCertsCtx);
+            return(NULL);
+        } else if(ret == 1) {
+            res = key;
             break;
         }
     }

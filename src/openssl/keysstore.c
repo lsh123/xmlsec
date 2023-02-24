@@ -31,6 +31,7 @@
 #include <xmlsec/openssl/x509.h>
 
 #include "../cast_helpers.h"
+#include "private.h"
 
 /****************************************************************************
  *
@@ -48,6 +49,10 @@ static xmlSecKeyPtr             xmlSecOpenSSLKeysStoreFindKey       (xmlSecKeySt
                                                                      const xmlChar* name,
                                                                      xmlSecKeyInfoCtxPtr keyInfoCtx);
 
+static xmlSecKeyPtr            xmlSecOpenSSLKeysStoreFindKeyFromX509Data(xmlSecKeyStorePtr store,
+                                                                 xmlSecKeyX509DataValuePtr x509Data,
+                                                                 xmlSecKeyInfoCtxPtr keyInfoCtx);
+
 static xmlSecKeyStoreKlass xmlSecOpenSSLKeysStoreKlass = {
     sizeof(xmlSecKeyStoreKlass),
     xmlSecOpenSSLKeysStoreSize,
@@ -56,10 +61,10 @@ static xmlSecKeyStoreKlass xmlSecOpenSSLKeysStoreKlass = {
     BAD_CAST "openssl-keys-store",          /* const xmlChar* name; */
 
     /* constructors/destructor */
-    xmlSecOpenSSLKeysStoreInitialize,       /* xmlSecKeyStoreInitializeMethod initialize; */
-    xmlSecOpenSSLKeysStoreFinalize,         /* xmlSecKeyStoreFinalizeMethod finalize; */
-    xmlSecOpenSSLKeysStoreFindKey,          /* xmlSecKeyStoreFindKeyMethod findKey; */
-    NULL,                                   /* xmlSecKeyStoreFindKeyFromX509DataMethod findKeyFromX509Data; */
+    xmlSecOpenSSLKeysStoreInitialize,           /* xmlSecKeyStoreInitializeMethod initialize; */
+    xmlSecOpenSSLKeysStoreFinalize,             /* xmlSecKeyStoreFinalizeMethod finalize; */
+    xmlSecOpenSSLKeysStoreFindKey,              /* xmlSecKeyStoreFindKeyMethod findKey; */
+    xmlSecOpenSSLKeysStoreFindKeyFromX509Data, /* xmlSecKeyStoreFindKeyFromX509DataMethod findKeyFromX509Data; */
 
     /* reserved for the future */
     NULL,                                   /* void* reserved0; */
@@ -120,6 +125,49 @@ xmlSecOpenSSLKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
     xmlSecAssert2(((simplekeystore != NULL) && (*simplekeystore != NULL)), NULL);
 
     return(xmlSecKeyStoreFindKey(*simplekeystore, name, keyInfoCtx));
+}
+
+
+static xmlSecKeyPtr
+xmlSecOpenSSLKeysStoreFindKeyFromX509Data(xmlSecKeyStorePtr store, xmlSecKeyX509DataValuePtr x509Data,
+    xmlSecKeyInfoCtxPtr keyInfoCtx
+) {
+#ifndef XMLSEC_NO_X509
+    xmlSecKeyStorePtr* simplekeystore;
+    xmlSecPtrListPtr keysList;
+    xmlSecKeyPtr key, res;
+
+    xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecOpenSSLKeysStoreId), NULL);
+    xmlSecAssert2(keyInfoCtx != NULL, NULL);
+
+
+    simplekeystore = xmlSecOpenSSLKeysStoreGetCtx(store);
+    xmlSecAssert2(((simplekeystore != NULL) && (*simplekeystore != NULL)), NULL);
+
+
+    keysList = xmlSecSimpleKeysStoreGetKeys(*simplekeystore);
+    if(keysList == NULL) {
+        xmlSecInternalError("xmlSecSimpleKeysStoreGetKeys", NULL);
+        return(NULL);
+    }
+
+    key = xmlSecOpenSSLX509FindKeyByValue(keysList, x509Data);
+    if(key == NULL) {
+        /* not found */
+        return(NULL);
+    }
+
+    /* since not all key stores can return key owned by someone else, we need to duplicate the key */
+    res = xmlSecKeyDuplicate(key);
+    if(res == NULL) {
+        xmlSecInternalError("xmlSecKeyDuplicate", NULL);
+        return(NULL);
+    }
+
+    return(res);
+#else  /* XMLSEC_NO_X509 */
+    return(NULL);
+#endif /* XMLSEC_NO_X509 */
 }
 
 /**

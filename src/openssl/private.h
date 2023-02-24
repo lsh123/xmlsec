@@ -60,8 +60,13 @@ XMLSEC_CRYPTO_EXPORT int        xmlSecOpenSSLX509FindCertCtxMatch          (xmlS
 
 
 
-XMLSEC_CRYPTO_EXPORT X509*              xmlSecOpenSSLX509StoreFindCertByValue(xmlSecKeyDataStorePtr store,
-                                                                              xmlSecKeyX509DataValuePtr x509Value);
+XMLSEC_CRYPTO_EXPORT X509*      xmlSecOpenSSLX509StoreFindCertByValue       (xmlSecKeyDataStorePtr store,
+                                                                             xmlSecKeyX509DataValuePtr x509Value);
+
+
+XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecOpenSSLX509FindKeyByValue           (xmlSecPtrListPtr keysList,
+                                                                             xmlSecKeyX509DataValuePtr x509Value);
+
 #endif /* XMLSEC_NO_X509 */
 
 #ifdef __cplusplus

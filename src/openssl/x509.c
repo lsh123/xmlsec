@@ -970,6 +970,60 @@ done:
     return(res);
 }
 
+const EVP_MD *
+xmlSecOpenSSLX509GetDigestFromAlgorithm(const xmlChar* href) {
+    /* use SHA256 by default */
+    if(href == NULL) {
+        return(EVP_sha256());
+    } else if(xmlStrcmp(href, xmlSecHrefSha1) == 0) {
+        return(EVP_sha1());
+    } else if(xmlStrcmp(href, xmlSecHrefSha224) == 0) {
+        return(EVP_sha224());
+    } else if(xmlStrcmp(href, xmlSecHrefSha256) == 0) {
+        return(EVP_sha256());
+    } else if(xmlStrcmp(href, xmlSecHrefSha384) == 0) {
+        return(EVP_sha384());
+    } else if(xmlStrcmp(href, xmlSecHrefSha512) == 0) {
+        return(EVP_sha512());
+    } else {
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
+            "href=%s", xmlSecErrorsSafeString(href));
+        return(NULL);
+    }
+}
+
+static int
+xmlSecOpenSSLX509DigestWrite(X509* cert, const xmlChar* algorithm, xmlSecBufferPtr buf) {
+    const EVP_MD * digest;
+    xmlSecByte md[EVP_MAX_MD_SIZE];
+    unsigned int len = 0;
+    int ret;
+
+    xmlSecAssert2(cert != NULL, -1);
+    xmlSecAssert2(buf != NULL, -1);
+
+    digest = xmlSecOpenSSLX509GetDigestFromAlgorithm(algorithm);
+    if(digest == NULL) {
+        xmlSecInternalError("xmlSecOpenSSLX509GetDigestFromAlgorithm", NULL);
+        return(-1);
+    }
+
+    ret = X509_digest(cert, digest, md, &len);
+    if((ret != 1) || (len <= 0)) {
+        xmlSecOpenSSLError("X509_digest", NULL);
+        return(-1);
+    }
+
+    ret = xmlSecBufferSetData(buf, md, len);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferSetData", NULL);
+        return(-1);
+    }
+
+    /* success */
+    return(0);
+}
+
 static xmlChar*
 xmlSecOpenSSLX509NameWrite(X509_NAME* nm) {
     xmlChar* res = NULL;
@@ -1138,6 +1192,15 @@ xmlSecOpenSSLKeyDataX509Write(xmlSecKeyDataPtr data,  xmlSecKeyX509DataValuePtr 
             x509Value->issuerSerial = xmlSecOpenSSLASN1IntegerWrite(X509_get_serialNumber(cert));
             if(x509Value->issuerSerial == NULL) {
                 xmlSecInternalError2("xmlSecOpenSSLASN1IntegerWrite(X509_get_serialNumber))",
+                    xmlSecKeyDataGetName(data),
+                    "pos=" XMLSEC_SIZE_FMT, ctx->crtPos);
+                return(-1);
+            }
+        }
+        if(((content & XMLSEC_X509DATA_DIGEST_NODE) != 0) && (x509Value->digestAlgorithm != NULL)) {
+            ret = xmlSecOpenSSLX509DigestWrite(cert, x509Value->digestAlgorithm, &(x509Value->digest));
+            if(ret < 0) {
+                xmlSecInternalError2("xmlSecOpenSSLX509DigestWrite",
                     xmlSecKeyDataGetName(data),
                     "pos=" XMLSEC_SIZE_FMT, ctx->crtPos);
                 return(-1);

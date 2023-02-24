@@ -2815,14 +2815,15 @@ xmlSecKeyValueRsaXmlWrite(xmlSecKeyValueRsaPtr data, xmlNodePtr node,
 
 static int                      xmlSecKeyX509DataValueInitialize            (xmlSecKeyX509DataValuePtr x509Value);
 static void                     xmlSecKeyX509DataValueFinalize              (xmlSecKeyX509DataValuePtr x509Value);
-static void                     xmlSecKeyX509DataValueReset                 (xmlSecKeyX509DataValuePtr x509Value);
+static void                     xmlSecKeyX509DataValueReset                 (xmlSecKeyX509DataValuePtr x509Value,
+                                                                             int writeMode);
 static int                      xmlSecKeyX509DataValueXmlRead               (xmlSecKeyX509DataValuePtr x509Value,
-                                                                         xmlNodePtr node,
-                                                                         xmlSecKeyInfoCtxPtr keyInfoCtx);
+                                                                             xmlNodePtr node,
+                                                                             xmlSecKeyInfoCtxPtr keyInfoCtx);
 static int                      xmlSecKeyX509DataValueXmlWrite              (xmlSecKeyX509DataValuePtr x509Value,
-                                                                         xmlNodePtr node,
-                                                                         int base64LineSize,
-                                                                         int addLineBreaks);
+                                                                             xmlNodePtr node,
+                                                                             int base64LineSize,
+                                                                             int addLineBreaks);
 
 /**
  * xmlSecKeyDataX509XmlRead:
@@ -2897,7 +2898,7 @@ xmlSecKeyDataX509XmlRead(xmlSecKeyPtr key, xmlSecKeyDataPtr data, xmlNodePtr nod
         }
 
         /* cleanup for the next node */
-        xmlSecKeyX509DataValueReset(&x509Value);
+        xmlSecKeyX509DataValueReset(&x509Value, 0);
     }
 
     /* success */
@@ -2914,12 +2915,14 @@ done:
 
 
 static int
-xmlSecX509DataGetNodeContent (xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+xmlSecX509DataGetNodeContent(xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx, xmlChar** digestAlgorithm) {
     xmlNodePtr cur;
     int content = 0;
 
     xmlSecAssert2(node != NULL, 0);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
+    xmlSecAssert2(digestAlgorithm != NULL, -1);
+    xmlSecAssert2((*digestAlgorithm) == NULL, -1);
 
     /* determine the current node content */
     cur = xmlSecGetNextElementNode(node->children);
@@ -2948,6 +2951,20 @@ xmlSecX509DataGetNodeContent (xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
                 content |= XMLSEC_X509DATA_SKI_NODE;
             } else {
                 content |= (XMLSEC_X509DATA_SKI_NODE << 16);
+            }
+        } else if(xmlSecCheckNodeName(cur, xmlSecNodeX509Digest, xmlSecDSig11Ns)) {
+            if(xmlSecIsEmptyNode(cur) == 1) {
+                content |= XMLSEC_X509DATA_DIGEST_NODE;
+            } else {
+                content |= (XMLSEC_X509DATA_DIGEST_NODE << 16);
+            }
+            /* only read the first digestAlgorithm */
+            if((*digestAlgorithm) == NULL) {
+                (*digestAlgorithm) = xmlGetProp(node, xmlSecAttrAlgorithm);
+                if((*digestAlgorithm) == NULL) {
+                    xmlSecInvalidNodeAttributeError(node, xmlSecAttrAlgorithm, NULL, "empty");
+                    return(-1);
+                }
             }
         } else if(xmlSecCheckNodeName(cur, xmlSecNodeX509CRL, xmlSecDSigNs)) {
             if(xmlSecIsEmptyNode(cur) == 1) {
@@ -3000,7 +3017,16 @@ xmlSecKeyDataX509XmlWrite(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyInfoC
         return(0);
     }
 
-    content = xmlSecX509DataGetNodeContent(node, keyInfoCtx);
+    ret = xmlSecKeyX509DataValueInitialize(&x509Value);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeyX509DataValueInitialize",
+            xmlSecKeyDataGetName(data));
+        goto done;
+    }
+    x509ValueInitialized = 1;
+
+
+    content = xmlSecX509DataGetNodeContent(node, keyInfoCtx, &(x509Value.digestAlgorithm));
     if (content < 0) {
         xmlSecInternalError2("xmlSecX509DataGetNodeContent",
             xmlSecKeyDataGetName(data), "content=%d", content);
@@ -3009,14 +3035,6 @@ xmlSecKeyDataX509XmlWrite(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyInfoC
         /* by default we are writing certificates and crls */
         content = XMLSEC_X509DATA_DEFAULT;
     }
-
-    ret = xmlSecKeyX509DataValueInitialize(&x509Value);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecKeyX509DataValueInitialize",
-            xmlSecKeyDataGetName(data));
-        goto done;
-    }
-    x509ValueInitialized = 1;
 
     while(1) {
         /* xmlSecKeyDataX509Write: returns 1 on success, 0 if no more certs/crls are available,
@@ -3037,7 +3055,7 @@ xmlSecKeyDataX509XmlWrite(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyInfoC
         }
 
          /* cleanup for the next obj */
-        xmlSecKeyX509DataValueReset(&x509Value);
+        xmlSecKeyX509DataValueReset(&x509Value, 1);
     }
 
     /* success */
@@ -3077,6 +3095,12 @@ xmlSecKeyX509DataValueInitialize(xmlSecKeyX509DataValuePtr x509Value) {
         xmlSecKeyX509DataValueFinalize(x509Value);
         return(-1);
     }
+    ret = xmlSecBufferInitialize(&(x509Value->digest), XMLSEC_KEY_DATA_X509_INIT_BUF_SIZE);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize(digest)", NULL);
+        xmlSecKeyX509DataValueFinalize(x509Value);
+        return(-1);
+    }
     return(0);
 }
 
@@ -3087,29 +3111,39 @@ xmlSecKeyX509DataValueFinalize(xmlSecKeyX509DataValuePtr x509Value) {
     xmlSecBufferFinalize(&(x509Value->cert));
     xmlSecBufferFinalize(&(x509Value->crl));
     xmlSecBufferFinalize(&(x509Value->ski));
+
     if(x509Value->subject != NULL) {
         xmlFree(x509Value->subject);
     }
+
     if(x509Value->issuerName != NULL) {
         xmlFree(x509Value->issuerName);
     }
     if(x509Value->issuerSerial != NULL) {
         xmlFree(x509Value->issuerSerial);
     }
+
+    if(x509Value->digestAlgorithm != NULL) {
+        xmlFree(x509Value->digestAlgorithm);
+    }
+    xmlSecBufferFinalize(&(x509Value->digest));
+
     memset(x509Value, 0, sizeof(xmlSecKeyX509DataValue));
 }
 
 static void
-xmlSecKeyX509DataValueReset(xmlSecKeyX509DataValuePtr x509Value) {
+xmlSecKeyX509DataValueReset(xmlSecKeyX509DataValuePtr x509Value, int writeMode) {
     xmlSecAssert(x509Value != NULL);
 
     xmlSecBufferEmpty(&(x509Value->cert));
     xmlSecBufferEmpty(&(x509Value->crl));
     xmlSecBufferEmpty(&(x509Value->ski));
+
     if(x509Value->subject != NULL) {
         xmlFree(x509Value->subject);
         x509Value->subject = NULL;
     }
+
     if(x509Value->issuerName != NULL) {
         xmlFree(x509Value->issuerName);
         x509Value->issuerName = NULL;
@@ -3118,6 +3152,14 @@ xmlSecKeyX509DataValueReset(xmlSecKeyX509DataValuePtr x509Value) {
         xmlFree(x509Value->issuerSerial);
         x509Value->issuerSerial = NULL;
     }
+
+    /* we keep digest algorithm as-is for the next certificate if we are writing it out */
+    if((writeMode != 0) && (x509Value->digestAlgorithm != NULL)) {
+        xmlFree(x509Value->digestAlgorithm);
+        x509Value->digestAlgorithm = NULL;
+    }
+    xmlSecBufferEmpty(&(x509Value->digest));
+
 }
 
 static int
@@ -3249,7 +3291,8 @@ done:
 
 static int
 xmlSecKeyX509DataValueXmlReadIssuerSerial(xmlSecKeyX509DataValuePtr x509Value, xmlNodePtr node,
-                                      xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlSecKeyInfoCtxPtr keyInfoCtx
+) {
     xmlNodePtr cur;
 
     xmlSecAssert2(x509Value != NULL, -1);
@@ -3339,6 +3382,23 @@ xmlSecKeyX509DataValueXmlRead(xmlSecKeyX509DataValuePtr x509Value, xmlNodePtr no
             xmlSecInternalError("xmlSecKeyX509DataValueXmlReadIssuerSerial", NULL);
             return(-1);
         }
+    } else if(xmlSecCheckNodeName(node, xmlSecNodeX509Digest, xmlSecDSig11Ns)) {
+        xmlSecAssert2(x509Value->digestAlgorithm == NULL, -1);
+
+        /*  The digest algorithm URI is identified with a required Algorithm attribute */
+        x509Value->digestAlgorithm = xmlGetProp(node, xmlSecAttrAlgorithm);
+        if(x509Value->digestAlgorithm == NULL) {
+            xmlSecInvalidNodeAttributeError(node, xmlSecAttrAlgorithm, NULL, "empty");
+            return(-1);
+        }
+
+        /* The dsig11:X509Digest element contains a base64-encoded digest of a certificate. */
+        ret = xmlSecKeyX509DataValueXmlReadBase64Blob(&(x509Value->digest), node, keyInfoCtx);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecKeyX509DataValueXmlReadBase64Blob(digest)", NULL);
+            return(-1);
+        }
+
     } else if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CHILD) != 0) {
         /* laxi schema validation: ignore unknown nodes */
         xmlSecUnexpectedNodeError(node, NULL);
@@ -3349,17 +3409,16 @@ xmlSecKeyX509DataValueXmlRead(xmlSecKeyX509DataValuePtr x509Value, xmlNodePtr no
     return(0);
 }
 
-static int
+static xmlNodePtr
 xmlSecKeyX509DataValueXmlWriteBase64Blob(xmlSecBufferPtr buf, xmlNodePtr node,
                                     const xmlChar* nodeName, const xmlChar* nodeNs,
                                     int base64LineSize, int addLineBreaks) {
-    xmlNodePtr cur;
+    xmlNodePtr child = NULL;
     xmlChar *content;
-    int res = -1;
 
-    xmlSecAssert2(buf != NULL, -1);
-    xmlSecAssert2(node != NULL, -1);
-    xmlSecAssert2(nodeName != NULL, -1);
+    xmlSecAssert2(buf != NULL, NULL);
+    xmlSecAssert2(node != NULL, NULL);
+    xmlSecAssert2(nodeName != NULL, NULL);
 
     content = xmlSecBase64Encode(xmlSecBufferGetData(buf), xmlSecBufferGetSize(buf),
         base64LineSize);
@@ -3368,32 +3427,31 @@ xmlSecKeyX509DataValueXmlWriteBase64Blob(xmlSecBufferPtr buf, xmlNodePtr node,
         goto done;
     }
 
-    cur = xmlSecEnsureEmptyChild(node, nodeName, nodeNs);
-    if(cur == NULL) {
+    child = xmlSecEnsureEmptyChild(node, nodeName, nodeNs);
+    if(child == NULL) {
         xmlSecInternalError2("xmlSecEnsureEmptyChild()", NULL,
             "nodeName=%s", xmlSecErrorsSafeString(nodeName));
         goto done;
     }
 
     if(addLineBreaks) {
-        xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed());
+        xmlNodeAddContent(child, xmlSecGetDefaultLineFeed());
     }
 
-    xmlNodeSetContent(cur, content);
+    xmlNodeSetContent(child, content);
 
     if(addLineBreaks) {
-        xmlNodeAddContent(cur, xmlSecGetDefaultLineFeed());
+        xmlNodeAddContent(child, xmlSecGetDefaultLineFeed());
     }
 
     /* success */
-    res = 0;
 
 done:
     /* cleanup */
     if(content != NULL) {
         xmlFree(content);
     }
-    return(res);
+    return(child);
 }
 
 
@@ -3422,36 +3480,42 @@ xmlSecKeyX509DataValueXmlWriteString(const xmlChar* content, xmlNodePtr node,
 static int
 xmlSecKeyX509DataValueXmlWrite(xmlSecKeyX509DataValuePtr x509Value, xmlNodePtr node,
                            int base64LineSize, int addLineBreaks) {
-    int ret;
-
     xmlSecAssert2(x509Value != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
 
-    if(xmlSecBufferGetSize(&(x509Value->cert)) > 0) {
-        ret = xmlSecKeyX509DataValueXmlWriteBase64Blob(&(x509Value->cert), node,
+    if(!xmlSecBufferIsEmpty(&(x509Value->cert))) {
+        xmlNodePtr child;
+
+        child = xmlSecKeyX509DataValueXmlWriteBase64Blob(&(x509Value->cert), node,
             xmlSecNodeX509Certificate, xmlSecDSigNs,
             base64LineSize, addLineBreaks);
-        if(ret < 0) {
+        if(child == NULL) {
             xmlSecInternalError("xmlSecKeyX509DataValueXmlWriteBase64Blob(cert)", NULL);
             return(-1);
         }
-    } else if(xmlSecBufferGetSize(&(x509Value->crl)) > 0) {
-        ret = xmlSecKeyX509DataValueXmlWriteBase64Blob(&(x509Value->crl), node,
+    } else if(!xmlSecBufferIsEmpty(&(x509Value->crl))) {
+        xmlNodePtr child;
+
+        child = xmlSecKeyX509DataValueXmlWriteBase64Blob(&(x509Value->crl), node,
             xmlSecNodeX509CRL, xmlSecDSigNs,
             base64LineSize, addLineBreaks);
-        if(ret < 0) {
+        if(child == NULL) {
             xmlSecInternalError("xmlSecKeyX509DataValueXmlWriteBase64Blob(cert)", NULL);
             return(-1);
         }
-    } else if(xmlSecBufferGetSize(&(x509Value->ski)) > 0) {
-        ret = xmlSecKeyX509DataValueXmlWriteBase64Blob(&(x509Value->ski), node,
+    } else if(!xmlSecBufferIsEmpty(&(x509Value->ski))) {
+        xmlNodePtr child;
+
+        child = xmlSecKeyX509DataValueXmlWriteBase64Blob(&(x509Value->ski), node,
             xmlSecNodeX509SKI, xmlSecDSigNs,
             base64LineSize, addLineBreaks);
-        if(ret < 0) {
+        if(child == NULL) {
             xmlSecInternalError("xmlSecKeyX509DataValueXmlWriteBase64Blob(ski)", NULL);
             return(-1);
         }
     } else if(x509Value->subject != NULL) {
+        int ret;
+
         ret = xmlSecKeyX509DataValueXmlWriteString(x509Value->subject, node,
             xmlSecNodeX509SubjectName, xmlSecDSigNs);
         if(ret < 0) {
@@ -3461,6 +3525,7 @@ xmlSecKeyX509DataValueXmlWrite(xmlSecKeyX509DataValuePtr x509Value, xmlNodePtr n
         }
     } else if((x509Value->issuerName != NULL) && (x509Value->issuerSerial != NULL)) {
         xmlNodePtr issuerSerial;
+        int ret;
 
         issuerSerial = xmlSecEnsureEmptyChild(node, xmlSecNodeX509IssuerSerial, xmlSecDSigNs);
         if(issuerSerial == NULL) {
@@ -3480,6 +3545,21 @@ xmlSecKeyX509DataValueXmlWrite(xmlSecKeyX509DataValuePtr x509Value, xmlNodePtr n
         if(ret < 0) {
             xmlSecInternalError2("xmlSecKeyX509DataValueXmlWriteString", NULL,
                 "issuerSerial=%s", xmlSecErrorsSafeString(x509Value->issuerSerial));
+            return(-1);
+        }
+    } else if((!xmlSecBufferIsEmpty(&(x509Value->digest))) && (x509Value->digestAlgorithm != NULL)) {
+        xmlNodePtr child;
+
+        child = xmlSecKeyX509DataValueXmlWriteBase64Blob(&(x509Value->digest), node,
+            xmlSecNodeX509Digest, xmlSecDSig11Ns,
+            base64LineSize, addLineBreaks);
+        if(child == NULL) {
+            xmlSecInternalError("xmlSecKeyX509DataValueXmlWriteBase64Blob(digest)", NULL);
+            return(-1);
+        }
+
+        if(xmlSetProp(child, xmlSecAttrAlgorithm, x509Value->digestAlgorithm) == NULL) {
+            xmlSecXmlError2("xmlSetProp", NULL, "name=%s", xmlSecErrorsSafeString(xmlSecAttrAlgorithm));
             return(-1);
         }
     }

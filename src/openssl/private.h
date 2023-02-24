@@ -43,6 +43,10 @@ typedef struct _xmlSecOpenSSLX509FindCertCtx {
     ASN1_INTEGER * issuerSerial;
     const xmlSecByte * ski; /* NOT OWNED */
     int skiLen;
+
+    const xmlSecByte * digestValue; /* NOT OWNED */
+    unsigned int digestLen;
+    const EVP_MD* digestMd;
 } xmlSecOpenSSLX509FindCertCtx, *xmlSecOpenSSLX509FindCertCtxPtr;
 
 XMLSEC_CRYPTO_EXPORT int        xmlSecOpenSSLX509FindCertCtxInitialize      (xmlSecOpenSSLX509FindCertCtxPtr ctx,
@@ -66,6 +70,8 @@ XMLSEC_CRYPTO_EXPORT X509*      xmlSecOpenSSLX509StoreFindCertByValue       (xml
 
 XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecOpenSSLX509FindKeyByValue           (xmlSecPtrListPtr keysList,
                                                                              xmlSecKeyX509DataValuePtr x509Value);
+
+XMLSEC_CRYPTO_EXPORT const EVP_MD* xmlSecOpenSSLX509GetDigestFromAlgorithm  (const xmlChar* href);
 
 #endif /* XMLSEC_NO_X509 */
 

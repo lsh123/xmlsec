@@ -657,6 +657,7 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeX509IssuerSerial[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeX509IssuerName[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeX509SerialNumber[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeX509SKI[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeX509Digest[];
 
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameRawX509Cert[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRawX509Cert[];

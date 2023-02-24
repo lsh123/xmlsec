@@ -17,16 +17,24 @@
  * @subject:           the subject name from <dsig:X509SubjectName /> node.
  * @issuerName:        the ski from <dsig:X509IssuerSerial/> node.
  * @issuerSerial:      the ski from <dsig:X509IssuerSerial/> node.
+ * @digestAlgorithm:   the @digest algorithm from <dsig11:X509Digest/> node.
+ * @digest:            the digest from <dsig11:X509Digest/> node.
  *
  * The content of a child of <X509Data/> node. Not all values will be set!
  */
 struct _xmlSecKeyX509DataValue {
     xmlSecBuffer cert;
     xmlSecBuffer crl;
+
     xmlSecBuffer ski;
+
     xmlChar* subject;
+
     xmlChar* issuerName;
     xmlChar* issuerSerial;
+
+    xmlChar* digestAlgorithm;
+    xmlSecBuffer digest;
 };
 
 #endif /* __XMLSEC_X509_H__ */

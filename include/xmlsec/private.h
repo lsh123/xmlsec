@@ -698,6 +698,12 @@ struct _xmlSecCryptoDLFunctions {
  */
 #define XMLSEC_X509DATA_CRL_NODE                                0x00000010
 /**
+ * XMLSEC_X509DATA_DIGEST_NODE:
+ *
+ * <dsig:X509Digest/> node found or would be written back.
+ */
+#define XMLSEC_X509DATA_DIGEST_NODE                             0x00000020
+/**
  * XMLSEC_X509DATA_DEFAULT:
  *
  * Default set of nodes to write in case of empty

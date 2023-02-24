@@ -1363,6 +1363,44 @@ xmlSecTmplX509DataAddSKI(xmlNodePtr x509DataNode) {
     return (cur);
 }
 
+/**
+ * xmlSecTmplX509DataAddDigest:
+ * @x509DataNode:       the pointer to <dsig:X509Data/> node.
+ * @digestAlgorithm:    the digest algorithm URL.
+ *
+ * Adds <dsig11:X509Digest/> node to the given <dsig:X509Data/> node.
+ *
+ * Returns: the pointer to the newly created <dsig11:X509Digest/> node or
+ * NULL if an error occurs.
+ */
+
+xmlNodePtr
+xmlSecTmplX509DataAddDigest(xmlNodePtr x509DataNode, const xmlChar* digestAlgorithm) {
+    xmlNodePtr cur;
+
+    xmlSecAssert2(x509DataNode != NULL, NULL);
+    xmlSecAssert2(digestAlgorithm != NULL, NULL);
+
+    cur = xmlSecFindChild(x509DataNode, xmlSecNodeX509Digest, xmlSecDSig11Ns);
+    if(cur != NULL) {
+        xmlSecNodeAlreadyPresentError(x509DataNode, xmlSecNodeX509Digest, NULL);
+        return(NULL);
+    }
+
+    cur = xmlSecAddChild(x509DataNode, xmlSecNodeX509Digest, xmlSecDSig11Ns);
+    if(cur == NULL) {
+        xmlSecInternalError("xmlSecAddChild(xmlSecNodeX509Digest)", NULL);
+        return(NULL);
+    }
+
+    if(xmlSetProp(cur, xmlSecAttrAlgorithm, digestAlgorithm) == NULL) {
+        xmlSecXmlError2("xmlSetProp", NULL, "name=%s", xmlSecErrorsSafeString(xmlSecAttrAlgorithm));
+        return(NULL);
+    }
+
+    return (cur);
+}
+
 
 /**
  * xmlSecTmplX509DataAddCertificate:

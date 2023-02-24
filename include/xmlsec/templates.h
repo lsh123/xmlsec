@@ -127,6 +127,7 @@ XMLSEC_EXPORT xmlNodePtr xmlSecTmplX509IssuerSerialAddIssuerName(xmlNodePtr x509
 XMLSEC_EXPORT xmlNodePtr xmlSecTmplX509IssuerSerialAddSerialNumber(xmlNodePtr x509IssuerSerialNode, const xmlChar* serial);
 XMLSEC_EXPORT xmlNodePtr xmlSecTmplX509DataAddSubjectName       (xmlNodePtr x509DataNode);
 XMLSEC_EXPORT xmlNodePtr xmlSecTmplX509DataAddSKI               (xmlNodePtr x509DataNode);
+XMLSEC_EXPORT xmlNodePtr xmlSecTmplX509DataAddDigest            (xmlNodePtr x509DataNode, const xmlChar* digestAlgorithm);
 XMLSEC_EXPORT xmlNodePtr xmlSecTmplX509DataAddCertificate       (xmlNodePtr x509DataNode);
 XMLSEC_EXPORT xmlNodePtr xmlSecTmplX509DataAddCRL               (xmlNodePtr x509DataNode);
 
@@ -160,4 +161,3 @@ XMLSEC_EXPORT int       xmlSecTmplTransformAddXPointer          (xmlNodePtr tran
 #endif /* __cplusplus */
 
 #endif /* __XMLSEC_TEMPLATES_H__ */
-

@@ -955,14 +955,38 @@ int xmlSecOpenSSLX509FindCertCtxInitialize(xmlSecOpenSSLX509FindCertCtxPtr ctx,
 
 int
 xmlSecOpenSSLX509FindCertCtxInitializeFromValue(xmlSecOpenSSLX509FindCertCtxPtr ctx, xmlSecKeyX509DataValuePtr x509Value) {
+    int ret;
+
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(x509Value != NULL, -1);
 
-    return(xmlSecOpenSSLX509FindCertCtxInitialize(ctx,
-        x509Value->subject,
-        x509Value->issuerName, x509Value->issuerSerial,
-        xmlSecBufferGetData(&(x509Value->ski)), xmlSecBufferGetSize(&(x509Value->ski))
-    ));
+    ret = xmlSecOpenSSLX509FindCertCtxInitialize(ctx,
+                x509Value->subject,
+                x509Value->issuerName, x509Value->issuerSerial,
+                xmlSecBufferGetData(&(x509Value->ski)), xmlSecBufferGetSize(&(x509Value->ski))
+    );
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecOpenSSLX509FindCertCtxInitialize", NULL);
+        xmlSecOpenSSLX509FindCertCtxFinalize(ctx);
+        return(-1);
+    }
+
+    if((!xmlSecBufferIsEmpty(&(x509Value->digest))) && (x509Value->digestAlgorithm != NULL)) {
+        xmlSecSize digestSize;
+
+        ctx->digestValue = xmlSecBufferGetData(&(x509Value->digest));
+        digestSize = xmlSecBufferGetSize(&(x509Value->digest));
+        XMLSEC_SAFE_CAST_SIZE_TO_UINT(digestSize, ctx->digestLen, return(-1), NULL);
+
+        ctx->digestMd = xmlSecOpenSSLX509GetDigestFromAlgorithm(x509Value->digestAlgorithm);
+        if(ctx->digestMd == NULL) {
+            xmlSecInternalError("xmlSecOpenSSLX509GetDigestFromAlgorithm", NULL);
+            xmlSecOpenSSLX509FindCertCtxFinalize(ctx);
+            return(-1);
+        }
+    }
+
+    return(0);
 }
 
 void xmlSecOpenSSLX509FindCertCtxFinalize(xmlSecOpenSSLX509FindCertCtxPtr ctx) {
@@ -1061,6 +1085,32 @@ xmlSecOpenSSLX509MatchBySki(X509* cert, const xmlSecByte* ski, int skiLen) {
     return(1);
 }
 
+static int
+xmlSecOpenSSLX509MatchByDigest(X509* cert, const xmlSecByte * digestValue, unsigned int digestLen, const EVP_MD* digest) {
+    xmlSecByte md[EVP_MAX_MD_SIZE];
+    unsigned int len = 0;
+    int ret;
+
+    xmlSecAssert2(cert != NULL, -1);
+
+    if((digestValue == NULL) || (digestLen <= 0) || (digest == NULL)) {
+        return(0);
+    }
+
+    ret = X509_digest(cert, digest, md, &len);
+    if((ret != 1) || (len <= 0)) {
+        xmlSecOpenSSLError("X509_digest", NULL);
+        return(-1);
+    }
+
+    if((len != digestLen) || (memcmp(md, digestValue, digestLen) != 0)) {
+        return(0);
+    }
+
+    /* success */
+    return(1);
+}
+
 /* returns 1 for match, 0 for no match, and a negative value if an error occurs */
 int
 xmlSecOpenSSLX509FindCertCtxMatch(xmlSecOpenSSLX509FindCertCtxPtr ctx, X509* cert) {
@@ -1090,6 +1140,15 @@ xmlSecOpenSSLX509FindCertCtxMatch(xmlSecOpenSSLX509FindCertCtxPtr ctx, X509* cer
     ret = xmlSecOpenSSLX509MatchBySki(cert, ctx->ski, ctx->skiLen);
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLX509MatchBySki", NULL);
+        return(-1);
+    } else if(ret == 1) {
+        /* success! */
+        return(1);
+    }
+
+    ret = xmlSecOpenSSLX509MatchByDigest(cert, ctx->digestValue, ctx->digestLen, ctx->digestMd);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecOpenSSLX509MatchByDigest", NULL);
         return(-1);
     } else if(ret == 1) {
         /* success! */

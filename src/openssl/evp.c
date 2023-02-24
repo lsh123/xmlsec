@@ -1628,7 +1628,6 @@ typedef struct _xmlSecOpenSSLKeyValueDh {
  * type uses X9.42 format which saves the value of 'q' and this must be used for FIPS186-4.
  */
 #define XMLSEC_OPENSSL_DH_EVP_NAME              "DHX"
-#define XMLSEC_OPENSSL_DH_KEY_TYPE              "fips186_4"
 
 static int
 xmlSecOpenSSLKeyValueDhInitialize(xmlSecOpenSSLKeyValueDhPtr dhKeyValue) {
@@ -2110,12 +2109,6 @@ xmlSecOpenSSLKeyDataDhSetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueDhPtr
             xmlSecKeyDataGetName(data));
         goto done;
     }
-    ret = OSSL_PARAM_BLD_push_utf8_string(param_bld, OSSL_PKEY_PARAM_FFC_TYPE, XMLSEC_OPENSSL_DH_KEY_TYPE, strlen(XMLSEC_OPENSSL_DH_KEY_TYPE));
-    if(ret != 1) {
-        xmlSecOpenSSLError("OSSL_PARAM_BLD_push_utf8_string(FFC_TYPE)",
-            xmlSecKeyDataGetName(data));
-        goto done;
-    }
 
     /* only required parameter */
     ret = OSSL_PARAM_BLD_push_BN(param_bld, OSSL_PKEY_PARAM_PUB_KEY, dhKeyValue->public);
@@ -2245,12 +2238,6 @@ xmlSecOpenSSLKeyDataDhGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSe
     param_bld = OSSL_PARAM_BLD_new();
     if(param_bld == NULL) {
         xmlSecOpenSSLError("OSSL_PARAM_BLD_new", xmlSecKeyDataGetName(data));
-        goto done;
-    }
-    ret = OSSL_PARAM_BLD_push_utf8_string(param_bld, OSSL_PKEY_PARAM_FFC_TYPE, XMLSEC_OPENSSL_DH_KEY_TYPE, strlen(XMLSEC_OPENSSL_DH_KEY_TYPE));
-    if(ret != 1) {
-        xmlSecOpenSSLError("OSSL_PARAM_BLD_push_utf8_string(FFC_TYPE)",
-            xmlSecKeyDataGetName(data));
         goto done;
     }
     ret = OSSL_PARAM_BLD_push_size_t(param_bld, OSSL_PKEY_PARAM_BITS, sizeBits);

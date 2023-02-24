@@ -502,7 +502,7 @@
                           <a href="https://www.w3.org/TR/xmlenc-core1/#sec-DHKeyAgreement">Diffie-Hellman with explicit KDF</a>
                         </td>
                         <td valign="top">Optional</td><!--Requirements -->
-                        <td valign="top">No</td><!-- OpenSSL-->
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#openssl3-required"><sup>(2)</sup></a> <a href="#openssl-dhx"><sup>(7)</sup></a></td><!-- OpenSSL-->
                         <td valign="top">No</td><!-- NSS -->
                         <td valign="top">No</td><!-- GnuTLS -->
                         <td valign="top">No</td><!-- MSCng -->
@@ -596,6 +596,9 @@
                         <li>
                             <a name="rsa-oaep-same-algo" id="rsa-oaep-same-algo"><sup>(6)</sup></a> RSA-OAEP digest algorithm and MGF1 algorithm
                             must be the same.
+                        </li>
+                        <li>
+                          <a name="openssl-dhx" id="openssl-dhx"><sup>(7)</sup></a> Only DHX (X9.42 format) keys are supported.
                         </li>
                     </ul>
                 </div>

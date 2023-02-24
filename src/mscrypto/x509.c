@@ -683,7 +683,9 @@ xmlSecMSCryptoKeyDataX509DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     fprintf(output, "</X509Data>\n");
 }
 
-
+/* xmlSecKeyDataX509Read: returns 1 if key is found and copied to @key, 0 if key is not found,
+ * or a negative value if an error occurs.
+ */
 static int
 xmlSecMSCryptoKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyValueX509Ptr x509Value,
     xmlSecKeysMngrPtr keysMngr, unsigned int flags) {
@@ -790,7 +792,9 @@ done:
     return(res);
 }
 
-
+/* xmlSecKeyDataX509Write: returns 1 on success, 0 if no more certs/crls are available,
+ * or a negative value if an error occurs.
+ */
 static int
 xmlSecMSCryptoKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyValueX509Ptr x509Value,
     int content, void* context) {
@@ -892,11 +896,11 @@ xmlSecMSCryptoKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyValueX509Ptr x509
     }
     else {
         /* no more certs or crls */
-        return(1);
+        return(0);
     }
 
     /* success */
-    return(0);
+    return(1);
 }
 
 static int

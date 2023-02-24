@@ -564,8 +564,7 @@ xmlSecOpenSSLKeyDataX509XmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         return(-1);
     }
 
-    ret = xmlSecKeyDataX509XmlRead(data, node, keyInfoCtx,
-        xmlSecOpenSSLKeyDataX509Read);
+    ret = xmlSecKeyDataX509XmlRead(data, node, keyInfoCtx, xmlSecOpenSSLKeyDataX509Read);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeyDataX509XmlRead",
             xmlSecKeyDataKlassGetName(id));
@@ -700,12 +699,14 @@ xmlSecOpenSSLKeyDataX509DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     fprintf(output, "</X509Data>\n");
 }
 
+/* xmlSecKeyDataX509Read: returns 1 if key is found and copied to @key, 0 if key is not found,
+ * or a negative value if an error occurs.
+ */
 static int
 xmlSecOpenSSLKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyValueX509Ptr x509Value,
                              xmlSecKeysMngrPtr keysMngr, unsigned int flags) {
     xmlSecKeyDataStorePtr x509Store;
     int stopOnUnknownCert = 0;
-    X509* storeCert = NULL;
     X509* cert = NULL;
     X509_CRL* crl = NULL;
     int ret;
@@ -734,27 +735,32 @@ xmlSecOpenSSLKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyValueX509Ptr x509Va
             xmlSecInternalError("xmlSecOpenSSLX509CertDerRead", xmlSecKeyDataGetName(data));
             goto done;
         }
-    } else if(xmlSecBufferGetSize(&(x509Value->crl)) > 0) {
+    }
+    if(xmlSecBufferGetSize(&(x509Value->crl)) > 0) {
         crl = xmlSecOpenSSLX509CrlDerRead(xmlSecBufferGetData(&(x509Value->crl)),
             xmlSecBufferGetSize(&(x509Value->crl)));
         if(crl == NULL) {
             xmlSecInternalError("xmlSecOpenSSLX509CertDerRead", xmlSecKeyDataGetName(data));
             goto done;
         }
-    } else {
+    }
+
+    /* if there is no cert in the X509Data node then try to find one */
+    if(cert == NULL) {
+        X509* storeCert = NULL;
+
         storeCert = xmlSecOpenSSLX509StoreFindCertByValue(x509Store, x509Value);
         if((storeCert == NULL) && (stopOnUnknownCert != 0)) {
             xmlSecOtherError(XMLSEC_ERRORS_R_CERT_NOT_FOUND, xmlSecKeyDataGetName(data), "cert lookup");
             goto done;
         }
-    }
-
-    /* if we found cert in a store, then duplicate it for key data */
-    if((cert == NULL) && (storeCert != NULL)) {
-        cert = X509_dup(storeCert);
-        if(cert == NULL) {
-            xmlSecOpenSSLError("X509_dup", xmlSecKeyDataGetName(data));
-            goto done;
+        /* if we found cert in a store, then duplicate it for key data */
+        if(storeCert != NULL) {
+            cert = X509_dup(storeCert);
+            if(cert == NULL) {
+                xmlSecOpenSSLError("X509_dup", xmlSecKeyDataGetName(data));
+                goto done;
+            }
         }
     }
 
@@ -1057,6 +1063,9 @@ xmlSecOpenSSLASN1IntegerWrite(ASN1_INTEGER *asni) {
     return(res);
 }
 
+/* xmlSecKeyDataX509Write: returns 1 on success, 0 if no more certs/crls are available,
+ * or a negative value if an error occurs.
+ */
 static int
 xmlSecOpenSSLKeyDataX509Write(xmlSecKeyDataPtr data,  xmlSecKeyValueX509Ptr x509Value,
                               int content, void* context) {
@@ -1149,11 +1158,11 @@ xmlSecOpenSSLKeyDataX509Write(xmlSecKeyDataPtr data,  xmlSecKeyValueX509Ptr x509
         ++ctx->crlPos;
     } else {
         /* no more certs or crls */
-        return(1);
+        return(0);
     }
 
     /* success */
-    return(0);
+    return(1);
 }
 
 
@@ -1396,6 +1405,7 @@ xmlSecOpenSSLKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr 
             return(-1);
         }
     }
+
     return(0);
 }
 

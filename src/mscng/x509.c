@@ -430,6 +430,9 @@ xmlSecMSCngKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data,
     return(0);
 }
 
+/* xmlSecKeyDataX509Read: returns 1 if key is found and copied to @key, 0 if key is not found,
+ * or a negative value if an error occurs.
+ */
 static int
 xmlSecMSCngKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyValueX509Ptr x509Value,
     xmlSecKeysMngrPtr keysMngr, unsigned int flags) {
@@ -703,6 +706,9 @@ typedef struct _xmlSecMSCngKeyDataX5099WriteContext {
     int doneCrls;
 } xmlSecMSCngKeyDataX5099WriteContext;
 
+/* xmlSecKeyDataX509Write: returns 1 on success, 0 if no more certs/crls are available,
+ * or a negative value if an error occurs.
+ */
 static int
 xmlSecMSCngKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyValueX509Ptr x509Value,
                             int content, void* context) {
@@ -766,7 +772,7 @@ xmlSecMSCngKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyValueX509Ptr x509Val
                 }
             }
             /* done */
-            return(0);
+            return(1);
         } else {
             ctx->doneCrts = 1;
         }
@@ -787,7 +793,7 @@ xmlSecMSCngKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyValueX509Ptr x509Val
                 }
             }
             /* done */
-            return(0);
+            return(1);
         } else {
             ctx->doneCrls = 1;
         }
@@ -796,7 +802,7 @@ xmlSecMSCngKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyValueX509Ptr x509Val
     /* no more certs or crls */
     xmlSecAssert2(ctx->doneCrts != 0, -1);
     xmlSecAssert2(ctx->doneCrls != 0, -1);
-    return(1);
+    return(0);
 }
 
 static int

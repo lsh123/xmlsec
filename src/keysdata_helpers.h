@@ -315,14 +315,14 @@ typedef struct _xmlSecKeyValueX509 {
 
 /**
  * xmlSecKeyDataX509Read:
- * @data:               the pointer to result @xmlSecKeyData.
+ * @data:               the pointer to X509 key data
  * @x509Value:          the pointer to input @xmlSecKeyValueX509.
  * @keysMngr:           the pointer to @xmlSecKeysMngr.
  * @flags:              the flags for certs processing.
  *
- * Creates xmlSecKeyData from @dsaValue
  *
- * Returns: the poitner to xmlSecKeyData or NULL if an error occurs.
+ * Returns: 1 if key is found and copied to @key, 0 if key is not found, or a negative
+ * value if an error occurs.
  */
 typedef int                    (*xmlSecKeyDataX509Read)                 (xmlSecKeyDataPtr data,
                                                                          xmlSecKeyValueX509Ptr x509Value,
@@ -338,7 +338,7 @@ typedef int                    (*xmlSecKeyDataX509Read)                 (xmlSecK
  *
  * If available, writes the next X509 object (cert or crl) into @x509Value.
  *
- * Returns: 0 on success, 1 if no more certs/crls are available, or a negative'
+ * Returns: 1 on success, 0 if no more certs/crls are available, or a negative
  * value if an error occurs.
  */
 typedef int                    (*xmlSecKeyDataX509Write)                (xmlSecKeyDataPtr data,

@@ -2826,7 +2826,7 @@ static int                      xmlSecKeyValueX509XmlWrite              (xmlSecK
 
 /**
  * xmlSecKeyDataX509XmlRead:
- * @data:               the x509 key data.
+ * @data:               the X509 key data.
  * @node:               the pointer to data's value XML node.
  * @keyInfoCtx:         the <dsig:KeyInfo/> node processing context.
  * @readFunc:           the pointer to the function that converts
@@ -2854,8 +2854,7 @@ xmlSecKeyDataX509XmlRead(xmlSecKeyDataPtr data, xmlNodePtr node,
 
     ret = xmlSecKeyValueX509Initialize(&x509Value);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecKeyValueX509Initialize",
-            xmlSecKeyDataGetName(data));
+        xmlSecInternalError("xmlSecKeyValueX509Initialize", NULL);
         goto done;
     }
     x509ValueInitialized = 1;
@@ -2863,16 +2862,19 @@ xmlSecKeyDataX509XmlRead(xmlSecKeyDataPtr data, xmlNodePtr node,
     for(cur = xmlSecGetNextElementNode(node->children); cur != NULL; cur = xmlSecGetNextElementNode(cur->next)) {
         ret = xmlSecKeyValueX509XmlRead(&x509Value, cur, keyInfoCtx);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecKeyValueX509XmlRead",
-                xmlSecKeyDataGetName(data));
+            xmlSecInternalError("xmlSecKeyValueX509XmlRead", NULL);
             goto done;
         }
 
+        /* xmlSecKeyDataX509Read: returns 1 if key is found and copied to @key, 0 if key is not found,
+         * or a negative value if an error occurs.
+         */
         ret = readFunc(data, &x509Value, keyInfoCtx->keysMngr, keyInfoCtx->flags);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecKeyDataX509Read",
-                xmlSecKeyDataGetName(data));
+            xmlSecInternalError("xmlSecKeyDataX509Read", NULL);
             goto done;
+        } else if(ret == 1) {
+            break;
         }
 
         /* cleanup for the next node */
@@ -2998,19 +3000,20 @@ xmlSecKeyDataX509XmlWrite(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyInfoC
     x509ValueInitialized = 1;
 
     while(1) {
+        /* xmlSecKeyDataX509Write: returns 1 on success, 0 if no more certs/crls are available,
+         * or a negative value if an error occurs.
+         */
         ret = writeFunc(data, &x509Value, content, writeFuncContext);
         if(ret < 0) {
-            xmlSecInternalError("writeFunc",
-                xmlSecKeyDataGetName(data));
+            xmlSecInternalError("writeFunc", xmlSecKeyDataGetName(data));
             goto done;
-        } else if (ret == 1) {
+        } else if (ret == 0) {
             break;
         }
 
         ret = xmlSecKeyValueX509XmlWrite(&x509Value, node, base64LineSize, addLineBreaks);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecKeyValueX509XmlWrite",
-                xmlSecKeyDataGetName(data));
+            xmlSecInternalError("xmlSecKeyValueX509XmlWrite", xmlSecKeyDataGetName(data));
             goto done;
         }
 

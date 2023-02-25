@@ -504,7 +504,7 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
                 goto done;
             } else if(ret == 0) {
                 const char* err_msg;
-                char subject[256], issuer[256];
+                char subject[1024], issuer[1024];
 
                 X509_NAME_oneline(X509_get_subject_name(err_cert), subject, sizeof(subject));
                 X509_NAME_oneline(X509_get_issuer_name(err_cert), issuer, sizeof(issuer));

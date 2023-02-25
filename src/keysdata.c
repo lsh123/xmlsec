@@ -2960,9 +2960,9 @@ xmlSecX509DataGetNodeContent(xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx, xm
             }
             /* only read the first digestAlgorithm */
             if((*digestAlgorithm) == NULL) {
-                (*digestAlgorithm) = xmlGetProp(node, xmlSecAttrAlgorithm);
+                (*digestAlgorithm) = xmlGetProp(cur, xmlSecAttrAlgorithm);
                 if((*digestAlgorithm) == NULL) {
-                    xmlSecInvalidNodeAttributeError(node, xmlSecAttrAlgorithm, NULL, "empty");
+                    xmlSecInvalidNodeAttributeError(cur, xmlSecAttrAlgorithm, NULL, "empty");
                     return(-1);
                 }
             }
@@ -3154,7 +3154,7 @@ xmlSecKeyX509DataValueReset(xmlSecKeyX509DataValuePtr x509Value, int writeMode) 
     }
 
     /* we keep digest algorithm as-is for the next certificate if we are writing it out */
-    if((writeMode != 0) && (x509Value->digestAlgorithm != NULL)) {
+    if((writeMode == 0) && (x509Value->digestAlgorithm != NULL)) {
         xmlFree(x509Value->digestAlgorithm);
         x509Value->digestAlgorithm = NULL;
     }

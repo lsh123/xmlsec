@@ -974,22 +974,64 @@ const EVP_MD *
 xmlSecOpenSSLX509GetDigestFromAlgorithm(const xmlChar* href) {
     /* use SHA256 by default */
     if(href == NULL) {
+#ifndef XMLSEC_NO_SHA256
         return(EVP_sha256());
-    } else if(xmlStrcmp(href, xmlSecHrefSha1) == 0) {
+#else  /* XMLSEC_NO_SHA256 */
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
+            "sha256 disabled and href=%s", xmlSecErrorsSafeString(href));
+        return(NULL);
+#endif /* XMLSEC_NO_SHA256 */
+    } else
+
+#ifndef XMLSEC_NO_SHA1
+    if(xmlStrcmp(href, xmlSecHrefSha1) == 0) {
         return(EVP_sha1());
-    } else if(xmlStrcmp(href, xmlSecHrefSha224) == 0) {
+    } else
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA224
+    if(xmlStrcmp(href, xmlSecHrefSha224) == 0) {
         return(EVP_sha224());
-    } else if(xmlStrcmp(href, xmlSecHrefSha256) == 0) {
+    } else
+#endif /* XMLSEC_NO_SHA224 */
+
+#ifndef XMLSEC_NO_SHA256
+    if(xmlStrcmp(href, xmlSecHrefSha256) == 0) {
         return(EVP_sha256());
-    } else if(xmlStrcmp(href, xmlSecHrefSha384) == 0) {
+    } else
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+    if(xmlStrcmp(href, xmlSecHrefSha384) == 0) {
         return(EVP_sha384());
-    } else if(xmlStrcmp(href, xmlSecHrefSha512) == 0) {
+    } else
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+    if(xmlStrcmp(href, xmlSecHrefSha512) == 0) {
         return(EVP_sha512());
-    } else {
+    } else
+#endif /* XMLSEC_NO_SHA512 */
+
+#ifndef XMLSEC_NO_SHA3
+    if(xmlStrcmp(href, xmlSecHrefSha3_224) == 0) {
+        return(EVP_sha3_224());
+    } else if(xmlStrcmp(href, xmlSecHrefSha3_256) == 0) {
+        return(EVP_sha3_256());
+    } else if(xmlStrcmp(href, xmlSecHrefSha3_384) == 0) {
+        return(EVP_sha3_384());
+    } else if(xmlStrcmp(href, xmlSecHrefSha3_512) == 0) {
+        return(EVP_sha3_512());
+    } else
+
+#endif /* XMLSEC_NO_SHA3 */
+    {
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
             "href=%s", xmlSecErrorsSafeString(href));
         return(NULL);
     }
+
+
 }
 
 static int
@@ -1001,6 +1043,7 @@ xmlSecOpenSSLX509DigestWrite(X509* cert, const xmlChar* algorithm, xmlSecBufferP
 
     xmlSecAssert2(cert != NULL, -1);
     xmlSecAssert2(buf != NULL, -1);
+
 
     digest = xmlSecOpenSSLX509GetDigestFromAlgorithm(algorithm);
     if(digest == NULL) {

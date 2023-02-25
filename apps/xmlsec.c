@@ -1027,7 +1027,7 @@ static void                     xmlSecAppPrintHelp              (xmlSecAppComman
 static int                      xmlSecAppInit                   (void);
 static void                     xmlSecAppShutdown               (void);
 static int                      xmlSecAppLoadKeys               (void);
-static int                      xmlSecAppPrepareKeyInfoReadCtx  (xmlSecKeyInfoCtxPtr ctx);
+static int                      xmlSecAppPrepareKeyInfoCtx  (xmlSecKeyInfoCtxPtr ctx);
 
 #ifndef XMLSEC_NO_XMLDSIG
 static int                      xmlSecAppSignFile               (const char* inputFileName,
@@ -1638,8 +1638,12 @@ xmlSecAppPrepareDSigCtx(xmlSecDSigCtxPtr dsigCtx) {
     }
 
     /* set key info params */
-    if(xmlSecAppPrepareKeyInfoReadCtx(&(dsigCtx->keyInfoReadCtx)) < 0) {
-        fprintf(stderr, "Error: failed to prepare key info context\n");
+    if(xmlSecAppPrepareKeyInfoCtx(&(dsigCtx->keyInfoReadCtx)) < 0) {
+        fprintf(stderr, "Error: failed to prepare read key info context\n");
+        return(-1);
+    }
+    if(xmlSecAppPrepareKeyInfoCtx(&(dsigCtx->keyInfoWriteCtx)) < 0) {
+        fprintf(stderr, "Error: failed to prepare write key info context\n");
         return(-1);
     }
 
@@ -1965,8 +1969,12 @@ xmlSecAppPrepareEncCtx(xmlSecEncCtxPtr encCtx) {
     }
 
     /* set key info params */
-    if(xmlSecAppPrepareKeyInfoReadCtx(&(encCtx->keyInfoReadCtx)) < 0) {
-        fprintf(stderr, "Error: failed to prepare key info context\n");
+    if(xmlSecAppPrepareKeyInfoCtx(&(encCtx->keyInfoReadCtx)) < 0) {
+        fprintf(stderr, "Error: failed to prepare read key info context\n");
+        return(-1);
+    }
+    if(xmlSecAppPrepareKeyInfoCtx(&(encCtx->keyInfoWriteCtx)) < 0) {
+        fprintf(stderr, "Error: failed to prepare write key info context\n");
         return(-1);
     }
 
@@ -2039,7 +2047,7 @@ xmlSecAppCheckTransform(const char * name) {
 }
 
 static int
-xmlSecAppPrepareKeyInfoReadCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
+xmlSecAppPrepareKeyInfoCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecAppCmdLineValuePtr value;
     int ret;
     xmlSecKeyDataId dataId;
@@ -2104,7 +2112,6 @@ xmlSecAppPrepareKeyInfoReadCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
             return(-1);
         }
     }
-
 
     /* read enabled KeyInfoReference uris */
     if(xmlSecAppCmdLineParamGetStringList(&enabledKeyInfoReferenceUrisParam) != NULL) {

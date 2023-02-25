@@ -1030,8 +1030,6 @@ xmlSecOpenSSLX509GetDigestFromAlgorithm(const xmlChar* href) {
             "href=%s", xmlSecErrorsSafeString(href));
         return(NULL);
     }
-
-
 }
 
 static int

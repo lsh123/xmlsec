@@ -180,6 +180,33 @@ if [ "z$crypto" = "zopenssl" -o "z$crypto" = "znss" ] ; then
         "--exact-key-search --privkey-der $topfolder/keys/largersakey.der,$topfolder/keys/largersacert.der --pwd secret123" \
         "--exact-key-search --session-key aes-256 --pubkey-cert-$cert_format $topfolder/keys/largersacert.$cert_format --xml-data $topfolder/aleksey-xmlenc-01/enc_rsa_1_5_x509_subject_name.data --node-name http://example.org/paymentv2:CreditCard" \
         "--exact-key-search --privkey-der $topfolder/keys/largersakey.der,$topfolder/keys/largersacert.der --pwd secret123"
+
+    execEncTest $res_success \
+        "" \
+        "aleksey-xmlenc-01/enc_rsa_1_5_x509_issuer_name_serial" \
+        "aes256-cbc rsa-1_5" \
+        "x509" \
+        "--exact-key-search --privkey-der $topfolder/keys/largersakey.der,$topfolder/keys/largersacert.der --pwd secret123" \
+        "--exact-key-search --session-key aes-256 --pubkey-cert-$cert_format $topfolder/keys/largersacert.$cert_format --xml-data $topfolder/aleksey-xmlenc-01/enc_rsa_1_5_x509_issuer_name_serial.data --node-name http://example.org/paymentv2:CreditCard" \
+        "--exact-key-search --privkey-der $topfolder/keys/largersakey.der,$topfolder/keys/largersacert.der --pwd secret123"
+
+    execEncTest $res_success \
+        "" \
+        "aleksey-xmlenc-01/enc_rsa_1_5_x509_ski" \
+        "aes256-cbc rsa-1_5" \
+        "x509" \
+        "--exact-key-search --privkey-der $topfolder/keys/largersakey.der,$topfolder/keys/largersacert.der --pwd secret123" \
+        "--exact-key-search --session-key aes-256 --pubkey-cert-$cert_format $topfolder/keys/largersacert.$cert_format --xml-data $topfolder/aleksey-xmlenc-01/enc_rsa_1_5_x509_ski.data --node-name http://example.org/paymentv2:CreditCard" \
+        "--exact-key-search --privkey-der $topfolder/keys/largersakey.der,$topfolder/keys/largersacert.der --pwd secret123"
+
+    execEncTest $res_success \
+        "" \
+        "aleksey-xmlenc-01/enc_rsa_1_5_x509_digest" \
+        "aes256-cbc rsa-1_5 sha256" \
+        "x509" \
+        "--exact-key-search --privkey-der $topfolder/keys/largersakey.der,$topfolder/keys/largersacert.der --pwd secret123" \
+        "--exact-key-search --session-key aes-256 --pubkey-cert-$cert_format $topfolder/keys/largersacert.$cert_format --xml-data $topfolder/aleksey-xmlenc-01/enc_rsa_1_5_x509_digest.data --node-name http://example.org/paymentv2:CreditCard" \
+        "--exact-key-search --privkey-der $topfolder/keys/largersakey.der,$topfolder/keys/largersacert.der --pwd secret123"
 fi
 
 

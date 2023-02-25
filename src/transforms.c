@@ -3416,6 +3416,7 @@ xmlSecTransformPbkdf2ParamsRead(xmlSecTransformPbkdf2ParamsPtr params, xmlNodePt
     int ret;
 
     xmlSecAssert2(params != NULL, -1);
+    xmlSecAssert2(params->prfAlgorithmHref == NULL, -1);
     xmlSecAssert2(node != NULL, -1);
 
     /* first node is required Salt */

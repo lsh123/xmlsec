@@ -186,12 +186,15 @@ xmlSecOpenSSLKdfFinalize(xmlSecTransformPtr transform) {
     if(ctx->kctx != NULL) {
         EVP_KDF_CTX_free(ctx->kctx);
     }
+
     if(ctx->digest != NULL) {
         xmlFree(ctx->digest);
     }
+
     if(ctx->mac != NULL) {
         xmlFree(ctx->mac);
     }
+
     xmlSecBufferFinalize(&(ctx->buffer));
 
     memset(ctx, 0, sizeof(xmlSecOpenSSLKdfCtx));
@@ -689,7 +692,7 @@ xmlSecOpenSSLPbkdf2NodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     res = 0;
 
 done:
-    if(paramsInitialized != 1) {
+    if(paramsInitialized != 0) {
         xmlSecTransformPbkdf2ParamsFinalize(&params);
     }
     return(res);

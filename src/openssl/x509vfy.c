@@ -189,7 +189,7 @@ xmlSecOpenSSLX509StoreFindCert_ex(xmlSecKeyDataStorePtr store,
     xmlSecKeyInfoCtx* keyInfoCtx ATTRIBUTE_UNUSED
 ) {
     xmlSecOpenSSLX509StoreCtxPtr ctx;
-    xmlSecOpenSSLX509FindCertCtx findCertsCtx;
+    xmlSecOpenSSLX509FindCertCtx findCertCtx;
     x509_size_t ii;
     int ret;
     X509* res = NULL;
@@ -204,13 +204,13 @@ xmlSecOpenSSLX509StoreFindCert_ex(xmlSecKeyDataStorePtr store,
     if(ctx->untrusted == NULL) {
         return(NULL);
     }
-    ret = xmlSecOpenSSLX509FindCertCtxInitialize(&findCertsCtx,
+    ret = xmlSecOpenSSLX509FindCertCtxInitialize(&findCertCtx,
             subjectName,
             issuerName, issuerSerial,
             ski, skiSize);
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLX509FindCertCtxInitialize", NULL);
-        xmlSecOpenSSLX509FindCertCtxFinalize(&findCertsCtx);
+        xmlSecOpenSSLX509FindCertCtxFinalize(&findCertCtx);
         return(NULL);
     }
     for(ii = 0; ii < sk_X509_num(ctx->untrusted); ++ii) {
@@ -219,10 +219,10 @@ xmlSecOpenSSLX509StoreFindCert_ex(xmlSecKeyDataStorePtr store,
             continue;
         }
 
-        ret = xmlSecOpenSSLX509FindCertCtxMatch(&findCertsCtx, cert);
+        ret = xmlSecOpenSSLX509FindCertCtxMatch(&findCertCtx, cert);
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLX509FindCertCtxMatch", NULL);
-            xmlSecOpenSSLX509FindCertCtxFinalize(&findCertsCtx);
+            xmlSecOpenSSLX509FindCertCtxFinalize(&findCertCtx);
             return(NULL);
         } else if(ret == 1) {
             res = cert;
@@ -231,14 +231,14 @@ xmlSecOpenSSLX509StoreFindCert_ex(xmlSecKeyDataStorePtr store,
     }
 
     /* done */
-    xmlSecOpenSSLX509FindCertCtxFinalize(&findCertsCtx);
+    xmlSecOpenSSLX509FindCertCtxFinalize(&findCertCtx);
     return(res);
 }
 
 X509*
 xmlSecOpenSSLX509StoreFindCertByValue(xmlSecKeyDataStorePtr store, xmlSecKeyX509DataValuePtr x509Value) {
     xmlSecOpenSSLX509StoreCtxPtr ctx;
-    xmlSecOpenSSLX509FindCertCtx findCertsCtx;
+    xmlSecOpenSSLX509FindCertCtx findCertCtx;
     x509_size_t ii;
     int ret;
     X509* res = NULL;
@@ -252,10 +252,10 @@ xmlSecOpenSSLX509StoreFindCertByValue(xmlSecKeyDataStorePtr store, xmlSecKeyX509
     if(ctx->untrusted == NULL) {
         return(NULL);
     }
-    ret = xmlSecOpenSSLX509FindCertCtxInitializeFromValue(&findCertsCtx, x509Value);
+    ret = xmlSecOpenSSLX509FindCertCtxInitializeFromValue(&findCertCtx, x509Value);
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLX509FindCertCtxInitializeFromValue", NULL);
-        xmlSecOpenSSLX509FindCertCtxFinalize(&findCertsCtx);
+        xmlSecOpenSSLX509FindCertCtxFinalize(&findCertCtx);
         return(NULL);
     }
     for(ii = 0; ii < sk_X509_num(ctx->untrusted); ++ii) {
@@ -264,10 +264,10 @@ xmlSecOpenSSLX509StoreFindCertByValue(xmlSecKeyDataStorePtr store, xmlSecKeyX509
             continue;
         }
 
-        ret = xmlSecOpenSSLX509FindCertCtxMatch(&findCertsCtx, cert);
+        ret = xmlSecOpenSSLX509FindCertCtxMatch(&findCertCtx, cert);
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLX509FindCertCtxMatch", NULL);
-            xmlSecOpenSSLX509FindCertCtxFinalize(&findCertsCtx);
+            xmlSecOpenSSLX509FindCertCtxFinalize(&findCertCtx);
             return(NULL);
         } else if(ret == 1) {
             res = cert;
@@ -276,13 +276,13 @@ xmlSecOpenSSLX509StoreFindCertByValue(xmlSecKeyDataStorePtr store, xmlSecKeyX509
     }
 
     /* done */
-    xmlSecOpenSSLX509FindCertCtxFinalize(&findCertsCtx);
+    xmlSecOpenSSLX509FindCertCtxFinalize(&findCertCtx);
     return(res);
 }
 
 xmlSecKeyPtr
 xmlSecOpenSSLX509FindKeyByValue(xmlSecPtrListPtr keysList, xmlSecKeyX509DataValuePtr x509Value) {
-    xmlSecOpenSSLX509FindCertCtx findCertsCtx;
+    xmlSecOpenSSLX509FindCertCtx findCertCtx;
     xmlSecSize keysListSize, ii;
     xmlSecKeyPtr res = NULL;
     int ret;
@@ -290,10 +290,10 @@ xmlSecOpenSSLX509FindKeyByValue(xmlSecPtrListPtr keysList, xmlSecKeyX509DataValu
     xmlSecAssert2(keysList != NULL, NULL);
     xmlSecAssert2(x509Value != NULL, NULL);
 
-    ret = xmlSecOpenSSLX509FindCertCtxInitializeFromValue(&findCertsCtx, x509Value);
+    ret = xmlSecOpenSSLX509FindCertCtxInitializeFromValue(&findCertCtx, x509Value);
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLX509FindCertCtxInitializeFromValue", NULL);
-        xmlSecOpenSSLX509FindCertCtxFinalize(&findCertsCtx);
+        xmlSecOpenSSLX509FindCertCtxFinalize(&findCertCtx);
         return(NULL);
     }
 
@@ -318,10 +318,10 @@ xmlSecOpenSSLX509FindKeyByValue(xmlSecPtrListPtr keysList, xmlSecKeyX509DataValu
         }
 
         /* does it match? */
-        ret = xmlSecOpenSSLX509FindCertCtxMatch(&findCertsCtx, keyCert);
+        ret = xmlSecOpenSSLX509FindCertCtxMatch(&findCertCtx, keyCert);
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLX509FindCertCtxMatch", NULL);
-            xmlSecOpenSSLX509FindCertCtxFinalize(&findCertsCtx);
+            xmlSecOpenSSLX509FindCertCtxFinalize(&findCertCtx);
             return(NULL);
         } else if(ret == 1) {
             res = key;
@@ -330,7 +330,7 @@ xmlSecOpenSSLX509FindKeyByValue(xmlSecPtrListPtr keysList, xmlSecKeyX509DataValu
     }
 
     /* done */
-    xmlSecOpenSSLX509FindCertCtxFinalize(&findCertsCtx);
+    xmlSecOpenSSLX509FindCertCtxFinalize(&findCertCtx);
     return(res);
 }
 

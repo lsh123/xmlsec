@@ -130,6 +130,7 @@ xmlSecBufferFinalize(xmlSecBufferPtr buf) {
     xmlSecAssert(buf != NULL);
 
     xmlSecBufferEmpty(buf);
+
     if(buf->data != 0) {
         xmlFree(buf->data);
     }
@@ -149,7 +150,6 @@ xmlSecBufferEmpty(xmlSecBufferPtr buf) {
 
     if(buf->data != 0) {
         xmlSecAssert(buf->maxSize > 0);
-
         memset(buf->data, 0, buf->maxSize);
     }
     buf->size = 0;

@@ -557,7 +557,7 @@ xmlSecOpenSSLKeyDataX509XmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr
     xmlSecAssert2(id == xmlSecOpenSSLKeyDataX509Id, -1);
     xmlSecAssert2(key != NULL, -1);
 
-    data = xmlSecKeyDataCreate(xmlSecOpenSSLKeyDataX509Id);
+    data = xmlSecKeyDataCreate(id);
     if(data == NULL) {
         xmlSecInternalError("xmlSecKeyDataCreate(xmlSecOpenSSLKeyDataX509Id)", xmlSecKeyDataKlassGetName(id));
         return(-1);
@@ -582,10 +582,6 @@ xmlSecOpenSSLKeyDataX509XmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr
         xmlSecInternalError("xmlSecOpenSSLVerifyAndAdoptX509KeyData", xmlSecKeyDataKlassGetName(id));
         xmlSecKeyDataDestroy(data);
         return(-1);
-    } else if(ret != 1) {
-        /* no errors but key was not found and data was not adopted */
-        xmlSecKeyDataDestroy(data);
-        return(0);
     }
     data = NULL; /* owned by data now */
 
@@ -1438,9 +1434,9 @@ xmlSecOpenSSLX509CertGetTime(ASN1_TIME * t, time_t* res) {
     (*res) = timegm(&tm) - offset * 60;
     return(0);
 }
+
 #endif /* !defined(OPENSSL_IS_BORINGSSL) */
 
-/* returns 1 if cert was found and verified and also data was adopted, 0 if not, or negative value if an error occurs */
 static int
 xmlSecOpenSSLVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecOpenSSLX509DataCtxPtr ctx;
@@ -1535,8 +1531,8 @@ xmlSecOpenSSLVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data, 
         return(-1);
     }
 
-    /* success: cert found and data was adopted */
-    return(1);
+    /* success */
+    return(0);
 }
 
 /**
@@ -1811,10 +1807,6 @@ xmlSecOpenSSLKeyDataRawX509CertBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         xmlSecInternalError("xmlSecOpenSSLVerifyAndAdoptX509KeyData", xmlSecKeyDataKlassGetName(id));
         xmlSecKeyDataDestroy(data);
         return(-1);
-    } else if(ret != 1) {
-        /* no errors but key was not found and data was not adopted */
-        xmlSecKeyDataDestroy(data);
-        return(0);
     }
     data = NULL; /* owned by data now */
 

@@ -127,6 +127,7 @@ xmlSecOpenSSLKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
     return(xmlSecKeyStoreFindKey(*simplekeystore, name, keyInfoCtx));
 }
 
+
 static xmlSecKeyPtr
 xmlSecOpenSSLKeysStoreFindKeyFromX509Data(xmlSecKeyStorePtr store, xmlSecKeyX509DataValuePtr x509Data,
     xmlSecKeyInfoCtxPtr keyInfoCtx

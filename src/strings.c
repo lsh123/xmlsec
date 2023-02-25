@@ -654,6 +654,7 @@ const xmlChar xmlSecNodeX509IssuerSerial[]      = "X509IssuerSerial";
 const xmlChar xmlSecNodeX509IssuerName[]        = "X509IssuerName";
 const xmlChar xmlSecNodeX509SerialNumber[]      = "X509SerialNumber";
 const xmlChar xmlSecNodeX509SKI[]               = "X509SKI";
+const xmlChar xmlSecNodeX509Digest[]            = "X509Digest";
 
 const xmlChar xmlSecNameRawX509Cert[]           = "raw-x509-cert";
 const xmlChar xmlSecHrefRawX509Cert[]           = "http://www.w3.org/2000/09/xmldsig#rawX509Certificate";

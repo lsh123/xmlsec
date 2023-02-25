@@ -1094,6 +1094,19 @@ xmlSecOpenSSLRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
         XMLSEC_OPENSSL_OAEP_DIGEST_SETUP(ctx, EVP_sha512(), OSSL_DIGEST_NAME_SHA2_512);
     } else
 #endif /* XMLSEC_NO_SHA512 */
+
+#ifndef XMLSEC_NO_SHA3
+    if(xmlStrcmp(oaepParams.digestAlgorithm, xmlSecHrefSha3_224) == 0) {
+        XMLSEC_OPENSSL_OAEP_DIGEST_SETUP(ctx, EVP_sha3_224(), OSSL_DIGEST_NAME_SHA3_224);
+    } else if(xmlStrcmp(oaepParams.digestAlgorithm, xmlSecHrefSha3_256) == 0) {
+        XMLSEC_OPENSSL_OAEP_DIGEST_SETUP(ctx, EVP_sha3_256(), OSSL_DIGEST_NAME_SHA3_256);
+    } else if(xmlStrcmp(oaepParams.digestAlgorithm, xmlSecHrefSha3_384) == 0) {
+        XMLSEC_OPENSSL_OAEP_DIGEST_SETUP(ctx, EVP_sha3_384(), OSSL_DIGEST_NAME_SHA3_384);
+    } else if(xmlStrcmp(oaepParams.digestAlgorithm, xmlSecHrefSha3_512) == 0) {
+        XMLSEC_OPENSSL_OAEP_DIGEST_SETUP(ctx, EVP_sha3_512(), OSSL_DIGEST_NAME_SHA3_512);
+    } else
+#endif /* XMLSEC_NO_SHA3 */
+
     {
        xmlSecInvalidTransfromError2(transform,
             "digest algorithm=\"%s\" is not supported for rsa/oaep",

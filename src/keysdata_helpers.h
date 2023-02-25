@@ -13,10 +13,12 @@
 
 
 #ifndef XMLSEC_PRIVATE
-#error "private.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-$crypto libraries"
+#error "keysdata_helpers.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-$crypto libraries"
 #endif /* XMLSEC_PRIVATE */
 
 #include <xmlsec/keysdata.h>
+#include <xmlsec/keysmngr.h>
+#include <xmlsec/x509.h>
 
 /**************************************************************************
  *
@@ -304,49 +306,42 @@ XMLSEC_EXPORT int               xmlSecKeyDataDsaXmlWrite                (xmlSecK
  * Helper functions to read/write X509 Keys
  *
  *************************************************************************/
-typedef struct _xmlSecKeyValueX509 {
-    xmlSecBuffer cert;
-    xmlSecBuffer crl;
-    xmlSecBuffer ski;
-    xmlChar* subject;
-    xmlChar* issuerName;
-    xmlChar* issuerSerial;
-} xmlSecKeyValueX509, *xmlSecKeyValueX509Ptr;
+
 
 /**
  * xmlSecKeyDataX509Read:
- * @data:               the pointer to result @xmlSecKeyData.
- * @x509Value:          the pointer to input @xmlSecKeyValueX509.
+ * @data:               the pointer to X509 key data
+ * @x509Value:          the pointer to input @xmlSecKeyX509DataValue.
  * @keysMngr:           the pointer to @xmlSecKeysMngr.
  * @flags:              the flags for certs processing.
  *
- * Creates xmlSecKeyData from @dsaValue
  *
- * Returns: the poitner to xmlSecKeyData or NULL if an error occurs.
+ * Returns: 0 on success and a negative value otherwise.
  */
 typedef int                    (*xmlSecKeyDataX509Read)                 (xmlSecKeyDataPtr data,
-                                                                         xmlSecKeyValueX509Ptr x509Value,
+                                                                         xmlSecKeyX509DataValuePtr x509Value,
                                                                          xmlSecKeysMngrPtr keysMngr,
                                                                          unsigned int flags);
 
 /**
  * xmlSecKeyDataX509Write:
  * @data:               the pointer to result @xmlSecKeyData.
- * @x509Value:          the pointer to result @xmlSecKeyValueX509.
+ * @x509Value:          the pointer to result @xmlSecKeyX509DataValue.
  * @content:            the bitmask of what should be output to @x509Value.
  * @context:            the writer function context.
  *
  * If available, writes the next X509 object (cert or crl) into @x509Value.
  *
- * Returns: 0 on success, 1 if no more certs/crls are available, or a negative'
+ * Returns: 1 on success, 0 if no more certs/crls are available, or a negative
  * value if an error occurs.
  */
 typedef int                    (*xmlSecKeyDataX509Write)                (xmlSecKeyDataPtr data,
-                                                                         xmlSecKeyValueX509Ptr x509Value,
+                                                                         xmlSecKeyX509DataValuePtr x509Value,
                                                                          int content,
                                                                          void* context);
 
-XMLSEC_EXPORT int               xmlSecKeyDataX509XmlRead                (xmlSecKeyDataPtr data,
+XMLSEC_EXPORT int               xmlSecKeyDataX509XmlRead                (xmlSecKeyPtr key,
+                                                                         xmlSecKeyDataPtr data,
                                                                          xmlNodePtr node,
                                                                          xmlSecKeyInfoCtxPtr keyInfoCtx,
                                                                          xmlSecKeyDataX509Read readFunc);

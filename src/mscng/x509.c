@@ -430,8 +430,9 @@ xmlSecMSCngKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data,
     return(0);
 }
 
+/* xmlSecKeyDataX509Read: 0 on success and a negative value otherwise */
 static int
-xmlSecMSCngKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyValueX509Ptr x509Value,
+xmlSecMSCngKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x509Value,
     xmlSecKeysMngrPtr keysMngr, unsigned int flags) {
     xmlSecKeyDataStorePtr x509Store;
     int stopOnUnknownCert = 0;
@@ -547,25 +548,22 @@ xmlSecMSCngKeyDataX509XmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     data = xmlSecKeyEnsureData(key, id);
     if (data == NULL) {
-        xmlSecInternalError("xmlSecKeyEnsureData",
-            xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecKeyEnsureData", xmlSecKeyDataKlassGetName(id));
         return(-1);
     }
 
-    ret = xmlSecKeyDataX509XmlRead(data, node, keyInfoCtx,
-        xmlSecMSCngKeyDataX509Read);
+    ret = xmlSecKeyDataX509XmlRead(key, data, node, keyInfoCtx, xmlSecMSCngKeyDataX509Read);
     if (ret < 0) {
-        xmlSecInternalError("xmlSecKeyDataX509XmlRead",
-            xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecKeyDataX509XmlRead", xmlSecKeyDataKlassGetName(id));
         return(-1);
     }
 
     ret = xmlSecMSCngKeyDataX509VerifyAndExtractKey(data, key, keyInfoCtx);
     if (ret < 0) {
-        xmlSecInternalError("xmlSecMSCngKeyDataX509VerifyAndExtractKey",
-            xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecMSCngKeyDataX509VerifyAndExtractKey", xmlSecKeyDataKlassGetName(id));
         return(-1);
     }
+
     return(0);
 }
 
@@ -703,8 +701,11 @@ typedef struct _xmlSecMSCngKeyDataX5099WriteContext {
     int doneCrls;
 } xmlSecMSCngKeyDataX5099WriteContext;
 
+/* xmlSecKeyDataX509Write: returns 1 on success, 0 if no more certs/crls are available,
+ * or a negative value if an error occurs.
+ */
 static int
-xmlSecMSCngKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyValueX509Ptr x509Value,
+xmlSecMSCngKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x509Value,
                             int content, void* context) {
     xmlSecMSCngKeyDataX5099WriteContext* ctx;
     int ret;
@@ -766,7 +767,7 @@ xmlSecMSCngKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyValueX509Ptr x509Val
                 }
             }
             /* done */
-            return(0);
+            return(1);
         } else {
             ctx->doneCrts = 1;
         }
@@ -787,7 +788,7 @@ xmlSecMSCngKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyValueX509Ptr x509Val
                 }
             }
             /* done */
-            return(0);
+            return(1);
         } else {
             ctx->doneCrls = 1;
         }
@@ -796,7 +797,7 @@ xmlSecMSCngKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyValueX509Ptr x509Val
     /* no more certs or crls */
     xmlSecAssert2(ctx->doneCrts != 0, -1);
     xmlSecAssert2(ctx->doneCrls != 0, -1);
-    return(1);
+    return(0);
 }
 
 static int

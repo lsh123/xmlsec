@@ -462,6 +462,16 @@ static xmlSecAppCmdLineParam privkeyOpensslEngineParam = {
     NULL
 };
 
+static xmlSecAppCmdLineParam exactKeySearchParam = {
+    xmlSecAppCmdLineTopicKeysMngr,
+    "--exact-key-search",
+    NULL,
+    "--exact-key-search"
+    "\n\tonly search for keys using <dsig:KeyInfo/> data",
+    xmlSecAppCmdLineParamTypeFlag,
+    xmlSecAppCmdLineParamFlagNone,
+    NULL
+};
 
 /****************************************************************
  *
@@ -924,6 +934,7 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
     &pubkeyDerParam,
     &pwdParam,
     &privkeyOpensslEngineParam,
+    &exactKeySearchParam,
 
 #ifndef XMLSEC_NO_AES
     &aesKeyParam,
@@ -2057,6 +2068,10 @@ xmlSecAppPrepareKeyInfoReadCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
     }
 #endif /* XMLSEC_NO_X509 */
 
+    if(xmlSecAppCmdLineParamIsSet(&exactKeySearchParam)) {
+        keyInfoCtx->flags |= XMLSEC_KEYINFO_FLAGS_EXACT_KEY_SEARCH;
+    }
+
     /* read enabled key data list */
     for(value = enabledKeyDataParam.value; value != NULL; value = value->next) {
         if(value->strListValue == NULL) {
@@ -2453,7 +2468,6 @@ xmlSecAppLoadKeys(void) {
             return(-1);
         }
     }
-
 
     return(0);
 }

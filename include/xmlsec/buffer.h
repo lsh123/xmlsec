@@ -68,6 +68,7 @@ XMLSEC_EXPORT void              xmlSecBufferDestroy             (xmlSecBufferPtr
 XMLSEC_EXPORT int               xmlSecBufferInitialize          (xmlSecBufferPtr buf,
                                                                  xmlSecSize size);
 XMLSEC_EXPORT void              xmlSecBufferFinalize            (xmlSecBufferPtr buf);
+XMLSEC_EXPORT int               xmlSecBufferIsEmpty             (xmlSecBufferPtr buf);
 XMLSEC_EXPORT xmlSecByte*       xmlSecBufferGetData             (xmlSecBufferPtr buf);
 XMLSEC_EXPORT int               xmlSecBufferSetData             (xmlSecBufferPtr buf,
                                                                  const xmlSecByte* data,

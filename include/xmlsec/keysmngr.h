@@ -27,6 +27,8 @@ typedef const struct _xmlSecKeyKlass                    xmlSecKeyKlass,
 typedef const struct _xmlSecKeyStoreKlass               xmlSecKeyStoreKlass,
                                                         *xmlSecKeyStoreId;
 
+typedef struct _xmlSecKeyX509DataValue                  xmlSecKeyX509DataValue,
+                                                        *xmlSecKeyX509DataValuePtr;
 
 /****************************************************************************
  *
@@ -38,6 +40,10 @@ XMLSEC_EXPORT void                      xmlSecKeysMngrDestroy           (xmlSecK
 
 XMLSEC_EXPORT xmlSecKeyPtr              xmlSecKeysMngrFindKey           (xmlSecKeysMngrPtr mngr,
                                                                          const xmlChar* name,
+                                                                         xmlSecKeyInfoCtxPtr keyInfoCtx);
+
+XMLSEC_EXPORT xmlSecKeyPtr              xmlSecKeysMngrFindKeyFromX509Data(xmlSecKeysMngrPtr mngr,
+                                                                         xmlSecKeyX509DataValuePtr x509Data,
                                                                          xmlSecKeyInfoCtxPtr keyInfoCtx);
 
 XMLSEC_EXPORT int                       xmlSecKeysMngrAdoptKeysStore    (xmlSecKeysMngrPtr mngr,
@@ -106,6 +112,9 @@ XMLSEC_EXPORT xmlSecKeyStorePtr xmlSecKeyStoreCreate            (xmlSecKeyStoreI
 XMLSEC_EXPORT void              xmlSecKeyStoreDestroy           (xmlSecKeyStorePtr store);
 XMLSEC_EXPORT xmlSecKeyPtr      xmlSecKeyStoreFindKey           (xmlSecKeyStorePtr store,
                                                                  const xmlChar* name,
+                                                                 xmlSecKeyInfoCtxPtr keyInfoCtx);
+XMLSEC_EXPORT xmlSecKeyPtr      xmlSecKeyStoreFindKeyFromX509Data(xmlSecKeyStorePtr store,
+                                                                 xmlSecKeyX509DataValuePtr x509Data,
                                                                  xmlSecKeyInfoCtxPtr keyInfoCtx);
 /**
  * xmlSecKeyStoreGetName:
@@ -194,6 +203,22 @@ typedef xmlSecKeyPtr            (*xmlSecKeyStoreFindKeyMethod)  (xmlSecKeyStoreP
                                                                  const xmlChar* name,
                                                                  xmlSecKeyInfoCtxPtr keyInfoCtx);
 
+
+/**
+ * xmlSecKeyStoreFindKeyFromX509DataMethod:
+ * @store:              the store.
+ * @x509Data:           the x509 data to lookup key.
+ * @keyInfoCtx:         the pointer to key info context.
+ *
+ * Keys store specific find method. The caller is responsible for destroying
+ * the returned key using #xmlSecKeyDestroy method.
+ *
+ * Returns: the pointer to a key or NULL if key is not found or an error occurs.
+ */
+typedef xmlSecKeyPtr            (*xmlSecKeyStoreFindKeyFromX509DataMethod)(xmlSecKeyStorePtr store,
+                                                                 xmlSecKeyX509DataValuePtr x509Data,
+                                                                 xmlSecKeyInfoCtxPtr keyInfoCtx);
+
 /**
  * xmlSecKeyStoreKlass:
  * @klassSize:          the store klass size.
@@ -215,13 +240,15 @@ struct _xmlSecKeyStoreKlass {
     const xmlChar*                      name;
 
     /* constructors/destructor */
-    xmlSecKeyStoreInitializeMethod      initialize;
-    xmlSecKeyStoreFinalizeMethod        finalize;
-    xmlSecKeyStoreFindKeyMethod         findKey;
+    xmlSecKeyStoreInitializeMethod              initialize;
+    xmlSecKeyStoreFinalizeMethod                finalize;
+
+    /* key loopkup */
+    xmlSecKeyStoreFindKeyMethod                 findKey;
+    xmlSecKeyStoreFindKeyFromX509DataMethod     findKeyFromX509Data;
 
     /* for the future */
     void*                               reserved0;
-    void*                               reserved1;
 };
 
 /**

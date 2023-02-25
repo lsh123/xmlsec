@@ -346,10 +346,10 @@ static xmlSecKeyStoreKlass xmlSecMSCngKeysStoreKlass = {
     xmlSecMSCngKeysStoreInitialize,             /* xmlSecKeyStoreInitializeMethod initialize; */
     xmlSecMSCngKeysStoreFinalize,               /* xmlSecKeyStoreFinalizeMethod finalize; */
     xmlSecMSCngKeysStoreFindKey,                /* xmlSecKeyStoreFindKeyMethod findKey; */
+    NULL,                                       /* xmlSecKeyStoreFindKeyFromX509DataMethod findKeyFromX509Data; */
 
     /* reserved for the future */
     NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
 };
 
 /**

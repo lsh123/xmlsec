@@ -43,6 +43,7 @@
 
 #include "../cast_helpers.h"
 #include "openssl_compat.h"
+#include "private.h"
 
 #ifdef OPENSSL_IS_BORINGSSL
 typedef size_t x509_size_t;
@@ -93,12 +94,6 @@ static xmlSecKeyDataStoreKlass xmlSecOpenSSLX509StoreKlass = {
 
 static int              xmlSecOpenSSLX509VerifyCRL                      (X509_STORE* xst,
                                                                          X509_CRL *crl );
-static X509*            xmlSecOpenSSLX509FindCert                       (STACK_OF(X509) *certs,
-                                                                         xmlChar *subjectName,
-                                                                         xmlChar *issuerName,
-                                                                         xmlChar *issuerSerial,
-                                                                         xmlSecByte * ski,
-                                                                         xmlSecSize skiSize);
 static X509*            xmlSecOpenSSLX509FindNextChainCert              (STACK_OF(X509) *chain,
                                                                          X509 *cert);
 static int              xmlSecOpenSSLX509VerifyCertAgainstCrls          (STACK_OF(X509_CRL) *crls,
@@ -141,7 +136,7 @@ xmlSecOpenSSLX509StoreGetKlass(void) {
  * @ski:                the desired certificate SKI.
  * @keyInfoCtx:         the pointer to <dsig:KeyInfo/> element processing context.
  *
- * Searches @store for a certificate that matches given criteria.
+ * Deprecated. Searches @store for a certificate that matches given criteria.
  *
  * Returns: pointer to found certificate or NULL if certificate is not found
  * or an error occurs.
@@ -149,7 +144,8 @@ xmlSecOpenSSLX509StoreGetKlass(void) {
 X509*
 xmlSecOpenSSLX509StoreFindCert(xmlSecKeyDataStorePtr store, xmlChar *subjectName,
                                 xmlChar *issuerName, xmlChar *issuerSerial,
-                                xmlChar *ski, xmlSecKeyInfoCtx* keyInfoCtx ) {
+                                xmlChar *ski, xmlSecKeyInfoCtx* keyInfoCtx
+) {
     if(ski != NULL) {
         xmlSecSize skiDecodedSize = 0;
         int ret;
@@ -167,7 +163,6 @@ xmlSecOpenSSLX509StoreFindCert(xmlSecKeyDataStorePtr store, xmlChar *subjectName
     } else {
         return(xmlSecOpenSSLX509StoreFindCert_ex(store, subjectName, issuerName, issuerSerial,
             NULL, 0, keyInfoCtx));
-
     }
 }
 
@@ -181,17 +176,22 @@ xmlSecOpenSSLX509StoreFindCert(xmlSecKeyDataStorePtr store, xmlChar *subjectName
  * @skiSize:            the desired certificate SKI size.
  * @keyInfoCtx:         the pointer to <dsig:KeyInfo/> element processing context.
  *
- * Searches @store for a certificate that matches given criteria.
+ * Deprecated. Searches @store for a certificate that matches given criteria.
  *
  * Returns: pointer to found certificate or NULL if certificate is not found
  * or an error occurs.
  */
 X509*
-xmlSecOpenSSLX509StoreFindCert_ex(xmlSecKeyDataStorePtr store, xmlChar *subjectName,
-                                 xmlChar *issuerName,  xmlChar *issuerSerial,
-                                 xmlSecByte * ski, xmlSecSize skiSize,
-                                 xmlSecKeyInfoCtx* keyInfoCtx ATTRIBUTE_UNUSED) {
+xmlSecOpenSSLX509StoreFindCert_ex(xmlSecKeyDataStorePtr store,
+    xmlChar *subjectName,
+    xmlChar *issuerName, xmlChar *issuerSerial,
+    xmlSecByte * ski, xmlSecSize skiSize,
+    xmlSecKeyInfoCtx* keyInfoCtx ATTRIBUTE_UNUSED
+) {
     xmlSecOpenSSLX509StoreCtxPtr ctx;
+    xmlSecOpenSSLX509FindCertCtx findCertsCtx;
+    x509_size_t ii;
+    int ret;
     X509* res = NULL;
 
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecOpenSSLX509StoreId), NULL);
@@ -200,11 +200,137 @@ xmlSecOpenSSLX509StoreFindCert_ex(xmlSecKeyDataStorePtr store, xmlChar *subjectN
     ctx = xmlSecOpenSSLX509StoreGetCtx(store);
     xmlSecAssert2(ctx != NULL, NULL);
 
-    if((res == NULL) && (ctx->untrusted != NULL)) {
-        res = xmlSecOpenSSLX509FindCert(ctx->untrusted, subjectName,
+    /* do we have any certs at all? */
+    if(ctx->untrusted == NULL) {
+        return(NULL);
+    }
+    ret = xmlSecOpenSSLX509FindCertCtxInitialize(&findCertsCtx,
+            subjectName,
             issuerName, issuerSerial,
             ski, skiSize);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecOpenSSLX509FindCertCtxInitialize", NULL);
+        xmlSecOpenSSLX509FindCertCtxFinalize(&findCertsCtx);
+        return(NULL);
     }
+    for(ii = 0; ii < sk_X509_num(ctx->untrusted); ++ii) {
+        X509 * cert = sk_X509_value(ctx->untrusted, ii);
+        if(cert == NULL) {
+            continue;
+        }
+
+        ret = xmlSecOpenSSLX509FindCertCtxMatch(&findCertsCtx, cert);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecOpenSSLX509FindCertCtxMatch", NULL);
+            xmlSecOpenSSLX509FindCertCtxFinalize(&findCertsCtx);
+            return(NULL);
+        } else if(ret == 1) {
+            res = cert;
+            break;
+        }
+    }
+
+    /* done */
+    xmlSecOpenSSLX509FindCertCtxFinalize(&findCertsCtx);
+    return(res);
+}
+
+X509*
+xmlSecOpenSSLX509StoreFindCertByValue(xmlSecKeyDataStorePtr store, xmlSecKeyX509DataValuePtr x509Value) {
+    xmlSecOpenSSLX509StoreCtxPtr ctx;
+    xmlSecOpenSSLX509FindCertCtx findCertsCtx;
+    x509_size_t ii;
+    int ret;
+    X509* res = NULL;
+
+    xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecOpenSSLX509StoreId), NULL);
+
+    ctx = xmlSecOpenSSLX509StoreGetCtx(store);
+    xmlSecAssert2(ctx != NULL, NULL);
+
+    /* do we have any certs at all? */
+    if(ctx->untrusted == NULL) {
+        return(NULL);
+    }
+    ret = xmlSecOpenSSLX509FindCertCtxInitializeFromValue(&findCertsCtx, x509Value);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecOpenSSLX509FindCertCtxInitializeFromValue", NULL);
+        xmlSecOpenSSLX509FindCertCtxFinalize(&findCertsCtx);
+        return(NULL);
+    }
+    for(ii = 0; ii < sk_X509_num(ctx->untrusted); ++ii) {
+        X509 * cert = sk_X509_value(ctx->untrusted, ii);
+        if(cert == NULL) {
+            continue;
+        }
+
+        ret = xmlSecOpenSSLX509FindCertCtxMatch(&findCertsCtx, cert);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecOpenSSLX509FindCertCtxMatch", NULL);
+            xmlSecOpenSSLX509FindCertCtxFinalize(&findCertsCtx);
+            return(NULL);
+        } else if(ret == 1) {
+            res = cert;
+            break;
+        }
+    }
+
+    /* done */
+    xmlSecOpenSSLX509FindCertCtxFinalize(&findCertsCtx);
+    return(res);
+}
+
+xmlSecKeyPtr
+xmlSecOpenSSLX509FindKeyByValue(xmlSecPtrListPtr keysList, xmlSecKeyX509DataValuePtr x509Value) {
+    xmlSecOpenSSLX509FindCertCtx findCertsCtx;
+    xmlSecSize keysListSize, ii;
+    xmlSecKeyPtr res = NULL;
+    int ret;
+
+    xmlSecAssert2(keysList != NULL, NULL);
+    xmlSecAssert2(x509Value != NULL, NULL);
+
+    ret = xmlSecOpenSSLX509FindCertCtxInitializeFromValue(&findCertsCtx, x509Value);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecOpenSSLX509FindCertCtxInitializeFromValue", NULL);
+        xmlSecOpenSSLX509FindCertCtxFinalize(&findCertsCtx);
+        return(NULL);
+    }
+
+    keysListSize = xmlSecPtrListGetSize(keysList);
+    for(ii = 0; ii < keysListSize; ++ii) {
+        xmlSecKeyPtr key;
+        xmlSecKeyDataPtr keyData;
+        X509* keyCert;
+
+        /* get key's cert from x509 key data */
+        key = (xmlSecKeyPtr)xmlSecPtrListGetItem(keysList, ii);
+        if(key == NULL) {
+            continue;
+        }
+        keyData = xmlSecKeyGetData(key, xmlSecOpenSSLKeyDataX509Id);
+        if(keyData == NULL) {
+            continue;
+        }
+        keyCert = xmlSecOpenSSLKeyDataX509GetKeyCert(keyData);
+        if(keyCert == NULL) {
+            continue;
+        }
+
+        /* does it match? */
+        ret = xmlSecOpenSSLX509FindCertCtxMatch(&findCertsCtx, keyCert);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecOpenSSLX509FindCertCtxMatch", NULL);
+            xmlSecOpenSSLX509FindCertCtxFinalize(&findCertsCtx);
+            return(NULL);
+        } else if(ret == 1) {
+            res = key;
+            break;
+        }
+    }
+
+    /* done */
+    xmlSecOpenSSLX509FindCertCtxFinalize(&findCertsCtx);
     return(res);
 }
 
@@ -378,7 +504,7 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
                 goto done;
             } else if(ret == 0) {
                 const char* err_msg;
-                char subject[256], issuer[256];
+                char subject[1024], issuer[1024];
 
                 X509_NAME_oneline(X509_get_subject_name(err_cert), subject, sizeof(subject));
                 X509_NAME_oneline(X509_get_issuer_name(err_cert), issuer, sizeof(issuer));
@@ -763,124 +889,274 @@ err:
     return(-1);
 }
 
-static X509*
-xmlSecOpenSSLX509FindCert(STACK_OF(X509) *certs, xmlChar *subjectName,
-                        xmlChar *issuerName, xmlChar *issuerSerial,
-                        xmlSecByte * ski, xmlSecSize skiSize) {
-    X509 *cert = NULL;
-    x509_size_t ii;
 
-    xmlSecAssert2(certs != NULL, NULL);
+int xmlSecOpenSSLX509FindCertCtxInitialize(xmlSecOpenSSLX509FindCertCtxPtr ctx,
+    const xmlChar *subjectName,
+    const xmlChar *issuerName, xmlChar *issuerSerial,
+    const xmlSecByte * ski, xmlSecSize skiSize
+) {
+    xmlSecAssert2(ctx != NULL, -1);
 
-    /* todo: may be this is not the fastest way to search certs */
+    memset(ctx, 0, sizeof(*ctx));
 
-    /* search by subject name if available */
-    if(subjectName != NULL) {
-        X509_NAME *nm;
-        X509_NAME *subj;
-
-        nm = xmlSecOpenSSLX509NameRead(subjectName);
-        if(nm == NULL) {
-            xmlSecInternalError2("xmlSecOpenSSLX509NameRead", NULL,
-                "subject=%s", xmlSecErrorsSafeString(subjectName));
-            return(NULL);
-        }
-        for(ii = 0; ii < sk_X509_num(certs); ++ii) {
-            cert = sk_X509_value(certs, ii);
-            subj = X509_get_subject_name(cert);
-            if(xmlSecOpenSSLX509NamesCompare(nm, subj) == 0) {
-                X509_NAME_free(nm);
-                return(cert);
-            }
-        }
-        X509_NAME_free(nm);
+    /* simplest one first */
+    if((ski != NULL) && (skiSize > 0)) {
+        ctx->ski = ski;
+        XMLSEC_SAFE_CAST_SIZE_TO_INT(skiSize, ctx->skiLen, return(-1), NULL);
     }
 
-    /* search by issuer name+serial if available */
-    if((issuerName != NULL) && (issuerSerial != NULL)) {
-        X509_NAME *nm;
-        X509_NAME *issuer;
-        BIGNUM *bn;
-        ASN1_INTEGER *serial;
 
-        nm = xmlSecOpenSSLX509NameRead(issuerName);
-        if(nm == NULL) {
+    if(subjectName != NULL) {
+        ctx->subjectName = xmlSecOpenSSLX509NameRead(subjectName);
+        if(ctx->subjectName == NULL) {
+            xmlSecInternalError2("xmlSecOpenSSLX509NameRead", NULL,
+                "subject=%s", xmlSecErrorsSafeString(subjectName));
+            xmlSecOpenSSLX509FindCertCtxFinalize(ctx);
+            return(-1);
+        }
+    }
+
+    if((issuerName != NULL) && (issuerSerial != NULL)) {
+        BIGNUM *bn = NULL;
+
+        ctx->issuerName = xmlSecOpenSSLX509NameRead(issuerName);
+        if(ctx->issuerName == NULL) {
             xmlSecInternalError2("xmlSecOpenSSLX509NameRead", NULL,
                 "issuer=%s", xmlSecErrorsSafeString(issuerName));
-            return(NULL);
+            xmlSecOpenSSLX509FindCertCtxFinalize(ctx);
+            return(-1);
         }
 
         bn = BN_new();
         if(bn == NULL) {
             xmlSecOpenSSLError("BN_new", NULL);
-            X509_NAME_free(nm);
-            return(NULL);
+            xmlSecOpenSSLX509FindCertCtxFinalize(ctx);
+            return(-1);
         }
         if(BN_dec2bn(&bn, (char*)issuerSerial) == 0) {
             xmlSecOpenSSLError("BN_dec2bn", NULL);
             BN_clear_free(bn);
-            X509_NAME_free(nm);
-            return(NULL);
+            xmlSecOpenSSLX509FindCertCtxFinalize(ctx);
+            return(-1);
         }
-
-        serial = BN_to_ASN1_INTEGER(bn, NULL);
-        if(serial == NULL) {
+        ctx->issuerSerial = BN_to_ASN1_INTEGER(bn, NULL);
+        if(ctx->issuerSerial == NULL) {
             xmlSecOpenSSLError("BN_to_ASN1_INTEGER", NULL);
             BN_clear_free(bn);
-            X509_NAME_free(nm);
-            return(NULL);
+            xmlSecOpenSSLX509FindCertCtxFinalize(ctx);
+            return(-1);
         }
         BN_clear_free(bn);
-
-
-        for(ii = 0; ii < sk_X509_num(certs); ++ii) {
-            cert = sk_X509_value(certs, ii);
-            if(ASN1_INTEGER_cmp(X509_get_serialNumber(cert), serial) != 0) {
-                continue;
-            }
-            issuer = X509_get_issuer_name(cert);
-            if(xmlSecOpenSSLX509NamesCompare(nm, issuer) == 0) {
-                ASN1_INTEGER_free(serial);
-                X509_NAME_free(nm);
-                return(cert);
-            }
-        }
-        X509_NAME_free(nm);
-        ASN1_INTEGER_free(serial);
     }
 
-    /* search by SKI if available */
-    if((ski != NULL) && (skiSize > 0)){
-        int index, skiLen;
-        X509_EXTENSION *ext;
-        ASN1_OCTET_STRING *keyId;
+    /* done! */
+    return(0);
+}
 
-        /* we need len as int since OpenSSL keyId->length is int */
-        XMLSEC_SAFE_CAST_SIZE_TO_INT(skiSize, skiLen, return(NULL), NULL);
-        for(ii = 0; ii < sk_X509_num(certs); ++ii) {
-            cert = sk_X509_value(certs, ii);
-            index = X509_get_ext_by_NID(cert, NID_subject_key_identifier, -1);
-            if(index < 0) {
-                continue;
-            }
-            ext = X509_get_ext(cert, index);
-            if(ext == NULL) {
-                continue;
-            }
-            keyId = (ASN1_OCTET_STRING *)X509V3_EXT_d2i(ext);
-            if(keyId == NULL) {
-                continue;
-            }
+int
+xmlSecOpenSSLX509FindCertCtxInitializeFromValue(xmlSecOpenSSLX509FindCertCtxPtr ctx, xmlSecKeyX509DataValuePtr x509Value) {
+    int ret;
 
-            if((keyId->length == skiLen) && (memcmp(keyId->data, ski, skiSize) == 0)) {
-                ASN1_OCTET_STRING_free(keyId);
-                return(cert);
-            }
-            ASN1_OCTET_STRING_free(keyId);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(x509Value != NULL, -1);
+
+    ret = xmlSecOpenSSLX509FindCertCtxInitialize(ctx,
+                x509Value->subject,
+                x509Value->issuerName, x509Value->issuerSerial,
+                xmlSecBufferGetData(&(x509Value->ski)), xmlSecBufferGetSize(&(x509Value->ski))
+    );
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecOpenSSLX509FindCertCtxInitialize", NULL);
+        xmlSecOpenSSLX509FindCertCtxFinalize(ctx);
+        return(-1);
+    }
+
+    if((!xmlSecBufferIsEmpty(&(x509Value->digest))) && (x509Value->digestAlgorithm != NULL)) {
+        xmlSecSize digestSize;
+
+        ctx->digestValue = xmlSecBufferGetData(&(x509Value->digest));
+        digestSize = xmlSecBufferGetSize(&(x509Value->digest));
+        XMLSEC_SAFE_CAST_SIZE_TO_UINT(digestSize, ctx->digestLen, return(-1), NULL);
+
+        ctx->digestMd = xmlSecOpenSSLX509GetDigestFromAlgorithm(x509Value->digestAlgorithm);
+        if(ctx->digestMd == NULL) {
+            xmlSecInternalError("xmlSecOpenSSLX509GetDigestFromAlgorithm", NULL);
+            xmlSecOpenSSLX509FindCertCtxFinalize(ctx);
+            return(-1);
         }
     }
 
-    return(NULL);
+    return(0);
+}
+
+void xmlSecOpenSSLX509FindCertCtxFinalize(xmlSecOpenSSLX509FindCertCtxPtr ctx) {
+    xmlSecAssert(ctx != NULL);
+
+    if(ctx->subjectName != NULL) {
+        X509_NAME_free(ctx->subjectName);
+    }
+    if(ctx->issuerName != NULL) {
+        X509_NAME_free(ctx->issuerName);
+    }
+    if(ctx->issuerSerial != NULL) {
+        ASN1_INTEGER_free(ctx->issuerSerial);
+    }
+    memset(ctx, 0, sizeof(*ctx));
+}
+
+
+static int
+xmlSecOpenSSLX509MatchBySubjectName(X509* cert, X509_NAME* subjectName) {
+    X509_NAME * certSubjectName;
+    xmlSecAssert2(cert != NULL, -1);
+
+    if(subjectName == NULL) {
+        return(0);
+    }
+
+    certSubjectName = X509_get_subject_name(cert);
+    if(certSubjectName == NULL) {
+        return(0);
+    }
+
+    if(xmlSecOpenSSLX509NamesCompare(subjectName, certSubjectName) != 0) {
+        return(0);
+    }
+
+    /* success */
+    return(1);
+}
+
+static int
+xmlSecOpenSSLX509MatchByIssuer(X509* cert,  X509_NAME* issuerName, ASN1_INTEGER* issuerSerial) {
+    ASN1_INTEGER* certSerial;
+    X509_NAME* certName;
+
+    xmlSecAssert2(cert != NULL, -1);
+
+    if((issuerName == NULL) || (issuerSerial == NULL)) {
+        return(0);
+    }
+
+    certSerial = X509_get_serialNumber(cert);
+    if((certSerial == NULL) || (ASN1_INTEGER_cmp(certSerial, issuerSerial) != 0)) {
+        return(0);
+    }
+    certName = X509_get_issuer_name(cert);
+    if((certName == NULL) || (xmlSecOpenSSLX509NamesCompare(certName, issuerName) != 0)) {
+        return(0);
+    }
+
+    /* success */
+    return(1);
+}
+
+static int
+xmlSecOpenSSLX509MatchBySki(X509* cert, const xmlSecByte* ski, int skiLen) {
+    X509_EXTENSION* ext;
+    ASN1_OCTET_STRING* keyId;
+    int index;
+
+    xmlSecAssert2(cert != NULL, -1);
+
+    if((ski == NULL) || (skiLen <= 0)) {
+        return(0);
+    }
+
+    index = X509_get_ext_by_NID(cert, NID_subject_key_identifier, -1);
+    if(index < 0) {
+        return(0);
+    }
+    ext = X509_get_ext(cert, index);
+    if(ext == NULL) {
+        return(0);
+    }
+    keyId = (ASN1_OCTET_STRING *)X509V3_EXT_d2i(ext);
+    if(keyId == NULL) {
+        return(0);
+    }
+    if((keyId->length != skiLen) || (memcmp(keyId->data, ski, (size_t)skiLen) != 0)) {
+        ASN1_OCTET_STRING_free(keyId);
+        return(0);
+    }
+    ASN1_OCTET_STRING_free(keyId);
+
+    /* success */
+    return(1);
+}
+
+static int
+xmlSecOpenSSLX509MatchByDigest(X509* cert, const xmlSecByte * digestValue, unsigned int digestLen, const EVP_MD* digest) {
+    xmlSecByte md[EVP_MAX_MD_SIZE];
+    unsigned int len = 0;
+    int ret;
+
+    xmlSecAssert2(cert != NULL, -1);
+
+    if((digestValue == NULL) || (digestLen <= 0) || (digest == NULL)) {
+        return(0);
+    }
+
+    ret = X509_digest(cert, digest, md, &len);
+    if((ret != 1) || (len <= 0)) {
+        xmlSecOpenSSLError("X509_digest", NULL);
+        return(-1);
+    }
+
+    if((len != digestLen) || (memcmp(md, digestValue, digestLen) != 0)) {
+        return(0);
+    }
+
+    /* success */
+    return(1);
+}
+
+/* returns 1 for match, 0 for no match, and a negative value if an error occurs */
+int
+xmlSecOpenSSLX509FindCertCtxMatch(xmlSecOpenSSLX509FindCertCtxPtr ctx, X509* cert) {
+    int ret;
+
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(cert != NULL, -1);
+
+    ret = xmlSecOpenSSLX509MatchBySubjectName(cert, ctx->subjectName);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecOpenSSLX509MatchBySubjectName", NULL);
+        return(-1);
+    } else if(ret == 1) {
+        /* success! */
+        return(1);
+    }
+
+    ret = xmlSecOpenSSLX509MatchByIssuer(cert, ctx->issuerName, ctx->issuerSerial);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecOpenSSLX509MatchByIssuer", NULL);
+        return(-1);
+    } else if(ret == 1) {
+        /* success! */
+        return(1);
+    }
+
+    ret = xmlSecOpenSSLX509MatchBySki(cert, ctx->ski, ctx->skiLen);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecOpenSSLX509MatchBySki", NULL);
+        return(-1);
+    } else if(ret == 1) {
+        /* success! */
+        return(1);
+    }
+
+    ret = xmlSecOpenSSLX509MatchByDigest(cert, ctx->digestValue, ctx->digestLen, ctx->digestMd);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecOpenSSLX509MatchByDigest", NULL);
+        return(-1);
+    } else if(ret == 1) {
+        /* success! */
+        return(1);
+    }
+
+    /* not found */
+    return(0);
 }
 
 static unsigned long

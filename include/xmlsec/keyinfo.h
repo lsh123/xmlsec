@@ -155,6 +155,17 @@ typedef enum {
  */
 #define XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_STRICT_CHECKS        0x00004000
 
+
+/**
+ * XMLSEC_KEYINFO_FLAGS_EXACT_KEY_SEARCH:
+ *
+ * If the flag is set then we'll not try to find any key that matches requirements
+ * (e.g. *any* RSA public key) but only search keys using the data in <dsig:KeyInfo/>
+ * (e.g. KeyName value) and fail if we can't find the key matching <dsig:KeyInfo/>
+ * data.
+ */
+#define XMLSEC_KEYINFO_FLAGS_EXACT_KEY_SEARCH                   0x00008000
+
 /**
  * xmlSecKeyInfoCtx:
  * @userData:           the pointer to user data (xmlsec and xmlsec-crypto

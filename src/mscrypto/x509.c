@@ -127,11 +127,11 @@ typedef struct _xmlSecMSCryptoKeyDataX509Context {
 } xmlSecMSCryptoKeyDataX509Context;
 
 static int              xmlSecMSCryptoKeyDataX509Read          (xmlSecKeyDataPtr data,
-                                                                xmlSecKeyValueX509Ptr x509Value,
+                                                                xmlSecKeyX509DataValuePtr x509Value,
                                                                 xmlSecKeysMngrPtr keysMngr,
                                                                 unsigned int flags);
 static int              xmlSecMSCryptoKeyDataX509Write         (xmlSecKeyDataPtr data,
-                                                                xmlSecKeyValueX509Ptr x509Value,
+                                                                xmlSecKeyX509DataValuePtr x509Value,
                                                                 int content,
                                                                 void* context);
 
@@ -543,23 +543,19 @@ xmlSecMSCryptoKeyDataX509XmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     data = xmlSecKeyEnsureData(key, id);
     if (data == NULL) {
-        xmlSecInternalError("xmlSecKeyEnsureData",
-            xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecKeyEnsureData", xmlSecKeyDataKlassGetName(id));
         return(-1);
     }
 
-    ret = xmlSecKeyDataX509XmlRead(data, node, keyInfoCtx,
-        xmlSecMSCryptoKeyDataX509Read);
+    ret = xmlSecKeyDataX509XmlRead(key, data, node, keyInfoCtx, xmlSecMSCryptoKeyDataX509Read);
     if (ret < 0) {
-        xmlSecInternalError("xmlSecKeyDataX509XmlRead",
-            xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecKeyDataX509XmlRead", xmlSecKeyDataKlassGetName(id));
         return(-1);
     }
 
     ret = xmlSecMSCryptoKeyDataX509VerifyAndExtractKey(data, key, keyInfoCtx);
     if (ret < 0) {
-        xmlSecInternalError("xmlSecMSCryptoKeyDataX509VerifyAndExtractKey",
-            xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecMSCryptoKeyDataX509VerifyAndExtractKey", xmlSecKeyDataKlassGetName(id));
         return(-1);
     }
     return(0);
@@ -683,9 +679,9 @@ xmlSecMSCryptoKeyDataX509DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     fprintf(output, "</X509Data>\n");
 }
 
-
+/* xmlSecKeyDataX509Read: 0 on success and a negative value otherwise */
 static int
-xmlSecMSCryptoKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyValueX509Ptr x509Value,
+xmlSecMSCryptoKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x509Value,
     xmlSecKeysMngrPtr keysMngr, unsigned int flags) {
     xmlSecKeyDataStorePtr x509Store;
     int stopOnUnknownCert = 0;
@@ -790,9 +786,11 @@ done:
     return(res);
 }
 
-
+/* xmlSecKeyDataX509Write: returns 1 on success, 0 if no more certs/crls are available,
+ * or a negative value if an error occurs.
+ */
 static int
-xmlSecMSCryptoKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyValueX509Ptr x509Value,
+xmlSecMSCryptoKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x509Value,
     int content, void* context) {
     xmlSecMSCryptoKeyDataX509Context* ctx;
     int ret;
@@ -892,11 +890,11 @@ xmlSecMSCryptoKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyValueX509Ptr x509
     }
     else {
         /* no more certs or crls */
-        return(1);
+        return(0);
     }
 
     /* success */
-    return(0);
+    return(1);
 }
 
 static int

@@ -605,6 +605,37 @@ xmlSecKeyCopy(xmlSecKeyPtr keyDst, xmlSecKeyPtr keySrc) {
     return(0);
 }
 
+#define XMLSEC_SWAP(val1, val2, TYPE)   \
+    {                                   \
+        TYPE _tmp = (val1);             \
+        (val1) = (val2);                \
+        (val2) = _tmp;                  \
+    }
+
+/**
+ * xmlSecKeySwap:
+ * @key1:             the first key.
+ * @key2:             the second key.
+ *
+ * Swaps key data for @key1 and@key2
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecKeySwap(xmlSecKeyPtr key1, xmlSecKeyPtr key2) {
+    xmlSecAssert2(key1 != NULL, -1);
+    xmlSecAssert2(key2 != NULL, -1);
+
+    XMLSEC_SWAP(key1->name,             key2->name,             xmlChar*);
+    XMLSEC_SWAP(key1->value,            key2->value,            xmlSecKeyDataPtr);
+    XMLSEC_SWAP(key1->dataList,         key2->dataList,         xmlSecPtrListPtr);
+    XMLSEC_SWAP(key1->usage,            key2->usage,            xmlSecKeyUsage);
+    XMLSEC_SWAP(key1->notValidBefore,   key2->notValidBefore,   time_t);
+    XMLSEC_SWAP(key1->notValidAfter,    key2->notValidAfter,    time_t);
+
+    return(0);
+}
+
 /**
  * xmlSecKeyDuplicate:
  * @key:                the pointer to the #xmlSecKey structure.
@@ -1249,8 +1280,8 @@ xmlSecKeysMngrGetKey(xmlNodePtr keyInfoNode, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     }
     xmlSecKeyDestroy(key);
 
-    /* if we have keys manager, try it */
-    if(keyInfoCtx->keysMngr != NULL) {
+    /* if we have keys manager, try to find any key that matches the required key (unless we were told NOT to do it) */
+    if(((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_EXACT_KEY_SEARCH) == 0) &&  (keyInfoCtx->keysMngr != NULL)) {
         key = xmlSecKeysMngrFindKey(keyInfoCtx->keysMngr, NULL, keyInfoCtx);
         if(key == NULL) {
             xmlSecInternalError("xmlSecKeysMngrFindKey", NULL);
@@ -1290,4 +1321,3 @@ xmlSecPtrListId
 xmlSecKeyPtrListGetKlass(void) {
     return(&xmlSecKeyPtrListKlass);
 }
-

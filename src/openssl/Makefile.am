@@ -27,6 +27,7 @@ libxmlsec1_openssl_la_SOURCES =\
 	evp_signatures.c \
 	kdf.c \
 	key_agrmnt.c \
+	keysstore.c \
 	hmac.c \
 	kw_aes.c \
 	kw_des.c \
@@ -36,6 +37,7 @@ libxmlsec1_openssl_la_SOURCES =\
 	x509.c \
 	x509vfy.c \
 	globals.h \
+	private.h \
 	openssl_compat.h \
 	$(NULL)
 

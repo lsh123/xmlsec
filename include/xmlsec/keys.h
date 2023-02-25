@@ -204,7 +204,8 @@ XMLSEC_EXPORT void              xmlSecKeyEmpty          (xmlSecKeyPtr key);
 XMLSEC_EXPORT xmlSecKeyPtr      xmlSecKeyDuplicate      (xmlSecKeyPtr key);
 XMLSEC_EXPORT int               xmlSecKeyCopy           (xmlSecKeyPtr keyDst,
                                                          xmlSecKeyPtr keySrc);
-
+XMLSEC_EXPORT int               xmlSecKeySwap           (xmlSecKeyPtr key1,
+                                                         xmlSecKeyPtr key2);
 XMLSEC_EXPORT const xmlChar*    xmlSecKeyGetName        (xmlSecKeyPtr key);
 XMLSEC_EXPORT int               xmlSecKeySetName        (xmlSecKeyPtr key,
                                                          const xmlChar* name);

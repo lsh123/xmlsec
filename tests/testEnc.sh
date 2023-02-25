@@ -166,7 +166,22 @@ execEncTest $res_success \
 #
 # aleksey-xmlenc-01
 #
-##########################################################################
+#########################################################################
+
+
+# Only OpenSSL and NSS currently has capability to lookup the key using X509 data
+# TODO: add tests for lookup of private keys (may be in enc?)
+if [ "z$crypto" = "zopenssl" -o "z$crypto" = "znss" ] ; then
+    execEncTest $res_success \
+        "" \
+        "aleksey-xmlenc-01/enc_rsa_1_5_x509_subject_name" \
+        "aes256-cbc rsa-1_5" \
+        "x509" \
+        "--exact-key-search --privkey-der $topfolder/keys/largersakey.der,$topfolder/keys/largersacert.der --pwd secret123" \
+        "--exact-key-search --session-key aes-256 --pubkey-cert-$cert_format $topfolder/keys/largersacert.$cert_format --xml-data $topfolder/aleksey-xmlenc-01/enc_rsa_1_5_x509_subject_name.data --node-name http://example.org/paymentv2:CreditCard" \
+        "--exact-key-search --privkey-der $topfolder/keys/largersakey.der,$topfolder/keys/largersacert.der --pwd secret123"
+fi
+
 
 # same file is encrypted with two keys, test both
 execEncTest $res_success \

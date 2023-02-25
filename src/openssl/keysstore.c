@@ -144,7 +144,6 @@ xmlSecOpenSSLKeysStoreFindKeyFromX509Data(xmlSecKeyStorePtr store, xmlSecKeyX509
     simplekeystore = xmlSecOpenSSLKeysStoreGetCtx(store);
     xmlSecAssert2(((simplekeystore != NULL) && (*simplekeystore != NULL)), NULL);
 
-
     keysList = xmlSecSimpleKeysStoreGetKeys(*simplekeystore);
     if(keysList == NULL) {
         xmlSecInternalError("xmlSecSimpleKeysStoreGetKeys", NULL);

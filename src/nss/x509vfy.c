@@ -939,7 +939,25 @@ xmlSecNssX509FindCertCtxMatch(xmlSecNssX509FindCertCtxPtr ctx, CERTCertificate* 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(cert != NULL, -1);
 
-    /* TODO */
+
+    /* subject name */
+    if(ctx->subjectNameItem != NULL) {
+        if (SECITEM_ItemsAreEqual(&(cert->derSubject), ctx->subjectNameItem)) {
+            /* found a match */
+            return(1);
+        }
+    }
+
+    /* issuer name + serial */
+    if(ctx->issuerAndSNInitialized != 0) {
+        if (
+            SECITEM_ItemsAreEqual(&(cert->derIssuer),  &(ctx->issuerAndSN.derIssuer)) &&
+            SECITEM_ItemsAreEqual(&(cert->serialNumber),  &(ctx->issuerAndSN.serialNumber))
+        ) {
+            /* found a match */
+            return(1);
+        }
+    }
 
     /* ski */
     if( (ctx->skiItem.data != NULL) && (ctx->skiItem.len > 0)) {

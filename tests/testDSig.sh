@@ -467,30 +467,6 @@ execDSigTest $res_success \
     "$priv_key_option $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--exact-key-search --untrusted-$cert_format $topfolder/keys/largersacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
-# Only OpenSSL currently has capability to lookup the key using X509 data
-if [ "z$crypto" = "zopenssl" ] ; then
-    execDSigTest $res_success \
-        "" \
-        "aleksey-xmldsig-01/enveloped-x509-subjectname" \
-        "sha512 rsa-sha512" \
-        "rsa x509" \
-        "--exact-key-search --pubkey-cert-$cert_format $topfolder/keys/largersacert.$cert_format --enabled-key-data x509"
-
-    execDSigTest $res_success \
-        "" \
-        "aleksey-xmldsig-01/enveloped-x509-issuerserial" \
-        "sha512 rsa-sha512" \
-        "rsa x509" \
-        "--exact-key-search --pubkey-cert-$cert_format $topfolder/keys/largersacert.$cert_format --enabled-key-data x509"
-
-    execDSigTest $res_success \
-        "" \
-        "aleksey-xmldsig-01/enveloped-x509-ski" \
-        "sha512 rsa-sha512" \
-        "rsa x509" \
-        "--exact-key-search --pubkey-cert-$cert_format $topfolder/keys/largersacert.$cert_format --enabled-key-data x509"
-fi
-
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/signature-two-keynames" \

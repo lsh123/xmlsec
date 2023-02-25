@@ -34,6 +34,7 @@
 #include <cert.h>
 #include <certdb.h>
 #include <pk11func.h>
+#include <sechash.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/base64.h>
@@ -51,6 +52,7 @@
 
 #include "../cast_helpers.h"
 #include "../keysdata_helpers.h"
+#include "private.h"
 
 /* workaround - NSS exports this but doesn't declare it */
 extern CERTCertificate * __CERT_NewTempCertificate(CERTCertDBHandle *handle,
@@ -77,6 +79,9 @@ static CERTSignedCrl*   xmlSecNssX509CrlDerRead                 (xmlSecByte* buf
                                                                  unsigned int flags);
 static xmlChar*         xmlSecNssX509NameWrite                  (CERTName* nm);
 static xmlChar*         xmlSecNssASN1IntegerWrite               (SECItem *num);
+static int              xmlSecNssX509DigestWrite                (CERTCertificate* cert,
+                                                                 const xmlChar* algorithm,
+                                                                 xmlSecBufferPtr buf);
 static void             xmlSecNssX509CertDebugDump              (CERTCertificate* cert,
                                                                  FILE* output);
 static void             xmlSecNssX509CertDebugXmlDump           (CERTCertificate* cert,
@@ -913,6 +918,15 @@ xmlSecNssKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x509V
                 return(-1);
             }
         }
+        if(((content & XMLSEC_X509DATA_DIGEST_NODE) != 0) && (x509Value->digestAlgorithm != NULL)) {
+            ret = xmlSecNssX509DigestWrite(cert, x509Value->digestAlgorithm, &(x509Value->digest));
+            if(ret < 0) {
+                xmlSecInternalError2("xmlSecNssX509DigestWrite",
+                    xmlSecKeyDataGetName(data),
+                    "pos=" XMLSEC_SIZE_FMT, ctx->crtPos);
+                return(-1);
+            }
+        }
         ++ctx->crtPos;
     } else if(ctx->crlPos < ctx->crlSize) {
         /* write crl */
@@ -1236,6 +1250,51 @@ xmlSecNssASN1IntegerWrite(SECItem *num) {
 
     PR_snprintf((char*)res, XMLSEC_NSS_INT_TO_STR_MAX_SIZE, "%llu", val);
     return(res);
+}
+
+static int
+xmlSecNssX509DigestWrite(CERTCertificate* cert, const xmlChar* algorithm, xmlSecBufferPtr buf) {
+    SECOidTag digestAlg;
+    xmlSecByte digest[XMLSEC_NSS_MAX_DIGEST_SIZE];
+    unsigned int digestLen;
+    SECStatus status;
+    int ret;
+
+    xmlSecAssert2(cert != NULL, -1);
+    xmlSecAssert2(buf != NULL, -1);
+
+    if((cert->derCert.type != siBuffer) || (cert->derCert.data == NULL) || (cert->derCert.len <= 0)) {
+        xmlSecInternalError("cert->derCert is invalid", NULL);
+        return(-1);
+    }
+
+    digestAlg = xmlSecNssX509GetDigestFromAlgorithm(algorithm);
+    if(digestAlg == SEC_OID_UNKNOWN) {
+        xmlSecInternalError("xmlSecOpenSSLX509GetDigestFromAlgorithm", NULL);
+        return(-1);
+    }
+
+    digestLen = HASH_ResultLenByOidTag(digestAlg);
+    if((digestLen == 0) || (digestLen > sizeof(digest))) {
+        xmlSecNssError3("HASH_ResultLenByOidTag", NULL,
+            "digestAlgOid=%d; len=%u", (int)digestAlg, digestLen);
+        return(-1);
+    }
+    status = PK11_HashBuf(digestAlg, digest, cert->derCert.data, (PRInt32)cert->derCert.len);
+    if (status != SECSuccess) {
+        xmlSecNssError2("PK11_HashBuf(cert->derCert)", NULL,
+            "digestAlgOid=%d", (int)digestAlg);
+        return(-1);
+    }
+
+    ret = xmlSecBufferSetData(buf, digest, digestLen);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferSetData", NULL);
+        return(-1);
+    }
+
+    /* success */
+    return(0);
 }
 
 static void

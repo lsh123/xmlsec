@@ -32,6 +32,12 @@
 extern "C" {
 #endif /* __cplusplus */
 
+/**
+ * Maximum digest output size in bytes
+ */
+#define XMLSEC_NSS_MAX_DIGEST_SIZE              128
+
+
 /******************************************************************************
  *
  * X509 Util functions
@@ -56,7 +62,7 @@ typedef struct _xmlSecNssX509FindCertCtx {
 
     const xmlSecByte * digestValue; /* NOT OWNED */
     unsigned int digestLen;
-    /* const EVP_MD* digestMd; */
+    SECOidTag digestAlg;
 } xmlSecNssX509FindCertCtx, *xmlSecNssX509FindCertCtxPtr;
 
 XMLSEC_CRYPTO_EXPORT int        xmlSecNssX509FindCertCtxInitialize          (xmlSecNssX509FindCertCtxPtr ctx,
@@ -74,6 +80,8 @@ XMLSEC_CRYPTO_EXPORT int        xmlSecNssX509FindCertCtxMatch               (xml
 
 XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecNssX509FindKeyByValue               (xmlSecPtrListPtr keysList,
                                                                              xmlSecKeyX509DataValuePtr x509Value);
+
+XMLSEC_CRYPTO_EXPORT SECOidTag  xmlSecNssX509GetDigestFromAlgorithm   (const xmlChar* href);
 
 #endif /* XMLSEC_NO_X509 */
 

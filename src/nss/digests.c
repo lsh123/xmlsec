@@ -31,8 +31,7 @@
 #include <xmlsec/nss/crypto.h>
 
 #include "../cast_helpers.h"
-
-#define XMLSEC_NSS_MAX_DIGEST_SIZE              64
+#include "private.h"
 
 /**************************************************************************
  *

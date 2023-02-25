@@ -24,6 +24,7 @@
 
 #include <cert.h>
 #include <secerr.h>
+#include <sechash.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
@@ -793,6 +794,57 @@ xmlSecNssX509FindKeyByValue(xmlSecPtrListPtr keysList, xmlSecKeyX509DataValuePtr
  * xmlSecNssX509FindCertCtx
  *
  **********************************************************************************/
+SECOidTag
+xmlSecNssX509GetDigestFromAlgorithm(const xmlChar* href) {
+    /* use SHA256 by default */
+    if(href == NULL) {
+#ifndef XMLSEC_NO_SHA256
+        return(SEC_OID_SHA256);
+#else  /* XMLSEC_NO_SHA256 */
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
+            "sha256 disabled and href=%s", xmlSecErrorsSafeString(href));
+        return(SEC_OID_UNKNOWN);
+#endif /* XMLSEC_NO_SHA256 */
+    } else
+
+#ifndef XMLSEC_NO_SHA1
+    if(xmlStrcmp(href, xmlSecHrefSha1) == 0) {
+        return(SEC_OID_SHA1);
+    } else
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA224
+    if(xmlStrcmp(href, xmlSecHrefSha224) == 0) {
+        return(SEC_OID_SHA224);
+    } else
+#endif /* XMLSEC_NO_SHA224 */
+
+#ifndef XMLSEC_NO_SHA256
+    if(xmlStrcmp(href, xmlSecHrefSha256) == 0) {
+        return(SEC_OID_SHA256);
+    } else
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+    if(xmlStrcmp(href, xmlSecHrefSha384) == 0) {
+        return(SEC_OID_SHA384);
+    } else
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+    if(xmlStrcmp(href, xmlSecHrefSha512) == 0) {
+        return(SEC_OID_SHA512);
+    } else
+#endif /* XMLSEC_NO_SHA512 */
+
+    {
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
+            "href=%s", xmlSecErrorsSafeString(href));
+        return(SEC_OID_UNKNOWN);
+    }
+}
+
+
 int xmlSecNssX509FindCertCtxInitialize(xmlSecNssX509FindCertCtxPtr ctx,
     const xmlChar *subjectName,
     const xmlChar *issuerName, xmlChar *issuerSerial,
@@ -902,14 +954,12 @@ xmlSecNssX509FindCertCtxInitializeFromValue(xmlSecNssX509FindCertCtxPtr ctx, xml
         digestSize = xmlSecBufferGetSize(&(x509Value->digest));
         XMLSEC_SAFE_CAST_SIZE_TO_UINT(digestSize, ctx->digestLen, return(-1), NULL);
 
-        /* TODO:
-        ctx->digestMd = xmlSecNssX509GetDigestFromAlgorithm(x509Value->digestAlgorithm);
-        if(ctx->digestMd == NULL) {
+        ctx->digestAlg = xmlSecNssX509GetDigestFromAlgorithm(x509Value->digestAlgorithm);
+        if(ctx->digestAlg == SEC_OID_UNKNOWN) {
             xmlSecInternalError("xmlSecNssX509GetDigestFromAlgorithm", NULL);
             xmlSecNssX509FindCertCtxFinalize(ctx);
             return(-1);
         }
-        */
     }
 
     return(0);
@@ -945,6 +995,9 @@ xmlSecNssX509FindCertCtxMatch(xmlSecNssX509FindCertCtxPtr ctx, CERTCertificate* 
         if (SECITEM_ItemsAreEqual(&(cert->derSubject), ctx->subjectNameItem)) {
             /* found a match */
             return(1);
+        } else {
+            /* no match */
+            return(0);
         }
     }
 
@@ -956,6 +1009,9 @@ xmlSecNssX509FindCertCtxMatch(xmlSecNssX509FindCertCtxPtr ctx, CERTCertificate* 
         ) {
             /* found a match */
             return(1);
+        } else {
+            /* no match */
+            return(0);
         }
     }
 
@@ -971,6 +1027,7 @@ xmlSecNssX509FindCertCtxMatch(xmlSecNssX509FindCertCtxPtr ctx, CERTCertificate* 
         }
 
         if((tmpitem.len != ctx->skiItem.len) || (memcmp(tmpitem.data, ctx->skiItem.data, ctx->skiItem.len) != 0)) {
+            /* no match */
             SECITEM_FreeItem(&tmpitem, PR_FALSE);
             return(0);
         }
@@ -979,6 +1036,37 @@ xmlSecNssX509FindCertCtxMatch(xmlSecNssX509FindCertCtxPtr ctx, CERTCertificate* 
         /* found a match */
         return(1);
     }
+
+    /* cert digest */
+    if(
+         (ctx->digestAlg != SEC_OID_UNKNOWN) && (ctx->digestValue != NULL) && (ctx->digestLen > 0) &&
+        (cert->derCert.type == siBuffer) && (cert->derCert.data != NULL) && (cert->derCert.len > 0)
+    ) {
+        xmlSecByte digest[XMLSEC_NSS_MAX_DIGEST_SIZE];
+        unsigned int digestLen;
+
+        digestLen = HASH_ResultLenByOidTag(ctx->digestAlg);
+        if((digestLen == 0) || (digestLen > sizeof(digest))) {
+            xmlSecNssError3("HASH_ResultLenByOidTag", NULL,
+                "digestAlgOid=%d; len=%u", (int)ctx->digestAlg, digestLen);
+            return(-1);
+        }
+        status = PK11_HashBuf(ctx->digestAlg, digest, cert->derCert.data, (PRInt32)cert->derCert.len);
+        if (status != SECSuccess) {
+            xmlSecNssError2("PK11_HashBuf(cert->derCert)", NULL,
+                "digestAlgOid=%d", (int)ctx->digestAlg);
+            return(-1);
+        }
+
+        if((digestLen != ctx->digestLen) || (memcmp(digest, ctx->digestValue, ctx->digestLen) != 0)) {
+            /* no match */
+            return(0);
+        }
+
+        /* found a match */
+        return(1);
+    }
+
 
     return(0);
 }

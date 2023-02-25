@@ -44,7 +44,9 @@
 #include <xmlsec/nss/x509.h>
 #include <xmlsec/nss/pkikeys.h>
 
+#include "private.h"
 #include "../cast_helpers.h"
+
 /****************************************************************************
  *
  * Nss Keys Store. Uses Simple Keys Store under the hood
@@ -60,6 +62,9 @@ static void                     xmlSecNssKeysStoreFinalize      (xmlSecKeyStoreP
 static xmlSecKeyPtr             xmlSecNssKeysStoreFindKey       (xmlSecKeyStorePtr store,
                                                                  const xmlChar* name,
                                                                  xmlSecKeyInfoCtxPtr keyInfoCtx);
+static xmlSecKeyPtr            xmlSecNssKeysStoreFindKeyFromX509Data(xmlSecKeyStorePtr store,
+                                                                 xmlSecKeyX509DataValuePtr x509Data,
+                                                                 xmlSecKeyInfoCtxPtr keyInfoCtx);
 
 static xmlSecKeyStoreKlass xmlSecNssKeysStoreKlass = {
     sizeof(xmlSecKeyStoreKlass),
@@ -72,7 +77,7 @@ static xmlSecKeyStoreKlass xmlSecNssKeysStoreKlass = {
     xmlSecNssKeysStoreInitialize,       /* xmlSecKeyStoreInitializeMethod initialize; */
     xmlSecNssKeysStoreFinalize,         /* xmlSecKeyStoreFinalizeMethod finalize; */
     xmlSecNssKeysStoreFindKey,          /* xmlSecKeyStoreFindKeyMethod findKey; */
-    NULL,                               /* xmlSecKeyStoreFindKeyFromX509DataMethod findKeyFromX509Data; */
+    xmlSecNssKeysStoreFindKeyFromX509Data,  /* xmlSecKeyStoreFindKeyFromX509DataMethod findKeyFromX509Data; */
 
     /* reserved for the future */
     NULL,                               /* void* reserved0; */
@@ -329,4 +334,44 @@ done:
     }
 
     return (retval);
+}
+
+static xmlSecKeyPtr
+xmlSecNssKeysStoreFindKeyFromX509Data(xmlSecKeyStorePtr store, xmlSecKeyX509DataValuePtr x509Data,
+    xmlSecKeyInfoCtxPtr keyInfoCtx
+) {
+#ifndef XMLSEC_NO_X509
+    xmlSecKeyStorePtr* simplekeystore;
+    xmlSecPtrListPtr keysList;
+    xmlSecKeyPtr key, res;
+
+    xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecNssKeysStoreId), NULL);
+    xmlSecAssert2(keyInfoCtx != NULL, NULL);
+
+    simplekeystore = xmlSecNssKeysStoreGetCtx(store);
+    xmlSecAssert2(((simplekeystore != NULL) && (*simplekeystore != NULL)), NULL);
+
+    keysList = xmlSecSimpleKeysStoreGetKeys(*simplekeystore);
+    if(keysList == NULL) {
+        xmlSecInternalError("xmlSecSimpleKeysStoreGetKeys", NULL);
+        return(NULL);
+    }
+
+    key = xmlSecNssX509FindKeyByValue(keysList, x509Data);
+    if(key == NULL) {
+        /* not found */
+        return(NULL);
+    }
+
+    /* since not all key stores can return key owned by someone else, we need to duplicate the key */
+    res = xmlSecKeyDuplicate(key);
+    if(res == NULL) {
+        xmlSecInternalError("xmlSecKeyDuplicate", NULL);
+        return(NULL);
+    }
+
+    return(res);
+#else  /* XMLSEC_NO_X509 */
+    return(NULL);
+#endif /* XMLSEC_NO_X509 */
 }

@@ -68,13 +68,13 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecNssKeyDataRawX509CertGetKlass(void
 #define xmlSecNssX509StoreId \
         xmlSecNssX509StoreGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataStoreId xmlSecNssX509StoreGetKlass(void);
-XMLSEC_CRYPTO_EXPORT CERTCertificate*           xmlSecNssX509StoreFindCert      (xmlSecKeyDataStorePtr store,
+XMLSEC_DEPRECATED XMLSEC_CRYPTO_EXPORT CERTCertificate*  xmlSecNssX509StoreFindCert      (xmlSecKeyDataStorePtr store,
                                                                                  xmlChar *subjectName,
                                                                                  xmlChar *issuerName,
                                                                                  xmlChar *issuerSerial,
                                                                                  xmlChar *ski,
                                                                                  xmlSecKeyInfoCtx* keyInfoCtx);
-XMLSEC_CRYPTO_EXPORT CERTCertificate*           xmlSecNssX509StoreFindCert_ex   (xmlSecKeyDataStorePtr store,
+XMLSEC_DEPRECATED XMLSEC_CRYPTO_EXPORT CERTCertificate*  xmlSecNssX509StoreFindCert_ex   (xmlSecKeyDataStorePtr store,
                                                                                  xmlChar *subjectName,
                                                                                  xmlChar *issuerName,
                                                                                  xmlChar *issuerSerial,
@@ -82,9 +82,9 @@ XMLSEC_CRYPTO_EXPORT CERTCertificate*           xmlSecNssX509StoreFindCert_ex   
                                                                                  xmlSecSize skiSize,
                                                                                  xmlSecKeyInfoCtx* keyInfoCtx);
 
-XMLSEC_CRYPTO_EXPORT CERTCertificate*           xmlSecNssX509StoreVerify        (xmlSecKeyDataStorePtr store,
-                                                                                 CERTCertList* certs,
-                                                                                 xmlSecKeyInfoCtx* keyInfoCtx);
+XMLSEC_CRYPTO_EXPORT CERTCertificate*           xmlSecNssX509StoreVerify   (xmlSecKeyDataStorePtr store,
+                                                                            CERTCertList* certs,
+                                                                            xmlSecKeyInfoCtx* keyInfoCtx);
 XMLSEC_CRYPTO_EXPORT int                        xmlSecNssX509StoreAdoptCert (xmlSecKeyDataStorePtr store,
                                                                              CERTCertificate* cert,
                                                                              xmlSecKeyDataType type);

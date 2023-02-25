@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PaymentInfo xmlns="http://example.org/paymentv2">
+  <Name>John Smith</Name>
+  <CreditCard Currency="USD" Limit="5,000"><EncryptedData xmlns="http://www.w3.org/2001/04/xmlenc#" Id="ED" Type="http://www.w3.org/2001/04/xmlenc#Content">
+  <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#aes256-cbc"/>
+  <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <EncryptedKey xmlns="http://www.w3.org/2001/04/xmlenc#">
+      <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#rsa-1_5"> </EncryptionMethod>
+      <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+        <X509Data>
+          <X509IssuerSerial>
+<X509IssuerName>emailAddress=xmlsec@aleksey.com,CN=Aleksey Sanin,O=XML Security Library (http://www.aleksey.com/xmlsec),ST=California,C=US</X509IssuerName>
+<X509SerialNumber>12655831530416757424</X509SerialNumber>
+</X509IssuerSerial>
+        </X509Data>
+      </KeyInfo>
+      <CipherData>
+        <CipherValue>bkU1kYdnhaL9q1150M+1+NGDXp+1cj6SJXgKeCPW7v63wHToQMPh7NwzN/sRtQjw
+OnwEt3VdGm0cL681Fa5+WFqFpJ6IgWevaKV842a1tnjDjc0wdHhDu3OzIfmxddvL
+A47txjdTlzz5zXhlsgwriIpt0YDT5PzfA6JlLoihmWUIKU5vMrHIcofilkXWaFAa
+AkYURLrTU3AmDA8ebURNeFapglkjaFFrxfssBdQZRP9axKJs/uXh45IH3usmhUpc
+X6fysRg6TL4t9adwSEqHveWb/TPCufbYO5B+DAQm+I3XCMu6/X3zg2zgl2dgagX5
+p9RQveBPXF1uTBbd+bpgskWoXdbUdTx6bn7VxAzxubGJtVpUqarGmejYYtJl7/5L
+pxHNoWtF8L9mra4xDVYSOHYI/yxnpNggiTdB5D9GvIITrhUEeCGwrdZ3Bh/dsQBx
+fgAYXxcH+pQLN7YljgQwF98pwCul8L3q279+FdMwC50hcFUHkRBsaHw3AZ0TG8+v
+AUy+bS9vi098g9XNaoAK81LoaQwiDFwdD9rdQvZHIxICnjwETueYe4AZNmms4ZDp
+3Q0mVMbkhjn6hbnu2OjEj1mlDwUCYJK++KtUY6LMdF673Lbh5jdIKN8uLBXOsXvb
+iaTvBCdJvK8S3Z2pq5VQYCOSxPTHWlRWWl/Fbh+1gXg=</CipherValue>
+      </CipherData>
+    </EncryptedKey>
+  </KeyInfo>
+  <CipherData>
+    <CipherValue>4El7znRyQrijEnaXCITYnh9Kgw24isvzJuoBu+9tM1D8NFSYa5FcAiA/p9ZmyFNU
+YtyaoaYdfO8MqW3SNcy/dFKRm1BOaf0Oft7UAjQVWHyfiAfUc9EzZZP5laRkDJB2
+rsLyRw+EckySWkB0k7ozloBImUgkiSTf17qBiSWUmCxz3tFZ8amyQ4zsAOcXmebx</CipherValue>
+  </CipherData>
+</EncryptedData></CreditCard>
+</PaymentInfo>

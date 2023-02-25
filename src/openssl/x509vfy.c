@@ -1008,6 +1008,8 @@ void xmlSecOpenSSLX509FindCertCtxFinalize(xmlSecOpenSSLX509FindCertCtxPtr ctx) {
 static int
 xmlSecOpenSSLX509MatchBySubjectName(X509* cert, X509_NAME* subjectName) {
     X509_NAME * certSubjectName;
+    int ret;
+
     xmlSecAssert2(cert != NULL, -1);
 
     if(subjectName == NULL) {
@@ -1019,7 +1021,9 @@ xmlSecOpenSSLX509MatchBySubjectName(X509* cert, X509_NAME* subjectName) {
         return(0);
     }
 
-    if(xmlSecOpenSSLX509NamesCompare(subjectName, certSubjectName) != 0) {
+    /* returns 0 if equal */
+    ret = xmlSecOpenSSLX509NamesCompare(subjectName, certSubjectName);
+    if(ret != 0) {
         return(0);
     }
 
@@ -1517,6 +1521,7 @@ xmlSecOpenSSLX509_NAME_ENTRIES_copy(X509_NAME * a) {
     return (res);
 }
 
+/* returns 0 if equal */
 static
 int xmlSecOpenSSLX509_NAME_ENTRIES_cmp(STACK_OF(X509_NAME_ENTRY)* a,  STACK_OF(X509_NAME_ENTRY)* b) {
     const X509_NAME_ENTRY *na;
@@ -1540,6 +1545,7 @@ int xmlSecOpenSSLX509_NAME_ENTRIES_cmp(STACK_OF(X509_NAME_ENTRY)* a,  STACK_OF(X
         }
     }
 
+    /* same */
     return(0);
 }
 
@@ -1549,6 +1555,8 @@ int xmlSecOpenSSLX509_NAME_ENTRIES_cmp(STACK_OF(X509_NAME_ENTRY)* a,  STACK_OF(X
  *
  * We have to sort X509_NAME entries to get correct results.
  * This is ugly but OpenSSL does not support it
+ *
+ * Returns 0 if equal
  */
 static int
 xmlSecOpenSSLX509NamesCompare(X509_NAME *a, X509_NAME *b) {
@@ -1577,7 +1585,7 @@ xmlSecOpenSSLX509NamesCompare(X509_NAME *a, X509_NAME *b) {
     (void)sk_X509_NAME_ENTRY_set_cmp_func(b1, xmlSecOpenSSLX509_NAME_ENTRY_cmp);
     sk_X509_NAME_ENTRY_sort(b1);
 
-    /* actually compare */
+    /* actually compare, returns 0 if equal */
     ret = xmlSecOpenSSLX509_NAME_ENTRIES_cmp(a1, b1);
 
     /* cleanup */
@@ -1586,6 +1594,7 @@ xmlSecOpenSSLX509NamesCompare(X509_NAME *a, X509_NAME *b) {
     return(ret);
 }
 
+/* returns 0 if equal */
 static int
 xmlSecOpenSSLX509_NAME_ENTRY_cmp(const X509_NAME_ENTRY * const *a, const X509_NAME_ENTRY * const *b) {
     ASN1_STRING *a_value, *b_value;

@@ -24,6 +24,7 @@
 
 #include <cert.h>
 #include <secerr.h>
+#include <sechash.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
@@ -38,6 +39,7 @@
 #include <xmlsec/nss/x509.h>
 
 #include "../cast_helpers.h"
+#include "private.h"
 
 /**************************************************************************
  *
@@ -78,7 +80,8 @@ static int              xmlSecNssX509NameStringRead     (const xmlSecByte **in,
                                                          int ingoreTrailingSpaces);
 static xmlSecByte *     xmlSecNssX509NameRead           (const xmlChar *str);
 
-static int              xmlSecNssNumToItem              (SECItem *it,
+static int              xmlSecNssNumToItem              (PLArenaPool *arena,
+                                                         SECItem *it,
                                                          PRUint64 num);
 
 
@@ -98,12 +101,7 @@ static xmlSecKeyDataStoreKlass xmlSecNssX509StoreKlass = {
     NULL,                                       /* void* reserved1; */
 };
 
-static CERTCertificate*         xmlSecNssX509FindCert(CERTCertList* certsList,
-                                                      const xmlChar *subjectName,
-                                                      const xmlChar *issuerName,
-                                                      const xmlChar *issuerSerial,
-                                                      xmlSecByte * ski,
-                                                      xmlSecSize skiSize);
+static CERTCertificate*         xmlSecNssX509FindCert(CERTCertList* certsList, xmlSecNssX509FindCertCtxPtr findCertCtx);
 
 
 /**
@@ -168,7 +166,7 @@ xmlSecNssX509StoreFindCert(xmlSecKeyDataStorePtr store, xmlChar *subjectName,
  * @skiSize:            the desired certificate SKI size.
  * @keyInfoCtx:         the pointer to <dsig:KeyInfo/> element processing context.
  *
- * Searches @store for a certificate that matches given criteria.
+ * Deprecated. Searches @store for a certificate that matches given criteria.
  *
  * Returns: pointer to found certificate or NULL if certificate is not found
  * or an error occurs.
@@ -179,6 +177,9 @@ xmlSecNssX509StoreFindCert_ex(xmlSecKeyDataStorePtr store, xmlChar *subjectName,
                                  xmlSecByte * ski, xmlSecSize skiSize,
                                  xmlSecKeyInfoCtx* keyInfoCtx ATTRIBUTE_UNUSED) {
     xmlSecNssX509StoreCtxPtr ctx;
+    xmlSecNssX509FindCertCtx findCertCtx;
+    CERTCertificate * cert;
+    int ret;
 
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecNssX509StoreId), NULL);
     UNREFERENCED_PARAMETER(keyInfoCtx);
@@ -186,9 +187,21 @@ xmlSecNssX509StoreFindCert_ex(xmlSecKeyDataStorePtr store, xmlChar *subjectName,
     ctx = xmlSecNssX509StoreGetCtx(store);
     xmlSecAssert2(ctx != NULL, NULL);
 
-    return xmlSecNssX509FindCert(ctx->certsList, subjectName,
-        issuerName, issuerSerial,
-        ski, skiSize);
+    ret = xmlSecNssX509FindCertCtxInitialize(&findCertCtx,
+            subjectName,
+            issuerName, issuerSerial,
+            ski, skiSize);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecNssX509FindCertCtxInitialize", NULL);
+        xmlSecNssX509FindCertCtxFinalize(&findCertCtx);
+        return(NULL);
+    }
+
+    cert = xmlSecNssX509FindCert(ctx->certsList, &findCertCtx);
+
+    /* done */
+    xmlSecNssX509FindCertCtxFinalize(&findCertCtx);
+    return(cert);
 }
 
 
@@ -449,151 +462,63 @@ xmlSecNssGetCertName(const xmlChar * name) {
 }
 
 static CERTCertificate*
-xmlSecNssX509FindCert(CERTCertList* certsList, const xmlChar *subjectName,
-                      const xmlChar *issuerName, const xmlChar *issuerSerial,
-                      xmlSecByte * ski, xmlSecSize skiSize) {
-    CERTCertificate *cert = NULL;
-    CERTName *name = NULL;
-    SECItem *nameitem = NULL;
-    CERTCertListNode* head;
-    SECItem tmpitem;
-    SECStatus status;
-    PRArenaPool *arena = NULL;
-    int rv;
+xmlSecNssX509FindCert(CERTCertList* certsList, xmlSecNssX509FindCertCtxPtr findCertCtx) {
+    CERTCertDBHandle * certDb;
+    CERTCertificate * cert = NULL;
+    int ret;
 
     /* certsList can be NULL */
+    xmlSecAssert2(findCertCtx != NULL, NULL);
 
-    /* search by subject name if available */
-    if ((cert == NULL) && (subjectName != NULL)) {
-        name = xmlSecNssGetCertName(subjectName);
-        if (name == NULL) {
-            xmlSecInternalError2("xmlSecNssGetCertName", NULL,
-                                 "subject=%s",
-                                 xmlSecErrorsSafeString(subjectName));
-            goto done;
-        }
+    /* try to search in our list - NSS doesn't update it's cache correctly
+     * when new certs are added https://bugzilla.mozilla.org/show_bug.cgi?id=211051
+     */
+    if(certsList != NULL) {
+        CERTCertListNode* curCertNode;
 
-        if(arena == NULL) {
-            arena = PORT_NewArena(DER_DEFAULT_CHUNKSIZE);
-            if (arena == NULL) {
-                xmlSecNssError("PORT_NewArena", NULL);
-                goto done;
+        for(curCertNode = CERT_LIST_HEAD(certsList);
+            (cert == NULL) && !CERT_LIST_END(curCertNode, certsList) &&
+            (curCertNode != NULL) && (curCertNode->cert != NULL);
+            curCertNode = CERT_LIST_NEXT(curCertNode)
+        ) {
+            ret = xmlSecNssX509FindCertCtxMatch(findCertCtx, curCertNode->cert);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecOpenSSLX509FindCertCtxMatch", NULL);
+                return(NULL);
+            } else if(ret == 1) {
+                cert = CERT_DupCertificate(curCertNode->cert);
+                if(cert == NULL) {
+                    xmlSecNssError("CERT_DupCertificate", NULL);
+                    return(NULL);
+                }
+                return(cert);
             }
         }
+    }
 
-        nameitem = SEC_ASN1EncodeItem(arena, NULL, (void *)name,
-                                      SEC_ASN1_GET(CERT_NameTemplate));
-        if (nameitem == NULL) {
-            xmlSecNssError("SEC_ASN1EncodeItem", NULL);
-            goto done;
-        }
+    /* search in the NSS DB */
+    certDb = CERT_GetDefaultCertDB();
+    if(certDb == NULL) {
+        xmlSecNssError("CERT_GetDefaultCertDB(ski)", NULL);
+        return(NULL);
+    }
 
-        cert = CERT_FindCertByName(CERT_GetDefaultCertDB(), nameitem);
+    /* search by subject name if available */
+    if ((cert == NULL) && (findCertCtx->subjectNameItem != NULL)) {
+        cert = CERT_FindCertByName(certDb, findCertCtx->subjectNameItem);
     }
 
     /* search by issuer name+serial if available */
-    if((cert == NULL) && (issuerName != NULL) && (issuerSerial != NULL)) {
-        CERTIssuerAndSN issuerAndSN;
-        PRUint64 issuerSN = 0;
-
-        name = xmlSecNssGetCertName(issuerName);
-        if (name == NULL) {
-            xmlSecInternalError2("xmlSecNssGetCertName", NULL,
-                                 "issuer=%s",
-                                 xmlSecErrorsSafeString(issuerName));
-            goto done;
-        }
-
-        if(arena == NULL) {
-            arena = PORT_NewArena(DER_DEFAULT_CHUNKSIZE);
-            if (arena == NULL) {
-                xmlSecNssError("PORT_NewArena", NULL);
-                goto done;
-            }
-        }
-
-        nameitem = SEC_ASN1EncodeItem(arena, NULL, (void *)name,
-                                      SEC_ASN1_GET(CERT_NameTemplate));
-        if (nameitem == NULL) {
-            xmlSecNssError("SEC_ASN1EncodeItem", NULL);
-            goto done;
-        }
-
-        memset(&issuerAndSN, 0, sizeof(issuerAndSN));
-
-        issuerAndSN.derIssuer.data = nameitem->data;
-        issuerAndSN.derIssuer.len = nameitem->len;
-
-        /* TBD: serial num can be arbitrarily long */
-        if(PR_sscanf((char *)issuerSerial, "%llu", &issuerSN) != 1) {
-            xmlSecNssError("PR_sscanf(issuerSerial)", NULL);
-            SECITEM_FreeItem(&issuerAndSN.serialNumber, PR_FALSE);
-            goto done;
-        }
-
-        rv = xmlSecNssNumToItem(&issuerAndSN.serialNumber, issuerSN);
-        if(rv <= 0) {
-            xmlSecInternalError("xmlSecNssNumToItem(serialNumber)", NULL);
-            SECITEM_FreeItem(&issuerAndSN.serialNumber, PR_FALSE);
-            goto done;
-        }
-
-        cert = CERT_FindCertByIssuerAndSN(CERT_GetDefaultCertDB(), &issuerAndSN);
-        SECITEM_FreeItem(&issuerAndSN.serialNumber, PR_FALSE);
+    if((cert == NULL) && (findCertCtx->issuerAndSNInitialized == 1)) {
+        cert = CERT_FindCertByIssuerAndSN(certDb, &(findCertCtx->issuerAndSN));
     }
 
     /* search by SKI if available */
-    if((cert == NULL) && (ski != NULL) && (skiSize > 0)) {
-        SECItem subjKeyID;
-
-        memset(&subjKeyID, 0, sizeof(subjKeyID));
-        subjKeyID.data = ski;
-        XMLSEC_SAFE_CAST_SIZE_TO_UINT(skiSize, subjKeyID.len, goto done, NULL);
-
-        cert = CERT_FindCertBySubjectKeyID(CERT_GetDefaultCertDB(),
-                                           &subjKeyID);
-
-        /* try to search in our list - NSS doesn't update it's cache correctly
-         * when new certs are added https://bugzilla.mozilla.org/show_bug.cgi?id=211051
-         */
-        if((cert == NULL) && (certsList != NULL)) {
-            for(head = CERT_LIST_HEAD(certsList);
-                (cert == NULL) && !CERT_LIST_END(head, certsList) &&
-                (head != NULL) && (head->cert != NULL);
-                head = CERT_LIST_NEXT(head)
-            ) {
-
-                memset(&tmpitem, 0, sizeof(tmpitem));
-                status = CERT_FindSubjectKeyIDExtension(head->cert, &tmpitem);
-                if (status != SECSuccess)  {
-                    xmlSecNssError("CERT_FindSubjectKeyIDExtension(ski)", NULL);
-                    SECITEM_FreeItem(&tmpitem, PR_FALSE);
-                    goto done;
-                }
-
-                if((tmpitem.len == subjKeyID.len) &&
-                   (memcmp(tmpitem.data, subjKeyID.data, subjKeyID.len) == 0)
-                ) {
-                    cert = CERT_DupCertificate(head->cert);
-                    if(cert == NULL) {
-                        xmlSecNssError("CERT_DupCertificate", NULL);
-                        SECITEM_FreeItem(&tmpitem, PR_FALSE);
-                        goto done;
-                    }
-                }
-                SECITEM_FreeItem(&tmpitem, PR_FALSE);
-            }
-        }
+    if((cert == NULL) && (findCertCtx->skiItem.data != NULL) && (findCertCtx->skiItem.len > 0)) {
+        cert = CERT_FindCertBySubjectKeyID(certDb, &(findCertCtx->skiItem));
     }
 
-done:
-    if (arena != NULL) {
-        PORT_FreeArena(arena, PR_FALSE);
-    }
-    if (name != NULL) {
-        CERT_DestroyName(name);
-    }
-
+    /* done */
     return(cert);
 }
 
@@ -769,12 +694,13 @@ xmlSecNssX509NameStringRead(const xmlSecByte **in, xmlSecSize *inSize,
 
 /* code lifted from NSS */
 static int
-xmlSecNssNumToItem(SECItem *it, PRUint64 ui)
+xmlSecNssNumToItem(PLArenaPool *arena, SECItem *it, PRUint64 ui)
 {
     unsigned char bb[9];
     unsigned int bb_len, zeros_len;
     int res;
 
+    xmlSecAssert2(arena != NULL, -1);
     xmlSecAssert2(it != NULL, -1);
 
     bb[0] = 0; /* important: we should have 0 at the beginning! */
@@ -797,7 +723,7 @@ xmlSecNssNumToItem(SECItem *it, PRUint64 ui)
     }
 
     it->len = bb_len - (zeros_len - 1);
-    it->data = (unsigned char *)PORT_Alloc(it->len * sizeof(bb[0]));
+    it->data = (unsigned char *)PORT_ArenaAlloc(arena, it->len * sizeof(bb[0]));
     if (it->data == NULL) {
         it->len = 0;
         return (-1);
@@ -808,4 +734,341 @@ xmlSecNssNumToItem(SECItem *it, PRUint64 ui)
 
     return(res);
 }
+
+xmlSecKeyPtr
+xmlSecNssX509FindKeyByValue(xmlSecPtrListPtr keysList, xmlSecKeyX509DataValuePtr x509Value) {
+    xmlSecNssX509FindCertCtx findCertCtx;
+    xmlSecSize keysListSize, ii;
+    xmlSecKeyPtr res = NULL;
+    int ret;
+
+    xmlSecAssert2(keysList != NULL, NULL);
+    xmlSecAssert2(x509Value != NULL, NULL);
+
+    ret = xmlSecNssX509FindCertCtxInitializeFromValue(&findCertCtx, x509Value);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecNssX509FindCertCtxInitializeFromValue", NULL);
+        xmlSecNssX509FindCertCtxFinalize(&findCertCtx);
+        return(NULL);
+    }
+
+    keysListSize = xmlSecPtrListGetSize(keysList);
+    for(ii = 0; ii < keysListSize; ++ii) {
+        xmlSecKeyPtr key;
+        xmlSecKeyDataPtr keyData;
+        CERTCertificate* keyCert;
+
+        /* get key's cert from x509 key data */
+        key = (xmlSecKeyPtr)xmlSecPtrListGetItem(keysList, ii);
+        if(key == NULL) {
+            continue;
+        }
+        keyData = xmlSecKeyGetData(key, xmlSecNssKeyDataX509Id);
+        if(keyData == NULL) {
+            continue;
+        }
+        keyCert = xmlSecNssKeyDataX509GetKeyCert(keyData);
+        if(keyCert == NULL) {
+            continue;
+        }
+
+        /* does it match? */
+        ret = xmlSecNssX509FindCertCtxMatch(&findCertCtx, keyCert);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecNssX509FindCertCtxMatch", NULL);
+            xmlSecNssX509FindCertCtxFinalize(&findCertCtx);
+            return(NULL);
+        } else if(ret == 1) {
+            res = key;
+            break;
+        }
+    }
+
+    /* done */
+    xmlSecNssX509FindCertCtxFinalize(&findCertCtx);
+    return(res);
+}
+
+/***********************************************************************************
+ *
+ * xmlSecNssX509FindCertCtx
+ *
+ **********************************************************************************/
+SECOidTag
+xmlSecNssX509GetDigestFromAlgorithm(const xmlChar* href) {
+    /* use SHA256 by default */
+    if(href == NULL) {
+#ifndef XMLSEC_NO_SHA256
+        return(SEC_OID_SHA256);
+#else  /* XMLSEC_NO_SHA256 */
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
+            "sha256 disabled and href=%s", xmlSecErrorsSafeString(href));
+        return(SEC_OID_UNKNOWN);
+#endif /* XMLSEC_NO_SHA256 */
+    } else
+
+#ifndef XMLSEC_NO_SHA1
+    if(xmlStrcmp(href, xmlSecHrefSha1) == 0) {
+        return(SEC_OID_SHA1);
+    } else
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA224
+    if(xmlStrcmp(href, xmlSecHrefSha224) == 0) {
+        return(SEC_OID_SHA224);
+    } else
+#endif /* XMLSEC_NO_SHA224 */
+
+#ifndef XMLSEC_NO_SHA256
+    if(xmlStrcmp(href, xmlSecHrefSha256) == 0) {
+        return(SEC_OID_SHA256);
+    } else
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+    if(xmlStrcmp(href, xmlSecHrefSha384) == 0) {
+        return(SEC_OID_SHA384);
+    } else
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+    if(xmlStrcmp(href, xmlSecHrefSha512) == 0) {
+        return(SEC_OID_SHA512);
+    } else
+#endif /* XMLSEC_NO_SHA512 */
+
+    {
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
+            "href=%s", xmlSecErrorsSafeString(href));
+        return(SEC_OID_UNKNOWN);
+    }
+}
+
+
+int xmlSecNssX509FindCertCtxInitialize(xmlSecNssX509FindCertCtxPtr ctx,
+    const xmlChar *subjectName,
+    const xmlChar *issuerName, xmlChar *issuerSerial,
+    xmlSecByte * ski, xmlSecSize skiSize
+) {
+    int ret;
+
+    xmlSecAssert2(ctx != NULL, -1);
+
+    memset(ctx, 0, sizeof(*ctx));
+
+    /* ski (easy first) */
+    if((ski != NULL) && (skiSize > 0)) {
+        ctx->skiItem.type = siBuffer;
+        ctx->skiItem.data = ski;
+        XMLSEC_SAFE_CAST_SIZE_TO_UINT(skiSize, ctx->skiItem.len, return(-1), NULL);
+    }
+
+    ctx->arena = PORT_NewArena(DER_DEFAULT_CHUNKSIZE);
+    if (ctx->arena == NULL) {
+        xmlSecNssError("PORT_NewArena", NULL);
+        xmlSecNssX509FindCertCtxFinalize(ctx);
+        return(-1);
+    }
+
+    /* subject name */
+    if(subjectName != NULL) {
+        ctx->subjectName = xmlSecNssGetCertName(subjectName);
+        if(ctx->subjectName == NULL) {
+            xmlSecInternalError2("xmlSecNssGetCertName", NULL,
+                "subjectName=%s", xmlSecErrorsSafeString(subjectName));
+            xmlSecNssX509FindCertCtxFinalize(ctx);
+            return(-1);
+        }
+        ctx->subjectNameItem = SEC_ASN1EncodeItem(ctx->arena, NULL, (void *)ctx->subjectName , SEC_ASN1_GET(CERT_NameTemplate));
+        if (ctx->subjectNameItem == NULL) {
+            xmlSecNssError2("SEC_ASN1EncodeItem(subjectName)", NULL,
+                "subjectName=%s", xmlSecErrorsSafeString(subjectName));
+            xmlSecNssX509FindCertCtxFinalize(ctx);
+            return(-1);
+        }
+    }
+
+    /* issuer name + serial  */
+    if((issuerName != NULL) && (issuerSerial != NULL)) {
+        memset(&ctx->issuerAndSN, 0, sizeof(ctx->issuerAndSN));
+
+        ctx->issuerName = xmlSecNssGetCertName(issuerName);
+        if(ctx->issuerName == NULL) {
+            xmlSecInternalError2("xmlSecNssGetCertName", NULL,
+                "issuerName=%s", xmlSecErrorsSafeString(issuerName));
+            xmlSecNssX509FindCertCtxFinalize(ctx);
+            return(-1);
+        }
+        ctx->issuerNameItem = SEC_ASN1EncodeItem(ctx->arena, NULL, (void *)ctx->issuerName , SEC_ASN1_GET(CERT_NameTemplate));
+        if (ctx->issuerNameItem == NULL) {
+            xmlSecNssError2("SEC_ASN1EncodeItem(issuerName)", NULL,
+                "issuerName=%s", xmlSecErrorsSafeString(issuerName));
+            xmlSecNssX509FindCertCtxFinalize(ctx);
+            return(-1);
+        }
+        ctx->issuerAndSN.derIssuer.type = ctx->issuerNameItem->type;
+        ctx->issuerAndSN.derIssuer.data = ctx->issuerNameItem->data;
+        ctx->issuerAndSN.derIssuer.len  = ctx->issuerNameItem->len;
+
+        /* TBD: serial num can be arbitrarily long */
+        if(PR_sscanf((char *)issuerSerial, "%llu", &(ctx->issuerSN)) != 1) {
+            xmlSecNssError("PR_sscanf(issuerSerial)", NULL);
+            xmlSecNssX509FindCertCtxFinalize(ctx);
+            return(-1);
+        }
+        ret = xmlSecNssNumToItem(ctx->arena, &(ctx->issuerAndSN.serialNumber), ctx->issuerSN);
+        if(ret <= 0) {
+            xmlSecInternalError("xmlSecNssNumToItem(serialNumber)", NULL);
+            xmlSecNssX509FindCertCtxFinalize(ctx);
+            return(-1);
+        }
+        ctx->issuerAndSNInitialized = 1;
+    }
+
+    /* done! */
+    return(0);
+}
+
+int
+xmlSecNssX509FindCertCtxInitializeFromValue(xmlSecNssX509FindCertCtxPtr ctx, xmlSecKeyX509DataValuePtr x509Value) {
+    int ret;
+
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(x509Value != NULL, -1);
+
+    ret = xmlSecNssX509FindCertCtxInitialize(ctx,
+                x509Value->subject,
+                x509Value->issuerName, x509Value->issuerSerial,
+                xmlSecBufferGetData(&(x509Value->ski)), xmlSecBufferGetSize(&(x509Value->ski))
+    );
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecNssX509FindCertCtxInitialize", NULL);
+        xmlSecNssX509FindCertCtxFinalize(ctx);
+        return(-1);
+    }
+
+    if((!xmlSecBufferIsEmpty(&(x509Value->digest))) && (x509Value->digestAlgorithm != NULL)) {
+        xmlSecSize digestSize;
+
+        ctx->digestValue = xmlSecBufferGetData(&(x509Value->digest));
+        digestSize = xmlSecBufferGetSize(&(x509Value->digest));
+        XMLSEC_SAFE_CAST_SIZE_TO_UINT(digestSize, ctx->digestLen, return(-1), NULL);
+
+        ctx->digestAlg = xmlSecNssX509GetDigestFromAlgorithm(x509Value->digestAlgorithm);
+        if(ctx->digestAlg == SEC_OID_UNKNOWN) {
+            xmlSecInternalError("xmlSecNssX509GetDigestFromAlgorithm", NULL);
+            xmlSecNssX509FindCertCtxFinalize(ctx);
+            return(-1);
+        }
+    }
+
+    return(0);
+}
+
+void
+xmlSecNssX509FindCertCtxFinalize(xmlSecNssX509FindCertCtxPtr ctx) {
+    xmlSecAssert(ctx != NULL);
+
+    if(ctx->subjectName != NULL) {
+        CERT_DestroyName(ctx->subjectName);
+    }
+    if(ctx->issuerName != NULL) {
+        CERT_DestroyName(ctx->issuerName);
+    }
+    if (ctx->arena != NULL) {
+        PORT_FreeArena(ctx->arena, PR_FALSE);
+    }
+    memset(ctx, 0, sizeof(*ctx));
+}
+
+/* returns 1 for match, 0 for no match, and a negative value if an error occurs */
+int
+xmlSecNssX509FindCertCtxMatch(xmlSecNssX509FindCertCtxPtr ctx, CERTCertificate* cert) {
+    SECStatus status;
+
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(cert != NULL, -1);
+
+
+    /* subject name */
+    if(ctx->subjectNameItem != NULL) {
+        if (SECITEM_ItemsAreEqual(&(cert->derSubject), ctx->subjectNameItem)) {
+            /* found a match */
+            return(1);
+        } else {
+            /* no match */
+            return(0);
+        }
+    }
+
+    /* issuer name + serial */
+    if(ctx->issuerAndSNInitialized != 0) {
+        if (
+            SECITEM_ItemsAreEqual(&(cert->derIssuer),  &(ctx->issuerAndSN.derIssuer)) &&
+            SECITEM_ItemsAreEqual(&(cert->serialNumber),  &(ctx->issuerAndSN.serialNumber))
+        ) {
+            /* found a match */
+            return(1);
+        } else {
+            /* no match */
+            return(0);
+        }
+    }
+
+    /* ski */
+    if( (ctx->skiItem.data != NULL) && (ctx->skiItem.len > 0)) {
+        SECItem tmpitem;
+
+        memset(&tmpitem, 0, sizeof(tmpitem));
+        status = CERT_FindSubjectKeyIDExtension(cert, &tmpitem);
+        if (status != SECSuccess)  {
+            xmlSecNssError("CERT_FindSubjectKeyIDExtension(ski)", NULL);
+            return(-1);
+        }
+
+        if((tmpitem.len != ctx->skiItem.len) || (memcmp(tmpitem.data, ctx->skiItem.data, ctx->skiItem.len) != 0)) {
+            /* no match */
+            SECITEM_FreeItem(&tmpitem, PR_FALSE);
+            return(0);
+        }
+        SECITEM_FreeItem(&tmpitem, PR_FALSE);
+
+        /* found a match */
+        return(1);
+    }
+
+    /* cert digest */
+    if(
+         (ctx->digestAlg != SEC_OID_UNKNOWN) && (ctx->digestValue != NULL) && (ctx->digestLen > 0) &&
+        (cert->derCert.type == siBuffer) && (cert->derCert.data != NULL) && (cert->derCert.len > 0)
+    ) {
+        xmlSecByte digest[XMLSEC_NSS_MAX_DIGEST_SIZE];
+        unsigned int digestLen;
+
+        digestLen = HASH_ResultLenByOidTag(ctx->digestAlg);
+        if((digestLen == 0) || (digestLen > sizeof(digest))) {
+            xmlSecNssError3("HASH_ResultLenByOidTag", NULL,
+                "digestAlgOid=%d; len=%u", (int)ctx->digestAlg, digestLen);
+            return(-1);
+        }
+        status = PK11_HashBuf(ctx->digestAlg, digest, cert->derCert.data, (PRInt32)cert->derCert.len);
+        if (status != SECSuccess) {
+            xmlSecNssError2("PK11_HashBuf(cert->derCert)", NULL,
+                "digestAlgOid=%d", (int)ctx->digestAlg);
+            return(-1);
+        }
+
+        if((digestLen != ctx->digestLen) || (memcmp(digest, ctx->digestValue, ctx->digestLen) != 0)) {
+            /* no match */
+            return(0);
+        }
+
+        /* found a match */
+        return(1);
+    }
+
+
+    return(0);
+}
+
 #endif /* XMLSEC_NO_X509 */

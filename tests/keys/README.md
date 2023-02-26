@@ -94,6 +94,43 @@ openssl verify -CAfile cacert.pem -untrusted ca2cert.pem expiredcert.pem
 rm expiredreq.pem
 ```
 
+### Generate ECDSA prime256v1 key with second level CA
+```
+openssl ecparam -list_curves
+openssl ecparam -name prime256v1 -genkey -noout -out ec-prime256v1-key.pem
+    Here use 'EC prime256v1 Key' for OU:
+openssl req -config ./openssl.cnf -new -key ec-prime256v1-key.pem -out ec-prime256v1-req.pem
+openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem -out ec-prime256v1-cert.pem -infiles ec-prime256v1-req.pem
+openssl verify -CAfile cacert.pem -untrusted ca2cert.pem ec-prime256v1-cert.pem
+rm ec-prime256v1-req.pem
+
+openssl x509 -in ec-prime256v1-cert.pem -inform PEM -out ec-prime256v1-cert.der -outform DER
+cp ec-prime256v1-cert.der ec-prime256v1-key.crt
+
+openssl pkey -inform PEM -in ec-prime256v1-key.pem --outform DER --out  ec-prime256v1-key.der
+openssl pkey -inform PEM -in ec-prime256v1-key.pem --outform DER --pubout --out  ec-prime256v1-pubkey.der
+openssl pkey -inform PEM -in ec-prime256v1-key.pem --outform PEM --pubout --out  ec-prime256v1-pubkey.pem
+```
+
+### Generate a second ECDSA prime256v1 key with second level CA
+```
+openssl ecparam -list_curves
+openssl ecparam -name prime256v1 -genkey -noout -out ec-prime256v1-second-key.pem
+    Here use 'EC prime256v1 Second Key' for OU:
+openssl req -config ./openssl.cnf -new -key ec-prime256v1-second-key.pem -out ec-prime256v1-second-req.pem
+openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem -out ec-prime256v1-second-cert.pem -infiles ec-prime256v1-second-req.pem
+openssl verify -CAfile cacert.pem -untrusted ca2cert.pem ec-prime256v1-second-cert.pem
+rm ec-prime256v1-second-req.pem
+
+openssl x509 -in ec-prime256v1-second-cert.pem -inform PEM -out ec-prime256v1-second-cert.der -outform DER
+cp ec-prime256v1-second-cert.der ec-prime256v1-second-key.crt
+
+openssl pkey -inform PEM -in ec-prime256v1-second-key.pem --outform DER --out  ec-prime256v1-second-key.der
+openssl pkey -inform PEM -in ec-prime256v1-second-key.pem --outform DER --pubout --out  ec-prime256v1-second-pubkey.der
+openssl pkey -inform PEM -in ec-prime256v1-second-key.pem --outform PEM --pubout --out  ec-prime256v1-second-pubkey.pem
+```
+
+
 ### Generate ECDSA secp256r1 key with second level CA
 ```
 openssl ecparam -list_curves
@@ -230,7 +267,7 @@ openssl dsa -inform PEM -outform DER -in dsa2048key.pem -out dsa2048key.der
 openssl dsa -inform PEM -outform DER -in dsa3072key.pem -out dsa3072key.der
 ```
 
-ECDSA keys:
+EC keys:
 ```
 openssl ec -inform PEM -outform DER -in ecdsa-secp256r1-key.pem -out ecdsa-secp256r1-key.der
 openssl ec -inform PEM -outform DER -in ecdsa-secp384r1-key.pem -out ecdsa-secp384r1-key.der
@@ -350,6 +387,14 @@ openssl pkcs12 -export -in alllargersa.pem -name TestLargeRsaKey -out largersake
 
 cat expiredkey.pem expiredcert.pem ca2cert.pem cacert.pem > allexpired.pem
 openssl pkcs12 -export -in allexpired.pem -name TestExpiredRsaKey -out expiredkey.p12
+
+cat ec-prime256v1-key.pem ec-prime256v1-cert.pem ca2cert.pem cacert.pem > all-ec-prime256v1.pem
+openssl pkcs12 -export -in all-ec-prime256v1.pem -name TestEcdsaSecp256r1Key -out ec-prime256v1-key.p12
+rm all-ec-prime256v1.pem
+
+cat ec-prime256v1-second-key.pem ec-prime256v1-second-cert.pem ca2cert.pem cacert.pem > all-ec-prime256v1-second.pem
+openssl pkcs12 -export -in all-ec-prime256v1-second.pem -name TestEcdsaSecp256r1Key -out ec-prime256v1-second-key.p12
+rm all-ec-prime256v1-second.pem
 
 cat ecdsa-secp256r1-key.pem ecdsa-secp256r1-cert.pem ca2cert.pem cacert.pem > all-ecdsa-secp256r1.pem
 openssl pkcs12 -export -in all-ecdsa-secp256r1.pem -name TestEcdsaSecp256r1Key -out ecdsa-secp256r1-key.p12

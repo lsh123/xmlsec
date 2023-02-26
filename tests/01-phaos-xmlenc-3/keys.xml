@@ -19,6 +19,14 @@
 	</KeyValue>
     </KeyInfo>
     <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <KeyName>my-tripledes-key</KeyName>
+	<KeyValue>
+	    <DESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">
+		yI+J1f3puYAERjIcT6vfg6RitmKX8nD0
+	    </DESKeyValue>
+	</KeyValue>
+    </KeyInfo>
+    <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
     <KeyName>my-3des-key</KeyName>
 	<KeyValue>
 	    <DESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">

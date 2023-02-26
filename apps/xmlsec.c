@@ -462,12 +462,13 @@ static xmlSecAppCmdLineParam privkeyOpensslEngineParam = {
     NULL
 };
 
-static xmlSecAppCmdLineParam exactKeySearchParam = {
+static xmlSecAppCmdLineParam laxKeySearchParam = {
     xmlSecAppCmdLineTopicKeysMngr,
-    "--exact-key-search",
+    "--lax-key-search",
     NULL,
-    "--exact-key-search"
-    "\n\tonly search for keys using <dsig:KeyInfo/> data",
+    "--lax-key-search"
+    "\n\tenable lax key search (e.g. by key type like \"rsa\") vs default strict key search"
+    "\n\tmode using only information from <dsig:KeyInfo/> node (e.g. key name)",
     xmlSecAppCmdLineParamTypeFlag,
     xmlSecAppCmdLineParamFlagNone,
     NULL
@@ -934,7 +935,7 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
     &pubkeyDerParam,
     &pwdParam,
     &privkeyOpensslEngineParam,
-    &exactKeySearchParam,
+    &laxKeySearchParam,
 
 #ifndef XMLSEC_NO_AES
     &aesKeyParam,
@@ -2076,8 +2077,8 @@ xmlSecAppPrepareKeyInfoCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
     }
 #endif /* XMLSEC_NO_X509 */
 
-    if(xmlSecAppCmdLineParamIsSet(&exactKeySearchParam)) {
-        keyInfoCtx->flags |= XMLSEC_KEYINFO_FLAGS_EXACT_KEY_SEARCH;
+    if(xmlSecAppCmdLineParamIsSet(&laxKeySearchParam)) {
+        keyInfoCtx->flags |= XMLSEC_KEYINFO_FLAGS_LAX_KEY_SEARCH;
     }
 
     /* read enabled key data list */

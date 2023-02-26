@@ -292,7 +292,7 @@ execKeysTest() {
         if [ "z$crypto" != "zgcrypt" ] ; then
             printf "    Reading private key from pkcs12 file                  "
             rm -f $tmpfile
-            params="--pkcs12 $privkey_file.p12 $pkcs12_key_extra_options $key_test_options --output $tmpfile $asym_key_test.tmpl"
+            params="--lax-key-search --pkcs12 $privkey_file.p12 $pkcs12_key_extra_options $key_test_options --output $tmpfile $asym_key_test.tmpl"
             echo "$extra_vars $VALGRIND $xmlsec_app sign $xmlsec_params $params" >>  $curlogfile
             $VALGRIND $xmlsec_app sign $xmlsec_params $params >> $curlogfile 2>> $curlogfile
             printRes $expected_res $?
@@ -305,7 +305,7 @@ execKeysTest() {
         if [ "z$crypto" != "zgcrypt" -a "z$crypto" != "znss" -a "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" ] ; then
             printf "    Reading private key from pkcs8 pem file               "
             rm -f $tmpfile
-            params="--pkcs8-pem $privkey_file.p8-pem $key_test_options --output $tmpfile $asym_key_test.tmpl"
+            params="--lax-key-search --pkcs8-pem $privkey_file.p8-pem $key_test_options --output $tmpfile $asym_key_test.tmpl"
             echo "$extra_vars $VALGRIND $xmlsec_app sign $xmlsec_params $params" >>  $curlogfile
             $VALGRIND $xmlsec_app  sign $xmlsec_params $params >> $curlogfile 2>> $curlogfile
             printRes $expected_res $?
@@ -318,7 +318,7 @@ execKeysTest() {
         if [ "z$crypto" != "zgcrypt" -a "z$crypto" != "znss" -a "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" ] ; then
             printf "    Reading private key from pkcs8 der file               "
             rm -f $tmpfile
-            params="--pkcs8-der $privkey_file.p8-der $key_test_options --output $tmpfile $asym_key_test.tmpl"
+            params="--lax-key-search --pkcs8-der $privkey_file.p8-der $key_test_options --output $tmpfile $asym_key_test.tmpl"
             echo "$extra_vars $VALGRIND $xmlsec_app sign $xmlsec_params $params" >>  $curlogfile
             $VALGRIND $xmlsec_app  sign $xmlsec_params $params >> $curlogfile 2>> $curlogfile
             printRes $expected_res $?
@@ -332,7 +332,7 @@ execKeysTest() {
         if [ "z$crypto" != "zgcrypt" -a "z$crypto" != "znss" -a "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" ] ; then
             printf "    Reading private key from pem file                     "
             rm -f $tmpfile
-            params="--privkey-pem $privkey_file.pem $key_test_options --output $tmpfile $asym_key_test.tmpl"
+            params="--lax-key-search --privkey-pem $privkey_file.pem $key_test_options --output $tmpfile $asym_key_test.tmpl"
             echo "$extra_vars $VALGRIND $xmlsec_app sign $xmlsec_params $params" >>  $curlogfile
             $VALGRIND $xmlsec_app  sign $xmlsec_params $params >> $curlogfile 2>> $curlogfile
             printRes $expected_res $?
@@ -345,7 +345,7 @@ execKeysTest() {
         if [ "z$crypto" != "znss"  -a "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" ] ; then
             printf "    Reading private key from der file                     "
             rm -f $tmpfile
-            params="--privkey-der $privkey_file.der $key_test_options --output $tmpfile $asym_key_test.tmpl"
+            params="--lax-key-search --privkey-der $privkey_file.der $key_test_options --output $tmpfile $asym_key_test.tmpl"
             echo "$extra_vars $VALGRIND $xmlsec_app sign $xmlsec_params $params" >>  $curlogfile
             $VALGRIND $xmlsec_app  sign $xmlsec_params $params >> $curlogfile 2>> $curlogfile
             printRes $expected_res $?
@@ -362,7 +362,7 @@ execKeysTest() {
         if [ "z$crypto" != "zgcrypt" -a "z$crypto" != "znss" -a "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" ] ; then
             printf "    Reading public key from pem file                      "
             rm -f $tmpfile
-            params="--pubkey-pem $pubkey_file.pem $key_test_options --output $tmpfile $asym_key_test.xml"
+            params="--lax-key-search --pubkey-pem $pubkey_file.pem $key_test_options --output $tmpfile $asym_key_test.xml"
             echo "$extra_vars $VALGRIND $xmlsec_app verify $xmlsec_params $params" >>  $curlogfile
             $VALGRIND $xmlsec_app verify $xmlsec_params $params >> $curlogfile 2>> $curlogfile
             printRes $expected_res $?
@@ -379,7 +379,7 @@ execKeysTest() {
         if [ "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" ] ; then
             printf "    Reading public key from der file                      "
             rm -f $tmpfile
-            params="--pubkey-der $pubkey_file.der $key_test_options --output $tmpfile $asym_key_test.xml"
+            params="--lax-key-search --pubkey-der $pubkey_file.der $key_test_options --output $tmpfile $asym_key_test.xml"
             echo "$extra_vars $VALGRIND $xmlsec_app verify $xmlsec_params $params" >>  $curlogfile
             $VALGRIND $xmlsec_app verify $xmlsec_params $params >> $curlogfile 2>> $curlogfile
             printRes $expected_res $?
@@ -394,7 +394,7 @@ execKeysTest() {
         if [ "z$crypto" != "zgcrypt" -a "z$crypto" != "znss" -a  "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" ] ; then
             printf "    Reading public key from pem cert file                 "
             rm -f $tmpfile
-            params="--pubkey-cert-pem $certkey_file.pem $key_test_options --output $tmpfile $asym_key_test.xml"
+            params="--lax-key-search --pubkey-cert-pem $certkey_file.pem $key_test_options --output $tmpfile $asym_key_test.xml"
             echo "$extra_vars $VALGRIND $xmlsec_app verify $xmlsec_params $params" >>  $curlogfile
             $VALGRIND $xmlsec_app verify $xmlsec_params $params >> $curlogfile 2>> $curlogfile
             printRes $expected_res $?
@@ -407,7 +407,7 @@ execKeysTest() {
         if [ "z$crypto" != "zgcrypt" ] ; then
             printf "    Reading public key from der cert file                 "
             rm -f $tmpfile
-            params="--pubkey-cert-der $certkey_file.der $key_test_options --output $tmpfile $asym_key_test.xml"
+            params="--lax-key-search --pubkey-cert-der $certkey_file.der $key_test_options --output $tmpfile $asym_key_test.xml"
             echo "$extra_vars $VALGRIND $xmlsec_app verify $xmlsec_params $params" >>  $curlogfile
             $VALGRIND $xmlsec_app verify $xmlsec_params $params >> $curlogfile 2>> $curlogfile
             printRes $expected_res $?

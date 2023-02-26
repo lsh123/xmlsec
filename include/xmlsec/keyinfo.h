@@ -157,14 +157,13 @@ typedef enum {
 
 
 /**
- * XMLSEC_KEYINFO_FLAGS_EXACT_KEY_SEARCH:
+ * XMLSEC_KEYINFO_FLAGS_LAX_KEY_SEARCH:
  *
- * If the flag is set then we'll not try to find any key that matches requirements
- * (e.g. *any* RSA public key) but only search keys using the data in <dsig:KeyInfo/>
- * (e.g. KeyName value) and fail if we can't find the key matching <dsig:KeyInfo/>
- * data.
+ * If the flag is set then we'll try to find any key that matches requirements
+ * (e.g. *any* RSA public key). In the default strict key search mode, only keys
+ * referenced in <dsig:KeyInfo/> (e.g. by KeyName value) are used.
  */
-#define XMLSEC_KEYINFO_FLAGS_EXACT_KEY_SEARCH                   0x00008000
+#define XMLSEC_KEYINFO_FLAGS_LAX_KEY_SEARCH                     0x00008000
 
 /**
  * xmlSecKeyInfoCtx:

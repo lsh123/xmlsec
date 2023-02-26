@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
-XML Security Library example: Simple signature template file for sign1 example. 
+<!--
+XML Security Library example: Simple signature template file for sign1 example.
 -->
 <Envelope xmlns="urn:envelope">
   <Data>
@@ -24,7 +24,10 @@ XML Security Library example: Simple signature template file for sign1 example.
     <SignatureValue/>
     <KeyInfo>
       <X509Data>
-        <X509IssuerSerial/>
+        <X509IssuerSerial>
+        <X509IssuerName>emailAddress=xmlsec@aleksey.com,CN=Aleksey Sanin,O=XML Security Library (http://www.aleksey.com/xmlsec),ST=California,C=US</X509IssuerName>
+        <X509SerialNumber>12655831530416757424</X509SerialNumber>
+        </X509IssuerSerial>
       </X509Data>
     </KeyInfo>
   </Signature>

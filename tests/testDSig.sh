@@ -45,54 +45,55 @@ echo "--------- Positive Testing ----------"
 ##########################################################################
 
 # HMAC
+# None of the tests include KeyInfo so we use "--lax-key-search" for *any* hmac key
 execDSigTest $res_success \
     "xmldsig11-interop-2012" \
     "signature-enveloping-hmac-sha1-truncated40" \
     "c14n sha1 hmac-sha1" \
     "" \
-    "--hmackey keys/hmackey.bin --hmac-min-out-len 40"
+    "--lax-key-search --hmackey keys/hmackey.bin --hmac-min-out-len 40"
 
 execDSigTest $res_success \
     "xmldsig11-interop-2012" \
     "signature-enveloping-hmac-sha1-truncated160" \
     "c14n sha1 hmac-sha1" \
     "" \
-    "--hmackey keys/hmackey.bin"
+    "--lax-key-search --hmackey keys/hmackey.bin"
 
 execDSigTest $res_success \
     "xmldsig11-interop-2012" \
     "signature-enveloping-hmac-sha224" \
     "c14n sha1 hmac-sha224" \
     "" \
-    "--hmackey keys/hmackey.bin"
+    "--lax-key-search --hmackey keys/hmackey.bin"
 
 execDSigTest $res_success \
     "xmldsig11-interop-2012" \
     "signature-enveloping-hmac-sha224" \
     "c14n sha1 hmac-sha224" \
     "" \
-    "--hmackey keys/hmackey.bin"
+    "--lax-key-search --hmackey keys/hmackey.bin"
 
 execDSigTest $res_success \
     "xmldsig11-interop-2012" \
     "signature-enveloping-hmac-sha256" \
     "c14n sha1 hmac-sha256" \
     "" \
-    "--hmackey keys/hmackey.bin"
+    "--lax-key-search --hmackey keys/hmackey.bin"
 
 execDSigTest $res_success \
     "xmldsig11-interop-2012" \
     "signature-enveloping-hmac-sha384" \
     "c14n sha1 hmac-sha384" \
     "" \
-    "--hmackey keys/hmackey.bin"
+    "--lax-key-search --hmackey keys/hmackey.bin"
 
 execDSigTest $res_success \
     "xmldsig11-interop-2012" \
     "signature-enveloping-hmac-sha512" \
     "c14n sha1 hmac-sha512" \
     "" \
-    "--hmackey keys/hmackey.bin"
+    "--lax-key-search --hmackey keys/hmackey.bin"
 
 # ECDSA
 
@@ -116,7 +117,7 @@ execDSigTest $res_success \
     "c14n sha1 ecdsa-sha1" \
     "key-value ec" \
     "--enabled-key-data key-value,ec" \
-    "--enabled-key-data key-value,ec $priv_key_option:key-p256 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-name,key-value,ec $priv_key_option:key-p256 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
     "--enabled-key-data key-value,ec"
 
 
@@ -126,7 +127,7 @@ execDSigTest $res_success \
     "c14n sha1 ecdsa-sha224" \
     "key-value ec" \
     "--enabled-key-data key-value,ec" \
-    "--enabled-key-data key-value,ec $priv_key_option:key-p256 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-name,key-value,ec $priv_key_option:key-p256 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
     "--enabled-key-data key-value,ec"
 
 execDSigTest $res_success \
@@ -135,7 +136,7 @@ execDSigTest $res_success \
     "c14n sha1 ecdsa-sha256" \
     "key-value ec" \
     "--enabled-key-data key-value,ec" \
-    "--enabled-key-data key-value,ec $priv_key_option:key-p256 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-name,key-value,ec $priv_key_option:key-p256 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
     "--enabled-key-data key-value,ec"
 
 # GCrypt has problems with ECDSA-sha2-384 signatures if hash is longer than key
@@ -147,7 +148,7 @@ if [ "z$crypto" != "zgcrypt" ] ; then
         "c14n sha1 ecdsa-sha384" \
         "key-value ec" \
         "--enabled-key-data key-value,ec" \
-        "--enabled-key-data key-value,ec $priv_key_option:key-p256 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
+        "--enabled-key-data key-name,key-value,ec $priv_key_option:key-p256 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
         "--enabled-key-data key-value,ec"
 fi
 
@@ -157,7 +158,7 @@ execDSigTest $res_success \
     "c14n sha1 ecdsa-sha512" \
     "key-value ec" \
     "--enabled-key-data key-value,ec" \
-    "--enabled-key-data key-value,ec $priv_key_option:key-p256 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-name,key-value,ec $priv_key_option:key-p256 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
     "--enabled-key-data key-value,ec"
 
 execDSigTest $res_success \
@@ -166,7 +167,7 @@ execDSigTest $res_success \
     "c14n sha1 ecdsa-sha1" \
     "key-value ec" \
     "--enabled-key-data key-value,ec" \
-    "--enabled-key-data key-value,ec $priv_key_option:key-p384 $topfolder/keys/ecdsa-secp384r1-key.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-name,key-value,ec $priv_key_option:key-p384 $topfolder/keys/ecdsa-secp384r1-key.$priv_key_format --pwd secret123" \
     "--enabled-key-data key-value,ec"
 
 execDSigTest $res_success \
@@ -175,7 +176,7 @@ execDSigTest $res_success \
     "c14n sha1 ecdsa-sha224" \
     "key-value ec" \
     "--enabled-key-data key-value,ec" \
-    "--enabled-key-data key-value,ec $priv_key_option:key-p384 $topfolder/keys/ecdsa-secp384r1-key.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-name,key-value,ec $priv_key_option:key-p384 $topfolder/keys/ecdsa-secp384r1-key.$priv_key_format --pwd secret123" \
     "--enabled-key-data key-value,ec"
 
 execDSigTest $res_success \
@@ -184,7 +185,7 @@ execDSigTest $res_success \
     "c14n sha1 ecdsa-sha256" \
     "key-value ec" \
     "--enabled-key-data key-value,ec" \
-    "--enabled-key-data key-value,ec $priv_key_option:key-p384 $topfolder/keys/ecdsa-secp384r1-key.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-name,key-value,ec $priv_key_option:key-p384 $topfolder/keys/ecdsa-secp384r1-key.$priv_key_format --pwd secret123" \
     "--enabled-key-data key-value,ec"
 
 # GCrypt has problems with ECDSA-sha2-384 signatures if hash is longer than key
@@ -196,7 +197,7 @@ if [ "z$crypto" != "zgcrypt" ] ; then
         "c14n sha1 ecdsa-sha384" \
         "key-value ec" \
         "--enabled-key-data key-value,ec" \
-        "--enabled-key-data key-value,ec $priv_key_option:key-p384 $topfolder/keys/ecdsa-secp384r1-key.$priv_key_format --pwd secret123" \
+        "--enabled-key-data key-name,key-value,ec $priv_key_option:key-p384 $topfolder/keys/ecdsa-secp384r1-key.$priv_key_format --pwd secret123" \
         "--enabled-key-data key-value,ec"
 fi
 
@@ -206,7 +207,7 @@ execDSigTest $res_success \
     "c14n sha1 ecdsa-sha512" \
     "key-value ec" \
     "--enabled-key-data key-value,ec" \
-    "--enabled-key-data key-value,ec $priv_key_option:key-p384 $topfolder/keys/ecdsa-secp384r1-key.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-name,key-value,ec $priv_key_option:key-p384 $topfolder/keys/ecdsa-secp384r1-key.$priv_key_format --pwd secret123" \
     "--enabled-key-data key-value,ec"
 
 execDSigTest $res_success \
@@ -215,7 +216,7 @@ execDSigTest $res_success \
     "c14n sha1 ecdsa-sha1" \
     "key-value ec" \
     "--enabled-key-data key-value,ec" \
-    "--enabled-key-data key-value,ec $priv_key_option:key-p521 $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-name,key-value,ec $priv_key_option:key-p521 $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
     "--enabled-key-data key-value,ec"
 
 execDSigTest $res_success \
@@ -224,7 +225,7 @@ execDSigTest $res_success \
     "c14n sha1 ecdsa-sha224" \
     "key-value ec" \
     "--enabled-key-data key-value,ec" \
-    "--enabled-key-data key-value,ec $priv_key_option:key-p521 $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-name,key-value,ec $priv_key_option:key-p521 $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
     "--enabled-key-data key-value,ec"
 
 execDSigTest $res_success \
@@ -233,7 +234,7 @@ execDSigTest $res_success \
     "c14n sha1 ecdsa-sha256" \
     "key-value ec" \
     "--enabled-key-data key-value,ec" \
-    "--enabled-key-data key-value,ec $priv_key_option:key-p521 $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-name,key-value,ec $priv_key_option:key-p521 $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
     "--enabled-key-data key-value,ec"
 
 execDSigTest $res_success \
@@ -242,7 +243,7 @@ execDSigTest $res_success \
     "c14n sha1 ecdsa-sha384" \
     "key-value ec" \
     "--enabled-key-data key-value,ec" \
-    "--enabled-key-data key-value,ec $priv_key_option:key-p521 $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-name,key-value,ec $priv_key_option:key-p521 $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
     "--enabled-key-data key-value,ec"
 
 execDSigTest $res_success \
@@ -251,7 +252,7 @@ execDSigTest $res_success \
     "c14n sha1 ecdsa-sha512" \
     "key-value ec" \
     "--enabled-key-data key-value,ec" \
-    "--enabled-key-data key-value,ec $priv_key_option:key-p521 $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-name,key-value,ec $priv_key_option:key-p521 $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
     "--enabled-key-data key-value,ec"
 
 # RSA
@@ -259,57 +260,57 @@ execDSigTest $res_success \
     "xmldsig11-interop-2012" \
     "signature-enveloping-rsa-sha224" \
     "c14n sha1 rsa-sha224" \
-    "" \
-    "--exact-key-search"
+    "rsa" \
+    "--enabled-key-data key-value,rsa"
 
 execDSigTest $res_success \
     "xmldsig11-interop-2012" \
     "signature-enveloping-rsa-sha256" \
     "c14n sha1 rsa-sha256" \
-    "" \
-    "--exact-key-search"
+    "rsa" \
+    "--enabled-key-data key-value,rsa"
 
 execDSigTest $res_success \
     "xmldsig11-interop-2012" \
     "signature-enveloping-rsa_sha384" \
     "c14n sha1 rsa-sha256" \
-    "" \
-    "--exact-key-search"
+    "rsa" \
+    "--enabled-key-data key-value,rsa"
 
 execDSigTest $res_success \
     "xmldsig11-interop-2012" \
     "signature-enveloping-rsa_sha512" \
     "c14n sha1 rsa-sha512" \
-    "" \
-    "--exact-key-search"
+    "rsa" \
+    "--enabled-key-data key-value,rsa"
 
 execDSigTest $res_success \
     "xmldsig11-interop-2012" \
     "signature-enveloping-sha224-rsa_sha256" \
     "c14n sha224 rsa-sha256" \
-    "" \
-    "--exact-key-search"
+    "rsa" \
+    "--enabled-key-data key-value,rsa"
 
 execDSigTest $res_success \
     "xmldsig11-interop-2012" \
     "signature-enveloping-sha256-rsa-sha256" \
     "c14n sha256 rsa-sha256" \
-    "" \
-    "--exact-key-search"
+    "rsa" \
+    "--enabled-key-data key-value,rsa"
 
 execDSigTest $res_success \
     "xmldsig11-interop-2012" \
     "signature-enveloping-sha384-rsa_sha256" \
     "c14n sha384 rsa-sha256" \
-    "" \
-    "--exact-key-search"
+    "rsa" \
+    "--enabled-key-data key-value,rsa"
 
 execDSigTest $res_success \
     "xmldsig11-interop-2012" \
     "signature-enveloping-sha512-rsa_sha256" \
     "c14n sha512 rsa-sha256" \
-    "" \
-    "--exact-key-search"
+    "rsa" \
+    "--enabled-key-data key-value,rsa"
 
 # KeyInfoReference
 execDSigTest $res_success \
@@ -317,9 +318,9 @@ execDSigTest $res_success \
     "signature-enveloping-keyinforeference-rsa" \
     "c14n sha256 rsa-sha256" \
     "key-info-reference key-name key-value rsa" \
-    "--exact-key-search --enabled-key-data key-info-reference,key-name,key-value,rsa" \
+    "--enabled-key-data key-info-reference,key-name,key-value,rsa" \
     "$priv_key_option:largersakey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
-    "--exact-key-search --enabled-key-data key-info-reference,key-name,rsa $pub_key_option:largersakey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format"
+    "--enabled-key-data key-info-reference,key-name,rsa $pub_key_option:largersakey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format"
 
 # DEREncodedKeyValue
 execDSigTest $res_success \
@@ -327,18 +328,18 @@ execDSigTest $res_success \
     "signature-enveloping-derencoded-rsa" \
     "c14n sha256 rsa-sha256" \
     "der-encoded-key-value rsa" \
-    "--exact-key-search --enabled-key-data der-encoded-key-value,rsa" \
-    "$priv_key_option $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
-    "--exact-key-search --enabled-key-data der-encoded-key-value,rsa"
+    "--enabled-key-data der-encoded-key-value,rsa" \
+    "$priv_key_option:largersakey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-key-data der-encoded-key-value,rsa"
 
 execDSigTest $res_success \
     "xmldsig11-interop-2012" \
     "signature-enveloping-derencoded-ec" \
     "c14n sha256 ecdsa-sha256" \
     "der-encoded-key-value ec" \
-    "--exact-key-search --enabled-key-data der-encoded-key-value,ec" \
-    "$priv_key_option $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
-    "--exact-key-search --enabled-key-data der-encoded-key-value,ec"
+    "--enabled-key-data der-encoded-key-value,ec" \
+    "$priv_key_option:secp256r1 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
+    "--enabled-key-data der-encoded-key-value,ec"
 
 
 # Only OpenSSL currently supports X509Digest and has capability to lookup the key using X509 data
@@ -348,9 +349,9 @@ if [ "z$crypto" = "zopenssl" ] ; then
         "signature-enveloping-x509digest-rsa" \
         "c14n sha256 rsa-sha256" \
         "x509" \
-        "--exact-key-search --enabled-key-data x509 --pubkey-cert-der ./keys/rsa-key.crt" \
+        "--enabled-key-data x509 --pubkey-cert-der ./keys/rsa-key.crt" \
         "--enabled-key-data x509 --pkcs12 $topfolder/keys/largersakey.p12 --pwd secret123" \
-        "--exact-key-search --enabled-key-data x509 --pubkey-cert-pem $topfolder/keys/largersacert.pem"
+        "--enabled-key-data x509 --pubkey-cert-pem $topfolder/keys/largersacert.pem"
 fi
 
 
@@ -360,6 +361,8 @@ fi
 #
 # http://www.w3.org/TR/xmldsig2ed-tests/
 #
+# No KeyInfo so use --lax-key-search option
+#
 ##########################################################################
 
 execDSigTest $res_success \
@@ -367,18 +370,18 @@ execDSigTest $res_success \
     "defCan-1" \
     "c14n11 sha1 hmac-sha1" \
     "hmac" \
-    "--hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey $topfolder/keys/hmackey.bin"
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
+    "--hmackey:mykey $topfolder/keys/hmackey.bin" \
+    "--hmackey:mykey $topfolder/keys/hmackey.bin"
 
 execDSigTest $res_success \
     "xmldsig2ed-tests" \
     "defCan-2" \
     "c14n11 xslt xpath sha1 hmac-sha1" \
     "hmac" \
-    "--hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey $topfolder/keys/hmackey.bin"
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
+    "--hmackey:mykey $topfolder/keys/hmackey.bin" \
+    "--hmackey:mykey $topfolder/keys/hmackey.bin"
 
 #
 # differences in XSLT transform output, tbd
@@ -398,42 +401,42 @@ execDSigTest $res_success \
     "xpointer-1-SUN" \
     "c14n11 xpointer sha1 hmac-sha1" \
     "hmac" \
-    "--hmackey $topfolder/keys/hmackey.bin"
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin"
 
 execDSigTest $res_success \
     "xmldsig2ed-tests" \
     "xpointer-2-SUN" \
     "c14n11 xpointer sha1 hmac-sha1" \
     "hmac" \
-    "--hmackey $topfolder/keys/hmackey.bin"
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin"
 
 execDSigTest $res_success \
     "xmldsig2ed-tests" \
     "xpointer-3-SUN" \
     "c14n11 xpointer sha1 hmac-sha1" \
     "hmac" \
-    "--hmackey $topfolder/keys/hmackey.bin"
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin"
 
 execDSigTest $res_success \
     "xmldsig2ed-tests" \
     "xpointer-4-SUN" \
     "c14n11 xpointer sha1 hmac-sha1" \
     "hmac" \
-    "--hmackey $topfolder/keys/hmackey.bin"
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin"
 
 execDSigTest $res_success \
     "xmldsig2ed-tests" \
     "xpointer-5-SUN" \
      "c14n11 xpointer sha1 hmac-sha1" \
      "hmac" \
-     "--hmackey $topfolder/keys/hmackey.bin"
+     "--lax-key-search --hmackey $topfolder/keys/hmackey.bin"
 
 execDSigTest $res_success \
     "xmldsig2ed-tests" \
     "xpointer-6-SUN" \
      "c14n11 xpointer sha1 hmac-sha1" \
      "hmac" \
-     "--hmackey $topfolder/keys/hmackey.bin"
+     "--lax-key-search --hmackey $topfolder/keys/hmackey.bin"
 
 ##########################################################################
 #
@@ -445,27 +448,27 @@ execDSigTest $res_success \
     "aleksey-xmldsig-01/enveloped-x509-subjectname" \
     "sha512 rsa-sha512" \
     "rsa x509" \
-    "--exact-key-search --untrusted-$cert_format $topfolder/keys/largersacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+    "--untrusted-$cert_format $topfolder/keys/largersacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
     "$priv_key_option $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
-    "--exact-key-search --untrusted-$cert_format $topfolder/keys/largersacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+    "--untrusted-$cert_format $topfolder/keys/largersacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloped-x509-issuerserial" \
     "sha512 rsa-sha512" \
     "rsa x509" \
-    "--exact-key-search --untrusted-$cert_format $topfolder/keys/largersacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+    "--untrusted-$cert_format $topfolder/keys/largersacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
     "$priv_key_option $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
-    "--exact-key-search --untrusted-$cert_format $topfolder/keys/largersacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+    "--untrusted-$cert_format $topfolder/keys/largersacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloped-x509-ski" \
     "sha512 rsa-sha512" \
     "rsa x509" \
-    "--exact-key-search --untrusted-$cert_format $topfolder/keys/largersacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+    "--untrusted-$cert_format $topfolder/keys/largersacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
     "$priv_key_option $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
-    "--exact-key-search --untrusted-$cert_format $topfolder/keys/largersacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+    "--untrusted-$cert_format $topfolder/keys/largersacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
     "" \
@@ -482,7 +485,7 @@ execDSigTest $res_success \
     "sha1 dsa-sha1" \
     "dsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123" \
+    "$priv_key_option:mykey $topfolder/keys/dsakey.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -491,7 +494,7 @@ execDSigTest $res_success \
     "sha1 rsa-sha1" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option $topfolder/keys/rsakey.$priv_key_format --pwd secret123" \
+    "$priv_key_option:mykey $topfolder/keys/rsakey.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -499,135 +502,135 @@ execDSigTest $res_success \
     "aleksey-xmldsig-01/enveloping-md5-hmac-md5" \
     "md5 hmac-md5" \
     "hmac" \
-    "--hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey $topfolder/keys/hmackey.bin"
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
+    "--hmackey:mykey $topfolder/keys/hmackey.bin" \
+    "--hmackey:mykey $topfolder/keys/hmackey.bin"
 
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloping-md5-hmac-md5-64" \
     "md5 hmac-md5" \
     "hmac" \
-    "--hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey $topfolder/keys/hmackey.bin"
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
+    "--hmackey:mykey $topfolder/keys/hmackey.bin" \
+    "--hmackey:mykey $topfolder/keys/hmackey.bin"
 
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloping-ripemd160-hmac-ripemd160" \
     "ripemd160 hmac-ripemd160" \
     "hmac" \
-    "--hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey $topfolder/keys/hmackey.bin"
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
+    "--hmackey:mykey $topfolder/keys/hmackey.bin" \
+    "--hmackey:mykey $topfolder/keys/hmackey.bin"
 
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloping-ripemd160-hmac-ripemd160-64" \
     "ripemd160 hmac-ripemd160" \
     "hmac" \
-    "--hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey $topfolder/keys/hmackey.bin"
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
+    "--hmackey:mykey $topfolder/keys/hmackey.bin" \
+    "--hmackey:mykey $topfolder/keys/hmackey.bin"
 
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/xpointer-hmac" \
     "xpointer sha1 hmac-sha1" \
     "hmac" \
-    "--hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey $topfolder/keys/hmackey.bin"
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
+    "--hmackey:mykey $topfolder/keys/hmackey.bin" \
+    "--hmackey:mykey $topfolder/keys/hmackey.bin"
 
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloping-sha1-hmac-sha1" \
     "sha1 hmac-sha1" \
     "hmac" \
-    "--hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey $topfolder/keys/hmackey.bin"
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
+    "--hmackey:mykey $topfolder/keys/hmackey.bin" \
+    "--hmackey:mykey $topfolder/keys/hmackey.bin"
 
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloping-sha1-hmac-sha1-64" \
     "sha1 hmac-sha1" \
     "hmac" \
-    "--hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey $topfolder/keys/hmackey.bin"
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
+    "--hmackey:mykey $topfolder/keys/hmackey.bin" \
+    "--hmackey:mykey $topfolder/keys/hmackey.bin"
 
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloping-sha224-hmac-sha224" \
     "sha224 hmac-sha224" \
     "hmac" \
-    "--hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey $topfolder/keys/hmackey.bin"
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
+    "--hmackey:mykey $topfolder/keys/hmackey.bin" \
+    "--hmackey:mykey $topfolder/keys/hmackey.bin"
 
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloping-sha224-hmac-sha224-64" \
     "sha224 hmac-sha224" \
     "hmac" \
-    "--hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey $topfolder/keys/hmackey.bin"
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
+    "--hmackey:mykey $topfolder/keys/hmackey.bin" \
+    "--hmackey:mykey $topfolder/keys/hmackey.bin"
 
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloping-sha256-hmac-sha256" \
     "sha256 hmac-sha256" \
     "hmac" \
-    "--hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey $topfolder/keys/hmackey.bin"
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
+    "--hmackey:mykey $topfolder/keys/hmackey.bin" \
+    "--hmackey:mykey $topfolder/keys/hmackey.bin"
 
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloping-sha256-hmac-sha256-64" \
     "sha256 hmac-sha256" \
     "hmac" \
-    "--hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey $topfolder/keys/hmackey.bin"
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
+    "--hmackey:mykey $topfolder/keys/hmackey.bin" \
+    "--hmackey:mykey $topfolder/keys/hmackey.bin"
 
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloping-sha384-hmac-sha384" \
     "sha384 hmac-sha384" \
     "hmac" \
-    "--hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey $topfolder/keys/hmackey.bin"
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
+    "--hmackey:mykey $topfolder/keys/hmackey.bin" \
+    "--hmackey:mykey $topfolder/keys/hmackey.bin"
 
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloping-sha384-hmac-sha384-64" \
     "sha384 hmac-sha384" \
     "hmac" \
-    "--hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey $topfolder/keys/hmackey.bin"
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
+    "--hmackey:mykey $topfolder/keys/hmackey.bin" \
+    "--hmackey:mykey $topfolder/keys/hmackey.bin"
 
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloping-sha512-hmac-sha512" \
     "sha512 hmac-sha512" \
     "hmac" \
-    "--hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey $topfolder/keys/hmackey.bin"
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
+    "--hmackey:mykey $topfolder/keys/hmackey.bin" \
+    "--hmackey:mykey $topfolder/keys/hmackey.bin"
 
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloping-sha512-hmac-sha512-64" \
     "sha512 hmac-sha512" \
     "hmac" \
-    "--hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey $topfolder/keys/hmackey.bin"
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
+    "--hmackey:mykey $topfolder/keys/hmackey.bin" \
+    "--hmackey:mykey $topfolder/keys/hmackey.bin"
 
 execDSigTest $res_success \
     "" \
@@ -635,7 +638,7 @@ execDSigTest $res_success \
     "md5 rsa-md5" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option $topfolder/keys/rsakey.$priv_key_format --pwd secret123" \
+    "$priv_key_option:mykey $topfolder/keys/rsakey.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -644,7 +647,7 @@ execDSigTest $res_success \
     "ripemd160 rsa-ripemd160" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option $topfolder/keys/rsakey.$priv_key_format --pwd secret123" \
+    "$priv_key_option:mykey $topfolder/keys/rsakey.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -653,7 +656,7 @@ execDSigTest $res_success \
     "sha1 rsa-sha1" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option $topfolder/keys/rsakey.$priv_key_format --pwd secret123" \
+    "$priv_key_option:mykey $topfolder/keys/rsakey.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -662,7 +665,7 @@ execDSigTest $res_success \
     "sha224 rsa-sha224" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option $topfolder/keys/rsakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$priv_key_option:mykey $topfolder/keys/rsakey$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -671,7 +674,7 @@ execDSigTest $res_success \
     "sha256 rsa-sha256" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option $topfolder/keys/rsakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$priv_key_option:mykey $topfolder/keys/rsakey$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -680,7 +683,7 @@ execDSigTest $res_success \
     "sha256 rsa-sha256 relationship" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option $topfolder/keys/rsakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$priv_key_option:mykey $topfolder/keys/rsakey$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -689,7 +692,7 @@ execDSigTest $res_success \
     "sha384 rsa-sha384" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$priv_key_option:mykey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -698,7 +701,7 @@ execDSigTest $res_success \
     "sha512 rsa-sha512" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$priv_key_option:mykey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -707,8 +710,8 @@ execDSigTest $res_success \
     "sha224 rsa-pss-sha224" \
     "rsa" \
     "$pub_key_option:largersakey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format" \
-    "$priv_key_option:largersakey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
-    "$pub_key_option:largersakey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format"
+    "$priv_key_option:mykey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$pub_key_option:mykey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format"
 
 execDSigTest $res_success \
     "" \
@@ -716,8 +719,8 @@ execDSigTest $res_success \
     "sha256 rsa-pss-sha256" \
     "rsa" \
     "$pub_key_option:largersakey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format" \
-    "$priv_key_option:largersakey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
-    "$pub_key_option:largersakey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format"
+    "$priv_key_option:mykey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$pub_key_option:mykey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format"
 
 execDSigTest $res_success \
     "" \
@@ -725,8 +728,8 @@ execDSigTest $res_success \
     "sha384 rsa-pss-sha384" \
     "rsa" \
     "$pub_key_option:largersakey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format" \
-    "$priv_key_option:largersakey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
-    "$pub_key_option:largersakey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format"
+    "$priv_key_option:mykey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$pub_key_option:mykey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format"
 
 execDSigTest $res_success \
     "" \
@@ -734,8 +737,8 @@ execDSigTest $res_success \
     "sha512 rsa-pss-sha512" \
     "rsa" \
     "$pub_key_option:largersakey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format" \
-    "$priv_key_option:largersakey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
-    "$pub_key_option:largersakey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format"
+    "$priv_key_option:mykey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$pub_key_option:mykey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format"
 
 
 execDSigTest $res_success \
@@ -744,8 +747,8 @@ execDSigTest $res_success \
     "sha3-224 rsa-pss-sha3-224" \
     "rsa" \
     "$pub_key_option:largersakey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format" \
-    "$priv_key_option:largersakey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
-    "$pub_key_option:largersakey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format"
+    "$priv_key_option:mykey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$pub_key_option:mykey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format"
 
 execDSigTest $res_success \
     "" \
@@ -753,8 +756,8 @@ execDSigTest $res_success \
     "sha3-256 rsa-pss-sha3-256" \
     "rsa" \
     "$pub_key_option:largersakey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format" \
-    "$priv_key_option:largersakey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
-    "$pub_key_option:largersakey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format"
+    "$priv_key_option:mykey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$pub_key_option:mykey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format"
 
 execDSigTest $res_success \
     "" \
@@ -762,8 +765,8 @@ execDSigTest $res_success \
     "sha3-384 rsa-pss-sha3-384" \
     "rsa" \
     "$pub_key_option:largersakey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format" \
-    "$priv_key_option:largersakey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
-    "$pub_key_option:largersakey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format"
+    "$priv_key_option:mykey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$pub_key_option:mykey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format"
 
 execDSigTest $res_success \
     "" \
@@ -771,8 +774,8 @@ execDSigTest $res_success \
     "sha3-512 rsa-pss-sha3-512" \
     "rsa" \
     "$pub_key_option:largersakey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format" \
-    "$priv_key_option:largersakey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
-    "$pub_key_option:largersakey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format"
+    "$priv_key_option:mykey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$pub_key_option:mykey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format"
 
 
 execDSigTest $res_success \
@@ -781,7 +784,7 @@ execDSigTest $res_success \
     "sha1 rsa-pss-sha1" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$priv_key_option:mykey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -790,7 +793,7 @@ execDSigTest $res_success \
     "sha224 rsa-pss-sha224" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$priv_key_option:mykey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -799,7 +802,7 @@ execDSigTest $res_success \
     "sha256 rsa-pss-sha256" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$priv_key_option:mykey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -808,7 +811,7 @@ execDSigTest $res_success \
     "sha384 rsa-pss-sha384" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$priv_key_option:mykey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -817,7 +820,7 @@ execDSigTest $res_success \
     "sha512 rsa-pss-sha512" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$priv_key_option:mykey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 
@@ -827,7 +830,7 @@ execDSigTest $res_success \
     "sha3-224 rsa-pss-sha3-224" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$priv_key_option:mykey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -836,7 +839,7 @@ execDSigTest $res_success \
     "sha3-256 rsa-pss-sha3-256" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$priv_key_option:mykey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -845,7 +848,7 @@ execDSigTest $res_success \
     "sha3-384 rsa-pss-sha3-384" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$priv_key_option:mykey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -854,7 +857,7 @@ execDSigTest $res_success \
     "sha3-512 rsa-pss-sha3-512" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$priv_key_option:mykey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 
@@ -864,7 +867,7 @@ execDSigTest $res_success \
     "sha256 dsa-sha256" \
     "dsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option $topfolder/keys/dsa2048key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$priv_key_option:mykey $topfolder/keys/dsa2048key$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -873,7 +876,7 @@ execDSigTest $res_success \
     "sha256 dsa-sha256" \
     "dsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option $topfolder/keys/dsa3072key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$priv_key_option:mykey $topfolder/keys/dsa3072key$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -882,8 +885,8 @@ execDSigTest $res_success \
     "sha1 dsa-sha1" \
     "" \
     "$priv_key_option:DsaKey $topfolder/keys/dsakey.$priv_key_format --pwd secret123" \
-    "$priv_key_option:DsaKey $topfolder/keys/dsakey.$priv_key_format --pwd secret123" \
-    "$priv_key_option:DsaKey $topfolder/keys/dsakey.$priv_key_format --pwd secret123"
+    "$priv_key_option:mykey $topfolder/keys/dsakey.$priv_key_format --pwd secret123" \
+    "$priv_key_option:mykey $topfolder/keys/dsakey.$priv_key_format --pwd secret123"
 
 
 execDSigTest $res_success \
@@ -892,8 +895,8 @@ execDSigTest $res_success \
     "sha1 ecdsa-sha1" \
     "" \
     "$priv_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
-    "$priv_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
-    "$priv_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123"
+    "$priv_key_option:mykey $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
+    "$priv_key_option:mykey $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123"
 
 
 execDSigTest $res_success \
@@ -902,8 +905,8 @@ execDSigTest $res_success \
     "ripemd160 ecdsa-ripemd160" \
     "ec" \
     "$priv_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
-    "$priv_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
-    "$priv_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123"
+    "$priv_key_option:mykey $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
+    "$priv_key_option:mykey $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123"
 
 
 execDSigTest $res_success \
@@ -911,9 +914,9 @@ execDSigTest $res_success \
     "aleksey-xmldsig-01/enveloped-sha1-rsa-sha1" \
     "sha1 rsa-sha1" \
     "" \
-    "$priv_key_option:LargeRsaKey $topfolder/keys/largersakey.$priv_key_format --pwd secret123" \
-    "$priv_key_option:LargeRsaKey $topfolder/keys/largersakey.$priv_key_format --pwd secret123" \
-    "$priv_key_option:LargeRsaKey $topfolder/keys/largersakey.$priv_key_format --pwd secret123"
+    "$priv_key_option:mykey $topfolder/keys/largersakey.$priv_key_format --pwd secret123" \
+    "$priv_key_option:mykey $topfolder/keys/largersakey.$priv_key_format --pwd secret123" \
+    "$priv_key_option:mykey $topfolder/keys/largersakey.$priv_key_format --pwd secret123"
 
 execDSigTest $res_success \
     "" \
@@ -921,8 +924,8 @@ execDSigTest $res_success \
     "sha224 ecdsa-sha224" \
     "ec" \
     "$pub_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-pubkey.$pub_key_format" \
-    "$priv_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
-    "$pub_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-pubkey.$pub_key_format"
+    "$priv_key_option:mykey $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
+    "$pub_key_option:mykey $topfolder/keys/ecdsa-secp256r1-pubkey.$pub_key_format"
 
 
 execDSigTest $res_success \
@@ -931,8 +934,8 @@ execDSigTest $res_success \
     "sha256 ecdsa-sha256" \
     "ec" \
     "$pub_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-pubkey.$pub_key_format" \
-    "$priv_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
-    "$pub_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-pubkey.$pub_key_format"
+    "$priv_key_option:mykey $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
+    "$pub_key_option:mykey $topfolder/keys/ecdsa-secp256r1-pubkey.$pub_key_format"
 
 
 execDSigTest $res_success \
@@ -941,8 +944,8 @@ execDSigTest $res_success \
     "sha384 ecdsa-sha384" \
     "ec" \
     "$pub_key_option:EcdsaSecp521r1 $topfolder/keys/ecdsa-secp521r1-pubkey.$pub_key_format" \
-    "$priv_key_option:EcdsaSecp521r1 $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
-    "$pub_key_option:EcdsaSecp521r1 $topfolder/keys/ecdsa-secp521r1-pubkey.$pub_key_format"
+    "$priv_key_option:mykey $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
+    "$pub_key_option:mykey $topfolder/keys/ecdsa-secp521r1-pubkey.$pub_key_format"
 
 execDSigTest $res_success \
     "" \
@@ -950,8 +953,8 @@ execDSigTest $res_success \
     "sha512 ecdsa-sha512" \
     "ec" \
     "$pub_key_option:EcdsaSecp521r1 $topfolder/keys/ecdsa-secp521r1-pubkey.$pub_key_format" \
-    "$priv_key_option:EcdsaSecp521r1 $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
-    "$pub_key_option:EcdsaSecp521r1 $topfolder/keys/ecdsa-secp521r1-pubkey.$pub_key_format"
+    "$priv_key_option:mykey $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
+    "$pub_key_option:mykey $topfolder/keys/ecdsa-secp521r1-pubkey.$pub_key_format"
 
 
 execDSigTest $res_success \
@@ -960,8 +963,8 @@ execDSigTest $res_success \
     "sha3-224 ecdsa-sha3-224" \
     "ec" \
     "$pub_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-pubkey.$pub_key_format" \
-    "$priv_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
-    "$pub_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-pubkey.$pub_key_format"
+    "$priv_key_option:mykey $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
+    "$pub_key_option:mykey $topfolder/keys/ecdsa-secp256r1-pubkey.$pub_key_format"
 
 execDSigTest $res_success \
     "" \
@@ -969,8 +972,8 @@ execDSigTest $res_success \
     "sha3-256 ecdsa-sha3-256" \
     "ec" \
     "$pub_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-pubkey.$pub_key_format" \
-    "$priv_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
-    "$pub_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-pubkey.$pub_key_format"
+    "$priv_key_option:mykey $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
+    "$pub_key_option:mykey $topfolder/keys/ecdsa-secp256r1-pubkey.$pub_key_format"
 
 execDSigTest $res_success \
     "" \
@@ -978,8 +981,8 @@ execDSigTest $res_success \
     "sha3-384 ecdsa-sha3-384" \
     "ec" \
     "$pub_key_option:EcdsaSecp521r1 $topfolder/keys/ecdsa-secp521r1-pubkey.$pub_key_format" \
-    "$priv_key_option:EcdsaSecp521r1 $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
-    "$pub_key_option:EcdsaSecp521r1 $topfolder/keys/ecdsa-secp521r1-pubkey.$pub_key_format"
+    "$priv_key_option:mykey $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
+    "$pub_key_option:mykey $topfolder/keys/ecdsa-secp521r1-pubkey.$pub_key_format"
 
 execDSigTest $res_success \
     "" \
@@ -987,8 +990,8 @@ execDSigTest $res_success \
     "sha3-512 ecdsa-sha3-512" \
     "ec" \
     "$pub_key_option:EcdsaSecp521r1 $topfolder/keys/ecdsa-secp521r1-pubkey.$pub_key_format" \
-    "$priv_key_option:EcdsaSecp521r1 $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
-    "$pub_key_option:EcdsaSecp521r1 $topfolder/keys/ecdsa-secp521r1-pubkey.$pub_key_format"
+    "$priv_key_option:mykey $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
+    "$pub_key_option:mykey $topfolder/keys/ecdsa-secp521r1-pubkey.$pub_key_format"
 
 
 execDSigTest $res_success \
@@ -997,7 +1000,7 @@ execDSigTest $res_success \
     "sha1 ecdsa-sha1" \
     "ec x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
+    "$priv_key_option:mykey $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -1006,7 +1009,7 @@ execDSigTest $res_success \
     "sha256 ecdsa-sha256" \
     "ec x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
+    "$priv_key_option:mykey $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -1015,7 +1018,7 @@ execDSigTest $res_success \
     "sha384 ecdsa-sha384" \
     "ec x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
+    "$priv_key_option:mykey $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -1024,7 +1027,7 @@ execDSigTest $res_success \
     "sha512 ecdsa-sha512" \
     "ec x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
+    "$priv_key_option:mykey $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 # MSCNG and GnuTLS doesn't support signatures with removed leading zeros (e.g. from Java)
@@ -1058,9 +1061,9 @@ execDSigTest $res_success \
     "aleksey-xmldsig-01/dtd-hmac-91" \
     "sha1 hmac-sha1" \
     "hmac" \
-    "--hmackey $topfolder/keys/hmackey.bin --dtd-file $topfolder/aleksey-xmldsig-01/dtd-hmac-91.dtd" \
-    "--hmackey $topfolder/keys/hmackey.bin --dtd-file $topfolder/aleksey-xmldsig-01/dtd-hmac-91.dtd" \
-    "--hmackey $topfolder/keys/hmackey.bin --dtd-file $topfolder/aleksey-xmldsig-01/dtd-hmac-91.dtd"
+    "--hmackey:name:KEY $topfolder/keys/hmackey.bin --dtd-file $topfolder/aleksey-xmldsig-01/dtd-hmac-91.dtd" \
+    "--hmackey:mykey $topfolder/keys/hmackey.bin --dtd-file $topfolder/aleksey-xmldsig-01/dtd-hmac-91.dtd" \
+    "--hmackey:mykey $topfolder/keys/hmackey.bin --dtd-file $topfolder/aleksey-xmldsig-01/dtd-hmac-91.dtd"
 
 execDSigTest $res_success \
     "" \
@@ -1068,7 +1071,7 @@ execDSigTest $res_success \
     "xpath2 sha1 rsa-sha1" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format" \
-    "$priv_key_option $topfolder/keys/rsakey.$priv_key_format --pwd secret123" \
+    "$priv_key_option:mykey $topfolder/keys/rsakey.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format"
 
 execDSigTest $res_success \
@@ -1077,7 +1080,7 @@ execDSigTest $res_success \
     "xpath2 sha1 rsa-sha1" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format  --untrusted-$cert_format $topfolder/keys/rsacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option $topfolder/keys/rsakey.$priv_key_format --pwd secret123" \
+    "$priv_key_option:mykey $topfolder/keys/rsakey.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format  --untrusted-$cert_format $topfolder/keys/rsacert.$cert_format --enabled-key-data x509"
 
 ##########################################################################
@@ -1091,7 +1094,7 @@ execDSigTest $res_success \
     "enveloped-signature sha1 dsa-sha1" \
     "dsa" \
     " " \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123" \
+    "$priv_key_option:mykey $topfolder/keys/dsakey.$priv_key_format --pwd secret123" \
     " "
 
 execDSigTest $res_success \
@@ -1100,7 +1103,7 @@ execDSigTest $res_success \
     "sha1 dsa-sha1" \
     "dsa" \
     " " \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123" \
+    "$priv_key_option:mykey $topfolder/keys/dsakey.$priv_key_format --pwd secret123" \
     " "
 
 execDSigTest $res_success \
@@ -1109,7 +1112,7 @@ execDSigTest $res_success \
     "base64 sha1 dsa-sha1" \
     "dsa" \
     " " \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123" \
+    "$priv_key_option:mykey $topfolder/keys/dsakey.$priv_key_format --pwd secret123" \
     " "
 
 execDSigTest $res_success \
@@ -1117,18 +1120,18 @@ execDSigTest $res_success \
     "merlin-xmldsig-twenty-three/signature-enveloping-hmac-sha1-40" \
     "sha1 hmac-sha1" \
     "hmac" \
-    "--hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey $topfolder/keys/hmackey.bin"
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
+    "--hmackey:mykey $topfolder/keys/hmackey.bin" \
+    "--hmackey:mykey $topfolder/keys/hmackey.bin"
 
 execDSigTest $res_success \
     "" \
     "merlin-xmldsig-twenty-three/signature-enveloping-hmac-sha1" \
     "sha1 hmac-sha1" \
     "hmac" \
-    "--hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey $topfolder/keys/hmackey.bin"
+    "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
+    "--hmackey:mykey $topfolder/keys/hmackey.bin" \
+    "--hmackey:mykey $topfolder/keys/hmackey.bin"
 
 execDSigTest $res_success \
     "" \
@@ -1136,7 +1139,7 @@ execDSigTest $res_success \
     "sha1 rsa-sha1" \
     "rsa" \
     " " \
-    "$priv_key_option $topfolder/keys/rsakey.$priv_key_format --pwd secret123" \
+    "$priv_key_option:mykey $topfolder/keys/rsakey.$priv_key_format --pwd secret123" \
     " "
 
 execDSigTest $res_success \
@@ -1145,7 +1148,7 @@ execDSigTest $res_success \
     "base64 sha1 dsa-sha1" \
     "dsa" \
     " $url_map_xml_stylesheet_b64_2005" \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_b64_2005" \
+    "$priv_key_option:mykey $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_b64_2005" \
     " $url_map_xml_stylesheet_b64_2005"
 
 execDSigTest $res_success \
@@ -1154,7 +1157,7 @@ execDSigTest $res_success \
     "sha1 dsa-sha1" \
     "dsa" \
     "$url_map_xml_stylesheet_2005" \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005" \
+    "$priv_key_option:mykey $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005" \
     " $url_map_xml_stylesheet_2005"
 
 execDSigTest $res_success \
@@ -1162,9 +1165,9 @@ execDSigTest $res_success \
     "merlin-xmldsig-twenty-three/signature-keyname" \
     "sha1 dsa-sha1" \
     "dsa x509" \
-    "--exact-key-search --pubkey-cert-$cert_format:Lugh $topfolder/merlin-xmldsig-twenty-three/certs/lugh-cert.$cert_format $url_map_xml_stylesheet_2005" \
-    "$priv_key_option:test-dsa $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005" \
-    "--exact-key-search $priv_key_option:test-dsa $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005"
+    "--pubkey-cert-$cert_format:Lugh $topfolder/merlin-xmldsig-twenty-three/certs/lugh-cert.$cert_format $url_map_xml_stylesheet_2005" \
+    "$priv_key_option:mykey $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005" \
+    "$priv_key_option:mykey $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005"
 
 execDSigTest $res_success \
     "" \
@@ -1172,7 +1175,7 @@ execDSigTest $res_success \
     "sha1 dsa-sha1" \
     "dsa x509" \
     "--trusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/ca.$cert_format --verification-gmt-time 2005-01-01+10:00:00 $url_map_xml_stylesheet_2005" \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005"\
+    "$priv_key_option:mykey $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005"\
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format $url_map_xml_stylesheet_2005"
 
 execDSigTest $res_success \
@@ -1180,36 +1183,36 @@ execDSigTest $res_success \
     "merlin-xmldsig-twenty-three/signature-x509-sn" \
     "sha1 dsa-sha1" \
     "dsa x509" \
-    "--exact-key-search --trusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/ca.$cert_format --untrusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/badb.$cert_format --verification-gmt-time 2005-01-01+10:00:00 $url_map_xml_stylesheet_2005" \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005"\
-    "--exact-key-search --trusted-$cert_format $topfolder/keys/cacert.$cert_format $url_map_xml_stylesheet_2005"
+    "--trusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/ca.$cert_format --untrusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/badb.$cert_format --verification-gmt-time 2005-01-01+10:00:00 $url_map_xml_stylesheet_2005" \
+    "$priv_key_option:mykey $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005"\
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format $url_map_xml_stylesheet_2005"
 
 execDSigTest $res_success \
     "" \
     "merlin-xmldsig-twenty-three/signature-x509-is" \
     "sha1 dsa-sha1" \
     "dsa x509" \
-    "--exact-key-search --trusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/ca.$cert_format --untrusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/macha.$cert_format --verification-gmt-time 2005-01-01+10:00:00 $url_map_xml_stylesheet_2005" \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005"\
-    "--exact-key-search --trusted-$cert_format $topfolder/keys/cacert.$cert_format $url_map_xml_stylesheet_2005"
+    "--trusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/ca.$cert_format --untrusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/macha.$cert_format --verification-gmt-time 2005-01-01+10:00:00 $url_map_xml_stylesheet_2005" \
+    "$priv_key_option:mykey $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005"\
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format $url_map_xml_stylesheet_2005"
 
 execDSigTest $res_success \
     "" \
     "merlin-xmldsig-twenty-three/signature-x509-ski" \
     "sha1 dsa-sha1" \
     "dsa x509" \
-    "--exact-key-search --trusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/ca.$cert_format --untrusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/nemain.$cert_format --verification-gmt-time 2005-01-01+10:00:00 $url_map_xml_stylesheet_2005" \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005"\
-    "--exact-key-search --trusted-$cert_format $topfolder/keys/cacert.$cert_format $url_map_xml_stylesheet_2005"
+    "--trusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/ca.$cert_format --untrusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/nemain.$cert_format --verification-gmt-time 2005-01-01+10:00:00 $url_map_xml_stylesheet_2005" \
+    "$priv_key_option:mykey $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005"\
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format $url_map_xml_stylesheet_2005"
 
 execDSigTest $res_success \
     "" \
     "merlin-xmldsig-twenty-three/signature-retrievalmethod-rawx509crt" \
     "sha1 dsa-sha1" \
     "dsa x509" \
-    "--exact-key-search --trusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/ca.$cert_format --untrusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/nemain.$cert_format --verification-gmt-time 2005-01-01+10:00:00 $url_map_xml_stylesheet_2005" \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005"\
-    "--exact-key-search --trusted-$cert_format $topfolder/keys/cacert.$cert_format --trusted-$cert_format $topfolder/keys/ca2cert.$cert_format $url_map_xml_stylesheet_2005"
+    "--trusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/ca.$cert_format --untrusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/nemain.$cert_format --verification-gmt-time 2005-01-01+10:00:00 $url_map_xml_stylesheet_2005" \
+    "--lax-key-search $priv_key_option:mykey $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005"\
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --trusted-$cert_format $topfolder/keys/ca2cert.$cert_format $url_map_xml_stylesheet_2005"
 
 execDSigTest $res_success \
     "" \
@@ -1217,7 +1220,7 @@ execDSigTest $res_success \
     "base64 xpath xslt enveloped-signature c14n-with-comments sha1 dsa-sha1" \
     "dsa x509" \
     "--trusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/merlin.$cert_format --verification-gmt-time 2005-01-01+10:00:00 $url_map_xml_stylesheet_2005 $url_map_xml_stylesheet_b64_2005" \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005 $url_map_xml_stylesheet_b64_2005" \
+    "--lax-key-search $priv_key_option:mykey $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005 $url_map_xml_stylesheet_b64_2005" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format $url_map_xml_stylesheet_2005 $url_map_xml_stylesheet_b64_2005"
 
 
@@ -1265,7 +1268,7 @@ execDSigTest $res_success \
     "merlin-xmlenc-five/encsig-hmac-sha256-rsa-1_5" \
     "sha1 hmac-sha256 rsa-1_5" \
     "hmac rsa" \
-    "$priv_key_option $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --pwd secret --verification-gmt-time 2005-01-01+10:00:00 $url_map_xml_stylesheet_2005"
+    "--lax-key-search $priv_key_option $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --pwd secret --verification-gmt-time 2005-01-01+10:00:00 $url_map_xml_stylesheet_2005"
 
 # Advanced RSA OAEP modes:
 # - MSCrypto only supports SHA1 for digest and mgf1
@@ -1276,7 +1279,7 @@ if [ "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" -a "z$crypto" != "zgcry
         "merlin-xmlenc-five/encsig-hmac-sha256-rsa-oaep-mgf1p" \
         "sha1 hmac-sha256 rsa-oaep-mgf1p sha1  sha1" \
         "hmac rsa" \
-        "$priv_key_option $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --pwd secret $url_map_xml_stylesheet_2005"
+        "--lax-key-search $priv_key_option $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --pwd secret $url_map_xml_stylesheet_2005"
 fi
 
 
@@ -1291,15 +1294,9 @@ execDSigTest $res_success \
     "exc-c14n sha1 dsa-sha1" \
     "dsa" \
     " " \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret123" \
+    "$priv_key_option:mykey $topfolder/keys/dsakey.$priv_key_format --pwd secret123" \
     " "
 
-execDSigTest $res_success \
-    "" \
-    "merlin-exc-c14n-one/exc-signature" \
-    "exc-c14n sha1 dsa-sha1" \
-    "dsa" \
-    " "
 
 ##########################################################################
 #
@@ -1344,7 +1341,7 @@ execDSigTest $res_success \
     "signature-big" \
     "base64 xslt xpath sha1 rsa-sha1" \
     "rsa x509" \
-    "--pubkey-cert-$cert_format certs/rsa-cert.$cert_format $url_map_rfc3161"
+    "--lax-key-search --pubkey-cert-$cert_format certs/rsa-cert.$cert_format $url_map_rfc3161"
 
 execDSigTest $res_success \
     "phaos-xmldsig-three" \
@@ -1379,35 +1376,35 @@ execDSigTest $res_success \
     "signature-hmac-md5-c14n-enveloping" \
     "md5 hmac-md5" \
     "hmac" \
-    "--hmackey certs/hmackey.bin"
+    "--lax-key-search --hmackey certs/hmackey.bin"
 
 execDSigTest $res_success \
     "phaos-xmldsig-three" \
     "signature-hmac-sha1-40-c14n-comments-detached" \
     "c14n-with-comments sha1 hmac-sha1" \
     "hmac" \
-    "--hmackey certs/hmackey.bin  $url_map_rfc3161"
+    "--lax-key-search --hmackey certs/hmackey.bin  $url_map_rfc3161"
 
 execDSigTest $res_success \
     "phaos-xmldsig-three" \
     "signature-hmac-sha1-40-exclusive-c14n-comments-detached" \
     "exc-c14n-with-comments sha1 hmac-sha1" \
     "hmac" \
-    "--hmackey certs/hmackey.bin $url_map_rfc3161"
+    "--lax-key-search --hmackey certs/hmackey.bin $url_map_rfc3161"
 
 execDSigTest $res_success \
     "phaos-xmldsig-three" \
     "signature-hmac-sha1-exclusive-c14n-comments-detached" \
     "exc-c14n-with-comments sha1 hmac-sha1" \
     "hmac" \
-    "--hmackey certs/hmackey.bin  $url_map_rfc3161"
+    "--lax-key-search --hmackey certs/hmackey.bin  $url_map_rfc3161"
 
 execDSigTest $res_success \
     "phaos-xmldsig-three" \
     "signature-hmac-sha1-exclusive-c14n-enveloped" \
     "enveloped-signature exc-c14n sha1 hmac-sha1" \
     "hmac" \
-    "--hmackey certs/hmackey.bin"
+    "--lax-key-search --hmackey certs/hmackey.bin"
 
 execDSigTest $res_success \
     "phaos-xmldsig-three" \
@@ -1492,7 +1489,7 @@ execDSigTest $res_success \
     "signature-rsa-manifest-x509-data-subject-name" \
     "sha1 rsa-sha1" \
     "rsa x509" \
-    "--exact-key-search --trusted-$cert_format certs/rsa-ca-cert.$cert_format --untrusted-$cert_format certs/rsa-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00 $url_map_rfc3161"
+    "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --untrusted-$cert_format certs/rsa-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00 $url_map_rfc3161"
 
 execDSigTest $res_success \
     "phaos-xmldsig-three" \

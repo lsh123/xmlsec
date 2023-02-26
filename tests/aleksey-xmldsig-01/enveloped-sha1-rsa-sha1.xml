@@ -30,7 +30,7 @@ RRwtDyDi2i/uYeSYqRhLgWE382yRgyyWNAX/8KVnFlfMBP17ZP9gRgDFOP/xmiRo
 NVhsH0qbWYTa2X6v8nAjMARe1aTq5T1fenZwkc43Nh1WgO+KYR4CMZB8bEtXYk2f
 EhWbMnIWkwtEO+M9SmgQMwCj9yIBBtMr4OBPOecYmq0=</SignatureValue>
     <KeyInfo>
-      <KeyName/>
+      <KeyName>mykey</KeyName>
     </KeyInfo>
   </Signature>
 </Envelope>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PaymentInfo xmlns="http://example.org/paymentv2">
+  <Name>John Smith</Name>
+  <CreditCard Currency="USD" Limit="5,000"><EncryptedData xmlns="http://www.w3.org/2001/04/xmlenc#" Id="ED" Type="http://www.w3.org/2001/04/xmlenc#Content">
+  <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#aes256-cbc"/>
+  <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <EncryptedKey xmlns="http://www.w3.org/2001/04/xmlenc#">
+      <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#rsa-1_5"> </EncryptionMethod>
+      <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+        <X509Data>
+          <dsig11:X509Digest xmlns:dsig11="http://www.w3.org/2009/xmldsig11#" Algorithm="http://www.w3.org/2007/05/xmldsig-more#sha3-384">MClRqAqlHbiUualZtgCJtIIr6WdwmJre3dr0jga5TZ5iV6/KsmW6KA6jDjaUI3xg
+</dsig11:X509Digest>
+        </X509Data>
+      </KeyInfo>
+      <CipherData>
+        <CipherValue>fsDNBIi7NqfgHJFnhoOibFgd1zWMKXFYRCO0tDesupM7f9dEe7zZsngBxFt0Vd1L
+WVVB7ubEd0AUga0/AmPQeuot1hegouQL/DtLdUWoHVr1kBPb1NmkUm7h3ctDm9+u
+s5iAv9tE9WYSYsg6iTUutnmWiPunyivbYhZFzDEZPWJXVCAoyZTkwoTHV98yumFe
+Qcz7gAzfbs3K2VH9CG7t+K+YZvtFHSh9XMLm40Z11UTldH0Pu+970CU6cv/Y34kN
+WuiOcCQarRbEDtc0yUUehGv6fi7GiISKERDzti3zLmflqNqK/1TCaZF3jb+ZunAs
+3z+gQNGzIeeS4i4YQIRzSO+pRcINf1bthNcewQa8z0FmWlxHb/AXs5D3xnLiTSLV
+NORSFIv9U6oazMApylrHz8iR9Sw/rZa84YT/962PMbed3KCKhJp2ug4ylSYtxNcn
+g/T7rZwr2U3iTyCB2cFTp3WBmZ1lnMaOXnAjzfFfhCHxIPqUHyyPwpsEPkDOEI5m
+naJHGMLUrmGabu6aFXcUg3vZwnSg6hLgBMPKVpsth//5y8GzjiCSAe9ROAqmEhEZ
+io6wwOGdvJq9KaEcL9qgrpvMFr9UH4baOlQsmza31cXNjNoV8PBfIyQWRhBOlCYj
+qy0uUnYRaEMKQEIk5SlUKly7ze93i6lWlLTrwQeLBpU=</CipherValue>
+      </CipherData>
+    </EncryptedKey>
+  </KeyInfo>
+  <CipherData>
+    <CipherValue>eSMVoj5c5VpnjFxQRKhQjlijZl1Lwaa8RHAg7z5EVQguA3mwZSy/7xl6a+IRIsmn
+zE24sB1tOCGiHid8JltLRIr8Y3Z3R9CMNt5UvRsYKF2pxh76XQ8BQBQLfYCWSFBA
+buj3SFeP5sQE3BuwO9E6D8YGij2Oi8s1gpaJARMkVLMYJ4nex4nNJWoik0oiGiq+</CipherValue>
+  </CipherData>
+</EncryptedData></CreditCard>
+</PaymentInfo>

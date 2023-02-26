@@ -604,7 +604,7 @@ done:
 static int
 xmlSecNssKeyDataDEREncodedKeyValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecKeyDataPtr keyData;
-    SECKEYPublicKey* pubkey;
+    SECKEYPublicKey* pubkey = NULL;
     SECItem* secItem = NULL;
     xmlChar* content = NULL;
     int res = -1;
@@ -648,6 +648,9 @@ xmlSecNssKeyDataDEREncodedKeyValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 done:
     if(content != NULL) {
         xmlFree(content);
+    }
+    if(pubkey != NULL) {
+        SECKEY_DestroyPublicKey(pubkey);
     }
     if(secItem != NULL) {
         SECITEM_FreeItem(secItem, PR_TRUE);

@@ -168,7 +168,6 @@ execEncTest $res_success \
 #
 #########################################################################
 
-
 # Only OpenSSL and NSS currently has capability to lookup the key using X509 data
 # TODO: add tests for lookup of private keys (may be in enc?)
 if [ "z$crypto" = "zopenssl" -o "z$crypto" = "znss" ] ; then

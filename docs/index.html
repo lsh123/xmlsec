@@ -79,6 +79,9 @@ see the Copyright file in the distribution  for details.<br><br></p>
                     <li>(<b>ABI breaking change</b>) Added support for the <a href="https://www.w3.org/TR/xmldsig-core1/#sec-KeyInfoReference">KeyInfoReference Element</a>.</li>
 					<li>(<b>ABI breaking change</b>) Switched xmlSecSize to use size_t by default. Use "--enable-size-t=no" configure option ("size_t=no" on Windows) to
 						restore the old behaviour (note that this behaviour is deprecated and will be removed in the future.</li>
+                    <li>(<b>API breaking change</b>) Changed the key search to srtict mode: only keys referenced by KeyInfo are used. To resore the old "lax" mode,
+                        set XMLSEC_KEYINFO_FLAGS_LAX_KEY_SEARCH flag on xmlSecKeyInfoCtx or use '--lax-key-search' option for XMLSec command line utility.
+                    </li>
                     <li>Disabled MD5 digest method by default. Use "--enable-md5" configure options ("legacy-crypto" option on Windows) to re-enable MD5.</li>
 					<li>Fixed all potentially unsafe integer conversions and all the other warnings.</li>
 					<li>(<b>API/ABI breaking change</b>) Removed deprecated functions.</li>
@@ -110,6 +113,7 @@ see the Copyright file in the distribution  for details.<br><br></p>
 					<li>Added support for <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP">RSA OAEP key transport including MGF1 algorithms</a>.</li>
                     <li>Added support for <a href="https://www.w3.org/TR/xmlenc-core1/#sec-AES-GCM">AES GCM ciphers</a>.</li>
                     <li>Added support for <a href="https://www.w3.org/TR/xmlenc-core1/#sec-PBKDF2">PBKDF2</a> derivation algorithms.</a></li>
+                    <li>Added support for <a href="https://www.w3.org/TR/xmldsig-core1/#sec-X509Data">X509Digest</a> element and ability to lookup keys using other X509Data elements.</li>
 					<li>Added support for <a href="https://www.w3.org/TR/xmldsig-core1/#sec-DEREncodedKeyValue">DEREncodedKeyValue</a> element.</li>
 				</ul>
 			</li>
@@ -157,6 +161,14 @@ see the Copyright file in the distribution  for details.<br><br></p>
 			</li>
 			<li><b>xmlsec command line utility:</b>
 				<ul>
+                    <li>(<b>API breaking change</b>) The XMLSec command line utility is using 'strict' key search mode by default. To restore the old 'lax'
+                        key search mode, use the new '--lax-key-search' option.</li>
+                    <li>Added '--enabled-key-info-reference-uris' option to control processing of the
+                        the <a href="https://www.w3.org/TR/xmldsig-core1/#sec-KeyInfoReference">KeyInfoReference Element</a>.
+                    </li>
+                    <li>Added '--pbkdf2-key' option for loading PBKDF2 keys.</li>
+                    <li>Added '--concatkdf-key' option for loading ConcatKDF keys.</li>
+                    <li>Added '--hmac-min-out-len' option to control the min accepted HMAC Output length.</li>
 					<li>Enabled templatized output filenames to facilitate batch operations on multiple input files.</li>
 				</ul>
 			</li>

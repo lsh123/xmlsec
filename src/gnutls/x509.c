@@ -54,8 +54,8 @@
  * X509 utility functions
  *
  ************************************************************************/
-static int              xmlSecGnuTLSKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data,
-                                                                 xmlSecKeyPtr key,
+static int              xmlSecGnuTLSKVerifyAndAdoptX509KeyData  (xmlSecKeyPtr key,
+                                                                 xmlSecKeyDataPtr data,
                                                                  xmlSecKeyInfoCtxPtr keyInfoCtx);
 
 /*************************************************************************
@@ -467,23 +467,38 @@ xmlSecGnuTLSKeyDataX509XmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     xmlSecAssert2(id == xmlSecGnuTLSKeyDataX509Id, -1);
     xmlSecAssert2(key != NULL, -1);
 
-    data = xmlSecKeyEnsureData(key, id);
+    data = xmlSecKeyDataCreate(xmlSecGnuTLSKeyDataX509Id);
     if(data == NULL) {
-        xmlSecInternalError("xmlSecKeyEnsureData", xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecKeyDataCreate(xmlSecGnuTLSKeyDataX509Id)", xmlSecKeyDataKlassGetName(id));
         return(-1);
     }
 
     ret = xmlSecKeyDataX509XmlRead(key, data, node, keyInfoCtx, xmlSecGnuTLSKeyDataX509Read);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeyDataX509XmlRead", xmlSecKeyDataKlassGetName(id));
+        xmlSecKeyDataDestroy(data);
         return(-1);
     }
 
-    ret = xmlSecGnuTLSKeyDataX509VerifyAndExtractKey(data, key, keyInfoCtx);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecGnuTLSKeyDataX509VerifyAndExtractKey", xmlSecKeyDataKlassGetName(id));
-        return(-1);
+    /* did we find the key already? */
+    if(xmlSecKeyGetValue(key) != NULL) {
+        xmlSecKeyDataDestroy(data);
+        return(0);
     }
+
+    ret = xmlSecGnuTLSKVerifyAndAdoptX509KeyData(key, data, keyInfoCtx);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecGnuTLSKVerifyAndAdoptX509KeyData", xmlSecKeyDataKlassGetName(id));
+        xmlSecKeyDataDestroy(data);
+        return(-1);
+    } else if(ret != 1) {
+        /* no errors but key was not found and data was not adopted */
+        xmlSecKeyDataDestroy(data);
+        return(0);
+    }
+    data = NULL; /* owned by data now */
+
+    /* success */
     return(0);
 }
 
@@ -910,10 +925,11 @@ xmlSecGnuTLSX509CertSKIWrite(gnutls_x509_crt_t cert, xmlSecBufferPtr buf) {
 }
 
 static int
-xmlSecGnuTLSKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr key,
-                                    xmlSecKeyInfoCtxPtr keyInfoCtx) {
+xmlSecGnuTLSKVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data,  xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecGnuTLSX509DataCtxPtr ctx;
     xmlSecKeyDataStorePtr x509Store;
+    gnutls_x509_crt_t cert;
+    xmlSecKeyDataPtr keyValue;
     int ret;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataX509Id), -1);
@@ -923,74 +939,79 @@ xmlSecGnuTLSKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr k
 
     ctx = xmlSecGnuTLSX509DataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->keyCert == NULL, -1);
 
-    x509Store = xmlSecKeysMngrGetDataStore(keyInfoCtx->keysMngr, xmlSecGnuTLSX509StoreId);
-    if(x509Store == NULL) {
-        xmlSecInternalError("xmlSecKeysMngrGetDataStore",
-                            xmlSecKeyDataGetName(data));
-        return(-1);
+    if( (xmlSecPtrListGetSize(&(ctx->certsList)) <= 0) || (xmlSecKeyGetValue(key) != NULL)) {
+        /* no certs or key was already found -> nothing to do (this shouldn't really happen) */
+        return(0);
     }
 
-    if((ctx->keyCert == NULL) && (xmlSecPtrListGetSize(&(ctx->certsList)) > 0) && (xmlSecKeyGetValue(key) == NULL)) {
-        gnutls_x509_crt_t cert;
-
-        cert = xmlSecGnuTLSX509StoreVerify(x509Store, &(ctx->certsList), &(ctx->crlsList), keyInfoCtx);
-        if(cert != NULL) {
-            xmlSecKeyDataPtr keyValue;
-
-            ctx->keyCert = xmlSecGnuTLSX509CertDup(cert);
-            if(ctx->keyCert == NULL) {
-                xmlSecInternalError("xmlSecGnuTLSX509CertDup",
-                                    xmlSecKeyDataGetName(data));
-                return(-1);
-            }
-
-            keyValue = xmlSecGnuTLSX509CertGetKey(ctx->keyCert);
-            if(keyValue == NULL) {
-                xmlSecInternalError("xmlSecGnuTLSX509CertGetKey",
-                                    xmlSecKeyDataGetName(data));
-                return(-1);
-            }
-
-            /* verify that the key matches our expectations */
-            if(xmlSecKeyReqMatchKeyValue(&(keyInfoCtx->keyReq), keyValue) != 1) {
-                xmlSecInternalError("xmlSecKeyReqMatchKeyValue",
-                                    xmlSecKeyDataGetName(data));
-                xmlSecKeyDataDestroy(keyValue);
-                return(-1);
-            }
-
-            ret = xmlSecKeySetValue(key, keyValue);
-            if(ret < 0) {
-                xmlSecInternalError("xmlSecKeySetValue",
-                                    xmlSecKeyDataGetName(data));
-                xmlSecKeyDataDestroy(keyValue);
-                return(-1);
-            }
-
-            /* get expiration time */
-            key->notValidBefore = gnutls_x509_crt_get_activation_time(ctx->keyCert);
-            if(key->notValidBefore == (time_t)-1) {
-                xmlSecGnuTLSError2("gnutls_x509_crt_get_activation_time", GNUTLS_E_SUCCESS,
-                    xmlSecKeyDataGetName(data),
-                    "cert activation time is invalid: %.lf",
-                    difftime(key->notValidBefore, (time_t)0));
-                return(-1);
-            }
-            key->notValidAfter = gnutls_x509_crt_get_expiration_time(ctx->keyCert);
-            if(key->notValidAfter == (time_t)-1) {
-                xmlSecGnuTLSError2("gnutls_x509_crt_get_expiration_time", GNUTLS_E_SUCCESS,
-                    xmlSecKeyDataGetName(data),
-                    "cert expiration time is invalid: %.lf",
-                    difftime(key->notValidAfter, (time_t)0));
-                return(-1);
-            }
-        } else if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_INVALID_CERT) != 0) {
+    /* lets find a cert we can verify */
+    x509Store = xmlSecKeysMngrGetDataStore(keyInfoCtx->keysMngr, xmlSecGnuTLSX509StoreId);
+    if(x509Store == NULL) {
+        xmlSecInternalError("xmlSecKeysMngrGetDataStore", xmlSecKeyDataGetName(data));
+        return(-1);
+    }
+    cert = xmlSecGnuTLSX509StoreVerify(x509Store, &(ctx->certsList), &(ctx->crlsList), keyInfoCtx);
+    if(cert == NULL) {
+        /* check if we want to fail if cert is not found */
+        if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_INVALID_CERT) != 0) {
             xmlSecOtherError(XMLSEC_ERRORS_R_CERT_NOT_FOUND, xmlSecKeyDataGetName(data), NULL);
             return(-1);
         }
+        return(0);
     }
-    return(0);
+
+    /* set cert into the x509 data */
+    ctx->keyCert = xmlSecGnuTLSX509CertDup(cert);
+    if(ctx->keyCert == NULL) {
+        xmlSecInternalError("xmlSecGnuTLSX509CertDup", xmlSecKeyDataGetName(data));
+        return(-1);
+    }
+    cert = NULL; /* we should be using ctx->keyCert for everything */
+
+    /* extract key from cert and verify that the key matches our expectations */
+    keyValue = xmlSecGnuTLSX509CertGetKey(ctx->keyCert);
+    if(keyValue == NULL) {
+        xmlSecInternalError("xmlSecGnuTLSX509CertGetKey", xmlSecKeyDataGetName(data));
+        return(-1);
+    }
+    if(xmlSecKeyReqMatchKeyValue(&(keyInfoCtx->keyReq), keyValue) != 1) {
+        xmlSecInternalError("xmlSecKeyReqMatchKeyValue", xmlSecKeyDataGetName(data));
+        xmlSecKeyDataDestroy(keyValue);
+        return(-1);
+    }
+    ret = xmlSecKeySetValue(key, keyValue);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeySetValue", xmlSecKeyDataGetName(data));
+        xmlSecKeyDataDestroy(keyValue);
+        return(-1);
+    }
+    keyValue = NULL; /* owned by key now */
+
+    /* copy cert not before / not after times from the cert */
+    key->notValidBefore = gnutls_x509_crt_get_activation_time(ctx->keyCert);
+    if(key->notValidBefore == (time_t)-1) {
+        xmlSecGnuTLSError("gnutls_x509_crt_get_activation_time", GNUTLS_E_SUCCESS, xmlSecKeyDataGetName(data));
+        return(-1);
+    }
+    key->notValidAfter = gnutls_x509_crt_get_expiration_time(ctx->keyCert);
+    if(key->notValidAfter == (time_t)-1) {
+        xmlSecGnuTLSError("gnutls_x509_crt_get_expiration_time", GNUTLS_E_SUCCESS, xmlSecKeyDataGetName(data));
+        return(-1);
+    }
+
+    /* THIS MUST BE THE LAST THING WE DO: add data to the key
+     * if we do it sooner and fail later then both the caller and the key will free data
+     * which would lead to double free */
+    ret = xmlSecKeyAdoptData(key, data);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeyAdoptData", xmlSecKeyDataGetName(data));
+        return(-1);
+    }
+
+    /* success: cert found and data was adopted */
+    return(1);
 }
 
 /**
@@ -1117,28 +1138,35 @@ xmlSecGnuTLSKeyDataRawX509CertBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         return(-1);
     }
 
-    data = xmlSecKeyEnsureData(key, xmlSecGnuTLSKeyDataX509Id);
+    data = xmlSecKeyDataCreate(xmlSecGnuTLSKeyDataX509Id);
     if(data == NULL) {
-        xmlSecInternalError("xmlSecKeyEnsureData",
-                            xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecKeyDataCreate(xmlSecGnuTLSKeyDataX509Id)", xmlSecKeyDataKlassGetName(id));
         gnutls_x509_crt_deinit(cert);
         return(-1);
     }
 
     ret = xmlSecGnuTLSKeyDataX509AdoptCert(data, cert);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecGnuTLSKeyDataX509AdoptCert",
-                            xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecGnuTLSKeyDataX509AdoptCert", xmlSecKeyDataKlassGetName(id));
         gnutls_x509_crt_deinit(cert);
+        xmlSecKeyDataDestroy(data);
         return(-1);
     }
+    cert = NULL; /* owned by data now */
 
-    ret = xmlSecGnuTLSKeyDataX509VerifyAndExtractKey(data, key, keyInfoCtx);
+    ret = xmlSecGnuTLSKVerifyAndAdoptX509KeyData(key, data, keyInfoCtx);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecGnuTLSKeyDataX509VerifyAndExtractKey",
-                            xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecGnuTLSKVerifyAndAdoptX509KeyData", xmlSecKeyDataKlassGetName(id));
+        xmlSecKeyDataDestroy(data);
         return(-1);
+    } else if(ret != 1) {
+        /* no errors but key was not found and data was not adopted */
+        xmlSecKeyDataDestroy(data);
+        return(0);
     }
+    data = NULL; /* owned by data now */
+
+    /* success */
     return(0);
 }
 

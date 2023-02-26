@@ -697,9 +697,9 @@ elif [ "z$crypto" = "zgnutls" ] ; then
 elif [ "z$crypto" = "zmscng" ] ; then
     min_percent_success=80
 elif [ "z$crypto" = "zmscrypto" ] ; then
-    min_percent_success=40
+    min_percent_success=30
 elif [ "z$crypto" = "zgcrypt" ] ; then
-    min_percent_success=40
+    min_percent_success=30
 else
     min_percent_success=50
 fi

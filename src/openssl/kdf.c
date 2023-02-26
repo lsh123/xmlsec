@@ -362,18 +362,58 @@ xmlSecOpenSSLConcatKdfSetDigestNameFromHref(xmlSecOpenSSLKdfCtxPtr ctx, const xm
 
     /* use SHA256 by default */
     if(href == NULL) {
+#ifndef XMLSEC_NO_SHA256
         digestName = SN_sha256;
-    } else if(xmlStrcmp(href, xmlSecHrefSha1) == 0) {
+#else  /* XMLSEC_NO_SHA256 */
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
+            "sha256 disabled and href=%s", xmlSecErrorsSafeString(href));
+        return(-1);
+#endif /* XMLSEC_NO_SHA256 */
+    } else
+
+#ifndef XMLSEC_NO_SHA1
+    if(xmlStrcmp(href, xmlSecHrefSha1) == 0) {
         digestName = SN_sha1;
-    } else if(xmlStrcmp(href, xmlSecHrefSha224) == 0) {
+    } else
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA224
+    if(xmlStrcmp(href, xmlSecHrefSha224) == 0) {
         digestName = SN_sha224;
-    } else if(xmlStrcmp(href, xmlSecHrefSha256) == 0) {
+    } else
+#endif /* XMLSEC_NO_SHA224 */
+
+#ifndef XMLSEC_NO_SHA256
+    if(xmlStrcmp(href, xmlSecHrefSha256) == 0) {
         digestName = SN_sha256;
-    } else if(xmlStrcmp(href, xmlSecHrefSha384) == 0) {
+    } else
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+    if(xmlStrcmp(href, xmlSecHrefSha384) == 0) {
         digestName = SN_sha384;
-    } else if(xmlStrcmp(href, xmlSecHrefSha512) == 0) {
+    } else
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+    if(xmlStrcmp(href, xmlSecHrefSha512) == 0) {
         digestName = SN_sha512;
-    } else {
+    } else
+#endif /* XMLSEC_NO_SHA512 */
+
+#ifndef XMLSEC_NO_SHA3
+    if(xmlStrcmp(href, xmlSecHrefSha3_224) == 0) {
+        digestName = SN_sha3_224;
+    } else if(xmlStrcmp(href, xmlSecHrefSha3_256) == 0) {
+        digestName = SN_sha3_256;
+    } else if(xmlStrcmp(href, xmlSecHrefSha3_384) == 0) {
+        digestName = SN_sha3_384;
+    } else if(xmlStrcmp(href, xmlSecHrefSha3_512) == 0) {
+        digestName = SN_sha3_512;
+    } else
+
+#endif /* XMLSEC_NO_SHA3 */
+    {
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
             "href=%s", xmlSecErrorsSafeString(href));
         return(-1);

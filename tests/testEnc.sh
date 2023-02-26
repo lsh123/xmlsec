@@ -168,6 +168,141 @@ execEncTest $res_success \
 #
 #########################################################################
 
+# MSCng has problems with AES-GCM produced by OpenSSL, disabled these tests for now
+# https://github.com/lsh123/xmlsec/issues/555
+if [ "z$crypto" != "zmscng" ] ; then
+    # ECDH + ConcatKDF + SHA1
+    execEncTest $res_success \
+        "" \
+        "aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha1_kw_aes256_aes128gcm" \
+        "aes256-gcm kw-aes256 ecdh-es concatkdf sha1" \
+        "agreement-method ec" \
+        "$priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123" \
+        "--session-key aes-256 $priv_key_option:originator-key-name $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123 $pub_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$pub_key_format --xml-data $topfolder/aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha1_kw_aes256_aes128gcm.data" \
+        "$priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123"
+
+    # ECDH + ConcatKDF + SHA2
+    execEncTest $res_success \
+        "" \
+        "aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha224_kw_aes256_aes128gcm" \
+        "aes256-gcm kw-aes256 ecdh-es concatkdf sha224" \
+        "agreement-method ec" \
+        "$priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123" \
+        "--session-key aes-256 $priv_key_option:originator-key-name $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123 $pub_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$pub_key_format --xml-data $topfolder/aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha224_kw_aes256_aes128gcm.data" \
+        "$priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123"
+
+    execEncTest $res_success \
+        "" \
+        "aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha256_kw_aes256_aes128gcm" \
+        "aes256-gcm kw-aes256 ecdh-es concatkdf sha256" \
+        "agreement-method ec" \
+        "$priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123" \
+        "--session-key aes-256 $priv_key_option:originator-key-name $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123 $pub_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$pub_key_format --xml-data $topfolder/aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha256_kw_aes256_aes128gcm.data" \
+        "$priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123"
+
+    execEncTest $res_success \
+        "" \
+        "aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha384_kw_aes256_aes128gcm" \
+        "aes256-gcm kw-aes256 ecdh-es concatkdf sha384" \
+        "agreement-method ec" \
+        "$priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123" \
+        "--session-key aes-256 $priv_key_option:originator-key-name $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123 $pub_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$pub_key_format --xml-data $topfolder/aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha384_kw_aes256_aes128gcm.data" \
+        "$priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123"
+
+    execEncTest $res_success \
+        "" \
+        "aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha512_kw_aes256_aes128gcm" \
+        "aes256-gcm kw-aes256 ecdh-es concatkdf sha512" \
+        "agreement-method ec" \
+        "$priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123" \
+        "--session-key aes-256 $priv_key_option:originator-key-name $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123 $pub_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$pub_key_format --xml-data $topfolder/aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha512_kw_aes256_aes128gcm.data" \
+        "$priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123"
+
+    # ECDH + ConcatKDF + SHA3
+    execEncTest $res_success \
+        "" \
+        "aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha3_224_kw_aes256_aes128gcm" \
+        "aes256-gcm kw-aes256 ecdh-es concatkdf sha3-224" \
+        "agreement-method ec" \
+        "$priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123" \
+        "--session-key aes-256 $priv_key_option:originator-key-name $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123 $pub_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$pub_key_format --xml-data $topfolder/aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha3_224_kw_aes256_aes128gcm.data" \
+        "$priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123"
+
+    execEncTest $res_success \
+        "" \
+        "aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha3_256_kw_aes256_aes128gcm" \
+        "aes256-gcm kw-aes256 ecdh-es concatkdf sha3-256" \
+        "agreement-method ec" \
+        "$priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123" \
+        "--session-key aes-256 $priv_key_option:originator-key-name $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123 $pub_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$pub_key_format --xml-data $topfolder/aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha3_256_kw_aes256_aes128gcm.data" \
+        "$priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123"
+
+    execEncTest $res_success \
+        "" \
+        "aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha3_384_kw_aes256_aes128gcm" \
+        "aes256-gcm kw-aes256 ecdh-es concatkdf sha3-384" \
+        "agreement-method ec" \
+        "$priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123" \
+        "--session-key aes-256 $priv_key_option:originator-key-name $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123 $pub_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$pub_key_format --xml-data $topfolder/aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha3_384_kw_aes256_aes128gcm.data" \
+        "$priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123"
+
+    execEncTest $res_success \
+        "" \
+        "aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha3_512_kw_aes256_aes128gcm" \
+        "aes256-gcm kw-aes256 ecdh-es concatkdf sha3-512" \
+        "agreement-method ec" \
+        "$priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123" \
+        "--session-key aes-256 $priv_key_option:originator-key-name $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123 $pub_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$pub_key_format --xml-data $topfolder/aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha3_512_kw_aes256_aes128gcm.data" \
+        "$priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123"
+
+    # ECDH + PBKDF2+SHA1
+    execEncTest $res_success \
+        "" \
+        "aleksey-xmlenc-01/enc_ecdh_p256_pbkdf2_1000_hmac_sha1_kw_aes256_aes128gcm" \
+        "aes256-gcm kw-aes256 ecdh-es pbkdf2 hmac-sha1" \
+        "agreement-method ec" \
+        "$priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123" \
+        "--session-key aes-256 $priv_key_option:originator-key-name $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123 $pub_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$pub_key_format --xml-data $topfolder/aleksey-xmlenc-01/enc_ecdh_p256_pbkdf2_1000_hmac_sha1_kw_aes256_aes128gcm.data" \
+        "$priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123"
+
+    # ECDH + PBKDF2+SHA2
+    execEncTest $res_success \
+        "" \
+        "aleksey-xmlenc-01/enc_ecdh_p256_pbkdf2_1000_hmac_sha224_kw_aes256_aes128gcm" \
+        "aes256-gcm kw-aes256 ecdh-es pbkdf2 hmac-sha224" \
+        "agreement-method ec" \
+        "$priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123" \
+        "--session-key aes-256 $priv_key_option:originator-key-name $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123 $pub_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$pub_key_format --xml-data $topfolder/aleksey-xmlenc-01/enc_ecdh_p256_pbkdf2_1000_hmac_sha224_kw_aes256_aes128gcm.data" \
+        "$priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123"
+
+    execEncTest $res_success \
+        "" \
+        "aleksey-xmlenc-01/enc_ecdh_p256_pbkdf2_1000_hmac_sha256_kw_aes256_aes128gcm" \
+        "aes256-gcm kw-aes256 ecdh-es pbkdf2 hmac-sha256" \
+        "agreement-method ec" \
+        "$priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123" \
+        "--session-key aes-256 $priv_key_option:originator-key-name $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123 $pub_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$pub_key_format --xml-data $topfolder/aleksey-xmlenc-01/enc_ecdh_p256_pbkdf2_1000_hmac_sha256_kw_aes256_aes128gcm.data" \
+        "$priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123"
+
+    execEncTest $res_success \
+        "" \
+        "aleksey-xmlenc-01/enc_ecdh_p256_pbkdf2_1000_hmac_sha384_kw_aes256_aes128gcm" \
+        "aes256-gcm kw-aes256 ecdh-es pbkdf2 hmac-sha384" \
+        "agreement-method ec" \
+        "$priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123" \
+        "--session-key aes-256 $priv_key_option:originator-key-name $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123 $pub_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$pub_key_format --xml-data $topfolder/aleksey-xmlenc-01/enc_ecdh_p256_pbkdf2_1000_hmac_sha384_kw_aes256_aes128gcm.data" \
+        "$priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123"
+
+    execEncTest $res_success \
+        "" \
+        "aleksey-xmlenc-01/enc_ecdh_p256_pbkdf2_1000_hmac_sha512_kw_aes256_aes128gcm" \
+        "aes256-gcm kw-aes256 ecdh-es pbkdf2 hmac-sha512" \
+        "agreement-method ec" \
+        "$priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123" \
+        "--session-key aes-256 $priv_key_option:originator-key-name $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123 $pub_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$pub_key_format --xml-data $topfolder/aleksey-xmlenc-01/enc_ecdh_p256_pbkdf2_1000_hmac_sha512_kw_aes256_aes128gcm.data" \
+        "$priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123"
+fi
+
 # Only OpenSSL / NSS / GnuTLS currently has capability to lookup the key using X509 data
 if [ "z$crypto" = "zopenssl" -o "z$crypto" = "znss" -o "z$crypto" = "zgnutls" ] ; then
     execEncTest $res_success \
@@ -199,14 +334,85 @@ if [ "z$crypto" = "zopenssl" -o "z$crypto" = "znss" -o "z$crypto" = "zgnutls" ] 
 
     execEncTest $res_success \
         "" \
-        "aleksey-xmlenc-01/enc_rsa_1_5_x509_digest" \
+        "aleksey-xmlenc-01/enc_rsa_1_5_x509_digest_sha1" \
+        "aes256-cbc rsa-1_5 sha1" \
+        "x509" \
+        "$priv_key_option $topfolder/keys/largersakey.$priv_key_format --pwd secret123" \
+        "--session-key aes-256 --pubkey-cert-$cert_format $topfolder/keys/largersacert.$cert_format --xml-data $topfolder/aleksey-xmlenc-01/enc_rsa_1_5_x509_digest_sha1.data --node-name http://example.org/paymentv2:CreditCard" \
+        "$priv_key_option $topfolder/keys/largersakey.$priv_key_format --pwd secret123"
+
+    execEncTest $res_success \
+        "" \
+        "aleksey-xmlenc-01/enc_rsa_1_5_x509_digest_sha224" \
+        "aes256-cbc rsa-1_5 sha224" \
+        "x509" \
+        "$priv_key_option $topfolder/keys/largersakey.$priv_key_format --pwd secret123" \
+        "--session-key aes-256 --pubkey-cert-$cert_format $topfolder/keys/largersacert.$cert_format --xml-data $topfolder/aleksey-xmlenc-01/enc_rsa_1_5_x509_digest_sha224.data --node-name http://example.org/paymentv2:CreditCard" \
+        "$priv_key_option $topfolder/keys/largersakey.$priv_key_format --pwd secret123"
+
+    execEncTest $res_success \
+        "" \
+        "aleksey-xmlenc-01/enc_rsa_1_5_x509_digest_sha256" \
         "aes256-cbc rsa-1_5 sha256" \
         "x509" \
         "$priv_key_option $topfolder/keys/largersakey.$priv_key_format --pwd secret123" \
-        "--session-key aes-256 --pubkey-cert-$cert_format $topfolder/keys/largersacert.$cert_format --xml-data $topfolder/aleksey-xmlenc-01/enc_rsa_1_5_x509_digest.data --node-name http://example.org/paymentv2:CreditCard" \
+        "--session-key aes-256 --pubkey-cert-$cert_format $topfolder/keys/largersacert.$cert_format --xml-data $topfolder/aleksey-xmlenc-01/enc_rsa_1_5_x509_digest_sha256.data --node-name http://example.org/paymentv2:CreditCard" \
+        "$priv_key_option $topfolder/keys/largersakey.$priv_key_format --pwd secret123"
+
+    execEncTest $res_success \
+        "" \
+        "aleksey-xmlenc-01/enc_rsa_1_5_x509_digest_sha384" \
+        "aes256-cbc rsa-1_5 sha384" \
+        "x509" \
+        "$priv_key_option $topfolder/keys/largersakey.$priv_key_format --pwd secret123" \
+        "--session-key aes-256 --pubkey-cert-$cert_format $topfolder/keys/largersacert.$cert_format --xml-data $topfolder/aleksey-xmlenc-01/enc_rsa_1_5_x509_digest_sha384.data --node-name http://example.org/paymentv2:CreditCard" \
+        "$priv_key_option $topfolder/keys/largersakey.$priv_key_format --pwd secret123"
+
+    execEncTest $res_success \
+        "" \
+        "aleksey-xmlenc-01/enc_rsa_1_5_x509_digest_sha512" \
+        "aes256-cbc rsa-1_5 sha512" \
+        "x509" \
+        "$priv_key_option $topfolder/keys/largersakey.$priv_key_format --pwd secret123" \
+        "--session-key aes-256 --pubkey-cert-$cert_format $topfolder/keys/largersacert.$cert_format --xml-data $topfolder/aleksey-xmlenc-01/enc_rsa_1_5_x509_digest_sha512.data --node-name http://example.org/paymentv2:CreditCard" \
+        "$priv_key_option $topfolder/keys/largersakey.$priv_key_format --pwd secret123"
+
+    execEncTest $res_success \
+        "" \
+        "aleksey-xmlenc-01/enc_rsa_1_5_x509_digest_sha3_224" \
+        "aes256-cbc rsa-1_5 sha3-224" \
+        "x509" \
+        "$priv_key_option $topfolder/keys/largersakey.$priv_key_format --pwd secret123" \
+        "--session-key aes-256 --pubkey-cert-$cert_format $topfolder/keys/largersacert.$cert_format --xml-data $topfolder/aleksey-xmlenc-01/enc_rsa_1_5_x509_digest_sha3_224.data --node-name http://example.org/paymentv2:CreditCard" \
+        "$priv_key_option $topfolder/keys/largersakey.$priv_key_format --pwd secret123"
+
+    execEncTest $res_success \
+        "" \
+        "aleksey-xmlenc-01/enc_rsa_1_5_x509_digest_sha3_256" \
+        "aes256-cbc rsa-1_5 sha3-256" \
+        "x509" \
+        "$priv_key_option $topfolder/keys/largersakey.$priv_key_format --pwd secret123" \
+        "--session-key aes-256 --pubkey-cert-$cert_format $topfolder/keys/largersacert.$cert_format --xml-data $topfolder/aleksey-xmlenc-01/enc_rsa_1_5_x509_digest_sha3_256.data --node-name http://example.org/paymentv2:CreditCard" \
+        "$priv_key_option $topfolder/keys/largersakey.$priv_key_format --pwd secret123"
+
+    execEncTest $res_success \
+        "" \
+        "aleksey-xmlenc-01/enc_rsa_1_5_x509_digest_sha3_384" \
+        "aes256-cbc rsa-1_5 sha3-384" \
+        "x509" \
+        "$priv_key_option $topfolder/keys/largersakey.$priv_key_format --pwd secret123" \
+        "--session-key aes-256 --pubkey-cert-$cert_format $topfolder/keys/largersacert.$cert_format --xml-data $topfolder/aleksey-xmlenc-01/enc_rsa_1_5_x509_digest_sha3_384.data --node-name http://example.org/paymentv2:CreditCard" \
+        "$priv_key_option $topfolder/keys/largersakey.$priv_key_format --pwd secret123"
+
+    execEncTest $res_success \
+        "" \
+        "aleksey-xmlenc-01/enc_rsa_1_5_x509_digest_sha3_512" \
+        "aes256-cbc rsa-1_5 sha3-512" \
+        "x509" \
+        "$priv_key_option $topfolder/keys/largersakey.$priv_key_format --pwd secret123" \
+        "--session-key aes-256 --pubkey-cert-$cert_format $topfolder/keys/largersacert.$cert_format --xml-data $topfolder/aleksey-xmlenc-01/enc_rsa_1_5_x509_digest_sha3_512.data --node-name http://example.org/paymentv2:CreditCard" \
         "$priv_key_option $topfolder/keys/largersakey.$priv_key_format --pwd secret123"
 fi
-
 
 # same file is encrypted with two keys, test both
 execEncTest $res_success \

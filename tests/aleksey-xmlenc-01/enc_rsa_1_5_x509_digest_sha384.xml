@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PaymentInfo xmlns="http://example.org/paymentv2">
+  <Name>John Smith</Name>
+  <CreditCard Currency="USD" Limit="5,000"><EncryptedData xmlns="http://www.w3.org/2001/04/xmlenc#" Id="ED" Type="http://www.w3.org/2001/04/xmlenc#Content">
+  <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#aes256-cbc"/>
+  <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <EncryptedKey xmlns="http://www.w3.org/2001/04/xmlenc#">
+      <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#rsa-1_5"> </EncryptionMethod>
+      <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+        <X509Data>
+          <dsig11:X509Digest xmlns:dsig11="http://www.w3.org/2009/xmldsig11#" Algorithm="http://www.w3.org/2001/04/xmldsig-more#sha384">Iniqv3viknEqaNU3+iLFdgRM0tgnAvyEfGbA1ZuW9J6v59O6qLXWfpU5mqoVY1Dz
+</dsig11:X509Digest>
+        </X509Data>
+      </KeyInfo>
+      <CipherData>
+        <CipherValue>ZUvDVyOpK8yMQJUPnUJ501zAbpKcD0qdVERZfjnLK3HAcq8ghPMKtjOHgXs+5Fug
+jA5cznRziCC8/zuleaZz+iMD3GvDMcHKivG//z6D+9LjAM6nUrAFrdnE7G5PURMy
+gE6VnNpJP+egRMxbwNJkb7NIWBX2bo5e+yYkI703QYD7gamyYuTxBEkN+wvMcpSY
+HV77cNpe8TxNlX3tm4ko3vbO3ZhA07fuxFd6wHZLJSg8rBn+V8jtvJPgS9SFOnDU
+oOL+gRdhV1li/7TVKTdclkpih6i8Mb2sv61nO5X1bU59s+0IcSMPIh0kOdYTq0Z5
+xoRkgjinToUgsgWoL6uJSXt2TotKvmHcLbleBhZ5OjtIrW4XzTRnMaqiitDEFlaR
+Idyusr2VtPLxLpUyS6u8GVCDOqnAg9lTjrlaVLB7B/EvsMK5k5eB8Y0RIIkgRH3+
+/K2QmmMfBaXyUXBVOlfaYFU33AktVX5RvNcPh4xbH53rqTfAYfwE89/GYBYTBwP5
+fZK3xvG6lGx3yMkSt96YNBflfUejIjK4MbBh52hb2z1M0jdkO2mhwncnfcNtwino
+rti02Hr4f+goM2TkxTBwxOe7DWAJ/uDXiRbZnSpoS3yfJwR/8F2iUg9bbxH9SB15
+8cUo+Wqt90+zcQb1E0C5nMmSRQrJyQdqdSrcG/qvwxw=</CipherValue>
+      </CipherData>
+    </EncryptedKey>
+  </KeyInfo>
+  <CipherData>
+    <CipherValue>uWaj6KskBg8uPwRcZ0BmoqYmI9QQM2zjJri3qmaE88Oh7CzCsv29WkJx2YqXQm++
+wQKkcxoNQ8q6qNm0HOXaMgbxlmsUZhYzbbQPvcOyMP+ZtR2BOBl0XCUytSEE2t2A
+AFoA7N+lCkKjxnFsJnzxeyUfjDaY34GaVmHM1aUjpGofQb90lXukF+mzAwF2Z7gj</CipherValue>
+  </CipherData>
+</EncryptedData></CreditCard>
+</PaymentInfo>

@@ -835,6 +835,15 @@ xmlSecGnuTLSKeyDataX509Write(xmlSecKeyDataPtr data,  xmlSecKeyX509DataValuePtr x
                 return(-1);
             }
         }
+        if(((content & XMLSEC_X509DATA_DIGEST_NODE) != 0) && (x509Value->digestAlgorithm != NULL)) {
+            ret = xmlSecGnuTLSX509DigestWrite(cert, x509Value->digestAlgorithm, &(x509Value->digest));
+            if(ret < 0) {
+                xmlSecInternalError2("xmlSecGnuTLSX509DigestWrite",
+                    xmlSecKeyDataGetName(data),
+                    "pos=" XMLSEC_SIZE_FMT, ctx->crtPos);
+                return(-1);
+            }
+        }
         ++ctx->crtPos;
     } else if(ctx->crlPos < ctx->crlSize) {
         /* write crl */

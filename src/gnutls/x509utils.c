@@ -309,6 +309,42 @@ xmlSecGnuTLSX509CertGetIssuerSerial(gnutls_x509_crt_t cert) {
     return(res);
 }
 
+int
+xmlSecGnuTLSX509DigestWrite(gnutls_x509_crt_t cert, const xmlChar* algorithm, xmlSecBufferPtr buf) {
+    gnutls_digest_algorithm_t digestAlgo;
+    xmlSecByte md[XMLSEC_GNUTLS_MAX_DIGEST_SIZE];
+    size_t mdLen = sizeof(md);
+    xmlSecSize mdSize;
+    int err;
+    int ret;
+
+    xmlSecAssert2(cert != NULL, -1);
+    xmlSecAssert2(buf != NULL, -1);
+
+    digestAlgo = xmlSecGnuTLSX509GetDigestFromAlgorithm(algorithm);
+    if(digestAlgo == GNUTLS_DIG_UNKNOWN) {
+        xmlSecInternalError("xmlSecGnuTLSX509GetDigestFromAlgorithm", NULL);
+        return(-1);
+    }
+
+    err = gnutls_x509_crt_get_fingerprint(cert, digestAlgo, md, &mdLen);
+    if((err != GNUTLS_E_SUCCESS) || (mdLen <= 0)) {
+        xmlSecGnuTLSError("gnutls_x509_crt_get_fingerprint", err, NULL);
+        return(-1);
+    }
+    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(mdLen, mdSize, return(-1), NULL);
+
+    ret = xmlSecBufferSetData(buf, md, mdSize);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferSetData", NULL);
+        return(-1);
+    }
+
+    /* success */
+    return(0);
+}
+
+
 gnutls_x509_crt_t
 xmlSecGnuTLSX509CertRead(const xmlSecByte* buf, xmlSecSize size, xmlSecKeyDataFormat format) {
     gnutls_x509_crt_t cert = NULL;
@@ -512,20 +548,15 @@ xmlSecGnuTLSX509FindCertCtxInitializeFromValue(xmlSecGnuTLSX509FindCertCtxPtr ct
     }
 
     if((!xmlSecBufferIsEmpty(&(x509Value->digest))) && (x509Value->digestAlgorithm != NULL)) {
-        xmlSecSize digestSize;
-
         ctx->digestValue = xmlSecBufferGetData(&(x509Value->digest));
-        digestSize = xmlSecBufferGetSize(&(x509Value->digest));
-        XMLSEC_SAFE_CAST_SIZE_TO_UINT(digestSize, ctx->digestLen, return(-1), NULL);
+        ctx->digestLen = xmlSecBufferGetSize(&(x509Value->digest));
 
-        /* TODO
-        ctx->digestMd = xmlSecGnuTLSX509GetDigestFromAlgorithm(x509Value->digestAlgorithm);
-        if(ctx->digestMd == NULL) {
+        ctx->digestAlgo = xmlSecGnuTLSX509GetDigestFromAlgorithm(x509Value->digestAlgorithm);
+        if(ctx->digestAlgo == GNUTLS_DIG_UNKNOWN) {
             xmlSecInternalError("xmlSecGnuTLSX509GetDigestFromAlgorithm", NULL);
             xmlSecGnuTLSX509FindCertCtxFinalize(ctx);
             return(-1);
         }
-         */
     }
 
     return(0);
@@ -619,34 +650,30 @@ xmlSecGnuTLSX509MatchBySki(gnutls_x509_crt_t cert, const xmlSecByte* ski, xmlSec
 }
 
 static int
-xmlSecGnuTLSX509MatchByDigest(gnutls_x509_crt_t cert, const xmlSecByte * digestValue, unsigned int digestLen) {
-#ifdef TODO
-    xmlSecByte md[EVP_MAX_MD_SIZE];
-    unsigned int len = 0;
-    int ret;
+xmlSecGnuTLSX509MatchByDigest(gnutls_x509_crt_t cert, const xmlSecByte * digestValue, size_t digestLen, gnutls_digest_algorithm_t digestAlgo) {
+    xmlSecByte md[XMLSEC_GNUTLS_MAX_DIGEST_SIZE];
+    size_t mdLen = sizeof(md);
+    int err;
 
     xmlSecAssert2(cert != NULL, -1);
 
-    if((digestValue == NULL) || (digestLen <= 0) || (digest == NULL)) {
+    if((digestValue == NULL) || (digestLen <= 0) || (digestAlgo == GNUTLS_DIG_UNKNOWN)) {
         return(0);
     }
 
-    ret = X509_digest(cert, digest, md, &len);
-    if((ret != 1) || (len <= 0)) {
-        xmlSecGnuTLSError("X509_digest", NULL);
+    err = gnutls_x509_crt_get_fingerprint(cert, digestAlgo, md, &mdLen);
+    if((err != GNUTLS_E_SUCCESS) || (mdLen <= 0)) {
+        xmlSecGnuTLSError("gnutls_x509_crt_get_fingerprint", err, NULL);
         return(-1);
     }
-
-    if((len != digestLen) || (memcmp(md, digestValue, digestLen) != 0)) {
+    if((mdLen != digestLen) || (memcmp(md, digestValue, digestLen) != 0)) {
         return(0);
     }
-    */
 
     /* success */
     return(1);
-#endif
-    return(0);
 }
+
 
 /* returns 1 for match, 0 for no match, and a negative value if an error occurs */
 int
@@ -683,7 +710,7 @@ xmlSecGnuTLSX509FindCertCtxMatch(xmlSecGnuTLSX509FindCertCtxPtr ctx, gnutls_x509
         return(1);
     }
 
-    ret = xmlSecGnuTLSX509MatchByDigest(cert, ctx->digestValue, ctx->digestLen);
+    ret = xmlSecGnuTLSX509MatchByDigest(cert, ctx->digestValue, ctx->digestLen, ctx->digestAlgo);
     if(ret < 0) {
         xmlSecInternalError("xmlSecGnuTLSX509MatchByDigest", NULL);
         return(-1);
@@ -696,6 +723,67 @@ xmlSecGnuTLSX509FindCertCtxMatch(xmlSecGnuTLSX509FindCertCtxPtr ctx, gnutls_x509
     return(0);
 }
 
+gnutls_digest_algorithm_t
+xmlSecGnuTLSX509GetDigestFromAlgorithm(const xmlChar* href) {
+    /* use SHA256 by default */
+    if(href == NULL) {
+#ifndef XMLSEC_NO_SHA256
+        return(GNUTLS_DIG_SHA256);
+#else  /* XMLSEC_NO_SHA256 */
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
+            "sha256 disabled and href=%s", xmlSecErrorsSafeString(href));
+        return(GNUTLS_DIG_UNKNOWN);
+#endif /* XMLSEC_NO_SHA256 */
+    } else
+
+#ifndef XMLSEC_NO_SHA1
+    if(xmlStrcmp(href, xmlSecHrefSha1) == 0) {
+        return(GNUTLS_DIG_SHA1);
+    } else
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA224
+    if(xmlStrcmp(href, xmlSecHrefSha224) == 0) {
+        return(GNUTLS_DIG_SHA224);
+    } else
+#endif /* XMLSEC_NO_SHA224 */
+
+#ifndef XMLSEC_NO_SHA256
+    if(xmlStrcmp(href, xmlSecHrefSha256) == 0) {
+        return(GNUTLS_DIG_SHA256);
+    } else
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+    if(xmlStrcmp(href, xmlSecHrefSha384) == 0) {
+        return(GNUTLS_DIG_SHA384);
+    } else
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+    if(xmlStrcmp(href, xmlSecHrefSha512) == 0) {
+        return(GNUTLS_DIG_SHA512);
+    } else
+#endif /* XMLSEC_NO_SHA512 */
+
+#ifndef XMLSEC_NO_SHA3
+    if(xmlStrcmp(href, xmlSecHrefSha3_224) == 0) {
+        return(GNUTLS_DIG_SHA3_224);
+    } else if(xmlStrcmp(href, xmlSecHrefSha3_256) == 0) {
+        return(GNUTLS_DIG_SHA3_256);
+    } else if(xmlStrcmp(href, xmlSecHrefSha3_384) == 0) {
+        return(GNUTLS_DIG_SHA3_384);
+    } else if(xmlStrcmp(href, xmlSecHrefSha3_512) == 0) {
+        return(GNUTLS_DIG_SHA3_512);
+    } else
+
+#endif /* XMLSEC_NO_SHA3 */
+    {
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
+            "href=%s", xmlSecErrorsSafeString(href));
+        return(GNUTLS_DIG_UNKNOWN);
+    }
+}
 
 /*************************************************************************
  *

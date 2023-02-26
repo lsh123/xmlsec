@@ -168,9 +168,8 @@ execEncTest $res_success \
 #
 #########################################################################
 
-# Only OpenSSL and NSS currently has capability to lookup the key using X509 data
-# TODO: add tests for lookup of private keys (may be in enc?)
-if [ "z$crypto" = "zopenssl" -o "z$crypto" = "znss" ] ; then
+# Only OpenSSL / NSS / GnuTLS currently has capability to lookup the key using X509 data
+if [ "z$crypto" = "zopenssl" -o "z$crypto" = "znss" -o "z$crypto" = "zgnutls" ] ; then
     execEncTest $res_success \
         "" \
         "aleksey-xmlenc-01/enc_rsa_1_5_x509_subject_name" \

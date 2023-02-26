@@ -68,7 +68,7 @@ typedef struct _xmlSecNssX509FindCertCtx {
 XMLSEC_CRYPTO_EXPORT int        xmlSecNssX509FindCertCtxInitialize          (xmlSecNssX509FindCertCtxPtr ctx,
                                                                              const xmlChar *subjectName,
                                                                              const xmlChar *issuerName,
-                                                                             xmlChar *issuerSerial,
+                                                                             const xmlChar *issuerSerial,
                                                                              xmlSecByte * ski,
                                                                              xmlSecSize skiSize);
 XMLSEC_CRYPTO_EXPORT int        xmlSecNssX509FindCertCtxInitializeFromValue(xmlSecNssX509FindCertCtxPtr ctx,

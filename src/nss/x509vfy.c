@@ -847,7 +847,7 @@ xmlSecNssX509GetDigestFromAlgorithm(const xmlChar* href) {
 
 int xmlSecNssX509FindCertCtxInitialize(xmlSecNssX509FindCertCtxPtr ctx,
     const xmlChar *subjectName,
-    const xmlChar *issuerName, xmlChar *issuerSerial,
+    const xmlChar *issuerName, const xmlChar *issuerSerial,
     xmlSecByte * ski, xmlSecSize skiSize
 ) {
     int ret;

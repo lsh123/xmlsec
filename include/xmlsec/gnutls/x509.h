@@ -83,13 +83,13 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecGnuTLSKeyDataRawX509CertGetKlass  
 #define xmlSecGnuTLSX509StoreId \
         xmlSecGnuTLSX509StoreGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataStoreId xmlSecGnuTLSX509StoreGetKlass (void);
-XMLSEC_CRYPTO_EXPORT gnutls_x509_crt_t  xmlSecGnuTLSX509StoreFindCert   (const xmlSecKeyDataStorePtr store,
+XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED gnutls_x509_crt_t  xmlSecGnuTLSX509StoreFindCert   (const xmlSecKeyDataStorePtr store,
                                                                          const xmlChar *subjectName,
                                                                          const xmlChar *issuerName,
                                                                          const xmlChar *issuerSerial,
                                                                          const xmlChar *ski,
                                                                          const xmlSecKeyInfoCtx* keyInfoCtx);
-XMLSEC_CRYPTO_EXPORT gnutls_x509_crt_t xmlSecGnuTLSX509StoreFindCert_ex(const xmlSecKeyDataStorePtr store,
+XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED gnutls_x509_crt_t xmlSecGnuTLSX509StoreFindCert_ex(const xmlSecKeyDataStorePtr store,
                                                                          const xmlChar *subjectName,
                                                                          const xmlChar *issuerName,
                                                                          const xmlChar *issuerSerial,

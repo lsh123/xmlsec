@@ -25,6 +25,7 @@ libxmlsec1_gnutls_la_SOURCES =\
 	crypto.c \
 	digests.c \
 	hmac.c \
+	keysstore.c \
 	kt_rsa.c \
 	kw_aes.c \
 	kw_des.c \

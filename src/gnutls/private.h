@@ -63,6 +63,9 @@ xmlChar *               xmlSecGnuTLSX509CertGetIssuerDN         (gnutls_x509_crt
 xmlChar *               xmlSecGnuTLSX509CertGetIssuerSerial     (gnutls_x509_crt_t cert);
 xmlChar *               xmlSecGnuTLSX509CertGetSKI              (gnutls_x509_crt_t cert);
 
+int                     xmlSecGnuTLSX509DigestWrite             (gnutls_x509_crt_t cert,
+                                                                 const xmlChar* algorithm,
+                                                                 xmlSecBufferPtr buf);
 
 gnutls_x509_crt_t       xmlSecGnuTLSX509CertRead                (const xmlSecByte* buf,
                                                                  xmlSecSize size,
@@ -73,6 +76,48 @@ void                    xmlSecGnuTLSX509CertDebugDump           (gnutls_x509_crt
                                                                  FILE* output);
 void                    xmlSecGnuTLSX509CertDebugXmlDump        (gnutls_x509_crt_t cert,
                                                                  FILE* output);
+
+
+gnutls_x509_crt_t       xmlSecGnuTLSX509StoreFindCertByValue    (xmlSecKeyDataStorePtr store,
+                                                                 xmlSecKeyX509DataValuePtr x509Value);
+xmlSecKeyPtr            xmlSecGnuTLSX509FindKeyByValue          (xmlSecPtrListPtr keysList,
+                                                                 xmlSecKeyX509DataValuePtr x509Value);
+
+gnutls_digest_algorithm_t  xmlSecGnuTLSX509GetDigestFromAlgorithm(const xmlChar* href);
+
+/*************************************************************************
+ *
+ * x509 certs search ctx
+ *
+ ************************************************************************/
+typedef struct _xmlSecGnuTLSX509FindCertCtx {
+    const xmlChar *subjectName;         /* NOT OWNED */
+
+    const xmlChar *issuerName;          /* NOT OWNED */
+    const xmlChar *issuerSerial;        /* NOT OWNED */
+
+    const xmlSecByte * ski;             /* NOT OWNED */
+    xmlSecSize skiSize;
+
+    const xmlSecByte * digestValue;     /* NOT OWNED */
+    size_t digestLen;
+    gnutls_digest_algorithm_t digestAlgo;
+} xmlSecGnuTLSX509FindCertCtx, *xmlSecGnuTLSX509FindCertCtxPtr;
+
+XMLSEC_CRYPTO_EXPORT int        xmlSecGnuTLSX509FindCertCtxInitialize      (xmlSecGnuTLSX509FindCertCtxPtr ctx,
+                                                                             const xmlChar *subjectName,
+                                                                             const xmlChar *issuerName,
+                                                                             const xmlChar *issuerSerial,
+                                                                             const xmlSecByte * ski,
+                                                                             xmlSecSize skiSize);
+XMLSEC_CRYPTO_EXPORT int        xmlSecGnuTLSX509FindCertCtxInitializeFromValue(xmlSecGnuTLSX509FindCertCtxPtr ctx,
+                                                                             xmlSecKeyX509DataValuePtr x509Value);
+XMLSEC_CRYPTO_EXPORT void       xmlSecGnuTLSX509FindCertCtxFinalize        (xmlSecGnuTLSX509FindCertCtxPtr ctx);
+
+XMLSEC_CRYPTO_EXPORT int        xmlSecGnuTLSX509FindCertCtxMatch          (xmlSecGnuTLSX509FindCertCtxPtr ctx,
+                                                                           gnutls_x509_crt_t cert);
+
+
 
 /*************************************************************************
  *
@@ -91,6 +136,7 @@ void                    xmlSecGnuTLSX509CrlDebugDump            (gnutls_x509_crl
 void                    xmlSecGnuTLSX509CrlDebugXmlDump         (gnutls_x509_crl_t crl,
                                                                  FILE* output);
 
+
 /*************************************************************************
  *
  * Misc. utils/helpers
@@ -99,7 +145,11 @@ void                    xmlSecGnuTLSX509CrlDebugXmlDump         (gnutls_x509_crl
 xmlChar*                xmlSecGnuTLSASN1IntegerWrite            (const unsigned char * data,
                                                                  size_t len);
 
-
+int                     xmlSecGnuTLSX509DnsEqual                (const xmlChar * ll,
+                                                                 const xmlChar * rr);
+int                     xmlSecGnuTLSX509CertCompareSKI          (gnutls_x509_crt_t cert,
+                                                                 const xmlSecByte * ski,
+                                                                  xmlSecSize skiSize);
 
 /*************************************************************************
  *

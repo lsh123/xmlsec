@@ -168,6 +168,53 @@ execEncTest $res_success \
 #
 #########################################################################
 
+# ECDH + ConcatKDF
+execEncTest $res_success \
+    "" \
+    "aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha1_kw_aes256_aes128gcm" \
+    "aes256-gcm kw-aes256 ecdh-es concatkdf sha1" \
+    "agreement-method ec" \
+    "$priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123" \
+    "--session-key aes-256 $priv_key_option:originator-key-name $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123 $pub_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$pub_key_format --xml-data $topfolder/aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha1_kw_aes256_aes128gcm.data" \
+    "$priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123"
+
+execEncTest $res_success \
+    "" \
+    "aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha224_kw_aes256_aes128gcm" \
+    "aes256-gcm kw-aes256 ecdh-es concatkdf sha224" \
+    "agreement-method ec" \
+    "$priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123" \
+    "--session-key aes-256 $priv_key_option:originator-key-name $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123 $pub_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$pub_key_format --xml-data $topfolder/aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha224_kw_aes256_aes128gcm.data" \
+    "$priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123"
+
+execEncTest $res_success \
+    "" \
+    "aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha256_kw_aes256_aes128gcm" \
+    "aes256-gcm kw-aes256 ecdh-es concatkdf sha256" \
+    "agreement-method ec" \
+    "$priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123" \
+    "--session-key aes-256 $priv_key_option:originator-key-name $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123 $pub_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$pub_key_format --xml-data $topfolder/aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha256_kw_aes256_aes128gcm.data" \
+    "$priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123"
+
+execEncTest $res_success \
+    "" \
+    "aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha384_kw_aes256_aes128gcm" \
+    "aes256-gcm kw-aes256 ecdh-es concatkdf sha384" \
+    "agreement-method ec" \
+    "$priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123" \
+    "--session-key aes-256 $priv_key_option:originator-key-name $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123 $pub_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$pub_key_format --xml-data $topfolder/aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha384_kw_aes256_aes128gcm.data" \
+    "$priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123"
+
+
+execEncTest $res_success \
+    "" \
+    "aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha512_kw_aes256_aes128gcm" \
+    "aes256-gcm kw-aes256 ecdh-es concatkdf sha512" \
+    "agreement-method ec" \
+    "$priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123" \
+    "--session-key aes-256 $priv_key_option:originator-key-name $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123 $pub_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$pub_key_format --xml-data $topfolder/aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha512_kw_aes256_aes128gcm.data" \
+    "$priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123"
+
 # Only OpenSSL / NSS / GnuTLS currently has capability to lookup the key using X509 data
 if [ "z$crypto" = "zopenssl" -o "z$crypto" = "znss" -o "z$crypto" = "zgnutls" ] ; then
     execEncTest $res_success \
@@ -278,7 +325,6 @@ if [ "z$crypto" = "zopenssl" -o "z$crypto" = "znss" -o "z$crypto" = "zgnutls" ] 
         "--session-key aes-256 --pubkey-cert-$cert_format $topfolder/keys/largersacert.$cert_format --xml-data $topfolder/aleksey-xmlenc-01/enc_rsa_1_5_x509_digest_sha3_512.data --node-name http://example.org/paymentv2:CreditCard" \
         "$priv_key_option $topfolder/keys/largersakey.$priv_key_format --pwd secret123"
 fi
-
 
 # same file is encrypted with two keys, test both
 execEncTest $res_success \

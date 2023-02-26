@@ -718,7 +718,6 @@ xmlSecOpenSSLKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x5
     xmlSecKeysMngrPtr keysMngr, unsigned int flags
 ) {
     xmlSecKeyDataStorePtr x509Store;
-    int stopOnUnknownCert = 0;
     X509* cert = NULL;
     X509_CRL* crl = NULL;
     int ret;
@@ -735,10 +734,6 @@ xmlSecOpenSSLKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x5
         goto done;
     }
 
-    /* determine what to do */
-    if((flags & XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CERT) != 0) {
-        stopOnUnknownCert = 1;
-    }
 
     if(xmlSecBufferGetSize(&(x509Value->cert)) > 0) {
         cert = xmlSecOpenSSLX509CertDerRead(xmlSecBufferGetData(&(x509Value->cert)),
@@ -760,7 +755,12 @@ xmlSecOpenSSLKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x5
     /* if there is no cert in the X509Data node then try to find one */
     if(cert == NULL) {
         X509* storeCert = NULL;
+        int stopOnUnknownCert = 0;
 
+        /* determine what to do */
+        if((flags & XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CERT) != 0) {
+            stopOnUnknownCert = 1;
+        }
         storeCert = xmlSecOpenSSLX509StoreFindCertByValue(x509Store, x509Value);
         if((storeCert == NULL) && (stopOnUnknownCert != 0)) {
             xmlSecOtherError(XMLSEC_ERRORS_R_CERT_NOT_FOUND, xmlSecKeyDataGetName(data), "cert lookup");

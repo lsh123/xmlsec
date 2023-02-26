@@ -444,9 +444,8 @@ execDSigTest $res_success \
 #
 ##########################################################################
 
-# Only OpenSSL and NSS currently has capability to lookup the key using X509 data
-# TODO: add tests for lookup of private keys (may be in enc?)
-if [ "z$crypto" = "zopenssl" -o "z$crypto" = "znss" ] ; then
+# Only OpenSSL / NSS / GnuTLS currently has capability to lookup the key using X509 data
+if [ "z$crypto" = "zopenssl" -o "z$crypto" = "znss" -o "z$crypto" = "zgnutls" ] ; then
     execDSigTest $res_success \
         "" \
         "aleksey-xmldsig-01/enveloped-x509-subjectname" \

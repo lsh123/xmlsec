@@ -892,7 +892,7 @@ err:
 
 int xmlSecOpenSSLX509FindCertCtxInitialize(xmlSecOpenSSLX509FindCertCtxPtr ctx,
     const xmlChar *subjectName,
-    const xmlChar *issuerName, xmlChar *issuerSerial,
+    const xmlChar *issuerName, const xmlChar *issuerSerial,
     const xmlSecByte * ski, xmlSecSize skiSize
 ) {
     xmlSecAssert2(ctx != NULL, -1);

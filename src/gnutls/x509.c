@@ -673,8 +673,6 @@ static int
 xmlSecGnuTLSKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x509Value,
                              xmlSecKeysMngrPtr keysMngr, unsigned int flags) {
     xmlSecKeyDataStorePtr x509Store;
-    int stopOnUnknownCert = 0;
-    gnutls_x509_crt_t storeCert = NULL;
     gnutls_x509_crt_t cert = NULL;
     gnutls_x509_crl_t crl = NULL;
     int ret;
@@ -691,11 +689,6 @@ xmlSecGnuTLSKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x50
         goto done;
     }
 
-    /* determine what to do */
-    if((flags & XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CERT) != 0) {
-        stopOnUnknownCert = 1;
-    }
-
     if(xmlSecBufferGetSize(&(x509Value->cert)) > 0) {
         cert = xmlSecGnuTLSX509CertRead(xmlSecBufferGetData(&(x509Value->cert)),
             xmlSecBufferGetSize(&(x509Value->cert)), xmlSecKeyDataFormatCertDer);
@@ -703,49 +696,38 @@ xmlSecGnuTLSKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x50
             xmlSecInternalError("xmlSecGnuTLSX509CertRead", xmlSecKeyDataGetName(data));
             goto done;
         }
-    } else if(xmlSecBufferGetSize(&(x509Value->crl)) > 0) {
+    }
+
+    if(xmlSecBufferGetSize(&(x509Value->crl)) > 0) {
         crl = xmlSecGnuTLSX509CrlRead(xmlSecBufferGetData(&(x509Value->crl)),
             xmlSecBufferGetSize(&(x509Value->crl)), xmlSecKeyDataFormatCertDer);
         if(crl == NULL) {
             xmlSecInternalError("xmlSecGnuTLSX509CrlRead", xmlSecKeyDataGetName(data));
             goto done;
         }
-    } else if(xmlSecBufferGetSize(&(x509Value->ski)) > 0) {
-        storeCert = xmlSecGnuTLSX509StoreFindCert_ex(x509Store, NULL,  NULL, NULL,
-            xmlSecBufferGetData(&(x509Value->ski)), xmlSecBufferGetSize(&(x509Value->ski)),
-            NULL /* unused */);
-        if((storeCert == NULL) && (stopOnUnknownCert != 0)) {
-            xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_NOT_FOUND, xmlSecKeyDataGetName(data),
-                "skiSize=" XMLSEC_SIZE_FMT, xmlSecBufferGetSize(&(x509Value->ski)));
-            goto done;
-        }
-    } else if(x509Value->subject != NULL) {
-        storeCert = xmlSecGnuTLSX509StoreFindCert_ex(x509Store, x509Value->subject,
-            NULL, NULL, NULL, 0, NULL /* unused */);
-        if((storeCert == NULL) && (stopOnUnknownCert != 0)) {
-            xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_NOT_FOUND, xmlSecKeyDataGetName(data),
-                "subject=%s", xmlSecErrorsSafeString(x509Value->subject));
-            goto done;
-        }
-    } else if((x509Value->issuerName != NULL) && (x509Value->issuerSerial != NULL)) {
-        storeCert = xmlSecGnuTLSX509StoreFindCert_ex(x509Store, NULL,
-            x509Value->issuerName, x509Value->issuerSerial,
-            NULL, 0, NULL /* unused */);
-        if((storeCert == NULL) && (stopOnUnknownCert != 0)) {
-            xmlSecOtherError3(XMLSEC_ERRORS_R_CERT_NOT_FOUND, xmlSecKeyDataGetName(data),
-                "issuerName=%s;issuerSerial=%s",
-                xmlSecErrorsSafeString(x509Value->issuerName),
-                xmlSecErrorsSafeString(x509Value->issuerSerial));
-            goto done;
-        }
     }
 
-    /* if we found cert in a store, then duplicate it for key data */
-    if((cert == NULL) && (storeCert != NULL)) {
-        cert = xmlSecGnuTLSX509CertDup(storeCert);
-        if(cert == NULL) {
-            xmlSecInternalError("xmlSecGnuTLSX509CertDup", xmlSecKeyDataGetName(data));
+    /* if there is no cert in the X509Data node then try to find one */
+    if(cert == NULL) {
+        gnutls_x509_crt_t storeCert = NULL;
+        int stopOnUnknownCert = 0;
+
+        /* determine what to do */
+        if((flags & XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CERT) != 0) {
+            stopOnUnknownCert = 1;
+        }
+        storeCert = xmlSecGnuTLSX509StoreFindCertByValue(x509Store, x509Value);
+        if((storeCert == NULL) && (stopOnUnknownCert != 0)) {
+            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_NOT_FOUND, xmlSecKeyDataGetName(data), "cert lookup");
             goto done;
+        }
+        /* if we found cert in a store, then duplicate it for key data */
+        if(storeCert != NULL) {
+            cert = xmlSecGnuTLSX509CertDup(storeCert);
+            if(cert == NULL) {
+                xmlSecInternalError("xmlSecGnuTLSX509CertDup", xmlSecKeyDataGetName(data));
+                goto done;
+            }
         }
     }
 

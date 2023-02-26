@@ -76,20 +76,13 @@ static xmlSecKeyDataStoreKlass xmlSecGnuTLSX509StoreKlass = {
 };
 
 static gnutls_x509_crt_t xmlSecGnuTLSX509FindCert                       (xmlSecPtrListPtr certs,
-                                                                         const xmlChar *subjectName,
-                                                                         const xmlChar *issuerName,
-                                                                         const xmlChar *issuerSerial,
-                                                                         const xmlSecByte * ski,
-                                                                         xmlSecSize skiSize);
+                                                                         xmlSecGnuTLSX509FindCertCtxPtr findCertCtx);
 static gnutls_x509_crt_t xmlSecGnuTLSX509FindSignedCert                 (xmlSecPtrListPtr certs,
                                                                          gnutls_x509_crt_t cert);
 static gnutls_x509_crt_t xmlSecGnuTLSX509FindSignerCert                 (xmlSecPtrListPtr certs,
                                                                          gnutls_x509_crt_t cert);
 
 
-static int               xmlSecGnuTLSX509CertCompareSKI                 (gnutls_x509_crt_t cert,
-                                                                         const xmlSecByte * ski,
-                                                                         xmlSecSize skiSize);
 /**
  * xmlSecGnuTLSX509StoreGetKlass:
  *
@@ -173,7 +166,9 @@ xmlSecGnuTLSX509StoreFindCert_ex(const xmlSecKeyDataStorePtr store, const xmlCha
                               const xmlSecByte * ski, xmlSecSize skiSize,
                               const xmlSecKeyInfoCtx* keyInfoCtx ATTRIBUTE_UNUSED) {
     xmlSecGnuTLSX509StoreCtxPtr ctx;
+    xmlSecGnuTLSX509FindCertCtx findCertCtx;
     gnutls_x509_crt_t res = NULL;
+    int ret;
 
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecGnuTLSX509StoreId), NULL);
     UNREFERENCED_PARAMETER(keyInfoCtx);
@@ -181,18 +176,59 @@ xmlSecGnuTLSX509StoreFindCert_ex(const xmlSecKeyDataStorePtr store, const xmlCha
     ctx = xmlSecGnuTLSX509StoreGetCtx(store);
     xmlSecAssert2(ctx != NULL, NULL);
 
-    if(res == NULL) {
-        res = xmlSecGnuTLSX509FindCert(&(ctx->certsTrusted), subjectName,
+    ret = xmlSecGnuTLSX509FindCertCtxInitialize(&findCertCtx,
+            subjectName,
             issuerName, issuerSerial,
             ski, skiSize);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecGnuTLSX509FindCertCtxInitialize", NULL);
+        xmlSecGnuTLSX509FindCertCtxFinalize(&findCertCtx);
+        return(NULL);
+    }
+
+    if(res == NULL) {
+        res = xmlSecGnuTLSX509FindCert(&(ctx->certsTrusted), &findCertCtx);
     }
     if(res == NULL) {
-        res = xmlSecGnuTLSX509FindCert(&(ctx->certsUntrusted), subjectName,
-            issuerName, issuerSerial,
-            ski, skiSize);
+        res = xmlSecGnuTLSX509FindCert(&(ctx->certsUntrusted), &findCertCtx);
     }
+
+    /* done */
+    xmlSecGnuTLSX509FindCertCtxFinalize(&findCertCtx);
     return(res);
 }
+
+gnutls_x509_crt_t
+xmlSecGnuTLSX509StoreFindCertByValue(xmlSecKeyDataStorePtr store, xmlSecKeyX509DataValuePtr x509Value) {
+    xmlSecGnuTLSX509StoreCtxPtr ctx;
+    xmlSecGnuTLSX509FindCertCtx findCertCtx;
+    int ret;
+    gnutls_x509_crt_t res = NULL;
+
+    xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecGnuTLSX509StoreId), NULL);
+
+    ctx = xmlSecGnuTLSX509StoreGetCtx(store);
+    xmlSecAssert2(ctx != NULL, NULL);
+
+    ret = xmlSecGnuTLSX509FindCertCtxInitializeFromValue(&findCertCtx, x509Value);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecGnuTLSX509FindCertCtxInitializeFromValue", NULL);
+        xmlSecGnuTLSX509FindCertCtxFinalize(&findCertCtx);
+        return(NULL);
+    }
+
+    if(res == NULL) {
+        res = xmlSecGnuTLSX509FindCert(&(ctx->certsTrusted), &findCertCtx);
+    }
+    if(res == NULL) {
+        res = xmlSecGnuTLSX509FindCert(&(ctx->certsUntrusted), &findCertCtx);
+    }
+
+    /* done */
+    xmlSecGnuTLSX509FindCertCtxFinalize(&findCertCtx);
+    return(res);
+}
+
 
 static int
 xmlSecGnuTLSX509CheckTime(const gnutls_x509_crt_t * cert_list,
@@ -533,7 +569,7 @@ xmlSecGnuTLSX509StoreFinalize(xmlSecKeyDataStorePtr store) {
  *****************************************************************************/
 #define XMLSEC_GNUTLS_DN_ATTRS_SIZE             1024
 
-static int
+int
 xmlSecGnuTLSX509DnsEqual(const xmlChar * ll, const xmlChar * rr) {
     xmlSecGnuTLSDnAttr ll_attrs[XMLSEC_GNUTLS_DN_ATTRS_SIZE];
     xmlSecGnuTLSDnAttr rr_attrs[XMLSEC_GNUTLS_DN_ATTRS_SIZE];
@@ -589,7 +625,7 @@ done:
  *
  * Returns 0 if SKI matches, 1 if SKI doesn't match and a negative value if an error occurs.
  */
-static int
+int
 xmlSecGnuTLSX509CertCompareSKI(gnutls_x509_crt_t cert, const xmlSecByte * ski, xmlSecSize skiSize) {
     xmlSecByte* buf = NULL;
     size_t bufSizeT = 0;
@@ -649,86 +685,33 @@ done:
 }
 
 static gnutls_x509_crt_t
-xmlSecGnuTLSX509FindCert(xmlSecPtrListPtr certs, const xmlChar *subjectName,
-                         const xmlChar *issuerName, const xmlChar *issuerSerial,
-                         const xmlSecByte * ski, xmlSecSize skiSize) {
+xmlSecGnuTLSX509FindCert(xmlSecPtrListPtr certs, xmlSecGnuTLSX509FindCertCtxPtr findCertCtx) {
     xmlSecSize ii, sz;
+    int ret;
 
     xmlSecAssert2(certs != NULL, NULL);
+    xmlSecAssert2(findCertCtx != NULL, NULL);
 
     /* todo: this is not the fastest way to search certs */
     sz = xmlSecPtrListGetSize(certs);
     for(ii = 0; (ii < sz); ++ii) {
         gnutls_x509_crt_t cert = xmlSecPtrListGetItem(certs, ii);
         if(cert == NULL) {
-            xmlSecInternalError2("xmlSecPtrListGetItem", NULL,
-                "pos=" XMLSEC_SIZE_FMT, ii);
+            xmlSecInternalError2("xmlSecPtrListGetItem", NULL, "pos=" XMLSEC_SIZE_FMT, ii);
             return(NULL);
         }
 
-        /* check subject name */
-        if(subjectName != NULL) {
-            xmlChar * tmp;
 
-            tmp = xmlSecGnuTLSX509CertGetSubjectDN(cert);
-            if(tmp == NULL) {
-                xmlSecInternalError2("xmlSecGnuTLSX509CertGetSubjectDN", NULL,
-                    "pos=" XMLSEC_SIZE_FMT, ii);
-                return(NULL);
-            }
-
-            if(xmlSecGnuTLSX509DnsEqual(subjectName, tmp) == 1) {
-                xmlFree(tmp);
-                return(cert);
-            }
-            xmlFree(tmp);
-        }
-
-        /* check issuer name + serial */
-        if((issuerName != NULL) && (issuerSerial != NULL)) {
-            xmlChar * tmp1;
-            xmlChar * tmp2;
-
-            tmp1 = xmlSecGnuTLSX509CertGetIssuerDN(cert);
-            if(tmp1 == NULL) {
-                xmlSecInternalError2("xmlSecGnuTLSX509CertGetIssuerDN", NULL,
-                    "pos=" XMLSEC_SIZE_FMT, ii);
-                return(NULL);
-            }
-
-            tmp2 = xmlSecGnuTLSX509CertGetIssuerSerial(cert);
-            if(tmp2 == NULL) {
-                xmlSecInternalError2("xmlSecGnuTLSX509CertGetIssuerSerial", NULL,
-                    "pos=" XMLSEC_SIZE_FMT, ii);
-                xmlFree(tmp1);
-                return(NULL);
-            }
-
-            if((xmlSecGnuTLSX509DnsEqual(issuerName, tmp1) == 1) && xmlStrEqual(issuerSerial, tmp2)) {
-                xmlFree(tmp1);
-                xmlFree(tmp2);
-                return(cert);
-            }
-            xmlFree(tmp1);
-            xmlFree(tmp2);
-        }
-
-        /* check subject ski */
-        if((ski != NULL) && (skiSize > 0)) {
-            int ret;
-
-            ret = xmlSecGnuTLSX509CertCompareSKI(cert, ski, skiSize);
-            if(ret < 0) {
-                xmlSecInternalError2("xmlSecGnuTLSX509CertCompareSKI", NULL,
-                    "pos=" XMLSEC_SIZE_FMT, ii);
-                return(NULL);
-            }
-            if(ret == 0) {
-                return(cert);
-            }
+        /* returns 1 for match, 0 for no match, and a negative value if an error occurs */
+        ret = xmlSecGnuTLSX509FindCertCtxMatch(findCertCtx, cert);
+        if(ret < 0) {
+            xmlSecInternalError2("xmlSecGnuTLSX509FindCertCtxMatch", NULL, "pos=" XMLSEC_SIZE_FMT, ii);
+            return(NULL);
+        } else if(ret == 1) {
+            return(cert);
         }
     }
-
+    /* not found */
     return(NULL);
 }
 

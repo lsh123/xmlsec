@@ -461,6 +461,242 @@ xmlSecGnuTLSX509CertDebugXmlDump(gnutls_x509_crt_t cert, FILE* output) {
     }
 }
 
+
+/*************************************************************************
+ *
+ * x509 certs search ctx
+ *
+ ************************************************************************/
+int xmlSecGnuTLSX509FindCertCtxInitialize(xmlSecGnuTLSX509FindCertCtxPtr ctx,
+    const xmlChar *subjectName,
+    const xmlChar *issuerName, const xmlChar *issuerSerial,
+    const xmlSecByte * ski, xmlSecSize skiSize
+) {
+    xmlSecAssert2(ctx != NULL, -1);
+
+    memset(ctx, 0, sizeof(*ctx));
+
+    /* TODO: figure out if we can convert the X509 Data into any faster representation */
+    if(subjectName != NULL) {
+        ctx->subjectName = subjectName;
+    }
+    if((issuerName != NULL) && (issuerSerial != NULL)) {
+        ctx->issuerName = issuerName;
+        ctx->issuerSerial = issuerSerial;
+    }
+    if((ski != NULL) && (skiSize > 0)) {
+        ctx->ski = ski;
+        ctx->skiSize = skiSize;
+    }
+
+    /* done! */
+    return(0);
+}
+
+int
+xmlSecGnuTLSX509FindCertCtxInitializeFromValue(xmlSecGnuTLSX509FindCertCtxPtr ctx, xmlSecKeyX509DataValuePtr x509Value) {
+    int ret;
+
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(x509Value != NULL, -1);
+
+    ret = xmlSecGnuTLSX509FindCertCtxInitialize(ctx,
+                x509Value->subject,
+                x509Value->issuerName, x509Value->issuerSerial,
+                xmlSecBufferGetData(&(x509Value->ski)), xmlSecBufferGetSize(&(x509Value->ski))
+    );
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecGnuTLSX509FindCertCtxInitialize", NULL);
+        xmlSecGnuTLSX509FindCertCtxFinalize(ctx);
+        return(-1);
+    }
+
+    if((!xmlSecBufferIsEmpty(&(x509Value->digest))) && (x509Value->digestAlgorithm != NULL)) {
+        xmlSecSize digestSize;
+
+        ctx->digestValue = xmlSecBufferGetData(&(x509Value->digest));
+        digestSize = xmlSecBufferGetSize(&(x509Value->digest));
+        XMLSEC_SAFE_CAST_SIZE_TO_UINT(digestSize, ctx->digestLen, return(-1), NULL);
+
+        /* TODO
+        ctx->digestMd = xmlSecGnuTLSX509GetDigestFromAlgorithm(x509Value->digestAlgorithm);
+        if(ctx->digestMd == NULL) {
+            xmlSecInternalError("xmlSecGnuTLSX509GetDigestFromAlgorithm", NULL);
+            xmlSecGnuTLSX509FindCertCtxFinalize(ctx);
+            return(-1);
+        }
+         */
+    }
+
+    return(0);
+}
+
+void xmlSecGnuTLSX509FindCertCtxFinalize(xmlSecGnuTLSX509FindCertCtxPtr ctx) {
+    xmlSecAssert(ctx != NULL);
+
+    memset(ctx, 0, sizeof(*ctx));
+}
+
+
+static int
+xmlSecGnuTLSX509MatchBySubjectName(gnutls_x509_crt_t cert, const xmlChar* subjectName) {
+    xmlChar * certSubjectName;
+
+    xmlSecAssert2(cert != NULL, -1);
+
+    if(subjectName == NULL) {
+        return(0);
+    }
+
+    certSubjectName = xmlSecGnuTLSX509CertGetSubjectDN(cert);
+    if(certSubjectName == NULL) {
+        return(0);
+    }
+
+    /* returns 1 if equal */
+    if(xmlSecGnuTLSX509DnsEqual(subjectName, certSubjectName) != 1) {
+        xmlFree(certSubjectName);
+        return(0);
+    }
+
+    /* success */
+    xmlFree(certSubjectName);
+    return(1);
+}
+
+static int
+xmlSecGnuTLSX509MatchByIssuer(gnutls_x509_crt_t cert,  const xmlChar* issuerName, const xmlChar* issuerSerial) {
+    xmlChar* certIssuerSerial;
+    xmlChar* certIssuerName;
+
+    xmlSecAssert2(cert != NULL, -1);
+
+    if((issuerName == NULL) || (issuerSerial == NULL)) {
+        return(0);
+    }
+
+    certIssuerName = xmlSecGnuTLSX509CertGetIssuerDN(cert);
+    if((certIssuerName == NULL) || (xmlSecGnuTLSX509DnsEqual(issuerName, certIssuerName) != 1)) {
+        xmlFree(certIssuerName);
+        return(0);
+    }
+    xmlFree(certIssuerName);
+
+    certIssuerSerial = xmlSecGnuTLSX509CertGetIssuerSerial(cert);
+    if((certIssuerSerial == NULL) || (!xmlStrEqual(issuerSerial, certIssuerSerial))) {
+        xmlFree(certIssuerSerial);
+        return(0);
+    }
+    xmlFree(certIssuerSerial);
+
+    /* success */
+    return(1);
+}
+
+static int
+xmlSecGnuTLSX509MatchBySki(gnutls_x509_crt_t cert, const xmlSecByte* ski, xmlSecSize skiSize) {
+    int ret;
+
+    xmlSecAssert2(cert != NULL, -1);
+
+    if((ski == NULL) || (skiSize <= 0)) {
+        return(0);
+    }
+
+    /* TODO: get rid of xmlSecGnuTLSX509CertCompareSKI */
+    /* returns 0 if matched */
+    ret = xmlSecGnuTLSX509CertCompareSKI(cert, ski, skiSize);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecGnuTLSX509CertCompareSKI", NULL);
+        return(-1);
+    } else if(ret != 0) {
+        /* not match */
+        return(0);
+    }
+
+    /* success */
+    return(1);
+}
+
+static int
+xmlSecGnuTLSX509MatchByDigest(gnutls_x509_crt_t cert, const xmlSecByte * digestValue, unsigned int digestLen) {
+#ifdef TODO
+    xmlSecByte md[EVP_MAX_MD_SIZE];
+    unsigned int len = 0;
+    int ret;
+
+    xmlSecAssert2(cert != NULL, -1);
+
+    if((digestValue == NULL) || (digestLen <= 0) || (digest == NULL)) {
+        return(0);
+    }
+
+    ret = X509_digest(cert, digest, md, &len);
+    if((ret != 1) || (len <= 0)) {
+        xmlSecGnuTLSError("X509_digest", NULL);
+        return(-1);
+    }
+
+    if((len != digestLen) || (memcmp(md, digestValue, digestLen) != 0)) {
+        return(0);
+    }
+    */
+
+    /* success */
+    return(1);
+#endif
+    return(0);
+}
+
+/* returns 1 for match, 0 for no match, and a negative value if an error occurs */
+int
+xmlSecGnuTLSX509FindCertCtxMatch(xmlSecGnuTLSX509FindCertCtxPtr ctx, gnutls_x509_crt_t cert) {
+    int ret;
+
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(cert != NULL, -1);
+
+    ret = xmlSecGnuTLSX509MatchBySubjectName(cert, ctx->subjectName);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecGnuTLSX509MatchBySubjectName", NULL);
+        return(-1);
+    } else if(ret == 1) {
+        /* success! */
+        return(1);
+    }
+
+    ret = xmlSecGnuTLSX509MatchByIssuer(cert, ctx->issuerName, ctx->issuerSerial);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecGnuTLSX509MatchByIssuer", NULL);
+        return(-1);
+    } else if(ret == 1) {
+        /* success! */
+        return(1);
+    }
+
+    ret = xmlSecGnuTLSX509MatchBySki(cert, ctx->ski, ctx->skiSize);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecGnuTLSX509MatchBySki", NULL);
+        return(-1);
+    } else if(ret == 1) {
+        /* success! */
+        return(1);
+    }
+
+    ret = xmlSecGnuTLSX509MatchByDigest(cert, ctx->digestValue, ctx->digestLen);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecGnuTLSX509MatchByDigest", NULL);
+        return(-1);
+    } else if(ret == 1) {
+        /* success! */
+        return(1);
+    }
+
+    /* not found */
+    return(0);
+}
+
+
 /*************************************************************************
  *
  * x509 crls utils/helpers

@@ -29,6 +29,7 @@
 
 #include <xmlsec/gnutls/app.h>
 #include <xmlsec/gnutls/crypto.h>
+#include <xmlsec/gnutls/keysstore.h>
 #include <xmlsec/gnutls/x509.h>
 
 #include "../cast_helpers.h"
@@ -863,7 +864,7 @@ xmlSecGnuTLSAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr,
  * xmlSecGnuTLSAppDefaultKeysMngrInit:
  * @mngr:               the pointer to keys manager.
  *
- * Initializes @mngr with simple keys store #xmlSecSimpleKeysStoreId
+ * Initializes @mngr with simple keys store #xmlSecGnuTLSKeysStoreId
  * and a default GnuTLS crypto key data stores.
  *
  * Returns: 0 on success or a negative value otherwise.
@@ -878,9 +879,9 @@ xmlSecGnuTLSAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
     if(xmlSecKeysMngrGetKeysStore(mngr) == NULL) {
         xmlSecKeyStorePtr keysStore;
 
-        keysStore = xmlSecKeyStoreCreate(xmlSecSimpleKeysStoreId);
+        keysStore = xmlSecKeyStoreCreate(xmlSecGnuTLSKeysStoreId);
         if(keysStore == NULL) {
-            xmlSecInternalError("xmlSecKeyStoreCreate(StoreId)", NULL);
+            xmlSecInternalError("xmlSecKeyStoreCreate(xmlSecGnuTLSKeysStoreId)", NULL);
             return(-1);
         }
 
@@ -927,9 +928,9 @@ xmlSecGnuTLSAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key)
         return(-1);
     }
 
-    ret = xmlSecSimpleKeysStoreAdoptKey(store, key);
+    ret = xmlSecGnuTLSKeysStoreAdoptKey(store, key);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecSimpleKeysStoreAdoptKey", NULL);
+        xmlSecInternalError("xmlSecGnuTLSKeysStoreAdoptKey", NULL);
         return(-1);
     }
 
@@ -960,9 +961,9 @@ xmlSecGnuTLSAppDefaultKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
         return(-1);
     }
 
-    ret = xmlSecSimpleKeysStoreLoad(store, uri, mngr);
+    ret = xmlSecGnuTLSKeysStoreLoad(store, uri, mngr);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecSimpleKeysStoreLoad", NULL,
+        xmlSecInternalError2("xmlSecGnuTLSKeysStoreLoad", NULL,
                              "uri=%s", xmlSecErrorsSafeString(uri));
         return(-1);
     }
@@ -994,9 +995,9 @@ xmlSecGnuTLSAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename,
         return(-1);
     }
 
-    ret = xmlSecSimpleKeysStoreSave(store, filename, type);
+    ret = xmlSecGnuTLSKeysStoreSave(store, filename, type);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecSimpleKeysStoreSave", NULL,
+        xmlSecInternalError2("xmlSecGnuTLSKeysStoreSave", NULL,
                              "filename=%s", xmlSecErrorsSafeString(filename));
         return(-1);
     }

@@ -229,6 +229,60 @@ xmlSecGnuTLSX509StoreFindCertByValue(xmlSecKeyDataStorePtr store, xmlSecKeyX509D
     return(res);
 }
 
+xmlSecKeyPtr
+xmlSecGnuTLSX509FindKeyByValue(xmlSecPtrListPtr keysList, xmlSecKeyX509DataValuePtr x509Value) {
+    xmlSecGnuTLSX509FindCertCtx findCertCtx;
+    xmlSecSize keysListSize, ii;
+    xmlSecKeyPtr res = NULL;
+    int ret;
+
+    xmlSecAssert2(keysList != NULL, NULL);
+    xmlSecAssert2(x509Value != NULL, NULL);
+
+    ret = xmlSecGnuTLSX509FindCertCtxInitializeFromValue(&findCertCtx, x509Value);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecGnuTLSX509FindCertCtxInitializeFromValue", NULL);
+        xmlSecGnuTLSX509FindCertCtxFinalize(&findCertCtx);
+        return(NULL);
+    }
+
+    keysListSize = xmlSecPtrListGetSize(keysList);
+    for(ii = 0; ii < keysListSize; ++ii) {
+        xmlSecKeyPtr key;
+        xmlSecKeyDataPtr keyData;
+        gnutls_x509_crt_t keyCert;
+
+        /* get key's cert from x509 key data */
+        key = (xmlSecKeyPtr)xmlSecPtrListGetItem(keysList, ii);
+        if(key == NULL) {
+            continue;
+        }
+        keyData = xmlSecKeyGetData(key, xmlSecGnuTLSKeyDataX509Id);
+        if(keyData == NULL) {
+            continue;
+        }
+        keyCert = xmlSecGnuTLSKeyDataX509GetKeyCert(keyData);
+        if(keyCert == NULL) {
+            continue;
+        }
+
+        /* does it match? */
+        ret = xmlSecGnuTLSX509FindCertCtxMatch(&findCertCtx, keyCert);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecGnuTLSX509FindCertCtxMatch", NULL);
+            xmlSecGnuTLSX509FindCertCtxFinalize(&findCertCtx);
+            return(NULL);
+        } else if(ret == 1) {
+            res = key;
+            break;
+        }
+    }
+
+    /* done */
+    xmlSecGnuTLSX509FindCertCtxFinalize(&findCertCtx);
+    return(res);
+}
+
 
 static int
 xmlSecGnuTLSX509CheckTime(const gnutls_x509_crt_t * cert_list,

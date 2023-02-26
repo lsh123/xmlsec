@@ -76,7 +76,9 @@ void                    xmlSecGnuTLSX509CertDebugXmlDump        (gnutls_x509_crt
 
 
 gnutls_x509_crt_t       xmlSecGnuTLSX509StoreFindCertByValue    (xmlSecKeyDataStorePtr store,
-                                                                xmlSecKeyX509DataValuePtr x509Value);
+                                                                 xmlSecKeyX509DataValuePtr x509Value);
+xmlSecKeyPtr            xmlSecGnuTLSX509FindKeyByValue          (xmlSecPtrListPtr keysList,
+                                                                 xmlSecKeyX509DataValuePtr x509Value);
 
 /*************************************************************************
  *

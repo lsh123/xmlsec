@@ -342,8 +342,8 @@ execDSigTest $res_success \
     "--enabled-key-data der-encoded-key-value,ec"
 
 
-# Only OpenSSL currently supports X509Digest and has capability to lookup the key using X509 data
-if [ "z$crypto" = "zopenssl" ] ; then
+# Only OpenSSL / NSS / GnuTLS currently has capability to lookup the key using X509 data
+if [ "z$crypto" = "zopenssl" -o "z$crypto" = "znss" -o "z$crypto" = "zgnutls" ] ; then
     execDSigTest $res_success \
         "xmldsig11-interop-2012" \
         "signature-enveloping-x509digest-rsa" \
@@ -351,7 +351,7 @@ if [ "z$crypto" = "zopenssl" ] ; then
         "x509" \
         "--enabled-key-data x509 --pubkey-cert-der ./keys/rsa-key.crt" \
         "--enabled-key-data x509 --pkcs12 $topfolder/keys/largersakey.p12 --pwd secret123" \
-        "--enabled-key-data x509 --pubkey-cert-pem $topfolder/keys/largersacert.pem"
+        "--enabled-key-data x509 --pubkey-cert-der $topfolder/keys/largersacert.der"
 fi
 
 

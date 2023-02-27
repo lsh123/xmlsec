@@ -43,9 +43,6 @@ typedef struct _xmlSecMSCngX509FindCertCtx {
 
     const xmlSecByte * digestValue; /* NOT OWNED */
     unsigned int digestLen;
-    /* TODO 
-    const EVP_MD* digestMd;
-    */
 } xmlSecMSCngX509FindCertCtx, *xmlSecMSCngX509FindCertCtxPtr;
 
 XMLSEC_CRYPTO_EXPORT int        xmlSecMSCngX509FindCertCtxInitialize        (xmlSecMSCngX509FindCertCtxPtr ctx,
@@ -61,7 +58,8 @@ XMLSEC_CRYPTO_EXPORT void       xmlSecMSCngX509FindCertCtxFinalize           (xm
 
 XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT xmlSecMSCngX509StoreFindCertByValue     (xmlSecKeyDataStorePtr store,
                                                                              xmlSecKeyX509DataValuePtr x509Value);
-
+XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT xmlSecMSCngX509FindCert                 (HCERTSTORE store, 
+                                                                             xmlSecMSCngX509FindCertCtxPtr findCertCtx);
 #endif /* XMLSEC_NO_X509 */
 
 #ifdef __cplusplus

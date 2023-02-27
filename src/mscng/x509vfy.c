@@ -993,13 +993,14 @@ xmlSecMSCngX509FindCertBySki(HCERTSTORE store, const xmlSecByte* ski, DWORD skiS
         NULL));
 }
 
-static PCCERT_CONTEXT
+PCCERT_CONTEXT
 xmlSecMSCngX509FindCert(HCERTSTORE store, xmlSecMSCngX509FindCertCtxPtr findCertCtx) {
     DWORD dwCertEncodingType = X509_ASN_ENCODING | PKCS_7_ASN_ENCODING;
     PCCERT_CONTEXT cert = NULL;
 
     xmlSecAssert2(store != 0, NULL);
     xmlSecAssert2(findCertCtx != 0, NULL);
+
 
     if((cert == NULL) && (findCertCtx->wcSubjectName != NULL)) {
         cert = xmlSecMSCngX509FindCertBySubject(store, findCertCtx->wcSubjectName, dwCertEncodingType);
@@ -1337,18 +1338,17 @@ xmlSecMSCngX509FindCertCtxInitializeFromValue(xmlSecMSCngX509FindCertCtxPtr ctx,
     if ((!xmlSecBufferIsEmpty(&(x509Value->digest))) && (x509Value->digestAlgorithm != NULL)) {
         xmlSecSize digestSize;
 
-        ctx->digestValue = xmlSecBufferGetData(&(x509Value->digest));
-        digestSize = xmlSecBufferGetSize(&(x509Value->digest));
-        XMLSEC_SAFE_CAST_SIZE_TO_UINT(digestSize, ctx->digestLen, return(-1), NULL);
-
-        /* TODO
-        ctx->digestMd = xmlSecMSCngX509GetDigestFromAlgorithm(x509Value->digestAlgorithm);
-        if (ctx->digestMd == NULL) {
-            xmlSecInternalError("xmlSecMSCngX509GetDigestFromAlgorithm", NULL);
+        /* only SHA1 algorithm is currently supported */
+        if (xmlStrcmp(x509Value->digestAlgorithm, xmlSecHrefSha1) != 0) {
+            xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
+                "href=%s", xmlSecErrorsSafeString(x509Value->digestAlgorithm));
             xmlSecMSCngX509FindCertCtxFinalize(ctx);
             return(-1);
         }
-        */
+
+        ctx->digestValue = xmlSecBufferGetData(&(x509Value->digest));
+        digestSize = xmlSecBufferGetSize(&(x509Value->digest));
+        XMLSEC_SAFE_CAST_SIZE_TO_UINT(digestSize, ctx->digestLen, return(-1), NULL);
     }
 
     return(0);

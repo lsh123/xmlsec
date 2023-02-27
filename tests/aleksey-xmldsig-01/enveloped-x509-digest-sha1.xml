@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+XML Security Library example: Simple signature template file for sign1 example.
+-->
+<Envelope xmlns="urn:envelope">
+  <Data>
+	Hello, World!
+  </Data>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+      <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/>
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
+            <Transform Algorithm="http://www.w3.org/TR/1999/REC-xpath-19991116">
+            <XPath xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">not(ancestor-or-self::dsig:Signature)</XPath>
+            </Transform>
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/>
+        <DigestValue>j12SN+LRqX4RricEwl5iEpjyand0nCMO8T5dNYR5P661F2ZrUS5wSbyMdu826KrG
+IQbvvjmkI+9+QmCrcJyXXA==</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>QbjtLPebTPTRhWyuYOKDUkAvSW3cs5RLUbRslB3w+tVuG5rKhnZNAIvxYeHY8dMP
+M5cXQm1WjPjZUzwDuINTv2YnOp+XVuo6vmjMb/ZsbPbDQYWkbgoXOFTdwJuLtZD8
+J2cgD0Bry1efcz9y9xZXgTpUeNKA9Q0qLRCpjYqdfsU7kaykPY4Ay/i2RgS8+o21
+CV3IL23pJ4LYyWud9pbMBlwW/QrFA2tlzxO9HmEUKt+08UZcUeSOJnX2QUFkEbEK
+mcXa/a6V1If23cAhlRgv0H9kQeacQFzoVz8TpH6pMEvOBFa8qdCZluyp+5Gn8vhW
+KPETPD1ehLVR59/iVX4Iy52H3NYYqrBfbo46X1iO7yQWwaGaGrLQE2oeAkvcJpwz
+HOzozGTREHU6+khljU/rYGh0eoFR0AsnduKUMEGWhCNsr0MriV79Ry7t2ZOog6yR
+m62yv9svROxLwKgSXzeGi6fua3BrYhk92MrUJ5ne/iAKQEfBq9Rst/hR6/BngS1P
+8PhCz+GMmVG4hKrc6fMg0Ij0+/z6kxNltNvtKfTrUa1QLm79BpDDFbnCK4u9sJ34
+zGuJq3WTQEnNrHK9hty+XlAFyhhWL+w56HArfiTNIu+GhdmC68lkRVvrNjZgriOo
+umqAUODuLEH0ZtB2hiDQwWnM9SP/A7IOOSET1qvHe0Q=</SignatureValue>
+    <KeyInfo>
+      <X509Data>
+          <dsig11:X509Digest xmlns:dsig11="http://www.w3.org/2009/xmldsig11#" Algorithm="http://www.w3.org/2000/09/xmldsig#sha1">1nwNaOvFfnwFCD7HCO1HFjrzgSc=
+</dsig11:X509Digest>
+<X509Digest xmlns="http://www.w3.org/2009/xmldsig11#" Algorithm="http://www.w3.org/2000/09/xmldsig#sha1">pzXVn5GWMr0L6WwkGXlc/1VEHts=
+</X509Digest>
+<X509Digest xmlns="http://www.w3.org/2009/xmldsig11#" Algorithm="http://www.w3.org/2000/09/xmldsig#sha1">ORYBjGgEUJDgXATNaSRvdaq1QTE=
+</X509Digest>
+      </X509Data>
+    </KeyInfo>
+  </Signature>
+</Envelope>

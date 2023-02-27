@@ -42,7 +42,7 @@ typedef struct _xmlSecMSCngX509FindCertCtx {
     DWORD skiLen;
 
     const xmlSecByte * digestValue; /* NOT OWNED */
-    unsigned int digestLen;
+    DWORD digestLen;
 } xmlSecMSCngX509FindCertCtx, *xmlSecMSCngX509FindCertCtxPtr;
 
 XMLSEC_CRYPTO_EXPORT int        xmlSecMSCngX509FindCertCtxInitialize        (xmlSecMSCngX509FindCertCtxPtr ctx,

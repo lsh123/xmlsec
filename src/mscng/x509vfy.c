@@ -975,20 +975,40 @@ done:
 }
 
 static PCCERT_CONTEXT
-xmlSecMSCngX509FindCertBySki(HCERTSTORE store, const xmlSecByte* ski, DWORD skiSize, DWORD dwCertEncodingType) {
+xmlSecMSCngX509FindCertBySki(HCERTSTORE store, const xmlSecByte* ski, DWORD skiLen, DWORD dwCertEncodingType) {
     CRYPT_HASH_BLOB blob;
 
     xmlSecAssert2(store != 0, NULL);
     xmlSecAssert2(ski != NULL, NULL);
-    xmlSecAssert2(skiSize > 0, NULL);
+    xmlSecAssert2(skiLen > 0, NULL);
 
     blob.pbData = (PBYTE)ski; /* remove const */
-    blob.cbData = skiSize;
+    blob.cbData = skiLen;
 
     return(CertFindCertificateInStore(store,
         dwCertEncodingType,
         0,
         CERT_FIND_KEY_IDENTIFIER,
+        &blob,
+        NULL));
+}
+
+/* ONLY SHA1 DIGEST IS CURRENTLY SUPPORTED */
+static PCCERT_CONTEXT
+xmlSecMSCngX509FindCertByDigest(HCERTSTORE store, const xmlSecByte* digest, DWORD digestLen, DWORD dwCertEncodingType) {
+    CRYPT_HASH_BLOB blob;
+
+    xmlSecAssert2(store != 0, NULL);
+    xmlSecAssert2(digest != NULL, NULL);
+    xmlSecAssert2(digestLen > 0, NULL);
+
+    blob.pbData = (PBYTE)digest; /* remove const */
+    blob.cbData = digestLen;
+
+    return(CertFindCertificateInStore(store,
+        dwCertEncodingType,
+        0,
+        CERT_FIND_SHA1_HASH,
         &blob,
         NULL));
 }
@@ -1012,6 +1032,9 @@ xmlSecMSCngX509FindCert(HCERTSTORE store, xmlSecMSCngX509FindCertCtxPtr findCert
 
     if((cert == NULL) &&  (findCertCtx->ski != NULL) && (findCertCtx->skiLen > 0)) {
         cert = xmlSecMSCngX509FindCertBySki(store, findCertCtx->ski, findCertCtx->skiLen, dwCertEncodingType);
+    }
+    if ((cert == NULL) && (findCertCtx->digestValue != NULL) && (findCertCtx->digestLen > 0)) {
+        cert = xmlSecMSCngX509FindCertByDigest(store, findCertCtx->digestValue, findCertCtx->digestLen, dwCertEncodingType);
     }
 
     return(cert);
@@ -1345,12 +1368,12 @@ xmlSecMSCngX509FindCertCtxInitializeFromValue(xmlSecMSCngX509FindCertCtxPtr ctx,
             xmlSecMSCngX509FindCertCtxFinalize(ctx);
             return(-1);
         }
-
         ctx->digestValue = xmlSecBufferGetData(&(x509Value->digest));
         digestSize = xmlSecBufferGetSize(&(x509Value->digest));
         XMLSEC_SAFE_CAST_SIZE_TO_UINT(digestSize, ctx->digestLen, return(-1), NULL);
     }
 
+    /* done */
     return(0);
 }
 

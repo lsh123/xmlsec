@@ -196,7 +196,8 @@ xmlSecGnuTLSKeyDataX509GetKeyCert(xmlSecKeyDataPtr data) {
  * @data:               the pointer to X509 key data.
  * @cert:               the pointer to GnuTLS X509 certificate.
  *
- * Sets the key's certificate in @data.
+ * Adds certificate to the X509 key data and sets the it as the key's
+ * certificate in @data. On success, the @data owns the cert.
  *
  * Returns: 0 on success or a negative value if an error occurs.
  */

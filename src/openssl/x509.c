@@ -284,6 +284,7 @@ xmlSecOpenSSLKeyDataX509AdoptCert(xmlSecKeyDataPtr data, X509* cert) {
 X509*
 xmlSecOpenSSLKeyDataX509GetCert(xmlSecKeyDataPtr data, xmlSecSize pos) {
     xmlSecOpenSSLX509DataCtxPtr ctx;
+    X509* cert;
     int iPos;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataX509Id), NULL);
@@ -292,9 +293,30 @@ xmlSecOpenSSLKeyDataX509GetCert(xmlSecKeyDataPtr data, xmlSecSize pos) {
     xmlSecAssert2(ctx != NULL, NULL);
     xmlSecAssert2(ctx->certsList != NULL, NULL);
 
+    /* ensure key cert if present is always the first one
+     * by "swapping" cert[0] and ctx->keyCert
+     *
+     * Part 1: return ctx->keyCert instead of cert[0]
+     */
+    if((ctx->keyCert != NULL) && (pos == 0)) {
+        return(ctx->keyCert);
+    }
+
     XMLSEC_SAFE_CAST_SIZE_TO_INT(pos, iPos, return(NULL), NULL);
     xmlSecAssert2(iPos < sk_X509_num(ctx->certsList), NULL);
-    return(sk_X509_value(ctx->certsList, iPos));
+    cert = sk_X509_value(ctx->certsList, iPos);
+    if(cert == NULL) {
+        xmlSecOpenSSLError2("sk_X509_value", NULL, "pos=%d", iPos)
+        return(NULL);
+    }
+
+    /* Part 2: return cert[0] instead of ctx->keyCert */
+    if((ctx->keyCert != NULL) && (X509_cmp(ctx->keyCert, cert) == 0)) {
+        cert = sk_X509_value(ctx->certsList, 0);
+    }
+
+    /* done */
+    return(cert);
 }
 
 /**
@@ -453,6 +475,7 @@ xmlSecOpenSSLKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
 
     xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecOpenSSLKeyDataX509Id), -1);
     xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecOpenSSLKeyDataX509Id), -1);
+    xmlSecAssert2(xmlSecOpenSSLKeyDataX509GetKeyCert(dst) == NULL, -1);
 
     /* copy certsList */
     size = xmlSecOpenSSLKeyDataX509GetCertsSize(src);

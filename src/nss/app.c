@@ -596,7 +596,6 @@ xmlSecNssAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSecSi
 int
 xmlSecNssAppKeyCertLoadSECItem(xmlSecKeyPtr key, SECItem* secItem, xmlSecKeyDataFormat format) {
     CERTCertificate *cert = NULL;
-    CERTCertificate *keyCert = NULL;
     xmlSecKeyDataPtr data;
     int ret;
     int res = -1;
@@ -630,27 +629,13 @@ xmlSecNssAppKeyCertLoadSECItem(xmlSecKeyPtr key, SECItem* secItem, xmlSecKeyData
     }
     xmlSecAssert2(cert != NULL, -1);
 
-    /* make a copy for key cert */
-    keyCert = CERT_DupCertificate(cert);
-    if(keyCert == NULL) {
-        xmlSecNssError("CERT_DupCertificate", xmlSecKeyDataGetName(data));
-        goto done;
-    }
-
-    /* add both cert and key cert in the data */
-    ret = xmlSecNssKeyDataX509AdoptCert(data, cert);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecNssKeyDataX509AdoptCert", xmlSecKeyDataGetName(data));
-        goto done;
-    }
-    cert = NULL; /* owned by data now */
-
-    ret = xmlSecNssKeyDataX509AdoptKeyCert(data, keyCert);
+    /* add key cert to the data */
+    ret = xmlSecNssKeyDataX509AdoptKeyCert(data, cert);
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssKeyDataX509AdoptKeyCert", xmlSecKeyDataGetName(data));
         goto done;
     }
-    keyCert = NULL; /* owned by data now */
+    cert = NULL; /* owned by data now */
 
     /* success */
     res = 0;
@@ -658,9 +643,6 @@ xmlSecNssAppKeyCertLoadSECItem(xmlSecKeyPtr key, SECItem* secItem, xmlSecKeyData
 done:
     if(cert != NULL) {
         CERT_DestroyCertificate(cert);
-    }
-    if(keyCert != NULL) {
-        CERT_DestroyCertificate(keyCert);
     }
     return(res);
 }
@@ -768,7 +750,7 @@ xmlSecNssAppPkcs12LoadSECItem(SECItem* secItem, const char *pwd,
                        void *pwdCallback ATTRIBUTE_UNUSED,
                        void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
     xmlSecKeyPtr key = NULL;
-    xmlSecKeyDataPtr data = NULL;
+    xmlSecKeyDataPtr keyValueData = NULL;
     xmlSecKeyDataPtr x509Data = NULL;
     int ret;
     PK11SlotInfo *slot = NULL;
@@ -855,8 +837,7 @@ xmlSecNssAppPkcs12LoadSECItem(SECItem* secItem, const char *pwd,
 
     x509Data = xmlSecKeyDataCreate(xmlSecNssKeyDataX509Id);
     if(x509Data == NULL) {
-        xmlSecInternalError("xmlSecKeyDataCreate",
-                            xmlSecTransformKlassGetName(xmlSecNssKeyDataX509Id));
+        xmlSecInternalError("xmlSecKeyDataCreate(xmlSecNssKeyDataX509Id)", NULL);
         goto done;
     }
 
@@ -865,94 +846,88 @@ xmlSecNssAppPkcs12LoadSECItem(SECItem* secItem, const char *pwd,
         privkey = PK11_FindKeyByAnyCert(cert, NULL);
 
         if (privkey != NULL) {
-            if (data != NULL) {
+            if (keyValueData != NULL) {
                 /* we already found a private key.
                  * assume the first private key we find is THE ONE
                  */
                 SECKEY_DestroyPrivateKey(privkey);
                 privkey = NULL;
-            } else {
-                pubkey = CERT_ExtractPublicKey(cert);
-                if (pubkey == NULL) {
-                    xmlSecNssError("CERT_ExtractPublicKey",
-                                   xmlSecKeyDataGetName(x509Data));
-                    goto done;
-                }
-                data = xmlSecNssPKIAdoptKey(privkey, pubkey);
-                if(data == NULL) {
-                    xmlSecInternalError("xmlSecNssPKIAdoptKey",
-                                        xmlSecKeyDataGetName(x509Data));
-                    goto done;
-                }
-
-                pubkey = NULL;
-                privkey = NULL;
-
-                tmpcert = CERT_DupCertificate(cert);
-                if(tmpcert == NULL) {
-                    xmlSecNssError("CERT_DupCertificate",
-                                   xmlSecKeyDataGetName(x509Data));
-                    goto done;
-                }
-
-                ret = xmlSecNssKeyDataX509AdoptKeyCert(x509Data, tmpcert);
-                if(ret < 0) {
-                    xmlSecInternalError("xmlSecNssKeyDataX509AdoptKeyCert",
-                                        xmlSecKeyDataGetName(x509Data));
-                    CERT_DestroyCertificate(tmpcert);
-                    goto done;
-                }
-
+                continue;
             }
-        }
 
-        tmpcert = CERT_DupCertificate(cert);
-        if(tmpcert == NULL) {
-            xmlSecNssError("CERT_DupCertificate",
-                           xmlSecKeyDataGetName(x509Data));
-            goto done;
-        }
-        ret = xmlSecNssKeyDataX509AdoptCert(x509Data, tmpcert);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecNssKeyDataX509AdoptCert",
-                                xmlSecKeyDataGetName(x509Data));
-            CERT_DestroyCertificate(tmpcert);
-            goto done;
-        }
+            pubkey = CERT_ExtractPublicKey(cert);
+            if (pubkey == NULL) {
+                xmlSecNssError("CERT_ExtractPublicKey", NULL);
+                goto done;
+            }
+            keyValueData = xmlSecNssPKIAdoptKey(privkey, pubkey);
+            if(keyValueData == NULL) {
+                xmlSecInternalError("xmlSecNssPKIAdoptKey", NULL);
+                goto done;
+            }
 
+            pubkey = NULL;
+            privkey = NULL;
+
+            tmpcert = CERT_DupCertificate(cert);
+            if(tmpcert == NULL) {
+                xmlSecNssError("CERT_DupCertificate", NULL);
+                goto done;
+            }
+
+            ret = xmlSecNssKeyDataX509AdoptKeyCert(x509Data, tmpcert);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecNssKeyDataX509AdoptKeyCert", NULL);
+                CERT_DestroyCertificate(tmpcert);
+                goto done;
+            }
+            tmpcert = NULL; /* owned by x509Data now */
+        } else {
+            tmpcert = CERT_DupCertificate(cert);
+            if(tmpcert == NULL) {
+                xmlSecNssError("CERT_DupCertificate", NULL);
+                goto done;
+            }
+            ret = xmlSecNssKeyDataX509AdoptCert(x509Data, tmpcert);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecNssKeyDataX509AdoptCert", NULL);
+                CERT_DestroyCertificate(tmpcert);
+                goto done;
+            }
+            tmpcert = NULL; /* owned by x509Data now */
+        }
     } /* end for loop */
 
-    if (data == NULL) {
+    if (keyValueData == NULL) {
         /* private key not found in PKCS12 file */
         xmlSecInternalError("xmlSecNssAppPkcs12Load(private key)", NULL);
         goto done;
      }
 
+    /* create key and set key value and x509 data into it */
     key = xmlSecKeyCreate();
     if(key == NULL) {
         xmlSecInternalError("xmlSecKeyCreate", NULL);
         goto done;
     }
 
-    ret = xmlSecKeySetValue(key, data);
+    ret = xmlSecKeySetValue(key, keyValueData);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecKeySetValue",
-                            xmlSecKeyDataGetName(x509Data));
+        xmlSecInternalError("xmlSecKeySetValue", NULL);
         xmlSecKeyDestroy(key);
         key = NULL;
         goto done;
     }
-    data = NULL;
+    keyValueData = NULL; /* owned by key now */
 
     ret = xmlSecKeyAdoptData(key, x509Data);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecKeyAdoptData",
-                            xmlSecKeyDataGetName(x509Data));
+        xmlSecInternalError("xmlSecKeyAdoptData", NULL);
         xmlSecKeyDestroy(key);
         key = NULL;
         goto done;
     }
-    x509Data = NULL;
+    x509Data = NULL; /* owned by key now */
 
 done:
     if (p12ctx) {
@@ -968,8 +943,8 @@ done:
     if(x509Data != NULL) {
         xmlSecKeyDataDestroy(x509Data);
     }
-    if(data != NULL) {
-        xmlSecKeyDataDestroy(data);
+    if(keyValueData != NULL) {
+        xmlSecKeyDataDestroy(keyValueData);
     }
     if (privkey) {
         SECKEY_DestroyPrivateKey(privkey);
@@ -996,7 +971,6 @@ xmlSecNssAppKeyFromCertLoadSECItem(SECItem* secItem, xmlSecKeyDataFormat format)
     xmlSecKeyDataPtr keyData = NULL;
     xmlSecKeyDataPtr certData;
     CERTCertificate *cert = NULL;
-    CERTCertificate *keyCert = NULL;
     int ret;
     xmlSecKeyPtr res = NULL;
 
@@ -1027,21 +1001,12 @@ xmlSecNssAppKeyFromCertLoadSECItem(SECItem* secItem, xmlSecKeyDataFormat format)
         goto done;
     }
 
-    /* create key */
+    /* create key set key value */
     key = xmlSecKeyCreate();
     if(key == NULL) {
         xmlSecInternalError("xmlSecKeyCreate", NULL);
         goto done;
     }
-
-    /* make a copy for key cert */
-    keyCert = CERT_DupCertificate(cert);
-    if(keyCert == NULL) {
-        xmlSecNssError("CERT_DupCertificate", NULL);
-        goto done;
-    }
-
-    /* set key value */
     ret = xmlSecKeySetValue(key, keyData);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeySetValue", NULL);
@@ -1049,32 +1014,22 @@ xmlSecNssAppKeyFromCertLoadSECItem(SECItem* secItem, xmlSecKeyDataFormat format)
     }
     keyData = NULL; /* owned by key now */
 
-    /* create cert data */
+    /* create cert data put key's cert into it */
     certData = xmlSecKeyEnsureData(key, xmlSecNssKeyDataX509Id);
     if(certData == NULL) {
         xmlSecInternalError("xmlSecKeyEnsureData", NULL);
         goto done;
     }
-
-    /* put cert and key cert in the cert data */
-    ret = xmlSecNssKeyDataX509AdoptCert(certData, cert);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecNssKeyDataX509AdoptCert", NULL);
-        goto done;
-    }
-    cert = NULL; /* owned by data now */
-
-    ret = xmlSecNssKeyDataX509AdoptKeyCert(certData, keyCert);
+    ret = xmlSecNssKeyDataX509AdoptKeyCert(certData, cert);
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssKeyDataX509AdoptKeyCert", NULL);
         goto done;
     }
-    keyCert = NULL; /* owned by data now */
+    cert = NULL; /* owned by data now */
 
     /* success */
     res = key;
     key = NULL;
-
 
 done:
     if(key != NULL) {
@@ -1086,10 +1041,6 @@ done:
     if(cert != NULL) {
         CERT_DestroyCertificate(cert);
     }
-    if(keyCert != NULL) {
-        CERT_DestroyCertificate(keyCert);
-    }
-
     return(res);
 }
 

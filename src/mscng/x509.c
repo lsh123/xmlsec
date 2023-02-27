@@ -385,14 +385,15 @@ xmlSecMSCnVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data, xml
             CertFreeCertificateContext(certCopy);
             return(-1);
         }
-    } else if((keyInfoCtx->keyReq.keyType & xmlSecKeyDataTypePublic) != 0) {
+    } else {
+        /* assume we want a public key (if we don't want private) */
         keyValue = xmlSecMSCngCertAdopt(certCopy, xmlSecKeyDataTypePublic);
         if(keyValue == NULL) {
             xmlSecInternalError("xmlSecMSCngCertAdopt", xmlSecKeyDataGetName(data));
             CertFreeCertificateContext(certCopy);
             return(-1);
         }
-    }
+    } 
     certCopy = NULL; /* owned by key value now */
 
     /* verify that keyValue matches the key requirements */

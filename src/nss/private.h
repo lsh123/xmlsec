@@ -78,10 +78,12 @@ XMLSEC_CRYPTO_EXPORT void       xmlSecNssX509FindCertCtxFinalize            (xml
 XMLSEC_CRYPTO_EXPORT int        xmlSecNssX509FindCertCtxMatch               (xmlSecNssX509FindCertCtxPtr ctx,
                                                                              CERTCertificate* cert);
 
+XMLSEC_CRYPTO_EXPORT CERTCertificate * xmlSecNssX509StoreFindCertByValue    (xmlSecKeyDataStorePtr store,
+                                                                             xmlSecKeyX509DataValuePtr x509Value);
 XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecNssX509FindKeyByValue               (xmlSecPtrListPtr keysList,
                                                                              xmlSecKeyX509DataValuePtr x509Value);
 
-XMLSEC_CRYPTO_EXPORT SECOidTag  xmlSecNssX509GetDigestFromAlgorithm   (const xmlChar* href);
+XMLSEC_CRYPTO_EXPORT SECOidTag  xmlSecNssX509GetDigestFromAlgorithm         (const xmlChar* href);
 
 #endif /* XMLSEC_NO_X509 */
 

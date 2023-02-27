@@ -9,7 +9,7 @@ XML Security Library example: Simple signature template file for sign1 example.
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
-      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
+      <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha224"/>
       <Reference URI="">
         <Transforms>
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
@@ -17,14 +17,14 @@ XML Security Library example: Simple signature template file for sign1 example.
             <XPath xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">not(ancestor-or-self::dsig:Signature)</XPath>
             </Transform>
         </Transforms>
-        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+        <DigestMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#sha224"/>
         <DigestValue></DigestValue>
       </Reference>
     </SignedInfo>
     <SignatureValue/>
     <KeyInfo>
       <X509Data>
-        <X509Digest xmlns="http://www.w3.org/2009/xmldsig11#" Algorithm="http://www.w3.org/2000/09/xmldsig#sha1">ORYBjGgEUJDgXATNaSRvdaq1QTE=</X509Digest>
+        <X509Digest xmlns="http://www.w3.org/2009/xmldsig11#" Algorithm="http://www.w3.org/2001/04/xmldsig-more#sha224">On8cOcvXKGKg4B/bVMlEJi6IqN/lIQ6zsdyZdA==</X509Digest>
       </X509Data>
     </KeyInfo>
   </Signature>

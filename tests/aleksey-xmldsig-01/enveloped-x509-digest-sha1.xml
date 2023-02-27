@@ -9,7 +9,7 @@ XML Security Library example: Simple signature template file for sign1 example.
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
-      <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/>
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
       <Reference URI="">
         <Transforms>
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
@@ -17,26 +17,25 @@ XML Security Library example: Simple signature template file for sign1 example.
             <XPath xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">not(ancestor-or-self::dsig:Signature)</XPath>
             </Transform>
         </Transforms>
-        <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/>
-        <DigestValue>j12SN+LRqX4RricEwl5iEpjyand0nCMO8T5dNYR5P661F2ZrUS5wSbyMdu826KrG
-IQbvvjmkI+9+QmCrcJyXXA==</DigestValue>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+        <DigestValue>9H/rQr2Axe9hYTV2n/tCp+3UIQQ=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>QbjtLPebTPTRhWyuYOKDUkAvSW3cs5RLUbRslB3w+tVuG5rKhnZNAIvxYeHY8dMP
-M5cXQm1WjPjZUzwDuINTv2YnOp+XVuo6vmjMb/ZsbPbDQYWkbgoXOFTdwJuLtZD8
-J2cgD0Bry1efcz9y9xZXgTpUeNKA9Q0qLRCpjYqdfsU7kaykPY4Ay/i2RgS8+o21
-CV3IL23pJ4LYyWud9pbMBlwW/QrFA2tlzxO9HmEUKt+08UZcUeSOJnX2QUFkEbEK
-mcXa/a6V1If23cAhlRgv0H9kQeacQFzoVz8TpH6pMEvOBFa8qdCZluyp+5Gn8vhW
-KPETPD1ehLVR59/iVX4Iy52H3NYYqrBfbo46X1iO7yQWwaGaGrLQE2oeAkvcJpwz
-HOzozGTREHU6+khljU/rYGh0eoFR0AsnduKUMEGWhCNsr0MriV79Ry7t2ZOog6yR
-m62yv9svROxLwKgSXzeGi6fua3BrYhk92MrUJ5ne/iAKQEfBq9Rst/hR6/BngS1P
-8PhCz+GMmVG4hKrc6fMg0Ij0+/z6kxNltNvtKfTrUa1QLm79BpDDFbnCK4u9sJ34
-zGuJq3WTQEnNrHK9hty+XlAFyhhWL+w56HArfiTNIu+GhdmC68lkRVvrNjZgriOo
-umqAUODuLEH0ZtB2hiDQwWnM9SP/A7IOOSET1qvHe0Q=</SignatureValue>
+    <SignatureValue>LqopLuWiVnEfLr6lOOht2YVtNI2Kb4xaKeP83lAmVPIweEgv1bMv7vkQ4jY2wmNo
+tdinEOmUJFKKpknWrvfr1Qi3MTtUhGNK7FJ1sxsr2JuiQIJE/y7ww1jhbdN9qocD
+m4iHmHtUbP2s7YmX4imz/k1CLxE1ekbPVn9dwHULdWNaSKh8+50MdZEBwuFcxPQC
+dsBjrad4wxDFIcWXX7RoqsvpvFaspVyG9b71VlVe6Zh8538fTB0X4Y5amG+00CCJ
+TYQ3V+0deXcbf2E8iy7o3jI1EZal+Yv3BkC2GquXJhgl18++8YHThADTMdEejjYT
+dNnhlW1+qpCbtfoP9zH8O2vXp6q45Fkg7qhyK4RRzqzuneK7AuUR7emqidfRLHWN
+iqXXUeU9/oLjObQmooQTuFtMT5dfryuzhnTE9gZjFoGDgd4tcJ/Q11uq6zn1LChb
+TLMC6d50GwpJeIKvH5wPsCLLUA60VNntuX5mQnfwGVN5wqB1q3zRqCuJmD2DC/Hx
+mnvQIQ36KjHylO+5hSIihFJLsYihNme/hTRMfcB2Nr/TNx2EOcueidkTGGLLCUja
+NSR09EFiD62uJgmJ5MBCRwk2Ye6lv6xTE53d8yLDbnidLv8eSnFCju9ZMCXC3Xmu
+AH5JiIha7aLX+bms/fsHiHZzGTiRJvNOjzrgqpzSQ7M=</SignatureValue>
     <KeyInfo>
       <X509Data>
-          <dsig11:X509Digest xmlns:dsig11="http://www.w3.org/2009/xmldsig11#" Algorithm="http://www.w3.org/2000/09/xmldsig#sha1">1nwNaOvFfnwFCD7HCO1HFjrzgSc=
-</dsig11:X509Digest>
+        <X509Digest xmlns="http://www.w3.org/2009/xmldsig11#" Algorithm="http://www.w3.org/2000/09/xmldsig#sha1">1nwNaOvFfnwFCD7HCO1HFjrzgSc=
+</X509Digest>
 <X509Digest xmlns="http://www.w3.org/2009/xmldsig11#" Algorithm="http://www.w3.org/2000/09/xmldsig#sha1">pzXVn5GWMr0L6WwkGXlc/1VEHts=
 </X509Digest>
 <X509Digest xmlns="http://www.w3.org/2009/xmldsig11#" Algorithm="http://www.w3.org/2000/09/xmldsig#sha1">ORYBjGgEUJDgXATNaSRvdaq1QTE=

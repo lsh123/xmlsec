@@ -735,10 +735,8 @@ xmlSecNssKeyDataX509DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
 static int
 xmlSecNssKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x509Value,
                          xmlSecKeysMngrPtr keysMngr, unsigned int flags) {
-    xmlSecKeyDataStorePtr x509Store;
     CERTCertificate* cert = NULL;
     CERTSignedCrl* crl = NULL;
-    int stopOnUnknownCert = 0;
     int ret;
     int res = -1;
 
@@ -747,17 +745,7 @@ xmlSecNssKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x509Va
     xmlSecAssert2(x509Value != NULL, -1);
     xmlSecAssert2(keysMngr != NULL, -1);
 
-    x509Store = xmlSecKeysMngrGetDataStore(keysMngr, xmlSecNssX509StoreId);
-    if(x509Store == NULL) {
-        xmlSecInternalError("xmlSecKeysMngrGetDataStore", xmlSecKeyDataGetName(data));
-        goto done;
-    }
-
-    /* determine what to do */
-    if((flags & XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CERT) != 0) {
-        stopOnUnknownCert = 1;
-    }
-
+    /* read CRT or CRL */
     if(xmlSecBufferGetSize(&(x509Value->cert)) > 0) {
         cert = xmlSecNssX509CertDerRead(xmlSecBufferGetData(&(x509Value->cert)),
             xmlSecBufferGetSize(&(x509Value->cert)));
@@ -765,39 +753,35 @@ xmlSecNssKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x509Va
             xmlSecInternalError("xmlSecNssX509CertDerRead", xmlSecKeyDataGetName(data));
             goto done;
         }
-    } else if(xmlSecBufferGetSize(&(x509Value->crl)) > 0) {
+    }
+    if(xmlSecBufferGetSize(&(x509Value->crl)) > 0) {
         crl = xmlSecNssX509CrlDerRead(xmlSecBufferGetData(&(x509Value->crl)),
             xmlSecBufferGetSize(&(x509Value->crl)), flags);
         if(crl == NULL) {
             xmlSecInternalError("xmlSecNssX509CertDerRead", xmlSecKeyDataGetName(data));
             goto done;
         }
-    } else if(xmlSecBufferGetSize(&(x509Value->ski)) > 0) {
-        cert = xmlSecNssX509StoreFindCert_ex(x509Store, NULL,  NULL, NULL,
-            xmlSecBufferGetData(&(x509Value->ski)), xmlSecBufferGetSize(&(x509Value->ski)),
-            NULL /* unused */);
-        if((cert == NULL) && (stopOnUnknownCert != 0)) {
-            xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_NOT_FOUND, xmlSecKeyDataGetName(data),
-                "skiSize=" XMLSEC_SIZE_FMT, xmlSecBufferGetSize(&(x509Value->ski)));
+    }
+
+    /* if there is no cert in the X509Data node then try to find one */
+    if(cert == NULL) {
+        xmlSecKeyDataStorePtr x509Store;
+        int stopOnUnknownCert = 0;
+
+
+        x509Store = xmlSecKeysMngrGetDataStore(keysMngr, xmlSecNssX509StoreId);
+        if(x509Store == NULL) {
+            xmlSecInternalError("xmlSecKeysMngrGetDataStore", xmlSecKeyDataGetName(data));
             goto done;
         }
-    } else if(x509Value->subject != NULL) {
-        cert = xmlSecNssX509StoreFindCert_ex(x509Store, x509Value->subject,
-            NULL, NULL, NULL, 0, NULL /* unused */);
-        if((cert == NULL) && (stopOnUnknownCert != 0)) {
-            xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_NOT_FOUND, xmlSecKeyDataGetName(data),
-                "subject=%s", xmlSecErrorsSafeString(x509Value->subject));
-            goto done;
+
+        /* determine what to do */
+        if((flags & XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CERT) != 0) {
+            stopOnUnknownCert = 1;
         }
-    } else if((x509Value->issuerName != NULL) && (x509Value->issuerSerial != NULL)) {
-        cert = xmlSecNssX509StoreFindCert_ex(x509Store, NULL,
-            x509Value->issuerName, x509Value->issuerSerial,
-            NULL, 0, NULL /* unused */);
+        cert = xmlSecNssX509StoreFindCertByValue(x509Store, x509Value);
         if((cert == NULL) && (stopOnUnknownCert != 0)) {
-            xmlSecOtherError3(XMLSEC_ERRORS_R_CERT_NOT_FOUND, xmlSecKeyDataGetName(data),
-                "issuerName=%s;issuerSerial=%s",
-                xmlSecErrorsSafeString(x509Value->issuerName),
-                xmlSecErrorsSafeString(x509Value->issuerSerial));
+            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_NOT_FOUND, xmlSecKeyDataGetName(data), "cert lookup");
             goto done;
         }
     }

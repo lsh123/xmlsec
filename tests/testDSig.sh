@@ -490,7 +490,9 @@ if [ "z$crypto" = "zopenssl" -o "z$crypto" = "znss" -o "z$crypto" = "zgnutls" -o
         "aleksey-xmldsig-01/enveloped-x509-digest-sha1" \
         "sha512 rsa-sha512" \
         "rsa x509" \
-        "--untrusted-$cert_format $topfolder/keys/largersacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" 
+        "--untrusted-$cert_format $topfolder/keys/largersacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+        "--lax-key-search $priv_key_option $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+        "--untrusted-$cert_format $topfolder/keys/largersacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 fi
 
 execDSigTest $res_success \

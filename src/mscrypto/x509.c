@@ -864,6 +864,15 @@ xmlSecMSCryptoKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr 
                 return(-1);
             }
         }
+        if (((content & XMLSEC_X509DATA_DIGEST_NODE) != 0) && (x509Value->digestAlgorithm != NULL)) {
+            ret = xmlSecMSCngX509DigestWrite(cert, x509Value->digestAlgorithm, &(x509Value->digest));
+            if (ret < 0) {
+                xmlSecInternalError2("xmlSecMSCngX509DigestWrite",
+                    xmlSecKeyDataGetName(data),
+                    "pos=" XMLSEC_SIZE_FMT, ctx->crtPos);
+                return(-1);
+            }
+        }
         ++ctx->crtPos;
     }
     else if (ctx->crlPos < ctx->crlSize) {
@@ -1181,6 +1190,45 @@ xmlSecMSCryptoX509SKIWrite(PCCERT_CONTEXT cert, xmlSecBufferPtr buf) {
             "size=%lu", dwSize);
         return(-1);
     }
+    return(0);
+}
+
+
+#define XMLSEC_MSCNG_SHA1_DIGEST_SIZE 20
+
+static int
+xmlSecMSCngX509DigestWrite(X509* cert, const xmlChar* algorithm, xmlSecBufferPtr buf) {
+    xmlSecByte md[XMLSEC_MSCNG_SHA1_DIGEST_SIZE];
+    DWORD mdLen = sizeof(md);
+    BOOL status;
+    int ret;
+
+    xmlSecAssert2(cert != NULL, -1);
+    xmlSecAssert2(buf != NULL, -1);
+
+    /* only SHA1 algorithm is currently supported */
+    if (xmlStrcmpalgorithm, xmlSecHrefSha1) != 0) {
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
+            "href=%s", xmlSecErrorsSafeString(algorithm));
+        return(-1);
+    }
+
+    status = CertGetCertificateContextProperty(cert,
+        CERT_SHA1_HASH_PROP_ID,
+        md,
+        &mdLen);
+    if ((!status) || (mdLen != sizeof(md))) {
+        xmlSecMSCngLastError("CertGetCertificateContextProperty", NULL);
+        return(-1);
+    }
+
+    ret = xmlSecBufferSetData(buf, md, mdLen);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecBufferSetData", NULL);
+        return(-1);
+    }
+
+    /* success */
     return(0);
 }
 

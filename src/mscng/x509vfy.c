@@ -34,6 +34,7 @@
 #include <xmlsec/mscng/x509.h>
 
 #include "../cast_helpers.h"
+#include "private.h"
 
 typedef struct _xmlSecMSCngX509StoreCtx xmlSecMSCngX509StoreCtx,
                                        *xmlSecMSCngX509StoreCtxPtr;
@@ -47,9 +48,6 @@ struct _xmlSecMSCngX509StoreCtx {
 XMLSEC_KEY_DATA_STORE_DECLARE(MSCngX509Store, xmlSecMSCngX509StoreCtx)
 #define xmlSecMSCngX509StoreSize XMLSEC_KEY_DATA_STORE_SIZE(MSCngX509Store)
 
-static PCCERT_CONTEXT xmlSecMSCngX509FindCertByIssuerNameAndSerial        (HCERTSTORE store,
-                                                                           const xmlChar* issuerName,
-                                                                           const xmlChar* issuerSerial);
 
 static void
 xmlSecMSCngX509StoreFinalize(xmlSecKeyDataStorePtr store) {
@@ -870,51 +868,20 @@ xmlSecMSCngCertStrToName(DWORD dwCertEncodingType, LPTSTR pszX500, DWORD dwStrTy
 }
 
 static PCCERT_CONTEXT
-xmlSecMSCngX509FindCertByIssuerNameAndSerial(HCERTSTORE store, const xmlChar* issuerName, const xmlChar* issuerSerial) {
+xmlSecMSCngX509FindCertByIssuerNameAndSerial(HCERTSTORE store, LPTSTR wcIssuerName, xmlSecBnPtr issuerSerialBn, DWORD dwCertEncodingType) {
     PCCERT_CONTEXT res = NULL;
-    xmlSecBn issuerSerialBn;
-    int issuerSerialBnInitialized = 0;
-    LPTSTR wcIssuerName = NULL;
-    DWORD dwCertEncodingType = X509_ASN_ENCODING | PKCS_7_ASN_ENCODING;
     CERT_INFO certInfo;
     BYTE* bdata = NULL;
     xmlSecSize issuerSerialSize;
     DWORD len;
-    int ret;
 
     xmlSecAssert2(store != 0, NULL);
-    xmlSecAssert2(issuerName != NULL, NULL);
-    xmlSecAssert2(issuerSerial != NULL, NULL);
+    xmlSecAssert2(wcIssuerName != NULL, NULL);
+    xmlSecAssert2(issuerSerialBn != NULL, NULL);
 
-    ret = xmlSecBnInitialize(&issuerSerialBn, 0);
-    if (ret < 0) {
-        xmlSecInternalError("xmlSecBnInitialize", NULL);
-        goto done;
-    }
-    issuerSerialBnInitialized = 1;
-
-    ret = xmlSecBnFromDecString(&issuerSerialBn, issuerSerial);
-    if (ret < 0) {
-        xmlSecInternalError("xmlSecBnFromDecString", NULL);
-        goto done;
-    }
-
-    /* MS Windows wants this in the opposite order */
-    ret = xmlSecBnReverse(&issuerSerialBn);
-    if (ret < 0) {
-        xmlSecInternalError("xmlSecBnReverse", NULL);
-        goto done;
-    }
-
-    certInfo.SerialNumber.pbData = xmlSecBnGetData(&issuerSerialBn);
-    issuerSerialSize  = xmlSecBnGetSize(&issuerSerialBn);
-    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(issuerSerialSize, certInfo.SerialNumber.cbData, goto done, NULL);
-
-    wcIssuerName = xmlSecMSCngX509GetCertName(issuerName);
-    if (wcIssuerName == NULL) {
-        xmlSecInternalError("xmlSecMSCngX509GetCertName", NULL);
-        goto done;
-    }
+    certInfo.SerialNumber.pbData = xmlSecBnGetData(issuerSerialBn);
+    issuerSerialSize  = xmlSecBnGetSize(issuerSerialBn);
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(issuerSerialSize, certInfo.SerialNumber.cbData, return(NULL), NULL);
 
     /* CASE 1: UTF8, DN */
     if (NULL == res) {
@@ -1000,66 +967,73 @@ xmlSecMSCngX509FindCertByIssuerNameAndSerial(HCERTSTORE store, const xmlChar* is
         }
     }
 
-done:
     if (bdata != NULL) {
         xmlFree(bdata);
-    }
-    if (wcIssuerName != NULL) {
-        xmlFree(wcIssuerName);
-    }
-    if (issuerSerialBnInitialized) {
-        xmlSecBnFinalize(&issuerSerialBn);
     }
     return(res);
 }
 
 static PCCERT_CONTEXT
-xmlSecMSCngX509FindCertBySki(HCERTSTORE store, xmlSecByte* ski, xmlSecSize skiSize) {
+xmlSecMSCngX509FindCertBySki(HCERTSTORE store, const xmlSecByte* ski, DWORD skiLen, DWORD dwCertEncodingType) {
     CRYPT_HASH_BLOB blob;
 
     xmlSecAssert2(store != 0, NULL);
     xmlSecAssert2(ski != NULL, NULL);
-    xmlSecAssert2(skiSize > 0, NULL);
+    xmlSecAssert2(skiLen > 0, NULL);
 
-    blob.pbData = ski;
-    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(skiSize, blob.cbData, return(NULL), NULL);
+    blob.pbData = (PBYTE)ski; /* remove const */
+    blob.cbData = skiLen;
 
     return(CertFindCertificateInStore(store,
-        PKCS_7_ASN_ENCODING | X509_ASN_ENCODING,
+        dwCertEncodingType,
         0,
         CERT_FIND_KEY_IDENTIFIER,
         &blob,
         NULL));
 }
 
+/* ONLY SHA1 DIGEST IS CURRENTLY SUPPORTED */
 static PCCERT_CONTEXT
-xmlSecMSCngX509FindCert(HCERTSTORE store, xmlChar* subjectName,
-                        xmlChar* issuerName, xmlChar* issuerSerial,
-                        xmlSecByte* ski, xmlSecSize skiSize) {
+xmlSecMSCngX509FindCertByDigest(HCERTSTORE store, const xmlSecByte* digest, DWORD digestLen, DWORD dwCertEncodingType) {
+    CRYPT_HASH_BLOB blob;
+
+    xmlSecAssert2(store != 0, NULL);
+    xmlSecAssert2(digest != NULL, NULL);
+    xmlSecAssert2(digestLen > 0, NULL);
+
+    blob.pbData = (PBYTE)digest; /* remove const */
+    blob.cbData = digestLen;
+
+    return(CertFindCertificateInStore(store,
+        dwCertEncodingType,
+        0,
+        CERT_FIND_SHA1_HASH,
+        &blob,
+        NULL));
+}
+
+PCCERT_CONTEXT
+xmlSecMSCngX509FindCert(HCERTSTORE store, xmlSecMSCngX509FindCertCtxPtr findCertCtx) {
+    DWORD dwCertEncodingType = X509_ASN_ENCODING | PKCS_7_ASN_ENCODING;
     PCCERT_CONTEXT cert = NULL;
 
     xmlSecAssert2(store != 0, NULL);
+    xmlSecAssert2(findCertCtx != 0, NULL);
 
-    if(subjectName != NULL) {
-        LPTSTR wcSubjectName;
 
-        wcSubjectName = xmlSecMSCngX509GetCertName(subjectName);
-        if(wcSubjectName == NULL) {
-            xmlSecInternalError("xmlSecMSCngX509GetCertName", NULL);
-            return(NULL);
-        }
-
-        cert = xmlSecMSCngX509FindCertBySubject(store, wcSubjectName,
-            PKCS_7_ASN_ENCODING | X509_ASN_ENCODING);
-        xmlFree(wcSubjectName);
+    if((cert == NULL) && (findCertCtx->wcSubjectName != NULL)) {
+        cert = xmlSecMSCngX509FindCertBySubject(store, findCertCtx->wcSubjectName, dwCertEncodingType);
     }
 
-    if(issuerName != NULL && issuerSerial != NULL) {
-        cert = xmlSecMSCngX509FindCertByIssuerNameAndSerial(store, issuerName, issuerSerial);
+    if((cert == NULL) && (findCertCtx->wcIssuerName != NULL) && (findCertCtx->issuerSerialBn != NULL)) {
+        cert = xmlSecMSCngX509FindCertByIssuerNameAndSerial(store, findCertCtx->wcIssuerName, findCertCtx->issuerSerialBn, dwCertEncodingType);
     }
 
-    if((ski != NULL) && (skiSize > 0)) {
-        cert = xmlSecMSCngX509FindCertBySki(store, ski, skiSize);
+    if((cert == NULL) &&  (findCertCtx->ski != NULL) && (findCertCtx->skiLen > 0)) {
+        cert = xmlSecMSCngX509FindCertBySki(store, findCertCtx->ski, findCertCtx->skiLen, dwCertEncodingType);
+    }
+    if ((cert == NULL) && (findCertCtx->digestValue != NULL) && (findCertCtx->digestLen > 0)) {
+        cert = xmlSecMSCngX509FindCertByDigest(store, findCertCtx->digestValue, findCertCtx->digestLen, dwCertEncodingType);
     }
 
     return(cert);
@@ -1124,8 +1098,10 @@ xmlSecMSCngX509StoreFindCert_ex(xmlSecKeyDataStorePtr store, xmlChar* subjectNam
                                 xmlChar* issuerName, xmlChar* issuerSerial,
                                 xmlSecByte* ski, xmlSecSize skiSize,
                                 xmlSecKeyInfoCtx* keyInfoCtx ATTRIBUTE_UNUSED) {
+    xmlSecMSCngX509FindCertCtx findCertCtx;
     xmlSecMSCngX509StoreCtxPtr ctx;
     PCCERT_CONTEXT cert = NULL;
+    int ret;
 
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecMSCngX509StoreId), NULL);
     UNREFERENCED_PARAMETER(keyInfoCtx);
@@ -1133,19 +1109,65 @@ xmlSecMSCngX509StoreFindCert_ex(xmlSecKeyDataStorePtr store, xmlChar* subjectNam
     ctx = xmlSecMSCngX509StoreGetCtx(store);
     xmlSecAssert2(ctx != NULL, NULL);
 
+    ret = xmlSecMSCngX509FindCertCtxInitialize(&findCertCtx,
+        subjectName,
+        issuerName, issuerSerial,
+        ski, skiSize);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecMSCngX509FindCertCtxInitialize", NULL);
+        xmlSecMSCngX509FindCertCtxFinalize(&findCertCtx);
+        return(NULL);
+    }
+
     /* search untrusted certs store */
-    if (ctx->untrusted != NULL) {
-        cert = xmlSecMSCngX509FindCert(ctx->untrusted, subjectName,
-            issuerName, issuerSerial, ski, skiSize);
+    if ((cert == NULL) && (ctx->untrusted != NULL)) {
+        cert = xmlSecMSCngX509FindCert(ctx->untrusted, &findCertCtx);
     }
 
     /* search trusted certs store */
-    if (cert == NULL && ctx->trusted != NULL) {
-        cert = xmlSecMSCngX509FindCert(ctx->trusted, subjectName,
-            issuerName, issuerSerial, ski, skiSize);
+    if ((cert == NULL) && (ctx->trusted != NULL)) {
+        cert = xmlSecMSCngX509FindCert(ctx->trusted, &findCertCtx);
     }
 
+    /* done */
+    xmlSecMSCngX509FindCertCtxFinalize(&findCertCtx);
     return(cert);
+}
+
+PCCERT_CONTEXT
+xmlSecMSCngX509StoreFindCertByValue(xmlSecKeyDataStorePtr store, xmlSecKeyX509DataValuePtr x509Value) {
+    xmlSecMSCngX509FindCertCtx findCertCtx;
+    xmlSecMSCngX509StoreCtxPtr ctx;
+    PCCERT_CONTEXT cert = NULL;
+    int ret;
+
+    xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecMSCngX509StoreId), NULL);
+    xmlSecAssert2(x509Value != NULL, NULL);
+
+    ctx = xmlSecMSCngX509StoreGetCtx(store);
+    xmlSecAssert2(ctx != NULL, NULL);
+
+    ret = xmlSecMSCngX509FindCertCtxInitializeFromValue(&findCertCtx, x509Value);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecMSCngX509FindCertCtxInitializeFromValue", NULL);
+        xmlSecMSCngX509FindCertCtxFinalize(&findCertCtx);
+        return(NULL);
+    }
+
+    /* search untrusted certs store */
+    if ((cert == NULL) && (ctx->untrusted != NULL)) {
+        cert = xmlSecMSCngX509FindCert(ctx->untrusted, &findCertCtx);
+    }
+
+    /* search trusted certs store */
+    if ((cert == NULL) && (ctx->trusted != NULL)) {
+        cert = xmlSecMSCngX509FindCert(ctx->trusted, &findCertCtx);
+    }
+
+    /* done */
+    xmlSecMSCngX509FindCertCtxFinalize(&findCertCtx);
+    return(cert);
+
 }
 
 /**
@@ -1250,6 +1272,123 @@ xmlSecMSCngX509FindCertBySubject(HCERTSTORE store, LPTSTR wcSubject,
     }
 
     return(res);
+}
+
+
+/******************************************************************************
+ *
+ * xmlSecMSCngX509FindCert functions
+ *
+ ******************************************************************************/
+int
+xmlSecMSCngX509FindCertCtxInitialize(xmlSecMSCngX509FindCertCtxPtr ctx,
+    const xmlChar* subjectName,
+    const xmlChar* issuerName, const xmlChar* issuerSerial,
+    const xmlSecByte* ski, xmlSecSize skiSize
+) {
+    int ret;
+    xmlSecAssert2(ctx != NULL, -1);
+
+    memset(ctx, 0, sizeof(*ctx));
+
+    /* simplest one first */
+    if ((ski != NULL) && (skiSize > 0)) {
+        ctx->ski = ski;
+        XMLSEC_SAFE_CAST_SIZE_TO_UINT(skiSize, ctx->skiLen, return(-1), NULL);
+    }
+
+    if (subjectName != NULL) {
+        ctx->wcSubjectName = xmlSecMSCngX509GetCertName(subjectName);
+        if (ctx->wcSubjectName == NULL) {
+            xmlSecInternalError("xmlSecMSCngX509GetCertName(subject)", NULL);
+            xmlSecMSCngX509FindCertCtxFinalize(ctx);
+            return(-1);
+        }
+    }
+
+    if ((issuerName != NULL) && (issuerSerial != NULL)) {
+        ctx->wcIssuerName = xmlSecMSCngX509GetCertName(issuerName);
+        if (ctx->wcIssuerName == NULL) {
+            xmlSecInternalError("xmlSecMSCngX509GetCertName(issuer)", NULL);
+            xmlSecMSCngX509FindCertCtxFinalize(ctx);
+            return(-1);
+        }
+
+        ctx->issuerSerialBn = xmlSecBnCreate(0);
+        if (ctx->issuerSerialBn == NULL) {
+            xmlSecInternalError("xmlSecBnCreate(issuerSerial)", NULL);
+            xmlSecMSCngX509FindCertCtxFinalize(ctx);
+            return(-1);
+        }
+        ret = xmlSecBnFromDecString(ctx->issuerSerialBn, issuerSerial);
+        if (ret < 0) {
+            xmlSecInternalError("xmlSecBnFromDecString(issuerSerial)", NULL);
+            xmlSecMSCngX509FindCertCtxFinalize(ctx);
+            return(-1);
+        }
+        /* MS Windows wants this in the opposite order */
+        ret = xmlSecBnReverse(ctx->issuerSerialBn);
+        if (ret < 0) {
+            xmlSecInternalError("xmlSecBnReverse", NULL);
+            xmlSecMSCngX509FindCertCtxFinalize(ctx);
+            return(-1);
+        }
+    }
+
+    /* done! */
+    return(0);
+}
+
+int
+xmlSecMSCngX509FindCertCtxInitializeFromValue(xmlSecMSCngX509FindCertCtxPtr ctx, xmlSecKeyX509DataValuePtr x509Value) {
+    int ret;
+
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(x509Value != NULL, -1);
+
+    ret = xmlSecMSCngX509FindCertCtxInitialize(ctx,
+        x509Value->subject,
+        x509Value->issuerName, x509Value->issuerSerial,
+        xmlSecBufferGetData(&(x509Value->ski)), xmlSecBufferGetSize(&(x509Value->ski))
+    );
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecMSCngX509FindCertCtxInitialize", NULL);
+        xmlSecMSCngX509FindCertCtxFinalize(ctx);
+        return(-1);
+    }
+
+    if ((!xmlSecBufferIsEmpty(&(x509Value->digest))) && (x509Value->digestAlgorithm != NULL)) {
+        xmlSecSize digestSize;
+
+        /* only SHA1 algorithm is currently supported */
+        if (xmlStrcmp(x509Value->digestAlgorithm, xmlSecHrefSha1) != 0) {
+            xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
+                "href=%s", xmlSecErrorsSafeString(x509Value->digestAlgorithm));
+            xmlSecMSCngX509FindCertCtxFinalize(ctx);
+            return(-1);
+        }
+        ctx->digestValue = xmlSecBufferGetData(&(x509Value->digest));
+        digestSize = xmlSecBufferGetSize(&(x509Value->digest));
+        XMLSEC_SAFE_CAST_SIZE_TO_UINT(digestSize, ctx->digestLen, return(-1), NULL);
+    }
+
+    /* done */
+    return(0);
+}
+
+void xmlSecMSCngX509FindCertCtxFinalize(xmlSecMSCngX509FindCertCtxPtr ctx) {
+    xmlSecAssert(ctx != NULL);
+
+    if (ctx->wcSubjectName != NULL) {
+        xmlFree(ctx->wcSubjectName);
+    }
+    if (ctx->wcIssuerName != NULL) {
+        xmlFree(ctx->wcIssuerName);
+    }
+    if (ctx->issuerSerialBn != NULL) {
+        xmlSecBnDestroy(ctx->issuerSerialBn);
+    }
+    memset(ctx, 0, sizeof(*ctx));
 }
 
 #endif /* XMLSEC_NO_X509 */

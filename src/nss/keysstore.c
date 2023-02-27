@@ -346,6 +346,7 @@ xmlSecNssKeysStoreFindKeyFromX509Data(xmlSecKeyStorePtr store, xmlSecKeyX509Data
     xmlSecKeyPtr key, res;
 
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecNssKeysStoreId), NULL);
+    xmlSecAssert2(x509Data != NULL, NULL);
     xmlSecAssert2(keyInfoCtx != NULL, NULL);
 
     simplekeystore = xmlSecNssKeysStoreGetCtx(store);

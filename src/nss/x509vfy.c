@@ -181,11 +181,13 @@ xmlSecNssX509StoreFindCert_ex(xmlSecKeyDataStorePtr store, xmlChar *subjectName,
     CERTCertificate * cert;
     int ret;
 
+    xmlSecAssert2(store != NULL, NULL);
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecNssX509StoreId), NULL);
     UNREFERENCED_PARAMETER(keyInfoCtx);
 
     ctx = xmlSecNssX509StoreGetCtx(store);
     xmlSecAssert2(ctx != NULL, NULL);
+    xmlSecAssert2(ctx->certsList != NULL, NULL);
 
     ret = xmlSecNssX509FindCertCtxInitialize(&findCertCtx,
             subjectName,
@@ -204,6 +206,34 @@ xmlSecNssX509StoreFindCert_ex(xmlSecKeyDataStorePtr store, xmlChar *subjectName,
     return(cert);
 }
 
+CERTCertificate *
+xmlSecNssX509StoreFindCertByValue(xmlSecKeyDataStorePtr store, xmlSecKeyX509DataValuePtr x509Value) {
+    xmlSecNssX509StoreCtxPtr ctx;
+    xmlSecNssX509FindCertCtx findCertCtx;
+    CERTCertificate * cert;
+    int ret;
+
+    xmlSecAssert2(store != NULL, NULL);
+    xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecNssX509StoreId), NULL);
+    xmlSecAssert2(x509Value != NULL, NULL);
+
+    ctx = xmlSecNssX509StoreGetCtx(store);
+    xmlSecAssert2(ctx != NULL, NULL);
+    xmlSecAssert2(ctx->certsList != NULL, NULL);
+
+    ret = xmlSecNssX509FindCertCtxInitializeFromValue(&findCertCtx, x509Value);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecNssX509FindCertCtxInitializeFromValue", NULL);
+        xmlSecNssX509FindCertCtxFinalize(&findCertCtx);
+        return(NULL);
+    }
+
+    cert = xmlSecNssX509FindCert(ctx->certsList, &findCertCtx);
+
+    /* done */
+    xmlSecNssX509FindCertCtxFinalize(&findCertCtx);
+    return(cert);
+}
 
 /**
  * xmlSecNssX509StoreVerify:
@@ -483,7 +513,7 @@ xmlSecNssX509FindCert(CERTCertList* certsList, xmlSecNssX509FindCertCtxPtr findC
         ) {
             ret = xmlSecNssX509FindCertCtxMatch(findCertCtx, curCertNode->cert);
             if(ret < 0) {
-                xmlSecInternalError("xmlSecOpenSSLX509FindCertCtxMatch", NULL);
+                xmlSecInternalError("xmlSecNssX509FindCertCtxMatch", NULL);
                 return(NULL);
             } else if(ret == 1) {
                 cert = CERT_DupCertificate(curCertNode->cert);

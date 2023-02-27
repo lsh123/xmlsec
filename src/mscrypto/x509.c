@@ -810,7 +810,7 @@ xmlSecMSCryptoKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr 
                 "pos=" XMLSEC_SIZE_FMT, ctx->crtPos);
             return(-1);
         }
-        if ((content & XMLSEC_X509DATA_CERTIFICATE_NODE) != 0) {
+        if (XMLSEC_X509DATA_HAS_NODE(content, XMLSEC_X509DATA_CERTIFICATE_NODE)) {
             xmlSecAssert2(cert->pbCertEncoded != NULL, -1);
             xmlSecAssert2(cert->cbCertEncoded > 0, -1);
 
@@ -823,7 +823,7 @@ xmlSecMSCryptoKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr 
                 return(-1);
             }
         }
-        if ((content & XMLSEC_X509DATA_SKI_NODE) != 0) {
+        if (XMLSEC_X509DATA_HAS_NODE(content, XMLSEC_X509DATA_SKI_NODE)) {
             ret = xmlSecMSCryptoX509SKIWrite(cert, &(x509Value->ski));
             if (ret < 0) {
                 xmlSecInternalError2("xmlSecMSCryptoX509SKIWrite",
@@ -832,7 +832,7 @@ xmlSecMSCryptoKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr 
                 return(-1);
             }
         }
-        if ((content & XMLSEC_X509DATA_SUBJECTNAME_NODE) != 0) {
+        if (XMLSEC_X509DATA_HAS_NODE(content, XMLSEC_X509DATA_SUBJECTNAME_NODE)) {
             xmlSecAssert2(x509Value->subject == NULL, -1);
             xmlSecAssert2(cert->pCertInfo != NULL, -1);
 
@@ -844,7 +844,7 @@ xmlSecMSCryptoKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr 
                 return(-1);
             }
         }
-        if ((content & XMLSEC_X509DATA_ISSUERSERIAL_NODE) != 0) {
+        if (XMLSEC_X509DATA_HAS_NODE(content, XMLSEC_X509DATA_ISSUERSERIAL_NODE)) {
             xmlSecAssert2(x509Value->issuerName == NULL, -1);
             xmlSecAssert2(x509Value->issuerSerial == NULL, -1);
             xmlSecAssert2(cert->pCertInfo != NULL, -1);

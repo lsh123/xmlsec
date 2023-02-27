@@ -3231,7 +3231,8 @@ xmlSecOpenSSLKeyDataEcSetValue(xmlSecKeyDataPtr data, const xmlChar* curveOid, x
     }
     ret = EVP_PKEY_CTX_set_group_name(ctx, (const char*)curve_name);
     if(ret != 1) {
-        xmlSecOpenSSLError("EVP_PKEY_CTX_set_group_name", xmlSecKeyDataGetName(data));
+        xmlSecOpenSSLError2("EVP_PKEY_CTX_set_group_name", xmlSecKeyDataGetName(data),
+            "curve=%s", xmlSecErrorsSafeString(curve_name));
         goto done;
     }
 

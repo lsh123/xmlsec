@@ -640,7 +640,6 @@ xmlSecOpenSSLAppKeyCertLoadBIO(xmlSecKeyPtr key, BIO* bio, xmlSecKeyDataFormat f
     xmlSecKeyDataFormat certFormat;
     xmlSecKeyDataPtr data = NULL;
     X509 *cert = NULL;
-    X509 *keyCert = NULL;
     int ret;
     int res = -1;
 
@@ -660,38 +659,25 @@ xmlSecOpenSSLAppKeyCertLoadBIO(xmlSecKeyPtr key, BIO* bio, xmlSecKeyDataFormat f
         certFormat = format;
     }
 
-    /* read cert and make a copy for key cert */
+    /* read cert */
     cert = xmlSecOpenSSLAppCertLoadBIO(bio, certFormat);
     if(cert == NULL) {
         xmlSecInternalError("xmlSecOpenSSLAppCertLoad", NULL);
         goto done;
     }
-    keyCert = X509_dup(cert);
-    if(keyCert == NULL) {
-        xmlSecOpenSSLError("X509_dup", NULL);
-        goto done;
-    }
 
-    /* add both cert and key cert to the key */
+    /* add cert to data as the key cert */
     data = xmlSecKeyEnsureData(key, xmlSecOpenSSLKeyDataX509Id);
     if(data == NULL) {
         xmlSecInternalError("xmlSecKeyEnsureData", NULL);
         goto done;
     }
-
-    ret = xmlSecOpenSSLKeyDataX509AdoptCert(data, cert);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecOpenSSLKeyDataX509AdoptCert", NULL);
-        goto done;
-    }
-    cert = NULL; /* owned by data now */
-
-    ret = xmlSecOpenSSLKeyDataX509AdoptKeyCert(data, keyCert);
+    ret = xmlSecOpenSSLKeyDataX509AdoptKeyCert(data, cert);
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLKeyDataX509AdoptKeyCert", NULL);
         goto done;
     }
-    keyCert = NULL; /* owned by data now */
+    cert = NULL; /* owned by data now */
 
     /* success */
     res = 0;
@@ -699,9 +685,6 @@ xmlSecOpenSSLAppKeyCertLoadBIO(xmlSecKeyPtr key, BIO* bio, xmlSecKeyDataFormat f
 done:
     if(cert != NULL) {
         X509_free(cert);
-    }
-    if(keyCert != NULL) {
-        X509_free(keyCert);
     }
     return(res);
 }
@@ -807,18 +790,15 @@ xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
                            void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
 
     PKCS12 *p12 = NULL;
-    EVP_PKEY *pKey = NULL;
-    STACK_OF(X509) *chain = NULL;
+    EVP_PKEY * pKey = NULL;
+    X509 * keyCert = NULL;
+    STACK_OF(X509) * chain = NULL;
     xmlSecKeyPtr key = NULL;
     xmlSecKeyPtr res = NULL;
     xmlSecKeyDataPtr data = NULL;
     xmlSecKeyDataPtr x509Data = NULL;
-    X509 *cert = NULL;
-    X509 *tmpcert = NULL;
     size_t pwdSize;
     int pwdLen;
-    int i;
-    int has_cert;
     int ret;
 
     xmlSecAssert2(bio != NULL, NULL);
@@ -845,7 +825,7 @@ xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
     }
 
     XMLSEC_OPENSSL_PUSH_LIB_CTX(goto done);
-    ret = PKCS12_parse(p12, pwd, &pKey, &cert, &chain);
+    ret = PKCS12_parse(p12, pwd, &pKey, &keyCert, &chain);
     XMLSEC_OPENSSL_POP_LIB_CTX();
     if(ret != 1) {
         xmlSecOpenSSLError("PKCS12_parse", NULL);
@@ -861,82 +841,55 @@ xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
 
     x509Data = xmlSecKeyDataCreate(xmlSecOpenSSLKeyDataX509Id);
     if(x509Data == NULL) {
-        xmlSecInternalError("xmlSecKeyDataCreate",
-                            xmlSecTransformKlassGetName(xmlSecOpenSSLKeyDataX509Id));
+        xmlSecInternalError("xmlSecKeyDataCreate", NULL);
         goto done;
-    }
-
-    /* starting from openssl 1.0.0 the PKCS12_parse() call will not create certs
-       chain object if there is no certificates in the pkcs12 file and it will be null
-     */
-    if(chain == NULL) {
-        chain = sk_X509_new_null();
-        if(chain == NULL) {
-            xmlSecOpenSSLError("sk_X509_new_null", NULL);
-            goto done;
-        }
     }
 
     /*
-        The documentation states (http://www.openssl.org/docs/crypto/PKCS12_parse.html):
-
-        If successful the private key will be written to "*pkey", the
-        corresponding certificate to "*cert" and any additional certificates
-        to "*ca".
-
-        In reality, the function sometime returns in the "ca" the certificates
-        including the one it is already returned in "cert".
-    */
-    has_cert = 0;
-    for(i = 0; i < sk_X509_num(chain); ++i) {
-        xmlSecAssert2(sk_X509_value(chain, i), NULL);
-
-        if(X509_cmp(sk_X509_value(chain, i), cert) == 0) {
-            has_cert = 1;
-            break;
-        }
-    }
-
-    if(has_cert == 0) {
-        tmpcert = X509_dup(cert);
-        if(tmpcert == NULL) {
-            xmlSecOpenSSLError("X509_dup",
-                               xmlSecKeyDataGetName(x509Data));
-            goto done;
-        }
-
-        ret = sk_X509_push(chain, tmpcert);
-        if(ret < 1) {
-            xmlSecOpenSSLError("sk_X509_push",
-                               xmlSecKeyDataGetName(x509Data));
-            X509_free(tmpcert);
-            goto done;
-        }
-    }
-
-    ret = xmlSecOpenSSLKeyDataX509AdoptKeyCert(x509Data, cert);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecOpenSSLKeyDataX509AdoptKeyCert",
-                            xmlSecKeyDataGetName(x509Data));
-        goto done;
-    }
-    cert = NULL;
-
-    for(i = 0; i < sk_X509_num(chain); ++i) {
-        xmlSecAssert2(sk_X509_value(chain, i), NULL);
-
-        tmpcert = X509_dup(sk_X509_value(chain, i));
-        if(tmpcert == NULL) {
-            xmlSecOpenSSLError("X509_dup",
-                               xmlSecKeyDataGetName(x509Data));
-            goto done;
-        }
-
-        ret = xmlSecOpenSSLKeyDataX509AdoptCert(x509Data, tmpcert);
+     * The documentation states (http://www.openssl.org/docs/crypto/PKCS12_parse.html):
+     *
+     * If successful the private key will be written to "*pkey", the
+     * corresponding certificate to "*cert" and any additional certificates
+     * to "*ca".
+     *
+     * In reality, the function sometime returns in the "ca" the certificates
+     * including the one it is already returned in "cert". We will sort this out
+     * in the xmlSecOpenSSLKeyDataX509AdoptKeyCert() and xmlSecOpenSSLKeyDataX509AdoptCert()
+     * functions.
+     */
+    if(keyCert != NULL) {
+        ret = xmlSecOpenSSLKeyDataX509AdoptKeyCert(x509Data, keyCert);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecOpenSSLKeyDataX509AdoptCert",
-                                xmlSecKeyDataGetName(x509Data));
+            xmlSecInternalError("xmlSecOpenSSLKeyDataX509AdoptKeyCert", NULL);
             goto done;
+        }
+        keyCert = NULL; /* owned by x5009 data now */
+    }
+
+    if(chain != NULL) {
+        int ii;
+
+        for(ii = 0; ii < sk_X509_num(chain); ++ii) {
+            X509* cert = sk_X509_value(chain, ii);
+            X509* tmpcert;
+
+            xmlSecAssert2(cert != NULL, NULL);
+
+            /* make a copy to ensure we have no race condition if there are errors
+             * in the middle of this loop
+             */
+            tmpcert = X509_dup(sk_X509_value(chain, ii));
+            if(tmpcert == NULL) {
+                xmlSecOpenSSLError("X509_dup", xmlSecKeyDataGetName(x509Data));
+                goto done;
+            }
+            ret = xmlSecOpenSSLKeyDataX509AdoptCert(x509Data, tmpcert);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecOpenSSLKeyDataX509AdoptCert", NULL);
+                X509_free(tmpcert);
+                goto done;
+            }
+            tmpcert = NULL; /* owned by x509 data now */
         }
     }
 
@@ -948,16 +901,14 @@ xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
 
     ret = xmlSecKeySetValue(key, data);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecKeySetValue",
-                            xmlSecKeyDataGetName(x509Data));
+        xmlSecInternalError("xmlSecKeySetValue", NULL);
         goto done;
     }
     data = NULL;
 
     ret = xmlSecKeyAdoptData(key, x509Data);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecKeyAdoptData",
-                            xmlSecKeyDataGetName(x509Data));
+        xmlSecInternalError("xmlSecKeyAdoptData", NULL);
         goto done;
     }
     x509Data = NULL;
@@ -976,11 +927,11 @@ done:
     if(chain != NULL) {
         sk_X509_pop_free(chain, X509_free);
     }
+    if(keyCert != NULL) {
+        X509_free(keyCert);
+    }
     if(pKey != NULL) {
         EVP_PKEY_free(pKey);
-    }
-    if(cert != NULL) {
-        X509_free(cert);
     }
     if(p12 != NULL) {
         PKCS12_free(p12);
@@ -1006,29 +957,16 @@ xmlSecOpenSSLAppKeyFromCertLoadBIO(BIO* bio, xmlSecKeyDataFormat format) {
     xmlSecKeyDataPtr keyData = NULL;
     xmlSecKeyDataPtr certData;
     X509 * cert = NULL;
-    X509 * keyCert = NULL;
     int ret;
     xmlSecKeyPtr res = NULL;
 
     xmlSecAssert2(bio != NULL, NULL);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
 
-    /* load cert and make a copy for keyCert */
+    /* load cert */
     cert = xmlSecOpenSSLAppCertLoadBIO(bio, format);
     if(cert == NULL) {
         xmlSecInternalError("xmlSecOpenSSLAppCertLoadBIO", NULL);
-        goto done;
-    }
-    keyCert = X509_dup(cert);
-    if(keyCert == NULL) {
-        xmlSecOpenSSLError("X509_dup", NULL);
-        goto done;
-    }
-
-    /* get key value */
-    keyData = xmlSecOpenSSLX509CertGetKey(cert);
-    if(keyData == NULL) {
-        xmlSecInternalError("xmlSecOpenSSLX509CertGetKey", NULL);
         goto done;
     }
 
@@ -1040,6 +978,11 @@ xmlSecOpenSSLAppKeyFromCertLoadBIO(BIO* bio, xmlSecKeyDataFormat format) {
     }
 
     /* set key value */
+    keyData = xmlSecOpenSSLX509CertGetKey(cert);
+    if(keyData == NULL) {
+        xmlSecInternalError("xmlSecOpenSSLX509CertGetKey", NULL);
+        goto done;
+    }
     ret = xmlSecKeySetValue(key, keyData);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeySetValue", NULL);
@@ -1047,27 +990,18 @@ xmlSecOpenSSLAppKeyFromCertLoadBIO(BIO* bio, xmlSecKeyDataFormat format) {
     }
     keyData = NULL; /* owned by key now */
 
-    /* create cert data */
+    /* put cert as the key's cert in the x509 data */
     certData = xmlSecKeyEnsureData(key, xmlSecOpenSSLKeyDataX509Id);
     if(certData == NULL) {
         xmlSecInternalError("xmlSecKeyEnsureData", NULL);
         goto done;
     }
-
-    /* put cert and key cert in the cert data */
-    ret = xmlSecOpenSSLKeyDataX509AdoptCert(certData, cert);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecOpenSSLKeyDataX509AdoptCert", NULL);
-        goto done;
-    }
-    cert = NULL; /* owned by certData now */
-
-    ret = xmlSecOpenSSLKeyDataX509AdoptKeyCert(certData, keyCert);
+    ret = xmlSecOpenSSLKeyDataX509AdoptKeyCert(certData, cert);
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLKeyDataX509AdoptKeyCert", NULL);
         goto done;
     }
-    keyCert = NULL; /* owned by certData now */
+    cert = NULL; /* owned by certData now */
 
     /* success */
     res = key;
@@ -1082,9 +1016,6 @@ done:
     }
     if(cert != NULL) {
          X509_free(cert);
-    }
-    if(keyCert != NULL) {
-         X509_free(keyCert);
     }
     return(res);
 }

@@ -84,7 +84,7 @@ static void             xmlSecOpenSSLX509CertDebugXmlDump       (X509* cert,
 typedef struct _xmlSecOpenSSLX509DataCtx                xmlSecOpenSSLX509DataCtx,
                                                         *xmlSecOpenSSLX509DataCtxPtr;
 struct _xmlSecOpenSSLX509DataCtx {
-    X509*               keyCert;
+    X509*               keyCert;        /* OWNED BY certsList */
     STACK_OF(X509)*     certsList;
     STACK_OF(X509_CRL)* crlsList;
 };
@@ -206,28 +206,61 @@ xmlSecOpenSSLKeyDataX509GetKeyCert(xmlSecKeyDataPtr data) {
     return(ctx->keyCert);
 }
 
+
+static int
+xmlSecOpenSSLKeyDataX509AddCertInternal(xmlSecOpenSSLX509DataCtxPtr ctx, X509* cert) {
+    int ret;
+
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(cert != NULL, -1);
+
+    if(ctx->certsList == NULL) {
+        ctx->certsList = sk_X509_new_null();
+        if(ctx->certsList == NULL) {
+            xmlSecOpenSSLError("sk_X509_new_null", NULL);
+            return(-1);
+        }
+    }
+
+    ret = sk_X509_push(ctx->certsList, cert);
+    if(ret < 1) {
+        xmlSecOpenSSLError("sk_X509_push", NULL);
+        return(-1);
+    }
+
+    /* done */
+    return(0);
+}
+
 /**
  * xmlSecOpenSSLKeyDataX509AdoptKeyCert:
  * @data:               the pointer to X509 key data.
  * @cert:               the pointer to OpenSSL X509 certificate.
  *
- * Sets the key's certificate in @data.
+ * Adds certificate to the X509 key data and sets the it as the key's
+ * certificate in @data. On success, the @data owns the cert.
  *
  * Returns: 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecOpenSSLKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, X509* cert) {
     xmlSecOpenSSLX509DataCtxPtr ctx;
+    int ret;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataX509Id), -1);
     xmlSecAssert2(cert != NULL, -1);
 
     ctx = xmlSecOpenSSLX509DataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->keyCert == NULL, -1);
 
-    if(ctx->keyCert != NULL) {
-        X509_free(ctx->keyCert);
+    ret = xmlSecOpenSSLKeyDataX509AddCertInternal(ctx, cert);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecOpenSSLKeyDataX509AddCertInternal", xmlSecKeyDataGetName(data));
+        return(-1);
     }
+
+    /* cert is now owned by data, we can't fail or there will be a double free */
     ctx->keyCert = cert;
     return(0);
 }
@@ -237,14 +270,13 @@ xmlSecOpenSSLKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, X509* cert) {
  * @data:               the pointer to X509 key data.
  * @cert:               the pointer to OpenSSL X509 certificate.
  *
- * Adds certificate to the X509 key data.
+ * Adds certificate to the X509 key data. On success, the @data owns the cert.
  *
  * Returns: 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecOpenSSLKeyDataX509AdoptCert(xmlSecKeyDataPtr data, X509* cert) {
     xmlSecOpenSSLX509DataCtxPtr ctx;
-    int ret;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataX509Id), -1);
     xmlSecAssert2(cert != NULL, -1);
@@ -252,23 +284,12 @@ xmlSecOpenSSLKeyDataX509AdoptCert(xmlSecKeyDataPtr data, X509* cert) {
     ctx = xmlSecOpenSSLX509DataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
 
-    if(ctx->certsList == NULL) {
-        ctx->certsList = sk_X509_new_null();
-        if(ctx->certsList == NULL) {
-            xmlSecOpenSSLError("sk_X509_new_null",
-                               xmlSecKeyDataGetName(data));
-            return(-1);
-        }
+    /* pkcs12 files sometime have key cert twice: as the key cert and as the cert in the chain */
+    if((ctx->keyCert != NULL) && (X509_cmp(ctx->keyCert, cert) == 0)) {
+        X509_free(cert); /* caller expects data to own the cert on success. */
+        return(0);
     }
-
-    ret = sk_X509_push(ctx->certsList, cert);
-    if(ret < 1) {
-        xmlSecOpenSSLError("sk_X509_push",
-                           xmlSecKeyDataGetName(data));
-        return(-1);
-    }
-
-    return(0);
+    return(xmlSecOpenSSLKeyDataX509AddCertInternal(ctx, cert));
 }
 
 /**
@@ -284,6 +305,7 @@ xmlSecOpenSSLKeyDataX509AdoptCert(xmlSecKeyDataPtr data, X509* cert) {
 X509*
 xmlSecOpenSSLKeyDataX509GetCert(xmlSecKeyDataPtr data, xmlSecSize pos) {
     xmlSecOpenSSLX509DataCtxPtr ctx;
+    X509* cert;
     int iPos;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataX509Id), NULL);
@@ -292,9 +314,30 @@ xmlSecOpenSSLKeyDataX509GetCert(xmlSecKeyDataPtr data, xmlSecSize pos) {
     xmlSecAssert2(ctx != NULL, NULL);
     xmlSecAssert2(ctx->certsList != NULL, NULL);
 
+    /* ensure key cert if present is always the first one
+     * by "swapping" cert[0] and ctx->keyCert
+     *
+     * Part 1: return ctx->keyCert instead of cert[0]
+     */
+    if((ctx->keyCert != NULL) && (pos == 0)) {
+        return(ctx->keyCert);
+    }
+
     XMLSEC_SAFE_CAST_SIZE_TO_INT(pos, iPos, return(NULL), NULL);
     xmlSecAssert2(iPos < sk_X509_num(ctx->certsList), NULL);
-    return(sk_X509_value(ctx->certsList, iPos));
+    cert = sk_X509_value(ctx->certsList, iPos);
+    if(cert == NULL) {
+        xmlSecOpenSSLError2("sk_X509_value", NULL, "pos=%d", iPos)
+        return(NULL);
+    }
+
+    /* Part 2: return cert[0] instead of ctx->keyCert */
+    if((ctx->keyCert != NULL) && (X509_cmp(ctx->keyCert, cert) == 0)) {
+        cert = sk_X509_value(ctx->certsList, 0);
+    }
+
+    /* done */
+    return(cert);
 }
 
 /**
@@ -444,7 +487,7 @@ xmlSecOpenSSLKeyDataX509Initialize(xmlSecKeyDataPtr data) {
 
 static int
 xmlSecOpenSSLKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
-    X509* certSrc;
+    X509* certSrc, *keyCertSrc;
     X509* certDst;
     X509_CRL* crlSrc;
     X509_CRL* crlDst;
@@ -455,6 +498,7 @@ xmlSecOpenSSLKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecOpenSSLKeyDataX509Id), -1);
 
     /* copy certsList */
+    keyCertSrc = xmlSecOpenSSLKeyDataX509GetKeyCert(src);
     size = xmlSecOpenSSLKeyDataX509GetCertsSize(src);
     for(pos = 0; pos < size; ++pos) {
         certSrc = xmlSecOpenSSLKeyDataX509GetCert(src, pos);
@@ -472,12 +516,23 @@ xmlSecOpenSSLKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
             return(-1);
         }
 
-        ret = xmlSecOpenSSLKeyDataX509AdoptCert(dst, certDst);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecOpenSSLKeyDataX509AdoptCert",
-                                xmlSecKeyDataGetName(dst));
-            X509_free(certDst);
-            return(-1);
+        /* ensure we copy keyCert correctly */
+        if(keyCertSrc == certSrc) {
+            ret = xmlSecOpenSSLKeyDataX509AdoptKeyCert(dst, certDst);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecOpenSSLKeyDataX509AdoptKeyCert",
+                                    xmlSecKeyDataGetName(dst));
+                X509_free(certDst);
+                return(-1);
+            }
+        } else {
+            ret = xmlSecOpenSSLKeyDataX509AdoptCert(dst, certDst);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecOpenSSLKeyDataX509AdoptCert",
+                                    xmlSecKeyDataGetName(dst));
+                X509_free(certDst);
+                return(-1);
+            }
         }
     }
 
@@ -508,23 +563,7 @@ xmlSecOpenSSLKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
         }
     }
 
-    /* copy key cert if exist */
-    certSrc = xmlSecOpenSSLKeyDataX509GetKeyCert(src);
-    if(certSrc != NULL) {
-        certDst = X509_dup(certSrc);
-        if(certDst == NULL) {
-            xmlSecOpenSSLError("X509_dup",
-                               xmlSecKeyDataGetName(dst));
-            return(-1);
-        }
-        ret = xmlSecOpenSSLKeyDataX509AdoptKeyCert(dst, certDst);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecOpenSSLKeyDataX509AdoptKeyCert",
-                                xmlSecKeyDataGetName(dst));
-            X509_free(certDst);
-            return(-1);
-        }
-    }
+    /* done */
     return(0);
 }
 
@@ -542,9 +581,6 @@ xmlSecOpenSSLKeyDataX509Finalize(xmlSecKeyDataPtr data) {
     }
     if(ctx->crlsList != NULL) {
         sk_X509_CRL_pop_free(ctx->crlsList, X509_CRL_free);
-    }
-    if(ctx->keyCert != NULL) {
-        X509_free(ctx->keyCert);
     }
     memset(ctx, 0, sizeof(xmlSecOpenSSLX509DataCtx));
 }
@@ -1447,6 +1483,7 @@ xmlSecOpenSSLVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data, 
     xmlSecKeyDataStorePtr x509Store;
     xmlSecKeyDataPtr keyValue;
     X509* cert;
+    X509* keyCert;
     int ret;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataX509Id), -1);
@@ -1479,13 +1516,21 @@ xmlSecOpenSSLVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data, 
         return(0);
     }
 
-    /* set cert into the x509 data */
-    ctx->keyCert = X509_dup(cert);
-    if(ctx->keyCert == NULL) {
+    /* set cert into the x509 data, we don't know if the cert is already in KeyData or not
+     * so assume we need to add it again.
+     */
+    keyCert = X509_dup(cert);
+    if(keyCert == NULL) {
         xmlSecOpenSSLError("X509_dup", xmlSecKeyDataGetName(data));
         return(-1);
     }
-    cert = NULL; /* we should be using ctx->keyCert for everything */
+    ret = xmlSecOpenSSLKeyDataX509AdoptKeyCert(data, keyCert);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecOpenSSLKeyDataX509AdoptKeyCert", xmlSecKeyDataGetName(data));
+        X509_free(keyCert);
+        return(-1);
+    }
+    cert = keyCert = NULL; /* we should be using ctx->keyCert for everything */
 
     /* extract key from cert and verify that the key matches our expectations */
     keyValue = xmlSecOpenSSLX509CertGetKey(ctx->keyCert);

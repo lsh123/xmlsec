@@ -33,6 +33,7 @@ libxmlsec1_mscng_la_SOURCES =\
 	kw_aes.c \
 	kw_des.c \
 	pbkdf2.c \
+	private.h \
 	signatures.c \
 	symkeys.c \
 	x509.c \

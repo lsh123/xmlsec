@@ -60,7 +60,7 @@
                     <li>(<b>ABI breaking change</b>) Added support for the <a href="https://www.w3.org/TR/xmldsig-core1/#sec-KeyInfoReference">KeyInfoReference Element</a>.</li>
 					<li>(<b>ABI breaking change</b>) Switched xmlSecSize to use size_t by default. Use "--enable-size-t=no" configure option ("size_t=no" on Windows) to
 						restore the old behaviour (note that this behaviour is deprecated and will be removed in the future.</li>
-					<li>(<b>API breaking change</b>) Changed the key search to srtict mode: only keys referenced by KeyInfo are used. To resore the old "lax" mode,
+					<li>(<b>API breaking change</b>) Changed the key search to strict mode: only keys referenced by KeyInfo are used. To restore the old "lax" mode,
 						set XMLSEC_KEYINFO_FLAGS_LAX_KEY_SEARCH flag on xmlSecKeyInfoCtx or use '--lax-key-search' option for XMLSec command line utility.
 					</li>
                     <li>Disabled MD5 digest method by default. Use "--enable-md5" configure options ("legacy-crypto" option on Windows) to re-enable MD5.</li>

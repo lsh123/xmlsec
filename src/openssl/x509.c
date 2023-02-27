@@ -262,7 +262,7 @@ xmlSecOpenSSLKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, X509* cert) {
 
     ret = xmlSecOpenSSLKeyDataX509AddCertInternal(ctx, cert);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecOpenSSLKeyDataX509AddCertInternal", xmlSecKeyDataGetName(data));
+        xmlSecInternalError("xmlSecOpenSSLKeyDataX509AddCertInternal", NULL);
         return(-1);
     }
 
@@ -338,7 +338,7 @@ xmlSecOpenSSLKeyDataX509GetCert(xmlSecKeyDataPtr data, xmlSecSize pos) {
     }
 
     /* Part 2: return cert[0] instead of ctx->keyCert */
-    if((ctx->keyCert != NULL) && (X509_cmp(ctx->keyCert, cert) == 0)) {
+    if(ctx->keyCert == cert) {
         cert = sk_X509_value(ctx->certsList, 0);
     }
 

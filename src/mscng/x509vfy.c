@@ -967,7 +967,6 @@ xmlSecMSCngX509FindCertByIssuerNameAndSerial(HCERTSTORE store, LPTSTR wcIssuerNa
         }
     }
 
-done:
     if (bdata != NULL) {
         xmlFree(bdata);
     }

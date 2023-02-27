@@ -252,6 +252,12 @@ xmlSecOpenSSLKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, X509* cert) {
 
     ctx = xmlSecOpenSSLX509DataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
+
+    /* avoid adding the same cert again */
+    if(ctx->keyCert == cert) {
+        X509_free(cert); /* caller expects data to own the cert on success. */
+        return(0);
+    }
     xmlSecAssert2(ctx->keyCert == NULL, -1);
 
     ret = xmlSecOpenSSLKeyDataX509AddCertInternal(ctx, cert);

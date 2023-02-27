@@ -2932,31 +2932,31 @@ xmlSecX509DataGetNodeContent(xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx, xm
                 content |= XMLSEC_X509DATA_CERTIFICATE_NODE;
             } else {
                 /* ensure return value isn't 0 if there are non-empty elements */
-                content |= (XMLSEC_X509DATA_CERTIFICATE_NODE << 16);
+                content |= (XMLSEC_X509DATA_CERTIFICATE_NODE << XMLSEC_X509DATA_SHIFT_IF_NOT_EMPTY);
             }
         } else if(xmlSecCheckNodeName(cur, xmlSecNodeX509SubjectName, xmlSecDSigNs)) {
             if(xmlSecIsEmptyNode(cur) == 1) {
                 content |= XMLSEC_X509DATA_SUBJECTNAME_NODE;
             } else {
-                content |= (XMLSEC_X509DATA_SUBJECTNAME_NODE << 16);
+                content |= (XMLSEC_X509DATA_SUBJECTNAME_NODE << XMLSEC_X509DATA_SHIFT_IF_NOT_EMPTY);
             }
         } else if(xmlSecCheckNodeName(cur, xmlSecNodeX509IssuerSerial, xmlSecDSigNs)) {
             if(xmlSecIsEmptyNode(cur) == 1) {
                 content |= XMLSEC_X509DATA_ISSUERSERIAL_NODE;
             } else {
-                content |= (XMLSEC_X509DATA_ISSUERSERIAL_NODE << 16);
+                content |= (XMLSEC_X509DATA_ISSUERSERIAL_NODE << XMLSEC_X509DATA_SHIFT_IF_NOT_EMPTY);
             }
         } else if(xmlSecCheckNodeName(cur, xmlSecNodeX509SKI, xmlSecDSigNs)) {
             if(xmlSecIsEmptyNode(cur) == 1) {
                 content |= XMLSEC_X509DATA_SKI_NODE;
             } else {
-                content |= (XMLSEC_X509DATA_SKI_NODE << 16);
+                content |= (XMLSEC_X509DATA_SKI_NODE << XMLSEC_X509DATA_SHIFT_IF_NOT_EMPTY);
             }
         } else if(xmlSecCheckNodeName(cur, xmlSecNodeX509Digest, xmlSecDSig11Ns)) {
             if(xmlSecIsEmptyNode(cur) == 1) {
                 content |= XMLSEC_X509DATA_DIGEST_NODE;
             } else {
-                content |= (XMLSEC_X509DATA_DIGEST_NODE << 16);
+                content |= (XMLSEC_X509DATA_DIGEST_NODE << XMLSEC_X509DATA_SHIFT_IF_NOT_EMPTY);
             }
             /* only read the first digestAlgorithm */
             if((*digestAlgorithm) == NULL) {
@@ -3493,7 +3493,8 @@ xmlSecKeyX509DataValueXmlWrite(xmlSecKeyX509DataValuePtr x509Value, xmlNodePtr n
             xmlSecInternalError("xmlSecKeyX509DataValueXmlWriteBase64Blob(cert)", NULL);
             return(-1);
         }
-    } else if(!xmlSecBufferIsEmpty(&(x509Value->crl))) {
+    }
+    if(!xmlSecBufferIsEmpty(&(x509Value->crl))) {
         xmlNodePtr child;
 
         child = xmlSecKeyX509DataValueXmlWriteBase64Blob(&(x509Value->crl), node,
@@ -3503,7 +3504,8 @@ xmlSecKeyX509DataValueXmlWrite(xmlSecKeyX509DataValuePtr x509Value, xmlNodePtr n
             xmlSecInternalError("xmlSecKeyX509DataValueXmlWriteBase64Blob(cert)", NULL);
             return(-1);
         }
-    } else if(!xmlSecBufferIsEmpty(&(x509Value->ski))) {
+    }
+    if(!xmlSecBufferIsEmpty(&(x509Value->ski))) {
         xmlNodePtr child;
 
         child = xmlSecKeyX509DataValueXmlWriteBase64Blob(&(x509Value->ski), node,
@@ -3513,7 +3515,8 @@ xmlSecKeyX509DataValueXmlWrite(xmlSecKeyX509DataValuePtr x509Value, xmlNodePtr n
             xmlSecInternalError("xmlSecKeyX509DataValueXmlWriteBase64Blob(ski)", NULL);
             return(-1);
         }
-    } else if(x509Value->subject != NULL) {
+    }
+    if(x509Value->subject != NULL) {
         int ret;
 
         ret = xmlSecKeyX509DataValueXmlWriteString(x509Value->subject, node,
@@ -3523,7 +3526,8 @@ xmlSecKeyX509DataValueXmlWrite(xmlSecKeyX509DataValuePtr x509Value, xmlNodePtr n
                 "subject=%s", xmlSecErrorsSafeString(x509Value->subject));
             return(-1);
         }
-    } else if((x509Value->issuerName != NULL) && (x509Value->issuerSerial != NULL)) {
+    }
+    if((x509Value->issuerName != NULL) && (x509Value->issuerSerial != NULL)) {
         xmlNodePtr issuerSerial;
         int ret;
 
@@ -3547,7 +3551,8 @@ xmlSecKeyX509DataValueXmlWrite(xmlSecKeyX509DataValuePtr x509Value, xmlNodePtr n
                 "issuerSerial=%s", xmlSecErrorsSafeString(x509Value->issuerSerial));
             return(-1);
         }
-    } else if((!xmlSecBufferIsEmpty(&(x509Value->digest))) && (x509Value->digestAlgorithm != NULL)) {
+    }
+    if((!xmlSecBufferIsEmpty(&(x509Value->digest))) && (x509Value->digestAlgorithm != NULL)) {
         xmlNodePtr child;
 
         child = xmlSecKeyX509DataValueXmlWriteBase64Blob(&(x509Value->digest), node,

@@ -243,7 +243,9 @@ xmlSecOpenSSLX509StoreFindCertByValue(xmlSecKeyDataStorePtr store, xmlSecKeyX509
     int ret;
     X509* res = NULL;
 
+    xmlSecAssert2(store != NULL, NULL);
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecOpenSSLX509StoreId), NULL);
+    xmlSecAssert2(x509Value != NULL, NULL);
 
     ctx = xmlSecOpenSSLX509StoreGetCtx(store);
     xmlSecAssert2(ctx != NULL, NULL);

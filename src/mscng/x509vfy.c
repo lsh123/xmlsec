@@ -881,7 +881,7 @@ xmlSecMSCngX509FindCertByIssuerNameAndSerial(HCERTSTORE store, LPTSTR wcIssuerNa
 
     certInfo.SerialNumber.pbData = xmlSecBnGetData(issuerSerialBn);
     issuerSerialSize  = xmlSecBnGetSize(issuerSerialBn);
-    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(issuerSerialSize, certInfo.SerialNumber.cbData, goto done, NULL);
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(issuerSerialSize, certInfo.SerialNumber.cbData, return(NULL), NULL);
 
     /* CASE 1: UTF8, DN */
     if (NULL == res) {

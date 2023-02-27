@@ -703,7 +703,8 @@ struct _xmlSecCryptoDLFunctions {
  * <dsig:X509Digest/> node found or would be written back.
  */
 #define XMLSEC_X509DATA_DIGEST_NODE                             0x00000020
-/**
+
+ /**
  * XMLSEC_X509DATA_DEFAULT:
  *
  * Default set of nodes to write in case of empty
@@ -712,6 +713,20 @@ struct _xmlSecCryptoDLFunctions {
 #define XMLSEC_X509DATA_DEFAULT \
         (XMLSEC_X509DATA_CERTIFICATE_NODE | XMLSEC_X509DATA_CRL_NODE)
 
+
+
+/**
+* XMLSEC_X509DATA_SHIFT_IF_NOT_EMPTY:
+*
+* Shift bits if node present but and not empty.
+*/
+#define XMLSEC_X509DATA_SHIFT_IF_NOT_EMPTY                      16
+
+
+/* helper macros */
+#define XMLSEC_X509DATA_HAS_EMPTY_NODE(content, flag)       ( ((content) & (flag)) != 0 )
+#define XMLSEC_X509DATA_HAS_NON_EMPTY_NODE(content, flag)   ( ((content) & ((flag) << XMLSEC_X509DATA_SHIFT_IF_NOT_EMPTY)) != 0 )
+#define XMLSEC_X509DATA_HAS_NODE(content, flag)             ( XMLSEC_X509DATA_HAS_EMPTY_NODE(content, flag) || XMLSEC_X509DATA_HAS_NON_EMPTY_NODE(content, flag))
 
 #ifdef __cplusplus
 }

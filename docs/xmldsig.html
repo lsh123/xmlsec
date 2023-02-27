@@ -1112,7 +1112,7 @@
                         <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- OpenSSL-->
                         <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- NSS -->
                         <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- GnuTLS -->
-                        <td valign="top">No</td><!-- MSCng -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#mscng-x509-digest"><sup>(5)</sup></a></td><!-- MSCng -->
                         <td valign="top">No</td><!-- MSCrypto -->
                         <td valign="top">No</td><!-- GCrypt -->
                       </tr>
@@ -1168,22 +1168,23 @@
                 </div>
 
                 <div id="notes">
-                  <ul>
-                    <li>
-                      <a name="xslt" id="xslt"></a><sup>(1)</sup> Requires <a href="http://xmlsoft.org/XSLT/downloads.html">LibXSLT</a> library.
-                    </li>
-                    <li>
-                      <a name="gost-openssl" id="gost-openssl"></a><sup>(2)</sup> Requires installation of the <a
-                        href="https://github.com/gost-engine/engine">GOST OpenSSL Engine</a>.
-                    </li>
-                    <li>
-                      <a name="gost-mscrypto" id="gost-mscrypto"></a><sup>(3)</sup> Requires installation of a GOST CSP.
-                    </li>
-                    <li>
-                      <a name="dsa-ke-value" id="dsa-ke-value"></a><sup>(4)</sup> Seed and PgenCounter are not
-                      supported.
-                    </li>
-                  </ul>
+                    <ul>
+                        <li>
+                            <a name="xslt" id="xslt"></a><sup>(1)</sup> Requires <a href="http://xmlsoft.org/XSLT/downloads.html">LibXSLT</a> library.
+                        </li>
+                        <li>
+                            <a name="gost-openssl" id="gost-openssl"></a><sup>(2)</sup> GOST support for the xmlsec-openssl library requires installation of the <a href="https://github.com/gost-engine/engine">GOST OpenSSL Engine</a>.
+                        </li>
+                        <li>
+                            <a name="gost-mscrypto" id="gost-mscrypto"></a><sup>(3)</sup> GOST support for the xmlsec-mscrypto library requires installation of a GOST CSP.
+                        </li>
+                        <li>
+                            <a name="dsa-ke-value" id="dsa-ke-value"></a><sup>(4)</sup> Seed and PgenCounter are not supported in DSAKeyValue element.
+                        </li>
+                        <li>
+                            <a name="mscng-x509-digest" id="mscng-x509-digest"></a><sup>(5)</sup> The xmlsec-mscng library only supports SHA1 digest algorithm for X509Digest element.
+                        </li>
+                    </ul>
                 </div>
 
                 <div id="test-vectores">

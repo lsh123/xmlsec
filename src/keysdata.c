@@ -2932,31 +2932,31 @@ xmlSecX509DataGetNodeContent(xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx, xm
                 content |= XMLSEC_X509DATA_CERTIFICATE_NODE;
             } else {
                 /* ensure return value isn't 0 if there are non-empty elements */
-                content |= (XMLSEC_X509DATA_CERTIFICATE_NODE << 16);
+                content |= (XMLSEC_X509DATA_CERTIFICATE_NODE << XMLSEC_X509DATA_SHIFT_IF_NOT_EMPTY);
             }
         } else if(xmlSecCheckNodeName(cur, xmlSecNodeX509SubjectName, xmlSecDSigNs)) {
             if(xmlSecIsEmptyNode(cur) == 1) {
                 content |= XMLSEC_X509DATA_SUBJECTNAME_NODE;
             } else {
-                content |= (XMLSEC_X509DATA_SUBJECTNAME_NODE << 16);
+                content |= (XMLSEC_X509DATA_SUBJECTNAME_NODE << XMLSEC_X509DATA_SHIFT_IF_NOT_EMPTY);
             }
         } else if(xmlSecCheckNodeName(cur, xmlSecNodeX509IssuerSerial, xmlSecDSigNs)) {
             if(xmlSecIsEmptyNode(cur) == 1) {
                 content |= XMLSEC_X509DATA_ISSUERSERIAL_NODE;
             } else {
-                content |= (XMLSEC_X509DATA_ISSUERSERIAL_NODE << 16);
+                content |= (XMLSEC_X509DATA_ISSUERSERIAL_NODE << XMLSEC_X509DATA_SHIFT_IF_NOT_EMPTY);
             }
         } else if(xmlSecCheckNodeName(cur, xmlSecNodeX509SKI, xmlSecDSigNs)) {
             if(xmlSecIsEmptyNode(cur) == 1) {
                 content |= XMLSEC_X509DATA_SKI_NODE;
             } else {
-                content |= (XMLSEC_X509DATA_SKI_NODE << 16);
+                content |= (XMLSEC_X509DATA_SKI_NODE << XMLSEC_X509DATA_SHIFT_IF_NOT_EMPTY);
             }
         } else if(xmlSecCheckNodeName(cur, xmlSecNodeX509Digest, xmlSecDSig11Ns)) {
             if(xmlSecIsEmptyNode(cur) == 1) {
                 content |= XMLSEC_X509DATA_DIGEST_NODE;
             } else {
-                content |= (XMLSEC_X509DATA_DIGEST_NODE << 16);
+                content |= (XMLSEC_X509DATA_DIGEST_NODE << XMLSEC_X509DATA_SHIFT_IF_NOT_EMPTY);
             }
             /* only read the first digestAlgorithm */
             if((*digestAlgorithm) == NULL) {

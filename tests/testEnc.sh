@@ -303,7 +303,8 @@ if [ "z$crypto" != "zmscng" ] ; then
         "$priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123"
 fi
 
-# Only OpenSSL / NSS / GnuTLS currently has capability to lookup the key using X509 data
+# Only OpenSSL / NSS / GnuTLS currently has capability to lookup the certs/keys using X509 data
+# These tests verify keys lookup, certificates lookup is tested in XMLDSig.sh
 if [ "z$crypto" = "zopenssl" -o "z$crypto" = "znss" -o "z$crypto" = "zgnutls" ] ; then
     execEncTest $res_success \
         "" \

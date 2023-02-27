@@ -137,8 +137,8 @@ xmlSecOpenSSLKeysStoreFindKeyFromX509Data(xmlSecKeyStorePtr store, xmlSecKeyX509
     xmlSecKeyPtr key, res;
 
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecOpenSSLKeysStoreId), NULL);
+    xmlSecAssert2(x509Data != NULL, NULL);
     xmlSecAssert2(keyInfoCtx != NULL, NULL);
-
 
     simplekeystore = xmlSecOpenSSLKeysStoreGetCtx(store);
     xmlSecAssert2(((simplekeystore != NULL) && (*simplekeystore != NULL)), NULL);

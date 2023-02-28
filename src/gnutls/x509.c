@@ -425,15 +425,13 @@ xmlSecGnuTLSKeyDataX509Initialize(xmlSecKeyDataPtr data) {
 
     ret = xmlSecPtrListInitialize(&(ctx->certsList), xmlSecGnuTLSX509CrtListId);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecPtrListInitialize(certsList)",
-                            xmlSecKeyDataGetName(data));
+        xmlSecInternalError("xmlSecPtrListInitialize(certsList)", NULL);
         return(-1);
     }
 
     ret = xmlSecPtrListInitialize(&(ctx->crlsList), xmlSecGnuTLSX509CrlListId);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecPtrListInitialize(crlsList)",
-                            xmlSecKeyDataGetName(data));
+        xmlSecInternalError("xmlSecPtrListInitialize(crlsList)", NULL);
         return(-1);
     }
 
@@ -454,19 +452,6 @@ xmlSecGnuTLSKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     ctxDst = xmlSecGnuTLSX509DataGetCtx(dst);
     xmlSecAssert2(ctxDst != NULL, -1);
 
-    /* copy key cert if exist */
-    if(ctxDst->keyCert != NULL) {
-        gnutls_x509_crt_deinit(ctxDst->keyCert);
-        ctxDst->keyCert = NULL;
-    }
-    if(ctxSrc->keyCert != NULL) {
-        ctxDst->keyCert = xmlSecGnuTLSX509CertDup(ctxSrc->keyCert);
-        if(ctxDst->keyCert == NULL) {
-            xmlSecInternalError("xmlSecGnuTLSX509CertDup", NULL);
-            return(-1);
-        }
-    }
-
     /* copy certsList if exists */
     xmlSecPtrListEmpty(&(ctxDst->certsList));
     ret = xmlSecPtrListCopy(&(ctxDst->certsList), &(ctxSrc->certsList));
@@ -481,6 +466,24 @@ xmlSecGnuTLSKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     if(ret < 0) {
         xmlSecInternalError("xmlSecPtrListCopy(crlsList)", NULL);
         return(-1);
+    }
+
+    /* keyCert: should be in the same position in certsList after copy */
+    if(ctxSrc->keyCert != NULL) {
+        xmlSecSize ii, size;
+
+        size = xmlSecPtrListGetSize(&(ctxDst->certsList));
+        xmlSecAssert2(size == xmlSecPtrListGetSize(&(ctxDst->certsList)), -1);
+        for(ii = 0; ii < size; ++ii) {
+            gnutls_x509_crt_t cert = xmlSecPtrListGetItem(&(ctxSrc->certsList), ii);
+            if(cert == ctxSrc->keyCert) {
+                ctxDst->keyCert = xmlSecPtrListGetItem(&(ctxDst->certsList), ii);
+                break;
+            }
+        }
+        /* just to double check */
+        xmlSecAssert2(ctxDst->keyCert != NULL, -1);
+        xmlSecAssert2(gnutls_x509_crt_equals(ctxSrc->keyCert, ctxDst->keyCert) != 0, -1);
     }
 
     /* done */

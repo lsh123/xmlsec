@@ -485,89 +485,6 @@ xmlSecOpenSSLKeyDataX509Initialize(xmlSecKeyDataPtr data) {
     return(0);
 }
 
-static int
-xmlSecOpenSSLKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
-    X509* certSrc, *keyCertSrc;
-    X509* certDst;
-    X509_CRL* crlSrc;
-    X509_CRL* crlDst;
-    xmlSecSize size, pos;
-    int ret;
-
-    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecOpenSSLKeyDataX509Id), -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecOpenSSLKeyDataX509Id), -1);
-    xmlSecAssert2(xmlSecOpenSSLKeyDataX509GetKeyCert(dst) == NULL, -1);
-
-    /* copy certsList */
-    keyCertSrc = xmlSecOpenSSLKeyDataX509GetKeyCert(src);
-    size = xmlSecOpenSSLKeyDataX509GetCertsSize(src);
-    for(pos = 0; pos < size; ++pos) {
-        certSrc = xmlSecOpenSSLKeyDataX509GetCert(src, pos);
-        if(certSrc == NULL) {
-            xmlSecInternalError2("xmlSecOpenSSLKeyDataX509GetCert",
-                                 xmlSecErrorsSafeString(xmlSecKeyDataGetName(src)),
-                                 "pos=" XMLSEC_SIZE_FMT, pos);
-            return(-1);
-        }
-
-        certDst = X509_dup(certSrc);
-        if(certDst == NULL) {
-            xmlSecOpenSSLError("X509_dup",
-                               xmlSecKeyDataGetName(dst));
-            return(-1);
-        }
-
-        /* ensure we copy keyCert correctly */
-        if(keyCertSrc == certSrc) {
-            ret = xmlSecOpenSSLKeyDataX509AdoptKeyCert(dst, certDst);
-            if(ret < 0) {
-                xmlSecInternalError("xmlSecOpenSSLKeyDataX509AdoptKeyCert",
-                                    xmlSecKeyDataGetName(dst));
-                X509_free(certDst);
-                return(-1);
-            }
-        } else {
-            ret = xmlSecOpenSSLKeyDataX509AdoptCert(dst, certDst);
-            if(ret < 0) {
-                xmlSecInternalError("xmlSecOpenSSLKeyDataX509AdoptCert",
-                                    xmlSecKeyDataGetName(dst));
-                X509_free(certDst);
-                return(-1);
-            }
-        }
-    }
-
-    /* copy crls */
-    size = xmlSecOpenSSLKeyDataX509GetCrlsSize(src);
-    for(pos = 0; pos < size; ++pos) {
-        crlSrc = xmlSecOpenSSLKeyDataX509GetCrl(src, pos);
-        if(crlSrc == NULL) {
-            xmlSecInternalError2("xmlSecOpenSSLKeyDataX509GetCrl",
-                                 xmlSecKeyDataGetName(src),
-                                 "pos=" XMLSEC_SIZE_FMT, pos);
-            return(-1);
-        }
-
-        crlDst = X509_CRL_dup(crlSrc);
-        if(crlDst == NULL) {
-            xmlSecOpenSSLError("X509_CRL_dup",
-                               xmlSecKeyDataGetName(dst));
-            return(-1);
-        }
-
-        ret = xmlSecOpenSSLKeyDataX509AdoptCrl(dst, crlDst);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecOpenSSLKeyDataX509AdoptCrl",
-                                xmlSecKeyDataGetName(dst));
-            X509_CRL_free(crlDst);
-            return(-1);
-        }
-    }
-
-    /* done */
-    return(0);
-}
-
 static void
 xmlSecOpenSSLKeyDataX509Finalize(xmlSecKeyDataPtr data) {
     xmlSecOpenSSLX509DataCtxPtr ctx;
@@ -605,7 +522,11 @@ xmlSecOpenSSLKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
 
     /* crts */
     if(ctxSrc->certsList != NULL) {
+#ifndef XMLSEC_OPENSSL_API_300
+        ctxDst->certsList = sk_X509_deep_copy(ctxSrc->certsList, (sk_X509_copyfunc)X509_dup, X509_free);
+#else  /* XMLSEC_OPENSSL_API_300 */
         ctxDst->certsList = sk_X509_deep_copy(ctxSrc->certsList, X509_dup, X509_free);
+#endif /* XMLSEC_OPENSSL_API_300 */
         if(ctxDst->certsList == NULL) {
             xmlSecOpenSSLError("sk_X509_deep_copy", xmlSecKeyDataGetName(dst));
             return(-1);
@@ -614,7 +535,11 @@ xmlSecOpenSSLKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
 
     /* crls */
     if(ctxSrc->crlsList != NULL) {
+#ifndef XMLSEC_OPENSSL_API_300
+        ctxDst->crlsList = sk_X509_CRL_deep_copy(ctxSrc->crlsList, (sk_X509_CRL_copyfunc)X509_CRL_dup, X509_CRL_free);
+#else  /* XMLSEC_OPENSSL_API_300 */
         ctxDst->crlsList = sk_X509_CRL_deep_copy(ctxSrc->crlsList, X509_CRL_dup, X509_CRL_free);
+#endif /* XMLSEC_OPENSSL_API_300 */
         if(ctxDst->crlsList == NULL) {
             xmlSecOpenSSLError("sk_X509_CRL_deep_copy", xmlSecKeyDataGetName(dst));
             return(-1);

@@ -21,7 +21,9 @@ cscript configure.js prefix=%PREFIX% %XMLSEC_OPTIONS% include=%XMLSEC_INCLUDE% l
 
 mkdir binaries
 copy %PREFIX%\bin\*.dll binaries
+copy %PREFIX%\bin\*.pdb binaries
 copy %PREFIX%\lib\*.dll binaries
+copy %PREFIX%\lib\*.pdb binaries
 copy %OPENSSL_PREFIX%\bin\*.dll binaries
 copy %OPENSSL_PREFIX%\lib\*.dll binaries
 

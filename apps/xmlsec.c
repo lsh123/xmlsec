@@ -1065,8 +1065,7 @@ static void                     xmlSecAppListTransforms         (void);
 static int                      xmlSecAppCheckTransform     (const char * name);
 
 static xmlSecTransformUriType   xmlSecAppGetUriType             (const char* string);
-static FILE*                    xmlSecAppOpenFile               (const char* filename);
-static void                     xmlSecAppCloseFile              (FILE* file);
+static xmlOutputBufferPtr       xmlSecAppOpenFile               (const char* filename);
 static int                      xmlSecAppWriteResult            (const char* inputFileName,
                                                                  const char* outputFileNameTmpl,
                                                                  xmlDocPtr doc,
@@ -1361,9 +1360,14 @@ fail:
     }
 #endif /* defined(XMLSEC_WINDOWS) */
 
-
 #if defined(_MSC_VER) && defined(_CRTDBG_MAP_ALLOC)
-    _CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_DEBUG);
+    _CrtSetReportMode(_CRT_WARN,    _CRTDBG_MODE_FILE);
+    _CrtSetReportMode(_CRT_ERROR,   _CRTDBG_MODE_FILE);
+    _CrtSetReportMode(_CRT_ASSERT,  _CRTDBG_MODE_FILE);
+
+    _CrtSetReportFile(_CRT_WARN,    _CRTDBG_FILE_STDERR);
+    _CrtSetReportFile(_CRT_ERROR,   _CRTDBG_FILE_STDERR);
+    _CrtSetReportFile(_CRT_ASSERT,  _CRTDBG_FILE_STDERR);
     _CrtDumpMemoryLeaks();
 #endif /*  defined(_MSC_VER) && defined(_CRTDBG_MAP_ALLOC) */
 
@@ -3159,35 +3163,25 @@ xmlSecAppGetUriType(const char* string) {
     return(type);
 }
 
-static FILE*
+static xmlOutputBufferPtr
 xmlSecAppOpenFile(const char* filename) {
-    FILE* file = NULL;
+    xmlOutputBufferPtr outBuffer = NULL;
 
     if((filename == NULL) || (strcmp(filename, XMLSEC_STDOUT_FILENAME) == 0)) {
-        return(stdout);
+        outBuffer = xmlOutputBufferCreateFile(stdout, NULL);
+        if (outBuffer == NULL) {
+            fprintf(stderr, "Error: failed to create output buffer for stdout\n");
+            return(NULL);
+        }
+    } else {
+        outBuffer = xmlOutputBufferCreateFilename(filename, NULL, 0);
+        if (outBuffer == NULL) {
+            fprintf(stderr, "Error: failed to open file \"%s\"\n", filename);
+            return(NULL);
+        }
     }
-#if defined(_MSC_VER)
-    fopen_s(&file, filename, "wb");
-#else /* defined(_MSC_VER) */
-    file = fopen(filename, "wb");
-#endif /* defined(_MSC_VER) */
-    if(file == NULL) {
-        fprintf(stderr, "Error: failed to open file \"%s\"\n", filename);
-        return(NULL);
-    }
-
-    return(file);
+    return(outBuffer);
 }
-
-static void
-xmlSecAppCloseFile(FILE* file) {
-    if((file == NULL) || (file == stdout) || (file == stderr)) {
-        return;
-    }
-
-    fclose(file);
-}
-
 
 #define XMLSEC_OUTPUT_TMPL_PARAM  "{inputfile}"
 static char*
@@ -3242,7 +3236,7 @@ xmlSecAppGetOutputFilename(const char* inputFileName, const char* outputFileName
 
     /* create output filename */
     resSize = strlen(outputFileNameTmpl) + strlen(inputBasename) + 1;
-    res = (char*)malloc(resSize);
+    res = (char*)xmlMalloc(resSize);
     if(res == NULL) {
         fprintf(stderr, "Error: cannot allocate %d bytes for the output filename\n", (int)resSize);
         goto done;
@@ -3296,7 +3290,8 @@ done:
 static int
 xmlSecAppWriteResult(const char* inputFileName, const char* outputFileNameTmpl, xmlDocPtr doc, xmlSecBufferPtr buffer) {
     char* outputFileName = NULL;
-    FILE* f;
+    xmlOutputBufferPtr outBuffer;
+    int ret;
 
     /* get output filename by replacing '{inputfile}' with input file name */
     if((inputFileName != NULL) && (outputFileNameTmpl != NULL)) {
@@ -3307,26 +3302,39 @@ xmlSecAppWriteResult(const char* inputFileName, const char* outputFileNameTmpl, 
         }
     }
 
-    /* write file */
-    f = xmlSecAppOpenFile(outputFileName != NULL ? outputFileName : outputFileNameTmpl);
-    if(f == NULL) {
-        free(outputFileName);
-        return(-1);
+    /* open file */
+    outBuffer = xmlSecAppOpenFile(outputFileName != NULL ? outputFileName : outputFileNameTmpl);
+    if ((outputFileName != NULL) && (outputFileName != outputFileNameTmpl)) {
+        xmlFree(outputFileName);
     }
-    if((outputFileName != NULL) && (outputFileName != outputFileNameTmpl)) {
-        free(outputFileName);
+    if(outBuffer == NULL) {
+        return(-1);
     }
 
+    /* dump output */
     if(doc != NULL) {
-        xmlDocDump(f, doc);
+        ret = xmlSaveFileTo(outBuffer, doc, (const char*)doc->encoding);
+        if (ret < 0) {
+            fprintf(stderr, "Error: failed to write xml output\n");
+            xmlOutputBufferClose(outBuffer);
+            return(-1);
+        }
+        /* xmlSaveFileTo closes the buffer */
     } else if((buffer != NULL) && (xmlSecBufferGetData(buffer) != NULL)) {
-        (void)fwrite(xmlSecBufferGetData(buffer), xmlSecBufferGetSize(buffer), 1, f);
+        ret = xmlOutputBufferWrite(outBuffer, (int)xmlSecBufferGetSize(buffer), (const char*)xmlSecBufferGetData(buffer));
+        if (ret < 0) {
+            fprintf(stderr, "Error: failed to write binary output\n");
+            xmlOutputBufferClose(outBuffer);
+            return(-1);
+        }
+        xmlOutputBufferClose(outBuffer);
     } else {
         fprintf(stderr, "Error: both result doc and result buffer are null\n");
-        xmlSecAppCloseFile(f);
+        xmlOutputBufferClose(outBuffer);
         return(-1);
     }
-    xmlSecAppCloseFile(f);
+    
+    /* done */
     return(0);
 }
 

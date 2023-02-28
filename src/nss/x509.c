@@ -1017,7 +1017,9 @@ xmlSecNssVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data,  xml
         return(0);
     }
 
-    /* set cert into the x509 data */
+    /* set cert into the x509 data, we don't know if the cert is already in KeyData or not
+     * so assume we need to add it again.
+     */
     keyCert = CERT_DupCertificate(cert);
     if(keyCert == NULL) {
         xmlSecNssError("CERT_DupCertificate", xmlSecKeyDataGetName(data));

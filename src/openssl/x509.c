@@ -338,7 +338,7 @@ xmlSecOpenSSLKeyDataX509GetCert(xmlSecKeyDataPtr data, xmlSecSize pos) {
     }
 
     /* Part 2: return cert[0] instead of ctx->keyCert */
-    if((ctx->keyCert != NULL) && (X509_cmp(ctx->keyCert, cert) == 0)) {
+    if(ctx->keyCert == cert) {
         cert = sk_X509_value(ctx->certsList, 0);
     }
 

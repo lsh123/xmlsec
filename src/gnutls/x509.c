@@ -191,6 +191,23 @@ xmlSecGnuTLSKeyDataX509GetKeyCert(xmlSecKeyDataPtr data) {
     return(ctx->keyCert);
 }
 
+static int
+xmlSecGnuTLSKeyDataX509AddCertInternal(xmlSecGnuTLSX509DataCtxPtr ctx, gnutls_x509_crt_t cert) {
+    int ret;
+
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(cert != NULL, -1);
+
+    ret = xmlSecPtrListAdd(&(ctx->certsList), cert);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecPtrListAdd", NULL);
+        return(-1);
+    }
+
+    /* done */
+    return(0);
+}
+
 /**
  * xmlSecGnuTLSKeyDataX509AdoptKeyCert:
  * @data:               the pointer to X509 key data.
@@ -204,6 +221,7 @@ xmlSecGnuTLSKeyDataX509GetKeyCert(xmlSecKeyDataPtr data) {
 int
 xmlSecGnuTLSKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, gnutls_x509_crt_t cert) {
     xmlSecGnuTLSX509DataCtxPtr ctx;
+    int ret;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataX509Id), -1);
     xmlSecAssert2(cert != NULL, -1);
@@ -211,9 +229,20 @@ xmlSecGnuTLSKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, gnutls_x509_crt_t cer
     ctx = xmlSecGnuTLSX509DataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
 
-    if(ctx->keyCert != NULL) {
-        gnutls_x509_crt_deinit(ctx->keyCert);
+    /* check if for some reasons same cert is used */
+    if((ctx->keyCert != NULL) && (gnutls_x509_crt_equals(cert, ctx->keyCert) != 0)) {
+        gnutls_x509_crt_deinit(cert);  /* caller expects data to own the cert on success. */
+        return(0);
     }
+    xmlSecAssert2(ctx->keyCert == NULL, -1);
+
+    ret = xmlSecGnuTLSKeyDataX509AddCertInternal(ctx, cert);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecGnuTLSKeyDataX509AddCertInternal", xmlSecKeyDataGetName(data));
+        return(-1);
+    }
+
+    /* cert is now owned by data, we can't fail or there will be a double free */
     ctx->keyCert = cert;
     return(0);
 }
@@ -230,7 +259,6 @@ xmlSecGnuTLSKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, gnutls_x509_crt_t cer
 int
 xmlSecGnuTLSKeyDataX509AdoptCert(xmlSecKeyDataPtr data, gnutls_x509_crt_t cert) {
     xmlSecGnuTLSX509DataCtxPtr ctx;
-    int ret;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataX509Id), -1);
     xmlSecAssert2(cert != NULL, -1);
@@ -238,14 +266,12 @@ xmlSecGnuTLSKeyDataX509AdoptCert(xmlSecKeyDataPtr data, gnutls_x509_crt_t cert) 
     ctx = xmlSecGnuTLSX509DataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
 
-    ret = xmlSecPtrListAdd(&(ctx->certsList), cert);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecPtrListAdd",
-                            xmlSecKeyDataGetName(data));
-        return(-1);
+    /* pkcs12 files sometime have key cert twice: as the key cert and as the cert in the chain */
+    if((ctx->keyCert != NULL) && (gnutls_x509_crt_equals(ctx->keyCert, cert) != 0)) {
+        gnutls_x509_crt_deinit(cert); /* caller expects data to own the cert on success. */
+        return(0);
     }
-
-    return(0);
+    return(xmlSecGnuTLSKeyDataX509AddCertInternal(ctx, cert));
 }
 
 /**
@@ -260,6 +286,7 @@ xmlSecGnuTLSKeyDataX509AdoptCert(xmlSecKeyDataPtr data, gnutls_x509_crt_t cert) 
  */
 gnutls_x509_crt_t
 xmlSecGnuTLSKeyDataX509GetCert(xmlSecKeyDataPtr data, xmlSecSize pos) {
+    gnutls_x509_crt_t cert;
     xmlSecGnuTLSX509DataCtxPtr ctx;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataX509Id), NULL);
@@ -267,7 +294,28 @@ xmlSecGnuTLSKeyDataX509GetCert(xmlSecKeyDataPtr data, xmlSecSize pos) {
     ctx = xmlSecGnuTLSX509DataGetCtx(data);
     xmlSecAssert2(ctx != NULL, NULL);
 
-    return(xmlSecPtrListGetItem(&(ctx->certsList), pos));
+    /* ensure key cert if present is always the first one
+     * by "swapping" cert[0] and ctx->keyCert
+     *
+     * Part 1: return ctx->keyCert instead of cert[0]
+     */
+    if((ctx->keyCert != NULL) && (pos == 0)) {
+        return(ctx->keyCert);
+    }
+
+    cert = xmlSecPtrListGetItem(&(ctx->certsList), pos);
+    if(cert == NULL) {
+        xmlSecInternalError("xmlSecPtrListGetItem", NULL);
+        return(NULL);
+    }
+
+    /* Part 2: return cert[0] instead of ctx->keyCert */
+    if(ctx->keyCert == cert) {
+        cert = xmlSecPtrListGetItem(&(ctx->certsList), 0);
+    }
+
+    /* done */
+    return(cert);
 }
 
 /**
@@ -453,9 +501,7 @@ xmlSecGnuTLSKeyDataX509Finalize(xmlSecKeyDataPtr data) {
 
     xmlSecPtrListFinalize(&(ctx->crlsList));
     xmlSecPtrListFinalize(&(ctx->certsList));
-    if(ctx->keyCert != NULL) {
-        gnutls_x509_crt_deinit(ctx->keyCert);
-    }
+
     memset(ctx, 0, sizeof(xmlSecGnuTLSX509DataCtx));
 }
 
@@ -921,6 +967,7 @@ xmlSecGnuTLSKVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data, 
     xmlSecGnuTLSX509DataCtxPtr ctx;
     xmlSecKeyDataStorePtr x509Store;
     gnutls_x509_crt_t cert;
+    gnutls_x509_crt_t keyCert;
     xmlSecKeyDataPtr keyValue;
     int ret;
 
@@ -954,13 +1001,21 @@ xmlSecGnuTLSKVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data, 
         return(0);
     }
 
-    /* set cert into the x509 data */
-    ctx->keyCert = xmlSecGnuTLSX509CertDup(cert);
-    if(ctx->keyCert == NULL) {
+    /* set cert into the x509 data, we don't know if the cert is already in KeyData or not
+     * so assume we need to add it again.
+     */
+    keyCert = xmlSecGnuTLSX509CertDup(cert);
+    if(keyCert == NULL) {
         xmlSecInternalError("xmlSecGnuTLSX509CertDup", xmlSecKeyDataGetName(data));
         return(-1);
     }
-    cert = NULL; /* we should be using ctx->keyCert for everything */
+    ret = xmlSecGnuTLSKeyDataX509AdoptKeyCert(data, keyCert);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecGnuTLSKeyDataX509AdoptKeyCert", xmlSecKeyDataGetName(data));
+        gnutls_x509_crt_deinit(keyCert);
+        return(-1);
+    }
+    cert = keyCert = NULL; /* we should be using ctx->keyCert for everything */
 
     /* extract key from cert and verify that the key matches our expectations */
     keyValue = xmlSecGnuTLSX509CertGetKey(ctx->keyCert);

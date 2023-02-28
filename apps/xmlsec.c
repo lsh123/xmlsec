@@ -17,6 +17,7 @@
 #define snprintf _snprintf
 #endif /* defined(_MSC_VER) && _MSC_VER < 1900 */
 
+
 #include <libxml/tree.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
@@ -47,6 +48,11 @@
 
 #include "crypto.h"
 #include "cmdline.h"
+
+
+#if defined(_MSC_VER) && defined(_CRTDBG_MAP_ALLOC)
+#include <crtdbg.h>
+#endif /*defined(_MSC_VER) && defined(_CRTDBG_MAP_ALLOC) */
 
 static const char copyright[] =
     "Written by Aleksey Sanin <aleksey@aleksey.com>.\n\n"
@@ -1354,6 +1360,13 @@ fail:
         utf8_argv = NULL;
     }
 #endif /* defined(XMLSEC_WINDOWS) */
+
+
+#if defined(_MSC_VER) && defined(_CRTDBG_MAP_ALLOC)
+    _CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_DEBUG);
+    _CrtDumpMemoryLeaks();
+#endif /*  defined(_MSC_VER) && defined(_CRTDBG_MAP_ALLOC) */
+
     return(res);
 }
 

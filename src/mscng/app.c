@@ -191,7 +191,6 @@ xmlSecKeyPtr
 xmlSecMSCngAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlSecKeyDataFormat format,
                             const char *pwd, void* pwdCallback, void* pwdCallbackCtx) {
     PCCERT_CONTEXT pCert = NULL;
-    PCCERT_CONTEXT pCertChain = NULL;
     PCCERT_CONTEXT pKeyCert = NULL;
     xmlSecKeyDataPtr x509Data = NULL;
     xmlSecKeyDataPtr keyData = NULL;
@@ -207,20 +206,13 @@ xmlSecMSCngAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlSecK
     UNREFERENCED_PARAMETER(pwdCallback);
     UNREFERENCED_PARAMETER(pwdCallbackCtx);
 
-    /* read cert and make a copy for cert chain and keyCert */
+    /* read cert and make a copy for keyCert */
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(dataSize, dwDataSize, goto done, NULL);
     pCert = CertCreateCertificateContext(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, data, dwDataSize);
     if(pCert == NULL) {
         xmlSecMSCngLastError("CertCreateCertificateContext", NULL);
         goto done;
     }
-
-    pCertChain = CertDuplicateCertificateContext(pCert);
-    if(pCertChain == NULL) {
-        xmlSecMSCngLastError("CertDuplicateCertificateContext", NULL);
-        goto done;
-    }
-
     pKeyCert = CertDuplicateCertificateContext(pCert);
     if(pKeyCert == NULL) {
         xmlSecMSCngLastError("CertDuplicateCertificateContext", NULL);
@@ -249,7 +241,7 @@ xmlSecMSCngAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlSecK
     }
     keyData = NULL;
 
-   /* add cert and keyCert to x509 data and add it to the key */
+    /* add keyCert to x509 data and add it to the key */
     x509Data = xmlSecKeyDataCreate(xmlSecMSCngKeyDataX509Id);
     if(x509Data == NULL) {
         xmlSecInternalError("xmlSecKeyDataCreate", NULL);
@@ -262,13 +254,6 @@ xmlSecMSCngAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlSecK
         goto done;
     }
     pKeyCert = NULL; /* owned by x509Data data now */
-
-    ret = xmlSecMSCngKeyDataX509AdoptCert(x509Data, pCertChain);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptCert", NULL);
-        goto done;
-    }
-    pCertChain = NULL; /* owned by x509Data data now */
 
     ret = xmlSecKeyAdoptData(key, x509Data);
     if(ret < 0) {
@@ -284,9 +269,6 @@ xmlSecMSCngAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlSecK
 done:
     if(pCert != NULL) {
         CertFreeCertificateContext(pCert);
-    }
-    if(pCertChain != NULL) {
-        CertFreeCertificateContext(pCertChain);
     }
     if(pKeyCert != NULL) {
         CertFreeCertificateContext(pKeyCert);
@@ -493,6 +475,11 @@ xmlSecMSCngAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, cons
         ret = CertGetCertificateContextProperty(cert, CERT_KEY_SPEC_PROP_ID,
             &dwData, &dwDataLen);
         if(ret == TRUE) {
+            if (privKeyData != NULL) {
+                /* multiple private keys, use the first one */
+                continue;
+            }
+
             /* adopt private key */
             certDuplicate = CertDuplicateCertificateContext(cert);
             if(certDuplicate == NULL) {
@@ -507,21 +494,35 @@ xmlSecMSCngAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, cons
                 goto cleanup;
             }
             certDuplicate = NULL;
-        }
 
-        /* adopt certificate */
-        certDuplicate = CertDuplicateCertificateContext(cert);
-        if(certDuplicate == NULL) {
-            xmlSecMSCngLastError("CertDuplicateCertificateContext", NULL);
-            goto cleanup;
-        }
+            /* adopt key certificate */
+            certDuplicate = CertDuplicateCertificateContext(cert);
+            if (certDuplicate == NULL) {
+                xmlSecMSCngLastError("CertDuplicateCertificateContext", NULL);
+                goto cleanup;
+            }
 
-        ret = xmlSecMSCngKeyDataX509AdoptCert(keyData, certDuplicate);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptKeyCert", NULL);
-            goto cleanup;
+            ret = xmlSecMSCngKeyDataX509AdoptKeyCert(keyData, certDuplicate);
+            if (ret < 0) {
+                xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptKeyCert", NULL);
+                goto cleanup;
+            }
+            certDuplicate = NULL;
+        } else {
+            /* adopt certificate */
+            certDuplicate = CertDuplicateCertificateContext(cert);
+            if (certDuplicate == NULL) {
+                xmlSecMSCngLastError("CertDuplicateCertificateContext", NULL);
+                goto cleanup;
+            }
+
+            ret = xmlSecMSCngKeyDataX509AdoptCert(keyData, certDuplicate);
+            if (ret < 0) {
+                xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptKeyCert", NULL);
+                goto cleanup;
+            }
+            certDuplicate = NULL;
         }
-        certDuplicate = NULL;
     }
 
     /* at this point we should have a private key */

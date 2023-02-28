@@ -57,6 +57,7 @@ var withLegacyCrypto = 0;
 var withNT4 = 0;
 var buildUnicode = 1;
 var buildDebug = 0;
+var buildWithMemcheck = 0;
 var buildWerror = 0;
 var buildPedantic = 1;
 var buildCc = "cl.exe";
@@ -124,6 +125,7 @@ function usage()
 	txt += "  nt4:        Enable NT 4.0 support (" + (withNT4 ? "yes" : "no") + ")\n";
 	txt += "  unicode:    Build Unicode version (" + (buildUnicode? "yes" : "no")  + ")\n";
 	txt += "  debug:      Build unoptimised debug executables (" + (buildDebug? "yes" : "no")  + ")\n";
+	txt += "  memcheck:   Build unoptimised debug executables with memcheck reporting (" + (buildWithMemcheck ? "yes" : "no") + ")\n";
 	txt += "  werror:     Build with warnings as errors (" + (buildWerror? "yes" : "no")  + ")\n";
     txt += "  pedantic:   Build with more warnings enabled (" + (buildPedantic? "yes" : "no") + ")\n";
 	txt += "  cc:         Build with the specified compiler(" + buildCc  + ")\n";
@@ -196,6 +198,7 @@ function discoverVersion()
 	vf.WriteLine("WITH_NT4=" + (withNT4 ? "1" : "0"));
 	vf.WriteLine("UNICODE=" + (buildUnicode? "1" : "0"));
 	vf.WriteLine("DEBUG=" + (buildDebug? "1" : "0"));
+	vf.WriteLine("MEMCHECK=" + (buildWithMemcheck ? "1" : "0"));
 	vf.WriteLine("WERROR=" + (buildWerror? "1" : "0"));
 	vf.WriteLine("PEDANTIC=" + (buildPedantic? "1" : "0"));
 	vf.WriteLine("CC=" + buildCc);
@@ -313,6 +316,7 @@ function genReadme(bname, ver, file)
  */
 
 /* Parse the command-line arguments. */
+var cruntimeSet = 0
 for (i = 0; (i < WScript.Arguments.length) && (error == 0); i++) {
 	var arg, opt;
 	arg = WScript.Arguments(i);
@@ -336,7 +340,10 @@ for (i = 0; (i < WScript.Arguments.length) && (error == 0); i++) {
 			buildUnicode = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "debug")
 			buildDebug = strToBool(arg.substring(opt.length + 1, arg.length));
-		else if (opt == "werror")
+		else if (opt == "memcheck") {
+			buildWithMemcheck = strToBool(arg.substring(opt.length + 1, arg.length));
+			buildDebug = true;
+		} else if (opt == "werror")
 			buildWerror = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "pedantic")
 			buildPedantic = strToBool(arg.substring(opt.length + 1, arg.length));
@@ -364,10 +371,11 @@ for (i = 0; (i < WScript.Arguments.length) && (error == 0); i++) {
 			buildInclude = arg.substring(opt.length + 1, arg.length);
 		else if (opt == "lib")
 			buildLib = arg.substring(opt.length + 1, arg.length);
-		else if (opt == "cruntime")
+		else if (opt == "cruntime") {
 			cruntime = arg.substring(opt.length + 1, arg.length);
-		else if (opt == "with-openssl3-engines")
-			withOpenSSL3Engines = strToBool(arg.substring(opt.length + 1, arg.length));		
+			cruntimeSet = 1;
+		} else if (opt == "with-openssl3-engines")
+			withOpenSSL3Engines = strToBool(arg.substring(opt.length + 1, arg.length));
 		else
 			error = 1;
 	} else if (i == 0) {
@@ -380,9 +388,15 @@ for (i = 0; (i < WScript.Arguments.length) && (error == 0); i++) {
 			usage();
 			WScript.Quit(0);
 		}
-	} else
+	} else {
 		error = 1;
+	}
 }
+
+if (cruntimeSet == 0 && buildDebug != 0) {
+	cruntime = cruntime + "d";
+}
+
 // If we have an error here, it is because the user supplied bad parameters.
 if (error != 0) {
 	usage();
@@ -473,6 +487,7 @@ txtOut += "     NT 4.0 support: " + boolToStr(withNT4) + "\n";
 txtOut += "  C-Runtime option: " + cruntime + "\n";
 txtOut += "           Unicode: " + boolToStr(buildUnicode) + "\n";
 txtOut += "     Debug symbols: " + boolToStr(buildDebug) + "\n";
+txtOut += "          Memcheck: " + boolToStr(buildWithMemcheck) + "\n";
 txtOut += "Warnings as errors: " + boolToStr(buildWerror) + "\n";
 txtOut += "          Pedantic: " + boolToStr(buildPedantic) + "\n";
 txtOut += "        C compiler: " + buildCc + "\n";

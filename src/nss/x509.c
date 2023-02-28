@@ -104,7 +104,7 @@ struct _xmlSecNssX509CrlNode {
 };
 
 struct _xmlSecNssX509DataCtx {
-    CERTCertificate*  keyCert;
+    CERTCertificate*  keyCert;  /* OWNED BY certsList */
 
     CERTCertList*    certsList;
     unsigned int     numCerts;
@@ -228,18 +228,47 @@ xmlSecNssKeyDataX509GetKeyCert(xmlSecKeyDataPtr data) {
     return(ctx->keyCert);
 }
 
+static int
+xmlSecNssKeyDataX509AddCertInternal(xmlSecNssX509DataCtxPtr ctx, CERTCertificate* cert) {
+    int ret;
+
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(cert != NULL, -1);
+
+    if(ctx->certsList == NULL) {
+        ctx->certsList = CERT_NewCertList();
+        if(ctx->certsList == NULL) {
+            xmlSecNssError("CERT_NewCertList", NULL);
+            return(-1);
+        }
+    }
+
+    ret = CERT_AddCertToListTail(ctx->certsList, cert);
+    if(ret != SECSuccess) {
+        xmlSecNssError("CERT_AddCertToListTail", NULL);
+        return(-1);
+    }
+    ctx->numCerts++;
+
+    /* done */
+    return(0);
+}
+
+
 /**
  * xmlSecNssKeyDataX509AdoptKeyCert:
  * @data:               the pointer to X509 key data.
  * @cert:               the pointer to NSS X509 certificate.
  *
- * Sets the key's certificate in @data.
+ * Adds certificate to the X509 key data and sets the it as the key's
+ * certificate in @data. On success, the @data owns the cert.
  *
  * Returns: 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecNssKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, CERTCertificate* cert) {
     xmlSecNssX509DataCtxPtr ctx;
+    int ret;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecNssKeyDataX509Id), -1);
     xmlSecAssert2(cert != NULL, -1);
@@ -247,9 +276,20 @@ xmlSecNssKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, CERTCertificate* cert) {
     ctx = xmlSecNssX509DataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
 
-    if(ctx->keyCert != NULL) {
-        CERT_DestroyCertificate(ctx->keyCert);
+    /* check if for some reasons same cert is used */
+    if((ctx->keyCert != NULL) && (CERT_CompareCerts(cert, ctx->keyCert) == PR_TRUE)) {
+        CERT_DestroyCertificate(cert);  /* caller expects data to own the cert on success. */
+        return(0);
     }
+    xmlSecAssert2(ctx->keyCert == NULL, -1);
+
+    ret = xmlSecNssKeyDataX509AddCertInternal(ctx, cert);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecNssKeyDataX509AddCertInternal", NULL);
+        return(-1);
+    }
+
+    /* cert is now owned by data, we can't fail or there will be a double free */
     ctx->keyCert = cert;
     return(0);
 }
@@ -266,7 +306,6 @@ xmlSecNssKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, CERTCertificate* cert) {
 int
 xmlSecNssKeyDataX509AdoptCert(xmlSecKeyDataPtr data, CERTCertificate* cert) {
     xmlSecNssX509DataCtxPtr ctx;
-    SECStatus ret;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecNssKeyDataX509Id), -1);
     xmlSecAssert2(cert != NULL, -1);
@@ -274,22 +313,12 @@ xmlSecNssKeyDataX509AdoptCert(xmlSecKeyDataPtr data, CERTCertificate* cert) {
     ctx = xmlSecNssX509DataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
 
-    if(ctx->certsList == NULL) {
-        ctx->certsList = CERT_NewCertList();
-        if(ctx->certsList == NULL) {
-            xmlSecNssError("CERT_NewCertList", xmlSecKeyDataGetName(data));
-            return(-1);
-        }
+   /* pkcs12 files sometime have key cert twice: as the key cert and as the cert in the chain */
+    if((ctx->keyCert != NULL) && (CERT_CompareCerts(ctx->keyCert, cert) == PR_TRUE)) {
+        CERT_DestroyCertificate(cert); /* caller expects data to own the cert on success. */
+        return(0);
     }
-
-    ret = CERT_AddCertToListTail(ctx->certsList, cert);
-    if(ret != SECSuccess) {
-        xmlSecNssError("CERT_AddCertToListTail", xmlSecKeyDataGetName(data));
-        return(-1);
-    }
-    ctx->numCerts++;
-
-    return(0);
+    return(xmlSecNssKeyDataX509AddCertInternal(ctx, cert));
 }
 
 /**
@@ -305,7 +334,7 @@ xmlSecNssKeyDataX509AdoptCert(xmlSecKeyDataPtr data, CERTCertificate* cert) {
 CERTCertificate*
 xmlSecNssKeyDataX509GetCert(xmlSecKeyDataPtr data, xmlSecSize pos) {
     xmlSecNssX509DataCtxPtr ctx;
-    CERTCertListNode*       head;
+    CERTCertListNode* cur;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecNssKeyDataX509Id), NULL);
 
@@ -314,14 +343,30 @@ xmlSecNssKeyDataX509GetCert(xmlSecKeyDataPtr data, xmlSecSize pos) {
     xmlSecAssert2(ctx->certsList != NULL, NULL);
     xmlSecAssert2(pos < ctx->numCerts, NULL);
 
-    head = CERT_LIST_HEAD(ctx->certsList);
-    while (pos > 0)
-    {
-        head = CERT_LIST_NEXT(head);
-        pos--;
+    /* ensure that key cert is always first */
+    if(ctx->keyCert != NULL) {
+        if(pos == 0) {
+            return(ctx->keyCert);
+        }
+        for(cur = CERT_LIST_HEAD(ctx->certsList); !CERT_LIST_END(cur, ctx->certsList); cur = CERT_LIST_NEXT(cur)) {
+            if(cur->cert == ctx->keyCert) {
+                continue;
+            }
+            --pos;
+            if(pos <= 0) {
+                return(cur->cert);
+            }
+        }
+    } else {
+        for(cur = CERT_LIST_HEAD(ctx->certsList); !CERT_LIST_END(cur, ctx->certsList); cur = CERT_LIST_NEXT(cur)) {
+            if(pos <= 0) {
+                return(cur->cert);
+            }
+            --pos;
+        }
     }
-
-    return (head->cert);
+    /* not found: should not be here */
+    return (NULL);
 }
 
 /**
@@ -444,93 +489,6 @@ xmlSecNssKeyDataX509Initialize(xmlSecKeyDataPtr data) {
     return(0);
 }
 
-static int
-xmlSecNssKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
-    CERTCertificate* certSrc;
-    CERTCertificate* certDst;
-    CERTSignedCrl* crlSrc;
-    CERTSignedCrl* crlDst;
-    xmlSecSize size, pos;
-    int ret;
-
-    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecNssKeyDataX509Id), -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecNssKeyDataX509Id), -1);
-
-    /* copy certsList */
-    size = xmlSecNssKeyDataX509GetCertsSize(src);
-    for(pos = 0; pos < size; ++pos) {
-        /* TBD: function below does linear scan, eliminate loop within
-         * loop
-         */
-        certSrc = xmlSecNssKeyDataX509GetCert(src, pos);
-        if(certSrc == NULL) {
-            xmlSecInternalError2("xmlSecNssKeyDataX509GetCert",
-                                 xmlSecKeyDataGetName(src),
-                                 "pos=" XMLSEC_SIZE_FMT, pos);
-            return(-1);
-        }
-
-        certDst = CERT_DupCertificate(certSrc);
-        if(certDst == NULL) {
-            xmlSecNssError("CERT_DupCertificate", xmlSecKeyDataGetName(dst));
-            return(-1);
-        }
-
-        ret = xmlSecNssKeyDataX509AdoptCert(dst, certDst);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecNssKeyDataX509AdoptCert",
-                                xmlSecKeyDataGetName(dst));
-            CERT_DestroyCertificate(certDst);
-            return(-1);
-        }
-    }
-
-    /* copy crls */
-    size = xmlSecNssKeyDataX509GetCrlsSize(src);
-    for(pos = 0; pos < size; ++pos) {
-        crlSrc = xmlSecNssKeyDataX509GetCrl(src, pos);
-        if(crlSrc == NULL) {
-            xmlSecInternalError2("xmlSecNssKeyDataX509GetCrl",
-                                 xmlSecKeyDataGetName(src),
-                                 "pos=" XMLSEC_SIZE_FMT, pos);
-            return(-1);
-        }
-
-        crlDst = SEC_DupCrl(crlSrc);
-        if(crlDst == NULL) {
-            xmlSecNssError("SEC_DupCrl", xmlSecKeyDataGetName(dst));
-            return(-1);
-        }
-
-        ret = xmlSecNssKeyDataX509AdoptCrl(dst, crlDst);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecNssKeyDataX509AdoptCrl",
-                                xmlSecKeyDataGetName(dst));
-            SEC_DestroyCrl(crlDst);
-            return(-1);
-        }
-    }
-
-    /* copy key cert if exist */
-    certSrc = xmlSecNssKeyDataX509GetKeyCert(src);
-    if(certSrc != NULL) {
-        certDst = CERT_DupCertificate(certSrc);
-        if(certDst == NULL) {
-            xmlSecNssError("CERT_DupCertificate",
-                           xmlSecKeyDataGetName(dst));
-            return(-1);
-        }
-        ret = xmlSecNssKeyDataX509AdoptKeyCert(dst, certDst);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecNssKeyDataX509AdoptKeyCert",
-                                xmlSecKeyDataGetName(dst));
-            CERT_DestroyCertificate(certDst);
-            return(-1);
-        }
-    }
-    return(0);
-}
-
 static void
 xmlSecNssKeyDataX509Finalize(xmlSecKeyDataPtr data) {
     xmlSecNssX509DataCtxPtr ctx;
@@ -557,13 +515,88 @@ xmlSecNssKeyDataX509Finalize(xmlSecKeyDataPtr data) {
             head = tmp;
         }
     }
-
-    if(ctx->keyCert != NULL) {
-        CERT_DestroyCertificate(ctx->keyCert);
-    }
-
     memset(ctx, 0, sizeof(xmlSecNssX509DataCtx));
 }
+
+static int
+xmlSecNssKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
+    xmlSecNssX509DataCtxPtr ctxSrc, ctxDst;
+    int ret;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecNssKeyDataX509Id), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecNssKeyDataX509Id), -1);
+
+    ctxSrc = xmlSecNssX509DataGetCtx(src);
+    xmlSecAssert2(ctxSrc != NULL, -1);
+
+    /* dst should not have any data */
+    ctxDst = xmlSecNssX509DataGetCtx(dst);
+    xmlSecAssert2(ctxDst != NULL, -1);
+    xmlSecAssert2(ctxDst->keyCert == NULL, -1);
+    xmlSecAssert2(ctxDst->certsList == NULL, -1);
+    xmlSecAssert2(ctxDst->crlsList == NULL, -1);
+
+    /* crts */
+    if(ctxSrc->certsList != NULL) {
+        CERTCertListNode* cur;
+        CERTCertificate* cert;
+
+        for(cur = CERT_LIST_HEAD(ctxSrc->certsList); !CERT_LIST_END(cur, ctxSrc->certsList); cur = CERT_LIST_NEXT(cur)) {
+            xmlSecAssert2(cur->cert != NULL, -1);
+            cert = CERT_DupCertificate(cur->cert);
+            if(cert == NULL) {
+                xmlSecNssError("CERT_DupCertificate", NULL);
+                return(-1);
+            }
+
+            /* handle key cert */
+            if(cur->cert == ctxSrc->keyCert) {
+                ret = xmlSecNssKeyDataX509AdoptKeyCert(dst, cert);
+                if(ret < 0) {
+                    xmlSecInternalError("xmlSecNssKeyDataX509AdoptKeyCert", NULL);
+                    CERT_DestroyCertificate(cert);
+                    return(-1);
+                }
+            } else {
+                ret = xmlSecNssKeyDataX509AdoptCert(dst, cert);
+                if(ret < 0) {
+                    xmlSecInternalError("xmlSecNssKeyDataX509AdoptCert", NULL);
+                    CERT_DestroyCertificate(cert);
+                    return(-1);
+                }
+            }
+            cert = NULL; /* owned by dst now */
+        }
+    }
+
+    /* crts */
+    if(ctxSrc->crlsList != NULL) {
+        xmlSecNssX509CrlNodePtr cur;
+        CERTSignedCrl* crl;
+
+        for(cur = ctxSrc->crlsList; cur != NULL; cur = cur->next) {
+            xmlSecAssert2(cur->crl != NULL, -1);
+
+            crl = SEC_DupCrl(cur->crl);
+            if(crl == NULL) {
+                xmlSecNssError("SEC_DupCrl", NULL);
+                return(-1);
+            }
+
+            ret = xmlSecNssKeyDataX509AdoptCrl(dst, crl);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecNssKeyDataX509AdoptCrl", NULL);
+                SEC_DestroyCrl(crl);
+                return(-1);
+            }
+            crl = NULL; /* owned by dst now */
+        }
+    }
+
+    /* done */
+    return(0);
+}
+
 
 static int
 xmlSecNssKeyDataX509XmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
@@ -947,8 +980,8 @@ xmlSecNssVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data,  xml
     xmlSecNssX509DataCtxPtr ctx;
     xmlSecKeyDataStorePtr x509Store;
     xmlSecKeyDataPtr keyValue;
-
     CERTCertificate* cert;
+    CERTCertificate* keyCert;
     int ret;
     SECStatus status;
     PRTime notBefore, notAfter;
@@ -984,13 +1017,21 @@ xmlSecNssVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data,  xml
         return(0);
     }
 
-    /* set cert into the x509 data */
-    ctx->keyCert = CERT_DupCertificate(cert);
-    if(ctx->keyCert == NULL) {
+    /* set cert into the x509 data, we don't know if the cert is already in KeyData or not
+     * so assume we need to add it again.
+     */
+    keyCert = CERT_DupCertificate(cert);
+    if(keyCert == NULL) {
         xmlSecNssError("CERT_DupCertificate", xmlSecKeyDataGetName(data));
         return(-1);
     }
-     cert = NULL; /* we should be using ctx->keyCert for everything */
+    ret = xmlSecNssKeyDataX509AdoptKeyCert(data, keyCert);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecNssX509CertGetKey", xmlSecKeyDataGetName(data));
+        CERT_DestroyCertificate(keyCert);
+        return(-1);
+    }
+    cert = keyCert = NULL; /* we should be using ctx->keyCert for everything */
 
     /* extract key from cert and verify that the key matches our expectations */
     keyValue = xmlSecNssX509CertGetKey(ctx->keyCert);
@@ -1016,14 +1057,12 @@ xmlSecNssVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data,  xml
     if (status == SECSuccess) {
         ret = xmlSecNssX509CertGetTime(&notBefore, &(key->notValidBefore));
         if(ret < 0) {
-            xmlSecInternalError("xmlSecNssX509CertGetTime(notValidBefore)",
-                                xmlSecKeyDataGetName(data));
+            xmlSecInternalError("xmlSecNssX509CertGetTime(notValidBefore)", xmlSecKeyDataGetName(data));
             return(-1);
         }
         ret = xmlSecNssX509CertGetTime(&notAfter, &(key->notValidAfter));
         if(ret < 0) {
-            xmlSecInternalError("xmlSecNssX509CertGetTime(notValidAfter)",
-                                xmlSecKeyDataGetName(data));
+            xmlSecInternalError("xmlSecNssX509CertGetTime(notValidAfter)", xmlSecKeyDataGetName(data));
             return(-1);
         }
     } else {
@@ -1254,7 +1293,7 @@ xmlSecNssX509DigestWrite(CERTCertificate* cert, const xmlChar* algorithm, xmlSec
 
     digestAlg = xmlSecNssX509GetDigestFromAlgorithm(algorithm);
     if(digestAlg == SEC_OID_UNKNOWN) {
-        xmlSecInternalError("xmlSecOpenSSLX509GetDigestFromAlgorithm", NULL);
+        xmlSecInternalError("xmlSecNssX509GetDigestFromAlgorithm", NULL);
         return(-1);
     }
 

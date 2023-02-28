@@ -617,13 +617,13 @@ xmlSecNssAppKeyCertLoadSECItem(xmlSecKeyPtr key, SECItem* secItem, xmlSecKeyData
         cert = __CERT_NewTempCertificate(CERT_GetDefaultCertDB(),
                                          secItem, NULL, PR_FALSE, PR_TRUE);
         if(cert == NULL) {
-            xmlSecNssError2("__CERT_NewTempCertificate", xmlSecKeyDataGetName(data),
+            xmlSecNssError2("__CERT_NewTempCertificate", NULL,
                 "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
             goto done;
         }
         break;
     default:
-        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, xmlSecKeyDataGetName(data),
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
             "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
         goto done;
     }
@@ -632,7 +632,7 @@ xmlSecNssAppKeyCertLoadSECItem(xmlSecKeyPtr key, SECItem* secItem, xmlSecKeyData
     /* add key cert to the data */
     ret = xmlSecNssKeyDataX509AdoptKeyCert(data, cert);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecNssKeyDataX509AdoptKeyCert", xmlSecKeyDataGetName(data));
+        xmlSecInternalError("xmlSecNssKeyDataX509AdoptKeyCert", NULL);
         goto done;
     }
     cert = NULL; /* owned by data now */

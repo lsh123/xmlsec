@@ -228,8 +228,7 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
      * symmetric keys using PK11_FindFixedKey
      */
     keyReq = &(keyInfoCtx->keyReq);
-    if (keyReq->keyType &
-        (xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate)) {
+    if (keyReq->keyType & (xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate)) {
         cert = CERT_FindCertByNickname (CERT_GetDefaultCertDB(), (char *)name);
         if (cert == NULL) {
             goto done;
@@ -267,44 +266,27 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
 
         x509Data = xmlSecKeyDataCreate(xmlSecNssKeyDataX509Id);
         if(x509Data == NULL) {
-            xmlSecInternalError("xmlSecKeyDataCreate",
-                                xmlSecTransformKlassGetName(xmlSecNssKeyDataX509Id));
+            xmlSecInternalError("xmlSecKeyDataCreate", NULL);
             goto done;
         }
 
         ret = xmlSecNssKeyDataX509AdoptKeyCert(x509Data, cert);
         if (ret < 0) {
-            xmlSecInternalError("xmlSecNssKeyDataX509AdoptKeyCert",
-                                xmlSecKeyDataGetName(x509Data));
+            xmlSecInternalError("xmlSecNssKeyDataX509AdoptKeyCert", NULL);
             goto done;
         }
-        cert = CERT_DupCertificate(cert);
-        if (cert == NULL) {
-            xmlSecNssError("CERT_DupCertificate",
-                           xmlSecKeyDataGetName(x509Data));
-            goto done;
-        }
-
-        ret = xmlSecNssKeyDataX509AdoptCert(x509Data, cert);
-        if (ret < 0) {
-            xmlSecInternalError("xmlSecNssKeyDataX509AdoptCert",
-                                xmlSecKeyDataGetName(x509Data));
-            goto done;
-        }
-        cert = NULL;
+        cert = NULL; /* owned by x509 data */
 
         ret = xmlSecKeySetValue(key, data);
         if (ret < 0) {
-            xmlSecInternalError("xmlSecKeySetValue",
-                xmlSecKeyDataGetName(data));
+            xmlSecInternalError("xmlSecKeySetValue", NULL);
             goto done;
         }
         data = NULL;
 
         ret = xmlSecKeyAdoptData(key, x509Data);
         if (ret < 0) {
-            xmlSecInternalError("xmlSecKeyAdoptData",
-                                xmlSecKeyDataGetName(x509Data));
+            xmlSecInternalError("xmlSecKeyAdoptData", NULL);
             goto done;
         }
         x509Data = NULL;

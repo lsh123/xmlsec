@@ -32,6 +32,7 @@ AUTOCONF = .\configure.txt
 #WITH_XMLSEC_DEBUG = 1
 #UNICODE = 1
 #DEBUG = 0
+#MEMCHECK = 0
 #WITH_CRYPTO=openssl
 #WITH_DEFAULT_CRYPTO=openssl
 #WITH_OPENSSL=1
@@ -413,6 +414,11 @@ CFLAGS = $(CFLAGS) /D "UNICODE" /D "_UNICODE"
 CFLAGS = $(CFLAGS) /D "_DEBUG" /Od /Zi
 !else
 CFLAGS = $(CFLAGS) /D "NDEBUG" /O2 /Zi
+!endif
+
+# Enable memcheck.
+!if "$(MEMCHECK)" == "1"
+# CFLAGS = $(CFLAGS) /D "_CRTDBG_MAP_ALLOC" 
 !endif
 
 CFLAGS = $(CFLAGS) $(CRUNTIME)

@@ -205,22 +205,6 @@ xmlSecMSCngKeysStoreAddCertDataToKey(xmlSecKeyPtr key, PCCERT_CONTEXT cert) {
         return(-1);
     }
 
-    /* add cert to the X509 list of certs */
-    certTmp = CertDuplicateCertificateContext(cert);
-    if (certTmp == NULL) {
-        xmlSecMSCngLastError("CertDuplicateCertificateContext", NULL);
-        xmlSecKeyDataDestroy(x509Data);
-        return(-1);
-    }
-    ret = xmlSecMSCngKeyDataX509AdoptCert(x509Data, certTmp);
-    if (ret < 0) {
-        xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptCert", NULL);
-        CertFreeCertificateContext(certTmp);
-        xmlSecKeyDataDestroy(x509Data);
-        return(-1);
-    }
-    certTmp = NULL; /* owned by x509Data*/
-
     /* set cert as the key cert */
     certTmp = CertDuplicateCertificateContext(cert);
     if (certTmp == NULL) {
@@ -236,7 +220,6 @@ xmlSecMSCngKeysStoreAddCertDataToKey(xmlSecKeyPtr key, PCCERT_CONTEXT cert) {
         return(-1);
     }
     certTmp = NULL; /* owned by x509Data*/
-
 
     /* lastly, add x509 data to the key */
     ret = xmlSecKeyAdoptData(key, x509Data);

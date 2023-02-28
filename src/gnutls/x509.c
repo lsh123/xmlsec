@@ -66,7 +66,7 @@ static int              xmlSecGnuTLSKVerifyAndAdoptX509KeyData  (xmlSecKeyPtr ke
 typedef struct _xmlSecGnuTLSX509DataCtx                         xmlSecGnuTLSX509DataCtx,
                                                                 *xmlSecGnuTLSX509DataCtxPtr;
 struct _xmlSecGnuTLSX509DataCtx {
-    gnutls_x509_crt_t   keyCert;
+    gnutls_x509_crt_t   keyCert;    /* OWNED BY certsList */
     xmlSecPtrList       certsList;
     xmlSecPtrList       crlsList;
 };
@@ -450,9 +450,9 @@ xmlSecGnuTLSKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecGnuTLSKeyDataX509Id), -1);
 
     ctxSrc = xmlSecGnuTLSX509DataGetCtx(src);
-    xmlSecAssert2(ctxSrc != NULL, 0);
+    xmlSecAssert2(ctxSrc != NULL, -1);
     ctxDst = xmlSecGnuTLSX509DataGetCtx(dst);
-    xmlSecAssert2(ctxDst != NULL, 0);
+    xmlSecAssert2(ctxDst != NULL, -1);
 
     /* copy key cert if exist */
     if(ctxDst->keyCert != NULL) {
@@ -462,8 +462,7 @@ xmlSecGnuTLSKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     if(ctxSrc->keyCert != NULL) {
         ctxDst->keyCert = xmlSecGnuTLSX509CertDup(ctxSrc->keyCert);
         if(ctxDst->keyCert == NULL) {
-            xmlSecInternalError("xmlSecGnuTLSX509CertDup",
-                                xmlSecKeyDataGetName(src));
+            xmlSecInternalError("xmlSecGnuTLSX509CertDup", NULL);
             return(-1);
         }
     }
@@ -472,8 +471,7 @@ xmlSecGnuTLSKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     xmlSecPtrListEmpty(&(ctxDst->certsList));
     ret = xmlSecPtrListCopy(&(ctxDst->certsList), &(ctxSrc->certsList));
     if(ret < 0) {
-        xmlSecInternalError("xmlSecPtrListCopy(certsList)",
-                            xmlSecKeyDataGetName(src));
+        xmlSecInternalError("xmlSecPtrListCopy(certsList)", NULL);
         return(-1);
     }
 
@@ -481,8 +479,7 @@ xmlSecGnuTLSKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     xmlSecPtrListEmpty(&(ctxDst->crlsList));
     ret = xmlSecPtrListCopy(&(ctxDst->crlsList), &(ctxSrc->crlsList));
     if(ret < 0) {
-        xmlSecInternalError("xmlSecPtrListCopy(crlsList)",
-                            xmlSecKeyDataGetName(src));
+        xmlSecInternalError("xmlSecPtrListCopy(crlsList)", NULL);
         return(-1);
     }
 

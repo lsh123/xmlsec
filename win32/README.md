@@ -131,6 +131,64 @@ runtimes or something even more trivial.
 Do not forget that if you need a different runtime for some reason, then
 you MUST recompile not only XMLSec, but LibXML, LibXSLT and OpenSSL as well.
 
+
+## Building dependencies
+
+### LibXML2
+
+In MSVC x64 native tools shell:
+
+```
+cd c:\<path to libxml2 sources>\win32
+cscript configure.js iconv=no prefix=c:\local\libxml2
+nmake
+nmake install
+```
+
+In CygWin shell:
+
+```
+cd /cygdrive/c/local/libxml2
+7z a ../libxml2-<version>-noiconv-win-x64.7z bin/ include/ lib/
+```
+
+### LibXSLT
+
+In MSVC x64 native tools shell:
+
+```
+cd c:\<libxslt-src-dir>\win32
+cscript configure.js iconv=no prefix=c:\local\libxslt include=c:\local\libxml2\include\libxml2 lib=c:\local\libxml2\lib
+nmake
+nmake install
+```
+
+In Cygwin shell:
+
+```
+cd /cygdrive/c/local/libxslt
+7z a ../libxslt-<version>-noiconv-win-x64.7z bin/ include/ lib/
+```
+
+## OpenSSL 1.1
+
+In MSVC x64 native tools shell:
+
+```
+cd c:\<openssl-1.1-src-dir>
+C:\Strawberry\perl\bin\perl.exe Configure no-asm --prefix=c:\local\openssl-1.1 VC-WIN64A
+nmake
+nmake install
+```
+
+In Cygwin shell:
+
+```
+cd /cygdrive/c/local/openssl-1.1
+7z a ../openssl-<version>-x64.7z bin/ html/ include/ lib/
+```
+
+
 ## Authors
 - March 2002, Igor Zlatkovic <igor@stud.fh-frankfurt.de>
 - July, 2022, Aleksey Sanin <aleksey@aleksey.com>

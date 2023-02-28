@@ -13,7 +13,7 @@ SET XMLSEC_CRYPTO=mscng
 SET OPENSSL_PREFIX=%PREFIX%\openssl-3.0.3
 SET XMLSEC_INCLUDE=%PREFIX%\include;%PREFIX%\include\libxml2;%OPENSSL_PREFIX%\include;%MSSDK_INCLUDE%
 SET XMLSEC_LIB=%PREFIX%\lib;%OPENSSL_PREFIX%\lib;%MSSDK_LIB%
-SET XMLSEC_OPTIONS=pedantic=yes static=yes with-dl=yes iconv=no debug=yes xslt=yes crypto=%XMLSEC_CRYPTO% unicode=no legacy-crypto=yes pedantic=yes
+SET XMLSEC_OPTIONS=pedantic=yes static=yes with-dl=yes iconv=no debug=yes memcheck=yes xslt=yes crypto=%XMLSEC_CRYPTO% unicode=no legacy-crypto=yes pedantic=yes
 
 nmake clean
 del /F Makefile configure.txt
@@ -21,7 +21,9 @@ cscript configure.js prefix=%PREFIX% %XMLSEC_OPTIONS% include=%XMLSEC_INCLUDE% l
 
 mkdir binaries
 copy %PREFIX%\bin\*.dll binaries
+copy %PREFIX%\bin\*.pdb binaries
 copy %PREFIX%\lib\*.dll binaries
+copy %PREFIX%\lib\*.pdb binaries
 copy %OPENSSL_PREFIX%\bin\*.dll binaries
 copy %OPENSSL_PREFIX%\lib\*.dll binaries
 

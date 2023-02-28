@@ -383,7 +383,7 @@ cat rsakey.pem rsacert.pem ca2cert.pem cacert.pem > allrsa.pem
 openssl pkcs12 -export -in allrsa.pem -name TestRsaKey -out rsakey.p12
 
 cat largersakey.pem largersacert.pem ca2cert.pem cacert.pem > alllargersa.pem
-openssl pkcs12 -export -in alllargersa.pem -name TestLargeRsaKey -out largersakey.p12
+openssl pkcs12 -export -in alllargersa.pem -name largersakey -out largersakey.p12
 
 cat expiredkey.pem expiredcert.pem ca2cert.pem cacert.pem > allexpired.pem
 openssl pkcs12 -export -in allexpired.pem -name TestExpiredRsaKey -out expiredkey.p12

@@ -303,6 +303,34 @@ static xmlSecAppCmdLineParam pkcs8DerParam = {
     NULL
 };
 
+
+/* openssl specific privkey options */
+static xmlSecAppCmdLineParam privkeyOpensslStoreParam = {
+    xmlSecAppCmdLineTopicKeysMngr,
+    "--privkey-openssl-store",
+    NULL,
+    "--privkey-openssl-store[:<name>] <uri>"
+    "\n\tload private key and certs through OpenSSL ossl_store interface (e.g. from HSM)",
+    xmlSecAppCmdLineParamTypeStringList,
+    xmlSecAppCmdLineParamFlagParamNameValue | xmlSecAppCmdLineParamFlagMultipleValues,
+    NULL
+};
+
+/* openssl specific privkey options */
+static xmlSecAppCmdLineParam privkeyOpensslEngineParam = {
+    xmlSecAppCmdLineTopicKeysMngr,
+    "--privkey-openssl-engine",
+    NULL,
+    "--privkey-openssl-engine[:<name>] <openssl-engine>;<openssl-key-id>[,<crtfile>[,<crtfile>[...]]]"
+    "\n\tload private key by OpenSSL ENGINE interface; specify the name of engine"
+    "\n\t(like with -engine params), the key specs (like with -inkey or -key params)"
+    "\n\tand optionally certificates that verify this key",
+    xmlSecAppCmdLineParamTypeStringList,
+    xmlSecAppCmdLineParamFlagParamNameValue | xmlSecAppCmdLineParamFlagMultipleValues,
+    NULL
+};
+
+
 static xmlSecAppCmdLineParam pubkeyParam = {
     xmlSecAppCmdLineTopicKeysMngr,
     "--pubkey-pem",
@@ -451,20 +479,6 @@ static xmlSecAppCmdLineParam enabledKeyInfoReferenceUrisParam = {
     "\n\tattribute values for the <dsig11:KeyInfoReference> element.",
     xmlSecAppCmdLineParamTypeStringList,
     xmlSecAppCmdLineParamFlagNone,
-    NULL
-};
-
-
-static xmlSecAppCmdLineParam privkeyOpensslEngineParam = {
-    xmlSecAppCmdLineTopicKeysMngr,
-    "--privkey-openssl-engine",
-    NULL,
-    "--privkey-openssl-engine[:<name>] <openssl-engine>;<openssl-key-id>[,<crtfile>[,<crtfile>[...]]]"
-    "\n\tload private key by OpenSSL ENGINE interface; specify the name of engine"
-    "\n\t(like with -engine params), the key specs (like with -inkey or -key params)"
-    "\n\tand optionally certificates that verify this key",
-    xmlSecAppCmdLineParamTypeStringList,
-    xmlSecAppCmdLineParamFlagParamNameValue | xmlSecAppCmdLineParamFlagMultipleValues,
     NULL
 };
 
@@ -937,10 +951,11 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
     &privkeyDerParam,
     &pkcs8PemParam,
     &pkcs8DerParam,
+    &privkeyOpensslStoreParam,
+    &privkeyOpensslEngineParam,
     &pubkeyParam,
     &pubkeyDerParam,
     &pwdParam,
-    &privkeyOpensslEngineParam,
     &laxKeySearchParam,
 
 #ifndef XMLSEC_NO_AES
@@ -2165,7 +2180,7 @@ xmlSecAppLoadKeys(void) {
         return(-1);
     }
 
-    /* generate new key file */
+    /* generate new keys */
     for(value = genKeyParam.value; value != NULL; value = value->next) {
         if(value->strValue == NULL) {
             fprintf(stderr, "Error: invalid value for option \"%s\".\n", genKeyParam.fullName);
@@ -2176,7 +2191,72 @@ xmlSecAppLoadKeys(void) {
         }
     }
 
-    /* read all xml key files */
+    /******************************************************************************************
+     *
+     * FIRST, READ ALL CERTIFICATES
+     *
+     ******************************************************************************************/
+
+#ifndef XMLSEC_NO_X509
+    /* read all trusted certs */
+    for(value = trustedParam.value; value != NULL; value = value->next) {
+        if(value->strValue == NULL) {
+            fprintf(stderr, "Error: invalid value for option \"%s\".\n", trustedParam.fullName);
+            return(-1);
+        } else if(xmlSecAppCryptoSimpleKeysMngrCertLoad(gKeysMngr,
+                    value->strValue, xmlSecKeyDataFormatPem,
+                    xmlSecKeyDataTypeTrusted) < 0) {
+            fprintf(stderr, "Error: failed to load trusted cert from \"%s\".\n",
+                    value->strValue);
+            return(-1);
+        }
+    }
+    for(value = trustedDerParam.value; value != NULL; value = value->next) {
+        if(value->strValue == NULL) {
+            fprintf(stderr, "Error: invalid value for option \"%s\".\n", trustedDerParam.fullName);
+            return(-1);
+        } else if(xmlSecAppCryptoSimpleKeysMngrCertLoad(gKeysMngr,
+                    value->strValue, xmlSecKeyDataFormatDer,
+                    xmlSecKeyDataTypeTrusted) < 0) {
+            fprintf(stderr, "Error: failed to load trusted cert from \"%s\".\n",
+                    value->strValue);
+            return(-1);
+        }
+    }
+
+    /* read all untrusted certs */
+    for(value = untrustedParam.value; value != NULL; value = value->next) {
+        if(value->strValue == NULL) {
+            fprintf(stderr, "Error: invalid value for option \"%s\".\n", untrustedParam.fullName);
+            return(-1);
+        } else if(xmlSecAppCryptoSimpleKeysMngrCertLoad(gKeysMngr,
+                    value->strValue, xmlSecKeyDataFormatPem,
+                    xmlSecKeyDataTypeNone) < 0) {
+            fprintf(stderr, "Error: failed to load untrusted cert from \"%s\".\n",
+                    value->strValue);
+            return(-1);
+        }
+    }
+    for(value = untrustedDerParam.value; value != NULL; value = value->next) {
+        if(value->strValue == NULL) {
+            fprintf(stderr, "Error: invalid value for option \"%s\".\n", untrustedDerParam.fullName);
+            return(-1);
+        } else if(xmlSecAppCryptoSimpleKeysMngrCertLoad(gKeysMngr,
+                    value->strValue, xmlSecKeyDataFormatDer,
+                    xmlSecKeyDataTypeNone) < 0) {
+            fprintf(stderr, "Error: failed to load untrusted cert from \"%s\".\n",
+                    value->strValue);
+            return(-1);
+        }
+    }
+
+#endif /* XMLSEC_NO_X509 */
+
+    /******************************************************************************************
+     *
+     * XMLSEC KEY FILE
+     *
+     ******************************************************************************************/
     for(value = keysFileParam.value; value != NULL; value = value->next) {
         if(value->strValue == NULL) {
             fprintf(stderr, "Error: invalid value for option \"%s\".\n", keysFileParam.fullName);
@@ -2187,7 +2267,11 @@ xmlSecAppLoadKeys(void) {
         }
     }
 
-    /* read all private keys */
+    /******************************************************************************************
+     *
+     * PRIVATE KEYS
+     *
+     ******************************************************************************************/
     for(value = privkeyParam.value; value != NULL; value = value->next) {
         if(value->strListValue == NULL) {
             fprintf(stderr, "Error: invalid value for option \"%s\".\n",
@@ -2252,7 +2336,68 @@ xmlSecAppLoadKeys(void) {
         }
     }
 
-    /* read all public keys */
+#ifndef XMLSEC_NO_X509
+    /* read all pkcs12 files */
+    if(xmlSecAppCmdLineParamIsSet(&pkcs12PersistParam)) {
+        xmlSecImportSetPersistKey();
+    }
+    for(value = pkcs12Param.value; value != NULL; value = value->next) {
+        if(value->strValue == NULL) {
+            fprintf(stderr, "Error: invalid value for option \"%s\".\n", pkcs12Param.fullName);
+            return(-1);
+        } else if(xmlSecAppCryptoSimpleKeysMngrPkcs12KeyLoad(gKeysMngr,
+                    value->strValue,
+                    xmlSecAppCmdLineParamGetString(&pwdParam),
+                    value->paramNameValue) < 0) {
+            fprintf(stderr, "Error: failed to load pkcs12 key from \"%s\".\n",
+                    value->strValue);
+            return(-1);
+        }
+    }
+#endif /* XMLSEC_NO_X509 */
+
+    for(value = privkeyOpensslStoreParam.value; value != NULL; value = value->next) {
+        if(value->strListValue == NULL) {
+            fprintf(stderr, "Error: invalid value for option \"%s\".\n",
+                    privkeyOpensslStoreParam.fullName);
+            return(-1);
+        } else if(xmlSecAppCryptoSimpleKeysMngrKeyAndCertsLoad(gKeysMngr,
+                    value->strListValue,
+                    xmlSecAppCmdLineParamGetString(&pwdParam),
+                    value->paramNameValue,
+                    xmlSecKeyDataFormatStore) < 0) {
+            fprintf(stderr, "Error: failed to load private key from \"%s\".\n",
+                    value->strListValue);
+            return(-1);
+        }
+    }
+
+    for(value = privkeyOpensslEngineParam.value; value != NULL; value = value->next) {
+        /* we expect at least one parameter for the key's engine+id */
+        if(value->strListValue == NULL || value->strListValue[0] == '\0') {
+            fprintf(stderr, "Error: invalid value for option \"%s\".\n", privkeyOpensslEngineParam.fullName);
+            return(-1);
+        }
+
+        /* the params format is: <openssl-engine>;<openssl-key-id>[,<crtfile>[,<crtfile>[...]]] */
+        if(xmlSecAppCryptoSimpleKeysMngrEngineKeyAndCertsLoad(gKeysMngr,
+                    value->strListValue,
+                    value->strListValue + strlen(value->strListValue) + 1,
+                    xmlSecAppCmdLineParamGetString(&pwdParam),
+                    value->paramNameValue,
+                    xmlSecKeyDataFormatEngine,
+                    xmlSecKeyDataFormatPem) < 0) {
+            fprintf(stderr, "Error: failed to load private key from \"%s\".\n",
+                    value->strListValue);
+            return(-1);
+        }
+    }
+
+    /******************************************************************************************
+     *
+     * PUBLIC KEYS
+     *
+     ******************************************************************************************/
     for(value = pubkeyParam.value; value != NULL; value = value->next) {
         if(value->strListValue == NULL) {
             fprintf(stderr, "Error: invalid value for option \"%s\".\n",
@@ -2284,6 +2429,48 @@ xmlSecAppLoadKeys(void) {
             return(-1);
         }
     }
+
+
+#ifndef XMLSEC_NO_X509
+    /* read all public keys in certs */
+    for(value = pubkeyCertParam.value; value != NULL; value = value->next) {
+        if(value->strListValue == NULL) {
+            fprintf(stderr, "Error: invalid value for option \"%s\".\n",
+                    pubkeyCertParam.fullName);
+            return(-1);
+        } else if(xmlSecAppCryptoSimpleKeysMngrKeyAndCertsLoad(gKeysMngr,
+                    value->strListValue,
+                    xmlSecAppCmdLineParamGetString(&pwdParam),
+                    value->paramNameValue,
+                    xmlSecKeyDataFormatCertPem) < 0) {
+            fprintf(stderr, "Error: failed to load public key from \"%s\".\n",
+                    value->strListValue);
+            return(-1);
+        }
+    }
+
+    for(value = pubkeyCertDerParam.value; value != NULL; value = value->next) {
+        if(value->strListValue == NULL) {
+            fprintf(stderr, "Error: invalid value for option \"%s\".\n",
+                    pubkeyCertDerParam.fullName);
+            return(-1);
+        } else if(xmlSecAppCryptoSimpleKeysMngrKeyAndCertsLoad(gKeysMngr,
+                    value->strListValue,
+                    xmlSecAppCmdLineParamGetString(&pwdParam),
+                    value->paramNameValue,
+                    xmlSecKeyDataFormatCertDer) < 0) {
+            fprintf(stderr, "Error: failed to load public key from \"%s\".\n",
+                    value->strListValue);
+            return(-1);
+        }
+    }
+#endif /* XMLSEC_NO_X509 */
+
+    /******************************************************************************************
+     *
+     * SYMMETRICAL KEYS
+     *
+     ******************************************************************************************/
 
 #ifndef XMLSEC_NO_AES
     /* read all AES keys */
@@ -2365,135 +2552,8 @@ xmlSecAppLoadKeys(void) {
     }
 #endif /* XMLSEC_NO_PBKDF2 */
 
-#ifndef XMLSEC_NO_X509
-    /* read all pkcs12 files */
-    if(xmlSecAppCmdLineParamIsSet(&pkcs12PersistParam)) {
-        xmlSecImportSetPersistKey();
-    }
-    for(value = pkcs12Param.value; value != NULL; value = value->next) {
-        if(value->strValue == NULL) {
-            fprintf(stderr, "Error: invalid value for option \"%s\".\n", pkcs12Param.fullName);
-            return(-1);
-        } else if(xmlSecAppCryptoSimpleKeysMngrPkcs12KeyLoad(gKeysMngr,
-                    value->strValue,
-                    xmlSecAppCmdLineParamGetString(&pwdParam),
-                    value->paramNameValue) < 0) {
-            fprintf(stderr, "Error: failed to load pkcs12 key from \"%s\".\n",
-                    value->strValue);
-            return(-1);
-        }
-    }
 
-    /* read all trusted certs */
-    for(value = trustedParam.value; value != NULL; value = value->next) {
-        if(value->strValue == NULL) {
-            fprintf(stderr, "Error: invalid value for option \"%s\".\n", trustedParam.fullName);
-            return(-1);
-        } else if(xmlSecAppCryptoSimpleKeysMngrCertLoad(gKeysMngr,
-                    value->strValue, xmlSecKeyDataFormatPem,
-                    xmlSecKeyDataTypeTrusted) < 0) {
-            fprintf(stderr, "Error: failed to load trusted cert from \"%s\".\n",
-                    value->strValue);
-            return(-1);
-        }
-    }
-    for(value = trustedDerParam.value; value != NULL; value = value->next) {
-        if(value->strValue == NULL) {
-            fprintf(stderr, "Error: invalid value for option \"%s\".\n", trustedDerParam.fullName);
-            return(-1);
-        } else if(xmlSecAppCryptoSimpleKeysMngrCertLoad(gKeysMngr,
-                    value->strValue, xmlSecKeyDataFormatDer,
-                    xmlSecKeyDataTypeTrusted) < 0) {
-            fprintf(stderr, "Error: failed to load trusted cert from \"%s\".\n",
-                    value->strValue);
-            return(-1);
-        }
-    }
-
-
-    /* read all public keys in certs */
-    for(value = pubkeyCertParam.value; value != NULL; value = value->next) {
-        if(value->strListValue == NULL) {
-            fprintf(stderr, "Error: invalid value for option \"%s\".\n",
-                    pubkeyCertParam.fullName);
-            return(-1);
-        } else if(xmlSecAppCryptoSimpleKeysMngrKeyAndCertsLoad(gKeysMngr,
-                    value->strListValue,
-                    xmlSecAppCmdLineParamGetString(&pwdParam),
-                    value->paramNameValue,
-                    xmlSecKeyDataFormatCertPem) < 0) {
-            fprintf(stderr, "Error: failed to load public key from \"%s\".\n",
-                    value->strListValue);
-            return(-1);
-        }
-    }
-
-    for(value = pubkeyCertDerParam.value; value != NULL; value = value->next) {
-        if(value->strListValue == NULL) {
-            fprintf(stderr, "Error: invalid value for option \"%s\".\n",
-                    pubkeyCertDerParam.fullName);
-            return(-1);
-        } else if(xmlSecAppCryptoSimpleKeysMngrKeyAndCertsLoad(gKeysMngr,
-                    value->strListValue,
-                    xmlSecAppCmdLineParamGetString(&pwdParam),
-                    value->paramNameValue,
-                    xmlSecKeyDataFormatCertDer) < 0) {
-            fprintf(stderr, "Error: failed to load public key from \"%s\".\n",
-                    value->strListValue);
-            return(-1);
-        }
-    }
-
-
-    /* read all untrusted certs */
-    for(value = untrustedParam.value; value != NULL; value = value->next) {
-        if(value->strValue == NULL) {
-            fprintf(stderr, "Error: invalid value for option \"%s\".\n", untrustedParam.fullName);
-            return(-1);
-        } else if(xmlSecAppCryptoSimpleKeysMngrCertLoad(gKeysMngr,
-                    value->strValue, xmlSecKeyDataFormatPem,
-                    xmlSecKeyDataTypeNone) < 0) {
-            fprintf(stderr, "Error: failed to load untrusted cert from \"%s\".\n",
-                    value->strValue);
-            return(-1);
-        }
-    }
-    for(value = untrustedDerParam.value; value != NULL; value = value->next) {
-        if(value->strValue == NULL) {
-            fprintf(stderr, "Error: invalid value for option \"%s\".\n", untrustedDerParam.fullName);
-            return(-1);
-        } else if(xmlSecAppCryptoSimpleKeysMngrCertLoad(gKeysMngr,
-                    value->strValue, xmlSecKeyDataFormatDer,
-                    xmlSecKeyDataTypeNone) < 0) {
-            fprintf(stderr, "Error: failed to load untrusted cert from \"%s\".\n",
-                    value->strValue);
-            return(-1);
-        }
-    }
-
-#endif /* XMLSEC_NO_X509 */
-
-    for(value = privkeyOpensslEngineParam.value; value != NULL; value = value->next) {
-        /* we expect at least one parameter for the key's engine+id */
-        if(value->strListValue == NULL || value->strListValue[0] == '\0') {
-            fprintf(stderr, "Error: invalid value for option \"%s\".\n", privkeyOpensslEngineParam.fullName);
-            return(-1);
-        }
-
-        /* the params format is: <openssl-engine>;<openssl-key-id>[,<crtfile>[,<crtfile>[...]]] */
-        if(xmlSecAppCryptoSimpleKeysMngrEngineKeyAndCertsLoad(gKeysMngr,
-                    value->strListValue,
-                    value->strListValue + strlen(value->strListValue) + 1,
-                    xmlSecAppCmdLineParamGetString(&pwdParam),
-                    value->paramNameValue,
-                    xmlSecKeyDataFormatEngine,
-                    xmlSecKeyDataFormatPem) < 0) {
-            fprintf(stderr, "Error: failed to load private key from \"%s\".\n",
-                    value->strListValue);
-            return(-1);
-        }
-    }
-
+    /* DONE */
     return(0);
 }
 
@@ -3333,7 +3393,7 @@ xmlSecAppWriteResult(const char* inputFileName, const char* outputFileNameTmpl, 
         xmlOutputBufferClose(outBuffer);
         return(-1);
     }
-    
+
     /* done */
     return(0);
 }

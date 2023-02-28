@@ -29,6 +29,7 @@
 #include <openssl/pkcs12.h>
 #include <openssl/conf.h>
 #include <openssl/engine.h>
+#include <openssl/store.h>
 #include <openssl/ui.h>
 
 #include <xmlsec/xmlsec.h>
@@ -62,6 +63,10 @@ static int      xmlSecOpenSSLDummyPasswordCallback      (char *buf,
 static xmlSecKeyPtr xmlSecOpenSSLAppEngineKeyLoad       (const char *engineName,
                                                          const char *engineKeyId,
                                                          xmlSecKeyDataFormat format,
+                                                         const char *pwd,
+                                                         void* pwdCallback,
+                                                         void* pwdCallbackCtx);
+static xmlSecKeyPtr xmlSecOpenSSLAppStorePrivateKeyLoad (const char *uri,
                                                          const char *pwd,
                                                          void* pwdCallback,
                                                          void* pwdCallbackCtx);
@@ -188,7 +193,7 @@ xmlSecKeyPtr
 xmlSecOpenSSLAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
                         const char *pwd, void* pwdCallback,
                         void* pwdCallbackCtx) {
-    xmlSecKeyPtr key;
+    xmlSecKeyPtr key = NULL;
 
     xmlSecAssert2(filename != NULL, NULL);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
@@ -226,6 +231,13 @@ xmlSecOpenSSLAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
         }
 
         xmlFree(buffer);
+    } else if(format == xmlSecKeyDataFormatStore) {
+        key = xmlSecOpenSSLAppStorePrivateKeyLoad(filename, pwd, pwdCallback, pwdCallbackCtx);
+        if(key == NULL) {
+            xmlSecInternalError2("xmlSecOpenSSLAppStorePrivateKeyLoad", NULL,
+                                 "filename=%s", xmlSecErrorsSafeString(filename));
+            return(NULL);
+        }
     } else {
         BIO* bio;
 
@@ -436,6 +448,7 @@ xmlSecOpenSSLAppEngineKeyLoad(const char *engineName, const char *engineKeyId,
                         void* pwdCallback ATTRIBUTE_UNUSED, void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
 
 #if !defined(OPENSSL_NO_ENGINE) && (!defined(XMLSEC_OPENSSL_API_300) || defined(XMLSEC_OPENSSL3_ENGINES))
+    UI_METHOD * ui_method  = NULL;
     ENGINE* engine = NULL;
     xmlSecKeyPtr key = NULL;
     xmlSecKeyDataPtr data = NULL;
@@ -481,10 +494,14 @@ xmlSecOpenSSLAppEngineKeyLoad(const char *engineName, const char *engineKeyId,
     }
     engineInit = 1;
 
+#ifndef OPENSSL_NO_UI_CONSOLE
+    ui_method = UI_OpenSSL();
+#else   /* OPENSSL_NO_UI_CONSOLE */
+    ui_method = UI_null();
+#endif  /* OPENSSL_NO_UI_CONSOLE */
+
     /* load private key */
-    pKey = ENGINE_load_private_key(engine, engineKeyId,
-                                   (UI_METHOD *)UI_null(),
-                                   NULL);
+    pKey = ENGINE_load_private_key(engine, engineKeyId, ui_method, NULL);
     if(pKey == NULL) {
         xmlSecOpenSSLError("ENGINE_load_private_key", NULL);
         goto done;
@@ -542,6 +559,78 @@ done:
 #endif /* !defined(OPENSSL_NO_ENGINE) && (!defined(XMLSEC_OPENSSL_API_300) || defined(XMLSEC_OPENSSL3_ENGINES)) */
 }
 
+static xmlSecKeyPtr
+xmlSecOpenSSLAppStorePrivateKeyLoad(const char *uri, const char *pwd, void* pwdCallback, void* pwdCallbackCtx) {
+    UI_METHOD * ui_method = NULL;
+    pem_password_cb * pwdCb;
+    void * pwdCbCtx;
+    OSSL_STORE_CTX * storeCtx = NULL;
+    xmlSecKeyPtr res = NULL;
+
+    xmlSecAssert2(uri != NULL, NULL);
+
+    /* prep pwd callbacks */
+    if(pwd != NULL) {
+        pwdCb = xmlSecOpenSSLDummyPasswordCallback;
+        pwdCbCtx = (void*)pwd;
+     } else {
+        pwdCb = XMLSEC_PTR_TO_FUNC(pem_password_cb, pwdCallback);
+        pwdCbCtx = pwdCallbackCtx;
+    }
+    ui_method = UI_UTIL_wrap_read_pem_callback(pwdCb, 0);
+    if(ui_method == NULL) {
+        xmlSecOpenSSLError("UI_UTIL_wrap_read_pem_callback", NULL);
+        goto done;
+    }
+
+#if !defined(XMLSEC_OPENSSL_API_300)
+    storeCtx = OSSL_STORE_open(uri,
+                ui_method, pwdCbCtx,
+                NULL, NULL);
+    if(storeCtx == NULL) {
+        xmlSecOpenSSLError2("OSSL_STORE_open", NULL,
+            "uri=%s", xmlSecErrorsSafeString(uri));
+        goto done;
+    }
+#else  /* !defined(XMLSEC_OPENSSL_API_300) */
+    storeCtx = OSSL_STORE_open_ex(uri,
+                xmlSecOpenSSLGetLibCtx(), NULL,
+                ui_method, pwdCbCtx,
+                NULL, NULL, NULL);
+    if(storeCtx == NULL) {
+        xmlSecOpenSSLError2("OSSL_STORE_open_ex", NULL,
+            "uri=%s", xmlSecErrorsSafeString(uri));
+        goto done;
+    }
+#endif /* !defined(XMLSEC_OPENSSL_API_300) */
+
+    while (!OSSL_STORE_eof(storeCtx)) {
+        OSSL_STORE_INFO *info = OSSL_STORE_load(storeCtx);
+        if(info == NULL) {
+            break;
+        }
+
+        switch (OSSL_STORE_INFO_get_type(info)) {
+        case OSSL_STORE_INFO_CERT:
+            /* Print the X.509 certificate text */
+            X509_print_fp(stdout, OSSL_STORE_INFO_get0_CERT(info));
+            /* Print the X.509 certificate PEM output */
+            PEM_write_X509(stdout, OSSL_STORE_INFO_get0_CERT(info));
+            break;
+        }
+    }
+
+    printf("DEBUG: TODO\n");
+
+done:
+    if(storeCtx != NULL) {
+        OSSL_STORE_close(storeCtx);
+    }
+    if(ui_method != NULL) {
+        UI_destroy_method(ui_method);
+    }
+    return(res);
+}
 
 #ifndef XMLSEC_NO_X509
 static X509*            xmlSecOpenSSLAppCertLoadBIO             (BIO* bio,

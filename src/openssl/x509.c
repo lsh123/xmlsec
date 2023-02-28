@@ -587,6 +587,64 @@ xmlSecOpenSSLKeyDataX509Finalize(xmlSecKeyDataPtr data) {
 }
 
 static int
+xmlSecOpenSSLKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
+    xmlSecOpenSSLX509DataCtxPtr ctxSrc, ctxDst;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecOpenSSLKeyDataX509Id), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecOpenSSLKeyDataX509Id), -1);
+
+    ctxSrc = xmlSecOpenSSLX509DataGetCtx(src);
+    xmlSecAssert2(ctxSrc != NULL, -1);
+
+    /* dst should not have any data */
+    ctxDst = xmlSecOpenSSLX509DataGetCtx(dst);
+    xmlSecAssert2(ctxDst != NULL, -1);
+    xmlSecAssert2(ctxDst->keyCert == NULL, -1);
+    xmlSecAssert2(ctxDst->certsList == NULL, -1);
+    xmlSecAssert2(ctxDst->crlsList == NULL, -1);
+
+    /* crts */
+    if(ctxSrc->certsList != NULL) {
+        ctxDst->certsList = sk_X509_deep_copy(ctxSrc->certsList, X509_dup, X509_free);
+        if(ctxDst->certsList == NULL) {
+            xmlSecOpenSSLError("sk_X509_deep_copy", xmlSecKeyDataGetName(dst));
+            return(-1);
+        }
+    }
+
+    /* crls */
+    if(ctxSrc->crlsList != NULL) {
+        ctxDst->crlsList = sk_X509_CRL_deep_copy(ctxSrc->crlsList, X509_CRL_dup, X509_CRL_free);
+        if(ctxDst->crlsList == NULL) {
+            xmlSecOpenSSLError("sk_X509_CRL_deep_copy", xmlSecKeyDataGetName(dst));
+            return(-1);
+        }
+    }
+
+    /* keyCert: should be in the same position in certsList after copy */
+    if(ctxSrc->keyCert != NULL) {
+        int ii, len;
+
+        len = sk_X509_num(ctxSrc->certsList);
+        xmlSecAssert2(len == sk_X509_num(ctxDst->certsList), -1);
+        for(ii = 0; ii < len; ++ii) {
+            X509* cert = sk_X509_value(ctxSrc->certsList, ii);
+            if(cert == ctxSrc->keyCert) {
+                ctxDst->keyCert = sk_X509_value(ctxDst->certsList, ii);
+                break;
+            }
+        }
+        /* just to double check */
+        xmlSecAssert2(ctxDst->keyCert != NULL, -1);
+        xmlSecAssert2(X509_cmp(ctxSrc->keyCert, ctxDst->keyCert) == 0, -1);
+    }
+
+    /* done */
+    return(0);
+}
+
+
+static int
 xmlSecOpenSSLKeyDataX509XmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecKeyDataPtr data;
     int ret;

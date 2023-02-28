@@ -84,7 +84,7 @@ static void             xmlSecOpenSSLX509CertDebugXmlDump       (X509* cert,
 typedef struct _xmlSecOpenSSLX509DataCtx                xmlSecOpenSSLX509DataCtx,
                                                         *xmlSecOpenSSLX509DataCtxPtr;
 struct _xmlSecOpenSSLX509DataCtx {
-    X509*               keyCert;        /* OWNED BY certsList */
+    X509*               keyCert;    /* OWNED BY certsList */
     STACK_OF(X509)*     certsList;
     STACK_OF(X509_CRL)* crlsList;
 };
@@ -252,6 +252,12 @@ xmlSecOpenSSLKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, X509* cert) {
 
     ctx = xmlSecOpenSSLX509DataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
+
+    /* check if for some reasons same cert is used */
+    if((ctx->keyCert != NULL) && (X509_cmp(cert, ctx->keyCert) == 0)) {
+        X509_free(cert);  /* caller expects data to own the cert on success. */
+        return(0);
+    }
     xmlSecAssert2(ctx->keyCert == NULL, -1);
 
     ret = xmlSecOpenSSLKeyDataX509AddCertInternal(ctx, cert);

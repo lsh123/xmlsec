@@ -20,6 +20,10 @@
 #include <openssl/rand.h>
 #include <openssl/sha.h>
 
+#ifndef XMLSEC_NO_DSA
+#include <openssl/dsa.h>
+#endif /* XMLSEC_NO_DSA */
+
 #ifndef XMLSEC_NO_EC
 #include <openssl/ec.h>
 #endif /* XMLSEC_NO_EC */
@@ -49,7 +53,8 @@
 
 typedef enum {
     xmlSecOpenSSLEvpSignatureMode_RsaPadding = 0,   /* use rsa padding and do nothing else */
-    xmlSecOpenSSLEvpSignatureMode_Ecdsa,            /* ecdsa signatures */
+    xmlSecOpenSSLEvpSignatureMode_Dsa,              /* dsa signatures: r+s are concatenated using fixed size */
+    xmlSecOpenSSLEvpSignatureMode_Ecdsa,            /* ecdsa signatures: r+s are concatenated using size of the key */
 } xmlSecOpenSSLEvpSignatureMode;
 
 typedef struct _xmlSecOpenSSLEvpSignatureCtx    xmlSecOpenSSLEvpSignatureCtx,
@@ -69,6 +74,16 @@ struct _xmlSecOpenSSLEvpSignatureCtx {
     int                 rsaPadding;
 };
 
+
+#ifndef XMLSEC_NO_DSA
+static int      xmlSecOpenSSLEvpSignatureDsa_XmlDSig2OpenSSL    (const xmlSecTransformId transformId,
+                                                                 const xmlSecByte * data,
+                                                                 xmlSecSize dataSize,
+                                                                 unsigned char ** out,
+                                                                 int * outLen);
+static int      xmlSecOpenSSLEvpSignatureDsa_OpenSSL2XmlDSig    (const xmlSecTransformId transformId,
+                                                                 xmlSecBufferPtr data);
+#endif /* XMLSEC_NO_DSA */
 
 #ifndef XMLSEC_NO_EC
 static int      xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL  (EVP_PKEY* pKey,
@@ -229,6 +244,26 @@ xmlSecOpenSSLEvpSignatureCheckId(xmlSecTransformPtr transform) {
 #endif /* XMLSEC_NO_RSA */
 
 
+    /*************************************************************************
+     *
+     * DSA
+     *
+     ************************************************************************/
+#ifndef XMLSEC_NO_DSA
+
+#ifndef XMLSEC_NO_SHA1
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformDsaSha1Id)) {
+        return(1);
+    } else
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA256
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformDsaSha256Id)) {
+        return(1);
+    } else
+#endif /* XMLSEC_NO_SHA256 */
+
+#endif /* XMLSEC_NO_DSA */
 
     /*************************************************************************
      *
@@ -289,7 +324,6 @@ xmlSecOpenSSLEvpSignatureCheckId(xmlSecTransformPtr transform) {
 #endif /* XMLSEC_NO_SHA3 */
 
 #endif /* XMLSEC_NO_EC */
-
 
     /*************************************************************************
      *
@@ -517,6 +551,31 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
 #endif /* XMLSEC_NO_SHA3 */
 
 #endif /* XMLSEC_NO_RSA */
+
+    /*************************************************************************
+     *
+     * DSA
+     *
+     ************************************************************************/
+#ifndef XMLSEC_NO_DSA
+
+#ifndef XMLSEC_NO_SHA1
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformDsaSha1Id)) {
+        XMLSEC_OPENSSL_EVP_SIGNATURE_SET_DIGEST(ctx, EVP_sha1(), OSSL_DIGEST_NAME_SHA1);
+        ctx->keyId      = xmlSecOpenSSLKeyDataDsaId;
+        ctx->mode       = xmlSecOpenSSLEvpSignatureMode_Dsa;
+    } else
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA256
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformDsaSha256Id)) {
+        XMLSEC_OPENSSL_EVP_SIGNATURE_SET_DIGEST(ctx, EVP_sha256(), OSSL_DIGEST_NAME_SHA2_256);
+        ctx->keyId      = xmlSecOpenSSLKeyDataDsaId;
+        ctx->mode       = xmlSecOpenSSLEvpSignatureMode_Dsa;
+    } else
+#endif /* XMLSEC_NO_SHA256 */
+
+#endif /* XMLSEC_NO_DSA */
 
     /*************************************************************************
      *
@@ -941,24 +1000,42 @@ xmlSecOpenSSLEvpSignatureVerify(xmlSecTransformPtr transform,
     }
 
     switch(ctx->mode) {
-        case xmlSecOpenSSLEvpSignatureMode_RsaPadding:
-            /* simple RSA padding */
-            XMLSEC_SAFE_CAST_SIZE_TO_UINT(dataSize, dataLen, goto done, xmlSecTransformGetName(transform));
-            ret = EVP_PKEY_verify(pKeyCtx, (xmlSecByte*)data, dataLen, dgst, dgstSize);
-            break;
-        case xmlSecOpenSSLEvpSignatureMode_Ecdsa:
+    case xmlSecOpenSSLEvpSignatureMode_RsaPadding:
+        /* simple RSA padding */
+        XMLSEC_SAFE_CAST_SIZE_TO_UINT(dataSize, dataLen, goto done, xmlSecTransformGetName(transform));
+        ret = EVP_PKEY_verify(pKeyCtx, (xmlSecByte*)data, dataLen, dgst, dgstSize);
+        break;
+
+    case xmlSecOpenSSLEvpSignatureMode_Dsa:
 #ifndef XMLSEC_NO_EC
-            /* convert XMLDSig data to the format expected by OpenSSL */
-            ret =  xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL(ctx->pKey, data, dataSize, &fixedData, &fixedDataLen);
-            if((ret < 0) || (fixedData == NULL) || (fixedDataLen <= 0)) {
-                xmlSecInternalError("xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL", xmlSecTransformGetName(transform));
-                goto done;
-            }
-            XMLSEC_SAFE_CAST_INT_TO_UINT(fixedDataLen, dataLen, goto done, xmlSecTransformGetName(transform));
-            ret = EVP_PKEY_verify(pKeyCtx, fixedData, dataLen, dgst, dgstSize);
-#else  /* XMLSEC_NO_EC */
-            xmlSecNotImplementedError("ECDSA signatures are disabled");
+        /* convert XMLDSig data to the format expected by OpenSSL */
+        ret =  xmlSecOpenSSLEvpSignatureDsa_XmlDSig2OpenSSL(transform->id, data, dataSize, &fixedData, &fixedDataLen);
+        if((ret < 0) || (fixedData == NULL) || (fixedDataLen <= 0)) {
+            xmlSecInternalError("xmlSecOpenSSLEvpSignatureDsa_XmlDSig2OpenSSL", xmlSecTransformGetName(transform));
             goto done;
+        }
+        XMLSEC_SAFE_CAST_INT_TO_UINT(fixedDataLen, dataLen, goto done, xmlSecTransformGetName(transform));
+        ret = EVP_PKEY_verify(pKeyCtx, fixedData, dataLen, dgst, dgstSize);
+        break;
+#else  /* XMLSEC_NO_EC */
+        xmlSecNotImplementedError("DSA signatures are disabled");
+        goto done;
+#endif /* XMLSEC_NO_EC */
+
+    case xmlSecOpenSSLEvpSignatureMode_Ecdsa:
+#ifndef XMLSEC_NO_EC
+        /* convert XMLDSig data to the format expected by OpenSSL */
+        ret =  xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL(ctx->pKey, data, dataSize, &fixedData, &fixedDataLen);
+        if((ret < 0) || (fixedData == NULL) || (fixedDataLen <= 0)) {
+            xmlSecInternalError("xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL", xmlSecTransformGetName(transform));
+            goto done;
+        }
+        XMLSEC_SAFE_CAST_INT_TO_UINT(fixedDataLen, dataLen, goto done, xmlSecTransformGetName(transform));
+        ret = EVP_PKEY_verify(pKeyCtx, fixedData, dataLen, dgst, dgstSize);
+        break;
+#else  /* XMLSEC_NO_EC */
+        xmlSecNotImplementedError("ECDSA signatures are disabled");
+        goto done;
 #endif /* XMLSEC_NO_EC */
     }
 
@@ -1053,6 +1130,21 @@ xmlSecOpenSSLEvpSignatureSign(xmlSecTransformPtr transform, xmlSecOpenSSLEvpSign
     case xmlSecOpenSSLEvpSignatureMode_RsaPadding:
         /* do nothing (easy case) */
         break;
+
+    case xmlSecOpenSSLEvpSignatureMode_Dsa:
+#ifndef XMLSEC_NO_EC
+        /* convert XMLDSig data to the format expected by OpenSSL */
+        ret =  xmlSecOpenSSLEvpSignatureDsa_OpenSSL2XmlDSig(transform->id, out);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecOpenSSLEvpSignatureDsa_OpenSSL2XmlDSig", xmlSecTransformGetName(transform));
+            goto done;
+        }
+        break;
+#else  /* XMLSEC_NO_EC */
+        xmlSecNotImplementedError("ECDSA signatures are disabled");
+        goto done;
+#endif /* XMLSEC_NO_EC */
+
     case xmlSecOpenSSLEvpSignatureMode_Ecdsa:
 #ifndef XMLSEC_NO_EC
         /* convert XMLDSig data to the format expected by OpenSSL */
@@ -1061,6 +1153,7 @@ xmlSecOpenSSLEvpSignatureSign(xmlSecTransformPtr transform, xmlSecOpenSSLEvpSign
             xmlSecInternalError("xmlSecOpenSSLEvpSignatureEcdsa_OpenSSL2XmlDSig", xmlSecTransformGetName(transform));
             goto done;
         }
+        break;
 #else  /* XMLSEC_NO_EC */
         xmlSecNotImplementedError("ECDSA signatures are disabled");
         goto done;
@@ -1452,7 +1545,252 @@ xmlSecOpenSSLTransformRsaPssSha3_512GetKlass(void) {
 
 #endif /* XMLSEC_NO_RSA */
 
+/*************************************************************************
+ *
+ * DSA EVP
+ *
+ * https://www.w3.org/TR/xmldsig-core1/#sec-DSA
+ * The output of the DSA algorithm consists of a pair of integers usually referred by the pair (r, s).
+ * DSA-SHA1: Integer to octet-stream conversion must be done according to the I2OSP operation defined
+ *           in the RFC 3447 [PKCS1] specification with a l parameter equal to 20
+ * DSA-SHA256: The pairs (2048, 256) and (3072, 256) correspond to the algorithm DSAwithSHA256
+ ************************************************************************/
 
+#define XMLSEC_OPENSSL_EVP_SIGNATURE_DSA_SHA1_HALF_LEN              20
+#define XMLSEC_OPENSSL_EVP_SIGNATURE_DSA_SHA256_HALF_LEN            (256 / 8)
+
+#ifndef XMLSEC_NO_DSA
+
+
+static int
+xmlSecOpenSSLEvpSignatureDsaHalfLen(const xmlSecTransformId transformId) {
+#ifndef XMLSEC_NO_SHA1
+    if(transformId == xmlSecOpenSSLTransformDsaSha1Id) {
+        return(XMLSEC_OPENSSL_EVP_SIGNATURE_DSA_SHA1_HALF_LEN);
+    } else
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA256
+    if(transformId == xmlSecOpenSSLTransformDsaSha256Id) {
+        return(XMLSEC_OPENSSL_EVP_SIGNATURE_DSA_SHA256_HALF_LEN);
+    } else
+#endif /* XMLSEC_NO_SHA256 */
+
+    {
+        /* should not happen */
+        return(0);
+    }
+}
+
+static int
+xmlSecOpenSSLEvpSignatureDsa_XmlDSig2OpenSSL(const xmlSecTransformId transformId,
+    const xmlSecByte * data, xmlSecSize dataSize,
+    unsigned char ** out, int * outLen
+) {
+    DSA_SIG* sig = NULL;
+    BIGNUM* rr = NULL;
+    BIGNUM* ss = NULL;
+    int signLen, signHalfLen;
+    int res = -1;
+    int ret;
+
+    xmlSecAssert2(transformId != NULL, 0);
+    xmlSecAssert2(data != NULL, 0);
+    xmlSecAssert2(dataSize > 0, 0);
+    xmlSecAssert2(out != NULL, 0);
+    xmlSecAssert2((*out) == NULL, 0);
+    xmlSecAssert2(outLen != NULL, 0);
+
+    /* calculate signature size */
+    signHalfLen = xmlSecOpenSSLEvpSignatureDsaHalfLen(transformId);
+    if(signHalfLen <= 0) {
+        xmlSecInternalError("xmlSecOpenSSLEvpSignatureDsaHalfLen", NULL);
+        goto done;
+    }
+
+    /* check size: we expect the r and s to be the same size and match the size of
+     * the key (RFC 6931); however some  implementations (e.g. Java) cut leading zeros:
+     * https://github.com/lsh123/xmlsec/issues/228 */
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(dataSize, signLen, goto done, NULL);
+    if((signLen < 2 * signHalfLen) && (signLen % 2 == 0)) {
+        signHalfLen = signLen / 2;
+    } else if(signLen != 2 * signHalfLen) {
+        xmlSecInternalError3("xmlSecOpenSSLEvpSignatureDsaHalfLen", NULL,
+            "signLen=%d; signHalfLen=%d", signLen, signHalfLen);
+        goto done;
+    }
+
+    /* create/read signature */
+    rr = BN_bin2bn(data, signHalfLen, NULL);
+    if(rr == NULL) {
+        xmlSecOpenSSLError("BN_bin2bn(sig->r)", NULL);
+        goto done;
+    }
+    ss = BN_bin2bn(data + signHalfLen, signHalfLen, NULL);
+    if(ss == NULL) {
+        xmlSecOpenSSLError("BN_bin2bn(sig->s)", NULL);
+        goto done;
+    }
+
+    sig = DSA_SIG_new();
+    if (sig == NULL) {
+        xmlSecOpenSSLError("DSA_SIG_new", NULL);
+        goto done;
+    }
+    ret = DSA_SIG_set0(sig, rr, ss);
+    if(ret == 0) {
+        xmlSecOpenSSLError("ECDSA_SIG_set0()", NULL);
+        goto done;
+    }
+    rr = NULL; /* owned by sig now */
+    ss = NULL; /* owned by sig now */
+
+    ret = i2d_DSA_SIG(sig, out); /* ret is size of signature on success */
+    if (ret < 0) {
+        xmlSecOpenSSLError("i2d_ECDSA_SIG", NULL);
+        goto done;
+    }
+
+    /* success */
+    (*outLen) = ret;
+    res = 0;
+
+done:
+    /* cleanup */
+    if (sig != NULL) {
+        DSA_SIG_free(sig);
+    }
+    if(rr != NULL) {
+        BN_clear_free(rr);
+    }
+    if(ss != NULL) {
+        BN_clear_free(ss);
+    }
+    /* done */
+    return(res);
+}
+
+static int
+xmlSecOpenSSLEvpSignatureDsa_OpenSSL2XmlDSig(const xmlSecTransformId transformId, xmlSecBufferPtr data) {
+    xmlSecByte * buf;
+    xmlSecSize bufSize;
+    int bufLen, signHalfLen, rLen, sLen;
+    DSA_SIG* sig = NULL;
+    const BIGNUM* rr = NULL;
+    const BIGNUM* ss = NULL;
+    int ret;
+    int res = -1;
+
+    xmlSecAssert2(transformId != NULL, 0);
+    xmlSecAssert2(data != NULL, 0);
+
+    buf = xmlSecBufferGetData(data);
+    bufSize = xmlSecBufferGetSize(data);
+    xmlSecAssert2(buf != NULL, 0);
+    xmlSecAssert2(bufSize > 0, 0);
+
+    /* calculate signature size */
+    signHalfLen = xmlSecOpenSSLEvpSignatureDsaHalfLen(transformId);
+    if(signHalfLen <= 0) {
+        xmlSecInternalError("xmlSecOpenSSLEvpSignatureDsaHalfLen", NULL);
+        goto done;
+    }
+
+    /* extract signature */
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(bufSize, bufLen, goto done, NULL);
+    sig = d2i_DSA_SIG(NULL, (const unsigned char **)&buf, bufLen);
+    if (sig == NULL) {
+        xmlSecOpenSSLError("d2i_ECDSA_SIG", NULL);
+        goto done;
+    }
+    DSA_SIG_get0(sig, &rr, &ss);
+    if((rr == NULL) || (ss == NULL)) {
+        xmlSecOpenSSLError("ECDSA_SIG_get0", NULL);
+        goto done;
+    }
+
+    /* check sizes */
+    rLen = BN_num_bytes(rr);
+    if ((rLen <= 0) || (rLen > signHalfLen)) {
+        xmlSecOpenSSLError3("BN_num_bytes(rr)", NULL,
+            "signHalfLen=%d; rLen=%d", signHalfLen, rLen);
+        goto done;
+    }
+    sLen = BN_num_bytes(ss);
+    if ((sLen <= 0) || (sLen > signHalfLen)) {
+        xmlSecOpenSSLError3("BN_num_bytes(ss)", NULL,
+            "signHalfLen=%d; sLen=%d", signHalfLen, sLen);
+        goto done;
+    }
+
+    /* adjust the buffer size */
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(2 * signHalfLen, bufSize, goto done, NULL);
+    ret = xmlSecBufferSetSize(data, bufSize);
+    if(ret < 0) {
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL,
+            "size=" XMLSEC_SIZE_FMT, bufSize);
+        goto done;
+    }
+    buf = xmlSecBufferGetData(data);
+    xmlSecAssert2(buf != NULL, 0);
+
+    /* write components */
+    xmlSecAssert2((rLen + sLen) <= 2 * signHalfLen, -1);
+    memset(buf, 0, bufSize);
+    BN_bn2bin(rr, buf + signHalfLen - rLen);
+    BN_bn2bin(ss, buf + 2 * signHalfLen - sLen);
+
+    /* success */
+    res = 0;
+
+done:
+    /* cleanup */
+    if (sig != NULL) {
+        DSA_SIG_free(sig);
+    }
+    /* done */
+    return(res);
+}
+
+
+
+#ifndef XMLSEC_NO_SHA1
+/* DSA-SHA1 signature transform: xmlSecOpenSSLDsaSha1Klass */
+XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS(DsaSha1)
+
+/**
+ * xmlSecOpenSSLTransformDsaSha1GetKlass:
+ *
+ * The DSA-SHA1 signature transform klass.
+ *
+ * Returns: DSA-SHA1 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecOpenSSLTransformDsaSha1GetKlass(void) {
+    return(&xmlSecOpenSSLDsaSha1Klass);
+}
+
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA256
+/* DSA-SHA1 signature transform: xmlSecOpenSSLDsaSha256Klass */
+XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS(DsaSha256)
+
+/**
+ * xmlSecOpenSSLTransformDsaSha256GetKlass:
+ *
+ * The DSA-SHA2-256 signature transform klass.
+ *
+ * Returns: DSA-SHA2-256 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecOpenSSLTransformDsaSha256GetKlass(void) {
+    return(&xmlSecOpenSSLDsaSha256Klass);
+}
+
+#endif /* XMLSEC_NO_SHA256 */
+
+#endif /* XMLSEC_NO_DSA */
 
 /*************************************************************************
  *
@@ -1471,7 +1809,6 @@ xmlSecOpenSSLTransformRsaPssSha3_512GetKlass(void) {
  *
  ************************************************************************/
 #ifndef XMLSEC_NO_EC
-
 
 static int
 xmlSecOpenSSLEvpSignatureEcdsaHalfLen(EVP_PKEY * pKey) {
@@ -1540,12 +1877,6 @@ xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL(EVP_PKEY* pKey, const xmlSecByte 
     }
 
     /* create/read signature */
-    sig = ECDSA_SIG_new();
-    if (sig == NULL) {
-        xmlSecOpenSSLError("DSA_SIG_new", NULL);
-        goto done;
-    }
-
     rr = BN_bin2bn(data, signHalfLen, NULL);
     if(rr == NULL) {
         xmlSecOpenSSLError("BN_bin2bn(sig->r)", NULL);
@@ -1557,6 +1888,11 @@ xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL(EVP_PKEY* pKey, const xmlSecByte 
         goto done;
     }
 
+    sig = ECDSA_SIG_new();
+    if (sig == NULL) {
+        xmlSecOpenSSLError("DSA_SIG_new", NULL);
+        goto done;
+    }
     ret = ECDSA_SIG_set0(sig, rr, ss);
     if(ret == 0) {
         xmlSecOpenSSLError("ECDSA_SIG_set0()", NULL);

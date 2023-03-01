@@ -64,6 +64,41 @@ xmlSecSetDefaultLineFeed(const xmlChar *linefeed)
 
 
 /**
+ * xmlSecGetNodeContentAndTrim:
+ * @cur:            the pointer to XML node.
+ *
+ * Reads @cur node content and trims it (both sides).
+ *
+ * Returns: trimmed node content or NULL if an error occurs.
+ */
+xmlChar*
+xmlSecGetNodeContentAndTrim(const xmlNodePtr cur) {
+    xmlChar * content;
+    xmlChar * bb;
+    xmlChar * ee;
+
+    content = xmlNodeGetContent(cur);
+    if(content == NULL) {
+        return(NULL);
+    }
+
+    /* ltrim */
+    bb = content;
+    while(((*bb) != '\0') && isspace(*bb)) { ++bb; }
+
+    /* rtrim */
+    ee = bb + xmlStrlen(bb);
+    while((ee != bb) && isspace(*(--ee))) { }
+    *(ee + 1) = '\0';
+
+    /* move string to the beggining */
+    if(content != bb) {
+        memmove(content, bb, (size_t)xmlStrlen(bb) + 1);
+    }
+    return(content);
+}
+
+/**
  * xmlSecGetNodeContentAsSize:
  * @cur:            the pointer to XML node.
  * @defValue:       the default value that will be returned in @res if there is no node content.
@@ -73,7 +108,6 @@ xmlSecSetDefaultLineFeed(const xmlChar *linefeed)
  *
  * Returns: 0 on success or -1 on error.
  */
-
 int
 xmlSecGetNodeContentAsSize(const xmlNodePtr cur, xmlSecSize defValue, xmlSecSize* res) {
     xmlChar *content;
@@ -2012,6 +2046,3 @@ xmlSecWin32ConvertUtf8ToTstr(const xmlChar*  str) {
 }
 
 #endif /* defined(XMLSEC_WINDOWS) */
-
-
-

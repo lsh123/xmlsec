@@ -82,6 +82,7 @@ see the Copyright file in the distribution  for details.<br><br></p>
                     <li>(<b>API breaking change</b>) Changed the key search to strict mode: only keys referenced by KeyInfo are used. To restore the old "lax" mode,
                         set XMLSEC_KEYINFO_FLAGS_LAX_KEY_SEARCH flag on xmlSecKeyInfoCtx or use '--lax-key-search' option for XMLSec command line utility.
                     </li>
+                    <li>(<b>API breaking change</b>) The KeyName element content is now trimmed before key search is performed.</li>
                     <li>Disabled MD5 digest method by default. Use "--enable-md5" configure options ("legacy-crypto" option on Windows) to re-enable MD5.</li>
 					<li>Fixed all potentially unsafe integer conversions and all the other warnings.</li>
 					<li>(<b>API/ABI breaking change</b>) Removed deprecated functions.</li>

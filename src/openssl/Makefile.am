@@ -24,7 +24,6 @@ libxmlsec1_openssl_la_SOURCES =\
 	crypto.c \
 	digests.c \
 	evp.c \
-	evp_signatures.c \
 	kdf.c \
 	key_agrmnt.c \
 	keysstore.c \
@@ -33,6 +32,7 @@ libxmlsec1_openssl_la_SOURCES =\
 	kw_des.c \
 	kt_rsa.c \
 	signatures.c \
+	signatures_legacy.c \
 	symkeys.c \
 	x509.c \
 	x509vfy.c \

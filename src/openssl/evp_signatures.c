@@ -77,10 +77,7 @@ static int      xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL  (EVP_PKEY* pKey,
                                                                  unsigned char ** out,
                                                                  int * outLen);
 static int      xmlSecOpenSSLEvpSignatureEcdsa_OpenSSL2XmlDSig  (EVP_PKEY* pKey,
-                                                                 const unsigned char * data,
-                                                                 int dataLen,
-                                                                 xmlSecByte ** out,
-                                                                 xmlSecSize * outSize);
+                                                                 xmlSecBufferPtr data);
 #endif /* XMLSEC_NO_EC */
 
 /******************************************************************************
@@ -1044,12 +1041,30 @@ xmlSecOpenSSLEvpSignatureSign(xmlSecTransformPtr transform, xmlSecOpenSSLEvpSign
         goto done;
     }
     XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(signLen, signSize, goto done, xmlSecTransformGetName(transform));
-
     ret = xmlSecBufferSetSize(out, signSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize", xmlSecTransformGetName(transform),
                 "size=" XMLSEC_SIZE_FMT, signSize);
         goto done;
+    }
+
+    /* fix signature if needed */
+    switch(ctx->mode) {
+    case xmlSecOpenSSLEvpSignatureMode_RsaPadding:
+        /* do nothing (easy case) */
+        break;
+    case xmlSecOpenSSLEvpSignatureMode_Ecdsa:
+#ifndef XMLSEC_NO_EC
+        /* convert XMLDSig data to the format expected by OpenSSL */
+        ret =  xmlSecOpenSSLEvpSignatureEcdsa_OpenSSL2XmlDSig(ctx->pKey, out);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecOpenSSLEvpSignatureEcdsa_OpenSSL2XmlDSig", xmlSecTransformGetName(transform));
+            goto done;
+        }
+#else  /* XMLSEC_NO_EC */
+        xmlSecNotImplementedError("ECDSA signatures are disabled");
+        goto done;
+#endif /* XMLSEC_NO_EC */
     }
 
     /* success */
@@ -1512,7 +1527,7 @@ xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL(EVP_PKEY* pKey, const xmlSecByte 
         goto done;
     }
 
-   /* check size: we expect the r and s to be the same size and match the size of
+    /* check size: we expect the r and s to be the same size and match the size of
      * the key (RFC 6931); however some  implementations (e.g. Java) cut leading zeros:
      * https://github.com/lsh123/xmlsec/issues/228 */
     XMLSEC_SAFE_CAST_SIZE_TO_INT(dataSize, signLen, goto done, NULL);
@@ -1576,11 +1591,85 @@ done:
 }
 
 static int
-xmlSecOpenSSLEvpSignatureEcdsa_OpenSSL2XmlDSig(EVP_PKEY* pKey, const unsigned char * data, int dataLen,
-    xmlSecByte ** out, xmlSecSize * outSize
-) {
-    /* TODO */
-    return(-1);
+xmlSecOpenSSLEvpSignatureEcdsa_OpenSSL2XmlDSig(EVP_PKEY* pKey, xmlSecBufferPtr data) {
+    xmlSecByte * buf;
+    xmlSecSize bufSize;
+    int bufLen, signHalfLen, rLen, sLen;
+    ECDSA_SIG* sig = NULL;
+    const BIGNUM* rr = NULL;
+    const BIGNUM* ss = NULL;
+    int ret;
+    int res = -1;
+
+    xmlSecAssert2(pKey != NULL, 0);
+    xmlSecAssert2(data != NULL, 0);
+
+    buf = xmlSecBufferGetData(data);
+    bufSize = xmlSecBufferGetSize(data);
+    xmlSecAssert2(buf != NULL, 0);
+    xmlSecAssert2(bufSize > 0, 0);
+
+    /* calculate signature size */
+    signHalfLen = xmlSecOpenSSLEvpSignatureEcdsaHalfLen(pKey);
+    if(signHalfLen <= 0) {
+        xmlSecInternalError("xmlSecOpenSSLEvpSignatureEcdsaHalfLen", NULL);
+        goto done;
+    }
+
+    /* extract signature */
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(bufSize, bufLen, goto done, NULL);
+    sig = d2i_ECDSA_SIG(NULL, (const unsigned char **)&buf, bufLen);
+    if (sig == NULL) {
+        xmlSecOpenSSLError("d2i_ECDSA_SIG", NULL);
+        goto done;
+    }
+    ECDSA_SIG_get0(sig, &rr, &ss);
+    if((rr == NULL) || (ss == NULL)) {
+        xmlSecOpenSSLError("ECDSA_SIG_get0", NULL);
+        goto done;
+    }
+
+    /* check sizes */
+    rLen = BN_num_bytes(rr);
+    if ((rLen <= 0) || (rLen > signHalfLen)) {
+        xmlSecOpenSSLError3("BN_num_bytes(rr)", NULL,
+            "signHalfLen=%d; rLen=%d", signHalfLen, rLen);
+        goto done;
+    }
+    sLen = BN_num_bytes(ss);
+    if ((sLen <= 0) || (sLen > signHalfLen)) {
+        xmlSecOpenSSLError3("BN_num_bytes(ss)", NULL,
+            "signHalfLen=%d; sLen=%d", signHalfLen, sLen);
+        goto done;
+    }
+
+    /* adjust the buffer size */
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(2 * signHalfLen, bufSize, goto done, NULL);
+    ret = xmlSecBufferSetSize(data, bufSize);
+    if(ret < 0) {
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL,
+            "size=" XMLSEC_SIZE_FMT, bufSize);
+        goto done;
+    }
+    buf = xmlSecBufferGetData(data);
+    xmlSecAssert2(buf != NULL, 0);
+
+    /* write components */
+    xmlSecAssert2((rLen + sLen) <= 2 * signHalfLen, -1);
+    memset(buf, 0, bufSize);
+    BN_bn2bin(rr, buf + signHalfLen - rLen);
+    BN_bn2bin(ss, buf + 2 * signHalfLen - sLen);
+
+    /* success */
+    res = 0;
+
+done:
+    /* cleanup */
+    if (sig != NULL) {
+        ECDSA_SIG_free(sig);
+    }
+    /* done */
+    return(res);
 }
 
 #ifndef XMLSEC_NO_RIPEMD160

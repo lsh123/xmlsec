@@ -559,13 +559,121 @@ done:
 #endif /* !defined(OPENSSL_NO_ENGINE) && (!defined(XMLSEC_OPENSSL_API_300) || defined(XMLSEC_OPENSSL3_ENGINES)) */
 }
 
+/* this function will either adopt or destroy ALL the params passed into it: pKey, keyCert, certs */
+static xmlSecKeyPtr
+xmlSecOpenSSLCreateKey(EVP_PKEY * pKey,  X509 * keyCert, STACK_OF(X509) * certs) {
+    xmlSecKeyDataPtr keyValue = NULL;
+    xmlSecKeyDataPtr x509Data = NULL;
+    xmlSecKeyPtr key = NULL;
+    xmlSecKeyPtr res = NULL;
+    int ret;
+
+    xmlSecAssert2(pKey != NULL, NULL);
+
+    key = xmlSecKeyCreate();
+    if(key == NULL) {
+        xmlSecInternalError("xmlSecKeyCreate", NULL);
+        goto done;
+    }
+
+    /* create key value from pKey */
+    keyValue = xmlSecOpenSSLEvpKeyAdopt(pKey);
+    if(keyValue == NULL) {
+        xmlSecInternalError("xmlSecOpenSSLEvpKeyAdopt", NULL);
+        goto done;
+    }
+    pKey = NULL; /* owned by keyValue now */
+
+    ret = xmlSecKeySetValue(key, keyValue);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeySetValue", NULL);
+        goto done;
+    }
+    keyValue = NULL;  /* owned by key now */
+
+    /* create x509 data for key */
+    if((keyCert != NULL) || (certs != NULL)) {
+        x509Data = xmlSecKeyDataCreate(xmlSecOpenSSLKeyDataX509Id);
+        if(x509Data == NULL) {
+            xmlSecInternalError("xmlSecKeyDataCreate", NULL);
+            goto done;
+        }
+        if(keyCert != NULL) {
+            ret = xmlSecOpenSSLKeyDataX509AdoptKeyCert(x509Data, keyCert);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecOpenSSLKeyDataX509AdoptKeyCert", NULL);
+                goto done;
+            }
+            keyCert = NULL; /* owned by x509Data now */
+        }
+        if(certs != NULL) {
+            while(sk_X509_num(certs) > 0) {
+                X509* cert = sk_X509_pop(certs);
+                if(cert == NULL) {
+                    continue;
+                }
+                if(cert == keyCert) {
+                    X509_free(cert);
+                    continue;
+                }
+                ret = xmlSecOpenSSLKeyDataX509AdoptCert(x509Data, cert);
+                if(ret < 0) {
+                    xmlSecInternalError("xmlSecOpenSSLKeyDataX509AdoptCert", NULL);
+                    X509_free(cert);
+                    goto done;
+                }
+                cert = NULL; /* owned by x509Data now */
+
+            }
+        }
+
+        ret = xmlSecKeyAdoptData(key, x509Data);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecKeyAdoptData", NULL);
+            goto done;
+        }
+        x509Data = NULL; /* owned by key now */
+    }
+
+    /* success */
+    res = key;
+    key = NULL;
+
+done:
+    if(pKey != NULL) {
+        EVP_PKEY_free(pKey);
+    }
+    if(keyCert != NULL) {
+        X509_free(keyCert);
+    }
+    if(certs != NULL) {
+        sk_X509_pop_free(certs, X509_free);
+    }
+    if(x509Data != NULL) {
+        xmlSecKeyDataDestroy(x509Data);
+    }
+    if(keyValue != NULL) {
+        xmlSecKeyDataDestroy(keyValue);
+    }
+    if(key != NULL) {
+        xmlSecKeyDestroy(key);
+    }
+    return(res);
+}
+
 static xmlSecKeyPtr
 xmlSecOpenSSLAppStorePrivateKeyLoad(const char *uri, const char *pwd, void* pwdCallback, void* pwdCallbackCtx) {
     UI_METHOD * ui_method = NULL;
     pem_password_cb * pwdCb;
     void * pwdCbCtx;
     OSSL_STORE_CTX * storeCtx = NULL;
+    STACK_OF(X509) * certs = NULL;
+    X509 * cert = NULL;
+    X509 * keyCert = NULL;
+    EVP_PKEY * pKey = NULL;
     xmlSecKeyPtr res = NULL;
+    int ii, size;
+    int ret;
 
     xmlSecAssert2(uri != NULL, NULL);
 
@@ -604,6 +712,14 @@ xmlSecOpenSSLAppStorePrivateKeyLoad(const char *uri, const char *pwd, void* pwdC
     }
 #endif /* !defined(XMLSEC_OPENSSL_API_300) */
 
+
+    certs = sk_X509_new_null();
+    if(certs == NULL) {
+        xmlSecOpenSSLError("sk_X509_new_null", NULL);
+        goto done;
+    }
+
+    /* load everything from store */
     while (!OSSL_STORE_eof(storeCtx)) {
         OSSL_STORE_INFO *info = OSSL_STORE_load(storeCtx);
         if(info == NULL) {
@@ -611,18 +727,99 @@ xmlSecOpenSSLAppStorePrivateKeyLoad(const char *uri, const char *pwd, void* pwdC
         }
 
         switch (OSSL_STORE_INFO_get_type(info)) {
+        case OSSL_STORE_INFO_PKEY:
+            /* only take the first private key */
+            if(pKey == NULL) {
+                pKey = OSSL_STORE_INFO_get1_PKEY(info);
+                if(pKey == NULL) {
+                    xmlSecOpenSSLError("OSSL_STORE_INFO_get1_PKEY", NULL);
+                    goto done;
+                }
+            }
+            break;
         case OSSL_STORE_INFO_CERT:
-            /* Print the X.509 certificate text */
-            X509_print_fp(stdout, OSSL_STORE_INFO_get0_CERT(info));
-            /* Print the X.509 certificate PEM output */
-            PEM_write_X509(stdout, OSSL_STORE_INFO_get0_CERT(info));
+            cert = OSSL_STORE_INFO_get1_CERT(info);
+            if(cert == NULL) {
+                xmlSecOpenSSLError("OSSL_STORE_INFO_get1_CERT", NULL);
+                goto done;
+            }
+            ret = sk_X509_push(certs, cert);
+            if(ret < 1) {
+                xmlSecOpenSSLError("sk_X509_push", NULL);
+                X509_free(cert);
+                goto done;
+            }
+            cert = NULL; /* owned by certs now */
+            break;
+        default:
+            /* printf("DEBUG: type = %d\n", OSSL_STORE_INFO_get_type(info)); */
+            /* do nothing */
             break;
         }
     }
 
-    printf("DEBUG: TODO\n");
+    /* do we have pkey? */
+    if(pKey == NULL) {
+        xmlSecOpenSSLError("Private key is not found in the store", NULL);
+        goto done;
+    }
+
+    /* try find key cert */
+    for(ii = 0, size = sk_X509_num(certs); ii < size; ++ii) {
+        EVP_PKEY * certKey;
+
+        cert = sk_X509_value(certs, ii);
+        if(cert == NULL) {
+            continue;
+        }
+        certKey = X509_get0_pubkey(cert);
+        if(certKey == NULL) {
+            continue;
+        }
+#ifndef XMLSEC_OPENSSL_API_300
+        if(EVP_PKEY_cmp(pKey, certKey) != 1) {
+            continue;
+        }
+#else /* XMLSEC_OPENSSL_API_300 */
+        if(EVP_PKEY_eq(pKey, certKey) != 1) {
+            continue;
+        }
+#endif /* XMLSEC_OPENSSL_API_300 */
+
+        /* found it! */
+        if(X509_up_ref(cert) != 1) {
+            xmlSecOpenSSLError("X509_up_ref", NULL);
+            goto done;
+        }
+        keyCert = cert;
+        break;
+    }
+
+    /* finally create a key, xmlSecOpenSSLCreateKey free's all passed params */
+    res = xmlSecOpenSSLCreateKey(pKey, keyCert, certs);
+    if(res == NULL) {
+        xmlSecInternalError("xmlSecKeyAdoptData", NULL);
+        pKey = NULL;
+        keyCert = NULL;
+        certs = NULL;
+        goto done;
+    }
+    pKey = NULL;
+    keyCert = NULL;
+    certs = NULL;
+
+    /* success! */
 
 done:
+    if(pKey != NULL) {
+        EVP_PKEY_free(pKey);
+    }
+    if(keyCert != NULL) {
+        X509_free(keyCert);
+    }
+    if(certs != NULL) {
+        sk_X509_pop_free(certs, X509_free);
+    }
     if(storeCtx != NULL) {
         OSSL_STORE_close(storeCtx);
     }
@@ -882,10 +1079,7 @@ xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
     EVP_PKEY * pKey = NULL;
     X509 * keyCert = NULL;
     STACK_OF(X509) * chain = NULL;
-    xmlSecKeyPtr key = NULL;
     xmlSecKeyPtr res = NULL;
-    xmlSecKeyDataPtr data = NULL;
-    xmlSecKeyDataPtr x509Data = NULL;
     size_t pwdSize;
     int pwdLen;
     int ret;
@@ -916,21 +1110,8 @@ xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
     XMLSEC_OPENSSL_PUSH_LIB_CTX(goto done);
     ret = PKCS12_parse(p12, pwd, &pKey, &keyCert, &chain);
     XMLSEC_OPENSSL_POP_LIB_CTX();
-    if(ret != 1) {
+    if((ret != 1) || (pKey == NULL)) {
         xmlSecOpenSSLError("PKCS12_parse", NULL);
-        goto done;
-    }
-
-    data = xmlSecOpenSSLEvpKeyAdopt(pKey);
-    if(data == NULL) {
-        xmlSecInternalError("xmlSecOpenSSLEvpKeyAdopt", NULL);
-        goto done;
-    }
-    pKey = NULL;
-
-    x509Data = xmlSecKeyDataCreate(xmlSecOpenSSLKeyDataX509Id);
-    if(x509Data == NULL) {
-        xmlSecInternalError("xmlSecKeyDataCreate", NULL);
         goto done;
     }
 
@@ -946,73 +1127,23 @@ xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
      * in the xmlSecOpenSSLKeyDataX509AdoptKeyCert() and xmlSecOpenSSLKeyDataX509AdoptCert()
      * functions.
      */
-    if(keyCert != NULL) {
-        ret = xmlSecOpenSSLKeyDataX509AdoptKeyCert(x509Data, keyCert);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecOpenSSLKeyDataX509AdoptKeyCert", NULL);
-            goto done;
-        }
-        keyCert = NULL; /* owned by x5009 data now */
-    }
 
-    if(chain != NULL) {
-        int ii;
-
-        for(ii = 0; ii < sk_X509_num(chain); ++ii) {
-            X509* cert = sk_X509_value(chain, ii);
-            X509* tmpcert;
-
-            xmlSecAssert2(cert != NULL, NULL);
-
-            /* make a copy to ensure we have no race condition if there are errors
-             * in the middle of this loop
-             */
-            tmpcert = X509_dup(sk_X509_value(chain, ii));
-            if(tmpcert == NULL) {
-                xmlSecOpenSSLError("X509_dup", xmlSecKeyDataGetName(x509Data));
-                goto done;
-            }
-            ret = xmlSecOpenSSLKeyDataX509AdoptCert(x509Data, tmpcert);
-            if(ret < 0) {
-                xmlSecInternalError("xmlSecOpenSSLKeyDataX509AdoptCert", NULL);
-                X509_free(tmpcert);
-                goto done;
-            }
-            tmpcert = NULL; /* owned by x509 data now */
-        }
-    }
-
-    key = xmlSecKeyCreate();
-    if(key == NULL) {
-        xmlSecInternalError("xmlSecKeyCreate", NULL);
-        goto done;
-    }
-
-    ret = xmlSecKeySetValue(key, data);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecKeySetValue", NULL);
-        goto done;
-    }
-    data = NULL;
-
-    ret = xmlSecKeyAdoptData(key, x509Data);
-    if(ret < 0) {
+    /* finally create a key, xmlSecOpenSSLCreateKey free's all passed params */
+    res = xmlSecOpenSSLCreateKey(pKey, keyCert, chain);
+    if(res == NULL) {
         xmlSecInternalError("xmlSecKeyAdoptData", NULL);
+        pKey = NULL;
+        keyCert = NULL;
+        chain = NULL;
         goto done;
     }
-    x509Data = NULL;
+    pKey = NULL;
+    keyCert = NULL;
+    chain = NULL;
 
-    /* success */
-    res = key;
-    key = NULL;
+    /* success! */
 
 done:
-    if(x509Data != NULL) {
-        xmlSecKeyDataDestroy(x509Data);
-    }
-    if(data != NULL) {
-        xmlSecKeyDataDestroy(data);
-    }
     if(chain != NULL) {
         sk_X509_pop_free(chain, X509_free);
     }
@@ -1024,9 +1155,6 @@ done:
     }
     if(p12 != NULL) {
         PKCS12_free(p12);
-    }
-    if(key != NULL) {
-        xmlSecKeyDestroy(key);
     }
     return(res);
 }

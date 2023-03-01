@@ -353,6 +353,20 @@ static xmlSecAppCmdLineParam pubkeyDerParam = {
     NULL
 };
 
+/* openssl specific pubkey options */
+static xmlSecAppCmdLineParam pubkeyOpensslEngineParam = {
+    xmlSecAppCmdLineTopicKeysMngr,
+    "--pubkey-openssl-engine",
+    NULL,
+    "--pubkey-openssl-engine[:<name>] <openssl-engine>;<openssl-key-id>[,<crtfile>[,<crtfile>[...]]]"
+    "\n\tload public key by OpenSSL ENGINE interface; specify the name of engine"
+    "\n\t(like with -engine params), the key specs (like with -inkey or -key params)"
+    "\n\tand optionally certificates that verify this key",
+    xmlSecAppCmdLineParamTypeStringList,
+    xmlSecAppCmdLineParamFlagParamNameValue | xmlSecAppCmdLineParamFlagMultipleValues,
+    NULL
+};
+
 
 #ifndef XMLSEC_NO_AES
 static xmlSecAppCmdLineParam aesKeyParam = {
@@ -955,6 +969,7 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
     &privkeyOpensslEngineParam,
     &pubkeyParam,
     &pubkeyDerParam,
+    &pubkeyOpensslEngineParam,
     &pwdParam,
     &laxKeySearchParam,
 
@@ -2430,6 +2445,26 @@ xmlSecAppLoadKeys(void) {
         }
     }
 
+    for(value = pubkeyOpensslEngineParam.value; value != NULL; value = value->next) {
+        /* we expect at least one parameter for the key's engine+id */
+        if(value->strListValue == NULL || value->strListValue[0] == '\0') {
+            fprintf(stderr, "Error: invalid value for option \"%s\".\n", pubkeyOpensslEngineParam.fullName);
+            return(-1);
+        }
+
+        /* the params format is: <openssl-engine>;<openssl-key-id>[,<crtfile>[,<crtfile>[...]]] */
+        if(xmlSecAppCryptoSimpleKeysMngrEngineKeyAndCertsLoad(gKeysMngr,
+                    value->strListValue,
+                    value->strListValue + strlen(value->strListValue) + 1,
+                    xmlSecAppCmdLineParamGetString(&pwdParam),
+                    value->paramNameValue,
+                    xmlSecKeyDataFormatEngine,
+                    xmlSecKeyDataFormatPem) < 0) {
+            fprintf(stderr, "Error: failed to load private key from \"%s\".\n",
+                    value->strListValue);
+            return(-1);
+        }
+    }
 
 #ifndef XMLSEC_NO_X509
     /* read all public keys in certs */

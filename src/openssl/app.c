@@ -500,11 +500,14 @@ xmlSecOpenSSLAppEngineKeyLoad(const char *engineName, const char *engineKeyId,
     ui_method = UI_null();
 #endif  /* OPENSSL_NO_UI_CONSOLE */
 
-    /* load private key */
+    /* load private and then public key */
     pKey = ENGINE_load_private_key(engine, engineKeyId, ui_method, NULL);
     if(pKey == NULL) {
-        xmlSecOpenSSLError("ENGINE_load_private_key", NULL);
-        goto done;
+        pKey = ENGINE_load_public_key(engine, engineKeyId, ui_method, NULL);
+        if(pKey == NULL) {
+            xmlSecOpenSSLError("ENGINE_load_private_key and ENGINE_load_public_key", NULL);
+            goto done;
+        }
     }
 
     /* create xmlsec key */

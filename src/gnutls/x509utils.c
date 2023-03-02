@@ -1024,12 +1024,10 @@ xmlSecGnuTLSASN1IntegerWrite(const unsigned char * data, size_t len) {
  *
  ************************************************************************/
 int
-xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
-                             const char *pwd,
-                             gnutls_x509_privkey_t * priv_key,
-                             gnutls_x509_crt_t * key_cert,
-                             xmlSecPtrListPtr certsList)
-{
+xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, const char *pwd,
+    gnutls_x509_privkey_t * priv_key, gnutls_x509_crt_t * key_cert, xmlSecPtrListPtr certsList,
+    xmlChar ** keyName
+) {
     gnutls_pkcs12_t pkcs12 = NULL;
     gnutls_pkcs12_bag_t bag = NULL;
     gnutls_x509_crt_t cert = NULL;
@@ -1048,6 +1046,8 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     xmlSecAssert2(key_cert!= NULL, -1);
     xmlSecAssert2((*key_cert) == NULL, -1);
     xmlSecAssert2(certsList != NULL, -1);
+    xmlSecAssert2(keyName != NULL, -1);
+    xmlSecAssert2((*keyName) == NULL, -1);
 
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(dataSize, dataLen, return(-1), NULL);
 
@@ -1146,6 +1146,22 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
                     if(err != GNUTLS_E_SUCCESS) {
                         xmlSecGnuTLSError("gnutls_x509_privkey_import_pkcs8", err, NULL);
                         goto done;
+                    }
+
+                    if((*keyName) == NULL) {
+                        char * name = NULL;
+                        err = gnutls_pkcs12_bag_get_friendly_name(bag, ii, &name);
+                        if(err != GNUTLS_E_SUCCESS) {
+                            xmlSecGnuTLSError("gnutls_pkcs12_bag_get_friendly_name", err, NULL);
+                            goto done;
+                        }
+                        if(name != NULL) {
+                            (*keyName) = xmlStrdup(BAD_CAST name);
+                            if((*keyName) == NULL) {
+                                xmlSecStrdupError(BAD_CAST name, NULL);
+                                goto done;
+                            }
+                        }
                     }
                 }
                 break;

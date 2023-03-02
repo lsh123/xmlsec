@@ -614,7 +614,6 @@ done:
 static xmlSecKeyPtr
 xmlSecOpenSSLCreateKey(EVP_PKEY * pKey,  X509 * keyCert, STACK_OF(X509) * certs) {
     xmlSecKeyDataPtr keyValue = NULL;
-    xmlSecKeyDataPtr x509Data = NULL;
     xmlSecKeyPtr key = NULL;
     xmlSecKeyPtr res = NULL;
     int ret;
@@ -642,11 +641,37 @@ xmlSecOpenSSLCreateKey(EVP_PKEY * pKey,  X509 * keyCert, STACK_OF(X509) * certs)
     }
     keyValue = NULL;  /* owned by key now */
 
+
+    /* try to get key name from x509 cert */
+    if(keyCert != NULL) {
+        unsigned char * name = NULL;
+        int nameLen = 0;
+
+        if(name == NULL) {
+            name = X509_alias_get0(keyCert, &nameLen);
+        }
+        if(name == NULL) {
+            name = X509_keyid_get0(keyCert, &nameLen);
+        }
+        if((name != NULL) && (nameLen > 0)) {
+            xmlSecSize nameSize = 0;
+
+            XMLSEC_SAFE_CAST_INT_TO_SIZE(nameLen, nameSize, goto done, NULL);
+            ret = xmlSecKeySetNameEx(key, name, nameSize);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecKeySetNameEx", NULL);
+                goto done;
+            }
+        }
+    }
+
     /* create x509 data for key */
     if((keyCert != NULL) || (certs != NULL)) {
-        x509Data = xmlSecKeyDataCreate(xmlSecOpenSSLKeyDataX509Id);
+        xmlSecKeyDataPtr x509Data;
+
+        x509Data = xmlSecKeyEnsureData(key, xmlSecOpenSSLKeyDataX509Id);
         if(x509Data == NULL) {
-            xmlSecInternalError("xmlSecKeyDataCreate", NULL);
+            xmlSecInternalError("xmlSecKeyEnsureData(xmlSecOpenSSLKeyDataX509Id)", NULL);
             goto done;
         }
         if(keyCert != NULL) {
@@ -677,13 +702,6 @@ xmlSecOpenSSLCreateKey(EVP_PKEY * pKey,  X509 * keyCert, STACK_OF(X509) * certs)
 
             }
         }
-
-        ret = xmlSecKeyAdoptData(key, x509Data);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecKeyAdoptData", NULL);
-            goto done;
-        }
-        x509Data = NULL; /* owned by key now */
     }
 
     /* success */
@@ -699,9 +717,6 @@ done:
     }
     if(certs != NULL) {
         sk_X509_pop_free(certs, X509_free);
-    }
-    if(x509Data != NULL) {
-        xmlSecKeyDataDestroy(x509Data);
     }
     if(keyValue != NULL) {
         xmlSecKeyDataDestroy(keyValue);
@@ -1023,7 +1038,7 @@ int
 xmlSecOpenSSLAppKeyCertLoadBIO(xmlSecKeyPtr key, BIO* bio, xmlSecKeyDataFormat format) {
 
     xmlSecKeyDataFormat certFormat;
-    xmlSecKeyDataPtr data = NULL;
+    xmlSecKeyDataPtr x509Data = NULL;
     X509 *cert = NULL;
     int ret;
     int res = -1;
@@ -1051,18 +1066,27 @@ xmlSecOpenSSLAppKeyCertLoadBIO(xmlSecKeyPtr key, BIO* bio, xmlSecKeyDataFormat f
         goto done;
     }
 
-    /* add cert to data as the key cert */
-    data = xmlSecKeyEnsureData(key, xmlSecOpenSSLKeyDataX509Id);
-    if(data == NULL) {
+    /* add cert to key */
+    x509Data = xmlSecKeyEnsureData(key, xmlSecOpenSSLKeyDataX509Id);
+    if(x509Data == NULL) {
         xmlSecInternalError("xmlSecKeyEnsureData", NULL);
         goto done;
     }
-    ret = xmlSecOpenSSLKeyDataX509AdoptKeyCert(data, cert);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecOpenSSLKeyDataX509AdoptKeyCert", NULL);
-        goto done;
+    if(xmlSecOpenSSLKeyDataX509GetKeyCert(x509Data) == NULL) {
+        /* TODO: check if cert matches the key */
+        ret = xmlSecOpenSSLKeyDataX509AdoptKeyCert(x509Data, cert);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecOpenSSLKeyDataX509AdoptKeyCert", NULL);
+            goto done;
+        }
+    } else {
+        ret = xmlSecOpenSSLKeyDataX509AdoptCert(x509Data, cert);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecOpenSSLKeyDataX509AdoptCert", NULL);
+            goto done;
+        }
     }
-    cert = NULL; /* owned by data now */
+    cert = NULL; /* owned by x509Data now */
 
     /* success */
     res = 0;

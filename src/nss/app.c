@@ -618,19 +618,13 @@ xmlSecNssAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSecSi
 int
 xmlSecNssAppKeyCertLoadSECItem(xmlSecKeyPtr key, SECItem* secItem, xmlSecKeyDataFormat format) {
     CERTCertificate *cert = NULL;
-    xmlSecKeyDataPtr data;
+    xmlSecKeyDataPtr x509Data;
     int ret;
     int res = -1;
 
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(secItem != NULL, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
-
-    data = xmlSecKeyEnsureData(key, xmlSecNssKeyDataX509Id);
-    if(data == NULL) {
-        xmlSecInternalError("xmlSecKeyEnsureData(xmlSecNssKeyDataX509Id)", NULL);
-        goto done;
-    }
 
     /* read cert */
     switch(format) {
@@ -651,13 +645,27 @@ xmlSecNssAppKeyCertLoadSECItem(xmlSecKeyPtr key, SECItem* secItem, xmlSecKeyData
     }
     xmlSecAssert2(cert != NULL, -1);
 
-    /* add key cert to the data */
-    ret = xmlSecNssKeyDataX509AdoptKeyCert(data, cert);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecNssKeyDataX509AdoptKeyCert", NULL);
+    /* add cert to the key */
+    x509Data = xmlSecKeyEnsureData(key, xmlSecNssKeyDataX509Id);
+    if(x509Data == NULL) {
+        xmlSecInternalError("xmlSecKeyEnsureData(xmlSecNssKeyDataX509Id)", NULL);
         goto done;
     }
-    cert = NULL; /* owned by data now */
+    if(xmlSecNssKeyDataX509GetKeyCert(x509Data) == NULL) {
+        /* TODO: check if cert matches the key */
+        ret = xmlSecNssKeyDataX509AdoptKeyCert(x509Data, cert);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecNssKeyDataX509AdoptKeyCert", NULL);
+            goto done;
+        }
+    } else {
+        ret = xmlSecNssKeyDataX509AdoptCert(x509Data, cert);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecNssKeyDataX509AdoptCert", NULL);
+            goto done;
+        }
+    }
+    cert = NULL; /* owned by x509Data now */
 
     /* success */
     res = 0;

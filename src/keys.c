@@ -755,6 +755,39 @@ xmlSecKeySetName(xmlSecKeyPtr key, const xmlChar* name) {
 }
 
 /**
+ * xmlSecKeySetNameEx:
+ * @key:                the pointer to key.
+ * @name:               the new key name.
+ * @nameSize:           the size of @name.
+ *
+ * Sets key name (see also #xmlSecKeyGetName function).
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecKeySetNameEx(xmlSecKeyPtr key, const xmlChar* name, xmlSecSize nameSize) {
+    xmlSecAssert2(key != NULL, -1);
+
+    if(key->name != NULL) {
+        xmlFree(key->name);
+        key->name = NULL;
+    }
+
+    if((name != NULL) && (nameSize > 0)) {
+        int nameLen;
+
+        XMLSEC_SAFE_CAST_SIZE_TO_INT(nameSize, nameLen, return(-1), NULL);
+        key->name = xmlStrndup(name, nameLen);
+        if(key->name == NULL) {
+            xmlSecStrdupError(name, NULL);
+            return(-1);
+        }
+    }
+
+    return(0);
+}
+
+/**
  * xmlSecKeyGetValue:
  * @key:                the pointer to key.
  *

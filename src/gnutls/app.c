@@ -295,7 +295,7 @@ xmlSecGnuTLSAppKeyCertLoadMemory(xmlSecKeyPtr key,
     const xmlSecByte* data, xmlSecSize dataSize, xmlSecKeyDataFormat format)
 {
     gnutls_x509_crt_t cert = NULL;
-    xmlSecKeyDataPtr keyData;
+    xmlSecKeyDataPtr x509Data;
     int ret;
     int res = -1;
 
@@ -311,18 +311,27 @@ xmlSecGnuTLSAppKeyCertLoadMemory(xmlSecKeyPtr key,
         goto done;
     }
 
-    /* add cert to key data */
-    keyData = xmlSecKeyEnsureData(key, xmlSecGnuTLSKeyDataX509Id);
-    if(keyData == NULL) {
+    /* add cert to key */
+    x509Data = xmlSecKeyEnsureData(key, xmlSecGnuTLSKeyDataX509Id);
+    if(x509Data == NULL) {
         xmlSecInternalError("xmlSecKeyEnsureData", NULL);
         goto done;
     }
-    ret = xmlSecGnuTLSKeyDataX509AdoptKeyCert(keyData, cert);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecGnuTLSKeyDataX509AdoptKeyCert", NULL);
-        goto done;
+    if(xmlSecGnuTLSKeyDataX509GetKeyCert(x509Data) == NULL) {
+        /* TODO: check if cert matches the key */
+        ret = xmlSecGnuTLSKeyDataX509AdoptKeyCert(x509Data, cert);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecGnuTLSKeyDataX509AdoptKeyCert", NULL);
+            goto done;
+        }
+    } else {
+        ret = xmlSecGnuTLSKeyDataX509AdoptCert(x509Data, cert);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecGnuTLSKeyDataX509AdoptCert", NULL);
+            goto done;
+        }
     }
-    cert = NULL; /* owned by keyData now */
+    cert = NULL; /* owned by x509Data now */
 
     /* success */
     res = 0;

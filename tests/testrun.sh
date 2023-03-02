@@ -300,6 +300,18 @@ execKeysTest() {
                 failures=`expr $failures + 1`
             fi
         fi
+        # only openssl supports keynames in pkcs12
+         if [ "z$crypto" = "zopenssl" ] ; then
+            printf "    Reading private key name from pkcs12 file             "
+            rm -f $tmpfile
+            params="--pkcs12 $privkey_file.p12 $pkcs12_key_extra_options $key_test_options --output $tmpfile $asym_key_test.tmpl"
+            echo "$extra_vars $VALGRIND $xmlsec_app sign $xmlsec_params $params" >>  $curlogfile
+            $VALGRIND $xmlsec_app sign $xmlsec_params $params >> $curlogfile 2>> $curlogfile
+            printRes $expected_res $?
+            if [ $? -ne 0 ]; then
+                failures=`expr $failures + 1`
+            fi
+        fi
 
         # only openssl supports --privkey-openssl-store
         if [ "z$crypto" = "zopenssl" ] ; then

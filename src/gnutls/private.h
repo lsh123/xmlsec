@@ -161,7 +161,8 @@ int                     xmlSecGnuTLSPkcs12LoadMemory            (const xmlSecByt
                                                                  const char *pwd,
                                                                  gnutls_x509_privkey_t * priv_key,
                                                                  gnutls_x509_crt_t * key_cert,
-                                                                 xmlSecPtrListPtr certsList);
+                                                                 xmlSecPtrListPtr certsList,
+                                                                 xmlChar ** keyName);
 
 /*************************************************************************
  *

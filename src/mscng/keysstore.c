@@ -87,8 +87,8 @@ xmlSecMSCngKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name, xmlSe
     LPCTSTR storeName;
     HCERTSTORE hStore = NULL;
     PCCERT_CONTEXT cert = NULL;
-    LPTSTR wcName = NULL;
-    BOOL ret;
+    LPTSTR lptName = NULL;
+    LPWSTR lpwName = NULL;
 
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecMSCngKeysStoreId), NULL);
     xmlSecAssert2(name != NULL, NULL);
@@ -103,87 +103,86 @@ xmlSecMSCngKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name, xmlSe
     if(hStore == NULL) {
         xmlSecMSCngLastError2("CertOpenSystemStore", xmlSecKeyStoreGetName(store),
             "name=%s", xmlSecErrorsSafeString(storeName));
-        return(NULL);
+        goto done;
     }
 
-    /* convert name to unicode */
-    wcName = xmlSecWin32ConvertUtf8ToTstr(name);
-    if(wcName == NULL) {
+    /* convert name to tstr */
+    lptName = xmlSecWin32ConvertUtf8ToTstr(name);
+    if(lptName == NULL) {
         xmlSecInternalError("xmlSecWin32ConvertUtf8ToTstr(name)",
                             xmlSecKeyStoreGetName(store));
-        CertCloseStore(hStore, 0);
-        return(NULL);
+        goto done;
     }
 
     /* find cert based on subject */
-    cert = xmlSecMSCngX509FindCertBySubject(
-        hStore,
-        wcName,
-        X509_ASN_ENCODING | PKCS_7_ASN_ENCODING);
+    if (cert == NULL) {
+        cert = xmlSecMSCngX509FindCertBySubject(
+            hStore,
+            lptName,
+            X509_ASN_ENCODING | PKCS_7_ASN_ENCODING);
+    }
 
+    /* find cert based on friendly name */
     if(cert == NULL) {
-        /* find cert based on friendly name */
-        DWORD dwPropSize;
-        PBYTE pbFriendlyName;
         PCCERT_CONTEXT pCertCtxIter = NULL;
 
+        /* convert name to unicode */
+        lpwName = xmlSecWin32ConvertUtf8ToUnicode(name);
+        if (lpwName == NULL) {
+            xmlSecInternalError("xmlSecWin32ConvertUtf8ToUnicode(name)",
+                xmlSecKeyStoreGetName(store));
+            goto done;
+        }
 
+        /* find cert based on friendly name */
         while (1) {
+            LPCWSTR lpwFriendlyName;
+
             pCertCtxIter = CertEnumCertificatesInStore(hStore, pCertCtxIter);
             if(pCertCtxIter == NULL) {
                 break;
             }
 
-            ret = CertGetCertificateContextProperty(pCertCtxIter,
-                                                    CERT_FRIENDLY_NAME_PROP_ID,
-                                                    NULL, &dwPropSize);
-            if(ret != TRUE) {
+            lpwFriendlyName = xmlSecMSCngX509GetFriendlyNameUnicode(pCertCtxIter);
+            if (lpwFriendlyName == NULL) {
                 continue;
             }
 
-            pbFriendlyName = xmlMalloc(dwPropSize);
-            if(pbFriendlyName == NULL) {
-                xmlSecMallocError(dwPropSize, xmlSecKeyStoreGetName(store));
-                xmlFree(wcName);
-                CertCloseStore(hStore, 0);
-                return(NULL);
-            }
-
-            ret = CertGetCertificateContextProperty(pCertCtxIter,
-                                                    CERT_FRIENDLY_NAME_PROP_ID,
-                                                    pbFriendlyName,
-                                                    &dwPropSize);
-            if(ret != TRUE) {
-                xmlFree(pbFriendlyName);
-                continue;
-            }
-
-            if(lstrcmp(wcName, (LPCTSTR)pbFriendlyName) == 0) {
+            if(lstrcmpW(lpwName, lpwFriendlyName) == 0) {
               cert = pCertCtxIter;
-              xmlFree(pbFriendlyName);
+              xmlFree((void*)lpwFriendlyName);
               break;
             }
 
-            xmlFree(pbFriendlyName);
+            xmlFree((void*)lpwFriendlyName);
         }
     }
 
+    /* find cert based on part of the name */
     if(cert == NULL) {
-        /* find cert based on part of the name */
         cert = CertFindCertificateInStore(
             hStore,
             X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
             0,
             CERT_FIND_SUBJECT_STR,
-            wcName,
+            lptName,
             NULL);
     }
 
+    /* done */
 
-    xmlFree(wcName);
-    /* dwFlags=0 means close the store with memory remaining allocated for
-     * contexts that have not been freed */
-    CertCloseStore(hStore, 0);
+done:
+    if (lptName != NULL) {
+        xmlFree(lptName);
+    }
+    if (lpwName != NULL) {
+        xmlFree(lpwName);
+    }
+    if(hStore != NULL) {
+        /* dwFlags=0 means close the store with memory remaining allocated for
+         * contexts that have not been freed */
+        CertCloseStore(hStore, 0);
+    }
 
     return(cert);
 }
@@ -340,7 +339,7 @@ xmlSecMSCngKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name, xmlSec
 
     cert = xmlSecMSCngKeysStoreFindCert(store, name, keyInfoCtx);
     if(cert == NULL) {
-        xmlSecInternalError("xmlSecMSCngKeysStoreFindCert", xmlSecKeyStoreGetName(store));
+        /* cert not found */
         goto done;
     }
 

@@ -948,8 +948,8 @@ execDSigTest $res_success \
     "sha1 dsa-sha1" \
     "" \
     "$priv_key_option:DsaKey $topfolder/keys/dsakey.$priv_key_format --pwd secret123" \
-    "$priv_key_option:mykey $topfolder/keys/dsakey.$priv_key_format --pwd secret123" \
-    "$priv_key_option:mykey $topfolder/keys/dsakey.$priv_key_format --pwd secret123"
+    "$priv_key_option:dsakey $topfolder/keys/dsakey.$priv_key_format --pwd secret123" \
+    "$priv_key_option:dsakey $topfolder/keys/dsakey.$priv_key_format --pwd secret123"
 
 
 execDSigTest $res_success \
@@ -958,8 +958,8 @@ execDSigTest $res_success \
     "sha1 ecdsa-sha1" \
     "" \
     "$priv_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
-    "$priv_key_option:mykey $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
-    "$priv_key_option:mykey $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123"
+    "$priv_key_option:TestEcdsaSecp256r1Key $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
+    "$priv_key_option:TestEcdsaSecp256r1Key $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123"
 
 
 execDSigTest $res_success \
@@ -978,8 +978,8 @@ execDSigTest $res_success \
     "sha1 rsa-sha1" \
     "" \
     "$priv_key_option:mykey $topfolder/keys/largersakey.$priv_key_format --pwd secret123" \
-    "$priv_key_option:mykey $topfolder/keys/largersakey.$priv_key_format --pwd secret123" \
-    "$priv_key_option:mykey $topfolder/keys/largersakey.$priv_key_format --pwd secret123"
+    "$priv_key_option:largersakey $topfolder/keys/largersakey.$priv_key_format --pwd secret123" \
+    "$priv_key_option:largersakey $topfolder/keys/largersakey.$priv_key_format --pwd secret123"
 
 execDSigTest $res_success \
     "" \

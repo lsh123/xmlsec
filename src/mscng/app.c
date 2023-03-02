@@ -37,6 +37,7 @@
 #include <xmlsec/mscng/x509.h>
 
 #include "../cast_helpers.h"
+#include "private.h"
 
 /* config info for the mscng keysstore */
 static LPTSTR gXmlSecMSCngAppCertStoreName = NULL;
@@ -443,6 +444,7 @@ xmlSecMSCngAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, cons
     xmlSecKeyDataPtr privKeyData = NULL;
     PCCERT_CONTEXT cert = NULL;
     PCCERT_CONTEXT certDuplicate = NULL;
+    xmlChar* keyName = NULL;
     int ret;
 
     xmlSecAssert2(data != NULL, NULL);
@@ -498,6 +500,11 @@ xmlSecMSCngAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, cons
             if (privKeyData != NULL) {
                 /* multiple private keys, use the first one */
                 continue;
+            }
+
+            /* get key name */
+            if (keyName == NULL) {
+                keyName = xmlSecMSCngX509GetFriendlyNameUtf8(cert);
             }
 
             /* adopt private key */
@@ -575,12 +582,24 @@ xmlSecMSCngAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, cons
     }
     keyData = NULL;
 
+    if (keyName != NULL) {
+        ret = xmlSecKeySetName(key, keyName);
+        if (ret < 0) {
+            xmlSecInternalError("xmlSecKeySetName", NULL);
+            xmlSecKeyDestroy(key);
+            goto cleanup;
+        }
+    }
+
 cleanup:
     if(certStore != NULL) {
         CertCloseStore(certStore, 0);
     }
     if(pwdWideChar != NULL) {
         xmlFree(pwdWideChar);
+    }
+    if (keyName != NULL) {
+        xmlFree(keyName);
     }
     if(keyData != NULL) {
         xmlSecKeyDataDestroy(keyData);

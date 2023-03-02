@@ -209,7 +209,9 @@ XMLSEC_EXPORT int               xmlSecKeySwap           (xmlSecKeyPtr key1,
 XMLSEC_EXPORT const xmlChar*    xmlSecKeyGetName        (xmlSecKeyPtr key);
 XMLSEC_EXPORT int               xmlSecKeySetName        (xmlSecKeyPtr key,
                                                          const xmlChar* name);
-
+XMLSEC_EXPORT int               xmlSecKeySetNameEx      (xmlSecKeyPtr key,
+                                                         const xmlChar* name,
+                                                         xmlSecSize nameSize);
 XMLSEC_EXPORT xmlSecKeyDataType xmlSecKeyGetType        (xmlSecKeyPtr key);
 
 XMLSEC_EXPORT xmlSecKeyDataPtr  xmlSecKeyGetValue       (xmlSecKeyPtr key);

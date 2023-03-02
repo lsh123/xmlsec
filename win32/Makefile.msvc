@@ -317,9 +317,10 @@ XMLSEC_MSCRYPTO_OBJS_A = \
 XMLSEC_MSCNG_OBJS = \
 	$(XMLSEC_MSCNG_INTDIR)\app.obj\
 	$(XMLSEC_MSCNG_INTDIR)\certkeys.obj \
-	$(XMLSEC_MSCNG_INTDIR)\crypto.obj\
-	$(XMLSEC_MSCNG_INTDIR)\ciphers.obj \
+	$(XMLSEC_MSCNG_INTDIR)\ciphers_cbc.obj \
+	$(XMLSEC_MSCNG_INTDIR)\ciphers_gcm.obj \
 	$(XMLSEC_MSCNG_INTDIR)\concatkdf.obj \
+	$(XMLSEC_MSCNG_INTDIR)\crypto.obj\
 	$(XMLSEC_MSCNG_INTDIR)\digests.obj\
 	$(XMLSEC_MSCNG_INTDIR)\hmac.obj \
 	$(XMLSEC_MSCNG_INTDIR)\symkeys.obj \
@@ -336,9 +337,10 @@ XMLSEC_MSCNG_OBJS = \
 XMLSEC_MSCNG_OBJS_A = \
 	$(XMLSEC_MSCNG_INTDIR_A)\app.obj\
 	$(XMLSEC_MSCNG_INTDIR_A)\certkeys.obj \
-	$(XMLSEC_MSCNG_INTDIR_A)\crypto.obj\
-	$(XMLSEC_MSCNG_INTDIR_A)\ciphers.obj \
+	$(XMLSEC_MSCNG_INTDIR_A)\ciphers_cbc.obj \
+	$(XMLSEC_MSCNG_INTDIR_A)\ciphers_gcm.obj \
 	$(XMLSEC_MSCNG_INTDIR_A)\concatkdf.obj \
+	$(XMLSEC_MSCNG_INTDIR_A)\crypto.obj\
 	$(XMLSEC_MSCNG_INTDIR_A)\digests.obj\
 	$(XMLSEC_MSCNG_INTDIR_A)\hmac.obj \
 	$(XMLSEC_MSCNG_INTDIR_A)\symkeys.obj \

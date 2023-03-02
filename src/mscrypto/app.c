@@ -25,9 +25,10 @@
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
-#include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/keysdata.h>
+#include <xmlsec/private.h>
+#include <xmlsec/transforms.h>
 #include <xmlsec/xmltree.h>
 
 #include <xmlsec/mscrypto/app.h>
@@ -129,19 +130,41 @@ xmlSecMSCryptoAppGetCertStoreName(void) {
  * @pwdCallback:        the key password callback.
  * @pwdCallbackCtx:     the user context for password callback.
  *
- * Reads key from the a file.
+ * Deprecated, use xmlSecMSCryptoAppKeyLoadEx instead. Reads key from the a file.
  *
  * Returns: pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
 xmlSecMSCryptoAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
-                         const char *pwd, void* pwdCallback, void* pwdCallbackCtx) {
+    const char *pwd, void* pwdCallback, void* pwdCallbackCtx
+) {
+    return(xmlSecMSCryptoAppKeyLoadEx(filename,  xmlSecKeyDataTypeUnknown, format, pwd, pwdCallback, pwdCallbackCtx));
+}
+
+/**
+ * xmlSecMSCryptoAppKeyLoadEx:
+ * @filename:           the key filename.
+ * @type:               the expected key type.
+ * @format:             the key file format.
+ * @pwd:                the key file password.
+ * @pwdCallback:        the key password callback.
+ * @pwdCallbackCtx:     the user context for password callback.
+ *
+ * Reads key from the a file.
+ *
+ * Returns: pointer to the key or NULL if an error occurs.
+ */
+xmlSecKeyPtr
+xmlSecMSCryptoAppKeyLoadEx(const char *filename, xmlSecKeyDataType type ATTRIBUTE_UNUSED, xmlSecKeyDataFormat format,
+    const char *pwd, void* pwdCallback, void* pwdCallbackCtx
+) {
     xmlSecBuffer buffer;
     xmlSecKeyPtr key = NULL;
     int ret;
 
     xmlSecAssert2(filename != NULL, NULL);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
+    UNREFERENCED_PARAMETER(type);
 
     switch (format) {
     case xmlSecKeyDataFormatPkcs12:

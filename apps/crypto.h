@@ -46,12 +46,14 @@ int     xmlSecAppCryptoSimpleKeysMngrKeyAndCertsLoad            (xmlSecKeysMngrP
                                                                  const char* files,
                                                                  const char* pwd,
                                                                  const char* name,
+                                                                 xmlSecKeyDataType type,
                                                                  xmlSecKeyDataFormat format);
 int     xmlSecAppCryptoSimpleKeysMngrEngineKeyAndCertsLoad      (xmlSecKeysMngrPtr mngr,
                                                                  const char* engineAndKeyId,
                                                                  const char* certFiles,
                                                                  const char* pwd,
                                                                  const char* name,
+                                                                 xmlSecKeyDataType type,
                                                                  xmlSecKeyDataFormat keyFormat,
                                                                  xmlSecKeyDataFormat certFormat);
 int     xmlSecAppCryptoSimpleKeysMngrPkcs12KeyLoad              (xmlSecKeysMngrPtr mngr,
@@ -72,6 +74,3 @@ int     xmlSecAppCryptoSimpleKeysMngrKeyGenerate                (xmlSecKeysMngrP
 #endif /* __cplusplus */
 
 #endif /* __XMLSEC_APPS_CRYPTO_H__ */
-
-
-

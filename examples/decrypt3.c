@@ -347,7 +347,7 @@ files_keys_store_find_key(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
 
     if((keyInfoCtx->keyReq.keyId == xmlSecKeyDataDsaId) || (keyInfoCtx->keyReq.keyId == xmlSecKeyDataRsaId)) {
         /* load key from a pem file, if key is not found then it's an error (is it?) */
-        key = xmlSecCryptoAppKeyLoad((const char*)name, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
+        key = xmlSecCryptoAppKeyLoadEx((const char*)name, xmlSecKeyDataTypePrivate, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
         if(key == NULL) {
             fprintf(stderr,"Error: failed to load public pem key from \"%s\"\n", name);
             return(NULL);

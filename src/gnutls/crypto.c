@@ -276,6 +276,7 @@ xmlSecCryptoGetFunctions_gnutls(void) {
     gXmlSecGnuTLSFunctions->cryptoAppKeyCertLoad                = xmlSecGnuTLSAppKeyCertLoad;
 #endif /* XMLSEC_NO_X509 */
     gXmlSecGnuTLSFunctions->cryptoAppKeyLoad                    = xmlSecGnuTLSAppKeyLoad;
+    gXmlSecGnuTLSFunctions->cryptoAppKeyLoadEx                  = xmlSecGnuTLSAppKeyLoadEx;
     gXmlSecGnuTLSFunctions->cryptoAppDefaultPwdCallback         = (void*)xmlSecGnuTLSAppGetDefaultPwdCallback();
 
     return(gXmlSecGnuTLSFunctions);

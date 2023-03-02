@@ -23,17 +23,18 @@
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
-#include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/keysmngr.h>
+#include <xmlsec/private.h>
+#include <xmlsec/transforms.h>
 #include <xmlsec/xmltree.h>
 
 #include <xmlsec/mscng/app.h>
 #include <xmlsec/mscng/crypto.h>
-#include <xmlsec/mscng/symbols.h>
-#include <xmlsec/mscng/x509.h>
 #include <xmlsec/mscng/certkeys.h>
 #include <xmlsec/mscng/keysstore.h>
+#include <xmlsec/mscng/symbols.h>
+#include <xmlsec/mscng/x509.h>
 
 #include "../cast_helpers.h"
 
@@ -114,21 +115,41 @@ xmlSecMSCngAppGetCertStoreName(void) {
  * @pwdCallback:        the key password callback.
  * @pwdCallbackCtx:     the user context for password callback.
  *
- * Reads key from the a file (not implemented yet).
+ * Deprecated, use @xmlSecMSCngAppKeyLoadEx instead. Reads key from the a file (not implemented yet).
  *
  * Returns: pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
 xmlSecMSCngAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
-                      const char *pwd,
-                      void* pwdCallback,
-                      void* pwdCallbackCtx) {
+    const char *pwd, void* pwdCallback, void* pwdCallbackCtx
+) {
+    return(xmlSecMSCngAppKeyLoadEx(filename,  xmlSecKeyDataTypeUnknown, format, pwd, pwdCallback, pwdCallbackCtx));
+}
+
+/**
+ * xmlSecMSCngAppKeyLoadEx:
+ * @filename:           the key filename.
+ * @type:               the expected key type.
+ * @format:             the key file format.
+ * @pwd:                the key file password.
+ * @pwdCallback:        the key password callback.
+ * @pwdCallbackCtx:     the user context for password callback.
+ *
+ * Reads key from the a file (not implemented yet).
+ *
+ * Returns: pointer to the key or NULL if an error occurs.
+ */
+xmlSecKeyPtr
+xmlSecMSCngAppKeyLoadEx(const char *filename, xmlSecKeyDataType type ATTRIBUTE_UNUSED, xmlSecKeyDataFormat format,
+    const char *pwd, void* pwdCallback, void* pwdCallbackCtx
+) {
     xmlSecBuffer buffer;
     xmlSecKeyPtr key = NULL;
     int ret;
 
     xmlSecAssert2(filename != NULL, NULL);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
+    UNREFERENCED_PARAMETER(type);
 
     switch(format) {
     case xmlSecKeyDataFormatPkcs12:
@@ -344,7 +365,7 @@ xmlSecMSCngAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSec
  *
  * Reads key and all associated certificates from the PKCS12 file
  * (not implemented yet).
- * For uniformity, call xmlSecMSCngAppKeyLoad instead of this function. Pass
+ * For uniformity, call @xmlSecMSCngAppKeyLoadEx instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
  *
  *
@@ -352,9 +373,8 @@ xmlSecMSCngAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSec
  */
 xmlSecKeyPtr
 xmlSecMSCngAppPkcs12Load(const char *filename,
-                         const char *pwd,
-                         void* pwdCallback,
-                         void* pwdCallbackCtx) {
+    const char *pwd, void* pwdCallback, void* pwdCallbackCtx
+) {
     xmlSecBuffer buffer;
     xmlSecByte* data;
     xmlSecKeyPtr key;
@@ -404,7 +424,7 @@ xmlSecMSCngAppPkcs12Load(const char *filename,
  * @pwdCallbackCtx:     the user context for password callback.
  *
  * Reads key and all associated certificates from the PKCS12 binary data.
- * For uniformity, call xmlSecMSCngAppKeyLoad instead of this function. Pass
+ * For uniformity, call @xmlSecMSCngAppKeyLoadEx instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
  *
  * Returns: pointer to the key or NULL if an error occurs.

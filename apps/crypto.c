@@ -86,9 +86,9 @@ xmlSecAppCryptoSimpleKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filena
 
 int
 xmlSecAppCryptoSimpleKeysMngrKeyAndCertsLoad(xmlSecKeysMngrPtr mngr,
-                                             const char* files, const char* pwd,
-                                             const char* name,
-                                             xmlSecKeyDataFormat format) {
+    const char* files, const char* pwd, const char* name,
+    xmlSecKeyDataType type, xmlSecKeyDataFormat format
+) {
     xmlSecKeyPtr key;
     int ret;
 
@@ -96,9 +96,9 @@ xmlSecAppCryptoSimpleKeysMngrKeyAndCertsLoad(xmlSecKeysMngrPtr mngr,
     xmlSecAssert2(files != NULL, -1);
 
     /* first is the key file */
-    key = xmlSecCryptoAppKeyLoad(files, format, pwd, xmlSecCryptoAppGetDefaultPwdCallback(), (void*)files);
+    key = xmlSecCryptoAppKeyLoadEx(files, type, format, pwd, xmlSecCryptoAppGetDefaultPwdCallback(), (void*)files);
     if(key == NULL) {
-        fprintf(stderr, "Error: xmlSecCryptoAppKeyLoad failed: file=%s\n",
+        fprintf(stderr, "Error: xmlSecCryptoAppKeyLoadEx failed: file=%s\n",
                 xmlSecErrorsSafeString(files));
         return(-1);
     }
@@ -147,6 +147,7 @@ xmlSecAppCryptoSimpleKeysMngrEngineKeyAndCertsLoad(xmlSecKeysMngrPtr mngr,
                                              const char* certFiles,
                                              const char* pwd,
                                              const char* name,
+                                             xmlSecKeyDataType type,
                                              xmlSecKeyDataFormat keyFormat,
                                              xmlSecKeyDataFormat certFormat) {
     xmlSecKeyPtr key;
@@ -157,10 +158,10 @@ xmlSecAppCryptoSimpleKeysMngrEngineKeyAndCertsLoad(xmlSecKeysMngrPtr mngr,
     xmlSecAssert2(certFiles != NULL, -1);
 
     /* load key */
-    key = xmlSecCryptoAppKeyLoad(engineAndKeyId, keyFormat, pwd,
-                xmlSecCryptoAppGetDefaultPwdCallback(), (void*)engineAndKeyId);
+    key = xmlSecCryptoAppKeyLoadEx(engineAndKeyId, type, keyFormat, pwd,
+        xmlSecCryptoAppGetDefaultPwdCallback(), (void*)engineAndKeyId);
     if(key == NULL) {
-        fprintf(stderr, "Error: xmlSecCryptoAppKeyLoad failed: file=%s\n",
+        fprintf(stderr, "Error: xmlSecCryptoAppKeyLoadEx failed: file=%s\n",
                 xmlSecErrorsSafeString(engineAndKeyId));
         return(-1);
     }
@@ -214,10 +215,10 @@ xmlSecAppCryptoSimpleKeysMngrPkcs12KeyLoad(xmlSecKeysMngrPtr mngr, const char *f
     xmlSecAssert2(filename != NULL, -1);
 
 #ifndef XMLSEC_NO_X509
-    key = xmlSecCryptoAppKeyLoad(filename, xmlSecKeyDataFormatPkcs12, pwd,
+    key = xmlSecCryptoAppKeyLoadEx(filename, xmlSecKeyDataTypePrivate, xmlSecKeyDataFormatPkcs12, pwd,
                     xmlSecCryptoAppGetDefaultPwdCallback(), (void*)filename);
     if(key == NULL) {
-        fprintf(stderr, "Error: xmlSecCryptoAppKeyLoad failed: filename=%s\n",
+        fprintf(stderr, "Error: xmlSecCryptoAppKeyLoadEx failed: filename=%s\n",
                 xmlSecErrorsSafeString(filename));
         return(-1);
     }

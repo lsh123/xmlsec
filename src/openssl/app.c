@@ -62,6 +62,7 @@ static int      xmlSecOpenSSLDummyPasswordCallback      (char *buf,
                                                          void *userdata);
 static xmlSecKeyPtr xmlSecOpenSSLAppEngineKeyLoad       (const char *engineName,
                                                          const char *engineKeyId,
+                                                         xmlSecKeyDataType type,
                                                          xmlSecKeyDataFormat format,
                                                          const char *pwd,
                                                          void* pwdCallback,
@@ -177,9 +178,31 @@ xmlSecOpenSSLAppShutdown(void) {
     return(0);
 }
 
+
 /**
  * xmlSecOpenSSLAppKeyLoad:
  * @filename:           the key filename.
+ * @format:             the key file format.
+ * @pwd:                the key file password.
+ * @pwdCallback:        the key password callback.
+ * @pwdCallbackCtx:     the user context for password callback.
+ *
+ * Deprecated, use @xmlSecOpenSSLAppKeyLoadEx function instead. Reads key from the a file.
+ *
+ * Returns: pointer to the key or NULL if an error occurs.
+ */
+xmlSecKeyPtr
+xmlSecOpenSSLAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
+                        const char *pwd, void* pwdCallback,
+                        void* pwdCallbackCtx) {
+    return(xmlSecOpenSSLAppKeyLoadEx(filename, xmlSecKeyDataTypeUnknown, format,
+        pwd, pwdCallback, pwdCallbackCtx));
+}
+
+/**
+ * xmlSecOpenSSLAppKeyLoadEx:
+ * @filename:           the key filename.
+ * @type:               the expected key type.
  * @format:             the key file format.
  * @pwd:                the key file password.
  * @pwdCallback:        the key password callback.
@@ -190,9 +213,9 @@ xmlSecOpenSSLAppShutdown(void) {
  * Returns: pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
-xmlSecOpenSSLAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
-                        const char *pwd, void* pwdCallback,
-                        void* pwdCallbackCtx) {
+xmlSecOpenSSLAppKeyLoadEx(const char *filename, xmlSecKeyDataType type, xmlSecKeyDataFormat format,
+    const char *pwd, void* pwdCallback, void* pwdCallbackCtx
+) {
     xmlSecKeyPtr key = NULL;
 
     xmlSecAssert2(filename != NULL, NULL);
@@ -222,7 +245,7 @@ xmlSecOpenSSLAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
         (*engineKeyId) = '\0';
         ++engineKeyId;
 
-        key = xmlSecOpenSSLAppEngineKeyLoad(engineName, engineKeyId, format, pwd, pwdCallback, pwdCallbackCtx);
+        key = xmlSecOpenSSLAppEngineKeyLoad(engineName, engineKeyId, type, format, pwd, pwdCallback, pwdCallbackCtx);
         if(key == NULL) {
             xmlSecInternalError2("xmlSecOpenSSLAppEngineKeyLoad", NULL,
                                  "filename=%s", xmlSecErrorsSafeString(filename));
@@ -444,9 +467,9 @@ xmlSecOpenSSLAppKeyLoadBIO(BIO* bio, xmlSecKeyDataFormat format,
 
 static xmlSecKeyPtr
 xmlSecOpenSSLAppEngineKeyLoad(const char *engineName, const char *engineKeyId,
-                        xmlSecKeyDataFormat format, const char *pwd ATTRIBUTE_UNUSED,
-                        void* pwdCallback ATTRIBUTE_UNUSED, void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
-
+    xmlSecKeyDataType type, xmlSecKeyDataFormat format,
+    const char *pwd ATTRIBUTE_UNUSED, void* pwdCallback ATTRIBUTE_UNUSED, void* pwdCallbackCtx ATTRIBUTE_UNUSED
+) {
 #if !defined(OPENSSL_NO_ENGINE) && (!defined(XMLSEC_OPENSSL_API_300) || defined(XMLSEC_OPENSSL3_ENGINES))
     UI_METHOD * ui_method  = NULL;
     ENGINE* engine = NULL;
@@ -500,12 +523,27 @@ xmlSecOpenSSLAppEngineKeyLoad(const char *engineName, const char *engineKeyId,
     ui_method = UI_null();
 #endif  /* OPENSSL_NO_UI_CONSOLE */
 
-    /* load private and then public key */
-    pKey = ENGINE_load_private_key(engine, engineKeyId, ui_method, NULL);
-    if(pKey == NULL) {
+    /* load private or public key */
+    if(type == xmlSecKeyDataTypeUnknown) {
+        /* try both */
+        pKey = ENGINE_load_private_key(engine, engineKeyId, ui_method, NULL);
+        if(pKey == NULL) {
+            pKey = ENGINE_load_public_key(engine, engineKeyId, ui_method, NULL);
+            if(pKey == NULL) {
+                xmlSecOpenSSLError("ENGINE_load_private_key and ENGINE_load_public_key", NULL);
+                goto done;
+            }
+        }
+    } else if(type == xmlSecKeyDataTypePrivate) {
+        pKey = ENGINE_load_private_key(engine, engineKeyId, ui_method, NULL);
+        if(pKey == NULL) {
+            xmlSecOpenSSLError("ENGINE_load_private_key", NULL);
+            goto done;
+        }
+    } else {
         pKey = ENGINE_load_public_key(engine, engineKeyId, ui_method, NULL);
         if(pKey == NULL) {
-            xmlSecOpenSSLError("ENGINE_load_private_key and ENGINE_load_public_key", NULL);
+            xmlSecOpenSSLError("ENGINE_load_public_key", NULL);
             goto done;
         }
     }
@@ -553,6 +591,7 @@ done:
 #else /* !defined(OPENSSL_NO_ENGINE) && (!defined(XMLSEC_OPENSSL_API_300) || defined(XMLSEC_OPENSSL3_ENGINES)) */
     UNREFERENCED_PARAMETER(engineName);
     UNREFERENCED_PARAMETER(engineKeyId);
+    UNREFERENCED_PARAMETER(type);
     UNREFERENCED_PARAMETER(format);
     UNREFERENCED_PARAMETER(pwd);
     UNREFERENCED_PARAMETER(pwdCallback);
@@ -986,7 +1025,7 @@ done:
  * @pwdCallbackCtx:     the user context for password callback.
  *
  * Reads key and all associated certificates from the PKCS12 file.
- * For uniformity, call xmlSecOpenSSLAppKeyLoad instead of this function. Pass
+ * For uniformity, call @xmlSecOpenSSLAppKeyLoadEX instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
  *
  * Returns: pointer to the key or NULL if an error occurs.
@@ -1027,7 +1066,7 @@ xmlSecOpenSSLAppPkcs12Load(const char *filename, const char *pwd,
  * @pwdCallbackCtx:     the user context for password callback.
  *
  * Reads key and all associated certificates from the PKCS12 data in memory buffer.
- * For uniformity, call xmlSecOpenSSLAppKeyLoad instead of this function. Pass
+ * For uniformity, call @xmlSecOpenSSLAppKeyLoadEx instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
  *
  * Returns: pointer to the key or NULL if an error occurs.
@@ -1068,7 +1107,7 @@ xmlSecOpenSSLAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
  * @pwdCallbackCtx:     the user context for password callback.
  *
  * Reads key and all associated certificates from the PKCS12 data in an OpenSSL BIO object.
- * For uniformity, call xmlSecOpenSSLAppKeyLoad instead of this function. Pass
+ * For uniformity, call @xmlSecOpenSSLAppKeyLoadEx instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
  *
  * Returns: pointer to the key or NULL if an error occurs.

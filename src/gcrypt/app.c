@@ -22,8 +22,9 @@
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
-#include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/private.h>
+#include <xmlsec/transforms.h>
 
 #include <xmlsec/gcrypt/app.h>
 #include <xmlsec/gcrypt/crypto.h>
@@ -154,21 +155,42 @@ xmlSecGCryptAppShutdown(void) {
  * @pwdCallback:        the key password callback.
  * @pwdCallbackCtx:     the user context for password callback.
  *
- * Reads key from the a file.
+ * Deprecated, use @xmlSecGCryptAppKeyLoadEx instead. Reads key from the a file.
  *
  * Returns: pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
 xmlSecGCryptAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
-                        const char *pwd,
-                        void* pwdCallback,
-                        void* pwdCallbackCtx) {
+    const char *pwd, void* pwdCallback, void* pwdCallbackCtx
+) {
+    return(xmlSecGCryptAppKeyLoadEx(filename,  xmlSecKeyDataTypeUnknown, format, pwd, pwdCallback, pwdCallbackCtx));
+}
+
+
+/**
+ * xmlSecGCryptAppKeyLoadEx:
+ * @filename:           the key filename.
+ * @type:               the expected key type.
+ * @format:             the key file format.
+ * @pwd:                the key file password.
+ * @pwdCallback:        the key password callback.
+ * @pwdCallbackCtx:     the user context for password callback.
+ *
+ * Reads key from the a file.
+ *
+ * Returns: pointer to the key or NULL if an error occurs.
+ */
+xmlSecKeyPtr
+xmlSecGCryptAppKeyLoadEx(const char *filename, xmlSecKeyDataType type ATTRIBUTE_UNUSED, xmlSecKeyDataFormat format,
+    const char *pwd, void* pwdCallback, void* pwdCallbackCtx
+) {
     xmlSecKeyPtr key;
     xmlSecBuffer buffer;
     int ret;
 
     xmlSecAssert2(filename != NULL, NULL);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
+    UNREFERENCED_PARAMETER(type);
 
     ret = xmlSecBufferInitialize(&buffer, 4*1024);
     if(ret < 0) {
@@ -331,7 +353,7 @@ xmlSecGCryptAppKeyCertLoadMemory(xmlSecKeyPtr key,
  *
  * Reads key and all associated certificates from the PKCS12 file
  * (not implemented yet).
- * For uniformity, call xmlSecGCryptAppKeyLoad instead of this function. Pass
+ * For uniformity, call @xmlSecGCryptAppKeyLoadEx instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
  *
  * Returns: pointer to the key or NULL if an error occurs.

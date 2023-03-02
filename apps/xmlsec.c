@@ -2296,6 +2296,7 @@ xmlSecAppLoadKeys(void) {
                     value->strListValue,
                     xmlSecAppCmdLineParamGetString(&pwdParam),
                     value->paramNameValue,
+                    xmlSecKeyDataTypePrivate,
                     xmlSecKeyDataFormatPem) < 0) {
             fprintf(stderr, "Error: failed to load private key from \"%s\".\n",
                     value->strListValue);
@@ -2312,6 +2313,7 @@ xmlSecAppLoadKeys(void) {
                     value->strListValue,
                     xmlSecAppCmdLineParamGetString(&pwdParam),
                     value->paramNameValue,
+                    xmlSecKeyDataTypePrivate,
                     xmlSecKeyDataFormatDer) < 0) {
             fprintf(stderr, "Error: failed to load private key from \"%s\".\n",
                     value->strListValue);
@@ -2328,6 +2330,7 @@ xmlSecAppLoadKeys(void) {
                     value->strListValue,
                     xmlSecAppCmdLineParamGetString(&pwdParam),
                     value->paramNameValue,
+                    xmlSecKeyDataTypePrivate,
                     xmlSecKeyDataFormatPkcs8Pem) < 0) {
             fprintf(stderr, "Error: failed to load private key from \"%s\".\n",
                     value->strListValue);
@@ -2344,6 +2347,7 @@ xmlSecAppLoadKeys(void) {
                     value->strListValue,
                     xmlSecAppCmdLineParamGetString(&pwdParam),
                     value->paramNameValue,
+                    xmlSecKeyDataTypePrivate,
                     xmlSecKeyDataFormatPkcs8Der) < 0) {
             fprintf(stderr, "Error: failed to load private key from \"%s\".\n",
                     value->strListValue);
@@ -2380,6 +2384,7 @@ xmlSecAppLoadKeys(void) {
                     value->strListValue,
                     xmlSecAppCmdLineParamGetString(&pwdParam),
                     value->paramNameValue,
+                    xmlSecKeyDataTypePrivate,
                     xmlSecKeyDataFormatStore) < 0) {
             fprintf(stderr, "Error: failed to load private key from \"%s\".\n",
                     value->strListValue);
@@ -2400,6 +2405,7 @@ xmlSecAppLoadKeys(void) {
                     value->strListValue + strlen(value->strListValue) + 1,
                     xmlSecAppCmdLineParamGetString(&pwdParam),
                     value->paramNameValue,
+                    xmlSecKeyDataTypePrivate,
                     xmlSecKeyDataFormatEngine,
                     xmlSecKeyDataFormatPem) < 0) {
             fprintf(stderr, "Error: failed to load private key from \"%s\".\n",
@@ -2422,6 +2428,7 @@ xmlSecAppLoadKeys(void) {
                     value->strListValue,
                     xmlSecAppCmdLineParamGetString(&pwdParam),
                     value->paramNameValue,
+                    xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic,
                     xmlSecKeyDataFormatPem) < 0) {
             fprintf(stderr, "Error: failed to load public key from \"%s\".\n",
                     value->strListValue);
@@ -2438,6 +2445,7 @@ xmlSecAppLoadKeys(void) {
                     value->strListValue,
                     xmlSecAppCmdLineParamGetString(&pwdParam),
                     value->paramNameValue,
+                    xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic,
                     xmlSecKeyDataFormatDer) < 0) {
             fprintf(stderr, "Error: failed to load public key from \"%s\".\n",
                     value->strListValue);
@@ -2458,6 +2466,7 @@ xmlSecAppLoadKeys(void) {
                     value->strListValue + strlen(value->strListValue) + 1,
                     xmlSecAppCmdLineParamGetString(&pwdParam),
                     value->paramNameValue,
+                    xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate,
                     xmlSecKeyDataFormatEngine,
                     xmlSecKeyDataFormatPem) < 0) {
             fprintf(stderr, "Error: failed to load private key from \"%s\".\n",
@@ -2477,6 +2486,7 @@ xmlSecAppLoadKeys(void) {
                     value->strListValue,
                     xmlSecAppCmdLineParamGetString(&pwdParam),
                     value->paramNameValue,
+                    xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic,
                     xmlSecKeyDataFormatCertPem) < 0) {
             fprintf(stderr, "Error: failed to load public key from \"%s\".\n",
                     value->strListValue);
@@ -2493,6 +2503,7 @@ xmlSecAppLoadKeys(void) {
                     value->strListValue,
                     xmlSecAppCmdLineParamGetString(&pwdParam),
                     value->paramNameValue,
+                    xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic,
                     xmlSecKeyDataFormatCertDer) < 0) {
             fprintf(stderr, "Error: failed to load public key from \"%s\".\n",
                     value->strListValue);

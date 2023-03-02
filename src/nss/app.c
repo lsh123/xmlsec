@@ -36,6 +36,7 @@
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/private.h>
 
 #include <xmlsec/nss/app.h>
 #include <xmlsec/nss/crypto.h>
@@ -278,19 +279,40 @@ xmlSecNssAppNicknameCollisionCallback(SECItem *old_nick ATTRIBUTE_UNUSED,
  * @pwdCallback:        the key password callback.
  * @pwdCallbackCtx:     the user context for password callback.
  *
- * Reads key from a file
+ * Deprecated, use @xmlSecNssAppKeyLoadEx instead. Reads key from a file
  *
  * Returns: pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
 xmlSecNssAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
-                    const char *pwd, void* pwdCallback, void* pwdCallbackCtx) {
+    const char *pwd, void* pwdCallback, void* pwdCallbackCtx
+) {
+    return(xmlSecNssAppKeyLoadEx(filename, xmlSecKeyDataTypeUnknown, format, pwd, pwdCallback, pwdCallbackCtx));
+}
+
+/**
+ * xmlSecNssAppKeyLoadEx:
+ * @filename:           the key filename.
+ * @format:             the key file format.
+ * @pwd:                the key file password.
+ * @pwdCallback:        the key password callback.
+ * @pwdCallbackCtx:     the user context for password callback.
+ *
+ * Reads key from a file
+ *
+ * Returns: pointer to the key or NULL if an error occurs.
+ */
+xmlSecKeyPtr
+xmlSecNssAppKeyLoadEx(const char *filename, xmlSecKeyDataType type ATTRIBUTE_UNUSED, xmlSecKeyDataFormat format,
+    const char *pwd, void* pwdCallback, void* pwdCallbackCtx
+) {
     SECItem secItem;
     xmlSecKeyPtr res;
     int ret;
 
     xmlSecAssert2(filename != NULL, NULL);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
+    UNREFERENCED_PARAMETER(type);
 
     /* read the file contents */
     memset(&secItem, 0, sizeof(secItem));
@@ -655,7 +677,7 @@ done:
  * @pwdCallbackCtx:     the user context for password callback.
  *
  * Reads key and all associated certificates from the PKCS12 file.
- * For uniformity, call xmlSecNssAppKeyLoad instead of this function. Pass
+ * For uniformity, call @xmlSecNssAppKeyLoadEx instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
  *
  * Returns: pointer to the key or NULL if an error occurs.
@@ -698,7 +720,7 @@ xmlSecNssAppPkcs12Load(const char *filename, const char *pwd,
  * @pwdCallbackCtx:     the user context for password callback.
  *
  * Reads key and all associated certificates from the PKCS12 binary data.
- * For uniformity, call xmlSecNssAppKeyLoad instead of this function. Pass
+ * For uniformity, call @xmlSecNssAppKeyLoadEx instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
  *
  * Returns: pointer to the key or NULL if an error occurs.
@@ -740,7 +762,7 @@ xmlSecNssAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, const 
  * @pwdCallbackCtx:     the user context for password callback.
  *
  * Reads key and all associated certificates from the PKCS12 SECItem.
- * For uniformity, call xmlSecNssAppKeyLoad instead of this function. Pass
+ * For uniformity, call @xmlSecNssAppKeyLoadEx instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
  *
  * Returns: pointer to the key or NULL if an error occurs.

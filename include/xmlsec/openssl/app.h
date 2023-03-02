@@ -71,7 +71,13 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLAppKeysMngrAddCertsFile(xml
  * Keys
  *
  ********************************************************************/
-XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr       xmlSecOpenSSLAppKeyLoad         (const char *filename,
+XMLSEC_DEPRECATED XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecOpenSSLAppKeyLoad(const char *filename,
+                                                                         xmlSecKeyDataFormat format,
+                                                                         const char *pwd,
+                                                                         void* pwdCallback,
+                                                                         void* pwdCallbackCtx);
+XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr       xmlSecOpenSSLAppKeyLoadEx       (const char *filename,
+                                                                         xmlSecKeyDataType type,
                                                                          xmlSecKeyDataFormat format,
                                                                          const char *pwd,
                                                                          void* pwdCallback,
@@ -124,5 +130,3 @@ XMLSEC_CRYPTO_EXPORT void*              xmlSecOpenSSLAppGetDefaultPwdCallback(vo
 #endif /* __cplusplus */
 
 #endif /* __XMLSEC_OPENSSL_APP_H__ */
-
-

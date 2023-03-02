@@ -1072,8 +1072,8 @@ xmlSecMSCngX509GetFriendlyNameUnicode(PCCERT_CONTEXT cert) {
         return(NULL);
     }
 
-    /* success */
-    return((LPCTSTR)pbFriendlyName);
+    /* success: always unicode string! */
+    return((LPCWSTR)pbFriendlyName);
 }
 
 /* caller must free returned string with xmlFree() */

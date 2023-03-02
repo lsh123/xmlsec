@@ -303,7 +303,6 @@ static xmlSecAppCmdLineParam pkcs8DerParam = {
     NULL
 };
 
-
 /* openssl specific privkey options */
 static xmlSecAppCmdLineParam privkeyOpensslStoreParam = {
     xmlSecAppCmdLineTopicKeysMngr,
@@ -316,7 +315,6 @@ static xmlSecAppCmdLineParam privkeyOpensslStoreParam = {
     NULL
 };
 
-/* openssl specific privkey options */
 static xmlSecAppCmdLineParam privkeyOpensslEngineParam = {
     xmlSecAppCmdLineTopicKeysMngr,
     "--privkey-openssl-engine",
@@ -354,6 +352,17 @@ static xmlSecAppCmdLineParam pubkeyDerParam = {
 };
 
 /* openssl specific pubkey options */
+static xmlSecAppCmdLineParam pubkeyOpensslStoreParam = {
+    xmlSecAppCmdLineTopicKeysMngr,
+    "--pubkey-openssl-store",
+    NULL,
+    "--pubkey-openssl-store[:<name>] <uri>"
+    "\n\tload pubkey key and certs through OpenSSL ossl_store interface (e.g. from HSM)",
+    xmlSecAppCmdLineParamTypeStringList,
+    xmlSecAppCmdLineParamFlagParamNameValue | xmlSecAppCmdLineParamFlagMultipleValues,
+    NULL
+};
+
 static xmlSecAppCmdLineParam pubkeyOpensslEngineParam = {
     xmlSecAppCmdLineTopicKeysMngr,
     "--pubkey-openssl-engine",
@@ -969,6 +978,7 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
     &privkeyOpensslEngineParam,
     &pubkeyParam,
     &pubkeyDerParam,
+    &pubkeyOpensslStoreParam,
     &pubkeyOpensslEngineParam,
     &pwdParam,
     &laxKeySearchParam,
@@ -2447,6 +2457,23 @@ xmlSecAppLoadKeys(void) {
                     value->paramNameValue,
                     xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic,
                     xmlSecKeyDataFormatDer) < 0) {
+            fprintf(stderr, "Error: failed to load public key from \"%s\".\n",
+                    value->strListValue);
+            return(-1);
+        }
+    }
+
+    for(value = pubkeyOpensslStoreParam.value; value != NULL; value = value->next) {
+        if(value->strListValue == NULL) {
+            fprintf(stderr, "Error: invalid value for option \"%s\".\n",
+                    pubkeyOpensslStoreParam.fullName);
+            return(-1);
+        } else if(xmlSecAppCryptoSimpleKeysMngrKeyAndCertsLoad(gKeysMngr,
+                    value->strListValue,
+                    xmlSecAppCmdLineParamGetString(&pwdParam),
+                    value->paramNameValue,
+                    xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic,
+                    xmlSecKeyDataFormatStore) < 0) {
             fprintf(stderr, "Error: failed to load public key from \"%s\".\n",
                     value->strListValue);
             return(-1);

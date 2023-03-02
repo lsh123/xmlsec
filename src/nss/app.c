@@ -794,7 +794,9 @@ xmlSecNssAppPkcs12LoadSECItem(SECItem* secItem, const char *pwd,
     CERTCertificate     *cert = NULL;
     CERTCertificate     *tmpcert = NULL;
     SEC_PKCS12DecoderContext *p12ctx = NULL;
+    const SEC_PKCS12DecoderItem *dip;
     size_t pwdSize;
+    xmlSecKeyPtr res = NULL;
 
     xmlSecAssert2((secItem != NULL), NULL);
 
@@ -940,12 +942,9 @@ xmlSecNssAppPkcs12LoadSECItem(SECItem* secItem, const char *pwd,
         xmlSecInternalError("xmlSecKeyCreate", NULL);
         goto done;
     }
-
     ret = xmlSecKeySetValue(key, keyValueData);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeySetValue", NULL);
-        xmlSecKeyDestroy(key);
-        key = NULL;
         goto done;
     }
     keyValueData = NULL; /* owned by key now */
@@ -953,13 +952,38 @@ xmlSecNssAppPkcs12LoadSECItem(SECItem* secItem, const char *pwd,
     ret = xmlSecKeyAdoptData(key, x509Data);
     if(ret < 0) {
         xmlSecInternalError("xmlSecKeyAdoptData", NULL);
-        xmlSecKeyDestroy(key);
-        key = NULL;
         goto done;
     }
     x509Data = NULL; /* owned by key now */
 
+    /* try to find key name */
+    rv = SEC_PKCS12DecoderIterateInit(p12ctx);
+    if (rv != SECSuccess) {
+        xmlSecNssError("SEC_PKCS12DecoderIterateInit", NULL);
+        goto done;
+    }
+    /* read pkcs12 bags */
+    while (SEC_PKCS12DecoderIterateNext(p12ctx, &dip) == SECSuccess) {
+         if((dip->friendlyName != NULL) && (dip->friendlyName->data != NULL) && (dip->friendlyName->len > 0) ) {
+            ret = xmlSecKeySetNameEx(key, dip->friendlyName->data, dip->friendlyName->len);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecKeySetNameEx", NULL);
+                goto done;
+            }
+            /* use the first one */
+            break;
+         }
+    }
+
+
+    /* success */
+    res = key;
+    key = NULL;
+
 done:
+    if(key != NULL) {
+        xmlSecKeyDestroy(key);
+    }
     if (p12ctx) {
         SEC_PKCS12DecoderFinish(p12ctx);
     }
@@ -983,7 +1007,7 @@ done:
         SECKEY_DestroyPublicKey(pubkey);
     }
 
-    return(key);
+    return(res);
 }
 
 /**

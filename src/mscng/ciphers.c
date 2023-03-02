@@ -290,6 +290,7 @@ xmlSecMSCngBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
         xmlSecInvalidKeyDataSizeError(bufDataSize, ctx->keySize, xmlSecTransformGetName(transform));
         goto done;
     }
+    bufDataSize = ctx->keySize;
 
     /* allocate the key object */
     dwKeyObjectLength = dwBytesWritten = 0;

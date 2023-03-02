@@ -300,8 +300,8 @@ execKeysTest() {
                 failures=`expr $failures + 1`
             fi
         fi
-        # only openssl / gnutls / nss supports keynames in pkcs12
-         if [ "z$crypto" = "zopenssl" -o "z$crypto" = "zgnutls" -o "z$crypto" = "znss" ] ; then
+        # only gcrypt and mscrypto doesn't support keynames in pkcs12
+        if [ "z$crypto" != "zgcrypt" -a "z$crypto" != "zmscrypto" ] ; then
             printf "    Reading private key name from pkcs12 file             "
             rm -f $tmpfile
             params="--pkcs12 $privkey_file.p12 $pkcs12_key_extra_options $key_test_options --output $tmpfile $asym_key_test.tmpl"

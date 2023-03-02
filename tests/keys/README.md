@@ -499,12 +499,12 @@ openssl pkcs12 -export -in allrsa.pem -name TestRsaKey -out rsakey-win.p12 -CSP 
 rm allrsa.pem
 
 cat largersakey.pem largersacert.pem ca2cert.pem cacert.pem > alllargersa.pem
-openssl pkcs12 -export -in alllargersa.pem -name TestLargeRsaKey -out largersakey-winxp.p12 -CSP "Microsoft Enhanced RSA and AES Cryptographic Provider (Prototype)"
-openssl pkcs12 -export -in alllargersa.pem -name TestLargeRsaKey -out largersakey-win.p12 -CSP "Microsoft Enhanced RSA and AES Cryptographic Provider"
+openssl pkcs12 -export -in alllargersa.pem -name largersakey -out largersakey-winxp.p12 -CSP "Microsoft Enhanced RSA and AES Cryptographic Provider (Prototype)"
+openssl pkcs12 -export -in alllargersa.pem -name largersakey -out largersakey-win.p12 -CSP "Microsoft Enhanced RSA and AES Cryptographic Provider"
 rm alllargersa.pem
 
 cat dsakey.pem dsacert.pem ca2cert.pem cacert.pem > alldsa.pem
-openssl pkcs12 -export -in alldsa.pem -name TestDsaKey -out dsakey-win.p12 -CSP "Microsoft Enhanced RSA and AES Cryptographic Provider"
+openssl pkcs12 -export -in alldsa.pem -name dsakey -out dsakey-win.p12 -CSP "Microsoft Enhanced RSA and AES Cryptographic Provider"
 rm alldsa.pem
 
 cat dsa2048key.pem dsa2048cert.pem ca2cert.pem cacert.pem > alldsa2048.pem

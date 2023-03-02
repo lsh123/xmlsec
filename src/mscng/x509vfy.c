@@ -1020,7 +1020,6 @@ xmlSecMSCngX509FindCert(HCERTSTORE store, xmlSecMSCngX509FindCertCtxPtr findCert
     xmlSecAssert2(store != 0, NULL);
     xmlSecAssert2(findCertCtx != 0, NULL);
 
-
     if((cert == NULL) && (findCertCtx->wcSubjectName != NULL)) {
         cert = xmlSecMSCngX509FindCertBySubject(store, findCertCtx->wcSubjectName, dwCertEncodingType);
     }
@@ -1037,6 +1036,71 @@ xmlSecMSCngX509FindCert(HCERTSTORE store, xmlSecMSCngX509FindCertCtxPtr findCert
     }
 
     return(cert);
+}
+
+/* caller must free returned string with xmlFree() */
+LPCWSTR
+xmlSecMSCngX509GetFriendlyNameUnicode(PCCERT_CONTEXT cert) {
+    DWORD dwPropSize;
+    PBYTE pbFriendlyName;
+    BOOL ret;
+
+    xmlSecAssert2(cert != 0, NULL);
+
+    /* CERT_FRIENDLY_NAME_PROP_ID: Returns a null-terminated Unicode character
+     * string that contains the display name for the certificate. */
+    ret = CertGetCertificateContextProperty(cert,
+        CERT_FRIENDLY_NAME_PROP_ID,
+        NULL, &dwPropSize);
+    if (ret != TRUE) {
+        /* name might not exists */
+        return(NULL);
+    }
+
+    pbFriendlyName = xmlMalloc(dwPropSize);
+    if (pbFriendlyName == NULL) {
+        xmlSecMallocError(dwPropSize, NULL);       
+        return(NULL);
+    }
+
+    ret = CertGetCertificateContextProperty(cert,
+        CERT_FRIENDLY_NAME_PROP_ID,
+        pbFriendlyName,
+        &dwPropSize);
+    if ((ret != TRUE) || (dwPropSize <= 0)) {
+        xmlSecMSCngLastError("CertGetCertificateContextProperty", NULL);
+        return(NULL);
+    }
+
+    /* success */
+    return((LPCTSTR)pbFriendlyName);
+}
+
+/* caller must free returned string with xmlFree() */
+xmlChar*
+xmlSecMSCngX509GetFriendlyNameUtf8(PCCERT_CONTEXT cert) {
+    LPCWSTR str;
+    xmlChar* res;
+
+    xmlSecAssert2(cert != 0, NULL);
+
+    str = xmlSecMSCngX509GetFriendlyNameUnicode(cert);
+    if (str == NULL) {
+        /* name might not exists */
+        return(NULL);
+    }
+
+    /* convert name to utf8 */
+    res = xmlSecWin32ConvertUnicodeToUtf8(str);
+    if (res == NULL) {
+        xmlSecInternalError("xmlSecWin32ConvertUnicodeToUtf8", NULL);
+        xmlFree((void*)str);
+        return(NULL);
+    }
+
+    /* success */
+    xmlFree((void*)str);
+    return(res);
 }
 
 /**

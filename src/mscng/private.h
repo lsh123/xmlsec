@@ -17,6 +17,7 @@
 #endif /* XMLSEC_PRIVATE */
 
 #include <xmlsec/exports.h>
+#include <xmlsec/bn.h>
 #include <xmlsec/xmlsec.h>
 
 #include "../keysdata_helpers.h"
@@ -60,6 +61,11 @@ XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT xmlSecMSCngX509StoreFindCertByValue     (xml
                                                                              xmlSecKeyX509DataValuePtr x509Value);
 XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT xmlSecMSCngX509FindCert                 (HCERTSTORE store, 
                                                                              xmlSecMSCngX509FindCertCtxPtr findCertCtx);
+
+XMLSEC_CRYPTO_EXPORT xmlChar*   xmlSecMSCngX509GetFriendlyNameUtf8          (PCCERT_CONTEXT cert);
+XMLSEC_CRYPTO_EXPORT LPCWSTR    xmlSecMSCngX509GetFriendlyNameUnicode(PCCERT_CONTEXT cert);
+
+
 #endif /* XMLSEC_NO_X509 */
 
 #ifdef __cplusplus

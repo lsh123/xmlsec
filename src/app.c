@@ -1951,6 +1951,7 @@ xmlSecCryptoAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* 
     return(xmlSecCryptoDLGetFunctions()->cryptoAppKeysMngrCertLoadMemory(mngr, data, dataSize, format, type));
 }
 
+
 /**
  * xmlSecCryptoAppKeyLoad:
  * @filename:           the key filename.
@@ -1959,7 +1960,7 @@ xmlSecCryptoAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* 
  * @pwdCallback:        the key password callback.
  * @pwdCallbackCtx:     the user context for password callback.
  *
- * Reads key from the a file.
+ * Deprecated: xmlSecCryptoAppKeyLoadEx instead. Use Reads key from the a file.
  *
  * Returns: pointer to the key or NULL if an error occurs.
  */
@@ -1972,6 +1973,30 @@ xmlSecCryptoAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
     }
 
     return(xmlSecCryptoDLGetFunctions()->cryptoAppKeyLoad(filename, format, pwd, pwdCallback, pwdCallbackCtx));
+}
+
+/**
+ * xmlSecCryptoAppKeyLoadEx:
+ * @filename:           the key filename.
+ * @type:               the key type (public / private).
+ * @format:             the key file format.
+ * @pwd:                the key file password.
+ * @pwdCallback:        the key password callback.
+ * @pwdCallbackCtx:     the user context for password callback.
+ *
+ * Reads key from the a file.
+ *
+ * Returns: pointer to the key or NULL if an error occurs.
+ */
+xmlSecKeyPtr
+xmlSecCryptoAppKeyLoadEx(const char *filename, xmlSecKeyDataType type, xmlSecKeyDataFormat format,
+                       const char *pwd, void* pwdCallback, void* pwdCallbackCtx) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->cryptoAppKeyLoadEx == NULL)) {
+        xmlSecNotImplementedError("cryptoAppKeyLoadEx");
+        return(NULL);
+    }
+
+    return(xmlSecCryptoDLGetFunctions()->cryptoAppKeyLoadEx(filename, type, format, pwd, pwdCallback, pwdCallbackCtx));
 }
 
 /**

@@ -75,11 +75,7 @@ when the bug is fixed. Also see:
     - [NSS bug](http://bugzilla.mozilla.org/show_bug.cgi?id=213795)
     - [xmlsec bug](https://github.com/lsh123/xmlsec/issues/6)
 
-7) AES-GCM algorithms are not supported properly in NSS. Also see:
-    - [NSS bug](https://bugzilla.mozilla.org/show_bug.cgi?id=1501854)
-    - [xmlsec bug](https://github.com/lsh123/xmlsec/issues/233)
-
-8) Not all file formats are supported
+7) Not all file formats are supported
     - `xmlSecNssAppKeyLoad()`: This function loads a PKI key from a file.
         - `xmlSecKeyDataFormatDer`: supported (note that `xmlsec-nss` expects
         private key in DER file to be in PrivateKeyInfo format and private keys
@@ -105,4 +101,3 @@ that needs to be removed in `xmlSecNssX509FindCert` function (`nss/x509vfy.c`).
     - [NSS bug](https://bugzilla.mozilla.org/show_bug.cgi?id=561689)
 
 11) CRLs from xml document support is not working at all.
-

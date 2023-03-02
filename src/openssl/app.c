@@ -62,11 +62,13 @@ static int      xmlSecOpenSSLDummyPasswordCallback      (char *buf,
                                                          void *userdata);
 static xmlSecKeyPtr xmlSecOpenSSLAppEngineKeyLoad       (const char *engineName,
                                                          const char *engineKeyId,
+                                                         xmlSecKeyDataType type,
                                                          xmlSecKeyDataFormat format,
                                                          const char *pwd,
                                                          void* pwdCallback,
                                                          void* pwdCallbackCtx);
-static xmlSecKeyPtr xmlSecOpenSSLAppStorePrivateKeyLoad (const char *uri,
+static xmlSecKeyPtr xmlSecOpenSSLAppStoreKeyLoad        (const char *uri,
+                                                         xmlSecKeyDataType type,
                                                          const char *pwd,
                                                          void* pwdCallback,
                                                          void* pwdCallbackCtx);
@@ -177,9 +179,31 @@ xmlSecOpenSSLAppShutdown(void) {
     return(0);
 }
 
+
 /**
  * xmlSecOpenSSLAppKeyLoad:
  * @filename:           the key filename.
+ * @format:             the key file format.
+ * @pwd:                the key file password.
+ * @pwdCallback:        the key password callback.
+ * @pwdCallbackCtx:     the user context for password callback.
+ *
+ * Deprecated, use @xmlSecOpenSSLAppKeyLoadEx function instead. Reads key from the a file.
+ *
+ * Returns: pointer to the key or NULL if an error occurs.
+ */
+xmlSecKeyPtr
+xmlSecOpenSSLAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
+                        const char *pwd, void* pwdCallback,
+                        void* pwdCallbackCtx) {
+    return(xmlSecOpenSSLAppKeyLoadEx(filename, xmlSecKeyDataTypeUnknown, format,
+        pwd, pwdCallback, pwdCallbackCtx));
+}
+
+/**
+ * xmlSecOpenSSLAppKeyLoadEx:
+ * @filename:           the key filename.
+ * @type:               the expected key type.
  * @format:             the key file format.
  * @pwd:                the key file password.
  * @pwdCallback:        the key password callback.
@@ -190,9 +214,9 @@ xmlSecOpenSSLAppShutdown(void) {
  * Returns: pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
-xmlSecOpenSSLAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
-                        const char *pwd, void* pwdCallback,
-                        void* pwdCallbackCtx) {
+xmlSecOpenSSLAppKeyLoadEx(const char *filename, xmlSecKeyDataType type, xmlSecKeyDataFormat format,
+    const char *pwd, void* pwdCallback, void* pwdCallbackCtx
+) {
     xmlSecKeyPtr key = NULL;
 
     xmlSecAssert2(filename != NULL, NULL);
@@ -222,7 +246,7 @@ xmlSecOpenSSLAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
         (*engineKeyId) = '\0';
         ++engineKeyId;
 
-        key = xmlSecOpenSSLAppEngineKeyLoad(engineName, engineKeyId, format, pwd, pwdCallback, pwdCallbackCtx);
+        key = xmlSecOpenSSLAppEngineKeyLoad(engineName, engineKeyId, type, format, pwd, pwdCallback, pwdCallbackCtx);
         if(key == NULL) {
             xmlSecInternalError2("xmlSecOpenSSLAppEngineKeyLoad", NULL,
                                  "filename=%s", xmlSecErrorsSafeString(filename));
@@ -232,9 +256,9 @@ xmlSecOpenSSLAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
 
         xmlFree(buffer);
     } else if(format == xmlSecKeyDataFormatStore) {
-        key = xmlSecOpenSSLAppStorePrivateKeyLoad(filename, pwd, pwdCallback, pwdCallbackCtx);
+        key = xmlSecOpenSSLAppStoreKeyLoad(filename, type, pwd, pwdCallback, pwdCallbackCtx);
         if(key == NULL) {
-            xmlSecInternalError2("xmlSecOpenSSLAppStorePrivateKeyLoad", NULL,
+            xmlSecInternalError2("xmlSecOpenSSLAppStoreKeyLoad", NULL,
                                  "filename=%s", xmlSecErrorsSafeString(filename));
             return(NULL);
         }
@@ -444,11 +468,13 @@ xmlSecOpenSSLAppKeyLoadBIO(BIO* bio, xmlSecKeyDataFormat format,
 
 static xmlSecKeyPtr
 xmlSecOpenSSLAppEngineKeyLoad(const char *engineName, const char *engineKeyId,
-                        xmlSecKeyDataFormat format, const char *pwd ATTRIBUTE_UNUSED,
-                        void* pwdCallback ATTRIBUTE_UNUSED, void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
-
+    xmlSecKeyDataType type, xmlSecKeyDataFormat format,
+    const char *pwd, void* pwdCallback, void* pwdCallbackCtx
+) {
 #if !defined(OPENSSL_NO_ENGINE) && (!defined(XMLSEC_OPENSSL_API_300) || defined(XMLSEC_OPENSSL3_ENGINES))
     UI_METHOD * ui_method  = NULL;
+    pem_password_cb * pwdCb;
+    void * pwdCbCtx;
     ENGINE* engine = NULL;
     xmlSecKeyPtr key = NULL;
     xmlSecKeyDataPtr data = NULL;
@@ -460,9 +486,19 @@ xmlSecOpenSSLAppEngineKeyLoad(const char *engineName, const char *engineKeyId,
     xmlSecAssert2(engineKeyId != NULL, NULL);
     xmlSecAssert2(format == xmlSecKeyDataFormatEngine, NULL);
 
-    UNREFERENCED_PARAMETER(pwd);
-    UNREFERENCED_PARAMETER(pwdCallback);
-    UNREFERENCED_PARAMETER(pwdCallbackCtx);
+    /* prep pwd callbacks */
+    if(pwd != NULL) {
+        pwdCb = xmlSecOpenSSLDummyPasswordCallback;
+        pwdCbCtx = (void*)pwd;
+     } else {
+        pwdCb = XMLSEC_PTR_TO_FUNC(pem_password_cb, pwdCallback);
+        pwdCbCtx = pwdCallbackCtx;
+    }
+    ui_method = UI_UTIL_wrap_read_pem_callback(pwdCb, 0);
+    if(ui_method == NULL) {
+        xmlSecOpenSSLError("UI_UTIL_wrap_read_pem_callback", NULL);
+        goto done;
+    }
 
     /* load and initialize the engine */
     engine = ENGINE_by_id(engineName);
@@ -494,17 +530,29 @@ xmlSecOpenSSLAppEngineKeyLoad(const char *engineName, const char *engineKeyId,
     }
     engineInit = 1;
 
-#ifndef OPENSSL_NO_UI_CONSOLE
-    ui_method = UI_OpenSSL();
-#else   /* OPENSSL_NO_UI_CONSOLE */
-    ui_method = UI_null();
-#endif  /* OPENSSL_NO_UI_CONSOLE */
-
-    /* load private key */
-    pKey = ENGINE_load_private_key(engine, engineKeyId, ui_method, NULL);
-    if(pKey == NULL) {
-        xmlSecOpenSSLError("ENGINE_load_private_key", NULL);
-        goto done;
+    /* load private or public key */
+    if(type == xmlSecKeyDataTypeUnknown) {
+        /* try both */
+        pKey = ENGINE_load_private_key(engine, engineKeyId, ui_method, pwdCbCtx);
+        if(pKey == NULL) {
+            pKey = ENGINE_load_public_key(engine, engineKeyId, ui_method, pwdCbCtx);
+            if(pKey == NULL) {
+                xmlSecOpenSSLError("ENGINE_load_private_key and ENGINE_load_public_key", NULL);
+                goto done;
+            }
+        }
+    } else if(type == xmlSecKeyDataTypePrivate) {
+        pKey = ENGINE_load_private_key(engine, engineKeyId, ui_method, pwdCbCtx);
+        if(pKey == NULL) {
+            xmlSecOpenSSLError("ENGINE_load_private_key", NULL);
+            goto done;
+        }
+    } else {
+        pKey = ENGINE_load_public_key(engine, engineKeyId, ui_method, pwdCbCtx);
+        if(pKey == NULL) {
+            xmlSecOpenSSLError("ENGINE_load_public_key", NULL);
+            goto done;
+        }
     }
 
     /* create xmlsec key */
@@ -544,12 +592,15 @@ done:
         }
         ENGINE_free(engine);
     }
-
+    if(ui_method != NULL) {
+        UI_destroy_method(ui_method);
+    }
     return(key);
 
 #else /* !defined(OPENSSL_NO_ENGINE) && (!defined(XMLSEC_OPENSSL_API_300) || defined(XMLSEC_OPENSSL3_ENGINES)) */
     UNREFERENCED_PARAMETER(engineName);
     UNREFERENCED_PARAMETER(engineKeyId);
+    UNREFERENCED_PARAMETER(type);
     UNREFERENCED_PARAMETER(format);
     UNREFERENCED_PARAMETER(pwd);
     UNREFERENCED_PARAMETER(pwdCallback);
@@ -661,8 +712,48 @@ done:
     return(res);
 }
 
+static X509 *
+xmlSecOpenSSLAppFindKeyCert(EVP_PKEY * pKey, STACK_OF(X509) * certs) {
+    X509 * cert;
+    EVP_PKEY * certKey;
+    int ii, size;
+
+    xmlSecAssert2(pKey != NULL, NULL);
+    xmlSecAssert2(certs != NULL, NULL);
+
+    /* try find key cert */
+    for(ii = 0, size = sk_X509_num(certs); ii < size; ++ii) {
+        cert = sk_X509_value(certs, ii);
+        if(cert == NULL) {
+            continue;
+        }
+        certKey = X509_get0_pubkey(cert);
+        if(certKey == NULL) {
+            continue;
+        }
+#ifndef XMLSEC_OPENSSL_API_300
+        if(EVP_PKEY_cmp(pKey, certKey) != 1) {
+            continue;
+        }
+#else /* XMLSEC_OPENSSL_API_300 */
+        if(EVP_PKEY_eq(pKey, certKey) != 1) {
+            continue;
+        }
+#endif /* XMLSEC_OPENSSL_API_300 */
+
+        /* found it! */
+        if(X509_up_ref(cert) != 1) {
+            return(NULL);
+        }
+        return(cert);
+    }
+
+    /* not found */
+    return(NULL);
+}
+
 static xmlSecKeyPtr
-xmlSecOpenSSLAppStorePrivateKeyLoad(const char *uri, const char *pwd, void* pwdCallback, void* pwdCallbackCtx) {
+xmlSecOpenSSLAppStoreKeyLoad(const char *uri, xmlSecKeyDataType type, const char *pwd, void* pwdCallback, void* pwdCallbackCtx) {
     UI_METHOD * ui_method = NULL;
     pem_password_cb * pwdCb;
     void * pwdCbCtx;
@@ -671,8 +762,9 @@ xmlSecOpenSSLAppStorePrivateKeyLoad(const char *uri, const char *pwd, void* pwdC
     X509 * cert = NULL;
     X509 * keyCert = NULL;
     EVP_PKEY * pKey = NULL;
+    EVP_PKEY * pPrivKey = NULL;
+    EVP_PKEY * pPubKey = NULL;
     xmlSecKeyPtr res = NULL;
-    int ii, size;
     int ret;
 
     xmlSecAssert2(uri != NULL, NULL);
@@ -729,14 +821,27 @@ xmlSecOpenSSLAppStorePrivateKeyLoad(const char *uri, const char *pwd, void* pwdC
         switch (OSSL_STORE_INFO_get_type(info)) {
         case OSSL_STORE_INFO_PKEY:
             /* only take the first private key */
-            if(pKey == NULL) {
-                pKey = OSSL_STORE_INFO_get1_PKEY(info);
-                if(pKey == NULL) {
+            if(pPrivKey == NULL) {
+                pPrivKey = OSSL_STORE_INFO_get1_PKEY(info);
+                if(pPrivKey == NULL) {
                     xmlSecOpenSSLError("OSSL_STORE_INFO_get1_PKEY", NULL);
                     goto done;
                 }
             }
             break;
+
+#if defined(XMLSEC_OPENSSL_API_300)
+        case OSSL_STORE_INFO_PUBKEY:
+            /* only take the first public key */
+            if(pPubKey == NULL) {
+                pPubKey = OSSL_STORE_INFO_get1_PUBKEY(info);
+                if(pPubKey == NULL) {
+                    xmlSecOpenSSLError("OSSL_STORE_INFO_get1_PUBKEY", NULL);
+                    goto done;
+                }
+            }
+            break;
+#endif /* !defined(XMLSEC_OPENSSL_API_300) */
         case OSSL_STORE_INFO_CERT:
             cert = OSSL_STORE_INFO_get1_CERT(info);
             if(cert == NULL) {
@@ -758,42 +863,30 @@ xmlSecOpenSSLAppStorePrivateKeyLoad(const char *uri, const char *pwd, void* pwdC
         }
     }
 
-    /* do we have pkey? */
-    if(pKey == NULL) {
-        xmlSecOpenSSLError("Private key is not found in the store", NULL);
-        goto done;
-    }
-
-    /* try find key cert */
-    for(ii = 0, size = sk_X509_num(certs); ii < size; ++ii) {
-        EVP_PKEY * certKey;
-
-        cert = sk_X509_value(certs, ii);
-        if(cert == NULL) {
-            continue;
-        }
-        certKey = X509_get0_pubkey(cert);
-        if(certKey == NULL) {
-            continue;
-        }
-#ifndef XMLSEC_OPENSSL_API_300
-        if(EVP_PKEY_cmp(pKey, certKey) != 1) {
-            continue;
-        }
-#else /* XMLSEC_OPENSSL_API_300 */
-        if(EVP_PKEY_eq(pKey, certKey) != 1) {
-            continue;
-        }
-#endif /* XMLSEC_OPENSSL_API_300 */
-
-        /* found it! */
-        if(X509_up_ref(cert) != 1) {
-            xmlSecOpenSSLError("X509_up_ref", NULL);
+    /* what do we get? */
+    if(type == xmlSecKeyDataTypePrivate) {
+        if(pPrivKey == NULL) {
+            xmlSecOpenSSLError("Private key is not found in the store", NULL);
             goto done;
         }
-        keyCert = cert;
-        break;
+        pKey = pPrivKey;
+        pPrivKey = NULL;
+    } else {
+        if(pPrivKey != NULL) {
+            pKey = pPrivKey;
+            pPrivKey = NULL;
+        } else if(pPubKey != NULL) {
+            pKey = pPubKey;
+            pPubKey = NULL;
+        } else {
+            xmlSecOpenSSLError("Neither private or public key is not found in the store", NULL);
+            goto done;
+        }
     }
+
+
+    /* try find key cert */
+    keyCert = xmlSecOpenSSLAppFindKeyCert(pKey, certs);
 
     /* finally create a key, xmlSecOpenSSLCreateKey free's all passed params */
     res = xmlSecOpenSSLCreateKey(pKey, keyCert, certs);
@@ -813,6 +906,12 @@ xmlSecOpenSSLAppStorePrivateKeyLoad(const char *uri, const char *pwd, void* pwdC
 done:
     if(pKey != NULL) {
         EVP_PKEY_free(pKey);
+    }
+    if(pPrivKey != NULL) {
+        EVP_PKEY_free(pPrivKey);
+    }
+    if(pPubKey != NULL) {
+        EVP_PKEY_free(pPubKey);
     }
     if(keyCert != NULL) {
         X509_free(keyCert);
@@ -983,7 +1082,7 @@ done:
  * @pwdCallbackCtx:     the user context for password callback.
  *
  * Reads key and all associated certificates from the PKCS12 file.
- * For uniformity, call xmlSecOpenSSLAppKeyLoad instead of this function. Pass
+ * For uniformity, call @xmlSecOpenSSLAppKeyLoadEX instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
  *
  * Returns: pointer to the key or NULL if an error occurs.
@@ -1024,7 +1123,7 @@ xmlSecOpenSSLAppPkcs12Load(const char *filename, const char *pwd,
  * @pwdCallbackCtx:     the user context for password callback.
  *
  * Reads key and all associated certificates from the PKCS12 data in memory buffer.
- * For uniformity, call xmlSecOpenSSLAppKeyLoad instead of this function. Pass
+ * For uniformity, call @xmlSecOpenSSLAppKeyLoadEx instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
  *
  * Returns: pointer to the key or NULL if an error occurs.
@@ -1065,7 +1164,7 @@ xmlSecOpenSSLAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
  * @pwdCallbackCtx:     the user context for password callback.
  *
  * Reads key and all associated certificates from the PKCS12 data in an OpenSSL BIO object.
- * For uniformity, call xmlSecOpenSSLAppKeyLoad instead of this function. Pass
+ * For uniformity, call @xmlSecOpenSSLAppKeyLoadEx instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
  *
  * Returns: pointer to the key or NULL if an error occurs.

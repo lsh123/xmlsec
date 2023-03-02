@@ -24,8 +24,9 @@
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
-#include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/private.h>
+#include <xmlsec/transforms.h>
 
 #include <xmlsec/gnutls/app.h>
 #include <xmlsec/gnutls/crypto.h>
@@ -96,15 +97,34 @@ xmlSecGnuTLSAppShutdown(void) {
  * @pwdCallback:        the key password callback.
  * @pwdCallbackCtx:     the user context for password callback.
  *
- * Reads key from the a file.
+ * Deprecated, use @xmlSecGnuTLSAppKeyLoadEx instead. Reads key from the a file.
  *
  * Returns: pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
 xmlSecGnuTLSAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
-                        const char *pwd,
-                        void* pwdCallback,
-                        void* pwdCallbackCtx) {
+    const char *pwd, void* pwdCallback, void* pwdCallbackCtx
+) {
+    return(xmlSecGnuTLSAppKeyLoadEx(filename, xmlSecKeyDataTypeUnknown, format, pwd, pwdCallback, pwdCallbackCtx));
+}
+
+/**
+ * xmlSecGnuTLSAppKeyLoadEx:
+ * @filename:           the key filename.
+ * @type:               the expected key type.
+ * @format:             the key file format.
+ * @pwd:                the key file password.
+ * @pwdCallback:        the key password callback.
+ * @pwdCallbackCtx:     the user context for password callback.
+ *
+ * Reads key from the a file.
+ *
+ * Returns: pointer to the key or NULL if an error occurs.
+ */
+xmlSecKeyPtr
+xmlSecGnuTLSAppKeyLoadEx(const char *filename, xmlSecKeyDataType type ATTRIBUTE_UNUSED, xmlSecKeyDataFormat format,
+    const char *pwd, void* pwdCallback, void* pwdCallbackCtx
+) {
     xmlSecKeyPtr key;
     xmlSecBuffer buffer;
     xmlSecByte * data;
@@ -113,6 +133,7 @@ xmlSecGnuTLSAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
 
     xmlSecAssert2(filename != NULL, NULL);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
+    UNREFERENCED_PARAMETER(type);
 
     /* read file into memory */
     ret = xmlSecBufferInitialize(&buffer, 4*1024);
@@ -321,7 +342,7 @@ done:
  * @pwdCallbackCtx:     the user context for password callback.
  *
  * Reads key and all associated certificates from the PKCS12 file.
- * For uniformity, call xmlSecGnuTLSAppKeyLoad instead of this function. Pass
+ * For uniformity, call @xmlSecGnuTLSAppKeyLoadEx instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
  *
  * Returns: pointer to the key or NULL if an error occurs.
@@ -331,7 +352,8 @@ xmlSecGnuTLSAppPkcs12Load(const char *filename,
                           const char *pwd,
                           void* pwdCallback,
                           void* pwdCallbackCtx) {
-    return(xmlSecGnuTLSAppKeyLoad(filename, xmlSecKeyDataFormatPkcs12, pwd, pwdCallback, pwdCallbackCtx));
+    return(xmlSecGnuTLSAppKeyLoadEx(filename, xmlSecKeyDataTypePrivate, xmlSecKeyDataFormatPkcs12,
+        pwd, pwdCallback, pwdCallbackCtx));
 }
 
 /**

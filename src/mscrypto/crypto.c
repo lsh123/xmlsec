@@ -260,6 +260,7 @@ xmlSecCryptoGetFunctions_mscrypto(void) {
     gXmlSecMSCryptoFunctions->cryptoAppKeyCertLoadMemory        = xmlSecMSCryptoAppKeyCertLoadMemory;
 #endif /* XMLSEC_NO_X509 */
     gXmlSecMSCryptoFunctions->cryptoAppKeyLoad                  = xmlSecMSCryptoAppKeyLoad;
+    gXmlSecMSCryptoFunctions->cryptoAppKeyLoadEx                = xmlSecMSCryptoAppKeyLoadEx;
     gXmlSecMSCryptoFunctions->cryptoAppKeyLoadMemory            = xmlSecMSCryptoAppKeyLoadMemory;
     gXmlSecMSCryptoFunctions->cryptoAppDefaultPwdCallback       = (void*)xmlSecMSCryptoAppGetDefaultPwdCallback();
 
@@ -602,5 +603,3 @@ ConvertEndianInPlace(xmlSecByte * buf, xmlSecSize size) {
     }
     return (0);
 }
-
-

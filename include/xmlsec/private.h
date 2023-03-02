@@ -250,6 +250,26 @@ typedef xmlSecKeyPtr            (*xmlSecCryptoAppKeyLoadMethod)         (const c
                                                                          void* pwdCallbackCtx);
 
 /**
+ * xmlSecCryptoAppKeyLoadExMethod:
+ * @filename:           the key filename.
+ * @type:               the expected key type.
+ * @format:             the key file format.
+ * @pwd:                the key file password.
+ * @pwdCallback:        the key password callback.
+ * @pwdCallbackCtx:     the user context for password callback.
+ *
+ * Reads key from the a file.
+ *
+ * Returns: pointer to the key or NULL if an error occurs.
+ */
+typedef xmlSecKeyPtr            (*xmlSecCryptoAppKeyLoadExMethod)       (const char *filename,
+                                                                         xmlSecKeyDataType type,
+                                                                         xmlSecKeyDataFormat format,
+                                                                         const char *pwd,
+                                                                         void* pwdCallback,
+                                                                         void* pwdCallbackCtx);
+
+/**
  * xmlSecCryptoAppKeyLoadMemoryMethod:
  * @data:               the key data.
  * @dataSize:           the key data size.
@@ -278,7 +298,7 @@ typedef xmlSecKeyPtr            (*xmlSecCryptoAppKeyLoadMemoryMethod)   (const x
  * @pwdCallbackCtx:     the user context for password callback.
  *
  * Reads key and all associated certificates from the PKCS12 file.
- * For uniformity, call xmlSecCryptoAppKeyLoad instead of this function. Pass
+ * For uniformity, call xmlSecCryptoAppKeyLoadEx instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
  *
  * Returns: pointer to the key or NULL if an error occurs.
@@ -296,7 +316,7 @@ typedef xmlSecKeyPtr            (*xmlSecCryptoAppPkcs12LoadMethod)      (const c
  * @pwdCallbackCtx:     the user context for password callback.
  *
  * Reads key and all associated certificates from the PKCS12 binary data.
- * For uniformity, call xmlSecCryptoAppKeyLoad instead of this function. Pass
+ * For uniformity, call xmlSecCryptoAppKeyLoadEx instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
  *
  * Returns: pointer to the key or NULL if an error occurs.
@@ -435,6 +455,7 @@ typedef int                     (*xmlSecCryptoAppKeyCertLoadMemoryMethod)(xmlSec
  * @cryptoAppKeysMngrCertLoad:          the default keys manager file cert load method.
  * @cryptoAppKeysMngrCertLoadMemory:    the default keys manager memory cert load method.
  * @cryptoAppKeyLoad:           the key file load method.
+ * @cryptoAppKeyLoadEx:         the key file load method.
  * @cryptoAppKeyLoadMemory:     the meory key load method.
  * @cryptoAppPkcs12Load:        the pkcs12 file load method.
  * @cryptoAppPkcs12LoadMemory:  the memory pkcs12 load method.
@@ -566,6 +587,7 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoAppKeysMngrCertLoadMethod        cryptoAppKeysMngrCertLoad;
     xmlSecCryptoAppKeysMngrCertLoadMemoryMethod  cryptoAppKeysMngrCertLoadMemory;
     xmlSecCryptoAppKeyLoadMethod                 cryptoAppKeyLoad;
+    xmlSecCryptoAppKeyLoadExMethod               cryptoAppKeyLoadEx;
     xmlSecCryptoAppKeyLoadMemoryMethod           cryptoAppKeyLoadMemory;
     xmlSecCryptoAppPkcs12LoadMethod              cryptoAppPkcs12Load;
     xmlSecCryptoAppPkcs12LoadMemoryMethod        cryptoAppPkcs12LoadMemory;

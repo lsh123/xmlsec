@@ -85,8 +85,8 @@ see the Copyright file in the distribution  for details.<br><br></p>
 					<li>(<b>API breaking change</b>) The KeyName element content is now trimmed before key search is performed.</li>
                     <li>(<b>API/ABI breaking change</b>) Disabled MD5 digest method by default. Use "--enable-md5" configure options ("legacy-crypto" option on Windows) to re-enable MD5.</li>
 					<li>(<b>ABI breaking change</b>) Removed deprecated functions.</li>
-                    <li>Added support for loading private keys through <a href="https://www.openssl.org/docs/man3.0/man7/ossl_store.html">ossl-store</a> interface (e.g.
-                        for using private keys from an HSM). Also see '--privkey-openssl-store' command line option for XMLSec utility.</li>
+                    <li>Added support for loading keys through <a href="https://www.openssl.org/docs/man3.0/man7/ossl_store.html">ossl-store</a> interface (e.g.
+                        for using keys from an HSM). Also see '--privkey-openssl-store' and '--pubkey-openssl-store ' command line options for XMLSec utility.</li>
                     <li>Fixed all potentially unsafe integer conversions and all the other warnings.</li>
 					<li>Added <a href="https://www.w3.org/TR/2012/NOTE-xmldsig-core1-interop-20121113/">XML Signature 1.1 interop (2012)</a>
                         and <a href="https://www.w3.org/TR/2012/NOTE-xmlenc-core1-interop-20121113/">XML Encryption 1.1 interop (2012)</a> tests.
@@ -168,14 +168,15 @@ see the Copyright file in the distribution  for details.<br><br></p>
 				<ul>
                     <li>(<b>API breaking change</b>) The XMLSec command line utility is using 'strict' key search mode by default. To restore the old 'lax'
                         key search mode, use the new '--lax-key-search' option.</li>
-                    <li>Added '--privkey-openssl-store' option for loading private keys via <a href="https://www.openssl.org/docs/man3.0/man7/ossl_store.html">ossl-store</a> interface
-                        (e.g. for using private keys from an HSM).</li>
+                    <li>Added support for loading keys through <a href="https://www.openssl.org/docs/man3.0/man7/ossl_store.html">ossl-store</a> interface (e.g.
+                        for using keys from an HSM). Also see '--privkey-openssl-store' and '--pubkey-openssl-store ' command line options for XMLSec utility.</li>
                     <li>Added '--enabled-key-info-reference-uris' option to control processing of the
                         the <a href="https://www.w3.org/TR/xmldsig-core1/#sec-KeyInfoReference">KeyInfoReference Element</a>.
                     </li>
                     <li>Added '--pbkdf2-key' option for loading PBKDF2 keys.</li>
                     <li>Added '--concatkdf-key' option for loading ConcatKDF keys.</li>
                     <li>Added '--hmac-min-out-len' option to control the min accepted HMAC Output length.</li>
+                    <li>Added '--pubkey-openssl-engine' option to load public keys from OpenSSL engine.</li>
 					<li>Enabled templatized output filenames to facilitate batch operations on multiple input files.</li>
 				</ul>
 			</li>

@@ -303,7 +303,6 @@ static xmlSecAppCmdLineParam pkcs8DerParam = {
     NULL
 };
 
-
 /* openssl specific privkey options */
 static xmlSecAppCmdLineParam privkeyOpensslStoreParam = {
     xmlSecAppCmdLineTopicKeysMngr,
@@ -316,7 +315,6 @@ static xmlSecAppCmdLineParam privkeyOpensslStoreParam = {
     NULL
 };
 
-/* openssl specific privkey options */
 static xmlSecAppCmdLineParam privkeyOpensslEngineParam = {
     xmlSecAppCmdLineTopicKeysMngr,
     "--privkey-openssl-engine",
@@ -348,6 +346,31 @@ static xmlSecAppCmdLineParam pubkeyDerParam = {
     NULL,
     "--pubkey-der[:<name>] <file>"
     "\n\tload public key from DER file",
+    xmlSecAppCmdLineParamTypeStringList,
+    xmlSecAppCmdLineParamFlagParamNameValue | xmlSecAppCmdLineParamFlagMultipleValues,
+    NULL
+};
+
+/* openssl specific pubkey options */
+static xmlSecAppCmdLineParam pubkeyOpensslStoreParam = {
+    xmlSecAppCmdLineTopicKeysMngr,
+    "--pubkey-openssl-store",
+    NULL,
+    "--pubkey-openssl-store[:<name>] <uri>"
+    "\n\tload pubkey key and certs through OpenSSL ossl_store interface (e.g. from HSM)",
+    xmlSecAppCmdLineParamTypeStringList,
+    xmlSecAppCmdLineParamFlagParamNameValue | xmlSecAppCmdLineParamFlagMultipleValues,
+    NULL
+};
+
+static xmlSecAppCmdLineParam pubkeyOpensslEngineParam = {
+    xmlSecAppCmdLineTopicKeysMngr,
+    "--pubkey-openssl-engine",
+    NULL,
+    "--pubkey-openssl-engine[:<name>] <openssl-engine>;<openssl-key-id>[,<crtfile>[,<crtfile>[...]]]"
+    "\n\tload public key by OpenSSL ENGINE interface; specify the name of engine"
+    "\n\t(like with -engine params), the key specs (like with -inkey or -key params)"
+    "\n\tand optionally certificates that verify this key",
     xmlSecAppCmdLineParamTypeStringList,
     xmlSecAppCmdLineParamFlagParamNameValue | xmlSecAppCmdLineParamFlagMultipleValues,
     NULL
@@ -955,6 +978,8 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
     &privkeyOpensslEngineParam,
     &pubkeyParam,
     &pubkeyDerParam,
+    &pubkeyOpensslStoreParam,
+    &pubkeyOpensslEngineParam,
     &pwdParam,
     &laxKeySearchParam,
 
@@ -2281,6 +2306,7 @@ xmlSecAppLoadKeys(void) {
                     value->strListValue,
                     xmlSecAppCmdLineParamGetString(&pwdParam),
                     value->paramNameValue,
+                    xmlSecKeyDataTypePrivate,
                     xmlSecKeyDataFormatPem) < 0) {
             fprintf(stderr, "Error: failed to load private key from \"%s\".\n",
                     value->strListValue);
@@ -2297,6 +2323,7 @@ xmlSecAppLoadKeys(void) {
                     value->strListValue,
                     xmlSecAppCmdLineParamGetString(&pwdParam),
                     value->paramNameValue,
+                    xmlSecKeyDataTypePrivate,
                     xmlSecKeyDataFormatDer) < 0) {
             fprintf(stderr, "Error: failed to load private key from \"%s\".\n",
                     value->strListValue);
@@ -2313,6 +2340,7 @@ xmlSecAppLoadKeys(void) {
                     value->strListValue,
                     xmlSecAppCmdLineParamGetString(&pwdParam),
                     value->paramNameValue,
+                    xmlSecKeyDataTypePrivate,
                     xmlSecKeyDataFormatPkcs8Pem) < 0) {
             fprintf(stderr, "Error: failed to load private key from \"%s\".\n",
                     value->strListValue);
@@ -2329,6 +2357,7 @@ xmlSecAppLoadKeys(void) {
                     value->strListValue,
                     xmlSecAppCmdLineParamGetString(&pwdParam),
                     value->paramNameValue,
+                    xmlSecKeyDataTypePrivate,
                     xmlSecKeyDataFormatPkcs8Der) < 0) {
             fprintf(stderr, "Error: failed to load private key from \"%s\".\n",
                     value->strListValue);
@@ -2365,6 +2394,7 @@ xmlSecAppLoadKeys(void) {
                     value->strListValue,
                     xmlSecAppCmdLineParamGetString(&pwdParam),
                     value->paramNameValue,
+                    xmlSecKeyDataTypePrivate,
                     xmlSecKeyDataFormatStore) < 0) {
             fprintf(stderr, "Error: failed to load private key from \"%s\".\n",
                     value->strListValue);
@@ -2385,6 +2415,7 @@ xmlSecAppLoadKeys(void) {
                     value->strListValue + strlen(value->strListValue) + 1,
                     xmlSecAppCmdLineParamGetString(&pwdParam),
                     value->paramNameValue,
+                    xmlSecKeyDataTypePrivate,
                     xmlSecKeyDataFormatEngine,
                     xmlSecKeyDataFormatPem) < 0) {
             fprintf(stderr, "Error: failed to load private key from \"%s\".\n",
@@ -2407,6 +2438,7 @@ xmlSecAppLoadKeys(void) {
                     value->strListValue,
                     xmlSecAppCmdLineParamGetString(&pwdParam),
                     value->paramNameValue,
+                    xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic,
                     xmlSecKeyDataFormatPem) < 0) {
             fprintf(stderr, "Error: failed to load public key from \"%s\".\n",
                     value->strListValue);
@@ -2423,6 +2455,7 @@ xmlSecAppLoadKeys(void) {
                     value->strListValue,
                     xmlSecAppCmdLineParamGetString(&pwdParam),
                     value->paramNameValue,
+                    xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic,
                     xmlSecKeyDataFormatDer) < 0) {
             fprintf(stderr, "Error: failed to load public key from \"%s\".\n",
                     value->strListValue);
@@ -2430,6 +2463,44 @@ xmlSecAppLoadKeys(void) {
         }
     }
 
+    for(value = pubkeyOpensslStoreParam.value; value != NULL; value = value->next) {
+        if(value->strListValue == NULL) {
+            fprintf(stderr, "Error: invalid value for option \"%s\".\n",
+                    pubkeyOpensslStoreParam.fullName);
+            return(-1);
+        } else if(xmlSecAppCryptoSimpleKeysMngrKeyAndCertsLoad(gKeysMngr,
+                    value->strListValue,
+                    xmlSecAppCmdLineParamGetString(&pwdParam),
+                    value->paramNameValue,
+                    xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic,
+                    xmlSecKeyDataFormatStore) < 0) {
+            fprintf(stderr, "Error: failed to load public key from \"%s\".\n",
+                    value->strListValue);
+            return(-1);
+        }
+    }
+
+    for(value = pubkeyOpensslEngineParam.value; value != NULL; value = value->next) {
+        /* we expect at least one parameter for the key's engine+id */
+        if(value->strListValue == NULL || value->strListValue[0] == '\0') {
+            fprintf(stderr, "Error: invalid value for option \"%s\".\n", pubkeyOpensslEngineParam.fullName);
+            return(-1);
+        }
+
+        /* the params format is: <openssl-engine>;<openssl-key-id>[,<crtfile>[,<crtfile>[...]]] */
+        if(xmlSecAppCryptoSimpleKeysMngrEngineKeyAndCertsLoad(gKeysMngr,
+                    value->strListValue,
+                    value->strListValue + strlen(value->strListValue) + 1,
+                    xmlSecAppCmdLineParamGetString(&pwdParam),
+                    value->paramNameValue,
+                    xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate,
+                    xmlSecKeyDataFormatEngine,
+                    xmlSecKeyDataFormatPem) < 0) {
+            fprintf(stderr, "Error: failed to load private key from \"%s\".\n",
+                    value->strListValue);
+            return(-1);
+        }
+    }
 
 #ifndef XMLSEC_NO_X509
     /* read all public keys in certs */
@@ -2442,6 +2513,7 @@ xmlSecAppLoadKeys(void) {
                     value->strListValue,
                     xmlSecAppCmdLineParamGetString(&pwdParam),
                     value->paramNameValue,
+                    xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic,
                     xmlSecKeyDataFormatCertPem) < 0) {
             fprintf(stderr, "Error: failed to load public key from \"%s\".\n",
                     value->strListValue);
@@ -2458,6 +2530,7 @@ xmlSecAppLoadKeys(void) {
                     value->strListValue,
                     xmlSecAppCmdLineParamGetString(&pwdParam),
                     value->paramNameValue,
+                    xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic,
                     xmlSecKeyDataFormatCertDer) < 0) {
             fprintf(stderr, "Error: failed to load public key from \"%s\".\n",
                     value->strListValue);

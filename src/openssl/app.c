@@ -829,6 +829,8 @@ xmlSecOpenSSLAppStoreKeyLoad(const char *uri, xmlSecKeyDataType type, const char
                 }
             }
             break;
+
+#if defined(XMLSEC_OPENSSL_API_300)
         case OSSL_STORE_INFO_PUBKEY:
             /* only take the first public key */
             if(pPubKey == NULL) {
@@ -839,6 +841,7 @@ xmlSecOpenSSLAppStoreKeyLoad(const char *uri, xmlSecKeyDataType type, const char
                 }
             }
             break;
+#endif /* !defined(XMLSEC_OPENSSL_API_300) */
         case OSSL_STORE_INFO_CERT:
             cert = OSSL_STORE_INFO_get1_CERT(info);
             if(cert == NULL) {

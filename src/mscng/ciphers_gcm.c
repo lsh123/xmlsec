@@ -229,13 +229,13 @@ xmlSecMSCngGcmBlockCipherSetKeyReq(xmlSecTransformPtr transform, xmlSecKeyReqPtr
 static int
 xmlSecMSCngGcmBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecMSCngGcmBlockCipherCtxPtr ctx;
-    xmlSecBufferPtr buffer;
-    int bufInitialized = 0;
+    xmlSecBufferPtr keyBuffer;
+    xmlSecByte* keyData;
     xmlSecBuffer blob;
+    int bufInitialized = 0;
     BCRYPT_KEY_DATA_BLOB_HEADER* blobHeader;
-    xmlSecByte* bufData;
     xmlSecByte* blobData;
-    xmlSecSize bufDataSize, blobSize;
+    xmlSecSize blobSize;
     DWORD dwKeyObjectLength, dwBytesWritten, dwBlobSize;
     NTSTATUS status;
     int ret;
@@ -255,15 +255,14 @@ xmlSecMSCngGcmBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) 
     xmlSecAssert2(ctx->keySize > 0, -1);
     xmlSecAssert2(ctx->pbKeyObject == NULL, -1);
 
-    buffer = xmlSecKeyDataBinaryValueGetBuffer(xmlSecKeyGetValue(key));
-    xmlSecAssert2(buffer != NULL, -1);
+    keyBuffer = xmlSecKeyDataBinaryValueGetBuffer(xmlSecKeyGetValue(key));
+    xmlSecAssert2(keyBuffer != NULL, -1);
 
-    bufData = xmlSecBufferGetData(buffer);
-    xmlSecAssert2(bufData != NULL, -1);
+    keyData = xmlSecBufferGetData(keyBuffer);
+    xmlSecAssert2(keyData != NULL, -1);
 
-    bufDataSize = xmlSecBufferGetSize(buffer);
-    if(bufDataSize < ctx->keySize) {
-        xmlSecInvalidKeyDataSizeError(bufDataSize, ctx->keySize, xmlSecTransformGetName(transform));
+    if(xmlSecBufferGetSize(keyBuffer) < ctx->keySize) {
+        xmlSecInvalidKeyDataSizeError(xmlSecBufferGetSize(keyBuffer), ctx->keySize, xmlSecTransformGetName(transform));
         goto done;
     }
 
@@ -287,7 +286,7 @@ xmlSecMSCngGcmBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) 
     }
 
     /* prefix the key with a BCRYPT_KEY_DATA_BLOB_HEADER */
-    blobSize = sizeof(BCRYPT_KEY_DATA_BLOB_HEADER) + bufDataSize;
+    blobSize = sizeof(BCRYPT_KEY_DATA_BLOB_HEADER) + ctx->keySize;
     ret = xmlSecBufferInitialize(&blob, blobSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferInitialize", xmlSecTransformGetName(transform),
@@ -302,8 +301,8 @@ xmlSecMSCngGcmBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) 
     blobHeader = (BCRYPT_KEY_DATA_BLOB_HEADER*)blobData;
     blobHeader->dwMagic = BCRYPT_KEY_DATA_BLOB_MAGIC;
     blobHeader->dwVersion = BCRYPT_KEY_DATA_BLOB_VERSION1;
-    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(bufDataSize, blobHeader->cbKeyData, goto done, xmlSecTransformGetName(transform));
-    memcpy(blobData + sizeof(BCRYPT_KEY_DATA_BLOB_HEADER), bufData, bufDataSize);
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(ctx->keySize, blobHeader->cbKeyData, goto done, xmlSecTransformGetName(transform));
+    memcpy(blobData + sizeof(BCRYPT_KEY_DATA_BLOB_HEADER), keyData, ctx->keySize);
 
     /* perform the actual import */
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(blobSize, dwBlobSize, goto done, xmlSecTransformGetName(transform));
@@ -392,6 +391,7 @@ xmlSecMSCngGcmBlockCipherCtxInit(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
     memset(ctx->authInfo.pbTag, 0, xmlSecMSCngAesGcmTagLengthInBytes);
     ctx->authInfo.cbTag = xmlSecMSCngAesGcmTagLengthInBytes;
 
+    /* printf("DEBUG: Init: last = %d\n", last); */
     XMLSEC_SAFE_CAST_ULONG_TO_SIZE(ctx->dwBlockLen, blockSize, return(-1), cipherName);
     if (last == 0) {
         /* Need some working buffers */
@@ -529,6 +529,8 @@ xmlSecMSCngGcmBlockCipherCtxUpdate(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
     }
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, inLen, return(-1), cipherName);
 
+    /* printf("DEBUG: Update: inSize = %d, blockSize = %d\n", (int)inSize, (int)blockSize); */
+
     outSize = xmlSecBufferGetSize(out);
     ret = xmlSecBufferSetMaxSize(out, outSize + inSize);
     if(ret < 0) {
@@ -633,6 +635,8 @@ xmlSecMSCngGcmBlockCipherCtxFinal(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
     inBufSize = xmlSecBufferGetSize(in);
     inBuf = xmlSecBufferGetData(in);
 
+    /* printf("DEBUG: Final: inBufSize = %d, blockSize = %d\n", (int)inBufSize, (int)ctx->dwBlockLen); */
+
     if(encrypt) {
         xmlSecSize outMaxSize;
 
@@ -694,6 +698,8 @@ xmlSecMSCngGcmBlockCipherCtxFinal(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
         }
         inBuf = xmlSecBufferGetData(in);
         inBufSize = xmlSecBufferGetSize(in);
+
+        /* printf("DEBUG: Final2: inBufSize = %d, tagsize = %d\n", (int)inBufSize, (int)xmlSecMSCngAesGcmTagLengthInBytes); */
 
         /* new out max size = old out size + in size (w/o tag) */
         outMaxSize = outBufSize + inBufSize;

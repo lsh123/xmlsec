@@ -872,7 +872,6 @@ xmlSecOpenSSLAppStoreKeyLoad(const char *uri, xmlSecKeyDataType type, const char
             cert = NULL; /* owned by certs now */
             break;
         default:
-            /* printf("DEBUG: type = %d\n", OSSL_STORE_INFO_get_type(info)); */
             /* do nothing */
             break;
         }

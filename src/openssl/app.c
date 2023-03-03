@@ -617,7 +617,6 @@ xmlSecOpenSSLCreateKey(EVP_PKEY * pKey,  X509 * keyCert, STACK_OF(X509) * certs)
     xmlSecKeyPtr key = NULL;
     xmlSecKeyPtr res = NULL;
     int ret;
-
     xmlSecAssert2(pKey != NULL, NULL);
 
     key = xmlSecKeyCreate();
@@ -773,6 +772,7 @@ xmlSecOpenSSLAppStoreKeyLoad(const char *uri, xmlSecKeyDataType type, const char
     pem_password_cb * pwdCb;
     void * pwdCbCtx;
     OSSL_STORE_CTX * storeCtx = NULL;
+    OSSL_STORE_INFO * info = NULL;
     STACK_OF(X509) * certs = NULL;
     X509 * cert = NULL;
     X509 * keyCert = NULL;
@@ -828,7 +828,7 @@ xmlSecOpenSSLAppStoreKeyLoad(const char *uri, xmlSecKeyDataType type, const char
 
     /* load everything from store */
     while (!OSSL_STORE_eof(storeCtx)) {
-        OSSL_STORE_INFO *info = OSSL_STORE_load(storeCtx);
+        info = OSSL_STORE_load(storeCtx);
         if(info == NULL) {
             break;
         }
@@ -875,6 +875,9 @@ xmlSecOpenSSLAppStoreKeyLoad(const char *uri, xmlSecKeyDataType type, const char
             /* do nothing */
             break;
         }
+
+        OSSL_STORE_INFO_free(info);
+        info = NULL;
     }
 
     /* what do we get? */
@@ -897,7 +900,6 @@ xmlSecOpenSSLAppStoreKeyLoad(const char *uri, xmlSecKeyDataType type, const char
             goto done;
         }
     }
-
 
     /* try find key cert */
     keyCert = xmlSecOpenSSLAppFindKeyCert(pKey, certs);
@@ -932,6 +934,9 @@ done:
     }
     if(certs != NULL) {
         sk_X509_pop_free(certs, X509_free);
+    }
+    if(info != NULL) {
+        OSSL_STORE_INFO_free(info);
     }
     if(storeCtx != NULL) {
         OSSL_STORE_close(storeCtx);

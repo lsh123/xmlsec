@@ -312,8 +312,8 @@ xmlSecTransformC14NPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
         if(outSize > maxDataSize) {
             outSize = maxDataSize;
         }
-        if(outSize > XMLSEC_TRANSFORM_BINARY_CHUNK) {
-            outSize = XMLSEC_TRANSFORM_BINARY_CHUNK;
+        if(outSize > transformCtx->binaryChunkSize) {
+            outSize = transformCtx->binaryChunkSize;
         }
         if(outSize > 0) {
             xmlSecAssert2(xmlSecBufferGetData(&(transform->outBuf)), -1);

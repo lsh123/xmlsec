@@ -151,7 +151,6 @@ xmlSecTransformKWDes3Execute(xmlSecTransformPtr transform, xmlSecTransformKWDes3
     out = &(transform->outBuf);
     inSize = xmlSecBufferGetSize(in);
     outSize = xmlSecBufferGetSize(out);
-    xmlSecAssert2(outSize == 0, -1);
 
     if(transform->status == xmlSecTransformStatusNone) {
         transform->status = xmlSecTransformStatusWorking;
@@ -167,6 +166,7 @@ xmlSecTransformKWDes3Execute(xmlSecTransformPtr transform, xmlSecTransformKWDes3
             return(-1);
         }
 
+        xmlSecAssert2(outSize == 0, -1);
         if(transform->operation == xmlSecTransformOperationEncrypt) {
             /* the encoded key might be 16 bytes longer plus one block just in case */
             outSize = inSize + XMLSEC_KW_DES3_IV_LENGTH +
@@ -602,11 +602,11 @@ xmlSecTransformKWAesExecute(xmlSecTransformPtr transform, xmlSecTransformKWAesCt
     keySize = xmlSecBufferGetSize(&(ctx->keyBuffer));
     xmlSecAssert2(keySize == ctx->keyExpectedSize, -1);
 
+
     in = &(transform->inBuf);
     out = &(transform->outBuf);
     inSize = xmlSecBufferGetSize(in);
     outSize = xmlSecBufferGetSize(out);
-    xmlSecAssert2(outSize == 0, -1);
 
     if(transform->status == xmlSecTransformStatusNone) {
         transform->status = xmlSecTransformStatusWorking;
@@ -622,6 +622,7 @@ xmlSecTransformKWAesExecute(xmlSecTransformPtr transform, xmlSecTransformKWAesCt
             return(-1);
         }
 
+        xmlSecAssert2(outSize == 0, -1);
         if(transform->operation == xmlSecTransformOperationEncrypt) {
             /* the encoded key might be 8 bytes longer plus 8 bytes just in case */
             outSize = inSize + XMLSEC_KW_AES_MAGIC_BLOCK_SIZE +

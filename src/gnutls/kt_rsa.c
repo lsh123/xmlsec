@@ -344,9 +344,6 @@ xmlSecGnuTLSKeyTransportExecute(xmlSecTransformPtr transform, int last, xmlSecTr
                     "More data available in the input buffer");
             return(-1);
         }
-    } else {
-        xmlSecInvalidTransfromStatusError(transform);
-        return(-1);
     }
 
     return(0);

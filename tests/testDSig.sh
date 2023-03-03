@@ -36,6 +36,49 @@ echo "--- LTDL_LIBRARY_PATH=$LTDL_LIBRARY_PATH" >> $logfile
 ##########################################################################
 ##########################################################################
 ##########################################################################
+
+# Test was created using the following command:
+# xmlsec1 sign --lax-key-search --privkey-pem tests/keys/largersakey.pem,tests/keys/largersacert.pem tests/aleksey-xmldsig-01/enveloped-x509-missing-cert.tmpl
+#
+echo "--------- Certificate verification testing ----------"
+
+# this should succeeed
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloped-x509-missing-cert" \
+    "sha256 rsa-sha256" \
+    "x509" \
+    "--untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+
+# this should fail: missing intermidiate cert (ca2cert)
+execDSigTest $res_fail \
+    "" \
+    "aleksey-xmldsig-01/enveloped-x509-missing-cert" \
+    "sha256 rsa-sha256" \
+    "x509" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+
+# this should fail: missing root cert (cacert)
+execDSigTest $res_fail \
+    "" \
+    "aleksey-xmldsig-01/enveloped-x509-missing-cert" \
+    "sha256 rsa-sha256" \
+    "x509" \
+    "--untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --enabled-key-data x509"
+
+# this should fail: wrong root cert (rsacert vs cacert)
+execDSigTest $res_fail \
+    "" \
+    "aleksey-xmldsig-01/enveloped-x509-missing-cert" \
+    "sha256 rsa-sha256" \
+    "x509" \
+    "--untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/rsacert.$cert_format --enabled-key-data x509"
+
+exit(1)
+
+##########################################################################
+##########################################################################
+##########################################################################
 echo "--------- Positive Testing ----------"
 
 ##########################################################################

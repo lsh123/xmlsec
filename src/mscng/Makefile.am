@@ -21,7 +21,8 @@ libxmlsec1_mscng_la_CPPFLAGS = \
 libxmlsec1_mscng_la_SOURCES =\
 	app.c \
 	certkeys.c \
-	ciphers.c \
+	ciphers_cbc.c \
+	ciphers_gcm.c \
 	concatkdf.c \
 	crypto.c \
 	digests.c \

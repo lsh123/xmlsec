@@ -1098,7 +1098,6 @@ done:
     return(res);
 }
 
-
 /**
  * xmlSecNssAppKeysMngrCertLoad:
  * @mngr:               the pointer to keys manager.
@@ -1144,8 +1143,8 @@ xmlSecNssAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
 /**
  * xmlSecNssAppKeysMngrCertLoadMemory:
  * @mngr:               the pointer to keys manager.
- * @data:               the key binary data.
- * @dataSize:           the key binary data size.
+ * @data:               the certificatedata.
+ * @dataSize:           the certificate data size.
  * @format:             the certificate format (PEM or DER).
  * @type:               the certificate type (trusted/untrusted).
  *
@@ -1238,6 +1237,54 @@ xmlSecNssAppKeysMngrCertLoadSECItem(xmlSecKeysMngrPtr mngr, SECItem* secItem,
 
     return(0);
 }
+
+
+/**
+ * xmlSecNssAppKeysMngrCrlLoad:
+ * @mngr:               the pointer to keys manager.
+ * @filename:           the CRL file.
+ * @format:             the CRL file format (PEM or DER).
+ *
+ * Reads crl from @filename and adds to the list of trusted or known
+ * untrusted crls in @store
+ *
+ * Returns: 0 on success or a negative value otherwise.
+ */
+int
+xmlSecNssAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, xmlSecKeyDataFormat format) {
+    xmlSecAssert2(mngr != NULL, -1);
+    xmlSecAssert2(filename != NULL, -1);
+    xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
+
+    /* TODO */
+    xmlSecNotImplementedError(NULL);
+    return(-1);
+}
+
+/**
+ * xmlSecNssAppKeysMngrCrlLoadMemory:
+ * @mngr:               the pointer to keys manager.
+ * @data:               the CRL data.
+ * @dataSize:           the CRL data size.
+ * @format:             the CRL format (PEM or DER).
+ *
+ * Reads crl from @data and adds to the list of trusted or known
+ * untrusted crls in @store
+ *
+ * Returns: 0 on success or a negative value otherwise.
+ */
+int
+xmlSecNssAppKeysMngrCrlLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* data, xmlSecSize dataSize, xmlSecKeyDataFormat format) {
+    xmlSecAssert2(mngr != NULL, -1);
+    xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(dataSize > 0, -1);
+    xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
+
+    /* TODO */
+    xmlSecNotImplementedError(NULL);
+    return(-1);
+}
+
 
 #endif /* XMLSEC_NO_X509 */
 

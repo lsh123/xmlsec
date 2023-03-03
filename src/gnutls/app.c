@@ -813,6 +813,29 @@ xmlSecGnuTLSAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr,
     return(0);
 }
 
+
+/**
+ * xmlSecGnuTLSAppKeysMngrCertLoad:
+ * @mngr:               the keys manager.
+ * @filename:           the CRL file.
+ * @format:             the CRL file format.
+ *
+ * Reads crls from @filename and adds to the list of trusted or known
+ * untrusted crls in @store.
+ *
+ * Returns: 0 on success or a negative value otherwise.
+ */
+int
+xmlSecGnuTLSAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, xmlSecKeyDataFormat format) {
+    xmlSecAssert2(mngr != NULL, -1);
+    xmlSecAssert2(filename != NULL, -1);
+    xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
+
+    /* TODO */
+    xmlSecNotImplementedError(NULL);
+    return(-1);
+}
+
 /**
  * xmlSecGnuTLSAppKeysMngrCertLoadMemory:
  * @mngr:               the keys manager.

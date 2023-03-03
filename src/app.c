@@ -1931,7 +1931,7 @@ xmlSecCryptoAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
  * @mngr:               the keys manager.
  * @data:               the certificate binary data.
  * @dataSize:           the certificate binary data size.
- * @format:             the certificate file format.
+ * @format:             the certificate data format.
  * @type:               the flag that indicates is the certificate trusted or not.
  *
  * Reads cert from binary buffer @data and adds to the list of trusted or known
@@ -1949,6 +1949,51 @@ xmlSecCryptoAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* 
     }
 
     return(xmlSecCryptoDLGetFunctions()->cryptoAppKeysMngrCertLoadMemory(mngr, data, dataSize, format, type));
+}
+
+/**
+ * xmlSecCryptoAppKeysMngrCrlLoad:
+ * @mngr:               the keys manager.
+ * @filename:           the CRL file.
+ * @format:             the CRL file format.
+ *
+ * Reads crls from @filename and adds to the list of trusted or known
+ * untrusted crls in @store.
+ *
+ * Returns: 0 on success or a negative value otherwise.
+ */
+int
+xmlSecCryptoAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, xmlSecKeyDataFormat format) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->cryptoAppKeysMngrCrlLoad == NULL)) {
+        xmlSecNotImplementedError("cryptoAppKeysMngrCrlLoad");
+        return(-1);
+    }
+
+    return(xmlSecCryptoDLGetFunctions()->cryptoAppKeysMngrCrlLoad(mngr, filename, format));
+}
+
+/**
+ * xmlSecCryptoAppKeysMngrCrlLoadMemory:
+ * @mngr:               the keys manager.
+ * @data:               the CRL binary data.
+ * @dataSize:           the CRL binary data size.
+ * @format:             the CRL data format.
+ *
+ * Reads crl from binary buffer @data and adds to the list of trusted or known
+ * untrusted crls in @store.
+ *
+ * Returns: 0 on success or a negative value otherwise.
+ */
+int
+xmlSecCryptoAppKeysMngrCrlLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* data, xmlSecSize dataSize,
+    xmlSecKeyDataFormat format
+) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->cryptoAppKeysMngrCrlLoadMemory == NULL)) {
+        xmlSecNotImplementedError("cryptoAppKeysMngrCrlLoadMemory");
+        return(-1);
+    }
+
+    return(xmlSecCryptoDLGetFunctions()->cryptoAppKeysMngrCrlLoadMemory(mngr, data, dataSize, format));
 }
 
 

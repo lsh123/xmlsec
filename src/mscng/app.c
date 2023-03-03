@@ -629,7 +629,7 @@ cleanup:
 int
 xmlSecMSCngAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
                                xmlSecKeyDataFormat format,
-                               xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
+                               xmlSecKeyDataType type) {
     xmlSecBuffer buffer;
     int ret;
 
@@ -667,8 +667,8 @@ xmlSecMSCngAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
 /**
  * xmlSecMSCngAppKeysMngrCertLoadMemory:
  * @mngr:               the pointer to keys manager.
- * @data:               the key binary data.
- * @dataSize:           the key binary data size.
+ * @data:               the certificate data.
+ * @dataSize:           the certificate data size.
  * @format:             the certificate format (PEM or DER).
  * @type:               the certificate type (trusted/untrusted).
  *
@@ -679,8 +679,8 @@ xmlSecMSCngAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
  */
 int
 xmlSecMSCngAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* data,
-                                     xmlSecSize dataSize, xmlSecKeyDataFormat format,
-                                     xmlSecKeyDataType type) {
+    xmlSecSize dataSize, xmlSecKeyDataFormat format, xmlSecKeyDataType type
+) {
     xmlSecKeyDataStorePtr x509Store;
     PCCERT_CONTEXT pCert = NULL;
     DWORD dwDataSize;
@@ -725,6 +725,53 @@ xmlSecMSCngAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* d
 
     return(0);
 }
+
+/**
+ * xmlSecMSCngAppKeysMngrCrlLoad:
+ * @mngr:               the keys manager.
+ * @filename:           the CRL file.
+ * @format:             the CRL file format.
+ *
+ * Reads crls from @filename and adds to the list of trusted or known
+ * untrusted crls in @store (not implemented yet).
+ *
+ * Returns: 0 on success or a negative value otherwise.
+ */
+int
+xmlSecMSCngAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, xmlSecKeyDataFormat format) {
+    xmlSecAssert2(mngr != NULL, -1);
+    xmlSecAssert2(filename != NULL, -1);
+    xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
+
+    /* TODO */
+    xmlSecNotImplementedError(NULL);
+    return(-1);
+}
+
+/**
+ * xmlSecMSCngAppKeysMngrCrlLoadMemory:
+ * @mngr:               the pointer to keys manager.
+ * @data:               the CRL data.
+ * @dataSize:           the CRL data size.
+ * @format:             the CRL format (PEM or DER).
+ *
+ * Reads crls from @data and adds to the list of trusted or known
+ * untrusted crls in @store
+ *
+ * Returns: 0 on success or a negative value otherwise.
+ */
+int
+xmlSecMSCngAppKeysMngrCrlLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* data, xmlSecSize dataSize, xmlSecKeyDataFormat format) {
+    xmlSecAssert2(mngr != NULL, -1);
+    xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(dataSize > 0, -1);
+    xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
+
+    /* TODO */
+    xmlSecNotImplementedError(NULL);
+    return(-1);
+}
+
 
 #endif /* XMLSEC_NO_X509 */
 

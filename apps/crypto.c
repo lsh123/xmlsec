@@ -84,6 +84,19 @@ xmlSecAppCryptoSimpleKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filena
 #endif /* XMLSEC_NO_X509 */
 }
 
+
+int
+xmlSecAppCryptoSimpleKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, xmlSecKeyDataFormat format) {
+    xmlSecAssert2(mngr != NULL, -1);
+    xmlSecAssert2(filename != NULL, -1);
+
+#ifndef XMLSEC_NO_X509
+    return(xmlSecCryptoAppKeysMngrCrlLoad(mngr, filename, format));
+#else /* XMLSEC_NO_X509 */
+    return(-1);
+#endif /* XMLSEC_NO_X509 */
+}
+
 int
 xmlSecAppCryptoSimpleKeysMngrKeyAndCertsLoad(xmlSecKeysMngrPtr mngr,
     const char* files, const char* pwd, const char* name,

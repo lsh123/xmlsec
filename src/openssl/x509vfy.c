@@ -382,12 +382,8 @@ xmlSecOpenSSLX509StoreVerifyAndCopyCrls(X509_STORE* xst, STACK_OF(X509_CRL)* crl
             /* crl failed verification */
             continue;
         }
-        ret = X509_CRL_up_ref(crl);
-        if(ret != 1) {
-            xmlSecOpenSSLError("X509_CRL_up_ref", NULL);
-            sk_X509_CRL_free(crls2);
-            return(NULL);
-        }
+        /* dont duplicate or up_ref the crl since we own
+         * pointer to it */
         ret = sk_X509_CRL_push(crls2, crl);
         if(ret <= 0) {
             xmlSecOpenSSLError("sk_X509_CRL_push", NULL);
@@ -462,13 +458,8 @@ xmlSecOpenSSLX509StoreVerifyAndCopyUntrustedCerts(X509_STORE* xst, STACK_OF(X509
             }
         }
 
-        /* add cert to the output */
-        ret = X509_up_ref(cert);
-        if(ret != 1) {
-            xmlSecOpenSSLError("X509_up_ref", NULL);
-            sk_X509_free(certs2);
-            return(NULL);
-        }
+        /* add cert to the output: dont duplicate or up_ref the cert since we own
+         * pointer to it */
         ret = sk_X509_push(certs2, cert);
         if(ret <= 0) {
             xmlSecOpenSSLError("sk_X509_push", NULL);
@@ -641,11 +632,8 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
                 continue;
             }
         }
-        ret = X509_up_ref(cert);
-        if(ret != 1) {
-            xmlSecInternalError("X509_up_ref", NULL);
-            goto done;
-        }
+        /* dont duplicate or up_ref the cert since we own
+         * pointer to it */
         ret = sk_X509_push(untrusted_certs2, cert);
         if(ret <= 0) {
             xmlSecInternalError("sk_X509_push", NULL);
@@ -696,6 +684,9 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
     }
 
 done:
+    /* only free sk_* structures, not the certs or crls because caller owns pointers
+     * or the store does and we didn't up_ref / dup certs when creating the sk_*'s.
+     */
     if((untrusted_certs2 != NULL) && (untrusted_certs2 != certs2)) {
         sk_X509_free(untrusted_certs2);
     }

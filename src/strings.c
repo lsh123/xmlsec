@@ -313,9 +313,11 @@ const xmlChar xmlSecHrefEcdh[]                  = "http://www.w3.org/2009/xmlenc
  *
  * ECDSA sigantures strings
  *
+ * https://www.ietf.org/rfc/rfc9231.html#name-ecdsa-sha-ecdsa-ripemd160-e
+ *
  ************************************************************************/
 const xmlChar xmlSecNameEcdsaRipemd160[]        = "ecdsa-ripemd160";
-const xmlChar xmlSecHrefEcdsaRipemd160[]        = "http://www.w3.org/2001/04/xmldsig-more#ecdsa-ripemd160";
+const xmlChar xmlSecHrefEcdsaRipemd160[]        = "http://www.w3.org/2007/05/xmldsig-more#ecdsa-ripemd160";
 
 const xmlChar xmlSecNameEcdsaSha1[]             = "ecdsa-sha1";
 const xmlChar xmlSecHrefEcdsaSha1[]             = "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha1";
@@ -343,7 +345,6 @@ const xmlChar xmlSecHrefEcdsaSha3_384[]         = "http://www.w3.org/2021/04/xml
 
 const xmlChar xmlSecNameEcdsaSha3_512[]         = "ecdsa-sha3-512";
 const xmlChar xmlSecHrefEcdsaSha3_512[]         = "http://www.w3.org/2021/04/xmldsig-more#ecdsa-sha3-512";
-
 
 /*************************************************************************
  *

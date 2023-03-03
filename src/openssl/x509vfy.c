@@ -339,7 +339,7 @@ xmlSecOpenSSLX509FindKeyByValue(xmlSecPtrListPtr keysList, xmlSecKeyX509DataValu
 
 static STACK_OF(X509_CRL)*
 xmlSecOpenSSLX509StoreVerifyAndCopyCrls(X509_STORE* xst, STACK_OF(X509_CRL)* crls) {
-    STACK_OF(X509_CRL)* crls2 = NULL;
+    STACK_OF(X509_CRL)* verified_crls = NULL;
     x509_size_t ii, num;
     int ret;
 
@@ -355,15 +355,15 @@ xmlSecOpenSSLX509StoreVerifyAndCopyCrls(X509_STORE* xst, STACK_OF(X509_CRL)* crl
     }
 
     /* create output crls list */
-    crls2 = sk_X509_CRL_new_null();
-    if(crls2 == NULL) {
+    verified_crls = sk_X509_CRL_new_null();
+    if(verified_crls == NULL) {
         xmlSecOpenSSLError("sk_X509_CRL_new_null", NULL);
         return(NULL);
     }
-    ret = sk_X509_CRL_reserve(crls2, num);
+    ret = sk_X509_CRL_reserve(verified_crls, num);
     if(ret != 1) {
         xmlSecOpenSSLError("sk_X509_CRL_reserve", NULL);
-        sk_X509_CRL_free(crls2);
+        sk_X509_CRL_free(verified_crls);
         return(NULL);
     }
 
@@ -376,7 +376,7 @@ xmlSecOpenSSLX509StoreVerifyAndCopyCrls(X509_STORE* xst, STACK_OF(X509_CRL)* crl
         ret = xmlSecOpenSSLX509VerifyCRL(xst, crl);
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLX509VerifyCRL", NULL);
-            sk_X509_CRL_free(crls2);
+            sk_X509_CRL_free(verified_crls);
             return(NULL);
         } else if (ret != 1) {
             /* crl failed verification */
@@ -384,23 +384,21 @@ xmlSecOpenSSLX509StoreVerifyAndCopyCrls(X509_STORE* xst, STACK_OF(X509_CRL)* crl
         }
         /* dont duplicate or up_ref the crl since we own
          * pointer to it */
-        ret = sk_X509_CRL_push(crls2, crl);
+        ret = sk_X509_CRL_push(verified_crls, crl);
         if(ret <= 0) {
             xmlSecOpenSSLError("sk_X509_CRL_push", NULL);
-            X509_CRL_free(crl);
-            sk_X509_CRL_free(crls2);
+            sk_X509_CRL_free(verified_crls);
             return(NULL);
         }
-        crl = NULL; /* owened by crls2 now */
     }
 
     /* done! */
-    return(crls2);
+    return(verified_crls);
 }
 
 static STACK_OF(X509)*
 xmlSecOpenSSLX509StoreVerifyAndCopyUntrustedCerts(X509_STORE* xst, STACK_OF(X509)* certs, STACK_OF(X509_CRL)* crls, STACK_OF(X509_CRL)* crls2) {
-    STACK_OF(X509)* certs2 = NULL;
+    STACK_OF(X509)* certs_after_crls_check = NULL;
     x509_size_t ii, num;
     int ret;
 
@@ -416,15 +414,15 @@ xmlSecOpenSSLX509StoreVerifyAndCopyUntrustedCerts(X509_STORE* xst, STACK_OF(X509
     }
 
     /* create output certs list */
-    certs2 = sk_X509_new_null();
-    if(certs2 == NULL) {
+    certs_after_crls_check = sk_X509_new_null();
+    if(certs_after_crls_check == NULL) {
         xmlSecOpenSSLError("sk_X509_new_null", NULL);
         return(NULL);
     }
-    ret = sk_X509_reserve(certs2, num);
+    ret = sk_X509_reserve(certs_after_crls_check, num);
     if(ret != 1) {
         xmlSecOpenSSLError("sk_X509_reserve", NULL);
-        sk_X509_free(certs2);
+        sk_X509_free(certs_after_crls_check);
         return(NULL);
     }
 
@@ -439,7 +437,7 @@ xmlSecOpenSSLX509StoreVerifyAndCopyUntrustedCerts(X509_STORE* xst, STACK_OF(X509
             ret = xmlSecOpenSSLX509VerifyCertAgainstCrls(crls, cert);
             if(ret < 0) {
                 xmlSecInternalError("xmlSecOpenSSLX509VerifyCertAgainstCrls(crls)", NULL);
-                sk_X509_free(certs2);
+                sk_X509_free(certs_after_crls_check);
                 return(NULL);
             } else if (ret != 1) {
                 /* cert failed verification */
@@ -450,7 +448,7 @@ xmlSecOpenSSLX509StoreVerifyAndCopyUntrustedCerts(X509_STORE* xst, STACK_OF(X509
             ret = xmlSecOpenSSLX509VerifyCertAgainstCrls(crls2, cert);
             if(ret < 0) {
                 xmlSecInternalError("xmlSecOpenSSLX509VerifyCertAgainstCrls(crls2)", NULL);
-                sk_X509_free(certs2);
+                sk_X509_free(certs_after_crls_check);
                 return(NULL);
             } else if (ret != 1) {
                 /* cert failed verification */
@@ -460,18 +458,16 @@ xmlSecOpenSSLX509StoreVerifyAndCopyUntrustedCerts(X509_STORE* xst, STACK_OF(X509
 
         /* add cert to the output: dont duplicate or up_ref the cert since we own
          * pointer to it */
-        ret = sk_X509_push(certs2, cert);
+        ret = sk_X509_push(certs_after_crls_check, cert);
         if(ret <= 0) {
             xmlSecOpenSSLError("sk_X509_push", NULL);
-            X509_free(cert);
-            sk_X509_free(certs2);
+            sk_X509_free(certs_after_crls_check);
             return(NULL);
         }
-        cert = NULL; /* owened by certs2 now */
     }
 
     /* done */
-    return(certs2);
+    return(certs_after_crls_check);
 }
 
 static int
@@ -585,9 +581,9 @@ xmlSecOpenSSLX509StoreVerifyCert(X509_STORE* xst, X509_STORE_CTX *xsc, X509* cer
 X509*
 xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* certs, XMLSEC_STACK_OF_X509_CRL* crls, xmlSecKeyInfoCtx* keyInfoCtx) {
     xmlSecOpenSSLX509StoreCtxPtr ctx;
-    STACK_OF(X509)* certs2 = NULL;
-    STACK_OF(X509)* untrusted_certs2 = NULL;
-    STACK_OF(X509_CRL)* crls2 = NULL;
+    STACK_OF(X509)* certs_after_crls_check = NULL;
+    STACK_OF(X509)* all_untrusted_certs = NULL;
+    STACK_OF(X509_CRL)* verified_crls = NULL;
     X509 * res = NULL;
     X509 * cert;
     X509_STORE_CTX *xsc = NULL;
@@ -602,47 +598,47 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
     xmlSecAssert2(ctx != NULL, NULL);
     xmlSecAssert2(ctx->xst != NULL, NULL);
 
-    /* dup crls but remove all non-verified (we assume that CRLs in the store are already verified) */
-    crls2 = xmlSecOpenSSLX509StoreVerifyAndCopyCrls(ctx->xst, crls);
+    /* copy crls list but remove all non-verified (we assume that CRLs in the store are already verified) */
+    verified_crls = xmlSecOpenSSLX509StoreVerifyAndCopyCrls(ctx->xst, crls);
 
-    /* dup certs + ctx->xst->untrusted but remove all that are revoked */
-    certs2 = xmlSecOpenSSLX509StoreVerifyAndCopyUntrustedCerts(ctx->xst, certs, ctx->crls, crls2);
-    if(certs2 == NULL) {
-        /* no certs verified */
+    /* copy certs list but remove all that are revoked through ctx->crls or verified_crls */
+    certs_after_crls_check = xmlSecOpenSSLX509StoreVerifyAndCopyUntrustedCerts(ctx->xst, certs, ctx->crls, verified_crls);
+    if(certs_after_crls_check == NULL) {
+        /* all certs are revoked, nothing to do */
         goto done;
     }
-    num = sk_X509_num(certs2);
+    num = sk_X509_num(certs_after_crls_check);
     if(num <= 0) {
         /* no certs verified */
         goto done;
     }
 
-    /* dup untrusted certs from ctx but remove all that are revoked, then add all the certs we have in certs2 */
-    untrusted_certs2 = xmlSecOpenSSLX509StoreVerifyAndCopyUntrustedCerts(ctx->xst, ctx->untrusted, ctx->crls, crls2);
-    if(untrusted_certs2 != NULL) {
-        ret = sk_X509_reserve(untrusted_certs2, num + sk_X509_num(untrusted_certs2));
+    /* copy untrusted certs list from ctx but remove all that are revoked, then add all the certs we have in certs_after_crls_check */
+    all_untrusted_certs = xmlSecOpenSSLX509StoreVerifyAndCopyUntrustedCerts(ctx->xst, ctx->untrusted, ctx->crls, verified_crls);
+    if(all_untrusted_certs != NULL) {
+        /* add certs_after_crls_check to the untrusted certs*/
+        ret = sk_X509_reserve(all_untrusted_certs, num + sk_X509_num(all_untrusted_certs));
         if(ret != 1) {
-            xmlSecOpenSSLError("sk_X509_reserve(untrusted_certs2)", NULL);
+            xmlSecOpenSSLError("sk_X509_reserve(all_untrusted_certs)", NULL);
             goto done;
         }
-
         for(ii = 0; ii < num; ++ii) {
-            cert = sk_X509_value(certs2, ii);
+            cert = sk_X509_value(certs_after_crls_check, ii);
             if(cert == NULL) {
                 continue;
             }
+
+            /* dont duplicate or up_ref the cert since we own
+            * pointer to it */
+            ret = sk_X509_push(all_untrusted_certs, cert);
+            if(ret <= 0) {
+                xmlSecInternalError("sk_X509_push", NULL);
+                goto done;
+            }
         }
-        /* dont duplicate or up_ref the cert since we own
-         * pointer to it */
-        ret = sk_X509_push(untrusted_certs2, cert);
-        if(ret <= 0) {
-            xmlSecInternalError("sk_X509_push", NULL);
-            X509_free(cert);
-            goto done;
-        }
-        cert = NULL; /* owened by untrusted_certs2 now */
     } else {
-        untrusted_certs2 = certs2;
+        /* short cut: the context doesn't have any untrusted certs */
+        all_untrusted_certs = certs_after_crls_check;
     }
 
     /* get one cert after another and try to verify */
@@ -652,13 +648,13 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
         goto done;
     }
     for(ii = 0; ii < num; ++ii) {
-        cert = sk_X509_value(certs2, ii);
+        cert = sk_X509_value(certs_after_crls_check, ii);
         if(cert == NULL) {
             continue;
         }
 
         /* we only attempt to verify "leaf" certs without children */
-        if((untrusted_certs2 != NULL) && (xmlSecOpenSSLX509FindChildCert(untrusted_certs2, cert) != NULL)) {
+        if((all_untrusted_certs != NULL) && (xmlSecOpenSSLX509FindChildCert(all_untrusted_certs, cert) != NULL)) {
             continue;
         }
 
@@ -668,7 +664,7 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
             goto done;
         }
 
-        ret = xmlSecOpenSSLX509StoreVerifyCert(ctx->xst, xsc, cert, untrusted_certs2, keyInfoCtx);
+        ret = xmlSecOpenSSLX509StoreVerifyCert(ctx->xst, xsc, cert, all_untrusted_certs, keyInfoCtx);
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLX509StoreVerifyCert", xmlSecKeyDataStoreGetName(store));
             goto done;
@@ -687,14 +683,14 @@ done:
     /* only free sk_* structures, not the certs or crls because caller owns pointers
      * or the store does and we didn't up_ref / dup certs when creating the sk_*'s.
      */
-    if((untrusted_certs2 != NULL) && (untrusted_certs2 != certs2)) {
-        sk_X509_free(untrusted_certs2);
+    if((all_untrusted_certs != NULL) && (all_untrusted_certs != certs_after_crls_check)) {
+        sk_X509_free(all_untrusted_certs);
     }
-    if(certs2 != NULL) {
-        sk_X509_free(certs2);
+    if(certs_after_crls_check != NULL) {
+        sk_X509_free(certs_after_crls_check);
     }
-    if(crls2 != NULL) {
-        sk_X509_CRL_free(crls2);
+    if(verified_crls != NULL) {
+        sk_X509_CRL_free(verified_crls);
     }
     if(xsc != NULL) {
         X509_STORE_CTX_free(xsc);

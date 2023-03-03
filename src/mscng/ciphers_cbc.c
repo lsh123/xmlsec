@@ -790,7 +790,7 @@ xmlSecMSCngCbcBlockCipherExecute(xmlSecTransformPtr transform, int last,
 #ifndef XMLSEC_NO_AES
 
 /* AES-CBC-128 block cipher klass: xmlSecMSCngAes128CbcKlass */
-XMLSEC_MSCNG_CBC_CIPHER_KLASS(Aes128Cbc);
+XMLSEC_MSCNG_CBC_CIPHER_KLASS(Aes128Cbc)
 
 /**
  * xmlSecMSCngTransformAes128CbcGetKlass:
@@ -805,7 +805,7 @@ xmlSecMSCngTransformAes128CbcGetKlass(void) {
 }
 
 /* AES-CBC-192 block cipher klass: xmlSecMSCngAes192CbcKlass */
-XMLSEC_MSCNG_CBC_CIPHER_KLASS(Aes192Cbc);
+XMLSEC_MSCNG_CBC_CIPHER_KLASS(Aes192Cbc)
 
 /**
  * xmlSecMSCngTransformAes192CbcGetKlass:
@@ -820,7 +820,7 @@ xmlSecMSCngTransformAes192CbcGetKlass(void) {
 }
 
 /* AES-CBC-256 block cipher klass: xmlSecMSCngAes256CbcKlass */
-XMLSEC_MSCNG_CBC_CIPHER_KLASS(Aes256Cbc);
+XMLSEC_MSCNG_CBC_CIPHER_KLASS(Aes256Cbc)
 
 /**
  * xmlSecMSCngTransformAes256CbcGetKlass:
@@ -839,7 +839,7 @@ xmlSecMSCngTransformAes256CbcGetKlass(void) {
 #ifndef XMLSEC_NO_DES
 
 /* Tripple-DES CBC block cipher klass: xmlSecMSCngDes3CbcKlass */
-XMLSEC_MSCNG_CBC_CIPHER_KLASS(Des3Cbc);
+XMLSEC_MSCNG_CBC_CIPHER_KLASS(Des3Cbc)
 
 /**
  * xmlSecMSCngTransformDes3CbcGetKlass:

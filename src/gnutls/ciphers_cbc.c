@@ -201,15 +201,15 @@ xmlSecGnuTLSCbcCipherCtxUpdate(xmlSecGnuTLSCbcCipherCtxPtr ctx, xmlSecBufferPtr 
      */
     inSize = xmlSecBufferGetSize(in);
     inBlocksSize = ctx->blockSize * (inSize / ctx->blockSize);
-    if(inBlocksSize == inSize) {
-        xmlSecAssert2(inBlocksSize >= ctx->blockSize, -1);
-        inBlocksSize -= ctx->blockSize; /* ensure we keep the last block around for Final() call to add/check/remove padding */
-    }
     if(inBlocksSize <= 0) {
         /* wait for more data: we want to make sure we keep the last chunk in tmp buffer for
          * padding check/removal on decryption
          */
         return(0);
+    }
+    if(inBlocksSize == inSize) {
+        xmlSecAssert2(inBlocksSize >= ctx->blockSize, -1);
+        inBlocksSize -= ctx->blockSize; /* ensure we keep the last block around for Final() call to add/check/remove padding */
     }
 
     inBuf = xmlSecBufferGetData(in);

@@ -72,6 +72,13 @@ openssl verify -CAfile cacert.pem -untrusted ca2cert.pem rsacert.pem
 rm rsareq.pem
 ```
 
+Revoke rsacert  and generate CRL
+```
+openssl ca -config ./openssl.cnf -revoke rsacert.pem
+openssl ca -config ./openssl.cnf  -gencrl -out revoked.crl
+```
+
+
 RSA 4096 bits:
 ```
 openssl genrsa -out largersakey.pem 4096
@@ -84,6 +91,7 @@ rm largersareq.pem
 openssl pkey -inform DER -in largersakey.der --outform DER --pubout --out largersapubkey.der
 openssl pkey -inform DER -in largersakey.der --outform PEM --pubout --out largersapubkey.pem
 ```
+
 
 ### Generate and sign short-live RSA cert for "expired cert" test (OU = "Test Expired RSA Certificate")
 ```

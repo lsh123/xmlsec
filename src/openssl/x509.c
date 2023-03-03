@@ -223,7 +223,7 @@ xmlSecOpenSSLKeyDataX509AddCertInternal(xmlSecOpenSSLX509DataCtxPtr ctx, X509* c
     }
 
     ret = sk_X509_push(ctx->certsList, cert);
-    if(ret < 1) {
+    if(ret <= 0) {
         xmlSecOpenSSLError("sk_X509_push", NULL);
         return(-1);
     }
@@ -402,16 +402,14 @@ xmlSecOpenSSLKeyDataX509AdoptCrl(xmlSecKeyDataPtr data, X509_CRL* crl) {
     if(ctx->crlsList == NULL) {
         ctx->crlsList = sk_X509_CRL_new_null();
         if(ctx->crlsList == NULL) {
-            xmlSecOpenSSLError("sk_X509_CRL_new_null",
-                               xmlSecKeyDataGetName(data));
+            xmlSecOpenSSLError("sk_X509_CRL_new_null", xmlSecKeyDataGetName(data));
             return(-1);
         }
     }
 
     ret = sk_X509_CRL_push(ctx->crlsList, crl);
-    if(ret < 1) {
-        xmlSecOpenSSLError("sk_X509_CRL_push",
-                           xmlSecKeyDataGetName(data));
+    if(ret <= 0) {
+        xmlSecOpenSSLError("sk_X509_CRL_push", xmlSecKeyDataGetName(data));
         return(-1);
     }
 

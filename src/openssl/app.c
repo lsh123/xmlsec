@@ -864,7 +864,7 @@ xmlSecOpenSSLAppStoreKeyLoad(const char *uri, xmlSecKeyDataType type, const char
                 goto done;
             }
             ret = sk_X509_push(certs, cert);
-            if(ret < 1) {
+            if(ret <= 0) {
                 xmlSecOpenSSLError("sk_X509_push", NULL);
                 X509_free(cert);
                 goto done;

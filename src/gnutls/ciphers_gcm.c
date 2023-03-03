@@ -200,6 +200,7 @@ xmlSecGnuTLSGcmCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
         xmlSecInvalidKeyDataSizeError(keySize, ctx->keySize, xmlSecTransformGetName(transform));
         return(-1);
     }
+    keySize = ctx->keySize;
 
     gnutlsKey.data = xmlSecBufferGetData(keyBuf);
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(keySize, gnutlsKey.size, return(-1), xmlSecTransformGetName(transform));

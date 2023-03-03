@@ -72,8 +72,6 @@ execDSigTest $res_fail \
     "x509" \
     "--untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/largersacert.$cert_format --enabled-key-data x509"
 
-exit(1)
-
 ##########################################################################
 ##########################################################################
 ##########################################################################

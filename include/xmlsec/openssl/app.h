@@ -65,6 +65,9 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLAppKeysMngrCrlLoadMemory(xm
                                                                          const xmlSecByte* data,
                                                                          xmlSecSize dataSize,
                                                                          xmlSecKeyDataFormat format);
+XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLAppKeysMngrCrlLoadBIO(xmlSecKeysMngrPtr mngr,
+                                                                         BIO* bio,
+                                                                         xmlSecKeyDataFormat format);
 
 XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLAppKeysMngrAddCertsPath(xmlSecKeysMngrPtr mngr,
                                                                          const char *path);

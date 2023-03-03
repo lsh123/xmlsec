@@ -75,7 +75,8 @@ rm rsareq.pem
 Revoke rsacert  and generate CRL
 ```
 openssl ca -config ./openssl.cnf -revoke rsacert.pem
-openssl ca -config ./openssl.cnf  -gencrl -out revoked.crl
+openssl ca -config ./openssl.cnf  -gencrl -out rsacert-revoked-crl.pem
+openssl crl -in rsacert-revoked-crl.pem -inform PEM -outform DER -out rsacert-revoked-crl.der
 ```
 
 

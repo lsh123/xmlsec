@@ -35,6 +35,7 @@
 #include <xmlsec/x509.h>
 #include <xmlsec/base64.h>
 #include <xmlsec/errors.h>
+#include <openssl/pem.h>
 #include <xmlsec/private.h>
 #include <xmlsec/xmltree.h>
 
@@ -764,7 +765,7 @@ xmlSecOpenSSLKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x5
         crl = xmlSecOpenSSLX509CrlDerRead(xmlSecBufferGetData(&(x509Value->crl)),
             xmlSecBufferGetSize(&(x509Value->crl)));
         if(crl == NULL) {
-            xmlSecInternalError("xmlSecOpenSSLX509CertDerRead", xmlSecKeyDataGetName(data));
+            xmlSecInternalError("xmlSecOpenSSLX509CrlDerRead", xmlSecKeyDataGetName(data));
             goto done;
         }
     }
@@ -1603,86 +1604,156 @@ xmlSecOpenSSLX509CertGetKey(X509* cert) {
     return(data);
 }
 
+
+X509*
+xmlSecOpenSSLX509CertLoadBIO(BIO* bio, xmlSecKeyDataFormat format) {
+    X509* tmp = NULL;
+    X509* res = NULL;
+
+    xmlSecAssert2(bio != NULL, NULL);
+    xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
+
+    /* create certificate object to hold the cert we are going to read */
+    tmp = X509_new_ex(xmlSecOpenSSLGetLibCtx(), NULL);
+    if(tmp == NULL) {
+        xmlSecOpenSSLError("X509_new_ex", NULL);
+        goto done;
+    }
+
+    /* read the cert */
+    switch(format) {
+    case xmlSecKeyDataFormatPem:
+    case xmlSecKeyDataFormatCertPem:
+        res = PEM_read_bio_X509_AUX(bio, &tmp, NULL, NULL);
+        if(res == NULL) {
+            xmlSecOpenSSLError("PEM_read_bio_X509_AUX", NULL);
+            goto done;
+        }
+        tmp = NULL; /* now it's res */
+        break;
+    case xmlSecKeyDataFormatDer:
+    case xmlSecKeyDataFormatCertDer:
+        res = d2i_X509_bio(bio, &tmp);
+        if(res == NULL) {
+            xmlSecOpenSSLError("d2i_X509_bio", NULL);
+            goto done;
+        }
+        tmp = NULL; /* now it's res */
+        break;
+    default:
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
+            "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
+        goto done;
+    }
+
+done:
+    if(tmp != NULL) {
+        X509_free(tmp);
+    }
+    return(res);
+}
+
+
+X509_CRL*
+xmlSecOpenSSLX509CrlLoadBIO(BIO* bio, xmlSecKeyDataFormat format) {
+    X509_CRL* tmp = NULL;
+    X509_CRL* res = NULL;
+
+    xmlSecAssert2(bio != NULL, NULL);
+    xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
+
+    /* create CRL object to hold the CRL we are going to read */
+    tmp = X509_CRL_new_ex(xmlSecOpenSSLGetLibCtx(), NULL);
+    if(tmp == NULL) {
+        xmlSecOpenSSLError("X509_CRL_new_ex", NULL);
+        goto done;
+    }
+
+    /* read the cert */
+    switch(format) {
+    case xmlSecKeyDataFormatPem:
+    case xmlSecKeyDataFormatCertPem:
+        res = PEM_read_bio_X509_CRL(bio, &tmp, NULL, NULL);
+        if(res == NULL) {
+            xmlSecOpenSSLError("PEM_read_bio_X509_CRL", NULL);
+            goto done;
+        }
+        tmp = NULL; /* now it's res */
+        break;
+    case xmlSecKeyDataFormatDer:
+    case xmlSecKeyDataFormatCertDer:
+        res = d2i_X509_CRL_bio(bio, &tmp);
+        if(res == NULL) {
+            xmlSecOpenSSLError("d2i_X509_CRL_bio", NULL);
+            goto done;
+        }
+        tmp = NULL; /* now it's res */
+        break;
+    default:
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
+            "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
+        goto done;
+    }
+
+done:
+    if(tmp != NULL) {
+        X509_CRL_free(tmp);
+    }
+    return(res);
+}
+
 static X509*
 xmlSecOpenSSLX509CertDerRead(const xmlSecByte* buf, xmlSecSize size) {
     X509 *cert = NULL;
-    BIO *mem = NULL;
-    X509 *tmpCert = NULL;
+    BIO * bio = NULL;
 
     xmlSecAssert2(buf != NULL, NULL);
     xmlSecAssert2(size > 0, NULL);
 
-    mem = xmlSecOpenSSLCreateMemBufBio(buf, size);
-    if(mem == NULL) {
+    bio = xmlSecOpenSSLCreateMemBufBio(buf, size);
+    if(bio == NULL) {
         xmlSecInternalError2("xmlSecOpenSSLCreateMemBufBio", NULL,
-                             "size=" XMLSEC_SIZE_FMT, size);
+            "size=" XMLSEC_SIZE_FMT, size);
         goto done;
     }
 
-    tmpCert = X509_new_ex(xmlSecOpenSSLGetLibCtx(), NULL);
-    if(tmpCert == NULL) {
-        xmlSecOpenSSLError("X509_new_ex", NULL);
-        goto done;
-    }
-    cert = d2i_X509_bio(mem, &tmpCert);
+    cert = xmlSecOpenSSLX509CertLoadBIO(bio, xmlSecKeyDataFormatDer);
     if(cert == NULL) {
-        xmlSecOpenSSLError2("d2i_X509_bio", NULL,
-                            "size=" XMLSEC_SIZE_FMT, size);
+        xmlSecInternalError("xmlSecOpenSSLX509CertLoadBIO", NULL);
         goto done;
     }
-
-    /* sucess: tmpCert is now cert */
-    tmpCert = NULL;
 
 done:
-    /*  cleanup */
-    if(tmpCert != NULL) {
-        X509_free(tmpCert);
-    }
-    if(mem != NULL) {
-        BIO_free_all(mem);
+    if(bio != NULL) {
+        BIO_free_all(bio);
     }
     return(cert);
 }
 
 static X509_CRL*
 xmlSecOpenSSLX509CrlDerRead(xmlSecByte* buf, xmlSecSize size) {
-    X509_CRL *tmpCrl = NULL;
     X509_CRL *crl = NULL;
-    BIO *mem = NULL;
+    BIO *bio = NULL;
 
     xmlSecAssert2(buf != NULL, NULL);
     xmlSecAssert2(size > 0, NULL);
 
-    mem = xmlSecOpenSSLCreateMemBufBio(buf, size);
-    if(mem == NULL) {
+    bio = xmlSecOpenSSLCreateMemBufBio(buf, size);
+    if(bio == NULL) {
         xmlSecInternalError2("xmlSecOpenSSLCreateMemBufBio", NULL,
-                             "size=" XMLSEC_SIZE_FMT, size);
+            "size=" XMLSEC_SIZE_FMT, size);
         goto done;
     }
-
-    tmpCrl = X509_CRL_new_ex(xmlSecOpenSSLGetLibCtx(), NULL);
-    if(tmpCrl == NULL) {
-        xmlSecOpenSSLError("X509_CRL_new_ex", NULL);
-        goto done;
-    }
-
-    crl = d2i_X509_CRL_bio(mem, &tmpCrl);
+    crl = xmlSecOpenSSLX509CrlLoadBIO(bio, xmlSecKeyDataFormatDer);
     if(crl == NULL) {
-        xmlSecOpenSSLError("d2i_X509_CRL_bio", NULL);
+        xmlSecInternalError("xmlSecOpenSSLX509CrlLoadBIO", NULL);
         goto done;
     }
-
-    /* success, tmpCrl is now crl */
-    tmpCrl = NULL;
 
 done:
     /* cleanup */
-    if(tmpCrl != NULL) {
-        X509_CRL_free(tmpCrl);
-    }
-    if(mem != NULL) {
-        BIO_free_all(mem);
+    if(bio != NULL) {
+        BIO_free_all(bio);
     }
     return(crl);
 }

@@ -73,6 +73,13 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecOpenSSLX509FindKeyByValue           (xml
 
 XMLSEC_CRYPTO_EXPORT const EVP_MD* xmlSecOpenSSLX509GetDigestFromAlgorithm  (const xmlChar* href);
 
+
+
+XMLSEC_CRYPTO_EXPORT X509*       xmlSecOpenSSLX509CertLoadBIO               (BIO* bio,
+                                                                             xmlSecKeyDataFormat format);
+XMLSEC_CRYPTO_EXPORT X509_CRL*   xmlSecOpenSSLX509CrlLoadBIO                (BIO* bio,
+                                                                             xmlSecKeyDataFormat format);
+
 #endif /* XMLSEC_NO_X509 */
 
 #ifdef __cplusplus

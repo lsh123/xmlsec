@@ -874,6 +874,17 @@ static xmlSecAppCmdLineParam untrustedParam = {
     NULL
 };
 
+static xmlSecAppCmdLineParam untrustedDerParam = {
+    xmlSecAppCmdLineTopicX509Certs,
+    "--untrusted-der",
+    NULL,
+    "--untrusted-der <file>"
+    "\n\tload untrusted certificate from DER file <file>",
+    xmlSecAppCmdLineParamTypeString,
+    xmlSecAppCmdLineParamFlagMultipleValues,
+    NULL
+};
+
 static xmlSecAppCmdLineParam crlPemParam = {
     xmlSecAppCmdLineTopicX509Certs,
     "--crl-pem",
@@ -891,17 +902,6 @@ static xmlSecAppCmdLineParam crlDerParam = {
     NULL,
     "--crl-der <file>"
     "\n\tload CRLs from DER file <file>",
-    xmlSecAppCmdLineParamTypeString,
-    xmlSecAppCmdLineParamFlagMultipleValues,
-    NULL
-};
-
-static xmlSecAppCmdLineParam untrustedDerParam = {
-    xmlSecAppCmdLineTopicX509Certs,
-    "--untrusted-der",
-    NULL,
-    "--untrusted-der <file>"
-    "\n\tload untrusted certificate from DER file <file>",
     xmlSecAppCmdLineParamTypeString,
     xmlSecAppCmdLineParamFlagMultipleValues,
     NULL
@@ -1046,6 +1046,8 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
     &untrustedParam,
     &trustedDerParam,
     &untrustedDerParam,
+    &crlPemParam,
+    &crlDerParam,
     &verificationTimeParam,
     &verificationGmtTimeParam,
     &depthParam,

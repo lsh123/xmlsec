@@ -81,6 +81,25 @@ execDSigTest $res_fail \
     "x509" \
     "--untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/largersacert.$cert_format --enabled-key-data x509"
 
+# currently only openssl supports loading CRL from the command line
+if [ "z$crypto" = "zopenssl" ] ; then
+    # this should fail because there is a CRL for the cert used for signing
+    execDSigTest $res_fail \
+        "" \
+        "aleksey-xmldsig-01/enveloped-x509-missing-cert" \
+        "sha256 rsa-sha256" \
+        "x509" \
+        "--untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --crl-$cert_format $topfolder/keys/rsacert-revoked-crl.$cert_format --enabled-key-data x509"
+
+    # this should succeeed too because we bypass all cert checks with --insecure mode
+    execDSigTest $res_success \
+        "" \
+        "aleksey-xmldsig-01/enveloped-x509-missing-cert" \
+        "sha256 rsa-sha256" \
+        "x509" \
+        "--insecure --crl-$cert_format $topfolder/keys/rsacert-revoked-crl.$cert_format --enabled-key-data x509"
+fi
+
 ##########################################################################
 ##########################################################################
 ##########################################################################

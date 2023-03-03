@@ -29,8 +29,6 @@ nhhOeEEW71djnIXe4kKxHMn5io2Q2ZHA+NceOYbMyTCp95kln5NejT9eRR1aNCtA
 l2aNr39dpqQvwOGTQWPx3A==</SignatureValue>
     <KeyInfo>
       <X509Data>
-        <X509SubjectName>emailAddress=xmlsec@aleksey.com,CN=Aleksey Sanin,OU=Test Large RSA Key,O=XML Security Library (http://www.aleksey.com/xmlsec),ST=California,C=US</X509SubjectName>
-<X509SubjectName>emailAddress=xmlsec@aleksey.com,CN=Aleksey Sanin,OU=Test Third Level RSA Certificate,O=XML Security Library (http://www.aleksey.com/xmlsec),ST=California,C=US</X509SubjectName>
         <X509Certificate>MIIEbzCCBBmgAwIBAgIJAK+ii7kzrdq5MA0GCSqGSIb3DQEBBQUAMIGcMQswCQYD
 VQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTE9MDsGA1UEChM0WE1MIFNlY3Vy
 aXR5IExpYnJhcnkgKGh0dHA6Ly93d3cuYWxla3NleS5jb20veG1sc2VjKTEWMBQG

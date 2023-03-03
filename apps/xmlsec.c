@@ -190,7 +190,6 @@ static xmlSecAppCmdLineParam cryptoConfigParam = {
     NULL
 };
 
-
 static xmlSecAppCmdLineParam repeatParam = {
     xmlSecAppCmdLineTopicCryptoConfig,
     "--repeat",
@@ -202,6 +201,18 @@ static xmlSecAppCmdLineParam repeatParam = {
     NULL
 };
 
+static xmlSecAppCmdLineParam transformBinChunkSizeParam = {
+    xmlSecAppCmdLineTopicCryptoConfig,
+    "--transform-binary-chunk-size",
+    NULL,
+    "--transform-binary-chunk-size <size>"
+    "\n\tsets the transforms binary processing chunk size to <size>; "
+    "\n\tincreasing chunk size might improve performance at the expense"
+    "\n\tof increased memory usage",
+    xmlSecAppCmdLineParamTypeNumber,
+    xmlSecAppCmdLineParamFlagNone,
+    NULL
+};
 
 static xmlSecAppCmdLineParam disableErrorMsgsParam = {
     xmlSecAppCmdLineTopicGeneral,
@@ -640,6 +651,7 @@ static xmlSecAppCmdLineParam idAttrParam = {
     NULL
 };
 
+
 static xmlSecAppCmdLineParam xxeParam = {
     xmlSecAppCmdLineTopicAll,
     "--xxe",
@@ -1024,11 +1036,12 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
     &cryptoParam,
     &cryptoConfigParam,
     &repeatParam,
+    &transformBinChunkSizeParam,
     &disableErrorMsgsParam,
     &printCryptoErrorMsgsParam,
-    &helpParam,
     &xxeParam,
     &urlMapParam,
+    &helpParam,
 
     /* MUST be the last one */
     NULL
@@ -1247,16 +1260,28 @@ int main(int argc, const char **argv) {
         goto fail;
     }
 
+    /* enable XXE? */
+    if(xmlSecAppCmdLineParamIsSet(&xxeParam)) {
+        xmlSecSetExternalEntityLoader( NULL );     // reset to libxml2's default handler
+    }
+
+    /* transform bin chunk size */
+    if(xmlSecAppCmdLineParamIsSet(&transformBinChunkSizeParam)) {
+        int chunkSize = xmlSecAppCmdLineParamGetInt(&transformBinChunkSizeParam, 0);
+        if(chunkSize <= 0) {
+            fprintf(stderr, "Error: transform binary chunk size should be greater than zero\n");
+            xmlSecAppPrintUsage();
+            goto fail;
+        }
+        xmlSecTransformCtxSetDefaultBinaryChunkSize((xmlSecSize)chunkSize);
+    }
+
+
     /* load keys */
     if(xmlSecAppLoadKeys() < 0) {
         fprintf(stderr, "Error: keys manager creation failed\n");
         xmlSecAppPrintUsage();
         goto fail;
-    }
-
-    /* enable XXE? */
-    if(xmlSecAppCmdLineParamIsSet(&xxeParam)) {
-        xmlSecSetExternalEntityLoader( NULL );     // reset to libxml2's default handler
     }
 
     /* get the "repeats" number */

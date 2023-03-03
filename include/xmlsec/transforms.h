@@ -32,13 +32,6 @@ extern "C" {
 typedef const struct _xmlSecTransformKlass              xmlSecTransformKlass,
                                                         *xmlSecTransformId;
 
-/**
- * XMLSEC_TRANSFORM_BINARY_CHUNK:
- *
- * The binary data chunks size. XMLSec processes binary data one chunk
- * at a time. Changing this impacts xmlsec memory usage and performance.
- */
-#define XMLSEC_TRANSFORM_BINARY_CHUNK                   1024
 
 /**********************************************************************
  *
@@ -50,6 +43,8 @@ XMLSEC_EXPORT int               xmlSecTransformIdsInit          (void);
 XMLSEC_EXPORT void              xmlSecTransformIdsShutdown      (void);
 XMLSEC_EXPORT int               xmlSecTransformIdsRegisterDefault(void);
 XMLSEC_EXPORT int               xmlSecTransformIdsRegister      (xmlSecTransformId id);
+
+
 
 /**
  * xmlSecTransformStatus:
@@ -330,6 +325,7 @@ struct _xmlSecTransformCtx {
     void*                                       userData;
     unsigned int                                flags;
     unsigned int                                flags2;
+    xmlSecSize                                  binaryChunkSize;
     xmlSecTransformUriType                      enabledUris;
     xmlSecPtrList                               enabledTransforms;
     xmlSecTransformCtxPreExecuteCallback        preExecCallback;
@@ -389,6 +385,11 @@ XMLSEC_EXPORT void                      xmlSecTransformCtxDebugDump     (xmlSecT
                                                                         FILE* output);
 XMLSEC_EXPORT void                      xmlSecTransformCtxDebugXmlDump  (xmlSecTransformCtxPtr ctx,
                                                                          FILE* output);
+
+
+XMLSEC_EXPORT xmlSecSize                xmlSecTransformCtxGetDefaultBinaryChunkSize(void);
+XMLSEC_EXPORT void                      xmlSecTransformCtxSetDefaultBinaryChunkSize(xmlSecSize binaryChunkSize);
+
 
 /**************************************************************************
  *

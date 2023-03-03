@@ -275,11 +275,44 @@ xmlSecTransformUriTypeCheck(xmlSecTransformUriType type, const xmlChar* uri) {
     return(((uriType & type) != 0) ? 1 : 0);
 }
 
+
+
 /**************************************************************************
  *
  * xmlSecTransformCtx
  *
  *************************************************************************/
+static xmlSecSize g_xmlSecTransformCtxDefaultBinaryChunkSize = (64*1024); /* 64kb */
+
+/**
+ * xmlSecTransformCtxGetDefaultBinaryChunkSize:
+ *
+ * Gets the binary chunk size. Increasing the chunk size improves
+ * XMLSec library performance at the expense of increased memory usage.
+ *
+ * Returns: the current binary processing chunk size.
+ */
+xmlSecSize
+xmlSecTransformCtxGetDefaultBinaryChunkSize(void) {
+    return(g_xmlSecTransformCtxDefaultBinaryChunkSize);
+}
+
+
+/**
+ * xmlSecTransformCtxSetDefaultBinaryChunkSize:
+ * @binaryChunkSize:    the new binary chunk size (must be greater than zero).
+ *
+ * Sets the default binary chunk size. Increasing the chunk size improves
+ * XMLSec library performance at the expense of increased memory usage.
+ * This function is not thread safe and should only be called during initialization.
+ */
+void
+xmlSecTransformCtxSetDefaultBinaryChunkSize(xmlSecSize binaryChunkSize) {
+    xmlSecAssert(binaryChunkSize > 0);
+    g_xmlSecTransformCtxDefaultBinaryChunkSize = binaryChunkSize;
+}
+
+
 
 /**
  * xmlSecTransformCtxCreate:
@@ -352,6 +385,7 @@ xmlSecTransformCtxInitialize(xmlSecTransformCtxPtr ctx) {
     }
 
     ctx->enabledUris = xmlSecTransformUriTypeAny;
+    ctx->binaryChunkSize = xmlSecTransformCtxGetDefaultBinaryChunkSize();
     return(0);
 }
 
@@ -1382,6 +1416,7 @@ xmlSecTransformPump(xmlSecTransformPtr left, xmlSecTransformPtr right, xmlSecTra
     xmlSecAssert2(xmlSecTransformIsValid(left), -1);
     xmlSecAssert2(xmlSecTransformIsValid(right), -1);
     xmlSecAssert2(transformCtx != NULL, -1);
+    xmlSecAssert2(transformCtx->binaryChunkSize > 0, -1);
 
     leftType = xmlSecTransformGetDataType(left, xmlSecTransformModePop, transformCtx);
     rightType = xmlSecTransformGetDataType(right, xmlSecTransformModePush, transformCtx);
@@ -1406,25 +1441,33 @@ xmlSecTransformPump(xmlSecTransformPtr left, xmlSecTransformPtr right, xmlSecTra
        }
     }  else if(((leftType & xmlSecTransformDataTypeBin) != 0) &&
                ((rightType & xmlSecTransformDataTypeBin) != 0)) {
-        xmlSecByte buf[XMLSEC_TRANSFORM_BINARY_CHUNK];
-        xmlSecSize bufSize;
-        int final;
+        xmlSecByte* buf;
+        int final = 0;
+
+        buf = xmlMalloc(transformCtx->binaryChunkSize);
+        if(buf == NULL) {
+            xmlSecMallocError(transformCtx->binaryChunkSize, NULL);
+            return(-1);
+        }
 
         do {
-            ret = xmlSecTransformPopBin(left, buf, sizeof(buf), &bufSize, transformCtx);
+            xmlSecSize bufSize = 0;
+            ret = xmlSecTransformPopBin(left, buf, transformCtx->binaryChunkSize, &bufSize, transformCtx);
             if(ret < 0) {
-                xmlSecInternalError("xmlSecTransformPopBin",
-                                    xmlSecTransformGetName(left));
+                xmlSecInternalError("xmlSecTransformPopBin", xmlSecTransformGetName(left));
+                xmlFree(buf);
                 return(-1);
             }
             final = (bufSize == 0) ? 1 : 0;
             ret = xmlSecTransformPushBin(right, buf, bufSize, final, transformCtx);
             if(ret < 0) {
-                xmlSecInternalError("xmlSecTransformPushBin",
-                                    xmlSecTransformGetName(right));
+                xmlSecInternalError("xmlSecTransformPushBin", xmlSecTransformGetName(right));
+                xmlFree(buf);
                 return(-1);
             }
         } while(final == 0);
+
+        xmlFree(buf);
     } else {
         xmlSecInvalidTransfromError2(left,
                     "transforms input/output data formats do not match, right transform=\"%s\"",
@@ -1912,8 +1955,8 @@ xmlSecTransformDefaultPushBin(xmlSecTransformPtr transform, const xmlSecByte* da
             xmlSecAssert2(data != NULL, -1);
 
             chunkSize = dataSize;
-            if(chunkSize > XMLSEC_TRANSFORM_BINARY_CHUNK) {
-                chunkSize = XMLSEC_TRANSFORM_BINARY_CHUNK;
+            if(chunkSize > transformCtx->binaryChunkSize) {
+                chunkSize = transformCtx->binaryChunkSize;
             }
 
             ret = xmlSecBufferAppend(&(transform->inBuf), data, chunkSize);
@@ -1944,8 +1987,8 @@ xmlSecTransformDefaultPushBin(xmlSecTransformPtr transform, const xmlSecByte* da
         }
 
         /* we don't want to push too much */
-        if(outSize > XMLSEC_TRANSFORM_BINARY_CHUNK) {
-            outSize = XMLSEC_TRANSFORM_BINARY_CHUNK;
+        if(outSize > transformCtx->binaryChunkSize) {
+            outSize = transformCtx->binaryChunkSize;
             finalData = 0;
         }
         if((transform->next != NULL) && ((outSize > 0) || (finalData != 0))) {
@@ -2008,7 +2051,7 @@ xmlSecTransformDefaultPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
             xmlSecSize inSize, chunkSize;
 
             inSize = xmlSecBufferGetSize(&(transform->inBuf));
-            chunkSize = XMLSEC_TRANSFORM_BINARY_CHUNK;
+            chunkSize = transformCtx->binaryChunkSize;
 
             /* ensure that we have space for at least one data chunk */
             ret = xmlSecBufferSetMaxSize(&(transform->inBuf), inSize + chunkSize);
@@ -2059,8 +2102,8 @@ xmlSecTransformDefaultPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
     }
 
     /* we don't want to put too much */
-    if(outSize > XMLSEC_TRANSFORM_BINARY_CHUNK) {
-        outSize = XMLSEC_TRANSFORM_BINARY_CHUNK;
+    if(outSize > transformCtx->binaryChunkSize) {
+        outSize = transformCtx->binaryChunkSize;
     }
     if(outSize > 0) {
         xmlSecAssert2(xmlSecBufferGetData(&(transform->outBuf)), -1);

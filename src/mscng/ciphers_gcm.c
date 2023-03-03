@@ -333,7 +333,7 @@ done:
 
 static int
 xmlSecMSCngGcmBlockCipherCtxInit(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
-        xmlSecBufferPtr in, xmlSecBufferPtr out, int encrypt, int last,
+        xmlSecBufferPtr in, xmlSecBufferPtr out, int encrypt,
         const xmlChar* cipherName, xmlSecTransformCtxPtr transformCtx
 ) {
     NTSTATUS status;
@@ -391,49 +391,42 @@ xmlSecMSCngGcmBlockCipherCtxInit(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
     memset(ctx->authInfo.pbTag, 0, xmlSecMSCngAesGcmTagLengthInBytes);
     ctx->authInfo.cbTag = xmlSecMSCngAesGcmTagLengthInBytes;
 
-    /* printf("DEBUG: Init: last = %d\n", last); */
+    /* Need some working buffers */
     XMLSEC_SAFE_CAST_ULONG_TO_SIZE(ctx->dwBlockLen, blockSize, return(-1), cipherName);
-    if (last == 0) {
-        /* Need some working buffers */
 
-        /* iv len == block len */
+    /* iv len == block len */
+    if (ctx->pbIV == NULL) {
+        ctx->pbIV = xmlMalloc(blockSize);
         if (ctx->pbIV == NULL) {
-            ctx->pbIV = xmlMalloc(blockSize);
-            if (ctx->pbIV == NULL) {
-                xmlSecMallocError(blockSize, cipherName);
-                return(-1);
-            }
-        }
-        ctx->cbIV = ctx->dwBlockLen;
-        memset(ctx->pbIV, 0, blockSize);
-
-        /* Setup an empty MAC context if we're chaining calls */
-        status = BCryptGetProperty(ctx->hAlg,
-            BCRYPT_AUTH_TAG_LENGTH,
-            (PUCHAR)&authTagLengths,
-            sizeof(authTagLengths),
-            &bytesRead,
-            0);
-        if (status != STATUS_SUCCESS) {
-            xmlSecMSCngNtError("BCryptGetProperty", cipherName, status);
+            xmlSecMallocError(blockSize, cipherName);
             return(-1);
         }
+    }
+    ctx->cbIV = ctx->dwBlockLen;
+    memset(ctx->pbIV, 0, blockSize);
 
+    /* Setup an empty MAC context if we're chaining calls */
+    status = BCryptGetProperty(ctx->hAlg,
+        BCRYPT_AUTH_TAG_LENGTH,
+        (PUCHAR)&authTagLengths,
+        sizeof(authTagLengths),
+        &bytesRead,
+        0);
+    if (status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptGetProperty", cipherName, status);
+        return(-1);
+    }
+
+    if (ctx->authInfo.pbMacContext == NULL) {
+        ctx->authInfo.pbMacContext = xmlMalloc(authTagLengths.dwMaxLength);
         if (ctx->authInfo.pbMacContext == NULL) {
-            ctx->authInfo.pbMacContext = xmlMalloc(authTagLengths.dwMaxLength);
-            if (ctx->authInfo.pbMacContext == NULL) {
-                xmlSecMallocError(authTagLengths.dwMaxLength, cipherName);
-                return(-1);
-            }
+            xmlSecMallocError(authTagLengths.dwMaxLength, cipherName);
+            return(-1);
         }
-        ctx->authInfo.cbMacContext = authTagLengths.dwMaxLength;
-        memset(ctx->authInfo.pbMacContext, 0, authTagLengths.dwMaxLength);
-        ctx->authInfo.dwFlags |= BCRYPT_AUTH_MODE_CHAIN_CALLS_FLAG;
     }
-    else {
-        ctx->pbIV = NULL;
-        ctx->cbIV = 0;
-    }
+    ctx->authInfo.cbMacContext = authTagLengths.dwMaxLength;
+    memset(ctx->authInfo.pbMacContext, 0, authTagLengths.dwMaxLength);
+    ctx->authInfo.dwFlags |= BCRYPT_AUTH_MODE_CHAIN_CALLS_FLAG;
 
     if (encrypt) {
 
@@ -528,8 +521,6 @@ xmlSecMSCngGcmBlockCipherCtxUpdate(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
         }
     }
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, inLen, return(-1), cipherName);
-
-    /* printf("DEBUG: Update: inSize = %d, blockSize = %d\n", (int)inSize, (int)blockSize); */
 
     outSize = xmlSecBufferGetSize(out);
     ret = xmlSecBufferSetMaxSize(out, outSize + inSize);
@@ -635,8 +626,6 @@ xmlSecMSCngGcmBlockCipherCtxFinal(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
     inBufSize = xmlSecBufferGetSize(in);
     inBuf = xmlSecBufferGetData(in);
 
-    /* printf("DEBUG: Final: inBufSize = %d, blockSize = %d\n", (int)inBufSize, (int)ctx->dwBlockLen); */
-
     if(encrypt) {
         xmlSecSize outMaxSize;
 
@@ -698,8 +687,6 @@ xmlSecMSCngGcmBlockCipherCtxFinal(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
         }
         inBuf = xmlSecBufferGetData(in);
         inBufSize = xmlSecBufferGetSize(in);
-
-        /* printf("DEBUG: Final2: inBufSize = %d, tagsize = %d\n", (int)inBufSize, (int)xmlSecMSCngAesGcmTagLengthInBytes); */
 
         /* new out max size = old out size + in size (w/o tag) */
         outMaxSize = outBufSize + inBufSize;
@@ -788,7 +775,7 @@ xmlSecMSCngGcmBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecT
         encrypt = (transform->operation == xmlSecTransformOperationEncrypt) ? 1 : 0;
 
         if(ctx->ctxInitialized == 0) {
-            ret = xmlSecMSCngGcmBlockCipherCtxInit(ctx, in, out, encrypt, last,
+            ret = xmlSecMSCngGcmBlockCipherCtxInit(ctx, in, out, encrypt,
                 xmlSecTransformGetName(transform), transformCtx);
             if(ret < 0) {
                 xmlSecInternalError("xmlSecMSCngGcmBlockCipherCtxInit",

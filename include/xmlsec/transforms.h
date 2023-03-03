@@ -32,7 +32,6 @@ extern "C" {
 typedef const struct _xmlSecTransformKlass              xmlSecTransformKlass,
                                                         *xmlSecTransformId;
 
-
 /**********************************************************************
  *
  * High-level functions

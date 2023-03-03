@@ -830,7 +830,7 @@ xmlSecMSCngGcmBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecT
 #ifndef XMLSEC_NO_AES
 
 /* AES-GCM-128 block cipher: xmlSecMSCngAes128GcmKlass */
-XMLSEC_MSCNG_GCM_CIPHER_KLASS(Aes128Gcm);
+XMLSEC_MSCNG_GCM_CIPHER_KLASS(Aes128Gcm)
 
 /**
  * xmlSecMSCngTransformAes128GcmGetKlass:
@@ -845,7 +845,7 @@ xmlSecMSCngTransformAes128GcmGetKlass(void) {
 }
 
 /* AES-GCM-192 block cipher: xmlSecMSCngAes192GcmKlass */
-XMLSEC_MSCNG_GCM_CIPHER_KLASS(Aes192Gcm);
+XMLSEC_MSCNG_GCM_CIPHER_KLASS(Aes192Gcm)
 
 /**
  * xmlSecMSCngTransformAes192GcmGetKlass:
@@ -860,7 +860,7 @@ xmlSecMSCngTransformAes192GcmGetKlass(void) {
 }
 
 /* AES-GCM-256 block cipher: xmlSecMSCngAes256GcmKlass */
-XMLSEC_MSCNG_GCM_CIPHER_KLASS(Aes256Gcm);
+XMLSEC_MSCNG_GCM_CIPHER_KLASS(Aes256Gcm)
 
 /**
  * xmlSecMSCngTransformAes256GcmGetKlass:

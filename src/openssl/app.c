@@ -23,15 +23,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include <openssl/evp.h>
-#include <openssl/rand.h>
-#include <openssl/pem.h>
-#include <openssl/pkcs12.h>
-#include <openssl/conf.h>
-#include <openssl/engine.h>
-#include <openssl/store.h>
-#include <openssl/ui.h>
-
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
@@ -46,10 +37,17 @@
 
 #include "openssl_compat.h"
 
-#ifndef XMLSEC_NO_X509
+/* Windows overwrites X509_NAME and other things that break openssl */
+#include <openssl/evp.h>
+#include <openssl/rand.h>
+#include <openssl/pem.h>
+#include <openssl/pkcs12.h>
+#include <openssl/conf.h>
+#include <openssl/engine.h>
+#include <openssl/store.h>
 #include <openssl/x509_vfy.h>
 #include <openssl/x509.h>
-#endif /* XMLSEC_NO_X509 */
+#include <openssl/ui.h>
 
 #ifdef XMLSEC_OPENSSL_API_300
 #include <openssl/provider.h>

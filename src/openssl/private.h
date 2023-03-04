@@ -34,7 +34,7 @@ extern "C" {
 #ifndef XMLSEC_NO_X509
 
 typedef struct _xmlSecOpenSSLX509FindCertCtx {
-    X509_NAME *subjectName;
+    X509_NAME * subjectName;
     X509_NAME * issuerName;
     ASN1_INTEGER * issuerSerial;
     const xmlSecByte * ski; /* NOT OWNED */

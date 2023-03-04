@@ -473,6 +473,15 @@ execEncTest $res_success \
     "" \
     "--keys-file $topfolder/keys/keys.xml"
 
+
+extra_message="Negative test: all cipher references are disabled"
+execEncTest $res_fail \
+    "" \
+    "aleksey-xmlenc-01/enc-aes192cbc-keyname-ref" \
+    "" \
+    "" \
+    "--keys-file $topfolder/keys/keys.xml --enabled-cipher-reference-uris empty"
+
 execEncTest $res_success \
     "" \
     "aleksey-xmlenc-01/enc-aes256cbc-keyname" \
@@ -766,6 +775,7 @@ execEncTest $res_success \
     "--pubkey-cert-$cert_format:pub1 $topfolder/keys/rsacert.$cert_format --pubkey-cert-$cert_format:pub2 $topfolder/keys/largersacert.$cert_format --session-key des-192 --xml-data $topfolder/aleksey-xmlenc-01/enc-two-recipients.data" \
     "--lax-key-search $priv_key_option:pub1 $topfolder/keys/largersakey.$priv_key_format --pwd secret123"
 
+
 ##########################################################################
 #
 # merlin-xmlenc-five
@@ -983,6 +993,15 @@ execEncTest $res_success \
     "--session-key aes-256 --keys-file $topfolder/01-phaos-xmlenc-3/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/01-phaos-xmlenc-3/enc-content-aes256-kt-rsa1_5.data --node-name http://example.org/paymentv2:CreditCard"  \
     "$priv_key_option:my-rsa-key $topfolder/01-phaos-xmlenc-3/rsa-priv-key.$priv_key_format --pwd secret"
 
+
+extra_message="Negative test: missing key"
+execEncTest $res_fail \
+    "" \
+    "01-phaos-xmlenc-3/enc-content-aes256-kt-rsa1_5" \
+    "" \
+    "" \
+    "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml --enabled-retrieval-method-uris empty"
+
 execEncTest $res_success \
     "" \
     "01-phaos-xmlenc-3/enc-text-aes256-kt-rsa_oaep_sha1" \
@@ -1082,6 +1101,15 @@ execEncTest $res_success \
     "--session-key aes-128 --keys-file $topfolder/01-phaos-xmlenc-3/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/01-phaos-xmlenc-3/enc-text-aes128-kw-aes192.data --node-name http://example.org/paymentv2:CreditCard"  \
     "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml"
 
+extra_message="Negative test: bad alg enc element"
+execEncTest $res_fail \
+    "" \
+    "01-phaos-xmlenc-3/bad-alg-enc-element-aes128-kw-3des" \
+    "" \
+    "" \
+    "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml"
+
+
 #01-phaos-xmlenc-3/enc-element-3des-ka-dh.xml
 #01-phaos-xmlenc-3/enc-element-aes128-ka-dh.xml
 #01-phaos-xmlenc-3/enc-element-aes192-ka-dh.xml
@@ -1154,36 +1182,6 @@ $VALGRIND $xmlsec_app decrypt $xmlsec_params --keys-file $keysfile $tmpfile >> $
 printRes $res_success $?
 fi
 
-
-##########################################################################
-##########################################################################
-##########################################################################
-echo "--------- Negative Testing: Following tests MUST FAIL ----------"
-if [ -z "$XMLSEC_TEST_REPRODUCIBLE" ]; then
-    echo "--- detailed log is written to  $logfile"
-fi
-execEncTest $res_fail \
-    "" \
-    "01-phaos-xmlenc-3/bad-alg-enc-element-aes128-kw-3des" \
-    "" \
-    "" \
-    "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml"
-
-execEncTest $res_fail \
-    "" \
-    "aleksey-xmlenc-01/enc-aes192cbc-keyname-ref" \
-    "" \
-    "" \
-    "--keys-file $topfolder/keys/keys.xml --enabled-cipher-reference-uris empty"
-
-execEncTest $res_fail \
-    "" \
-    "01-phaos-xmlenc-3/enc-content-aes256-kt-rsa1_5" \
-    "" \
-    "" \
-    "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml --enabled-retrieval-method-uris empty"
-
-rm -rf $tmpfile
 
 ##########################################################################
 ##########################################################################

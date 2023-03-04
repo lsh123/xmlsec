@@ -700,7 +700,7 @@ done:
  *                      trusted or not.
  *
  * Reads cert from @filename and adds to the list of trusted or known
- * untrusted certs in @store (not implemented yet).
+ * untrusted certs in @store.
  *
  * Returns: 0 on success or a negative value otherwise.
  */
@@ -809,8 +809,7 @@ xmlSecMSCryptoAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte
  * @filename:           the CRL file.
  * @format:             the CRL file format.
  *
- * Reads crl from @filename and adds to the list of trusted or known
- * untrusted crls in @store (not implemented yet).
+ * Reads crl from @filename and adds to the list of crls in @store.
  *
  * Returns: 0 on success or a negative value otherwise.
  */
@@ -832,8 +831,7 @@ xmlSecMSCryptoAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, x
  * @dataSize:           size of binary CRL (data)
  * @format:             the CRL format.
  *
- * Reads crl from @data and adds to the list of trusted or known
- * untrusted crls in @store.
+ * Reads crl from @data and adds to the list of crls in @store.
  *
  * Returns: 0 on success or a negative value otherwise.
  */

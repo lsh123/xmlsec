@@ -301,8 +301,8 @@ xmlSecGCryptAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
  * @filename:           the certificate filename.
  * @format:             the certificate file format.
  *
- * Reads the certificate from $@filename and adds it to key
- * (not implemented yet).
+ * Placeholder. GCrypt  does not support X509 certificates.
+ * Reads the certificate from $@filename and adds it to key.
  *
  * Returns: 0 on success or a negative value otherwise.
  */
@@ -325,7 +325,8 @@ xmlSecGCryptAppKeyCertLoad(xmlSecKeyPtr key, const char* filename,
  * @dataSize:           the certificate binary data size.
  * @format:             the certificate file format.
  *
- * Reads the certificate from memory buffer and adds it to key (not implemented yet).
+ * Placeholder. GCrypt  does not support X509 certificates.
+ * Reads the certificate from memory buffer and adds it to key.
  *
  * Returns: 0 on success or a negative value otherwise.
  */
@@ -351,8 +352,9 @@ xmlSecGCryptAppKeyCertLoadMemory(xmlSecKeyPtr key,
  * @pwdCallback:        the password callback.
  * @pwdCallbackCtx:     the user context for password callback.
  *
- * Reads key and all associated certificates from the PKCS12 file
- * (not implemented yet).
+ * Placeholder. GCrypt  does not support X509 certificates.
+ * Reads key and all associated certificates from the PKCS12 file.
+ *
  * For uniformity, call @xmlSecGCryptAppKeyLoadEx instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
  *
@@ -378,9 +380,11 @@ xmlSecGCryptAppPkcs12Load(const char *filename,
  * @pwdCallback:        the password callback.
  * @pwdCallbackCtx:     the user context for password callback.
  *
+ * Placeholder. GCrypt  does not support X509 certificates.
+ *
  * Reads key and all associated certificates from the PKCS12 data in memory buffer.
  * For uniformity, call xmlSecGCryptAppKeyLoadMemory instead of this function. Pass
- * in format=xmlSecKeyDataFormatPkcs12 (not implemented yet).
+ * in format=xmlSecKeyDataFormatPkcs12.
  *
  * Returns: pointer to the key or NULL if an error occurs.
  */
@@ -405,8 +409,10 @@ xmlSecGCryptAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
  * @type:               the flag that indicates is the certificate in @filename
  *                      trusted or not.
  *
+ * Placeholder. GCrypt  does not support X509 certificates.
+ *
  * Reads cert from @filename and adds to the list of trusted or known
- * untrusted certs in @store (not implemented yet).
+ * untrusted certs in @store.
  *
  * Returns: 0 on success or a negative value otherwise.
  */
@@ -430,8 +436,9 @@ xmlSecGCryptAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr,
  * @filename:           the CRL file.
  * @format:             the CRL file format.
  *
- * Reads crls from @filename and adds to the list of trusted or known
- * untrusted crls in @store (not implemented yet).
+ * Placeholder. GCrypt  does not support X509 certificates.
+ *
+ * Reads crls from @filename and adds to the list of crls in @store.
  *
  * Returns: 0 on success or a negative value otherwise.
  */
@@ -454,8 +461,10 @@ xmlSecGCryptAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, xml
  * @format:             the certificate file format.
  * @type:               the flag that indicates is the certificate trusted or not.
  *
+ * Placeholder. GCrypt  does not support X509 certificates.
+ *
  * Reads cert from binary buffer @data and adds to the list of trusted or known
- * untrusted certs in @store (not implemented yet).
+ * untrusted certs in @store.
  *
  * Returns: 0 on success or a negative value otherwise.
  */

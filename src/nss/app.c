@@ -1245,8 +1245,7 @@ xmlSecNssAppKeysMngrCertLoadSECItem(xmlSecKeysMngrPtr mngr, SECItem* secItem,
  * @filename:           the CRL file.
  * @format:             the CRL file format (PEM or DER).
  *
- * Reads crl from @filename and adds to the list of trusted or known
- * untrusted crls in @store
+ * Reads crl from @filename and adds to the list of crls in @store
  *
  * Returns: 0 on success or a negative value otherwise.
  */
@@ -1268,8 +1267,7 @@ xmlSecNssAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, xmlSec
  * @dataSize:           the CRL data size.
  * @format:             the CRL format (PEM or DER).
  *
- * Reads crl from @data and adds to the list of trusted or known
- * untrusted crls in @store
+ * Reads crl from @data and adds to the list of crls in @store
  *
  * Returns: 0 on success or a negative value otherwise.
  */

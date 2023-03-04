@@ -72,10 +72,10 @@ openssl verify -CAfile cacert.pem -untrusted ca2cert.pem rsacert.pem
 rm rsareq.pem
 ```
 
-Revoke rsacert  and generate CRL
+Revoke rsacert and generate CRL
 ```
-openssl ca -config ./openssl.cnf -revoke rsacert.pem
-openssl ca -config ./openssl.cnf  -gencrl -out rsacert-revoked-crl.pem
+openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem -revoke rsacert.pem
+openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem -gencrl -out rsacert-revoked-crl.pem
 openssl crl -in rsacert-revoked-crl.pem -inform PEM -outform DER -out rsacert-revoked-crl.der
 ```
 

@@ -1504,8 +1504,7 @@ xmlSecOpenSSLAppKeysMngrCertLoadBIO(xmlSecKeysMngrPtr mngr, BIO* bio, xmlSecKeyD
  * @filename:           the CRL file.
  * @format:             the CRL file format..
  *
- * Reads crl from @filename and adds to the list of trusted or known
- * untrusted crls in @store.
+ * Reads crl from @filename and adds to the list of crls in @store.
  *
  * Returns: 0 on success or a negative value otherwise.
  */
@@ -1544,8 +1543,7 @@ xmlSecOpenSSLAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, xm
  * @dataSize:           the CRL binary data size.
  * @format:             the CRL format.
  *
- * Reads crl from binary buffer @data and adds to the list of trusted or known
- * untrusted crls in @store.
+ * Reads crl from binary buffer @data and adds to the list of crls in @store.
  *
  * Returns: 0 on success or a negative value otherwise.
  */
@@ -1584,8 +1582,7 @@ xmlSecOpenSSLAppKeysMngrCrlLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* 
  * @bio:                the CRL BIO.
  * @format:             the CRL file format.
  *
- * Reads crl from an OpenSSL BIO object and adds to the list of trusted or known
- * untrusted crls in @store.
+ * Reads crl from an OpenSSL BIO object and adds to the list of crls in @store.
  *
  * Returns: 0 on success or a negative value otherwise.
  */

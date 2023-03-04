@@ -229,9 +229,6 @@ printCheckStatus() {
 }
 
 extra_message=""
-printMsg() {
-    extra_message=" ($1)"
-}
 
 #
 # Keys test function

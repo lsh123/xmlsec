@@ -1105,7 +1105,7 @@ if [ "z$crypto" != "zmscng" -a "z$crypto" != "zgnutls" ] ; then
 fi
 
 
-addExtraMsg "DTD is present"
+extra_message="DTD is present"
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/dtd-hmac-91" \
@@ -1115,7 +1115,7 @@ execDSigTest $res_success \
     "--hmackey:mykey $topfolder/keys/hmackey.bin --dtd-file $topfolder/aleksey-xmldsig-01/dtd-hmac-91.dtd" \
     "--hmackey:mykey $topfolder/keys/hmackey.bin --dtd-file $topfolder/aleksey-xmldsig-01/dtd-hmac-91.dtd"
 
-addExtraMsg "Negative test: missing DTD"
+extra_message="Negative test: missing DTD"
 execDSigTest $res_fail \
     "" \
     "aleksey-xmldsig-01/dtd-hmac-91" \
@@ -1153,7 +1153,7 @@ echo "--------- Certificate verification testing ----------"
 #
 
 # This should fail: expired cert
-addExtraMsg "Negative test: expired cert"
+extra_message="Negative test: expired cert"
 execDSigTest $res_fail \
     "" \
     "aleksey-xmldsig-01/enveloping-expired-cert" \
@@ -1162,7 +1162,7 @@ execDSigTest $res_fail \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509 --verification-gmt-time 2022-12-20+00:00:00"
 
 # Expired cert but there is verification time overwrite
-addExtraMsg "Expired cert but there is verification timestamp overwrite"
+extra_message="Expired cert but there is verification timestamp overwrite"
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloping-expired-cert" \
@@ -1173,7 +1173,7 @@ execDSigTest $res_success \
 # 'Verify existing signature' MUST fail here, as --trusted-... is not passed.
 # If this passes, that's a bug. Note that we need to cleanup NSS certs DB
 # since it automaticall stores trusted certs
-addExtraMsg "Missing trusted cert but there is --insecure bypass"
+extra_message="Missing trusted cert but there is --insecure bypass"
 execDSigTest $res_fail \
     "aleksey-xmldsig-01" \
     "enveloping-sha256-rsa-sha256-verify" \
@@ -1184,7 +1184,7 @@ execDSigTest $res_fail \
 # This is the same, but due to --insecure it must pass.
 # If this fails, that means avoiding the certificate verification doesn't
 # happen correctly
-addExtraMsg "Negative test: missing trusted cert"
+extra_message="Negative test: missing trusted cert"
 execDSigTest $res_success \
     "aleksey-xmldsig-01" \
     "enveloping-sha256-rsa-sha256-verify" \
@@ -1197,7 +1197,7 @@ execDSigTest $res_success \
 #
 
 # this should succeeed with both intermidiate and trusted certs provided
-addExtraMsg "Cert chaing is good"
+extra_message="Cert chaing is good"
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloped-x509-missing-cert" \
@@ -1206,7 +1206,7 @@ execDSigTest $res_success \
     "--untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 # this should succeeed too because we bypass all cert checks with --insecure mode
-addExtraMsg "Cert chain is missing but there is --insecure bypass"
+extra_message="Cert chain is missing but there is --insecure bypass"
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloped-x509-missing-cert" \
@@ -1215,7 +1215,7 @@ execDSigTest $res_success \
     "--insecure --enabled-key-data x509"
 
 # this should fail: missing intermidiate cert (ca2cert)
-addExtraMsg "Negative test: Missing intermidiate cert"
+extra_message="Negative test: Missing intermidiate cert"
 execDSigTest $res_fail \
     "" \
     "aleksey-xmldsig-01/enveloped-x509-missing-cert" \
@@ -1233,7 +1233,7 @@ execDSigTest $res_fail \
 # currently only openssl supports loading CRL from the command line
 if [ "z$crypto" = "zopenssl" -o  "z$crypto" = "zgnutls" ] ; then
     # this should fail because there is a CRL for the cert used for signing
-    addExtraMsg "Negative test: CRL present"
+    extra_message="Negative test: CRL present"
     execDSigTest $res_fail \
         "" \
         "aleksey-xmldsig-01/enveloped-x509-missing-cert" \
@@ -1242,7 +1242,7 @@ if [ "z$crypto" = "zopenssl" -o  "z$crypto" = "zgnutls" ] ; then
         "--untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --crl-$cert_format $topfolder/keys/rsacert-revoked-crl.$cert_format --enabled-key-data x509"
 
     # this should fail because while CRL is past due, it's still better than nothing
-    addExtraMsg "Negative test: CRL is past due"
+    extra_message="Negative test: CRL is past due"
     execDSigTest $res_fail \
         "" \
         "aleksey-xmldsig-01/enveloped-x509-missing-cert" \
@@ -1251,7 +1251,7 @@ if [ "z$crypto" = "zopenssl" -o  "z$crypto" = "zgnutls" ] ; then
         "--verification-gmt-time 2023-05-01+00:00:00 --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --crl-$cert_format $topfolder/keys/rsacert-revoked-crl.$cert_format --enabled-key-data x509"
 
     # this should succeeed because CRL is not valid yet
-    addExtraMsg "CRL is not valid"
+    extra_message="CRL is not valid"
     execDSigTest $res_success \
         "" \
         "aleksey-xmldsig-01/enveloped-x509-missing-cert" \
@@ -1260,7 +1260,7 @@ if [ "z$crypto" = "zopenssl" -o  "z$crypto" = "zgnutls" ] ; then
         "--verification-gmt-time 2023-03-01+00:00:00 --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --crl-$cert_format $topfolder/keys/rsacert-revoked-crl.$cert_format --enabled-key-data x509"
 
     # this should succeeed too because we bypass all cert checks with --insecure mode
-    addExtraMsg "CRL is present but there is --insecure bypass"
+    extra_message="CRL is present but there is --insecure bypass"
     execDSigTest $res_success \
         "" \
         "aleksey-xmldsig-01/enveloped-x509-missing-cert" \
@@ -1365,7 +1365,7 @@ execDSigTest $res_success \
     "$priv_key_option:mykey $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005"\
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format $url_map_xml_stylesheet_2005"
 
-addExtraMsg "Negative test: CRL is present"
+extra_message="Negative test: CRL is present"
 execDSigTest $res_fail \
     "" \
     "merlin-xmldsig-twenty-three/signature-x509-crt-crl" \
@@ -1702,7 +1702,7 @@ execDSigTest $res_success \
     "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00"
 
 
-addExtraMsg "Negative test: bad retrieval method"
+extra_message="Negative test: bad retrieval method"
 execDSigTest $res_fail \
     "phaos-xmldsig-three" \
     "signature-rsa-detached-xslt-transform-bad-retrieval-method" \
@@ -1710,7 +1710,7 @@ execDSigTest $res_fail \
     "rsa x509" \
     "--trusted-$cert_format certs/rsa-ca-cert.$cert_format $url_map_rfc3161"
 
-addExtraMsg "Negative test: bad digest"
+extra_message="Negative test: bad digest"
 execDSigTest $res_fail \
     "phaos-xmldsig-three" \
     "signature-rsa-enveloped-bad-digest-val" \
@@ -1718,7 +1718,7 @@ execDSigTest $res_fail \
     "rsa x509" \
     "--trusted-$cert_format certs/rsa-ca-cert.$cert_format"
 
-addExtraMsg "Negative test: bad sig"
+extra_message="Negative test: bad sig"
 execDSigTest $res_fail \
     "phaos-xmldsig-three" \
     "signature-rsa-enveloped-bad-sig" \
@@ -1726,7 +1726,7 @@ execDSigTest $res_fail \
     "rsa x509" \
     "--trusted-$cert_format certs/rsa-ca-cert.$cert_format"
 
-addExtraMsg "Negative test: CRL present"
+extra_message="Negative test: CRL present"
 execDSigTest $res_fail \
     "phaos-xmldsig-three" \
     "signature-rsa-manifest-x509-data-crl" \

@@ -474,7 +474,7 @@ execEncTest $res_success \
     "--keys-file $topfolder/keys/keys.xml"
 
 
-addExtraMsg "Negative test: all cipher references are disabled"
+extra_message="Negative test: all cipher references are disabled"
 execEncTest $res_fail \
     "" \
     "aleksey-xmlenc-01/enc-aes192cbc-keyname-ref" \
@@ -993,7 +993,8 @@ execEncTest $res_success \
     "--session-key aes-256 --keys-file $topfolder/01-phaos-xmlenc-3/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/01-phaos-xmlenc-3/enc-content-aes256-kt-rsa1_5.data --node-name http://example.org/paymentv2:CreditCard"  \
     "$priv_key_option:my-rsa-key $topfolder/01-phaos-xmlenc-3/rsa-priv-key.$priv_key_format --pwd secret"
 
-addExtraMsg "Negative test: missing key"
+
+extra_message="Negative test: missing key"
 execEncTest $res_fail \
     "" \
     "01-phaos-xmlenc-3/enc-content-aes256-kt-rsa1_5" \
@@ -1100,7 +1101,7 @@ execEncTest $res_success \
     "--session-key aes-128 --keys-file $topfolder/01-phaos-xmlenc-3/keys.xml --enabled-key-data key-name,enc-key --xml-data $topfolder/01-phaos-xmlenc-3/enc-text-aes128-kw-aes192.data --node-name http://example.org/paymentv2:CreditCard"  \
     "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml"
 
-addExtraMsg "Negative test: bad alg enc element"
+extra_message="Negative test: bad alg enc element"
 execEncTest $res_fail \
     "" \
     "01-phaos-xmlenc-3/bad-alg-enc-element-aes128-kw-3des" \

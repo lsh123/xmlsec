@@ -104,6 +104,9 @@ XMLSEC_CRYPTO_EXPORT CERTCertificate* xmlSecNssX509CertDerRead               (CE
 XMLSEC_CRYPTO_EXPORT CERTSignedCrl*   xmlSecNssX509CrlDerRead                (xmlSecByte* buf,
                                                                               xmlSecSize size,
                                                                               unsigned int flags);
+
+XMLSEC_CRYPTO_EXPORT int              xmlSecNssX509CertGetTime                (PRTime* t,
+                                                                               time_t* res);
 #endif /* XMLSEC_NO_X509 */
 
 #ifdef __cplusplus

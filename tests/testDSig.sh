@@ -1223,15 +1223,17 @@ execDSigTest $res_fail \
     "x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
-\
+# this should fail: wront trusted cert (largersacert)
+extra_message="Negative test: Wront trusted cert"
+execDSigTest $res_fail \
     "" \
     "aleksey-xmldsig-01/enveloped-x509-missing-cert" \
     "sha256 rsa-sha256" \
     "x509" \
     "--untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/largersacert.$cert_format --enabled-key-data x509"
 
-# currently only openssl supports loading CRL from the command line
-if [ "z$crypto" = "zopenssl" -o  "z$crypto" = "zgnutls" ] ; then
+# currently only openssl/gnutls/nss support loading CRL from the command line
+if [ "z$crypto" = "zopenssl" -o  "z$crypto" = "zgnutls" -o  "z$crypto" = "znss" ] ; then
     # this should fail because there is a CRL for the cert used for signing
     extra_message="Negative test: CRL present"
     execDSigTest $res_fail \

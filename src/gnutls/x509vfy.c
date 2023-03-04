@@ -528,6 +528,7 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
 
     /* gnutls doesn't allow to specify "verification" timestamp so
      * we have to do it ourselves */
+    /* TODO: check revocation date (https://github.com/lsh123/xmlsec/issues/579)*/
     flags |= GNUTLS_VERIFY_DISABLE_TIME_CHECKS;
     flags |= GNUTLS_VERIFY_ALLOW_UNSORTED_CHAIN;
     if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_STRICT_CHECKS) != 0) {

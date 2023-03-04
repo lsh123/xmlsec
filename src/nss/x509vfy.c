@@ -24,6 +24,7 @@
 
 #include <cert.h>
 #include <secerr.h>
+#include <secder.h>
 #include <sechash.h>
 
 #include <xmlsec/xmlsec.h>
@@ -238,6 +239,191 @@ xmlSecNssX509StoreFindCertByValue(xmlSecKeyDataStorePtr store, xmlSecKeyX509Data
     return(cert);
 }
 
+/* returns 1 if cert was revoked, 0 if not, and a negative value if an error occurs */
+static int
+xmlSecNssX509StoreCheckIfCertIsRevoked(CERTCertificate* cert, CERTSignedCrl* crl, xmlSecKeyInfoCtx* keyInfoCtx) {
+    CERTCrlEntry *entry;
+    SECStatus rv;
+    int ret;
+    int ii;
+
+    xmlSecAssert2(cert != NULL, -1);
+    xmlSecAssert2(crl != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+
+    /* do we have any revocation entries? */
+    if (crl->crl.entries == NULL) {
+        return(0);
+    }
+    for(ii = 0; ((entry = crl->crl.entries[ii]) != NULL); ++ii) {
+        if (SECITEM_CompareItem(&(cert->serialNumber), &(entry->serialNumber)) != SECEqual) {
+            continue;
+        }
+        /* check revocation date: if we are checking against current time, we assume
+         * that CRL and revocation do NOT come from the future and we don't need to check
+         * the timestamps */
+        if(keyInfoCtx->certsVerificationTime > 0) {
+            PRTime revocationDate = 0;
+            time_t revocationTs = 0;
+
+            rv = DER_DecodeTimeChoice(&revocationDate, &(entry->revocationDate));
+            if((rv != SECSuccess) || (revocationDate == 0)) {
+                xmlSecNssError("DER_DecodeTimeChoice(revocationDate)", NULL);
+                return(-1);
+            }
+            ret = xmlSecNssX509CertGetTime(&revocationDate, &revocationTs);
+            if((ret < 0) || (revocationTs == 0)) {
+                xmlSecInternalError("xmlSecNssX509CertGetTime(revocationDate)", NULL);
+                return(-1);
+            }
+            if(keyInfoCtx->certsVerificationTime < revocationTs) {
+                /* verification time before revocation ts, this doesn't apply */
+                continue;
+            }
+        }
+
+        /* we found a valid revocation entry for this cert */
+        return(1);
+    }
+
+    /* not found */
+    return(0);
+}
+
+static int
+xmlSecNssX509StoreFindBestCrl(xmlSecNssX509StoreCtxPtr x509StoreCtx, CERTCertificate* cert, CERTSignedCrl ** res, xmlSecKeyInfoCtx* keyInfoCtx) {
+    xmlSecNssX509CrlNodePtr cur;
+    PRTime lastUpdate = 0;
+    PRTime resLastUpdate = 0;
+    SECStatus rv;
+    int ret;
+
+    xmlSecAssert2(x509StoreCtx != NULL, -1);
+    xmlSecAssert2(cert != NULL, -1);
+    xmlSecAssert2(res != NULL, -1);
+    xmlSecAssert2((*res) == NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+
+    /* find best matching CRL */
+    for(cur = x509StoreCtx->crlsList; cur != NULL; cur = cur->next) {
+        if(cur->crl == NULL) {
+            continue;
+        }
+        if (SECITEM_CompareItem(&(cert->derIssuer), &(cur->crl->crl.derName)) != SECEqual) {
+            continue;
+        }
+
+        /* get lastUpdate time */
+        rv = DER_DecodeTimeChoice(&lastUpdate, &(cur->crl->crl.lastUpdate));
+        if((rv != SECSuccess) || (lastUpdate == 0)) {
+            xmlSecNssError("DER_DecodeTimeChoice(lastUpdate)", NULL);
+            return(-1);
+        }
+
+        /* check last/next update: if we are checking against current time, we assume
+         * that CRL does NOT come from the future and we don't need to check
+         * the timestamps */
+        if(keyInfoCtx->certsVerificationTime > 0) {
+            time_t lastUpdateTime = 0;
+
+            ret = xmlSecNssX509CertGetTime(&lastUpdate, &lastUpdateTime);
+            if((ret < 0) || (lastUpdateTime == 0)) {
+                xmlSecInternalError("xmlSecNssX509CertGetTime(lastUpdate)", NULL);
+                return(-1);
+            }
+            if(keyInfoCtx->certsVerificationTime < lastUpdateTime) {
+                /* verification time before this CRL was created, it doesn't apply */
+                continue;
+            }
+        }
+
+        /* Use latest CRL by the last update time */
+        if(((*res) == NULL) || (resLastUpdate < lastUpdate)) {
+            (*res) = cur->crl;
+            resLastUpdate = lastUpdate;
+        }
+    }
+
+    /* done! */
+    return(0);
+}
+
+static int
+xmlSecNssX509StoreRemoveRevokedCerts(xmlSecNssX509StoreCtxPtr x509StoreCtx, CERTCertList* certs,
+    CERTCertList** res, xmlSecKeyInfoCtx* keyInfoCtx
+) {
+    CERTCertListNode* cur;
+    CERTCertificate* cert;
+    SECStatus rv;
+    int ret;
+
+    xmlSecAssert2(x509StoreCtx != NULL, -1);
+    xmlSecAssert2(certs != NULL, -1);
+    xmlSecAssert2(res != NULL, -1);
+    xmlSecAssert2((*res) == NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+
+    (*res) = CERT_NewCertList();
+    if((*res) == NULL) {
+        xmlSecNssError("CERT_NewCertList", NULL);
+        return(-1);
+    }
+
+    for (cur = CERT_LIST_HEAD(certs); !CERT_LIST_END(cur, certs); cur = CERT_LIST_NEXT(cur)) {
+        CERTSignedCrl* crl = NULL;
+
+        if(cur->cert == NULL) {
+            continue;
+        }
+
+        ret = xmlSecNssX509StoreFindBestCrl(x509StoreCtx, cur->cert, &crl, keyInfoCtx);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecNssX509StoreFindBestCrl",  NULL);
+            return(-1);
+        }
+        if(crl != NULL) {
+            ret = xmlSecNssX509StoreCheckIfCertIsRevoked(cur->cert, crl, keyInfoCtx);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecNssX509StoreFindBestCrl",  NULL);
+                return(-1);
+            } else if(ret != 0) {
+                /* cert was revoked */
+                continue;
+            }
+        }
+
+        /* add to the output */
+        cert = CERT_DupCertificate(cur->cert);
+        if(cert == NULL) {
+            xmlSecNssError("CERT_DupCertificate", NULL);
+            return(-1);
+        }
+        rv = CERT_AddCertToListTail((*res),  cert);
+        if(rv != SECSuccess) {
+            xmlSecNssError("CERT_AddCertToListTail", NULL);
+            return(-1);
+        }
+    }
+
+    /* done */
+    return(0);
+}
+
+static CERTCertificate *
+xmlSecNssX509StoreFindChildCert(CERTCertificate* cert, CERTCertList* certs) {
+    CERTCertListNode* cur;
+
+    xmlSecAssert2(cert != NULL, NULL);
+    xmlSecAssert2(certs != NULL, NULL);
+
+     for (cur = CERT_LIST_HEAD(certs); !CERT_LIST_END(cur, certs); cur = CERT_LIST_NEXT(cur)) {
+        if (SECITEM_CompareItem(&(cur->cert->derIssuer), &(cert->derSubject)) == SECEqual) {
+            return(cur->cert);
+        }
+     }
+     return(NULL);
+}
+
 /**
  * xmlSecNssX509StoreVerify:
  * @store:              the pointer to X509 key data store klass.
@@ -249,17 +435,16 @@ xmlSecNssX509StoreFindCertByValue(xmlSecKeyDataStorePtr store, xmlSecKeyX509Data
  * Returns: pointer to the first verified certificate from @certs.
  */
 CERTCertificate *
-xmlSecNssX509StoreVerify(xmlSecKeyDataStorePtr store, CERTCertList* certs,
-                         xmlSecKeyInfoCtx* keyInfoCtx) {
+xmlSecNssX509StoreVerify(xmlSecKeyDataStorePtr store, CERTCertList* certs, xmlSecKeyInfoCtx* keyInfoCtx) {
     xmlSecNssX509StoreCtxPtr ctx;
-    CERTCertListNode*       head;
-    CERTCertificate*       cert = NULL;
-    CERTCertListNode*       head1;
-    CERTCertificate*       cert1 = NULL;
+    CERTCertListNode* cur;
+    CERTCertList* good_certs = NULL;
+    CERTCertificate* cert = NULL;
     SECStatus status = SECFailure;
     int64 timeboundary;
     int64 tmp1, tmp2;
     PRErrorCode err;
+    int ret;
 
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecNssX509StoreId), NULL);
     xmlSecAssert2(certs != NULL, NULL);
@@ -278,48 +463,53 @@ xmlSecNssX509StoreVerify(xmlSecKeyDataStorePtr store, CERTCertList* certs,
         timeboundary = PR_Now();
     }
 
-    for (head = CERT_LIST_HEAD(certs);
-         !CERT_LIST_END(head, certs);
-         head = CERT_LIST_NEXT(head)) {
-        cert = head->cert;
-
-        /* if cert is the issuer of any other cert in the list, then it is
-         * to be skipped */
-        for (head1 = CERT_LIST_HEAD(certs);
-             !CERT_LIST_END(head1, certs);
-             head1 = CERT_LIST_NEXT(head1)) {
-
-            cert1 = head1->cert;
-            if (cert1 == cert) {
-                continue;
-            }
-
-            if (SECITEM_CompareItem(&cert1->derIssuer, &cert->derSubject)
-                                      == SECEqual) {
-                break;
-            }
-        }
-
-        if (!CERT_LIST_END(head1, certs)) {
-            continue;
-        }
-
-        if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS) == 0) {
-            /* it's important to set the usage here, otherwise no real verification
-             * is performed. */
-            status = CERT_VerifyCertificate(CERT_GetDefaultCertDB(),
-                                            cert, PR_FALSE,
-                                            certificateUsageEmailSigner,
-                                            timeboundary , NULL, NULL, NULL);
-            if(status == SECSuccess) {
-                break;
-            }
-        } else {
-            status = SECSuccess;
-            break;
+    /* do we need to verify anything at all? */
+    if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS) != 0) {
+        good_certs = certs;
+    } else {
+        /* look through the certs and remove all revoked certs */
+        ret = xmlSecNssX509StoreRemoveRevokedCerts(ctx, certs, &good_certs, keyInfoCtx);
+        if((ret < 0) || (good_certs == NULL)) {
+            xmlSecInternalError("xmlSecNssX509StoreRemoveRevokedCerts",  xmlSecKeyDataStoreGetName(store));
+            CERT_DestroyCertList(good_certs);
+            return(NULL);
         }
     }
 
+    /* now go through all good certs we have and try to verify them */
+    for (cur = CERT_LIST_HEAD(good_certs); !CERT_LIST_END(cur, good_certs); cur = CERT_LIST_NEXT(cur)) {
+        cert = cur->cert;
+
+        /* if cert is the issuer of any other cert in the list, then it is
+         * to be skipped (note that we are using the bigger "certs" list instead of good_certs!) */
+        if(xmlSecNssX509StoreFindChildCert(cert, certs) != NULL) {
+            /* found a child, skip */
+            continue;
+        }
+
+        /* do we need to verify anything at all? */
+        if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS) != 0) {
+            status = SECSuccess;
+            break;
+        }
+        /* it's important to set the usage here, otherwise no real verification
+         * is performed. */
+        status = CERT_VerifyCertificate(CERT_GetDefaultCertDB(), cert, PR_FALSE,
+                    certificateUsageEmailSigner,
+                    timeboundary , NULL, NULL, NULL);
+        if(status == SECSuccess) {
+            break;
+        }
+    }
+    /* SMALL HACK: we are using the fact that NSS implements certs as ref counted objects
+     * and CERT_DupCertificate() simply bumps the counter. Otherwise, the "cert"
+     * might belong to good_certs and will be destroyed here. But exactly the
+     * same pointer is in certs as well so we are good. Otherwise we will need to find
+     * a certificates in "certs" that matches "cert" and return that pointer instead.
+     */
+    if(good_certs != certs) {
+        CERT_DestroyCertList(good_certs);
+    }
     if (status == SECSuccess) {
         return (cert);
     }
@@ -332,25 +522,25 @@ xmlSecNssX509StoreVerify(xmlSecKeyDataStorePtr store, CERTCertList* certs,
             xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_ISSUER_FAILED,
                 xmlSecKeyDataStoreGetName(store),
                 "subject=\"%s\"; reason=the issuer's cert is expired/invalid or not found",
-                xmlSecErrorsSafeString(cert->subjectName));
+                xmlSecErrorsSafeString(cert != NULL ? cert->subjectName : NULL));
             break;
         case SEC_ERROR_EXPIRED_CERTIFICATE:
             xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_HAS_EXPIRED,
                 xmlSecKeyDataStoreGetName(store),
                 "subject=\"%s\"; reason=expired",
-                xmlSecErrorsSafeString(cert->subjectName));
+                xmlSecErrorsSafeString(cert != NULL ? cert->subjectName : NULL));
             break;
         case SEC_ERROR_REVOKED_CERTIFICATE:
             xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_REVOKED,
                 xmlSecKeyDataStoreGetName(store),
                 "subject=\"%s\"; reason=revoked",
-                xmlSecErrorsSafeString(cert->subjectName));
+                xmlSecErrorsSafeString(cert != NULL ? cert->subjectName : NULL));
             break;
         default:
             xmlSecOtherError3(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
                 xmlSecKeyDataStoreGetName(store),
                 "subject=\"%s\"; reason=%d",
-                xmlSecErrorsSafeString(cert->subjectName),
+                xmlSecErrorsSafeString(cert != NULL ? cert->subjectName : NULL),
                 err);
             break;
     }

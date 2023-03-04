@@ -1278,7 +1278,7 @@ xmlSecNssAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, xmlSec
     /* read CRL */
     switch(format) {
     case xmlSecKeyDataFormatDer:
-        crl = xmlSecNssX509CrlDerRead(secItem.data, secItem.len, 0);
+        crl = xmlSecNssX509CrlDerRead(secItem.data, secItem.len, XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_STRICT_CHECKS);
         if(crl == NULL) {
             xmlSecInternalError2("xmlSecNssX509CrlDerRead", NULL,
                 "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
@@ -1345,7 +1345,7 @@ xmlSecNssAppKeysMngrCrlLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* data
     /* read CRL */
     switch(format) {
     case xmlSecKeyDataFormatDer:
-        crl = xmlSecNssX509CrlDerRead(secItem.data, secItem.len, 0);
+        crl = xmlSecNssX509CrlDerRead(secItem.data, secItem.len, XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_STRICT_CHECKS);
         if(crl == NULL) {
             xmlSecInternalError2("xmlSecNssX509CrlDerRead", NULL,
                 "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));

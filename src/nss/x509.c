@@ -81,8 +81,7 @@ static void             xmlSecNssX509CertDebugDump              (CERTCertificate
                                                                  FILE* output);
 static void             xmlSecNssX509CertDebugXmlDump           (CERTCertificate* cert,
                                                                  FILE* output);
-static int              xmlSecNssX509CertGetTime                (PRTime* t,
-                                                                 time_t* res);
+
 
 /*************************************************************************
  *
@@ -216,7 +215,7 @@ xmlSecNssKeyDataX509GetKeyCert(xmlSecKeyDataPtr data) {
 
 static int
 xmlSecNssKeyDataX509AddCertInternal(xmlSecNssX509DataCtxPtr ctx, CERTCertificate* cert) {
-    int ret;
+    SECStatus rv;
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(cert != NULL, -1);
@@ -229,8 +228,8 @@ xmlSecNssKeyDataX509AddCertInternal(xmlSecNssX509DataCtxPtr ctx, CERTCertificate
         }
     }
 
-    ret = CERT_AddCertToListTail(ctx->certsList, cert);
-    if(ret != SECSuccess) {
+    rv = CERT_AddCertToListTail(ctx->certsList, cert);
+    if(rv != SECSuccess) {
         xmlSecNssError("CERT_AddCertToListTail", NULL);
         return(-1);
     }
@@ -964,8 +963,7 @@ xmlSecNssVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data,  xml
     /* lets find a cert we can verify */
     x509Store = xmlSecKeysMngrGetDataStore(keyInfoCtx->keysMngr, xmlSecNssX509StoreId);
     if(x509Store == NULL) {
-        xmlSecInternalError("xmlSecKeysMngrGetDataStore",
-                            xmlSecKeyDataGetName(data));
+        xmlSecInternalError("xmlSecKeysMngrGetDataStore", xmlSecKeyDataGetName(data));
         return(-1);
     }
     cert = xmlSecNssX509StoreVerify(x509Store, ctx->certsList, keyInfoCtx);
@@ -1043,7 +1041,7 @@ xmlSecNssVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data,  xml
     return(1);
 }
 
-static int
+int
 xmlSecNssX509CertGetTime(PRTime* t, time_t* res) {
 
     PRTime tmp64_1, tmp64_2;

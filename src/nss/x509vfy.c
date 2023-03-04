@@ -59,6 +59,9 @@ struct _xmlSecNssX509StoreCtx {
      */
 
     CERTCertList* certsList; /* just keeping a reference to destroy later */
+
+    xmlSecNssX509CrlNodePtr crlsList;
+    unsigned int     numCrls;
 };
 
 /****************************************************************************
@@ -410,6 +413,35 @@ xmlSecNssX509StoreAdoptCert(xmlSecKeyDataStorePtr store, CERTCertificate* cert, 
     return(0);
 }
 
+
+/**
+ * xmlSecNssX509StoreAdoptCrl:
+ * @store:              the pointer to X509 key data store klass.
+ * @crl:                the pointer to NSS X509 CRL.
+ *
+ * Adds CRL to the store.
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecNssX509StoreAdoptCrl(xmlSecKeyDataStorePtr store, CERTSignedCrl * crl) {
+    xmlSecNssX509StoreCtxPtr ctx;
+    int ret;
+
+    xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecNssX509StoreId), -1);
+    xmlSecAssert2(crl != NULL, -1);
+
+    ctx = xmlSecNssX509StoreGetCtx(store);
+    xmlSecAssert2(ctx != NULL, -1);
+
+    ret = xmlSecNssX509CrlListAdoptCrl(&(ctx->crlsList), crl);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecNssX509CrlListAdoptCrl", xmlSecKeyDataStoreGetName(store));
+        return(-1);
+    }
+    return(0);
+}
+
 static int
 xmlSecNssX509StoreInitialize(xmlSecKeyDataStorePtr store) {
     xmlSecNssX509StoreCtxPtr ctx;
@@ -434,6 +466,10 @@ xmlSecNssX509StoreFinalize(xmlSecKeyDataStorePtr store) {
     if (ctx->certsList) {
         CERT_DestroyCertList(ctx->certsList);
         ctx->certsList = NULL;
+    }
+    if (ctx->crlsList != NULL) {
+        xmlSecNssX509CrlListDestroy(ctx->crlsList);
+        ctx->crlsList = NULL;
     }
 
     memset(ctx, 0, sizeof(xmlSecNssX509StoreCtx));

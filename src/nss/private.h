@@ -85,6 +85,25 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecNssX509FindKeyByValue               (xml
 
 XMLSEC_CRYPTO_EXPORT SECOidTag  xmlSecNssX509GetDigestFromAlgorithm         (const xmlChar* href);
 
+
+/* NSS has a list for Certs but not Crls so we have to do it ourselves */
+typedef struct _xmlSecNssX509CrlNode xmlSecNssX509CrlNode, *xmlSecNssX509CrlNodePtr;
+struct _xmlSecNssX509CrlNode {
+    xmlSecNssX509CrlNodePtr  next;
+    CERTSignedCrl           *crl;
+};
+
+XMLSEC_CRYPTO_EXPORT xmlSecNssX509CrlNodePtr xmlSecNssX509CrlListDuplicate  (xmlSecNssX509CrlNodePtr head);
+XMLSEC_CRYPTO_EXPORT void       xmlSecNssX509CrlListDestroy                 (xmlSecNssX509CrlNodePtr head);
+XMLSEC_CRYPTO_EXPORT int        xmlSecNssX509CrlListAdoptCrl                (xmlSecNssX509CrlNodePtr * head,
+                                                                             CERTSignedCrl* crl);
+
+XMLSEC_CRYPTO_EXPORT CERTCertificate* xmlSecNssX509CertDerRead               (CERTCertDBHandle *handle,
+                                                                              xmlSecByte* buf,
+                                                                              xmlSecSize size);
+XMLSEC_CRYPTO_EXPORT CERTSignedCrl*   xmlSecNssX509CrlDerRead                (xmlSecByte* buf,
+                                                                              xmlSecSize size,
+                                                                              unsigned int flags);
 #endif /* XMLSEC_NO_X509 */
 
 #ifdef __cplusplus

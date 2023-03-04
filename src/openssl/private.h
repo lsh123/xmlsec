@@ -17,10 +17,8 @@
 #endif /* XMLSEC_PRIVATE */
 
 
-#include <openssl/types.h>
-
-
 #ifndef XMLSEC_NO_X509
+#include <openssl/x509_vfy.h>
 #include <openssl/x509.h>
 #endif /* XMLSEC_NO_X509 */
 

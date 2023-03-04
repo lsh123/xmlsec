@@ -813,29 +813,6 @@ xmlSecGnuTLSAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr,
     return(0);
 }
 
-
-/**
- * xmlSecGnuTLSAppKeysMngrCertLoad:
- * @mngr:               the keys manager.
- * @filename:           the CRL file.
- * @format:             the CRL file format.
- *
- * Reads crls from @filename and adds to the list of trusted or known
- * untrusted crls in @store.
- *
- * Returns: 0 on success or a negative value otherwise.
- */
-int
-xmlSecGnuTLSAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, xmlSecKeyDataFormat format) {
-    xmlSecAssert2(mngr != NULL, -1);
-    xmlSecAssert2(filename != NULL, -1);
-    xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
-
-    /* TODO */
-    xmlSecNotImplementedError(NULL);
-    return(-1);
-}
-
 /**
  * xmlSecGnuTLSAppKeysMngrCertLoadMemory:
  * @mngr:               the keys manager.
@@ -885,6 +862,104 @@ xmlSecGnuTLSAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr,
 
     return(0);
 }
+
+/**
+ * xmlSecGnuTLSAppKeysMngrCertLoad:
+ * @mngr:               the keys manager.
+ * @filename:           the CRL file.
+ * @format:             the CRL file format.
+ *
+ * Reads crls from @filename and adds to the list of crls in @store.
+ *
+ * Returns: 0 on success or a negative value otherwise.
+ */
+int
+xmlSecGnuTLSAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, xmlSecKeyDataFormat format) {
+    xmlSecBuffer buffer;
+    int ret;
+
+    xmlSecAssert2(mngr != NULL, -1);
+    xmlSecAssert2(filename != NULL, -1);
+    xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
+
+    ret = xmlSecBufferInitialize(&buffer, 4*1024);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize", NULL);
+        return(-1);
+    }
+
+    ret = xmlSecBufferReadFile(&buffer, filename);
+    if((ret < 0) || (xmlSecBufferGetData(&buffer) == NULL) || (xmlSecBufferGetSize(&buffer) <= 0)) {
+        xmlSecInternalError2("xmlSecBufferReadFile", NULL,
+                            "filename=%s", xmlSecErrorsSafeString(filename));
+        xmlSecBufferFinalize(&buffer);
+        return(-1);
+    }
+
+    ret = xmlSecGnuTLSAppKeysMngrCrlLoadMemory(mngr,
+                    xmlSecBufferGetData(&buffer),
+                    xmlSecBufferGetSize(&buffer),
+                    format);
+    if(ret < 0) {
+        xmlSecInternalError2("xmlSecGnuTLSAppKeysMngrCrlLoadMemory", NULL,
+                             "filename=%s", xmlSecErrorsSafeString(filename));
+        xmlSecBufferFinalize(&buffer);
+        return(-1);
+    }
+
+    /* cleanup */
+    xmlSecBufferFinalize(&buffer);
+    return(0);
+}
+
+
+/**
+ * xmlSecGnuTLSAppKeysMngrCrlLoadMemory:
+ * @mngr:               the keys manager.
+ * @data:               the CRL binary data.
+ * @dataSize:           the CRL binary data size.
+ * @format:             the CRL file format.
+ *
+ * Reads CRL from binary buffer @data and adds to the list of trusted or known
+ * untrusted CRL in @store.
+ *
+ * Returns: 0 on success or a negative value otherwise.
+ */
+int
+xmlSecGnuTLSAppKeysMngrCrlLoadMemory(xmlSecKeysMngrPtr mngr,
+    const xmlSecByte* data, xmlSecSize dataSize, xmlSecKeyDataFormat format
+) {
+    xmlSecKeyDataStorePtr x509Store;
+    gnutls_x509_crl_t crl;
+    int ret;
+
+    xmlSecAssert2(mngr != NULL, -1);
+    xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(dataSize > 0, -1);
+    xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
+
+    x509Store = xmlSecKeysMngrGetDataStore(mngr, xmlSecGnuTLSX509StoreId);
+    if(x509Store == NULL) {
+        xmlSecInternalError("xmlSecKeysMngrGetDataStore(StoreId)", NULL);
+        return(-1);
+    }
+
+    crl = xmlSecGnuTLSX509CrlRead(data, dataSize, format);
+    if(crl == NULL) {
+        xmlSecInternalError("xmlSecGnuTLSX509CrlRead", NULL);
+        return(-1);
+    }
+
+    ret = xmlSecGnuTLSX509StoreAdoptCrl(x509Store, crl);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecGnuTLSX509StoreAdoptCrl", NULL);
+        gnutls_x509_crl_deinit(crl);
+        return(-1);
+    }
+
+    return(0);
+}
+
 
 #endif /* XMLSEC_NO_X509 */
 

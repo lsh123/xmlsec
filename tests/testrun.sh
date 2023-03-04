@@ -228,6 +228,12 @@ printCheckStatus() {
     return "$check_res"
 }
 
+printMsg() {
+    msg="$1"
+    echo "$msg" >> $curlogfile
+    echo "$msg"
+}
+
 #
 # Keys test function
 #

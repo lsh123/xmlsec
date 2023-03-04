@@ -104,7 +104,8 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSX509StoreAdoptCert  (xmlSecK
                                                                          gnutls_x509_crt_t cert,
                                                                          xmlSecKeyDataType type);
 
-
+XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSX509StoreAdoptCrl  (xmlSecKeyDataStorePtr store,
+                                                                         gnutls_x509_crl_t crl);
 
 
 #ifdef __cplusplus

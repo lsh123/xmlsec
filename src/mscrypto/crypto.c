@@ -356,8 +356,7 @@ static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Random[] = {
  * @buffer:             the destination buffer.
  * @size:               the numer of bytes to generate.
  *
- * Generates @size random bytes and puts result in @buffer
- * (not implemented yet).
+ * Generates @size random bytes and puts result in @buffer.
  *
  * Returns: 0 on success or a negative value otherwise.
  */

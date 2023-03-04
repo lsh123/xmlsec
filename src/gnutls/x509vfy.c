@@ -46,6 +46,7 @@ typedef struct _xmlSecGnuTLSX509StoreCtx                xmlSecGnuTLSX509StoreCtx
 struct _xmlSecGnuTLSX509StoreCtx {
     xmlSecPtrList certsTrusted;
     xmlSecPtrList certsUntrusted;
+    xmlSecPtrList crls;
 };
 
 /****************************************************************************
@@ -356,6 +357,7 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
     xmlSecSize cert_list_size;
     gnutls_x509_crl_t * crl_list = NULL;
     xmlSecSize crl_list_size;
+    xmlSecSize crl_ctx_list_size;
     gnutls_x509_crt_t * ca_list = NULL;
     xmlSecSize ca_list_size;
     time_t verification_time;
@@ -384,23 +386,32 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
         cert_list = (gnutls_x509_crt_t *)xmlMalloc(sizeof(gnutls_x509_crt_t) * cert_list_size);
         if(cert_list == NULL) {
             xmlSecMallocError(sizeof(gnutls_x509_crt_t) * cert_list_size,
-                              xmlSecKeyDataStoreGetName(store));
+                xmlSecKeyDataStoreGetName(store));
             goto done;
         }
     }
     crl_list_size = xmlSecPtrListGetSize(crls);
-    if(crl_list_size > 0) {
-        crl_list = (gnutls_x509_crl_t *)xmlMalloc(sizeof(gnutls_x509_crl_t) * crl_list_size);
+    crl_ctx_list_size = xmlSecPtrListGetSize(crls);
+    if((crl_list_size + crl_ctx_list_size) > 0) {
+        crl_list = (gnutls_x509_crl_t *)xmlMalloc(sizeof(gnutls_x509_crl_t) * (crl_list_size + crl_ctx_list_size));
         if(crl_list == NULL) {
-            xmlSecMallocError(sizeof(gnutls_x509_crl_t) * crl_list_size,
-                              xmlSecKeyDataStoreGetName(store));
+            xmlSecMallocError(sizeof(gnutls_x509_crl_t) * (crl_list_size + crl_ctx_list_size),
+                xmlSecKeyDataStoreGetName(store));
             goto done;
         }
         for(ii = 0; ii < crl_list_size; ++ii) {
             crl_list[ii] = xmlSecPtrListGetItem(crls, ii);
             if(crl_list[ii] == NULL) {
                 xmlSecInternalError("xmlSecPtrListGetItem(crls)",
-                                    xmlSecKeyDataStoreGetName(store));
+                    xmlSecKeyDataStoreGetName(store));
+                goto done;
+            }
+        }
+        for(ii = 0; ii < crl_ctx_list_size; ++ii) {
+            crl_list[ii + crl_list_size] = xmlSecPtrListGetItem(&(ctx->crls), ii);
+            if(crl_list[ii + crl_list_size] == NULL) {
+                xmlSecInternalError("xmlSecPtrListGetItem(ctx->crls)",
+                    xmlSecKeyDataStoreGetName(store));
                 goto done;
             }
         }
@@ -436,7 +447,7 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
         flags |= GNUTLS_VERIFY_ALLOW_SIGN_RSA_MD5;
 #if GNUTLS_VERSION_NUMBER >= 0x030600
         flags |= GNUTLS_VERIFY_ALLOW_SIGN_WITH_SHA1;
-#endif
+#endif /* GNUTLS_VERSION_NUMBER >= 0x030600 */
     }
 
     /* We are going to build all possible cert chains and try to verify them */
@@ -572,6 +583,38 @@ xmlSecGnuTLSX509StoreAdoptCert(xmlSecKeyDataStorePtr store, gnutls_x509_crt_t ce
     return(0);
 }
 
+
+/**
+ * xmlSecGnuTLSX509StoreAdoptCrl:
+ * @store:              the pointer to X509 key data store klass.
+ * @crl:                the pointer to GnuTLS X509 CRL.
+ *
+ * Adds CRL to the store.
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecGnuTLSX509StoreAdoptCrl(xmlSecKeyDataStorePtr store, gnutls_x509_crl_t crl) {
+    xmlSecGnuTLSX509StoreCtxPtr ctx;
+    int ret;
+
+    xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecGnuTLSX509StoreId), -1);
+    xmlSecAssert2(crl != NULL, -1);
+
+    ctx = xmlSecGnuTLSX509StoreGetCtx(store);
+    xmlSecAssert2(ctx != NULL, -1);
+
+   ret = xmlSecPtrListAdd(&(ctx->crls), crl);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecPtrListAdd(crls)", xmlSecKeyDataStoreGetName(store));
+        return(-1);
+    }
+
+    /* done */
+    return(0);
+}
+
+
 static int
 xmlSecGnuTLSX509StoreInitialize(xmlSecKeyDataStorePtr store) {
     xmlSecGnuTLSX509StoreCtxPtr ctx;
@@ -598,6 +641,13 @@ xmlSecGnuTLSX509StoreInitialize(xmlSecKeyDataStorePtr store) {
         return(-1);
     }
 
+    ret = xmlSecPtrListInitialize(&(ctx->crls), xmlSecGnuTLSX509CrlListId);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecPtrListInitialize(crls)",
+                            xmlSecKeyDataStoreGetName(store));
+        return(-1);
+    }
+
     return(0);
 }
 
@@ -611,6 +661,7 @@ xmlSecGnuTLSX509StoreFinalize(xmlSecKeyDataStorePtr store) {
 
     xmlSecPtrListFinalize(&(ctx->certsTrusted));
     xmlSecPtrListFinalize(&(ctx->certsUntrusted));
+    xmlSecPtrListFinalize(&(ctx->crls));
 
     memset(ctx, 0, sizeof(xmlSecGnuTLSX509StoreCtx));
 }

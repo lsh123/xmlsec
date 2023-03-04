@@ -1957,8 +1957,7 @@ xmlSecCryptoAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* 
  * @filename:           the CRL file.
  * @format:             the CRL file format.
  *
- * Reads crls from @filename and adds to the list of trusted or known
- * untrusted crls in @store.
+ * Reads crls from @filename and adds to the list of crls in @store.
  *
  * Returns: 0 on success or a negative value otherwise.
  */
@@ -1979,8 +1978,7 @@ xmlSecCryptoAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, xml
  * @dataSize:           the CRL binary data size.
  * @format:             the CRL data format.
  *
- * Reads crl from binary buffer @data and adds to the list of trusted or known
- * untrusted crls in @store.
+ * Reads crl from binary buffer @data and adds to the list of crls in @store.
  *
  * Returns: 0 on success or a negative value otherwise.
  */

@@ -272,7 +272,9 @@ xmlSecCryptoGetFunctions_gnutls(void) {
     gXmlSecGnuTLSFunctions->cryptoAppDefaultKeysMngrSave        = xmlSecGnuTLSAppDefaultKeysMngrSave;
 #ifndef XMLSEC_NO_X509
     gXmlSecGnuTLSFunctions->cryptoAppKeysMngrCertLoad           = xmlSecGnuTLSAppKeysMngrCertLoad;
+    gXmlSecGnuTLSFunctions->cryptoAppKeysMngrCertLoadMemory     = xmlSecGnuTLSAppKeysMngrCertLoadMemory;
     gXmlSecGnuTLSFunctions->cryptoAppKeysMngrCrlLoad            = xmlSecGnuTLSAppKeysMngrCrlLoad;
+    gXmlSecGnuTLSFunctions->cryptoAppKeysMngrCrlLoadMemory      = xmlSecGnuTLSAppKeysMngrCrlLoadMemory;
     gXmlSecGnuTLSFunctions->cryptoAppPkcs12Load                 = xmlSecGnuTLSAppPkcs12Load;
     gXmlSecGnuTLSFunctions->cryptoAppKeyCertLoad                = xmlSecGnuTLSAppKeyCertLoad;
 #endif /* XMLSEC_NO_X509 */

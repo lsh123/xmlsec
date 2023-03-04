@@ -116,8 +116,7 @@ xmlSecMSCngAppGetCertStoreName(void) {
  * @pwdCallback:        the key password callback.
  * @pwdCallbackCtx:     the user context for password callback.
  *
- * Deprecated, use @xmlSecMSCngAppKeyLoadEx instead. Reads key from the a file (not implemented yet).
- *
+ * Deprecated, use @xmlSecMSCngAppKeyLoadEx instead. Reads key from the a file.
  * Returns: pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
@@ -136,7 +135,7 @@ xmlSecMSCngAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
  * @pwdCallback:        the key password callback.
  * @pwdCallbackCtx:     the user context for password callback.
  *
- * Reads key from the a file (not implemented yet).
+ * Reads key from the a file.
  *
  * Returns: pointer to the key or NULL if an error occurs.
  */
@@ -316,8 +315,7 @@ done:
  * @filename:           the certificate filename.
  * @format:             the certificate file format.
  *
- * Reads the certificate from $@filename and adds it to key
- * (not implemented yet).
+ * Reads the certificate from $@filename and adds it to key.
  *
  * Returns: 0 on success or a negative value otherwise.
  */
@@ -364,8 +362,8 @@ xmlSecMSCngAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSec
  * @pwdCallback:        the password callback.
  * @pwdCallbackCtx:     the user context for password callback.
  *
- * Reads key and all associated certificates from the PKCS12 file
- * (not implemented yet).
+ * Reads key and all associated certificates from the PKCS12 file.
+ *
  * For uniformity, call @xmlSecMSCngAppKeyLoadEx instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
  *
@@ -622,7 +620,7 @@ cleanup:
  *                      trusted or not.
  *
  * Reads cert from @filename and adds to the list of trusted or known
- * untrusted certs in @store (not implemented yet).
+ * untrusted certs in @store.
  *
  * Returns: 0 on success or a negative value otherwise.
  */
@@ -732,8 +730,7 @@ xmlSecMSCngAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* d
  * @filename:           the CRL file.
  * @format:             the CRL file format.
  *
- * Reads crls from @filename and adds to the list of trusted or known
- * untrusted crls in @store (not implemented yet).
+ * Reads crls from @filename and adds to the list of crls in @store.
  *
  * Returns: 0 on success or a negative value otherwise.
  */
@@ -755,8 +752,7 @@ xmlSecMSCngAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, xmlS
  * @dataSize:           the CRL data size.
  * @format:             the CRL format (PEM or DER).
  *
- * Reads crls from @data and adds to the list of trusted or known
- * untrusted crls in @store
+ * Reads crls from @data and adds to the list of crls in @store
  *
  * Returns: 0 on success or a negative value otherwise.
  */

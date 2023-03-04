@@ -237,8 +237,7 @@ typedef int                     (*xmlSecCryptoAppKeysMngrCertLoadMemoryMethod)(x
  * @filename:           the CRL file.
  * @format:             the CRL file format.
  *
- * Reads crls from @filename and adds to the list of trusted or known
- * untrusted crls in @store.
+ * Reads crls from @filename and adds to the list of crls in @store.
  *
  * Returns: 0 on success or a negative value otherwise.
  */
@@ -252,8 +251,7 @@ typedef int                     (*xmlSecCryptoAppKeysMngrCrlLoadMethod)(xmlSecKe
  * @dataSize:           the CRL data size.
  * @format:             the CRL data format.
  *
- * Reads crls from @data and adds to the list of trusted or known
- * untrusted crls in @store.
+ * Reads crls from @data and adds to the list of crls in @store.
  *
  * Returns: 0 on success or a negative value otherwise.
  */

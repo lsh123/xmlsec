@@ -23,9 +23,10 @@
 
 #include <nspr.h>
 #include <nss.h>
-#include <pk11func.h>
 #include <cert.h>
+#include <certdb.h>
 #include <keyhi.h>
+#include <pk11func.h>
 #include <pkcs12.h>
 #include <p12plcy.h>
 /*
@@ -45,13 +46,8 @@
 #include <xmlsec/nss/keysstore.h>
 
 #include "../cast_helpers.h"
+#include "private.h"
 
-/* workaround - NSS exports this but doesn't declare it */
-extern CERTCertificate * __CERT_NewTempCertificate              (CERTCertDBHandle *handle,
-                                                                 SECItem *derCert,
-                                                                 char *nickname,
-                                                                 PRBool isperm,
-                                                                 PRBool copyDER);
 static int xmlSecNssAppCreateSECItem                            (SECItem *contents,
                                                                  const xmlSecByte* data,
                                                                  xmlSecSize dataSize);
@@ -624,16 +620,18 @@ xmlSecNssAppKeyCertLoadSECItem(xmlSecKeyPtr key, SECItem* secItem, xmlSecKeyData
 
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(secItem != NULL, -1);
+    xmlSecAssert2(secItem->type == siBuffer, -1);
+    xmlSecAssert2(secItem->data != NULL, -1);
+    xmlSecAssert2(secItem->len > 0, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
     /* read cert */
     switch(format) {
     case xmlSecKeyDataFormatPkcs8Der:
     case xmlSecKeyDataFormatDer:
-        cert = __CERT_NewTempCertificate(CERT_GetDefaultCertDB(),
-                                         secItem, NULL, PR_FALSE, PR_TRUE);
+        cert = xmlSecNssX509CertDerRead(CERT_GetDefaultCertDB(), secItem->data, secItem->len);
         if(cert == NULL) {
-            xmlSecNssError2("__CERT_NewTempCertificate", NULL,
+            xmlSecInternalError2("xmlSecNssX509CertDerRead", NULL,
                 "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
             goto done;
         }
@@ -1029,15 +1027,17 @@ xmlSecNssAppKeyFromCertLoadSECItem(SECItem* secItem, xmlSecKeyDataFormat format)
     xmlSecKeyPtr res = NULL;
 
     xmlSecAssert2(secItem != NULL, NULL);
+    xmlSecAssert2(secItem->type == siBuffer, NULL);
+    xmlSecAssert2(secItem->data != NULL, NULL);
+    xmlSecAssert2(secItem->len > 0, NULL);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
 
     /* load cert */
     switch(format) {
     case xmlSecKeyDataFormatCertDer:
-        cert = __CERT_NewTempCertificate(CERT_GetDefaultCertDB(),
-                    secItem, NULL, PR_FALSE, PR_TRUE);
+        cert = xmlSecNssX509CertDerRead(CERT_GetDefaultCertDB(), secItem->data, secItem->len);
         if(cert == NULL) {
-            xmlSecNssError2("__CERT_NewTempCertificate", NULL,
+            xmlSecInternalError2("xmlSecNssX509CertDerRead", NULL,
                 "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
             goto done;
         }
@@ -1204,6 +1204,9 @@ xmlSecNssAppKeysMngrCertLoadSECItem(xmlSecKeysMngrPtr mngr, SECItem* secItem,
 
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(secItem != NULL, -1);
+    xmlSecAssert2(secItem->type == siBuffer, -1);
+    xmlSecAssert2(secItem->data != NULL, -1);
+    xmlSecAssert2(secItem->len > 0, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
     x509Store = xmlSecKeysMngrGetDataStore(mngr, xmlSecNssX509StoreId);
@@ -1214,10 +1217,9 @@ xmlSecNssAppKeysMngrCertLoadSECItem(xmlSecKeysMngrPtr mngr, SECItem* secItem,
 
     switch(format) {
     case xmlSecKeyDataFormatDer:
-        cert = __CERT_NewTempCertificate(CERT_GetDefaultCertDB(),
-                                         secItem, NULL, PR_FALSE, PR_TRUE);
+        cert = xmlSecNssX509CertDerRead(CERT_GetDefaultCertDB(), secItem->data, secItem->len);
         if(cert == NULL) {
-            xmlSecNssError2("__CERT_NewTempCertificate", NULL,
+            xmlSecInternalError2("xmlSecNssX509CertDerRead", NULL,
                 "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
             return(-1);
         }
@@ -1238,7 +1240,6 @@ xmlSecNssAppKeysMngrCertLoadSECItem(xmlSecKeysMngrPtr mngr, SECItem* secItem,
     return(0);
 }
 
-
 /**
  * xmlSecNssAppKeysMngrCrlLoad:
  * @mngr:               the pointer to keys manager.
@@ -1251,13 +1252,59 @@ xmlSecNssAppKeysMngrCertLoadSECItem(xmlSecKeysMngrPtr mngr, SECItem* secItem,
  */
 int
 xmlSecNssAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, xmlSecKeyDataFormat format) {
+    xmlSecKeyDataStorePtr x509Store;
+    CERTSignedCrl* crl;
+    SECItem secItem;
+    int ret;
+
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(filename != NULL, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
-    /* TODO */
-    xmlSecNotImplementedError(NULL);
-    return(-1);
+    x509Store = xmlSecKeysMngrGetDataStore(mngr, xmlSecNssX509StoreId);
+    if(x509Store == NULL) {
+        xmlSecInternalError("xmlSecKeysMngrGetDataStore(xmlSecNssX509StoreId)", NULL);
+        return(-1);
+    }
+
+    /* read the file contents */
+    memset(&secItem, 0, sizeof(secItem));
+    ret = xmlSecNssAppReadSECItem(&secItem, filename);
+    if((ret < 0) || (secItem.type != siBuffer) ||(secItem.data == NULL) || (secItem.len <= 0)) {
+        xmlSecInternalError("xmlSecNssAppReadSECItem", NULL);
+        return(-1);
+    }
+
+    /* read CRL */
+    switch(format) {
+    case xmlSecKeyDataFormatDer:
+        crl = xmlSecNssX509CrlDerRead(secItem.data, secItem.len, XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_STRICT_CHECKS);
+        if(crl == NULL) {
+            xmlSecInternalError2("xmlSecNssX509CrlDerRead", NULL,
+                "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
+            SECITEM_FreeItem(&secItem, PR_FALSE);
+            return(-1);
+        }
+        break;
+    default:
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
+            "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
+        SECITEM_FreeItem(&secItem, PR_FALSE);
+        return(-1);
+    }
+    SECITEM_FreeItem(&secItem, PR_FALSE);
+
+    /* Add CRL to the store */
+    ret = xmlSecNssX509StoreAdoptCrl(x509Store, crl);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecNssX509StoreAdoptCrl", NULL);
+        SEC_DestroyCrl(crl);
+        return(-1);
+    }
+    crl = NULL; /* owned by x509data now */
+
+    /* done */
+    return(0);
 }
 
 /**
@@ -1273,14 +1320,58 @@ xmlSecNssAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, xmlSec
  */
 int
 xmlSecNssAppKeysMngrCrlLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* data, xmlSecSize dataSize, xmlSecKeyDataFormat format) {
+    xmlSecKeyDataStorePtr x509Store;
+    CERTSignedCrl* crl;
+    SECItem secItem;
+    int ret;
+
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(data != NULL, -1);
-    xmlSecAssert2(dataSize > 0, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
-    /* TODO */
-    xmlSecNotImplementedError(NULL);
-    return(-1);
+    x509Store = xmlSecKeysMngrGetDataStore(mngr, xmlSecNssX509StoreId);
+    if(x509Store == NULL) {
+        xmlSecInternalError("xmlSecKeysMngrGetDataStore(xmlSecNssX509StoreId)", NULL);
+        return(-1);
+    }
+
+    memset(&secItem, 0, sizeof(secItem));
+    ret = xmlSecNssAppCreateSECItem(&secItem, data, dataSize);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecNssAppCreateSECItem", NULL);
+        return(-1);
+    }
+
+    /* read CRL */
+    switch(format) {
+    case xmlSecKeyDataFormatDer:
+        crl = xmlSecNssX509CrlDerRead(secItem.data, secItem.len, XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_STRICT_CHECKS);
+        if(crl == NULL) {
+            xmlSecInternalError2("xmlSecNssX509CrlDerRead", NULL,
+                "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
+            SECITEM_FreeItem(&secItem, PR_FALSE);
+            return(-1);
+        }
+        break;
+    default:
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
+            "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
+        SECITEM_FreeItem(&secItem, PR_FALSE);
+        return(-1);
+    }
+    SECITEM_FreeItem(&secItem, PR_FALSE);
+
+    /* Add CRL to the store */
+    ret = xmlSecNssX509StoreAdoptCrl(x509Store, crl);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecNssX509StoreAdoptCrl", NULL);
+        SEC_DestroyCrl(crl);
+        return(-1);
+    }
+    crl = NULL; /* owned by x509data now */
+
+    /* done */
+    return(0);
 }
 
 

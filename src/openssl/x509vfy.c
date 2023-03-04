@@ -412,7 +412,7 @@ xmlSecOpenSSLX509StoreVerifyCrlTimes(X509_CRL *crl, xmlSecKeyInfoCtx* keyInfoCtx
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
     /* check times: X509_cmp_time() and X509_cmp_current_time() return -1 if asn1_time is earlier
-        * than, or equal to, in_tm (resp. current time), and 1 otherwise. These methods return 0 on error. */
+     * than, or equal to, in_tm (resp. current time), and 1 otherwise. These methods return 0 on error. */
     lastUpdate = X509_CRL_get0_lastUpdate(crl);
     if(lastUpdate != NULL) {
         if(keyInfoCtx->certsVerificationTime > 0) {
@@ -493,14 +493,16 @@ xmlSecOpenSSLX509StoreVerifyCrlTimes(X509_CRL *crl, xmlSecKeyInfoCtx* keyInfoCtx
 
 
 static int
-xmlSecOpenSSLX509StoreVerifyCertAgainstRevoked(X509 * cert, STACK_OF(X509_REVOKED) *revoked_certs) {
+xmlSecOpenSSLX509StoreVerifyCertAgainstRevoked(X509 * cert, STACK_OF(X509_REVOKED) *revoked_certs, xmlSecKeyInfoCtx* keyInfoCtx) {
     X509_REVOKED * revoked_cert;
     const ASN1_INTEGER * revoked_cert_serial;
     const ASN1_INTEGER * cert_serial;
     x509_size_t ii, num;
+    int ret;
 
     xmlSecAssert2(cert != NULL, -1);
     xmlSecAssert2(revoked_certs != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
 
     cert_serial = X509_get_serialNumber(cert);
     if(cert_serial == NULL) {
@@ -525,6 +527,29 @@ xmlSecOpenSSLX509StoreVerifyCertAgainstRevoked(X509 * cert, STACK_OF(X509_REVOKE
             continue;
         }
 
+        /* don't bother checking the revocation date if we are checking against
+         * current time. In this case we assume that CRL didn't come from the future */
+        if(keyInfoCtx->certsVerificationTime > 0) {
+            const ASN1_TIME * revocationDate;
+            time_t tt = keyInfoCtx->certsVerificationTime;
+
+            revocationDate = X509_REVOKED_get0_revocationDate(revoked_cert);
+            if(revocationDate == NULL) {
+                xmlSecOpenSSLError("X509_REVOKED_get0_revocationDate(revoked_cert)", NULL);
+                return(-1);
+            }
+            ret = X509_cmp_time(revocationDate, &tt);
+            if(ret == 0) {
+                xmlSecOpenSSLError("X509_cmp_time(revocationDate)", NULL);
+                return(-1);
+            }
+            /* ret = 1: asn1_time is later than time */
+            if(ret > 0) {
+                /* revocationDate > certsVerificationTime, we are good */
+                continue;
+            }
+        }
+
         /* cert matches revoked */
         return(0);
     }
@@ -534,7 +559,7 @@ xmlSecOpenSSLX509StoreVerifyCertAgainstRevoked(X509 * cert, STACK_OF(X509_REVOKE
 }
 
 static int
-xmlSecOpenSSLX509StoreVerifyFindCertAgainstCrl(STACK_OF(X509_CRL) *crls, X509* cert, xmlSecKeyInfoCtx* keyInfoCtx) {
+xmlSecOpenSSLX509StoreVerifyCertAgainstCrl(STACK_OF(X509_CRL) *crls, X509* cert, xmlSecKeyInfoCtx* keyInfoCtx) {
     STACK_OF(X509_REVOKED) * revoked_certs;
     X509_NAME *cert_issuer;
     X509_NAME *crl_issuer;
@@ -580,13 +605,12 @@ xmlSecOpenSSLX509StoreVerifyFindCertAgainstCrl(STACK_OF(X509_CRL) *crls, X509* c
             continue;
         }
 
-
         /* CRL is good: verify cert */
         revoked_certs = X509_CRL_get_REVOKED(crl);
         if(revoked_certs == NULL) {
             continue;
         }
-        ret = xmlSecOpenSSLX509StoreVerifyCertAgainstRevoked(cert, revoked_certs);
+        ret = xmlSecOpenSSLX509StoreVerifyCertAgainstRevoked(cert, revoked_certs, keyInfoCtx);
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLX509StoreVerifyCertAgainstRevoked", NULL);
             return(-1);
@@ -624,9 +648,9 @@ xmlSecOpenSSLX509StoreVerifyCertAgainstCrls(STACK_OF(X509)* chain, STACK_OF(X509
         if(cert == NULL) {
             continue;
         }
-        ret = xmlSecOpenSSLX509StoreVerifyFindCertAgainstCrl(crls, cert, keyInfoCtx);
+        ret = xmlSecOpenSSLX509StoreVerifyCertAgainstCrl(crls, cert, keyInfoCtx);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecOpenSSLX509StoreVerifyFindCertAgainstCrl", NULL);
+            xmlSecInternalError("xmlSecOpenSSLX509StoreVerifyCertAgainstCrl", NULL);
             return(-1);
         } else if(ret != 1) {
             /* cert was revoked */

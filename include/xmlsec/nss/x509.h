@@ -88,6 +88,8 @@ XMLSEC_CRYPTO_EXPORT CERTCertificate*           xmlSecNssX509StoreVerify   (xmlS
 XMLSEC_CRYPTO_EXPORT int                        xmlSecNssX509StoreAdoptCert (xmlSecKeyDataStorePtr store,
                                                                              CERTCertificate* cert,
                                                                              xmlSecKeyDataType type);
+XMLSEC_CRYPTO_EXPORT int                        xmlSecNssX509StoreAdoptCrl  (xmlSecKeyDataStorePtr store,
+                                                                             CERTSignedCrl* crl);
 
 
 #ifdef __cplusplus

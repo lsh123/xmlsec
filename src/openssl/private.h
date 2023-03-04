@@ -17,15 +17,15 @@
 #endif /* XMLSEC_PRIVATE */
 
 
-#ifndef XMLSEC_NO_X509
-#include <openssl/x509_vfy.h>
-#include <openssl/x509.h>
-#endif /* XMLSEC_NO_X509 */
-
 #include <xmlsec/exports.h>
 #include <xmlsec/xmlsec.h>
 
 #include "../keysdata_helpers.h"
+
+#ifndef XMLSEC_NO_X509
+#include <openssl/x509_vfy.h>
+#include <openssl/x509.h>
+#endif /* XMLSEC_NO_X509 */
 
 #ifdef __cplusplus
 extern "C" {

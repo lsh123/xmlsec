@@ -46,6 +46,11 @@
 
 #include "openssl_compat.h"
 
+#ifndef XMLSEC_NO_X509
+#include <openssl/x509_vfy.h>
+#include <openssl/x509.h>
+#endif /* XMLSEC_NO_X509 */
+
 #ifdef XMLSEC_OPENSSL_API_300
 #include <openssl/provider.h>
 #endif /* XMLSEC_OPENSSL_API_300 */

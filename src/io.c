@@ -24,13 +24,22 @@
 #include <libxml/tree.h>
 #include <libxml/xmlIO.h>
 
-#ifdef LIBXML_HTTP_ENABLED
-#include <libxml/nanohttp.h>
+/* check if we want HTTP and FTP support */
+#ifndef LIBXML_HTTP_ENABLED
+#define XMLSEC_NO_HTTP  1
 #endif /* LIBXML_HTTP_ENABLED */
 
-#ifdef LIBXML_FTP_ENABLED
-#include <libxml/nanoftp.h>
+#ifndef LIBXML_FTP_ENABLED
+#define XMLSEC_NO_FTP  1
 #endif /* LIBXML_FTP_ENABLED */
+
+#ifndef XMLSEC_NO_HTTP
+#include <libxml/nanohttp.h>
+#endif /* XMLSEC_NO_HTTP */
+
+#ifndef XMLSEC_NO_FTP
+#include <libxml/nanoftp.h>
+#endif /* XMLSEC_NO_FTP */
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
@@ -162,13 +171,14 @@ xmlSecIOInit(void) {
         return(-1);
     }
 
-#ifdef LIBXML_FTP_ENABLED
+#ifndef XMLSEC_NO_FTP
     xmlNanoFTPInit();
-#endif /* LIBXML_FTP_ENABLED */
+#endif /* XMLSEC_NO_FTP */
 
-#ifdef LIBXML_HTTP_ENABLED
+#ifndef XMLSEC_NO_HTTP
     xmlNanoHTTPInit();
-#endif /* LIBXML_HTTP_ENABLED */
+#endif /* #ifndef XMLSEC_NO_HTTP
+ */
 
     ret = xmlSecIORegisterDefaultCallbacks();
     if(ret < 0) {
@@ -188,13 +198,13 @@ xmlSecIOInit(void) {
 void
 xmlSecIOShutdown(void) {
 
-#ifdef LIBXML_HTTP_ENABLED
+#ifndef XMLSEC_NO_HTTP
     xmlNanoHTTPCleanup();
-#endif /* LIBXML_HTTP_ENABLED */
+#endif /* XMLSEC_NO_HTTP */
 
-#ifdef LIBXML_FTP_ENABLED
+#ifndef XMLSEC_NO_FTP
     xmlNanoFTPCleanup();
-#endif /* LIBXML_FTP_ENABLED */
+#endif /* XMLSEC_NO_FTP */
 
     xmlSecPtrListFinalize(&xmlSecAllIOCallbacks);
 }
@@ -257,6 +267,7 @@ int
 xmlSecIORegisterDefaultCallbacks(void) {
     int ret;
 
+#ifndef XMLSEC_NO_FILES
     /* Callbacks added later are picked up first */
     ret = xmlSecIORegisterCallbacks(xmlFileMatch, xmlFileOpen,
                               xmlFileRead, xmlFileClose);
@@ -264,24 +275,25 @@ xmlSecIORegisterDefaultCallbacks(void) {
         xmlSecInternalError("xmlSecIORegisterCallbacks(file)", NULL);
         return(-1);
     }
+#endif /* XMLSEC_NO_FILES */
 
-#ifdef LIBXML_HTTP_ENABLED
+#ifndef XMLSEC_NO_HTTP
     ret = xmlSecIORegisterCallbacks(xmlIOHTTPMatch, xmlIOHTTPOpen,
                               xmlIOHTTPRead, xmlIOHTTPClose);
     if(ret < 0) {
         xmlSecInternalError("xmlSecIORegisterCallbacks(http)", NULL);
         return(-1);
     }
-#endif /* LIBXML_HTTP_ENABLED */
+#endif /* XMLSEC_NO_HTTP */
 
-#ifdef LIBXML_FTP_ENABLED
+#ifndef XMLSEC_NO_FTP
     ret = xmlSecIORegisterCallbacks(xmlIOFTPMatch, xmlIOFTPOpen,
                               xmlIOFTPRead, xmlIOFTPClose);
     if(ret < 0) {
         xmlSecInternalError("xmlSecIORegisterCallbacks(ftp)", NULL);
         return(-1);
     }
-#endif /* LIBXML_FTP_ENABLED */
+#endif /* XMLSEC_NO_FTP */
 
     /* done */
     return(0);
@@ -504,4 +516,3 @@ xmlSecTransformInputURIPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
     }
     return(0);
 }
-

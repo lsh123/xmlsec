@@ -1883,6 +1883,54 @@ if test "z$build_on_windows" = "zyes" ; then
 fi
 
 dnl ==========================================================================
+dnl See do we need files support
+dnl ==========================================================================
+AC_MSG_CHECKING(for files support)
+AC_ARG_ENABLE([files], [AS_HELP_STRING([--enable-files],[enable files support (yes)])])
+if test "z$enable_files" = "zno" ; then
+    XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_FILES=1"
+    XMLSEC_NO_FILES="1"
+    AC_MSG_RESULT([no (tests will be broken!)])
+else
+    XMLSEC_NO_FILES="0"
+    AC_MSG_RESULT([yes])
+fi
+AM_CONDITIONAL(XMLSEC_NO_FILES, test "z$XMLSEC_NO_FILES" = "z1")
+AC_SUBST(XMLSEC_NO_FILES)
+
+dnl ==========================================================================
+dnl See do we need FTP support
+dnl ==========================================================================
+AC_MSG_CHECKING(for FTP support)
+AC_ARG_ENABLE([ftp], [AS_HELP_STRING([--enable-ftp],[enable FTP support (no, deprecated)])])
+if test "z$enable_ftp" = "zyes" ; then
+    XMLSEC_NO_FTP="0"
+    AC_MSG_RESULT([yes (deprecated)])
+else
+    XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_FTP=1"
+    XMLSEC_NO_FTP="1"
+    AC_MSG_RESULT([disabled])
+fi
+AM_CONDITIONAL(XMLSEC_NO_FTP, test "z$XMLSEC_NO_FTP" = "z1")
+AC_SUBST(XMLSEC_NO_FTP)
+
+dnl ==========================================================================
+dnl See do we need HTTP support
+dnl ==========================================================================
+AC_MSG_CHECKING(for HTTP support)
+AC_ARG_ENABLE([http], [AS_HELP_STRING([--enable-http],[enable HTTP support (yes)])])
+if test "z$enable_http" = "zno" ; then
+    XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_HTTP=1"
+    XMLSEC_NO_HTTP="1"
+    AC_MSG_RESULT([no])
+else
+    XMLSEC_NO_HTTP="0"
+    AC_MSG_RESULT([yes])
+fi
+AM_CONDITIONAL(XMLSEC_NO_HTTP, test "z$XMLSEC_NO_HTTP" = "z1")
+AC_SUBST(XMLSEC_NO_HTTP)
+
+dnl ==========================================================================
 dnl See do we need MD5 support
 dnl ==========================================================================
 AC_MSG_CHECKING(for MD5 support)
@@ -2020,6 +2068,21 @@ if test "z$enable_dsa" = "zno" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_DSA=1"
     XMLSEC_NO_DSA="1"
     AC_MSG_RESULT([disabled])
+dnl ==========================================================================
+dnl See do we need MD5 support
+dnl ==========================================================================
+AC_MSG_CHECKING(for MD5 support)
+AC_ARG_ENABLE([md5], [AS_HELP_STRING([--enable-md5],[enable MD5 support (no, deprecated)])])
+if test "z$enable_md5" = "zyes" ; then
+    XMLSEC_NO_MD5="0"
+    AC_MSG_RESULT([yes (deprecated)])
+else
+    XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_MD5=1"
+    XMLSEC_NO_MD5="1"
+    AC_MSG_RESULT([disabled])
+fi
+AM_CONDITIONAL(XMLSEC_NO_MD5, test "z$XMLSEC_NO_MD5" = "z1")
+AC_SUBST(XMLSEC_NO_MD5)
 else
     XMLSEC_NO_DSA="0"
     AC_MSG_RESULT([yes])

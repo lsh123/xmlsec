@@ -228,10 +228,9 @@ printCheckStatus() {
     return "$check_res"
 }
 
+extra_message=""
 printMsg() {
-    msg="$1"
-    echo "$msg" >> $curlogfile
-    echo "$msg"
+    extra_message=" ($1)"
 }
 
 #
@@ -265,8 +264,9 @@ execKeysTest() {
     fi
 
     # starting test
-    echo "Test: $alg_name ($expected_res)"
-    echo "Test: $alg_name ($expected_res)" > $curlogfile
+    echo "Test: $alg_name $extra_message"
+    echo "Test: $alg_name $extra_message -- expected $expected_res" > $curlogfile
+    extra_message=""
 
     # check key data
     if [ -n "$req_key_data" ] ; then
@@ -517,13 +517,14 @@ execDSigTest() {
     if [ -n "$folder" ] ; then
         cd $topfolder/$folder
         full_file=$filename
-        echo $folder/$filename
-        echo "Test: $folder/$filename in folder " `pwd` " ($expected_res)" > $curlogfile
+        echo "Test: $folder/$filename $extra_message"
+        echo "Test: $folder/$filename in folder " `pwd` " $extra_message -- expected $expected_res" > $curlogfile
     else
         full_file=$topfolder/$filename
-        echo $filename
-        echo "Test: $folder/$filename ($expected_res)" > $curlogfile
+        echo "Test: $filename $extra_message"
+        echo "Test: $folder/$filename $extra_message -- $expected_res" > $curlogfile
     fi
+    extra_message=""
 
     # check transforms
     if [ -n "$req_transforms" ] ; then
@@ -634,13 +635,14 @@ execEncTest() {
     if [ -n "$folder" ] ; then
         cd $topfolder/$folder
         full_file=$filename
-        echo $folder/$filename
-        echo "Test: $folder/$filename in folder " `pwd` " ($expected_res)" > $curlogfile
+        echo "Test: $folder/$filename $extra_message"
+        echo "Test: $folder/$filename in folder " `pwd` " $extra_message -- $expected_res" > $curlogfile
     else
         full_file=$topfolder/$filename
-        echo $filename
-        echo "Test: $folder/$filename ($expected_res)" > $curlogfile
+        echo "Test: $filename $extra_message"
+        echo "Test: $folder/$filename $extra_message -- $expected_res" > $curlogfile
     fi
+    extra_message=""
 
     # check transforms
     if [ -n "$req_transforms" ] ; then

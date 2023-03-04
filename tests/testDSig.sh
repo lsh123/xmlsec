@@ -36,6 +36,89 @@ echo "--- LTDL_LIBRARY_PATH=$LTDL_LIBRARY_PATH" >> $logfile
 ##########################################################################
 ##########################################################################
 ##########################################################################
+echo "--------- Certificate verification testing ----------"
+# Test was created using the following command:
+# xmlsec1 sign --lax-key-search --privkey-pem tests/keys/rsakey.pem,tests/keys/rsacert.pem tests/aleksey-xmldsig-01/enveloped-x509-missing-cert.tmpl
+#
+
+# this should succeeed with both intermidiate and trusted certs provided
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloped-x509-missing-cert" \
+    "sha256 rsa-sha256" \
+    "x509" \
+    "--untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+
+# this should succeeed too because we bypass all cert checks with --insecure mode
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloped-x509-missing-cert" \
+    "sha256 rsa-sha256" \
+    "x509" \
+    "--insecure --enabled-key-data x509"
+
+# this should fail: missing intermidiate cert (ca2cert)
+execDSigTest $res_fail \
+    "" \
+    "aleksey-xmldsig-01/enveloped-x509-missing-cert" \
+    "sha256 rsa-sha256" \
+    "x509" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+
+# this should fail: missing trusted cert (cacert)
+execDSigTest $res_fail \
+    "" \
+    "aleksey-xmldsig-01/enveloped-x509-missing-cert" \
+    "sha256 rsa-sha256" \
+    "x509" \
+    "--untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --enabled-key-data x509"
+
+# this should fail: wrong trusted cert (largersacert vs cacert)
+execDSigTest $res_fail \
+    "" \
+    "aleksey-xmldsig-01/enveloped-x509-missing-cert" \
+    "sha256 rsa-sha256" \
+    "x509" \
+    "--untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/largersacert.$cert_format --enabled-key-data x509"
+
+# currently only openssl supports loading CRL from the command line
+if [ "z$crypto" = "zopenssl" ] ; then
+    # this should fail because there is a CRL for the cert used for signing
+    execDSigTest $res_fail \
+        "" \
+        "aleksey-xmldsig-01/enveloped-x509-missing-cert" \
+        "sha256 rsa-sha256" \
+        "x509" \
+        "--untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --crl-$cert_format $topfolder/keys/rsacert-revoked-crl.$cert_format --enabled-key-data x509"
+
+    # this should fail because while CRL is past due, it's still better than nothing
+    execDSigTest $res_fail \
+        "" \
+        "aleksey-xmldsig-01/enveloped-x509-missing-cert" \
+        "sha256 rsa-sha256" \
+        "x509" \
+        "--verification-gmt-time 2023-05-01+00:00:00 --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --crl-$cert_format $topfolder/keys/rsacert-revoked-crl.$cert_format --enabled-key-data x509"
+
+    # this should succeeed because CRL is not valid yet
+    execDSigTest $res_success \
+        "" \
+        "aleksey-xmldsig-01/enveloped-x509-missing-cert" \
+        "sha256 rsa-sha256" \
+        "x509" \
+        "--verification-gmt-time 2023-03-01+00:00:00 --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --crl-$cert_format $topfolder/keys/rsacert-revoked-crl.$cert_format --enabled-key-data x509"
+
+    # this should succeeed too because we bypass all cert checks with --insecure mode
+    execDSigTest $res_success \
+        "" \
+        "aleksey-xmldsig-01/enveloped-x509-missing-cert" \
+        "sha256 rsa-sha256" \
+        "x509" \
+        "--insecure --crl-$cert_format $topfolder/keys/rsacert-revoked-crl.$cert_format --enabled-key-data x509"
+fi
+
+##########################################################################
+##########################################################################
+##########################################################################
 echo "--------- Positive Testing ----------"
 
 ##########################################################################
@@ -1676,15 +1759,6 @@ execDSigTest $res_fail \
 # 'Verify existing signature' MUST fail here, as --trusted-... is not passed.
 # If this passes, that's a bug. Note that we need to cleanup NSS certs DB
 # since it automaticall stores trusted certs
-if [ "z$crypto" = "znss" ] ;
-then
-    certutil  -D -n "$NSS_TEST_CERT_NICKNAME" -d "$crypto_config_folder"
-    if [ $? -ne 0 ]; then
-        echo "--- FAILED TO DELETE TRUSTED TEST CERTIFICATE FROM NSS CERT DB. THE NEXT TEST MIGHT FAIL" >> $logfile
-        echo "--- FAILED TO DELETE TRUSTED TEST CERTIFICATE FROM NSS CERT DB. THE NEXT TEST MIGHT FAIL"
-    fi
-fi
-
 execDSigTest $res_fail \
     "aleksey-xmldsig-01" \
     "enveloping-sha256-rsa-sha256-verify" \

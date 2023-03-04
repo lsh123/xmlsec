@@ -3677,12 +3677,6 @@ xmlSecKeyDataIdListFindByNode(xmlSecPtrListPtr list, const xmlChar* nodeName,
         dataId = (xmlSecKeyDataId)xmlSecPtrListGetItem(list, i);
         xmlSecAssert2(dataId != xmlSecKeyDataIdUnknown, xmlSecKeyDataIdUnknown);
 
-        /*
-        printf("DEBUG: nodeName=%s,  nodeNs=%s, usage=%d, dataId->dataNodeName=%s, dataId->dataNodeNs=%s, dataId->usage=%d\n",
-            (char*)nodeName, (char*)nodeNs, (int)usage,
-            (char*)dataId->dataNodeName, (char*)dataId->dataNodeNs, (int)dataId->usage
-        );
-        */
         if(((usage & dataId->usage) != 0) &&
            xmlStrEqual(nodeName, dataId->dataNodeName) &&
            xmlStrEqual(nodeNs, dataId->dataNodeNs)) {

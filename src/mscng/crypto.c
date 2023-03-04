@@ -291,6 +291,8 @@ xmlSecCryptoGetFunctions_mscng(void) {
 #ifndef XMLSEC_NO_X509
     gXmlSecMSCngFunctions->cryptoAppKeysMngrCertLoad            = xmlSecMSCngAppKeysMngrCertLoad;
     gXmlSecMSCngFunctions->cryptoAppKeysMngrCertLoadMemory      = xmlSecMSCngAppKeysMngrCertLoadMemory;
+    gXmlSecMSCngFunctions->cryptoAppKeysMngrCrlLoad             = xmlSecMSCngAppKeysMngrCrlLoad;
+    gXmlSecMSCngFunctions->cryptoAppKeysMngrCrlLoadMemory       = xmlSecMSCngAppKeysMngrCrlLoadMemory;
     gXmlSecMSCngFunctions->cryptoAppPkcs12Load                  = xmlSecMSCngAppPkcs12Load;
     gXmlSecMSCngFunctions->cryptoAppPkcs12LoadMemory            = xmlSecMSCngAppPkcs12LoadMemory;
     gXmlSecMSCngFunctions->cryptoAppKeyCertLoad                 = xmlSecMSCngAppKeyCertLoad;

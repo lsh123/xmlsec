@@ -53,6 +53,14 @@ XMLSEC_CRYPTO_EXPORT int        xmlSecMSCngAppKeysMngrCertLoadMemory (xmlSecKeys
                                                                       xmlSecSize dataSize,
                                                                       xmlSecKeyDataFormat format,
                                                                       xmlSecKeyDataType type);
+
+XMLSEC_CRYPTO_EXPORT int        xmlSecMSCngAppKeysMngrCrlLoad       (xmlSecKeysMngrPtr mngr,
+                                                                      const char *filename,
+                                                                      xmlSecKeyDataFormat format);
+XMLSEC_CRYPTO_EXPORT int        xmlSecMSCngAppKeysMngrCrlLoadMemory (xmlSecKeysMngrPtr mngr,
+                                                                      const xmlSecByte *data,
+                                                                      xmlSecSize dataSize,
+                                                                      xmlSecKeyDataFormat format);
 #endif /* XMLSEC_NO_X509 */
 
 

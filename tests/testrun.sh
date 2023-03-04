@@ -171,6 +171,13 @@ fi
 
 NSS_TEST_CERT_NICKNAME="NSS Certificate DB:Aleksey Sanin - XML Security Library (http://www.aleksey.com/xmlsec)"
 
+cleanupNssCerts() {
+    echo "certutil  -D -n \"$NSS_TEST_CERT_NICKNAME\" -d \"$crypto_config_folder\""  >> $logfile
+    certutil  -D -n "$NSS_TEST_CERT_NICKNAME" -d "$crypto_config_folder"   >> $logfile 2>> $logfile
+    if [ $? -ne 0 ]; then
+        echo "--- FAILED TO DELETE TRUSTED TEST CERTIFICATE FROM NSS CERT DB. THE NEXT TEST MIGHT FAIL" >> $logfile
+    fi
+}
 
 #
 # Check the command result and print it to stdout
@@ -489,6 +496,10 @@ execDSigTest() {
     rm -f $tmpfile
     old_pwd=`pwd`
 
+    if [ "z$crypto" = "znss" ] ; then
+        cleanupNssCerts
+    fi
+
     # check params
     if [ "z$expected_res" != "z$res_success" -a "z$expected_res" != "z$res_fail" ] ; then
         echo " Bad parameter: expected_res=$expected_res"
@@ -600,6 +611,11 @@ execEncTest() {
     # prepare
     rm -f $tmpfile $tmpfile.2
     old_pwd=`pwd`
+
+
+    if [ "z$crypto" = "znss" ] ; then
+        cleanupNssCerts
+    fi
 
     # check params
     if [ "z$expected_res" != "z$res_success" -a "z$expected_res" != "z$res_fail" ] ; then

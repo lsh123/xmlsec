@@ -48,6 +48,9 @@ XMLSEC_CRYPTO_EXPORT int        xmlSecGnuTLSAppKeysMngrCertLoad         (xmlSecK
                                                                          const char *filename,
                                                                          xmlSecKeyDataFormat format,
                                                                          xmlSecKeyDataType type);
+XMLSEC_CRYPTO_EXPORT int        xmlSecGnuTLSAppKeysMngrCrlLoad          (xmlSecKeysMngrPtr mngr,
+                                                                         const char *filename,
+                                                                         xmlSecKeyDataFormat format);
 XMLSEC_CRYPTO_EXPORT int        xmlSecGnuTLSAppKeysMngrCertLoadMemory   (xmlSecKeysMngrPtr mngr,
                                                                          const xmlSecByte* data,
                                                                          xmlSecSize dataSize,

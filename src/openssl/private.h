@@ -17,10 +17,6 @@
 #endif /* XMLSEC_PRIVATE */
 
 
-#ifndef XMLSEC_NO_X509
-#include <openssl/x509.h>
-#endif /* XMLSEC_NO_X509 */
-
 #include <xmlsec/exports.h>
 #include <xmlsec/xmlsec.h>
 
@@ -38,7 +34,7 @@ extern "C" {
 #ifndef XMLSEC_NO_X509
 
 typedef struct _xmlSecOpenSSLX509FindCertCtx {
-    X509_NAME *subjectName;
+    X509_NAME * subjectName;
     X509_NAME * issuerName;
     ASN1_INTEGER * issuerSerial;
     const xmlSecByte * ski; /* NOT OWNED */
@@ -72,6 +68,15 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecOpenSSLX509FindKeyByValue           (xml
                                                                              xmlSecKeyX509DataValuePtr x509Value);
 
 XMLSEC_CRYPTO_EXPORT const EVP_MD* xmlSecOpenSSLX509GetDigestFromAlgorithm  (const xmlChar* href);
+
+
+
+XMLSEC_CRYPTO_EXPORT X509*       xmlSecOpenSSLX509CertLoadBIO               (BIO* bio,
+                                                                             xmlSecKeyDataFormat format);
+XMLSEC_CRYPTO_EXPORT X509_CRL*   xmlSecOpenSSLX509CrlLoadBIO                (BIO* bio,
+                                                                             xmlSecKeyDataFormat format);
+
+XMLSEC_CRYPTO_EXPORT time_t      xmlSecOpenSSLX509Asn1TimeToTime            (const ASN1_TIME * t);
 
 #endif /* XMLSEC_NO_X509 */
 

@@ -35,6 +35,7 @@
 #include <xmlsec/x509.h>
 #include <xmlsec/base64.h>
 #include <xmlsec/errors.h>
+#include <openssl/pem.h>
 #include <xmlsec/private.h>
 #include <xmlsec/xmltree.h>
 
@@ -223,7 +224,7 @@ xmlSecOpenSSLKeyDataX509AddCertInternal(xmlSecOpenSSLX509DataCtxPtr ctx, X509* c
     }
 
     ret = sk_X509_push(ctx->certsList, cert);
-    if(ret < 1) {
+    if(ret <= 0) {
         xmlSecOpenSSLError("sk_X509_push", NULL);
         return(-1);
     }
@@ -402,16 +403,14 @@ xmlSecOpenSSLKeyDataX509AdoptCrl(xmlSecKeyDataPtr data, X509_CRL* crl) {
     if(ctx->crlsList == NULL) {
         ctx->crlsList = sk_X509_CRL_new_null();
         if(ctx->crlsList == NULL) {
-            xmlSecOpenSSLError("sk_X509_CRL_new_null",
-                               xmlSecKeyDataGetName(data));
+            xmlSecOpenSSLError("sk_X509_CRL_new_null", xmlSecKeyDataGetName(data));
             return(-1);
         }
     }
 
     ret = sk_X509_CRL_push(ctx->crlsList, crl);
-    if(ret < 1) {
-        xmlSecOpenSSLError("sk_X509_CRL_push",
-                           xmlSecKeyDataGetName(data));
+    if(ret <= 0) {
+        xmlSecOpenSSLError("sk_X509_CRL_push", xmlSecKeyDataGetName(data));
         return(-1);
     }
 
@@ -766,7 +765,7 @@ xmlSecOpenSSLKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x5
         crl = xmlSecOpenSSLX509CrlDerRead(xmlSecBufferGetData(&(x509Value->crl)),
             xmlSecBufferGetSize(&(x509Value->crl)));
         if(crl == NULL) {
-            xmlSecInternalError("xmlSecOpenSSLX509CertDerRead", xmlSecKeyDataGetName(data));
+            xmlSecInternalError("xmlSecOpenSSLX509CrlDerRead", xmlSecKeyDataGetName(data));
             goto done;
         }
     }
@@ -1371,52 +1370,47 @@ my_timegm(struct tm *t) {
 
 #if !defined(OPENSSL_IS_BORINGSSL)
 
-static int
-xmlSecOpenSSLX509CertGetTime(const ASN1_TIME * t, time_t* res) {
+time_t
+xmlSecOpenSSLX509Asn1TimeToTime(const ASN1_TIME * t) {
     struct tm tm;
     int ret;
 
-    xmlSecAssert2(t != NULL, -1);
-    xmlSecAssert2(res != NULL, -1);
+    xmlSecAssert2(t != NULL, 0);
 
-    (*res) = 0;
     if(!ASN1_TIME_check(t)) {
         xmlSecOpenSSLError("ASN1_TIME_check", NULL);
-        return(-1);
+        return(0);
     }
 
     memset(&tm, 0, sizeof(tm));
     ret = ASN1_TIME_to_tm(t, &tm);
     if(ret != 1) {
         xmlSecOpenSSLError("ASN1_TIME_to_tm", NULL);
-        return(-1);
+        return(0);
     }
 
-    (*res) = timegm(&tm);
-    return(0);
+    return(timegm(&tm));
 }
 
 #else  /* !defined(OPENSSL_IS_BORINGSSL) */
 
-static int
-xmlSecOpenSSLX509CertGetTime(ASN1_TIME * t, time_t* res) {
+time_t
+xmlSecOpenSSLX509Asn1TimeToTime(ASN1_TIME * t) {
     struct tm tm;
     int offset;
 
-    xmlSecAssert2(t != NULL, -1);
-    xmlSecAssert2(res != NULL, -1);
+    xmlSecAssert2(t != NULL, 0);
 
-    (*res) = 0;
     if(!ASN1_TIME_check(t)) {
         xmlSecOpenSSLError("ASN1_TIME_check", NULL);
-        return(-1);
+        return(0);
     }
 
     memset(&tm, 0, sizeof(tm));
 
 #define g2(p) (((p)[0]-'0')*10+(p)[1]-'0')
     if(t->type == V_ASN1_UTCTIME) {
-        xmlSecAssert2(t->length > 12, -1);
+        xmlSecAssert2(t->length > 12, 0);
 
         /* this code is copied from OpenSSL asn1/a_utctm.c file */
         tm.tm_year = g2(t->data);
@@ -1431,7 +1425,7 @@ xmlSecOpenSSLX509CertGetTime(ASN1_TIME * t, time_t* res) {
         if(t->data[12] == 'Z') {
             offset = 0;
         } else {
-            xmlSecAssert2(t->length > 16, -1);
+            xmlSecAssert2(t->length > 16, 0);
 
             offset = g2(t->data + 13) * 60 + g2(t->data + 15);
             if(t->data[12] == '-') {
@@ -1440,7 +1434,7 @@ xmlSecOpenSSLX509CertGetTime(ASN1_TIME * t, time_t* res) {
         }
         tm.tm_isdst = -1;
     } else {
-        xmlSecAssert2(t->length > 14, -1);
+        xmlSecAssert2(t->length > 14, 0);
 
         tm.tm_year = g2(t->data) * 100 + g2(t->data + 2);
         tm.tm_mon  = g2(t->data + 4) - 1;
@@ -1451,7 +1445,7 @@ xmlSecOpenSSLX509CertGetTime(ASN1_TIME * t, time_t* res) {
         if(t->data[14] == 'Z') {
             offset = 0;
         } else {
-            xmlSecAssert2(t->length > 18, -1);
+            xmlSecAssert2(t->length > 18, 0);
 
             offset = g2(t->data + 15) * 60 + g2(t->data + 17);
             if(t->data[14] == '-') {
@@ -1461,8 +1455,7 @@ xmlSecOpenSSLX509CertGetTime(ASN1_TIME * t, time_t* res) {
         tm.tm_isdst = -1;
     }
 #undef g2
-    (*res) = timegm(&tm) - offset * 60;
-    return(0);
+    return(timegm(&tm) - offset * 60);
 }
 #endif /* !defined(OPENSSL_IS_BORINGSSL) */
 
@@ -1543,18 +1536,18 @@ xmlSecOpenSSLVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data, 
 
     /* copy cert not before / not after times from the cert */
     if(X509_get0_notBefore(ctx->keyCert) != NULL) {
-        ret = xmlSecOpenSSLX509CertGetTime(X509_get0_notBefore(ctx->keyCert), &(key->notValidBefore));
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecOpenSSLX509CertGetTime(notValidBefore)", xmlSecKeyDataGetName(data));
+        key->notValidBefore = xmlSecOpenSSLX509Asn1TimeToTime(X509_get0_notBefore(ctx->keyCert));
+        if(key->notValidBefore <= 0) {
+            xmlSecInternalError("xmlSecOpenSSLX509Asn1TimeToTime(notValidBefore)", xmlSecKeyDataGetName(data));
             return(-1);
         }
     } else {
         key->notValidBefore = 0;
     }
     if(X509_get0_notAfter(ctx->keyCert) != NULL) {
-        ret = xmlSecOpenSSLX509CertGetTime(X509_get0_notAfter(ctx->keyCert), &(key->notValidAfter));
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecOpenSSLX509CertGetTime(notValidAfter)", xmlSecKeyDataGetName(data));
+        key->notValidAfter = xmlSecOpenSSLX509Asn1TimeToTime(X509_get0_notAfter(ctx->keyCert));
+        if(key->notValidAfter <= 0) {
+            xmlSecInternalError("xmlSecOpenSSLX509Asn1TimeToTime(notValidAfter)", xmlSecKeyDataGetName(data));
             return(-1);
         }
     } else {
@@ -1605,86 +1598,156 @@ xmlSecOpenSSLX509CertGetKey(X509* cert) {
     return(data);
 }
 
+
+X509*
+xmlSecOpenSSLX509CertLoadBIO(BIO* bio, xmlSecKeyDataFormat format) {
+    X509* tmp = NULL;
+    X509* res = NULL;
+
+    xmlSecAssert2(bio != NULL, NULL);
+    xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
+
+    /* create certificate object to hold the cert we are going to read */
+    tmp = X509_new_ex(xmlSecOpenSSLGetLibCtx(), NULL);
+    if(tmp == NULL) {
+        xmlSecOpenSSLError("X509_new_ex", NULL);
+        goto done;
+    }
+
+    /* read the cert */
+    switch(format) {
+    case xmlSecKeyDataFormatPem:
+    case xmlSecKeyDataFormatCertPem:
+        res = PEM_read_bio_X509_AUX(bio, &tmp, NULL, NULL);
+        if(res == NULL) {
+            xmlSecOpenSSLError("PEM_read_bio_X509_AUX", NULL);
+            goto done;
+        }
+        tmp = NULL; /* now it's res */
+        break;
+    case xmlSecKeyDataFormatDer:
+    case xmlSecKeyDataFormatCertDer:
+        res = d2i_X509_bio(bio, &tmp);
+        if(res == NULL) {
+            xmlSecOpenSSLError("d2i_X509_bio", NULL);
+            goto done;
+        }
+        tmp = NULL; /* now it's res */
+        break;
+    default:
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
+            "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
+        goto done;
+    }
+
+done:
+    if(tmp != NULL) {
+        X509_free(tmp);
+    }
+    return(res);
+}
+
+
+X509_CRL*
+xmlSecOpenSSLX509CrlLoadBIO(BIO* bio, xmlSecKeyDataFormat format) {
+    X509_CRL* tmp = NULL;
+    X509_CRL* res = NULL;
+
+    xmlSecAssert2(bio != NULL, NULL);
+    xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
+
+    /* create CRL object to hold the CRL we are going to read */
+    tmp = X509_CRL_new_ex(xmlSecOpenSSLGetLibCtx(), NULL);
+    if(tmp == NULL) {
+        xmlSecOpenSSLError("X509_CRL_new_ex", NULL);
+        goto done;
+    }
+
+    /* read the cert */
+    switch(format) {
+    case xmlSecKeyDataFormatPem:
+    case xmlSecKeyDataFormatCertPem:
+        res = PEM_read_bio_X509_CRL(bio, &tmp, NULL, NULL);
+        if(res == NULL) {
+            xmlSecOpenSSLError("PEM_read_bio_X509_CRL", NULL);
+            goto done;
+        }
+        tmp = NULL; /* now it's res */
+        break;
+    case xmlSecKeyDataFormatDer:
+    case xmlSecKeyDataFormatCertDer:
+        res = d2i_X509_CRL_bio(bio, &tmp);
+        if(res == NULL) {
+            xmlSecOpenSSLError("d2i_X509_CRL_bio", NULL);
+            goto done;
+        }
+        tmp = NULL; /* now it's res */
+        break;
+    default:
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
+            "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
+        goto done;
+    }
+
+done:
+    if(tmp != NULL) {
+        X509_CRL_free(tmp);
+    }
+    return(res);
+}
+
 static X509*
 xmlSecOpenSSLX509CertDerRead(const xmlSecByte* buf, xmlSecSize size) {
     X509 *cert = NULL;
-    BIO *mem = NULL;
-    X509 *tmpCert = NULL;
+    BIO * bio = NULL;
 
     xmlSecAssert2(buf != NULL, NULL);
     xmlSecAssert2(size > 0, NULL);
 
-    mem = xmlSecOpenSSLCreateMemBufBio(buf, size);
-    if(mem == NULL) {
+    bio = xmlSecOpenSSLCreateMemBufBio(buf, size);
+    if(bio == NULL) {
         xmlSecInternalError2("xmlSecOpenSSLCreateMemBufBio", NULL,
-                             "size=" XMLSEC_SIZE_FMT, size);
+            "size=" XMLSEC_SIZE_FMT, size);
         goto done;
     }
 
-    tmpCert = X509_new_ex(xmlSecOpenSSLGetLibCtx(), NULL);
-    if(tmpCert == NULL) {
-        xmlSecOpenSSLError("X509_new_ex", NULL);
-        goto done;
-    }
-    cert = d2i_X509_bio(mem, &tmpCert);
+    cert = xmlSecOpenSSLX509CertLoadBIO(bio, xmlSecKeyDataFormatDer);
     if(cert == NULL) {
-        xmlSecOpenSSLError2("d2i_X509_bio", NULL,
-                            "size=" XMLSEC_SIZE_FMT, size);
+        xmlSecInternalError("xmlSecOpenSSLX509CertLoadBIO", NULL);
         goto done;
     }
-
-    /* sucess: tmpCert is now cert */
-    tmpCert = NULL;
 
 done:
-    /*  cleanup */
-    if(tmpCert != NULL) {
-        X509_free(tmpCert);
-    }
-    if(mem != NULL) {
-        BIO_free_all(mem);
+    if(bio != NULL) {
+        BIO_free_all(bio);
     }
     return(cert);
 }
 
 static X509_CRL*
 xmlSecOpenSSLX509CrlDerRead(xmlSecByte* buf, xmlSecSize size) {
-    X509_CRL *tmpCrl = NULL;
     X509_CRL *crl = NULL;
-    BIO *mem = NULL;
+    BIO *bio = NULL;
 
     xmlSecAssert2(buf != NULL, NULL);
     xmlSecAssert2(size > 0, NULL);
 
-    mem = xmlSecOpenSSLCreateMemBufBio(buf, size);
-    if(mem == NULL) {
+    bio = xmlSecOpenSSLCreateMemBufBio(buf, size);
+    if(bio == NULL) {
         xmlSecInternalError2("xmlSecOpenSSLCreateMemBufBio", NULL,
-                             "size=" XMLSEC_SIZE_FMT, size);
+            "size=" XMLSEC_SIZE_FMT, size);
         goto done;
     }
-
-    tmpCrl = X509_CRL_new_ex(xmlSecOpenSSLGetLibCtx(), NULL);
-    if(tmpCrl == NULL) {
-        xmlSecOpenSSLError("X509_CRL_new_ex", NULL);
-        goto done;
-    }
-
-    crl = d2i_X509_CRL_bio(mem, &tmpCrl);
+    crl = xmlSecOpenSSLX509CrlLoadBIO(bio, xmlSecKeyDataFormatDer);
     if(crl == NULL) {
-        xmlSecOpenSSLError("d2i_X509_CRL_bio", NULL);
+        xmlSecInternalError("xmlSecOpenSSLX509CrlLoadBIO", NULL);
         goto done;
     }
-
-    /* success, tmpCrl is now crl */
-    tmpCrl = NULL;
 
 done:
     /* cleanup */
-    if(tmpCrl != NULL) {
-        X509_CRL_free(tmpCrl);
-    }
-    if(mem != NULL) {
-        BIO_free_all(mem);
+    if(bio != NULL) {
+        BIO_free_all(bio);
     }
     return(crl);
 }

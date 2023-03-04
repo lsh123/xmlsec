@@ -313,7 +313,7 @@ xmlSecGCryptAppKeyCertLoad(xmlSecKeyPtr key, const char* filename,
     xmlSecAssert2(filename != NULL, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
-    /* TODO */
+    /* GCrypt  does not support X509 certificates */
     xmlSecNotImplementedError(NULL);
     return(-1);
 }
@@ -339,7 +339,7 @@ xmlSecGCryptAppKeyCertLoadMemory(xmlSecKeyPtr key,
     xmlSecAssert2(dataSize > 0, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
-    /* TODO */
+    /* GCrypt  does not support X509 certificates */
     xmlSecNotImplementedError(NULL);
     return(-1);
 }
@@ -365,7 +365,7 @@ xmlSecGCryptAppPkcs12Load(const char *filename,
                           void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
     xmlSecAssert2(filename != NULL, NULL);
 
-    /* TODO */
+    /* GCrypt  does not support X509 certificates */
     xmlSecNotImplementedError(NULL);
     return(NULL);
 }
@@ -392,7 +392,7 @@ xmlSecGCryptAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     xmlSecAssert2(data != NULL, NULL);
     xmlSecAssert2(dataSize > 0, NULL);
 
-    /* TODO */
+    /* GCrypt  does not support X509 certificates */
     xmlSecNotImplementedError(NULL);
     return(NULL);
 }
@@ -419,7 +419,29 @@ xmlSecGCryptAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr,
     xmlSecAssert2(filename != NULL, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
-    /* TODO */
+    /* GCrypt  does not support X509 certificates */
+    xmlSecNotImplementedError(NULL);
+    return(-1);
+}
+
+/**
+ * xmlSecGCryptAppKeysMngrCrlLoad:
+ * @mngr:               the keys manager.
+ * @filename:           the CRL file.
+ * @format:             the CRL file format.
+ *
+ * Reads crls from @filename and adds to the list of trusted or known
+ * untrusted crls in @store (not implemented yet).
+ *
+ * Returns: 0 on success or a negative value otherwise.
+ */
+int
+xmlSecGCryptAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, xmlSecKeyDataFormat format) {
+    xmlSecAssert2(mngr != NULL, -1);
+    xmlSecAssert2(filename != NULL, -1);
+    xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
+
+    /* GCrypt  does not support X509 certificates */
     xmlSecNotImplementedError(NULL);
     return(-1);
 }
@@ -448,7 +470,7 @@ xmlSecGCryptAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr,
     xmlSecAssert2(dataSize > 0, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
-    /* TODO */
+    /* GCrypt  does not support X509 certificates */
     xmlSecNotImplementedError(NULL);
     return(-1);
 }

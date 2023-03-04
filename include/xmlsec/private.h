@@ -215,9 +215,9 @@ typedef int                     (*xmlSecCryptoAppKeysMngrCertLoadMethod)(xmlSecK
 /**
  * xmlSecCryptoAppKeysMngrCertLoadMemoryMethod:
  * @mngr:               the keys manager.
- * @data:               the key data.
- * @dataSize:           the key data size.
- * @format:             the certificate format.
+ * @data:               the certificate data.
+ * @dataSize:           the certificate data size.
+ * @format:             the certificate data format.
  * @type:               the flag that indicates is the certificate in @data
  *                      trusted or not.
  *
@@ -231,6 +231,37 @@ typedef int                     (*xmlSecCryptoAppKeysMngrCertLoadMemoryMethod)(x
                                                                          xmlSecSize dataSize,
                                                                          xmlSecKeyDataFormat format,
                                                                          xmlSecKeyDataType type);
+/**
+ * xmlSecCryptoAppKeysMngrCrlLoadMethod:
+ * @mngr:               the keys manager.
+ * @filename:           the CRL file.
+ * @format:             the CRL file format.
+ *
+ * Reads crls from @filename and adds to the list of trusted or known
+ * untrusted crls in @store.
+ *
+ * Returns: 0 on success or a negative value otherwise.
+ */
+typedef int                     (*xmlSecCryptoAppKeysMngrCrlLoadMethod)(xmlSecKeysMngrPtr mngr,
+                                                                         const char *filename,
+                                                                         xmlSecKeyDataFormat format);
+/**
+ * xmlSecCryptoAppKeysMngrCrlLoadMemoryMethod:
+ * @mngr:               the keys manager.
+ * @data:               the CRL data.
+ * @dataSize:           the CRL data size.
+ * @format:             the CRL data format.
+ *
+ * Reads crls from @data and adds to the list of trusted or known
+ * untrusted crls in @store.
+ *
+ * Returns: 0 on success or a negative value otherwise.
+ */
+typedef int                     (*xmlSecCryptoAppKeysMngrCrlLoadMemoryMethod)(xmlSecKeysMngrPtr mngr,
+                                                                         const xmlSecByte* data,
+                                                                         xmlSecSize dataSize,
+                                                                         xmlSecKeyDataFormat formate);
+
 /**
  * xmlSecCryptoAppKeyLoadMethod:
  * @filename:           the key filename.
@@ -454,6 +485,8 @@ typedef int                     (*xmlSecCryptoAppKeyCertLoadMemoryMethod)(xmlSec
  * @cryptoAppDefaultKeysMngrSave:       the default keys manager save method.
  * @cryptoAppKeysMngrCertLoad:          the default keys manager file cert load method.
  * @cryptoAppKeysMngrCertLoadMemory:    the default keys manager memory cert load method.
+ * @cryptoAppKeysMngrCrlLoad:           the default keys manager file crl load method.
+ * @cryptoAppKeysMngrCrlLoadMemory:     the default keys manager memory crl load method.
  * @cryptoAppKeyLoad:           the key file load method.
  * @cryptoAppKeyLoadEx:         the key file load method.
  * @cryptoAppKeyLoadMemory:     the meory key load method.
@@ -586,6 +619,8 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoAppDefaultKeysMngrSaveMethod     cryptoAppDefaultKeysMngrSave;
     xmlSecCryptoAppKeysMngrCertLoadMethod        cryptoAppKeysMngrCertLoad;
     xmlSecCryptoAppKeysMngrCertLoadMemoryMethod  cryptoAppKeysMngrCertLoadMemory;
+    xmlSecCryptoAppKeysMngrCrlLoadMethod         cryptoAppKeysMngrCrlLoad;
+    xmlSecCryptoAppKeysMngrCrlLoadMemoryMethod   cryptoAppKeysMngrCrlLoadMemory;
     xmlSecCryptoAppKeyLoadMethod                 cryptoAppKeyLoad;
     xmlSecCryptoAppKeyLoadExMethod               cryptoAppKeyLoadEx;
     xmlSecCryptoAppKeyLoadMemoryMethod           cryptoAppKeyLoadMemory;

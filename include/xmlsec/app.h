@@ -705,6 +705,13 @@ XMLSEC_EXPORT int                               xmlSecCryptoAppKeysMngrCertLoadM
                                                                                  xmlSecSize dataSize,
                                                                                  xmlSecKeyDataFormat format,
                                                                                  xmlSecKeyDataType type);
+XMLSEC_EXPORT int                               xmlSecCryptoAppKeysMngrCrlLoad  (xmlSecKeysMngrPtr mngr,
+                                                                                 const char *filename,
+                                                                                 xmlSecKeyDataFormat format);
+XMLSEC_EXPORT int                               xmlSecCryptoAppKeysMngrCrlLoadMemory(xmlSecKeysMngrPtr mngr,
+                                                                                 const xmlSecByte* data,
+                                                                                 xmlSecSize dataSize,
+                                                                                 xmlSecKeyDataFormat format);
 XMLSEC_DEPRECATED XMLSEC_EXPORT xmlSecKeyPtr    xmlSecCryptoAppKeyLoad          (const char *filename,
                                                                                  xmlSecKeyDataFormat format,
                                                                                  const char *pwd,

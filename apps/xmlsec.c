@@ -852,17 +852,6 @@ static xmlSecAppCmdLineParam trustedParam = {
     NULL
 };
 
-static xmlSecAppCmdLineParam untrustedParam = {
-    xmlSecAppCmdLineTopicX509Certs,
-    "--untrusted-pem",
-    "--untrusted",
-    "--untrusted-pem <file>"
-    "\n\tload untrusted certificate from PEM file <file>",
-    xmlSecAppCmdLineParamTypeString,
-    xmlSecAppCmdLineParamFlagMultipleValues,
-    NULL
-};
-
 static xmlSecAppCmdLineParam trustedDerParam = {
     xmlSecAppCmdLineTopicX509Certs,
     "--trusted-der",
@@ -874,12 +863,45 @@ static xmlSecAppCmdLineParam trustedDerParam = {
     NULL
 };
 
+static xmlSecAppCmdLineParam untrustedParam = {
+    xmlSecAppCmdLineTopicX509Certs,
+    "--untrusted-pem",
+    "--untrusted",
+    "--untrusted-pem <file>"
+    "\n\tload untrusted certificate from PEM file <file>",
+    xmlSecAppCmdLineParamTypeString,
+    xmlSecAppCmdLineParamFlagMultipleValues,
+    NULL
+};
+
 static xmlSecAppCmdLineParam untrustedDerParam = {
     xmlSecAppCmdLineTopicX509Certs,
     "--untrusted-der",
     NULL,
     "--untrusted-der <file>"
     "\n\tload untrusted certificate from DER file <file>",
+    xmlSecAppCmdLineParamTypeString,
+    xmlSecAppCmdLineParamFlagMultipleValues,
+    NULL
+};
+
+static xmlSecAppCmdLineParam crlPemParam = {
+    xmlSecAppCmdLineTopicX509Certs,
+    "--crl-pem",
+    "--crl",
+    "--crl-pem <file>"
+    "\n\tload CRLs from PEM file <file>",
+    xmlSecAppCmdLineParamTypeString,
+    xmlSecAppCmdLineParamFlagMultipleValues,
+    NULL
+};
+
+static xmlSecAppCmdLineParam crlDerParam = {
+    xmlSecAppCmdLineTopicX509Certs,
+    "--crl-der",
+    NULL,
+    "--crl-der <file>"
+    "\n\tload CRLs from DER file <file>",
     xmlSecAppCmdLineParamTypeString,
     xmlSecAppCmdLineParamFlagMultipleValues,
     NULL
@@ -1024,6 +1046,8 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
     &untrustedParam,
     &trustedDerParam,
     &untrustedDerParam,
+    &crlPemParam,
+    &crlDerParam,
     &verificationTimeParam,
     &verificationGmtTimeParam,
     &depthParam,
@@ -2300,6 +2324,29 @@ xmlSecAppLoadKeys(void) {
         }
     }
 
+    /* read all crls*/
+    for(value = crlPemParam.value; value != NULL; value = value->next) {
+        if(value->strValue == NULL) {
+            fprintf(stderr, "Error: invalid value for option \"%s\".\n", crlPemParam.fullName);
+            return(-1);
+        } else if(xmlSecAppCryptoSimpleKeysMngrCrlLoad(gKeysMngr,
+                    value->strValue, xmlSecKeyDataFormatPem) < 0) {
+            fprintf(stderr, "Error: failed to load CRLs from \"%s\".\n",
+                    value->strValue);
+            return(-1);
+        }
+    }
+    for(value = crlDerParam.value; value != NULL; value = value->next) {
+        if(value->strValue == NULL) {
+            fprintf(stderr, "Error: invalid value for option \"%s\".\n", crlDerParam.fullName);
+            return(-1);
+        } else if(xmlSecAppCryptoSimpleKeysMngrCrlLoad(gKeysMngr,
+                    value->strValue, xmlSecKeyDataFormatDer) < 0) {
+            fprintf(stderr, "Error: failed to load CRLs from \"%s\".\n",
+                    value->strValue);
+            return(-1);
+        }
+    }
 #endif /* XMLSEC_NO_X509 */
 
     /******************************************************************************************

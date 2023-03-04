@@ -410,6 +410,8 @@ xmlSecCryptoGetFunctions_openssl(void) {
 #ifndef XMLSEC_NO_X509
     gXmlSecOpenSSLFunctions->cryptoAppKeysMngrCertLoad          = xmlSecOpenSSLAppKeysMngrCertLoad;
     gXmlSecOpenSSLFunctions->cryptoAppKeysMngrCertLoadMemory    = xmlSecOpenSSLAppKeysMngrCertLoadMemory;
+    gXmlSecOpenSSLFunctions->cryptoAppKeysMngrCrlLoad           = xmlSecOpenSSLAppKeysMngrCrlLoad;
+    gXmlSecOpenSSLFunctions->cryptoAppKeysMngrCrlLoadMemory     = xmlSecOpenSSLAppKeysMngrCrlLoadMemory;
     gXmlSecOpenSSLFunctions->cryptoAppPkcs12Load                = xmlSecOpenSSLAppPkcs12Load;
     gXmlSecOpenSSLFunctions->cryptoAppPkcs12LoadMemory          = xmlSecOpenSSLAppPkcs12LoadMemory;
     gXmlSecOpenSSLFunctions->cryptoAppKeyCertLoad               = xmlSecOpenSSLAppKeyCertLoad;

@@ -759,7 +759,7 @@ xmlSecMSCryptoAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
 int
 xmlSecMSCryptoAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* data,
                                         xmlSecSize dataSize, xmlSecKeyDataFormat format,
-                                        xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
+                                        xmlSecKeyDataType type) {
     xmlSecKeyDataStorePtr x509Store;
     PCCERT_CONTEXT pCert = NULL;
     DWORD dwDataSize;
@@ -801,6 +801,52 @@ xmlSecMSCryptoAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte
     }
 
     return(0);
+}
+
+/**
+ * xmlSecMSCryptoAppKeysMngrCrlLoad:
+ * @mngr:               the keys manager.
+ * @filename:           the CRL file.
+ * @format:             the CRL file format.
+ *
+ * Reads crl from @filename and adds to the list of trusted or known
+ * untrusted crls in @store (not implemented yet).
+ *
+ * Returns: 0 on success or a negative value otherwise.
+ */
+int
+xmlSecMSCryptoAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, xmlSecKeyDataFormat format) {
+    xmlSecAssert2(mngr != NULL, -1);
+    xmlSecAssert2(filename != NULL, -1);
+    xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
+
+    /* TODO */
+    xmlSecNotImplementedError(NULL);
+    return(-1);
+}
+
+/**
+ * xmlSecMSCryptoAppKeysMngrCrlLoadMemory:
+ * @mngr:               the keys manager.
+ * @data:               the binary CRL.
+ * @dataSize:           size of binary CRL (data)
+ * @format:             the CRL format.
+ *
+ * Reads crl from @data and adds to the list of trusted or known
+ * untrusted crls in @store.
+ *
+ * Returns: 0 on success or a negative value otherwise.
+ */
+int
+xmlSecMSCryptoAppKeysMngrCrlLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* data, xmlSecSize dataSize, xmlSecKeyDataFormat format) {
+    xmlSecAssert2(mngr != NULL, -1);
+    xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(dataSize > 0, -1);
+    xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
+
+    /* TODO */
+    xmlSecNotImplementedError(NULL);
+    return(-1);
 }
 
 /**

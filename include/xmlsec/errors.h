@@ -310,7 +310,7 @@ extern "C" {
  *
  * Max allowed KeyInfoReference level reached.
  */
-#define XMLSEC_ERRORS_R_MAX_KEYINFOREFERENCE_LEVEL            51
+#define XMLSEC_ERRORS_R_MAX_KEYINFOREFERENCE_LEVEL        51
 
 /**
  * XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL:
@@ -360,6 +360,27 @@ extern "C" {
  * "Not valid after" verification failed.
  */
 #define XMLSEC_ERRORS_R_CERT_HAS_EXPIRED                76
+
+/**
+ * XMLSEC_ERRORS_R_CRL_VERIFY_FAILED:
+ *
+ * CRL verification failed.
+ */
+#define XMLSEC_ERRORS_R_CRL_VERIFY_FAILED              77
+
+/**
+ * XMLSEC_ERRORS_R_CRL_NOT_YET_VALID:
+ *
+ * "Last update" CRL verification failed.
+ */
+#define XMLSEC_ERRORS_R_CRL_NOT_YET_VALID              78
+
+/**
+ * XMLSEC_ERRORS_R_CRL_HAS_EXPIRED:
+ *
+ * "Next update" verification failed.
+ */
+#define XMLSEC_ERRORS_R_CRL_HAS_EXPIRED                79
 
 /**
  * XMLSEC_ERRORS_R_DSIG_NO_REFERENCES:

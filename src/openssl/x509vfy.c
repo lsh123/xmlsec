@@ -93,8 +93,11 @@ static xmlSecKeyDataStoreKlass xmlSecOpenSSLX509StoreKlass = {
 };
 
 static int              xmlSecOpenSSLX509VerifyCRL                      (X509_STORE* xst,
-                                                                         X509_CRL *crl );
-static X509*            xmlSecOpenSSLX509FindChildCert              (STACK_OF(X509) *chain,
+                                                                         X509_STORE_CTX* xsc,
+                                                                         STACK_OF(X509)* untrusted,
+                                                                         X509_CRL *crl,
+                                                                         xmlSecKeyInfoCtx* keyInfoCtx);
+static X509*            xmlSecOpenSSLX509FindChildCert                  (STACK_OF(X509) *chain,
                                                                          X509 *cert);
 static X509_NAME*       xmlSecOpenSSLX509NameRead                       (const xmlChar *str);
 static int              xmlSecOpenSSLX509NameStringRead                 (const xmlChar **in,
@@ -337,12 +340,16 @@ xmlSecOpenSSLX509FindKeyByValue(xmlSecPtrListPtr keysList, xmlSecKeyX509DataValu
 
 
 static STACK_OF(X509_CRL)*
-xmlSecOpenSSLX509StoreVerifyAndCopyCrls(X509_STORE* xst, STACK_OF(X509_CRL)* crls) {
+xmlSecOpenSSLX509StoreVerifyAndCopyCrls(X509_STORE* xst, X509_STORE_CTX* xsc, STACK_OF(X509)* untrusted, STACK_OF(X509_CRL)* crls,
+    xmlSecKeyInfoCtx* keyInfoCtx
+) {
     STACK_OF(X509_CRL)* verified_crls = NULL;
     x509_size_t ii, num;
     int ret;
 
     xmlSecAssert2(xst != NULL, NULL);
+    xmlSecAssert2(xsc != NULL, NULL);
+    xmlSecAssert2(keyInfoCtx != NULL, NULL);
 
     /* check if we have anything to copy */
     if(crls == NULL) {
@@ -372,7 +379,8 @@ xmlSecOpenSSLX509StoreVerifyAndCopyCrls(X509_STORE* xst, STACK_OF(X509_CRL)* crl
         if(crl == NULL) {
             continue;
         }
-        ret = xmlSecOpenSSLX509VerifyCRL(xst, crl);
+
+        ret = xmlSecOpenSSLX509VerifyCRL(xst, xsc, untrusted, crl, keyInfoCtx);
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLX509VerifyCRL", NULL);
             sk_X509_CRL_free(verified_crls);
@@ -396,8 +404,10 @@ xmlSecOpenSSLX509StoreVerifyAndCopyCrls(X509_STORE* xst, STACK_OF(X509_CRL)* crl
 }
 
 static int
-xmlSecOpenSSLX509StoreVerifyFindCrlsForCert(STACK_OF(X509_CRL) *crls, X509* cert, STACK_OF(X509_CRL) ** out) {
-    X509_NAME *issuer;
+xmlSecOpenSSLX509StoreVerifyFindCrlsForCert(STACK_OF(X509_CRL) *crls, X509* cert, STACK_OF(X509_CRL) ** out, xmlSecKeyInfoCtx* keyInfoCtx) {
+    const ASN1_TIME * nextUpdate, * lastUpdate;
+    X509_NAME *cert_issuer;
+    X509_NAME *crl_issuer;
     X509_CRL *crl = NULL;
     x509_size_t ii, num;
     int ret;
@@ -405,13 +415,14 @@ xmlSecOpenSSLX509StoreVerifyFindCrlsForCert(STACK_OF(X509_CRL) *crls, X509* cert
     xmlSecAssert2(crls != NULL, -1);
     xmlSecAssert2(cert != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
 
     /*
      * Try to retrieve a CRL corresponding to the issuer of
      * the current certificate
      */
-    issuer = X509_get_issuer_name(cert);
-    if(issuer == NULL) {
+    cert_issuer = X509_get_issuer_name(cert);
+    if(cert_issuer == NULL) {
         xmlSecOpenSSLError("X509_get_issuer_name", NULL);
         return(-1);
     }
@@ -422,17 +433,76 @@ xmlSecOpenSSLX509StoreVerifyFindCrlsForCert(STACK_OF(X509_CRL) *crls, X509* cert
         if(crl == NULL) {
             continue;
         }
-
-        /* is this CRL from same issuer? */
-        if(xmlSecOpenSSLX509NamesCompare(X509_CRL_get_issuer(crl), issuer) != 0) {
+        crl_issuer = X509_CRL_get_issuer(crl);
+        if(crl_issuer == NULL) {
             continue;
         }
 
-        /* check the CRL date that it's not expired */
-        /* TODO: compare against cert verification time from keyInfoCtx */
-        ret = X509_cmp_current_time(X509_CRL_get0_nextUpdate(crl));
-        if (ret == 0) {
+        /* is this CRL from same issuer? */
+        if(xmlSecOpenSSLX509NamesCompare(crl_issuer, cert_issuer) != 0) {
             continue;
+        }
+
+        /* check times: X509_cmp_time() and X509_cmp_current_time() return -1 if asn1_time is earlier
+         * than, or equal to, in_tm (resp. current time), and 1 otherwise. These methods return 0 on error. */
+        lastUpdate = X509_CRL_get0_lastUpdate(crl);
+        if(lastUpdate != NULL) {
+            if(keyInfoCtx->certsVerificationTime > 0) {
+                time_t tt = keyInfoCtx->certsVerificationTime;
+                ret = X509_cmp_time(lastUpdate, &tt);
+                if(ret == 0) {
+                    xmlSecOpenSSLError("X509_cmp_time(lastUpdate)", NULL);
+                    return(-1);
+                }
+            } else {
+                ret = X509_cmp_current_time(lastUpdate);
+                if(ret == 0) {
+                    xmlSecOpenSSLError("X509_cmp_current_time(lastUpdate)", NULL);
+                    return(-1);
+                }
+            }
+
+            /* ret = 1: asn1_time is later than time */
+            if(ret > 0) {
+                char issuer_name[256];
+                time_t ts;
+
+                ts = xmlSecOpenSSLX509Asn1TimeToTime(lastUpdate);
+                X509_NAME_oneline(crl_issuer, issuer_name, sizeof(issuer_name));
+                xmlSecOtherError3(XMLSEC_ERRORS_R_CRL_NOT_YET_VALID, NULL,
+                    "issuer=%s; lastUpdate=%lf", issuer_name, (double)ts);
+                continue;
+            }
+        }
+        nextUpdate = X509_CRL_get0_nextUpdate(crl);
+        if(nextUpdate != NULL) {
+            if(keyInfoCtx->certsVerificationTime > 0) {
+                time_t tt = keyInfoCtx->certsVerificationTime;
+                ret = X509_cmp_time(nextUpdate, &tt);
+                if(ret == 0) {
+                    xmlSecOpenSSLError("X509_cmp_time(nextUpdate)", NULL);
+                    return(-1);
+                }
+            } else {
+                ret = X509_cmp_current_time(nextUpdate);
+                if(ret == 0) {
+                    xmlSecOpenSSLError("X509_cmp_current_time(nextUpdate)", NULL);
+                    return(-1);
+                }
+            }
+
+            /* ret = -1: asn1_time is earlier than, or equal to than time, however old CRL is
+             * better than no CRL so we log an error and continue */
+            if(ret < 0) {
+                char issuer_name[256];
+                time_t ts;
+
+                ts = xmlSecOpenSSLX509Asn1TimeToTime(nextUpdate);
+                X509_NAME_oneline(crl_issuer, issuer_name, sizeof(issuer_name));
+                xmlSecOtherError3(XMLSEC_ERRORS_R_CRL_HAS_EXPIRED, NULL,
+                    "issuer=%s; nextUpdate=%lf", issuer_name, (double)ts);
+                /* DO NOT STOP: OLD CRL IS BETTER THAN NOTHING */
+            }
         }
 
         /* CRL is good! add it to the output list */
@@ -496,7 +566,7 @@ xmlSecOpenSSLX509StoreVerifyCertAgainstRevoked(X509 * cert, STACK_OF(X509_REVOKE
 }
 
 static int
-xmlSecOpenSSLX509StoreVerifyCertAgainstCrls(STACK_OF(X509)* chain, STACK_OF(X509_CRL)* crls,  xmlSecKeyInfoCtx* keyInfoCtx) {
+xmlSecOpenSSLX509StoreVerifyCertAgainstCrls(STACK_OF(X509)* chain, STACK_OF(X509_CRL)* crls, xmlSecKeyInfoCtx* keyInfoCtx) {
     STACK_OF(X509_CRL)* crls_for_chain = NULL;
     X509 * cert;
     X509_CRL * crl;
@@ -516,7 +586,7 @@ xmlSecOpenSSLX509StoreVerifyCertAgainstCrls(STACK_OF(X509)* chain, STACK_OF(X509
         if(cert == NULL) {
             continue;
         }
-        ret = xmlSecOpenSSLX509StoreVerifyFindCrlsForCert(crls, cert, &crls_for_chain);
+        ret = xmlSecOpenSSLX509StoreVerifyFindCrlsForCert(crls, cert, &crls_for_chain, keyInfoCtx);
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLX509StoreVerifyFindCrlsForCert", NULL);
             goto done;
@@ -576,26 +646,13 @@ done:
 }
 
 static int
-xmlSecOpenSSLX509StoreVerifyCert(X509_STORE* xst, X509_STORE_CTX* xsc, X509* cert,
-    STACK_OF(X509)* untrusted, STACK_OF(X509_CRL)* crls, STACK_OF(X509_CRL)* crls2,
-    xmlSecKeyInfoCtx* keyInfoCtx
-) {
-    STACK_OF(X509)* chain;
+xmlSecOpenSSLX509StoreSetCtx(X509_STORE_CTX* xsc, xmlSecKeyInfoCtx* keyInfoCtx) {
     X509_VERIFY_PARAM * vpm = NULL;
     unsigned long vpm_flags = 0;
-    int ret;
 
-    xmlSecAssert2(xst != NULL, -1);
     xmlSecAssert2(xsc != NULL, -1);
-    xmlSecAssert2(cert != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
-    ret = X509_STORE_CTX_init(xsc, xst, cert, untrusted);
-    if(ret != 1) {
-        xmlSecOpenSSLError("X509_STORE_CTX_init", NULL);
-        return(-1);
-
-    }
     if(keyInfoCtx->certsVerificationTime > 0) {
         X509_STORE_CTX_set_time(xsc, 0, keyInfoCtx->certsVerificationTime);
     }
@@ -618,11 +675,41 @@ xmlSecOpenSSLX509StoreVerifyCert(X509_STORE* xst, X509_STORE_CTX* xsc, X509* cer
     X509_STORE_CTX_set0_param(xsc, vpm);
     vpm = NULL; /* owned by xsc now */
 
+    /* done */
+    return(0);
+}
+
+static int
+xmlSecOpenSSLX509StoreVerifyCert(X509_STORE* xst, X509_STORE_CTX* xsc, X509* cert,
+    STACK_OF(X509)* untrusted, STACK_OF(X509_CRL)* crls, STACK_OF(X509_CRL)* crls2,
+    xmlSecKeyInfoCtx* keyInfoCtx
+) {
+    STACK_OF(X509)* chain;
+    int ret;
+    int res = -1;
+
+    xmlSecAssert2(xst != NULL, -1);
+    xmlSecAssert2(xsc != NULL, -1);
+    xmlSecAssert2(cert != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+
+    /* init contenxt and set verification params from keyinfo ctx*/
+    ret = X509_STORE_CTX_init(xsc, xst, cert, untrusted);
+    if(ret != 1) {
+        xmlSecOpenSSLError("X509_STORE_CTX_init", NULL);
+        goto done;
+    }
+    ret = xmlSecOpenSSLX509StoreSetCtx(xsc, keyInfoCtx);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecOpenSSLX509StoreSetCtx", NULL);
+        goto done;
+    }
+
     /* verify */
     ret = X509_verify_cert(xsc);
     if(ret < 0) {
         xmlSecOpenSSLError("X509_verify_cert", NULL);
-        return(-1);
+        goto done;
     } else if(ret != 1) {
         X509 * err_cert = NULL;
         int err = 0;
@@ -671,13 +758,16 @@ xmlSecOpenSSLX509StoreVerifyCert(X509_STORE* xst, X509_STORE_CTX* xsc, X509* cer
         } else {
             xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED, NULL, "cert verification failed");
         }
-        return(0);
+
+        /* not verified */
+        res = 0;
+        goto done;
     }
 
     chain = X509_STORE_CTX_get0_chain(xsc);
     if(chain == NULL) {
         xmlSecOpenSSLError("X509_STORE_CTX_get0_chain(crls)", NULL);
-        return(-1);
+        goto done;
     }
 
     /* now check against crls */
@@ -685,25 +775,31 @@ xmlSecOpenSSLX509StoreVerifyCert(X509_STORE* xst, X509_STORE_CTX* xsc, X509* cer
         ret = xmlSecOpenSSLX509StoreVerifyCertAgainstCrls(chain, crls, keyInfoCtx);
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLX509StoreVerifyCertAgainstCrls(crls)", NULL);
-            return(-1);
+            goto done;
         } else if(ret != 1) {
             /* not verified */
-            return(0);
+            res = 0;
+            goto done;
         }
     }
     if(crls2 != NULL) {
         ret = xmlSecOpenSSLX509StoreVerifyCertAgainstCrls(chain, crls2, keyInfoCtx);
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLX509StoreVerifyCertAgainstCrls(crls2)", NULL);
-            return(-1);
+            goto done;
         } else if(ret != 1) {
             /* not verified */
-            return(0);
+            res = 0;
+            goto done;
         }
     }
 
-    /* success */
-    return(1);
+    /* success: verified */
+    res = 1;
+
+done:
+    X509_STORE_CTX_cleanup(xsc);
+    return(res);
 }
 
 /**
@@ -736,6 +832,13 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
     xmlSecAssert2(ctx != NULL, NULL);
     xmlSecAssert2(ctx->xst != NULL, NULL);
 
+    /* reuse xsc for both crls and certs verification */
+    xsc = X509_STORE_CTX_new_ex(xmlSecOpenSSLGetLibCtx(), NULL);
+    if(xsc == NULL) {
+        xmlSecOpenSSLError("X509_STORE_CTX_new", xmlSecKeyDataStoreGetName(store));
+        goto done;
+    }
+
     /* create a combined list of all untrusted certs*/
     all_untrusted_certs = xmlSecOpenSSLX509StoreCombineCerts(certs, ctx->untrusted);
     if(all_untrusted_certs == NULL) {
@@ -744,14 +847,9 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
     }
 
     /* copy crls list but remove all non-verified (we assume that CRLs in the store are already verified) */
-    verified_crls = xmlSecOpenSSLX509StoreVerifyAndCopyCrls(ctx->xst, crls);
+    verified_crls = xmlSecOpenSSLX509StoreVerifyAndCopyCrls(ctx->xst, xsc, all_untrusted_certs, crls, keyInfoCtx);
 
     /* get one cert after another and try to verify */
-    xsc = X509_STORE_CTX_new_ex(xmlSecOpenSSLGetLibCtx(), NULL);
-    if(xsc == NULL) {
-        xmlSecOpenSSLError("X509_STORE_CTX_new", xmlSecKeyDataStoreGetName(store));
-        goto done;
-    }
     num = sk_X509_num(certs);
     for(ii = 0; ii < num; ++ii) {
         cert = sk_X509_value(certs, ii);
@@ -1063,55 +1161,75 @@ xmlSecOpenSSLX509StoreFinalize(xmlSecKeyDataStorePtr store) {
  *
  *****************************************************************************/
 static int
-xmlSecOpenSSLX509VerifyCRL(X509_STORE* xst, X509_CRL *crl ) {
-    X509_STORE_CTX *xsc = NULL;
+xmlSecOpenSSLX509VerifyCRL(X509_STORE* xst, X509_STORE_CTX* xsc, STACK_OF(X509)* untrusted, X509_CRL *crl, xmlSecKeyInfoCtx* keyInfoCtx) {
     X509_OBJECT *xobj = NULL;
-    EVP_PKEY *pkey = NULL;
+    EVP_PKEY *pKey = NULL;
     int ret;
+    int res = -1;
 
     xmlSecAssert2(xst != NULL, -1);
+    xmlSecAssert2(xsc != NULL, -1);
     xmlSecAssert2(crl != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
 
-    xsc = X509_STORE_CTX_new_ex(xmlSecOpenSSLGetLibCtx(), NULL);
-    if(xsc == NULL) {
-        xmlSecOpenSSLError("X509_STORE_CTX_new", NULL);
-        goto err;
-    }
     xobj = (X509_OBJECT *)X509_OBJECT_new();
     if(xobj == NULL) {
         xmlSecOpenSSLError("X509_OBJECT_new", NULL);
-        goto err;
+        goto done;
     }
 
-    ret = X509_STORE_CTX_init(xsc, xst, NULL, NULL);
+    /* init contenxt and set verification params from keyinfo ctx*/
+    ret = X509_STORE_CTX_init(xsc, xst, NULL, untrusted);
     if(ret != 1) {
         xmlSecOpenSSLError("X509_STORE_CTX_init", NULL);
-        goto err;
+        goto done;
     }
-    ret = X509_STORE_CTX_get_by_subject(xsc, X509_LU_X509,
-                                        X509_CRL_get_issuer(crl), xobj);
+    ret = xmlSecOpenSSLX509StoreSetCtx(xsc, keyInfoCtx);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecOpenSSLX509StoreSetCtx", NULL);
+        goto done;
+    }
+
+    ret = X509_STORE_CTX_get_by_subject(xsc, X509_LU_X509, X509_CRL_get_issuer(crl), xobj);
     if(ret <= 0) {
         xmlSecOpenSSLError("X509_STORE_CTX_get_by_subject", NULL);
-        goto err;
+        goto done;
     }
-    pkey = X509_get_pubkey(X509_OBJECT_get0_X509(xobj));
-    if(pkey == NULL) {
-        xmlSecOpenSSLError("X509_get_pubkey", NULL);
-        goto err;
-    }
-    ret = X509_CRL_verify(crl, pkey);
-    EVP_PKEY_free(pkey);
-    if(ret != 1) {
-        xmlSecOpenSSLError("X509_CRL_verify", NULL);
-    }
-    X509_STORE_CTX_free(xsc);
-    X509_OBJECT_free(xobj);
-    return((ret == 1) ? 1 : 0);
 
-err:
-    X509_STORE_CTX_free(xsc);
-    X509_OBJECT_free(xobj);
-    return(-1);
+    pKey = X509_get_pubkey(X509_OBJECT_get0_X509(xobj));
+    if(pKey == NULL) {
+        xmlSecOpenSSLError("X509_get_pubkey", NULL);
+        goto done;
+    }
+
+    ret = X509_CRL_verify(crl, pKey);
+    if(ret < 0) {
+        xmlSecOpenSSLError("X509_CRL_verify", NULL);
+        goto done;
+    } if(ret != 0) {
+        char issuer[256];
+
+        /* cert was not verified */
+        X509_NAME_oneline(X509_CRL_get_issuer(crl), issuer, sizeof(issuer));
+        xmlSecOtherError2(XMLSEC_ERRORS_R_CRL_VERIFY_FAILED, NULL, "issuer=%s", issuer);
+
+        /* not verified */
+        res = 0;
+        goto done;
+    }
+
+    /* success: verified */
+    res = 1;
+
+done:
+    if(pKey != NULL) {
+        EVP_PKEY_free(pKey);
+    }
+    if(xobj != NULL) {
+        X509_OBJECT_free(xobj);
+    }
+    X509_STORE_CTX_cleanup(xsc);
+    return(res);
 }
 
 

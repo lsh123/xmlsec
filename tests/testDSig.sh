@@ -91,6 +91,22 @@ if [ "z$crypto" = "zopenssl" ] ; then
         "x509" \
         "--untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --crl-$cert_format $topfolder/keys/rsacert-revoked-crl.$cert_format --enabled-key-data x509"
 
+    # this should fail because while CRL is past due, it's still better than nothing
+    execDSigTest $res_fail \
+        "" \
+        "aleksey-xmldsig-01/enveloped-x509-missing-cert" \
+        "sha256 rsa-sha256" \
+        "x509" \
+        "--verification-gmt-time 2023-05-01+00:00:00 --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --crl-$cert_format $topfolder/keys/rsacert-revoked-crl.$cert_format --enabled-key-data x509"
+
+    # this should succeeed because CRL is not valid yet
+    execDSigTest $res_success \
+        "" \
+        "aleksey-xmldsig-01/enveloped-x509-missing-cert" \
+        "sha256 rsa-sha256" \
+        "x509" \
+        "--verification-gmt-time 2023-03-01+00:00:00 --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --crl-$cert_format $topfolder/keys/rsacert-revoked-crl.$cert_format --enabled-key-data x509"
+
     # this should succeeed too because we bypass all cert checks with --insecure mode
     execDSigTest $res_success \
         "" \

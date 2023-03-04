@@ -43,7 +43,7 @@
 <!--Links - start--><!--Links - end-->
 </table>
 </td>
-<td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
+<td valign="top"><table width="80%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
 <div align="center">
 <h1>XML Security Library News</h1>
 </div>
@@ -59,11 +59,13 @@
 				<ul>
                     <li>(<b>ABI breaking change</b>) Added support for the <a href="https://www.w3.org/TR/xmldsig-core1/#sec-KeyInfoReference">KeyInfoReference Element</a>.</li>
 					<li>(<b>ABI breaking change</b>) Switched xmlSecSize to use size_t by default. Use "--enable-size-t=no" configure option ("size_t=no" on Windows) to
-						restore the old behaviour (note that this behaviour is deprecated and will be removed in the future.</li>
+						restore the old behaviour (note that support for xmlSecSize being different from size_t will be removed in the future).</li>
 					<li>(<b>API breaking change</b>) Changed the key search to strict mode: only keys referenced by KeyInfo are used. To restore the old "lax" mode,
 						set XMLSEC_KEYINFO_FLAGS_LAX_KEY_SEARCH flag on xmlSecKeyInfoCtx or use '--lax-key-search' option for XMLSec command line utility.
 					</li>
 					<li>(<b>API breaking change</b>) The KeyName element content is now trimmed before key search is performed.</li>
+					<li>(<b>API breaking change</b>) Disabled FTP support by default. Use "--enable-ftp" configure option to restore it. Also added
+                        "--enable-http" and "--enable-files" configure options to control support for loading files over HTTP or locally.</li>
                     <li>(<b>API/ABI breaking change</b>) Disabled MD5 digest method by default. Use "--enable-md5" configure options ("legacy-crypto" option on Windows) to re-enable MD5.</li>
 					<li>(<b>ABI breaking change</b>) Removed deprecated functions.</li>
                     <li>Added support for loading keys through <a href="https://www.openssl.org/docs/man3.0/man7/ossl_store.html">ossl-store</a> interface (e.g.

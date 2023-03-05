@@ -477,6 +477,31 @@ xmlSecOpenSSLKeyDataX509GetCrlsSize(xmlSecKeyDataPtr data) {
     return(res);
 }
 
+
+STACK_OF(X509)*
+xmlSecOpenSSLKeyDataX509GetCerts(xmlSecKeyDataPtr data) {
+    xmlSecOpenSSLX509DataCtxPtr ctx;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataX509Id), NULL);
+
+    ctx = xmlSecOpenSSLX509DataGetCtx(data);
+    xmlSecAssert2(ctx != NULL, 0);
+
+    return(ctx->certsList);
+}
+
+STACK_OF(X509_CRL)*
+xmlSecOpenSSLKeyDataX509GetCrls (xmlSecKeyDataPtr data) {
+    xmlSecOpenSSLX509DataCtxPtr ctx;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataX509Id), NULL);
+
+    ctx = xmlSecOpenSSLX509DataGetCtx(data);
+    xmlSecAssert2(ctx != NULL, 0);
+
+    return(ctx->crlsList);
+}
+
 static int
 xmlSecOpenSSLKeyDataX509Initialize(xmlSecKeyDataPtr data) {
     xmlSecOpenSSLX509DataCtxPtr ctx;

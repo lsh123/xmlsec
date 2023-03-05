@@ -78,6 +78,11 @@ XMLSEC_CRYPTO_EXPORT X509_CRL*   xmlSecOpenSSLX509CrlLoadBIO                (BIO
 
 XMLSEC_CRYPTO_EXPORT time_t      xmlSecOpenSSLX509Asn1TimeToTime            (const ASN1_TIME * t);
 
+
+XMLSEC_CRYPTO_EXPORT STACK_OF(X509)*        xmlSecOpenSSLKeyDataX509GetCerts(xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT STACK_OF(X509_CRL)*    xmlSecOpenSSLKeyDataX509GetCrls (xmlSecKeyDataPtr data);
+
+
 #endif /* XMLSEC_NO_X509 */
 
 #ifdef __cplusplus

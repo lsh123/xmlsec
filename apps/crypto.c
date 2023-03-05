@@ -103,6 +103,7 @@ xmlSecAppCryptoSimpleKeysMngrKeyAndCertsLoad(xmlSecKeysMngrPtr mngr,
     xmlSecKeyDataType type, xmlSecKeyDataFormat format,
     xmlSecKeyInfoCtxPtr keyInfoCtx, int verifyKey
 ) {
+    const char* cert_file;
     xmlSecKeyPtr key;
     int ret;
 
@@ -129,18 +130,18 @@ xmlSecAppCryptoSimpleKeysMngrKeyAndCertsLoad(xmlSecKeysMngrPtr mngr,
     }
 
 #ifndef XMLSEC_NO_X509
-    for(files += strlen(files) + 1; (files[0] != '\0'); files += strlen(files) + 1) {
-        ret = xmlSecCryptoAppKeyCertLoad(key, files, format);
+    for(cert_file = files + strlen(files) + 1; (cert_file[0] != '\0'); cert_file += strlen(cert_file) + 1) {
+        ret = xmlSecCryptoAppKeyCertLoad(key, cert_file, format);
         if(ret < 0) {
             fprintf(stderr, "Error: xmlSecCryptoAppKeyCertLoad failed: file=%s\n",
-                    xmlSecErrorsSafeString(files));
+                    xmlSecErrorsSafeString(cert_file));
             xmlSecKeyDestroy(key);
             return(-1);
         }
     }
 #else /* XMLSEC_NO_X509 */
-    files += strlen(files) + 1;
-    if(files[0] != '\0') {
+    cert_file = files + strlen(files) + 1;
+    if(cert_file[0] != '\0') {
         fprintf(stderr, "Error: X509 support is disabled\n");
         return(-1);
     }

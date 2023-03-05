@@ -302,7 +302,8 @@ xmlSecCryptoGetFunctions_nss(void) {
     gXmlSecNssFunctions->cryptoAppInit                  = xmlSecNssAppInit;
     gXmlSecNssFunctions->cryptoAppShutdown              = xmlSecNssAppShutdown;
     gXmlSecNssFunctions->cryptoAppDefaultKeysMngrInit   = xmlSecNssAppDefaultKeysMngrInit;
-    gXmlSecNssFunctions->cryptoAppDefaultKeysMngrAdoptKey       = xmlSecNssAppDefaultKeysMngrAdoptKey;
+    gXmlSecNssFunctions->cryptoAppDefaultKeysMngrAdoptKey  = xmlSecNssAppDefaultKeysMngrAdoptKey;
+    gXmlSecNssFunctions->cryptoAppDefaultKeysMngrVerifyKey = xmlSecNssAppDefaultKeysMngrVerifyKey;
     gXmlSecNssFunctions->cryptoAppDefaultKeysMngrLoad   = xmlSecNssAppDefaultKeysMngrLoad;
     gXmlSecNssFunctions->cryptoAppDefaultKeysMngrSave   = xmlSecNssAppDefaultKeysMngrSave;
 #ifndef XMLSEC_NO_X509

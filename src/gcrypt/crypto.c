@@ -284,6 +284,7 @@ xmlSecCryptoGetFunctions_gcrypt(void) {
     gXmlSecGCryptFunctions->cryptoAppShutdown                   = xmlSecGCryptAppShutdown;
     gXmlSecGCryptFunctions->cryptoAppDefaultKeysMngrInit        = xmlSecGCryptAppDefaultKeysMngrInit;
     gXmlSecGCryptFunctions->cryptoAppDefaultKeysMngrAdoptKey    = xmlSecGCryptAppDefaultKeysMngrAdoptKey;
+    gXmlSecGCryptFunctions->cryptoAppDefaultKeysMngrVerifyKey   = xmlSecGCryptAppDefaultKeysMngrVerifyKey;
     gXmlSecGCryptFunctions->cryptoAppDefaultKeysMngrLoad        = xmlSecGCryptAppDefaultKeysMngrLoad;
     gXmlSecGCryptFunctions->cryptoAppDefaultKeysMngrSave        = xmlSecGCryptAppDefaultKeysMngrSave;
 #ifndef XMLSEC_NO_X509

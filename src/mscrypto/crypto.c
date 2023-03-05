@@ -249,6 +249,7 @@ xmlSecCryptoGetFunctions_mscrypto(void) {
     gXmlSecMSCryptoFunctions->cryptoAppShutdown                 = xmlSecMSCryptoAppShutdown;
     gXmlSecMSCryptoFunctions->cryptoAppDefaultKeysMngrInit      = xmlSecMSCryptoAppDefaultKeysMngrInit;
     gXmlSecMSCryptoFunctions->cryptoAppDefaultKeysMngrAdoptKey  = xmlSecMSCryptoAppDefaultKeysMngrAdoptKey;
+    gXmlSecMSCryptoFunctions->cryptoAppDefaultKeysMngrVerifyKey = xmlSecMSCryptoAppDefaultKeysMngrVerifyKey;
     gXmlSecMSCryptoFunctions->cryptoAppDefaultKeysMngrLoad      = xmlSecMSCryptoAppDefaultKeysMngrLoad;
     gXmlSecMSCryptoFunctions->cryptoAppDefaultKeysMngrSave      = xmlSecMSCryptoAppDefaultKeysMngrSave;
 #ifndef XMLSEC_NO_X509

@@ -30,6 +30,7 @@ extern "C" {
 XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLAppInit            (const char* config);
 XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLAppShutdown        (void);
 
+
 /********************************************************************
  *
  * Keys Manager
@@ -38,6 +39,9 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLAppShutdown        (void);
 XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr);
 XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr,
                                                                          xmlSecKeyPtr key);
+XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLAppDefaultKeysMngrVerifyKey(xmlSecKeysMngrPtr mngr,
+                                                                         xmlSecKeyPtr key,
+                                                                         xmlSecKeyInfoCtxPtr keyInfoCtx);
 XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLAppDefaultKeysMngrLoad(xmlSecKeysMngrPtr mngr,
                                                                          const char* uri);
 XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr,

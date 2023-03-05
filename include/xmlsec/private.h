@@ -169,6 +169,23 @@ typedef int                     (*xmlSecCryptoAppDefaultKeysMngrAdoptKeyMethod)
                                                                         (xmlSecKeysMngrPtr mngr,
                                                                          xmlSecKeyPtr key);
 /**
+ * xmlSecCryptoAppDefaultKeysMngVerifyKeyMethod:
+ * @mngr:               the pointer to keys manager.
+ * @key:                the pointer to key.
+ * @keyInfoCtx:         the key info context for verification.
+ *
+ * Verifies @key with the keys manager @mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
+ * function:
+ * - Checks that key certificate is present
+ * - Checks that key certificate is valid
+ *
+ * Returns: 1 if key is verified, 0 otherwise, or a negative value if an error occurs.
+ */
+typedef int                     (*xmlSecCryptoAppDefaultKeysMngVerifyKeyMethod)
+                                                                        (xmlSecKeysMngrPtr mngr,
+                                                                         xmlSecKeyPtr key,
+                                                                         xmlSecKeyInfoCtxPtr keyInfoCtx);
+/**
  * xmlSecCryptoAppDefaultKeysMngrLoadMethod:
  * @mngr:               the pointer to keys manager.
  * @uri:                the uri.
@@ -479,6 +496,7 @@ typedef int                     (*xmlSecCryptoAppKeyCertLoadMemoryMethod)(xmlSec
  * @cryptoAppShutdown:          the default crypto engine shutdown method.
  * @cryptoAppDefaultKeysMngrInit:       the default keys manager init method.
  * @cryptoAppDefaultKeysMngrAdoptKey:   the default keys manager adopt key method.
+ * @cryptoAppDefaultKeysMngrVerifyKey:  the defualt keys manager verify key method.
  * @cryptoAppDefaultKeysMngrLoad:       the default keys manager load method.
  * @cryptoAppDefaultKeysMngrSave:       the default keys manager save method.
  * @cryptoAppKeysMngrCertLoad:          the default keys manager file cert load method.
@@ -613,6 +631,7 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoAppShutdownMethod                cryptoAppShutdown;
     xmlSecCryptoAppDefaultKeysMngrInitMethod     cryptoAppDefaultKeysMngrInit;
     xmlSecCryptoAppDefaultKeysMngrAdoptKeyMethod cryptoAppDefaultKeysMngrAdoptKey;
+    xmlSecCryptoAppDefaultKeysMngVerifyKeyMethod cryptoAppDefaultKeysMngrVerifyKey;
     xmlSecCryptoAppDefaultKeysMngrLoadMethod     cryptoAppDefaultKeysMngrLoad;
     xmlSecCryptoAppDefaultKeysMngrSaveMethod     cryptoAppDefaultKeysMngrSave;
     xmlSecCryptoAppKeysMngrCertLoadMethod        cryptoAppKeysMngrCertLoad;

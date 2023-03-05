@@ -35,6 +35,9 @@ XMLSEC_CRYPTO_EXPORT int        xmlSecGCryptAppShutdown                 (void);
 XMLSEC_CRYPTO_EXPORT int        xmlSecGCryptAppDefaultKeysMngrInit      (xmlSecKeysMngrPtr mngr);
 XMLSEC_CRYPTO_EXPORT int        xmlSecGCryptAppDefaultKeysMngrAdoptKey  (xmlSecKeysMngrPtr mngr,
                                                                          xmlSecKeyPtr key);
+XMLSEC_CRYPTO_EXPORT int        xmlSecGCryptAppDefaultKeysMngrVerifyKey(xmlSecKeysMngrPtr mngr,
+                                                                         xmlSecKeyPtr key,
+                                                                         xmlSecKeyInfoCtxPtr keyInfoCtx);
 XMLSEC_CRYPTO_EXPORT int        xmlSecGCryptAppDefaultKeysMngrLoad      (xmlSecKeysMngrPtr mngr,
                                                                          const char* uri);
 XMLSEC_CRYPTO_EXPORT int        xmlSecGCryptAppDefaultKeysMngrSave      (xmlSecKeysMngrPtr mngr,

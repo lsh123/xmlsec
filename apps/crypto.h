@@ -50,7 +50,9 @@ int     xmlSecAppCryptoSimpleKeysMngrKeyAndCertsLoad            (xmlSecKeysMngrP
                                                                  const char* pwd,
                                                                  const char* name,
                                                                  xmlSecKeyDataType type,
-                                                                 xmlSecKeyDataFormat format);
+                                                                 xmlSecKeyDataFormat format,
+                                                                 xmlSecKeyInfoCtxPtr keyInfoCtx,
+                                                                 int verifyKey);
 int     xmlSecAppCryptoSimpleKeysMngrEngineKeyAndCertsLoad      (xmlSecKeysMngrPtr mngr,
                                                                  const char* engineAndKeyId,
                                                                  const char* certFiles,
@@ -58,11 +60,15 @@ int     xmlSecAppCryptoSimpleKeysMngrEngineKeyAndCertsLoad      (xmlSecKeysMngrP
                                                                  const char* name,
                                                                  xmlSecKeyDataType type,
                                                                  xmlSecKeyDataFormat keyFormat,
-                                                                 xmlSecKeyDataFormat certFormat);
+                                                                 xmlSecKeyDataFormat certFormat,
+                                                                 xmlSecKeyInfoCtxPtr keyInfoCtx,
+                                                                 int verifyKey);
 int     xmlSecAppCryptoSimpleKeysMngrPkcs12KeyLoad              (xmlSecKeysMngrPtr mngr,
                                                                  const char* filename,
                                                                  const char* pwd,
-                                                                 const char* name);
+                                                                 const char* name,
+                                                                 xmlSecKeyInfoCtxPtr keyInfoCtx,
+                                                                 int verifyKey);
 int     xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad              (xmlSecKeysMngrPtr mngr,
                                                                  const char* keyKlass,
                                                                  const char* filename,

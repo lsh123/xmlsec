@@ -100,13 +100,15 @@ xmlSecAppCryptoSimpleKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filenam
 int
 xmlSecAppCryptoSimpleKeysMngrKeyAndCertsLoad(xmlSecKeysMngrPtr mngr,
     const char* files, const char* pwd, const char* name,
-    xmlSecKeyDataType type, xmlSecKeyDataFormat format
+    xmlSecKeyDataType type, xmlSecKeyDataFormat format,
+    xmlSecKeyInfoCtxPtr keyInfoCtx, int verifyKey
 ) {
     xmlSecKeyPtr key;
     int ret;
 
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(files != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
 
     /* first is the key file */
     key = xmlSecCryptoAppKeyLoadEx(files, type, format, pwd, xmlSecCryptoAppGetDefaultPwdCallback(), (void*)files);
@@ -144,6 +146,22 @@ xmlSecAppCryptoSimpleKeysMngrKeyAndCertsLoad(xmlSecKeysMngrPtr mngr,
     }
 #endif /* XMLSEC_NO_X509 */
 
+
+    if(verifyKey != 0) {
+        ret = xmlSecCryptoAppDefaultKeysMngrVerifyKey(mngr, key, keyInfoCtx);
+        if(ret < 0) {
+            fprintf(stderr, "Error: xmlSecCryptoAppDefaultKeysMngrVerifyKey failed: filename='%s'\n",
+            xmlSecErrorsSafeString(files));
+            xmlSecKeyDestroy(key);
+            return(-1);
+        } else if(ret != 1) {
+            fprintf(stderr, "Error: key cannot be verified: filename='%s'\n",
+            xmlSecErrorsSafeString(files));
+            xmlSecKeyDestroy(key);
+            return(-1);
+        }
+    }
+
     ret = xmlSecCryptoAppDefaultKeysMngrAdoptKey(mngr, key);
     if(ret < 0) {
         fprintf(stderr, "Error: xmlSecCryptoAppDefaultKeysMngrAdoptKey failed\n");
@@ -156,25 +174,24 @@ xmlSecAppCryptoSimpleKeysMngrKeyAndCertsLoad(xmlSecKeysMngrPtr mngr,
 
 int
 xmlSecAppCryptoSimpleKeysMngrEngineKeyAndCertsLoad(xmlSecKeysMngrPtr mngr,
-                                             const char* engineAndKeyId,
-                                             const char* certFiles,
-                                             const char* pwd,
-                                             const char* name,
-                                             xmlSecKeyDataType type,
-                                             xmlSecKeyDataFormat keyFormat,
-                                             xmlSecKeyDataFormat certFormat) {
+    const char* engineAndKeyId, const char* certFiles,
+    const char* pwd, const char* name,
+    xmlSecKeyDataType type, xmlSecKeyDataFormat keyFormat, xmlSecKeyDataFormat certFormat,
+    xmlSecKeyInfoCtxPtr keyInfoCtx, int verifyKey
+) {
     xmlSecKeyPtr key;
     int ret;
 
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(engineAndKeyId != NULL, -1);
     xmlSecAssert2(certFiles != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
 
     /* load key */
     key = xmlSecCryptoAppKeyLoadEx(engineAndKeyId, type, keyFormat, pwd,
         xmlSecCryptoAppGetDefaultPwdCallback(), (void*)engineAndKeyId);
     if(key == NULL) {
-        fprintf(stderr, "Error: xmlSecCryptoAppKeyLoadEx failed: file=%s\n",
+        fprintf(stderr, "Error: xmlSecCryptoAppKeyLoadEx failed: engineAndKeyId=%s\n",
                 xmlSecErrorsSafeString(engineAndKeyId));
         return(-1);
     }
@@ -208,6 +225,21 @@ xmlSecAppCryptoSimpleKeysMngrEngineKeyAndCertsLoad(xmlSecKeysMngrPtr mngr,
     }
 #endif /* XMLSEC_NO_X509 */
 
+    if(verifyKey != 0) {
+        ret = xmlSecCryptoAppDefaultKeysMngrVerifyKey(mngr, key, keyInfoCtx);
+        if(ret < 0) {
+            fprintf(stderr, "Error: xmlSecCryptoAppDefaultKeysMngrVerifyKey failed: engineAndKeyId='%s'\n",
+            xmlSecErrorsSafeString(engineAndKeyId));
+            xmlSecKeyDestroy(key);
+            return(-1);
+        } else if(ret != 1) {
+            fprintf(stderr, "Error: key cannot be verified: engineAndKeyId='%s'\n",
+            xmlSecErrorsSafeString(engineAndKeyId));
+            xmlSecKeyDestroy(key);
+            return(-1);
+        }
+    }
+
     /* add key to KM */
     ret = xmlSecCryptoAppDefaultKeysMngrAdoptKey(mngr, key);
     if(ret < 0) {
@@ -220,18 +252,21 @@ xmlSecAppCryptoSimpleKeysMngrEngineKeyAndCertsLoad(xmlSecKeysMngrPtr mngr,
 }
 
 int
-xmlSecAppCryptoSimpleKeysMngrPkcs12KeyLoad(xmlSecKeysMngrPtr mngr, const char *filename, const char* pwd, const char *name) {
+xmlSecAppCryptoSimpleKeysMngrPkcs12KeyLoad(xmlSecKeysMngrPtr mngr, const char *filename, const char* pwd,
+    const char *name, xmlSecKeyInfoCtxPtr keyInfoCtx, int verifyKey
+) {
     xmlSecKeyPtr key;
     int ret;
 
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(filename != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
 
 #ifndef XMLSEC_NO_X509
     key = xmlSecCryptoAppKeyLoadEx(filename, xmlSecKeyDataTypePrivate, xmlSecKeyDataFormatPkcs12, pwd,
                     xmlSecCryptoAppGetDefaultPwdCallback(), (void*)filename);
     if(key == NULL) {
-        fprintf(stderr, "Error: xmlSecCryptoAppKeyLoadEx failed: filename=%s\n",
+        fprintf(stderr, "Error: xmlSecCryptoAppKeyLoadEx failed: filename='%s'\n",
                 xmlSecErrorsSafeString(filename));
         return(-1);
     }
@@ -239,11 +274,26 @@ xmlSecAppCryptoSimpleKeysMngrPkcs12KeyLoad(xmlSecKeysMngrPtr mngr, const char *f
     if(name != NULL) {
         ret = xmlSecKeySetName(key, BAD_CAST name);
         if(ret < 0) {
-            fprintf(stderr, "Error: xmlSecKeySetName failed: name=%s\n",
+            fprintf(stderr, "Error: xmlSecKeySetName failed: name='%s'\n",
                     xmlSecErrorsSafeString(name));
             xmlSecKeyDestroy(key);
             return(-1);
         }
+    }
+
+    if(verifyKey != 0) {
+            ret = xmlSecCryptoAppDefaultKeysMngrVerifyKey(mngr, key, keyInfoCtx);
+            if(ret < 0) {
+                fprintf(stderr, "Error: xmlSecCryptoAppDefaultKeysMngrVerifyKey failed: filename='%s'\n",
+                xmlSecErrorsSafeString(filename));
+                xmlSecKeyDestroy(key);
+                return(-1);
+            } else if(ret != 1) {
+                fprintf(stderr, "Error: key cannot be verified: filename='%s'\n",
+                xmlSecErrorsSafeString(filename));
+                xmlSecKeyDestroy(key);
+                return(-1);
+            }
     }
 
     ret = xmlSecCryptoAppDefaultKeysMngrAdoptKey(mngr, key);

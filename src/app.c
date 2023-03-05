@@ -1861,6 +1861,33 @@ xmlSecCryptoAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key)
     return(xmlSecCryptoDLGetFunctions()->cryptoAppDefaultKeysMngrAdoptKey(mngr, key));
 }
 
+
+/**
+ * xmlSecCryptoAppDefaultKeysMngrVerifyKey:
+ * @mngr:               the pointer to keys manager.
+ * @key:                the pointer to key.
+ * @keyInfoCtx:         the key info context for verification.
+ *
+ * Verifies @key with the keys manager @mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
+ * function:
+ * - Checks that key certificate is present
+ * - Checks that key certificate is valid
+ *
+ * Adds @key to the keys manager @mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
+ * function.
+ *
+ * Returns: 1 if key is verified, 0 otherwise, or a negative value if an error occurs.
+ */
+int
+xmlSecCryptoAppDefaultKeysMngrVerifyKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->cryptoAppDefaultKeysMngrVerifyKey == NULL)) {
+        xmlSecNotImplementedError("cryptoAppDefaultKeysMngrVerifyKey");
+        return(-1);
+    }
+
+    return(xmlSecCryptoDLGetFunctions()->cryptoAppDefaultKeysMngrVerifyKey(mngr, key, keyInfoCtx));
+}
+
 /**
  * xmlSecCryptoAppDefaultKeysMngrLoad:
  * @mngr:               the pointer to keys manager.

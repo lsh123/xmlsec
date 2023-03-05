@@ -38,6 +38,9 @@ XMLSEC_CRYPTO_EXPORT LPCTSTR    xmlSecMSCngAppGetCertStoreName       (void);
 XMLSEC_CRYPTO_EXPORT int        xmlSecMSCngAppDefaultKeysMngrInit    (xmlSecKeysMngrPtr mngr);
 XMLSEC_CRYPTO_EXPORT int        xmlSecMSCngAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr,
                                                                       xmlSecKeyPtr key);
+XMLSEC_CRYPTO_EXPORT int        xmlSecMSCngAppDefaultKeysMngrVerifyKey(xmlSecKeysMngrPtr mngr,
+                                                                      xmlSecKeyPtr key,
+                                                                      xmlSecKeyInfoCtxPtr keyInfoCtx);
 XMLSEC_CRYPTO_EXPORT int        xmlSecMSCngAppDefaultKeysMngrLoad    (xmlSecKeysMngrPtr mngr,
                                                                       const char* uri);
 XMLSEC_CRYPTO_EXPORT int        xmlSecMSCngAppDefaultKeysMngrSave    (xmlSecKeysMngrPtr mngr,

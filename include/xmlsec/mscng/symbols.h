@@ -123,6 +123,7 @@ extern "C" {
 #define xmlSecCryptoAppShutdown                 xmlSecMSCngAppShutdown
 #define xmlSecCryptoAppDefaultKeysMngrInit      xmlSecMSCngAppDefaultKeysMngrInit
 #define xmlSecCryptoAppDefaultKeysMngrAdoptKey  xmlSecMSCngAppDefaultKeysMngrAdoptKey
+#define xmlSecCryptoAppDefaultKeysMngrVerifyKey xmlSecMSCngAppDefaultKeysMngrVerifyKey
 #define xmlSecCryptoAppDefaultKeysMngrLoad      xmlSecMSCngAppDefaultKeysMngrLoad
 #define xmlSecCryptoAppDefaultKeysMngrSave      xmlSecMSCngAppDefaultKeysMngrSave
 #define xmlSecCryptoAppKeysMngrCertLoad         xmlSecMSCngAppKeysMngrCertLoad

@@ -131,6 +131,7 @@ extern "C" {
 #define xmlSecCryptoAppShutdown                 xmlSecGCryptAppShutdown
 #define xmlSecCryptoAppDefaultKeysMngrInit      xmlSecGCryptAppDefaultKeysMngrInit
 #define xmlSecCryptoAppDefaultKeysMngrAdoptKey  xmlSecGCryptAppDefaultKeysMngrAdoptKey
+#define xmlSecCryptoAppDefaultKeysMngrVerifyKey xmlSecGCryptAppDefaultKeysMngrVerifyKey
 #define xmlSecCryptoAppDefaultKeysMngrLoad      xmlSecGCryptAppDefaultKeysMngrLoad
 #define xmlSecCryptoAppDefaultKeysMngrSave      xmlSecGCryptAppDefaultKeysMngrSave
 #define xmlSecCryptoAppKeysMngrCertLoad         xmlSecGCryptAppKeysMngrCertLoad

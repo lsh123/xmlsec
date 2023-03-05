@@ -890,15 +890,117 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
             xmlSecInternalError("xmlSecOpenSSLX509StoreVerifyCert", xmlSecKeyDataStoreGetName(store));
             goto done;
         } else if(ret != 1) {
-            X509_STORE_CTX_cleanup (xsc);
             continue;
         }
 
         /* success! */
-        X509_STORE_CTX_cleanup (xsc);
         res = cert;
         break;
     }
+
+done:
+    /* only free sk_* structures, not the certs or crls because caller owns pointers
+     * or the store does and we didn't up_ref / dup certs when creating the sk_*'s.
+     */
+    if(all_untrusted_certs != NULL) {
+        sk_X509_free(all_untrusted_certs);
+    }
+    if(verified_crls != NULL) {
+        sk_X509_CRL_free(verified_crls);
+    }
+    if(xsc != NULL) {
+        X509_STORE_CTX_free(xsc);
+    }
+    return(res);
+}
+
+/**
+ * xmlSecOpenSSLX509StoreVerifyKey:
+ * @store:              the pointer to X509 key data store klass.
+ * @key:                the pointer to key.
+ * @keyInfoCtx:         the key info context for verification.
+ *
+ * Verifies @key with the keys manager @mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
+ * function:
+ * - Checks that key certificate is present
+ * - Checks that key certificate is valid
+ *
+ * Adds @key to the keys manager @mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
+ * function.
+ *
+ * Returns: 1 if key is verified, 0 otherwise, or a negative value if an error occurs.
+ */
+int
+xmlSecOpenSSLX509StoreVerifyKey(xmlSecKeyDataStorePtr store, xmlSecKeyPtr key, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlSecOpenSSLX509StoreCtxPtr ctx;
+    xmlSecKeyDataPtr x509Data;
+    X509* keyCert;
+    STACK_OF(X509)* certs;
+    STACK_OF(X509_CRL)* crls;
+    X509_STORE_CTX *xsc = NULL;
+    STACK_OF(X509)* all_untrusted_certs = NULL;
+    STACK_OF(X509_CRL)* verified_crls = NULL;
+    int ret;
+    int res = -1;
+
+    xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecOpenSSLX509StoreId), -1);
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+
+
+    ctx = xmlSecOpenSSLX509StoreGetCtx(store);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->xst != NULL,  -1);
+
+    /* retrieve X509 data */
+    x509Data = xmlSecKeyGetData(key, xmlSecOpenSSLKeyDataX509Id);
+    if(x509Data == NULL) {
+        xmlSecInternalError("xmlSecKeyGetData(xmlSecOpenSSLKeyDataX509Id)", xmlSecKeyDataStoreGetName(store));
+        return(-1);
+    }
+    keyCert =  xmlSecOpenSSLKeyDataX509GetKeyCert(x509Data);
+    if(keyCert == NULL) {
+        xmlSecInternalError("key certificate is required", xmlSecKeyDataStoreGetName(store));
+        res = 0; /* verification failed */
+        goto done;
+    }
+    certs = xmlSecOpenSSLKeyDataX509GetCerts(x509Data);
+    crls = xmlSecOpenSSLKeyDataX509GetCrls(x509Data);
+
+    /* do we even need to verify the leaf cert? */
+    if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS) != 0) {
+        goto done;
+    }
+
+    /* reuse xsc for both crls and certs verification */
+    xsc = X509_STORE_CTX_new_ex(xmlSecOpenSSLGetLibCtx(), NULL);
+    if(xsc == NULL) {
+        xmlSecOpenSSLError("X509_STORE_CTX_new", xmlSecKeyDataStoreGetName(store));
+        goto done;
+    }
+
+    /* create a combined list of all untrusted certs*/
+    all_untrusted_certs = xmlSecOpenSSLX509StoreCombineCerts(certs, ctx->untrusted);
+    if(all_untrusted_certs == NULL) {
+        xmlSecInternalError("xmlSecOpenSSLX509StoreCombineCerts", xmlSecKeyDataStoreGetName(store));
+        goto done;
+    }
+
+    /* copy crls list but remove all non-verified (we assume that CRLs in the store are already verified) */
+    verified_crls = xmlSecOpenSSLX509StoreVerifyAndCopyCrls(ctx->xst, xsc, all_untrusted_certs, crls, keyInfoCtx);
+
+    /* verify */
+    ret = xmlSecOpenSSLX509StoreVerifyCert(ctx->xst, xsc, keyCert, all_untrusted_certs, verified_crls, ctx->crls, keyInfoCtx);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecOpenSSLX509StoreVerifyCert", xmlSecKeyDataStoreGetName(store));
+        goto done;
+    } else if(ret != 1) {
+        res = 0; /* verification failed */
+        goto done;
+    }
+
+    /* success! */
+    res = 1;
 
 done:
     /* only free sk_* structures, not the certs or crls because caller owns pointers

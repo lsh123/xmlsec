@@ -268,6 +268,7 @@ xmlSecCryptoGetFunctions_gnutls(void) {
     gXmlSecGnuTLSFunctions->cryptoAppShutdown                   = xmlSecGnuTLSAppShutdown;
     gXmlSecGnuTLSFunctions->cryptoAppDefaultKeysMngrInit        = xmlSecGnuTLSAppDefaultKeysMngrInit;
     gXmlSecGnuTLSFunctions->cryptoAppDefaultKeysMngrAdoptKey    = xmlSecGnuTLSAppDefaultKeysMngrAdoptKey;
+    gXmlSecGnuTLSFunctions->cryptoAppDefaultKeysMngrVerifyKey   = xmlSecGnuTLSAppDefaultKeysMngrVerifyKey;
     gXmlSecGnuTLSFunctions->cryptoAppDefaultKeysMngrLoad        = xmlSecGnuTLSAppDefaultKeysMngrLoad;
     gXmlSecGnuTLSFunctions->cryptoAppDefaultKeysMngrSave        = xmlSecGnuTLSAppDefaultKeysMngrSave;
 #ifndef XMLSEC_NO_X509

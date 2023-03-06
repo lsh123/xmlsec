@@ -42,8 +42,6 @@
 #include "../cast_helpers.h"
 #include "../keysdata_helpers.h"
 
-XMLSEC_CRYPTO_EXPORT EVP_PKEY* xmlSecOpenSSLKeyGetEvp(xmlSecKeyPtr key);
-
 #ifdef OPENSSL_IS_BORINGSSL
 #ifndef XMLSEC_NO_RSA
 static inline int RSA_test_flags(const RSA *r, int flags) {

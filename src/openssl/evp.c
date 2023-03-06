@@ -39,9 +39,17 @@
 #include <openssl/param_build.h>
 #endif /* XMLSEC_OPENSSL_API_300 */
 
+/* Windows overwrites X509_NAME and other things that break openssl */
+#include <openssl/evp.h>
+#include <openssl/x509.h>
+#include <openssl/x509_vfy.h>
+#include <openssl/x509v3.h>
+#include <openssl/asn1.h>
+
 #include "../cast_helpers.h"
 #include "../keysdata_helpers.h"
 #include "private.h"
+
 
 #ifdef OPENSSL_IS_BORINGSSL
 #ifndef XMLSEC_NO_RSA

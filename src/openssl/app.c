@@ -730,11 +730,39 @@ done:
     return(res);
 }
 
+
+/* returns 1 if matches, 0 if not, or a negative value on error */
+static int
+xmlSecOpenSSLAppCheckCertMatchesKey(EVP_PKEY * pKey,  X509 * cert) {
+    EVP_PKEY * certKey;
+
+    xmlSecAssert2(pKey != NULL, -1);
+    xmlSecAssert2(cert != NULL, -1);
+
+    certKey = X509_get0_pubkey(cert);
+    if(certKey == NULL) {
+        return(-1);
+    }
+
+#ifndef XMLSEC_OPENSSL_API_300
+    if(EVP_PKEY_cmp(pKey, certKey) != 1) {
+        return(0);
+    }
+#else /* XMLSEC_OPENSSL_API_300 */
+    if(EVP_PKEY_eq(pKey, certKey) != 1) {
+        return(0);
+    }
+#endif /* XMLSEC_OPENSSL_API_300 */
+
+    /* matches! */
+    return(1);
+}
+
 static X509 *
 xmlSecOpenSSLAppFindKeyCert(EVP_PKEY * pKey, STACK_OF(X509) * certs) {
     X509 * cert;
-    EVP_PKEY * certKey;
     int ii, size;
+    int ret;
 
     xmlSecAssert2(pKey != NULL, NULL);
     xmlSecAssert2(certs != NULL, NULL);
@@ -745,24 +773,18 @@ xmlSecOpenSSLAppFindKeyCert(EVP_PKEY * pKey, STACK_OF(X509) * certs) {
         if(cert == NULL) {
             continue;
         }
-        certKey = X509_get0_pubkey(cert);
-        if(certKey == NULL) {
+
+        /* ignore errors, only care if cert matches */
+        ret = xmlSecOpenSSLAppCheckCertMatchesKey(pKey, cert);
+        if(ret != 1) {
             continue;
         }
-#ifndef XMLSEC_OPENSSL_API_300
-        if(EVP_PKEY_cmp(pKey, certKey) != 1) {
-            continue;
-        }
-#else /* XMLSEC_OPENSSL_API_300 */
-        if(EVP_PKEY_eq(pKey, certKey) != 1) {
-            continue;
-        }
-#endif /* XMLSEC_OPENSSL_API_300 */
 
         /* found it! */
         if(X509_up_ref(cert) != 1) {
             return(NULL);
         }
+
         return(cert);
     }
 
@@ -1043,12 +1065,12 @@ xmlSecOpenSSLAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlS
  */
 int
 xmlSecOpenSSLAppKeyCertLoadBIO(xmlSecKeyPtr key, BIO* bio, xmlSecKeyDataFormat format) {
-
     xmlSecKeyDataFormat certFormat;
     xmlSecKeyDataPtr x509Data = NULL;
     X509 *cert = NULL;
     int ret;
     int res = -1;
+    int isKeyCert = 0;
 
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(bio != NULL, -1);
@@ -1069,7 +1091,7 @@ xmlSecOpenSSLAppKeyCertLoadBIO(xmlSecKeyPtr key, BIO* bio, xmlSecKeyDataFormat f
     /* read cert */
     cert = xmlSecOpenSSLX509CertLoadBIO(bio, certFormat);
     if(cert == NULL) {
-        xmlSecInternalError("xmlSecOpenSSLAppCertLoad", NULL);
+        xmlSecInternalError("xmlSecOpenSSLX509CertLoadBIO", NULL);
         goto done;
     }
 
@@ -1079,8 +1101,24 @@ xmlSecOpenSSLAppKeyCertLoadBIO(xmlSecKeyPtr key, BIO* bio, xmlSecKeyDataFormat f
         xmlSecInternalError("xmlSecKeyEnsureData", NULL);
         goto done;
     }
+
+    /* do we want to add this cert as a key cert? don't bother checking
+     * if the key cert is already set */
     if(xmlSecOpenSSLKeyDataX509GetKeyCert(x509Data) == NULL) {
-        /* TODO: check if cert matches the key */
+        EVP_PKEY* pKey;
+
+        /* pKey might not be set yet */
+        pKey = xmlSecOpenSSLKeyGetEvp(key);
+        if(pKey != NULL) {
+            /* ignore errors here */
+            ret = xmlSecOpenSSLAppCheckCertMatchesKey(pKey,  cert);
+            if(ret == 1) {
+                isKeyCert = 1;
+            }
+        }
+    }
+
+    if(isKeyCert != 0) {
         ret = xmlSecOpenSSLKeyDataX509AdoptKeyCert(x509Data, cert);
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLKeyDataX509AdoptKeyCert", NULL);

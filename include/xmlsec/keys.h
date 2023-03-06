@@ -218,6 +218,9 @@ XMLSEC_EXPORT xmlSecKeyDataPtr  xmlSecKeyGetValue       (xmlSecKeyPtr key);
 XMLSEC_EXPORT int               xmlSecKeySetValue       (xmlSecKeyPtr key,
                                                          xmlSecKeyDataPtr value);
 
+XMLSEC_EXPORT xmlSecSize         xmlSecKeyGetSize       (xmlSecKeyPtr key);
+
+
 XMLSEC_EXPORT xmlSecKeyDataPtr  xmlSecKeyGetData        (xmlSecKeyPtr key,
                                                          xmlSecKeyDataId dataId);
 XMLSEC_EXPORT xmlSecKeyDataPtr  xmlSecKeyEnsureData     (xmlSecKeyPtr key,

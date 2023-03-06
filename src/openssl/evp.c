@@ -41,6 +41,7 @@
 
 #include "../cast_helpers.h"
 #include "../keysdata_helpers.h"
+#include "private.h"
 
 #ifdef OPENSSL_IS_BORINGSSL
 #ifndef XMLSEC_NO_RSA
@@ -183,6 +184,20 @@ xmlSecOpenSSLEvpKeyDataGetEvp(xmlSecKeyDataPtr data) {
     xmlSecAssert2(ctx != NULL, NULL);
 
     return(ctx->pKey);
+}
+
+EVP_PKEY*
+xmlSecOpenSSLKeyGetEvp(xmlSecKeyPtr key) {
+    xmlSecKeyDataPtr value;
+
+    xmlSecAssert2(key != NULL, NULL);
+
+    value = xmlSecKeyGetValue(key);
+    if(value == NULL) {
+        /* key value might not have been set yet */
+        return(NULL);
+    }
+    return(xmlSecOpenSSLEvpKeyDataGetEvp(value));
 }
 
 static int
@@ -550,7 +565,6 @@ done:
 
 static int
 xmlSecOpenSSLKeyDataDEREncodedKeyValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    xmlSecKeyDataPtr keyValue;
     EVP_PKEY * pKey;
     xmlSecByte * data = NULL;
     xmlSecSize dataSize = 0;
@@ -565,14 +579,9 @@ xmlSecOpenSSLKeyDataDEREncodedKeyValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr 
     xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeWrite, -1);
 
     /* get EVP_PKEY */
-    keyValue = xmlSecKeyGetValue(key);
-    if(keyValue == NULL) {
-        xmlSecInternalError("xmlSecKeyGetValue", xmlSecKeyDataKlassGetName(id));
-        goto done;
-    }
-    pKey = xmlSecOpenSSLEvpKeyDataGetEvp(keyValue);
+    pKey = xmlSecOpenSSLKeyGetEvp(key);
     if(pKey == NULL) {
-        xmlSecInternalError("xmlSecOpenSSLEvpKeyDataGetEvp", xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecOpenSSLKeyGetEvp", xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 

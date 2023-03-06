@@ -240,6 +240,8 @@ xmlSecOpenSSLKeyDataX509AddCertInternal(xmlSecOpenSSLX509DataCtxPtr ctx, X509* c
  *
  * Adds certificate to the X509 key data and sets the it as the key's
  * certificate in @data. On success, the @data owns the cert.
+ * This function DOES NOT check if the key matches the key cert
+ * (use @xmlSecOpenSSLAppKeyCertLoadBIO that performs this check).
  *
  * Returns: 0 on success or a negative value if an error occurs.
  */

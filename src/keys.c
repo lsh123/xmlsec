@@ -825,6 +825,24 @@ xmlSecKeySetValue(xmlSecKeyPtr key, xmlSecKeyDataPtr value) {
 }
 
 /**
+ * xmlSecKeyGetSize:
+ * @key:                the pointer to key.
+ *
+ * Gets key size (see also #xmlSecKeyDataGetSize function).
+ *
+ * Returns: key size.
+ */
+xmlSecSize
+xmlSecKeyGetSize(xmlSecKeyPtr key) {
+    xmlSecAssert2(key != NULL, 0);
+
+    if(key->value == NULL) {
+        return(0);
+    }
+    return(xmlSecKeyDataGetSize(key->value));
+}
+
+/**
  * xmlSecKeyGetData:
  * @key:                the pointer to key.
  * @dataId:             the requested data klass.

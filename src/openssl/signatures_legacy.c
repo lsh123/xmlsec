@@ -35,6 +35,7 @@
 #include "openssl_compat.h"
 
 #include "../cast_helpers.h"
+#include "private.h"
 
 #if !defined(XMLSEC_OPENSSL_API_300) && !defined(XMLSEC_NO_EC)
 
@@ -317,7 +318,6 @@ xmlSecOpenSSLSignatureLegacyFinalize(xmlSecTransformPtr transform) {
 static int
 xmlSecOpenSSLSignatureLegacySetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecOpenSSLSignatureLegacyCtxPtr ctx;
-    xmlSecKeyDataPtr value;
     EVP_PKEY* pKey;
 
     xmlSecAssert2(xmlSecOpenSSLSignatureLegacyCheckId(transform), -1);
@@ -331,13 +331,9 @@ xmlSecOpenSSLSignatureLegacySetKey(xmlSecTransformPtr transform, xmlSecKeyPtr ke
     xmlSecAssert2(ctx->keyId != NULL, -1);
     xmlSecAssert2(xmlSecKeyCheckId(key, ctx->keyId), -1);
 
-    value = xmlSecKeyGetValue(key);
-    xmlSecAssert2(value != NULL, -1);
-
-    pKey = xmlSecOpenSSLEvpKeyDataGetEvp(value);
+    pKey = xmlSecOpenSSLKeyGetEvp(value);
     if(pKey == NULL) {
-        xmlSecInternalError("xmlSecOpenSSLEvpKeyDataGetEvp",
-                            xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecOpenSSLKeyGetEvp", xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -347,8 +343,7 @@ xmlSecOpenSSLSignatureLegacySetKey(xmlSecTransformPtr transform, xmlSecKeyPtr ke
 
     ctx->pKey = xmlSecOpenSSLEvpKeyDup(pKey);
     if(ctx->pKey == NULL) {
-        xmlSecInternalError("xmlSecOpenSSLEvpKeyDup",
-                            xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecOpenSSLEvpKeyDup", xmlSecTransformGetName(transform));
         return(-1);
     }
 

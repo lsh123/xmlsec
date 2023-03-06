@@ -38,6 +38,7 @@
 
 #include "../cast_helpers.h"
 #include "openssl_compat.h"
+#include "private.h"
 
 /**
  * The ECDSA signature were added to EVP interface in 3.0.0
@@ -795,7 +796,6 @@ xmlSecOpenSSLEvpSignatureFinalize(xmlSecTransformPtr transform) {
 static int
 xmlSecOpenSSLEvpSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecOpenSSLEvpSignatureCtxPtr ctx;
-    xmlSecKeyDataPtr value;
     EVP_PKEY* pKey;
 
     xmlSecAssert2(xmlSecOpenSSLEvpSignatureCheckId(transform), -1);
@@ -809,21 +809,15 @@ xmlSecOpenSSLEvpSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) 
     xmlSecAssert2(ctx->keyId != NULL, -1);
     xmlSecAssert2(xmlSecKeyCheckId(key, ctx->keyId), -1);
 
-    value = xmlSecKeyGetValue(key);
-    xmlSecAssert2(value != NULL, -1);
-
-    ctx->keySize = xmlSecKeyDataGetSize(value);
+    ctx->keySize = xmlSecKeyGetSize(key);
     if(ctx->keySize <= 0) {
-        xmlSecInternalError("xmlSecKeyDataGetSize",
-                            xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecKeyGetSize", xmlSecTransformGetName(transform));
         return(-1);
     }
 
-
-    pKey = xmlSecOpenSSLEvpKeyDataGetEvp(value);
+    pKey = xmlSecOpenSSLKeyGetEvp(key);
     if(pKey == NULL) {
-        xmlSecInternalError("xmlSecOpenSSLEvpKeyDataGetEvp",
-                            xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecOpenSSLKeyGetEvp", xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -833,8 +827,7 @@ xmlSecOpenSSLEvpSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) 
 
     ctx->pKey = xmlSecOpenSSLEvpKeyDup(pKey);
     if(ctx->pKey == NULL) {
-        xmlSecInternalError("xmlSecOpenSSLEvpKeyDup",
-                            xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecOpenSSLEvpKeyDup", xmlSecTransformGetName(transform));
         return(-1);
     }
 

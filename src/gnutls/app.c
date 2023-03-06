@@ -291,9 +291,9 @@ xmlSecGnuTLSAppKeyCertLoad(xmlSecKeyPtr key, const char* filename,
  * Returns: 0 on success or a negative value otherwise.
  */
 int
-xmlSecGnuTLSAppKeyCertLoadMemory(xmlSecKeyPtr key,
-    const xmlSecByte* data, xmlSecSize dataSize, xmlSecKeyDataFormat format)
-{
+xmlSecGnuTLSAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSecSize dataSize,
+    xmlSecKeyDataFormat format
+) {
     gnutls_x509_crt_t cert = NULL;
     xmlSecKeyDataPtr x509Data;
     int ret;

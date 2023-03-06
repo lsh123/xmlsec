@@ -1252,14 +1252,17 @@ if [ "z$crypto" = "zopenssl" -o  "z$crypto" = "zgnutls" -o  "z$crypto" = "znss" 
         "x509" \
         "--verification-gmt-time 2023-05-01+00:00:00 --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --crl-$cert_format $topfolder/keys/rsacert-revoked-crl.$cert_format --enabled-key-data x509"
 
-    # this should succeeed because CRL is not valid yet
-    extra_message="CRL is not valid yet"
-    execDSigTest $res_success \
-        "" \
-        "aleksey-xmldsig-01/enveloped-x509-missing-cert" \
-        "sha256 rsa-sha256" \
-        "x509" \
-        "--verification-gmt-time 2023-03-01+00:00:00 --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --crl-$cert_format $topfolder/keys/rsacert-revoked-crl.$cert_format --enabled-key-data x509"
+    # GnuTLS doesn't allow CRL verification by time (https://github.com/lsh123/xmlsec/issues/579)
+    if [ "z$crypto" != "zgnutls" ] ; then
+        # this should succeeed because CRL is not valid yet
+        extra_message="CRL is not valid yet"
+        execDSigTest $res_success \
+            "" \
+            "aleksey-xmldsig-01/enveloped-x509-missing-cert" \
+            "sha256 rsa-sha256" \
+            "x509" \
+            "--verification-gmt-time 2023-03-01+00:00:00 --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --crl-$cert_format $topfolder/keys/rsacert-revoked-crl.$cert_format --enabled-key-data x509"
+    fi
 
     # this should succeeed too because we bypass all cert checks with --insecure mode
     extra_message="CRL is present but there is --insecure bypass"

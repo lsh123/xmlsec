@@ -324,45 +324,6 @@ xmlSecGnuTLSX509CheckCrtTime(const gnutls_x509_crt_t cert, time_t ts) {
 
 
 static int
-xmlSecGnuTLSX509CheckCrlTime(const gnutls_x509_crl_t crl, time_t ts) {
-    time_t thisUpdate, nextUpdate;
-
-    xmlSecAssert2(crl != NULL, -1);
-
-    /* get expiration times */
-    thisUpdate = gnutls_x509_crl_get_this_update(crl);
-    if(thisUpdate == (time_t)-1) {
-        xmlSecGnuTLSError2("gnutls_x509_crl_get_this_update", GNUTLS_E_SUCCESS, NULL,
-            "crl this update time is invalid: %.lf",
-            difftime(thisUpdate, (time_t)0));
-        return(-1);
-    }
-    nextUpdate = gnutls_x509_crl_get_next_update(crl);
-    if(nextUpdate == (time_t)-1) {
-        xmlSecGnuTLSError2("gnutls_x509_crl_get_next_update", GNUTLS_E_SUCCESS, NULL,
-            "crl next update time is invalid: %.lf",
-            difftime(nextUpdate, (time_t)0));
-        return(-1);
-    }
-
-    /* check */
-    if(ts < thisUpdate) {
-        /* TODO: print crl issuer */
-        xmlSecOtherError(XMLSEC_ERRORS_R_CRL_NOT_YET_VALID, NULL, NULL);
-        return(0);
-    }
-    if(ts > nextUpdate) {
-        /* TODO: print crl issuer */
-        xmlSecOtherError(XMLSEC_ERRORS_R_CRL_HAS_EXPIRED, NULL, NULL);
-        /* DO NOTHING: OLD CRL IS BETTER THAN NOTHING! */
-    }
-
-    /* good! */
-    return(1);
-}
-
-
-static int
 xmlSecGnuTLSX509CheckCrtsTime(const gnutls_x509_crt_t * cert_list, xmlSecSize cert_list_size, time_t ts) {
     xmlSecSize ii;
     int ret;
@@ -470,18 +431,6 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
                     xmlSecKeyDataStoreGetName(store));
                 goto done;
             }
-
-            ret = xmlSecGnuTLSX509CheckCrlTime(crl, verification_time);
-            if(ret < 0) {
-                xmlSecInternalError("xmlSecGnuTLSX509CheckCrlTime",
-                    xmlSecKeyDataStoreGetName(store));
-                goto done;
-            } else if(ret != 1) {
-                /* crl time check failed */
-                continue;
-            }
-
-            /* crl looks good! */
             crl_list[crl_actual_list_size++] = crl;
         }
         for(ii = 0; ii < crl_ctx_list_size; ++ii) {
@@ -491,18 +440,6 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
                     xmlSecKeyDataStoreGetName(store));
                 goto done;
             }
-
-            ret = xmlSecGnuTLSX509CheckCrlTime(crl, verification_time);
-            if(ret < 0) {
-                xmlSecInternalError("xmlSecGnuTLSX509CheckCrlTime",
-                    xmlSecKeyDataStoreGetName(store));
-                goto done;
-            } else if(ret != 1) {
-                /* crl time check failed */
-                continue;
-            }
-
-            /* crl looks good! */
             crl_list[crl_actual_list_size++] = crl;
         }
     }
@@ -527,9 +464,13 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
 
 
     /* gnutls doesn't allow to specify "verification" timestamp so
-     * we have to do it ourselves */
-    /* TODO: check revocation date (https://github.com/lsh123/xmlsec/issues/579)*/
-    flags |= GNUTLS_VERIFY_DISABLE_TIME_CHECKS;
+     * we have to do it ourselves. Unfortunately it doesn't work
+     * for CRLs yet: https://github.com/lsh123/xmlsec/issues/579
+     */
+    if(keyInfoCtx->certsVerificationTime > 0) {
+        flags |= GNUTLS_VERIFY_DISABLE_TIME_CHECKS;
+    }
+
     flags |= GNUTLS_VERIFY_ALLOW_UNSORTED_CHAIN;
     if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_STRICT_CHECKS) != 0) {
         flags |= GNUTLS_VERIFY_ALLOW_SIGN_RSA_MD2;

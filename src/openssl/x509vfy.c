@@ -404,95 +404,6 @@ xmlSecOpenSSLX509StoreVerifyAndCopyCrls(X509_STORE* xst, X509_STORE_CTX* xsc, ST
 }
 
 static int
-xmlSecOpenSSLX509StoreVerifyCrlTimes(X509_CRL *crl, xmlSecKeyInfoCtx* keyInfoCtx) {
-    const ASN1_TIME * nextUpdate, * lastUpdate;
-    int ret;
-
-    xmlSecAssert2(crl != NULL, -1);
-    xmlSecAssert2(keyInfoCtx != NULL, -1);
-
-    /* check times: X509_cmp_time() and X509_cmp_current_time() return -1 if asn1_time is earlier
-     * than, or equal to, in_tm (resp. current time), and 1 otherwise. These methods return 0 on error. */
-    lastUpdate = X509_CRL_get0_lastUpdate(crl);
-    if(lastUpdate != NULL) {
-        if(keyInfoCtx->certsVerificationTime > 0) {
-            time_t tt = keyInfoCtx->certsVerificationTime;
-            ret = X509_cmp_time(lastUpdate, &tt);
-            if(ret == 0) {
-                xmlSecOpenSSLError("X509_cmp_time(lastUpdate)", NULL);
-                return(-1);
-            }
-        } else {
-            ret = X509_cmp_current_time(lastUpdate);
-            if(ret == 0) {
-                xmlSecOpenSSLError("X509_cmp_current_time(lastUpdate)", NULL);
-                return(-1);
-            }
-        }
-
-        /* ret = 1: asn1_time is later than time */
-        if(ret > 0) {
-            X509_NAME *crl_issuer;
-            char issuer_name[256];
-            time_t ts;
-
-            ts = xmlSecOpenSSLX509Asn1TimeToTime(lastUpdate);
-            crl_issuer = X509_CRL_get_issuer(crl);
-            if(crl_issuer != NULL) {
-                X509_NAME_oneline(crl_issuer, issuer_name, sizeof(issuer_name));
-                xmlSecOtherError3(XMLSEC_ERRORS_R_CRL_NOT_YET_VALID, NULL,
-                    "issuer=%s; lastUpdate=%lf", issuer_name, (double)ts);
-            } else {
-                xmlSecOtherError2(XMLSEC_ERRORS_R_CRL_NOT_YET_VALID, NULL,
-                    "lastUpdate=%lf", (double)ts);
-            }
-            return(0);
-        }
-    }
-    nextUpdate = X509_CRL_get0_nextUpdate(crl);
-    if(nextUpdate != NULL) {
-        if(keyInfoCtx->certsVerificationTime > 0) {
-            time_t tt = keyInfoCtx->certsVerificationTime;
-            ret = X509_cmp_time(nextUpdate, &tt);
-            if(ret == 0) {
-                xmlSecOpenSSLError("X509_cmp_time(nextUpdate)", NULL);
-                return(-1);
-            }
-        } else {
-            ret = X509_cmp_current_time(nextUpdate);
-            if(ret == 0) {
-                xmlSecOpenSSLError("X509_cmp_current_time(nextUpdate)", NULL);
-                return(-1);
-            }
-        }
-
-        /* ret = -1: asn1_time is earlier than, or equal to than time, however old CRL is
-            * better than no CRL so we log an error and continue */
-        if(ret < 0) {
-            X509_NAME *crl_issuer;
-            char issuer_name[256];
-            time_t ts;
-
-            ts = xmlSecOpenSSLX509Asn1TimeToTime(nextUpdate);
-            crl_issuer = X509_CRL_get_issuer(crl);
-            if(crl_issuer != NULL) {
-                X509_NAME_oneline(crl_issuer, issuer_name, sizeof(issuer_name));
-                xmlSecOtherError3(XMLSEC_ERRORS_R_CRL_HAS_EXPIRED, NULL,
-                    "issuer=%s; nextUpdate=%lf", issuer_name, (double)ts);
-            } else {
-                xmlSecOtherError2(XMLSEC_ERRORS_R_CRL_HAS_EXPIRED, NULL,
-                    "nextUpdate=%lf", (double)ts);
-            }
-            /* DO NOT STOP: OLD CRL IS BETTER THAN NOTHING */
-        }
-    }
-
-    /* success: crl is good! */
-    return(1);
-}
-
-
-static int
 xmlSecOpenSSLX509StoreVerifyCertAgainstRevoked(X509 * cert, STACK_OF(X509_REVOKED) *revoked_certs, xmlSecKeyInfoCtx* keyInfoCtx) {
     X509_REVOKED * revoked_cert;
     const ASN1_INTEGER * revoked_cert_serial;
@@ -545,7 +456,21 @@ xmlSecOpenSSLX509StoreVerifyCertAgainstRevoked(X509 * cert, STACK_OF(X509_REVOKE
             }
             /* ret = 1: asn1_time is later than time */
             if(ret > 0) {
+                X509_NAME *issuer;
+                char issuer_name[256];
+                time_t ts;
+
                 /* revocationDate > certsVerificationTime, we are good */
+                ts = xmlSecOpenSSLX509Asn1TimeToTime(revocationDate);
+                issuer = X509_get_issuer_name(cert);
+                if(issuer != NULL) {
+                    X509_NAME_oneline(issuer, issuer_name, sizeof(issuer_name));
+                    xmlSecOtherError3(XMLSEC_ERRORS_R_CRL_NOT_YET_VALID, NULL,
+                        "issuer=%s; revocationDate=%lf", issuer_name, (double)ts);
+                } else {
+                    xmlSecOtherError2(XMLSEC_ERRORS_R_CRL_NOT_YET_VALID, NULL,
+                        "revocationDates=%lf", (double)ts);
+                }
                 continue;
             }
         }
@@ -558,28 +483,21 @@ xmlSecOpenSSLX509StoreVerifyCertAgainstRevoked(X509 * cert, STACK_OF(X509_REVOKE
     return(1);
 }
 
+/* tries to find the best CRL, returns 1 on success, 0 if crl is not found, or a negative value on error */
 static int
-xmlSecOpenSSLX509StoreVerifyCertAgainstCrl(STACK_OF(X509_CRL) *crls, X509* cert, xmlSecKeyInfoCtx* keyInfoCtx) {
-    STACK_OF(X509_REVOKED) * revoked_certs;
-    X509_NAME *cert_issuer;
-    X509_NAME *crl_issuer;
+xmlSecOpenSSLX509StoreFindBestCrl(X509_NAME *cert_issuer, STACK_OF(X509_CRL) *crls, X509_CRL **res) {
     X509_CRL *crl = NULL;
+    X509_NAME *crl_issuer;
+    const ASN1_TIME * lastUpdate;
+    time_t resLastUpdateTime = 0;
     x509_size_t ii, num;
     int ret;
 
+    xmlSecAssert2(cert_issuer != NULL, -1);
     xmlSecAssert2(crls != NULL, -1);
-    xmlSecAssert2(cert != NULL, -1);
-    xmlSecAssert2(keyInfoCtx != NULL, -1);
+    xmlSecAssert2(res != NULL, -1);
+    xmlSecAssert2((*res) == NULL, -1);
 
-    /*
-     * Try to retrieve a CRL corresponding to the issuer of
-     * the current certificate
-     */
-    cert_issuer = X509_get_issuer_name(cert);
-    if(cert_issuer == NULL) {
-        xmlSecOpenSSLError("X509_get_issuer_name", NULL);
-        return(-1);
-    }
 
     num = sk_X509_CRL_num(crls);
     for(ii = 0; ii < num; ++ii) {
@@ -597,33 +515,89 @@ xmlSecOpenSSLX509StoreVerifyCertAgainstCrl(STACK_OF(X509_CRL) *crls, X509* cert,
             continue;
         }
 
-        ret = xmlSecOpenSSLX509StoreVerifyCrlTimes(crl, keyInfoCtx);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecOpenSSLX509StoreVerifyCrlTimes", NULL);
+        /* use the latest CRL we have */
+        lastUpdate = X509_CRL_get0_lastUpdate(crl);
+        if(lastUpdate == NULL) {
+            xmlSecOpenSSLError("X509_CRL_get0_lastUpdate", NULL);
             return(-1);
-        } else if(ret != 1) {
+        }
+
+        if((*res) == NULL) {
+            (*res) = crl;
+            resLastUpdateTime = xmlSecOpenSSLX509Asn1TimeToTime(lastUpdate);
             continue;
         }
 
-        /* CRL is good: verify cert */
-        revoked_certs = X509_CRL_get_REVOKED(crl);
-        if(revoked_certs == NULL) {
+        /* return -1 if asn1_time is earlier than, or equal to, ts
+         * and 1 otherwise. These methods return 0 on error.*/
+        ret = X509_cmp_time(lastUpdate, &resLastUpdateTime);
+        if(ret == 0) {
+            xmlSecOpenSSLError("X509_cmp_time(lastUpdate)", NULL);
+            return(-1);
+        }
+        if(ret > 0) {
+            /* asn1_time is greater than ts (i.e. crl is newer than crl in res)*/
+            (*res) = crl;
+            resLastUpdateTime = xmlSecOpenSSLX509Asn1TimeToTime(lastUpdate);
             continue;
         }
-        ret = xmlSecOpenSSLX509StoreVerifyCertAgainstRevoked(cert, revoked_certs, keyInfoCtx);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecOpenSSLX509StoreVerifyCertAgainstRevoked", NULL);
-            return(-1);
-        } else if(ret != 1) {
-            char subject[256], issuer[256];
+    }
 
-            /* cert is revoked, fail */
-            X509_NAME_oneline(X509_get_subject_name(cert), subject, sizeof(subject));
-            X509_NAME_oneline(X509_get_issuer_name(cert), issuer, sizeof(issuer));
-            xmlSecOtherError3(XMLSEC_ERRORS_R_CERT_REVOKED, NULL, "subject=%s; issuer=%s", subject, issuer);
-            return(0);
-        }
+    /* did we find anything? */
+    return((*res) != NULL ? 1 : 0);
+}
 
+static int
+xmlSecOpenSSLX509StoreVerifyCertAgainstCrls(STACK_OF(X509_CRL) *crls, X509* cert, xmlSecKeyInfoCtx* keyInfoCtx) {
+    X509_NAME *cert_issuer;
+    X509_CRL *crl = NULL;
+    STACK_OF(X509_REVOKED) * revoked_certs;
+    int ret;
+
+    xmlSecAssert2(crls != NULL, -1);
+    xmlSecAssert2(cert != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+
+    /*
+     * Try to retrieve a CRL corresponding to the issuer of
+     * the current certificate
+     */
+    cert_issuer = X509_get_issuer_name(cert);
+    if(cert_issuer == NULL) {
+        xmlSecOpenSSLError("X509_get_issuer_name", NULL);
+        return(-1);
+    }
+
+    ret = xmlSecOpenSSLX509StoreFindBestCrl(cert_issuer, crls, &crl);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecOpenSSLX509StoreFindBestCrl", NULL);
+        return(-1);
+    }
+
+    /* verify against revoked certs */
+    if(crl == NULL) {
+        /* success: verified! */
+        return(1);
+    }
+
+    revoked_certs = X509_CRL_get_REVOKED(crl);
+    if(revoked_certs == NULL) {
+        xmlSecOpenSSLError("X509_CRL_get_REVOKED", NULL);
+        return(-1);
+    }
+
+    ret = xmlSecOpenSSLX509StoreVerifyCertAgainstRevoked(cert, revoked_certs, keyInfoCtx);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecOpenSSLX509StoreVerifyCertAgainstRevoked", NULL);
+        return(-1);
+    } else if(ret != 1) {
+        char subject[256], issuer[256];
+
+        /* cert is revoked, fail */
+        X509_NAME_oneline(X509_get_subject_name(cert), subject, sizeof(subject));
+        X509_NAME_oneline(X509_get_issuer_name(cert), issuer, sizeof(issuer));
+        xmlSecOtherError3(XMLSEC_ERRORS_R_CERT_REVOKED, NULL, "subject=%s; issuer=%s", subject, issuer);
+        return(0);
     }
 
     /* success: verified! */
@@ -632,7 +606,7 @@ xmlSecOpenSSLX509StoreVerifyCertAgainstCrl(STACK_OF(X509_CRL) *crls, X509* cert,
 
 
 static int
-xmlSecOpenSSLX509StoreVerifyCertAgainstCrls(STACK_OF(X509)* chain, STACK_OF(X509_CRL)* crls, xmlSecKeyInfoCtx* keyInfoCtx) {
+xmlSecOpenSSLX509StoreVerifyCertsAgainstCrls(STACK_OF(X509)* chain, STACK_OF(X509_CRL)* crls, xmlSecKeyInfoCtx* keyInfoCtx) {
     X509 * cert;
     x509_size_t ii, num_certs;
     int ret;
@@ -648,9 +622,9 @@ xmlSecOpenSSLX509StoreVerifyCertAgainstCrls(STACK_OF(X509)* chain, STACK_OF(X509
         if(cert == NULL) {
             continue;
         }
-        ret = xmlSecOpenSSLX509StoreVerifyCertAgainstCrl(crls, cert, keyInfoCtx);
+        ret = xmlSecOpenSSLX509StoreVerifyCertAgainstCrls(crls, cert, keyInfoCtx);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecOpenSSLX509StoreVerifyCertAgainstCrl", NULL);
+            xmlSecInternalError("xmlSecOpenSSLX509StoreVerifyCertAgainstCrls", NULL);
             return(-1);
         } else if(ret != 1) {
             /* cert was revoked */
@@ -789,9 +763,9 @@ xmlSecOpenSSLX509StoreVerifyCert(X509_STORE* xst, X509_STORE_CTX* xsc, X509* cer
 
     /* now check against crls */
     if(crls != NULL) {
-        ret = xmlSecOpenSSLX509StoreVerifyCertAgainstCrls(chain, crls, keyInfoCtx);
+        ret = xmlSecOpenSSLX509StoreVerifyCertsAgainstCrls(chain, crls, keyInfoCtx);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecOpenSSLX509StoreVerifyCertAgainstCrls(crls)", NULL);
+            xmlSecInternalError("xmlSecOpenSSLX509StoreVerifyCertsAgainstCrls(crls)", NULL);
             goto done;
         } else if(ret != 1) {
             /* not verified */
@@ -800,9 +774,9 @@ xmlSecOpenSSLX509StoreVerifyCert(X509_STORE* xst, X509_STORE_CTX* xsc, X509* cer
         }
     }
     if(crls2 != NULL) {
-        ret = xmlSecOpenSSLX509StoreVerifyCertAgainstCrls(chain, crls2, keyInfoCtx);
+        ret = xmlSecOpenSSLX509StoreVerifyCertsAgainstCrls(chain, crls2, keyInfoCtx);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecOpenSSLX509StoreVerifyCertAgainstCrls(crls2)", NULL);
+            xmlSecInternalError("xmlSecOpenSSLX509StoreVerifyCertsAgainstCrls(crls2)", NULL);
             goto done;
         } else if(ret != 1) {
             /* not verified */

@@ -296,7 +296,6 @@ xmlSecNssX509StoreFindBestCrl(xmlSecNssX509StoreCtxPtr x509StoreCtx, CERTCertifi
     PRTime lastUpdate = 0;
     PRTime resLastUpdate = 0;
     SECStatus rv;
-    int ret;
 
     xmlSecAssert2(x509StoreCtx != NULL, -1);
     xmlSecAssert2(cert != NULL, -1);
@@ -318,23 +317,6 @@ xmlSecNssX509StoreFindBestCrl(xmlSecNssX509StoreCtxPtr x509StoreCtx, CERTCertifi
         if((rv != SECSuccess) || (lastUpdate == 0)) {
             xmlSecNssError("DER_DecodeTimeChoice(lastUpdate)", NULL);
             return(-1);
-        }
-
-        /* check last/next update: if we are checking against current time, we assume
-         * that CRL does NOT come from the future and we don't need to check
-         * the timestamps */
-        if(keyInfoCtx->certsVerificationTime > 0) {
-            time_t lastUpdateTime = 0;
-
-            ret = xmlSecNssX509CertGetTime(&lastUpdate, &lastUpdateTime);
-            if((ret < 0) || (lastUpdateTime == 0)) {
-                xmlSecInternalError("xmlSecNssX509CertGetTime(lastUpdate)", NULL);
-                return(-1);
-            }
-            if(keyInfoCtx->certsVerificationTime < lastUpdateTime) {
-                /* verification time before this CRL was created, it doesn't apply */
-                continue;
-            }
         }
 
         /* Use latest CRL by the last update time */

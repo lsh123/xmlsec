@@ -185,6 +185,20 @@ xmlSecOpenSSLEvpKeyDataGetEvp(xmlSecKeyDataPtr data) {
     return(ctx->pKey);
 }
 
+EVP_PKEY*
+xmlSecOpenSSLKeyGetEvp(xmlSecKeyPtr key) {
+    xmlSecKeyDataPtr value;
+
+    xmlSecAssert2(key != NULL, NULL);
+
+    value = xmlSecKeyGetValue(key);
+    if(value == NULL) {
+        /* key value might not have been set yet */
+        return(NULL);
+    }
+    return(xmlSecOpenSSLEvpKeyDataGetEvp(value));
+}
+
 static int
 xmlSecOpenSSLEvpKeyDataInitialize(xmlSecKeyDataPtr data) {
     xmlSecOpenSSLEvpKeyDataCtxPtr ctx;
@@ -550,7 +564,6 @@ done:
 
 static int
 xmlSecOpenSSLKeyDataDEREncodedKeyValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    xmlSecKeyDataPtr keyValue;
     EVP_PKEY * pKey;
     xmlSecByte * data = NULL;
     xmlSecSize dataSize = 0;
@@ -565,14 +578,9 @@ xmlSecOpenSSLKeyDataDEREncodedKeyValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr 
     xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeWrite, -1);
 
     /* get EVP_PKEY */
-    keyValue = xmlSecKeyGetValue(key);
-    if(keyValue == NULL) {
-        xmlSecInternalError("xmlSecKeyGetValue", xmlSecKeyDataKlassGetName(id));
-        goto done;
-    }
-    pKey = xmlSecOpenSSLEvpKeyDataGetEvp(keyValue);
+    pKey = xmlSecOpenSSLKeyGetEvp(key);
     if(pKey == NULL) {
-        xmlSecInternalError("xmlSecOpenSSLEvpKeyDataGetEvp", xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecOpenSSLKeyGetEvp", xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 
@@ -1156,7 +1164,8 @@ xmlSecOpenSSLKeyDataDsaGetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueDsaP
     }
 
     /* TODO: implement check for private key on a token (similar to keys on ENGINE) */
-    dsaKeyValue->externalPrivKey = 0;
+    /* https://github.com/openssl/openssl/issues/9467 */
+    dsaKeyValue->externalPrivKey = 1;
 
     /* success */
     return(0);
@@ -3979,7 +3988,8 @@ xmlSecOpenSSLKeyDataRsaGetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueRsaP
     }
 
     /* TODO: implement check for private key on a token (similar to keys on ENGINE) */
-    rsaKeyValue->externalPrivKey = 0;
+    /* https://github.com/openssl/openssl/issues/9467 */
+    rsaKeyValue->externalPrivKey = 1;
 
     /* success */
     return(0);

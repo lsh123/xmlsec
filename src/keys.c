@@ -404,7 +404,7 @@ xmlSecKeyReqMatchKey(xmlSecKeyReqPtr keyReq, xmlSecKeyPtr key) {
     xmlSecAssert2(xmlSecKeyIsValid(key), -1);
 
     if((keyReq->keyType != xmlSecKeyDataTypeUnknown) && ((xmlSecKeyGetType(key) & keyReq->keyType) == 0)) {
-         return(0);
+        return(0);
     }
     if((keyReq->keyUsage != xmlSecKeyDataUsageUnknown) && ((keyReq->keyUsage & key->usage) == 0)) {
         return(0);
@@ -822,6 +822,24 @@ xmlSecKeySetValue(xmlSecKeyPtr key, xmlSecKeyDataPtr value) {
     key->value = value;
 
     return(0);
+}
+
+/**
+ * xmlSecKeyGetSize:
+ * @key:                the pointer to key.
+ *
+ * Gets key size (see also #xmlSecKeyDataGetSize function).
+ *
+ * Returns: key size.
+ */
+xmlSecSize
+xmlSecKeyGetSize(xmlSecKeyPtr key) {
+    xmlSecAssert2(key != NULL, 0);
+
+    if(key->value == NULL) {
+        return(0);
+    }
+    return(xmlSecKeyDataGetSize(key->value));
 }
 
 /**

@@ -164,6 +164,11 @@ xmlSecOpenSSLKeysStoreFindKeyFromX509Data(xmlSecKeyStorePtr store, xmlSecKeyX509
 
     return(res);
 #else  /* XMLSEC_NO_X509 */
+    xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecOpenSSLKeysStoreId), NULL);
+    xmlSecAssert2(x509Data != NULL, NULL);
+    xmlSecAssert2(keyInfoCtx != NULL, NULL);
+
+    xmlSecNotImplementedError("X509 support is disabled");
     return(NULL);
 #endif /* XMLSEC_NO_X509 */
 }

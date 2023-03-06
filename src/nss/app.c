@@ -60,10 +60,14 @@ static PRBool xmlSecNssAppAscii2UCS2Conv                        (PRBool toUnicod
                                                                  unsigned int   maxOutBufLen,
                                                                  unsigned int  *outBufLen,
                                                                  PRBool         swapBytes);
+static xmlSecKeyPtr     xmlSecNssAppDerKeyLoadSECItem           (SECItem* secItem);
+
+
+#ifndef XMLSEC_NO_X509
 static SECItem *xmlSecNssAppNicknameCollisionCallback           (SECItem *old_nick,
                                                                  PRBool *cancel,
                                                                  void *wincx);
-static xmlSecKeyPtr     xmlSecNssAppDerKeyLoadSECItem           (SECItem* secItem);
+#endif /* XMLSEC_NO_X509 */
 
 /**
  * xmlSecNssAppInit:
@@ -233,12 +237,12 @@ xmlSecNssAppAscii2UCS2Conv(PRBool toUnicode,
                                     outBuf, maxOutBufLen, outBufLen));
 }
 
+#ifndef XMLSEC_NO_X509
 /* rename certificate if needed */
 static SECItem *
 xmlSecNssAppNicknameCollisionCallback(SECItem *old_nick ATTRIBUTE_UNUSED,
-                                      PRBool *cancel,
-                                      void *wincx ATTRIBUTE_UNUSED)
-{
+    PRBool *cancel, void *wincx ATTRIBUTE_UNUSED
+) {
     CERTCertificate *cert = (CERTCertificate *)wincx;
     char *nick = NULL;
     SECItem *ret_nick = NULL;
@@ -266,6 +270,7 @@ xmlSecNssAppNicknameCollisionCallback(SECItem *old_nick ATTRIBUTE_UNUSED,
     ret_nick->len = (unsigned int)PORT_Strlen(nick);
     return ret_nick;
 }
+#endif /* XMLSEC_NO_X509 */
 
 /**
  * xmlSecNssAppKeyLoad:
@@ -384,9 +389,8 @@ xmlSecNssAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlSecKey
  */
 xmlSecKeyPtr
 xmlSecNssAppKeyLoadSECItem(SECItem* secItem, xmlSecKeyDataFormat format,
-                    const char *pwd,
-                    void* pwdCallback,
-                    void* pwdCallbackCtx) {
+    const char *pwd, void* pwdCallback, void* pwdCallbackCtx
+) {
     xmlSecKeyPtr key = NULL;
 
     xmlSecAssert2(secItem != NULL, NULL);

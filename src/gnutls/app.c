@@ -36,6 +36,7 @@
 #include "../cast_helpers.h"
 #include "private.h"
 
+
 static xmlSecKeyPtr     xmlSecGnuTLSAppPemDerKeyLoadMemory      (const xmlSecByte * data,
                                                                  xmlSecSize dataSize,
                                                                  gnutls_x509_crt_fmt_t fmt);
@@ -47,9 +48,12 @@ static xmlSecKeyPtr     xmlSecGnuTLSAppPkcs8KeyLoadMemory       (const xmlSecByt
                                                                  void* pwdCallback,
                                                                  void* pwdCallbackCtx);
 
+#ifndef XMLSEC_NO_X509
 static xmlSecKeyPtr     xmlSecGnuTLSAppKeyFromCertLoadMemory    (const xmlSecByte* data,
                                                                  xmlSecSize dataSize,
                                                                  xmlSecKeyDataFormat format);
+#endif /* XMLSEC_NO_X509 */
+
 
 /**
  * xmlSecGnuTLSAppInit:
@@ -229,6 +233,7 @@ xmlSecGnuTLSAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,  xmlSe
 }
 
 #ifndef XMLSEC_NO_X509
+
 /**
  * xmlSecGnuTLSAppKeyCertLoad:
  * @key:                the pointer to key.
@@ -240,8 +245,7 @@ xmlSecGnuTLSAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,  xmlSe
  * Returns: 0 on success or a negative value otherwise.
  */
 int
-xmlSecGnuTLSAppKeyCertLoad(xmlSecKeyPtr key, const char* filename,
-                          xmlSecKeyDataFormat format) {
+xmlSecGnuTLSAppKeyCertLoad(xmlSecKeyPtr key, const char* filename, xmlSecKeyDataFormat format) {
     xmlSecBuffer buffer;
     int ret;
 
@@ -291,9 +295,9 @@ xmlSecGnuTLSAppKeyCertLoad(xmlSecKeyPtr key, const char* filename,
  * Returns: 0 on success or a negative value otherwise.
  */
 int
-xmlSecGnuTLSAppKeyCertLoadMemory(xmlSecKeyPtr key,
-    const xmlSecByte* data, xmlSecSize dataSize, xmlSecKeyDataFormat format)
-{
+xmlSecGnuTLSAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSecSize dataSize,
+    xmlSecKeyDataFormat format
+) {
     gnutls_x509_crt_t cert = NULL;
     xmlSecKeyDataPtr x509Data;
     int ret;
@@ -381,10 +385,8 @@ xmlSecGnuTLSAppPkcs12Load(const char *filename,
  */
 xmlSecKeyPtr
 xmlSecGnuTLSAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
-                                const char *pwd,
-                                void* pwdCallback ATTRIBUTE_UNUSED,
-                                void* pwdCallbackCtx ATTRIBUTE_UNUSED)
-{
+    const char *pwd, void* pwdCallback ATTRIBUTE_UNUSED, void* pwdCallbackCtx ATTRIBUTE_UNUSED
+) {
     xmlSecKeyPtr key = NULL;
     xmlSecKeyPtr res = NULL;
     xmlSecPtrList certsList;
@@ -518,6 +520,7 @@ done:
     xmlSecPtrListFinalize(&certsList);
     return(res);
 }
+#endif /* XMLSEC_NO_X509 */
 
 
 static gnutls_privkey_t
@@ -686,6 +689,7 @@ xmlSecGnuTLSAppPkcs8KeyLoadMemory(const xmlSecByte * data, xmlSecSize dataSize, 
     return(key);
 }
 
+#ifndef XMLSEC_NO_X509
 static xmlSecKeyPtr
 xmlSecGnuTLSAppKeyFromCertLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlSecKeyDataFormat format)
 {

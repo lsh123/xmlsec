@@ -614,6 +614,8 @@ done:
 #endif /* !defined(OPENSSL_NO_ENGINE) && (!defined(XMLSEC_OPENSSL_API_300) || defined(XMLSEC_OPENSSL3_ENGINES)) */
 }
 
+#ifndef XMLSEC_NO_X509
+
 /* this function will either adopt or destroy ALL the params passed into it: pKey, keyCert, certs */
 static xmlSecKeyPtr
 xmlSecOpenSSLCreateKey(EVP_PKEY * pKey,  X509 * keyCert, STACK_OF(X509) * certs) {
@@ -791,9 +793,11 @@ xmlSecOpenSSLAppFindKeyCert(EVP_PKEY * pKey, STACK_OF(X509) * certs) {
     /* not found */
     return(NULL);
 }
+#endif /* XMLSEC_NO_X509 */
 
 static xmlSecKeyPtr
 xmlSecOpenSSLAppStoreKeyLoad(const char *uri, xmlSecKeyDataType type, const char *pwd, void* pwdCallback, void* pwdCallbackCtx) {
+#ifndef XMLSEC_NO_X509
     UI_METHOD * ui_method = NULL;
     pem_password_cb * pwdCb;
     void * pwdCbCtx;
@@ -971,6 +975,18 @@ done:
         UI_destroy_method(ui_method);
     }
     return(res);
+
+#else /* XMLSEC_NO_X509 */
+
+    xmlSecAssert2(uri != NULL, NULL);
+    UNREFERENCED_PARAMETER(type);
+    UNREFERENCED_PARAMETER(pwd);
+    UNREFERENCED_PARAMETER(pwdCallback);
+    UNREFERENCED_PARAMETER(pwdCallbackCtx);
+
+    xmlSecNotImplementedError("X509 support is disabled");
+    return(NULL);
+#endif /* XMLSEC_NO_X509 */
 }
 
 #ifndef XMLSEC_NO_X509

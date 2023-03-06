@@ -128,8 +128,7 @@ xmlSecGnuTLSKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
 }
 
 static xmlSecKeyPtr
-xmlSecGnuTLSKeysStoreFindKeyFromX509Data(xmlSecKeyStorePtr store, xmlSecKeyX509DataValuePtr x509Data,
-    xmlSecKeyInfoCtxPtr keyInfoCtx
+xmlSecGnuTLSKeysStoreFindKeyFromX509Data(xmlSecKeyStorePtr store, xmlSecKeyX509DataValuePtr x509Data, xmlSecKeyInfoCtxPtr keyInfoCtx
 ) {
 #ifndef XMLSEC_NO_X509
     xmlSecKeyStorePtr* simplekeystore;
@@ -137,8 +136,8 @@ xmlSecGnuTLSKeysStoreFindKeyFromX509Data(xmlSecKeyStorePtr store, xmlSecKeyX509D
     xmlSecKeyPtr key, res;
 
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecGnuTLSKeysStoreId), NULL);
+    xmlSecAssert2(x509Data != NULL, NULL);
     xmlSecAssert2(keyInfoCtx != NULL, NULL);
-
 
     simplekeystore = xmlSecGnuTLSKeysStoreGetCtx(store);
     xmlSecAssert2(((simplekeystore != NULL) && (*simplekeystore != NULL)), NULL);
@@ -164,6 +163,11 @@ xmlSecGnuTLSKeysStoreFindKeyFromX509Data(xmlSecKeyStorePtr store, xmlSecKeyX509D
 
     return(res);
 #else  /* XMLSEC_NO_X509 */
+    xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecGnuTLSKeysStoreId), NULL);
+    xmlSecAssert2(x509Data != NULL, NULL);
+    xmlSecAssert2(keyInfoCtx != NULL, NULL);
+
+    xmlSecNotImplementedError("X509 support is disabled");
     return(NULL);
 #endif /* XMLSEC_NO_X509 */
 }

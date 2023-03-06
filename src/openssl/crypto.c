@@ -479,11 +479,11 @@ xmlSecOpenSSLShutdown(void) {
  */
 int
 xmlSecOpenSSLKeysMngrInit(xmlSecKeysMngrPtr mngr) {
+#ifndef XMLSEC_NO_X509
     int ret;
 
     xmlSecAssert2(mngr != NULL, -1);
 
-#ifndef XMLSEC_NO_X509
     /* create x509 store if needed */
     if(xmlSecKeysMngrGetDataStore(mngr, xmlSecOpenSSLX509StoreId) == NULL) {
         xmlSecKeyDataStorePtr x509Store;
@@ -501,7 +501,12 @@ xmlSecOpenSSLKeysMngrInit(xmlSecKeysMngrPtr mngr) {
             return(-1);
         }
     }
+
+#else /* XMLSEC_NO_X509 */
+    xmlSecAssert2(mngr != NULL, -1);
+
 #endif /* XMLSEC_NO_X509 */
+
     return(0);
 }
 

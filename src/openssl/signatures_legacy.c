@@ -331,7 +331,7 @@ xmlSecOpenSSLSignatureLegacySetKey(xmlSecTransformPtr transform, xmlSecKeyPtr ke
     xmlSecAssert2(ctx->keyId != NULL, -1);
     xmlSecAssert2(xmlSecKeyCheckId(key, ctx->keyId), -1);
 
-    pKey = xmlSecOpenSSLKeyGetEvp(value);
+    pKey = xmlSecOpenSSLKeyGetEvp(key);
     if(pKey == NULL) {
         xmlSecInternalError("xmlSecOpenSSLKeyGetEvp", xmlSecTransformGetName(transform));
         return(-1);

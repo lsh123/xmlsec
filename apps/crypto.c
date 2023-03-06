@@ -20,6 +20,10 @@
 
 #include "crypto.h"
 
+#ifndef UNREFERENCED_PARAMETER
+#define UNREFERENCED_PARAMETER(param)   ((void)(param))
+#endif /* UNREFERENCED_PARAMETER */
+
 int
 xmlSecAppCryptoInit(const char* config) {
     if(xmlSecCryptoAppInit(config) < 0) {
@@ -78,8 +82,15 @@ xmlSecAppCryptoSimpleKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filena
     xmlSecAssert2(filename != NULL, -1);
 
 #ifndef XMLSEC_NO_X509
+
     return(xmlSecCryptoAppKeysMngrCertLoad(mngr, filename, format, type));
+
 #else /* XMLSEC_NO_X509 */
+
+    UNREFERENCED_PARAMETER(format);
+    UNREFERENCED_PARAMETER(type);
+
+    fprintf(stderr, "Error: X509 support is disabled\n");
     return(-1);
 #endif /* XMLSEC_NO_X509 */
 }
@@ -91,8 +102,14 @@ xmlSecAppCryptoSimpleKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filenam
     xmlSecAssert2(filename != NULL, -1);
 
 #ifndef XMLSEC_NO_X509
+
     return(xmlSecCryptoAppKeysMngrCrlLoad(mngr, filename, format));
+
 #else /* XMLSEC_NO_X509 */
+
+    UNREFERENCED_PARAMETER(format);
+
+    fprintf(stderr, "Error: X509 support is disabled\n");
     return(-1);
 #endif /* XMLSEC_NO_X509 */
 }
@@ -219,6 +236,8 @@ xmlSecAppCryptoSimpleKeysMngrEngineKeyAndCertsLoad(xmlSecKeysMngrPtr mngr,
         }
     }
 #else /* XMLSEC_NO_X509 */
+    UNREFERENCED_PARAMETER(certFormat);
+
     if(certFiles[0] != '\0') {
         fprintf(stderr, "Error: X509 support is disabled\n");
         xmlSecKeyDestroy(key);
@@ -256,6 +275,7 @@ int
 xmlSecAppCryptoSimpleKeysMngrPkcs12KeyLoad(xmlSecKeysMngrPtr mngr, const char *filename, const char* pwd,
     const char *name, xmlSecKeyInfoCtxPtr keyInfoCtx, int verifyKey
 ) {
+#ifndef XMLSEC_NO_X509
     xmlSecKeyPtr key;
     int ret;
 
@@ -263,7 +283,6 @@ xmlSecAppCryptoSimpleKeysMngrPkcs12KeyLoad(xmlSecKeysMngrPtr mngr, const char *f
     xmlSecAssert2(filename != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
-#ifndef XMLSEC_NO_X509
     key = xmlSecCryptoAppKeyLoadEx(filename, xmlSecKeyDataTypePrivate, xmlSecKeyDataFormatPkcs12, pwd,
                     xmlSecCryptoAppGetDefaultPwdCallback(), (void*)filename);
     if(key == NULL) {
@@ -306,6 +325,14 @@ xmlSecAppCryptoSimpleKeysMngrPkcs12KeyLoad(xmlSecKeysMngrPtr mngr, const char *f
 
     return(0);
 #else /* XMLSEC_NO_X509 */
+    xmlSecAssert2(mngr != NULL, -1);
+    xmlSecAssert2(filename != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+
+    UNREFERENCED_PARAMETER(pwd);
+    UNREFERENCED_PARAMETER(name);
+    UNREFERENCED_PARAMETER(verifyKey);
+
     fprintf(stderr, "Error: X509 support is disabled\n");
     return(-1);
 #endif /* XMLSEC_NO_X509 */

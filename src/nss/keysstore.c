@@ -191,8 +191,7 @@ xmlSecNssKeysStoreFinalize(xmlSecKeyStorePtr store) {
 }
 
 static xmlSecKeyPtr
-xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
-                          xmlSecKeyInfoCtxPtr keyInfoCtx) {
+xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecKeyStorePtr* ss;
     xmlSecKeyPtr key = NULL;
     xmlSecKeyPtr retval = NULL;
@@ -264,6 +263,7 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
             return (NULL);
         }
 
+#ifndef XMLSEC_NO_X509
         x509Data = xmlSecKeyDataCreate(xmlSecNssKeyDataX509Id);
         if(x509Data == NULL) {
             xmlSecInternalError("xmlSecKeyDataCreate", NULL);
@@ -276,6 +276,7 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
             goto done;
         }
         cert = NULL; /* owned by x509 data */
+#endif /* XMLSEC_NO_X509 */
 
         ret = xmlSecKeySetValue(key, data);
         if (ret < 0) {
@@ -355,6 +356,11 @@ xmlSecNssKeysStoreFindKeyFromX509Data(xmlSecKeyStorePtr store, xmlSecKeyX509Data
 
     return(res);
 #else  /* XMLSEC_NO_X509 */
+    xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecNssKeysStoreId), NULL);
+    xmlSecAssert2(x509Data != NULL, NULL);
+    xmlSecAssert2(keyInfoCtx != NULL, NULL);
+
+    xmlSecNotImplementedError("X509 support is disabled");
     return(NULL);
 #endif /* XMLSEC_NO_X509 */
 }

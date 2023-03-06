@@ -3384,7 +3384,7 @@ xmlSecTransformPbkdf2ParamsFinalize(xmlSecTransformPbkdf2ParamsPtr params) {
     memset(params, 0, sizeof(*params));
 }
 
-/**
+/*
  * https://www.w3.org/TR/xmlenc-core1/#sec-PBKDF2
  *
  *  <element name="PBKDF2-params" type="xenc11:PBKDF2ParameterType"/>

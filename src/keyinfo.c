@@ -1258,7 +1258,7 @@ xmlSecKeyDataRetrievalMethodReadXmlResult(xmlSecKeyDataId typeId, xmlSecKeyPtr k
 
 /**************************************************************************
  *
- * <dsig11:KeyInfoReference /> processing
+ * dsig11:KeyInfoReference element  processing
  *
  *************************************************************************/
 static int                      xmlSecKeyDataKeyInfoReferenceXmlRead(xmlSecKeyDataId id,
@@ -1337,7 +1337,7 @@ static int                      xmlSecKeyDataKeyInfoReferenceReadXmlResult(xmlSe
  *
  * https://www.w3.org/TR/xmldsig-core1/#sec-KeyInfoReference
  *
- * Returns: the <dsig11:KeyInfoReference/> element processing key data klass.
+ * Returns: the dsig11:KeyInfoReference element processing key data klass.
  */
 xmlSecKeyDataId
 xmlSecKeyDataKeyInfoReferenceGetKlass(void) {
@@ -1716,7 +1716,7 @@ done:
 
 /**************************************************************************
  *
- * <enc11:DerivedKey/> processing
+ * enc11:DerivedKey element processing
  *
  *************************************************************************/
 static int      xmlSecKeyDataDerivedKeyXmlRead          (xmlSecKeyDataId id,
@@ -1771,7 +1771,7 @@ static xmlSecKeyDataKlass xmlSecKeyDataDerivedKeyKlass = {
 /**
  * xmlSecKeyDataDerivedKeyGetKlass:
  *
- * The <enc11:DerivedKey/> element key data klass
+ * The enc11:DerivedKey element key data klass
  * (https://www.w3.org/TR/xmlenc-core1/#sec-DerivedKey)
  *
  * The DerivedKey element is used to transport information about
@@ -1785,7 +1785,7 @@ static xmlSecKeyDataKlass xmlSecKeyDataDerivedKeyKlass = {
  * to the EncryptionMethod or SignatureMethod algorithm without
  * any additional processing.
  *
- * Returns: the <enc11:DerivedKey/> element processing key data klass.
+ * Returns: the enc11:DerivedKey element processing key data klass.
  */
 xmlSecKeyDataId
 xmlSecKeyDataDerivedKeyGetKlass(void) {

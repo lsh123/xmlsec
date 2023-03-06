@@ -299,6 +299,7 @@ typedef int             (*xmlSecTransformCtxPreExecuteCallback)         (xmlSecT
  *                      (reserved for the future).
  * @flags2:             the bit mask flags to control transforms execution
  *                      (reserved for the future).
+ * @binaryChunkSize:    the chunk of size for binary transforms processing.
  * @enabledUris:        the allowed transform data source uri types.
  * @enabledTransforms:  the list of enabled transforms; if list is empty (default)
  *                      then all registered transforms are enabled.
@@ -308,6 +309,7 @@ typedef int             (*xmlSecTransformCtxPreExecuteCallback)         (xmlSecT
  *                      insert additional transforms in the chain or do
  *                      additional validation (and abort transform execution
  *                      if needed).
+ * @parentKeyInfoCtx:   the parent's key info ctx for key agreement.
  * @result:             the pointer to transforms result buffer.
  * @status:             the transforms chain processing status.
  * @uri:                the data source URI without xpointer expression.
@@ -407,6 +409,7 @@ XMLSEC_EXPORT void                      xmlSecTransformCtxSetDefaultBinaryChunkS
  * @outBuf:             the output binary data buffer.
  * @inNodes:            the input XML nodes.
  * @outNodes:           the output XML nodes.
+ * @expectedOutputSize: the expected transform output size (used for key wraps).
  * @reserved0:          reserved for the future.
  * @reserved1:          reserved for the future.
  *

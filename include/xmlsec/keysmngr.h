@@ -226,9 +226,9 @@ typedef xmlSecKeyPtr            (*xmlSecKeyStoreFindKeyFromX509DataMethod)(xmlSe
  * @name:               the store's name.
  * @initialize:         the store's initialization method.
  * @finalize:           the store's finalization (destroy) method.
- * @findKey:            the store's find method.
+ * @findKey:            the store's method to find key by key name.
+ * @findKeyFromX509Data: the store's method to find key based on x509 data.
  * @reserved0:          reserved for the future.
- * @reserved1:          reserved for the future.
  *
  * The keys store id (klass).
  */

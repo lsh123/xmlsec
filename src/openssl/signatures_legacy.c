@@ -11,7 +11,7 @@
 /**
  * SECTION:crypto
  */
-/**
+/*
  * The ECDSA signature were added to EVP interface in 3.0.0
  * https://www.openssl.org/docs/manmaster/man7/EVP_SIGNATURE-ECDSA.html
  *

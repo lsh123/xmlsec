@@ -275,7 +275,7 @@ typedef int                     (*xmlSecCryptoAppKeysMngrCrlLoadMethod)(xmlSecKe
 typedef int                     (*xmlSecCryptoAppKeysMngrCrlLoadMemoryMethod)(xmlSecKeysMngrPtr mngr,
                                                                          const xmlSecByte* data,
                                                                          xmlSecSize dataSize,
-                                                                         xmlSecKeyDataFormat formate);
+                                                                         xmlSecKeyDataFormat format);
 
 /**
  * xmlSecCryptoAppKeyLoadMethod:

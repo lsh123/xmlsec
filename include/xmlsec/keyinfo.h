@@ -179,17 +179,17 @@ typedef enum {
  * @retrievalMethodCtx: the transforms context for <dsig:RetrievalMethod />
  *                      element processing.
  * @maxRetrievalMethodLevel: the max recursion level when processing
- *                      <dsig:RetrievalMethod /> element; default level is 1
+ *                      dsig:RetrievalMethod element; default level is 1
  *                      (see also @curRetrievalMethodLevel).
- * @keyInfoReferenceCtx: the transforms context for <dsig11:KeyInfoReference />
+ * @keyInfoReferenceCtx: the transforms context for dsig11:KeyInfoReference
  *                      element processing.
  * @maxKeyInfoReferenceLevel: the max recursion level when processing
- *                      <dsig11:KeyInfoReference  /> element; default level is 1
+ *                      dsig11:KeyInfoReference element; default level is 1
  *                      (see also @curKeyInfoReferenceLevel).
  * @encCtx:             the encryption context for <dsig:EncryptedKey /> element
  *                      processing.
  * @maxEncryptedKeyLevel: the max recursion level when processing
- *                      <enc:EncryptedKey /> element; default level is 1
+ *                      enc:EncryptedKey element; default level is 1
  *                      (see @curEncryptedKeyLevel).
  * @certsVerificationTime: the time to use for X509 certificates verification
  *                      ("not valid before" and "not valid after" checks);
@@ -198,12 +198,13 @@ typedef enum {
  *                      clock "now".
  * @certsVerificationDepth: the max certifications chain length (default is 9).
  * @pgpReserved:        reserved for PGP.
- * @curRetrievalMethodLevel: the current <dsig:RetrievalMethod /> element
+ * @curRetrievalMethodLevel: the current dsig:RetrievalMethod element
  *                      processing level (see @maxRetrievalMethodLevel).
- * @curKeyInfoReferenceLevel: the current <dsig11:KeyInfoReference /> element
+ * @curKeyInfoReferenceLevel: the current dsig11:KeyInfoReference element
  *                      processing level (see @maxKeyInfoReferenceLevel).
- * @curEncryptedKeyLevel: the current <enc:EncryptedKey /> or <enc11:DerivedKey> element
+ * @curEncryptedKeyLevel: the current enc:EncryptedKey or enc11:DerivedKey element
  *                      processing level (see @maxEncryptedKeyLevel).
+ * @operation:          the transform operation for this key info.
  * @keyReq:             the current key requirements.
  * @reserved0:          reserved for the future.
  * @reserved1:          reserved for the future.
@@ -270,7 +271,7 @@ XMLSEC_EXPORT void                      xmlSecKeyInfoCtxDebugXmlDump    (xmlSecK
 /**
  * xmlSecKeyDataNameId
  *
- * The <dsig:KeyName> processing class.
+ * The dsig:KeyName processing class.
  */
 #define xmlSecKeyDataNameId             xmlSecKeyDataNameGetKlass()
 XMLSEC_EXPORT xmlSecKeyDataId           xmlSecKeyDataNameGetKlass       (void);
@@ -278,7 +279,7 @@ XMLSEC_EXPORT xmlSecKeyDataId           xmlSecKeyDataNameGetKlass       (void);
 /**
  * xmlSecKeyDataValueId
  *
- * The <dsig:KeyValue> processing class.
+ * The dsig:KeyValue processing class.
  */
 #define xmlSecKeyDataValueId            xmlSecKeyDataValueGetKlass()
 XMLSEC_EXPORT xmlSecKeyDataId           xmlSecKeyDataValueGetKlass      (void);
@@ -286,7 +287,7 @@ XMLSEC_EXPORT xmlSecKeyDataId           xmlSecKeyDataValueGetKlass      (void);
 /**
  * xmlSecKeyDataRetrievalMethodId
  *
- * The <dsig:RetrievalMethod> processing class.
+ * The dsig:RetrievalMethod processing class.
  */
 #define xmlSecKeyDataRetrievalMethodId  xmlSecKeyDataRetrievalMethodGetKlass()
 XMLSEC_EXPORT xmlSecKeyDataId           xmlSecKeyDataRetrievalMethodGetKlass(void);
@@ -294,7 +295,7 @@ XMLSEC_EXPORT xmlSecKeyDataId           xmlSecKeyDataRetrievalMethodGetKlass(voi
 /**
  * xmlSecKeyDataKeyInfoReferenceId
  *
- * The <dsig11:KeyInfoReference> processing class.
+ * The dsig11:KeyInfoReference processing class.
  */
 #define xmlSecKeyDataKeyInfoReferenceId xmlSecKeyDataKeyInfoReferenceGetKlass()
 XMLSEC_EXPORT xmlSecKeyDataId           xmlSecKeyDataKeyInfoReferenceGetKlass(void);
@@ -303,7 +304,7 @@ XMLSEC_EXPORT xmlSecKeyDataId           xmlSecKeyDataKeyInfoReferenceGetKlass(vo
 /**
  * xmlSecKeyDataEncryptedKeyId
  *
- * The <enc:EncryptedKey> processing class.
+ * The enc:EncryptedKey element processing class.
  */
 #define xmlSecKeyDataEncryptedKeyId     xmlSecKeyDataEncryptedKeyGetKlass()
 XMLSEC_EXPORT xmlSecKeyDataId           xmlSecKeyDataEncryptedKeyGetKlass(void);
@@ -311,7 +312,7 @@ XMLSEC_EXPORT xmlSecKeyDataId           xmlSecKeyDataEncryptedKeyGetKlass(void);
 /**
  * xmlSecKeyDataAgreementMethodId
  *
- * The <enc:AgreementMethod> processing class.
+ * The enc:AgreementMethod processing class.
  */
 #define xmlSecKeyDataAgreementMethodId  xmlSecKeyDataAgreementMethodGetKlass()
 XMLSEC_EXPORT xmlSecKeyDataId           xmlSecKeyDataAgreementMethodGetKlass(void);
@@ -319,7 +320,7 @@ XMLSEC_EXPORT xmlSecKeyDataId           xmlSecKeyDataAgreementMethodGetKlass(voi
 /**
  * xmlSecKeyDataDerivedKeyId
  *
- * The <enc11:DerivedKey> processing class.
+ * The enc11:DerivedKey processing class.
  */
 #define xmlSecKeyDataDerivedKeyId       xmlSecKeyDataDerivedKeyGetKlass()
 XMLSEC_EXPORT xmlSecKeyDataId           xmlSecKeyDataDerivedKeyGetKlass(void);

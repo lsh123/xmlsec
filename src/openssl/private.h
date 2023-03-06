@@ -22,17 +22,10 @@
 
 #include "../keysdata_helpers.h"
 
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
-
-
-/******************************************************************************
- *
- * EVP_PKEY Util functions
- *
- ******************************************************************************/
-XMLSEC_CRYPTO_EXPORT EVP_PKEY* xmlSecOpenSSLKeyGetEvp                       (xmlSecKeyPtr key);
 
 
 

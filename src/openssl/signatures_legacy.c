@@ -35,7 +35,6 @@
 #include "openssl_compat.h"
 
 #include "../cast_helpers.h"
-#include "private.h"
 
 #if !defined(XMLSEC_OPENSSL_API_300) && !defined(XMLSEC_NO_EC)
 

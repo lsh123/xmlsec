@@ -38,7 +38,6 @@
 
 #include "../cast_helpers.h"
 #include "openssl_compat.h"
-#include "private.h"
 
 /**
  * The ECDSA signature were added to EVP interface in 3.0.0

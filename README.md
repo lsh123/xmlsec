@@ -9,7 +9,7 @@ standards:
 Complete XMLSec library documentation is published on [XMLSec website](https://www.aleksey.com/xmlsec/).
 
 ## License
-XMLSec library is released under the MIT Licence (see the [Copyright file](Copyright).
+XMLSec library is released under the MIT Licence (see the [Copyright file](Copyright)).
 
 ## Building and installing XMLSec
 
@@ -43,8 +43,11 @@ XMLSec library:
   # nspr/nss libraries
   apt install libnspr4 libnspr4-dev libnss3 libnss3-dev libnss3-tools
 
-  # gcrypt/gnutls libraries
-  apt install libgcrypt20 libgcrypt20-dev libgnutls28-dev
+  # gnutls libraries
+  apt install libgnutls30
+
+  # gnutls libraries
+  apt install libgcrypt20 libgcrypt20-dev
 
   # required for building man pages and docs
   apt install help2man man2html gtk-doc-tools

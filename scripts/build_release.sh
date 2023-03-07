@@ -33,10 +33,10 @@ cd "$build_root"
 echo "============== Checking out the module '$git_url'"
 git clone $git_uri
 cd xmlsec
-if [ x"$rc" != x ]; then
-    echo "============== Switching to release branch '$git_release_branch' for RC build '$rc'"
-    git checkout $git_release_branch
-fi
+#if [ x"$rc" != x ]; then
+#    echo "============== Switching to release branch '$git_release_branch' for RC build '$rc'"
+#    git checkout $git_release_branch
+#fi
 find . -name ".git" | xargs rm -r
 
 echo "============== Building xmlsec1-$version"

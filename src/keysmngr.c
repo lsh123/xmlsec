@@ -483,7 +483,7 @@ xmlSecSimpleKeysStoreLoad_ex(xmlSecKeyStorePtr store, const char *uri,
     }
 
     root = xmlDocGetRootElement(doc);
-    if(!xmlSecCheckNodeName(root, BAD_CAST "Keys", xmlSecNs)) {
+    if((root == NULL) || (!xmlSecCheckNodeName(root, BAD_CAST "Keys", xmlSecNs))) {
         xmlSecInvalidNodeError(root, BAD_CAST "Keys",
             xmlSecKeyStoreGetName(store));
         xmlFreeDoc(doc);

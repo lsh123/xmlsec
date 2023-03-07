@@ -2758,7 +2758,7 @@ xmlSecTransformConcatKdfParamsRead(xmlSecTransformConcatKdfParamsPtr params, xml
 
     /* first (and only) node is required DigestMethod */
     cur  = xmlSecGetNextElementNode(node->children);
-    if((cur != NULL) && (!xmlSecCheckNodeName(cur, xmlSecNodeDigestMethod, xmlSecDSigNs))) {
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeDigestMethod, xmlSecDSigNs))) {
         xmlSecInvalidNodeError(cur, xmlSecNodeDigestMethod, NULL);
         return(-1);
     }
@@ -3432,7 +3432,7 @@ xmlSecTransformPbkdf2ParamsReadSalt(xmlSecTransformPbkdf2ParamsPtr params, xmlNo
 
     /* first and onluy node is required Salt / Specified (Salt / OtherSource is not supported)*/
     cur  = xmlSecGetNextElementNode(node->children);
-    if((cur != NULL) && (!xmlSecCheckNodeName(cur, xmlSecNodePbkdf2SaltSpecified, xmlSecEnc11Ns))) {
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodePbkdf2SaltSpecified, xmlSecEnc11Ns))) {
         xmlSecInvalidNodeError(cur, xmlSecNodePbkdf2SaltSpecified, NULL);
         return(-1);
     }
@@ -3464,7 +3464,7 @@ xmlSecTransformPbkdf2ParamsRead(xmlSecTransformPbkdf2ParamsPtr params, xmlNodePt
 
     /* first node is required Salt */
     cur  = xmlSecGetNextElementNode(node->children);
-    if((cur != NULL) && (!xmlSecCheckNodeName(cur, xmlSecNodePbkdf2Salt, xmlSecEnc11Ns))) {
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodePbkdf2Salt, xmlSecEnc11Ns))) {
         xmlSecInvalidNodeError(cur, xmlSecNodePbkdf2Salt, NULL);
         return(-1);
     }
@@ -3476,7 +3476,7 @@ xmlSecTransformPbkdf2ParamsRead(xmlSecTransformPbkdf2ParamsPtr params, xmlNodePt
 
     /* next is required IterationCount */
     cur = xmlSecGetNextElementNode(cur->next);
-    if((cur != NULL) && (!xmlSecCheckNodeName(cur, xmlSecNodePbkdf2IterationCount, xmlSecEnc11Ns))) {
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodePbkdf2IterationCount, xmlSecEnc11Ns))) {
         xmlSecInvalidNodeError(cur, xmlSecNodePbkdf2IterationCount, NULL);
         return(-1);
     }
@@ -3488,7 +3488,7 @@ xmlSecTransformPbkdf2ParamsRead(xmlSecTransformPbkdf2ParamsPtr params, xmlNodePt
 
     /* next is required KeyLength */
     cur = xmlSecGetNextElementNode(cur->next);
-    if((cur != NULL) && (!xmlSecCheckNodeName(cur, xmlSecNodePbkdf2KeyLength, xmlSecEnc11Ns))) {
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodePbkdf2KeyLength, xmlSecEnc11Ns))) {
         xmlSecInvalidNodeError(cur, xmlSecNodePbkdf2KeyLength, NULL);
         return(-1);
     }
@@ -3500,7 +3500,7 @@ xmlSecTransformPbkdf2ParamsRead(xmlSecTransformPbkdf2ParamsPtr params, xmlNodePt
 
     /* next is required PRF */
     cur = xmlSecGetNextElementNode(cur->next);
-    if((cur != NULL) && (!xmlSecCheckNodeName(cur, xmlSecNodePbkdf2PRF, xmlSecEnc11Ns))) {
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodePbkdf2PRF, xmlSecEnc11Ns))) {
         xmlSecInvalidNodeError(cur, xmlSecNodePbkdf2PRF, NULL);
         return(-1);
     }

@@ -652,10 +652,10 @@ xmlSecTransformCtxNodeRead(xmlSecTransformCtxPtr ctx, xmlNodePtr node,
 /**
  * xmlSecTransformCtxNodesListRead:
  * @ctx:                the pointer to transforms chain processing context.
- * @node:               the pointer to <dsig:Transform/> nodes parent node.
+ * @node:               the pointer to &lt;dsig:Transform/&gt; nodes parent node.
  * @usage:              the transform's usage (signature, encryption, etc.).
  *
- * Reads transforms from the <dsig:Transform/> children of the @node and
+ * Reads transforms from the &lt;dsig:Transform/&gt; children of the @node and
  * appends them to the current transforms chain in @ctx object.
  *
  * Returns: 0 on success or a negative value otherwise.

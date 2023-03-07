@@ -210,49 +210,49 @@ typedef unsigned int                            xmlSecTransformUsage;
 /**
  * xmlSecTransformUsageDSigTransform:
  *
- * Transform could be used in <dsig:Transform>.
+ * Transform could be used in &lt;dsig:Transform/&gt;.
  */
 #define xmlSecTransformUsageDSigTransform       0x0001
 
 /**
  * xmlSecTransformUsageC14NMethod:
  *
- * Transform could be used in <dsig:CanonicalizationMethod>.
+ * Transform could be used in &lt;dsig:CanonicalizationMethod/&gt;.
  */
 #define xmlSecTransformUsageC14NMethod          0x0002
 
 /**
  * xmlSecTransformUsageDigestMethod:
  *
- * Transform could be used in <dsig:DigestMethod>.
+ * Transform could be used in &lt;dsig:DigestMethod/&gt;.
  */
 #define xmlSecTransformUsageDigestMethod        0x0004
 
 /**
  * xmlSecTransformUsageSignatureMethod:
  *
- * Transform could be used in <dsig:SignatureMethod>.
+ * Transform could be used in &lt;dsig:SignatureMethod/&gt;.
  */
 #define xmlSecTransformUsageSignatureMethod     0x0008
 
 /**
  * xmlSecTransformUsageEncryptionMethod:
  *
- * Transform could be used in <enc:EncryptionMethod>.
+ * Transform could be used in &lt;enc:EncryptionMethod/&gt;.
  */
 #define xmlSecTransformUsageEncryptionMethod    0x0010
 
 /**
  * xmlSecTransformUsageKeyDerivationMethod:
  *
- * Transform could be used in <enc11:KeyDerivationMethod>.
+ * Transform could be used in &lt;enc11:KeyDerivationMethod/&gt;.
  */
 #define xmlSecTransformUsageKeyDerivationMethod 0x0020
 
 /**
  * xmlSecTransformUsageAgreementMethod:
  *
- * Transform could be used in <enc11:AgreementMethod>.
+ * Transform could be used in &lt;enc11:AgreementMethod/&gt;.
  */
 #define xmlSecTransformUsageAgreementMethod 0x0040
 
@@ -620,7 +620,7 @@ typedef xmlSecTransformDataType (*xmlSecTransformGetDataTypeMethod)(xmlSecTransf
 /**
  * xmlSecTransformNodeReadMethod:
  * @transform:                  the pointer to transform object.
- * @node:                       the pointer to <dsig:Transform/> node.
+ * @node:                       the pointer to &lt;dsig:Transform/&gt; node.
  * @transformCtx:               the pointer to transform context object.
  *
  * The transform specific method to read the transform data from
@@ -635,7 +635,7 @@ typedef int             (*xmlSecTransformNodeReadMethod)        (xmlSecTransform
 /**
  * xmlSecTransformNodeWriteMethod:
  * @transform:                  the pointer to transform object.
- * @node:                       the pointer to <dsig:Transform/> node.
+ * @node:                       the pointer to &lt;dsig:Transform/&gt; node.
  * @transformCtx:               the pointer to transform context object.
  *
  * The transform specific method to write transform information to an XML node @node.

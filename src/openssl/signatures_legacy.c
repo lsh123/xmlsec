@@ -513,7 +513,7 @@ xmlSecOpenSSLSignatureLegacyExecute(xmlSecTransformPtr transform, int last, xmlS
  * http://csrc.nist.gov/publications/PubsNISTIRs.html#NIST-IR-7802
  *
  * The ECDSA algorithm signature is a pair of integers referred to as (r, s).
- * The <dsig:SignatureValue> consists of the base64 [RFC2045] encoding of the
+ * The &lt;dsig:SignatureValue/&gt; consists of the base64 [RFC2045] encoding of the
  * concatenation of two octet-streams that respectively result from the
  * octet-encoding of the values r and s, in that order. Integer to
  * octet-stream conversion MUST be done according to the I2OSP operation

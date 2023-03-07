@@ -500,7 +500,7 @@ static xmlSecKeyDataKlass xmlSecNssKeyDataDEREncodedKeyValueKlass = {
  *          </simpleContent>
  *      </complexType>
  *
- * Returns: the <dsig11:DEREncodedKeyValue/> element processing key data klass.
+ * Returns: the &lt;dsig11:DEREncodedKeyValue/&gt;element processing key data klass.
  */
 xmlSecKeyDataId
 xmlSecNssKeyDataDEREncodedKeyValueGetKlass(void) {
@@ -662,7 +662,7 @@ done:
 #ifndef XMLSEC_NO_DSA
 /**************************************************************************
  *
- * <dsig:DSAKeyValue> processing
+ * &lt;dsig:DSAKeyValue/&gt; processing
  *
  *
  * The DSAKeyValue Element (http://www.w3.org/TR/xmldsig-core/#sec-DSAKeyValue)
@@ -1168,7 +1168,7 @@ xmlSecNssKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
 #ifndef XMLSEC_NO_RSA
 /**************************************************************************
  *
- * <dsig:RSAKeyValue> processing
+ * &lt;dsig:RSAKeyValue/&gt; processing
  *
  * http://www.w3.org/TR/xmldsig-core/#sec-RSAKeyValue
  * The RSAKeyValue Element

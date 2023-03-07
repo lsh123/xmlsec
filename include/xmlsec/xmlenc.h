@@ -33,8 +33,8 @@ extern "C" {
 
 /**
  * xmlEncCtxMode:
- * @xmlEncCtxModeEncryptedData: the <enc:EncryptedData/> element procesing.
- * @xmlEncCtxModeEncryptedKey:  the <enc:EncryptedKey/> element processing.
+ * @xmlEncCtxModeEncryptedData: the &lt;enc:EncryptedData/&gt; element procesing.
+ * @xmlEncCtxModeEncryptedKey:  the &lt;enc:EncryptedKey/&gt; element processing.
  *
  * The #xmlSecEncCtx mode.
  */
@@ -62,31 +62,31 @@ typedef enum {
  * @keyInfoWriteCtx:            the writing key context (not used for signature verification).
  * @transformCtx:               the transforms processing context.
  * @defEncMethodId:             the default encryption method (used if
- *                              <enc:EncryptionMethod/> node is not present).
+ *                              &lt;enc:EncryptionMethod/&gt; node is not present).
  * @encKey:                     the signature key; application may set #encKey
  *                              before calling encryption/decryption functions.
  * @operation:                  the operation: encrypt or decrypt.
  * @result:                     the pointer to signature (not valid for signature verification).
  * @resultBase64Encoded:        the flag: if set then result in #result is base64 encoded.
- * @resultReplaced:             the flag: if set then resulted <enc:EncryptedData/>
- *                              or <enc:EncryptedKey/> node is added to the document.
+ * @resultReplaced:             the flag: if set then resulted &lt;enc:EncryptedData/&gt;
+ *                              or &lt;enc:EncryptedKey/&gt; node is added to the document.
  * @encMethod:                  the pointer to encryption transform.
  * @replacedNodeList: the first node of the list of replaced nodes depending on the nodeReplacementMode
- * @id:                         the ID attribute of <enc:EncryptedData/>
- *                              or <enc:EncryptedKey/> node.
- * @type:                       the Type attribute of <enc:EncryptedData/>
- *                              or <enc:EncryptedKey/> node.
- * @mimeType:                   the MimeType attribute of <enc:EncryptedData/>
- *                              or <enc:EncryptedKey/> node.
- * @encoding:                   the Encoding attributeof <enc:EncryptedData/>
- *                              or <enc:EncryptedKey/> node.
- * @recipient:                  the Recipient attribute of <enc:EncryptedKey/> node..
- * @carriedKeyName:             the CarriedKeyName attribute of <enc:EncryptedKey/> node.
- * @encDataNode:                the pointer to <enc:EncryptedData/>
- *                              or <enc:EncryptedKey/> node.
- * @encMethodNode:              the pointer to <enc:EncryptionMethod/> node.
- * @keyInfoNode:                the pointer to <enc:KeyInfo/> node.
- * @cipherValueNode:            the pointer to <enc:CipherValue/> node.
+ * @id:                         the ID attribute of &lt;enc:EncryptedData/&gt;
+ *                              or &lt;enc:EncryptedKey/&gt; node.
+ * @type:                       the Type attribute of &lt;enc:EncryptedData/&gt;
+ *                              or &lt;enc:EncryptedKey/&gt; node.
+ * @mimeType:                   the MimeType attribute of &lt;enc:EncryptedData/&gt;
+ *                              or &lt;enc:EncryptedKey/&gt; node.
+ * @encoding:                   the Encoding attributeof &lt;enc:EncryptedData/&gt;
+ *                              or &lt;enc:EncryptedKey/&gt; node.
+ * @recipient:                  the Recipient attribute of &lt;enc:EncryptedKey/&gt; node..
+ * @carriedKeyName:             the CarriedKeyName attribute of &lt;enc:EncryptedKey/&gt; node.
+ * @encDataNode:                the pointer to &lt;enc:EncryptedData/&gt;
+ *                              or &lt;enc:EncryptedKey/&gt; node.
+ * @encMethodNode:              the pointer to &lt;enc:EncryptionMethod/&gt; node.
+ * @keyInfoNode:                the pointer to &lt;enc:KeyInfo/&gt; node.
+ * @cipherValueNode:            the pointer to &lt;enc:CipherValue/&gt; node.
  * @reserved1:                  reserved for the future.
  *
  * XML Encryption context.

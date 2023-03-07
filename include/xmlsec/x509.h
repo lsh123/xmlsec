@@ -11,14 +11,14 @@
 
 /**
  * xmlSecKeyX509DataValue:
- * @cert:              the certificate from <dsig:X509Certificate/> node.
- * @crl:               the crl from <dsig:X509CRL/> node.
- * @ski:               the ski from <dsig:X509SKI/> node.
+ * @cert:              the certificate from &lt;dsig:X509Certificate/&gt; node.
+ * @crl:               the crl from &lt;dsig:X509CRL/&gt; node.
+ * @ski:               the ski from &lt;dsig:X509SKI/&gt; node.
  * @subject:           the subject name from <dsig:X509SubjectName /> node.
- * @issuerName:        the ski from <dsig:X509IssuerSerial/> node.
- * @issuerSerial:      the ski from <dsig:X509IssuerSerial/> node.
- * @digestAlgorithm:   the @digest algorithm from <dsig11:X509Digest/> node.
- * @digest:            the digest from <dsig11:X509Digest/> node.
+ * @issuerName:        the ski from &lt;dsig:X509IssuerSerial/&gt; node.
+ * @issuerSerial:      the ski from &lt;dsig:X509IssuerSerial/&gt; node.
+ * @digestAlgorithm:   the @digest algorithm from &lt;dsig11:X509Digest/&gt; node.
+ * @digest:            the digest from &lt;dsig11:X509Digest/&gt; node.
  *
  * The content of a child of <X509Data/> node. Not all values will be set!
  */

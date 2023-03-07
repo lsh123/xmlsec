@@ -461,7 +461,7 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataDEREncodedKeyValueKlass = {
  *          </simpleContent>
  *      </complexType>
  *
- * Returns: the <dsig11:DEREncodedKeyValue/> element processing key data klass.
+ * Returns: the &lt;dsig11:DEREncodedKeyValue/&gt;element processing key data klass.
  */
 xmlSecKeyDataId
 xmlSecOpenSSLKeyDataDEREncodedKeyValueGetKlass(void) {
@@ -617,7 +617,7 @@ done:
 
 /**************************************************************************
  *
- * <dsig:DSAKeyValue> processing
+ * &lt;dsig:DSAKeyValue/&gt; processing
  *
  *
  * The DSAKeyValue Element (http://www.w3.org/TR/xmldsig-core/#sec-DSAKeyValue)
@@ -2552,10 +2552,10 @@ done:
  *
  * http://csrc.nist.gov/publications/PubsNISTIRs.html#NIST-IR-7802
  *
- * RFC 4050 [RFC4050] describes a possible <dsig:KeyValue> representation
+ * RFC 4050 [RFC4050] describes a possible &lt;dsig:KeyValue/&gt; representation
  * for an EC key. The representation and processing instructions
  * described in [RFC4050] are not completely compatible with [XMLDSIG-11];
- * therefore, EC keys SHOULD NOT be provided through a <dsig:KeyValue>
+ * therefore, EC keys SHOULD NOT be provided through a &lt;dsig:KeyValue/&gt;
  * element.
  *
  *************************************************************************/
@@ -3392,7 +3392,7 @@ xmlSecOpenSSLKeyValueRsaFinalize(xmlSecOpenSSLKeyValueRsaPtr rsaKeyValue) {
 
 /**************************************************************************
  *
- * <dsig:RSAKeyValue> processing
+ * &lt;dsig:RSAKeyValue/&gt; processing
  *
  * http://www.w3.org/TR/xmldsig-core/#sec-RSAKeyValue
  * The RSAKeyValue Element

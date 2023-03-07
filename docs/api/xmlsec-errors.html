@@ -269,6 +269,10 @@
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-ALGORITHM:CAPS" title="XMLSEC_ERRORS_R_INVALID_ALGORITHM">XMLSEC_ERRORS_R_INVALID_ALGORITHM</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
 <td class="function_name"><a class="link" href="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-KEY-DATA:CAPS" title="XMLSEC_ERRORS_R_INVALID_KEY_DATA">XMLSEC_ERRORS_R_INVALID_KEY_DATA</a></td>
 </tr>
 <tr>
@@ -301,6 +305,10 @@
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-errors.html#XMLSEC-ERRORS-R-MAX-KEYINFOREFERENCE-LEVEL:CAPS" title="XMLSEC_ERRORS_R_MAX_KEYINFOREFERENCE_LEVEL">XMLSEC_ERRORS_R_MAX_KEYINFOREFERENCE_LEVEL</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
 <td class="function_name"><a class="link" href="xmlsec-errors.html#XMLSEC-ERRORS-R-MAX-ENCKEY-LEVEL:CAPS" title="XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL">XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL</a></td>
 </tr>
 <tr>
@@ -326,6 +334,18 @@
 <tr>
 <td class="define_keyword">#define</td>
 <td class="function_name"><a class="link" href="xmlsec-errors.html#XMLSEC-ERRORS-R-CERT-HAS-EXPIRED:CAPS" title="XMLSEC_ERRORS_R_CERT_HAS_EXPIRED">XMLSEC_ERRORS_R_CERT_HAS_EXPIRED</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-errors.html#XMLSEC-ERRORS-R-CRL-VERIFY-FAILED:CAPS" title="XMLSEC_ERRORS_R_CRL_VERIFY_FAILED">XMLSEC_ERRORS_R_CRL_VERIFY_FAILED</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-errors.html#XMLSEC-ERRORS-R-CRL-NOT-YET-VALID:CAPS" title="XMLSEC_ERRORS_R_CRL_NOT_YET_VALID">XMLSEC_ERRORS_R_CRL_NOT_YET_VALID</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-errors.html#XMLSEC-ERRORS-R-CRL-HAS-EXPIRED:CAPS" title="XMLSEC_ERRORS_R_CRL_HAS_EXPIRED">XMLSEC_ERRORS_R_CRL_HAS_EXPIRED</a></td>
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
@@ -972,6 +992,13 @@ enable it.</p>
 </div>
 <hr>
 <div class="refsect2">
+<a name="XMLSEC-ERRORS-R-INVALID-ALGORITHM:CAPS"></a><h3>XMLSEC_ERRORS_R_INVALID_ALGORITHM</h3>
+<pre class="programlisting">#define XMLSEC_ERRORS_R_INVALID_ALGORITHM               36
+</pre>
+<p>Invalid or unsupported algorithm.</p>
+</div>
+<hr>
+<div class="refsect2">
 <a name="XMLSEC-ERRORS-R-INVALID-KEY-DATA:CAPS"></a><h3>XMLSEC_ERRORS_R_INVALID_KEY_DATA</h3>
 <pre class="programlisting">#define XMLSEC_ERRORS_R_INVALID_KEY_DATA                41
 </pre>
@@ -1029,6 +1056,13 @@ in the <a class="ulink" href="" target="_top">&lt;dsig:RetrievalMethod/&gt;</a> 
 </div>
 <hr>
 <div class="refsect2">
+<a name="XMLSEC-ERRORS-R-MAX-KEYINFOREFERENCE-LEVEL:CAPS"></a><h3>XMLSEC_ERRORS_R_MAX_KEYINFOREFERENCE_LEVEL</h3>
+<pre class="programlisting">#define XMLSEC_ERRORS_R_MAX_KEYINFOREFERENCE_LEVEL        51
+</pre>
+<p>Max allowed KeyInfoReference level reached.</p>
+</div>
+<hr>
+<div class="refsect2">
 <a name="XMLSEC-ERRORS-R-MAX-ENCKEY-LEVEL:CAPS"></a><h3>XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL</h3>
 <pre class="programlisting">#define XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL                61
 </pre>
@@ -1075,6 +1109,27 @@ in the <a class="ulink" href="" target="_top">&lt;dsig:RetrievalMethod/&gt;</a> 
 <pre class="programlisting">#define XMLSEC_ERRORS_R_CERT_HAS_EXPIRED                76
 </pre>
 <p>"Not valid after" verification failed.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="XMLSEC-ERRORS-R-CRL-VERIFY-FAILED:CAPS"></a><h3>XMLSEC_ERRORS_R_CRL_VERIFY_FAILED</h3>
+<pre class="programlisting">#define XMLSEC_ERRORS_R_CRL_VERIFY_FAILED              77
+</pre>
+<p>CRL verification failed.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="XMLSEC-ERRORS-R-CRL-NOT-YET-VALID:CAPS"></a><h3>XMLSEC_ERRORS_R_CRL_NOT_YET_VALID</h3>
+<pre class="programlisting">#define XMLSEC_ERRORS_R_CRL_NOT_YET_VALID              78
+</pre>
+<p>"Last update" CRL verification failed.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="XMLSEC-ERRORS-R-CRL-HAS-EXPIRED:CAPS"></a><h3>XMLSEC_ERRORS_R_CRL_HAS_EXPIRED</h3>
+<pre class="programlisting">#define XMLSEC_ERRORS_R_CRL_HAS_EXPIRED                79
+</pre>
+<p>"Next update" verification failed.</p>
 </div>
 <hr>
 <div class="refsect2">

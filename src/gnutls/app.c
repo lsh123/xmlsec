@@ -868,7 +868,7 @@ xmlSecGnuTLSAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr,
 }
 
 /**
- * xmlSecGnuTLSAppKeysMngrCertLoad:
+ * xmlSecGnuTLSAppKeysMngrCrlLoad:
  * @mngr:               the keys manager.
  * @filename:           the CRL file.
  * @format:             the CRL file format.

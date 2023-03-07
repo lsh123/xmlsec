@@ -261,6 +261,22 @@
 </tr>
 <tr>
 <td class="function_type">
+<a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="returnvalue">xmlSecSize</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-transforms.html#xmlSecTransformCtxGetDefaultBinaryChunkSize" title="xmlSecTransformCtxGetDefaultBinaryChunkSize ()">xmlSecTransformCtxGetDefaultBinaryChunkSize</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">void</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-transforms.html#xmlSecTransformCtxSetDefaultBinaryChunkSize" title="xmlSecTransformCtxSetDefaultBinaryChunkSize ()">xmlSecTransformCtxSetDefaultBinaryChunkSize</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
 <a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="returnvalue">xmlSecTransformPtr</span></a>
 </td>
 <td class="function_name">
@@ -821,10 +837,6 @@
 </colgroup>
 <tbody>
 <tr>
-<td class="define_keyword">#define</td>
-<td class="function_name"><a class="link" href="xmlsec-transforms.html#XMLSEC-TRANSFORM-BINARY-CHUNK:CAPS" title="XMLSEC_TRANSFORM_BINARY_CHUNK">XMLSEC_TRANSFORM_BINARY_CHUNK</a></td>
-</tr>
-<tr>
 <td class="datatype_keyword">enum</td>
 <td class="function_name"><a class="link" href="xmlsec-transforms.html#xmlSecTransformStatus" title="enum xmlSecTransformStatus">xmlSecTransformStatus</a></td>
 </tr>
@@ -907,6 +919,14 @@
 <tr>
 <td class="define_keyword">#define</td>
 <td class="function_name"><a class="link" href="xmlsec-transforms.html#xmlSecTransformUsageEncryptionMethod" title="xmlSecTransformUsageEncryptionMethod">xmlSecTransformUsageEncryptionMethod</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-transforms.html#xmlSecTransformUsageKeyDerivationMethod" title="xmlSecTransformUsageKeyDerivationMethod">xmlSecTransformUsageKeyDerivationMethod</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-transforms.html#xmlSecTransformUsageAgreementMethod" title="xmlSecTransformUsageAgreementMethod">xmlSecTransformUsageAgreementMethod</a></td>
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
@@ -1827,6 +1847,44 @@ xmlSecTransformCtxDebugXmlDump (<em class="parameter"><code><a class="link" href
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformCtxGetDefaultBinaryChunkSize"></a><h3>xmlSecTransformCtxGetDefaultBinaryChunkSize ()</h3>
+<pre class="programlisting"><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="returnvalue">xmlSecSize</span></a>
+xmlSecTransformCtxGetDefaultBinaryChunkSize
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Gets the binary chunk size. Increasing the chunk size improves
+XMLSec library performance at the expense of increased memory usage.</p>
+<div class="refsect3">
+<a name="xmlSecTransformCtxGetDefaultBinaryChunkSize.returns"></a><h4>Returns</h4>
+<p> the current binary processing chunk size.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformCtxSetDefaultBinaryChunkSize"></a><h3>xmlSecTransformCtxSetDefaultBinaryChunkSize ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">void</span></font>
+xmlSecTransformCtxSetDefaultBinaryChunkSize
+                               (<em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> binaryChunkSize</code></em>);</pre>
+<p>Sets the default binary chunk size. Increasing the chunk size improves
+XMLSec library performance at the expense of increased memory usage.
+This function is not thread safe and should only be called during initialization.</p>
+<div class="refsect3">
+<a name="xmlSecTransformCtxSetDefaultBinaryChunkSize.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>binaryChunkSize</p></td>
+<td class="parameter_description"><p>the new binary chunk size (must be greater than zero).</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
 </table></div>
 </div>
 </div>
@@ -4119,14 +4177,6 @@ might create a security vulnerability and is not recommended.</p>
 <div class="refsect1">
 <a name="xmlsec-transforms.other_details"></a><h2>Types and Values</h2>
 <div class="refsect2">
-<a name="XMLSEC-TRANSFORM-BINARY-CHUNK:CAPS"></a><h3>XMLSEC_TRANSFORM_BINARY_CHUNK</h3>
-<pre class="programlisting">#define XMLSEC_TRANSFORM_BINARY_CHUNK                   1024
-</pre>
-<p>The binary data chunks size. XMLSec processes binary data one chunk
-at a time. Changing this impacts xmlsec memory usage and performance.</p>
-</div>
-<hr>
-<div class="refsect2">
 <a name="xmlSecTransformStatus"></a><h3>enum xmlSecTransformStatus</h3>
 <p>The transform execution status.</p>
 <div class="refsect3">
@@ -4379,6 +4429,20 @@ at a time. Changing this impacts xmlsec memory usage and performance.</p>
 </div>
 <hr>
 <div class="refsect2">
+<a name="xmlSecTransformUsageKeyDerivationMethod"></a><h3>xmlSecTransformUsageKeyDerivationMethod</h3>
+<pre class="programlisting">#define xmlSecTransformUsageKeyDerivationMethod 0x0020
+</pre>
+<p>Transform could be used in &lt;enc11:KeyDerivationMethod/&gt;.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformUsageAgreementMethod"></a><h3>xmlSecTransformUsageAgreementMethod</h3>
+<pre class="programlisting">#define xmlSecTransformUsageAgreementMethod 0x0040
+</pre>
+<p>Transform could be used in &lt;enc11:AgreementMethod/&gt;.</p>
+</div>
+<hr>
+<div class="refsect2">
 <a name="xmlSecTransformUsageAny"></a><h3>xmlSecTransformUsageAny</h3>
 <pre class="programlisting">#define xmlSecTransformUsageAny                 0xFFFF
 </pre>
@@ -4401,9 +4465,13 @@ documents that don't follow XML, XPointer and XML DSig specifications.</p>
     void*                                       userData;
     unsigned int                                flags;
     unsigned int                                flags2;
+    xmlSecSize                                  binaryChunkSize;
     xmlSecTransformUriType                      enabledUris;
     xmlSecPtrList                               enabledTransforms;
     xmlSecTransformCtxPreExecuteCallback        preExecCallback;
+
+    /* used by Key Agreement transforms */
+    xmlSecKeyInfoCtxPtr                         parentKeyInfoCtx;
 
     /* results */
     xmlSecBufferPtr                             result;
@@ -4447,6 +4515,11 @@ touch this).</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
+<td class="struct_member_name"><p><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> <em class="structfield"><code><a name="xmlSecTransformCtx.binaryChunkSize"></a>binaryChunkSize</code></em>;</p></td>
+<td class="struct_member_description"><p>the chunk of size for binary transforms processing.</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
 <td class="struct_member_name"><p><a class="link" href="xmlsec-transforms.html#xmlSecTransformUriType" title="xmlSecTransformUriType"><span class="type">xmlSecTransformUriType</span></a> <em class="structfield"><code><a name="xmlSecTransformCtx.enabledUris"></a>enabledUris</code></em>;</p></td>
 <td class="struct_member_description"><p>the allowed transform data source uri types.</p></td>
 <td class="struct_member_annotations"> </td>
@@ -4465,6 +4538,11 @@ can use this callback to change transforms parameters,
 insert additional transforms in the chain or do
 additional validation (and abort transform execution
 if needed).</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><a class="link" href="xmlsec-keyinfo.html#xmlSecKeyInfoCtx" title="struct xmlSecKeyInfoCtx"><span class="type">xmlSecKeyInfoCtxPtr</span></a> <em class="structfield"><code><a name="xmlSecTransformCtx.parentKeyInfoCtx"></a>parentKeyInfoCtx</code></em>;</p></td>
+<td class="struct_member_description"><p>the parent's key info ctx for key agreement.</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
@@ -4532,6 +4610,9 @@ if needed).</p></td>
     xmlSecNodeSetPtr                    inNodes;
     xmlSecNodeSetPtr                    outNodes;
 
+    /* used for some transform (e.g. KDF) to determine the desired output size */
+    xmlSecSize                          expectedOutputSize;
+
     /* reserved for the future */
     void*                               reserved0;
     void*                               reserved1;
@@ -4595,6 +4676,11 @@ if needed).</p></td>
 <tr>
 <td class="struct_member_name"><p><a class="link" href="xmlsec-nodeset.html#xmlSecNodeSet" title="struct xmlSecNodeSet"><span class="type">xmlSecNodeSetPtr</span></a> <em class="structfield"><code><a name="xmlSecTransform.outNodes"></a>outNodes</code></em>;</p></td>
 <td class="struct_member_description"><p>the output XML nodes.</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> <em class="structfield"><code><a name="xmlSecTransform.expectedOutputSize"></a>expectedOutputSize</code></em>;</p></td>
+<td class="struct_member_description"><p>the expected transform output size (used for key wraps).</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>

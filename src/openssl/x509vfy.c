@@ -136,7 +136,7 @@ xmlSecOpenSSLX509StoreGetKlass(void) {
  * @issuerName:         the desired certificate issuer name.
  * @issuerSerial:       the desired certificate issuer serial number.
  * @ski:                the desired certificate SKI.
- * @keyInfoCtx:         the pointer to <dsig:KeyInfo/> element processing context.
+ * @keyInfoCtx:         the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
  *
  * Deprecated. Searches @store for a certificate that matches given criteria.
  *
@@ -176,7 +176,7 @@ xmlSecOpenSSLX509StoreFindCert(xmlSecKeyDataStorePtr store, xmlChar *subjectName
  * @issuerSerial:       the desired certificate issuer serial number.
  * @ski:                the desired certificate SKI.
  * @skiSize:            the desired certificate SKI size.
- * @keyInfoCtx:         the pointer to <dsig:KeyInfo/> element processing context.
+ * @keyInfoCtx:         the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
  *
  * Deprecated. Searches @store for a certificate that matches given criteria.
  *
@@ -798,7 +798,7 @@ done:
  * @store:              the pointer to X509 key data store klass.
  * @certs:              the untrusted certificates stack.
  * @crls:               the crls stack.
- * @keyInfoCtx:         the pointer to <dsig:KeyInfo/> element processing context.
+ * @keyInfoCtx:         the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
  *
  * Verifies @certs list.
  *

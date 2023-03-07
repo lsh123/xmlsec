@@ -57,7 +57,7 @@ typedef unsigned int                                    xmlSecKeyDataUsage;
 /**
  * xmlSecKeyDataUsageKeyInfoNodeRead:
  *
- * The key data could be read from a <dsig:KeyInfo/> child.
+ * The key data could be read from a &lt;dsig:KeyInfo/&gt; child.
  */
 #define xmlSecKeyDataUsageKeyInfoNodeRead               0x00001
 
@@ -413,7 +413,7 @@ typedef void                    (*xmlSecKeyDataFinalizeMethod)  (xmlSecKeyDataPt
  * @id:                 the data id.
  * @key:                the key.
  * @node:               the pointer to data's value XML node.
- * @keyInfoCtx:         the <dsig:KeyInfo/> node processing context.
+ * @keyInfoCtx:         the &lt;dsig:KeyInfo/&gt; node processing context.
  *
  * Key data specific method for reading XML node.
  *
@@ -428,7 +428,7 @@ typedef int                     (*xmlSecKeyDataXmlReadMethod)   (xmlSecKeyDataId
  * @id:                 the data id.
  * @key:                the key.
  * @node:               the pointer to data's value XML node.
- * @keyInfoCtx:         the <dsig:KeyInfo> node processing context.
+ * @keyInfoCtx:         the &lt;dsig:KeyInfo/&gt; node processing context.
  *
  * Key data specific method for writing XML node.
  *
@@ -444,7 +444,7 @@ typedef int                     (*xmlSecKeyDataXmlWriteMethod)  (xmlSecKeyDataId
  * @key:                the key.
  * @buf:                the input buffer.
  * @bufSize:            the buffer size.
- * @keyInfoCtx:         the <dsig:KeyInfo/> node processing context.
+ * @keyInfoCtx:         the &lt;dsig:KeyInfo/&gt; node processing context.
  *
  * Key data specific method for reading binary buffer.
  *
@@ -461,7 +461,7 @@ typedef int                     (*xmlSecKeyDataBinReadMethod)   (xmlSecKeyDataId
  * @key:                the key.
  * @buf:                the output buffer.
  * @bufSize:            the buffer size.
- * @keyInfoCtx:         the <dsig:KeyInfo/> node processing context.
+ * @keyInfoCtx:         the &lt;dsig:KeyInfo/&gt; node processing context.
  *
  * Key data specific method for reading binary buffer.
  *

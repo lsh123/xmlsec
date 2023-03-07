@@ -93,7 +93,7 @@ struct _xmlSecMSCryptoX509DataCtx {
 
 /**************************************************************************
  *
- * <dsig:X509Data> processing (http://www.w3.org/TR/xmldsig-core/#sec-X509Data)
+ * &lt;dsig:X509Data/&gt; processing (http://www.w3.org/TR/xmldsig-core/#sec-X509Data)
  *
  *************************************************************************/
 XMLSEC_KEY_DATA_DECLARE(MSCryptoX509Data, xmlSecMSCryptoX509DataCtx)

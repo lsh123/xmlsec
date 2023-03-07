@@ -73,6 +73,14 @@
 </tr>
 <tr>
 <td class="function_type">
+<font><span class="returnvalue">xmlChar</span></font> *
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-xmltree.html#xmlSecGetNodeContentAndTrim" title="xmlSecGetNodeContentAndTrim ()">xmlSecGetNodeContentAndTrim</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
@@ -281,6 +289,24 @@
 <td class="define_keyword">#define</td>
 <td class="function_name">
 <a class="link" href="xmlsec-xmltree.html#xmlSecGetHex" title="xmlSecGetHex()">xmlSecGetHex</a><span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name">
+<a class="link" href="xmlsec-xmltree.html#xmlSecFromHex" title="xmlSecFromHex()">xmlSecFromHex</a><span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name">
+<a class="link" href="xmlsec-xmltree.html#xmlSecFromHex2" title="xmlSecFromHex2()">xmlSecFromHex2</a><span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name">
+<a class="link" href="xmlsec-xmltree.html#xmlSecToHex" title="xmlSecToHex()">xmlSecToHex</a><span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -601,6 +627,33 @@ xmlSecGetNodeNsHref (<em class="parameter"><code>const <font><span class="type">
 <div class="refsect3">
 <a name="xmlSecGetNodeNsHref.returns"></a><h4>Returns</h4>
 <p> node's namespace href.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecGetNodeContentAndTrim"></a><h3>xmlSecGetNodeContentAndTrim ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlChar</span></font> *
+xmlSecGetNodeContentAndTrim (<em class="parameter"><code>const <font><span class="type">xmlNodePtr</span></font> cur</code></em>);</pre>
+<p>Reads <em class="parameter"><code>cur</code></em>
+ node content and trims it (both sides).</p>
+<div class="refsect3">
+<a name="xmlSecGetNodeContentAndTrim.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>cur</p></td>
+<td class="parameter_description"><p>the pointer to XML node.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecGetNodeContentAndTrim.returns"></a><h4>Returns</h4>
+<p> trimmed node content or NULL if an error occurs.</p>
 </div>
 </div>
 <hr>
@@ -1610,8 +1663,9 @@ xmlSecPrintXmlString (<em class="parameter"><code><font><span class="type">FILE<
 <hr>
 <div class="refsect2">
 <a name="xmlSecGetHex"></a><h3>xmlSecGetHex()</h3>
-<pre class="programlisting">#define             xmlSecGetHex(c)</pre>
-<p>Macro. Returns the hex value of the <em class="parameter"><code>c</code></em>
+<pre class="programlisting">#define xmlSecGetHex(ch)         xmlSecFromHex(ch)
+</pre>
+<p>Deprecated. Macro. Returns the hex value of the <em class="parameter"><code>ch</code></em>
 .</p>
 <div class="refsect3">
 <a name="xmlSecGetHex.parameters"></a><h4>Parameters</h4>
@@ -1622,8 +1676,83 @@ xmlSecPrintXmlString (<em class="parameter"><code><font><span class="type">FILE<
 <col>
 </colgroup>
 <tbody><tr>
-<td class="parameter_name"><p>c</p></td>
+<td class="parameter_name"><p>ch</p></td>
 <td class="parameter_description"><p>the character,</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecFromHex"></a><h3>xmlSecFromHex()</h3>
+<pre class="programlisting">#define             xmlSecFromHex(ch)</pre>
+<p>Macro. Returns the hex value of the <em class="parameter"><code>ch</code></em>
+.</p>
+<div class="refsect3">
+<a name="xmlSecFromHex.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>ch</p></td>
+<td class="parameter_description"><p>the character,</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecFromHex2"></a><h3>xmlSecFromHex2()</h3>
+<pre class="programlisting">#define xmlSecFromHex2(ch1, ch2)   ((xmlSecByte)((xmlSecFromHex(ch1) &lt;&lt; 4) | (xmlSecFromHex(ch2))))
+</pre>
+<p>Macro. Returns the hex value of the pair (<em class="parameter"><code>c1</code></em>
+ <em class="parameter"><code>c2</code></em>
+).</p>
+<div class="refsect3">
+<a name="xmlSecFromHex2.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>ch1</p></td>
+<td class="parameter_description"><p>the first character,</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>ch2</p></td>
+<td class="parameter_description"><p>the second character,</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecToHex"></a><h3>xmlSecToHex()</h3>
+<pre class="programlisting">#define             xmlSecToHex(vv)</pre>
+<p>Macro. Returns the hex character of the <em class="parameter"><code>vv</code></em>
+.</p>
+<div class="refsect3">
+<a name="xmlSecToHex.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>vv</p></td>
+<td class="parameter_description"><p>the value,</p></td>
 <td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>

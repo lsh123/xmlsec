@@ -1290,10 +1290,10 @@ xmlSecKeyReadMemory(xmlSecKeyDataId dataId, const xmlSecByte* data, xmlSecSize d
 
 /**
  * xmlSecKeysMngrGetKey:
- * @keyInfoNode:        the pointer to <dsig:KeyInfo/> node.
- * @keyInfoCtx:         the pointer to <dsig:KeyInfo/> node processing context.
+ * @keyInfoNode:        the pointer to &lt;dsig:KeyInfo/&gt; node.
+ * @keyInfoCtx:         the pointer to &lt;dsig:KeyInfo/&gt; node processing context.
  *
- * Reads the <dsig:KeyInfo/> node @keyInfoNode and extracts the key.
+ * Reads the &lt;dsig:KeyInfo/&gt; node @keyInfoNode and extracts the key.
  *
  * Returns: the pointer to key or NULL if the key is not found or
  * an error occurs.
@@ -1306,7 +1306,7 @@ xmlSecKeysMngrGetKey(xmlNodePtr keyInfoNode, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecAssert2(keyInfoCtx != NULL, NULL);
 
 
-    /* first try to read data from <dsig:KeyInfo/> node */
+    /* first try to read data from &lt;dsig:KeyInfo/&gt; node */
     key = xmlSecKeyCreate();
     if(key == NULL) {
         xmlSecInternalError("xmlSecKeyCreate", NULL);

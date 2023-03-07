@@ -301,7 +301,7 @@ extern "C" {
  * XMLSEC_ERRORS_R_MAX_RETRIEVAL_TYPE_MISMATCH:
  *
  * The retrieved key data type does not match the one specified
- * in the <dsig:RetrievalMethod/> node.
+ * in the &lt;dsig:RetrievalMethod/&gt; node.
  */
 #define XMLSEC_ERRORS_R_MAX_RETRIEVAL_TYPE_MISMATCH     52
 
@@ -385,14 +385,14 @@ extern "C" {
 /**
  * XMLSEC_ERRORS_R_DSIG_NO_REFERENCES:
  *
- * The <dsig:Reference> nodes not found.
+ * The &lt;dsig:Reference/&gt; nodes not found.
  */
 #define XMLSEC_ERRORS_R_DSIG_NO_REFERENCES              81
 
 /**
  * XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE:
  *
- * The <dsig:Reference> validation failed.
+ * The &lt;dsig:Reference/&gt; validation failed.
  */
 #define XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE          82
 

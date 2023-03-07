@@ -697,7 +697,7 @@ xmlSecMSCngUnixTimeToFileTime(time_t in, LPFILETIME out) {
  * @store: the pointer to X509 certificate context store klass.
  * @cert: the certificate to verify.
  * @certStore: the untrusted certificates stack.
- * @keyInfoCtx: the pointer to <dsig:KeyInfo/> element processing context.
+ * @keyInfoCtx: the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
  *
  * Verifies @cert.
  *
@@ -749,7 +749,7 @@ xmlSecMSCngX509StoreVerifyCertificate(xmlSecKeyDataStorePtr store,
  * xmlSecMSCngX509StoreVerify:
  * @store: the pointer to X509 certificate context store klass.
  * @certs: the untrusted certificates stack.
- * @keyInfoCtx: the pointer to <dsig:KeyInfo/> element processing context.
+ * @keyInfoCtx: the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
  *
  * Verifies @certs list.
  *
@@ -1059,7 +1059,7 @@ xmlSecMSCngX509GetFriendlyNameUnicode(PCCERT_CONTEXT cert) {
 
     pbFriendlyName = xmlMalloc(dwPropSize);
     if (pbFriendlyName == NULL) {
-        xmlSecMallocError(dwPropSize, NULL);       
+        xmlSecMallocError(dwPropSize, NULL);
         return(NULL);
     }
 
@@ -1110,7 +1110,7 @@ xmlSecMSCngX509GetFriendlyNameUtf8(PCCERT_CONTEXT cert) {
  * @issuerName:     the desired certificate issuer name.
  * @issuerSerial:   the desired certificate issuer serial number.
  * @ski:            the desired certificate SKI.
- * @keyInfoCtx:     the pointer to <dsig:KeyInfo/> element processing context.
+ * @keyInfoCtx:     the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
  *
  * Searches @store for a certificate that matches given criteria.
  *
@@ -1150,7 +1150,7 @@ xmlSecMSCngX509StoreFindCert(xmlSecKeyDataStorePtr store, xmlChar *subjectName,
  * @issuerSerial:   the desired certificate issuer serial number.
  * @ski:            the desired certificate SKI.
  * @skiSize:        the desired certificate SKI size.
- * @keyInfoCtx:     the pointer to <dsig:KeyInfo/> element processing context.
+ * @keyInfoCtx:     the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
  *
  * Searches @store for a certificate that matches given criteria.
  *

@@ -122,8 +122,8 @@ xmlSecKeyDataIdsRegister(xmlSecKeyDataId id) {
  * xmlSecKeyDataIdsRegisterDefault:
  *
  * Registers default (implemented by XML Security Library)
- * key data klasses: <dsig:KeyName/> element processing klass,
- * <dsig:KeyValue/> element processing klass, ...
+ * key data klasses: &lt;dsig:KeyName/&gt; element processing klass,
+ * &lt;dsig:KeyValue/&gt; element processing klass, ...
  *
  * Returns: 0 on success or a negative value if an error occurs.
  */
@@ -276,7 +276,7 @@ xmlSecKeyDataDestroy(xmlSecKeyDataPtr data) {
  * @id:                 the data klass.
  * @key:                the destination key.
  * @node:               the pointer to an XML node.
- * @keyInfoCtx:         the pointer to <dsig:KeyInfo/> element processing context.
+ * @keyInfoCtx:         the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
  *
  * Reads the key data of klass @id from XML @node and adds them to @key.
  *
@@ -297,7 +297,7 @@ xmlSecKeyDataXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, xmlS
  * @id:                 the data klass.
  * @key:                the source key.
  * @node:               the pointer to an XML node.
- * @keyInfoCtx:         the pointer to <dsig:KeyInfo/> element processing context.
+ * @keyInfoCtx:         the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
  *
  * Writes the key data of klass @id from @key to an XML @node.
  *
@@ -319,7 +319,7 @@ xmlSecKeyDataXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, xml
  * @key:                the destination key.
  * @buf:                the input binary buffer.
  * @bufSize:            the input buffer size.
- * @keyInfoCtx:         the <dsig:KeyInfo/> node processing context.
+ * @keyInfoCtx:         the &lt;dsig:KeyInfo/&gt; node processing context.
  *
  * Reads the key data of klass @id from binary buffer @buf to @key.
  *
@@ -343,7 +343,7 @@ xmlSecKeyDataBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
  * @key:                the source key.
  * @buf:                the output binary buffer.
  * @bufSize:            the output buffer size.
- * @keyInfoCtx:         the <dsig:KeyInfo/> node processing context.
+ * @keyInfoCtx:         the &lt;dsig:KeyInfo/&gt; node processing context.
  *
  * Writes the key data of klass @id from the @key to a binary buffer @buf.
  *
@@ -565,7 +565,7 @@ xmlSecKeyDataBinaryValueFinalize(xmlSecKeyDataPtr data) {
  * @id:                 the data klass.
  * @key:                the pointer to destination key.
  * @node:               the pointer to an XML node.
- * @keyInfoCtx:         the pointer to <dsig:KeyInfo/> element processing context.
+ * @keyInfoCtx:         the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
  *
  * Reads binary key data from @node to the key by base64 decoding the @node content.
  *
@@ -679,7 +679,7 @@ done:
  * @id:                 the data klass.
  * @key:                the pointer to source key.
  * @node:               the pointer to an XML node.
- * @keyInfoCtx:         the pointer to <dsig:KeyInfo/> element processing context.
+ * @keyInfoCtx:         the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
  *
  * Base64 encodes binary key data of klass @id from the @key and
  * sets to the @node content.
@@ -728,7 +728,7 @@ xmlSecKeyDataBinaryValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
  * @key:                the pointer to destination key.
  * @buf:                the source binary buffer.
  * @bufSize:            the source binary buffer size.
- * @keyInfoCtx:         the pointer to <dsig:KeyInfo/> element processing context.
+ * @keyInfoCtx:         the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
  *
  * Reads binary key data of the klass @id from @buf to the @key.
  *
@@ -822,7 +822,7 @@ xmlSecKeyDataBinaryValueBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
  * @key:                the pointer to source key.
  * @buf:                the destination binary buffer.
  * @bufSize:            the destination binary buffer size.
- * @keyInfoCtx:         the pointer to <dsig:KeyInfo/> element processing context.
+ * @keyInfoCtx:         the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
  *
  * Writes binary key data of klass @id from the @key to @buf.
  *
@@ -997,7 +997,7 @@ static int                      xmlSecKeyValueEcXmlWrite                (xmlSecK
  * @id:                 the data id.
  * @key:                the key.
  * @node:               the pointer to data's value XML node.
- * @keyInfoCtx:         the <dsig:KeyInfo/> node processing context.
+ * @keyInfoCtx:         the &lt;dsig:KeyInfo/&gt; node processing context.
  * @readFunc:           the pointer to the function that converts
  *                      @xmlSecKeyValueEc to @xmlSecKeyData.
  *
@@ -1078,7 +1078,7 @@ done:
  * @id:                 the data id.
  * @key:                the key.
  * @node:               the pointer to data's value XML node.
- * @keyInfoCtx:         the <dsig:KeyInfo> node processing context.
+ * @keyInfoCtx:         the &lt;dsig:KeyInfo/&gt; node processing context.
  * @base64LineSize:     the base64 max line size.
  * @addLineBreaks:      the flag indicating if we need to add line breaks around base64 output.
  * @writeFunc:          the pointer to the function that converts
@@ -1480,7 +1480,7 @@ static int                      xmlSecKeyValueDhXmlWrite               (xmlSecKe
  * @id:                 the data id.
  * @key:                the key.
  * @node:               the pointer to data's value XML node.
- * @keyInfoCtx:         the <dsig:KeyInfo/> node processing context.
+ * @keyInfoCtx:         the &lt;dsig:KeyInfo/&gt; node processing context.
  * @readFunc:           the pointer to the function that converts
  *                      @xmlSecKeyValueDh to @xmlSecKeyData.
  *
@@ -1561,7 +1561,7 @@ done:
  * @id:                 the data id.
  * @key:                the key.
  * @node:               the pointer to data's value XML node.
- * @keyInfoCtx:         the <dsig:KeyInfo> node processing context.
+ * @keyInfoCtx:         the &lt;dsig:KeyInfo/&gt; node processing context.
  * @base64LineSize:     the base64 max line size.
  * @addLineBreaks:      the flag indicating if we need to add line breaks around base64 output.
  * @writeFunc:          the pointer to the function that converts
@@ -1942,7 +1942,7 @@ static int                      xmlSecKeyValueDsaXmlWrite               (xmlSecK
  * @id:                 the data id.
  * @key:                the key.
  * @node:               the pointer to data's value XML node.
- * @keyInfoCtx:         the <dsig:KeyInfo/> node processing context.
+ * @keyInfoCtx:         the &lt;dsig:KeyInfo/&gt; node processing context.
  * @readFunc:           the pointer to the function that converts
  *                      @xmlSecKeyValueDsa to @xmlSecKeyData.
  *
@@ -2022,7 +2022,7 @@ done:
  * @id:                 the data id.
  * @key:                the key.
  * @node:               the pointer to data's value XML node.
- * @keyInfoCtx:         the <dsig:KeyInfo> node processing context.
+ * @keyInfoCtx:         the &lt;dsig:KeyInfo/&gt; node processing context.
  * @base64LineSize:     the base64 max line size.
  * @addLineBreaks:      the flag indicating if we need to add line breaks around base64 output.
  * @writeFunc:          the pointer to the function that converts
@@ -2392,7 +2392,7 @@ static int                      xmlSecKeyValueRsaXmlWrite               (xmlSecK
  * @id:                 the data id.
  * @key:                the key.
  * @node:               the pointer to data's value XML node.
- * @keyInfoCtx:         the <dsig:KeyInfo/> node processing context.
+ * @keyInfoCtx:         the &lt;dsig:KeyInfo/&gt; node processing context.
  * @readFunc:           the pointer to the function that converts
  *                      @xmlSecKeyValueRsa to @xmlSecKeyData.
  *
@@ -2472,7 +2472,7 @@ done:
  * @id:                 the data id.
  * @key:                the key.
  * @node:               the pointer to data's value XML node.
- * @keyInfoCtx:         the <dsig:KeyInfo> node processing context.
+ * @keyInfoCtx:         the &lt;dsig:KeyInfo/&gt; node processing context.
  * @base64LineSize:     the base64 max line size.
  * @addLineBreaks:      the flag indicating if we need to add line breaks around base64 output.
  * @writeFunc:          the pointer to the function that converts
@@ -2728,7 +2728,7 @@ xmlSecKeyValueRsaXmlWrite(xmlSecKeyValueRsaPtr data, xmlNodePtr node,
 #if !defined(XMLSEC_NO_X509)
 /**************************************************************************
  *
- * Helper functions to read/write <dsig:X509Data>
+ * Helper functions to read/write &lt;dsig:X509Data/&gt;
  *
  *
  * The X509Data Element (http://www.w3.org/TR/xmldsig-core/#sec-X509Data)
@@ -2776,7 +2776,8 @@ xmlSecKeyValueRsaXmlWrite(xmlSecKeyValueRsaPtr data, xmlNodePtr node,
  * least one such certificate must contain the public key which verifies the
  * signature.
  *
- * Schema Definition
+ * <programlisting><![CDATA[
+ *  Schema Definition:
  *
  *  <element name="X509Data" type="ds:X509DataType"/>
  *  <complexType name="X509DataType">
@@ -2798,7 +2799,7 @@ xmlSecKeyValueRsaXmlWrite(xmlSecKeyValueRsaPtr data, xmlNodePtr node,
  *     </sequence>
  *  </complexType>
  *
- *  DTD
+ *  DTD:
  *
  *    <!ELEMENT X509Data ((X509IssuerSerial | X509SKI | X509SubjectName |
  *                          X509Certificate | X509CRL)+ %X509.ANY;)>
@@ -2809,6 +2810,7 @@ xmlSecKeyValueRsaXmlWrite(xmlSecKeyValueRsaPtr data, xmlNodePtr node,
  *    <!ELEMENT X509SKI (#PCDATA) >
  *    <!ELEMENT X509Certificate (#PCDATA) >
  *    <!ELEMENT X509CRL (#PCDATA) >
+ * ]]></programlisting>
  *
  *************************************************************************/
 #define XMLSEC_KEY_DATA_X509_INIT_BUF_SIZE     512
@@ -2830,7 +2832,7 @@ static int                      xmlSecKeyX509DataValueXmlWrite              (xml
  * @key:                the resulting key
  * @data:               the X509 key data.
  * @node:               the pointer to data's value XML node.
- * @keyInfoCtx:         the <dsig:KeyInfo/> node processing context.
+ * @keyInfoCtx:         the &lt;dsig:KeyInfo/&gt; node processing context.
  * @readFunc:           the pointer to the function that converts
  *                      @xmlSecKeyX509DataValue to @xmlSecKeyData.
  *
@@ -2986,7 +2988,7 @@ xmlSecX509DataGetNodeContent(xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx, xm
  * @data:               the x509 key data.
  * @x509ObjNum:         the number of X509 objects in @data.
  * @node:               the pointer to data's value XML node.
- * @keyInfoCtx:         the <dsig:KeyInfo> node processing context.
+ * @keyInfoCtx:         the &lt;dsig:KeyInfo/&gt; node processing context.
  * @base64LineSize:     the base64 max line size.
  * @addLineBreaks:      the flag indicating if we need to add line breaks around base64 output.
  * @writeFunc:          the pointer to the function that converts
@@ -3392,7 +3394,7 @@ xmlSecKeyX509DataValueXmlRead(xmlSecKeyX509DataValuePtr x509Value, xmlNodePtr no
             return(-1);
         }
 
-        /* The dsig11:X509Digest element contains a base64-encoded digest of a certificate. */
+        /* The&lt;dsig11:X509Digest/&gt; element contains a base64-encoded digest of a certificate. */
         ret = xmlSecKeyX509DataValueXmlReadBase64Blob(&(x509Value->digest), node, keyInfoCtx);
         if(ret < 0) {
             xmlSecInternalError("xmlSecKeyX509DataValueXmlReadBase64Blob(digest)", NULL);

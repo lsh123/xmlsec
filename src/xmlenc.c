@@ -54,7 +54,7 @@ static const xmlChar*           xmlSecEncIds[] = { BAD_CAST "Id", NULL };
  * xmlSecEncCtxCreate:
  * @keysMngr:           the pointer to keys manager.
  *
- * Creates <enc:EncryptedData/> element processing context.
+ * Creates &lt;enc:EncryptedData/&gt; element processing context.
  * The caller is responsible for destroying returned object by calling
  * #xmlSecEncCtxDestroy function.
  *
@@ -83,7 +83,7 @@ xmlSecEncCtxCreate(xmlSecKeysMngrPtr keysMngr) {
 
 /**
  * xmlSecEncCtxDestroy:
- * @encCtx:             the pointer to <enc:EncryptedData/> processing context.
+ * @encCtx:             the pointer to &lt;enc:EncryptedData/&gt; processing context.
  *
  * Destroy context object created with #xmlSecEncCtxCreate function.
  */
@@ -108,10 +108,10 @@ xmlSecEncCtxSetDefaults(xmlSecEncCtxPtr encCtx) {
 
 /**
  * xmlSecEncCtxInitialize:
- * @encCtx:             the pointer to <enc:EncryptedData/> processing context.
+ * @encCtx:             the pointer to &lt;enc:EncryptedData/&gt; processing context.
  * @keysMngr:           the pointer to keys manager.
  *
- * Initializes <enc:EncryptedData/> element processing context.
+ * Initializes &lt;enc:EncryptedData/&gt; element processing context.
  * The caller is responsible for cleaning up returned object by calling
  * #xmlSecEncCtxFinalize function.
  *
@@ -151,7 +151,7 @@ xmlSecEncCtxInitialize(xmlSecEncCtxPtr encCtx, xmlSecKeysMngrPtr keysMngr) {
 
 /**
  * xmlSecEncCtxFinalize:
- * @encCtx:             the pointer to <enc:EncryptedData/> processing context.
+ * @encCtx:             the pointer to &lt;enc:EncryptedData/&gt; processing context.
  *
  * Cleans up @encCtx object.
  */
@@ -170,7 +170,7 @@ xmlSecEncCtxFinalize(xmlSecEncCtxPtr encCtx) {
 
 /**
  * xmlSecEncCtxReset:
- * @encCtx:             the pointer to <enc:EncryptedData/> processing context.
+ * @encCtx:             the pointer to &lt;enc:EncryptedData/&gt; processing context.
  *
  * Resets @encCtx object, user settings are not touched.
  */
@@ -279,8 +279,8 @@ xmlSecEncCtxCopyUserPref(xmlSecEncCtxPtr dst, xmlSecEncCtxPtr src) {
 
 /**
  * xmlSecEncCtxBinaryEncrypt:
- * @encCtx:             the pointer to <enc:EncryptedData/> processing context.
- * @tmpl:               the pointer to <enc:EncryptedData/> template node.
+ * @encCtx:             the pointer to &lt;enc:EncryptedData/&gt; processing context.
+ * @tmpl:               the pointer to &lt;enc:EncryptedData/&gt; template node.
  * @data:               the pointer for binary buffer.
  * @dataSize:           the @data buffer size.
  *
@@ -329,12 +329,12 @@ xmlSecEncCtxBinaryEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl,
 
 /**
  * xmlSecEncCtxXmlEncrypt:
- * @encCtx:             the pointer to <enc:EncryptedData/> processing context.
- * @tmpl:               the pointer to <enc:EncryptedData/> template node.
+ * @encCtx:             the pointer to &lt;enc:EncryptedData/&gt; processing context.
+ * @tmpl:               the pointer to &lt;enc:EncryptedData/&gt; template node.
  * @node:               the pointer to node for encryption.
  *
  * Encrypts @node according to template @tmpl. If requested, @node is replaced
- * with result <enc:EncryptedData/> node.
+ * with result &lt;enc:EncryptedData/&gt; node.
  *
  * Returns: 0 on success or a negative value if an error occurs.
  */
@@ -458,8 +458,8 @@ xmlSecEncCtxXmlEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, xmlNodePtr node)
 
 /**
  * xmlSecEncCtxUriEncrypt:
- * @encCtx:             the pointer to <enc:EncryptedData/> processing context.
- * @tmpl:               the pointer to <enc:EncryptedData/> template node.
+ * @encCtx:             the pointer to &lt;enc:EncryptedData/&gt; processing context.
+ * @tmpl:               the pointer to &lt;enc:EncryptedData/&gt; template node.
  * @uri:                the URI.
  *
  * Encrypts data from @uri according to template @tmpl.
@@ -515,8 +515,8 @@ xmlSecEncCtxUriEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, const xmlChar *u
 
 /**
  * xmlSecEncCtxDecrypt:
- * @encCtx:             the pointer to <enc:EncryptedData/> processing context.
- * @node:               the pointer to <enc:EncryptedData/> node.
+ * @encCtx:             the pointer to &lt;enc:EncryptedData/&gt; processing context.
+ * @node:               the pointer to &lt;enc:EncryptedData/&gt; node.
  *
  * Decrypts @node and if necessary replaces @node with decrypted data.
  *
@@ -585,7 +585,7 @@ xmlSecEncCtxDecrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
 /**
  * xmlSecEncCtxDecryptToBuffer:
  * @encCtx:             the pointer to encryption processing context.
- * @node:               the pointer to <enc:EncryptedData/> node.
+ * @node:               the pointer to &lt;enc:EncryptedData/&gt; node.
  *
  * Decrypts @node data to the result.
  *
@@ -841,7 +841,7 @@ xmlSecEncCtxEncDataNodeWrite(xmlSecEncCtxPtr encCtx) {
         encCtx->resultReplaced = 1;
     }
 
-    /* update <enc:KeyInfo/> node */
+    /* update &lt;enc:KeyInfo/&gt; node */
     if(encCtx->keyInfoNode != NULL) {
         ret = xmlSecKeyInfoNodeWrite(encCtx->keyInfoNode, encCtx->encKey, &(encCtx->keyInfoWriteCtx));
         if(ret < 0) {
@@ -943,7 +943,7 @@ xmlSecEncCtxCipherReferenceNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
 
 /**
  * xmlSecEncCtxDebugDump:
- * @encCtx:             the pointer to <enc:EncryptedData/> processing context.
+ * @encCtx:             the pointer to &lt;enc:EncryptedData/&gt; processing context.
  * @output:             the pointer to output FILE.
  *
  * Prints the debug information about @encCtx to @output.
@@ -1027,7 +1027,7 @@ xmlSecEncCtxDebugDump(xmlSecEncCtxPtr encCtx, FILE* output) {
 
 /**
  * xmlSecEncCtxDebugXmlDump:
- * @encCtx:             the pointer to <enc:EncryptedData/> processing context.
+ * @encCtx:             the pointer to &lt;enc:EncryptedData/&gt; processing context.
  * @output:             the pointer to output FILE.
  *
  * Prints the debug information about @encCtx to @output in XML format.
@@ -1189,11 +1189,11 @@ xmlSecEncCtxGenerateKey(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xmlSecKey
  * xmlSecEncCtxDerivedKeyGenerate:
  * @encCtx:             the pointer to encryption processing context.
  * @keyId:              the expected key id, the actual derived key might have a different id.
- * @node:               the pointer to <enc11:DerivedKey> node.
+ * @node:               the pointer to &lt;enc11:DerivedKey/&gt; node.
  * @keyInfoCtx:         the pointer to the "parent" key info context.
  *
  * Generates (derives) key from @node (https://www.w3.org/TR/xmlenc-core1/#sec-DerivedKey):
- *
+ * <programlisting><![CDATA[
  *  <element name="DerivedKey" type="xenc11:DerivedKeyType"/>
  *  <complexType name="DerivedKeyType">
  *      <sequence>
@@ -1213,7 +1213,8 @@ xmlSecEncCtxGenerateKey(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xmlSecKey
  *          <any namespace="##any" minOccurs="0" maxOccurs="unbounded"/>
  *      </sequence>
  *      <attribute name="Algorithm" type="anyURI" use="required"/>
- * </complexType>
+ *  </complexType>
+ * ]]></programlisting>
  *
  * Returns: the derived key on success or NULL  if an error occurs.
  */
@@ -1359,11 +1360,12 @@ done:
  * xmlSecEncCtxAgreementMethodGenerate:
  * @encCtx:             the pointer to encryption processing context.
  * @keyId:              the expected key id, the actual derived key might have a different id.
- * @node:               the pointer to <enc:AgreementMethod> node.
+ * @node:               the pointer to &lt;enc:AgreementMethod/&gt; node.
  * @keyInfoCtx:         the pointer to the "parent" key info context.
  *
  * Generates (derives) key from @node (https://www.w3.org/TR/xmlenc-core1/#sec-AgreementMethod):
  *
+ * <programlisting><![CDATA[
  *  <element name="AgreementMethod" type="xenc:AgreementMethodType"/>
  *  <complexType name="AgreementMethodType" mixed="true">
  *      <sequence>
@@ -1375,6 +1377,7 @@ done:
  *      </sequence>
  *      <attribute name="Algorithm" type="anyURI" use="required"/>
  *  </complexType>
+ * ]]></programlisting>
  *
  * Returns: the generated key on success or NULL if an error occurs.
  */

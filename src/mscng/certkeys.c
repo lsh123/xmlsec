@@ -562,7 +562,7 @@ static xmlSecKeyDataKlass xmlSecMSCngKeyDataDEREncodedKeyValueKlass = {
  *          </simpleContent>
  *      </complexType>
  *
- * Returns: the <dsig11:DEREncodedKeyValue/> element processing key data klass.
+ * Returns: the &lt;dsig11:DEREncodedKeyValue/&gt;element processing key data klass.
  */
 xmlSecKeyDataId
 xmlSecMSCngKeyDataDEREncodedKeyValueGetKlass(void) {
@@ -627,7 +627,7 @@ xmlSecMSCngKeyDataDEREncodedKeyValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key
         dataLen,
         CRYPT_DECODE_ALLOC_FLAG,
         NULL,
-        &keyInfo, 
+        &keyInfo,
         &keyInfoLen
     );
     if ((status != TRUE) || (keyInfo == NULL) || (keyInfoLen <= 0)) {

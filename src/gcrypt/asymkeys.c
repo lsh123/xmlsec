@@ -493,7 +493,7 @@ done:
 #ifndef XMLSEC_NO_DSA
 /**************************************************************************
  *
- * <dsig:DSAKeyValue> processing
+ * &lt;dsig:DSAKeyValue/&gt; processing
  *
  *
  * The DSAKeyValue Element (http://www.w3.org/TR/xmldsig-core/#sec-DSAKeyValue)
@@ -1037,7 +1037,7 @@ done:
 #ifndef XMLSEC_NO_RSA
 /**************************************************************************
  *
- * <dsig:RSAKeyValue> processing
+ * &lt;dsig:RSAKeyValue/&gt; processing
  *
  * http://www.w3.org/TR/xmldsig-core/#sec-RSAKeyValue
  * The RSAKeyValue Element

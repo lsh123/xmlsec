@@ -48,42 +48,42 @@ typedef struct _xmlSecOpenSSLX509FindCertCtx {
     const EVP_MD* digestMd;
 } xmlSecOpenSSLX509FindCertCtx, *xmlSecOpenSSLX509FindCertCtxPtr;
 
-XMLSEC_CRYPTO_EXPORT int        xmlSecOpenSSLX509FindCertCtxInitialize      (xmlSecOpenSSLX509FindCertCtxPtr ctx,
-                                                                             const xmlChar *subjectName,
-                                                                             const xmlChar *issuerName,
-                                                                             const xmlChar *issuerSerial,
-                                                                             const xmlSecByte * ski,
-                                                                             xmlSecSize skiSize);
-XMLSEC_CRYPTO_EXPORT int        xmlSecOpenSSLX509FindCertCtxInitializeFromValue(xmlSecOpenSSLX509FindCertCtxPtr ctx,
-                                                                             xmlSecKeyX509DataValuePtr x509Value);
-XMLSEC_CRYPTO_EXPORT void       xmlSecOpenSSLX509FindCertCtxFinalize        (xmlSecOpenSSLX509FindCertCtxPtr ctx);
+int             xmlSecOpenSSLX509FindCertCtxInitialize          (xmlSecOpenSSLX509FindCertCtxPtr ctx,
+                                                                 const xmlChar *subjectName,
+                                                                 const xmlChar *issuerName,
+                                                                 const xmlChar *issuerSerial,
+                                                                 const xmlSecByte * ski,
+                                                                 xmlSecSize skiSize);
+int             xmlSecOpenSSLX509FindCertCtxInitializeFromValue (xmlSecOpenSSLX509FindCertCtxPtr ctx,
+                                                                 xmlSecKeyX509DataValuePtr x509Value);
+void            xmlSecOpenSSLX509FindCertCtxFinalize            (xmlSecOpenSSLX509FindCertCtxPtr ctx);
 
-XMLSEC_CRYPTO_EXPORT int        xmlSecOpenSSLX509FindCertCtxMatch          (xmlSecOpenSSLX509FindCertCtxPtr ctx,
-                                                                            X509* cert);
-
-
-
-XMLSEC_CRYPTO_EXPORT X509*      xmlSecOpenSSLX509StoreFindCertByValue       (xmlSecKeyDataStorePtr store,
-                                                                             xmlSecKeyX509DataValuePtr x509Value);
-
-
-XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecOpenSSLX509FindKeyByValue           (xmlSecPtrListPtr keysList,
-                                                                             xmlSecKeyX509DataValuePtr x509Value);
-
-XMLSEC_CRYPTO_EXPORT const EVP_MD* xmlSecOpenSSLX509GetDigestFromAlgorithm  (const xmlChar* href);
+int             xmlSecOpenSSLX509FindCertCtxMatch               (xmlSecOpenSSLX509FindCertCtxPtr ctx,
+                                                                 X509* cert);
 
 
 
-XMLSEC_CRYPTO_EXPORT X509*       xmlSecOpenSSLX509CertLoadBIO               (BIO* bio,
-                                                                             xmlSecKeyDataFormat format);
-XMLSEC_CRYPTO_EXPORT X509_CRL*   xmlSecOpenSSLX509CrlLoadBIO                (BIO* bio,
-                                                                             xmlSecKeyDataFormat format);
-
-XMLSEC_CRYPTO_EXPORT time_t      xmlSecOpenSSLX509Asn1TimeToTime            (const ASN1_TIME * t);
+X509*           xmlSecOpenSSLX509StoreFindCertByValue           (xmlSecKeyDataStorePtr store,
+                                                                 xmlSecKeyX509DataValuePtr x509Value);
 
 
-XMLSEC_CRYPTO_EXPORT STACK_OF(X509)*        xmlSecOpenSSLKeyDataX509GetCerts(xmlSecKeyDataPtr data);
-XMLSEC_CRYPTO_EXPORT STACK_OF(X509_CRL)*    xmlSecOpenSSLKeyDataX509GetCrls (xmlSecKeyDataPtr data);
+xmlSecKeyPtr    xmlSecOpenSSLX509FindKeyByValue                 (xmlSecPtrListPtr keysList,
+                                                                 xmlSecKeyX509DataValuePtr x509Value);
+
+const EVP_MD*   xmlSecOpenSSLX509GetDigestFromAlgorithm         (const xmlChar* href);
+
+
+
+X509*           xmlSecOpenSSLX509CertLoadBIO                    (BIO* bio,
+                                                                 xmlSecKeyDataFormat format);
+X509_CRL*       xmlSecOpenSSLX509CrlLoadBIO                     (BIO* bio,
+                                                                 xmlSecKeyDataFormat format);
+
+time_t          xmlSecOpenSSLX509Asn1TimeToTime                 (const ASN1_TIME * t);
+
+
+STACK_OF(X509)*        xmlSecOpenSSLKeyDataX509GetCerts         (xmlSecKeyDataPtr data);
+STACK_OF(X509_CRL)*    xmlSecOpenSSLKeyDataX509GetCrls          (xmlSecKeyDataPtr data);
 
 
 #endif /* XMLSEC_NO_X509 */

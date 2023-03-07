@@ -46,24 +46,23 @@ typedef struct _xmlSecMSCngX509FindCertCtx {
     DWORD digestLen;
 } xmlSecMSCngX509FindCertCtx, *xmlSecMSCngX509FindCertCtxPtr;
 
-XMLSEC_CRYPTO_EXPORT int        xmlSecMSCngX509FindCertCtxInitialize        (xmlSecMSCngX509FindCertCtxPtr ctx,
-                                                                             const xmlChar *subjectName,
-                                                                             const xmlChar *issuerName,
-                                                                             const xmlChar *issuerSerial,
-                                                                             const xmlSecByte * ski,
-                                                                             xmlSecSize skiSize);
-XMLSEC_CRYPTO_EXPORT int        xmlSecMSCngX509FindCertCtxInitializeFromValue(xmlSecMSCngX509FindCertCtxPtr ctx,
-                                                                             xmlSecKeyX509DataValuePtr x509Value);
-XMLSEC_CRYPTO_EXPORT void       xmlSecMSCngX509FindCertCtxFinalize           (xmlSecMSCngX509FindCertCtxPtr ctx);
+int             xmlSecMSCngX509FindCertCtxInitialize                (xmlSecMSCngX509FindCertCtxPtr ctx,
+                                                                     const xmlChar *subjectName,
+                                                                     const xmlChar *issuerName,
+                                                                     const xmlChar *issuerSerial,
+                                                                     const xmlSecByte * ski,
+                                                                     xmlSecSize skiSize);
+int                 xmlSecMSCngX509FindCertCtxInitializeFromValue   (xmlSecMSCngX509FindCertCtxPtr ctx,
+                                                                     xmlSecKeyX509DataValuePtr x509Value);
+void                xmlSecMSCngX509FindCertCtxFinalize              (xmlSecMSCngX509FindCertCtxPtr ctx);
 
+PCCERT_CONTEXT      xmlSecMSCngX509StoreFindCertByValue             (xmlSecKeyDataStorePtr store,
+                                                                     xmlSecKeyX509DataValuePtr x509Value);
+PCCERT_CONTEXT      xmlSecMSCngX509FindCert                         (HCERTSTORE store,
+                                                                     xmlSecMSCngX509FindCertCtxPtr findCertCtx);
 
-XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT xmlSecMSCngX509StoreFindCertByValue     (xmlSecKeyDataStorePtr store,
-                                                                             xmlSecKeyX509DataValuePtr x509Value);
-XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT xmlSecMSCngX509FindCert                 (HCERTSTORE store, 
-                                                                             xmlSecMSCngX509FindCertCtxPtr findCertCtx);
-
-XMLSEC_CRYPTO_EXPORT xmlChar*   xmlSecMSCngX509GetFriendlyNameUtf8          (PCCERT_CONTEXT cert);
-XMLSEC_CRYPTO_EXPORT LPCWSTR    xmlSecMSCngX509GetFriendlyNameUnicode(PCCERT_CONTEXT cert);
+xmlChar*            xmlSecMSCngX509GetFriendlyNameUtf8              (PCCERT_CONTEXT cert);
+LPCWSTR             xmlSecMSCngX509GetFriendlyNameUnicode           (PCCERT_CONTEXT cert);
 
 
 #endif /* XMLSEC_NO_X509 */

@@ -104,18 +104,18 @@ typedef struct _xmlSecGnuTLSX509FindCertCtx {
     gnutls_digest_algorithm_t digestAlgo;
 } xmlSecGnuTLSX509FindCertCtx, *xmlSecGnuTLSX509FindCertCtxPtr;
 
-XMLSEC_CRYPTO_EXPORT int        xmlSecGnuTLSX509FindCertCtxInitialize      (xmlSecGnuTLSX509FindCertCtxPtr ctx,
-                                                                             const xmlChar *subjectName,
-                                                                             const xmlChar *issuerName,
-                                                                             const xmlChar *issuerSerial,
-                                                                             const xmlSecByte * ski,
-                                                                             xmlSecSize skiSize);
-XMLSEC_CRYPTO_EXPORT int        xmlSecGnuTLSX509FindCertCtxInitializeFromValue(xmlSecGnuTLSX509FindCertCtxPtr ctx,
-                                                                             xmlSecKeyX509DataValuePtr x509Value);
-XMLSEC_CRYPTO_EXPORT void       xmlSecGnuTLSX509FindCertCtxFinalize        (xmlSecGnuTLSX509FindCertCtxPtr ctx);
+int        xmlSecGnuTLSX509FindCertCtxInitialize            (xmlSecGnuTLSX509FindCertCtxPtr ctx,
+                                                             const xmlChar *subjectName,
+                                                             const xmlChar *issuerName,
+                                                             const xmlChar *issuerSerial,
+                                                             const xmlSecByte * ski,
+                                                             xmlSecSize skiSize);
+int        xmlSecGnuTLSX509FindCertCtxInitializeFromValue   (xmlSecGnuTLSX509FindCertCtxPtr ctx,
+                                                             xmlSecKeyX509DataValuePtr x509Value);
+void       xmlSecGnuTLSX509FindCertCtxFinalize              (xmlSecGnuTLSX509FindCertCtxPtr ctx);
 
-XMLSEC_CRYPTO_EXPORT int        xmlSecGnuTLSX509FindCertCtxMatch          (xmlSecGnuTLSX509FindCertCtxPtr ctx,
-                                                                           gnutls_x509_crt_t cert);
+int        xmlSecGnuTLSX509FindCertCtxMatch                 (xmlSecGnuTLSX509FindCertCtxPtr ctx,
+                                                             gnutls_x509_crt_t cert);
 
 
 

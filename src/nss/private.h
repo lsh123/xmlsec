@@ -65,25 +65,25 @@ typedef struct _xmlSecNssX509FindCertCtx {
     SECOidTag digestAlg;
 } xmlSecNssX509FindCertCtx, *xmlSecNssX509FindCertCtxPtr;
 
-XMLSEC_CRYPTO_EXPORT int        xmlSecNssX509FindCertCtxInitialize          (xmlSecNssX509FindCertCtxPtr ctx,
-                                                                             const xmlChar *subjectName,
-                                                                             const xmlChar *issuerName,
-                                                                             const xmlChar *issuerSerial,
-                                                                             xmlSecByte * ski,
-                                                                             xmlSecSize skiSize);
-XMLSEC_CRYPTO_EXPORT int        xmlSecNssX509FindCertCtxInitializeFromValue(xmlSecNssX509FindCertCtxPtr ctx,
-                                                                             xmlSecKeyX509DataValuePtr x509Value);
-XMLSEC_CRYPTO_EXPORT void       xmlSecNssX509FindCertCtxFinalize            (xmlSecNssX509FindCertCtxPtr ctx);
+int        xmlSecNssX509FindCertCtxInitialize           (xmlSecNssX509FindCertCtxPtr ctx,
+                                                         const xmlChar *subjectName,
+                                                         const xmlChar *issuerName,
+                                                         const xmlChar *issuerSerial,
+                                                         xmlSecByte * ski,
+                                                         xmlSecSize skiSize);
+int        xmlSecNssX509FindCertCtxInitializeFromValue  (xmlSecNssX509FindCertCtxPtr ctx,
+                                                         xmlSecKeyX509DataValuePtr x509Value);
+void       xmlSecNssX509FindCertCtxFinalize             (xmlSecNssX509FindCertCtxPtr ctx);
 
-XMLSEC_CRYPTO_EXPORT int        xmlSecNssX509FindCertCtxMatch               (xmlSecNssX509FindCertCtxPtr ctx,
-                                                                             CERTCertificate* cert);
+int        xmlSecNssX509FindCertCtxMatch                (xmlSecNssX509FindCertCtxPtr ctx,
+                                                         CERTCertificate* cert);
 
-XMLSEC_CRYPTO_EXPORT CERTCertificate * xmlSecNssX509StoreFindCertByValue    (xmlSecKeyDataStorePtr store,
-                                                                             xmlSecKeyX509DataValuePtr x509Value);
-XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecNssX509FindKeyByValue               (xmlSecPtrListPtr keysList,
-                                                                             xmlSecKeyX509DataValuePtr x509Value);
+CERTCertificate * xmlSecNssX509StoreFindCertByValue     (xmlSecKeyDataStorePtr store,
+                                                         xmlSecKeyX509DataValuePtr x509Value);
+xmlSecKeyPtr xmlSecNssX509FindKeyByValue                (xmlSecPtrListPtr keysList,
+                                                         xmlSecKeyX509DataValuePtr x509Value);
 
-XMLSEC_CRYPTO_EXPORT SECOidTag  xmlSecNssX509GetDigestFromAlgorithm         (const xmlChar* href);
+SECOidTag  xmlSecNssX509GetDigestFromAlgorithm          (const xmlChar* href);
 
 
 /* NSS has a list for Certs but not Crls so we have to do it ourselves */
@@ -93,20 +93,20 @@ struct _xmlSecNssX509CrlNode {
     CERTSignedCrl           *crl;
 };
 
-XMLSEC_CRYPTO_EXPORT xmlSecNssX509CrlNodePtr xmlSecNssX509CrlListDuplicate  (xmlSecNssX509CrlNodePtr head);
-XMLSEC_CRYPTO_EXPORT void       xmlSecNssX509CrlListDestroy                 (xmlSecNssX509CrlNodePtr head);
-XMLSEC_CRYPTO_EXPORT int        xmlSecNssX509CrlListAdoptCrl                (xmlSecNssX509CrlNodePtr * head,
-                                                                             CERTSignedCrl* crl);
+xmlSecNssX509CrlNodePtr xmlSecNssX509CrlListDuplicate  (xmlSecNssX509CrlNodePtr head);
+void       xmlSecNssX509CrlListDestroy                 (xmlSecNssX509CrlNodePtr head);
+int        xmlSecNssX509CrlListAdoptCrl                (xmlSecNssX509CrlNodePtr * head,
+                                                        CERTSignedCrl* crl);
 
-XMLSEC_CRYPTO_EXPORT CERTCertificate* xmlSecNssX509CertDerRead               (CERTCertDBHandle *handle,
-                                                                              xmlSecByte* buf,
-                                                                              xmlSecSize size);
-XMLSEC_CRYPTO_EXPORT CERTSignedCrl*   xmlSecNssX509CrlDerRead                (xmlSecByte* buf,
-                                                                              xmlSecSize size,
-                                                                              unsigned int flags);
+CERTCertificate* xmlSecNssX509CertDerRead               (CERTCertDBHandle *handle,
+                                                         xmlSecByte* buf,
+                                                         xmlSecSize size);
+CERTSignedCrl*   xmlSecNssX509CrlDerRead                (xmlSecByte* buf,
+                                                         xmlSecSize size,
+                                                         unsigned int flags);
 
-XMLSEC_CRYPTO_EXPORT int              xmlSecNssX509CertGetTime                (PRTime* t,
-                                                                               time_t* res);
+int              xmlSecNssX509CertGetTime               (PRTime* t,
+                                                         time_t* res);
 #endif /* XMLSEC_NO_X509 */
 
 #ifdef __cplusplus

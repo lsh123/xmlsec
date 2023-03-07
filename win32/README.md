@@ -140,7 +140,7 @@ In MSVC x64 native tools shell:
 
 ```
 cd c:\<path to libxml2 sources>\win32
-cscript configure.js iconv=no prefix=c:\local\libxml2
+cscript configure.js iconv=no zlib=no cruntime=/MD prefix=c:\local\distro\libxml2
 nmake
 nmake install
 ```
@@ -148,7 +148,7 @@ nmake install
 In CygWin shell:
 
 ```
-cd /cygdrive/c/local/libxml2
+cd /cygdrive/c/local/distro/libxml2
 7z a ../libxml2-<version>-noiconv-win-x64.7z bin/ include/ lib/
 ```
 
@@ -158,7 +158,7 @@ In MSVC x64 native tools shell:
 
 ```
 cd c:\<libxslt-src-dir>\win32
-cscript configure.js iconv=no prefix=c:\local\libxslt include=c:\local\libxml2\include\libxml2 lib=c:\local\libxml2\lib
+cscript configure.js iconv=no zlib=no cruntime=/MD prefix=c:\local\distro\libxslt\ include=c:\local\distro\libxml2\include\libxml2 lib=c:\local\distro\libxml2\lib
 nmake
 nmake install
 ```
@@ -166,7 +166,7 @@ nmake install
 In Cygwin shell:
 
 ```
-cd /cygdrive/c/local/libxslt
+cd /cygdrive/c/local/distro/libxslt
 7z a ../libxslt-<version>-noiconv-win-x64.7z bin/ include/ lib/
 ```
 
@@ -176,7 +176,7 @@ In MSVC x64 native tools shell:
 
 ```
 cd c:\<openssl-1.1-src-dir>
-C:\Strawberry\perl\bin\perl.exe Configure no-asm --prefix=c:\local\openssl-1.1 VC-WIN64A
+C:\Strawberry\perl\bin\perl.exe Configure no-asm --prefix=c:\local\distro\openssl-1.1 VC-WIN64A
 nmake
 nmake install
 ```
@@ -184,8 +184,51 @@ nmake install
 In Cygwin shell:
 
 ```
-cd /cygdrive/c/local/openssl-1.1
+cd /cygdrive/c/local/distro/openssl-1.1
 7z a ../openssl-<version>-x64.7z bin/ html/ include/ lib/
+```
+
+## OpenSSL 3.x
+
+In MSVC x64 native tools shell:
+
+```
+cd c:\<openssl-3.x-src-dir>
+C:\Strawberry\perl\bin\perl.exe Configure no-asm --prefix=c:\local\distro\openssl --release VC-WIN64A
+nmake
+nmake install
+```
+
+In Cygwin shell:
+
+```
+cd /cygdrive/c/local/distro/openssl
+7z a ../openssl-<version>-x64.7z bin/ html/ include/ lib/
+```
+
+## XMLSec
+
+In MSVC x64 native tools shell:
+
+```
+cd c:\<xmlsec-src-dir>
+cscript configure.js pedantic=yes with-dl=yes iconv=no cruntime=/MD xslt=yes crypto=openssl unicode=yes prefix=C:\local\distro\xmlsec include=C:\local\distro\libxml2\include;C:\local\distro\libxml2\include\libxml2;C:\local\distro\libxslt\include;C:\local\distro\openssl\include; lib=C:\local\distro\libxml2\lib;C:\local\distro\libxslt\lib;C:\local\distro\openssl\lib
+nmake
+nmake install
+```
+
+In Cygwin shell:
+
+```
+cd /cygdrive/c/local/distro/openssl
+7z a ../openssl-<version>-x64.7z bin/ html/ include/ lib/
+```
+
+## Archive
+In Cygwin shell:
+```
+cd C:\local\distro
+zip -r xmlsec1-<version>-win64.zip libxml2 libxslt openssl xmlsec README.md
 ```
 
 

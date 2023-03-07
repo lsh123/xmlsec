@@ -1942,6 +1942,7 @@ static STACK_OF(X509_NAME_ENTRY)*
 xmlSecOpenSSLX509_NAME_ENTRIES_copy(X509_NAME * a) {
     STACK_OF(X509_NAME_ENTRY) * res = NULL;
     int ii;
+    int ret;
 
     res = sk_X509_NAME_ENTRY_new(xmlSecOpenSSLX509_NAME_ENTRY_cmp);
     if(res == NULL) {
@@ -1950,7 +1951,11 @@ xmlSecOpenSSLX509_NAME_ENTRIES_copy(X509_NAME * a) {
     }
 
     for (ii = X509_NAME_entry_count(a) - 1; ii >= 0; --ii) {
-        sk_X509_NAME_ENTRY_push(res, X509_NAME_get_entry(a, ii));
+        ret = sk_X509_NAME_ENTRY_push(res, X509_NAME_get_entry(a, ii));
+        if(ret <= 0) {
+            xmlSecOpenSSLError("sk_X509_NAME_ENTRY_push", NULL);
+            return(NULL);
+        }
     }
 
     return (res);

@@ -239,7 +239,7 @@ xmlSecMSCngConcatKdfNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 
     /* first (and only) node is required ConcatKDFParams */
     cur  = xmlSecGetNextElementNode(node->children);
-    if((cur != NULL) && (!xmlSecCheckNodeName(cur, xmlSecNodeConcatKDFParams, xmlSecEnc11Ns))) {
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeConcatKDFParams, xmlSecEnc11Ns))) {
         xmlSecInvalidNodeError(cur, xmlSecNodeConcatKDFParams, NULL);
         return(-1);
     }

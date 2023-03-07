@@ -1124,7 +1124,7 @@ xmlSecGnuTLSKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     }
 
     /* y */
-    if((g.data == NULL) || (y.size <= 0)) {
+    if((y.data == NULL) || (y.size <= 0)) {
         xmlSecInternalError("DSA y parameter is NULL", xmlSecKeyDataKlassGetName(id));
         goto done;
     }

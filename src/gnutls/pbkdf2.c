@@ -226,7 +226,7 @@ xmlSecGnuTLSPbkdf2NodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
 
     /* first (and only) node is required Pbkdf2Params */
     cur  = xmlSecGetNextElementNode(node->children);
-    if((cur != NULL) && (!xmlSecCheckNodeName(cur, xmlSecNodePbkdf2Params, xmlSecEnc11Ns))) {
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodePbkdf2Params, xmlSecEnc11Ns))) {
         xmlSecInvalidNodeError(cur, xmlSecNodePbkdf2Params, NULL);
         return(-1);
     }

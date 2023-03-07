@@ -294,6 +294,7 @@ xmlSecNssAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
 /**
  * xmlSecNssAppKeyLoadEx:
  * @filename:           the key filename.
+ * @type:               the key type (public / private).
  * @format:             the key file format.
  * @pwd:                the key file password.
  * @pwdCallback:        the key password callback.

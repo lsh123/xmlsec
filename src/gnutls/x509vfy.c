@@ -103,7 +103,7 @@ xmlSecGnuTLSX509StoreGetKlass(void) {
  * @issuerName:         the desired certificate issuer name.
  * @issuerSerial:       the desired certificate issuer serial number.
  * @ski:                the desired certificate SKI.
- * @keyInfoCtx:         the pointer to <dsig:KeyInfo/> element processing context.
+ * @keyInfoCtx:         the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
  *
  * Searches @store for a certificate that matches given criteria.
  *
@@ -154,7 +154,7 @@ xmlSecGnuTLSX509StoreFindCert(const xmlSecKeyDataStorePtr store, const xmlChar *
  * @issuerSerial:       the desired certificate issuer serial number.
  * @ski:                the desired certificate SKI.
  * @skiSize:            the desired certificate SKI size.
- * @keyInfoCtx:         the pointer to <dsig:KeyInfo/> element processing context.
+ * @keyInfoCtx:         the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
  *
  * Searches @store for a certificate that matches given criteria.
  *
@@ -355,7 +355,7 @@ xmlSecGnuTLSX509CheckCrtsTime(const gnutls_x509_crt_t * cert_list, xmlSecSize ce
  * @store:              the pointer to X509 key data store klass.
  * @certs:              the untrusted certificates.
  * @crls:               the crls.
- * @keyInfoCtx:         the pointer to <dsig:KeyInfo/> element processing context.
+ * @keyInfoCtx:         the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
  *
  * Verifies @certs list.
  *

@@ -65,7 +65,7 @@ static const xmlChar*           xmlSecDSigIds[] = { xmlSecAttrId, NULL };
  * xmlSecDSigCtxCreate:
  * @keysMngr:           the pointer to keys manager.
  *
- * Creates <dsig:Signature/> element processing context.
+ * Creates &lt;dsig:Signature/&gt; element processing context.
  * The caller is responsible for destroying returned object by calling
  * #xmlSecDSigCtxDestroy function.
  *
@@ -94,7 +94,7 @@ xmlSecDSigCtxCreate(xmlSecKeysMngrPtr keysMngr) {
 
 /**
  * xmlSecDSigCtxDestroy:
- * @dsigCtx:            the pointer to <dsig:Signature/> processing context.
+ * @dsigCtx:            the pointer to &lt;dsig:Signature/&gt; processing context.
  *
  * Destroy context object created with #xmlSecDSigCtxCreate function.
  */
@@ -108,10 +108,10 @@ xmlSecDSigCtxDestroy(xmlSecDSigCtxPtr dsigCtx) {
 
 /**
  * xmlSecDSigCtxInitialize:
- * @dsigCtx:            the pointer to <dsig:Signature/> processing context.
+ * @dsigCtx:            the pointer to &lt;dsig:Signature/&gt; processing context.
  * @keysMngr:           the pointer to keys manager.
  *
- * Initializes <dsig:Signature/> element processing context.
+ * Initializes &lt;dsig:Signature/&gt; element processing context.
  * The caller is responsible for cleaning up returned object by calling
  * #xmlSecDSigCtxFinalize function.
  *
@@ -169,7 +169,7 @@ xmlSecDSigCtxInitialize(xmlSecDSigCtxPtr dsigCtx, xmlSecKeysMngrPtr keysMngr) {
 
 /**
  * xmlSecDSigCtxFinalize:
- * @dsigCtx:            the pointer to <dsig:Signature/> processing context.
+ * @dsigCtx:            the pointer to &lt;dsig:Signature/&gt; processing context.
  *
  * Cleans up @dsigCtx object initialized with #xmlSecDSigCtxInitialize function.
  */
@@ -197,10 +197,10 @@ xmlSecDSigCtxFinalize(xmlSecDSigCtxPtr dsigCtx) {
 
 /**
  * xmlSecDSigCtxEnableReferenceTransform:
- * @dsigCtx:            the pointer to <dsig:Signature/> processing context.
+ * @dsigCtx:            the pointer to &lt;dsig:Signature/&gt; processing context.
  * @transformId:        the transform klass.
  *
- * Enables @transformId for <dsig:Reference/> elements processing.
+ * Enables @transformId for &lt;dsig:Reference/&gt; elements processing.
  *
  * Returns: 0 on success or a negative value if an error occurs.
  */
@@ -230,10 +230,10 @@ xmlSecDSigCtxEnableReferenceTransform(xmlSecDSigCtxPtr dsigCtx, xmlSecTransformI
 
 /**
  * xmlSecDSigCtxEnableSignatureTransform:
- * @dsigCtx:            the pointer to <dsig:Signature/> processing context.
+ * @dsigCtx:            the pointer to &lt;dsig:Signature/&gt; processing context.
  * @transformId:        the transform klass.
  *
- * Enables @transformId for <dsig:SignedInfo/> element processing.
+ * Enables @transformId for &lt;dsig:SignedInfo/&gt; element processing.
  *
  * Returns: 0 on success or a negative value if an error occurs.
  */
@@ -248,9 +248,9 @@ xmlSecDSigCtxEnableSignatureTransform(xmlSecDSigCtxPtr dsigCtx, xmlSecTransformI
 
 /**
  * xmlSecDSigCtxGetPreSignBuffer:
- * @dsigCtx:            the pointer to <dsig:Signature/> processing context.
+ * @dsigCtx:            the pointer to &lt;dsig:Signature/&gt; processing context.
  *
- * Gets pointer to the buffer with serialized <dsig:SignedInfo/> element
+ * Gets pointer to the buffer with serialized &lt;dsig:SignedInfo/&gt; element
  * just before signature claculation (valid if and only if
  * #XMLSEC_DSIG_FLAGS_STORE_SIGNATURE context flag is set.
  *
@@ -266,8 +266,8 @@ xmlSecDSigCtxGetPreSignBuffer(xmlSecDSigCtxPtr dsigCtx) {
 
 /**
  * xmlSecDSigCtxSign:
- * @dsigCtx:            the pointer to <dsig:Signature/> processing context.
- * @tmpl:               the pointer to <dsig:Signature/> node with signature template.
+ * @dsigCtx:            the pointer to &lt;dsig:Signature/&gt; processing context.
+ * @tmpl:               the pointer to &lt;dsig:Signature/&gt; node with signature template.
  *
  * Signs the data as described in @tmpl node.
  *
@@ -324,8 +324,8 @@ xmlSecDSigCtxSign(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr tmpl) {
 
 /**
  * xmlSecDSigCtxVerify:
- * @dsigCtx:            the pointer to <dsig:Signature/> processing context.
- * @node:               the pointer with <dsig:Signature/> node.
+ * @dsigCtx:            the pointer to &lt;dsig:Signature/&gt; processing context.
+ * @node:               the pointer with &lt;dsig:Signature/&gt; node.
  *
  * Validates signature in the @node. The verification result is returned
  * in #status member of the @dsigCtx object.
@@ -809,7 +809,7 @@ xmlSecDSigCtxProcessKeyInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
         return(-1);
     }
 
-    /* if we are signing document, update <dsig:KeyInfo/> node */
+    /* if we are signing document, update &lt;dsig:KeyInfo/&gt; node */
     if((node != NULL) && (dsigCtx->operation == xmlSecTransformOperationSign)) {
         ret = xmlSecKeyInfoNodeWrite(node, dsigCtx->signKey, &(dsigCtx->keyInfoWriteCtx));
         if(ret < 0) {
@@ -954,7 +954,7 @@ xmlSecDSigCtxProcessManifestNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
 
 /**
  * xmlSecDSigCtxDebugDump:
- * @dsigCtx:            the pointer to <dsig:Signature/> processing context.
+ * @dsigCtx:            the pointer to &lt;dsig:Signature/&gt; processing context.
  * @output:             the pointer to output FILE.
  *
  * Prints the debug information about @dsigCtx to @output.
@@ -1034,7 +1034,7 @@ xmlSecDSigCtxDebugDump(xmlSecDSigCtxPtr dsigCtx, FILE* output) {
 
 /**
  * xmlSecDSigCtxDebugXmlDump:
- * @dsigCtx:            the pointer to <dsig:Signature/> processing context.
+ * @dsigCtx:            the pointer to &lt;dsig:Signature/&gt; processing context.
  * @output:             the pointer to output FILE.
  *
  * Prints the debug information about @dsigCtx to @output in XML format.
@@ -1134,10 +1134,10 @@ xmlSecDSigCtxDebugXmlDump(xmlSecDSigCtxPtr dsigCtx, FILE* output) {
  *************************************************************************/
 /**
  * xmlSecDSigReferenceCtxCreate:
- * @dsigCtx:            the pointer to parent <dsig:Signature/> node processing context.
- * @origin:             the reference origin (<dsig:SignedInfo/> or <dsig:Manifest/> node).
+ * @dsigCtx:            the pointer to parent &lt;dsig:Signature/&gt; node processing context.
+ * @origin:             the reference origin (&lt;dsig:SignedInfo/&gt; or &lt;dsig:Manifest/&gt; node).
  *
- * Creates new <dsig:Reference/> element processing context. Caller is responsible
+ * Creates new &lt;dsig:Reference/&gt; element processing context. Caller is responsible
  * for destroying the returned context by calling #xmlSecDSigReferenceCtxDestroy
  * function.
  *
@@ -1167,7 +1167,7 @@ xmlSecDSigReferenceCtxCreate(xmlSecDSigCtxPtr dsigCtx, xmlSecDSigReferenceOrigin
 
 /**
  * xmlSecDSigReferenceCtxDestroy:
- * @dsigRefCtx:         the pointer to <dsig:Reference/> element processing context.
+ * @dsigRefCtx:         the pointer to &lt;dsig:Reference/&gt; element processing context.
  *
  * Destroy context object created with #xmlSecDSigReferenceCtxCreate function.
  */
@@ -1181,11 +1181,11 @@ xmlSecDSigReferenceCtxDestroy(xmlSecDSigReferenceCtxPtr dsigRefCtx) {
 
 /**
  * xmlSecDSigReferenceCtxInitialize:
- * @dsigRefCtx:         the pointer to <dsig:Reference/> element processing context.
- * @dsigCtx:            the pointer to parent <dsig:Signature/> node processing context.
- * @origin:             the reference origin (<dsig:SignedInfo/> or <dsig:Manifest/> node).
+ * @dsigRefCtx:         the pointer to &lt;dsig:Reference/&gt; element processing context.
+ * @dsigCtx:            the pointer to parent &lt;dsig:Signature/&gt; node processing context.
+ * @origin:             the reference origin (&lt;dsig:SignedInfo/&gt; or &lt;dsig:Manifest/&gt; node).
  *
- * Initializes new <dsig:Reference/> element processing context. Caller is responsible
+ * Initializes new &lt;dsig:Reference/&gt; element processing context. Caller is responsible
  * for cleaning up the returned context by calling #xmlSecDSigReferenceCtxFinalize
  * function.
  *
@@ -1232,7 +1232,7 @@ xmlSecDSigReferenceCtxInitialize(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlSecDSi
 
 /**
  * xmlSecDSigReferenceCtxFinalize:
- * @dsigRefCtx:         the pointer to <dsig:Reference/> element processing context.
+ * @dsigRefCtx:         the pointer to &lt;dsig:Reference/&gt; element processing context.
  *
  * Cleans up context object created with #xmlSecDSigReferenceCtxInitialize function.
  */
@@ -1255,9 +1255,9 @@ xmlSecDSigReferenceCtxFinalize(xmlSecDSigReferenceCtxPtr dsigRefCtx) {
 
 /**
  * xmlSecDSigReferenceCtxGetPreDigestBuffer:
- * @dsigRefCtx:         the pointer to <dsig:Reference/> element processing context.
+ * @dsigRefCtx:         the pointer to &lt;dsig:Reference/&gt; element processing context.
  *
- * Gets the results of <dsig:Reference/> node processing just before digesting
+ * Gets the results of &lt;dsig:Reference/&gt; node processing just before digesting
  * (valid only if #XMLSEC_DSIG_FLAGS_STORE_SIGNEDINFO_REFERENCES or
  * #XMLSEC_DSIG_FLAGS_STORE_MANIFEST_REFERENCES flas of signature context
  * is set).
@@ -1274,8 +1274,8 @@ xmlSecDSigReferenceCtxGetPreDigestBuffer(xmlSecDSigReferenceCtxPtr dsigRefCtx) {
 
 /**
  * xmlSecDSigReferenceCtxProcessNode:
- * @dsigRefCtx:         the pointer to <dsig:Reference/> element processing context.
- * @node:               the pointer to <dsig:Reference/> node.
+ * @dsigRefCtx:         the pointer to &lt;dsig:Reference/&gt; element processing context.
+ * @node:               the pointer to &lt;dsig:Reference/&gt; node.
 
  * The Reference Element (http://www.w3.org/TR/xmldsig-core/#sec-Reference)
  *
@@ -1458,7 +1458,7 @@ xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodeP
 
 /**
  * xmlSecDSigReferenceCtxDebugDump:
- * @dsigRefCtx:         the pointer to <dsig:Reference/> element processing context.
+ * @dsigRefCtx:         the pointer to &lt;dsig:Reference/&gt; element processing context.
  * @output:             the pointer to output FILE.
  *
  * Prints debug information about @dsigRefCtx to @output.
@@ -1526,7 +1526,7 @@ xmlSecDSigReferenceCtxDebugDump(xmlSecDSigReferenceCtxPtr dsigRefCtx, FILE* outp
 
 /**
  * xmlSecDSigReferenceCtxDebugXmlDump:
- * @dsigRefCtx:         the pointer to <dsig:Reference/> element processing context.
+ * @dsigRefCtx:         the pointer to &lt;dsig:Reference/&gt; element processing context.
  * @output:             the pointer to output FILE.
  *
  * Prints debug information about @dsigRefCtx to @output in output format.
@@ -1619,9 +1619,9 @@ static xmlSecPtrListKlass xmlSecDSigReferenceCtxListKlass = {
 /**
  * xmlSecDSigReferenceCtxListGetKlass:
  *
- * The <dsig:Reference/> element processing contexts list klass.
+ * The &lt;dsig:Reference/&gt; element processing contexts list klass.
  *
- * Returns: <dsig:Reference/> element processing context list klass.
+ * Returns: &lt;dsig:Reference/&gt; element processing context list klass.
  */
 xmlSecPtrListId
 xmlSecDSigReferenceCtxListGetKlass(void) {
@@ -1629,5 +1629,3 @@ xmlSecDSigReferenceCtxListGetKlass(void) {
 }
 
 #endif /* XMLSEC_NO_XMLDSIG */
-
-

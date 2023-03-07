@@ -57,30 +57,30 @@ typedef enum {
 /**
  * XMLSEC_DSIG_FLAGS_IGNORE_MANIFESTS:
  *
- * If this flag is set then <dsig:Manifests/> nodes will not be processed.
+ * If this flag is set then &lt;dsig:Manifests/&gt; nodes will not be processed.
  */
 #define XMLSEC_DSIG_FLAGS_IGNORE_MANIFESTS                      0x00000001
 
 /**
  * XMLSEC_DSIG_FLAGS_STORE_SIGNEDINFO_REFERENCES:
  *
- * If this flag is set then pre-digest buffer for <dsig:Reference/> child
- * of <dsig:KeyInfo/> element will be stored in #xmlSecDSigCtx.
+ * If this flag is set then pre-digest buffer for &lt;dsig:Reference/&gt; child
+ * of &lt;dsig:KeyInfo/&gt; element will be stored in #xmlSecDSigCtx.
  */
 #define XMLSEC_DSIG_FLAGS_STORE_SIGNEDINFO_REFERENCES           0x00000002
 
 /**
  * XMLSEC_DSIG_FLAGS_STORE_MANIFEST_REFERENCES:
  *
- * If this flag is set then pre-digest buffer for <dsig:Reference/> child
- * of <dsig:Manifest/> element will be stored in #xmlSecDSigCtx.
+ * If this flag is set then pre-digest buffer for &lt;dsig:Reference/&gt; child
+ * of &lt;dsig:Manifest/&gt; element will be stored in #xmlSecDSigCtx.
  */
 #define XMLSEC_DSIG_FLAGS_STORE_MANIFEST_REFERENCES             0x00000004
 
 /**
  * XMLSEC_DSIG_FLAGS_STORE_SIGNATURE:
  *
- * If this flag is set then pre-signature buffer for <dsig:SignedInfo/>
+ * If this flag is set then pre-signature buffer for &lt;dsig:SignedInfo/&gt;
  * element processing will be stored in #xmlSecDSigCtx.
  */
 #define XMLSEC_DSIG_FLAGS_STORE_SIGNATURE                       0x00000008
@@ -102,10 +102,10 @@ typedef enum {
  * @flags2:                     the XML Digital Signature processing flags.
  * @keyInfoReadCtx:             the reading key context.
  * @keyInfoWriteCtx:            the writing key context (not used for signature verification).
- * @transformCtx:               the <dsig:SignedInfo/> node processing context.
- * @enabledReferenceUris:       the URI types allowed for <dsig:Reference/> node.
- * @enabledReferenceTransforms: the list of transforms allowed in <dsig:Reference/> node.
- * @referencePreExecuteCallback:the callback for <dsig:Reference/> node processing.
+ * @transformCtx:               the &lt;dsig:SignedInfo/&gt; node processing context.
+ * @enabledReferenceUris:       the URI types allowed for &lt;dsig:Reference/&gt; node.
+ * @enabledReferenceTransforms: the list of transforms allowed in &lt;dsig:Reference/&gt; node.
+ * @referencePreExecuteCallback:the callback for &lt;dsig:Reference/&gt; node processing.
  * @defSignMethodId:            the default signing method klass.
  * @defC14NMethodId:            the default c14n method klass.
  * @defDigestMethodId:          the default digest method klass.
@@ -114,15 +114,15 @@ typedef enum {
  *                              functions.
  * @operation:                  the operation: sign or verify.
  * @result:                     the pointer to signature (not valid for signature verification).
- * @status:                     the <dsig:Signature/> processing status.
+ * @status:                     the &lt;dsig:Signature/&gt; processing status.
  * @signMethod:                 the pointer to signature transform.
  * @c14nMethod:                 the pointer to c14n transform.
  * @preSignMemBufMethod:        the pointer to binary buffer right before signature
  *                              (valid only if #XMLSEC_DSIG_FLAGS_STORE_SIGNATURE flag is set).
- * @signValueNode:              the pointer to <dsig:SignatureValue/> node.
- * @id:                         the pointer to Id attribute of <dsig:Signature/> node.
- * @signedInfoReferences:       the list of references in <dsig:SignedInfo/> node.
- * @manifestReferences:         the list of references in <dsig:Manifest/> nodes.
+ * @signValueNode:              the pointer to &lt;dsig:SignatureValue/&gt; node.
+ * @id:                         the pointer to Id attribute of &lt;dsig:Signature/&gt; node.
+ * @signedInfoReferences:       the list of references in &lt;dsig:SignedInfo/&gt; node.
+ * @manifestReferences:         the list of references in &lt;dsig:Manifest/&gt; nodes.
  * @reserved0:                  reserved for the future.
  * @reserved1:                  reserved for the future.
  *
@@ -189,11 +189,11 @@ XMLSEC_EXPORT void              xmlSecDSigCtxDebugXmlDump       (xmlSecDSigCtxPt
  *************************************************************************/
 /**
  * xmlSecDSigReferenceOrigin:
- * @xmlSecDSigReferenceOriginSignedInfo:reference in <dsig:SignedInfo> node.
- * @xmlSecDSigReferenceOriginManifest:  reference <dsig:Manifest> node.
+ * @xmlSecDSigReferenceOriginSignedInfo:reference in &lt;dsig:SignedInfo/&gt; node.
+ * @xmlSecDSigReferenceOriginManifest:  reference &lt;dsig:Manifest/&gt; node.
  *
- * The possible <dsig:Reference/> node locations: in the <dsig:SignedInfo/>
- * node or in the <dsig:Manifest/> node.
+ * The possible &lt;dsig:Reference/&gt; node locations: in the &lt;dsig:SignedInfo/&gt;
+ * node or in the &lt;dsig:Manifest/&gt; node.
  */
 typedef enum  {
     xmlSecDSigReferenceOriginSignedInfo,
@@ -204,8 +204,8 @@ typedef enum  {
  * xmlSecDSigReferenceCtx:
  * @userData:                   the pointer to user data (xmlsec and xmlsec-crypto libraries
  *                              never touches this).
- * @dsigCtx:                    the pointer to "parent" <dsig:Signature/> processing context.
- * @origin:                     the signature origin (<dsig:SignedInfo/> or <dsig:Manifest/>).
+ * @dsigCtx:                    the pointer to "parent" &lt;dsig:Signature/&gt; processing context.
+ * @origin:                     the signature origin (&lt;dsig:SignedInfo/&gt; or &lt;dsig:Manifest/&gt;).
  * @transformCtx:               the reference processing transforms context.
  * @digestMethod:               the pointer to digest transform.
  * @result:                     the pointer to digest result.
@@ -214,13 +214,13 @@ typedef enum  {
  *                              (valid only if either
  *                              #XMLSEC_DSIG_FLAGS_STORE_SIGNEDINFO_REFERENCES or
  *                              #XMLSEC_DSIG_FLAGS_STORE_MANIFEST_REFERENCES flags are set).
- * @id:                         the <dsig:Reference/> node ID attribute.
- * @uri:                        the <dsig:Reference/> node URI attribute.
- * @type:                       the <dsig:Reference/> node Type attribute.
+ * @id:                         the &lt;dsig:Reference/&gt; node ID attribute.
+ * @uri:                        the &lt;dsig:Reference/&gt; node URI attribute.
+ * @type:                       the &lt;dsig:Reference/&gt; node Type attribute.
  * @reserved0:                  reserved for the future.
  * @reserved1:                  reserved for the future.
  *
- * The <dsig:Reference/> processing context.
+ * The &lt;dsig:Reference/&gt; processing context.
  */
 struct _xmlSecDSigReferenceCtx {
     void*                       userData;
@@ -278,4 +278,3 @@ XMLSEC_EXPORT xmlSecPtrListId   xmlSecDSigReferenceCtxListGetKlass(void);
 #endif /* XMLSEC_NO_XMLDSIG */
 
 #endif /* __XMLSEC_XMLDSIG_H__ */
-

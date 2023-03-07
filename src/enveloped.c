@@ -135,7 +135,7 @@ xmlSecTransformEnvelopedExecute(xmlSecTransformPtr transform, int last,
         return(-1);
     }
 
-    /* intersect <dsig:Signature/> node children with input nodes (if exist) */
+    /* intersect &lt;dsig:Signature/&gt; node children with input nodes (if exist) */
     transform->outNodes = xmlSecNodeSetAdd(transform->inNodes, children, xmlSecNodeSetIntersection);
     if(transform->outNodes == NULL) {
         xmlSecInternalError("xmlSecNodeSetAdd",

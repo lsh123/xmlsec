@@ -536,6 +536,10 @@
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataUsageReadFromFile" title="xmlSecKeyDataUsageReadFromFile">xmlSecKeyDataUsageReadFromFile</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
 <td class="function_name"><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataUsageAny" title="xmlSecKeyDataUsageAny">xmlSecKeyDataUsageAny</a></td>
 </tr>
 <tr>
@@ -675,8 +679,8 @@ xmlSecKeyDataIdsShutdown (<em class="parameter"><code><span class="type">void</s
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecKeyDataIdsRegisterDefault (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>Registers default (implemented by XML Security Library)
-key data klasses: <a class="ulink" href="" target="_top">&lt;dsig:KeyName/&gt;</a> element processing klass,</p>
-<a class="ulink" href="" target="_top">&lt;dsig:KeyValue/&gt;</a> element processing klass, ...
+key data klasses: <a class="ulink" href="" target="_top">&lt;dsig:KeyName/&gt;</a> element processing klass,
+<a class="ulink" href="" target="_top">&lt;dsig:KeyValue/&gt;</a> element processing klass, ...</p>
 <div class="refsect3">
 <a name="xmlSecKeyDataIdsRegisterDefault.returns"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
@@ -2437,8 +2441,15 @@ in binary format.</p>
 </div>
 <hr>
 <div class="refsect2">
+<a name="xmlSecKeyDataUsageReadFromFile"></a><h3>xmlSecKeyDataUsageReadFromFile</h3>
+<pre class="programlisting">#define xmlSecKeyDataUsageReadFromFile                   0x00040
+</pre>
+<p>The key data could be read from a file.</p>
+</div>
+<hr>
+<div class="refsect2">
 <a name="xmlSecKeyDataUsageAny"></a><h3>xmlSecKeyDataUsageAny</h3>
-<pre class="programlisting">#define xmlSecKeyDataUsageAny                           0xFFFFF
+<pre class="programlisting">#define xmlSecKeyDataUsageAny                            0xFFFFF
 </pre>
 <p>Any key data usage.</p>
 </div>
@@ -2592,6 +2603,11 @@ in any format.</p>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecKeyDataFormatEngine"></a>xmlSecKeyDataFormatEngine</p></td>
 <td class="enum_member_description"><p>the crypto engine (e.g. OpenSSL ENGINE).</p></td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="xmlSecKeyDataFormatStore"></a>xmlSecKeyDataFormatStore</p></td>
+<td class="enum_member_description"><p>the crypto store (e.g. OpenSSL ossl_store).</p></td>
 <td class="enum_member_annotations"> </td>
 </tr>
 </tbody>

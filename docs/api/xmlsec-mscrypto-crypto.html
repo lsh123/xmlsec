@@ -697,8 +697,7 @@ xmlSecMSCryptoGenerateRandom (<em class="parameter"><code><a class="link" href="
                               <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> size</code></em>);</pre>
 <p>Generates <em class="parameter"><code>size</code></em>
  random bytes and puts result in <em class="parameter"><code>buffer</code></em>
-
-(not implemented yet).</p>
+.</p>
 <div class="refsect3">
 <a name="xmlSecMSCryptoGenerateRandom.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -920,10 +919,10 @@ xmlSecMSCryptoTransformRsaSha1GetKlass
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecMSCryptoTransformRsaSha256GetKlass
                                (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>The RSA-SHA256 signature transform klass.</p>
+<p>The RSA-SHA2-256 signature transform klass.</p>
 <div class="refsect3">
 <a name="xmlSecMSCryptoTransformRsaSha256GetKlass.returns"></a><h4>Returns</h4>
-<p> RSA-SHA256 signature transform klass.</p>
+<p> RSA-SHA2-256 signature transform klass.</p>
 </div>
 </div>
 <hr>
@@ -932,10 +931,10 @@ xmlSecMSCryptoTransformRsaSha256GetKlass
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecMSCryptoTransformRsaSha384GetKlass
                                (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>The RSA-SHA384 signature transform klass.</p>
+<p>The RSA-SHA2-384 signature transform klass.</p>
 <div class="refsect3">
 <a name="xmlSecMSCryptoTransformRsaSha384GetKlass.returns"></a><h4>Returns</h4>
-<p> RSA-SHA384 signature transform klass.</p>
+<p> RSA-SHA2-384 signature transform klass.</p>
 </div>
 </div>
 <hr>
@@ -944,10 +943,10 @@ xmlSecMSCryptoTransformRsaSha384GetKlass
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecMSCryptoTransformRsaSha512GetKlass
                                (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>The RSA-SHA512 signature transform klass.</p>
+<p>The RSA-SHA2-512 signature transform klass.</p>
 <div class="refsect3">
 <a name="xmlSecMSCryptoTransformRsaSha512GetKlass.returns"></a><h4>Returns</h4>
-<p> RSA-SHA512 signature transform klass.</p>
+<p> RSA-SHA2-512 signature transform klass.</p>
 </div>
 </div>
 <hr>
@@ -1429,19 +1428,19 @@ xmlSecMSCryptoTransformHmacSha512GetKlass
 <div class="refsect2">
 <a name="xmlSecMSCryptoTransformRsaSha256Id"></a><h3>xmlSecMSCryptoTransformRsaSha256Id</h3>
 <pre class="programlisting">#define             xmlSecMSCryptoTransformRsaSha256Id</pre>
-<p>The RSA-SHA256 signature transform klass.</p>
+<p>The RSA-SHA2-256 signature transform klass.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecMSCryptoTransformRsaSha384Id"></a><h3>xmlSecMSCryptoTransformRsaSha384Id</h3>
 <pre class="programlisting">#define             xmlSecMSCryptoTransformRsaSha384Id</pre>
-<p>The RSA-SHA384 signature transform klass.</p>
+<p>The RSA-SHA2-384 signature transform klass.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecMSCryptoTransformRsaSha512Id"></a><h3>xmlSecMSCryptoTransformRsaSha512Id</h3>
 <pre class="programlisting">#define             xmlSecMSCryptoTransformRsaSha512Id</pre>
-<p>The RSA-SHA512 signature transform klass.</p>
+<p>The RSA-SHA2-512 signature transform klass.</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1471,19 +1470,19 @@ xmlSecMSCryptoTransformHmacSha512GetKlass
 <div class="refsect2">
 <a name="xmlSecMSCryptoTransformSha256Id"></a><h3>xmlSecMSCryptoTransformSha256Id</h3>
 <pre class="programlisting">#define             xmlSecMSCryptoTransformSha256Id</pre>
-<p>The SHA256 digest transform klass.</p>
+<p>The SHA2-256 digest transform klass.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecMSCryptoTransformSha384Id"></a><h3>xmlSecMSCryptoTransformSha384Id</h3>
 <pre class="programlisting">#define             xmlSecMSCryptoTransformSha384Id</pre>
-<p>The SHA384 digest transform klass.</p>
+<p>The SHA2-384 digest transform klass.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecMSCryptoTransformSha512Id"></a><h3>xmlSecMSCryptoTransformSha512Id</h3>
 <pre class="programlisting">#define             xmlSecMSCryptoTransformSha512Id</pre>
-<p>The SHA512 digest transform klass.</p>
+<p>The SHA2-512 digest transform klass.</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1567,7 +1566,7 @@ xmlSecMSCryptoTransformHmacSha512GetKlass
 <div class="refsect2">
 <a name="xmlSecMSCryptoKeyDataHmacId"></a><h3>xmlSecMSCryptoKeyDataHmacId</h3>
 <pre class="programlisting">#define             xmlSecMSCryptoKeyDataHmacId</pre>
-<p>The DHMAC key klass.</p>
+<p>The HMAC key klass.</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1591,25 +1590,25 @@ xmlSecMSCryptoTransformHmacSha512GetKlass
 <div class="refsect2">
 <a name="xmlSecMSCryptoTransformHmacSha224Id"></a><h3>xmlSecMSCryptoTransformHmacSha224Id</h3>
 <pre class="programlisting">#define             xmlSecMSCryptoTransformHmacSha224Id</pre>
-<p>The HMAC with SHA224 signature transform klass.</p>
+<p>The HMAC with SHA2-224 signature transform klass.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecMSCryptoTransformHmacSha256Id"></a><h3>xmlSecMSCryptoTransformHmacSha256Id</h3>
 <pre class="programlisting">#define             xmlSecMSCryptoTransformHmacSha256Id</pre>
-<p>The HMAC with SHA256 signature transform klass.</p>
+<p>The HMAC with SHA2-256 signature transform klass.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecMSCryptoTransformHmacSha384Id"></a><h3>xmlSecMSCryptoTransformHmacSha384Id</h3>
 <pre class="programlisting">#define             xmlSecMSCryptoTransformHmacSha384Id</pre>
-<p>The HMAC with SHA384 signature transform klass.</p>
+<p>The HMAC with SHA2-384 signature transform klass.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecMSCryptoTransformHmacSha512Id"></a><h3>xmlSecMSCryptoTransformHmacSha512Id</h3>
 <pre class="programlisting">#define             xmlSecMSCryptoTransformHmacSha512Id</pre>
-<p>The HMAC with SHA512 signature transform klass.</p>
+<p>The HMAC with SHA2-512 signature transform klass.</p>
 </div>
 </div>
 </div>

@@ -57,10 +57,10 @@ XMLSEC_EXPORT xmlSecKeyDataStorePtr     xmlSecKeysMngrGetDataStore      (xmlSecK
 
 /**
  * xmlSecGetKeyCallback:
- * @keyInfoNode:                the pointer to <dsig:KeyInfo/> node.
- * @keyInfoCtx:                 the pointer to <dsig:KeyInfo/> node processing context.
+ * @keyInfoNode:                the pointer to &lt;dsig:KeyInfo/&gt; node.
+ * @keyInfoCtx:                 the pointer to &lt;dsig:KeyInfo/&gt; node processing context.
  *
- * Reads the <dsig:KeyInfo/> node @keyInfoNode and extracts the key.
+ * Reads the &lt;dsig:KeyInfo/&gt; node @keyInfoNode and extracts the key.
  *
  * Returns: the pointer to key or NULL if the key is not found or
  * an error occurs.
@@ -72,7 +72,7 @@ typedef xmlSecKeyPtr    (*xmlSecGetKeyCallback)         (xmlNodePtr keyInfoNode,
  * xmlSecKeysMngr:
  * @keysStore:                  the key store (list of keys known to keys manager).
  * @storesList:                 the list of key data stores known to keys manager.
- * @getKey:                     the callback used to read <dsig:KeyInfo/> node.
+ * @getKey:                     the callback used to read &lt;dsig:KeyInfo/&gt; node.
  *
  * The keys manager structure.
  */
@@ -226,9 +226,9 @@ typedef xmlSecKeyPtr            (*xmlSecKeyStoreFindKeyFromX509DataMethod)(xmlSe
  * @name:               the store's name.
  * @initialize:         the store's initialization method.
  * @finalize:           the store's finalization (destroy) method.
- * @findKey:            the store's find method.
+ * @findKey:            the store's method to find key by key name.
+ * @findKeyFromX509Data: the store's method to find key based on x509 data.
  * @reserved0:          reserved for the future.
- * @reserved1:          reserved for the future.
  *
  * The keys store id (klass).
  */

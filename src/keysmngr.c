@@ -96,7 +96,7 @@ xmlSecKeysMngrDestroy(xmlSecKeysMngrPtr mngr) {
  * xmlSecKeysMngrFindKey:
  * @mngr:               the pointer to keys manager.
  * @name:               the desired key name.
- * @keyInfoCtx:         the pointer to <dsig:KeyInfo/> node processing context.
+ * @keyInfoCtx:         the pointer to &lt;dsig:KeyInfo/&gt; node processing context.
  *
  * Lookups key in the keys manager keys store. The caller is responsible
  * for destroying the returned key using #xmlSecKeyDestroy method.
@@ -123,7 +123,7 @@ xmlSecKeysMngrFindKey(xmlSecKeysMngrPtr mngr, const xmlChar* name, xmlSecKeyInfo
  * xmlSecKeysMngrFindKeyFromX509Data:
  * @mngr:               the pointer to keys manager.
  * @x509Data:           the X509 data to use for searching the keys.
- * @keyInfoCtx:         the pointer to <dsig:KeyInfo/> node processing context.
+ * @keyInfoCtx:         the pointer to &lt;dsig:KeyInfo/&gt; node processing context.
  *
  * Lookups key in the keys manager keys store. The caller is responsible
  * for destroying the returned key using #xmlSecKeyDestroy method.
@@ -311,7 +311,7 @@ xmlSecKeyStoreDestroy(xmlSecKeyStorePtr store) {
  * xmlSecKeyStoreFindKey:
  * @store:              the pointer to keys store.
  * @name:               the desired key name.
- * @keyInfoCtx:         the pointer to <dsig:KeyInfo/> node processing context.
+ * @keyInfoCtx:         the pointer to &lt;dsig:KeyInfo/&gt; node processing context.
  *
  * Lookups key in the store. The caller is responsible for destroying
  * the returned key using #xmlSecKeyDestroy method.
@@ -333,7 +333,7 @@ xmlSecKeyStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKeyInf
  * xmlSecKeyStoreFindKeyFromX509Data:
  * @store:              the pointer to keys store.
  * @x509Data:           the X509 data to use for search.
- * @keyInfoCtx:         the pointer to <dsig:KeyInfo/> node processing context.
+ * @keyInfoCtx:         the pointer to &lt;dsig:KeyInfo/&gt; node processing context.
  *
  * Lookups key in the store. The caller is responsible for destroying
  * the returned key using #xmlSecKeyDestroy method.

@@ -23,7 +23,7 @@ extern "C" {
 
 /***********************************************************************
  *
- * <dsig:Signature> node
+ * &lt;dsig:Signature/&gt; node
  *
  **********************************************************************/
 XMLSEC_EXPORT xmlNodePtr xmlSecTmplSignatureCreate              (xmlDocPtr doc,
@@ -64,7 +64,7 @@ XMLSEC_EXPORT xmlNodePtr xmlSecTmplManifestAddReference         (xmlNodePtr mani
 
 /***********************************************************************
  *
- * <enc:EncryptedData> node
+ * &lt;enc:EncryptedData/&gt; node
  *
  **********************************************************************/
 XMLSEC_EXPORT xmlNodePtr xmlSecTmplEncDataCreate                (xmlDocPtr doc,
@@ -89,7 +89,7 @@ XMLSEC_EXPORT xmlNodePtr xmlSecTmplCipherReferenceAddTransform  (xmlNodePtr ciph
 
 /***********************************************************************
  *
- * <enc:EncryptedKey> node
+ * &lt;enc:EncryptedKey/&gt; node
  *
  **********************************************************************/
 XMLSEC_EXPORT xmlNodePtr xmlSecTmplReferenceListAddDataReference(xmlNodePtr encNode,
@@ -99,7 +99,7 @@ XMLSEC_EXPORT xmlNodePtr xmlSecTmplReferenceListAddKeyReference (xmlNodePtr encN
 
 /***********************************************************************
  *
- * <dsig:KeyInfo> node
+ * &lt;dsig:KeyInfo/&gt; node
  *
  **********************************************************************/
 XMLSEC_EXPORT xmlNodePtr xmlSecTmplKeyInfoAddKeyName            (xmlNodePtr keyInfoNode,
@@ -119,7 +119,7 @@ XMLSEC_EXPORT xmlNodePtr xmlSecTmplKeyInfoAddEncryptedKey       (xmlNodePtr keyI
 
 /***********************************************************************
  *
- * <dsig:X509Data> node
+ * &lt;dsig:X509Data/&gt; node
  *
  **********************************************************************/
 XMLSEC_EXPORT xmlNodePtr xmlSecTmplX509DataAddIssuerSerial      (xmlNodePtr x509DataNode);
@@ -133,7 +133,7 @@ XMLSEC_EXPORT xmlNodePtr xmlSecTmplX509DataAddCRL               (xmlNodePtr x509
 
 /***********************************************************************
  *
- * <dsig:Transform> node
+ * &lt;dsig:Transform/&gt; node
  *
  **********************************************************************/
 XMLSEC_EXPORT int       xmlSecTmplTransformAddHmacOutputLength  (xmlNodePtr transformNode,

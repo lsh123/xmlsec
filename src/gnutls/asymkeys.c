@@ -384,7 +384,7 @@ xmlSecGCryptAsymetricKeyCreatePub(gnutls_pubkey_t pubkey) {
 
 /**
  * xmlSecGCryptAsymetricKeyCreatePriv:
- * @pubkey:             the pointer to GnuTLS private key.
+ * @privkey:             the pointer to GnuTLS private key.
  *
  * Creates XMLSec key from GnuTLS private key.
  *
@@ -546,7 +546,7 @@ static xmlSecKeyDataKlass xmlSecGnuTLSKeyDataDEREncodedKeyValueKlass = {
  *          </simpleContent>
  *      </complexType>
  *
- * Returns: the <dsig11:DEREncodedKeyValue/> element processing key data klass.
+ * Returns: the &lt;dsig11:DEREncodedKeyValue/&gt;element processing key data klass.
  */
 xmlSecKeyDataId
 xmlSecGnuTLSKeyDataDEREncodedKeyValueGetKlass(void) {
@@ -698,7 +698,7 @@ done:
 #ifndef XMLSEC_NO_DSA
 /**************************************************************************
  *
- * <dsig:DSAKeyValue> processing
+ * &lt;dsig:DSAKeyValue/&gt; processing
  *
  *
  * The DSAKeyValue Element (http://www.w3.org/TR/xmldsig-core/#sec-DSAKeyValue)
@@ -1704,7 +1704,7 @@ done:
 #ifndef XMLSEC_NO_RSA
 /**************************************************************************
  *
- * <dsig:RSAKeyValue> processing
+ * &lt;dsig:RSAKeyValue/&gt; processing
  *
  *
  * The RSAKeyValue Element (http://www.w3.org/TR/xmldsig-core/#sec-RSAKeyValue)

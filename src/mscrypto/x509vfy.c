@@ -104,7 +104,7 @@ xmlSecMSCryptoX509StoreGetKlass(void) {
  * @issuerName:     the desired certificate issuer name.
  * @issuerSerial:   the desired certificate issuer serial number.
  * @ski:            the desired certificate SKI.
- * @keyInfoCtx:     the pointer to <dsig:KeyInfo/> element processing context.
+ * @keyInfoCtx:     the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
  *
  * Searches @store for a certificate that matches given criteria.
  *
@@ -145,7 +145,7 @@ xmlSecMSCryptoX509StoreFindCert(xmlSecKeyDataStorePtr store, xmlChar *subjectNam
  * @issuerSerial:   the desired certificate issuer serial number.
  * @ski:            the desired certificate SKI.
  * @skiSize:        the desired certificate SKI size.
- * @keyInfoCtx:     the pointer to <dsig:KeyInfo/> element processing context.
+ * @keyInfoCtx:     the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
  *
  * Searches @store for a certificate that matches given criteria.
  *
@@ -526,7 +526,7 @@ xmlSecMSCryptoX509StoreConstructCertsChain(xmlSecKeyDataStorePtr store, PCCERT_C
  * xmlSecMSCryptoX509StoreVerify:
  * @store:        the pointer to X509 certificate context store klass.
  * @certs:        the untrusted certificates stack.
- * @keyInfoCtx:        the pointer to <dsig:KeyInfo/> element processing context.
+ * @keyInfoCtx:        the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
  *
  * Verifies @certs list.
  *

@@ -293,8 +293,9 @@ xmlSecOpenSSLKeyDataX509AdoptCert(xmlSecKeyDataPtr data, X509* cert) {
     ctx = xmlSecOpenSSLX509DataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
 
-    /* pkcs12 files sometime have key cert twice: as the key cert and as the cert in the chain */
-    if((ctx->keyCert != NULL) && (X509_cmp(ctx->keyCert, cert) == 0)) {
+    /* pkcs12 files sometime have key cert twice: as the key cert and as the cert in the chain,
+     * if this ever change -- fix xmlSecOpenSSLCreateKey that relies on this check */
+    if((ctx->keyCert != NULL) && ((ctx->keyCert == cert) || (X509_cmp(ctx->keyCert, cert) == 0))) {
         X509_free(cert); /* caller expects data to own the cert on success. */
         return(0);
     }

@@ -693,10 +693,8 @@ xmlSecOpenSSLCreateKey(EVP_PKEY * pKey,  X509 * keyCert, STACK_OF(X509) * certs)
                 if(cert == NULL) {
                     continue;
                 }
-                if(cert == keyCert) {
-                    X509_free(cert);
-                    continue;
-                }
+                /* don't bother to check against keyCert, the xmlSecOpenSSLKeyDataX509AdoptCert does
+                 * it automatically */
                 ret = xmlSecOpenSSLKeyDataX509AdoptCert(x509Data, cert);
                 if(ret < 0) {
                     xmlSecInternalError("xmlSecOpenSSLKeyDataX509AdoptCert", NULL);

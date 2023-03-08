@@ -328,6 +328,7 @@ xmlSecNssKeyDataX509GetCert(xmlSecKeyDataPtr data, xmlSecSize pos) {
     xmlSecAssert2(ctx->certsList != NULL, NULL);
     xmlSecAssert2(pos < ctx->numCerts, NULL);
 
+
     /* ensure that key cert is always first */
     if(ctx->keyCert != NULL) {
         if(pos == 0) {

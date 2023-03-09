@@ -214,7 +214,7 @@ xmlSecNssKeyDataX509GetKeyCert(xmlSecKeyDataPtr data) {
 }
 
 static int
-xmlSecNssKeyDataX509AddCertInternal(xmlSecNssX509DataCtxPtr ctx, CERTCertificate* cert) {
+xmlSecNssKeyDataX509AddCertInternal(xmlSecNssX509DataCtxPtr ctx, CERTCertificate* cert, int isKeyCert) {
     SECStatus rv;
 
     xmlSecAssert2(ctx != NULL, -1);
@@ -228,10 +228,19 @@ xmlSecNssKeyDataX509AddCertInternal(xmlSecNssX509DataCtxPtr ctx, CERTCertificate
         }
     }
 
-    rv = CERT_AddCertToListTail(ctx->certsList, cert);
-    if(rv != SECSuccess) {
-        xmlSecNssError("CERT_AddCertToListTail", NULL);
-        return(-1);
+    /* ensure that key cert is the first one one */
+    if(isKeyCert != 0) {
+        rv = CERT_AddCertToListHead(ctx->certsList, cert);
+        if(rv != SECSuccess) {
+            xmlSecNssError("CERT_AddCertToListHead", NULL);
+            return(-1);
+        }
+    } else {
+        rv = CERT_AddCertToListTail(ctx->certsList, cert);
+        if(rv != SECSuccess) {
+            xmlSecNssError("CERT_AddCertToListTail", NULL);
+            return(-1);
+        }
     }
     ctx->numCerts++;
 
@@ -268,7 +277,7 @@ xmlSecNssKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, CERTCertificate* cert) {
     }
     xmlSecAssert2(ctx->keyCert == NULL, -1);
 
-    ret = xmlSecNssKeyDataX509AddCertInternal(ctx, cert);
+    ret = xmlSecNssKeyDataX509AddCertInternal(ctx, cert, 1); /* key cert */
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssKeyDataX509AddCertInternal", NULL);
         return(-1);
@@ -303,7 +312,7 @@ xmlSecNssKeyDataX509AdoptCert(xmlSecKeyDataPtr data, CERTCertificate* cert) {
         CERT_DestroyCertificate(cert); /* caller expects data to own the cert on success. */
         return(0);
     }
-    return(xmlSecNssKeyDataX509AddCertInternal(ctx, cert));
+    return(xmlSecNssKeyDataX509AddCertInternal(ctx, cert, 0)); /* not a key cert */
 }
 
 /**
@@ -328,29 +337,15 @@ xmlSecNssKeyDataX509GetCert(xmlSecKeyDataPtr data, xmlSecSize pos) {
     xmlSecAssert2(ctx->certsList != NULL, NULL);
     xmlSecAssert2(pos < ctx->numCerts, NULL);
 
-
-    /* ensure that key cert is always first */
-    if(ctx->keyCert != NULL) {
-        if(pos == 0) {
-            return(ctx->keyCert);
+    /* to ensure that key cert is always first we put it at the top of the list
+     * in xmlSecNssKeyDataX509AddCertInternal */
+    for(cur = CERT_LIST_HEAD(ctx->certsList); !CERT_LIST_END(cur, ctx->certsList); cur = CERT_LIST_NEXT(cur)) {
+        if(pos <= 0) {
+            return(cur->cert);
         }
-        for(cur = CERT_LIST_HEAD(ctx->certsList); !CERT_LIST_END(cur, ctx->certsList); cur = CERT_LIST_NEXT(cur)) {
-            if(cur->cert == ctx->keyCert) {
-                continue;
-            }
-            --pos;
-            if(pos <= 0) {
-                return(cur->cert);
-            }
-        }
-    } else {
-        for(cur = CERT_LIST_HEAD(ctx->certsList); !CERT_LIST_END(cur, ctx->certsList); cur = CERT_LIST_NEXT(cur)) {
-            if(pos <= 0) {
-                return(cur->cert);
-            }
-            --pos;
-        }
+        --pos;
     }
+
     /* not found: should not be here */
     return (NULL);
 }
@@ -371,7 +366,6 @@ xmlSecNssKeyDataX509GetCertsSize(xmlSecKeyDataPtr data) {
 
     ctx = xmlSecNssX509DataGetCtx(data);
     xmlSecAssert2(ctx != NULL, 0);
-
     return(ctx->numCerts);
 }
 
@@ -1076,6 +1070,7 @@ xmlSecKeyDataPtr
 xmlSecNssX509CertGetKey(CERTCertificate* cert) {
     xmlSecKeyDataPtr data;
     SECKEYPublicKey *pubkey = NULL;
+    SECKEYPrivateKey *privkey = NULL;
 
     xmlSecAssert2(cert != NULL, NULL);
 
@@ -1085,10 +1080,16 @@ xmlSecNssX509CertGetKey(CERTCertificate* cert) {
         return(NULL);
     }
 
-    data = xmlSecNssPKIAdoptKey(NULL, pubkey);
+    /* see if we can find private key too for this cert */
+    privkey = PK11_FindKeyByAnyCert(cert, NULL);
+
+    data = xmlSecNssPKIAdoptKey(privkey, pubkey);
     if(data == NULL) {
         xmlSecInternalError("xmlSecNssPKIAdoptKey", NULL);
         SECKEY_DestroyPublicKey(pubkey);
+        if(privkey != NULL) {
+            SECKEY_DestroyPrivateKey(privkey);
+        }
         return(NULL);
     }
 

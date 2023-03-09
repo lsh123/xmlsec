@@ -209,7 +209,7 @@ xmlSecOpenSSLKeyDataX509GetKeyCert(xmlSecKeyDataPtr data) {
 
 
 static int
-xmlSecOpenSSLKeyDataX509AddCertInternal(xmlSecOpenSSLX509DataCtxPtr ctx, X509* cert) {
+xmlSecOpenSSLKeyDataX509AddCertInternal(xmlSecOpenSSLX509DataCtxPtr ctx, X509* cert, int keyCert) {
     int ret;
 
     xmlSecAssert2(ctx != NULL, -1);
@@ -223,10 +223,19 @@ xmlSecOpenSSLKeyDataX509AddCertInternal(xmlSecOpenSSLX509DataCtxPtr ctx, X509* c
         }
     }
 
-    ret = sk_X509_push(ctx->certsList, cert);
-    if(ret <= 0) {
-        xmlSecOpenSSLError("sk_X509_push", NULL);
-        return(-1);
+    /* ensure that key cert is the first one one */
+    if(keyCert != 0) {
+        ret = sk_X509_insert(ctx->certsList, cert, 0);
+        if(ret <= 0) {
+            xmlSecOpenSSLError("sk_X509_insert(0)", NULL);
+            return(-1);
+        }
+    } else {
+        ret = sk_X509_push(ctx->certsList, cert);
+        if(ret <= 0) {
+            xmlSecOpenSSLError("sk_X509_push", NULL);
+            return(-1);
+        }
     }
 
     /* done */
@@ -263,7 +272,7 @@ xmlSecOpenSSLKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, X509* cert) {
     }
     xmlSecAssert2(ctx->keyCert == NULL, -1);
 
-    ret = xmlSecOpenSSLKeyDataX509AddCertInternal(ctx, cert);
+    ret = xmlSecOpenSSLKeyDataX509AddCertInternal(ctx, cert, 1); /* key cert */
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLKeyDataX509AddCertInternal", xmlSecKeyDataGetName(data));
         return(-1);
@@ -299,7 +308,7 @@ xmlSecOpenSSLKeyDataX509AdoptCert(xmlSecKeyDataPtr data, X509* cert) {
         X509_free(cert); /* caller expects data to own the cert on success. */
         return(0);
     }
-    return(xmlSecOpenSSLKeyDataX509AddCertInternal(ctx, cert));
+    return(xmlSecOpenSSLKeyDataX509AddCertInternal(ctx, cert, 0)); /* not a key cert */
 }
 
 /**
@@ -315,7 +324,6 @@ xmlSecOpenSSLKeyDataX509AdoptCert(xmlSecKeyDataPtr data, X509* cert) {
 X509*
 xmlSecOpenSSLKeyDataX509GetCert(xmlSecKeyDataPtr data, xmlSecSize pos) {
     xmlSecOpenSSLX509DataCtxPtr ctx;
-    X509* cert;
     int iPos;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataX509Id), NULL);
@@ -324,30 +332,11 @@ xmlSecOpenSSLKeyDataX509GetCert(xmlSecKeyDataPtr data, xmlSecSize pos) {
     xmlSecAssert2(ctx != NULL, NULL);
     xmlSecAssert2(ctx->certsList != NULL, NULL);
 
-    /* ensure key cert if present is always the first one
-     * by "swapping" cert[0] and ctx->keyCert
-     *
-     * Part 1: return ctx->keyCert instead of cert[0]
-     */
-    if((ctx->keyCert != NULL) && (pos == 0)) {
-        return(ctx->keyCert);
-    }
-
+    /* to ensure that key cert is always first we put it at the first position
+     * in xmlSecOpenSSLKeyDataX509AddCertInternal */
     XMLSEC_SAFE_CAST_SIZE_TO_INT(pos, iPos, return(NULL), NULL);
     xmlSecAssert2(iPos < sk_X509_num(ctx->certsList), NULL);
-    cert = sk_X509_value(ctx->certsList, iPos);
-    if(cert == NULL) {
-        xmlSecOpenSSLError2("sk_X509_value", NULL, "pos=%d", iPos)
-        return(NULL);
-    }
-
-    /* Part 2: return cert[0] instead of ctx->keyCert */
-    if(ctx->keyCert == cert) {
-        cert = sk_X509_value(ctx->certsList, 0);
-    }
-
-    /* done */
-    return(cert);
+    return(sk_X509_value(ctx->certsList, iPos));
 }
 
 /**

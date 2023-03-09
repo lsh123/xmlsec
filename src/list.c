@@ -302,6 +302,44 @@ xmlSecPtrListAdd(xmlSecPtrListPtr list, xmlSecPtr item) {
 }
 
 /**
+ * xmlSecPtrListInsert:
+ * @list:               the pointer to list.
+ * @item:               the item.
+ * @pos:                the position to insert at.
+ *
+ * Inserts @item at the position @pos in the @list.
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecPtrListInsert(xmlSecPtrListPtr list, xmlSecPtr item, xmlSecSize pos) {
+    int ret;
+
+    xmlSecAssert2(xmlSecPtrListIsValid(list), -1);
+
+    ret = xmlSecPtrListEnsureSize(list, list->use + 1);
+    if(ret < 0) {
+        xmlSecInternalError2("xmlSecPtrListEnsureSize", xmlSecPtrListGetName(list),
+            "size=" XMLSEC_SIZE_FMT, list->use + 1);
+        return(-1);
+    }
+
+    if(pos < list->use) {
+        /* move (pos, size) to (pos + 1, size + 1) and insert new item at pos */
+        memmove(&(list->data[pos + 1]), &(list->data[pos]), sizeof(xmlSecPtr) * (list->use - pos));
+        list->data[pos] = item;
+        ++list->use;
+    } else {
+        /* insert at the end of the list if pos >= size */
+        list->data[list->use++] = item;
+    }
+
+    /* done */
+    return(0);
+}
+
+
+/**
  * xmlSecPtrListSet:
  * @list:               the pointer to list.
  * @item:               the item.
@@ -509,5 +547,3 @@ xmlSecStringListDestroyItem(xmlSecPtr ptr) {
 
     xmlFree(ptr);
 }
-
-

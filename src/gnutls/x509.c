@@ -192,16 +192,25 @@ xmlSecGnuTLSKeyDataX509GetKeyCert(xmlSecKeyDataPtr data) {
 }
 
 static int
-xmlSecGnuTLSKeyDataX509AddCertInternal(xmlSecGnuTLSX509DataCtxPtr ctx, gnutls_x509_crt_t cert) {
+xmlSecGnuTLSKeyDataX509AddCertInternal(xmlSecGnuTLSX509DataCtxPtr ctx, gnutls_x509_crt_t cert, int keyCert) {
     int ret;
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(cert != NULL, -1);
 
-    ret = xmlSecPtrListAdd(&(ctx->certsList), cert);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecPtrListAdd", NULL);
-        return(-1);
+    /* ensure that key cert is the first one one */
+    if(keyCert != 1) {
+        ret = xmlSecPtrListInsert(&(ctx->certsList), cert, 0);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecPtrListInsert(0)", NULL);
+            return(-1);
+        }
+    } else {
+        ret = xmlSecPtrListAdd(&(ctx->certsList), cert);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecPtrListAdd", NULL);
+            return(-1);
+        }
     }
 
     /* done */
@@ -236,7 +245,7 @@ xmlSecGnuTLSKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, gnutls_x509_crt_t cer
     }
     xmlSecAssert2(ctx->keyCert == NULL, -1);
 
-    ret = xmlSecGnuTLSKeyDataX509AddCertInternal(ctx, cert);
+    ret = xmlSecGnuTLSKeyDataX509AddCertInternal(ctx, cert, 1); /* key cert */
     if(ret < 0) {
         xmlSecInternalError("xmlSecGnuTLSKeyDataX509AddCertInternal", xmlSecKeyDataGetName(data));
         return(-1);
@@ -271,7 +280,7 @@ xmlSecGnuTLSKeyDataX509AdoptCert(xmlSecKeyDataPtr data, gnutls_x509_crt_t cert) 
         gnutls_x509_crt_deinit(cert); /* caller expects data to own the cert on success. */
         return(0);
     }
-    return(xmlSecGnuTLSKeyDataX509AddCertInternal(ctx, cert));
+    return(xmlSecGnuTLSKeyDataX509AddCertInternal(ctx, cert, 0)); /* not a key cert */
 }
 
 /**
@@ -286,7 +295,6 @@ xmlSecGnuTLSKeyDataX509AdoptCert(xmlSecKeyDataPtr data, gnutls_x509_crt_t cert) 
  */
 gnutls_x509_crt_t
 xmlSecGnuTLSKeyDataX509GetCert(xmlSecKeyDataPtr data, xmlSecSize pos) {
-    gnutls_x509_crt_t cert;
     xmlSecGnuTLSX509DataCtxPtr ctx;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataX509Id), NULL);
@@ -294,28 +302,9 @@ xmlSecGnuTLSKeyDataX509GetCert(xmlSecKeyDataPtr data, xmlSecSize pos) {
     ctx = xmlSecGnuTLSX509DataGetCtx(data);
     xmlSecAssert2(ctx != NULL, NULL);
 
-    /* ensure key cert if present is always the first one
-     * by "swapping" cert[0] and ctx->keyCert
-     *
-     * Part 1: return ctx->keyCert instead of cert[0]
-     */
-    if((ctx->keyCert != NULL) && (pos == 0)) {
-        return(ctx->keyCert);
-    }
-
-    cert = xmlSecPtrListGetItem(&(ctx->certsList), pos);
-    if(cert == NULL) {
-        xmlSecInternalError("xmlSecPtrListGetItem", NULL);
-        return(NULL);
-    }
-
-    /* Part 2: return cert[0] instead of ctx->keyCert */
-    if(ctx->keyCert == cert) {
-        cert = xmlSecPtrListGetItem(&(ctx->certsList), 0);
-    }
-
-    /* done */
-    return(cert);
+    /* to ensure that key cert is always first we put it at the first position
+     * in xmlSecGnuTLSKeyDataX509AddCertInternal */
+    return(xmlSecPtrListGetItem(&(ctx->certsList), pos));
 }
 
 /**

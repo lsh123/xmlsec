@@ -986,14 +986,15 @@ const char*
 xmlSecDSigCtxGetStatusString(xmlSecDSigStatus status) {
     switch(status) {
     case xmlSecDSigStatusSucceeded:
-        return "Succeeded";
+        return "OK";
 
     case xmlSecDSigStatusInvalid:
-        return "Invalid";
+        return "FAILED";
 
+    /* unknown status can only be caused by an error in the operation */
     case xmlSecDSigStatusUnknown:
     default:
-        return "Unknown";
+        return "ERROR";
     }
 }
 
@@ -1009,17 +1010,17 @@ const char*
 xmlSecDSigCtxGetFailureReasonString(xmlSecDSigFailureReason failureReason) {
     switch(failureReason) {
     case xmlSecDSigFailureReasonReference:
-        return "Reference";
+        return "REFERENCE";
 
     case xmlSecDSigFailureReasonSignature:
-        return "Signature";
+        return "SIGNATURE";
 
     case xmlSecDSigFailureReasonKeyNotFound:
-        return "Key not found";
+        return "KEY-NOT-FOUND";
 
     case xmlSecDSigFailureReasonUnknown:
     default:
-        return "Unknown";
+        return "UNKNOWN";
     }
 }
 

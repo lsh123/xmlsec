@@ -210,6 +210,7 @@ xmlSecOpenSSLKeyDataX509GetKeyCert(xmlSecKeyDataPtr data) {
 
 static int
 xmlSecOpenSSLKeyDataX509AddCertInternal(xmlSecOpenSSLX509DataCtxPtr ctx, X509* cert, int keyCert) {
+    X509* dup;
     int ret;
 
     xmlSecAssert2(ctx != NULL, -1);
@@ -223,7 +224,13 @@ xmlSecOpenSSLKeyDataX509AddCertInternal(xmlSecOpenSSLX509DataCtxPtr ctx, X509* c
         }
     }
 
-    /* ensure that key cert is the first one one */
+    /* we don't want duplicates */
+    dup = sk_X509_delete_ptr(ctx->certsList, cert);
+    if(dup != NULL) {
+        X509_free(dup);
+    }
+
+    /* ensure that key cert is the first one */
     if(keyCert != 0) {
         ret = sk_X509_insert(ctx->certsList, cert, 0);
         if(ret <= 0) {
@@ -265,8 +272,9 @@ xmlSecOpenSSLKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, X509* cert) {
     ctx = xmlSecOpenSSLX509DataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
 
+
     /* check if for some reasons same cert is used */
-    if((ctx->keyCert != NULL) && (X509_cmp(cert, ctx->keyCert) == 0)) {
+    if((ctx->keyCert != NULL) && ((cert == ctx->keyCert) || (X509_cmp(cert, ctx->keyCert) == 0))) {
         X509_free(cert);  /* caller expects data to own the cert on success. */
         return(0);
     }
@@ -1236,7 +1244,7 @@ xmlSecOpenSSLKeyDataX509Write(xmlSecKeyDataPtr data,  xmlSecKeyX509DataValuePtr 
                 "pos=" XMLSEC_SIZE_FMT, ctx->crtPos);
             return(-1);
         }
-        if (XMLSEC_X509DATA_HAS_NODE(content, XMLSEC_X509DATA_CERTIFICATE_NODE)) {
+        if (XMLSEC_X509DATA_HAS_EMPTY_NODE(content, XMLSEC_X509DATA_CERTIFICATE_NODE)) {
             ret = xmlSecOpenSSLX509CertDerWrite(cert, &(x509Value->cert));
             if(ret < 0) {
                 xmlSecInternalError2("xmlSecOpenSSLX509CertDerWrite",
@@ -1245,7 +1253,7 @@ xmlSecOpenSSLKeyDataX509Write(xmlSecKeyDataPtr data,  xmlSecKeyX509DataValuePtr 
                 return(-1);
             }
         }
-        if (XMLSEC_X509DATA_HAS_NODE(content, XMLSEC_X509DATA_SKI_NODE)) {
+        if (XMLSEC_X509DATA_HAS_EMPTY_NODE(content, XMLSEC_X509DATA_SKI_NODE)) {
             ret = xmlSecOpenSSLX509SKIWrite(cert, &(x509Value->ski));
             if(ret < 0) {
                 xmlSecInternalError2("xmlSecOpenSSLX509SKIWrite",
@@ -1254,7 +1262,7 @@ xmlSecOpenSSLKeyDataX509Write(xmlSecKeyDataPtr data,  xmlSecKeyX509DataValuePtr 
                 return(-1);
             }
         }
-        if (XMLSEC_X509DATA_HAS_NODE(content, XMLSEC_X509DATA_SUBJECTNAME_NODE)) {
+        if (XMLSEC_X509DATA_HAS_EMPTY_NODE(content, XMLSEC_X509DATA_SUBJECTNAME_NODE)) {
             xmlSecAssert2(x509Value->subject == NULL, -1);
 
             x509Value->subject = xmlSecOpenSSLX509NameWrite(X509_get_subject_name(cert));
@@ -1265,7 +1273,7 @@ xmlSecOpenSSLKeyDataX509Write(xmlSecKeyDataPtr data,  xmlSecKeyX509DataValuePtr 
                 return(-1);
             }
         }
-        if (XMLSEC_X509DATA_HAS_NODE(content, XMLSEC_X509DATA_ISSUERSERIAL_NODE)) {
+        if (XMLSEC_X509DATA_HAS_EMPTY_NODE(content, XMLSEC_X509DATA_ISSUERSERIAL_NODE)) {
             xmlSecAssert2(x509Value->issuerName == NULL, -1);
             xmlSecAssert2(x509Value->issuerSerial == NULL, -1);
 
@@ -1284,7 +1292,7 @@ xmlSecOpenSSLKeyDataX509Write(xmlSecKeyDataPtr data,  xmlSecKeyX509DataValuePtr 
                 return(-1);
             }
         }
-        if((XMLSEC_X509DATA_HAS_NODE(content, XMLSEC_X509DATA_DIGEST_NODE)) && (x509Value->digestAlgorithm != NULL)) {
+        if((XMLSEC_X509DATA_HAS_EMPTY_NODE(content, XMLSEC_X509DATA_DIGEST_NODE)) && (x509Value->digestAlgorithm != NULL)) {
             ret = xmlSecOpenSSLX509DigestWrite(cert, x509Value->digestAlgorithm, &(x509Value->digest));
             if(ret < 0) {
                 xmlSecInternalError2("xmlSecOpenSSLX509DigestWrite",

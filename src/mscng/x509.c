@@ -394,7 +394,7 @@ xmlSecMSCnVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data, xml
     }
     cert = keyCert = NULL; /* we should be using ctx->keyCert for everything */
 
-    /* extract key from cert (need to copy the certificate, so it can be adopted according to the key value data) */    
+    /* extract key from cert (need to copy the certificate, so it can be adopted according to the key value data) */
     certCopy = CertDuplicateCertificateContext(ctx->keyCert);
     if(certCopy == NULL) {
         xmlSecMSCngLastError("CertDuplicateCertificateContext", xmlSecKeyDataGetName(data));
@@ -415,7 +415,7 @@ xmlSecMSCnVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data, xml
             CertFreeCertificateContext(certCopy);
             return(-1);
         }
-    } 
+    }
     certCopy = NULL; /* owned by key value now */
 
     /* verify that keyValue matches the key requirements */
@@ -445,7 +445,7 @@ xmlSecMSCnVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data, xml
         xmlSecInternalError("xmlSecMSCngX509CertGetTime", xmlSecKeyDataGetName(data));
         return(-1);
     }
- 
+
     /* THIS MUST BE THE LAST THING WE DO: add data to the key
      * if we do it sooner and fail later then both the caller and the key will free data
      * which would lead to double free */
@@ -783,7 +783,7 @@ xmlSecMSCngKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x50
     if (ctx->doneCrts == 0) {
         ctx->crt = CertEnumCertificatesInStore(ctx->store, ctx->crt);
         if (ctx->crt != NULL) {
-            if (XMLSEC_X509DATA_HAS_NODE(content, XMLSEC_X509DATA_CERTIFICATE_NODE)) {
+            if (XMLSEC_X509DATA_HAS_EMPTY_NODE(content, XMLSEC_X509DATA_CERTIFICATE_NODE)) {
                 xmlSecAssert2(ctx->crt->pbCertEncoded != NULL, -1);
                 xmlSecAssert2(ctx->crt->cbCertEncoded > 0, -1);
 
@@ -793,14 +793,14 @@ xmlSecMSCngKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x50
                     return(-1);
                 }
             }
-            if (XMLSEC_X509DATA_HAS_NODE(content, XMLSEC_X509DATA_SKI_NODE)) {
+            if (XMLSEC_X509DATA_HAS_EMPTY_NODE(content, XMLSEC_X509DATA_SKI_NODE)) {
                 ret = xmlSecMSCngX509SKIWrite(ctx->crt, &(x509Value->ski));
                 if (ret < 0) {
                     xmlSecInternalError("xmlSecMSCngX509SKIWrite", xmlSecKeyDataGetName(data));
                     return(-1);
                 }
             }
-            if (XMLSEC_X509DATA_HAS_NODE(content, XMLSEC_X509DATA_SUBJECTNAME_NODE)) {
+            if (XMLSEC_X509DATA_HAS_EMPTY_NODE(content, XMLSEC_X509DATA_SUBJECTNAME_NODE)) {
                 xmlSecAssert2(x509Value->subject == NULL, -1);
                 xmlSecAssert2(ctx->crt->pCertInfo != NULL, -1);
 
@@ -810,7 +810,7 @@ xmlSecMSCngKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x50
                     return(-1);
                 }
             }
-            if (XMLSEC_X509DATA_HAS_NODE(content, XMLSEC_X509DATA_ISSUERSERIAL_NODE)) {
+            if (XMLSEC_X509DATA_HAS_EMPTY_NODE(content, XMLSEC_X509DATA_ISSUERSERIAL_NODE)) {
                 xmlSecAssert2(x509Value->issuerName == NULL, -1);
                 xmlSecAssert2(x509Value->issuerSerial == NULL, -1);
                 xmlSecAssert2(ctx->crt->pCertInfo != NULL, -1);
@@ -826,7 +826,7 @@ xmlSecMSCngKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x50
                    return(-1);
                 }
             }
-            if( (XMLSEC_X509DATA_HAS_NODE(content, XMLSEC_X509DATA_DIGEST_NODE)) && (x509Value->digestAlgorithm != NULL)) {
+            if( (XMLSEC_X509DATA_HAS_EMPTY_NODE(content, XMLSEC_X509DATA_DIGEST_NODE)) && (x509Value->digestAlgorithm != NULL)) {
                 ret = xmlSecMSCngX509DigestWrite(ctx->crt, x509Value->digestAlgorithm, &(x509Value->digest));
                 if (ret < 0) {
                     xmlSecInternalError("xmlSecMSCngX509DigestWrite", xmlSecKeyDataGetName(data));

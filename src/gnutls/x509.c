@@ -193,12 +193,31 @@ xmlSecGnuTLSKeyDataX509GetKeyCert(xmlSecKeyDataPtr data) {
 
 static int
 xmlSecGnuTLSKeyDataX509AddCertInternal(xmlSecGnuTLSX509DataCtxPtr ctx, gnutls_x509_crt_t cert, int keyCert) {
+    gnutls_x509_crt_t cert2;
+    xmlSecSize ii, size;
     int ret;
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(cert != NULL, -1);
 
-    /* ensure that key cert is the first one one */
+    /* we don't want duplicate certs */
+    size = xmlSecPtrListGetSize(&(ctx->certsList));
+    for(ii = 0; ii < size; ++ii) {
+        cert2 = xmlSecPtrListGetItem(&(ctx->certsList), ii);
+        if(cert2 == NULL) {
+            continue;
+        }
+        if((cert == cert2) || (gnutls_x509_crt_equals(cert, cert2) != 0)) {
+            ret = xmlSecPtrListRemove(&(ctx->certsList), ii);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecPtrListRemove()", NULL);
+                return(-1);
+            }
+            break;
+        }
+    }
+
+    /* ensure that key cert is the first one */
     if(keyCert != 1) {
         ret = xmlSecPtrListInsert(&(ctx->certsList), cert, 0);
         if(ret < 0) {
@@ -239,7 +258,7 @@ xmlSecGnuTLSKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, gnutls_x509_crt_t cer
     xmlSecAssert2(ctx != NULL, -1);
 
     /* check if for some reasons same cert is used */
-    if((ctx->keyCert != NULL) && (gnutls_x509_crt_equals(cert, ctx->keyCert) != 0)) {
+    if((ctx->keyCert != NULL) && ((cert == ctx->keyCert) || (gnutls_x509_crt_equals(cert, ctx->keyCert) != 0))) {
         gnutls_x509_crt_deinit(cert);  /* caller expects data to own the cert on success. */
         return(0);
     }
@@ -276,7 +295,7 @@ xmlSecGnuTLSKeyDataX509AdoptCert(xmlSecKeyDataPtr data, gnutls_x509_crt_t cert) 
     xmlSecAssert2(ctx != NULL, -1);
 
     /* pkcs12 files sometime have key cert twice: as the key cert and as the cert in the chain */
-    if((ctx->keyCert != NULL) && (gnutls_x509_crt_equals(ctx->keyCert, cert) != 0)) {
+    if((ctx->keyCert != NULL) && ((cert == ctx->keyCert) || (gnutls_x509_crt_equals(cert, ctx->keyCert) != 0))) {
         gnutls_x509_crt_deinit(cert); /* caller expects data to own the cert on success. */
         return(0);
     }
@@ -823,7 +842,7 @@ xmlSecGnuTLSKeyDataX509Write(xmlSecKeyDataPtr data,  xmlSecKeyX509DataValuePtr x
                 "pos=" XMLSEC_SIZE_FMT, ctx->crtPos);
             return(-1);
         }
-        if (XMLSEC_X509DATA_HAS_NODE(content, XMLSEC_X509DATA_CERTIFICATE_NODE)) {
+        if (XMLSEC_X509DATA_HAS_EMPTY_NODE(content, XMLSEC_X509DATA_CERTIFICATE_NODE)) {
             ret = xmlSecGnuTLSX509CertDerWrite(cert, &(x509Value->cert));
             if(ret < 0) {
                 xmlSecInternalError2("xmlSecGnuTLSX509CertDerWrite",
@@ -832,7 +851,7 @@ xmlSecGnuTLSKeyDataX509Write(xmlSecKeyDataPtr data,  xmlSecKeyX509DataValuePtr x
                 return(-1);
             }
         }
-        if (XMLSEC_X509DATA_HAS_NODE(content, XMLSEC_X509DATA_SKI_NODE)) {
+        if (XMLSEC_X509DATA_HAS_EMPTY_NODE(content, XMLSEC_X509DATA_SKI_NODE)) {
             ret = xmlSecGnuTLSX509CertSKIWrite(cert, &(x509Value->ski));
             if(ret < 0) {
                 xmlSecInternalError2("xmlSecGnuTLSX509SKIWrite",
@@ -841,7 +860,7 @@ xmlSecGnuTLSKeyDataX509Write(xmlSecKeyDataPtr data,  xmlSecKeyX509DataValuePtr x
                 return(-1);
             }
         }
-        if (XMLSEC_X509DATA_HAS_NODE(content, XMLSEC_X509DATA_SUBJECTNAME_NODE)) {
+        if (XMLSEC_X509DATA_HAS_EMPTY_NODE(content, XMLSEC_X509DATA_SUBJECTNAME_NODE)) {
             xmlSecAssert2(x509Value->subject == NULL, -1);
 
             x509Value->subject = xmlSecGnuTLSX509CertGetSubjectDN(cert);
@@ -852,7 +871,7 @@ xmlSecGnuTLSKeyDataX509Write(xmlSecKeyDataPtr data,  xmlSecKeyX509DataValuePtr x
                 return(-1);
             }
         }
-        if (XMLSEC_X509DATA_HAS_NODE(content, XMLSEC_X509DATA_ISSUERSERIAL_NODE)) {
+        if (XMLSEC_X509DATA_HAS_EMPTY_NODE(content, XMLSEC_X509DATA_ISSUERSERIAL_NODE)) {
             xmlSecAssert2(x509Value->issuerName == NULL, -1);
             xmlSecAssert2(x509Value->issuerSerial == NULL, -1);
 
@@ -871,7 +890,7 @@ xmlSecGnuTLSKeyDataX509Write(xmlSecKeyDataPtr data,  xmlSecKeyX509DataValuePtr x
                 return(-1);
             }
         }
-        if((XMLSEC_X509DATA_HAS_NODE(content, XMLSEC_X509DATA_DIGEST_NODE)) && (x509Value->digestAlgorithm != NULL)) {
+        if((XMLSEC_X509DATA_HAS_EMPTY_NODE(content, XMLSEC_X509DATA_DIGEST_NODE)) && (x509Value->digestAlgorithm != NULL)) {
             ret = xmlSecGnuTLSX509DigestWrite(cert, x509Value->digestAlgorithm, &(x509Value->digest));
             if(ret < 0) {
                 xmlSecInternalError2("xmlSecGnuTLSX509DigestWrite",

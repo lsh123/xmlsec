@@ -3550,8 +3550,8 @@ xmlSecAppGetOutputFilename(const char* inputFileName, const char* outputFileName
     char* outputFileNameTmplPointer;
     size_t resSize;
     char* res = NULL;
-    const char* tmp = NULL;
 #if !defined(_MSC_VER)
+    const char* tmp = NULL;
     char* tmp2;
 #else /* !defined(_MSC_VER) */
     errno_t err;

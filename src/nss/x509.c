@@ -213,8 +213,28 @@ xmlSecNssKeyDataX509GetKeyCert(xmlSecKeyDataPtr data) {
     return(ctx->keyCert);
 }
 
+
+static CERTCertListNode*
+xmlSecNssKeyDataX509FindCertInternal(xmlSecNssX509DataCtxPtr ctx, CERTCertificate* cert) {
+    CERTCertListNode* cur;
+
+    xmlSecAssert2(ctx != NULL, NULL);
+    xmlSecAssert2(cert != NULL, NULL);
+
+    if(ctx->certsList == NULL) {
+        return(NULL);
+    }
+    for(cur = CERT_LIST_HEAD(ctx->certsList); !CERT_LIST_END(cur, ctx->certsList); cur = CERT_LIST_NEXT(cur)) {
+        if((cur->cert == cert) || (CERT_CompareCerts(cert, cur->cert) == PR_TRUE)) {
+            return(cur);
+        }
+    }
+    return(NULL);
+}
+
 static int
 xmlSecNssKeyDataX509AddCertInternal(xmlSecNssX509DataCtxPtr ctx, CERTCertificate* cert, int isKeyCert) {
+    CERTCertListNode* existingCertNode;
     SECStatus rv;
 
     xmlSecAssert2(ctx != NULL, -1);
@@ -228,7 +248,14 @@ xmlSecNssKeyDataX509AddCertInternal(xmlSecNssX509DataCtxPtr ctx, CERTCertificate
         }
     }
 
-    /* ensure that key cert is the first one one */
+    /* we don't want duplicates */
+    existingCertNode = xmlSecNssKeyDataX509FindCertInternal(ctx, cert);
+    if(existingCertNode != NULL) {
+        CERT_RemoveCertListNode(existingCertNode);
+        --ctx->numCerts;
+    }
+
+    /* ensure that key cert is the first one */
     if(isKeyCert != 0) {
         rv = CERT_AddCertToListHead(ctx->certsList, cert);
         if(rv != SECSuccess) {
@@ -242,12 +269,11 @@ xmlSecNssKeyDataX509AddCertInternal(xmlSecNssX509DataCtxPtr ctx, CERTCertificate
             return(-1);
         }
     }
-    ctx->numCerts++;
+    ++ctx->numCerts;
 
     /* done */
     return(0);
 }
-
 
 /**
  * xmlSecNssKeyDataX509AdoptKeyCert:
@@ -271,7 +297,7 @@ xmlSecNssKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, CERTCertificate* cert) {
     xmlSecAssert2(ctx != NULL, -1);
 
     /* check if for some reasons same cert is used */
-    if((ctx->keyCert != NULL) && (CERT_CompareCerts(cert, ctx->keyCert) == PR_TRUE)) {
+    if((ctx->keyCert != NULL) && ((ctx->keyCert == cert) || (CERT_CompareCerts(cert, ctx->keyCert) == PR_TRUE))) {
         CERT_DestroyCertificate(cert);  /* caller expects data to own the cert on success. */
         return(0);
     }
@@ -308,7 +334,7 @@ xmlSecNssKeyDataX509AdoptCert(xmlSecKeyDataPtr data, CERTCertificate* cert) {
     xmlSecAssert2(ctx != NULL, -1);
 
    /* pkcs12 files sometime have key cert twice: as the key cert and as the cert in the chain */
-    if((ctx->keyCert != NULL) && (CERT_CompareCerts(ctx->keyCert, cert) == PR_TRUE)) {
+    if((ctx->keyCert != NULL) && ((ctx->keyCert == cert) || (CERT_CompareCerts(cert, ctx->keyCert) == PR_TRUE))) {
         CERT_DestroyCertificate(cert); /* caller expects data to own the cert on success. */
         return(0);
     }

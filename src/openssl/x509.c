@@ -210,6 +210,7 @@ xmlSecOpenSSLKeyDataX509GetKeyCert(xmlSecKeyDataPtr data) {
 
 static int
 xmlSecOpenSSLKeyDataX509AddCertInternal(xmlSecOpenSSLX509DataCtxPtr ctx, X509* cert, int keyCert) {
+    X509* dup;
     int ret;
 
     xmlSecAssert2(ctx != NULL, -1);
@@ -223,7 +224,13 @@ xmlSecOpenSSLKeyDataX509AddCertInternal(xmlSecOpenSSLX509DataCtxPtr ctx, X509* c
         }
     }
 
-    /* ensure that key cert is the first one one */
+    /* we don't want duplicates */
+    dup = sk_X509_delete_ptr(ctx->certsList, cert);
+    if(dup != NULL) {
+        X509_free(dup);
+    }
+
+    /* ensure that key cert is the first one */
     if(keyCert != 0) {
         ret = sk_X509_insert(ctx->certsList, cert, 0);
         if(ret <= 0) {
@@ -265,8 +272,9 @@ xmlSecOpenSSLKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, X509* cert) {
     ctx = xmlSecOpenSSLX509DataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
 
+
     /* check if for some reasons same cert is used */
-    if((ctx->keyCert != NULL) && (X509_cmp(cert, ctx->keyCert) == 0)) {
+    if((ctx->keyCert != NULL) && ((cert == ctx->keyCert) || (X509_cmp(cert, ctx->keyCert) == 0))) {
         X509_free(cert);  /* caller expects data to own the cert on success. */
         return(0);
     }

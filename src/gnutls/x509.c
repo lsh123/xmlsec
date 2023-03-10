@@ -193,12 +193,31 @@ xmlSecGnuTLSKeyDataX509GetKeyCert(xmlSecKeyDataPtr data) {
 
 static int
 xmlSecGnuTLSKeyDataX509AddCertInternal(xmlSecGnuTLSX509DataCtxPtr ctx, gnutls_x509_crt_t cert, int keyCert) {
+    gnutls_x509_crt_t cert2;
+    xmlSecSize ii, size;
     int ret;
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(cert != NULL, -1);
 
-    /* ensure that key cert is the first one one */
+    /* we don't want duplicate certs */
+    size = xmlSecPtrListGetSize(&(ctx->certsList));
+    for(ii = 0; ii < size; ++ii) {
+        cert2 = xmlSecPtrListGetItem(&(ctx->certsList), ii);
+        if(cert2 == NULL) {
+            continue;
+        }
+        if((cert == cert2) || (gnutls_x509_crt_equals(cert, cert2) != 0)) {
+            ret = xmlSecPtrListRemove(&(ctx->certsList), ii);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecPtrListRemove()", NULL);
+                return(-1);
+            }
+            break;
+        }
+    }
+
+    /* ensure that key cert is the first one */
     if(keyCert != 1) {
         ret = xmlSecPtrListInsert(&(ctx->certsList), cert, 0);
         if(ret < 0) {
@@ -239,7 +258,7 @@ xmlSecGnuTLSKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, gnutls_x509_crt_t cer
     xmlSecAssert2(ctx != NULL, -1);
 
     /* check if for some reasons same cert is used */
-    if((ctx->keyCert != NULL) && (gnutls_x509_crt_equals(cert, ctx->keyCert) != 0)) {
+    if((ctx->keyCert != NULL) && ((cert == ctx->keyCert) || (gnutls_x509_crt_equals(cert, ctx->keyCert) != 0))) {
         gnutls_x509_crt_deinit(cert);  /* caller expects data to own the cert on success. */
         return(0);
     }
@@ -276,7 +295,7 @@ xmlSecGnuTLSKeyDataX509AdoptCert(xmlSecKeyDataPtr data, gnutls_x509_crt_t cert) 
     xmlSecAssert2(ctx != NULL, -1);
 
     /* pkcs12 files sometime have key cert twice: as the key cert and as the cert in the chain */
-    if((ctx->keyCert != NULL) && (gnutls_x509_crt_equals(ctx->keyCert, cert) != 0)) {
+    if((ctx->keyCert != NULL) && ((cert == ctx->keyCert) || (gnutls_x509_crt_equals(cert, ctx->keyCert) != 0))) {
         gnutls_x509_crt_deinit(cert); /* caller expects data to own the cert on success. */
         return(0);
     }

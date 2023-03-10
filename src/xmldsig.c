@@ -58,6 +58,11 @@ static int      xmlSecDSigCtxProcessManifestNode        (xmlSecDSigCtxPtr dsigCt
 static int      xmlSecDSigCtxProcessReferences          (xmlSecDSigCtxPtr dsigCtx,
                                                          xmlNodePtr firstReferenceNode);
 
+
+static void     xmlSecDSigCtxMarkAsSucceeded            (xmlSecDSigCtxPtr dsigCtx);
+static void     xmlSecDSigCtxMarkAsFailed               (xmlSecDSigCtxPtr dsigCtx,
+                                                         xmlSecDSigFailureReason failureReason);
+
 /* The ID attribute in XMLDSig is 'Id' */
 static const xmlChar*           xmlSecDSigIds[] = { xmlSecAttrId, NULL };
 
@@ -318,7 +323,7 @@ xmlSecDSigCtxSign(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr tmpl) {
     xmlNodeSetContentLen(dsigCtx->signValueNode, outBuf, outLen);
 
     /* set success status and we are done */
-    dsigCtx->status = xmlSecDSigStatusSucceeded;
+    xmlSecDSigCtxMarkAsSucceeded(dsigCtx);
     return(0);
 }
 
@@ -370,14 +375,32 @@ xmlSecDSigCtxVerify(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
 
     /* set status and we are done */
     if(dsigCtx->signMethod->status == xmlSecTransformStatusOk) {
-        dsigCtx->status = xmlSecDSigStatusSucceeded;
+        xmlSecDSigCtxMarkAsSucceeded(dsigCtx);
     } else {
-        dsigCtx->status = xmlSecDSigStatusInvalid;
+        xmlSecDSigCtxMarkAsFailed(dsigCtx, xmlSecDSigFailureReasonSignatureFailure);
     }
     return(0);
 }
 
-/**
+static void
+xmlSecDSigCtxMarkAsSucceeded(xmlSecDSigCtxPtr dsigCtx) {
+    xmlSecAssert(dsigCtx != NULL);
+
+    dsigCtx->status = xmlSecDSigStatusSucceeded;
+}
+
+static void
+xmlSecDSigCtxMarkAsFailed(xmlSecDSigCtxPtr dsigCtx, xmlSecDSigFailureReason failureReason) {
+    xmlSecAssert(dsigCtx != NULL);
+
+    dsigCtx->status = xmlSecDSigStatusInvalid;
+    if(dsigCtx->failureReason == xmlSecDSigFailureReasonUnknown) {
+        dsigCtx->failureReason = failureReason;
+    }
+}
+
+
+/*
  * xmlSecDSigCtxProcessSignatureNode:
  *
  * The Signature  element (http://www.w3.org/TR/xmldsig-core/#sec-Signature)
@@ -763,7 +786,7 @@ xmlSecDSigCtxProcessReferences(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr firstReferen
 
         /* bail out if next Reference processing failed */
         if(dsigRefCtx->status != xmlSecDSigStatusSucceeded) {
-            dsigCtx->status = xmlSecDSigStatusInvalid;
+            xmlSecDSigCtxMarkAsFailed(dsigCtx, xmlSecDSigFailureReasonReferenceFailure);
             return(0);
         }
     }
@@ -783,8 +806,7 @@ xmlSecDSigCtxProcessKeyInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
     /* set key requirements */
     ret = xmlSecTransformSetKeyReq(dsigCtx->signMethod, &(dsigCtx->keyInfoReadCtx.keyReq));
     if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformSetKeyReq",
-                            xmlSecTransformGetName(dsigCtx->signMethod));
+        xmlSecInternalError("xmlSecTransformSetKeyReq", xmlSecTransformGetName(dsigCtx->signMethod));
         return(-1);
     }
 
@@ -798,14 +820,14 @@ xmlSecDSigCtxProcessKeyInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
     /* check that we have exactly what we want */
     if((dsigCtx->signKey == NULL) || (!xmlSecKeyMatch(dsigCtx->signKey, NULL, &(dsigCtx->keyInfoReadCtx.keyReq)))) {
         xmlSecOtherError(XMLSEC_ERRORS_R_KEY_NOT_FOUND, NULL, NULL);
+        xmlSecDSigCtxMarkAsFailed(dsigCtx, xmlSecDSigFailureReasonKeyNotFound);
         return(-1);
     }
 
     /* set the key to the transform */
     ret = xmlSecTransformSetKey(dsigCtx->signMethod, dsigCtx->signKey);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformSetKey",
-                            xmlSecTransformGetName(dsigCtx->signMethod));
+        xmlSecInternalError("xmlSecTransformSetKey", xmlSecTransformGetName(dsigCtx->signMethod));
         return(-1);
     }
 
@@ -953,6 +975,55 @@ xmlSecDSigCtxProcessManifestNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
 }
 
 /**
+ * xmlSecDSigCtxGetStatusString:
+ * @dsigCtx: the status.
+ *
+ * Gets status as a string.
+ *
+ * Returns status as a string.
+ */
+const char*
+xmlSecDSigCtxGetStatusString(xmlSecDSigStatus status) {
+    switch(status) {
+    case xmlSecDSigStatusSucceeded:
+        return "Succeeded";
+
+    case xmlSecDSigStatusInvalid:
+        return "Invalid";
+
+    case xmlSecDSigStatusUnknown:
+    default:
+        return "Unknown";
+    }
+}
+
+/**
+ * xmlSecDSigCtxGetFailureReasonString:
+ * @failureReason:   the failure reason.
+ *
+ * Gets failure reason as a string.
+ *
+ * Returns failure reason as a string.
+ */
+const char*
+xmlSecDSigCtxGetFailureReasonString(xmlSecDSigFailureReason failureReason) {
+    switch(failureReason) {
+    case xmlSecDSigFailureReasonReferenceFailure:
+        return "Digest failure";
+
+    case xmlSecDSigFailureReasonSignatureFailure:
+        return "Signature failure";
+
+    case xmlSecDSigFailureReasonKeyNotFound:
+        return "Key not found";
+
+    case xmlSecDSigFailureReasonUnknown:
+    default:
+        return "Unknown";
+    }
+}
+
+/**
  * xmlSecDSigCtxDebugDump:
  * @dsigCtx:            the pointer to &lt;dsig:Signature/&gt; processing context.
  * @output:             the pointer to output FILE.
@@ -969,17 +1040,9 @@ xmlSecDSigCtxDebugDump(xmlSecDSigCtxPtr dsigCtx, FILE* output) {
     } else {
         fprintf(output, "= VERIFICATION CONTEXT\n");
     }
-    switch(dsigCtx->status) {
-        case xmlSecDSigStatusUnknown:
-            fprintf(output, "== Status: unknown\n");
-            break;
-        case xmlSecDSigStatusSucceeded:
-            fprintf(output, "== Status: succeeded\n");
-            break;
-        case xmlSecDSigStatusInvalid:
-            fprintf(output, "== Status: invalid\n");
-            break;
-    }
+    fprintf(output, "== Status: %s\n", xmlSecDSigCtxGetStatusString(dsigCtx->status));
+    fprintf(output, "== Failure reason: %s\n", xmlSecDSigCtxGetFailureReasonString(dsigCtx->failureReason));
+
     fprintf(output, "== flags: 0x%08x\n", dsigCtx->flags);
     fprintf(output, "== flags2: 0x%08x\n", dsigCtx->flags2);
 
@@ -1045,21 +1108,13 @@ xmlSecDSigCtxDebugXmlDump(xmlSecDSigCtxPtr dsigCtx, FILE* output) {
     xmlSecAssert(output != NULL);
 
     if(dsigCtx->operation == xmlSecTransformOperationSign) {
-        fprintf(output, "<SignatureContext \n");
+        fprintf(output, "<SignatureContext\n");
     } else {
-        fprintf(output, "<VerificationContext \n");
+        fprintf(output, "<VerificationContext\n");
     }
-    switch(dsigCtx->status) {
-        case xmlSecDSigStatusUnknown:
-            fprintf(output, "status=\"unknown\" >\n");
-            break;
-        case xmlSecDSigStatusSucceeded:
-            fprintf(output, "status=\"succeeded\" >\n");
-            break;
-        case xmlSecDSigStatusInvalid:
-            fprintf(output, "status=\"invalid\" >\n");
-            break;
-    }
+    fprintf(output, " status=\"%s\"", xmlSecDSigCtxGetStatusString(dsigCtx->status));
+    fprintf(output, " failureReason=\"%s\"\n", xmlSecDSigCtxGetFailureReasonString(dsigCtx->failureReason));
+    fprintf(output, ">\n");
 
     fprintf(output, "<Flags>%08x</Flags>\n", dsigCtx->flags);
     fprintf(output, "<Flags2>%08x</Flags2>\n", dsigCtx->flags2);
@@ -1474,17 +1529,8 @@ xmlSecDSigReferenceCtxDebugDump(xmlSecDSigReferenceCtxPtr dsigRefCtx, FILE* outp
     } else {
         fprintf(output, "= REFERENCE VERIFICATION CONTEXT\n");
     }
-    switch(dsigRefCtx->status) {
-        case xmlSecDSigStatusUnknown:
-            fprintf(output, "== Status: unknown\n");
-            break;
-        case xmlSecDSigStatusSucceeded:
-            fprintf(output, "== Status: succeeded\n");
-            break;
-        case xmlSecDSigStatusInvalid:
-            fprintf(output, "== Status: invalid\n");
-            break;
-    }
+    fprintf(output, "== Status: %s\n", xmlSecDSigCtxGetStatusString(dsigRefCtx->status));
+
     if(dsigRefCtx->id != NULL) {
         fprintf(output, "== Id: \"%s\"\n", dsigRefCtx->id);
     }
@@ -1542,17 +1588,8 @@ xmlSecDSigReferenceCtxDebugXmlDump(xmlSecDSigReferenceCtxPtr dsigRefCtx, FILE* o
     } else {
         fprintf(output, "<ReferenceVerificationContext ");
     }
-    switch(dsigRefCtx->status) {
-        case xmlSecDSigStatusUnknown:
-            fprintf(output, "status=\"unknown\" >\n");
-            break;
-        case xmlSecDSigStatusSucceeded:
-            fprintf(output, "status=\"succeeded\" >\n");
-            break;
-        case xmlSecDSigStatusInvalid:
-            fprintf(output, "status=\"invalid\" >\n");
-            break;
-    }
+    fprintf(output, " status=\"%s\"", xmlSecDSigCtxGetStatusString(dsigRefCtx->status));
+    fprintf(output, ">\n");
 
     fprintf(output, "<Id>");
     xmlSecPrintXmlString(output, dsigRefCtx->id);

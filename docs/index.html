@@ -85,7 +85,7 @@ see the Copyright file in the distribution  for details.<br><br></p>
 					<li>(<b>API breaking change</b>) Disabled FTP support by default. Use "--enable-ftp" configure option to restore it. Also added
                         "--enable-http" and "--enable-files" configure options to control support for loading files over HTTP or locally.</li>
                     <li>(<b>API/ABI breaking change</b>) Disabled MD5 digest method by default. Use "--enable-md5" configure options ("legacy-crypto" option on Windows) to re-enable MD5.</li>
-					<li>(<b>ABI breaking change</b>) Added "failureReason" file to xmlSecDSigCtx to provide more granular signature or signature verification failure reason.</li>
+					<li>(<b>ABI breaking change</b>) Added "failureReason" file to xmlSecDSigCtx and xmlEncCtx to provide more granular operation failure reason.</li>
                     <li>(<b>ABI breaking change</b>) Removed deprecated functions.</li>
                     <li>Added support for loading keys through <a href="https://www.openssl.org/docs/man3.0/man7/ossl_store.html">ossl-store</a> interface (e.g.
                         for using keys from an HSM). Also see '--privkey-openssl-store' and '--pubkey-openssl-store ' command line options for XMLSec utility.</li>

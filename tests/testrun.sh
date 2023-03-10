@@ -19,6 +19,9 @@ if test "z$OS_ARCH" = "zCygwin" || test "z$OS_ARCH" = "zMsys" ; then
     xmlsec_app=`cygpath -a "$xmlsec_app"`
 fi
 
+# Ensure we get detailed errors
+xmlsec_params="--verbose"
+
 #
 # Prepare folders
 #

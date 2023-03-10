@@ -1559,7 +1559,7 @@ xmlSecAppSignFile(const char* inputFileName, const char* outputFileNameTmpl) {
 done:
 
     fprintf(stderr, "Signature status: %s\n", xmlSecDSigCtxGetStatusString(dsigCtx.status));
-    if(dsigCtx.status == xmlSecDSigStatusInvalid) {
+    if((dsigCtx.status == xmlSecDSigStatusInvalid) && (dsigCtx.failureReason != xmlSecDSigFailureReasonUnknown)) {
         fprintf(stderr, "Failure reason: %s\n", xmlSecDSigCtxGetFailureReasonString(dsigCtx.failureReason));
     }
 
@@ -1620,7 +1620,7 @@ xmlSecAppVerifyFile(const char* inputFileName) {
 done:
 
     fprintf(stderr, "Verification status: %s\n", xmlSecDSigCtxGetStatusString(dsigCtx.status));
-    if(dsigCtx.status == xmlSecDSigStatusInvalid) {
+    if((dsigCtx.status == xmlSecDSigStatusInvalid) && (dsigCtx.failureReason != xmlSecDSigFailureReasonUnknown)) {
         fprintf(stderr, "Failure reason: %s\n", xmlSecDSigCtxGetFailureReasonString(dsigCtx.failureReason));
     }
 
@@ -1777,7 +1777,7 @@ xmlSecAppSignTmpl(const char* outputFileNameTmpl) {
 done:
 
     fprintf(stderr, "Signature status: %s\n", xmlSecDSigCtxGetStatusString(dsigCtx.status));
-    if(dsigCtx.status == xmlSecDSigStatusInvalid) {
+    if((dsigCtx.status == xmlSecDSigStatusInvalid) && (dsigCtx.failureReason != xmlSecDSigFailureReasonUnknown)) {
         fprintf(stderr, "Failure reason: %s\n", xmlSecDSigCtxGetFailureReasonString(dsigCtx.failureReason));
     }
 
@@ -1961,6 +1961,10 @@ xmlSecAppEncryptFile(const char* inputFileName, const char* outputFileNameTmpl) 
     res = 0;
 
 done:
+    if(encCtx.failureReason != xmlSecEncFailureReasonUnknown) {
+        fprintf(stderr, "Failure reason: %s\n", xmlSecEncCtxGetFailureReasonString(encCtx.failureReason));
+    }
+
     /* print debug info if requested */
     if(xmlSecAppCmdLineParamIsSet(&verboseParam)) {
         xmlSecAppPrintEncCtx(&encCtx);
@@ -2026,6 +2030,10 @@ xmlSecAppDecryptFile(const char* inputFileName, const char* outputFileNameTmpl) 
     res = 0;
 
 done:
+    if(encCtx.failureReason != xmlSecEncFailureReasonUnknown) {
+        fprintf(stderr, "Failure reason: %s\n", xmlSecEncCtxGetFailureReasonString(encCtx.failureReason));
+    }
+
     /* print debug info if requested */
     if(xmlSecAppCmdLineParamIsSet(&verboseParam)) {
         xmlSecAppPrintEncCtx(&encCtx);
@@ -2112,6 +2120,10 @@ xmlSecAppEncryptTmpl(const char* outputFileNameTmpl) {
     res = 0;
 
 done:
+    if(encCtx.failureReason != xmlSecEncFailureReasonUnknown) {
+        fprintf(stderr, "Failure reason: %s\n", xmlSecEncCtxGetFailureReasonString(encCtx.failureReason));
+    }
+
     /* print debug info if requested */
     if(xmlSecAppCmdLineParamIsSet(&verboseParam)) {
         xmlSecAppPrintEncCtx(&encCtx);

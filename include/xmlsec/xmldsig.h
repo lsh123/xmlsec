@@ -51,8 +51,8 @@ typedef enum {
 /**
  * xmlSecDSigFailureReason:
  * @xmlSecDSigFailureReasonUnknown:            the failure reason is unknown.
- * @xmlSecDSigFailureReasonReferenceFailure:   the reference processing failure (e.g. digest doesn't match).
- * @xmlSecDSigFailureReasonSignatureFailure:   the signature processing failure (e.g. signature doesn't match).
+ * @xmlSecDSigFailureReasonReference:   the reference processing failure (e.g. digest doesn't match).
+ * @xmlSecDSigFailureReasonSignature:   the signature processing failure (e.g. signature doesn't match).
  * @xmlSecDSigFailureReasonKeyNotFound:        the key not found.
  *
  * XML Digital signature processing failure reason. The application should use
@@ -60,8 +60,8 @@ typedef enum {
  */
 typedef enum {
     xmlSecDSigFailureReasonUnknown = 0,
-    xmlSecDSigFailureReasonReferenceFailure,
-    xmlSecDSigFailureReasonSignatureFailure,
+    xmlSecDSigFailureReasonReference,
+    xmlSecDSigFailureReasonSignature,
     xmlSecDSigFailureReasonKeyNotFound,
 } xmlSecDSigFailureReason;
 

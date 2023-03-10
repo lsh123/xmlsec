@@ -377,7 +377,7 @@ xmlSecDSigCtxVerify(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
     if(dsigCtx->signMethod->status == xmlSecTransformStatusOk) {
         xmlSecDSigCtxMarkAsSucceeded(dsigCtx);
     } else {
-        xmlSecDSigCtxMarkAsFailed(dsigCtx, xmlSecDSigFailureReasonSignatureFailure);
+        xmlSecDSigCtxMarkAsFailed(dsigCtx, xmlSecDSigFailureReasonSignature);
     }
     return(0);
 }
@@ -786,7 +786,7 @@ xmlSecDSigCtxProcessReferences(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr firstReferen
 
         /* bail out if next Reference processing failed */
         if(dsigRefCtx->status != xmlSecDSigStatusSucceeded) {
-            xmlSecDSigCtxMarkAsFailed(dsigCtx, xmlSecDSigFailureReasonReferenceFailure);
+            xmlSecDSigCtxMarkAsFailed(dsigCtx, xmlSecDSigFailureReasonReference);
             return(0);
         }
     }
@@ -1008,11 +1008,11 @@ xmlSecDSigCtxGetStatusString(xmlSecDSigStatus status) {
 const char*
 xmlSecDSigCtxGetFailureReasonString(xmlSecDSigFailureReason failureReason) {
     switch(failureReason) {
-    case xmlSecDSigFailureReasonReferenceFailure:
-        return "Digest failure";
+    case xmlSecDSigFailureReasonReference:
+        return "Reference";
 
-    case xmlSecDSigFailureReasonSignatureFailure:
-        return "Signature failure";
+    case xmlSecDSigFailureReasonSignature:
+        return "Signature";
 
     case xmlSecDSigFailureReasonKeyNotFound:
         return "Key not found";

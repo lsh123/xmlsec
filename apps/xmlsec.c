@@ -1162,6 +1162,7 @@ static int                      xmlSecAppInputReadCallback      (void * context,
                                                                  int len);
 static int                      xmlSecAppInputCloseCallback     (void * context);
 
+
 #if defined(XMLSEC_WINDOWS) && defined(UNICODE) && defined(__MINGW32__)
 int wmain(int argc, wchar_t* argv[]);
 #endif /* defined(XMLSEC_WINDOWS) && defined(UNICODE) && defined(__MINGW32__) */
@@ -1297,6 +1298,7 @@ int main(int argc, const char **argv) {
     } else {
        xmlSecErrorsDefaultCallbackEnableOutput(0);
     }
+
 
     /* transform bin chunk size */
     if(xmlSecAppCmdLineParamIsSet(&transformBinChunkSizeParam)) {
@@ -1435,8 +1437,10 @@ int main(int argc, const char **argv) {
     }
 
     goto success;
+
 success:
     res = 0;
+
 fail:
     if(gKeysMngr != NULL) {
         xmlSecKeysMngrDestroy(gKeysMngr);
@@ -1511,6 +1515,11 @@ xmlSecAppSignFile(const char* inputFileName, const char* outputFileNameTmpl) {
     }
     total_time += clock() - start_time;
 
+    /* return an error if siganture failed */
+    if(dsigCtx.status != xmlSecDSigStatusSucceeded) {
+        goto done;
+    }
+
     if(repeats <= 1) {
         int ret;
 
@@ -1576,8 +1585,8 @@ xmlSecAppVerifyFile(const char* inputFileName) {
     }
     total_time += clock() - start_time;
 
-    if((repeats <= 1) && (dsigCtx.status != xmlSecDSigStatusSucceeded)){
-        /* return an error if signature does not match */
+    /* return an error if verification failed */
+    if(dsigCtx.status != xmlSecDSigStatusSucceeded) {
         goto done;
     }
 
@@ -1723,6 +1732,11 @@ xmlSecAppSignTmpl(const char* outputFileNameTmpl) {
         goto done;
     }
     total_time += clock() - start_time;
+
+    /* return an error if siganture failed */
+    if(dsigCtx.status != xmlSecDSigStatusSucceeded) {
+        goto done;
+    }
 
     if(repeats <= 1) {
         int ret;

@@ -45,6 +45,19 @@ typedef enum {
 
 
 /**
+ * xmlSecEncFailureReason:
+ * @xmlSecEncFailureReasonUnknown:            the failure reason is unknown.
+ * @xmlSecEncFailureReasonKeyNotFound:        the key not found.
+ *
+ * XML Encryption processing failure reason. The application should use
+ * the returned value from the encrypt/decrypt functions first.
+ */
+typedef enum {
+    xmlSecEncFailureReasonUnknown = 0,
+    xmlSecEncFailureReasonKeyNotFound,
+} xmlSecEncFailureReason;
+
+/**
  * XMLSEC_ENC_RETURN_REPLACED_NODE:
  *
  * If this flag is set, then the replaced node will be returned in the replacedNodeList
@@ -109,6 +122,7 @@ struct _xmlSecEncCtx {
     int                         resultBase64Encoded;
     int                         resultReplaced;
     xmlSecTransformPtr          encMethod;
+    xmlSecEncFailureReason      failureReason;
 
     /* attributes from EncryptedData or EncryptedKey */
     xmlChar*                    id;
@@ -169,6 +183,8 @@ XMLSEC_EXPORT xmlSecKeyPtr      xmlSecEncCtxAgreementMethodGenerate(xmlSecEncCtx
 XMLSEC_EXPORT int               xmlSecEncCtxAgreementMethodXmlWrite(xmlSecEncCtxPtr encCtx,
                                                                  xmlNodePtr node,
                                                                  xmlSecKeyInfoCtxPtr keyInfoCtx);
+
+XMLSEC_EXPORT const char*       xmlSecEncCtxGetFailureReasonString(xmlSecEncFailureReason failureReason);
 
 #ifdef __cplusplus
 }

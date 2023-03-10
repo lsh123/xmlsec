@@ -46,6 +46,9 @@ static int      xmlSecEncCtxCipherDataNodeRead          (xmlSecEncCtxPtr encCtx,
 static int      xmlSecEncCtxCipherReferenceNodeRead     (xmlSecEncCtxPtr encCtx,
                                                          xmlNodePtr node);
 
+static void     xmlSecEncCtxMarkAsFailed                (xmlSecEncCtxPtr encCtx,
+                                                         xmlSecEncFailureReason failureReason);
+
 /* The ID attribute in XMLEnc is 'Id' */
 static const xmlChar*           xmlSecEncIds[] = { BAD_CAST "Id", NULL };
 
@@ -790,6 +793,7 @@ xmlSecEncCtxEncDataNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
         xmlSecOtherError2(XMLSEC_ERRORS_R_KEY_NOT_FOUND, NULL,
                           "encMethod=%s",
                           xmlSecErrorsSafeString(xmlSecTransformGetName(encCtx->encMethod)));
+        xmlSecEncCtxMarkAsFailed(encCtx, xmlSecEncFailureReasonKeyNotFound);
         return(-1);
     }
 
@@ -941,6 +945,14 @@ xmlSecEncCtxCipherReferenceNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
     return(0);
 }
 
+static void
+xmlSecEncCtxMarkAsFailed(xmlSecEncCtxPtr encCtx, xmlSecEncFailureReason failureReason) {
+    xmlSecAssert(encCtx != NULL);
+    if(encCtx->failureReason == xmlSecEncFailureReasonUnknown) {
+        encCtx->failureReason = failureReason;
+    }
+}
+
 /**
  * xmlSecEncCtxDebugDump:
  * @encCtx:             the pointer to &lt;enc:EncryptedData/&gt; processing context.
@@ -969,8 +981,11 @@ xmlSecEncCtxDebugDump(xmlSecEncCtxPtr encCtx, FILE* output) {
             }
             break;
     }
+    fprintf(output, "== Failure reason: %s\n", xmlSecEncCtxGetFailureReasonString(encCtx->failureReason));
+
     fprintf(output, "== Status: %s\n",
             (encCtx->resultReplaced) ? "replaced" : "not-replaced" );
+
 
     fprintf(output, "== flags: 0x%08x\n", encCtx->flags);
     fprintf(output, "== flags2: 0x%08x\n", encCtx->flags2);
@@ -1053,7 +1068,9 @@ xmlSecEncCtxDebugXmlDump(xmlSecEncCtxPtr encCtx, FILE* output) {
             }
             break;
     }
-    fprintf(output, "status=\"%s\" >\n", (encCtx->resultReplaced) ? "replaced" : "not-replaced" );
+    fprintf(output, " status=\"%s\"\n", (encCtx->resultReplaced) ? "replaced" : "not-replaced" );
+    fprintf(output, " failureReason=\"%s\"\n", xmlSecEncCtxGetFailureReasonString(encCtx->failureReason));
+    fprintf(output, ">\n");
 
     fprintf(output, "<Flags>%08x</Flags>\n", encCtx->flags);
     fprintf(output, "<Flags2>%08x</Flags2>\n", encCtx->flags2);
@@ -1315,6 +1332,7 @@ xmlSecEncCtxDerivedKeyGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xm
     if((encCtx->encKey == NULL) || (!xmlSecKeyMatch(encCtx->encKey, NULL, &(encCtx->keyInfoReadCtx.keyReq)))) {
         xmlSecOtherError2(XMLSEC_ERRORS_R_KEY_NOT_FOUND, NULL,
             "encMethod=%s", xmlSecErrorsSafeString(xmlSecTransformGetName(encCtx->encMethod)));
+        xmlSecEncCtxMarkAsFailed(encCtx, xmlSecEncFailureReasonKeyNotFound);
         return(NULL);
     }
     ret = xmlSecTransformSetKey(encCtx->encMethod, encCtx->encKey);
@@ -1454,4 +1472,20 @@ xmlSecEncCtxAgreementMethodXmlWrite(xmlSecEncCtxPtr encCtx, xmlNodePtr node, xml
     return(0);
 }
 
+/**
+ * xmlSecEncCtxGetFailureReasonString:
+ * @failureReason:   the failure reason.
+ *
+ * Gets failure reason as a string.
+ *
+ * Returns failure reason as a string.
+ */
+const char*
+xmlSecEncCtxGetFailureReasonString(xmlSecEncFailureReason failureReason) {
+    switch(failureReason) {
+    case xmlSecEncFailureReasonUnknown:
+    default:
+        return "UNKNOWN";
+    }
+}
 #endif /* XMLSEC_NO_XMLENC */

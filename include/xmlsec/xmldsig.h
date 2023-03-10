@@ -50,10 +50,10 @@ typedef enum {
 
 /**
  * xmlSecDSigFailureReason:
- * @xmlSecDSigFailureReasonUnknown:            the failure reason is unknown.
- * @xmlSecDSigFailureReasonReference:   the reference processing failure (e.g. digest doesn't match).
- * @xmlSecDSigFailureReasonSignature:   the signature processing failure (e.g. signature doesn't match).
- * @xmlSecDSigFailureReasonKeyNotFound:        the key not found.
+ * @xmlSecDSigFailureReasonUnknown:         the failure reason is unknown.
+ * @xmlSecDSigFailureReasonReference:       the reference processing failure (e.g. digest doesn't match).
+ * @xmlSecDSigFailureReasonSignature:       the signature processing failure (e.g. signature doesn't match).
+ * @xmlSecDSigFailureReasonKeyNotFound:     the key not found.
  *
  * XML Digital signature processing failure reason. The application should use
  * @xmlSecDSigStatus to find out the operation status first.
@@ -200,6 +200,8 @@ XMLSEC_EXPORT void              xmlSecDSigCtxDebugDump          (xmlSecDSigCtxPt
                                                                  FILE* output);
 XMLSEC_EXPORT void              xmlSecDSigCtxDebugXmlDump       (xmlSecDSigCtxPtr dsigCtx,
                                                                  FILE* output);
+
+
 XMLSEC_EXPORT const char*       xmlSecDSigCtxGetStatusString    (xmlSecDSigStatus status);
 XMLSEC_EXPORT const char*       xmlSecDSigCtxGetFailureReasonString(xmlSecDSigFailureReason failureReason);
 

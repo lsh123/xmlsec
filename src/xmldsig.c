@@ -1115,7 +1115,7 @@ xmlSecDSigCtxDebugXmlDump(xmlSecDSigCtxPtr dsigCtx, FILE* output) {
     }
     fprintf(output, " status=\"%s\"", xmlSecDSigCtxGetStatusString(dsigCtx->status));
     fprintf(output, " failureReason=\"%s\"\n", xmlSecDSigCtxGetFailureReasonString(dsigCtx->failureReason));
-    fprintf(output, ">\n");
+
 
     fprintf(output, "<Flags>%08x</Flags>\n", dsigCtx->flags);
     fprintf(output, "<Flags2>%08x</Flags2>\n", dsigCtx->flags2);

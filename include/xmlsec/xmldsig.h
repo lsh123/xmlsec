@@ -48,6 +48,24 @@ typedef enum {
     xmlSecDSigStatusInvalid
 } xmlSecDSigStatus;
 
+/**
+ * xmlSecDSigFailureReason:
+ * @xmlSecDSigFailureReasonUnknown:            the failure reason is unknown.
+ * @xmlSecDSigFailureReasonReferenceFailure:   the reference processing failure (e.g. digest doesn't match).
+ * @xmlSecDSigFailureReasonSignatureFailure:   the signature processing failure (e.g. signature doesn't match).
+ * @xmlSecDSigFailureReasonKeyNotFound:        the key not found.
+ *
+ * XML Digital signature processing failure reason. The application should use
+ * @xmlSecDSigStatus to find out the operation status first.
+ */
+typedef enum {
+    xmlSecDSigFailureReasonUnknown = 0,
+    xmlSecDSigFailureReasonReferenceFailure,
+    xmlSecDSigFailureReasonSignatureFailure,
+    xmlSecDSigFailureReasonKeyNotFound,
+} xmlSecDSigFailureReason;
+
+
 /**************************************************************************
  *
  * xmlSecDSigCtx
@@ -115,6 +133,7 @@ typedef enum {
  * @operation:                  the operation: sign or verify.
  * @result:                     the pointer to signature (not valid for signature verification).
  * @status:                     the &lt;dsig:Signature/&gt; processing status.
+ * @failureReason:              the detailed failure reason (if known); the application should check @status first.
  * @signMethod:                 the pointer to signature transform.
  * @c14nMethod:                 the pointer to c14n transform.
  * @preSignMemBufMethod:        the pointer to binary buffer right before signature
@@ -148,6 +167,7 @@ struct _xmlSecDSigCtx {
     xmlSecTransformOperation    operation;
     xmlSecBufferPtr             result;
     xmlSecDSigStatus            status;
+    xmlSecDSigFailureReason     failureReason;
     xmlSecTransformPtr          signMethod;
     xmlSecTransformPtr          c14nMethod;
     xmlSecTransformPtr          preSignMemBufMethod;
@@ -180,6 +200,8 @@ XMLSEC_EXPORT void              xmlSecDSigCtxDebugDump          (xmlSecDSigCtxPt
                                                                  FILE* output);
 XMLSEC_EXPORT void              xmlSecDSigCtxDebugXmlDump       (xmlSecDSigCtxPtr dsigCtx,
                                                                  FILE* output);
+XMLSEC_EXPORT const char*       xmlSecDSigCtxGetStatusString    (xmlSecDSigStatus status);
+XMLSEC_EXPORT const char*       xmlSecDSigCtxGetFailureReasonString(xmlSecDSigFailureReason failureReason);
 
 
 /**************************************************************************

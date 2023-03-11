@@ -948,6 +948,7 @@ xmlSecEncCtxCipherReferenceNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
 static void
 xmlSecEncCtxMarkAsFailed(xmlSecEncCtxPtr encCtx, xmlSecEncFailureReason failureReason) {
     xmlSecAssert(encCtx != NULL);
+
     if(encCtx->failureReason == xmlSecEncFailureReasonUnknown) {
         encCtx->failureReason = failureReason;
     }
@@ -1483,6 +1484,9 @@ xmlSecEncCtxAgreementMethodXmlWrite(xmlSecEncCtxPtr encCtx, xmlNodePtr node, xml
 const char*
 xmlSecEncCtxGetFailureReasonString(xmlSecEncFailureReason failureReason) {
     switch(failureReason) {
+    case xmlSecEncFailureReasonKeyNotFound:
+        return "KEY-NOT-FOUND";
+
     case xmlSecEncFailureReasonUnknown:
     default:
         return "UNKNOWN";

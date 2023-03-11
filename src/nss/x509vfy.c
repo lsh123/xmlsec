@@ -408,6 +408,10 @@ xmlSecNssX509StoreFindChildCert(CERTCertificate* cert, CERTCertList* certs) {
     xmlSecAssert2(certs != NULL, NULL);
 
      for (cur = CERT_LIST_HEAD(certs); !CERT_LIST_END(cur, certs); cur = CERT_LIST_NEXT(cur)) {
+        /* allow self signed certs */
+        if(cur->cert == cert) {
+            continue;
+        }
         if (SECITEM_CompareItem(&(cur->cert->derIssuer), &(cert->derSubject)) == SECEqual) {
             return(cur->cert);
         }

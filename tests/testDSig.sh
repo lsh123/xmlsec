@@ -1225,6 +1225,7 @@ execDSigTest $res_fail \
     "--untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/largersacert.$cert_format --enabled-key-data x509"
 
 # currently only openssl/gnutls/nss support loading CRL from the command line
+# https://github.com/lsh123/xmlsec/issues/583
 if [ "z$crypto" = "zopenssl" -o  "z$crypto" = "zgnutls" -o  "z$crypto" = "znss" ] ; then
     # this should fail because there is a CRL for the cert used for signing
     extra_message="Negative test: CRL present"
@@ -1268,6 +1269,7 @@ fi
 
 
 # currently only openssl supports key verification
+# https://github.com/lsh123/xmlsec/issues/587
 if [ "z$crypto" = "zopenssl" ] ; then
     # this should succeeed because key verification is not requested (no --verify-keys option)
     extra_message="Successfully use key without verification"

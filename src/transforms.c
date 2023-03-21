@@ -742,6 +742,7 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
     int uriLen;
     int useVisa3DHack = 0;
     int ret;
+    int res = -1;
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->uri == NULL, -1);
@@ -751,14 +752,14 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
 
     /* check uri */
     if(xmlSecTransformUriTypeCheck(ctx->enabledUris, uri) != 1) {
-        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_KEY_DATA_SIZE, NULL,
-                "uri=%s", xmlSecErrorsSafeString(uri));
-        return(-1);
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_KEY_DATA_SIZE, NULL, "uri=%s", xmlSecErrorsSafeString(uri));
+        goto done;
     }
 
     /* is it an empty uri? */
     if((uri == NULL) || (xmlSecStrlen(uri) == 0)) {
-        return(0);
+        res = 0;
+        goto done;
     }
 
     /* do we have barename or full xpointer? */
@@ -767,31 +768,33 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
         ctx->uri = xmlStrdup(uri);
         if(ctx->uri == NULL) {
             xmlSecStrdupError(uri, NULL);
-            return(-1);
+            goto done;
         }
-        /* we are done */
-        return(0);
+        /* nothing else to do */
+        res = 0;
+        goto done;
     } else if(xmlStrcmp(uri, BAD_CAST "#xpointer(/)") == 0) {
         ctx->xptrExpr = xmlStrdup(uri);
         if(ctx->xptrExpr == NULL) {
             xmlSecStrdupError(uri, NULL);
-            return(-1);
+            goto done;
         }
-        /* we are done */
-        return(0);
+        /* nothing else to do */
+        res = 0;
+        goto done;
     }
 
     XMLSEC_SAFE_CAST_PTRDIFF_TO_INT((xptr - uri), uriLen, return(-1), NULL);
     ctx->uri = xmlStrndup(uri, uriLen);
     if(ctx->uri == NULL) {
         xmlSecStrdupError(uri, NULL);
-        return(-1);
+        goto done;
     }
 
     ctx->xptrExpr = xmlStrdup(xptr);
     if(ctx->xptrExpr == NULL) {
         xmlSecStrdupError(xptr, NULL);
-        return(-1);
+        goto done;
     }
 
     /* do we have barename or full xpointer? */
@@ -814,13 +817,12 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
         buf = (xmlChar*)xmlMalloc(size * sizeof(xmlChar));
         if(buf == NULL) {
             xmlSecMallocError(size * sizeof(xmlChar), NULL);
-            return(-1);
+            goto done;
         }
         ret = xmlStrPrintf(buf, len, XMLSEC_TRANSFORM_XPOINTER_TMPL, xptr + 1);
         if(ret < 0) {
             xmlSecXmlError("xmlStrPrintf", NULL);
-             xmlFree(buf);
-             return(-1);
+            goto done;
         }
         xptr = buf;
         nodeSetType = xmlSecNodeSetTreeWithoutComments;
@@ -833,20 +835,14 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
         transform = xmlSecTransformCtxCreateAndPrepend(ctx, xmlSecTransformXPointerId);
         if(!xmlSecTransformIsValid(transform)) {
             xmlSecInternalError("xmlSecTransformCtxCreateAndPrepend(xmlSecTransformXPointerId)", NULL);
-            if(buf != NULL) {
-                xmlFree(buf);
-            }
-            return(-1);
+            goto done;
         }
 
         ret = xmlSecTransformXPointerSetExpr(transform, xptr, nodeSetType, hereNode);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecTransformXPointerSetExpr",
-                                xmlSecTransformGetName(transform));
-            if(buf != NULL) {
-                xmlFree(buf);
-            }
-            return(-1);
+            xmlSecInternalError("xmlSecTransformXPointerSetExpr", xmlSecTransformGetName(transform));
+            goto done;
+
         }
     } else {
         /* Visa3D protocol doesn't follow XML/XPointer/XMLDSig specs
@@ -860,27 +856,24 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
         transform = xmlSecTransformCtxCreateAndPrepend(ctx, xmlSecTransformVisa3DHackId);
         if(!xmlSecTransformIsValid(transform)) {
             xmlSecInternalError("xmlSecTransformCtxCreateAndPrepend(xmlSecTransformVisa3DHackId)", NULL);
-            if(buf != NULL) {
-                xmlFree(buf);
-            }
-            return(-1);
+            goto done;
         }
 
         ret = xmlSecTransformVisa3DHackSetID(transform, xptr);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecTransformVisa3DHackSetID",
-                                xmlSecTransformGetName(transform));
-            if(buf != NULL) {
-                xmlFree(buf);
-            }
-            return(-1);
+            xmlSecInternalError("xmlSecTransformVisa3DHackSetID", xmlSecTransformGetName(transform));
+            goto done;
         }
     }
+
+    /* success */
+    res = 0;
+
+done:
     if(buf != NULL) {
         xmlFree(buf);
     }
-
-    return(0);
+    return(res);
 }
 
 /**

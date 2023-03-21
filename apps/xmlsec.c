@@ -3688,7 +3688,7 @@ xmlSecAppWriteResult(const char* inputFileName, const char* outputFileNameTmpl, 
         ret = xmlSaveFileTo(outBuffer, doc, (const char*)doc->encoding);
         if (ret < 0) {
             fprintf(stderr, "Error: failed to write xml output\n");
-            xmlOutputBufferClose(outBuffer);
+            (void)xmlOutputBufferClose(outBuffer);
             return(-1);
         }
         /* xmlSaveFileTo closes the buffer */
@@ -3696,13 +3696,13 @@ xmlSecAppWriteResult(const char* inputFileName, const char* outputFileNameTmpl, 
         ret = xmlOutputBufferWrite(outBuffer, (int)xmlSecBufferGetSize(buffer), (const char*)xmlSecBufferGetData(buffer));
         if (ret < 0) {
             fprintf(stderr, "Error: failed to write binary output\n");
-            xmlOutputBufferClose(outBuffer);
+            (void)xmlOutputBufferClose(outBuffer);
             return(-1);
         }
-        xmlOutputBufferClose(outBuffer);
+        (void)xmlOutputBufferClose(outBuffer);
     } else {
         fprintf(stderr, "Error: both result doc and result buffer are null\n");
-        xmlOutputBufferClose(outBuffer);
+        (void)xmlOutputBufferClose(outBuffer);
         return(-1);
     }
 

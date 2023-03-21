@@ -704,44 +704,6 @@ xmlSecBufferHexRead(xmlSecBufferPtr buf, const xmlChar* hexStr) {
     return(0);
 }
 
-/**
- * xmlSecBufferHexWrite:
- * @buf:                the pointer to buffer object.
- *
- * Wirtes hex encoded content of @buf into a newly allocated string.
- * The caller is responsible for deallocating returned string with xmlFree().
- *
- * Returns: hex encoded string on success or NULL if an error occurs.
- */
-xmlChar*
-xmlSecBufferHexWrite(xmlSecBufferPtr buf) {
-    const xmlSecByte* data;
-    xmlSecSize ii, size;
-    xmlSecByte bb;
-    xmlChar* res, *pp;
-
-    xmlSecAssert2(buf != NULL, NULL);
-
-    data = xmlSecBufferGetData(buf);
-    size = xmlSecBufferGetSize(buf);
-    xmlSecAssert2(data != NULL, NULL);
-
-    res = (xmlChar* )xmlMalloc(size + 1);
-    if(res == NULL) {
-        xmlSecMallocError(size + 1, NULL);
-        return(NULL);
-    }
-
-    for(pp = res, ii = 0; ii < size; ++ii) {
-        bb = data[ii];
-        *(pp++) = xmlSecToHex((bb >> 4) & 0x0F);
-        *(pp++) = xmlSecToHex((bb) & 0x0F);
-    }
-    *(pp) = '\0';
-    return(res);
-}
-
-
 /************************************************************************
  *
  * IO buffer

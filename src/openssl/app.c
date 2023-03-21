@@ -616,14 +616,18 @@ done:
 
 #ifndef XMLSEC_NO_X509
 
-/* this function will either adopt or destroy ALL the params passed into it: pKey, keyCert, certs */
+/* this function will set input parameters to NULL if it adopts them */
 static xmlSecKeyPtr
-xmlSecOpenSSLCreateKey(EVP_PKEY * pKey,  X509 * keyCert, STACK_OF(X509) * certs) {
+xmlSecOpenSSLCreateKey(EVP_PKEY ** pKey,  X509 ** keyCert, STACK_OF(X509) ** certs) {
     xmlSecKeyDataPtr keyValue = NULL;
     xmlSecKeyPtr key = NULL;
     xmlSecKeyPtr res = NULL;
     int ret;
+
     xmlSecAssert2(pKey != NULL, NULL);
+    xmlSecAssert2((*pKey) != NULL, NULL);
+    xmlSecAssert2(keyCert != NULL, NULL);
+    xmlSecAssert2(certs != NULL, NULL);
 
     key = xmlSecKeyCreate();
     if(key == NULL) {
@@ -632,12 +636,12 @@ xmlSecOpenSSLCreateKey(EVP_PKEY * pKey,  X509 * keyCert, STACK_OF(X509) * certs)
     }
 
     /* create key value from pKey */
-    keyValue = xmlSecOpenSSLEvpKeyAdopt(pKey);
+    keyValue = xmlSecOpenSSLEvpKeyAdopt(*pKey);
     if(keyValue == NULL) {
         xmlSecInternalError("xmlSecOpenSSLEvpKeyAdopt", NULL);
         goto done;
     }
-    pKey = NULL; /* owned by keyValue now */
+    (*pKey) = NULL; /* owned by keyValue now */
 
     ret = xmlSecKeySetValue(key, keyValue);
     if(ret < 0) {
@@ -646,17 +650,16 @@ xmlSecOpenSSLCreateKey(EVP_PKEY * pKey,  X509 * keyCert, STACK_OF(X509) * certs)
     }
     keyValue = NULL;  /* owned by key now */
 
-
     /* try to get key name from x509 cert */
-    if(keyCert != NULL) {
+    if((*keyCert) != NULL) {
         unsigned char * name = NULL;
         int nameLen = 0;
 
         if(name == NULL) {
-            name = X509_alias_get0(keyCert, &nameLen);
+            name = X509_alias_get0((*keyCert), &nameLen);
         }
         if(name == NULL) {
-            name = X509_keyid_get0(keyCert, &nameLen);
+            name = X509_keyid_get0((*keyCert), &nameLen);
         }
         if((name != NULL) && (nameLen > 0)) {
             xmlSecSize nameSize = 0;
@@ -671,7 +674,7 @@ xmlSecOpenSSLCreateKey(EVP_PKEY * pKey,  X509 * keyCert, STACK_OF(X509) * certs)
     }
 
     /* create x509 data for key */
-    if((keyCert != NULL) || (certs != NULL)) {
+    if(((*keyCert) != NULL) || ((*certs) != NULL)) {
         xmlSecKeyDataPtr x509Data;
 
         x509Data = xmlSecKeyEnsureData(key, xmlSecOpenSSLKeyDataX509Id);
@@ -679,20 +682,21 @@ xmlSecOpenSSLCreateKey(EVP_PKEY * pKey,  X509 * keyCert, STACK_OF(X509) * certs)
             xmlSecInternalError("xmlSecKeyEnsureData(xmlSecOpenSSLKeyDataX509Id)", NULL);
             goto done;
         }
-        if(keyCert != NULL) {
-            ret = xmlSecOpenSSLKeyDataX509AdoptKeyCert(x509Data, keyCert);
+        if((*keyCert) != NULL) {
+            ret = xmlSecOpenSSLKeyDataX509AdoptKeyCert(x509Data, (*keyCert));
             if(ret < 0) {
                 xmlSecInternalError("xmlSecOpenSSLKeyDataX509AdoptKeyCert", NULL);
                 goto done;
             }
-            keyCert = NULL; /* owned by x509Data now */
+            (*keyCert) = NULL; /* owned by x509Data now */
         }
-        if(certs != NULL) {
-            while(sk_X509_num(certs) > 0) {
-                X509* cert = sk_X509_pop(certs);
+        if((*certs) != NULL) {
+            while(sk_X509_num((*certs)) > 0) {
+                X509* cert = sk_X509_pop((*certs));
                 if(cert == NULL) {
                     continue;
                 }
+
                 /* don't bother to check against keyCert, the xmlSecOpenSSLKeyDataX509AdoptCert does
                  * it automatically */
                 ret = xmlSecOpenSSLKeyDataX509AdoptCert(x509Data, cert);
@@ -702,7 +706,6 @@ xmlSecOpenSSLCreateKey(EVP_PKEY * pKey,  X509 * keyCert, STACK_OF(X509) * certs)
                     goto done;
                 }
                 cert = NULL; /* owned by x509Data now */
-
             }
         }
     }
@@ -712,15 +715,6 @@ xmlSecOpenSSLCreateKey(EVP_PKEY * pKey,  X509 * keyCert, STACK_OF(X509) * certs)
     key = NULL;
 
 done:
-    if(pKey != NULL) {
-        EVP_PKEY_free(pKey);
-    }
-    if(keyCert != NULL) {
-        X509_free(keyCert);
-    }
-    if(certs != NULL) {
-        sk_X509_pop_free(certs, X509_free);
-    }
     if(keyValue != NULL) {
         xmlSecKeyDataDestroy(keyValue);
     }
@@ -934,37 +928,28 @@ xmlSecOpenSSLAppStoreKeyLoad(const char *uri, xmlSecKeyDataType type, const char
      * so we aren't going to free it */
     keyCert = xmlSecOpenSSLAppFindKeyCert(pKey, certs);
 
-    /* finally create a key, xmlSecOpenSSLCreateKey free's all passed params */
-    res = xmlSecOpenSSLCreateKey(pKey, keyCert, certs);
+    /* finally create a key, xmlSecOpenSSLCreateKey will set values to NULL as it uses them */
+    res = xmlSecOpenSSLCreateKey(&pKey, &keyCert, &certs);
     if(res == NULL) {
         xmlSecInternalError("xmlSecKeyAdoptData", NULL);
-        pKey = NULL;
-        keyCert = NULL;
-        certs = NULL;
         goto done;
     }
-    pKey = NULL;
-    keyCert = NULL;
-    certs = NULL;
 
     /* success! */
 
 done:
-    if(pKey != NULL) {
-        EVP_PKEY_free(pKey);
-    }
     if(pPrivKey != NULL) {
         EVP_PKEY_free(pPrivKey);
     }
     if(pPubKey != NULL) {
         EVP_PKEY_free(pPubKey);
     }
-    /* keyCert can't be non-NULL with the current code, make
-    sure free it if code changes.
+    if(pKey != NULL) {
+         EVP_PKEY_free(pKey);
+    }
     if(keyCert != NULL) {
         X509_free(keyCert);
     }
-    */
     if(certs != NULL) {
         sk_X509_pop_free(certs, X509_free);
     }
@@ -1297,7 +1282,7 @@ xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
     XMLSEC_OPENSSL_PUSH_LIB_CTX(goto done);
     ret = PKCS12_parse(p12, pwd, &pKey, &keyCert, &chain);
     XMLSEC_OPENSSL_POP_LIB_CTX();
-    if(ret != 1) {
+    if((ret != 1) || (pKey == NULL)) {
         xmlSecOpenSSLError("PKCS12_parse", NULL);
         goto done;
     }
@@ -1315,18 +1300,12 @@ xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
      * functions.
      */
 
-    /* finally create a key, xmlSecOpenSSLCreateKey free's all passed params */
-    res = xmlSecOpenSSLCreateKey(pKey, keyCert, chain);
+    /* finally create a key, xmlSecOpenSSLCreateKey will set values to NULL as it uses them */
+    res = xmlSecOpenSSLCreateKey(&pKey, &keyCert, &chain);
     if(res == NULL) {
         xmlSecInternalError("xmlSecKeyAdoptData", NULL);
-        pKey = NULL;
-        keyCert = NULL;
-        chain = NULL;
         goto done;
     }
-    pKey = NULL;
-    keyCert = NULL;
-    chain = NULL;
 
     /* success! */
 

@@ -502,8 +502,7 @@ xmlSecGCryptPkSignatureInitialize(xmlSecTransformPtr transform) {
     /* create digest ctx */
     err = gcry_md_open(&ctx->digestCtx, ctx->digest, GCRY_MD_FLAG_SECURE); /* we are paranoid */
     if(err != GPG_ERR_NO_ERROR) {
-        xmlSecGCryptError("gcry_md_open", err,
-                          xmlSecTransformGetName(transform));
+        xmlSecGCryptError("gcry_md_open", err, xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -685,13 +684,13 @@ xmlSecGCryptPkSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
             gcry_md_final(ctx->digestCtx);
             buf = gcry_md_read(ctx->digestCtx, ctx->digest);
             if(buf == NULL) {
-                xmlSecGCryptError("gcry_md_read", (gcry_error_t)GPG_ERR_NO_ERROR,
-                                  xmlSecTransformGetName(transform));
+                xmlSecGCryptError("gcry_md_read", (gcry_error_t)GPG_ERR_NO_ERROR, xmlSecTransformGetName(transform));
                 return(-1);
             }
 
             /* copy it to our internal buffer */
             ctx->dgstSize = gcry_md_get_algo_dlen(ctx->digest);
+
             xmlSecAssert2(ctx->dgstSize > 0, -1);
             xmlSecAssert2(ctx->dgstSize <= sizeof(ctx->dgst), -1);
             memcpy(ctx->dgst, buf, ctx->dgstSize);
@@ -700,8 +699,7 @@ xmlSecGCryptPkSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
             if(transform->operation == xmlSecTransformOperationSign) {
                 ret = ctx->sign(ctx->digest, ctx->key_data, ctx->dgst, ctx->dgstSize, out);
                 if(ret < 0) {
-                    xmlSecInternalError("ctx->sign",
-                                        xmlSecTransformGetName(transform));
+                    xmlSecInternalError("ctx->sign", xmlSecTransformGetName(transform));
                     return(-1);
                 }
             }
@@ -2158,7 +2156,7 @@ xmlSecGCryptEcdsaSign(int digest, xmlSecKeyDataPtr key_data,
 
     err = gcry_sexp_build (&s_data, NULL,
                            "(data (flags raw)"
-                           "(hash %s %m))",
+                           "(hash %s %M))",
                            algo_name, m_hash);
     if((err != GPG_ERR_NO_ERROR) || (s_data == NULL)) {
         xmlSecGCryptError("gcry_sexp_build(data)", err, NULL);
@@ -2311,7 +2309,7 @@ xmlSecGCryptEcdsaVerify(int digest, xmlSecKeyDataPtr key_data,
 
     err = gcry_sexp_build (&s_data, NULL,
                            "(data (flags raw)"
-                           "(hash %s %m))",
+                           "(hash %s %M))",
                            algo_name, m_hash);
     if((err != GPG_ERR_NO_ERROR) || (s_data == NULL)) {
         xmlSecGCryptError("gcry_sexp_build(data)", err, NULL);

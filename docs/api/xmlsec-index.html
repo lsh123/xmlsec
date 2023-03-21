@@ -168,11 +168,14 @@
 <li class="listitem"><p><a class="link" href="xmlsec-xmldsig.html#xmlSecDSigCtxEnableReferenceTransform" title="xmlSecDSigCtxEnableReferenceTransform ()">xmlSecDSigCtxEnableReferenceTransform</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-xmldsig.html#xmlSecDSigCtxEnableSignatureTransform" title="xmlSecDSigCtxEnableSignatureTransform ()">xmlSecDSigCtxEnableSignatureTransform</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-xmldsig.html#xmlSecDSigCtxFinalize" title="xmlSecDSigCtxFinalize ()">xmlSecDSigCtxFinalize</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-xmldsig.html#xmlSecDSigCtxGetFailureReasonString" title="xmlSecDSigCtxGetFailureReasonString ()">xmlSecDSigCtxGetFailureReasonString</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-xmldsig.html#xmlSecDSigCtxGetPreSignBuffer" title="xmlSecDSigCtxGetPreSignBuffer ()">xmlSecDSigCtxGetPreSignBuffer</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-xmldsig.html#xmlSecDSigCtxGetStatusString" title="xmlSecDSigCtxGetStatusString ()">xmlSecDSigCtxGetStatusString</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-xmldsig.html#xmlSecDSigCtxInitialize" title="xmlSecDSigCtxInitialize ()">xmlSecDSigCtxInitialize</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-xmldsig.html#xmlSecDSigCtx" title="struct xmlSecDSigCtx">xmlSecDSigCtx</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-xmldsig.html#xmlSecDSigCtxSign" title="xmlSecDSigCtxSign ()">xmlSecDSigCtxSign</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-xmldsig.html#xmlSecDSigCtxVerify" title="xmlSecDSigCtxVerify ()">xmlSecDSigCtxVerify</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-xmldsig.html#xmlSecDSigFailureReason" title="enum xmlSecDSigFailureReason">xmlSecDSigFailureReason</a></p></li>
 <li class="listitem"><p><font>XMLSEC-DSIG-FLAGS-IGNORE-MANIFESTS</font></p></li>
 <li class="listitem"><p><font>XMLSEC-DSIG-FLAGS-STORE-MANIFEST-REFERENCES</font></p></li>
 <li class="listitem"><p><font>XMLSEC-DSIG-FLAGS-STORE-SIGNATURE</font></p></li>
@@ -203,11 +206,13 @@
 <li class="listitem"><p><a class="link" href="xmlsec-xmlenc.html#xmlSecEncCtxDerivedKeyGenerate" title="xmlSecEncCtxDerivedKeyGenerate ()">xmlSecEncCtxDerivedKeyGenerate</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-xmlenc.html#xmlSecEncCtxDestroy" title="xmlSecEncCtxDestroy ()">xmlSecEncCtxDestroy</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-xmlenc.html#xmlSecEncCtxFinalize" title="xmlSecEncCtxFinalize ()">xmlSecEncCtxFinalize</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-xmlenc.html#xmlSecEncCtxGetFailureReasonString" title="xmlSecEncCtxGetFailureReasonString ()">xmlSecEncCtxGetFailureReasonString</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-xmlenc.html#xmlSecEncCtxInitialize" title="xmlSecEncCtxInitialize ()">xmlSecEncCtxInitialize</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-xmlenc.html#xmlSecEncCtx" title="struct xmlSecEncCtx">xmlSecEncCtx</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-xmlenc.html#xmlSecEncCtxReset" title="xmlSecEncCtxReset ()">xmlSecEncCtxReset</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-xmlenc.html#xmlSecEncCtxUriEncrypt" title="xmlSecEncCtxUriEncrypt ()">xmlSecEncCtxUriEncrypt</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-xmlenc.html#xmlSecEncCtxXmlEncrypt" title="xmlSecEncCtxXmlEncrypt ()">xmlSecEncCtxXmlEncrypt</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-xmlenc.html#xmlSecEncFailureReason" title="enum xmlSecEncFailureReason">xmlSecEncFailureReason</a></p></li>
 <li class="listitem"><p><font>XMLSEC-ENC-RETURN-REPLACED-NODE</font></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-xmltree.html#xmlSecEnsureEmptyChild" title="xmlSecEnsureEmptyChild ()">xmlSecEnsureEmptyChild</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-errors.html#xmlSecError" title="xmlSecError ()">xmlSecError</a></p></li>
@@ -1633,6 +1638,7 @@
 <li class="listitem"><p><a class="link" href="xmlsec-list.html#xmlSecPtrListGetSize" title="xmlSecPtrListGetSize ()">xmlSecPtrListGetSize</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-list.html#xmlSecPtrListIdUnknown" title="xmlSecPtrListIdUnknown">xmlSecPtrListIdUnknown</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-list.html#xmlSecPtrListInitialize" title="xmlSecPtrListInitialize ()">xmlSecPtrListInitialize</a></p></li>
+<li class="listitem"><p><a class="link" href="xmlsec-list.html#xmlSecPtrListInsert" title="xmlSecPtrListInsert ()">xmlSecPtrListInsert</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-list.html#xmlSecPtrListIsValid" title="xmlSecPtrListIsValid()">xmlSecPtrListIsValid</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-list.html#xmlSecPtrListKlassGetName" title="xmlSecPtrListKlassGetName()">xmlSecPtrListKlassGetName</a></p></li>
 <li class="listitem"><p><a class="link" href="xmlsec-list.html#xmlSecPtrListKlass" title="struct xmlSecPtrListKlass">xmlSecPtrListKlass</a></p></li>

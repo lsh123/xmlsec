@@ -98,6 +98,7 @@ typedef enum {
  * @encDataNode:                the pointer to &lt;enc:EncryptedData/&gt;
  *                              or &lt;enc:EncryptedKey/&gt; node.
  * @encMethodNode:              the pointer to &lt;enc:EncryptionMethod/&gt; node.
+ * @failureReason:              the detailed failure reason.
  * @keyInfoNode:                the pointer to &lt;enc:KeyInfo/&gt; node.
  * @cipherValueNode:            the pointer to &lt;enc:CipherValue/&gt; node.
  * @reserved1:                  reserved for the future.

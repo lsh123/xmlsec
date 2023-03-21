@@ -929,7 +929,9 @@ xmlSecOpenSSLAppStoreKeyLoad(const char *uri, xmlSecKeyDataType type, const char
         }
     }
 
-    /* try find key cert */
+    /* try find key cert, the result might be NULL and we are OK with it,
+     * keyCert can't be non-NULL after the call to xmlSecOpenSSLCreateKey()
+     * so we aren't going to free it */
     keyCert = xmlSecOpenSSLAppFindKeyCert(pKey, certs);
 
     /* finally create a key, xmlSecOpenSSLCreateKey free's all passed params */
@@ -957,9 +959,12 @@ done:
     if(pPubKey != NULL) {
         EVP_PKEY_free(pPubKey);
     }
+    /* keyCert can't be non-NULL with the current code, make
+    sure free it if code changes.
     if(keyCert != NULL) {
         X509_free(keyCert);
     }
+    */
     if(certs != NULL) {
         sk_X509_pop_free(certs, X509_free);
     }
@@ -1292,7 +1297,7 @@ xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
     XMLSEC_OPENSSL_PUSH_LIB_CTX(goto done);
     ret = PKCS12_parse(p12, pwd, &pKey, &keyCert, &chain);
     XMLSEC_OPENSSL_POP_LIB_CTX();
-    if((ret != 1) || (pKey == NULL)) {
+    if(ret != 1) {
         xmlSecOpenSSLError("PKCS12_parse", NULL);
         goto done;
     }

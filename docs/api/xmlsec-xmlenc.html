@@ -171,6 +171,13 @@
 <a class="link" href="xmlsec-xmlenc.html#xmlSecEncCtxAgreementMethodXmlWrite" title="xmlSecEncCtxAgreementMethodXmlWrite ()">xmlSecEncCtxAgreementMethodXmlWrite</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
+<tr>
+<td class="function_type">const <font><span class="returnvalue">char</span></font> *
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-xmlenc.html#xmlSecEncCtxGetFailureReasonString" title="xmlSecEncCtxGetFailureReasonString ()">xmlSecEncCtxGetFailureReasonString</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
 </tbody>
 </table></div>
 </div>
@@ -185,6 +192,10 @@
 <tr>
 <td class="datatype_keyword">enum</td>
 <td class="function_name"><a class="link" href="xmlsec-xmlenc.html#xmlEncCtxMode" title="enum xmlEncCtxMode">xmlEncCtxMode</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="xmlsec-xmlenc.html#xmlSecEncFailureReason" title="enum xmlSecEncFailureReason">xmlSecEncFailureReason</a></td>
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
@@ -778,6 +789,29 @@ xmlSecEncCtxAgreementMethodXmlWrite (<em class="parameter"><code><a class="link"
                                      <em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> node</code></em>,
                                      <em class="parameter"><code><a class="link" href="xmlsec-keyinfo.html#xmlSecKeyInfoCtx" title="struct xmlSecKeyInfoCtx"><span class="type">xmlSecKeyInfoCtxPtr</span></a> keyInfoCtx</code></em>);</pre>
 </div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecEncCtxGetFailureReasonString"></a><h3>xmlSecEncCtxGetFailureReasonString ()</h3>
+<pre class="programlisting">const <font><span class="returnvalue">char</span></font> *
+xmlSecEncCtxGetFailureReasonString (<em class="parameter"><code><a class="link" href="xmlsec-xmlenc.html#xmlSecEncFailureReason" title="enum xmlSecEncFailureReason"><span class="type">xmlSecEncFailureReason</span></a> failureReason</code></em>);</pre>
+<p>Gets failure reason as a string.</p>
+<p>Returns failure reason as a string.</p>
+<div class="refsect3">
+<a name="xmlSecEncCtxGetFailureReasonString.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>failureReason</p></td>
+<td class="parameter_description"><p>the failure reason.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
 </div>
 <div class="refsect1">
 <a name="xmlsec-xmlenc.other_details"></a><h2>Types and Values</h2>
@@ -801,6 +835,34 @@ xmlSecEncCtxAgreementMethodXmlWrite (<em class="parameter"><code><a class="link"
 <tr>
 <td class="enum_member_name"><p><a name="xmlEncCtxModeEncryptedKey"></a>xmlEncCtxModeEncryptedKey</p></td>
 <td class="enum_member_description"><p>the <a class="ulink" href="" target="_top">&lt;enc:EncryptedKey/&gt;</a> element processing.</p></td>
+<td class="enum_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecEncFailureReason"></a><h3>enum xmlSecEncFailureReason</h3>
+<p>XML Encryption processing failure reason. The application should use
+the returned value from the encrypt/decrypt functions first.</p>
+<div class="refsect3">
+<a name="xmlSecEncFailureReason.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="xmlSecEncFailureReasonUnknown"></a>xmlSecEncFailureReasonUnknown</p></td>
+<td class="enum_member_description"><p>the failure reason is unknown.</p></td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="xmlSecEncFailureReasonKeyNotFound"></a>xmlSecEncFailureReasonKeyNotFound</p></td>
+<td class="enum_member_description"><p>the key not found.</p></td>
 <td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
@@ -835,6 +897,7 @@ xmlSecEncCtxAgreementMethodXmlWrite (<em class="parameter"><code><a class="link"
     int                         resultBase64Encoded;
     int                         resultReplaced;
     xmlSecTransformPtr          encMethod;
+    xmlSecEncFailureReason      failureReason;
 
     /* attributes from EncryptedData or EncryptedKey */
     xmlChar*                    id;
@@ -936,6 +999,11 @@ or <a class="ulink" href="" target="_top">&lt;enc:EncryptedKey/&gt;</a> node is 
 <tr>
 <td class="struct_member_name"><p><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="type">xmlSecTransformPtr</span></a> <em class="structfield"><code><a name="xmlSecEncCtx.encMethod"></a>encMethod</code></em>;</p></td>
 <td class="struct_member_description"><p>the pointer to encryption transform.</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><a class="link" href="xmlsec-xmlenc.html#xmlSecEncFailureReason" title="enum xmlSecEncFailureReason"><span class="type">xmlSecEncFailureReason</span></a> <em class="structfield"><code><a name="xmlSecEncCtx.failureReason"></a>failureReason</code></em>;</p></td>
+<td class="struct_member_description"><p>the detailed failure reason.</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>

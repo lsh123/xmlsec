@@ -718,6 +718,7 @@
     <keyword type="function" name="xmlSecPtrListGetSize ()" link="xmlsec-list.html#xmlSecPtrListGetSize"/>
     <keyword type="function" name="xmlSecPtrListGetItem ()" link="xmlsec-list.html#xmlSecPtrListGetItem"/>
     <keyword type="function" name="xmlSecPtrListAdd ()" link="xmlsec-list.html#xmlSecPtrListAdd"/>
+    <keyword type="function" name="xmlSecPtrListInsert ()" link="xmlsec-list.html#xmlSecPtrListInsert"/>
     <keyword type="function" name="xmlSecPtrListSet ()" link="xmlsec-list.html#xmlSecPtrListSet"/>
     <keyword type="function" name="xmlSecPtrListRemove ()" link="xmlsec-list.html#xmlSecPtrListRemove"/>
     <keyword type="function" name="xmlSecPtrListRemoveAndReturn ()" link="xmlsec-list.html#xmlSecPtrListRemoveAndReturn"/>
@@ -962,6 +963,8 @@
     <keyword type="function" name="xmlSecDSigCtxGetPreSignBuffer ()" link="xmlsec-xmldsig.html#xmlSecDSigCtxGetPreSignBuffer"/>
     <keyword type="function" name="xmlSecDSigCtxDebugDump ()" link="xmlsec-xmldsig.html#xmlSecDSigCtxDebugDump"/>
     <keyword type="function" name="xmlSecDSigCtxDebugXmlDump ()" link="xmlsec-xmldsig.html#xmlSecDSigCtxDebugXmlDump"/>
+    <keyword type="function" name="xmlSecDSigCtxGetStatusString ()" link="xmlsec-xmldsig.html#xmlSecDSigCtxGetStatusString"/>
+    <keyword type="function" name="xmlSecDSigCtxGetFailureReasonString ()" link="xmlsec-xmldsig.html#xmlSecDSigCtxGetFailureReasonString"/>
     <keyword type="function" name="xmlSecDSigReferenceCtxCreate ()" link="xmlsec-xmldsig.html#xmlSecDSigReferenceCtxCreate"/>
     <keyword type="function" name="xmlSecDSigReferenceCtxDestroy ()" link="xmlsec-xmldsig.html#xmlSecDSigReferenceCtxDestroy"/>
     <keyword type="function" name="xmlSecDSigReferenceCtxInitialize ()" link="xmlsec-xmldsig.html#xmlSecDSigReferenceCtxInitialize"/>
@@ -972,6 +975,7 @@
     <keyword type="function" name="xmlSecDSigReferenceCtxDebugXmlDump ()" link="xmlsec-xmldsig.html#xmlSecDSigReferenceCtxDebugXmlDump"/>
     <keyword type="function" name="xmlSecDSigReferenceCtxListGetKlass ()" link="xmlsec-xmldsig.html#xmlSecDSigReferenceCtxListGetKlass"/>
     <keyword type="enum" name="enum xmlSecDSigStatus" link="xmlsec-xmldsig.html#xmlSecDSigStatus"/>
+    <keyword type="enum" name="enum xmlSecDSigFailureReason" link="xmlsec-xmldsig.html#xmlSecDSigFailureReason"/>
     <keyword type="macro" name="XMLSEC_DSIG_FLAGS_IGNORE_MANIFESTS" link="xmlsec-xmldsig.html#XMLSEC-DSIG-FLAGS-IGNORE-MANIFESTS:CAPS"/>
     <keyword type="macro" name="XMLSEC_DSIG_FLAGS_STORE_SIGNEDINFO_REFERENCES" link="xmlsec-xmldsig.html#XMLSEC-DSIG-FLAGS-STORE-SIGNEDINFO-REFERENCES:CAPS"/>
     <keyword type="macro" name="XMLSEC_DSIG_FLAGS_STORE_MANIFEST_REFERENCES" link="xmlsec-xmldsig.html#XMLSEC-DSIG-FLAGS-STORE-MANIFEST-REFERENCES:CAPS"/>
@@ -997,7 +1001,9 @@
     <keyword type="function" name="xmlSecEncCtxDerivedKeyGenerate ()" link="xmlsec-xmlenc.html#xmlSecEncCtxDerivedKeyGenerate"/>
     <keyword type="function" name="xmlSecEncCtxAgreementMethodGenerate ()" link="xmlsec-xmlenc.html#xmlSecEncCtxAgreementMethodGenerate"/>
     <keyword type="function" name="xmlSecEncCtxAgreementMethodXmlWrite ()" link="xmlsec-xmlenc.html#xmlSecEncCtxAgreementMethodXmlWrite"/>
+    <keyword type="function" name="xmlSecEncCtxGetFailureReasonString ()" link="xmlsec-xmlenc.html#xmlSecEncCtxGetFailureReasonString"/>
     <keyword type="enum" name="enum xmlEncCtxMode" link="xmlsec-xmlenc.html#xmlEncCtxMode"/>
+    <keyword type="enum" name="enum xmlSecEncFailureReason" link="xmlsec-xmlenc.html#xmlSecEncFailureReason"/>
     <keyword type="macro" name="XMLSEC_ENC_RETURN_REPLACED_NODE" link="xmlsec-xmlenc.html#XMLSEC-ENC-RETURN-REPLACED-NODE:CAPS"/>
     <keyword type="struct" name="struct xmlSecEncCtx" link="xmlsec-xmlenc.html#xmlSecEncCtx"/>
     <keyword type="function" name="xmlSecInit ()" link="xmlsec-xmlsec.html#xmlSecInit"/>
@@ -2164,10 +2170,16 @@
     <keyword type="constant" name="xmlSecDSigStatusUnknown" link="xmlsec-xmldsig.html#xmlSecDSigStatusUnknown"/>
     <keyword type="constant" name="xmlSecDSigStatusSucceeded" link="xmlsec-xmldsig.html#xmlSecDSigStatusSucceeded"/>
     <keyword type="constant" name="xmlSecDSigStatusInvalid" link="xmlsec-xmldsig.html#xmlSecDSigStatusInvalid"/>
+    <keyword type="constant" name="xmlSecDSigFailureReasonUnknown" link="xmlsec-xmldsig.html#xmlSecDSigFailureReasonUnknown"/>
+    <keyword type="constant" name="xmlSecDSigFailureReasonReference" link="xmlsec-xmldsig.html#xmlSecDSigFailureReasonReference"/>
+    <keyword type="constant" name="xmlSecDSigFailureReasonSignature" link="xmlsec-xmldsig.html#xmlSecDSigFailureReasonSignature"/>
+    <keyword type="constant" name="xmlSecDSigFailureReasonKeyNotFound" link="xmlsec-xmldsig.html#xmlSecDSigFailureReasonKeyNotFound"/>
     <keyword type="constant" name="xmlSecDSigReferenceOriginSignedInfo" link="xmlsec-xmldsig.html#xmlSecDSigReferenceOriginSignedInfo"/>
     <keyword type="constant" name="xmlSecDSigReferenceOriginManifest" link="xmlsec-xmldsig.html#xmlSecDSigReferenceOriginManifest"/>
     <keyword type="constant" name="xmlEncCtxModeEncryptedData" link="xmlsec-xmlenc.html#xmlEncCtxModeEncryptedData"/>
     <keyword type="constant" name="xmlEncCtxModeEncryptedKey" link="xmlsec-xmlenc.html#xmlEncCtxModeEncryptedKey"/>
+    <keyword type="constant" name="xmlSecEncFailureReasonUnknown" link="xmlsec-xmlenc.html#xmlSecEncFailureReasonUnknown"/>
+    <keyword type="constant" name="xmlSecEncFailureReasonKeyNotFound" link="xmlsec-xmlenc.html#xmlSecEncFailureReasonKeyNotFound"/>
     <keyword type="constant" name="xmlSecCheckVersionExactMatch" link="xmlsec-xmlsec.html#xmlSecCheckVersionExactMatch"/>
     <keyword type="constant" name="xmlSecCheckVersionABICompatible" link="xmlsec-xmlsec.html#xmlSecCheckVersionABICompatible"/>
     <keyword type="member" name="xmlSecBuffer.data" link="xmlsec-buffer.html#xmlSecBuffer.data"/>
@@ -2346,6 +2358,7 @@
     <keyword type="member" name="xmlSecDSigCtx.operation" link="xmlsec-xmldsig.html#xmlSecDSigCtx.operation"/>
     <keyword type="member" name="xmlSecDSigCtx.result" link="xmlsec-xmldsig.html#xmlSecDSigCtx.result"/>
     <keyword type="member" name="xmlSecDSigCtx.status" link="xmlsec-xmldsig.html#xmlSecDSigCtx.status"/>
+    <keyword type="member" name="xmlSecDSigCtx.failureReason" link="xmlsec-xmldsig.html#xmlSecDSigCtx.failureReason"/>
     <keyword type="member" name="xmlSecDSigCtx.signMethod" link="xmlsec-xmldsig.html#xmlSecDSigCtx.signMethod"/>
     <keyword type="member" name="xmlSecDSigCtx.c14nMethod" link="xmlsec-xmldsig.html#xmlSecDSigCtx.c14nMethod"/>
     <keyword type="member" name="xmlSecDSigCtx.preSignMemBufMethod" link="xmlsec-xmldsig.html#xmlSecDSigCtx.preSignMemBufMethod"/>
@@ -2382,6 +2395,7 @@
     <keyword type="member" name="xmlSecEncCtx.resultBase64Encoded" link="xmlsec-xmlenc.html#xmlSecEncCtx.resultBase64Encoded"/>
     <keyword type="member" name="xmlSecEncCtx.resultReplaced" link="xmlsec-xmlenc.html#xmlSecEncCtx.resultReplaced"/>
     <keyword type="member" name="xmlSecEncCtx.encMethod" link="xmlsec-xmlenc.html#xmlSecEncCtx.encMethod"/>
+    <keyword type="member" name="xmlSecEncCtx.failureReason" link="xmlsec-xmlenc.html#xmlSecEncCtx.failureReason"/>
     <keyword type="member" name="xmlSecEncCtx.id" link="xmlsec-xmlenc.html#xmlSecEncCtx.id"/>
     <keyword type="member" name="xmlSecEncCtx.type" link="xmlsec-xmlenc.html#xmlSecEncCtx.type"/>
     <keyword type="member" name="xmlSecEncCtx.mimeType" link="xmlsec-xmlenc.html#xmlSecEncCtx.mimeType"/>

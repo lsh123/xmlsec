@@ -976,7 +976,7 @@ xmlSecDSigCtxProcessManifestNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
 
 /**
  * xmlSecDSigCtxGetStatusString:
- * @dsigCtx: the status.
+ * @status: the status.
  *
  * Gets status as a string.
  *

@@ -139,18 +139,14 @@ execDSigTest $res_success \
     "--enabled-key-data key-name,key-value,ec $priv_key_option:key-p256 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
     "--enabled-key-data key-value,ec"
 
-# GCrypt has problems with ECDSA-sha2-384 signatures if hash is longer than key
-# https://github.com/lsh123/xmlsec/issues/504
-if [ "z$crypto" != "zgcrypt" ] ; then
-    execDSigTest $res_success \
-        "xmldsig11-interop-2012" \
-        "signature-enveloping-p256_sha384" \
-        "c14n sha1 ecdsa-sha384" \
-        "key-value ec" \
-        "--enabled-key-data key-value,ec" \
-        "--enabled-key-data key-name,key-value,ec $priv_key_option:key-p256 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
-        "--enabled-key-data key-value,ec"
-fi
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-p256_sha384" \
+    "c14n sha1 ecdsa-sha384" \
+    "key-value ec" \
+    "--enabled-key-data key-value,ec" \
+    "--enabled-key-data key-name,key-value,ec $priv_key_option:key-p256 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-value,ec"
 
 execDSigTest $res_success \
     "xmldsig11-interop-2012" \
@@ -188,18 +184,14 @@ execDSigTest $res_success \
     "--enabled-key-data key-name,key-value,ec $priv_key_option:key-p384 $topfolder/keys/ecdsa-secp384r1-key.$priv_key_format --pwd secret123" \
     "--enabled-key-data key-value,ec"
 
-# GCrypt has problems with ECDSA-sha2-384 signatures if hash is longer than key
-# https://github.com/lsh123/xmlsec/issues/504
-if [ "z$crypto" != "zgcrypt" ] ; then
-    execDSigTest $res_success \
-        "xmldsig11-interop-2012" \
-        "signature-enveloping-p384_sha384" \
-        "c14n sha1 ecdsa-sha384" \
-        "key-value ec" \
-        "--enabled-key-data key-value,ec" \
-        "--enabled-key-data key-name,key-value,ec $priv_key_option:key-p384 $topfolder/keys/ecdsa-secp384r1-key.$priv_key_format --pwd secret123" \
-        "--enabled-key-data key-value,ec"
-fi
+execDSigTest $res_success \
+    "xmldsig11-interop-2012" \
+    "signature-enveloping-p384_sha384" \
+    "c14n sha1 ecdsa-sha384" \
+    "key-value ec" \
+    "--enabled-key-data key-value,ec" \
+    "--enabled-key-data key-name,key-value,ec $priv_key_option:key-p384 $topfolder/keys/ecdsa-secp384r1-key.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-value,ec"
 
 execDSigTest $res_success \
     "xmldsig11-interop-2012" \
@@ -1233,6 +1225,7 @@ execDSigTest $res_fail \
     "--untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/largersacert.$cert_format --enabled-key-data x509"
 
 # currently only openssl/gnutls/nss support loading CRL from the command line
+# https://github.com/lsh123/xmlsec/issues/583
 if [ "z$crypto" = "zopenssl" -o  "z$crypto" = "zgnutls" -o  "z$crypto" = "znss" ] ; then
     # this should fail because there is a CRL for the cert used for signing
     extra_message="Negative test: CRL present"
@@ -1276,6 +1269,7 @@ fi
 
 
 # currently only openssl supports key verification
+# https://github.com/lsh123/xmlsec/issues/587
 if [ "z$crypto" = "zopenssl" ] ; then
     # this should succeeed because key verification is not requested (no --verify-keys option)
     extra_message="Successfully use key without verification"

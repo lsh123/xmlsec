@@ -2403,7 +2403,8 @@ xmlSecKeyValueX509XmlWrite(xmlSecKeyValueX509Ptr x509Value, xmlNodePtr node,
             xmlSecInternalError("xmlSecKeyValueX509XmlWriteBase64Blob(cert)", NULL);
             return(-1);
         }
-    } else if(xmlSecBufferGetSize(&(x509Value->crl)) > 0) {
+    }
+    if(xmlSecBufferGetSize(&(x509Value->crl)) > 0) {
         ret = xmlSecKeyValueX509XmlWriteBase64Blob(&(x509Value->crl), node,
             xmlSecNodeX509CRL, xmlSecDSigNs,
             base64LineSize, addLineBreaks);
@@ -2411,7 +2412,8 @@ xmlSecKeyValueX509XmlWrite(xmlSecKeyValueX509Ptr x509Value, xmlNodePtr node,
             xmlSecInternalError("xmlSecKeyValueX509XmlWriteBase64Blob(cert)", NULL);
             return(-1);
         }
-    } else if(xmlSecBufferGetSize(&(x509Value->ski)) > 0) {
+    }
+    if(xmlSecBufferGetSize(&(x509Value->ski)) > 0) {
         ret = xmlSecKeyValueX509XmlWriteBase64Blob(&(x509Value->ski), node,
             xmlSecNodeX509SKI, xmlSecDSigNs,
             base64LineSize, addLineBreaks);
@@ -2419,7 +2421,8 @@ xmlSecKeyValueX509XmlWrite(xmlSecKeyValueX509Ptr x509Value, xmlNodePtr node,
             xmlSecInternalError("xmlSecKeyValueX509XmlWriteBase64Blob(ski)", NULL);
             return(-1);
         }
-    } else if(x509Value->subject != NULL) {
+    }
+    if(x509Value->subject != NULL) {
         ret = xmlSecKeyValueX509XmlWriteString(x509Value->subject, node,
             xmlSecNodeX509SubjectName, xmlSecDSigNs);
         if(ret < 0) {
@@ -2427,7 +2430,8 @@ xmlSecKeyValueX509XmlWrite(xmlSecKeyValueX509Ptr x509Value, xmlNodePtr node,
                 "subject=%s", xmlSecErrorsSafeString(x509Value->subject));
             return(-1);
         }
-    } else if((x509Value->issuerName != NULL) && (x509Value->issuerSerial != NULL)) {
+    }
+    if((x509Value->issuerName != NULL) && (x509Value->issuerSerial != NULL)) {
         xmlNodePtr issuerSerial;
 
         issuerSerial = xmlSecEnsureEmptyChild(node, xmlSecNodeX509IssuerSerial, xmlSecDSigNs);
@@ -2807,4 +2811,3 @@ void xmlSecImportSetPersistKey(void) {
 int xmlSecImportGetPersistKey(void) {
     return xmlSecImportPersistKey;
 }
-

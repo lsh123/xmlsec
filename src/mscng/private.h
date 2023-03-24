@@ -26,6 +26,14 @@
 extern "C" {
 #endif /* __cplusplus */
 
+
+ /******************************************************************************
+ *
+ * Key data functions
+ *
+ ******************************************************************************/
+ xmlSecSize         xmlSecMSCngKeyDataGetSize                       (xmlSecKeyDataPtr data);
+
 /******************************************************************************
  *
  * X509 Util functions
@@ -46,7 +54,7 @@ typedef struct _xmlSecMSCngX509FindCertCtx {
     DWORD digestLen;
 } xmlSecMSCngX509FindCertCtx, *xmlSecMSCngX509FindCertCtxPtr;
 
-int             xmlSecMSCngX509FindCertCtxInitialize                (xmlSecMSCngX509FindCertCtxPtr ctx,
+int                 xmlSecMSCngX509FindCertCtxInitialize            (xmlSecMSCngX509FindCertCtxPtr ctx,
                                                                      const xmlChar *subjectName,
                                                                      const xmlChar *issuerName,
                                                                      const xmlChar *issuerSerial,

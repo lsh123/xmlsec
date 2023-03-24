@@ -31,6 +31,20 @@
 #include <xmlsec/mscng/certkeys.h>
 
 #include "../cast_helpers.h"
+#include "private.h"
+
+ /*************************************************************************
+  *
+  * DSA EVP
+  *
+  * https://www.w3.org/TR/xmldsig-core1/#sec-DSA
+  * The output of the DSA algorithm consists of a pair of integers usually referred by the pair (r, s).
+  * DSA-SHA1: Integer to octet-stream conversion must be done according to the I2OSP operation defined
+  *           in the RFC 3447 [PKCS1] specification with a l parameter equal to 20
+  * DSA-SHA256: The pairs (2048, 256) and (3072, 256) correspond to the algorithm DSAwithSHA256
+  ************************************************************************/
+#define XMLSEC_MSCNG_SIGNATURE_DSA_SHA1_HALF_LEN              20
+#define XMLSEC_MSCNG_SIGNATURE_DSA_SHA256_HALF_LEN            (256 / 8)
 
 /**************************************************************************
  *
@@ -42,6 +56,7 @@ typedef struct _xmlSecMSCngSignatureCtx      xmlSecMSCngSignatureCtx,
 struct _xmlSecMSCngSignatureCtx {
     xmlSecKeyDataPtr    data;
     xmlSecKeyDataId     keyId;
+    DWORD               signatureHalfSize;
     LPCWSTR pszHashAlgId;
     DWORD cbHash;
     PBYTE pbHash;
@@ -195,6 +210,7 @@ static int xmlSecMSCngSignatureInitialize(xmlSecTransformPtr transform) {
     if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformDsaSha1Id)) {
         ctx->pszHashAlgId = BCRYPT_SHA1_ALGORITHM;
         ctx->keyId = xmlSecMSCngKeyDataDsaId;
+        ctx->signatureHalfSize = XMLSEC_MSCNG_SIGNATURE_DSA_SHA1_HALF_LEN;
     } else
 #endif /* XMLSEC_NO_SHA1 */
 
@@ -412,17 +428,93 @@ static int xmlSecMSCngSignatureSetKeyReq(xmlSecTransformPtr transform,  xmlSecKe
     return(0);
 }
 
-static int xmlSecMSCngSignatureVerify(xmlSecTransformPtr transform,
-                                      const xmlSecByte* data,
-                                      xmlSecSize dataSize,
-                                      xmlSecTransformCtxPtr transformCtx) {
+/*
+* https://www.w3.org/TR/xmldsig-core1/#sec-ECDSA
+* 
+* The output of the ECDSA algorithm consists of a pair of integers usually
+* referred by the pair(r, s).The signature value consists of the base64
+* encoding of the concatenation of two octet - streams that respectively result
+* from the octet - encoding of the values r and s in that order.Integer to
+* octet - stream conversion must be done according to the I2OSP operation defined
+* in the RFC 3447[PKCS1] specification with the l parameter equal to the size of
+* the base point order of the curve in bytes(e.g. 32 for the P - 256 curve and 66
+* for the P - 521 curve).
+*/
+static int
+xmlSecMSCngSignatureFixBrokenJava(xmlSecMSCngSignatureCtxPtr ctx,
+    const xmlSecByte* data, xmlSecSize dataSize,
+    const xmlSecByte** out, xmlSecSize* outSize
+) {
+    xmlSecSize halfSize;
+    xmlSecSize keySize;
+    xmlSecByte* res;
+    xmlSecSize offset;
+
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->data != NULL, -1);
+    xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(out != NULL, -1);
+    xmlSecAssert2(outSize != NULL, -1);
+
+    if (ctx->keyId == xmlSecMSCngKeyDataDsaId) {
+        halfSize = ctx->signatureHalfSize;
+    } else if (ctx->keyId == xmlSecMSCngKeyDataEcId) {
+        keySize = xmlSecMSCngKeyDataGetSize(ctx->data);
+        if (keySize <= 0) {
+            xmlSecInternalError("xmlSecMSCngKeyDataGetSize", NULL);
+            return(-1);
+        }
+        halfSize = (keySize + 7) / 8;
+    } else {
+        /* nothing to do: this only applies to DSA and ECDSA signatures */
+        return(0);
+    }
+
+    /* check the size */
+    if (2 * halfSize == dataSize) {
+        return(0);
+    }
+    else if ((dataSize > 2 * halfSize) || (dataSize % 2 != 0)) {
+        xmlSecInternalError3("xmlSecOpenSSLEvpSignatureEcdsaHalfLen", NULL,
+            "expectedSignLen=" XMLSEC_SIZE_FMT "; actualSignLen=" XMLSEC_SIZE_FMT, 2 * halfSize, dataSize);
+        return(-1);
+    }
+
+    /* let's fix it! */
+    res = (xmlSecByte*)xmlMalloc(2 * halfSize);
+    if (res == NULL) {
+        xmlSecMallocError(2 * halfSize, NULL);
+        return(-1);
+    }
+    memset(res, 0, 2 * halfSize);
+
+    /* add zeros at the beggining of both r and s */
+    offset = (2 * halfSize - dataSize) / 2;
+    memcpy(res + offset, data, dataSize / 2);
+    memcpy(res + halfSize + offset, data + dataSize / 2, dataSize / 2);
+
+    /* success */
+    (*out) = res;
+    (*outSize) = 2 * halfSize;
+    return(0);
+}
+
+static int
+xmlSecMSCngSignatureVerify(xmlSecTransformPtr transform,
+    const xmlSecByte* data, xmlSecSize dataSize,
+    xmlSecTransformCtxPtr transformCtx
+) {
     xmlSecMSCngSignatureCtxPtr ctx;
     BCRYPT_KEY_HANDLE pubkey;
     NTSTATUS status;
     BCRYPT_PKCS1_PADDING_INFO pkcs1PaddingInfo;
     BCRYPT_PSS_PADDING_INFO pssPadingInfo;
     VOID* pPaddingInfo = NULL;
+    xmlSecByte* fixedData = NULL;
+    xmlSecSize fixedDataSize = 0;
     DWORD dwDataSize;
+    int ret;
+    int res = -1;
 
     xmlSecAssert2(xmlSecMSCngSignatureCheckId(transform), -1);
     xmlSecAssert2(transform->operation == xmlSecTransformOperationVerify, -1);
@@ -438,7 +530,7 @@ static int xmlSecMSCngSignatureVerify(xmlSecTransformPtr transform,
     pubkey = xmlSecMSCngKeyDataGetPubKey(ctx->data);
     if(pubkey == 0) {
         xmlSecInternalError("xmlSecMSCngKeyDataGetPubKey", xmlSecTransformGetName(transform));
-        return(-1);
+        goto done;
     }
 
     /* RSA needs explicit padding, otherwise STATUS_INVALID_PARAMETER is
@@ -450,15 +542,28 @@ static int xmlSecMSCngSignatureVerify(xmlSecTransformPtr transform,
         pssPadingInfo.pszAlgId = ctx->pszHashAlgId;
         pssPadingInfo.cbSalt = ctx->dwRsaPssSaltSize;
         pPaddingInfo = &pssPadingInfo;
+    } else {
+        /* we expect the DSA/ECDSA r and s to be the same size and either have fixed size (DSA) or match
+         * the size of the key (ECDSA); however some implementations (e.g. Java) cut leading zeros:
+         * https://github.com/lsh123/xmlsec/issues/228 */
+        ret = xmlSecMSCngSignatureFixBrokenJava(ctx, data, dataSize, &fixedData, &fixedDataSize);
+        if (ret < 0) {
+            xmlSecInternalError("xmlSecMSCngSignatureFixBrokenJava", xmlSecTransformGetName(transform));
+            goto done;
+        }
+        if ((fixedData != NULL) && (fixedDataSize > 0)) {
+            data = fixedData;
+            dataSize = fixedDataSize;
+        }
     }
 
-    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(dataSize, dwDataSize, return(-1), xmlSecTransformGetName(transform));
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(dataSize, dwDataSize, goto done, xmlSecTransformGetName(transform));
     status = BCryptVerifySignature(
         pubkey,
         pPaddingInfo,
         ctx->pbHash,
         ctx->cbHash,
-        (PBYTE)data,
+        (PBYTE)((fixedData != NULL) ? fixedData : data),
         dwDataSize,
         ctx->dwInfoFlags);
     if(status != STATUS_SUCCESS) {
@@ -467,16 +572,23 @@ static int xmlSecMSCngSignatureVerify(xmlSecTransformPtr transform,
                 xmlSecTransformGetName(transform),
                 "BCryptVerifySignature: the signature was not verified");
             transform->status = xmlSecTransformStatusFail;
-            return(-1);
+            goto done;
         } else {
             xmlSecMSCngNtError("BCryptVerifySignature",
                 xmlSecTransformGetName(transform), status);
-            return(-1);
+            goto done;
         }
     }
 
+    /* success */
     transform->status = xmlSecTransformStatusOk;
-    return(0);
+    res = 0;
+
+done:
+    if (fixedData != NULL) {
+        xmlFree(fixedData);
+    }
+    return(res);
 }
 
 static int

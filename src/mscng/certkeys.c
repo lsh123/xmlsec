@@ -40,6 +40,7 @@
 
 #include "../cast_helpers.h"
 #include "../keysdata_helpers.h"
+#include "private.h"
 
 typedef struct _xmlSecMSCngKeyDataCtx xmlSecMSCngKeyDataCtx,
                                       *xmlSecMSCngKeyDataCtxPtr;
@@ -52,8 +53,6 @@ struct _xmlSecMSCngKeyDataCtx {
 
 XMLSEC_KEY_DATA_DECLARE(MSCngKeyData, xmlSecMSCngKeyDataCtx)
 #define xmlSecMSCngKeyDataSize XMLSEC_KEY_DATA_SIZE(MSCngKeyData)
-
-static xmlSecSize xmlSecMSCngKeyDataGetSize(xmlSecKeyDataPtr data);
 
 static int
 xmlSecMSCngKeyDataCertGetPubkey(PCCERT_CONTEXT cert, BCRYPT_KEY_HANDLE* key) {
@@ -1521,7 +1520,7 @@ xmlSecMSCngKeyDataRsaGetType(xmlSecKeyDataPtr data) {
     return(xmlSecKeyDataTypePublic);
 }
 
-static xmlSecSize
+xmlSecSize
 xmlSecMSCngKeyDataGetSize(xmlSecKeyDataPtr data) {
     NTSTATUS status;
     xmlSecMSCngKeyDataCtxPtr ctx;

@@ -25,10 +25,18 @@ del /F Makefile configure.txt
 cscript configure.js prefix=%XMLSEC_PREFIX% %XMLSEC_OPTIONS% include=%XMLSEC_INCLUDE% lib=%XMLSEC_LIB%
 
 mkdir binaries
-copy %PREFIX%\bin\*.dll binaries
-copy %PREFIX%\bin\*.pdb binaries
-copy %PREFIX%\lib\*.dll binaries
-copy %PREFIX%\lib\*.pdb binaries
+copy %LIBXML2_PREFIX%\bin\*.dll binaries
+copy %LIBXML2_PREFIX%\bin\*.pdb binaries
+copy %LIBXML2_PREFIX%\lib\*.dll binaries
+copy %LIBXML2_PREFIX%\lib\*.pdb binaries
+
+copy %LIBXSLT_PREFIX%\bin\*.dll binaries
+copy %LIBXSLT_PREFIX%\bin\*.pdb binaries
+copy %LIBXSLT_PREFIX%\lib\*.dll binaries
+copy %LIBXSLT_PREFIX%\lib\*.pdb binaries
+
 copy %OPENSSL_PREFIX%\bin\*.dll binaries
+copy %OPENSSL_PREFIX%\bin\*.pdb binaries
 copy %OPENSSL_PREFIX%\lib\*.dll binaries
+copy %OPENSSL_PREFIX%\lib\*.pdb binaries
 

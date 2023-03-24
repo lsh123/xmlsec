@@ -1085,16 +1085,13 @@ execDSigTest $res_success \
     "$priv_key_option:mykey $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
-# MSCNG and GnuTLS doesn't support signatures with removed leading zeros (e.g. from Java)
-# https://github.com/lsh123/xmlsec/issues/228
-if [ "z$crypto" != "zmscng" ] ; then
-    execDSigTest $res_success \
-        "" \
-        "aleksey-xmldsig-01/enveloped-ecdsa-java-bug" \
-        "sha512 ecdsa-sha512" \
-        "ec x509" \
-        "--trusted-$cert_format $topfolder/keys/enveloped-ecdsa-java-bug-cert.$cert_format --enabled-key-data x509 --verification-gmt-time 2019-01-01+00:00:00"
-fi
+# see issue https://github.com/lsh123/xmlsec/issues/228
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloped-ecdsa-java-bug" \
+    "sha512 ecdsa-sha512" \
+    "ec x509" \
+    "--trusted-$cert_format $topfolder/keys/enveloped-ecdsa-java-bug-cert.$cert_format --enabled-key-data x509 --verification-gmt-time 2019-01-01+00:00:00"
 
 
 extra_message="DTD is present"

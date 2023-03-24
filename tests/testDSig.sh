@@ -1085,6 +1085,7 @@ execDSigTest $res_success \
     "$priv_key_option:mykey $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
+# see issue https://github.com/lsh123/xmlsec/issues/228
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloped-ecdsa-java-bug" \

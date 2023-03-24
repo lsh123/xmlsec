@@ -1087,7 +1087,7 @@ execDSigTest $res_success \
 
 # MSCNG and GnuTLS doesn't support signatures with removed leading zeros (e.g. from Java)
 # https://github.com/lsh123/xmlsec/issues/228
-if [ "z$crypto" != "zmscng" -a "z$crypto" != "zgnutls" ] ; then
+if [ "z$crypto" != "zmscng" ] ; then
     execDSigTest $res_success \
         "" \
         "aleksey-xmldsig-01/enveloped-ecdsa-java-bug" \

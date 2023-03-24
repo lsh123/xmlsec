@@ -546,7 +546,7 @@ xmlSecMSCngSignatureVerify(xmlSecTransformPtr transform,
         /* we expect the DSA/ECDSA r and s to be the same size and either have fixed size (DSA) or match
          * the size of the key (ECDSA); however some implementations (e.g. Java) cut leading zeros:
          * https://github.com/lsh123/xmlsec/issues/228 */
-        ret = xmlSecMSCngSignatureFixBrokenJava(ctx, data, dataSize, &fixedData, &fixedDataSize);
+        ret = xmlSecMSCngSignatureFixBrokenJava(ctx, data, dataSize, (const xmlSecByte**)&fixedData, &fixedDataSize);
         if (ret < 0) {
             xmlSecInternalError("xmlSecMSCngSignatureFixBrokenJava", xmlSecTransformGetName(transform));
             goto done;

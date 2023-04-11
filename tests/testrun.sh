@@ -86,6 +86,12 @@ if [ "z$crypto" = "zopenssl" -a "z$XMLSEC_OPENSSL_TEST_CONFIG" != "z" ] ; then
     export OPENSSL_CONF="$opensslconf"
 fi
 
+if [ "z$crypto" = "zopenssl" ] ; then
+    # phaos certs use RSA-MD5 which might be disabled
+    extra_vars="$extra_vars OPENSSL_ENABLE_MD5_VERIFY=1"
+    export OPENSSL_ENABLE_MD5_VERIFY=1
+fi
+
 #
 # Setup keys config
 #

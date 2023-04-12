@@ -5,6 +5,10 @@ standards:
 - [XML Signature Syntax and Processing](https://www.w3.org/TR/xmldsig-core)
 - [XML Encryption Syntax and Processing](https://www.w3.org/TR/xmlenc-core/)
 
+Detailed information about supported features and algorithms can be found in 
+the [XMLDsig](https://www.aleksey.com/xmlsec/xmldsig.html) and 
+the [XMLEnc](https://www.aleksey.com/xmlsec/xmlenc.html) interoperability reports.
+
 ## Documentation
 Complete XMLSec library documentation is published on [XMLSec website](https://www.aleksey.com/xmlsec/).
 

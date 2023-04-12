@@ -388,7 +388,6 @@
     <keyword type="function" name="xmlSecBufferBase64NodeContentRead ()" link="xmlsec-buffer.html#xmlSecBufferBase64NodeContentRead"/>
     <keyword type="function" name="xmlSecBufferBase64NodeContentWrite ()" link="xmlsec-buffer.html#xmlSecBufferBase64NodeContentWrite"/>
     <keyword type="function" name="xmlSecBufferHexRead ()" link="xmlsec-buffer.html#xmlSecBufferHexRead"/>
-    <keyword type="function" name="xmlSecBufferHexWrite ()" link="xmlsec-buffer.html#xmlSecBufferHexWrite"/>
     <keyword type="function" name="xmlSecBufferCreateOutputBuffer ()" link="xmlsec-buffer.html#xmlSecBufferCreateOutputBuffer"/>
     <keyword type="enum" name="enum xmlSecAllocMode" link="xmlsec-buffer.html#xmlSecAllocMode"/>
     <keyword type="struct" name="struct xmlSecBuffer" link="xmlsec-buffer.html#xmlSecBuffer"/>

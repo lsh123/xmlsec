@@ -112,7 +112,7 @@ jobs:
     - name: configure
       working-directory: build.dir
       run: |
-          ../autogen.sh --prefix=${GITHUB_WORKSPACE}/install.dir  --enable-werror --enable-pedantic ${{ matrix.config_flags }}
+          ../autogen.sh --prefix=${GITHUB_WORKSPACE}/install.dir  --enable-werror --enable-pedantic --with-openssl=`brew --prefix openssl` ${{ matrix.config_flags }}
     - name: make
       working-directory: build.dir
       run: |

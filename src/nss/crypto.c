@@ -412,7 +412,7 @@ xmlSecNssKeysMngrInit(xmlSecKeysMngrPtr mngr) {
  * Returns: internal key slot and initializes it if needed.
  */
 PK11SlotInfo *
-xmlSecNssGetInternalKeySlot()
+xmlSecNssGetInternalKeySlot(void)
 {
     PK11SlotInfo *slot = NULL;
     SECStatus rv;

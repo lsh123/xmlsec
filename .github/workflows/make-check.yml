@@ -19,7 +19,7 @@ jobs:
         include:
           - config_flags:
           - config_flags: --enable-size-t=no
-          - config_flags: --enable-md5 --enable-gost --enable-gost2012
+          - config_flags: --enable-md5
           - config_flags: --enable-static-linking=yes --without-nss --without-gcrypt --without-gnutls
     steps:
     - name: install dependencies
@@ -57,7 +57,7 @@ jobs:
         include:
           - config_flags:
           - config_flags: --enable-size-t=no
-          - config_flags: --enable-md5 --enable-gost --enable-gost2012
+          - config_flags: --enable-md5
           - config_flags: --enable-static-linking=yes --without-nss --without-gcrypt --without-gnutls
     steps:
     - name: install dependencies
@@ -97,7 +97,7 @@ jobs:
         include:
           - config_flags:
           - config_flags: --enable-size-t=no
-          - config_flags: --enable-md5 --enable-gost --enable-gost2012
+          - config_flags: --enable-md5
     steps:
     - name: install dependencies
       run: |

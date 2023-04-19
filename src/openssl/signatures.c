@@ -2173,14 +2173,14 @@ xmlSecOpenSSLTransformEcdsaSha3_512GetKlass(void) {
 XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS(Gost2001GostR3411_94)
 
 /**
- * TransformGost2001GostR3411_94GetKlass:
+ * xmlSecOpenSSLTransformGost2001GostR3411_94GetKlass:
  *
  * The GOST2001-GOSTR3411_94 signature transform klass.
  *
  * Returns: GOST2001-GOSTR3411_94 signature transform klass.
  */
 xmlSecTransformId
-TransformGost2001GostR3411_94GetKlass(void) {
+xmlSecOpenSSLTransformGost2001GostR3411_94GetKlass(void) {
     return(&xmlSecOpenSSLGost2001GostR3411_94Klass);
 }
 #endif /* XMLSEC_NO_GOST */

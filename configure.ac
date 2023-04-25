@@ -76,6 +76,30 @@ XMLSEC_EXTRA_LDFLAGS=
 XMLSEC_CRYPTO_EXTRA_LDFLAGS=
 
 dnl ==========================================================================
+dnl Detect compiler
+dnl ==========================================================================
+build_with_gcc=no
+build_with_clang=no
+AC_MSG_CHECKING(for '$CC' compiler type)
+
+cc_ver=`$CC -v 2>&1 | grep -i version`
+case "${cc_ver}" in
+  *gcc*|*GCC* )
+    build_with_gcc=yes
+    AC_MSG_RESULT("GCC")
+    ;;
+
+  *clang*|*CLANG* )
+    build_with_clang=yes
+    AC_MSG_RESULT("CLANG")
+    ;;
+  *)
+    AC_MSG_RESULT("Other")
+    ;;
+esac
+
+
+dnl ==========================================================================
 dnl Perform host specific configuration
 dnl ==========================================================================
 
@@ -2489,7 +2513,7 @@ else
     CFLAGS="$CFLAGS -Wwrite-strings -Wmissing-prototypes"
     CFLAGS="$CFLAGS -Wnested-externs -Wredundant-decls"
 
-    if test "z$build_on_mac" = "zno" ; then
+    if test "z$build_with_gcc" = "zyes" ; then
         CFLAGS="$CFLAGS -Wformat-overflow=2 -Wformat-signedness"
     fi
     AC_MSG_RESULT([yes])

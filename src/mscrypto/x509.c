@@ -477,6 +477,7 @@ xmlSecMSCryptoKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
         if(crlDst == NULL) {
             xmlSecMSCryptoError("CertDuplicateCRLContext",
                                 xmlSecKeyDataGetName(dst));
+            CertFreeCRLContext(crlSrc);
             return(-1);
         }
 
@@ -484,9 +485,11 @@ xmlSecMSCryptoKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
         if(ret < 0) {
             xmlSecInternalError("xmlSecMSCryptoKeyDataX509AdoptCrl",
                                 xmlSecKeyDataGetName(dst));
+            CertFreeCRLContext(crlSrc);
             CertFreeCRLContext(crlDst);
             return(-1);
         }
+        CertFreeCRLContext(crlSrc);
     }
 
     /* copy key cert if exist */
@@ -884,9 +887,11 @@ xmlSecMSCryptoKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr 
                     xmlSecKeyDataGetName(data),
                     "pos=" XMLSEC_SIZE_FMT "; crlSize=%lu",
                     ctx->crlPos, crl->cbCrlEncoded);
+                CertFreeCRLContext(crl);
                 return(-1);
             }
         }
+        CertFreeCRLContext(crl);
         ++ctx->crlPos;
     }
     else {

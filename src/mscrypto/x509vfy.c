@@ -618,6 +618,7 @@ xmlSecMSCryptoX509StoreAdoptCert(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT pCe
                             xmlSecKeyDataStoreGetName(store));
         return(-1);
     }
+    CertFreeCertificateContext(pCert);
 
     return(0);
 }

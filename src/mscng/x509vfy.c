@@ -345,6 +345,7 @@ xmlSecMSCngX509StoreAdoptCert(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT pCert,
         xmlSecMSCngLastError("CertAddCertificateContextToStore", xmlSecKeyDataStoreGetName(store));
         return(-1);
     }
+    CertFreeCertificateContext(pCert);
 
     return(0);
 }

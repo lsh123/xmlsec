@@ -424,7 +424,7 @@ xmlSecMSCryptoKeyDataX509Initialize(xmlSecKeyDataPtr data) {
 static int
 xmlSecMSCryptoKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     PCCERT_CONTEXT certSrc, certDst;
-    PCCRL_CONTEXT crlSrc;
+    PCCRL_CONTEXT crlSrc, crlDst;
     xmlSecSize size, pos;
     int ret;
 
@@ -472,13 +472,23 @@ xmlSecMSCryptoKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
             return(-1);
         }
 
-        ret = xmlSecMSCryptoKeyDataX509AdoptCrl(dst, crlSrc);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecMSCryptoKeyDataX509AdoptCrl",
+        crlDst = CertDuplicateCRLContext(crlSrc);
+        if(crlDst == NULL) {
+            xmlSecMSCryptoError("CertDuplicateCRLContext",
                                 xmlSecKeyDataGetName(dst));
             CertFreeCRLContext(crlSrc);
             return(-1);
         }
+
+        ret = xmlSecMSCryptoKeyDataX509AdoptCrl(dst, crlDst);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecMSCryptoKeyDataX509AdoptCrl",
+                                xmlSecKeyDataGetName(dst));
+            CertFreeCRLContext(crlSrc);
+            CertFreeCRLContext(crlDst);
+            return(-1);
+        }
+        CertFreeCRLContext(crlSrc);
     }
 
     /* copy key cert if exist */

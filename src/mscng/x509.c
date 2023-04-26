@@ -290,6 +290,7 @@ xmlSecMSCngKeyDataX509AdoptCrl(xmlSecKeyDataPtr data, PCCRL_CONTEXT crl) {
         xmlSecMSCngLastError("CertAddCRLContextToStore", NULL);
         return(-1);
     }
+    CertFreeCRLContext(crl);
 
     return(0);
 }

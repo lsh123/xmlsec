@@ -445,13 +445,23 @@ xmlSecMSCryptoKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
             return(-1);
         }
 
-        ret = xmlSecMSCryptoKeyDataX509AdoptCert(dst, certSrc);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecMSCryptoKeyDataX509AdoptCert",
+        certDst = CertDuplicateCertificateContext(certSrc);
+        if(certDst == NULL) {
+            xmlSecMSCryptoError("CertDuplicateCertificateContext",
                                 xmlSecKeyDataGetName(dst));
             CertFreeCertificateContext(certSrc);
             return(-1);
         }
+
+        ret = xmlSecMSCryptoKeyDataX509AdoptCert(dst, certDst);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecMSCryptoKeyDataX509AdoptCert",
+                                xmlSecKeyDataGetName(dst));
+            CertFreeCertificateContext(certSrc);
+            CertFreeCertificateContext(certDst);
+            return(-1);
+        }
+        CertFreeCertificateContext(certSrc);
     }
 
     /* copy crls */

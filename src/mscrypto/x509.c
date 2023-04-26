@@ -938,8 +938,10 @@ xmlSecMSCryptoKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr
             if(ctx->keyCert == NULL) {
                     xmlSecMSCryptoError("CertDuplicateCertificateContext",
                                         xmlSecKeyDataGetName(data));
+                    CertFreeCertificateContext(cert);
                     return(-1);
             }
+            CertFreeCertificateContext(cert);
 
                 /* search key according to KeyReq */
                 pCert = CertDuplicateCertificateContext( ctx->keyCert ) ;

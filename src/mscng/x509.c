@@ -385,8 +385,10 @@ xmlSecMSCnVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data, xml
     keyCert = CertDuplicateCertificateContext(cert);
     if(keyCert == NULL) {
         xmlSecMSCngLastError("CertDuplicateCertificateContext", xmlSecKeyDataGetName(data));
+        CertFreeCertificateContext(cert);
         return(-1);
     }
+    CertFreeCertificateContext(cert);
     ret = xmlSecMSCngKeyDataX509AdoptKeyCert(data, keyCert);
     if (ret < 0) {
         xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptKeyCert", xmlSecKeyDataGetName(data));

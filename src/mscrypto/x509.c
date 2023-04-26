@@ -341,6 +341,7 @@ xmlSecMSCryptoKeyDataX509AdoptCrl(xmlSecKeyDataPtr data, PCCRL_CONTEXT crl) {
                             xmlSecKeyDataGetName(data));
         return(-1);
     }
+    CertFreeCRLContext(crl);
     ctx->numCrls++;
 
     return(0);

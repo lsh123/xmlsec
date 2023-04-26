@@ -117,6 +117,7 @@ xmlSecMSCngKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
         dstCert = CertDuplicateCertificateContext(srcCert);
         if(dstCert == NULL) {
             xmlSecMSCngLastError("CertDuplicateCertificateContext", NULL);
+            CertFreeCertificateContext(srcCert);
             return(-1);
         }
 
@@ -125,6 +126,7 @@ xmlSecMSCngKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
             ret = xmlSecMSCngKeyDataX509AdoptKeyCert(dst, dstCert);
             if (ret < 0) {
                 xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptKeyCert", NULL);
+                CertFreeCertificateContext(srcCert);
                 CertFreeCertificateContext(dstCert);
                 return(-1);
             }
@@ -132,6 +134,7 @@ xmlSecMSCngKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
             ret = xmlSecMSCngKeyDataX509AdoptCert(dst, dstCert);
             if (ret < 0) {
                 xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptCert", NULL);
+                CertFreeCertificateContext(srcCert);
                 CertFreeCertificateContext(dstCert);
                 return(-1);
             }

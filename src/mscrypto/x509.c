@@ -925,10 +925,17 @@ xmlSecMSCryptoKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr
 
         cert = xmlSecMSCryptoX509StoreVerify(x509Store, ctx->hMemStore, keyInfoCtx);
         if(cert != NULL) {
-                xmlSecKeyDataPtr keyValue = NULL;
-                PCCERT_CONTEXT pCert = NULL;
+            xmlSecKeyDataPtr keyValue = NULL;
+        PCCERT_CONTEXT pCert = NULL;
 
-                ctx->keyCert = cert;
+            ctx->keyCert = CertDuplicateCertificateContext(cert);
+            if(ctx->keyCert == NULL) {
+                    xmlSecMSCryptoError("CertDuplicateCertificateContext",
+                                        xmlSecKeyDataGetName(data));
+                    CertFreeCertificateContext(cert);
+                    return(-1);
+            }
+            CertFreeCertificateContext(cert);
 
                 /* search key according to KeyReq */
                 pCert = CertDuplicateCertificateContext( ctx->keyCert ) ;

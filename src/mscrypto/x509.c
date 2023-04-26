@@ -424,7 +424,7 @@ xmlSecMSCryptoKeyDataX509Initialize(xmlSecKeyDataPtr data) {
 static int
 xmlSecMSCryptoKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     PCCERT_CONTEXT certSrc, certDst;
-    PCCRL_CONTEXT crlSrc, crlDst;
+    PCCRL_CONTEXT crlSrc;
     xmlSecSize size, pos;
     int ret;
 
@@ -472,18 +472,11 @@ xmlSecMSCryptoKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
             return(-1);
         }
 
-        crlDst = CertDuplicateCRLContext(crlSrc);
-        if(crlDst == NULL) {
-            xmlSecMSCryptoError("CertDuplicateCRLContext",
-                                xmlSecKeyDataGetName(dst));
-            return(-1);
-        }
-
-        ret = xmlSecMSCryptoKeyDataX509AdoptCrl(dst, crlDst);
+        ret = xmlSecMSCryptoKeyDataX509AdoptCrl(dst, crlSrc);
         if(ret < 0) {
             xmlSecInternalError("xmlSecMSCryptoKeyDataX509AdoptCrl",
                                 xmlSecKeyDataGetName(dst));
-            CertFreeCRLContext(crlDst);
+            CertFreeCRLContext(crlSrc);
             return(-1);
         }
     }
@@ -883,9 +876,11 @@ xmlSecMSCryptoKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr 
                     xmlSecKeyDataGetName(data),
                     "pos=" XMLSEC_SIZE_FMT "; crlSize=%lu",
                     ctx->crlPos, crl->cbCrlEncoded);
+                CertFreeCRLContext(crl);
                 return(-1);
             }
         }
+        CertFreeCRLContext(crl);
         ++ctx->crlPos;
     }
     else {

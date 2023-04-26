@@ -226,6 +226,7 @@ xmlSecMSCryptoCheckRevocation(HCERTSTORE hStore, PCCERT_CONTEXT pCert) {
         if (CertFindCertificateInCRL(pCert, pCrl, 0, NULL, &pCrlEntry) && (pCrlEntry != NULL)) {
             xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED, NULL,
                              "CertFindCertificateInCRL: cert found in crl list");
+            CertFreeCRLContext(pCrl);
             return(FALSE);
         }
     }

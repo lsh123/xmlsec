@@ -382,6 +382,7 @@ xmlSecMSCngCheckRevocation(HCERTSTORE store, PCCERT_CONTEXT cert) {
 
         xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED, NULL,
             "cert found in CRL");
+        CertFreeCRLContext(crlCtx);
         return(-1);
     }
 

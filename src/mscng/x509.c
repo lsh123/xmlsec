@@ -341,7 +341,6 @@ xmlSecMSCnVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data, xml
     xmlSecMSCngX509DataCtxPtr ctx;
     xmlSecKeyDataStorePtr x509Store;
     xmlSecKeyDataPtr keyValue;
-    PCCERT_CONTEXT cert;
     PCCERT_CONTEXT certCopy;
     PCCERT_CONTEXT keyCert;
     int ret;
@@ -368,8 +367,8 @@ xmlSecMSCnVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data, xml
         xmlSecInternalError("xmlSecKeysMngrGetDataStore", xmlSecKeyDataGetName(data));
         return(-1);
     }
-    cert = xmlSecMSCngX509StoreVerify(x509Store, ctx->hMemStore, keyInfoCtx);
-    if (cert == NULL) {
+    keyCert = xmlSecMSCngX509StoreVerify(x509Store, ctx->hMemStore, keyInfoCtx);
+    if (keyCert == NULL) {
         /* check if we want to fail if cert is not found */
         if ((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_INVALID_CERT) != 0) {
             xmlSecOtherError(XMLSEC_ERRORS_R_CERT_NOT_FOUND, xmlSecKeyDataGetName(data), NULL);
@@ -381,18 +380,13 @@ xmlSecMSCnVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data, xml
     /* set cert into the x509 data, we don't know if the cert is already in KeyData or not
      * so assume we need to add it again.
      */
-    keyCert = CertDuplicateCertificateContext(cert);
-    if(keyCert == NULL) {
-        xmlSecMSCngLastError("CertDuplicateCertificateContext", xmlSecKeyDataGetName(data));
-        return(-1);
-    }
     ret = xmlSecMSCngKeyDataX509AdoptKeyCert(data, keyCert);
     if (ret < 0) {
         xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptKeyCert", xmlSecKeyDataGetName(data));
         CertFreeCertificateContext(keyCert);
         return(-1);
     }
-    cert = keyCert = NULL; /* we should be using ctx->keyCert for everything */
+    keyCert = NULL; /* we should be using ctx->keyCert for everything */
 
     /* extract key from cert (need to copy the certificate, so it can be adopted according to the key value data) */
     certCopy = CertDuplicateCertificateContext(ctx->keyCert);

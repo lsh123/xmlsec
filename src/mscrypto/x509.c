@@ -445,18 +445,11 @@ xmlSecMSCryptoKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
             return(-1);
         }
 
-        certDst = CertDuplicateCertificateContext(certSrc);
-        if(certDst == NULL) {
-            xmlSecMSCryptoError("CertDuplicateCertificateContext",
-                                xmlSecKeyDataGetName(dst));
-            return(-1);
-        }
-
-        ret = xmlSecMSCryptoKeyDataX509AdoptCert(dst, certDst);
+        ret = xmlSecMSCryptoKeyDataX509AdoptCert(dst, certSrc);
         if(ret < 0) {
             xmlSecInternalError("xmlSecMSCryptoKeyDataX509AdoptCert",
                                 xmlSecKeyDataGetName(dst));
-            CertFreeCertificateContext(certDst);
+            CertFreeCertificateContext(certSrc);
             return(-1);
         }
     }
@@ -640,6 +633,7 @@ xmlSecMSCryptoKeyDataX509DebugDump(xmlSecKeyDataPtr data, FILE* output) {
         }
         fprintf(output, "==== Certificate:\n");
         xmlSecMSCryptoX509CertDebugDump(cert, output);
+        CertFreeCertificateContext(cert);
     }
 
     /* we don't print out crls */
@@ -673,6 +667,7 @@ xmlSecMSCryptoKeyDataX509DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
         fprintf(output, "<Certificate>\n");
         xmlSecMSCryptoX509CertDebugXmlDump(cert, output);
         fprintf(output, "</Certificate>\n");
+        CertFreeCertificateContext(cert);
     }
 
     /* we don't print out crls */
@@ -820,6 +815,7 @@ xmlSecMSCryptoKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr 
                     xmlSecKeyDataGetName(data),
                     "pos=" XMLSEC_SIZE_FMT "; certSize=%lu",
                     ctx->crtPos, cert->cbCertEncoded);
+                CertFreeCertificateContext(cert);
                 return(-1);
             }
         }
@@ -829,6 +825,7 @@ xmlSecMSCryptoKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr 
                 xmlSecInternalError2("xmlSecMSCryptoX509SKIWrite",
                     xmlSecKeyDataGetName(data),
                     "pos=" XMLSEC_SIZE_FMT, ctx->crtPos);
+                CertFreeCertificateContext(cert);
                 return(-1);
             }
         }
@@ -841,6 +838,7 @@ xmlSecMSCryptoKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr 
                 xmlSecInternalError2("xmlSecMSCryptoX509NameWrite(subject)",
                     xmlSecKeyDataGetName(data),
                     "pos=" XMLSEC_SIZE_FMT, ctx->crtPos);
+                CertFreeCertificateContext(cert);
                 return(-1);
             }
         }
@@ -854,6 +852,7 @@ xmlSecMSCryptoKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr 
                 xmlSecInternalError2("xmlSecMSCryptoX509NameWrite(issuer name)",
                     xmlSecKeyDataGetName(data),
                     "pos=" XMLSEC_SIZE_FMT, ctx->crtPos);
+                CertFreeCertificateContext(cert);
                 return(-1);
             }
             x509Value->issuerSerial = xmlSecMSCryptoASN1IntegerWrite(&(cert->pCertInfo->SerialNumber));
@@ -861,8 +860,10 @@ xmlSecMSCryptoKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr 
                 xmlSecInternalError2("xmlSecMSCryptoASN1IntegerWrite(issuer serial))",
                     xmlSecKeyDataGetName(data),
                     "pos=" XMLSEC_SIZE_FMT, ctx->crtPos);
+                CertFreeCertificateContext(cert);
                 return(-1);
             }
+            CertFreeCertificateContext(cert);
         }
         ++ctx->crtPos;
     }

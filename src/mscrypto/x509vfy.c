@@ -765,7 +765,7 @@ xmlSecMSCryptoX509StoreInitialize(xmlSecKeyDataStorePtr store) {
     if(hTrustedMemStore == NULL) {
         xmlSecMSCryptoError("CertOpenStore",
                             xmlSecKeyDataStoreGetName(store));
-        CertCloseStore(ctx->trusted, CERT_CLOSE_STORE_FORCE_FLAG);
+        CertCloseStore(ctx->trusted, 0);
         ctx->trusted = NULL ;
         return(-1);
     }
@@ -774,12 +774,12 @@ xmlSecMSCryptoX509StoreInitialize(xmlSecKeyDataStorePtr store) {
     if( !CertAddStoreToCollection( ctx->trusted, hTrustedMemStore, CERT_PHYSICAL_STORE_ADD_ENABLE_FLAG, 1 ) ) {
         xmlSecMSCryptoError("CertAddStoreToCollection",
                             xmlSecKeyDataStoreGetName(store));
-        CertCloseStore(ctx->trusted, CERT_CLOSE_STORE_FORCE_FLAG);
-        CertCloseStore(hTrustedMemStore, CERT_CLOSE_STORE_CHECK_FLAG);
+        CertCloseStore(ctx->trusted, 0);
+        CertCloseStore(hTrustedMemStore, 0);
         ctx->trusted = NULL ;
         return(-1);
     }
-    CertCloseStore(hTrustedMemStore, CERT_CLOSE_STORE_CHECK_FLAG);
+    CertCloseStore(hTrustedMemStore, 0);
 
     /* create untrusted certs store collection */
     ctx->untrusted = CertOpenStore(CERT_STORE_PROV_COLLECTION,
@@ -790,7 +790,7 @@ xmlSecMSCryptoX509StoreInitialize(xmlSecKeyDataStorePtr store) {
     if(ctx->untrusted == NULL) {
         xmlSecMSCryptoError("CertOpenStore",
                             xmlSecKeyDataStoreGetName(store));
-        CertCloseStore(ctx->trusted, CERT_CLOSE_STORE_FORCE_FLAG);
+        CertCloseStore(ctx->trusted, 0);
         ctx->trusted = NULL ;
         return(-1);
     }
@@ -804,8 +804,8 @@ xmlSecMSCryptoX509StoreInitialize(xmlSecKeyDataStorePtr store) {
     if(hUntrustedMemStore == NULL) {
         xmlSecMSCryptoError("CertOpenStore",
                             xmlSecKeyDataStoreGetName(store));
-        CertCloseStore(ctx->trusted, CERT_CLOSE_STORE_FORCE_FLAG);
-        CertCloseStore(ctx->untrusted, CERT_CLOSE_STORE_FORCE_FLAG);
+        CertCloseStore(ctx->trusted, 0);
+        CertCloseStore(ctx->untrusted, 0);
         ctx->trusted = NULL ;
         ctx->untrusted = NULL ;
         return(-1);
@@ -815,14 +815,14 @@ xmlSecMSCryptoX509StoreInitialize(xmlSecKeyDataStorePtr store) {
     if( !CertAddStoreToCollection( ctx->untrusted, hUntrustedMemStore, CERT_PHYSICAL_STORE_ADD_ENABLE_FLAG, 1 ) ) {
         xmlSecMSCryptoError("CertAddStoreToCollection",
                             xmlSecKeyDataStoreGetName(store));
-        CertCloseStore(ctx->untrusted, CERT_CLOSE_STORE_FORCE_FLAG);
-        CertCloseStore(ctx->trusted, CERT_CLOSE_STORE_FORCE_FLAG);
-        CertCloseStore(hUntrustedMemStore, CERT_CLOSE_STORE_CHECK_FLAG);
+        CertCloseStore(ctx->untrusted, 0);
+        CertCloseStore(ctx->trusted, 0);
+        CertCloseStore(hUntrustedMemStore, 0);
         ctx->trusted = NULL ;
         ctx->untrusted = NULL ;
         return(-1);
     }
-    CertCloseStore(hUntrustedMemStore, CERT_CLOSE_STORE_CHECK_FLAG);
+    CertCloseStore(hUntrustedMemStore, 0);
 
     return(0);
 }

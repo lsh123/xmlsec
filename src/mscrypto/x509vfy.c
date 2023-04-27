@@ -838,10 +838,10 @@ xmlSecMSCryptoX509StoreFinalize(xmlSecKeyDataStorePtr store) {
     xmlSecAssert(ctx != NULL);
 
     if (ctx->trusted) {
-        CertCloseStore(ctx->trusted, CERT_CLOSE_STORE_FORCE_FLAG);
+        CertCloseStore(ctx->trusted, 0);
     }
     if (ctx->untrusted) {
-        CertCloseStore(ctx->untrusted, CERT_CLOSE_STORE_FORCE_FLAG);
+        CertCloseStore(ctx->untrusted, 0);
     }
 
     memset(ctx, 0, sizeof(xmlSecMSCryptoX509StoreCtx));

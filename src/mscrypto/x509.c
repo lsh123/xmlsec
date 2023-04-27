@@ -530,7 +530,7 @@ xmlSecMSCryptoKeyDataX509Finalize(xmlSecKeyDataPtr data) {
     }
 
     if (ctx->hMemStore != 0) {
-        if (!CertCloseStore(ctx->hMemStore, CERT_CLOSE_STORE_FORCE_FLAG)) {
+        if (!CertCloseStore(ctx->hMemStore, 0)) {
             xmlSecInternalError("CertCloseStore", NULL);
             return;
         }

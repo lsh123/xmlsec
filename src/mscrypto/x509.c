@@ -980,6 +980,9 @@ xmlSecMSCryptoKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr
                                 return(-1);
                         }
                         pCert = NULL ;
+                } else {
+                        CertFreeCertificateContext(pCert);
+                        pCert = NULL;
                 }
 
             /* verify that the key matches our expectations */

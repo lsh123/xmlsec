@@ -685,6 +685,9 @@ done:
     if(keyData != NULL) {
         xmlSecKeyDataDestroy(keyData);
     }
+    if(pCert != NULL) {
+        CertFreeCertificateContext(pCert);
+    }
     if(tmpcert != NULL) {
         CertFreeCertificateContext(tmpcert);
     }

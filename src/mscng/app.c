@@ -605,6 +605,9 @@ cleanup:
     if(privKeyData != NULL) {
         xmlSecKeyDataDestroy(privKeyData);
     }
+    if(cert != NULL) {
+        CertFreeCertificateContext(cert);
+    }
     if(certDuplicate != NULL) {
         CertFreeCertificateContext(certDuplicate);
     }

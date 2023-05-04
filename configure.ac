@@ -1146,7 +1146,7 @@ if test "z$NSPR_FOUND" = "zyes" -a "z$NSPR_LIB_PATH" != "z" ; then
     if test "z$with_gnu_ld" = "zyes" ; then
         NSPR_LIBS="$NSPR_LIBS -Wl,-rpath-link -Wl,$NSPR_LIB_PATH"
     fi
-    NSPR_LIBS="$NSPR_LIBS -L$NSPR_LIB_PATH/lib $NSPR_LIBS_LIST"
+    NSPR_LIBS="$NSPR_LIBS -L$NSPR_LIB_PATH $NSPR_LIBS_LIST"
 fi
 
 dnl Priority 5 (NSS): Just try to compile/link and hope for the best
@@ -1183,7 +1183,7 @@ if test "z$NSS_FOUND" = "zyes" -a "z$NSS_LIB_PATH" != "z" ; then
     if test "z$with_gnu_ld" = "zyes" ; then
         NSS_LIBS="$NSS_LIBS -Wl,-rpath-link -Wl,$NSS_LIB_PATH"
     fi
-    NSS_LIBS="$NSS_LIBS -L$NSS_LIB_PATH/lib $NSS_LIBS_LIST"
+    NSS_LIBS="$NSS_LIBS -L$NSS_LIB_PATH $NSS_LIBS_LIST"
 fi
 
 dnl Check NSS and NSPR versions

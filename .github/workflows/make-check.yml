@@ -126,6 +126,11 @@ jobs:
     - name: make check
       working-directory: build.dir
       run: |
+          export LD_LIBRARY_PATH=`brew --prefix openssl`/lib:$LD_LIBRARY_PATH
+          export LD_LIBRARY_PATH=`brew --prefix nspr`/lib:$LD_LIBRARY_PATH
+          export LD_LIBRARY_PATH=`brew --prefix nss`/lib:$LD_LIBRARY_PATH
+          export LD_LIBRARY_PATH=`brew --prefix libgcrypt`/lib:$LD_LIBRARY_PATH
+          export LD_LIBRARY_PATH=`brew --prefix gnutls`/lib:$LD_LIBRARY_PATH
           make check
     - name: make install
       working-directory: build.dir

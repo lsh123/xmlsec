@@ -51,7 +51,7 @@ AM_CFLAGS = \
 	$(CRYPTO_INCLUDES) \
 	$(LIBXSLT_CFLAGS) \
 	$(LIBXML_CFLAGS) \
-	$(XMLSEC_DL_INCLUDES) \
+	$(LIBLTDL_CFLAGS) \
 	$(NULL)
 
 # xmlsec command line utility
@@ -73,11 +73,10 @@ xmlsec1_LDADD = \
 	$(LIBXML_LIBS) \
 	$(CRYPTO_LD_ADD) \
 	$(XMLSEC_LIBS) \
-	$(XMLSEC_DL_LIBS) \
+	$(LIBLTDL_LIBS) \
 	$(NULL)
 
 xmlsec1_DEPENDENCIES = \
 	$(CRYPTO_DEPS) \
 	$(XMLSEC_LIBS) \
 	$(NULL)
-

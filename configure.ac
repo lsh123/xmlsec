@@ -2363,17 +2363,42 @@ AC_SUBST(XMLSEC_STATIC_BINARIES)
 dnl ==========================================================================
 dnl check if we need dynamic loading support
 dnl ==========================================================================
-XMLSEC_DL_INCLUDES=""
-XMLSEC_DL_LIBS=""
-AC_ARG_ENABLE([crypto_dl], [AS_HELP_STRING([--enable-crypto-dl],[enable dynamic loading support for xmlsec-crypto libraries (yes)])])
-if test "z$enable_crypto_dl" = "zno" ; then
-    AC_MSG_CHECKING(for xmlsec-crypto dynamic loading support)
-    XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_CRYPTO_DYNAMIC_LOADING=1"
-    XMLSEC_NO_CRYPTO_DYNAMIC_LOADING="1"
-    AC_MSG_RESULT([disabled])
-else
+LIBLTDL_INCLUDE_MARKER="ltdl.h"
+LIBLTDL_LIB_MARKER="libltdl$shrext"
+
+LIBLTDL_CFLAGS=""
+LIBLTDL_LIBS=""
+LIBLTDL_FOUND="no"
+
+AC_ARG_WITH([libltdl], [AS_HELP_STRING([--with-libltdl@<:@=PFX@:>@],[libltdl location])])
+AC_ARG_ENABLE([crypto_dl], [AS_HELP_STRING([--enable-crypto-dl],[enable dynamic loading support for xmlsec-crypto libraries (obsolete, use --with-libltdl)])])
+
+dnl Priority 0: Check if library is not needed
+if test "z$with_libltdl" = "zno" ||  test "z$enable_crypto_dl" = "zno" ; then
+    LIBLTDL_FOUND="disabled"
+fi
+
+dnl Priority 1: User specifies the path to installation
+if test "z$LIBLTDL_FOUND" = "zno" -a "z$with_libltdl" != "z" -a "z$with_libltdl" != "zyes" ; then
+    AC_MSG_CHECKING(for libltdl library installation in "$with_libltdl" folder)
+    if test -f "$with_libltdl/include/$LIBLTDL_INCLUDE_MARKER" ; then
+        LIBLTDL_CFLAGS="-I$with_libltdl/include"
+        LIBLTDL_LIBS="-L$with_libltdl/lib -lltdl"
+        LIBLTDL_FOUND="yes"
+        AC_MSG_RESULT([yes])
+    else
+        AC_MSG_ERROR([not found: "$with_libltdl/include/$LIBLTDL_INCLUDE_MARKER" file doesn't exist), typo?])
+    fi
+fi
+
+dnl Priority 2: User sets both CFLAGS and LIBS flags
+if test "z$LIBLTDL_FOUND" = "zno" -a  "z$LIBLTDL_CFLAGS" != "z" -a "z$LIBLTDL_LIBS" != "z" ; then
+    LIBLTDL_FOUND="yes"
+fi
+
+dnl Priority 3: Just try to compile/link and hope for the best
+if test "z$LIBLTDL_FOUND" = "zno" ; then
     AC_CHECK_HEADER([ltdl.h], [
-       XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_DL_LIBLTDL=1"
        AC_CHECK_LIB(
     	    [ltdl],
     	    [lt_dlopenext],
@@ -2384,20 +2409,33 @@ else
         LIBLTDL=
     ])
 
-    AC_MSG_CHECKING(for xmlsec-crypto dynamic loading support)
+    AC_MSG_CHECKING(for libltdl library installation)
     if test "z$LIBLTDL" != "z" ; then
-       XMLSEC_DL_INCLUDES="$INCLTDL"
-       XMLSEC_DL_LIBS="$LIBLTDL"
-       XMLSEC_NO_CRYPTO_DYNAMIC_LOADING="0"
-	   AC_MSG_RESULT([yes])
+        LIBLTDL_CFLAGS="$INCLTDL"
+        LIBLTDL_LIBS="$LIBLTDL"
+        LIBLTDL_FOUND="yes"
+        AC_MSG_RESULT([yes])
     else
-	   AC_MSG_ERROR([libltdl is required for xmlsec-crypto dynamic loading])
+	   AC_MSG_RESULT([not found])
     fi
 fi
+
+dnl Finally set all the flags
+AC_MSG_CHECKING(for xmlsec-crypto dynamic loading support)
+if test "z$LIBLTDL_FOUND" = "zyes" ; then
+    XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_DL_LIBLTDL=1"
+    XMLSEC_NO_CRYPTO_DYNAMIC_LOADING="0"
+    AC_MSG_RESULT([yes])
+else
+    XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_CRYPTO_DYNAMIC_LOADING=1"
+    XMLSEC_NO_CRYPTO_DYNAMIC_LOADING="1"
+    AC_MSG_RESULT([$LIBLTDL_FOUND])
+fi
+
 AM_CONDITIONAL(XMLSEC_NO_CRYPTO_DYNAMIC_LOADING, test "z$XMLSEC_NO_CRYPTO_DYNAMIC_LOADING" = "z1")
 AC_SUBST(XMLSEC_NO_CRYPTO_DYNAMIC_LOADING)
-AC_SUBST(XMLSEC_DL_INCLUDES)
-AC_SUBST(XMLSEC_DL_LIBS)
+AC_SUBST(LIBLTDL_CFLAGS)
+AC_SUBST(LIBLTDL_LIBS)
 
 dnl ==========================================================================
 dnl check if we need dynamic loading in the xmlsec apps
@@ -2543,8 +2581,8 @@ else
     XMLSEC_CHECK_CRYPTO_LIST="$XMLSEC_CRYPTO_LIST"
 fi
 
-XMLSEC_CORE_CFLAGS="$XMLSEC_DEFINES -I${includedir}/xmlsec1  $XMLSEC_DL_INCLUDES"
-XMLSEC_CORE_LIBS="-lxmlsec1 $XMLSEC_DL_LIBS "
+XMLSEC_CORE_CFLAGS="$XMLSEC_DEFINES -I${includedir}/xmlsec1  $LIBLTDL_CFLAGS"
+XMLSEC_CORE_LIBS="-lxmlsec1 $LIBLTDL_LIBS "
 AC_SUBST(XMLSEC_CORE_CFLAGS)
 AC_SUBST(XMLSEC_CORE_LIBS)
 

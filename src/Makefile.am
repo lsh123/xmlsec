@@ -8,7 +8,7 @@ AM_CFLAGS = \
 	-I../include \
 	-I$(top_srcdir)/include \
 	$(XMLSEC_DEFINES) \
-	$(XMLSEC_DL_INCLUDES) \
+	$(LIBLTDL_CFLAGS) \
 	$(LIBXSLT_CFLAGS) \
 	$(LIBXML_CFLAGS) \
 	$(NULL)
@@ -64,7 +64,7 @@ libxmlsec1_la_SOURCES = \
 libxmlsec1_la_LIBADD = \
 	$(LIBXSLT_LIBS) \
 	$(LIBXML_LIBS) \
-	$(XMLSEC_DL_LIBS) \
+	$(LIBLTDL_LIBS) \
 	$(NULL)
 
 libxmlsec1_la_LDFLAGS = \

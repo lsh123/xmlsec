@@ -48,6 +48,15 @@ struct _xmlSecMSCngX509StoreCtx {
 XMLSEC_KEY_DATA_STORE_DECLARE(MSCngX509Store, xmlSecMSCngX509StoreCtx)
 #define xmlSecMSCngX509StoreSize XMLSEC_KEY_DATA_STORE_SIZE(MSCngX509Store)
 
+// https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certclosestore
+//
+// CERT_CLOSE_STORE_CHECK_FLAG should only be used as a diagnostic tool in the development
+// of applications.
+#ifdef _DEBUG
+#define XMLSEC_CLOSE_STORE_FLAG     (CERT_CLOSE_STORE_CHECK_FLAG)
+#else  // _DEBUG
+#define XMLSEC_CLOSE_STORE_FLAG     (0)
+#endif // _DEBUG
 
 static void
 xmlSecMSCngX509StoreFinalize(xmlSecKeyDataStorePtr store) {
@@ -59,7 +68,7 @@ xmlSecMSCngX509StoreFinalize(xmlSecKeyDataStorePtr store) {
     xmlSecAssert(ctx != NULL);
 
     if(ctx->trusted != NULL) {
-        ret = CertCloseStore(ctx->trusted, CERT_CLOSE_STORE_CHECK_FLAG);
+        ret = CertCloseStore(ctx->trusted, XMLSEC_CLOSE_STORE_FLAG);
         if(ret == FALSE) {
             xmlSecMSCngLastError("CertCloseStore", xmlSecKeyDataStoreGetName(store));
             /* ignore error */
@@ -67,7 +76,7 @@ xmlSecMSCngX509StoreFinalize(xmlSecKeyDataStorePtr store) {
     }
 
     if(ctx->trustedMemStore != NULL) {
-        ret = CertCloseStore(ctx->trustedMemStore, CERT_CLOSE_STORE_CHECK_FLAG);
+        ret = CertCloseStore(ctx->trustedMemStore, XMLSEC_CLOSE_STORE_FLAG);
         if(ret == FALSE) {
             xmlSecMSCngLastError("CertCloseStore", xmlSecKeyDataStoreGetName(store));
             /* ignore error */
@@ -75,7 +84,7 @@ xmlSecMSCngX509StoreFinalize(xmlSecKeyDataStorePtr store) {
     }
 
     if(ctx->untrusted != NULL) {
-        ret = CertCloseStore(ctx->untrusted, CERT_CLOSE_STORE_CHECK_FLAG);
+        ret = CertCloseStore(ctx->untrusted, XMLSEC_CLOSE_STORE_FLAG);
         if(ret == FALSE) {
             xmlSecMSCngLastError("CertCloseStore", xmlSecKeyDataStoreGetName(store));
             /* ignore error */
@@ -83,7 +92,7 @@ xmlSecMSCngX509StoreFinalize(xmlSecKeyDataStorePtr store) {
     }
 
     if(ctx->untrustedMemStore != NULL) {
-        ret = CertCloseStore(ctx->untrustedMemStore, CERT_CLOSE_STORE_CHECK_FLAG);
+        ret = CertCloseStore(ctx->untrustedMemStore, XMLSEC_CLOSE_STORE_FLAG);
         if(ret == FALSE) {
             xmlSecMSCngLastError("CertCloseStore", xmlSecKeyDataStoreGetName(store));
             /* ignore error */

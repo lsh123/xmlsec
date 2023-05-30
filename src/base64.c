@@ -580,16 +580,20 @@ xmlSecBase64CtxDecodeIsFinished(xmlSecBase64CtxPtr ctx) {
 }
 
 static xmlSecSize
-xmlSecBase64GetEncodeSize(xmlSecBase64CtxPtr ctx, xmlSecSize inLen) {
+xmlSecBase64GetEncodeSize(xmlSecSize columnsSize, xmlSecSize inSize) {
     xmlSecSize size;
 
-    xmlSecAssert2(ctx != NULL, 0);
-
-    size = (4 * inLen) / 3 + 4;
-    if(ctx->columns > 0) {
-        size += (size / ctx->columns) + 4;
+    size = (4 * inSize) / 3 + 4;
+    if(columnsSize > 0) {
+        size += (size / columnsSize) + 4;
     }
     return(size + 1);
+}
+
+
+static xmlSecSize
+xmlSecBase64GetDecodeSize(xmlSecSize inSize) {
+    return(3 * inSize / 4 + 8);
 }
 
 /**
@@ -625,7 +629,7 @@ xmlSecBase64Encode(const xmlSecByte *in, xmlSecSize inSize, int columns) {
     ctx_initialized = 1;
 
     /* create result buffer */
-    outSize = xmlSecBase64GetEncodeSize(&ctx, inSize);
+    outSize = xmlSecBase64GetEncodeSize(ctx.columns, inSize);
     if(outSize == 0) {
         xmlSecInternalError("xmlSecBase64GetEncodeSize", NULL);
         goto done;
@@ -877,12 +881,9 @@ xmlSecBase64Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPt
             outSize = xmlSecBufferGetSize(out);
             if(inSize > 0) {
                 if(ctx->encode != 0) {
-                    outMaxLen = 4 * inSize / 3 + 8;
-                    if(ctx->columns > 0) {
-                        outMaxLen += inSize / ctx->columns + 4;
-                    }
+                    outMaxLen = xmlSecBase64GetEncodeSize(ctx->columns, inSize);
                 } else {
-                    outMaxLen = 3 * inSize / 4 + 8;
+                    outMaxLen = xmlSecBase64GetDecodeSize(inSize);
                 }
                 ret = xmlSecBufferSetMaxSize(out, outSize + outMaxLen);
                 if(ret < 0) {
@@ -955,5 +956,3 @@ xmlSecBase64Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPt
     }
     return(0);
 }
-
-

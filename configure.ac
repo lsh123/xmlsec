@@ -408,7 +408,7 @@ if test "z$LIBXML_FOUND" = "zno" ; then
         AC_LANG_PROGRAM([[
             #include <libxml/xmlversion.h>
         ]],[[
-            int main () { xmlCheckVersion(0);; return(0); }
+            xmlCheckVersion(0);
         ]])
     ],[
         LIBXML_FOUND=yes
@@ -585,7 +585,7 @@ if test "z$LIBXSLT_FOUND" = "zno" ; then
         AC_LANG_PROGRAM([[
             #include <libxslt/xslt.h>
         ]],[[
-            int main () { xsltInit(); return(0); }
+            xsltInit();
         ]])
     ],[
         LIBXSLT_FOUND=yes
@@ -773,10 +773,7 @@ if test "z$OPENSSL_FOUND" = "zno" ; then
         AC_LANG_PROGRAM([[
             #include <openssl/ssl.h>
         ]],[[
-            int main () {
-                OPENSSL_init_ssl(0, NULL);
-                return(0);
-            }
+            OPENSSL_init_ssl(0, NULL);
         ]])
     ],[
         OPENSSL_FOUND=yes
@@ -1100,7 +1097,7 @@ if test "z$NSPR_FOUND" = "zno" ; then
             #include <stdio.h>
             #include <nspr/nspr.h>
         ]],[[
-            int main () { printf("v=%s\n", PR_GetVersion()); return(0); }
+            printf("v=%s\n", PR_GetVersion());
         ]])
     ],[
         NSPR_FOUND=yes
@@ -1137,7 +1134,7 @@ if test "z$NSS_FOUND" = "zno" ; then
             #include <stdio.h>
             #include <nss/nss.h>
         ]],[[
-            int main () { printf("v=%s\n", NSS_GetVersion()); return(0); }
+            printf("v=%s\n", NSS_GetVersion());
         ]])
     ],[
         NSS_FOUND=yes
@@ -1336,7 +1333,7 @@ if test "z$GCRYPT_FOUND" = "zno" ; then
         AC_LANG_PROGRAM([[
             #include <gcrypt.h>
         ]],[[
-            int main () { printf("v=%s\n", gcry_check_version("0")); return(0); }
+            printf("v=%s\n", gcry_check_version("0"));
         ]])
     ],[
         GCRYPT_FOUND=yes
@@ -1495,7 +1492,7 @@ if test "z$GNUTLS_FOUND" = "zno" ; then
         AC_LANG_PROGRAM([[
             #include <gnutls/gnutls.h>
         ]],[[
-            int main () { gnutls_global_init(); return(0); }
+            gnutls_global_init();
         ]])
     ],[
         GNUTLS_FOUND=yes

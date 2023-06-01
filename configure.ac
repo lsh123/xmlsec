@@ -795,9 +795,9 @@ if test "z$OPENSSL_FOUND" = "zno" ; then
     LIBS="$LIBS $OPENSSL_LIBS $OPENSSL_LIBS_LIST"
     AC_LINK_IFELSE([
         AC_LANG_PROGRAM([[
-            #include <openssl/ssl.h>
+            #include <openssl/crypto.h>
         ]],[[
-            OPENSSL_init_ssl(0, NULL);
+            OPENSSL_init_crypto(0, NULL);
         ]])
     ],[
         OPENSSL_FOUND=yes

@@ -951,8 +951,13 @@ dnl
 dnl ==========================================================================
 
 dnl After upgrading min ver >= 3.59, remove the check in include/nss/crypto.h (search for NSS_VMAJOR)
-NSS_MIN_VERSION="3.52"
-NSPR_MIN_VERSION="4.25.0"
+if test "z$enable_aes_gcm" = "zno" ; then
+    NSS_MIN_VERSION="3.35"
+    NSPR_MIN_VERSION="4.18.0"
+else
+    NSS_MIN_VERSION="3.52"
+    NSPR_MIN_VERSION="4.25.0"
+fi
 SEAMONKEY_MIN_VERSION="1.0"
 MOZILLA_MIN_VERSION="1.4"
 NSS_CRYPTO_LIB="$XMLSEC_PACKAGE-nss"
@@ -2198,6 +2203,22 @@ else
 fi
 AM_CONDITIONAL(XMLSEC_NO_AES, test "z$XMLSEC_NO_AES" = "z1")
 AC_SUBST(XMLSEC_NO_AES)
+
+dnl ==========================================================================
+dnl See do we need AES GCM support
+dnl ==========================================================================
+AC_MSG_CHECKING(for AES GCM support)
+AC_ARG_ENABLE([aes-gcm], [AS_HELP_STRING([--enable-aes-gcm],[enable AES GCM support])])
+if test "z$enable_aes_gcm" = "zno" ; then
+    XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_AES_GCM=1"
+    XMLSEC_NO_AES_GCM="1"
+    AC_MSG_RESULT([disabled])
+else
+    XMLSEC_NO_AES_GCM="0"
+    AC_MSG_RESULT([yes])
+fi
+AM_CONDITIONAL(XMLSEC_NO_AES_GCM, test "z$XMLSEC_NO_AES_GCM" = "z1")
+AC_SUBST(XMLSEC_NO_AES_GCM)
 
 dnl ==========================================================================
 dnl See do we need ConcatKDF support

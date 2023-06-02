@@ -105,6 +105,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecNssTransformAes192CbcGetKlass(void
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecNssTransformAes256CbcGetKlass(void);
 
 
+#ifndef XMLSEC_NO_AES_GCM
 /**
  * xmlSecNssTransformAes128GcmId:
  *
@@ -131,6 +132,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecNssTransformAes192GcmGetKlass(void
 #define xmlSecNssTransformAes256GcmId \
         xmlSecNssTransformAes256GcmGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecNssTransformAes256GcmGetKlass(void);
+#endif
 
 
 /**

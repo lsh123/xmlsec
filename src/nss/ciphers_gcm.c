@@ -31,6 +31,7 @@
 #include "../cast_helpers.h"
 #include "../kw_aes_des.h"
 
+#ifndef XMLSEC_NO_AES_GCM
 /* https://www.w3.org/TR/xmlenc-core1/#sec-AES-GCM
  *
  * For the purposes of this specification, AES-GCM shall be used with
@@ -591,3 +592,4 @@ xmlSecNssTransformAes256GcmGetKlass(void) {
 }
 
 #endif /* XMLSEC_NO_AES */
+#endif /* XMLSEC_NO_AES_GCM */

@@ -131,9 +131,11 @@ xmlSecCryptoGetFunctions_nss(void) {
     gXmlSecNssFunctions->transformAes192CbcGetKlass     = xmlSecNssTransformAes192CbcGetKlass;
     gXmlSecNssFunctions->transformAes256CbcGetKlass     = xmlSecNssTransformAes256CbcGetKlass;
 
+#ifndef XMLSEC_NO_AES_GCM
     gXmlSecNssFunctions->transformAes128GcmGetKlass     = xmlSecNssTransformAes128GcmGetKlass;
     gXmlSecNssFunctions->transformAes192GcmGetKlass     = xmlSecNssTransformAes192GcmGetKlass;
     gXmlSecNssFunctions->transformAes256GcmGetKlass     = xmlSecNssTransformAes256GcmGetKlass;
+#endif /* XMLSEC_NO_AES_GCM */
 
     gXmlSecNssFunctions->transformKWAes128GetKlass      = xmlSecNssTransformKWAes128GetKlass;
     gXmlSecNssFunctions->transformKWAes192GetKlass      = xmlSecNssTransformKWAes192GetKlass;

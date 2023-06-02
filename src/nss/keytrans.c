@@ -104,7 +104,9 @@ xmlSecNssKeyTransportCheckId(xmlSecTransformPtr transform) {
 static int
 xmlSecNssKeyTransportInitialize(xmlSecTransformPtr transform) {
     xmlSecNssKeyTransportCtxPtr context;
+#ifndef XMLSEC_NO_RSA_OAEP
     int ret;
+#endif /* XMLSEC_NO_RSA_OAEP */
 
     xmlSecAssert2(xmlSecNssKeyTransportCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssKeyTransportSize), -1);
@@ -407,7 +409,6 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
     xmlSecSize blockSize, materialSize, resultSize;
     unsigned int resultLen;
     xmlSecBufferPtr result;
-    int ret;
     SECStatus rv;
     int res = -1;
 
@@ -495,6 +496,7 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
         if(ctx->cipher == CKM_RSA_PKCS_OAEP) {
             CK_RSA_PKCS_OAEP_PARAMS oaep_params;
             SECItem param = {siBuffer, (unsigned char*)&oaep_params, sizeof(oaep_params)};
+            int ret;
 
             ret = xmlSecNssKeyTransportSetOaepParams(ctx, &oaep_params);
             if (ret < 0) {
@@ -534,6 +536,7 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
         if(ctx->cipher == CKM_RSA_PKCS_OAEP) {
             CK_RSA_PKCS_OAEP_PARAMS oaep_params;
             SECItem param = {siBuffer, (unsigned char*)&oaep_params, sizeof(oaep_params)};
+            int ret;
 
             ret = xmlSecNssKeyTransportSetOaepParams(ctx, &oaep_params);
             if (ret < 0) {

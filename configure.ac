@@ -951,8 +951,8 @@ dnl
 dnl ==========================================================================
 
 dnl After upgrading min ver >= 3.59, remove the check in include/nss/crypto.h (search for NSS_VMAJOR)
-NSS_MIN_VERSION="3.52"
-NSPR_MIN_VERSION="4.25.0"
+NSS_MIN_VERSION="3.35"
+NSPR_MIN_VERSION="4.18.0"
 SEAMONKEY_MIN_VERSION="1.0"
 MOZILLA_MIN_VERSION="1.4"
 NSS_CRYPTO_LIB="$XMLSEC_PACKAGE-nss"

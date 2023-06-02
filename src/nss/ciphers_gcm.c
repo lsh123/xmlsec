@@ -40,6 +40,11 @@
 #define XMLSEC_NSS_GCM_CIPHER_IV_SIZE                    12
 #define XMLSEC_NSS_GCM_CIPHER_TAG_SIZE                   16
 
+/* struct was renamed in https://github.com/nss-dev/nss/commit/ba931199b924a2eac38899d04b04eedc75771546 */
+#if (NSS_VMAJOR < 3) || ((NSS_VMAJOR == 3) && (NSS_VMINOR < 52))
+#define CK_NSS_GCM_PARAMS CK_GCM_PARAMS
+#endif // (NSS_VMAJOR < 3) || ((NSS_VMAJOR == 3) && (NSS_VMINOR < 52))
+
 /**************************************************************************
  *
  * Internal Nss GCM cipher CTX

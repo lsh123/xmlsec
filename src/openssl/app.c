@@ -44,10 +44,13 @@
 #include <openssl/pkcs12.h>
 #include <openssl/conf.h>
 #include <openssl/engine.h>
-#include <openssl/store.h>
 #include <openssl/x509_vfy.h>
 #include <openssl/x509.h>
 #include <openssl/ui.h>
+
+#ifndef XMLSEC_OPENSSL_NO_STORE
+#include <openssl/store.h>
+#endif /* XMLSEC_OPENSSL_NO_STORE */
 
 #ifdef XMLSEC_OPENSSL_API_300
 #include <openssl/provider.h>
@@ -477,8 +480,10 @@ xmlSecOpenSSLAppEngineKeyLoad(const char *engineName, const char *engineKeyId,
 ) {
 #if !defined(OPENSSL_NO_ENGINE) && (!defined(XMLSEC_OPENSSL_API_300) || defined(XMLSEC_OPENSSL3_ENGINES))
     UI_METHOD * ui_method  = NULL;
-    pem_password_cb * pwdCb;
     void * pwdCbCtx;
+#ifndef XMLSEC_OPENSSL_NO_PWD_CALLBACK
+    pem_password_cb * pwdCb;
+#endif /* XMLSEC_OPENSSL_NO_PWD_CALLBACK */
     ENGINE* engine = NULL;
     xmlSecKeyPtr key = NULL;
     xmlSecKeyDataPtr data = NULL;
@@ -490,6 +495,7 @@ xmlSecOpenSSLAppEngineKeyLoad(const char *engineName, const char *engineKeyId,
     xmlSecAssert2(engineKeyId != NULL, NULL);
     xmlSecAssert2(format == xmlSecKeyDataFormatEngine, NULL);
 
+#ifndef XMLSEC_OPENSSL_NO_PWD_CALLBACK
     /* prep pwd callbacks */
     if(pwd != NULL) {
         pwdCb = xmlSecOpenSSLDummyPasswordCallback;
@@ -503,6 +509,18 @@ xmlSecOpenSSLAppEngineKeyLoad(const char *engineName, const char *engineKeyId,
         xmlSecOpenSSLError("UI_UTIL_wrap_read_pem_callback", NULL);
         goto done;
     }
+#else   /* XMLSEC_OPENSSL_NO_PWD_CALLBACK */
+    UNREFERENCED_PARAMETER(pwd);
+    UNREFERENCED_PARAMETER(pwdCallback);
+    UNREFERENCED_PARAMETER(pwdCallbackCtx);
+
+    ui_method = UI_OpenSSL();
+    if(ui_method == NULL) {
+        xmlSecOpenSSLError("UI_OpenSSL", NULL);
+        goto done;
+    }
+    pwdCbCtx = NULL;
+#endif /* XMLSEC_OPENSSL_NO_PWD_CALLBACK */
 
     /* load and initialize the engine */
     engine = ENGINE_by_id(engineName);
@@ -789,7 +807,7 @@ xmlSecOpenSSLAppFindKeyCert(EVP_PKEY * pKey, STACK_OF(X509) * certs) {
 
 static xmlSecKeyPtr
 xmlSecOpenSSLAppStoreKeyLoad(const char *uri, xmlSecKeyDataType type, const char *pwd, void* pwdCallback, void* pwdCallbackCtx) {
-#ifndef XMLSEC_NO_X509
+#if !defined(XMLSEC_OPENSSL_NO_STORE) && !defined(XMLSEC_NO_X509)
     UI_METHOD * ui_method = NULL;
     pem_password_cb * pwdCb;
     void * pwdCbCtx;
@@ -964,7 +982,7 @@ done:
     }
     return(res);
 
-#else /* XMLSEC_NO_X509 */
+#else /* !defined(XMLSEC_OPENSSL_NO_STORE) && !defined(XMLSEC_NO_X509) */
 
     xmlSecAssert2(uri != NULL, NULL);
     UNREFERENCED_PARAMETER(type);
@@ -972,9 +990,9 @@ done:
     UNREFERENCED_PARAMETER(pwdCallback);
     UNREFERENCED_PARAMETER(pwdCallbackCtx);
 
-    xmlSecNotImplementedError("X509 support is disabled");
+    xmlSecNotImplementedError("X509 or OpenSSL Stores support is disabled");
     return(NULL);
-#endif /* XMLSEC_NO_X509 */
+#endif /* !defined(XMLSEC_OPENSSL_NO_STORE) && !defined(XMLSEC_NO_X509) */
 }
 
 #ifndef XMLSEC_NO_X509

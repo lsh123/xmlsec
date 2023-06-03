@@ -87,6 +87,19 @@ else
 fi
 xmlsec_params="$xmlsec_params --crypto-config $crypto_config"
 
+# What flavour of OpenSSL do we have?
+case $XMLSEC_OPENSSL_VERSION in
+*LibreSSL*)
+    xmlsec_openssl_flavor="libressl"
+    ;;
+*BoringSSL*)
+    xmlsec_openssl_flavor="boringssl"
+    ;;
+*)
+    xmlsec_openssl_flavor="openssl"
+    ;;
+esac
+
 #
 # Setup extra vars
 #
@@ -333,7 +346,7 @@ execKeysTest() {
         fi
 
         # only openssl supports --privkey-openssl-store
-        if [ "z$crypto" = "zopenssl" ] ; then
+        if [ "z$crypto" = "zopenssl" -a "z$xmlsec_openssl_flavor" != "zlibressl" ] ; then
             printf "    Reading private key from pkcs12 file using ossl-store "
             rm -f $tmpfile
             params="--lax-key-search --privkey-openssl-store $privkey_file.p12 $pkcs12_key_extra_options $key_test_options --output $tmpfile $asym_key_test.tmpl"
@@ -402,7 +415,7 @@ execKeysTest() {
     # test reading public keys
     if [ -n "$pubkey_file" -a -n "$asym_key_test" ]; then
         # only openssl supports --pubkey-openssl-store
-        if [ "z$crypto" = "zopenssl" ] ; then
+        if [ "z$crypto" = "zopenssl" -a "z$xmlsec_openssl_flavor" != "zlibressl" ] ; then
             printf "    Reading public key from pem file using ossl-store     "
             rm -f $tmpfile
             params="--lax-key-search --pubkey-openssl-store $pubkey_file.pem $key_test_options $asym_key_test.xml"

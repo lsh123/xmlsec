@@ -1,7 +1,7 @@
 # XMLSec Library: XMLSEC-NSS
 
 ## What version of NSS?
-NSS 3.50.1 or greater and NSPR 4.25.1 or greater are required.
+NSS 3.35 or greater and NSPR 4.18 or greater are required.
 
 ## Keys manager
 

@@ -837,7 +837,7 @@ if test "z$OPENSSL_FOUND" = "zyes" ; then
             greater-than-minvers
             #endif
         ],[
-            OPENSSL_VERSION="1.1.0 (LibreSSL >= 3.6)"
+            OPENSSL_VERSION="LibreSSL >= 3.6"
         ],[
             OPENSSL_VERSION=""
         ])
@@ -853,7 +853,7 @@ if test "z$OPENSSL_FOUND" = "zyes" ; then
             #endif
             #endif
         ],[
-            OPENSSL_VERSION="1.1.0 (BoringSSL)"
+            OPENSSL_VERSION="BoringSSL >= 1.1.0"
             enable_ripemd160=no
             enable_dsa=no
         ],[
@@ -918,6 +918,7 @@ AC_SUBST(OPENSSL_LIBS)
 AC_SUBST(OPENSSL_CRYPTO_LIB)
 AC_SUBST(OPENSSL_TEST_CONFIG)
 AC_SUBST(OPENSSL_MIN_VERSION)
+AC_SUBST(OPENSSL_VERSION)
 
 dnl See if we should build OpenSSL 3+ with engines support
 AC_ARG_ENABLE([openssl3_engines],[AS_HELP_STRING([--enable-openssl3-engines],[enable engines support for OpenSSL 3+ (no)])])

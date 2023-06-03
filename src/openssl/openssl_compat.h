@@ -104,20 +104,19 @@ int RSA_padding_check_PKCS1_OAEP_mgf1(uint8_t *out, size_t *out_len, size_t max_
 /* Not implemented by LibreSSL (yet?) */
 #define XMLSEC_OPENSSL_NO_STORE             1
 #define XMLSEC_OPENSSL_NO_PWD_CALLBACK      1
+#define XMLSEC_OPENSSL_NO_DEEP_COPY         1
 #define XMLSEC_NO_DH                        1
+
+/* simply return success */
+#define sk_X509_reserve(crts, num)          (1)
+#define sk_X509_CRL_reserve(crls, num)      (1)
+
+#if (LIBRESSL_VERSION_NUMBER < 0x3080000fL)
+#define XMLSEC_NO_SHA3                      1
+#endif /* (LIBRESSL_VERSION_NUMBER < 0x3080000fL) */
 
 #if (LIBRESSL_VERSION_NUMBER < 0x3070200fL)
 #define UI_null()                           NULL
-#endif /* (LIBRESSL_VERSION_NUMBER < 0x3070200fL) */
-
-#if (LIBRESSL_VERSION_NUMBER < 0x30500000L)
-/* EVP_CIPHER_CTX stuff */
-#define EVP_CIPHER_CTX_encrypting(x)       ((x)->encrypt)
-
-/* X509 stuff */
-#define X509_STORE_CTX_get_by_subject      X509_STORE_get_by_subject
-#define X509_OBJECT_new()                  (calloc(1, sizeof(X509_OBJECT)))
-#define X509_OBJECT_free(x)                { X509_OBJECT_free_contents(x); free(x); }
 #endif /* (LIBRESSL_VERSION_NUMBER < 0x3070200fL) */
 
 #endif /* defined(LIBRESSL_VERSION_NUMBER) */

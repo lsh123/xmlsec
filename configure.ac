@@ -833,11 +833,11 @@ if test "z$OPENSSL_FOUND" = "zyes" ; then
     if test "z$OPENSSL_VERSION" = "z" ; then
         AC_EGREP_CPP(greater-than-minvers, [
             #include <openssl/opensslv.h>
-            #if defined(LIBRESSL_VERSION_NUMBER) && LIBRESSL_VERSION_NUMBER >= 0x20700000L
+            #if defined(LIBRESSL_VERSION_NUMBER) && LIBRESSL_VERSION_NUMBER >= 0x30600000L
             greater-than-minvers
             #endif
         ],[
-            OPENSSL_VERSION="1.1.0 (LibreSSL >= 2.7)"
+            OPENSSL_VERSION="1.1.0 (LibreSSL >= 3.6)"
         ],[
             OPENSSL_VERSION=""
         ])

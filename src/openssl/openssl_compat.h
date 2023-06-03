@@ -70,6 +70,9 @@ static inline int xmlSecOpenSSLCompatRand(unsigned char *buf, xmlSecSize size) {
  *****************************************************************************/
 #ifdef OPENSSL_IS_BORINGSSL
 
+/* Not implemented by LibreSSL (yet?) */
+#define XMLSEC_OPENSSL_NO_ASN1_TIME_TO_TM   1
+
 #define ENGINE_cleanup(...)                 {}
 #define CONF_modules_unload(...)            {}
 #define RAND_write_file(file)               (0)
@@ -100,8 +103,8 @@ int RSA_padding_check_PKCS1_OAEP_mgf1(uint8_t *out, size_t *out_len, size_t max_
  *****************************************************************************/
 #if defined(LIBRESSL_VERSION_NUMBER)
 
-
 /* Not implemented by LibreSSL (yet?) */
+#define XMLSEC_OPENSSL_NO_ASN1_TIME_TO_TM   1
 #define XMLSEC_OPENSSL_NO_STORE             1
 #define XMLSEC_OPENSSL_NO_PWD_CALLBACK      1
 #define XMLSEC_OPENSSL_NO_DEEP_COPY         1

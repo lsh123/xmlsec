@@ -1455,7 +1455,7 @@ my_timegm(struct tm *t) {
 
 #endif /* HAVE_TIMEGM */
 
-#if !defined(OPENSSL_IS_BORINGSSL)
+#ifndef XMLSEC_OPENSSL_NO_ASN1_TIME_TO_TM
 
 time_t
 xmlSecOpenSSLX509Asn1TimeToTime(const ASN1_TIME * t) {
@@ -1479,10 +1479,10 @@ xmlSecOpenSSLX509Asn1TimeToTime(const ASN1_TIME * t) {
     return(timegm(&tm));
 }
 
-#else  /* !defined(OPENSSL_IS_BORINGSSL) */
+#else  /* XMLSEC_OPENSSL_NO_ASN1_TIME_TO_TM */
 
 time_t
-xmlSecOpenSSLX509Asn1TimeToTime(ASN1_TIME * t) {
+xmlSecOpenSSLX509Asn1TimeToTime(const ASN1_TIME * t) {
     struct tm tm;
     int offset;
 
@@ -1544,7 +1544,7 @@ xmlSecOpenSSLX509Asn1TimeToTime(ASN1_TIME * t) {
 #undef g2
     return(timegm(&tm) - offset * 60);
 }
-#endif /* !defined(OPENSSL_IS_BORINGSSL) */
+#endif /* XMLSEC_OPENSSL_NO_ASN1_TIME_TO_TM */
 
 /* returns 1 if cert was found and verified and also data was adopted, 0 if not, or negative value if an error occurs */
 static int

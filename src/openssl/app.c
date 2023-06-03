@@ -614,9 +614,10 @@ done:
         }
         ENGINE_free(engine);
     }
-    if(ui_method != NULL) {
+    if((ui_method != NULL) && (ui_method != UI_OpenSSL())) {
         UI_destroy_method(ui_method);
     }
+    /* result */
     return(key);
 
 #else /* !defined(OPENSSL_NO_ENGINE) && (!defined(XMLSEC_OPENSSL_API_300) || defined(XMLSEC_OPENSSL3_ENGINES)) */

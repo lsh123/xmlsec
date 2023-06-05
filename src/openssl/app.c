@@ -48,9 +48,9 @@
 #include <openssl/x509.h>
 #include <openssl/ui.h>
 
-#ifndef XMLSEC_OPENSSL_NO_STORE
+#ifdef HAVE_OPENSSL_STORE_H
 #include <openssl/store.h>
-#endif /* XMLSEC_OPENSSL_NO_STORE */
+#endif /* HAVE_OPENSSL_STORE_H */
 
 #ifdef XMLSEC_OPENSSL_API_300
 #include <openssl/provider.h>
@@ -808,7 +808,7 @@ xmlSecOpenSSLAppFindKeyCert(EVP_PKEY * pKey, STACK_OF(X509) * certs) {
 
 static xmlSecKeyPtr
 xmlSecOpenSSLAppStoreKeyLoad(const char *uri, xmlSecKeyDataType type, const char *pwd, void* pwdCallback, void* pwdCallbackCtx) {
-#if !defined(XMLSEC_OPENSSL_NO_STORE) && !defined(XMLSEC_NO_X509)
+#if defined(HAVE_OPENSSL_STORE_H) && !defined(XMLSEC_NO_X509)
     UI_METHOD * ui_method = NULL;
     pem_password_cb * pwdCb;
     void * pwdCbCtx;
@@ -983,7 +983,7 @@ done:
     }
     return(res);
 
-#else /* !defined(XMLSEC_OPENSSL_NO_STORE) && !defined(XMLSEC_NO_X509) */
+#else /* defined(HAVE_OPENSSL_STORE_H) && !defined(XMLSEC_NO_X509) */
 
     xmlSecAssert2(uri != NULL, NULL);
     UNREFERENCED_PARAMETER(type);
@@ -993,7 +993,7 @@ done:
 
     xmlSecNotImplementedError("X509 or OpenSSL Stores support is disabled");
     return(NULL);
-#endif /* !defined(XMLSEC_OPENSSL_NO_STORE) && !defined(XMLSEC_NO_X509) */
+#endif /* defined(HAVE_OPENSSL_STORE_H) && !defined(XMLSEC_NO_X509) */
 }
 
 #ifndef XMLSEC_NO_X509

@@ -890,6 +890,8 @@ if test "z$OPENSSL_FOUND" = "zyes" ; then
 
     CPPFLAGS=$OLD_CPPFLAGS
 
+    AC_CHECK_HEADERS([openssl/store.h])
+
     if test "z$OPENSSL_VERSION" != "z" ; then
         OPENSSL_FOUND=yes
     else

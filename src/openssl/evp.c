@@ -185,6 +185,42 @@ xmlSecOpenSSLEvpKeyDataGetEvp(xmlSecKeyDataPtr data) {
     return(ctx->pKey);
 }
 
+/**
+ * xmlSecOpenSSLKeyGetKeySize:
+* @data:               the pointer to OpenSSL EVP data.
+ *
+ * Gets the key size in bits
+ *
+ * Returns: the size of the key in bits or 0 if an error occurs.
+ */
+xmlSecSize
+xmlSecOpenSSLKeyDataGetKeySize(xmlSecKeyDataPtr data) {
+    EVP_PKEY* pKey;
+    xmlSecSize res;
+    int ret;
+
+    xmlSecAssert2(data != NULL, 0);
+
+    pKey = xmlSecOpenSSLEvpKeyDataGetEvp(data);
+    xmlSecAssert2(pKey != NULL, 0);
+
+    ret = EVP_PKEY_get_bits(pKey);
+    if(ret <= 0) {
+        xmlSecOpenSSLError("EVP_PKEY_get_bits", xmlSecKeyDataGetName(data));
+        return(0);
+    }
+
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, res,  return(0), xmlSecKeyDataGetName(data));
+    return(res);
+}
+/**
+ * xmlSecOpenSSLKeyGetEvp:
+ * @key:               the pointer to OpenSSL EVP key.
+ *
+ * Gets the EVP_PKEY from the key.
+ *
+ * Returns: pointer to EVP_PKEY or NULL if an error occurs.
+ */
 EVP_PKEY*
 xmlSecOpenSSLKeyGetEvp(xmlSecKeyPtr key) {
     xmlSecKeyDataPtr value;
@@ -3068,6 +3104,7 @@ done:
     }
     return(res);
 }
+
 #else /* XMLSEC_OPENSSL_API_300 */
 
 static const xmlChar*
@@ -3100,39 +3137,7 @@ xmlSecOpenSSLKeyDataEcGetNameFromOid(const xmlChar* oid) {
 
 static xmlSecSize
 xmlSecOpenSSLKeyDataEcGetSize(xmlSecKeyDataPtr data) {
-    const EVP_PKEY* pKey;
-    BIGNUM * order = NULL;
-    int numBits;
-    xmlSecSize res = 0;
-    int ret;
-
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcId), 0);
-
-    pKey = xmlSecOpenSSLKeyDataEcGetEvp(data);
-    xmlSecAssert2(pKey != NULL, 0);
-
-    ret = EVP_PKEY_get_bn_param(pKey, OSSL_PKEY_PARAM_EC_ORDER, &order);
-    if((ret != 1) || (order == NULL)) {
-        xmlSecOpenSSLError("EVP_PKEY_get_bn_param(ec_order)",
-            xmlSecKeyDataGetName(data));
-        goto done;
-    }
-
-    numBits = BN_num_bytes(order);
-    if(numBits < 0) {
-        xmlSecOpenSSLError("BN_num_bits",
-            xmlSecKeyDataGetName(data));
-        goto done;
-    }
-
-    /* success */
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(numBits, res,  goto done, xmlSecKeyDataGetName(data));
-
-done:
-    if(order != NULL) {
-        BN_clear_free(order);
-    }
-    return(res);
+   return(xmlSecOpenSSLKeyDataGetKeySize(data));
 }
 
 static int

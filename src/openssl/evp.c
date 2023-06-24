@@ -185,6 +185,14 @@ xmlSecOpenSSLEvpKeyDataGetEvp(xmlSecKeyDataPtr data) {
     return(ctx->pKey);
 }
 
+/**
+ * xmlSecOpenSSLKeyGetEvp:
+ * @key:               the pointer to OpenSSL EVP key.
+ *
+ * Gets the EVP_PKEY from the key.
+ *
+ * Returns: pointer to EVP_PKEY or NULL if an error occurs.
+ */
 EVP_PKEY*
 xmlSecOpenSSLKeyGetEvp(xmlSecKeyPtr key) {
     xmlSecKeyDataPtr value;
@@ -258,6 +266,29 @@ xmlSecOpenSSLEvpKeyDataFinalize(xmlSecKeyDataPtr data) {
     }
     memset(ctx, 0, sizeof(xmlSecOpenSSLEvpKeyDataCtx));
 }
+
+#ifdef XMLSEC_OPENSSL_API_300
+static xmlSecSize
+xmlSecOpenSSLKeyDataGetKeySize(xmlSecKeyDataPtr data) {
+    EVP_PKEY* pKey;
+    xmlSecSize res;
+    int ret;
+
+    xmlSecAssert2(data != NULL, 0);
+
+    pKey = xmlSecOpenSSLEvpKeyDataGetEvp(data);
+    xmlSecAssert2(pKey != NULL, 0);
+
+    ret = EVP_PKEY_get_bits(pKey);
+    if(ret <= 0) {
+        xmlSecOpenSSLError("EVP_PKEY_get_bits", xmlSecKeyDataGetName(data));
+        return(0);
+    }
+
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, res,  return(0), xmlSecKeyDataGetName(data));
+    return(res);
+}
+#endif /* XMLSEC_OPENSSL_API_300 */
 
 /******************************************************************************
  *
@@ -1354,38 +1385,7 @@ done:
 
 static xmlSecSize
 xmlSecOpenSSLKeyDataDsaGetSize(xmlSecKeyDataPtr data) {
-    const EVP_PKEY* pKey = NULL;
-    BIGNUM *p = NULL;
-    int numBits;
-    int ret;
-    xmlSecSize res = 0;
-
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataDsaId), 0);
-
-    pKey = xmlSecOpenSSLKeyDataDsaGetEvp(data);
-    xmlSecAssert2(pKey != NULL, 0);
-
-    ret = EVP_PKEY_get_bn_param(pKey, OSSL_PKEY_PARAM_FFC_P, &p);
-    if((ret != 1) || (p == NULL)) {
-        xmlSecOpenSSLError("EVP_PKEY_get_bn_param(p)", xmlSecKeyDataGetName(data));
-        goto done;
-    }
-
-    numBits = BN_num_bits(p);
-    if(numBits < 0) {
-        xmlSecOpenSSLError("BN_num_bits", xmlSecKeyDataGetName(data));
-        goto done;
-    }
-
-    /* success */
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(numBits, res, goto done, xmlSecKeyDataGetName(data));
-
-done:
-    /* cleanup */
-    if(p != NULL) {
-        BN_clear_free(p);
-    }
-    return(res);
+    return(xmlSecOpenSSLKeyDataGetKeySize(data));
 }
 
 #endif /* XMLSEC_OPENSSL_API_300 */
@@ -2301,26 +2301,7 @@ done:
 
 static xmlSecSize
 xmlSecOpenSSLKeyDataDhGetSize(xmlSecKeyDataPtr data) {
-    const EVP_PKEY* pKey = NULL;
-    int numBits;
-    xmlSecSize res = 0;
-
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataDhId), 0);
-
-    pKey = xmlSecOpenSSLKeyDataDhGetEvp(data);
-    xmlSecAssert2(pKey != NULL, 0);
-
-    numBits = EVP_PKEY_bits(pKey);
-    if(numBits < 0) {
-        xmlSecOpenSSLError("EVP_PKEY_bits", xmlSecKeyDataGetName(data));
-        goto done;
-    }
-
-    /* success */
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(numBits, res, goto done, xmlSecKeyDataGetName(data));
-
-done:
-    return(res);
+    return(xmlSecOpenSSLKeyDataGetKeySize(data));
 }
 
 #endif /* XMLSEC_OPENSSL_API_300 */
@@ -3068,6 +3049,7 @@ done:
     }
     return(res);
 }
+
 #else /* XMLSEC_OPENSSL_API_300 */
 
 static const xmlChar*
@@ -3100,39 +3082,7 @@ xmlSecOpenSSLKeyDataEcGetNameFromOid(const xmlChar* oid) {
 
 static xmlSecSize
 xmlSecOpenSSLKeyDataEcGetSize(xmlSecKeyDataPtr data) {
-    const EVP_PKEY* pKey;
-    BIGNUM * order = NULL;
-    int numBits;
-    xmlSecSize res = 0;
-    int ret;
-
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcId), 0);
-
-    pKey = xmlSecOpenSSLKeyDataEcGetEvp(data);
-    xmlSecAssert2(pKey != NULL, 0);
-
-    ret = EVP_PKEY_get_bn_param(pKey, OSSL_PKEY_PARAM_EC_ORDER, &order);
-    if((ret != 1) || (order == NULL)) {
-        xmlSecOpenSSLError("EVP_PKEY_get_bn_param(ec_order)",
-            xmlSecKeyDataGetName(data));
-        goto done;
-    }
-
-    numBits = BN_num_bytes(order);
-    if(numBits < 0) {
-        xmlSecOpenSSLError("BN_num_bits",
-            xmlSecKeyDataGetName(data));
-        goto done;
-    }
-
-    /* success */
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(numBits, res,  goto done, xmlSecKeyDataGetName(data));
-
-done:
-    if(order != NULL) {
-        BN_clear_free(order);
-    }
-    return(res);
+   return(xmlSecOpenSSLKeyDataGetKeySize(data));
 }
 
 static int
@@ -3929,35 +3879,7 @@ done:
 
 static xmlSecSize
 xmlSecOpenSSLKeyDataRsaGetSize(xmlSecKeyDataPtr data) {
-    EVP_PKEY* pKey = NULL;
-    BIGNUM* n = NULL;
-    int numBits;
-    xmlSecSize res = 0;
-
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataRsaId), 0);
-
-    pKey = xmlSecOpenSSLKeyDataRsaGetEvp(data);
-    xmlSecAssert2(pKey != NULL, 0);
-
-    if(EVP_PKEY_get_bn_param(pKey, OSSL_PKEY_PARAM_RSA_N, &n) != 1) {
-        xmlSecOpenSSLError("EVP_PKEY_get_bn_param(n)", xmlSecKeyDataGetName(data));
-        goto done;
-    }
-
-    numBits = BN_num_bits(n);
-    if(numBits < 0) {
-        xmlSecOpenSSLError("BN_num_bits", xmlSecKeyDataGetName(data));
-        goto done;
-    }
-
-    /* success */
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(numBits, res, goto done, xmlSecKeyDataGetName(data));
-
-done:
-    if(n != NULL) {
-        BN_clear_free(n);
-    }
-    return(res);
+    return(xmlSecOpenSSLKeyDataGetKeySize(data));
 }
 
 static int

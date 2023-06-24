@@ -34,9 +34,6 @@ XMLSEC_CRYPTO_EXPORT int            xmlSecOpenSSLEvpKeyDataAdoptEvp     (xmlSecK
                                                                          EVP_PKEY* pKey);
 XMLSEC_CRYPTO_EXPORT EVP_PKEY*      xmlSecOpenSSLEvpKeyDataGetEvp       (xmlSecKeyDataPtr data);
 
-XMLSEC_CRYPTO_EXPORT xmlSecSize     xmlSecOpenSSLKeyDataGetKeySize     (xmlSecKeyDataPtr data);
-
-
 /******************************************************************************
  *
  * EVP helper functions

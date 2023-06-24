@@ -186,34 +186,6 @@ xmlSecOpenSSLEvpKeyDataGetEvp(xmlSecKeyDataPtr data) {
 }
 
 /**
- * xmlSecOpenSSLKeyGetKeySize:
-* @data:               the pointer to OpenSSL EVP data.
- *
- * Gets the key size in bits
- *
- * Returns: the size of the key in bits or 0 if an error occurs.
- */
-xmlSecSize
-xmlSecOpenSSLKeyDataGetKeySize(xmlSecKeyDataPtr data) {
-    EVP_PKEY* pKey;
-    xmlSecSize res;
-    int ret;
-
-    xmlSecAssert2(data != NULL, 0);
-
-    pKey = xmlSecOpenSSLEvpKeyDataGetEvp(data);
-    xmlSecAssert2(pKey != NULL, 0);
-
-    ret = EVP_PKEY_get_bits(pKey);
-    if(ret <= 0) {
-        xmlSecOpenSSLError("EVP_PKEY_get_bits", xmlSecKeyDataGetName(data));
-        return(0);
-    }
-
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, res,  return(0), xmlSecKeyDataGetName(data));
-    return(res);
-}
-/**
  * xmlSecOpenSSLKeyGetEvp:
  * @key:               the pointer to OpenSSL EVP key.
  *
@@ -294,6 +266,29 @@ xmlSecOpenSSLEvpKeyDataFinalize(xmlSecKeyDataPtr data) {
     }
     memset(ctx, 0, sizeof(xmlSecOpenSSLEvpKeyDataCtx));
 }
+
+#ifdef XMLSEC_OPENSSL_API_300
+static xmlSecSize
+xmlSecOpenSSLKeyDataGetKeySize(xmlSecKeyDataPtr data) {
+    EVP_PKEY* pKey;
+    xmlSecSize res;
+    int ret;
+
+    xmlSecAssert2(data != NULL, 0);
+
+    pKey = xmlSecOpenSSLEvpKeyDataGetEvp(data);
+    xmlSecAssert2(pKey != NULL, 0);
+
+    ret = EVP_PKEY_get_bits(pKey);
+    if(ret <= 0) {
+        xmlSecOpenSSLError("EVP_PKEY_get_bits", xmlSecKeyDataGetName(data));
+        return(0);
+    }
+
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, res,  return(0), xmlSecKeyDataGetName(data));
+    return(res);
+}
+#endif /* XMLSEC_OPENSSL_API_300 */
 
 /******************************************************************************
  *

@@ -155,7 +155,7 @@ jobs:
             config_flags: --enable-size-t=no
           - msystem: MINGW64
             arch: x86_64
-            config_flags: --enable-static --enable-static-linking --disable-tmpl-tests
+            config_flags: --enable-static --enable-static-linking
     defaults:
       run:
         shell: msys2 {0}

@@ -2491,7 +2491,7 @@ dnl See do we need templates tests
 dnl ==========================================================================
 AC_MSG_CHECKING(for templates testing)
 AC_ARG_ENABLE([tmpl_tests], [AS_HELP_STRING([--enable-tmpl-tests],[enable templates testing in xmlsec utility (yes)])])
-if test "z$enable_tmpl_tests" = "zyes" ; then
+if test "z$enable_tmpl_tests" = "zno" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_TMPL_TEST=1"
     AC_MSG_RESULT([disabled])
 else

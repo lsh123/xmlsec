@@ -47,7 +47,7 @@ extern "C" {
 #      if !defined(XMLSEC_STATIC)
 #        define XMLSEC_EXPORT __declspec(dllimport)
 #      else
-#        define XMLSEC_EXPORT
+#        define XMLSEC_EXPORT extern
 #      endif
 #    endif /* defined(IN_XMLSEC) */
    /* This holds on all other platforms/compilers, which are easier to
@@ -71,7 +71,7 @@ extern "C" {
 #      if !defined(XMLSEC_STATIC)
 #        define XMLSEC_CRYPTO_EXPORT __declspec(dllimport)
 #      else
-#        define XMLSEC_CRYPTO_EXPORT
+#        define XMLSEC_CRYPTO_EXPORT extern
 #      endif
 #    endif /* defined(IN_XMLSEC_CRYPTO) */
    /* This holds on all other platforms/compilers, which are easier to

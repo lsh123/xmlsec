@@ -1755,13 +1755,6 @@ AC_ARG_WITH([default_crypto], [AS_HELP_STRING([--with-default-crypto=name],[defa
 
 # check the argument
 case "z$with_default_crypto" in
-    'zmscrypto')
-        if test "z$XMLSEC_NO_MSCRYPTO" != "z1" ; then
-            XMLSEC_DEFAULT_CRYPTO="mscrypto"
-        else
-            AC_MSG_ERROR('$with_default_crypto' is specified as default crypto library but it is not configured or found)
-        fi
-        ;;
     'zmscng')
         if test "z$XMLSEC_NO_MSCNG" != "z1" ; then
             XMLSEC_DEFAULT_CRYPTO="mscng"
@@ -1790,6 +1783,13 @@ case "z$with_default_crypto" in
             AC_MSG_ERROR('$with_default_crypto' is specified as default crypto library but it is not configured or found)
         fi
         ;;
+    'zmscrypto')
+        if test "z$XMLSEC_NO_MSCRYPTO" != "z1" ; then
+            XMLSEC_DEFAULT_CRYPTO="mscrypto"
+        else
+            AC_MSG_ERROR('$with_default_crypto' is specified as default crypto library but it is not configured or found)
+        fi
+        ;;
     'zgcrypt')
         if test "z$XMLSEC_NO_GCRYPT" != "z1" ; then
             XMLSEC_DEFAULT_CRYPTO="gcrypt"
@@ -1798,10 +1798,11 @@ case "z$with_default_crypto" in
         fi
         ;;
     'z')
-        dnl The first crypto library wins
-        if test "z$XMLSEC_NO_MSCRYPTO" != "z1" ; then
-            XMLSEC_DEFAULT_CRYPTO="mscrypto"
-        elif test "z$XMLSEC_NO_MSCNG" != "z1" ; then
+        dnl The first crypto library wins:
+        dnl    - if on Windows and MSCng is available -- use it
+        dnl    - Then choose one with most supported features: OpenSSL > NSS > GnuTLS
+        dnl    - MSCrypto and GCrypt are in maintanance mode and go last
+        if test "z$XMLSEC_NO_MSCNG" != "z1" ; then
             XMLSEC_DEFAULT_CRYPTO="mscng"
         elif test "z$XMLSEC_NO_OPENSSL" != "z1" ; then
             XMLSEC_DEFAULT_CRYPTO="openssl"
@@ -1809,6 +1810,8 @@ case "z$with_default_crypto" in
             XMLSEC_DEFAULT_CRYPTO="nss"
         elif test "z$XMLSEC_NO_GNUTLS" != "z1" ; then
             XMLSEC_DEFAULT_CRYPTO="gnutls"
+        elif test "z$XMLSEC_NO_MSCRYPTO" != "z1" ; then
+            XMLSEC_DEFAULT_CRYPTO="mscrypto"
         elif test "z$XMLSEC_NO_GCRYPT" != "z1" ; then
             XMLSEC_DEFAULT_CRYPTO="gcrypt"
         else
@@ -2494,7 +2497,7 @@ dnl See do we need templates tests
 dnl ==========================================================================
 AC_MSG_CHECKING(for templates testing)
 AC_ARG_ENABLE([tmpl_tests], [AS_HELP_STRING([--enable-tmpl-tests],[enable templates testing in xmlsec utility (yes)])])
-if test "z$enable_tmpl_tests" = "zyes" ; then
+if test "z$enable_tmpl_tests" = "zno" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_TMPL_TEST=1"
     AC_MSG_RESULT([disabled])
 else

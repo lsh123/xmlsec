@@ -2224,6 +2224,9 @@ AC_MSG_CHECKING(for static linking)
 AC_ARG_ENABLE([static_linking], [AS_HELP_STRING([--enable-static-linking],[enable static linking (no)])])
 if test "z$enable_static_linking" = "zyes" -o "z$enable_static_linking" = "ztrue" ; then
     XMLSEC_STATIC_BINARIES="-static"
+    if test "z$build_on_windows" = "zyes" ; then
+        XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_STATIC=1"
+    fi
     XMLSEC_APP_DEFINES="$XMLSEC_APP_DEFINES -DXMLSEC_STATIC=1"
     enable_crypto_dl="no"
     AC_MSG_RESULT([yes])

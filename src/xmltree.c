@@ -705,6 +705,7 @@ int
 xmlSecReplaceNodeBufferAndReturn(xmlNodePtr node, const xmlSecByte *buffer, xmlSecSize size, xmlNodePtr *replaced) {
     xmlNodePtr results = NULL;
     xmlNodePtr next = NULL;
+    const xmlChar *oldenc;
     int len;
     xmlParserErrors ret;
 
@@ -713,8 +714,11 @@ xmlSecReplaceNodeBufferAndReturn(xmlNodePtr node, const xmlSecByte *buffer, xmlS
 
     /* parse buffer in the context of node's parent */
     XMLSEC_SAFE_CAST_SIZE_TO_INT(size, len, return(-1), NULL);
+    oldenc = node->doc->encoding;
+    node->doc->encoding = NULL;
     ret = xmlParseInNodeContext(node->parent, (const char*)buffer, len,
             xmlSecParserGetDefaultOptions(), &results);
+    node->doc->encoding = oldenc;
     if(ret != XML_ERR_OK) {
         xmlSecXmlError("xmlParseInNodeContext", NULL);
         return(-1);

@@ -1144,11 +1144,12 @@ static void                     xmlSecAppListTransforms         (void);
 static int                      xmlSecAppCheckTransform     (const char * name);
 
 static xmlSecTransformUriType   xmlSecAppGetUriType             (const char* string);
-static xmlOutputBufferPtr       xmlSecAppOpenFile               (const char* filename);
+static xmlOutputBufferPtr       xmlSecAppOpenFile               (const char* filename, const char* encoding);
 static int                      xmlSecAppWriteResult            (const char* inputFileName,
                                                                  const char* outputFileNameTmpl,
                                                                  xmlDocPtr doc,
-                                                                 xmlSecBufferPtr buffer);
+                                                                 xmlSecBufferPtr buffer,
+                                                                 const xmlChar* encoding);
 static int                      xmlSecAppAddIDAttr              (xmlNodePtr cur,
                                                                  const xmlChar* attr,
                                                                  const xmlChar* node,
@@ -1548,7 +1549,7 @@ xmlSecAppSignFile(const char* inputFileName, const char* outputFileNameTmpl) {
     if(g_repeats <= 1) {
         int ret;
 
-        ret = xmlSecAppWriteResult(inputFileName, outputFileNameTmpl, data->doc, NULL);
+        ret = xmlSecAppWriteResult(inputFileName, outputFileNameTmpl, data->doc, NULL, data->doc->encoding);
         if(ret < 0) {
             goto done;
         }
@@ -1766,7 +1767,7 @@ xmlSecAppSignTmpl(const char* outputFileNameTmpl) {
     if(g_repeats <= 1) {
         int ret;
 
-        ret = xmlSecAppWriteResult(NULL, outputFileNameTmpl, doc, NULL);
+        ret = xmlSecAppWriteResult(NULL, outputFileNameTmpl, doc, NULL, doc->encoding);
         if(ret < 0) {
             goto done;
         }
@@ -1949,11 +1950,11 @@ xmlSecAppEncryptFile(const char* inputFileName, const char* outputFileNameTmpl) 
     /* print out result only once per execution */
     if(g_repeats <= 1) {
         if(encCtx.resultReplaced) {
-            if(xmlSecAppWriteResult(inputFileName, outputFileNameTmpl, (data != NULL) ? data->doc : doc, NULL) < 0) {
+            if(xmlSecAppWriteResult(inputFileName, outputFileNameTmpl, (data != NULL) ? data->doc : doc, NULL, (data != NULL) ? data->doc->encoding : doc->encoding) < 0) {
                 goto done;
             }
         } else {
-            if(xmlSecAppWriteResult(inputFileName, outputFileNameTmpl, NULL, encCtx.result) < 0) {
+            if(xmlSecAppWriteResult(inputFileName, outputFileNameTmpl, NULL, encCtx.result, (data != NULL) ? data->doc->encoding : doc->encoding) < 0) {
                 goto done;
             }
         }
@@ -2018,11 +2019,11 @@ xmlSecAppDecryptFile(const char* inputFileName, const char* outputFileNameTmpl) 
     /* print out result only once per execution */
     if(g_repeats <= 1) {
         if(encCtx.resultReplaced) {
-            if(xmlSecAppWriteResult(inputFileName, outputFileNameTmpl, data->doc, NULL) < 0) {
+            if(xmlSecAppWriteResult(inputFileName, outputFileNameTmpl, data->doc, NULL, data->doc->encoding) < 0) {
                 goto done;
             }
         } else {
-            if(xmlSecAppWriteResult(inputFileName, outputFileNameTmpl, NULL, encCtx.result) < 0) {
+            if(xmlSecAppWriteResult(inputFileName, outputFileNameTmpl, NULL, encCtx.result, data->doc->encoding) < 0) {
                 goto done;
             }
         }
@@ -2108,11 +2109,11 @@ xmlSecAppEncryptTmpl(const char* outputFileNameTmpl) {
     /* print out result only once per execution */
     if(g_repeats <= 1) {
         if(encCtx.resultReplaced) {
-            if(xmlSecAppWriteResult(NULL, outputFileNameTmpl, doc, NULL) < 0) {
+            if(xmlSecAppWriteResult(NULL, outputFileNameTmpl, doc, NULL, doc->encoding) < 0) {
                 goto done;
             }
         } else {
-            if(xmlSecAppWriteResult(NULL, outputFileNameTmpl, NULL, encCtx.result) < 0) {
+            if(xmlSecAppWriteResult(NULL, outputFileNameTmpl, NULL, encCtx.result, doc->encoding) < 0) {
                 goto done;
             }
         }
@@ -3535,17 +3536,25 @@ xmlSecAppGetUriType(const char* string) {
 }
 
 static xmlOutputBufferPtr
-xmlSecAppOpenFile(const char* filename) {
+xmlSecAppOpenFile(const char* filename, const char* encoding) {
     xmlOutputBufferPtr outBuffer = NULL;
+    xmlCharEncodingHandlerPtr encoder = NULL;
+
+    if(encoding != NULL) {
+        encoder = xmlFindCharEncodingHandler(encoding);
+        if(encoder == NULL) {
+            return(NULL);
+        }
+    }
 
     if((filename == NULL) || (strcmp(filename, XMLSEC_STDOUT_FILENAME) == 0)) {
-        outBuffer = xmlOutputBufferCreateFile(stdout, NULL);
+        outBuffer = xmlOutputBufferCreateFile(stdout, encoder);
         if (outBuffer == NULL) {
             fprintf(stderr, "Error: failed to create output buffer for stdout\n");
             return(NULL);
         }
     } else {
-        outBuffer = xmlOutputBufferCreateFilename(filename, NULL, 0);
+        outBuffer = xmlOutputBufferCreateFilename(filename, encoder, 0);
         if (outBuffer == NULL) {
             fprintf(stderr, "Error: failed to open file \"%s\"\n", filename);
             return(NULL);
@@ -3660,7 +3669,7 @@ done:
 }
 
 static int
-xmlSecAppWriteResult(const char* inputFileName, const char* outputFileNameTmpl, xmlDocPtr doc, xmlSecBufferPtr buffer) {
+xmlSecAppWriteResult(const char* inputFileName, const char* outputFileNameTmpl, xmlDocPtr doc, xmlSecBufferPtr buffer, const xmlChar* encoding) {
     char* outputFileName = NULL;
     xmlOutputBufferPtr outBuffer;
     int ret;
@@ -3675,7 +3684,7 @@ xmlSecAppWriteResult(const char* inputFileName, const char* outputFileNameTmpl, 
     }
 
     /* open file */
-    outBuffer = xmlSecAppOpenFile(outputFileName != NULL ? outputFileName : outputFileNameTmpl);
+    outBuffer = xmlSecAppOpenFile(outputFileName != NULL ? outputFileName : outputFileNameTmpl, (const char *)encoding);
     if ((outputFileName != NULL) && (outputFileName != outputFileNameTmpl)) {
         xmlFree(outputFileName);
     }

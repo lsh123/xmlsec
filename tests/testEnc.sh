@@ -440,6 +440,14 @@ execEncTest $res_success \
     "--session-key aes-256 --xml-data $topfolder/aleksey-xmlenc-01/large_input.data --pubkey-cert-$cert_format:my-key $topfolder/keys/largersacert.$cert_format" \
     "$priv_key_option:my-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123"
 
+execEncTest $res_success \
+    "" \
+    "aleksey-xmlenc-01/isolatin1" \
+    "aes256-cbc rsa-1_5" \
+    "x509" \
+    "$priv_key_option:my-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123" \
+    "--session-key aes-256 --xml-data $topfolder/aleksey-xmlenc-01/isolatin1.data --pubkey-cert-$cert_format:my-key $topfolder/keys/largersacert.$cert_format" \
+    "$priv_key_option:my-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123"
 
 execEncTest $res_success \
     "" \

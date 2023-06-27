@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<EncryptedData xmlns="http://www.w3.org/2001/04/xmlenc#" Type="http://www.w3.org/2001/04/xmlenc#Element">
+<EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#aes256-cbc"/>
+<KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+<EncryptedKey xmlns="http://www.w3.org/2001/04/xmlenc#">
+<EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#rsa-1_5"/>
+<KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+<KeyName>my-key</KeyName>
+</KeyInfo>
+<CipherData>
+<CipherValue>lqsjtE+hKgTrbewbQJh6v/9CxFQoCEU1xYZgRcRXY3PWYsbGVZRUxh2Uo+Ol+lxF
+rWP3HF5OORIMQBrJRe/0EKE73kEV/hpxepGlaJVzcXUssHs5V+JBZ2anFmlSfnC2
+yRE6QnnVEMsImyNwyvFuiTzVfYxvzA/+/5KT3htEhqXAD/sVvHvQTvEtAfs9FGQQ
+HUgt/svaF+rwJ7ExPW9XxWNumGejSIra6Wqmos338GE9/YWi8mqS4m7ekVfezgVR
+iKotg3vtc3Y27DySLM/ZJswvbCwDUJ2adhRVL2oj6QgTMC2RWixfnyt3BsSxq+vG
+kAXHCK2RBJ+EeiUbp+k3WviByt2Rnnhfw445XppvRjV6Jq4UxSPg9Sgmug3dJfY2
+cpB2ZI4+IeRdqqn5abXoyf8iuWmNCysQY1CRvTug9daUj3thXmGi1VRGmxn+OMLB
+OoS/HDz8Upf7f4oSYvNLMA0ltt2noi1EXiC4eJUoFjgBmcVYivz71k9qylY/qYmq
+YPSkPtWnfcKrlVR45/n9k6p2Ya+h6MOraIuK4fBtJVcv+F3oZ6vn11Dfx/QYTHFo
+bp1U31lsLGIARX5GO3cdeopvMxNnBrgsAO18/G4oOg684sFtz2iSKTasuG2HKedW
+5nslH+5p6/NHk/Oz/YwOTFNeOhjOWGRw4vsTxp48tZk=</CipherValue>
+</CipherData>
+</EncryptedKey>
+</KeyInfo>
+<CipherData>
+<CipherValue>fihyE7174wqsJ9Sdit6IrEw4C4pbDCfqu/NofzOexNXQdp9NCg5xBtLCkgphAbPD
+WhJFt/CyVnmlZ3TEJanm2Q==</CipherValue>
+</CipherData>
+</EncryptedData>

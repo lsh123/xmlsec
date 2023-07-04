@@ -48,6 +48,15 @@
 <h1>XML Security Library News</h1>
 </div>
 <ul>
+	<li>July 5 2023<br>
+		The <a href="download.html">XML Security Library 1.2.38</a> release includes the following changes:
+				<ul>
+				<li>Fixed static linking with MinGW.</li>
+				<li>(xmlsec-mscng) Fixed block ciphers key size.</li>
+				<li>Several other small fixes (<a href="https://github.com/lsh123/xmlsec/commits/xmlsec-1_2_x">more details</a>).</li>
+				</ul>
+	</li>
+	<br>
 	<li>November 30 2022<br>
         The <a href="download.html">XML Security Library 1.2.37</a> release includes the following changes:
         <ul>
@@ -209,12 +218,12 @@
         <li>Added OOXML Relationships Transform Algorithm (patch from <a href="https://github.com/vmiklos">Miklos Vajna</a>).</li>
         <li>Added experimental GOST2012 support for xmlsec-openssl (patch from Nikolay Shaplov).</li>
         <li>Migrated XMLSec to <a href="https://github.com/lsh123/xmlsec">GitHub</a>.</li>
-        <li>Added OpenSSL 1.1.0 (pre 2) API support (major re-factoring for all OpenSSL based implementations of the 
+        <li>Added OpenSSL 1.1.0 (pre 2) API support (major re-factoring for all OpenSSL based implementations of the
         block ciphers and the DSA/ECDSA signatures).</li>
         <li>Removed support for legacy OpenSSL 0.9.6 (last release: March, 2004) and 0.9.7 (last release: February, 2007).</li>
         <li>Completely revamped manpages/documentation build to completely pass 'make distcheck' tests.</li>
-        <li>Deprecated XMLSEC_CRYPTO define in favor of xmlSecGetDefaultCrypto() function.</li> 
-        <li>Implemented several other smaller features; fixed several other minor bugs, code cleanups: 
+        <li>Deprecated XMLSEC_CRYPTO define in favor of xmlSecGetDefaultCrypto() function.</li>
+        <li>Implemented several other smaller features; fixed several other minor bugs, code cleanups:
         (<a href="https://github.com/lsh123/xmlsec/commits/master">more details</a>).</li>
         </ul>
 </li>
@@ -223,7 +232,7 @@
         accessing source code and reporting issues.
 </li>
 <br><li>May 27 2014<br>
-        The <a href="download.html">XML Security Library 1.2.20</a> release fixes a number of miscellaneous bugs and 
+        The <a href="download.html">XML Security Library 1.2.20</a> release fixes a number of miscellaneous bugs and
         updates expired or soon-to-be-expired certificates in the test suite.
 </li>
 <br><li>March 24 2013<br>
@@ -259,7 +268,7 @@
 <li>xmlsec-mscrypto: Added HMAC with MD5, SHA1, SHA256/384/512;
 	RSA with MD5, SHA256/384/512 support.</li>
 	<li>xmlsec-mscrypto: Converted to Unicode (the non-Unicode builds are still available as compile time option).</li>
-	<li>xmlsec-nss: Added MD5 and SHA256/384/512 support for digest, HMAC 
+	<li>xmlsec-nss: Added MD5 and SHA256/384/512 support for digest, HMAC
 	and RSA (the new minimum required version for NSS library is 3.9).</li>
 	<li>xmlsec-gnutls: Added SHA256/384/512 for digest and HMAC;
 	MD5 and RIPEMD160 digests support (the new minimum required version for
@@ -271,11 +280,11 @@
 <br><li>December 5 2009<br>
 	Changes in <a href="download.html">XML Security Library 1.2.14</a> release:
 	<ul>
-<li>XMLSec library is switched from built-in LTDL library to the system 
-	LTDL library on Linux/Unix and native calls on Windows to fix 
-	<a href="https://bugzilla.redhat.com/show_bug.cgi?id=CVE-2009-3736">security 
+<li>XMLSec library is switched from built-in LTDL library to the system
+	LTDL library on Linux/Unix and native calls on Windows to fix
+	<a href="https://bugzilla.redhat.com/show_bug.cgi?id=CVE-2009-3736">security
 	issue</a> in LTDL.</li>
-	<li>Fixed minor bugs (see <a href="https://github.com/lsh123/xmlsec/commits/master">commits log</a> 
+	<li>Fixed minor bugs (see <a href="https://github.com/lsh123/xmlsec/commits/master">commits log</a>
 	for complete list).</li>
 	</ul>
 </li>
@@ -295,9 +304,9 @@
 	The new <a href="download.html">XML Security Library 1.2.12</a> release
 	includes the following changes (see ChangeLog for the complete list of changes):
 	<ul>
-<li>Fixed HMAC vulnerability with small values of HMAC length 
+<li>Fixed HMAC vulnerability with small values of HMAC length
 	(<a href="http://www.kb.cert.org/vuls/id/466161">CERT VU #466161</a>).</li>
-	<li>Added support for the GOST implemented by Russian Crypto Pro CSP 
+	<li>Added support for the GOST implemented by Russian Crypto Pro CSP
 	(patch from Dennis Prochko)</li>
 	<li>Added an option to return the replaced node (based on the patch from Frank Gross)</li>
 	<li>Added new function xmlSecNodeEncodeAndSetContent for encoding
@@ -320,9 +329,9 @@
 	includes the following changes:
 	<ul>
 <li>GOST algorithms support (Dmitry Belyavsky)</li>
-	<li>Ability to disable system trusted certs in xmlsec-mscrypto 
+	<li>Ability to disable system trusted certs in xmlsec-mscrypto
 	(Dmitry Belyavsky)</li>
-	<li>New functions for adding X509IssuerName and X509SerialNumber 
+	<li>New functions for adding X509IssuerName and X509SerialNumber
 	nodes to the template (Dmitry Belyavsky)</li>
 	<li>Better packaging support for Fedora and Debian (Daniel Veillard, John Belmonte)</li>
 	<li>Cleanups from Coverity tool reports</li>
@@ -331,8 +340,8 @@
 </li>
 <br><li>July 12 2005<br>
 	The new <a href="download.html">XML Security Library 1.2.9</a> release
-	includes few bug fixes and adds support for the recently released 
-	<a href="http://www.openssl.org">OpenSSL 0.9.8</a> including several 
+	includes few bug fixes and adds support for the recently released
+	<a href="http://www.openssl.org">OpenSSL 0.9.8</a> including several
 	new algorithms for <a href="xmldsig.html">xmlsec-openssl</a>:
 	<ul>
 <li>SHA224/SHA256/SHA384/SHA512</li>
@@ -353,7 +362,7 @@
 	<li>(core) added functions to create &lt;X509Data/&gt; node children
 	in the signature template;</li>
 	<li>(core) fixed xmlSecGenerateID() function;</li>
-	<li>(core) fixed dynamic linking initialization/shutdown when custom memory 
+	<li>(core) fixed dynamic linking initialization/shutdown when custom memory
 	allocation functions are used;</li>
 	<li>(core) fixed encrypted text parsing and xmlParseInNodeContext() function;</li>
 	<li>(openssl) fixed parsing quoted values in the certificate subject;</li>
@@ -361,7 +370,7 @@
 	</ul>
 </li>
 <br><li>August 25 2004<br>
-	The new <a href="download.html">XML Security Library 1.2.6</a> 
+	The new <a href="download.html">XML Security Library 1.2.6</a>
 	fixes several minor bugs and adds support for loading keys and
 	certificates from memory.
 </li>
@@ -371,41 +380,41 @@
 	for using XML Security Library.
 </li>
 <br><li>April 15 2004<br>
-	The new <a href="download.html">XML Security Library 1.2.5</a> 
+	The new <a href="download.html">XML Security Library 1.2.5</a>
 	includes a simple XKMS server implementation and fixes a nasty
 	bug with encrypting/decrypting nodes with an empty content.
 </li>
 <br><li>January 27 2004<br>
-	The new <a href="download.html">XML Security Library 1.2.4</a> 
-	release fixes many configuration and installation problems 
+	The new <a href="download.html">XML Security Library 1.2.4</a>
+	release fixes many configuration and installation problems
 	found by John.
 </li>
 <br><li>January 6 2004<br>
-	The new <a href="download.html">XML Security Library 1.2.3</a> 
+	The new <a href="download.html">XML Security Library 1.2.3</a>
 	release upgrades xmlsec-gnutls code to support latest gnutls
-	library version (1.0.4) and fixes several configuration and 
+	library version (1.0.4) and fixes several configuration and
 	installation problems.
 </li>
 <br><li>November 11 2003<br>
-	The new <a href="download.html">XML Security Library 1.2.2</a> 
+	The new <a href="download.html">XML Security Library 1.2.2</a>
 	release includes several improvements in ./configure script
 	(Daniel, Roumen) and a bug fix for certificates serial number
 	processing in xmlsec-mscrypto.
 </li>
 <br><li>October 14 2003<br>
-	The new <a href="download.html">XML Security Library 1.2.1</a> 
+	The new <a href="download.html">XML Security Library 1.2.1</a>
 	release includes a special "hack" for supporting ID attributes
-	with invalid values in Visa 3D; fixed processing of root element 
-	node siblings (bug #124245); template functions for creating 
+	with invalid values in Visa 3D; fixed processing of root element
+	node siblings (bug #124245); template functions for creating
 	&lt;enc:KeyReference/&gt; and &lt;enc:DataReference/&amp;gt
-	nodes (Wouter); new "XMLSEC_DOCDIR" environment variable 
+	nodes (Wouter); new "XMLSEC_DOCDIR" environment variable
 	for ./configure script; updated README files for xmlsec-crypto
 	libraries.
 </li>
 <br><li>September 30 2003<br>
-	The major change in the new <a href="download.html">XML Security Library 1.2.0</a> 
+	The major change in the new <a href="download.html">XML Security Library 1.2.0</a>
 	release is the MS Crypto API support implemented by Wouter. Other changes
-	include loading public keys from certificates and improved namespaces 
+	include loading public keys from certificates and improved namespaces
 	support for start node selection with "--node-xpath" command line option
 	for xmlsec command line utility; updated online XML DSig Verifier;
 	updated docs and man pages.
@@ -413,45 +422,45 @@
 <br><li>September 17 2003<br>
 	The new <a href="download.html">XML Security Library 1.1.2</a> release
 	introduces dynamical crypto engines loading based on ltdl library (including
-	tutorial, API reference and documentation updates); adds an ability to build 
+	tutorial, API reference and documentation updates); adds an ability to build
 	multiple xmlsec-crypto libraries in one build on Windows; fixes minor problems
 	in test suite and multiple warnings when building on Sun Solaris.
 </li>
 <br><li>August 21 2003<br>
 	The new <a href="download.html">XML Security Library 1.1.1</a> release
 	adds &lt;X509Data/&gt; node templates support to xmlsec-nss (Tej);
-	includes new functions for reading keys and certificates from memory 
+	includes new functions for reading keys and certificates from memory
 	for xmlsec-core and xmlsec-openssl (Joachim); fixes several problems
-	in xmlsec configuration files (Roumen) and a bug in URI attribute 
+	in xmlsec configuration files (Roumen) and a bug in URI attribute
 	XInclude processing.
 </li>
 <br><li>August 5 2003<br>
 	A great patch from Tej that dramaticaly improves xmlsec-nss functionality
-	deserves a minor version number update :). In addition to that, the new 
-	<a href="download.html">XML Security Library 1.1.0</a> 
+	deserves a minor version number update :). In addition to that, the new
+	<a href="download.html">XML Security Library 1.1.0</a>
 	release includes &lt;X509Data/&gt; node templates support
 	for xmlsec-openssl (Roumen); separate pkg-config files for xmlsec-crypto
 	libraries and minor documentation updates (including coding style
-	and some useful commands for xmlsec developers in a new "HACKING" 
+	and some useful commands for xmlsec developers in a new "HACKING"
 	file).
 </li>
 <br><li>July 15 2003<br>
-	There were several minor patches during last month and it's time to do 
-	a new <a href="download.html">XML Security Library 1.0.4</a> 
+	There were several minor patches during last month and it's time to do
+	a new <a href="download.html">XML Security Library 1.0.4</a>
 	release to pick up them: x509 certificates names comparison function
-	now supports multiple entries woth the same object name (Roumen); 
+	now supports multiple entries woth the same object name (Roumen);
 	multiple build fixes; documentation mistypes fixes.<br>
-	Also I gave an XML Security presentation at 
-	<a href="http://oreillynet.com/oscon2003/">OSCON 2003</a> last week. 
+	Also I gave an XML Security presentation at
+	<a href="http://oreillynet.com/oscon2003/">OSCON 2003</a> last week.
 	You can download slides <a href="http://www.aleksey.com/xmlsec/extra/xmlsec_oscon_2003.ppt">here</a>.
 </li>
 <br><li>June 17 2003<br>
-	The <a href="download.html">XML Security Library 1.0.3</a> 
-	release adds PKCS#8 support for xmlsec-openssl (Tej) and fixes several 
+	The <a href="download.html">XML Security Library 1.0.3</a>
+	release adds PKCS#8 support for xmlsec-openssl (Tej) and fixes several
 	configuration and portability problems.
 </li>
 <br><li>June 03 2003<br>
-	The <a href="download.html">XML Security Library 1.0.2</a> 
+	The <a href="download.html">XML Security Library 1.0.2</a>
 	release includes several fixes in xmlsec-nss configuration and
 	linking options (Tej), PKCS21 files reading improvements,
 	minor documentation and help file fixes. Also this release
@@ -460,31 +469,31 @@
 	use or even compile it in.
 </li>
 <br><li>April 28 2003<br>
-	The <a href="download.html">XML Security Library 1.0.1</a> 
-	release is a maintanance release. It fixes several compilation 
-	problems found in 1.0.0 release on the following platforms: 
-	OpenBSD/sparc64, Win32 Wacom C, Sun Workshop CC 6.0. Also from 
-	now on Win32 MSVC port enables the threading support 
-	by default (this is a part of the Igor's change to 
+	The <a href="download.html">XML Security Library 1.0.1</a>
+	release is a maintanance release. It fixes several compilation
+	problems found in 1.0.0 release on the following platforms:
+	OpenBSD/sparc64, Win32 Wacom C, Sun Workshop CC 6.0. Also from
+	now on Win32 MSVC port enables the threading support
+	by default (this is a part of the Igor's change to
 	LibXML2/LibXSLT/XMLSec libraries).If you don't
 	use one of these platforms then you'll see no difference.
 </li>
 <br><li>April 17 2003<br>
-	The <a href="download.html">XML Security Library 1.0.0</a> 
+	The <a href="download.html">XML Security Library 1.0.0</a>
 	release is the major upgrade from 0.0.X version.
 	The new version includes multiple crypto engines support
 	(with "out of the box" support for OpenSSL, GnuTLS and NSS);
-	simplified and cleaned internal structure and API; 
+	simplified and cleaned internal structure and API;
 	several performance and memory usage improvements;
-	new or updated documentation (tutorial, API reference manual and 
+	new or updated documentation (tutorial, API reference manual and
 	examples).
 </li>
 <br><li>April 10 2003<br>
-	The final release candidate <a href="download.html">XML Security 
-	Library 1.0.0rc1</a> is available for download. This release includes 
-	minor API polishing, 
-	complete <a href="api/xmlsec-ref.html">API Reference Manual</a>, 
-	new chapters in the <a href="api/xmlsec-notes.html">tutorial</a> and 
+	The final release candidate <a href="download.html">XML Security
+	Library 1.0.0rc1</a> is available for download. This release includes
+	minor API polishing,
+	complete <a href="api/xmlsec-ref.html">API Reference Manual</a>,
+	new chapters in the <a href="api/xmlsec-notes.html">tutorial</a> and
 	several new <a href="api/xmlsec-examples.html">examples</a>.
 	Another big change is using major version number in library files
 	to prevent collisions between different library versions.<br>
@@ -492,17 +501,17 @@
 	happen in a week from now.
 </li>
 <br><li>April 8 2003<br>
-	The new <a href="download.html">XML Security Library 0.0.15</a> 
+	The new <a href="download.html">XML Security Library 0.0.15</a>
 	release is a preparation for the upcomming 1.0.0 release and
-	provides an ability to have both versions installed together 
-	on the same box. 
-	Also this release includes updated expired certificates for 
-	the regression test suite and a fix for minor bug in reading binary 
+	provides an ability to have both versions installed together
+	on the same box.
+	Also this release includes updated expired certificates for
+	the regression test suite and a fix for minor bug in reading binary
 	keys on Windows.
 	</li>
         <li>March 26 2003<br><a href="download.html">XML Security Library 0.1.1</a>
-	release is the first release candidate for the new stable 
-	version of XML Security Library. A lot of internal changes 
+	release is the first release candidate for the new stable
+	version of XML Security Library. A lot of internal changes
 	including enchanced processing controls, performance improvements
 	for XML transforms, <a href="api/index.html">new documentation</a>,
 	updated <a href="api/xmlsec-examples.html">examples</a>
@@ -514,43 +523,43 @@
 </li>
 <br><li>March 19 2003<br><a href="download.html">XML Security Library 0.0.14</a> release
 	includes several minor bugfixes in references URI
-	processing, binary transforms processing and xmlsec 
+	processing, binary transforms processing and xmlsec
 	command line utility.
 </li>
 <br><li>March 5 2003<br>
 	The <a href="download.html">XML Security Library 0.1.0</a> release
 	creates a framework for integrating XML Security Library
 	with almost any crypto engine and even combining multiple crypto
-	engines in one application. As an example, basic support for GnuTLS and NSS 
+	engines in one application. As an example, basic support for GnuTLS and NSS
 	libraries is provided (digests, hmac and block ciphers).<br>
 	This is a pre-alpha release <b>not recommended</b> for production
-	(please use the <a href="download.html">stable 0.0.X</a> releases 
+	(please use the <a href="download.html">stable 0.0.X</a> releases
 	instead). The new 0.1.X API and ABI will defenetly change.
 	However, if you plan to use XML Security Library with a new crypto
-	engine and plan to write some code then you can start now. 
+	engine and plan to write some code then you can start now.
 	The "backend" API is pretty stable and I do not expect major
 	changes.
 </li>
 <br><li>February 21 2003<br><a href="download.html">XML Security Library 0.0.13</a> release
-	fixes incorrect processing of signatures with more than 3 binary 
+	fixes incorrect processing of signatures with more than 3 binary
 	transforms in a row, improved pkcs12 files support and minor
 	documentation update.
 </li>
 <br><li>January 26 2003<br>
-	Two major fixes in <a href="http://www.aleksey.com/pipermail/xmlsec/2003/000507.html">HMAC</a> and 
-	<a href="http://www.aleksey.com/pipermail/xmlsec/2003/000516.html">DES/AES</a> 
+	Two major fixes in <a href="http://www.aleksey.com/pipermail/xmlsec/2003/000507.html">HMAC</a> and
+	<a href="http://www.aleksey.com/pipermail/xmlsec/2003/000516.html">DES/AES</a>
 	algorithms are the reason for the new <a href="download.html">XML Security Library 0.0.12</a> release.
-	Also there are few other minor features and bug fixes (see Changelog in the 
+	Also there are few other minor features and bug fixes (see Changelog in the
 	distribution for more details).
 </li>
 <br><li>December 3 2002<br>
 	New <a href="download.html">XML Security Library 0.0.11</a> release
-	fixes a <a href="http://www.aleksey.com/pipermail/xmlsec/2002/000368.html">major 
+	fixes a <a href="http://www.aleksey.com/pipermail/xmlsec/2002/000368.html">major
 	problem</a> in Reference URI attribute processing. This release
-	also includes several Win32 build process fixes from Igor.	
+	also includes several Win32 build process fixes from Igor.
 </li>
 <br><li>October 20 2002<br>
-	Almost two months from previous release and a lot of minor 
+	Almost two months from previous release and a lot of minor
 	enchancements are good reasons for the new
 	<a href="download.html">XML Security Library 0.0.10</a> release:
 	<ul>
@@ -558,9 +567,9 @@
 	expiration against it;</li>
 	<li>Implemented XML results output format for the xmlsec command
 	line utility;</li>
-	<li>Fixed XMLDSig examples and added a new one (thanks to Devin 
+	<li>Fixed XMLDSig examples and added a new one (thanks to Devin
 	Heitmueller);</li>
-	<li>Resolved static link issue and a bunch of other improvements 
+	<li>Resolved static link issue and a bunch of other improvements
 	for Win32 platform builds (Igor Zlatkovic);</li>
 	<li>Added dynamic linking option for xmlsec command line utility
 	to help Debian port (John Belmonte);</li>
@@ -568,7 +577,7 @@
 	</ul>
 </li>
 <br><li>August 26 2002<br>
-	I've completelly screwed up. The release 0.0.8 was totally broken 
+	I've completelly screwed up. The release 0.0.8 was totally broken
 	(I've simply packaged files from wrong CVS :) )
 	and I am doing a new <a href="download.html">0.0.9 release</a>
 	to fix all the problems. Please upgrade to the new version
@@ -594,7 +603,7 @@
 	</ul>
 </li>
 <br><li>July 11 2002<br>
-	XML Security Library <a href="documentation.html">documentation</a> 
+	XML Security Library <a href="documentation.html">documentation</a>
 	created.
 </li>
 <br><li>July 10 2002<br>
@@ -602,9 +611,9 @@
 	includes all small bug fixes for last month and a new LibXML2 library
 	with improved canonicalization.
 </li>
-<br><li>May 28 2002<br> 
+<br><li>May 28 2002<br>
 	New LibXML 2.4.22 is <a href="http://xmlsoft.org/news.html">released</a>
-	and new <a href="download.html">XML Security Library 0.0.6</a> is 
+	and new <a href="download.html">XML Security Library 0.0.6</a> is
 	released:
 	<ul>
 <li>Win32 port is added: the idea and most of the configuration scripts
@@ -614,7 +623,7 @@
 	algorithms and enveloped signatures).</li>
 	<li>
 <a href="http://www.w3.org/TR/xmldsig-filter2/">XPath Filter 2</a>
-	and <a href="http://lists.w3.org/Archives/Public/w3c-ietf-xmldsig/2002AprJun/0001.html">Alternative 
+	and <a href="http://lists.w3.org/Archives/Public/w3c-ietf-xmldsig/2002AprJun/0001.html">Alternative
 	XPath Filter</a> (not compiled by default, use --enable-altxpath configuration
 	switch if you need this transform) support is added. </li>
 	<li>Custom network protocol handler support is added. It is similar
@@ -626,7 +635,7 @@
 <br><li>May 14 2002<br>
 	I've checked in new code for plugging in custom input handlers
 	(similar to ones that exist in LibXML2). The downside is that
-	you have to use <a href="ftp://xmlsoft.org/cvs-snapshot.tar.gz">daily 
+	you have to use <a href="ftp://xmlsoft.org/cvs-snapshot.tar.gz">daily
 	LibXML2 snapshot</a> to compile daily XML Security Library snapshot.
 </li>
 <br><li>April 28 2002<br><a href="download.html">XMLSec 0.0.5</a> released:
@@ -643,7 +652,7 @@
 	Minor release <a href="download.html">XMLSec 0.0.4</a> with main
 	goal to fix broken RPM:
 	<ul>
-<li>The RPM is recompiled using OpenSSL 0.9.6. The previous 
+<li>The RPM is recompiled using OpenSSL 0.9.6. The previous
 	version was compiled with OpenSSL 0.9.7 but I got few complains
 	that there are no RPMs for 0.9.7 yet. The downsides of using 0.9.6 are
 	some functionality limitations for XML Encryption (no AES support,
@@ -662,8 +671,8 @@
 <br><li>April 16 2002<br>
 	A lot of changes and time for new release <a href="download.html">XMLSec 0.0.3</a>:
 	<ul>
-<li>The first release that includes <a href="xmlenc.html">XML Encryption support</a>! 
-	The bad news is that most of new features require <a href="download.html">OpenSSL 0.9.7</a> which is 
+<li>The first release that includes <a href="xmlenc.html">XML Encryption support</a>!
+	The bad news is that most of new features require <a href="download.html">OpenSSL 0.9.7</a> which is
 	not officially released yet.</li>
 	<li>Options to enable/disable support for particular algorithms were
 	added to the <code>./configure</code> script.</li>
@@ -674,7 +683,7 @@
 	The <a href="download.html">RPM packages</a> are now available.
 </li>
 <br><li>April 5 2002<br>
-	Test suite updates and new minor release <a href="download.html">XML 
+	Test suite updates and new minor release <a href="download.html">XML
 	Security Library 0.0.2a.</a><br>
 	New <a href="http://lists.w3.org/Archives/Public/w3c-ietf-xmldsig/2002AprJun/0017.html">
 	interoperability tests</a>
@@ -684,33 +693,33 @@
 	OpenSSL CRL problem.</a>
 	These new tests are included into the distribution and previous Merlin's
 	test suites  are removed. Because of these changes I decided to generate
-	a new package that also will include the <a href="xmldsig-verifier.html">Online 
+	a new package that also will include the <a href="xmldsig-verifier.html">Online
 	XML Digital Signature Verifier</a> code.
 </li>
 <br><li>April 3 2002<br>
 	The <a href="xmldsig-verifier.html">Online XML
-	Digital Signature Verifier</a> is available! You can use this tool to 
+	Digital Signature Verifier</a> is available! You can use this tool to
 	verify your XML Digital Signatures from online Web form or using a simple
-	Perl script. The idea was stolen from <a href="http://lists.w3.org/Archives/Public/w3c-ietf-xmldsig/2002AprJun/0006.html">Manoj K. 
+	Perl script. The idea was stolen from <a href="http://lists.w3.org/Archives/Public/w3c-ietf-xmldsig/2002AprJun/0006.html">Manoj K.
 	Srivastava.</a>
 </li>
 <br><li>March 31 2002<br>
-	Some major changes and a time for new release: <a href="download.html">XML Security 
-	Library 0.0.2</a>. Now XML Security Library supports <b>all</b> MUST/SHOULD/MAY 
+	Some major changes and a time for new release: <a href="download.html">XML Security
+	Library 0.0.2</a>. Now XML Security Library supports <b>all</b> MUST/SHOULD/MAY
 	<a href="xmldsig-interop.html">features</a> from XMLDSig standard!
 	<ul>
 <li>Added X509 certificates and certificate chains support</li>
-	<li>The detailed signature generation/verification results are made available 
+	<li>The detailed signature generation/verification results are made available
 	to the application</li>
 	<li>RetrievalMethod, Manifests and <a href="http://www.ietf.org/internet-drafts/draft-eastlake-xmldsig-uri-02.txt">additional
 	algorithms</a> are added</li>
-	<li>The Transforms and KeyInfo code was significantly re-writen with a goal 
+	<li>The Transforms and KeyInfo code was significantly re-writen with a goal
 	to separate it from XMLDSig logic for better re-usability (in XML Encryption,
 	etc.)</li>
 	</ul>
 </li>
 <br><li>March 18 2002<br><ul>
-<li>Fixed wrong way shift of the DSA digest result bug found by Philipp 
+<li>Fixed wrong way shift of the DSA digest result bug found by Philipp
 	Gühring.  This bug is critical and I have to do a <a href="download/xmlsec-0.0.1a.tar.gz">new
 	build.</a>
 </li>
@@ -720,7 +729,7 @@
 </li>
 <br><li>March 17 2002<br>
 	The <a href="download.html">XML Security Library 0.0.1</a> is released
-	and available for download! Please try it out and send 
+	and available for download! Please try it out and send
 	me your comments/suggestions.
 </li>
 <br>

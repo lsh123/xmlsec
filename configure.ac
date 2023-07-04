@@ -1,10 +1,10 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT([xmlsec1],[1.2.37],[http://www.aleksey.com/xmlsec])
+AC_INIT([xmlsec1],[1.2.38],[http://www.aleksey.com/xmlsec])
 
 XMLSEC_PACKAGE=xmlsec1
 XMLSEC_VERSION_MAJOR=1
 XMLSEC_VERSION_MINOR=2
-XMLSEC_VERSION_SUBMINOR=37
+XMLSEC_VERSION_SUBMINOR=38
 XMLSEC_VERSION="$XMLSEC_VERSION_MAJOR.$XMLSEC_VERSION_MINOR.$XMLSEC_VERSION_SUBMINOR"
 XMLSEC_VERSION_INFO=`echo $XMLSEC_VERSION | awk -F. '{ printf "%d:%d:%d", $1+$2, $3, $2 }'`
 XMLSEC_VERSION_SAFE=`echo $XMLSEC_VERSION | sed 's/\./_/g'`
@@ -2385,7 +2385,7 @@ if test "z$enable_pedantic" = "zyes" ; then
     CFLAGS="$CFLAGS -Wconversion -Wunused -Wshadow -Wpointer-arith -Wcast-align"
     CFLAGS="$CFLAGS -Wwrite-strings -Waggregate-return -Wmissing-prototypes"
     CFLAGS="$CFLAGS -Wnested-externs -Wredundant-decls"
-    
+
     if test "z$build_on_mac" = "zno" ; then
         CFLAGS="$CFLAGS -Wformat-overflow=2 -Wformat-signedness"
     fi

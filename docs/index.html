@@ -67,74 +67,20 @@ XML Security Library is released under the
 see the Copyright file in the distribution  for details.<br><br></p>
 <p><b>News</b></p>
 <ul>
+<li>July 5 2023<br>
+The <a href="download.html">XML Security Library 1.2.38</a> release includes the following changes:
+        <ul>
+        <li>Fixed static linking with MinGW.</li>
+        <li>(xmlsec-mscng) Fixed block ciphers key size.</li>
+        <li>Several other small fixes (<a href="https://github.com/lsh123/xmlsec/commits/xmlsec-1_2_x">more details</a>).</li>
+        </ul>
+</li>
+<br>
 <li>November 30 2022<br>
         The <a href="download.html">XML Security Library 1.2.37</a> release includes the following changes:
         <ul>
         <li>Fixed two regressions from 1.2.36 release: <a href="https://github.com/lsh123/xmlsec/issues/437">issue #437</a>
         and <a href="https://github.com/lsh123/xmlsec/issues/449">issue #449</a>.</li>
-        </ul>
-</li>
-<br>
-<li>October 31 2022<br>
-        The <a href="download.html">XML Security Library 1.2.36</a> release includes the following changes:
-        <ul>
-        <li>Retired the XMLSec mailing list "xmlsec@aleksey.com" and the <a href="xmldsig-verifier.html">XMLSec Online Signature Verifier</a>.</li>
-        <li>Several other small fixes (<a href="https://github.com/lsh123/xmlsec/commits/master">more details</a>).</li>
-        </ul>
-</li>
-<br>
-<li>October 25 2022<br>
-        The <a href="download.html">XML Security Library 1.2.35</a> release includes the following changes:
-        <ul>
-        <li>Migration to OpenSSL 3.0 API (based on PR by @snargit). Note that OpenSSL engines
-            are disabled by default when XMLSec library is compiled against OpenSSL 3.0.
-            To re-enable OpenSSL engines, use "--enable-openssl3-engines" configure flag
-            (there will be a lot of deprecation warnings).
-        </li>
-        <li>The OpenSSL before 1.1.0 and LibreSSL before 2.7.0 are now deprecated and
-            will be removed in the future versions of XMLSec Library.
-        </li>
-        <li>Refactored all the integer casts to ensure cast-safety. Fixed all warnings
-            and enabled "-Werror" and "-pedantic" flags on CI builds.
-        </li>
-        <li>Added configure flag to use size_t for xmlSecSize (currently disabled by default
-            for backward compatibility).
-        </li>
-        <li>Moved all CI builds to GitHub actions.</li>
-        <li>Several other small fixes (<a href="https://github.com/lsh123/xmlsec/commits/master">more details</a>).</li>
-        </ul>
-</li>
-<br>
-<li>May 3 2022<br>
-        The <a href="download.html">XML Security Library 1.2.34</a> release includes the following changes:
-        <ul>
-        <li>Support for OpenSSL compiled with OPENSSL_NO_ERR.</li>
-        <li>Full support for LibreSSL 3.5.0 and above (@vishwin).</li>
-        <li>Several other small fixes (<a href="https://github.com/lsh123/xmlsec/commits/master">more details</a>).</li>
-        </ul>
-</li>
-<br>
-<li>October 25 2021<br>
-        The <a href="download.html">XML Security Library 1.2.33</a> release includes the following changes:
-        <ul>
-        <li>Added --privkey-openssl-engine option to enhance openssl engine support (Leonardo Secci).</li>
-        <li>Fixed decrypting session key for two recipients.</li>
-        <li>Several other small fixes (<a href="https://github.com/lsh123/xmlsec/commits/master">more details</a>).</li>
-        </ul>
-</li>
-<br>
-<li>April 21 2021<br>
-        The <a href="download.html">XML Security Library 1.2.32</a> release includes the following changes:
-        <ul>
-        <li>Several small fixes (<a href="https://github.com/lsh123/xmlsec/commits/master">more details</a>).</li>
-        </ul>
-</li>
-<br>
-<li>October 29 2020<br>
-        The <a href="download.html">XML Security Library 1.2.31</a> release includes the following changes:
-        <ul>
-        <li>Added configure option to ensure memset() securely erases memory (gcc).</li>
-        <li>Several other small fixes (<a href="https://github.com/lsh123/xmlsec/commits/master">more details</a>).</li>
         </ul>
 </li>
 <br>

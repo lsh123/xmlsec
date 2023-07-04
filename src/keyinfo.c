@@ -61,6 +61,7 @@
 #include <xmlsec/keys.h>
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/transforms.h>
+#include <xmlsec/parser.h>
 #include <xmlsec/xmlenc.h>
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/errors.h>
@@ -1197,9 +1198,9 @@ xmlSecKeyDataRetrievalMethodReadXmlResult(xmlSecKeyDataId typeId, xmlSecKeyPtr k
     xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeRead, -1);
 
     XMLSEC_SAFE_CAST_SIZE_TO_INT(bufferSize, bufferLen, return(-1), NULL);
-    doc = xmlRecoverMemory((const char*)buffer, bufferLen);
+    doc = xmlReadMemory((const char*)buffer, bufferLen, NULL, NULL, xmlSecParserGetDefaultOptions() | XML_PARSE_RECOVER);
     if(doc == NULL) {
-        xmlSecXmlError("xmlRecoverMemory", xmlSecKeyDataKlassGetName(typeId));
+        xmlSecXmlError("xmlReadMemory", xmlSecKeyDataKlassGetName(typeId));
         return(-1);
     }
 
@@ -1452,9 +1453,9 @@ xmlSecKeyDataKeyInfoReferenceReadXmlResult(xmlSecKeyDataId typeId, xmlSecKeyPtr 
 
 
     XMLSEC_SAFE_CAST_SIZE_TO_INT(bufferSize, bufferLen, return(-1), NULL);
-    doc = xmlRecoverMemory((const char*)buffer, bufferLen);
+    doc = xmlReadMemory((const char*)buffer, bufferLen, NULL, NULL, xmlSecParserGetDefaultOptions() | XML_PARSE_RECOVER);
     if(doc == NULL) {
-        xmlSecXmlError("xmlRecoverMemory", xmlSecKeyDataKlassGetName(typeId));
+        xmlSecXmlError("xmlReadMemory", xmlSecKeyDataKlassGetName(typeId));
         return(-1);
     }
 

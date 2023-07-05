@@ -90,6 +90,9 @@ jobs:
           - config_flags:
           - config_flags: --enable-size-t=yes
     steps:
+    - name: Set up Homebrew
+      id: set-up-homebrew
+      uses: Homebrew/actions/setup-homebrew@master      
     - name: install dependencies
       run: |
           brew update

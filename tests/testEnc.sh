@@ -442,11 +442,20 @@ execEncTest $res_success \
 
 execEncTest $res_success \
     "" \
-    "aleksey-xmlenc-01/isolatin1" \
+    "aleksey-xmlenc-01/enc-element-isolatin1" \
     "aes256-cbc rsa-1_5" \
     "x509" \
     "$priv_key_option:my-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123" \
-    "--session-key aes-256 --xml-data $topfolder/aleksey-xmlenc-01/isolatin1.data --pubkey-cert-$cert_format:my-key $topfolder/keys/largersacert.$cert_format" \
+    "--session-key aes-256 --xml-data $topfolder/aleksey-xmlenc-01/enc-element-isolatin1.data --pubkey-cert-$cert_format:my-key $topfolder/keys/largersacert.$cert_format" \
+    "$priv_key_option:my-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123"
+
+execEncTest $res_success \
+    "" \
+    "aleksey-xmlenc-01/enc-content-isolatin1" \
+    "aes256-cbc rsa-1_5" \
+    "x509" \
+    "$priv_key_option:my-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123" \
+    "--session-key aes-256 --xml-data $topfolder/aleksey-xmlenc-01/enc-content-isolatin1.data --node-name http://example.org/paymentv2:CreditCard --pubkey-cert-$cert_format:my-key $topfolder/keys/largersacert.$cert_format" \
     "$priv_key_option:my-key $topfolder/keys/largersakey.$priv_key_format --pwd secret123"
 
 execEncTest $res_success \

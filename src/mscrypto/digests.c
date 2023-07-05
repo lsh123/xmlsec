@@ -86,12 +86,14 @@ static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Sha2[] = {
     { NULL, 0 }
 };
 
+#ifndef XMLSEC_NO_MD5
 static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Md5[] = {
     { MS_STRONG_PROV,                                   PROV_RSA_FULL },
     { MS_ENHANCED_PROV,                                 PROV_RSA_FULL },
     { MS_DEF_PROV,                                      PROV_RSA_FULL },
     { NULL, 0 }
 };
+#endif /* XMLSEC_NO_MD5 */
 
 #ifndef XMLSEC_NO_GOST
 static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Gost[] = {

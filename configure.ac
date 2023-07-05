@@ -2100,7 +2100,15 @@ AC_ARG_ENABLE([dsa], [AS_HELP_STRING([--enable-dsa],[enable DSA support (yes)])]
 if test "z$enable_dsa" = "zno" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_DSA=1"
     XMLSEC_NO_DSA="1"
-    AC_MSG_RESULT([disabled])dnl ==========================================================================
+    AC_MSG_RESULT([disabled])
+else
+    XMLSEC_NO_DSA="0"
+    AC_MSG_RESULT([yes])
+fi
+AM_CONDITIONAL(XMLSEC_NO_DSA, test "z$XMLSEC_NO_DSA" = "z1")
+AC_SUBST(XMLSEC_NO_DSA)
+
+dnl ==========================================================================
 dnl See do we need MD5 support
 dnl ==========================================================================
 AC_MSG_CHECKING(for MD5 support)
@@ -2115,12 +2123,6 @@ else
 fi
 AM_CONDITIONAL(XMLSEC_NO_MD5, test "z$XMLSEC_NO_MD5" = "z1")
 AC_SUBST(XMLSEC_NO_MD5)
-else
-    XMLSEC_NO_DSA="0"
-    AC_MSG_RESULT([yes])
-fi
-AM_CONDITIONAL(XMLSEC_NO_DSA, test "z$XMLSEC_NO_DSA" = "z1")
-AC_SUBST(XMLSEC_NO_DSA)
 
 dnl ==========================================================================
 dnl See do we need RSA support
@@ -2455,6 +2457,9 @@ if test "z$enable_apps_crypto_dl" = "zno" ; then
 elif test "z$enable_crypto_dl" = "zno" ; then
     AC_MSG_RESULT([disabled])
     AC_MSG_ERROR(xmlsec-crypto libraries dynamic loading support in xmlsec command line tool is requested but no dynamic loading in xmlsec itself is disabled)
+elif test "z$LIBLTDL_FOUND" != "zyes" ; then
+    AC_MSG_RESULT([disabled])
+    AC_MSG_ERROR(xmlsec-crypto libraries dynamic loading support in xmlsec command line tool is requested but no LibLTDL is found)
 else
     XMLSEC_APP_DEFINES="$XMLSEC_APP_DEFINES -DXMLSEC_CRYPTO_DYNAMIC_LOADING=1"
     XMLSEC_NO_APPS_CRYPTO_DYNAMIC_LOADING="0"

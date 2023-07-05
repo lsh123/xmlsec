@@ -101,6 +101,8 @@ jobs:
     steps:
     - name: install dependencies
       run: |
+          brew untap --force homebrew/cask
+          rm -rf /usr/local/Homebrew/Library/Taps/homebrew/homebrew-core
           unset HOMEBREW_NO_INSTALL_FROM_API
           brew update
           brew install automake autoconf pkg-config libtool

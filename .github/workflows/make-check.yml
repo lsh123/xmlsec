@@ -101,6 +101,7 @@ jobs:
     steps:
     - name: install dependencies
       run: |
+          unset HOMEBREW_NO_INSTALL_FROM_API
           brew update
           brew install automake autoconf pkg-config libtool
           # brew install libxml2 libxslt

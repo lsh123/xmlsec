@@ -560,7 +560,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformEcdhGetKlass(void);
 
 /********************************************************************
  *
- * GOST2001 transform
+ * GOST 2001 keys and ransforms
  *
  *******************************************************************/
 

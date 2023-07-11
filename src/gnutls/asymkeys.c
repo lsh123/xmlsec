@@ -2182,7 +2182,98 @@ done:
 
 #endif /* XMLSEC_NO_RSA */
 
+/**************************************************************************
+ *
+ * Shared GOST2001 and GOST2012 keys functions
+ *
+ *************************************************************************/
 
+#if !defined(XMLSEC_NO_GOST) || !defined(XMLSEC_NO_GOST2012)
+static gnutls_pubkey_t
+xmlSecGnuTLSKeyDataGostPubKeyFromPrivKey(gnutls_privkey_t privkey) {
+    gnutls_pubkey_t pubkey = NULL;
+    gnutls_ecc_curve_t curve = GNUTLS_ECC_CURVE_INVALID;
+    gnutls_digest_algorithm_t digest = GNUTLS_DIG_UNKNOWN;
+    gnutls_gost_paramset_t paramset = GNUTLS_GOST_PARAMSET_UNKNOWN;
+	gnutls_datum_t x = { NULL, 0 };
+    gnutls_datum_t y = { NULL, 0 };
+    gnutls_datum_t k = { NULL, 0 };
+    int err;
+
+    xmlSecAssert2(privkey != NULL, NULL);
+
+    err = gnutls_privkey_export_gost_raw2(privkey,
+        &curve, &digest, &paramset,
+        &x, &y, &k,
+        0);
+    if((err != GNUTLS_E_SUCCESS) && (curve != GNUTLS_ECC_CURVE_INVALID)) {
+        xmlSecGnuTLSError("gnutls_privkey_export_gost_raw2", err, NULL);
+        goto done;
+    }
+
+    err = gnutls_pubkey_init(&pubkey);
+    if(err != GNUTLS_E_SUCCESS) {
+        xmlSecGnuTLSError("gnutls_pubkey_init", err, NULL);
+        goto done;
+    }
+
+    err = gnutls_pubkey_import_gost_raw(pubkey,
+        curve, digest, paramset,
+        &x, &y);
+    if(err != GNUTLS_E_SUCCESS) {
+        xmlSecGnuTLSError("gnutls_pubkey_import_gost_raw", err, NULL);
+        gnutls_pubkey_deinit(pubkey);
+        goto done;
+    }
+
+done:
+    if(x.data != NULL) {
+        gnutls_free(x.data);
+    }
+    if(y.data != NULL) {
+        gnutls_free(y.data);
+    }
+    if(k.data != NULL) {
+        gnutls_free(k.data);
+    }
+    return(pubkey);
+}
+
+static int
+xmlSecGnuTLSKeyDataGostAdoptKey(int algo, xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, gnutls_privkey_t privkey) {
+    int ret;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataGost2001Id), -1);
+
+    /* verify key type */
+    if(pubkey != NULL) {
+        ret = gnutls_pubkey_get_pk_algorithm(pubkey, NULL);
+        if(ret != algo) {
+            xmlSecInternalError2("Invalid pubkey algorithm", NULL, "type=%d", ret);
+            return(-1);
+        }
+    }
+    if(privkey != NULL) {
+        ret = gnutls_privkey_get_pk_algorithm(privkey, NULL);
+        if(ret != algo) {
+            xmlSecInternalError2("Invalid privkey algorithm", NULL, "type=%d", ret);
+            return(-1);
+        }
+    }
+
+    /* create pub key if needed */
+    if((privkey != NULL) && (pubkey == NULL)) {
+        pubkey = xmlSecGnuTLSKeyDataGostPubKeyFromPrivKey(privkey);
+        if(pubkey == NULL) {
+            xmlSecInternalError("xmlSecGnuTLSKeyDataGostPubKeyFromPrivKey", NULL);
+            return(-1);
+        }
+    }
+
+    /* do the work */
+    return xmlSecGnuTLSAsymKeyDataAdoptKey(data, pubkey, privkey);
+}
+#endif /* !defined(XMLSEC_NO_GOST) || !defined(XMLSEC_NO_GOST2012) */
 
 #ifndef XMLSEC_NO_GOST
 /**************************************************************************
@@ -2203,8 +2294,6 @@ static void             xmlSecGnuTLSKeyDataGost2001DebugDump    (xmlSecKeyDataPt
                                                                  FILE* output);
 static void             xmlSecGnuTLSKeyDataGost2001DebugXmlDump (xmlSecKeyDataPtr data,
                                                                  FILE* output);
-
-static gnutls_pubkey_t  xmlSecGnuTLSKeyDataGost2001PubKeyFromPrivKey  (gnutls_privkey_t privkey);
 
 static xmlSecKeyDataKlass xmlSecGnuTLSKeyDataGost2001Klass = {
     sizeof(xmlSecKeyDataKlass),
@@ -2268,37 +2357,7 @@ xmlSecGnuTLSKeyDataGost2001GetKlass(void) {
  */
 int
 xmlSecGnuTLSKeyDataGost2001AdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, gnutls_privkey_t privkey) {
-    int ret;
-
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataGost2001Id), -1);
-
-    /* verify key type */
-    if(pubkey != NULL) {
-        ret = gnutls_pubkey_get_pk_algorithm(pubkey, NULL);
-        if(ret != GNUTLS_PK_GOST_01) {
-            xmlSecInternalError2("Invalid pubkey algorithm", NULL, "type=%d", ret);
-            return(-1);
-        }
-    }
-    if(privkey != NULL) {
-        ret = gnutls_privkey_get_pk_algorithm(privkey, NULL);
-        if(ret != GNUTLS_PK_GOST_01) {
-            xmlSecInternalError2("Invalid privkey algorithm", NULL, "type=%d", ret);
-            return(-1);
-        }
-    }
-
-    /* create pub key if needed */
-    if((privkey != NULL) && (pubkey == NULL)) {
-        pubkey = xmlSecGnuTLSKeyDataGost2001PubKeyFromPrivKey(privkey);
-        if(pubkey == NULL) {
-            xmlSecInternalError("xmlSecGnuTLSKeyDataGost2001PubKeyFromPrivKey", NULL);
-            return(-1);
-        }
-    }
-
-    /* do the work */
-    return xmlSecGnuTLSAsymKeyDataAdoptKey(data, pubkey, privkey);
+    return(xmlSecGnuTLSKeyDataGostAdoptKey(GNUTLS_PK_GOST_01, data, pubkey, privkey));
 }
 
 /**
@@ -2383,57 +2442,342 @@ xmlSecGnuTLSKeyDataGost2001DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
             xmlSecGnuTLSKeyDataGost2001GetSize(data));
 }
 
-static gnutls_pubkey_t
-xmlSecGnuTLSKeyDataGost2001PubKeyFromPrivKey(gnutls_privkey_t privkey) {
-    gnutls_pubkey_t pubkey = NULL;
-    gnutls_ecc_curve_t curve = GNUTLS_ECC_CURVE_INVALID;
-    gnutls_digest_algorithm_t digest = GNUTLS_DIG_UNKNOWN;
-    gnutls_gost_paramset_t paramset = GNUTLS_GOST_PARAMSET_UNKNOWN;
-	gnutls_datum_t x = { NULL, 0 };
-    gnutls_datum_t y = { NULL, 0 };
-    gnutls_datum_t k = { NULL, 0 };
-    int err;
+#endif /* XMLSEC_NO_GOST */
 
-    xmlSecAssert2(privkey != NULL, NULL);
 
-    err = gnutls_privkey_export_gost_raw2(privkey,
-        &curve, &digest, &paramset,
-        &x, &y, &k,
-        0);
-    if((err != GNUTLS_E_SUCCESS) && (curve != GNUTLS_ECC_CURVE_INVALID)) {
-        xmlSecGnuTLSError("gnutls_privkey_export_gost_raw2", err, NULL);
-        goto done;
-    }
 
-    err = gnutls_pubkey_init(&pubkey);
-    if(err != GNUTLS_E_SUCCESS) {
-        xmlSecGnuTLSError("gnutls_pubkey_init", err, NULL);
-        goto done;
-    }
+#ifndef XMLSEC_NO_GOST2012
+/**************************************************************************
+ *
+ * GOST R 34.10-2012 256 bit xml key representation processing
+ *
+ *************************************************************************/
+static int              xmlSecGnuTLSKeyDataGost2012_256Initialize   (xmlSecKeyDataPtr data);
+static int              xmlSecGnuTLSKeyDataGost2012_256Duplicate    (xmlSecKeyDataPtr dst,
+                                                                     xmlSecKeyDataPtr src);
+static void             xmlSecGnuTLSKeyDataGost2012_256Finalize     (xmlSecKeyDataPtr data);
 
-    err = gnutls_pubkey_import_gost_raw(pubkey,
-        curve, digest, paramset,
-        &x, &y);
-    if(err != GNUTLS_E_SUCCESS) {
-        xmlSecGnuTLSError("gnutls_pubkey_import_gost_raw", err, NULL);
-        gnutls_pubkey_deinit(pubkey);
-        goto done;
-    }
+static xmlSecKeyDataType xmlSecGnuTLSKeyDataGost2012_256GetType     (xmlSecKeyDataPtr data);
+static xmlSecSize       xmlSecGnuTLSKeyDataGost2012_256GetSize      (xmlSecKeyDataPtr data);
 
-done:
-    if(x.data != NULL) {
-        gnutls_free(x.data);
-    }
-    if(y.data != NULL) {
-        gnutls_free(y.data);
-    }
-    if(k.data != NULL) {
-        gnutls_free(k.data);
-    }
-    return(pubkey);
+static void             xmlSecGnuTLSKeyDataGost2012_256DebugDump    (xmlSecKeyDataPtr data,
+                                                                     FILE* output);
+static void             xmlSecGnuTLSKeyDataGost2012_256DebugXmlDump (xmlSecKeyDataPtr data,
+                                                                     FILE* output);
+
+static xmlSecKeyDataKlass xmlSecGnuTLSKeyDataGost2012_256Klass = {
+    sizeof(xmlSecKeyDataKlass),
+    xmlSecGnuTLSAsymKeyDataSize,
+
+    /* data */
+    xmlSecNameGostR3410_2012_256KeyValue,
+    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+                                                /* xmlSecKeyDataUsage usage; */
+    xmlSecHrefGostR3410_2012_256KeyValue,       /* const xmlChar* href; */
+    xmlSecNodeGostR3410_2012_256KeyValue,       /* const xmlChar* dataNodeName; */
+    xmlSecDSigNs,                               /* const xmlChar* dataNodeNs; */
+
+    /* constructors/destructor */
+    xmlSecGnuTLSKeyDataGost2012_256Initialize,  /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecGnuTLSKeyDataGost2012_256Duplicate,   /* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecGnuTLSKeyDataGost2012_256Finalize,    /* xmlSecKeyDataFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecKeyDataGenerateMethod generate; */
+
+    /* get info */
+    xmlSecGnuTLSKeyDataGost2012_256GetType,     /* xmlSecKeyDataGetTypeMethod getType; */
+    xmlSecGnuTLSKeyDataGost2012_256GetSize,     /* xmlSecKeyDataGetSizeMethod getSize; */
+    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
+
+    /* read/write */
+    NULL,                                       /* xmlSecKeyDataXmlReadMethod xmlRead; */
+    NULL,                                       /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    NULL,                                       /* xmlSecKeyDataBinReadMethod binRead; */
+    NULL,                                       /* xmlSecKeyDataBinWriteMethod binWrite; */
+
+    /* debug */
+    xmlSecGnuTLSKeyDataGost2012_256DebugDump,       /* xmlSecKeyDataDebugDumpMethod debugDump; */
+    xmlSecGnuTLSKeyDataGost2012_256DebugXmlDump,    /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+
+    /* reserved for the future */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecGnuTLSKeyDataGost2012_256GetKlass:
+ *
+ * The GnuTLS GOST 2012 (256 bits) key data klass.
+ *
+ * Returns: pointer to GnuTLS GOST 2012 (256 bits) key data klass.
+ */
+xmlSecKeyDataId
+xmlSecGnuTLSKeyDataGost2012_256GetKlass(void) {
+    return(&xmlSecGnuTLSKeyDataGost2012_256Klass);
 }
 
-#endif /* XMLSEC_NO_GOST */
+/**
+ * xmlSecGnuTLSKeyDataGost2012_256AdoptKey:
+ * @data:               the pointer to GOST 2012 (256 bits) key data.
+ * @pubkey:             the pointer to GnuTLS GOST 2012 (256 bits) key.
+ * @privkey:            the pointer to GnuTLS GOST 2012 (256 bits) key.
+ *
+ * Sets the value of GOST 2012 (256 bits) key data. The @pubkey and @privkey will be owned by the @data on success.
+ *
+ * Returns: 0 on success or a negative value otherwise.
+ */
+int
+xmlSecGnuTLSKeyDataGost2012_256AdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, gnutls_privkey_t privkey) {
+    return(xmlSecGnuTLSKeyDataGostAdoptKey(GNUTLS_PK_GOST_12_256, data, pubkey, privkey));
+}
+
+/**
+ * xmlSecGnuTLSKeyDataGost2012_256GetPublicKey:
+ * @data:               the pointer to GOST 2012 (256 bits) key data.
+ *
+ * Gets the GnuTLS GOST 2012 (256 bits) public key from GOST 2012 (256 bits) key data.
+ *
+ * Returns: pointer to GnuTLS public GOST 2012 (256 bits) key or NULL if an error occurs.
+ */
+gnutls_pubkey_t
+xmlSecGnuTLSKeyDataGost2012_256GetPublicKey(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataGost2012_256Id), NULL);
+    return xmlSecGnuTLSAsymKeyDataGetPublicKey(data);
+}
+
+/**
+ * xmlSecGnuTLSKeyDataGost2012_256GetPrivateKey:
+ * @data:               the pointer to GOST 2012 (256 bits) key data.
+ *
+ * Gets the GnuTLS GOST 2012 (256 bits) private key from GOST 2012 (256 bits) key data.
+ *
+ * Returns: pointer to GnuTLS private GOST 2012 (256 bits) key or NULL if an error occurs.
+ */
+gnutls_privkey_t
+xmlSecGnuTLSKeyDataGost2012_256GetPrivateKey(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataGost2012_256Id), NULL);
+    return xmlSecGnuTLSAsymKeyDataGetPrivateKey(data);
+}
+
+static int
+xmlSecGnuTLSKeyDataGost2012_256Initialize(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataGost2012_256Id), -1);
+
+    return(xmlSecGnuTLSAsymKeyDataInitialize(data));
+}
+
+static int
+xmlSecGnuTLSKeyDataGost2012_256Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecGnuTLSKeyDataGost2012_256Id), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecGnuTLSKeyDataGost2012_256Id), -1);
+
+    return(xmlSecGnuTLSAsymKeyDataDuplicate(dst, src));
+}
+
+static void
+xmlSecGnuTLSKeyDataGost2012_256Finalize(xmlSecKeyDataPtr data) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataGost2012_256Id));
+
+    xmlSecGnuTLSAsymKeyDataFinalize(data);
+}
+
+static xmlSecKeyDataType
+xmlSecGnuTLSKeyDataGost2012_256GetType(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataGost2012_256Id), xmlSecKeyDataTypeUnknown);
+
+    return xmlSecGnuTLSAsymKeyDataGetType(data);
+}
+
+static xmlSecSize
+xmlSecGnuTLSKeyDataGost2012_256GetSize(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataGost2012_256Id), 0);
+
+    return xmlSecGnuTLSAsymKeyDataGetSize(data);
+}
+
+static void
+xmlSecGnuTLSKeyDataGost2012_256DebugDump(xmlSecKeyDataPtr data, FILE* output) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataGost2012_256Id));
+    xmlSecAssert(output != NULL);
+
+    fprintf(output, "=== GOST 2012 (256 bits) key: size = " XMLSEC_SIZE_FMT "\n",
+            xmlSecGnuTLSKeyDataGost2012_256GetSize(data));
+}
+
+static void
+xmlSecGnuTLSKeyDataGost2012_256DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataGost2012_256Id));
+    xmlSecAssert(output != NULL);
+
+    fprintf(output, "<GOST2012_256KeyValue size=\"" XMLSEC_SIZE_FMT "\" />\n",
+            xmlSecGnuTLSKeyDataGost2012_256GetSize(data));
+}
+
+/**************************************************************************
+ *
+ * GOST R 34.10-2012 512 bit xml key representation processing
+ *
+ *************************************************************************/
+static int              xmlSecGnuTLSKeyDataGost2012_512Initialize   (xmlSecKeyDataPtr data);
+static int              xmlSecGnuTLSKeyDataGost2012_512Duplicate    (xmlSecKeyDataPtr dst,
+                                                                     xmlSecKeyDataPtr src);
+static void             xmlSecGnuTLSKeyDataGost2012_512Finalize     (xmlSecKeyDataPtr data);
+
+static xmlSecKeyDataType xmlSecGnuTLSKeyDataGost2012_512GetType     (xmlSecKeyDataPtr data);
+static xmlSecSize       xmlSecGnuTLSKeyDataGost2012_512GetSize      (xmlSecKeyDataPtr data);
+
+static void             xmlSecGnuTLSKeyDataGost2012_512DebugDump    (xmlSecKeyDataPtr data,
+                                                                     FILE* output);
+static void             xmlSecGnuTLSKeyDataGost2012_512DebugXmlDump (xmlSecKeyDataPtr data,
+                                                                     FILE* output);
+
+static xmlSecKeyDataKlass xmlSecGnuTLSKeyDataGost2012_512Klass = {
+    sizeof(xmlSecKeyDataKlass),
+    xmlSecGnuTLSAsymKeyDataSize,
+
+    /* data */
+    xmlSecNameGostR3410_2012_512KeyValue,
+    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+                                                /* xmlSecKeyDataUsage usage; */
+    xmlSecHrefGostR3410_2012_512KeyValue,       /* const xmlChar* href; */
+    xmlSecNodeGostR3410_2012_512KeyValue,       /* const xmlChar* dataNodeName; */
+    xmlSecDSigNs,                               /* const xmlChar* dataNodeNs; */
+
+    /* constructors/destructor */
+    xmlSecGnuTLSKeyDataGost2012_512Initialize,  /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecGnuTLSKeyDataGost2012_512Duplicate,   /* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecGnuTLSKeyDataGost2012_512Finalize,    /* xmlSecKeyDataFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecKeyDataGenerateMethod generate; */
+
+    /* get info */
+    xmlSecGnuTLSKeyDataGost2012_512GetType,     /* xmlSecKeyDataGetTypeMethod getType; */
+    xmlSecGnuTLSKeyDataGost2012_512GetSize,     /* xmlSecKeyDataGetSizeMethod getSize; */
+    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
+
+    /* read/write */
+    NULL,                                       /* xmlSecKeyDataXmlReadMethod xmlRead; */
+    NULL,                                       /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    NULL,                                       /* xmlSecKeyDataBinReadMethod binRead; */
+    NULL,                                       /* xmlSecKeyDataBinWriteMethod binWrite; */
+
+    /* debug */
+    xmlSecGnuTLSKeyDataGost2012_512DebugDump,       /* xmlSecKeyDataDebugDumpMethod debugDump; */
+    xmlSecGnuTLSKeyDataGost2012_512DebugXmlDump,    /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+
+    /* reserved for the future */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecGnuTLSKeyDataGost2012_512GetKlass:
+ *
+ * The GnuTLS GOST 2012 (512 bits) key data klass.
+ *
+ * Returns: pointer to GnuTLS GOST 2012 (512 bits) key data klass.
+ */
+xmlSecKeyDataId
+xmlSecGnuTLSKeyDataGost2012_512GetKlass(void) {
+    return(&xmlSecGnuTLSKeyDataGost2012_512Klass);
+}
+
+/**
+ * xmlSecGnuTLSKeyDataGost2012_512AdoptKey:
+ * @data:               the pointer to GOST 2012 (512 bits) key data.
+ * @pubkey:             the pointer to GnuTLS GOST 2012 (512 bits) key.
+ * @privkey:            the pointer to GnuTLS GOST 2012 (512 bits) key.
+ *
+ * Sets the value of GOST 2012 (512 bits) key data. The @pubkey and @privkey will be owned by the @data on success.
+ *
+ * Returns: 0 on success or a negative value otherwise.
+ */
+int
+xmlSecGnuTLSKeyDataGost2012_512AdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, gnutls_privkey_t privkey) {
+    return(xmlSecGnuTLSKeyDataGostAdoptKey(GNUTLS_PK_GOST_12_512, data, pubkey, privkey));
+}
+
+/**
+ * xmlSecGnuTLSKeyDataGost2012_512GetPublicKey:
+ * @data:               the pointer to GOST 2012 (512 bits) key data.
+ *
+ * Gets the GnuTLS GOST 2012 (512 bits) public key from GOST 2012 (512 bits) key data.
+ *
+ * Returns: pointer to GnuTLS public GOST 2012 (512 bits) key or NULL if an error occurs.
+ */
+gnutls_pubkey_t
+xmlSecGnuTLSKeyDataGost2012_512GetPublicKey(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataGost2012_512Id), NULL);
+    return xmlSecGnuTLSAsymKeyDataGetPublicKey(data);
+}
+
+/**
+ * xmlSecGnuTLSKeyDataGost2012_512GetPrivateKey:
+ * @data:               the pointer to GOST 2012 (512 bits) key data.
+ *
+ * Gets the GnuTLS GOST 2012 (512 bits) private key from GOST 2012 (512 bits) key data.
+ *
+ * Returns: pointer to GnuTLS private GOST 2012 (512 bits) key or NULL if an error occurs.
+ */
+gnutls_privkey_t
+xmlSecGnuTLSKeyDataGost2012_512GetPrivateKey(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataGost2012_512Id), NULL);
+    return xmlSecGnuTLSAsymKeyDataGetPrivateKey(data);
+}
+
+static int
+xmlSecGnuTLSKeyDataGost2012_512Initialize(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataGost2012_512Id), -1);
+
+    return(xmlSecGnuTLSAsymKeyDataInitialize(data));
+}
+
+static int
+xmlSecGnuTLSKeyDataGost2012_512Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecGnuTLSKeyDataGost2012_512Id), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecGnuTLSKeyDataGost2012_512Id), -1);
+
+    return(xmlSecGnuTLSAsymKeyDataDuplicate(dst, src));
+}
+
+static void
+xmlSecGnuTLSKeyDataGost2012_512Finalize(xmlSecKeyDataPtr data) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataGost2012_512Id));
+
+    xmlSecGnuTLSAsymKeyDataFinalize(data);
+}
+
+static xmlSecKeyDataType
+xmlSecGnuTLSKeyDataGost2012_512GetType(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataGost2012_512Id), xmlSecKeyDataTypeUnknown);
+
+    return xmlSecGnuTLSAsymKeyDataGetType(data);
+}
+
+static xmlSecSize
+xmlSecGnuTLSKeyDataGost2012_512GetSize(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataGost2012_512Id), 0);
+
+    return xmlSecGnuTLSAsymKeyDataGetSize(data);
+}
+
+static void
+xmlSecGnuTLSKeyDataGost2012_512DebugDump(xmlSecKeyDataPtr data, FILE* output) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataGost2012_512Id));
+    xmlSecAssert(output != NULL);
+
+    fprintf(output, "=== GOST 2012 (512 bits) key: size = " XMLSEC_SIZE_FMT "\n",
+            xmlSecGnuTLSKeyDataGost2012_512GetSize(data));
+}
+
+static void
+xmlSecGnuTLSKeyDataGost2012_512DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataGost2012_512Id));
+    xmlSecAssert(output != NULL);
+
+    fprintf(output, "<GOST2012_512KeyValue size=\"" XMLSEC_SIZE_FMT "\" />\n",
+            xmlSecGnuTLSKeyDataGost2012_512GetSize(data));
+}
+
+#endif /* XMLSEC_NO_GOST2012 */
 
 
 
@@ -2544,6 +2888,41 @@ xmlSecGnuTLSAsymKeyDataCreate(gnutls_pubkey_t pubkey, gnutls_privkey_t privkey) 
 
         break;
 #endif /* XMLSEC_NO_GOST */
+
+
+#ifndef XMLSEC_NO_GOST2012
+    case GNUTLS_PK_GOST_12_256:
+        keyData = xmlSecKeyDataCreate(xmlSecGnuTLSKeyDataGost2012_256Id);
+        if(keyData == NULL) {
+            xmlSecInternalError("xmlSecKeyDataCreate(2012_256Id)", NULL);
+            return(NULL);
+        }
+
+        ret = xmlSecGnuTLSKeyDataGost2012_256AdoptKey(keyData, pubkey, privkey);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecGnuTLSKeyDataGost2012_256AdoptKey", NULL);
+            xmlSecKeyDataDestroy(keyData);
+            return(NULL);
+        }
+
+        break;
+
+   case GNUTLS_PK_GOST_12_512:
+        keyData = xmlSecKeyDataCreate(xmlSecGnuTLSKeyDataGost2012_512Id);
+        if(keyData == NULL) {
+            xmlSecInternalError("xmlSecKeyDataCreate(2012_512Id)", NULL);
+            return(NULL);
+        }
+
+        ret = xmlSecGnuTLSKeyDataGost2012_512AdoptKey(keyData, pubkey, privkey);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecGnuTLSKeyDataGost2012_512AdoptKey", NULL);
+            xmlSecKeyDataDestroy(keyData);
+            return(NULL);
+        }
+
+        break;
+#endif /* XMLSEC_NO_GOST2012 */
 
         default:
             xmlSecInternalError2("Public / private key algorithm is not supported", NULL,

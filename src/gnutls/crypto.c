@@ -88,6 +88,11 @@ xmlSecCryptoGetFunctions_gnutls(void) {
     gXmlSecGnuTLSFunctions->keyDataGost2001GetKlass     = xmlSecGnuTLSKeyDataGost2001GetKlass;
 #endif /* XMLSEC_NO_GOST */
 
+#ifndef XMLSEC_NO_GOST2012
+    gXmlSecGnuTLSFunctions->keyDataGostR3410_2012_256GetKlass = xmlSecGnuTLSKeyDataGost2012_256GetKlass;
+    gXmlSecGnuTLSFunctions->keyDataGostR3410_2012_512GetKlass = xmlSecGnuTLSKeyDataGost2012_512GetKlass;
+#endif /* XMLSEC_NO_GOST2012 */
+
 #ifndef XMLSEC_NO_HMAC
     gXmlSecGnuTLSFunctions->keyDataHmacGetKlass         = xmlSecGnuTLSKeyDataHmacGetKlass;
 #endif /* XMLSEC_NO_HMAC */

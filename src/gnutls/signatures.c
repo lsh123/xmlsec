@@ -156,8 +156,17 @@ xmlSecGnuTLSSignatureCheckId(xmlSecTransformPtr transform) {
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformGost2001GostR3411_94Id)) {
         return(1);
     }
-
 #endif /* XMLSEC_NO_GOST */
+
+#ifndef XMLSEC_NO_GOST2012
+    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformGostR3410_2012GostR3411_2012_256Id)) {
+        return(1);
+    }
+
+    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformGostR3410_2012GostR3411_2012_512Id)) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_GOST2012 */
 
     /********************************* RSA *******************************/
 #ifndef XMLSEC_NO_RSA
@@ -323,6 +332,25 @@ xmlSecGnuTLSSignatureInitialize(xmlSecTransformPtr transform) {
         ctx->getPrivKey = xmlSecGnuTLSKeyDataGost2001GetPrivateKey;
     } else
 #endif /* XMLSEC_NO_GOST */
+
+    /********************************* GOST 2012 *******************************/
+#ifndef XMLSEC_NO_GOST2012
+    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformGostR3410_2012GostR3411_2012_256Id)) {
+        ctx->keyId      = xmlSecGnuTLSKeyDataGost2012_256Id;
+        ctx->dgstAlgo   = GNUTLS_DIG_STREEBOG_256;
+        ctx->signAlgo   = GNUTLS_SIGN_GOST_256;
+        ctx->getPubKey  = xmlSecGnuTLSKeyDataGost2012_256GetPublicKey;
+        ctx->getPrivKey = xmlSecGnuTLSKeyDataGost2012_256GetPrivateKey;
+    } else
+
+    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformGostR3410_2012GostR3411_2012_512Id)) {
+        ctx->keyId      = xmlSecGnuTLSKeyDataGost2012_512Id;
+        ctx->dgstAlgo   = GNUTLS_DIG_STREEBOG_512;
+        ctx->signAlgo   = GNUTLS_SIGN_GOST_512;
+        ctx->getPubKey  = xmlSecGnuTLSKeyDataGost2012_512GetPublicKey;
+        ctx->getPrivKey = xmlSecGnuTLSKeyDataGost2012_512GetPrivateKey;
+    } else
+#endif /* XMLSEC_NO_GOST2012 */
 
     /********************************* RSA *******************************/
 #ifndef XMLSEC_NO_RSA
@@ -1520,6 +1548,102 @@ xmlSecGnuTLSTransformGost2001GostR3411_94GetKlass(void) {
 }
 
 #endif /* XMLSEC_NO_GOST */
+
+
+/********************************* GOST 2012 *******************************/
+#ifndef XMLSEC_NO_GOST2012
+
+/****************************************************************************
+ *
+ * GOST R 34.10-2012 - GOST R 34.11-2012 256 bit signature transform
+ *
+ ***************************************************************************/
+static xmlSecTransformKlass xmlSecGnuTLSTransformGostR3410_2012GostR3411_2012_256Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecGnuTLSSignatureSize,                  /* xmlSecSize objSize */
+
+    xmlSecNameGostR3410_2012GostR3411_2012_256, /* const xmlChar* name; */
+    xmlSecHrefGostR3410_2012GostR3411_2012_256, /* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
+
+    xmlSecGnuTLSSignatureInitialize,            /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecGnuTLSSignatureFinalize,              /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecGnuTLSSignatureSetKeyReq,             /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGnuTLSSignatureSetKey,                /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecGnuTLSSignatureVerify,                /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecGnuTLSSignatureExecute,               /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecGnuTLSTransformGostR3410_2012GostR3411_2012_256GetKlass:
+ *
+ * The GOST R 34.10-2012 - GOST R 34.11-2012 256 bit  signature transform klass.
+ *
+ * Returns: GOST R 34.10-2012 - GOST R 34.11-2012 256 bit  signature transform klass.
+ */
+xmlSecTransformId
+xmlSecGnuTLSTransformGostR3410_2012GostR3411_2012_256GetKlass(void) {
+    return(&xmlSecGnuTLSTransformGostR3410_2012GostR3411_2012_256Klass);
+}
+
+/****************************************************************************
+ *
+ * GOST R 34.10-2012 - GOST R 34.11-2012 512 bit signature transform
+ *
+ ***************************************************************************/
+static xmlSecTransformKlass xmlSecGnuTLSTransformGostR3410_2012GostR3411_2012_512Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecGnuTLSSignatureSize,                  /* xmlSecSize objSize */
+
+    xmlSecNameGostR3410_2012GostR3411_2012_512, /* const xmlChar* name; */
+    xmlSecHrefGostR3410_2012GostR3411_2012_512, /* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
+
+    xmlSecGnuTLSSignatureInitialize,            /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecGnuTLSSignatureFinalize,              /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecGnuTLSSignatureSetKeyReq,             /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGnuTLSSignatureSetKey,                /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecGnuTLSSignatureVerify,                /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecGnuTLSSignatureExecute,               /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecGnuTLSTransformGostR3410_2012GostR3411_2012_512GetKlass:
+ *
+ * The GOST R 34.10-2012 - GOST R 34.11-2012 512 bit  signature transform klass.
+ *
+ * Returns: GOST R 34.10-2012 - GOST R 34.11-2012 512 bit  signature transform klass.
+ */
+xmlSecTransformId
+xmlSecGnuTLSTransformGostR3410_2012GostR3411_2012_512GetKlass(void) {
+    return(&xmlSecGnuTLSTransformGostR3410_2012GostR3411_2012_512Klass);
+}
+
+
+#endif /* XMLSEC_NO_GOST2012 */
+
 
 /********************************* RSA *******************************/
 

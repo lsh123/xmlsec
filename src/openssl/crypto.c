@@ -247,10 +247,11 @@ xmlSecCryptoGetFunctions_openssl(void) {
 #endif /* XMLSEC_NO_GOST */
 
 #ifndef XMLSEC_NO_GOST2012
-    gXmlSecOpenSSLFunctions->transformGostR3410_2012GostR3411_2012_256GetKlass = xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_256GetKlass;
-    gXmlSecOpenSSLFunctions->transformGostR3410_2012GostR3411_2012_512GetKlass = xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_512GetKlass;
     gXmlSecOpenSSLFunctions->transformGostR3411_2012_256GetKlass       = xmlSecOpenSSLTransformGostR3411_2012_256GetKlass;
     gXmlSecOpenSSLFunctions->transformGostR3411_2012_512GetKlass       = xmlSecOpenSSLTransformGostR3411_2012_512GetKlass;
+
+    gXmlSecOpenSSLFunctions->transformGostR3410_2012GostR3411_2012_256GetKlass = xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_256GetKlass;
+    gXmlSecOpenSSLFunctions->transformGostR3410_2012GostR3411_2012_512GetKlass = xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_512GetKlass;
 #endif /* XMLSEC_NO_GOST2012 */
 
     /******************************* HMAC ********************************/

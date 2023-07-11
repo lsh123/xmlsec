@@ -20,7 +20,7 @@ jobs:
           - config_flags:
           - config_flags: --enable-size-t=no --enable-md5
           - config_flags: --enable-static --enable-static-linking --without-nss --without-gcrypt --without-gnutls
-          - config_flags: --enable-static --enable-static-linking --enable-gost --without-openssl --without-nss --without-gcrypt
+          - config_flags: --enable-static --enable-static-linking --enable-gost --enable-gost2012 --without-openssl --without-nss --without-gcrypt
     steps:
     - name: install dependencies
       run: |

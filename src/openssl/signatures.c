@@ -68,6 +68,7 @@ typedef enum {
     xmlSecOpenSSLEvpSignatureMode_RsaPadding = 0,   /* use rsa padding and do nothing else */
     xmlSecOpenSSLEvpSignatureMode_Dsa,              /* dsa signatures: r+s are concatenated using fixed size */
     xmlSecOpenSSLEvpSignatureMode_Ecdsa,            /* ecdsa signatures: r+s are concatenated using size of the key */
+    xmlSecOpenSSLEvpSignatureMode_Gost,             /* do nothing */
 } xmlSecOpenSSLEvpSignatureMode;
 
 typedef struct _xmlSecOpenSSLEvpSignatureCtx    xmlSecOpenSSLEvpSignatureCtx,
@@ -688,7 +689,7 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
             return(-1);
         }
         ctx->keyId      = xmlSecOpenSSLKeyDataGost2001Id;
-        ctx->mode       = xmlSecOpenSSLEvpSignatureMode_RsaPadding;
+        ctx->mode       = xmlSecOpenSSLEvpSignatureMode_Gost;
         ctx->rsaPadding = RSA_PKCS1_PADDING;
     } else
 #endif /* XMLSEC_NO_GOST */
@@ -704,7 +705,7 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
             return(-1);
         }
         ctx->keyId      = xmlSecOpenSSLKeyDataGostR3410_2012_256Id;
-        ctx->mode       = xmlSecOpenSSLEvpSignatureMode_RsaPadding;
+        ctx->mode       = xmlSecOpenSSLEvpSignatureMode_Gost;
         ctx->rsaPadding = RSA_PKCS1_PADDING;
     } else
 
@@ -718,7 +719,7 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
             return(-1);
         }
         ctx->keyId      = xmlSecOpenSSLKeyDataGostR3410_2012_512Id;
-        ctx->mode       = xmlSecOpenSSLEvpSignatureMode_RsaPadding;
+        ctx->mode       = xmlSecOpenSSLEvpSignatureMode_Gost;
         ctx->rsaPadding = RSA_PKCS1_PADDING;
     } else
 #endif /* XMLSEC_NO_GOST2012 */
@@ -1016,7 +1017,8 @@ xmlSecOpenSSLEvpSignatureVerify(xmlSecTransformPtr transform,
 
     switch(ctx->mode) {
     case xmlSecOpenSSLEvpSignatureMode_RsaPadding:
-        /* simple RSA padding */
+    case xmlSecOpenSSLEvpSignatureMode_Gost:
+        /* simple RSA or GOST padding */
         XMLSEC_SAFE_CAST_SIZE_TO_UINT(dataSize, dataLen, goto done, xmlSecTransformGetName(transform));
         ret = EVP_PKEY_verify(pKeyCtx, (xmlSecByte*)data, dataLen, dgst, dgstSize);
         break;
@@ -1145,6 +1147,7 @@ xmlSecOpenSSLEvpSignatureSign(xmlSecTransformPtr transform, xmlSecOpenSSLEvpSign
     /* fix signature if needed */
     switch(ctx->mode) {
     case xmlSecOpenSSLEvpSignatureMode_RsaPadding:
+    case xmlSecOpenSSLEvpSignatureMode_Gost:
         /* do nothing (easy case) */
         break;
 

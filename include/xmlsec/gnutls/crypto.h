@@ -392,6 +392,83 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformGost2001GostR3411_94
 
 /********************************************************************
  *
+ * GOST 2012 keys and transforms
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_GOST2012
+
+/**
+ * xmlSecGnuTLSKeyDataGost2012_256Id:
+ *
+ * The GOST R 34.10-2012 256 bit key klass.
+ */
+#define xmlSecGnuTLSKeyDataGost2012_256Id   xmlSecGnuTLSKeyDataGost2012_256GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecGnuTLSKeyDataGost2012_256GetKlass  (void);
+XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataGost2012_256AdoptKey  (xmlSecKeyDataPtr data,
+                                                                                 gnutls_pubkey_t pubkey,
+                                                                                 gnutls_privkey_t privkey);
+XMLSEC_CRYPTO_EXPORT gnutls_pubkey_t    xmlSecGnuTLSKeyDataGost2012_256GetPublicKey (xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT gnutls_privkey_t   xmlSecGnuTLSKeyDataGost2012_256GetPrivateKey(xmlSecKeyDataPtr data);
+
+/**
+ * xmlSecGnuTLSKeyDataGost2012_512Id:
+ *
+ * The GOST R 34.10-2012 512 bit key klass.
+ */
+#define xmlSecGnuTLSKeyDataGost2012_512Id   xmlSecGnuTLSKeyDataGost2012_512GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecGnuTLSKeyDataGost2012_512GetKlass  (void);
+XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataGost2012_512AdoptKey  (xmlSecKeyDataPtr data,
+                                                                                 gnutls_pubkey_t pubkey,
+                                                                                 gnutls_privkey_t privkey);
+XMLSEC_CRYPTO_EXPORT gnutls_pubkey_t    xmlSecGnuTLSKeyDataGost2012_512GetPublicKey (xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT gnutls_privkey_t   xmlSecGnuTLSKeyDataGost2012_512GetPrivateKey(xmlSecKeyDataPtr data);
+
+
+
+/**
+ * xmlSecGnuTLSTransformGostR3411_2012_256Id:
+ *
+ * The GOST R 34.11-2012 256 bit digest transform klass.
+ */
+#define xmlSecGnuTLSTransformGostR3411_2012_256Id \
+    xmlSecGnuTLSTransformGostR3411_2012_256GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformGostR3411_2012_256GetKlass(void);
+
+
+/**
+ * xmlSecGnuTLSTransformGostR3411_2012_512Id:
+ *
+ * The GOST R 34.11-2012 512 bit digest transform klass.
+ */
+#define xmlSecGnuTLSTransformGostR3411_2012_512Id \
+    xmlSecGnuTLSTransformGostR3411_2012_512GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformGostR3411_2012_512GetKlass(void);
+
+
+/**
+ * xmlSecGnuTLSTransformGostR3410_2012GostR3411_2012_256Id:
+ *
+ * The GOST R 34.10-2012 - GOST R 3411-2012 256 bit signature transform klass.
+ */
+#define xmlSecGnuTLSTransformGostR3410_2012GostR3411_2012_256Id \
+        xmlSecGnuTLSTransformGostR3410_2012GostR3411_2012_256GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformGostR3410_2012GostR3411_2012_256GetKlass(void);
+
+
+/**
+ * xmlSecGnuTLSTransformGostR3410_2012GostR3411_2012_512Id:
+ *
+ * The GOST R 34.10-2012 - GOST R 3411-2012 512 bit signature transform klass.
+ */
+#define xmlSecGnuTLSTransformGostR3410_2012GostR3411_2012_512Id \
+        xmlSecGnuTLSTransformGostR3410_2012GostR3411_2012_512GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformGostR3410_2012GostR3411_2012_512GetKlass(void);
+
+
+#endif /* XMLSEC_NO_GOST2012 */
+
+/********************************************************************
+ *
  * HMAC transforms
  *
  *******************************************************************/

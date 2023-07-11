@@ -2238,10 +2238,10 @@ AM_CONDITIONAL(XMLSEC_NO_PBKDF2, test "z$XMLSEC_NO_PBKDF2" = "z1")
 AC_SUBST(XMLSEC_NO_PBKDF2)
 
 dnl ==========================================================================
-dnl See do we need GOST support
+dnl See do we need GOST 2001 support
 dnl ==========================================================================
-AC_MSG_CHECKING(for GOST support)
-AC_ARG_ENABLE([gost], [AS_HELP_STRING([--enable-gost],[enable GOST support (no)])])
+AC_MSG_CHECKING(for GOST 2001 support)
+AC_ARG_ENABLE([gost], [AS_HELP_STRING([--enable-gost],[enable GOST-2001 support (no)])])
 if test "z$enable_gost" != "zyes" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_GOST=1"
     XMLSEC_NO_GOST="1"
@@ -2254,10 +2254,10 @@ AM_CONDITIONAL(XMLSEC_NO_GOST, test "z$XMLSEC_NO_GOST" = "z1")
 AC_SUBST(XMLSEC_NO_GOST)
 
 dnl ==========================================================================
-dnl See do we need GOST2012 support
+dnl See do we need GOST 2012 support
 dnl ==========================================================================
-AC_MSG_CHECKING(for EXPERMIENTAL GOST2012 support)
-AC_ARG_ENABLE([gost2012], [AS_HELP_STRING([--enable-gost2012],[enable EXPERMIENTAL GOST2012 support (no)])])
+AC_MSG_CHECKING(for GOST 2012 support)
+AC_ARG_ENABLE([gost2012], [AS_HELP_STRING([--enable-gost2012],[enable GOST-2012 support (no)])])
 if test "z$enable_gost2012" != "zyes" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_GOST2012=1"
     XMLSEC_NO_GOST2012="1"

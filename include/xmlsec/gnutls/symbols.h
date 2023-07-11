@@ -101,6 +101,8 @@ extern "C" {
 #define xmlSecTransformSha3_384Id               xmlSecGnuTLSTransformSha3_384Id
 #define xmlSecTransformSha3_512Id               xmlSecGnuTLSTransformSha3_512Id
 
+#define xmlSecTransformGostR3411_94Id           xmlSecGnuTLSTransformGostR3411_94Id
+#define xmlSecTransformGost2001GostR3411_94Id   xmlSecGnuTLSTransformGost2001GostR3411_94Id
 
 /********************************************************************
  *

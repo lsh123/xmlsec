@@ -1226,7 +1226,6 @@ done:
 #endif /* XMLSEC_NO_DSA */
 
 
-
 #ifndef XMLSEC_NO_EC
 /**************************************************************************
  *
@@ -2184,6 +2183,260 @@ done:
 #endif /* XMLSEC_NO_RSA */
 
 
+
+#ifndef XMLSEC_NO_GOST
+/**************************************************************************
+ *
+ * GOST2001 XML key representation processing.
+ *
+ *************************************************************************/
+
+static int              xmlSecGnuTLSKeyDataGost2001Initialize   (xmlSecKeyDataPtr data);
+static int              xmlSecGnuTLSKeyDataGost2001Duplicate    (xmlSecKeyDataPtr dst,
+                                                                 xmlSecKeyDataPtr src);
+static void             xmlSecGnuTLSKeyDataGost2001Finalize     (xmlSecKeyDataPtr data);
+
+static xmlSecKeyDataType xmlSecGnuTLSKeyDataGost2001GetType     (xmlSecKeyDataPtr data);
+static xmlSecSize       xmlSecGnuTLSKeyDataGost2001GetSize      (xmlSecKeyDataPtr data);
+
+static void             xmlSecGnuTLSKeyDataGost2001DebugDump    (xmlSecKeyDataPtr data,
+                                                                 FILE* output);
+static void             xmlSecGnuTLSKeyDataGost2001DebugXmlDump (xmlSecKeyDataPtr data,
+                                                                 FILE* output);
+
+static gnutls_pubkey_t  xmlSecGnuTLSKeyDataGost2001PubKeyFromPrivKey  (gnutls_privkey_t privkey);
+
+static xmlSecKeyDataKlass xmlSecGnuTLSKeyDataGost2001Klass = {
+    sizeof(xmlSecKeyDataKlass),
+    xmlSecGnuTLSAsymKeyDataSize,
+
+    /* data */
+    xmlSecNameGOST2001KeyValue,
+    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+                                                /* xmlSecKeyDataUsage usage; */
+    xmlSecHrefGOST2001KeyValue,                 /* const xmlChar* href; */
+    xmlSecNodeGOST2001KeyValue,                 /* const xmlChar* dataNodeName; */
+    xmlSecDSigNs,                               /* const xmlChar* dataNodeNs; */
+
+    /* constructors/destructor */
+    xmlSecGnuTLSKeyDataGost2001Initialize,      /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecGnuTLSKeyDataGost2001Duplicate,       /* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecGnuTLSKeyDataGost2001Finalize,        /* xmlSecKeyDataFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecKeyDataGenerateMethod generate; */
+
+    /* get info */
+    xmlSecGnuTLSKeyDataGost2001GetType,         /* xmlSecKeyDataGetTypeMethod getType; */
+    xmlSecGnuTLSKeyDataGost2001GetSize,         /* xmlSecKeyDataGetSizeMethod getSize; */
+    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
+
+    /* read/write */
+    NULL,                                       /* xmlSecKeyDataXmlReadMethod xmlRead; */
+    NULL,                                       /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    NULL,                                       /* xmlSecKeyDataBinReadMethod binRead; */
+    NULL,                                       /* xmlSecKeyDataBinWriteMethod binWrite; */
+
+    /* debug */
+    xmlSecGnuTLSKeyDataGost2001DebugDump,       /* xmlSecKeyDataDebugDumpMethod debugDump; */
+    xmlSecGnuTLSKeyDataGost2001DebugXmlDump,    /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+
+    /* reserved for the future */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecGnuTLSKeyDataGost2001GetKlass:
+ *
+ * The GnuTLS GOST 2001 key data klass.
+ *
+ * Returns: pointer to GnuTLS GOST 2001 key data klass.
+ */
+xmlSecKeyDataId
+xmlSecGnuTLSKeyDataGost2001GetKlass(void) {
+    return(&xmlSecGnuTLSKeyDataGost2001Klass);
+}
+
+/**
+ * xmlSecGnuTLSKeyDataGost2001AdoptKey:
+ * @data:               the pointer to GOST 2001 key data.
+ * @pubkey:             the pointer to GnuTLS GOST 2001 key.
+ * @privkey:            the pointer to GnuTLS GOST 2001 key.
+ *
+ * Sets the value of GOST 2001 key data. The @pubkey and @privkey will be owned by the @data on success.
+ *
+ * Returns: 0 on success or a negative value otherwise.
+ */
+int
+xmlSecGnuTLSKeyDataGost2001AdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, gnutls_privkey_t privkey) {
+    int ret;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataGost2001Id), -1);
+
+    /* verify key type */
+    if(pubkey != NULL) {
+        ret = gnutls_pubkey_get_pk_algorithm(pubkey, NULL);
+        if(ret != GNUTLS_PK_GOST_01) {
+            xmlSecInternalError2("Invalid pubkey algorithm", NULL, "type=%d", ret);
+            return(-1);
+        }
+    }
+    if(privkey != NULL) {
+        ret = gnutls_privkey_get_pk_algorithm(privkey, NULL);
+        if(ret != GNUTLS_PK_GOST_01) {
+            xmlSecInternalError2("Invalid privkey algorithm", NULL, "type=%d", ret);
+            return(-1);
+        }
+    }
+
+    /* create pub key if needed */
+    if((privkey != NULL) && (pubkey == NULL)) {
+        pubkey = xmlSecGnuTLSKeyDataGost2001PubKeyFromPrivKey(privkey);
+        if(pubkey == NULL) {
+            xmlSecInternalError("xmlSecGnuTLSKeyDataGost2001PubKeyFromPrivKey", NULL);
+            return(-1);
+        }
+    }
+
+    /* do the work */
+    return xmlSecGnuTLSAsymKeyDataAdoptKey(data, pubkey, privkey);
+}
+
+/**
+ * xmlSecGnuTLSKeyDataGost2001GetPublicKey:
+ * @data:               the pointer to GOST 2001 key data.
+ *
+ * Gets the GnuTLS GOST 2001 public key from GOST 2001 key data.
+ *
+ * Returns: pointer to GnuTLS public GOST 2001 key or NULL if an error occurs.
+ */
+gnutls_pubkey_t
+xmlSecGnuTLSKeyDataGost2001GetPublicKey(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataGost2001Id), NULL);
+    return xmlSecGnuTLSAsymKeyDataGetPublicKey(data);
+}
+
+/**
+ * xmlSecGnuTLSKeyDataGost2001GetPrivateKey:
+ * @data:               the pointer to GOST 2001 key data.
+ *
+ * Gets the GnuTLS GOST 2001 private key from GOST 2001 key data.
+ *
+ * Returns: pointer to GnuTLS private GOST 2001 key or NULL if an error occurs.
+ */
+gnutls_privkey_t
+xmlSecGnuTLSKeyDataGost2001GetPrivateKey(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataGost2001Id), NULL);
+    return xmlSecGnuTLSAsymKeyDataGetPrivateKey(data);
+}
+
+static int
+xmlSecGnuTLSKeyDataGost2001Initialize(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataGost2001Id), -1);
+
+    return(xmlSecGnuTLSAsymKeyDataInitialize(data));
+}
+
+static int
+xmlSecGnuTLSKeyDataGost2001Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecGnuTLSKeyDataGost2001Id), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecGnuTLSKeyDataGost2001Id), -1);
+
+    return(xmlSecGnuTLSAsymKeyDataDuplicate(dst, src));
+}
+
+static void
+xmlSecGnuTLSKeyDataGost2001Finalize(xmlSecKeyDataPtr data) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataGost2001Id));
+
+    xmlSecGnuTLSAsymKeyDataFinalize(data);
+}
+
+static xmlSecKeyDataType
+xmlSecGnuTLSKeyDataGost2001GetType(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataGost2001Id), xmlSecKeyDataTypeUnknown);
+
+    return xmlSecGnuTLSAsymKeyDataGetType(data);
+}
+
+static xmlSecSize
+xmlSecGnuTLSKeyDataGost2001GetSize(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataGost2001Id), 0);
+
+    return xmlSecGnuTLSAsymKeyDataGetSize(data);
+}
+
+static void
+xmlSecGnuTLSKeyDataGost2001DebugDump(xmlSecKeyDataPtr data, FILE* output) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataGost2001Id));
+    xmlSecAssert(output != NULL);
+
+    fprintf(output, "=== GOST 2001 key: size = " XMLSEC_SIZE_FMT "\n",
+            xmlSecGnuTLSKeyDataGost2001GetSize(data));
+}
+
+static void
+xmlSecGnuTLSKeyDataGost2001DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataGost2001Id));
+    xmlSecAssert(output != NULL);
+
+    fprintf(output, "<GOST2001KeyValue size=\"" XMLSEC_SIZE_FMT "\" />\n",
+            xmlSecGnuTLSKeyDataGost2001GetSize(data));
+}
+
+static gnutls_pubkey_t
+xmlSecGnuTLSKeyDataGost2001PubKeyFromPrivKey(gnutls_privkey_t privkey) {
+    gnutls_pubkey_t pubkey = NULL;
+    gnutls_ecc_curve_t curve = GNUTLS_ECC_CURVE_INVALID;
+    gnutls_digest_algorithm_t digest = GNUTLS_DIG_UNKNOWN;
+    gnutls_gost_paramset_t paramset = GNUTLS_GOST_PARAMSET_UNKNOWN;
+	gnutls_datum_t x = { NULL, 0 };
+    gnutls_datum_t y = { NULL, 0 };
+    gnutls_datum_t k = { NULL, 0 };
+    int err;
+
+    xmlSecAssert2(privkey != NULL, NULL);
+
+    err = gnutls_privkey_export_gost_raw2(privkey,
+        &curve, &digest, &paramset,
+        &x, &y, &k,
+        0);
+    if((err != GNUTLS_E_SUCCESS) && (curve != GNUTLS_ECC_CURVE_INVALID)) {
+        xmlSecGnuTLSError("gnutls_privkey_export_gost_raw2", err, NULL);
+        goto done;
+    }
+
+    err = gnutls_pubkey_init(&pubkey);
+    if(err != GNUTLS_E_SUCCESS) {
+        xmlSecGnuTLSError("gnutls_pubkey_init", err, NULL);
+        goto done;
+    }
+
+    err = gnutls_pubkey_import_gost_raw(pubkey,
+        curve, digest, paramset,
+        &x, &y);
+    if(err != GNUTLS_E_SUCCESS) {
+        xmlSecGnuTLSError("gnutls_pubkey_import_gost_raw", err, NULL);
+        gnutls_pubkey_deinit(pubkey);
+        goto done;
+    }
+
+done:
+    if(x.data != NULL) {
+        gnutls_free(x.data);
+    }
+    if(y.data != NULL) {
+        gnutls_free(y.data);
+    }
+    if(k.data != NULL) {
+        gnutls_free(k.data);
+    }
+    return(pubkey);
+}
+
+#endif /* XMLSEC_NO_GOST */
+
+
+
 /**************************************************************************
  *
  * Internal helper functions
@@ -2211,11 +2464,11 @@ xmlSecGnuTLSAsymKeyDataCreate(gnutls_pubkey_t pubkey, gnutls_privkey_t privkey) 
     } else if(pubkey_algo == privkey_algo) {
         algo = pubkey_algo;
     } else {
-        xmlSecGnuTLSError("diffeerent algorithms for public and private key", GNUTLS_E_SUCCESS, NULL);
+        xmlSecGnuTLSError("different algorithms for public and private key", GNUTLS_E_SUCCESS, NULL);
         return(NULL);
     }
     if(algo == GNUTLS_PK_UNKNOWN) {
-        xmlSecGnuTLSError("cant determine algorithm for public and private key", GNUTLS_E_SUCCESS, NULL);
+        xmlSecGnuTLSError("cannot determine algorithm for public and private key", GNUTLS_E_SUCCESS, NULL);
         return(NULL);
     }
 
@@ -2272,7 +2525,25 @@ xmlSecGnuTLSAsymKeyDataCreate(gnutls_pubkey_t pubkey, gnutls_privkey_t privkey) 
         }
 
         break;
-#endif /* XMLSEC_NO_RSA */
+#endif /* XMLSEC_NO_EC */
+
+#ifndef XMLSEC_NO_GOST
+    case GNUTLS_PK_GOST_01:
+        keyData = xmlSecKeyDataCreate(xmlSecGnuTLSKeyDataGost2001Id);
+        if(keyData == NULL) {
+            xmlSecInternalError("xmlSecKeyDataCreate(Gost2001Id)", NULL);
+            return(NULL);
+        }
+
+        ret = xmlSecGnuTLSKeyDataGost2001AdoptKey(keyData, pubkey, privkey);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecGnuTLSKeyDataGost2001AdoptKey", NULL);
+            xmlSecKeyDataDestroy(keyData);
+            return(NULL);
+        }
+
+        break;
+#endif /* XMLSEC_NO_GOST */
 
         default:
             xmlSecInternalError2("Public / private key algorithm is not supported", NULL,

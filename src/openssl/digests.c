@@ -135,7 +135,7 @@ xmlSecOpenSSLEvpDigestCheckId(xmlSecTransformPtr transform) {
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformGostR3411_94Id)) {
         return(1);
     } else
-#endif /* XMLSEC_NO_GOST*/
+#endif /* XMLSEC_NO_GOST */
 
 #ifndef XMLSEC_NO_GOST2012
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformGostR3411_2012_256Id)) {

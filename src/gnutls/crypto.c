@@ -185,11 +185,18 @@ xmlSecCryptoGetFunctions_gnutls(void) {
 
 #endif /* XMLSEC_NO_EC */
 
-    /******************************* GOST ********************************/
+    /******************************* GOST 2001 ********************************/
 #ifndef XMLSEC_NO_GOST
     gXmlSecGnuTLSFunctions->transformGost2001GostR3411_94GetKlass     = xmlSecGnuTLSTransformGost2001GostR3411_94GetKlass;
     gXmlSecGnuTLSFunctions->transformGostR3411_94GetKlass             = xmlSecGnuTLSTransformGostR3411_94GetKlass;
 #endif /* XMLSEC_NO_GOST */
+
+    /******************************* GOST 2012 ********************************/
+#ifndef XMLSEC_NO_GOST2012
+    gXmlSecGnuTLSFunctions->transformGostR3411_2012_256GetKlass       = xmlSecGnuTLSTransformGostR3411_2012_256GetKlass;
+    gXmlSecGnuTLSFunctions->transformGostR3411_2012_512GetKlass       = xmlSecGnuTLSTransformGostR3411_2012_512GetKlass;
+#endif /* XMLSEC_NO_GOST2012 */
+
 
     /******************************* HMAC ********************************/
 #ifndef XMLSEC_NO_HMAC

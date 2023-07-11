@@ -425,6 +425,26 @@ XMLSEC_CRYPTO_EXPORT gnutls_privkey_t   xmlSecGnuTLSKeyDataGost2012_512GetPrivat
 
 
 
+/**
+ * xmlSecGnuTLSTransformGostR3411_2012_256Id:
+ *
+ * The GOST R 34.11-2012 256 bit hash transform klass.
+ */
+#define xmlSecGnuTLSTransformGostR3411_2012_256Id \
+    xmlSecGnuTLSTransformGostR3411_2012_256GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformGostR3411_2012_256GetKlass(void);
+
+
+/**
+ * xmlSecGnuTLSTransformGostR3411_2012_512Id:
+ *
+ * The GOST R 34.11-2012 512 bit hash transform klass.
+ */
+#define xmlSecGnuTLSTransformGostR3411_2012_512Id \
+    xmlSecGnuTLSTransformGostR3411_2012_512GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformGostR3411_2012_512GetKlass(void);
+
+
 #endif /* XMLSEC_NO_GOST2012 */
 
 /********************************************************************

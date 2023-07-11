@@ -195,6 +195,9 @@ xmlSecCryptoGetFunctions_gnutls(void) {
 #ifndef XMLSEC_NO_GOST2012
     gXmlSecGnuTLSFunctions->transformGostR3411_2012_256GetKlass       = xmlSecGnuTLSTransformGostR3411_2012_256GetKlass;
     gXmlSecGnuTLSFunctions->transformGostR3411_2012_512GetKlass       = xmlSecGnuTLSTransformGostR3411_2012_512GetKlass;
+
+    gXmlSecGnuTLSFunctions->transformGostR3410_2012GostR3411_2012_256GetKlass = xmlSecGnuTLSTransformGostR3410_2012GostR3411_2012_256GetKlass;
+    gXmlSecGnuTLSFunctions->transformGostR3410_2012GostR3411_2012_512GetKlass = xmlSecGnuTLSTransformGostR3410_2012GostR3411_2012_512GetKlass;
 #endif /* XMLSEC_NO_GOST2012 */
 
 

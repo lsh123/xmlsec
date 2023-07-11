@@ -223,7 +223,7 @@ openssl verify -CAfile cacert.pem -untrusted ca2cert.pem dh1024-first-pubkey.crt
 rm dh1024-first-req.pem
 ```
 
-### Generate and sign GOST2012 key with second level CA
+### Generate and sign GOST2001 and GOST2012 keys with second level CA
 To enable GOST support, modify openssl.conf file:
 - uncomment the `# gost = gost_section` line'
 - specify correct path to `gost.so` in the `dynamic_path` variable in the `gost_section` section
@@ -236,7 +236,7 @@ OPENSSL_CONF=./openssl.cnf openssl verify -CAfile cacert.pem -untrusted ca2cert.
 rm gost2001req.pem
 ```
 
-GOST2001 256 bits:
+GOST2012 256 bits:
 ```
 openssl req -config ./openssl.cnf -newkey gost2012_256 -pkeyopt paramset:A -nodes -keyout gost2012_256key.pem -out gost2012_256req.pem
 openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem -out gost2012_256cert.pem -infiles gost2012_256req.pem
@@ -244,7 +244,7 @@ OPENSSL_CONF=./openssl.cnf openssl verify -CAfile cacert.pem -untrusted ca2cert.
 rm gost2012_256req.pem
 ```
 
-GOST2001 512 bits:
+GOST2012 512 bits:
 ```
 openssl req -config ./openssl.cnf -newkey gost2012_512 -pkeyopt paramset:A -nodes -keyout gost2012_512key.pem -out gost2012_512req.pem
 openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem -out gost2012_512cert.pem -infiles gost2012_512req.pem
@@ -426,7 +426,7 @@ rm all-ecdsa-secp521r1.pem
 GOST keys (see above the instructions to configure GOST engine):
 ```
 cat gost2001key.pem gost2001cert.pem ca2cert.pem cacert.pem > all-gost2001.pem
-OPENSSL_CONF=./openssl.cnf openssl pkcs12 -export -in all-gost2001.pem -name TestGost2012_256Key -out gost2001key.p12
+OPENSSL_CONF=./openssl.cnf openssl pkcs12 -export -in all-gost2001.pem -name TestGost2001_Key -out gost2001key.p12
 rm all-gost2001.pem
 
 cat gost2012_256key.pem gost2012_256cert.pem ca2cert.pem cacert.pem > all-gost2012_256.pem

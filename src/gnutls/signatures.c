@@ -41,7 +41,7 @@
 
 /**************************************************************************
  *
- * Internal NSS signatures ctx
+ * Internal GNUTLS signatures ctx
  *
  *****************************************************************************/
 typedef gnutls_pubkey_t     (*xmlSecGnuTLSKeyDataGetPublicKeyMethod)      (xmlSecKeyDataPtr data);
@@ -150,6 +150,14 @@ xmlSecGnuTLSSignatureCheckId(xmlSecTransformPtr transform) {
 #endif /* XMLSEC_NO_SHA3 */
 
 #endif /* XMLSEC_NO_EC */
+
+    /********************************* GOST 2001 *******************************/
+#ifndef XMLSEC_NO_GOST
+    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformGost2001GostR3411_94Id)) {
+        return(1);
+    }
+
+#endif /* XMLSEC_NO_GOST */
 
     /********************************* RSA *******************************/
 #ifndef XMLSEC_NO_RSA
@@ -304,6 +312,17 @@ xmlSecGnuTLSSignatureInitialize(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_SHA3 */
 
+    /********************************* GOST 2001 *******************************/
+#ifndef XMLSEC_NO_GOST
+    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformGost2001GostR3411_94Id)) {
+        ctx->keyId      = xmlSecGnuTLSKeyDataGost2001Id;
+        ctx->dgstAlgo   = GNUTLS_DIG_GOSTR_94;
+        ctx->signAlgo   = GNUTLS_SIGN_GOST_94;
+        ctx->verifyFlags = GNUTLS_VERIFY_ALLOW_BROKEN;
+        ctx->getPubKey  = xmlSecGnuTLSKeyDataGost2001GetPublicKey;
+        ctx->getPrivKey = xmlSecGnuTLSKeyDataGost2001GetPrivateKey;
+    } else
+#endif /* XMLSEC_NO_GOST */
 
     /********************************* RSA *******************************/
 #ifndef XMLSEC_NO_RSA
@@ -1111,7 +1130,7 @@ xmlSecGnuTLSTransformDsaSha256GetKlass(void) {
 
 #endif /* XMLSEC_NO_DSA */
 
-/********************************* DSA *******************************/
+/********************************* EC *******************************/
 #ifndef XMLSEC_NO_EC
 /*
  * https://www.w3.org/TR/xmldsig-core1/#sec-ECDSA
@@ -1450,6 +1469,57 @@ xmlSecGnuTLSTransformEcdsaSha3_512GetKlass(void) {
 #endif /* XMLSEC_NO_SHA3 */
 
 #endif /* XMLSEC_NO_EC */
+
+
+
+/********************************* GOST 2001 *******************************/
+#ifndef XMLSEC_NO_GOST
+
+/****************************************************************************
+ *
+ * GOST2001 GOSTR3411_94 signature transform
+ *
+ ***************************************************************************/
+static xmlSecTransformKlass xmlSecGnuTLSTransformGost2001GostR3411_94Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecGnuTLSSignatureSize,                  /* xmlSecSize objSize */
+
+    xmlSecNameGost2001GostR3411_94,             /* const xmlChar* name; */
+    xmlSecHrefGost2001GostR3411_94,             /* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
+
+    xmlSecGnuTLSSignatureInitialize,            /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecGnuTLSSignatureFinalize,              /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecGnuTLSSignatureSetKeyReq,             /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGnuTLSSignatureSetKey,                /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecGnuTLSSignatureVerify,                /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecGnuTLSSignatureExecute,               /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecGnuTLSTransformGost2001GostR3411_94GetKlass:
+ *
+ * The GOST2001 GOSTR3411_94 signature transform klass.
+ *
+ * Returns: GOST2001 GOSTR3411_94 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecGnuTLSTransformGost2001GostR3411_94GetKlass(void) {
+    return(&xmlSecGnuTLSTransformGost2001GostR3411_94Klass);
+}
+
+#endif /* XMLSEC_NO_GOST */
 
 /********************************* RSA *******************************/
 

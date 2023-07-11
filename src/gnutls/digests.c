@@ -93,7 +93,6 @@ xmlSecGnuTLSDigestCheckId(xmlSecTransformPtr transform) {
     }
 #endif /* XMLSEC_NO_SHA512 */
 
-
 #ifndef XMLSEC_NO_SHA3
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformSha3_256Id)) {
         return(1);
@@ -105,6 +104,13 @@ xmlSecGnuTLSDigestCheckId(xmlSecTransformPtr transform) {
         return(1);
     }
 #endif /* XMLSEC_NO_SHA3 */
+
+#ifndef XMLSEC_NO_GOST
+    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformGostR3411_94Id)) {
+        return(1);
+    } else
+#endif /* XMLSEC_NO_GOST */
+
     return(0);
 }
 
@@ -146,7 +152,6 @@ xmlSecGnuTLSDigestInitialize(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_SHA512 */
 
-
 #ifndef XMLSEC_NO_SHA3
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformSha3_256Id)) {
         ctx->dgstAlgo = GNUTLS_DIG_SHA3_256;
@@ -158,6 +163,12 @@ xmlSecGnuTLSDigestInitialize(xmlSecTransformPtr transform) {
         ctx->dgstAlgo = GNUTLS_DIG_SHA3_512;
     } else
 #endif /* XMLSEC_NO_SHA3 */
+
+#ifndef XMLSEC_NO_GOST
+    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformGostR3411_94Id)) {
+        ctx->dgstAlgo = GNUTLS_DIG_GOSTR_94;
+    } else
+#endif /* XMLSEC_NO_GOST */
 
     if(1) {
         xmlSecInvalidTransfromError(transform)
@@ -638,3 +649,52 @@ xmlSecGnuTLSTransformSha3_512GetKlass(void) {
     return(&xmlSecGnuTLSSha3_512Klass);
 }
 #endif /* XMLSEC_NO_SHA3 */
+
+
+#ifndef XMLSEC_NO_GOST
+/******************************************************************************
+ *
+ * GOSTR3411_94 Digest transforms
+ *
+ *****************************************************************************/
+static xmlSecTransformKlass xmlSecGnuTLSGostR3411_94Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecGnuTLSDigestSize,                     /* xmlSecSize objSize */
+
+    /* data */
+    xmlSecNameGostR3411_94,                     /* const xmlChar* name; */
+    xmlSecHrefGostR3411_94,                     /* const xmlChar* href; */
+    xmlSecTransformUsageDigestMethod,           /* xmlSecTransformUsage usage; */
+
+    /* methods */
+    xmlSecGnuTLSDigestInitialize,               /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecGnuTLSDigestFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecGnuTLSDigestVerify,                   /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecGnuTLSDigestExecute,                  /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecGnuTLSTransformGostR3411_94GetKlass:
+ *
+ * GOSTR3411_94 digest transform klass.
+ *
+ * Returns: pointer to GOSTR3411_94 digest transform klass.
+ */
+xmlSecTransformId
+xmlSecGnuTLSTransformGostR3411_94GetKlass(void) {
+    return(&xmlSecGnuTLSGostR3411_94Klass);
+}
+#endif /* XMLSEC_NO_GOST */

@@ -2243,8 +2243,6 @@ static int
 xmlSecGnuTLSKeyDataGostAdoptKey(int algo, xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, gnutls_privkey_t privkey) {
     int ret;
 
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataGost2001Id), -1);
-
     /* verify key type */
     if(pubkey != NULL) {
         ret = gnutls_pubkey_get_pk_algorithm(pubkey, NULL);
@@ -2357,6 +2355,7 @@ xmlSecGnuTLSKeyDataGost2001GetKlass(void) {
  */
 int
 xmlSecGnuTLSKeyDataGost2001AdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, gnutls_privkey_t privkey) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataGost2001Id), -1);
     return(xmlSecGnuTLSKeyDataGostAdoptKey(GNUTLS_PK_GOST_01, data, pubkey, privkey));
 }
 
@@ -2527,6 +2526,7 @@ xmlSecGnuTLSKeyDataGost2012_256GetKlass(void) {
  */
 int
 xmlSecGnuTLSKeyDataGost2012_256AdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, gnutls_privkey_t privkey) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataGost2012_256Id), -1);
     return(xmlSecGnuTLSKeyDataGostAdoptKey(GNUTLS_PK_GOST_12_256, data, pubkey, privkey));
 }
 
@@ -2692,6 +2692,7 @@ xmlSecGnuTLSKeyDataGost2012_512GetKlass(void) {
  */
 int
 xmlSecGnuTLSKeyDataGost2012_512AdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, gnutls_privkey_t privkey) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataGost2012_512Id), -1);
     return(xmlSecGnuTLSKeyDataGostAdoptKey(GNUTLS_PK_GOST_12_512, data, pubkey, privkey));
 }
 

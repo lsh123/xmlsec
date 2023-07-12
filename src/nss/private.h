@@ -101,6 +101,9 @@ int        xmlSecNssX509CrlListAdoptCrl                (xmlSecNssX509CrlNodePtr 
 CERTCertificate* xmlSecNssX509CertDerRead               (CERTCertDBHandle *handle,
                                                          xmlSecByte* buf,
                                                          xmlSecSize size);
+CERTCertificate* xmlSecNssX509CertPemRead               (CERTCertDBHandle *handle,
+                                                         xmlSecByte* buf,
+                                                         xmlSecSize size);
 CERTSignedCrl*   xmlSecNssX509CrlDerRead                (xmlSecByte* buf,
                                                          xmlSecSize size,
                                                          unsigned int flags);

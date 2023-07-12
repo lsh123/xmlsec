@@ -461,8 +461,9 @@ execKeysTest() {
     fi
 
     if [ -n "$certkey_file" -a -n "$asym_key_test" ]; then
-        # nss, gcrypt, mscrypto, mscng don't support pem
-        if [ "z$crypto" != "zgcrypt" -a "z$crypto" != "znss" -a  "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" ] ; then
+        # gcrypt doesn't support cert
+        # mscrypto, mscng don't support pem
+        if [ "z$crypto" != "zgcrypt" -a "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" ] ; then
             printf "    Reading public key from pem cert file                 "
             rm -f $tmpfile
             params="--lax-key-search --pubkey-cert-pem $certkey_file.pem $key_test_options $asym_key_test.xml"

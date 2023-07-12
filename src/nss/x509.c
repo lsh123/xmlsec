@@ -1161,7 +1161,6 @@ xmlSecNssX509CertDerRead(CERTCertDBHandle *handle, xmlSecByte* buf, xmlSecSize s
         return(NULL);
     }
 
-
     return(cert);
 }
 
@@ -1201,6 +1200,64 @@ xmlSecNssX509CrlDerRead(xmlSecByte* buf, xmlSecSize size, unsigned int flags) {
 
     PK11_FreeSlot(slot);
     return(crl);
+}
+
+typedef struct _xmlSecNssX509CertReadResult {
+    PLArenaPool* arena;
+    SECItem cert;
+} xmlSecNssX509CertReadResult;
+
+
+static SECStatus
+xmlSecNssX509CertReadCallback(void *arg, SECItem **certs, int numcerts) {
+    xmlSecNssX509CertReadResult* result = (xmlSecNssX509CertReadResult *)arg;
+
+    xmlSecAssert2(result != NULL, SECFailure);
+    xmlSecAssert2(result->arena != NULL, SECFailure);
+    xmlSecAssert2(numcerts > 0, SECFailure);
+    xmlSecAssert2(certs != NULL, SECFailure);
+    xmlSecAssert2((*certs) != NULL, SECFailure);
+
+    return SECITEM_CopyItem(result->arena, &(result->cert), *certs);
+}
+
+
+CERTCertificate*
+xmlSecNssX509CertPemRead(CERTCertDBHandle *handle, xmlSecByte* buf, xmlSecSize size) {
+    xmlSecNssX509CertReadResult result;
+    CERTCertificate *cert = NULL;
+    int len;
+    SECStatus rv;
+
+    xmlSecAssert2(handle != NULL, NULL);
+    xmlSecAssert2(buf != NULL, NULL);
+    xmlSecAssert2(size > 0, NULL);
+
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(size, len, return(NULL), NULL);
+
+    result.arena = PORT_NewArena(DER_DEFAULT_CHUNKSIZE);
+    if(result.arena == NULL) {
+        xmlSecNssError("PORT_NewArena", NULL);
+        return(NULL);
+    }
+
+    rv = CERT_DecodeCertPackage((char*)buf, len, xmlSecNssX509CertReadCallback, (void *)(&result));
+    if(rv != SECSuccess) {
+        xmlSecNssError("CERT_DecodeCertPackage", NULL);
+        PORT_FreeArena(result.arena, PR_FALSE);
+        return(NULL);
+    }
+
+    cert = __CERT_NewTempCertificate(handle, &(result.cert), NULL, PR_FALSE, PR_TRUE);
+    if(cert == NULL) {
+        xmlSecNssError("__CERT_NewTempCertificate", NULL);
+        PORT_FreeArena(result.arena, PR_FALSE);
+        return(NULL);
+    }
+
+    /* done */
+    PORT_FreeArena(result.arena, PR_FALSE);
+    return (cert);
 }
 
 static xmlChar*

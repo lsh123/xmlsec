@@ -1255,7 +1255,7 @@ xmlSecNssX509CertPemRead(CERTCertDBHandle *handle, xmlSecByte* buf, xmlSecSize s
         return(NULL);
     }
 
-done:
+    /* done */
     PORT_FreeArena(result.arena, PR_FALSE);
     return (cert);
 }

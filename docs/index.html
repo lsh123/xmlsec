@@ -73,19 +73,18 @@ see the Copyright file in the distribution  for details.<br><br></p>
 		<br>
 		<br>
         <ul>
-            <li>
-                The xmlsec-mscrypto is moved down in the default crypto library selection list as it is now in maintanance mode
-                (use "--with-default-crypto" option to force the selection).
-            </li>
             <li>(xmlsec-openssl) Fixed padding for GOST 2001 and 2012 signatures.</li>
             <li>(xmlsec-nss) Added support for reading PEM certificates.</li>
             <li>(xmlsec-nss) Added a check to ensure that the key certificat matches the key.</li>
             <li>(xmlsec-gnutls) Added support for GOST R 34.11-94, GOST R 34.11-2012 256 bit, and GOST R 34.11-2012 512 bit digest algorithms.</li>
             <li>(xmlsec-gnutls) Added support GOST R 34.10-2001, GOST R 34.11-2012 256 bit, and GOST R 34.11-2012 512 bit signature algorithms.</li>
             <li>(xmlsec-gnutls) Added a check to ensure that the key certificat matches the key.</li>
-            <li>(MinGW build) Fixed the static libraries build with "--enable-static-linking" option on MinGW.</li>
+            <li>(MinGW build) The xmlsec-mscrypto is moved down in the default crypto library selection list as it is now 
+                in maintanance mode (use "--with-default-crypto" option to force the selection).
+            </li>
+            <li>(MinGW build) Fixed the static libraries build with "--enable-static-linking" option.</li>
             <li>(MSVC build) Added 'ftp' and 'http' options to control FTP and HTTP support. FTP support is disabled by default.</li>
-            <li>Several other small fixes (<a href="https://github.com/lsh123/xmlsec/commits/master">more details</a>).</li>
+            <li>Several other small fixes (see <a href="https://github.com/lsh123/xmlsec/commits/master">more details</a>).</li>
         </ul>
 	</li>
 	<br>

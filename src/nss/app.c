@@ -743,7 +743,7 @@ xmlSecNssAppKeyCertLoadSECItem(xmlSecKeyPtr key, SECItem* secItem, xmlSecKeyData
             isKeyCert = 1;
         }
     }
-    if(isKeyCert) {
+    if(isKeyCert != 0) {
         ret = xmlSecNssKeyDataX509AdoptKeyCert(x509Data, cert);
         if(ret < 0) {
             xmlSecInternalError("xmlSecNssKeyDataX509AdoptKeyCert", NULL);

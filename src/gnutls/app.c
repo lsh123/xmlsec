@@ -283,6 +283,83 @@ xmlSecGnuTLSAppKeyCertLoad(xmlSecKeyPtr key, const char* filename, xmlSecKeyData
     return(0);
 }
 
+
+/* returns 1 if matches, 0 if not, or a negative value on error */
+static int
+xmlSecGnuTLSAppCheckCertMatchesKey(xmlSecKeyPtr key,  gnutls_x509_crt_t cert) {
+    xmlSecKeyDataPtr keyData = NULL;
+    gnutls_pubkey_t pubkey = NULL;
+    gnutls_pubkey_t cert_pubkey = NULL;
+    gnutls_datum_t der_pubkey = { NULL, 0 };
+    gnutls_datum_t der_cert_pubkey = { NULL, 0 };
+    int err;
+    int res = -1;
+
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(cert != NULL, -1);
+
+    /* get key's pubkey and its der encoding */
+    keyData = xmlSecKeyGetValue(key);
+    if(keyData == NULL) {
+        res = 0; /* no key -> no match */
+        goto done;
+    }
+    pubkey = xmlSecGnuTLSAsymKeyDataGetPublicKey(keyData);
+    if(pubkey == NULL) {
+        xmlSecInternalError("xmlSecGnuTLSAsymKeyDataGetPublicKey", NULL);
+        goto done;
+    }
+    err = gnutls_pubkey_export2(pubkey, GNUTLS_X509_FMT_DER, &der_pubkey);
+    if((err != GNUTLS_E_SUCCESS) || (der_pubkey.data == NULL)) {
+        xmlSecGnuTLSError("gnutls_pubkey_export2", err, NULL);
+        goto done;
+    }
+
+    /* get certs's pubkey and its der encoding */
+    err = gnutls_pubkey_init(&cert_pubkey);
+    if (err != GNUTLS_E_SUCCESS) {
+        xmlSecGnuTLSError("gnutls_pubkey_init", err, NULL);
+        goto done;
+    }
+
+    err = gnutls_pubkey_import_x509(cert_pubkey, cert, 0);
+    if (err != GNUTLS_E_SUCCESS) {
+        xmlSecGnuTLSError("gnutls_pubkey_import_x509", err, NULL);
+        goto done;
+    }
+    err = gnutls_pubkey_export2(cert_pubkey, GNUTLS_X509_FMT_DER, &der_cert_pubkey);
+    if((err != GNUTLS_E_SUCCESS) || (der_cert_pubkey.data == NULL)) {
+        xmlSecGnuTLSError("gnutls_pubkey_export2", err, NULL);
+        goto done;
+    }
+
+    /* compare */
+    if(der_pubkey.size != der_cert_pubkey.size) {
+        res = 0; /* different size -> no match */
+        goto done;
+    }
+    if(memcmp(der_pubkey.data, der_cert_pubkey.data, der_pubkey.size) != 0) {
+        res = 0; /* different data -> no match */
+        goto done;
+    }
+
+    /* match! */
+    res = 1;
+
+done:
+    if (cert_pubkey) {
+        gnutls_pubkey_deinit(cert_pubkey);
+    }
+    if(der_pubkey.data != NULL) {
+        gnutls_free(der_pubkey.data);
+    }
+    if(der_cert_pubkey.data != NULL) {
+        gnutls_free(der_cert_pubkey.data);
+    }
+    return(res);
+}
+
+
 /**
  * xmlSecGnuTLSAppKeyCertLoadMemory:
  * @key:                the pointer to key.
@@ -300,6 +377,7 @@ xmlSecGnuTLSAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSe
 ) {
     gnutls_x509_crt_t cert = NULL;
     xmlSecKeyDataPtr x509Data;
+    int isKeyCert = 0;
     int ret;
     int res = -1;
 
@@ -321,8 +399,19 @@ xmlSecGnuTLSAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSe
         xmlSecInternalError("xmlSecKeyEnsureData", NULL);
         goto done;
     }
+
+    /* do we want to add this cert as a key cert? */
     if(xmlSecGnuTLSKeyDataX509GetKeyCert(x509Data) == NULL) {
-        /* TODO: check if cert matches the key */
+        ret = xmlSecGnuTLSAppCheckCertMatchesKey(key, cert);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecGnuTLSAppCheckCertMatchesKey", NULL);
+            goto done;
+        }
+        if(ret == 1) {
+            isKeyCert = 1;
+        }
+    }
+    if(isKeyCert != 0) {
         ret = xmlSecGnuTLSKeyDataX509AdoptKeyCert(x509Data, cert);
         if(ret < 0) {
             xmlSecInternalError("xmlSecGnuTLSKeyDataX509AdoptKeyCert", NULL);

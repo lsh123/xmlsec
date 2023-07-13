@@ -66,10 +66,6 @@ static int              xmlSecGnuTLSAsymKeyDataGenerate         (xmlSecKeyDataPt
 static int              xmlSecGnuTLSAsymKeyDataDuplicate        (xmlSecKeyDataPtr dst,
                                                                  xmlSecKeyDataPtr src);
 
-static gnutls_pubkey_t  xmlSecGnuTLSAsymKeyDataGetPublicKey     (xmlSecKeyDataPtr data);
-static gnutls_privkey_t xmlSecGnuTLSAsymKeyDataGetPrivateKey    (xmlSecKeyDataPtr data);
-static xmlSecKeyDataType xmlSecGnuTLSAsymKeyDataGetType         (xmlSecKeyDataPtr data);
-static xmlSecSize       xmlSecGnuTLSAsymKeyDataGetSize          (xmlSecKeyDataPtr data);
 
 static int
 xmlSecGnuTLSAsymKeyDataInitialize(xmlSecKeyDataPtr data) {
@@ -247,7 +243,7 @@ xmlSecGnuTLSAsymKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     return(0);
 }
 
-static gnutls_pubkey_t
+gnutls_pubkey_t
 xmlSecGnuTLSAsymKeyDataGetPublicKey(xmlSecKeyDataPtr data) {
     xmlSecGnuTLSAsymKeyDataCtxPtr ctx;
 
@@ -260,7 +256,7 @@ xmlSecGnuTLSAsymKeyDataGetPublicKey(xmlSecKeyDataPtr data) {
     return(ctx->pubkey);
 }
 
-static gnutls_privkey_t
+gnutls_privkey_t
 xmlSecGnuTLSAsymKeyDataGetPrivateKey(xmlSecKeyDataPtr data) {
     xmlSecGnuTLSAsymKeyDataCtxPtr ctx;
 
@@ -273,7 +269,7 @@ xmlSecGnuTLSAsymKeyDataGetPrivateKey(xmlSecKeyDataPtr data) {
     return(ctx->privkey);
 }
 
-static xmlSecKeyDataType
+xmlSecKeyDataType
 xmlSecGnuTLSAsymKeyDataGetType(xmlSecKeyDataPtr data) {
     xmlSecGnuTLSAsymKeyDataCtxPtr ctx;
 
@@ -294,7 +290,7 @@ xmlSecGnuTLSAsymKeyDataGetType(xmlSecKeyDataPtr data) {
     return (xmlSecKeyDataTypeUnknown);
 }
 
-static xmlSecSize
+xmlSecSize
 xmlSecGnuTLSAsymKeyDataGetSize(xmlSecKeyDataPtr data) {
     xmlSecGnuTLSAsymKeyDataCtxPtr ctx;
     unsigned int bits = 0;

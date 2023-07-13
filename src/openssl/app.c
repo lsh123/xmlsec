@@ -1091,9 +1091,9 @@ xmlSecOpenSSLAppKeyCertLoadBIO(xmlSecKeyPtr key, BIO* bio, xmlSecKeyDataFormat f
     xmlSecKeyDataFormat certFormat;
     xmlSecKeyDataPtr x509Data = NULL;
     X509 *cert = NULL;
+    int isKeyCert = 0;
     int ret;
     int res = -1;
-    int isKeyCert = 0;
 
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(bio != NULL, -1);
@@ -1125,8 +1125,7 @@ xmlSecOpenSSLAppKeyCertLoadBIO(xmlSecKeyPtr key, BIO* bio, xmlSecKeyDataFormat f
         goto done;
     }
 
-    /* do we want to add this cert as a key cert? don't bother checking
-     * if the key cert is already set */
+    /* do we want to add this cert as a key cert? */
     if(xmlSecOpenSSLKeyDataX509GetKeyCert(x509Data) == NULL) {
         EVP_PKEY* pKey;
 
@@ -1135,6 +1134,10 @@ xmlSecOpenSSLAppKeyCertLoadBIO(xmlSecKeyPtr key, BIO* bio, xmlSecKeyDataFormat f
         if(pKey != NULL) {
             /* ignore errors here */
             ret = xmlSecOpenSSLAppCheckCertMatchesKey(pKey,  cert);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecOpenSSLAppCheckCertMatchesKey", NULL);
+                goto done;
+            }
             if(ret == 1) {
                 isKeyCert = 1;
             }

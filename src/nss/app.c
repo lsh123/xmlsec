@@ -529,6 +529,73 @@ done:
     return (retval);
 }
 
+/* returns 1 if matches, 0 if not, or a negative value on error */
+static int
+xmlSecNssAppCheckCertMatchesKey(xmlSecKeyPtr key,  CERTCertificate * cert) {
+    xmlSecKeyDataPtr keyData = NULL;
+    SECKEYPublicKey* pubkey = NULL;
+    SECKEYPublicKey* cert_pubkey = NULL;
+    SECItem * der_pubkey = NULL;
+    SECItem * der_cert_pubkey = NULL;
+    int res = -1;
+
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(cert != NULL, -1);
+
+    /* get key's pubkey and its der encoding */
+    keyData = xmlSecKeyGetValue(key);
+    if(keyData == NULL) {
+        res = 0; /* no key -> no match */
+        goto done;
+    }
+    pubkey = xmlSecNssPKIKeyDataGetPubKey(keyData);
+    if(pubkey == NULL) {
+        xmlSecInternalError("xmlSecNssPKIKeyDataGetPubKey", NULL);
+        goto done;
+    }
+    der_pubkey = SECKEY_EncodeDERSubjectPublicKeyInfo(pubkey);
+    if (der_pubkey == NULL) {
+        xmlSecNssError("SECKEY_EncodeDERSubjectPublicKeyInfo", NULL);
+        goto done;
+    }
+
+    /* get certs's pubkey and its der encoding */
+    cert_pubkey = CERT_ExtractPublicKey(cert);
+    if (cert_pubkey == NULL) {
+        xmlSecNssError("CERT_ExtractPublicKey", NULL);
+        goto done;
+    }
+    der_cert_pubkey = SECKEY_EncodeDERSubjectPublicKeyInfo(cert_pubkey);
+    if (der_cert_pubkey == NULL) {
+        xmlSecNssError("SECKEY_EncodeDERSubjectPublicKeyInfo", NULL);
+        goto done;
+    }
+
+    /* compare */
+    if(SECEqual == SECITEM_CompareItem(der_pubkey, der_cert_pubkey)) {
+        /* match */
+        res = 1;
+    } else {
+        /* no match */
+        res = 0;
+    }
+
+done:
+    if(pubkey != NULL) {
+        SECKEY_DestroyPublicKey(pubkey);
+    }
+    if (cert_pubkey) {
+        SECKEY_DestroyPublicKey(cert_pubkey);
+    }
+    if(der_pubkey != NULL) {
+        SECITEM_FreeItem(der_pubkey, PR_TRUE);
+    }
+    if(der_cert_pubkey != NULL) {
+        SECITEM_FreeItem(der_cert_pubkey, PR_TRUE);
+    }
+    return(res);
+}
+
 #ifndef XMLSEC_NO_X509
 /**
  * xmlSecNssAppKeyCertLoad:
@@ -621,6 +688,7 @@ int
 xmlSecNssAppKeyCertLoadSECItem(xmlSecKeyPtr key, SECItem* secItem, xmlSecKeyDataFormat format) {
     CERTCertificate *cert = NULL;
     xmlSecKeyDataPtr x509Data;
+    int isKeyCert = 0;
     int ret;
     int res = -1;
 
@@ -663,8 +731,19 @@ xmlSecNssAppKeyCertLoadSECItem(xmlSecKeyPtr key, SECItem* secItem, xmlSecKeyData
         xmlSecInternalError("xmlSecKeyEnsureData(xmlSecNssKeyDataX509Id)", NULL);
         goto done;
     }
+
+    /* do we want to add this cert as a key cert? */
     if(xmlSecNssKeyDataX509GetKeyCert(x509Data) == NULL) {
-        /* TODO: check if cert matches the key */
+        ret = xmlSecNssAppCheckCertMatchesKey(key, cert);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecNssAppCheckCertMatchesKey", NULL);
+            goto done;
+        }
+        if(ret == 1) {
+            isKeyCert = 1;
+        }
+    }
+    if(isKeyCert) {
         ret = xmlSecNssKeyDataX509AdoptKeyCert(x509Data, cert);
         if(ret < 0) {
             xmlSecInternalError("xmlSecNssKeyDataX509AdoptKeyCert", NULL);

@@ -18,7 +18,7 @@ jobs:
       matrix:
         include:
           - config_flags:
-          - config_flags: --enable-size-t=no --enable-md5
+          - config_flags: --enable-size-t=no --enable-md5 --enable-ftp
           - config_flags: --enable-static --enable-static-linking --without-nss --without-gcrypt --without-gnutls
           - config_flags: --enable-static --enable-static-linking --enable-gost --enable-gost2012 --without-openssl --without-nss --without-gcrypt
     steps:
@@ -56,7 +56,7 @@ jobs:
       matrix:
         include:
           - config_flags:
-          - config_flags: --enable-size-t=no --enable-md5
+          - config_flags: --enable-size-t=no --enable-md5 --enable-ftp
           - config_flags: --enable-static-linking=yes --without-nss --without-gcrypt --without-gnutls
     steps:
     - name: install dependencies
@@ -95,7 +95,7 @@ jobs:
       matrix:
         include:
           - config_flags:
-          - config_flags: --enable-size-t=no --enable-md5
+          - config_flags: --enable-size-t=no --enable-md5 --enable-ftp
     steps:
     - name: Set up Homebrew
       id: set-up-homebrew
@@ -153,7 +153,7 @@ jobs:
             config_flags: --enable-unicode=no
           - msystem: MINGW64
             arch: x86_64
-            config_flags: --enable-size-t=no --enable-md5
+            config_flags: --enable-size-t=no --enable-md5 --enable-ftp
           - msystem: MINGW64
             arch: x86_64
             config_flags: --enable-static --enable-static-linking
@@ -215,23 +215,23 @@ jobs:
       matrix:
         include:
           - crypto: mscrypto
-            config_flags: unicode=yes with-dl=yes legacy-crypto=yes
+            config_flags: unicode=yes with-dl=yes
           - crypto: mscng
-            config_flags: unicode=yes with-dl=yes legacy-crypto=yes
+            config_flags: unicode=yes with-dl=yes
           - crypto: mscrypto
-            config_flags: unicode=yes with-dl=yes
+            config_flags: unicode=no with-dl=no static=yes
           - crypto: mscng
-            config_flags: unicode=yes with-dl=yes
+            config_flags: unicode=no with-dl=no static=yes
+          - crypto: mscrypto
+            config_flags: unicode=yes with-dl=yes legacy-crypto=yes ftp=yes
+          - crypto: mscng
+            config_flags: unicode=yes with-dl=yes legacy-crypto=yes ftp=yes
           - crypto: openssl-300
             config_flags: unicode=yes with-dl=yes
+          - crypto: openssl-300
+            config_flags: unicode=no with-dl=no static=yes
           - crypto: openssl-110
             config_flags: unicode=yes with-dl=yes
-          - crypto: openssl-300
-            config_flags: unicode=no with-dl=no static=yes
-          - crypto: mscrypto
-            config_flags: unicode=no with-dl=no static=yes
-          - crypto: mscng
-            config_flags: unicode=no with-dl=no static=yes
     env:
       VISUAL_STUDIO_ROOT: "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise"
       INSTALL_FOLDER: c:\install.dir

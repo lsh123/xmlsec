@@ -31,6 +31,10 @@ xmlSecKeyDataPtr        xmlSecGnuTLSAsymKeyDataCreate           (gnutls_pubkey_t
                                                                  gnutls_privkey_t privkey);
 
 
+gnutls_pubkey_t         xmlSecGnuTLSAsymKeyDataGetPublicKey     (xmlSecKeyDataPtr data);
+gnutls_privkey_t        xmlSecGnuTLSAsymKeyDataGetPrivateKey    (xmlSecKeyDataPtr data);
+xmlSecKeyDataType       xmlSecGnuTLSAsymKeyDataGetType          (xmlSecKeyDataPtr data);
+xmlSecSize              xmlSecGnuTLSAsymKeyDataGetSize          (xmlSecKeyDataPtr data);
 
 #ifndef XMLSEC_NO_X509
 

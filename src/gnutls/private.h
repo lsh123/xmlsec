@@ -56,6 +56,10 @@ xmlSecPtrListId         xmlSecGnuTLSX509CrtListGetKlass         (void);
         xmlSecGnuTLSX509CrlListGetKlass()
 xmlSecPtrListId         xmlSecGnuTLSX509CrlListGetKlass         (void);
 
+
+xmlSecPtrListPtr        xmlSecGnuTLSKeyDataX509GetCerts         (xmlSecKeyDataPtr data);
+xmlSecPtrListPtr        xmlSecGnuTLSKeyDataX509GetCrls          (xmlSecKeyDataPtr data);
+
 /*************************************************************************
  *
  * x509 certs utils/helpers
@@ -121,7 +125,9 @@ void       xmlSecGnuTLSX509FindCertCtxFinalize              (xmlSecGnuTLSX509Fin
 int        xmlSecGnuTLSX509FindCertCtxMatch                 (xmlSecGnuTLSX509FindCertCtxPtr ctx,
                                                              gnutls_x509_crt_t cert);
 
-
+int         xmlSecGnuTLSX509StoreVerifyKey                  (xmlSecKeyDataStorePtr store,
+                                                             xmlSecKeyPtr key,
+                                                             xmlSecKeyInfoCtxPtr keyInfoCtx);
 
 /*************************************************************************
  *

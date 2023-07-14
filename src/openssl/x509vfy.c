@@ -926,7 +926,7 @@ xmlSecOpenSSLX509StoreVerifyKey(xmlSecKeyDataStorePtr store, xmlSecKeyPtr key, x
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->xst != NULL,  -1);
 
-    /* retrieve X509 data */
+    /* retrieve X509 data and get key cert */
     x509Data = xmlSecKeyGetData(key, xmlSecOpenSSLKeyDataX509Id);
     if(x509Data == NULL) {
         xmlSecInternalError("xmlSecKeyGetData(xmlSecOpenSSLKeyDataX509Id)", xmlSecKeyDataStoreGetName(store));
@@ -938,13 +938,15 @@ xmlSecOpenSSLX509StoreVerifyKey(xmlSecKeyDataStorePtr store, xmlSecKeyPtr key, x
         res = 0; /* verification failed */
         goto done;
     }
-    certs = xmlSecOpenSSLKeyDataX509GetCerts(x509Data);
-    crls = xmlSecOpenSSLKeyDataX509GetCrls(x509Data);
 
-    /* do we even need to verify the leaf cert? */
+    /* do we even need to verify the key cert? */
     if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS) != 0) {
+        res = 1;
         goto done;
     }
+
+    certs = xmlSecOpenSSLKeyDataX509GetCerts(x509Data);
+    crls = xmlSecOpenSSLKeyDataX509GetCrls(x509Data);
 
     /* reuse xsc for both crls and certs verification */
     xsc = X509_STORE_CTX_new_ex(xmlSecOpenSSLGetLibCtx(), NULL);

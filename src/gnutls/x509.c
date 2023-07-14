@@ -191,6 +191,31 @@ xmlSecGnuTLSKeyDataX509GetKeyCert(xmlSecKeyDataPtr data) {
     return(ctx->keyCert);
 }
 
+xmlSecPtrListPtr
+xmlSecGnuTLSKeyDataX509GetCerts(xmlSecKeyDataPtr data) {
+    xmlSecGnuTLSX509DataCtxPtr ctx;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataX509Id), NULL);
+
+    ctx = xmlSecGnuTLSX509DataGetCtx(data);
+    xmlSecAssert2(ctx != NULL, NULL);
+
+    return(&(ctx->certsList));
+}
+
+xmlSecPtrListPtr
+xmlSecGnuTLSKeyDataX509GetCrls(xmlSecKeyDataPtr data) {
+    xmlSecGnuTLSX509DataCtxPtr ctx;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataX509Id), NULL);
+
+    ctx = xmlSecGnuTLSX509DataGetCtx(data);
+    xmlSecAssert2(ctx != NULL, NULL);
+
+    return(&(ctx->crlsList));
+}
+
+
 static int
 xmlSecGnuTLSKeyDataX509AddCertInternal(xmlSecGnuTLSX509DataCtxPtr ctx, gnutls_x509_crt_t cert, int keyCert) {
     gnutls_x509_crt_t cert2;
@@ -417,7 +442,6 @@ xmlSecGnuTLSKeyDataX509GetCrlsSize(xmlSecKeyDataPtr data) {
 
     return(xmlSecPtrListGetSize(&(ctx->crlsList)));
 }
-
 
 static int
 xmlSecGnuTLSKeyDataX509Initialize(xmlSecKeyDataPtr data) {

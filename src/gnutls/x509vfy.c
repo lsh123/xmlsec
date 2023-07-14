@@ -512,17 +512,12 @@ xmlSecGnuTLSX509StoreVerifyCert(xmlSecGnuTLSX509StoreCtxPtr ctx,
 
     flags |= GNUTLS_VERIFY_ALLOW_UNSORTED_CHAIN;
     if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_STRICT_CHECKS) != 0) {
-        /* allow legacy digests only if requested during build */
-#ifndef XMLSEC_NO_MD5
+        /* legacy digests are still needed for tests */
         flags |= GNUTLS_VERIFY_ALLOW_SIGN_RSA_MD2;
         flags |= GNUTLS_VERIFY_ALLOW_SIGN_RSA_MD5;
-#endif /* XMLSEC_NO_MD5 */
-
-#ifndef XMLSEC_NO_SHA1
 #if GNUTLS_VERSION_NUMBER >= 0x030600
         flags |= GNUTLS_VERIFY_ALLOW_SIGN_WITH_SHA1;
 #endif /* GNUTLS_VERSION_NUMBER >= 0x030600 */
-#endif /* XMLSEC_NO_SHA1 */
     }
 
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(certs_chain_size, certs_chain_len, return(1), NULL);

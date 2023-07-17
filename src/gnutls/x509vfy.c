@@ -600,11 +600,13 @@ xmlSecGnuTLSX509StoreVerifyKey(xmlSecKeyDataStorePtr store, xmlSecKeyPtr key, xm
     x509Data = xmlSecKeyGetData(key, xmlSecGnuTLSKeyDataX509Id);
     if(x509Data == NULL) {
         xmlSecInternalError("xmlSecKeyGetData(xmlSecGnuTLSKeyDataX509Id)", xmlSecKeyDataStoreGetName(store));
+        res = 0; /* key cannot be verified w/o key cert */
         goto done;
     }
     key_cert =  xmlSecGnuTLSKeyDataX509GetKeyCert(x509Data);
     if(key_cert == NULL) {
         xmlSecInternalError("xmlSecGnuTLSKeyDataX509GetKeyCert", xmlSecKeyDataStoreGetName(store));
+        res = 0; /* key cannot be verified w/o key cert */
         goto done;
     }
     key_certs = xmlSecGnuTLSKeyDataX509GetCerts(x509Data);

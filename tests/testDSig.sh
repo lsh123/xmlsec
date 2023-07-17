@@ -1223,7 +1223,7 @@ execDSigTest $res_fail \
 
 # currently only openssl/gnutls/nss support loading CRL from the command line
 # https://github.com/lsh123/xmlsec/issues/583
-if [ "z$crypto" = "zopenssl" -o  "z$crypto" = "zgnutls" -o  "z$crypto" = "znss" ] ; then
+if [ "z$crypto" = "zopenssl" -o  "z$crypto" = "zgnutls" -o "z$crypto" = "znss" ] ; then
     # this should fail because there is a CRL for the cert used for signing
     extra_message="Negative test: CRL present"
     execDSigTest $res_fail \
@@ -1265,9 +1265,9 @@ if [ "z$crypto" = "zopenssl" -o  "z$crypto" = "zgnutls" -o  "z$crypto" = "znss" 
 fi
 
 
-# currently only openssl supports key verification
+# currently only openssl, gnutls, and nss supports key verification
 # https://github.com/lsh123/xmlsec/issues/587
-if [ "z$crypto" = "zopenssl"  -o  "z$crypto" = "zgnutls" ] ; then
+if [ "z$crypto" = "zopenssl" -o  "z$crypto" = "zgnutls" -o "z$crypto" = "znss" ] ; then
     # this should succeeed because key verification is not requested (no --verify-keys option)
     extra_message="Successfully use key without verification"
     execDSigTest $res_success \

@@ -419,6 +419,127 @@ xmlSecNssX509StoreFindChildCert(CERTCertificate* cert, CERTCertList* certs) {
      return(NULL);
 }
 
+
+/* returns 1 if verified, 0 if not, an < 0 if an error occurs */
+static int
+xmlSecNssX509StoreVerifyCert(CERTCertDBHandle *handle, CERTCertificate* cert, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    int64 timeboundary;
+    int64 tmp1, tmp2;
+    SECStatus status;
+    PRErrorCode err;
+
+    xmlSecAssert2(handle != NULL, -1);
+    xmlSecAssert2(cert != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+
+    /* do we need to verify anything at all? */
+    if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS) != 0) {
+        return(1);
+    }
+
+    if(keyInfoCtx->certsVerificationTime > 0) {
+        /* convert the time since epoch in seconds to microseconds */
+        LL_UI2L(timeboundary, keyInfoCtx->certsVerificationTime);
+        tmp1 = (int64)PR_USEC_PER_SEC;
+        tmp2 = timeboundary;
+        LL_MUL(timeboundary, tmp1, tmp2);
+    } else {
+        timeboundary = PR_Now();
+    }
+
+    /* it's important to set the usage here, otherwise no real verification
+     * is performed. */
+    status = CERT_VerifyCertificate(handle, cert, PR_FALSE,
+                certificateUsageEmailSigner,
+                timeboundary , NULL, NULL, NULL);
+    if(status == SECSuccess) {
+        return(1);
+    }
+
+    /* not verified, print an error and bail out */
+    err = PORT_GetError();
+    switch(err) {
+        case SEC_ERROR_EXPIRED_ISSUER_CERTIFICATE:
+        case SEC_ERROR_CA_CERT_INVALID:
+        case SEC_ERROR_UNKNOWN_SIGNER:
+            xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_ISSUER_FAILED, NULL,
+                "subject=\"%s\"; reason=the issuer's cert is expired/invalid or not found",
+                xmlSecErrorsSafeString(cert != NULL ? cert->subjectName : NULL));
+            break;
+        case SEC_ERROR_EXPIRED_CERTIFICATE:
+            xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_HAS_EXPIRED, NULL,
+                "subject=\"%s\"; reason=expired",
+                xmlSecErrorsSafeString(cert != NULL ? cert->subjectName : NULL));
+            break;
+        case SEC_ERROR_REVOKED_CERTIFICATE:
+            xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_REVOKED, NULL,
+                "subject=\"%s\"; reason=revoked",
+                xmlSecErrorsSafeString(cert != NULL ? cert->subjectName : NULL));
+            break;
+        default:
+            xmlSecOtherError3(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED, NULL,
+                "subject=\"%s\"; reason=%d",
+                xmlSecErrorsSafeString(cert != NULL ? cert->subjectName : NULL),
+                err);
+            break;
+    }
+    return(0);
+}
+
+/**
+ * xmlSecNssX509StoreVerifyKey:
+ * @store:              the pointer to X509 key data store klass.
+ * @key:                the pointer to key.
+ * @keyInfoCtx:         the key info context for verification.
+ *
+ * Verifies @key with the keys manager @mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
+ * function:
+ * - Checks that key certificate is present
+ * - Checks that key certificate is valid
+ *
+ * Adds @key to the keys manager @mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
+ * function.
+ *
+ * Returns: 1 if key is verified, 0 otherwise, or a negative value if an error occurs.
+ */
+int
+xmlSecNssX509StoreVerifyKey(xmlSecKeyDataStorePtr store, xmlSecKeyPtr key, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlSecNssX509StoreCtxPtr ctx;
+    xmlSecKeyDataPtr x509Data;
+    CERTCertificate* key_cert;
+    int ret;
+
+    xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecNssX509StoreId), -1);
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+
+    ctx = xmlSecNssX509StoreGetCtx(store);
+    xmlSecAssert2(ctx != NULL, -1);
+
+    /* retrieve X509 data and get key cert, other certs and crls */
+    x509Data = xmlSecKeyGetData(key, xmlSecNssKeyDataX509Id);
+    if(x509Data == NULL) {
+        xmlSecInternalError("xmlSecKeyGetData(xmlSecNssKeyDataX509Id)", xmlSecKeyDataStoreGetName(store));
+        return(0); /* key cannot be verified w/o key cert */
+    }
+    key_cert = xmlSecNssKeyDataX509GetKeyCert(x509Data);
+    if(key_cert == NULL) {
+        xmlSecInternalError("xmlSecNssKeyDataX509GetKeyCert", xmlSecKeyDataStoreGetName(store));
+        return(0); /* key cannot be verified w/o key cert */
+    }
+
+    ret = xmlSecNssX509StoreVerifyCert(CERT_GetDefaultCertDB(), key_cert, keyInfoCtx);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecNssX509StoreVerifyCert", xmlSecKeyDataStoreGetName(store));
+        return(-1);
+    } else if(ret != 1) {
+        return(0); /* cert verification failed*/
+    }
+
+    /* success */
+    return(1);
+}
+
 /**
  * xmlSecNssX509StoreVerify:
  * @store:              the pointer to X509 key data store klass.
@@ -434,11 +555,8 @@ xmlSecNssX509StoreVerify(xmlSecKeyDataStorePtr store, CERTCertList* certs, xmlSe
     xmlSecNssX509StoreCtxPtr ctx;
     CERTCertListNode* cur;
     CERTCertList* good_certs = NULL;
-    CERTCertificate* cert = NULL;
-    SECStatus status = SECFailure;
-    int64 timeboundary;
-    int64 tmp1, tmp2;
-    PRErrorCode err;
+
+    CERTCertificate* res = NULL;
     int ret;
 
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecNssX509StoreId), NULL);
@@ -448,15 +566,6 @@ xmlSecNssX509StoreVerify(xmlSecKeyDataStorePtr store, CERTCertList* certs, xmlSe
     ctx = xmlSecNssX509StoreGetCtx(store);
     xmlSecAssert2(ctx != NULL, NULL);
 
-    if(keyInfoCtx->certsVerificationTime > 0) {
-        /* convert the time since epoch in seconds to microseconds */
-        LL_UI2L(timeboundary, keyInfoCtx->certsVerificationTime);
-        tmp1 = (int64)PR_USEC_PER_SEC;
-        tmp2 = timeboundary;
-        LL_MUL(timeboundary, tmp1, tmp2);
-    } else {
-        timeboundary = PR_Now();
-    }
 
     /* do we need to verify anything at all? */
     if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS) != 0) {
@@ -466,14 +575,13 @@ xmlSecNssX509StoreVerify(xmlSecKeyDataStorePtr store, CERTCertList* certs, xmlSe
         ret = xmlSecNssX509StoreRemoveRevokedCerts(ctx, certs, &good_certs, keyInfoCtx);
         if((ret < 0) || (good_certs == NULL)) {
             xmlSecInternalError("xmlSecNssX509StoreRemoveRevokedCerts",  xmlSecKeyDataStoreGetName(store));
-            CERT_DestroyCertList(good_certs);
-            return(NULL);
+            goto done;
         }
     }
 
     /* now go through all good certs we have and try to verify them */
-    for (cur = CERT_LIST_HEAD(good_certs); !CERT_LIST_END(cur, good_certs); cur = CERT_LIST_NEXT(cur)) {
-        cert = cur->cert;
+    for (cur = CERT_LIST_HEAD(good_certs); (!CERT_LIST_END(cur, good_certs)) && (res == NULL); cur = CERT_LIST_NEXT(cur)) {
+        CERTCertificate* cert = cur->cert;
 
         /* if cert is the issuer of any other cert in the list, then it is
          * to be skipped (note that we are using the bigger "certs" list instead of good_certs!) */
@@ -482,65 +590,30 @@ xmlSecNssX509StoreVerify(xmlSecKeyDataStorePtr store, CERTCertList* certs, xmlSe
             continue;
         }
 
-        /* do we need to verify anything at all? */
-        if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS) != 0) {
-            status = SECSuccess;
-            break;
+        ret = xmlSecNssX509StoreVerifyCert(CERT_GetDefaultCertDB(), cert, keyInfoCtx);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecNssX509StoreVerifyCert", xmlSecKeyDataStoreGetName(store));
+            continue; /* ignore all errors and try other certs */
+        } else if(ret != 1) {
+            continue; /* ignore all errors and try other certs */
         }
-        /* it's important to set the usage here, otherwise no real verification
-         * is performed. */
-        status = CERT_VerifyCertificate(CERT_GetDefaultCertDB(), cert, PR_FALSE,
-                    certificateUsageEmailSigner,
-                    timeboundary , NULL, NULL, NULL);
-        if(status == SECSuccess) {
-            break;
-        }
+
+        /* DONE! */
+        res = cert;
     }
+
+
+done:
     /* SMALL HACK: we are using the fact that NSS implements certs as ref counted objects
      * and CERT_DupCertificate() simply bumps the counter. Otherwise, the "cert"
      * might belong to good_certs and will be destroyed here. But exactly the
      * same pointer is in certs as well so we are good. Otherwise we will need to find
      * a certificates in "certs" that matches "cert" and return that pointer instead.
      */
-    if(good_certs != certs) {
+    if((good_certs != certs) && (good_certs != NULL)) {
         CERT_DestroyCertList(good_certs);
     }
-    if (status == SECSuccess) {
-        return (cert);
-    }
-
-    err = PORT_GetError();
-    switch(err) {
-        case SEC_ERROR_EXPIRED_ISSUER_CERTIFICATE:
-        case SEC_ERROR_CA_CERT_INVALID:
-        case SEC_ERROR_UNKNOWN_SIGNER:
-            xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_ISSUER_FAILED,
-                xmlSecKeyDataStoreGetName(store),
-                "subject=\"%s\"; reason=the issuer's cert is expired/invalid or not found",
-                xmlSecErrorsSafeString(cert != NULL ? cert->subjectName : NULL));
-            break;
-        case SEC_ERROR_EXPIRED_CERTIFICATE:
-            xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_HAS_EXPIRED,
-                xmlSecKeyDataStoreGetName(store),
-                "subject=\"%s\"; reason=expired",
-                xmlSecErrorsSafeString(cert != NULL ? cert->subjectName : NULL));
-            break;
-        case SEC_ERROR_REVOKED_CERTIFICATE:
-            xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_REVOKED,
-                xmlSecKeyDataStoreGetName(store),
-                "subject=\"%s\"; reason=revoked",
-                xmlSecErrorsSafeString(cert != NULL ? cert->subjectName : NULL));
-            break;
-        default:
-            xmlSecOtherError3(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
-                xmlSecKeyDataStoreGetName(store),
-                "subject=\"%s\"; reason=%d",
-                xmlSecErrorsSafeString(cert != NULL ? cert->subjectName : NULL),
-                err);
-            break;
-    }
-
-    return (NULL);
+    return(res);
 }
 
 /**

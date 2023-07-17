@@ -83,7 +83,11 @@ CERTCertificate * xmlSecNssX509StoreFindCertByValue     (xmlSecKeyDataStorePtr s
 xmlSecKeyPtr xmlSecNssX509FindKeyByValue                (xmlSecPtrListPtr keysList,
                                                          xmlSecKeyX509DataValuePtr x509Value);
 
-SECOidTag  xmlSecNssX509GetDigestFromAlgorithm          (const xmlChar* href);
+SECOidTag   xmlSecNssX509GetDigestFromAlgorithm          (const xmlChar* href);
+
+int         xmlSecNssX509StoreVerifyKey                 (xmlSecKeyDataStorePtr store,
+                                                         xmlSecKeyPtr key,
+                                                         xmlSecKeyInfoCtxPtr keyInfoCtx);
 
 
 /* NSS has a list for Certs but not Crls so we have to do it ourselves */
@@ -110,6 +114,10 @@ CERTSignedCrl*   xmlSecNssX509CrlDerRead                (xmlSecByte* buf,
 
 int              xmlSecNssX509CertGetTime               (PRTime* t,
                                                          time_t* res);
+
+CERTCertList* xmlSecNssKeyDataX509GetCerts              (xmlSecKeyDataPtr data);
+xmlSecNssX509CrlNodePtr xmlSecNssKeyDataX509GetCrls     (xmlSecKeyDataPtr data);
+
 #endif /* XMLSEC_NO_X509 */
 
 #ifdef __cplusplus

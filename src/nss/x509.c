@@ -213,6 +213,29 @@ xmlSecNssKeyDataX509GetKeyCert(xmlSecKeyDataPtr data) {
     return(ctx->keyCert);
 }
 
+CERTCertList*
+xmlSecNssKeyDataX509GetCerts(xmlSecKeyDataPtr data) {
+    xmlSecNssX509DataCtxPtr ctx;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecNssKeyDataX509Id), NULL);
+
+    ctx = xmlSecNssX509DataGetCtx(data);
+    xmlSecAssert2(ctx != NULL, NULL);
+
+    return(ctx->certsList);
+}
+
+xmlSecNssX509CrlNodePtr
+xmlSecNssKeyDataX509GetCrls(xmlSecKeyDataPtr data) {
+    xmlSecNssX509DataCtxPtr ctx;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecNssKeyDataX509Id), NULL);
+
+    ctx = xmlSecNssX509DataGetCtx(data);
+    xmlSecAssert2(ctx != NULL, NULL);
+
+    return(ctx->crlsList);
+}
 
 static CERTCertListNode*
 xmlSecNssKeyDataX509FindCertInternal(xmlSecNssX509DataCtxPtr ctx, CERTCertificate* cert) {

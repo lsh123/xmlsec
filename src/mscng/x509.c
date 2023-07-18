@@ -23,8 +23,6 @@
 
 #include <string.h>
 
-#include <windows.h>
-
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/base64.h>
 #include <xmlsec/bn.h>

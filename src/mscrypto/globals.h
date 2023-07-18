@@ -23,6 +23,8 @@
 #define XMLSEC_PRIVATE
 
 #include <windows.h>
+#include <wincrypt.h>
+
 #include <xmlsec/xmlsec.h>
 
 /* Include common error helper macros. */

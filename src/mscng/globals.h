@@ -18,6 +18,17 @@
 #include "config.h"
 #endif /* HAVE_CONFIG_H */
 
+/**
+ * Add all windows headers in one place
+ */
+#define WIN32_NO_STATUS
+#include <windows.h>
+#undef WIN32_NO_STATUS
+#include <wincrypt.h>
+#include <ntstatus.h>
+#include <bcrypt.h>
+#include <ncrypt.h>
+
 #define IN_XMLSEC_CRYPTO
 #define XMLSEC_PRIVATE
 

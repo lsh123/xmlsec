@@ -19,9 +19,6 @@
 
 #include <string.h>
 
-#include <windows.h>
-#include <wincrypt.h>
-
 #ifndef XMLSEC_NO_GOST
 #include "csp_oid.h"
 #include "csp_calg.h"

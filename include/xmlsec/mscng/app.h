@@ -15,7 +15,7 @@
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/transforms.h>
 
-#include <wincrypt.h>
+#include <windows.h>
 
 #ifdef __cplusplus
 extern "C" {

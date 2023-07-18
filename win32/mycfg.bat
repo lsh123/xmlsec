@@ -8,7 +8,7 @@ REM
 REM Aleksey Sanin <aleksey@aleksey.com>
 REM
 
-SET XMLSEC_CRYPTO=mscng
+SET XMLSEC_CRYPTO=openssl
 
 SET PREFIX=C:\local\distro
 SET LIBXML2_PREFIX=%PREFIX%\libxml2

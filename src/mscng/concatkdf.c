@@ -22,13 +22,6 @@
 #include <string.h>
 #include <ctype.h>
 
-#define WIN32_NO_STATUS
-#include <windows.h>
-#undef WIN32_NO_STATUS
-#include <ntstatus.h>
-#include <bcrypt.h>
-#include <ncrypt.h>
-
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/base64.h>
 #include <xmlsec/keys.h>

@@ -27,9 +27,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <windows.h>
-#include <wincrypt.h>
-
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/buffer.h>
 #include <xmlsec/base64.h>

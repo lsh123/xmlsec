@@ -28,9 +28,10 @@
 #ifdef __GNUC__
 #ifdef HAVE_ANSIDECL_H
 #include <ansidecl.h>
-#endif
-#endif
+#endif /* HAVE_ANSIDECL_H */
+#endif /* __GNUC__ */
 
+/* This is needed for UNREFERENCED_PARAMETER */
 #if defined(XMLSEC_WINDOWS)
 #include <windows.h>
 #endif /* defined(XMLSEC_WINDOWS) */

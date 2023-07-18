@@ -181,6 +181,7 @@ xmlSecMSCngX509CertDerRead(const xmlSecByte* buf, xmlSecSize size) {
 
     return(cert);
 }
+
 static int
 xmlSecMSCngKeyDataX509AddCertInternal(xmlSecMSCngX509DataCtxPtr ctx, PCCERT_CONTEXT cert) {
     xmlSecAssert2(ctx != NULL, -1);
@@ -294,6 +295,39 @@ xmlSecMSCngKeyDataX509AdoptCrl(xmlSecKeyDataPtr data, PCCRL_CONTEXT crl) {
     CertFreeCRLContext(crl);
 
     return(0);
+}
+
+/**
+ * xmlSecMSCngKeyDataX509GetKeyCert:
+ * @data:               the pointer to X509 key data.
+ *
+ * Gets the certificate from which the key was extracted.
+ *
+ * Returns: the key's certificate or NULL if key data was not used for key
+ * extraction or an error occurs.
+ */
+PCCERT_CONTEXT
+xmlSecMSCngKeyDataX509GetKeyCert(xmlSecKeyDataPtr data) {
+    xmlSecMSCngX509DataCtxPtr ctx;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataX509Id), NULL);
+
+    ctx = xmlSecMSCngX509DataGetCtx(data);
+    xmlSecAssert2(ctx != NULL, NULL);
+
+    return(ctx->keyCert);
+}
+
+HCERTSTORE
+xmlSecMSCngKeyDataX509GetCertStore(xmlSecKeyDataPtr data) {
+    xmlSecMSCngX509DataCtxPtr ctx;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataX509Id), NULL);
+
+    ctx = xmlSecMSCngX509DataGetCtx(data);
+    xmlSecAssert2(ctx != NULL, NULL);
+
+    return(ctx->hMemStore);
 }
 
 

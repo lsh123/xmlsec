@@ -41,6 +41,12 @@ extern "C" {
  ******************************************************************************/
 #ifndef XMLSEC_NO_X509
 
+int                 xmlSecMSCngX509StoreVerifyKey                    (xmlSecKeyDataStorePtr store,
+                                                                     xmlSecKeyPtr key,
+                                                                     xmlSecKeyInfoCtxPtr keyInfoCtx);
+
+HCERTSTORE          xmlSecMSCngKeyDataX509GetCertStore              (xmlSecKeyDataPtr data);
+
 typedef struct _xmlSecMSCngX509FindCertCtx {
     LPTSTR wcSubjectName;
 

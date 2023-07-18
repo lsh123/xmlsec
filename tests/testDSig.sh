@@ -1265,9 +1265,9 @@ if [ "z$crypto" = "zopenssl" -o  "z$crypto" = "zgnutls" -o "z$crypto" = "znss" ]
 fi
 
 
-# currently only openssl, gnutls, and nss supports key verification
+# only openssl, gnutls, nss, and mcng supports key verification
 # https://github.com/lsh123/xmlsec/issues/587
-if [ "z$crypto" = "zopenssl" -o  "z$crypto" = "zgnutls" -o "z$crypto" = "znss" ] ; then
+if [ "z$crypto" = "zopenssl" -o  "z$crypto" = "zgnutls" -o "z$crypto" = "znss" -o "z$crypto" = "zmscng" ] ; then
     # this should succeeed because key verification is not requested (no --verify-keys option)
     extra_message="Successfully use key without verification"
     execDSigTest $res_success \

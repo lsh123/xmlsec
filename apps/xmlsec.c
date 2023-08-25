@@ -35,6 +35,7 @@
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/xmltree.h>
+#include <xmlsec/base64.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/keysmngr.h>
@@ -201,6 +202,16 @@ static xmlSecAppCmdLineParam repeatParam = {
     NULL
 };
 
+static xmlSecAppCmdLineParam base64LineSizeParam = {
+    xmlSecAppCmdLineTopicCryptoConfig,
+    "--base64-line-size",
+    NULL,
+    "--base64-line-size <size>"
+    "\n\tsets the max line size for base64 encodings to <size>",
+    xmlSecAppCmdLineParamTypeNumber,
+    xmlSecAppCmdLineParamFlagNone,
+    NULL
+};
 static xmlSecAppCmdLineParam transformBinChunkSizeParam = {
     xmlSecAppCmdLineTopicCryptoConfig,
     "--transform-binary-chunk-size",
@@ -1064,6 +1075,7 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
     &cryptoConfigParam,
     &verboseParam,
     &repeatParam,
+    &base64LineSizeParam,
     &transformBinChunkSizeParam,
     &xxeParam,
     &urlMapParam,
@@ -1353,6 +1365,17 @@ xmlSecAppExecute(xmlSecAppCommand command, const char** utf8_argv, int argc) {
        xmlSecErrorsDefaultCallbackEnableOutput(0);
     }
 
+
+    /* base64 line size */
+    if(xmlSecAppCmdLineParamIsSet(&base64LineSizeParam)) {
+        int lineSize = xmlSecAppCmdLineParamGetInt(&base64LineSizeParam, 0);
+        if(lineSize <= 0) {
+            fprintf(stderr, "Error: base64 line size should be greater than zero\n");
+            xmlSecAppPrintUsage();
+            goto done;
+        }
+        xmlSecBase64SetDefaultLineSize((xmlSecSize)lineSize);
+    }
 
     /* transform bin chunk size */
     if(xmlSecAppCmdLineParamIsSet(&transformBinChunkSizeParam)) {

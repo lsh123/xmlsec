@@ -1374,7 +1374,7 @@ xmlSecAppExecute(xmlSecAppCommand command, const char** utf8_argv, int argc) {
             xmlSecAppPrintUsage();
             goto done;
         }
-        xmlSecBase64SetDefaultLineSize((xmlSecSize)lineSize);
+        xmlSecBase64SetDefaultLineSize(lineSize);
     }
 
     /* transform bin chunk size */

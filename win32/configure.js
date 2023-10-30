@@ -116,9 +116,9 @@ function usage()
 	txt += "either 'yes' or 'no'.\n\n";
 	txt += "XmlSec Library options, default value given in parentheses:\n\n";
 	txt += "  crypto:     Crypto engines list, first is default: \"openssl\",\n";
-	txt += "              \"openssl=100\", \"openssl=100\", \"openssl=110\",\n";
-	txt += "              \"openssl-110\", \"openssl=300\", \"openssl-300\",\n";
-	txt += "              \"nss\", \"mscrypto\", \"mscng\" (\"" + withCrypto + "\");\n"
+	txt += "              \"openssl=110\", \"openssl-110\", \"openssl=300\",\n";
+	txt += "              \"openssl-300\", \"nss\", \"mscrypto\", \"mscng\"\n";
+	txt += "              (\"" + withCrypto + "\");\n"
  	txt += "  xslt:       LibXSLT is used (" + (withLibXSLT? "yes" : "no")  + ")\n";
  	txt += "  iconv:      Use the iconv library (" + (withIconv? "yes" : "no")  + ")\n";
 	txt += "  size_t:     Use the size_t (" + (withSizeT ? "yes" : "no") + ")\n";
@@ -150,7 +150,7 @@ function usage()
 	txt += "  lib:        Additional search path for the linker, particularily\n";
 	txt += "              where libxml library can be found (" + buildLib + ")\n";
 	txt += "\nCrypto options, default value given in parentheses:\n\n";
-	txt += "  with-openssl3-engines:    Enable dynamic loading of xmlsec-crypto libraries (" + (withOpenSSL3Engines ? "yes" : "no") + ")\n";	
+	txt += "  with-openssl3-engines:    Enable dynamic loading of xmlsec-crypto libraries (" + (withOpenSSL3Engines ? "yes" : "no") + ")\n";
 	WScript.Echo(txt);
 }
 

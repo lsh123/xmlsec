@@ -1167,8 +1167,8 @@
     <keyword type="function" name="xmlSecOpenSSLTransformEcdsaSha3_512GetKlass ()" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformEcdsaSha3-512GetKlass"/>
     <keyword type="function" name="xmlSecOpenSSLTransformEcdhGetKlass ()" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformEcdhGetKlass"/>
     <keyword type="function" name="xmlSecOpenSSLKeyDataGost2001GetKlass ()" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataGost2001GetKlass"/>
-    <keyword type="function" name="xmlSecOpenSSLTransformGost2001GostR3411_94GetKlass ()" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformGost2001GostR3411-94GetKlass"/>
     <keyword type="function" name="xmlSecOpenSSLTransformGostR3411_94GetKlass ()" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformGostR3411-94GetKlass"/>
+    <keyword type="function" name="xmlSecOpenSSLTransformGost2001GostR3411_94GetKlass ()" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformGost2001GostR3411-94GetKlass"/>
     <keyword type="function" name="xmlSecOpenSSLKeyDataGostR3410_2012_256GetKlass ()" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataGostR3410-2012-256GetKlass"/>
     <keyword type="function" name="xmlSecOpenSSLKeyDataGostR3410_2012_512GetKlass ()" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataGostR3410-2012-512GetKlass"/>
     <keyword type="function" name="xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_256GetKlass ()" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformGostR3410-2012GostR3411-2012-256GetKlass"/>
@@ -1276,8 +1276,8 @@
     <keyword type="macro" name="xmlSecOpenSSLTransformEcdsaSha3_512Id" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformEcdsaSha3-512Id"/>
     <keyword type="macro" name="xmlSecOpenSSLTransformEcdhId" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformEcdhId"/>
     <keyword type="macro" name="xmlSecOpenSSLKeyDataGost2001Id" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataGost2001Id"/>
-    <keyword type="macro" name="xmlSecOpenSSLTransformGost2001GostR3411_94Id" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformGost2001GostR3411-94Id"/>
     <keyword type="macro" name="xmlSecOpenSSLTransformGostR3411_94Id" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformGostR3411-94Id"/>
+    <keyword type="macro" name="xmlSecOpenSSLTransformGost2001GostR3411_94Id" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformGost2001GostR3411-94Id"/>
     <keyword type="macro" name="xmlSecOpenSSLKeyDataGostR3410_2012_256Id" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataGostR3410-2012-256Id"/>
     <keyword type="macro" name="xmlSecOpenSSLKeyDataGostR3410_2012_512Id" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataGostR3410-2012-512Id"/>
     <keyword type="macro" name="xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_256Id" link="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformGostR3410-2012GostR3411-2012-256Id"/>
@@ -1414,6 +1414,24 @@
     <keyword type="function" name="xmlSecGnuTLSTransformEcdsaSha3_256GetKlass ()" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformEcdsaSha3-256GetKlass"/>
     <keyword type="function" name="xmlSecGnuTLSTransformEcdsaSha3_384GetKlass ()" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformEcdsaSha3-384GetKlass"/>
     <keyword type="function" name="xmlSecGnuTLSTransformEcdsaSha3_512GetKlass ()" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformEcdsaSha3-512GetKlass"/>
+    <keyword type="function" name="xmlSecGnuTLSKeyDataGost2001GetKlass ()" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSKeyDataGost2001GetKlass"/>
+    <keyword type="function" name="xmlSecGnuTLSKeyDataGost2001AdoptKey ()" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSKeyDataGost2001AdoptKey"/>
+    <keyword type="function" name="xmlSecGnuTLSKeyDataGost2001GetPublicKey ()" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSKeyDataGost2001GetPublicKey"/>
+    <keyword type="function" name="xmlSecGnuTLSKeyDataGost2001GetPrivateKey ()" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSKeyDataGost2001GetPrivateKey"/>
+    <keyword type="function" name="xmlSecGnuTLSTransformGostR3411_94GetKlass ()" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformGostR3411-94GetKlass"/>
+    <keyword type="function" name="xmlSecGnuTLSTransformGost2001GostR3411_94GetKlass ()" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformGost2001GostR3411-94GetKlass"/>
+    <keyword type="function" name="xmlSecGnuTLSKeyDataGost2012_256GetKlass ()" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSKeyDataGost2012-256GetKlass"/>
+    <keyword type="function" name="xmlSecGnuTLSKeyDataGost2012_256AdoptKey ()" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSKeyDataGost2012-256AdoptKey"/>
+    <keyword type="function" name="xmlSecGnuTLSKeyDataGost2012_256GetPublicKey ()" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSKeyDataGost2012-256GetPublicKey"/>
+    <keyword type="function" name="xmlSecGnuTLSKeyDataGost2012_256GetPrivateKey ()" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSKeyDataGost2012-256GetPrivateKey"/>
+    <keyword type="function" name="xmlSecGnuTLSKeyDataGost2012_512GetKlass ()" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSKeyDataGost2012-512GetKlass"/>
+    <keyword type="function" name="xmlSecGnuTLSKeyDataGost2012_512AdoptKey ()" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSKeyDataGost2012-512AdoptKey"/>
+    <keyword type="function" name="xmlSecGnuTLSKeyDataGost2012_512GetPublicKey ()" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSKeyDataGost2012-512GetPublicKey"/>
+    <keyword type="function" name="xmlSecGnuTLSKeyDataGost2012_512GetPrivateKey ()" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSKeyDataGost2012-512GetPrivateKey"/>
+    <keyword type="function" name="xmlSecGnuTLSTransformGostR3411_2012_256GetKlass ()" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformGostR3411-2012-256GetKlass"/>
+    <keyword type="function" name="xmlSecGnuTLSTransformGostR3411_2012_512GetKlass ()" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformGostR3411-2012-512GetKlass"/>
+    <keyword type="function" name="xmlSecGnuTLSTransformGostR3410_2012GostR3411_2012_256GetKlass ()" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformGostR3410-2012GostR3411-2012-256GetKlass"/>
+    <keyword type="function" name="xmlSecGnuTLSTransformGostR3410_2012GostR3411_2012_512GetKlass ()" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformGostR3410-2012GostR3411-2012-512GetKlass"/>
     <keyword type="function" name="xmlSecGnuTLSKeyDataHmacGetKlass ()" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSKeyDataHmacGetKlass"/>
     <keyword type="function" name="xmlSecGnuTLSKeyDataHmacSet ()" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSKeyDataHmacSet"/>
     <keyword type="function" name="xmlSecGnuTLSTransformHmacSha1GetKlass ()" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformHmacSha1GetKlass"/>
@@ -1468,6 +1486,15 @@
     <keyword type="macro" name="xmlSecGnuTLSTransformEcdsaSha3_256Id" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformEcdsaSha3-256Id"/>
     <keyword type="macro" name="xmlSecGnuTLSTransformEcdsaSha3_384Id" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformEcdsaSha3-384Id"/>
     <keyword type="macro" name="xmlSecGnuTLSTransformEcdsaSha3_512Id" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformEcdsaSha3-512Id"/>
+    <keyword type="macro" name="xmlSecGnuTLSKeyDataGost2001Id" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSKeyDataGost2001Id"/>
+    <keyword type="macro" name="xmlSecGnuTLSTransformGostR3411_94Id" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformGostR3411-94Id"/>
+    <keyword type="macro" name="xmlSecGnuTLSTransformGost2001GostR3411_94Id" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformGost2001GostR3411-94Id"/>
+    <keyword type="macro" name="xmlSecGnuTLSKeyDataGost2012_256Id" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSKeyDataGost2012-256Id"/>
+    <keyword type="macro" name="xmlSecGnuTLSKeyDataGost2012_512Id" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSKeyDataGost2012-512Id"/>
+    <keyword type="macro" name="xmlSecGnuTLSTransformGostR3411_2012_256Id" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformGostR3411-2012-256Id"/>
+    <keyword type="macro" name="xmlSecGnuTLSTransformGostR3411_2012_512Id" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformGostR3411-2012-512Id"/>
+    <keyword type="macro" name="xmlSecGnuTLSTransformGostR3410_2012GostR3411_2012_256Id" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformGostR3410-2012GostR3411-2012-256Id"/>
+    <keyword type="macro" name="xmlSecGnuTLSTransformGostR3410_2012GostR3411_2012_512Id" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformGostR3410-2012GostR3411-2012-512Id"/>
     <keyword type="macro" name="xmlSecGnuTLSKeyDataHmacId" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSKeyDataHmacId"/>
     <keyword type="macro" name="xmlSecGnuTLSTransformHmacSha1Id" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformHmacSha1Id"/>
     <keyword type="macro" name="xmlSecGnuTLSTransformHmacSha256Id" link="xmlsec-gnutls-crypto.html#xmlSecGnuTLSTransformHmacSha256Id"/>
@@ -2112,6 +2139,7 @@
     <keyword type="function" name="xmlSecMSCngKeyDataX509GetKlass ()" link="xmlsec-mscng-x509.html#xmlSecMSCngKeyDataX509GetKlass"/>
     <keyword type="function" name="xmlSecMSCngKeyDataRawX509CertGetKlass ()" link="xmlsec-mscng-x509.html#xmlSecMSCngKeyDataRawX509CertGetKlass"/>
     <keyword type="function" name="xmlSecMSCngX509StoreGetKlass ()" link="xmlsec-mscng-x509.html#xmlSecMSCngX509StoreGetKlass"/>
+    <keyword type="function" name="xmlSecMSCngKeyDataX509GetKeyCert ()" link="xmlsec-mscng-x509.html#xmlSecMSCngKeyDataX509GetKeyCert"/>
     <keyword type="function" name="xmlSecMSCngKeyDataX509AdoptKeyCert ()" link="xmlsec-mscng-x509.html#xmlSecMSCngKeyDataX509AdoptKeyCert"/>
     <keyword type="function" name="xmlSecMSCngKeyDataX509AdoptCert ()" link="xmlsec-mscng-x509.html#xmlSecMSCngKeyDataX509AdoptCert"/>
     <keyword type="function" name="xmlSecMSCngKeyDataX509AdoptCrl ()" link="xmlsec-mscng-x509.html#xmlSecMSCngKeyDataX509AdoptCrl"/>

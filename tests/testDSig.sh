@@ -3,6 +3,12 @@
 # This script needs to be called from testrun.sh script
 #
 
+# ensure this script is called from testrun.sh
+if [ -z "$xmlsec_app" -o -z "$crypto_config_folder" ]; then
+    echo "This script needs to be called from testrun.sh script"
+    exit 1
+fi
+
 # Setup URL to files mapping for offline testing, if tests are run against online
 # then some tests might fail.
 if [ -z "$XMLSEC_TEST_ONLINE" ]; then

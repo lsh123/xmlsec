@@ -48,7 +48,7 @@ jobs:
       run: |
           make install
 
-  check-ubuntu-openssl110:
+  check-ubuntu-openssl111:
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
@@ -205,24 +205,22 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - crypto: mscrypto
-            config_flags: unicode=yes with-dl=yes
           - crypto: mscng
             config_flags: unicode=yes with-dl=yes
-          - crypto: mscrypto
-            config_flags: unicode=no with-dl=no static=yes
           - crypto: mscng
-            config_flags: unicode=no with-dl=no static=yes
+            config_flags: unicode=no with-dl=no static=yes legacy-crypto=yes ftp=yes
           - crypto: mscrypto
-            config_flags: unicode=yes with-dl=yes legacy-crypto=yes ftp=yes
-          - crypto: mscng
-            config_flags: unicode=yes with-dl=yes legacy-crypto=yes ftp=yes
+            config_flags: unicode=yes with-dl=yes
+          - crypto: mscrypto
+            config_flags:  unicode=no with-dl=no static=yes legacy-crypto=yes ftp=yes
           - crypto: openssl-300
             config_flags: unicode=yes with-dl=yes
           - crypto: openssl-300
             config_flags: unicode=no with-dl=no static=yes
-          - crypto: openssl-110
+          - crypto: openssl-111
             config_flags: unicode=yes with-dl=yes
+          - crypto: openssl-111
+            config_flags: unicode=yes with-dl=yes static=yes
     env:
       VISUAL_STUDIO_ROOT: "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise"
       INSTALL_FOLDER: c:\install.dir
@@ -230,7 +228,7 @@ jobs:
       LIBXML2_FILE: libxml2-2.9.8-noiconv-win-x64.7z
       LIBXSLT_FILE: libxslt-1.1.32-noiconv-win-x64.7z
       OPENSSL300_FILE: openssl-3.0.3-win-x64.7z
-      OPENSSL110_FILE: openssl-1.1.1o-win-x64.7z
+      OPENSSL111_FILE: openssl-1.1.1o-win-x64.7z
     steps:
     - name: create-dirs
       run: |
@@ -246,9 +244,9 @@ jobs:
           if("${{ matrix.crypto }}" -like "*openssl-300*") {
               Invoke-WebRequest ${{ env.EXTRAS_URL }}/${{ env.OPENSSL300_FILE }} -O ${{ env.OPENSSL300_FILE }}
               7z x ${{ env.OPENSSL300_FILE }}
-          } elseif("${{ matrix.crypto }}" -like "*openssl-110*") {
-              Invoke-WebRequest ${{ env.EXTRAS_URL }}/${{ env.OPENSSL110_FILE }} -O ${{ env.OPENSSL110_FILE }}
-              7z x ${{ env.OPENSSL110_FILE }}
+          } elseif("${{ matrix.crypto }}" -like "*openssl-111*") {
+              Invoke-WebRequest ${{ env.EXTRAS_URL }}/${{ env.OPENSSL111_FILE }} -O ${{ env.OPENSSL111_FILE }}
+              7z x ${{ env.OPENSSL111_FILE }}
           }
     - name: configure-git
       shell: bash

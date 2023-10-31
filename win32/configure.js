@@ -114,7 +114,7 @@ function usage()
 	txt += "either 'yes' or 'no'.\n\n";
 	txt += "XmlSec Library options, default value given in parentheses:\n\n";
 	txt += "  crypto:     Crypto engines list, first is default: \"openssl\",\n";
-	txt += "              \"openssl=110\", \"openssl-110\", \"openssl=300\",\n";
+	txt += "              \"openssl=111\", \"openssl-111\", \"openssl=300\",\n";
 	txt += "              \"openssl-300\", \"nss\", \"mscrypto\", \"mscng\"\n";
 	txt += "              (\"" + withCrypto + "\");\n"
  	txt += "  xslt:       LibXSLT is used (" + (withLibXSLT? "yes" : "no")  + ")\n";
@@ -412,15 +412,15 @@ for (j = 0; j < crlist.length; j++) {
 	if (crlist[j] == "openssl") {
 		curcrypto="openssl";
 		withOpenSSL = 1;
-		withOpenSSLVersion = "110"; /* default */
-	} else if (crlist[j] == "openssl=110" || crlist[j] == "openssl-110") {
-		curcrypto="openssl";
-		withOpenSSL = 1;
-		withOpenSSLVersion = "110";
+		withOpenSSLVersion = "300"; /* default */
 	} else if (crlist[j] == "openssl=300" || crlist[j] == "openssl-300") {
-		curcrypto="openssl";
+		curcrypto = "openssl";
 		withOpenSSL = 1;
 		withOpenSSLVersion = "300";
+	} else if (crlist[j] == "openssl=111" || crlist[j] == "openssl-111") {
+		curcrypto="openssl";
+		withOpenSSL = 1;
+		withOpenSSLVersion = "111";
 	} else if (crlist[j] == "nss") {
 		curcrypto="nss";
 		withNss = 1;

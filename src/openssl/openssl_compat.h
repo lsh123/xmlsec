@@ -11,16 +11,73 @@
 
 #include "../cast_helpers.h"
 
+
 /******************************************************************************
  *
- * OpenSSL 1.1.1
+ * boringssl compatibility
  *
- ******************************************************************************/
-#if !defined(XMLSEC_OPENSSL_API_111) && !defined(XMLSEC_OPENSSL_API_300)
+ *****************************************************************************/
+#ifdef OPENSSL_IS_BORINGSSL
 
-#define RAND_priv_bytes(buf,num)            RAND_bytes((buf),(num))
+/* Not implemented by LibreSSL (yet?) */
+#define XMLSEC_OPENSSL_NO_ASN1_TIME_TO_TM   1
+#define XMLSEC_OPENSSL_NO_STORE             1
+#define XMLSEC_OPENSSL_NO_DEEP_COPY         1
+#define XMLSEC_OPENSSL_NO_CRL_VERIFICATION  1
+#define XMLSEC_OPENSSL_NO_RSA_OAEP          1
+#define XMLSEC_NO_DH                        1
+#define XMLSEC_NO_DSA                       1
+#define XMLSEC_NO_SHA3                      1
 
-#endif /* !defined(XMLSEC_OPENSSL_API_111) && !defined(XMLSEC_OPENSSL_API_300) */
+
+#define ENGINE_cleanup(...)                 {}
+#define CONF_modules_unload(...)            {}
+
+#define RAND_priv_bytes(buf,len)            RAND_bytes((buf), (len))
+#define RAND_write_file(file)               (0)
+
+#define EVP_PKEY_base_id(pkey)              EVP_PKEY_id(pkey)
+#define EVP_CipherFinal(ctx, out, out_len)  EVP_CipherFinal_ex(ctx, out, out_len)
+#define EVP_read_pw_string(...)             (-1)
+
+#define X509_get0_pubkey(cert)              X509_get_pubkey((cert))
+#define X509_STORE_CTX_get_by_subject       X509_STORE_get_by_subject
+
+/* simply return success */
+#define sk_X509_reserve(crts, num)          (1)
+#define sk_X509_CRL_reserve(crls, num)      (1)
+
+#endif /* OPENSSL_IS_BORINGSSL */
+
+/******************************************************************************
+ *
+ * LibreSSL compatibility (implements most of OpenSSL 1.1 API)
+ *
+ *****************************************************************************/
+#if defined(LIBRESSL_VERSION_NUMBER)
+
+/* Not implemented by LibreSSL (yet?) */
+#define XMLSEC_OPENSSL_NO_ASN1_TIME_TO_TM   1
+#define XMLSEC_OPENSSL_NO_STORE             1
+#define XMLSEC_OPENSSL_NO_PWD_CALLBACK      1
+#define XMLSEC_OPENSSL_NO_DEEP_COPY         1
+#define XMLSEC_NO_DH                        1
+
+#define RAND_priv_bytes(buf,len)            RAND_bytes((buf), (len))
+
+/* simply return success */
+#define sk_X509_reserve(crts, num)          (1)
+#define sk_X509_CRL_reserve(crls, num)      (1)
+
+#if (LIBRESSL_VERSION_NUMBER < 0x3080000fL)
+#define XMLSEC_NO_SHA3                      1
+#endif /* (LIBRESSL_VERSION_NUMBER < 0x3080000fL) */
+
+#if (LIBRESSL_VERSION_NUMBER < 0x3070200fL)
+#define UI_null()                           NULL
+#endif /* (LIBRESSL_VERSION_NUMBER < 0x3070200fL) */
+
+#endif /* defined(LIBRESSL_VERSION_NUMBER) */
 
 
 /******************************************************************************
@@ -62,67 +119,6 @@ static inline int xmlSecOpenSSLCompatRand(unsigned char *buf, xmlSecSize size) {
 }
 
 #endif /* !defined(XMLSEC_OPENSSL_API_300) */
-
-/******************************************************************************
- *
- * boringssl compatibility
- *
- *****************************************************************************/
-#ifdef OPENSSL_IS_BORINGSSL
-
-/* Not implemented by LibreSSL (yet?) */
-#define XMLSEC_OPENSSL_NO_ASN1_TIME_TO_TM   1
-
-#define ENGINE_cleanup(...)                 {}
-#define CONF_modules_unload(...)            {}
-#define RAND_write_file(file)               (0)
-
-#define EVP_PKEY_base_id(pkey)             EVP_PKEY_id(pkey)
-#define EVP_CipherFinal(ctx, out, out_len) EVP_CipherFinal_ex(ctx, out, out_len)
-#define EVP_read_pw_string(...)             (-1)
-
-#define X509_STORE_CTX_get_by_subject      X509_STORE_get_by_subject
-#define X509_OBJECT_new()                  (calloc(1, sizeof(X509_OBJECT)))
-#define X509_OBJECT_free(x)                { X509_OBJECT_free_contents(x); free(x); }
-
-/* defined in boringssl/crypto/fipsmodule/rsa/internal.h */
-int RSA_padding_check_PKCS1_OAEP_mgf1(uint8_t *out, size_t *out_len, size_t max_out,
-                                      const uint8_t *from, size_t from_len,
-                                      const uint8_t *param, size_t param_len,
-                                      const EVP_MD *md, const EVP_MD *mgf1md);
- int RSA_padding_add_PKCS1_OAEP_mgf1(unsigned char *to, int tlen,
-                                     const unsigned char *f, int fl,
-                                     const unsigned char *p, int pl,
-                                     const EVP_MD *md, const EVP_MD *mgf1md);
-#endif /* OPENSSL_IS_BORINGSSL */
-
-/******************************************************************************
- *
- * LibreSSL compatibility (implements most of OpenSSL 1.1 API)
- *
- *****************************************************************************/
-#if defined(LIBRESSL_VERSION_NUMBER)
-
-/* Not implemented by LibreSSL (yet?) */
-#define XMLSEC_OPENSSL_NO_ASN1_TIME_TO_TM   1
-#define XMLSEC_OPENSSL_NO_STORE             1
-#define XMLSEC_OPENSSL_NO_PWD_CALLBACK      1
-#define XMLSEC_OPENSSL_NO_DEEP_COPY         1
-#define XMLSEC_NO_DH                        1
-
-/* simply return success */
-#define sk_X509_reserve(crts, num)          (1)
-#define sk_X509_CRL_reserve(crls, num)      (1)
-
-#if (LIBRESSL_VERSION_NUMBER < 0x3080000fL)
-#define XMLSEC_NO_SHA3                      1
-#endif /* (LIBRESSL_VERSION_NUMBER < 0x3080000fL) */
-
-#if (LIBRESSL_VERSION_NUMBER < 0x3070200fL)
-#define UI_null()                           NULL
-#endif /* (LIBRESSL_VERSION_NUMBER < 0x3070200fL) */
-
-#endif /* defined(LIBRESSL_VERSION_NUMBER) */
 
 
 /******************************************************************************

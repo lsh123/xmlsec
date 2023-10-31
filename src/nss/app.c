@@ -273,25 +273,6 @@ xmlSecNssAppNicknameCollisionCallback(SECItem *old_nick ATTRIBUTE_UNUSED,
 #endif /* XMLSEC_NO_X509 */
 
 /**
- * xmlSecNssAppKeyLoad:
- * @filename:           the key filename.
- * @format:             the key file format.
- * @pwd:                the key file password.
- * @pwdCallback:        the key password callback.
- * @pwdCallbackCtx:     the user context for password callback.
- *
- * Deprecated, use @xmlSecNssAppKeyLoadEx instead. Reads key from a file
- *
- * Returns: pointer to the key or NULL if an error occurs.
- */
-xmlSecKeyPtr
-xmlSecNssAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
-    const char *pwd, void* pwdCallback, void* pwdCallbackCtx
-) {
-    return(xmlSecNssAppKeyLoadEx(filename, xmlSecKeyDataTypeUnknown, format, pwd, pwdCallback, pwdCallbackCtx));
-}
-
-/**
  * xmlSecNssAppKeyLoadEx:
  * @filename:           the key filename.
  * @type:               the key type (public / private).

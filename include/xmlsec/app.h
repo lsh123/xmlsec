@@ -81,13 +81,6 @@ XMLSEC_EXPORT xmlSecKeyDataId                   xmlSecKeyDataDhGetKlass(void);
 #define xmlSecKeyDataDsaId                      xmlSecKeyDataDsaGetKlass()
 XMLSEC_EXPORT xmlSecKeyDataId                   xmlSecKeyDataDsaGetKlass(void);
 /**
- * xmlSecKeyDataEcdsaId:
- *
- * Deprecated. The EC key klass.
- */
-#define xmlSecKeyDataEcdsaId                    xmlSeckeyDataEcGetKlass()
-XMLSEC_EXPORT XMLSEC_DEPRECATED xmlSecKeyDataId xmlSeckeyDataEcGetKlass(void);
-/**
  * xmlSecKeyDataEcId:
  *
  * The EC key klass.
@@ -715,11 +708,6 @@ XMLSEC_EXPORT int                               xmlSecCryptoAppKeysMngrCrlLoadMe
                                                                                  const xmlSecByte* data,
                                                                                  xmlSecSize dataSize,
                                                                                  xmlSecKeyDataFormat format);
-XMLSEC_DEPRECATED XMLSEC_EXPORT xmlSecKeyPtr    xmlSecCryptoAppKeyLoad          (const char *filename,
-                                                                                 xmlSecKeyDataFormat format,
-                                                                                 const char *pwd,
-                                                                                 void* pwdCallback,
-                                                                                 void* pwdCallbackCtx);
 XMLSEC_EXPORT xmlSecKeyPtr                      xmlSecCryptoAppKeyLoadEx        (const char *filename,
                                                                                  xmlSecKeyDataType type,
                                                                                  xmlSecKeyDataFormat format,

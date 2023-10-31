@@ -208,23 +208,6 @@ XMLSEC_CRYPTO_EXPORT gcry_sexp_t        xmlSecGCryptKeyDataEcGetPublicKey       
 XMLSEC_CRYPTO_EXPORT gcry_sexp_t        xmlSecGCryptKeyDataEcGetPrivateKey      (xmlSecKeyDataPtr data);
 
 
-/**
- * xmlSecGCryptKeyDataEcdsaId:
- *
- * Deprecated. The EC key klass.
- */
-#define xmlSecGCryptKeyDataEcdsaId     xmlSecGCryptKeyDataEcId
-XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED xmlSecKeyDataId    xmlSecGCryptKeyDataEcdsaGetKlass        (void);
-XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED int                xmlSecGCryptKeyDataEcdsaAdoptKey        (xmlSecKeyDataPtr data,
-                                                                                                   gcry_sexp_t ec_key);
-XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED int                xmlSecGCryptKeyDataEcdsaAdoptKeyPair    (xmlSecKeyDataPtr data,
-                                                                                                    gcry_sexp_t pub_key,
-                                                                                                    gcry_sexp_t priv_key);
-XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED gcry_sexp_t        xmlSecGCryptKeyDataEcdsaGetPublicKey    (xmlSecKeyDataPtr data);
-XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED gcry_sexp_t        xmlSecGCryptKeyDataEcdsaGetPrivateKey   (xmlSecKeyDataPtr data);
-
-
-
 #ifndef XMLSEC_NO_SHA1
 /**
  * xmlSecGCryptTransformEcdsaSha1Id:

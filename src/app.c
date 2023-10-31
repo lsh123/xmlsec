@@ -193,27 +193,6 @@ xmlSecKeyDataDsaGetKlass(void) {
     return(xmlSecCryptoDLGetFunctions()->keyDataDsaGetKlass());
 }
 
-
-/**
- * xmlSeckeyDataEcGetKlass:
- *
- * Deprecated. The EC key data klass.
- *
- * Returns: EC key data klass or NULL if an error occurs
- * (xmlsec-crypto library is not loaded or the EC key data
- * klass is not implemented).
- */
-xmlSecKeyDataId
-xmlSeckeyDataEcGetKlass(void) {
-    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->keyDataEcGetKlass == NULL)) {
-        xmlSecNotImplementedError("keyDataEcGetKlass");
-        return(xmlSecKeyDataIdUnknown);
-    }
-
-    return(xmlSecCryptoDLGetFunctions()->keyDataEcGetKlass());
-}
-
-
 /**
  * xmlSecKeyDataEcGetKlass:
  *
@@ -2021,30 +2000,6 @@ xmlSecCryptoAppKeysMngrCrlLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* d
     return(xmlSecCryptoDLGetFunctions()->cryptoAppKeysMngrCrlLoadMemory(mngr, data, dataSize, format));
 }
 
-
-/**
- * xmlSecCryptoAppKeyLoad:
- * @filename:           the key filename.
- * @format:             the key file format.
- * @pwd:                the key file password.
- * @pwdCallback:        the key password callback.
- * @pwdCallbackCtx:     the user context for password callback.
- *
- * Deprecated: xmlSecCryptoAppKeyLoadEx instead. Use Reads key from the a file.
- *
- * Returns: pointer to the key or NULL if an error occurs.
- */
-xmlSecKeyPtr
-xmlSecCryptoAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
-                       const char *pwd, void* pwdCallback, void* pwdCallbackCtx) {
-    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->cryptoAppKeyLoad == NULL)) {
-        xmlSecNotImplementedError("cryptoAppKeyLoad");
-        return(NULL);
-    }
-
-    return(xmlSecCryptoDLGetFunctions()->cryptoAppKeyLoad(filename, format, pwd, pwdCallback, pwdCallbackCtx));
-}
-
 /**
  * xmlSecCryptoAppKeyLoadEx:
  * @filename:           the key filename.
@@ -2101,7 +2056,7 @@ xmlSecCryptoAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlSec
  * @pwdCallbackCtx:     the user context for password callback.
  *
  * Reads key and all associated certificates from the PKCS12 file.
- * For uniformity, call xmlSecCryptoAppKeyLoad instead of this function. Pass
+ * For uniformity, call xmlSecCryptoAppKeyLoadEx instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
  *
  * Returns: pointer to the key or NULL if an error occurs.

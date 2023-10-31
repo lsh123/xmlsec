@@ -76,7 +76,7 @@ when the bug is fixed. Also see:
     - [xmlsec bug](https://github.com/lsh123/xmlsec/issues/6)
 
 7) Not all file formats are supported
-    - `xmlSecNssAppKeyLoad()`: This function loads a PKI key from a file.
+    - `xmlSecNssAppKeyLoadEx()`: This function loads a PKI key from a file.
         - `xmlSecKeyDataFormatDer`: supported (note that `xmlsec-nss` expects
         private key in DER file to be in PrivateKeyInfo format and private keys
         in the xmlsec test suite aren't in that format);

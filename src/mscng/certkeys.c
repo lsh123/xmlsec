@@ -2112,15 +2112,4 @@ xmlSecMSCngKeyDataEcGetKlass(void) {
     return(&xmlSecMSCngKeyDataEcKlass);
 }
 
-/**
- * xmlSecMSCngKeyDataEcdsaGetKlass:
- *
- * Deprecated. The MSCng EC CertKey data klass.
- *
- * Returns: pointer to MSCng EC key data klass.
- */
-xmlSecKeyDataId
-xmlSecMSCngKeyDataEcdsaGetKlass(void) {
-    return(xmlSecMSCngKeyDataEcGetKlass());
-}
 #endif /* XMLSEC_NO_EC */

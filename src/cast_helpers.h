@@ -338,20 +338,10 @@
 
 #endif /* (ULONG_MAX > XMLSEC_SIZE_MAX) */
 
-/* Safe cast with limits check: size_t -> xmlSecSize (assume size_t >= 0) */
-#if (SIZE_MAX > XMLSEC_SIZE_MAX)
-
-#define XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(srcVal, dstVal, errorAction, errorObject) \
-    XMLSEC_SAFE_CAST_MAX_CHECK(size_t, (srcVal), XMLSEC_SIZE_T_FMT,              \
-        xmlSecSize, (dstVal), XMLSEC_SIZE_FMT, XMLSEC_SIZE_MIN, XMLSEC_SIZE_MAX, \
-        errorAction, (errorObject))
-
-#else /* (SIZE_MAX > XMLSEC_SIZE_MAX) */
-
+/* Safe cast with limits check: size_t -> xmlSecSize (same type) */
 #define XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(srcVal, dstVal, errorAction, errorObject) \
     (dstVal) = (srcVal);
 
-#endif /* (SIZE_MAX > XMLSEC_SIZE_MAX) */
 
 /******************************************************************************
  *

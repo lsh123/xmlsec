@@ -1647,20 +1647,6 @@ xmlSecNsskeyDataEcGetKlass(void) {
     return(&xmlSecNssKeyDataEcKlass);
 }
 
-
-/**
- * xmlSecNssKeyDataEcdsaGetKlass:
- *
- * Deprecated. The EC key data klass.
- *
- * Returns: pointer to EC key data klass.
- */
-xmlSecKeyDataId
-xmlSecNssKeyDataEcdsaGetKlass(void) {
-    return(xmlSecNsskeyDataEcGetKlass());
-}
-
-
 static int
 xmlSecNssKeyDataEcInitialize(xmlSecKeyDataPtr data) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecNssKeyDataEcId), -1);

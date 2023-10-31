@@ -72,11 +72,6 @@ XMLSEC_CRYPTO_EXPORT int        xmlSecMSCngAppKeysMngrCrlLoadMemory (xmlSecKeysM
  * Keys
  *
  ********************************************************************/
-XMLSEC_DEPRECATED XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecMSCngAppKeyLoad(const char *filename,
-                                                                      xmlSecKeyDataFormat format,
-                                                                      const char *pwd,
-                                                                      void *pwdCallback,
-                                                                      void* pwdCallbackCtx);
 XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecMSCngAppKeyLoadEx            (const char *filename,
                                                                       xmlSecKeyDataType type,
                                                                       xmlSecKeyDataFormat format,

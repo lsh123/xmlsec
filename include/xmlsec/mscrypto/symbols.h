@@ -101,7 +101,6 @@ extern "C" {
 #define xmlSecCryptoAppKeysMngrCertLoadMemory   xmlSecMSCryptoAppKeysMngrCertLoadMemory
 #define xmlSecCryptoAppKeysMngrCrlLoad          xmlSecMSCryptoAppKeysMngrCrlLoad
 #define xmlSecCryptoAppKeysMngrCrlLoadMemory    xmlSecMSCryptoAppKeysMngrCrlLoadMemory
-#define xmlSecCryptoAppKeyLoad                  xmlSecMSCryptoAppKeyLoad
 #define xmlSecCryptoAppKeyLoadEx                xmlSecMSCryptoAppKeyLoadEx
 #define xmlSecCryptoAppPkcs12Load               xmlSecMSCryptoAppPkcs12Load
 #define xmlSecCryptoAppKeyCertLoad              xmlSecMSCryptoAppKeyCertLoad

@@ -1310,18 +1310,6 @@ xmlSecGnuTLSKeyDataEcGetKlass(void) {
 }
 
 /**
- * xmlSecGnuTLSKeyDataEdsaGetKlass:
- *
- * Deprecated. The GnuTLS EC key data klass.
- *
- * Returns: pointer to GnuTLS EC key data klass.
- */
-xmlSecKeyDataId
-xmlSecGnuTLSKeyDataEdsaGetKlass(void) {
-    return(xmlSecGnuTLSKeyDataEcGetKlass());
-}
-
-/**
  * xmlSecGnuTLSKeyDataEcAdoptKey:
  * @data:               the pointer to EC key data.
  * @pubkey:             the pointer to GnuTLS EC key.

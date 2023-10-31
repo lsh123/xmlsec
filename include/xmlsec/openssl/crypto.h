@@ -414,18 +414,6 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformDhEsGetKlass(void);
 #ifndef XMLSEC_NO_EC
 
 /**
- * xmlSecOpenSSLKeyDataEcdsaId:
- *
- * Deprecated. The EC key klass.
- */
-#define xmlSecOpenSSLKeyDataEcdsaId xmlSecOpenSSLKeyDataEcId
-XMLSEC_DEPRECATED XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataEcdsaGetKlass     (void);
-XMLSEC_DEPRECATED XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeyDataEcdsaAdoptEvp     (xmlSecKeyDataPtr data,
-                                                                                                 EVP_PKEY* pKey);
-XMLSEC_DEPRECATED XMLSEC_CRYPTO_EXPORT EVP_PKEY*          xmlSecOpenSSLKeyDataEcdsaGetEvp       (xmlSecKeyDataPtr data);
-
-
-/**
  * xmlSecOpenSSLKeyDataEcId:
  *
  * The EC key klass.

@@ -2652,47 +2652,6 @@ xmlSecOpenSSLKeyDataEcGetEvp(xmlSecKeyDataPtr data) {
     return(xmlSecOpenSSLEvpKeyDataGetEvp(data));
 }
 
-/**
- * xmlSecOpenSSLKeyDataEcdsaGetKlass:
- *
- * Deprecated. The EC key data klass.
- *
- * Returns: pointer to EC key data klass.
- */
-xmlSecKeyDataId
-xmlSecOpenSSLKeyDataEcdsaGetKlass(void) {
-    return(xmlSecOpenSSLKeyDataEcGetKlass());
-}
-
-/**
- * xmlSecOpenSSLKeyDataEcdsaAdoptEvp:
- * @data:               the pointer to EC key data.
- * @pKey:               the pointer to OpenSSL EVP key.
- *
- * Deprecated. Sets the EC key data value to OpenSSL EVP key.
- *
- * Returns: 0 on success or a negative value otherwise.
- */
-int
-xmlSecOpenSSLKeyDataEcdsaAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
-    return(xmlSecOpenSSLKeyDataEcAdoptEvp(data, pKey));
-}
-
-/**
- * xmlSecOpenSSLKeyDataEcdsaGetEvp:
- * @data:               the pointer to EC key data.
- *
- * Deprecated. Gets the OpenSSL EVP key from EC key data.
- *
- * Returns: pointer to OpenSSL EVP key or NULL if an error occurs.
- */
-EVP_PKEY*
-xmlSecOpenSSLKeyDataEcdsaGetEvp(xmlSecKeyDataPtr data) {
-    return(xmlSecOpenSSLKeyDataEcGetEvp(data));
-}
-
-
-
 static int
 xmlSecOpenSSLKeyDataEcInitialize(xmlSecKeyDataPtr data) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcId), -1);

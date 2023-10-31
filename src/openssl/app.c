@@ -186,27 +186,6 @@ xmlSecOpenSSLAppShutdown(void) {
     return(0);
 }
 
-
-/**
- * xmlSecOpenSSLAppKeyLoad:
- * @filename:           the key filename.
- * @format:             the key file format.
- * @pwd:                the key file password.
- * @pwdCallback:        the key password callback.
- * @pwdCallbackCtx:     the user context for password callback.
- *
- * Deprecated, use @xmlSecOpenSSLAppKeyLoadEx function instead. Reads key from the a file.
- *
- * Returns: pointer to the key or NULL if an error occurs.
- */
-xmlSecKeyPtr
-xmlSecOpenSSLAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
-                        const char *pwd, void* pwdCallback,
-                        void* pwdCallbackCtx) {
-    return(xmlSecOpenSSLAppKeyLoadEx(filename, xmlSecKeyDataTypeUnknown, format,
-        pwd, pwdCallback, pwdCallbackCtx));
-}
-
 /**
  * xmlSecOpenSSLAppKeyLoadEx:
  * @filename:           the key filename.

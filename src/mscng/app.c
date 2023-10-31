@@ -107,24 +107,6 @@ xmlSecMSCngAppGetCertStoreName(void) {
 }
 
 /**
- * xmlSecMSCngAppKeyLoad:
- * @filename:           the key filename.
- * @format:             the key file format.
- * @pwd:                the key file password.
- * @pwdCallback:        the key password callback.
- * @pwdCallbackCtx:     the user context for password callback.
- *
- * Deprecated, use @xmlSecMSCngAppKeyLoadEx instead. Reads key from the a file.
- * Returns: pointer to the key or NULL if an error occurs.
- */
-xmlSecKeyPtr
-xmlSecMSCngAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
-    const char *pwd, void* pwdCallback, void* pwdCallbackCtx
-) {
-    return(xmlSecMSCngAppKeyLoadEx(filename,  xmlSecKeyDataTypeUnknown, format, pwd, pwdCallback, pwdCallbackCtx));
-}
-
-/**
  * xmlSecMSCngAppKeyLoadEx:
  * @filename:           the key filename.
  * @type:               the expected key type.

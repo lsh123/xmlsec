@@ -261,17 +261,6 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataEcAdoptKey           
 XMLSEC_CRYPTO_EXPORT gnutls_pubkey_t    xmlSecGnuTLSKeyDataEcGetPublicKey       (xmlSecKeyDataPtr data);
 XMLSEC_CRYPTO_EXPORT gnutls_privkey_t   xmlSecGnuTLSKeyDataEcGetPrivateKey      (xmlSecKeyDataPtr data);
 
-
-
-/**
- * xmlSecGnuTLSKeyDataEcdsaId:
- *
- * Deprecated. The EC key klass.
- */
-#define xmlSecGnuTLSKeyDataEcdsaId      xmlSecGnuTLSKeyDataEcId
-XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED xmlSecKeyDataId    xmlSecGnuTLSKeyDataEdsaGetKlass(void);
-
-
 #ifndef XMLSEC_NO_SHA1
 /**
  * xmlSecGnuTLSTransformEcdsaSha1Id:

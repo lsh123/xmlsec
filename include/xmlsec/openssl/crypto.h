@@ -47,17 +47,11 @@ extern "C" {
  *******************************************************************/
 #if defined(LIBRESSL_VERSION_NUMBER) && LIBRESSL_VERSION_NUMBER >= 0x30500000L
 /* LibreSSL implements (most of) OpenSSL 1.1 API */
-#define XMLSEC_OPENSSL_API_110      1
+#define XMLSEC_OPENSSL_API_111      1
 #elif OPENSSL_VERSION_NUMBER >= 0x30000000L
 #define XMLSEC_OPENSSL_API_300      1
 #elif OPENSSL_VERSION_NUMBER >= 0x10101000L
 #define XMLSEC_OPENSSL_API_111      1
-#define XMLSEC_OPENSSL_API_110      1
-#elif OPENSSL_VERSION_NUMBER >= 0x10100000L
-#define XMLSEC_OPENSSL_API_110      1
-#if defined(_MSC_VER) || defined(__GNUC__) || defined(__clang__)
-#pragma message("Support for OpenSSL before version 1.1.1 is deprecated and will be removed in the future versions of XMLSec library")
-#endif /* defined(_MSC_VER) || defined(__GNUC__) || defined(__clang__) */
 #else  /* OPENSSL_VERSION_NUMBER */
 #error "This version of OpenSSL library is not supported"
 #endif /* OPENSSL_VERSION_NUMBER */

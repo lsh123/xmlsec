@@ -1,8 +1,7 @@
 # XMLSec Library: XMLSEC-OPENSSL
 
 ## What version of OpenSSL?
-OpenSSL 1.1.1 or later is required. Note that support for OpenSSL 1.1.0 is
-deprecated and will be removed in the future releases.
+OpenSSL 1.1.1 or later is required.
 
 Also LibreSSL (>= 3.5.0) and Boring SSL (>= 1.1.0) should work but those are
 less tested than OpenSSL.

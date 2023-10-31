@@ -510,6 +510,7 @@ xmlSecOpenSSLRsaPkcs1Process(xmlSecTransformPtr transform) {
     return(0);
 }
 
+#ifndef XMLSEC_OPENSSL_NO_RSA_OAEP
 /**************************************************************************
  *
  * Internal OpenSSL RSA OAEP CTX
@@ -739,6 +740,9 @@ xmlSecOpenSSLRsaOaepProcessImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, const xmlSecByte
             return(-1);
         }
         xmlSecBufferFinalize(&tmp);
+
+        /* success */
+        XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, (*outSize), return(-1), NULL);
     } else {
         /* decrypt */
         BIGNUM * bn;
@@ -751,7 +755,6 @@ xmlSecOpenSSLRsaOaepProcessImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, const xmlSecByte
         }
         outLen = ret;
 
-#ifndef OPENSSL_IS_BORINGSSL
         /*
          * the private decrypt w/o padding adds '0's at the beginning.
          * it's not clear for me can I simply skip all '0's from the
@@ -779,7 +782,6 @@ xmlSecOpenSSLRsaOaepProcessImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, const xmlSecByte
         }
         outLen = ret;
         BN_clear_free(bn);
-#endif /* OPENSSL_IS_BORINGSSL */
 
         ret = RSA_padding_check_PKCS1_OAEP_mgf1(
             outBuf, outLen, outBuf, outLen, keyLen,
@@ -789,10 +791,12 @@ xmlSecOpenSSLRsaOaepProcessImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, const xmlSecByte
             xmlSecOpenSSLError("RSA_padding_check_PKCS1_OAEP_mgf1",  NULL);
             return(-1);
         }
+
+        /* success */
+        XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, (*outSize), return(-1), NULL);
     }
 
     /* success */
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, (*outSize), return(-1), NULL);
     return(0);
 }
 
@@ -1363,5 +1367,7 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform) {
 
     return(0);
 }
+#endif /* XMLSEC_OPENSSL_NO_RSA_OAEP */
+
 
 #endif /* XMLSEC_NO_RSA */

@@ -42,17 +42,6 @@
 #include "../cast_helpers.h"
 #include "../keysdata_helpers.h"
 
-#ifdef OPENSSL_IS_BORINGSSL
-#ifndef XMLSEC_NO_RSA
-static inline int RSA_test_flags(const RSA *r, int flags) {
-    xmlSecAssert2(r != NULL, 0);
-    return(r->flags & flags);
-}
-#endif /* XMLSEC_NO_RSA */
-
-#endif /* OPENSSL_IS_BORINGSSL */
-
-
 static int
 xmlSecOpenSSLGetBNValue(const xmlSecBufferPtr buf, BIGNUM **bigNum) {
     xmlSecByte* bufPtr;

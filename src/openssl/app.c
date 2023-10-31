@@ -46,7 +46,10 @@
 #include <openssl/engine.h>
 #include <openssl/x509_vfy.h>
 #include <openssl/x509.h>
+
+#ifndef OPENSSL_IS_BORINGSSL
 #include <openssl/ui.h>
+#endif /* OPENSSL_IS_BORINGSSL */
 
 #ifndef XMLSEC_OPENSSL_NO_STORE
 #include <openssl/store.h>
@@ -750,6 +753,7 @@ xmlSecOpenSSLAppCheckCertMatchesKey(EVP_PKEY * pKey,  X509 * cert) {
     return(1);
 }
 
+#if !defined(XMLSEC_OPENSSL_NO_STORE)
 static X509 *
 xmlSecOpenSSLAppFindKeyCert(EVP_PKEY * pKey, STACK_OF(X509) * certs) {
     X509 * cert;
@@ -783,6 +787,8 @@ xmlSecOpenSSLAppFindKeyCert(EVP_PKEY * pKey, STACK_OF(X509) * certs) {
     /* not found */
     return(NULL);
 }
+#endif /* !defined(XMLSEC_OPENSSL_NO_STORE) */
+
 #endif /* XMLSEC_NO_X509 */
 
 static xmlSecKeyPtr

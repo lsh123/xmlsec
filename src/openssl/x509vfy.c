@@ -1257,6 +1257,7 @@ xmlSecOpenSSLX509StoreFinalize(xmlSecKeyDataStorePtr store) {
  *****************************************************************************/
 static int
 xmlSecOpenSSLX509VerifyCRL(X509_STORE* xst, X509_STORE_CTX* xsc, STACK_OF(X509)* untrusted, X509_CRL *crl, xmlSecKeyInfoCtx* keyInfoCtx) {
+#ifndef XMLSEC_OPENSSL_NO_CRL_VERIFICATION
     X509_OBJECT *xobj = NULL;
     EVP_PKEY *pKey = NULL;
     int ret;
@@ -1325,6 +1326,11 @@ done:
     }
     X509_STORE_CTX_cleanup(xsc);
     return(res);
+
+#else /* XMLSEC_OPENSSL_NO_CRL_VERIFICATION */
+    /* boringssl doesn't have X509_OBJECT_new() or public definition of X509_OBJECT */
+    return(1);
+#endif /* XMLSEC_OPENSSL_NO_CRL_VERIFICATION */
 }
 
 

@@ -672,7 +672,7 @@ XMLSEC_CRYPTO_DISABLED_LIST=""
 dnl ==========================================================================
 dnl OpenSSL
 dnl ==========================================================================
-OPENSSL_MIN_VERSION="1.1.0"
+OPENSSL_MIN_VERSION="1.1.1"
 OPENSSL_INCLUDE_DIR="$COMMON_INCLUDE_DIR /usr/local/ssl/include"
 OPENSSL_LIB_DIR="$COMMON_LIB_DIR /usr/local/ssl/lib /usr/local/ssl/lib64"
 OPENSSL_CRYPTO_LIB="$XMLSEC_PACKAGE-openssl"
@@ -680,16 +680,6 @@ OPENSSL_INCLUDE_MARKER="openssl/opensslv.h"
 OPENSSL_LIB_SHARED_MARKER="libcrypto$shrext"
 OPENSSL_LIB_STATIC_MARKER="libcrypto.a"
 OPENSSL_LIBS_LIST="-lcrypto"
-case $host in
-    *-*-mingw*)   OPENSSL_EXTRA_LIBS=;;
-    *-*-osf5*)    OPENSSL_EXTRA_LIBS=;;
-    *-*-openbsd*) OPENSSL_EXTRA_LIBS=;;
-    *-*-netbsd*)  OPENSSL_EXTRA_LIBS=;;
-    *-*-freebsd*|*-*-dragonfly*) OPENSSL_EXTRA_LIBS=;;
-    *-*-darwin*) OPENSSL_EXTRA_LIBS=;;
-    #FIXME: check if lib "dl" is required
-    *)            OPENSSL_EXTRA_LIBS=-ldl;;
-esac
 
 XMLSEC_NO_OPENSSL="1"
 OPENSSL_VERSION=""
@@ -791,7 +781,7 @@ fi
 
 dnl Set flags if INCLUDE_PATH or LIB_PATH are set
 if test "z$OPENSSL_FOUND" = "zyes" -a "z$OPENSSL_INCLUDE_PATH" != "z" ; then
-    OPENSSL_CFLAGS="$OPENSSL_CFLAGS -I$OPENSSL_INCLUDE_PATH -I$OPENSSL_INCLUDE_PATH/openssl"
+    OPENSSL_CFLAGS="$OPENSSL_CFLAGS -I$OPENSSL_INCLUDE_PATH"
 fi
 if test "z$OPENSSL_FOUND" = "zyes" -a "z$OPENSSL_LIB_PATH" != "z" ; then
     if test -f "$OPENSSL_LIB_PATH/$OPENSSL_LIB_SHARED_MARKER" ; then
@@ -816,6 +806,8 @@ if test "z$OPENSSL_FOUND" = "zyes" ; then
             #endif
         ],[
             OPENSSL_VERSION="LibreSSL >= 3.5"
+            OPENSSL_LIBS="-Wl,-Bstatic $OPENSSL_LIBS -Wl,-Bdynamic"
+            enable_dh=no
         ],[
             OPENSSL_VERSION=""
         ])
@@ -825,15 +817,18 @@ if test "z$OPENSSL_FOUND" = "zyes" ; then
         AC_EGREP_CPP(greater-than-minvers, [
             #include <openssl/opensslv.h>
             #include <openssl/crypto.h>
-            #if OPENSSL_VERSION_NUMBER >= 0x10100000L
+            #if OPENSSL_VERSION_NUMBER >= 0x10100010L
             #ifdef OPENSSL_IS_BORINGSSL
             greater-than-minvers
             #endif
             #endif
         ],[
-            OPENSSL_VERSION="BoringSSL >= 1.1.0"
+            OPENSSL_VERSION="BoringSSL >= 1.1.1"
+            OPENSSL_LIBS="-Wl,-Bstatic $OPENSSL_LIBS -Wl,-Bdynamic"
             enable_ripemd160=no
             enable_dsa=no
+            enable_dh=no
+            enable_sha3=no
         ],[
             OPENSSL_VERSION=""
         ])
@@ -856,11 +851,11 @@ if test "z$OPENSSL_FOUND" = "zyes" ; then
     if test "z$OPENSSL_VERSION" = "z" ; then
         AC_EGREP_CPP(greater-than-minvers, [
             #include <openssl/opensslv.h>
-            #if OPENSSL_VERSION_NUMBER >= 0x10100000L
+            #if OPENSSL_VERSION_NUMBER >= 0x10100010L
             greater-than-minvers
             #endif
         ],[
-            OPENSSL_VERSION="1.1.0"
+            OPENSSL_VERSION="1.1.1"
         ],[
             OPENSSL_VERSION=""
         ])

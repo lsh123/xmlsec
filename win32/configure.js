@@ -55,7 +55,6 @@ var withHTTP = 1;
 var withLegacyCrypto = 0;
 
 /* Win32 build options. */
-var withNT4 = 0;
 var buildUnicode = 1;
 var buildDebug = 0;
 var buildWithMemcheck = 0;
@@ -124,7 +123,6 @@ function usage()
 	txt += "  http:       Enable HTTP support (" + (withHTTP ? "yes" : "no") + ")\n";
 	txt += "  legacy - crypto:  Use the size_t (" + (withLegacyCrypto ? "yes" : "no") + ")\n";
 	txt += "\nWin32 build options, default value given in parentheses:\n\n";
-	txt += "  nt4:        Enable NT 4.0 support (" + (withNT4 ? "yes" : "no") + ")\n";
 	txt += "  unicode:    Build Unicode version (" + (buildUnicode? "yes" : "no")  + ")\n";
 	txt += "  debug:      Build unoptimised debug executables (" + (buildDebug? "yes" : "no")  + ")\n";
 	txt += "  memcheck:   Build unoptimised debug executables with memcheck reporting (" + (buildWithMemcheck ? "yes" : "no") + ")\n";
@@ -198,7 +196,6 @@ function discoverVersion()
 	vf.WriteLine("WITH_FTP=" + (withFTP ? "1" : "0"));
 	vf.WriteLine("WITH_HTTP=" + (withHTTP ? "1" : "0"));
 	vf.WriteLine("WITH_LEGACY_CRYPTO=" + (withLegacyCrypto ? "1" : "0"));
-	vf.WriteLine("WITH_NT4=" + (withNT4 ? "1" : "0"));
 	vf.WriteLine("UNICODE=" + (buildUnicode? "1" : "0"));
 	vf.WriteLine("DEBUG=" + (buildDebug? "1" : "0"));
 	vf.WriteLine("MEMCHECK=" + (buildWithMemcheck ? "1" : "0"));
@@ -339,8 +336,6 @@ for (i = 0; (i < WScript.Arguments.length) && (error == 0); i++) {
 			withHTTP = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "legacy-crypto")
 			withLegacyCrypto = strToBool(arg.substring(opt.length + 1, arg.length));
-		else if (opt == "nt4")
-			withNT4 = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "unicode")
 			buildUnicode = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "debug")
@@ -489,7 +484,6 @@ txtOut += "       Support HTTP: " + boolToStr(withHTTP) + "\n";
 txtOut += "\n";
 txtOut += "Win32 build configuration\n";
 txtOut += "-------------------------\n";
-txtOut += "     NT 4.0 support: " + boolToStr(withNT4) + "\n";
 txtOut += "  C-Runtime option: " + cruntime + "\n";
 txtOut += "           Unicode: " + boolToStr(buildUnicode) + "\n";
 txtOut += "     Debug symbols: " + boolToStr(buildDebug) + "\n";

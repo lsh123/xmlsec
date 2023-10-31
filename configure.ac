@@ -306,28 +306,6 @@ AC_DEFUN([AX_FIND_FOLDER],[
 ])
 
 dnl ==========================================================================
-dnl check do we have size_t and its size,
-dnl TODO: will need to replace this and the xmlSecSize define with
-dnl typedef on next ABI refresh
-dnl ==========================================================================
-AC_CHECK_SIZEOF(size_t)
-
-XMLSEC_USE_SIZE_T="no"
-AC_ARG_ENABLE([size-t], [AS_HELP_STRING([--enable-size-t],[enable xmsSecSize typedef to size_t (yes)])])
-AC_MSG_CHECKING(for using size_t)
-if test "z$enable_size_t" = "zno" ; then
-    XMLSEC_USE_SIZE_T="no"
-    AC_MSG_RESULT([no (deprecated)])
-else
-    XMLSEC_USE_SIZE_T="yes"
-    AC_MSG_RESULT([yes])
-fi
-
-if test "z$XMLSEC_USE_SIZE_T" != "zyes" -a "$ac_cv_sizeof_size_t" -ne "4" ; then
-    XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_SIZE_T"
-fi
-
-dnl ==========================================================================
 dnl find libxml
 dnl ==========================================================================
 LIBXML_MIN_VERSION="2.8.0"

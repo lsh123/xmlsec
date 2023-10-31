@@ -18,9 +18,8 @@ jobs:
       matrix:
         include:
           - config_flags:
-          - config_flags: --enable-size-t=no --enable-md5 --enable-ftp
           - config_flags: --enable-static --enable-static-linking --without-nss --without-gcrypt --without-gnutls
-          - config_flags: --enable-static --enable-static-linking --enable-gost --enable-gost2012 --without-openssl --without-nss --without-gcrypt
+          - config_flags: --enable-static --enable-static-linking --enable-ftp --enable-md5 --enable-gost --enable-gost2012 --without-openssl --without-nss --without-gcrypt
     steps:
     - name: install dependencies
       run: |
@@ -56,7 +55,6 @@ jobs:
       matrix:
         include:
           - config_flags:
-          - config_flags: --enable-size-t=no --enable-md5 --enable-ftp
           - config_flags: --enable-static-linking=yes --without-nss --without-gcrypt --without-gnutls
     steps:
     - name: install dependencies
@@ -95,7 +93,6 @@ jobs:
       matrix:
         include:
           - config_flags:
-          - config_flags: --enable-size-t=no --enable-md5 --enable-ftp
     steps:
     - name: Set up Homebrew
       id: set-up-homebrew
@@ -150,13 +147,7 @@ jobs:
             config_flags: --enable-unicode=yes
           - msystem: MINGW64
             arch: x86_64
-            config_flags: --enable-unicode=no
-          - msystem: MINGW64
-            arch: x86_64
-            config_flags: --enable-size-t=no --enable-md5 --enable-ftp
-          - msystem: MINGW64
-            arch: x86_64
-            config_flags: --enable-static --enable-static-linking
+            config_flags: --enable-static --enable-static-linking --enable-unicode=no --enable-md5 --enable-ftp
     defaults:
       run:
         shell: msys2 {0}

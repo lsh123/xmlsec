@@ -50,7 +50,6 @@ var withMSCrypto = 0;
 var withMSCng = 0;
 var withLibXSLT = 1;
 var withIconv = 1;
-var withSizeT = 1;
 var withFTP = 0; /* disable ftp by default */
 var withHTTP = 1;
 var withLegacyCrypto = 0;
@@ -121,7 +120,6 @@ function usage()
 	txt += "              (\"" + withCrypto + "\");\n"
  	txt += "  xslt:       LibXSLT is used (" + (withLibXSLT? "yes" : "no")  + ")\n";
  	txt += "  iconv:      Use the iconv library (" + (withIconv? "yes" : "no")  + ")\n";
-	txt += "  size_t:     Use the size_t (" + (withSizeT ? "yes" : "no") + ")\n";
 	txt += "  ftp:        Enable FTP support (" + (withFTP ? "yes" : "no") + ")\n";
 	txt += "  http:       Enable HTTP support (" + (withHTTP ? "yes" : "no") + ")\n";
 	txt += "  legacy - crypto:  Use the size_t (" + (withLegacyCrypto ? "yes" : "no") + ")\n";
@@ -197,7 +195,6 @@ function discoverVersion()
 	vf.WriteLine("WITH_MSCNG=" + withMSCng);
 	vf.WriteLine("WITH_LIBXSLT=" + (withLibXSLT ? "1" : "0"));
 	vf.WriteLine("WITH_ICONV=" + (withIconv ? "1" : "0"));
-	vf.WriteLine("WITH_SIZE_T=" + (withSizeT ? "1" : "0"));
 	vf.WriteLine("WITH_FTP=" + (withFTP ? "1" : "0"));
 	vf.WriteLine("WITH_HTTP=" + (withHTTP ? "1" : "0"));
 	vf.WriteLine("WITH_LEGACY_CRYPTO=" + (withLegacyCrypto ? "1" : "0"));
@@ -336,8 +333,6 @@ for (i = 0; (i < WScript.Arguments.length) && (error == 0); i++) {
 			withLibXSLT = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "iconv")
 			withIconv = strToBool(arg.substring(opt.length + 1, arg.length));
-		else if (opt == "size_t")
-			withSizeT = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "ftp")
 			withFTP = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "http")
@@ -488,7 +483,6 @@ txtOut += "       Use MSCrypto: " + boolToStr(withMSCrypto) + "\n";
 txtOut += "          Use MSCng: " + boolToStr(withMSCng) + "\n";
 txtOut += "        Use LibXSLT: " + boolToStr(withLibXSLT) + "\n";
 txtOut += "          Use iconv: " + boolToStr(withIconv) + "\n";
-txtOut += "         Use size_t: " + boolToStr(withSizeT) + "\n";
 txtOut += "  Use legacy crypto: " + boolToStr(withLegacyCrypto) + "\n";
 txtOut += "        Support FTP: " + boolToStr(withFTP) + "\n";
 txtOut += "       Support HTTP: " + boolToStr(withHTTP) + "\n";

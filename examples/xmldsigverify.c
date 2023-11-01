@@ -36,12 +36,14 @@ int load_trusted_certs(xmlSecKeysMngrPtr mngr, const char* path, int report_load
 int verify_request(xmlSecKeysMngrPtr mngr);
 unsigned int url_decode(char *buf, unsigned int size);
 
-int
-main() {
+int main(int argc, char **argv) {
     xmlSecKeysMngrPtr mngr;
 #ifndef XMLSEC_NO_XSLT
     xsltSecurityPrefsPtr xsltSecPrefs = NULL;
 #endif /* XMLSEC_NO_XSLT */
+
+    assert(argc > 0);
+    assert(argv);
 
     /* start response */
     fprintf(stdout, "Content-type: text/plain\n");

@@ -270,6 +270,9 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
         goto done;
     }
 
+    /* skip strict certs checks since we have old certs */
+    dsigCtx->keyInfoReadCtx.flags |= XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_STRICT_CHECKS;
+
     /* Verify signature */
     if(xmlSecDSigCtxVerify(dsigCtx, node) < 0) {
         fprintf(stderr,"Error: signature verify\n");

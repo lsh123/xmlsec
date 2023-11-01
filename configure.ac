@@ -71,7 +71,8 @@ dnl ==========================================================================
 dnl XMLSec configs
 dnl ==========================================================================
 XMLSEC_DEFINES=
-XMLSEC_APP_DEFINES=
+XMLSEC_EXTRA_APP_CFLAGS=
+XMLSEC_EXTRA_APP_LDFLAGS=
 XMLSEC_EXTRA_LDFLAGS=
 XMLSEC_CRYPTO_EXTRA_LDFLAGS=
 
@@ -136,6 +137,8 @@ case "${host}" in
     dnl instead libxmlsec1-NN.dll, where NN is a number.
     XMLSEC_EXTRA_LDFLAGS="$XMLSEC_EXTRA_LDFLAGS -no-undefined -avoid-version"
     XMLSEC_CRYPTO_EXTRA_LDFLAGS="$XMLSEC_CRYPTO_EXTRA_LDFLAGS -no-undefined -avoid-version"
+    XMLSEC_EXTRA_APP_CFLAGS=-mconsole
+    XMLSEC_EXTRA_APP_LDFLAGS=-mconsole
     XMLSEC_SHLIBSFX=".dll.a"
 
     build_on_windows=yes
@@ -144,6 +147,8 @@ case "${host}" in
   *-*-cygwin*)
     XMLSEC_EXTRA_LDFLAGS="$XMLSEC_EXTRA_LDFLAGS -no-undefined"
     XMLSEC_CRYPTO_EXTRA_LDFLAGS="$XMLSEC_CRYPTO_EXTRA_LDFLAGS -no-undefined"
+    XMLSEC_EXTRA_APP_CFLAGS=-mconsole
+    XMLSEC_EXTRA_APP_LDFLAGS=-mconsole
 
     build_on_windows=yes
     AC_MSG_RESULT("Windows (Cygwin)")
@@ -2331,7 +2336,7 @@ if test "z$enable_static_linking" = "zyes" -o "z$enable_static_linking" = "ztrue
     if test "z$build_on_windows" = "zyes" ; then
         XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_STATIC=1"
     fi
-    XMLSEC_APP_DEFINES="$XMLSEC_APP_DEFINES -DXMLSEC_STATIC=1"
+    XMLSEC_EXTRA_APP_CFLAGS="$XMLSEC_EXTRA_APP_CFLAGS -DXMLSEC_STATIC=1"
     enable_crypto_dl="no"
     AC_MSG_RESULT([yes])
 else
@@ -2434,7 +2439,7 @@ elif test "z$LIBLTDL_FOUND" != "zyes" ; then
     AC_MSG_RESULT([disabled])
     AC_MSG_ERROR(xmlsec-crypto libraries dynamic loading support in xmlsec command line tool is requested but no LibLTDL is found)
 else
-    XMLSEC_APP_DEFINES="$XMLSEC_APP_DEFINES -DXMLSEC_CRYPTO_DYNAMIC_LOADING=1"
+    XMLSEC_EXTRA_APP_CFLAGS="$XMLSEC_EXTRA_APP_CFLAGS -DXMLSEC_CRYPTO_DYNAMIC_LOADING=1"
     XMLSEC_NO_APPS_CRYPTO_DYNAMIC_LOADING="0"
     AC_MSG_RESULT([yes])
 fi
@@ -2613,7 +2618,8 @@ AC_SUBST(CFLAGS)
 AC_SUBST(CPPFLAGS)
 AC_SUBST(LDFLAGS)
 AC_SUBST(XMLSEC_DEFINES)
-AC_SUBST(XMLSEC_APP_DEFINES)
+AC_SUBST(XMLSEC_EXTRA_APP_CFLAGS)
+AC_SUBST(XMLSEC_EXTRA_APP_LDFLAGS)
 AC_SUBST(XMLSEC_EXTRA_LDFLAGS)
 AC_SUBST(XMLSEC_CRYPTO_EXTRA_LDFLAGS)
 

@@ -122,7 +122,7 @@ main(int argc, char **argv) {
     }
 
     /* we use key filename as key name here */
-    if(encrypt_file(mngr, argv[1], argv[2]) < 0) {
+    if(encrypt_file(mngr, argv[1], basename(argv[2])) < 0) {
         xmlSecKeysMngrDestroy(mngr);
         return(-1);
     }

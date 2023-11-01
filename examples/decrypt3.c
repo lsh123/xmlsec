@@ -38,7 +38,7 @@
 #include <xmlsec/crypto.h>
 
 xmlSecKeyStoreId  files_keys_store_get_klass(void);
-xmlSecKeysMngrPtr create_files_keys_mngr(void);
+xmlSecKeysMngrPtr create_files_keys_mngr(char* keys_folder);
 int decrypt_file(xmlSecKeysMngrPtr mngr, const char* enc_file);
 
 int
@@ -50,9 +50,9 @@ main(int argc, char **argv) {
 
     assert(argv);
 
-    if(argc != 2) {
+    if((argc < 2) || (argc > 3)) {
         fprintf(stderr, "Error: wrong number of arguments.\n");
-        fprintf(stderr, "Usage: %s <enc-file>\n", argv[0]);
+        fprintf(stderr, "Usage: %s <enc-file> [<keys-folder>]\n", argv[0]);
         return(1);
     }
 
@@ -116,7 +116,7 @@ main(int argc, char **argv) {
     }
 
     /* create keys manager and load keys */
-    mngr = create_files_keys_mngr();
+    mngr = create_files_keys_mngr((argc > 2) ? argv[2] : NULL);
     if(mngr == NULL) {
         return(-1);
     }
@@ -235,7 +235,7 @@ done:
  * Returns pointer to newly created keys manager or NULL if an error occurs.
  */
 xmlSecKeysMngrPtr
-create_files_keys_mngr(void) {
+create_files_keys_mngr(char* keys_folder) {
     xmlSecKeyStorePtr keysStore;
     xmlSecKeysMngrPtr mngr;
 
@@ -245,6 +245,9 @@ create_files_keys_mngr(void) {
         fprintf(stderr, "Error: failed to create keys store.\n");
         return(NULL);
     }
+
+    /* save the keys folder (see files_keys_store_find_key) */
+    keysStore->reserved0 = keys_folder;
 
     /* create keys manager */
     mngr = xmlSecKeysMngrCreate();
@@ -325,7 +328,9 @@ files_keys_store_get_klass(void) {
 static xmlSecKeyPtr
 files_keys_store_find_key(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecKeyPtr key;
+    const char* keys_folder;
     const xmlChar* p;
+    char path[FILENAME_MAX];
 
     assert(store);
     assert(keyInfoCtx);
@@ -336,7 +341,7 @@ files_keys_store_find_key(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
         return(NULL);
     }
 
-    /* we don't want to open files in a folder other than "current";
+    /* we don't want to open files in a folder other than specified;
      * to prevent it limit the characters in the key name to alpha/digit,
      * '.', '-' or '_'.
      */
@@ -346,18 +351,34 @@ files_keys_store_find_key(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
         }
     }
 
+    /* we saved keys folder in reserved0 field  (see create_files_keys_mngr) */
+    keys_folder = (const char*)store->reserved0;
+    if(keys_folder != NULL) {
+#if defined(_MSC_VER)
+        sprintf_s(path, sizeof(path), "%s/%s", keys_folder, (const char*)name);
+#else  /* defined(_MSC_VER) */
+        sprintf(path, "%s/%s", keys_folder, (const char*)name);
+#endif /* defined(_MSC_VER) */
+    } else {
+#if defined(_MSC_VER)
+    strcpy_s(path, sizeof(path), (const char*)name);
+#else  /* defined(_MSC_VER) */
+    strcpy(path, (const char*)name);
+#endif /* defined(_MSC_VER) */
+    }
+
     if((keyInfoCtx->keyReq.keyId == xmlSecKeyDataDsaId) || (keyInfoCtx->keyReq.keyId == xmlSecKeyDataRsaId)) {
         /* load key from a pem file, if key is not found then it's an error (is it?) */
-        key = xmlSecCryptoAppKeyLoadEx((const char*)name, xmlSecKeyDataTypePrivate, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
+        key = xmlSecCryptoAppKeyLoadEx(path, xmlSecKeyDataTypePrivate, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
         if(key == NULL) {
-            fprintf(stderr,"Error: failed to load public pem key from \"%s\"\n", name);
+            fprintf(stderr,"Error: failed to load public pem key from \"%s\"\n", path);
             return(NULL);
         }
     } else {
         /* otherwise it's a binary key, if key is not found then it's an error (is it?) */
-        key = xmlSecKeyReadBinaryFile(keyInfoCtx->keyReq.keyId, (const char*)name);
+        key = xmlSecKeyReadBinaryFile(keyInfoCtx->keyReq.keyId,path);
         if(key == NULL) {
-            fprintf(stderr,"Error: failed to load key from binary file \"%s\"\n", name);
+            fprintf(stderr,"Error: failed to load key from binary file \"%s\"\n", path);
             return(NULL);
         }
     }

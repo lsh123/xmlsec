@@ -621,8 +621,7 @@ xmlSecSimpleKeysStoreSave(xmlSecKeyStorePtr store, const char *filename, xmlSecK
     /* create doc */
     doc = xmlSecCreateTree(BAD_CAST "Keys", xmlSecNs);
     if(doc == NULL) {
-        xmlSecInternalError("xmlSecCreateTree",
-                            xmlSecKeyStoreGetName(store));
+        xmlSecInternalError("xmlSecCreateTree", xmlSecKeyStoreGetName(store));
         return(-1);
     }
 
@@ -637,10 +636,8 @@ xmlSecSimpleKeysStoreSave(xmlSecKeyStorePtr store, const char *filename, xmlSecK
 
         cur = xmlSecAddChild(xmlDocGetRootElement(doc), xmlSecNodeKeyInfo, xmlSecDSigNs);
         if(cur == NULL) {
-            xmlSecInternalError2("xmlSecAddChild",
-                                 xmlSecKeyStoreGetName(store),
-                                 "node=%s",
-                                 xmlSecErrorsSafeString(xmlSecNodeKeyInfo));
+            xmlSecInternalError2("xmlSecAddChild", xmlSecKeyStoreGetName(store),
+                "node=%s", xmlSecErrorsSafeString(xmlSecNodeKeyInfo));
             xmlFreeDoc(doc);
             return(-1);
         }
@@ -648,10 +645,8 @@ xmlSecSimpleKeysStoreSave(xmlSecKeyStorePtr store, const char *filename, xmlSecK
         /* special data key name */
         if(xmlSecKeyGetName(key) != NULL) {
             if(xmlSecAddChild(cur, xmlSecNodeKeyName, xmlSecDSigNs) == NULL) {
-                xmlSecInternalError2("xmlSecAddChild",
-                                     xmlSecKeyStoreGetName(store),
-                                     "node=%s",
-                                     xmlSecErrorsSafeString(xmlSecNodeKeyName));
+                xmlSecInternalError2("xmlSecAddChild", xmlSecKeyStoreGetName(store),
+                    "node=%s", xmlSecErrorsSafeString(xmlSecNodeKeyName));
                 xmlFreeDoc(doc);
                 return(-1);
             }
@@ -672,9 +667,8 @@ xmlSecSimpleKeysStoreSave(xmlSecKeyStorePtr store, const char *filename, xmlSecK
             }
 
             if(xmlSecAddChild(cur, dataId->dataNodeName, dataId->dataNodeNs) == NULL) {
-                xmlSecInternalError2("xmlSecAddChild",
-                                     xmlSecKeyStoreGetName(store),
-                                    "node=%s", xmlSecErrorsSafeString(dataId->dataNodeName));
+                xmlSecInternalError2("xmlSecAddChild", xmlSecKeyStoreGetName(store),
+                    "node=%s", xmlSecErrorsSafeString(dataId->dataNodeName));
                 xmlFreeDoc(doc);
                 return(-1);
             }
@@ -682,8 +676,7 @@ xmlSecSimpleKeysStoreSave(xmlSecKeyStorePtr store, const char *filename, xmlSecK
 
         ret = xmlSecKeyInfoCtxInitialize(&keyInfoCtx, NULL);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecKeyInfoCtxInitialize",
-                                xmlSecKeyStoreGetName(store));
+            xmlSecInternalError("xmlSecKeyInfoCtxInitialize", xmlSecKeyStoreGetName(store));
             xmlFreeDoc(doc);
             return(-1);
         }
@@ -693,11 +686,19 @@ xmlSecSimpleKeysStoreSave(xmlSecKeyStorePtr store, const char *filename, xmlSecK
         keyInfoCtx.keyReq.keyType       = type;
         keyInfoCtx.keyReq.keyUsage      = xmlSecKeyDataUsageAny;
 
+        /* enable all keydata for store */
+        ret = xmlSecSimpleKeysStoreEnableAllKeyData(&keyInfoCtx);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecSimpleKeysStoreEnableAllKeyData", xmlSecKeyStoreGetName(store));
+            xmlSecKeyInfoCtxFinalize(&keyInfoCtx);
+            xmlFreeDoc(doc);
+            return(-1);
+        }
+
         /* finally write key in the node */
         ret = xmlSecKeyInfoNodeWrite(cur, key, &keyInfoCtx);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecKeyInfoNodeWrite",
-                                xmlSecKeyStoreGetName(store));
+            xmlSecInternalError("xmlSecKeyInfoNodeWrite", xmlSecKeyStoreGetName(store));
             xmlSecKeyInfoCtxFinalize(&keyInfoCtx);
             xmlFreeDoc(doc);
             return(-1);
@@ -709,7 +710,7 @@ xmlSecSimpleKeysStoreSave(xmlSecKeyStorePtr store, const char *filename, xmlSecK
     ret = xmlSaveFormatFile(filename, doc, 1);
     if(ret < 0) {
         xmlSecXmlError2("xmlSaveFormatFile", xmlSecKeyStoreGetName(store),
-                        "filename=%s", xmlSecErrorsSafeString(filename));
+            "filename=%s", xmlSecErrorsSafeString(filename));
         xmlFreeDoc(doc);
         return(-1);
     }

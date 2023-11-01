@@ -559,12 +559,17 @@ xmlSecCryptoDLGetFunctions(void) {
         return(-1);                                                                                                                       \
     }                                                                                                                                     \
 
+#define XMLSEC_REGISTER_DISABLED_KEY_DATA(name)      \
+    if((functions->keyData ## name ## GetKlass != NULL) && (xmlSecKeyDataIdsRegisterDisabled(functions->keyData ## name ## GetKlass()) < 0)) {    \
+        xmlSecInternalError("xmlSecKeyDataIdsRegisterDisabled", xmlSecKeyDataKlassGetName(functions->keyData ## name ## GetKlass()));             \
+        return(-1);                                                                                                                       \
+    }                                                                                                                                     \
 
 #define XMLSEC_REGISTER_TRANSFORM(name)     \
     if((functions->transform ## name ## GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transform ## name ## GetKlass()) < 0) {   \
         xmlSecInternalError("xmlSecTransformIdsRegister", xmlSecTransformKlassGetName(functions->transform ## name ## GetKlass()));          \
-        return(-1);                                                                                                                             \
-    }                                                                                                                                           \
+        return(-1);                                                                                                                          \
+    }                                                                                                                                        \
 
 
 /**
@@ -598,7 +603,10 @@ xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(struct _xmlSecCryptoDLFuncti
     XMLSEC_REGISTER_KEY_DATA(Rsa);                  // keyDataRsaGetKlass
     XMLSEC_REGISTER_KEY_DATA(X509);                 // keyDataX509GetKlass
     XMLSEC_REGISTER_KEY_DATA(RawX509Cert);          // keyDataRawX509CertGetKlass
-    XMLSEC_REGISTER_KEY_DATA(DEREncodedKeyValue);   // keyDataDEREncodedKeyValueGetKlass
+
+     /* DEREncodedKeyValue key data should not be used in production w/o understanding of the security risks */
+    XMLSEC_REGISTER_DISABLED_KEY_DATA(DEREncodedKeyValue);   // keyDataDEREncodedKeyValueGetKlass
+
 
     /****************************************************************************
      *

@@ -446,6 +446,34 @@ xmlSecSimpleKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
         xmlSecSimpleKeysStoreAdoptKey));
 }
 
+static int
+xmlSecSimpleKeysStoreEnableAllKeyData(xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlSecPtrListPtr list;
+    xmlSecSize ii, size;
+    xmlSecKeyDataId dataId;
+    int ret;
+
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+
+    list = xmlSecKeyDataIdsGet();
+    xmlSecAssert2(list != NULL, -1);
+
+    size = xmlSecPtrListGetSize(list);
+    for(ii = 0; ii < size; ++ii) {
+        dataId = (xmlSecKeyDataId)xmlSecPtrListGetItem(list, ii);
+        xmlSecAssert2(dataId != xmlSecKeyDataIdUnknown, -1);
+
+        ret = xmlSecPtrListAdd(&(keyInfoCtx->enabledKeyData), (const xmlSecPtr)dataId);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecPtrListAdd", NULL);
+            return(-1);
+        }
+    }
+
+    /* done */
+    return(0);
+}
+
 /**
  * xmlSecSimpleKeysStoreLoad_ex:
  * @store:              the pointer to simple keys store.
@@ -484,8 +512,7 @@ xmlSecSimpleKeysStoreLoad_ex(xmlSecKeyStorePtr store, const char *uri,
 
     root = xmlDocGetRootElement(doc);
     if((root == NULL) || (!xmlSecCheckNodeName(root, BAD_CAST "Keys", xmlSecNs))) {
-        xmlSecInvalidNodeError(root, BAD_CAST "Keys",
-            xmlSecKeyStoreGetName(store));
+        xmlSecInvalidNodeError(root, BAD_CAST "Keys", xmlSecKeyStoreGetName(store));
         xmlFreeDoc(doc);
         return(-1);
     }
@@ -494,16 +521,14 @@ xmlSecSimpleKeysStoreLoad_ex(xmlSecKeyStorePtr store, const char *uri,
     while((cur != NULL) && xmlSecCheckNodeName(cur, xmlSecNodeKeyInfo, xmlSecDSigNs)) {
         key = xmlSecKeyCreate();
         if(key == NULL) {
-            xmlSecInternalError("xmlSecKeyCreate",
-                xmlSecKeyStoreGetName(store));
+            xmlSecInternalError("xmlSecKeyCreate", xmlSecKeyStoreGetName(store));
             xmlFreeDoc(doc);
             return(-1);
         }
 
         ret = xmlSecKeyInfoCtxInitialize(&keyInfoCtx, NULL);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecKeyInfoCtxInitialize",
-                xmlSecKeyStoreGetName(store));
+            xmlSecInternalError("xmlSecKeyInfoCtxInitialize", xmlSecKeyStoreGetName(store));
             xmlSecKeyDestroy(key);
             xmlFreeDoc(doc);
             return(-1);
@@ -517,10 +542,19 @@ xmlSecSimpleKeysStoreLoad_ex(xmlSecKeyStorePtr store, const char *uri,
         keyInfoCtx.keyReq.keyType = xmlSecKeyDataTypeAny;
         keyInfoCtx.keyReq.keyUsage= xmlSecKeyDataUsageAny;
 
+        /* enable all keydata for store */
+        ret = xmlSecSimpleKeysStoreEnableAllKeyData(&keyInfoCtx);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecSimpleKeysStoreEnableAllKeyData", xmlSecKeyStoreGetName(store));
+            xmlSecKeyInfoCtxFinalize(&keyInfoCtx);
+            xmlSecKeyDestroy(key);
+            xmlFreeDoc(doc);
+            return(-1);
+        }
+
         ret = xmlSecKeyInfoNodeRead(cur, key, &keyInfoCtx);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecKeyInfoNodeRead",
-                xmlSecKeyStoreGetName(store));
+            xmlSecInternalError("xmlSecKeyInfoNodeRead", xmlSecKeyStoreGetName(store));
             xmlSecKeyInfoCtxFinalize(&keyInfoCtx);
             xmlSecKeyDestroy(key);
             xmlFreeDoc(doc);
@@ -531,8 +565,7 @@ xmlSecSimpleKeysStoreLoad_ex(xmlSecKeyStorePtr store, const char *uri,
         if(xmlSecKeyIsValid(key)) {
             ret = adoptKeyFunc(store, key);
             if(ret < 0) {
-                xmlSecInternalError("adoptKeyFunc",
-                    xmlSecKeyStoreGetName(store));
+                xmlSecInternalError("adoptKeyFunc", xmlSecKeyStoreGetName(store));
                 xmlSecKeyDestroy(key);
                 xmlFreeDoc(doc);
                 return(-1);

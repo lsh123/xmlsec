@@ -37,12 +37,15 @@
 #include <xmlsec/xmlenc.h>
 #include <xmlsec/crypto.h>
 
-xmlSecKeyStoreId  files_keys_store_get_klass(void);
-xmlSecKeysMngrPtr create_files_keys_mngr(char* keys_folder);
-int decrypt_file(xmlSecKeysMngrPtr mngr, const char* enc_file);
+ /* Special handling for command line parameters on Windows is needed */
+#include "win_main.c"
 
-int
-main(int argc, char **argv) {
+static xmlSecKeyStoreId  files_keys_store_get_klass(void);
+static xmlSecKeysMngrPtr create_files_keys_mngr(char* keys_folder);
+static int decrypt_file(xmlSecKeysMngrPtr mngr, const char* enc_file);
+
+static int
+real_main(int argc, char** argv) {
     xmlSecKeysMngrPtr mngr;
 #ifndef XMLSEC_NO_XSLT
     xsltSecurityPrefsPtr xsltSecPrefs = NULL;
@@ -158,7 +161,7 @@ main(int argc, char **argv) {
  *
  * Returns 0 on success or a negative value if an error occurs.
  */
-int
+static int
 decrypt_file(xmlSecKeysMngrPtr mngr, const char* enc_file) {
     xmlDocPtr doc = NULL;
     xmlNodePtr node = NULL;
@@ -234,7 +237,7 @@ done:
  *
  * Returns pointer to newly created keys manager or NULL if an error occurs.
  */
-xmlSecKeysMngrPtr
+static xmlSecKeysMngrPtr
 create_files_keys_mngr(char* keys_folder) {
     xmlSecKeyStorePtr keysStore;
     xmlSecKeysMngrPtr mngr;
@@ -309,7 +312,7 @@ static xmlSecKeyStoreKlass files_keys_store_klass = {
  *
  * Returns files based keys store klass.
  */
-xmlSecKeyStoreId
+static xmlSecKeyStoreId
 files_keys_store_get_klass(void) {
     return(&files_keys_store_klass);
 }

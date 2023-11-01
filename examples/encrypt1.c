@@ -36,10 +36,14 @@
 #include <xmlsec/xmlenc.h>
 #include <xmlsec/crypto.h>
 
-int encrypt_file(const char* tmpl_file, char* key_file,
-                 const unsigned char* data, size_t dataSize);
-int
-main(int argc, char **argv) {
+ /* Special handling for command line parameters on Windows is needed */
+#include "win_main.c"
+
+static int encrypt_file(const char* tmpl_file, char* key_file,
+    const unsigned char* data, size_t dataSize);
+
+static int
+real_main(int argc, char** argv) {
     static const char secret_data[] = "Big secret";
 #ifndef XMLSEC_NO_XSLT
     xsltSecurityPrefsPtr xsltSecPrefs = NULL;
@@ -147,7 +151,7 @@ main(int argc, char **argv) {
  *
  * Returns 0 on success or a negative value if an error occurs.
  */
-int
+static int
 encrypt_file(const char* tmpl_file, char* key_file,
              const unsigned char* data, size_t dataSize) {
     xmlDocPtr doc = NULL;

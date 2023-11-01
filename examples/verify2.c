@@ -35,11 +35,14 @@
 #include <xmlsec/xmldsig.h>
 #include <xmlsec/crypto.h>
 
-xmlSecKeysMngrPtr load_keys(char** files, int files_size);
-int verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file);
+ /* Special handling for command line parameters on Windows is needed */
+#include "win_main.c"
 
-int
-main(int argc, char **argv) {
+static xmlSecKeysMngrPtr load_keys(char** files, int files_size);
+static int verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file);
+
+static int
+real_main(int argc, char** argv) {
 #ifndef XMLSEC_NO_XSLT
     xsltSecurityPrefsPtr xsltSecPrefs = NULL;
 #endif /* XMLSEC_NO_XSLT */
@@ -159,7 +162,7 @@ main(int argc, char **argv) {
  * Returns the pointer to newly created keys manager or NULL if an error
  * occurs.
  */
-xmlSecKeysMngrPtr
+static xmlSecKeysMngrPtr
 load_keys(char** files, int files_size) {
     xmlSecKeysMngrPtr mngr;
     xmlSecKeyPtr key;
@@ -225,7 +228,7 @@ load_keys(char** files, int files_size) {
  *
  * Returns 0 on success or a negative value if an error occurs.
  */
-int
+static int
 verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
     xmlDocPtr doc = NULL;
     xmlNodePtr node = NULL;

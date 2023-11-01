@@ -27,7 +27,7 @@ static xmlSecAppCmdLineParamPtr xmlSecAppCmdLineParamsListFind  (xmlSecAppCmdLin
                                                                  xmlSecAppCmdLineParamTopic topics,
                                                                  const char* name);
 static int                      xmlSecAppCmdLineParamRead       (xmlSecAppCmdLineParamPtr param,
-                                                                 const char** argv,
+                                                                 char** argv,
                                                                  int argc,
                                                                  int pos);
 static int                      xmlSecAppCmdLineTimeParamRead   (const char* str,
@@ -88,7 +88,7 @@ xmlSecAppCmdLineParamGetTime(xmlSecAppCmdLineParamPtr param, time_t def) {
 int
 xmlSecAppCmdLineParamsListParse(xmlSecAppCmdLineParamPtr* params,
                                 xmlSecAppCmdLineParamTopic topics,
-                                const char** argv, int argc, int pos) {
+                                char** argv, int argc, int pos) {
     xmlSecAppCmdLineParamPtr param;
     int ii;
     int ret;
@@ -234,7 +234,7 @@ xmlSecAppCmdLineParamsListFind(xmlSecAppCmdLineParamPtr* params, xmlSecAppCmdLin
 }
 
 static int
-xmlSecAppCmdLineParamRead(xmlSecAppCmdLineParamPtr param, const char** argv, int argc, int pos) {
+xmlSecAppCmdLineParamRead(xmlSecAppCmdLineParamPtr param, char** argv, int argc, int pos) {
     xmlSecAppCmdLineValuePtr value;
     xmlSecAppCmdLineValuePtr prev = NULL;
     char* buf;

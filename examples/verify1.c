@@ -34,10 +34,13 @@
 #include <xmlsec/xmldsig.h>
 #include <xmlsec/crypto.h>
 
-int verify_file(const char* xml_file, char* key_file);
+ /* Special handling for command line parameters on Windows is needed */
+#include "win_main.c"
 
-int
-main(int argc, char **argv) {
+static int verify_file(const char* xml_file, char* key_file);
+
+static int
+real_main(int argc, char** argv) {
 #ifndef XMLSEC_NO_XSLT
     xsltSecurityPrefsPtr xsltSecPrefs = NULL;
 #endif /* XMLSEC_NO_XSLT */
@@ -141,7 +144,7 @@ main(int argc, char **argv) {
  *
  * Returns 0 on success or a negative value if an error occurs.
  */
-int
+static int
 verify_file(const char* xml_file, char* key_file) {
     xmlDocPtr doc = NULL;
     xmlNodePtr node = NULL;

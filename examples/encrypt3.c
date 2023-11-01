@@ -38,11 +38,14 @@
 #include <xmlsec/templates.h>
 #include <xmlsec/crypto.h>
 
-xmlSecKeysMngrPtr load_rsa_keys(char* key_file);
-int encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* key_name);
+ /* Special handling for command line parameters on Windows is needed */
+#include "win_main.c"
 
-int
-main(int argc, char **argv) {
+static xmlSecKeysMngrPtr load_rsa_keys(char* key_file);
+static int encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* key_name);
+
+static int
+real_main(int argc, char** argv) {
     xmlSecKeysMngrPtr mngr;
 #ifndef XMLSEC_NO_XSLT
     xsltSecurityPrefsPtr xsltSecPrefs = NULL;
@@ -160,7 +163,7 @@ main(int argc, char **argv) {
  * Returns the pointer to newly created keys manager or NULL if an error
  * occurs.
  */
-xmlSecKeysMngrPtr
+static xmlSecKeysMngrPtr
 load_rsa_keys(char* key_file) {
     xmlSecKeysMngrPtr mngr;
     xmlSecKeyPtr key;
@@ -222,7 +225,7 @@ load_rsa_keys(char* key_file) {
  *
  * Returns 0 on success or a negative value if an error occurs.
  */
-int
+static int
 encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* key_name) {
     xmlDocPtr doc = NULL;
     xmlNodePtr encDataNode = NULL;

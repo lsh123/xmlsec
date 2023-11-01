@@ -26,17 +26,22 @@
 #include <xmlsec/crypto.h>
 
 #include <xmlsec/parser.h>
-/* #define XMLDSIGVERIFY_DEFAULT_TRUSTED_CERTS_FOLDER   "/etc/httpd/conf/ssl.crt" */
+
+/* Special handling for command line parameters on Windows is needed */
+#include "win_main.c"
+
+ /* #define XMLDSIGVERIFY_DEFAULT_TRUSTED_CERTS_FOLDER   "/etc/httpd/conf/ssl.crt" */
 #define XMLDSIGVERIFY_DEFAULT_TRUSTED_CERTS_FOLDER      "/var/www/cgi-bin/keys-certs.def"
 #define XMLDSIGVERIFY_KEY_AND_CERTS_FOLDER              "/var/www/cgi-bin/keys-certs"
 
 
-int load_keys(xmlSecKeysMngrPtr mngr, const char* path, int report_loaded_keys);
-int load_trusted_certs(xmlSecKeysMngrPtr mngr, const char* path, int report_loaded_certs);
-int verify_request(xmlSecKeysMngrPtr mngr);
-unsigned int url_decode(char *buf, unsigned int size);
+static int load_keys(xmlSecKeysMngrPtr mngr, const char* path, int report_loaded_keys);
+static int load_trusted_certs(xmlSecKeysMngrPtr mngr, const char* path, int report_loaded_certs);
+static int verify_request(xmlSecKeysMngrPtr mngr);
+static unsigned int url_decode(char *buf, unsigned int size);
 
-int main(int argc, char **argv) {
+static int
+real_main(int argc, char** argv) {
     xmlSecKeysMngrPtr mngr;
 #ifndef XMLSEC_NO_XSLT
     xsltSecurityPrefsPtr xsltSecPrefs = NULL;
@@ -169,7 +174,8 @@ int main(int argc, char **argv) {
  *
  * Returns 0 on success or a negative value if an error occurs.
  */
-int load_trusted_certs(xmlSecKeysMngrPtr mngr, const char* path, int report_loaded_certs) {
+static int
+load_trusted_certs(xmlSecKeysMngrPtr mngr, const char* path, int report_loaded_certs) {
     DIR* dir;
     struct dirent* entry;
     char filename[2048];
@@ -212,7 +218,8 @@ int load_trusted_certs(xmlSecKeysMngrPtr mngr, const char* path, int report_load
     return(0);
 }
 
-int load_keys(xmlSecKeysMngrPtr mngr, const char* path, int report_loaded_keys) {
+static int
+load_keys(xmlSecKeysMngrPtr mngr, const char* path, int report_loaded_keys) {
     char filename[256];
 
     assert(mngr);
@@ -238,7 +245,7 @@ int load_keys(xmlSecKeysMngrPtr mngr, const char* path, int report_loaded_keys) 
  *
  * Returns 0 on success or a negative value if an error occurs.
  */
-int
+static int
 verify_request(xmlSecKeysMngrPtr mngr) {
     xmlBufferPtr buffer = NULL;
     xmlSecByte buf[256];
@@ -360,7 +367,8 @@ done:
  * Returns length of the decoded result on success or
  * a negative value if an error occurs.
  */
-unsigned int url_decode(char *buf, unsigned int size) {
+static unsigned int
+url_decode(char *buf, unsigned int size) {
     unsigned int ii, jj;
     char ch;
 

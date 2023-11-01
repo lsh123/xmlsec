@@ -34,7 +34,7 @@
 int load_keys(xmlSecKeysMngrPtr mngr, const char* path, int report_loaded_keys);
 int load_trusted_certs(xmlSecKeysMngrPtr mngr, const char* path, int report_loaded_certs);
 int verify_request(xmlSecKeysMngrPtr mngr);
-int url_decode(char *buf, size_t size);
+unsigned int url_decode(char *buf, unsigned int size);
 
 int
 main() {
@@ -171,7 +171,7 @@ int load_trusted_certs(xmlSecKeysMngrPtr mngr, const char* path, int report_load
     DIR* dir;
     struct dirent* entry;
     char filename[2048];
-    int len;
+    size_t len;
 
     assert(mngr);
     assert(path);
@@ -243,7 +243,7 @@ verify_request(xmlSecKeysMngrPtr mngr) {
     xmlDocPtr doc = NULL;
     xmlNodePtr node = NULL;
     xmlSecDSigCtxPtr dsigCtx = NULL;
-    int ret;
+    size_t ret;
     int res = -1;
 
     assert(mngr);
@@ -257,17 +257,16 @@ verify_request(xmlSecKeysMngrPtr mngr) {
 
     while(!feof(stdin)) {
         ret = fread(buf, 1, sizeof(buf), stdin);
-        if(ret < 0) {
-            fprintf(stdout,"Error: read failed\n");
-            goto done;
+        if(ret <= 0) {
+            break;
         }
-        xmlBufferAdd(buffer, buf, (xmlSecSize)ret);
+        xmlBufferAdd(buffer, buf, (int)ret);
     }
 
     /* is the document submitted from the form? */
     if(strncmp((char*)xmlBufferContent(buffer), "_xmldoc=", 8) == 0) {
         xmlBufferShrink(buffer, 8);
-        buffer->use = url_decode((char*)xmlBufferContent(buffer), xmlBufferLength(buffer));
+        buffer->use = url_decode((char*)xmlBufferContent(buffer), (unsigned int)xmlBufferLength(buffer));
     }
 
     /**
@@ -359,8 +358,8 @@ done:
  * Returns length of the decoded result on success or
  * a negative value if an error occurs.
  */
-int url_decode(char *buf, size_t size) {
-    size_t ii, jj;
+unsigned int url_decode(char *buf, unsigned int size) {
+    unsigned int ii, jj;
     char ch;
 
     assert(buf);
@@ -376,7 +375,7 @@ int url_decode(char *buf, size_t size) {
             buf[jj] = buf[ii];
         }
     }
-    return((int)jj);
+    return(jj);
 }
 
 

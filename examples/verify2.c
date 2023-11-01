@@ -18,6 +18,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+#include <libgen.h>
+#include <libgen.h>
 
 #include <libxml/tree.h>
 #include <libxml/xmlmemory.h>
@@ -193,8 +195,8 @@ load_keys(char** files, int files_size) {
         }
 
         /* set key name to the file name, this is just an example! */
-        if(xmlSecKeySetName(key, BAD_CAST files[i]) < 0) {
-            fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", files[i]);
+        if(xmlSecKeySetName(key, BAD_CAST basename(files[i])) < 0) {
+            fprintf(stderr,"Error:  failed to set key name for key from \"%s\"\n", files[i]);
             xmlSecKeyDestroy(key);
             xmlSecKeysMngrDestroy(mngr);
             return(NULL);

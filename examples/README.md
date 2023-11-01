@@ -5,8 +5,8 @@ This folder contains XML Security Library examples.
 ## Building examples
 
 ### Unixes
-Just run the usual `make` command (assuming that xmlsec, libxml2, libxslt and
-all other required libraries are already installed).
+Just run the usual `make` command. A simplified `Makefile.unix` makefile is
+also included to show how one can build examples outside of the xmlsec source tree.
 
 ### Windows
 - Add paths to include and library files for xmlsec, libxml2, libxslt and

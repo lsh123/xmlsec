@@ -1,7 +1,7 @@
 NULL =
 
 SAFE_VERSION	= @XMLSEC_VERSION_SAFE@
-SUBDIRS 	    = include src
+SUBDIRS 	    = include src examples
 if XMLSEC_APPS
 SUBDIRS += apps
 endif
@@ -41,7 +41,6 @@ DISTCLEANFILES = \
 
 EXTRA_DIST = \
 	m4 \
-	examples \
 	scripts \
 	tests \
 	win32 \
@@ -62,10 +61,6 @@ EXTRA_DIST = \
 	xmlsec1-config \
 	xmlsec1.spec \
 	xmlsec1.m4 \
-	$(NULL)
-
-EXTRA_CLEAN = \
-	examples \
 	$(NULL)
 
 ABS_SRCDIR=@abs_srcdir@
@@ -103,7 +98,10 @@ docs-clean:
 docs-man:
 	@(cd man && $(MAKE) docs)
 
-check: check-all check-info
+check: check-examples check-all check-info
+
+check-examples:
+	@(cd examples && $(MAKE) check)
 
 check-all: $(TEST_APP)
 	for crypto in $(CHECK_CRYPTO_LIST) ; do \
@@ -192,13 +190,3 @@ perfcheck: $(TEST_APP)
 
 dist-hook:
 
-cleantar:
-	@($(RM) -f xmlsec*.tar.gz COPYING.LIB)
-
-tar-release: clean cleantar
-	@(unset CDPATH && $(MAKE) dist)
-
-rpm: cleantar tar-release
-	@(unset CDPATH && rpmbuild -ta $(distdir).tar.gz)
-
-rpm-release: clean cleantar rpm

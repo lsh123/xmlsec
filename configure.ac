@@ -2674,6 +2674,7 @@ include/Makefile
 include/xmlsec/Makefile
 src/Makefile
 apps/Makefile
+examples/Makefile
 docs/Makefile
 docs/api/Makefile
 man/Makefile

@@ -21,6 +21,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+#include <libgen.h>
 
 #include <libxml/tree.h>
 #include <libxml/xmlmemory.h>
@@ -190,7 +191,7 @@ load_rsa_keys(char* key_file) {
     }
 
     /* set key name to the file name, this is just an example! */
-    if(xmlSecKeySetName(key, BAD_CAST key_file) < 0) {
+    if(xmlSecKeySetName(key, BAD_CAST basename(key_file)) < 0) {
         fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
         xmlSecKeyDestroy(key);
         xmlSecKeysMngrDestroy(mngr);
@@ -305,6 +306,10 @@ encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* key_name)
         fprintf(stderr,"Error: failed to generate session des key\n");
         goto done;
     }
+
+    /* we don't specify key name */
+    encCtx->keyInfoReadCtx.flags |= XMLSEC_KEYINFO_FLAGS_LAX_KEY_SEARCH;
+    encCtx->keyInfoWriteCtx.flags |= XMLSEC_KEYINFO_FLAGS_LAX_KEY_SEARCH;
 
     /* encrypt the data */
     if(xmlSecEncCtxXmlEncrypt(encCtx, encDataNode, xmlDocGetRootElement(doc)) < 0) {

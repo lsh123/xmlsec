@@ -21,6 +21,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+#include <libgen.h>
 
 #include <libxml/tree.h>
 #include <libxml/xmlmemory.h>
@@ -37,7 +38,7 @@
 #include <xmlsec/templates.h>
 #include <xmlsec/crypto.h>
 
-int encrypt_file(const char* xml_file, const char* key_file);
+int encrypt_file(const char* xml_file, char* key_file);
 
 int
 main(int argc, char **argv) {
@@ -146,7 +147,7 @@ main(int argc, char **argv) {
  * Returns 0 on success or a negative value if an error occurs.
  */
 int
-encrypt_file(const char* xml_file, const char* key_file) {
+encrypt_file(const char* xml_file, char* key_file) {
     xmlDocPtr doc = NULL;
     xmlNodePtr encDataNode = NULL;
     xmlNodePtr keyInfoNode = NULL;
@@ -205,7 +206,7 @@ encrypt_file(const char* xml_file, const char* key_file) {
     }
 
     /* set key name to the file name, this is just an example! */
-    if(xmlSecKeySetName(encCtx->encKey, BAD_CAST key_file) < 0) {
+    if(xmlSecKeySetName(encCtx->encKey, BAD_CAST basename(key_file)) < 0) {
         fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
         goto done;
     }

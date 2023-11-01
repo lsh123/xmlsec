@@ -21,6 +21,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <assert.h>
+#include <libgen.h>
 
 #include <libxml/tree.h>
 #include <libxml/xmlmemory.h>

@@ -5,11 +5,11 @@
     <xsl:template name="linkto">
 	<xsl:param name="href"/>
 	<xsl:param name="text"/>
-	<xsl:element name="a"> 
+	<xsl:element name="a">
 	    <xsl:attribute name="href">
 		<xsl:value-of select="$topfolder"/>
 		<xsl:value-of select="$href"/>
-	    </xsl:attribute>		
+	    </xsl:attribute>
 	    <xsl:value-of select="$text"/>
 	</xsl:element>
     </xsl:template>
@@ -17,14 +17,14 @@
     <xsl:template name="myimg">
 	<xsl:param name="src"/>
 	<xsl:param name="alt"/>
-	<xsl:element name="img"> 
+	<xsl:element name="img">
 	    <xsl:attribute name="src">
 		<xsl:value-of select="$topfolder"/>
 		<xsl:value-of select="$src"/>
-	    </xsl:attribute>		
+	    </xsl:attribute>
 	    <xsl:attribute name="alt">
 		<xsl:value-of select="$alt"/>
-	    </xsl:attribute>			    
+	    </xsl:attribute>
 	    <xsl:attribute name="border">0</xsl:attribute>
 	</xsl:element>
     </xsl:template>
@@ -38,138 +38,137 @@
 <body>
 <table width="100%" valign="top">
 <tr valign="top">
-    <!-- top navigation menu start -->     
+    <!-- top navigation menu start -->
     <td valign="top" align="left" width="210">
-	<xsl:call-template name="myimg"> 
-	    <xsl:with-param name="src">images/logo.gif</xsl:with-param> 
-	    <xsl:with-param name="alt">XML Security Library</xsl:with-param> 
+	<xsl:call-template name="myimg">
+	    <xsl:with-param name="src">images/logo.gif</xsl:with-param>
+	    <xsl:with-param name="alt">XML Security Library</xsl:with-param>
 	</xsl:call-template>
         <p/>
         <ul>
 
 	    <li>
-		<xsl:call-template name="linkto"> 
-		    <xsl:with-param name="href">index.html</xsl:with-param> 
-		    <xsl:with-param name="text">Home</xsl:with-param> 
-		</xsl:call-template>
-	    </li>	    
-	    <li>
-		<xsl:call-template name="linkto"> 
-		    <xsl:with-param name="href">download.html</xsl:with-param> 
-		    <xsl:with-param name="text">Download</xsl:with-param> 
+		<xsl:call-template name="linkto">
+		    <xsl:with-param name="href">index.html</xsl:with-param>
+		    <xsl:with-param name="text">Home</xsl:with-param>
 		</xsl:call-template>
 	    </li>
 	    <li>
-		<xsl:call-template name="linkto"> 
-		    <xsl:with-param name="href">news.html</xsl:with-param> 
-		    <xsl:with-param name="text">News</xsl:with-param> 
+		<xsl:call-template name="linkto">
+		    <xsl:with-param name="href">download.html</xsl:with-param>
+		    <xsl:with-param name="text">Download</xsl:with-param>
 		</xsl:call-template>
-	    </li>	    
+	    </li>
 	    <li>
-		<xsl:call-template name="linkto"> 
-		    <xsl:with-param name="href">documentation.html</xsl:with-param> 
-		    <xsl:with-param name="text">Documentation</xsl:with-param> 
+		<xsl:call-template name="linkto">
+		    <xsl:with-param name="href">news.html</xsl:with-param>
+		    <xsl:with-param name="text">News</xsl:with-param>
 		</xsl:call-template>
-	    </li>	    
+	    </li>
+	    <li>
+		<xsl:call-template name="linkto">
+		    <xsl:with-param name="href">documentation.html</xsl:with-param>
+		    <xsl:with-param name="text">Documentation</xsl:with-param>
+		</xsl:call-template>
+	    </li>
 	    <ul>
 	    <li>
-		<xsl:call-template name="linkto"> 
-		    <xsl:with-param name="href">faq.html</xsl:with-param> 
-		    <xsl:with-param name="text">FAQ</xsl:with-param> 
+		<xsl:call-template name="linkto">
+		    <xsl:with-param name="href">faq.html</xsl:with-param>
+		    <xsl:with-param name="text">FAQ</xsl:with-param>
 		</xsl:call-template>
-	    </li>	    
+	    </li>
 	    <li>
-		<xsl:call-template name="linkto"> 
-		    <xsl:with-param name="href">api/xmlsec-notes.html</xsl:with-param> 
-		    <xsl:with-param name="text">Tutorial</xsl:with-param> 
+		<xsl:call-template name="linkto">
+		    <xsl:with-param name="href">api/xmlsec-notes.html</xsl:with-param>
+		    <xsl:with-param name="text">Tutorial</xsl:with-param>
 		</xsl:call-template>
-	    </li>	    
+	    </li>
 	    <li>
-		<xsl:call-template name="linkto"> 
-		    <xsl:with-param name="href">api/xmlsec-reference.html</xsl:with-param> 
-		    <xsl:with-param name="text">API reference</xsl:with-param> 
+		<xsl:call-template name="linkto">
+		    <xsl:with-param name="href">api/xmlsec-reference.html</xsl:with-param>
+		    <xsl:with-param name="text">API reference</xsl:with-param>
 		</xsl:call-template>
-	    </li>	    
+	    </li>
 	    <li>
-		<xsl:call-template name="linkto"> 
-		    <xsl:with-param name="href">api/xmlsec-examples.html</xsl:with-param> 
-		    <xsl:with-param name="text">Examples</xsl:with-param> 
+		<xsl:call-template name="linkto">
+		    <xsl:with-param name="href">api/xmlsec-examples.html</xsl:with-param>
+		    <xsl:with-param name="text">Examples</xsl:with-param>
 		</xsl:call-template>
-	    </li>	    
+	    </li>
 	    </ul>
 	    <li>
-		<xsl:call-template name="linkto"> 
-		    <xsl:with-param name="href">xmldsig.html</xsl:with-param> 
-		    <xsl:with-param name="text">XML Digital Signature</xsl:with-param> 
+		<xsl:call-template name="linkto">
+		    <xsl:with-param name="href">xmldsig.html</xsl:with-param>
+		    <xsl:with-param name="text">XML Digital Signature</xsl:with-param>
 		</xsl:call-template>
 	    </li>
 	    <li>
-		<xsl:call-template name="linkto"> 
-		    <xsl:with-param name="href">xmlenc.html</xsl:with-param> 
-		    <xsl:with-param name="text">XML Encryption</xsl:with-param> 
+		<xsl:call-template name="linkto">
+		    <xsl:with-param name="href">xmlenc.html</xsl:with-param>
+		    <xsl:with-param name="text">XML Encryption</xsl:with-param>
 		</xsl:call-template>
 	    </li>
 	    <li>
-		<xsl:call-template name="linkto"> 
-		    <xsl:with-param name="href">c14n.html</xsl:with-param> 
-		    <xsl:with-param name="text">XML Canonicalization</xsl:with-param> 
+		<xsl:call-template name="linkto">
+		    <xsl:with-param name="href">c14n.html</xsl:with-param>
+		    <xsl:with-param name="text">XML Canonicalization</xsl:with-param>
 		</xsl:call-template>
 	    </li>
 	    <li>
-		<xsl:call-template name="linkto"> 
-		    <xsl:with-param name="href">bugs.html</xsl:with-param> 
-		    <xsl:with-param name="text">Reporting Bugs</xsl:with-param> 
+		<xsl:call-template name="linkto">
+		    <xsl:with-param name="href">bugs.html</xsl:with-param>
+		    <xsl:with-param name="text">Reporting Bugs</xsl:with-param>
 		</xsl:call-template>
 	    </li>
             <li><a href="mailing-list.html">Mailing list</a></li>
 	    <li>
-		<xsl:call-template name="linkto"> 
-		    <xsl:with-param name="href">related.html</xsl:with-param> 
-		    <xsl:with-param name="text">Related</xsl:with-param> 
+		<xsl:call-template name="linkto">
+		    <xsl:with-param name="href">related.html</xsl:with-param>
+		    <xsl:with-param name="text">Related</xsl:with-param>
 		</xsl:call-template>
-	    </li>	    
+	    </li>
 	    <li>
-		<xsl:call-template name="linkto"> 
-		    <xsl:with-param name="href">authors.html</xsl:with-param> 
-		    <xsl:with-param name="text">Authors</xsl:with-param> 
+		<xsl:call-template name="linkto">
+		    <xsl:with-param name="href">authors.html</xsl:with-param>
+		    <xsl:with-param name="text">Authors</xsl:with-param>
 		</xsl:call-template>
 	    </li>
 	</ul>
 	<table width="100%"><tr><td width="15"></td><td>
       	<a href="http://xmlsoft.org/">
-	    <xsl:call-template name="myimg"> 
-		<xsl:with-param name="src">images/libxml2-logo.png</xsl:with-param> 
-		<xsl:with-param name="alt">LibXML2</xsl:with-param> 
+	    <xsl:call-template name="myimg">
+		<xsl:with-param name="src">images/libxml2-logo.png</xsl:with-param>
+		<xsl:with-param name="alt">LibXML2</xsl:with-param>
 	    </xsl:call-template>
 	</a>
 	</td></tr><tr><td width="15"></td><td>
 	<a href="http://xmlsoft.org/XSLT">
-	    <xsl:call-template name="myimg"> 
-		<xsl:with-param name="src">images/libxslt-logo.png</xsl:with-param> 
-		<xsl:with-param name="alt">LibXSLT</xsl:with-param> 
+	    <xsl:call-template name="myimg">
+		<xsl:with-param name="src">images/libxslt-logo.png</xsl:with-param>
+		<xsl:with-param name="alt">LibXSLT</xsl:with-param>
 	    </xsl:call-template>
 	</a>
 	</td></tr><tr><td width="15"></td><td>
 	<a href="http://www.openssl.org/">
-	    <xsl:call-template name="myimg"> 
-		<xsl:with-param name="src">images/openssl-logo.png</xsl:with-param> 
-		<xsl:with-param name="alt">OpenSSL</xsl:with-param> 
+	    <xsl:call-template name="myimg">
+		<xsl:with-param name="src">images/openssl-logo.png</xsl:with-param>
+		<xsl:with-param name="alt">OpenSSL</xsl:with-param>
 	    </xsl:call-template>
 	</a>
 	</td></tr>
-	
+
 	<!-- links block markers -->
 	<xsl:comment>Links - start</xsl:comment>
 	<xsl:comment>Links - end</xsl:comment>
-	
+
 	</table>
      </td>
      <!-- top navigation menu end -->
-
-     <td valign="top" > 
-        <table width="100%" valign="top">
-	    <tr><td valign="top" align="left" id="xmlsecContent"> 
-	    <xsl:choose> 
+     <td valign="top" >
+        <table width="80%" valign="top" style="margin-left:10px;">
+	    <tr><td valign="top" align="left" id="xmlsecContent">
+	    <xsl:choose>
 		<xsl:when test="//td[@id='xmlsecContent']">
 		    <xsl:copy-of select="//td[@id='xmlsecContent']/*" />
 		</xsl:when>

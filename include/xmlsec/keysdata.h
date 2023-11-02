@@ -253,10 +253,12 @@ typedef enum {
  *
  *************************************************************************/
 XMLSEC_EXPORT xmlSecPtrListPtr  xmlSecKeyDataIdsGet             (void);
+XMLSEC_EXPORT xmlSecPtrListPtr  xmlSecKeyDataIdsGetEnabled      (void);
 XMLSEC_EXPORT int               xmlSecKeyDataIdsInit            (void);
 XMLSEC_EXPORT void              xmlSecKeyDataIdsShutdown        (void);
 XMLSEC_EXPORT int               xmlSecKeyDataIdsRegisterDefault (void);
 XMLSEC_EXPORT int               xmlSecKeyDataIdsRegister        (xmlSecKeyDataId id);
+XMLSEC_EXPORT int               xmlSecKeyDataIdsRegisterDisabled(xmlSecKeyDataId id);
 
 /**************************************************************************
  *

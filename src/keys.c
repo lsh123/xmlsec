@@ -1305,7 +1305,6 @@ xmlSecKeysMngrGetKey(xmlNodePtr keyInfoNode, xmlSecKeyInfoCtxPtr keyInfoCtx) {
 
     xmlSecAssert2(keyInfoCtx != NULL, NULL);
 
-
     /* first try to read data from &lt;dsig:KeyInfo/&gt; node */
     key = xmlSecKeyCreate();
     if(key == NULL) {

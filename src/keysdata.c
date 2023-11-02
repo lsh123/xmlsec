@@ -42,6 +42,7 @@
  *
  *************************************************************************/
 static xmlSecPtrList xmlSecAllKeyDataIds;
+static xmlSecPtrList xmlSecEnabledKeyDataIds;
 static int xmlSecImportPersistKey = 0;
 
 /**
@@ -57,6 +58,19 @@ xmlSecKeyDataIdsGet(void) {
 }
 
 /**
+ * xmlSecKeyDataIdsGetEnabled:
+ *
+ * Gets global enabled key data klasses list.
+ *
+ * Returns: the pointer to list of all enabled key data klasses.
+ */
+xmlSecPtrListPtr
+xmlSecKeyDataIdsGetEnabled(void) {
+    return(&xmlSecEnabledKeyDataIds);
+}
+
+
+/**
  * xmlSecKeyDataIdsInit:
  *
  * Initializes the key data klasses. This function is called from the
@@ -68,7 +82,13 @@ int
 xmlSecKeyDataIdsInit(void) {
     int ret;
 
-    ret = xmlSecPtrListInitialize(xmlSecKeyDataIdsGet(), xmlSecKeyDataIdListId);
+    ret = xmlSecPtrListInitialize(&xmlSecAllKeyDataIds, xmlSecKeyDataIdListId);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecPtrListInitialize(xmlSecKeyDataIdListId)", NULL);
+        return(-1);
+    }
+
+    ret = xmlSecPtrListInitialize(&xmlSecEnabledKeyDataIds, xmlSecKeyDataIdListId);
     if(ret < 0) {
         xmlSecInternalError("xmlSecPtrListInitialize(xmlSecKeyDataIdListId)", NULL);
         return(-1);
@@ -91,14 +111,15 @@ xmlSecKeyDataIdsInit(void) {
  */
 void
 xmlSecKeyDataIdsShutdown(void) {
-    xmlSecPtrListFinalize(xmlSecKeyDataIdsGet());
+    xmlSecPtrListFinalize(&xmlSecAllKeyDataIds);
+    xmlSecPtrListFinalize(&xmlSecEnabledKeyDataIds);
 }
 
 /**
  * xmlSecKeyDataIdsRegister:
  * @id:                 the key data klass.
  *
- * Registers @id in the global list of key data klasses.
+ * Registers @id in the global list of key data klasses and enable this key data.
  *
  * Returns: 0 on success or a negative value if an error occurs.
  */
@@ -108,10 +129,38 @@ xmlSecKeyDataIdsRegister(xmlSecKeyDataId id) {
 
     xmlSecAssert2(id != xmlSecKeyDataIdUnknown, -1);
 
-    ret = xmlSecPtrListAdd(xmlSecKeyDataIdsGet(), (xmlSecPtr)id);
+    ret = xmlSecPtrListAdd(&xmlSecAllKeyDataIds, (xmlSecPtr)id);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecPtrListAdd",
-                            xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecPtrListAdd(&xmlSecAllKeyDataIds)", xmlSecKeyDataKlassGetName(id));
+        return(-1);
+    }
+
+    ret = xmlSecPtrListAdd(&xmlSecEnabledKeyDataIds, (xmlSecPtr)id);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecPtrListAdd(&xmlSecEnabledKeyDataIds)", xmlSecKeyDataKlassGetName(id));
+        return(-1);
+    }
+
+    return(0);
+}
+
+/**
+ * xmlSecKeyDataIdsRegisterDisabled:
+ * @id:                 the key data klass.
+ *
+ * Registers @id in the global list of key data klasses and but DO NOT enable this key data.
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecKeyDataIdsRegisterDisabled(xmlSecKeyDataId id) {
+    int ret;
+
+    xmlSecAssert2(id != xmlSecKeyDataIdUnknown, -1);
+
+    ret = xmlSecPtrListAdd(&xmlSecAllKeyDataIds, (xmlSecPtr)id);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecPtrListAdd(&xmlSecAllKeyDataIds)", xmlSecKeyDataKlassGetName(id));
         return(-1);
     }
 
@@ -131,11 +180,6 @@ int
 xmlSecKeyDataIdsRegisterDefault(void) {
     if(xmlSecKeyDataIdsRegister(xmlSecKeyDataNameId) < 0) {
         xmlSecInternalError("xmlSecKeyDataIdsRegister(xmlSecKeyDataNameId)", NULL);
-        return(-1);
-    }
-
-    if(xmlSecKeyDataIdsRegister(xmlSecKeyDataValueId) < 0) {
-        xmlSecInternalError("xmlSecKeyDataIdsRegister(xmlSecKeyDataValueId)", NULL);
         return(-1);
     }
 
@@ -163,6 +207,12 @@ xmlSecKeyDataIdsRegisterDefault(void) {
         return(-1);
     }
 #endif /* XMLSEC_NO_XMLENC */
+
+    /* KeyValue key data should not be used in production w/o understanding of the security risks */
+    if(xmlSecKeyDataIdsRegisterDisabled(xmlSecKeyDataValueId) < 0) {
+        xmlSecInternalError("xmlSecKeyDataIdsRegister(xmlSecKeyDataValueId)", NULL);
+        return(-1);
+    }
 
     return(0);
 }

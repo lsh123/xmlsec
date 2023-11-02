@@ -108,12 +108,12 @@ xmlSecKeyInfoNodeRead(xmlNodePtr keyInfoNode, xmlSecKeyPtr key, xmlSecKeyInfoCtx
         nodeName = cur->name;
         nodeNs = xmlSecGetNodeNsHref(cur);
 
-        /* use global list only if we don't have a local one */
+        /* use global enabled list only if we don't have a local one */
         if(xmlSecPtrListGetSize(&(keyInfoCtx->enabledKeyData)) > 0) {
             dataId = xmlSecKeyDataIdListFindByNode(&(keyInfoCtx->enabledKeyData),
                             nodeName, nodeNs, xmlSecKeyDataUsageKeyInfoNodeRead);
         } else {
-            dataId = xmlSecKeyDataIdListFindByNode(xmlSecKeyDataIdsGet(),
+            dataId = xmlSecKeyDataIdListFindByNode(xmlSecKeyDataIdsGetEnabled(),
                             nodeName, nodeNs, xmlSecKeyDataUsageKeyInfoNodeRead);
         }
         if(dataId != xmlSecKeyDataIdUnknown) {
@@ -131,6 +131,8 @@ xmlSecKeyInfoNodeRead(xmlNodePtr keyInfoNode, xmlSecKeyPtr key, xmlSecKeyInfoCtx
              * desire to disable unknown nodes*/
             xmlSecUnexpectedNodeError(cur, NULL);
             return(-1);
+        } else {
+            xmlSecUnexpectedNodeError(cur, NULL);
         }
     }
 
@@ -168,13 +170,13 @@ xmlSecKeyInfoNodeWrite(xmlNodePtr keyInfoNode, xmlSecKeyPtr key, xmlSecKeyInfoCt
         nodeName = cur->name;
         nodeNs = xmlSecGetNodeNsHref(cur);
 
-        /* use global list only if we don't have a local one */
+        /* use global eanbled list only if we don't have a local one */
         if(xmlSecPtrListGetSize(&(keyInfoCtx->enabledKeyData)) > 0) {
                 dataId = xmlSecKeyDataIdListFindByNode(&(keyInfoCtx->enabledKeyData),
                             nodeName, nodeNs,
                             xmlSecKeyDataUsageKeyInfoNodeWrite);
         } else {
-                dataId = xmlSecKeyDataIdListFindByNode(xmlSecKeyDataIdsGet(),
+                dataId = xmlSecKeyDataIdListFindByNode(xmlSecKeyDataIdsGetEnabled(),
                             nodeName, nodeNs,
                             xmlSecKeyDataUsageKeyInfoNodeWrite);
         }
@@ -863,12 +865,12 @@ xmlSecKeyDataValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node,
     nodeName = cur->name;
     nodeNs = xmlSecGetNodeNsHref(cur);
 
-    /* use global list only if we don't have a local one */
+    /* use global enabled list only if we don't have a local one */
     if(xmlSecPtrListGetSize(&(keyInfoCtx->enabledKeyData)) > 0) {
         dataId = xmlSecKeyDataIdListFindByNode(&(keyInfoCtx->enabledKeyData),
                             nodeName, nodeNs, xmlSecKeyDataUsageKeyValueNodeRead);
     } else {
-        dataId = xmlSecKeyDataIdListFindByNode(xmlSecKeyDataIdsGet(),
+        dataId = xmlSecKeyDataIdListFindByNode(xmlSecKeyDataIdsGetEnabled(),
                             nodeName, nodeNs, xmlSecKeyDataUsageKeyValueNodeRead);
     }
     if(dataId != xmlSecKeyDataIdUnknown) {
@@ -1063,12 +1065,12 @@ xmlSecKeyDataRetrievalMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNod
 
     retrType = xmlGetProp(node, xmlSecAttrType);
     if(retrType != NULL) {
-        /* use global list only if we don't have a local one */
+        /* use global enabled list only if we don't have a local one */
         if(xmlSecPtrListGetSize(&(keyInfoCtx->enabledKeyData)) > 0) {
             dataId = xmlSecKeyDataIdListFindByHref(&(keyInfoCtx->enabledKeyData),
                             retrType, xmlSecKeyDataUsageRetrievalMethodNode);
         } else {
-            dataId = xmlSecKeyDataIdListFindByHref(xmlSecKeyDataIdsGet(),
+            dataId = xmlSecKeyDataIdListFindByHref(xmlSecKeyDataIdsGetEnabled(),
                             retrType, xmlSecKeyDataUsageRetrievalMethodNode);
         }
     }
@@ -1214,12 +1216,12 @@ xmlSecKeyDataRetrievalMethodReadXmlResult(xmlSecKeyDataId typeId, xmlSecKeyPtr k
     nodeName = cur->name;
     nodeNs = xmlSecGetNodeNsHref(cur);
 
-    /* use global list only if we don't have a local one */
+    /* use global enabled list only if we don't have a local one */
     if(xmlSecPtrListGetSize(&(keyInfoCtx->enabledKeyData)) > 0) {
         dataId = xmlSecKeyDataIdListFindByNode(&(keyInfoCtx->enabledKeyData),
                             nodeName, nodeNs, xmlSecKeyDataUsageRetrievalMethodNodeXml);
     } else {
-        dataId = xmlSecKeyDataIdListFindByNode(xmlSecKeyDataIdsGet(),
+        dataId = xmlSecKeyDataIdListFindByNode(xmlSecKeyDataIdsGetEnabled(),
                             nodeName, nodeNs, xmlSecKeyDataUsageRetrievalMethodNodeXml);
     }
     if(dataId == xmlSecKeyDataIdUnknown) {

@@ -118,8 +118,12 @@
 <td class="function_name"><a class="link" href="xmlsec-xmlsec.html#XMLSEC-SIZE-T-FMT:CAPS" title="XMLSEC_SIZE_T_FMT">XMLSEC_SIZE_T_FMT</a></td>
 </tr>
 <tr>
-<td class="define_keyword">#define</td>
+<td class="typedef_keyword">typedef</td>
 <td class="function_name"><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize">xmlSecSize</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-xmlsec.html#XMLSEC-SIZE-MIN:CAPS" title="XMLSEC_SIZE_MIN">XMLSEC_SIZE_MIN</a></td>
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
@@ -128,10 +132,6 @@
 <tr>
 <td class="define_keyword">#define</td>
 <td class="function_name"><a class="link" href="xmlsec-xmlsec.html#XMLSEC-SIZE-FMT:CAPS" title="XMLSEC_SIZE_FMT">XMLSEC_SIZE_FMT</a></td>
-</tr>
-<tr>
-<td class="define_keyword">#define</td>
-<td class="function_name"><a class="link" href="xmlsec-xmlsec.html#XMLSEC-SIZE-MIN:CAPS" title="XMLSEC_SIZE_MIN">XMLSEC_SIZE_MIN</a></td>
 </tr>
 <tr>
 <td class="typedef_keyword">typedef</td>
@@ -318,26 +318,26 @@ despite the fact that MSVC runtime supports it for 10+ years.</p>
 <hr>
 <div class="refsect2">
 <a name="xmlSecSize"></a><h3>xmlSecSize</h3>
-<pre class="programlisting">#define xmlSecSize                              unsigned int
+<pre class="programlisting">typedef size_t xmlSecSize;
 </pre>
 <p>Size of something.</p>
 </div>
 <hr>
 <div class="refsect2">
+<a name="XMLSEC-SIZE-MIN:CAPS"></a><h3>XMLSEC_SIZE_MIN</h3>
+<pre class="programlisting">#define XMLSEC_SIZE_MIN                         ((xmlSecSize)0)
+</pre>
+</div>
+<hr>
+<div class="refsect2">
 <a name="XMLSEC-SIZE-MAX:CAPS"></a><h3>XMLSEC_SIZE_MAX</h3>
-<pre class="programlisting">#define XMLSEC_SIZE_MAX                         UINT_MAX
+<pre class="programlisting">#define XMLSEC_SIZE_MAX                         SIZE_MAX
 </pre>
 </div>
 <hr>
 <div class="refsect2">
 <a name="XMLSEC-SIZE-FMT:CAPS"></a><h3>XMLSEC_SIZE_FMT</h3>
-<pre class="programlisting">#define XMLSEC_SIZE_FMT                         "%u"
-</pre>
-</div>
-<hr>
-<div class="refsect2">
-<a name="XMLSEC-SIZE-MIN:CAPS"></a><h3>XMLSEC_SIZE_MIN</h3>
-<pre class="programlisting">#define XMLSEC_SIZE_MIN                         ((xmlSecSize)0)
+<pre class="programlisting">#define XMLSEC_SIZE_FMT                         XMLSEC_SIZE_T_FMT
 </pre>
 </div>
 <hr>

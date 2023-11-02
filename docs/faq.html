@@ -130,7 +130,8 @@
   </table>
   </p>
   <p>
-    If you have questions about XML Security Library licensing then feel free to send these questions to the <a href="mailing-list.html">mailing list</a>.
+    If you have questions about XML Security Library licensing then feel free to send these questions
+    to the <a href="mailing-list.html">mailing list</a>.
   </p>
 </div>
 
@@ -151,7 +152,7 @@
     make <br>
     make check <br>
     make install
-  </code> </blockquote>
+  </code></blockquote>
   </p>
   <p>
     On Windows the process is more complicated. Please check readme file in
@@ -168,9 +169,10 @@
     a <a href="http://www.aleksey.com/xmlsec/bugs.html">bug report</a> and I'll try to fix it.
   </p>
 
-  <h4><a name="section_2_5"></a>2.5. I got the xmlsec source code from GitHub and there is no <code>configure</code> script. Where can I get it?</h4>
-  <p>The <code>configure</code> (and several other files) are generated. Use the <code>autogen.sh</code> script to
-    regenerate these files:
+  <h4><a name="section_2_5"></a>2.5. I got the xmlsec source code from GitHub and there is
+    no <code>configure</code> script. Where can I get it?</h4>
+  <p>The <code>configure</code> (and several other files) are generated. Use the
+    <code>autogen.sh</code> script to regenerate these files:
     <blockquote><code>
         mkdir build <br>
         cd build <br>
@@ -180,10 +182,12 @@
     </code></blockquote>
   </p>
 
-  <h4><a name="section_2_6"></a>2.6. I do not need all these features supported by xmlsec. Can I disable some of them?</h4>
+  <h4><a name="section_2_6"></a>2.6. I do not need all these features supported by xmlsec. Can I disable
+    some of them?</h4>
   <p>Yes, you can. Please run <code>configure --help</code> for the list of possible configuration options. </p>
 
-  <h4><a name="section_2_7"></a>2.7. I am compiling XMLSec library on Windows and it does not compile or crashes right after the launch. Can you help me?</h4>
+  <h4><a name="section_2_7"></a>2.7. I am compiling XMLSec library on Windows and it does not compile or crashes
+    right after the launch. Can you help me?</h4>
   <p>There are several possible reasons why you might have problems on Windows:
     <ul>
       <li>
@@ -214,11 +218,12 @@
   <h4><a name="section_3_1"></a>3.1. xmlSecDSigCtxValidate() function returned 0. Does this mean that the signature is valid?</h4>
   <p><b>No!</b> The <code>xmlSecDSigCtxValidate()</code> function returns 0 when there are no <i>processing</i>
     errors during signature validation (i.e. the document has correct syntax, all keys were found, etc.).
-    The signature is valid if and only if the <code>xmlSecDSigCtxValidate()</code> function returns 0 <b>and</b>
+    The signature is valid if and only if the <code>xmlSecDSigCtxValidate()</code> function returns 0 <b> and</b>
     the <code>status</code> member of the <code>xmlSecDSigCtx</code> structure is equal to <code>xmlSecDSigStatusSucceeded</code>.
   </p>
 
-  <h4><a name="section_3_2"></a>3.2. I am trying to sign use a part of XML document using an "Id" attribute but it does not work. Do you support "Id" attributes at all?</h4>
+  <h4><a name="section_3_2"></a>3.2. I am trying to sign use a part of XML document using an "Id" attribute but
+    it does not work. Do you support "Id" attributes at all?</h4>
   <p>Yes, the <code>Id</code> attributes are supported by both XMLSec and LibXML2 libraries. However, you have to
   tell LibXML2/XMLSec what is the name of the ID attribute. XML specification does not require ID attribute to
   have name "ID", "Id" or "id". It can be anything you want! There are several ways to declare an ID attribute:
@@ -231,13 +236,13 @@
         ]&gt;
       </code></blockquote>
       The DTD might be directly included in the XML file or located in a standalone file. In the second case, you might
-      load the DTD in xmlsec command line utility with the <code>--dtd-file</code> option.
+      load the DTD in <a href="xmlsec-man.html">xmlsec command line utility</a> with the <code>--dtd-file</code> option.
     </li>
     <li><b>Use xml:id.</b> The <a href="http://www.w3.org/TR/xml-id/">xml:id</a> spec allows to declare
       an ID attribute in the schema or DTD.
     </li>
-    <li><b>Use --id-attr for xmlsec command line utility.</b> The <code>--id-attr</code> command line option allows
-      to quickly declare an ID attribute for xmlsec command line utility.
+    <li><b>Use --id-attr for <a href="xmlsec-man.html">xmlsec command line utility</a>.</b> The <code>--id-attr</code> command
+      line option allows to quickly declare an ID attribute for <a href="xmlsec-man.html">xmlsec command line utility</a>.
     </li>
     <li><b>Use xmlAddID function.</b> If you are writing an application, you can declare an ID attribute using
       the <code>xmlAddID</code> LibXML2 function.
@@ -245,13 +250,15 @@
   </ul>
   </p>
 
-  <h4><a name="section_3_3"></a>3.3.<span style="font-weight: bold;"> </span>I am trying to sign an XML document and I have a warning about "empty nodes set". Should I worry about this?</h4>
+  <h4><a name="section_3_3"></a>3.3.<span style="font-weight: bold;"> </span>I am trying to sign an XML document and
+    I have a warning about "empty nodes set". Should I worry about this?</h4>
   <p>Most likely <b>yes</b>. When it's not an error from specification point of view, I can hardly imagine
     a real world case that requires signing an empty nodes set (i.e. signing an empty string). Most likely,
     you have this error because you are trying to use an ID attribute and you did not declare the ID attribute
     (see <a href="faq.html#section_3_2">section 3.2</a> about ID attributes).</p>
 
-  <h4><a name="section_3_4"></a>3.4. I am trying to sign/validate a document but xmlXPtrEval function can't evaluate "xpointer(id('XXXXXXX'))" expression. What's wrong?</h4>
+  <h4><a name="section_3_4"></a>3.4. I am trying to sign/validate a document but xmlXPtrEval function can't
+    evaluate "xpointer(id('XXXXXXX'))" expression. What's wrong?</h4>
   <p>First of all, read <a href="#section_3_2">section 3.2</a> about ID attributes. If you have tried to declare
     the required ID attribute and you still have problems then it is likely working with the Visa 3D protocol.
     This protocol tries to reference to an "id" attribute defined as CDATA instead of ID in the DTD (it is
@@ -263,65 +270,97 @@
     <ul>
       <li>
         First, register ID attributes manually (using either <code>xmlAddID</code> function or
-        <code>--id-attr</code> option for xmlsec command line utility).
+        <code>--id-attr</code> option for <a href="xmlsec-man.html">xmlsec command line utility</a>).
       </li>
       <li>
         Second, enable the "Visa 3D hack" in XML DSig context (using either <code>dsigCtx-&gt;flags |= XMLSEC_DSIG_FLAGS_USE_VISA3D_HACK</code>
-        or <code>--enable-visa3d-hack</code> option for xmlsec command line utility).
+        or <code>--enable-visa3d-hack</code> option for <a href="xmlsec-man.html">xmlsec command line utility</a>).
       </li>
     </ul>
     <b>This is a hack. You are warned!</b>
   </p>
-  <p><b>UPDATE:</b> It appears that newer version (Novemeber, 2005) of the Visa3D DTD has this problem corrected and
+  <p><b>UPDATE:</b> It appears that newer version (Novemeber, 2005) of the Visa3D DTD has this problem fixed and
     now "id" attribute is declared as ID correctly.
   </p>
 
-  <h4><a name="section_3_5"></a>3.5. I have a document signed with a certificate that is now expired. Can I verify this signature?</h4>
-  <p>Yes, you can. However, you need to be carefull. Most likely you do want to make sure that the certificate was
-    not expired when the document was signed. The <a href="http://www.w3.org/Signature">XML Digital Signature</a>
-    specification does not have a standard way to include the signature timestamp. Which means that you need to define
-    where to put timestamp by yourself. Please note, that the timestamp <b>must</b> be signed along with the other data.
-    Finaly set the desired verification time in <code>certsVerificationTime</code> member of the <code>xmlSecKeyInfoCtx</code> structure.
-    If you are using xmlsec command line utility then you can use <code>--verification-time &lt;time&gt;</code> option
-    (where <code>&lt;time&gt;</code> is the local system time in the "<code>YYYY-MM-DD HH:MM:SS</code>" format).
+  <h4><a name="section_3_5"></a>3.5. The XMLSec library or XMLSec command line tool fails because the key cannot be found. What's wrong?</h4>
+  <p>There might be multiple reasons for the "key cannot be found error":
+    <ul>
+      <li>
+        <b>KeyValue or DEREncodedKeyValue nodes are disabled by default.</b> The <code>KeyValue</code> and <code>DEREncodedKeyValue</code>
+        nodes allow definition of the key value directly in an XML file. This creates a security risk because there is no mechanism
+        to verify the key origin (and for example, this enables to create "fake" signatures). Thus, the <code>KeyValue</code> and
+        <code>DEREncodedKeyValue</code> nodes are disabled by default. Yet, in some use cases the use of these nodes in XML file
+        can be appropriate. If you verify that these nodes do not present security concerns for your applicaton, then you can
+        re-enable <code>KeyValue</code> and <code>DEREncodedKeyValue</code> nodes using the <code>--enabled-key-data</code> option
+        for the <a href="xmlsec-man.html">xmlsec command line utility</a>, or by setting the <code>keyInfoCtx->enabledKeyData</code>
+        parameter in your application.
+        <b>THIS IS NOT SECURE AND NOT RECOMMENDED.</b>
+      <li>
+        <b>Key is not referenced in KeyInfo node (or this node is not included).</b> If a key is not referenced in the XML file then it
+        creates a potential security risk because the key is no longer coupled with signature (the <code>KeyInfo</code> node is signed
+        during the XML signature process and it's integrity is validated during XML signature verification). Yet, in some use cases not
+        using the <code>KeyInfo</code> node to specifiy the key can be appropriate. If you verify that this does not present a security
+        concerns for your applicaton, then you can enable "lax" key search mode by using <code>--lax-key-search</code> option for the
+        <a href="xmlsec-man.html">xmlsec command line utility</a>, or by setting <code>keyInfoCtx->flags |= XMLSEC_KEYINFO_FLAGS_LAX_KEY_SEARCH;</code>
+        flag in your application.
+        <b>THIS IS NOT SECURE AND NOT RECOMMENDED.</b>
+      </li>
+      <li>
+        <b>Certificate cannot be verified.</b> See the next <a href="#section_3_6">question 3.6</a> in this FAQ.
+      </li>
+    </ul>
   </p>
 
-  <h4><a name="section_3_6"></a>3.6. I really like the XMLSec library but it is based on OpenSSL and I have to use another crypto library in my application. Can you write code to support my crypto library?</h4>
+  <h4><a name="section_3_6"></a>3.6. The XMLSec library or XMLSec command line tool fails because the certificate cannot be
+    verified. What's wrong?</h4>
+  <p>There might be several reasons why XMLSec library cannot verify a certificate:
+    <ul>
+      <li>
+        First, check that both trusted (root) and untrusted certificates from the certificate chain are provided to
+        the XMLSec library or command line tool (e.g. in the XML file, or loaded into the keys manager,
+        or available in the crypto library ceritificates store, or provided in the command line, or ...).
+      </li>
+      <li>
+        Check if any of the certificates in the certificate verification chain expired.
+        The <a href="http://www.w3.org/Signature">XML Digital Signature</a> specification does not have a standard way
+        to include the signature timestamp. If you decide to add timestamp to your signature, then consider
+        signing the timestamp along with other data. If you verify that changing signature verification time from "now"
+        to some other value does not present a security concerns for your applicaton, then you can use
+        <code>--verification-time &lt;time&gt;</code> option (where <code>&lt;time&gt;</code> is the local system
+        time in the <code>YYYY-MM-DD HH:MM:SS</code> format), or by setting <code>keyInfoCtx->certsVerificationTime</code>
+        parameter in your application.
+      </li>
+      <li>
+        Older certificates that use MD5 or SHA1 hashes might be rejected by newer cryptographic libraries because these
+        algorithms are no longer considered secure. If you verify that this does not present a security concerns for your applicaton,
+        then you can re-enable these algorithms (and also skip some other strict certificate verification checks) by using the
+        <code>--X509-skip-strict-checks</code> option for the <a href="xmlsec-man.html">xmlsec command line utility</a>, or by setting
+        <code>keyInfoCtx->flags |= XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_STRICT_CHECKS;</code> flag in your application.
+        <b>THIS IS NOT SECURE AND NOT RECOMMENDED.</b>
+      </li>
+      <li>
+        Lastly, you can use the <code>--insecure </code> option for the <a href="xmlsec-man.html">xmlsec command line utility</a>,
+        or by set <code>keyInfoCtx->flags |= XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS;</code> flag in your application to
+        completely disable the certificates verification. Disabling certificate verification creates a security risk because
+        there is no mechanism to verify the key origin (and for example, this enables to create "fake" signatures).
+        <b>THIS IS NOT SECURE AND NOT RECOMMENDED.</b>
+      </li>
+
+    </ul>
+  </p>
+
+  <h4><a name="section_3_7"></a>3.7. I really like the XMLSec library but it is based on OpenSSL and I have to use another crypto library in my application. Can you write code to support my crypto library?</h4>
   <p>The XMLSec library has a very modular structure and there should be no problem with using another crypto library.
     For example, XMLSec already supports NSS, GnuTLS, GCrypt and multple Microsoft Crypto APIs. If your favorite cryptographic
     library is not supported by XMLSec then you can either write intergration yourself or contact me to discuss possible options.
   </p>
 
-  <h4><a name="section_3_7"></a>3.7. I really like the XMLSec library but it does not have cipher or transform that I need. Can you write code for me?</h4>
+  <h4><a name="section_3_8"></a>3.8. I really like the XMLSec library but it does not have cipher or transform that I need. Can you write code for me?</h4>
   <p>The XMLSec library has a very modular structure and it is easy to add any cipher or other transform. You can either
     write intergration yourself or contact me to discuss possible options.
   </p>
 
-  <h4><a name="section_3_8"></a>3.8. The XMLSec library or XMLSec command line tool fails because the key cannot be found. What's wrong?</h4>
-  <p>There might be multiple reasons for the "key cannot be found error":
-    <ul>
-      <li><b>KeyValue or DEREncodedKeyValue are disabled by default.</b> The <code>KeyValue</code>and <code>DEREncodedKeyValue</code>
-        nodes allow definition of the key value directly in XML file. This creates a security risk because there is no mechanism
-        to verify the key origin (and for example, enable "fake" signature). Thus, the <code>KeyValue</code>and <code>DEREncodedKeyValue</code>
-        nodes are disabled by default. Yet, in some use cases the use of these nodes in XML file can be appropriate. If you verify
-        that these nodes do not present security concerns for your applicaton, the you can re-enable these nods using
-        the <code>--enabled-key-data</code> option for the xmlsec command line utility or update the <code>keyInfoCtx->enabledKeyData</code>
-        parameter in your application.
-      <li><b>Key is not referenced in KeyInfo node (or this node is not included).</b> If key is not referenced in the XML file then it
-        creates a potential security problem because the key is now decoupled from signature (e.g. the <code>KeyInfo</code> node is signed
-        during the XML signature process and it's integrity is validated during XML signature verification).  Yet, in some use cases not
-        using the <code>KeyInfo</code> node to specifiy the key can be appropriate. If you verify that this does not present security concerns
-        for your applicaton, the you can enable "lax" key search mode by using <code>--lax-key-search</code> option for the xmlsec command line utility or
-        by setting <code>keyInfoCtx->flags |= XMLSEC_KEYINFO_FLAGS_LAX_KEY_SEARCH;</code> flag in your application.
-      </li>
-      <li><b>Certificate cannot be verified.</b> In this case, you will need to double check that both trusted (root) and untrusted certificates
-        from the certificate chain are provided to the XMLSec library or command line tool. Older certificates that use MD5 or SHA1 signatures
-        might be rejected by newer cryptographic libraries (use the <code>--X509-skip-strict-checks</code> option for the xmlsec command line utility or
-        set <code>keyInfoCtx->flags |= XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_STRICT_CHECKS;</code> flag in your application to allow older hashing
-        algorithms and skip some other certificate checks). If the certificate is expired see <a href="#section_3_5">section 3.5 in this FAQ</a>.
-      </li>
-    </ul>
-  </p>
 </div>
 </td></tr></table></td>
 </tr></table></body>

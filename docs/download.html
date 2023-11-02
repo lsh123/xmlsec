@@ -261,18 +261,20 @@
                                     Interoperability report</a> provide detailed information about the features supported by each library.</p>
                             </div>
                             <div align="left">
-                                <h2>Installation (source archive)</h2>
-                                <p>All steps are usual:<br></p>
-                                <blockquote>
-                                    <code>gunzip -c xmlsec1-xxx.tar.gz | tar xvf -</code><br>
-                                    <code>cd xmlsec1-xxxx</code><br>
-                                    <code>./configure --help</code><br>
-                                    <code>./configure [possible options]</code><br>
-                                    <code>make</code><br>
-                                    <code>make install</code><br>
-                                    <code>make check</code>
-                                </blockquote>
-                                <p>The last step is optional and requires Internet connection to execute some tests.<br>
+                                <h2>Build and install</h2>
+                                <p>All steps are the usual Unix/Linux build steps (see readme file in <code>xmlsec-&lt;version&gt;/win32</code>
+                                    folder for Windows instructions):
+                                <blockquote><code>
+                                    gunzip -c xmlsec-&lt;version&gt;.tar.gz | tar xvf - <br>
+                                    cd xmlsec-&lt;version&gt; <br>
+                                    mkdir build <br>
+                                    cd build <br>
+                                    ../configure --help <br>
+                                    ../configure [configure options] <br>
+                                    make <br>
+                                    make check <br>
+                                    make install <br>
+                                  </code></blockquote>
                                 </p>
                             </div>
                             <div align="left">

@@ -32,7 +32,7 @@ docs-copy:
 		    (chmod u+w $(builddir)/*.html || true) ; \
 		    (chmod u+w $(builddir)/*.ico || true) ; \
 		    (chmod -R u+w $(builddir)/images || true) ; \
-            (chmod -R u+w $(builddir)/css || true) ; \
+		    (chmod -R u+w $(builddir)/css || true) ; \
 		fi \
 	)
 

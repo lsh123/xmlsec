@@ -4,6 +4,7 @@ SUBDIRS=api
 
 TARGET_DIR=@XMLSEC_DOCDIR@
 
+# we copy over all folders to builddir to make it easier to test docs
 EXTRA_DIST=\
 	$(builddir)/images     \
 	$(builddir)/css        \
@@ -27,10 +28,11 @@ docs-copy:
 		echo "Copying docs..."; \
 		if [ z"$(srcdir)" != z"$(builddir)" -a z"`uname`" != z"Darwin" ]; \
 		then \
-		    $(CP) -ru $(srcdir)/*.html $(srcdir)/*.ico $(srcdir)/images $(builddir)/  ; \
+		    $(CP) -ru $(srcdir)/*.html $(srcdir)/*.ico $(srcdir)/images $(srcdir)/css $(builddir)/  ; \
 		    (chmod u+w $(builddir)/*.html || true) ; \
 		    (chmod u+w $(builddir)/*.ico || true) ; \
 		    (chmod -R u+w $(builddir)/images || true) ; \
+		    (chmod -R u+w $(builddir)/css || true) ; \
 		fi \
 	)
 
@@ -96,6 +98,7 @@ clean-local:
 	-rm -f *.stamp
 	( if [ z"$(srcdir)" != z"$(builddir)" ] ; then \
 		(chmod -R u+w $(builddir)/images || true) && rm -rf $(builddir)/images ; \
+        (chmod -R u+w $(builddir)/css || true) && rm -rf $(builddir)/css ; \
 		(chmod -R u+w $(builddir)/src || true) && rm -rf $(builddir)/src ; \
 		(for i in `find $(builddir) -name "*.html" -print` ; do \
 			echo "Removing files '$$i' ... " ; \
@@ -112,13 +115,16 @@ distclean-local: clean-local
 install-data-local: 
 	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)
 	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)/images
+	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)/css
 	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)/api
 	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)/api/images
 	-@INSTALL@ -m 0644 $(builddir)/*.html $(DESTDIR)$(TARGET_DIR)
 	-@INSTALL@ -m 0644 $(builddir)/*.ico  $(DESTDIR)$(TARGET_DIR)
 	-@INSTALL@ -m 0644 $(builddir)/images/*.gif $(builddir)/images/*.png $(DESTDIR)$(TARGET_DIR)/images
+	-@INSTALL@ -m 0644 $(builddir)/css $(DESTDIR)$(TARGET_DIR)/css
 	-@INSTALL@ -m 0644 $(builddir)/api/*.html $(builddir)/api/*.png $(builddir)/api/*.sgml $(DESTDIR)$(TARGET_DIR)/api
 	-@INSTALL@ -m 0644 $(builddir)/api/images/*.png $(DESTDIR)$(TARGET_DIR)/api/images
 
 uninstall-local:
 	@rm -rf $(DESTDIR)$(TARGET_DIR)
+

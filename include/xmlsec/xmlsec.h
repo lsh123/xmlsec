@@ -12,6 +12,7 @@
 #define __XMLSEC_H__
 
 #include <libxml/tree.h>
+#include <libxml/parser.h>
 
 #include <xmlsec/version.h>
 #include <xmlsec/exports.h>

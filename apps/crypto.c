@@ -12,6 +12,7 @@
 #endif
 
 #include <string.h>
+#include <stdlib.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>

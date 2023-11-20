@@ -22,6 +22,7 @@
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
 #include <libxml/xpath.h>
+#include <libxml/xmlsave.h>
 #include <libxml/xpathInternals.h>
 
 #ifndef XMLSEC_NO_XSLT
@@ -3030,7 +3031,7 @@ xmlSecAppInit(void) {
     /* Init libxml */
     xmlInitParser();
     LIBXML_TEST_VERSION
-    xmlTreeIndentString = "\t";
+    xmlThrDefTreeIndentString("\t");
 #ifndef XMLSEC_NO_XSLT
     xmlIndentTreeOutput = 1;
 #endif /* XMLSEC_NO_XSLT */

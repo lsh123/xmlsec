@@ -18,6 +18,7 @@
 #include "globals.h"
 
 #include <string.h>
+#include <stdlib.h>
 
 #ifndef XMLSEC_NO_GOST
 #include "csp_oid.h"

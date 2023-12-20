@@ -11,6 +11,7 @@
 #define snprintf _snprintf
 #endif
 
+#include <stdlib.h>
 #include <string.h>
 
 #include <xmlsec/xmlsec.h>

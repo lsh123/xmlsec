@@ -136,7 +136,7 @@ extern "C" {
  */
 #define xmlSecXmlError(errorFunction, errorObject) \
     {                                                 \
-        const xmlErrorPtr error = xmlGetLastError();        \
+        const xmlError * error = xmlGetLastError();        \
         int code = (error != NULL) ? error->code : 0; \
         const char* message = (error != NULL) ? error->message : NULL; \
         xmlSecError(XMLSEC_ERRORS_HERE,               \
@@ -159,7 +159,7 @@ extern "C" {
  */
 #define xmlSecXmlError2(errorFunction, errorObject, msg, param) \
     {                                                 \
-        const xmlErrorPtr error = xmlGetLastError();        \
+        const xmlError * error = xmlGetLastError();        \
         int code = (error != NULL) ? error->code : 0; \
         const char* message = (error != NULL) ? error->message : NULL; \
         xmlSecError(XMLSEC_ERRORS_HERE,               \
@@ -227,7 +227,7 @@ extern "C" {
  */
 #define xmlSecXsltError(errorFunction, ctxt, errorObject) \
     {                                                 \
-        const xmlErrorPtr error = xmlGetLastError();        \
+        const xmlError * error = xmlGetLastError();        \
         int code = (error != NULL) ? error->code : 0; \
         const char* message = (error != NULL) ? error->message : NULL; \
         xmlSecError(XMLSEC_ERRORS_HERE,               \

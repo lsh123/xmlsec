@@ -164,6 +164,7 @@ xmlSecCryptoGetFunctions_nss(void) {
 
     /* gcm */
     gXmlSecNssFunctions->transformAes128GcmGetKlass     = xmlSecNssTransformAes128GcmGetKlass;
+    gXmlSecNssFunctions->transformAes192GcmGetKlass     = xmlSecNssTransformAes192GcmGetKlass;
     gXmlSecNssFunctions->transformAes256GcmGetKlass     = xmlSecNssTransformAes256GcmGetKlass;
 
     /* kw: uses AES ECB */

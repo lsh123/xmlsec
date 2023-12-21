@@ -54,7 +54,7 @@ execKeysTest $res_success       \
 
 execKeysTest $res_success       \
     "dsa"                       \
-    "dsa-sha1 sha1"             \
+    "dsa-sha256 sha256"         \
     "test-dsa"                  \
     "dsa-1024"                  \
     "$topfolder/keys/dsa2048key"    \

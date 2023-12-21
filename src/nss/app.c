@@ -223,7 +223,7 @@ xmlSecNssAppAscii2UCS2Conv(PRBool toUnicode,
                            unsigned int  *outBufLen,
                            PRBool         swapBytes ATTRIBUTE_UNUSED)
 {
-    SECItem it;
+    SECItem it = { siBuffer, NULL, 0 };
 
     if (toUnicode == PR_FALSE) {
         return (PR_FALSE);
@@ -289,7 +289,7 @@ xmlSecKeyPtr
 xmlSecNssAppKeyLoadEx(const char *filename, xmlSecKeyDataType type ATTRIBUTE_UNUSED, xmlSecKeyDataFormat format,
     const char *pwd, void* pwdCallback, void* pwdCallbackCtx
 ) {
-    SECItem secItem;
+    SECItem secItem = { siBuffer, NULL, 0 };
     xmlSecKeyPtr res;
     int ret;
 
@@ -332,7 +332,7 @@ xmlSecNssAppKeyLoadEx(const char *filename, xmlSecKeyDataType type ATTRIBUTE_UNU
 xmlSecKeyPtr
 xmlSecNssAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlSecKeyDataFormat format,
                     const char *pwd, void* pwdCallback, void* pwdCallbackCtx) {
-    SECItem secItem;
+    SECItem secItem = { siBuffer, NULL, 0 };
     xmlSecKeyPtr res;
     int ret;
 
@@ -421,7 +421,7 @@ xmlSecNssAppDerKeyLoadSECItem(SECItem* secItem) {
     SECKEYPublicKey *pubkey = NULL;
     SECKEYPrivateKey *privkey = NULL;
     CERTSubjectPublicKeyInfo *spki = NULL;
-    SECItem nickname;
+    SECItem nickname = { siBuffer, NULL, 0 };
     PK11SlotInfo *slot = NULL;
     SECStatus status;
 
@@ -590,7 +590,7 @@ done:
  */
 int
 xmlSecNssAppKeyCertLoad(xmlSecKeyPtr key, const char* filename, xmlSecKeyDataFormat format) {
-    SECItem secItem;
+    SECItem secItem = { siBuffer, NULL, 0 };
     int ret;
 
     xmlSecAssert2(key != NULL, -1);
@@ -629,7 +629,7 @@ xmlSecNssAppKeyCertLoad(xmlSecKeyPtr key, const char* filename, xmlSecKeyDataFor
  */
 int
 xmlSecNssAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSecSize dataSize, xmlSecKeyDataFormat format) {
-    SECItem secItem;
+    SECItem secItem = { siBuffer, NULL, 0 };
     int ret;
 
     xmlSecAssert2(key != NULL, -1);
@@ -766,7 +766,7 @@ xmlSecKeyPtr
 xmlSecNssAppPkcs12Load(const char *filename, const char *pwd,
                        void *pwdCallback ATTRIBUTE_UNUSED,
                        void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
-    SECItem secItem;
+    SECItem secItem = { siBuffer, NULL, 0 };
     xmlSecKeyPtr res;
     int ret;
 
@@ -809,7 +809,7 @@ xmlSecKeyPtr
 xmlSecNssAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, const char *pwd,
                        void *pwdCallback ATTRIBUTE_UNUSED,
                        void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
-    SECItem secItem;
+    SECItem secItem = { siBuffer, NULL, 0 };
     xmlSecKeyPtr res;
     int ret;
 
@@ -856,8 +856,8 @@ xmlSecNssAppPkcs12LoadSECItem(SECItem* secItem, const char *pwd,
     xmlSecKeyDataPtr x509Data = NULL;
     int ret;
     PK11SlotInfo *slot = NULL;
-    SECItem pwditem;
-    SECItem uc2_pwditem;
+    SECItem pwditem = { siBuffer, NULL, 0 };
+    SECItem uc2_pwditem = { siBuffer, NULL, 0 };
     SECStatus rv;
     SECKEYPrivateKey *privkey = NULL;
     SECKEYPublicKey *pubkey = NULL;
@@ -1196,7 +1196,7 @@ int
 xmlSecNssAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
                              xmlSecKeyDataFormat format,
                              xmlSecKeyDataType type) {
-    SECItem secItem;
+    SECItem secItem = { siBuffer, NULL, 0 };
     int ret;
 
     xmlSecAssert2(mngr != NULL, -1);
@@ -1239,7 +1239,7 @@ int
 xmlSecNssAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* data,
                              xmlSecSize dataSize, xmlSecKeyDataFormat format,
                              xmlSecKeyDataType type) {
-    SECItem secItem;
+    SECItem secItem = { siBuffer, NULL, 0 };
     int ret;
 
     xmlSecAssert2(mngr != NULL, -1);
@@ -1344,7 +1344,7 @@ int
 xmlSecNssAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, xmlSecKeyDataFormat format) {
     xmlSecKeyDataStorePtr x509Store;
     CERTSignedCrl* crl;
-    SECItem secItem;
+    SECItem secItem = { siBuffer, NULL, 0 };
     int ret;
 
     xmlSecAssert2(mngr != NULL, -1);
@@ -1412,7 +1412,7 @@ int
 xmlSecNssAppKeysMngrCrlLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* data, xmlSecSize dataSize, xmlSecKeyDataFormat format) {
     xmlSecKeyDataStorePtr x509Store;
     CERTSignedCrl* crl;
-    SECItem secItem;
+    SECItem secItem = { siBuffer, NULL, 0 };
     int ret;
 
     xmlSecAssert2(mngr != NULL, -1);

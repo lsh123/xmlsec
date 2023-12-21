@@ -205,7 +205,7 @@ xmlSecNssGcmCipherGetKey(xmlSecNssGcmCipherCtxPtr ctx, CK_ATTRIBUTE_TYPE operati
     xmlSecBufferPtr keyBuf;
     xmlSecSize keySize;
     xmlSecByte* keyData;
-    SECItem key_item;
+    SECItem key_item = { siBuffer, NULL, 0 };
     PK11SlotInfo *slot = NULL;
     PK11SymKey *symKey = NULL;
 
@@ -251,7 +251,7 @@ xmlSecNssGcmCipherEncrypt(xmlSecNssGcmCipherCtxPtr ctx, xmlSecBufferPtr in, xmlS
     xmlSecSize inSize, outSize;
     xmlSecByte *plaintext, *iv, *outData;
     CK_NSS_GCM_PARAMS gcm_params;
-    SECItem param;
+    SECItem param = { siBuffer, NULL, 0 };
     PK11SymKey* symKey = NULL;
     unsigned int outputlen = 0, maxoutputlen, inputlen;
     SECStatus rv;
@@ -339,7 +339,7 @@ xmlSecNssGcmCipherDecrypt(xmlSecNssGcmCipherCtxPtr ctx, xmlSecBufferPtr in, xmlS
     xmlSecSize inSize, outSize;
     xmlSecByte *iv, *ciphertext, *outData;
     CK_NSS_GCM_PARAMS gcm_params;
-    SECItem param;
+    SECItem param = { siBuffer, NULL, 0 };
     PK11SymKey* symKey = NULL;
     unsigned int outputlen = 0, maxoutputlen, inputlen;
     SECStatus rv;

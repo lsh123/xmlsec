@@ -430,7 +430,7 @@ xmlSecNSSKWAesEnsureKey(xmlSecNssKWAesCtxPtr ctx, int enc) {
     xmlSecSize keySize;
     CK_MECHANISM_TYPE cipherMech;
     PK11SlotInfo* slot = NULL;
-    SECItem  keyItem;
+    SECItem  keyItem = { siBuffer, NULL, 0 };
     int res = -1;
 
     xmlSecAssert2(ctx != NULL, -1);

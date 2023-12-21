@@ -656,7 +656,7 @@ xmlSecNssSignatureVerify(xmlSecTransformPtr transform,
                         xmlSecTransformCtxPtr transformCtx) {
     xmlSecNssSignatureCtxPtr ctx;
     SECStatus status;
-    SECItem   signature;
+    SECItem   signature = { siBuffer, NULL, 0 };
 
     xmlSecAssert2(xmlSecNssSignatureCheckId(transform), -1);
     xmlSecAssert2(transform->operation == xmlSecTransformOperationVerify, -1);
@@ -673,7 +673,7 @@ xmlSecNssSignatureVerify(xmlSecTransformPtr transform,
 
     if(xmlSecNssSignatureAlgorithmEncoded(ctx->alg)) {
         /* This creates a signature which is ASN1 encoded */
-        SECItem   signatureDer;
+        SECItem   signatureDer = { siBuffer, NULL, 0 };
         SECStatus statusDer;
 
         memset(&signatureDer, 0, sizeof(signatureDer));
@@ -758,7 +758,7 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
     xmlSecBufferPtr in, out;
     xmlSecSize inSize, outSize;
     SECStatus status;
-    SECItem signature;
+    SECItem signature = { siBuffer, NULL, 0 };
     int ret;
 
     xmlSecAssert2(xmlSecNssSignatureCheckId(transform), -1);

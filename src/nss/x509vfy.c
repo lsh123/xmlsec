@@ -1341,7 +1341,7 @@ xmlSecNssX509FindCertCtxMatch(xmlSecNssX509FindCertCtxPtr ctx, CERTCertificate* 
 
     /* ski */
     if( (ctx->skiItem.data != NULL) && (ctx->skiItem.len > 0)) {
-        SECItem tmpitem;
+        SECItem tmpitem = { siBuffer, NULL, 0 };
 
         memset(&tmpitem, 0, sizeof(tmpitem));
         status = CERT_FindSubjectKeyIDExtension(cert, &tmpitem);

@@ -890,7 +890,7 @@ xmlSecNssKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x509V
             }
         }
         if (XMLSEC_X509DATA_HAS_EMPTY_NODE(content, XMLSEC_X509DATA_SKI_NODE)) {
-            SECItem ski;
+            SECItem ski = { siBuffer, NULL, 0 };
             SECStatus rv;
 
             rv = CERT_FindSubjectKeyIDExtension(cert, &ski);
@@ -1168,7 +1168,7 @@ xmlSecNssX509SECItemWrite(SECItem* secItem, xmlSecBufferPtr buf) {
 CERTCertificate*
 xmlSecNssX509CertDerRead(CERTCertDBHandle *handle, xmlSecByte* buf, xmlSecSize size) {
     CERTCertificate *cert;
-    SECItem  derCert;
+    SECItem  derCert = { siBuffer, NULL, 0 };
 
     xmlSecAssert2(handle != NULL, NULL);
     xmlSecAssert2(buf != NULL, NULL);
@@ -1190,7 +1190,7 @@ xmlSecNssX509CertDerRead(CERTCertDBHandle *handle, xmlSecByte* buf, xmlSecSize s
 CERTSignedCrl*
 xmlSecNssX509CrlDerRead(xmlSecByte* buf, xmlSecSize size, unsigned int flags) {
     CERTSignedCrl *crl = NULL;
-    SECItem derCrl;
+    SECItem derCrl = { siBuffer, NULL, 0 };
     PK11SlotInfo *slot = NULL;
     PRInt32 importOptions = CRL_IMPORT_DEFAULT_OPTIONS;
 

@@ -418,7 +418,8 @@ xmlSecNssKWDes3Encrypt(const xmlSecByte *key, xmlSecSize keySize,
     PK11SymKey* symKey = NULL;
     SECItem* param = NULL;
     PK11Context* pk11ctx = NULL;
-    SECItem keyItem, ivItem;
+    SECItem keyItem = { siBuffer, NULL, 0 };
+    SECItem ivItem = { siBuffer, NULL, 0 };
     SECStatus status;
     int inLen, outLen, maxOutLen;
     int res = -1;

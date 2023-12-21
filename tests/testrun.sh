@@ -258,13 +258,14 @@ extra_message=""
 execKeysTest() {
     expected_res="$1"
     req_key_data="$2"
-    key_name="$3"
-    alg_name="$4"
-    privkey_file="$5"
-    pubkey_file="$6"
-    certkey_file="$7"
-    asym_key_test="$8"
-    key_test_options="$9"
+    req_transforms="$3"
+    key_name="$4"
+    alg_name="$5"
+    privkey_file="$6"
+    pubkey_file="$7"
+    certkey_file="$8"
+    asym_key_test="$9"
+    key_test_options="${10}"
     failures=0
 
     if [ -n "$XMLSEC_TEST_NAME" -a "$XMLSEC_TEST_NAME" != "$key_name" ]; then
@@ -297,6 +298,20 @@ execKeysTest() {
         if [ $res -ne 0 ]; then
 	        cat $curlogfile >> $logfile
 	        cd $old_pwd
+            return
+        fi
+    fi
+
+    # check transforms
+    if [ -n "$req_transforms" ] ; then
+        printf "    Checking required transforms                          "
+        echo "$extra_vars $xmlsec_app check-transforms $xmlsec_params $req_transforms" >> $curlogfile
+        $xmlsec_app check-transforms $xmlsec_params $req_transforms >> $curlogfile 2>> $curlogfile
+        printCheckStatus $?
+        res=$?
+        if [ $res -ne 0 ]; then
+            cat $curlogfile >> $logfile
+	    cd $old_pwd
             return
         fi
     fi

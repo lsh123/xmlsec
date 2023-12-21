@@ -37,23 +37,26 @@ rm -rf $keysfile
 echo "--------- Positive Testing ----------"
 execKeysTest $res_success   \
     "hmac"                  \
+    "hmac-sha1"             \
     "test-hmac-sha1"        \
     "hmac-192"
 
 execKeysTest $res_success       \
     "rsa"                       \
+    "rsa-sha256 sha256"         \
     "test-rsa"                  \
-    "rsa-1024"                  \
-    "$topfolder/keys/largersakey$priv_key_suffix"    \
+    "rsa-2048"                  \
+    "$topfolder/keys/largersakey$priv_key_suffix"  \
     "$topfolder/keys/largersapubkey" \
     "$topfolder/keys/largersacert"   \
-    "$topfolder/aleksey-xmldsig-01/enveloped-sha1-rsa-sha1" \
+    "$topfolder/aleksey-xmldsig-01/enveloped-sha256-rsa-sha256" \
     "--pwd secret123 --enabled-key-data key-name"
 
 execKeysTest $res_success       \
     "dsa"                       \
+    "dsa-sha1 sha1"             \
     "test-dsa"                  \
-    "dsa-1024"                  \
+    "dsa-2048"                  \
     "$topfolder/keys/dsakey"    \
     "$topfolder/keys/dsapubkey" \
     "$topfolder/keys/dsacert"   \
@@ -62,37 +65,43 @@ execKeysTest $res_success       \
 
 execKeysTest $res_success   \
     "ec"                    \
+    "ecdsa-sha256 sha256"   \
     ""                      \
     "ec"                    \
     "$topfolder/keys/ecdsa-secp256r1-key" \
     "$topfolder/keys/ecdsa-secp256r1-pubkey" \
     "$topfolder/keys/ecdsa-secp256r1-cert" \
-    "$topfolder/aleksey-xmldsig-01/enveloped-sha1-ecdsa-sha1" \
+    "$topfolder/aleksey-xmldsig-01/enveloped-sha256-ecdsa-sha256" \
     "--pwd secret123 --enabled-key-data key-name"
 
 # generating large dh keys takes forever
 execKeysTest $res_success   \
     "dh"                    \
     ""                      \
+    ""                      \
     "dh"
 
 execKeysTest $res_success   \
     "des"                   \
+    ""                      \
     "test-des"              \
     "des-192"
 
 execKeysTest $res_success   \
     "aes"                   \
+    ""                      \
     "test-aes128"           \
     "aes-128"
 
 execKeysTest $res_success   \
     "aes"                   \
+    ""                      \
     "test-aes192"           \
     "aes-192"
 
 execKeysTest $res_success   \
     "aes"                   \
+    ""                      \
     "test-aes256"           \
     "aes-256"
 

@@ -981,6 +981,15 @@ execDSigTest $res_success \
 
 execDSigTest $res_success \
     "" \
+    "aleksey-xmldsig-01/enveloped-sha256-rsa-sha256" \
+    "sha256 rsa-sha256" \
+    "" \
+    "$priv_key_option:largersakey $topfolder/keys/largersakey.$priv_key_format --pwd secret123" \
+    "$priv_key_option:largersakey $topfolder/keys/largersakey.$priv_key_format --pwd secret123" \
+    "$priv_key_option:largersakey $topfolder/keys/largersakey.$priv_key_format --pwd secret123"
+
+execDSigTest $res_success \
+    "" \
     "aleksey-xmldsig-01/enveloped-sha224-ecdsa-sha224" \
     "sha224 ecdsa-sha224" \
     "ec" \
@@ -995,8 +1004,8 @@ execDSigTest $res_success \
     "sha256 ecdsa-sha256" \
     "ec" \
     "$pub_key_option:EcdsaSecp256r1 $topfolder/keys/ecdsa-secp256r1-pubkey.$pub_key_format" \
-    "$priv_key_option:mykey $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
-    "$pub_key_option:mykey $topfolder/keys/ecdsa-secp256r1-pubkey.$pub_key_format"
+    "$priv_key_option:TestEcdsaSecp256r1Key $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
+    "$pub_key_option:TestEcdsaSecp256r1Key $topfolder/keys/ecdsa-secp256r1-pubkey.$pub_key_format"
 
 
 execDSigTest $res_success \
@@ -1278,37 +1287,37 @@ if [ "z$crypto" = "zopenssl" -o  "z$crypto" = "zgnutls" -o "z$crypto" = "znss" -
     extra_message="Successfully use key without verification"
     execDSigTest $res_success \
         "" \
-        "aleksey-xmldsig-01/enveloped-sha1-rsa-sha1" \
-        "sha1 rsa-sha1" \
+        "aleksey-xmldsig-01/enveloped-sha256-rsa-sha256" \
+        "sha256 rsa-sha256" \
         "x509" \
-        "--pubkey-cert-$cert_format:mykey $topfolder/keys/largersacert.$cert_format --enabled-key-data key-name"
+        "--pubkey-cert-$cert_format:largersakey $topfolder/keys/largersacert.$cert_format --enabled-key-data key-name"
 
     # this should fail because key cannot be verified without certificates
     extra_message="Negative test: key cannot be verified"
     execDSigTest $res_fail \
         "" \
-        "aleksey-xmldsig-01/enveloped-sha1-rsa-sha1" \
-        "sha1 rsa-sha1" \
+        "aleksey-xmldsig-01/enveloped-sha256-rsa-sha256" \
+        "sha256 rsa-sha256" \
         "x509" \
-        "--verify-keys --pubkey-cert-$cert_format:mykey $topfolder/keys/largersacert.$cert_format --enabled-key-data key-name"
+        "--verify-keys --pubkey-cert-$cert_format:largersakey $topfolder/keys/largersacert.$cert_format --enabled-key-data key-name"
 
     # this should fail because key cannot be verified at specified time
     extra_message="Negative test: key cannot be verified (cert is not yet valid)"
     execDSigTest $res_fail \
         "" \
-        "aleksey-xmldsig-01/enveloped-sha1-rsa-sha1" \
-        "sha1 rsa-sha1" \
+        "aleksey-xmldsig-01/enveloped-sha256-rsa-sha256" \
+        "sha256 rsa-sha256" \
         "x509" \
-        "--verify-keys --verification-gmt-time 1980-01-01+00:00:00  --pubkey-cert-$cert_format:mykey  $topfolder/keys/largersacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data key-name"
+        "--verify-keys --verification-gmt-time 1980-01-01+00:00:00  --pubkey-cert-$cert_format:largersakey  $topfolder/keys/largersacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data key-name"
 
     # this should succeeed because key can be verified
     extra_message="Successfully verify key"
     execDSigTest $res_success \
         "" \
-        "aleksey-xmldsig-01/enveloped-sha1-rsa-sha1" \
-        "sha1 rsa-sha1" \
+        "aleksey-xmldsig-01/enveloped-sha256-rsa-sha256" \
+        "sha256 rsa-sha256" \
         "x509" \
-        "--verify-keys --pubkey-cert-$cert_format:mykey  $topfolder/keys/largersacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data key-name"
+        "--verify-keys --pubkey-cert-$cert_format:largersakey  $topfolder/keys/largersacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data key-name"
 
 
 fi

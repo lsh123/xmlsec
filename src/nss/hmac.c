@@ -265,8 +265,8 @@ xmlSecNssHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecKeyDataPtr value;
     xmlSecBufferPtr buffer;
     xmlSecSize bufferSize;
-    SECItem keyItem;
-    SECItem ignore;
+    SECItem keyItem = { siBuffer, NULL, 0 };
+    SECItem ignore = { siBuffer, NULL, 0 };
     PK11SlotInfo* slot;
     PK11SymKey* symKey;
 

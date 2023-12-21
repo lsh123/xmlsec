@@ -77,8 +77,8 @@ xmlSecNssCbcCipherCtxInit(xmlSecNssCbcCipherCtxPtr ctx,
     int encrypt, const xmlChar* cipherName,
     xmlSecTransformCtxPtr transformCtx)
 {
-    SECItem keyItem;
-    SECItem ivItem;
+    SECItem keyItem = { siBuffer, NULL, 0 };
+    SECItem ivItem = { siBuffer, NULL, 0 };
     PK11SlotInfo* slot;
     PK11SymKey* symKey;
     int ivLen;

@@ -1790,7 +1790,7 @@ xmlSecNssKeyDataEcRead(xmlSecKeyDataId id, xmlSecKeyValueEcPtr ecValue) {
     CK_OBJECT_HANDLE handle;
     SECKEYPublicKey *pubkey=NULL;
     PRArenaPool *arena = NULL;
-    SECItem ecparams;
+    SECItem ecparams = { siBuffer, NULL, 0 };
     SECOidData *oidData = NULL;
     SECOidTag oidTag;
     SECStatus rv;

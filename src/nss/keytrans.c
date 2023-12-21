@@ -405,7 +405,7 @@ static int
 xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr in, xmlSecBufferPtr out,
                               int encrypt, xmlSecTransformCtxPtr transformCtx) {
     PK11SymKey* symKey = NULL;
-    SECItem oriskv;
+    SECItem oriskv = { siBuffer, NULL, 0 };
     xmlSecSize blockSize, materialSize, resultSize;
     unsigned int resultLen;
     xmlSecBufferPtr result;
@@ -471,7 +471,7 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr i
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(materialSize, oriskv.len, goto done, NULL);
 
     if(encrypt != 0) {
-        SECItem wrpskv;
+        SECItem wrpskv = { siBuffer, NULL, 0 };
 
         /* Create template symmetric key from material if needed */
         symKey = xmlSecNssKeyTransportLoadSymKeyUsingPublicKeySlot(ctx, &oriskv);

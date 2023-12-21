@@ -937,7 +937,7 @@ NSPR_LIB_MARKER="libnspr4$shrext"
 NSPR_LIBS_LIST="-lnspr4 -lplds4 -lplc4"
 NSS_INCLUDE_MARKER="nss/nss.h"
 NSS_LIB_MARKER="libnss3$shrext"
-NSS_LIBS_LIST="-lnss3 -lsmime3"
+NSS_LIBS_LIST="-lnss3 -lsmime3 -lnssutil3"
 
 XMLSEC_NO_NSS="1"
 NSPR_INCLUDE_PATH=

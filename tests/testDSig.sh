@@ -944,11 +944,20 @@ execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloped-sha1-dsa-sha1" \
     "sha1 dsa-sha1" \
-    "" \
+    "dsa" \
     "$priv_key_option:DsaKey $topfolder/keys/dsakey.$priv_key_format --pwd secret123" \
     "$priv_key_option:dsakey $topfolder/keys/dsakey.$priv_key_format --pwd secret123" \
     "$priv_key_option:dsakey $topfolder/keys/dsakey.$priv_key_format --pwd secret123"
 
+
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloped-sha256-dsa2048-sha256" \
+    "sha256 dsa-sha256" \
+    "dsa" \
+    "$priv_key_option:TestDsa2048Key $topfolder/keys/dsa2048key.$priv_key_format --pwd secret123" \
+    "$priv_key_option:TestDsa2048Key $topfolder/keys/dsa2048key.$priv_key_format --pwd secret123" \
+    "$priv_key_option:TestDsa2048Key $topfolder/keys/dsa2048key.$priv_key_format --pwd secret123"
 
 execDSigTest $res_success \
     "" \

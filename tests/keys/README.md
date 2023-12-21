@@ -49,6 +49,9 @@ openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem \
         -out dsa2048cert.pem -infiles dsa2048req.pem
 openssl verify -CAfile cacert.pem -untrusted ca2cert.pem dsa2048cert.pem
 rm dsa2048req.pem
+
+openssl pkey -inform DER -in dsa2048key.der --outform DER --pubout --out dsa2048pubkey.der
+openssl pkey -inform DER -in dsa2048key.der --outform PEM --pubout --out dsa2048pubkey.pem
 ```
 
 DSA 3072 bits:

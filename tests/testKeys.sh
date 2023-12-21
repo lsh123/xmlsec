@@ -56,11 +56,11 @@ execKeysTest $res_success       \
     "dsa"                       \
     "dsa-sha1 sha1"             \
     "test-dsa"                  \
-    "dsa-2048"                  \
-    "$topfolder/keys/dsakey"    \
-    "$topfolder/keys/dsapubkey" \
-    "$topfolder/keys/dsacert"   \
-    "$topfolder/aleksey-xmldsig-01/enveloped-sha1-dsa-sha1" \
+    "dsa-1024"                  \
+    "$topfolder/keys/dsa2048key"    \
+    "$topfolder/keys/dsa2048pubkey" \
+    "$topfolder/keys/dsa2048cert"   \
+    "$topfolder/aleksey-xmldsig-01/enveloped-sha256-dsa2048-sha256" \
     "--pwd secret123 --enabled-key-data key-name"
 
 execKeysTest $res_success   \

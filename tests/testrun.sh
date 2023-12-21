@@ -191,7 +191,14 @@ else
     diff_param=-u
 fi
 
+#
+# NSS specific:
+# - Cert name we need to delete for tests to work
+# - Ignore NSS system policies in tests since we have legacy algorithms and small key sizes
+#
 NSS_TEST_CERT_NICKNAME="NSS Certificate DB:Aleksey Sanin - XML Security Library (http://www.aleksey.com/xmlsec)"
+export NSS_IGNORE_SYSTEM_POLICY=1
+
 
 cleanupNssCerts() {
     echo "certutil  -D -n \"$NSS_TEST_CERT_NICKNAME\" -d \"$crypto_config_folder\""  >> $logfile

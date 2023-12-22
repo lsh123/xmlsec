@@ -64,7 +64,6 @@
   <h4><a name="section_1_2"></a>1.2. Can I use xmlsec with proprietary application or library? Can I use xmlsec with
     a GNU GPL application or library?</h4>
   <p>Probably, you will need to ask a lawyer. But IANAL answer can be found in the following table:</p>
-  <p>
   <table style="text-align: left; width: 85%; margin-left: auto; margin-right: auto;" border="1" cellpadding="2" cellspacing="2">
     <tbody>
     <tr>
@@ -128,7 +127,6 @@
     </tr>
     </tbody>
   </table>
-  </p>
   <p>
     If you have questions about XML Security Library licensing then feel free to send these questions
     to the <a href="mailing-list.html">mailing list</a>.
@@ -141,7 +139,7 @@
   <p>See XML Security Library <a href="http://www.aleksey.com/xmlsec/">download page</a>.</p>
 
   <h4><a name="section_2_2"></a>2.2. How to compile xmlsec?</h4>
-  <p>On Unix just follow the "standard":
+  <p>On Unix just follow the "standard":</p>
   <blockquote><code>
     gunzip -c xmlsec-&lt;version&gt;.tar.gz | tar xvf - <br>
     cd xmlsec-&lt;version&gt; <br>
@@ -153,7 +151,6 @@
     make check <br>
     make install
   </code></blockquote>
-  </p>
   <p>
     On Windows the process is more complicated. Please check readme file in
     the <code>xmlsec-&lt;version&gt;/win32</code> folder.
@@ -172,15 +169,14 @@
   <h4><a name="section_2_5"></a>2.5. I got the xmlsec source code from GitHub and there is
     no <code>configure</code> script. Where can I get it?</h4>
   <p>The <code>configure</code> (and several other files) are generated. Use the
-    <code>autogen.sh</code> script to regenerate these files:
-    <blockquote><code>
-        mkdir build <br>
-        cd build <br>
-        ../autogen.sh [configure options] <br>
-        make <br>
-        ...
-    </code></blockquote>
-  </p>
+    <code>autogen.sh</code> script to regenerate these files:</p>
+  <blockquote><code>
+      mkdir build <br>
+      cd build <br>
+      ../autogen.sh [configure options] <br>
+      make <br>
+      ...
+  </code></blockquote>
 
   <h4><a name="section_2_6"></a>2.6. I do not need all these features supported by xmlsec. Can I disable
     some of them?</h4>
@@ -188,7 +184,7 @@
 
   <h4><a name="section_2_7"></a>2.7. I am compiling XMLSec library on Windows and it does not compile or crashes
     right after the launch. Can you help me?</h4>
-  <p>There are several possible reasons why you might have problems on Windows:
+  <p>There are several possible reasons why you might have problems on Windows:</p>
     <ul>
       <li>
         <b>Incorrect MS C runtime libraries.</b>
@@ -210,7 +206,6 @@
         no effect on Unix.
       </li>
     </ul>
-  </p>
 </div>
 
 <div>
@@ -226,7 +221,7 @@
     it does not work. Do you support "Id" attributes at all?</h4>
   <p>Yes, the <code>Id</code> attributes are supported by both XMLSec and LibXML2 libraries. However, you have to
   tell LibXML2/XMLSec what is the name of the ID attribute. XML specification does not require ID attribute to
-  have name "ID", "Id" or "id". It can be anything you want! There are several ways to declare an ID attribute:
+  have name "ID", "Id" or "id". It can be anything you want! There are several ways to declare an ID attribute:</p>
   <ul>
     <li><b>Use DTD.</b> For example, the following DTD declares <code>Id</code> attribute in <code>Data</code> node to be
       an XML ID attribute:
@@ -248,7 +243,6 @@
       the <code>xmlAddID</code> LibXML2 function.
     </li>
   </ul>
-  </p>
 
   <h4><a name="section_3_3"></a>3.3.<span style="font-weight: bold;"> </span>I am trying to sign an XML document and
     I have a warning about "empty nodes set". Should I worry about this?</h4>
@@ -266,7 +260,7 @@
     Visa 3D "id" attribute may start from number or contain "+" or "/" and this breakes the
     <a href="http://www.w3.org/TR/REC-xml#sec-attribute-types">XML specification</a> again. The right solution
     for this problem is to change Visa 3D protocol. As a practical soluton, try (on your own risk) the "Visa 3D hack"
-    in xmlsec:
+    in xmlsec:</p>
     <ul>
       <li>
         First, register ID attributes manually (using either <code>xmlAddID</code> function or
@@ -277,8 +271,7 @@
         or <code>--enable-visa3d-hack</code> option for <a href="xmlsec-man.html">xmlsec command line utility</a>).
       </li>
     </ul>
-    <b>This is a hack. You are warned!</b>
-  </p>
+  <p><b>This is a hack. You are warned!</b></p>
   <p><b>UPDATE:</b> It appears that newer version (Novemeber, 2005) of the Visa3D DTD has this problem fixed and
     now "id" attribute is declared as ID correctly.
   </p>
@@ -314,7 +307,7 @@
 
   <h4><a name="section_3_6"></a>3.6. The XMLSec library or XMLSec command line tool fails because the certificate cannot be
     verified. What's wrong?</h4>
-  <p>There might be several reasons why XMLSec library cannot verify a certificate:
+  <p>There might be several reasons why XMLSec library cannot verify a certificate:</p>
     <ul>
       <li>
         First, check that both trusted (root) and untrusted certificates from the certificate chain are provided to
@@ -346,9 +339,7 @@
         there is no mechanism to verify the key origin (and for example, this enables to create "fake" signatures).
         <b>THIS IS NOT SECURE AND NOT RECOMMENDED.</b>
       </li>
-
     </ul>
-  </p>
 
   <h4><a name="section_3_7"></a>3.7. I really like the XMLSec library but it is based on OpenSSL and I have to use another crypto library in my application. Can you write code to support my crypto library?</h4>
   <p>The XMLSec library has a very modular structure and there should be no problem with using another crypto library.

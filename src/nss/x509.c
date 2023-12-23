@@ -581,7 +581,7 @@ xmlSecNssKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
                     return(-1);
                 }
             }
-            cert = NULL; /* owned by dst now */
+            /* cert is owned by dst now */
         }
     }
 
@@ -1463,7 +1463,7 @@ xmlSecNssX509CrlListDuplicate(xmlSecNssX509CrlNodePtr head) {
             xmlSecNssX509CrlListDestroy(newHead);
             return(NULL);
         }
-        crl = NULL; /* owned by newHead now */
+        /* crl is owned by newHead now */
     }
 
     /* done */

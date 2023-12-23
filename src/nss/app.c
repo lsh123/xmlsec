@@ -862,9 +862,9 @@ xmlSecNssAppPkcs12LoadSECItem(SECItem* secItem, const char *pwd,
     SECKEYPrivateKey *privkey = NULL;
     SECKEYPublicKey *pubkey = NULL;
     CERTCertList *certlist = NULL;
-    CERTCertListNode    *head = NULL;
-    CERTCertificate     *cert = NULL;
-    CERTCertificate     *tmpcert = NULL;
+    CERTCertListNode *head = NULL;
+    CERTCertificate *cert = NULL;
+    CERTCertificate *tmpcert = NULL;
     SEC_PKCS12DecoderContext *p12ctx = NULL;
     const SEC_PKCS12DecoderItem *dip;
     size_t pwdSize;
@@ -982,7 +982,6 @@ xmlSecNssAppPkcs12LoadSECItem(SECItem* secItem, const char *pwd,
             ret = xmlSecNssKeyDataX509AdoptKeyCert(x509Data, tmpcert);
             if(ret < 0) {
                 xmlSecInternalError("xmlSecNssKeyDataX509AdoptKeyCert", NULL);
-                CERT_DestroyCertificate(tmpcert);
                 goto done;
             }
             tmpcert = NULL; /* owned by x509Data now */
@@ -995,7 +994,6 @@ xmlSecNssAppPkcs12LoadSECItem(SECItem* secItem, const char *pwd,
             ret = xmlSecNssKeyDataX509AdoptCert(x509Data, tmpcert);
             if(ret < 0) {
                 xmlSecInternalError("xmlSecNssKeyDataX509AdoptCert", NULL);
-                CERT_DestroyCertificate(tmpcert);
                 goto done;
             }
             tmpcert = NULL; /* owned by x509Data now */
@@ -1053,6 +1051,9 @@ xmlSecNssAppPkcs12LoadSECItem(SECItem* secItem, const char *pwd,
     key = NULL;
 
 done:
+    if(tmpcert != NULL) {
+        CERT_DestroyCertificate(tmpcert);
+    }
     if(key != NULL) {
         xmlSecKeyDestroy(key);
     }

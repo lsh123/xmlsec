@@ -892,7 +892,6 @@ xmlSecOpenSSLAppStoreKeyLoad(const char *uri, xmlSecKeyDataType type, const char
             ret = sk_X509_push(certs, cert);
             if(ret <= 0) {
                 xmlSecOpenSSLError("sk_X509_push", NULL);
-                X509_free(cert);
                 goto done;
             }
             cert = NULL; /* owned by certs now */
@@ -942,6 +941,9 @@ xmlSecOpenSSLAppStoreKeyLoad(const char *uri, xmlSecKeyDataType type, const char
     /* success! */
 
 done:
+    if(cert != NULL) {
+        X509_free(cert);
+    }
     if(pPrivKey != NULL) {
         EVP_PKEY_free(pPrivKey);
     }

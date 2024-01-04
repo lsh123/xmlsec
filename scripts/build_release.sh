@@ -62,11 +62,12 @@ fi
 
 if [ x"$rc" = x ]; then
      echo "============== Tagging the release $version in the github"
+     echo "RUN MANUALLY: git tag -a "${version}" -m 'XMLSec release $version'"
      echo "RUN MANUALLY: git tag -a "xmlsec_$git_version_tag" -m 'XMLSec release $version'"
      echo "RUN MANUALLY: git push --follow-tags"
 else
      echo "============== Tagging the release $version-$rc in the github"
-     echo "RUN MANUALLY: git tag -a "xmlsec_${version}-$rc" -m 'XMLSec release $version-$rc'"
+     echo "RUN MANUALLY: git tag -a "${version}-$rc" -m 'XMLSec release $version-$rc'"
      echo "RUN MANUALLY: git tag -a "xmlsec_${git_version_tag}_$rc" -m 'XMLSec release $version-$rc'"
      echo "RUN MANUALLY: git push --follow-tags"
 fi

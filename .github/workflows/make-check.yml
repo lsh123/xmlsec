@@ -231,7 +231,8 @@ jobs:
       working-directory: ${{ env.INSTALL_FOLDER }}
       run: |
           Invoke-WebRequest ${{ env.LIBS_URL }} -O ${{ env.LIBS_FILE }}
-          Expand-Archive -Path ${{ env.LIBS_FILE }}
+          Expand-Archive -Path ${{ env.LIBS_FILE }}  -DestinationPath "."
+          dir
     - name: configure-git
       shell: bash
       run: |

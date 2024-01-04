@@ -221,9 +221,10 @@ jobs:
       VISUAL_STUDIO_ROOT: "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise"
       INSTALL_FOLDER: c:\install.dir
       LIBS_VERSION: 1.3.3
+    steps:
+    - env:
       LIBS_URL: "https://github.com/lsh123/xmlsec/releases/download/${{ env.LIBS_VERSION }}/xmlsec1-${{ env.LIBS_VERSION }}-win64.zip"
       LIBS_FILE: "xmlsec1-${{ env.LIBS_VERSION }}-win64.zip"
-    steps:
     - name: create-dirs
       run: |
           mkdir ${{ env.INSTALL_FOLDER }}

@@ -208,27 +208,19 @@ jobs:
           - crypto: mscng
             config_flags: unicode=yes with-dl=yes
           - crypto: mscng
-            config_flags: unicode=no with-dl=no static=yes legacy-crypto=yes ftp=yes
+            config_flags: unicode=no with-dl=no static=yes legacy-crypto=yes
           - crypto: mscrypto
             config_flags: unicode=yes with-dl=yes
           - crypto: mscrypto
-            config_flags:  unicode=no with-dl=no static=yes legacy-crypto=yes ftp=yes
+            config_flags:  unicode=no with-dl=no static=yes legacy-crypto=yes
           - crypto: openssl-300
             config_flags: unicode=yes with-dl=yes
           - crypto: openssl-300
             config_flags: unicode=no with-dl=no static=yes
-          - crypto: openssl-111
-            config_flags: unicode=yes with-dl=yes
-          - crypto: openssl-111
-            config_flags: unicode=yes with-dl=yes static=yes
     env:
       VISUAL_STUDIO_ROOT: "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise"
       INSTALL_FOLDER: c:\install.dir
-      EXTRAS_URL: https://www.aleksey.com/xmlsec/download/extras
-      LIBXML2_FILE: libxml2-2.9.8-noiconv-win-x64.7z
-      LIBXSLT_FILE: libxslt-1.1.32-noiconv-win-x64.7z
-      OPENSSL300_FILE: openssl-3.0.3-win-x64.7z
-      OPENSSL111_FILE: openssl-1.1.1o-win-x64.7z
+      LIBS_VERSION: 1.3.3
     steps:
     - name: create-dirs
       run: |
@@ -236,18 +228,12 @@ jobs:
     - name: install dependencies
       shell: pwsh
       working-directory: ${{ env.INSTALL_FOLDER }}
+      env:
+        LIBS_URL: "https://github.com/lsh123/xmlsec/releases/download/${{ env.LIBS_VERSION }}/xmlsec1-${{ env.LIBS_VERSION }}-win64.zip"
+        LIBS_FILE: "xmlsec1-${{ env.LIBS_VERSION }}-win64.zip"
       run: |
-          Invoke-WebRequest ${{ env.EXTRAS_URL }}/${{ env.LIBXML2_FILE }} -O ${{ env.LIBXML2_FILE }}
-          7z x ${{ env.LIBXML2_FILE }}
-          Invoke-WebRequest ${{ env.EXTRAS_URL }}/${{ env.LIBXSLT_FILE }} -O ${{ env.LIBXSLT_FILE }}
-          7z x ${{ env.LIBXSLT_FILE }}
-          if("${{ matrix.crypto }}" -like "*openssl-300*") {
-              Invoke-WebRequest ${{ env.EXTRAS_URL }}/${{ env.OPENSSL300_FILE }} -O ${{ env.OPENSSL300_FILE }}
-              7z x ${{ env.OPENSSL300_FILE }}
-          } elseif("${{ matrix.crypto }}" -like "*openssl-111*") {
-              Invoke-WebRequest ${{ env.EXTRAS_URL }}/${{ env.OPENSSL111_FILE }} -O ${{ env.OPENSSL111_FILE }}
-              7z x ${{ env.OPENSSL111_FILE }}
-          }
+          Invoke-WebRequest ${{ env.LIBS_URL }} -O ${{ env.LIBS_FILE }}
+          Expand-Archive -Path ${{ env.LIBS_FILE }}  -DestinationPath "."
     - name: configure-git
       shell: bash
       run: |
@@ -262,21 +248,21 @@ jobs:
           cscript configure.js pedantic=yes werror=yes static=yes iconv=no ^
               crypto=${{ matrix.crypto }} ${{ matrix.config_flags }} ^
               prefix=${{ env.INSTALL_FOLDER }} ^
-              include=${{ env.INSTALL_FOLDER }}\include;${{ env.INSTALL_FOLDER }}\include\libxml2;%MSSDK_INCLUDE% ^
-              lib=${{ env.INSTALL_FOLDER }}\bin;${{ env.INSTALL_FOLDER }}\lib;%MSSDK_LIB%
+              include=${{ env.INSTALL_FOLDER }}\libxml2\include;${{ env.INSTALL_FOLDER }}\libxml2\include\libxml2;${{ env.INSTALL_FOLDER }}\libxslt\include;${{ env.INSTALL_FOLDER }}\openssl\include;%MSSDK_INCLUDE% ^
+              lib=${{ env.INSTALL_FOLDER }}\libxml2\lib;${{ env.INSTALL_FOLDER }}\libxslt\lib;${{ env.INSTALL_FOLDER }}\openssl\lib;%MSSDK_LIB%
     - name: make
       working-directory: win32
       shell: cmd
       run: |
           call "${{ env.VISUAL_STUDIO_ROOT }}\VC\Auxiliary\Build\vcvars64.bat"
-          set PATH=${{ env.INSTALL_FOLDER }}\bin;${{ env.INSTALL_FOLDER }}\lib;;%PATH%
+          set PATH=${{ env.INSTALL_FOLDER }}\libxml2\bin;${{ env.INSTALL_FOLDER }}\libxslt\bin;${{ env.INSTALL_FOLDER }}\openssl\bin;%PATH%
           nmake
     - name: make check
       working-directory: win32
       shell: cmd
       run: |
           call "${{ env.VISUAL_STUDIO_ROOT }}\VC\Auxiliary\Build\vcvars64.bat"
-          set PATH=${{ env.INSTALL_FOLDER }}\bin;${{ env.INSTALL_FOLDER }}\lib;%PATH%
+          set PATH=${{ env.INSTALL_FOLDER }}\libxml2\bin;${{ env.INSTALL_FOLDER }}\libxslt\bin;${{ env.INSTALL_FOLDER }}\openssl\bin;%PATH%
           set OPENSSL_MODULES=${{ env.INSTALL_FOLDER }}\lib\ossl-modules
           nmake check
     - name: make install

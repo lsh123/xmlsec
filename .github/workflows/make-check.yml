@@ -244,7 +244,7 @@ jobs:
           set PATH=${{ env.INSTALL_FOLDER }}\libxml2\bin;${{ env.INSTALL_FOLDER }}\libxslt\bin;${{ env.INSTALL_FOLDER }}\openssl\bin;%PATH%
           set OPENSSL_MODULES=${{ env.INSTALL_FOLDER }}\lib\ossl-modules
           nmake check
-      - name: make install
+    - name: make install
       working-directory: win32
       shell: cmd
       run: |

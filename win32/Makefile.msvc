@@ -72,7 +72,7 @@ XMLSEC_SO 		= $(XMLSEC_BASENAME).dll
 XMLSEC_SO_MANIFEST	= $(XMLSEC_BASENAME).dll.manifest
 XMLSEC_PDB 		= $(XMLSEC_BASENAME).pdb
 XMLSEC_IMP 		= $(XMLSEC_BASENAME).lib
-XMLSEC_A 		= $(XMLSEC_BASENAME)_a.lib!if "$(WITH_FTP)" == "1"
+XMLSEC_A 		= $(XMLSEC_BASENAME)_a.lib
 CFLAGS = $(CFLAGS)
 !else
 CFLAGS = $(CFLAGS) /D "XMLSEC_NO_FTP"
@@ -348,9 +348,7 @@ XMLSEC_MSCNG_OBJS_A = \
 	$(XMLSEC_MSCNG_INTDIR_A)\signatures.obj\
 	$(XMLSEC_MSCNG_INTDIR_A)\keysstore.obj \
 	$(XMLSEC_MSCNG_INTDIR_A)\x509.obj\
-	$(XMLSEC_MSCNG_INTDIR_A)\x509vfy.obj
-
-#
+	$(XMLSEC_MSCNG_INTDIR_A)\x509vfy.objWITH_FTP
 # The preprocessor and its options.
 #
 CPP      = cl.exe /EP
@@ -374,10 +372,7 @@ CFLAGS = $(CFLAGS) /I$(INCPREFIX)
 CFLAGS = $(CFLAGS) /W4
 !else
 CFLAGS = $(CFLAGS) /W1
-!endif
-
-# C4127: conditional expression is constant
-#     this generates a false warning inside asserts
+!endifWITH_FTPts
 # C4130: '!=': logical operation on address of string constant:
 #     this generates a false warning inside macros
 # C4152: nonstandard extension, function/data pointer conversion in expression

@@ -345,8 +345,6 @@ XMLSEC_MSCNG_OBJS_A = \
 	$(XMLSEC_MSCNG_INTDIR_A)\keysstore.obj \
 	$(XMLSEC_MSCNG_INTDIR_A)\x509.obj\
 	$(XMLSEC_MSCNG_INTDIR_A)\x509vfy.obj
-
-#
 # The preprocessor and its options.
 #
 CPP      = cl.exe /EP
@@ -356,7 +354,7 @@ CPPFLAGS = /nologo
 # The compiler and its options.
 #
 CFLAGS = $(CFLAGS) /nologo /D "WIN32" /D "_WINDOWS" /D inline=__inline
-CFLAGS = $(CFLAGS) /D "_MBCS" /D "_REENTRANT" 
+CFLAGS = $(CFLAGS) /D "_MBCS" /D "_REENTRANT"
 CFLAGS = $(CFLAGS) /D PACKAGE=\"$(XMLSEC_NAME)\"
 CFLAGS = $(CFLAGS) /D "HAVE_STDIO_H" /D "HAVE_STDLIB_H"
 CFLAGS = $(CFLAGS) /D "HAVE_STRING_H" /D "HAVE_CTYPE_H"
@@ -400,6 +398,12 @@ CFLAGS = $(CFLAGS) /D "NDEBUG" /O2 /Zi
 CFLAGS = $(CFLAGS) $(CRUNTIME)
 
 # configurable options
+!if "$(WITH_FTP)" == "1"
+CFLAGS = $(CFLAGS)
+!else
+CFLAGS = $(CFLAGS) /D "XMLSEC_NO_FTP"
+!endif
+
 !if "$(WITH_LIBXSLT)" == "1"
 !else
 CFLAGS = $(CFLAGS) /DXMLSEC_NO_XSLT=1

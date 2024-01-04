@@ -2,7 +2,7 @@ name: Make Check
 
 on:
   push:
-    branches: 
+    branches:
           - master
           - xmlsec-1_2_x
   pull_request:
@@ -92,13 +92,13 @@ jobs:
     steps:
     - name: Set up Homebrew
       id: set-up-homebrew
-      uses: Homebrew/actions/setup-homebrew@master      
+      uses: Homebrew/actions/setup-homebrew@master
     - name: install dependencies
       run: |
           brew update
           brew install automake autoconf libtool
           # brew install libxml2 libxslt libgcrypt
-          brew install openssl nspr nss        
+          brew install openssl nspr nss
     - uses: actions/checkout@v2
     - name: create-build-dirs
       run: |
@@ -136,12 +136,12 @@ jobs:
             config_flags: --enable-unicode=no --enable-size-t=no
     defaults:
       run:
-        shell: msys2 {0}  
+        shell: msys2 {0}
     steps:
     - uses: msys2/setup-msys2@v2
       with:
         msystem: ${{ matrix.msystem }}
-        release: false  
+        release: false
         update: false
         install: >-
           autoconf
@@ -186,44 +186,34 @@ jobs:
       matrix:
         include:
           - crypto: mscrypto
-            config_flags: unicode=yes with-dl=yes
+            config_flags: unicode=yes with-dl=yes ftp=no
           - crypto: mscng
-            config_flags: unicode=yes with-dl=yes
+            config_flags: unicode=yes with-dl=yes ftp=no
           - crypto: openssl-300
-            config_flags: unicode=yes with-dl=yes
-          - crypto: openssl-110
-            config_flags: unicode=yes with-dl=yes
+            config_flags: unicode=yes with-dl=yes ftp=no
           - crypto: mscrypto
-            config_flags: unicode=no with-dl=no
+            config_flags: unicode=no with-dl=no ftp=no
           - crypto: mscng
-            config_flags: unicode=no with-dl=no
+            config_flags: unicode=no with-dl=no ftp=no
+          - crypto: openssl-300
+            config_flags: unicode=no with-dl=no ftp=no
     env:
       VISUAL_STUDIO_ROOT: "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise"
-      EXTRAS_FOLDER: C:\extras
-      EXTRAS_URL: https://www.aleksey.com/xmlsec/download/extras
-      LIBXML2_FILE: libxml2-2.9.8-noiconv-win-x64.7z
-      LIBXSLT_FILE: libxslt-1.1.32-noiconv-win-x64.7z
-      OPENSSL300_FILE: openssl-3.0.3-win-x64.7z
-      OPENSSL110_FILE: openssl-1.1.1o-win-x64.7z
+      INSTALL_FOLDER: c:\install.dir
+      LIBS_VERSION: 1.3.3
     steps:
     - name: create-dirs
       run: |
-          mkdir ${{ env.EXTRAS_FOLDER }}
+          mkdir ${{ env.INSTALL_FOLDER }}
     - name: install dependencies
       shell: pwsh
-      working-directory: ${{ env.EXTRAS_FOLDER }}
+      working-directory: ${{ env.INSTALL_FOLDER }}
+      env:
+        LIBS_URL: "https://github.com/lsh123/xmlsec/releases/download/${{ env.LIBS_VERSION }}/xmlsec1-${{ env.LIBS_VERSION }}-win64.zip"
+        LIBS_FILE: "xmlsec1-${{ env.LIBS_VERSION }}-win64.zip"
       run: |
-          Invoke-WebRequest ${{ env.EXTRAS_URL }}/${{ env.LIBXML2_FILE }} -O ${{ env.LIBXML2_FILE }}
-          7z x ${{ env.LIBXML2_FILE }}
-          Invoke-WebRequest ${{ env.EXTRAS_URL }}/${{ env.LIBXSLT_FILE }} -O ${{ env.LIBXSLT_FILE }}
-          7z x ${{ env.LIBXSLT_FILE }}
-          if("${{ matrix.crypto }}" -like "*openssl-300*") {
-              Invoke-WebRequest ${{ env.EXTRAS_URL }}/${{ env.OPENSSL300_FILE }} -O ${{ env.OPENSSL300_FILE }}
-              7z x ${{ env.OPENSSL300_FILE }}
-          } elseif("${{ matrix.crypto }}" -like "*openssl-110*") {
-              Invoke-WebRequest ${{ env.EXTRAS_URL }}/${{ env.OPENSSL110_FILE }} -O ${{ env.OPENSSL110_FILE }}
-              7z x ${{ env.OPENSSL110_FILE }}
-          }
+          Invoke-WebRequest ${{ env.LIBS_URL }} -O ${{ env.LIBS_FILE }}
+          Expand-Archive -Path ${{ env.LIBS_FILE }}  -DestinationPath "."
     - name: configure-git
       shell: bash
       run: |
@@ -234,24 +224,31 @@ jobs:
       shell: cmd
       run: |
           call "${{ env.VISUAL_STUDIO_ROOT }}\VC\Auxiliary\Build\vcvars64.bat"
-          set PATH=${{ env.EXTRAS_FOLDER }}\bin;${{ env.EXTRAS_FOLDER }}\lib;;%PATH%
           cscript configure.js pedantic=yes werror=yes static=yes iconv=no ^
               crypto=${{ matrix.crypto }} ${{ matrix.config_flags }} ^
-              prefix=${{ env.EXTRAS_FOLDER }} ^
-              include=${{ env.EXTRAS_FOLDER }}\include;${{ env.EXTRAS_FOLDER }}\include\libxml2;%MSSDK_INCLUDE% ^
-              lib=${{ env.EXTRAS_FOLDER }}\bin;${{ env.EXTRAS_FOLDER }}\lib;%MSSDK_LIB%
+              prefix=${{ env.INSTALL_FOLDER }}\xmlsec.build ^
+              include=${{ env.INSTALL_FOLDER }}\libxml2\include;${{ env.INSTALL_FOLDER }}\libxml2\include\libxml2;${{ env.INSTALL_FOLDER }}\libxslt\include;${{ env.INSTALL_FOLDER }}\openssl\include;%MSSDK_INCLUDE% ^
+              lib=${{ env.INSTALL_FOLDER }}\libxml2\lib;${{ env.INSTALL_FOLDER }}\libxslt\lib;${{ env.INSTALL_FOLDER }}\openssl\lib;%MSSDK_LIB%
     - name: make
       working-directory: win32
       shell: cmd
       run: |
           call "${{ env.VISUAL_STUDIO_ROOT }}\VC\Auxiliary\Build\vcvars64.bat"
-          set PATH=${{ env.EXTRAS_FOLDER }}\bin;${{ env.EXTRAS_FOLDER }}\lib;;%PATH%
+          set PATH=${{ env.INSTALL_FOLDER }}\libxml2\bin;${{ env.INSTALL_FOLDER }}\libxslt\bin;${{ env.INSTALL_FOLDER }}\openssl\bin;%PATH%
           nmake
     - name: make check
       working-directory: win32
       shell: cmd
       run: |
           call "${{ env.VISUAL_STUDIO_ROOT }}\VC\Auxiliary\Build\vcvars64.bat"
-          set PATH=${{ env.EXTRAS_FOLDER }}\bin;${{ env.EXTRAS_FOLDER }}\lib;%PATH%
-          set OPENSSL_MODULES=${{ env.EXTRAS_FOLDER }}\lib\ossl-modules
+          set PATH=${{ env.INSTALL_FOLDER }}\libxml2\bin;${{ env.INSTALL_FOLDER }}\libxslt\bin;${{ env.INSTALL_FOLDER }}\openssl\bin;%PATH%
+          set OPENSSL_MODULES=${{ env.INSTALL_FOLDER }}\lib\ossl-modules
           nmake check
+    - name: make install
+      working-directory: win32
+      shell: cmd
+      run: |
+          call "${{ env.VISUAL_STUDIO_ROOT }}\VC\Auxiliary\Build\vcvars64.bat"
+          nmake install
+
+

@@ -208,11 +208,11 @@ jobs:
           - crypto: mscng
             config_flags: unicode=yes with-dl=yes
           - crypto: mscng
-            config_flags: unicode=no with-dl=no static=yes legacy-crypto=yes ftp=yes
+            config_flags: unicode=no with-dl=no static=yes legacy-crypto=yes
           - crypto: mscrypto
             config_flags: unicode=yes with-dl=yes
           - crypto: mscrypto
-            config_flags:  unicode=no with-dl=no static=yes legacy-crypto=yes ftp=yes
+            config_flags:  unicode=no with-dl=no static=yes legacy-crypto=yes
           - crypto: openssl-300
             config_flags: unicode=yes with-dl=yes
           - crypto: openssl-300
@@ -220,8 +220,9 @@ jobs:
     env:
       VISUAL_STUDIO_ROOT: "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise"
       INSTALL_FOLDER: c:\install.dir
-      LIBS_URL: "https://github.com/lsh123/xmlsec/releases/download/1.3.3/xmlsec1-1.3.3-win64.zip"
-      LIBS_FILE: "xmlsec1-1.3.3-win64.zip"
+      LIBS_VERSION: 1.3.3
+      LIBS_URL: "https://github.com/lsh123/xmlsec/releases/download/${{ env.LIBS_VERSION }}/xmlsec1-${{ env.LIBS_VERSION }}-win64.zip"
+      LIBS_FILE: "xmlsec1-${{ env.LIBS_VERSION }}-win64.zip"
     steps:
     - name: create-dirs
       run: |
@@ -232,7 +233,6 @@ jobs:
       run: |
           Invoke-WebRequest ${{ env.LIBS_URL }} -O ${{ env.LIBS_FILE }}
           Expand-Archive -Path ${{ env.LIBS_FILE }}  -DestinationPath "."
-          dir
     - name: configure-git
       shell: bash
       run: |
@@ -261,7 +261,7 @@ jobs:
       shell: cmd
       run: |
           call "${{ env.VISUAL_STUDIO_ROOT }}\VC\Auxiliary\Build\vcvars64.bat"
-          set PATH=${{ env.INSTALL_FOLDER }}\bin;${{ env.INSTALL_FOLDER }}\lib;%PATH%
+          set PATH=${{ env.INSTALL_FOLDER }}\libxml2\bin;${{ env.INSTALL_FOLDER }}\libxslt\bin;${{ env.INSTALL_FOLDER }}\openssl\bin;%PATH%
           set OPENSSL_MODULES=${{ env.INSTALL_FOLDER }}\lib\ossl-modules
           nmake check
     - name: make install

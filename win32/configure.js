@@ -50,7 +50,7 @@ var withMSCrypto = 0;
 var withMSCng = 0;
 var withLibXSLT = 1;
 var withIconv = 1;
-var withFTP = 0; /* disable ftp by default */
+var withFTP = 1;
 var withNT4 = 1;
 
 /* Win32 build options. */
@@ -351,7 +351,12 @@ for (i = 0; (i < WScript.Arguments.length) && (error == 0); i++) {
 			buildBinPrefix = arg.substring(opt.length + 1, arg.length);
 		else if (opt == "libdir")
 			buildLibPrefix = arg.substring(opt.length + 1, arg.length);
-		else if (opt == "sodir")vf.WriteLine("WITH_FTP=" + (withFTP ? "1" : "0"));ngth + 1, arg.length);
+		else if (opt == "sodir")
+			buildSoPrefix = arg.substring(opt.length + 1, arg.length);
+		else if (opt == "incdir")
+			buildIncPrefix = arg.substring(opt.length + 1, arg.length);
+		else if (opt == "include")
+			buildInclude = arg.substring(opt.length + 1, arg.length);
 		else if (opt == "lib")
 			buildLib = arg.substring(opt.length + 1, arg.length);
 		else if (opt == "cruntime")

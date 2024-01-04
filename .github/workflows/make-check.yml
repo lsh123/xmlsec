@@ -186,17 +186,17 @@ jobs:
       matrix:
         include:
           - crypto: mscrypto
-            config_flags: unicode=yes with-dl=yes
+            config_flags: unicode=yes with-dl=yes ftp=no
           - crypto: mscng
-            config_flags: unicode=yes with-dl=yes
+            config_flags: unicode=yes with-dl=yes ftp=no
           - crypto: openssl-300
-            config_flags: unicode=yes with-dl=yes
+            config_flags: unicode=yes with-dl=yes ftp=no
           - crypto: mscrypto
-            config_flags: unicode=no with-dl=no
+            config_flags: unicode=no with-dl=no ftp=no
           - crypto: mscng
-            config_flags: unicode=no with-dl=no
+            config_flags: unicode=no with-dl=no ftp=no
           - crypto: openssl-300
-            config_flags: unicode=no with-dl=no
+            config_flags: unicode=no with-dl=no ftp=no
     env:
       VISUAL_STUDIO_ROOT: "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise"
       INSTALL_FOLDER: c:\install.dir

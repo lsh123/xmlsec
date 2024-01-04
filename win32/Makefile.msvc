@@ -348,7 +348,7 @@ XMLSEC_MSCNG_OBJS_A = \
 	$(XMLSEC_MSCNG_INTDIR_A)\signatures.obj\
 	$(XMLSEC_MSCNG_INTDIR_A)\keysstore.obj \
 	$(XMLSEC_MSCNG_INTDIR_A)\x509.obj\
-	$(XMLSEC_MSCNG_INTDIR_A)\x509vfy.objWITH_FTP
+	$(XMLSEC_MSCNG_INTDIR_A)\x509vfy.obj
 # The preprocessor and its options.
 #
 CPP      = cl.exe /EP
@@ -372,7 +372,10 @@ CFLAGS = $(CFLAGS) /I$(INCPREFIX)
 CFLAGS = $(CFLAGS) /W4
 !else
 CFLAGS = $(CFLAGS) /W1
-!endifWITH_FTPts
+!endif
+
+# C4127: conditional expression is constant
+#     this generates a false warning inside asserts
 # C4130: '!=': logical operation on address of string constant:
 #     this generates a false warning inside macros
 # C4152: nonstandard extension, function/data pointer conversion in expression

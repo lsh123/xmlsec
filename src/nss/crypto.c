@@ -361,7 +361,15 @@ xmlSecCryptoGetFunctions_nss(void) {
 
 static void
 xmlSecNssUpdateAvailableCryptoTransforms(xmlSecCryptoDLFunctionsPtr functions) {
+    SECStatus rv;
     xmlSecAssert(functions != NULL);
+
+    /* in theory NSS should be already initialized but just in case */
+    rv = SECOID_Init();
+    if (rv != SECSuccess) {
+        xmlSecNssError("SECOID_Init", NULL);
+        return;
+    }
 
     /******************************* AES ********************************/
     /* cbc */

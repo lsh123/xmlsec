@@ -85,7 +85,7 @@ XMLSEC_EXPORT xmlSecKeyDataId                   xmlSecKeyDataDsaGetKlass(void);
  *
  * The EC key klass.
  */
-#define xmlSecKeyDataEcId                       xmlSecKeyDataEcetKlass()
+#define xmlSecKeyDataEcId                       xmlSecKeyDataEcGetKlass()
 XMLSEC_EXPORT xmlSecKeyDataId                   xmlSecKeyDataEcGetKlass(void);
 /**
  * xmlSecKeyDataGost2001Id:

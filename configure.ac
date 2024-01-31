@@ -806,7 +806,6 @@ if test "z$OPENSSL_FOUND" = "zyes" ; then
             #endif
         ],[
             OPENSSL_VERSION="LibreSSL >= 3.5"
-            OPENSSL_LIBS="-Wl,-Bstatic $OPENSSL_LIBS -Wl,-Bdynamic"
             enable_dh=no
         ],[
             OPENSSL_VERSION=""
@@ -824,7 +823,6 @@ if test "z$OPENSSL_FOUND" = "zyes" ; then
             #endif
         ],[
             OPENSSL_VERSION="BoringSSL >= 1.1.1"
-            OPENSSL_LIBS="-Wl,-Bstatic $OPENSSL_LIBS -Wl,-Bdynamic"
             enable_ripemd160=no
             enable_dsa=no
             enable_dh=no

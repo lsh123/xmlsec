@@ -212,7 +212,7 @@ jobs:
         LIBS_URL: "https://github.com/lsh123/xmlsec/releases/download/${{ env.LIBS_VERSION }}/xmlsec1-${{ env.LIBS_VERSION }}-win64.zip"
         LIBS_FILE: "xmlsec1-${{ env.LIBS_VERSION }}-win64.zip"
       run: |
-          Invoke-WebRequest ${{ env.LIBS_URL }} -O ${{ env.LIBS_FILE }}
+          Invoke-WebRequest ${{ env.LIBS_URL }} -OutFile ${{ env.LIBS_FILE }}
           Expand-Archive -Path ${{ env.LIBS_FILE }}  -DestinationPath "."
     - name: configure-git
       shell: bash

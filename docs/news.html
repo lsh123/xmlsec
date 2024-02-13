@@ -48,14 +48,14 @@
 <h1>XML Security Library News</h1>
 </div>
 <ul>
-	<li>January 4, 2023<br>
+	<li>January 4, 2024<br>
 		The <a href="download.html">XML Security Library 1.3.3</a> release includes the following changes:
 		<br>
 		<br>
         <ul>
             <li>
                 (xmlsec-core) Disabled KeyValue and DEREncodedKeyValue  XML nodes by default. Use the '--enabled-key-data' option
-                for the xmlsec command line utility or update the 'keyInfoCtx->enabledKeyData' parameter if you need to re-enable these nodes
+                for the xmlsec command line utility or update the 'keyInfoCtx.enabledKeyData' parameter if you need to re-enable these nodes
                 (also see <a href="faq.html#section_3_5">question 3.5 in the FAQ</a>).
             </li>
             <li>(xmlsec-core) Removed '--enable-size-t' ('size_t' for MSVC builds) option and made 'xmlSecSize' to always be the same as 'size_t'.</li>

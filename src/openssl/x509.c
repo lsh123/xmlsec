@@ -1457,40 +1457,43 @@ my_timegm(struct tm *t) {
 
 #ifndef XMLSEC_OPENSSL_NO_ASN1_TIME_TO_TM
 
-time_t
-xmlSecOpenSSLX509Asn1TimeToTime(const ASN1_TIME * t) {
+int
+xmlSecOpenSSLX509Asn1TimeToTime(const ASN1_TIME * t, time_t * res) {
     struct tm tm;
     int ret;
 
-    xmlSecAssert2(t != NULL, 0);
+    xmlSecAssert2(t != NULL, -1);
+    xmlSecAssert2(res != NULL, -1);
 
     if(!ASN1_TIME_check(t)) {
         xmlSecOpenSSLError("ASN1_TIME_check", NULL);
-        return(0);
+        return(-1);
     }
 
     memset(&tm, 0, sizeof(tm));
     ret = ASN1_TIME_to_tm(t, &tm);
     if(ret != 1) {
         xmlSecOpenSSLError("ASN1_TIME_to_tm", NULL);
-        return(0);
+        return(-1);
     }
 
-    return(timegm(&tm));
+    (*res) = timegm(&tm);
+    return (0);
 }
 
 #else  /* XMLSEC_OPENSSL_NO_ASN1_TIME_TO_TM */
 
-time_t
-xmlSecOpenSSLX509Asn1TimeToTime(const ASN1_TIME * t) {
+int
+xmlSecOpenSSLX509Asn1TimeToTime(const ASN1_TIME * t, time_t * res) {
     struct tm tm;
     int offset;
 
-    xmlSecAssert2(t != NULL, 0);
+    xmlSecAssert2(t != NULL, -1);
+    xmlSecAssert2(res != NULL, -1);
 
     if(!ASN1_TIME_check(t)) {
         xmlSecOpenSSLError("ASN1_TIME_check", NULL);
-        return(0);
+        return(-1);
     }
 
     memset(&tm, 0, sizeof(tm));
@@ -1542,7 +1545,9 @@ xmlSecOpenSSLX509Asn1TimeToTime(const ASN1_TIME * t) {
         tm.tm_isdst = -1;
     }
 #undef g2
-    return(timegm(&tm) - offset * 60);
+
+    (*res) = (timegm(&tm) - offset * 60);
+    return (0);
 }
 #endif /* XMLSEC_OPENSSL_NO_ASN1_TIME_TO_TM */
 
@@ -1623,8 +1628,8 @@ xmlSecOpenSSLVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data, 
 
     /* copy cert not before / not after times from the cert */
     if(X509_get0_notBefore(ctx->keyCert) != NULL) {
-        key->notValidBefore = xmlSecOpenSSLX509Asn1TimeToTime(X509_get0_notBefore(ctx->keyCert));
-        if(key->notValidBefore <= 0) {
+        ret = xmlSecOpenSSLX509Asn1TimeToTime(X509_get0_notBefore(ctx->keyCert), &(key->notValidBefore));
+        if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLX509Asn1TimeToTime(notValidBefore)", xmlSecKeyDataGetName(data));
             return(-1);
         }
@@ -1632,8 +1637,8 @@ xmlSecOpenSSLVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data, 
         key->notValidBefore = 0;
     }
     if(X509_get0_notAfter(ctx->keyCert) != NULL) {
-        key->notValidAfter = xmlSecOpenSSLX509Asn1TimeToTime(X509_get0_notAfter(ctx->keyCert));
-        if(key->notValidAfter <= 0) {
+        ret = xmlSecOpenSSLX509Asn1TimeToTime(X509_get0_notAfter(ctx->keyCert), &(key->notValidAfter));
+        if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLX509Asn1TimeToTime(notValidAfter)", xmlSecKeyDataGetName(data));
             return(-1);
         }

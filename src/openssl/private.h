@@ -79,7 +79,7 @@ X509*           xmlSecOpenSSLX509CertLoadBIO                    (BIO* bio,
 X509_CRL*       xmlSecOpenSSLX509CrlLoadBIO                     (BIO* bio,
                                                                  xmlSecKeyDataFormat format);
 
-time_t          xmlSecOpenSSLX509Asn1TimeToTime                 (const ASN1_TIME * t);
+int             xmlSecOpenSSLX509Asn1TimeToTime                 (const ASN1_TIME * t, time_t * res);
 
 
 STACK_OF(X509)*        xmlSecOpenSSLKeyDataX509GetCerts         (xmlSecKeyDataPtr data);

@@ -450,18 +450,22 @@ xmlSecOpenSSLX509StoreVerifyCertAgainstRevoked(X509 * cert, STACK_OF(X509_REVOKE
                 return(-1);
             }
             ret = X509_cmp_time(revocationDate, &tt);
-            if(ret == 0) {
+            if (ret == 0) {
                 xmlSecOpenSSLError("X509_cmp_time(revocationDate)", NULL);
                 return(-1);
             }
             /* ret = 1: asn1_time is later than time */
-            if(ret > 0) {
+            if (ret > 0) {
                 X509_NAME *issuer;
                 char issuer_name[256];
                 time_t ts;
 
                 /* revocationDate > certsVerificationTime, we are good */
-                ts = xmlSecOpenSSLX509Asn1TimeToTime(revocationDate);
+                ret = xmlSecOpenSSLX509Asn1TimeToTime(revocationDate, &ts);
+                if (ret < 0) {
+                    xmlSecInternalError("xmlSecOpenSSLX509Asn1TimeToTime", NULL);
+                    return(-1);
+                }
                 issuer = X509_get_issuer_name(cert);
                 if(issuer != NULL) {
                     X509_NAME_oneline(issuer, issuer_name, sizeof(issuer_name));
@@ -524,7 +528,12 @@ xmlSecOpenSSLX509StoreFindBestCrl(X509_NAME *cert_issuer, STACK_OF(X509_CRL) *cr
 
         if((*res) == NULL) {
             (*res) = crl;
-            resLastUpdateTime = xmlSecOpenSSLX509Asn1TimeToTime(lastUpdate);
+
+            ret = xmlSecOpenSSLX509Asn1TimeToTime(lastUpdate, &resLastUpdateTime);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecOpenSSLX509Asn1TimeToTime", NULL);
+                return(-1);
+            }
             continue;
         }
 
@@ -538,7 +547,12 @@ xmlSecOpenSSLX509StoreFindBestCrl(X509_NAME *cert_issuer, STACK_OF(X509_CRL) *cr
         if(ret > 0) {
             /* asn1_time is greater than ts (i.e. crl is newer than crl in res)*/
             (*res) = crl;
-            resLastUpdateTime = xmlSecOpenSSLX509Asn1TimeToTime(lastUpdate);
+
+            ret = xmlSecOpenSSLX509Asn1TimeToTime(lastUpdate, &resLastUpdateTime);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecOpenSSLX509Asn1TimeToTime", NULL);
+                return(-1);
+            }
             continue;
         }
     }

@@ -895,7 +895,9 @@ xmlSecGnuTLSSignatureVerify(xmlSecTransformPtr transform,
         err = gnutls_pubkey_verify_hash2(pubkey, ctx->signAlgo, ctx->verifyFlags, &hash, &signature);
     }
 
-    if(err == GNUTLS_E_SUCCESS) {
+    /* In case of a verification failure GNUTLS_E_PK_SIG_VERIFY_FAILED
+       is returned, and zero or positive code on success. */
+    if(err >= 0) {
         /* signature is good */
         transform->status = xmlSecTransformStatusOk;
     } else if(err == GNUTLS_E_PK_SIG_VERIFY_FAILED) {

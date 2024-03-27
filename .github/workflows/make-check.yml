@@ -99,10 +99,9 @@ jobs:
       uses: Homebrew/actions/setup-homebrew@master
     - name: install dependencies
       run: |
-          brew update
-          brew install automake autoconf pkg-config libtool
-          # brew install libxml2 libxslt
-          brew install openssl nspr nss libgcrypt gnutls
+          HOMEBREW_NO_AUTOUPDATE=1 brew install automake autoconf pkg-config libtool
+          HOMEBREW_NO_AUTOUPDATE=1 brew install libxml2 libxslt
+          HOMEBREW_NO_AUTOUPDATE=1 brew install openssl nspr nss libgcrypt gnutls
     - uses: actions/checkout@v2
     - name: create-build-dirs
       run: |

@@ -219,7 +219,7 @@ jobs:
     env:
       VISUAL_STUDIO_ROOT: "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise"
       INSTALL_FOLDER: c:\install.dir
-      LIBS_VERSION: 1.3.3
+      LIBS_VERSION: 1.3.4
     steps:
     - name: create-dirs
       run: |

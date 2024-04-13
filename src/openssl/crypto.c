@@ -363,12 +363,14 @@ xmlSecCryptoGetFunctions_openssl(void) {
     gXmlSecOpenSSLFunctions->transformRsaPssSha3_512GetKlass   = xmlSecOpenSSLTransformRsaPssSha3_512GetKlass;
 #endif /* XMLSEC_NO_SHA3 */
 
+#ifndef XMLSEC_NO_RSA_PKCS15
     gXmlSecOpenSSLFunctions->transformRsaPkcs1GetKlass          = xmlSecOpenSSLTransformRsaPkcs1GetKlass;
+#endif /* XMLSEC_NO_RSA_PKCS15 */
 
-#ifndef XMLSEC_OPENSSL_NO_RSA_OAEP
+#ifndef XMLSEC_NO_RSA_OAEP
     gXmlSecOpenSSLFunctions->transformRsaOaepGetKlass           = xmlSecOpenSSLTransformRsaOaepGetKlass;
     gXmlSecOpenSSLFunctions->transformRsaOaepEnc11GetKlass      = xmlSecOpenSSLTransformRsaOaepEnc11GetKlass;
-#endif /* XMLSEC_OPENSSL_NO_RSA_OAEP */
+#endif /* XMLSEC_NO_RSA_OAEP */
 
 #endif /* XMLSEC_NO_RSA */
 

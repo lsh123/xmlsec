@@ -168,6 +168,8 @@ done:
     return(res);
 }
 
+#ifndef XMLSEC_NO_RSA_PKCS15
+
 /**************************************************************************
  *
  * Internal GCrypt RSA PKCS1 CTX
@@ -490,6 +492,9 @@ xmlSecGCryptRsaPkcs1Execute(xmlSecTransformPtr transform, int last,
     return(0);
 }
 
+#endif /* XMLSEC_NO_RSA_PKCS15 */
+
+#ifndef XMLSEC_NO_RSA_OAEP
 /**************************************************************************
  *
  * Internal GCrypt RSA OAEP CTX
@@ -1055,6 +1060,9 @@ xmlSecGCryptRsaOaepExecute(xmlSecTransformPtr transform, int last,
     }
     return(0);
 }
+
+#endif /* XMLSEC_NO_RSA_OAEP */
+
 #else /* XMLSEC_NO_RSA */
 
 /* ISO C forbids an empty translation unit */

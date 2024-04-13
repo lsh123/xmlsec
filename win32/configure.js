@@ -52,6 +52,8 @@ var withLibXSLT = 1;
 var withIconv = 1;
 var withFTP = 0; /* disable ftp by default */
 var withHTTP = 1;
+var withGost = 0;
+var withRsaPkcs15 = 1;
 var withLegacyCrypto = 0;
 
 /* Win32 build options. */
@@ -121,7 +123,9 @@ function usage()
  	txt += "  iconv:      Use the iconv library (" + (withIconv? "yes" : "no")  + ")\n";
 	txt += "  ftp:        Enable FTP support (" + (withFTP ? "yes" : "no") + ")\n";
 	txt += "  http:       Enable HTTP support (" + (withHTTP ? "yes" : "no") + ")\n";
-	txt += "  legacy - crypto:  Use the size_t (" + (withLegacyCrypto ? "yes" : "no") + ")\n";
+	txt += "  rsa-pkcs15: Enable RSA PKCS#1.5 key transport (" + (withRsaPkcs15 ? "yes" : "no") + ")\n";
+	txt += "  gost:	      Enable GOST algorithms (" + (withGost ? "yes" : "no") + ")\n";
+	txt += "  legacy-crypto: Enable legacy crypto algorithms (" + (withLegacyCrypto ? "yes" : "no") + ")\n";
 	txt += "\nWin32 build options, default value given in parentheses:\n\n";
 	txt += "  unicode:    Build Unicode version (" + (buildUnicode? "yes" : "no")  + ")\n";
 	txt += "  debug:      Build unoptimised debug executables (" + (buildDebug? "yes" : "no")  + ")\n";
@@ -195,6 +199,8 @@ function discoverVersion()
 	vf.WriteLine("WITH_ICONV=" + (withIconv ? "1" : "0"));
 	vf.WriteLine("WITH_FTP=" + (withFTP ? "1" : "0"));
 	vf.WriteLine("WITH_HTTP=" + (withHTTP ? "1" : "0"));
+	vf.WriteLine("WITH_GOST=" + (withGost ? "1" : "0"));
+	vf.WriteLine("WITH_RSA_PKCS15=" + (withRsaPkcs15 ? "1" : "0"));
 	vf.WriteLine("WITH_LEGACY_CRYPTO=" + (withLegacyCrypto ? "1" : "0"));
 	vf.WriteLine("UNICODE=" + (buildUnicode? "1" : "0"));
 	vf.WriteLine("DEBUG=" + (buildDebug? "1" : "0"));
@@ -334,6 +340,10 @@ for (i = 0; (i < WScript.Arguments.length) && (error == 0); i++) {
 			withFTP = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "http")
 			withHTTP = strToBool(arg.substring(opt.length + 1, arg.length));
+		else if (opt == "rsa-pkcs15")
+			withRsaPkcs15 = strToBool(arg.substring(opt.length + 1, arg.length));
+		else if (opt == "gost")
+			withGost = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "legacy-crypto")
 			withLegacyCrypto = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "unicode")
@@ -469,42 +479,44 @@ WScript.Echo("Created Makefile.");
 // Display the final configuration.
 var txtOut = "\nXMLSEC configuration\n";
 txtOut += "----------------------------\n";
-txtOut += "         Use Crypto: " + withCrypto + "\n";
-txtOut += " Use Default Crypto: " + withDefaultCrypto + "\n";
-txtOut += "        Use OpenSSL: " + boolToStr(withOpenSSL) + "\n";
-txtOut += "Use OpenSSL Version: " + withOpenSSLVersion + "\n";
-txtOut += "            Use NSS: " + boolToStr(withNss) + "\n";
-txtOut += "       Use MSCrypto: " + boolToStr(withMSCrypto) + "\n";
-txtOut += "          Use MSCng: " + boolToStr(withMSCng) + "\n";
-txtOut += "        Use LibXSLT: " + boolToStr(withLibXSLT) + "\n";
-txtOut += "          Use iconv: " + boolToStr(withIconv) + "\n";
-txtOut += "  Use legacy crypto: " + boolToStr(withLegacyCrypto) + "\n";
-txtOut += "        Support FTP: " + boolToStr(withFTP) + "\n";
-txtOut += "       Support HTTP: " + boolToStr(withHTTP) + "\n";
+txtOut += "          Use Crypto: " + withCrypto + "\n";
+txtOut += "  Use Default Crypto: " + withDefaultCrypto + "\n";
+txtOut += "         Use OpenSSL: " + boolToStr(withOpenSSL) + "\n";
+txtOut += " Use OpenSSL Version: " + withOpenSSLVersion + "\n";
+txtOut += "             Use NSS: " + boolToStr(withNss) + "\n";
+txtOut += "        Use MSCrypto: " + boolToStr(withMSCrypto) + "\n";
+txtOut += "           Use MSCng: " + boolToStr(withMSCng) + "\n";
+txtOut += "         Use LibXSLT: " + boolToStr(withLibXSLT) + "\n";
+txtOut += "           Use iconv: " + boolToStr(withIconv) + "\n";
+txtOut += " Enable RSA PKCS#1.5: " + boolToStr(withRsaPkcs15) + "\n";
+txtOut += "         Enable GOST: " + boolToStr(withGost) + "\n";
+txtOut += "Enable legacy crypto: " + boolToStr(withLegacyCrypto) + "\n";
+txtOut += "         Support FTP: " + boolToStr(withFTP) + "\n";
+txtOut += "        Support HTTP: " + boolToStr(withHTTP) + "\n";
 txtOut += "\n";
 txtOut += "Win32 build configuration\n";
 txtOut += "-------------------------\n";
-txtOut += "  C-Runtime option: " + cruntime + "\n";
-txtOut += "           Unicode: " + boolToStr(buildUnicode) + "\n";
-txtOut += "     Debug symbols: " + boolToStr(buildDebug) + "\n";
-txtOut += "          Memcheck: " + boolToStr(buildWithMemcheck) + "\n";
-txtOut += "Warnings as errors: " + boolToStr(buildWerror) + "\n";
-txtOut += "          Pedantic: " + boolToStr(buildPedantic) + "\n";
-txtOut += "        C compiler: " + buildCc + "\n";
-txtOut += "  C compiler flags: " + buildCflags + "\n";
-txtOut += "Static xmlsec libs: " + boolToStr(buildStatic) + "\n";
-txtOut += " Enable DL support: " + boolToStr(buildWithDLSupport) + "\n";
-txtOut += "    Install prefix: " + buildPrefix + "\n";
-txtOut += "      Put tools in: " + buildBinPrefix + "\n";
-txtOut += "    Put headers in: " + buildIncPrefix + "\n";
-txtOut += "Put static libs in: " + buildLibPrefix + "\n";
-txtOut += "Put shared libs in: " + buildSoPrefix + "\n";
-txtOut += "      Include path: " + buildInclude + "\n";
-txtOut += "          Lib path: " + buildLib + "\n";
+txtOut += "   C-Runtime option: " + cruntime + "\n";
+txtOut += "            Unicode: " + boolToStr(buildUnicode) + "\n";
+txtOut += "      Debug symbols: " + boolToStr(buildDebug) + "\n";
+txtOut += "           Memcheck: " + boolToStr(buildWithMemcheck) + "\n";
+txtOut += " Warnings as errors: " + boolToStr(buildWerror) + "\n";
+txtOut += "           Pedantic: " + boolToStr(buildPedantic) + "\n";
+txtOut += "         C compiler: " + buildCc + "\n";
+txtOut += "   C compiler flags: " + buildCflags + "\n";
+txtOut += " Static xmlsec libs: " + boolToStr(buildStatic) + "\n";
+txtOut += "  Enable DL support: " + boolToStr(buildWithDLSupport) + "\n";
+txtOut += "     Install prefix: " + buildPrefix + "\n";
+txtOut += "       Put tools in: " + buildBinPrefix + "\n";
+txtOut += "     Put headers in: " + buildIncPrefix + "\n";
+txtOut += " Put static libs in: " + buildLibPrefix + "\n";
+txtOut += " Put shared libs in: " + buildSoPrefix + "\n";
+txtOut += "       Include path: " + buildInclude + "\n";
+txtOut += "           Lib path: " + buildLib + "\n";
 txtOut += "\n";
 txtOut += "Crypto configuration\n";
 txtOut += "-------------------------\n";
-txtOut += "Use OpenSSL3 Engine: " + boolToStr(withOpenSSL3Engines) + "\n";
+txtOut += " Use OpenSSL3 Engine: " + boolToStr(withOpenSSL3Engines) + "\n";
 WScript.Echo(txtOut);
 
 // Done.

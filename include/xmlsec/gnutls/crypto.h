@@ -652,7 +652,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformRsaPssSha384GetKlass
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformRsaPssSha512GetKlass(void);
 #endif /* XMLSEC_NO_SHA512 */
 
-
+#ifndef XMLSEC_NO_RSA_PKCS15
 /**
  * xmlSecGnuTLSTransformRsaPkcs1Id:
  *
@@ -661,6 +661,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformRsaPssSha512GetKlass
 #define xmlSecGnuTLSTransformRsaPkcs1Id \
         xmlSecGnuTLSTransformRsaPkcs1GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformRsaPkcs1GetKlass(void);
+#endif /* XMLSEC_NO_RSA_PKCS15 */
 
 #endif /* XMLSEC_NO_RSA */
 

@@ -22,7 +22,7 @@
 #include <string.h>
 
 #include <nss.h>
-#include <pk11func.h>
+#include <pk11pub.h>
 #include <prinit.h>
 #include <prtypes.h>
 #include <secoidt.h>
@@ -298,7 +298,9 @@ xmlSecCryptoGetFunctions_nss(void) {
 #endif /* XMLSEC_NO_SHA512 */
 
 
+#ifndef XMLSEC_NO_RSA_PKCS15
     gXmlSecNssFunctions->transformRsaPkcs1GetKlass      = xmlSecNssTransformRsaPkcs1GetKlass;
+#endif /* XMLSEC_NO_RSA_PKCS15*/
 
 #ifndef XMLSEC_NO_RSA_OAEP
     gXmlSecNssFunctions->transformRsaOaepGetKlass       = xmlSecNssTransformRsaOaepGetKlass;

@@ -44,6 +44,7 @@
 #include "../cast_helpers.h"
 #include "../transform_helpers.h"
 
+#ifndef XMLSEC_NO_RSA_PKCS15
 
 /**************************************************************************
  *
@@ -509,8 +510,9 @@ xmlSecOpenSSLRsaPkcs1Process(xmlSecTransformPtr transform) {
 
     return(0);
 }
+#endif /* XMLSEC_NO_RSA_PKCS15 */
 
-#ifndef XMLSEC_OPENSSL_NO_RSA_OAEP
+#ifndef XMLSEC_NO_RSA_OAEP
 /**************************************************************************
  *
  * Internal OpenSSL RSA OAEP CTX
@@ -1367,7 +1369,7 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform) {
 
     return(0);
 }
-#endif /* XMLSEC_OPENSSL_NO_RSA_OAEP */
+#endif /* XMLSEC_NO_RSA_OAEP */
 
 
 #endif /* XMLSEC_NO_RSA */

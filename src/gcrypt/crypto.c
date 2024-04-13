@@ -246,9 +246,14 @@ xmlSecCryptoGetFunctions_gcrypt(void) {
 #endif /* XMLSEC_NO_SHA3 */
 
 
+#ifndef XMLSEC_NO_RSA_PKCS15
     gXmlSecGCryptFunctions->transformRsaPkcs1GetKlass          = xmlSecGCryptTransformRsaPkcs1GetKlass;
+#endif /* XMLSEC_NO_RSA_PKCS15 */
+
+#ifndef XMLSEC_NO_RSA_OAEP
     gXmlSecGCryptFunctions->transformRsaOaepGetKlass           = xmlSecGCryptTransformRsaOaepGetKlass;
     gXmlSecGCryptFunctions->transformRsaOaepEnc11GetKlass      = xmlSecGCryptTransformRsaOaepEnc11GetKlass;
+#endif /* XMLSEC_NO_RSA_OAEP */
 
 #endif /* XMLSEC_NO_RSA */
 

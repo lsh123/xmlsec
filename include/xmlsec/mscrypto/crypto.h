@@ -212,6 +212,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformRsaSha384GetKlass(
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformRsaSha512GetKlass(void);
 #endif /* XMLSEC_NO_SHA512 */
 
+#ifndef XMLSEC_NO_RSA_PKCS15
 /**
  * xmlSecMSCryptoTransformRsaPkcs1Id:
  *
@@ -220,17 +221,18 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformRsaSha512GetKlass(
 #define xmlSecMSCryptoTransformRsaPkcs1Id \
         xmlSecMSCryptoTransformRsaPkcs1GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformRsaPkcs1GetKlass(void);
+#endif /* XMLSEC_NO_RSA_PKCS15 */
 
+#ifndef XMLSEC_NO_RSA_OAEP
 /**
  * xmlSecMSCryptoTransformRsaOaepId:
  *
  * The RSA OAEP key transport transform klass. MSCrypto only supports SHA1 for digest and MGF1.
  */
-#ifndef XMLSEC_NO_SHA1
 #define xmlSecMSCryptoTransformRsaOaepId \
         xmlSecMSCryptoTransformRsaOaepGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformRsaOaepGetKlass(void);
-#endif /* XMLSEC_NO_SHA1 */
+#endif /* XMLSEC_NO_RSA_OAEP */
 
 #endif /* XMLSEC_NO_RSA */
 

@@ -26,7 +26,7 @@
 #include <cert.h>
 #include <certdb.h>
 #include <keyhi.h>
-#include <pk11func.h>
+#include <pk11pub.h>
 #include <pkcs12.h>
 #include <p12plcy.h>
 /*

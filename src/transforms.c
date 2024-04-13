@@ -3519,6 +3519,7 @@ xmlSecTransformPbkdf2ParamsRead(xmlSecTransformPbkdf2ParamsPtr params, xmlNodePt
 
 
 #ifndef XMLSEC_NO_RSA
+#ifndef XMLSEC_NO_RSA_OAEP
 int
 xmlSecTransformRsaOaepParamsInitialize(xmlSecTransformRsaOaepParamsPtr oaepParams) {
     int ret;
@@ -3604,5 +3605,5 @@ xmlSecTransformRsaOaepParamsRead(xmlSecTransformRsaOaepParamsPtr oaepParams, xml
     /* done */
     return(0);
 }
-
+#endif /* XMLSEC_NO_RSA_OAEP */
 #endif /* XMLSEC_NO_RSA */

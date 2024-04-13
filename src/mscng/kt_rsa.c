@@ -57,15 +57,23 @@ XMLSEC_TRANSFORM_DECLARE(MSCngRsaPkcs1Oaep, xmlSecMSCngRsaPkcs1OaepCtx)
 static int
 xmlSecMSCngRsaPkcs1OaepCheckId(xmlSecTransformPtr transform) {
 
+#ifndef XMLSEC_NO_RSA_PKCS15
     if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaPkcs1Id)) {
         return(1);
-    } else if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaOaepId)) {
+    } else
+#endif /* XMLSEC_NO_RSA_PKCS15 */
+
+#ifndef XMLSEC_NO_RSA_OAEP
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaOaepId)) {
         return(1);
     } else if (xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaOaepEnc11Id)) {
         return(1);
-    }
+    } else
+#endif /* XMLSEC_NO_RSA_OAEP */
 
-    return(0);
+    {
+        return(0);
+    }
 }
 
 static int
@@ -236,6 +244,7 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
         }
 
         /* encrypt */
+#ifndef XMLSEC_NO_RSA_PKCS15
         if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaPkcs1Id)) {
             status = BCryptEncrypt(hPubKey,
                 inBuf,
@@ -252,7 +261,11 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
                     xmlSecTransformGetName(transform), status);
                 return(-1);
             }
-        } else if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaOaepId) || xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaOaepEnc11Id)) {
+        } else
+#endif /* XMLSEC_NO_RSA_PKCS15 */
+
+#ifndef XMLSEC_NO_RSA_OAEP
+        if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaOaepId) || xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaOaepEnc11Id)) {
             BCRYPT_OAEP_PADDING_INFO paddingInfo;
             xmlSecSize oaepParamsSize;
 
@@ -276,10 +289,13 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
                 xmlSecMSCngNtError("BCryptEncrypt", xmlSecTransformGetName(transform), status);
                 return(-1);
             }
-        } else {
+        } else
+#endif /* XMLSEC_NO_RSA_OAEP */
+        {
             xmlSecInvalidTransfromError(transform)
             return(-1);
         }
+
     } else {
         /* this should be true since we checked above, but let's double check */
         if (inSize != outSize) {
@@ -297,6 +313,7 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
         }
 
         /* decrypt */
+#ifndef XMLSEC_NO_RSA_PKCS15
         if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaPkcs1Id)) {
             securityStatus = NCryptDecrypt(hPrivKey,
                 inBuf,
@@ -311,7 +328,11 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
                     xmlSecTransformGetName(transform), securityStatus);
                 return(-1);
             }
-        } else if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaOaepId) || xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaOaepEnc11Id)) {
+        } else
+#endif /* XMLSEC_NO_RSA_PKCS15 */
+
+#ifndef XMLSEC_NO_RSA_OAEP
+        if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaOaepId) || xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaOaepEnc11Id)) {
             BCRYPT_OAEP_PADDING_INFO paddingInfo;
             xmlSecSize oaepParamsSize;
 
@@ -334,7 +355,9 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
                     xmlSecTransformGetName(transform), securityStatus);
                 return(-1);
             }
-        } else {
+        } else 
+#endif /* XMLSEC_NO_RSA_OAEP */
+        {
             xmlSecInvalidTransfromError(transform)
             return(-1);
         }
@@ -398,51 +421,6 @@ xmlSecMSCngRsaPkcs1OaepExecute(xmlSecTransformPtr transform, int last,
 
     return(0);
 }
-
-/**********************************************************************
- *
- * RSA/PKCS1 transform
- *
- **********************************************************************/
-static xmlSecTransformKlass xmlSecMSCngRsaPkcs1Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSeccMSCngRsaPkcs1OaepSize,               /* xmlSecSize objSize */
-
-    xmlSecNameRsaPkcs1,                         /* const xmlChar* name; */
-    xmlSecHrefRsaPkcs1,                         /* const xmlChar* href; */
-    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
-
-    xmlSecMSCngRsaPkcs1OaepInitialize,          /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecMSCngRsaPkcs1OaepFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCngRsaPkcs1OaepSetKeyReq,           /* xmlSecTransformSetKeyMethod setKeyReq; */
-    xmlSecMSCngRsaPkcs1OaepSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecMSCngRsaPkcs1OaepExecute,             /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
-
-/**
- * xmlSecMSCngTransformRsaPkcs1GetKlass:
- *
- * The RSA-PKCS1 key transport transform klass.
- *
- * Returns: RSA-PKCS1 key transport transform klass.
- */
-xmlSecTransformId
-xmlSecMSCngTransformRsaPkcs1GetKlass(void) {
-    return(&xmlSecMSCngRsaPkcs1Klass);
-}
-
 
 static int
 xmlSecMSCngRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
@@ -584,6 +562,7 @@ xmlSecMSCngRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     return(0);
 }
 
+#ifndef XMLSEC_NO_RSA_OAEP
 static xmlSecTransformKlass xmlSecMSCngRsaOaepKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -662,5 +641,55 @@ xmlSecTransformId
 xmlSecMSCngTransformRsaOaepEnc11GetKlass(void) {
     return(&xmlSecMSCngRsaOaepEnc11Klass);
 }
+#endif /* XMLSEC_NO_RSA_OAEP */
+
+#ifndef XMLSEC_NO_RSA_PKCS15
+
+/**********************************************************************
+ *
+ * RSA/PKCS1 transform
+ *
+ **********************************************************************/
+static xmlSecTransformKlass xmlSecMSCngRsaPkcs1Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSeccMSCngRsaPkcs1OaepSize,               /* xmlSecSize objSize */
+
+    xmlSecNameRsaPkcs1,                         /* const xmlChar* name; */
+    xmlSecHrefRsaPkcs1,                         /* const xmlChar* href; */
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
+
+    xmlSecMSCngRsaPkcs1OaepInitialize,          /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecMSCngRsaPkcs1OaepFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecMSCngRsaPkcs1OaepSetKeyReq,           /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecMSCngRsaPkcs1OaepSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
+    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecMSCngRsaPkcs1OaepExecute,             /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecMSCngTransformRsaPkcs1GetKlass:
+ *
+ * The RSA-PKCS1 key transport transform klass.
+ *
+ * Returns: RSA-PKCS1 key transport transform klass.
+ */
+xmlSecTransformId
+xmlSecMSCngTransformRsaPkcs1GetKlass(void) {
+    return(&xmlSecMSCngRsaPkcs1Klass);
+}
+
+#endif /* XMLSEC_NO_RSA_PKCS15 */
+
 
 #endif /* XMLSEC_NO_RSA */

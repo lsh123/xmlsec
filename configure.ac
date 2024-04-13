@@ -1855,7 +1855,7 @@ if test "z$build_on_windows" = "zyes" ; then
 fi
 
 dnl ==========================================================================
-dnl See do we need files support
+dnl Check if we need files support
 dnl ==========================================================================
 AC_MSG_CHECKING(for files support)
 AC_ARG_ENABLE([files], [AS_HELP_STRING([--enable-files],[enable files support (yes)])])
@@ -1871,7 +1871,7 @@ AM_CONDITIONAL(XMLSEC_NO_FILES, test "z$XMLSEC_NO_FILES" = "z1")
 AC_SUBST(XMLSEC_NO_FILES)
 
 dnl ==========================================================================
-dnl See do we need FTP support
+dnl Check if we need FTP support
 dnl ==========================================================================
 AC_MSG_CHECKING(for FTP support)
 AC_ARG_ENABLE([ftp], [AS_HELP_STRING([--enable-ftp],[enable FTP support (no, deprecated)])])
@@ -1887,7 +1887,7 @@ AM_CONDITIONAL(XMLSEC_NO_FTP, test "z$XMLSEC_NO_FTP" = "z1")
 AC_SUBST(XMLSEC_NO_FTP)
 
 dnl ==========================================================================
-dnl See do we need HTTP support
+dnl Check if we need HTTP support
 dnl ==========================================================================
 AC_MSG_CHECKING(for HTTP support)
 AC_ARG_ENABLE([http], [AS_HELP_STRING([--enable-http],[enable HTTP support (yes)])])
@@ -1903,7 +1903,7 @@ AM_CONDITIONAL(XMLSEC_NO_HTTP, test "z$XMLSEC_NO_HTTP" = "z1")
 AC_SUBST(XMLSEC_NO_HTTP)
 
 dnl ==========================================================================
-dnl See do we need MD5 support
+dnl Check if we need MD5 support
 dnl ==========================================================================
 AC_MSG_CHECKING(for MD5 support)
 AC_ARG_ENABLE([md5], [AS_HELP_STRING([--enable-md5],[enable MD5 support (no, deprecated)])])
@@ -1919,7 +1919,7 @@ AM_CONDITIONAL(XMLSEC_NO_MD5, test "z$XMLSEC_NO_MD5" = "z1")
 AC_SUBST(XMLSEC_NO_MD5)
 
 dnl ==========================================================================
-dnl See do we need RIPEMD-160 support
+dnl Check if we need RIPEMD-160 support
 dnl ==========================================================================
 AC_MSG_CHECKING(for RIPEMD-160 support)
 AC_ARG_ENABLE([ripemd160], [AS_HELP_STRING([--enable-ripemd160],[enable RIPEMD-160 support (yes)])])
@@ -1935,7 +1935,7 @@ AM_CONDITIONAL(XMLSEC_NO_RIPEMD160, test "z$XMLSEC_NO_RIPEMD160" = "z1")
 AC_SUBST(XMLSEC_NO_RIPEMD160)
 
 dnl ==========================================================================
-dnl See do we need SHA1 support
+dnl Check if we need SHA1 support
 dnl ==========================================================================
 AC_MSG_CHECKING(for SHA1 support)
 AC_ARG_ENABLE([sha1], [AS_HELP_STRING([--enable-sha1],[enable SHA1 support (yes, use discouraged)])])
@@ -1951,7 +1951,7 @@ AM_CONDITIONAL(XMLSEC_NO_SHA1, test "z$XMLSEC_NO_SHA1" = "z1")
 AC_SUBST(XMLSEC_NO_SHA1)
 
 dnl ==========================================================================
-dnl See do we need SHA224 support
+dnl Check if we need SHA224 support
 dnl ==========================================================================
 AC_MSG_CHECKING(for SHA224 support)
 AC_ARG_ENABLE([sha224], [AS_HELP_STRING([--enable-sha224],[enable SHA224 support (yes)])])
@@ -1967,7 +1967,7 @@ AM_CONDITIONAL(XMLSEC_NO_SHA224, test "z$XMLSEC_NO_SHA224" = "z1")
 AC_SUBST(XMLSEC_NO_SHA224)
 
 dnl ==========================================================================
-dnl See do we need SHA256 support
+dnl Check if we need SHA256 support
 dnl ==========================================================================
 AC_MSG_CHECKING(for SHA256 support)
 AC_ARG_ENABLE([sha256], [AS_HELP_STRING([--enable-sha256],[enable SHA256 support (yes)])])
@@ -1983,7 +1983,7 @@ AM_CONDITIONAL(XMLSEC_NO_SHA256, test "z$XMLSEC_NO_SHA256" = "z1")
 AC_SUBST(XMLSEC_NO_SHA256)
 
 dnl ==========================================================================
-dnl See do we need SHA384 support
+dnl Check if we need SHA384 support
 dnl ==========================================================================
 AC_MSG_CHECKING(for SHA384 support)
 AC_ARG_ENABLE([sha384], [AS_HELP_STRING([--enable-sha384],[enable SHA384 support (yes)])])
@@ -1999,7 +1999,7 @@ AM_CONDITIONAL(XMLSEC_NO_SHA384, test "z$XMLSEC_NO_SHA384" = "z1")
 AC_SUBST(XMLSEC_NO_SHA384)
 
 dnl ==========================================================================
-dnl See do we need SHA512 support
+dnl Check if we need SHA512 support
 dnl ==========================================================================
 AC_MSG_CHECKING(for SHA512 support)
 AC_ARG_ENABLE([sha512], [AS_HELP_STRING([--enable-sha512],[enable SHA512 support (yes)])])
@@ -2015,7 +2015,7 @@ AM_CONDITIONAL(XMLSEC_NO_SHA512, test "z$XMLSEC_NO_SHA512" = "z1")
 AC_SUBST(XMLSEC_NO_SHA512)
 
 dnl ==========================================================================
-dnl See do we need SHA3 support
+dnl Check if we need SHA3 support
 dnl ==========================================================================
 AC_MSG_CHECKING(for SHA3 support)
 AC_ARG_ENABLE([sha3], [AS_HELP_STRING([--enable-sha3],[enable SHA3 support (yes)])])
@@ -2031,7 +2031,7 @@ AM_CONDITIONAL(XMLSEC_NO_SHA3, test "z$XMLSEC_NO_SHA3" = "z1")
 AC_SUBST(XMLSEC_NO_SHA3)
 
 dnl ==========================================================================
-dnl See do we need HMAC support
+dnl Check if we need HMAC support
 dnl ==========================================================================
 AC_MSG_CHECKING(for HMAC support)
 AC_ARG_ENABLE([hmac], [AS_HELP_STRING([--enable-hmac],[enable HMAC support (yes)])])
@@ -2047,7 +2047,7 @@ AM_CONDITIONAL(XMLSEC_NO_HMAC, test "z$XMLSEC_NO_HMAC" = "z1")
 AC_SUBST(XMLSEC_NO_HMAC)
 
 dnl ==========================================================================
-dnl See do we need DH support
+dnl Check if we need DH support
 dnl ==========================================================================
 AC_MSG_CHECKING(for DH support)
 AC_ARG_ENABLE([dh], [AS_HELP_STRING([--enable-dh],[enable DH support (yes)])])
@@ -2064,7 +2064,7 @@ AC_SUBST(XMLSEC_NO_DH)
 
 
 dnl ==========================================================================
-dnl See do we need DSA support
+dnl Check if we need DSA support
 dnl ==========================================================================
 AC_MSG_CHECKING(for DSA support)
 AC_ARG_ENABLE([dsa], [AS_HELP_STRING([--enable-dsa],[enable DSA support (yes)])])
@@ -2080,7 +2080,7 @@ AM_CONDITIONAL(XMLSEC_NO_DSA, test "z$XMLSEC_NO_DSA" = "z1")
 AC_SUBST(XMLSEC_NO_DSA)
 
 dnl ==========================================================================
-dnl See do we need MD5 support
+dnl Check if we need MD5 support
 dnl ==========================================================================
 AC_MSG_CHECKING(for MD5 support)
 AC_ARG_ENABLE([md5], [AS_HELP_STRING([--enable-md5],[enable MD5 support (no, deprecated)])])
@@ -2096,7 +2096,7 @@ AM_CONDITIONAL(XMLSEC_NO_MD5, test "z$XMLSEC_NO_MD5" = "z1")
 AC_SUBST(XMLSEC_NO_MD5)
 
 dnl ==========================================================================
-dnl See do we need RSA support
+dnl Check if we need RSA support
 dnl ==========================================================================
 AC_MSG_CHECKING(for RSA support)
 AC_ARG_ENABLE([rsa], [AS_HELP_STRING([--enable-rsa],[enable RSA support (yes)])])
@@ -2111,9 +2111,40 @@ fi
 AM_CONDITIONAL(XMLSEC_NO_RSA, test "z$XMLSEC_NO_RSA" = "z1")
 AC_SUBST(XMLSEC_NO_RSA)
 
+dnl ==========================================================================
+dnl Check if we need RSA PKCS 1.5 support
+dnl ==========================================================================
+AC_MSG_CHECKING(for RSA PKCS 1.5 support)
+AC_ARG_ENABLE([rsa-pkcs15], [AS_HELP_STRING([--enable-rsa-pkcs15], [enable RSA PKCS 1.5 support (yes)])])
+if test "z$enable_rsa_pkcs15" = "zno" ; then
+    XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_RSA_PKCS15=1"
+    XMLSEC_NO_RSA_PKCS15="1"
+    AC_MSG_RESULT([disabled])
+else
+    XMLSEC_NO_RSA_PKCS15="0"
+    AC_MSG_RESULT([yes])
+fi
+AM_CONDITIONAL(XMLSEC_NO_RSA_PKCS15, test "z$XMLSEC_NO_RSA_PKCS15" = "z1")
+AC_SUBST(XMLSEC_NO_RSA_PKCS15)
 
 dnl ==========================================================================
-dnl See do we need EC (Eliptic Curve) support
+dnl Check if we need RSA OAEP support
+dnl ==========================================================================
+AC_MSG_CHECKING(for RSA OAEP support)
+AC_ARG_ENABLE([rsa-oaep], [AS_HELP_STRING([--enable-rsa-oaep], [enable RSA OAEP support (yes)])])
+if test "z$enable_rsa_oaep" = "zno" ; then
+    XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_RSA_OAEP=1"
+    XMLSEC_NO_RSA_OAEP="1"
+    AC_MSG_RESULT([disabled])
+else
+    XMLSEC_NO_RSA_OAEP="0"
+    AC_MSG_RESULT([yes])
+fi
+AM_CONDITIONAL(XMLSEC_NO_RSA_OAEP, test "z$XMLSEC_NO_RSA_OAEP" = "z1")
+AC_SUBST(XMLSEC_NO_RSA_OAEP)
+
+dnl ==========================================================================
+dnl Check if we need EC (Eliptic Curve) support
 dnl ==========================================================================
 AC_MSG_CHECKING(for Eliptic Curve support)
 AC_ARG_ENABLE([ec], [AS_HELP_STRING([--enable-ec],[enable EC support (yes)])])
@@ -2129,7 +2160,7 @@ AM_CONDITIONAL(XMLSEC_NO_EC, test "z$XMLSEC_NO_EC" = "z1")
 AC_SUBST(XMLSEC_NO_EC)
 
 dnl ==========================================================================
-dnl See do we need x509 support
+dnl Check if we need x509 support
 dnl ==========================================================================
 AC_MSG_CHECKING(for x509 support)
 AC_ARG_ENABLE([x509], [AS_HELP_STRING([--enable-x509],[enable x509 support (yes)])])
@@ -2145,7 +2176,7 @@ AM_CONDITIONAL(XMLSEC_NO_X509, test "z$XMLSEC_NO_X509" = "z1")
 AC_SUBST(XMLSEC_NO_X509)
 
 dnl ==========================================================================
-dnl See do we need DES support
+dnl Check if we need DES support
 dnl ==========================================================================
 AC_MSG_CHECKING(for DES support)
 AC_ARG_ENABLE([des], [AS_HELP_STRING([--enable-des],[enable DES support (yes, deprecated)])])
@@ -2161,7 +2192,7 @@ AM_CONDITIONAL(XMLSEC_NO_DES, test "z$XMLSEC_NO_DES" = "z1")
 AC_SUBST(XMLSEC_NO_DES)
 
 dnl ==========================================================================
-dnl See do we need AES support
+dnl Check if we need AES support
 dnl ==========================================================================
 AC_MSG_CHECKING(for AES support)
 AC_ARG_ENABLE([aes], [AS_HELP_STRING([--enable-aes],[enable AES support])])
@@ -2177,7 +2208,7 @@ AM_CONDITIONAL(XMLSEC_NO_AES, test "z$XMLSEC_NO_AES" = "z1")
 AC_SUBST(XMLSEC_NO_AES)
 
 dnl ==========================================================================
-dnl See do we need ConcatKDF support
+dnl Check if we need ConcatKDF support
 dnl ==========================================================================
 AC_MSG_CHECKING(for ConcatKDF support)
 AC_ARG_ENABLE([concatkdf], [AS_HELP_STRING([--enable-concatkdf],[enable ConcatKDF support (yes)])])
@@ -2193,7 +2224,7 @@ AM_CONDITIONAL(XMLSEC_NO_CONCATKDF, test "z$XMLSEC_NO_CONCATKDF" = "z1")
 AC_SUBST(XMLSEC_NO_CONCATKDF)
 
 dnl ==========================================================================
-dnl See do we need PBKDF2 support
+dnl Check if we need PBKDF2 support
 dnl ==========================================================================
 AC_MSG_CHECKING(for PBKDF2 support)
 AC_ARG_ENABLE([pbkdf2], [AS_HELP_STRING([--enable-pbkdf2],[enable PBKDF2 support (yes)])])
@@ -2209,10 +2240,10 @@ AM_CONDITIONAL(XMLSEC_NO_PBKDF2, test "z$XMLSEC_NO_PBKDF2" = "z1")
 AC_SUBST(XMLSEC_NO_PBKDF2)
 
 dnl ==========================================================================
-dnl See do we need GOST 2001 support
+dnl Check if we need GOST 2001 support
 dnl ==========================================================================
 AC_MSG_CHECKING(for GOST 2001 support)
-AC_ARG_ENABLE([gost], [AS_HELP_STRING([--enable-gost],[enable GOST-2001 support (no)])])
+AC_ARG_ENABLE([gost], [AS_HELP_STRING([--enable-gost], [enable GOST-2001 support (no)])])
 if test "z$enable_gost" != "zyes" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_GOST=1"
     XMLSEC_NO_GOST="1"
@@ -2225,10 +2256,10 @@ AM_CONDITIONAL(XMLSEC_NO_GOST, test "z$XMLSEC_NO_GOST" = "z1")
 AC_SUBST(XMLSEC_NO_GOST)
 
 dnl ==========================================================================
-dnl See do we need GOST 2012 support
+dnl Check if we need GOST 2012 support
 dnl ==========================================================================
 AC_MSG_CHECKING(for GOST 2012 support)
-AC_ARG_ENABLE([gost2012], [AS_HELP_STRING([--enable-gost2012],[enable GOST-2012 support (no)])])
+AC_ARG_ENABLE([gost2012], [AS_HELP_STRING([--enable-gost2012], [enable GOST-2012 support (no)])])
 if test "z$enable_gost2012" != "zyes" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_GOST2012=1"
     XMLSEC_NO_GOST2012="1"
@@ -2240,9 +2271,8 @@ fi
 AM_CONDITIONAL(XMLSEC_NO_GOST2012, test "z$XMLSEC_NO_GOST2012" = "z1")
 AC_SUBST(XMLSEC_NO_GOST2012)
 
-
 dnl ==========================================================================
-dnl See do we need XMLDSig support
+dnl Check if we need XMLDSig support
 dnl ==========================================================================
 AC_MSG_CHECKING(for XMLDSig support)
 AC_ARG_ENABLE([xmldsig], [AS_HELP_STRING([--enable-xmldsig],[enable XMLDSig support (yes)])])
@@ -2258,7 +2288,7 @@ AM_CONDITIONAL(XMLSEC_NO_XMLDSIG, test "z$XMLSEC_NO_XMLDSIG" = "z1")
 AC_SUBST(XMLSEC_NO_XMLDSIG)
 
 dnl ==========================================================================
-dnl See do we need XMLEnc support
+dnl Check if we need XMLEnc support
 dnl ==========================================================================
 AC_MSG_CHECKING(for XMLEnc support)
 AC_ARG_ENABLE([xmlenc], [AS_HELP_STRING([--enable-xmlenc],[enable XMLEnc support (yes)])])
@@ -2274,7 +2304,7 @@ AM_CONDITIONAL(XMLSEC_NO_XMLENC, test "z$XMLSEC_NO_XMLENC" = "z1")
 AC_SUBST(XMLSEC_NO_XMLENC)
 
 dnl ==========================================================================
-dnl See do we need mans
+dnl Check if we need mans
 dnl ==========================================================================
 AC_MSG_CHECKING(for mans)
 AC_ARG_ENABLE([mans], [AS_HELP_STRING([--enable-mans],[enable manual pages (yes)])])
@@ -2289,7 +2319,7 @@ AM_CONDITIONAL(XMLSEC_MANS, test "z$XMLSEC_MANS" = "z1")
 AC_SUBST(XMLSEC_MANS)
 
 dnl ==========================================================================
-dnl See do we need docs
+dnl Check if we need docs
 dnl ==========================================================================
 AC_MSG_CHECKING(for docs)
 AC_ARG_ENABLE([docs], [AS_HELP_STRING([--enable-docs],[enable documentation (yes)])])
@@ -2457,7 +2487,7 @@ AC_MSG_RESULT([$XMLSEC_DOCDIR])
 AC_SUBST(XMLSEC_DOCDIR)
 
 dnl ==========================================================================
-dnl See do we need Simple Keys Manager
+dnl Check if we need Simple Keys Manager
 dnl ==========================================================================
 AC_MSG_CHECKING(for Simple Keys Manager testing)
 AC_ARG_ENABLE([skm], [AS_HELP_STRING([--enable-skm],[enable Simple Keys Manager testing (yes)])])
@@ -2469,7 +2499,7 @@ else
 fi
 
 dnl ==========================================================================
-dnl See do we need templates tests
+dnl Check if we need templates tests
 dnl ==========================================================================
 AC_MSG_CHECKING(for templates testing)
 AC_ARG_ENABLE([tmpl_tests], [AS_HELP_STRING([--enable-tmpl-tests],[enable templates testing in xmlsec utility (yes)])])

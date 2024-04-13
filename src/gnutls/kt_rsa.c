@@ -12,7 +12,10 @@
  * SECTION:crypto
  */
 
+
 #include "globals.h"
+
+#ifndef XMLSEC_NO_RSA
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -73,11 +76,11 @@ static int      xmlSecGnuTLSKeyTransportExecute         (xmlSecTransformPtr tran
 static int
 xmlSecGnuTLSKeyTransportCheckId(xmlSecTransformPtr transform) {
 
-#ifndef XMLSEC_NO_RSA
+#ifndef XMLSEC_NO_RSA_PKCS15
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformRsaPkcs1Id)) {
         return(1);
     }
-#endif /* XMLSEC_NO_RSA */
+#endif /* XMLSEC_NO_RSA_PKCS15 */
 
     /* not found */
     return(0);
@@ -96,13 +99,13 @@ xmlSecGnuTLSKeyTransportInitialize(xmlSecTransformPtr transform) {
     /* initialize context */
     memset(ctx, 0, sizeof(xmlSecGnuTLSKeyTransportCtx));
 
-#ifndef XMLSEC_NO_RSA
+#ifndef XMLSEC_NO_RSA_PKCS15
     if(transform->id == xmlSecGnuTLSTransformRsaPkcs1Id) {
         ctx->getPubKey  = xmlSecGnuTLSKeyDataRsaGetPublicKey;
         ctx->getPrivKey = xmlSecGnuTLSKeyDataRsaGetPrivateKey;
         ctx->keyId = xmlSecGnuTLSKeyDataRsaId;
     } else
-#endif /* XMLSEC_NO_RSA */
+#endif /* XMLSEC_NO_RSA_PKCS15 */
 
     /* not found */
     {
@@ -349,8 +352,7 @@ xmlSecGnuTLSKeyTransportExecute(xmlSecTransformPtr transform, int last, xmlSecTr
     return(0);
 }
 
-
-#ifndef XMLSEC_NO_RSA
+#ifndef XMLSEC_NO_RSA_PKCS15
 
 static xmlSecTransformKlass xmlSecGnuTLSRsaPkcs1Klass = {
     /* klass/object sizes */
@@ -391,4 +393,5 @@ xmlSecGnuTLSTransformRsaPkcs1GetKlass(void) {
     return(&xmlSecGnuTLSRsaPkcs1Klass);
 }
 
+#endif /* XMLSEC_NO_RSA_PKCS15 */
 #endif /* XMLSEC_NO_RSA */

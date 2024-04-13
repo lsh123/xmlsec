@@ -57,15 +57,23 @@ XMLSEC_TRANSFORM_DECLARE(MSCngRsaPkcs1Oaep, xmlSecMSCngRsaPkcs1OaepCtx)
 static int
 xmlSecMSCngRsaPkcs1OaepCheckId(xmlSecTransformPtr transform) {
 
+#ifndef XMLSEC_NO_RSA_PKCS15
     if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaPkcs1Id)) {
         return(1);
-    } else if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaOaepId)) {
+    } else
+#endif /* XMLSEC_NO_RSA_PKCS15 */
+
+#ifndef XMLSEC_NO_RSA_OAEP
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaOaepId)) {
         return(1);
     } else if (xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaOaepEnc11Id)) {
         return(1);
-    }
+    } else
+#endif /* XMLSEC_NO_RSA_OAEP */
 
-    return(0);
+    {
+        return(0);
+    }
 }
 
 static int
@@ -236,6 +244,7 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
         }
 
         /* encrypt */
+#ifndef XMLSEC_NO_RSA_PKCS15
         if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaPkcs1Id)) {
             status = BCryptEncrypt(hPubKey,
                 inBuf,
@@ -252,7 +261,11 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
                     xmlSecTransformGetName(transform), status);
                 return(-1);
             }
-        } else if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaOaepId) || xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaOaepEnc11Id)) {
+        } else
+#endif /* XMLSEC_NO_RSA_PKCS15 */
+
+#ifndef XMLSEC_NO_RSA_OAEP
+        if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaOaepId) || xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaOaepEnc11Id)) {
             BCRYPT_OAEP_PADDING_INFO paddingInfo;
             xmlSecSize oaepParamsSize;
 
@@ -276,10 +289,13 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
                 xmlSecMSCngNtError("BCryptEncrypt", xmlSecTransformGetName(transform), status);
                 return(-1);
             }
-        } else {
+        } else
+#endif /* XMLSEC_NO_RSA_OAEP */
+        {
             xmlSecInvalidTransfromError(transform)
             return(-1);
         }
+
     } else {
         /* this should be true since we checked above, but let's double check */
         if (inSize != outSize) {
@@ -297,6 +313,7 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
         }
 
         /* decrypt */
+#ifndef XMLSEC_NO_RSA_PKCS15
         if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaPkcs1Id)) {
             securityStatus = NCryptDecrypt(hPrivKey,
                 inBuf,
@@ -311,7 +328,11 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
                     xmlSecTransformGetName(transform), securityStatus);
                 return(-1);
             }
-        } else if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaOaepId) || xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaOaepEnc11Id)) {
+        } else
+#endif /* XMLSEC_NO_RSA_PKCS15 */
+
+#ifndef XMLSEC_NO_RSA_OAEP
+        if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaOaepId) || xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaOaepEnc11Id)) {
             BCRYPT_OAEP_PADDING_INFO paddingInfo;
             xmlSecSize oaepParamsSize;
 
@@ -334,7 +355,9 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
                     xmlSecTransformGetName(transform), securityStatus);
                 return(-1);
             }
-        } else {
+        } else 
+#endif /* XMLSEC_NO_RSA_OAEP */
+        {
             xmlSecInvalidTransfromError(transform)
             return(-1);
         }

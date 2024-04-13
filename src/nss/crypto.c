@@ -22,7 +22,7 @@
 #include <string.h>
 
 #include <nss.h>
-#include <pk11func.h>
+#include <pk11pub.h>
 #include <prinit.h>
 #include <prtypes.h>
 #include <secoidt.h>

@@ -33,7 +33,7 @@
 #include <keyhi.h>
 #include <cert.h>
 #include <certdb.h>
-#include <pk11func.h>
+#include <pk11pub.h>
 #include <sechash.h>
 
 #include <xmlsec/xmlsec.h>

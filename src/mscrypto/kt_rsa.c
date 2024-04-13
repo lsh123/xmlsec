@@ -73,15 +73,17 @@ static int      xmlSecMSCryptoRsaPkcs1OaepProcess               (xmlSecTransform
 static int
 xmlSecMSCryptoRsaPkcs1OaepCheckId(xmlSecTransformPtr transform) {
 
+#ifndef XMLSEC_NO_RSA_PKCS15
     if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaPkcs1Id)) {
         return(1);
     } else
+#endif /* XMLSEC_NO_RSA_PKCS15 */
 
-#ifndef XMLSEC_NO_SHA1
+#ifndef XMLSEC_NO_RSA_OAEP
     if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaOaepId)) {
         return(1);
     } else
-#endif /* XMLSEC_NO_SHA1 */
+#endif /* XMLSEC_NO_RSA_OAEP */
 
     /* not found */
     {
@@ -110,15 +112,17 @@ xmlSecMSCryptoRsaPkcs1OaepInitialize(xmlSecTransformPtr transform) {
         return(-1);
     }
 
+#ifndef XMLSEC_NO_RSA_PKCS15
     if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaPkcs1Id)) {
         ctx->dwFlags = 0;
     } else
+#endif /* XMLSEC_NO_RSA_PKCS15 */
 
-#ifndef XMLSEC_NO_SHA1
+#ifndef XMLSEC_NO_RSA_OAEP
     if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaOaepId)) {
         ctx->dwFlags = CRYPT_OAEP;
     } else
-#endif /* XMLSEC_NO_SHA1 */
+#endif /* XMLSEC_NO_RSA_OAEP */
 
     /* not found */
     {
@@ -215,7 +219,7 @@ xmlSecMSCryptoRsaPkcs1OaepExecute(xmlSecTransformPtr transform, int last,
     }
 
     if((transform->status == xmlSecTransformStatusWorking) && (last == 0)) {
-                /* just do nothing */
+        /* just do nothing */
     } else  if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
         ret = xmlSecMSCryptoRsaPkcs1OaepProcess(transform);
         if(ret < 0) {
@@ -311,7 +315,7 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
         xmlSecAssert2(outBuf != NULL, -1);
 
 
-#ifndef XMLSEC_NO_SHA1
+#ifndef XMLSEC_NO_RSA_OAEP
         /* set OAEP parameter for the key
          *
          * aleksey: I don't understand how this would work in multi-threaded
@@ -331,7 +335,7 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
                 return (-1);
             }
         }
-#endif /* XMLSEC_NO_SHA1 */
+#endif /* XMLSEC_NO_RSA_OAEP */
 
         /* encrypt */
         if (!CryptEncrypt(hKey, 0, TRUE, ctx->dwFlags, outBuf, &dwInLen, dwBufLen)) {
@@ -359,7 +363,7 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
             return (-1);
         }
 
-#ifndef XMLSEC_NO_SHA1
+#ifndef XMLSEC_NO_RSA_OAEP
         /* set OAEP parameter for the key
          *
          * aleksey: I don't understand how this would work in multi-threaded
@@ -379,7 +383,7 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
                 return (-1);
             }
         }
-#endif /* XMLSEC_NO_SHA1 */
+#endif /* XMLSEC_NO_RSA_OAEP */
 
         /* decrypt */
         if (!CryptDecrypt(hKey, 0, TRUE, ctx->dwFlags, outBuf, &dwOutLen)) {
@@ -407,7 +411,7 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
     return(0);
 }
 
-
+#ifndef XMLSEC_NO_RSA_PKCS15
 /**********************************************************************
  *
  * RSA/PKCS1 transform
@@ -452,15 +456,15 @@ xmlSecTransformId
 xmlSecMSCryptoTransformRsaPkcs1GetKlass(void) {
     return(&xmlSecMSCryptoRsaPkcs1Klass);
 }
+#endif /* XMLSEC_NO_RSA_PKCS15 */
 
 
-
+#ifndef XMLSEC_NO_RSA_OAEP
 /**********************************************************************
  *
  * RSA/OAEP transform: only SHA1 is supported for digest and MGF1!
  *
  **********************************************************************/
-#ifndef XMLSEC_NO_SHA1
 
 static int          xmlSecMSCryptoRsaOaepNodeRead               (xmlSecTransformPtr transform,
                                                                  xmlNodePtr node,
@@ -553,6 +557,6 @@ xmlSecMSCryptoRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     xmlSecTransformRsaOaepParamsFinalize(&oaepParams);
     return(0);
 }
-#endif /* XMLSEC_NO_SHA1 */
+#endif /* XMLSEC_NO_RSA_OAEP */
 
 #endif /* XMLSEC_NO_RSA */

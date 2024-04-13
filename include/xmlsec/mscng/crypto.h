@@ -203,6 +203,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformRsaPssSha384GetKlass(
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformRsaPssSha512GetKlass(void);
 #endif /* XMLSEC_NO_SHA512 */
 
+#ifndef XMLSEC_NO_RSA_PKCS15
 /**
  * xmlSecMSCngTransformRsaPkcs1Id:
  *
@@ -211,7 +212,9 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformRsaPssSha512GetKlass(
 #define xmlSecMSCngTransformRsaPkcs1Id \
         xmlSecMSCngTransformRsaPkcs1GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformRsaPkcs1GetKlass(void);
+#endif /* XMLSEC_NO_RSA_PKCS15 */
 
+#ifndef XMLSEC_NO_RSA_OAEP
 /**
  * xmlSecMSCngTransformRsaOaepId:
  *
@@ -230,6 +233,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformRsaOaepGetKlass(void)
 #define xmlSecMSCngTransformRsaOaepEnc11Id \
         xmlSecMSCngTransformRsaOaepEnc11GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformRsaOaepEnc11GetKlass(void);
+#endif /* XMLSEC_NO_RSA_OAEP */
 
 #endif /* XMLSEC_NO_RSA */
 

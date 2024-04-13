@@ -298,7 +298,9 @@ xmlSecCryptoGetFunctions_nss(void) {
 #endif /* XMLSEC_NO_SHA512 */
 
 
+#ifndef XMLSEC_NO_RSA_PKCS15
     gXmlSecNssFunctions->transformRsaPkcs1GetKlass      = xmlSecNssTransformRsaPkcs1GetKlass;
+#endif /* XMLSEC_NO_RSA_PKCS15*/
 
 #ifndef XMLSEC_NO_RSA_OAEP
     gXmlSecNssFunctions->transformRsaOaepGetKlass       = xmlSecNssTransformRsaOaepGetKlass;

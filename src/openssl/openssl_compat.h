@@ -24,7 +24,7 @@
 #define XMLSEC_OPENSSL_NO_STORE             1
 #define XMLSEC_OPENSSL_NO_DEEP_COPY         1
 #define XMLSEC_OPENSSL_NO_CRL_VERIFICATION  1
-#define XMLSEC_OPENSSL_NO_RSA_OAEP          1
+#define XMLSEC_NO_RSA_OAEP                  1
 #define XMLSEC_NO_DH                        1
 #define XMLSEC_NO_DSA                       1
 #define XMLSEC_NO_SHA3                      1

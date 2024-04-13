@@ -80,12 +80,12 @@ static int
 xmlSecNssKeyTransportCheckId(xmlSecTransformPtr transform) {
 
 #ifndef XMLSEC_NO_RSA
+#ifndef XMLSEC_NO_RSA_PKCS15
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformRsaPkcs1Id)) {
         return(1);
     }
-#endif /* XMLSEC_NO_RSA */
+#endif /* XMLSEC_NO_RSA_PKCS15 */
 
-#ifndef XMLSEC_NO_RSA
 #ifndef XMLSEC_NO_RSA_OAEP
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformRsaOaepId)) {
         return (1);
@@ -118,13 +118,14 @@ xmlSecNssKeyTransportInitialize(xmlSecTransformPtr transform) {
     memset(context, 0, sizeof(xmlSecNssKeyTransportCtx));
 
 #ifndef XMLSEC_NO_RSA
+
+#ifndef XMLSEC_NO_RSA_PKCS15
     if(transform->id == xmlSecNssTransformRsaPkcs1Id) {
         context->cipher = CKM_RSA_PKCS;
         context->keyId = xmlSecNssKeyDataRsaId;
     } else
-#endif /* XMLSEC_NO_RSA */
+#endif /* XMLSEC_NO_RSA_PKCS15 */
 
-#ifndef XMLSEC_NO_RSA
 #ifndef XMLSEC_NO_RSA_OAEP
     if(transform->id == xmlSecNssTransformRsaOaepId) {
         context->cipher = CKM_RSA_PKCS_OAEP;
@@ -134,6 +135,7 @@ xmlSecNssKeyTransportInitialize(xmlSecTransformPtr transform) {
         context->keyId = xmlSecNssKeyDataRsaId;
     } else
 #endif /* XMLSEC_NO_RSA_OAEP */
+
 #endif /* XMLSEC_NO_RSA */
 
     /* not found */
@@ -671,6 +673,7 @@ xmlSecNssKeyTransportExecute(xmlSecTransformPtr transform, int last, xmlSecTrans
 
 
 #ifndef XMLSEC_NO_RSA
+#ifndef XMLSEC_NO_RSA_PKCS15
 
 static xmlSecTransformKlass xmlSecNssRsaPkcs1Klass = {
     /* klass/object sizes */
@@ -710,9 +713,7 @@ xmlSecTransformId
 xmlSecNssTransformRsaPkcs1GetKlass(void) {
     return(&xmlSecNssRsaPkcs1Klass);
 }
-#endif /* XMLSEC_NO_RSA */
-
-#ifndef XMLSEC_NO_RSA
+#endif /* XMLSEC_NO_RSA_PKCS15 */
 
 #ifndef XMLSEC_NO_RSA_OAEP
 

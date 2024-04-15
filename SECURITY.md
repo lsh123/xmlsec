@@ -7,8 +7,8 @@ After 5 years, the support MIGHT be provided on case-by-case basis.
 
 | Version   | Rekease date       | Supported          |
 | --------- | -------------------|------------------- |
-| <= 1.2.25 | September 12, 2017 | :x:                |
-| >= 1.2.26 | June 5, 2018       | :white_check_mark: |
+| <= 1.2.28 | April 16, 2019     | :x:                |
+| >= 1.2.29 | October 15, 2019   | :white_check_mark: |
 | >= 1.3.0  | April 12, 2023     | :white_check_mark: |
 
 ## Reporting a Vulnerability

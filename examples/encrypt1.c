@@ -159,7 +159,7 @@ encrypt_file(const char* tmpl_file, const char* key_file,
     assert(data);
 
     /* load template */
-    doc = xmlParseFile(tmpl_file);
+    doc = xmlReadFile(tmpl_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
         fprintf(stderr, "Error: unable to parse file \"%s\"\n", tmpl_file);
         goto done;

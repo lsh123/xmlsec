@@ -503,9 +503,9 @@ xmlSecSimpleKeysStoreLoad_ex(xmlSecKeyStorePtr store, const char *uri,
     xmlSecAssert2(adoptKeyFunc != NULL, -1);
     UNREFERENCED_PARAMETER(keysMngr);
 
-    doc = xmlParseFile(uri);
+    doc = xmlReadFile(uri, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET);
     if(doc == NULL) {
-        xmlSecXmlError2("xmlParseFile", xmlSecKeyStoreGetName(store),
+        xmlSecXmlError2("xmlReadFile ", xmlSecKeyStoreGetName(store),
                         "uri=%s", xmlSecErrorsSafeString(uri));
         return(-1);
     }

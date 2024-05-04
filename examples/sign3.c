@@ -167,7 +167,7 @@ sign_file(const char* xml_file, const char* key_file, const char* cert_file) {
     assert(cert_file);
 
     /* load doc file */
-    doc = xmlParseFile(xml_file);
+    doc = xmlReadFile(xml_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
         fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
         goto done;

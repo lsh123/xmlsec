@@ -168,7 +168,7 @@ decrypt_file(xmlSecKeysMngrPtr mngr, const char* enc_file) {
     assert(enc_file);
 
     /* load template */
-    doc = xmlParseFile(enc_file);
+    doc = xmlReadFile(enc_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
         fprintf(stderr, "Error: unable to parse file \"%s\"\n", enc_file);
         goto done;

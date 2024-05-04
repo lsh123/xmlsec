@@ -157,7 +157,7 @@ encrypt_file(const char* xml_file, const char* key_file) {
     assert(key_file);
 
     /* load template */
-    doc = xmlParseFile(xml_file);
+    doc = xmlReadFile(xml_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
         fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
         goto done;

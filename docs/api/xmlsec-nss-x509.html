@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>x509: XML Security Library Reference Manual</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
 <link rel="up" href="xmlsec-nss-ref.html" title="XML Security Library for NSS API Reference.">
 <link rel="prev" href="xmlsec-nss-pkikeys.html" title="pkikeys">
 <link rel="next" href="xmlsec-mscrypto-ref.html" title="XML Security Library for Microsoft Crypto API Reference.">
-<meta name="generator" content="GTK-Doc V1.27 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.33.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -144,14 +144,6 @@
 <font><span class="returnvalue">CERTCertificate</span></font> *
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-nss-x509.html#xmlSecNssX509StoreFindCert" title="xmlSecNssX509StoreFindCert ()">xmlSecNssX509StoreFindCert</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
-<font><span class="returnvalue">CERTCertificate</span></font> *
-</td>
-<td class="function_name">
 <a class="link" href="xmlsec-nss-x509.html#xmlSecNssX509StoreVerify" title="xmlSecNssX509StoreVerify ()">xmlSecNssX509StoreVerify</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
@@ -161,6 +153,14 @@
 </td>
 <td class="function_name">
 <a class="link" href="xmlsec-nss-x509.html#xmlSecNssX509StoreAdoptCert" title="xmlSecNssX509StoreAdoptCert ()">xmlSecNssX509StoreAdoptCert</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-nss-x509.html#xmlSecNssX509StoreAdoptCrl" title="xmlSecNssX509StoreAdoptCrl ()">xmlSecNssX509StoreAdoptCrl</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 </tbody>
@@ -238,8 +238,10 @@ extraction or an error occurs.</p>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecNssKeyDataX509AdoptKeyCert (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
                                   <em class="parameter"><code><font><span class="type">CERTCertificate</span></font> *cert</code></em>);</pre>
-<p>Sets the key's certificate in <em class="parameter"><code>data</code></em>
-.</p>
+<p>Adds certificate to the X509 key data and sets the it as the key's
+certificate in <em class="parameter"><code>data</code></em>
+. On success, the <em class="parameter"><code>data</code></em>
+ owns the cert.</p>
 <div class="refsect3">
 <a name="xmlSecNssKeyDataX509AdoptKeyCert.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -516,71 +518,12 @@ xmlSecNssX509StoreGetKlass (<em class="parameter"><code><span class="type">void<
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecNssX509StoreFindCert"></a><h3>xmlSecNssX509StoreFindCert ()</h3>
-<pre class="programlisting"><font><span class="returnvalue">CERTCertificate</span></font> *
-xmlSecNssX509StoreFindCert (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataStore" title="struct xmlSecKeyDataStore"><span class="type">xmlSecKeyDataStorePtr</span></a> store</code></em>,
-                            <em class="parameter"><code><font><span class="type">xmlChar</span></font> *subjectName</code></em>,
-                            <em class="parameter"><code><font><span class="type">xmlChar</span></font> *issuerName</code></em>,
-                            <em class="parameter"><code><font><span class="type">xmlChar</span></font> *issuerSerial</code></em>,
-                            <em class="parameter"><code><font><span class="type">xmlChar</span></font> *ski</code></em>,
-                            <em class="parameter"><code><a class="link" href="xmlsec-keyinfo.html#xmlSecKeyInfoCtx" title="struct xmlSecKeyInfoCtx"><span class="type">xmlSecKeyInfoCtx</span></a> *keyInfoCtx</code></em>);</pre>
-<p>Searches <em class="parameter"><code>store</code></em>
- for a certificate that matches given criteria.</p>
-<div class="refsect3">
-<a name="xmlSecNssX509StoreFindCert.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
-<colgroup>
-<col>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>store</p></td>
-<td class="parameter_description"><p>the pointer to X509 key data store klass.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>subjectName</p></td>
-<td class="parameter_description"><p>the desired certificate name.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>issuerName</p></td>
-<td class="parameter_description"><p>the desired certificate issuer name.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>issuerSerial</p></td>
-<td class="parameter_description"><p>the desired certificate issuer serial number.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>ski</p></td>
-<td class="parameter_description"><p>the desired certificate SKI.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>keyInfoCtx</p></td>
-<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> element processing context.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="xmlSecNssX509StoreFindCert.returns"></a><h4>Returns</h4>
-<p> pointer to found certificate or NULL if certificate is not found
-or an error occurs.</p>
-</div>
-</div>
-<hr>
-<div class="refsect2">
 <a name="xmlSecNssX509StoreVerify"></a><h3>xmlSecNssX509StoreVerify ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">CERTCertificate</span></font> *
 xmlSecNssX509StoreVerify (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataStore" title="struct xmlSecKeyDataStore"><span class="type">xmlSecKeyDataStorePtr</span></a> store</code></em>,
                           <em class="parameter"><code><font><span class="type">CERTCertList</span></font> *certs</code></em>,
                           <em class="parameter"><code><a class="link" href="xmlsec-keyinfo.html#xmlSecKeyInfoCtx" title="struct xmlSecKeyInfoCtx"><span class="type">xmlSecKeyInfoCtx</span></a> *keyInfoCtx</code></em>);</pre>
+<div class="warning"><p><code class="literal">xmlSecNssX509StoreVerify</code> is deprecated and should not be used in newly-written code.</p></div>
 <p>Verifies <em class="parameter"><code>certs</code></em>
  list.</p>
 <div class="refsect3">
@@ -656,6 +599,40 @@ xmlSecNssX509StoreAdoptCert (<em class="parameter"><code><a class="link" href="x
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecNssX509StoreAdoptCrl"></a><h3>xmlSecNssX509StoreAdoptCrl ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecNssX509StoreAdoptCrl (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataStore" title="struct xmlSecKeyDataStore"><span class="type">xmlSecKeyDataStorePtr</span></a> store</code></em>,
+                            <em class="parameter"><code><font><span class="type">CERTSignedCrl</span></font> *crl</code></em>);</pre>
+<p>Adds CRL to the store.</p>
+<div class="refsect3">
+<a name="xmlSecNssX509StoreAdoptCrl.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>store</p></td>
+<td class="parameter_description"><p>the pointer to X509 key data store klass.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>crl</p></td>
+<td class="parameter_description"><p>the pointer to NSS X509 CRL.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecNssX509StoreAdoptCrl.returns"></a><h4>Returns</h4>
+<p> 0 on success or a negative value if an error occurs.</p>
+</div>
+</div>
 </div>
 <div class="refsect1">
 <a name="xmlsec-nss-x509.other_details"></a><h2>Types and Values</h2>
@@ -679,6 +656,6 @@ xmlSecNssX509StoreAdoptCert (<em class="parameter"><code><a class="link" href="x
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.27</div>
+<hr>Generated by GTK-Doc V1.33.1</div>
 </body>
 </html>

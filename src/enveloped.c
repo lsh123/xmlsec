@@ -1,16 +1,16 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- *
+ * Enveloped transform implementation.
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:enveloped
- * @Short_description: Enveloped transform implementation.
- * @Stability: Private
+ * SECTION:transforms
+ * @Short_description:
+ * @Stability: Stable
  *
  */
 #include "globals.h"
@@ -135,7 +135,7 @@ xmlSecTransformEnvelopedExecute(xmlSecTransformPtr transform, int last,
         return(-1);
     }
 
-    /* intersect <dsig:Signature/> node children with input nodes (if exist) */
+    /* intersect &lt;dsig:Signature/&gt; node children with input nodes (if exist) */
     transform->outNodes = xmlSecNodeSetAdd(transform->inNodes, children, xmlSecNodeSetIntersection);
     if(transform->outNodes == NULL) {
         xmlSecInternalError("xmlSecNodeSetAdd",
@@ -146,4 +146,3 @@ xmlSecTransformEnvelopedExecute(xmlSecTransformPtr transform, int last,
 
     return(0);
 }
-

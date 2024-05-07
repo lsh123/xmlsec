@@ -6,7 +6,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 #ifndef __XMLSEC_GLOBALS_H__
 #define __XMLSEC_GLOBALS_H__
@@ -24,28 +24,9 @@
 /* Include common error helper macros. */
 #include "../errors_helpers.h"
 
-/**
- * xmlSecGnuTLSGCryptError:
- * @errorFunction:      the failed function name.
- * @errCode:            the GCrypt error code.
- * @errorObject:        the error specific error object (e.g. transform, key data, etc).
- *
- * Macro. The XMLSec library macro for reporting GnuTLS-GCrypt errors.
- */
-#define xmlSecGnuTLSGCryptError(errorFunction, errCode, errorObject)  \
-    {                                                       \
-        const char* source = gcry_strsource((errCode));     \
-        const char* message = gcry_strerror((errCode));     \
-        xmlSecError(XMLSEC_ERRORS_HERE,                     \
-                    (const char*)(errorObject),             \
-                    (errorFunction),                        \
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,          \
-                    "gcrypt error: %ld: %s: %s",            \
-                    (long)(errCode),                        \
-                    xmlSecErrorsSafeString(source),         \
-                    xmlSecErrorsSafeString(message)         \
-        );                                                  \
-    }
+
+/** Max digest size */
+#define XMLSEC_GNUTLS_MAX_DIGEST_SIZE 128
 
 /**
  * xmlSecGnuTLSError:
@@ -62,9 +43,9 @@
                     (const char*)(errorObject),             \
                     (errorFunction),                        \
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,          \
-                    "gnutls error: %ld: %s",                \
-                    (long)(errCode),                        \
-                    xmlSecErrorsSafeString(message)         \
+                   "gnutls error: %d: %s",             \
+                    (errCode),                              \
+                    xmlSecErrorsSafeString(message)     \
         );                                                  \
     }
 
@@ -85,9 +66,9 @@
                     (const char*)(errorObject),             \
                     (errorFunction),                        \
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,          \
-                    msg  "gnutls error: %ld: %s",           \
+                    msg  "; gnutls error: %d: %s",          \
                     (param),                                \
-                    (long)(errCode),                        \
+                    (errCode),                              \
                     xmlSecErrorsSafeString(message)         \
         );                                                  \
     }

@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>app: XML Security Library Reference Manual</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
 <link rel="up" href="xmlsec-nss-ref.html" title="XML Security Library for NSS API Reference.">
 <link rel="prev" href="xmlsec-nss-ref.html" title="XML Security Library for NSS API Reference.">
-<link rel="next" href="xmlsec-nss-bignum.html" title="bignum">
-<meta name="generator" content="GTK-Doc V1.27 (XML mode)">
+<link rel="next" href="xmlsec-nss-crypto.html" title="crypto">
+<meta name="generator" content="GTK-Doc V1.33.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -20,7 +20,7 @@
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <td><a accesskey="u" href="xmlsec-nss-ref.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
 <td><a accesskey="p" href="xmlsec-nss-ref.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="n" href="xmlsec-nss-bignum.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+<td><a accesskey="n" href="xmlsec-nss-crypto.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="refentry">
 <a name="xmlsec-nss-app"></a><div class="titlepage"></div>
@@ -80,6 +80,14 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
+<a class="link" href="xmlsec-nss-app.html#xmlSecNssAppDefaultKeysMngrVerifyKey" title="xmlSecNssAppDefaultKeysMngrVerifyKey ()">xmlSecNssAppDefaultKeysMngrVerifyKey</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
 <a class="link" href="xmlsec-nss-app.html#xmlSecNssAppDefaultKeysMngrLoad" title="xmlSecNssAppDefaultKeysMngrLoad ()">xmlSecNssAppDefaultKeysMngrLoad</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
@@ -117,10 +125,26 @@
 </tr>
 <tr>
 <td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-nss-app.html#xmlSecNssAppKeysMngrCrlLoad" title="xmlSecNssAppKeysMngrCrlLoad ()">xmlSecNssAppKeysMngrCrlLoad</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-nss-app.html#xmlSecNssAppKeysMngrCrlLoadMemory" title="xmlSecNssAppKeysMngrCrlLoadMemory ()">xmlSecNssAppKeysMngrCrlLoadMemory</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
 <a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-nss-app.html#xmlSecNssAppKeyLoad" title="xmlSecNssAppKeyLoad ()">xmlSecNssAppKeyLoad</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-nss-app.html#xmlSecNssAppKeyLoadEx" title="xmlSecNssAppKeyLoadEx ()">xmlSecNssAppKeyLoadEx</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -208,7 +232,7 @@
 </div>
 <div class="refsect1">
 <a name="xmlsec-nss-app.description"></a><h2>Description</h2>
-<p></p>
+<p>Common functions for xmlsec1 command line utility tool for NSS.</p>
 </div>
 <div class="refsect1">
 <a name="xmlsec-nss-app.functions_details"></a><h2>Functions</h2>
@@ -317,6 +341,57 @@ function.</p>
 <div class="refsect3">
 <a name="xmlSecNssAppDefaultKeysMngrAdoptKey.returns"></a><h4>Returns</h4>
 <p> 0 on success or a negative value otherwise.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecNssAppDefaultKeysMngrVerifyKey"></a><h3>xmlSecNssAppDefaultKeysMngrVerifyKey ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecNssAppDefaultKeysMngrVerifyKey (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>,
+                                      <em class="parameter"><code><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="type">xmlSecKeyPtr</span></a> key</code></em>,
+                                      <em class="parameter"><code><a class="link" href="xmlsec-keyinfo.html#xmlSecKeyInfoCtx" title="struct xmlSecKeyInfoCtx"><span class="type">xmlSecKeyInfoCtxPtr</span></a> keyInfoCtx</code></em>);</pre>
+<p>Verifies <em class="parameter"><code>key</code></em>
+ with the keys manager <em class="parameter"><code>mngr</code></em>
+ created with <a class="link" href="xmlsec-app.html#xmlSecCryptoAppDefaultKeysMngrInit" title="xmlSecCryptoAppDefaultKeysMngrInit ()"><span class="type">xmlSecCryptoAppDefaultKeysMngrInit</span></a>
+function:</p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem"><p>Checks that key certificate is present</p></li>
+<li class="listitem"><p>Checks that key certificate is valid</p></li>
+</ul></div>
+<p>Adds <em class="parameter"><code>key</code></em>
+ to the keys manager <em class="parameter"><code>mngr</code></em>
+ created with <a class="link" href="xmlsec-app.html#xmlSecCryptoAppDefaultKeysMngrInit" title="xmlSecCryptoAppDefaultKeysMngrInit ()"><span class="type">xmlSecCryptoAppDefaultKeysMngrInit</span></a>
+function.</p>
+<div class="refsect3">
+<a name="xmlSecNssAppDefaultKeysMngrVerifyKey.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>mngr</p></td>
+<td class="parameter_description"><p>the pointer to keys manager.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>key</p></td>
+<td class="parameter_description"><p>the pointer to key.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>keyInfoCtx</p></td>
+<td class="parameter_description"><p>the key info context for verification.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecNssAppDefaultKeysMngrVerifyKey.returns"></a><h4>Returns</h4>
+<p> 1 if key is verified, 0 otherwise, or a negative value if an error occurs.</p>
 </div>
 </div>
 <hr>
@@ -475,12 +550,12 @@ untrusted certs in <em class="parameter"><code>store</code></em>
 </tr>
 <tr>
 <td class="parameter_name"><p>data</p></td>
-<td class="parameter_description"><p>the key binary data.</p></td>
+<td class="parameter_description"><p>the certificatedata.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>dataSize</p></td>
-<td class="parameter_description"><p>the key binary data size.</p></td>
+<td class="parameter_description"><p>the certificate data size.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -552,16 +627,107 @@ untrusted certs in <em class="parameter"><code>store</code></em>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecNssAppKeyLoad"></a><h3>xmlSecNssAppKeyLoad ()</h3>
+<a name="xmlSecNssAppKeysMngrCrlLoad"></a><h3>xmlSecNssAppKeysMngrCrlLoad ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecNssAppKeysMngrCrlLoad (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>,
+                             <em class="parameter"><code>const <font><span class="type">char</span></font> *filename</code></em>,
+                             <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataFormat" title="enum xmlSecKeyDataFormat"><span class="type">xmlSecKeyDataFormat</span></a> format</code></em>);</pre>
+<p>Reads crl from <em class="parameter"><code>filename</code></em>
+ and adds to the list of crls in <em class="parameter"><code>store</code></em>
+</p>
+<div class="refsect3">
+<a name="xmlSecNssAppKeysMngrCrlLoad.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>mngr</p></td>
+<td class="parameter_description"><p>the pointer to keys manager.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>filename</p></td>
+<td class="parameter_description"><p>the CRL file.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>format</p></td>
+<td class="parameter_description"><p>the CRL file format (PEM or DER).</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecNssAppKeysMngrCrlLoad.returns"></a><h4>Returns</h4>
+<p> 0 on success or a negative value otherwise.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecNssAppKeysMngrCrlLoadMemory"></a><h3>xmlSecNssAppKeysMngrCrlLoadMemory ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecNssAppKeysMngrCrlLoadMemory (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>,
+                                   <em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *data</code></em>,
+                                   <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> dataSize</code></em>,
+                                   <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataFormat" title="enum xmlSecKeyDataFormat"><span class="type">xmlSecKeyDataFormat</span></a> format</code></em>);</pre>
+<p>Reads crl from <em class="parameter"><code>data</code></em>
+ and adds to the list of crls in <em class="parameter"><code>store</code></em>
+</p>
+<div class="refsect3">
+<a name="xmlSecNssAppKeysMngrCrlLoadMemory.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>mngr</p></td>
+<td class="parameter_description"><p>the pointer to keys manager.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>data</p></td>
+<td class="parameter_description"><p>the CRL data.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>dataSize</p></td>
+<td class="parameter_description"><p>the CRL data size.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>format</p></td>
+<td class="parameter_description"><p>the CRL format (PEM or DER).</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecNssAppKeysMngrCrlLoadMemory.returns"></a><h4>Returns</h4>
+<p> 0 on success or a negative value otherwise.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecNssAppKeyLoadEx"></a><h3>xmlSecNssAppKeyLoadEx ()</h3>
 <pre class="programlisting"><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
-xmlSecNssAppKeyLoad (<em class="parameter"><code>const <font><span class="type">char</span></font> *filename</code></em>,
-                     <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataFormat" title="enum xmlSecKeyDataFormat"><span class="type">xmlSecKeyDataFormat</span></a> format</code></em>,
-                     <em class="parameter"><code>const <font><span class="type">char</span></font> *pwd</code></em>,
-                     <em class="parameter"><code><font><span class="type">void</span></font> *pwdCallback</code></em>,
-                     <em class="parameter"><code><font><span class="type">void</span></font> *pwdCallbackCtx</code></em>);</pre>
+xmlSecNssAppKeyLoadEx (<em class="parameter"><code>const <font><span class="type">char</span></font> *filename</code></em>,
+                       <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataType" title="xmlSecKeyDataType"><span class="type">xmlSecKeyDataType</span></a> type</code></em>,
+                       <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataFormat" title="enum xmlSecKeyDataFormat"><span class="type">xmlSecKeyDataFormat</span></a> format</code></em>,
+                       <em class="parameter"><code>const <font><span class="type">char</span></font> *pwd</code></em>,
+                       <em class="parameter"><code><font><span class="type">void</span></font> *pwdCallback</code></em>,
+                       <em class="parameter"><code><font><span class="type">void</span></font> *pwdCallbackCtx</code></em>);</pre>
 <p>Reads key from a file</p>
 <div class="refsect3">
-<a name="xmlSecNssAppKeyLoad.parameters"></a><h4>Parameters</h4>
+<a name="xmlSecNssAppKeyLoadEx.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col>
@@ -572,6 +738,11 @@ xmlSecNssAppKeyLoad (<em class="parameter"><code>const <font><span class="type">
 <tr>
 <td class="parameter_name"><p>filename</p></td>
 <td class="parameter_description"><p>the key filename.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>type</p></td>
+<td class="parameter_description"><p>the key type (public / private).</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -598,7 +769,7 @@ xmlSecNssAppKeyLoad (<em class="parameter"><code>const <font><span class="type">
 </table></div>
 </div>
 <div class="refsect3">
-<a name="xmlSecNssAppKeyLoad.returns"></a><h4>Returns</h4>
+<a name="xmlSecNssAppKeyLoadEx.returns"></a><h4>Returns</h4>
 <p> pointer to the key or NULL if an error occurs.</p>
 </div>
 </div>
@@ -722,7 +893,8 @@ xmlSecNssAppPkcs12Load (<em class="parameter"><code>const <font><span class="typ
                         <em class="parameter"><code><font><span class="type">void</span></font> *pwdCallback</code></em>,
                         <em class="parameter"><code><font><span class="type">void</span></font> *pwdCallbackCtx</code></em>);</pre>
 <p>Reads key and all associated certificates from the PKCS12 file.
-For uniformity, call xmlSecNssAppKeyLoad instead of this function. Pass
+For uniformity, call <em class="parameter"><code>xmlSecNssAppKeyLoadEx</code></em>
+ instead of this function. Pass
 in format=xmlSecKeyDataFormatPkcs12.</p>
 <div class="refsect3">
 <a name="xmlSecNssAppPkcs12Load.parameters"></a><h4>Parameters</h4>
@@ -771,7 +943,8 @@ xmlSecNssAppPkcs12LoadMemory (<em class="parameter"><code>const <a class="link" 
                               <em class="parameter"><code><font><span class="type">void</span></font> *pwdCallback</code></em>,
                               <em class="parameter"><code><font><span class="type">void</span></font> *pwdCallbackCtx</code></em>);</pre>
 <p>Reads key and all associated certificates from the PKCS12 binary data.
-For uniformity, call xmlSecNssAppKeyLoad instead of this function. Pass
+For uniformity, call <em class="parameter"><code>xmlSecNssAppKeyLoadEx</code></em>
+ instead of this function. Pass
 in format=xmlSecKeyDataFormatPkcs12.</p>
 <div class="refsect3">
 <a name="xmlSecNssAppPkcs12LoadMemory.parameters"></a><h4>Parameters</h4>
@@ -824,7 +997,8 @@ xmlSecNssAppPkcs12LoadSECItem (<em class="parameter"><code><font><span class="ty
                                <em class="parameter"><code><font><span class="type">void</span></font> *pwdCallback</code></em>,
                                <em class="parameter"><code><font><span class="type">void</span></font> *pwdCallbackCtx</code></em>);</pre>
 <p>Reads key and all associated certificates from the PKCS12 SECItem.
-For uniformity, call xmlSecNssAppKeyLoad instead of this function. Pass
+For uniformity, call <em class="parameter"><code>xmlSecNssAppKeyLoadEx</code></em>
+ instead of this function. Pass
 in format=xmlSecKeyDataFormatPkcs12.</p>
 <div class="refsect3">
 <a name="xmlSecNssAppPkcs12LoadSECItem.parameters"></a><h4>Parameters</h4>
@@ -1040,12 +1214,8 @@ xmlSecNssAppGetDefaultPwdCallback (<em class="parameter"><code><span class="type
 </div>
 </div>
 </div>
-<div class="refsect1">
-<a name="xmlsec-nss-app.other_details"></a><h2>Types and Values</h2>
-<p></p>
-</div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.27</div>
+<hr>Generated by GTK-Doc V1.33.1</div>
 </body>
 </html>

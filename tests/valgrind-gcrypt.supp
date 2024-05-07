@@ -1,0 +1,113 @@
+##----------------------------------------------------------------------##
+#
+# Errors to suppress by default with GCrypt
+#
+# Format of this file is:
+# {
+#     name_of_suppression
+#     kind: one of Param Value1 Value2 Value4 Value8
+#                   Free Addr1 Addr2 Addr4 Addr8
+#                   Cond (previously known as Value0)
+#     (if Param: name of system call param, if Free: name of free-ing fn)
+#     caller0 name, or /name/of/so/file.so
+#     caller1 name, or ditto
+#     (optionally: caller2 name)
+#     (optionally: caller3 name)
+#  }
+
+##----------------------------------------------------------------------##
+
+{
+   global_init -> malloc
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   ...
+   fun:global_init
+   ...
+   fun:main
+}
+
+{
+   gcry_check_version -> malloc
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   ...
+   fun:gcry_check_version
+   ...
+   fun:main
+}
+
+{
+   gcry_randomize -> malloc
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   ...
+   fun:gcry_randomize
+   ...
+   fun:main
+}
+
+{
+   gcry_pk_genkey -> malloc
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   ...
+   fun:gcry_pk_genkey
+   ...
+   fun:main
+}
+
+{
+   xmlSecGCryptGenerateRandom -> malloc
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   ...
+   fun:_gcry_rngcsprng_randomize
+   fun:xmlSecGCryptGenerateRandom
+   ...
+   fun:main
+}
+
+{
+   xmlSecGCryptDsaSign -> do_randomize -> malloc
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   ...
+   fun:do_randomize
+   ...
+   fun:xmlSecGCryptDsaSign
+   ...
+   fun:main
+}
+
+{
+   xmlSecGCryptRsaPkcs1Sign -> _gcry_mpi_randomize -> malloc
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   ...
+   fun:_gcry_mpi_randomize
+   ...
+   fun:xmlSecGCryptRsaPkcs1Sign
+   ...
+   fun:main
+}
+
+{
+   xmlSecGCryptBlockCipherCtxInit -> _gcry_rngcsprng_randomize -> malloc
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   ...
+   fun:_gcry_rngcsprng_randomize
+   ...
+   fun:xmlSecGCryptBlockCipherCtxInit
+   ...
+   fun:main
+}

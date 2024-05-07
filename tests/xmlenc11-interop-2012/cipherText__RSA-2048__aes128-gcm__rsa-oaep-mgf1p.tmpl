@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xenc:EncryptedData xmlns:xenc="http://www.w3.org/2001/04/xmlenc#" Type="http://www.w3.org/2001/04/xmlenc#Element">
+   <xenc:EncryptionMethod Algorithm="http://www.w3.org/2009/xmlenc11#aes128-gcm" />
+   <dsig:KeyInfo xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+      <xenc:EncryptedKey>
+         <xenc:EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p">
+            <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+         </xenc:EncryptionMethod>
+         <dsig:KeyInfo>
+            <dsig:KeyName>TestRsa2048Key</dsig:KeyName>
+            <dsig:X509Data></dsig:X509Data>
+         </dsig:KeyInfo>
+         <xenc:CipherData>
+            <xenc:CipherValue></xenc:CipherValue>
+         </xenc:CipherData>
+      </xenc:EncryptedKey>
+   </dsig:KeyInfo>
+   <xenc:CipherData>
+      <xenc:CipherValue></xenc:CipherValue>
+   </xenc:CipherData>
+</xenc:EncryptedData>

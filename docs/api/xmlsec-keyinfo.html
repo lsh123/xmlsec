@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>keyinfo: XML Security Library Reference Manual</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
 <link rel="up" href="xmlsec-ref.html" title="XML Security Core Library API Reference.">
 <link rel="prev" href="xmlsec-io.html" title="io">
 <link rel="next" href="xmlsec-keysdata.html" title="keysdata">
-<meta name="generator" content="GTK-Doc V1.27 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.33.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -160,7 +160,31 @@
 <font><span class="returnvalue">xmlSecKeyDataId</span></font>
 </td>
 <td class="function_name">
+<a class="link" href="xmlsec-keyinfo.html#xmlSecKeyDataKeyInfoReferenceGetKlass" title="xmlSecKeyDataKeyInfoReferenceGetKlass ()">xmlSecKeyDataKeyInfoReferenceGetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecKeyDataId</span></font>
+</td>
+<td class="function_name">
 <a class="link" href="xmlsec-keyinfo.html#xmlSecKeyDataEncryptedKeyGetKlass" title="xmlSecKeyDataEncryptedKeyGetKlass ()">xmlSecKeyDataEncryptedKeyGetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecKeyDataId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-keyinfo.html#xmlSecKeyDataAgreementMethodGetKlass" title="xmlSecKeyDataAgreementMethodGetKlass ()">xmlSecKeyDataAgreementMethodGetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecKeyDataId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-keyinfo.html#xmlSecKeyDataDerivedKeyGetKlass" title="xmlSecKeyDataDerivedKeyGetKlass ()">xmlSecKeyDataDerivedKeyGetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 </tbody>
@@ -231,6 +255,10 @@
 <td class="function_name"><a class="link" href="xmlsec-keyinfo.html#XMLSEC-KEYINFO-FLAGS-X509DATA-SKIP-STRICT-CHECKS:CAPS" title="XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_STRICT_CHECKS">XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_STRICT_CHECKS</a></td>
 </tr>
 <tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-keyinfo.html#XMLSEC-KEYINFO-FLAGS-LAX-KEY-SEARCH:CAPS" title="XMLSEC_KEYINFO_FLAGS_LAX_KEY_SEARCH">XMLSEC_KEYINFO_FLAGS_LAX_KEY_SEARCH</a></td>
+</tr>
+<tr>
 <td class="datatype_keyword">struct</td>
 <td class="function_name"><a class="link" href="xmlsec-keyinfo.html#xmlSecKeyInfoCtx" title="struct xmlSecKeyInfoCtx">xmlSecKeyInfoCtx</a></td>
 </tr>
@@ -248,14 +276,26 @@
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-keyinfo.html#xmlSecKeyDataKeyInfoReferenceId" title="xmlSecKeyDataKeyInfoReferenceId">xmlSecKeyDataKeyInfoReferenceId</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
 <td class="function_name"><a class="link" href="xmlsec-keyinfo.html#xmlSecKeyDataEncryptedKeyId" title="xmlSecKeyDataEncryptedKeyId">xmlSecKeyDataEncryptedKeyId</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-keyinfo.html#xmlSecKeyDataAgreementMethodId" title="xmlSecKeyDataAgreementMethodId">xmlSecKeyDataAgreementMethodId</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-keyinfo.html#xmlSecKeyDataDerivedKeyId" title="xmlSecKeyDataDerivedKeyId">xmlSecKeyDataDerivedKeyId</a></td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <div class="refsect1">
 <a name="xmlsec-keyinfo.description"></a><h2>Description</h2>
-<p><a class="ulink" href="https://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top">KeyInfo</a> is an 
+<p><a class="ulink" href="https://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top">KeyInfo</a> is an
 optional element that enables the recipient(s) to obtain
 the key needed to validate the signature.  KeyInfo may contain keys,
 names, certificates and other public key management information, such as
@@ -687,6 +727,29 @@ Reference's URI and The Reference Processing Model.</p>
 </div>
 <hr>
 <div class="refsect2">
+<a name="xmlSecKeyDataKeyInfoReferenceGetKlass"></a><h3>xmlSecKeyDataKeyInfoReferenceGetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
+xmlSecKeyDataKeyInfoReferenceGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>A KeyInfoReference element within KeyInfo is used to convey a reference to
+a KeyInfo element at another location in the same or different document.</p>
+<p>KeyInfoReference uses the same syntax and dereferencing behavior as Reference's URI
+and the Reference Processing Model except that there are no child elements and
+the presence of the URI attribute is mandatory.</p>
+<p>The result of dereferencing a KeyInfoReference MUST be a KeyInfo element, or an XML
+document with a KeyInfo element as the root.</p>
+<p>     </p>
+<span style="color: red">&lt;element&gt;&lt;/element&gt;</span><span style="color: red">&lt;complexType&gt;
+         <span style="color: red">&lt;attribute&gt;&lt;/attribute&gt;</span>
+         <span style="color: red">&lt;attribute&gt;&lt;/attribute&gt;</span>
+     &lt;/complexType&gt;</span>
+
+https://www.w3.org/TR/xmldsig-core1/<font><span class="type">sec-KeyInfoReference</span></font><div class="refsect3">
+<a name="xmlSecKeyDataKeyInfoReferenceGetKlass.returns"></a><h4>Returns</h4>
+<p> the&lt;dsig11:KeyInfoReference/&gt; element processing key data klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
 <a name="xmlSecKeyDataEncryptedKeyGetKlass"></a><h3>xmlSecKeyDataEncryptedKeyGetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
 xmlSecKeyDataEncryptedKeyGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
@@ -702,6 +765,46 @@ without any additional processing.</p>
 <div class="refsect3">
 <a name="xmlSecKeyDataEncryptedKeyGetKlass.returns"></a><h4>Returns</h4>
 <p> the <a class="ulink" href="" target="_top">&lt;enc:EncryptedKey/&gt;</a> element processing key data klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecKeyDataAgreementMethodGetKlass"></a><h3>xmlSecKeyDataAgreementMethodGetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
+xmlSecKeyDataAgreementMethodGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The <a class="ulink" href="" target="_top">&lt;enc:AgreementMethod/&gt;</a> element key data klass
+(hhttps://www.w3.org/TR/xmlenc-core1/<font><span class="type">sec-Alg-KeyAgreement</span></font>)</p>
+<p>A Key Agreement algorithm provides for the derivation of a shared secret key based on
+a shared secret computed from certain types of compatible public keys from both the sender
+and the recipient. Information from the originator to determine the secret is indicated by
+an optional OriginatorKeyInfo parameter child of an AgreementMethod element while that associated
+with the recipient is indicated by an optional RecipientKeyInfo. A shared key is derived from
+this shared secret by a method determined by the Key Agreement algorithm.</p>
+<div class="refsect3">
+<a name="xmlSecKeyDataAgreementMethodGetKlass.returns"></a><h4>Returns</h4>
+<p> the <a class="ulink" href="" target="_top">&lt;enc:AgreementMethod/&gt;</a> element processing key data klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecKeyDataDerivedKeyGetKlass"></a><h3>xmlSecKeyDataDerivedKeyGetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
+xmlSecKeyDataDerivedKeyGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The&lt;enc11:DerivedKey/&gt; element key data klass
+(https://www.w3.org/TR/xmlenc-core1/<font><span class="type">sec-DerivedKey</span></font>)</p>
+<p>The DerivedKey element is used to transport information about
+a derived key from the originator to recipient(s). It may be
+used as a stand-alone XML document, be placed within an application
+document, or appear inside an EncryptedData or Signature element as
+a child of a ds:KeyInfo element. The key value itself is never sent
+by the originator. Rather, the originator provides information to
+the recipient(s) by which the recipient(s) can derive the same key value.
+When the key has been derived the resulting octets are made available
+to the EncryptionMethod or SignatureMethod algorithm without
+any additional processing.</p>
+<div class="refsect3">
+<a name="xmlSecKeyDataDerivedKeyGetKlass.returns"></a><h4>Returns</h4>
+<p> the&lt;enc11:DerivedKey/&gt; element processing key data klass.</p>
 </div>
 </div>
 </div>
@@ -840,6 +943,15 @@ Otherwise we just ignore it.</p>
 </div>
 <hr>
 <div class="refsect2">
+<a name="XMLSEC-KEYINFO-FLAGS-LAX-KEY-SEARCH:CAPS"></a><h3>XMLSEC_KEYINFO_FLAGS_LAX_KEY_SEARCH</h3>
+<pre class="programlisting">#define XMLSEC_KEYINFO_FLAGS_LAX_KEY_SEARCH                     0x00008000
+</pre>
+<p>If the flag is set then we'll try to find any key that matches requirements
+(e.g. *any* RSA public key). In the default strict key search mode, only keys
+referenced in <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> (e.g. by KeyName value) are used.</p>
+</div>
+<hr>
+<div class="refsect2">
 <a name="xmlSecKeyInfoCtx"></a><h3>struct xmlSecKeyInfoCtx</h3>
 <pre class="programlisting">struct xmlSecKeyInfoCtx {
     void*                               userData;
@@ -854,24 +966,26 @@ Otherwise we just ignore it.</p>
     xmlSecTransformCtx                  retrievalMethodCtx;
     int                                 maxRetrievalMethodLevel;
 
+    /* KeyInfoReference */
+    xmlSecTransformCtx                  keyInfoReferenceCtx;
+    int                                 maxKeyInfoReferenceLevel;
 
-    /* EncryptedKey */
+    /* EncryptedKey or DerivedKey */
     xmlSecEncCtxPtr                     encCtx;
     int                                 maxEncryptedKeyLevel;
-
-
 
     /* x509 certificates */
     time_t                              certsVerificationTime;
     int                                 certsVerificationDepth;
-
 
     /* PGP */
     void*                               pgpReserved;    /* TODO */
 
     /* internal data */
     int                                 curRetrievalMethodLevel;
+    int                                 curKeyInfoReferenceLevel;
     int                                 curEncryptedKeyLevel;
+    xmlSecTransformOperation            operation;
     xmlSecKeyReq                        keyReq;
 
     /* for the future */
@@ -935,10 +1049,24 @@ element processing.</p></td>
 </tr>
 <tr>
 <td class="struct_member_name"><p><font><span class="type">int</span></font> <em class="structfield"><code><a name="xmlSecKeyInfoCtx.maxRetrievalMethodLevel"></a>maxRetrievalMethodLevel</code></em>;</p></td>
-<td class="struct_member_description">
-<p>the max recursion level when processing</p>
-<a class="ulink" href="" target="_top">&lt;dsig:RetrievalMethod /&gt;</a> element; default level is 1
-(see also <em class="parameter"><code>curRetrievalMethodLevel</code></em>).</td>
+<td class="struct_member_description"><p>the max recursion level when processing
+<a class="ulink" href="" target="_top">&lt;dsig:RetrievalMethod/&gt;</a> element; default level is 1
+(see also <em class="parameter"><code>curRetrievalMethodLevel</code></em>
+).</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><a class="link" href="xmlsec-transforms.html#xmlSecTransformCtx" title="struct xmlSecTransformCtx"><span class="type">xmlSecTransformCtx</span></a> <em class="structfield"><code><a name="xmlSecKeyInfoCtx.keyInfoReferenceCtx"></a>keyInfoReferenceCtx</code></em>;</p></td>
+<td class="struct_member_description"><p>the transforms context for&lt;dsig11:KeyInfoReference/&gt;
+element processing.</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><font><span class="type">int</span></font> <em class="structfield"><code><a name="xmlSecKeyInfoCtx.maxKeyInfoReferenceLevel"></a>maxKeyInfoReferenceLevel</code></em>;</p></td>
+<td class="struct_member_description"><p>the max recursion level when processing
+&lt;dsig11:KeyInfoReference/&gt; element; default level is 1
+(see also <em class="parameter"><code>curKeyInfoReferenceLevel</code></em>
+).</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
@@ -949,10 +1077,10 @@ processing.</p></td>
 </tr>
 <tr>
 <td class="struct_member_name"><p><font><span class="type">int</span></font> <em class="structfield"><code><a name="xmlSecKeyInfoCtx.maxEncryptedKeyLevel"></a>maxEncryptedKeyLevel</code></em>;</p></td>
-<td class="struct_member_description">
-<p>the max recursion level when processing</p>
-<a class="ulink" href="" target="_top">&lt;enc:EncryptedKey /&gt;</a> element; default level is 1
-(see <em class="parameter"><code>curEncryptedKeyLevel</code></em>).</td>
+<td class="struct_member_description"><p>the max recursion level when processing
+<a class="ulink" href="" target="_top">&lt;enc:EncryptedKey/&gt;</a> element; default level is 1
+(see <em class="parameter"><code>curEncryptedKeyLevel</code></em>
+).</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
@@ -977,16 +1105,28 @@ clock "now".</p></td>
 </tr>
 <tr>
 <td class="struct_member_name"><p><font><span class="type">int</span></font> <em class="structfield"><code><a name="xmlSecKeyInfoCtx.curRetrievalMethodLevel"></a>curRetrievalMethodLevel</code></em>;</p></td>
-<td class="struct_member_description"><p>the current <a class="ulink" href="" target="_top">&lt;dsig:RetrievalMethod /&gt;</a> element
+<td class="struct_member_description"><p>the current<a class="ulink" href="" target="_top">&lt;dsig:RetrievalMethod/&gt;</a> element
 processing level (see <em class="parameter"><code>maxRetrievalMethodLevel</code></em>
 ).</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
+<td class="struct_member_name"><p><font><span class="type">int</span></font> <em class="structfield"><code><a name="xmlSecKeyInfoCtx.curKeyInfoReferenceLevel"></a>curKeyInfoReferenceLevel</code></em>;</p></td>
+<td class="struct_member_description"><p>the current&lt;dsig11:KeyInfoReference/&gt; element
+processing level (see <em class="parameter"><code>maxKeyInfoReferenceLevel</code></em>
+).</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
 <td class="struct_member_name"><p><font><span class="type">int</span></font> <em class="structfield"><code><a name="xmlSecKeyInfoCtx.curEncryptedKeyLevel"></a>curEncryptedKeyLevel</code></em>;</p></td>
-<td class="struct_member_description"><p>the current <a class="ulink" href="" target="_top">&lt;enc:EncryptedKey /&gt;</a> element
+<td class="struct_member_description"><p>the current<a class="ulink" href="" target="_top">&lt;enc:EncryptedKey/&gt;</a> or&lt;enc11:DerivedKey/&gt; element
 processing level (see <em class="parameter"><code>maxEncryptedKeyLevel</code></em>
 ).</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><a class="link" href="xmlsec-transforms.html#xmlSecTransformOperation" title="enum xmlSecTransformOperation"><span class="type">xmlSecTransformOperation</span></a> <em class="structfield"><code><a name="xmlSecKeyInfoCtx.operation"></a>operation</code></em>;</p></td>
+<td class="struct_member_description"><p>the transform operation for this key info.</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
@@ -1013,32 +1153,53 @@ processing level (see <em class="parameter"><code>maxEncryptedKeyLevel</code></e
 <a name="xmlSecKeyDataNameId"></a><h3>xmlSecKeyDataNameId</h3>
 <pre class="programlisting">#define xmlSecKeyDataNameId             xmlSecKeyDataNameGetKlass()
 </pre>
-<p>The <a class="ulink" href="" target="_top">&lt;dsig:KeyName/&gt;</a> processing class.</p>
+<p>The<a class="ulink" href="" target="_top">&lt;dsig:KeyName/&gt;</a> processing class.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecKeyDataValueId"></a><h3>xmlSecKeyDataValueId</h3>
 <pre class="programlisting">#define xmlSecKeyDataValueId            xmlSecKeyDataValueGetKlass()
 </pre>
-<p>The <a class="ulink" href="" target="_top">&lt;dsig:KeyValue/&gt;</a> processing class.</p>
+<p>The<a class="ulink" href="" target="_top">&lt;dsig:KeyValue/&gt;</a> processing class.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecKeyDataRetrievalMethodId"></a><h3>xmlSecKeyDataRetrievalMethodId</h3>
 <pre class="programlisting">#define xmlSecKeyDataRetrievalMethodId  xmlSecKeyDataRetrievalMethodGetKlass()
 </pre>
-<p>The <a class="ulink" href="" target="_top">&lt;dsig:RetrievalMethod/&gt;</a> processing class.</p>
+<p>The<a class="ulink" href="" target="_top">&lt;dsig:RetrievalMethod/&gt;</a> processing class.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecKeyDataKeyInfoReferenceId"></a><h3>xmlSecKeyDataKeyInfoReferenceId</h3>
+<pre class="programlisting">#define xmlSecKeyDataKeyInfoReferenceId xmlSecKeyDataKeyInfoReferenceGetKlass()
+</pre>
+<p>The&lt;dsig11:KeyInfoReference/&gt; processing class.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecKeyDataEncryptedKeyId"></a><h3>xmlSecKeyDataEncryptedKeyId</h3>
 <pre class="programlisting">#define xmlSecKeyDataEncryptedKeyId     xmlSecKeyDataEncryptedKeyGetKlass()
 </pre>
-<p>The <a class="ulink" href="" target="_top">&lt;enc:EncryptedKey/&gt;</a> processing class.</p>
+<p>The<a class="ulink" href="" target="_top">&lt;enc:EncryptedKey/&gt;</a> element processing class.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecKeyDataAgreementMethodId"></a><h3>xmlSecKeyDataAgreementMethodId</h3>
+<pre class="programlisting">#define xmlSecKeyDataAgreementMethodId  xmlSecKeyDataAgreementMethodGetKlass()
+</pre>
+<p>The<a class="ulink" href="" target="_top">&lt;enc:AgreementMethod/&gt;</a> processing class.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecKeyDataDerivedKeyId"></a><h3>xmlSecKeyDataDerivedKeyId</h3>
+<pre class="programlisting">#define xmlSecKeyDataDerivedKeyId       xmlSecKeyDataDerivedKeyGetKlass()
+</pre>
+<p>The&lt;enc11:DerivedKey/&gt; processing class.</p>
 </div>
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.27</div>
+<hr>Generated by GTK-Doc V1.33.1</div>
 </body>
 </html>

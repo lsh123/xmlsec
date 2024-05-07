@@ -1,17 +1,15 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * C14N transform implementation.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:c14n
- * @Short_description: C14N transform implementation.
- * @Stability: Private
- *
+ * SECTION:transforms
  */
 #include "globals.h"
 
@@ -29,32 +27,32 @@
 #include <xmlsec/xmltree.h>
 #include <xmlsec/errors.h>
 
+#include "cast_helpers.h"
+
 /******************************************************************************
  *
  * C14N transforms
  *
- * Inclusive namespaces list for ExclC14N (xmlSecStringList) is located
- * after xmlSecTransform structure
+ * xmlSecTransform + xmlSecStringList (inclusive namespaces list for ExclC14N).
  *
  *****************************************************************************/
-#define xmlSecTransformC14NSize \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecPtrList))
-#define xmlSecTransformC14NGetNsList(transform) \
-    ((xmlSecTransformCheckSize((transform), xmlSecTransformC14NSize)) ? \
-        (xmlSecPtrListPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)) : \
-        (xmlSecPtrListPtr)NULL)
+XMLSEC_TRANSFORM_DECLARE(C14N, xmlSecPtrList)
+#define xmlSecC14NSize XMLSEC_TRANSFORM_SIZE(C14N)
 
 #define xmlSecTransformC14NCheckId(transform) \
     (xmlSecTransformInclC14NCheckId((transform)) || \
      xmlSecTransformInclC14N11CheckId((transform)) || \
      xmlSecTransformExclC14NCheckId((transform)) || \
      xmlSecTransformCheckId((transform), xmlSecTransformRemoveXmlTagsC14NId))
+
 #define xmlSecTransformInclC14NCheckId(transform) \
     (xmlSecTransformCheckId((transform), xmlSecTransformInclC14NId) || \
      xmlSecTransformCheckId((transform), xmlSecTransformInclC14NWithCommentsId))
+
 #define xmlSecTransformInclC14N11CheckId(transform) \
     (xmlSecTransformCheckId((transform), xmlSecTransformInclC14N11Id) || \
      xmlSecTransformCheckId((transform), xmlSecTransformInclC14N11WithCommentsId))
+
 #define xmlSecTransformExclC14NCheckId(transform) \
     (xmlSecTransformCheckId((transform), xmlSecTransformExclC14NId) || \
      xmlSecTransformCheckId((transform), xmlSecTransformExclC14NWithCommentsId) )
@@ -75,7 +73,7 @@ static int              xmlSecTransformC14NPopBin       (xmlSecTransformPtr tran
                                                          xmlSecTransformCtxPtr transformCtx);
 static int              xmlSecTransformC14NExecute      (xmlSecTransformId id,
                                                          xmlSecNodeSetPtr nodes,
-                                                         xmlChar** nsList,
+                                                         xmlSecPtrListPtr nsList,
                                                          xmlOutputBufferPtr buf);
 static int
 xmlSecTransformC14NInitialize(xmlSecTransformPtr transform) {
@@ -84,7 +82,7 @@ xmlSecTransformC14NInitialize(xmlSecTransformPtr transform) {
 
     xmlSecAssert2(xmlSecTransformC14NCheckId(transform), -1);
 
-    nsList = xmlSecTransformC14NGetNsList(transform);
+    nsList = xmlSecC14NGetCtx(transform);
     xmlSecAssert2(nsList != NULL, -1);
 
     ret = xmlSecPtrListInitialize(nsList, xmlSecStringListId);
@@ -102,7 +100,7 @@ xmlSecTransformC14NFinalize(xmlSecTransformPtr transform) {
 
     xmlSecAssert(xmlSecTransformC14NCheckId(transform));
 
-    nsList = xmlSecTransformC14NGetNsList(transform);
+    nsList = xmlSecC14NGetCtx(transform);
     xmlSecAssert(xmlSecPtrListCheckId(nsList, xmlSecStringListId));
 
     xmlSecPtrListFinalize(nsList);
@@ -121,7 +119,7 @@ xmlSecTransformC14NNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSe
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
-    nsList = xmlSecTransformC14NGetNsList(transform);
+    nsList = xmlSecC14NGetCtx(transform);
     xmlSecAssert2(xmlSecPtrListCheckId(nsList, xmlSecStringListId), -1);
     xmlSecAssert2(xmlSecPtrListGetSize(nsList) == 0, -1);
 
@@ -191,7 +189,6 @@ static int
 xmlSecTransformC14NPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr nodes,
                             xmlSecTransformCtxPtr transformCtx) {
     xmlOutputBufferPtr buf;
-    xmlSecPtrListPtr nsList;
     int ret;
 
     xmlSecAssert2(xmlSecTransformC14NCheckId(transform), -1);
@@ -230,16 +227,12 @@ xmlSecTransformC14NPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr nodes,
         }
     }
 
-    /* we are using a semi-hack here: we know that xmlSecPtrList keeps
-     * all pointers in the big array */
-    nsList = xmlSecTransformC14NGetNsList(transform);
-    xmlSecAssert2(xmlSecPtrListCheckId(nsList, xmlSecStringListId), -1);
-
-    ret = xmlSecTransformC14NExecute(transform->id, nodes, (xmlChar**)(nsList->data), buf);
+    ret = xmlSecTransformC14NExecute(transform->id, nodes,
+            xmlSecC14NGetCtx(transform), buf);
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformC14NExecute",
                             xmlSecTransformGetName(transform));
-        xmlOutputBufferClose(buf);
+        (void)xmlOutputBufferClose(buf);
         return(-1);
     }
 
@@ -256,7 +249,6 @@ static int
 xmlSecTransformC14NPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
                             xmlSecSize maxDataSize, xmlSecSize* dataSize,
                             xmlSecTransformCtxPtr transformCtx) {
-    xmlSecPtrListPtr nsList;
     xmlSecBufferPtr out;
     int ret;
 
@@ -296,14 +288,12 @@ xmlSecTransformC14NPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
 
         /* we are using a semi-hack here: we know that xmlSecPtrList keeps
          * all pointers in the big array */
-        nsList = xmlSecTransformC14NGetNsList(transform);
-        xmlSecAssert2(xmlSecPtrListCheckId(nsList, xmlSecStringListId), -1);
-
-        ret = xmlSecTransformC14NExecute(transform->id, transform->inNodes, (xmlChar**)(nsList->data), buf);
+        ret = xmlSecTransformC14NExecute(transform->id, transform->inNodes,
+                xmlSecC14NGetCtx(transform), buf);
         if(ret < 0) {
             xmlSecInternalError("xmlSecTransformC14NExecute",
                                 xmlSecTransformGetName(transform));
-            xmlOutputBufferClose(buf);
+            (void)xmlOutputBufferClose(buf);
             return(-1);
         }
         ret = xmlOutputBufferClose(buf);
@@ -322,8 +312,8 @@ xmlSecTransformC14NPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
         if(outSize > maxDataSize) {
             outSize = maxDataSize;
         }
-        if(outSize > XMLSEC_TRANSFORM_BINARY_CHUNK) {
-            outSize = XMLSEC_TRANSFORM_BINARY_CHUNK;
+        if(outSize > transformCtx->binaryChunkSize) {
+            outSize = transformCtx->binaryChunkSize;
         }
         if(outSize > 0) {
             xmlSecAssert2(xmlSecBufferGetData(&(transform->outBuf)), -1);
@@ -331,9 +321,8 @@ xmlSecTransformC14NPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
             memcpy(data, xmlSecBufferGetData(&(transform->outBuf)), outSize);
             ret = xmlSecBufferRemoveHead(&(transform->outBuf), outSize);
             if(ret < 0) {
-                xmlSecInternalError2("xmlSecBufferRemoveHead",
-                                     xmlSecTransformGetName(transform),
-                                     "size=%d", outSize);
+                xmlSecInternalError2("xmlSecBufferRemoveHead", xmlSecTransformGetName(transform),
+                    "size=" XMLSEC_SIZE_FMT, outSize);
                 return(-1);
             }
         } else if(xmlSecBufferGetSize(out) == 0) {
@@ -353,13 +342,15 @@ xmlSecTransformC14NPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
 }
 
 static int
-xmlSecTransformC14NExecute(xmlSecTransformId id, xmlSecNodeSetPtr nodes, xmlChar** nsList,
+xmlSecTransformC14NExecute(xmlSecTransformId id, xmlSecNodeSetPtr nodes, xmlSecPtrListPtr nsList,
                            xmlOutputBufferPtr buf) {
     int ret;
 
     xmlSecAssert2(id != xmlSecTransformIdUnknown, -1);
     xmlSecAssert2(nodes != NULL, -1);
     xmlSecAssert2(nodes->doc != NULL, -1);
+    xmlSecAssert2(nsList != NULL, -1);
+    xmlSecAssert2(xmlSecPtrListCheckId(nsList, xmlSecStringListId), -1);
     xmlSecAssert2(buf != NULL, -1);
 
     /* execute c14n transform */
@@ -380,13 +371,17 @@ xmlSecTransformC14NExecute(xmlSecTransformId id, xmlSecNodeSetPtr nodes, xmlChar
                         (xmlC14NIsVisibleCallback)xmlSecNodeSetContains,
                         nodes, XML_C14N_1_1, NULL, 1, buf);
     } else if(id == xmlSecTransformExclC14NId) {
+        /* we are using a semi-hack here: we know that xmlSecPtrList keeps
+         * all pointers in the big array */
         ret = xmlC14NExecute(nodes->doc,
                         (xmlC14NIsVisibleCallback)xmlSecNodeSetContains,
-                        nodes, XML_C14N_EXCLUSIVE_1_0, nsList, 0, buf);
+                        nodes, XML_C14N_EXCLUSIVE_1_0, (xmlChar**)(nsList->data), 0, buf);
     } else if(id == xmlSecTransformExclC14NWithCommentsId) {
+        /* we are using a semi-hack here: we know that xmlSecPtrList keeps
+         * all pointers in the big array */
         ret = xmlC14NExecute(nodes->doc,
                         (xmlC14NIsVisibleCallback)xmlSecNodeSetContains,
-                        nodes, XML_C14N_EXCLUSIVE_1_0, nsList, 1, buf);
+                        nodes, XML_C14N_EXCLUSIVE_1_0, (xmlChar**)(nsList->data), 1, buf);
     } else if(id == xmlSecTransformRemoveXmlTagsC14NId) {
         ret = xmlSecNodeSetDumpTextNodes(nodes, buf);
     } else {
@@ -412,7 +407,7 @@ xmlSecTransformC14NExecute(xmlSecTransformId id, xmlSecNodeSetPtr nodes, xmlChar
 static xmlSecTransformKlass xmlSecTransformInclC14NKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecTransformC14NSize,                    /* xmlSecSize objSize */
+    xmlSecC14NSize,                             /* xmlSecSize objSize */
 
     xmlSecNameC14N,                             /* const xmlChar* name; */
     xmlSecHrefC14N,                             /* const xmlChar* href; */
@@ -459,7 +454,7 @@ xmlSecTransformInclC14NGetKlass(void) {
 static xmlSecTransformKlass xmlSecTransformInclC14NWithCommentsKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecTransformC14NSize,                    /* xmlSecSize objSize */
+    xmlSecC14NSize,                             /* xmlSecSize objSize */
 
     /* same as xmlSecTransformId */
     xmlSecNameC14NWithComments,                 /* const xmlChar* name; */
@@ -507,7 +502,7 @@ xmlSecTransformInclC14NWithCommentsGetKlass(void) {
 static xmlSecTransformKlass xmlSecTransformInclC14N11Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecTransformC14NSize,                    /* xmlSecSize objSize */
+    xmlSecC14NSize,                             /* xmlSecSize objSize */
 
     xmlSecNameC14N11,                           /* const xmlChar* name; */
     xmlSecHrefC14N11,                           /* const xmlChar* href; */
@@ -552,7 +547,7 @@ xmlSecTransformInclC14N11GetKlass(void) {
 static xmlSecTransformKlass xmlSecTransformInclC14N11WithCommentsKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecTransformC14NSize,                    /* xmlSecSize objSize */
+    xmlSecC14NSize,                             /* xmlSecSize objSize */
 
     /* same as xmlSecTransformId */
     xmlSecNameC14N11WithComments,               /* const xmlChar* name; */
@@ -599,7 +594,7 @@ xmlSecTransformInclC14N11WithCommentsGetKlass(void) {
 static xmlSecTransformKlass xmlSecTransformExclC14NKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecTransformC14NSize,                    /* xmlSecSize objSize */
+    xmlSecC14NSize,                             /* xmlSecSize objSize */
 
     xmlSecNameExcC14N,                          /* const xmlChar* name; */
     xmlSecHrefExcC14N,                          /* const xmlChar* href; */
@@ -645,7 +640,7 @@ xmlSecTransformExclC14NGetKlass(void) {
 static xmlSecTransformKlass xmlSecTransformExclC14NWithCommentsKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecTransformC14NSize,                    /* xmlSecSize objSize */
+    xmlSecC14NSize,                             /* xmlSecSize objSize */
 
     xmlSecNameExcC14NWithComments,              /* const xmlChar* name; */
     xmlSecHrefExcC14NWithComments,              /* const xmlChar* href; */
@@ -691,7 +686,7 @@ xmlSecTransformExclC14NWithCommentsGetKlass(void) {
 static xmlSecTransformKlass xmlSecTransformRemoveXmlTagsC14NKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecTransformC14NSize,                    /* xmlSecSize objSize */
+    xmlSecC14NSize,                             /* xmlSecSize objSize */
 
     BAD_CAST "remove-xml-tags-transform",       /* const xmlChar* name; */
     NULL,                                       /* const xmlChar* href; */
@@ -737,4 +732,3 @@ xmlSecTransformId
 xmlSecTransformRemoveXmlTagsC14NGetKlass(void) {
     return(&xmlSecTransformRemoveXmlTagsC14NKlass);
 }
-

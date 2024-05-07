@@ -5,13 +5,15 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * SECTION:crypto
- * @Short_description: Crypto transforms implementation for GCrypt.
+ * @Short_description: Core crypto functions for GCrypt.
  * @Stability: Stable
  *
+ *
+ * Core crypto functions for GCrypt.
  */
 
 #include "globals.h"
@@ -76,6 +78,10 @@ xmlSecCryptoGetFunctions_gcrypt(void) {
     gXmlSecGCryptFunctions->keyDataDsaGetKlass          = xmlSecGCryptKeyDataDsaGetKlass;
 #endif /* XMLSEC_NO_DSA */
 
+#ifndef XMLSEC_NO_EC
+    gXmlSecGCryptFunctions->keyDataEcGetKlass        = xmlSecGCryptkeyDataEcGetKlass;
+#endif /* XMLSEC_NO_EC */
+
 #ifndef XMLSEC_NO_HMAC
     gXmlSecGCryptFunctions->keyDataHmacGetKlass         = xmlSecGCryptKeyDataHmacGetKlass;
 #endif /* XMLSEC_NO_HMAC */
@@ -121,6 +127,35 @@ xmlSecCryptoGetFunctions_gcrypt(void) {
 #endif /* XMLSEC_NO_SHA1 */
 
 #endif /* XMLSEC_NO_DSA */
+
+    /******************************* ECDSA ********************************/
+#ifndef XMLSEC_NO_EC
+
+#ifndef XMLSEC_NO_SHA1
+    gXmlSecGCryptFunctions->transformEcdsaSha1GetKlass        = xmlSecGCryptTransformEcdsaSha1GetKlass;
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA256
+    gXmlSecGCryptFunctions->transformEcdsaSha256GetKlass      = xmlSecGCryptTransformEcdsaSha256GetKlass;
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+    gXmlSecGCryptFunctions->transformEcdsaSha384GetKlass      = xmlSecGCryptTransformEcdsaSha384GetKlass;
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+    gXmlSecGCryptFunctions->transformEcdsaSha512GetKlass      = xmlSecGCryptTransformEcdsaSha512GetKlass;
+#endif /* XMLSEC_NO_SHA512 */
+
+
+#ifndef XMLSEC_NO_SHA256
+    gXmlSecGCryptFunctions->transformEcdsaSha3_256GetKlass      = xmlSecGCryptTransformEcdsaSha3_256GetKlass;
+    gXmlSecGCryptFunctions->transformEcdsaSha3_384GetKlass      = xmlSecGCryptTransformEcdsaSha3_384GetKlass;
+    gXmlSecGCryptFunctions->transformEcdsaSha3_512GetKlass      = xmlSecGCryptTransformEcdsaSha3_512GetKlass;
+#endif /* XMLSEC_NO_SHA512 */
+
+#endif /* XMLSEC_NO_EC */
+
 
     /******************************* HMAC ********************************/
 #ifndef XMLSEC_NO_HMAC
@@ -188,6 +223,38 @@ xmlSecCryptoGetFunctions_gcrypt(void) {
     gXmlSecGCryptFunctions->transformRsaSha512GetKlass         = xmlSecGCryptTransformRsaSha512GetKlass;
 #endif /* XMLSEC_NO_SHA512 */
 
+#ifndef XMLSEC_NO_SHA1
+    gXmlSecGCryptFunctions->transformRsaPssSha1GetKlass        = xmlSecGCryptTransformRsaPssSha1GetKlass;
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA256
+    gXmlSecGCryptFunctions->transformRsaPssSha256GetKlass      = xmlSecGCryptTransformRsaPssSha256GetKlass;
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+    gXmlSecGCryptFunctions->transformRsaPssSha384GetKlass      = xmlSecGCryptTransformRsaPssSha384GetKlass;
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+    gXmlSecGCryptFunctions->transformRsaPssSha512GetKlass      = xmlSecGCryptTransformRsaPssSha512GetKlass;
+#endif /* XMLSEC_NO_SHA512 */
+
+#ifndef XMLSEC_NO_SHA3
+    gXmlSecGCryptFunctions->transformRsaPssSha3_256GetKlass    = xmlSecGCryptTransformRsaPssSha3_256GetKlass;
+    gXmlSecGCryptFunctions->transformRsaPssSha3_384GetKlass    = xmlSecGCryptTransformRsaPssSha3_384GetKlass;
+    gXmlSecGCryptFunctions->transformRsaPssSha3_512GetKlass    = xmlSecGCryptTransformRsaPssSha3_512GetKlass;
+#endif /* XMLSEC_NO_SHA3 */
+
+
+#ifndef XMLSEC_NO_RSA_PKCS15
+    gXmlSecGCryptFunctions->transformRsaPkcs1GetKlass          = xmlSecGCryptTransformRsaPkcs1GetKlass;
+#endif /* XMLSEC_NO_RSA_PKCS15 */
+
+#ifndef XMLSEC_NO_RSA_OAEP
+    gXmlSecGCryptFunctions->transformRsaOaepGetKlass           = xmlSecGCryptTransformRsaOaepGetKlass;
+    gXmlSecGCryptFunctions->transformRsaOaepEnc11GetKlass      = xmlSecGCryptTransformRsaOaepEnc11GetKlass;
+#endif /* XMLSEC_NO_RSA_OAEP */
+
 #endif /* XMLSEC_NO_RSA */
 
     /******************************* SHA ********************************/
@@ -207,6 +274,11 @@ xmlSecCryptoGetFunctions_gcrypt(void) {
     gXmlSecGCryptFunctions->transformSha512GetKlass             = xmlSecGCryptTransformSha512GetKlass;
 #endif /* XMLSEC_NO_SHA512 */
 
+#ifndef XMLSEC_NO_SHA3
+    gXmlSecGCryptFunctions->transformSha3_256GetKlass           = xmlSecGCryptTransformSha3_256GetKlass;
+    gXmlSecGCryptFunctions->transformSha3_384GetKlass           = xmlSecGCryptTransformSha3_384GetKlass;
+    gXmlSecGCryptFunctions->transformSha3_512GetKlass           = xmlSecGCryptTransformSha3_512GetKlass;
+#endif /* XMLSEC_NO_SHA3 */
 
     /********************************************************************
      *
@@ -217,14 +289,16 @@ xmlSecCryptoGetFunctions_gcrypt(void) {
     gXmlSecGCryptFunctions->cryptoAppShutdown                   = xmlSecGCryptAppShutdown;
     gXmlSecGCryptFunctions->cryptoAppDefaultKeysMngrInit        = xmlSecGCryptAppDefaultKeysMngrInit;
     gXmlSecGCryptFunctions->cryptoAppDefaultKeysMngrAdoptKey    = xmlSecGCryptAppDefaultKeysMngrAdoptKey;
+    gXmlSecGCryptFunctions->cryptoAppDefaultKeysMngrVerifyKey   = xmlSecGCryptAppDefaultKeysMngrVerifyKey;
     gXmlSecGCryptFunctions->cryptoAppDefaultKeysMngrLoad        = xmlSecGCryptAppDefaultKeysMngrLoad;
     gXmlSecGCryptFunctions->cryptoAppDefaultKeysMngrSave        = xmlSecGCryptAppDefaultKeysMngrSave;
 #ifndef XMLSEC_NO_X509
     gXmlSecGCryptFunctions->cryptoAppKeysMngrCertLoad           = xmlSecGCryptAppKeysMngrCertLoad;
+    gXmlSecGCryptFunctions->cryptoAppKeysMngrCrlLoad            = xmlSecGCryptAppKeysMngrCrlLoad;
     gXmlSecGCryptFunctions->cryptoAppPkcs12Load                 = xmlSecGCryptAppPkcs12Load;
     gXmlSecGCryptFunctions->cryptoAppKeyCertLoad                = xmlSecGCryptAppKeyCertLoad;
 #endif /* XMLSEC_NO_X509 */
-    gXmlSecGCryptFunctions->cryptoAppKeyLoad                    = xmlSecGCryptAppKeyLoad;
+    gXmlSecGCryptFunctions->cryptoAppKeyLoadEx                  = xmlSecGCryptAppKeyLoadEx;
     gXmlSecGCryptFunctions->cryptoAppDefaultPwdCallback         = (void*)xmlSecGCryptAppGetDefaultPwdCallback();
 
     return(gXmlSecGCryptFunctions);
@@ -302,7 +376,7 @@ xmlSecGCryptGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
     ret = xmlSecBufferSetSize(buffer, size);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize", NULL,
-                             "size=%d", size);
+                             "size=" XMLSEC_SIZE_FMT, size);
         return(-1);
     }
 

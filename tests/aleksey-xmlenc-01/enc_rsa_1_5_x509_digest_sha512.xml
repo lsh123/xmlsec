@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PaymentInfo xmlns="http://example.org/paymentv2">
+  <Name>John Smith</Name>
+  <CreditCard Currency="USD" Limit="5,000"><EncryptedData xmlns="http://www.w3.org/2001/04/xmlenc#" Id="ED" Type="http://www.w3.org/2001/04/xmlenc#Content">
+  <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#aes256-cbc"/>
+  <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <EncryptedKey xmlns="http://www.w3.org/2001/04/xmlenc#">
+      <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#rsa-1_5"> </EncryptionMethod>
+      <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+        <X509Data>
+          <dsig11:X509Digest xmlns:dsig11="http://www.w3.org/2009/xmldsig11#" Algorithm="http://www.w3.org/2001/04/xmlenc#sha512">LSqfckG+6OWZq9GKyBMN8sFV74O6tDGY5HYqFF1c2E1GMkl2n3ZMG7ayvSZdca8j
+L0XIxqwf0OmkqU9CIIL8Xg==
+</dsig11:X509Digest>
+        </X509Data>
+      </KeyInfo>
+      <CipherData>
+        <CipherValue>XbT1v+OtT+YeDQC+m6lui2F5sycgE395LAVU2Ieu6POrUpSshzR28d8+dCB78zWL
+eK7N0/icsBIZaQ+n52RlZYuD+hcI/y/ir05vJ6qMTr0b2KOcjpiCVa/sUHXtbGRQ
+0ZIV/LxeKOFok6P7dIirbfq52RwJp9atCchGi1+Dxf/eJq0wGt+96CJUhASRtfBj
+V07z+Ze2KTtVXyB05IOtbpcXf/V+ehjjJ3th+gaEe51RC/zxxOgfMOHTbMk8z1Vh
+adpFNy0TTF0Bc/lZLEWOqoML49B2lQPA1hfr47Xb9x2nMb+p2NND6la+fghVKidG
+HNB0nhFyySYeiaQwa1jbq/ZxGxBrzd8euZCK3oJzBxO+L8vt/I/sZEkawXhgGdVP
+Ogr7D6POZ4xI1JmCciwJRtUK/uZc95T+JK3nYX+pUAjV5gPj3U8+qB0BApdJlcWg
+6fhFtn4gdTApUEJA0omthNaezTRyWKmZ8yTBlL/iFSrGuF3YYV1I7GsClROgSX3+
+1LuUPQvtHOUfGDsYMjN1ZEe5ocqKzfsOZ9PC6x+dIGZfLvkisJCog4RMNiudv2sO
+UwyX50Aw+gneniWkTgcHUErA8UOOeD9zt/Kyv/ZArUVj47bXfCX1dTb+RJ0PrZNa
+r0897U5hxkJm2/IGcjbblTmV/eEixmWCoqOEESguGzs=</CipherValue>
+      </CipherData>
+    </EncryptedKey>
+  </KeyInfo>
+  <CipherData>
+    <CipherValue>je9fdrjeJOaI9vn7lwLKr/3VUKk1JgFBF9rQGE/gJhwpNAcyOogD6OxxP0zYI50L
+3TD7iL596hR5zdmE41+eiX7DQfC+dUryrGgWfL8cHsJllbk0i4fuasO1JdXJnSL2
+hHxgfn5mW4jYVGycINFcsQpZW261a91j6D2nx8pcM2TZrFK1psZT1dEwH97lfhg+</CipherValue>
+  </CipherData>
+</EncryptedData></CreditCard>
+</PaymentInfo>

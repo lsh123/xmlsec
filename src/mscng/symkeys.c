@@ -1,32 +1,23 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * Symmetric keys implementation for MSCng.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
+* Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  * Copyright (C) 2018 Miklos Vajna. All Rights Reserved.
  */
 /**
- * SECTION:symkeys
- * @Short_description: Symmetric keys implementation for Microsoft Cryptography API: Next Generation (CNG).
- * @Stability: Private
- *
+ * SECTION:crypto
  */
 
 #include "globals.h"
 
 #include <string.h>
 
-#define WIN32_NO_STATUS
-#include <windows.h>
-#undef WIN32_NO_STATUS
-#include <ntstatus.h>
-#include <bcrypt.h>
-#include <ncrypt.h>
-
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/xmltree.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/transforms.h>
@@ -34,6 +25,9 @@
 #include <xmlsec/bn.h>
 
 #include <xmlsec/mscng/crypto.h>
+
+#include "../cast_helpers.h"
+#include "../keysdata_helpers.h"
 
 #define xmlSecMSCngSymKeyDataCheckId(data) \
     (xmlSecKeyDataIsValid((data)) && \
@@ -48,6 +42,14 @@ xmlSecMSCngSymKeyDataKlassCheck(xmlSecKeyDataKlass* klass) {
     } else
 #endif /* XMLSEC_NO_AES */
 
+#ifndef XMLSEC_NO_CONCATKDF
+    if (klass == xmlSecMSCngKeyDataConcatKdfId) {
+        return(1);
+    }
+    else
+#endif /* XMLSEC_NO_CONCATKDF */
+
+
 #ifndef XMLSEC_NO_DES
     if(klass == xmlSecMSCngKeyDataDesId) {
         return(1);
@@ -59,6 +61,13 @@ xmlSecMSCngSymKeyDataKlassCheck(xmlSecKeyDataKlass* klass) {
         return(1);
     } else
 #endif /* XMLSEC_NO_HMAC */
+
+#ifndef XMLSEC_NO_PBKDF2
+    if (klass == xmlSecMSCngKeyDataPbkdf2Id) {
+        return(1);
+    }
+    else
+#endif /* XMLSEC_NO_PBKDF2 */
 
     {
         return(0);
@@ -170,6 +179,184 @@ xmlSecMSCngSymKeyDataDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecKeyDataBinaryValueDebugXmlDump(data, output);
 }
 
+
+#ifndef XMLSEC_NO_AES
+/**************************************************************************
+ *
+ * <xmlsec:AESKeyValue> processing
+ *
+ *************************************************************************/
+static xmlSecKeyDataKlass xmlSecMSCngKeyDataAesKlass = {
+    sizeof(xmlSecKeyDataKlass),
+    xmlSecKeyDataBinarySize,
+
+    /* data */
+    xmlSecNameAESKeyValue,
+    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+    /* xmlSecKeyDataUsage usage; */
+    xmlSecHrefAESKeyValue,                      /* const xmlChar* href; */
+    xmlSecNodeAESKeyValue,                      /* const xmlChar* dataNodeName; */
+    xmlSecNs,                                   /* const xmlChar* dataNodeNs; */
+
+    /* constructors/destructor */
+    xmlSecMSCngSymKeyDataInitialize,            /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecMSCngSymKeyDataDuplicate,             /* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecMSCngSymKeyDataFinalize,              /* xmlSecKeyDataFinalizeMethod finalize; */
+    xmlSecMSCngSymKeyDataGenerate,              /* xmlSecKeyDataGenerateMethod generate; */
+
+    /* get info */
+    xmlSecMSCngSymKeyDataGetType,               /* xmlSecKeyDataGetTypeMethod getType; */
+    xmlSecMSCngSymKeyDataGetSize,               /* xmlSecKeyDataGetSizeMethod getSize; */
+    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
+
+    /* read/write */
+    xmlSecMSCngSymKeyDataXmlRead,               /* xmlSecKeyDataXmlReadMethod xmlRead; */
+    xmlSecMSCngSymKeyDataXmlWrite,              /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    xmlSecMSCngSymKeyDataBinRead,               /* xmlSecKeyDataBinReadMethod binRead; */
+    xmlSecMSCngSymKeyDataBinWrite,              /* xmlSecKeyDataBinWriteMethod binWrite; */
+
+    /* debug */
+    xmlSecMSCngSymKeyDataDebugDump,             /* xmlSecKeyDataDebugDumpMethod debugDump; */
+    xmlSecMSCngSymKeyDataDebugXmlDump,          /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+
+    /* reserved for the future */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecMSCngKeyDataAesGetKlass:
+ *
+ * The AES key data klass.
+ *
+ * Returns: AES key data klass.
+ */
+xmlSecKeyDataId
+xmlSecMSCngKeyDataAesGetKlass(void) {
+    return(&xmlSecMSCngKeyDataAesKlass);
+}
+#endif /* XMLSEC_NO_AES */
+
+
+#ifndef XMLSEC_NO_CONCATKDF
+
+/**************************************************************************
+ *
+ * ConcatKdf klass
+ *
+ *************************************************************************/
+static xmlSecKeyDataKlass xmlSecMSCngKeyDataConcatKdfKlass = {
+    sizeof(xmlSecKeyDataKlass),
+    xmlSecKeyDataBinarySize,
+
+    /* data */
+    xmlSecNameConcatKdfKeyValue,
+    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+    /* xmlSecKeyDataUsage usage; */
+    NULL,                               /* const xmlChar* href; */
+    NULL,                               /* const xmlChar* dataNodeName; */
+    NULL,                               /* const xmlChar* dataNodeNs; */
+
+    /* constructors/destructor */
+    xmlSecMSCngSymKeyDataInitialize,    /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecMSCngSymKeyDataDuplicate,     /* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecMSCngSymKeyDataFinalize,      /* xmlSecKeyDataFinalizeMethod finalize; */
+    xmlSecMSCngSymKeyDataGenerate,      /* xmlSecKeyDataGenerateMethod generate; */
+
+    /* get info */
+    xmlSecMSCngSymKeyDataGetType,       /* xmlSecKeyDataGetTypeMethod getType; */
+    xmlSecMSCngSymKeyDataGetSize,       /* xmlSecKeyDataGetSizeMethod getSize; */
+    NULL,                               /* xmlSecKeyDataGetIdentifier getIdentifier; */
+
+    /* read/write */
+    xmlSecMSCngSymKeyDataXmlRead,       /* xmlSecKeyDataXmlReadMethod xmlRead; */
+    xmlSecMSCngSymKeyDataXmlWrite,      /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    xmlSecMSCngSymKeyDataBinRead,       /* xmlSecKeyDataBinReadMethod binRead; */
+    xmlSecMSCngSymKeyDataBinWrite,      /* xmlSecKeyDataBinWriteMethod binWrite; */
+
+    /* debug */
+    xmlSecMSCngSymKeyDataDebugDump,     /* xmlSecKeyDataDebugDumpMethod debugDump; */
+    xmlSecMSCngSymKeyDataDebugXmlDump,  /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+
+    /* reserved for the future */
+    NULL,                               /* void* reserved0; */
+    NULL,                               /* void* reserved1; */
+};
+
+/**
+ * xmlSecMSCngKeyDataConcatKdfGetKlass:
+ *
+ * The ConcatKdf key data klass.
+ *
+ * Returns: ConcatKdf key data klass.
+ */
+xmlSecKeyDataId
+xmlSecMSCngKeyDataConcatKdfGetKlass(void) {
+    return(&xmlSecMSCngKeyDataConcatKdfKlass);
+}
+#endif /* XMLSEC_NO_CONCATKDF */
+
+
+#ifndef XMLSEC_NO_DES
+
+/**************************************************************************
+ *
+ * <xmlsec:DESKeyValue> processing
+ *
+ *************************************************************************/
+static xmlSecKeyDataKlass xmlSecMSCngKeyDataDesKlass = {
+    sizeof(xmlSecKeyDataKlass),
+    xmlSecKeyDataBinarySize,
+
+    /* data */
+    xmlSecNameDESKeyValue,
+    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+    /* xmlSecKeyDataUsage usage; */
+    xmlSecHrefDESKeyValue,                      /* const xmlChar* href; */
+    xmlSecNodeDESKeyValue,                      /* const xmlChar* dataNodeName; */
+    xmlSecNs,                                   /* const xmlChar* dataNodeNs; */
+
+    /* constructors/destructor */
+    xmlSecMSCngSymKeyDataInitialize,            /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecMSCngSymKeyDataDuplicate,             /* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecMSCngSymKeyDataFinalize,              /* xmlSecKeyDataFinalizeMethod finalize; */
+    xmlSecMSCngSymKeyDataGenerate,              /* xmlSecKeyDataGenerateMethod generate; */
+
+    /* get info */
+    xmlSecMSCngSymKeyDataGetType,               /* xmlSecKeyDataGetTypeMethod getType; */
+    xmlSecMSCngSymKeyDataGetSize,               /* xmlSecKeyDataGetSizeMethod getSize; */
+        NULL,                                   /* xmlSecKeyDataGetIdentifier getIdentifier; */
+
+    /* read/write */
+    xmlSecMSCngSymKeyDataXmlRead,               /* xmlSecKeyDataXmlReadMethod xmlRead; */
+    xmlSecMSCngSymKeyDataXmlWrite,              /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    xmlSecMSCngSymKeyDataBinRead,               /* xmlSecKeyDataBinReadMethod binRead; */
+    xmlSecMSCngSymKeyDataBinWrite,              /* xmlSecKeyDataBinWriteMethod binWrite; */
+
+    /* debug */
+    xmlSecMSCngSymKeyDataDebugDump,             /* xmlSecKeyDataDebugDumpMethod debugDump; */
+    xmlSecMSCngSymKeyDataDebugXmlDump,          /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+
+    /* reserved for the future */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecMSCngKeyDataDesGetKlass:
+ *
+ * The DES key data klass.
+ *
+ * Returns: DES key data klass.
+ */
+xmlSecKeyDataId
+xmlSecMSCngKeyDataDesGetKlass(void) {
+    return(&xmlSecMSCngKeyDataDesKlass);
+}
+
+#endif /* XMLSEC_NO_DES */
+
+
 #ifndef XMLSEC_NO_HMAC
 
 /**************************************************************************
@@ -183,7 +370,7 @@ static xmlSecKeyDataKlass xmlSecMSCngKeyDataHmacKlass = {
 
     /* data */
     xmlSecNameHMACKeyValue,
-    xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
                                                 /* xmlSecKeyDataUsage usage; */
     xmlSecHrefHMACKeyValue,                     /* const xmlChar* href; */
     xmlSecNodeHMACKeyValue,                     /* const xmlChar* dataNodeName; */
@@ -228,118 +415,61 @@ xmlSecMSCngKeyDataHmacGetKlass(void) {
 }
 #endif /* XMLSEC_NO_HMAC */
 
-#ifndef XMLSEC_NO_AES
+
+#ifndef XMLSEC_NO_PBKDF2
+
 /**************************************************************************
  *
- * <xmlsec:AESKeyValue> processing
+ * PBKDF2 klass
  *
  *************************************************************************/
-static xmlSecKeyDataKlass xmlSecMSCngKeyDataAesKlass = {
+static xmlSecKeyDataKlass xmlSecMSCngKeyDataPbkdf2Klass = {
     sizeof(xmlSecKeyDataKlass),
     xmlSecKeyDataBinarySize,
 
     /* data */
-    xmlSecNameAESKeyValue,
-    xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
-                                                /* xmlSecKeyDataUsage usage; */
-    xmlSecHrefAESKeyValue,                      /* const xmlChar* href; */
-    xmlSecNodeAESKeyValue,                      /* const xmlChar* dataNodeName; */
-    xmlSecNs,                                   /* const xmlChar* dataNodeNs; */
+    xmlSecNamePbkdf2KeyValue,
+    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+    /* xmlSecKeyDataUsage usage; */
+    NULL,                               /* const xmlChar* href; */
+    NULL,                               /* const xmlChar* dataNodeName; */
+    NULL,                               /* const xmlChar* dataNodeNs; */
 
     /* constructors/destructor */
-    xmlSecMSCngSymKeyDataInitialize,            /* xmlSecKeyDataInitializeMethod initialize; */
-    xmlSecMSCngSymKeyDataDuplicate,             /* xmlSecKeyDataDuplicateMethod duplicate; */
-    xmlSecMSCngSymKeyDataFinalize,              /* xmlSecKeyDataFinalizeMethod finalize; */
-    xmlSecMSCngSymKeyDataGenerate,              /* xmlSecKeyDataGenerateMethod generate; */
+    xmlSecMSCngSymKeyDataInitialize,    /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecMSCngSymKeyDataDuplicate,     /* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecMSCngSymKeyDataFinalize,      /* xmlSecKeyDataFinalizeMethod finalize; */
+    xmlSecMSCngSymKeyDataGenerate,      /* xmlSecKeyDataGenerateMethod generate; */
 
     /* get info */
-    xmlSecMSCngSymKeyDataGetType,               /* xmlSecKeyDataGetTypeMethod getType; */
-    xmlSecMSCngSymKeyDataGetSize,               /* xmlSecKeyDataGetSizeMethod getSize; */
-    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
+    xmlSecMSCngSymKeyDataGetType,       /* xmlSecKeyDataGetTypeMethod getType; */
+    xmlSecMSCngSymKeyDataGetSize,       /* xmlSecKeyDataGetSizeMethod getSize; */
+    NULL,                               /* xmlSecKeyDataGetIdentifier getIdentifier; */
 
     /* read/write */
-    xmlSecMSCngSymKeyDataXmlRead,               /* xmlSecKeyDataXmlReadMethod xmlRead; */
-    xmlSecMSCngSymKeyDataXmlWrite,              /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
-    xmlSecMSCngSymKeyDataBinRead,               /* xmlSecKeyDataBinReadMethod binRead; */
-    xmlSecMSCngSymKeyDataBinWrite,              /* xmlSecKeyDataBinWriteMethod binWrite; */
+    xmlSecMSCngSymKeyDataXmlRead,       /* xmlSecKeyDataXmlReadMethod xmlRead; */
+    xmlSecMSCngSymKeyDataXmlWrite,      /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    xmlSecMSCngSymKeyDataBinRead,       /* xmlSecKeyDataBinReadMethod binRead; */
+    xmlSecMSCngSymKeyDataBinWrite,      /* xmlSecKeyDataBinWriteMethod binWrite; */
 
     /* debug */
-    xmlSecMSCngSymKeyDataDebugDump,             /* xmlSecKeyDataDebugDumpMethod debugDump; */
-    xmlSecMSCngSymKeyDataDebugXmlDump,          /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+    xmlSecMSCngSymKeyDataDebugDump,     /* xmlSecKeyDataDebugDumpMethod debugDump; */
+    xmlSecMSCngSymKeyDataDebugXmlDump,  /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
 
     /* reserved for the future */
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
+    NULL,                               /* void* reserved0; */
+    NULL,                               /* void* reserved1; */
 };
 
 /**
- * xmlSecMSCngKeyDataAesGetKlass:
+ * xmlSecMSCngKeyDataPbkdf2GetKlass:
  *
- * The AES key data klass.
+ * The PBKDF2 key data klass.
  *
- * Returns: AES key data klass.
+ * Returns: PBKDF2 key data klass.
  */
 xmlSecKeyDataId
-xmlSecMSCngKeyDataAesGetKlass(void) {
-    return(&xmlSecMSCngKeyDataAesKlass);
+xmlSecMSCngKeyDataPbkdf2GetKlass(void) {
+    return(&xmlSecMSCngKeyDataPbkdf2Klass);
 }
-#endif /* XMLSEC_NO_AES */
-
-#ifndef XMLSEC_NO_DES
-
-/**************************************************************************
- *
- * <xmlsec:DESKeyValue> processing
- *
- *************************************************************************/
-static xmlSecKeyDataKlass xmlSecMSCngKeyDataDesKlass = {
-    sizeof(xmlSecKeyDataKlass),
-    xmlSecKeyDataBinarySize,
-
-    /* data */
-    xmlSecNameDESKeyValue,
-    xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
-                                                /* xmlSecKeyDataUsage usage; */
-    xmlSecHrefDESKeyValue,                      /* const xmlChar* href; */
-    xmlSecNodeDESKeyValue,                      /* const xmlChar* dataNodeName; */
-    xmlSecNs,                                   /* const xmlChar* dataNodeNs; */
-
-    /* constructors/destructor */
-    xmlSecMSCngSymKeyDataInitialize,            /* xmlSecKeyDataInitializeMethod initialize; */
-    xmlSecMSCngSymKeyDataDuplicate,             /* xmlSecKeyDataDuplicateMethod duplicate; */
-    xmlSecMSCngSymKeyDataFinalize,              /* xmlSecKeyDataFinalizeMethod finalize; */
-    xmlSecMSCngSymKeyDataGenerate,              /* xmlSecKeyDataGenerateMethod generate; */
-
-    /* get info */
-    xmlSecMSCngSymKeyDataGetType,               /* xmlSecKeyDataGetTypeMethod getType; */
-    xmlSecMSCngSymKeyDataGetSize,               /* xmlSecKeyDataGetSizeMethod getSize; */
-        NULL,                                   /* xmlSecKeyDataGetIdentifier getIdentifier; */
-
-    /* read/write */
-    xmlSecMSCngSymKeyDataXmlRead,               /* xmlSecKeyDataXmlReadMethod xmlRead; */
-    xmlSecMSCngSymKeyDataXmlWrite,              /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
-    xmlSecMSCngSymKeyDataBinRead,               /* xmlSecKeyDataBinReadMethod binRead; */
-    xmlSecMSCngSymKeyDataBinWrite,              /* xmlSecKeyDataBinWriteMethod binWrite; */
-
-    /* debug */
-    xmlSecMSCngSymKeyDataDebugDump,             /* xmlSecKeyDataDebugDumpMethod debugDump; */
-    xmlSecMSCngSymKeyDataDebugXmlDump,          /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
-
-    /* reserved for the future */
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
-
-/**
- * xmlSecMSCngKeyDataDesGetKlass:
- *
- * The DES key data klass.
- *
- * Returns: DES key data klass.
- */
-xmlSecKeyDataId
-xmlSecMSCngKeyDataDesGetKlass(void) {
-    return(&xmlSecMSCngKeyDataDesKlass);
-}
-
-#endif /* XMLSEC_NO_DES */
+#endif /* XMLSEC_NO_PBKDF2 */

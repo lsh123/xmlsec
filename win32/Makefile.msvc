@@ -32,16 +32,20 @@ AUTOCONF = .\configure.txt
 #WITH_XMLSEC_DEBUG = 1
 #UNICODE = 1
 #DEBUG = 0
+#MEMCHECK = 0
 #WITH_CRYPTO=openssl
 #WITH_DEFAULT_CRYPTO=openssl
 #WITH_OPENSSL=1
 #WITH_OPENSSL_VERSION=
+#WITH_OPENSSL3_ENGINES=0
 #WITH_NSS=0
 #WITH_MSCRYPTO=0
 #WITH_MSCNG=0
 #WITH_LIBXSLT=1
 #STATIC = 0
 #WITH_DL = 1
+#WERROR = 0
+#PEDANTIC = 1
 #PREFIX = . # set this to the right value.
 #BINPREFIX = $(PREFIX)\bin
 #INCPREFIX = $(PREFIX)\include
@@ -56,10 +60,10 @@ AUTOCONF = .\configure.txt
 #
 # Names of various input and output components.
 #
-!if "$(STATIC)" == "1"
-APP_NAME 		= xmlseca.exe
-!else
+!if "$(WITH_DL)" == "1"
 APP_NAME 		= xmlsec.exe
+!else
+APP_NAME 		= xmlseca.exe
 !endif
 APP_NAME_MANIFEST	= $(APP_NAME).manifest
 
@@ -164,11 +168,9 @@ XMLSEC_OBJS = \
 	$(XMLSEC_INTDIR)\nodeset.obj \
 	$(XMLSEC_INTDIR)\parser.obj \
 	$(XMLSEC_INTDIR)\relationship.obj \
-	$(XMLSEC_INTDIR)\soap.obj \
 	$(XMLSEC_INTDIR)\strings.obj \
 	$(XMLSEC_INTDIR)\templates.obj \
 	$(XMLSEC_INTDIR)\transforms.obj \
-	$(XMLSEC_INTDIR)\x509.obj \
 	$(XMLSEC_INTDIR)\xmldsig.obj \
 	$(XMLSEC_INTDIR)\xmlenc.obj \
 	$(XMLSEC_INTDIR)\xmlsec.obj \
@@ -195,11 +197,9 @@ XMLSEC_OBJS_A = \
 	$(XMLSEC_INTDIR_A)\nodeset.obj \
 	$(XMLSEC_INTDIR_A)\parser.obj \
 	$(XMLSEC_INTDIR_A)\relationship.obj \
-	$(XMLSEC_INTDIR_A)\soap.obj \
 	$(XMLSEC_INTDIR_A)\strings.obj \
 	$(XMLSEC_INTDIR_A)\templates.obj \
 	$(XMLSEC_INTDIR_A)\transforms.obj \
-	$(XMLSEC_INTDIR_A)\x509.obj \
 	$(XMLSEC_INTDIR_A)\xmldsig.obj \
 	$(XMLSEC_INTDIR_A)\xmlenc.obj \
 	$(XMLSEC_INTDIR_A)\xmlsec.obj \
@@ -209,73 +209,77 @@ XMLSEC_OBJS_A = \
 
 XMLSEC_OPENSSL_OBJS = \
 	$(XMLSEC_OPENSSL_INTDIR)\app.obj\
-	$(XMLSEC_OPENSSL_INTDIR)\bn.obj \
 	$(XMLSEC_OPENSSL_INTDIR)\ciphers.obj \
 	$(XMLSEC_OPENSSL_INTDIR)\crypto.obj \
 	$(XMLSEC_OPENSSL_INTDIR)\digests.obj \
 	$(XMLSEC_OPENSSL_INTDIR)\evp.obj \
-	$(XMLSEC_OPENSSL_INTDIR)\evp_signatures.obj \
 	$(XMLSEC_OPENSSL_INTDIR)\hmac.obj \
+	$(XMLSEC_OPENSSL_INTDIR)\kdf.obj \
+	$(XMLSEC_OPENSSL_INTDIR)\key_agrmnt.obj \
+	$(XMLSEC_OPENSSL_INTDIR)\keysstore.obj \
 	$(XMLSEC_OPENSSL_INTDIR)\kt_rsa.obj \
 	$(XMLSEC_OPENSSL_INTDIR)\kw_aes.obj \
 	$(XMLSEC_OPENSSL_INTDIR)\kw_des.obj \
 	$(XMLSEC_OPENSSL_INTDIR)\signatures.obj \
+	$(XMLSEC_OPENSSL_INTDIR)\signatures_legacy.obj \
 	$(XMLSEC_OPENSSL_INTDIR)\strings.obj \
 	$(XMLSEC_OPENSSL_INTDIR)\symkeys.obj \
 	$(XMLSEC_OPENSSL_INTDIR)\x509.obj \
 	$(XMLSEC_OPENSSL_INTDIR)\x509vfy.obj
 XMLSEC_OPENSSL_OBJS_A = \
 	$(XMLSEC_OPENSSL_INTDIR_A)\app.obj\
-	$(XMLSEC_OPENSSL_INTDIR_A)\bn.obj \
 	$(XMLSEC_OPENSSL_INTDIR_A)\ciphers.obj \
 	$(XMLSEC_OPENSSL_INTDIR_A)\crypto.obj \
 	$(XMLSEC_OPENSSL_INTDIR_A)\digests.obj \
 	$(XMLSEC_OPENSSL_INTDIR_A)\evp.obj \
-	$(XMLSEC_OPENSSL_INTDIR_A)\evp_signatures.obj \
 	$(XMLSEC_OPENSSL_INTDIR_A)\hmac.obj \
+	$(XMLSEC_OPENSSL_INTDIR_A)\kdf.obj \
+	$(XMLSEC_OPENSSL_INTDIR_A)\key_agrmnt.obj \
+	$(XMLSEC_OPENSSL_INTDIR_A)\keysstore.obj \
 	$(XMLSEC_OPENSSL_INTDIR_A)\kt_rsa.obj \
 	$(XMLSEC_OPENSSL_INTDIR_A)\kw_aes.obj \
 	$(XMLSEC_OPENSSL_INTDIR_A)\kw_des.obj \
 	$(XMLSEC_OPENSSL_INTDIR_A)\signatures.obj \
+	$(XMLSEC_OPENSSL_INTDIR_A)\signatures_legacy.obj \
 	$(XMLSEC_OPENSSL_INTDIR_A)\strings.obj \
 	$(XMLSEC_OPENSSL_INTDIR_A)\symkeys.obj \
 	$(XMLSEC_OPENSSL_INTDIR_A)\x509.obj \
 	$(XMLSEC_OPENSSL_INTDIR_A)\x509vfy.obj
 
 XMLSEC_NSS_OBJS = \
-	$(XMLSEC_NSS_INTDIR)\app.obj\
-	$(XMLSEC_NSS_INTDIR)\bignum.obj\
+	$(XMLSEC_NSS_INTDIR)\app.obj \
 	$(XMLSEC_NSS_INTDIR)\ciphers.obj \
 	$(XMLSEC_NSS_INTDIR)\crypto.obj \
 	$(XMLSEC_NSS_INTDIR)\digests.obj \
 	$(XMLSEC_NSS_INTDIR)\hmac.obj \
-	$(XMLSEC_NSS_INTDIR)\pkikeys.obj\
-	$(XMLSEC_NSS_INTDIR)\signatures.obj\
+	$(XMLSEC_NSS_INTDIR)\keysstore.obj \
+	$(XMLSEC_NSS_INTDIR)\keytrans.obj \
+	$(XMLSEC_NSS_INTDIR)\kw_des.obj \
+	$(XMLSEC_NSS_INTDIR)\kw_aes.obj \
+	$(XMLSEC_NSS_INTDIR)\pbkdf2.obj \
+	$(XMLSEC_NSS_INTDIR)\pkikeys.obj \
+	$(XMLSEC_NSS_INTDIR)\signatures.obj \
+	$(XMLSEC_NSS_INTDIR)\strings.obj \
 	$(XMLSEC_NSS_INTDIR)\symkeys.obj \
-	$(XMLSEC_NSS_INTDIR)\x509.obj\
-	$(XMLSEC_NSS_INTDIR)\x509vfy.obj\
-	$(XMLSEC_NSS_INTDIR)\keysstore.obj\
-	$(XMLSEC_NSS_INTDIR)\keytrans.obj\
-	$(XMLSEC_NSS_INTDIR)\kw_des.obj\
-	$(XMLSEC_NSS_INTDIR)\kw_aes.obj\
-	$(XMLSEC_NSS_INTDIR)\strings.obj
+	$(XMLSEC_NSS_INTDIR)\x509.obj \
+	$(XMLSEC_NSS_INTDIR)\x509vfy.obj
 XMLSEC_NSS_OBJS_A = \
-	$(XMLSEC_NSS_INTDIR_A)\app.obj\
-	$(XMLSEC_NSS_INTDIR_A)\bignum.obj\
+	$(XMLSEC_NSS_INTDIR_A)\app.obj \
 	$(XMLSEC_NSS_INTDIR_A)\ciphers.obj \
 	$(XMLSEC_NSS_INTDIR_A)\crypto.obj \
 	$(XMLSEC_NSS_INTDIR_A)\digests.obj \
 	$(XMLSEC_NSS_INTDIR_A)\hmac.obj \
-	$(XMLSEC_NSS_INTDIR_A)\pkikeys.obj\
-	$(XMLSEC_NSS_INTDIR_A)\signatures.obj\
+	$(XMLSEC_NSS_INTDIR_A)\keysstore.obj \
+	$(XMLSEC_NSS_INTDIR_A)\kt_rsa.obj \
+	$(XMLSEC_NSS_INTDIR_A)\kw_des.obj \
+	$(XMLSEC_NSS_INTDIR_A)\kw_aes.obj \
+	$(XMLSEC_NSS_INTDIR_A)\pbkdf2.obj \
+	$(XMLSEC_NSS_INTDIR_A)\pkikeys.obj \
+	$(XMLSEC_NSS_INTDIR_A)\strings.obj \
+	$(XMLSEC_NSS_INTDIR_A)\signatures.obj \
 	$(XMLSEC_NSS_INTDIR_A)\symkeys.obj \
-	$(XMLSEC_NSS_INTDIR_A)\x509.obj\
-	$(XMLSEC_NSS_INTDIR_A)\x509vfy.obj\
-	$(XMLSEC_NSS_INTDIR_A)\keysstore.obj\
-	$(XMLSEC_NSS_INTDIR_A)\kt_rsa.obj\
-	$(XMLSEC_NSS_INTDIR_A)\kw_des.obj\
-	$(XMLSEC_NSS_INTDIR_A)\kw_aes.obj\
-	$(XMLSEC_NSS_INTDIR_A)\strings.obj
+	$(XMLSEC_NSS_INTDIR_A)\x509.obj \
+	$(XMLSEC_NSS_INTDIR_A)\x509vfy.obj
 
 XMLSEC_MSCRYPTO_OBJS = \
 	$(XMLSEC_MSCRYPTO_INTDIR)\app.obj\
@@ -313,108 +317,159 @@ XMLSEC_MSCRYPTO_OBJS_A = \
 XMLSEC_MSCNG_OBJS = \
 	$(XMLSEC_MSCNG_INTDIR)\app.obj\
 	$(XMLSEC_MSCNG_INTDIR)\certkeys.obj \
+	$(XMLSEC_MSCNG_INTDIR)\ciphers_cbc.obj \
+	$(XMLSEC_MSCNG_INTDIR)\ciphers_gcm.obj \
+	$(XMLSEC_MSCNG_INTDIR)\concatkdf.obj \
 	$(XMLSEC_MSCNG_INTDIR)\crypto.obj\
-	$(XMLSEC_MSCNG_INTDIR)\ciphers.obj \
 	$(XMLSEC_MSCNG_INTDIR)\digests.obj\
 	$(XMLSEC_MSCNG_INTDIR)\hmac.obj \
 	$(XMLSEC_MSCNG_INTDIR)\symkeys.obj \
+	$(XMLSEC_MSCNG_INTDIR)\key_agrmnt.obj \
+	$(XMLSEC_MSCNG_INTDIR)\keysstore.obj \
 	$(XMLSEC_MSCNG_INTDIR)\kt_rsa.obj \
 	$(XMLSEC_MSCNG_INTDIR)\kw_aes.obj \
 	$(XMLSEC_MSCNG_INTDIR)\kw_des.obj \
+	$(XMLSEC_MSCNG_INTDIR)\pbkdf2.obj \
 	$(XMLSEC_MSCNG_INTDIR)\strings.obj\
 	$(XMLSEC_MSCNG_INTDIR)\signatures.obj\
-	$(XMLSEC_MSCNG_INTDIR)\keysstore.obj \
 	$(XMLSEC_MSCNG_INTDIR)\x509.obj\
 	$(XMLSEC_MSCNG_INTDIR)\x509vfy.obj
 XMLSEC_MSCNG_OBJS_A = \
 	$(XMLSEC_MSCNG_INTDIR_A)\app.obj\
 	$(XMLSEC_MSCNG_INTDIR_A)\certkeys.obj \
+	$(XMLSEC_MSCNG_INTDIR_A)\ciphers_cbc.obj \
+	$(XMLSEC_MSCNG_INTDIR_A)\ciphers_gcm.obj \
+	$(XMLSEC_MSCNG_INTDIR_A)\concatkdf.obj \
 	$(XMLSEC_MSCNG_INTDIR_A)\crypto.obj\
-	$(XMLSEC_MSCNG_INTDIR_A)\ciphers.obj \
 	$(XMLSEC_MSCNG_INTDIR_A)\digests.obj\
 	$(XMLSEC_MSCNG_INTDIR_A)\hmac.obj \
 	$(XMLSEC_MSCNG_INTDIR_A)\symkeys.obj \
+	$(XMLSEC_MSCNG_INTDIR_A)\key_agrmnt.obj \
+	$(XMLSEC_MSCNG_INTDIR_A)\keysstore.obj \
 	$(XMLSEC_MSCNG_INTDIR_A)\kt_rsa.obj \
 	$(XMLSEC_MSCNG_INTDIR_A)\kw_aes.obj \
 	$(XMLSEC_MSCNG_INTDIR_A)\kw_des.obj \
+	$(XMLSEC_MSCNG_INTDIR_A)\pbkdf2.obj \
 	$(XMLSEC_MSCNG_INTDIR_A)\strings.obj\
 	$(XMLSEC_MSCNG_INTDIR_A)\signatures.obj\
-	$(XMLSEC_MSCNG_INTDIR_A)\keysstore.obj \
 	$(XMLSEC_MSCNG_INTDIR_A)\x509.obj\
 	$(XMLSEC_MSCNG_INTDIR_A)\x509vfy.obj
 
 #
 # The preprocessor and its options.
 #
-CPP 			= cl.exe /EP
-CPPFLAGS 		= /nologo
+CPP      = cl.exe /EP
+CPPFLAGS = /nologo
 
 #
 # The compiler and its options.
 #
-CFLAGS 			= $(CFLAGS) /nologo /D "WIN32" /D "_WINDOWS" /D inline=__inline
-# C4130: '!=': logical operation on address of string constant:
-#     this generates a false warning inside macros
-# C4127: conditional expression is constant
-#     this generates a false warning inside asserts
-# C4152: nonstandard extension, function/data pointer conversion in expression
-#     this generates a false warning for XMLSEC_PTR_TO_FUNC
-CFLAGS 			= $(CFLAGS) /D "_MBCS" /D "_REENTRANT"  /W4 /wd4130
-CFLAGS                  = $(CFLAGS) /wd4127 /wd4152
+CFLAGS = $(CFLAGS) /nologo /D "WIN32" /D "_WINDOWS" /D inline=__inline
+CFLAGS = $(CFLAGS) /D "_MBCS" /D "_REENTRANT"
+CFLAGS = $(CFLAGS) /D PACKAGE=\"$(XMLSEC_NAME)\"
+CFLAGS = $(CFLAGS) /D "HAVE_STDIO_H" /D "HAVE_STDLIB_H"
+CFLAGS = $(CFLAGS) /D "HAVE_STRING_H" /D "HAVE_CTYPE_H"
+CFLAGS = $(CFLAGS) /D "HAVE_MALLOC_H" /D "HAVE_MEMORY_H"
+CFLAGS = $(CFLAGS) /D "WIN32_LEAN_AND_MEAN"
+CFLAGS = $(CFLAGS) /I$(BASEDIR) /I$(BASEDIR)\include
+CFLAGS = $(CFLAGS) /I$(INCPREFIX)
 
-!if "$(WERROR)" == "1"
-CFLAGS 			= $(CFLAGS) /WX
+!if "$(WITH_GOST)" == "1"
+CFLAGS = $(CFLAGS)
+!else
+CFLAGS = $(CFLAGS) /D "XMLSEC_NO_GOST" /D "XMLSEC_NO_GOST2012"
 !endif
 
-CFLAGS 			= $(CFLAGS) /I$(BASEDIR) /I$(BASEDIR)\include
-CFLAGS 			= $(CFLAGS) /I$(INCPREFIX)
-CFLAGS 			= $(CFLAGS) /D PACKAGE=\"$(XMLSEC_NAME)\"
-CFLAGS 			= $(CFLAGS) /D "HAVE_STDIO_H" /D "HAVE_STDLIB_H"
-CFLAGS 			= $(CFLAGS) /D "HAVE_STRING_H" /D "HAVE_CTYPE_H"
-CFLAGS 			= $(CFLAGS) /D "HAVE_MALLOC_H" /D "HAVE_MEMORY_H"
-CFLAGS 			= $(CFLAGS) /D "XMLSEC_NO_GOST" /D "XMLSEC_NO_GOST2012"
-CFLAGS                  = $(CFLAGS) /D "XMLSEC_NO_SIZE_T"
+!if "$(WITH_RSA_PKCS15)" == "1"
+CFLAGS = $(CFLAGS)
+!else
+CFLAGS = $(CFLAGS)  /D "XMLSEC_NO_RSA_PKCS15"
+!endif
 
+!if "$(WITH_LEGACY_CRYPTO)" == "1"
+CFLAGS = $(CFLAGS)
+!else
+CFLAGS = $(CFLAGS)  /D "XMLSEC_NO_MD5"
+!endif
+
+!if "$(WITH_FTP)" == "1"
+CFLAGS = $(CFLAGS)
+!else
+CFLAGS = $(CFLAGS) /D "XMLSEC_NO_FTP"
+!endif
+
+!if "$(WITH_HTTP)" == "1"
+CFLAGS = $(CFLAGS)
+!else
+CFLAGS = $(CFLAGS) /D "XMLSEC_NO_HTTP"
+!endif
+
+!if "$(PEDANTIC)" == "1"
+CFLAGS = $(CFLAGS) /W4
+!else
+CFLAGS = $(CFLAGS) /W1
+!endif
+
+# C4127: conditional expression is constant
+#     this generates a false warning inside asserts
+# C4130: '!=': logical operation on address of string constant:
+#     this generates a false warning inside macros
+# C4152: nonstandard extension, function/data pointer conversion in expression
+#     this generates a false warning for XMLSEC_PTR_TO_FUNC
+# C4232: nonstandard extension, address of dllimport is not static
+#     this generates a false warning for functions used in structs
+CFLAGS = $(CFLAGS) /wd4127 /wd4130 /wd4152 /wd4232
+
+!if "$(WERROR)" == "1"
+CFLAGS = $(CFLAGS) /WX
+!endif
 
 !if "$(UNICODE)" == "1"
-CFLAGS 			= $(CFLAGS) /D "UNICODE" /D "_UNICODE"
+CFLAGS = $(CFLAGS) /D "UNICODE" /D "_UNICODE"
 !endif
 
 # Optimisation and debug symbols.
 !if "$(DEBUG)" == "1"
-CFLAGS 			= $(CFLAGS) /D "_DEBUG" /Od /Zi
+CFLAGS = $(CFLAGS) /D "_DEBUG" /Od /Zi
 !else
-CFLAGS 			= $(CFLAGS) /D "NDEBUG" /O2 /Zi
+CFLAGS = $(CFLAGS) /D "NDEBUG" /O2 /Zi
 !endif
 
-CFLAGS 			= $(CFLAGS) $(CRUNTIME)
+# Enable memcheck.
+!if "$(MEMCHECK)" == "1"
+# CFLAGS = $(CFLAGS) /D "_CRTDBG_MAP_ALLOC"
+!endif
+
+CFLAGS = $(CFLAGS) $(CRUNTIME)
 
 # configurable options
 !if "$(WITH_LIBXSLT)" == "1"
 !else
-CFLAGS 			= $(CFLAGS) /DXMLSEC_NO_XSLT=1
+CFLAGS = $(CFLAGS) /DXMLSEC_NO_XSLT=1
 !endif
 
-!if "$(WITH_NT4)" == "1"
-CFLAGS 			= $(CFLAGS) /DXMLSEC_MSCRYPTO_NT4=1
-!else
-!endif
-
-CFLAGS			= $(CFLAGS) /D "XMLSEC_DEFAULT_CRYPTO=\"$(XMLSEC_DEFAULT_CRYPTO)\""
+CFLAGS = $(CFLAGS) /D "XMLSEC_DEFAULT_CRYPTO=\"$(XMLSEC_DEFAULT_CRYPTO)\""
 !if "$(WITH_DL)" == "1"
-CFLAGS			= $(CFLAGS) /D "XMLSEC_DL_WIN32"
-APP_CFLAGS		= $(APP_CFLAGS) /D "XMLSEC_CRYPTO_DYNAMIC_LOADING"
+CFLAGS = $(CFLAGS) /D "XMLSEC_DL_WIN32"
+APP_CFLAGS = $(APP_CFLAGS) /D "XMLSEC_CRYPTO_DYNAMIC_LOADING"
 !else
-CFLAGS 			= $(CFLAGS) /D "XMLSEC_NO_CRYPTO_DYNAMIC_LOADING"
-APP_CFLAGS		= $(APP_CFLAGS) $(XMLSEC_CRYPTO_CFLAGS)
+CFLAGS 	= $(CFLAGS) /D "XMLSEC_NO_CRYPTO_DYNAMIC_LOADING"
+APP_CFLAGS = $(APP_CFLAGS) $(XMLSEC_CRYPTO_CFLAGS)
 # this disables TEMPLATE tests and helps with missing algorithms (hmac) in mscrypto
-APP_CFLAGS		= $(APP_CFLAGS) /D "XMLSEC_NO_TMPL_TEST"
+APP_CFLAGS = $(APP_CFLAGS) /D "XMLSEC_NO_TMPL_TEST"
 !endif
 
 XMLSEC_OPENSSL_CFLAGS   = /D "XMLSEC_CRYPTO_OPENSSL" /D "XMLSEC_DEFAULT_CRYPTO=\"openssl\""
 XMLSEC_NSS_CFLAGS   	= /D "XMLSEC_CRYPTO_NSS" /D "XMLSEC_DEFAULT_CRYPTO=\"nss\""
 XMLSEC_MSCRYPTO_CFLAGS  = /D "XMLSEC_CRYPTO_MSCRYPTO" /D "XMLSEC_DEFAULT_CRYPTO=\"mscrypto\""
 XMLSEC_MSCNG_CFLAGS     = /D "XMLSEC_CRYPTO_MSCNG" /D "XMLSEC_DEFAULT_CRYPTO=\"mscng\""
+
+# Crytpo options
+!if "$(WITH_OPENSSL_VERSION)" == "XMLSEC_OPENSSL_300"
+!if "$(WITH_OPENSSL3_ENGINES)" == "1"
+XMLSEC_OPENSSL_CFLAGS  = $(XMLSEC_OPENSSL_CFLAGS) /D "XMLSEC_OPENSSL3_ENGINES=1"
+!endif
+!endif
 
 #
 # The linker and its options.
@@ -426,9 +481,13 @@ LIBS 			=
 
 # Optimisation and debug symbols.
 !if "$(DEBUG)" == "1"
-LDFLAGS 		= $(LDFLAGS)
+LDFLAGS 		= $(LDFLAGS) /DEBUG /OPT:ICF
 !else
-LDFLAGS 		= $(LDFLAGS) /opt:ref,icf
+LDFLAGS 		= $(LDFLAGS) /OPT:REF,ICF
+!endif
+
+!if "$(PEDANTIC)" == "1"
+LDFLAGS = $(LDFLAGS) /WX
 !endif
 
 SOLIBS 			= $(LIBS) libxml2.lib ws2_32.lib
@@ -445,22 +504,17 @@ SOLIBS 			= $(SOLIBS) libxslt.lib
 ALIBS 			= $(ALIBS) libxslt_a.lib
 !endif
 
-!if "$(STATIC)" == "1"
-APP_LIBS  		= $(ALIBS) $(XMLSEC_CRYPTO_ALIBS)
-!else
-APP_LIBS  		= $(SOLIBS) $(XMLSEC_CRYPTO_SOLIBS)
-!endif
-
 !if "$(WITH_DL)" == "1"
+APP_LIBS  		= $(SOLIBS) $(XMLSEC_CRYPTO_SOLIBS)
 !else
+APP_LIBS  		= $(ALIBS) $(XMLSEC_CRYPTO_ALIBS)
 !endif
 
-!if "$(WITH_OPENSSL_VERSION)" == "XMLSEC_OPENSSL_110"
 XMLSEC_OPENSSL_SOLIBS   = libcrypto.lib wsock32.lib kernel32.lib user32.lib gdi32.lib crypt32.lib advapi32.lib ws2_32.lib
 XMLSEC_OPENSSL_ALIBS    = libcrypto.lib wsock32.lib kernel32.lib user32.lib gdi32.lib crypt32.lib advapi32.lib ws2_32.lib
-!else
-XMLSEC_OPENSSL_SOLIBS   = libeay32.lib wsock32.lib kernel32.lib user32.lib gdi32.lib crypt32.lib advapi32.lib
-XMLSEC_OPENSSL_ALIBS    = libeay32.lib wsock32.lib kernel32.lib user32.lib gdi32.lib crypt32.lib advapi32.lib
+
+!if "$(WITH_OPENSSL_VERSION)" == "XMLSEC_OPENSSL_300"
+!elseif "$(WITH_OPENSSL_VERSION)" == "XMLSEC_OPENSSL_111"
 !endif
 
 XMLSEC_NSS_SOLIBS       = smime3.lib ssl3.lib nss3.lib libnspr4.lib libplds4.lib libplc4.lib kernel32.lib user32.lib gdi32.lib
@@ -476,6 +530,10 @@ XMLSEC_MSCNG_ALIBS   = kernel32.lib user32.lib gdi32.lib Crypt32.lib Advapi32.li
 # The archiver and its options.
 AR = link.exe /lib
 ARFLAGS = /nologo
+
+!if "$(PEDANTIC)" == "1"
+ARFLAGS = $(ARFLAGS) /WX
+!endif
 
 #
 # xmlsec-<default-crypto> options
@@ -524,29 +582,64 @@ XMLSEC_CRYPTO_IMP	    = $(XMLSEC_MSCNG_IMP)
 XMLSEC_CRYPTO_A		    = $(XMLSEC_MSCNG_A)
 !endif
 
+
+!if "$(WITH_OPENSSL_VERSION)" == "XMLSEC_OPENSSL_300"
+XMLSEC_OPENSSL_TEST_CONFIG = openssl3.cnf
+!else
+XMLSEC_OPENSSL_TEST_CONFIG =
+!endif
+
+!if "$(STATIC)" == "1"
+EXTRA_ALL_TARGETS=xmlseca
+EXTRA_OPENSSL_TARGETS=openssla
+EXTRA_NSS_TARGETS=nssa
+EXTRA_MSCNG_TARGETS=mscnga
+EXTRA_MSCRYPTO_TARGETS=mscryptoa
+!else
+EXTRA_ALL_TARGETS=
+EXTRA_OPENSSL_TARGETS=
+EXTRA_NSS_TARGETS=
+EXTRA_MSCNG_TARGETS=
+EXTRA_MSCRYPTO_TARGETS=
+!endif
+
+
+EXTRA_CRYPTO_TARGETS =
+!if "$(WITH_OPENSSL)" == "1"
+EXTRA_CRYPTO_TARGETS = $(EXTRA_CRYPTO_TARGETS) openssl $(EXTRA_OPENSSL_TARGETS)
+!endif
+!if "$(WITH_NSS)" == "1"
+EXTRA_CRYPTO_TARGETS = $(EXTRA_CRYPTO_TARGETS) nss $(EXTRA_NSS_TARGETS)
+!endif
+!if "$(WITH_MSCNG)" == "1"
+EXTRA_CRYPTO_TARGETS = $(EXTRA_CRYPTO_TARGETS) mscng $(EXTRA_MSCNG_TARGETS)
+!endif
+!if "$(WITH_MSCRYPTO)" == "1"
+EXTRA_CRYPTO_TARGETS = $(EXTRA_CRYPTO_TARGETS) mscrypto $(EXTRA_MSCRYPTO_TARGETS)
+!endif
+
 #
 # Build rules
 #
 
-all : xmlsec xmlseca $(WITH_CRYPTO) apps
+all: apps $(EXTRA_ALL_TARGETS) $(EXTRA_CRYPTO_TARGETS)
 
-xmlsec : $(XMLSEC_APPS_INTDIR) $(BINDIR)\$(XMLSEC_SO) $(XMLSEC_DEFAULT_CRYPTO)
+apps: $(BINDIR)\$(APP_NAME)
 
-xmlseca :  $(XMLSEC_APPS_INTDIR_A) $(BINDIR)\$(XMLSEC_A) $(XMLSEC_DEFAULT_CRYPTO_A)
+xmlseca:  $(XMLSEC_APPS_INTDIR_A) $(BINDIR)\$(XMLSEC_A) $(XMLSEC_DEFAULT_CRYPTO_A)
+xmlsec: $(XMLSEC_APPS_INTDIR) $(BINDIR)\$(XMLSEC_SO) $(XMLSEC_DEFAULT_CRYPTO)
 
 openssla: $(BINDIR)\$(XMLSEC_OPENSSL_A)
-openssl: $(BINDIR)\$(XMLSEC_OPENSSL_SO) openssla
+openssl: $(BINDIR)\$(XMLSEC_OPENSSL_SO) $(EXTRA_OPENSSL_TARGETS)
 
 nssa: $(BINDIR)\$(XMLSEC_NSS_A)
-nss: $(BINDIR)\$(XMLSEC_NSS_SO) nssa
+nss: $(BINDIR)\$(XMLSEC_NSS_SO) $(EXTRA_NSS_TARGETS)
 
 mscryptoa: $(BINDIR)\$(XMLSEC_MSCRYPTO_A)
-mscrypto: $(BINDIR)\$(XMLSEC_MSCRYPTO_SO) $(BINDIR)\$(XMLSEC_MSCRYPTO_A)
+mscrypto: $(BINDIR)\$(XMLSEC_MSCRYPTO_SO) $(EXTRA_MSCRYPTO_TARGETS)
 
 mscnga: $(BINDIR)\$(XMLSEC_MSCNG_A)
-mscng: $(BINDIR)\$(XMLSEC_MSCNG_SO) $(BINDIR)\$(XMLSEC_MSCNG_A)
-
-apps : $(BINDIR)\$(APP_NAME)
+mscng: $(BINDIR)\$(XMLSEC_MSCNG_SO) $(EXTRA_MSCNG_TARGETS)
 
 check : check-keys check-dsig check-enc
 
@@ -554,6 +647,7 @@ check-keys : $(BINDIR)\$(APP_NAME)
 	cd ..
 	if not exist %MAKEDIR%\tmp mkdir %MAKEDIR%\tmp
 	set TMPFOLDER=%MAKEDIR%\tmp
+	set XMLSEC_OPENSSL_TEST_CONFIG=$(XMLSEC_OPENSSL_TEST_CONFIG)
 	sh ./tests/testrun.sh ./tests/testKeys.sh "$(WITH_DEFAULT_CRYPTO)" ./tests win32/$(BINDIR)/$(APP_NAME) der
 	cd win32
 
@@ -561,6 +655,7 @@ check-dsig : $(BINDIR)\$(APP_NAME)
 	cd ..
 	if not exist %MAKEDIR%\tmp mkdir %MAKEDIR%\tmp
 	set TMPFOLDER=%MAKEDIR%\tmp
+	set XMLSEC_OPENSSL_TEST_CONFIG=$(XMLSEC_OPENSSL_TEST_CONFIG)
 	sh ./tests/testrun.sh ./tests/testDSig.sh "$(WITH_DEFAULT_CRYPTO)" ./tests win32/$(BINDIR)/$(APP_NAME) der
 	cd win32
 
@@ -568,6 +663,7 @@ check-enc : $(BINDIR)\$(APP_NAME)
 	cd ..
 	if not exist %MAKEDIR%\tmp mkdir %MAKEDIR%\tmp
 	set TMPFOLDER=%MAKEDIR%\tmp
+	set XMLSEC_OPENSSL_TEST_CONFIG=$(XMLSEC_OPENSSL_TEST_CONFIG)
 	sh ./tests/testrun.sh ./tests/testEnc.sh "$(WITH_DEFAULT_CRYPTO)" ./tests win32/$(BINDIR)/$(APP_NAME) der
 	cd win32
 
@@ -589,18 +685,31 @@ clean :
 rebuild : clean all
 
 install : all
+    :: directoreies
 	if not exist $(INCPREFIX)\$(XMLSEC_NAME) mkdir $(INCPREFIX)\$(XMLSEC_NAME)
 	if not exist $(BINPREFIX) mkdir $(BINPREFIX)
 	if not exist $(LIBPREFIX) mkdir $(LIBPREFIX)
-	if exist $(BINDIR)\$(XMLSEC_OPENSSL_SO) if not exist $(INCPREFIX)\$(XMLSEC_NAME)\openssl mkdir $(INCPREFIX)\$(XMLSEC_NAME)\openssl
-	if exist $(BINDIR)\$(XMLSEC_NSS_SO) if not exist $(INCPREFIX)\$(XMLSEC_NAME)\nss mkdir $(INCPREFIX)\$(XMLSEC_NAME)\nss
-	if exist $(BINDIR)\$(XMLSEC_MSCRYPTO_SO) if not exist $(INCPREFIX)\$(XMLSEC_NAME)\mscrypto mkdir $(INCPREFIX)\$(XMLSEC_NAME)\mscrypto
-	if exist $(BINDIR)\$(XMLSEC_MSCNG_SO) if not exist $(INCPREFIX)\$(XMLSEC_NAME)\mscng mkdir $(INCPREFIX)\$(XMLSEC_NAME)\mscng
+
+	:: include files
 	if exist $(BASEDIR)\include\$(XMLSEC_NAME) copy $(BASEDIR)\include\$(XMLSEC_NAME)\*.h $(INCPREFIX)\$(XMLSEC_NAME)
+	if exist $(BINDIR)\$(XMLSEC_OPENSSL_SO) if not exist $(INCPREFIX)\$(XMLSEC_NAME)\openssl mkdir $(INCPREFIX)\$(XMLSEC_NAME)\openssl
+	if exist $(BINDIR)\$(XMLSEC_OPENSSL_A) if not exist $(INCPREFIX)\$(XMLSEC_NAME)\openssl mkdir $(INCPREFIX)\$(XMLSEC_NAME)\openssl
 	if exist $(BINDIR)\$(XMLSEC_OPENSSL_SO) copy $(BASEDIR)\include\$(XMLSEC_NAME)\openssl\*.h $(INCPREFIX)\$(XMLSEC_NAME)\openssl
+    if exist $(BINDIR)\$(XMLSEC_OPENSSL_A) copy $(BASEDIR)\include\$(XMLSEC_NAME)\openssl\*.h $(INCPREFIX)\$(XMLSEC_NAME)\openssl
+	if exist $(BINDIR)\$(XMLSEC_NSS_SO) if not exist $(INCPREFIX)\$(XMLSEC_NAME)\nss mkdir $(INCPREFIX)\$(XMLSEC_NAME)\nss
+	if exist $(BINDIR)\$(XMLSEC_NSS_A) if not exist $(INCPREFIX)\$(XMLSEC_NAME)\nss mkdir $(INCPREFIX)\$(XMLSEC_NAME)\nss
 	if exist $(BINDIR)\$(XMLSEC_NSS_SO) copy $(BASEDIR)\include\$(XMLSEC_NAME)\nss\*.h $(INCPREFIX)\$(XMLSEC_NAME)\nss
+	if exist $(BINDIR)\$(XMLSEC_NSS_A) copy $(BASEDIR)\include\$(XMLSEC_NAME)\nss\*.h $(INCPREFIX)\$(XMLSEC_NAME)\nss
+	if exist $(BINDIR)\$(XMLSEC_MSCRYPTO_SO) if not exist $(INCPREFIX)\$(XMLSEC_NAME)\mscrypto mkdir $(INCPREFIX)\$(XMLSEC_NAME)\mscrypto
+	if exist $(BINDIR)\$(XMLSEC_MSCRYPTO_A) if not exist $(INCPREFIX)\$(XMLSEC_NAME)\mscrypto mkdir $(INCPREFIX)\$(XMLSEC_NAME)\mscrypto
 	if exist $(BINDIR)\$(XMLSEC_MSCRYPTO_SO) copy $(BASEDIR)\include\$(XMLSEC_NAME)\mscrypto\*.h $(INCPREFIX)\$(XMLSEC_NAME)\mscrypto
+	if exist $(BINDIR)\$(XMLSEC_MSCRYPTO_A) copy $(BASEDIR)\include\$(XMLSEC_NAME)\mscrypto\*.h $(INCPREFIX)\$(XMLSEC_NAME)\mscrypto
+	if exist $(BINDIR)\$(XMLSEC_MSCNG_SO) if not exist $(INCPREFIX)\$(XMLSEC_NAME)\mscng mkdir $(INCPREFIX)\$(XMLSEC_NAME)\mscng
+	if exist $(BINDIR)\$(XMLSEC_MSCNG_A) if not exist $(INCPREFIX)\$(XMLSEC_NAME)\mscng mkdir $(INCPREFIX)\$(XMLSEC_NAME)\mscng
 	if exist $(BINDIR)\$(XMLSEC_MSCNG_SO) copy $(BASEDIR)\include\$(XMLSEC_NAME)\mscng\*.h $(INCPREFIX)\$(XMLSEC_NAME)\mscng
+	if exist $(BINDIR)\$(XMLSEC_MSCNG_A) copy $(BASEDIR)\include\$(XMLSEC_NAME)\mscng\*.h $(INCPREFIX)\$(XMLSEC_NAME)\mscng
+
+	:: shared and static libs
 	if exist $(BINDIR)\$(XMLSEC_SO) copy $(BINDIR)\$(XMLSEC_SO) $(SOPREFIX)
 	if exist $(BINDIR)\$(XMLSEC_SO_MANIFEST) copy $(BINDIR)\$(XMLSEC_SO_MANIFEST) $(SOPREFIX)
 	if exist $(BINDIR)\$(XMLSEC_PDB) copy $(BINDIR)\$(XMLSEC_PDB) $(SOPREFIX)
@@ -626,6 +735,8 @@ install : all
 	if exist $(BINDIR)\$(XMLSEC_MSCNG_PDB) copy $(BINDIR)\$(XMLSEC_MSCNG_PDB) $(SOPREFIX)
 	if exist $(BINDIR)\$(XMLSEC_MSCNG_A) copy $(BINDIR)\$(XMLSEC_MSCNG_A) $(LIBPREFIX)
 	if exist $(BINDIR)\$(XMLSEC_MSCNG_IMP) copy $(BINDIR)\$(XMLSEC_MSCNG_IMP) $(LIBPREFIX)
+
+	:: apps
 	if exist $(BINDIR)\$(APP_NAME) copy $(BINDIR)\$(APP_NAME) $(BINPREFIX)
 	if exist $(BINDIR)\$(APP_NAME_MANIFEST) copy $(BINDIR)\$(APP_NAME_MANIFEST) $(BINPREFIX)
 
@@ -659,19 +770,15 @@ uninstall :
 	if exist $(BINPREFIX)\$(APP_NAME) del /F /S /Q $(BINPREFIX)\$(APP_NAME)
 	if exist $(BINPREFIX)\$(APP_NAME_MANIFEST) del /F /S /Q $(BINPREFIX)\$(APP_NAME_MANIFEST)
 
-# This is a target for me, to make a binary distribution. Not for the public use,
-# keep your hands off :-)
-BDVERSION = $(XMLSEC_VERSION_MAJOR).$(XMLSEC_VERSION_MINOR).$(XMLSEC_VERSION_SUBMINOR)
-BDPREFIX = $(XMLSEC_BASENAME)-$(BDVERSION).win32
-bindist : all
-	$(MAKE) /nologo PREFIX=$(BDPREFIX) SOPREFIX=$(BDPREFIX)\bin install
-	cscript //NoLogo configure.js genreadme $(XMLSEC_BASENAME) $(BDVERSION) $(BDPREFIX)\readme.txt
-
+#
 # Makes the compiler output directory.
+#
 $(BINDIR) :
 	if not exist $(BINDIR) mkdir $(BINDIR)
 
+#
 # Makes intermediate directories.
+#
 $(XMLSEC_APPS_INTDIR) :
 	if not exist $(XMLSEC_APPS_INTDIR) mkdir $(XMLSEC_APPS_INTDIR)
 $(XMLSEC_APPS_INTDIR_A) :
@@ -702,7 +809,9 @@ $(XMLSEC_MSCNG_INTDIR) :
 $(XMLSEC_MSCNG_INTDIR_A) :
 	if not exist $(XMLSEC_MSCNG_INTDIR_A) mkdir $(XMLSEC_MSCNG_INTDIR_A)
 
+#
 # An implicit rule for xmlsec compilation.
+#
 {$(APPS_SRCDIR)}.c{$(XMLSEC_APPS_INTDIR)}.obj::
 	$(CC) $(CFLAGS) $(APP_CFLAGS) /Fo$(XMLSEC_APPS_INTDIR)\ /c $<
 
@@ -729,7 +838,9 @@ $(XMLSEC_MSCNG_INTDIR_A) :
 {$(XMLSEC_MSCNG_SRCDIR)}.c{$(XMLSEC_MSCNG_INTDIR)}.obj::
 	$(CC) $(CFLAGS) $(XMLSEC_MSCNG_CFLAGS) /Fo$(XMLSEC_MSCNG_INTDIR)\ /c $<
 
+#
 # An implicit rule for static xmlsec compilation.
+#
 {$(APPS_SRCDIR)}.c{$(XMLSEC_APPS_INTDIR_A)}.obj::
 	$(CC) /D "LIBXML_STATIC" /D "LIBXSLT_STATIC" /D "XMLSEC_STATIC" \
 		$(CFLAGS) $(APP_CFLAGS) /Fo$(XMLSEC_APPS_INTDIR_A)\ /c $<
@@ -766,7 +877,9 @@ $(XMLSEC_MSCNG_INTDIR_A) :
 	$(CC) /D "LIBXML_STATIC" /D "LIBXSLT_STATIC" /D "XMLSEC_STATIC" \
 		$(CFLAGS) $(XMLSEC_MSCNG_CFLAGS) /Fo$(XMLSEC_MSCNG_INTDIR_A)\ /c $<
 
+#
 # Compiles xmlsec source. Uses the implicit rule for commands.
+#
 $(XMLSEC_OBJS) : $(XMLSEC_INTDIR)
 $(XMLSEC_OBJS_A) : $(XMLSEC_INTDIR_A)
 
@@ -782,7 +895,9 @@ $(XMLSEC_MSCRYPTO_OBJS_A) : $(XMLSEC_MSCRYPTO_INTDIR_A)
 $(XMLSEC_MSCNG_OBJS) : $(XMLSEC_MSCNG_INTDIR)
 $(XMLSEC_MSCNG_OBJS_A) : $(XMLSEC_MSCNG_INTDIR_A)
 
+#
 # Creates the shared objects and archives.
+#
 $(BINDIR)\$(XMLSEC_SO) : $(BINDIR) $(XMLSEC_OBJS)
 	$(LD) $(LDFLAGS) /DLL /VERSION:$(XMLSEC_VERSION_MAJOR).$(XMLSEC_VERSION_MINOR) \
 		/IMPLIB:$(BINDIR)\$(XMLSEC_IMP) /OUT:$(BINDIR)\$(XMLSEC_SO) \
@@ -790,43 +905,47 @@ $(BINDIR)\$(XMLSEC_SO) : $(BINDIR) $(XMLSEC_OBJS)
 $(BINDIR)\$(XMLSEC_A) : $(BINDIR) $(XMLSEC_OBJS_A)
 	$(AR) $(ARFLAGS) /OUT:$(BINDIR)\$(XMLSEC_A) $(XMLSEC_OBJS_A)
 
-$(BINDIR)\$(XMLSEC_OPENSSL_SO) : $(BINDIR) $(XMLSEC_OPENSSL_OBJS)
+$(BINDIR)\$(XMLSEC_OPENSSL_SO) : $(BINDIR) $(BINDIR)\$(XMLSEC_SO) $(XMLSEC_OPENSSL_OBJS)
 	$(LD) $(LDFLAGS) /DLL /VERSION:$(XMLSEC_VERSION_MAJOR).$(XMLSEC_VERSION_MINOR) \
 		/IMPLIB:$(BINDIR)\$(XMLSEC_OPENSSL_IMP) /OUT:$(BINDIR)\$(XMLSEC_OPENSSL_SO) \
 		$(XMLSEC_OPENSSL_OBJS) $(XMLSEC_IMP) $(SOLIBS) $(XMLSEC_OPENSSL_SOLIBS)
-$(BINDIR)\$(XMLSEC_OPENSSL_A) : $(BINDIR) $(XMLSEC_OPENSSL_OBJS_A)
+$(BINDIR)\$(XMLSEC_OPENSSL_A) : $(BINDIR) $(BINDIR)\$(XMLSEC_A) $(XMLSEC_OPENSSL_OBJS_A)
 	$(AR) $(ARFLAGS) /OUT:$(BINDIR)\$(XMLSEC_OPENSSL_A) $(XMLSEC_OPENSSL_OBJS_A)
 
-$(BINDIR)\$(XMLSEC_NSS_SO) : $(BINDIR) $(XMLSEC_NSS_OBJS)
+$(BINDIR)\$(XMLSEC_NSS_SO) : $(BINDIR) $(BINDIR)\$(XMLSEC_SO) $(XMLSEC_NSS_OBJS)
 	$(LD) $(LDFLAGS) /DLL /VERSION:$(XMLSEC_VERSION_MAJOR).$(XMLSEC_VERSION_MINOR) \
 		/IMPLIB:$(BINDIR)\$(XMLSEC_NSS_IMP) /OUT:$(BINDIR)\$(XMLSEC_NSS_SO) \
 		$(XMLSEC_NSS_OBJS) $(XMLSEC_IMP) $(SOLIBS) $(XMLSEC_NSS_SOLIBS)
-$(BINDIR)\$(XMLSEC_NSS_A) : $(BINDIR) $(XMLSEC_NSS_OBJS_A)
+$(BINDIR)\$(XMLSEC_NSS_A) : $(BINDIR) $(BINDIR)\$(XMLSEC_A) $(XMLSEC_NSS_OBJS_A)
 	$(AR) $(ARFLAGS) /OUT:$(BINDIR)\$(XMLSEC_NSS_A) $(XMLSEC_NSS_OBJS_A)
 
-$(BINDIR)\$(XMLSEC_MSCRYPTO_SO) : $(BINDIR) $(XMLSEC_MSCRYPTO_OBJS)
+$(BINDIR)\$(XMLSEC_MSCRYPTO_SO) : $(BINDIR) $(BINDIR)\$(XMLSEC_SO) $(XMLSEC_MSCRYPTO_OBJS)
 	$(LD) $(LDFLAGS) /DLL /VERSION:$(XMLSEC_VERSION_MAJOR).$(XMLSEC_VERSION_MINOR) \
 		/IMPLIB:$(BINDIR)\$(XMLSEC_MSCRYPTO_IMP) /OUT:$(BINDIR)\$(XMLSEC_MSCRYPTO_SO) \
 		$(XMLSEC_MSCRYPTO_OBJS) $(XMLSEC_IMP) $(SOLIBS) $(XMLSEC_MSCRYPTO_SOLIBS)
-$(BINDIR)\$(XMLSEC_MSCRYPTO_A) : $(BINDIR) $(XMLSEC_MSCRYPTO_OBJS_A)
+$(BINDIR)\$(XMLSEC_MSCRYPTO_A) : $(BINDIR) $(BINDIR)\$(XMLSEC_A) $(XMLSEC_MSCRYPTO_OBJS_A)
 	$(AR) $(ARFLAGS) /OUT:$(BINDIR)\$(XMLSEC_MSCRYPTO_A) $(XMLSEC_MSCRYPTO_OBJS_A)
 
-$(BINDIR)\$(XMLSEC_MSCNG_SO) : $(BINDIR) $(XMLSEC_MSCNG_OBJS)
+$(BINDIR)\$(XMLSEC_MSCNG_SO) : $(BINDIR) $(BINDIR)\$(XMLSEC_SO) $(XMLSEC_MSCNG_OBJS)
 	$(LD) $(LDFLAGS) /DLL /VERSION:$(XMLSEC_VERSION_MAJOR).$(XMLSEC_VERSION_MINOR) \
 		/IMPLIB:$(BINDIR)\$(XMLSEC_MSCNG_IMP) /OUT:$(BINDIR)\$(XMLSEC_MSCNG_SO) \
 		$(XMLSEC_MSCNG_OBJS) $(XMLSEC_IMP) $(SOLIBS) $(XMLSEC_MSCNG_SOLIBS)
-$(BINDIR)\$(XMLSEC_MSCNG_A) : $(BINDIR) $(XMLSEC_MSCNG_OBJS_A)
+$(BINDIR)\$(XMLSEC_MSCNG_A) : $(BINDIR) $(BINDIR)\$(XMLSEC_A) $(XMLSEC_MSCNG_OBJS_A)
 	$(AR) $(ARFLAGS) /OUT:$(BINDIR)\$(XMLSEC_MSCNG_A) $(XMLSEC_MSCNG_OBJS_A)
 
+#
 # An implicit rule for xmlsec command line tool
-$(BINDIR)\xmlseca.exe: $(BINDIR) $(XMLSEC_APPS_OBJS_A)
+#
+$(BINDIR)\xmlseca.exe: xmlseca $(BINDIR) $(XMLSEC_APPS_OBJS_A)
 	$(LD) $(LDFLAGS) /OUT:$@ $(XMLSEC_A) $(XMLSEC_CRYPTO_A) $(APP_LIBS) $(XMLSEC_APPS_OBJS_A)
-$(BINDIR)\xmlsec.exe: $(BINDIR) $(XMLSEC_APPS_OBJS)
+$(BINDIR)\xmlsec.exe: xmlsec $(BINDIR) $(XMLSEC_APPS_OBJS)
 	$(LD) $(LDFLAGS) /OUT:$@ $(XMLSEC_IMP) $(XMLSEC_CRYPTO_IMP) $(APP_LIBS) $(XMLSEC_APPS_OBJS)
 
-# Builds xmlsec and friends. Uses the implicit rule for commands.
-$(BINDIR)\$(APP_NAME) : $(BINDIR) xmlsec xmlseca
 
-# Source dependences should be autogenerated somehow here, but how to
-# do it? I have no clue.
-
+# This is a target for me, to make a binary distribution. Not for the public use,
+# keep your hands off :-)
+BDVERSION = $(XMLSEC_VERSION_MAJOR).$(XMLSEC_VERSION_MINOR).$(XMLSEC_VERSION_SUBMINOR)
+BDPREFIX = $(XMLSEC_BASENAME)-$(BDVERSION).win32
+bindist : all
+	$(MAKE) /nologo PREFIX=$(BDPREFIX) SOPREFIX=$(BDPREFIX)\bin install
+	cscript //NoLogo configure.js genreadme $(XMLSEC_BASENAME) $(BDVERSION) $(BDPREFIX)\readme.txt

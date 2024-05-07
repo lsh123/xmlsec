@@ -1,18 +1,41 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * Relationship transform implementation
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:relationship
- * @Short_description: Relationship transform implementation
- * @Stability: Private
+ * SECTION:transforms
+ */
+
+#include "globals.h"
+
+#include <stdlib.h>
+#include <string.h>
+
+#include <libxml/tree.h>
+#include <libxml/xpointer.h>
+#include <libxml/c14n.h>
+
+#include <xmlsec/xmlsec.h>
+#include <xmlsec/xmltree.h>
+#include <xmlsec/keys.h>
+#include <xmlsec/list.h>
+#include <xmlsec/transforms.h>
+#include <xmlsec/errors.h>
+
+#include "cast_helpers.h"
+
+
+/**************************************************************************
  *
- * [Relationship transform](http://standards.iso.org/ittf/PubliclyAvailableStandards/c061796_ISO_IEC_29500-2_2012.zip)
+ * XML Relationshi transform
+ *
+ *  * [Relationship transform](http://standards.iso.org/ittf/PubliclyAvailableStandards/c061796_ISO_IEC_29500-2_2012.zip)
  *
  * The relationships transform takes the XML document from the Relationships part and converts
  * it to another XML document.
@@ -72,33 +95,17 @@
  *     when there will be such an input, then it'll be easy to add support for that. But I didn't want to clutter
  *     the current implementation with details that doesn't seem to be used in practice
  *
- */
-#include "globals.h"
-
-#include <stdlib.h>
-#include <string.h>
-
-#include <libxml/tree.h>
-#include <libxml/xpointer.h>
-#include <libxml/c14n.h>
-
-#include <xmlsec/xmlsec.h>
-#include <xmlsec/xmltree.h>
-#include <xmlsec/keys.h>
-#include <xmlsec/list.h>
-#include <xmlsec/transforms.h>
-#include <xmlsec/errors.h>
-
-
+ * xmlSecTransform + xmlSecRelationshipCtx
+ *
+ ***************************************************************************/
 typedef struct _xmlSecRelationshipCtx           xmlSecRelationshipCtx,
                                                 *xmlSecRelationshipCtxPtr;
 struct _xmlSecRelationshipCtx {
     xmlSecPtrListPtr                    sourceIdList;
 };
-#define xmlSecRelationshipSize        \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecRelationshipCtx))
-#define xmlSecRelationshipGetCtx(transform)        \
-    ((xmlSecRelationshipCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
+
+XMLSEC_TRANSFORM_DECLARE(Relationship, xmlSecRelationshipCtx)
+#define xmlSecRelationshipSize XMLSEC_TRANSFORM_SIZE(Relationship)
 
 static int              xmlSecRelationshipInitialize      (xmlSecTransformPtr transform);
 static void             xmlSecRelationshipFinalize        (xmlSecTransformPtr transform);
@@ -146,6 +153,13 @@ static xmlSecTransformKlass xmlSecRelationshipKlass = {
     NULL,                                       /* void* reserved1; */
 };
 
+/**
+ * xmlSecTransformRelationshipGetKlass:
+ *
+ * Gets the Relationship transform klass.
+ *
+ * Returns: Relationship transform klass.
+ */
 xmlSecTransformId
 xmlSecTransformRelationshipGetKlass(void) {
     return(&xmlSecRelationshipKlass);
@@ -604,7 +618,7 @@ xmlSecTransformRelationshipPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPt
     if(ret < 0) {
        xmlSecInternalError("xmlSecTransformRelationshipExecute",
                            xmlSecTransformGetName(transform));
-       xmlOutputBufferClose(buf);
+       (void)xmlOutputBufferClose(buf);
        return(-1);
     }
 
@@ -658,7 +672,7 @@ xmlSecTransformRelationshipPopBin(xmlSecTransformPtr transform, xmlSecByte* data
        if(ret < 0) {
             xmlSecInternalError("xmlC14NExecute",
                                 xmlSecTransformGetName(transform));
-           xmlOutputBufferClose(buf);
+           (void)xmlOutputBufferClose(buf);
            return(-1);
        }
 
@@ -678,8 +692,8 @@ xmlSecTransformRelationshipPopBin(xmlSecTransformPtr transform, xmlSecByte* data
        if(outSize > maxDataSize) {
            outSize = maxDataSize;
        }
-       if(outSize > XMLSEC_TRANSFORM_BINARY_CHUNK) {
-           outSize = XMLSEC_TRANSFORM_BINARY_CHUNK;
+       if(outSize > transformCtx->binaryChunkSize) {
+           outSize = transformCtx->binaryChunkSize;
        }
        if(outSize > 0) {
            xmlSecAssert2(xmlSecBufferGetData(out), -1);
@@ -689,7 +703,7 @@ xmlSecTransformRelationshipPopBin(xmlSecTransformPtr transform, xmlSecByte* data
            if(ret < 0) {
                xmlSecInternalError2("xmlSecBufferRemoveHead",
                                     xmlSecTransformGetName(transform),
-                                    "size=%d", outSize);
+                                    "size=" XMLSEC_SIZE_FMT, outSize);
                return(-1);
            }
        } else if(xmlSecBufferGetSize(out) == 0) {

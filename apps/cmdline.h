@@ -1,20 +1,20 @@
-/** 
+/**
  * XMLSec library
- * 
+ *
  * Command line parsing routines
  *
  * See Copyright for the status of this software.
- * 
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ *
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 #ifndef __XMLSEC_APPS_CMDLINE_H__
-#define __XMLSEC_APPS_CMDLINE_H__    
+#define __XMLSEC_APPS_CMDLINE_H__
 
 #include <time.h>
 
 #ifdef __cplusplus
 extern "C" {
-#endif /* __cplusplus */ 
+#endif /* __cplusplus */
 
 typedef struct _xmlSecAppCmdLineParam           xmlSecAppCmdLineParam,
                                                 *xmlSecAppCmdLineParamPtr;
@@ -33,7 +33,8 @@ typedef enum {
     xmlSecAppCmdLineParamTypeString,
     xmlSecAppCmdLineParamTypeStringList,
     xmlSecAppCmdLineParamTypeNumber,
-    xmlSecAppCmdLineParamTypeTime
+    xmlSecAppCmdLineParamTypeTime,
+    xmlSecAppCmdLineParamTypeGmtTime
 } xmlSecAppCmdLineParamType;
 
 struct _xmlSecAppCmdLineParam {
@@ -78,7 +79,7 @@ struct _xmlSecAppCmdLineValue {
 
 xmlSecAppCmdLineValuePtr xmlSecAppCmdLineValueCreate    (xmlSecAppCmdLineParamPtr param,
                                                          int pos);
-void                     xmlSecAppCmdLineValueDestroy   (xmlSecAppCmdLineValuePtr value);                                                                
+void                     xmlSecAppCmdLineValueDestroy   (xmlSecAppCmdLineValuePtr value);
 
 
 #ifdef __cplusplus

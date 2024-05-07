@@ -1,17 +1,15 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * Ciphers transforms implementation for GCrypt.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:ciphers
- * @Short_description: Ciphers transforms implementation for GCrypt.
- * @Stability: Private
- *
+ * SECTION:crypto
  */
 
 #include "globals.h"
@@ -26,6 +24,9 @@
 #include <xmlsec/errors.h>
 
 #include <xmlsec/gcrypt/crypto.h>
+
+#include "../cast_helpers.h"
+#include "../keysdata_helpers.h"
 
 /**************************************************************************
  *
@@ -68,7 +69,8 @@ xmlSecGCryptBlockCipherCtxInit(xmlSecGCryptBlockCipherCtxPtr ctx,
                                 const xmlChar* cipherName,
                                 xmlSecTransformCtxPtr transformCtx) {
     gcry_err_code_t err;
-    int blockLen;
+    size_t blockLen;
+    xmlSecSize blockSize;
     int ret;
 
     xmlSecAssert2(ctx != NULL, -1);
@@ -83,6 +85,7 @@ xmlSecGCryptBlockCipherCtxInit(xmlSecGCryptBlockCipherCtxPtr ctx,
     /* iv len == block len */
     blockLen = gcry_cipher_get_algo_blklen(ctx->cipher);
     xmlSecAssert2(blockLen > 0, -1);
+    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(blockLen, blockSize, return(-1), cipherName);
 
     if(encrypt) {
         xmlSecByte* iv;
@@ -90,10 +93,10 @@ xmlSecGCryptBlockCipherCtxInit(xmlSecGCryptBlockCipherCtxPtr ctx,
 
         /* allocate space for IV */
         outSize = xmlSecBufferGetSize(out);
-        ret = xmlSecBufferSetSize(out, outSize + blockLen);
+        ret = xmlSecBufferSetSize(out, outSize + blockSize);
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferSetSize", cipherName,
-                                 "size=%d", outSize + blockLen);
+                "size=" XMLSEC_SIZE_FMT, (outSize + blockSize));
             return(-1);
         }
         iv = xmlSecBufferGetData(out) + outSize;
@@ -102,14 +105,13 @@ xmlSecGCryptBlockCipherCtxInit(xmlSecGCryptBlockCipherCtxPtr ctx,
         gcry_randomize(iv, blockLen, GCRY_STRONG_RANDOM);
         err = gcry_cipher_setiv(ctx->cipherCtx, iv, blockLen);
         if(err != GPG_ERR_NO_ERROR) {
-            xmlSecGCryptError("gcry_cipher_setiv", err,
-                              cipherName);
+            xmlSecGCryptError("gcry_cipher_setiv", err, cipherName);
             return(-1);
         }
     } else {
         /* if we don't have enough data, exit and hope that
          * we'll have iv next time */
-        if(xmlSecBufferGetSize(in) < (xmlSecSize)blockLen) {
+        if(xmlSecBufferGetSize(in) < blockSize) {
             return(0);
         }
         xmlSecAssert2(xmlSecBufferGetData(in) != NULL, -1);
@@ -117,16 +119,15 @@ xmlSecGCryptBlockCipherCtxInit(xmlSecGCryptBlockCipherCtxPtr ctx,
         /* set iv */
         err = gcry_cipher_setiv(ctx->cipherCtx, xmlSecBufferGetData(in), blockLen);
         if(err != GPG_ERR_NO_ERROR) {
-            xmlSecGCryptError("gcry_cipher_setiv", err,
-                              cipherName);
+            xmlSecGCryptError("gcry_cipher_setiv", err, cipherName);
             return(-1);
         }
 
         /* and remove from input */
-        ret = xmlSecBufferRemoveHead(in, blockLen);
+        ret = xmlSecBufferRemoveHead(in, blockSize);
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferRemoveHead", cipherName,
-                                 "size=%d", blockLen);
+                "size=" XMLSEC_SIZE_FMT, blockSize);
             return(-1);
         }
     }
@@ -142,7 +143,8 @@ xmlSecGCryptBlockCipherCtxUpdate(xmlSecGCryptBlockCipherCtxPtr ctx,
                                   const xmlChar* cipherName,
                                   xmlSecTransformCtxPtr transformCtx) {
     xmlSecSize inSize, inBlocks, outSize;
-    int blockLen;
+    size_t blockLen;
+    xmlSecSize blockSize;
     xmlSecByte* outBuf;
     gcry_err_code_t err;
     int ret;
@@ -157,28 +159,29 @@ xmlSecGCryptBlockCipherCtxUpdate(xmlSecGCryptBlockCipherCtxPtr ctx,
 
     blockLen = gcry_cipher_get_algo_blklen(ctx->cipher);
     xmlSecAssert2(blockLen > 0, -1);
+    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(blockLen, blockSize, return(-1), cipherName);
 
     inSize = xmlSecBufferGetSize(in);
     outSize = xmlSecBufferGetSize(out);
 
-    if(inSize < (xmlSecSize)blockLen) {
+    if(inSize < blockSize) {
         return(0);
     }
 
     if(encrypt) {
-        inBlocks = inSize / ((xmlSecSize)blockLen);
+        inBlocks = inSize / blockSize;
     } else {
         /* we want to have the last block in the input buffer
          * for padding check */
-        inBlocks = (inSize - 1) / ((xmlSecSize)blockLen);
+        inBlocks = (inSize - 1) / blockSize;
     }
-    inSize = inBlocks * ((xmlSecSize)blockLen);
+    inSize = inBlocks * blockSize;
 
     /* we write out the input size plus may be one block */
-    ret = xmlSecBufferSetMaxSize(out, outSize + inSize + blockLen);
+    ret = xmlSecBufferSetMaxSize(out, outSize + inSize + blockSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetMaxSize", cipherName,
-                             "size=%d", outSize + inSize + blockLen);
+            "size=" XMLSEC_SIZE_FMT, (outSize + inSize + blockSize));
         return(-1);
     }
     outBuf = xmlSecBufferGetData(out) + outSize;
@@ -187,16 +190,14 @@ xmlSecGCryptBlockCipherCtxUpdate(xmlSecGCryptBlockCipherCtxPtr ctx,
         err = gcry_cipher_encrypt(ctx->cipherCtx, outBuf, inSize + blockLen,
                                 xmlSecBufferGetData(in), inSize);
         if(err != GPG_ERR_NO_ERROR) {
-            xmlSecGCryptError("gcry_cipher_encrypt", err,
-                              cipherName);
+            xmlSecGCryptError("gcry_cipher_encrypt", err, cipherName);
             return(-1);
         }
     } else {
         err = gcry_cipher_decrypt(ctx->cipherCtx, outBuf, inSize + blockLen,
                                 xmlSecBufferGetData(in), inSize);
         if(err != GPG_ERR_NO_ERROR) {
-            xmlSecGCryptError("gcry_cipher_decrypt", err,
-                              cipherName);
+            xmlSecGCryptError("gcry_cipher_decrypt", err, cipherName);
             return(-1);
         }
     }
@@ -205,7 +206,7 @@ xmlSecGCryptBlockCipherCtxUpdate(xmlSecGCryptBlockCipherCtxPtr ctx,
     ret = xmlSecBufferSetSize(out, outSize + inSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize", cipherName,
-                             "size=%d", outSize + inSize);
+            "size=" XMLSEC_SIZE_FMT, (outSize + inSize));
         return(-1);
     }
 
@@ -213,7 +214,7 @@ xmlSecGCryptBlockCipherCtxUpdate(xmlSecGCryptBlockCipherCtxPtr ctx,
     ret = xmlSecBufferRemoveHead(in, inSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferRemoveHead", cipherName,
-                             "size=%d", inSize);
+            "size=" XMLSEC_SIZE_FMT, inSize);
         return(-1);
     }
     return(0);
@@ -226,8 +227,8 @@ xmlSecGCryptBlockCipherCtxFinal(xmlSecGCryptBlockCipherCtxPtr ctx,
                                  int encrypt,
                                  const xmlChar* cipherName,
                                  xmlSecTransformCtxPtr transformCtx) {
-    xmlSecSize inSize, outSize;
-    int blockLen, outLen = 0;
+    xmlSecSize inSize, outSize, outSize2, blockSize;
+    size_t blockLen;
     xmlSecByte* inBuf;
     xmlSecByte* outBuf;
     gcry_err_code_t err;
@@ -243,41 +244,41 @@ xmlSecGCryptBlockCipherCtxFinal(xmlSecGCryptBlockCipherCtxPtr ctx,
 
     blockLen = gcry_cipher_get_algo_blklen(ctx->cipher);
     xmlSecAssert2(blockLen > 0, -1);
+    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(blockLen, blockSize, return(-1), cipherName);
 
     inSize = xmlSecBufferGetSize(in);
     outSize = xmlSecBufferGetSize(out);
 
     if(encrypt != 0) {
-        xmlSecAssert2(inSize < (xmlSecSize)blockLen, -1);
+        xmlSecAssert2(inSize < blockSize, -1);
 
         /* create padding */
-        ret = xmlSecBufferSetMaxSize(in, blockLen);
+        ret = xmlSecBufferSetMaxSize(in, blockSize);
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferSetMaxSize", cipherName,
-                                 "size=%d", blockLen);
+                "size=" XMLSEC_SIZE_FMT, blockSize);
             return(-1);
         }
         inBuf = xmlSecBufferGetData(in);
 
         /* create random padding */
-        if((xmlSecSize)blockLen > (inSize + 1)) {
-            gcry_randomize(inBuf + inSize, blockLen - inSize - 1,
-                        GCRY_STRONG_RANDOM); /* as usual, we are paranoid */
+        if(blockSize > (inSize + 1)) {
+            gcry_randomize(inBuf + inSize, blockLen - inSize - 1, GCRY_STRONG_RANDOM); /* as usual, we are paranoid */
         }
-        inBuf[blockLen - 1] = blockLen - inSize;
-        inSize = blockLen;
+        XMLSEC_SAFE_CAST_SIZE_TO_BYTE((blockSize - inSize), inBuf[blockSize - 1], return(-1), cipherName);
+        inSize = blockSize;
     } else {
-        if(inSize != (xmlSecSize)blockLen) {
-            xmlSecInvalidSizeError("Input data", inSize, blockLen, cipherName);
+        if(inSize != blockSize) {
+            xmlSecInvalidSizeError("Input data", inSize, blockSize, cipherName);
             return(-1);
         }
     }
 
     /* process last block */
-    ret = xmlSecBufferSetMaxSize(out, outSize + 2 * blockLen);
+    ret = xmlSecBufferSetMaxSize(out, outSize + 2 * blockSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetMaxSize", cipherName,
-                             "size=%d", outSize + 2 * blockLen);
+            "size=" XMLSEC_SIZE_FMT, (outSize + 2 * blockSize));
         return(-1);
     }
     outBuf = xmlSecBufferGetData(out) + outSize;
@@ -286,37 +287,38 @@ xmlSecGCryptBlockCipherCtxFinal(xmlSecGCryptBlockCipherCtxPtr ctx,
         err = gcry_cipher_encrypt(ctx->cipherCtx, outBuf, inSize + blockLen,
                                 xmlSecBufferGetData(in), inSize);
         if(err != GPG_ERR_NO_ERROR) {
-            xmlSecGCryptError("gcry_cipher_encrypt", err,
-                              cipherName);
+            xmlSecGCryptError("gcry_cipher_encrypt", err, cipherName);
             return(-1);
         }
     } else {
         err = gcry_cipher_decrypt(ctx->cipherCtx, outBuf, inSize + blockLen,
                                 xmlSecBufferGetData(in), inSize);
         if(err != GPG_ERR_NO_ERROR) {
-            xmlSecGCryptError("gcry_cipher_decrypt", err,
-                              cipherName);
+            xmlSecGCryptError("gcry_cipher_decrypt", err, cipherName);
             return(-1);
         }
     }
 
     if(encrypt == 0) {
+        xmlSecSize padding;
+
         /* check padding */
-        if(inSize < outBuf[blockLen - 1]) {
+        padding = (xmlSecSize)outBuf[blockLen - 1];
+        if(inSize < padding) {
             xmlSecInvalidSizeLessThanError("Input data padding",
-                    inSize, outBuf[blockLen - 1], cipherName);
+                    inSize, padding, cipherName);
             return(-1);
         }
-        outLen = inSize - outBuf[blockLen - 1];
+        outSize2 = inSize - padding;
     } else {
-        outLen = inSize;
+        outSize2 = inSize;
     }
 
     /* set correct output buffer size */
-    ret = xmlSecBufferSetSize(out, outSize + outLen);
+    ret = xmlSecBufferSetSize(out, outSize + outSize2);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize", cipherName,
-                             "size=%d", outSize + outLen);
+            "size=" XMLSEC_SIZE_FMT, (outSize + outSize2));
         return(-1);
     }
 
@@ -324,27 +326,11 @@ xmlSecGCryptBlockCipherCtxFinal(xmlSecGCryptBlockCipherCtxPtr ctx,
     ret = xmlSecBufferRemoveHead(in, inSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferRemoveHead", cipherName,
-                             "size=%d", inSize);
+            "size=" XMLSEC_SIZE_FMT, inSize);
         return(-1);
     }
 
-
-    /* set correct output buffer size */
-    ret = xmlSecBufferSetSize(out, outSize + outLen);
-    if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetSize", cipherName,
-                             "size=%d", outSize + outLen);
-        return(-1);
-    }
-
-    /* remove the processed block from input */
-    ret = xmlSecBufferRemoveHead(in, inSize);
-    if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferRemoveHead", cipherName,
-                             "size=%d", inSize);
-        return(-1);
-    }
-
+    /* success */
     return(0);
 }
 
@@ -353,13 +339,11 @@ xmlSecGCryptBlockCipherCtxFinal(xmlSecGCryptBlockCipherCtxPtr ctx,
  *
  *  Block Cipher transforms
  *
- * xmlSecGCryptBlockCipherCtx block is located after xmlSecTransform structure
+ *  xmlSecTransform + xmlSecGCryptBlockCipherCtx
  *
  *****************************************************************************/
-#define xmlSecGCryptBlockCipherSize     \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecGCryptBlockCipherCtx))
-#define xmlSecGCryptBlockCipherGetCtx(transform) \
-    ((xmlSecGCryptBlockCipherCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
+XMLSEC_TRANSFORM_DECLARE(GCryptBlockCipher, xmlSecGCryptBlockCipherCtx)
+#define xmlSecGCryptBlockCipherSize XMLSEC_TRANSFORM_SIZE(GCryptBlockCipher)
 
 static int      xmlSecGCryptBlockCipherInitialize       (xmlSecTransformPtr transform);
 static void     xmlSecGCryptBlockCipherFinalize         (xmlSecTransformPtr transform);
@@ -465,6 +449,7 @@ xmlSecGCryptBlockCipherFinalize(xmlSecTransformPtr transform) {
 static int
 xmlSecGCryptBlockCipherSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
     xmlSecGCryptBlockCipherCtxPtr ctx;
+    size_t keyBitsSize;
 
     xmlSecAssert2(xmlSecGCryptBlockCipherCheckId(transform), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
@@ -484,7 +469,10 @@ xmlSecGCryptBlockCipherSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr 
         keyReq->keyUsage = xmlSecKeyUsageDecrypt;
     }
 
-    keyReq->keyBitsSize = 8 * gcry_cipher_get_algo_keylen(ctx->cipher);
+    keyBitsSize = 8 * gcry_cipher_get_algo_keylen(ctx->cipher);
+    xmlSecAssert2(keyBitsSize > 0, -1);
+
+    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(keyBitsSize, keyReq->keyBitsSize, return(-1), xmlSecTransformGetName(transform));
     return(0);
 }
 
@@ -492,6 +480,7 @@ static int
 xmlSecGCryptBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecGCryptBlockCipherCtxPtr ctx;
     xmlSecBufferPtr buffer;
+    size_t keySizeT;
     xmlSecSize keySize;
     gcry_err_code_t err;
 
@@ -508,8 +497,9 @@ xmlSecGCryptBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecAssert2(ctx->keyId != NULL, -1);
     xmlSecAssert2(xmlSecKeyCheckId(key, ctx->keyId), -1);
 
-    keySize = gcry_cipher_get_algo_keylen(ctx->cipher);
-    xmlSecAssert2(keySize > 0, -1);
+    keySizeT = gcry_cipher_get_algo_keylen(ctx->cipher);
+    xmlSecAssert2(keySizeT > 0, -1);
+    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(keySizeT, keySize, return(-1), xmlSecTransformGetName(transform));
 
     buffer = xmlSecKeyDataBinaryValueGetBuffer(xmlSecKeyGetValue(key));
     xmlSecAssert2(buffer != NULL, -1);
@@ -771,4 +761,3 @@ xmlSecGCryptTransformDes3CbcGetKlass(void) {
     return(&xmlSecGCryptDes3CbcKlass);
 }
 #endif /* XMLSEC_NO_DES */
-

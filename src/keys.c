@@ -5,7 +5,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * SECTION:keys
@@ -30,6 +30,7 @@
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/errors.h>
 
+#include "cast_helpers.h"
 
 /**************************************************************************
  *
@@ -403,7 +404,7 @@ xmlSecKeyReqMatchKey(xmlSecKeyReqPtr keyReq, xmlSecKeyPtr key) {
     xmlSecAssert2(xmlSecKeyIsValid(key), -1);
 
     if((keyReq->keyType != xmlSecKeyDataTypeUnknown) && ((xmlSecKeyGetType(key) & keyReq->keyType) == 0)) {
-         return(0);
+        return(0);
     }
     if((keyReq->keyUsage != xmlSecKeyDataUsageUnknown) && ((keyReq->keyUsage & key->usage) == 0)) {
         return(0);
@@ -460,7 +461,7 @@ xmlSecKeyReqDebugDump(xmlSecKeyReqPtr keyReq, FILE* output) {
                 BAD_CAST "NULL");
     fprintf(output, "==== keyType: 0x%08x\n", keyReq->keyType);
     fprintf(output, "==== keyUsage: 0x%08x\n", keyReq->keyUsage);
-    fprintf(output, "==== keyBitsSize: %d\n", keyReq->keyBitsSize);
+    fprintf(output, "==== keyBitsSize: " XMLSEC_SIZE_FMT "\n", keyReq->keyBitsSize);
     xmlSecPtrListDebugDump(&(keyReq->keyUseWithList), output);
 }
 
@@ -484,7 +485,7 @@ xmlSecKeyReqDebugXmlDump(xmlSecKeyReqPtr keyReq, FILE* output) {
 
     fprintf(output, "<KeyType>0x%08x</KeyType>\n", keyReq->keyType);
     fprintf(output, "<KeyUsage>0x%08x</KeyUsage>\n", keyReq->keyUsage);
-    fprintf(output, "<KeyBitsSize>%d</KeyBitsSize>\n", keyReq->keyBitsSize);
+    fprintf(output, "<KeyBitsSize>" XMLSEC_SIZE_FMT "</KeyBitsSize>\n", keyReq->keyBitsSize);
     xmlSecPtrListDebugXmlDump(&(keyReq->keyUseWithList), output);
     fprintf(output, "</KeyReq>\n");
 }
@@ -601,6 +602,37 @@ xmlSecKeyCopy(xmlSecKeyPtr keyDst, xmlSecKeyPtr keySrc) {
     keyDst->usage          = keySrc->usage;
     keyDst->notValidBefore = keySrc->notValidBefore;
     keyDst->notValidAfter  = keySrc->notValidAfter;
+    return(0);
+}
+
+#define XMLSEC_SWAP(val1, val2, TYPE)   \
+    {                                   \
+        TYPE _tmp = (val1);             \
+        (val1) = (val2);                \
+        (val2) = _tmp;                  \
+    }
+
+/**
+ * xmlSecKeySwap:
+ * @key1:             the first key.
+ * @key2:             the second key.
+ *
+ * Swaps key data for @key1 and@key2
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecKeySwap(xmlSecKeyPtr key1, xmlSecKeyPtr key2) {
+    xmlSecAssert2(key1 != NULL, -1);
+    xmlSecAssert2(key2 != NULL, -1);
+
+    XMLSEC_SWAP(key1->name,             key2->name,             xmlChar*);
+    XMLSEC_SWAP(key1->value,            key2->value,            xmlSecKeyDataPtr);
+    XMLSEC_SWAP(key1->dataList,         key2->dataList,         xmlSecPtrListPtr);
+    XMLSEC_SWAP(key1->usage,            key2->usage,            xmlSecKeyUsage);
+    XMLSEC_SWAP(key1->notValidBefore,   key2->notValidBefore,   time_t);
+    XMLSEC_SWAP(key1->notValidAfter,    key2->notValidAfter,    time_t);
+
     return(0);
 }
 
@@ -723,6 +755,39 @@ xmlSecKeySetName(xmlSecKeyPtr key, const xmlChar* name) {
 }
 
 /**
+ * xmlSecKeySetNameEx:
+ * @key:                the pointer to key.
+ * @name:               the new key name.
+ * @nameSize:           the size of @name.
+ *
+ * Sets key name (see also #xmlSecKeyGetName function).
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecKeySetNameEx(xmlSecKeyPtr key, const xmlChar* name, xmlSecSize nameSize) {
+    xmlSecAssert2(key != NULL, -1);
+
+    if(key->name != NULL) {
+        xmlFree(key->name);
+        key->name = NULL;
+    }
+
+    if((name != NULL) && (nameSize > 0)) {
+        int nameLen;
+
+        XMLSEC_SAFE_CAST_SIZE_TO_INT(nameSize, nameLen, return(-1), NULL);
+        key->name = xmlStrndup(name, nameLen);
+        if(key->name == NULL) {
+            xmlSecStrdupError(name, NULL);
+            return(-1);
+        }
+    }
+
+    return(0);
+}
+
+/**
  * xmlSecKeyGetValue:
  * @key:                the pointer to key.
  *
@@ -757,6 +822,24 @@ xmlSecKeySetValue(xmlSecKeyPtr key, xmlSecKeyDataPtr value) {
     key->value = value;
 
     return(0);
+}
+
+/**
+ * xmlSecKeyGetSize:
+ * @key:                the pointer to key.
+ *
+ * Gets key size (see also #xmlSecKeyDataGetSize function).
+ *
+ * Returns: key size.
+ */
+xmlSecSize
+xmlSecKeyGetSize(xmlSecKeyPtr key) {
+    xmlSecAssert2(key != NULL, 0);
+
+    if(key->value == NULL) {
+        return(0);
+    }
+    return(xmlSecKeyDataGetSize(key->value));
 }
 
 /**
@@ -913,10 +996,12 @@ xmlSecKeyDebugDump(xmlSecKeyPtr key, FILE *output) {
     if(key->name != NULL) {
         fprintf(output, "=== key name: %s\n", key->name);
     }
-    fprintf(output, "=== key usage: %d\n", key->usage);
+    fprintf(output, "=== key usage: %u\n", key->usage);
     if(key->notValidBefore < key->notValidAfter) {
-        fprintf(output, "=== key not valid before: %ld\n", (unsigned long)key->notValidBefore);
-        fprintf(output, "=== key not valid after: %ld\n", (unsigned long)key->notValidAfter);
+        fprintf(output, "=== key not valid before: %.lf\n",
+            difftime(key->notValidBefore, (time_t)0));
+        fprintf(output, "=== key not valid after: %.lf\n",
+            difftime(key->notValidAfter, (time_t)0));
     }
     if(key->value != NULL) {
         xmlSecKeyDataDebugDump(key->value, output);
@@ -961,9 +1046,9 @@ xmlSecKeyDebugXmlDump(xmlSecKeyPtr key, FILE *output) {
     fprintf(output, "</KeyName>\n");
 
     if(key->notValidBefore < key->notValidAfter) {
-        fprintf(output, "<KeyValidity notValidBefore=\"%ld\" notValidAfter=\"%ld\"/>\n",
-                (unsigned long)key->notValidBefore,
-                (unsigned long)key->notValidAfter);
+        fprintf(output, "<KeyValidity notValidBefore=\"%.lf\" notValidAfter=\"%.lf\"/>\n",
+            difftime(key->notValidBefore, (time_t)0),
+            difftime(key->notValidAfter, (time_t)0));
     }
 
     if(key->value != NULL) {
@@ -1005,7 +1090,7 @@ xmlSecKeyGenerate(xmlSecKeyDataId dataId, xmlSecSize sizeBits, xmlSecKeyDataType
     if(ret < 0) {
         xmlSecInternalError3("xmlSecKeyDataGenerate",
                              xmlSecKeyDataKlassGetName(dataId),
-                             "size=%d;type=%d", sizeBits, type);
+                             "size=" XMLSEC_SIZE_FMT ";type=%u", sizeBits, type);
         xmlSecKeyDataDestroy(data);
         return(NULL);
     }
@@ -1205,10 +1290,10 @@ xmlSecKeyReadMemory(xmlSecKeyDataId dataId, const xmlSecByte* data, xmlSecSize d
 
 /**
  * xmlSecKeysMngrGetKey:
- * @keyInfoNode:        the pointer to <dsig:KeyInfo/> node.
- * @keyInfoCtx:         the pointer to <dsig:KeyInfo/> node processing context.
+ * @keyInfoNode:        the pointer to &lt;dsig:KeyInfo/&gt; node.
+ * @keyInfoCtx:         the pointer to &lt;dsig:KeyInfo/&gt; node processing context.
  *
- * Reads the <dsig:KeyInfo/> node @keyInfoNode and extracts the key.
+ * Reads the &lt;dsig:KeyInfo/&gt; node @keyInfoNode and extracts the key.
  *
  * Returns: the pointer to key or NULL if the key is not found or
  * an error occurs.
@@ -1220,8 +1305,7 @@ xmlSecKeysMngrGetKey(xmlNodePtr keyInfoNode, xmlSecKeyInfoCtxPtr keyInfoCtx) {
 
     xmlSecAssert2(keyInfoCtx != NULL, NULL);
 
-
-    /* first try to read data from <dsig:KeyInfo/> node */
+    /* first try to read data from &lt;dsig:KeyInfo/&gt; node */
     key = xmlSecKeyCreate();
     if(key == NULL) {
         xmlSecInternalError("xmlSecKeyCreate", NULL);
@@ -1246,8 +1330,8 @@ xmlSecKeysMngrGetKey(xmlNodePtr keyInfoNode, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     }
     xmlSecKeyDestroy(key);
 
-    /* if we have keys manager, try it */
-    if(keyInfoCtx->keysMngr != NULL) {
+    /* if we have keys manager, try to find any key that matches the required key (if lax key search is allowed) */
+    if(((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_LAX_KEY_SEARCH) != 0) &&  (keyInfoCtx->keysMngr != NULL)) {
         key = xmlSecKeysMngrFindKey(keyInfoCtx->keysMngr, NULL, keyInfoCtx);
         if(key == NULL) {
             xmlSecInternalError("xmlSecKeysMngrFindKey", NULL);
@@ -1287,4 +1371,3 @@ xmlSecPtrListId
 xmlSecKeyPtrListGetKlass(void) {
     return(&xmlSecKeyPtrListKlass);
 }
-

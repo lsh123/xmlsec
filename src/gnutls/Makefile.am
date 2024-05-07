@@ -1,7 +1,7 @@
 NULL =
 
 EXTRA_DIST = \
-	README \
+	README.md \
 	$(NULL)
 
 lib_LTLIBRARIES = \
@@ -20,29 +20,31 @@ libxmlsec1_gnutls_la_CPPFLAGS = \
 
 libxmlsec1_gnutls_la_SOURCES =\
 	app.c \
-	ciphers.c \
+	ciphers_cbc.c \
+	ciphers_gcm.c \
 	crypto.c \
 	digests.c \
 	hmac.c \
+	keysstore.c \
+	kt_rsa.c \
 	kw_aes.c \
 	kw_des.c \
+	pbkdf2.c \
+	private.h \
 	symkeys.c \
 	asymkeys.c \
 	signatures.c \
-	x509utils.h \
 	x509utils.c \
 	x509.c \
 	x509vfy.c \
 	globals.h \
 	$(NULL)
 
-# xmlsec-gnutls library requires xmlsec-gcrypt
 libxmlsec1_gnutls_la_LIBADD = \
 	$(GNUTLS_LIBS) \
 	$(LIBXSLT_LIBS) \
 	$(LIBXML_LIBS) \
 	../libxmlsec1.la \
-	../gcrypt/libxmlsec1-gcrypt.la \
 	$(NULL)
 
 libxmlsec1_gnutls_la_DEPENDENCIES = \

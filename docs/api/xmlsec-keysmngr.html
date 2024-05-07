@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>keysmngr: XML Security Library Reference Manual</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
 <link rel="up" href="xmlsec-ref.html" title="XML Security Core Library API Reference.">
 <link rel="prev" href="xmlsec-keys.html" title="keys">
 <link rel="next" href="xmlsec-list.html" title="list">
-<meta name="generator" content="GTK-Doc V1.27 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.33.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -65,6 +65,14 @@
 </td>
 <td class="function_name">
 <a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngrFindKey" title="xmlSecKeysMngrFindKey ()">xmlSecKeysMngrFindKey</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngrFindKeyFromX509Data" title="xmlSecKeysMngrFindKeyFromX509Data ()">xmlSecKeysMngrFindKeyFromX509Data</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -140,6 +148,14 @@
 </td>
 </tr>
 <tr>
+<td class="function_type">
+<a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-keysmngr.html#xmlSecKeyStoreFindKeyFromX509Data" title="xmlSecKeyStoreFindKeyFromX509Data ()">xmlSecKeyStoreFindKeyFromX509Data</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
 <td class="define_keyword">#define</td>
 <td class="function_name">
 <a class="link" href="xmlsec-keysmngr.html#xmlSecKeyStoreGetName" title="xmlSecKeyStoreGetName()">xmlSecKeyStoreGetName</a><span class="c_punctuation">()</span>
@@ -188,9 +204,25 @@
 </td>
 </tr>
 <tr>
+<td class="function_type">
+<a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
+</td>
+<td class="function_name">
+<span class="c_punctuation">(</span><a class="link" href="xmlsec-keysmngr.html#xmlSecKeyStoreFindKeyFromX509DataMethod" title="xmlSecKeyStoreFindKeyFromX509DataMethod ()">*xmlSecKeyStoreFindKeyFromX509DataMethod</a><span class="c_punctuation">)</span> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
 <td class="define_keyword">#define</td>
 <td class="function_name">
 <a class="link" href="xmlsec-keysmngr.html#xmlSecKeyStoreKlassGetName" title="xmlSecKeyStoreKlassGetName()">xmlSecKeyStoreKlassGetName</a><span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<span class="c_punctuation">(</span><a class="link" href="xmlsec-keysmngr.html#xmlSecSimpleKeysStoreAdoptKeyFunc" title="xmlSecSimpleKeysStoreAdoptKeyFunc ()">*xmlSecSimpleKeysStoreAdoptKeyFunc</a><span class="c_punctuation">)</span> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -215,6 +247,14 @@
 </td>
 <td class="function_name">
 <a class="link" href="xmlsec-keysmngr.html#xmlSecSimpleKeysStoreLoad" title="xmlSecSimpleKeysStoreLoad ()">xmlSecSimpleKeysStoreLoad</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-keysmngr.html#xmlSecSimpleKeysStoreLoad-ex" title="xmlSecSimpleKeysStoreLoad_ex ()">xmlSecSimpleKeysStoreLoad_ex</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -345,6 +385,47 @@ for destroying the returned key using <a class="link" href="xmlsec-keys.html#xml
 </div>
 <div class="refsect3">
 <a name="xmlSecKeysMngrFindKey.returns"></a><h4>Returns</h4>
+<p> the pointer to a key or NULL if key is not found or an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecKeysMngrFindKeyFromX509Data"></a><h3>xmlSecKeysMngrFindKeyFromX509Data ()</h3>
+<pre class="programlisting"><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
+xmlSecKeysMngrFindKeyFromX509Data (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>,
+                                   <em class="parameter"><code><font><span class="type">xmlSecKeyX509DataValuePtr</span></font> x509Data</code></em>,
+                                   <em class="parameter"><code><a class="link" href="xmlsec-keyinfo.html#xmlSecKeyInfoCtx" title="struct xmlSecKeyInfoCtx"><span class="type">xmlSecKeyInfoCtxPtr</span></a> keyInfoCtx</code></em>);</pre>
+<p>Lookups key in the keys manager keys store. The caller is responsible
+for destroying the returned key using <a class="link" href="xmlsec-keys.html#xmlSecKeyDestroy" title="xmlSecKeyDestroy ()"><span class="type">xmlSecKeyDestroy</span></a> method.</p>
+<div class="refsect3">
+<a name="xmlSecKeysMngrFindKeyFromX509Data.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>mngr</p></td>
+<td class="parameter_description"><p>the pointer to keys manager.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x509Data</p></td>
+<td class="parameter_description"><p>the X509 data to use for searching the keys.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>keyInfoCtx</p></td>
+<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> node processing context.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecKeysMngrFindKeyFromX509Data.returns"></a><h4>Returns</h4>
 <p> the pointer to a key or NULL if key is not found or an error occurs.</p>
 </div>
 </div>
@@ -646,6 +727,47 @@ the returned key using <a class="link" href="xmlsec-keys.html#xmlSecKeyDestroy" 
 </div>
 <hr>
 <div class="refsect2">
+<a name="xmlSecKeyStoreFindKeyFromX509Data"></a><h3>xmlSecKeyStoreFindKeyFromX509Data ()</h3>
+<pre class="programlisting"><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
+xmlSecKeyStoreFindKeyFromX509Data (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeyStore" title="struct xmlSecKeyStore"><span class="type">xmlSecKeyStorePtr</span></a> store</code></em>,
+                                   <em class="parameter"><code><font><span class="type">xmlSecKeyX509DataValuePtr</span></font> x509Data</code></em>,
+                                   <em class="parameter"><code><a class="link" href="xmlsec-keyinfo.html#xmlSecKeyInfoCtx" title="struct xmlSecKeyInfoCtx"><span class="type">xmlSecKeyInfoCtxPtr</span></a> keyInfoCtx</code></em>);</pre>
+<p>Lookups key in the store. The caller is responsible for destroying
+the returned key using <a class="link" href="xmlsec-keys.html#xmlSecKeyDestroy" title="xmlSecKeyDestroy ()"><span class="type">xmlSecKeyDestroy</span></a> method.</p>
+<div class="refsect3">
+<a name="xmlSecKeyStoreFindKeyFromX509Data.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>store</p></td>
+<td class="parameter_description"><p>the pointer to keys store.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x509Data</p></td>
+<td class="parameter_description"><p>the X509 data to use for search.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>keyInfoCtx</p></td>
+<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> node processing context.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecKeyStoreFindKeyFromX509Data.returns"></a><h4>Returns</h4>
+<p> the pointer to a key or NULL if key is not found or an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
 <a name="xmlSecKeyStoreGetName"></a><h3>xmlSecKeyStoreGetName()</h3>
 <pre class="programlisting">#define             xmlSecKeyStoreGetName(store)</pre>
 <p>Macro. Returns key store name.</p>
@@ -842,6 +964,48 @@ the returned key using <a class="link" href="xmlsec-keys.html#xmlSecKeyDestroy" 
 </div>
 <hr>
 <div class="refsect2">
+<a name="xmlSecKeyStoreFindKeyFromX509DataMethod"></a><h3>xmlSecKeyStoreFindKeyFromX509DataMethod ()</h3>
+<pre class="programlisting"><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
+<span class="c_punctuation">(</span>*xmlSecKeyStoreFindKeyFromX509DataMethod<span class="c_punctuation">)</span>
+                               (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeyStore" title="struct xmlSecKeyStore"><span class="type">xmlSecKeyStorePtr</span></a> store</code></em>,
+                                <em class="parameter"><code><font><span class="type">xmlSecKeyX509DataValuePtr</span></font> x509Data</code></em>,
+                                <em class="parameter"><code><a class="link" href="xmlsec-keyinfo.html#xmlSecKeyInfoCtx" title="struct xmlSecKeyInfoCtx"><span class="type">xmlSecKeyInfoCtxPtr</span></a> keyInfoCtx</code></em>);</pre>
+<p>Keys store specific find method. The caller is responsible for destroying
+the returned key using <a class="link" href="xmlsec-keys.html#xmlSecKeyDestroy" title="xmlSecKeyDestroy ()"><span class="type">xmlSecKeyDestroy</span></a> method.</p>
+<div class="refsect3">
+<a name="xmlSecKeyStoreFindKeyFromX509DataMethod.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>store</p></td>
+<td class="parameter_description"><p>the store.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x509Data</p></td>
+<td class="parameter_description"><p>the x509 data to lookup key.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>keyInfoCtx</p></td>
+<td class="parameter_description"><p>the pointer to key info context.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecKeyStoreFindKeyFromX509DataMethod.returns"></a><h4>Returns</h4>
+<p> the pointer to a key or NULL if key is not found or an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
 <a name="xmlSecKeyStoreKlassGetName"></a><h3>xmlSecKeyStoreKlassGetName()</h3>
 <pre class="programlisting">#define             xmlSecKeyStoreKlassGetName(klass)</pre>
 <p>Macro. Returns store klass name.</p>
@@ -859,6 +1023,44 @@ the returned key using <a class="link" href="xmlsec-keys.html#xmlSecKeyDestroy" 
 <td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecSimpleKeysStoreAdoptKeyFunc"></a><h3>xmlSecSimpleKeysStoreAdoptKeyFunc ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+<span class="c_punctuation">(</span>*xmlSecSimpleKeysStoreAdoptKeyFunc<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeyStore" title="struct xmlSecKeyStore"><span class="type">xmlSecKeyStorePtr</span></a> store</code></em>,
+                                      <em class="parameter"><code><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="type">xmlSecKeyPtr</span></a> key</code></em>);</pre>
+<p>Adds <em class="parameter"><code>key</code></em>
+ to the <em class="parameter"><code>store</code></em>
+. On success, the <em class="parameter"><code>store</code></em>
+ owns the <em class="parameter"><code>key</code></em>
+.</p>
+<div class="refsect3">
+<a name="xmlSecSimpleKeysStoreAdoptKeyFunc.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>store</p></td>
+<td class="parameter_description"><p>the pointer to key store.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>key</p></td>
+<td class="parameter_description"><p>the pointer to key.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecSimpleKeysStoreAdoptKeyFunc.returns"></a><h4>Returns</h4>
+<p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
 <hr>
@@ -945,6 +1147,52 @@ xmlSecSimpleKeysStoreLoad (<em class="parameter"><code><a class="link" href="xml
 </div>
 <div class="refsect3">
 <a name="xmlSecSimpleKeysStoreLoad.returns"></a><h4>Returns</h4>
+<p> 0 on success or a negative value if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecSimpleKeysStoreLoad-ex"></a><h3>xmlSecSimpleKeysStoreLoad_ex ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecSimpleKeysStoreLoad_ex (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeyStore" title="struct xmlSecKeyStore"><span class="type">xmlSecKeyStorePtr</span></a> store</code></em>,
+                              <em class="parameter"><code>const <font><span class="type">char</span></font> *uri</code></em>,
+                              <em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> keysMngr</code></em>,
+                              <em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecSimpleKeysStoreAdoptKeyFunc" title="xmlSecSimpleKeysStoreAdoptKeyFunc ()"><span class="type">xmlSecSimpleKeysStoreAdoptKeyFunc</span></a> adoptKeyFunc</code></em>);</pre>
+<p>Reads keys from an XML file.</p>
+<div class="refsect3">
+<a name="xmlSecSimpleKeysStoreLoad-ex.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>store</p></td>
+<td class="parameter_description"><p>the pointer to simple keys store.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>uri</p></td>
+<td class="parameter_description"><p>the filename.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>keysMngr</p></td>
+<td class="parameter_description"><p>the pointer to associated keys manager.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>adoptKeyFunc</p></td>
+<td class="parameter_description"><p>the callback to add the key to keys manager.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecSimpleKeysStoreLoad-ex.returns"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
@@ -1114,13 +1362,15 @@ if an error occurs.</p>
     const xmlChar*                      name;
 
     /* constructors/destructor */
-    xmlSecKeyStoreInitializeMethod      initialize;
-    xmlSecKeyStoreFinalizeMethod        finalize;
-    xmlSecKeyStoreFindKeyMethod         findKey;
+    xmlSecKeyStoreInitializeMethod              initialize;
+    xmlSecKeyStoreFinalizeMethod                finalize;
+
+    /* key loopkup */
+    xmlSecKeyStoreFindKeyMethod                 findKey;
+    xmlSecKeyStoreFindKeyFromX509DataMethod     findKeyFromX509Data;
 
     /* for the future */
     void*                               reserved0;
-    void*                               reserved1;
 };
 </pre>
 <p>The keys store id (klass).</p>
@@ -1160,16 +1410,16 @@ if an error occurs.</p>
 </tr>
 <tr>
 <td class="struct_member_name"><p><a class="link" href="xmlsec-keysmngr.html#xmlSecKeyStoreFindKeyMethod" title="xmlSecKeyStoreFindKeyMethod ()"><span class="type">xmlSecKeyStoreFindKeyMethod</span></a> <em class="structfield"><code><a name="xmlSecKeyStoreKlass.findKey"></a>findKey</code></em>;</p></td>
-<td class="struct_member_description"><p>the store's find method.</p></td>
+<td class="struct_member_description"><p>the store's method to find key by key name.</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><a class="link" href="xmlsec-keysmngr.html#xmlSecKeyStoreFindKeyFromX509DataMethod" title="xmlSecKeyStoreFindKeyFromX509DataMethod ()"><span class="type">xmlSecKeyStoreFindKeyFromX509DataMethod</span></a> <em class="structfield"><code><a name="xmlSecKeyStoreKlass.findKeyFromX509Data"></a>findKeyFromX509Data</code></em>;</p></td>
+<td class="struct_member_description"><p>the store's method to find key based on x509 data.</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
 <td class="struct_member_name"><p><font><span class="type">void</span></font> *<em class="structfield"><code><a name="xmlSecKeyStoreKlass.reserved0"></a>reserved0</code></em>;</p></td>
-<td class="struct_member_description"><p>reserved for the future.</p></td>
-<td class="struct_member_annotations"> </td>
-</tr>
-<tr>
-<td class="struct_member_name"><p><font><span class="type">void</span></font> *<em class="structfield"><code><a name="xmlSecKeyStoreKlass.reserved1"></a>reserved1</code></em>;</p></td>
 <td class="struct_member_description"><p>reserved for the future.</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
@@ -1187,6 +1437,6 @@ if an error occurs.</p>
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.27</div>
+<hr>Generated by GTK-Doc V1.33.1</div>
 </body>
 </html>

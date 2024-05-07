@@ -5,7 +5,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * SECTION:membuf
@@ -30,19 +30,17 @@
 #include <xmlsec/membuf.h>
 #include <xmlsec/errors.h>
 
+#include "cast_helpers.h"
+
 /*****************************************************************************
  *
  * Memory Buffer Transform
  *
- * xmlSecBuffer is located after xmlSecTransform
+ * xmlSecTransform + xmlSecBuffer
  *
  ****************************************************************************/
-#define xmlSecTransformMemBufSize \
-        (sizeof(xmlSecTransform) + sizeof(xmlSecBuffer))
-#define xmlSecTransformMemBufGetBuf(transform) \
-    ((xmlSecTransformCheckSize((transform), xmlSecTransformMemBufSize)) ? \
-        (xmlSecBufferPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)) : \
-        (xmlSecBufferPtr)NULL)
+XMLSEC_TRANSFORM_DECLARE(MemBuf, xmlSecBuffer)
+#define xmlSecMemBufSize XMLSEC_TRANSFORM_SIZE(MemBuf)
 
 static int              xmlSecTransformMemBufInitialize         (xmlSecTransformPtr transform);
 static void             xmlSecTransformMemBufFinalize           (xmlSecTransformPtr transform);
@@ -52,7 +50,7 @@ static int              xmlSecTransformMemBufExecute            (xmlSecTransform
 static xmlSecTransformKlass xmlSecTransformMemBufKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecTransformMemBufSize,                  /* xmlSecSize objSize */
+    xmlSecMemBufSize,                           /* xmlSecSize objSize */
 
     xmlSecNameMemBuf,                           /* const xmlChar* name; */
     NULL,                                       /* const xmlChar* href; */
@@ -102,7 +100,7 @@ xmlSecTransformMemBufGetBuffer(xmlSecTransformPtr transform) {
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformMemBufId), NULL);
 
-    buffer = xmlSecTransformMemBufGetBuf(transform);
+    buffer = xmlSecMemBufGetCtx(transform);
     xmlSecAssert2(buffer != NULL, NULL);
 
     return(buffer);
@@ -115,7 +113,7 @@ xmlSecTransformMemBufInitialize(xmlSecTransformPtr transform) {
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformMemBufId), -1);
 
-    buffer = xmlSecTransformMemBufGetBuf(transform);
+    buffer = xmlSecMemBufGetCtx(transform);
     xmlSecAssert2(buffer != NULL, -1);
 
     ret = xmlSecBufferInitialize(buffer, 0);
@@ -133,10 +131,10 @@ xmlSecTransformMemBufFinalize(xmlSecTransformPtr transform) {
 
     xmlSecAssert(xmlSecTransformCheckId(transform, xmlSecTransformMemBufId));
 
-    buffer = xmlSecTransformMemBufGetBuf(transform);
+    buffer = xmlSecMemBufGetCtx(transform);
     xmlSecAssert(buffer != NULL);
 
-    xmlSecBufferFinalize(xmlSecTransformMemBufGetBuf(transform));
+    xmlSecBufferFinalize(xmlSecMemBufGetCtx(transform));
 }
 
 static int
@@ -149,7 +147,7 @@ xmlSecTransformMemBufExecute(xmlSecTransformPtr transform, int last, xmlSecTrans
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformMemBufId), -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
-    buffer = xmlSecTransformMemBufGetBuf(transform);
+    buffer = xmlSecMemBufGetCtx(transform);
     xmlSecAssert2(buffer != NULL, -1);
 
     in = &(transform->inBuf);
@@ -166,7 +164,7 @@ xmlSecTransformMemBufExecute(xmlSecTransformPtr transform, int last, xmlSecTrans
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferAppend",
                                  xmlSecTransformGetName(transform),
-                                 "size=%d", inSize);
+                                 "size=" XMLSEC_SIZE_FMT, inSize);
             return(-1);
         }
 
@@ -174,7 +172,7 @@ xmlSecTransformMemBufExecute(xmlSecTransformPtr transform, int last, xmlSecTrans
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferAppend",
                                  xmlSecTransformGetName(transform),
-                                 "size=%d", inSize);
+                                 "size=" XMLSEC_SIZE_FMT, inSize);
             return(-1);
         }
 
@@ -182,7 +180,7 @@ xmlSecTransformMemBufExecute(xmlSecTransformPtr transform, int last, xmlSecTrans
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferRemoveHead",
                                  xmlSecTransformGetName(transform),
-                                 "size=%d", inSize);
+                                "size=" XMLSEC_SIZE_FMT, inSize);
             return(-1);
         }
 

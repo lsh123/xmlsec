@@ -1,18 +1,16 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * Digests transforms implementation for NSS.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
 /**
- * SECTION:digests
- * @Short_description: Digests transforms implementation for NSS.
- * @Stability: Private
- *
+ * SECTION:crypto
  */
 
 #include "globals.h"
@@ -22,7 +20,7 @@
 #include <nspr.h>
 #include <nss.h>
 #include <secoid.h>
-#include <pk11func.h>
+#include <pk11pub.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
@@ -32,7 +30,8 @@
 #include <xmlsec/nss/app.h>
 #include <xmlsec/nss/crypto.h>
 
-#define XMLSEC_NSS_MAX_DIGEST_SIZE              64
+#include "../cast_helpers.h"
+#include "private.h"
 
 /**************************************************************************
  *
@@ -51,13 +50,11 @@ struct _xmlSecNssDigestCtx {
  *
  * Digest transforms
  *
- * xmlSecNssDigestCtx is located after xmlSecTransform
+ * xmlSecTransform + xmlSecNssDigestCtx
  *
  *****************************************************************************/
-#define xmlSecNssDigestSize     \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecNssDigestCtx))
-#define xmlSecNssDigestGetCtx(transform) \
-    ((xmlSecNssDigestCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
+XMLSEC_TRANSFORM_DECLARE(NssDigest, xmlSecNssDigestCtx)
+#define xmlSecNssDigestSize XMLSEC_TRANSFORM_SIZE(NssDigest)
 
 static int      xmlSecNssDigestCheckId                  (xmlSecTransformPtr transform);
 static int      xmlSecNssDigestInitialize               (xmlSecTransformPtr transform);
@@ -214,7 +211,7 @@ xmlSecNssDigestVerify(xmlSecTransformPtr transform,
     xmlSecAssert2(ctx->dgstSize > 0, -1);
 
     if(dataSize != ctx->dgstSize) {
-        xmlSecInvalidIntegerDataError2("dataSize", dataSize,
+        xmlSecInvalidSizeDataError2("dataSize", dataSize,
                 "dgstSize", ctx->dgstSize, "dataSize == dgstSize",
                 xmlSecTransformGetName(transform));
         transform->status = xmlSecTransformStatusFail;
@@ -265,17 +262,20 @@ xmlSecNssDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
 
         inSize = xmlSecBufferGetSize(in);
         if(inSize > 0) {
-            rv = PK11_DigestOp(ctx->digestCtx, xmlSecBufferGetData(in), inSize);
+            unsigned int inLen;
+
+            XMLSEC_SAFE_CAST_SIZE_TO_UINT(inSize, inLen, return(-1), xmlSecTransformGetName(transform));
+            rv = PK11_DigestOp(ctx->digestCtx, xmlSecBufferGetData(in), inLen);
             if (rv != SECSuccess) {
                 xmlSecNssError("PK11_DigestOp", xmlSecTransformGetName(transform));
                 return(-1);
             }
 
-            ret = xmlSecBufferRemoveHead(in, inSize);
+            ret = xmlSecBufferRemoveHead(in, inLen);
             if(ret < 0) {
                 xmlSecInternalError2("xmlSecBufferRemoveHead",
                                      xmlSecTransformGetName(transform),
-                                     "size=%d", inSize);
+                                     "size=%u", inLen);
                 return(-1);
             }
         }
@@ -288,14 +288,13 @@ xmlSecNssDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
                 return(-1);
             }
             xmlSecAssert2(dgstSize > 0, -1);
-            ctx->dgstSize = XMLSEC_SIZE_BAD_CAST(dgstSize);
+            ctx->dgstSize =dgstSize;
 
             if(transform->operation == xmlSecTransformOperationSign) {
                 ret = xmlSecBufferAppend(out, ctx->dgst, ctx->dgstSize);
                 if(ret < 0) {
-                    xmlSecInternalError2("xmlSecBufferAppend",
-                                         xmlSecTransformGetName(transform),
-                                         "size=%d", ctx->dgstSize);
+                    xmlSecInternalError2("xmlSecBufferAppend", xmlSecTransformGetName(transform),
+                        "size=" XMLSEC_SIZE_FMT, ctx->dgstSize);
                     return(-1);
                 }
             }
@@ -412,7 +411,7 @@ xmlSecNssTransformSha1GetKlass(void) {
 #ifndef XMLSEC_NO_SHA224
 /******************************************************************************
  *
- * SHA224 Digest transforms
+ * SHA2-224 digest transforms
  *
  *****************************************************************************/
 static xmlSecTransformKlass xmlSecNssSha224Klass = {
@@ -447,9 +446,9 @@ static xmlSecTransformKlass xmlSecNssSha224Klass = {
 /**
  * xmlSecNssTransformSha224GetKlass:
  *
- * SHA224 digest transform klass.
+ * SHA2-224 digest transform klass.
  *
- * Returns: pointer to SHA224 digest transform klass.
+ * Returns: pointer to SHA2-224 digest transform klass.
  */
 xmlSecTransformId
 xmlSecNssTransformSha224GetKlass(void) {
@@ -460,7 +459,7 @@ xmlSecNssTransformSha224GetKlass(void) {
 #ifndef XMLSEC_NO_SHA256
 /******************************************************************************
  *
- * SHA256 Digest transforms
+ * SHA2-256 digest transforms
  *
  *****************************************************************************/
 static xmlSecTransformKlass xmlSecNssSha256Klass = {
@@ -495,9 +494,9 @@ static xmlSecTransformKlass xmlSecNssSha256Klass = {
 /**
  * xmlSecNssTransformSha256GetKlass:
  *
- * SHA256 digest transform klass.
+ * SHA2-256 digest transform klass.
  *
- * Returns: pointer to SHA256 digest transform klass.
+ * Returns: pointer to SHA2-256 digest transform klass.
  */
 xmlSecTransformId
 xmlSecNssTransformSha256GetKlass(void) {
@@ -509,7 +508,7 @@ xmlSecNssTransformSha256GetKlass(void) {
 #ifndef XMLSEC_NO_SHA384
 /******************************************************************************
  *
- * SHA384 Digest transforms
+ * SHA2-384 digest transforms
  *
  *****************************************************************************/
 static xmlSecTransformKlass xmlSecNssSha384Klass = {
@@ -544,9 +543,9 @@ static xmlSecTransformKlass xmlSecNssSha384Klass = {
 /**
  * xmlSecNssTransformSha384GetKlass:
  *
- * SHA384 digest transform klass.
+ * SHA2-384 digest transform klass.
  *
- * Returns: pointer to SHA384 digest transform klass.
+ * Returns: pointer to SHA2-384 digest transform klass.
  */
 xmlSecTransformId
 xmlSecNssTransformSha384GetKlass(void) {
@@ -557,7 +556,7 @@ xmlSecNssTransformSha384GetKlass(void) {
 #ifndef XMLSEC_NO_SHA512
 /******************************************************************************
  *
- * SHA512 Digest transforms
+ * SHA2-512 digest transforms
  *
  *****************************************************************************/
 static xmlSecTransformKlass xmlSecNssSha512Klass = {
@@ -592,13 +591,12 @@ static xmlSecTransformKlass xmlSecNssSha512Klass = {
 /**
  * xmlSecNssTransformSha512GetKlass:
  *
- * SHA512 digest transform klass.
+ * SHA2-512 digest transform klass.
  *
- * Returns: pointer to SHA512 digest transform klass.
+ * Returns: pointer to SHA2-512 digest transform klass.
  */
 xmlSecTransformId
 xmlSecNssTransformSha512GetKlass(void) {
     return(&xmlSecNssSha512Klass);
 }
 #endif /* XMLSEC_NO_SHA512 */
-

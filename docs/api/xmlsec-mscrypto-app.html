@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>app: XML Security Library Reference Manual</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
 <link rel="up" href="xmlsec-mscrypto-ref.html" title="XML Security Library for Microsoft Crypto API Reference.">
 <link rel="prev" href="xmlsec-mscrypto-ref.html" title="XML Security Library for Microsoft Crypto API Reference.">
 <link rel="next" href="xmlsec-mscrypto-certkeys.html" title="certkeys">
-<meta name="generator" content="GTK-Doc V1.27 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.33.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -81,6 +81,14 @@
 </td>
 <td class="function_name">
 <a class="link" href="xmlsec-mscrypto-app.html#xmlSecMSCryptoAppDefaultKeysMngrAdoptKey" title="xmlSecMSCryptoAppDefaultKeysMngrAdoptKey ()">xmlSecMSCryptoAppDefaultKeysMngrAdoptKey</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscrypto-app.html#xmlSecMSCryptoAppDefaultKeysMngrVerifyKey" title="xmlSecMSCryptoAppDefaultKeysMngrVerifyKey ()">xmlSecMSCryptoAppDefaultKeysMngrVerifyKey</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -165,10 +173,26 @@
 </tr>
 <tr>
 <td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscrypto-app.html#xmlSecMSCryptoAppKeysMngrCrlLoad" title="xmlSecMSCryptoAppKeysMngrCrlLoad ()">xmlSecMSCryptoAppKeysMngrCrlLoad</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscrypto-app.html#xmlSecMSCryptoAppKeysMngrCrlLoadMemory" title="xmlSecMSCryptoAppKeysMngrCrlLoadMemory ()">xmlSecMSCryptoAppKeysMngrCrlLoadMemory</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
 <a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-mscrypto-app.html#xmlSecMSCryptoAppKeyLoad" title="xmlSecMSCryptoAppKeyLoad ()">xmlSecMSCryptoAppKeyLoad</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-mscrypto-app.html#xmlSecMSCryptoAppKeyLoadEx" title="xmlSecMSCryptoAppKeyLoadEx ()">xmlSecMSCryptoAppKeyLoadEx</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -224,7 +248,7 @@
 </div>
 <div class="refsect1">
 <a name="xmlsec-mscrypto-app.description"></a><h2>Description</h2>
-<p></p>
+<p>Common functions for xmlsec1 command line utility tool for MSCrypto.</p>
 </div>
 <div class="refsect1">
 <a name="xmlsec-mscrypto-app.functions_details"></a><h2>Functions</h2>
@@ -346,6 +370,58 @@ function.</p>
 <div class="refsect3">
 <a name="xmlSecMSCryptoAppDefaultKeysMngrAdoptKey.returns"></a><h4>Returns</h4>
 <p> 0 on success or a negative value otherwise.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCryptoAppDefaultKeysMngrVerifyKey"></a><h3>xmlSecMSCryptoAppDefaultKeysMngrVerifyKey ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecMSCryptoAppDefaultKeysMngrVerifyKey
+                               (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>,
+                                <em class="parameter"><code><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="type">xmlSecKeyPtr</span></a> key</code></em>,
+                                <em class="parameter"><code><a class="link" href="xmlsec-keyinfo.html#xmlSecKeyInfoCtx" title="struct xmlSecKeyInfoCtx"><span class="type">xmlSecKeyInfoCtxPtr</span></a> keyInfoCtx</code></em>);</pre>
+<p>Verifies <em class="parameter"><code>key</code></em>
+ with the keys manager <em class="parameter"><code>mngr</code></em>
+ created with <a class="link" href="xmlsec-app.html#xmlSecCryptoAppDefaultKeysMngrInit" title="xmlSecCryptoAppDefaultKeysMngrInit ()"><span class="type">xmlSecCryptoAppDefaultKeysMngrInit</span></a>
+function:</p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem"><p>Checks that key certificate is present</p></li>
+<li class="listitem"><p>Checks that key certificate is valid</p></li>
+</ul></div>
+<p>Adds <em class="parameter"><code>key</code></em>
+ to the keys manager <em class="parameter"><code>mngr</code></em>
+ created with <a class="link" href="xmlsec-app.html#xmlSecCryptoAppDefaultKeysMngrInit" title="xmlSecCryptoAppDefaultKeysMngrInit ()"><span class="type">xmlSecCryptoAppDefaultKeysMngrInit</span></a>
+function.</p>
+<div class="refsect3">
+<a name="xmlSecMSCryptoAppDefaultKeysMngrVerifyKey.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>mngr</p></td>
+<td class="parameter_description"><p>the pointer to keys manager.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>key</p></td>
+<td class="parameter_description"><p>the pointer to key.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>keyInfoCtx</p></td>
+<td class="parameter_description"><p>the key info context for verification.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecMSCryptoAppDefaultKeysMngrVerifyKey.returns"></a><h4>Returns</h4>
+<p> 1 if key is verified, 0 otherwise, or a negative value if an error occurs.</p>
 </div>
 </div>
 <hr>
@@ -659,7 +735,7 @@ xmlSecMSCryptoAppKeysMngrCertLoad (<em class="parameter"><code><a class="link" h
 <p>Reads cert from <em class="parameter"><code>filename</code></em>
  and adds to the list of trusted or known
 untrusted certs in <em class="parameter"><code>store</code></em>
- (not implemented yet).</p>
+.</p>
 <div class="refsect3">
 <a name="xmlSecMSCryptoAppKeysMngrCertLoad.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -757,16 +833,108 @@ trusted or not.</p></td>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecMSCryptoAppKeyLoad"></a><h3>xmlSecMSCryptoAppKeyLoad ()</h3>
+<a name="xmlSecMSCryptoAppKeysMngrCrlLoad"></a><h3>xmlSecMSCryptoAppKeysMngrCrlLoad ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecMSCryptoAppKeysMngrCrlLoad (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>,
+                                  <em class="parameter"><code>const <font><span class="type">char</span></font> *filename</code></em>,
+                                  <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataFormat" title="enum xmlSecKeyDataFormat"><span class="type">xmlSecKeyDataFormat</span></a> format</code></em>);</pre>
+<p>Reads crl from <em class="parameter"><code>filename</code></em>
+ and adds to the list of crls in <em class="parameter"><code>store</code></em>
+.</p>
+<div class="refsect3">
+<a name="xmlSecMSCryptoAppKeysMngrCrlLoad.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>mngr</p></td>
+<td class="parameter_description"><p>the keys manager.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>filename</p></td>
+<td class="parameter_description"><p>the CRL file.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>format</p></td>
+<td class="parameter_description"><p>the CRL file format.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecMSCryptoAppKeysMngrCrlLoad.returns"></a><h4>Returns</h4>
+<p> 0 on success or a negative value otherwise.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCryptoAppKeysMngrCrlLoadMemory"></a><h3>xmlSecMSCryptoAppKeysMngrCrlLoadMemory ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecMSCryptoAppKeysMngrCrlLoadMemory
+                               (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>,
+                                <em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *data</code></em>,
+                                <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> dataSize</code></em>,
+                                <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataFormat" title="enum xmlSecKeyDataFormat"><span class="type">xmlSecKeyDataFormat</span></a> format</code></em>);</pre>
+<p>Reads crl from <em class="parameter"><code>data</code></em>
+ and adds to the list of crls in <em class="parameter"><code>store</code></em>
+.</p>
+<div class="refsect3">
+<a name="xmlSecMSCryptoAppKeysMngrCrlLoadMemory.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>mngr</p></td>
+<td class="parameter_description"><p>the keys manager.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>data</p></td>
+<td class="parameter_description"><p>the binary CRL.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>dataSize</p></td>
+<td class="parameter_description"><p>size of binary CRL (data)</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>format</p></td>
+<td class="parameter_description"><p>the CRL format.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecMSCryptoAppKeysMngrCrlLoadMemory.returns"></a><h4>Returns</h4>
+<p> 0 on success or a negative value otherwise.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCryptoAppKeyLoadEx"></a><h3>xmlSecMSCryptoAppKeyLoadEx ()</h3>
 <pre class="programlisting"><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
-xmlSecMSCryptoAppKeyLoad (<em class="parameter"><code>const <font><span class="type">char</span></font> *filename</code></em>,
-                          <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataFormat" title="enum xmlSecKeyDataFormat"><span class="type">xmlSecKeyDataFormat</span></a> format</code></em>,
-                          <em class="parameter"><code>const <font><span class="type">char</span></font> *pwd</code></em>,
-                          <em class="parameter"><code><font><span class="type">void</span></font> *pwdCallback</code></em>,
-                          <em class="parameter"><code><font><span class="type">void</span></font> *pwdCallbackCtx</code></em>);</pre>
+xmlSecMSCryptoAppKeyLoadEx (<em class="parameter"><code>const <font><span class="type">char</span></font> *filename</code></em>,
+                            <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataType" title="xmlSecKeyDataType"><span class="type">xmlSecKeyDataType</span></a> type</code></em>,
+                            <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataFormat" title="enum xmlSecKeyDataFormat"><span class="type">xmlSecKeyDataFormat</span></a> format</code></em>,
+                            <em class="parameter"><code>const <font><span class="type">char</span></font> *pwd</code></em>,
+                            <em class="parameter"><code><font><span class="type">void</span></font> *pwdCallback</code></em>,
+                            <em class="parameter"><code><font><span class="type">void</span></font> *pwdCallbackCtx</code></em>);</pre>
 <p>Reads key from the a file.</p>
 <div class="refsect3">
-<a name="xmlSecMSCryptoAppKeyLoad.parameters"></a><h4>Parameters</h4>
+<a name="xmlSecMSCryptoAppKeyLoadEx.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col>
@@ -777,6 +945,11 @@ xmlSecMSCryptoAppKeyLoad (<em class="parameter"><code>const <font><span class="t
 <tr>
 <td class="parameter_name"><p>filename</p></td>
 <td class="parameter_description"><p>the key filename.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>type</p></td>
+<td class="parameter_description"><p>the expected key type.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -803,7 +976,7 @@ xmlSecMSCryptoAppKeyLoad (<em class="parameter"><code>const <font><span class="t
 </table></div>
 </div>
 <div class="refsect3">
-<a name="xmlSecMSCryptoAppKeyLoad.returns"></a><h4>Returns</h4>
+<a name="xmlSecMSCryptoAppKeyLoadEx.returns"></a><h4>Returns</h4>
 <p> pointer to the key or NULL if an error occurs.</p>
 </div>
 </div>
@@ -1064,12 +1237,8 @@ xmlSecMSCryptoAppGetDefaultPwdCallback
 </div>
 </div>
 </div>
-<div class="refsect1">
-<a name="xmlsec-mscrypto-app.other_details"></a><h2>Types and Values</h2>
-<p></p>
-</div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.27</div>
+<hr>Generated by GTK-Doc V1.33.1</div>
 </body>
 </html>

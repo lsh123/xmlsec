@@ -6,7 +6,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 #ifndef __XMLSEC_GLOBALS_H__
 #define __XMLSEC_GLOBALS_H__
@@ -39,7 +39,7 @@
                     (errorFunction),                        \
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,          \
                     "NSS error: %ld",                       \
-                    (long int)error_code                    \
+                    (long)(error_code)                      \
         );                                                  \
     }
 
@@ -61,7 +61,32 @@
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,          \
                     msg "; NSS error: %ld",                 \
                     (param),                                \
-                    (long int)error_code                    \
+                    (long)(error_code)                      \
+        );                                                  \
+    }
+
+
+ /**
+  * xmlSecNssError3:
+  * @errorFunction:      the failed function name.
+  * @errorObject:        the error specific error object (e.g. transform, key data, etc).
+  * @msg:                the extra message.
+  * @param1:             the extra message param1.
+  * @param2:             the extra message param2.
+  *
+  * Macro. The XMLSec library macro for reporting NSS crypro errors.
+  */
+#define xmlSecNssError3(errorFunction, errorObject, msg, param1, param2) \
+    {                                                       \
+        PRInt32 error_code = PR_GetError();                 \
+        xmlSecError(XMLSEC_ERRORS_HERE,                     \
+                    (const char*)(errorObject),             \
+                    (errorFunction),                        \
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,          \
+                    msg "; NSS error: %ld",                 \
+                    (param1),                               \
+                    (param2),                               \
+                    (long)(error_code)                      \
         );                                                  \
     }
 

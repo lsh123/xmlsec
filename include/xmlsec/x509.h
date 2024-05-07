@@ -4,77 +4,37 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 #ifndef __XMLSEC_X509_H__
 #define __XMLSEC_X509_H__
 
-#ifndef XMLSEC_NO_X509
-
-#include <stdio.h>
-
-#include <libxml/tree.h>
-#include <libxml/parser.h>
-
-#include <xmlsec/xmlsec.h>
-#include <xmlsec/buffer.h>
-#include <xmlsec/list.h>
-#include <xmlsec/keys.h>
-#include <xmlsec/keysmngr.h>
-#include <xmlsec/keyinfo.h>
-#include <xmlsec/transforms.h>
-
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
 /**
- * XMLSEC_X509DATA_CERTIFICATE_NODE:
+ * xmlSecKeyX509DataValue:
+ * @cert:              the certificate from &lt;dsig:X509Certificate/&gt; node.
+ * @crl:               the crl from &lt;dsig:X509CRL/&gt; node.
+ * @ski:               the ski from &lt;dsig:X509SKI/&gt; node.
+ * @subject:           the subject name from <dsig:X509SubjectName /> node.
+ * @issuerName:        the ski from &lt;dsig:X509IssuerSerial/&gt; node.
+ * @issuerSerial:      the ski from &lt;dsig:X509IssuerSerial/&gt; node.
+ * @digestAlgorithm:   the @digest algorithm from &lt;dsig11:X509Digest/&gt; node.
+ * @digest:            the digest from &lt;dsig11:X509Digest/&gt; node.
  *
- * <dsig:X509Certificate/> node found or would be written back.
+ * The content of a child of <X509Data/> node. Not all values will be set!
  */
-#define XMLSEC_X509DATA_CERTIFICATE_NODE                        0x00000001
-/**
- * XMLSEC_X509DATA_SUBJECTNAME_NODE:
- *
- * <dsig:X509SubjectName/> node found or would be written back.
- */
-#define XMLSEC_X509DATA_SUBJECTNAME_NODE                        0x00000002
-/**
- * XMLSEC_X509DATA_ISSUERSERIAL_NODE:
- *
- * <dsig:X509IssuerSerial/> node found or would be written back.
- */
-#define XMLSEC_X509DATA_ISSUERSERIAL_NODE                       0x00000004
-/**
- * XMLSEC_X509DATA_SKI_NODE:
- *
- * <dsig:X509SKI/> node found or would be written back.
- */
-#define XMLSEC_X509DATA_SKI_NODE                                0x00000008
-/**
- * XMLSEC_X509DATA_CRL_NODE:
- *
- * <dsig:X509CRL/> node found or would be written back.
- */
-#define XMLSEC_X509DATA_CRL_NODE                                0x00000010
-/**
- * XMLSEC_X509DATA_DEFAULT:
- *
- * Default set of nodes to write in case of empty
- * <dsig:X509Data/> node template.
- */
-#define XMLSEC_X509DATA_DEFAULT \
-        (XMLSEC_X509DATA_CERTIFICATE_NODE | XMLSEC_X509DATA_CRL_NODE)
+struct _xmlSecKeyX509DataValue {
+    xmlSecBuffer cert;
+    xmlSecBuffer crl;
 
-XMLSEC_EXPORT int               xmlSecX509DataGetNodeContent    (xmlNodePtr node,
-                                                                 xmlSecKeyInfoCtxPtr keyInfoCtx);
+    xmlSecBuffer ski;
 
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
+    xmlChar* subject;
 
-#endif /* XMLSEC_NO_X509 */
+    xmlChar* issuerName;
+    xmlChar* issuerSerial;
+
+    xmlChar* digestAlgorithm;
+    xmlSecBuffer digest;
+};
 
 #endif /* __XMLSEC_X509_H__ */
-

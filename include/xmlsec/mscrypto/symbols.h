@@ -94,11 +94,14 @@ extern "C" {
 #define xmlSecCryptoAppShutdown                 xmlSecMSCryptoAppShutdown
 #define xmlSecCryptoAppDefaultKeysMngrInit      xmlSecMSCryptoAppDefaultKeysMngrInit
 #define xmlSecCryptoAppDefaultKeysMngrAdoptKey  xmlSecMSCryptoAppDefaultKeysMngrAdoptKey
+#define xmlSecCryptoAppDefaultKeysMngrVerifyKey xmlSecMSCryptoAppDefaultKeysMngrVerifyKey
 #define xmlSecCryptoAppDefaultKeysMngrLoad      xmlSecMSCryptoAppDefaultKeysMngrLoad
 #define xmlSecCryptoAppDefaultKeysMngrSave      xmlSecMSCryptoAppDefaultKeysMngrSave
 #define xmlSecCryptoAppKeysMngrCertLoad         xmlSecMSCryptoAppKeysMngrCertLoad
 #define xmlSecCryptoAppKeysMngrCertLoadMemory   xmlSecMSCryptoAppKeysMngrCertLoadMemory
-#define xmlSecCryptoAppKeyLoad                  xmlSecMSCryptoAppKeyLoad
+#define xmlSecCryptoAppKeysMngrCrlLoad          xmlSecMSCryptoAppKeysMngrCrlLoad
+#define xmlSecCryptoAppKeysMngrCrlLoadMemory    xmlSecMSCryptoAppKeysMngrCrlLoadMemory
+#define xmlSecCryptoAppKeyLoadEx                xmlSecMSCryptoAppKeyLoadEx
 #define xmlSecCryptoAppPkcs12Load               xmlSecMSCryptoAppPkcs12Load
 #define xmlSecCryptoAppKeyCertLoad              xmlSecMSCryptoAppKeyCertLoad
 #define xmlSecCryptoAppKeyLoadMemory            xmlSecMSCryptoAppKeyLoadMemory
@@ -115,4 +118,3 @@ extern "C" {
 #endif /* __XMLSEC_MSCRYPTO_CRYPTO_H__ */
 
 #define __XMLSEC_MSCRYPTO_CRYPTO_H__
-

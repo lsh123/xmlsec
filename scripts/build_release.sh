@@ -1,4 +1,4 @@
-#!/bin/sh 
+#!/bin/sh
 #
 # Usage: build_release.sh <version> [<release-candidate-tag>]
 #
@@ -17,7 +17,7 @@ tar_file="xmlsec1-$version.tar.gz"
 sig_file="xmlsec1-$version.sig"
 rc_tar_file="xmlsec1-$version-$rc.tar.gz"
 rc_sig_file="xmlsec1-$version-$rc.sig"
-git_release_branch="xmlsec-$version-release"
+git_release_branch=`echo "xmlsec-$version" | sed 's/\./_/g'`
 git_version_tag=`echo $version | sed 's/\./_/g'`
 
 if [ x"$version" = x ]; then
@@ -33,10 +33,10 @@ cd "$build_root"
 echo "============== Checking out the module '$git_url'"
 git clone $git_uri
 cd xmlsec
-if [ x"$rc" != x ]; then
-    echo "============== Switching to release branch '$git_release_branch' for RC build '$rc'"
-    git checkout $git_release_branch
-fi
+#if [ x"$rc" != x ]; then
+#    echo "============== Switching to release branch '$git_release_branch' for RC build '$rc'"
+#    git checkout $git_release_branch
+#fi
 find . -name ".git" | xargs rm -r
 
 echo "============== Building xmlsec1-$version"
@@ -62,9 +62,32 @@ fi
 
 if [ x"$rc" = x ]; then
      echo "============== Tagging the release $version in the github"
-     echo "RUN MANUALLY: git tag -a "xmlsec-$git_version_tag" -m 'XMLSec release $version'"
+     echo "RUN MANUALLY: git tag -a "${version}" -m 'XMLSec release $version'"
+     echo "RUN MANUALLY: git tag -a "xmlsec_$git_version_tag" -m 'XMLSec release $version'"
+     echo "RUN MANUALLY: git push --follow-tags"
+else
+     echo "============== Tagging the release $version-$rc in the github"
+     echo "RUN MANUALLY: git tag -a "${version}-$rc" -m 'XMLSec release $version-$rc'"
+     echo "RUN MANUALLY: git tag -a "xmlsec_${git_version_tag}_$rc" -m 'XMLSec release $version-$rc'"
      echo "RUN MANUALLY: git push --follow-tags"
 fi
+
+echo "======== Publish release to website:"
+if [ x"$rc" = x ]; then
+    echo "RUN MANUALLY: scp $tar_file $sig_file smtp.aleksey.com:"
+    echo "ssh to smtp.aleksey.com, run the ./bin/push-xmlsec-docs.sh $version"
+    echo "then switch symlink for /home/apps/www/aleksey.com/xmlsec/current"
+else
+    echo "RUN MANUALLY: scp $rc_tar_file $rc_sig_file smtp.aleksey.com:"
+    echo "ssh to smtp.aleksey.com, run the ./bin/push-xmlsec-docs.sh $version-$rc"
+    echo "then switch symlink for /home/apps/www/aleksey.com/xmlsec/rc/"
+fi
+
+echo "========= Publish release to github:"
+echo "Download release from website, go to github releases, use newly created tag and "
+echo "tarball to publish release; after that create announcement about the release in the "
+echo "github dicussions"
+
 
 echo "============== Cleanup"
 #rm -rf "$build_root"

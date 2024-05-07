@@ -1,17 +1,15 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * Signatures implementation for GCrypt.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2010-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:signatures
- * @Short_description: Signatures implementation for GCrypt.
- * @Stability: Private
- *
+ * SECTION:crypto
  */
 
 #include "globals.h"
@@ -27,6 +25,7 @@
 
 #include <xmlsec/gcrypt/crypto.h>
 
+#include "../cast_helpers.h"
 
 /**************************************************************************
  *
@@ -46,32 +45,62 @@ typedef int     (*xmlSecGCryptPkVerifyMethod)   (int digest,
                                                  xmlSecSize dataSize);
 
 #ifndef XMLSEC_NO_DSA
-static int      xmlSecGCryptDsaPkSign           (int digest,
+#ifndef XMLSEC_NO_SHA1
+static int      xmlSecGCryptDsaSign             (int digest,
                                                  xmlSecKeyDataPtr key_data,
                                                  const xmlSecByte* dgst,
                                                  xmlSecSize dgstSize,
                                                  xmlSecBufferPtr out);
-static int      xmlSecGCryptDsaPkVerify         (int digest,
+static int      xmlSecGCryptDsaVerify           (int digest,
                                                  xmlSecKeyDataPtr key_data,
                                                  const xmlSecByte* dgst,
                                                  xmlSecSize dgstSize,
                                                  const xmlSecByte* data,
                                                  xmlSecSize dataSize);
+#endif  /* XMLSEC_NO_SHA1 */
 #endif  /* XMLSEC_NO_DSA */
 
 #ifndef XMLSEC_NO_RSA
-static int      xmlSecGCryptRsaPkcs1PkSign      (int digest,
+static int      xmlSecGCryptRsaPkcs1Sign        (int digest,
                                                  xmlSecKeyDataPtr key_data,
                                                  const xmlSecByte* dgst,
                                                  xmlSecSize dgstSize,
                                                  xmlSecBufferPtr out);
-static int      xmlSecGCryptRsaPkcs1PkVerify    (int digest,
+static int      xmlSecGCryptRsaPkcs1Verify      (int digest,
+                                                 xmlSecKeyDataPtr key_data,
+                                                 const xmlSecByte* dgst,
+                                                 xmlSecSize dgstSize,
+                                                 const xmlSecByte* data,
+                                                 xmlSecSize dataSize);
+
+static int      xmlSecGCryptRsaPssSign          (int digest,
+                                                 xmlSecKeyDataPtr key_data,
+                                                 const xmlSecByte* dgst,
+                                                 xmlSecSize dgstSize,
+                                                 xmlSecBufferPtr out);
+static int      xmlSecGCryptRsaPssVerify        (int digest,
                                                  xmlSecKeyDataPtr key_data,
                                                  const xmlSecByte* dgst,
                                                  xmlSecSize dgstSize,
                                                  const xmlSecByte* data,
                                                  xmlSecSize dataSize);
 #endif  /* XMLSEC_NO_RSA */
+
+
+#ifndef XMLSEC_NO_EC
+static int      xmlSecGCryptEcdsaSign           (int digest,
+                                                 xmlSecKeyDataPtr key_data,
+                                                 const xmlSecByte* dgst,
+                                                 xmlSecSize dgstSize,
+                                                 xmlSecBufferPtr out);
+static int      xmlSecGCryptEcdsaVerify         (int digest,
+                                                 xmlSecKeyDataPtr key_data,
+                                                 const xmlSecByte* dgst,
+                                                 xmlSecSize dgstSize,
+                                                 const xmlSecByte* data,
+                                                 xmlSecSize dataSize);
+#endif  /* XMLSEC_NO_EC */
+
 
 
 /**************************************************************************
@@ -101,13 +130,11 @@ struct _xmlSecGCryptPkSignatureCtx {
  *
  * Pk Signature transforms
  *
- * xmlSecGCryptPkSignatureCtx is located after xmlSecTransform
+ * xmlSecTransform + xmlSecGCryptPkSignatureCtx
  *
  *****************************************************************************/
-#define xmlSecGCryptPkSignatureSize   \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecGCryptPkSignatureCtx))
-#define xmlSecGCryptPkSignatureGetCtx(transform) \
-    ((xmlSecGCryptPkSignatureCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
+XMLSEC_TRANSFORM_DECLARE(GCryptPkSignature, xmlSecGCryptPkSignatureCtx)
+#define xmlSecGCryptPkSignatureSize XMLSEC_TRANSFORM_SIZE(GCryptPkSignature)
 
 static int      xmlSecGCryptPkSignatureCheckId                  (xmlSecTransformPtr transform);
 static int      xmlSecGCryptPkSignatureInitialize               (xmlSecTransformPtr transform);
@@ -174,7 +201,86 @@ xmlSecGCryptPkSignatureCheckId(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_SHA512 */
 
+
+#ifndef XMLSEC_NO_SHA1
+    if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformRsaPssSha1Id)) {
+        return(1);
+    } else
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA256
+    if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformRsaPssSha256Id)) {
+        return(1);
+    } else
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+    if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformRsaPssSha384Id)) {
+        return(1);
+    } else
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+    if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformRsaPssSha512Id)) {
+        return(1);
+    } else
+#endif /* XMLSEC_NO_SHA512 */
+
+
+#ifndef XMLSEC_NO_SHA3
+    if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformRsaPssSha3_256Id)) {
+        return(1);
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformRsaPssSha3_384Id)) {
+        return(1);
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformRsaPssSha3_512Id)) {
+        return(1);
+    } else
+#endif /* XMLSEC_NO_SHA3 */
+
+
 #endif /* XMLSEC_NO_RSA */
+
+#ifndef XMLSEC_NO_EC
+
+#ifndef XMLSEC_NO_SHA1
+    if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformEcdsaSha1Id)) {
+        return(1);
+    } else
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA256
+    if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformEcdsaSha256Id)) {
+        return(1);
+    } else
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+    if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformEcdsaSha384Id)) {
+        return(1);
+    } else
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+    if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformEcdsaSha512Id)) {
+        return(1);
+    } else
+#endif /* XMLSEC_NO_SHA512 */
+
+#ifndef XMLSEC_NO_SHA3
+    if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformEcdsaSha3_256Id)) {
+        return(1);
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformEcdsaSha3_384Id)) {
+        return(1);
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformEcdsaSha3_512Id)) {
+        return(1);
+    } else
+#endif /* XMLSEC_NO_SHA3 */
+
+#endif /* XMLSEC_NO_EC */
 
     {
         return(0);
@@ -202,8 +308,8 @@ xmlSecGCryptPkSignatureInitialize(xmlSecTransformPtr transform) {
     if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformDsaSha1Id)) {
         ctx->digest     = GCRY_MD_SHA1;
         ctx->keyId      = xmlSecGCryptKeyDataDsaId;
-        ctx->sign       = xmlSecGCryptDsaPkSign;
-        ctx->verify     = xmlSecGCryptDsaPkVerify;
+        ctx->sign       = xmlSecGCryptDsaSign;
+        ctx->verify     = xmlSecGCryptDsaVerify;
     } else
 #endif /* XMLSEC_NO_SHA1 */
 
@@ -215,8 +321,8 @@ xmlSecGCryptPkSignatureInitialize(xmlSecTransformPtr transform) {
     if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformRsaMd5Id)) {
         ctx->digest     = GCRY_MD_MD5;
         ctx->keyId      = xmlSecGCryptKeyDataRsaId;
-        ctx->sign       = xmlSecGCryptRsaPkcs1PkSign;
-        ctx->verify     = xmlSecGCryptRsaPkcs1PkVerify;
+        ctx->sign       = xmlSecGCryptRsaPkcs1Sign;
+        ctx->verify     = xmlSecGCryptRsaPkcs1Verify;
     } else
 #endif /* XMLSEC_NO_MD5 */
 
@@ -224,17 +330,18 @@ xmlSecGCryptPkSignatureInitialize(xmlSecTransformPtr transform) {
     if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformRsaRipemd160Id)) {
         ctx->digest     = GCRY_MD_RMD160;
         ctx->keyId      = xmlSecGCryptKeyDataRsaId;
-        ctx->sign       = xmlSecGCryptRsaPkcs1PkSign;
-        ctx->verify     = xmlSecGCryptRsaPkcs1PkVerify;
+        ctx->sign       = xmlSecGCryptRsaPkcs1Sign;
+        ctx->verify     = xmlSecGCryptRsaPkcs1Verify;
     } else
 #endif /* XMLSEC_NO_RIPEMD160 */
+
 
 #ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformRsaSha1Id)) {
         ctx->digest     = GCRY_MD_SHA1;
         ctx->keyId      = xmlSecGCryptKeyDataRsaId;
-        ctx->sign       = xmlSecGCryptRsaPkcs1PkSign;
-        ctx->verify     = xmlSecGCryptRsaPkcs1PkVerify;
+        ctx->sign       = xmlSecGCryptRsaPkcs1Sign;
+        ctx->verify     = xmlSecGCryptRsaPkcs1Verify;
     } else
 #endif /* XMLSEC_NO_SHA1 */
 
@@ -242,8 +349,8 @@ xmlSecGCryptPkSignatureInitialize(xmlSecTransformPtr transform) {
     if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformRsaSha256Id)) {
         ctx->digest     = GCRY_MD_SHA256;
         ctx->keyId      = xmlSecGCryptKeyDataRsaId;
-        ctx->sign       = xmlSecGCryptRsaPkcs1PkSign;
-        ctx->verify     = xmlSecGCryptRsaPkcs1PkVerify;
+        ctx->sign       = xmlSecGCryptRsaPkcs1Sign;
+        ctx->verify     = xmlSecGCryptRsaPkcs1Verify;
     } else
 #endif /* XMLSEC_NO_SHA256 */
 
@@ -251,8 +358,8 @@ xmlSecGCryptPkSignatureInitialize(xmlSecTransformPtr transform) {
     if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformRsaSha384Id)) {
         ctx->digest     = GCRY_MD_SHA384;
         ctx->keyId      = xmlSecGCryptKeyDataRsaId;
-        ctx->sign       = xmlSecGCryptRsaPkcs1PkSign;
-        ctx->verify     = xmlSecGCryptRsaPkcs1PkVerify;
+        ctx->sign       = xmlSecGCryptRsaPkcs1Sign;
+        ctx->verify     = xmlSecGCryptRsaPkcs1Verify;
     } else
 #endif /* XMLSEC_NO_SHA384 */
 
@@ -260,12 +367,132 @@ xmlSecGCryptPkSignatureInitialize(xmlSecTransformPtr transform) {
     if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformRsaSha512Id)) {
         ctx->digest     = GCRY_MD_SHA512;
         ctx->keyId      = xmlSecGCryptKeyDataRsaId;
-        ctx->sign       = xmlSecGCryptRsaPkcs1PkSign;
-        ctx->verify     = xmlSecGCryptRsaPkcs1PkVerify;
+        ctx->sign       = xmlSecGCryptRsaPkcs1Sign;
+        ctx->verify     = xmlSecGCryptRsaPkcs1Verify;
     } else
 #endif /* XMLSEC_NO_SHA512 */
 
+#ifndef XMLSEC_NO_SHA1
+    if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformRsaPssSha1Id)) {
+        ctx->digest     = GCRY_MD_SHA1;
+        ctx->keyId      = xmlSecGCryptKeyDataRsaId;
+        ctx->sign       = xmlSecGCryptRsaPssSign;
+        ctx->verify     = xmlSecGCryptRsaPssVerify;
+    } else
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA256
+    if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformRsaPssSha256Id)) {
+        ctx->digest     = GCRY_MD_SHA256;
+        ctx->keyId      = xmlSecGCryptKeyDataRsaId;
+        ctx->sign       = xmlSecGCryptRsaPssSign;
+        ctx->verify     = xmlSecGCryptRsaPssVerify;
+    } else
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+    if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformRsaPssSha384Id)) {
+        ctx->digest     = GCRY_MD_SHA384;
+        ctx->keyId      = xmlSecGCryptKeyDataRsaId;
+        ctx->sign       = xmlSecGCryptRsaPssSign;
+        ctx->verify     = xmlSecGCryptRsaPssVerify;
+    } else
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+    if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformRsaPssSha512Id)) {
+        ctx->digest     = GCRY_MD_SHA512;
+        ctx->keyId      = xmlSecGCryptKeyDataRsaId;
+        ctx->sign       = xmlSecGCryptRsaPssSign;
+        ctx->verify     = xmlSecGCryptRsaPssVerify;
+    } else
+#endif /* XMLSEC_NO_SHA512 */
+
+
+#ifndef XMLSEC_NO_SHA3
+    if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformRsaPssSha3_256Id)) {
+        ctx->digest     = GCRY_MD_SHA3_256;
+        ctx->keyId      = xmlSecGCryptKeyDataRsaId;
+        ctx->sign       = xmlSecGCryptRsaPssSign;
+        ctx->verify     = xmlSecGCryptRsaPssVerify;
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformRsaPssSha3_384Id)) {
+        ctx->digest     = GCRY_MD_SHA3_384;
+        ctx->keyId      = xmlSecGCryptKeyDataRsaId;
+        ctx->sign       = xmlSecGCryptRsaPssSign;
+        ctx->verify     = xmlSecGCryptRsaPssVerify;
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformRsaPssSha3_512Id)) {
+        ctx->digest     = GCRY_MD_SHA3_512;
+        ctx->keyId      = xmlSecGCryptKeyDataRsaId;
+        ctx->sign       = xmlSecGCryptRsaPssSign;
+        ctx->verify     = xmlSecGCryptRsaPssVerify;
+    } else
+#endif /* XMLSEC_NO_SHA3 */
+
 #endif /* XMLSEC_NO_RSA */
+
+#ifndef XMLSEC_NO_EC
+
+#ifndef XMLSEC_NO_SHA1
+    if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformEcdsaSha1Id)) {
+        ctx->digest     = GCRY_MD_SHA1;
+        ctx->keyId      = xmlSecGCryptKeyDataEcId;
+        ctx->sign       = xmlSecGCryptEcdsaSign;
+        ctx->verify     = xmlSecGCryptEcdsaVerify;
+    } else
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA256
+    if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformEcdsaSha256Id)) {
+        ctx->digest     = GCRY_MD_SHA256;
+        ctx->keyId      = xmlSecGCryptKeyDataEcId;
+        ctx->sign       = xmlSecGCryptEcdsaSign;
+        ctx->verify     = xmlSecGCryptEcdsaVerify;
+    } else
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+    if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformEcdsaSha384Id)) {
+        ctx->digest     = GCRY_MD_SHA384;
+        ctx->keyId      = xmlSecGCryptKeyDataEcId;
+        ctx->sign       = xmlSecGCryptEcdsaSign;
+        ctx->verify     = xmlSecGCryptEcdsaVerify;
+    } else
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+    if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformEcdsaSha512Id)) {
+        ctx->digest     = GCRY_MD_SHA512;
+        ctx->keyId      = xmlSecGCryptKeyDataEcId;
+        ctx->sign       = xmlSecGCryptEcdsaSign;
+        ctx->verify     = xmlSecGCryptEcdsaVerify;
+    } else
+#endif /* XMLSEC_NO_SHA512 */
+
+
+#ifndef XMLSEC_NO_SHA3
+    if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformEcdsaSha3_256Id)) {
+        ctx->digest     = GCRY_MD_SHA3_256;
+        ctx->keyId      = xmlSecGCryptKeyDataEcId;
+        ctx->sign       = xmlSecGCryptEcdsaSign;
+        ctx->verify     = xmlSecGCryptEcdsaVerify;
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformEcdsaSha3_384Id)) {
+        ctx->digest     = GCRY_MD_SHA3_384;
+        ctx->keyId      = xmlSecGCryptKeyDataEcId;
+        ctx->sign       = xmlSecGCryptEcdsaSign;
+        ctx->verify     = xmlSecGCryptEcdsaVerify;
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformEcdsaSha3_512Id)) {
+        ctx->digest     = GCRY_MD_SHA3_512;
+        ctx->keyId      = xmlSecGCryptKeyDataEcId;
+        ctx->sign       = xmlSecGCryptEcdsaSign;
+        ctx->verify     = xmlSecGCryptEcdsaVerify;
+    } else
+#endif /* XMLSEC_NO_SHA3 */
+
+#endif /* XMLSEC_NO_EC */
 
     if(1) {
         xmlSecInvalidTransfromError(transform)
@@ -275,8 +502,7 @@ xmlSecGCryptPkSignatureInitialize(xmlSecTransformPtr transform) {
     /* create digest ctx */
     err = gcry_md_open(&ctx->digestCtx, ctx->digest, GCRY_MD_FLAG_SECURE); /* we are paranoid */
     if(err != GPG_ERR_NO_ERROR) {
-        xmlSecGCryptError("gcry_md_open", err,
-                          xmlSecTransformGetName(transform));
+        xmlSecGCryptError("gcry_md_open", err, xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -389,16 +615,16 @@ xmlSecGCryptPkSignatureVerify(xmlSecTransformPtr transform,
     }
 
     /* check result */
-    if(ret == 1) {
-        transform->status = xmlSecTransformStatusOk;
-    } else {
+    if(ret != 1) {
         xmlSecOtherError(XMLSEC_ERRORS_R_DATA_NOT_MATCH,
                          xmlSecTransformGetName(transform),
-                         "ctx->verify: signature does not verify");
+                         "ctx->verify: signature verification failed");
         transform->status = xmlSecTransformStatusFail;
+        return(0);
     }
 
-    /* done */
+    /* success */
+    transform->status = xmlSecTransformStatusOk;
     return(0);
 }
 
@@ -445,7 +671,7 @@ xmlSecGCryptPkSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
             if(ret < 0) {
                 xmlSecInternalError2("xmlSecBufferRemoveHead",
                                      xmlSecTransformGetName(transform),
-                                     "size=%d", inSize);
+                                     "size=" XMLSEC_SIZE_FMT, inSize);
                 return(-1);
             }
         }
@@ -458,13 +684,13 @@ xmlSecGCryptPkSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
             gcry_md_final(ctx->digestCtx);
             buf = gcry_md_read(ctx->digestCtx, ctx->digest);
             if(buf == NULL) {
-                xmlSecGCryptError("gcry_md_read", GPG_ERR_NO_ERROR,
-                                  xmlSecTransformGetName(transform));
+                xmlSecGCryptError("gcry_md_read", (gcry_error_t)GPG_ERR_NO_ERROR, xmlSecTransformGetName(transform));
                 return(-1);
             }
 
             /* copy it to our internal buffer */
             ctx->dgstSize = gcry_md_get_algo_dlen(ctx->digest);
+
             xmlSecAssert2(ctx->dgstSize > 0, -1);
             xmlSecAssert2(ctx->dgstSize <= sizeof(ctx->dgst), -1);
             memcpy(ctx->dgst, buf, ctx->dgstSize);
@@ -473,8 +699,7 @@ xmlSecGCryptPkSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
             if(transform->operation == xmlSecTransformOperationSign) {
                 ret = ctx->sign(ctx->digest, ctx->key_data, ctx->dgst, ctx->dgstSize, out);
                 if(ret < 0) {
-                    xmlSecInternalError("ctx->sign",
-                                        xmlSecTransformGetName(transform));
+                    xmlSecInternalError("ctx->sign", xmlSecTransformGetName(transform));
                     return(-1);
                 }
             }
@@ -504,6 +729,7 @@ static int
 xmlSecGCryptAppendMpi(gcry_mpi_t a, xmlSecBufferPtr out, xmlSecSize min_size) {
     xmlSecSize outSize;
     size_t written;
+    xmlSecSize writtenSize;
     gpg_error_t err;
     int ret;
 
@@ -520,27 +746,28 @@ xmlSecGCryptAppendMpi(gcry_mpi_t a, xmlSecBufferPtr out, xmlSecSize min_size) {
         xmlSecGCryptError("gcry_mpi_print", err, NULL);
         return(-1);
     }
+    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(written, writtenSize, return(-1), NULL);
 
     /* add zeros at the beggining (if needed) */
-    if((min_size > 0) && (written < min_size)) {
-        outSize += (min_size - written);
+    if((min_size > 0) && (writtenSize < min_size)) {
+        outSize += (min_size - writtenSize);
     }
 
     /* allocate space */
-    ret = xmlSecBufferSetMaxSize(out, outSize + written + 1);
+    ret = xmlSecBufferSetMaxSize(out, outSize + writtenSize + 1);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetMaxSize", NULL,
-                             "size=%d", (int)(outSize + written + 1));
+            "size=" XMLSEC_SIZE_FMT, (outSize + writtenSize + 1));
         return(-1);
     }
     xmlSecAssert2(xmlSecBufferGetMaxSize(out) > outSize, -1);
 
     /* add zeros at the beggining (if needed) */
-    if((min_size > 0) && (written < min_size)) {
+    if((min_size > 0) && (writtenSize < min_size)) {
         xmlSecSize ii;
         xmlSecByte * p = xmlSecBufferGetData(out);
 
-        for(ii = 0; ii < (min_size - written); ++ii) {
+        for(ii = 0; ii < (min_size - writtenSize); ++ii) {
             p[outSize - ii - 1] = 0;
         }
     }
@@ -555,12 +782,13 @@ xmlSecGCryptAppendMpi(gcry_mpi_t a, xmlSecBufferPtr out, xmlSecSize min_size) {
         xmlSecGCryptError("gcry_mpi_print", err, NULL);
         return(-1);
     }
+    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(written, writtenSize, return(-1), NULL);
 
     /* reset size */
-    ret = xmlSecBufferSetSize(out, outSize + written);
+    ret = xmlSecBufferSetSize(out, outSize + writtenSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize", NULL,
-                            "size=%d", (int)(outSize + written));
+            "size=" XMLSEC_SIZE_FMT, (outSize + writtenSize));
         return(-1);
     }
 
@@ -594,8 +822,10 @@ xmlSecGCryptAppendMpi(gcry_mpi_t a, xmlSecBufferPtr out, xmlSecSize min_size) {
  * <SignatureValue>i6watmQQQ1y3GB+VsWq5fJKzQcBB4jRfH1bfJFj0JtFVtLotttzYyA==</SignatureValue>
  *
  ***************************************************************************/
+#define XMLSEC_GCRYPT_DSA_SIG_SIZE  20
+
 static int
-xmlSecGCryptDsaPkSign(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
+xmlSecGCryptDsaSign(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
                       const xmlSecByte* dgst, xmlSecSize dgstSize,
                       xmlSecBufferPtr out) {
     gcry_mpi_t m_hash = NULL;
@@ -605,16 +835,19 @@ xmlSecGCryptDsaPkSign(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
     gcry_sexp_t s_s = NULL;
     gcry_mpi_t m_r = NULL;
     gcry_mpi_t m_s = NULL;
+    gcry_sexp_t s_key;
     gcry_sexp_t s_tmp;
     gpg_error_t err;
     int ret;
     int res = -1;
 
     xmlSecAssert2(key_data != NULL, -1);
-    xmlSecAssert2(xmlSecGCryptKeyDataDsaGetPrivateKey(key_data) != NULL, -1);
     xmlSecAssert2(dgst != NULL, -1);
     xmlSecAssert2(dgstSize > 0, -1);
     xmlSecAssert2(out != NULL, -1);
+
+    s_key = xmlSecGCryptKeyDataDsaGetPrivateKey(key_data);
+    xmlSecAssert2(s_key != NULL, -1);
 
     /* get the current digest, can't use "hash" :( */
     err = gcry_mpi_scan(&m_hash, GCRYMPI_FMT_USG, dgst, dgstSize, NULL);
@@ -624,7 +857,8 @@ xmlSecGCryptDsaPkSign(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
     }
 
     err = gcry_sexp_build (&s_data, NULL,
-                           "(data (flags raw)(value %m))",
+                           "(data (flags raw)"
+                           "(value %m))",
                            m_hash);
     if((err != GPG_ERR_NO_ERROR) || (s_data == NULL)) {
         xmlSecGCryptError("gcry_sexp_build(data)", err, NULL);
@@ -632,7 +866,7 @@ xmlSecGCryptDsaPkSign(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
     }
 
     /* create signature */
-    err = gcry_pk_sign(&s_sig, s_data, xmlSecGCryptKeyDataDsaGetPrivateKey(key_data));
+    err = gcry_pk_sign(&s_sig, s_data, s_key);
     if(err != GPG_ERR_NO_ERROR) {
         xmlSecGCryptError("gcry_pk_sign", err, NULL);
         goto done;
@@ -641,8 +875,7 @@ xmlSecGCryptDsaPkSign(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
     /* find signature value */
     s_tmp = gcry_sexp_find_token(s_sig, "sig-val", 0);
     if(s_tmp == NULL) {
-        xmlSecGCryptError("gcry_sexp_find_token(sig-val)",
-                          GPG_ERR_NO_ERROR, NULL);
+        xmlSecGCryptError("gcry_sexp_find_token(sig-val)", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
         goto done;
     }
     gcry_sexp_release(s_sig);
@@ -650,8 +883,7 @@ xmlSecGCryptDsaPkSign(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
 
     s_tmp = gcry_sexp_find_token(s_sig, "dsa", 0);
     if(s_tmp == NULL) {
-        xmlSecGCryptError("gcry_sexp_find_token(dsa)",
-                          GPG_ERR_NO_ERROR, NULL);
+        xmlSecGCryptError("gcry_sexp_find_token(dsa)", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
         goto done;
     }
     gcry_sexp_release(s_sig);
@@ -660,46 +892,43 @@ xmlSecGCryptDsaPkSign(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
     /* r */
     s_r = gcry_sexp_find_token(s_sig, "r", 0);
     if(s_r == NULL) {
-        xmlSecGCryptError("gcry_sexp_find_token(r)",
-                          GPG_ERR_NO_ERROR, NULL);
+        xmlSecGCryptError("gcry_sexp_find_token(r)", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
         goto done;
     }
 
     m_r = gcry_sexp_nth_mpi(s_r, 1, GCRYMPI_FMT_USG);
     if(m_r == NULL) {
-        xmlSecGCryptError("gcry_sexp_nth_mpi(r)",
-                          GPG_ERR_NO_ERROR, NULL);
+        xmlSecGCryptError("gcry_sexp_nth_mpi(r)", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
         goto done;
     }
 
     /* s */
     s_s = gcry_sexp_find_token(s_sig, "s", 0);
     if(s_s == NULL) {
-        xmlSecGCryptError("gcry_sexp_find_token(s)",
-                          GPG_ERR_NO_ERROR, NULL);
+        xmlSecGCryptError("gcry_sexp_find_token(s)", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
         goto done;
     }
 
     m_s = gcry_sexp_nth_mpi(s_s, 1, GCRYMPI_FMT_USG);
     if(m_s == NULL) {
-        xmlSecGCryptError("gcry_sexp_nth_mpi(s)",
-                          GPG_ERR_NO_ERROR, NULL);
+        xmlSecGCryptError("gcry_sexp_nth_mpi(s)", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
         goto done;
     }
 
     /* write out: r + s */
-    ret = xmlSecGCryptAppendMpi(m_r, out, 20);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecGCryptAppendMpi", NULL);
+    ret = xmlSecGCryptAppendMpi(m_r, out, XMLSEC_GCRYPT_DSA_SIG_SIZE);
+    if((ret < 0) || (xmlSecBufferGetSize(out) != XMLSEC_GCRYPT_DSA_SIG_SIZE)) {
+        xmlSecInternalError2("xmlSecGCryptAppendMpi", NULL,
+            "outSize=" XMLSEC_SIZE_FMT, xmlSecBufferGetSize(out));
         goto done;
     }
-    xmlSecAssert2(xmlSecBufferGetSize(out) == 20, -1);
-    ret = xmlSecGCryptAppendMpi(m_s, out, 20);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecGCryptAppendMpi", NULL);
+
+    ret = xmlSecGCryptAppendMpi(m_s, out, XMLSEC_GCRYPT_DSA_SIG_SIZE);
+    if((ret < 0) || (xmlSecBufferGetSize(out) != (XMLSEC_GCRYPT_DSA_SIG_SIZE + XMLSEC_GCRYPT_DSA_SIG_SIZE))) {
+        xmlSecInternalError2("xmlSecGCryptAppendMpi", NULL,
+            "outSize=" XMLSEC_SIZE_FMT, xmlSecBufferGetSize(out));
         goto done;
     }
-    xmlSecAssert2(xmlSecBufferGetSize(out) == (20 + 20), -1);
 
     /* done */
     res = 0;
@@ -732,7 +961,7 @@ done:
 }
 
 static int
-xmlSecGCryptDsaPkVerify(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
+xmlSecGCryptDsaVerify(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
                         const xmlSecByte* dgst, xmlSecSize dgstSize,
                         const xmlSecByte* data, xmlSecSize dataSize) {
     gcry_mpi_t m_hash = NULL;
@@ -740,15 +969,18 @@ xmlSecGCryptDsaPkVerify(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
     gcry_mpi_t m_sig_r = NULL;
     gcry_mpi_t m_sig_s = NULL;
     gcry_sexp_t s_sig = NULL;
+    gcry_sexp_t s_key;
     gpg_error_t err;
     int res = -1;
 
     xmlSecAssert2(key_data != NULL, -1);
-    xmlSecAssert2(xmlSecGCryptKeyDataDsaGetPublicKey(key_data) != NULL, -1);
     xmlSecAssert2(dgst != NULL, -1);
     xmlSecAssert2(dgstSize > 0, -1);
     xmlSecAssert2(data != NULL, -1);
-    xmlSecAssert2(dataSize == (20 + 20), -1);
+    xmlSecAssert2(dataSize == (XMLSEC_GCRYPT_DSA_SIG_SIZE + XMLSEC_GCRYPT_DSA_SIG_SIZE), -1);
+
+    s_key = xmlSecGCryptKeyDataDsaGetPublicKey(key_data);
+    xmlSecAssert2(s_key != NULL, -1);
 
     /* get the current digest, can't use "hash" :( */
     err = gcry_mpi_scan(&m_hash, GCRYMPI_FMT_USG, dgst, dgstSize, NULL);
@@ -758,7 +990,8 @@ xmlSecGCryptDsaPkVerify(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
     }
 
     err = gcry_sexp_build (&s_data, NULL,
-                           "(data (flags raw)(value %m))",
+                           "(data (flags raw)"
+                           "(value %m))",
                            m_hash);
     if((err != GPG_ERR_NO_ERROR) || (s_data == NULL)) {
         xmlSecGCryptError("gcry_sexp_build(data)", err, NULL);
@@ -766,12 +999,12 @@ xmlSecGCryptDsaPkVerify(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
     }
 
     /* get the existing signature */
-    err = gcry_mpi_scan(&m_sig_r, GCRYMPI_FMT_USG, data, 20, NULL);
+    err = gcry_mpi_scan(&m_sig_r, GCRYMPI_FMT_USG, data, XMLSEC_GCRYPT_DSA_SIG_SIZE, NULL);
     if((err != GPG_ERR_NO_ERROR) || (m_sig_r == NULL)) {
         xmlSecGCryptError("gcry_mpi_scan(r)", err, NULL);
         goto done;
     }
-    err = gcry_mpi_scan(&m_sig_s, GCRYMPI_FMT_USG, data + 20, 20, NULL);
+    err = gcry_mpi_scan(&m_sig_s, GCRYMPI_FMT_USG, data + XMLSEC_GCRYPT_DSA_SIG_SIZE, XMLSEC_GCRYPT_DSA_SIG_SIZE, NULL);
     if((err != GPG_ERR_NO_ERROR) || (m_sig_s == NULL)) {
         xmlSecGCryptError("gcry_mpi_scan(s)", err, NULL);
         goto done;
@@ -786,7 +1019,7 @@ xmlSecGCryptDsaPkVerify(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
     }
 
     /* verify signature */
-    err = gcry_pk_verify(s_sig, s_data, xmlSecGCryptKeyDataDsaGetPublicKey(key_data));
+    err = gcry_pk_verify(s_sig, s_data, s_key);
     if(err == GPG_ERR_NO_ERROR) {
         res = 1; /* good signature */
     } else if(err == GPG_ERR_BAD_SIGNATURE) {
@@ -895,40 +1128,45 @@ xmlSecGCryptTransformDsaSha1GetKlass(void) {
  *
  * This prefix is included to make it easier to use standard cryptographic
  * libraries. The FF octet MUST be repeated the maximum number of times such
- * that the value of the quantity being CRYPTed is one octet shorter than 
+ * that the value of the quantity being CRYPTed is one octet shorter than
  * the RSA modulus.
  *
  ***************************************************************************/
 static int
-xmlSecGCryptRsaPkcs1PkSign(int digest, xmlSecKeyDataPtr key_data,
+xmlSecGCryptRsaPkcs1Sign(int digest, xmlSecKeyDataPtr key_data,
                            const xmlSecByte* dgst, xmlSecSize dgstSize,
                            xmlSecBufferPtr out) {
     gcry_sexp_t s_data = NULL;
     gcry_mpi_t m_sig = NULL;
     gcry_sexp_t s_sig = NULL;
+    gcry_sexp_t s_key;
     gcry_sexp_t s_tmp;
     gpg_error_t err;
+    int dgstLen;
     int ret;
     int res = -1;
 
     xmlSecAssert2(key_data != NULL, -1);
-    xmlSecAssert2(xmlSecGCryptKeyDataRsaGetPrivateKey(key_data) != NULL, -1);
     xmlSecAssert2(dgst != NULL, -1);
     xmlSecAssert2(dgstSize > 0, -1);
     xmlSecAssert2(out != NULL, -1);
 
+    s_key = xmlSecGCryptKeyDataRsaGetPrivateKey(key_data);
+    xmlSecAssert2(s_key != NULL, -1);
+
     /* get the current digest */
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(dgstSize, dgstLen, return(-1), NULL);
     err = gcry_sexp_build (&s_data, NULL,
                            "(data (flags pkcs1)(hash %s %b))",
                            gcry_md_algo_name(digest),
-                           (int)dgstSize, dgst);
+                           dgstLen, dgst);
     if((err != GPG_ERR_NO_ERROR) || (s_data == NULL)) {
         xmlSecGCryptError("gcry_sexp_build(data)", err, NULL);
         goto done;
     }
 
     /* create signature */
-    err = gcry_pk_sign(&s_sig, s_data, xmlSecGCryptKeyDataRsaGetPrivateKey(key_data));
+    err = gcry_pk_sign(&s_sig, s_data, s_key);
     if(err != GPG_ERR_NO_ERROR) {
         xmlSecGCryptError("gcry_pk_sign", err, NULL);
         goto done;
@@ -937,8 +1175,7 @@ xmlSecGCryptRsaPkcs1PkSign(int digest, xmlSecKeyDataPtr key_data,
     /* find signature value */
     s_tmp = gcry_sexp_find_token(s_sig, "sig-val", 0);
     if(s_tmp == NULL) {
-        xmlSecGCryptError("gcry_sexp_find_token(sig-val)",
-                          GPG_ERR_NO_ERROR, NULL);
+        xmlSecGCryptError("gcry_sexp_find_token(sig-val)", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
         goto done;
     }
     gcry_sexp_release(s_sig);
@@ -946,8 +1183,7 @@ xmlSecGCryptRsaPkcs1PkSign(int digest, xmlSecKeyDataPtr key_data,
 
     s_tmp = gcry_sexp_find_token(s_sig, "rsa", 0);
     if(s_tmp == NULL) {
-        xmlSecGCryptError("gcry_sexp_find_token(rsa)",
-                          GPG_ERR_NO_ERROR, NULL);
+        xmlSecGCryptError("gcry_sexp_find_token(rsa)", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
         goto done;
     }
     gcry_sexp_release(s_sig);
@@ -955,8 +1191,7 @@ xmlSecGCryptRsaPkcs1PkSign(int digest, xmlSecKeyDataPtr key_data,
 
     s_tmp = gcry_sexp_find_token(s_sig, "s", 0);
     if(s_tmp == NULL) {
-        xmlSecGCryptError("gcry_sexp_find_token(s)",
-                          GPG_ERR_NO_ERROR, NULL);
+        xmlSecGCryptError("gcry_sexp_find_token(s)", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
         goto done;
     }
     gcry_sexp_release(s_sig);
@@ -964,8 +1199,186 @@ xmlSecGCryptRsaPkcs1PkSign(int digest, xmlSecKeyDataPtr key_data,
 
     m_sig = gcry_sexp_nth_mpi(s_sig, 1, GCRYMPI_FMT_USG);
     if(m_sig == NULL) {
-        xmlSecGCryptError("gcry_sexp_nth_mpi(1)",
-                          GPG_ERR_NO_ERROR, NULL);
+        xmlSecGCryptError("gcry_sexp_nth_mpi(1)", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
+        goto done;
+    }
+
+    /* write out */
+    ret = xmlSecGCryptAppendMpi(m_sig, out, 0);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecGCryptAppendMpi", NULL);
+        goto done;
+    }
+
+    /* success */
+    res = 0;
+
+done:
+    if(m_sig != NULL) {
+        gcry_mpi_release(m_sig);
+    }
+
+    if(s_data != NULL) {
+        gcry_sexp_release(s_data);
+    }
+    if(s_sig != NULL) {
+        gcry_sexp_release(s_sig);
+    }
+
+    return(res);
+}
+
+static int
+xmlSecGCryptRsaPkcs1Verify(int digest, xmlSecKeyDataPtr key_data,
+                             const xmlSecByte* dgst, xmlSecSize dgstSize,
+                             const xmlSecByte* data, xmlSecSize dataSize) {
+    gcry_sexp_t s_data = NULL;
+    gcry_mpi_t m_sig = NULL;
+    gcry_sexp_t s_sig = NULL;
+    gcry_sexp_t s_key;
+    gpg_error_t err;
+    int dgstLen;
+    int res = -1;
+
+    xmlSecAssert2(key_data != NULL, -1);
+    xmlSecAssert2(dgst != NULL, -1);
+    xmlSecAssert2(dgstSize > 0, -1);
+    xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(dataSize > 0, -1);
+
+    s_key = xmlSecGCryptKeyDataRsaGetPublicKey(key_data);
+    xmlSecAssert2(s_key != NULL, -1);
+
+    /* get the current digest */
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(dgstSize, dgstLen, return(-1), NULL);
+    err = gcry_sexp_build (&s_data, NULL,
+                           "(data (flags pkcs1)(hash %s %b))",
+                           gcry_md_algo_name(digest),
+                           dgstLen, dgst);
+    if((err != GPG_ERR_NO_ERROR) || (s_data == NULL)) {
+        xmlSecGCryptError("gcry_sexp_build(data)", err, NULL);
+        goto done;
+    }
+
+    /* get the existing signature */
+    err = gcry_mpi_scan(&m_sig, GCRYMPI_FMT_USG, data, dataSize, NULL);
+    if((err != GPG_ERR_NO_ERROR) || (m_sig == NULL)) {
+        xmlSecGCryptError("gcry_mpi_scan", err, NULL);
+        goto done;
+    }
+
+    err = gcry_sexp_build (&s_sig, NULL,
+                           "(sig-val(rsa(s %m)))",
+                           m_sig);
+    if((err != GPG_ERR_NO_ERROR) || (s_sig == NULL)) {
+        xmlSecGCryptError("gcry_sexp_build(sig-val)", err, NULL);
+        goto done;
+    }
+
+    /* verify signature */
+    err = gcry_pk_verify(s_sig, s_data, s_key);
+    if(err == GPG_ERR_NO_ERROR) {
+        res = 1; /* good signature */
+    } else if(err == GPG_ERR_BAD_SIGNATURE) {
+        res = 0; /* bad signature */
+    } else {
+        xmlSecGCryptError("gcry_pk_verify", err, NULL);
+        goto done;
+    }
+
+    /* done */
+done:
+    if(m_sig != NULL) {
+        gcry_mpi_release(m_sig);
+    }
+
+    if(s_data != NULL) {
+        gcry_sexp_release(s_data);
+    }
+    if(s_sig != NULL) {
+        gcry_sexp_release(s_sig);
+    }
+
+    return(res);
+}
+
+/****************************************************pkcs1************************
+ *
+ * RSA-PSS
+ *
+ ***************************************************************************/
+static int
+xmlSecGCryptRsaPssSign(int digest, xmlSecKeyDataPtr key_data,
+                       const xmlSecByte* dgst, xmlSecSize dgstSize,
+                       xmlSecBufferPtr out)
+{
+    gcry_sexp_t s_data = NULL;
+    gcry_mpi_t m_sig = NULL;
+    gcry_sexp_t s_sig = NULL;
+    gcry_sexp_t s_key;
+    gcry_sexp_t s_tmp;
+    gpg_error_t err;
+    int dgstLen;
+    int ret;
+    int res = -1;
+
+    xmlSecAssert2(key_data != NULL, -1);
+    xmlSecAssert2(dgst != NULL, -1);
+    xmlSecAssert2(dgstSize > 0, -1);
+    xmlSecAssert2(out != NULL, -1);
+
+    s_key = xmlSecGCryptKeyDataRsaGetPrivateKey(key_data);
+    xmlSecAssert2(s_key != NULL, -1);
+
+    /* get the current digest */
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(dgstSize, dgstLen, return(-1), NULL);
+    err = gcry_sexp_build (&s_data, NULL,
+                           "(data (flags pss)"
+                            "(salt-length %u)"
+                            "(hash %s %b))",
+                           dgstSize,  /* The default salt length is the length of the hash function */
+                           gcry_md_algo_name(digest),
+                           dgstLen, dgst);
+    if((err != GPG_ERR_NO_ERROR) || (s_data == NULL)) {
+        xmlSecGCryptError("gcry_sexp_build(data)", err, NULL);
+        goto done;
+    }
+
+    /* create signature */
+    err = gcry_pk_sign(&s_sig, s_data, s_key);
+    if(err != GPG_ERR_NO_ERROR) {
+        xmlSecGCryptError("gcry_pk_sign", err, NULL);
+        goto done;
+    }
+
+    /* find signature value */
+    s_tmp = gcry_sexp_find_token(s_sig, "sig-val", 0);
+    if(s_tmp == NULL) {
+        xmlSecGCryptError("gcry_sexp_find_token(sig-val)", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
+        goto done;
+    }
+    gcry_sexp_release(s_sig);
+    s_sig = s_tmp;
+
+    s_tmp = gcry_sexp_find_token(s_sig, "rsa", 0);
+    if(s_tmp == NULL) {
+        xmlSecGCryptError("gcry_sexp_find_token(rsa)", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
+        goto done;
+    }
+    gcry_sexp_release(s_sig);
+    s_sig = s_tmp;
+
+    s_tmp = gcry_sexp_find_token(s_sig, "s", 0);
+    if(s_tmp == NULL) {
+        xmlSecGCryptError("gcry_sexp_find_token(s)", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
+        goto done;
+    }
+    gcry_sexp_release(s_sig);
+    s_sig = s_tmp;
+
+    m_sig = gcry_sexp_nth_mpi(s_sig, 1, GCRYMPI_FMT_USG);
+    if(m_sig == NULL) {
+        xmlSecGCryptError("gcry_sexp_nth_mpi(1)", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
         goto done;
     }
 
@@ -995,27 +1408,35 @@ done:
 }
 
 static int
-xmlSecGCryptRsaPkcs1PkVerify(int digest, xmlSecKeyDataPtr key_data,
+xmlSecGCryptRsaPssVerify(int digest, xmlSecKeyDataPtr key_data,
                              const xmlSecByte* dgst, xmlSecSize dgstSize,
                              const xmlSecByte* data, xmlSecSize dataSize) {
     gcry_sexp_t s_data = NULL;
     gcry_mpi_t m_sig = NULL;
     gcry_sexp_t s_sig = NULL;
+    gcry_sexp_t s_key;
     gpg_error_t err;
+    int dgstLen;
     int res = -1;
 
     xmlSecAssert2(key_data != NULL, -1);
-    xmlSecAssert2(xmlSecGCryptKeyDataRsaGetPublicKey(key_data) != NULL, -1);
     xmlSecAssert2(dgst != NULL, -1);
     xmlSecAssert2(dgstSize > 0, -1);
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(dataSize > 0, -1);
 
+    s_key = xmlSecGCryptKeyDataRsaGetPublicKey(key_data);
+    xmlSecAssert2(s_key != NULL, -1);
+
     /* get the current digest */
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(dgstSize, dgstLen, return(-1), NULL);
     err = gcry_sexp_build (&s_data, NULL,
-                           "(data (flags pkcs1)(hash %s %b))",
+                           "(data (flags pss)"
+                           "(salt-length %u)"
+                           "(hash %s %b))",
+                           dgstSize,  /* The default salt length is the length of the hash function */
                            gcry_md_algo_name(digest),
-                           (int)dgstSize, dgst);
+                           dgstLen, dgst);
     if((err != GPG_ERR_NO_ERROR) || (s_data == NULL)) {
         xmlSecGCryptError("gcry_sexp_build(data)", err, NULL);
         goto done;
@@ -1037,7 +1458,7 @@ xmlSecGCryptRsaPkcs1PkVerify(int digest, xmlSecKeyDataPtr key_data,
     }
 
     /* verify signature */
-    err = gcry_pk_verify(s_sig, s_data, xmlSecGCryptKeyDataRsaGetPublicKey(key_data));
+    err = gcry_pk_verify(s_sig, s_data, s_key);
     if(err == GPG_ERR_NO_ERROR) {
         res = 1; /* good signature */
     } else if(err == GPG_ERR_BAD_SIGNATURE) {
@@ -1209,7 +1630,7 @@ xmlSecGCryptTransformRsaSha1GetKlass(void) {
 #ifndef XMLSEC_NO_SHA256
 /****************************************************************************
  *
- * RSA-SHA256 signature transform
+ * RSA-SHA2-256 signature transform
  *
  ***************************************************************************/
 static xmlSecTransformKlass xmlSecGCryptRsaSha256Klass = {
@@ -1242,9 +1663,9 @@ static xmlSecTransformKlass xmlSecGCryptRsaSha256Klass = {
 /**
  * xmlSecGCryptTransformRsaSha256GetKlass:
  *
- * The RSA-SHA256 signature transform klass.
+ * The RSA-SHA2-256 signature transform klass.
  *
- * Returns: RSA-SHA256 signature transform klass.
+ * Returns: RSA-SHA2-256 signature transform klass.
  */
 xmlSecTransformId
 xmlSecGCryptTransformRsaSha256GetKlass(void) {
@@ -1256,7 +1677,7 @@ xmlSecGCryptTransformRsaSha256GetKlass(void) {
 #ifndef XMLSEC_NO_SHA384
 /****************************************************************************
  *
- * RSA-SHA384 signature transform
+ * RSA-SHA2-384 signature transform
  *
  ***************************************************************************/
 static xmlSecTransformKlass xmlSecGCryptRsaSha384Klass = {
@@ -1289,9 +1710,9 @@ static xmlSecTransformKlass xmlSecGCryptRsaSha384Klass = {
 /**
  * xmlSecGCryptTransformRsaSha384GetKlass:
  *
- * The RSA-SHA384 signature transform klass.
+ * The RSA-SHA2-384 signature transform klass.
  *
- * Returns: RSA-SHA384 signature transform klass.
+ * Returns: RSA-SHA2-384 signature transform klass.
  */
 xmlSecTransformId
 xmlSecGCryptTransformRsaSha384GetKlass(void) {
@@ -1303,7 +1724,7 @@ xmlSecGCryptTransformRsaSha384GetKlass(void) {
 #ifndef XMLSEC_NO_SHA512
 /****************************************************************************
  *
- * RSA-SHA512 signature transform
+ * RSA-SHA2-512 signature transform
  *
  ***************************************************************************/
 static xmlSecTransformKlass xmlSecGCryptRsaSha512Klass = {
@@ -1336,9 +1757,9 @@ static xmlSecTransformKlass xmlSecGCryptRsaSha512Klass = {
 /**
  * xmlSecGCryptTransformRsaSha512GetKlass:
  *
- * The RSA-SHA512 signature transform klass.
+ * The RSA-SHA2-512 signature transform klass.
  *
- * Returns: RSA-SHA512 signature transform klass.
+ * Returns: RSA-SHA2-512 signature transform klass.
  */
 xmlSecTransformId
 xmlSecGCryptTransformRsaSha512GetKlass(void) {
@@ -1347,7 +1768,933 @@ xmlSecGCryptTransformRsaSha512GetKlass(void) {
 
 #endif /* XMLSEC_NO_SHA512 */
 
+
+#ifndef XMLSEC_NO_SHA1
+/****************************************************************************
+ *
+ * RSA-PSS-SHA1 signature transform
+ *
+ ***************************************************************************/
+static xmlSecTransformKlass xmlSecGCryptRsaPssSha1Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecGCryptPkSignatureSize,                /* xmlSecSize objSize */
+
+    xmlSecNameRsaPssSha1,                       /* const xmlChar* name; */
+    xmlSecHrefRsaPssSha1,                       /* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
+
+    xmlSecGCryptPkSignatureInitialize,          /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecGCryptPkSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGCryptPkSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecGCryptPkSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecGCryptPkSignatureExecute,             /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecGCryptTransformRsaPssSha1GetKlass:
+ *
+ * The RSA-PSS-SHA1 signature transform klass.
+ *
+ * Returns: RSA-PSS-SHA1 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecGCryptTransformRsaPssSha1GetKlass(void) {
+    return(&xmlSecGCryptRsaPssSha1Klass);
+}
+
+#endif /* XMLSEC_NO_SHA1 */
+
+
+#ifndef XMLSEC_NO_SHA256
+/****************************************************************************
+ *
+ * RSA-PSS-SHA2-256 signature transform
+ *
+ ***************************************************************************/
+static xmlSecTransformKlass xmlSecGCryptRsaPssSha256Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecGCryptPkSignatureSize,                /* xmlSecSize objSize */
+
+    xmlSecNameRsaPssSha256,                     /* const xmlChar* name; */
+    xmlSecHrefRsaPssSha256,                     /* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
+
+    xmlSecGCryptPkSignatureInitialize,          /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecGCryptPkSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGCryptPkSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecGCryptPkSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecGCryptPkSignatureExecute,             /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecGCryptTransformRsaPssSha256GetKlass:
+ *
+ * The RSA-PSS-SHA2-256 signature transform klass.
+ *
+ * Returns: RSA-PSS-SHA2-256 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecGCryptTransformRsaPssSha256GetKlass(void) {
+    return(&xmlSecGCryptRsaPssSha256Klass);
+}
+
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+/****************************************************************************
+ *
+ * RSA-PSS-SHA2-384 signature transform
+ *
+ ***************************************************************************/
+static xmlSecTransformKlass xmlSecGCryptRsaPssSha384Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecGCryptPkSignatureSize,                /* xmlSecSize objSize */
+
+    xmlSecNameRsaPssSha384,                     /* const xmlChar* name; */
+    xmlSecHrefRsaPssSha384,                     /* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
+
+    xmlSecGCryptPkSignatureInitialize,          /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecGCryptPkSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGCryptPkSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecGCryptPkSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecGCryptPkSignatureExecute,             /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecGCryptTransformRsaPssSha384GetKlass:
+ *
+ * The RSA-PSS-SHA2-384 signature transform klass.
+ *
+ * Returns: RSA-PSS-SHA2-384 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecGCryptTransformRsaPssSha384GetKlass(void) {
+    return(&xmlSecGCryptRsaPssSha384Klass);
+}
+
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+/****************************************************************************
+ *
+ * RSA-PSS-SHA2-512 signature transform
+ *
+ ***************************************************************************/
+static xmlSecTransformKlass xmlSecGCryptRsaPssSha512Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecGCryptPkSignatureSize,                /* xmlSecSize objSize */
+
+    xmlSecNameRsaPssSha512,                     /* const xmlChar* name; */
+    xmlSecHrefRsaPssSha512,                     /* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
+
+    xmlSecGCryptPkSignatureInitialize,          /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecGCryptPkSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGCryptPkSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecGCryptPkSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecGCryptPkSignatureExecute,             /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecGCryptTransformRsaPssSha512GetKlass:
+ *
+ * The RSA-PSS-SHA2-512 signature transform klass.
+ *
+ * Returns: RSA-PSS-SHA2-512 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecGCryptTransformRsaPssSha512GetKlass(void) {
+    return(&xmlSecGCryptRsaPssSha512Klass);
+}
+
+#endif /* XMLSEC_NO_SHA512 */
+
+
+
+#ifndef XMLSEC_NO_SHA3
+/****************************************************************************
+ *
+ * RSA-PSS-SHA3-256 signature transform
+ *
+ ***************************************************************************/
+static xmlSecTransformKlass xmlSecGCryptRsaPssSha3_256Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecGCryptPkSignatureSize,                /* xmlSecSize objSize */
+
+    xmlSecNameRsaPssSha3_256,                   /* const xmlChar* name; */
+    xmlSecHrefRsaPssSha3_256,                   /* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
+
+    xmlSecGCryptPkSignatureInitialize,          /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecGCryptPkSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGCryptPkSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecGCryptPkSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecGCryptPkSignatureExecute,             /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecGCryptTransformRsaPssSha3_256GetKlass:
+ *
+ * The RSA-PSS-SHA3-256 signature transform klass.
+ *
+ * Returns: RSA-PSS-SHA3-256 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecGCryptTransformRsaPssSha3_256GetKlass(void) {
+    return(&xmlSecGCryptRsaPssSha3_256Klass);
+}
+
+/****************************************************************************
+ *
+ * RSA-PSS-SHA3-384 signature transform
+ *
+ ***************************************************************************/
+static xmlSecTransformKlass xmlSecGCryptRsaPssSha3_384Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecGCryptPkSignatureSize,                /* xmlSecSize objSize */
+
+    xmlSecNameRsaPssSha3_384,                   /* const xmlChar* name; */
+    xmlSecHrefRsaPssSha3_384,                   /* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
+
+    xmlSecGCryptPkSignatureInitialize,          /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecGCryptPkSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGCryptPkSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecGCryptPkSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecGCryptPkSignatureExecute,             /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecGCryptTransformRsaPssSha3_384GetKlass:
+ *
+ * The RSA-PSS-SHA3-384 signature transform klass.
+ *
+ * Returns: RSA-PSS-SHA3-384 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecGCryptTransformRsaPssSha3_384GetKlass(void) {
+    return(&xmlSecGCryptRsaPssSha3_384Klass);
+}
+
+/****************************************************************************
+ *
+ * RSA-PSS-SHA3-512 signature transform
+ *
+ ***************************************************************************/
+static xmlSecTransformKlass xmlSecGCryptRsaPssSha3_512Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecGCryptPkSignatureSize,                /* xmlSecSize objSize */
+
+    xmlSecNameRsaPssSha3_512,                   /* const xmlChar* name; */
+    xmlSecHrefRsaPssSha3_512,                   /* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
+
+    xmlSecGCryptPkSignatureInitialize,          /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecGCryptPkSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGCryptPkSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecGCryptPkSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecGCryptPkSignatureExecute,             /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecGCryptTransformRsaPssSha3_512GetKlass:
+ *
+ * The RSA-PSS-SHA3-512 signature transform klass.
+ *
+ * Returns: RSA-PSS-SHA3-512 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecGCryptTransformRsaPssSha3_512GetKlass(void) {
+    return(&xmlSecGCryptRsaPssSha3_512Klass);
+}
+
+#endif /* XMLSEC_NO_SHA3 */
+
+
 #endif /* XMLSEC_NO_RSA */
 
+#ifndef XMLSEC_NO_EC
+/*
+ * https://www.w3.org/TR/xmldsig-core1/#sec-ECDSA
+ *
+ * The output of the ECDSA algorithm consists of a pair of integers usually referred by the pair (r, s).
+ * The signature value consists of the base64 encoding of the concatenation of two octet-streams that respectively
+ * result from the octet-encoding of the values r and s in that order. Integer to octet-stream conversion must
+ * be done according to the I2OSP operation defined in the RFC 3447 [PKCS1] specification with the l parameter equal
+ * to the size of the base point order of the curve in bytes (e.g. 32 for the P-256 curve and 66 for the P-521 curve).
+ */
+static int
+xmlSecGCryptEcdsaSign(int digest, xmlSecKeyDataPtr key_data,
+    const xmlSecByte* dgst, xmlSecSize dgstSize,
+    xmlSecBufferPtr out)
+{
+    gcry_mpi_t m_hash = NULL;
+    gcry_sexp_t s_data = NULL;
+    gcry_sexp_t s_sig = NULL;
+    gcry_sexp_t s_r = NULL;
+    gcry_sexp_t s_s = NULL;
+    gcry_mpi_t m_r = NULL;
+    gcry_mpi_t m_s = NULL;
+    gcry_sexp_t s_key;
+    gcry_sexp_t s_tmp;
+    gpg_error_t err;
+    const char * algo_name;
+    xmlSecSize keySize;
+    int ret;
+    int res = -1;
+
+    xmlSecAssert2(key_data != NULL, -1);
+    xmlSecAssert2(dgst != NULL, -1);
+    xmlSecAssert2(dgstSize > 0, -1);
+    xmlSecAssert2(out != NULL, -1);
+
+    s_key = xmlSecGCryptKeyDataEcGetPrivateKey(key_data);
+    xmlSecAssert2(s_key != NULL, -1);
+
+    keySize = xmlSecKeyDataGetSize(key_data);
+    keySize = (keySize + 7) / 8;
+    xmlSecAssert2(keySize > 0, -1);
+
+    algo_name = gcry_md_algo_name(digest);
+    if(algo_name == NULL) {
+        xmlSecGCryptError2("gcry_md_algo_name", (gpg_error_t)GPG_ERR_NO_ERROR, NULL,
+            "digest=%d", digest);
+        goto done;
+    }
+
+    /* get the current digest, can't use "hash" :( */
+    err = gcry_mpi_scan(&m_hash, GCRYMPI_FMT_USG, dgst, dgstSize, NULL);
+    if((err != GPG_ERR_NO_ERROR) || (m_hash == NULL)) {
+        xmlSecGCryptError("gcry_mpi_scan(hash)", err, NULL);
+        goto done;
+    }
+
+    err = gcry_sexp_build (&s_data, NULL,
+                           "(data (flags raw)"
+                           "(hash %s %M))",
+                           algo_name, m_hash);
+    if((err != GPG_ERR_NO_ERROR) || (s_data == NULL)) {
+        xmlSecGCryptError("gcry_sexp_build(data)", err, NULL);
+        goto done;
+    }
+
+    /* create signature */
+    err = gcry_pk_sign(&s_sig, s_data, s_key);
+    if(err != GPG_ERR_NO_ERROR) {
+        xmlSecGCryptError("gcry_pk_sign", err, NULL);
+        goto done;
+    }
+
+    /* find signature value */
+    s_tmp = gcry_sexp_find_token(s_sig, "sig-val", 0);
+    if(s_tmp == NULL) {
+        xmlSecGCryptError("gcry_sexp_find_token(sig-val)", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
+        goto done;
+    }
+    gcry_sexp_release(s_sig);
+    s_sig = s_tmp;
+
+    s_tmp = gcry_sexp_find_token(s_sig, "ecdsa", 0);
+    if(s_tmp == NULL) {
+        xmlSecGCryptError("gcry_sexp_find_token(ecdsa)", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
+        goto done;
+    }
+    gcry_sexp_release(s_sig);
+    s_sig = s_tmp;
+
+    /* r */
+    s_r = gcry_sexp_find_token(s_sig, "r", 0);
+    if(s_r == NULL) {
+        xmlSecGCryptError("gcry_sexp_find_token(r)", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
+        goto done;
+    }
+
+    m_r = gcry_sexp_nth_mpi(s_r, 1, GCRYMPI_FMT_USG);
+    if(m_r == NULL) {
+        xmlSecGCryptError("gcry_sexp_nth_mpi(r)", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
+        goto done;
+    }
+
+    /* s */
+    s_s = gcry_sexp_find_token(s_sig, "s", 0);
+    if(s_s == NULL) {
+        xmlSecGCryptError("gcry_sexp_find_token(s)", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
+        goto done;
+    }
+
+    m_s = gcry_sexp_nth_mpi(s_s, 1, GCRYMPI_FMT_USG);
+    if(m_s == NULL) {
+        xmlSecGCryptError("gcry_sexp_nth_mpi(s)", (gcry_error_t)GPG_ERR_NO_ERROR, NULL);
+        goto done;
+    }
+
+    /* write out: r + s */
+    ret = xmlSecGCryptAppendMpi(m_r, out, keySize);
+    if((ret < 0) || (xmlSecBufferGetSize(out) != keySize)) {
+        xmlSecInternalError2("xmlSecGCryptAppendMpi", NULL,
+            "outSize=" XMLSEC_SIZE_FMT, xmlSecBufferGetSize(out));
+        goto done;
+    }
+
+    ret = xmlSecGCryptAppendMpi(m_s, out, keySize);
+    if((ret < 0) || (xmlSecBufferGetSize(out) != (keySize + keySize))) {
+        xmlSecInternalError2("xmlSecGCryptAppendMpi", NULL,
+            "outSize=" XMLSEC_SIZE_FMT, xmlSecBufferGetSize(out));
+        goto done;
+    }
+
+    /* done */
+    res = 0;
+
+done:
+    if(m_hash != NULL) {
+        gcry_mpi_release(m_hash);
+    }
+    if(m_r != NULL) {
+        gcry_mpi_release(m_r);
+    }
+    if(m_s != NULL) {
+        gcry_mpi_release(m_s);
+    }
+
+    if(s_data != NULL) {
+        gcry_sexp_release(s_data);
+    }
+    if(s_sig != NULL) {
+        gcry_sexp_release(s_sig);
+    }
+    if(s_r != NULL) {
+        gcry_sexp_release(s_r);
+    }
+    if(s_s != NULL) {
+        gcry_sexp_release(s_s);
+    }
+
+    return(res);
+}
+
+static int
+xmlSecGCryptEcdsaVerify(int digest, xmlSecKeyDataPtr key_data,
+    const xmlSecByte* dgst, xmlSecSize dgstSize,
+    const xmlSecByte* data, xmlSecSize dataSize)
+{
+    gcry_mpi_t m_hash = NULL;
+    gcry_sexp_t s_data = NULL;
+    gcry_mpi_t m_sig_r = NULL;
+    gcry_mpi_t m_sig_s = NULL;
+    gcry_sexp_t s_sig = NULL;
+    gcry_sexp_t s_key;
+    const char * algo_name;
+    xmlSecSize keySize;
+    gpg_error_t err;
+    int res = -1;
+
+    xmlSecAssert2(key_data != NULL, -1);
+    xmlSecAssert2(dgst != NULL, -1);
+    xmlSecAssert2(dgstSize > 0, -1);
+    xmlSecAssert2(data != NULL, -1);
+
+    s_key = xmlSecGCryptKeyDataEcGetPublicKey(key_data);
+    xmlSecAssert2(s_key != NULL, -1);
+
+    keySize = xmlSecKeyDataGetSize(key_data);
+    keySize = (keySize + 7) / 8;
+    xmlSecAssert2(keySize > 0, -1);
+
+    /* check signature size */
+    if(dataSize != 2 * keySize) {
+        xmlSecInternalError3("Invalid signature size", NULL,
+            "actual=" XMLSEC_SIZE_FMT "; expected=" XMLSEC_SIZE_FMT, dataSize, 2 * keySize);
+        goto done;
+    }
+
+    algo_name = gcry_md_algo_name(digest);
+    if(algo_name == NULL) {
+        xmlSecGCryptError2("gcry_md_algo_name", (gpg_error_t)GPG_ERR_NO_ERROR, NULL,
+            "digest=%d", digest);
+        goto done;
+    }
+
+    /* get the current digest, can't use "hash" :( */
+    err = gcry_mpi_scan(&m_hash, GCRYMPI_FMT_USG, dgst, dgstSize, NULL);
+    if((err != GPG_ERR_NO_ERROR) || (m_hash == NULL)) {
+        xmlSecGCryptError("gcry_mpi_scan(hash)", err, NULL);
+        goto done;
+    }
+
+    err = gcry_sexp_build (&s_data, NULL,
+                           "(data (flags raw)"
+                           "(hash %s %M))",
+                           algo_name, m_hash);
+    if((err != GPG_ERR_NO_ERROR) || (s_data == NULL)) {
+        xmlSecGCryptError("gcry_sexp_build(data)", err, NULL);
+        goto done;
+    }
+
+    /* get the existing signature */
+    err = gcry_mpi_scan(&m_sig_r, GCRYMPI_FMT_USG, data, keySize, NULL);
+    if((err != GPG_ERR_NO_ERROR) || (m_sig_r == NULL)) {
+        xmlSecGCryptError("gcry_mpi_scan(r)", err, NULL);
+        goto done;
+    }
+    err = gcry_mpi_scan(&m_sig_s, GCRYMPI_FMT_USG, data + keySize, keySize, NULL);
+    if((err != GPG_ERR_NO_ERROR) || (m_sig_s == NULL)) {
+        xmlSecGCryptError("gcry_mpi_scan(s)", err, NULL);
+        goto done;
+    }
+
+    err = gcry_sexp_build (&s_sig, NULL,
+                           "(sig-val(ecdsa(r %m)(s %m)))",
+                           m_sig_r, m_sig_s);
+    if((err != GPG_ERR_NO_ERROR) || (s_sig == NULL)) {
+        xmlSecGCryptError("gcry_sexp_build(sig-val)", err, NULL);
+        goto done;
+    }
+
+    /* verify signature */
+    err = gcry_pk_verify(s_sig, s_data, s_key);
+    if(err == GPG_ERR_NO_ERROR) {
+        res = 1; /* good signature */
+    } else if(err == GPG_ERR_BAD_SIGNATURE) {
+        res = 0; /* bad signature */
+    } else {
+        xmlSecGCryptError("gcry_pk_verify", err, NULL);
+        goto done;
+    }
+
+    /* done */
+done:
+    if(m_hash != NULL) {
+        gcry_mpi_release(m_hash);
+    }
+    if(m_sig_r != NULL) {
+        gcry_mpi_release(m_sig_r);
+    }
+    if(m_sig_s != NULL) {
+        gcry_mpi_release(m_sig_s);
+    }
+
+    if(s_data != NULL) {
+        gcry_sexp_release(s_data);
+    }
+    if(s_sig != NULL) {
+        gcry_sexp_release(s_sig);
+    }
+
+    return(res);
+}
+
+#ifndef XMLSEC_NO_SHA1
+/****************************************************************************
+ *
+ * ECDSA-SHA1 signature transform
+ *
+ ***************************************************************************/
+static xmlSecTransformKlass xmlSecGCryptEcdsaSha1Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecGCryptPkSignatureSize,                /* xmlSecSize objSize */
+
+    xmlSecNameEcdsaSha1,                       /* const xmlChar* name; */
+    xmlSecHrefEcdsaSha1,                       /* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
+
+    xmlSecGCryptPkSignatureInitialize,          /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecGCryptPkSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGCryptPkSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecGCryptPkSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecGCryptPkSignatureExecute,             /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecGCryptTransformEcdsaSha1GetKlass:
+ *
+ * The ECDSA-SHA1 signature transform klass.
+ *
+ * Returns: ECDSA-SHA1 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecGCryptTransformEcdsaSha1GetKlass(void) {
+    return(&xmlSecGCryptEcdsaSha1Klass);
+}
+
+#endif /* XMLSEC_NO_SHA1 */
 
 
+#ifndef XMLSEC_NO_SHA256
+/****************************************************************************
+ *
+ * ECDSA-SHA2-256 signature transform
+ *
+ ***************************************************************************/
+static xmlSecTransformKlass xmlSecGCryptEcdsaSha256Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecGCryptPkSignatureSize,                /* xmlSecSize objSize */
+
+    xmlSecNameEcdsaSha256,                     /* const xmlChar* name; */
+    xmlSecHrefEcdsaSha256,                     /* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
+
+    xmlSecGCryptPkSignatureInitialize,          /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecGCryptPkSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGCryptPkSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecGCryptPkSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecGCryptPkSignatureExecute,             /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecGCryptTransformEcdsaSha256GetKlass:
+ *
+ * The ECDSA-SHA2-256 signature transform klass.
+ *
+ * Returns: ECDSA-SHA2-256 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecGCryptTransformEcdsaSha256GetKlass(void) {
+    return(&xmlSecGCryptEcdsaSha256Klass);
+}
+
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+/****************************************************************************
+ *
+ * ECDSA-SHA2-384 signature transform
+ *
+ ***************************************************************************/
+static xmlSecTransformKlass xmlSecGCryptEcdsaSha384Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecGCryptPkSignatureSize,                /* xmlSecSize objSize */
+
+    xmlSecNameEcdsaSha384,                     /* const xmlChar* name; */
+    xmlSecHrefEcdsaSha384,                     /* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
+
+    xmlSecGCryptPkSignatureInitialize,          /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecGCryptPkSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGCryptPkSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecGCryptPkSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecGCryptPkSignatureExecute,             /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecGCryptTransformEcdsaSha384GetKlass:
+ *
+ * The ECDSA-SHA2-384 signature transform klass.
+ *
+ * Returns: ECDSA-SHA2-384 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecGCryptTransformEcdsaSha384GetKlass(void) {
+    return(&xmlSecGCryptEcdsaSha384Klass);
+}
+
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+/****************************************************************************
+ *
+ * ECDSA-SHA2-512 signature transform
+ *
+ ***************************************************************************/
+static xmlSecTransformKlass xmlSecGCryptEcdsaSha512Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecGCryptPkSignatureSize,                /* xmlSecSize objSize */
+
+    xmlSecNameEcdsaSha512,                     /* const xmlChar* name; */
+    xmlSecHrefEcdsaSha512,                     /* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
+
+    xmlSecGCryptPkSignatureInitialize,          /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecGCryptPkSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGCryptPkSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecGCryptPkSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecGCryptPkSignatureExecute,             /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecGCryptTransformEcdsaSha512GetKlass:
+ *
+ * The ECDSA-SHA2-512 signature transform klass.
+ *
+ * Returns: ECDSA-SHA2-512 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecGCryptTransformEcdsaSha512GetKlass(void) {
+    return(&xmlSecGCryptEcdsaSha512Klass);
+}
+
+#endif /* XMLSEC_NO_SHA512 */
+
+
+
+
+#ifndef XMLSEC_NO_SHA3
+/****************************************************************************
+ *
+ * ECDSA-SHA3-256 signature transform
+ *
+ ***************************************************************************/
+static xmlSecTransformKlass xmlSecGCryptEcdsaSha3_256Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecGCryptPkSignatureSize,                /* xmlSecSize objSize */
+
+    xmlSecNameEcdsaSha3_256,                     /* const xmlChar* name; */
+    xmlSecHrefEcdsaSha3_256,                     /* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
+
+    xmlSecGCryptPkSignatureInitialize,          /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecGCryptPkSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGCryptPkSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecGCryptPkSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecGCryptPkSignatureExecute,             /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecGCryptTransformEcdsaSha3_256GetKlass:
+ *
+ * The ECDSA-SHA3-256 signature transform klass.
+ *
+ * Returns: ECDSA-SHA3-256 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecGCryptTransformEcdsaSha3_256GetKlass(void) {
+    return(&xmlSecGCryptEcdsaSha3_256Klass);
+}
+
+/****************************************************************************
+ *
+ * ECDSA-SHA3-384 signature transform
+ *
+ ***************************************************************************/
+static xmlSecTransformKlass xmlSecGCryptEcdsaSha3_384Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecGCryptPkSignatureSize,                /* xmlSecSize objSize */
+
+    xmlSecNameEcdsaSha3_384,                     /* const xmlChar* name; */
+    xmlSecHrefEcdsaSha3_384,                     /* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
+
+    xmlSecGCryptPkSignatureInitialize,          /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecGCryptPkSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGCryptPkSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecGCryptPkSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecGCryptPkSignatureExecute,             /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecGCryptTransformEcdsaSha3_384GetKlass:
+ *
+ * The ECDSA-SHA3-384 signature transform klass.
+ *
+ * Returns: ECDSA-SHA3-384 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecGCryptTransformEcdsaSha3_384GetKlass(void) {
+    return(&xmlSecGCryptEcdsaSha3_384Klass);
+}
+
+/****************************************************************************
+ *
+ * ECDSA-SHA3-512 signature transform
+ *
+ ***************************************************************************/
+static xmlSecTransformKlass xmlSecGCryptEcdsaSha3_512Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecGCryptPkSignatureSize,                /* xmlSecSize objSize */
+
+    xmlSecNameEcdsaSha3_512,                     /* const xmlChar* name; */
+    xmlSecHrefEcdsaSha3_512,                     /* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
+
+    xmlSecGCryptPkSignatureInitialize,          /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecGCryptPkSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecGCryptPkSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGCryptPkSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecGCryptPkSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecGCryptPkSignatureExecute,             /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecGCryptTransformEcdsaSha3_512GetKlass:
+ *
+ * The ECDSA-SHA3-512 signature transform klass.
+ *
+ * Returns: ECDSA-SHA3-512 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecGCryptTransformEcdsaSha3_512GetKlass(void) {
+    return(&xmlSecGCryptEcdsaSha3_512Klass);
+}
+
+#endif /* XMLSEC_NO_SHA3 */
+
+
+#endif /* XMLSEC_NO_EC */

@@ -4,7 +4,7 @@
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * SECTION:list
@@ -23,6 +23,8 @@
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/list.h>
 #include <xmlsec/errors.h>
+
+#include "cast_helpers.h"
 
 static int              xmlSecPtrListEnsureSize                 (xmlSecPtrListPtr list,
                                                                  xmlSecSize size);
@@ -183,9 +185,8 @@ xmlSecPtrListCopy(xmlSecPtrListPtr dst, xmlSecPtrListPtr src) {
     /* allocate memory */
     ret = xmlSecPtrListEnsureSize(dst, dst->use + src->use);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecPtrListEnsureSize",
-                             xmlSecPtrListGetName(src),
-                             "size=%d", src->use);
+        xmlSecInternalError2("xmlSecPtrListEnsureSize", xmlSecPtrListGetName(src),
+            "size=" XMLSEC_SIZE_FMT, src->use);
         return(-1);
     }
 
@@ -197,8 +198,7 @@ xmlSecPtrListCopy(xmlSecPtrListPtr dst, xmlSecPtrListPtr src) {
         if((dst->id->duplicateItem != NULL) && (src->data[i] != NULL)) {
             dst->data[dst->use] = dst->id->duplicateItem(src->data[i]);
             if(dst->data[dst->use] == NULL) {
-                xmlSecInternalError("duplicateItem",
-                                    xmlSecPtrListGetName(src));
+                xmlSecInternalError("duplicateItem", xmlSecPtrListGetName(src));
                 return(-1);
             }
         } else {
@@ -292,15 +292,52 @@ xmlSecPtrListAdd(xmlSecPtrListPtr list, xmlSecPtr item) {
 
     ret = xmlSecPtrListEnsureSize(list, list->use + 1);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecPtrListEnsureSize",
-                             xmlSecPtrListGetName(list),
-                             "size=%d", list->use + 1);
+        xmlSecInternalError2("xmlSecPtrListEnsureSize", xmlSecPtrListGetName(list),
+            "size=" XMLSEC_SIZE_FMT, list->use + 1);
         return(-1);
     }
 
     list->data[list->use++] = item;
     return(0);
 }
+
+/**
+ * xmlSecPtrListInsert:
+ * @list:               the pointer to list.
+ * @item:               the item.
+ * @pos:                the position to insert at.
+ *
+ * Inserts @item at the position @pos in the @list.
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecPtrListInsert(xmlSecPtrListPtr list, xmlSecPtr item, xmlSecSize pos) {
+    int ret;
+
+    xmlSecAssert2(xmlSecPtrListIsValid(list), -1);
+
+    ret = xmlSecPtrListEnsureSize(list, list->use + 1);
+    if(ret < 0) {
+        xmlSecInternalError2("xmlSecPtrListEnsureSize", xmlSecPtrListGetName(list),
+            "size=" XMLSEC_SIZE_FMT, list->use + 1);
+        return(-1);
+    }
+
+    if(pos < list->use) {
+        /* move (pos, size) to (pos + 1, size + 1) and insert new item at pos */
+        memmove(&(list->data[pos + 1]), &(list->data[pos]), sizeof(xmlSecPtr) * (list->use - pos));
+        list->data[pos] = item;
+        ++list->use;
+    } else {
+        /* insert at the end of the list if pos >= size */
+        list->data[list->use++] = item;
+    }
+
+    /* done */
+    return(0);
+}
+
 
 /**
  * xmlSecPtrListSet:
@@ -389,7 +426,7 @@ xmlSecPtrListDebugDump(xmlSecPtrListPtr list, FILE* output) {
     xmlSecAssert(xmlSecPtrListIsValid(list));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "=== list size: %d\n", list->use);
+    fprintf(output, "=== list size: " XMLSEC_SIZE_FMT "\n", list->use);
     if(list->id->debugDumpItem != NULL) {
         xmlSecSize pos;
 
@@ -414,7 +451,7 @@ xmlSecPtrListDebugXmlDump(xmlSecPtrListPtr list, FILE* output) {
     xmlSecAssert(xmlSecPtrListIsValid(list));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "<List size=\"%d\">\n", list->use);
+    fprintf(output, "<List size=\"" XMLSEC_SIZE_FMT "\">\n", list->use);
     if(list->id->debugXmlDumpItem != NULL) {
         xmlSecSize pos;
 
@@ -510,5 +547,3 @@ xmlSecStringListDestroyItem(xmlSecPtr ptr) {
 
     xmlFree(ptr);
 }
-
-

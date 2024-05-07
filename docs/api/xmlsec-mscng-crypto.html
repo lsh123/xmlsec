@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>crypto: XML Security Library Reference Manual</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
 <link rel="up" href="xmlsec-msccng-ref.html" title="XML Security Library for Microsoft Cryptography API: Next Generation (CNG) Reference.">
 <link rel="prev" href="xmlsec-mscng-certkeys.html" title="certkeys">
 <link rel="next" href="xmlsec-mscng-keysstore.html" title="keysstore">
-<meta name="generator" content="GTK-Doc V1.27 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.33.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -27,7 +27,7 @@
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="xmlsec-mscng-crypto.top_of_page"></a>crypto</span></h2>
-<p>crypto — Crypto transforms implementation for Microsoft Cryptography API: Next Generation (CNG).</p>
+<p>crypto</p>
 </td>
 <td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
@@ -81,6 +81,22 @@
 </td>
 <td class="function_name">
 <a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngKeysMngrInit" title="xmlSecMSCngKeysMngrInit ()">xmlSecMSCngKeysMngrInit</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecKeyDataId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngKeyDataConcatKdfGetKlass" title="xmlSecMSCngKeyDataConcatKdfGetKlass ()">xmlSecMSCngKeyDataConcatKdfGetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformConcatKdfGetKlass" title="xmlSecMSCngTransformConcatKdfGetKlass ()">xmlSecMSCngTransformConcatKdfGetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -152,6 +168,38 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformRsaPssSha1GetKlass" title="xmlSecMSCngTransformRsaPssSha1GetKlass ()">xmlSecMSCngTransformRsaPssSha1GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformRsaPssSha256GetKlass" title="xmlSecMSCngTransformRsaPssSha256GetKlass ()">xmlSecMSCngTransformRsaPssSha256GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformRsaPssSha384GetKlass" title="xmlSecMSCngTransformRsaPssSha384GetKlass ()">xmlSecMSCngTransformRsaPssSha384GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformRsaPssSha512GetKlass" title="xmlSecMSCngTransformRsaPssSha512GetKlass ()">xmlSecMSCngTransformRsaPssSha512GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
 <a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformRsaPkcs1GetKlass" title="xmlSecMSCngTransformRsaPkcs1GetKlass ()">xmlSecMSCngTransformRsaPkcs1GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
@@ -165,10 +213,18 @@
 </tr>
 <tr>
 <td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformRsaOaepEnc11GetKlass" title="xmlSecMSCngTransformRsaOaepEnc11GetKlass ()">xmlSecMSCngTransformRsaOaepEnc11GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
 <font><span class="returnvalue">xmlSecKeyDataId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngKeyDataEcdsaGetKlass" title="xmlSecMSCngKeyDataEcdsaGetKlass ()">xmlSecMSCngKeyDataEcdsaGetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngKeyDataEcGetKlass" title="xmlSecMSCngKeyDataEcGetKlass ()">xmlSecMSCngKeyDataEcGetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -201,6 +257,14 @@
 </td>
 <td class="function_name">
 <a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformEcdsaSha512GetKlass" title="xmlSecMSCngTransformEcdsaSha512GetKlass ()">xmlSecMSCngTransformEcdsaSha512GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformEcdhGetKlass" title="xmlSecMSCngTransformEcdhGetKlass ()">xmlSecMSCngTransformEcdhGetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -281,6 +345,22 @@
 </td>
 <td class="function_name">
 <a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformMd5GetKlass" title="xmlSecMSCngTransformMd5GetKlass ()">xmlSecMSCngTransformMd5GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecKeyDataId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngKeyDataPbkdf2GetKlass" title="xmlSecMSCngKeyDataPbkdf2GetKlass ()">xmlSecMSCngKeyDataPbkdf2GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformPbkdf2GetKlass" title="xmlSecMSCngTransformPbkdf2GetKlass ()">xmlSecMSCngTransformPbkdf2GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -395,6 +475,14 @@
 <a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformKWAes256GetKlass" title="xmlSecMSCngTransformKWAes256GetKlass ()">xmlSecMSCngTransformKWAes256GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecKeyDataId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngKeyDataDEREncodedKeyValueGetKlass" title="xmlSecMSCngKeyDataDEREncodedKeyValueGetKlass ()">xmlSecMSCngKeyDataDEREncodedKeyValueGetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
 </tbody>
 </table></div>
 </div>
@@ -406,6 +494,14 @@
 <col>
 </colgroup>
 <tbody>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngKeyDataConcatKdfId" title="xmlSecMSCngKeyDataConcatKdfId">xmlSecMSCngKeyDataConcatKdfId</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformConcatKdfId" title="xmlSecMSCngTransformConcatKdfId">xmlSecMSCngTransformConcatKdfId</a></td>
+</tr>
 <tr>
 <td class="define_keyword">#define</td>
 <td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngKeyDataDsaId" title="xmlSecMSCngKeyDataDsaId">xmlSecMSCngKeyDataDsaId</a></td>
@@ -440,6 +536,22 @@
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformRsaPssSha1Id" title="xmlSecMSCngTransformRsaPssSha1Id">xmlSecMSCngTransformRsaPssSha1Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformRsaPssSha256Id" title="xmlSecMSCngTransformRsaPssSha256Id">xmlSecMSCngTransformRsaPssSha256Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformRsaPssSha384Id" title="xmlSecMSCngTransformRsaPssSha384Id">xmlSecMSCngTransformRsaPssSha384Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformRsaPssSha512Id" title="xmlSecMSCngTransformRsaPssSha512Id">xmlSecMSCngTransformRsaPssSha512Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
 <td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformRsaPkcs1Id" title="xmlSecMSCngTransformRsaPkcs1Id">xmlSecMSCngTransformRsaPkcs1Id</a></td>
 </tr>
 <tr>
@@ -448,7 +560,11 @@
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
-<td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngKeyDataEcdsaId" title="xmlSecMSCngKeyDataEcdsaId">xmlSecMSCngKeyDataEcdsaId</a></td>
+<td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformRsaOaepEnc11Id" title="xmlSecMSCngTransformRsaOaepEnc11Id">xmlSecMSCngTransformRsaOaepEnc11Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngKeyDataEcId" title="xmlSecMSCngKeyDataEcId">xmlSecMSCngKeyDataEcId</a></td>
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
@@ -465,6 +581,10 @@
 <tr>
 <td class="define_keyword">#define</td>
 <td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformEcdsaSha512Id" title="xmlSecMSCngTransformEcdsaSha512Id">xmlSecMSCngTransformEcdsaSha512Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformEcdhId" title="xmlSecMSCngTransformEcdhId">xmlSecMSCngTransformEcdhId</a></td>
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
@@ -505,6 +625,14 @@
 <tr>
 <td class="define_keyword">#define</td>
 <td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformMd5Id" title="xmlSecMSCngTransformMd5Id">xmlSecMSCngTransformMd5Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngKeyDataPbkdf2Id" title="xmlSecMSCngKeyDataPbkdf2Id">xmlSecMSCngKeyDataPbkdf2Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformPbkdf2Id" title="xmlSecMSCngTransformPbkdf2Id">xmlSecMSCngTransformPbkdf2Id</a></td>
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
@@ -562,6 +690,10 @@
 <td class="define_keyword">#define</td>
 <td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngTransformKWAes256Id" title="xmlSecMSCngTransformKWAes256Id">xmlSecMSCngTransformKWAes256Id</a></td>
 </tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-mscng-crypto.html#xmlSecMSCngKeyDataDEREncodedKeyValueId" title="xmlSecMSCngKeyDataDEREncodedKeyValueId">xmlSecMSCngKeyDataDEREncodedKeyValueId</a></td>
+</tr>
 </tbody>
 </table></div>
 </div>
@@ -587,11 +719,9 @@ xmlSecCryptoGetFunctions_mscng (<em class="parameter"><code><span class="type">v
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecMSCngGenerateRandom (<em class="parameter"><code><a class="link" href="xmlsec-buffer.html#xmlSecBuffer" title="struct xmlSecBuffer"><span class="type">xmlSecBufferPtr</span></a> buffer</code></em>,
                            <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> size</code></em>);</pre>
-<div class="warning"><p><code class="literal">xmlSecMSCngGenerateRandom</code> is deprecated and should not be used in newly-written code.</p></div>
 <p>Generates <em class="parameter"><code>size</code></em>
  random bytes and puts result in <em class="parameter"><code>buffer</code></em>
-
-(not implemented yet).</p>
+.</p>
 <div class="refsect3">
 <a name="xmlSecMSCngGenerateRandom.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -669,6 +799,28 @@ xmlSecMSCngKeysMngrInit (<em class="parameter"><code><a class="link" href="xmlse
 </div>
 <hr>
 <div class="refsect2">
+<a name="xmlSecMSCngKeyDataConcatKdfGetKlass"></a><h3>xmlSecMSCngKeyDataConcatKdfGetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
+xmlSecMSCngKeyDataConcatKdfGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The ConcatKdf key data klass.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngKeyDataConcatKdfGetKlass.returns"></a><h4>Returns</h4>
+<p> ConcatKdf key data klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformConcatKdfGetKlass"></a><h3>xmlSecMSCngTransformConcatKdfGetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecMSCngTransformConcatKdfGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The CONCATKDF2 key derivation  transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngTransformConcatKdfGetKlass.returns"></a><h4>Returns</h4>
+<p> the CONCATKDF2 key derivation transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
 <a name="xmlSecMSCngKeyDataDsaGetKlass"></a><h3>xmlSecMSCngKeyDataDsaGetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
 xmlSecMSCngKeyDataDsaGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
@@ -727,10 +879,10 @@ xmlSecMSCngTransformRsaSha1GetKlass (<em class="parameter"><code><span class="ty
 <a name="xmlSecMSCngTransformRsaSha256GetKlass"></a><h3>xmlSecMSCngTransformRsaSha256GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecMSCngTransformRsaSha256GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>The RSA-SHA256 signature transform klass.</p>
+<p>The RSA-SHA2-256 signature transform klass.</p>
 <div class="refsect3">
 <a name="xmlSecMSCngTransformRsaSha256GetKlass.returns"></a><h4>Returns</h4>
-<p> RSA-SHA256 signature transform klass.</p>
+<p> RSA-SHA2-256 signature transform klass.</p>
 </div>
 </div>
 <hr>
@@ -738,10 +890,10 @@ xmlSecMSCngTransformRsaSha256GetKlass (<em class="parameter"><code><span class="
 <a name="xmlSecMSCngTransformRsaSha384GetKlass"></a><h3>xmlSecMSCngTransformRsaSha384GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecMSCngTransformRsaSha384GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>The RSA-SHA384 signature transform klass.</p>
+<p>The RSA-SHA2-384 signature transform klass.</p>
 <div class="refsect3">
 <a name="xmlSecMSCngTransformRsaSha384GetKlass.returns"></a><h4>Returns</h4>
-<p> RSA-SHA384 signature transform klass.</p>
+<p> RSA-SHA2-384 signature transform klass.</p>
 </div>
 </div>
 <hr>
@@ -749,10 +901,58 @@ xmlSecMSCngTransformRsaSha384GetKlass (<em class="parameter"><code><span class="
 <a name="xmlSecMSCngTransformRsaSha512GetKlass"></a><h3>xmlSecMSCngTransformRsaSha512GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecMSCngTransformRsaSha512GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>The RSA-SHA512 signature transform klass.</p>
+<p>The RSA-SHA2-512 signature transform klass.</p>
 <div class="refsect3">
 <a name="xmlSecMSCngTransformRsaSha512GetKlass.returns"></a><h4>Returns</h4>
-<p> RSA-SHA512 signature transform klass.</p>
+<p> RSA-SHA2-512 signature transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformRsaPssSha1GetKlass"></a><h3>xmlSecMSCngTransformRsaPssSha1GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecMSCngTransformRsaPssSha1GetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The RSA-PSS-SHA1 signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngTransformRsaPssSha1GetKlass.returns"></a><h4>Returns</h4>
+<p> RSA-PSS-SHA1 signature transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformRsaPssSha256GetKlass"></a><h3>xmlSecMSCngTransformRsaPssSha256GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecMSCngTransformRsaPssSha256GetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The RSA-PSS-SHA2-256 signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngTransformRsaPssSha256GetKlass.returns"></a><h4>Returns</h4>
+<p> RSA-PSS-SHA2-256 signature transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformRsaPssSha384GetKlass"></a><h3>xmlSecMSCngTransformRsaPssSha384GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecMSCngTransformRsaPssSha384GetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The RSA-PSS-SHA2-384 signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngTransformRsaPssSha384GetKlass.returns"></a><h4>Returns</h4>
+<p> RSA-PSS-SHA2-384 signature transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformRsaPssSha512GetKlass"></a><h3>xmlSecMSCngTransformRsaPssSha512GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecMSCngTransformRsaPssSha512GetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The RSA-PSS-SHA2-512 signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngTransformRsaPssSha512GetKlass.returns"></a><h4>Returns</h4>
+<p> RSA-PSS-SHA2-512 signature transform klass.</p>
 </div>
 </div>
 <hr>
@@ -771,7 +971,7 @@ xmlSecMSCngTransformRsaPkcs1GetKlass (<em class="parameter"><code><span class="t
 <a name="xmlSecMSCngTransformRsaOaepGetKlass"></a><h3>xmlSecMSCngTransformRsaOaepGetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecMSCngTransformRsaOaepGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>The RSA-OAEP key transport transform klass.</p>
+<p>The RSA-OAEP key transport transform klass (XMLEnc 1.0).</p>
 <div class="refsect3">
 <a name="xmlSecMSCngTransformRsaOaepGetKlass.returns"></a><h4>Returns</h4>
 <p> RSA-OAEP key transport transform klass.</p>
@@ -779,13 +979,25 @@ xmlSecMSCngTransformRsaOaepGetKlass (<em class="parameter"><code><span class="ty
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecMSCngKeyDataEcdsaGetKlass"></a><h3>xmlSecMSCngKeyDataEcdsaGetKlass ()</h3>
-<pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
-xmlSecMSCngKeyDataEcdsaGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>The MSCng ECDSA CertKey data klass.</p>
+<a name="xmlSecMSCngTransformRsaOaepEnc11GetKlass"></a><h3>xmlSecMSCngTransformRsaOaepEnc11GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecMSCngTransformRsaOaepEnc11GetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The RSA-OAEP key transport transform klass (XMLEnc 1.1).</p>
 <div class="refsect3">
-<a name="xmlSecMSCngKeyDataEcdsaGetKlass.returns"></a><h4>Returns</h4>
-<p> pointer to MSCng ECDSA key data klass.</p>
+<a name="xmlSecMSCngTransformRsaOaepEnc11GetKlass.returns"></a><h4>Returns</h4>
+<p> RSA-OAEP key transport transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngKeyDataEcGetKlass"></a><h3>xmlSecMSCngKeyDataEcGetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
+xmlSecMSCngKeyDataEcGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The MSCng EC CertKey data klass.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngKeyDataEcGetKlass.returns"></a><h4>Returns</h4>
+<p> pointer to MSCng EC key data klass.</p>
 </div>
 </div>
 <hr>
@@ -805,10 +1017,10 @@ xmlSecMSCngTransformEcdsaSha1GetKlass (<em class="parameter"><code><span class="
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecMSCngTransformEcdsaSha256GetKlass
                                (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>The ECDSA-SHA256 signature transform klass.</p>
+<p>The ECDSA-SHA2-256 signature transform klass.</p>
 <div class="refsect3">
 <a name="xmlSecMSCngTransformEcdsaSha256GetKlass.returns"></a><h4>Returns</h4>
-<p> ECDSA-SHA256 signature transform klass.</p>
+<p> ECDSA-SHA2-256 signature transform klass.</p>
 </div>
 </div>
 <hr>
@@ -817,10 +1029,10 @@ xmlSecMSCngTransformEcdsaSha256GetKlass
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecMSCngTransformEcdsaSha384GetKlass
                                (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>The ECDSA-SHA384 signature transform klass.</p>
+<p>The ECDSA-SHA2-384 signature transform klass.</p>
 <div class="refsect3">
 <a name="xmlSecMSCngTransformEcdsaSha384GetKlass.returns"></a><h4>Returns</h4>
-<p> ECDSA-SHA384 signature transform klass.</p>
+<p> ECDSA-SHA2-384 signature transform klass.</p>
 </div>
 </div>
 <hr>
@@ -829,10 +1041,21 @@ xmlSecMSCngTransformEcdsaSha384GetKlass
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecMSCngTransformEcdsaSha512GetKlass
                                (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>The ECDSA-SHA512 signature transform klass.</p>
+<p>The ECDSA-SHA2-512 signature transform klass.</p>
 <div class="refsect3">
 <a name="xmlSecMSCngTransformEcdsaSha512GetKlass.returns"></a><h4>Returns</h4>
-<p> ECDSA-SHA512 signature transform klass.</p>
+<p> ECDSA-SHA2-512 signature transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformEcdhGetKlass"></a><h3>xmlSecMSCngTransformEcdhGetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecMSCngTransformEcdhGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The ECDH key agreement transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngTransformEcdhGetKlass.returns"></a><h4>Returns</h4>
+<p> the ECDH key agreement transform klass.</p>
 </div>
 </div>
 <hr>
@@ -946,6 +1169,28 @@ xmlSecMSCngTransformMd5GetKlass (<em class="parameter"><code><span class="type">
 <div class="refsect3">
 <a name="xmlSecMSCngTransformMd5GetKlass.returns"></a><h4>Returns</h4>
 <p> pointer to MD-5 digest transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngKeyDataPbkdf2GetKlass"></a><h3>xmlSecMSCngKeyDataPbkdf2GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
+xmlSecMSCngKeyDataPbkdf2GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The PBKDF2 key data klass.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngKeyDataPbkdf2GetKlass.returns"></a><h4>Returns</h4>
+<p> PBKDF2 key data klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformPbkdf2GetKlass"></a><h3>xmlSecMSCngTransformPbkdf2GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecMSCngTransformPbkdf2GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The PBKDF2 key derivation  transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngTransformPbkdf2GetKlass.returns"></a><h4>Returns</h4>
+<p> the PBKDF2 key derivation transform klass.</p>
 </div>
 </div>
 <hr>
@@ -1102,9 +1347,40 @@ xmlSecMSCngTransformKWAes256GetKlass (<em class="parameter"><code><span class="t
 <p> AES-256 key wrapper transform klass.</p>
 </div>
 </div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngKeyDataDEREncodedKeyValueGetKlass"></a><h3>xmlSecMSCngKeyDataDEREncodedKeyValueGetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
+xmlSecMSCngKeyDataDEREncodedKeyValueGetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>https://www.w3.org/TR/xmldsig-core1/<font><span class="type">sec-DEREncodedKeyValue</span></font></p>
+<p>     </p>
+<span style="color: red">&lt;element&gt;&lt;/element&gt;</span><span style="color: red">&lt;complexType&gt;
+         <span style="color: red">&lt;simpleContent&gt;
+             <span style="color: red">&lt;extension&gt;
+                 <span style="color: red">&lt;attribute&gt;&lt;/attribute&gt;</span>
+             &lt;/extension&gt;</span>
+         &lt;/simpleContent&gt;</span>
+     &lt;/complexType&gt;</span><div class="refsect3">
+<a name="xmlSecMSCngKeyDataDEREncodedKeyValueGetKlass.returns"></a><h4>Returns</h4>
+<p> the &lt;dsig11:DEREncodedKeyValue/&gt;element processing key data klass.</p>
+</div>
+</div>
 </div>
 <div class="refsect1">
 <a name="xmlsec-mscng-crypto.other_details"></a><h2>Types and Values</h2>
+<div class="refsect2">
+<a name="xmlSecMSCngKeyDataConcatKdfId"></a><h3>xmlSecMSCngKeyDataConcatKdfId</h3>
+<pre class="programlisting">#define             xmlSecMSCngKeyDataConcatKdfId</pre>
+<p>The ConcatKDF key klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformConcatKdfId"></a><h3>xmlSecMSCngTransformConcatKdfId</h3>
+<pre class="programlisting">#define             xmlSecMSCngTransformConcatKdfId</pre>
+<p>The ConcatKDF key derivation transform klass.</p>
+</div>
+<hr>
 <div class="refsect2">
 <a name="xmlSecMSCngKeyDataDsaId"></a><h3>xmlSecMSCngKeyDataDsaId</h3>
 <pre class="programlisting">#define             xmlSecMSCngKeyDataDsaId</pre>
@@ -1138,19 +1414,43 @@ xmlSecMSCngTransformKWAes256GetKlass (<em class="parameter"><code><span class="t
 <div class="refsect2">
 <a name="xmlSecMSCngTransformRsaSha256Id"></a><h3>xmlSecMSCngTransformRsaSha256Id</h3>
 <pre class="programlisting">#define             xmlSecMSCngTransformRsaSha256Id</pre>
-<p>The RSA-SHA256 signature transform klass.</p>
+<p>The RSA-SHA2-256 signature transform klass.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecMSCngTransformRsaSha384Id"></a><h3>xmlSecMSCngTransformRsaSha384Id</h3>
 <pre class="programlisting">#define             xmlSecMSCngTransformRsaSha384Id</pre>
-<p>The RSA-SHA384 signature transform klass.</p>
+<p>The RSA-SHA2-384 signature transform klass.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecMSCngTransformRsaSha512Id"></a><h3>xmlSecMSCngTransformRsaSha512Id</h3>
 <pre class="programlisting">#define             xmlSecMSCngTransformRsaSha512Id</pre>
-<p>The RSA-SHA512 signature transform klass.</p>
+<p>The RSA-SHA2-512 signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformRsaPssSha1Id"></a><h3>xmlSecMSCngTransformRsaPssSha1Id</h3>
+<pre class="programlisting">#define             xmlSecMSCngTransformRsaPssSha1Id</pre>
+<p>The RSA-PSS-SHA1 signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformRsaPssSha256Id"></a><h3>xmlSecMSCngTransformRsaPssSha256Id</h3>
+<pre class="programlisting">#define             xmlSecMSCngTransformRsaPssSha256Id</pre>
+<p>The RSA-PSS-SHA2-256 signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformRsaPssSha384Id"></a><h3>xmlSecMSCngTransformRsaPssSha384Id</h3>
+<pre class="programlisting">#define             xmlSecMSCngTransformRsaPssSha384Id</pre>
+<p>The RSA-PSS-SHA2-384 signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformRsaPssSha512Id"></a><h3>xmlSecMSCngTransformRsaPssSha512Id</h3>
+<pre class="programlisting">#define             xmlSecMSCngTransformRsaPssSha512Id</pre>
+<p>The RSA-PSS-SHA2-512 signature transform klass.</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1162,13 +1462,20 @@ xmlSecMSCngTransformKWAes256GetKlass (<em class="parameter"><code><span class="t
 <div class="refsect2">
 <a name="xmlSecMSCngTransformRsaOaepId"></a><h3>xmlSecMSCngTransformRsaOaepId</h3>
 <pre class="programlisting">#define             xmlSecMSCngTransformRsaOaepId</pre>
-<p>The RSA OAEP key transport transform klass.</p>
+<p>The RSA OAEP key transport transform klass (XMLEnc 1.0).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecMSCngKeyDataEcdsaId"></a><h3>xmlSecMSCngKeyDataEcdsaId</h3>
-<pre class="programlisting">#define             xmlSecMSCngKeyDataEcdsaId</pre>
-<p>The ECDSA key klass.</p>
+<a name="xmlSecMSCngTransformRsaOaepEnc11Id"></a><h3>xmlSecMSCngTransformRsaOaepEnc11Id</h3>
+<pre class="programlisting">#define             xmlSecMSCngTransformRsaOaepEnc11Id</pre>
+<p>The RSA OAEP key transport transform klass (XMLEnc 1.1).</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngKeyDataEcId"></a><h3>xmlSecMSCngKeyDataEcId</h3>
+<pre class="programlisting">#define xmlSecMSCngKeyDataEcId          xmlSecMSCngKeyDataEcGetKlass()
+</pre>
+<p>The EC key klass.</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1180,19 +1487,25 @@ xmlSecMSCngTransformKWAes256GetKlass (<em class="parameter"><code><span class="t
 <div class="refsect2">
 <a name="xmlSecMSCngTransformEcdsaSha256Id"></a><h3>xmlSecMSCngTransformEcdsaSha256Id</h3>
 <pre class="programlisting">#define             xmlSecMSCngTransformEcdsaSha256Id</pre>
-<p>The ECDSA-SHA256 signature transform klass.</p>
+<p>The ECDSA-SHA2-256 signature transform klass.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecMSCngTransformEcdsaSha384Id"></a><h3>xmlSecMSCngTransformEcdsaSha384Id</h3>
 <pre class="programlisting">#define             xmlSecMSCngTransformEcdsaSha384Id</pre>
-<p>The ECDSA-SHA384 signature transform klass.</p>
+<p>The ECDSA-SHA2-384 signature transform klass.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecMSCngTransformEcdsaSha512Id"></a><h3>xmlSecMSCngTransformEcdsaSha512Id</h3>
 <pre class="programlisting">#define             xmlSecMSCngTransformEcdsaSha512Id</pre>
-<p>The ECDSA-SHA512 signature transform klass.</p>
+<p>The ECDSA-SHA2-512 signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformEcdhId"></a><h3>xmlSecMSCngTransformEcdhId</h3>
+<pre class="programlisting">#define             xmlSecMSCngTransformEcdhId</pre>
+<p>The ECDH key agreement transform klass.</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1234,25 +1547,37 @@ xmlSecMSCngTransformKWAes256GetKlass (<em class="parameter"><code><span class="t
 <div class="refsect2">
 <a name="xmlSecMSCngTransformHmacSha256Id"></a><h3>xmlSecMSCngTransformHmacSha256Id</h3>
 <pre class="programlisting">#define             xmlSecMSCngTransformHmacSha256Id</pre>
-<p>The HMAC-SHA256 signature transform klass.</p>
+<p>The HMAC-SHA2-256 signature transform klass.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecMSCngTransformHmacSha384Id"></a><h3>xmlSecMSCngTransformHmacSha384Id</h3>
 <pre class="programlisting">#define             xmlSecMSCngTransformHmacSha384Id</pre>
-<p>The HMAC-SHA384 signature transform klass.</p>
+<p>The HMAC-SHA2-384 signature transform klass.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecMSCngTransformHmacSha512Id"></a><h3>xmlSecMSCngTransformHmacSha512Id</h3>
 <pre class="programlisting">#define             xmlSecMSCngTransformHmacSha512Id</pre>
-<p>The HMAC-SHA512 signature transform klass.</p>
+<p>The HMAC-SHA2-512 signature transform klass.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecMSCngTransformMd5Id"></a><h3>xmlSecMSCngTransformMd5Id</h3>
 <pre class="programlisting">#define             xmlSecMSCngTransformMd5Id</pre>
 <p>The MD5 digest transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngKeyDataPbkdf2Id"></a><h3>xmlSecMSCngKeyDataPbkdf2Id</h3>
+<pre class="programlisting">#define             xmlSecMSCngKeyDataPbkdf2Id</pre>
+<p>The PBKDF2 key klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngTransformPbkdf2Id"></a><h3>xmlSecMSCngTransformPbkdf2Id</h3>
+<pre class="programlisting">#define             xmlSecMSCngTransformPbkdf2Id</pre>
+<p>The PBDKF2 key derivation transform klass.</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1264,19 +1589,19 @@ xmlSecMSCngTransformKWAes256GetKlass (<em class="parameter"><code><span class="t
 <div class="refsect2">
 <a name="xmlSecMSCngTransformSha256Id"></a><h3>xmlSecMSCngTransformSha256Id</h3>
 <pre class="programlisting">#define             xmlSecMSCngTransformSha256Id</pre>
-<p>The SHA256 digest transform klass.</p>
+<p>The SHA2-256 digest transform klass.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecMSCngTransformSha384Id"></a><h3>xmlSecMSCngTransformSha384Id</h3>
 <pre class="programlisting">#define             xmlSecMSCngTransformSha384Id</pre>
-<p>The SHA384 digest transform klass.</p>
+<p>The SHA2-384 digest transform klass.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecMSCngTransformSha512Id"></a><h3>xmlSecMSCngTransformSha512Id</h3>
 <pre class="programlisting">#define             xmlSecMSCngTransformSha512Id</pre>
-<p>The SHA512 digest transform klass.</p>
+<p>The SHA2-512 digest transform klass.</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1338,9 +1663,16 @@ xmlSecMSCngTransformKWAes256GetKlass (<em class="parameter"><code><span class="t
 <pre class="programlisting">#define             xmlSecMSCngTransformKWAes256Id</pre>
 <p>The AES 256 key wrap transform klass.</p>
 </div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngKeyDataDEREncodedKeyValueId"></a><h3>xmlSecMSCngKeyDataDEREncodedKeyValueId</h3>
+<pre class="programlisting">#define xmlSecMSCngKeyDataDEREncodedKeyValueId   xmlSecMSCngKeyDataDEREncodedKeyValueGetKlass()
+</pre>
+<p>The MSCng DEREncodedKeyValue data klass.</p>
+</div>
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.27</div>
+<hr>Generated by GTK-Doc V1.33.1</div>
 </body>
 </html>

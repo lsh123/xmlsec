@@ -1,17 +1,20 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * X509 certificates implementation for MSCng.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
+* Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  * Copyright (C) 2018 Miklos Vajna. All Rights Reserved.
  */
 /**
  * SECTION:x509
- * @Short_description: X509 certificates implementation for Microsoft Cryptography API: Next Generation (CNG). 
+ * @Short_description: X509 certificates implementation for MSCng.
  * @Stability: Stable
  *
+ * X509 certificates implementation for MSCng.
  */
 
 #include "globals.h"
@@ -20,34 +23,35 @@
 
 #include <string.h>
 
-#include <windows.h>
-
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/xmltree.h>
-#include <xmlsec/keys.h>
-#include <xmlsec/keyinfo.h>
-#include <xmlsec/keysmngr.h>
-#include <xmlsec/x509.h>
 #include <xmlsec/base64.h>
 #include <xmlsec/bn.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/keys.h>
+#include <xmlsec/keyinfo.h>
+#include <xmlsec/keysmngr.h>
+#include <xmlsec/xmltree.h>
+#include <xmlsec/private.h>
+#include <xmlsec/x509.h>
 
+#include <xmlsec/mscng/certkeys.h>
 #include <xmlsec/mscng/crypto.h>
 #include <xmlsec/mscng/x509.h>
-#include <xmlsec/mscng/certkeys.h>
+
+#include "../cast_helpers.h"
+#include "../keysdata_helpers.h"
+#include "private.h"
 
 typedef struct _xmlSecMSCngX509DataCtx xmlSecMSCngX509DataCtx,
                                        *xmlSecMSCngX509DataCtxPtr;
 
 struct _xmlSecMSCngX509DataCtx {
     HCERTSTORE hMemStore;
-    PCCERT_CONTEXT cert;
+    PCCERT_CONTEXT keyCert; /* owned by hMemStore */
 };
 
-#define xmlSecMSCngX509DataSize      \
-    (sizeof(xmlSecKeyData) + sizeof(xmlSecMSCngX509DataCtx))
-#define xmlSecMSCngX509DataGetCtx(data) \
-    ((xmlSecMSCngX509DataCtxPtr)(((xmlSecByte*)(data)) + sizeof(xmlSecKeyData)))
+XMLSEC_KEY_DATA_DECLARE(MSCngX509Data, xmlSecMSCngX509DataCtx)
+#define xmlSecMSCngX509DataSize XMLSEC_KEY_DATA_SIZE(MSCngX509Data)
 
 static int
 xmlSecMSCngKeyDataX509Initialize(xmlSecKeyDataPtr data) {
@@ -71,56 +75,6 @@ xmlSecMSCngKeyDataX509Initialize(xmlSecKeyDataPtr data) {
     return(0);
 }
 
-static int
-xmlSecMSCngKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
-    PCCERT_CONTEXT srcCert = NULL;
-    PCCERT_CONTEXT dstCert;
-    xmlSecMSCngX509DataCtxPtr srcCtx;
-    int ret;
-
-    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecMSCngKeyDataX509Id), -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecMSCngKeyDataX509Id), -1);
-    srcCtx = xmlSecMSCngX509DataGetCtx(src);
-
-    /* duplicate the certificate store */
-    while((srcCert = CertEnumCertificatesInStore(srcCtx->hMemStore, srcCert)) != NULL) {
-        dstCert = CertDuplicateCertificateContext(srcCert);
-        if(dstCert == NULL) {
-            xmlSecMSCngLastError("CertDuplicateCertificateContext",
-                xmlSecKeyDataGetName(dst));
-            return(-1);
-        }
-
-        ret = xmlSecMSCngKeyDataX509AdoptCert(dst, dstCert);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptCert",
-                xmlSecKeyDataGetName(dst));
-            CertFreeCertificateContext(dstCert);
-            return(-1);
-        }
-    }
-
-    if(srcCtx->cert != NULL) {
-        /* have a key certificate, duplicate that */
-        dstCert = CertDuplicateCertificateContext(srcCtx->cert);
-        if(dstCert == NULL) {
-            xmlSecMSCngLastError("CertDuplicateCertificateContext",
-                xmlSecKeyDataGetName(dst));
-            return(-1);
-        }
-
-        ret = xmlSecMSCngKeyDataX509AdoptKeyCert(dst, dstCert);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptKeyCert",
-                xmlSecKeyDataGetName(dst));
-            CertFreeCertificateContext(dstCert);
-            return(-1);
-        }
-    }
-
-    return(0);
-}
-
 static void
 xmlSecMSCngKeyDataX509Finalize(xmlSecKeyDataPtr data) {
     xmlSecMSCngX509DataCtxPtr ctx;
@@ -130,20 +84,66 @@ xmlSecMSCngKeyDataX509Finalize(xmlSecKeyDataPtr data) {
     ctx = xmlSecMSCngX509DataGetCtx(data);
     xmlSecAssert(ctx != NULL);
 
-    if(ctx->cert != NULL) {
-        if(!CertFreeCertificateContext(ctx->cert)) {
-            xmlSecMSCngLastError("CertFreeCertificateContext", NULL);
-        }
-    }
-
-    if(ctx->hMemStore != 0) {
-        if(!CertCloseStore(ctx->hMemStore, 0)) {
+    if (ctx->hMemStore != 0) {
+        if (!CertCloseStore(ctx->hMemStore, 0)) {
             xmlSecMSCngLastError("CertCloseStore", NULL);
+            /* ignore error */
         }
     }
 
     memset(ctx, 0, sizeof(xmlSecMSCngX509DataCtx));
 }
+
+static int
+xmlSecMSCngKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
+    PCCERT_CONTEXT srcCert = NULL;
+    PCCERT_CONTEXT dstCert;
+    xmlSecMSCngX509DataCtxPtr srcCtx;
+    xmlSecMSCngX509DataCtxPtr dstCtx;
+    int ret;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecMSCngKeyDataX509Id), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecMSCngKeyDataX509Id), -1);
+
+    srcCtx = xmlSecMSCngX509DataGetCtx(src);
+    xmlSecAssert2(srcCtx != NULL, -1);
+    dstCtx = xmlSecMSCngX509DataGetCtx(dst);
+    xmlSecAssert2(dstCtx != NULL, -1);
+
+    /* duplicate the certificate store */
+    while((srcCert = CertEnumCertificatesInStore(srcCtx->hMemStore, srcCert)) != NULL) {
+        dstCert = CertDuplicateCertificateContext(srcCert);
+        if(dstCert == NULL) {
+            xmlSecMSCngLastError("CertDuplicateCertificateContext", NULL);
+            CertFreeCertificateContext(srcCert);
+            return(-1);
+        }
+
+        /* ensure to handle keyCert */
+        if (srcCert == srcCtx->keyCert) {
+            ret = xmlSecMSCngKeyDataX509AdoptKeyCert(dst, dstCert);
+            if (ret < 0) {
+                xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptKeyCert", NULL);
+                CertFreeCertificateContext(srcCert);
+                CertFreeCertificateContext(dstCert);
+                return(-1);
+            }
+        } else {
+            ret = xmlSecMSCngKeyDataX509AdoptCert(dst, dstCert);
+            if (ret < 0) {
+                xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptCert", NULL);
+                CertFreeCertificateContext(srcCert);
+                CertFreeCertificateContext(dstCert);
+                return(-1);
+            }
+        }
+        dstCert = NULL; /* owned by dst now */
+    }
+
+    /* done */
+    return(0);
+}
+
 
 static xmlSecKeyDataType
 xmlSecMSCngKeyDataX509GetType(xmlSecKeyDataPtr data) {
@@ -167,11 +167,13 @@ xmlSecMSCngKeyDataX509GetIdentifier(xmlSecKeyDataPtr data) {
 static PCCERT_CONTEXT
 xmlSecMSCngX509CertDerRead(const xmlSecByte* buf, xmlSecSize size) {
     PCCERT_CONTEXT cert;
+    DWORD dwSize;
 
     xmlSecAssert2(buf != NULL, NULL);
     xmlSecAssert2(size > 0, NULL);
 
-    cert = CertCreateCertificateContext(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, buf, size);
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(size, dwSize, return(NULL), NULL);
+    cert = CertCreateCertificateContext(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, buf, dwSize);
     if(cert == NULL) {
         xmlSecMSCngLastError("CertCreateCertificateContext", NULL);
         return(NULL);
@@ -180,31 +182,39 @@ xmlSecMSCngX509CertDerRead(const xmlSecByte* buf, xmlSecSize size) {
     return(cert);
 }
 
-/**
- * xmlSecMSCngX509CertBase64DerRead:
- *
- * The MSCng reader for the <X509Certificate> XML content.
- */
-static PCCERT_CONTEXT
-xmlSecMSCngX509CertBase64DerRead(xmlChar* buf) {
-    int size;
+static int
+xmlSecMSCngKeyDataX509AddCertInternal(xmlSecMSCngX509DataCtxPtr ctx, PCCERT_CONTEXT cert) {
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(cert != NULL, -1);
 
-    xmlSecAssert2(buf != NULL, NULL);
-
-    /* in-place decoding */
-    size = xmlSecBase64Decode(buf, (xmlSecByte*)buf, xmlStrlen(buf));
-    if(size < 0) {
-        xmlSecInternalError("xmlSecBase64Decode", NULL);
-        return(NULL);
+    if (!CertAddCertificateContextToStore(ctx->hMemStore,
+        cert,
+        CERT_STORE_ADD_ALWAYS,
+        NULL
+    )) {
+        xmlSecMSCngLastError("CertAddCertificateContextToStore", NULL);
+        return(-1);
     }
 
-    return(xmlSecMSCngX509CertDerRead((xmlSecByte*)buf, size));
+    /* caller expects data to own the cert on success. */
+    CertFreeCertificateContext(cert);
+    return(0);
 }
 
-
+/**
+ * xmlSecMSCngKeyDataX509AdoptKeyCert:
+ * @data:    the pointer to key data.
+ * @cert:    the pointer to certificates.
+ *
+ * Adds certificate to the X509 key data and sets the it as the key's
+ * certificate in @data. On success, the @data owns the cert.
+ *
+ * Returns: 0 on success or a negative value otherwise.
+ */
 int
 xmlSecMSCngKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert) {
     xmlSecMSCngX509DataCtxPtr ctx;
+    int ret;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataX509Id), -1);
     xmlSecAssert2(cert != NULL, -1);
@@ -212,14 +222,33 @@ xmlSecMSCngKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert) {
     ctx = xmlSecMSCngX509DataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
 
-    if(ctx->cert != NULL) {
-        CertFreeCertificateContext(ctx->cert);
+    /* check if for some reasons same cert is used */
+    if ((ctx->keyCert != NULL) && (CertCompareCertificate(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, cert->pCertInfo, ctx->keyCert->pCertInfo) == TRUE)) {
+        CertFreeCertificateContext(cert);  /* caller expects data to own the cert on success. */
+        return(0);
     }
-    ctx->cert = cert;
+    xmlSecAssert2(ctx->keyCert == NULL, -1);
 
+    ret = xmlSecMSCngKeyDataX509AddCertInternal(ctx, cert);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecMSCngKeyDataX509AddCertInternal", xmlSecKeyDataGetName(data));
+        return(-1);
+    }
+
+    /* cert is now owned by data, we can't fail or there will be a double free */
+    ctx->keyCert = cert;
     return(0);
 }
 
+/**
+ * xmlSecMSCngKeyDataX509AdoptCert:
+ * @data:    the pointer to key data.
+ * @cert:    the pointer to certificates.
+ *
+ * Adds @cert to @data as a certificate. On success, @data owns the @cert.
+ *
+ * Returns: 0 on success or a negative value otherwise.
+ */
 int
 xmlSecMSCngKeyDataX509AdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert) {
     xmlSecMSCngX509DataCtxPtr ctx;
@@ -231,18 +260,12 @@ xmlSecMSCngKeyDataX509AdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert) {
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->hMemStore != 0, -1);
 
-    if(!CertAddCertificateContextToStore(ctx->hMemStore,
-        cert,
-        CERT_STORE_ADD_ALWAYS,
-        NULL)) {
-        xmlSecMSCngLastError("CertAddCertificateContextToStore",
-            xmlSecKeyDataGetName(data));
-        return(-1);
+    /* pkcs12 files sometime have key cert twice: as the key cert and as the cert in the chain */
+    if ((ctx->keyCert != NULL) && (CertCompareCertificate(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, cert->pCertInfo, ctx->keyCert->pCertInfo) == TRUE)) {
+        CertFreeCertificateContext(cert); /* caller expects data to own the cert on success. */
+        return(0);
     }
-
-    /* this just decrements the refcount, so won't free */
-    CertFreeCertificateContext(cert);
-    return(0);
+    return(xmlSecMSCngKeyDataX509AddCertInternal(ctx, cert));
 }
 
 /**
@@ -266,447 +289,64 @@ xmlSecMSCngKeyDataX509AdoptCrl(xmlSecKeyDataPtr data, PCCRL_CONTEXT crl) {
     xmlSecAssert2(ctx->hMemStore != 0, -1);
 
     if (!CertAddCRLContextToStore(ctx->hMemStore, crl, CERT_STORE_ADD_ALWAYS, NULL)) {
-        xmlSecMSCngLastError("CertAddCRLContextToStore",
-            xmlSecKeyDataGetName(data));
+        xmlSecMSCngLastError("CertAddCRLContextToStore", NULL);
         return(-1);
     }
+    CertFreeCRLContext(crl);
 
     return(0);
 }
 
 /**
- * xmlSecMSCngX509SubjectNameNodeRead:
+ * xmlSecMSCngKeyDataX509GetKeyCert:
+ * @data:               the pointer to X509 key data.
  *
- * The MSCng reader for the <X509SubjectName> XML element.
- */
-static int
-xmlSecMSCngX509SubjectNameNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node,
-    xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    xmlSecKeyDataStorePtr store;
-    xmlChar* subject;
-    PCCERT_CONTEXT cert;
-    int ret;
-
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataX509Id), -1);
-    xmlSecAssert2(node != NULL, -1);
-    xmlSecAssert2(keyInfoCtx != NULL, -1);
-    xmlSecAssert2(keyInfoCtx->keysMngr != NULL, -1);
-
-    store = xmlSecKeysMngrGetDataStore(keyInfoCtx->keysMngr, xmlSecMSCngX509StoreId);
-    if(store == NULL) {
-        xmlSecInternalError("xmlSecKeysMngrGetDataStore",
-            xmlSecKeyDataGetName(data));
-        return(-1);
-    }
-
-    subject = xmlNodeGetContent(node);
-    if((subject == NULL) || (xmlSecIsEmptyString(subject) == 1)) {
-        if(subject != NULL) {
-            xmlFree(subject);
-        }
-        if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_STOP_ON_EMPTY_NODE) != 0) {
-            xmlSecInvalidNodeContentError(node, xmlSecKeyDataGetName(data),
-                "empty");
-            return(-1);
-        }
-
-        return(0);
-    }
-
-    cert = xmlSecMSCngX509StoreFindCert(store, subject, NULL, NULL, NULL, keyInfoCtx);
-    if(cert == NULL) {
-        if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CERT) != 0) {
-            xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_NOT_FOUND,
-                xmlSecKeyDataGetName(data), "subject=%s",
-                xmlSecErrorsSafeString(subject));
-            xmlFree(subject);
-            return(-1);
-        }
-
-        xmlFree(subject);
-        return(0);
-    }
-
-    ret = xmlSecMSCngKeyDataX509AdoptCert(data, cert);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptCert",
-            xmlSecKeyDataGetName(data));
-        CertFreeCertificateContext(cert);
-        xmlFree(subject);
-        return(-1);
-    }
-
-    xmlFree(subject);
-    return(0);
-}
-/**
- * xmlSecMSCngX509CertificateNodeRead:
+ * Gets the certificate from which the key was extracted.
  *
- * The MSCng reader for the <X509Certificate> XML element.
+ * Returns: the key's certificate or NULL if key data was not used for key
+ * extraction or an error occurs.
  */
-static int
-xmlSecMSCngX509CertificateNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node,
-    xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    xmlChar* content;
-    PCCERT_CONTEXT cert;
-    int ret;
+PCCERT_CONTEXT
+xmlSecMSCngKeyDataX509GetKeyCert(xmlSecKeyDataPtr data) {
+    xmlSecMSCngX509DataCtxPtr ctx;
 
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataX509Id), -1);
-    xmlSecAssert2(node != NULL, -1);
-    xmlSecAssert2(keyInfoCtx != NULL, -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataX509Id), NULL);
 
-    content = xmlNodeGetContent(node);
-    if((content == NULL) || (xmlSecIsEmptyString(content) == 1)) {
-        if(content != NULL) {
-            xmlFree(content);
-        }
+    ctx = xmlSecMSCngX509DataGetCtx(data);
+    xmlSecAssert2(ctx != NULL, NULL);
 
-        if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_STOP_ON_EMPTY_NODE) != 0) {
-            xmlSecInvalidNodeContentError(node, xmlSecKeyDataGetName(data),
-                "content is an empty string");
-            return(-1);
-        }
-
-        return(0);
-    }
-
-    cert = xmlSecMSCngX509CertBase64DerRead(content);
-    if(cert == NULL) {
-        xmlSecInternalError("xmlSecMSCngX509CertBase64DerRead",
-            xmlSecKeyDataGetName(data));
-        return(-1);
-    }
-
-    ret = xmlSecMSCngKeyDataX509AdoptCert(data, cert);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptCert",
-            xmlSecKeyDataGetName(data));
-        return(-1);
-
-    }
-
-    xmlFree(content);
-    return(0);
+    return(ctx->keyCert);
 }
 
-/**
- * xmlSecMSCngX509IssuerSerialNodeRead:
- *
- * The MSCng reader for the <X509IssuerSerial> XML element.
- */
-static int
-xmlSecMSCngX509IssuerSerialNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node,
-    xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    xmlSecKeyDataStorePtr store;
-    xmlNodePtr cur;
-    xmlChar* issuerName;
-    xmlChar* issuerSerial;
-    PCCERT_CONTEXT cert;
-    int ret;
+HCERTSTORE
+xmlSecMSCngKeyDataX509GetCertStore(xmlSecKeyDataPtr data) {
+    xmlSecMSCngX509DataCtxPtr ctx;
 
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataX509Id), -1);
-    xmlSecAssert2(node != NULL, -1);
-    xmlSecAssert2(keyInfoCtx != NULL, -1);
-    xmlSecAssert2(keyInfoCtx->keysMngr != NULL, -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataX509Id), NULL);
 
-    store = xmlSecKeysMngrGetDataStore(keyInfoCtx->keysMngr, xmlSecMSCngX509StoreId);
-    if(store == NULL) {
-        xmlSecInternalError("xmlSecKeysMngrGetDataStore",
-            xmlSecKeyDataGetName(data));
-        return(-1);
-    }
+    ctx = xmlSecMSCngX509DataGetCtx(data);
+    xmlSecAssert2(ctx != NULL, NULL);
 
-    cur = xmlSecGetNextElementNode(node->children);
-    if(cur == NULL) {
-        if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_STOP_ON_EMPTY_NODE) != 0) {
-            xmlSecNodeNotFoundError("xmlSecGetNextElementNode", node, NULL,
-                xmlSecKeyDataGetName(data));
-            return(-1);
-        }
-
-        return(0);
-    }
-
-    /* handle X509IssuerName */
-    if(!xmlSecCheckNodeName(cur, xmlSecNodeX509IssuerName, xmlSecDSigNs)) {
-        xmlSecInvalidNodeError(cur, xmlSecNodeX509IssuerName,
-            xmlSecKeyDataGetName(data));
-        return(-1);
-    }
-
-    issuerName = xmlNodeGetContent(cur);
-    if(issuerName == NULL) {
-        xmlSecInvalidNodeContentError(cur, xmlSecKeyDataGetName(data),
-            "empty");
-        return(-1);
-    }
-
-    cur = xmlSecGetNextElementNode(cur->next);
-    if(cur == NULL) {
-        if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_STOP_ON_EMPTY_NODE) != 0) {
-            xmlSecNodeNotFoundError("xmlSecGetNextElementNode", node, NULL,
-                xmlSecKeyDataGetName(data));
-            return(-1);
-        }
-
-        return(0);
-    }
-
-    /* handle X509SerialNumber */
-    if(!xmlSecCheckNodeName(cur, xmlSecNodeX509SerialNumber, xmlSecDSigNs)) {
-        xmlSecInvalidNodeError(cur, xmlSecNodeX509SerialNumber,
-            xmlSecKeyDataGetName(data));
-        xmlFree(issuerName);
-        return(-1);
-    }
-
-    issuerSerial = xmlNodeGetContent(cur);
-    if(issuerSerial == NULL) {
-        xmlSecInvalidNodeContentError(cur, xmlSecKeyDataGetName(data),
-            "empty");
-        xmlFree(issuerSerial);
-        return(-1);
-    }
-
-    cur = xmlSecGetNextElementNode(cur->next);
-    if(cur != NULL) {
-        xmlSecUnexpectedNodeError(cur, xmlSecKeyDataGetName(data));
-        xmlFree(issuerSerial);
-        xmlFree(issuerName);
-        return(-1);
-    }
-
-    cert = xmlSecMSCngX509StoreFindCert(store, NULL, issuerName, issuerSerial,
-        NULL, keyInfoCtx);
-    if(cert == NULL) {
-        if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CERT) != 0) {
-            xmlSecOtherError3(XMLSEC_ERRORS_R_CERT_NOT_FOUND, xmlSecKeyDataGetName(data),
-                "issuerName=%s;issuerSerial=%s",
-                xmlSecErrorsSafeString(issuerName),
-                xmlSecErrorsSafeString(issuerSerial));
-            xmlFree(issuerSerial);
-            xmlFree(issuerName);
-            return(-1);
-        }
-
-	xmlFree(issuerSerial);
-	xmlFree(issuerName);
-	return(0);
-    }
-
-    ret = xmlSecMSCngKeyDataX509AdoptCert(data, cert);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptCert",
-            xmlSecKeyDataGetName(data));
-        CertFreeCertificateContext(cert);
-        xmlFree(issuerSerial);
-        xmlFree(issuerName);
-        return(-1);
-    }
-
-    xmlFree(issuerSerial);
-    xmlFree(issuerName);
-    return(0);
+    return(ctx->hMemStore);
 }
 
-/**
- * xmlSecMSCngX509SKINodeRead:
- *
- * The MSCng reader for the <X509SKI> XML element.
- */
-static int
-xmlSecMSCngX509SKINodeRead(xmlSecKeyDataPtr data, xmlNodePtr node,
-        xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    xmlSecKeyDataStorePtr store;
-    xmlChar* ski;
-    PCCERT_CONTEXT cert;
-    int ret;
-
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataX509Id), -1);
-    xmlSecAssert2(node != NULL, -1);
-    xmlSecAssert2(keyInfoCtx != NULL, -1);
-    xmlSecAssert2(keyInfoCtx->keysMngr != NULL, -1);
-
-    store = xmlSecKeysMngrGetDataStore(keyInfoCtx->keysMngr, xmlSecMSCngX509StoreId);
-    if(store == NULL) {
-        xmlSecInternalError("xmlSecKeysMngrGetDataStore",
-            xmlSecKeyDataGetName(data));
-        return(-1);
-    }
-
-    ski = xmlNodeGetContent(node);
-    if((ski == NULL) || (xmlSecIsEmptyString(ski) == 1)) {
-        if(ski != NULL) {
-            xmlFree(ski);
-        }
-        if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_STOP_ON_EMPTY_NODE) != 0) {
-            xmlSecInvalidNodeContentError(node, xmlSecKeyDataGetName(data),
-                "empty");
-            return(-1);
-        }
-        return(0);
-    }
-
-    cert = xmlSecMSCngX509StoreFindCert(store, NULL, NULL, NULL, ski, keyInfoCtx);
-    if(cert == NULL){
-        xmlFree(ski);
-
-        if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CERT) != 0) {
-            xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_NOT_FOUND, xmlSecKeyDataGetName(data),
-                              "ski=%s", xmlSecErrorsSafeString(ski));
-            return(-1);
-        }
-        return(0);
-    }
-
-    ret = xmlSecMSCngKeyDataX509AdoptCert(data, cert);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptCert",
-                            xmlSecKeyDataGetName(data));
-        CertFreeCertificateContext(cert);
-        xmlFree(ski);
-        return(-1);
-    }
-
-    xmlFree(ski);
-    return(0);
-}
 
 static PCCRL_CONTEXT
-xmlSecMSCngX509CrlDerRead(xmlSecByte* buf, xmlSecSize size,
-        xmlSecKeyInfoCtxPtr keyInfoCtx) {
+xmlSecMSCngX509CrlDerRead(xmlSecByte* buf, xmlSecSize size) {
     PCCRL_CONTEXT crl = NULL;
+    DWORD dwSize;
 
     xmlSecAssert2(buf != NULL, NULL);
-    xmlSecAssert2(keyInfoCtx != NULL, NULL);
     xmlSecAssert2(size > 0, NULL);
 
-    crl = CertCreateCRLContext(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, buf, size);
-
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(size, dwSize, return(NULL), NULL);
+    crl = CertCreateCRLContext(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, buf, dwSize);
     if(crl == NULL) {
         xmlSecMSCngLastError("CertCreateCRLContext", NULL);
         return(NULL);
     }
 
     return(crl);
-}
-
-static PCCRL_CONTEXT
-xmlSecMSCngX509CrlBase64DerRead(xmlChar* buf, xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    int ret;
-
-    xmlSecAssert2(buf != NULL, NULL);
-
-    /* usual trick with base64 decoding in-place */
-    ret = xmlSecBase64Decode(buf, (xmlSecByte*)buf, xmlStrlen(buf));
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecBase64Decode", NULL);
-        return(NULL);
-    }
-
-    return(xmlSecMSCngX509CrlDerRead((xmlSecByte*)buf, ret, keyInfoCtx));
-}
-
-static int
-xmlSecMSCngX509CRLNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    xmlChar *content;
-    PCCRL_CONTEXT crl;
-    int ret;
-
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataX509Id), -1);
-    xmlSecAssert2(node != NULL, -1);
-    xmlSecAssert2(keyInfoCtx != NULL, -1);
-
-    content = xmlNodeGetContent(node);
-    if((content == NULL) || (xmlSecIsEmptyString(content) == 1)) {
-        if(content != NULL) {
-            xmlFree(content);
-        }
-        if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_STOP_ON_EMPTY_NODE) != 0) {
-            xmlSecInvalidNodeContentError(node, xmlSecKeyDataGetName(data), "empty");
-            return(-1);
-        }
-        return(0);
-    }
-
-    crl = xmlSecMSCngX509CrlBase64DerRead(content, keyInfoCtx);
-    if(crl == NULL) {
-        xmlSecInternalError("xmlSecMSCngX509CrlBase64DerRead",
-            xmlSecKeyDataGetName(data));
-        xmlFree(content);
-        return(-1);
-    }
-
-    ret = xmlSecMSCngKeyDataX509AdoptCrl(data, crl);
-    if (ret < 0) {
-        xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptCrl",
-            xmlSecKeyDataGetName(data));
-        xmlFree(content);
-        CertFreeCRLContext(crl);
-        return(-1);
-    }
-
-    xmlFree(content);
-    return(0);
-}
-
-/**
- * xmlSecMSCngX509DataNodeRead:
- *
- * The MSCng reader for the <X509Data> XML element.
- */
-static int
-xmlSecMSCngX509DataNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node,
-    xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    xmlNodePtr cur;
-    int ret;
-
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataX509Id), -1);
-    xmlSecAssert2(node != NULL, -1);
-    xmlSecAssert2(keyInfoCtx != NULL, -1);
-
-    for(cur = xmlSecGetNextElementNode(node->children);
-        cur != NULL;
-        cur = xmlSecGetNextElementNode(cur->next)) {
-        if(xmlSecCheckNodeName(cur, xmlSecNodeX509Certificate, xmlSecDSigNs)) {
-            ret = xmlSecMSCngX509CertificateNodeRead(data, cur, keyInfoCtx);
-            if(ret < 0) {
-                xmlSecInternalError("xmlSecMSCngX509CertificateNodeRead",
-                    xmlSecKeyDataGetName(data));
-                return(-1);
-            }
-        } else if(xmlSecCheckNodeName(cur, xmlSecNodeX509SubjectName, xmlSecDSigNs)) {
-            ret = xmlSecMSCngX509SubjectNameNodeRead(data, cur, keyInfoCtx);
-            if(ret < 0) {
-                xmlSecInternalError("xmlSecMSCngX509SubjectNameNodeRead",
-                    xmlSecKeyDataGetName(data));
-                return(-1);
-            }
-        } else if(xmlSecCheckNodeName(cur, xmlSecNodeX509IssuerSerial, xmlSecDSigNs)) {
-            ret = xmlSecMSCngX509IssuerSerialNodeRead(data, cur, keyInfoCtx);
-            if(ret < 0) {
-                xmlSecInternalError("xmlSecMSCngX509IssuerSerialNodeRead", NULL);
-                return(-1);
-            }
-        } else if(xmlSecCheckNodeName(cur, xmlSecNodeX509SKI, xmlSecDSigNs)) {
-            ret = xmlSecMSCngX509SKINodeRead(data, cur, keyInfoCtx);
-            if(ret < 0) {
-                xmlSecInternalError("xmlSecMSCngX509SKINodeRead", NULL);
-                return(-1);
-            }
-        } else if(xmlSecCheckNodeName(cur, xmlSecNodeX509CRL, xmlSecDSigNs)) {
-            ret = xmlSecMSCngX509CRLNodeRead(data, cur, keyInfoCtx);
-            if(ret < 0) {
-                xmlSecInternalError("xmlSecMSCngX509CRLNodeRead",
-                                    xmlSecKeyDataGetName(data));
-                return(-1);
-            }
-        } else if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CHILD) != 0) {
-            xmlSecUnexpectedNodeError(cur, xmlSecKeyDataGetName(data));
-            return(-1);
-        }
-    }
-    return(0);
 }
 
 /**
@@ -731,114 +371,216 @@ xmlSecMSCngX509CertGetTime(FILETIME in, time_t* out) {
     return(0);
 }
 
+/* returns 1 if cert was found and verified and also data was adopted, 0 if not, or negative value if an error occurs */
 static int
-xmlSecMSCngKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data,
-    xmlSecKeyPtr key, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+xmlSecMSCnVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecMSCngX509DataCtxPtr ctx;
-    xmlSecKeyDataStorePtr store;
+    xmlSecKeyDataStorePtr x509Store;
+    xmlSecKeyDataPtr keyValue;
     PCCERT_CONTEXT cert;
+    PCCERT_CONTEXT certCopy;
+    PCCERT_CONTEXT keyCert;
+    int ret;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataX509Id), -1);
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
     xmlSecAssert2(keyInfoCtx->keysMngr != NULL, -1);
 
-    if(xmlSecKeyGetValue(key) != NULL) {
-        return(0);
-    }
-
     ctx = xmlSecMSCngX509DataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->hMemStore != 0, -1);
+    xmlSecAssert2(ctx->keyCert == NULL, -1);
 
-    if(ctx->cert != NULL) {
+
+    if (xmlSecKeyGetValue(key) != NULL) {
+        /* key was already found -> nothing to do (this shouldn't really happen) */
         return(0);
     }
 
-    store = xmlSecKeysMngrGetDataStore(keyInfoCtx->keysMngr, xmlSecMSCngX509StoreId);
-    if(store == NULL) {
-        xmlSecInternalError("xmlSecKeysMngrGetDataStore",
-            xmlSecKeyDataGetName(data));
+    /* lets find a cert we can verify */
+    x509Store = xmlSecKeysMngrGetDataStore(keyInfoCtx->keysMngr, xmlSecMSCngX509StoreId);
+    if(x509Store == NULL) {
+        xmlSecInternalError("xmlSecKeysMngrGetDataStore", xmlSecKeyDataGetName(data));
+        return(-1);
+    }
+    cert = xmlSecMSCngX509StoreVerify(x509Store, ctx->hMemStore, keyInfoCtx);
+    if (cert == NULL) {
+        /* check if we want to fail if cert is not found */
+        if ((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_INVALID_CERT) != 0) {
+            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_NOT_FOUND, xmlSecKeyDataGetName(data), NULL);
+            return(-1);
+        }
+        return(0);
+    }
+
+    /* set cert into the x509 data, we don't know if the cert is already in KeyData or not
+     * so assume we need to add it again.
+     */
+    keyCert = CertDuplicateCertificateContext(cert);
+    if(keyCert == NULL) {
+        xmlSecMSCngLastError("CertDuplicateCertificateContext", xmlSecKeyDataGetName(data));
+        CertFreeCertificateContext(cert);
+        return(-1);
+    }
+    CertFreeCertificateContext(cert);
+    ret = xmlSecMSCngKeyDataX509AdoptKeyCert(data, keyCert);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptKeyCert", xmlSecKeyDataGetName(data));
+        CertFreeCertificateContext(keyCert);
+        return(-1);
+    }
+    cert = keyCert = NULL; /* we should be using ctx->keyCert for everything */
+
+    /* extract key from cert (need to copy the certificate, so it can be adopted according to the key value data) */
+    certCopy = CertDuplicateCertificateContext(ctx->keyCert);
+    if(certCopy == NULL) {
+        xmlSecMSCngLastError("CertDuplicateCertificateContext", xmlSecKeyDataGetName(data));
+        return(-1);
+    }
+    if((keyInfoCtx->keyReq.keyType & xmlSecKeyDataTypePrivate) != 0) {
+        keyValue = xmlSecMSCngCertAdopt(certCopy, xmlSecKeyDataTypePrivate);
+        if(keyValue == NULL) {
+            xmlSecInternalError("xmlSecMSCngCertAdopt", xmlSecKeyDataGetName(data));
+            CertFreeCertificateContext(certCopy);
+            return(-1);
+        }
+    } else {
+        /* assume we want a public key (if we don't want private) */
+        keyValue = xmlSecMSCngCertAdopt(certCopy, xmlSecKeyDataTypePublic);
+        if(keyValue == NULL) {
+            xmlSecInternalError("xmlSecMSCngCertAdopt", xmlSecKeyDataGetName(data));
+            CertFreeCertificateContext(certCopy);
+            return(-1);
+        }
+    }
+    certCopy = NULL; /* owned by key value now */
+
+    /* verify that keyValue matches the key requirements */
+    if(xmlSecKeyReqMatchKeyValue(&(keyInfoCtx->keyReq), keyValue) != 1) {
+        xmlSecInternalError("xmlSecKeyReqMatchKeyValue", xmlSecKeyDataGetName(data));
+        xmlSecKeyDataDestroy(keyValue);
         return(-1);
     }
 
-    cert = xmlSecMSCngX509StoreVerify(store, ctx->hMemStore, keyInfoCtx);
-    if(cert != NULL) {
-        int ret;
-        PCCERT_CONTEXT certCopy;
-        xmlSecKeyDataPtr keyValue = NULL;
+    /* set key value */
+    ret = xmlSecKeySetValue(key, keyValue);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeySetValue", xmlSecKeyDataGetName(data));
+        xmlSecKeyDataDestroy(keyValue);
+        return(-1);
+    }
+    keyValue = NULL; /* owned by key now */
 
-        ctx->cert = CertDuplicateCertificateContext(cert);
-        if(ctx->cert == NULL) {
-            xmlSecMSCngLastError("CertDuplicateCertificateContext",
-                xmlSecKeyDataGetName(data));
-            return(-1);
-        }
-
-        /* copy the certificate, so it can be adopted according to the key data
-         * type */
-        certCopy = CertDuplicateCertificateContext(ctx->cert);
-        if(certCopy == NULL) {
-            xmlSecMSCngLastError("CertDuplicateCertificateContext",
-                xmlSecKeyDataGetName(data));
-            return(-1);
-        }
-
-        if((keyInfoCtx->keyReq.keyType & xmlSecKeyDataTypePrivate) != 0) {
-            keyValue = xmlSecMSCngCertAdopt(certCopy, xmlSecKeyDataTypePrivate);
-            if(keyValue == NULL) {
-                xmlSecInternalError("xmlSecMSCngCertAdopt",
-                    xmlSecKeyDataGetName(data));
-                return(-1);
-            }
-        } else if((keyInfoCtx->keyReq.keyType & xmlSecKeyDataTypePublic) != 0) {
-            keyValue = xmlSecMSCngCertAdopt(certCopy, xmlSecKeyDataTypePublic);
-            if(keyValue == NULL) {
-                xmlSecInternalError("xmlSecMSCngCertAdopt",
-                    xmlSecKeyDataGetName(data));
-                return(-1);
-            }
-        }
-
-        /* verify that keyValue matches the key requirements */
-        if(xmlSecKeyReqMatchKeyValue(&(keyInfoCtx->keyReq), keyValue) != 1) {
-            xmlSecInternalError("xmlSecKeyReqMatchKeyValue",
-                xmlSecKeyDataGetName(data));
-            xmlSecKeyDataDestroy(keyValue);
-            return(-1);
-        }
-
-        ret = xmlSecKeySetValue(key, keyValue);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecKeySetValue",
-                xmlSecKeyDataGetName(data));
-            xmlSecKeyDataDestroy(keyValue);
-            return(-1);
-        }
-
-        ret = xmlSecMSCngX509CertGetTime(ctx->cert->pCertInfo->NotBefore,
-            &(key->notValidBefore));
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecMSCngX509CertGetTime",
-                xmlSecKeyDataGetName(data));
-            return(-1);
-        }
-
-        ret = xmlSecMSCngX509CertGetTime(ctx->cert->pCertInfo->NotAfter,
-            &(key->notValidAfter));
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecMSCngX509CertGetTime",
-                xmlSecKeyDataGetName(data));
-            return(-1);
-        }
-    } else if((keyInfoCtx->flags &
-            XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_INVALID_CERT) != 0) {
-        xmlSecOtherError(XMLSEC_ERRORS_R_CERT_NOT_FOUND,
-            xmlSecKeyDataGetName(data), NULL);
+    /* copy cert not before / not after times from the cert */
+    ret = xmlSecMSCngX509CertGetTime(ctx->keyCert->pCertInfo->NotBefore, &(key->notValidBefore));
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecMSCngX509CertGetTime", xmlSecKeyDataGetName(data));
+        return(-1);
+    }
+    ret = xmlSecMSCngX509CertGetTime(ctx->keyCert->pCertInfo->NotAfter, &(key->notValidAfter));
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecMSCngX509CertGetTime", xmlSecKeyDataGetName(data));
         return(-1);
     }
 
-    return(0);
+    /* THIS MUST BE THE LAST THING WE DO: add data to the key
+     * if we do it sooner and fail later then both the caller and the key will free data
+     * which would lead to double free */
+    ret = xmlSecKeyAdoptData(key, data);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecKeyAdoptData", xmlSecKeyDataGetName(data));
+        return(-1);
+    }
+
+    /* success: cert found and data was adopted */
+    return(1);
+}
+
+/* xmlSecKeyDataX509Read: 0 on success and a negative value otherwise */
+static int
+xmlSecMSCngKeyDataX509Read(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x509Value,
+    xmlSecKeysMngrPtr keysMngr, unsigned int flags) {
+    PCCERT_CONTEXT cert = NULL;
+    PCCRL_CONTEXT crl = NULL;
+    int ret;
+    int res = -1;
+
+    xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataX509Id), -1);
+    xmlSecAssert2(x509Value != NULL, -1);
+    xmlSecAssert2(keysMngr != NULL, -1);
+
+    /* read CRT or CRL */
+    if (xmlSecBufferGetSize(&(x509Value->cert)) > 0) {
+        cert = xmlSecMSCngX509CertDerRead(xmlSecBufferGetData(&(x509Value->cert)),
+            xmlSecBufferGetSize(&(x509Value->cert)));
+        if (cert == NULL) {
+            xmlSecInternalError("xmlSecMSCngX509CertDerRead", xmlSecKeyDataGetName(data));
+            goto done;
+        }
+    }
+    if (xmlSecBufferGetSize(&(x509Value->crl)) > 0) {
+        crl = xmlSecMSCngX509CrlDerRead(xmlSecBufferGetData(&(x509Value->crl)),
+            xmlSecBufferGetSize(&(x509Value->crl)));
+        if (crl == NULL) {
+            xmlSecInternalError("xmlSecMSCngX509CertDerRead", xmlSecKeyDataGetName(data));
+            goto done;
+        }
+    }
+
+    /* if there is no cert in the X509Data node then try to find one */
+    if (cert == NULL) {
+        xmlSecKeyDataStorePtr x509Store;
+        int stopOnUnknownCert = 0;
+
+        x509Store = xmlSecKeysMngrGetDataStore(keysMngr, xmlSecMSCngX509StoreId);
+        if (x509Store == NULL) {
+            xmlSecInternalError("xmlSecKeysMngrGetDataStore", xmlSecKeyDataGetName(data));
+            goto done;
+        }
+        /* determine what to do */
+        if ((flags & XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CERT) != 0) {
+            stopOnUnknownCert = 1;
+        }
+
+        cert = xmlSecMSCngX509StoreFindCertByValue(x509Store, x509Value);
+        if ((cert == NULL) && (stopOnUnknownCert != 0)) {
+            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_NOT_FOUND, xmlSecKeyDataGetName(data), "cert lookup");
+            goto done;
+        }
+    }
+
+    /* if we found a cert or a crl, then add it to the data */
+    if (cert != NULL) {
+        ret = xmlSecMSCngKeyDataX509AdoptCert(data, cert);
+        if (ret < 0) {
+            xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptCert", xmlSecKeyDataGetName(data));
+            goto done;
+        }
+        cert = NULL; /* owned by data now */
+    }
+    if (crl != NULL) {
+        ret = xmlSecMSCngKeyDataX509AdoptCrl(data, crl);
+        if (ret < 0) {
+            xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptCrl", xmlSecKeyDataGetName(data));
+            goto done;
+        }
+        crl = NULL; /* owned by data now */
+    }
+
+    /* success */
+    res = 0;
+
+done:
+    /* cleanup */
+    if (cert != NULL) {
+        CertFreeCertificateContext(cert);
+    }
+    if (crl != NULL) {
+        CertFreeCRLContext(crl);
+    }
+    return(res);
 }
 
 static int
@@ -849,62 +591,38 @@ xmlSecMSCngKeyDataX509XmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     xmlSecAssert2(id == xmlSecMSCngKeyDataX509Id, -1);
     xmlSecAssert2(key != NULL, -1);
-    xmlSecAssert2(node != NULL, -1);
-    xmlSecAssert2(keyInfoCtx != NULL, -1);
 
-    data = xmlSecKeyEnsureData(key, id);
-    if(data == NULL) {
-        xmlSecInternalError("xmlSecKeyEnsureData",
-                            xmlSecKeyDataKlassGetName(id));
+    data = xmlSecKeyDataCreate(xmlSecMSCngKeyDataX509Id);
+    if (data == NULL) {
+        xmlSecInternalError("xmlSecKeyDataCreate(xmlSecMSCngKeyDataX509Id)", xmlSecKeyDataKlassGetName(id));
         return(-1);
     }
 
-    ret = xmlSecMSCngX509DataNodeRead(data, node, keyInfoCtx);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecMSCngX509DataNodeRead",
-            xmlSecKeyDataKlassGetName(id));
+    ret = xmlSecKeyDataX509XmlRead(key, data, node, keyInfoCtx, xmlSecMSCngKeyDataX509Read);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecKeyDataX509XmlRead", xmlSecKeyDataKlassGetName(id));
+        xmlSecKeyDataDestroy(data);
         return(-1);
     }
 
-    ret = xmlSecMSCngKeyDataX509VerifyAndExtractKey(data, key, keyInfoCtx);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecMSCngKeyDataX509VerifyAndExtractKey",
-            xmlSecKeyDataKlassGetName(id));
-        return(-1);
+    /* did we find the key already? */
+    if (xmlSecKeyGetValue(key) != NULL) {
+        xmlSecKeyDataDestroy(data);
+        return(0);
     }
 
-    return(0);
-}
-
-static int
-xmlSecMSCngX509CertificateNodeWrite(PCCERT_CONTEXT cert, xmlNodePtr node,
-        xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    xmlChar* buf;
-    xmlNodePtr child;
-
-    xmlSecAssert2(cert != NULL, -1);
-    xmlSecAssert2(cert->pbCertEncoded != NULL, -1);
-    xmlSecAssert2(cert->cbCertEncoded > 0, -1);
-    xmlSecAssert2(node != NULL, -1);
-    xmlSecAssert2(keyInfoCtx != NULL, -1);
-
-    buf = xmlSecBase64Encode(cert->pbCertEncoded, cert->cbCertEncoded,
-        keyInfoCtx->base64LineSize);
-    if(buf == NULL) {
-        xmlSecInternalError("xmlSecBase64Encode", NULL);
-        return(-1);
+    ret = xmlSecMSCnVerifyAndAdoptX509KeyData(key, data, keyInfoCtx);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecMSCnVerifyAndAdoptX509KeyData", xmlSecKeyDataKlassGetName(id));
+        xmlSecKeyDataDestroy(data);
+    } else if (ret != 1) {
+        /* no errors but key was not found and data was not adopted */
+        xmlSecKeyDataDestroy(data);
+        return(0);
     }
+    data = NULL; /* owned by data now */
 
-    child = xmlSecEnsureEmptyChild(node, xmlSecNodeX509Certificate, xmlSecDSigNs);
-    if(child == NULL) {
-        xmlSecInternalError("xmlSecEnsureEmptyChild", NULL);
-        xmlFree(buf);
-        return(-1);
-    }
-
-    xmlNodeSetContent(child, buf);
-    xmlFree(buf);
-
+    /* success */
     return(0);
 }
 
@@ -948,307 +666,281 @@ xmlSecMSCngX509NameWrite(PCERT_NAME_BLOB nm) {
     return(res);
 }
 
-static int
-xmlSecMSCngX509SubjectNameNodeWrite(PCCERT_CONTEXT cert, xmlNodePtr node) {
-    xmlChar* buf = NULL;
-    xmlNodePtr cur = NULL;
-    int ret;
-
-    xmlSecAssert2(cert != NULL, -1);
-    xmlSecAssert2(node != NULL, -1);
-
-    buf = xmlSecMSCngX509NameWrite(&(cert->pCertInfo->Subject));
-    if(buf == NULL) {
-        xmlSecInternalError("xmlSecMSCngX509NameWrite", NULL);
-        return(-1);
-    }
-
-    cur = xmlSecEnsureEmptyChild(node, xmlSecNodeX509SubjectName, xmlSecDSigNs);
-    if(cur == NULL) {
-        xmlSecInternalError("xmlSecEnsureEmptyChild", NULL);
-        xmlFree(buf);
-        return(-1);
-    }
-
-    ret = xmlSecNodeEncodeAndSetContent(cur, buf);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecNodeEncodeAndSetContent", NULL);
-        xmlFree(buf);
-        return(-1);
-    }
-
-    /* done */
-    xmlFree(buf);
-    return(0);
-}
-
-static int
-xmlSecMSCngASN1IntegerWrite(xmlNodePtr node, PCRYPT_INTEGER_BLOB num) {
+static xmlChar*
+xmlSecMSCngASN1IntegerWrite(PCRYPT_INTEGER_BLOB num) {
     xmlSecBn bn;
+    xmlChar* res;
     int ret;
 
-    xmlSecAssert2(node != NULL, -1);
-    xmlSecAssert2(num != NULL, -1);
+    xmlSecAssert2(num != NULL, NULL);
 
     ret = xmlSecBnInitialize(&bn, num->cbData + 1);
     if(ret < 0) {
-	xmlSecInternalError2("xmlSecBnInitialize", NULL, "size=%ld",
-	    num->cbData + 1);
-        return(-1);
+        xmlSecInternalError2("xmlSecBnInitialize", NULL, "size=%lu", num->cbData + 1);
+        return(NULL);
     }
 
     ret = xmlSecBnSetData(&bn, num->pbData, num->cbData);
     if(ret < 0) {
         xmlSecInternalError("xmlSecBnSetData", NULL);
         xmlSecBnFinalize(&bn);
-        return(-1);
+        return(NULL);
     }
 
     /* SerialNumber is little-endian, see <https://msdn.microsoft.com/en-us/library/windows/desktop/aa377200(v=vs.85).aspx>.
-     * xmldsig wants big-endian, so enable reversing */
-    ret = xmlSecBnSetNodeValue(&bn, node, xmlSecBnDec, 1, 0);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecBnSetNodeValue", NULL);
+     * xmldsig wants big-endian, so reverse */
+    ret = xmlSecBnReverse(&bn);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecBnReverse", NULL);
         xmlSecBnFinalize(&bn);
-        return(-1);
+        return(NULL);
     }
 
+    res = xmlSecBnToDecString(&bn);
+    if (res == NULL) {
+        xmlSecInternalError("xmlSecBnToDecString", NULL);
+        xmlSecBnFinalize(&bn);
+        return(NULL);
+    }
+
+    /* done */
     xmlSecBnFinalize(&bn);
-    return(0);
+    return(res);
 }
 
 static int
-xmlSecMSCngX509IssuerSerialNodeWrite(PCCERT_CONTEXT cert, xmlNodePtr node) {
-    xmlNodePtr cur;
-    xmlNodePtr issuerNameNode;
-    xmlNodePtr issuerNumberNode;
-    xmlChar* buf;
+xmlSecMSCngX509SKIWrite(PCCERT_CONTEXT cert, xmlSecBufferPtr buf) {
+    PCERT_EXTENSION pCertExt;
+    DWORD dwSize;
+    BOOL rv;
     int ret;
 
     xmlSecAssert2(cert != NULL, -1);
-    xmlSecAssert2(node != NULL, -1);
-
-    /* create xml nodes */
-    cur = xmlSecEnsureEmptyChild(node, xmlSecNodeX509IssuerSerial, xmlSecDSigNs);
-    if(cur == NULL) {
-        xmlSecInternalError("xmlSecEnsureEmptyChild", NULL);
-        return(-1);
-    }
-
-    issuerNameNode = xmlSecEnsureEmptyChild(cur, xmlSecNodeX509IssuerName, xmlSecDSigNs);
-    if(issuerNameNode == NULL) {
-        xmlSecInternalError("xmlSecEnsureEmptyChild", NULL);
-        return(-1);
-    }
-
-    issuerNumberNode = xmlSecEnsureEmptyChild(cur, xmlSecNodeX509SerialNumber, xmlSecDSigNs);
-    if(issuerNumberNode == NULL) {
-        xmlSecInternalError("xmlSecEnsureEmptyChild", NULL);
-        return(-1);
-    }
-
-    /* write data */
-    buf = xmlSecMSCngX509NameWrite(&(cert->pCertInfo->Issuer));
-    if(buf == NULL) {
-        xmlSecInternalError("xmlSecMSCngX509NameWrite", NULL);
-        return(-1);
-    }
-
-    ret = xmlSecNodeEncodeAndSetContent(issuerNameNode, buf);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecNodeEncodeAndSetContent", NULL);
-        xmlFree(buf);
-        return(-1);
-    }
-
-    xmlFree(buf);
-
-    ret = xmlSecMSCngASN1IntegerWrite(issuerNumberNode, &(cert->pCertInfo->SerialNumber));
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecMSCngASN1IntegerWrite", NULL);
-        return(-1);
-    }
-    return(0);
-}
-
-static xmlChar*
-xmlSecMSCngX509SKIWrite(PCCERT_CONTEXT cert) {
-    xmlChar *res = NULL;
-    DWORD dwSize;
-    BYTE *bSKI = NULL;
-    PCERT_EXTENSION pCertExt;
-
-    xmlSecAssert2(cert != NULL, NULL);
+    xmlSecAssert2(buf != NULL, -1);
 
     /* First check if the SKI extension actually exists, otherwise we get a SHA1 hash of the cert */
     pCertExt = CertFindExtension(szOID_SUBJECT_KEY_IDENTIFIER, cert->pCertInfo->cExtension, cert->pCertInfo->rgExtension);
     if (pCertExt == NULL) {
         xmlSecMSCngLastError("CertFindExtension", NULL);
-        return (NULL);
+        return (0);
     }
 
-    if (!CertGetCertificateContextProperty(cert, CERT_KEY_IDENTIFIER_PROP_ID, NULL, &dwSize) || dwSize < 1) {
+    rv = CertGetCertificateContextProperty(cert, CERT_KEY_IDENTIFIER_PROP_ID, NULL, &dwSize);
+    if (!rv || dwSize <= 0) {
         xmlSecMSCngLastError("CertGetCertificateContextProperty", NULL);
-        return (NULL);
-    }
-    bSKI = xmlMalloc(dwSize);
-    if (bSKI == NULL) {
-        xmlSecMallocError(dwSize, NULL);
-        return (NULL);
+        return(-1);
     }
 
-    if (!CertGetCertificateContextProperty(cert, CERT_KEY_IDENTIFIER_PROP_ID, bSKI, &dwSize)) {
+    ret = xmlSecBufferSetMaxSize(buf, dwSize);
+    if (ret < 0) {
+        xmlSecInternalError2("xmlSecBufferSetMaxSize", NULL,
+            "size=%lu", dwSize);
+        return(-1);
+    }
+
+    if (!CertGetCertificateContextProperty(cert, CERT_KEY_IDENTIFIER_PROP_ID, xmlSecBufferGetData(buf), &dwSize)) {
         xmlSecMSCngLastError("CertGetCertificateContextProperty", NULL);
-        xmlFree(bSKI);
-        return (NULL);
-    }
-
-    if (bSKI == NULL) {
-        return(NULL);
-    }
-
-    res = xmlSecBase64Encode(bSKI, dwSize, 0);
-    if(res == NULL) {
-        xmlSecInternalError("xmlSecBase64Encode", NULL);
-        xmlFree(bSKI);
-        return(NULL);
-    }
-    xmlFree(bSKI);
-
-    return(res);
-}
-
-static int
-xmlSecMSCngX509SKINodeWrite(PCCERT_CONTEXT cert, xmlNodePtr node) {
-    xmlChar *buf = NULL;
-    xmlNodePtr cur = NULL;
-    int ret;
-
-    xmlSecAssert2(cert != NULL, -1);
-    xmlSecAssert2(node != NULL, -1);
-
-    buf = xmlSecMSCngX509SKIWrite(cert);
-    if(buf == NULL) {
-        xmlSecInternalError("xmlSecMSCngX509SKIWrite", NULL);
         return(-1);
     }
 
-    cur = xmlSecEnsureEmptyChild(node, xmlSecNodeX509SKI, xmlSecDSigNs);
-    if(cur == NULL) {
-        xmlSecInternalError("xmlSecEnsureEmptyChild", NULL);
-        xmlFree(buf);
+    ret = xmlSecBufferSetSize(buf, dwSize);
+    if (ret < 0) {
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL,
+            "size=%lu", dwSize);
         return(-1);
     }
-
-    ret = xmlSecNodeEncodeAndSetContent(cur, buf);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecNodeEncodeAndSetContent", NULL);
-        xmlFree(buf);
-        return(-1);
-    }
-
-    xmlFree(buf);
     return(0);
 }
 
+#define XMLSEC_MSCNG_SHA1_DIGEST_SIZE 20
+
 static int
-xmlSecMSCngX509CRLNodeWrite(PCCRL_CONTEXT crl, xmlNodePtr node,
-        xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    xmlSecAssert2(crl != NULL, -1);
-    xmlSecAssert2(node != NULL, -1);
-    xmlSecAssert2(keyInfoCtx != NULL, -1);
+xmlSecMSCngX509DigestWrite(PCCERT_CONTEXT cert, const xmlChar* algorithm, xmlSecBufferPtr buf) {
+    xmlSecByte md[XMLSEC_MSCNG_SHA1_DIGEST_SIZE];
+    DWORD mdLen = sizeof(md);
+    BOOL status;
+    int ret;
 
-    xmlSecNotImplementedError(NULL);
+    xmlSecAssert2(cert != NULL, -1);
+    xmlSecAssert2(buf != NULL, -1);
 
-    return(-1);
+    /* only SHA1 algorithm is currently supported */
+    if (xmlStrcmp(algorithm, xmlSecHrefSha1) != 0) {
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
+            "href=%s", xmlSecErrorsSafeString(algorithm));
+        return(-1);
+    }
+
+    status = CertGetCertificateContextProperty(cert,
+        CERT_SHA1_HASH_PROP_ID,
+        md,
+        &mdLen);
+    if ((!status) || (mdLen != sizeof(md))) {
+        xmlSecMSCngLastError("CertGetCertificateContextProperty", NULL);
+        return(-1);
+    }
+
+    ret = xmlSecBufferSetData(buf, md, mdLen);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecBufferSetData", NULL);
+        return(-1);
+    }
+
+    /* success */
+    return(0);
+}
+
+
+typedef struct _xmlSecMSCngKeyDataX5099WriteContext {
+    HCERTSTORE store;
+    PCCERT_CONTEXT crt;
+    PCCRL_CONTEXT crl;
+    int doneCrts;
+    int doneCrls;
+} xmlSecMSCngKeyDataX5099WriteContext;
+
+/* xmlSecKeyDataX509Write: returns 1 on success, 0 if no more certs/crls are available,
+ * or a negative value if an error occurs.
+ */
+static int
+xmlSecMSCngKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x509Value,
+                            int content, void* context) {
+    xmlSecMSCngKeyDataX5099WriteContext* ctx;
+    int ret;
+
+    xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataX509Id), -1);
+    xmlSecAssert2(x509Value != NULL, -1);
+    xmlSecAssert2(context != NULL, -1);
+
+    ctx = (xmlSecMSCngKeyDataX5099WriteContext*)context;
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->store != NULL, -1);
+
+    /* try to get and write the next cert if availablle */
+    if (ctx->doneCrts == 0) {
+        ctx->crt = CertEnumCertificatesInStore(ctx->store, ctx->crt);
+        if (ctx->crt != NULL) {
+            if (XMLSEC_X509DATA_HAS_EMPTY_NODE(content, XMLSEC_X509DATA_CERTIFICATE_NODE)) {
+                xmlSecAssert2(ctx->crt->pbCertEncoded != NULL, -1);
+                xmlSecAssert2(ctx->crt->cbCertEncoded > 0, -1);
+
+                ret = xmlSecBufferSetData(&(x509Value->cert), ctx->crt->pbCertEncoded, ctx->crt->cbCertEncoded);
+                if (ret < 0) {
+                    xmlSecInternalError("xmlSecBufferSetData", xmlSecKeyDataGetName(data));
+                    return(-1);
+                }
+            }
+            if (XMLSEC_X509DATA_HAS_EMPTY_NODE(content, XMLSEC_X509DATA_SKI_NODE)) {
+                ret = xmlSecMSCngX509SKIWrite(ctx->crt, &(x509Value->ski));
+                if (ret < 0) {
+                    xmlSecInternalError("xmlSecMSCngX509SKIWrite", xmlSecKeyDataGetName(data));
+                    return(-1);
+                }
+            }
+            if (XMLSEC_X509DATA_HAS_EMPTY_NODE(content, XMLSEC_X509DATA_SUBJECTNAME_NODE)) {
+                xmlSecAssert2(x509Value->subject == NULL, -1);
+                xmlSecAssert2(ctx->crt->pCertInfo != NULL, -1);
+
+                x509Value->subject = xmlSecMSCngX509NameWrite(&(ctx->crt->pCertInfo->Subject));
+                if (x509Value->subject == NULL) {
+                    xmlSecInternalError("xmlSecMSCngX509NameWrite(subject)", xmlSecKeyDataGetName(data));
+                    return(-1);
+                }
+            }
+            if (XMLSEC_X509DATA_HAS_EMPTY_NODE(content, XMLSEC_X509DATA_ISSUERSERIAL_NODE)) {
+                xmlSecAssert2(x509Value->issuerName == NULL, -1);
+                xmlSecAssert2(x509Value->issuerSerial == NULL, -1);
+                xmlSecAssert2(ctx->crt->pCertInfo != NULL, -1);
+
+                x509Value->issuerName = xmlSecMSCngX509NameWrite(&(ctx->crt->pCertInfo->Issuer));
+                if (x509Value->issuerName == NULL) {
+                    xmlSecInternalError("xmlSecMSCngX509NameWrite(issuer name)", xmlSecKeyDataGetName(data));
+                    return(-1);
+                }
+                x509Value->issuerSerial = xmlSecMSCngASN1IntegerWrite(&(ctx->crt->pCertInfo->SerialNumber));
+                if (x509Value->issuerSerial == NULL) {
+                    xmlSecInternalError("xmlSecMSCngASN1IntegerWrite(issuer serial))", xmlSecKeyDataGetName(data));
+                   return(-1);
+                }
+            }
+            if( (XMLSEC_X509DATA_HAS_EMPTY_NODE(content, XMLSEC_X509DATA_DIGEST_NODE)) && (x509Value->digestAlgorithm != NULL)) {
+                ret = xmlSecMSCngX509DigestWrite(ctx->crt, x509Value->digestAlgorithm, &(x509Value->digest));
+                if (ret < 0) {
+                    xmlSecInternalError("xmlSecMSCngX509DigestWrite", xmlSecKeyDataGetName(data));
+                    return(-1);
+                }
+            }
+            /* done */
+            return(1);
+        } else {
+            ctx->doneCrts = 1;
+        }
+    }
+
+    /* try to get and write the next crl if availablle */
+    if (ctx->doneCrls == 0) {
+        ctx->crl = CertEnumCRLsInStore(ctx->store, ctx->crl);
+        if (ctx->crl != NULL) {
+            if ((content & XMLSEC_X509DATA_CRL_NODE) != 0) {
+                xmlSecAssert2(ctx->crl->pbCrlEncoded != NULL, -1);
+                xmlSecAssert2(ctx->crl->cbCrlEncoded > 0, -1);
+
+                ret = xmlSecBufferSetData(&(x509Value->crl), ctx->crl->pbCrlEncoded, ctx->crl->cbCrlEncoded);
+                if (ret < 0) {
+                    xmlSecInternalError("xmlSecBufferSetData", xmlSecKeyDataGetName(data));
+                    return(-1);
+                }
+            }
+            /* done */
+            return(1);
+        } else {
+            ctx->doneCrls = 1;
+        }
+    }
+
+    /* no more certs or crls */
+    xmlSecAssert2(ctx->doneCrts != 0, -1);
+    xmlSecAssert2(ctx->doneCrls != 0, -1);
+    return(0);
 }
 
 static int
 xmlSecMSCngKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
                                xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    int content;
-    xmlSecKeyDataPtr keyData;
+    xmlSecMSCngKeyDataX5099WriteContext context;
     xmlSecMSCngX509DataCtxPtr x509DataCtx;
-    PCCERT_CONTEXT cert = NULL;
-    HCERTSTORE certs;
-    PCCRL_CONTEXT crlCtx = NULL;
+    xmlSecKeyDataPtr data;
     int ret;
 
     xmlSecAssert2(id == xmlSecMSCngKeyDataX509Id, -1);
     xmlSecAssert2(key != NULL, -1);
-    xmlSecAssert2(node != NULL, -1);
-    xmlSecAssert2(keyInfoCtx != NULL, -1);
 
-    content = xmlSecX509DataGetNodeContent(node, keyInfoCtx);
-    if(content < 0) {
-        xmlSecInternalError("xmlSecX509DataGetNodeContent",
+    /* get x509 data */
+    data = xmlSecKeyGetData(key, id);
+    if (data == NULL) {
+        /* no x509 data in the key */
+        return(0);
+    }
+    x509DataCtx = xmlSecMSCngX509DataGetCtx(data);
+    xmlSecAssert2(x509DataCtx != NULL, -1);
+
+    /* setup context */
+    context.store = x509DataCtx->hMemStore;
+    context.crt = NULL;
+    context.crl = NULL;
+    context.doneCrts = context.doneCrls = 0;
+
+    ret = xmlSecKeyDataX509XmlWrite(data, node, keyInfoCtx,
+        xmlSecBase64GetDefaultLineSize(), 1, /* add line breaks */
+        xmlSecMSCngKeyDataX509Write, &context);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecKeyDataX509XmlWrite",
             xmlSecKeyDataKlassGetName(id));
         return(-1);
     }
-    if(content == 0) {
-        /* no content -> writer the default */
-        content = XMLSEC_X509DATA_DEFAULT;
-    }
 
-    keyData = xmlSecKeyGetData(key, id);
-    if(keyData == NULL) {
-        /* nothing to do */
-        return(0);
-    }
-
-    xmlSecAssert2(xmlSecKeyDataCheckId(keyData, xmlSecMSCngKeyDataX509Id), -1);
-    x509DataCtx = xmlSecMSCngX509DataGetCtx(keyData);
-    certs = x509DataCtx->hMemStore;
-
-    /* write certificates */
-    while((cert = CertEnumCertificatesInStore(certs, cert)) != NULL) {
-        if((content & XMLSEC_X509DATA_CERTIFICATE_NODE) != 0) {
-            ret = xmlSecMSCngX509CertificateNodeWrite(cert, node, keyInfoCtx);
-            if(ret < 0) {
-                xmlSecInternalError("xmlSecMSCngX509CertificateNodeWrite",
-                    xmlSecKeyDataKlassGetName(id));
-                return(-1);
-            }
-        }
-
-        if((content & XMLSEC_X509DATA_SUBJECTNAME_NODE) != 0) {
-            ret = xmlSecMSCngX509SubjectNameNodeWrite(cert, node);
-            if(ret < 0) {
-                xmlSecInternalError("xmlSecMSCngX509SubjectNameNodeWrite",
-                    xmlSecKeyDataKlassGetName(id));
-                return(-1);
-            }
-        }
-
-        if((content & XMLSEC_X509DATA_ISSUERSERIAL_NODE) != 0) {
-            ret = xmlSecMSCngX509IssuerSerialNodeWrite(cert, node);
-            if(ret< 0) {
-                xmlSecInternalError("xmlSecMSCngX509IssuerSerialNodeWrite",
-                    xmlSecKeyDataKlassGetName(id));
-                return(-1);
-            }
-        }
-
-        if((content & XMLSEC_X509DATA_SKI_NODE) != 0) {
-            ret = xmlSecMSCngX509SKINodeWrite(cert, node);
-            if(ret < 0) {
-                xmlSecInternalError("xmlSecMSCngX509SKINodeWrite",
-                    xmlSecKeyDataKlassGetName(id));
-                return(-1);
-            }
-        }
-    }
-
-    /* write CRLs */
-    while((crlCtx = CertEnumCRLsInStore(certs, crlCtx)) != NULL) {
-        ret = xmlSecMSCngX509CRLNodeWrite(crlCtx, node, keyInfoCtx);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecMSCngX509CRLNodeWrite",
-                xmlSecKeyDataKlassGetName(id));
-            return(-1);
-        }
-    }
-
+    /* success */
     return(0);
 }
 
@@ -1258,6 +950,7 @@ xmlSecMSCngKeyDataX509DebugDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(output != NULL);
 
     xmlSecNotImplementedError(NULL);
+    /* ignore error */
 }
 
 static void
@@ -1266,6 +959,7 @@ xmlSecMSCngKeyDataX509DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(output != NULL);
 
     xmlSecNotImplementedError(NULL);
+    /* ignore error */
 }
 
 static xmlSecKeyDataKlass xmlSecMSCngKeyDataX509Klass = {
@@ -1274,7 +968,7 @@ static xmlSecKeyDataKlass xmlSecMSCngKeyDataX509Klass = {
 
     /* data */
     xmlSecNameX509Data,
-    xmlSecKeyDataUsageKeyInfoNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyInfoNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
                                                 /* xmlSecKeyDataUsage usage; */
     xmlSecHrefX509Data,                         /* const xmlChar* href; */
     xmlSecNodeX509Data,                         /* const xmlChar* dataNodeName; */
@@ -1344,29 +1038,35 @@ xmlSecMSCngKeyDataRawX509CertBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         return(-1);
     }
 
-    data = xmlSecKeyEnsureData(key, xmlSecMSCngKeyDataX509Id);
+    data = xmlSecKeyDataCreate(xmlSecMSCngKeyDataX509Id);
     if(data == NULL) {
-        xmlSecInternalError("xmlSecKeyEnsureData",
-            xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecKeyDataCreate(xmlSecKeyDataCreate)", xmlSecKeyDataKlassGetName(id));
         CertFreeCertificateContext(cert);
         return(-1);
     }
 
     ret = xmlSecMSCngKeyDataX509AdoptCert(data, cert);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptCert",
-            xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptCert", xmlSecKeyDataKlassGetName(id));
         CertFreeCertificateContext(cert);
+        xmlSecKeyDataDestroy(data);
         return(-1);
     }
+    cert = NULL; /* owned by data now */
 
-    ret = xmlSecMSCngKeyDataX509VerifyAndExtractKey(data, key, keyInfoCtx);
+    ret = xmlSecMSCnVerifyAndAdoptX509KeyData(key, data, keyInfoCtx);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecMSCngKeyDataX509VerifyAndExtractKey",
-            xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecMSCnVerifyAndAdoptX509KeyData", xmlSecKeyDataKlassGetName(id));
+        xmlSecKeyDataDestroy(data);
         return(-1);
+    } else if (ret != 1) {
+        /* no errors but key was not found and data was not adopted */
+        xmlSecKeyDataDestroy(data);
+        return(0);
     }
+    data = NULL; /* owned by data now */
 
+    /* success */
     return(0);
 }
 
@@ -1376,7 +1076,7 @@ static xmlSecKeyDataKlass xmlSecMSCngKeyDataRawX509CertKlass = {
 
     /* data */
     xmlSecNameRawX509Cert,
-    xmlSecKeyDataUsageRetrievalMethodNodeBin,
+    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageRetrievalMethodNodeBin,
                                                 /* xmlSecKeyDataUsage usage; */
     xmlSecHrefRawX509Cert,                      /* const xmlChar* href; */
     NULL,                                       /* const xmlChar* dataNodeName; */

@@ -1,18 +1,15 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- *
+ * X509 certificates support functions for GnuTLS.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2010-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:x509utils
- * @Short_description: X509 certificates support functions for GnuTLS. 
- * @Stability: Private
- *
+ * SECTION:x509
  */
 
 #include "globals.h"
@@ -26,16 +23,12 @@
 #include <errno.h>
 #include <time.h>
 
-#include <libxml/tree.h>
-
-
-
 #include <gnutls/gnutls.h>
+#include <gnutls/abstract.h>
 #include <gnutls/x509.h>
 #include <gnutls/pkcs12.h>
 
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/xmltree.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/keysmngr.h>
@@ -47,8 +40,8 @@
 #include <xmlsec/gnutls/crypto.h>
 #include <xmlsec/gnutls/x509.h>
 
-#include "x509utils.h"
-
+#include "private.h"
+#include "../cast_helpers.h"
 
 /**************************************************************************
  *
@@ -168,30 +161,39 @@ xmlSecGnuTLSX509CrlListDebugXmlDumpItem(xmlSecPtr ptr, FILE* output) {
  *
  ************************************************************************/
 
-/* HACK: gnutls doesn't have cert duplicate function, so we simply 
+/* HACK: gnutls doesn't have cert duplicate function, so we simply
  write cert out and then read it back */
 gnutls_x509_crt_t
 xmlSecGnuTLSX509CertDup(gnutls_x509_crt_t src) {
-    xmlChar * buf = NULL;
+    xmlSecBuffer buf;
     gnutls_x509_crt_t res = NULL;
+    int ret;
 
     xmlSecAssert2(src != NULL, NULL);
 
-    buf = xmlSecGnuTLSX509CertBase64DerWrite(src, 0);
-    if(buf == NULL) {
-        xmlSecInternalError("xmlSecGnuTLSX509CertBase64DerWrite", NULL);
+    ret = xmlSecBufferInitialize(&buf, 0);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize", NULL);
         return (NULL);
     }
 
-    res = xmlSecGnuTLSX509CertBase64DerRead(buf);
+    ret = xmlSecGnuTLSX509CertDerWrite(src, &buf);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecGnuTLSX509CertDerWrite", NULL);
+        xmlSecBufferFinalize(&buf);
+        return (NULL);
+    }
+
+    res = xmlSecGnuTLSX509CertRead(xmlSecBufferGetData(&buf), xmlSecBufferGetSize(&buf),
+        xmlSecKeyDataFormatCertDer);
     if(res == NULL) {
-        xmlSecInternalError("xmlSecGnuTLSX509CertBase64DerRead", NULL);
-        xmlFree(buf);
+        xmlSecInternalError("xmlSecGnuTLSX509CertRead", NULL);
+        xmlSecBufferFinalize(&buf);
         return (NULL);
     }
 
     /* done */
-    xmlFree(buf);
+    xmlSecBufferFinalize(&buf);
     return (res);
 }
 
@@ -307,73 +309,48 @@ xmlSecGnuTLSX509CertGetIssuerSerial(gnutls_x509_crt_t cert) {
     return(res);
 }
 
-xmlChar *
-xmlSecGnuTLSX509CertGetSKI(gnutls_x509_crt_t cert) {
-    xmlChar * res = NULL;
-    xmlSecByte* buf = NULL;
-    size_t bufSize = 0;
-    unsigned int critical = 0;
+int
+xmlSecGnuTLSX509DigestWrite(gnutls_x509_crt_t cert, const xmlChar* algorithm, xmlSecBufferPtr buf) {
+    gnutls_digest_algorithm_t digestAlgo;
+    xmlSecByte md[XMLSEC_GNUTLS_MAX_DIGEST_SIZE];
+    size_t mdLen = sizeof(md);
+    xmlSecSize mdSize;
     int err;
-
-    xmlSecAssert2(cert != NULL, NULL);
-
-    /* get ski size */
-    err = gnutls_x509_crt_get_subject_key_id(cert, NULL, &bufSize, &critical);
-    if((err != GNUTLS_E_SHORT_MEMORY_BUFFER) || (bufSize <= 0)) {
-        xmlSecGnuTLSError("gnutls_x509_crt_get_subject_key_id", err, NULL);
-        return(NULL);
-    }
-
-    /* allocate buffer */
-    buf = (xmlSecByte *)xmlMalloc(bufSize + 1);
-    if(buf == NULL) {
-        xmlSecMallocError(bufSize + 1, NULL);
-        return(NULL);
-    }
-
-    /* write it out */
-    err = gnutls_x509_crt_get_subject_key_id(cert, buf, &bufSize, &critical);
-    if(err != GNUTLS_E_SUCCESS) {
-        xmlSecGnuTLSError("gnutls_x509_crt_get_subject_key_id", err, NULL);
-        xmlFree(buf);
-        return(NULL);
-    }
-
-    /* convert to string */
-    res = xmlSecBase64Encode(buf, bufSize, 0);
-    if(res == NULL) {
-        xmlSecInternalError("xmlSecBase64Encode", NULL);
-        xmlFree(buf);
-        return(NULL);
-    }
-
-    /* done */
-    xmlFree(buf);
-    return(res);
-}
-
-
-gnutls_x509_crt_t
-xmlSecGnuTLSX509CertBase64DerRead(xmlChar* buf) {
     int ret;
 
-    xmlSecAssert2(buf != NULL, NULL);
+    xmlSecAssert2(cert != NULL, -1);
+    xmlSecAssert2(buf != NULL, -1);
 
-    /* usual trick with base64 decoding "in-place" */
-    ret = xmlSecBase64Decode(buf, (xmlSecByte*)buf, xmlStrlen(buf));
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecBase64Decode", NULL);
-        return(NULL);
+    digestAlgo = xmlSecGnuTLSX509GetDigestFromAlgorithm(algorithm);
+    if(digestAlgo == GNUTLS_DIG_UNKNOWN) {
+        xmlSecInternalError("xmlSecGnuTLSX509GetDigestFromAlgorithm", NULL);
+        return(-1);
     }
 
-    return(xmlSecGnuTLSX509CertRead((const xmlSecByte*)buf, ret, xmlSecKeyDataFormatCertDer));
+    err = gnutls_x509_crt_get_fingerprint(cert, digestAlgo, md, &mdLen);
+    if((err != GNUTLS_E_SUCCESS) || (mdLen <= 0)) {
+        xmlSecGnuTLSError("gnutls_x509_crt_get_fingerprint", err, NULL);
+        return(-1);
+    }
+    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(mdLen, mdSize, return(-1), NULL);
+
+    ret = xmlSecBufferSetData(buf, md, mdSize);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferSetData", NULL);
+        return(-1);
+    }
+
+    /* success */
+    return(0);
 }
+
 
 gnutls_x509_crt_t
 xmlSecGnuTLSX509CertRead(const xmlSecByte* buf, xmlSecSize size, xmlSecKeyDataFormat format) {
     gnutls_x509_crt_t cert = NULL;
     gnutls_x509_crt_fmt_t fmt;
     gnutls_datum_t data;
+    unsigned int bufLen;
     int err;
 
     xmlSecAssert2(buf != NULL, NULL);
@@ -391,9 +368,10 @@ xmlSecGnuTLSX509CertRead(const xmlSecByte* buf, xmlSecSize size, xmlSecKeyDataFo
         break;
     default:
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
-                         "format=%d", (int)format);
+            "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
         return(NULL);
     }
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, bufLen, return(NULL), NULL);
 
     /* read cert */
     err = gnutls_x509_crt_init(&cert);
@@ -403,7 +381,8 @@ xmlSecGnuTLSX509CertRead(const xmlSecByte* buf, xmlSecSize size, xmlSecKeyDataFo
     }
 
     data.data = (unsigned char*)buf;
-    data.size = size;
+    data.size = bufLen;
+
     err = gnutls_x509_crt_import(cert, &data, fmt);
     if(err != GNUTLS_E_SUCCESS) {
         xmlSecGnuTLSError("gnutls_x509_crt_import", err, NULL);
@@ -414,48 +393,44 @@ xmlSecGnuTLSX509CertRead(const xmlSecByte* buf, xmlSecSize size, xmlSecKeyDataFo
     return(cert);
 }
 
-xmlChar*
-xmlSecGnuTLSX509CertBase64DerWrite(gnutls_x509_crt_t cert, int base64LineWrap) {
-    xmlChar * res = NULL;
-    xmlSecByte* buf = NULL;
-    size_t bufSize = 0;
+int
+xmlSecGnuTLSX509CertDerWrite(gnutls_x509_crt_t cert, xmlSecBufferPtr buf) {
+    size_t bufSizeT = 0;
+    xmlSecSize bufSize;
+    xmlSecByte * bufData;
+    int ret;
     int err;
 
-    xmlSecAssert2(cert != NULL, NULL);
+    xmlSecAssert2(cert != NULL, -1);
+    xmlSecAssert2(buf != NULL, -1);
 
     /* get size */
-    err = gnutls_x509_crt_export(cert, GNUTLS_X509_FMT_DER, NULL, &bufSize);
-    if((err != GNUTLS_E_SHORT_MEMORY_BUFFER) || (bufSize <= 0)) {
+    err = gnutls_x509_crt_export(cert, GNUTLS_X509_FMT_DER, NULL, &bufSizeT);
+    if((err != GNUTLS_E_SHORT_MEMORY_BUFFER) || (bufSizeT <= 0)) {
         xmlSecGnuTLSError("gnutls_x509_crt_export(GNUTLS_X509_FMT_DER)", err, NULL);
-        return(NULL);
+        return(-1);
     }
+    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(bufSizeT, bufSize, return(-1), NULL);
 
     /* allocate buffer */
-    buf = (xmlSecByte *)xmlMalloc(bufSize + 1);
-    if(buf == NULL) {
-        xmlSecMallocError(bufSize + 1, NULL);
-        return(NULL);
+    ret = xmlSecBufferSetSize(buf, bufSize);
+    if(ret < 0) {
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL,
+            "bufSize=" XMLSEC_SIZE_FMT, bufSize);
+        return(-1);
     }
+    bufData = xmlSecBufferGetData(buf);
+    xmlSecAssert2(bufData != NULL, -1);
 
     /* write it out */
-    err = gnutls_x509_crt_export(cert, GNUTLS_X509_FMT_DER, buf, &bufSize);
+    err = gnutls_x509_crt_export(cert, GNUTLS_X509_FMT_DER, bufData, &bufSizeT);
     if(err != GNUTLS_E_SUCCESS) {
         xmlSecGnuTLSError("gnutls_x509_crt_export(GNUTLS_X509_FMT_DER)", err, NULL);
-        xmlFree(buf);
-        return(NULL);
+        return(-1);
     }
 
-    /* convert to string */
-    res = xmlSecBase64Encode(buf, bufSize, base64LineWrap);
-    if(res == NULL) {
-        xmlSecInternalError("xmlSecBase64Encode", NULL);
-        xmlFree(buf);
-        return(NULL);
-    }
-
-    /* done */
-    xmlFree(buf);
-    return(res);
+    /* success */
+    return(0);
 }
 
 void
@@ -522,36 +497,333 @@ xmlSecGnuTLSX509CertDebugXmlDump(gnutls_x509_crt_t cert, FILE* output) {
     }
 }
 
+
+/*************************************************************************
+ *
+ * x509 certs search ctx
+ *
+ ************************************************************************/
+int xmlSecGnuTLSX509FindCertCtxInitialize(xmlSecGnuTLSX509FindCertCtxPtr ctx,
+    const xmlChar *subjectName,
+    const xmlChar *issuerName, const xmlChar *issuerSerial,
+    const xmlSecByte * ski, xmlSecSize skiSize
+) {
+    xmlSecAssert2(ctx != NULL, -1);
+
+    memset(ctx, 0, sizeof(*ctx));
+
+    /* TODO: figure out if we can convert the X509 Data into any faster representation */
+    if(subjectName != NULL) {
+        ctx->subjectName = subjectName;
+    }
+    if((issuerName != NULL) && (issuerSerial != NULL)) {
+        ctx->issuerName = issuerName;
+        ctx->issuerSerial = issuerSerial;
+    }
+    if((ski != NULL) && (skiSize > 0)) {
+        ctx->ski = ski;
+        ctx->skiSize = skiSize;
+    }
+
+    /* done! */
+    return(0);
+}
+
+int
+xmlSecGnuTLSX509FindCertCtxInitializeFromValue(xmlSecGnuTLSX509FindCertCtxPtr ctx, xmlSecKeyX509DataValuePtr x509Value) {
+    int ret;
+
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(x509Value != NULL, -1);
+
+    ret = xmlSecGnuTLSX509FindCertCtxInitialize(ctx,
+                x509Value->subject,
+                x509Value->issuerName, x509Value->issuerSerial,
+                xmlSecBufferGetData(&(x509Value->ski)), xmlSecBufferGetSize(&(x509Value->ski))
+    );
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecGnuTLSX509FindCertCtxInitialize", NULL);
+        xmlSecGnuTLSX509FindCertCtxFinalize(ctx);
+        return(-1);
+    }
+
+    if((!xmlSecBufferIsEmpty(&(x509Value->digest))) && (x509Value->digestAlgorithm != NULL)) {
+        ctx->digestValue = xmlSecBufferGetData(&(x509Value->digest));
+        ctx->digestLen = xmlSecBufferGetSize(&(x509Value->digest));
+
+        ctx->digestAlgo = xmlSecGnuTLSX509GetDigestFromAlgorithm(x509Value->digestAlgorithm);
+        if(ctx->digestAlgo == GNUTLS_DIG_UNKNOWN) {
+            xmlSecInternalError("xmlSecGnuTLSX509GetDigestFromAlgorithm", NULL);
+            xmlSecGnuTLSX509FindCertCtxFinalize(ctx);
+            return(-1);
+        }
+    }
+
+    return(0);
+}
+
+void xmlSecGnuTLSX509FindCertCtxFinalize(xmlSecGnuTLSX509FindCertCtxPtr ctx) {
+    xmlSecAssert(ctx != NULL);
+
+    memset(ctx, 0, sizeof(*ctx));
+}
+
+
+static int
+xmlSecGnuTLSX509MatchBySubjectName(gnutls_x509_crt_t cert, const xmlChar* subjectName) {
+    xmlChar * certSubjectName;
+
+    xmlSecAssert2(cert != NULL, -1);
+
+    if(subjectName == NULL) {
+        return(0);
+    }
+
+    certSubjectName = xmlSecGnuTLSX509CertGetSubjectDN(cert);
+    if(certSubjectName == NULL) {
+        return(0);
+    }
+
+    /* returns 1 if equal */
+    if(xmlSecGnuTLSX509DnsEqual(subjectName, certSubjectName) != 1) {
+        xmlFree(certSubjectName);
+        return(0);
+    }
+
+    /* success */
+    xmlFree(certSubjectName);
+    return(1);
+}
+
+static int
+xmlSecGnuTLSX509MatchByIssuer(gnutls_x509_crt_t cert,  const xmlChar* issuerName, const xmlChar* issuerSerial) {
+    xmlChar* certIssuerSerial;
+    xmlChar* certIssuerName;
+
+    xmlSecAssert2(cert != NULL, -1);
+
+    if((issuerName == NULL) || (issuerSerial == NULL)) {
+        return(0);
+    }
+
+    certIssuerName = xmlSecGnuTLSX509CertGetIssuerDN(cert);
+    if((certIssuerName == NULL) || (xmlSecGnuTLSX509DnsEqual(issuerName, certIssuerName) != 1)) {
+        xmlFree(certIssuerName);
+        return(0);
+    }
+    xmlFree(certIssuerName);
+
+    certIssuerSerial = xmlSecGnuTLSX509CertGetIssuerSerial(cert);
+    if((certIssuerSerial == NULL) || (!xmlStrEqual(issuerSerial, certIssuerSerial))) {
+        xmlFree(certIssuerSerial);
+        return(0);
+    }
+    xmlFree(certIssuerSerial);
+
+    /* success */
+    return(1);
+}
+
+static int
+xmlSecGnuTLSX509MatchBySki(gnutls_x509_crt_t cert, const xmlSecByte* ski, xmlSecSize skiSize) {
+    int ret;
+
+    xmlSecAssert2(cert != NULL, -1);
+
+    if((ski == NULL) || (skiSize <= 0)) {
+        return(0);
+    }
+
+    /* TODO: get rid of xmlSecGnuTLSX509CertCompareSKI */
+    /* returns 0 if matched */
+    ret = xmlSecGnuTLSX509CertCompareSKI(cert, ski, skiSize);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecGnuTLSX509CertCompareSKI", NULL);
+        return(-1);
+    } else if(ret != 0) {
+        /* not match */
+        return(0);
+    }
+
+    /* success */
+    return(1);
+}
+
+static int
+xmlSecGnuTLSX509MatchByDigest(gnutls_x509_crt_t cert, const xmlSecByte * digestValue, size_t digestLen, gnutls_digest_algorithm_t digestAlgo) {
+    xmlSecByte md[XMLSEC_GNUTLS_MAX_DIGEST_SIZE];
+    size_t mdLen = sizeof(md);
+    int err;
+
+    xmlSecAssert2(cert != NULL, -1);
+
+    if((digestValue == NULL) || (digestLen <= 0) || (digestAlgo == GNUTLS_DIG_UNKNOWN)) {
+        return(0);
+    }
+
+    err = gnutls_x509_crt_get_fingerprint(cert, digestAlgo, md, &mdLen);
+    if((err != GNUTLS_E_SUCCESS) || (mdLen <= 0)) {
+        xmlSecGnuTLSError("gnutls_x509_crt_get_fingerprint", err, NULL);
+        return(-1);
+    }
+    if((mdLen != digestLen) || (memcmp(md, digestValue, digestLen) != 0)) {
+        return(0);
+    }
+
+    /* success */
+    return(1);
+}
+
+
+/* returns 1 for match, 0 for no match, and a negative value if an error occurs */
+int
+xmlSecGnuTLSX509FindCertCtxMatch(xmlSecGnuTLSX509FindCertCtxPtr ctx, gnutls_x509_crt_t cert) {
+    int ret;
+
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(cert != NULL, -1);
+
+    ret = xmlSecGnuTLSX509MatchBySubjectName(cert, ctx->subjectName);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecGnuTLSX509MatchBySubjectName", NULL);
+        return(-1);
+    } else if(ret == 1) {
+        /* success! */
+        return(1);
+    }
+
+    ret = xmlSecGnuTLSX509MatchByIssuer(cert, ctx->issuerName, ctx->issuerSerial);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecGnuTLSX509MatchByIssuer", NULL);
+        return(-1);
+    } else if(ret == 1) {
+        /* success! */
+        return(1);
+    }
+
+    ret = xmlSecGnuTLSX509MatchBySki(cert, ctx->ski, ctx->skiSize);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecGnuTLSX509MatchBySki", NULL);
+        return(-1);
+    } else if(ret == 1) {
+        /* success! */
+        return(1);
+    }
+
+    ret = xmlSecGnuTLSX509MatchByDigest(cert, ctx->digestValue, ctx->digestLen, ctx->digestAlgo);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecGnuTLSX509MatchByDigest", NULL);
+        return(-1);
+    } else if(ret == 1) {
+        /* success! */
+        return(1);
+    }
+
+    /* not found */
+    return(0);
+}
+
+gnutls_digest_algorithm_t
+xmlSecGnuTLSX509GetDigestFromAlgorithm(const xmlChar* href) {
+    /* use SHA256 by default */
+    if(href == NULL) {
+#ifndef XMLSEC_NO_SHA256
+        return(GNUTLS_DIG_SHA256);
+#else  /* XMLSEC_NO_SHA256 */
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
+            "sha256 disabled and href=%s", xmlSecErrorsSafeString(href));
+        return(GNUTLS_DIG_UNKNOWN);
+#endif /* XMLSEC_NO_SHA256 */
+    } else
+
+#ifndef XMLSEC_NO_SHA1
+    if(xmlStrcmp(href, xmlSecHrefSha1) == 0) {
+        return(GNUTLS_DIG_SHA1);
+    } else
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA224
+    if(xmlStrcmp(href, xmlSecHrefSha224) == 0) {
+        return(GNUTLS_DIG_SHA224);
+    } else
+#endif /* XMLSEC_NO_SHA224 */
+
+#ifndef XMLSEC_NO_SHA256
+    if(xmlStrcmp(href, xmlSecHrefSha256) == 0) {
+        return(GNUTLS_DIG_SHA256);
+    } else
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+    if(xmlStrcmp(href, xmlSecHrefSha384) == 0) {
+        return(GNUTLS_DIG_SHA384);
+    } else
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+    if(xmlStrcmp(href, xmlSecHrefSha512) == 0) {
+        return(GNUTLS_DIG_SHA512);
+    } else
+#endif /* XMLSEC_NO_SHA512 */
+
+#ifndef XMLSEC_NO_SHA3
+    if(xmlStrcmp(href, xmlSecHrefSha3_224) == 0) {
+        return(GNUTLS_DIG_SHA3_224);
+    } else if(xmlStrcmp(href, xmlSecHrefSha3_256) == 0) {
+        return(GNUTLS_DIG_SHA3_256);
+    } else if(xmlStrcmp(href, xmlSecHrefSha3_384) == 0) {
+        return(GNUTLS_DIG_SHA3_384);
+    } else if(xmlStrcmp(href, xmlSecHrefSha3_512) == 0) {
+        return(GNUTLS_DIG_SHA3_512);
+    } else
+
+#endif /* XMLSEC_NO_SHA3 */
+    {
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
+            "href=%s", xmlSecErrorsSafeString(href));
+        return(GNUTLS_DIG_UNKNOWN);
+    }
+}
+
 /*************************************************************************
  *
  * x509 crls utils/helpers
  *
  ************************************************************************/
 
-/* HACK: gnutls doesn't have crl duplicate function, so we simply 
+/* HACK: gnutls doesn't have crl duplicate function, so we simply
  write crl out and then read it back */
 gnutls_x509_crl_t
 xmlSecGnuTLSX509CrlDup(gnutls_x509_crl_t src) {
-    xmlChar * buf = NULL;
+    xmlSecBuffer buf;
     gnutls_x509_crl_t res = NULL;
+    int ret;
 
     xmlSecAssert2(src != NULL, NULL);
 
-    buf = xmlSecGnuTLSX509CrlBase64DerWrite(src, 0);
-    if(buf == NULL) {
-        xmlSecInternalError("xmlSecGnuTLSX509CrlBase64DerWrite", NULL);
+    ret = xmlSecBufferInitialize(&buf, 0);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize", NULL);
         return (NULL);
     }
 
-    res = xmlSecGnuTLSX509CrlBase64DerRead(buf);
+    ret = xmlSecGnuTLSX509CrlDerWrite(src, &buf);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecGnuTLSX509CrlDerWrite", NULL);
+        xmlSecBufferFinalize(&buf);
+        return (NULL);
+    }
+
+    res = xmlSecGnuTLSX509CrlRead(xmlSecBufferGetData(&buf), xmlSecBufferGetSize(&buf),
+        xmlSecKeyDataFormatCertDer);
     if(res == NULL) {
-        xmlSecInternalError("xmlSecGnuTLSX509CrlBase64DerRead", NULL);
-        xmlFree(buf);
+        xmlSecInternalError("xmlSecGnuTLSX509CrlRead", NULL);
+        xmlSecBufferFinalize(&buf);
         return (NULL);
     }
 
     /* done */
-    xmlFree(buf);
+    xmlSecBufferFinalize(&buf);
     return (res);
 }
 
@@ -590,26 +862,11 @@ xmlSecGnuTLSX509CrlGetIssuerDN(gnutls_x509_crl_t crl) {
 }
 
 gnutls_x509_crl_t
-xmlSecGnuTLSX509CrlBase64DerRead(xmlChar* buf) {
-    int ret;
-
-    xmlSecAssert2(buf != NULL, NULL);
-
-    /* usual trick with base64 decoding "in-place" */
-    ret = xmlSecBase64Decode(buf, (xmlSecByte*)buf, xmlStrlen(buf));
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecBase64Decode", NULL);
-        return(NULL);
-    }
-
-    return(xmlSecGnuTLSX509CrlRead((const xmlSecByte*)buf, ret, xmlSecKeyDataFormatCertDer));
-}
-
-gnutls_x509_crl_t
 xmlSecGnuTLSX509CrlRead(const xmlSecByte* buf, xmlSecSize size, xmlSecKeyDataFormat format) {
     gnutls_x509_crl_t crl = NULL;
     gnutls_x509_crt_fmt_t fmt;
     gnutls_datum_t data;
+    unsigned int bufLen;
     int err;
 
     xmlSecAssert2(buf != NULL, NULL);
@@ -627,9 +884,10 @@ xmlSecGnuTLSX509CrlRead(const xmlSecByte* buf, xmlSecSize size, xmlSecKeyDataFor
         break;
     default:
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
-                         "format=%d", (int)format);
+            "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
         return(NULL);
     }
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, bufLen, return(NULL), NULL);
 
     /* read crl */
     err = gnutls_x509_crl_init(&crl);
@@ -639,7 +897,7 @@ xmlSecGnuTLSX509CrlRead(const xmlSecByte* buf, xmlSecSize size, xmlSecKeyDataFor
     }
 
     data.data = (unsigned char*)buf;
-    data.size = size;
+    data.size = bufLen;
     err = gnutls_x509_crl_import(crl, &data, fmt);
     if(err != GNUTLS_E_SUCCESS) {
         xmlSecGnuTLSError("gnutls_x509_crl_import", err, NULL);
@@ -650,48 +908,44 @@ xmlSecGnuTLSX509CrlRead(const xmlSecByte* buf, xmlSecSize size, xmlSecKeyDataFor
     return(crl);
 }
 
-xmlChar*
-xmlSecGnuTLSX509CrlBase64DerWrite(gnutls_x509_crl_t crl, int base64LineWrap) {
-    xmlChar * res = NULL;
-    xmlSecByte* buf = NULL;
-    size_t bufSize = 0;
+int
+xmlSecGnuTLSX509CrlDerWrite(gnutls_x509_crl_t crl, xmlSecBufferPtr buf) {
+    size_t bufSizeT = 0;
+    xmlSecSize bufSize;
+    xmlSecByte * bufData;
+    int ret;
     int err;
 
-    xmlSecAssert2(crl != NULL, NULL);
+    xmlSecAssert2(crl != NULL, -1);
+    xmlSecAssert2(buf != NULL, -1);
 
     /* get size */
-    err = gnutls_x509_crl_export(crl, GNUTLS_X509_FMT_DER, NULL, &bufSize);
-    if((err != GNUTLS_E_SHORT_MEMORY_BUFFER) || (bufSize <= 0)) {
-        xmlSecGnuTLSError("gnutls_x509_crl_export(GNUTLS_X509_FMT_DER)", err, NULL);
-        return(NULL);
+    err = gnutls_x509_crl_export(crl, GNUTLS_X509_FMT_DER, NULL, &bufSizeT);
+    if((err != GNUTLS_E_SHORT_MEMORY_BUFFER) || (bufSizeT <= 0)) {
+        xmlSecGnuTLSError("ggnutls_x509_crl_export(GNUTLS_X509_FMT_DER)", err, NULL);
+        return(-1);
     }
+    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(bufSizeT, bufSize, return(-1), NULL);
 
     /* allocate buffer */
-    buf = (xmlSecByte *)xmlMalloc(bufSize + 1);
-    if(buf == NULL) {
-        xmlSecMallocError(bufSize + 1, NULL);
-        return(NULL);
+    ret = xmlSecBufferSetSize(buf, bufSize);
+    if(ret < 0) {
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL,
+            "bufSize=" XMLSEC_SIZE_FMT, bufSize);
+        return(-1);
     }
+    bufData = xmlSecBufferGetData(buf);
+    xmlSecAssert2(bufData != NULL, -1);
 
     /* write it out */
-    err = gnutls_x509_crl_export(crl, GNUTLS_X509_FMT_DER, buf, &bufSize);
+    err = gnutls_x509_crl_export(crl,GNUTLS_X509_FMT_DER, bufData, &bufSizeT);
     if(err != GNUTLS_E_SUCCESS) {
-        xmlSecGnuTLSError("gnutls_x509_crl_export(GNUTLS_X509_FMT_DER)", err, NULL);
-        xmlFree(buf);
-        return(NULL);
+        xmlSecGnuTLSError("ggnutls_x509_crl_export(GNUTLS_X509_FMT_DER)", err, NULL);
+        return(-1);
     }
 
-    /* convert to string */
-    res = xmlSecBase64Encode(buf, bufSize, base64LineWrap);
-    if(res == NULL) {
-        xmlSecInternalError("xmlSecBase64Encode", NULL);
-        xmlFree(buf);
-        return(NULL);
-    }
-
-    /* done */
-    xmlFree(buf);
-    return(res);
+    /* success */
+    return(0);
 }
 
 void
@@ -731,10 +985,10 @@ xmlSecGnuTLSX509CrlDebugXmlDump(gnutls_x509_crl_t crl, FILE* output) {
  * Misc. utils/helpers
  *
  ************************************************************************/
+#define XMLSEC_GNUTLS_INT_TO_STR_MAX_SIZE 64
 xmlChar*
 xmlSecGnuTLSASN1IntegerWrite(const unsigned char * data, size_t len) {
     xmlChar *res = NULL;
-    int resLen = 64; /* not more than 64 chars */
     unsigned long long int val = 0;
     size_t ii = 0;
     int shift = 0;
@@ -748,13 +1002,13 @@ xmlSecGnuTLSASN1IntegerWrite(const unsigned char * data, size_t len) {
         val |= ((unsigned long long)data[ii - 1]) << shift;
     }
 
-    res = (xmlChar*)xmlMalloc(resLen + 1);
+    res = (xmlChar*)xmlMalloc(XMLSEC_GNUTLS_INT_TO_STR_MAX_SIZE + 1);
     if(res == NULL) {
-        xmlSecMallocError(resLen + 1, NULL);
+        xmlSecMallocError(XMLSEC_GNUTLS_INT_TO_STR_MAX_SIZE + 1, NULL);
         return(NULL);
     }
 
-    ret = xmlStrPrintf(res, resLen, "%llu", val);
+    ret = xmlStrPrintf(res, XMLSEC_GNUTLS_INT_TO_STR_MAX_SIZE, "%llu", val);
     if(ret < 0) {
         xmlSecXmlError("xmlStrPrintf", NULL);
         xmlFree(res);
@@ -770,17 +1024,16 @@ xmlSecGnuTLSASN1IntegerWrite(const unsigned char * data, size_t len) {
  *
  ************************************************************************/
 int
-xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
-                             const char *pwd,
-                             gnutls_x509_privkey_t * priv_key,
-                             gnutls_x509_crt_t * key_cert,
-                             xmlSecPtrListPtr certsList)
-{
+xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, const char *pwd,
+    gnutls_x509_privkey_t * priv_key, gnutls_x509_crt_t * key_cert, xmlSecPtrListPtr certsList,
+    xmlChar ** keyName
+) {
     gnutls_pkcs12_t pkcs12 = NULL;
     gnutls_pkcs12_bag_t bag = NULL;
     gnutls_x509_crt_t cert = NULL;
     gnutls_datum_t datum;
     xmlSecSize certsSize;
+    unsigned int dataLen;
     int res = -1;
     int idx;
     int err;
@@ -793,6 +1046,10 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     xmlSecAssert2(key_cert!= NULL, -1);
     xmlSecAssert2((*key_cert) == NULL, -1);
     xmlSecAssert2(certsList != NULL, -1);
+    xmlSecAssert2(keyName != NULL, -1);
+    xmlSecAssert2((*keyName) == NULL, -1);
+
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(dataSize, dataLen, return(-1), NULL);
 
     /* read pkcs12 in internal structure */
     err = gnutls_pkcs12_init(&pkcs12);
@@ -802,7 +1059,7 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     }
 
     datum.data = (unsigned char *)data;
-    datum.size = dataSize;
+    datum.size = dataLen;
     err = gnutls_pkcs12_import(pkcs12, &datum, GNUTLS_X509_FMT_DER, 0);
     if(err != GNUTLS_E_SUCCESS) {
         xmlSecGnuTLSError("gnutls_pkcs12_import", err, NULL);
@@ -820,7 +1077,7 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     for(idx = 0; ; ++idx) {
         int bag_type;
         int elements_in_bag;
-        int ii;
+        unsigned int num, ii;
 
         err = gnutls_pkcs12_bag_init(&bag);
         if(err != GNUTLS_E_SUCCESS) {
@@ -857,7 +1114,8 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
             xmlSecGnuTLSError("gnutls_pkcs12_bag_get_count", elements_in_bag, NULL);
             goto done;
         }
-        for(ii = 0; ii < elements_in_bag; ++ii) {
+        XMLSEC_SAFE_CAST_INT_TO_UINT(elements_in_bag, num, goto done, NULL);
+        for(ii = 0; ii < num; ++ii) {
             bag_type = gnutls_pkcs12_bag_get_type(bag, ii);
             if(bag_type < 0) {
                 xmlSecGnuTLSError("gnutls_pkcs12_bag_get_type", bag_type, NULL);
@@ -888,6 +1146,22 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
                     if(err != GNUTLS_E_SUCCESS) {
                         xmlSecGnuTLSError("gnutls_x509_privkey_import_pkcs8", err, NULL);
                         goto done;
+                    }
+
+                    if((*keyName) == NULL) {
+                        char * name = NULL;
+                        err = gnutls_pkcs12_bag_get_friendly_name(bag, ii, &name);
+                        if(err != GNUTLS_E_SUCCESS) {
+                            xmlSecGnuTLSError("gnutls_pkcs12_bag_get_friendly_name", err, NULL);
+                            goto done;
+                        }
+                        if(name != NULL) {
+                            (*keyName) = xmlStrdup(BAD_CAST name);
+                            if((*keyName) == NULL) {
+                                xmlSecStrdupError(BAD_CAST name, NULL);
+                                goto done;
+                            }
+                        }
                     }
                 }
                 break;
@@ -996,63 +1270,6 @@ done:
     return(res);
 }
 
-xmlSecKeyDataPtr
-xmlSecGnuTLSCreateKeyDataAndAdoptPrivKey(gnutls_x509_privkey_t priv_key) {
-    xmlSecKeyDataPtr res = NULL;
-    int key_alg;
-    int ret;
-
-    xmlSecAssert2(priv_key != NULL, NULL);
-
-    /* create key value data */
-    key_alg = gnutls_x509_privkey_get_pk_algorithm(priv_key);
-    if(key_alg < 0) {
-        xmlSecGnuTLSError("gnutls_x509_privkey_get_pk_algorithm", key_alg < 0, NULL);
-        return (NULL);
-    }
-    switch(key_alg) {
-#ifndef XMLSEC_NO_RSA
-    case GNUTLS_PK_RSA:
-        res = xmlSecKeyDataCreate(xmlSecGnuTLSKeyDataRsaId);
-        if(res == NULL) {
-            xmlSecInternalError("xmlSecKeyDataCreate(KeyDataRsaId)", NULL);
-            return(NULL);
-        }
-
-        ret = xmlSecGnuTLSKeyDataRsaAdoptPrivateKey(res, priv_key);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecGnuTLSKeyDataRsaAdoptPrivateKey(KeyDataRsaId)", NULL);
-            xmlSecKeyDataDestroy(res);
-            return(NULL);
-        }
-        break;
-#endif /* XMLSEC_NO_RSA */
-
-#ifndef XMLSEC_NO_DSA
-    case GNUTLS_PK_DSA:
-        res = xmlSecKeyDataCreate(xmlSecGnuTLSKeyDataDsaId);
-        if(res == NULL) {
-            xmlSecInternalError("xmlSecKeyDataCreate(KeyDataDsaId)", NULL);
-            return(NULL);
-        }
-
-        ret = xmlSecGnuTLSKeyDataDsaAdoptPrivateKey(res, priv_key);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecGnuTLSKeyDataDsaAdoptPrivateKey(KeyDataDsaId)", NULL);
-            xmlSecKeyDataDestroy(res);
-            return(NULL);
-        }
-        break;
-#endif /* XMLSEC_NO_DSA */
-    default:
-        xmlSecInvalidIntegerTypeError("key_alg", key_alg, "supported algorithm", NULL);
-        return(NULL);
-    }
-
-    /* done */
-    return(res);
-}
-
 /*************************************************************************
  *
  * LDAP DN parser
@@ -1120,7 +1337,7 @@ xmlSecGnuTLSDnAttrrsFind(const xmlSecGnuTLSDnAttr * attrs,
 
 int
 xmlSecGnuTLSDnAttrsEqual(const xmlSecGnuTLSDnAttr * ll, xmlSecSize llSize,
-                         const xmlSecGnuTLSDnAttr * rr, xmlSecSize rrSize) 
+                         const xmlSecGnuTLSDnAttr * rr, xmlSecSize rrSize)
 {
     xmlSecSize llNum = 0;
     xmlSecSize rrNum = 0;
@@ -1170,7 +1387,7 @@ xmlSecGnuTLSDnAttrsEqual(const xmlSecGnuTLSDnAttr * ll, xmlSecSize llSize,
 /*
 Distinguished name syntax
 
-The formal syntax for a Distinguished Name (DN) is based on RFC 2253. 
+The formal syntax for a Distinguished Name (DN) is based on RFC 2253.
 The Backus Naur Form (BNF) syntax is defined as follows:
 
     <name> ::= <name-component> ( <spaced-separator> )
@@ -1220,7 +1437,7 @@ White-space characters (spaces) might be present on either side of the comma or
 semicolon. The white-space characters are ignored, and the semicolon is replaced
 with a comma.
 
-In addition, space (' ' ASCII 32) characters may be present either before or 
+In addition, space (' ' ASCII 32) characters may be present either before or
 after a '+' or '='. These space characters are ignored when parsing.
 */
 enum xmlSecGnuTLSDnParseState {
@@ -1244,7 +1461,7 @@ xmlSecGnuTLSDnAttrsParse(const xmlChar * dn,
     xmlChar ch;
     enum xmlSecGnuTLSDnParseState state;
     int slash;
-    xmlSecSize pos;
+    xmlSecSize size, pos;
     int res = -1;
 
     xmlSecAssert2(dn != NULL, -1);
@@ -1252,9 +1469,10 @@ xmlSecGnuTLSDnAttrsParse(const xmlChar * dn,
     xmlSecAssert2(attrsSize > 0, -1);
 
     /* allocate buffer, we don't need more than string */
-    tmp = (xmlChar *)xmlMalloc(xmlStrlen(dn) + 1);
+    size = xmlSecStrlen(dn);
+    tmp = (xmlChar *)xmlMalloc(size + 1);
     if(tmp == NULL) {
-        xmlSecMallocError(xmlStrlen(dn) + 1, NULL);
+        xmlSecMallocError(size + 1, NULL);
         goto done;
     }
 
@@ -1308,7 +1526,7 @@ xmlSecGnuTLSDnAttrsParse(const xmlChar * dn,
                 if(ch != '\"') {
                     state = xmlSecGnuTLSDnParseState_String;
                     slash = 0;
-                    --dn; /* small hack, so we can look at the same char 
+                    --dn; /* small hack, so we can look at the same char
                            again with the correct state */
                 } else {
                     state = xmlSecGnuTLSDnParseState_QuotedString;
@@ -1350,7 +1568,7 @@ xmlSecGnuTLSDnAttrsParse(const xmlChar * dn,
             } else if(ch == '\\') {
                 slash = 1;
             } else if(ch == '\"') {
-                *(p) = '\0'; 
+                *(p) = '\0';
                 /* don't remove spaces for quoted string */
 
                 attrs[pos].value = xmlStrdup(tmp);
@@ -1387,20 +1605,9 @@ xmlSecGnuTLSDnAttrsParse(const xmlChar * dn,
 
     /* check end state */
     if(state != xmlSecGnuTLSDnParseState_BeforeNameComponent) {
-        xmlSecInvalidIntegerDataError("state", state, "xmlSecGnuTLSDnParseState_BeforeNameComponent", NULL);
+        xmlSecUnsupportedEnumValueError("state", state, NULL);
         goto done;
     }
-
-    /* debug
-    {
-        xmlSecSize ii;
-        for(ii = 0; ii < attrsSize; ++ii) {
-            if(attrs[ii].key != NULL) {
-                printf("DEBUG: attrs - %s=>%s\n", attrs[ii].key, attrs[ii].value);
-            }
-        }
-    }
-    */
 
     /* done */
     res = 0;
@@ -1414,6 +1621,3 @@ done:
 
 
 #endif /* XMLSEC_NO_X509 */
-
-
-

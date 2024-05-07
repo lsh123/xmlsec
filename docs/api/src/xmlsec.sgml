@@ -34,14 +34,12 @@ http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
 <!ENTITY xmlsec-templates 		"base/templates.xml">
 <!ENTITY xmlsec-transforms 		"base/transforms.xml">
 <!ENTITY xmlsec-version 		"base/version.xml">
-<!ENTITY xmlsec-x509                    "base/x509.xml">
 <!ENTITY xmlsec-xmldsig 		"base/xmldsig.xml">
 <!ENTITY xmlsec-xmlenc 			"base/xmlenc.xml">
 <!ENTITY xmlsec-xmlsec 			"base/xmlsec.xml">
 <!ENTITY xmlsec-xmltree 		"base/xmltree.xml">
 
 <!ENTITY xmlsec-openssl-app 		"openssl/app.xml">
-<!ENTITY xmlsec-openssl-bn 		"openssl/bn.xml">
 <!ENTITY xmlsec-openssl-crypto		"openssl/crypto.xml">
 <!ENTITY xmlsec-openssl-evp 		"openssl/evp.xml">
 <!ENTITY xmlsec-openssl-x509 		"openssl/x509.xml">
@@ -54,11 +52,10 @@ http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
 <!ENTITY xmlsec-gcrypt-crypto 		"gcrypt/crypto.xml">
 
 <!ENTITY xmlsec-nss-app 		"nss/app.xml">
-<!ENTITY xmlsec-nss-bignum		"nss/bignum.xml">
 <!ENTITY xmlsec-nss-crypto 		"nss/crypto.xml">
 <!ENTITY xmlsec-nss-keysstore		"nss/keysstore.xml">
 <!ENTITY xmlsec-nss-pkikeys		"nss/pkikeys.xml">
-<!ENTITY xmlsec-nss-x509		"nss/x509.xml">
+<!ENTITY xmlsec-nss-x509		   "nss/x509.xml">
 
 <!ENTITY xmlsec-mscrypto-app 		"mscrypto/app.xml">
 <!ENTITY xmlsec-mscrypto-certkeys	"mscrypto/certkeys.xml">
@@ -122,7 +119,7 @@ http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
       </author>
     </authorgroup>
     <copyright>
-      <year>2002-2017</year>
+      <year>2002-2022</year>
       <holder>Aleksey Sanin</holder>
     </copyright>	
     <legalnotice>
@@ -241,7 +238,6 @@ http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
     <xi:include href="&xmlsec-xmlenc;"/>
     <xi:include href="&xmlsec-xmlsec;"/>
     <xi:include href="&xmlsec-xmltree;"/>
-    <xi:include href="&xmlsec-x509;"/>
     </chapter>
 
     <chapter id="xmlsec-openssl-ref">
@@ -251,7 +247,6 @@ http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
     build by extracting comments from the code sources. </para>
 
     <xi:include href="&xmlsec-openssl-app;"/>
-    <xi:include href="&xmlsec-openssl-bn;"/>
     <xi:include href="&xmlsec-openssl-crypto;"/>
     <xi:include href="&xmlsec-openssl-evp;"/>
     <xi:include href="&xmlsec-openssl-x509;"/>
@@ -285,7 +280,6 @@ http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
     build by extracting comments from the code sources. </para>
 
     <xi:include href="&xmlsec-nss-app;"/>
-    <xi:include href="&xmlsec-nss-bignum;"/>
     <xi:include href="&xmlsec-nss-crypto;"/>
     <xi:include href="&xmlsec-nss-keysstore;"/>
     <xi:include href="&xmlsec-nss-pkikeys;"/>

@@ -5,7 +5,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * SECTION:xmltree
@@ -32,7 +32,9 @@
 #include <xmlsec/base64.h>
 #include <xmlsec/errors.h>
 
-static const xmlChar*	g_xmlsec_xmltree_default_linefeed = xmlSecStringCR;
+#include "cast_helpers.h"
+
+static const xmlChar*    g_xmlsec_xmltree_default_linefeed = xmlSecStringCR;
 
 /**
  * xmlSecGetDefaultLineFeed:
@@ -58,6 +60,90 @@ void
 xmlSecSetDefaultLineFeed(const xmlChar *linefeed)
 {
     g_xmlsec_xmltree_default_linefeed = linefeed;
+}
+
+
+/**
+ * xmlSecGetNodeContentAndTrim:
+ * @cur:            the pointer to XML node.
+ *
+ * Reads @cur node content and trims it (both sides).
+ *
+ * Returns: trimmed node content or NULL if an error occurs.
+ */
+xmlChar*
+xmlSecGetNodeContentAndTrim(const xmlNodePtr cur) {
+    xmlChar * content;
+    xmlChar * bb;
+    xmlChar * ee;
+
+    content = xmlNodeGetContent(cur);
+    if(content == NULL) {
+        return(NULL);
+    }
+
+    /* ltrim */
+    bb = content;
+    while(((*bb) != '\0') && isspace(*bb)) { ++bb; }
+
+    /* rtrim */
+    ee = bb + xmlStrlen(bb);
+    while((ee != bb) && isspace(*(--ee))) { }
+    *(ee + 1) = '\0';
+
+    /* move string to the beggining */
+    if(content != bb) {
+        memmove(content, bb, (size_t)xmlStrlen(bb) + 1);
+    }
+    return(content);
+}
+
+/**
+ * xmlSecGetNodeContentAsSize:
+ * @cur:            the pointer to XML node.
+ * @defValue:       the default value that will be returned in @res if there is no node content.
+ * @res:            the pointer to the result value.
+ *
+ * Reads @cur node content and converts it to xmlSecSize value.
+ *
+ * Returns: 0 on success or -1 on error.
+ */
+int
+xmlSecGetNodeContentAsSize(const xmlNodePtr cur, xmlSecSize defValue, xmlSecSize* res) {
+    xmlChar *content;
+    long int val;
+    char* endptr = NULL;
+
+    xmlSecAssert2(cur != NULL, -1);
+    xmlSecAssert2(res != NULL, -1);
+
+    content = xmlNodeGetContent(cur);
+    if(content == NULL) {
+        (*res) = defValue;
+        return(0);
+    }
+
+    val = strtol((char*)content, &endptr, 10);
+    if((val < 0) || (val == LONG_MAX) || (endptr == NULL)) {
+        xmlSecInvalidNodeContentError(cur, NULL, "can't parse node content as size");
+        xmlFree(content);
+        return(-1);
+    }
+
+    /* skip spaces at the end */
+    while(isspace((int)(*endptr))) {
+        ++endptr;
+    }
+    if((content + xmlStrlen(content)) != BAD_CAST endptr) {
+        xmlSecInvalidNodeContentError(cur, NULL, "can't parse node content as size (extra characters at the end)");
+        xmlFree(content);
+        return(-1);
+    }
+    xmlFree(content);
+
+    /* success */
+    XMLSEC_SAFE_CAST_LONG_TO_SIZE(val, (*res), return(-1), NULL);
+    return(0);
 }
 
 /**
@@ -346,8 +432,6 @@ xmlSecEnsureEmptyChild(xmlNodePtr parent, const xmlChar *name, const xmlChar *ns
     /* if not found then either add next or add at the end */
     if(cur == NULL) {
         cur = xmlSecAddChild(parent, name, ns);
-    } else if((cur->next != NULL) && (cur->next->type == XML_TEXT_NODE)) {
-        cur = xmlSecAddNextSibling(cur->next, name, ns);
     } else {
         cur = xmlSecAddNextSibling(cur, name, ns);
     }
@@ -621,18 +705,20 @@ int
 xmlSecReplaceNodeBufferAndReturn(xmlNodePtr node, const xmlSecByte *buffer, xmlSecSize size, xmlNodePtr *replaced) {
     xmlNodePtr results = NULL;
     xmlNodePtr next = NULL;
-    int ret;
+    const xmlChar *oldenc;
+    int len;
+    xmlParserErrors ret;
 
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(node->parent != NULL, -1);
 
-    /* parse buffer in the context of node's parent (also see xmlSecParsePrepareCtxt):
-     * XML_PARSE_NONET  to support c14n
-     * XML_PARSE_NODICT to avoid problems with moving nodes around
-     * XML_PARSE_HUGE   to enable parsing of XML documents with large text nodes
-     */
-    ret = xmlParseInNodeContext(node->parent, (const char*)buffer, size,
-    		XML_PARSE_NONET | XML_PARSE_NODICT | XML_PARSE_HUGE, &results);
+    /* parse buffer in the context of node's parent */
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(size, len, return(-1), NULL);
+    oldenc = node->doc->encoding;
+    node->doc->encoding = NULL;
+    ret = xmlParseInNodeContext(node->parent, (const char*)buffer, len,
+            xmlSecParserGetDefaultOptions(), &results);
+    node->doc->encoding = oldenc;
     if(ret != XML_ERR_OK) {
         xmlSecXmlError("xmlParseInNodeContext", NULL);
         return(-1);
@@ -720,6 +806,7 @@ xmlSecAddIDs(xmlDocPtr doc, xmlNodePtr cur, const xmlChar** ids) {
                             xmlAddID(NULL, doc, name, attr);
                         } else if(tmp != attr) {
                             xmlSecInvalidStringDataError("id", name, "unique id (id already defined)", NULL);
+                            /* ignore error */
                         }
                         xmlFree(name);
                     }
@@ -829,7 +916,7 @@ xmlSecIsEmptyString(const xmlChar* str) {
     xmlSecAssert2(str != NULL, -1);
 
     for( ;*str != '\0'; ++str) {
-        if(!isspace((int)(*str))) {
+        if(!isspace((*str))) {
             return(0);
         }
     }
@@ -901,12 +988,15 @@ xmlSecGetQName(xmlNodePtr node, const xmlChar* href, const xmlChar* local) {
     }
 
     if((ns != NULL) && (ns->prefix != NULL)) {
-        xmlSecSize len;
+        xmlSecSize size;
+        int len;
 
         len = xmlStrlen(local) + xmlStrlen(ns->prefix) + 4;
-        qname = (xmlChar *)xmlMalloc(len);
+        XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, return(NULL), NULL);
+
+        qname = (xmlChar *)xmlMalloc(size);
         if(qname == NULL) {
-            xmlSecMallocError(len, NULL);
+            xmlSecMallocError(size, NULL);
             return(NULL);
         }
 
@@ -1019,7 +1109,10 @@ xmlSecQName2IntegerGetIntegerFromString(xmlSecQName2IntegerInfoConstPtr info,
 
     qnameLocalPart = xmlStrchr(qname, ':');
     if(qnameLocalPart != NULL) {
-        qnamePrefix = xmlStrndup(qname, (int)(qnameLocalPart - qname));
+        int qnameLen;
+
+        XMLSEC_SAFE_CAST_PTRDIFF_TO_INT((qnameLocalPart - qname), qnameLen, return(-1), NULL);
+        qnamePrefix = xmlStrndup(qname, qnameLen);
         if(qnamePrefix == NULL) {
             xmlSecStrdupError(qname, NULL);
             return(-1);
@@ -1423,7 +1516,10 @@ xmlSecQName2BitMaskGetBitMaskFromString(xmlSecQName2BitMaskInfoConstPtr info,
 
     qnameLocalPart = xmlStrchr(qname, ':');
     if(qnameLocalPart != NULL) {
-        qnamePrefix = xmlStrndup(qname, (int)(qnameLocalPart - qname));
+        int qnameLen;
+
+        XMLSEC_SAFE_CAST_PTRDIFF_TO_INT((qnameLocalPart - qname), qnameLen, return(-1), NULL);
+        qnamePrefix = xmlStrndup(qname, qnameLen);
         if(qnamePrefix == NULL) {
             xmlSecStrdupError(qname, NULL);
             return(-1);
@@ -1489,9 +1585,7 @@ xmlSecQName2BitMaskGetStringFromBitMask(xmlSecQName2BitMaskInfoConstPtr info,
     qnameInfo = xmlSecQName2BitMaskGetInfo(info, mask);
     if(qnameInfo == NULL) {
         xmlSecInternalError3("xmlSecQName2BitMaskGetInfo", NULL,
-                             "node=%s,mask=%d",
-                             xmlSecErrorsSafeString(node->name),
-                             mask);
+            "node=%s,mask=%u", xmlSecErrorsSafeString(node->name), mask);
         return(NULL);
     }
 
@@ -1684,7 +1778,7 @@ xmlSecQName2BitMaskDebugXmlDump(xmlSecQName2BitMaskInfoConstPtr info, xmlSecBitM
  * Windows string conversions
  *
  ************************************************************************/
-#ifdef WIN32
+#if defined(XMLSEC_WINDOWS)
 
 /**
  * xmlSecWin32ConvertUtf8ToUnicode:
@@ -1697,6 +1791,7 @@ xmlSecQName2BitMaskDebugXmlDump(xmlSecQName2BitMaskInfoConstPtr info, xmlSecBitM
 LPWSTR
 xmlSecWin32ConvertUtf8ToUnicode(const xmlChar* str) {
     LPWSTR res = NULL;
+    xmlSecSize size;
     int len;
     int ret;
 
@@ -1708,11 +1803,12 @@ xmlSecWin32ConvertUtf8ToUnicode(const xmlChar* str) {
         return(NULL);
     }
     len = ret + 1;
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, return(NULL), NULL);
 
     /* allocate buffer */
-    res = (LPWSTR)xmlMalloc(sizeof(WCHAR) * len);
+    res = (LPWSTR)xmlMalloc(sizeof(WCHAR) * size);
     if(res == NULL) {
-        xmlSecMallocError(sizeof(WCHAR) * len, NULL);
+        xmlSecMallocError(sizeof(WCHAR) * size, NULL);
         return(NULL);
     }
 
@@ -1738,6 +1834,7 @@ xmlSecWin32ConvertUtf8ToUnicode(const xmlChar* str) {
 xmlChar*
 xmlSecWin32ConvertUnicodeToUtf8(LPCWSTR str) {
     xmlChar * res = NULL;
+    xmlSecSize size;
     int len;
     int ret;
 
@@ -1749,11 +1846,12 @@ xmlSecWin32ConvertUnicodeToUtf8(LPCWSTR str) {
         return(NULL);
     }
     len = ret + 1;
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, return(NULL), NULL);
 
     /* allocate buffer */
-    res = (xmlChar*)xmlMalloc(sizeof(xmlChar) * len);
+    res = (xmlChar*)xmlMalloc(sizeof(xmlChar) * size);
     if(res == NULL) {
-        xmlSecMallocError(sizeof(xmlChar) * len, NULL);
+        xmlSecMallocError(sizeof(xmlChar) * size, NULL);
         return(NULL);
     }
 
@@ -1779,6 +1877,7 @@ xmlSecWin32ConvertUnicodeToUtf8(LPCWSTR str) {
 LPWSTR
 xmlSecWin32ConvertLocaleToUnicode(const char* str) {
     LPWSTR res = NULL;
+    xmlSecSize size;
     int len;
     int ret;
 
@@ -1789,12 +1888,13 @@ xmlSecWin32ConvertLocaleToUnicode(const char* str) {
     if(ret <= 0) {
         return(NULL);
     }
-    len = ret;
+    len = ret + 1;
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, return(NULL), NULL);
 
     /* allocate buffer */
-    res = (LPWSTR)xmlMalloc(sizeof(WCHAR) * len);
+    res = (LPWSTR)xmlMalloc(sizeof(WCHAR) * size);
     if(res == NULL) {
-        xmlSecMallocError(sizeof(WCHAR) * len, NULL);
+        xmlSecMallocError(sizeof(WCHAR) * size, NULL);
         return(NULL);
     }
 
@@ -1821,6 +1921,7 @@ xmlChar*
 xmlSecWin32ConvertLocaleToUtf8(const char * str) {
     LPWSTR strW = NULL;
     xmlChar * res = NULL;
+    xmlSecSize size;
     int len;
     int ret;
 
@@ -1838,11 +1939,12 @@ xmlSecWin32ConvertLocaleToUtf8(const char * str) {
         return(NULL);
     }
     len = ret + 1;
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, return(NULL), NULL);
 
     /* allocate buffer */
-    res = (xmlChar*)xmlMalloc(sizeof(xmlChar) * len);
+    res = (xmlChar*)xmlMalloc(sizeof(xmlChar) * size);
     if(res == NULL) {
-        xmlSecMallocError(sizeof(xmlChar) * len, NULL);
+        xmlSecMallocError(sizeof(xmlChar) * size, NULL);
         xmlFree(strW);
         return(NULL);
     }
@@ -1872,6 +1974,7 @@ char *
 xmlSecWin32ConvertUtf8ToLocale(const xmlChar* str) {
     LPWSTR strW = NULL;
     char * res = NULL;
+    xmlSecSize size;
     int len;
     int ret;
 
@@ -1889,11 +1992,12 @@ xmlSecWin32ConvertUtf8ToLocale(const xmlChar* str) {
         return(NULL);
     }
     len = ret + 1;
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, return(NULL), NULL);
 
     /* allocate buffer */
-    res = (char*)xmlMalloc(sizeof(char) * len);
+    res = (char*)xmlMalloc(sizeof(char) * size);
     if(res == NULL) {
-        xmlSecMallocError(sizeof(char) * len, NULL);
+        xmlSecMallocError(sizeof(char) * size, NULL);
         xmlFree(strW);
         return(NULL);
     }
@@ -1945,7 +2049,4 @@ xmlSecWin32ConvertUtf8ToTstr(const xmlChar*  str) {
 #endif /* UNICODE */
 }
 
-#endif /* WIN32 */
-
-
-
+#endif /* defined(XMLSEC_WINDOWS) */

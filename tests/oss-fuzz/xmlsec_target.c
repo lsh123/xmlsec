@@ -2,7 +2,7 @@
 #include <xmlsec/parser.h>
 
 void ignore (void* ctx, const char* msg, ...) {
-	  // Error handler to avoid spam of error messages from libxml parser.
+      // Error handler to avoid spam of error messages from libxml parser.
 }
 
 int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
@@ -10,7 +10,7 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
     xmlSecBufferPtr buf = xmlSecBufferCreate(size);
     xmlSecBufferSetData(buf, data, size);
     xmlDocPtr doc = xmlSecParseMemory(xmlSecBufferGetData(buf),
-		    xmlSecBufferGetSize(buf), 0);
+            xmlSecBufferGetSize(buf), 0);
 
     if (doc != NULL) xmlFreeDoc(doc);
     xmlSecBufferDestroy(buf);

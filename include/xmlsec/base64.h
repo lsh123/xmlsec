@@ -6,13 +6,14 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 #ifndef __XMLSEC_BASE64_H__
 #define __XMLSEC_BASE64_H__
 
 #include <libxml/tree.h>
 
+#include <xmlsec/exports.h>
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/transforms.h>
 
@@ -42,22 +43,28 @@ XMLSEC_EXPORT int               xmlSecBase64CtxInitialize       (xmlSecBase64Ctx
                                                                  int encode,
                                                                  int columns);
 XMLSEC_EXPORT void              xmlSecBase64CtxFinalize         (xmlSecBase64CtxPtr ctx);
-XMLSEC_EXPORT int               xmlSecBase64CtxUpdate           (xmlSecBase64CtxPtr ctx,
-                                                                 const xmlSecByte *in,
+XMLSEC_EXPORT int               xmlSecBase64CtxUpdate_ex        (xmlSecBase64CtxPtr ctx,
+                                                                 const xmlSecByte* in,
                                                                  xmlSecSize inSize,
-                                                                 xmlSecByte *out,
-                                                                 xmlSecSize outSize);
-XMLSEC_EXPORT int               xmlSecBase64CtxFinal            (xmlSecBase64CtxPtr ctx,
-                                                                 xmlSecByte *out,
-                                                                 xmlSecSize outSize);
+                                                                 xmlSecByte* out,
+                                                                 xmlSecSize outSize,
+                                                                 xmlSecSize* outWritten);
+
+XMLSEC_EXPORT int                xmlSecBase64CtxFinal_ex        (xmlSecBase64CtxPtr ctx,
+                                                                 xmlSecByte* out,
+                                                                 xmlSecSize outSize,
+                                                                 xmlSecSize* outWritten);
 
 /* Standalone routines to do base64 encode/decode "at once" */
-XMLSEC_EXPORT xmlChar*          xmlSecBase64Encode              (const xmlSecByte *buf,
-                                                                 xmlSecSize len,
+XMLSEC_EXPORT xmlChar*           xmlSecBase64Encode             (const xmlSecByte* in,
+                                                                 xmlSecSize inSize,
                                                                  int columns);
-XMLSEC_EXPORT int               xmlSecBase64Decode              (const xmlChar* str,
-                                                                 xmlSecByte *buf,
-                                                                 xmlSecSize len);
+XMLSEC_EXPORT int                xmlSecBase64Decode_ex          (const xmlChar* str,
+                                                                 xmlSecByte* out,
+                                                                 xmlSecSize outSize,
+                                                                 xmlSecSize* outWritten);
+XMLSEC_EXPORT int                xmlSecBase64DecodeInPlace      (xmlChar* str,
+                                                                 xmlSecSize* outWritten);
 
 #ifdef __cplusplus
 }

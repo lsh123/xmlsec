@@ -7,7 +7,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 #ifndef __XMLSEC_XMLENC_H__
 #define __XMLSEC_XMLENC_H__
@@ -19,6 +19,7 @@
 #include <libxml/tree.h>
 #include <libxml/parser.h>
 
+#include <xmlsec/exports.h>
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/buffer.h>
 #include <xmlsec/keys.h>
@@ -32,8 +33,8 @@ extern "C" {
 
 /**
  * xmlEncCtxMode:
- * @xmlEncCtxModeEncryptedData: the <enc:EncryptedData/> element procesing.
- * @xmlEncCtxModeEncryptedKey:  the <enc:EncryptedKey/> element processing.
+ * @xmlEncCtxModeEncryptedData: the &lt;enc:EncryptedData/&gt; element procesing.
+ * @xmlEncCtxModeEncryptedKey:  the &lt;enc:EncryptedKey/&gt; element processing.
  *
  * The #xmlSecEncCtx mode.
  */
@@ -42,6 +43,19 @@ typedef enum {
     xmlEncCtxModeEncryptedKey
 } xmlEncCtxMode;
 
+
+/**
+ * xmlSecEncFailureReason:
+ * @xmlSecEncFailureReasonUnknown:            the failure reason is unknown.
+ * @xmlSecEncFailureReasonKeyNotFound:        the key not found.
+ *
+ * XML Encryption processing failure reason. The application should use
+ * the returned value from the encrypt/decrypt functions first.
+ */
+typedef enum {
+    xmlSecEncFailureReasonUnknown = 0,
+    xmlSecEncFailureReasonKeyNotFound,
+} xmlSecEncFailureReason;
 
 /**
  * XMLSEC_ENC_RETURN_REPLACED_NODE:
@@ -61,31 +75,32 @@ typedef enum {
  * @keyInfoWriteCtx:            the writing key context (not used for signature verification).
  * @transformCtx:               the transforms processing context.
  * @defEncMethodId:             the default encryption method (used if
- *                              <enc:EncryptionMethod/> node is not present).
+ *                              &lt;enc:EncryptionMethod/&gt; node is not present).
  * @encKey:                     the signature key; application may set #encKey
  *                              before calling encryption/decryption functions.
  * @operation:                  the operation: encrypt or decrypt.
  * @result:                     the pointer to signature (not valid for signature verification).
  * @resultBase64Encoded:        the flag: if set then result in #result is base64 encoded.
- * @resultReplaced:             the flag: if set then resulted <enc:EncryptedData/>
- *                              or <enc:EncryptedKey/> node is added to the document.
+ * @resultReplaced:             the flag: if set then resulted &lt;enc:EncryptedData/&gt;
+ *                              or &lt;enc:EncryptedKey/&gt; node is added to the document.
  * @encMethod:                  the pointer to encryption transform.
  * @replacedNodeList: the first node of the list of replaced nodes depending on the nodeReplacementMode
- * @id:                         the ID attribute of <enc:EncryptedData/>
- *                              or <enc:EncryptedKey/> node.
- * @type:                       the Type attribute of <enc:EncryptedData/>
- *                              or <enc:EncryptedKey/> node.
- * @mimeType:                   the MimeType attribute of <enc:EncryptedData/>
- *                              or <enc:EncryptedKey/> node.
- * @encoding:                   the Encoding attributeof <enc:EncryptedData/>
- *                              or <enc:EncryptedKey/> node.
- * @recipient:                  the Recipient attribute of <enc:EncryptedKey/> node..
- * @carriedKeyName:             the CarriedKeyName attribute of <enc:EncryptedKey/> node.
- * @encDataNode:                the pointer to <enc:EncryptedData/>
- *                              or <enc:EncryptedKey/> node.
- * @encMethodNode:              the pointer to <enc:EncryptionMethod/> node.
- * @keyInfoNode:                the pointer to <enc:KeyInfo/> node.
- * @cipherValueNode:            the pointer to <enc:CipherValue/> node.
+ * @id:                         the ID attribute of &lt;enc:EncryptedData/&gt;
+ *                              or &lt;enc:EncryptedKey/&gt; node.
+ * @type:                       the Type attribute of &lt;enc:EncryptedData/&gt;
+ *                              or &lt;enc:EncryptedKey/&gt; node.
+ * @mimeType:                   the MimeType attribute of &lt;enc:EncryptedData/&gt;
+ *                              or &lt;enc:EncryptedKey/&gt; node.
+ * @encoding:                   the Encoding attributeof &lt;enc:EncryptedData/&gt;
+ *                              or &lt;enc:EncryptedKey/&gt; node.
+ * @recipient:                  the Recipient attribute of &lt;enc:EncryptedKey/&gt; node..
+ * @carriedKeyName:             the CarriedKeyName attribute of &lt;enc:EncryptedKey/&gt; node.
+ * @encDataNode:                the pointer to &lt;enc:EncryptedData/&gt;
+ *                              or &lt;enc:EncryptedKey/&gt; node.
+ * @encMethodNode:              the pointer to &lt;enc:EncryptionMethod/&gt; node.
+ * @failureReason:              the detailed failure reason.
+ * @keyInfoNode:                the pointer to &lt;enc:KeyInfo/&gt; node.
+ * @cipherValueNode:            the pointer to &lt;enc:CipherValue/&gt; node.
  * @reserved1:                  reserved for the future.
  *
  * XML Encryption context.
@@ -108,6 +123,7 @@ struct _xmlSecEncCtx {
     int                         resultBase64Encoded;
     int                         resultReplaced;
     xmlSecTransformPtr          encMethod;
+    xmlSecEncFailureReason      failureReason;
 
     /* attributes from EncryptedData or EncryptedKey */
     xmlChar*                    id;
@@ -148,11 +164,28 @@ XMLSEC_EXPORT int               xmlSecEncCtxUriEncrypt          (xmlSecEncCtxPtr
 XMLSEC_EXPORT int               xmlSecEncCtxDecrypt             (xmlSecEncCtxPtr encCtx,
                                                                  xmlNodePtr node);
 XMLSEC_EXPORT xmlSecBufferPtr   xmlSecEncCtxDecryptToBuffer     (xmlSecEncCtxPtr encCtx,
-                                                                 xmlNodePtr node                );
+                                                                 xmlNodePtr node);
 XMLSEC_EXPORT void              xmlSecEncCtxDebugDump           (xmlSecEncCtxPtr encCtx,
                                                                  FILE* output);
 XMLSEC_EXPORT void              xmlSecEncCtxDebugXmlDump        (xmlSecEncCtxPtr encCtx,
                                                                  FILE* output);
+
+XMLSEC_EXPORT xmlSecKeyPtr      xmlSecEncCtxDerivedKeyGenerate  (xmlSecEncCtxPtr encCtx,
+                                                                 xmlSecKeyDataId keyId,
+                                                                 xmlNodePtr node,
+                                                                 xmlSecKeyInfoCtxPtr keyInfoCtx);
+
+
+XMLSEC_EXPORT xmlSecKeyPtr      xmlSecEncCtxAgreementMethodGenerate(xmlSecEncCtxPtr encCtx,
+                                                                 xmlSecKeyDataId keyId,
+                                                                 xmlNodePtr node,
+                                                                 xmlSecKeyInfoCtxPtr keyInfoCtx);
+
+XMLSEC_EXPORT int               xmlSecEncCtxAgreementMethodXmlWrite(xmlSecEncCtxPtr encCtx,
+                                                                 xmlNodePtr node,
+                                                                 xmlSecKeyInfoCtxPtr keyInfoCtx);
+
+XMLSEC_EXPORT const char*       xmlSecEncCtxGetFailureReasonString(xmlSecEncFailureReason failureReason);
 
 #ifdef __cplusplus
 }
@@ -161,4 +194,3 @@ XMLSEC_EXPORT void              xmlSecEncCtxDebugXmlDump        (xmlSecEncCtxPtr
 #endif /* XMLSEC_NO_XMLENC */
 
 #endif /* __XMLSEC_XMLENC_H__ */
-

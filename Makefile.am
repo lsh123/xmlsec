@@ -49,6 +49,7 @@ EXTRA_DIST = \
 	ChangeLog \
 	Copyright \
 	HACKING \
+	README.md \
 	xmlsec-openssl.pc.in \
 	xmlsec-nss.pc.in\
 	xmlsec-gnutls.pc.in \
@@ -69,64 +70,71 @@ EXTRA_CLEAN = \
 
 ABS_SRCDIR=@abs_srcdir@
 ABS_BUILDDIR=@abs_builddir@
+XMLSEC_OPENSSL_TEST_CONFIG=@OPENSSL_TEST_CONFIG@
+XMLSEC_OPENSSL_VERSION=@OPENSSL_VERSION@
+
 if XMLSEC_NO_APPS_CRYPTO_DYNAMIC_LOADING
 PRECHECK_COMMANDS = \
+	export XMLSEC_OPENSSL_TEST_CONFIG="$(XMLSEC_OPENSSL_TEST_CONFIG)" && \
+	export XMLSEC_OPENSSL_VERSION="$(XMLSEC_OPENSSL_VERSION)" && \
 	cd $(ABS_SRCDIR) \
 	$(NULL)
 else
 PRECHECK_COMMANDS= \
-	export LD_LIBRARY_PATH="$(ABS_BUILDDIR)/src/.libs:$$LD_LIBRARY_PATH" ; \
-	for i in $(XMLSEC_CRYPTO_LIST) ; do \
-	    export LTDL_LIBRARY_PATH="$(ABS_BUILDDIR)/src/$$i/.libs:$$LTDL_LIBRARY_PATH" ; \
+	export XMLSEC_OPENSSL_TEST_CONFIG="$(XMLSEC_OPENSSL_TEST_CONFIG)" && \
+	export XMLSEC_OPENSSL_VERSION="$(XMLSEC_OPENSSL_VERSION)" && \
+	export LD_LIBRARY_PATH="$(ABS_BUILDDIR)/src/.libs:$$LD_LIBRARY_PATH" && \
+	for i in $(XMLSEC_CHECK_CRYPTO_LIST) ; do \
+		export LTDL_LIBRARY_PATH="$(ABS_BUILDDIR)/src/$$i/.libs:$$LTDL_LIBRARY_PATH" ; \
 	done && \
 	cd $(ABS_SRCDIR) \
-	$(NULL)	
+	$(NULL)
 endif
 CHECK_CRYPTO_LIST = \
-	$(XMLSEC_CRYPTO_LIST) \
+	$(XMLSEC_CHECK_CRYPTO_LIST) \
 	$(NULL)
 
 docs: docs-man
 	@(cd docs && $(MAKE) docs)
 
-docs-clean: 
+docs-clean:
 	@(cd docs && $(MAKE) clean)
 
-docs-man: 
+docs-man:
 	@(cd man && $(MAKE) docs)
 
 check: check-all check-info
 
-check-all: $(TEST_APP) 
+check-all: $(TEST_APP)
 	for crypto in $(CHECK_CRYPTO_LIST) ; do \
 		make check-crypto-$$crypto || exit 1 ; \
 	done
 
-check-crypto-%: $(TEST_APP) 
+check-crypto-%: $(TEST_APP)
 	@($(PRECHECK_COMMANDS) && \
-    echo "=================== Checking xmlsec-$* =================================" && \
-    $(SHELL) ./tests/testrun.sh \
-        $(ABS_SRCDIR)/tests/testKeys.sh \
-        $* \
-        $(ABS_SRCDIR)/tests \
-        $(ABS_BUILDDIR)/$(TEST_APP) der \
-    && \
-    $(SHELL) ./tests/testrun.sh \
-        $(ABS_SRCDIR)/tests/testDSig.sh \
-        $* \
-        $(ABS_SRCDIR)/tests \
-        $(ABS_BUILDDIR)/$(TEST_APP) \
-        der \
-    && \
-    $(SHELL) ./tests/testrun.sh \
-        $(ABS_SRCDIR)/tests/testEnc.sh \
-        $* \
-        $(ABS_SRCDIR)/tests \
-        $(ABS_BUILDDIR)/$(TEST_APP) \
-        der \
-    ; \
+	echo "=================== Checking xmlsec-$* =================================" && \
+	$(SHELL) ./tests/testrun.sh \
+		$(ABS_SRCDIR)/tests/testKeys.sh \
+		$* \
+		$(ABS_SRCDIR)/tests \
+		$(ABS_BUILDDIR)/$(TEST_APP) der \
+	&& \
+	$(SHELL) ./tests/testrun.sh \
+		$(ABS_SRCDIR)/tests/testDSig.sh \
+		$* \
+		$(ABS_SRCDIR)/tests \
+		$(ABS_BUILDDIR)/$(TEST_APP) \
+		der \
+	&& \
+	$(SHELL) ./tests/testrun.sh \
+		$(ABS_SRCDIR)/tests/testEnc.sh \
+		$* \
+		$(ABS_SRCDIR)/tests \
+		$(ABS_BUILDDIR)/$(TEST_APP) \
+		der \
+	; \
 	)
-	
+
 check-info:
 	@echo "---------------------------- ATTENTION -----------------------------------"
 	@echo "--- Some of the tests use resources located on external HTTP servers.  ---"
@@ -144,7 +152,7 @@ check-keys: $(TEST_APP)
 	    der \
 	)
 
-check-dsig: $(TEST_APP) 	
+check-dsig: $(TEST_APP)
 	@($(PRECHECK_COMMANDS) && \
 	$(SHELL) ./tests/testrun.sh \
 	    $(ABS_SRCDIR)/tests/testDSig.sh \
@@ -154,7 +162,7 @@ check-dsig: $(TEST_APP)
 	    der \
 	)
 
-check-enc: $(TEST_APP) 
+check-enc: $(TEST_APP)
 	@($(PRECHECK_COMMANDS) && \
 	$(SHELL) ./tests/testrun.sh \
 	    $(ABS_SRCDIR)/tests/testEnc.sh  \
@@ -171,9 +179,13 @@ memcheck-res:
 	@grep -i 'indirectly lost:' /tmp/*.log | sed 's/.*==.*== *//' | sort -u
 	@grep -i 'possibly lost:' /tmp/*.log | sed 's/.*==.*== *//' | sort -u
 	@grep -i 'still reachable:' /tmp/*.log | sed 's/.*==.*== *//' | sort -u
+	@grep -i 'used_suppression:' /tmp/*.log | sed 's/.*--.*-- *//' | sort -u
 
 memcheck: $(TEST_APP)
 	@(export DEBUG_MEMORY=1 && $(MAKE) check && $(MAKE) memcheck-res)
+
+memcheck-crypto-%: $(TEST_APP)
+	@(export DEBUG_MEMORY=1 && $(MAKE) check-crypto-$* && $(MAKE) memcheck-res)
 
 perfcheck: $(TEST_APP)
 	@(export PERF_TEST=10 && $(MAKE) check)
@@ -190,4 +202,3 @@ rpm: cleantar tar-release
 	@(unset CDPATH && rpmbuild -ta $(distdir).tar.gz)
 
 rpm-release: clean cleantar rpm
-	

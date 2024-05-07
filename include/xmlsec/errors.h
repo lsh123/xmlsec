@@ -6,10 +6,12 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 #ifndef __XMLSEC_ERRORS_H__
 #define __XMLSEC_ERRORS_H__
+
+#include <xmlsec/exports.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -240,6 +242,13 @@ extern "C" {
 #define XMLSEC_ERRORS_R_TRANSFORM_DISABLED              35
 
 /**
+ * XMLSEC_ERRORS_R_INVALID_ALGORITHM:
+ *
+ * Invalid or unsupported algorithm.
+ */
+#define XMLSEC_ERRORS_R_INVALID_ALGORITHM               36
+
+/**
  * XMLSEC_ERRORS_R_INVALID_KEY_DATA:
  *
  * Key data is invalid.
@@ -292,9 +301,16 @@ extern "C" {
  * XMLSEC_ERRORS_R_MAX_RETRIEVAL_TYPE_MISMATCH:
  *
  * The retrieved key data type does not match the one specified
- * in the <dsig:RetrievalMethod/> node.
+ * in the &lt;dsig:RetrievalMethod/&gt; node.
  */
 #define XMLSEC_ERRORS_R_MAX_RETRIEVAL_TYPE_MISMATCH     52
+
+/**
+ * XMLSEC_ERRORS_R_MAX_KEYINFOREFERENCE_LEVEL:
+ *
+ * Max allowed KeyInfoReference level reached.
+ */
+#define XMLSEC_ERRORS_R_MAX_KEYINFOREFERENCE_LEVEL        51
 
 /**
  * XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL:
@@ -346,16 +362,37 @@ extern "C" {
 #define XMLSEC_ERRORS_R_CERT_HAS_EXPIRED                76
 
 /**
+ * XMLSEC_ERRORS_R_CRL_VERIFY_FAILED:
+ *
+ * CRL verification failed.
+ */
+#define XMLSEC_ERRORS_R_CRL_VERIFY_FAILED              77
+
+/**
+ * XMLSEC_ERRORS_R_CRL_NOT_YET_VALID:
+ *
+ * "Last update" CRL verification failed.
+ */
+#define XMLSEC_ERRORS_R_CRL_NOT_YET_VALID              78
+
+/**
+ * XMLSEC_ERRORS_R_CRL_HAS_EXPIRED:
+ *
+ * "Next update" verification failed.
+ */
+#define XMLSEC_ERRORS_R_CRL_HAS_EXPIRED                79
+
+/**
  * XMLSEC_ERRORS_R_DSIG_NO_REFERENCES:
  *
- * The <dsig:Reference> nodes not found.
+ * The &lt;dsig:Reference/&gt; nodes not found.
  */
 #define XMLSEC_ERRORS_R_DSIG_NO_REFERENCES              81
 
 /**
  * XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE:
  *
- * The <dsig:Reference> validation failed.
+ * The &lt;dsig:Reference/&gt; validation failed.
  */
 #define XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE          82
 
@@ -365,6 +402,13 @@ extern "C" {
  * Invalid assertion.
  */
 #define XMLSEC_ERRORS_R_ASSERTION                       100
+
+/**
+ * XMLSEC_ERROR_R_CAST_IMPOSSIBLE:
+ *
+ * Impossible to cast from one type to another.
+ */
+#define XMLSEC_ERROR_R_CAST_IMPOSSIBLE                  101
 
 /**
  * XMLSEC_ERRORS_MAX_NUMBER:
@@ -419,14 +463,21 @@ XMLSEC_EXPORT const char*       xmlSecErrorsGetMsg              (xmlSecSize pos)
 
 
 
+#if !defined(__XMLSEC_FUNCTION__)
+
 /* __FUNCTION__ is defined for MSC compiler < MS VS .NET 2003 */
 #if defined(_MSC_VER) && (_MSC_VER >= 1300)
 #define __XMLSEC_FUNCTION__ __FUNCTION__
-#endif /* _MSC_VER */
+
+/* and for GCC too */
+#elif defined(__GNUC__)
+#define __XMLSEC_FUNCTION__ __func__
 
 /* fallback for __FUNCTION__ */
-#if !defined(__XMLSEC_FUNCTION__)
+#else
 #define __XMLSEC_FUNCTION__  ""
+#endif
+
 #endif /*!defined(__XMLSEC_FUNCTION__) */
 
 /**
@@ -511,5 +562,3 @@ XMLSEC_EXPORT void xmlSecError                          (const char* file,
 #endif /* __cplusplus */
 
 #endif /* __XMLSEC_ERRORS_H__ */
-
-

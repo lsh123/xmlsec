@@ -7,13 +7,13 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2010-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 #ifndef __XMLSEC_MSCRYPTO_PRIVATE_H__
 #define __XMLSEC_MSCRYPTO_PRIVATE_H__
 
 #ifndef XMLSEC_PRIVATE
-#error "private.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-$crypto libraries"
+#error "mscrypto/private.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-$crypto libraries"
 #endif /* XMLSEC_PRIVATE */
 
 #if defined(__MINGW32__) && defined(XMLSEC_CUSTOM_CRYPT32)
@@ -29,10 +29,10 @@ extern "C" {
  * Utils
  *
  ********************************************************************/
-int                ConvertEndian                    (const xmlSecByte * src, 
-                                                     xmlSecByte * dst, 
+int                ConvertEndian                    (const xmlSecByte * src,
+                                                     xmlSecByte * dst,
                                                      xmlSecSize size);
-int                ConvertEndianInPlace             (xmlSecByte * buf, 
+int                ConvertEndianInPlace             (xmlSecByte * buf,
                                                      xmlSecSize size);
 
 /********************************************************************
@@ -89,7 +89,7 @@ BOOL               xmlSecMSCryptoCreatePrivateExponentOneKey    (HCRYPTPROV hPro
 
 BOOL               xmlSecMSCryptoImportPlainSessionBlob         (HCRYPTPROV hProv,
                                                                  HCRYPTKEY hPrivateKey,
-                                                                 ALG_ID dwAlgId,
+                                                                 ALG_ID algId,
                                                                  LPBYTE pbKeyMaterial,
                                                                  DWORD dwKeyMaterial,
                                                                  BOOL bCheckKeyLength,
@@ -111,6 +111,13 @@ PCCERT_CONTEXT     xmlSecMSCryptoX509StoreFindCert              (xmlSecKeyDataSt
                                                                  xmlChar *issuerSerial,
                                                                  xmlChar *ski,
                                                                  xmlSecKeyInfoCtx* keyInfoCtx);
+PCCERT_CONTEXT     xmlSecMSCryptoX509StoreFindCert_ex           (xmlSecKeyDataStorePtr store,
+                                                                xmlChar* subjectName,
+                                                                xmlChar* issuerName,
+                                                                xmlChar* issuerSerial,
+                                                                xmlSecByte* ski,
+                                                                xmlSecSize skiSize,
+                                                                xmlSecKeyInfoCtx* keyInfoCtx);
 
 xmlChar *          xmlSecMSCryptoX509GetNameString              (PCCERT_CONTEXT pCertContext,
                                                                  DWORD dwType,

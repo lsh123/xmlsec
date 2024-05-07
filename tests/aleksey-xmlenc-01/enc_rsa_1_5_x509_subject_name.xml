@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PaymentInfo xmlns="http://example.org/paymentv2">
+  <Name>John Smith</Name>
+  <CreditCard Currency="USD" Limit="5,000"><EncryptedData xmlns="http://www.w3.org/2001/04/xmlenc#" Id="ED" Type="http://www.w3.org/2001/04/xmlenc#Content">
+  <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#aes256-cbc"/>
+  <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <EncryptedKey xmlns="http://www.w3.org/2001/04/xmlenc#">
+      <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#rsa-1_5"> </EncryptionMethod>
+      <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+        <X509Data>
+          <X509SubjectName>emailAddress=xmlsec@aleksey.com,CN=Aleksey Sanin,OU=Test Large RSA Key,O=XML Security Library (http://www.aleksey.com/xmlsec),ST=California,C=US</X509SubjectName>
+        </X509Data>
+      </KeyInfo>
+      <CipherData>
+        <CipherValue>NA24ykbMPJ/otVCMxJAvQMUrOvZrZ2vVPq3NNNa6jPEFQwORgJJJMdQ9FCHhIlyQ
+zsgPIEa9w2od+0zccPKxIwSZoRyB6M+1Kb3npkalmgT0vUEQIuKDvSOffr0t07KB
+DOejteKEkSgWoXOssmCKuy8K75gUdGOTEA5U++s91kZO9s38xTgPSVVPjVcwGlnK
+QeTZSkovsTjAvsQYLzAzYLwfgaZ34q1sVqhRcZOofkXCpxsi3SwcOHDJ/T5/ElPl
+Yu/9lQRRTsxSfaE2ihGanI0+fnVmEWrHCHnKiX8mTrJlKBQK3B3Do6b3aqwgdDuH
+u2LcknVl1TqI8+GchQuveE/vmUM1Ynf/yhJlYQg6xwz8L7h/3bnMKnvCqDv4bT7f
+fpfFuvfl/UkQ2ioihGn5ryxv3DHwPHounYRHEBcZmQ0Dlw2xQcOtZIGtO9r7NTNq
+oPu0tLk0RETcHGNpolUFA90Qbh7YuuDX/twYVcqt8QjeEEMYUZZ+/oFETfDhcgDf
+QuQpHJZqqYyTaz/o8esjUMg8FNHC5KH5rDgQSuBb5rPdqqJVr6+BCPth3lDBB2Np
+KGBffJlRHsVXcSWmC/YafyeOdmzxQxAJTJ9ixrSk7GiMEC6xX1v2i0whigVSA786
+8rIzHfHnnCLlg8awjlrb3xLY2pvi9PrpDvyn96NKpEg=</CipherValue>
+      </CipherData>
+    </EncryptedKey>
+  </KeyInfo>
+  <CipherData>
+    <CipherValue>2cQUnpzdmkivDVKyP9e2ps4ZWi6HHWPY3bgKJRj5ff6r2PFRJgxq42LGOsmXlCra
+A/PKeNE7SO9/aQifyqT7P3lLNWTTQ7Rvwp5EWZphAWiuExvJxVjLmu5MoCE61NnG
+qSXscl8FleHy9/JEh7jfM7LFQ3DmsI4dFNbZGhEBSxR7ovhewNYgLDM958ha1gwb</CipherValue>
+  </CipherData>
+</EncryptedData></CreditCard>
+</PaymentInfo>

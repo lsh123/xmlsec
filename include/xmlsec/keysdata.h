@@ -6,13 +6,14 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 #ifndef __XMLSEC_KEYSDATA_H__
 #define __XMLSEC_KEYSDATA_H__
 
 #include <libxml/tree.h>
 
+#include <xmlsec/exports.h>
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/buffer.h>
 #include <xmlsec/list.h>
@@ -56,7 +57,7 @@ typedef unsigned int                                    xmlSecKeyDataUsage;
 /**
  * xmlSecKeyDataUsageKeyInfoNodeRead:
  *
- * The key data could be read from a <dsig:KeyInfo/> child.
+ * The key data could be read from a &lt;dsig:KeyInfo/&gt; child.
  */
 #define xmlSecKeyDataUsageKeyInfoNodeRead               0x00001
 
@@ -98,11 +99,18 @@ typedef unsigned int                                    xmlSecKeyDataUsage;
 #define xmlSecKeyDataUsageRetrievalMethodNodeBin        0x00020
 
 /**
+ * xmlSecKeyDataUsageReadFromFile:
+ *
+ * The key data could be read from a file.
+ */
+#define xmlSecKeyDataUsageReadFromFile                   0x00040
+
+/**
  * xmlSecKeyDataUsageAny:
  *
  * Any key data usage.
  */
-#define xmlSecKeyDataUsageAny                           0xFFFFF
+#define xmlSecKeyDataUsageAny                            0xFFFFF
 
 /**
  * xmlSecKeyDataUsageKeyInfoNode:
@@ -220,6 +228,8 @@ typedef unsigned int                            xmlSecKeyDataType;
  * @xmlSecKeyDataFormatPkcs12:          the PKCS12 format (bag of keys and certs)
  * @xmlSecKeyDataFormatCertPem:         the PEM cert.
  * @xmlSecKeyDataFormatCertDer:         the DER cert.
+ * @xmlSecKeyDataFormatEngine:          the crypto engine (e.g. OpenSSL ENGINE).
+ * @xmlSecKeyDataFormatStore:           the crypto store (e.g. OpenSSL ossl_store).
  *
  * The key data format (binary, der, pem, etc.).
  */
@@ -232,7 +242,9 @@ typedef enum {
     xmlSecKeyDataFormatPkcs8Der,
     xmlSecKeyDataFormatPkcs12,
     xmlSecKeyDataFormatCertPem,
-    xmlSecKeyDataFormatCertDer
+    xmlSecKeyDataFormatCertDer,
+    xmlSecKeyDataFormatEngine,
+    xmlSecKeyDataFormatStore
 } xmlSecKeyDataFormat;
 
 /**************************************************************************
@@ -241,10 +253,12 @@ typedef enum {
  *
  *************************************************************************/
 XMLSEC_EXPORT xmlSecPtrListPtr  xmlSecKeyDataIdsGet             (void);
+XMLSEC_EXPORT xmlSecPtrListPtr  xmlSecKeyDataIdsGetEnabled      (void);
 XMLSEC_EXPORT int               xmlSecKeyDataIdsInit            (void);
 XMLSEC_EXPORT void              xmlSecKeyDataIdsShutdown        (void);
 XMLSEC_EXPORT int               xmlSecKeyDataIdsRegisterDefault (void);
 XMLSEC_EXPORT int               xmlSecKeyDataIdsRegister        (xmlSecKeyDataId id);
+XMLSEC_EXPORT int               xmlSecKeyDataIdsRegisterDisabled(xmlSecKeyDataId id);
 
 /**************************************************************************
  *
@@ -401,7 +415,7 @@ typedef void                    (*xmlSecKeyDataFinalizeMethod)  (xmlSecKeyDataPt
  * @id:                 the data id.
  * @key:                the key.
  * @node:               the pointer to data's value XML node.
- * @keyInfoCtx:         the <dsig:KeyInfo/> node processing context.
+ * @keyInfoCtx:         the &lt;dsig:KeyInfo/&gt; node processing context.
  *
  * Key data specific method for reading XML node.
  *
@@ -416,7 +430,7 @@ typedef int                     (*xmlSecKeyDataXmlReadMethod)   (xmlSecKeyDataId
  * @id:                 the data id.
  * @key:                the key.
  * @node:               the pointer to data's value XML node.
- * @keyInfoCtx:         the <dsig:KeyInfo> node processing context.
+ * @keyInfoCtx:         the &lt;dsig:KeyInfo/&gt; node processing context.
  *
  * Key data specific method for writing XML node.
  *
@@ -432,7 +446,7 @@ typedef int                     (*xmlSecKeyDataXmlWriteMethod)  (xmlSecKeyDataId
  * @key:                the key.
  * @buf:                the input buffer.
  * @bufSize:            the buffer size.
- * @keyInfoCtx:         the <dsig:KeyInfo/> node processing context.
+ * @keyInfoCtx:         the &lt;dsig:KeyInfo/&gt; node processing context.
  *
  * Key data specific method for reading binary buffer.
  *
@@ -449,7 +463,7 @@ typedef int                     (*xmlSecKeyDataBinReadMethod)   (xmlSecKeyDataId
  * @key:                the key.
  * @buf:                the output buffer.
  * @bufSize:            the buffer size.
- * @keyInfoCtx:         the <dsig:KeyInfo/> node processing context.
+ * @keyInfoCtx:         the &lt;dsig:KeyInfo/&gt; node processing context.
  *
  * Key data specific method for reading binary buffer.
  *
@@ -589,6 +603,19 @@ struct _xmlSecKeyDataKlass {
 #define xmlSecKeyDataKlassGetName(klass) \
         (((klass)) ? ((klass)->name) : NULL)
 
+
+
+/***********************************************************************
+ *
+ * Helper functions for binary key data (HMAC, AES, DES, ...).
+ *
+ **********************************************************************/
+XMLSEC_EXPORT xmlSecSize        xmlSecKeyDataBinaryValueGetSize         (xmlSecKeyDataPtr data);
+XMLSEC_EXPORT xmlSecBufferPtr   xmlSecKeyDataBinaryValueGetBuffer       (xmlSecKeyDataPtr data);
+XMLSEC_EXPORT int               xmlSecKeyDataBinaryValueSetBuffer       (xmlSecKeyDataPtr data,
+                                                                         const xmlSecByte* buf,
+                                                                         xmlSecSize bufSize);
+
 /***********************************************************************
  *
  * Key Data list
@@ -633,53 +660,6 @@ XMLSEC_EXPORT void              xmlSecKeyDataIdListDebugDump    (xmlSecPtrListPt
 XMLSEC_EXPORT void              xmlSecKeyDataIdListDebugXmlDump (xmlSecPtrListPtr list,
                                                                  FILE* output);
 
-/**************************************************************************
- *
- * xmlSecKeyDataBinary
- *
- * key (xmlSecBuffer) is located after xmlSecKeyData structure
- *
- *************************************************************************/
-/**
- * xmlSecKeyDataBinarySize:
- *
- * The binary key data object size.
- */
-#define xmlSecKeyDataBinarySize \
-    (sizeof(xmlSecKeyData) + sizeof(xmlSecBuffer))
-
-XMLSEC_EXPORT int               xmlSecKeyDataBinaryValueInitialize      (xmlSecKeyDataPtr data);
-XMLSEC_EXPORT int               xmlSecKeyDataBinaryValueDuplicate       (xmlSecKeyDataPtr dst,
-                                                                        xmlSecKeyDataPtr src);
-XMLSEC_EXPORT void              xmlSecKeyDataBinaryValueFinalize        (xmlSecKeyDataPtr data);
-XMLSEC_EXPORT int               xmlSecKeyDataBinaryValueXmlRead         (xmlSecKeyDataId id,
-                                                                         xmlSecKeyPtr key,
-                                                                         xmlNodePtr node,
-                                                                         xmlSecKeyInfoCtxPtr keyInfoCtx);
-XMLSEC_EXPORT int               xmlSecKeyDataBinaryValueXmlWrite        (xmlSecKeyDataId id,
-                                                                         xmlSecKeyPtr key,
-                                                                         xmlNodePtr node,
-                                                                         xmlSecKeyInfoCtxPtr keyInfoCtx);
-XMLSEC_EXPORT int               xmlSecKeyDataBinaryValueBinRead         (xmlSecKeyDataId id,
-                                                                         xmlSecKeyPtr key,
-                                                                         const xmlSecByte* buf,
-                                                                         xmlSecSize bufSize,
-                                                                         xmlSecKeyInfoCtxPtr keyInfoCtx);
-XMLSEC_EXPORT int               xmlSecKeyDataBinaryValueBinWrite        (xmlSecKeyDataId id,
-                                                                         xmlSecKeyPtr key,
-                                                                         xmlSecByte** buf,
-                                                                         xmlSecSize* bufSize,
-                                                                         xmlSecKeyInfoCtxPtr keyInfoCtx);
-XMLSEC_EXPORT void              xmlSecKeyDataBinaryValueDebugDump       (xmlSecKeyDataPtr data,
-                                                                        FILE* output);
-XMLSEC_EXPORT void              xmlSecKeyDataBinaryValueDebugXmlDump    (xmlSecKeyDataPtr data,
-                                                                         FILE* output);
-
-XMLSEC_EXPORT xmlSecSize        xmlSecKeyDataBinaryValueGetSize         (xmlSecKeyDataPtr data);
-XMLSEC_EXPORT xmlSecBufferPtr   xmlSecKeyDataBinaryValueGetBuffer       (xmlSecKeyDataPtr data);
-XMLSEC_EXPORT int               xmlSecKeyDataBinaryValueSetBuffer       (xmlSecKeyDataPtr data,
-                                                                         const xmlSecByte* buf,
-                                                                         xmlSecSize bufSize);
 
 /**************************************************************************
  *
@@ -829,10 +809,8 @@ struct _xmlSecKeyDataStoreKlass {
 #define xmlSecKeyDataStorePtrListId     xmlSecKeyDataStorePtrListGetKlass()
 XMLSEC_EXPORT xmlSecPtrListId   xmlSecKeyDataStorePtrListGetKlass       (void);
 
-#ifdef XMLSEC_PRIVATE
 XMLSEC_EXPORT void xmlSecImportSetPersistKey                            (void);
 XMLSEC_EXPORT int xmlSecImportGetPersistKey                             (void);
-#endif
 
 #ifdef __cplusplus
 }

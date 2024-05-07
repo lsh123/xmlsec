@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Klasses and objects.: XML Security Library Reference Manual</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
 <link rel="up" href="xmlsec-notes-new-crypto.html" title="Adding support for new cryptographic library.">
 <link rel="prev" href="xmlsec-notes-new-crypto-functions.html" title="xmlSecCryptoApp* functions.">
 <link rel="next" href="xmlsec-notes-new-crypto-transforms.html" title="Cryptographic transforms.">
-<meta name="generator" content="GTK-Doc V1.27 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.33.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -25,9 +25,9 @@
 <p>The XML Security Library is written in C but it uses some OOP techniques:
 	the objects in the library have "klasses" and there is "klasses" inheritance.
 	(see <a class="link" href="xmlsec-signature-klasses.html" title="APPENDIX A. XML Security Library Signature Klasses.">signature</a> and
-	<a class="link" href="xmlsec-encryption-klasses.html" title="APPENDIX B. XML Security Library Encryption Klasses.">encryption</a> klasses 
-	diagrams). The "klass" is different from C++ "class" (btw, this is 
-	one of the reasons why it is spelled differently). The idea of "klasses" 
+	<a class="link" href="xmlsec-encryption-klasses.html" title="APPENDIX B. XML Security Library Encryption Klasses.">encryption</a> klasses
+	diagrams). The "klass" is different from C++ "class" (btw, this is
+	one of the reasons why it is spelled differently). The idea of "klasses"
 	used in XML Security Library are close to one in the GLIB/GTK/GNOME
 	and many other C projects. If you ever seen an OOP code written in C
 	you should find everything familiar.
@@ -37,11 +37,11 @@
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">
 <p>"Klass" declaration structure that defines "klass" interfaces
-	and global constant data (for example, the human-readable name of 
+	and global constant data (for example, the human-readable name of
 	the "klass").
 	</p>
 <div class="example">
-<a name="id-1.2.14.5.3.1.1.1.1"></a><p class="title"><b>Example 30. Base transform "klass" and its child XPath transform "klass" structure.</b></p>
+<a name="id-1.2.14.4.3.1.1.1.1"></a><p class="title"><b>Example 25. Base transform "klass" and its child XPath transform "klass" structure.</b></p>
 <div class="example-contents"><pre class="programlisting">
 struct _xmlSecTransformKlass {
     /* data */
@@ -76,7 +76,7 @@ static xmlSecTransformKlass xmlSecTransformXPathKlass = {
     xmlSecTransformXPathFinalize,	/* xmlSecTransformFinalizeMethod finalize; */
     xmlSecTransformXPathNodeRead,	/* xmlSecTransformNodeReadMethod readNode; */
     NULL,				/* xmlSecTransformNodeWriteMethod writeNode; */
-    
+
     ...
 };
 	    </pre></div>
@@ -86,11 +86,11 @@ static xmlSecTransformKlass xmlSecTransformXPathKlass = {
 </li>
 <li class="listitem">
 <p>"Klass" id which is simply a pointer to the "klass"
-	declaration strucutre. "Klass" id is used to bind "klass" objects 
+	declaration strucutre. "Klass" id is used to bind "klass" objects
 	to the "klass" declaration and to pass "klass" strucutre to functions.
 	</p>
 <div class="example">
-<a name="id-1.2.14.5.3.1.2.1.1"></a><p class="title"><b>Example 31. Base transform "klass" id declaration and its child XPath transform "klass" id implementation.</b></p>
+<a name="id-1.2.14.4.3.1.2.1.1"></a><p class="title"><b>Example 26. Base transform "klass" id declaration and its child XPath transform "klass" id implementation.</b></p>
 <div class="example-contents"><pre class="programlisting">
 typedef const struct _xmlSecTransformKlass		xmlSecTransformKlass, *xmlSecTransformId;
 
@@ -100,7 +100,7 @@ typedef const struct _xmlSecTransformKlass		xmlSecTransformKlass, *xmlSecTransfo
 
 ...
 
-xmlSecTransformId 
+xmlSecTransformId
 xmlSecTransformXPathGetKlass(void) {
     return(&amp;xmlSecTransformXPathKlass);
 }
@@ -115,10 +115,10 @@ xmlSecTransformXPathGetKlass(void) {
 	object data.
 	</p>
 <div class="example">
-<a name="id-1.2.14.5.3.1.3.1.1"></a><p class="title"><b>Example 32. Base transform object strucutre and its child XPath transform object.</b></p>
+<a name="id-1.2.14.4.3.1.3.1.1"></a><p class="title"><b>Example 27. Base transform object strucutre and its child XPath transform object.</b></p>
 <div class="example-contents"><pre class="programlisting">
 struct _xmlSecTransform {
-    xmlSecTransformId 			id; 
+    xmlSecTransformId 			id;
     xmlSecTransformOperation		operation;
     xmlSecTransformStatus		status;
     xmlNodePtr				hereNode;
@@ -126,7 +126,7 @@ struct _xmlSecTransform {
     /* transforms chain */
     xmlSecTransformPtr			next;
     xmlSecTransformPtr			prev;
-    
+
     ...
 };
 
@@ -137,7 +137,7 @@ struct _xmlSecTransform {
  * XPath/XPointer transforms
  *
  * xmlSecPtrList with XPath expressions is located after xmlSecTransform structure
- * 
+ *
  *****************************************************************************/
 #define xmlSecXPathTransformSize	\
     (sizeof(xmlSecTransform) + sizeof(xmlSecPtrList))
@@ -155,6 +155,6 @@ struct _xmlSecTransform {
 	</p>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.27</div>
+<hr>Generated by GTK-Doc V1.33.1</div>
 </body>
 </html>

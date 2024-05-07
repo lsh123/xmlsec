@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xenc:EncryptedData xmlns:xenc="http://www.w3.org/2001/04/xmlenc#" Type="http://www.w3.org/2001/04/xmlenc#Element">
+   <xenc:EncryptionMethod Algorithm="http://www.w3.org/2009/xmlenc11#aes256-gcm" />
+   <dsig:KeyInfo xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+      <xenc:EncryptedKey>
+         <xenc:EncryptionMethod Algorithm="http://www.w3.org/2009/xmlenc11#rsa-oaep">
+            <dsig:DigestMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#sha384" />
+            <xenc11:MGF xmlns:xenc11="http://www.w3.org/2009/xmlenc11#" Algorithm="http://www.w3.org/2009/xmlenc11#mgf1sha1" />
+         </xenc:EncryptionMethod>
+         <dsig:KeyInfo>
+             <dsig:KeyName>TestRsa3072Key</dsig:KeyName>
+            <dsig:X509Data></dsig:X509Data>
+         </dsig:KeyInfo>
+         <xenc:CipherData>
+            <xenc:CipherValue></xenc:CipherValue>
+         </xenc:CipherData>
+      </xenc:EncryptedKey>
+   </dsig:KeyInfo>
+   <xenc:CipherData>
+        <xenc:CipherValue></xenc:CipherValue>
+   </xenc:CipherData>
+</xenc:EncryptedData>

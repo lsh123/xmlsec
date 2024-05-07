@@ -6,7 +6,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 #ifndef __XMLSEC_CRYPTO_H__
 #define __XMLSEC_CRYPTO_H__
@@ -51,6 +51,7 @@
 #ifdef XMLSEC_CRYPTO_GNUTLS
 #include <xmlsec/gnutls/app.h>
 #include <xmlsec/gnutls/crypto.h>
+#include <xmlsec/gnutls/x509.h>
 #include <xmlsec/gnutls/symbols.h>
 #else /* XMLSEC_CRYPTO_GNUTLS */
 #ifdef XMLSEC_CRYPTO_GCRYPT

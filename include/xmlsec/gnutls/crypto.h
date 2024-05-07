@@ -4,11 +4,12 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 #ifndef __XMLSEC_GNUTLS_CRYPTO_H__
 #define __XMLSEC_GNUTLS_CRYPTO_H__
 
+#include <xmlsec/exports.h>
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
@@ -39,6 +40,19 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeysMngrInit        (xmlSecK
 XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSGenerateRandom      (xmlSecBufferPtr buffer,
                                                                          xmlSecSize size);
 
+
+
+/********************************************************************
+ *
+ * Asymetric keys helpers
+ *
+ *******************************************************************/
+
+XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr       xmlSecGCryptAsymetricKeyCreatePub       (gnutls_pubkey_t pubkey);
+XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr       xmlSecGCryptAsymetricKeyCreatePriv      (gnutls_privkey_t privkey);
+
+XMLSEC_CRYPTO_EXPORT gnutls_pubkey_t    xmlSecGCryptAsymetricKeyGetPub          (xmlSecKeyPtr key);
+XMLSEC_CRYPTO_EXPORT gnutls_privkey_t   xmlSecGCryptAsymetricKeyGetPriv         (xmlSecKeyPtr key);
 
 /********************************************************************
  *
@@ -83,6 +97,35 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecGnuTLSTransformAes192CbcGetKlass(v
 #define xmlSecGnuTLSTransformAes256CbcId \
         xmlSecGnuTLSTransformAes256CbcGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecGnuTLSTransformAes256CbcGetKlass(void);
+
+
+/**
+ * xmlSecGnuTLSTransformAes128GcmId:
+ *
+ * The AES128 GCM cipher transform klass.
+ */
+#define xmlSecGnuTLSTransformAes128GcmId \
+        xmlSecGnuTLSTransformAes128GcmGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecGnuTLSTransformAes128GcmGetKlass(void);
+
+/**
+ * xmlSecGnuTLSTransformAes192GcmId:
+ *
+ * The AES192 GCM cipher transform klass.
+ */
+#define xmlSecGnuTLSTransformAes192GcmId \
+        xmlSecGnuTLSTransformAes192GcmGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecGnuTLSTransformAes192GcmGetKlass(void);
+
+/**
+ * xmlSecGnuTLSTransformAes256GcmId:
+ *
+ * The AES256 GCM cipher transform klass.
+ */
+#define xmlSecGnuTLSTransformAes256GcmId \
+        xmlSecGnuTLSTransformAes256GcmGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecGnuTLSTransformAes256GcmGetKlass(void);
+
 
 /**
  * xmlSecGnuTLSTransformKWAes128Id:
@@ -167,13 +210,11 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformKWDes3GetKlass(void)
 #define xmlSecGnuTLSKeyDataDsaId \
         xmlSecGnuTLSKeyDataDsaGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecGnuTLSKeyDataDsaGetKlass          (void);
-XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataDsaAdoptPrivateKey   (xmlSecKeyDataPtr data,
-                                                                                 gnutls_x509_privkey_t dsa_key);
-XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataDsaAdoptPublicKey    (xmlSecKeyDataPtr data,
-                                                                                 gnutls_datum_t * p,
-                                                                                 gnutls_datum_t * q,
-                                                                                 gnutls_datum_t * g,
-                                                                                 gnutls_datum_t * y);
+XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataDsaAdoptKey          (xmlSecKeyDataPtr data,
+                                                                                 gnutls_pubkey_t pubkey,
+                                                                                 gnutls_privkey_t privkey);
+XMLSEC_CRYPTO_EXPORT gnutls_pubkey_t    xmlSecGnuTLSKeyDataDsaGetPublicKey      (xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT gnutls_privkey_t   xmlSecGnuTLSKeyDataDsaGetPrivateKey     (xmlSecKeyDataPtr data);
 
 #ifndef XMLSEC_NO_SHA1
 /**
@@ -186,9 +227,234 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataDsaAdoptPublicKey    
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformDsaSha1GetKlass(void);
 #endif /* XMLSEC_NO_SHA1 */
 
+#ifndef XMLSEC_NO_SHA256
+/**
+ * xmlSecGnuTLSTransformDsaSha256Id:
+ *
+ * The DSA SHA2-256 signature transform klass.
+ */
+#define xmlSecGnuTLSTransformDsaSha256Id \
+        xmlSecGnuTLSTransformDsaSha256GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformDsaSha256GetKlass(void);
+#endif /* XMLSEC_NO_SHA256 */
+
 #endif /* XMLSEC_NO_DSA */
 
 
+/********************************************************************
+ *
+ * EC key and transforms
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_EC
+
+/**
+ * xmlSecGnuTLSKeyDataEcId:
+ *
+ * The EC key klass.
+ */
+#define xmlSecGnuTLSKeyDataEcId         xmlSecGnuTLSKeyDataEcGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecGnuTLSKeyDataEcGetKlass           (void);
+XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataEcAdoptKey           (xmlSecKeyDataPtr data,
+                                                                                 gnutls_pubkey_t pubkey,
+                                                                                 gnutls_privkey_t privkey);
+XMLSEC_CRYPTO_EXPORT gnutls_pubkey_t    xmlSecGnuTLSKeyDataEcGetPublicKey       (xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT gnutls_privkey_t   xmlSecGnuTLSKeyDataEcGetPrivateKey      (xmlSecKeyDataPtr data);
+
+#ifndef XMLSEC_NO_SHA1
+/**
+ * xmlSecGnuTLSTransformEcdsaSha1Id:
+ *
+ * The ECDSA-SHA1 signature transform klass.
+ */
+#define xmlSecGnuTLSTransformEcdsaSha1Id \
+        xmlSecGnuTLSTransformEcdsaSha1GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformEcdsaSha1GetKlass(void);
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA256
+/**
+ * xmlSecGnuTLSTransformEcdsaSha256Id:
+ *
+ * The ECDSA-SHA2-256 signature transform klass.
+ */
+#define xmlSecGnuTLSTransformEcdsaSha256Id       \
+        xmlSecGnuTLSTransformEcdsaSha256GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformEcdsaSha256GetKlass(void);
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+/**
+ * xmlSecGnuTLSTransformEcdsaSha384Id:
+ *
+ * The ECDSA-SHA2-384 signature transform klass.
+ */
+#define xmlSecGnuTLSTransformEcdsaSha384Id       \
+        xmlSecGnuTLSTransformEcdsaSha384GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformEcdsaSha384GetKlass(void);
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+/**
+ * xmlSecGnuTLSTransformEcdsaSha512Id:
+ *
+ * The ECDSA-SHA2-512 signature transform klass.
+ */
+#define xmlSecGnuTLSTransformEcdsaSha512Id       \
+        xmlSecGnuTLSTransformEcdsaSha512GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformEcdsaSha512GetKlass(void);
+#endif /* XMLSEC_NO_SHA512 */
+
+
+#ifndef XMLSEC_NO_SHA3
+/**
+ * xmlSecGnuTLSTransformEcdsaSha3_256Id:
+ *
+ * The ECDSA-SHA3-256 signature transform klass.
+ */
+#define xmlSecGnuTLSTransformEcdsaSha3_256Id       \
+        xmlSecGnuTLSTransformEcdsaSha3_256GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformEcdsaSha3_256GetKlass(void);
+
+/**
+ * xmlSecGnuTLSTransformEcdsaSha3_384Id:
+ *
+ * The ECDSA-SHA3-384 signature transform klass.
+ */
+#define xmlSecGnuTLSTransformEcdsaSha3_384Id       \
+        xmlSecGnuTLSTransformEcdsaSha3_384GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformEcdsaSha3_384GetKlass(void);
+
+/**
+ * xmlSecGnuTLSTransformEcdsaSha3_512Id:
+ *
+ * The ECDSA-SHA3-512 signature transform klass.
+ */
+#define xmlSecGnuTLSTransformEcdsaSha3_512Id       \
+        xmlSecGnuTLSTransformEcdsaSha3_512GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformEcdsaSha3_512GetKlass(void);
+#endif /* XMLSEC_NO_SHA3 */
+
+#endif /* XMLSEC_NO_EC */
+
+
+/********************************************************************
+ *
+ * GOST 2001 key and transforms
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_GOST
+
+/**
+ * xmlSecGnuTLSKeyDataGost2001Id:
+ *
+ * The GOST 2001 key klass.
+ */
+#define xmlSecGnuTLSKeyDataGost2001Id   xmlSecGnuTLSKeyDataGost2001GetKlass     ()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecGnuTLSKeyDataGost2001GetKlass     (void);
+XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataGost2001AdoptKey     (xmlSecKeyDataPtr data,
+                                                                                 gnutls_pubkey_t pubkey,
+                                                                                 gnutls_privkey_t privkey);
+XMLSEC_CRYPTO_EXPORT gnutls_pubkey_t    xmlSecGnuTLSKeyDataGost2001GetPublicKey (xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT gnutls_privkey_t   xmlSecGnuTLSKeyDataGost2001GetPrivateKey(xmlSecKeyDataPtr data);
+
+/**
+ * xmlSecGnuTLSTransformGostR3411_94Id:
+ *
+ * The GOSTR3411_94 digest transform klass.
+ */
+#define xmlSecGnuTLSTransformGostR3411_94Id \
+        xmlSecGnuTLSTransformGostR3411_94GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformGostR3411_94GetKlass(void);
+
+/**
+ * xmlSecGnuTLSTransformGost2001GostR3411_94Id:
+ *
+ * The GOST2001 GOSTR3411_94 signature transform klass.
+ */
+#define xmlSecGnuTLSTransformGost2001GostR3411_94Id \
+        xmlSecGnuTLSTransformGost2001GostR3411_94GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformGost2001GostR3411_94GetKlass(void);
+
+#endif /* XMLSEC_NO_GOST */
+
+
+/********************************************************************
+ *
+ * GOST 2012 keys and transforms
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_GOST2012
+
+/**
+ * xmlSecGnuTLSKeyDataGost2012_256Id:
+ *
+ * The GOST R 34.10-2012 256 bit key klass.
+ */
+#define xmlSecGnuTLSKeyDataGost2012_256Id   xmlSecGnuTLSKeyDataGost2012_256GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecGnuTLSKeyDataGost2012_256GetKlass  (void);
+XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataGost2012_256AdoptKey  (xmlSecKeyDataPtr data,
+                                                                                 gnutls_pubkey_t pubkey,
+                                                                                 gnutls_privkey_t privkey);
+XMLSEC_CRYPTO_EXPORT gnutls_pubkey_t    xmlSecGnuTLSKeyDataGost2012_256GetPublicKey (xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT gnutls_privkey_t   xmlSecGnuTLSKeyDataGost2012_256GetPrivateKey(xmlSecKeyDataPtr data);
+
+/**
+ * xmlSecGnuTLSKeyDataGost2012_512Id:
+ *
+ * The GOST R 34.10-2012 512 bit key klass.
+ */
+#define xmlSecGnuTLSKeyDataGost2012_512Id   xmlSecGnuTLSKeyDataGost2012_512GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecGnuTLSKeyDataGost2012_512GetKlass  (void);
+XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataGost2012_512AdoptKey  (xmlSecKeyDataPtr data,
+                                                                                 gnutls_pubkey_t pubkey,
+                                                                                 gnutls_privkey_t privkey);
+XMLSEC_CRYPTO_EXPORT gnutls_pubkey_t    xmlSecGnuTLSKeyDataGost2012_512GetPublicKey (xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT gnutls_privkey_t   xmlSecGnuTLSKeyDataGost2012_512GetPrivateKey(xmlSecKeyDataPtr data);
+
+
+
+/**
+ * xmlSecGnuTLSTransformGostR3411_2012_256Id:
+ *
+ * The GOST R 34.11-2012 256 bit digest transform klass.
+ */
+#define xmlSecGnuTLSTransformGostR3411_2012_256Id \
+    xmlSecGnuTLSTransformGostR3411_2012_256GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformGostR3411_2012_256GetKlass(void);
+
+
+/**
+ * xmlSecGnuTLSTransformGostR3411_2012_512Id:
+ *
+ * The GOST R 34.11-2012 512 bit digest transform klass.
+ */
+#define xmlSecGnuTLSTransformGostR3411_2012_512Id \
+    xmlSecGnuTLSTransformGostR3411_2012_512GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformGostR3411_2012_512GetKlass(void);
+
+
+/**
+ * xmlSecGnuTLSTransformGostR3410_2012GostR3411_2012_256Id:
+ *
+ * The GOST R 34.10-2012 - GOST R 3411-2012 256 bit signature transform klass.
+ */
+#define xmlSecGnuTLSTransformGostR3410_2012GostR3411_2012_256Id \
+        xmlSecGnuTLSTransformGostR3410_2012GostR3411_2012_256GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformGostR3410_2012GostR3411_2012_256GetKlass(void);
+
+
+/**
+ * xmlSecGnuTLSTransformGostR3410_2012GostR3411_2012_512Id:
+ *
+ * The GOST R 34.10-2012 - GOST R 3411-2012 512 bit signature transform klass.
+ */
+#define xmlSecGnuTLSTransformGostR3410_2012GostR3411_2012_512Id \
+        xmlSecGnuTLSTransformGostR3410_2012GostR3411_2012_512GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformGostR3410_2012GostR3411_2012_512GetKlass(void);
+
+
+#endif /* XMLSEC_NO_GOST2012 */
 
 /********************************************************************
  *
@@ -196,9 +462,6 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformDsaSha1GetKlass(void
  *
  *******************************************************************/
 #ifndef XMLSEC_NO_HMAC
-
-XMLSEC_CRYPTO_EXPORT int               xmlSecGnuTLSHmacGetMinOutputLength(void);
-XMLSEC_CRYPTO_EXPORT void              xmlSecGnuTLSHmacSetMinOutputLength(int min_length);
 
 /**
  * xmlSecGnuTLSKeyDataHmacId:
@@ -211,29 +474,6 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecGnuTLSKeyDataHmacGetKlass (void);
 XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataHmacSet      (xmlSecKeyDataPtr data,
                                                                          const xmlSecByte* buf,
                                                                          xmlSecSize bufSize);
-
-#ifndef XMLSEC_NO_MD5
-/**
- * xmlSecGnuTLSTransformHmacMd5Id:
- *
- * The HMAC with MD5 signature transform klass.
- */
-#define xmlSecGnuTLSTransformHmacMd5Id \
-        xmlSecGnuTLSTransformHmacMd5GetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformHmacMd5GetKlass(void);
-
-#endif /* XMLSEC_NO_MD5 */
-
-#ifndef XMLSEC_NO_RIPEMD160
-/**
- * xmlSecGnuTLSTransformHmacRipemd160Id:
- *
- * The HMAC with RipeMD160 signature transform klass.
- */
-#define xmlSecGnuTLSTransformHmacRipemd160Id \
-        xmlSecGnuTLSTransformHmacRipemd160GetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformHmacRipemd160GetKlass(void);
-#endif /* XMLSEC_NO_RIPEMD160 */
 
 #ifndef XMLSEC_NO_SHA1
 /**
@@ -250,7 +490,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformHmacSha1GetKlass(voi
 /**
  * xmlSecGnuTLSTransformHmacSha256Id:
  *
- * The HMAC with SHA256 signature transform klass.
+ * The HMAC with SHA2-256 signature transform klass.
  */
 #define xmlSecGnuTLSTransformHmacSha256Id \
         xmlSecGnuTLSTransformHmacSha256GetKlass()
@@ -261,7 +501,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformHmacSha256GetKlass(v
 /**
  * xmlSecGnuTLSTransformHmacSha384Id:
  *
- * The HMAC with SHA384 signature transform klass.
+ * The HMAC with SHA2-384 signature transform klass.
  */
 #define xmlSecGnuTLSTransformHmacSha384Id \
         xmlSecGnuTLSTransformHmacSha384GetKlass()
@@ -272,7 +512,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformHmacSha384GetKlass(v
 /**
  * xmlSecGnuTLSTransformHmacSha512Id:
  *
- * The HMAC with SHA512 signature transform klass.
+ * The HMAC with SHA2-512 signature transform klass.
  */
 #define xmlSecGnuTLSTransformHmacSha512Id \
         xmlSecGnuTLSTransformHmacSha512GetKlass()
@@ -280,6 +520,37 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformHmacSha512GetKlass(v
 #endif /* XMLSEC_NO_SHA512 */
 
 #endif /* XMLSEC_NO_HMAC */
+
+
+/********************************************************************
+ *
+ * PBKDF2 transforms
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_PBKDF2
+
+/**
+ * xmlSecGnuTLSKeyDataPbkdf2Id:
+ *
+ * The PBKDF2 key klass.
+ */
+#define xmlSecGnuTLSKeyDataPbkdf2Id \
+        xmlSecGnuTLSKeyDataPbkdf2GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecGnuTLSKeyDataPbkdf2GetKlass (void);
+XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataPbkdf2Set      (xmlSecKeyDataPtr data,
+                                                                           const xmlSecByte* buf,
+                                                                           xmlSecSize bufSize);
+
+/**
+ * xmlSecGnuTLSTransformPbkdf2Id:
+ *
+ * The PBKDF2 key derivation transform klass.
+ */
+#define xmlSecGnuTLSTransformPbkdf2Id \
+        xmlSecGnuTLSTransformPbkdf2GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformPbkdf2GetKlass(void);
+
+#endif /* XMLSEC_NO_PBKDF2 */
 
 /********************************************************************
  *
@@ -296,33 +567,12 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformHmacSha512GetKlass(v
 #define xmlSecGnuTLSKeyDataRsaId \
         xmlSecGnuTLSKeyDataRsaGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecGnuTLSKeyDataRsaGetKlass          (void);
-XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataRsaAdoptPrivateKey   (xmlSecKeyDataPtr data,
-                                                                                 gnutls_x509_privkey_t rsa_key);
-XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataRsaAdoptPublicKey    (xmlSecKeyDataPtr data,
-                                                                                 gnutls_datum_t * m,
-                                                                                 gnutls_datum_t * e);
+XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataRsaAdoptKey          (xmlSecKeyDataPtr data,
+                                                                                 gnutls_pubkey_t pubkey,
+                                                                                 gnutls_privkey_t privkey);
+XMLSEC_CRYPTO_EXPORT gnutls_pubkey_t    xmlSecGnuTLSKeyDataRsaGetPublicKey      (xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT gnutls_privkey_t   xmlSecGnuTLSKeyDataRsaGetPrivateKey     (xmlSecKeyDataPtr data);
 
-#ifndef XMLSEC_NO_MD5
-/**
- * xmlSecGnuTLSTransformRsaMd5Id:
- *
- * The RSA-MD5 signature transform klass.
- */
-#define xmlSecGnuTLSTransformRsaMd5Id  \
-        xmlSecGnuTLSTransformRsaMd5GetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformRsaMd5GetKlass(void);
-#endif /* XMLSEC_NO_MD5 */
-
-#ifndef XMLSEC_NO_RIPEMD160
-/**
- * xmlSecGnuTLSTransformRsaRipemd160Id:
- *
- * The RSA-RIPEMD160 signature transform klass.
- */
-#define xmlSecGnuTLSTransformRsaRipemd160Id    \
-        xmlSecGnuTLSTransformRsaRipemd160GetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformRsaRipemd160GetKlass(void);
-#endif /* XMLSEC_NO_RIPEMD160 */
 
 #ifndef XMLSEC_NO_SHA1
 /**
@@ -339,7 +589,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformRsaSha1GetKlass(void
 /**
  * xmlSecGnuTLSTransformRsaSha256Id:
  *
- * The RSA-SHA256 signature transform klass.
+ * The RSA-SHA2-256 signature transform klass.
  */
 #define xmlSecGnuTLSTransformRsaSha256Id       \
         xmlSecGnuTLSTransformRsaSha256GetKlass()
@@ -350,7 +600,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformRsaSha256GetKlass(vo
 /**
  * xmlSecGnuTLSTransformRsaSha384Id:
  *
- * The RSA-SHA384 signature transform klass.
+ * The RSA-SHA2-384 signature transform klass.
  */
 #define xmlSecGnuTLSTransformRsaSha384Id       \
         xmlSecGnuTLSTransformRsaSha384GetKlass()
@@ -361,12 +611,57 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformRsaSha384GetKlass(vo
 /**
  * xmlSecGnuTLSTransformRsaSha512Id:
  *
- * The RSA-SHA512 signature transform klass.
+ * The RSA-SHA2-512 signature transform klass.
  */
 #define xmlSecGnuTLSTransformRsaSha512Id       \
         xmlSecGnuTLSTransformRsaSha512GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformRsaSha512GetKlass(void);
 #endif /* XMLSEC_NO_SHA512 */
+
+
+#ifndef XMLSEC_NO_SHA256
+/**
+ * xmlSecGnuTLSTransformRsaPssSha256Id:
+ *
+ * The RSA-PSS-SHA2-256 signature transform klass.
+ */
+#define xmlSecGnuTLSTransformRsaPssSha256Id       \
+        xmlSecGnuTLSTransformRsaPssSha256GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformRsaPssSha256GetKlass(void);
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+/**
+ * xmlSecGnuTLSTransformRsaPssSha384Id:
+ *
+ * The RSA-PSS-SHA2-384 signature transform klass.
+ */
+#define xmlSecGnuTLSTransformRsaPssSha384Id       \
+        xmlSecGnuTLSTransformRsaPssSha384GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformRsaPssSha384GetKlass(void);
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+/**
+ * xmlSecGnuTLSTransformRsaPssSha512Id:
+ *
+ * The RSA-PSS-SHA2-512 signature transform klass.
+ */
+#define xmlSecGnuTLSTransformRsaPssSha512Id       \
+        xmlSecGnuTLSTransformRsaPssSha512GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformRsaPssSha512GetKlass(void);
+#endif /* XMLSEC_NO_SHA512 */
+
+#ifndef XMLSEC_NO_RSA_PKCS15
+/**
+ * xmlSecGnuTLSTransformRsaPkcs1Id:
+ *
+ * The RSA PKCS1 key transport transform klass.
+ */
+#define xmlSecGnuTLSTransformRsaPkcs1Id \
+        xmlSecGnuTLSTransformRsaPkcs1GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformRsaPkcs1GetKlass(void);
+#endif /* XMLSEC_NO_RSA_PKCS15 */
 
 #endif /* XMLSEC_NO_RSA */
 
@@ -391,7 +686,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformSha1GetKlass(void);
 /**
  * xmlSecGnuTLSTransformSha256Id:
  *
- * The HMAC with SHA256 signature transform klass.
+ * The HMAC with SHA2-256 signature transform klass.
  */
 #define xmlSecGnuTLSTransformSha256Id \
         xmlSecGnuTLSTransformSha256GetKlass()
@@ -402,7 +697,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformSha256GetKlass(void)
 /**
  * xmlSecGnuTLSTransformSha384Id:
  *
- * The HMAC with SHA384 signature transform klass.
+ * The HMAC with SHA2-384 signature transform klass.
  */
 #define xmlSecGnuTLSTransformSha384Id \
         xmlSecGnuTLSTransformSha384GetKlass()
@@ -413,46 +708,51 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformSha384GetKlass(void)
 /**
  * xmlSecGnuTLSTransformSha512Id:
  *
- * The HMAC with SHA512 signature transform klass.
+ * The HMAC with SHA2-512 signature transform klass.
  */
 #define xmlSecGnuTLSTransformSha512Id \
         xmlSecGnuTLSTransformSha512GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformSha512GetKlass(void);
 #endif /* XMLSEC_NO_SHA512 */
 
-/********************************************************************
- *
- * Md5 transforms
- *
- *******************************************************************/
-#ifndef XMLSEC_NO_MD5
+
+#ifndef XMLSEC_NO_SHA3
 /**
- * xmlSecGnuTLSTransformMd5Id:
+ * xmlSecGnuTLSTransformSha3_256Id:
  *
- * The MD5 digest transform klass.
+ * The HMAC with SHA3-256 signature transform klass.
  */
-#define xmlSecGnuTLSTransformMd5Id \
-        xmlSecGnuTLSTransformMd5GetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformMd5GetKlass(void);
-#endif /* XMLSEC_NO_MD5 */
+#define xmlSecGnuTLSTransformSha3_256Id \
+        xmlSecGnuTLSTransformSha3_256GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformSha3_256GetKlass(void);
 
-
-/********************************************************************
- *
- * RipeMD160 transforms
- *
- *******************************************************************/
-#ifndef XMLSEC_NO_RIPEMD160
 /**
- * xmlSecGnuTLSTransformRipemd160Id:
+ * xmlSecGnuTLSTransformSha3_384Id:
  *
- * The RIPEMD160 digest transform klass.
+ * The HMAC with SHA3-384 signature transform klass.
  */
-#define xmlSecGnuTLSTransformRipemd160Id \
-        xmlSecGnuTLSTransformRipemd160GetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformRipemd160GetKlass(void);
-#endif /* XMLSEC_NO_RIPEMD160 */
+#define xmlSecGnuTLSTransformSha3_384Id \
+        xmlSecGnuTLSTransformSha3_384GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformSha3_384GetKlass(void);
 
+/**
+ * xmlSecGnuTLSTransformSha3_512Id:
+ *
+ * The HMAC with SHA3-512 signature transform klass.
+ */
+#define xmlSecGnuTLSTransformSha3_512Id \
+        xmlSecGnuTLSTransformSha3_512GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformSha3_512GetKlass(void);
+#endif /* XMLSEC_NO_SHA3 */
+
+
+/**
+ * xmlSecGnuTLSKeyDataDEREncodedKeyValueId:
+ *
+ * The GnuTLS DEREncodedKeyValue data klass.
+ */
+#define xmlSecGnuTLSKeyDataDEREncodedKeyValueId  xmlSecGnuTLSKeyDataDEREncodedKeyValueGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId             xmlSecGnuTLSKeyDataDEREncodedKeyValueGetKlass(void);
 
 #ifdef __cplusplus
 }

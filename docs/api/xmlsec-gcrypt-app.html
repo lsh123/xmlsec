@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>app: XML Security Library Reference Manual</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
 <link rel="up" href="xmlsec-gcrypt-ref.html" title="XML Security Library for GCrypt API Reference.">
 <link rel="prev" href="xmlsec-gcrypt-ref.html" title="XML Security Library for GCrypt API Reference.">
 <link rel="next" href="xmlsec-gcrypt-crypto.html" title="crypto">
-<meta name="generator" content="GTK-Doc V1.27 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.33.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -80,6 +80,14 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
+<a class="link" href="xmlsec-gcrypt-app.html#xmlSecGCryptAppDefaultKeysMngrVerifyKey" title="xmlSecGCryptAppDefaultKeysMngrVerifyKey ()">xmlSecGCryptAppDefaultKeysMngrVerifyKey</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
 <a class="link" href="xmlsec-gcrypt-app.html#xmlSecGCryptAppDefaultKeysMngrLoad" title="xmlSecGCryptAppDefaultKeysMngrLoad ()">xmlSecGCryptAppDefaultKeysMngrLoad</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
@@ -104,6 +112,14 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
+<a class="link" href="xmlsec-gcrypt-app.html#xmlSecGCryptAppKeysMngrCrlLoad" title="xmlSecGCryptAppKeysMngrCrlLoad ()">xmlSecGCryptAppKeysMngrCrlLoad</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
 <a class="link" href="xmlsec-gcrypt-app.html#xmlSecGCryptAppKeysMngrCertLoadMemory" title="xmlSecGCryptAppKeysMngrCertLoadMemory ()">xmlSecGCryptAppKeysMngrCertLoadMemory</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
@@ -112,7 +128,7 @@
 <a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-gcrypt-app.html#xmlSecGCryptAppKeyLoad" title="xmlSecGCryptAppKeyLoad ()">xmlSecGCryptAppKeyLoad</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-gcrypt-app.html#xmlSecGCryptAppKeyLoadEx" title="xmlSecGCryptAppKeyLoadEx ()">xmlSecGCryptAppKeyLoadEx</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -168,7 +184,7 @@
 </div>
 <div class="refsect1">
 <a name="xmlsec-gcrypt-app.description"></a><h2>Description</h2>
-<p></p>
+<p>Application support functions for GCrypt.</p>
 </div>
 <div class="refsect1">
 <a name="xmlsec-gcrypt-app.functions_details"></a><h2>Functions</h2>
@@ -282,6 +298,58 @@ function.</p>
 </div>
 <hr>
 <div class="refsect2">
+<a name="xmlSecGCryptAppDefaultKeysMngrVerifyKey"></a><h3>xmlSecGCryptAppDefaultKeysMngrVerifyKey ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecGCryptAppDefaultKeysMngrVerifyKey
+                               (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>,
+                                <em class="parameter"><code><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="type">xmlSecKeyPtr</span></a> key</code></em>,
+                                <em class="parameter"><code><a class="link" href="xmlsec-keyinfo.html#xmlSecKeyInfoCtx" title="struct xmlSecKeyInfoCtx"><span class="type">xmlSecKeyInfoCtxPtr</span></a> keyInfoCtx</code></em>);</pre>
+<p>Verifies <em class="parameter"><code>key</code></em>
+ with the keys manager <em class="parameter"><code>mngr</code></em>
+ created with <a class="link" href="xmlsec-app.html#xmlSecCryptoAppDefaultKeysMngrInit" title="xmlSecCryptoAppDefaultKeysMngrInit ()"><span class="type">xmlSecCryptoAppDefaultKeysMngrInit</span></a>
+function:</p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem"><p>Checks that key certificate is present</p></li>
+<li class="listitem"><p>Checks that key certificate is valid</p></li>
+</ul></div>
+<p>Adds <em class="parameter"><code>key</code></em>
+ to the keys manager <em class="parameter"><code>mngr</code></em>
+ created with <a class="link" href="xmlsec-app.html#xmlSecCryptoAppDefaultKeysMngrInit" title="xmlSecCryptoAppDefaultKeysMngrInit ()"><span class="type">xmlSecCryptoAppDefaultKeysMngrInit</span></a>
+function.</p>
+<div class="refsect3">
+<a name="xmlSecGCryptAppDefaultKeysMngrVerifyKey.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>mngr</p></td>
+<td class="parameter_description"><p>the pointer to keys manager.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>key</p></td>
+<td class="parameter_description"><p>the pointer to key.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>keyInfoCtx</p></td>
+<td class="parameter_description"><p>the key info context for verification.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecGCryptAppDefaultKeysMngrVerifyKey.returns"></a><h4>Returns</h4>
+<p> 1 if key is verified, 0 otherwise, or a negative value if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
 <a name="xmlSecGCryptAppDefaultKeysMngrLoad"></a><h3>xmlSecGCryptAppDefaultKeysMngrLoad ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecGCryptAppDefaultKeysMngrLoad (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>,
@@ -366,10 +434,11 @@ xmlSecGCryptAppKeysMngrCertLoad (<em class="parameter"><code><a class="link" hre
                                  <em class="parameter"><code>const <font><span class="type">char</span></font> *filename</code></em>,
                                  <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataFormat" title="enum xmlSecKeyDataFormat"><span class="type">xmlSecKeyDataFormat</span></a> format</code></em>,
                                  <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataType" title="xmlSecKeyDataType"><span class="type">xmlSecKeyDataType</span></a> type</code></em>);</pre>
+<p>Placeholder. GCrypt  does not support X509 certificates.</p>
 <p>Reads cert from <em class="parameter"><code>filename</code></em>
  and adds to the list of trusted or known
 untrusted certs in <em class="parameter"><code>store</code></em>
- (not implemented yet).</p>
+.</p>
 <div class="refsect3">
 <a name="xmlSecGCryptAppKeysMngrCertLoad.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -410,6 +479,49 @@ trusted or not.</p></td>
 </div>
 <hr>
 <div class="refsect2">
+<a name="xmlSecGCryptAppKeysMngrCrlLoad"></a><h3>xmlSecGCryptAppKeysMngrCrlLoad ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecGCryptAppKeysMngrCrlLoad (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>,
+                                <em class="parameter"><code>const <font><span class="type">char</span></font> *filename</code></em>,
+                                <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataFormat" title="enum xmlSecKeyDataFormat"><span class="type">xmlSecKeyDataFormat</span></a> format</code></em>);</pre>
+<p>Placeholder. GCrypt  does not support X509 certificates.</p>
+<p>Reads crls from <em class="parameter"><code>filename</code></em>
+ and adds to the list of crls in <em class="parameter"><code>store</code></em>
+.</p>
+<div class="refsect3">
+<a name="xmlSecGCryptAppKeysMngrCrlLoad.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>mngr</p></td>
+<td class="parameter_description"><p>the keys manager.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>filename</p></td>
+<td class="parameter_description"><p>the CRL file.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>format</p></td>
+<td class="parameter_description"><p>the CRL file format.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecGCryptAppKeysMngrCrlLoad.returns"></a><h4>Returns</h4>
+<p> 0 on success or a negative value otherwise.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
 <a name="xmlSecGCryptAppKeysMngrCertLoadMemory"></a><h3>xmlSecGCryptAppKeysMngrCertLoadMemory ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecGCryptAppKeysMngrCertLoadMemory (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>,
@@ -417,10 +529,11 @@ xmlSecGCryptAppKeysMngrCertLoadMemory (<em class="parameter"><code><a class="lin
                                        <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> dataSize</code></em>,
                                        <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataFormat" title="enum xmlSecKeyDataFormat"><span class="type">xmlSecKeyDataFormat</span></a> format</code></em>,
                                        <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataType" title="xmlSecKeyDataType"><span class="type">xmlSecKeyDataType</span></a> type</code></em>);</pre>
+<p>Placeholder. GCrypt  does not support X509 certificates.</p>
 <p>Reads cert from binary buffer <em class="parameter"><code>data</code></em>
  and adds to the list of trusted or known
 untrusted certs in <em class="parameter"><code>store</code></em>
- (not implemented yet).</p>
+.</p>
 <div class="refsect3">
 <a name="xmlSecGCryptAppKeysMngrCertLoadMemory.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -465,16 +578,17 @@ untrusted certs in <em class="parameter"><code>store</code></em>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecGCryptAppKeyLoad"></a><h3>xmlSecGCryptAppKeyLoad ()</h3>
+<a name="xmlSecGCryptAppKeyLoadEx"></a><h3>xmlSecGCryptAppKeyLoadEx ()</h3>
 <pre class="programlisting"><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
-xmlSecGCryptAppKeyLoad (<em class="parameter"><code>const <font><span class="type">char</span></font> *filename</code></em>,
-                        <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataFormat" title="enum xmlSecKeyDataFormat"><span class="type">xmlSecKeyDataFormat</span></a> format</code></em>,
-                        <em class="parameter"><code>const <font><span class="type">char</span></font> *pwd</code></em>,
-                        <em class="parameter"><code><font><span class="type">void</span></font> *pwdCallback</code></em>,
-                        <em class="parameter"><code><font><span class="type">void</span></font> *pwdCallbackCtx</code></em>);</pre>
+xmlSecGCryptAppKeyLoadEx (<em class="parameter"><code>const <font><span class="type">char</span></font> *filename</code></em>,
+                          <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataType" title="xmlSecKeyDataType"><span class="type">xmlSecKeyDataType</span></a> type</code></em>,
+                          <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataFormat" title="enum xmlSecKeyDataFormat"><span class="type">xmlSecKeyDataFormat</span></a> format</code></em>,
+                          <em class="parameter"><code>const <font><span class="type">char</span></font> *pwd</code></em>,
+                          <em class="parameter"><code><font><span class="type">void</span></font> *pwdCallback</code></em>,
+                          <em class="parameter"><code><font><span class="type">void</span></font> *pwdCallbackCtx</code></em>);</pre>
 <p>Reads key from the a file.</p>
 <div class="refsect3">
-<a name="xmlSecGCryptAppKeyLoad.parameters"></a><h4>Parameters</h4>
+<a name="xmlSecGCryptAppKeyLoadEx.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col>
@@ -485,6 +599,11 @@ xmlSecGCryptAppKeyLoad (<em class="parameter"><code>const <font><span class="typ
 <tr>
 <td class="parameter_name"><p>filename</p></td>
 <td class="parameter_description"><p>the key filename.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>type</p></td>
+<td class="parameter_description"><p>the expected key type.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -511,7 +630,7 @@ xmlSecGCryptAppKeyLoad (<em class="parameter"><code>const <font><span class="typ
 </table></div>
 </div>
 <div class="refsect3">
-<a name="xmlSecGCryptAppKeyLoad.returns"></a><h4>Returns</h4>
+<a name="xmlSecGCryptAppKeyLoadEx.returns"></a><h4>Returns</h4>
 <p> pointer to the key or NULL if an error occurs.</p>
 </div>
 </div>
@@ -581,9 +700,10 @@ xmlSecGCryptAppPkcs12Load (<em class="parameter"><code>const <font><span class="
                            <em class="parameter"><code>const <font><span class="type">char</span></font> *pwd</code></em>,
                            <em class="parameter"><code><font><span class="type">void</span></font> *pwdCallback</code></em>,
                            <em class="parameter"><code><font><span class="type">void</span></font> *pwdCallbackCtx</code></em>);</pre>
-<p>Reads key and all associated certificates from the PKCS12 file
-(not implemented yet).
-For uniformity, call xmlSecGCryptAppKeyLoad instead of this function. Pass
+<p>Placeholder. GCrypt  does not support X509 certificates.
+Reads key and all associated certificates from the PKCS12 file.</p>
+<p>For uniformity, call <em class="parameter"><code>xmlSecGCryptAppKeyLoadEx</code></em>
+ instead of this function. Pass
 in format=xmlSecKeyDataFormatPkcs12.</p>
 <div class="refsect3">
 <a name="xmlSecGCryptAppPkcs12Load.parameters"></a><h4>Parameters</h4>
@@ -631,9 +751,10 @@ xmlSecGCryptAppPkcs12LoadMemory (<em class="parameter"><code>const <a class="lin
                                  <em class="parameter"><code>const <font><span class="type">char</span></font> *pwd</code></em>,
                                  <em class="parameter"><code><font><span class="type">void</span></font> *pwdCallback</code></em>,
                                  <em class="parameter"><code><font><span class="type">void</span></font> *pwdCallbackCtx</code></em>);</pre>
+<p>Placeholder. GCrypt  does not support X509 certificates.</p>
 <p>Reads key and all associated certificates from the PKCS12 data in memory buffer.
 For uniformity, call xmlSecGCryptAppKeyLoadMemory instead of this function. Pass
-in format=xmlSecKeyDataFormatPkcs12 (not implemented yet).</p>
+in format=xmlSecKeyDataFormatPkcs12.</p>
 <div class="refsect3">
 <a name="xmlSecGCryptAppPkcs12LoadMemory.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -683,9 +804,9 @@ in format=xmlSecKeyDataFormatPkcs12 (not implemented yet).</p>
 xmlSecGCryptAppKeyCertLoad (<em class="parameter"><code><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="type">xmlSecKeyPtr</span></a> key</code></em>,
                             <em class="parameter"><code>const <font><span class="type">char</span></font> *filename</code></em>,
                             <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataFormat" title="enum xmlSecKeyDataFormat"><span class="type">xmlSecKeyDataFormat</span></a> format</code></em>);</pre>
-<p>Reads the certificate from $<em class="parameter"><code>filename</code></em>
- and adds it to key
-(not implemented yet).</p>
+<p>Placeholder. GCrypt  does not support X509 certificates.
+Reads the certificate from $<em class="parameter"><code>filename</code></em>
+ and adds it to key.</p>
 <div class="refsect3">
 <a name="xmlSecGCryptAppKeyCertLoad.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -726,7 +847,8 @@ xmlSecGCryptAppKeyCertLoadMemory (<em class="parameter"><code><a class="link" hr
                                   <em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *data</code></em>,
                                   <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> dataSize</code></em>,
                                   <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataFormat" title="enum xmlSecKeyDataFormat"><span class="type">xmlSecKeyDataFormat</span></a> format</code></em>);</pre>
-<p>Reads the certificate from memory buffer and adds it to key (not implemented yet).</p>
+<p>Placeholder. GCrypt  does not support X509 certificates.
+Reads the certificate from memory buffer and adds it to key.</p>
 <div class="refsect3">
 <a name="xmlSecGCryptAppKeyCertLoadMemory.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -776,12 +898,8 @@ xmlSecGCryptAppGetDefaultPwdCallback (<em class="parameter"><code><span class="t
 </div>
 </div>
 </div>
-<div class="refsect1">
-<a name="xmlsec-gcrypt-app.other_details"></a><h2>Types and Values</h2>
-<p></p>
-</div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.27</div>
+<hr>Generated by GTK-Doc V1.33.1</div>
 </body>
 </html>

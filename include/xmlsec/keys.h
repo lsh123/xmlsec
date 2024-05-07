@@ -6,13 +6,14 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 #ifndef __XMLSEC_KEYS_H__
 #define __XMLSEC_KEYS_H__
 
 #include <time.h>
 
+#include <xmlsec/exports.h>
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/list.h>
 #include <xmlsec/keysdata.h>
@@ -59,9 +60,23 @@ typedef unsigned int                    xmlSecKeyUsage;
 /**
  * xmlSecKeyUsageKeyExchange:
  *
- * The key is used for key exchange.
+ * Deprecated. The key is used for key exchange.
  */
 #define xmlSecKeyUsageKeyExchange       0x00000010
+
+/**
+ * xmlSecKeyUsageKeyDerive:
+ *
+ * The key is used for key derivation.
+ */
+#define xmlSecKeyUsageKeyDerive         0x00000020
+
+/**
+ * xmlSecKeyUsageKeyAgreement:
+ *
+ * The key is used for key agreement.
+ */
+#define xmlSecKeyUsageKeyAgreement      0x00000040
 
 /**
  * xmlSecKeyUsageAny:
@@ -189,16 +204,22 @@ XMLSEC_EXPORT void              xmlSecKeyEmpty          (xmlSecKeyPtr key);
 XMLSEC_EXPORT xmlSecKeyPtr      xmlSecKeyDuplicate      (xmlSecKeyPtr key);
 XMLSEC_EXPORT int               xmlSecKeyCopy           (xmlSecKeyPtr keyDst,
                                                          xmlSecKeyPtr keySrc);
-
+XMLSEC_EXPORT int               xmlSecKeySwap           (xmlSecKeyPtr key1,
+                                                         xmlSecKeyPtr key2);
 XMLSEC_EXPORT const xmlChar*    xmlSecKeyGetName        (xmlSecKeyPtr key);
 XMLSEC_EXPORT int               xmlSecKeySetName        (xmlSecKeyPtr key,
                                                          const xmlChar* name);
-
+XMLSEC_EXPORT int               xmlSecKeySetNameEx      (xmlSecKeyPtr key,
+                                                         const xmlChar* name,
+                                                         xmlSecSize nameSize);
 XMLSEC_EXPORT xmlSecKeyDataType xmlSecKeyGetType        (xmlSecKeyPtr key);
 
 XMLSEC_EXPORT xmlSecKeyDataPtr  xmlSecKeyGetValue       (xmlSecKeyPtr key);
 XMLSEC_EXPORT int               xmlSecKeySetValue       (xmlSecKeyPtr key,
                                                          xmlSecKeyDataPtr value);
+
+XMLSEC_EXPORT xmlSecSize         xmlSecKeyGetSize       (xmlSecKeyPtr key);
+
 
 XMLSEC_EXPORT xmlSecKeyDataPtr  xmlSecKeyGetData        (xmlSecKeyPtr key,
                                                          xmlSecKeyDataId dataId);
@@ -273,4 +294,3 @@ XMLSEC_EXPORT xmlSecPtrListId   xmlSecKeyPtrListGetKlass                (void);
 #endif /* __cplusplus */
 
 #endif /* __XMLSEC_KEYS_H__ */
-

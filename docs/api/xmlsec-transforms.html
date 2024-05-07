@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>transforms: XML Security Library Reference Manual</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
 <link rel="up" href="xmlsec-ref.html" title="XML Security Core Library API Reference.">
 <link rel="prev" href="xmlsec-templates.html" title="templates">
 <link rel="next" href="xmlsec-version.html" title="version">
-<meta name="generator" content="GTK-Doc V1.27 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.33.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -27,7 +27,7 @@
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="xmlsec-transforms.top_of_page"></a>transforms</span></h2>
-<p>transforms — Transform object functions.</p>
+<p>transforms — XMLDsig and XMLEnc transforms.</p>
 </td>
 <td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
@@ -257,6 +257,22 @@
 </td>
 <td class="function_name">
 <a class="link" href="xmlsec-transforms.html#xmlSecTransformCtxDebugXmlDump" title="xmlSecTransformCtxDebugXmlDump ()">xmlSecTransformCtxDebugXmlDump</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="returnvalue">xmlSecSize</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-transforms.html#xmlSecTransformCtxGetDefaultBinaryChunkSize" title="xmlSecTransformCtxGetDefaultBinaryChunkSize ()">xmlSecTransformCtxGetDefaultBinaryChunkSize</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">void</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-transforms.html#xmlSecTransformCtxSetDefaultBinaryChunkSize" title="xmlSecTransformCtxSetDefaultBinaryChunkSize ()">xmlSecTransformCtxSetDefaultBinaryChunkSize</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -793,6 +809,22 @@
 <a class="link" href="xmlsec-transforms.html#xmlSecTransformVisa3DHackSetID" title="xmlSecTransformVisa3DHackSetID ()">xmlSecTransformVisa3DHackSetID</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
+<tr>
+<td class="function_type">
+<a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="returnvalue">xmlSecSize</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-transforms.html#xmlSecTransformHmacGetMinOutputBitsSize" title="xmlSecTransformHmacGetMinOutputBitsSize ()">xmlSecTransformHmacGetMinOutputBitsSize</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">void</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-transforms.html#xmlSecTransformHmacSetMinOutputBitsSize" title="xmlSecTransformHmacSetMinOutputBitsSize ()">xmlSecTransformHmacSetMinOutputBitsSize</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
 </tbody>
 </table></div>
 </div>
@@ -804,10 +836,6 @@
 <col>
 </colgroup>
 <tbody>
-<tr>
-<td class="define_keyword">#define</td>
-<td class="function_name"><a class="link" href="xmlsec-transforms.html#XMLSEC-TRANSFORM-BINARY-CHUNK:CAPS" title="XMLSEC_TRANSFORM_BINARY_CHUNK">XMLSEC_TRANSFORM_BINARY_CHUNK</a></td>
-</tr>
 <tr>
 <td class="datatype_keyword">enum</td>
 <td class="function_name"><a class="link" href="xmlsec-transforms.html#xmlSecTransformStatus" title="enum xmlSecTransformStatus">xmlSecTransformStatus</a></td>
@@ -891,6 +919,14 @@
 <tr>
 <td class="define_keyword">#define</td>
 <td class="function_name"><a class="link" href="xmlsec-transforms.html#xmlSecTransformUsageEncryptionMethod" title="xmlSecTransformUsageEncryptionMethod">xmlSecTransformUsageEncryptionMethod</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-transforms.html#xmlSecTransformUsageKeyDerivationMethod" title="xmlSecTransformUsageKeyDerivationMethod">xmlSecTransformUsageKeyDerivationMethod</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-transforms.html#xmlSecTransformUsageAgreementMethod" title="xmlSecTransformUsageAgreementMethod">xmlSecTransformUsageAgreementMethod</a></td>
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
@@ -985,36 +1021,6 @@
 </div>
 <div class="refsect1">
 <a name="xmlsec-transforms.description"></a><h2>Description</h2>
-<p>The <a class="ulink" href="http://www.w3.org/TR/xmldsig-core/#sec-Transforms" target="_top">Transforms Element</a>
-contains an ordered list of Transform elements; these describe how the signer
-obtained the data object that was digested.</p>
-<p>Schema Definition:</p>
-<div class="informalexample"><pre class="programlisting">
- &lt;element name="Transforms" type="ds:TransformsType"/&gt;
- &lt;complexType name="TransformsType"&gt;
-   &lt;sequence&gt;
-     &lt;element ref="ds:Transform" maxOccurs="unbounded"/&gt;
-   &lt;/sequence&gt;
-  &lt;/complexType&gt;
-
- &lt;element name="Transform" type="ds:TransformType"/&gt;
- &lt;complexType name="TransformType" mixed="true"&gt;
-   &lt;choice minOccurs="0" maxOccurs="unbounded"&gt;
-     &lt;any namespace="##other" processContents="lax"/&gt;
-     &lt;!-- (1,1) elements from (0,unbounded) namespaces --&gt;
-     &lt;element name="XPath" type="string"/&gt;
-   &lt;/choice&gt;
-   &lt;attribute name="Algorithm" type="anyURI" use="required"/&gt;
- &lt;/complexType&gt;
-</pre></div>
-<p></p>
-<p>DTD:</p>
-<div class="informalexample"><pre class="programlisting">
- &lt;!ELEMENT Transforms (Transform+)&gt;
- &lt;!ELEMENT Transform (#PCDATA|XPath %Transform.ANY;)* &gt;
- &lt;!ATTLIST Transform Algorithm    CDATA    #REQUIRED &gt;
- &lt;!ELEMENT XPath (#PCDATA) &gt;
-</pre></div>
 <p></p>
 </div>
 <div class="refsect1">
@@ -1841,6 +1847,44 @@ xmlSecTransformCtxDebugXmlDump (<em class="parameter"><code><a class="link" href
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformCtxGetDefaultBinaryChunkSize"></a><h3>xmlSecTransformCtxGetDefaultBinaryChunkSize ()</h3>
+<pre class="programlisting"><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="returnvalue">xmlSecSize</span></a>
+xmlSecTransformCtxGetDefaultBinaryChunkSize
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Gets the binary chunk size. Increasing the chunk size improves
+XMLSec library performance at the expense of increased memory usage.</p>
+<div class="refsect3">
+<a name="xmlSecTransformCtxGetDefaultBinaryChunkSize.returns"></a><h4>Returns</h4>
+<p> the current binary processing chunk size.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformCtxSetDefaultBinaryChunkSize"></a><h3>xmlSecTransformCtxSetDefaultBinaryChunkSize ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">void</span></font>
+xmlSecTransformCtxSetDefaultBinaryChunkSize
+                               (<em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> binaryChunkSize</code></em>);</pre>
+<p>Sets the default binary chunk size. Increasing the chunk size improves
+XMLSec library performance at the expense of increased memory usage.
+This function is not thread safe and should only be called during initialization.</p>
+<div class="refsect3">
+<a name="xmlSecTransformCtxSetDefaultBinaryChunkSize.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>binaryChunkSize</p></td>
+<td class="parameter_description"><p>the new binary chunk size (must be greater than zero).</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
 </table></div>
 </div>
 </div>
@@ -3959,6 +4003,11 @@ xmlSecTransformXPointerSetExpr (<em class="parameter"><code><a class="link" href
 <a name="xmlSecTransformRelationshipGetKlass"></a><h3>xmlSecTransformRelationshipGetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformRelationshipGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Gets the Relationship transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecTransformRelationshipGetKlass.returns"></a><h4>Returns</h4>
+<p> Relationship transform klass.</p>
+</div>
 </div>
 <hr>
 <div class="refsect2">
@@ -3999,7 +4048,7 @@ then the result of these steps is logically equivalent [XHTML].</p>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
 xmlSecTransformXsltSetDefaultSecurityPrefs
                                (<em class="parameter"><code><font><span class="type">xsltSecurityPrefsPtr</span></font> sec</code></em>);</pre>
-<p>Sets the new default security preferences. The xmlsec default security policy is 
+<p>Sets the new default security preferences. The xmlsec default security policy is
 to disable everything.</p>
 <div class="refsect3">
 <a name="xmlSecTransformXsltSetDefaultSecurityPrefs.parameters"></a><h4>Parameters</h4>
@@ -4088,17 +4137,45 @@ xmlSecTransformVisa3DHackSetID (<em class="parameter"><code><a class="link" href
 <p> 0 on success or a negative value if an error occurs.</p>
 </div>
 </div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformHmacGetMinOutputBitsSize"></a><h3>xmlSecTransformHmacGetMinOutputBitsSize ()</h3>
+<pre class="programlisting"><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="returnvalue">xmlSecSize</span></a>
+xmlSecTransformHmacGetMinOutputBitsSize
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Gets the minimum size in bits for HMAC output.</p>
+<div class="refsect3">
+<a name="xmlSecTransformHmacGetMinOutputBitsSize.returns"></a><h4>Returns</h4>
+<p> the min HMAC output size in bits.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformHmacSetMinOutputBitsSize"></a><h3>xmlSecTransformHmacSetMinOutputBitsSize ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">void</span></font>
+xmlSecTransformHmacSetMinOutputBitsSize
+                               (<em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> val</code></em>);</pre>
+<p>Sets the min HMAC output size in bits. Low value for min output size
+might create a security vulnerability and is not recommended.</p>
+<div class="refsect3">
+<a name="xmlSecTransformHmacSetMinOutputBitsSize.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>val</p></td>
+<td class="parameter_description"><p>the new min hmac output size in bits.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
 </div>
 <div class="refsect1">
 <a name="xmlsec-transforms.other_details"></a><h2>Types and Values</h2>
-<div class="refsect2">
-<a name="XMLSEC-TRANSFORM-BINARY-CHUNK:CAPS"></a><h3>XMLSEC_TRANSFORM_BINARY_CHUNK</h3>
-<pre class="programlisting">#define XMLSEC_TRANSFORM_BINARY_CHUNK                   1024
-</pre>
-<p>The binary data chunks size. XMLSec processes binary data one chunk
-at a time. Changing this impacts xmlsec memory usage and performance.</p>
-</div>
-<hr>
 <div class="refsect2">
 <a name="xmlSecTransformStatus"></a><h3>enum xmlSecTransformStatus</h3>
 <p>The transform execution status.</p>
@@ -4352,6 +4429,20 @@ at a time. Changing this impacts xmlsec memory usage and performance.</p>
 </div>
 <hr>
 <div class="refsect2">
+<a name="xmlSecTransformUsageKeyDerivationMethod"></a><h3>xmlSecTransformUsageKeyDerivationMethod</h3>
+<pre class="programlisting">#define xmlSecTransformUsageKeyDerivationMethod 0x0020
+</pre>
+<p>Transform could be used in &lt;enc11:KeyDerivationMethod/&gt;.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformUsageAgreementMethod"></a><h3>xmlSecTransformUsageAgreementMethod</h3>
+<pre class="programlisting">#define xmlSecTransformUsageAgreementMethod 0x0040
+</pre>
+<p>Transform could be used in &lt;enc11:AgreementMethod/&gt;.</p>
+</div>
+<hr>
+<div class="refsect2">
 <a name="xmlSecTransformUsageAny"></a><h3>xmlSecTransformUsageAny</h3>
 <pre class="programlisting">#define xmlSecTransformUsageAny                 0xFFFF
 </pre>
@@ -4374,9 +4465,13 @@ documents that don't follow XML, XPointer and XML DSig specifications.</p>
     void*                                       userData;
     unsigned int                                flags;
     unsigned int                                flags2;
+    xmlSecSize                                  binaryChunkSize;
     xmlSecTransformUriType                      enabledUris;
     xmlSecPtrList                               enabledTransforms;
     xmlSecTransformCtxPreExecuteCallback        preExecCallback;
+
+    /* used by Key Agreement transforms */
+    xmlSecKeyInfoCtxPtr                         parentKeyInfoCtx;
 
     /* results */
     xmlSecBufferPtr                             result;
@@ -4420,6 +4515,11 @@ touch this).</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
+<td class="struct_member_name"><p><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> <em class="structfield"><code><a name="xmlSecTransformCtx.binaryChunkSize"></a>binaryChunkSize</code></em>;</p></td>
+<td class="struct_member_description"><p>the chunk of size for binary transforms processing.</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
 <td class="struct_member_name"><p><a class="link" href="xmlsec-transforms.html#xmlSecTransformUriType" title="xmlSecTransformUriType"><span class="type">xmlSecTransformUriType</span></a> <em class="structfield"><code><a name="xmlSecTransformCtx.enabledUris"></a>enabledUris</code></em>;</p></td>
 <td class="struct_member_description"><p>the allowed transform data source uri types.</p></td>
 <td class="struct_member_annotations"> </td>
@@ -4438,6 +4538,11 @@ can use this callback to change transforms parameters,
 insert additional transforms in the chain or do
 additional validation (and abort transform execution
 if needed).</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><a class="link" href="xmlsec-keyinfo.html#xmlSecKeyInfoCtx" title="struct xmlSecKeyInfoCtx"><span class="type">xmlSecKeyInfoCtxPtr</span></a> <em class="structfield"><code><a name="xmlSecTransformCtx.parentKeyInfoCtx"></a>parentKeyInfoCtx</code></em>;</p></td>
+<td class="struct_member_description"><p>the parent's key info ctx for key agreement.</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
@@ -4505,6 +4610,9 @@ if needed).</p></td>
     xmlSecNodeSetPtr                    inNodes;
     xmlSecNodeSetPtr                    outNodes;
 
+    /* used for some transform (e.g. KDF) to determine the desired output size */
+    xmlSecSize                          expectedOutputSize;
+
     /* reserved for the future */
     void*                               reserved0;
     void*                               reserved1;
@@ -4568,6 +4676,11 @@ if needed).</p></td>
 <tr>
 <td class="struct_member_name"><p><a class="link" href="xmlsec-nodeset.html#xmlSecNodeSet" title="struct xmlSecNodeSet"><span class="type">xmlSecNodeSetPtr</span></a> <em class="structfield"><code><a name="xmlSecTransform.outNodes"></a>outNodes</code></em>;</p></td>
 <td class="struct_member_description"><p>the output XML nodes.</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> <em class="structfield"><code><a name="xmlSecTransform.expectedOutputSize"></a>expectedOutputSize</code></em>;</p></td>
+<td class="struct_member_description"><p>the expected transform output size (used for key wraps).</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
@@ -4849,6 +4962,6 @@ such expressions thru XPath/XPointer engine, we need to have this hack here.</p>
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.27</div>
+<hr>Generated by GTK-Doc V1.33.1</div>
 </body>
 </html>

@@ -6,7 +6,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 #ifndef __XMLSEC_GLOBALS_H__
 #define __XMLSEC_GLOBALS_H__
@@ -43,8 +43,8 @@
                     (const char*)(errorObject),             \
                     (errorFunction),                        \
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,          \
-                    "gcrypt error: %ld: %s: %s",            \
-                    (long)(errCode),                        \
+                    "gcrypt error: %u: %s: %s",             \
+                    (errCode),                              \
                     xmlSecErrorsSafeString(source),         \
                     xmlSecErrorsSafeString(message)         \
         );                                                  \
@@ -68,9 +68,9 @@
                     (const char*)(errorObject),             \
                     (errorFunction),                        \
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,          \
-                    msg "; gcrypt error: %ld: %s:  %s",       \
+                    msg "; gcrypt error: %u: %s: %s",       \
                     (param),                                \
-                    (long)(errCode),                        \
+                    (errCode),                              \
                     xmlSecErrorsSafeString(source),         \
                     xmlSecErrorsSafeString(message)         \
         );                                                  \

@@ -1,16 +1,49 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * HMAC transforms implementation for Microsoft Crypto API.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:hmac
- * @Short_description: HMAC transforms implementation for Microsoft Crypto API.
- * @Stability: Private
+ * SECTION:crypto
+ */
+
+
+#ifndef XMLSEC_NO_HMAC
+#include "globals.h"
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+
+#include <xmlsec/xmlsec.h>
+#include <xmlsec/base64.h>
+#include <xmlsec/errors.h>
+#include <xmlsec/keys.h>
+#include <xmlsec/private.h>
+#include <xmlsec/transforms.h>
+
+#include <xmlsec/mscrypto/crypto.h>
+
+#include "private.h"
+#include "../cast_helpers.h"
+#include "../keysdata_helpers.h"
+#include "../transform_helpers.h"
+
+
+/**************************************************************************
+ *
+ * Configuration
+ *
+ *****************************************************************************/
+
+/******************************************************************************
+ *
+ * Internal MSCrypto HMAC CTX
  *
  * [HMAC Algorithm support](http://www.w3.org/TR/xmldsig-core/#sec-HMAC):
  * The HMAC algorithm (RFC2104 [HMAC]) takes the truncation length in bits
@@ -22,66 +55,7 @@
  *   <HMACOutputLength>128</HMACOutputLength>
  * </SignatureMethod>
  * |]
- */
 
-
-#ifndef XMLSEC_NO_HMAC
-#include "globals.h"
-
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <windows.h>
-#include <wincrypt.h>
-
-#include <xmlsec/xmlsec.h>
-#include <xmlsec/xmltree.h>
-#include <xmlsec/base64.h>
-#include <xmlsec/keys.h>
-#include <xmlsec/transforms.h>
-#include <xmlsec/errors.h>
-
-#include <xmlsec/mscrypto/crypto.h>
-#include "private.h"
-
-/* sizes in bits */
-#define XMLSEC_MSCRYPTO_MIN_HMAC_SIZE            80
-#define XMLSEC_MSCRYPTO_MAX_HMAC_SIZE            256
-
-/**************************************************************************
- *
- * Configuration
- *
- *****************************************************************************/
-static int g_xmlsec_mscrypto_hmac_min_length = XMLSEC_MSCRYPTO_MIN_HMAC_SIZE;
-
-/**
- * xmlSecMSCryptoHmacGetMinOutputLength:
- *
- * Gets the value of min HMAC length.
- *
- * Returns: the min HMAC output length
- */
-int xmlSecMSCryptoHmacGetMinOutputLength(void)
-{
-    return g_xmlsec_mscrypto_hmac_min_length;
-}
-
-/**
- * xmlSecMSCryptoHmacSetMinOutputLength:
- * @min_length: the new min length
- *
- * Sets the min HMAC output length
- */
-void xmlSecMSCryptoHmacSetMinOutputLength(int min_length)
-{
-    g_xmlsec_mscrypto_hmac_min_length = min_length;
-}
-
-/******************************************************************************
- *
- * Internal MSCrypto HMAC CTX
- *
  *****************************************************************************/
 typedef struct _xmlSecMSCryptoHmacCtx            xmlSecMSCryptoHmacCtx, *xmlSecMSCryptoHmacCtxPtr;
 struct _xmlSecMSCryptoHmacCtx {
@@ -91,8 +65,9 @@ struct _xmlSecMSCryptoHmacCtx {
     ALG_ID          alg_id;
     const xmlSecMSCryptoProviderInfo  * providers;
     HCRYPTHASH      mscHash;
-    unsigned char   dgst[XMLSEC_MSCRYPTO_MAX_HMAC_SIZE];
-    xmlSecSize      dgstSize;   /* dgst size in bytes */
+    unsigned char   dgst[XMLSEC_TRASNFORM_HMAC_MAX_OUTPUT_SIZE];
+    xmlSecSize      dgstSize;
+    xmlSecSize      dgstSizeInBits;   /* dgst size in bytes */
     int             ctxInitialized;
 };
 
@@ -100,13 +75,9 @@ struct _xmlSecMSCryptoHmacCtx {
  *
  * HMAC transforms
  *
- * xmlSecMSCryptoHmacCtx is located after xmlSecTransform
- *
  *****************************************************************************/
-#define xmlSecMSCryptoHmacGetCtx(transform) \
-    ((xmlSecMSCryptoHmacCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
-#define xmlSecMSCryptoHmacSize   \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecMSCryptoHmacCtx))
+XMLSEC_TRANSFORM_DECLARE(MSCryptoHmac, xmlSecMSCryptoHmacCtx)
+#define xmlSecMSCryptoHmacSize XMLSEC_TRANSFORM_SIZE(MSCryptoHmac)
 
 static int      xmlSecMSCryptoHmacCheckId                        (xmlSecTransformPtr transform);
 static int      xmlSecMSCryptoHmacInitialize                     (xmlSecTransformPtr transform);
@@ -278,45 +249,26 @@ xmlSecMSCryptoHmacFinalize(xmlSecTransformPtr transform) {
 }
 
 static int
-xmlSecMSCryptoHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransformCtxPtr transformCtx) {
+xmlSecMSCryptoHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
+                           xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
     xmlSecMSCryptoHmacCtxPtr ctx;
-    xmlNodePtr cur;
+    int ret;
 
     xmlSecAssert2(xmlSecMSCryptoHmacCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCryptoHmacSize), -1);
     xmlSecAssert2(node!= NULL, -1);
-    xmlSecAssert2(transformCtx != NULL, -1);
+    UNREFERENCED_PARAMETER(transformCtx);
 
     ctx = xmlSecMSCryptoHmacGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    cur = xmlSecGetNextElementNode(node->children);
-    if((cur != NULL) && xmlSecCheckNodeName(cur, xmlSecNodeHMACOutputLength, xmlSecDSigNs)) {
-        xmlChar *content;
-
-        content = xmlNodeGetContent(cur);
-        if(content != NULL) {
-            ctx->dgstSize = atoi((char*)content);
-            xmlFree(content);
-        }
-
-        /* Ensure that HMAC length is greater than min specified.
-           Otherwise, an attacker can set this length to 0 or very
-           small value
-        */
-        if((int)ctx->dgstSize < xmlSecMSCryptoHmacGetMinOutputLength()) {
-            xmlSecInvalidNodeContentError(cur, xmlSecTransformGetName(transform),
-                                          "HMAC output length is too small");
-            return(-1);
-        }
-
-        cur = xmlSecGetNextElementNode(cur->next);
-    }
-
-    if(cur != NULL) {
-        xmlSecUnexpectedNodeError(cur, xmlSecTransformGetName(transform));
+    ret = xmlSecTransformHmacReadOutputBitsSize(node, ctx->dgstSizeInBits, &ctx->dgstSizeInBits);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecTransformHmacReadOutputBitsSize()",
+            xmlSecTransformGetName(transform));
         return(-1);
     }
+
     return(0);
 }
 
@@ -344,6 +296,9 @@ xmlSecMSCryptoHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecKeyDataPtr value;
     xmlSecBufferPtr buffer;
     HMAC_INFO hmacInfo;
+    xmlSecByte* bufPtr;
+    xmlSecSize bufSize;
+    DWORD dwBufSize;
     int ret;
 
     xmlSecAssert2(xmlSecMSCryptoHmacCheckId(transform), -1);
@@ -365,24 +320,25 @@ xmlSecMSCryptoHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     buffer = xmlSecKeyDataBinaryValueGetBuffer(value);
     xmlSecAssert2(buffer != NULL, -1);
 
-    if(xmlSecBufferGetSize(buffer) == 0) {
+    bufPtr = xmlSecBufferGetData(buffer);
+    bufSize = xmlSecBufferGetSize(buffer);
+    if((bufPtr == NULL) || (bufSize == 0)) {
         xmlSecInvalidZeroKeyDataSizeError(xmlSecTransformGetName(transform));
         return(-1);
     }
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(bufSize, dwBufSize, return(-1), xmlSecTransformGetName(transform));
 
-    xmlSecAssert2(xmlSecBufferGetData(buffer) != NULL, -1);
-
-    /* Import this key and get an HCRYPTKEY handle. 
-     * 
-     * HACK!!! HACK!!! HACK!!! 
-     * 
+    /* Import this key and get an HCRYPTKEY handle.
+     *
+     * HACK!!! HACK!!! HACK!!!
+     *
      * Using CALG_RC2 instead of CALG_HMAC for the key algorithm so we don't want to check key length
      */
     if (!xmlSecMSCryptoImportPlainSessionBlob(ctx->provider,
         ctx->pubPrivKey,
         CALG_RC2,
-        xmlSecBufferGetData(buffer),
-        xmlSecBufferGetSize(buffer),
+        bufPtr,
+        dwBufSize,
         FALSE,
         &(ctx->cryptKey)
         ) || (ctx->cryptKey == 0))  {
@@ -390,7 +346,7 @@ xmlSecMSCryptoHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
         xmlSecInternalError("xmlSecMSCryptoImportPlainSessionBlob",
                             xmlSecTransformGetName(transform));
         return(-1);
-    }   
+    }
 
     /* create hash */
     ret = CryptCreateHash(ctx->provider,
@@ -422,54 +378,33 @@ xmlSecMSCryptoHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 static int
 xmlSecMSCryptoHmacVerify(xmlSecTransformPtr transform,
                         const xmlSecByte* data, xmlSecSize dataSize,
-                        xmlSecTransformCtxPtr transformCtx) {
-    static xmlSecByte last_byte_masks[] =
-                { 0xFF, 0x80, 0xC0, 0xE0, 0xF0, 0xF8, 0xFC, 0xFE };
-
+                        xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
     xmlSecMSCryptoHmacCtxPtr ctx;
-    xmlSecByte mask;
+    int ret;
 
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCryptoHmacSize), -1);
     xmlSecAssert2(transform->operation == xmlSecTransformOperationVerify, -1);
     xmlSecAssert2(transform->status == xmlSecTransformStatusFinished, -1);
     xmlSecAssert2(data != NULL, -1);
-    xmlSecAssert2(transformCtx != NULL, -1);
+    UNREFERENCED_PARAMETER(transformCtx);
 
     ctx = xmlSecMSCryptoHmacGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->dgstSize > 0, -1);
+    xmlSecAssert2(ctx->dgstSizeInBits > 0, -1);
 
-    /* compare the digest size in bytes */
-    if(dataSize != ((ctx->dgstSize + 7) / 8)){
-        xmlSecInvalidSizeError("HMAC digest",
-                               dataSize, ((ctx->dgstSize + 7) / 8),
-                               xmlSecTransformGetName(transform));
-        transform->status = xmlSecTransformStatusFail;
-        return(0);
+    /* Returns 1 for match, 0 for no match, <0 for errors. */
+    ret = xmlSecTransformHmacVerify(data, dataSize, ctx->dgst, ctx->dgstSizeInBits, ctx->dgstSize);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecTransformHmacVerify", xmlSecTransformGetName(transform));
+        return(-1);
     }
-
-    /* we check the last byte separately */
-    xmlSecAssert2(dataSize > 0, -1);
-    mask = last_byte_masks[ctx->dgstSize % 8];
-    if((ctx->dgst[dataSize - 1] & mask) != (data[dataSize - 1]  & mask)) {
-        xmlSecOtherError(XMLSEC_ERRORS_R_DATA_NOT_MATCH,
-                         xmlSecTransformGetName(transform),
-                         "data and digest do not match (last byte)");
-        transform->status = xmlSecTransformStatusFail;
-        return(0);
+    if (ret == 1) {
+        transform->status = xmlSecTransformStatusOk;
     }
-
-    /* now check the rest of the digest */
-    if((dataSize > 1) && (memcmp(ctx->dgst, data, dataSize - 1) != 0)) {
-        xmlSecOtherError(XMLSEC_ERRORS_R_DATA_NOT_MATCH,
-                         xmlSecTransformGetName(transform),
-                         "data and digest do not match");
+    else {
         transform->status = xmlSecTransformStatusFail;
-        return(0);
     }
-
-    transform->status = xmlSecTransformStatusOk;
     return(0);
 }
 
@@ -501,32 +436,30 @@ xmlSecMSCryptoHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
 
         inSize = xmlSecBufferGetSize(in);
         if(inSize > 0) {
+            DWORD dwInSize;
+
+            XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, dwInSize, return(-1), xmlSecTransformGetName(transform));
             ret = CryptHashData(ctx->mscHash,
                 xmlSecBufferGetData(in),
-                inSize,
+                dwInSize,
                 0);
 
             if(ret == 0) {
-                xmlSecMSCryptoError2("CryptHashData",
-                                    xmlSecTransformGetName(transform),
-                                    "size=%d", inSize);
+                xmlSecMSCryptoError2("CryptHashData", xmlSecTransformGetName(transform),
+                    "size=" XMLSEC_SIZE_FMT, inSize);
                 return(-1);
             }
 
             ret = xmlSecBufferRemoveHead(in, inSize);
             if(ret < 0) {
-                xmlSecInternalError2("xmlSecBufferRemoveHead",
-                                     xmlSecTransformGetName(transform),
-                                     "size=%d", inSize);
+                xmlSecInternalError2("xmlSecBufferRemoveHead", xmlSecTransformGetName(transform),
+                    "size=" XMLSEC_SIZE_FMT, inSize);
                 return(-1);
             }
         }
 
         if(last) {
-            /* TODO: make a MSCrypto compatible assert here */
-            /* xmlSecAssert2((xmlSecSize)EVP_MD_size(ctx->digest) <= sizeof(ctx->dgst), -1); */
-            DWORD retLen;
-            retLen = XMLSEC_MSCRYPTO_MAX_HMAC_SIZE;
+            DWORD retLen = XMLSEC_TRASNFORM_HMAC_MAX_OUTPUT_SIZE;
 
             ret = CryptGetHashParam(ctx->mscHash,
                 HP_HASHVAL,
@@ -535,32 +468,21 @@ xmlSecMSCryptoHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
                 0);
 
             if (ret == 0) {
-                xmlSecInternalError2("CryptGetHashParam",
-                                     xmlSecTransformGetName(transform),
-                                     "size=%d", inSize);
+                xmlSecInternalError2("CryptGetHashParam", xmlSecTransformGetName(transform),
+                    "size=" XMLSEC_SIZE_FMT, inSize);
                 return(-1);
             }
             xmlSecAssert2(retLen > 0, -1);
+            XMLSEC_SAFE_CAST_ULONG_TO_SIZE(retLen, ctx->dgstSize, return(-1), xmlSecTransformGetName(transform));
 
             /* check/set the result digest size */
-            if(ctx->dgstSize == 0) {
-                ctx->dgstSize = retLen * 8; /* no dgst size specified, use all we have */
-            } else if(ctx->dgstSize <= 8 * retLen) {
-                retLen = ((ctx->dgstSize + 7) / 8); /* we need to truncate result digest */
-            } else {
-                xmlSecInvalidSizeLessThanError("HMAC digest (bits)",
-                                        8 * retLen, ctx->dgstSize,
-                                        xmlSecTransformGetName(transform));
-                return(-1);
+            if(ctx->dgstSizeInBits == 0) {
+                ctx->dgstSizeInBits = ctx->dgstSize * 8; /* no dgst size specified, use all we have */
             }
-
-            /* copy result to output */
-            if(transform->operation == xmlSecTransformOperationSign) {
-                ret = xmlSecBufferAppend(out, ctx->dgst, retLen);
-                if(ret < 0) {
-                    xmlSecInternalError2("xmlSecBufferAppend",
-                                         xmlSecTransformGetName(transform),
-                                         "size=%d", ctx->dgstSize);
+            if (transform->operation == xmlSecTransformOperationSign) {
+                ret = xmlSecTransformHmacWriteOutput(ctx->dgst, ctx->dgstSizeInBits, ctx->dgstSize, out);
+                if (ret < 0) {
+                    xmlSecInternalError("xmlSecTransformHmacWriteOutput", xmlSecTransformGetName(transform));
                     return(-1);
                 }
             }
@@ -908,4 +830,3 @@ xmlSecMSCryptoTransformHmacSha512GetKlass(void) {
 
 
 #endif /* XMLSEC_NO_HMAC */
-

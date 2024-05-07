@@ -1,18 +1,20 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * Crypto key dat and transforms implementation for NSS.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
 /**
  * SECTION:crypto
- * @Short_description: Crypto transforms implementation for NSS.
+ * @Short_description: Crypto key dat and transforms implementation for NSS.
  * @Stability: Stable
  *
+ * Implementation of keys and tranforms for NSS.
  */
 
 #include "globals.h"
@@ -20,8 +22,10 @@
 #include <string.h>
 
 #include <nss.h>
-#include <pk11func.h>
+#include <pk11pub.h>
 #include <prinit.h>
+#include <prtypes.h>
+#include <secoidt.h>
 
 
 #include <xmlsec/xmlsec.h>
@@ -37,7 +41,37 @@
 #include <xmlsec/nss/crypto.h>
 #include <xmlsec/nss/x509.h>
 
-static xmlSecCryptoDLFunctionsPtr gXmlSecNssFunctions = NULL;
+#include "../cast_helpers.h"
+
+static xmlSecCryptoDLFunctionsPtr  gXmlSecNssFunctions = NULL;
+
+
+/* checks if a given algorithm is enabled in NSS */
+static int
+xmlSecNssCryptoCheckAlgorithm(SECOidTag alg) {
+    PRUint32 policyFlags = 0;
+    SECStatus rv;
+
+    rv = NSS_GetAlgorithmPolicy(alg, &policyFlags);
+    if (rv == SECFailure) {
+        return(0);
+    }
+    if((policyFlags & NSS_USE_ALG_IN_ANY_SIGNATURE) == 0) {
+        return(0);
+    }
+    return(1);
+}
+static int
+xmlSecNssCryptoCheckMechanism(CK_MECHANISM_TYPE type) {
+    SECOidTag alg;
+
+    alg = PK11_MechanismToAlgtag(type);
+    if (alg == SEC_OID_UNKNOWN) {
+        return (0);
+    }
+    return (xmlSecNssCryptoCheckAlgorithm(alg));
+}
+
 
 /**
  * xmlSecCryptoGetFunctions_nss:
@@ -83,13 +117,17 @@ xmlSecCryptoGetFunctions_nss(void) {
     gXmlSecNssFunctions->keyDataDsaGetKlass             = xmlSecNssKeyDataDsaGetKlass;
 #endif /* XMLSEC_NO_DSA */
 
-#ifndef XMLSEC_NO_ECDSA
-    gXmlSecNssFunctions->keyDataEcdsaGetKlass          = xmlSecNssKeyDataEcdsaGetKlass;
-#endif /* XMLSEC_NO_ECDSA */
+#ifndef XMLSEC_NO_EC
+    gXmlSecNssFunctions->keyDataEcGetKlass              = xmlSecNsskeyDataEcGetKlass;
+#endif /* XMLSEC_NO_EC */
 
 #ifndef XMLSEC_NO_HMAC
     gXmlSecNssFunctions->keyDataHmacGetKlass            = xmlSecNssKeyDataHmacGetKlass;
 #endif /* XMLSEC_NO_HMAC */
+
+#ifndef XMLSEC_NO_PBKDF2
+    gXmlSecNssFunctions->keyDataPbkdf2GetKlass          = xmlSecNssKeyDataPbkdf2GetKlass;
+#endif /* XMLSEC_NO_PBKDF2 */
 
 #ifndef XMLSEC_NO_RSA
     gXmlSecNssFunctions->keyDataRsaGetKlass             = xmlSecNssKeyDataRsaGetKlass;
@@ -99,6 +137,8 @@ xmlSecCryptoGetFunctions_nss(void) {
     gXmlSecNssFunctions->keyDataX509GetKlass            = xmlSecNssKeyDataX509GetKlass;
     gXmlSecNssFunctions->keyDataRawX509CertGetKlass     = xmlSecNssKeyDataRawX509CertGetKlass;
 #endif /* XMLSEC_NO_X509 */
+
+    gXmlSecNssFunctions->keyDataDEREncodedKeyValueGetKlass = xmlSecNssKeyDataDEREncodedKeyValueGetKlass;
 
     /********************************************************************
      *
@@ -117,9 +157,17 @@ xmlSecCryptoGetFunctions_nss(void) {
 
     /******************************* AES ********************************/
 #ifndef XMLSEC_NO_AES
+    /* cbc */
     gXmlSecNssFunctions->transformAes128CbcGetKlass     = xmlSecNssTransformAes128CbcGetKlass;
     gXmlSecNssFunctions->transformAes192CbcGetKlass     = xmlSecNssTransformAes192CbcGetKlass;
     gXmlSecNssFunctions->transformAes256CbcGetKlass     = xmlSecNssTransformAes256CbcGetKlass;
+
+    /* gcm */
+    gXmlSecNssFunctions->transformAes128GcmGetKlass     = xmlSecNssTransformAes128GcmGetKlass;
+    gXmlSecNssFunctions->transformAes192GcmGetKlass     = xmlSecNssTransformAes192GcmGetKlass;
+    gXmlSecNssFunctions->transformAes256GcmGetKlass     = xmlSecNssTransformAes256GcmGetKlass;
+
+    /* kw: uses AES ECB */
     gXmlSecNssFunctions->transformKWAes128GetKlass      = xmlSecNssTransformKWAes128GetKlass;
     gXmlSecNssFunctions->transformKWAes192GetKlass      = xmlSecNssTransformKWAes192GetKlass;
     gXmlSecNssFunctions->transformKWAes256GetKlass      = xmlSecNssTransformKWAes256GetKlass;
@@ -127,14 +175,17 @@ xmlSecCryptoGetFunctions_nss(void) {
 
     /******************************* DES ********************************/
 #ifndef XMLSEC_NO_DES
+    /* cbc */
     gXmlSecNssFunctions->transformDes3CbcGetKlass       = xmlSecNssTransformDes3CbcGetKlass;
+
+    /* kw: uses DES3_CBC */
     gXmlSecNssFunctions->transformKWDes3GetKlass        = xmlSecNssTransformKWDes3GetKlass;
 #endif /* XMLSEC_NO_DES */
 
     /******************************* DSA ********************************/
 #ifndef XMLSEC_NO_DSA
 #ifndef XMLSEC_NO_SHA1
-    gXmlSecNssFunctions->transformDsaSha1GetKlass       = xmlSecNssTransformDsaSha1GetKlass;
+    gXmlSecNssFunctions->transformDsaSha1GetKlass         = xmlSecNssTransformDsaSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
 #ifndef XMLSEC_NO_SHA256
     gXmlSecNssFunctions->transformDsaSha256GetKlass       = xmlSecNssTransformDsaSha256GetKlass;
@@ -142,7 +193,7 @@ xmlSecCryptoGetFunctions_nss(void) {
 #endif /* XMLSEC_NO_DSA */
 
     /******************************* ECDSA ******************************/
-#ifndef XMLSEC_NO_ECDSA
+#ifndef XMLSEC_NO_EC
 #ifndef XMLSEC_NO_SHA1
     gXmlSecNssFunctions->transformEcdsaSha1GetKlass = xmlSecNssTransformEcdsaSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
@@ -158,7 +209,7 @@ xmlSecCryptoGetFunctions_nss(void) {
 #ifndef XMLSEC_NO_SHA512
     gXmlSecNssFunctions->transformEcdsaSha512GetKlass = xmlSecNssTransformEcdsaSha512GetKlass;
 #endif /* XMLSEC_NO_SHA512 */
-#endif /* XMLSEC_NO_ECDSA */
+#endif /* XMLSEC_NO_EC */
 
     /******************************* HMAC ********************************/
 #ifndef XMLSEC_NO_HMAC
@@ -193,6 +244,11 @@ xmlSecCryptoGetFunctions_nss(void) {
 
 #endif /* XMLSEC_NO_HMAC */
 
+    /******************************* PBKDF2 ********************************/
+#ifndef XMLSEC_NO_PBKDF2
+    gXmlSecNssFunctions->transformPbkdf2GetKlass       = xmlSecNssTransformPbkdf2GetKlass;
+#endif /* XMLSEC_NO_PBKDF2 */
+
     /******************************* RSA ********************************/
 #ifndef XMLSEC_NO_RSA
 
@@ -220,16 +276,36 @@ xmlSecCryptoGetFunctions_nss(void) {
     gXmlSecNssFunctions->transformRsaSha512GetKlass     = xmlSecNssTransformRsaSha512GetKlass;
 #endif /* XMLSEC_NO_SHA512 */
 
+
+#ifndef XMLSEC_NO_SHA1
+    gXmlSecNssFunctions->transformRsaPssSha1GetKlass    = xmlSecNssTransformRsaPssSha1GetKlass;
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA224
+    gXmlSecNssFunctions->transformRsaPssSha224GetKlass  = xmlSecNssTransformRsaPssSha224GetKlass;
+#endif /* XMLSEC_NO_SHA224 */
+
+#ifndef XMLSEC_NO_SHA256
+    gXmlSecNssFunctions->transformRsaPssSha256GetKlass  = xmlSecNssTransformRsaPssSha256GetKlass;
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+    gXmlSecNssFunctions->transformRsaPssSha384GetKlass  = xmlSecNssTransformRsaPssSha384GetKlass;
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+    gXmlSecNssFunctions->transformRsaPssSha512GetKlass  = xmlSecNssTransformRsaPssSha512GetKlass;
+#endif /* XMLSEC_NO_SHA512 */
+
+
+#ifndef XMLSEC_NO_RSA_PKCS15
     gXmlSecNssFunctions->transformRsaPkcs1GetKlass      = xmlSecNssTransformRsaPkcs1GetKlass;
+#endif /* XMLSEC_NO_RSA_PKCS15*/
 
-/* aleksey, April 2010: NSS 3.12.6 has CKM_RSA_PKCS_OAEP algorithm but
-   it doesn't implement the SHA1 OAEP PKCS we need
-
-   https://bugzilla.mozilla.org/show_bug.cgi?id=158747
-*/
-#ifdef XMLSEC_NSS_RSA_OAEP_TODO
+#ifndef XMLSEC_NO_RSA_OAEP
     gXmlSecNssFunctions->transformRsaOaepGetKlass       = xmlSecNssTransformRsaOaepGetKlass;
-#endif /* XMLSEC_NSS_RSA_OAEP_TODO */
+    gXmlSecNssFunctions->transformRsaOaepEnc11GetKlass  = xmlSecNssTransformRsaOaepEnc11GetKlass;
+#endif /* XMLSEC_NO_RSA_OAEP */
 
 #endif /* XMLSEC_NO_RSA */
 
@@ -264,22 +340,202 @@ xmlSecCryptoGetFunctions_nss(void) {
     gXmlSecNssFunctions->cryptoAppInit                  = xmlSecNssAppInit;
     gXmlSecNssFunctions->cryptoAppShutdown              = xmlSecNssAppShutdown;
     gXmlSecNssFunctions->cryptoAppDefaultKeysMngrInit   = xmlSecNssAppDefaultKeysMngrInit;
-    gXmlSecNssFunctions->cryptoAppDefaultKeysMngrAdoptKey       = xmlSecNssAppDefaultKeysMngrAdoptKey;
+    gXmlSecNssFunctions->cryptoAppDefaultKeysMngrAdoptKey  = xmlSecNssAppDefaultKeysMngrAdoptKey;
+    gXmlSecNssFunctions->cryptoAppDefaultKeysMngrVerifyKey = xmlSecNssAppDefaultKeysMngrVerifyKey;
     gXmlSecNssFunctions->cryptoAppDefaultKeysMngrLoad   = xmlSecNssAppDefaultKeysMngrLoad;
     gXmlSecNssFunctions->cryptoAppDefaultKeysMngrSave   = xmlSecNssAppDefaultKeysMngrSave;
 #ifndef XMLSEC_NO_X509
     gXmlSecNssFunctions->cryptoAppKeysMngrCertLoad      = xmlSecNssAppKeysMngrCertLoad;
     gXmlSecNssFunctions->cryptoAppKeysMngrCertLoadMemory= xmlSecNssAppKeysMngrCertLoadMemory;
+    gXmlSecNssFunctions->cryptoAppKeysMngrCrlLoad       = xmlSecNssAppKeysMngrCrlLoad;
+    gXmlSecNssFunctions->cryptoAppKeysMngrCrlLoadMemory = xmlSecNssAppKeysMngrCrlLoadMemory;
     gXmlSecNssFunctions->cryptoAppPkcs12Load            = xmlSecNssAppPkcs12Load;
     gXmlSecNssFunctions->cryptoAppPkcs12LoadMemory      = xmlSecNssAppPkcs12LoadMemory;
     gXmlSecNssFunctions->cryptoAppKeyCertLoad           = xmlSecNssAppKeyCertLoad;
     gXmlSecNssFunctions->cryptoAppKeyCertLoadMemory     = xmlSecNssAppKeyCertLoadMemory;
 #endif /* XMLSEC_NO_X509 */
-    gXmlSecNssFunctions->cryptoAppKeyLoad               = xmlSecNssAppKeyLoad;
+    gXmlSecNssFunctions->cryptoAppKeyLoadEx             = xmlSecNssAppKeyLoadEx;
     gXmlSecNssFunctions->cryptoAppKeyLoadMemory         = xmlSecNssAppKeyLoadMemory;
     gXmlSecNssFunctions->cryptoAppDefaultPwdCallback    = (void*)xmlSecNssAppGetDefaultPwdCallback();
 
     return(gXmlSecNssFunctions);
+}
+
+static void
+xmlSecNssUpdateAvailableCryptoTransforms(xmlSecCryptoDLFunctionsPtr functions) {
+    SECStatus rv;
+    xmlSecAssert(functions != NULL);
+
+    /* in theory NSS should be already initialized but just in case */
+    rv = SECOID_Init();
+    if (rv != SECSuccess) {
+        xmlSecNssError("SECOID_Init", NULL);
+        return;
+    }
+
+    /******************************* AES ********************************/
+    /* cbc */
+    if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_AES_128_CBC) == 0) {
+        functions->transformAes128CbcGetKlass     = NULL;
+    }
+    if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_AES_192_CBC) == 0) {
+        functions->transformAes192CbcGetKlass     = NULL;
+    }
+    if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_AES_256_CBC) == 0) {
+        functions->transformAes256CbcGetKlass     = NULL;
+    }
+
+    /* gcm */
+    if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_AES_128_GCM) == 0) {
+        functions->transformAes128GcmGetKlass     = NULL;
+    }
+    if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_AES_192_GCM) == 0) {
+        functions->transformAes256GcmGetKlass     = NULL;
+    }
+
+    /* kw: uses AES ECB */
+    if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_AES_128_ECB) == 0) {
+        functions->transformKWAes128GetKlass      = NULL;
+    }
+    if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_AES_192_ECB) == 0) {
+        functions->transformKWAes192GetKlass      = NULL;
+    }
+    if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_AES_256_ECB) == 0) {
+        functions->transformKWAes256GetKlass      = NULL;
+    }
+
+    /******************************* DES ********************************/
+    /* cbc */
+    if (xmlSecNssCryptoCheckMechanism(CKM_DES3_CBC) == 0) {
+        functions->transformDes3CbcGetKlass       = NULL;
+    }
+    /* kw: uses DES3_CBC */
+    if ((xmlSecNssCryptoCheckMechanism(CKM_DES3_CBC) == 0) || (xmlSecNssCryptoCheckAlgorithm(SEC_OID_SHA1) == 0)) {
+        functions->transformKWDes3GetKlass        = NULL;
+    }
+
+    /******************************* DSA ********************************/
+    if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_ANSIX9_DSA_SIGNATURE_WITH_SHA1_DIGEST) == 0) {
+        functions->transformDsaSha1GetKlass         = NULL;
+    }
+    if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_NIST_DSA_SIGNATURE_WITH_SHA256_DIGEST) == 0) {
+        functions->transformDsaSha256GetKlass       = NULL;
+    }
+
+    /******************************* ECDSA ******************************/
+    if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_ANSIX962_ECDSA_SHA1_SIGNATURE) == 0) {
+        functions->transformEcdsaSha1GetKlass = NULL;
+    }
+    if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_ANSIX962_ECDSA_SHA224_SIGNATURE) == 0) {
+        functions->transformEcdsaSha224GetKlass = NULL;
+    }
+    if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_ANSIX962_ECDSA_SHA256_SIGNATURE) == 0) {
+        functions->transformEcdsaSha256GetKlass = NULL;
+    }
+    if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_ANSIX962_ECDSA_SHA384_SIGNATURE) == 0) {
+        functions->transformEcdsaSha384GetKlass = NULL;
+    }
+    if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_ANSIX962_ECDSA_SHA512_SIGNATURE) == 0) {
+        functions->transformEcdsaSha512GetKlass = NULL;
+    }
+
+    /******************************* HMAC ********************************/
+    if (xmlSecNssCryptoCheckMechanism(CKM_MD5_HMAC) == 0) {
+        functions->transformHmacMd5GetKlass       = NULL;
+    }
+    if (xmlSecNssCryptoCheckMechanism(CKM_RIPEMD160_HMAC) == 0) {
+        functions->transformHmacRipemd160GetKlass = NULL;
+    }
+    if (xmlSecNssCryptoCheckMechanism(CKM_SHA_1_HMAC) == 0) {
+        functions->transformHmacSha1GetKlass      = NULL;
+    }
+    if (xmlSecNssCryptoCheckMechanism(CKM_SHA224_HMAC) == 0) {
+        functions->transformHmacSha224GetKlass    = NULL;
+    }
+    if (xmlSecNssCryptoCheckMechanism(CKM_SHA256_HMAC) == 0) {
+        functions->transformHmacSha256GetKlass    = NULL;
+    }
+    if (xmlSecNssCryptoCheckMechanism(CKM_SHA384_HMAC) == 0) {
+        functions->transformHmacSha384GetKlass    = NULL;
+    }
+    if (xmlSecNssCryptoCheckMechanism(CKM_SHA512_HMAC) == 0) {
+        functions->transformHmacSha512GetKlass    = NULL;
+    }
+
+    /******************************* PBKDF2 ********************************/
+    if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_PKCS5_PBKDF2) == 0) {
+        functions->transformPbkdf2GetKlass       = NULL;
+    }
+
+    /******************************* RSA ********************************/
+    if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_PKCS1_MD5_WITH_RSA_ENCRYPTION) == 0) {
+        functions->transformRsaMd5GetKlass        = NULL;
+    }
+
+    if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_PKCS1_SHA1_WITH_RSA_ENCRYPTION) == 0) {
+        functions->transformRsaSha1GetKlass       = NULL;
+    }
+
+    if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_PKCS1_SHA224_WITH_RSA_ENCRYPTION) == 0) {
+        functions->transformRsaSha224GetKlass     = NULL;
+    }
+    if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_PKCS1_SHA256_WITH_RSA_ENCRYPTION) == 0) {
+        functions->transformRsaSha256GetKlass     = NULL;
+    }
+    if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_PKCS1_SHA384_WITH_RSA_ENCRYPTION) == 0) {
+        functions->transformRsaSha384GetKlass     = NULL;
+    }
+    if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_PKCS1_SHA512_WITH_RSA_ENCRYPTION) == 0) {
+        functions->transformRsaSha512GetKlass     = NULL;
+    }
+
+    if ((xmlSecNssCryptoCheckAlgorithm(SEC_OID_PKCS1_RSA_PSS_SIGNATURE) == 0) || (xmlSecNssCryptoCheckAlgorithm(SEC_OID_SHA1) == 0)) {
+        functions->transformRsaPssSha1GetKlass    = NULL;
+    }
+    if ((xmlSecNssCryptoCheckAlgorithm(SEC_OID_PKCS1_RSA_PSS_SIGNATURE) == 0) || (xmlSecNssCryptoCheckAlgorithm(SEC_OID_SHA224) == 0)) {
+        functions->transformRsaPssSha224GetKlass  = NULL;
+    }
+    if ((xmlSecNssCryptoCheckAlgorithm(SEC_OID_PKCS1_RSA_PSS_SIGNATURE) == 0) || (xmlSecNssCryptoCheckAlgorithm(SEC_OID_SHA256) == 0)) {
+        functions->transformRsaPssSha256GetKlass  = NULL;
+    }
+    if ((xmlSecNssCryptoCheckAlgorithm(SEC_OID_PKCS1_RSA_PSS_SIGNATURE) == 0) || (xmlSecNssCryptoCheckAlgorithm(SEC_OID_SHA384) == 0)) {
+        functions->transformRsaPssSha384GetKlass  = NULL;
+    }
+    if ((xmlSecNssCryptoCheckAlgorithm(SEC_OID_PKCS1_RSA_PSS_SIGNATURE) == 0) || (xmlSecNssCryptoCheckAlgorithm(SEC_OID_SHA512) == 0)) {
+        functions->transformRsaPssSha512GetKlass  = NULL;
+    }
+
+    if (xmlSecNssCryptoCheckMechanism(CKM_RSA_PKCS) == 0) {
+        functions->transformRsaPkcs1GetKlass      = NULL;
+    }
+
+    if (xmlSecNssCryptoCheckMechanism(CKM_RSA_PKCS_OAEP) == 0) {
+        functions->transformRsaOaepGetKlass       = NULL;
+        functions->transformRsaOaepEnc11GetKlass  = NULL;
+    }
+
+
+    /******************************* SHA ********************************/
+    if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_SHA1) == 0) {
+        functions->transformSha1GetKlass          = NULL;
+    }
+    if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_SHA224) == 0) {
+        functions->transformSha224GetKlass        = NULL;
+    }
+    if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_SHA256) == 0) {
+        functions->transformSha256GetKlass        = NULL;
+    }
+    if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_SHA384) == 0) {
+        functions->transformSha384GetKlass        = NULL;
+    }
+    if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_SHA512) == 0) {
+        functions->transformSha512GetKlass        = NULL;
+    }
+
+    /******************************* MD5 ********************************/
+    if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_MD5) == 0) {
+        functions->transformMd5GetKlass           = NULL;
+    }
 }
 
 /**
@@ -299,6 +555,9 @@ xmlSecNssInit (void)  {
 
     /* set default errors callback for xmlsec to us */
     xmlSecErrorsSetCallback(xmlSecNssErrorsDefaultCallback);
+
+    /* update the avaialble algos based on NSS configs */
+    xmlSecNssUpdateAvailableCryptoTransforms(xmlSecCryptoGetFunctions_nss());
 
     /* register our klasses */
     if(xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(xmlSecCryptoGetFunctions_nss()) < 0) {
@@ -331,11 +590,11 @@ xmlSecNssShutdown(void) {
  */
 int
 xmlSecNssKeysMngrInit(xmlSecKeysMngrPtr mngr) {
+#ifndef XMLSEC_NO_X509
     int ret;
 
     xmlSecAssert2(mngr != NULL, -1);
 
-#ifndef XMLSEC_NO_X509
     /* create x509 store if needed */
     if(xmlSecKeysMngrGetDataStore(mngr, xmlSecNssX509StoreId) == NULL) {
         xmlSecKeyDataStorePtr x509Store;
@@ -353,6 +612,10 @@ xmlSecNssKeysMngrInit(xmlSecKeysMngrPtr mngr) {
             return(-1);
         }
     }
+
+#else /* XMLSEC_NO_X509 */
+    xmlSecAssert2(mngr != NULL, -1);
+
 #endif /* XMLSEC_NO_X509 */
 
     return(0);
@@ -366,7 +629,7 @@ xmlSecNssKeysMngrInit(xmlSecKeysMngrPtr mngr) {
  * Returns: internal key slot and initializes it if needed.
  */
 PK11SlotInfo *
-xmlSecNssGetInternalKeySlot()
+xmlSecNssGetInternalKeySlot(void)
 {
     PK11SlotInfo *slot = NULL;
     SECStatus rv;
@@ -409,6 +672,7 @@ xmlSecNssGetInternalKeySlot()
 int
 xmlSecNssGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
     SECStatus rv;
+    int len;
     int ret;
 
     xmlSecAssert2(buffer != NULL, -1);
@@ -416,15 +680,17 @@ xmlSecNssGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
 
     ret = xmlSecBufferSetSize(buffer, size);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=%d", size);
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL,
+                             "size=" XMLSEC_SIZE_FMT, size);
         return(-1);
     }
 
     /* get random data */
-    rv = PK11_GenerateRandom((xmlSecByte*)xmlSecBufferGetData(buffer), size);
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(size, len, return(-1), NULL);
+    rv = PK11_GenerateRandom((xmlSecByte*)xmlSecBufferGetData(buffer), len);
     if(rv != SECSuccess) {
         xmlSecNssError2("PK11_GenerateRandom", NULL,
-                        "size=%lu", (unsigned long)size);
+                        "size=" XMLSEC_SIZE_FMT, size);
         return(-1);
     }
     return(0);

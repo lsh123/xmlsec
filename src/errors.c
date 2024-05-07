@@ -5,7 +5,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * SECTION:errors
@@ -73,6 +73,7 @@ static xmlSecErrorDescription xmlSecErrorsTable[XMLSEC_ERRORS_MAX_NUMBER + 1] = 
   { XMLSEC_ERRORS_R_INVALID_URI_TYPE,           "invalid URI type" },
   { XMLSEC_ERRORS_R_TRANSFORM_SAME_DOCUMENT_REQUIRED,   "same document is required for transform" },
   { XMLSEC_ERRORS_R_TRANSFORM_DISABLED,         "transform is disabled" },
+  { XMLSEC_ERRORS_R_INVALID_ALGORITHM,          "invalid or unsupported algorithm" },
   { XMLSEC_ERRORS_R_INVALID_KEY_DATA,           "invalid key data" },
   { XMLSEC_ERRORS_R_KEY_DATA_NOT_FOUND,         "key data is not found" },
   { XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST,     "key data already exist" },
@@ -88,6 +89,9 @@ static xmlSecErrorDescription xmlSecErrorsTable[XMLSEC_ERRORS_MAX_NUMBER + 1] = 
   { XMLSEC_ERRORS_R_CERT_ISSUER_FAILED,         "certificate issuer check failed" },
   { XMLSEC_ERRORS_R_CERT_NOT_YET_VALID,         "certificate is not yet valid" },
   { XMLSEC_ERRORS_R_CERT_HAS_EXPIRED,           "certificate has expired" },
+  { XMLSEC_ERRORS_R_CRL_VERIFY_FAILED,          "CRL verification failed" },
+  { XMLSEC_ERRORS_R_CRL_NOT_YET_VALID,          "CRL is not yet valid" },
+  { XMLSEC_ERRORS_R_CRL_HAS_EXPIRED,            "CRL has expired" },
   { XMLSEC_ERRORS_R_DSIG_NO_REFERENCES,         "Reference nodes are not found" },
   { XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE,     "Reference verification failed" },
   { XMLSEC_ERRORS_R_ASSERTION,                  "assertion" },

@@ -6,7 +6,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * SECTION:io
@@ -24,13 +24,22 @@
 #include <libxml/tree.h>
 #include <libxml/xmlIO.h>
 
-#ifdef LIBXML_HTTP_ENABLED
-#include <libxml/nanohttp.h>
+/* check if we want HTTP and FTP support */
+#ifndef LIBXML_HTTP_ENABLED
+#define XMLSEC_NO_HTTP  1
 #endif /* LIBXML_HTTP_ENABLED */
 
-#ifdef LIBXML_FTP_ENABLED
-#include <libxml/nanoftp.h>
+#ifndef LIBXML_FTP_ENABLED
+#define XMLSEC_NO_FTP  1
 #endif /* LIBXML_FTP_ENABLED */
+
+#ifndef XMLSEC_NO_HTTP
+#include <libxml/nanohttp.h>
+#endif /* XMLSEC_NO_HTTP */
+
+#ifndef XMLSEC_NO_FTP
+#include <libxml/nanoftp.h>
+#endif /* XMLSEC_NO_FTP */
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
@@ -39,6 +48,7 @@
 #include <xmlsec/io.h>
 #include <xmlsec/errors.h>
 
+#include "cast_helpers.h"
 
 /*******************************************************************
  *
@@ -161,13 +171,14 @@ xmlSecIOInit(void) {
         return(-1);
     }
 
-#ifdef LIBXML_FTP_ENABLED
+#ifndef XMLSEC_NO_FTP
     xmlNanoFTPInit();
-#endif /* LIBXML_FTP_ENABLED */
+#endif /* XMLSEC_NO_FTP */
 
-#ifdef LIBXML_HTTP_ENABLED
+#ifndef XMLSEC_NO_HTTP
     xmlNanoHTTPInit();
-#endif /* LIBXML_HTTP_ENABLED */
+#endif /* #ifndef XMLSEC_NO_HTTP
+ */
 
     ret = xmlSecIORegisterDefaultCallbacks();
     if(ret < 0) {
@@ -187,13 +198,13 @@ xmlSecIOInit(void) {
 void
 xmlSecIOShutdown(void) {
 
-#ifdef LIBXML_HTTP_ENABLED
+#ifndef XMLSEC_NO_HTTP
     xmlNanoHTTPCleanup();
-#endif /* LIBXML_HTTP_ENABLED */
+#endif /* XMLSEC_NO_HTTP */
 
-#ifdef LIBXML_FTP_ENABLED
+#ifndef XMLSEC_NO_FTP
     xmlNanoFTPCleanup();
-#endif /* LIBXML_FTP_ENABLED */
+#endif /* XMLSEC_NO_FTP */
 
     xmlSecPtrListFinalize(&xmlSecAllIOCallbacks);
 }
@@ -256,6 +267,7 @@ int
 xmlSecIORegisterDefaultCallbacks(void) {
     int ret;
 
+#ifndef XMLSEC_NO_FILES
     /* Callbacks added later are picked up first */
     ret = xmlSecIORegisterCallbacks(xmlFileMatch, xmlFileOpen,
                               xmlFileRead, xmlFileClose);
@@ -263,37 +275,35 @@ xmlSecIORegisterDefaultCallbacks(void) {
         xmlSecInternalError("xmlSecIORegisterCallbacks(file)", NULL);
         return(-1);
     }
+#endif /* XMLSEC_NO_FILES */
 
-#ifdef LIBXML_HTTP_ENABLED
+#ifndef XMLSEC_NO_HTTP
     ret = xmlSecIORegisterCallbacks(xmlIOHTTPMatch, xmlIOHTTPOpen,
                               xmlIOHTTPRead, xmlIOHTTPClose);
     if(ret < 0) {
         xmlSecInternalError("xmlSecIORegisterCallbacks(http)", NULL);
         return(-1);
     }
-#endif /* LIBXML_HTTP_ENABLED */
+#endif /* XMLSEC_NO_HTTP */
 
-#ifdef LIBXML_FTP_ENABLED
+#ifndef XMLSEC_NO_FTP
     ret = xmlSecIORegisterCallbacks(xmlIOFTPMatch, xmlIOFTPOpen,
                               xmlIOFTPRead, xmlIOFTPClose);
     if(ret < 0) {
         xmlSecInternalError("xmlSecIORegisterCallbacks(ftp)", NULL);
         return(-1);
     }
-#endif /* LIBXML_FTP_ENABLED */
+#endif /* XMLSEC_NO_FTP */
 
     /* done */
     return(0);
 }
 
-
-
-
 /**************************************************************
  *
  * Input URI Transform
  *
- * xmlSecInputURICtx is located after xmlSecTransform
+ * xmlSecTransform + xmlSecInputURICtx
  *
  **************************************************************/
 typedef struct _xmlSecInputURICtx                               xmlSecInputURICtx,
@@ -302,12 +312,9 @@ struct _xmlSecInputURICtx {
     xmlSecIOCallbackPtr         clbks;
     void*                       clbksCtx;
 };
-#define xmlSecTransformInputUriSize \
-        (sizeof(xmlSecTransform) + sizeof(xmlSecInputURICtx))
-#define xmlSecTransformInputUriGetCtx(transform) \
-    ((xmlSecTransformCheckSize((transform), xmlSecTransformInputUriSize)) ? \
-        (xmlSecInputURICtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)) : \
-        (xmlSecInputURICtxPtr)NULL)
+
+XMLSEC_TRANSFORM_DECLARE(InputUri, xmlSecInputURICtx)
+#define xmlSecInputUriSize XMLSEC_TRANSFORM_SIZE(InputUri)
 
 static int              xmlSecTransformInputURIInitialize       (xmlSecTransformPtr transform);
 static void             xmlSecTransformInputURIFinalize         (xmlSecTransformPtr transform);
@@ -320,7 +327,7 @@ static int              xmlSecTransformInputURIPopBin           (xmlSecTransform
 static xmlSecTransformKlass xmlSecTransformInputURIKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecTransformInputUriSize,                /* xmlSecSize objSize */
+    xmlSecInputUriSize,                         /* xmlSecSize objSize */
 
     BAD_CAST "input-uri",                       /* const xmlChar* name; */
     NULL,                                       /* const xmlChar* href; */
@@ -372,7 +379,7 @@ xmlSecTransformInputURIOpen(xmlSecTransformPtr transform, const xmlChar *uri) {
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformInputURIId), -1);
     xmlSecAssert2(uri != NULL, -1);
 
-    ctx = xmlSecTransformInputUriGetCtx(transform);
+    ctx = xmlSecInputUriGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->clbks == NULL, -1);
     xmlSecAssert2(ctx->clbksCtx == NULL, -1);
@@ -430,14 +437,14 @@ xmlSecTransformInputURIClose(xmlSecTransformPtr transform) {
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformInputURIId), -1);
 
-    ctx = xmlSecTransformInputUriGetCtx(transform);
+    ctx = xmlSecInputUriGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
     /* close if still open and mark as closed */
     if((ctx->clbksCtx != NULL) && (ctx->clbks != NULL) && (ctx->clbks->closecallback != NULL)) {
-    	(ctx->clbks->closecallback)(ctx->clbksCtx);
-    	ctx->clbksCtx = NULL;
-    	ctx->clbks = NULL;
+        (ctx->clbks->closecallback)(ctx->clbksCtx);
+        ctx->clbksCtx = NULL;
+        ctx->clbks = NULL;
     }
 
     /* done */
@@ -450,7 +457,7 @@ xmlSecTransformInputURIInitialize(xmlSecTransformPtr transform) {
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformInputURIId), -1);
 
-    ctx = xmlSecTransformInputUriGetCtx(transform);
+    ctx = xmlSecInputUriGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
     memset(ctx, 0, sizeof(xmlSecInputURICtx));
@@ -459,12 +466,12 @@ xmlSecTransformInputURIInitialize(xmlSecTransformPtr transform) {
 
 static void
 xmlSecTransformInputURIFinalize(xmlSecTransformPtr transform) {
-	xmlSecInputURICtxPtr ctx;
-	int ret;
+    xmlSecInputURICtxPtr ctx;
+    int ret;
 
     xmlSecAssert(xmlSecTransformCheckId(transform, xmlSecTransformInputURIId));
 
-    ctx = xmlSecTransformInputUriGetCtx(transform);
+    ctx = xmlSecInputUriGetCtx(transform);
     xmlSecAssert(ctx != NULL);
 
     ret = xmlSecTransformInputURIClose(transform);
@@ -472,9 +479,9 @@ xmlSecTransformInputURIFinalize(xmlSecTransformPtr transform) {
         xmlSecInternalError2("xmlSecTransformInputURIClose",
                              xmlSecTransformGetName(transform),
                              "ret=%d", ret);
-		/* ignore the error */
-		/* return; */
-	}
+        /* ignore the error */
+        /* return; */
+    }
 
     memset(ctx, 0, sizeof(xmlSecInputURICtx));
     return;
@@ -485,7 +492,7 @@ xmlSecTransformInputURIPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
                               xmlSecSize maxDataSize, xmlSecSize* dataSize,
                               xmlSecTransformCtxPtr transformCtx) {
     xmlSecInputURICtxPtr ctx;
-
+    int maxDataLen;
     int ret;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformInputURIId), -1);
@@ -493,19 +500,19 @@ xmlSecTransformInputURIPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
     xmlSecAssert2(dataSize != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
-    ctx = xmlSecTransformInputUriGetCtx(transform);
+    ctx = xmlSecInputUriGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
     if((ctx->clbksCtx != NULL) && (ctx->clbks != NULL) && (ctx->clbks->readcallback != NULL)) {
-        ret = (ctx->clbks->readcallback)(ctx->clbksCtx, (char*)data, (int)maxDataSize);
+        XMLSEC_SAFE_CAST_SIZE_TO_INT(maxDataSize, maxDataLen, return(-1), xmlSecTransformGetName(transform));
+        ret = (ctx->clbks->readcallback)(ctx->clbksCtx, (char*)data, maxDataLen);
         if(ret < 0) {
             xmlSecInternalError("ctx->clbks->readcallback", xmlSecTransformGetName(transform));
             return(-1);
         }
-        (*dataSize) = ret;
+        XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, (*dataSize), return(-1), NULL);
     } else {
         (*dataSize) = 0;
     }
     return(0);
 }
-

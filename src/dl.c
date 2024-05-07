@@ -5,7 +5,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * SECTION:dl
@@ -41,9 +41,11 @@
 #include <ltdl.h>
 #endif /* XMLSEC_DL_LIBLTDL */
 
-#ifdef XMLSEC_DL_WIN32
+#if defined(XMLSEC_WINDOWS) && defined(XMLSEC_DL_WIN32)
 #include <windows.h>
-#endif /* XMLSEC_DL_WIN32 */
+#endif /* defined(XMLSEC_WINDOWS) && defined(XMLSEC_DL_WIN32) */
+
+#include "cast_helpers.h"
 
 /***********************************************************************
  *
@@ -62,9 +64,9 @@ struct _xmlSecCryptoDLLibrary {
     lt_dlhandle handle;
 #endif /* XMLSEC_DL_LIBLTDL */
 
-#ifdef XMLSEC_DL_WIN32
+#if defined(XMLSEC_WINDOWS) && defined(XMLSEC_DL_WIN32)
     HINSTANCE   handle;
-#endif /* XMLSEC_DL_WIN32 */
+#endif /* defined(XMLSEC_WINDOWS) && defined(XMLSEC_DL_WIN32) */
 };
 
 static xmlSecCryptoDLLibraryPtr xmlSecCryptoDLLibraryCreate             (const xmlChar* name);
@@ -83,7 +85,8 @@ static xmlSecPtrListKlass xmlSecCryptoDLLibrariesListKlass = {
 };
 static xmlSecPtrListId          xmlSecCryptoDLLibrariesListGetKlass     (void);
 static int                      xmlSecCryptoDLLibrariesListFindByName   (xmlSecPtrListPtr list,
-                                                                         const xmlChar* name);
+                                                                         const xmlChar* name,
+                                                                         xmlSecSize* pos);
 
 typedef xmlSecCryptoDLFunctionsPtr xmlSecCryptoGetFunctionsCallback(void);
 
@@ -147,7 +150,7 @@ xmlSecCryptoDLLibraryCreate(const xmlChar* name) {
     }
 #endif /* XMLSEC_DL_LIBLTDL */
 
-#ifdef XMLSEC_DL_WIN32
+#if defined(XMLSEC_WINDOWS) && defined(XMLSEC_DL_WIN32)
 #if !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
     lib->handle = LoadLibraryA((char*)lib->filename);
 #else
@@ -177,7 +180,7 @@ xmlSecCryptoDLLibraryCreate(const xmlChar* name) {
         xmlSecCryptoDLLibraryDestroy(lib);
         return(NULL);
     }
-#endif /* XMLSEC_DL_WIN32 */
+#endif /* defined(XMLSEC_WINDOWS) && defined(XMLSEC_DL_WIN32) */
 
     if(getFunctions == NULL) {
         xmlSecInternalError("invalid configuration: no way to load library", NULL);
@@ -220,20 +223,22 @@ xmlSecCryptoDLLibraryDestroy(xmlSecCryptoDLLibraryPtr lib) {
         ret = lt_dlclose(lib->handle);
         if(ret != 0) {
             xmlSecIOError("lt_dlclose", NULL, NULL);
+            /* ignore error */
         }
     }
 #endif /* XMLSEC_DL_LIBLTDL */
 
-#ifdef XMLSEC_DL_WIN32
+#if defined(XMLSEC_WINDOWS) && defined(XMLSEC_DL_WIN32)
     if(lib->handle != NULL) {
         BOOL res;
 
         res = FreeLibrary(lib->handle);
         if(!res) {
             xmlSecIOError("FreeLibrary", NULL, NULL);
+            /* ignore error */
         }
         }
-#endif /* XMLSEC_DL_WIN32*/
+#endif /* defined(XMLSEC_WINDOWS) && defined(XMLSEC_DL_WIN32)*/
 
     memset(lib, 0, sizeof(xmlSecCryptoDLLibrary));
     xmlFree(lib);
@@ -247,24 +252,29 @@ xmlSecCryptoDLLibraryDuplicate(xmlSecCryptoDLLibraryPtr lib) {
     return(xmlSecCryptoDLLibraryCreate(lib->name));
 }
 
+#define XMLSEC_CRYPTO_DL_LIB_TMPL   "lib%s-%s"
 static xmlChar*
 xmlSecCryptoDLLibraryConstructFilename(const xmlChar* name) {
-    static char tmpl[] = "lib%s-%s";
     xmlChar* res;
+    xmlSecSize size;
     int len;
     int ret;
 
     xmlSecAssert2(name != NULL, NULL);
 
-    /* TODO */
-    len = xmlStrlen(BAD_CAST PACKAGE) + xmlStrlen(name) + xmlStrlen(BAD_CAST tmpl) + 1;
-    res = (xmlChar*)xmlMalloc(len + 1);
+    size = xmlSecStrlen(BAD_CAST PACKAGE) +
+           xmlSecStrlen(name) +
+           xmlSecStrlen(BAD_CAST XMLSEC_CRYPTO_DL_LIB_TMPL) +
+           1;
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(size, len, return(NULL), NULL);
+
+    res = (xmlChar*)xmlMalloc(size + 1);
     if(res == NULL) {
-        xmlSecMallocError(len + 1, NULL);
+        xmlSecMallocError(size + 1, NULL);
         return(NULL);
     }
 
-    ret = xmlStrPrintf(res, len, tmpl, PACKAGE, name);
+    ret = xmlStrPrintf(res, len, XMLSEC_CRYPTO_DL_LIB_TMPL, PACKAGE, name);
     if(ret < 0) {
         xmlSecXmlError("xmlStrPrintf", NULL);
         xmlFree(res);
@@ -274,23 +284,27 @@ xmlSecCryptoDLLibraryConstructFilename(const xmlChar* name) {
     return(res);
 }
 
+#define XMLSEC_CRYPTO_DL_GET_FUNCTIONS_TMPL  "xmlSecCryptoGetFunctions_%s"
+
 static xmlChar*
 xmlSecCryptoDLLibraryConstructGetFunctionsName(const xmlChar* name) {
-    static char tmpl[] = "xmlSecCryptoGetFunctions_%s";
     xmlChar* res;
     int len;
+    xmlSecSize size;
     int ret;
 
     xmlSecAssert2(name != NULL, NULL);
 
-    len = xmlStrlen(name) + xmlStrlen(BAD_CAST tmpl) + 1;
-    res = (xmlChar*)xmlMalloc(len + 1);
+    len = xmlStrlen(name) + xmlStrlen(BAD_CAST XMLSEC_CRYPTO_DL_GET_FUNCTIONS_TMPL) + 1;
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, return(NULL), -1);
+
+    res = (xmlChar*)xmlMalloc(size + 1);
     if(res == NULL) {
-        xmlSecMallocError(len + 1, NULL);
+        xmlSecMallocError(size + 1, NULL);
         return(NULL);
     }
 
-    ret = xmlStrPrintf(res, len, tmpl, name);
+    ret = xmlStrPrintf(res, len, XMLSEC_CRYPTO_DL_GET_FUNCTIONS_TMPL, name);
     if(ret < 0) {
         xmlSecXmlError("xmlStrPrintf", NULL);
         xmlFree(res);
@@ -306,18 +320,20 @@ xmlSecCryptoDLLibrariesListGetKlass(void) {
 }
 
 static int
-xmlSecCryptoDLLibrariesListFindByName(xmlSecPtrListPtr list, const xmlChar* name) {
-    xmlSecSize i, size;
+xmlSecCryptoDLLibrariesListFindByName(xmlSecPtrListPtr list, const xmlChar* name, xmlSecSize* pos) {
+    xmlSecSize ii, size;
     xmlSecCryptoDLLibraryPtr lib;
 
     xmlSecAssert2(xmlSecPtrListCheckId(list, xmlSecCryptoDLLibrariesListGetKlass()), -1);
     xmlSecAssert2(name != NULL, -1);
+    xmlSecAssert2(pos != NULL, -1);
 
     size = xmlSecPtrListGetSize(list);
-    for(i = 0; i < size; ++i) {
-        lib = (xmlSecCryptoDLLibraryPtr)xmlSecPtrListGetItem(list, i);
+    for(ii = 0; ii < size; ++ii) {
+        lib = (xmlSecCryptoDLLibraryPtr)xmlSecPtrListGetItem(list, ii);
         if((lib != NULL) && (lib->name != NULL) && (xmlStrcmp(lib->name, name) == 0)) {
-            return(i);
+            (*pos) = ii;
+            return(0);
         }
     }
     return(-1);
@@ -381,6 +397,7 @@ xmlSecCryptoDLShutdown(void) {
     ret = lt_dlexit ();
     if(ret != 0) {
         xmlSecIOError("lt_dlexit", NULL, NULL);
+        /* ignore error */
     }
 #else  /* XMLSEC_DL_LIBLTDL */
     UNREFERENCED_PARAMETER(ret);
@@ -434,31 +451,30 @@ xmlSecCryptoDLLoadLibrary(const xmlChar* crypto) {
 xmlSecCryptoDLFunctionsPtr
 xmlSecCryptoDLGetLibraryFunctions(const xmlChar* crypto) {
     xmlSecCryptoDLLibraryPtr lib;
-    int pos;
+    xmlSecSize pos;
     int ret;
 
     xmlSecAssert2(crypto != NULL, NULL);
 
-    pos = xmlSecCryptoDLLibrariesListFindByName(&gXmlSecCryptoDLLibraries, crypto);
-    if(pos >= 0) {
+    ret = xmlSecCryptoDLLibrariesListFindByName(&gXmlSecCryptoDLLibraries, crypto, &pos);
+    if(ret >= 0) {
         lib = (xmlSecCryptoDLLibraryPtr)xmlSecPtrListGetItem(&gXmlSecCryptoDLLibraries, pos);
         xmlSecAssert2(lib != NULL, NULL);
         xmlSecAssert2(lib->functions != NULL, NULL);
-
         return(lib->functions);
     }
 
     lib = xmlSecCryptoDLLibraryCreate(crypto);
     if(lib == NULL) {
         xmlSecInternalError2("xmlSecCryptoDLLibraryCreate", NULL,
-                             "crypto=%s", xmlSecErrorsSafeString(crypto));
+            "crypto=%s", xmlSecErrorsSafeString(crypto));
         return(NULL);
     }
 
     ret = xmlSecPtrListAdd(&gXmlSecCryptoDLLibraries, lib);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecPtrListAdd", NULL,
-                             "crypto=%s", xmlSecErrorsSafeString(crypto));
+            "crypto=%s", xmlSecErrorsSafeString(crypto));
         xmlSecCryptoDLLibraryDestroy(lib);
         return(NULL);
     }
@@ -480,13 +496,13 @@ xmlSecCryptoDLGetLibraryFunctions(const xmlChar* crypto) {
 int
 xmlSecCryptoDLUnloadLibrary(const xmlChar* crypto) {
     xmlSecCryptoDLLibraryPtr lib;
-    int pos;
+    xmlSecSize pos;
     int ret;
 
     xmlSecAssert2(crypto != NULL, -1);
 
-    pos = xmlSecCryptoDLLibrariesListFindByName(&gXmlSecCryptoDLLibraries, crypto);
-    if(pos < 0) {
+    ret = xmlSecCryptoDLLibrariesListFindByName(&gXmlSecCryptoDLLibraries, crypto, &pos);
+    if(ret < 0) {
         /* todo: is it an error? */
         return(0);
     }
@@ -536,6 +552,26 @@ xmlSecCryptoDLGetFunctions(void) {
 
 #endif /* XMLSEC_NO_CRYPTO_DYNAMIC_LOADING */
 
+
+#define XMLSEC_REGISTER_KEY_DATA(name)      \
+    if((functions->keyData ## name ## GetKlass != NULL) && (xmlSecKeyDataIdsRegister(functions->keyData ## name ## GetKlass()) < 0)) {    \
+        xmlSecInternalError("xmlSecKeyDataIdsRegister", xmlSecKeyDataKlassGetName(functions->keyData ## name ## GetKlass()));             \
+        return(-1);                                                                                                                       \
+    }                                                                                                                                     \
+
+#define XMLSEC_REGISTER_DISABLED_KEY_DATA(name)      \
+    if((functions->keyData ## name ## GetKlass != NULL) && (xmlSecKeyDataIdsRegisterDisabled(functions->keyData ## name ## GetKlass()) < 0)) {    \
+        xmlSecInternalError("xmlSecKeyDataIdsRegisterDisabled", xmlSecKeyDataKlassGetName(functions->keyData ## name ## GetKlass()));             \
+        return(-1);                                                                                                                       \
+    }                                                                                                                                     \
+
+#define XMLSEC_REGISTER_TRANSFORM(name)     \
+    if((functions->transform ## name ## GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transform ## name ## GetKlass()) < 0) {   \
+        xmlSecInternalError("xmlSecTransformIdsRegister", xmlSecTransformKlassGetName(functions->transform ## name ## GetKlass()));          \
+        return(-1);                                                                                                                          \
+    }                                                                                                                                        \
+
+
 /**
  * xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms:
  * @functions:          the functions table.
@@ -553,60 +589,23 @@ xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(struct _xmlSecCryptoDLFuncti
      * Register keys
      *
      ****************************************************************************/
-    if((functions->keyDataAesGetKlass != NULL) && (xmlSecKeyDataIdsRegister(functions->keyDataAesGetKlass()) < 0)) {
-        xmlSecInternalError("xmlSecKeyDataIdsRegister",
-                            xmlSecKeyDataKlassGetName(functions->keyDataAesGetKlass()));
-        return(-1);
-    }
-    if((functions->keyDataDesGetKlass != NULL) && (xmlSecKeyDataIdsRegister(functions->keyDataDesGetKlass()) < 0)) {
-        xmlSecInternalError("xmlSecKeyDataIdsRegister",
-                            xmlSecKeyDataKlassGetName(functions->keyDataDesGetKlass()));
-        return(-1);
-    }
-    if((functions->keyDataDsaGetKlass != NULL) && (xmlSecKeyDataIdsRegister(functions->keyDataDsaGetKlass()) < 0)) {
-        xmlSecInternalError("xmlSecKeyDataIdsRegister",
-                            xmlSecKeyDataKlassGetName(functions->keyDataDsaGetKlass()));
-        return(-1);
-    }
-    if((functions->keyDataEcdsaGetKlass != NULL) && (xmlSecKeyDataIdsRegister(functions->keyDataEcdsaGetKlass()) < 0)) {
-        xmlSecInternalError("xmlSecKeyDataIdsRegister",
-                            xmlSecKeyDataKlassGetName(functions->keyDataEcdsaGetKlass()));
-        return(-1);
-    }
-    if((functions->keyDataGost2001GetKlass != NULL) && (xmlSecKeyDataIdsRegister(functions->keyDataGost2001GetKlass()) < 0)) {
-        xmlSecInternalError("xmlSecKeyDataIdsRegister",
-                            xmlSecKeyDataKlassGetName(functions->keyDataGost2001GetKlass()));
-        return(-1);
-    }
-    if((functions->keyDataGostR3410_2012_256GetKlass != NULL) && (xmlSecKeyDataIdsRegister(functions->keyDataGostR3410_2012_256GetKlass()) < 0)) {
-        xmlSecInternalError("xmlSecKeyDataIdsRegister",
-                            xmlSecKeyDataKlassGetName(functions->keyDataGostR3410_2012_256GetKlass()));
-        return(-1);
-    }
-    if((functions->keyDataGostR3410_2012_512GetKlass != NULL) && (xmlSecKeyDataIdsRegister(functions->keyDataGostR3410_2012_512GetKlass()) < 0)) {
-        xmlSecInternalError("xmlSecKeyDataIdsRegister",
-                            xmlSecKeyDataKlassGetName(functions->keyDataGostR3410_2012_512GetKlass()));
-        return(-1);
-    }    if((functions->keyDataHmacGetKlass != NULL) && (xmlSecKeyDataIdsRegister(functions->keyDataHmacGetKlass()) < 0)) {
-        xmlSecInternalError("xmlSecKeyDataIdsRegister",
-                            xmlSecKeyDataKlassGetName(functions->keyDataHmacGetKlass()));
-        return(-1);
-    }
-    if((functions->keyDataRsaGetKlass != NULL) && (xmlSecKeyDataIdsRegister(functions->keyDataRsaGetKlass()) < 0)) {
-        xmlSecInternalError("xmlSecKeyDataIdsRegister",
-                            xmlSecKeyDataKlassGetName(functions->keyDataRsaGetKlass()));
-        return(-1);
-    }
-    if((functions->keyDataX509GetKlass != NULL) && (xmlSecKeyDataIdsRegister(functions->keyDataX509GetKlass()) < 0)) {
-        xmlSecInternalError("xmlSecKeyDataIdsRegister",
-                            xmlSecKeyDataKlassGetName(functions->keyDataX509GetKlass()));
-        return(-1);
-    }
-    if((functions->keyDataRawX509CertGetKlass != NULL) && (xmlSecKeyDataIdsRegister(functions->keyDataRawX509CertGetKlass()) < 0)) {
-        xmlSecInternalError("xmlSecKeyDataIdsRegister",
-                            xmlSecKeyDataKlassGetName(functions->keyDataRawX509CertGetKlass()));
-        return(-1);
-    }
+    XMLSEC_REGISTER_KEY_DATA(Aes);                  // keyDataAesGetKlass
+    XMLSEC_REGISTER_KEY_DATA(ConcatKdf);            // keyDataConcatKdfGetKlass
+    XMLSEC_REGISTER_KEY_DATA(Des);                  // keyDataDesGetKlass
+    XMLSEC_REGISTER_KEY_DATA(Dh);                   // keyDataDhGetKlass
+    XMLSEC_REGISTER_KEY_DATA(Dsa);                  // keyDataDsaGetKlass
+    XMLSEC_REGISTER_KEY_DATA(Ec);                   // keyDataEcGetKlass
+    XMLSEC_REGISTER_KEY_DATA(Gost2001);             // keyDataGost2001GetKlass
+    XMLSEC_REGISTER_KEY_DATA(GostR3410_2012_256);   // keyDataGostR3410_2012_256GetKlass
+    XMLSEC_REGISTER_KEY_DATA(GostR3410_2012_512);   // keyDataGetKlass
+    XMLSEC_REGISTER_KEY_DATA(Hmac);                 // keyDataHmacGetKlass
+    XMLSEC_REGISTER_KEY_DATA(Pbkdf2);               // keyDataPbkdf2GetKlass
+    XMLSEC_REGISTER_KEY_DATA(Rsa);                  // keyDataRsaGetKlass
+    XMLSEC_REGISTER_KEY_DATA(X509);                 // keyDataX509GetKlass
+    XMLSEC_REGISTER_KEY_DATA(RawX509Cert);          // keyDataRawX509CertGetKlass
+
+     /* DEREncodedKeyValue key data should not be used in production w/o understanding of the security risks */
+    XMLSEC_REGISTER_DISABLED_KEY_DATA(DEREncodedKeyValue);   // keyDataDEREncodedKeyValueGetKlass
 
 
     /****************************************************************************
@@ -614,289 +613,111 @@ xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(struct _xmlSecCryptoDLFuncti
      * Register transforms
      *
      ****************************************************************************/
-    if((functions->transformAes128CbcGetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformAes128CbcGetKlass()) < 0) {
-        xmlSecInternalError("xmlSecTransformIdsRegister",
-                            xmlSecTransformKlassGetName(functions->transformAes128CbcGetKlass()));
-        return(-1);
-    }
+    XMLSEC_REGISTER_TRANSFORM(Aes128Cbc);                           // transformAes128CbcGetKlass
+    XMLSEC_REGISTER_TRANSFORM(Aes192Cbc);                           // transformAes192CbcGetKlass
+    XMLSEC_REGISTER_TRANSFORM(Aes192Cbc);                           // transformAes192CbcGetKlass
+    XMLSEC_REGISTER_TRANSFORM(Aes256Cbc);                           // transformAes256CbcGetKlass
 
-    if((functions->transformAes192CbcGetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformAes192CbcGetKlass()) < 0) {
-        xmlSecInternalError("xmlSecTransformIdsRegister",
-                            xmlSecTransformKlassGetName(functions->transformAes192CbcGetKlass()));
-        return(-1);
-    }
+    XMLSEC_REGISTER_TRANSFORM(Aes128Gcm);                           // transformAes128GcmGetKlass
+    XMLSEC_REGISTER_TRANSFORM(Aes192Gcm);                           // transformAes192GcmGetKlass
+    XMLSEC_REGISTER_TRANSFORM(Aes256Gcm);                           // transformAes256GcmGetKlass
 
-    if((functions->transformAes256CbcGetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformAes256CbcGetKlass()) < 0) {
-        xmlSecInternalError("xmlSecTransformIdsRegister",
-                            xmlSecTransformKlassGetName(functions->transformAes256CbcGetKlass()));
-        return(-1);
-    }
+    XMLSEC_REGISTER_TRANSFORM(ConcatKdf);                           // transformConcatKdfGetKlass
 
-    if ((functions->transformAes128GcmGetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformAes128GcmGetKlass()) < 0) {
-        xmlSecInternalError("xmlSecTransformIdsRegister",
-                            xmlSecTransformKlassGetName(functions->transformAes128GcmGetKlass()));
-        return(-1);
-    }
+    XMLSEC_REGISTER_TRANSFORM(KWAes128);                            // transformKWAes128GetKlass
+    XMLSEC_REGISTER_TRANSFORM(KWAes192);                            // transformKWAes192GetKlass
+    XMLSEC_REGISTER_TRANSFORM(KWAes256);                            // transformKWAes256GetKlass
 
-    if ((functions->transformAes192GcmGetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformAes192GcmGetKlass()) < 0) {
-        xmlSecInternalError("xmlSecTransformIdsRegister",
-                            xmlSecTransformKlassGetName(functions->transformAes192GcmGetKlass()));
-        return(-1);
-    }
+    XMLSEC_REGISTER_TRANSFORM(Des3Cbc);                             // transformDes3CbcGetKlass
 
-    if ((functions->transformAes256GcmGetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformAes256GcmGetKlass()) < 0) {
-        xmlSecInternalError("xmlSecTransformIdsRegister",
-                            xmlSecTransformKlassGetName(functions->transformAes256GcmGetKlass()));
-        return(-1);
-    }
+    XMLSEC_REGISTER_TRANSFORM(KWDes3);                              // transformKWDes3GetKlass
 
-    if((functions->transformKWAes128GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformKWAes128GetKlass()) < 0) {
-        xmlSecInternalError("xmlSecTransformIdsRegister",
-                            xmlSecTransformKlassGetName(functions->transformKWAes128GetKlass()));
-        return(-1);
-    }
+    XMLSEC_REGISTER_TRANSFORM(Gost2001GostR3411_94);                // transformGost2001GostR3411_94GetKlass
+    XMLSEC_REGISTER_TRANSFORM(GostR3410_2012GostR3411_2012_256);    // transformGostR3410_2012GostR3411_2012_256GetKlass
+    XMLSEC_REGISTER_TRANSFORM(GostR3410_2012GostR3411_2012_512);    // transformGostR3410_2012GostR3411_2012_512GetKlass
 
-    if((functions->transformKWAes192GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformKWAes192GetKlass()) < 0) {
-        xmlSecInternalError("xmlSecTransformIdsRegister",
-                            xmlSecTransformKlassGetName(functions->transformKWAes192GetKlass()));
-        return(-1);
-    }
+    XMLSEC_REGISTER_TRANSFORM(DhEs);                                // transformDhEsGetKlass
 
-    if((functions->transformKWAes256GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformKWAes256GetKlass()) < 0) {
-        xmlSecInternalError("xmlSecTransformIdsRegister",
-                            xmlSecTransformKlassGetName(functions->transformKWAes256GetKlass()));
-        return(-1);
-    }
+    XMLSEC_REGISTER_TRANSFORM(DsaSha1);                             // transformDsaSha1GetKlass
+    XMLSEC_REGISTER_TRANSFORM(DsaSha256);                           // transformDsaSha256GetKlass
 
-    if((functions->transformDes3CbcGetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformDes3CbcGetKlass()) < 0) {
-        xmlSecInternalError("xmlSecTransformIdsRegister",
-                            xmlSecTransformKlassGetName(functions->transformDes3CbcGetKlass()));
-        return(-1);
-    }
+    XMLSEC_REGISTER_TRANSFORM(Ecdh);                                // transformEcdhGetKlass
 
-    if((functions->transformKWDes3GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformKWDes3GetKlass()) < 0) {
-        xmlSecInternalError("xmlSecTransformIdsRegister",
-                            xmlSecTransformKlassGetName(functions->transformKWDes3GetKlass()));
-        return(-1);
-    }
+    XMLSEC_REGISTER_TRANSFORM(EcdsaRipemd160);                      // transformEcdsaRipemd160GetKlass
 
-    if((functions->transformGost2001GostR3411_94GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformGost2001GostR3411_94GetKlass()) < 0) {
-        xmlSecInternalError("xmlSecTransformIdsRegister",
-                            xmlSecTransformKlassGetName(functions->transformGost2001GostR3411_94GetKlass()));
-        return(-1);
-    }
+    XMLSEC_REGISTER_TRANSFORM(EcdsaSha1);                           // transformEcdsaSha1GetKlass
 
-    if((functions->transformGostR3410_2012GostR3411_2012_256GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformGostR3410_2012GostR3411_2012_256GetKlass()) < 0) {
-        xmlSecInternalError("xmlSecTransformIdsRegister",
-                            xmlSecTransformKlassGetName(functions->transformGostR3410_2012GostR3411_2012_256GetKlass()));
-        return(-1);
-    }
+    XMLSEC_REGISTER_TRANSFORM(EcdsaSha224);                         // transformEcdsaSha224GetKlass
+    XMLSEC_REGISTER_TRANSFORM(EcdsaSha256);                         // transformEcdsaSha256GetKlass
+    XMLSEC_REGISTER_TRANSFORM(EcdsaSha384);                         // transformEcdsaSha384GetKlass
+    XMLSEC_REGISTER_TRANSFORM(EcdsaSha512);                         // transformEcdsaSha512GetKlass
 
-    if((functions->transformGostR3410_2012GostR3411_2012_512GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformGostR3410_2012GostR3411_2012_512GetKlass()) < 0) {
-        xmlSecInternalError("xmlSecTransformIdsRegister",
-                            xmlSecTransformKlassGetName(functions->transformGostR3410_2012GostR3411_2012_512GetKlass()));
-        return(-1);
-    }
+    XMLSEC_REGISTER_TRANSFORM(EcdsaSha3_224);                       // transformEcdsaSha3_224GetKlass
+    XMLSEC_REGISTER_TRANSFORM(EcdsaSha3_256);                       // transformEcdsaSha3_256GetKlass
+    XMLSEC_REGISTER_TRANSFORM(EcdsaSha3_384);                       // transformEcdsaSha3_384GetKlass
+    XMLSEC_REGISTER_TRANSFORM(EcdsaSha3_512);                       // transformEcdsaSha3_512GetKlass
 
-    if((functions->transformDsaSha1GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformDsaSha1GetKlass()) < 0) {
-        xmlSecInternalError("xmlSecTransformIdsRegister",
-                            xmlSecTransformKlassGetName(functions->transformDsaSha1GetKlass()));
-        return(-1);
-    }
+    XMLSEC_REGISTER_TRANSFORM(HmacMd5);                             // transformHmacMd5GetKlass
 
-    if((functions->transformDsaSha256GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformDsaSha256GetKlass()) < 0) {
-        xmlSecInternalError("xmlSecTransformIdsRegister",
-                            xmlSecTransformKlassGetName(functions->transformDsaSha256GetKlass()));
-        return(-1);
-    }
+    XMLSEC_REGISTER_TRANSFORM(HmacRipemd160);                       // transformHmacRipemd160GetKlass
 
-    if((functions->transformEcdsaSha1GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformEcdsaSha1GetKlass()) < 0) {
-        xmlSecInternalError("xmlSecTransformIdsRegister",
-                            xmlSecTransformKlassGetName(functions->transformEcdsaSha1GetKlass()));
-        return(-1);
-    }
+    XMLSEC_REGISTER_TRANSFORM(HmacSha1);                            // transformHmacSha1GetKlass
 
-    if((functions->transformEcdsaSha224GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformEcdsaSha224GetKlass()) < 0) {
-        xmlSecInternalError("xmlSecTransformIdsRegister",
-                            xmlSecTransformKlassGetName(functions->transformEcdsaSha224GetKlass()));
-        return(-1);
-    }
+    XMLSEC_REGISTER_TRANSFORM(HmacSha224);                          // transformHmacSha224GetKlass
+    XMLSEC_REGISTER_TRANSFORM(HmacSha256);                          // transformHmacSha256GetKlass
+    XMLSEC_REGISTER_TRANSFORM(HmacSha384);                          // transformHmacSha384GetKlass
+    XMLSEC_REGISTER_TRANSFORM(HmacSha512);                          // transformHmacSha512GetKlass
 
-    if((functions->transformEcdsaSha256GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformEcdsaSha256GetKlass()) < 0) {
-        xmlSecInternalError("xmlSecTransformIdsRegister",
-                            xmlSecTransformKlassGetName(functions->transformEcdsaSha256GetKlass()));
-        return(-1);
-    }
+    XMLSEC_REGISTER_TRANSFORM(Md5);                                 // transformMd5GetKlass
 
-    if((functions->transformEcdsaSha384GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformEcdsaSha384GetKlass()) < 0) {
-        xmlSecInternalError("xmlSecTransformIdsRegister",
-                            xmlSecTransformKlassGetName(functions->transformEcdsaSha384GetKlass()));
-        return(-1);
-    }
+    XMLSEC_REGISTER_TRANSFORM(Pbkdf2);                              // transformPbkdf2GetKlass
 
-    if((functions->transformEcdsaSha512GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformEcdsaSha512GetKlass()) < 0) {
-        xmlSecInternalError("xmlSecTransformIdsRegister",
-                            xmlSecTransformKlassGetName(functions->transformEcdsaSha512GetKlass()));
-        return(-1);
-    }
+    XMLSEC_REGISTER_TRANSFORM(Ripemd160);                           // transformRipemd160GetKlass
 
-    if((functions->transformHmacMd5GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformHmacMd5GetKlass()) < 0) {
-        xmlSecInternalError("xmlSecTransformIdsRegister",
-                            xmlSecTransformKlassGetName(functions->transformHmacMd5GetKlass()));
-        return(-1);
-    }
+    XMLSEC_REGISTER_TRANSFORM(RsaMd5);                              // transformRsaMd5GetKlass
 
-    if((functions->transformHmacRipemd160GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformHmacRipemd160GetKlass()) < 0) {
-        xmlSecInternalError("xmlSecTransformIdsRegister",
-                            xmlSecTransformKlassGetName(functions->transformHmacRipemd160GetKlass()));
-        return(-1);
-    }
+    XMLSEC_REGISTER_TRANSFORM(RsaRipemd160);                        // transformRsaRipemd160GetKlass
 
-    if((functions->transformHmacSha1GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformHmacSha1GetKlass()) < 0) {
-        xmlSecInternalError("xmlSecTransformIdsRegister",
-                            xmlSecTransformKlassGetName(functions->transformHmacSha1GetKlass()));
-        return(-1);
-    }
+    XMLSEC_REGISTER_TRANSFORM(RsaSha1);                             // transformRsaSha1GetKlass
 
-    if((functions->transformHmacSha224GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformHmacSha224GetKlass()) < 0) {
-        xmlSecInternalError("xmlSecTransformIdsRegister",
-                            xmlSecTransformKlassGetName(functions->transformHmacSha224GetKlass()));
-        return(-1);
-    }
+    XMLSEC_REGISTER_TRANSFORM(RsaSha224);                           // transformRsaSha224GetKlass
+    XMLSEC_REGISTER_TRANSFORM(RsaSha256);                           // transformRsaSha256GetKlass
+    XMLSEC_REGISTER_TRANSFORM(RsaSha384);                           // transformRsaSha384GetKlass
+    XMLSEC_REGISTER_TRANSFORM(RsaSha512);                           // transformRsaSha512GetKlass
 
-    if((functions->transformHmacSha256GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformHmacSha256GetKlass()) < 0) {
-        xmlSecInternalError("xmlSecTransformIdsRegister",
-                            xmlSecTransformKlassGetName(functions->transformHmacSha256GetKlass()));
-        return(-1);
-    }
+    XMLSEC_REGISTER_TRANSFORM(RsaPssSha1);                          // transformRsaPssSha1GetKlass
 
-    if((functions->transformHmacSha384GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformHmacSha384GetKlass()) < 0) {
-        xmlSecInternalError("xmlSecTransformIdsRegister",
-                            xmlSecTransformKlassGetName(functions->transformHmacSha384GetKlass()));
-        return(-1);
-    }
+    XMLSEC_REGISTER_TRANSFORM(RsaPssSha224);                        // transformRsaPssSha224GetKlass
+    XMLSEC_REGISTER_TRANSFORM(RsaPssSha256);                        // transformRsaPssSha256GetKlass
+    XMLSEC_REGISTER_TRANSFORM(RsaPssSha384);                        // transformRsaPssSha384GetKlass
+    XMLSEC_REGISTER_TRANSFORM(RsaPssSha512);                        // transformRsaPssSha512GetKlass
 
-    if((functions->transformHmacSha512GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformHmacSha512GetKlass()) < 0) {
-        xmlSecInternalError("xmlSecTransformIdsRegister",
-                            xmlSecTransformKlassGetName(functions->transformHmacSha512GetKlass()));
-        return(-1);
-    }
+    XMLSEC_REGISTER_TRANSFORM(RsaPssSha3_224);                      // transformRsaPssSha3_224GetKlass
+    XMLSEC_REGISTER_TRANSFORM(RsaPssSha3_256);                      // transformRsaPssSha3_256GetKlass
+    XMLSEC_REGISTER_TRANSFORM(RsaPssSha3_384);                      // transformRsaPssSha3_384GetKlass
+    XMLSEC_REGISTER_TRANSFORM(RsaPssSha3_512);                      // transformRsaPssSha3_512GetKlass
 
-    if((functions->transformMd5GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformMd5GetKlass()) < 0) {
-        xmlSecInternalError("xmlSecTransformIdsRegister",
-                            xmlSecTransformKlassGetName(functions->transformMd5GetKlass()));
-        return(-1);
-    }
+    XMLSEC_REGISTER_TRANSFORM(RsaPkcs1);                            // transformRsaPkcs1GetKlass
 
-    if((functions->transformRipemd160GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformRipemd160GetKlass()) < 0) {
-        xmlSecInternalError("xmlSecTransformIdsRegister",
-                            xmlSecTransformKlassGetName(functions->transformRipemd160GetKlass()));
-        return(-1);
-    }
+    XMLSEC_REGISTER_TRANSFORM(RsaOaep);                             // transformRsaOaepGetKlass
+    XMLSEC_REGISTER_TRANSFORM(RsaOaepEnc11);                        // transformRsaOaepEnc11GetKlass
 
-    if((functions->transformRsaMd5GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformRsaMd5GetKlass()) < 0) {
-        xmlSecInternalError("xmlSecTransformIdsRegister",
-                            xmlSecTransformKlassGetName(functions->transformRsaMd5GetKlass()));
-        return(-1);
-    }
+    XMLSEC_REGISTER_TRANSFORM(GostR3411_94);                        // transformGostR3411_94GetKlass
+    XMLSEC_REGISTER_TRANSFORM(GostR3411_2012_256);                  // transformGostR3411_2012_256GetKlass
+    XMLSEC_REGISTER_TRANSFORM(GostR3411_2012_512);                  // transformGostR3411_2012_512GetKlass
 
-    if((functions->transformRsaRipemd160GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformRsaRipemd160GetKlass()) < 0) {
-        xmlSecInternalError("xmlSecTransformIdsRegister",
-                            xmlSecTransformKlassGetName(functions->transformRsaRipemd160GetKlass()));
-        return(-1);
-    }
+    XMLSEC_REGISTER_TRANSFORM(Sha1);                                // transformSha1GetKlass
 
-    if((functions->transformRsaSha1GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformRsaSha1GetKlass()) < 0) {
-        xmlSecInternalError("xmlSecTransformIdsRegister",
-                            xmlSecTransformKlassGetName(functions->transformRsaSha1GetKlass()));
-        return(-1);
-    }
+    XMLSEC_REGISTER_TRANSFORM(Sha224);                              // transformSha224GetKlass
+    XMLSEC_REGISTER_TRANSFORM(Sha256);                              // transformSha256GetKlass
+    XMLSEC_REGISTER_TRANSFORM(Sha384);                              // transformSha384GetKlass
+    XMLSEC_REGISTER_TRANSFORM(Sha512);                              // transformSha512GetKlass
 
-    if((functions->transformRsaSha224GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformRsaSha224GetKlass()) < 0) {
-        xmlSecInternalError("xmlSecTransformIdsRegister",
-                            xmlSecTransformKlassGetName(functions->transformRsaSha224GetKlass()));
-        return(-1);
-    }
-
-    if((functions->transformRsaSha256GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformRsaSha256GetKlass()) < 0) {
-        xmlSecInternalError("xmlSecTransformIdsRegister",
-                            xmlSecTransformKlassGetName(functions->transformRsaSha256GetKlass()));
-        return(-1);
-    }
-
-    if((functions->transformRsaSha384GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformRsaSha384GetKlass()) < 0) {
-        xmlSecInternalError("xmlSecTransformIdsRegister",
-                            xmlSecTransformKlassGetName(functions->transformRsaSha384GetKlass()));
-        return(-1);
-    }
-
-    if((functions->transformRsaSha512GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformRsaSha512GetKlass()) < 0) {
-        xmlSecInternalError("xmlSecTransformIdsRegister",
-                            xmlSecTransformKlassGetName(functions->transformRsaSha512GetKlass()));
-        return(-1);
-    }
-
-    if((functions->transformRsaPkcs1GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformRsaPkcs1GetKlass()) < 0) {
-        xmlSecInternalError("xmlSecTransformIdsRegister",
-                            xmlSecTransformKlassGetName(functions->transformRsaPkcs1GetKlass()));
-        return(-1);
-    }
-
-    if((functions->transformRsaOaepGetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformRsaOaepGetKlass()) < 0) {
-        xmlSecInternalError("xmlSecTransformIdsRegister",
-                            xmlSecTransformKlassGetName(functions->transformRsaOaepGetKlass()));
-        return(-1);
-    }
-
-    if((functions->transformGostR3411_94GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformGostR3411_94GetKlass()) < 0) {
-        xmlSecInternalError("xmlSecTransformIdsRegister",
-                            xmlSecTransformKlassGetName(functions->transformGostR3411_94GetKlass()));
-        return(-1);
-    }
-
-    if((functions->transformGostR3411_2012_256GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformGostR3411_2012_256GetKlass()) < 0) {
-        xmlSecInternalError("xmlSecTransformIdsRegister",
-                            xmlSecTransformKlassGetName(functions->transformGostR3411_2012_256GetKlass()));
-        return(-1);
-    }
-
-    if((functions->transformGostR3411_2012_512GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformGostR3411_2012_512GetKlass()) < 0) {
-        xmlSecInternalError("xmlSecTransformIdsRegister",
-                            xmlSecTransformKlassGetName(functions->transformGostR3411_2012_512GetKlass()));
-        return(-1);
-    }
-    if((functions->transformSha1GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformSha1GetKlass()) < 0) {
-        xmlSecInternalError("xmlSecTransformIdsRegister",
-                            xmlSecTransformKlassGetName(functions->transformSha1GetKlass()));
-        return(-1);
-    }
-
-    if((functions->transformSha224GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformSha224GetKlass()) < 0) {
-        xmlSecInternalError("xmlSecTransformIdsRegister",
-                            xmlSecTransformKlassGetName(functions->transformSha224GetKlass()));
-        return(-1);
-    }
-
-    if((functions->transformSha256GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformSha256GetKlass()) < 0) {
-        xmlSecInternalError("xmlSecTransformIdsRegister",
-                            xmlSecTransformKlassGetName(functions->transformSha256GetKlass()));
-        return(-1);
-    }
-
-    if((functions->transformSha384GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformSha384GetKlass()) < 0) {
-        xmlSecInternalError("xmlSecTransformIdsRegister",
-                            xmlSecTransformKlassGetName(functions->transformSha384GetKlass()));
-        return(-1);
-    }
-
-    if((functions->transformSha512GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformSha512GetKlass()) < 0) {
-        xmlSecInternalError("xmlSecTransformIdsRegister",
-                            xmlSecTransformKlassGetName(functions->transformSha512GetKlass()));
-        return(-1);
-    }
+    XMLSEC_REGISTER_TRANSFORM(Sha3_224);                            // transformSha3_224GetKlass
+    XMLSEC_REGISTER_TRANSFORM(Sha3_256);                            // transformSha3_256GetKlass
+    XMLSEC_REGISTER_TRANSFORM(Sha3_384);                            // transformSha3_384GetKlass
+    XMLSEC_REGISTER_TRANSFORM(Sha3_512);                            // transformSha3_512GetKlass
 
     /* done */
     return(0);
 }
-
-

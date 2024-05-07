@@ -1,26 +1,21 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * Ciphers transforms implementation for MSCrypto.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
  * Copyright (C) 2003 Cordys R&D BV, All rights reserved.
- * Copyright (C) 2003-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:ciphers
- * @Short_description: Ciphers transforms implementation for Microsoft Crypto API.
- * @Stability: Private
- *
+ * SECTION:crypto
  */
 
 #include "globals.h"
 
 #include <string.h>
-
-#include <windows.h>
-#include <wincrypt.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
@@ -30,7 +25,8 @@
 #include <xmlsec/mscrypto/crypto.h>
 
 #include "private.h"
-
+#include "../cast_helpers.h"
+#include "../keysdata_helpers.h"
 
 /**************************************************************************
  *
@@ -66,9 +62,9 @@ xmlSecMSCryptoBlockCipherCtxInit(xmlSecMSCryptoBlockCipherCtxPtr ctx,
                                  int encrypt,
                                  const xmlChar* cipherName,
                                  xmlSecTransformCtxPtr transformCtx) {
-    int blockLen;
     int ret;
-    DWORD dwBlockLen, dwBlockLenLen;
+    DWORD dwBlockLen, dwBlockLenBits, dwBlockLenBitsLen;
+    xmlSecSize blockSize, inSize, outSize;
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->cryptKey != 0, -1);
@@ -78,32 +74,34 @@ xmlSecMSCryptoBlockCipherCtxInit(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     xmlSecAssert2(transformCtx != NULL, -1);
 
     /* iv len == block len */
-    dwBlockLenLen = sizeof(DWORD);
-    if (!CryptGetKeyParam(ctx->cryptKey, KP_BLOCKLEN, (BYTE *)&dwBlockLen, &dwBlockLenLen, 0)) {
+    dwBlockLenBitsLen = sizeof(dwBlockLenBits);
+    if (!CryptGetKeyParam(ctx->cryptKey, KP_BLOCKLEN, (BYTE *)&dwBlockLenBits, &dwBlockLenBitsLen, 0)) {
         xmlSecMSCryptoError("CryptGetKeyParam", cipherName);
         return(-1);
     }
 
-    blockLen = dwBlockLen / 8;
-    xmlSecAssert2(blockLen > 0, -1);
+    dwBlockLen = dwBlockLenBits / 8;
+    xmlSecAssert2(dwBlockLen > 0, -1);
+    XMLSEC_SAFE_CAST_ULONG_TO_SIZE(dwBlockLen, blockSize, return(-1), cipherName);
+
+    inSize = xmlSecBufferGetSize(in);
+    outSize = xmlSecBufferGetSize(out);
+
     if(encrypt) {
         unsigned char* iv;
-        xmlSecSize outSize;
 
         /* allocate space for IV */
-        outSize = xmlSecBufferGetSize(out);
-        ret = xmlSecBufferSetSize(out, outSize + blockLen);
+        ret = xmlSecBufferSetSize(out, outSize + blockSize);
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferSetSize", cipherName,
-                                 "size=%d", outSize + blockLen);
+                "size=" XMLSEC_SIZE_FMT, (outSize + blockSize));
             return(-1);
         }
         iv = xmlSecBufferGetData(out) + outSize;
 
         /* generate and use random iv */
-        if(!CryptGenRandom(ctx->cryptProvider, blockLen, iv)) {
-            xmlSecMSCryptoError2("CryptGenRandom", cipherName,
-                                 "len=%d", blockLen);
+        if(!CryptGenRandom(ctx->cryptProvider, dwBlockLen, iv)) {
+            xmlSecMSCryptoError2("CryptGenRandom", cipherName, "len=%lu", dwBlockLen);
             return(-1);
         }
 
@@ -114,7 +112,7 @@ xmlSecMSCryptoBlockCipherCtxInit(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     } else {
         /* if we don't have enough data, exit and hope that
         * we'll have iv next time */
-        if(xmlSecBufferGetSize(in) < XMLSEC_SIZE_BAD_CAST(blockLen)) {
+        if(inSize < blockSize) {
             return(0);
         }
         xmlSecAssert2(xmlSecBufferGetData(in) != NULL, -1);
@@ -126,10 +124,10 @@ xmlSecMSCryptoBlockCipherCtxInit(xmlSecMSCryptoBlockCipherCtxPtr ctx,
         }
 
         /* and remove from input */
-        ret = xmlSecBufferRemoveHead(in, blockLen);
+        ret = xmlSecBufferRemoveHead(in, blockSize);
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferRemoveHead", cipherName,
-                                 "size=%d", blockLen);
+                                 "size=" XMLSEC_SIZE_FMT, blockSize);
             return(-1);
 
         }
@@ -145,12 +143,11 @@ xmlSecMSCryptoBlockCipherCtxUpdate(xmlSecMSCryptoBlockCipherCtxPtr ctx,
                                    int encrypt,
                                    const xmlChar* cipherName,
                                    xmlSecTransformCtxPtr transformCtx) {
-    xmlSecSize inSize, inBlocks, outSize;
-    int blockLen;
+    DWORD dwBlockLen, dwBlockLenBits, dwBlockLenBitsLen, dwCLen;
+    xmlSecSize blockSize, inSize, inBlocks, outSize;
     unsigned char* outBuf;
     unsigned char* inBuf;
     int ret;
-    DWORD dwBlockLen, dwBlockLenLen, dwCLen;
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->ctxInitialized != 0, -1);
@@ -158,35 +155,36 @@ xmlSecMSCryptoBlockCipherCtxUpdate(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
-    dwBlockLenLen = sizeof(DWORD);
-    if (!CryptGetKeyParam(ctx->cryptKey, KP_BLOCKLEN, (BYTE *)&dwBlockLen, &dwBlockLenLen, 0)) {
+    dwBlockLenBitsLen = sizeof(dwBlockLenBits);
+    if (!CryptGetKeyParam(ctx->cryptKey, KP_BLOCKLEN, (BYTE *)&dwBlockLenBits, &dwBlockLenBitsLen, 0)) {
         xmlSecMSCryptoError("CryptSetKeyParam", cipherName);
         return(-1);
     }
-    blockLen = dwBlockLen / 8;
-    xmlSecAssert2(blockLen > 0, -1);
+    dwBlockLen = dwBlockLenBits / 8;
+    xmlSecAssert2(dwBlockLen > 0, -1);
+    XMLSEC_SAFE_CAST_ULONG_TO_SIZE(dwBlockLen, blockSize, return(-1), cipherName);
 
     inSize = xmlSecBufferGetSize(in);
     outSize = xmlSecBufferGetSize(out);
 
-    if(inSize < XMLSEC_SIZE_BAD_CAST(blockLen)) {
+    if(inSize < blockSize) {
         return(0);
     }
 
     if(encrypt) {
-        inBlocks = inSize / XMLSEC_SIZE_BAD_CAST(blockLen);
+        inBlocks = inSize / blockSize;
     } else {
         /* we want to have the last block in the input buffer
          * for padding check */
-        inBlocks = (inSize - 1) / XMLSEC_SIZE_BAD_CAST(blockLen);
+        inBlocks = (inSize - 1) / blockSize;
     }
-    inSize = inBlocks * XMLSEC_SIZE_BAD_CAST(blockLen);
+    inSize = inBlocks * blockSize;
 
     /* we write out the input size plus may be one block */
-    ret = xmlSecBufferSetMaxSize(out, outSize + inSize + blockLen);
+    ret = xmlSecBufferSetMaxSize(out, outSize + inSize + blockSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetMaxSize", cipherName,
-                             "size=%d", outSize + inSize + blockLen);
+            "size=" XMLSEC_SIZE_FMT, (outSize + inSize + blockSize));
         return(-1);
     }
     outBuf = xmlSecBufferGetData(out) + outSize;
@@ -194,9 +192,12 @@ xmlSecMSCryptoBlockCipherCtxUpdate(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     xmlSecAssert2(inBuf != NULL, -1);
 
     memcpy(outBuf, inBuf, inSize);
-    dwCLen = inSize;
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, dwCLen, return(-1), cipherName);
     if(encrypt) {
-        if(!CryptEncrypt(ctx->cryptKey, 0, FALSE, 0, outBuf, &dwCLen, inSize + blockLen)) {
+        DWORD dwBufLen;
+
+        XMLSEC_SAFE_CAST_SIZE_TO_ULONG((inSize + blockSize), dwBufLen, return(-1), cipherName);
+        if(!CryptEncrypt(ctx->cryptKey, 0, FALSE, 0, outBuf, &dwCLen, dwBufLen)) {
             xmlSecMSCryptoError("CryptEncrypt", cipherName);
             return(-1);
         }
@@ -208,8 +209,7 @@ xmlSecMSCryptoBlockCipherCtxUpdate(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     }
     /* Check if we really have de/encrypted the numbers of bytes that we requested */
     if (dwCLen != inSize) {
-        xmlSecInternalError2("CryptEn/Decrypt", cipherName,
-                             "size=%ld", dwCLen);
+        xmlSecInternalError2("CryptEn/Decrypt", cipherName, "size=%lu", dwCLen);
         return(-1);
     }
 
@@ -217,7 +217,7 @@ xmlSecMSCryptoBlockCipherCtxUpdate(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     ret = xmlSecBufferSetSize(out, outSize + inSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize", cipherName,
-                             "size=%d", outSize + inSize);
+            "size=" XMLSEC_SIZE_FMT, (outSize + inSize));
         return(-1);
     }
 
@@ -225,7 +225,7 @@ xmlSecMSCryptoBlockCipherCtxUpdate(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     ret = xmlSecBufferRemoveHead(in, inSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferRemoveHead", cipherName,
-                             "size=%d", inSize);
+                             "size=" XMLSEC_SIZE_FMT, inSize);
         return(-1);
     }
     return(0);
@@ -238,12 +238,11 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
                                   int encrypt,
                                   const xmlChar* cipherName,
                                   xmlSecTransformCtxPtr transformCtx) {
-    xmlSecSize inSize, outSize;
-    int blockLen, outLen = 0;
+    DWORD dwBlockLen, dwBlockLenBits, dwBlockLenBitsLen, dwCLen;
+    xmlSecSize blockSize, inSize, outSize;
     unsigned char* inBuf;
     unsigned char* outBuf;
     int ret;
-    DWORD dwBlockLen, dwBlockLenLen, dwCLen;
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->ctxInitialized != 0, -1);
@@ -251,61 +250,66 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
-    dwBlockLenLen = sizeof(DWORD);
-    if (!CryptGetKeyParam(ctx->cryptKey, KP_BLOCKLEN, (BYTE *)&dwBlockLen, &dwBlockLenLen, 0)) {
+    dwBlockLenBitsLen = sizeof(dwBlockLenBits);
+    if (!CryptGetKeyParam(ctx->cryptKey, KP_BLOCKLEN, (BYTE *)&dwBlockLenBits, &dwBlockLenBitsLen, 0)) {
         xmlSecMSCryptoError("CryptGetKeyParam", cipherName);
         return(-1);
     }
-    blockLen = dwBlockLen / 8;
-    xmlSecAssert2(blockLen > 0, -1);
+    dwBlockLen = dwBlockLenBits / 8;
+    xmlSecAssert2(dwBlockLen > 0, -1);
+    XMLSEC_SAFE_CAST_ULONG_TO_SIZE(dwBlockLen, blockSize, return(-1), cipherName);
 
     inSize = xmlSecBufferGetSize(in);
     outSize = xmlSecBufferGetSize(out);
 
     if(encrypt != 0) {
-        xmlSecAssert2(inSize < XMLSEC_SIZE_BAD_CAST(blockLen), -1);
+        xmlSecAssert2(inSize < blockSize, -1);
 
         /* create padding */
-        ret = xmlSecBufferSetMaxSize(in, blockLen);
+        ret = xmlSecBufferSetMaxSize(in, blockSize);
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferSetMaxSize", cipherName,
-                                 "size=%d", blockLen);
+                                 "size=" XMLSEC_SIZE_FMT, blockSize);
             return(-1);
         }
         inBuf = xmlSecBufferGetData(in);
 
         /* create random padding */
-        if(XMLSEC_SIZE_BAD_CAST(blockLen) > (inSize + 1)) {
-            if (!CryptGenRandom(ctx->cryptProvider, blockLen - inSize - 1, inBuf + inSize)) {
+        if(blockSize > (inSize + 1)) {
+            XMLSEC_SAFE_CAST_SIZE_TO_ULONG((blockSize - inSize - 1), dwCLen, return(-1), cipherName);
+            if (!CryptGenRandom(ctx->cryptProvider, dwCLen, inBuf + inSize)) {
                 xmlSecMSCryptoError("CryptGenRandom", cipherName);
                 return(-1);
             }
         }
-        inBuf[blockLen - 1] = (unsigned char)(blockLen - inSize);
-        inSize = blockLen;
+        XMLSEC_SAFE_CAST_SIZE_TO_BYTE((blockSize - inSize), inBuf[blockSize - 1], return(-1), cipherName);
+        inSize = blockSize;
     } else {
-        if(inSize != XMLSEC_SIZE_BAD_CAST(blockLen)) {
-            xmlSecInvalidSizeError("Input data", inSize, blockLen, cipherName);
+        if(inSize != blockSize) {
+            xmlSecInvalidSizeError("Input data", inSize, blockSize, cipherName);
             return(-1);
         }
         inBuf = xmlSecBufferGetData(in);
     }
 
     /* process last block */
-    ret = xmlSecBufferSetMaxSize(out, outSize + 2 * blockLen);
+    ret = xmlSecBufferSetMaxSize(out, outSize + 2 * blockSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetMaxSize", cipherName,
-                             "size=%d", outSize + 2 * blockLen);
+            "size=" XMLSEC_SIZE_FMT, (outSize + 2 * blockSize));
         return(-1);
     }
     outBuf = xmlSecBufferGetData(out) + outSize;
     memcpy(outBuf, inBuf, inSize);
 
-    dwCLen = inSize;
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, dwCLen, return(-1), cipherName);
     if(encrypt) {
+        DWORD dwBufLen;
+
         /* Set process last block to false, since we handle padding ourselves, and MSCrypto padding
          * can be skipped. I hope this will work .... */
-        if(!CryptEncrypt(ctx->cryptKey, 0, FALSE, 0, outBuf, &dwCLen, inSize + blockLen)) {
+        XMLSEC_SAFE_CAST_SIZE_TO_ULONG((inSize + blockSize), dwBufLen, return(-1), cipherName);
+        if(!CryptEncrypt(ctx->cryptKey, 0, FALSE, 0, outBuf, &dwCLen, dwBufLen)) {
             xmlSecMSCryptoError("CryptEncrypt", cipherName);
             return(-1);
         }
@@ -318,36 +322,33 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
 
     /* Check if we really have de/encrypted the numbers of bytes that we requested */
     if (dwCLen != inSize) {
-        xmlSecInternalError2("CryptEn/Decrypt", cipherName,
-                             "size=%ld", dwCLen);
+        xmlSecInternalError2("CryptEn/Decrypt", cipherName, "size=%lu", dwCLen);
         return(-1);
     }
 
     if(encrypt == 0) {
         /* check padding */
-        if(inSize < outBuf[blockLen - 1]) {
+        if(inSize < outBuf[blockSize - 1]) {
             xmlSecInvalidSizeLessThanError("Input data padding",
-                    inSize, outBuf[blockLen - 1], cipherName);
+                    inSize, outBuf[blockSize - 1], cipherName);
             return(-1);
         }
-        outLen = inSize - outBuf[blockLen - 1];
+        outSize += inSize - outBuf[blockSize - 1];
     } else {
-        outLen = inSize;
+        outSize += inSize;
     }
 
     /* set correct output buffer size */
-    ret = xmlSecBufferSetSize(out, outSize + outLen);
+    ret = xmlSecBufferSetSize(out, outSize);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetSize", cipherName,
-                             "size=%d", outSize + outLen);
+        xmlSecInternalError2("xmlSecBufferSetSize", cipherName, "size=" XMLSEC_SIZE_FMT, outSize);
         return(-1);
     }
 
     /* remove the processed block from input */
     ret = xmlSecBufferRemoveHead(in, inSize);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferRemoveHead", cipherName,
-                             "size=%d", inSize);
+        xmlSecInternalError2("xmlSecBufferRemoveHead", cipherName, "size=" XMLSEC_SIZE_FMT, inSize);
         return(-1);
     }
 
@@ -358,13 +359,9 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
  *
  *  Block Cipher transforms
  *
- * xmlSecMSCryptoBlockCipherCtx block is located after xmlSecTransform structure
- *
  *****************************************************************************/
-#define xmlSecMSCryptoBlockCipherSize   \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecMSCryptoBlockCipherCtx))
-#define xmlSecMSCryptoBlockCipherGetCtx(transform) \
-    ((xmlSecMSCryptoBlockCipherCtxPtr)(((unsigned char*)(transform)) + sizeof(xmlSecTransform)))
+XMLSEC_TRANSFORM_DECLARE(MSCryptoBlockCipher, xmlSecMSCryptoBlockCipherCtx)
+#define xmlSecMSCryptoBlockCipherSize XMLSEC_TRANSFORM_SIZE(MSCryptoBlockCipher)
 
 static int      xmlSecMSCryptoBlockCipherInitialize     (xmlSecTransformPtr transform);
 static void     xmlSecMSCryptoBlockCipherFinalize       (xmlSecTransformPtr transform);
@@ -457,7 +454,7 @@ xmlSecMSCryptoBlockCipherInitialize(xmlSecTransformPtr transform) {
         ctx->keyId                  = xmlSecMSCryptoKeyDataAesId;
         ctx->providers              = xmlSecMSCryptoProviderInfo_Aes;
         ctx->keySize                = 32;
-    } else     
+    } else
 #endif /* XMLSEC_NO_AES */
 
     {
@@ -502,7 +499,7 @@ xmlSecMSCryptoBlockCipherFinalize(xmlSecTransformPtr transform) {
     if (ctx->cryptProvider) {
         CryptReleaseContext(ctx->cryptProvider, 0);
     }
-    
+
     memset(ctx, 0, sizeof(xmlSecMSCryptoBlockCipherCtx));
 }
 
@@ -535,6 +532,7 @@ static int
 xmlSecMSCryptoBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecMSCryptoBlockCipherCtxPtr ctx;
     xmlSecBufferPtr buffer;
+    DWORD dwKeyLen;
     BYTE* bufData;
 
     xmlSecAssert2(xmlSecMSCryptoBlockCipherCheckId(transform), -1);
@@ -563,11 +561,12 @@ xmlSecMSCryptoBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) 
     xmlSecAssert2(bufData != NULL, -1);
 
     /* Import this key and get an HCRYPTKEY handle */
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(ctx->keySize, dwKeyLen, return(-1), xmlSecTransformGetName(transform));
     if (!xmlSecMSCryptoImportPlainSessionBlob(ctx->cryptProvider,
         ctx->pubPrivKey,
         ctx->algorithmIdentifier,
         bufData,
-        ctx->keySize,
+        dwKeyLen,
         TRUE,
         &(ctx->cryptKey)))  {
 

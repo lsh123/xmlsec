@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>xmlsec: XML Security Library Reference Manual</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
 <link rel="up" href="xmlsec-ref.html" title="XML Security Core Library API Reference.">
 <link rel="prev" href="xmlsec-xmlenc.html" title="xmlenc">
 <link rel="next" href="xmlsec-xmltree.html" title="xmltree">
-<meta name="generator" content="GTK-Doc V1.27 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.33.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -44,12 +44,6 @@
 </colgroup>
 <tbody>
 <tr>
-<td class="define_keyword">#define</td>
-<td class="function_name">
-<a class="link" href="xmlsec-xmlsec.html#XMLSEC-SIZE-BAD-CAST:CAPS" title="XMLSEC_SIZE_BAD_CAST()">XMLSEC_SIZE_BAD_CAST</a><span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
 <td class="function_type">
 <font><span class="returnvalue">int</span></font>
 </td>
@@ -78,6 +72,14 @@
 </td>
 <td class="function_name">
 <a class="link" href="xmlsec-xmlsec.html#xmlSecSetExternalEntityLoader" title="xmlSecSetExternalEntityLoader ()">xmlSecSetExternalEntityLoader</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="returnvalue">xmlSecSize</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-xmlsec.html#xmlSecStrlen" title="xmlSecStrlen ()">xmlSecStrlen</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -113,15 +115,27 @@
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-xmlsec.html#XMLSEC-SIZE-T-FMT:CAPS" title="XMLSEC_SIZE_T_FMT">XMLSEC_SIZE_T_FMT</a></td>
+</tr>
+<tr>
+<td class="typedef_keyword">typedef</td>
 <td class="function_name"><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize">xmlSecSize</a></td>
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
-<td class="function_name"><a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte">xmlSecByte</a></td>
+<td class="function_name"><a class="link" href="xmlsec-xmlsec.html#XMLSEC-SIZE-MIN:CAPS" title="XMLSEC_SIZE_MIN">XMLSEC_SIZE_MIN</a></td>
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
-<td class="function_name"><a class="link" href="xmlsec-xmlsec.html#XMLSEC-CRYPTO:CAPS" title="XMLSEC_CRYPTO">XMLSEC_CRYPTO</a></td>
+<td class="function_name"><a class="link" href="xmlsec-xmlsec.html#XMLSEC-SIZE-MAX:CAPS" title="XMLSEC_SIZE_MAX">XMLSEC_SIZE_MAX</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-xmlsec.html#XMLSEC-SIZE-FMT:CAPS" title="XMLSEC_SIZE_FMT">XMLSEC_SIZE_FMT</a></td>
+</tr>
+<tr>
+<td class="typedef_keyword">typedef</td>
+<td class="function_name"><a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte">xmlSecByte</a></td>
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
@@ -136,32 +150,10 @@
 </div>
 <div class="refsect1">
 <a name="xmlsec-xmlsec.description"></a><h2>Description</h2>
-<p></p>
+<p>Various utility functions.</p>
 </div>
 <div class="refsect1">
 <a name="xmlsec-xmlsec.functions_details"></a><h2>Functions</h2>
-<div class="refsect2">
-<a name="XMLSEC-SIZE-BAD-CAST:CAPS"></a><h3>XMLSEC_SIZE_BAD_CAST()</h3>
-<pre class="programlisting">#define XMLSEC_SIZE_BAD_CAST(val)               ((xmlSecSize)(val))
-</pre>
-<p>Bad cast to xmlSecSize</p>
-<div class="refsect3">
-<a name="XMLSEC-SIZE-BAD-CAST.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
-<colgroup>
-<col>
-<col>
-<col>
-</colgroup>
-<tbody><tr>
-<td class="parameter_name"><p>val</p></td>
-<td class="parameter_description"><p>the value to cast</p></td>
-<td class="parameter_annotations"> </td>
-</tr></tbody>
-</table></div>
-</div>
-</div>
-<hr>
 <div class="refsect2">
 <a name="xmlSecInit"></a><h3>xmlSecInit ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
@@ -178,10 +170,10 @@ xmlSecInit (<em class="parameter"><code><span class="type">void</span></code></e
 <a name="xmlSecShutdown"></a><h3>xmlSecShutdown ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecShutdown (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>Gets the default crypto engine ("openssl", "nss", etc.) for the XML Security Library.</p>
+<p>Clean ups the XML Security Library.</p>
 <div class="refsect3">
 <a name="xmlSecShutdown.returns"></a><h4>Returns</h4>
-<p> the default crypto engine ("openssl", "nss", etc.).</p>
+<p> 0 on success or a negative value otherwise.</p>
 </div>
 </div>
 <hr>
@@ -189,12 +181,59 @@ xmlSecShutdown (<em class="parameter"><code><span class="type">void</span></code
 <a name="xmlSecGetDefaultCrypto"></a><h3>xmlSecGetDefaultCrypto ()</h3>
 <pre class="programlisting">const <font><span class="returnvalue">xmlChar</span></font> *
 xmlSecGetDefaultCrypto (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Gets the default crypto engine ("openssl", "nss", etc.) for the XML Security Library.</p>
+<div class="refsect3">
+<a name="xmlSecGetDefaultCrypto.returns"></a><h4>Returns</h4>
+<p> the default crypto engine ("openssl", "nss", etc.).</p>
+</div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecSetExternalEntityLoader"></a><h3>xmlSecSetExternalEntityLoader ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
-xmlSecSetExternalEntityLoader (<em class="parameter"><code><font><span class="type">xmlExternalEntityLoader</span></font> Param1</code></em>);</pre>
+xmlSecSetExternalEntityLoader (<em class="parameter"><code><font><span class="type">xmlExternalEntityLoader</span></font> entityLoader</code></em>);</pre>
+<p>Wrapper for xmlSetExternalEntityLoader.</p>
+<div class="refsect3">
+<a name="xmlSecSetExternalEntityLoader.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>entityLoader</p></td>
+<td class="parameter_description"><p>the new entity resolver function, or NULL to restore libxml2's default handler</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecStrlen"></a><h3>xmlSecStrlen ()</h3>
+<pre class="programlisting"><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="returnvalue">xmlSecSize</span></a>
+xmlSecStrlen (<em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *str</code></em>);</pre>
+<p>Calcaulates the lenght of the string.</p>
+<div class="refsect3">
+<a name="xmlSecStrlen.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>str</p></td>
+<td class="parameter_description"><p>the string.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecStrlen.returns"></a><h4>Returns</h4>
+<p> the length of the string.</p>
+</div>
 </div>
 <hr>
 <div class="refsect2">
@@ -270,34 +309,50 @@ xmlSecCheckVersionExt (<em class="parameter"><code><font><span class="type">int<
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecSize"></a><h3>xmlSecSize</h3>
-<pre class="programlisting">#define xmlSecSize                              unsigned int
+<a name="XMLSEC-SIZE-T-FMT:CAPS"></a><h3>XMLSEC_SIZE_T_FMT</h3>
+<pre class="programlisting">#define XMLSEC_SIZE_T_FMT                      "%llu"
 </pre>
-<p>Size of something. Should be typedef instead of define
-but it will break ABI (todo).</p>
+<p>The only reason we need this is that MinGW doesn't recognize "<font><code class="literal">zu</code></font>"
+despite the fact that MSVC runtime supports it for 10+ years.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecSize"></a><h3>xmlSecSize</h3>
+<pre class="programlisting">typedef size_t xmlSecSize;
+</pre>
+<p>Size of something.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="XMLSEC-SIZE-MIN:CAPS"></a><h3>XMLSEC_SIZE_MIN</h3>
+<pre class="programlisting">#define XMLSEC_SIZE_MIN                         ((xmlSecSize)0)
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="XMLSEC-SIZE-MAX:CAPS"></a><h3>XMLSEC_SIZE_MAX</h3>
+<pre class="programlisting">#define XMLSEC_SIZE_MAX                         SIZE_MAX
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="XMLSEC-SIZE-FMT:CAPS"></a><h3>XMLSEC_SIZE_FMT</h3>
+<pre class="programlisting">#define XMLSEC_SIZE_FMT                         XMLSEC_SIZE_T_FMT
+</pre>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecByte"></a><h3>xmlSecByte</h3>
-<pre class="programlisting">#define xmlSecByte                              unsigned char
+<pre class="programlisting">typedef unsigned char xmlSecByte;
 </pre>
-<p>One byte. Should be typedef instead of define
-but it will break ABI (todo).</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="XMLSEC-CRYPTO:CAPS"></a><h3>XMLSEC_CRYPTO</h3>
-<pre class="programlisting">#define XMLSEC_CRYPTO                          (xmlSecGetDefaultCrypto())
-</pre>
-<p>Macro. Deprecated. Defined for backward compatibility only. Do not use
-in your code and use <a class="link" href="xmlsec-xmlsec.html#xmlSecGetDefaultCrypto" title="xmlSecGetDefaultCrypto ()"><code class="function">xmlSecGetDefaultCrypto()</code></a> function instead.</p>
-<p>Returns the default crypto engine.</p>
+<p>One byte.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="XMLSEC-DEPRECATED:CAPS"></a><h3>XMLSEC_DEPRECATED</h3>
 <pre class="programlisting">#define XMLSEC_DEPRECATED __attribute__((deprecated))
 </pre>
+<p>Marks function as deprecated.</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -329,6 +384,6 @@ in your code and use <a class="link" href="xmlsec-xmlsec.html#xmlSecGetDefaultCr
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.27</div>
+<hr>Generated by GTK-Doc V1.33.1</div>
 </body>
 </html>

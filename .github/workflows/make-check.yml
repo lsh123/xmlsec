@@ -2,117 +2,270 @@ name: Make Check
 
 on:
   push:
-    branches: [ master ]
+    branches:
+          - master
+          - xmlsec-1_2_x
   pull_request:
-    branches: [ master ]
+    branches:
+          - master
+          - xmlsec-1_2_x
 
 jobs:
-  check-ubuntu:
-    runs-on: ubuntu-latest
+  check-ubuntu-openssl300:
+    runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
       matrix:
         include:
-          - static_linking: true
-          - static_linking: false
+          - config_flags:
+          - config_flags: --enable-static --enable-static-linking --without-nss --without-gcrypt --without-gnutls
+          - config_flags: --enable-static --enable-static-linking --enable-ftp --enable-md5 --enable-gost --enable-gost2012 --without-openssl --without-nss --without-gcrypt
     steps:
     - name: install dependencies
       run: |
           sudo apt update
           sudo apt install automake autoconf libtool libtool-bin libltdl-dev libltdl7
           sudo apt install libxml2 libxml2-dev libxslt1.1 libxslt1-dev
-          sudo apt install libssl1.0.0 libssl-dev libnspr4 libnspr4-dev libnss3 libnss3-dev libnss3-tools libgcrypt20 libgcrypt20-dev libgnutls28-dev
+          sudo apt install libssl1.1 libssl-dev libnspr4 libnspr4-dev libnss3 libnss3-dev libnss3-tools libgcrypt20 libgcrypt20-dev libgnutls28-dev
     - uses: actions/checkout@v2
-    - run: mkdir build
+    - name: create-build-dirs
+      run: |
+          mkdir build.dir install.dir
     - name: configure
-      working-directory: build
-      run: ../autogen.sh --enable-werror --enable-static-linking=${{ matrix.static_linking }}
+      working-directory: build.dir
+      run: |
+          ../autogen.sh --prefix=${GITHUB_WORKSPACE}/install.dir --enable-werror --enable-pedantic ${{ matrix.config_flags }}
     - name: make
-      working-directory: build
-      run: make
+      working-directory: build.dir
+      run: |
+          make
     - name: make check
-      working-directory: build
-      run: make check
-  
-  check-osx:
-    runs-on: macos-latest
+      working-directory: build.dir
+      run: |
+          make check
+    - name: make install
+      working-directory: build.dir
+      run: |
+          make install
+
+  check-ubuntu-openssl111:
+    runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
       matrix:
         include:
-          - static_linking: true
-          - static_linking: false
+          - config_flags:
+          - config_flags: --enable-static-linking=yes --without-nss --without-gcrypt --without-gnutls
     steps:
     - name: install dependencies
       run: |
-          brew update
-          brew install automake autoconf libtool
-          # brew install libxml2 libxslt
-          brew install openssl nspr nss libgcrypt gnutls        
+          sudo apt update
+          sudo apt install automake autoconf libtool libtool-bin libltdl-dev libltdl7
+          sudo apt install libxml2 libxml2-dev libxslt1.1 libxslt1-dev
+          sudo apt install wget
     - uses: actions/checkout@v2
-    - run: mkdir build
+    - name: create-build-dirs
+      run: |
+          mkdir build.dir install.dir
     - name: configure
-      working-directory: build
-      run: ../autogen.sh --enable-werror --enable-static-linking=${{ matrix.static_linking }}
+      working-directory: build.dir
+      run: |
+          export LD_LIBRARY_PATH="/usr/local/openssl3/lib:/usr/local/openssl3/lib64:$LD_LIBRARY_PATH"
+          ../autogen.sh --prefix=${GITHUB_WORKSPACE}/install.dir --enable-werror --enable-pedantic ${{ matrix.config_flags }}
     - name: make
-      working-directory: build
-      run: make
+      working-directory: build.dir
+      run: |
+          make
     - name: make check
-      working-directory: build
-      run: make check
-  
+      working-directory: build.dir
+      run: |
+          export LD_LIBRARY_PATH="/usr/local/openssl3/lib:/usr/local/openssl3/lib64:$LD_LIBRARY_PATH"
+          make check
+    - name: make install
+      working-directory: build.dir
+      run: |
+          make install
+
+  check-osx:
+    runs-on: macos-13
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - config_flags:
+    steps:
+    - name: Set up Homebrew
+      id: set-up-homebrew
+      uses: Homebrew/actions/setup-homebrew@master
+    - name: install dependencies
+      run: |
+          HOMEBREW_NO_AUTO_UPDATE=1 HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1 brew install automake autoconf pkg-config libtool
+          HOMEBREW_NO_AUTO_UPDATE=1 HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1 brew install libxml2 libxslt
+          HOMEBREW_NO_AUTO_UPDATE=1 HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1 brew install openssl nspr nss libgcrypt gnutls
+    - uses: actions/checkout@v2
+    - name: create-build-dirs
+      run: |
+          mkdir build.dir install.dir
+    - name: configure
+      working-directory: build.dir
+      run: |
+          ../autogen.sh --prefix=${GITHUB_WORKSPACE}/install.dir  --enable-werror --enable-pedantic \
+            --with-openssl=`brew --prefix openssl` \
+            --with-nspr=`brew --prefix nspr` \
+            --with-nss=`brew --prefix nss` \
+            --with-gcrypt=`brew --prefix libgcrypt` \
+            --with-gnutls=`brew --prefix gnutls` \
+            ${{ matrix.config_flags }}
+    - name: make
+      working-directory: build.dir
+      run: |
+          make
+    - name: make check
+      working-directory: build.dir
+      run: |
+          export PATH=`brew --prefix openssl`/bin:$PATH
+          export LD_LIBRARY_PATH=`brew --prefix openssl`/lib:$LD_LIBRARY_PATH
+          export LD_LIBRARY_PATH=`brew --prefix nspr`/lib:$LD_LIBRARY_PATH
+          export LD_LIBRARY_PATH=`brew --prefix nss`/lib:$LD_LIBRARY_PATH
+          export LD_LIBRARY_PATH=`brew --prefix libgcrypt`/lib:$LD_LIBRARY_PATH
+          export LD_LIBRARY_PATH=`brew --prefix gnutls`/lib:$LD_LIBRARY_PATH
+          make check
+    - name: make install
+      working-directory: build.dir
+      run: |
+          make install
+
   check-mingw:
-    runs-on: windows-latest
+    runs-on: windows-2022
     strategy:
       fail-fast: false
       matrix:
         include:
           - msystem: MINGW64
             arch: x86_64
-            unicode: true
-            static_linking: true
+            config_flags: --enable-unicode=yes
           - msystem: MINGW64
             arch: x86_64
-            unicode: true
-            static_linking: false
-          - msystem: MINGW64
-            arch: x86_64
-            unicode: false
-            static_linking: true
-          - msystem: MINGW64
-            arch: x86_64
-            unicode: false
-            static_linking: false
+            config_flags: --enable-static --enable-static-linking --enable-unicode=no --enable-md5 --enable-ftp
     defaults:
       run:
-        shell: msys2 {0}  
+        shell: msys2 {0}
     steps:
     - uses: msys2/setup-msys2@v2
       with:
         msystem: ${{ matrix.msystem }}
-        release: false  
+        release: false
         update: false
         install: >-
-          git
+          autoconf
+          automake
           base-devel
+          git
+          libtool
           mingw-w64-${{ matrix.arch }}-toolchain
-          mingw-w64-${{ matrix.arch }}-libtool
           mingw-w64-${{ matrix.arch }}-libxml2
           mingw-w64-${{ matrix.arch }}-libxslt
+          mingw-w64-${{ matrix.arch }}-libltdl
           mingw-w64-${{ matrix.arch }}-openssl
-          mingw-w64-${{ matrix.arch }}-nspr
-          mingw-w64-${{ matrix.arch }}-nss
+          mingw-w64-${{ matrix.arch }}-libgcrypt
           mingw-w64-${{ matrix.arch }}-gnutls
-    - run: git config --global core.autocrlf input
+    - name: configure-git
+      run: |
+          git config --global core.autocrlf input
       shell: bash
-    - uses: actions/checkout@v2      
-    - run: mkdir build
+    - uses: actions/checkout@v2
+    - name: create-dirs
+      run: |
+          mkdir build.dir install.dir
+      shell: bash
     - name: configure
-      working-directory: build
-      run: pwd && ../autogen.sh --build="${{ matrix.arch }}-w64-mingw32" --host="${{ matrix.arch }}-w64-mingw32" --enable-unicode=${{ matrix.unicode }} --enable-static-linking=${{ matrix.static_linking }} --enable-mscrypto --enable-mscng 
+      working-directory: build.dir
+      run: |
+          ../autogen.sh --prefix=`cygpath -u "${GITHUB_WORKSPACE}/install.dir"` --enable-werror  --enable-pedantic \
+              --enable-mscrypto --enable-mscng ${{ matrix.config_flags }} \
+              --build="${{ matrix.arch }}-w64-mingw32" \
+              --host="${{ matrix.arch }}-w64-mingw32"
     - name: make
-      working-directory: build
-      run: make
+      working-directory: build.dir
+      run: |
+          make
     - name: make check
-      working-directory: build
-      run: make check
+      working-directory: build.dir
+      run: |
+          make check
+    - name: make install
+      working-directory: build.dir
+      run: |
+          make install
+
+  check-msvc:
+    runs-on: windows-2022
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - crypto: mscng
+            config_flags: unicode=yes with-dl=yes
+          - crypto: mscng
+            config_flags: unicode=no with-dl=no static=yes legacy-crypto=yes
+          - crypto: mscrypto
+            config_flags: unicode=yes with-dl=yes
+          - crypto: mscrypto
+            config_flags:  unicode=no with-dl=no static=yes legacy-crypto=yes
+          - crypto: openssl-300
+            config_flags: unicode=yes with-dl=yes
+          - crypto: openssl-300
+            config_flags: unicode=no with-dl=no static=yes
+    env:
+      VISUAL_STUDIO_ROOT: "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise"
+      INSTALL_FOLDER: c:\install.dir
+      LIBS_VERSION: 1.3.4
+    steps:
+    - name: create-dirs
+      run: |
+          mkdir ${{ env.INSTALL_FOLDER }}
+    - name: install dependencies
+      shell: pwsh
+      working-directory: ${{ env.INSTALL_FOLDER }}
+      env:
+        LIBS_URL: "https://github.com/lsh123/xmlsec/releases/download/${{ env.LIBS_VERSION }}/xmlsec1-${{ env.LIBS_VERSION }}-win64.zip"
+        LIBS_FILE: "xmlsec1-${{ env.LIBS_VERSION }}-win64.zip"
+      run: |
+          Invoke-WebRequest ${{ env.LIBS_URL }} -OutFile ${{ env.LIBS_FILE }}
+          Expand-Archive -Path ${{ env.LIBS_FILE }}  -DestinationPath "."
+    - name: configure-git
+      shell: bash
+      run: |
+          git config --global core.autocrlf input
+    - uses: actions/checkout@v2
+    - name: configure
+      working-directory: win32
+      shell: cmd
+      run: |
+          call "${{ env.VISUAL_STUDIO_ROOT }}\VC\Auxiliary\Build\vcvars64.bat"
+          cscript configure.js pedantic=yes werror=yes static=yes iconv=no ^
+              crypto=${{ matrix.crypto }} ${{ matrix.config_flags }} ^
+              prefix=${{ env.INSTALL_FOLDER }}\xmlsec.build ^
+              include=${{ env.INSTALL_FOLDER }}\libxml2\include;${{ env.INSTALL_FOLDER }}\libxml2\include\libxml2;${{ env.INSTALL_FOLDER }}\libxslt\include;${{ env.INSTALL_FOLDER }}\openssl\include;%MSSDK_INCLUDE% ^
+              lib=${{ env.INSTALL_FOLDER }}\libxml2\lib;${{ env.INSTALL_FOLDER }}\libxslt\lib;${{ env.INSTALL_FOLDER }}\openssl\lib;%MSSDK_LIB%
+    - name: make
+      working-directory: win32
+      shell: cmd
+      run: |
+          call "${{ env.VISUAL_STUDIO_ROOT }}\VC\Auxiliary\Build\vcvars64.bat"
+          set PATH=${{ env.INSTALL_FOLDER }}\libxml2\bin;${{ env.INSTALL_FOLDER }}\libxslt\bin;${{ env.INSTALL_FOLDER }}\openssl\bin;%PATH%
+          nmake
+    - name: make check
+      working-directory: win32
+      shell: cmd
+      run: |
+          call "${{ env.VISUAL_STUDIO_ROOT }}\VC\Auxiliary\Build\vcvars64.bat"
+          set PATH=${{ env.INSTALL_FOLDER }}\libxml2\bin;${{ env.INSTALL_FOLDER }}\libxslt\bin;${{ env.INSTALL_FOLDER }}\openssl\bin;%PATH%
+          set OPENSSL_MODULES=${{ env.INSTALL_FOLDER }}\lib\ossl-modules
+          nmake check
+    - name: make install
+      working-directory: win32
+      shell: cmd
+      run: |
+          call "${{ env.VISUAL_STUDIO_ROOT }}\VC\Auxiliary\Build\vcvars64.bat"
+          nmake install

@@ -11,6 +11,7 @@
 #ifndef __XMLSEC_MSCRYPTO_KEYSSTORE_H__
 #define __XMLSEC_MSCRYPTO_KEYSSTORE_H__
 
+#include <xmlsec/exports.h>
 #include <xmlsec/xmlsec.h>
 
 #ifdef __cplusplus

@@ -15,15 +15,15 @@
 		<Exponent>
 		    AQAB
 		</Exponent>
-		<PrivateExponent xmlns="http://www.aleksey.com/xmlsec/2002">
-		    Ur48iILiGpME2ONY6s/A0fdaaaBLyM9c6nng3MXX5tt8SuP4EYy8NHLygwNTEXva
-		    qC6MP9jdxqdZByXnlhzTj+AgZk1gc2i1RTHYzbW1Mg9y5m9FaPGyLnsguP8MeZCw
-		    nJf51yoO24TspTt22XC/JnyShZGk6D1hkMoumjWbYRPRGPI0Sb1++3qbdnBJrAD1
-		    i7TFJW9Ui6Q0iXt6KZDMFh4ZDAbCEyAyjJtBaPAg6mdu9xF9P+ICH2f8DJdyO04w
-		    bBaGJ+N6X5TVcwyGtwveYDnFv6AZClntNOhN+Y4Ql5UKH0FEqmCeIfglUKWGJM54
-		    3hVMtliD8EaYZOOsRkpfgQ==
-		</PrivateExponent>
 	    </RSAKeyValue>
+	</KeyValue>
+    </KeyInfo>
+    <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <KeyName>my-tripledes-key</KeyName>
+	<KeyValue>
+	    <DESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">
+		yI+J1f3puYAERjIcT6vfg6RitmKX8nD0
+	    </DESKeyValue>
 	</KeyValue>
     </KeyInfo>
     <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">

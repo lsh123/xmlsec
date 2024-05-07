@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>crypto: XML Security Library Reference Manual</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
 <link rel="up" href="xmlsec-openssl-ref.html" title="XML Security Library for OpenSLL API Reference.">
-<link rel="prev" href="xmlsec-openssl-bn.html" title="bn">
+<link rel="prev" href="xmlsec-openssl-app.html" title="app">
 <link rel="next" href="xmlsec-openssl-evp.html" title="evp">
-<meta name="generator" content="GTK-Doc V1.27 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.33.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -19,7 +19,7 @@
 </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <td><a accesskey="u" href="xmlsec-openssl-ref.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
-<td><a accesskey="p" href="xmlsec-openssl-bn.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="p" href="xmlsec-openssl-app.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
 <td><a accesskey="n" href="xmlsec-openssl-evp.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="refentry">
@@ -27,7 +27,7 @@
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="xmlsec-openssl-crypto.top_of_page"></a>crypto</span></h2>
-<p>crypto — Crypto transforms implementation for OpenSSL.</p>
+<p>crypto</p>
 </td>
 <td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
@@ -96,6 +96,46 @@
 </td>
 <td class="function_name">
 <a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLGetDefaultTrustedCertsFolder" title="xmlSecOpenSSLGetDefaultTrustedCertsFolder ()">xmlSecOpenSSLGetDefaultTrustedCertsFolder</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLSetLibCtx" title="xmlSecOpenSSLSetLibCtx ()">xmlSecOpenSSLSetLibCtx</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">OSSL_LIB_CTX</span></font> *
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLGetLibCtx" title="xmlSecOpenSSLGetLibCtx ()">xmlSecOpenSSLGetLibCtx</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">BIO</span></font> *
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLCreateMemBio" title="xmlSecOpenSSLCreateMemBio ()">xmlSecOpenSSLCreateMemBio</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">BIO</span></font> *
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLCreateMemBufBio" title="xmlSecOpenSSLCreateMemBufBio ()">xmlSecOpenSSLCreateMemBufBio</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">BIO</span></font> *
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLCreateReadFileBio" title="xmlSecOpenSSLCreateReadFileBio ()">xmlSecOpenSSLCreateReadFileBio</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -191,6 +231,30 @@
 <font><span class="returnvalue">xmlSecKeyDataId</span></font>
 </td>
 <td class="function_name">
+<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataConcatKdfGetKlass" title="xmlSecOpenSSLKeyDataConcatKdfGetKlass ()">xmlSecOpenSSLKeyDataConcatKdfGetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataConcatKdfSet" title="xmlSecOpenSSLKeyDataConcatKdfSet ()">xmlSecOpenSSLKeyDataConcatKdfSet</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformConcatKdfGetKlass" title="xmlSecOpenSSLTransformConcatKdfGetKlass ()">xmlSecOpenSSLTransformConcatKdfGetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecKeyDataId</span></font>
+</td>
+<td class="function_name">
 <a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataDesGetKlass" title="xmlSecOpenSSLKeyDataDesGetKlass ()">xmlSecOpenSSLKeyDataDesGetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
@@ -231,22 +295,6 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataDsaAdoptDsa" title="xmlSecOpenSSLKeyDataDsaAdoptDsa ()">xmlSecOpenSSLKeyDataDsaAdoptDsa</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
-<font><span class="returnvalue">DSA</span></font> *
-</td>
-<td class="function_name">
-<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataDsaGetDsa" title="xmlSecOpenSSLKeyDataDsaGetDsa ()">xmlSecOpenSSLKeyDataDsaGetDsa</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
-<font><span class="returnvalue">int</span></font>
-</td>
-<td class="function_name">
 <a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataDsaAdoptEvp" title="xmlSecOpenSSLKeyDataDsaAdoptEvp ()">xmlSecOpenSSLKeyDataDsaAdoptEvp</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
@@ -279,7 +327,7 @@
 <font><span class="returnvalue">xmlSecKeyDataId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataEcdsaGetKlass" title="xmlSecOpenSSLKeyDataEcdsaGetKlass ()">xmlSecOpenSSLKeyDataEcdsaGetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataDhGetKlass" title="xmlSecOpenSSLKeyDataDhGetKlass ()">xmlSecOpenSSLKeyDataDhGetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -287,23 +335,7 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataEcdsaAdoptEcdsa" title="xmlSecOpenSSLKeyDataEcdsaAdoptEcdsa ()">xmlSecOpenSSLKeyDataEcdsaAdoptEcdsa</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
-<font><span class="returnvalue">EC_KEY</span></font> *
-</td>
-<td class="function_name">
-<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataEcdsaGetEcdsa" title="xmlSecOpenSSLKeyDataEcdsaGetEcdsa ()">xmlSecOpenSSLKeyDataEcdsaGetEcdsa</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
-<font><span class="returnvalue">int</span></font>
-</td>
-<td class="function_name">
-<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataEcdsaAdoptEvp" title="xmlSecOpenSSLKeyDataEcdsaAdoptEvp ()">xmlSecOpenSSLKeyDataEcdsaAdoptEvp</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataDhAdoptEvp" title="xmlSecOpenSSLKeyDataDhAdoptEvp ()">xmlSecOpenSSLKeyDataDhAdoptEvp</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -311,7 +343,47 @@
 <font><span class="returnvalue">EVP_PKEY</span></font> *
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataEcdsaGetEvp" title="xmlSecOpenSSLKeyDataEcdsaGetEvp ()">xmlSecOpenSSLKeyDataEcdsaGetEvp</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataDhGetEvp" title="xmlSecOpenSSLKeyDataDhGetEvp ()">xmlSecOpenSSLKeyDataDhGetEvp</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformDhEsGetKlass" title="xmlSecOpenSSLTransformDhEsGetKlass ()">xmlSecOpenSSLTransformDhEsGetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecKeyDataId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataEcGetKlass" title="xmlSecOpenSSLKeyDataEcGetKlass ()">xmlSecOpenSSLKeyDataEcGetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataEcAdoptEvp" title="xmlSecOpenSSLKeyDataEcAdoptEvp ()">xmlSecOpenSSLKeyDataEcAdoptEvp</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">EVP_PKEY</span></font> *
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataEcGetEvp" title="xmlSecOpenSSLKeyDataEcGetEvp ()">xmlSecOpenSSLKeyDataEcGetEvp</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformEcdsaRipemd160GetKlass" title="xmlSecOpenSSLTransformEcdsaRipemd160GetKlass ()">xmlSecOpenSSLTransformEcdsaRipemd160GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -356,6 +428,46 @@
 </tr>
 <tr>
 <td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformEcdsaSha3-224GetKlass" title="xmlSecOpenSSLTransformEcdsaSha3_224GetKlass ()">xmlSecOpenSSLTransformEcdsaSha3_224GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformEcdsaSha3-256GetKlass" title="xmlSecOpenSSLTransformEcdsaSha3_256GetKlass ()">xmlSecOpenSSLTransformEcdsaSha3_256GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformEcdsaSha3-384GetKlass" title="xmlSecOpenSSLTransformEcdsaSha3_384GetKlass ()">xmlSecOpenSSLTransformEcdsaSha3_384GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformEcdsaSha3-512GetKlass" title="xmlSecOpenSSLTransformEcdsaSha3_512GetKlass ()">xmlSecOpenSSLTransformEcdsaSha3_512GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformEcdhGetKlass" title="xmlSecOpenSSLTransformEcdhGetKlass ()">xmlSecOpenSSLTransformEcdhGetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
 <font><span class="returnvalue">xmlSecKeyDataId</span></font>
 </td>
 <td class="function_name">
@@ -367,7 +479,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformGost2001GostR3411-94GetKlass" title="xmlSecOpenSSLTransformGost2001GostR3411_94GetKlass ()">xmlSecOpenSSLTransformGost2001GostR3411_94GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformGostR3411-94GetKlass" title="xmlSecOpenSSLTransformGostR3411_94GetKlass ()">xmlSecOpenSSLTransformGostR3411_94GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -375,7 +487,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformGostR3411-94GetKlass" title="xmlSecOpenSSLTransformGostR3411_94GetKlass ()">xmlSecOpenSSLTransformGostR3411_94GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformGost2001GostR3411-94GetKlass" title="xmlSecOpenSSLTransformGost2001GostR3411_94GetKlass ()">xmlSecOpenSSLTransformGost2001GostR3411_94GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -424,22 +536,6 @@
 </td>
 <td class="function_name">
 <a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformGostR3411-2012-512GetKlass" title="xmlSecOpenSSLTransformGostR3411_2012_512GetKlass ()">xmlSecOpenSSLTransformGostR3411_2012_512GetKlass</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
-<font><span class="returnvalue">int</span></font>
-</td>
-<td class="function_name">
-<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLHmacGetMinOutputLength" title="xmlSecOpenSSLHmacGetMinOutputLength ()">xmlSecOpenSSLHmacGetMinOutputLength</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
-<font><span class="returnvalue">void</span></font>
-</td>
-<td class="function_name">
-<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLHmacSetMinOutputLength" title="xmlSecOpenSSLHmacSetMinOutputLength ()">xmlSecOpenSSLHmacSetMinOutputLength</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -524,6 +620,30 @@
 </tr>
 <tr>
 <td class="function_type">
+<font><span class="returnvalue">xmlSecKeyDataId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataPbkdf2GetKlass" title="xmlSecOpenSSLKeyDataPbkdf2GetKlass ()">xmlSecOpenSSLKeyDataPbkdf2GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataPbkdf2Set" title="xmlSecOpenSSLKeyDataPbkdf2Set ()">xmlSecOpenSSLKeyDataPbkdf2Set</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformPbkdf2GetKlass" title="xmlSecOpenSSLTransformPbkdf2GetKlass ()">xmlSecOpenSSLTransformPbkdf2GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
@@ -536,22 +656,6 @@
 </td>
 <td class="function_name">
 <a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataRsaGetKlass" title="xmlSecOpenSSLKeyDataRsaGetKlass ()">xmlSecOpenSSLKeyDataRsaGetKlass</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
-<font><span class="returnvalue">int</span></font>
-</td>
-<td class="function_name">
-<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataRsaAdoptRsa" title="xmlSecOpenSSLKeyDataRsaAdoptRsa ()">xmlSecOpenSSLKeyDataRsaAdoptRsa</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
-<font><span class="returnvalue">RSA</span></font> *
-</td>
-<td class="function_name">
-<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataRsaGetRsa" title="xmlSecOpenSSLKeyDataRsaGetRsa ()">xmlSecOpenSSLKeyDataRsaGetRsa</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -647,6 +751,86 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
+<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformRsaOaepEnc11GetKlass" title="xmlSecOpenSSLTransformRsaOaepEnc11GetKlass ()">xmlSecOpenSSLTransformRsaOaepEnc11GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformRsaPssSha1GetKlass" title="xmlSecOpenSSLTransformRsaPssSha1GetKlass ()">xmlSecOpenSSLTransformRsaPssSha1GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformRsaPssSha224GetKlass" title="xmlSecOpenSSLTransformRsaPssSha224GetKlass ()">xmlSecOpenSSLTransformRsaPssSha224GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformRsaPssSha256GetKlass" title="xmlSecOpenSSLTransformRsaPssSha256GetKlass ()">xmlSecOpenSSLTransformRsaPssSha256GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformRsaPssSha384GetKlass" title="xmlSecOpenSSLTransformRsaPssSha384GetKlass ()">xmlSecOpenSSLTransformRsaPssSha384GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformRsaPssSha512GetKlass" title="xmlSecOpenSSLTransformRsaPssSha512GetKlass ()">xmlSecOpenSSLTransformRsaPssSha512GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformRsaPssSha3-224GetKlass" title="xmlSecOpenSSLTransformRsaPssSha3_224GetKlass ()">xmlSecOpenSSLTransformRsaPssSha3_224GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformRsaPssSha3-256GetKlass" title="xmlSecOpenSSLTransformRsaPssSha3_256GetKlass ()">xmlSecOpenSSLTransformRsaPssSha3_256GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformRsaPssSha3-384GetKlass" title="xmlSecOpenSSLTransformRsaPssSha3_384GetKlass ()">xmlSecOpenSSLTransformRsaPssSha3_384GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformRsaPssSha3-512GetKlass" title="xmlSecOpenSSLTransformRsaPssSha3_512GetKlass ()">xmlSecOpenSSLTransformRsaPssSha3_512GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
 <a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformSha1GetKlass" title="xmlSecOpenSSLTransformSha1GetKlass ()">xmlSecOpenSSLTransformSha1GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
@@ -684,6 +868,38 @@
 </tr>
 <tr>
 <td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformSha3-224GetKlass" title="xmlSecOpenSSLTransformSha3_224GetKlass ()">xmlSecOpenSSLTransformSha3_224GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformSha3-256GetKlass" title="xmlSecOpenSSLTransformSha3_256GetKlass ()">xmlSecOpenSSLTransformSha3_256GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformSha3-384GetKlass" title="xmlSecOpenSSLTransformSha3_384GetKlass ()">xmlSecOpenSSLTransformSha3_384GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformSha3-512GetKlass" title="xmlSecOpenSSLTransformSha3_512GetKlass ()">xmlSecOpenSSLTransformSha3_512GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
 <font><span class="returnvalue">void</span></font>
 </td>
 <td class="function_name">
@@ -703,15 +919,23 @@
 <tbody>
 <tr>
 <td class="define_keyword">#define</td>
-<td class="function_name"><a class="link" href="xmlsec-openssl-crypto.html#XMLSEC-OPENSSL-API-100:CAPS" title="XMLSEC_OPENSSL_API_100">XMLSEC_OPENSSL_API_100</a></td>
+<td class="function_name"><a class="link" href="xmlsec-openssl-crypto.html#XMLSEC-OPENSSL-API-111:CAPS" title="XMLSEC_OPENSSL_API_111">XMLSEC_OPENSSL_API_111</a></td>
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
-<td class="function_name"><a class="link" href="xmlsec-openssl-crypto.html#XMLSEC-OPENSSL-API-110:CAPS" title="XMLSEC_OPENSSL_API_110">XMLSEC_OPENSSL_API_110</a></td>
+<td class="function_name"><a class="link" href="xmlsec-openssl-crypto.html#XMLSEC-OPENSSL-API-300:CAPS" title="XMLSEC_OPENSSL_API_300">XMLSEC_OPENSSL_API_300</a></td>
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
 <td class="function_name"><a class="link" href="xmlsec-openssl-crypto.html#XMLSEC-NO-AES:CAPS" title="XMLSEC_NO_AES">XMLSEC_NO_AES</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-openssl-crypto.html#XMLSEC-NO-CONCATKDF:CAPS" title="XMLSEC_NO_CONCATKDF">XMLSEC_NO_CONCATKDF</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-openssl-crypto.html#XMLSEC-NO-PBKDF2:CAPS" title="XMLSEC_NO_PBKDF2">XMLSEC_NO_PBKDF2</a></td>
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
@@ -723,7 +947,7 @@
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
-<td class="function_name"><a class="link" href="xmlsec-openssl-crypto.html#XMLSEC-NO-ECDSA:CAPS" title="XMLSEC_NO_ECDSA">XMLSEC_NO_ECDSA</a></td>
+<td class="function_name"><a class="link" href="xmlsec-openssl-crypto.html#XMLSEC-NO-EC:CAPS" title="XMLSEC_NO_EC">XMLSEC_NO_EC</a></td>
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
@@ -815,6 +1039,14 @@
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataConcatKdfId" title="xmlSecOpenSSLKeyDataConcatKdfId">xmlSecOpenSSLKeyDataConcatKdfId</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformConcatKdfId" title="xmlSecOpenSSLTransformConcatKdfId">xmlSecOpenSSLTransformConcatKdfId</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
 <td class="function_name"><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataDesId" title="xmlSecOpenSSLKeyDataDesId">xmlSecOpenSSLKeyDataDesId</a></td>
 </tr>
 <tr>
@@ -839,7 +1071,19 @@
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
-<td class="function_name"><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataEcdsaId" title="xmlSecOpenSSLKeyDataEcdsaId">xmlSecOpenSSLKeyDataEcdsaId</a></td>
+<td class="function_name"><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataDhId" title="xmlSecOpenSSLKeyDataDhId">xmlSecOpenSSLKeyDataDhId</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformDhEsId" title="xmlSecOpenSSLTransformDhEsId">xmlSecOpenSSLTransformDhEsId</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataEcId" title="xmlSecOpenSSLKeyDataEcId">xmlSecOpenSSLKeyDataEcId</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformEcdsaRipemd160Id" title="xmlSecOpenSSLTransformEcdsaRipemd160Id">xmlSecOpenSSLTransformEcdsaRipemd160Id</a></td>
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
@@ -863,15 +1107,35 @@
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformEcdsaSha3-224Id" title="xmlSecOpenSSLTransformEcdsaSha3_224Id">xmlSecOpenSSLTransformEcdsaSha3_224Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformEcdsaSha3-256Id" title="xmlSecOpenSSLTransformEcdsaSha3_256Id">xmlSecOpenSSLTransformEcdsaSha3_256Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformEcdsaSha3-384Id" title="xmlSecOpenSSLTransformEcdsaSha3_384Id">xmlSecOpenSSLTransformEcdsaSha3_384Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformEcdsaSha3-512Id" title="xmlSecOpenSSLTransformEcdsaSha3_512Id">xmlSecOpenSSLTransformEcdsaSha3_512Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformEcdhId" title="xmlSecOpenSSLTransformEcdhId">xmlSecOpenSSLTransformEcdhId</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
 <td class="function_name"><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataGost2001Id" title="xmlSecOpenSSLKeyDataGost2001Id">xmlSecOpenSSLKeyDataGost2001Id</a></td>
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
-<td class="function_name"><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformGost2001GostR3411-94Id" title="xmlSecOpenSSLTransformGost2001GostR3411_94Id">xmlSecOpenSSLTransformGost2001GostR3411_94Id</a></td>
+<td class="function_name"><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformGostR3411-94Id" title="xmlSecOpenSSLTransformGostR3411_94Id">xmlSecOpenSSLTransformGostR3411_94Id</a></td>
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
-<td class="function_name"><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformGostR3411-94Id" title="xmlSecOpenSSLTransformGostR3411_94Id">xmlSecOpenSSLTransformGostR3411_94Id</a></td>
+<td class="function_name"><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformGost2001GostR3411-94Id" title="xmlSecOpenSSLTransformGost2001GostR3411_94Id">xmlSecOpenSSLTransformGost2001GostR3411_94Id</a></td>
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
@@ -935,6 +1199,14 @@
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLKeyDataPbkdf2Id" title="xmlSecOpenSSLKeyDataPbkdf2Id">xmlSecOpenSSLKeyDataPbkdf2Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformPbkdf2Id" title="xmlSecOpenSSLTransformPbkdf2Id">xmlSecOpenSSLTransformPbkdf2Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
 <td class="function_name"><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformRipemd160Id" title="xmlSecOpenSSLTransformRipemd160Id">xmlSecOpenSSLTransformRipemd160Id</a></td>
 </tr>
 <tr>
@@ -979,6 +1251,46 @@
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformRsaOaepEnc11Id" title="xmlSecOpenSSLTransformRsaOaepEnc11Id">xmlSecOpenSSLTransformRsaOaepEnc11Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformRsaPssSha1Id" title="xmlSecOpenSSLTransformRsaPssSha1Id">xmlSecOpenSSLTransformRsaPssSha1Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformRsaPssSha224Id" title="xmlSecOpenSSLTransformRsaPssSha224Id">xmlSecOpenSSLTransformRsaPssSha224Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformRsaPssSha256Id" title="xmlSecOpenSSLTransformRsaPssSha256Id">xmlSecOpenSSLTransformRsaPssSha256Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformRsaPssSha384Id" title="xmlSecOpenSSLTransformRsaPssSha384Id">xmlSecOpenSSLTransformRsaPssSha384Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformRsaPssSha512Id" title="xmlSecOpenSSLTransformRsaPssSha512Id">xmlSecOpenSSLTransformRsaPssSha512Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformRsaPssSha3-224Id" title="xmlSecOpenSSLTransformRsaPssSha3_224Id">xmlSecOpenSSLTransformRsaPssSha3_224Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformRsaPssSha3-256Id" title="xmlSecOpenSSLTransformRsaPssSha3_256Id">xmlSecOpenSSLTransformRsaPssSha3_256Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformRsaPssSha3-384Id" title="xmlSecOpenSSLTransformRsaPssSha3_384Id">xmlSecOpenSSLTransformRsaPssSha3_384Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformRsaPssSha3-512Id" title="xmlSecOpenSSLTransformRsaPssSha3_512Id">xmlSecOpenSSLTransformRsaPssSha3_512Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
 <td class="function_name"><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformSha1Id" title="xmlSecOpenSSLTransformSha1Id">xmlSecOpenSSLTransformSha1Id</a></td>
 </tr>
 <tr>
@@ -996,6 +1308,22 @@
 <tr>
 <td class="define_keyword">#define</td>
 <td class="function_name"><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformSha512Id" title="xmlSecOpenSSLTransformSha512Id">xmlSecOpenSSLTransformSha512Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformSha3-224Id" title="xmlSecOpenSSLTransformSha3_224Id">xmlSecOpenSSLTransformSha3_224Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformSha3-256Id" title="xmlSecOpenSSLTransformSha3_256Id">xmlSecOpenSSLTransformSha3_256Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformSha3-384Id" title="xmlSecOpenSSLTransformSha3_384Id">xmlSecOpenSSLTransformSha3_384Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLTransformSha3-512Id" title="xmlSecOpenSSLTransformSha3_512Id">xmlSecOpenSSLTransformSha3_512Id</a></td>
 </tr>
 </tbody>
 </table></div>
@@ -1137,6 +1465,121 @@ xmlSecOpenSSLGetDefaultTrustedCertsFolder
 <div class="refsect3">
 <a name="xmlSecOpenSSLGetDefaultTrustedCertsFolder.returns"></a><h4>Returns</h4>
 <p> the default trusted cert folder.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLSetLibCtx"></a><h3>xmlSecOpenSSLSetLibCtx ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecOpenSSLSetLibCtx (<em class="parameter"><code><font><span class="type">OSSL_LIB_CTX</span></font> *libctx</code></em>);</pre>
+<p>Sets the OSSL_LIB_CTX object to be used by xmlsec-openssl. The caller is
+responsible for lifetime of this object.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLSetLibCtx.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>libctx</p></td>
+<td class="parameter_description"><p>the OSSL_LIB_CTX object to be used by xmlsec-openssl
+or NULL to use default.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecOpenSSLSetLibCtx.returns"></a><h4>Returns</h4>
+<p> 0 on success or a negative value if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLGetLibCtx"></a><h3>xmlSecOpenSSLGetLibCtx ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">OSSL_LIB_CTX</span></font> *
+xmlSecOpenSSLGetLibCtx (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Gets the current OSSL_LIB_CTX object to be used by xmlsec-openssl or
+NULL if the default one is used.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLGetLibCtx.returns"></a><h4>Returns</h4>
+<p> the current OSSL_LIB_CTX object or NULL if default is used.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLCreateMemBio"></a><h3>xmlSecOpenSSLCreateMemBio ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">BIO</span></font> *
+xmlSecOpenSSLCreateMemBio (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Creates a memory BIO using <a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLGetLibCtx" title="xmlSecOpenSSLGetLibCtx ()"><code class="function">xmlSecOpenSSLGetLibCtx()</code></a> for OpenSSL 3.0.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLCreateMemBio.returns"></a><h4>Returns</h4>
+<p> the pointer to BIO object or NULL if an error occurs/</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLCreateMemBufBio"></a><h3>xmlSecOpenSSLCreateMemBufBio ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">BIO</span></font> *
+xmlSecOpenSSLCreateMemBufBio (<em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *buf</code></em>,
+                              <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> bufSize</code></em>);</pre>
+<p>Creates a read-only memory BIO using <a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLGetLibCtx" title="xmlSecOpenSSLGetLibCtx ()"><code class="function">xmlSecOpenSSLGetLibCtx()</code></a> for
+OpenSSL 3.0 containing <em class="parameter"><code>len</code></em>
+ bytes of data from <em class="parameter"><code>buf</code></em>
+.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLCreateMemBufBio.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>buf</p></td>
+<td class="parameter_description"><p>the data</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>bufSize</p></td>
+<td class="parameter_description"><p>the data size</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecOpenSSLCreateMemBufBio.returns"></a><h4>Returns</h4>
+<p> the pointer to BIO object or NULL if an error occurs/</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLCreateReadFileBio"></a><h3>xmlSecOpenSSLCreateReadFileBio ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">BIO</span></font> *
+xmlSecOpenSSLCreateReadFileBio (<em class="parameter"><code>const <font><span class="type">char</span></font> *path</code></em>);</pre>
+<p>Creates a read-only file BIO using <a class="link" href="xmlsec-openssl-crypto.html#xmlSecOpenSSLGetLibCtx" title="xmlSecOpenSSLGetLibCtx ()"><code class="function">xmlSecOpenSSLGetLibCtx()</code></a> for
+OpenSSL 3.0.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLCreateReadFileBio.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>path</p></td>
+<td class="parameter_description"><p>the file path</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecOpenSSLCreateReadFileBio.returns"></a><h4>Returns</h4>
+<p> the pointer to BIO object or NULL if an error occurs/</p>
 </div>
 </div>
 <hr>
@@ -1300,6 +1743,69 @@ xmlSecOpenSSLTransformKWAes256GetKlass
 </div>
 <hr>
 <div class="refsect2">
+<a name="xmlSecOpenSSLKeyDataConcatKdfGetKlass"></a><h3>xmlSecOpenSSLKeyDataConcatKdfGetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
+xmlSecOpenSSLKeyDataConcatKdfGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The ConcatKdf key data klass.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLKeyDataConcatKdfGetKlass.returns"></a><h4>Returns</h4>
+<p> ConcatKdf key data klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLKeyDataConcatKdfSet"></a><h3>xmlSecOpenSSLKeyDataConcatKdfSet ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecOpenSSLKeyDataConcatKdfSet (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
+                                  <em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *buf</code></em>,
+                                  <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> bufSize</code></em>);</pre>
+<p>Sets the value of ConcatKdf key data.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLKeyDataConcatKdfSet.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>data</p></td>
+<td class="parameter_description"><p>the pointer to ConcatKdf key data.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>buf</p></td>
+<td class="parameter_description"><p>the pointer to key value.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>bufSize</p></td>
+<td class="parameter_description"><p>the key value size (in bytes).</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecOpenSSLKeyDataConcatKdfSet.returns"></a><h4>Returns</h4>
+<p> 0 on success or a negative value if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLTransformConcatKdfGetKlass"></a><h3>xmlSecOpenSSLTransformConcatKdfGetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecOpenSSLTransformConcatKdfGetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The ConcatKDF key derivation  transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLTransformConcatKdfGetKlass.returns"></a><h4>Returns</h4>
+<p> the ConcatKDF key derivation transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
 <a name="xmlSecOpenSSLKeyDataDesGetKlass"></a><h3>xmlSecOpenSSLKeyDataDesGetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
 xmlSecOpenSSLKeyDataDesGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
@@ -1384,66 +1890,6 @@ xmlSecOpenSSLKeyDataDsaGetKlass (<em class="parameter"><code><span class="type">
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecOpenSSLKeyDataDsaAdoptDsa"></a><h3>xmlSecOpenSSLKeyDataDsaAdoptDsa ()</h3>
-<pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecOpenSSLKeyDataDsaAdoptDsa (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
-                                 <em class="parameter"><code><font><span class="type">DSA</span></font> *dsa</code></em>);</pre>
-<p>Sets the value of DSA key data.</p>
-<div class="refsect3">
-<a name="xmlSecOpenSSLKeyDataDsaAdoptDsa.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
-<colgroup>
-<col>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>data</p></td>
-<td class="parameter_description"><p>the pointer to DSA key data.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>dsa</p></td>
-<td class="parameter_description"><p>the pointer to OpenSSL DSA key.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="xmlSecOpenSSLKeyDataDsaAdoptDsa.returns"></a><h4>Returns</h4>
-<p> 0 on success or a negative value otherwise.</p>
-</div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="xmlSecOpenSSLKeyDataDsaGetDsa"></a><h3>xmlSecOpenSSLKeyDataDsaGetDsa ()</h3>
-<pre class="programlisting"><font><span class="returnvalue">DSA</span></font> *
-xmlSecOpenSSLKeyDataDsaGetDsa (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
-<p>Gets the OpenSSL DSA key from DSA key data.</p>
-<div class="refsect3">
-<a name="xmlSecOpenSSLKeyDataDsaGetDsa.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
-<colgroup>
-<col>
-<col>
-<col>
-</colgroup>
-<tbody><tr>
-<td class="parameter_name"><p>data</p></td>
-<td class="parameter_description"><p>the pointer to DSA key data.</p></td>
-<td class="parameter_annotations"> </td>
-</tr></tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="xmlSecOpenSSLKeyDataDsaGetDsa.returns"></a><h4>Returns</h4>
-<p> pointer to OpenSSL DSA key or NULL if an error occurs.</p>
-</div>
-</div>
-<hr>
-<div class="refsect2">
 <a name="xmlSecOpenSSLKeyDataDsaAdoptEvp"></a><h3>xmlSecOpenSSLKeyDataDsaAdoptEvp ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecOpenSSLKeyDataDsaAdoptEvp (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
@@ -1519,32 +1965,32 @@ xmlSecOpenSSLTransformDsaSha1GetKlass (<em class="parameter"><code><span class="
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecOpenSSLTransformDsaSha256GetKlass
                                (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>The DSA-SHA256 signature transform klass.</p>
+<p>The DSA-SHA2-256 signature transform klass.</p>
 <div class="refsect3">
 <a name="xmlSecOpenSSLTransformDsaSha256GetKlass.returns"></a><h4>Returns</h4>
-<p> DSA-SHA256 signature transform klass.</p>
+<p> DSA-SHA2-256 signature transform klass.</p>
 </div>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecOpenSSLKeyDataEcdsaGetKlass"></a><h3>xmlSecOpenSSLKeyDataEcdsaGetKlass ()</h3>
+<a name="xmlSecOpenSSLKeyDataDhGetKlass"></a><h3>xmlSecOpenSSLKeyDataDhGetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
-xmlSecOpenSSLKeyDataEcdsaGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>The ECDSA key data klass.</p>
+xmlSecOpenSSLKeyDataDhGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The DH key data klass.</p>
 <div class="refsect3">
-<a name="xmlSecOpenSSLKeyDataEcdsaGetKlass.returns"></a><h4>Returns</h4>
-<p> pointer to ECDSA key data klass.</p>
+<a name="xmlSecOpenSSLKeyDataDhGetKlass.returns"></a><h4>Returns</h4>
+<p> pointer to DH key data klass.</p>
 </div>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecOpenSSLKeyDataEcdsaAdoptEcdsa"></a><h3>xmlSecOpenSSLKeyDataEcdsaAdoptEcdsa ()</h3>
+<a name="xmlSecOpenSSLKeyDataDhAdoptEvp"></a><h3>xmlSecOpenSSLKeyDataDhAdoptEvp ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecOpenSSLKeyDataEcdsaAdoptEcdsa (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
-                                     <em class="parameter"><code><font><span class="type">EC_KEY</span></font> *ecdsa</code></em>);</pre>
-<p>Sets the value of ECDSA key data.</p>
+xmlSecOpenSSLKeyDataDhAdoptEvp (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
+                                <em class="parameter"><code><font><span class="type">EVP_PKEY</span></font> *pKey</code></em>);</pre>
+<p>Sets the DH key data value to OpenSSL EVP key.</p>
 <div class="refsect3">
-<a name="xmlSecOpenSSLKeyDataEcdsaAdoptEcdsa.parameters"></a><h4>Parameters</h4>
+<a name="xmlSecOpenSSLKeyDataDhAdoptEvp.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col>
@@ -1554,67 +2000,7 @@ xmlSecOpenSSLKeyDataEcdsaAdoptEcdsa (<em class="parameter"><code><a class="link"
 <tbody>
 <tr>
 <td class="parameter_name"><p>data</p></td>
-<td class="parameter_description"><p>the pointer to ECDSA key data.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>ecdsa</p></td>
-<td class="parameter_description"><p>the pointer to OpenSSL ECDSA key.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="xmlSecOpenSSLKeyDataEcdsaAdoptEcdsa.returns"></a><h4>Returns</h4>
-<p> 0 on success or a negative value otherwise.</p>
-</div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="xmlSecOpenSSLKeyDataEcdsaGetEcdsa"></a><h3>xmlSecOpenSSLKeyDataEcdsaGetEcdsa ()</h3>
-<pre class="programlisting"><font><span class="returnvalue">EC_KEY</span></font> *
-xmlSecOpenSSLKeyDataEcdsaGetEcdsa (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
-<p>Gets the OpenSSL ECDSA key from ECDSA key data.</p>
-<div class="refsect3">
-<a name="xmlSecOpenSSLKeyDataEcdsaGetEcdsa.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
-<colgroup>
-<col>
-<col>
-<col>
-</colgroup>
-<tbody><tr>
-<td class="parameter_name"><p>data</p></td>
-<td class="parameter_description"><p>the pointer to ECDSA key data.</p></td>
-<td class="parameter_annotations"> </td>
-</tr></tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="xmlSecOpenSSLKeyDataEcdsaGetEcdsa.returns"></a><h4>Returns</h4>
-<p> pointer to OpenSSL ECDSA key or NULL if an error occurs.</p>
-</div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="xmlSecOpenSSLKeyDataEcdsaAdoptEvp"></a><h3>xmlSecOpenSSLKeyDataEcdsaAdoptEvp ()</h3>
-<pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecOpenSSLKeyDataEcdsaAdoptEvp (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
-                                   <em class="parameter"><code><font><span class="type">EVP_PKEY</span></font> *pKey</code></em>);</pre>
-<p>Sets the ECDSA key data value to OpenSSL EVP key.</p>
-<div class="refsect3">
-<a name="xmlSecOpenSSLKeyDataEcdsaAdoptEvp.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
-<colgroup>
-<col>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>data</p></td>
-<td class="parameter_description"><p>the pointer to ECDSA key data.</p></td>
+<td class="parameter_description"><p>the pointer to DH key data.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -1626,18 +2012,18 @@ xmlSecOpenSSLKeyDataEcdsaAdoptEvp (<em class="parameter"><code><a class="link" h
 </table></div>
 </div>
 <div class="refsect3">
-<a name="xmlSecOpenSSLKeyDataEcdsaAdoptEvp.returns"></a><h4>Returns</h4>
+<a name="xmlSecOpenSSLKeyDataDhAdoptEvp.returns"></a><h4>Returns</h4>
 <p> 0 on success or a negative value otherwise.</p>
 </div>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecOpenSSLKeyDataEcdsaGetEvp"></a><h3>xmlSecOpenSSLKeyDataEcdsaGetEvp ()</h3>
+<a name="xmlSecOpenSSLKeyDataDhGetEvp"></a><h3>xmlSecOpenSSLKeyDataDhGetEvp ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">EVP_PKEY</span></font> *
-xmlSecOpenSSLKeyDataEcdsaGetEvp (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
-<p>Gets the OpenSSL EVP key from ECDSA key data.</p>
+xmlSecOpenSSLKeyDataDhGetEvp (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
+<p>Gets the OpenSSL EVP key from DH key data.</p>
 <div class="refsect3">
-<a name="xmlSecOpenSSLKeyDataEcdsaGetEvp.parameters"></a><h4>Parameters</h4>
+<a name="xmlSecOpenSSLKeyDataDhGetEvp.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col>
@@ -1646,14 +2032,108 @@ xmlSecOpenSSLKeyDataEcdsaGetEvp (<em class="parameter"><code><a class="link" hre
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
-<td class="parameter_description"><p>the pointer to ECDSA key data.</p></td>
+<td class="parameter_description"><p>the pointer to DH key data.</p></td>
 <td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="xmlSecOpenSSLKeyDataEcdsaGetEvp.returns"></a><h4>Returns</h4>
+<a name="xmlSecOpenSSLKeyDataDhGetEvp.returns"></a><h4>Returns</h4>
 <p> pointer to OpenSSL EVP key or NULL if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLTransformDhEsGetKlass"></a><h3>xmlSecOpenSSLTransformDhEsGetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecOpenSSLTransformDhEsGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The DH key agreement transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLTransformDhEsGetKlass.returns"></a><h4>Returns</h4>
+<p> the DH key agreement transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLKeyDataEcGetKlass"></a><h3>xmlSecOpenSSLKeyDataEcGetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
+xmlSecOpenSSLKeyDataEcGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The EC key data klass.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLKeyDataEcGetKlass.returns"></a><h4>Returns</h4>
+<p> pointer to EC key data klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLKeyDataEcAdoptEvp"></a><h3>xmlSecOpenSSLKeyDataEcAdoptEvp ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecOpenSSLKeyDataEcAdoptEvp (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
+                                <em class="parameter"><code><font><span class="type">EVP_PKEY</span></font> *pKey</code></em>);</pre>
+<p>Sets the EC key data value to OpenSSL EVP key.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLKeyDataEcAdoptEvp.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>data</p></td>
+<td class="parameter_description"><p>the pointer to EC key data.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>pKey</p></td>
+<td class="parameter_description"><p>the pointer to OpenSSL EVP key.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecOpenSSLKeyDataEcAdoptEvp.returns"></a><h4>Returns</h4>
+<p> 0 on success or a negative value otherwise.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLKeyDataEcGetEvp"></a><h3>xmlSecOpenSSLKeyDataEcGetEvp ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">EVP_PKEY</span></font> *
+xmlSecOpenSSLKeyDataEcGetEvp (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
+<p>Gets the OpenSSL EVP key from EC key data.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLKeyDataEcGetEvp.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>data</p></td>
+<td class="parameter_description"><p>the pointer to EC key data.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecOpenSSLKeyDataEcGetEvp.returns"></a><h4>Returns</h4>
+<p> pointer to OpenSSL EVP key or NULL if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLTransformEcdsaRipemd160GetKlass"></a><h3>xmlSecOpenSSLTransformEcdsaRipemd160GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecOpenSSLTransformEcdsaRipemd160GetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The ECDSA-RIPEMD160 signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLTransformEcdsaRipemd160GetKlass.returns"></a><h4>Returns</h4>
+<p> ECDSA-RIPEMD160 signature transform klass.</p>
 </div>
 </div>
 <hr>
@@ -1674,10 +2154,10 @@ xmlSecOpenSSLTransformEcdsaSha1GetKlass
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecOpenSSLTransformEcdsaSha224GetKlass
                                (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>The ECDSA-SHA224 signature transform klass.</p>
+<p>The ECDSA-SHA2-224 signature transform klass.</p>
 <div class="refsect3">
 <a name="xmlSecOpenSSLTransformEcdsaSha224GetKlass.returns"></a><h4>Returns</h4>
-<p> ECDSA-SHA224 signature transform klass.</p>
+<p> ECDSA-SHA2-224 signature transform klass.</p>
 </div>
 </div>
 <hr>
@@ -1686,10 +2166,10 @@ xmlSecOpenSSLTransformEcdsaSha224GetKlass
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecOpenSSLTransformEcdsaSha256GetKlass
                                (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>The ECDSA-SHA256 signature transform klass.</p>
+<p>The ECDSA-SHA2-256 signature transform klass.</p>
 <div class="refsect3">
 <a name="xmlSecOpenSSLTransformEcdsaSha256GetKlass.returns"></a><h4>Returns</h4>
-<p> ECDSA-SHA256 signature transform klass.</p>
+<p> ECDSA-SHA2-256 signature transform klass.</p>
 </div>
 </div>
 <hr>
@@ -1698,10 +2178,10 @@ xmlSecOpenSSLTransformEcdsaSha256GetKlass
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecOpenSSLTransformEcdsaSha384GetKlass
                                (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>The ECDSA-SHA384 signature transform klass.</p>
+<p>The ECDSA-SHA2-384 signature transform klass.</p>
 <div class="refsect3">
 <a name="xmlSecOpenSSLTransformEcdsaSha384GetKlass.returns"></a><h4>Returns</h4>
-<p> ECDSA-SHA384 signature transform klass.</p>
+<p> ECDSA-SHA2-384 signature transform klass.</p>
 </div>
 </div>
 <hr>
@@ -1710,10 +2190,69 @@ xmlSecOpenSSLTransformEcdsaSha384GetKlass
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecOpenSSLTransformEcdsaSha512GetKlass
                                (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>The ECDSA-SHA512 signature transform klass.</p>
+<p>The ECDSA-SHA2-512 signature transform klass.</p>
 <div class="refsect3">
 <a name="xmlSecOpenSSLTransformEcdsaSha512GetKlass.returns"></a><h4>Returns</h4>
-<p> ECDSA-SHA512 signature transform klass.</p>
+<p> ECDSA-SHA2-512 signature transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLTransformEcdsaSha3-224GetKlass"></a><h3>xmlSecOpenSSLTransformEcdsaSha3_224GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecOpenSSLTransformEcdsaSha3_224GetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The ECDSA-SHA3-224 signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLTransformEcdsaSha3-224GetKlass.returns"></a><h4>Returns</h4>
+<p> ECDSA-SHA3-224 signature transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLTransformEcdsaSha3-256GetKlass"></a><h3>xmlSecOpenSSLTransformEcdsaSha3_256GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecOpenSSLTransformEcdsaSha3_256GetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The ECDSA-SHA3-256 signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLTransformEcdsaSha3-256GetKlass.returns"></a><h4>Returns</h4>
+<p> ECDSA-SHA3-256 signature transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLTransformEcdsaSha3-384GetKlass"></a><h3>xmlSecOpenSSLTransformEcdsaSha3_384GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecOpenSSLTransformEcdsaSha3_384GetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The ECDSA-SHA3-384 signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLTransformEcdsaSha3-384GetKlass.returns"></a><h4>Returns</h4>
+<p> ECDSA-SHA3-384 signature transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLTransformEcdsaSha3-512GetKlass"></a><h3>xmlSecOpenSSLTransformEcdsaSha3_512GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecOpenSSLTransformEcdsaSha3_512GetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The ECDSA-SHA3-512 signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLTransformEcdsaSha3-512GetKlass.returns"></a><h4>Returns</h4>
+<p> ECDSA-SHA3-512 signature transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLTransformEcdhGetKlass"></a><h3>xmlSecOpenSSLTransformEcdhGetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecOpenSSLTransformEcdhGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The ECDH key agreement transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLTransformEcdhGetKlass.returns"></a><h4>Returns</h4>
+<p> the ECDH key agreement transform klass.</p>
 </div>
 </div>
 <hr>
@@ -1729,18 +2268,6 @@ xmlSecOpenSSLKeyDataGost2001GetKlass (<em class="parameter"><code><span class="t
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecOpenSSLTransformGost2001GostR3411-94GetKlass"></a><h3>xmlSecOpenSSLTransformGost2001GostR3411_94GetKlass ()</h3>
-<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
-xmlSecOpenSSLTransformGost2001GostR3411_94GetKlass
-                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>The GOST2001-GOSTR3411_94 signature transform klass.</p>
-<div class="refsect3">
-<a name="xmlSecOpenSSLTransformGost2001GostR3411-94GetKlass.returns"></a><h4>Returns</h4>
-<p> GOST2001-GOSTR3411_94 signature transform klass.</p>
-</div>
-</div>
-<hr>
-<div class="refsect2">
 <a name="xmlSecOpenSSLTransformGostR3411-94GetKlass"></a><h3>xmlSecOpenSSLTransformGostR3411_94GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecOpenSSLTransformGostR3411_94GetKlass
@@ -1749,6 +2276,18 @@ xmlSecOpenSSLTransformGostR3411_94GetKlass
 <div class="refsect3">
 <a name="xmlSecOpenSSLTransformGostR3411-94GetKlass.returns"></a><h4>Returns</h4>
 <p> pointer to GOSTR3411_94 digest transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLTransformGost2001GostR3411-94GetKlass"></a><h3>xmlSecOpenSSLTransformGost2001GostR3411_94GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecOpenSSLTransformGost2001GostR3411_94GetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The GOST2001-GOSTR3411_94 signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLTransformGost2001GostR3411-94GetKlass.returns"></a><h4>Returns</h4>
+<p> GOST2001-GOSTR3411_94 signature transform klass.</p>
 </div>
 </div>
 <hr>
@@ -1781,6 +2320,11 @@ xmlSecOpenSSLKeyDataGostR3410_2012_512GetKlass
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_256GetKlass
                                (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The GOST R 34.10-2012 - GOST R 34.11-2012 256 bit signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLTransformGostR3410-2012GostR3411-2012-256GetKlass.returns"></a><h4>Returns</h4>
+<p> GOST R 34.10-2012 - GOST R 34.11-2012 256 bit signature transform klass.</p>
+</div>
 </div>
 <hr>
 <div class="refsect2">
@@ -1788,6 +2332,11 @@ xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_256GetKlass
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_512GetKlass
                                (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The GOST R 34.10-2012 - GOST R 34.11-2012 512 bit signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLTransformGostR3410-2012GostR3411-2012-512GetKlass.returns"></a><h4>Returns</h4>
+<p> GOST R 34.10-2012 - GOST R 34.11-2012 512 bit signature transform klass.</p>
+</div>
 </div>
 <hr>
 <div class="refsect2">
@@ -1811,39 +2360,6 @@ xmlSecOpenSSLTransformGostR3411_2012_512GetKlass
 <div class="refsect3">
 <a name="xmlSecOpenSSLTransformGostR3411-2012-512GetKlass.returns"></a><h4>Returns</h4>
 <p> pointer to GOST R 34.11-2012 512 bit digest transform klass.</p>
-</div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="xmlSecOpenSSLHmacGetMinOutputLength"></a><h3>xmlSecOpenSSLHmacGetMinOutputLength ()</h3>
-<pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecOpenSSLHmacGetMinOutputLength (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>Gets the value of min HMAC length.</p>
-<div class="refsect3">
-<a name="xmlSecOpenSSLHmacGetMinOutputLength.returns"></a><h4>Returns</h4>
-<p> the min HMAC output length</p>
-</div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="xmlSecOpenSSLHmacSetMinOutputLength"></a><h3>xmlSecOpenSSLHmacSetMinOutputLength ()</h3>
-<pre class="programlisting"><font><span class="returnvalue">void</span></font>
-xmlSecOpenSSLHmacSetMinOutputLength (<em class="parameter"><code><font><span class="type">int</span></font> min_length</code></em>);</pre>
-<p>Sets the min HMAC output length</p>
-<div class="refsect3">
-<a name="xmlSecOpenSSLHmacSetMinOutputLength.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
-<colgroup>
-<col>
-<col>
-<col>
-</colgroup>
-<tbody><tr>
-<td class="parameter_name"><p>min_length</p></td>
-<td class="parameter_description"><p>the new min length</p></td>
-<td class="parameter_annotations"> </td>
-</tr></tbody>
-</table></div>
 </div>
 </div>
 <hr>
@@ -1993,6 +2509,68 @@ xmlSecOpenSSLTransformMd5GetKlass (<em class="parameter"><code><span class="type
 </div>
 <hr>
 <div class="refsect2">
+<a name="xmlSecOpenSSLKeyDataPbkdf2GetKlass"></a><h3>xmlSecOpenSSLKeyDataPbkdf2GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
+xmlSecOpenSSLKeyDataPbkdf2GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The PBKDF2 key data klass.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLKeyDataPbkdf2GetKlass.returns"></a><h4>Returns</h4>
+<p> PBKDF2 key data klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLKeyDataPbkdf2Set"></a><h3>xmlSecOpenSSLKeyDataPbkdf2Set ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecOpenSSLKeyDataPbkdf2Set (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
+                               <em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *buf</code></em>,
+                               <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> bufSize</code></em>);</pre>
+<p>Sets the value of PBKDF2 key data.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLKeyDataPbkdf2Set.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>data</p></td>
+<td class="parameter_description"><p>the pointer to Pbkdf2 key data.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>buf</p></td>
+<td class="parameter_description"><p>the pointer to key value.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>bufSize</p></td>
+<td class="parameter_description"><p>the key value size (in bytes).</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecOpenSSLKeyDataPbkdf2Set.returns"></a><h4>Returns</h4>
+<p> 0 on success or a negative value if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLTransformPbkdf2GetKlass"></a><h3>xmlSecOpenSSLTransformPbkdf2GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecOpenSSLTransformPbkdf2GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The PBKDF2 key derivation  transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLTransformPbkdf2GetKlass.returns"></a><h4>Returns</h4>
+<p> the PBKDF2 key derivation transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
 <a name="xmlSecOpenSSLTransformRipemd160GetKlass"></a><h3>xmlSecOpenSSLTransformRipemd160GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecOpenSSLTransformRipemd160GetKlass
@@ -2012,66 +2590,6 @@ xmlSecOpenSSLKeyDataRsaGetKlass (<em class="parameter"><code><span class="type">
 <div class="refsect3">
 <a name="xmlSecOpenSSLKeyDataRsaGetKlass.returns"></a><h4>Returns</h4>
 <p> pointer to OpenSSL RSA key data klass.</p>
-</div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="xmlSecOpenSSLKeyDataRsaAdoptRsa"></a><h3>xmlSecOpenSSLKeyDataRsaAdoptRsa ()</h3>
-<pre class="programlisting"><font><span class="returnvalue">int</span></font>
-xmlSecOpenSSLKeyDataRsaAdoptRsa (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
-                                 <em class="parameter"><code><font><span class="type">RSA</span></font> *rsa</code></em>);</pre>
-<p>Sets the value of RSA key data.</p>
-<div class="refsect3">
-<a name="xmlSecOpenSSLKeyDataRsaAdoptRsa.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
-<colgroup>
-<col>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>data</p></td>
-<td class="parameter_description"><p>the pointer to RSA key data.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>rsa</p></td>
-<td class="parameter_description"><p>the pointer to OpenSSL RSA key.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="xmlSecOpenSSLKeyDataRsaAdoptRsa.returns"></a><h4>Returns</h4>
-<p> 0 on success or a negative value otherwise.</p>
-</div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="xmlSecOpenSSLKeyDataRsaGetRsa"></a><h3>xmlSecOpenSSLKeyDataRsaGetRsa ()</h3>
-<pre class="programlisting"><font><span class="returnvalue">RSA</span></font> *
-xmlSecOpenSSLKeyDataRsaGetRsa (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
-<p>Gets the OpenSSL RSA key from RSA key data.</p>
-<div class="refsect3">
-<a name="xmlSecOpenSSLKeyDataRsaGetRsa.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
-<colgroup>
-<col>
-<col>
-<col>
-</colgroup>
-<tbody><tr>
-<td class="parameter_name"><p>data</p></td>
-<td class="parameter_description"><p>the pointer to RSA key data.</p></td>
-<td class="parameter_annotations"> </td>
-</tr></tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="xmlSecOpenSSLKeyDataRsaGetRsa.returns"></a><h4>Returns</h4>
-<p> pointer to OpenSSL RSA key or NULL if an error occurs.</p>
 </div>
 </div>
 <hr>
@@ -2174,10 +2692,10 @@ xmlSecOpenSSLTransformRsaSha1GetKlass (<em class="parameter"><code><span class="
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecOpenSSLTransformRsaSha224GetKlass
                                (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>The RSA-SHA224 signature transform klass.</p>
+<p>The RSA-SHA2-224 signature transform klass.</p>
 <div class="refsect3">
 <a name="xmlSecOpenSSLTransformRsaSha224GetKlass.returns"></a><h4>Returns</h4>
-<p> RSA-SHA224 signature transform klass.</p>
+<p> RSA-SHA2-224 signature transform klass.</p>
 </div>
 </div>
 <hr>
@@ -2186,10 +2704,10 @@ xmlSecOpenSSLTransformRsaSha224GetKlass
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecOpenSSLTransformRsaSha256GetKlass
                                (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>The RSA-SHA256 signature transform klass.</p>
+<p>The RSA-SHA2-256 signature transform klass.</p>
 <div class="refsect3">
 <a name="xmlSecOpenSSLTransformRsaSha256GetKlass.returns"></a><h4>Returns</h4>
-<p> RSA-SHA256 signature transform klass.</p>
+<p> RSA-SHA2-256 signature transform klass.</p>
 </div>
 </div>
 <hr>
@@ -2198,10 +2716,10 @@ xmlSecOpenSSLTransformRsaSha256GetKlass
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecOpenSSLTransformRsaSha384GetKlass
                                (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>The RSA-SHA384 signature transform klass.</p>
+<p>The RSA-SHA2-384 signature transform klass.</p>
 <div class="refsect3">
 <a name="xmlSecOpenSSLTransformRsaSha384GetKlass.returns"></a><h4>Returns</h4>
-<p> RSA-SHA384 signature transform klass.</p>
+<p> RSA-SHA2-384 signature transform klass.</p>
 </div>
 </div>
 <hr>
@@ -2210,10 +2728,10 @@ xmlSecOpenSSLTransformRsaSha384GetKlass
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecOpenSSLTransformRsaSha512GetKlass
                                (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>The RSA-SHA512 signature transform klass.</p>
+<p>The RSA-SHA2-512 signature transform klass.</p>
 <div class="refsect3">
 <a name="xmlSecOpenSSLTransformRsaSha512GetKlass.returns"></a><h4>Returns</h4>
-<p> RSA-SHA512 signature transform klass.</p>
+<p> RSA-SHA2-512 signature transform klass.</p>
 </div>
 </div>
 <hr>
@@ -2233,10 +2751,130 @@ xmlSecOpenSSLTransformRsaPkcs1GetKlass
 <a name="xmlSecOpenSSLTransformRsaOaepGetKlass"></a><h3>xmlSecOpenSSLTransformRsaOaepGetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecOpenSSLTransformRsaOaepGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>The RSA-OAEP key transport transform klass.</p>
+<p>The RSA-OAEP key transport transform klass (XMLEnc 1.0).</p>
 <div class="refsect3">
 <a name="xmlSecOpenSSLTransformRsaOaepGetKlass.returns"></a><h4>Returns</h4>
 <p> RSA-OAEP key transport transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLTransformRsaOaepEnc11GetKlass"></a><h3>xmlSecOpenSSLTransformRsaOaepEnc11GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecOpenSSLTransformRsaOaepEnc11GetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The RSA-OAEP key transport transform klass (XMLEnc 1.1).</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLTransformRsaOaepEnc11GetKlass.returns"></a><h4>Returns</h4>
+<p> RSA-OAEP key transport transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLTransformRsaPssSha1GetKlass"></a><h3>xmlSecOpenSSLTransformRsaPssSha1GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecOpenSSLTransformRsaPssSha1GetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The RSA-PSS-SHA1 signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLTransformRsaPssSha1GetKlass.returns"></a><h4>Returns</h4>
+<p> RSA-PSS-SHA1 signature transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLTransformRsaPssSha224GetKlass"></a><h3>xmlSecOpenSSLTransformRsaPssSha224GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecOpenSSLTransformRsaPssSha224GetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The RSA-PSS-SHA2-224 signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLTransformRsaPssSha224GetKlass.returns"></a><h4>Returns</h4>
+<p> RSA-PSS-SHA2-224 signature transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLTransformRsaPssSha256GetKlass"></a><h3>xmlSecOpenSSLTransformRsaPssSha256GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecOpenSSLTransformRsaPssSha256GetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The RSA-PSS-SHA2-256 signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLTransformRsaPssSha256GetKlass.returns"></a><h4>Returns</h4>
+<p> RSA-PSS-SHA2-256 signature transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLTransformRsaPssSha384GetKlass"></a><h3>xmlSecOpenSSLTransformRsaPssSha384GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecOpenSSLTransformRsaPssSha384GetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The RSA-PSS-SHA2-384 signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLTransformRsaPssSha384GetKlass.returns"></a><h4>Returns</h4>
+<p> RSA-PSS-SHA2-384 signature transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLTransformRsaPssSha512GetKlass"></a><h3>xmlSecOpenSSLTransformRsaPssSha512GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecOpenSSLTransformRsaPssSha512GetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The RSA-PSS-SHA2-512 signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLTransformRsaPssSha512GetKlass.returns"></a><h4>Returns</h4>
+<p> RSA-PSS-SHA2-512 signature transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLTransformRsaPssSha3-224GetKlass"></a><h3>xmlSecOpenSSLTransformRsaPssSha3_224GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecOpenSSLTransformRsaPssSha3_224GetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The RSA-PSS-SHA3-224 signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLTransformRsaPssSha3-224GetKlass.returns"></a><h4>Returns</h4>
+<p> RSA-PSS-SHA3-224 signature transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLTransformRsaPssSha3-256GetKlass"></a><h3>xmlSecOpenSSLTransformRsaPssSha3_256GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecOpenSSLTransformRsaPssSha3_256GetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The RSA-PSS-SHA3-256 signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLTransformRsaPssSha3-256GetKlass.returns"></a><h4>Returns</h4>
+<p> RSA-PSS-SHA3-256 signature transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLTransformRsaPssSha3-384GetKlass"></a><h3>xmlSecOpenSSLTransformRsaPssSha3_384GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecOpenSSLTransformRsaPssSha3_384GetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The RSA-PSS-SHA3-384 signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLTransformRsaPssSha3-384GetKlass.returns"></a><h4>Returns</h4>
+<p> RSA-PSS-SHA3-384 signature transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLTransformRsaPssSha3-512GetKlass"></a><h3>xmlSecOpenSSLTransformRsaPssSha3_512GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecOpenSSLTransformRsaPssSha3_512GetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The RSA-PSS-SHA3-512 signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLTransformRsaPssSha3-512GetKlass.returns"></a><h4>Returns</h4>
+<p> RSA-PSS-SHA3-512 signature transform klass.</p>
 </div>
 </div>
 <hr>
@@ -2255,10 +2893,10 @@ xmlSecOpenSSLTransformSha1GetKlass (<em class="parameter"><code><span class="typ
 <a name="xmlSecOpenSSLTransformSha224GetKlass"></a><h3>xmlSecOpenSSLTransformSha224GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecOpenSSLTransformSha224GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>SHA-224 digest transform klass.</p>
+<p>SHA2-224 digest transform klass.</p>
 <div class="refsect3">
 <a name="xmlSecOpenSSLTransformSha224GetKlass.returns"></a><h4>Returns</h4>
-<p> pointer to SHA-224 digest transform klass.</p>
+<p> pointer to SHA2-224 digest transform klass.</p>
 </div>
 </div>
 <hr>
@@ -2266,10 +2904,10 @@ xmlSecOpenSSLTransformSha224GetKlass (<em class="parameter"><code><span class="t
 <a name="xmlSecOpenSSLTransformSha256GetKlass"></a><h3>xmlSecOpenSSLTransformSha256GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecOpenSSLTransformSha256GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>SHA-256 digest transform klass.</p>
+<p>SHA2-256 digest transform klass.</p>
 <div class="refsect3">
 <a name="xmlSecOpenSSLTransformSha256GetKlass.returns"></a><h4>Returns</h4>
-<p> pointer to SHA-256 digest transform klass.</p>
+<p> pointer to SHA2-256 digest transform klass.</p>
 </div>
 </div>
 <hr>
@@ -2277,10 +2915,10 @@ xmlSecOpenSSLTransformSha256GetKlass (<em class="parameter"><code><span class="t
 <a name="xmlSecOpenSSLTransformSha384GetKlass"></a><h3>xmlSecOpenSSLTransformSha384GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecOpenSSLTransformSha384GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>SHA-384 digest transform klass.</p>
+<p>SHA2-384 digest transform klass.</p>
 <div class="refsect3">
 <a name="xmlSecOpenSSLTransformSha384GetKlass.returns"></a><h4>Returns</h4>
-<p> pointer to SHA-384 digest transform klass.</p>
+<p> pointer to SHA2-384 digest transform klass.</p>
 </div>
 </div>
 <hr>
@@ -2288,10 +2926,58 @@ xmlSecOpenSSLTransformSha384GetKlass (<em class="parameter"><code><span class="t
 <a name="xmlSecOpenSSLTransformSha512GetKlass"></a><h3>xmlSecOpenSSLTransformSha512GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecOpenSSLTransformSha512GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>SHA-512 digest transform klass.</p>
+<p>SHA2-512 digest transform klass.</p>
 <div class="refsect3">
 <a name="xmlSecOpenSSLTransformSha512GetKlass.returns"></a><h4>Returns</h4>
-<p> pointer to SHA-512 digest transform klass.</p>
+<p> pointer to SHA2-512 digest transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLTransformSha3-224GetKlass"></a><h3>xmlSecOpenSSLTransformSha3_224GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecOpenSSLTransformSha3_224GetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>SHA3-224 digest transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLTransformSha3-224GetKlass.returns"></a><h4>Returns</h4>
+<p> pointer to SHA3-224 digest transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLTransformSha3-256GetKlass"></a><h3>xmlSecOpenSSLTransformSha3_256GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecOpenSSLTransformSha3_256GetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>SHA3-256 digest transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLTransformSha3-256GetKlass.returns"></a><h4>Returns</h4>
+<p> pointer to SHA3-256 digest transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLTransformSha3-384GetKlass"></a><h3>xmlSecOpenSSLTransformSha3_384GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecOpenSSLTransformSha3_384GetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>SHA3-384 digest transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLTransformSha3-384GetKlass.returns"></a><h4>Returns</h4>
+<p> pointer to SHA3-384 digest transform klass.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLTransformSha3-512GetKlass"></a><h3>xmlSecOpenSSLTransformSha3_512GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecOpenSSLTransformSha3_512GetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>SHA3-512 digest transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLTransformSha3-512GetKlass.returns"></a><h4>Returns</h4>
+<p> pointer to SHA3-512 digest transform klass.</p>
 </div>
 </div>
 <hr>
@@ -2358,20 +3044,32 @@ xmlSecOpenSSLErrorsDefaultCallback (<em class="parameter"><code>const <font><spa
 <div class="refsect1">
 <a name="xmlsec-openssl-crypto.other_details"></a><h2>Types and Values</h2>
 <div class="refsect2">
-<a name="XMLSEC-OPENSSL-API-100:CAPS"></a><h3>XMLSEC_OPENSSL_API_100</h3>
-<pre class="programlisting">#define XMLSEC_OPENSSL_API_100      1
+<a name="XMLSEC-OPENSSL-API-111:CAPS"></a><h3>XMLSEC_OPENSSL_API_111</h3>
+<pre class="programlisting">#define XMLSEC_OPENSSL_API_111      1
 </pre>
 </div>
 <hr>
 <div class="refsect2">
-<a name="XMLSEC-OPENSSL-API-110:CAPS"></a><h3>XMLSEC_OPENSSL_API_110</h3>
-<pre class="programlisting">#define XMLSEC_OPENSSL_API_110      1
+<a name="XMLSEC-OPENSSL-API-300:CAPS"></a><h3>XMLSEC_OPENSSL_API_300</h3>
+<pre class="programlisting">#define XMLSEC_OPENSSL_API_300      1
 </pre>
 </div>
 <hr>
 <div class="refsect2">
 <a name="XMLSEC-NO-AES:CAPS"></a><h3>XMLSEC_NO_AES</h3>
 <pre class="programlisting">#define XMLSEC_NO_AES       1
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="XMLSEC-NO-CONCATKDF:CAPS"></a><h3>XMLSEC_NO_CONCATKDF</h3>
+<pre class="programlisting">#define XMLSEC_NO_CONCATKDF  1
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="XMLSEC-NO-PBKDF2:CAPS"></a><h3>XMLSEC_NO_PBKDF2</h3>
+<pre class="programlisting">#define XMLSEC_NO_PBKDF2     1
 </pre>
 </div>
 <hr>
@@ -2388,8 +3086,8 @@ xmlSecOpenSSLErrorsDefaultCallback (<em class="parameter"><code>const <font><spa
 </div>
 <hr>
 <div class="refsect2">
-<a name="XMLSEC-NO-ECDSA:CAPS"></a><h3>XMLSEC_NO_ECDSA</h3>
-<pre class="programlisting">#define XMLSEC_NO_ECDSA     1
+<a name="XMLSEC-NO-EC:CAPS"></a><h3>XMLSEC_NO_EC</h3>
+<pre class="programlisting">#define XMLSEC_NO_EC     1
 </pre>
 </div>
 <hr>
@@ -2526,6 +3224,18 @@ xmlSecOpenSSLErrorsDefaultCallback (<em class="parameter"><code>const <font><spa
 </div>
 <hr>
 <div class="refsect2">
+<a name="xmlSecOpenSSLKeyDataConcatKdfId"></a><h3>xmlSecOpenSSLKeyDataConcatKdfId</h3>
+<pre class="programlisting">#define             xmlSecOpenSSLKeyDataConcatKdfId</pre>
+<p>The ConcatKDF key derivation key klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLTransformConcatKdfId"></a><h3>xmlSecOpenSSLTransformConcatKdfId</h3>
+<pre class="programlisting">#define             xmlSecOpenSSLTransformConcatKdfId</pre>
+<p>The ConcatKDF key derivation transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
 <a name="xmlSecOpenSSLKeyDataDesId"></a><h3>xmlSecOpenSSLKeyDataDesId</h3>
 <pre class="programlisting">#define             xmlSecOpenSSLKeyDataDesId</pre>
 <p>The DES key klass.</p>
@@ -2558,13 +3268,32 @@ xmlSecOpenSSLErrorsDefaultCallback (<em class="parameter"><code>const <font><spa
 <div class="refsect2">
 <a name="xmlSecOpenSSLTransformDsaSha256Id"></a><h3>xmlSecOpenSSLTransformDsaSha256Id</h3>
 <pre class="programlisting">#define             xmlSecOpenSSLTransformDsaSha256Id</pre>
-<p>The DSA SHA256 signature transform klass.</p>
+<p>The DSA SHA2-256 signature transform klass.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecOpenSSLKeyDataEcdsaId"></a><h3>xmlSecOpenSSLKeyDataEcdsaId</h3>
-<pre class="programlisting">#define             xmlSecOpenSSLKeyDataEcdsaId</pre>
-<p>The ECDSA key klass.</p>
+<a name="xmlSecOpenSSLKeyDataDhId"></a><h3>xmlSecOpenSSLKeyDataDhId</h3>
+<pre class="programlisting">#define             xmlSecOpenSSLKeyDataDhId</pre>
+<p>The DH key klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLTransformDhEsId"></a><h3>xmlSecOpenSSLTransformDhEsId</h3>
+<pre class="programlisting">#define             xmlSecOpenSSLTransformDhEsId</pre>
+<p>The DH key agreement transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLKeyDataEcId"></a><h3>xmlSecOpenSSLKeyDataEcId</h3>
+<pre class="programlisting">#define xmlSecOpenSSLKeyDataEcId        xmlSecOpenSSLKeyDataEcGetKlass()
+</pre>
+<p>The EC key klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLTransformEcdsaRipemd160Id"></a><h3>xmlSecOpenSSLTransformEcdsaRipemd160Id</h3>
+<pre class="programlisting">#define             xmlSecOpenSSLTransformEcdsaRipemd160Id</pre>
+<p>The ECDSA-RIPEMD160 signature transform klass.</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -2576,25 +3305,55 @@ xmlSecOpenSSLErrorsDefaultCallback (<em class="parameter"><code>const <font><spa
 <div class="refsect2">
 <a name="xmlSecOpenSSLTransformEcdsaSha224Id"></a><h3>xmlSecOpenSSLTransformEcdsaSha224Id</h3>
 <pre class="programlisting">#define             xmlSecOpenSSLTransformEcdsaSha224Id</pre>
-<p>The ECDSA-SHA224 signature transform klass.</p>
+<p>The ECDSA-SHA2-224 signature transform klass.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecOpenSSLTransformEcdsaSha256Id"></a><h3>xmlSecOpenSSLTransformEcdsaSha256Id</h3>
 <pre class="programlisting">#define             xmlSecOpenSSLTransformEcdsaSha256Id</pre>
-<p>The ECDSA-SHA256 signature transform klass.</p>
+<p>The ECDSA-SHA2-256 signature transform klass.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecOpenSSLTransformEcdsaSha384Id"></a><h3>xmlSecOpenSSLTransformEcdsaSha384Id</h3>
 <pre class="programlisting">#define             xmlSecOpenSSLTransformEcdsaSha384Id</pre>
-<p>The ECDSA-SHA384 signature transform klass.</p>
+<p>The ECDSA-SHA2-384 signature transform klass.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecOpenSSLTransformEcdsaSha512Id"></a><h3>xmlSecOpenSSLTransformEcdsaSha512Id</h3>
 <pre class="programlisting">#define             xmlSecOpenSSLTransformEcdsaSha512Id</pre>
-<p>The ECDSA-SHA512 signature transform klass.</p>
+<p>The ECDSA-SHA2-512 signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLTransformEcdsaSha3-224Id"></a><h3>xmlSecOpenSSLTransformEcdsaSha3_224Id</h3>
+<pre class="programlisting">#define             xmlSecOpenSSLTransformEcdsaSha3_224Id</pre>
+<p>The ECDSA-SHA3-224 signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLTransformEcdsaSha3-256Id"></a><h3>xmlSecOpenSSLTransformEcdsaSha3_256Id</h3>
+<pre class="programlisting">#define             xmlSecOpenSSLTransformEcdsaSha3_256Id</pre>
+<p>The ECDSA-SHA3-256 signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLTransformEcdsaSha3-384Id"></a><h3>xmlSecOpenSSLTransformEcdsaSha3_384Id</h3>
+<pre class="programlisting">#define             xmlSecOpenSSLTransformEcdsaSha3_384Id</pre>
+<p>The ECDSA-SHA3-384 signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLTransformEcdsaSha3-512Id"></a><h3>xmlSecOpenSSLTransformEcdsaSha3_512Id</h3>
+<pre class="programlisting">#define             xmlSecOpenSSLTransformEcdsaSha3_512Id</pre>
+<p>The ECDSA-SHA3-512 signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLTransformEcdhId"></a><h3>xmlSecOpenSSLTransformEcdhId</h3>
+<pre class="programlisting">#define             xmlSecOpenSSLTransformEcdhId</pre>
+<p>The ECDH key agreement transform klass.</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -2604,25 +3363,27 @@ xmlSecOpenSSLErrorsDefaultCallback (<em class="parameter"><code>const <font><spa
 </div>
 <hr>
 <div class="refsect2">
+<a name="xmlSecOpenSSLTransformGostR3411-94Id"></a><h3>xmlSecOpenSSLTransformGostR3411_94Id</h3>
+<pre class="programlisting">#define             xmlSecOpenSSLTransformGostR3411_94Id</pre>
+<p>The GOSTR3411_94 digest transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
 <a name="xmlSecOpenSSLTransformGost2001GostR3411-94Id"></a><h3>xmlSecOpenSSLTransformGost2001GostR3411_94Id</h3>
 <pre class="programlisting">#define             xmlSecOpenSSLTransformGost2001GostR3411_94Id</pre>
 <p>The GOST2001 GOSTR3411_94 signature transform klass.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecOpenSSLTransformGostR3411-94Id"></a><h3>xmlSecOpenSSLTransformGostR3411_94Id</h3>
-<pre class="programlisting">#define             xmlSecOpenSSLTransformGostR3411_94Id</pre>
-<p>The GOSTR3411_94 signature transform klass.</p>
-</div>
-<hr>
-<div class="refsect2">
 <a name="xmlSecOpenSSLKeyDataGostR3410-2012-256Id"></a><h3>xmlSecOpenSSLKeyDataGostR3410_2012_256Id</h3>
 <pre class="programlisting">#define             xmlSecOpenSSLKeyDataGostR3410_2012_256Id</pre>
+<p>The GOST R 34.10-2012 256 key klass.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecOpenSSLKeyDataGostR3410-2012-512Id"></a><h3>xmlSecOpenSSLKeyDataGostR3410_2012_512Id</h3>
 <pre class="programlisting">#define             xmlSecOpenSSLKeyDataGostR3410_2012_512Id</pre>
+<p>The GOST R 34.10-2012 512 key klass.</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -2652,7 +3413,7 @@ xmlSecOpenSSLErrorsDefaultCallback (<em class="parameter"><code>const <font><spa
 <div class="refsect2">
 <a name="xmlSecOpenSSLKeyDataHmacId"></a><h3>xmlSecOpenSSLKeyDataHmacId</h3>
 <pre class="programlisting">#define             xmlSecOpenSSLKeyDataHmacId</pre>
-<p>The DHMAC key klass.</p>
+<p>The HMAC key klass.</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -2676,31 +3437,43 @@ xmlSecOpenSSLErrorsDefaultCallback (<em class="parameter"><code>const <font><spa
 <div class="refsect2">
 <a name="xmlSecOpenSSLTransformHmacSha224Id"></a><h3>xmlSecOpenSSLTransformHmacSha224Id</h3>
 <pre class="programlisting">#define             xmlSecOpenSSLTransformHmacSha224Id</pre>
-<p>The HMAC with SHA224 signature transform klass.</p>
+<p>The HMAC with SHA2-224 signature transform klass.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecOpenSSLTransformHmacSha256Id"></a><h3>xmlSecOpenSSLTransformHmacSha256Id</h3>
 <pre class="programlisting">#define             xmlSecOpenSSLTransformHmacSha256Id</pre>
-<p>The HMAC with SHA256 signature transform klass.</p>
+<p>The HMAC with SHA2-256 signature transform klass.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecOpenSSLTransformHmacSha384Id"></a><h3>xmlSecOpenSSLTransformHmacSha384Id</h3>
 <pre class="programlisting">#define             xmlSecOpenSSLTransformHmacSha384Id</pre>
-<p>The HMAC with SHA384 signature transform klass.</p>
+<p>The HMAC with SHA2-384 signature transform klass.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecOpenSSLTransformHmacSha512Id"></a><h3>xmlSecOpenSSLTransformHmacSha512Id</h3>
 <pre class="programlisting">#define             xmlSecOpenSSLTransformHmacSha512Id</pre>
-<p>The HMAC with SHA512 signature transform klass.</p>
+<p>The HMAC with SHA2-512 signature transform klass.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecOpenSSLTransformMd5Id"></a><h3>xmlSecOpenSSLTransformMd5Id</h3>
 <pre class="programlisting">#define             xmlSecOpenSSLTransformMd5Id</pre>
 <p>The MD5 digest transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLKeyDataPbkdf2Id"></a><h3>xmlSecOpenSSLKeyDataPbkdf2Id</h3>
+<pre class="programlisting">#define             xmlSecOpenSSLKeyDataPbkdf2Id</pre>
+<p>The Pbkdf2 key derivation key klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLTransformPbkdf2Id"></a><h3>xmlSecOpenSSLTransformPbkdf2Id</h3>
+<pre class="programlisting">#define             xmlSecOpenSSLTransformPbkdf2Id</pre>
+<p>The PBKDF2 key derivation transform klass.</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -2736,25 +3509,25 @@ xmlSecOpenSSLErrorsDefaultCallback (<em class="parameter"><code>const <font><spa
 <div class="refsect2">
 <a name="xmlSecOpenSSLTransformRsaSha224Id"></a><h3>xmlSecOpenSSLTransformRsaSha224Id</h3>
 <pre class="programlisting">#define             xmlSecOpenSSLTransformRsaSha224Id</pre>
-<p>The RSA-SHA224 signature transform klass.</p>
+<p>The RSA-SHA2-224 signature transform klass.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecOpenSSLTransformRsaSha256Id"></a><h3>xmlSecOpenSSLTransformRsaSha256Id</h3>
 <pre class="programlisting">#define             xmlSecOpenSSLTransformRsaSha256Id</pre>
-<p>The RSA-SHA256 signature transform klass.</p>
+<p>The RSA-SHA2-256 signature transform klass.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecOpenSSLTransformRsaSha384Id"></a><h3>xmlSecOpenSSLTransformRsaSha384Id</h3>
 <pre class="programlisting">#define             xmlSecOpenSSLTransformRsaSha384Id</pre>
-<p>The RSA-SHA384 signature transform klass.</p>
+<p>The RSA-SHA2-384 signature transform klass.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecOpenSSLTransformRsaSha512Id"></a><h3>xmlSecOpenSSLTransformRsaSha512Id</h3>
 <pre class="programlisting">#define             xmlSecOpenSSLTransformRsaSha512Id</pre>
-<p>The RSA-SHA512 signature transform klass.</p>
+<p>The RSA-SHA2-512 signature transform klass.</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -2766,7 +3539,67 @@ xmlSecOpenSSLErrorsDefaultCallback (<em class="parameter"><code>const <font><spa
 <div class="refsect2">
 <a name="xmlSecOpenSSLTransformRsaOaepId"></a><h3>xmlSecOpenSSLTransformRsaOaepId</h3>
 <pre class="programlisting">#define             xmlSecOpenSSLTransformRsaOaepId</pre>
-<p>The RSA PKCS1 key transport transform klass.</p>
+<p>The RSA PKCS1 key transport transform klass (XMLEnc 1.0).</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLTransformRsaOaepEnc11Id"></a><h3>xmlSecOpenSSLTransformRsaOaepEnc11Id</h3>
+<pre class="programlisting">#define             xmlSecOpenSSLTransformRsaOaepEnc11Id</pre>
+<p>The RSA PKCS1 key transport transform klass (XMLEnc 1.1).</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLTransformRsaPssSha1Id"></a><h3>xmlSecOpenSSLTransformRsaPssSha1Id</h3>
+<pre class="programlisting">#define             xmlSecOpenSSLTransformRsaPssSha1Id</pre>
+<p>The RSA-PSS-SHA1 signature transform klass (https://www.rfc-editor.org/rfc/rfc9231.txt).</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLTransformRsaPssSha224Id"></a><h3>xmlSecOpenSSLTransformRsaPssSha224Id</h3>
+<pre class="programlisting">#define             xmlSecOpenSSLTransformRsaPssSha224Id</pre>
+<p>The RSA-PSS-SHA2-224 signature transform klass (https://www.rfc-editor.org/rfc/rfc9231.txt).</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLTransformRsaPssSha256Id"></a><h3>xmlSecOpenSSLTransformRsaPssSha256Id</h3>
+<pre class="programlisting">#define             xmlSecOpenSSLTransformRsaPssSha256Id</pre>
+<p>The RSA-PSS-SHA2-256 signature transform klass (https://www.rfc-editor.org/rfc/rfc9231.txt).</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLTransformRsaPssSha384Id"></a><h3>xmlSecOpenSSLTransformRsaPssSha384Id</h3>
+<pre class="programlisting">#define             xmlSecOpenSSLTransformRsaPssSha384Id</pre>
+<p>The RSA-PSS-SHA2-384 signature transform klass (https://www.rfc-editor.org/rfc/rfc9231.txt).</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLTransformRsaPssSha512Id"></a><h3>xmlSecOpenSSLTransformRsaPssSha512Id</h3>
+<pre class="programlisting">#define             xmlSecOpenSSLTransformRsaPssSha512Id</pre>
+<p>The RSA-PSS-SHA2-512 signature transform klass (https://www.rfc-editor.org/rfc/rfc9231.txt).</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLTransformRsaPssSha3-224Id"></a><h3>xmlSecOpenSSLTransformRsaPssSha3_224Id</h3>
+<pre class="programlisting">#define             xmlSecOpenSSLTransformRsaPssSha3_224Id</pre>
+<p>The RSA-PSS-SHA3-224 signature transform klass (https://www.rfc-editor.org/rfc/rfc9231.txt).</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLTransformRsaPssSha3-256Id"></a><h3>xmlSecOpenSSLTransformRsaPssSha3_256Id</h3>
+<pre class="programlisting">#define             xmlSecOpenSSLTransformRsaPssSha3_256Id</pre>
+<p>The RSA-PSS-SHA3-256 signature transform klass (https://www.rfc-editor.org/rfc/rfc9231.txt).</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLTransformRsaPssSha3-384Id"></a><h3>xmlSecOpenSSLTransformRsaPssSha3_384Id</h3>
+<pre class="programlisting">#define             xmlSecOpenSSLTransformRsaPssSha3_384Id</pre>
+<p>The RSA-PSS-SHA3-384 signature transform klass (https://www.rfc-editor.org/rfc/rfc9231.txt).</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLTransformRsaPssSha3-512Id"></a><h3>xmlSecOpenSSLTransformRsaPssSha3_512Id</h3>
+<pre class="programlisting">#define             xmlSecOpenSSLTransformRsaPssSha3_512Id</pre>
+<p>The RSA-PSS-SHA3-512 signature transform klass (https://www.rfc-editor.org/rfc/rfc9231.txt).</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -2778,29 +3611,53 @@ xmlSecOpenSSLErrorsDefaultCallback (<em class="parameter"><code>const <font><spa
 <div class="refsect2">
 <a name="xmlSecOpenSSLTransformSha224Id"></a><h3>xmlSecOpenSSLTransformSha224Id</h3>
 <pre class="programlisting">#define             xmlSecOpenSSLTransformSha224Id</pre>
-<p>The SHA224 digest transform klass.</p>
+<p>The SHA2-224 digest transform klass.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecOpenSSLTransformSha256Id"></a><h3>xmlSecOpenSSLTransformSha256Id</h3>
 <pre class="programlisting">#define             xmlSecOpenSSLTransformSha256Id</pre>
-<p>The SHA256 digest transform klass.</p>
+<p>The SHA2-256 digest transform klass.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecOpenSSLTransformSha384Id"></a><h3>xmlSecOpenSSLTransformSha384Id</h3>
 <pre class="programlisting">#define             xmlSecOpenSSLTransformSha384Id</pre>
-<p>The SHA384 digest transform klass.</p>
+<p>The SHA2-384 digest transform klass.</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="xmlSecOpenSSLTransformSha512Id"></a><h3>xmlSecOpenSSLTransformSha512Id</h3>
 <pre class="programlisting">#define             xmlSecOpenSSLTransformSha512Id</pre>
-<p>The SHA512 digest transform klass.</p>
+<p>The SHA2-512 digest transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLTransformSha3-224Id"></a><h3>xmlSecOpenSSLTransformSha3_224Id</h3>
+<pre class="programlisting">#define             xmlSecOpenSSLTransformSha3_224Id</pre>
+<p>The SHA3-224 digest transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLTransformSha3-256Id"></a><h3>xmlSecOpenSSLTransformSha3_256Id</h3>
+<pre class="programlisting">#define             xmlSecOpenSSLTransformSha3_256Id</pre>
+<p>The SHA3-256 digest transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLTransformSha3-384Id"></a><h3>xmlSecOpenSSLTransformSha3_384Id</h3>
+<pre class="programlisting">#define             xmlSecOpenSSLTransformSha3_384Id</pre>
+<p>The SHA3-384 digest transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLTransformSha3-512Id"></a><h3>xmlSecOpenSSLTransformSha3_512Id</h3>
+<pre class="programlisting">#define             xmlSecOpenSSLTransformSha3_512Id</pre>
+<p>The SHA3-512 digest transform klass.</p>
 </div>
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.27</div>
+<hr>Generated by GTK-Doc V1.33.1</div>
 </body>
 </html>

@@ -18,22 +18,19 @@
 
 #include <string.h>
 
-#define WIN32_NO_STATUS
-#include <windows.h>
-#undef WIN32_NO_STATUS
-#include <ntstatus.h>
-
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/dl.h>
-#include <xmlsec/xmltree.h>
 #include <xmlsec/private.h>
+#include <xmlsec/xmltree.h>
 
 #include <xmlsec/mscng/app.h>
 #include <xmlsec/mscng/crypto.h>
 #include <xmlsec/mscng/x509.h>
+
+#include "../cast_helpers.h"
 
 static xmlSecCryptoDLFunctionsPtr gXmlSecMSCngFunctions = NULL;
 
@@ -73,6 +70,10 @@ xmlSecCryptoGetFunctions_mscng(void) {
     gXmlSecMSCngFunctions->keyDataAesGetKlass           = xmlSecMSCngKeyDataAesGetKlass;
 #endif /* XMLSEC_NO_AES */
 
+#ifndef XMLSEC_NO_CONCATKDF
+    gXmlSecMSCngFunctions->keyDataConcatKdfGetKlass     = xmlSecMSCngKeyDataConcatKdfGetKlass;
+#endif /* XMLSEC_NO_CONCATKDF */
+
 #ifndef XMLSEC_NO_DES
     gXmlSecMSCngFunctions->keyDataDesGetKlass           = xmlSecMSCngKeyDataDesGetKlass;
 #endif /* XMLSEC_NO_DES */
@@ -81,27 +82,28 @@ xmlSecCryptoGetFunctions_mscng(void) {
     gXmlSecMSCngFunctions->keyDataDsaGetKlass           = xmlSecMSCngKeyDataDsaGetKlass;
 #endif /* XMLSEC_NO_DSA */
 
-#ifndef XMLSEC_NO_ECDSA
-    gXmlSecMSCngFunctions->keyDataEcdsaGetKlass         = xmlSecMSCngKeyDataEcdsaGetKlass;
-#endif /* XMLSEC_NO_ECDSA */
-
-#ifdef XMLSEC_MSCNG_TODO
-    gXmlSecMSCngFunctions->keyDataGost2001GetKlass      = xmlSecMSCngKeyDataGost2001GetKlass;
-    gXmlSecMSCngFunctions->keyDataGostR3410_2012GetKlass = xmlSecMSCngKeyDataGostR3410_2012GetKlass;
-#endif /* XMLSEC_NO_GOST */
+#ifndef XMLSEC_NO_EC
+    gXmlSecMSCngFunctions->keyDataEcGetKlass             = xmlSecMSCngKeyDataEcGetKlass;
+#endif /* XMLSEC_NO_EC */
 
 #ifndef XMLSEC_NO_HMAC
     gXmlSecMSCngFunctions->keyDataHmacGetKlass          = xmlSecMSCngKeyDataHmacGetKlass;
 #endif /* XMLSEC_NO_HMAC */
+
+#ifndef XMLSEC_NO_PBKDF2
+    gXmlSecMSCngFunctions->keyDataPbkdf2GetKlass        = xmlSecMSCngKeyDataPbkdf2GetKlass;
+#endif /* XMLSEC_NO_PBKDF2 */
 
 #ifndef XMLSEC_NO_RSA
     gXmlSecMSCngFunctions->keyDataRsaGetKlass           = xmlSecMSCngKeyDataRsaGetKlass;
 #endif /* XMLSEC_NO_RSA */
 
 #ifndef XMLSEC_NO_X509
-    gXmlSecMSCngFunctions->keyDataX509GetKlass                  = xmlSecMSCngKeyDataX509GetKlass;
-    gXmlSecMSCngFunctions->keyDataRawX509CertGetKlass           = xmlSecMSCngKeyDataRawX509CertGetKlass;
+    gXmlSecMSCngFunctions->keyDataX509GetKlass          = xmlSecMSCngKeyDataX509GetKlass;
+    gXmlSecMSCngFunctions->keyDataRawX509CertGetKlass   = xmlSecMSCngKeyDataRawX509CertGetKlass;
 #endif /* XMLSEC_NO_X509 */
+
+    gXmlSecMSCngFunctions->keyDataDEREncodedKeyValueGetKlass = xmlSecMSCngKeyDataDEREncodedKeyValueGetKlass;
 
     /********************************************************************
      *
@@ -131,6 +133,11 @@ xmlSecCryptoGetFunctions_mscng(void) {
     gXmlSecMSCngFunctions->transformKWAes256GetKlass            = xmlSecMSCngTransformKWAes256GetKlass;
 #endif /* XMLSEC_NO_AES */
 
+    /******************************* ConcatKDF ********************************/
+#ifndef XMLSEC_NO_CONCATKDF
+    gXmlSecMSCngFunctions->transformConcatKdfGetKlass = xmlSecMSCngTransformConcatKdfGetKlass;
+#endif /* XMLSEC_NO_CONCATKDF */
+
     /******************************* DES ********************************/
 #ifndef XMLSEC_NO_DES
     gXmlSecMSCngFunctions->transformDes3CbcGetKlass             = xmlSecMSCngTransformDes3CbcGetKlass;
@@ -144,22 +151,14 @@ xmlSecCryptoGetFunctions_mscng(void) {
     gXmlSecMSCngFunctions->transformDsaSha1GetKlass             = xmlSecMSCngTransformDsaSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
 
-#ifdef XMLSEC_MSCNG_TODO
-    gXmlSecMSCngFunctions->transformDsaSha256GetKlass           = xmlSecMSCngTransformDsaSha256GetKlass;
-#endif /* XMLSEC_NO_SHA256 */
-
 #endif /* XMLSEC_NO_DSA */
 
     /******************************* ECDSA ********************************/
-#ifndef XMLSEC_NO_ECDSA
+#ifndef XMLSEC_NO_EC
 
 #ifndef XMLSEC_NO_SHA1
     gXmlSecMSCngFunctions->transformEcdsaSha1GetKlass           = xmlSecMSCngTransformEcdsaSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
-
-#ifdef XMLSEC_MSCNG_TODO
-    gXmlSecMSCngFunctions->transformEcdsaSha224GetKlass         = xmlSecMSCngTransformEcdsaSha224GetKlass;
-#endif /* XMLSEC_NO_SHA224 */
 
 #ifndef XMLSEC_NO_SHA256
     gXmlSecMSCngFunctions->transformEcdsaSha256GetKlass         = xmlSecMSCngTransformEcdsaSha256GetKlass;
@@ -173,20 +172,10 @@ xmlSecCryptoGetFunctions_mscng(void) {
     gXmlSecMSCngFunctions->transformEcdsaSha512GetKlass         = xmlSecMSCngTransformEcdsaSha512GetKlass;
 #endif /* XMLSEC_NO_SHA512 */
 
-#endif /* XMLSEC_NO_ECDSA */
+    gXmlSecMSCngFunctions->transformEcdhGetKlass                = xmlSecMSCngTransformEcdhGetKlass;
 
-    /******************************* GOST ********************************/
-#ifdef XMLSEC_MSCNG_TODO
-    gXmlSecMSCngFunctions->transformGost2001GostR3411_94GetKlass                = xmlSecMSCngTransformGost2001GostR3411_94GetKlass;
-    gXmlSecMSCngFunctions->transformGostR3410_2012GostR3411_2012_256GetKlass    = xmlSecMSCngTransformGostR3410_2012GostR3411_2012_256GetKlass;
-    gXmlSecMSCngFunctions->transformGostR3410_2012GostR3411_2012_512GetKlass    = xmlSecMSCngTransformGostR3410_2012GostR3411_2012_512GetKlass;
-#endif /* XMLSEC_NO_GOST */
+#endif /* XMLSEC_NO_EC */
 
-#ifdef XMLSEC_MSCNG_TODO
-    gXmlSecMSCngFunctions->transformGostR3411_94GetKlass                = xmlSecMSCngTransformGostR3411_94GetKlass;
-    gXmlSecMSCngFunctions->transformGostR3411_2012_256GetKlass          = xmlSecMSCngTransformGostR3411_2012_256GetKlass;
-    gXmlSecMSCngFunctions->transformGostR3411_2012_512GetKlass          = xmlSecMSCngTransformGostR3411_2012_512GetKlass;
-#endif /* XMLSEC_NO_GOST */
 
     /******************************* HMAC ********************************/
 #ifndef XMLSEC_NO_HMAC
@@ -211,20 +200,12 @@ xmlSecCryptoGetFunctions_mscng(void) {
     gXmlSecMSCngFunctions->transformHmacSha512GetKlass          = xmlSecMSCngTransformHmacSha512GetKlass;
 #endif /* XMLSEC_NO_SHA512 */
 
-#ifdef XMLSEC_MSCNG_TODO
-    gXmlSecMSCngFunctions->transformHmacRipemd160GetKlass       = xmlSecMSCngTransformHmacRipemd160GetKlass;
-#endif /* XMLSEC_NO_RIPEMD160 */
-
-#ifdef XMLSEC_MSCNG_TODO
-    gXmlSecMSCngFunctions->transformHmacMd5GetKlass             = xmlSecMSCngTransformHmacMd5GetKlass;
-#endif /* XMLSEC_NO_MD5 */
-
 #endif /* XMLSEC_NO_HMAC */
 
-    /******************************* RIPEMD160 ********************************/
-#ifdef XMLSEC_MSCNG_TODO
-    gXmlSecMSCngFunctions->transformRipemd160GetKlass           = xmlSecMSCngTransformRipemd160GetKlass;
-#endif /* XMLSEC_NO_RIPEMD160 */
+    /******************************* PBKDF2 ********************************/
+#ifndef XMLSEC_NO_PBKDF2
+    gXmlSecMSCngFunctions->transformPbkdf2GetKlass              = xmlSecMSCngTransformPbkdf2GetKlass;
+#endif /* XMLSEC_NO_PBKDF2 */
 
     /******************************* RSA ********************************/
 #ifndef XMLSEC_NO_RSA
@@ -249,8 +230,31 @@ xmlSecCryptoGetFunctions_mscng(void) {
     gXmlSecMSCngFunctions->transformRsaSha512GetKlass       = xmlSecMSCngTransformRsaSha512GetKlass;
 #endif /* XMLSEC_NO_SHA512 */
 
+
+#ifndef XMLSEC_NO_SHA1
+    gXmlSecMSCngFunctions->transformRsaPssSha1GetKlass = xmlSecMSCngTransformRsaPssSha1GetKlass;
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA256
+    gXmlSecMSCngFunctions->transformRsaPssSha256GetKlass = xmlSecMSCngTransformRsaPssSha256GetKlass;
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+    gXmlSecMSCngFunctions->transformRsaPssSha384GetKlass = xmlSecMSCngTransformRsaPssSha384GetKlass;
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+    gXmlSecMSCngFunctions->transformRsaPssSha512GetKlass = xmlSecMSCngTransformRsaPssSha512GetKlass;
+#endif /* XMLSEC_NO_SHA512 */
+
+#ifndef XMLSEC_NO_RSA_PKCS15
     gXmlSecMSCngFunctions->transformRsaPkcs1GetKlass            = xmlSecMSCngTransformRsaPkcs1GetKlass;
+#endif /* XMLSEC_NO_RSA_PKCS15 */
+
+#ifndef XMLSEC_NO_RSA_OAEP
     gXmlSecMSCngFunctions->transformRsaOaepGetKlass             = xmlSecMSCngTransformRsaOaepGetKlass;
+    gXmlSecMSCngFunctions->transformRsaOaepEnc11GetKlass        = xmlSecMSCngTransformRsaOaepEnc11GetKlass;
+#endif /* XMLSEC_NO_RSA_OAEP */
 
 #endif /* XMLSEC_NO_RSA */
 
@@ -281,17 +285,20 @@ xmlSecCryptoGetFunctions_mscng(void) {
     gXmlSecMSCngFunctions->cryptoAppShutdown                    = xmlSecMSCngAppShutdown;
     gXmlSecMSCngFunctions->cryptoAppDefaultKeysMngrInit         = xmlSecMSCngAppDefaultKeysMngrInit;
     gXmlSecMSCngFunctions->cryptoAppDefaultKeysMngrAdoptKey     = xmlSecMSCngAppDefaultKeysMngrAdoptKey;
+    gXmlSecMSCngFunctions->cryptoAppDefaultKeysMngrVerifyKey    = xmlSecMSCngAppDefaultKeysMngrVerifyKey;
     gXmlSecMSCngFunctions->cryptoAppDefaultKeysMngrLoad         = xmlSecMSCngAppDefaultKeysMngrLoad;
     gXmlSecMSCngFunctions->cryptoAppDefaultKeysMngrSave         = xmlSecMSCngAppDefaultKeysMngrSave;
 #ifndef XMLSEC_NO_X509
     gXmlSecMSCngFunctions->cryptoAppKeysMngrCertLoad            = xmlSecMSCngAppKeysMngrCertLoad;
     gXmlSecMSCngFunctions->cryptoAppKeysMngrCertLoadMemory      = xmlSecMSCngAppKeysMngrCertLoadMemory;
+    gXmlSecMSCngFunctions->cryptoAppKeysMngrCrlLoad             = xmlSecMSCngAppKeysMngrCrlLoad;
+    gXmlSecMSCngFunctions->cryptoAppKeysMngrCrlLoadMemory       = xmlSecMSCngAppKeysMngrCrlLoadMemory;
     gXmlSecMSCngFunctions->cryptoAppPkcs12Load                  = xmlSecMSCngAppPkcs12Load;
     gXmlSecMSCngFunctions->cryptoAppPkcs12LoadMemory            = xmlSecMSCngAppPkcs12LoadMemory;
     gXmlSecMSCngFunctions->cryptoAppKeyCertLoad                 = xmlSecMSCngAppKeyCertLoad;
     gXmlSecMSCngFunctions->cryptoAppKeyCertLoadMemory           = xmlSecMSCngAppKeyCertLoadMemory;
 #endif /* XMLSEC_NO_X509 */
-    gXmlSecMSCngFunctions->cryptoAppKeyLoad                     = xmlSecMSCngAppKeyLoad;
+    gXmlSecMSCngFunctions->cryptoAppKeyLoadEx                   = xmlSecMSCngAppKeyLoadEx;
     gXmlSecMSCngFunctions->cryptoAppKeyLoadMemory               = xmlSecMSCngAppKeyLoadMemory;
     gXmlSecMSCngFunctions->cryptoAppDefaultPwdCallback          = (void*)xmlSecMSCngAppGetDefaultPwdCallback();
 
@@ -342,14 +349,14 @@ xmlSecMSCngShutdown(void) {
  * @buffer:             the destination buffer.
  * @size:               the numer of bytes to generate.
  *
- * Generates @size random bytes and puts result in @buffer
- * (not implemented yet).
+ * Generates @size random bytes and puts result in @buffer.
  *
  * Returns: 0 on success or a negative value otherwise.
  */
 int
 xmlSecMSCngGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
     NTSTATUS status;
+    DWORD dwSize;
     int ret;
 
     xmlSecAssert2(buffer != NULL, -1);
@@ -357,14 +364,15 @@ xmlSecMSCngGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
 
     ret = xmlSecBufferSetSize(buffer, size);
     if(ret < 0) {
-    xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=%d", size);
+    xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=" XMLSEC_SIZE_FMT, size);
         return(-1);
     }
 
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(size, dwSize, return(-1), NULL);
     status = BCryptGenRandom(
         NULL,
         (PBYTE)xmlSecBufferGetData(buffer),
-        (ULONG)size,
+        dwSize,
         BCRYPT_USE_SYSTEM_PREFERRED_RNG);
     if(status != STATUS_SUCCESS) {
         xmlSecMSCngNtError("BCryptGenRandom", NULL, status);
@@ -408,56 +416,4 @@ xmlSecMSCngKeysMngrInit(xmlSecKeysMngrPtr mngr) {
 #endif /* XMLSEC_NO_X509 */
 
     return(0);
-}
-
-/**
- * xmlSecMSCngConvertUtf8ToTstr:
- * @str:         the string to convert.
- *
- * Converts input string from UTF8 to TSTR (locale or Unicode).
- *
- * Returns: a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.
- */
-LPTSTR
-xmlSecMSCngConvertUtf8ToTstr(const xmlChar* str) {
-    return(xmlSecWin32ConvertUtf8ToTstr(str));
-}
-
-/**
- * xmlSecMSCngConvertTstrToUtf8:
- * @str:         the string to convert.
- *
- * Converts input string from TSTR (locale or Unicode) to UTF8.
- *
- * Returns: a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.
- */
-xmlChar*
-xmlSecMSCngConvertTstrToUtf8(LPCTSTR str) {
-    return(xmlSecWin32ConvertTstrToUtf8(str));
-}
-
-/**
- * xmlSecMSCngConvertUnicodeToUtf8:
- * @str:         the string to convert.
- *
- * Converts input string from Unicode to UTF8.
- *
- * Returns: a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.
- */
-xmlChar*
-xmlSecMSCngConvertUnicodeToUtf8(LPCWSTR str) {
-    return(xmlSecWin32ConvertUnicodeToUtf8(str));
-}
-
-/**
- * xmlSecMSCngConvertUtf8ToUnicode:
- * @str:         the string to convert.
- *
- * Converts input string from UTF8 to Unicode.
- *
- * Returns: a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.
- */
-LPWSTR
-xmlSecMSCngConvertUtf8ToUnicode(const xmlChar* str) {
-    return(xmlSecWin32ConvertUtf8ToUnicode(str));
 }

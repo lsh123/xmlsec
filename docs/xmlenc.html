@@ -1,837 +1,619 @@
+<!DOCTYPE html>
 <html>
+
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>XML Security Library: XML Encryption</title>
-<style type="text/css">
-table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
-    width: 20em;
-}
-</style>
-<style type="text/css">
-table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
-    width: 20em;
-}
-.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-}
-.programlisting {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation a {
-    color: initial;
-}
-.navigation a:visited {
-    color: initial;
-}
-</style>
-<style type="text/css">
-table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
-    width: 20em;
-}
-.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-}
-.programlisting {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation a {
-    color: initial;
-}
-.navigation a:visited {
-    color: initial;
-}
-</style>
-<style type="text/css">
-table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
-    width: 20em;
-}
-.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-}
-.programlisting {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation a {
-    color: initial;
-}
-.navigation a:visited {
-    color: initial;
-}
-</style>
-<style type="text/css">
-table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
-    width: 20em;
-}
-.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-}
-.programlisting {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation a {
-    color: initial;
-}
-.navigation a:visited {
-    color: initial;
-}
-</style>
-<style type="text/css">
-table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
-    width: 20em;
-}
-.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-}
-.programlisting {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation a {
-    color: initial;
-}
-.navigation a:visited {
-    color: initial;
-}
-</style>
-<style type="text/css">
-table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
-    width: 20em;
-}
-.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-}
-.programlisting {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation a {
-    color: initial;
-}
-.navigation a:visited {
-    color: initial;
-}
-</style>
-<style type="text/css">
-table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
-    width: 20em;
-}
-.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-}
-.programlisting {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation a {
-    color: initial;
-}
-.navigation a:visited {
-    color: initial;
-}
-</style>
-<style type="text/css">
-table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
-    width: 20em;
-}
-.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-}
-.programlisting {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation a {
-    color: initial;
-}
-.navigation a:visited {
-    color: initial;
-}
-</style>
-<style type="text/css">
-table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
-    width: 20em;
-}
-.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-}
-.programlisting {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation a {
-    color: initial;
-}
-.navigation a:visited {
-    color: initial;
-}
-</style>
-<style type="text/css">
-table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
-    width: 20em;
-}
-.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-}
-.programlisting {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation a {
-    color: initial;
-}
-.navigation a:visited {
-    color: initial;
-}
-</style>
-<style type="text/css">
-table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
-    width: 20em;
-}
-.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-}
-.programlisting {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation a {
-    color: initial;
-}
-.navigation a:visited {
-    color: initial;
-}
-</style>
-<style type="text/css">
-table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
-    width: 20em;
-}
-.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-}
-.programlisting {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation a {
-    color: initial;
-}
-.navigation a:visited {
-    color: initial;
-}
-</style>
-<style type="text/css">
-table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
-    width: 20em;
-}
-.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-}
-.programlisting {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation a {
-    color: initial;
-}
-.navigation a:visited {
-    color: initial;
-}
-</style>
-<style type="text/css">
-table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
-    width: 20em;
-}
-.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-}
-.programlisting {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation a {
-    color: initial;
-}
-.navigation a:visited {
-    color: initial;
-}
-</style>
-<style type="text/css">
-table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
-    width: 20em;
-}
-.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-}
-.programlisting {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation a {
-    color: initial;
-}
-.navigation a:visited {
-    color: initial;
-}
-</style>
-<style type="text/css">
-table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
-    width: 20em;
-}
-.synopsis, .classsynopsis {
-    background: #eeeeee;
-    border: solid 1px #aaaaaa;
-}
-.programlisting {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation {
-    background: #eeeeee;
-    border: solid 1px #000000;
-}
-.navigation a {
-    color: initial;
-}
-.navigation a:visited {
-    color: initial;
-}
-</style>
+  <meta name="generator" content="HTML Tidy for HTML5 for Linux version 5.6.0">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>XML Security Library: XML Encryption</title>
+  <link rel="stylesheet" href="css/main.css">
 </head>
-<body><table width="100%" valign="top"><tr valign="top">
-<td valign="top" align="left" width="210">
-<img src="images/logo.gif" alt="XML Security Library" border="0"><p></p>
-<ul>
-<li><a href="index.html">Home</a></li>
-<li><a href="download.html">Download</a></li>
-<li><a href="news.html">News</a></li>
-<li><a href="documentation.html">Documentation</a></li>
-<ul>
-<li><a href="faq.html">FAQ</a></li>
-<li><a href="api/xmlsec-notes.html">Tutorial</a></li>
-<li><a href="api/xmlsec-reference.html">API reference</a></li>
-<li><a href="api/xmlsec-examples.html">Examples</a></li>
-</ul>
-<li><a href="xmldsig.html">XML Digital Signature</a></li>
-<ul><li><a href="http://www.aleksey.com/xmlsec/xmldsig-verifier.html">Online Verifier</a></li></ul>
-<li><a href="xmlenc.html">XML Encryption</a></li>
-<li><a href="c14n.html">XML Canonicalization</a></li>
-<li><a href="bugs.html">Reporting Bugs</a></li>
-<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
-<li><a href="related.html">Related</a></li>
-<li><a href="authors.html">Authors</a></li>
-</ul>
-<table width="100%">
-<tr>
-<td width="15"></td>
-<td><a href="http://xmlsoft.org/"><img src="images/libxml2-logo.png" alt="LibXML2" border="0"></a></td>
-</tr>
-<tr>
-<td width="15"></td>
-<td><a href="http://xmlsoft.org/XSLT"><img src="images/libxslt-logo.png" alt="LibXSLT" border="0"></a></td>
-</tr>
-<tr>
-<td width="15"></td>
-<td><a href="http://www.openssl.org/"><img src="images/openssl-logo.png" alt="OpenSSL" border="0"></a></td>
-</tr>
-<!--Links - start--><!--Links - end-->
-</table>
-</td>
-<td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent"><div align="center">
-            <h2> XML Encryption </h2>
-<div align="left">
-<a href="http://www.w3.org/TR/xmlenc-core">XML Encryption 1.0</a> standard
-specifies
-the process for encryptind data and representing the result in XML
-document.
-The data may be an XML element, or an XML element content, or any
-arbitrary
-data (including XML document). </div>
-            <div align="center">
-            <h3>XML Security Library Interoperability Report</h3>
-            <h4 style="text-align: center;">XML Encryption 1.0 (<a href="http://www.w3.org/TR/xmlenc-core/">W3C Recommendation</a>)</h4>
-            </div>
-            <div align="center">
-            <p> </p>
-            <table style="width: 85%;" border="1" cellpadding="2" cellspacing="2"><tbody>
-<tr>
-<td style="width: 40%;" align="left" valign="top"><b>Features and algorithms</b></td>
-    <td valign="top"><b>XMLSec with OpenSSL</b></td>
-    <td valign="top"><b>XMLSec with GnuTLS</b></td>
-    <td valign="top"><b>XMLSec with GCrypt</b></td>
-    <td valign="top"><b>XMLSec with NSS</b></td>
-    <td valign="top"><b>XMLSec with MSCrypto</b></td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">Laxly valid schema 
-    generation of EncryptedData/EncryptedKey</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">
-    <ul><li>Normalized Form C generations.</li></ul>
-</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">Type, MimeType, and Encoding</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">CipherReference
-    URI derefencing</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">
-    <ul><li>Transforms </li></ul>
-</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">
-    <ul><li>ds:KeyInfo</li></ul>
-</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">
-    <ul><li>enc:DHKeyValue</li></ul>
-</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">
-    <ul><li>ds:KeyName</li></ul>
-</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">
-    <ul><li>ds:RetrievalMethod</li></ul>
-</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">ReferenceList</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">EncryptionProperties</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">Satisfactory Performance</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">Required Type
-    support: Element and Content.</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">Encryption</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">
-    <ul><li>Serialization of XML Element and Content
-    (NFC conversion from non-Unicode encodings).
-    </li></ul>
-</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">
-    <ul><li>Encryptor returns EncryptedData structure. </li></ul>
-</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">
-    <ul><li> Encryptor replaces EncryptedData into source
-    document (when Type is Element or Content).</li></ul>
-</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">Decryption</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">
-    <ul><li>The decryptor returns the data and its Type to
-    the application (be it an octet sequence or key value).</li></ul>
-</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">
-    <ul><li>If data is Element or Content the decryptor
-    return the UTF-8 encoding XML character data.</li></ul>
-</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">
-    <ul><li>If data is Element or Content the decryptor
-    replaces the EncryptedData in the source document with the decrypted
-    data.</li></ul>
-</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">TRIPLEDES</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">AES-128</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">AES-256</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">AES-192</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">RSA-v1.5 (192 bit keys for AES or DES)</td>
-    <td valign="top">Y</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">RSA-OAEP (128 and 256 bit keys for AES)</td>
-    <td valign="top">Y<a href="#rsa-oaep"><sup>(1)</sup></a>
-</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">Diffie-Hellman Key Agreement</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">TRIPLEDES Key Wrap</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">AES-128 Key Wrap (128 bit keys)</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">AES-192 Key Wrap</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">AES-256 Key Wrap (256 bit keys)</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">SHA1</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">SHA256</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">SHA512</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">RIPEMD-160</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">XML Digital Signature</td>
-    <td valign="top">Y </td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">Decryption Transform</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">
-    <ul><li>XPointer support in <code>Except URI</code>
-</li></ul>
-</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top"><a href="http://www.w3.org/TR/xml-c14n">Canonical XML 1.0</a></td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top"><a href="http://www.w3.org/TR/xml-exc-c14n">Exlusive Canonical XML 1.0</a></td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top"><a href="http://www.w3.org/TR/xml-c14n11/">Canonical XML 1.1</a></td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-<td style="width: 40%;" align="left" valign="top">Base64 Encoding</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-</tbody></table>
-<div align="left"> <br><a name="rsa-oaep"></a> <sup>(1)</sup> OpenSSL (and XML
-Security Library) supports only SHA1 as the digest in the RSA-OAEP key
-transport.<br><p> <b>Test vectors (from <a href="http://www.w3.org/Encryption/2002/02-xenc-interop.html">W3C XML
-Encryption
-interop page</a>): </b><br><a href="http://lists.w3.org/Archives/Public/xml-encryption/2002Mar/0008.html">merlin-xmlenc-five.tar.gz</a>
-            <br><a href="http://lists.w3.org/Archives/Public/xml-encryption/2002Mar/att-0052/01-phaos-xmlenc-3.zip">phaos-xmlenc-3.zip</a>
-            <br></p>
-            </div>
-            </div>
-            </div></td></tr></table></td>
-</tr></table></body>
+
+<body>
+  <table width="100%" valign="top">
+    <tr valign="top">
+      <td valign="top" align="left" width="210">
+        <img src="images/logo.gif" alt="XML Security Library" border="0">
+        <ul>
+          <li>
+            <a href="index.html">Home</a>
+          </li>
+          <li>
+            <a href="download.html">Download</a>
+          </li>
+          <li>
+            <a href="news.html">News</a>
+          </li>
+          <li>
+            <a href="documentation.html">Documentation</a>
+          </li>
+          <ul>
+            <li>
+              <a href="faq.html">FAQ</a>
+            </li>
+            <li>
+              <a href="api/xmlsec-notes.html">Tutorial</a>
+            </li>
+            <li>
+              <a href="api/xmlsec-reference.html">API reference</a>
+            </li>
+            <li>
+              <a href="api/xmlsec-examples.html">Examples</a>
+            </li>
+          </ul>
+          <li>
+            <a href="xmldsig.html">XML Digital Signature</a>
+          </li>
+          <li>
+            <a href="xmlenc.html">XML Encryption</a>
+          </li>
+          <li>
+            <a href="c14n.html">XML Canonicalization</a>
+          </li>
+          <li>
+            <a href="bugs.html">Reporting Bugs</a>
+          </li>
+          <li>
+            <a href="mailing-list.html">Mailing list</a>
+          </li>
+          <li>
+            <a href="related.html">Related</a>
+          </li>
+          <li>
+            <a href="authors.html">Authors</a>
+          </li>
+        </ul>
+        <table width="100%">
+          <tr>
+            <td width="15"></td>
+            <td>
+              <a href="http://xmlsoft.org/"><img src="images/libxml2-logo.png" alt="LibXML2" border="0"></a>
+            </td>
+          </tr>
+          <tr>
+            <td width="15"></td>
+            <td>
+              <a href="http://xmlsoft.org/XSLT"><img src="images/libxslt-logo.png" alt="LibXSLT" border="0"></a>
+            </td>
+          </tr>
+          <tr>
+            <td width="15"></td>
+            <td>
+              <a href="http://www.openssl.org/"><img src="images/openssl-logo.png" alt="OpenSSL" border="0"></a>
+            </td>
+          </tr><!--Links - start--><!--Links - end-->
+        </table>
+      </td>
+      <td valign="top"><table width="80%" valign="top" style="margin-left:10px;"><tr><td valign="top" align="left" id="xmlsecContent">
+        <div align="center"><h2>XML Encryption Interoperability Report</h2></div>
+              <div style="width: 85%;" align="left">
+                <div>
+                  XML Security library supports the following features as defined in
+                  <a href="https://www.w3.org/TR/xmlenc-core1/#sec-AlgID">XML Encryption Syntax and Processing Version 1.1</a>
+                  (also see <a href="https://www.ietf.org/rfc/rfc9231.html">RFC 9231</a>):
+                </div>
+                <div id="core">
+                  <h3>XMLSec Library core features</h3>
+                  <table width="100%" border="1" cellpadding="2" cellspacing="2">
+                    <tbody>
+                      <tr>
+                        <td style="width: 40%;" valign="top">&nbsp;</td>
+                        <td style="width: 20%;" valign="top">
+                          <b><a href="https://www.w3.org/TR/xmlenc-core1/#sec-AlgID">Requirements</a></b>
+                        </td>
+                        <td valign="top"><b>Status</b></td>
+                      </tr>
+                      <tr>
+                        <td colspan="3"><b>Processing rules</b></td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmlenc-core1/#sec-Type-Parameters">Type parameter value: Element</a>
+                        </td>
+                        <td valign="top">Required</td><!--Requirements -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmlenc-core1/#sec-Type-Parameters">Type parameter value: Content</a>
+                        </td>
+                        <td valign="top">Required</td><!--Requirements -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmlenc-core1/#sec-Type-Parameters">Type parameter value: EXI</a>
+                        </td>
+                        <td valign="top">Optional</td><!--Requirements -->
+                        <td valign="top">No</td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmlenc-core1/#sec-Processing-Encryption">Encryption</a>
+                        </td>
+                        <td valign="top">Required</td><!--Requirements -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmlenc-core1/#sec-Processing-Decryption">Decryption</a>
+                        </td>
+                        <td valign="top">Required</td><!--Requirements -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmlenc-core1/#sec-Processing-XML">XML Encryption</a>
+                        </td>
+                        <td valign="top">Optional</td><!--Requirements -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td>
+                      </tr>
+
+                      <tr>
+                        <td colspan="3"><b>Syntax</b></td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmlenc-core1/#sec-EncryptedType">The EncryptedType Element</a>
+                        </td>
+                        <td valign="top">Required</td><!--Requirements -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmlenc-core1/#sec-EncryptionMethod">The EncryptionMethodElement</a>
+                        </td>
+                        <td valign="top">Optional</td><!--Requirements -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmlenc-core1/#sec-CipherData">The CipherData Element</a>
+                        </td>
+                        <td valign="top">Required</td><!--Requirements -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmlenc-core1/#sec-CipherReference">The CipherReference Element</a>
+                        </td>
+                        <td valign="top">Optional</td><!--Requirements -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmlenc-core1/#sec-EncryptedData">The EncryptedData Element</a>
+                        </td>
+                        <td valign="top">Required</td><!--Requirements -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmlenc-core1/#sec-EncryptedKey">The EncryptedKey Element</a>
+                        </td>
+                        <td valign="top">Optional</td><!--Requirements -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmlenc-core1/#sec-DerivedKey">The DerivedKey Element</a>
+                        </td>
+                        <td valign="top">Required</td><!--Requirements -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#derived-key"><sup>(1)</sup></a></td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmlenc-core1/#sec-ds-RetrievalMethod">The ds:RetrievalMethod Element</a>
+                        </td>
+                        <td valign="top">Optional</td><!--Requirements -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmlenc-core1/#sec-ReferenceList">The ReferenceList Element</a>
+                        </td>
+                        <td valign="top">Optional</td><!--Requirements -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmlenc-core1/#sec-EncryptionProperties">The EncryptionProperties Element</a>
+                        </td>
+                        <td valign="top">Optional</td><!--Requirements -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td>
+                      </tr>
+                      <tr>
+                        <td valign="top" colspan="3"><b>Transforms</b></td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmlenc-core1/#sec-Alg-Canonicalition">XML Canonicalization</a>
+                        </td>
+                        <td valign="top" colspan="2">See <a href="xmldsig.html">XMLDsig Report</a></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div id="algorithms">
+                  <h3>XMLSec Cryptographic Libraries features</h3>
+                  <table width="100%" border="1" cellpadding="2" cellspacing="2">
+                    <tbody>
+                      <tr>
+                        <td style="width: 40%;" valign="top">&nbsp;</td>
+                        <td style="width: 20%;" valign="top">
+                          <b><a href="https://www.w3.org/TR/xmlenc-core1/#sec-AlgID">Requirements</a></b>
+                        </td>
+                        <td valign="top"><b>XMLSec with OpenSSL</b></td>
+                        <td valign="top"><b>XMLSec with NSS</b></td>
+                        <td valign="top"><b>XMLSec with GnuTLS</b></td>
+                        <td valign="top"><b>XMLSec with MSCng</b></td>
+                        <td valign="top"><b>XMLSec with MSCrypto</b></td>
+                        <td valign="top"><b>XMLSec with GCrypt</b></td>
+                      </tr>
+                      <tr>
+                        <td valign="top" colspan="8"><b>Block Encryption Algorithms</b>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmlenc-core1/#sec-tripledes-cbc">Triple DES (DES3)</a>
+                        </td>
+                        <td valign="top">Required</td><!--Requirements -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- OpenSSL-->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- NSS -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- GnuTLS -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- MSCng -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- MSCrypto -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmlenc-core1/#sec-AES">AES-CBC-128</a>
+                        </td>
+                        <td valign="top">Required</td><!--Requirements -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- OpenSSL-->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- NSS -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- GnuTLS -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- MSCng -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- MSCrypto -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmlenc-core1/#sec-AES">AES-CBC-192</a>
+                        </td>
+                        <td valign="top">Optional</td><!--Requirements -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- OpenSSL-->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- NSS -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- GnuTLS -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- MSCng -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- MSCrypto -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmlenc-core1/#sec-AES">AES-CBC-256</a>
+                        </td>
+                        <td valign="top">Required</td><!--Requirements -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- OpenSSL-->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- NSS -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- GnuTLS -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- MSCng -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- MSCrypto -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmlenc-core1/#sec-AES-GCM">AES-GCM-128</a>
+                        </td>
+                        <td valign="top">Required</td><!--Requirements -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- OpenSSL-->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- NSS -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- GnuTLS -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- MSCng -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- MSCrypto -->
+                        <td valign="top">No</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmlenc-core1/#sec-AES-GCM">AES-GCM-192</a>
+                        </td>
+                        <td valign="top">Optional</td><!--Requirements -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- OpenSSL-->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- NSS -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- GnuTLS -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- MSCng -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- MSCrypto -->
+                        <td valign="top">No</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmlenc-core1/#sec-AES-GCM">AES-GCM-256</a>
+                        </td>
+                        <td valign="top">Optional</td><!--Requirements -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- OpenSSL-->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- NSS -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- GnuTLS -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- MSCng -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- MSCrypto -->
+                        <td valign="top">No</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmlenc-core1/#sec-Alg-Stream">Stream Encryption Algorithms</a>
+                        </td>
+                        <td valign="top">Optional</td><!--Requirements -->
+                        <td valign="top">No</td><!-- OpenSSL-->
+                        <td valign="top">No</td><!-- NSS -->
+                        <td valign="top">No</td><!-- GnuTLS -->
+                        <td valign="top">No</td><!-- MSCng -->
+                        <td valign="top">No</td><!-- MSCrypto -->
+                        <td valign="top">No</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top" colspan="8"><b>Key Derivation</b></td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmlenc-core1/#sec-ConcatKDF">ConcatKDF</a>
+                        </td>
+                        <td valign="top">Required</td><!--Requirements -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#openssl3-required"><sup>(2)</sup></a> <a href="#concatkdf"><sup>(3)</sup></a></td><!-- OpenSSL-->
+                        <td valign="top">No</td><!-- NSS -->
+                        <td valign="top">No</td><!-- GnuTLS -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#concatkdf"><sup>(3)</sup></a> <a href="#mscng-old-win"><sup>(4)</sup></a></td><!-- MSCng -->
+                        <td valign="top">No</td><!-- MSCrypto -->
+                        <td valign="top">No</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmlenc-core1/#sec-PBKDF2">PBKDF2</a>
+                        </td>
+                        <td valign="top">Optional</td><!--Requirements -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#openssl3-required"><sup>(2)</sup></a> <a href="#pbkdf2"><sup>(5)</sup></a></td><!-- OpenSSL-->
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#pbkdf2"><sup>(5)</sup></a></td><!-- NSS -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#pbkdf2"><sup>(5)</sup></a></td><!-- GnuTLS -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes  <a href="#mscng-old-win"><sup>(4)</sup></a> <a href="#pbkdf2"><sup>(5)</sup></a></td><!-- MSCng -->
+                        <td valign="top">No</td><!-- MSCrypto -->
+                        <td valign="top">No</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top" colspan="8"><b>Key Transport</b></td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-1_5">RSA PKCS1 v1.5</a>
+                        </td>
+                        <td valign="top">Optional</td><!--Requirements -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- OpenSSL-->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- NSS -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- GnuTLS -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- MSCng -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- MSCrypto -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP">RSA-OAEP (MGF1 with SHA1)</a>
+                        </td>
+                        <td valign="top">Required</td><!--Requirements -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- OpenSSL-->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- NSS -->
+                        <td valign="top">No</td><!-- GnuTLS -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- MSCng -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- MSCrypto -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP">RSA-OAEP with MGF1-SHA1</a>
+                        </td>
+                        <td valign="top">Optional</td><!--Requirements -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- OpenSSL-->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- NSS -->
+                        <td valign="top">No</td><!-- GnuTLS -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#rsa-oaep-same-algo"><sup>(6)</sup></a></td><!-- MSCng -->
+                        <td valign="top">No</td><!-- MSCrypto -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#rsa-oaep-same-algo"><sup>(6)</sup></a></td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP">RSA-OAEP with MGF1-SHA224</a>
+                        </td>
+                        <td valign="top">Optional</td><!--Requirements -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- OpenSSL-->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- NSS -->
+                        <td valign="top">No</td><!-- GnuTLS -->
+                        <td valign="top">No</td><!-- MSCng -->
+                        <td valign="top">No</td><!-- MSCrypto -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#rsa-oaep-same-algo"><sup>(6)</sup></a></td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP">RSA-OAEP with MGF1-SHA256</a>
+                        </td>
+                        <td valign="top">Optional</td><!--Requirements -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- OpenSSL-->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- NSS -->
+                        <td valign="top">No</td><!-- GnuTLS -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#rsa-oaep-same-algo"><sup>(6)</sup></a></td><!-- MSCng -->
+                        <td valign="top">No</td><!-- MSCrypto -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#rsa-oaep-same-algo"><sup>(6)</sup></a></td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP">RSA-OAEP with MGF1-SHA384</a>
+                        </td>
+                        <td valign="top">Optional</td><!--Requirements -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- OpenSSL-->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- NSS -->
+                        <td valign="top">No</td><!-- GnuTLS -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#rsa-oaep-same-algo"><sup>(6)</sup></a></td><!-- MSCng -->
+                        <td valign="top">No</td><!-- MSCrypto -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#rsa-oaep-same-algo"><sup>(6)</sup></a></td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP">RSA-OAEP with MGF1-SHA512</a>
+                        </td>
+                        <td valign="top">Optional</td><!--Requirements -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- OpenSSL-->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- NSS -->
+                        <td valign="top">No</td><!-- GnuTLS -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#rsa-oaep-same-algo"><sup>(6)</sup></a></td><!-- MSCng -->
+                        <td valign="top">No</td><!-- MSCrypto -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#rsa-oaep-same-algo"><sup>(6)</sup></a></td><!-- GCrypt -->
+                      </tr>
+
+                      <tr>
+                        <td valign="top" colspan="8"><b>Key Agreement</b></td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmlenc-core1/#sec-ECDH-ES">Elliptic Curve Diffie-Hellman (ECDH)</a>
+                        </td>
+                        <td valign="top">Required</td><!--Requirements -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#openssl3-required"><sup>(2)</sup></a></td><!-- OpenSSL-->
+                        <td valign="top">No</td><!-- NSS -->
+                        <td valign="top">No</td><!-- GnuTLS -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#mscng-old-win"><sup>(4)</sup></a></td><!-- MSCng -->
+                        <td valign="top">No</td><!-- MSCrypto -->
+                        <td valign="top">No</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmlenc-core1/#sec-DHKeyAgreement">Diffie-Hellman with legacy KDF</a>
+                        </td>
+                        <td valign="top">Optional</td><!--Requirements -->
+                        <td valign="top">No</td><!-- OpenSSL-->
+                        <td valign="top">No</td><!-- NSS -->
+                        <td valign="top">No</td><!-- GnuTLS -->
+                        <td valign="top">No</td><!-- MSCng -->
+                        <td valign="top">No</td><!-- MSCrypto -->
+                        <td valign="top">No</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmlenc-core1/#sec-DHKeyAgreement">Diffie-Hellman with explicit KDF</a>
+                        </td>
+                        <td valign="top">Optional</td><!--Requirements -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#openssl3-required"><sup>(2)</sup></a> <a href="#openssl-dhx"><sup>(7)</sup></a></td><!-- OpenSSL-->
+                        <td valign="top">No</td><!-- NSS -->
+                        <td valign="top">No</td><!-- GnuTLS -->
+                        <td valign="top">No</td><!-- MSCng -->
+                        <td valign="top">No</td><!-- MSCrypto -->
+                        <td valign="top">No</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top" colspan="8"><b>Symmetric Key Wrap</b></td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmlenc-core1/#sec-kw-tripledes">Triple DES Key Wrap</a>
+                        </td>
+                        <td valign="top">Required</td><!--Requirements -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- OpenSSL-->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- NSS -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- GnuTLS -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- MSCng -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- MSCrypto -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmlenc-core1/#sec-kw-aes">AES-128 KeyWrap</a>
+                        </td>
+                        <td valign="top">Required</td><!--Requirements -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- OpenSSL-->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- NSS -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- GnuTLS -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- MSCng -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- MSCrypto -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmlenc-core1/#sec-kw-aes">AES-192 KeyWrap</a>
+                        </td>
+                        <td valign="top">Optional</td><!--Requirements -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- OpenSSL-->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- NSS -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- GnuTLS -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- MSCng -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- MSCrypto -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmlenc-core1/#sec-kw-aes">AES-256 KeyWrap</a>
+                        </td>
+                        <td valign="top">Required</td><!--Requirements -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- OpenSSL-->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- NSS -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- GnuTLS -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- MSCng -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- MSCrypto -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td><!-- GCrypt -->
+                      </tr>
+                      <tr>
+                        <td valign="top" colspan="8"><b>Message Digest</b></td>
+                      </tr>
+                      <tr>
+                        <td valign="top">
+                          <a href="https://www.w3.org/TR/xmlenc-core1/#sec-Alg-MessageDigest">Message Digest Algorithms</a>
+                        </td>
+                        <td valign="top" colspan="7">See <a href="xmldsig.html">XMLDsig Report</a></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div id="notes">
+                    <ul>
+                        <li>
+                            <a id="derived-key"><sup>(1)</sup></a> Some optional features in DerivedKey element are not supported
+                            (<a href="https://github.com/lsh123/xmlsec/issues/515">more details</a>).
+                        </li>
+                        <li>
+                            <a id="openssl3-required"><sup>(2)</sup></a> Requires OpenSSL 3.0.0 or greater.
+                        </li>
+                        <li>
+                            <a id="concatkdf"><sup>(3)</sup></a> Only byte-aligned bit strings in ConcatKDFParams element are supported
+                            (<a href="https://github.com/lsh123/xmlsec/issues/514">more details</a>).
+                        </li>
+                        <li>
+                            <a id="mscng-old-win"><sup>(4)</sup></a> The xmlsec-mscng library does not support some cryptographic algortihms
+                            on Windows 8, Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP.
+                        </li>
+                        <li>
+                            <a id="pbkdf2"><sup>(5)</sup></a> Only "specified" salt is supported for PBKDF2.
+                        </li>
+                        <li>
+                            <a id="rsa-oaep-same-algo"><sup>(6)</sup></a> RSA-OAEP digest algorithm and MGF1 algorithm
+                            must be the same.
+                        </li>
+                        <li>
+                          <a id="openssl-dhx"><sup>(7)</sup></a> The xmlsec-openssl library only supports DHX (X9.42 format) keys for DH algorithm.
+                        </li>
+                    </ul>
+                </div>
+
+                <div id="test-vectores">
+                  <h3>Test vectors</h3>
+                  <div>
+                    <ul>
+                      <li><a href="http://www.w3.org/Encryption/2002/02-xenc-interop.html">XML Encryption 1.0 interop (2002)</a></li>
+                      <li><a href="https://www.w3.org/TR/2012/NOTE-xmlenc-core1-interop-20121113/">XML Encryption 1.1 interop (2012)</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+
 </html>

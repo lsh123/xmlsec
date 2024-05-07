@@ -8,17 +8,19 @@ AM_CFLAGS = \
 	-I../include \
 	-I$(top_srcdir)/include \
 	$(XMLSEC_DEFINES) \
-	$(XMLSEC_DL_INCLUDES) \
+	$(LIBLTDL_CFLAGS) \
 	$(LIBXSLT_CFLAGS) \
 	$(LIBXML_CFLAGS) \
 	$(NULL)
 
 EXTRA_DIST = \
+	cast_helpers.h \
 	errors_helpers.h \
+	keysdata_helpers.h \
+	transform_helpers.h \
 	globals.h \
 	kw_aes_des.h \
 	xslt.h \
-	skeleton \
 	mscrypto \
 	$(XMLSEC_CRYPTO_DISABLED_LIST) \
 	$(NULL)
@@ -51,7 +53,6 @@ libxmlsec1_la_SOURCES = \
 	strings.c \
 	templates.c \
 	transforms.c \
-	x509.c \
 	xmldsig.c \
 	xmlenc.c \
 	xmlsec.c \
@@ -60,18 +61,13 @@ libxmlsec1_la_SOURCES = \
 	xslt.c \
 	$(NULL)
 
-if XMLSEC_ENABLE_SOAP
-libxmlsec1_la_SOURCES += soap.c
-endif
-
 libxmlsec1_la_LIBADD = \
 	$(LIBXSLT_LIBS) \
 	$(LIBXML_LIBS) \
-	$(XMLSEC_DL_LIBS) \
+	$(LIBLTDL_LIBS) \
 	$(NULL)
 
 libxmlsec1_la_LDFLAGS = \
 	@XMLSEC_EXTRA_LDFLAGS@ \
 	-version-info @XMLSEC_VERSION_INFO@ \
 	$(NULL)
-

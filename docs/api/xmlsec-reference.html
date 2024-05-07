@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Part II. XML Security Library API Reference.: XML Security Library Reference Manual</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
 <link rel="up" href="index.html" title="XML Security Library Reference Manual">
 <link rel="prev" href="xmlsec-encryption-klasses.html" title="APPENDIX B. XML Security Library Encryption Klasses.">
 <link rel="next" href="xmlsec-ref.html" title="XML Security Core Library API Reference.">
-<meta name="generator" content="GTK-Doc V1.27 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.33.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -76,7 +76,7 @@
 <span class="refentrytitle"><a href="xmlsec-templates.html">templates</a></span><span class="refpurpose"> — XML signature and encryption template functions.</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="xmlsec-transforms.html">transforms</a></span><span class="refpurpose"> — Transform object functions.</span>
+<span class="refentrytitle"><a href="xmlsec-transforms.html">transforms</a></span><span class="refpurpose"> — XMLDsig and XMLEnc transforms.</span>
 </dt>
 <dt>
 <span class="refentrytitle"><a href="xmlsec-version.html">version</a></span><span class="refpurpose"> — Version macros.</span>
@@ -93,9 +93,6 @@
 <dt>
 <span class="refentrytitle"><a href="xmlsec-xmltree.html">xmltree</a></span><span class="refpurpose"> — XML tree functions.</span>
 </dt>
-<dt>
-<span class="refentrytitle"><a href="xmlsec-x509.html">x509</a></span><span class="refpurpose"> — &lt;dsig:X509Certificate/&gt; node parser functions.</span>
-</dt>
 </dl></dd>
 <dt><span class="chapter"><a href="xmlsec-openssl-ref.html">XML Security Library for OpenSLL API Reference.</a></span></dt>
 <dd><dl>
@@ -103,13 +100,10 @@
 <span class="refentrytitle"><a href="xmlsec-openssl-app.html">app</a></span><span class="refpurpose"> — Application support functions for OpenSSL.</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="xmlsec-openssl-bn.html">bn</a></span><span class="refpurpose"> — Big numbers (BIGNUM) support functions implementation for OpenSSL.</span>
+<span class="refentrytitle"><a href="xmlsec-openssl-crypto.html">crypto</a></span><span class="refpurpose"></span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="xmlsec-openssl-crypto.html">crypto</a></span><span class="refpurpose"> — Crypto transforms implementation for OpenSSL.</span>
-</dt>
-<dt>
-<span class="refentrytitle"><a href="xmlsec-openssl-evp.html">evp</a></span><span class="refpurpose"> — Private/public (EVP) keys implementation for OpenSSL.</span>
+<span class="refentrytitle"><a href="xmlsec-openssl-evp.html">evp</a></span><span class="refpurpose"></span>
 </dt>
 <dt>
 <span class="refentrytitle"><a href="xmlsec-openssl-x509.html">x509</a></span><span class="refpurpose"> — X509 certificates implementation for OpenSSL.</span>
@@ -121,7 +115,7 @@
 <span class="refentrytitle"><a href="xmlsec-gnutls-app.html">app</a></span><span class="refpurpose"> — Application support functions for GnuTLS.</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="xmlsec-gnutls-crypto.html">crypto</a></span><span class="refpurpose"> — Crypto transforms implementation for GnuTLS.</span>
+<span class="refentrytitle"><a href="xmlsec-gnutls-crypto.html">crypto</a></span><span class="refpurpose"></span>
 </dt>
 <dt>
 <span class="refentrytitle"><a href="xmlsec-gnutls-x509.html">x509</a></span><span class="refpurpose"> — X509 certificates implementation for GnuTLS.</span>
@@ -133,7 +127,7 @@
 <span class="refentrytitle"><a href="xmlsec-gcrypt-app.html">app</a></span><span class="refpurpose"> — Application support functions for GCrypt.</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="xmlsec-gcrypt-crypto.html">crypto</a></span><span class="refpurpose"> — Crypto transforms implementation for GCrypt.</span>
+<span class="refentrytitle"><a href="xmlsec-gcrypt-crypto.html">crypto</a></span><span class="refpurpose"> — Core crypto functions for GCrypt.</span>
 </dt>
 </dl></dd>
 <dt><span class="chapter"><a href="xmlsec-nss-ref.html">XML Security Library for NSS API Reference.</a></span></dt>
@@ -142,10 +136,7 @@
 <span class="refentrytitle"><a href="xmlsec-nss-app.html">app</a></span><span class="refpurpose"> — Application support functions for NSS.</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="xmlsec-nss-bignum.html">bignum</a></span><span class="refpurpose"> — Big numbers support functions implementation for NSS.</span>
-</dt>
-<dt>
-<span class="refentrytitle"><a href="xmlsec-nss-crypto.html">crypto</a></span><span class="refpurpose"> — Crypto transforms implementation for NSS.</span>
+<span class="refentrytitle"><a href="xmlsec-nss-crypto.html">crypto</a></span><span class="refpurpose"></span>
 </dt>
 <dt>
 <span class="refentrytitle"><a href="xmlsec-nss-keysstore.html">keysstore</a></span><span class="refpurpose"> — Keys store implementation for NSS.</span>
@@ -184,13 +175,13 @@
 <span class="refentrytitle"><a href="xmlsec-mscng-certkeys.html">certkeys</a></span><span class="refpurpose"> — Certificate keys support functions for Microsoft Cryptography API: Next Generation (CNG).</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="xmlsec-mscng-crypto.html">crypto</a></span><span class="refpurpose"> — Crypto transforms implementation for Microsoft Cryptography API: Next Generation (CNG).</span>
+<span class="refentrytitle"><a href="xmlsec-mscng-crypto.html">crypto</a></span><span class="refpurpose"></span>
 </dt>
 <dt>
 <span class="refentrytitle"><a href="xmlsec-mscng-keysstore.html">keysstore</a></span><span class="refpurpose"> — Keys store implementation for Microsoft Cryptography API: Next Generation (CNG).</span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="xmlsec-mscng-x509.html">x509</a></span><span class="refpurpose"> — X509 certificates implementation for Microsoft Cryptography API: Next Generation (CNG).</span>
+<span class="refentrytitle"><a href="xmlsec-mscng-x509.html">x509</a></span><span class="refpurpose"> — X509 certificates implementation for MSCng.</span>
 </dt>
 </dl></dd>
 <dt><span class="chapter"><a href="xmlsec-index.html">XML Security Library Reference Index</a></span></dt>
@@ -198,6 +189,6 @@
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.27</div>
+<hr>Generated by GTK-Doc V1.33.1</div>
 </body>
 </html>

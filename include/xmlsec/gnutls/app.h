@@ -4,11 +4,15 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 #ifndef __XMLSEC_GNUTLS_APP_H__
 #define __XMLSEC_GNUTLS_APP_H__
 
+#include <gnutls/abstract.h>
+#include <gnutls/gnutls.h>
+
+#include <xmlsec/exports.h>
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keysmngr.h>
@@ -34,6 +38,9 @@ XMLSEC_CRYPTO_EXPORT int        xmlSecGnuTLSAppShutdown                 (void);
 XMLSEC_CRYPTO_EXPORT int        xmlSecGnuTLSAppDefaultKeysMngrInit      (xmlSecKeysMngrPtr mngr);
 XMLSEC_CRYPTO_EXPORT int        xmlSecGnuTLSAppDefaultKeysMngrAdoptKey  (xmlSecKeysMngrPtr mngr,
                                                                          xmlSecKeyPtr key);
+XMLSEC_CRYPTO_EXPORT int        xmlSecGnuTLSAppDefaultKeysMngrVerifyKey (xmlSecKeysMngrPtr mngr,
+                                                                         xmlSecKeyPtr key,
+                                                                         xmlSecKeyInfoCtxPtr keyInfoCtx);
 XMLSEC_CRYPTO_EXPORT int        xmlSecGnuTLSAppDefaultKeysMngrLoad      (xmlSecKeysMngrPtr mngr,
                                                                          const char* uri);
 XMLSEC_CRYPTO_EXPORT int        xmlSecGnuTLSAppDefaultKeysMngrSave      (xmlSecKeysMngrPtr mngr,
@@ -49,6 +56,13 @@ XMLSEC_CRYPTO_EXPORT int        xmlSecGnuTLSAppKeysMngrCertLoadMemory   (xmlSecK
                                                                          xmlSecSize dataSize,
                                                                          xmlSecKeyDataFormat format,
                                                                          xmlSecKeyDataType type);
+XMLSEC_CRYPTO_EXPORT int        xmlSecGnuTLSAppKeysMngrCrlLoad          (xmlSecKeysMngrPtr mngr,
+                                                                         const char *filename,
+                                                                         xmlSecKeyDataFormat format);
+XMLSEC_CRYPTO_EXPORT int        xmlSecGnuTLSAppKeysMngrCrlLoadMemory    (xmlSecKeysMngrPtr mngr,
+                                                                         const xmlSecByte* data,
+                                                                         xmlSecSize dataSize,
+                                                                         xmlSecKeyDataFormat format);
 #endif /* XMLSEC_NO_X509 */
 
 
@@ -57,7 +71,9 @@ XMLSEC_CRYPTO_EXPORT int        xmlSecGnuTLSAppKeysMngrCertLoadMemory   (xmlSecK
  * Keys
  *
  ********************************************************************/
-XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecGnuTLSAppKeyLoad                (const char *filename,
+
+XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecGnuTLSAppKeyLoadEx             (const char *filename,
+                                                                         xmlSecKeyDataType type,
                                                                          xmlSecKeyDataFormat format,
                                                                          const char *pwd,
                                                                          void *pwdCallback,
@@ -93,4 +109,3 @@ XMLSEC_CRYPTO_EXPORT void*      xmlSecGnuTLSAppGetDefaultPwdCallback    (void);
 #endif /* __cplusplus */
 
 #endif /* __XMLSEC_GNUTLS_APP_H__ */
-

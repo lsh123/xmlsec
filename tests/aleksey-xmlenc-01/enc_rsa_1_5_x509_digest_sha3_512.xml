@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PaymentInfo xmlns="http://example.org/paymentv2">
+  <Name>John Smith</Name>
+  <CreditCard Currency="USD" Limit="5,000"><EncryptedData xmlns="http://www.w3.org/2001/04/xmlenc#" Id="ED" Type="http://www.w3.org/2001/04/xmlenc#Content">
+  <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#aes256-cbc"/>
+  <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <EncryptedKey xmlns="http://www.w3.org/2001/04/xmlenc#">
+      <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#rsa-1_5"> </EncryptionMethod>
+      <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+        <X509Data>
+          <dsig11:X509Digest xmlns:dsig11="http://www.w3.org/2009/xmldsig11#" Algorithm="http://www.w3.org/2007/05/xmldsig-more#sha3-512">dRzdpkTFU0W5Xi2iW3S6mn8EqNGbkt0RlGN/qAoADn7UbNHB3kc6zCbzyCfYHA4z
+btSE3aiSGapG/PaiyiiBow==
+</dsig11:X509Digest>
+        </X509Data>
+      </KeyInfo>
+      <CipherData>
+        <CipherValue>wQ+P2tdEwawmMFqG2qBfecz9uM4LHpepdBVDwe+t0HlgYMtdpkhv0sn449QVDKH+
+xtpA+wZsEJq+hvI1uyqv8KFNmxt9H2neh6UiyTNfbZdJzxF6S1T5i8tYdKyieEFe
+xJOiNQ4WTxU7RydWsyI3YALcuAh75aiU2gMwAMS+yLSvjoMLPJoFOXIoqMW+mSZS
+tjnoQBeU4xrB1tsk9CkDXmN8ijlmsKf18m+9EpNAIQoTUDFhEcvR+RWBMjFCXWoG
+TVIfdFyCLtspt90tajtN7unmulfUD43oCs1u5NbSBRbxg3iyaO/V81vh1epo9Rl/
+RV/XKnmCaVbhjoIca0axVCNrtAtfgdEjosorHuGgWuMw3wYMQ3TKIyaAq0G59Cga
+YWyF+Ya4kQ4mzCcd5mGcIgzeNEiDqihzdcKaVbr4mQ87HxAoMG1D9jw5672dV1Ig
+LIjQ+nocFyhWa5iPvWGYge8D1ug1znakSkY3gmHhbrQdEvBsOlGMOJzEjAWlB0Zk
+m2AboPaiQKVMOSvdGcQgWS8QeUfhVbZxwkQlbd97DxYrMh/e5TchKCeF7HfGYvix
+sHxWokJNfgegyv4E6MnvGqwfVEznq8arbZnJqM+NO2i+wR/ob8XO8s4e61gJ0GwA
+e64etiVv7miungnHgRux3FttbXKRnvVl0svZuEwOxl4=</CipherValue>
+      </CipherData>
+    </EncryptedKey>
+  </KeyInfo>
+  <CipherData>
+    <CipherValue>OJd1oFkH20yqKKN2VRSNqDGAMF0zUMaFIRS1bnE9bZQG+wLZC+nvd7hYJO0Cv9RZ
+Hz+u+JiJLRofMmO7/dhPTnQOTjsrwZlOYyvngCjqfD9kuE/UFXKL54r2AYC+dVG9
+oXgbXwAwj+GUMfgr4k4rfL8dypv8hO4anohTn/KViimT9pid3NNQCbK3fCb7mlll</CipherValue>
+  </CipherData>
+</EncryptedData></CreditCard>
+</PaymentInfo>

@@ -18,26 +18,22 @@
 
 #include <string.h>
 
-#define WIN32_NO_STATUS
-#include <windows.h>
-#undef WIN32_NO_STATUS
-#include <ntstatus.h>
-#include <bcrypt.h>
-#include <ncrypt.h>
-
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/xmltree.h>
+#include <xmlsec/bn.h>
+#include <xmlsec/errors.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/transforms.h>
-#include <xmlsec/errors.h>
-#include <xmlsec/bn.h>
+#include <xmlsec/xmltree.h>
 
 #include <xmlsec/mscng/app.h>
 #include <xmlsec/mscng/crypto.h>
 #include <xmlsec/mscng/keysstore.h>
-#include <xmlsec/mscng/x509.h>
 #include <xmlsec/mscng/certkeys.h>
+#include <xmlsec/mscng/x509.h>
+
+#include "../cast_helpers.h"
+#include "private.h"
 
 #define XMLSEC_MSCNG_APP_DEFAULT_CERT_STORE_NAME TEXT("MY")
 
@@ -45,29 +41,22 @@
  *
  * MSCng Keys Store. Uses Simple Keys Store under the hood
  *
- * Simple Keys Store ptr is located after xmlSecKeyStore
- *
  ***************************************************************************/
-#define xmlSecMSCngKeysStoreSize (sizeof(xmlSecKeyStore) + sizeof(xmlSecKeyStorePtr))
-
-#define xmlSecMSCngKeysStoreGetSS(store) \
-    ((xmlSecKeyStoreCheckSize((store), xmlSecMSCngKeysStoreSize)) ? \
-     (xmlSecKeyStorePtr*)(((xmlSecByte*)(store)) + sizeof(xmlSecKeyStore)) : \
-     (xmlSecKeyStorePtr*)NULL)
+XMLSEC_KEY_STORE_DECLARE(MSCngKeysStore, xmlSecKeyStorePtr)
+#define xmlSecMSCngKeysStoreSize XMLSEC_KEY_STORE_SIZE(MSCngKeysStore)
 
 static int
 xmlSecMSCngKeysStoreInitialize(xmlSecKeyStorePtr store) {
-    xmlSecKeyStorePtr *ss;
+    xmlSecKeyStorePtr *simpleKeyStore;
 
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecMSCngKeysStoreId), -1);
 
-    ss = xmlSecMSCngKeysStoreGetSS(store);
-    xmlSecAssert2(*ss == NULL, -1);
+    simpleKeyStore = xmlSecMSCngKeysStoreGetCtx(store);
+    xmlSecAssert2(*simpleKeyStore == NULL, -1);
 
-    *ss = xmlSecKeyStoreCreate(xmlSecSimpleKeysStoreId);
-    if(*ss == NULL) {
-        xmlSecInternalError("xmlSecKeyStoreCreate",
-            xmlSecKeyStoreGetName(store));
+    *simpleKeyStore = xmlSecKeyStoreCreate(xmlSecSimpleKeysStoreId);
+    if(*simpleKeyStore == NULL) {
+        xmlSecInternalError("xmlSecKeyStoreCreate", xmlSecKeyStoreGetName(store));
         return(-1);
     }
 
@@ -76,24 +65,23 @@ xmlSecMSCngKeysStoreInitialize(xmlSecKeyStorePtr store) {
 
 static void
 xmlSecMSCngKeysStoreFinalize(xmlSecKeyStorePtr store) {
-    xmlSecKeyStorePtr *ss;
+    xmlSecKeyStorePtr *simpleKeyStore;
 
     xmlSecAssert(xmlSecKeyStoreCheckId(store, xmlSecMSCngKeysStoreId));
 
-    ss = xmlSecMSCngKeysStoreGetSS(store);
-    xmlSecAssert((ss != NULL) && (*ss != NULL));
+    simpleKeyStore = xmlSecMSCngKeysStoreGetCtx(store);
+    xmlSecAssert((simpleKeyStore != NULL) && (*simpleKeyStore != NULL));
 
-    xmlSecKeyStoreDestroy(*ss);
+    xmlSecKeyStoreDestroy(*simpleKeyStore);
 }
 
 static PCCERT_CONTEXT
-xmlSecMSCngKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
-        xmlSecKeyInfoCtxPtr keyInfoCtx) {
+xmlSecMSCngKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     LPCTSTR storeName;
     HCERTSTORE hStore = NULL;
-    PCCERT_CONTEXT pCertContext = NULL;
-    LPTSTR wcName = NULL;
-    BOOL ret;
+    PCCERT_CONTEXT cert = NULL;
+    LPTSTR lptName = NULL;
+    LPWSTR lpwName = NULL;
 
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecMSCngKeysStoreId), NULL);
     xmlSecAssert2(name != NULL, NULL);
@@ -106,114 +94,228 @@ xmlSecMSCngKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
 
     hStore = CertOpenSystemStore(0, storeName);
     if(hStore == NULL) {
-        xmlSecMSCngLastError("CertOpenSystemStore",
-                             xmlSecKeyStoreGetName(store));
-        return(NULL);
+        xmlSecMSCngLastError2("CertOpenSystemStore", xmlSecKeyStoreGetName(store),
+            "name=%s", xmlSecErrorsSafeString(storeName));
+        goto done;
     }
 
-    /* convert name to unicode */
-    wcName = xmlSecWin32ConvertUtf8ToTstr(name);
-    if(wcName == NULL) {
+    /* convert name to tstr */
+    lptName = xmlSecWin32ConvertUtf8ToTstr(name);
+    if(lptName == NULL) {
         xmlSecInternalError("xmlSecWin32ConvertUtf8ToTstr(name)",
                             xmlSecKeyStoreGetName(store));
-        CertCloseStore(hStore, 0);
-        return(NULL);
+        goto done;
     }
 
     /* find cert based on subject */
-    pCertContext = xmlSecMSCngX509FindCertBySubject(
-        hStore,
-        wcName,
-        X509_ASN_ENCODING | PKCS_7_ASN_ENCODING);
+    if (cert == NULL) {
+        cert = xmlSecMSCngX509FindCertBySubject(
+            hStore,
+            lptName,
+            X509_ASN_ENCODING | PKCS_7_ASN_ENCODING);
+    }
 
-    if(pCertContext == NULL) {
-        /* find cert based on friendly name */
-        DWORD dwPropSize;
-        PBYTE pbFriendlyName;
+    /* find cert based on friendly name */
+    if(cert == NULL) {
         PCCERT_CONTEXT pCertCtxIter = NULL;
 
+        /* convert name to unicode */
+        lpwName = xmlSecWin32ConvertUtf8ToUnicode(name);
+        if (lpwName == NULL) {
+            xmlSecInternalError("xmlSecWin32ConvertUtf8ToUnicode(name)",
+                xmlSecKeyStoreGetName(store));
+            goto done;
+        }
 
+        /* find cert based on friendly name */
         while (1) {
+            LPCWSTR lpwFriendlyName;
+
             pCertCtxIter = CertEnumCertificatesInStore(hStore, pCertCtxIter);
             if(pCertCtxIter == NULL) {
                 break;
             }
 
-            ret = CertGetCertificateContextProperty(pCertCtxIter,
-                                                    CERT_FRIENDLY_NAME_PROP_ID,
-                                                    NULL, &dwPropSize);
-            if(ret != TRUE) {
+            lpwFriendlyName = xmlSecMSCngX509GetFriendlyNameUnicode(pCertCtxIter);
+            if (lpwFriendlyName == NULL) {
                 continue;
             }
 
-            pbFriendlyName = xmlMalloc(dwPropSize);
-            if(pbFriendlyName == NULL) {
-                xmlSecMallocError(dwPropSize, xmlSecKeyStoreGetName(store));
-                xmlFree(wcName);
-                CertCloseStore(hStore, 0);
-                return(NULL);
-            }
-
-            ret = CertGetCertificateContextProperty(pCertCtxIter,
-                                                    CERT_FRIENDLY_NAME_PROP_ID,
-                                                    pbFriendlyName,
-                                                    &dwPropSize);
-            if(ret != TRUE) {
-                xmlFree(pbFriendlyName);
-                continue;
-            }
-
-            if(lstrcmp(wcName, (LPCTSTR)pbFriendlyName) == 0) {
-              pCertContext = pCertCtxIter;
-              xmlFree(pbFriendlyName);
+            if(lstrcmpW(lpwName, lpwFriendlyName) == 0) {
+              cert = pCertCtxIter;
+              xmlFree((void*)lpwFriendlyName);
               break;
             }
 
-            xmlFree(pbFriendlyName);
+            xmlFree((void*)lpwFriendlyName);
         }
     }
 
-    if(pCertContext == NULL) {
-        /* find cert based on part of the name */
-        pCertContext = CertFindCertificateInStore(
+    /* find cert based on part of the name */
+    if(cert == NULL) {
+        cert = CertFindCertificateInStore(
             hStore,
             X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
             0,
             CERT_FIND_SUBJECT_STR,
-            wcName,
+            lptName,
             NULL);
     }
 
+    /* done */
 
-    xmlFree(wcName);
-    /* dwFlags=0 means close the store with memory remaining allocated for
-     * contexts that have not been freed */
-    CertCloseStore(hStore, 0);
+done:
+    if (lptName != NULL) {
+        xmlFree(lptName);
+    }
+    if (lpwName != NULL) {
+        xmlFree(lpwName);
+    }
+    if(hStore != NULL) {
+        /* dwFlags=0 means close the store with memory remaining allocated for
+         * contexts that have not been freed */
+        CertCloseStore(hStore, 0);
+    }
 
-    return(pCertContext);
+    return(cert);
+}
+
+
+static int
+xmlSecMSCngKeysStoreAddCertDataToKey(xmlSecKeyPtr key, PCCERT_CONTEXT cert) {
+    xmlSecKeyDataPtr x509Data = NULL;
+    PCCERT_CONTEXT certTmp = NULL;
+    int ret;
+
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(cert != NULL, -1);
+
+    /* create x509 data  */
+    x509Data = xmlSecKeyDataCreate(xmlSecMSCngKeyDataX509Id);
+    if (x509Data == NULL) {
+        xmlSecInternalError("xmlSecKeyDataCreate", NULL);
+        return(-1);
+    }
+
+    /* set cert as the key cert */
+    certTmp = CertDuplicateCertificateContext(cert);
+    if (certTmp == NULL) {
+        xmlSecMSCngLastError("CertDuplicateCertificateContext", NULL);
+        xmlSecKeyDataDestroy(x509Data);
+        return(-1);
+    }
+    ret = xmlSecMSCngKeyDataX509AdoptKeyCert(x509Data, certTmp);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptKeyCert", NULL);
+        CertFreeCertificateContext(certTmp);
+        xmlSecKeyDataDestroy(x509Data);
+        return(-1);
+    }
+    certTmp = NULL; /* owned by x509Data*/
+
+    /* lastly, add x509 data to the key */
+    ret = xmlSecKeyAdoptData(key, x509Data);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecKeyAdoptData", NULL);
+        xmlSecKeyDataDestroy(x509Data);
+        return(-1);
+    }
+    x509Data = NULL; /* owned by key */
+
+    /* success */
+    return(0);
+}
+
+static int
+xmlSecMSCngKeysStoreSetKeyValueFromCert(xmlSecKeyPtr key, PCCERT_CONTEXT cert, xmlSecKeyReqPtr keyReq) {
+    PCCERT_CONTEXT certTmp;
+    xmlSecKeyDataPtr keyValue;
+    int ret;
+
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(cert != NULL, -1);
+    xmlSecAssert2(keyReq != NULL, -1);
+
+    /* create key value data from cert */
+    certTmp = CertDuplicateCertificateContext(cert);
+    if (certTmp == NULL) {
+        xmlSecMSCngLastError("CertDuplicateCertificateContext", NULL);
+        return(-1);
+    }
+
+    keyValue = xmlSecMSCngCertAdopt(cert, keyReq->keyType);
+    if (keyValue == NULL) {
+        xmlSecInternalError("xmlSecMSCngCertAdopt", NULL);
+        CertFreeCertificateContext(certTmp);
+        return(-1);
+    }
+    certTmp = NULL; /* owned by key value now */
+
+    /* add key value data to the key */
+    ret = xmlSecKeySetValue(key, keyValue);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecKeySetValue", NULL);
+        xmlSecKeyDataDestroy(keyValue);
+        return(-1);
+    }
+    keyValue = NULL; /* owned by key  now */
+
+    /* success */
+    return(0);
 }
 
 static xmlSecKeyPtr
-xmlSecMSCngKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
-        xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    xmlSecKeyStorePtr* ss;
+xmlSecMSCngKeysStoreCreateKeyFromCert(PCCERT_CONTEXT cert, xmlSecKeyReqPtr keyReq) {
     xmlSecKeyPtr key = NULL;
+    int ret;
+
+    xmlSecAssert2(cert != NULL, NULL);
+    xmlSecAssert2(keyReq != NULL, NULL);
+
+    /* create key */
+    key = xmlSecKeyCreate();
+    if (key == NULL) {
+        xmlSecInternalError("xmlSecKeyCreate", NULL);
+        return(NULL);
+    }
+
+    /* set key value */
+    ret = xmlSecMSCngKeysStoreSetKeyValueFromCert(key, cert, keyReq);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecMSCngKeysStoreSetKeyValueFromCert", NULL);
+        xmlSecKeyDestroy(key);
+        return(NULL);
+    }
+
+    /* create and add x509 data to the key */
+    ret = xmlSecMSCngKeysStoreAddCertDataToKey(key, cert);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecMSCngKeysStoreAddCertDataToKey", NULL);
+        xmlSecKeyDestroy(key);
+        return(NULL);
+    }
+
+    /* success */
+    return(key);
+}
+
+static xmlSecKeyPtr
+xmlSecMSCngKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlSecKeyStorePtr* simpleKeyStore;
     xmlSecKeyReqPtr keyReq = NULL;
-    PCCERT_CONTEXT pCertContext = NULL;
-    PCCERT_CONTEXT pDuplicatedCertContext = NULL;
-    xmlSecKeyDataPtr data = NULL;
-    xmlSecKeyDataPtr x509Data = NULL;
+    PCCERT_CONTEXT cert = NULL;
+    xmlSecKeyPtr key = NULL;
     xmlSecKeyPtr res = NULL;
     int ret;
 
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecMSCngKeysStoreId), NULL);
     xmlSecAssert2(keyInfoCtx != NULL, NULL);
 
-    ss = xmlSecMSCngKeysStoreGetSS(store);
-    xmlSecAssert2(((ss != NULL) && (*ss != NULL)), NULL);
+    simpleKeyStore = xmlSecMSCngKeysStoreGetCtx(store);
+    xmlSecAssert2(((simpleKeyStore != NULL) && (*simpleKeyStore != NULL)), NULL);
 
     /* look for the key in the simple store */
-    key = xmlSecKeyStoreFindKey(*ss, name, keyInfoCtx);
+    key = xmlSecKeyStoreFindKey(*simpleKeyStore, name, keyInfoCtx);
     if(key != NULL) {
         return(key);
     }
@@ -228,78 +330,17 @@ xmlSecMSCngKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
         goto done;
     }
 
-    pCertContext = xmlSecMSCngKeysStoreFindCert(store, name, keyInfoCtx);
-    if(pCertContext == NULL) {
+    cert = xmlSecMSCngKeysStoreFindCert(store, name, keyInfoCtx);
+    if(cert == NULL) {
+        /* cert not found */
         goto done;
     }
 
-    /* set cert in x509 data */
-    x509Data = xmlSecKeyDataCreate(xmlSecMSCngKeyDataX509Id);
-    if(x509Data == NULL) {
-        xmlSecInternalError("xmlSecKeyDataCreate",
-            xmlSecKeyDataGetName(x509Data));
+    key = xmlSecMSCngKeysStoreCreateKeyFromCert(cert, keyReq);
+    if (key == NULL) {
+        xmlSecInternalError("xmlSecMSCngKeysStoreCreateKeyFromCert", xmlSecKeyStoreGetName(store));
         goto done;
     }
-
-    pDuplicatedCertContext = CertDuplicateCertificateContext(pCertContext);
-    if(pDuplicatedCertContext == NULL) {
-        xmlSecMSCngLastError("CertDuplicateCertificateContext",
-            xmlSecKeyDataGetName(x509Data));
-        goto done;
-    }
-
-    ret = xmlSecMSCngKeyDataX509AdoptCert(x509Data, pDuplicatedCertContext);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptCert",
-            xmlSecKeyDataGetName(x509Data));
-        goto done;
-    }
-    pDuplicatedCertContext = NULL;
-
-    pDuplicatedCertContext = CertDuplicateCertificateContext(pCertContext);
-    if(pDuplicatedCertContext == NULL) {
-        xmlSecMSCngLastError("CertDuplicateCertificateContext",
-            xmlSecKeyDataGetName(x509Data));
-        goto done;
-    }
-
-    ret = xmlSecMSCngKeyDataX509AdoptKeyCert(x509Data, pDuplicatedCertContext);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecMSCngKeyDataX509AdoptKeyCert",
-            xmlSecKeyDataGetName(x509Data));
-        goto done;
-    }
-    pDuplicatedCertContext = NULL;
-
-    /* set cert in key data */
-    data = xmlSecMSCngCertAdopt(pCertContext, keyReq->keyType);
-    if(data == NULL) {
-        xmlSecInternalError("xmlSecMSCngCertAdopt", NULL);
-        goto done;
-    }
-    pCertContext = NULL;
-
-    /* create key and add key data and x509 data to it */
-    key = xmlSecKeyCreate();
-    if(key == NULL) {
-        xmlSecInternalError("xmlSecKeyCreate", NULL);
-        goto done;
-    }
-
-    ret = xmlSecKeySetValue(key, data);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecKeySetValue", xmlSecKeyDataGetName(data));
-        goto done;
-    }
-    data = NULL;
-
-    ret = xmlSecKeyAdoptData(key, x509Data);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecKeyAdoptData",
-            xmlSecKeyDataGetName(x509Data));
-        goto done;
-    }
-    x509Data = NULL;
 
     /* set the name of the key to the given name */
     ret = xmlSecKeySetName(key, name);
@@ -315,44 +356,111 @@ xmlSecMSCngKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
     }
 
 done:
-    if(pCertContext != NULL) {
-        CertFreeCertificateContext(pCertContext);
+    if(cert != NULL) {
+        CertFreeCertificateContext(cert);
     }
-
-    if(pDuplicatedCertContext != NULL) {
-        CertFreeCertificateContext(pDuplicatedCertContext);
-    }
-
-    if(data != NULL) {
-        xmlSecKeyDataDestroy(data);
-    }
-
-    if(x509Data != NULL) {
-        xmlSecKeyDataDestroy(x509Data);
-    }
-
     if(key != NULL) {
         xmlSecKeyDestroy(key);
     }
-
     return(res);
 }
+
+static xmlSecKeyPtr
+xmlSecMSCngKeysStoreFindKeyFromX509Data(xmlSecKeyStorePtr store, xmlSecKeyX509DataValuePtr x509Data, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+#ifndef XMLSEC_NO_X509
+    LPCTSTR storeName;
+    HCERTSTORE hStore = NULL;
+    xmlSecMSCngX509FindCertCtx findCertCtx;
+    PCCERT_CONTEXT cert = NULL;
+    xmlSecKeyPtr key;
+    int ret;
+
+    xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecMSCngKeysStoreId), NULL);
+    xmlSecAssert2(x509Data != NULL, NULL);
+    xmlSecAssert2(keyInfoCtx != NULL, NULL);
+
+    /* open system store */
+    storeName = xmlSecMSCngAppGetCertStoreName();
+    if (storeName == NULL) {
+        storeName = XMLSEC_MSCNG_APP_DEFAULT_CERT_STORE_NAME;
+    }
+
+    hStore = CertOpenSystemStore(0, storeName);
+    if (hStore == NULL) {
+        xmlSecMSCngLastError2("CertOpenSystemStore", xmlSecKeyStoreGetName(store),
+            "name=%s", xmlSecErrorsSafeString(storeName));
+        return(NULL);
+    }
+
+    /* init find certs */
+    ret = xmlSecMSCngX509FindCertCtxInitializeFromValue(&findCertCtx, x509Data);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecMSCngX509FindCertCtxInitializeFromValue", NULL);
+        xmlSecMSCngX509FindCertCtxFinalize(&findCertCtx);
+        CertCloseStore(hStore, 0);
+        return(NULL);
+    }
+
+    /* do we have a cert we can use? not an error if we don't! */
+    cert = xmlSecMSCngX509FindCert(hStore, &findCertCtx);
+    if (cert == NULL) {
+        xmlSecMSCngX509FindCertCtxFinalize(&findCertCtx);
+        CertCloseStore(hStore, 0);
+        return(NULL);
+    }
+
+    /* create a key */
+    key = xmlSecMSCngKeysStoreCreateKeyFromCert(cert, &(keyInfoCtx->keyReq));
+    if (key == NULL) {
+        xmlSecInternalError("xmlSecMSCngKeysStoreCreateKeyFromCert", xmlSecKeyStoreGetName(store));
+        CertFreeCertificateContext(cert);
+        xmlSecMSCngX509FindCertCtxFinalize(&findCertCtx);
+        CertCloseStore(hStore, 0);
+        return(NULL);
+    }
+
+    /* TODO: search simple keys store? */
+    /* 
+    simplekeystore = xmlSecMSCngKeysStoreGetCtx(store);
+    xmlSecAssert2(((simplekeystore != NULL) && (*simplekeystore != NULL)), NULL);
+
+    keysList = xmlSecSimpleKeysStoreGetKeys(*simplekeystore);
+    if (keysList == NULL) {
+        xmlSecInternalError("xmlSecSimpleKeysStoreGetKeys", NULL);
+        return(NULL);
+    }
+    key = xmlSecMSCngX509FindKeyByValue(keysList, x509Data);
+    if (key == NULL) {
+        return(NULL);
+    }
+    */
+
+    /* done! */
+    CertFreeCertificateContext(cert);
+    xmlSecMSCngX509FindCertCtxFinalize(&findCertCtx);
+    CertCloseStore(hStore, 0);
+    return(key);
+#else  /* XMLSEC_NO_X509 */
+    return(NULL);
+#endif /* XMLSEC_NO_X509 */
+}
+
 
 static xmlSecKeyStoreKlass xmlSecMSCngKeysStoreKlass = {
     sizeof(xmlSecKeyStoreKlass),
     xmlSecMSCngKeysStoreSize,
 
     /* data */
-    BAD_CAST "MSCng-keys-store",               /* const xmlChar* name; */
+    BAD_CAST "MSCng-keys-store",                /* const xmlChar* name; */
 
     /* constructors/destructor */
     xmlSecMSCngKeysStoreInitialize,             /* xmlSecKeyStoreInitializeMethod initialize; */
     xmlSecMSCngKeysStoreFinalize,               /* xmlSecKeyStoreFinalizeMethod finalize; */
     xmlSecMSCngKeysStoreFindKey,                /* xmlSecKeyStoreFindKeyMethod findKey; */
+    xmlSecMSCngKeysStoreFindKeyFromX509Data,    /* xmlSecKeyStoreFindKeyFromX509DataMethod findKeyFromX509Data; */
 
     /* reserved for the future */
     NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
 };
 
 /**
@@ -378,17 +486,17 @@ xmlSecMSCngKeysStoreGetKlass(void) {
  */
 int
 xmlSecMSCngKeysStoreAdoptKey(xmlSecKeyStorePtr store, xmlSecKeyPtr key) {
-    xmlSecKeyStorePtr *ss;
+    xmlSecKeyStorePtr *simpleKeyStore;
 
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecMSCngKeysStoreId), -1);
     xmlSecAssert2((key != NULL), -1);
 
-    ss = xmlSecMSCngKeysStoreGetSS(store);
-    xmlSecAssert2(ss != NULL, -1);
-    xmlSecAssert2(*ss != NULL, -1);
-    xmlSecAssert2(xmlSecKeyStoreCheckId(*ss, xmlSecSimpleKeysStoreId), -1);
+    simpleKeyStore = xmlSecMSCngKeysStoreGetCtx(store);
+    xmlSecAssert2(simpleKeyStore != NULL, -1);
+    xmlSecAssert2(*simpleKeyStore != NULL, -1);
+    xmlSecAssert2(xmlSecKeyStoreCheckId(*simpleKeyStore, xmlSecSimpleKeysStoreId), -1);
 
-    return(xmlSecSimpleKeysStoreAdoptKey(*ss, key));
+    return(xmlSecSimpleKeysStoreAdoptKey(*simpleKeyStore, key));
 }
 
 /**
@@ -402,95 +510,8 @@ xmlSecMSCngKeysStoreAdoptKey(xmlSecKeyStorePtr store, xmlSecKeyPtr key) {
  * Returns: 0 on success or a negative value if an error occurs.
  */
 int
-xmlSecMSCngKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
-        xmlSecKeysMngrPtr keysMngr) {
-    xmlDocPtr doc;
-    xmlNodePtr root;
-    xmlNodePtr cur;
-    xmlSecKeyPtr key;
-    xmlSecKeyInfoCtx keyInfoCtx;
-    int ret;
-
-    xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecMSCngKeysStoreId), -1);
-    xmlSecAssert2((uri != NULL), -1);
-    UNREFERENCED_PARAMETER(keysMngr);
-
-    doc = xmlParseFile(uri);
-    if(doc == NULL) {
-	xmlSecXmlError2("xmlParseFile", xmlSecKeyStoreGetName(store), "uri=%s",
-            xmlSecErrorsSafeString(uri));
-        return(-1);
-    }
-
-    root = xmlDocGetRootElement(doc);
-    if(!xmlSecCheckNodeName(root, BAD_CAST "Keys", xmlSecNs)) {
-        xmlSecInvalidNodeError(root, BAD_CAST "Keys", xmlSecKeyStoreGetName(store));
-        xmlFreeDoc(doc);
-        return(-1);
-    }
-
-    cur = xmlSecGetNextElementNode(root->children);
-    while((cur != NULL) && xmlSecCheckNodeName(cur, xmlSecNodeKeyInfo, xmlSecDSigNs)) {
-        key = xmlSecKeyCreate();
-        if(key == NULL) {
-            xmlSecInternalError("xmlSecKeyCreate",
-                                xmlSecKeyStoreGetName(store));
-            xmlFreeDoc(doc);
-            return(-1);
-        }
-
-        ret = xmlSecKeyInfoCtxInitialize(&keyInfoCtx, NULL);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecKeyInfoCtxInitialize",
-                                xmlSecKeyStoreGetName(store));
-            xmlSecKeyDestroy(key);
-            xmlFreeDoc(doc);
-            return(-1);
-        }
-
-        keyInfoCtx.mode           = xmlSecKeyInfoModeRead;
-        keyInfoCtx.keysMngr       = NULL;
-        keyInfoCtx.flags          = XMLSEC_KEYINFO_FLAGS_DONT_STOP_ON_KEY_FOUND |
-                                    XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS;
-        keyInfoCtx.keyReq.keyId   = xmlSecKeyDataIdUnknown;
-        keyInfoCtx.keyReq.keyType = xmlSecKeyDataTypeAny;
-        keyInfoCtx.keyReq.keyUsage= xmlSecKeyDataUsageAny;
-
-        ret = xmlSecKeyInfoNodeRead(cur, key, &keyInfoCtx);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecKeyInfoNodeRead",
-                                xmlSecKeyStoreGetName(store));
-            xmlSecKeyInfoCtxFinalize(&keyInfoCtx);
-            xmlSecKeyDestroy(key);
-            xmlFreeDoc(doc);
-            return(-1);
-        }
-        xmlSecKeyInfoCtxFinalize(&keyInfoCtx);
-
-        if(xmlSecKeyIsValid(key)) {
-            ret = xmlSecMSCngKeysStoreAdoptKey(store, key);
-            if(ret < 0) {
-                xmlSecInternalError("xmlSecMSCngKeysStoreAdoptKey",
-                    xmlSecKeyStoreGetName(store));
-                xmlSecKeyDestroy(key);
-                xmlFreeDoc(doc);
-                return(-1);
-            }
-        } else {
-            /* we have an unknown key in our file, just ignore it */
-            xmlSecKeyDestroy(key);
-        }
-        cur = xmlSecGetNextElementNode(cur->next);
-    }
-
-    if(cur != NULL) {
-        xmlSecUnexpectedNodeError(cur, xmlSecKeyStoreGetName(store));
-        xmlFreeDoc(doc);
-        return(-1);
-    }
-
-    xmlFreeDoc(doc);
-    return(0);
+xmlSecMSCngKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri, xmlSecKeysMngrPtr keysMngr) {
+    return(xmlSecSimpleKeysStoreLoad_ex(store, uri, keysMngr, xmlSecMSCngKeysStoreAdoptKey));
 }
 
 /**
@@ -505,15 +526,15 @@ xmlSecMSCngKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
  */
 int
 xmlSecMSCngKeysStoreSave(xmlSecKeyStorePtr store, const char *filename, xmlSecKeyDataType type) {
-    xmlSecKeyStorePtr *ss;
+    xmlSecKeyStorePtr *simpleKeyStore;
 
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecMSCngKeysStoreId), -1);
     xmlSecAssert2((filename != NULL), -1);
 
-    ss = xmlSecMSCngKeysStoreGetSS(store);
-    xmlSecAssert2(ss != NULL, -1);
-    xmlSecAssert2(*ss != NULL, -1);
-    xmlSecAssert2(xmlSecKeyStoreCheckId(*ss, xmlSecSimpleKeysStoreId), -1);
+    simpleKeyStore = xmlSecMSCngKeysStoreGetCtx(store);
+    xmlSecAssert2(simpleKeyStore != NULL, -1);
+    xmlSecAssert2(*simpleKeyStore != NULL, -1);
+    xmlSecAssert2(xmlSecKeyStoreCheckId(*simpleKeyStore, xmlSecSimpleKeysStoreId), -1);
 
-    return(xmlSecSimpleKeysStoreSave(*ss, filename, type));
+    return(xmlSecSimpleKeysStoreSave(*simpleKeyStore, filename, type));
 }

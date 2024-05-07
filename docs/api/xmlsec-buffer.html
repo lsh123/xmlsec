@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>buffer: XML Security Library Reference Manual</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
 <link rel="up" href="xmlsec-ref.html" title="XML Security Core Library API Reference.">
 <link rel="prev" href="xmlsec-bn.html" title="bn">
 <link rel="next" href="xmlsec-dl.html" title="dl">
-<meta name="generator" content="GTK-Doc V1.27 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.33.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -85,6 +85,14 @@
 </tr>
 <tr>
 <td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-buffer.html#xmlSecBufferIsEmpty" title="xmlSecBufferIsEmpty ()">xmlSecBufferIsEmpty</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
 <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="returnvalue">xmlSecByte</span></a> *
 </td>
 <td class="function_name">
@@ -141,6 +149,14 @@
 </tr>
 <tr>
 <td class="function_type">
+<font><span class="returnvalue">void</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-buffer.html#xmlSecBufferSwap" title="xmlSecBufferSwap ()">xmlSecBufferSwap</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
@@ -176,6 +192,14 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
+<a class="link" href="xmlsec-buffer.html#xmlSecBufferReverse" title="xmlSecBufferReverse ()">xmlSecBufferReverse</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
 <a class="link" href="xmlsec-buffer.html#xmlSecBufferReadFile" title="xmlSecBufferReadFile ()">xmlSecBufferReadFile</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
@@ -193,6 +217,14 @@
 </td>
 <td class="function_name">
 <a class="link" href="xmlsec-buffer.html#xmlSecBufferBase64NodeContentWrite" title="xmlSecBufferBase64NodeContentWrite ()">xmlSecBufferBase64NodeContentWrite</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-buffer.html#xmlSecBufferHexRead" title="xmlSecBufferHexRead ()">xmlSecBufferHexRead</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -367,6 +399,36 @@ function.</p>
 <td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecBufferIsEmpty"></a><h3>xmlSecBufferIsEmpty ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecBufferIsEmpty (<em class="parameter"><code><a class="link" href="xmlsec-buffer.html#xmlSecBuffer" title="struct xmlSecBuffer"><span class="type">xmlSecBufferPtr</span></a> buf</code></em>);</pre>
+<p>Checks if the <em class="parameter"><code>buf</code></em>
+ is empty (<em class="parameter"><code>buf</code></em>
+ is null or <em class="parameter"><code>buf</code></em>
+'s data is null or <em class="parameter"><code>buf</code></em>
+'s size is zero).</p>
+<div class="refsect3">
+<a name="xmlSecBufferIsEmpty.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>buf</p></td>
+<td class="parameter_description"><p>the pointer to buffer object.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecBufferIsEmpty.returns"></a><h4>Returns</h4>
+<p> 1 if buffer is empty or 0 otherwise.</p>
 </div>
 </div>
 <hr>
@@ -584,6 +646,36 @@ xmlSecBufferEmpty (<em class="parameter"><code><a class="link" href="xmlsec-buff
 </div>
 <hr>
 <div class="refsect2">
+<a name="xmlSecBufferSwap"></a><h3>xmlSecBufferSwap ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">void</span></font>
+xmlSecBufferSwap (<em class="parameter"><code><a class="link" href="xmlsec-buffer.html#xmlSecBuffer" title="struct xmlSecBuffer"><span class="type">xmlSecBufferPtr</span></a> buf1</code></em>,
+                  <em class="parameter"><code><a class="link" href="xmlsec-buffer.html#xmlSecBuffer" title="struct xmlSecBuffer"><span class="type">xmlSecBufferPtr</span></a> buf2</code></em>);</pre>
+<p>Swaps the content of the two buffers.</p>
+<div class="refsect3">
+<a name="xmlSecBufferSwap.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>buf1</p></td>
+<td class="parameter_description"><p>the pointer to the first buffer object.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>buf2</p></td>
+<td class="parameter_description"><p>the pointer to the second buffer object.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
 <a name="xmlSecBufferAppend"></a><h3>xmlSecBufferAppend ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecBufferAppend (<em class="parameter"><code><a class="link" href="xmlsec-buffer.html#xmlSecBuffer" title="struct xmlSecBuffer"><span class="type">xmlSecBufferPtr</span></a> buf</code></em>,
@@ -736,6 +828,33 @@ xmlSecBufferRemoveTail (<em class="parameter"><code><a class="link" href="xmlsec
 </div>
 <hr>
 <div class="refsect2">
+<a name="xmlSecBufferReverse"></a><h3>xmlSecBufferReverse ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecBufferReverse (<em class="parameter"><code><a class="link" href="xmlsec-buffer.html#xmlSecBuffer" title="struct xmlSecBuffer"><span class="type">xmlSecBufferPtr</span></a> buf</code></em>);</pre>
+<p>Reverses order of bytes in the buffer <em class="parameter"><code>buf</code></em>
+.</p>
+<div class="refsect3">
+<a name="xmlSecBufferReverse.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>buf</p></td>
+<td class="parameter_description"><p>the pointer to buffer object.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecBufferReverse.returns"></a><h4>Returns</h4>
+<p> 0 on success or a negative value if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
 <a name="xmlSecBufferReadFile"></a><h3>xmlSecBufferReadFile ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecBufferReadFile (<em class="parameter"><code><a class="link" href="xmlsec-buffer.html#xmlSecBuffer" title="struct xmlSecBuffer"><span class="type">xmlSecBufferPtr</span></a> buf</code></em>,
@@ -848,6 +967,42 @@ xmlSecBufferBase64NodeContentWrite (<em class="parameter"><code><a class="link" 
 </div>
 <hr>
 <div class="refsect2">
+<a name="xmlSecBufferHexRead"></a><h3>xmlSecBufferHexRead ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecBufferHexRead (<em class="parameter"><code><a class="link" href="xmlsec-buffer.html#xmlSecBuffer" title="struct xmlSecBuffer"><span class="type">xmlSecBufferPtr</span></a> buf</code></em>,
+                     <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *hexStr</code></em>);</pre>
+<p>Reads content of hex encoded <em class="parameter"><code>hexStr</code></em>
+ into <em class="parameter"><code>buf</code></em>
+.</p>
+<div class="refsect3">
+<a name="xmlSecBufferHexRead.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>buf</p></td>
+<td class="parameter_description"><p>the pointer to buffer object.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>hexStr</p></td>
+<td class="parameter_description"><p>the hex string.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecBufferHexRead.returns"></a><h4>Returns</h4>
+<p> 0 on success or a negative value if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
 <a name="xmlSecBufferCreateOutputBuffer"></a><h3>xmlSecBufferCreateOutputBuffer ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlOutputBufferPtr</span></font>
 xmlSecBufferCreateOutputBuffer (<em class="parameter"><code><a class="link" href="xmlsec-buffer.html#xmlSecBuffer" title="struct xmlSecBuffer"><span class="type">xmlSecBufferPtr</span></a> buf</code></em>);</pre>
@@ -896,13 +1051,13 @@ occurs.</p>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecAllocModeExact"></a>xmlSecAllocModeExact</p></td>
 <td class="enum_member_description"><p>the memory allocation mode that minimizes total
-                             allocated memory size.</p></td>
+allocated memory size.</p></td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecAllocModeDouble"></a>xmlSecAllocModeDouble</p></td>
 <td class="enum_member_description"><p>the memory allocation mode that tries to minimize
-                             the number of malloc calls.</p></td>
+the number of malloc calls.</p></td>
 <td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
@@ -956,6 +1111,6 @@ occurs.</p>
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.27</div>
+<hr>Generated by GTK-Doc V1.33.1</div>
 </body>
 </html>

@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>errors: XML Security Library Reference Manual</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
 <link rel="up" href="xmlsec-ref.html" title="XML Security Core Library API Reference.">
 <link rel="prev" href="xmlsec-dl.html" title="dl">
 <link rel="next" href="xmlsec-io.html" title="io">
-<meta name="generator" content="GTK-Doc V1.27 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.33.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -269,6 +269,10 @@
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-ALGORITHM:CAPS" title="XMLSEC_ERRORS_R_INVALID_ALGORITHM">XMLSEC_ERRORS_R_INVALID_ALGORITHM</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
 <td class="function_name"><a class="link" href="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-KEY-DATA:CAPS" title="XMLSEC_ERRORS_R_INVALID_KEY_DATA">XMLSEC_ERRORS_R_INVALID_KEY_DATA</a></td>
 </tr>
 <tr>
@@ -301,6 +305,10 @@
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-errors.html#XMLSEC-ERRORS-R-MAX-KEYINFOREFERENCE-LEVEL:CAPS" title="XMLSEC_ERRORS_R_MAX_KEYINFOREFERENCE_LEVEL">XMLSEC_ERRORS_R_MAX_KEYINFOREFERENCE_LEVEL</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
 <td class="function_name"><a class="link" href="xmlsec-errors.html#XMLSEC-ERRORS-R-MAX-ENCKEY-LEVEL:CAPS" title="XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL">XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL</a></td>
 </tr>
 <tr>
@@ -329,6 +337,18 @@
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-errors.html#XMLSEC-ERRORS-R-CRL-VERIFY-FAILED:CAPS" title="XMLSEC_ERRORS_R_CRL_VERIFY_FAILED">XMLSEC_ERRORS_R_CRL_VERIFY_FAILED</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-errors.html#XMLSEC-ERRORS-R-CRL-NOT-YET-VALID:CAPS" title="XMLSEC_ERRORS_R_CRL_NOT_YET_VALID">XMLSEC_ERRORS_R_CRL_NOT_YET_VALID</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-errors.html#XMLSEC-ERRORS-R-CRL-HAS-EXPIRED:CAPS" title="XMLSEC_ERRORS_R_CRL_HAS_EXPIRED">XMLSEC_ERRORS_R_CRL_HAS_EXPIRED</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
 <td class="function_name"><a class="link" href="xmlsec-errors.html#XMLSEC-ERRORS-R-DSIG-NO-REFERENCES:CAPS" title="XMLSEC_ERRORS_R_DSIG_NO_REFERENCES">XMLSEC_ERRORS_R_DSIG_NO_REFERENCES</a></td>
 </tr>
 <tr>
@@ -338,6 +358,10 @@
 <tr>
 <td class="define_keyword">#define</td>
 <td class="function_name"><a class="link" href="xmlsec-errors.html#XMLSEC-ERRORS-R-ASSERTION:CAPS" title="XMLSEC_ERRORS_R_ASSERTION">XMLSEC_ERRORS_R_ASSERTION</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-errors.html#XMLSEC-ERROR-R-CAST-IMPOSSIBLE:CAPS" title="XMLSEC_ERROR_R_CAST_IMPOSSIBLE">XMLSEC_ERROR_R_CAST_IMPOSSIBLE</a></td>
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
@@ -968,6 +992,13 @@ enable it.</p>
 </div>
 <hr>
 <div class="refsect2">
+<a name="XMLSEC-ERRORS-R-INVALID-ALGORITHM:CAPS"></a><h3>XMLSEC_ERRORS_R_INVALID_ALGORITHM</h3>
+<pre class="programlisting">#define XMLSEC_ERRORS_R_INVALID_ALGORITHM               36
+</pre>
+<p>Invalid or unsupported algorithm.</p>
+</div>
+<hr>
+<div class="refsect2">
 <a name="XMLSEC-ERRORS-R-INVALID-KEY-DATA:CAPS"></a><h3>XMLSEC_ERRORS_R_INVALID_KEY_DATA</h3>
 <pre class="programlisting">#define XMLSEC_ERRORS_R_INVALID_KEY_DATA                41
 </pre>
@@ -1025,6 +1056,13 @@ in the <a class="ulink" href="" target="_top">&lt;dsig:RetrievalMethod/&gt;</a> 
 </div>
 <hr>
 <div class="refsect2">
+<a name="XMLSEC-ERRORS-R-MAX-KEYINFOREFERENCE-LEVEL:CAPS"></a><h3>XMLSEC_ERRORS_R_MAX_KEYINFOREFERENCE_LEVEL</h3>
+<pre class="programlisting">#define XMLSEC_ERRORS_R_MAX_KEYINFOREFERENCE_LEVEL        51
+</pre>
+<p>Max allowed KeyInfoReference level reached.</p>
+</div>
+<hr>
+<div class="refsect2">
 <a name="XMLSEC-ERRORS-R-MAX-ENCKEY-LEVEL:CAPS"></a><h3>XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL</h3>
 <pre class="programlisting">#define XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL                61
 </pre>
@@ -1074,6 +1112,27 @@ in the <a class="ulink" href="" target="_top">&lt;dsig:RetrievalMethod/&gt;</a> 
 </div>
 <hr>
 <div class="refsect2">
+<a name="XMLSEC-ERRORS-R-CRL-VERIFY-FAILED:CAPS"></a><h3>XMLSEC_ERRORS_R_CRL_VERIFY_FAILED</h3>
+<pre class="programlisting">#define XMLSEC_ERRORS_R_CRL_VERIFY_FAILED              77
+</pre>
+<p>CRL verification failed.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="XMLSEC-ERRORS-R-CRL-NOT-YET-VALID:CAPS"></a><h3>XMLSEC_ERRORS_R_CRL_NOT_YET_VALID</h3>
+<pre class="programlisting">#define XMLSEC_ERRORS_R_CRL_NOT_YET_VALID              78
+</pre>
+<p>"Last update" CRL verification failed.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="XMLSEC-ERRORS-R-CRL-HAS-EXPIRED:CAPS"></a><h3>XMLSEC_ERRORS_R_CRL_HAS_EXPIRED</h3>
+<pre class="programlisting">#define XMLSEC_ERRORS_R_CRL_HAS_EXPIRED                79
+</pre>
+<p>"Next update" verification failed.</p>
+</div>
+<hr>
+<div class="refsect2">
 <a name="XMLSEC-ERRORS-R-DSIG-NO-REFERENCES:CAPS"></a><h3>XMLSEC_ERRORS_R_DSIG_NO_REFERENCES</h3>
 <pre class="programlisting">#define XMLSEC_ERRORS_R_DSIG_NO_REFERENCES              81
 </pre>
@@ -1092,6 +1151,13 @@ in the <a class="ulink" href="" target="_top">&lt;dsig:RetrievalMethod/&gt;</a> 
 <pre class="programlisting">#define XMLSEC_ERRORS_R_ASSERTION                       100
 </pre>
 <p>Invalid assertion.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="XMLSEC-ERROR-R-CAST-IMPOSSIBLE:CAPS"></a><h3>XMLSEC_ERROR_R_CAST_IMPOSSIBLE</h3>
+<pre class="programlisting">#define XMLSEC_ERROR_R_CAST_IMPOSSIBLE                  101
+</pre>
+<p>Impossible to cast from one type to another.</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1118,6 +1184,6 @@ for the <a class="link" href="xmlsec-errors.html#xmlSecError" title="xmlSecError
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.27</div>
+<hr>Generated by GTK-Doc V1.33.1</div>
 </body>
 </html>

@@ -5,19 +5,21 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * SECTION:xmlsec
  * @Short_description: Utility functions.
  * @Stability: Stable
  *
+ * Various utility functions.
  */
 
 #include "globals.h"
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #include <libxml/tree.h>
 
@@ -28,6 +30,8 @@
 #include <xmlsec/app.h>
 #include <xmlsec/io.h>
 #include <xmlsec/errors.h>
+
+#include "cast_helpers.h"
 
 /*
  * Custom external entity handler, denies all files except the initial
@@ -60,10 +64,9 @@ xmlSecNoXxeExternalEntityLoader(const char *URL, const char *ID,
     return(NULL);
 }
 
-/*
+/**
  * xmlSecSetExternalEntityLoader:
- * @entityLoader:       the new entity resolver function, or NULL to restore 
- *                      libxml2's default handler
+ * @entityLoader:       the new entity resolver function, or NULL to restore libxml2's default handler
  *
  * Wrapper for xmlSetExternalEntityLoader.
  */
@@ -127,7 +130,7 @@ xmlSecInit(void) {
  */
 int
 xmlSecShutdown(void) {
-    int res = 0;
+    int res = -1;
 
     xmlSecTransformIdsShutdown();
     xmlSecKeyDataIdsShutdown();
@@ -135,8 +138,15 @@ xmlSecShutdown(void) {
 #ifndef XMLSEC_NO_CRYPTO_DYNAMIC_LOADING
     if(xmlSecCryptoDLShutdown() < 0) {
         xmlSecInternalError("xmlSecCryptoDLShutdown", NULL);
-        res = -1;
+        goto done;
     }
+#endif /* XMLSEC_NO_CRYPTO_DYNAMIC_LOADING */
+
+    /* success */
+    res = 0;
+
+#ifndef XMLSEC_NO_CRYPTO_DYNAMIC_LOADING
+done:
 #endif /* XMLSEC_NO_CRYPTO_DYNAMIC_LOADING */
 
     xmlSecIOShutdown();
@@ -145,7 +155,7 @@ xmlSecShutdown(void) {
 }
 
 /**
- * xmlSecShutdown:
+ * xmlSecGetDefaultCrypto:
  *
  * Gets the default crypto engine ("openssl", "nss", etc.) for the XML Security Library.
  *
@@ -200,4 +210,23 @@ xmlSecCheckVersionExt(int major, int minor, int subminor, xmlSecCheckVersionMode
     return(1);
 }
 
+/**
+ * xmlSecStrlen:
+ * @str:                the string.
+ *
+ * Calcaulates the lenght of the string.
+ *
+ * Returns: the length of the string.
+ */
+xmlSecSize
+xmlSecStrlen(const xmlChar* str) {
+    size_t len;
+    xmlSecSize res;
 
+    if (str == NULL) {
+        return(0);
+    }
+    len = strlen((const char*)str);
+    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(len, res, return(0), NULL);
+    return(res);
+}

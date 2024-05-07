@@ -6,12 +6,14 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 #ifndef __XMLSEC_BUFFER_H__
 #define __XMLSEC_BUFFER_H__
 
 #include <libxml/tree.h>
+
+#include <xmlsec/exports.h>
 #include <xmlsec/xmlsec.h>
 
 #ifdef __cplusplus
@@ -66,6 +68,7 @@ XMLSEC_EXPORT void              xmlSecBufferDestroy             (xmlSecBufferPtr
 XMLSEC_EXPORT int               xmlSecBufferInitialize          (xmlSecBufferPtr buf,
                                                                  xmlSecSize size);
 XMLSEC_EXPORT void              xmlSecBufferFinalize            (xmlSecBufferPtr buf);
+XMLSEC_EXPORT int               xmlSecBufferIsEmpty             (xmlSecBufferPtr buf);
 XMLSEC_EXPORT xmlSecByte*       xmlSecBufferGetData             (xmlSecBufferPtr buf);
 XMLSEC_EXPORT int               xmlSecBufferSetData             (xmlSecBufferPtr buf,
                                                                  const xmlSecByte* data,
@@ -77,6 +80,8 @@ XMLSEC_EXPORT xmlSecSize        xmlSecBufferGetMaxSize          (xmlSecBufferPtr
 XMLSEC_EXPORT int               xmlSecBufferSetMaxSize          (xmlSecBufferPtr buf,
                                                                  xmlSecSize size);
 XMLSEC_EXPORT void              xmlSecBufferEmpty               (xmlSecBufferPtr buf);
+XMLSEC_EXPORT void              xmlSecBufferSwap                (xmlSecBufferPtr buf1,
+                                                                 xmlSecBufferPtr buf2);
 XMLSEC_EXPORT int               xmlSecBufferAppend              (xmlSecBufferPtr buf,
                                                                  const xmlSecByte* data,
                                                                  xmlSecSize size);
@@ -87,17 +92,20 @@ XMLSEC_EXPORT int               xmlSecBufferRemoveHead          (xmlSecBufferPtr
                                                                  xmlSecSize size);
 XMLSEC_EXPORT int               xmlSecBufferRemoveTail          (xmlSecBufferPtr buf,
                                                                  xmlSecSize size);
-
+XMLSEC_EXPORT int               xmlSecBufferReverse             (xmlSecBufferPtr buf);
 XMLSEC_EXPORT int               xmlSecBufferReadFile            (xmlSecBufferPtr buf,
                                                                  const char* filename);
-
 XMLSEC_EXPORT int               xmlSecBufferBase64NodeContentRead(xmlSecBufferPtr buf,
                                                                  xmlNodePtr node);
 XMLSEC_EXPORT int               xmlSecBufferBase64NodeContentWrite(xmlSecBufferPtr buf,
                                                                  xmlNodePtr node,
                                                                  int columns);
+XMLSEC_EXPORT int               xmlSecBufferHexRead             (xmlSecBufferPtr buf,
+                                                                 const xmlChar* hexStr);
 
 XMLSEC_EXPORT xmlOutputBufferPtr xmlSecBufferCreateOutputBuffer (xmlSecBufferPtr buf);
+
+
 
 
 #ifdef __cplusplus
@@ -105,4 +113,3 @@ XMLSEC_EXPORT xmlOutputBufferPtr xmlSecBufferCreateOutputBuffer (xmlSecBufferPtr
 #endif /* __cplusplus */
 
 #endif /* __XMLSEC_BUFFER_H__ */
-

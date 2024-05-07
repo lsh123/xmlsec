@@ -8,6 +8,8 @@
 HOME			= .
 RANDFILE		= $ENV::HOME/.rnd
 
+openssl_conf = openssl_init
+
 # Extra OBJECT IDENTIFIER info:
 #oid_file		= $ENV::HOME/.oid
 oid_section		= new_oids
@@ -18,6 +20,19 @@ oid_section		= new_oids
 # extensions		= 
 # (Alternatively, use a configuration file that has only
 # X.509v3 extensions in its main [= default] section.)
+
+[openssl_init]
+engines = engine_section
+
+# List of engines to load
+[engine_section]
+# gost = gost_section
+
+[gost_section]
+engine_id = gost
+dynamic_path = (path to openssl)/gost.so
+default_algorithms = ALL
+init = 1
 
 [ new_oids ]
 

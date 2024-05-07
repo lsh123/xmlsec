@@ -9,9 +9,7 @@
 #ifndef __XMLSEC_MSCRYPTO_CRYPTO_H__
 #define __XMLSEC_MSCRYPTO_CRYPTO_H__
 
-#include <windows.h>
-#include <wincrypt.h>
-
+#include <xmlsec/exports.h>
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
@@ -42,23 +40,6 @@ XMLSEC_CRYPTO_EXPORT void               xmlSecMSCryptoErrorsDefaultCallback(cons
                                                                         const char* errorSubject,
                                                                         int reason,
                                                                         const char* msg);
-
-/******************************************************************************
- *
- * String encoding conversion utils
- *
- ******************************************************************************/
-XMLSEC_DEPRECATED XMLSEC_CRYPTO_EXPORT LPWSTR             xmlSecMSCryptoConvertLocaleToUnicode(const char* str);
-
-XMLSEC_DEPRECATED XMLSEC_CRYPTO_EXPORT LPWSTR             xmlSecMSCryptoConvertUtf8ToUnicode  (const xmlChar* str);
-XMLSEC_DEPRECATED XMLSEC_CRYPTO_EXPORT xmlChar*           xmlSecMSCryptoConvertUnicodeToUtf8  (LPCWSTR str);
-
-XMLSEC_DEPRECATED XMLSEC_CRYPTO_EXPORT xmlChar*           xmlSecMSCryptoConvertLocaleToUtf8   (const char* str);
-XMLSEC_DEPRECATED XMLSEC_CRYPTO_EXPORT char*              xmlSecMSCryptoConvertUtf8ToLocale   (const xmlChar* str);
-
-XMLSEC_DEPRECATED XMLSEC_CRYPTO_EXPORT xmlChar*           xmlSecMSCryptoConvertTstrToUtf8     (LPCTSTR str);
-XMLSEC_DEPRECATED XMLSEC_CRYPTO_EXPORT LPTSTR             xmlSecMSCryptoConvertUtf8ToTstr     (const xmlChar*  str);
-
 
 /********************************************************************
  *
@@ -202,7 +183,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformRsaSha1GetKlass(vo
 /**
  * xmlSecMSCryptoTransformRsaSha256Id:
  *
- * The RSA-SHA256 signature transform klass.
+ * The RSA-SHA2-256 signature transform klass.
  */
 #define xmlSecMSCryptoTransformRsaSha256Id     \
        xmlSecMSCryptoTransformRsaSha256GetKlass()
@@ -213,7 +194,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformRsaSha256GetKlass(
 /**
  * xmlSecMSCryptoTransformRsaSha384Id:
  *
- * The RSA-SHA384 signature transform klass.
+ * The RSA-SHA2-384 signature transform klass.
  */
 #define xmlSecMSCryptoTransformRsaSha384Id     \
        xmlSecMSCryptoTransformRsaSha384GetKlass()
@@ -224,13 +205,14 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformRsaSha384GetKlass(
 /**
  * xmlSecMSCryptoTransformRsaSha512Id:
  *
- * The RSA-SHA512 signature transform klass.
+ * The RSA-SHA2-512 signature transform klass.
  */
 #define xmlSecMSCryptoTransformRsaSha512Id     \
        xmlSecMSCryptoTransformRsaSha512GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformRsaSha512GetKlass(void);
 #endif /* XMLSEC_NO_SHA512 */
 
+#ifndef XMLSEC_NO_RSA_PKCS15
 /**
  * xmlSecMSCryptoTransformRsaPkcs1Id:
  *
@@ -239,26 +221,19 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformRsaSha512GetKlass(
 #define xmlSecMSCryptoTransformRsaPkcs1Id \
         xmlSecMSCryptoTransformRsaPkcs1GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformRsaPkcs1GetKlass(void);
+#endif /* XMLSEC_NO_RSA_PKCS15 */
 
+#ifndef XMLSEC_NO_RSA_OAEP
 /**
  * xmlSecMSCryptoTransformRsaOaepId:
  *
- * The RSA OAEP key transport transform klass.
+ * The RSA OAEP key transport transform klass. MSCrypto only supports SHA1 for digest and MGF1.
  */
 #define xmlSecMSCryptoTransformRsaOaepId \
         xmlSecMSCryptoTransformRsaOaepGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformRsaOaepGetKlass(void);
+#endif /* XMLSEC_NO_RSA_OAEP */
 
-/**
- * xmlSecMSCryptoTransformRsaOaepId:
- *
- * The RSA PKCS1 key transport transform klass.
- */
-/*
-#define xmlSecMSCryptoTransformRsaOaepId \
-        xmlSecMSCryptoTransformRsaOaepGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformRsaOaepGetKlass(void);
-*/
 #endif /* XMLSEC_NO_RSA */
 
 /********************************************************************
@@ -305,7 +280,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformSha1GetKlass(void)
 /**
  * xmlSecMSCryptoTransformSha256Id:
  *
- * The SHA256 digest transform klass.
+ * The SHA2-256 digest transform klass.
  */
 #define xmlSecMSCryptoTransformSha256Id \
        xmlSecMSCryptoTransformSha256GetKlass()
@@ -322,7 +297,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformSha256GetKlass(voi
 /**
  * xmlSecMSCryptoTransformSha384Id:
  *
- * The SHA384 digest transform klass.
+ * The SHA2-384 digest transform klass.
  */
 #define xmlSecMSCryptoTransformSha384Id \
        xmlSecMSCryptoTransformSha384GetKlass()
@@ -339,7 +314,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformSha384GetKlass(voi
 /**
  * xmlSecMSCryptoTransformSha512Id:
  *
- * The SHA512 digest transform klass.
+ * The SHA2-512 digest transform klass.
  */
 #define xmlSecMSCryptoTransformSha512Id \
        xmlSecMSCryptoTransformSha512GetKlass()
@@ -511,13 +486,10 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformKWDes3GetKlass(voi
  *******************************************************************/
 #ifndef XMLSEC_NO_HMAC
 
-XMLSEC_CRYPTO_EXPORT int               xmlSecMSCryptoHmacGetMinOutputLength(void);
-XMLSEC_CRYPTO_EXPORT void              xmlSecMSCryptoHmacSetMinOutputLength(int min_length);
-
 /**
  * xmlSecMSCryptoKeyDataHmacId:
  *
- * The DHMAC key klass.
+ * The HMAC key klass.
  */
 #define xmlSecMSCryptoKeyDataHmacId \
         xmlSecMSCryptoKeyDataHmacGetKlass()
@@ -537,6 +509,18 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecMSCryptoKeyDataHmacSet     (xmlSec
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformHmacMd5GetKlass(void);
 #endif /* XMLSEC_NO_MD5 */
 
+
+#ifndef XMLSEC_NO_RIPEMD160
+/**
+ * xmlSecMSCryptoTransformHmacRipemd160Id:
+ *
+ * The HMAC with RipeMD160 signature transform klass.
+ */
+#define xmlSecMSCryptoTransformHmacRipemd160Id \
+        xmlSecMSCryptoTransformHmacRipemd160GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformHmacRipemd160GetKlass(void);
+#endif /* XMLSEC_NO_RIPEMD160 */
+
 #ifndef XMLSEC_NO_SHA1
 /**
  * xmlSecMSCryptoTransformHmacSha1Id:
@@ -548,11 +532,22 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformHmacMd5GetKlass(vo
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformHmacSha1GetKlass(void);
 #endif /* XMLSEC_NO_SHA1 */
 
+#ifndef XMLSEC_NO_SHA224
+/**
+ * xmlSecMSCryptoTransformHmacSha224Id:
+ *
+ * The HMAC with SHA2-224 signature transform klass.
+ */
+#define xmlSecMSCryptoTransformHmacSha224Id \
+        xmlSecMSCryptoTransformHmacSha224GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformHmacSha224GetKlass(void);
+#endif /* XMLSEC_NO_SHA224 */
+
 #ifndef XMLSEC_NO_SHA256
 /**
  * xmlSecMSCryptoTransformHmacSha256Id:
  *
- * The HMAC with SHA256 signature transform klass.
+ * The HMAC with SHA2-256 signature transform klass.
  */
 #define xmlSecMSCryptoTransformHmacSha256Id \
         xmlSecMSCryptoTransformHmacSha256GetKlass()
@@ -563,7 +558,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformHmacSha256GetKlass
 /**
  * xmlSecMSCryptoTransformHmacSha384Id:
  *
- * The HMAC with SHA384 signature transform klass.
+ * The HMAC with SHA2-384 signature transform klass.
  */
 #define xmlSecMSCryptoTransformHmacSha384Id \
         xmlSecMSCryptoTransformHmacSha384GetKlass()
@@ -574,7 +569,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformHmacSha384GetKlass
 /**
  * xmlSecMSCryptoTransformHmacSha512Id:
  *
- * The HMAC with SHA512 signature transform klass.
+ * The HMAC with SHA2-512 signature transform klass.
  */
 #define xmlSecMSCryptoTransformHmacSha512Id \
         xmlSecMSCryptoTransformHmacSha512GetKlass()

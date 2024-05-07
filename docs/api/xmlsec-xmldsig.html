@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>xmldsig: XML Security Library Reference Manual</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
 <link rel="up" href="xmlsec-ref.html" title="XML Security Core Library API Reference.">
 <link rel="prev" href="xmlsec-version.html" title="version">
 <link rel="next" href="xmlsec-xmlenc.html" title="xmlenc">
-<meta name="generator" content="GTK-Doc V1.27 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.33.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -132,6 +132,20 @@
 </td>
 </tr>
 <tr>
+<td class="function_type">const <font><span class="returnvalue">char</span></font> *
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-xmldsig.html#xmlSecDSigCtxGetStatusString" title="xmlSecDSigCtxGetStatusString ()">xmlSecDSigCtxGetStatusString</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <font><span class="returnvalue">char</span></font> *
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-xmldsig.html#xmlSecDSigCtxGetFailureReasonString" title="xmlSecDSigCtxGetFailureReasonString ()">xmlSecDSigCtxGetFailureReasonString</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
 <td class="function_type">
 <a class="link" href="xmlsec-xmldsig.html#xmlSecDSigReferenceCtx" title="struct xmlSecDSigReferenceCtx"><span class="returnvalue">xmlSecDSigReferenceCtxPtr</span></a>
 </td>
@@ -217,6 +231,10 @@
 <tr>
 <td class="datatype_keyword">enum</td>
 <td class="function_name"><a class="link" href="xmlsec-xmldsig.html#xmlSecDSigStatus" title="enum xmlSecDSigStatus">xmlSecDSigStatus</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="xmlsec-xmldsig.html#xmlSecDSigFailureReason" title="enum xmlSecDSigFailureReason">xmlSecDSigFailureReason</a></td>
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
@@ -610,6 +628,52 @@ xmlSecDSigCtxDebugXmlDump (<em class="parameter"><code><a class="link" href="xml
 </div>
 <hr>
 <div class="refsect2">
+<a name="xmlSecDSigCtxGetStatusString"></a><h3>xmlSecDSigCtxGetStatusString ()</h3>
+<pre class="programlisting">const <font><span class="returnvalue">char</span></font> *
+xmlSecDSigCtxGetStatusString (<em class="parameter"><code><a class="link" href="xmlsec-xmldsig.html#xmlSecDSigStatus" title="enum xmlSecDSigStatus"><span class="type">xmlSecDSigStatus</span></a> status</code></em>);</pre>
+<p>Gets status as a string.</p>
+<p>Returns status as a string.</p>
+<div class="refsect3">
+<a name="xmlSecDSigCtxGetStatusString.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>status</p></td>
+<td class="parameter_description"><p>the status.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecDSigCtxGetFailureReasonString"></a><h3>xmlSecDSigCtxGetFailureReasonString ()</h3>
+<pre class="programlisting">const <font><span class="returnvalue">char</span></font> *
+xmlSecDSigCtxGetFailureReasonString (<em class="parameter"><code><a class="link" href="xmlsec-xmldsig.html#xmlSecDSigFailureReason" title="enum xmlSecDSigFailureReason"><span class="type">xmlSecDSigFailureReason</span></a> failureReason</code></em>);</pre>
+<p>Gets failure reason as a string.</p>
+<p>Returns failure reason as a string.</p>
+<div class="refsect3">
+<a name="xmlSecDSigCtxGetFailureReasonString.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>failureReason</p></td>
+<td class="parameter_description"><p>the failure reason.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
 <a name="xmlSecDSigReferenceCtxCreate"></a><h3>xmlSecDSigReferenceCtxCreate ()</h3>
 <pre class="programlisting"><a class="link" href="xmlsec-xmldsig.html#xmlSecDSigReferenceCtx" title="struct xmlSecDSigReferenceCtx"><span class="returnvalue">xmlSecDSigReferenceCtxPtr</span></a>
 xmlSecDSigReferenceCtxCreate (<em class="parameter"><code><a class="link" href="xmlsec-xmldsig.html#xmlSecDSigCtx" title="struct xmlSecDSigCtx"><span class="type">xmlSecDSigCtxPtr</span></a> dsigCtx</code></em>,
@@ -876,7 +940,7 @@ xmlSecDSigReferenceCtxListGetKlass (<em class="parameter"><code><span class="typ
 <p>The <a class="ulink" href="" target="_top">&lt;dsig:Reference/&gt;</a> element processing contexts list klass.</p>
 <div class="refsect3">
 <a name="xmlSecDSigReferenceCtxListGetKlass.returns"></a><h4>Returns</h4>
-<a class="ulink" href="" target="_top">&lt;dsig:Reference/&gt;</a> element processing context list klass.
+<p> <a class="ulink" href="" target="_top">&lt;dsig:Reference/&gt;</a> element processing context list klass.</p>
 </div>
 </div>
 </div>
@@ -907,6 +971,45 @@ xmlSecDSigReferenceCtxListGetKlass (<em class="parameter"><code><span class="typ
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecDSigStatusInvalid"></a>xmlSecDSigStatusInvalid</p></td>
 <td class="enum_member_description"><p>the processing failed.</p></td>
+<td class="enum_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecDSigFailureReason"></a><h3>enum xmlSecDSigFailureReason</h3>
+<p>XML Digital signature processing failure reason. The application should use
+<em class="parameter"><code>xmlSecDSigStatus</code></em>
+ to find out the operation status first.</p>
+<div class="refsect3">
+<a name="xmlSecDSigFailureReason.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="xmlSecDSigFailureReasonUnknown"></a>xmlSecDSigFailureReasonUnknown</p></td>
+<td class="enum_member_description"><p>the failure reason is unknown.</p></td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="xmlSecDSigFailureReasonReference"></a>xmlSecDSigFailureReasonReference</p></td>
+<td class="enum_member_description"><p>the reference processing failure (e.g. digest doesn't match).</p></td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="xmlSecDSigFailureReasonSignature"></a>xmlSecDSigFailureReasonSignature</p></td>
+<td class="enum_member_description"><p>the signature processing failure (e.g. signature doesn't match).</p></td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="xmlSecDSigFailureReasonKeyNotFound"></a>xmlSecDSigFailureReasonKeyNotFound</p></td>
+<td class="enum_member_description"><p>the key not found.</p></td>
 <td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
@@ -976,6 +1079,7 @@ documents that don't follow XML, XPointer and XML DSig specifications.</p>
     xmlSecTransformOperation    operation;
     xmlSecBufferPtr             result;
     xmlSecDSigStatus            status;
+    xmlSecDSigFailureReason     failureReason;
     xmlSecTransformPtr          signMethod;
     xmlSecTransformPtr          c14nMethod;
     xmlSecTransformPtr          preSignMemBufMethod;
@@ -1080,6 +1184,12 @@ functions.</p></td>
 <tr>
 <td class="struct_member_name"><p><a class="link" href="xmlsec-xmldsig.html#xmlSecDSigStatus" title="enum xmlSecDSigStatus"><span class="type">xmlSecDSigStatus</span></a> <em class="structfield"><code><a name="xmlSecDSigCtx.status"></a>status</code></em>;</p></td>
 <td class="struct_member_description"><p>the <a class="ulink" href="" target="_top">&lt;dsig:Signature/&gt;</a> processing status.</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><a class="link" href="xmlsec-xmldsig.html#xmlSecDSigFailureReason" title="enum xmlSecDSigFailureReason"><span class="type">xmlSecDSigFailureReason</span></a> <em class="structfield"><code><a name="xmlSecDSigCtx.failureReason"></a>failureReason</code></em>;</p></td>
+<td class="struct_member_description"><p>the detailed failure reason (if known); the application should check <em class="parameter"><code>status</code></em>
+first.</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
@@ -1274,6 +1384,6 @@ never touches this).</p></td>
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.27</div>
+<hr>Generated by GTK-Doc V1.33.1</div>
 </body>
 </html>

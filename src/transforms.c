@@ -1,15 +1,16 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * Transform object functions.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:transforms 
- * @Short_description: Transform object functions.
+ * SECTION:transforms
+ * @Short_description: XMLDsig and XMLEnc transforms.
  * @Stability: Stable
  *
  * The [Transforms Element](http://www.w3.org/TR/xmldsig-core/#sec-Transforms)
@@ -51,6 +52,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <stddef.h>
 
 #include <libxml/tree.h>
 #include <libxml/xpath.h>
@@ -62,6 +64,7 @@
 #include <xmlsec/keysdata.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keyinfo.h>
+#include <xmlsec/keysmngr.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/base64.h>
 #include <xmlsec/io.h>
@@ -70,6 +73,10 @@
 #include <xmlsec/errors.h>
 
 #include "xslt.h"
+#include "cast_helpers.h"
+#include "transform_helpers.h"
+
+#define XMLSEC_TRANSFORM_XPOINTER_TMPL "xpointer(id(\'%s\'))"
 
 /**************************************************************************
  *
@@ -256,7 +263,7 @@ int
 xmlSecTransformUriTypeCheck(xmlSecTransformUriType type, const xmlChar* uri) {
     xmlSecTransformUriType uriType = 0;
 
-    if((uri == NULL) || (xmlStrlen(uri) == 0)) {
+    if((uri == NULL) || (xmlSecStrlen(uri) == 0)) {
         uriType = xmlSecTransformUriTypeEmpty;
     } else if(uri[0] == '#') {
         uriType = xmlSecTransformUriTypeSameDocument;
@@ -268,11 +275,44 @@ xmlSecTransformUriTypeCheck(xmlSecTransformUriType type, const xmlChar* uri) {
     return(((uriType & type) != 0) ? 1 : 0);
 }
 
+
+
 /**************************************************************************
  *
  * xmlSecTransformCtx
  *
  *************************************************************************/
+static xmlSecSize g_xmlSecTransformCtxDefaultBinaryChunkSize = (64*1024); /* 64kb */
+
+/**
+ * xmlSecTransformCtxGetDefaultBinaryChunkSize:
+ *
+ * Gets the binary chunk size. Increasing the chunk size improves
+ * XMLSec library performance at the expense of increased memory usage.
+ *
+ * Returns: the current binary processing chunk size.
+ */
+xmlSecSize
+xmlSecTransformCtxGetDefaultBinaryChunkSize(void) {
+    return(g_xmlSecTransformCtxDefaultBinaryChunkSize);
+}
+
+
+/**
+ * xmlSecTransformCtxSetDefaultBinaryChunkSize:
+ * @binaryChunkSize:    the new binary chunk size (must be greater than zero).
+ *
+ * Sets the default binary chunk size. Increasing the chunk size improves
+ * XMLSec library performance at the expense of increased memory usage.
+ * This function is not thread safe and should only be called during initialization.
+ */
+void
+xmlSecTransformCtxSetDefaultBinaryChunkSize(xmlSecSize binaryChunkSize) {
+    xmlSecAssert(binaryChunkSize > 0);
+    g_xmlSecTransformCtxDefaultBinaryChunkSize = binaryChunkSize;
+}
+
+
 
 /**
  * xmlSecTransformCtxCreate:
@@ -345,6 +385,7 @@ xmlSecTransformCtxInitialize(xmlSecTransformCtxPtr ctx) {
     }
 
     ctx->enabledUris = xmlSecTransformUriTypeAny;
+    ctx->binaryChunkSize = xmlSecTransformCtxGetDefaultBinaryChunkSize();
     return(0);
 }
 
@@ -611,10 +652,10 @@ xmlSecTransformCtxNodeRead(xmlSecTransformCtxPtr ctx, xmlNodePtr node,
 /**
  * xmlSecTransformCtxNodesListRead:
  * @ctx:                the pointer to transforms chain processing context.
- * @node:               the pointer to <dsig:Transform/> nodes parent node.
+ * @node:               the pointer to &lt;dsig:Transform/&gt; nodes parent node.
  * @usage:              the transform's usage (signature, encryption, etc.).
  *
- * Reads transforms from the <dsig:Transform/> children of the @node and
+ * Reads transforms from the &lt;dsig:Transform/&gt; children of the @node and
  * appends them to the current transforms chain in @ctx object.
  *
  * Returns: 0 on success or a negative value otherwise.
@@ -698,8 +739,10 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
     xmlSecNodeSetType nodeSetType = xmlSecNodeSetTree;
     const xmlChar* xptr;
     xmlChar* buf = NULL;
+    int uriLen;
     int useVisa3DHack = 0;
     int ret;
+    int res = -1;
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->uri == NULL, -1);
@@ -709,14 +752,14 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
 
     /* check uri */
     if(xmlSecTransformUriTypeCheck(ctx->enabledUris, uri) != 1) {
-        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_URI_TYPE, NULL,
-                          "uri=%s", xmlSecErrorsSafeString(uri));
-        return(-1);
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_KEY_DATA_SIZE, NULL, "uri=%s", xmlSecErrorsSafeString(uri));
+        goto done;
     }
 
     /* is it an empty uri? */
-    if((uri == NULL) || (xmlStrlen(uri) == 0)) {
-        return(0);
+    if((uri == NULL) || (xmlSecStrlen(uri) == 0)) {
+        res = 0;
+        goto done;
     }
 
     /* do we have barename or full xpointer? */
@@ -725,30 +768,33 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
         ctx->uri = xmlStrdup(uri);
         if(ctx->uri == NULL) {
             xmlSecStrdupError(uri, NULL);
-            return(-1);
+            goto done;
         }
-        /* we are done */
-        return(0);
+        /* nothing else to do */
+        res = 0;
+        goto done;
     } else if(xmlStrcmp(uri, BAD_CAST "#xpointer(/)") == 0) {
         ctx->xptrExpr = xmlStrdup(uri);
         if(ctx->xptrExpr == NULL) {
             xmlSecStrdupError(uri, NULL);
-            return(-1);
+            goto done;
         }
-        /* we are done */
-        return(0);
+        /* nothing else to do */
+        res = 0;
+        goto done;
     }
 
-    ctx->uri = xmlStrndup(uri, (int)(xptr - uri));
+    XMLSEC_SAFE_CAST_PTRDIFF_TO_INT((xptr - uri), uriLen, return(-1), NULL);
+    ctx->uri = xmlStrndup(uri, uriLen);
     if(ctx->uri == NULL) {
         xmlSecStrdupError(uri, NULL);
-        return(-1);
+        goto done;
     }
 
     ctx->xptrExpr = xmlStrdup(xptr);
     if(ctx->xptrExpr == NULL) {
         xmlSecStrdupError(xptr, NULL);
-        return(-1);
+        goto done;
     }
 
     /* do we have barename or full xpointer? */
@@ -761,22 +807,22 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
         nodeSetType = xmlSecNodeSetTreeWithoutComments;
         useVisa3DHack = 1;
     } else {
-        static const char tmpl[] = "xpointer(id(\'%s\'))";
         xmlSecSize size;
+        int len;
 
         /* we need to add "xpointer(id('..')) because otherwise we have
          * problems with numeric ("111" and so on) and other "strange" ids */
-        size = xmlStrlen(BAD_CAST tmpl) + xmlStrlen(xptr) + 2;
+        len = xmlStrlen(BAD_CAST XMLSEC_TRANSFORM_XPOINTER_TMPL) + xmlStrlen(xptr) + 2;
+        XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, return(-1), NULL);
         buf = (xmlChar*)xmlMalloc(size * sizeof(xmlChar));
         if(buf == NULL) {
             xmlSecMallocError(size * sizeof(xmlChar), NULL);
-            return(-1);
+            goto done;
         }
-        ret = xmlStrPrintf(buf, size, tmpl, xptr + 1);
+        ret = xmlStrPrintf(buf, len, XMLSEC_TRANSFORM_XPOINTER_TMPL, xptr + 1);
         if(ret < 0) {
             xmlSecXmlError("xmlStrPrintf", NULL);
-             xmlFree(buf);
-             return(-1);
+            goto done;
         }
         xptr = buf;
         nodeSetType = xmlSecNodeSetTreeWithoutComments;
@@ -789,20 +835,14 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
         transform = xmlSecTransformCtxCreateAndPrepend(ctx, xmlSecTransformXPointerId);
         if(!xmlSecTransformIsValid(transform)) {
             xmlSecInternalError("xmlSecTransformCtxCreateAndPrepend(xmlSecTransformXPointerId)", NULL);
-            if(buf != NULL) {
-                xmlFree(buf);
-            }
-            return(-1);
+            goto done;
         }
 
         ret = xmlSecTransformXPointerSetExpr(transform, xptr, nodeSetType, hereNode);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecTransformXPointerSetExpr",
-                                xmlSecTransformGetName(transform));
-            if(buf != NULL) {
-                xmlFree(buf);
-            }
-            return(-1);
+            xmlSecInternalError("xmlSecTransformXPointerSetExpr", xmlSecTransformGetName(transform));
+            goto done;
+
         }
     } else {
         /* Visa3D protocol doesn't follow XML/XPointer/XMLDSig specs
@@ -816,27 +856,24 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
         transform = xmlSecTransformCtxCreateAndPrepend(ctx, xmlSecTransformVisa3DHackId);
         if(!xmlSecTransformIsValid(transform)) {
             xmlSecInternalError("xmlSecTransformCtxCreateAndPrepend(xmlSecTransformVisa3DHackId)", NULL);
-            if(buf != NULL) {
-                xmlFree(buf);
-            }
-            return(-1);
+            goto done;
         }
 
         ret = xmlSecTransformVisa3DHackSetID(transform, xptr);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecTransformVisa3DHackSetID",
-                                xmlSecTransformGetName(transform));
-            if(buf != NULL) {
-                xmlFree(buf);
-            }
-            return(-1);
+            xmlSecInternalError("xmlSecTransformVisa3DHackSetID", xmlSecTransformGetName(transform));
+            goto done;
         }
     }
+
+    /* success */
+    res = 0;
+
+done:
     if(buf != NULL) {
         xmlFree(buf);
     }
-
-    return(0);
+    return(res);
 }
 
 /**
@@ -892,7 +929,7 @@ xmlSecTransformCtxPrepare(xmlSecTransformCtxPtr ctx, xmlSecTransformDataType inp
         }
     }
 
-    /* finally let application a chance to verify that it's ok to execte
+    /* finally let application a chance to verify that it's ok to execute
      * this transforms chain */
     if(ctx->preExecCallback != NULL) {
         ret = (ctx->preExecCallback)(ctx);
@@ -924,8 +961,6 @@ xmlSecTransformCtxBinaryExecute(xmlSecTransformCtxPtr ctx,
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->result == NULL, -1);
     xmlSecAssert2(ctx->status == xmlSecTransformStatusNone, -1);
-    xmlSecAssert2(data != NULL, -1);
-    xmlSecAssert2(dataSize > 0, -1);
 
     /* we should not have uri stored in ctx */
     xmlSecAssert2(ctx->uri == NULL, -1);
@@ -939,7 +974,7 @@ xmlSecTransformCtxBinaryExecute(xmlSecTransformCtxPtr ctx,
     ret = xmlSecTransformPushBin(ctx->first, data, dataSize, 1, ctx);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecTransformPushBin", NULL,
-                             "dataSize=%d", dataSize);
+                             "dataSize=" XMLSEC_SIZE_FMT,  dataSize);
         return(-1);
     }
 
@@ -1068,10 +1103,10 @@ xmlSecTransformCtxExecute(xmlSecTransformCtxPtr ctx, xmlDocPtr doc) {
     xmlSecAssert2(ctx->status == xmlSecTransformStatusNone, -1);
     xmlSecAssert2(doc != NULL, -1);
 
-    if((ctx->uri == NULL) || (xmlStrlen(ctx->uri) == 0)) {
+    if((ctx->uri == NULL) || (xmlSecStrlen(ctx->uri) == 0)) {
         xmlSecNodeSetPtr nodes;
 
-        if((ctx->xptrExpr != NULL) && (xmlStrlen(ctx->xptrExpr) > 0)){
+        if((ctx->xptrExpr != NULL) && (xmlSecStrlen(ctx->xptrExpr) > 0)){
             /* our xpointer transform takes care of providing correct nodes set */
             nodes = xmlSecNodeSetCreate(doc, NULL, xmlSecNodeSetNormal);
             if(nodes == NULL) {
@@ -1120,7 +1155,8 @@ xmlSecTransformCtxDebugDump(xmlSecTransformCtxPtr ctx, FILE* output) {
     xmlSecAssert(ctx != NULL);
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "== TRANSFORMS CTX (status=%d)\n", ctx->status);
+    fprintf(output, "== TRANSFORMS CTX (status=" XMLSEC_ENUM_FMT ")\n",
+        XMLSEC_ENUM_CAST(ctx->status));
 
     fprintf(output, "== flags: 0x%08x\n", ctx->flags);
     fprintf(output, "== flags2: 0x%08x\n", ctx->flags2);
@@ -1154,7 +1190,8 @@ xmlSecTransformCtxDebugXmlDump(xmlSecTransformCtxPtr ctx, FILE* output) {
     xmlSecAssert(ctx != NULL);
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "<TransformCtx status=\"%d\">\n", ctx->status);
+    fprintf(output, "<TransformCtx status=\"" XMLSEC_ENUM_FMT "\">\n",
+        XMLSEC_ENUM_CAST(ctx->status));
 
     fprintf(output, "<Flags>%08x</Flags>\n", ctx->flags);
     fprintf(output, "<Flags2>%08x</Flags2>\n", ctx->flags2);
@@ -1372,6 +1409,7 @@ xmlSecTransformPump(xmlSecTransformPtr left, xmlSecTransformPtr right, xmlSecTra
     xmlSecAssert2(xmlSecTransformIsValid(left), -1);
     xmlSecAssert2(xmlSecTransformIsValid(right), -1);
     xmlSecAssert2(transformCtx != NULL, -1);
+    xmlSecAssert2(transformCtx->binaryChunkSize > 0, -1);
 
     leftType = xmlSecTransformGetDataType(left, xmlSecTransformModePop, transformCtx);
     rightType = xmlSecTransformGetDataType(right, xmlSecTransformModePush, transformCtx);
@@ -1396,25 +1434,33 @@ xmlSecTransformPump(xmlSecTransformPtr left, xmlSecTransformPtr right, xmlSecTra
        }
     }  else if(((leftType & xmlSecTransformDataTypeBin) != 0) &&
                ((rightType & xmlSecTransformDataTypeBin) != 0)) {
-        xmlSecByte buf[XMLSEC_TRANSFORM_BINARY_CHUNK];
-        xmlSecSize bufSize;
-        int final;
+        xmlSecByte* buf;
+        int final = 0;
+
+        buf = xmlMalloc(transformCtx->binaryChunkSize);
+        if(buf == NULL) {
+            xmlSecMallocError(transformCtx->binaryChunkSize, NULL);
+            return(-1);
+        }
 
         do {
-            ret = xmlSecTransformPopBin(left, buf, sizeof(buf), &bufSize, transformCtx);
+            xmlSecSize bufSize = 0;
+            ret = xmlSecTransformPopBin(left, buf, transformCtx->binaryChunkSize, &bufSize, transformCtx);
             if(ret < 0) {
-                xmlSecInternalError("xmlSecTransformPopBin",
-                                    xmlSecTransformGetName(left));
+                xmlSecInternalError("xmlSecTransformPopBin", xmlSecTransformGetName(left));
+                xmlFree(buf);
                 return(-1);
             }
             final = (bufSize == 0) ? 1 : 0;
             ret = xmlSecTransformPushBin(right, buf, bufSize, final, transformCtx);
             if(ret < 0) {
-                xmlSecInternalError("xmlSecTransformPushBin",
-                                    xmlSecTransformGetName(right));
+                xmlSecInternalError("xmlSecTransformPushBin", xmlSecTransformGetName(right));
+                xmlFree(buf);
                 return(-1);
             }
         } while(final == 0);
+
+        xmlFree(buf);
     } else {
         xmlSecInvalidTransfromError2(left,
                     "transforms input/output data formats do not match, right transform=\"%s\"",
@@ -1862,9 +1908,7 @@ xmlSecTransformDefaultGetDataType(xmlSecTransformPtr transform, xmlSecTransformM
             }
             break;
         default:
-            xmlSecInvalidIntegerDataError("mode", mode,
-                    "xmlSecTransformModePush,xmlSecTransformModePop",
-                    xmlSecTransformGetName(transform));
+            xmlSecUnsupportedEnumValueError("mode", mode, xmlSecTransformGetName(transform));
             return(xmlSecTransformDataTypeUnknown);
     }
 
@@ -1904,15 +1948,14 @@ xmlSecTransformDefaultPushBin(xmlSecTransformPtr transform, const xmlSecByte* da
             xmlSecAssert2(data != NULL, -1);
 
             chunkSize = dataSize;
-            if(chunkSize > XMLSEC_TRANSFORM_BINARY_CHUNK) {
-                chunkSize = XMLSEC_TRANSFORM_BINARY_CHUNK;
+            if(chunkSize > transformCtx->binaryChunkSize) {
+                chunkSize = transformCtx->binaryChunkSize;
             }
 
             ret = xmlSecBufferAppend(&(transform->inBuf), data, chunkSize);
             if(ret < 0) {
-                xmlSecInternalError2("xmlSecBufferAppend",
-                                     xmlSecTransformGetName(transform),
-                                     "size=%d", chunkSize);
+                xmlSecInternalError2("xmlSecBufferAppend", xmlSecTransformGetName(transform),
+                    "size=" XMLSEC_SIZE_FMT, chunkSize);
                 return(-1);
             }
 
@@ -1924,9 +1967,8 @@ xmlSecTransformDefaultPushBin(xmlSecTransformPtr transform, const xmlSecByte* da
         finalData = (((dataSize == 0) && (final != 0)) ? 1 : 0);
         ret = xmlSecTransformExecute(transform, finalData, transformCtx);
         if(ret < 0) {
-            xmlSecInternalError2("xmlSecTransformExecute",
-                                 xmlSecTransformGetName(transform),
-                                 "final=%d", final);
+            xmlSecInternalError2("xmlSecTransformExecute", xmlSecTransformGetName(transform),
+                "final=%d", final);
             return(-1);
         }
 
@@ -1938,8 +1980,8 @@ xmlSecTransformDefaultPushBin(xmlSecTransformPtr transform, const xmlSecByte* da
         }
 
         /* we don't want to push too much */
-        if(outSize > XMLSEC_TRANSFORM_BINARY_CHUNK) {
-            outSize = XMLSEC_TRANSFORM_BINARY_CHUNK;
+        if(outSize > transformCtx->binaryChunkSize) {
+            outSize = transformCtx->binaryChunkSize;
             finalData = 0;
         }
         if((transform->next != NULL) && ((outSize > 0) || (finalData != 0))) {
@@ -1949,20 +1991,18 @@ xmlSecTransformDefaultPushBin(xmlSecTransformPtr transform, const xmlSecByte* da
                             finalData,
                             transformCtx);
             if(ret < 0) {
-                xmlSecInternalError3("xmlSecTransformPushBin",
-                                     xmlSecTransformGetName(transform->next),
-                                     "final=%d;outSize=%d", final, outSize);
+                xmlSecInternalError3("xmlSecTransformPushBin", xmlSecTransformGetName(transform->next),
+                    "final=%d;outSize=" XMLSEC_SIZE_FMT, final, outSize);
                 return(-1);
             }
         }
 
         /* remove data anyway */
-        if(outSize > 0) {
+        if(outSize > 0){
             ret = xmlSecBufferRemoveHead(&(transform->outBuf), outSize);
             if(ret < 0) {
-                xmlSecInternalError2("xmlSecBufferRemoveHead",
-                                     xmlSecTransformGetName(transform),
-                                     "size=%d", outSize);
+                xmlSecInternalError2("xmlSecBufferRemoveHead", xmlSecTransformGetName(transform),
+                    "size=" XMLSEC_SIZE_FMT, outSize);
                 return(-1);
             }
         }
@@ -2004,14 +2044,13 @@ xmlSecTransformDefaultPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
             xmlSecSize inSize, chunkSize;
 
             inSize = xmlSecBufferGetSize(&(transform->inBuf));
-            chunkSize = XMLSEC_TRANSFORM_BINARY_CHUNK;
+            chunkSize = transformCtx->binaryChunkSize;
 
             /* ensure that we have space for at least one data chunk */
             ret = xmlSecBufferSetMaxSize(&(transform->inBuf), inSize + chunkSize);
             if(ret < 0) {
-                xmlSecInternalError2("xmlSecBufferSetMaxSize",
-                                     xmlSecTransformGetName(transform),
-                                     "size=%d", inSize + chunkSize);
+                xmlSecInternalError2("xmlSecBufferSetMaxSize", xmlSecTransformGetName(transform),
+                    "size=" XMLSEC_SIZE_FMT, (inSize + chunkSize));
                 return(-1);
             }
 
@@ -2020,8 +2059,7 @@ xmlSecTransformDefaultPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
                             xmlSecBufferGetData(&(transform->inBuf)) + inSize,
                             chunkSize, &chunkSize, transformCtx);
             if(ret < 0) {
-                xmlSecInternalError("xmlSecTransformPopBin",
-                                    xmlSecTransformGetName(transform->prev));
+                xmlSecInternalError("xmlSecTransformPopBin", xmlSecTransformGetName(transform->prev));
                 return(-1);
             }
 
@@ -2029,9 +2067,8 @@ xmlSecTransformDefaultPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
             if(chunkSize > 0) {
                 ret = xmlSecBufferSetSize(&(transform->inBuf), inSize + chunkSize);
                 if(ret < 0) {
-                    xmlSecInternalError2("xmlSecBufferSetSize",
-                                         xmlSecTransformGetName(transform),
-                                         "size=%d", inSize + chunkSize);
+                    xmlSecInternalError2("xmlSecBufferSetSize", xmlSecTransformGetName(transform),
+                        "size=" XMLSEC_SIZE_FMT, (inSize + chunkSize));
                     return(-1);
                 }
                 final = 0; /* the previous transform returned some data..*/
@@ -2058,8 +2095,8 @@ xmlSecTransformDefaultPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
     }
 
     /* we don't want to put too much */
-    if(outSize > XMLSEC_TRANSFORM_BINARY_CHUNK) {
-        outSize = XMLSEC_TRANSFORM_BINARY_CHUNK;
+    if(outSize > transformCtx->binaryChunkSize) {
+        outSize = transformCtx->binaryChunkSize;
     }
     if(outSize > 0) {
         xmlSecAssert2(xmlSecBufferGetData(&(transform->outBuf)), -1);
@@ -2070,7 +2107,7 @@ xmlSecTransformDefaultPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferRemoveHead",
                                  xmlSecTransformGetName(transform),
-                                 "size=%d", outSize);
+                                 "size=" XMLSEC_SIZE_FMT, outSize);
             return(-1);
         }
     }
@@ -2368,10 +2405,10 @@ static xmlSecTransformIOBufferPtr xmlSecTransformIOBufferCreate (xmlSecTransform
 static void     xmlSecTransformIOBufferDestroy                  (xmlSecTransformIOBufferPtr buffer);
 static int      xmlSecTransformIOBufferRead                     (xmlSecTransformIOBufferPtr buffer,
                                                                  xmlSecByte *buf,
-                                                                 xmlSecSize size);
+                                                                 int len);
 static int      xmlSecTransformIOBufferWrite                    (xmlSecTransformIOBufferPtr buffer,
                                                                  const xmlSecByte *buf,
-                                                                 xmlSecSize size);
+                                                                 int len);
 static int      xmlSecTransformIOBufferClose                    (xmlSecTransformIOBufferPtr buffer);
 
 
@@ -2397,8 +2434,8 @@ xmlSecTransformCreateOutputBuffer(xmlSecTransformPtr transform, xmlSecTransformC
     type = xmlSecTransformDefaultGetDataType(transform, xmlSecTransformModePush, transformCtx);
     if((type & xmlSecTransformDataTypeBin) == 0) {
         xmlSecInvalidTransfromError2(transform,
-                            "push binary data not supported, type=\"%d\"",
-                            (int)type);
+            "push binary data not supported, type=\"" XMLSEC_ENUM_FMT "\"",
+            XMLSEC_ENUM_CAST(type));
         return(NULL);
     }
 
@@ -2444,8 +2481,8 @@ xmlSecTransformCreateInputBuffer(xmlSecTransformPtr transform, xmlSecTransformCt
     type = xmlSecTransformDefaultGetDataType(transform, xmlSecTransformModePop, transformCtx);
     if((type & xmlSecTransformDataTypeBin) == 0) {
         xmlSecInvalidTransfromError2(transform,
-                            "pop binary data not supported, type=\"%d\"",
-                            (int)type);
+            "pop binary data not supported, type=\"" XMLSEC_ENUM_FMT "\"",
+            XMLSEC_ENUM_CAST(type));
         return(NULL);
     }
 
@@ -2501,8 +2538,10 @@ xmlSecTransformIOBufferDestroy(xmlSecTransformIOBufferPtr buffer) {
 
 static int
 xmlSecTransformIOBufferRead(xmlSecTransformIOBufferPtr buffer,
-                            xmlSecByte *buf, xmlSecSize size) {
+                            xmlSecByte *buf, int len) {
+    xmlSecSize size;
     int ret;
+    int res;
 
     xmlSecAssert2(buffer != NULL, -1);
     xmlSecAssert2(buffer->mode == xmlSecTransformIOBufferModeRead, -1);
@@ -2510,19 +2549,23 @@ xmlSecTransformIOBufferRead(xmlSecTransformIOBufferPtr buffer,
     xmlSecAssert2(buffer->transformCtx != NULL, -1);
     xmlSecAssert2(buf != NULL, -1);
 
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, return(-1), xmlSecTransformGetName(buffer->transform));
     ret = xmlSecTransformPopBin(buffer->transform, buf, size, &size, buffer->transformCtx);
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformPopBin",
                             xmlSecTransformGetName(buffer->transform));
         return(-1);
     }
-    return(size);
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(size, res, return(-1), NULL);
+    return(res);
 }
 
 static int
 xmlSecTransformIOBufferWrite(xmlSecTransformIOBufferPtr buffer,
-                            const xmlSecByte *buf, xmlSecSize size) {
+                            const xmlSecByte *buf, int len) {
+    xmlSecSize size;
     int ret;
+    int res;
 
     xmlSecAssert2(buffer != NULL, -1);
     xmlSecAssert2(buffer->mode == xmlSecTransformIOBufferModeWrite, -1);
@@ -2530,13 +2573,15 @@ xmlSecTransformIOBufferWrite(xmlSecTransformIOBufferPtr buffer,
     xmlSecAssert2(buffer->transformCtx != NULL, -1);
     xmlSecAssert2(buf != NULL, -1);
 
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, return(-1), xmlSecTransformGetName(buffer->transform));
     ret = xmlSecTransformPushBin(buffer->transform, buf, size, 0, buffer->transformCtx);
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformPushBin",
                             xmlSecTransformGetName(buffer->transform));
         return(-1);
     }
-    return(size);
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(size, res, return(-1), NULL);
+    return(res);
 }
 
 static int
@@ -2560,3 +2605,1005 @@ xmlSecTransformIOBufferClose(xmlSecTransformIOBufferPtr buffer) {
     xmlSecTransformIOBufferDestroy(buffer);
     return(0);
 }
+
+
+/*********************************************************************
+ *
+ * Helper transform functions
+ *
+ ********************************************************************/
+
+#ifndef XMLSEC_NO_CONCATKDF
+
+#define XMLSEC_TRANSFORM_CONCATKDF_DEFAULT_BUF_SIZE       64
+
+/* reads optional attribute and decodes it as bit string (https://www.w3.org/TR/xmlenc-core1/#sec-ConcatKDF):
+ *
+ * 1/ The bitstring is divided into octets using big-endian encoding. If the length of the bitstring is not
+ *    a multiple of 8 then add padding bits (value 0) as necessary to the last octet to make it a multiple of 8.
+ * 2/ Prepend one octet to the octets string from step 1. This octet shall identify (in a big-endian representation)
+ *    the number of padding bits added to the last octet in step 1.
+ * 3/ Encode the octet string resulting from step 2 as a hexBinary string.
+ *
+ * Example: the bitstring 11011, which is 5 bits long, gets 3 additional padding bits to become the bitstring
+ * 11011000 (or D8 in hex). This bitstring is then prepended with one octet identifying the number of padding bits
+ * to become the octet string (in hex) 03D8, which then finally is encoded as a hexBinary string value of "03D8".
+ *
+ * While any bit string can be used with ConcatKDF, it is RECOMMENDED to keep byte aligned for greatest interoperability.
+ *
+ * TODO: only bit aligned bit strings are supported (https://github.com/lsh123/xmlsec/issues/514)
+ */
+static int
+xmlSecTransformConcatKdfParamsReadsBitsAttr(xmlSecBufferPtr buf, xmlNodePtr node, const xmlChar* attrName) {
+    xmlChar * attrValue;
+    xmlSecByte* data;
+    xmlSecSize size;
+    int ret;
+
+    xmlSecAssert2(buf != NULL, -1);
+    xmlSecAssert2(node!= NULL, -1);
+    xmlSecAssert2(attrName != NULL, -1);
+
+    attrValue = xmlGetProp(node, attrName);
+    if(attrValue == NULL) {
+        xmlSecBufferEmpty(buf);
+        return(0);
+    }
+
+    ret = xmlSecBufferHexRead(buf, attrValue);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferHexRead", NULL);
+        xmlFree(attrValue);
+        return(-1);
+    }
+    xmlFree(attrValue);
+
+    data = xmlSecBufferGetData(buf);
+    size = xmlSecBufferGetSize(buf);
+    if((data == NULL) || (size <= 0)) {
+        /* xmlSecInvalidSizeDataError("size", size, "at least one byte is expected", NULL); */
+        /* ignore empty buffer */
+        return(0);
+    }
+
+    /* only byte aligned bit strings are supported */
+    if(data[0] != 0) {
+        xmlSecInvalidDataError("First bit string byte should be 0 (only byte aligned bit strings are supported)", NULL);
+        return (-1);
+    }
+
+    ret = xmlSecBufferRemoveHead(buf, 1);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferHexRead", NULL);
+        return(-1);
+    }
+
+    /* done */
+    return(0);
+}
+
+
+int
+xmlSecTransformConcatKdfParamsInitialize(xmlSecTransformConcatKdfParamsPtr params) {
+    int ret;
+
+    xmlSecAssert2(params != NULL, -1);
+    memset(params, 0, sizeof(*params));
+
+    ret = xmlSecBufferInitialize(&(params->bufAlgorithmID), XMLSEC_TRANSFORM_CONCATKDF_DEFAULT_BUF_SIZE);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize(bufAlgorithmID)", NULL);
+        xmlSecTransformConcatKdfParamsFinalize(params);
+        return(-1);
+    }
+    ret = xmlSecBufferInitialize(&(params->bufPartyUInfo), XMLSEC_TRANSFORM_CONCATKDF_DEFAULT_BUF_SIZE);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize(bufPartyUInfo)", NULL);
+        xmlSecTransformConcatKdfParamsFinalize(params);
+        return(-1);
+    }
+    ret = xmlSecBufferInitialize(&(params->bufPartyVInfo), XMLSEC_TRANSFORM_CONCATKDF_DEFAULT_BUF_SIZE);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize(bufPartyVInfo)", NULL);
+        xmlSecTransformConcatKdfParamsFinalize(params);
+        return(-1);
+    }
+    ret = xmlSecBufferInitialize(&(params->bufSuppPubInfo), XMLSEC_TRANSFORM_CONCATKDF_DEFAULT_BUF_SIZE);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize(bufSuppPubInfo)", NULL);
+        xmlSecTransformConcatKdfParamsFinalize(params);
+        return(-1);
+    }
+    ret = xmlSecBufferInitialize(&(params->bufSuppPrivInfo), XMLSEC_TRANSFORM_CONCATKDF_DEFAULT_BUF_SIZE);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize(bufSuppPrivInfo)", NULL);
+        xmlSecTransformConcatKdfParamsFinalize(params);
+        return(-1);
+    }
+
+    /* done */
+    return(0);
+}
+
+void
+xmlSecTransformConcatKdfParamsFinalize(xmlSecTransformConcatKdfParamsPtr params) {
+    xmlSecAssert(params != NULL);
+
+    if(params->digestMethod != NULL) {
+        xmlFree(params->digestMethod);
+    }
+    xmlSecBufferFinalize(&(params->bufAlgorithmID));
+    xmlSecBufferFinalize(&(params->bufPartyUInfo));
+    xmlSecBufferFinalize(&(params->bufPartyVInfo));
+    xmlSecBufferFinalize(&(params->bufSuppPubInfo));
+    xmlSecBufferFinalize(&(params->bufSuppPrivInfo));
+
+    memset(params, 0, sizeof(*params));
+}
+
+int
+xmlSecTransformConcatKdfParamsRead(xmlSecTransformConcatKdfParamsPtr params, xmlNodePtr node) {
+    xmlNodePtr cur;
+    int ret;
+
+    xmlSecAssert2(params != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+
+    /* first (and only) node is required DigestMethod */
+    cur  = xmlSecGetNextElementNode(node->children);
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeDigestMethod, xmlSecDSigNs))) {
+        xmlSecInvalidNodeError(cur, xmlSecNodeDigestMethod, NULL);
+        return(-1);
+    }
+    params->digestMethod = xmlGetProp(cur, xmlSecAttrAlgorithm);
+    if(params->digestMethod == NULL) {
+        xmlSecInvalidNodeAttributeError(cur, xmlSecAttrAlgorithm, NULL, "empty");
+        return(-1);
+    }
+    cur = xmlSecGetNextElementNode(cur->next);
+
+    /* if we have something else then it's an error */
+    if(cur != NULL) {
+        xmlSecUnexpectedNodeError(cur,  NULL);
+        return(-1);
+    }
+
+    /* now read all attributes */
+    ret = xmlSecTransformConcatKdfParamsReadsBitsAttr(&(params->bufAlgorithmID), node, xmlSecNodeConcatKDFAttrAlgorithmID);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecTransformConcatKdfParamsReadsBitsAttr(AlgorithmID)", NULL);
+        return(-1);
+    }
+    ret = xmlSecTransformConcatKdfParamsReadsBitsAttr(&(params->bufPartyUInfo), node, xmlSecNodeConcatKDFAttrPartyUInfo);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecTransformConcatKdfParamsReadsBitsAttr(PartyUInfo)", NULL);
+        return(-1);
+    }
+    ret = xmlSecTransformConcatKdfParamsReadsBitsAttr(&(params->bufPartyVInfo), node, xmlSecNodeConcatKDFAttrPartyVInfo);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecTransformConcatKdfParamsReadsBitsAttr(PartyVInfo)", NULL);
+        return(-1);
+    }
+    ret = xmlSecTransformConcatKdfParamsReadsBitsAttr(&(params->bufSuppPubInfo), node, xmlSecNodeConcatKDFAttrSuppPubInfo);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecTransformConcatKdfParamsReadsBitsAttr(SuppPubInfo)", NULL);
+        return(-1);
+    }
+    ret = xmlSecTransformConcatKdfParamsReadsBitsAttr(&(params->bufSuppPrivInfo), node, xmlSecNodeConcatKDFAttrSuppPrivInfo);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecTransformConcatKdfParamsReadsBitsAttr(ASuppPrivInfo)", NULL);
+        return(-1);
+    }
+
+    /* done! */
+    return(0);
+}
+
+/* https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-56Ar3.pdf
+ * For this format, FixedInfo is a bit string equal to the following concatenation:
+ *
+ * AlgorithmID || PartyUInfo || PartyVInfo {|| SuppPubInfo }{|| SuppPrivInfo }
+ */
+int
+xmlSecTransformConcatKdfParamsGetFixedInfo(xmlSecTransformConcatKdfParamsPtr params, xmlSecBufferPtr bufFixedInfo) {
+    xmlSecSize size;
+    int ret;
+
+    xmlSecAssert2(params != NULL, -1);
+    xmlSecAssert2(bufFixedInfo != NULL, -1);
+
+    size = xmlSecBufferGetSize(&(params->bufAlgorithmID)) +
+        xmlSecBufferGetSize(&(params->bufPartyUInfo)) +
+        xmlSecBufferGetSize(&(params->bufPartyVInfo)) +
+        xmlSecBufferGetSize(&(params->bufSuppPubInfo)) +
+        xmlSecBufferGetSize(&(params->bufSuppPrivInfo));
+
+    ret = xmlSecBufferSetMaxSize(bufFixedInfo, size);
+    if(ret < 0) {
+        xmlSecInternalError2("xmlSecBufferSetMaxSize", NULL,
+            "size=" XMLSEC_SIZE_FMT, size);
+        return (-1);
+    }
+
+    ret = xmlSecBufferSetData(bufFixedInfo,
+        xmlSecBufferGetData(&(params->bufAlgorithmID)),
+        xmlSecBufferGetSize(&(params->bufAlgorithmID)));
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferSetData(AlgorithmID)", NULL);
+        return (-1);
+    }
+    ret = xmlSecBufferAppend(bufFixedInfo,
+        xmlSecBufferGetData(&(params->bufPartyUInfo)),
+        xmlSecBufferGetSize(&(params->bufPartyUInfo)));
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferAppend(PartyUInfo)", NULL);
+        return (-1);
+    }
+    ret = xmlSecBufferAppend(bufFixedInfo,
+        xmlSecBufferGetData(&(params->bufPartyVInfo)),
+        xmlSecBufferGetSize(&(params->bufPartyVInfo)));
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferAppend(PartyVInfo)", NULL);
+        return (-1);
+    }
+    ret = xmlSecBufferAppend(bufFixedInfo,
+        xmlSecBufferGetData(&(params->bufSuppPubInfo)),
+        xmlSecBufferGetSize(&(params->bufSuppPubInfo)));
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferAppend(SuppPubInfo)", NULL);
+        return (-1);
+    }
+    ret = xmlSecBufferAppend(bufFixedInfo,
+        xmlSecBufferGetData(&(params->bufSuppPrivInfo)),
+        xmlSecBufferGetSize(&(params->bufSuppPrivInfo)));
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferAppend(SuppPrivInfo)", NULL);
+        return (-1);
+    }
+
+    /* done */
+    return(0);
+}
+
+#endif /* XMLSEC_NO_CONCATKDF */
+
+/**************************** Common Key Agreement Params ********************************/
+int
+xmlSecTransformKeyAgreementParamsInitialize(xmlSecTransformKeyAgreementParamsPtr params) {
+    int ret;
+
+    xmlSecAssert2(params != NULL, -1);
+
+    memset(params, 0, sizeof(*params));
+
+    ret = xmlSecKeyInfoCtxInitialize(&(params->kdfKeyInfoCtx), NULL); /* no keys manager needed */
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeyInfoCtxInitialize", NULL);
+        xmlSecTransformKeyAgreementParamsFinalize(params);
+        return(-1);
+    }
+
+    /* done */
+    return(0);
+}
+
+void
+xmlSecTransformKeyAgreementParamsFinalize(xmlSecTransformKeyAgreementParamsPtr params) {
+    xmlSecAssert(params != NULL);
+
+
+    xmlSecKeyInfoCtxFinalize(&(params->kdfKeyInfoCtx));
+
+    if(params->kdfTransform != NULL) {
+        xmlSecTransformDestroy(params->kdfTransform);
+    }
+    if(params->memBufTransform != NULL) {
+        xmlSecTransformDestroy(params->memBufTransform);
+    }
+    if(params->keyOriginator != NULL) {
+        xmlSecKeyDestroy(params->keyOriginator);
+    }
+    if(params->keyRecipient != NULL) {
+        xmlSecKeyDestroy(params->keyRecipient);
+    }
+
+    /* cleanup */
+    memset(params, 0, sizeof(*params));
+}
+
+static xmlSecKeyPtr
+xmlSecTransformKeyAgreementReadKey(xmlSecKeyDataType keyType, xmlNodePtr node,
+    xmlSecTransformPtr kaTransform, xmlSecTransformCtxPtr transformCtx)
+{
+    xmlSecKeyInfoCtx keyInfoCtx;
+    xmlSecKeysMngrPtr keysMngr;
+    xmlSecKeyPtr key = NULL;
+    xmlSecKeyPtr res = NULL;
+    int ret;
+
+    xmlSecAssert2(node != NULL, NULL);
+    xmlSecAssert2(kaTransform != NULL, NULL);
+    xmlSecAssert2(transformCtx != NULL, NULL);
+    xmlSecAssert2(transformCtx->parentKeyInfoCtx != NULL, NULL);
+
+    keysMngr = transformCtx->parentKeyInfoCtx->keysMngr;
+    xmlSecAssert2(keysMngr != NULL, NULL);
+    xmlSecAssert2(keysMngr->getKey != NULL, NULL);
+
+     /* create keyinfo ctx */
+    ret = xmlSecKeyInfoCtxInitialize(&keyInfoCtx, keysMngr);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeyInfoCtxInitialize(recipient)", xmlSecNodeGetName(node));
+        return(NULL);
+    }
+    ret = xmlSecKeyInfoCtxCopyUserPref(&keyInfoCtx, transformCtx->parentKeyInfoCtx);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeyInfoCtxCopyUserPref(recipient)", xmlSecNodeGetName(node));
+        goto done;
+    }
+    keyInfoCtx.mode = xmlSecKeyInfoModeRead;
+
+    ret = xmlSecTransformSetKeyReq(kaTransform, &(keyInfoCtx.keyReq));
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecTransformSetKeyReq(originator)", xmlSecNodeGetName(node));
+        goto done;
+    }
+    keyInfoCtx.keyReq.keyType = keyType;
+
+    key = (keysMngr->getKey)(node, &keyInfoCtx);
+    if(key == NULL) {
+        xmlSecOtherError(XMLSEC_ERRORS_R_KEY_NOT_FOUND, xmlSecNodeGetName(node), "key not found");
+        goto done;
+    }
+    if(!xmlSecKeyMatch(key, NULL, &(keyInfoCtx.keyReq))) {
+        xmlSecOtherError(XMLSEC_ERRORS_R_KEY_NOT_FOUND, xmlSecNodeGetName(node), "key doesn't match requiremetns");
+        goto done;
+    }
+
+    /* success */
+    res = key;
+    key = NULL;
+
+done:
+    if(key != NULL) {
+        xmlSecKeyDestroy(key);
+    }
+    xmlSecKeyInfoCtxFinalize(&keyInfoCtx);
+    return(res);
+}
+
+
+static int
+xmlSecTransformKeyAgreementWriteKey(xmlSecKeyPtr key, xmlNodePtr node,
+    xmlSecTransformPtr kaTransform, xmlSecTransformCtxPtr transformCtx)
+{
+    xmlSecKeyInfoCtx keyInfoCtx;
+    int ret;
+    int res = -1;
+
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(kaTransform != NULL, -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
+    xmlSecAssert2(transformCtx->parentKeyInfoCtx != NULL, -1);
+
+
+     /* create keyinfo ctx */
+    ret = xmlSecKeyInfoCtxInitialize(&keyInfoCtx, NULL);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeyInfoCtxInitialize(recipient)", xmlSecNodeGetName(node));
+        return(-1);
+    }
+    ret = xmlSecKeyInfoCtxCopyUserPref(&keyInfoCtx, transformCtx->parentKeyInfoCtx);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeyInfoCtxCopyUserPref(recipient)", xmlSecNodeGetName(node));
+        goto done;
+    }
+    keyInfoCtx.mode = xmlSecKeyInfoModeWrite;
+    keyInfoCtx.keyReq.keyType = xmlSecKeyDataTypePublic; /* write public keys only */
+
+    /* write node */
+    ret = xmlSecKeyInfoNodeWrite(node, key, &(keyInfoCtx));
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecKeyInfoNodeWrite", NULL);
+        goto done;
+    }
+
+    /* success */
+    res = 0;
+
+done:
+    xmlSecKeyInfoCtxFinalize(&keyInfoCtx);
+    return(res);
+}
+
+
+int
+xmlSecTransformKeyAgreementParamsRead(xmlSecTransformKeyAgreementParamsPtr params, xmlNodePtr node,
+    xmlSecTransformPtr kaTransform, xmlSecTransformCtxPtr transformCtx)
+{
+    xmlNodePtr cur;
+    xmlSecKeyDataType originatorKeyType, recipientKeyType;
+    int ret;
+    int res = -1;
+
+    xmlSecAssert2(params != NULL, -1);
+    xmlSecAssert2(params->kdfTransform == NULL, -1);
+    xmlSecAssert2(params->memBufTransform == NULL, -1);
+    xmlSecAssert2(params->keyOriginator == NULL, -1);
+    xmlSecAssert2(params->keyRecipient == NULL, -1);
+    xmlSecAssert2(kaTransform != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
+    xmlSecAssert2(transformCtx->parentKeyInfoCtx != NULL, -1);
+
+    if(transformCtx->parentKeyInfoCtx->operation == xmlSecTransformOperationEncrypt) {
+        /* we are encrypting on originator side which needs private key */
+        originatorKeyType = xmlSecKeyDataTypePrivate;
+        recipientKeyType = xmlSecKeyDataTypePublic;
+    } else {
+        /* we are decrypting on recipient side which needs private key */
+        originatorKeyType = xmlSecKeyDataTypePublic;
+        recipientKeyType = xmlSecKeyDataTypePrivate;
+    }
+
+    /* first is required KeyDerivationMethod */
+    cur = xmlSecGetNextElementNode(node->children);
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeKeyDerivationMethod, xmlSecEnc11Ns))) {
+        xmlSecInvalidNodeError(cur, xmlSecNodeKeyDerivationMethod, NULL);
+        goto done;
+    }
+    params->kdfTransform = xmlSecTransformNodeRead(cur, xmlSecTransformUsageKeyDerivationMethod, transformCtx);
+    if(params->kdfTransform  == NULL) {
+        xmlSecInternalError("xmlSecTransformNodeRead", xmlSecNodeGetName(node));
+        goto done;
+    }
+    ret = xmlSecTransformSetKeyReq(params->kdfTransform, &(params->kdfKeyInfoCtx.keyReq));
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecTransformSetKeyReq", xmlSecNodeGetName(node));
+        goto done;
+    }
+
+    /* next node is required OriginatorKeyInfo (we need public key)*/
+    cur = xmlSecGetNextElementNode(cur->next);
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeOriginatorKeyInfo, xmlSecEncNs))) {
+        xmlSecInvalidNodeError(cur, xmlSecNodeOriginatorKeyInfo, NULL);
+        goto done;
+    }
+    params->keyOriginator = xmlSecTransformKeyAgreementReadKey(originatorKeyType, cur, kaTransform, transformCtx);
+    if(params->keyOriginator  == NULL) {
+        xmlSecInternalError("xmlSecTransformKeyAgreementReadKey(OriginatorKeyInfo)", xmlSecNodeGetName(node));
+        goto done;
+    }
+
+    /* next node is required RecipientKeyInfo (we need private key)*/
+    cur = xmlSecGetNextElementNode(cur->next);
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeRecipientKeyInfo, xmlSecEncNs))) {
+        xmlSecInvalidNodeError(cur, xmlSecNodeRecipientKeyInfo, NULL);
+        goto done;
+    }
+    params->keyRecipient = xmlSecTransformKeyAgreementReadKey(recipientKeyType, cur, kaTransform, transformCtx);
+    if(params->keyRecipient  == NULL) {
+        xmlSecInternalError("xmlSecTransformKeyAgreementReadKey(RecipientKeyInfo)", xmlSecNodeGetName(node));
+        goto done;
+    }
+
+    /* if there is something left than it's an error */
+    cur = xmlSecGetNextElementNode(cur->next);
+    if(cur != NULL) {
+        xmlSecUnexpectedNodeError(cur,  NULL);
+        goto done;
+    }
+
+    /* append MemBuf transform after kdf transform to collect results */
+    params->memBufTransform = xmlSecTransformCreate(xmlSecTransformMemBufId);
+    if(!xmlSecTransformIsValid(params->memBufTransform )) {
+        xmlSecInternalError("xmlSecTransformCreate(MemBufId)",  xmlSecNodeGetName(node));
+        goto done;
+    }
+    params->kdfTransform->next = params->memBufTransform;
+    params->memBufTransform->prev = params->kdfTransform;
+
+    /* success */
+    res = 0;
+
+done:
+    return(res);
+}
+
+int
+xmlSecTransformKeyAgreementParamsWrite(xmlSecTransformKeyAgreementParamsPtr params, xmlNodePtr node,
+    xmlSecTransformPtr kaTransform, xmlSecTransformCtxPtr transformCtx)
+{
+    xmlNodePtr cur;
+    int ret;
+    int res = -1;
+
+    xmlSecAssert2(params != NULL, -1);
+    xmlSecAssert2(kaTransform != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
+    xmlSecAssert2(transformCtx->parentKeyInfoCtx != NULL, -1);
+
+    /* first is required KeyDerivationMethod */
+    cur = xmlSecGetNextElementNode(node->children);
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeKeyDerivationMethod, xmlSecEnc11Ns))) {
+        xmlSecInvalidNodeError(cur, xmlSecNodeKeyDerivationMethod, NULL);
+        goto done;
+    }
+    /* do nothing for KeyDerivationMethod for now */
+
+    /* next node is required OriginatorKeyInfo (we need public key)*/
+    cur = xmlSecGetNextElementNode(cur->next);
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeOriginatorKeyInfo, xmlSecEncNs))) {
+        xmlSecInvalidNodeError(cur, xmlSecNodeOriginatorKeyInfo, NULL);
+        goto done;
+    }
+    if(params->keyOriginator != NULL) {
+        ret = xmlSecTransformKeyAgreementWriteKey(params->keyOriginator, cur, kaTransform, transformCtx);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecTransformKeyAgreementWriteKey(OriginatorKeyInfo)", xmlSecNodeGetName(node));
+            goto done;
+        }
+    }
+
+    /* next node is required RecipientKeyInfo (we need private key)*/
+    cur = xmlSecGetNextElementNode(cur->next);
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeRecipientKeyInfo, xmlSecEncNs))) {
+        xmlSecInvalidNodeError(cur, xmlSecNodeRecipientKeyInfo, NULL);
+        goto done;
+    }
+    if(params->keyRecipient != NULL) {
+        ret = xmlSecTransformKeyAgreementWriteKey(params->keyRecipient, cur, kaTransform, transformCtx);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecTransformKeyAgreementWriteKey(RecipientKeyInfo)", xmlSecNodeGetName(node));
+            goto done;
+        }
+    }
+
+    /* if there is something left than it's an error */
+    cur = xmlSecGetNextElementNode(cur->next);
+    if(cur != NULL) {
+        xmlSecUnexpectedNodeError(cur,  NULL);
+        goto done;
+    }
+
+    /* success */
+    res = 0;
+
+done:
+    return(res);
+}
+
+#ifndef XMLSEC_NO_HMAC
+
+/* min output for hmac transform in bits */
+static xmlSecSize g_xmlsec_transform_hmac_min_output_bits_size = 80;
+
+/**
+ * xmlSecTransformHmacGetMinOutputBitsSize:
+ *
+ * Gets the minimum size in bits for HMAC output.
+ *
+ * Returns: the min HMAC output size in bits.
+ */
+xmlSecSize
+xmlSecTransformHmacGetMinOutputBitsSize(void) {
+    return(g_xmlsec_transform_hmac_min_output_bits_size);
+}
+
+/**
+ * xmlSecTransformHmacSetMinOutputBitsSize:
+ * @val: the new min hmac output size in bits.
+ *
+ * Sets the min HMAC output size in bits. Low value for min output size
+ * might create a security vulnerability and is not recommended.
+ */
+void xmlSecTransformHmacSetMinOutputBitsSize(xmlSecSize val) {
+    g_xmlsec_transform_hmac_min_output_bits_size = val;
+}
+
+/*
+ * HMAC (http://www.w3.org/TR/xmldsig-core/#sec-HMAC):
+ *
+ * The HMAC algorithm (RFC2104 [HMAC]) takes the truncation length in bits
+ * as a parameter; if the parameter is not specified then all the bits of the
+ * hash are output. An example of an HMAC SignatureMethod element:
+ * <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#hmac-sha1">
+ *   <HMACOutputLength>128</HMACOutputLength>
+ * </SignatureMethod>
+ *
+ * Schema Definition:
+ *
+ * <simpleType name="HMACOutputLengthType">
+ *   <restriction base="integer"/>
+ * </simpleType>
+ *
+ * DTD:
+ *
+ * <!ELEMENT HMACOutputLength (#PCDATA)>
+ */
+int
+xmlSecTransformHmacReadOutputBitsSize(xmlNodePtr node, xmlSecSize defaultSize, xmlSecSize* res) {
+    xmlNodePtr cur;
+
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(res != NULL, -1);
+
+    cur = xmlSecGetNextElementNode(node->children);
+    if ((cur != NULL) && xmlSecCheckNodeName(cur, xmlSecNodeHMACOutputLength, xmlSecDSigNs)) {
+        xmlSecSize minSize;
+        int ret;
+
+        ret = xmlSecGetNodeContentAsSize(cur, defaultSize, res);
+        if (ret != 0) {
+            xmlSecInternalError("xmlSecGetNodeContentAsSize(HMACOutputLength)", NULL);
+            return(-1);
+        }
+
+        /* Ensure that HMAC length is greater than min specified.
+           Otherwise, an attacker can set this length to 0 or very
+           small value
+        */
+        minSize = xmlSecTransformHmacGetMinOutputBitsSize();
+        if ((*res) < minSize) {
+            xmlSecInvalidNodeContentError3(cur, NULL,
+                "HMAC output length=" XMLSEC_SIZE_FMT "; HMAC min output length=" XMLSEC_SIZE_FMT,
+                (*res), minSize);
+            return(-1);
+        }
+
+        cur = xmlSecGetNextElementNode(cur->next);
+    }
+
+    /* no other nodes expected */
+    if (cur != NULL) {
+        xmlSecUnexpectedNodeError(cur, NULL);
+        return(-1);
+    }
+    return(0);
+}
+
+static xmlSecByte g_hmac_last_byte_masks[] = { 0xFF, 0x80, 0xC0, 0xE0, 0xF0, 0xF8, 0xFC, 0xFE };
+
+int
+xmlSecTransformHmacWriteOutput(const xmlSecByte * hmac, xmlSecSize hmacSizeInBits, xmlSecSize hmacMaxSizeInBytes, xmlSecBufferPtr out)
+{
+    xmlSecSize hmacSize;
+    xmlSecByte lastByteMask;
+    xmlSecByte* outData;
+    int ret;
+
+    xmlSecAssert2(hmac != NULL, -1);
+    xmlSecAssert2(hmacSizeInBits > 0, -1);
+    xmlSecAssert2(out != NULL, -1);
+
+    hmacSize = (hmacSizeInBits + 7) / 8;
+    xmlSecAssert2(hmacSize > 0, -1);
+    xmlSecAssert2(hmacSize <= hmacMaxSizeInBytes, -1);
+
+    ret = xmlSecBufferAppend(out, hmac, hmacSize);
+    if(ret < 0) {
+        xmlSecInternalError2("xmlSecBufferAppend", NULL, "size=" XMLSEC_SIZE_FMT, hmacSize);
+        return(-1);
+    }
+
+    /* fix up last byte */
+    lastByteMask = g_hmac_last_byte_masks[hmacSizeInBits % 8];
+    outData = xmlSecBufferGetData(out);
+    if(outData == NULL) {
+        xmlSecInternalError("xmlSecBufferGetData", NULL);
+        return(-1);
+    }
+    outData[hmacSize - 1] &= lastByteMask;
+
+    /* success */
+    return(0);
+}
+
+/* Returns 1 for match, 0 for no match, <0 for errors. */
+int
+xmlSecTransformHmacVerify(const xmlSecByte* data, xmlSecSize dataSize,
+    const xmlSecByte * hmac, xmlSecSize hmacSizeInBits, xmlSecSize hmacMaxSizeInBytes)
+{
+    xmlSecSize hmacSize;
+    xmlSecByte lastByteMask;
+
+    xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(dataSize > 0, -1);
+    xmlSecAssert2(hmac != NULL, -1);
+    xmlSecAssert2(hmacSizeInBits > 0, -1);
+
+    hmacSize = (hmacSizeInBits + 7) / 8;
+    xmlSecAssert2(hmacSize > 0, -1);
+    xmlSecAssert2(hmacSize <= hmacMaxSizeInBytes, -1);
+
+    if(dataSize != hmacSize){
+        xmlSecInvalidSizeError("HMAC digest", dataSize, hmacSize, NULL);
+        return(0);
+    }
+
+    /* we check the last byte separately */
+    lastByteMask = g_hmac_last_byte_masks[hmacSizeInBits % 8];
+    if((hmac[hmacSize - 1] & lastByteMask) != (data[dataSize - 1] & lastByteMask)) {
+        xmlSecOtherError(XMLSEC_ERRORS_R_DATA_NOT_MATCH, NULL, "data and digest do not match (last byte)");
+        return(0);
+    }
+
+    /* now check the rest of the digest */
+    if((hmacSize > 1) && (memcmp(hmac, data, hmacSize - 1) != 0)) {
+        xmlSecOtherError(XMLSEC_ERRORS_R_DATA_NOT_MATCH, NULL, "data and digest do not match");
+        return(0);
+    }
+
+    /* success */
+    return(1);
+}
+
+#endif /* XMLSEC_NO_HMAC */
+
+
+#ifndef XMLSEC_NO_PBKDF2
+
+#define XMLSEC_TRANSFORM_PBKDF2_DEFAULT_BUF_SIZE       64
+
+int
+xmlSecTransformPbkdf2ParamsInitialize(xmlSecTransformPbkdf2ParamsPtr params) {
+    int ret;
+
+    xmlSecAssert2(params != NULL, -1);
+    memset(params, 0, sizeof(*params));
+
+    ret = xmlSecBufferInitialize(&(params->salt), XMLSEC_TRANSFORM_PBKDF2_DEFAULT_BUF_SIZE);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize(bufAlgorithmID)", NULL);
+        xmlSecTransformPbkdf2ParamsFinalize(params);
+        return(-1);
+    }
+
+    /* done */
+    return(0);
+}
+
+void
+xmlSecTransformPbkdf2ParamsFinalize(xmlSecTransformPbkdf2ParamsPtr params) {
+    xmlSecAssert(params != NULL);
+
+    if(params->prfAlgorithmHref != NULL) {
+        xmlFree(params->prfAlgorithmHref);
+    }
+    xmlSecBufferFinalize(&(params->salt));
+
+    memset(params, 0, sizeof(*params));
+}
+
+/*
+ * https://www.w3.org/TR/xmlenc-core1/#sec-PBKDF2
+ *
+ *  <element name="PBKDF2-params" type="xenc11:PBKDF2ParameterType"/>
+ *  <complexType name="PBKDF2ParameterType">
+ *      <sequence>
+ *          <element name="Salt">
+ *              <complexType>
+ *                  <choice>
+ *                      <element name="Specified" type="base64Binary"/>
+ *                      <element name="OtherSource" type="xenc11:AlgorithmIdentifierType"/>
+ *                  </choice>
+ *              </complexType>
+ *          </element>
+ *          <element name="IterationCount" type="positiveInteger"/>
+ *          <element name="KeyLength" type="positiveInteger"/>
+ *          <element name="PRF" type="xenc11:PRFAlgorithmIdentifierType"/>
+ *      </sequence>
+ *  </complexType>
+ *
+ *  <complexType name="AlgorithmIdentifierType">
+ *      <sequence>
+ *          <element name="Parameters" type="anyType" minOccurs="0"/>
+ *      </sequence>
+ *      <attribute name="Algorithm" type="anyURI"/>
+ *  </complexType>
+ *
+ *  <complexType name="PRFAlgorithmIdentifierType">
+ *      <complexContent>
+ *          <restriction base="xenc11:AlgorithmIdentifierType">
+ *              <attribute name="Algorithm" type="anyURI"/>
+ *          </restriction>
+ *      </complexContent>
+ * </complexType>
+ *
+ * - Salt / OtherSource is not supported
+ * - PRF algorithm parameters are not supported
+*/
+static int
+xmlSecTransformPbkdf2ParamsReadSalt(xmlSecTransformPbkdf2ParamsPtr params, xmlNodePtr node) {
+    xmlNodePtr cur;
+    int ret;
+
+    xmlSecAssert2(params != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+
+    /* first and onluy node is required Salt / Specified (Salt / OtherSource is not supported)*/
+    cur  = xmlSecGetNextElementNode(node->children);
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodePbkdf2SaltSpecified, xmlSecEnc11Ns))) {
+        xmlSecInvalidNodeError(cur, xmlSecNodePbkdf2SaltSpecified, NULL);
+        return(-1);
+    }
+    ret = xmlSecBufferBase64NodeContentRead(&(params->salt), cur);
+    if((ret < 0) || (xmlSecBufferGetSize(&(params->salt)) <= 0)) {
+        xmlSecInternalError("xmlSecBufferBase64NodeContentRead(Salt)", NULL);
+        return(-1);
+    }
+
+    /* if we have something else then it's an error */
+    cur = xmlSecGetNextElementNode(cur->next);
+    if(cur != NULL) {
+        xmlSecUnexpectedNodeError(cur,  NULL);
+        return(-1);
+    }
+
+    /* done! */
+    return(0);
+}
+
+int
+xmlSecTransformPbkdf2ParamsRead(xmlSecTransformPbkdf2ParamsPtr params, xmlNodePtr node) {
+    xmlNodePtr cur;
+    int ret;
+
+    xmlSecAssert2(params != NULL, -1);
+    xmlSecAssert2(params->prfAlgorithmHref == NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+
+    /* first node is required Salt */
+    cur  = xmlSecGetNextElementNode(node->children);
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodePbkdf2Salt, xmlSecEnc11Ns))) {
+        xmlSecInvalidNodeError(cur, xmlSecNodePbkdf2Salt, NULL);
+        return(-1);
+    }
+    ret = xmlSecTransformPbkdf2ParamsReadSalt(params, cur);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecTransformPbkdf2ParamsReadSalt", NULL);
+        return(-1);
+    }
+
+    /* next is required IterationCount */
+    cur = xmlSecGetNextElementNode(cur->next);
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodePbkdf2IterationCount, xmlSecEnc11Ns))) {
+        xmlSecInvalidNodeError(cur, xmlSecNodePbkdf2IterationCount, NULL);
+        return(-1);
+    }
+    ret = xmlSecGetNodeContentAsSize(cur, 0, &(params->iterationCount));
+    if((ret < 0) || (params->iterationCount <= 0)) {
+        xmlSecInternalError("xmlSecGetNodeContentAsSize(iterationCount)", NULL);
+        return(-1);
+    }
+
+    /* next is required KeyLength */
+    cur = xmlSecGetNextElementNode(cur->next);
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodePbkdf2KeyLength, xmlSecEnc11Ns))) {
+        xmlSecInvalidNodeError(cur, xmlSecNodePbkdf2KeyLength, NULL);
+        return(-1);
+    }
+    ret = xmlSecGetNodeContentAsSize(cur, 0, &(params->keyLength));
+    if((ret < 0) || (params->keyLength <= 0)) {
+        xmlSecInternalError("xmlSecGetNodeContentAsSize(keyLength)", NULL);
+        return(-1);
+    }
+
+    /* next is required PRF */
+    cur = xmlSecGetNextElementNode(cur->next);
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodePbkdf2PRF, xmlSecEnc11Ns))) {
+        xmlSecInvalidNodeError(cur, xmlSecNodePbkdf2PRF, NULL);
+        return(-1);
+    }
+    params->prfAlgorithmHref = xmlGetProp(cur, xmlSecAttrAlgorithm);
+    if(params->prfAlgorithmHref == NULL) {
+        xmlSecInvalidNodeAttributeError(cur, xmlSecAttrAlgorithm, NULL, "empty");
+        return(-1);
+    }
+    /* PRF algorithm parameters are not supported */
+
+    /* if we have something else then it's an error */
+    cur = xmlSecGetNextElementNode(cur->next);
+    if(cur != NULL) {
+        xmlSecUnexpectedNodeError(cur,  NULL);
+        return(-1);
+    }
+
+    /* done! */
+    return(0);
+}
+
+#endif /* XMLSEC_NO_CONCATKDF */
+
+
+#ifndef XMLSEC_NO_RSA
+#ifndef XMLSEC_NO_RSA_OAEP
+int
+xmlSecTransformRsaOaepParamsInitialize(xmlSecTransformRsaOaepParamsPtr oaepParams) {
+    int ret;
+
+    xmlSecAssert2(oaepParams != NULL, -1);
+
+    memset(oaepParams, 0, sizeof(xmlSecTransformRsaOaepParams));
+
+    ret = xmlSecBufferInitialize(&(oaepParams->oaepParams), 0);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize", NULL);
+        return(-1);
+    }
+
+    return(0);
+}
+
+void
+xmlSecTransformRsaOaepParamsFinalize(xmlSecTransformRsaOaepParamsPtr oaepParams) {
+    xmlSecAssert(oaepParams != NULL);
+
+    xmlSecBufferFinalize(&(oaepParams->oaepParams));
+    if(oaepParams->digestAlgorithm != NULL) {
+        xmlFree(oaepParams->digestAlgorithm);
+    }
+    if(oaepParams->mgf1DigestAlgorithm != NULL) {
+        xmlFree(oaepParams->mgf1DigestAlgorithm);
+    }
+    memset(oaepParams, 0, sizeof(xmlSecTransformRsaOaepParams));
+}
+
+/*
+ * See https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP
+ *  <EncryptionMethod Algorithm="http://www.w3.org/2009/xmlenc11#rsa-oaep">
+ *      <OAEPparams>9lWu3Q==</OAEPparams>
+ *      <xenc11:MGF Algorithm="http://www.w3.org/2001/04/xmlenc#MGF1withSHA1" />
+ *      <ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+ *  <EncryptionMethod>
+*/
+int
+xmlSecTransformRsaOaepParamsRead(xmlSecTransformRsaOaepParamsPtr oaepParams, xmlNodePtr node) {
+    xmlNodePtr cur;
+    int ret;
+
+    xmlSecAssert2(oaepParams != NULL, -1);
+    xmlSecAssert2(xmlSecBufferGetSize(&(oaepParams->oaepParams)) == 0, -1);
+    xmlSecAssert2(oaepParams->digestAlgorithm == NULL, -1);
+    xmlSecAssert2(oaepParams->mgf1DigestAlgorithm == NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+
+    cur = xmlSecGetNextElementNode(node->children);
+    while (cur != NULL) {
+        if (xmlSecCheckNodeName(cur, xmlSecNodeRsaOAEPparams, xmlSecEncNs)) {
+            ret = xmlSecBufferBase64NodeContentRead(&(oaepParams->oaepParams), cur);
+            if (ret < 0) {
+                xmlSecInternalError("xmlSecBufferBase64NodeContentRead", NULL);
+                return(-1);
+            }
+        } else if (xmlSecCheckNodeName(cur, xmlSecNodeDigestMethod, xmlSecDSigNs)) {
+            /* digest algorithm attribute is required */
+            oaepParams->digestAlgorithm = xmlGetProp(cur, xmlSecAttrAlgorithm);
+            if (oaepParams->digestAlgorithm == NULL) {
+                xmlSecInvalidNodeAttributeError(cur, xmlSecAttrAlgorithm, NULL, "empty");
+                return(-1);
+            }
+        } else if (xmlSecCheckNodeName(cur, xmlSecNodeRsaMGF, xmlSecEnc11Ns)) {
+            /* mgf1 digest algorithm attribute is required */
+            oaepParams->mgf1DigestAlgorithm = xmlGetProp(cur, xmlSecAttrAlgorithm);
+            if (oaepParams->mgf1DigestAlgorithm == NULL) {
+                xmlSecInvalidNodeAttributeError(cur, xmlSecAttrAlgorithm, NULL, "empty");
+                return(-1);
+            }
+        } else {
+            /* node not recognized */
+            xmlSecUnexpectedNodeError(cur, NULL);
+                return(-1);
+        }
+
+        /* next node */
+        cur = xmlSecGetNextElementNode(cur->next);
+    }
+
+    /* done */
+    return(0);
+}
+#endif /* XMLSEC_NO_RSA_OAEP */
+#endif /* XMLSEC_NO_RSA */

@@ -6,11 +6,12 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 #ifndef __XMLSEC_KEYSMGMR_H__
 #define __XMLSEC_KEYSMGMR_H__
 
+#include <xmlsec/exports.h>
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/list.h>
 #include <xmlsec/keys.h>
@@ -26,6 +27,8 @@ typedef const struct _xmlSecKeyKlass                    xmlSecKeyKlass,
 typedef const struct _xmlSecKeyStoreKlass               xmlSecKeyStoreKlass,
                                                         *xmlSecKeyStoreId;
 
+typedef struct _xmlSecKeyX509DataValue                  xmlSecKeyX509DataValue,
+                                                        *xmlSecKeyX509DataValuePtr;
 
 /****************************************************************************
  *
@@ -39,6 +42,10 @@ XMLSEC_EXPORT xmlSecKeyPtr              xmlSecKeysMngrFindKey           (xmlSecK
                                                                          const xmlChar* name,
                                                                          xmlSecKeyInfoCtxPtr keyInfoCtx);
 
+XMLSEC_EXPORT xmlSecKeyPtr              xmlSecKeysMngrFindKeyFromX509Data(xmlSecKeysMngrPtr mngr,
+                                                                         xmlSecKeyX509DataValuePtr x509Data,
+                                                                         xmlSecKeyInfoCtxPtr keyInfoCtx);
+
 XMLSEC_EXPORT int                       xmlSecKeysMngrAdoptKeysStore    (xmlSecKeysMngrPtr mngr,
                                                                          xmlSecKeyStorePtr store);
 XMLSEC_EXPORT xmlSecKeyStorePtr         xmlSecKeysMngrGetKeysStore      (xmlSecKeysMngrPtr mngr);
@@ -50,10 +57,10 @@ XMLSEC_EXPORT xmlSecKeyDataStorePtr     xmlSecKeysMngrGetDataStore      (xmlSecK
 
 /**
  * xmlSecGetKeyCallback:
- * @keyInfoNode:                the pointer to <dsig:KeyInfo/> node.
- * @keyInfoCtx:                 the pointer to <dsig:KeyInfo/> node processing context.
+ * @keyInfoNode:                the pointer to &lt;dsig:KeyInfo/&gt; node.
+ * @keyInfoCtx:                 the pointer to &lt;dsig:KeyInfo/&gt; node processing context.
  *
- * Reads the <dsig:KeyInfo/> node @keyInfoNode and extracts the key.
+ * Reads the &lt;dsig:KeyInfo/&gt; node @keyInfoNode and extracts the key.
  *
  * Returns: the pointer to key or NULL if the key is not found or
  * an error occurs.
@@ -65,7 +72,7 @@ typedef xmlSecKeyPtr    (*xmlSecGetKeyCallback)         (xmlNodePtr keyInfoNode,
  * xmlSecKeysMngr:
  * @keysStore:                  the key store (list of keys known to keys manager).
  * @storesList:                 the list of key data stores known to keys manager.
- * @getKey:                     the callback used to read <dsig:KeyInfo/> node.
+ * @getKey:                     the callback used to read &lt;dsig:KeyInfo/&gt; node.
  *
  * The keys manager structure.
  */
@@ -105,6 +112,9 @@ XMLSEC_EXPORT xmlSecKeyStorePtr xmlSecKeyStoreCreate            (xmlSecKeyStoreI
 XMLSEC_EXPORT void              xmlSecKeyStoreDestroy           (xmlSecKeyStorePtr store);
 XMLSEC_EXPORT xmlSecKeyPtr      xmlSecKeyStoreFindKey           (xmlSecKeyStorePtr store,
                                                                  const xmlChar* name,
+                                                                 xmlSecKeyInfoCtxPtr keyInfoCtx);
+XMLSEC_EXPORT xmlSecKeyPtr      xmlSecKeyStoreFindKeyFromX509Data(xmlSecKeyStorePtr store,
+                                                                 xmlSecKeyX509DataValuePtr x509Data,
                                                                  xmlSecKeyInfoCtxPtr keyInfoCtx);
 /**
  * xmlSecKeyStoreGetName:
@@ -193,6 +203,22 @@ typedef xmlSecKeyPtr            (*xmlSecKeyStoreFindKeyMethod)  (xmlSecKeyStoreP
                                                                  const xmlChar* name,
                                                                  xmlSecKeyInfoCtxPtr keyInfoCtx);
 
+
+/**
+ * xmlSecKeyStoreFindKeyFromX509DataMethod:
+ * @store:              the store.
+ * @x509Data:           the x509 data to lookup key.
+ * @keyInfoCtx:         the pointer to key info context.
+ *
+ * Keys store specific find method. The caller is responsible for destroying
+ * the returned key using #xmlSecKeyDestroy method.
+ *
+ * Returns: the pointer to a key or NULL if key is not found or an error occurs.
+ */
+typedef xmlSecKeyPtr            (*xmlSecKeyStoreFindKeyFromX509DataMethod)(xmlSecKeyStorePtr store,
+                                                                 xmlSecKeyX509DataValuePtr x509Data,
+                                                                 xmlSecKeyInfoCtxPtr keyInfoCtx);
+
 /**
  * xmlSecKeyStoreKlass:
  * @klassSize:          the store klass size.
@@ -200,9 +226,9 @@ typedef xmlSecKeyPtr            (*xmlSecKeyStoreFindKeyMethod)  (xmlSecKeyStoreP
  * @name:               the store's name.
  * @initialize:         the store's initialization method.
  * @finalize:           the store's finalization (destroy) method.
- * @findKey:            the store's find method.
+ * @findKey:            the store's method to find key by key name.
+ * @findKeyFromX509Data: the store's method to find key based on x509 data.
  * @reserved0:          reserved for the future.
- * @reserved1:          reserved for the future.
  *
  * The keys store id (klass).
  */
@@ -214,13 +240,15 @@ struct _xmlSecKeyStoreKlass {
     const xmlChar*                      name;
 
     /* constructors/destructor */
-    xmlSecKeyStoreInitializeMethod      initialize;
-    xmlSecKeyStoreFinalizeMethod        finalize;
-    xmlSecKeyStoreFindKeyMethod         findKey;
+    xmlSecKeyStoreInitializeMethod              initialize;
+    xmlSecKeyStoreFinalizeMethod                finalize;
+
+    /* key loopkup */
+    xmlSecKeyStoreFindKeyMethod                 findKey;
+    xmlSecKeyStoreFindKeyFromX509DataMethod     findKeyFromX509Data;
 
     /* for the future */
     void*                               reserved0;
-    void*                               reserved1;
 };
 
 /**
@@ -238,6 +266,21 @@ struct _xmlSecKeyStoreKlass {
  * Simple Keys Store
  *
  ***************************************************************************/
+
+
+/**
+ * xmlSecSimpleKeysStoreAdoptKeyFunc:
+ * @store:              the pointer to key store.
+ * @key:                the pointer to key.
+ *
+ * Adds @key to the @store. On success, the @store owns the @key.
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+typedef int                    (*xmlSecSimpleKeysStoreAdoptKeyFunc)     (xmlSecKeyStorePtr store,
+                                                                         xmlSecKeyPtr key);
+
+
 /**
  * xmlSecSimpleKeysStoreId:
  *
@@ -250,6 +293,10 @@ XMLSEC_EXPORT int                       xmlSecSimpleKeysStoreAdoptKey   (xmlSecK
 XMLSEC_EXPORT int                       xmlSecSimpleKeysStoreLoad       (xmlSecKeyStorePtr store,
                                                                          const char *uri,
                                                                          xmlSecKeysMngrPtr keysMngr);
+XMLSEC_EXPORT int                       xmlSecSimpleKeysStoreLoad_ex    (xmlSecKeyStorePtr store,
+                                                                         const char *uri,
+                                                                         xmlSecKeysMngrPtr keysMngr,
+                                                                         xmlSecSimpleKeysStoreAdoptKeyFunc adoptKeyFunc);
 XMLSEC_EXPORT int                       xmlSecSimpleKeysStoreSave       (xmlSecKeyStorePtr store,
                                                                          const char *filename,
                                                                          xmlSecKeyDataType type);
@@ -261,4 +308,3 @@ XMLSEC_EXPORT xmlSecPtrListPtr          xmlSecSimpleKeysStoreGetKeys    (xmlSecK
 #endif /* __cplusplus */
 
 #endif /* __XMLSEC_KEYSMGMR_H__ */
-

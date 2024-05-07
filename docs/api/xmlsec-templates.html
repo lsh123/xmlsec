@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>templates: XML Security Library Reference Manual</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
 <link rel="up" href="xmlsec-ref.html" title="XML Security Core Library API Reference.">
 <link rel="prev" href="xmlsec-parser.html" title="parser">
 <link rel="next" href="xmlsec-transforms.html" title="transforms">
-<meta name="generator" content="GTK-Doc V1.27 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.33.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -304,6 +304,14 @@
 <font><span class="returnvalue">xmlNodePtr</span></font>
 </td>
 <td class="function_name">
+<a class="link" href="xmlsec-templates.html#xmlSecTmplX509DataAddDigest" title="xmlSecTmplX509DataAddDigest ()">xmlSecTmplX509DataAddDigest</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlNodePtr</span></font>
+</td>
+<td class="function_name">
 <a class="link" href="xmlsec-templates.html#xmlSecTmplX509DataAddCertificate" title="xmlSecTmplX509DataAddCertificate ()">xmlSecTmplX509DataAddCertificate</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
@@ -387,11 +395,11 @@ xmlSecTmplSignatureCreate (<em class="parameter"><code><font><span class="type">
                            <em class="parameter"><code><font><span class="type">xmlSecTransformId</span></font> c14nMethodId</code></em>,
                            <em class="parameter"><code><font><span class="type">xmlSecTransformId</span></font> signMethodId</code></em>,
                            <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *id</code></em>);</pre>
-<p>Creates new <a class="ulink" href="" target="_top">&lt;dsig:Signature/&gt;</a> node with the mandatory <a class="ulink" href="" target="_top">&lt;dsig:SignedInfo/&gt;</a>,</p>
+<p>Creates new <a class="ulink" href="" target="_top">&lt;dsig:Signature/&gt;</a> node with the mandatory <a class="ulink" href="" target="_top">&lt;dsig:SignedInfo/&gt;</a>,
 <a class="ulink" href="" target="_top">&lt;dsig:CanonicalizationMethod/&gt;</a>, <a class="ulink" href="" target="_top">&lt;dsig:SignatureMethod/&gt;</a> and
 <a class="ulink" href="" target="_top">&lt;dsig:SignatureValue/&gt;</a> children and sub-children.
 The application is responsible for inserting the returned node
-in the XML document.
+in the XML document.</p>
 <div class="refsect3">
 <a name="xmlSecTmplSignatureCreate.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -442,14 +450,14 @@ xmlSecTmplSignatureCreateNsPref (<em class="parameter"><code><font><span class="
                                  <em class="parameter"><code><font><span class="type">xmlSecTransformId</span></font> signMethodId</code></em>,
                                  <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *id</code></em>,
                                  <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *nsPrefix</code></em>);</pre>
-<p>Creates new <a class="ulink" href="" target="_top">&lt;dsig:Signature/&gt;</a> node with the mandatory</p>
+<p>Creates new <a class="ulink" href="" target="_top">&lt;dsig:Signature/&gt;</a> node with the mandatory
 <a class="ulink" href="" target="_top">&lt;dsig:SignedInfo/&gt;</a>, <a class="ulink" href="" target="_top">&lt;dsig:CanonicalizationMethod/&gt;</a>,
 <a class="ulink" href="" target="_top">&lt;dsig:SignatureMethod/&gt;</a> and <a class="ulink" href="" target="_top">&lt;dsig:SignatureValue/&gt;</a> children and
 sub-children. This method differs from xmlSecTmplSignatureCreate in
 that it will define the http://www.w3.org/2000/09/xmldsig#
 namespace with the given prefix that will be used for all of the
 appropriate child nodes.  The application is responsible for
-inserting the returned node in the XML document.
+inserting the returned node in the XML document.</p>
 <div class="refsect3">
 <a name="xmlSecTmplSignatureCreateNsPref.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -546,8 +554,9 @@ xmlSecTmplSignatureAddReference (<em class="parameter"><code><font><span class="
 ), Id (<em class="parameter"><code>id</code></em>
 ) and
 Type (<em class="parameter"><code>type</code></em>
-) attributes and the required children <a class="ulink" href="" target="_top">&lt;dsig:DigestMethod/&gt;</a> and</p>
-<a class="ulink" href="" target="_top">&lt;dsig:DigestValue/&gt;</a> to the <a class="ulink" href="" target="_top">&lt;dsig:SignedInfo/&gt;</a> child of <em class="parameter"><code>signNode</code></em>.
+) attributes and the required children <a class="ulink" href="" target="_top">&lt;dsig:DigestMethod/&gt;</a> and
+<a class="ulink" href="" target="_top">&lt;dsig:DigestValue/&gt;</a> to the <a class="ulink" href="" target="_top">&lt;dsig:SignedInfo/&gt;</a> child of <em class="parameter"><code>signNode</code></em>
+.</p>
 <div class="refsect3">
 <a name="xmlSecTmplSignatureAddReference.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -818,8 +827,9 @@ xmlSecTmplManifestAddReference (<em class="parameter"><code><font><span class="t
 ), Id (<em class="parameter"><code>id</code></em>
 ) and
 Type (<em class="parameter"><code>type</code></em>
-) attributes and the required children <a class="ulink" href="" target="_top">&lt;dsig:DigestMethod/&gt;</a> and</p>
-<a class="ulink" href="" target="_top">&lt;dsig:DigestValue/&gt;</a> to the <a class="ulink" href="" target="_top">&lt;dsig:Manifest/&gt;</a> node <em class="parameter"><code>manifestNode</code></em>.
+) attributes and the required children <a class="ulink" href="" target="_top">&lt;dsig:DigestMethod/&gt;</a> and
+<a class="ulink" href="" target="_top">&lt;dsig:DigestValue/&gt;</a> to the <a class="ulink" href="" target="_top">&lt;dsig:Manifest/&gt;</a> node <em class="parameter"><code>manifestNode</code></em>
+.</p>
 <div class="refsect3">
 <a name="xmlSecTmplManifestAddReference.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -1005,9 +1015,10 @@ NULL if an error occurs.</p>
 xmlSecTmplEncDataAddEncProperty (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> encNode</code></em>,
                                  <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *id</code></em>,
                                  <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *target</code></em>);</pre>
-<p>Adds <a class="ulink" href="" target="_top">&lt;enc:EncryptionProperty/&gt;</a> node (and the parent</p>
+<p>Adds <a class="ulink" href="" target="_top">&lt;enc:EncryptionProperty/&gt;</a> node (and the parent
 <a class="ulink" href="" target="_top">&lt;enc:EncryptionProperties/&gt;</a> node if required) to the
-<a class="ulink" href="" target="_top">&lt;enc:EncryptedData/&gt;</a> node <em class="parameter"><code>encNode</code></em>.
+<a class="ulink" href="" target="_top">&lt;enc:EncryptedData/&gt;</a> node <em class="parameter"><code>encNode</code></em>
+.</p>
 <div class="refsect3">
 <a name="xmlSecTmplEncDataAddEncProperty.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -1628,6 +1639,41 @@ NULL if an error occurs.</p>
 </div>
 <hr>
 <div class="refsect2">
+<a name="xmlSecTmplX509DataAddDigest"></a><h3>xmlSecTmplX509DataAddDigest ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlNodePtr</span></font>
+xmlSecTmplX509DataAddDigest (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> x509DataNode</code></em>,
+                             <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *digestAlgorithm</code></em>);</pre>
+<p>Adds &lt;dsig11:X509Digest/&gt; node to the given <a class="ulink" href="" target="_top">&lt;dsig:X509Data/&gt;</a> node.</p>
+<div class="refsect3">
+<a name="xmlSecTmplX509DataAddDigest.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>x509DataNode</p></td>
+<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;dsig:X509Data/&gt;</a> node.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>digestAlgorithm</p></td>
+<td class="parameter_description"><p>the digest algorithm URL.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecTmplX509DataAddDigest.returns"></a><h4>Returns</h4>
+<p> the pointer to the newly created &lt;dsig11:X509Digest/&gt; node or
+NULL if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
 <a name="xmlSecTmplX509DataAddCertificate"></a><h3>xmlSecTmplX509DataAddCertificate ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlNodePtr</span></font>
 xmlSecTmplX509DataAddCertificate (<em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> x509DataNode</code></em>);</pre>
@@ -1967,12 +2013,8 @@ xmlSecTmplTransformAddXPointer (<em class="parameter"><code><font><span class="t
 </div>
 </div>
 </div>
-<div class="refsect1">
-<a name="xmlsec-templates.other_details"></a><h2>Types and Values</h2>
-<p></p>
-</div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.27</div>
+<hr>Generated by GTK-Doc V1.33.1</div>
 </body>
 </html>

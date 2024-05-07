@@ -18,17 +18,17 @@ BuildRequires: libxslt-devel >= @LIBXSLT_MIN_VERSION@
 Prefix: %{_prefix}
 Docdir: %{_docdir}
 
-%define _unpackaged_files_terminate_build  0 
+%define _unpackaged_files_terminate_build  0
 %define _missing_doc_files_terminate_build 0
 
 %description
-XML Security Library is a C library based on LibXML2  and OpenSSL. 
-The library was created with a goal to support major XML security 
-standards "XML Digital Signature" and "XML Encryption". 
+XML Security Library is a C library based on LibXML2  and OpenSSL.
+The library was created with a goal to support major XML security
+standards "XML Digital Signature" and "XML Encryption".
 
-%package devel 
+%package devel
 Summary: Libraries, includes, etc. to develop applications with XML Digital Signatures and XML Encryption support.
-Group: Development/Libraries 
+Group: Development/Libraries
 Requires: xmlsec1 = %{version}
 Requires: libxml2-devel >= @LIBXML_MIN_VERSION@
 Requires: libxslt-devel >= @LIBXSLT_MIN_VERSION@
@@ -37,12 +37,12 @@ Requires: zlib-devel
 Requires: libtool-ltdl-devel
 
 %description devel
-Libraries, includes, etc. you can use to develop applications with XML Digital 
+Libraries, includes, etc. you can use to develop applications with XML Digital
 Signatures and XML Encryption support.
 
 %package openssl
 Summary: OpenSSL crypto plugin for XML Security Library
-Group: Development/Libraries 
+Group: Development/Libraries
 Requires: xmlsec1 = %{version}
 Requires: libxml2 >= @LIBXML_MIN_VERSION@
 Requires: libxslt >= @LIBXSLT_MIN_VERSION@
@@ -55,7 +55,7 @@ for the xmlsec library
 
 %package openssl-devel
 Summary: OpenSSL crypto plugin for XML Security Library
-Group: Development/Libraries 
+Group: Development/Libraries
 Requires: xmlsec1 = %{version}
 Requires: xmlsec1-devel = %{version}
 Requires: xmlsec1-openssl = %{version}
@@ -69,7 +69,7 @@ Libraries, includes, etc. for developing XML Security applications with OpenSSL
 
 %package nss
 Summary: NSS crypto plugin for XML Security Library
-Group: Development/Libraries 
+Group: Development/Libraries
 Requires: xmlsec1 = %{version}
 Requires: libxml2 >= @LIBXML_MIN_VERSION@
 Requires: libxslt >= @LIBXSLT_MIN_VERSION@
@@ -82,7 +82,7 @@ for the xmlsec library
 
 %package nss-devel
 Summary: NSS crypto plugin for XML Security Library
-Group: Development/Libraries 
+Group: Development/Libraries
 Requires: xmlsec1 = %{version}
 Requires: xmlsec1-devel = %{version}
 Requires: xmlsec1-nss = %{version}
@@ -133,7 +133,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %postun -p /sbin/ldconfig
 
-%files 
+%files
 %defattr(-, root, root)
 
 %doc AUTHORS ChangeLog NEWS README Copyright
@@ -144,7 +144,7 @@ rm -rf $RPM_BUILD_ROOT
 %{prefix}/bin/xmlsec1
 
 %files devel
-%defattr(-, root, root)  
+%defattr(-, root, root)
 
 %{prefix}/bin/xmlsec1-config
 %{prefix}/include/xmlsec1/xmlsec/*.h
@@ -152,32 +152,32 @@ rm -rf $RPM_BUILD_ROOT
 %{prefix}/lib/libxmlsec1.*a
 %{prefix}/lib/pkgconfig/xmlsec1.pc
 %{prefix}/lib/xmlsec1Conf.sh
-%{prefix}/share/doc/xmlsec1/* 
+%{prefix}/share/doc/xmlsec1/*
 %{prefix}/share/aclocal/xmlsec1.m4
 %doc AUTHORS HACKING ChangeLog NEWS README Copyright
 %doc %{_mandir}/man1/xmlsec1-config.1*
 
 %files openssl
-%defattr(-, root, root)  
+%defattr(-, root, root)
 
 %{prefix}/lib/libxmlsec1-openssl.so.*
 %{prefix}/lib/libxmlsec1-openssl.so
 
 %files openssl-devel
-%defattr(-, root, root)  
+%defattr(-, root, root)
 
 %{prefix}/include/xmlsec1/xmlsec/openssl/*.h
 %{prefix}/lib/libxmlsec1-openssl.*a
 %{prefix}/lib/pkgconfig/xmlsec1-openssl.pc
 
 %files nss
-%defattr(-, root, root)  
+%defattr(-, root, root)
 
 %{prefix}/lib/libxmlsec1-nss.so.*
 %{prefix}/lib/libxmlsec1-nss.so
 
 %files nss-devel
-%defattr(-, root, root)  
+%defattr(-, root, root)
 
 %{prefix}/include/xmlsec1/xmlsec/nss/*.h
 %{prefix}/lib/libxmlsec1-nss.*a

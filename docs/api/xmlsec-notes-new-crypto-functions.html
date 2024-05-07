@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>xmlSecCryptoApp* functions.: XML Security Library Reference Manual</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
 <link rel="up" href="xmlsec-notes-new-crypto.html" title="Adding support for new cryptographic library.">
-<link rel="prev" href="xmlsec-notes-new-crypto-skeleton.html" title="Creating a framework from the skeleton.">
+<link rel="prev" href="xmlsec-notes-new-crypto.html" title="Adding support for new cryptographic library.">
 <link rel="next" href="xmlsec-notes-new-crypto-klasses.html" title="Klasses and objects.">
-<meta name="generator" content="GTK-Doc V1.27 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.33.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -16,7 +16,7 @@
 <td width="100%" align="left" class="shortcuts"></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <td><a accesskey="u" href="xmlsec-notes-new-crypto.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
-<td><a accesskey="p" href="xmlsec-notes-new-crypto-skeleton.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="p" href="xmlsec-notes-new-crypto.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
 <td><a accesskey="n" href="xmlsec-notes-new-crypto-klasses.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="sect1">
@@ -24,30 +24,28 @@
 <a name="xmlsec-notes-new-crypto-functions"></a>xmlSecCryptoApp* functions.</h2></div></div></div>
 <p>
 	The XML Security Library allows application to load multiple
-	"xmlsec-&lt;crypto&gt; libraries. To prevent symbol conflicts, 
-	all "xmlsec-mycrypto" library names MUST start with "xmlSecMyCrypto". 
+	"xmlsec-&lt;crypto&gt; libraries. To prevent symbol conflicts,
+	all "xmlsec-mycrypto" library names MUST start with "xmlSecMyCrypto".
 	However, in some applications (for example, the xmlsec command line
-	utility) that can use any crypto library, would prefer to 
+	utility) that can use any crypto library, would prefer to
 	use a generic function names where possible.
-	The "include/xmlsec/crypto.h" and "include/xmlsec/mycrypto/symbols.h" 
-	include files do the magic by mapping "xmlSecMyCrypto*" to 
+	The "include/xmlsec/crypto.h" and "include/xmlsec/mycrypto/symbols.h"
+	include files do the magic by mapping "xmlSecMyCrypto*" to
 	"xmlSecCrypto*" names using "XMLSEC_CRYPTO_*" defines.
 	</p>
 <p>
-	In order to build xmlsec command line utility, the 
+	In order to build xmlsec command line utility, the
 	"xmlsec-&lt;crypto&gt;" library must implement several functions.
-	The stubs for all these functions are provided in the "skeleton"
-	we've created. While these functions are not required to be
-	implemented by "xmlsec-&lt;crypto&gt;" library, you should consider
-	doing so (if possible) to simplify testing (thru xmlsec command line
-	utility) and application development.
+	While these functions are not required to be implemented by "xmlsec-&lt;crypto&gt;"
+	library, you should consider doing so (if possible) to simplify testing
+	(thru xmlsec command line utility) and application development.
 	</p>
 <p>
 	In adition to xmlSecCryptoApp* functions, the xmlsec-&lt;crypto&gt;
 	library MUST implement following xmlSecCrypto* functions:
 	</p>
 <div class="table">
-<a name="id-1.2.14.4.4.1"></a><p class="title"><b>Table 1. xmlSecCrypto* functions.</b></p>
+<a name="id-1.2.14.3.4.1"></a><p class="title"><b>Table 1. xmlSecCrypto* functions.</b></p>
 <div class="table-contents"><table class="table" summary="xmlSecCrypto* functions." border="1">
 <colgroup>
 <col>
@@ -56,11 +54,11 @@
 <tbody>
 <tr>
 <td>xmlSecCryptoInit()</td>
-<td>Initializes xmlsec-&lt;crypto&gt; library: registers cryptographic 
-	transforms implemented by the library, keys, etc. 
+<td>Initializes xmlsec-&lt;crypto&gt; library: registers cryptographic
+	transforms implemented by the library, keys, etc.
 	Please note, that the application might want to intialize
 	the cryprographic library by itself. The default cryprographic
-	library initialization (for example, used by xmlsec utility) 
+	library initialization (for example, used by xmlsec utility)
 	is implemented in xmlSecCryptoAppInit() function.
 	</td>
 </tr>
@@ -69,7 +67,7 @@
 <td>Shuts down xmlsec-&lt;crypto&gt; library.
 	Please note, that the application might want to shutdown
 	the cryprographic library by itself. The default cryprographic
-	library shutdown (for example, used by xmlsec utility) 
+	library shutdown (for example, used by xmlsec utility)
 	is implemented in xmlSecCryptoAppShutdown() function.
 	</td>
 </tr>
@@ -86,6 +84,6 @@
 	</p>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.27</div>
+<hr>Generated by GTK-Doc V1.33.1</div>
 </body>
 </html>

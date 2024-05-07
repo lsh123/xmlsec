@@ -1,6 +1,7 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * Digests transforms implementation for Microsoft Crypto API.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -9,17 +10,13 @@
  * Copyright (c) 2005-2006 Cryptocom LTD (http://www.cryptocom.ru).
  */
 /**
- * SECTION:digests
- * @Short_description: Digests transforms implementation for Microsoft Crypto API.
- * @Stability: Private
- *
+ * SECTION:crypto
  */
 
 #include "globals.h"
 
 #include <string.h>
-#include <windows.h>
-#include <wincrypt.h>
+
 #ifndef XMLSEC_NO_GOST
 #include "csp_calg.h"
 #endif
@@ -30,7 +27,9 @@
 #include <xmlsec/errors.h>
 
 #include <xmlsec/mscrypto/crypto.h>
+
 #include "private.h"
+#include "../cast_helpers.h"
 
 #define MSCRYPTO_MAX_HASH_SIZE 256
 
@@ -48,14 +47,9 @@ struct _xmlSecMSCryptoDigestCtx {
  *
  * MSCrypto Digest transforms
  *
- * xmlSecMSCryptoDigestCtx is located after xmlSecTransform
- *
  *****************************************************************************/
-#define xmlSecMSCryptoDigestSize        \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecMSCryptoDigestCtx))
-#define xmlSecMSCryptoDigestGetCtx(transform) \
-    ((xmlSecMSCryptoDigestCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
-
+XMLSEC_TRANSFORM_DECLARE(MSCryptoDigest, xmlSecMSCryptoDigestCtx)
+#define xmlSecMSCryptoDigestSize XMLSEC_TRANSFORM_SIZE(MSCryptoDigest)
 
 static int      xmlSecMSCryptoDigestInitialize  (xmlSecTransformPtr transform);
 static void     xmlSecMSCryptoDigestFinalize    (xmlSecTransformPtr transform);
@@ -74,6 +68,7 @@ static int      xmlSecMSCryptoDigestCheckId     (xmlSecTransformPtr transform);
  *
  * MUST END with { NULL, 0 } !!!
  */
+#ifndef XMLSEC_NO_SHA1
 static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Sha1[] = {
     { XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV,                PROV_RSA_AES},
     { XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV_PROTOTYPE,      PROV_RSA_AES },
@@ -82,6 +77,7 @@ static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Sha1[] = {
     { MS_DEF_PROV,                                      PROV_RSA_FULL },
     { NULL, 0 }
 };
+#endif /* XMLSEC_NO_SHA1*/
 
 static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Sha2[] = {
     { XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV,                PROV_RSA_AES},
@@ -89,12 +85,14 @@ static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Sha2[] = {
     { NULL, 0 }
 };
 
+#ifndef XMLSEC_NO_MD5
 static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Md5[] = {
     { MS_STRONG_PROV,                                   PROV_RSA_FULL },
     { MS_ENHANCED_PROV,                                 PROV_RSA_FULL },
     { MS_DEF_PROV,                                      PROV_RSA_FULL },
     { NULL, 0 }
 };
+#endif /* XMLSEC_NO_MD5*/
 
 #ifndef XMLSEC_NO_GOST
 static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Gost[] = {
@@ -345,55 +343,43 @@ xmlSecMSCryptoDigestExecute(xmlSecTransformPtr transform,
 
         inSize = xmlSecBufferGetSize(in);
         if(inSize > 0) {
-            ret = CryptHashData(ctx->mscHash,
-                xmlSecBufferGetData(in),
-                inSize,
-                0);
+            DWORD dwInSize;
 
+            XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, dwInSize, return(-1), xmlSecTransformGetName(transform));
+            ret = CryptHashData(ctx->mscHash, xmlSecBufferGetData(in), dwInSize, 0);
             if(ret == 0) {
-                xmlSecMSCryptoError2("CryptHashData",
-                                     xmlSecTransformGetName(transform),
-                                     "size=%d", inSize);
+                xmlSecMSCryptoError2("CryptHashData", xmlSecTransformGetName(transform),
+                    "size=" XMLSEC_SIZE_FMT, inSize);
                 return(-1);
             }
 
             ret = xmlSecBufferRemoveHead(in, inSize);
             if(ret < 0) {
-                xmlSecInternalError2("xmlSecBufferRemoveHead",
-                                     xmlSecTransformGetName(transform),
-                                     "size=%d", inSize);
+                xmlSecInternalError2("xmlSecBufferRemoveHead", xmlSecTransformGetName(transform),
+                    "size=" XMLSEC_SIZE_FMT, inSize);
                 return(-1);
             }
         }
         if(last) {
-            /* TODO: make a MSCrypto compatible assert here */
-            /* xmlSecAssert2((xmlSecSize)EVP_MD_size(ctx->digest) <= sizeof(ctx->dgst), -1); */
-            DWORD retLen;
-            retLen = MSCRYPTO_MAX_HASH_SIZE;
-
+            DWORD retLen = MSCRYPTO_MAX_HASH_SIZE;
             ret = CryptGetHashParam(ctx->mscHash,
                                     HP_HASHVAL,
                                     ctx->dgst,
                                     &retLen,
                                     0);
             if (ret == 0) {
-                xmlSecMSCryptoError2("CryptGetHashParam(HP_HASHVAL)",
-                                     xmlSecTransformGetName(transform),
-                                     "size=%d", MSCRYPTO_MAX_HASH_SIZE);
+                xmlSecMSCryptoError("CryptGetHashParam(HP_HASHVAL)", xmlSecTransformGetName(transform));
                 return(-1);
             }
-
-            ctx->dgstSize = XMLSEC_SIZE_BAD_CAST(retLen);
-
-            xmlSecAssert2(ctx->dgstSize > 0, -1);
+            xmlSecAssert2(retLen > 0, -1);
+            XMLSEC_SAFE_CAST_ULONG_TO_SIZE(retLen, ctx->dgstSize, return(-1), xmlSecTransformGetName(transform));
 
             /* copy result to output */
             if(transform->operation == xmlSecTransformOperationSign) {
                 ret = xmlSecBufferAppend(out, ctx->dgst, ctx->dgstSize);
                 if(ret < 0) {
-                    xmlSecInternalError2("xmlSecBufferAppend",
-                                         xmlSecTransformGetName(transform),
-                                         "size=%d", ctx->dgstSize);
+                    xmlSecInternalError2("xmlSecBufferAppend", xmlSecTransformGetName(transform),
+                        "size=" XMLSEC_SIZE_FMT, ctx->dgstSize);
                     return(-1);
                 }
             }
@@ -759,4 +745,3 @@ xmlSecMSCryptoTransformGostR3411_2012_512GetKlass(void) {
     return(&xmlSecMSCryptoGostR3411_2012_512Klass);
 }
 #endif /* XMLSEC_NO_GOST*/
-

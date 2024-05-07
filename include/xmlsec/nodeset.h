@@ -6,7 +6,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 #ifndef __XMLSEC_NODESET_H__
 #define __XMLSEC_NODESET_H__
@@ -14,6 +14,7 @@
 #include <libxml/tree.h>
 #include <libxml/xpath.h>
 
+#include <xmlsec/exports.h>
 #include <xmlsec/xmlsec.h>
 
 #ifdef __cplusplus

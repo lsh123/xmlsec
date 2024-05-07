@@ -5,13 +5,14 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * SECTION:app
  * @Short_description: Application support functions for GCrypt.
  * @Stability: Stable
  *
+ * Application support functions for GCrypt.
  */
 #include "globals.h"
 
@@ -21,13 +22,15 @@
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
-#include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/private.h>
+#include <xmlsec/transforms.h>
 
 #include <xmlsec/gcrypt/app.h>
 #include <xmlsec/gcrypt/crypto.h>
 
 #include "asn1.h"
+#include "../cast_helpers.h"
 
 /**
  * xmlSecGCryptAppInit:
@@ -73,7 +76,7 @@ Noteworthy changes in version 1.4.3 (2008-09-18)
 
     /* NOTE configure.in defines GCRYPT_MIN_VERSION */
     if (!gcry_check_version (GCRYPT_MIN_VERSION)) {
-        xmlSecGCryptError2("gcry_check_version", GPG_ERR_NO_ERROR, NULL,
+        xmlSecGCryptError2("gcry_check_version", (gcry_error_t)GPG_ERR_NO_ERROR, NULL,
                            "min_version=%s", GCRYPT_MIN_VERSION);
         return(-1);
     }
@@ -96,7 +99,8 @@ Noteworthy changes in version 1.4.3 (2008-09-18)
     err = gcry_control(GCRYCTL_INIT_SECMEM, 32768, 0);
     if(err != GPG_ERR_NO_ERROR) {
         xmlSecGCryptError("gcry_control(GCRYCTL_INIT_SECMEM)", err, NULL);
-        return(-1);
+        /* ignore this error because of libgrcypt bug in allocating memory,
+        see https://github.com/lsh123/xmlsec/issues/415 for more details */
     }
 
     /* It is now okay to let Libgcrypt complain when there was/is
@@ -144,8 +148,9 @@ xmlSecGCryptAppShutdown(void) {
 }
 
 /**
- * xmlSecGCryptAppKeyLoad:
+ * xmlSecGCryptAppKeyLoadEx:
  * @filename:           the key filename.
+ * @type:               the expected key type.
  * @format:             the key file format.
  * @pwd:                the key file password.
  * @pwdCallback:        the key password callback.
@@ -156,16 +161,16 @@ xmlSecGCryptAppShutdown(void) {
  * Returns: pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
-xmlSecGCryptAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
-                        const char *pwd,
-                        void* pwdCallback,
-                        void* pwdCallbackCtx) {
+xmlSecGCryptAppKeyLoadEx(const char *filename, xmlSecKeyDataType type ATTRIBUTE_UNUSED, xmlSecKeyDataFormat format,
+    const char *pwd, void* pwdCallback, void* pwdCallbackCtx
+) {
     xmlSecKeyPtr key;
     xmlSecBuffer buffer;
     int ret;
 
     xmlSecAssert2(filename != NULL, NULL);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
+    UNREFERENCED_PARAMETER(type);
 
     ret = xmlSecBufferInitialize(&buffer, 4*1024);
     if(ret < 0) {
@@ -242,7 +247,7 @@ xmlSecGCryptAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
 #endif /* XMLSEC_NO_X509 */
     default:
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
-                         "format=%d", (int)format);
+            "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
         return(NULL);
     }
 
@@ -276,8 +281,8 @@ xmlSecGCryptAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
  * @filename:           the certificate filename.
  * @format:             the certificate file format.
  *
- * Reads the certificate from $@filename and adds it to key
- * (not implemented yet).
+ * Placeholder. GCrypt  does not support X509 certificates.
+ * Reads the certificate from $@filename and adds it to key.
  *
  * Returns: 0 on success or a negative value otherwise.
  */
@@ -288,7 +293,7 @@ xmlSecGCryptAppKeyCertLoad(xmlSecKeyPtr key, const char* filename,
     xmlSecAssert2(filename != NULL, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
-    /* TODO */
+    /* GCrypt  does not support X509 certificates */
     xmlSecNotImplementedError(NULL);
     return(-1);
 }
@@ -300,7 +305,8 @@ xmlSecGCryptAppKeyCertLoad(xmlSecKeyPtr key, const char* filename,
  * @dataSize:           the certificate binary data size.
  * @format:             the certificate file format.
  *
- * Reads the certificate from memory buffer and adds it to key (not implemented yet).
+ * Placeholder. GCrypt  does not support X509 certificates.
+ * Reads the certificate from memory buffer and adds it to key.
  *
  * Returns: 0 on success or a negative value otherwise.
  */
@@ -314,7 +320,7 @@ xmlSecGCryptAppKeyCertLoadMemory(xmlSecKeyPtr key,
     xmlSecAssert2(dataSize > 0, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
-    /* TODO */
+    /* GCrypt  does not support X509 certificates */
     xmlSecNotImplementedError(NULL);
     return(-1);
 }
@@ -326,9 +332,10 @@ xmlSecGCryptAppKeyCertLoadMemory(xmlSecKeyPtr key,
  * @pwdCallback:        the password callback.
  * @pwdCallbackCtx:     the user context for password callback.
  *
- * Reads key and all associated certificates from the PKCS12 file
- * (not implemented yet).
- * For uniformity, call xmlSecGCryptAppKeyLoad instead of this function. Pass
+ * Placeholder. GCrypt  does not support X509 certificates.
+ * Reads key and all associated certificates from the PKCS12 file.
+ *
+ * For uniformity, call @xmlSecGCryptAppKeyLoadEx instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
  *
  * Returns: pointer to the key or NULL if an error occurs.
@@ -340,7 +347,7 @@ xmlSecGCryptAppPkcs12Load(const char *filename,
                           void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
     xmlSecAssert2(filename != NULL, NULL);
 
-    /* TODO */
+    /* GCrypt  does not support X509 certificates */
     xmlSecNotImplementedError(NULL);
     return(NULL);
 }
@@ -353,9 +360,11 @@ xmlSecGCryptAppPkcs12Load(const char *filename,
  * @pwdCallback:        the password callback.
  * @pwdCallbackCtx:     the user context for password callback.
  *
+ * Placeholder. GCrypt  does not support X509 certificates.
+ *
  * Reads key and all associated certificates from the PKCS12 data in memory buffer.
  * For uniformity, call xmlSecGCryptAppKeyLoadMemory instead of this function. Pass
- * in format=xmlSecKeyDataFormatPkcs12 (not implemented yet).
+ * in format=xmlSecKeyDataFormatPkcs12.
  *
  * Returns: pointer to the key or NULL if an error occurs.
  */
@@ -367,7 +376,7 @@ xmlSecGCryptAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     xmlSecAssert2(data != NULL, NULL);
     xmlSecAssert2(dataSize > 0, NULL);
 
-    /* TODO */
+    /* GCrypt  does not support X509 certificates */
     xmlSecNotImplementedError(NULL);
     return(NULL);
 }
@@ -380,13 +389,15 @@ xmlSecGCryptAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
  * @type:               the flag that indicates is the certificate in @filename
  *                      trusted or not.
  *
+ * Placeholder. GCrypt  does not support X509 certificates.
+ *
  * Reads cert from @filename and adds to the list of trusted or known
- * untrusted certs in @store (not implemented yet).
+ * untrusted certs in @store.
  *
  * Returns: 0 on success or a negative value otherwise.
  */
 int
-xmlSecGCryptAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, 
+xmlSecGCryptAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr,
                                 const char *filename,
                                 xmlSecKeyDataFormat format,
                                 xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
@@ -394,7 +405,30 @@ xmlSecGCryptAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr,
     xmlSecAssert2(filename != NULL, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
-    /* TODO */
+    /* GCrypt  does not support X509 certificates */
+    xmlSecNotImplementedError(NULL);
+    return(-1);
+}
+
+/**
+ * xmlSecGCryptAppKeysMngrCrlLoad:
+ * @mngr:               the keys manager.
+ * @filename:           the CRL file.
+ * @format:             the CRL file format.
+ *
+ * Placeholder. GCrypt  does not support X509 certificates.
+ *
+ * Reads crls from @filename and adds to the list of crls in @store.
+ *
+ * Returns: 0 on success or a negative value otherwise.
+ */
+int
+xmlSecGCryptAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, xmlSecKeyDataFormat format) {
+    xmlSecAssert2(mngr != NULL, -1);
+    xmlSecAssert2(filename != NULL, -1);
+    xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
+
+    /* GCrypt  does not support X509 certificates */
     xmlSecNotImplementedError(NULL);
     return(-1);
 }
@@ -407,8 +441,10 @@ xmlSecGCryptAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr,
  * @format:             the certificate file format.
  * @type:               the flag that indicates is the certificate trusted or not.
  *
+ * Placeholder. GCrypt  does not support X509 certificates.
+ *
  * Reads cert from binary buffer @data and adds to the list of trusted or known
- * untrusted certs in @store (not implemented yet).
+ * untrusted certs in @store.
  *
  * Returns: 0 on success or a negative value otherwise.
  */
@@ -423,7 +459,7 @@ xmlSecGCryptAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr,
     xmlSecAssert2(dataSize > 0, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
-    /* TODO */
+    /* GCrypt  does not support X509 certificates */
     xmlSecNotImplementedError(NULL);
     return(-1);
 }
@@ -508,6 +544,33 @@ xmlSecGCryptAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key)
 }
 
 /**
+ * xmlSecGCryptAppDefaultKeysMngrVerifyKey:
+ * @mngr:               the pointer to keys manager.
+ * @key:                the pointer to key.
+ * @keyInfoCtx:         the key info context for verification.
+ *
+ * Verifies @key with the keys manager @mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
+ * function:
+ * - Checks that key certificate is present
+ * - Checks that key certificate is valid
+ *
+ * Adds @key to the keys manager @mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
+ * function.
+ *
+ * Returns: 1 if key is verified, 0 otherwise, or a negative value if an error occurs.
+ */
+int
+xmlSecGCryptAppDefaultKeysMngrVerifyKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+
+    xmlSecAssert2(mngr != NULL, -1);
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+
+    xmlSecNotImplementedError("xmlSecGCryptAppDefaultKeysMngrVerifyKey");
+    return(-1);
+}
+
+/**
  * xmlSecGCryptAppDefaultKeysMngrLoad:
  * @mngr:               the pointer to keys manager.
  * @uri:                the uri.
@@ -586,4 +649,3 @@ void*
 xmlSecGCryptAppGetDefaultPwdCallback(void) {
     return(NULL);
 }
-

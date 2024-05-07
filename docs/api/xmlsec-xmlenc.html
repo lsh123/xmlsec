@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>xmlenc: XML Security Library Reference Manual</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
 <link rel="up" href="xmlsec-ref.html" title="XML Security Core Library API Reference.">
 <link rel="prev" href="xmlsec-xmldsig.html" title="xmldsig">
 <link rel="next" href="xmlsec-xmlsec.html" title="xmlsec">
-<meta name="generator" content="GTK-Doc V1.27 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.33.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -147,6 +147,37 @@
 <a class="link" href="xmlsec-xmlenc.html#xmlSecEncCtxDebugXmlDump" title="xmlSecEncCtxDebugXmlDump ()">xmlSecEncCtxDebugXmlDump</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
+<tr>
+<td class="function_type">
+<a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-xmlenc.html#xmlSecEncCtxDerivedKeyGenerate" title="xmlSecEncCtxDerivedKeyGenerate ()">xmlSecEncCtxDerivedKeyGenerate</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-xmlenc.html#xmlSecEncCtxAgreementMethodGenerate" title="xmlSecEncCtxAgreementMethodGenerate ()">xmlSecEncCtxAgreementMethodGenerate</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-xmlenc.html#xmlSecEncCtxAgreementMethodXmlWrite" title="xmlSecEncCtxAgreementMethodXmlWrite ()">xmlSecEncCtxAgreementMethodXmlWrite</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <font><span class="returnvalue">char</span></font> *
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-xmlenc.html#xmlSecEncCtxGetFailureReasonString" title="xmlSecEncCtxGetFailureReasonString ()">xmlSecEncCtxGetFailureReasonString</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
 </tbody>
 </table></div>
 </div>
@@ -161,6 +192,10 @@
 <tr>
 <td class="datatype_keyword">enum</td>
 <td class="function_name"><a class="link" href="xmlsec-xmlenc.html#xmlEncCtxMode" title="enum xmlEncCtxMode">xmlEncCtxMode</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="xmlsec-xmlenc.html#xmlSecEncFailureReason" title="enum xmlSecEncFailureReason">xmlSecEncFailureReason</a></td>
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
@@ -525,8 +560,7 @@ xmlSecEncCtxDecrypt (<em class="parameter"><code><a class="link" href="xmlsec-xm
 xmlSecEncCtxDecryptToBuffer (<em class="parameter"><code><a class="link" href="xmlsec-xmlenc.html#xmlSecEncCtx" title="struct xmlSecEncCtx"><span class="type">xmlSecEncCtxPtr</span></a> encCtx</code></em>,
                              <em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> node</code></em>);</pre>
 <p>Decrypts <em class="parameter"><code>node</code></em>
- data to the <em class="parameter"><code>encCtx</code></em>
- buffer.</p>
+ data to the result.</p>
 <div class="refsect3">
 <a name="xmlSecEncCtxDecryptToBuffer.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -538,7 +572,7 @@ xmlSecEncCtxDecryptToBuffer (<em class="parameter"><code><a class="link" href="x
 <tbody>
 <tr>
 <td class="parameter_name"><p>encCtx</p></td>
-<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;enc:EncryptedData/&gt;</a> processing context.</p></td>
+<td class="parameter_description"><p>the pointer to encryption processing context.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -551,7 +585,7 @@ xmlSecEncCtxDecryptToBuffer (<em class="parameter"><code><a class="link" href="x
 </div>
 <div class="refsect3">
 <a name="xmlSecEncCtxDecryptToBuffer.returns"></a><h4>Returns</h4>
-<p> 0 on success or a negative value if an error occurs.</p>
+<p> a buffer with key on success or NULL if an error occurs.</p>
 </div>
 </div>
 <hr>
@@ -618,6 +652,166 @@ xmlSecEncCtxDebugXmlDump (<em class="parameter"><code><a class="link" href="xmls
 </table></div>
 </div>
 </div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecEncCtxDerivedKeyGenerate"></a><h3>xmlSecEncCtxDerivedKeyGenerate ()</h3>
+<pre class="programlisting"><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
+xmlSecEncCtxDerivedKeyGenerate (<em class="parameter"><code><a class="link" href="xmlsec-xmlenc.html#xmlSecEncCtx" title="struct xmlSecEncCtx"><span class="type">xmlSecEncCtxPtr</span></a> encCtx</code></em>,
+                                <em class="parameter"><code><font><span class="type">xmlSecKeyDataId</span></font> keyId</code></em>,
+                                <em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> node</code></em>,
+                                <em class="parameter"><code><a class="link" href="xmlsec-keyinfo.html#xmlSecKeyInfoCtx" title="struct xmlSecKeyInfoCtx"><span class="type">xmlSecKeyInfoCtxPtr</span></a> keyInfoCtx</code></em>);</pre>
+<p>Generates (derives) key from <em class="parameter"><code>node</code></em>
+ (https://www.w3.org/TR/xmlenc-core1/<font><span class="type">sec-DerivedKey</span></font>):</p>
+<pre class="programlisting">
+ &lt;element name="DerivedKey" type="xenc11:DerivedKeyType"/&gt;
+ &lt;complexType name="DerivedKeyType"&gt;
+     &lt;sequence&gt;
+         &lt;element ref="xenc11:KeyDerivationMethod" minOccurs="0"/&gt;
+         &lt;element ref="xenc:ReferenceList" minOccurs="0"/&gt;
+         &lt;element name="DerivedKeyName" type="string" minOccurs="0"/&gt;
+         &lt;element name="MasterKeyName" type="string" minOccurs="0"/&gt;
+     &lt;/sequence&gt;
+     &lt;attribute name="Recipient" type="string" use="optional"/&gt;
+     &lt;attribute name="Id" type="ID" use="optional"/&gt;
+     &lt;attribute name="Type" type="anyURI" use="optional"/&gt;
+ &lt;/complexType&gt;
+
+ &lt;element name="KeyDerivationMethod" type="xenc:KeyDerivationMethodType"/&gt;
+ &lt;complexType name="KeyDerivationMethodType"&gt;
+     &lt;sequence&gt;
+         &lt;any namespace="##any" minOccurs="0" maxOccurs="unbounded"/&gt;
+     &lt;/sequence&gt;
+     &lt;attribute name="Algorithm" type="anyURI" use="required"/&gt;
+ &lt;/complexType&gt;
+</pre>
+<div class="refsect3">
+<a name="xmlSecEncCtxDerivedKeyGenerate.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>encCtx</p></td>
+<td class="parameter_description"><p>the pointer to encryption processing context.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>keyId</p></td>
+<td class="parameter_description"><p>the expected key id, the actual derived key might have a different id.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>node</p></td>
+<td class="parameter_description"><p>the pointer to &lt;enc11:DerivedKey/&gt; node.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>keyInfoCtx</p></td>
+<td class="parameter_description"><p>the pointer to the "parent" key info context.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecEncCtxDerivedKeyGenerate.returns"></a><h4>Returns</h4>
+<p> the derived key on success or NULL  if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecEncCtxAgreementMethodGenerate"></a><h3>xmlSecEncCtxAgreementMethodGenerate ()</h3>
+<pre class="programlisting"><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
+xmlSecEncCtxAgreementMethodGenerate (<em class="parameter"><code><a class="link" href="xmlsec-xmlenc.html#xmlSecEncCtx" title="struct xmlSecEncCtx"><span class="type">xmlSecEncCtxPtr</span></a> encCtx</code></em>,
+                                     <em class="parameter"><code><font><span class="type">xmlSecKeyDataId</span></font> keyId</code></em>,
+                                     <em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> node</code></em>,
+                                     <em class="parameter"><code><a class="link" href="xmlsec-keyinfo.html#xmlSecKeyInfoCtx" title="struct xmlSecKeyInfoCtx"><span class="type">xmlSecKeyInfoCtxPtr</span></a> keyInfoCtx</code></em>);</pre>
+<p>Generates (derives) key from <em class="parameter"><code>node</code></em>
+ (https://www.w3.org/TR/xmlenc-core1/<font><span class="type">sec-AgreementMethod</span></font>):</p>
+<pre class="programlisting">
+ &lt;element name="AgreementMethod" type="xenc:AgreementMethodType"/&gt;
+ &lt;complexType name="AgreementMethodType" mixed="true"&gt;
+     &lt;sequence&gt;
+         &lt;element name="KA-Nonce" minOccurs="0" type="base64Binary"/&gt;
+         &lt;!-- &lt;element ref="ds:DigestMethod" minOccurs="0"/&gt; --&gt;
+         &lt;any namespace="##other" minOccurs="0" maxOccurs="unbounded"/&gt;
+         &lt;element name="OriginatorKeyInfo" minOccurs="0" type="ds:KeyInfoType"/&gt;
+         &lt;element name="RecipientKeyInfo" minOccurs="0" type="ds:KeyInfoType"/&gt;
+     &lt;/sequence&gt;
+     &lt;attribute name="Algorithm" type="anyURI" use="required"/&gt;
+ &lt;/complexType&gt;
+</pre>
+<div class="refsect3">
+<a name="xmlSecEncCtxAgreementMethodGenerate.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>encCtx</p></td>
+<td class="parameter_description"><p>the pointer to encryption processing context.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>keyId</p></td>
+<td class="parameter_description"><p>the expected key id, the actual derived key might have a different id.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>node</p></td>
+<td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;enc:AgreementMethod/&gt;</a> node.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>keyInfoCtx</p></td>
+<td class="parameter_description"><p>the pointer to the "parent" key info context.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecEncCtxAgreementMethodGenerate.returns"></a><h4>Returns</h4>
+<p> the generated key on success or NULL if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecEncCtxAgreementMethodXmlWrite"></a><h3>xmlSecEncCtxAgreementMethodXmlWrite ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecEncCtxAgreementMethodXmlWrite (<em class="parameter"><code><a class="link" href="xmlsec-xmlenc.html#xmlSecEncCtx" title="struct xmlSecEncCtx"><span class="type">xmlSecEncCtxPtr</span></a> encCtx</code></em>,
+                                     <em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> node</code></em>,
+                                     <em class="parameter"><code><a class="link" href="xmlsec-keyinfo.html#xmlSecKeyInfoCtx" title="struct xmlSecKeyInfoCtx"><span class="type">xmlSecKeyInfoCtxPtr</span></a> keyInfoCtx</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecEncCtxGetFailureReasonString"></a><h3>xmlSecEncCtxGetFailureReasonString ()</h3>
+<pre class="programlisting">const <font><span class="returnvalue">char</span></font> *
+xmlSecEncCtxGetFailureReasonString (<em class="parameter"><code><a class="link" href="xmlsec-xmlenc.html#xmlSecEncFailureReason" title="enum xmlSecEncFailureReason"><span class="type">xmlSecEncFailureReason</span></a> failureReason</code></em>);</pre>
+<p>Gets failure reason as a string.</p>
+<p>Returns failure reason as a string.</p>
+<div class="refsect3">
+<a name="xmlSecEncCtxGetFailureReasonString.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>failureReason</p></td>
+<td class="parameter_description"><p>the failure reason.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
 </div>
 <div class="refsect1">
 <a name="xmlsec-xmlenc.other_details"></a><h2>Types and Values</h2>
@@ -641,6 +835,34 @@ xmlSecEncCtxDebugXmlDump (<em class="parameter"><code><a class="link" href="xmls
 <tr>
 <td class="enum_member_name"><p><a name="xmlEncCtxModeEncryptedKey"></a>xmlEncCtxModeEncryptedKey</p></td>
 <td class="enum_member_description"><p>the <a class="ulink" href="" target="_top">&lt;enc:EncryptedKey/&gt;</a> element processing.</p></td>
+<td class="enum_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecEncFailureReason"></a><h3>enum xmlSecEncFailureReason</h3>
+<p>XML Encryption processing failure reason. The application should use
+the returned value from the encrypt/decrypt functions first.</p>
+<div class="refsect3">
+<a name="xmlSecEncFailureReason.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="xmlSecEncFailureReasonUnknown"></a>xmlSecEncFailureReasonUnknown</p></td>
+<td class="enum_member_description"><p>the failure reason is unknown.</p></td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="xmlSecEncFailureReasonKeyNotFound"></a>xmlSecEncFailureReasonKeyNotFound</p></td>
+<td class="enum_member_description"><p>the key not found.</p></td>
 <td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
@@ -675,6 +897,7 @@ xmlSecEncCtxDebugXmlDump (<em class="parameter"><code><a class="link" href="xmls
     int                         resultBase64Encoded;
     int                         resultReplaced;
     xmlSecTransformPtr          encMethod;
+    xmlSecEncFailureReason      failureReason;
 
     /* attributes from EncryptedData or EncryptedKey */
     xmlChar*                    id;
@@ -742,9 +965,8 @@ never touches this).</p></td>
 </tr>
 <tr>
 <td class="struct_member_name"><p><font><span class="type">xmlSecTransformId</span></font> <em class="structfield"><code><a name="xmlSecEncCtx.defEncMethodId"></a>defEncMethodId</code></em>;</p></td>
-<td class="struct_member_description">
-<p>the default encryption method (used if</p>
-<a class="ulink" href="" target="_top">&lt;enc:EncryptionMethod/&gt;</a> node is not present).</td>
+<td class="struct_member_description"><p>the default encryption method (used if
+<a class="ulink" href="" target="_top">&lt;enc:EncryptionMethod/&gt;</a> node is not present).</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
@@ -777,6 +999,11 @@ or <a class="ulink" href="" target="_top">&lt;enc:EncryptedKey/&gt;</a> node is 
 <tr>
 <td class="struct_member_name"><p><a class="link" href="xmlsec-transforms.html#xmlSecTransform" title="struct xmlSecTransform"><span class="type">xmlSecTransformPtr</span></a> <em class="structfield"><code><a name="xmlSecEncCtx.encMethod"></a>encMethod</code></em>;</p></td>
 <td class="struct_member_description"><p>the pointer to encryption transform.</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><a class="link" href="xmlsec-xmlenc.html#xmlSecEncFailureReason" title="enum xmlSecEncFailureReason"><span class="type">xmlSecEncFailureReason</span></a> <em class="structfield"><code><a name="xmlSecEncCtx.failureReason"></a>failureReason</code></em>;</p></td>
+<td class="struct_member_description"><p>the detailed failure reason.</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
@@ -851,6 +1078,6 @@ or <a class="ulink" href="" target="_top">&lt;enc:EncryptedKey/&gt;</a> node.</p
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.27</div>
+<hr>Generated by GTK-Doc V1.33.1</div>
 </body>
 </html>

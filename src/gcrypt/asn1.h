@@ -6,7 +6,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2010-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 #ifndef __XMLSEC_GCRYPT_ASN1_H__
 #define __XMLSEC_GCRYPT_ASN1_H__
@@ -22,9 +22,11 @@ extern "C" {
 enum xmlSecGCryptDerKeyType {
     xmlSecGCryptDerKeyTypeAuto = 0,
     xmlSecGCryptDerKeyTypePublicDsa,
-    xmlSecGCryptDerKeyTypePublicRsa,
     xmlSecGCryptDerKeyTypePrivateDsa,
-    xmlSecGCryptDerKeyTypePrivateRsa
+    xmlSecGCryptDerKeyTypePublicRsa,
+    xmlSecGCryptDerKeyTypePrivateRsa,
+    xmlSecGCryptDerKeyTypePublicEc,
+    xmlSecGCryptDerKeyTypePrivateEc
 };
 
 xmlSecKeyDataPtr        xmlSecGCryptParseDer            (const xmlSecByte * der,

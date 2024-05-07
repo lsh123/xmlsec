@@ -1,17 +1,15 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * Symmetric keys implementation for OpenSSL.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:symkeys
- * @Short_description: Symmetric keys implementation for OpenSSL.
- * @Stability: Private
- *
+ * SECTION:crypto
  */
 
 #include "globals.h"
@@ -23,7 +21,6 @@
 #include <openssl/rand.h>
 
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/xmltree.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/transforms.h>
@@ -31,6 +28,8 @@
 #include <xmlsec/private.h>
 
 #include <xmlsec/openssl/crypto.h>
+
+#include "../keysdata_helpers.h"
 
 /*****************************************************************************
  *
@@ -64,7 +63,7 @@ static int      xmlSecOpenSSLSymKeyDataGenerate         (xmlSecKeyDataPtr data,
                                                          xmlSecKeyDataType type);
 
 static xmlSecKeyDataType xmlSecOpenSSLSymKeyDataGetType (xmlSecKeyDataPtr data);
-static xmlSecSize       xmlSecOpenSSLSymKeyDataGetSize          (xmlSecKeyDataPtr data);
+static xmlSecSize       xmlSecOpenSSLSymKeyDataGetSize  (xmlSecKeyDataPtr data);
 static void     xmlSecOpenSSLSymKeyDataDebugDump        (xmlSecKeyDataPtr data,
                                                          FILE* output);
 static void     xmlSecOpenSSLSymKeyDataDebugXmlDump     (xmlSecKeyDataPtr data,
@@ -181,11 +180,6 @@ xmlSecOpenSSLSymKeyDataDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
 
 static int
 xmlSecOpenSSLSymKeyDataKlassCheck(xmlSecKeyDataKlass* klass) {
-#ifndef XMLSEC_NO_DES
-    if(klass == xmlSecOpenSSLKeyDataDesId) {
-        return(1);
-    }
-#endif /* XMLSEC_NO_DES */
 
 #ifndef XMLSEC_NO_AES
     if(klass == xmlSecOpenSSLKeyDataAesId) {
@@ -193,12 +187,29 @@ xmlSecOpenSSLSymKeyDataKlassCheck(xmlSecKeyDataKlass* klass) {
     }
 #endif /* XMLSEC_NO_AES */
 
+#ifndef XMLSEC_NO_CONCATKDF
+    if(klass == xmlSecOpenSSLKeyDataConcatKdfId) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_CONCATKDF */
+
+#ifndef XMLSEC_NO_DES
+    if(klass == xmlSecOpenSSLKeyDataDesId) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_DES */
+
 #ifndef XMLSEC_NO_HMAC
     if(klass == xmlSecOpenSSLKeyDataHmacId) {
         return(1);
     }
 #endif /* XMLSEC_NO_HMAC */
 
+#ifndef XMLSEC_NO_PBKDF2
+    if(klass == xmlSecOpenSSLKeyDataPbkdf2Id) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_PBKDF2 */
     return(0);
 }
 
@@ -214,7 +225,7 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataAesKlass = {
 
     /* data */
     xmlSecNameAESKeyValue,
-    xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
                                                 /* xmlSecKeyDataUsage usage; */
     xmlSecHrefAESKeyValue,                      /* const xmlChar* href; */
     xmlSecNodeAESKeyValue,                      /* const xmlChar* dataNodeName; */
@@ -283,6 +294,88 @@ xmlSecOpenSSLKeyDataAesSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecS
 }
 #endif /* XMLSEC_NO_AES */
 
+
+#ifndef XMLSEC_NO_CONCATKDF
+/**************************************************************************
+ *
+ * The ConcatKDF key derivation key
+ *
+ *************************************************************************/
+static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataConcatKdfKlass = {
+    sizeof(xmlSecKeyDataKlass),
+    xmlSecKeyDataBinarySize,
+
+    /* data */
+    xmlSecNameConcatKdfKeyValue,
+    xmlSecKeyDataUsageReadFromFile,             /* xmlSecKeyDataUsage usage; */
+    NULL,                                       /* const xmlChar* href; */
+    NULL,                                       /* const xmlChar* dataNodeName; */
+    xmlSecNs,                                   /* const xmlChar* dataNodeNs; */
+
+    /* constructors/destructor */
+    xmlSecOpenSSLSymKeyDataInitialize,          /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecOpenSSLSymKeyDataDuplicate,           /* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecOpenSSLSymKeyDataFinalize,            /* xmlSecKeyDataFinalizeMethod finalize; */
+    xmlSecOpenSSLSymKeyDataGenerate,            /* xmlSecKeyDataGenerateMethod generate; */
+
+    /* get info */
+    xmlSecOpenSSLSymKeyDataGetType,             /* xmlSecKeyDataGetTypeMethod getType; */
+    xmlSecOpenSSLSymKeyDataGetSize,             /* xmlSecKeyDataGetSizeMethod getSize; */
+    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
+
+    /* read/write */
+    NULL,                                       /* xmlSecKeyDataXmlReadMethod xmlRead; */
+    NULL,                                       /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    xmlSecOpenSSLSymKeyDataBinRead,             /* xmlSecKeyDataBinReadMethod binRead; */
+    xmlSecOpenSSLSymKeyDataBinWrite,            /* xmlSecKeyDataBinWriteMethod binWrite; */
+
+    /* debug */
+    xmlSecOpenSSLSymKeyDataDebugDump,           /* xmlSecKeyDataDebugDumpMethod debugDump; */
+    xmlSecOpenSSLSymKeyDataDebugXmlDump,        /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+
+    /* reserved for the future */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecOpenSSLKeyDataConcatKdfGetKlass:
+ *
+ * The ConcatKdf key data klass.
+ *
+ * Returns: ConcatKdf key data klass.
+ */
+xmlSecKeyDataId
+xmlSecOpenSSLKeyDataConcatKdfGetKlass(void) {
+    return(&xmlSecOpenSSLKeyDataConcatKdfKlass);
+}
+
+/**
+ * xmlSecOpenSSLKeyDataConcatKdfSet:
+ * @data:               the pointer to ConcatKdf key data.
+ * @buf:                the pointer to key value.
+ * @bufSize:            the key value size (in bytes).
+ *
+ * Sets the value of ConcatKdf key data.
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecOpenSSLKeyDataConcatKdfSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSize bufSize) {
+    xmlSecBufferPtr buffer;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataConcatKdfId), -1);
+    xmlSecAssert2(buf != NULL, -1);
+    xmlSecAssert2(bufSize > 0, -1);
+
+    buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
+    xmlSecAssert2(buffer != NULL, -1);
+
+    return(xmlSecBufferSetData(buffer, buf, bufSize));
+}
+#endif /* XMLSEC_NO_CONCATKDF */
+
+
 #ifndef XMLSEC_NO_DES
 /**************************************************************************
  *
@@ -295,7 +388,7 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataDesKlass = {
 
     /* data */
     xmlSecNameDESKeyValue,
-    xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
                                                 /* xmlSecKeyDataUsage usage; */
     xmlSecHrefDESKeyValue,                      /* const xmlChar* href; */
     xmlSecNodeDESKeyValue,                      /* const xmlChar* dataNodeName; */
@@ -377,7 +470,7 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataHmacKlass = {
 
     /* data */
     xmlSecNameHMACKeyValue,
-    xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
                                                 /* xmlSecKeyDataUsage usage; */
     xmlSecHrefHMACKeyValue,                     /* const xmlChar* href; */
     xmlSecNodeHMACKeyValue,                     /* const xmlChar* dataNodeName; */
@@ -447,3 +540,82 @@ xmlSecOpenSSLKeyDataHmacSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSec
 
 #endif /* XMLSEC_NO_HMAC */
 
+#ifndef XMLSEC_NO_PBKDF2
+/**************************************************************************
+ *
+ * The PBKDF2 key derivation key
+ *
+ *************************************************************************/
+static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataPbkdf2Klass = {
+    sizeof(xmlSecKeyDataKlass),
+    xmlSecKeyDataBinarySize,
+
+    /* data */
+    xmlSecNamePbkdf2KeyValue,
+    xmlSecKeyDataUsageReadFromFile,             /* xmlSecKeyDataUsage usage; */
+    NULL,                                       /* const xmlChar* href; */
+    NULL,                                       /* const xmlChar* dataNodeName; */
+    NULL,                                       /* const xmlChar* dataNodeNs; */
+
+    /* constructors/destructor */
+    xmlSecOpenSSLSymKeyDataInitialize,          /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecOpenSSLSymKeyDataDuplicate,           /* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecOpenSSLSymKeyDataFinalize,            /* xmlSecKeyDataFinalizeMethod finalize; */
+    xmlSecOpenSSLSymKeyDataGenerate,            /* xmlSecKeyDataGenerateMethod generate; */
+
+    /* get info */
+    xmlSecOpenSSLSymKeyDataGetType,             /* xmlSecKeyDataGetTypeMethod getType; */
+    xmlSecOpenSSLSymKeyDataGetSize,             /* xmlSecKeyDataGetSizeMethod getSize; */
+    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
+
+    /* read/write */
+    NULL,                                       /* xmlSecKeyDataXmlReadMethod xmlRead; */
+    NULL,                                       /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    xmlSecOpenSSLSymKeyDataBinRead,             /* xmlSecKeyDataBinReadMethod binRead; */
+    xmlSecOpenSSLSymKeyDataBinWrite,            /* xmlSecKeyDataBinWriteMethod binWrite; */
+
+    /* debug */
+    xmlSecOpenSSLSymKeyDataDebugDump,           /* xmlSecKeyDataDebugDumpMethod debugDump; */
+    xmlSecOpenSSLSymKeyDataDebugXmlDump,        /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+
+    /* reserved for the future */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecOpenSSLKeyDataPbkdf2GetKlass:
+ *
+ * The PBKDF2 key data klass.
+ *
+ * Returns: PBKDF2 key data klass.
+ */
+xmlSecKeyDataId
+xmlSecOpenSSLKeyDataPbkdf2GetKlass(void) {
+    return(&xmlSecOpenSSLKeyDataPbkdf2Klass);
+}
+
+/**
+ * xmlSecOpenSSLKeyDataPbkdf2Set:
+ * @data:               the pointer to Pbkdf2 key data.
+ * @buf:                the pointer to key value.
+ * @bufSize:            the key value size (in bytes).
+ *
+ * Sets the value of PBKDF2 key data.
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecOpenSSLKeyDataPbkdf2Set(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSize bufSize) {
+    xmlSecBufferPtr buffer;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataPbkdf2Id), -1);
+    xmlSecAssert2(buf != NULL, -1);
+    xmlSecAssert2(bufSize > 0, -1);
+
+    buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
+    xmlSecAssert2(buffer != NULL, -1);
+
+    return(xmlSecBufferSetData(buffer, buf, bufSize));
+}
+#endif /* XMLSEC_NO_PBKDF2 */

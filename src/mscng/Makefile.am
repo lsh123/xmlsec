@@ -1,7 +1,7 @@
 NULL =
 
 EXTRA_DIST = \
-	README \
+	README.md \
 	$(NULL)
 
 lib_LTLIBRARIES = \
@@ -21,15 +21,20 @@ libxmlsec1_mscng_la_CPPFLAGS = \
 libxmlsec1_mscng_la_SOURCES =\
 	app.c \
 	certkeys.c \
-	ciphers.c \
+	ciphers_cbc.c \
+	ciphers_gcm.c \
+	concatkdf.c \
 	crypto.c \
 	digests.c \
 	globals.h \
 	hmac.c \
+	key_agrmnt.c \
 	keysstore.c \
 	kt_rsa.c \
 	kw_aes.c \
 	kw_des.c \
+	pbkdf2.c \
+	private.h \
 	signatures.c \
 	symkeys.c \
 	x509.c \

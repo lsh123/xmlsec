@@ -6,7 +6,7 @@
  * distribution for preciese wording.
  *
  * Copyright (C) 2003 Cordys R&D BV, All rights reserved.
- * Copyright (C) 2003-2016 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  * Copyright (c) 2005-2006 Cryptocom LTD (http://www.cryptocom.ru).
  */
 /**
@@ -25,14 +25,15 @@
 #include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/dl.h>
-#include <xmlsec/xmltree.h>
 #include <xmlsec/private.h>
+#include <xmlsec/xmltree.h>
 
 #include <xmlsec/mscrypto/app.h>
 #include <xmlsec/mscrypto/crypto.h>
 #include <xmlsec/mscrypto/x509.h>
-#include "private.h"
 
+#include "private.h"
+#include "../cast_helpers.h"
 
 #define XMLSEC_CONTAINER_NAME_A "xmlsec-key-container"
 #define XMLSEC_CONTAINER_NAME_W L"xmlsec-key-container"
@@ -217,8 +218,14 @@ xmlSecCryptoGetFunctions_mscrypto(void) {
     gXmlSecMSCryptoFunctions->transformRsaSha512GetKlass       = xmlSecMSCryptoTransformRsaSha512GetKlass;
 #endif /* XMLSEC_NO_SHA512 */
 
+#ifndef XMLSEC_NO_RSA_PKCS15
     gXmlSecMSCryptoFunctions->transformRsaPkcs1GetKlass         = xmlSecMSCryptoTransformRsaPkcs1GetKlass;
+#endif /* XMLSEC_NO_RSA_PKCS15 */
+
+#ifndef XMLSEC_NO_RSA_OAEP
     gXmlSecMSCryptoFunctions->transformRsaOaepGetKlass          = xmlSecMSCryptoTransformRsaOaepGetKlass;
+#endif /* XMLSEC_NO_RSA_OAEP */
+
 #endif /* XMLSEC_NO_RSA */
 
     /******************************* SHA ********************************/
@@ -244,17 +251,20 @@ xmlSecCryptoGetFunctions_mscrypto(void) {
     gXmlSecMSCryptoFunctions->cryptoAppShutdown                 = xmlSecMSCryptoAppShutdown;
     gXmlSecMSCryptoFunctions->cryptoAppDefaultKeysMngrInit      = xmlSecMSCryptoAppDefaultKeysMngrInit;
     gXmlSecMSCryptoFunctions->cryptoAppDefaultKeysMngrAdoptKey  = xmlSecMSCryptoAppDefaultKeysMngrAdoptKey;
+    gXmlSecMSCryptoFunctions->cryptoAppDefaultKeysMngrVerifyKey = xmlSecMSCryptoAppDefaultKeysMngrVerifyKey;
     gXmlSecMSCryptoFunctions->cryptoAppDefaultKeysMngrLoad      = xmlSecMSCryptoAppDefaultKeysMngrLoad;
     gXmlSecMSCryptoFunctions->cryptoAppDefaultKeysMngrSave      = xmlSecMSCryptoAppDefaultKeysMngrSave;
 #ifndef XMLSEC_NO_X509
     gXmlSecMSCryptoFunctions->cryptoAppKeysMngrCertLoad         = xmlSecMSCryptoAppKeysMngrCertLoad;
     gXmlSecMSCryptoFunctions->cryptoAppKeysMngrCertLoadMemory   = xmlSecMSCryptoAppKeysMngrCertLoadMemory;
+    gXmlSecMSCryptoFunctions->cryptoAppKeysMngrCrlLoad          = xmlSecMSCryptoAppKeysMngrCrlLoad;
+    gXmlSecMSCryptoFunctions->cryptoAppKeysMngrCrlLoadMemory    = xmlSecMSCryptoAppKeysMngrCrlLoadMemory;
     gXmlSecMSCryptoFunctions->cryptoAppPkcs12Load               = xmlSecMSCryptoAppPkcs12Load;
     gXmlSecMSCryptoFunctions->cryptoAppPkcs12LoadMemory         = xmlSecMSCryptoAppPkcs12LoadMemory;
     gXmlSecMSCryptoFunctions->cryptoAppKeyCertLoad              = xmlSecMSCryptoAppKeyCertLoad;
     gXmlSecMSCryptoFunctions->cryptoAppKeyCertLoadMemory        = xmlSecMSCryptoAppKeyCertLoadMemory;
 #endif /* XMLSEC_NO_X509 */
-    gXmlSecMSCryptoFunctions->cryptoAppKeyLoad                  = xmlSecMSCryptoAppKeyLoad;
+    gXmlSecMSCryptoFunctions->cryptoAppKeyLoadEx                = xmlSecMSCryptoAppKeyLoadEx;
     gXmlSecMSCryptoFunctions->cryptoAppKeyLoadMemory            = xmlSecMSCryptoAppKeyLoadMemory;
     gXmlSecMSCryptoFunctions->cryptoAppDefaultPwdCallback       = (void*)xmlSecMSCryptoAppGetDefaultPwdCallback();
 
@@ -348,39 +358,46 @@ static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Random[] = {
  * @buffer:             the destination buffer.
  * @size:               the numer of bytes to generate.
  *
- * Generates @size random bytes and puts result in @buffer
- * (not implemented yet).
+ * Generates @size random bytes and puts result in @buffer.
  *
  * Returns: 0 on success or a negative value otherwise.
  */
 int
 xmlSecMSCryptoGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
     HCRYPTPROV hProv = 0;
+    DWORD dwSize;
     int ret;
+    int res = -1;
 
     xmlSecAssert2(buffer != NULL, -1);
     xmlSecAssert2(size > 0, -1);
 
     ret = xmlSecBufferSetSize(buffer, size);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetSize", NULL,
-                             "size=%d", size);
-        return(-1);
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=" XMLSEC_SIZE_FMT, size);
+        goto done;
     }
-
     hProv = xmlSecMSCryptoFindProvider(xmlSecMSCryptoProviderInfo_Random, NULL, CRYPT_VERIFYCONTEXT, FALSE);
     if (0 == hProv) {
         xmlSecInternalError("xmlSecMSCryptoFindProvider", NULL);
-        return(-1);
-    }
-    if (FALSE == CryptGenRandom(hProv, (DWORD)size, xmlSecBufferGetData(buffer))) {
-        xmlSecMSCryptoError("CryptGenRandom", NULL);
-        CryptReleaseContext(hProv,0);
-        return(-1);
+        goto done;
     }
 
-    CryptReleaseContext(hProv, 0);
-    return(0);
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(size, dwSize, goto done, NULL);
+    if (FALSE == CryptGenRandom(hProv, dwSize, xmlSecBufferGetData(buffer))) {
+        xmlSecMSCryptoError("CryptGenRandom", NULL);
+        goto done;
+    }
+
+    /* success */
+    res = 0;
+
+done:
+    /* cleanup */
+    if (hProv != 0) {
+        CryptReleaseContext(hProv, 0);
+    }
+    return(res);
 }
 
 /**
@@ -392,19 +409,21 @@ xmlSecMSCryptoGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
  * Returns the system error message for the give error code.
  */
 void
-xmlSecMSCryptoGetErrorMessage(DWORD dwError, xmlChar * out, xmlSecSize outSize) {
-    LPTSTR errorText = NULL;
-    DWORD ret;
+xmlSecMSCryptoGetErrorMessage(DWORD dwError, xmlChar * out, int outLen) {
 #ifndef UNICODE
     WCHAR errorTextW[XMLSEC_MSCRYPTO_ERROR_MSG_BUFFER_SIZE];
 #endif /* UNICODE */
+    LPTSTR errorText = NULL;
+    DWORD dwRet;
+    int ret;
 
     xmlSecAssert(out != NULL);
-    xmlSecAssert(outSize > 0);
+    xmlSecAssert(outLen > 0);
+    out[0] = '\0';
 
     /* Use system message tables to retrieve error text, allocate buffer on local
        heap for error text, don't use any inserts/parameters */
-    ret = FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM
+    dwRet = FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM
                       | FORMAT_MESSAGE_ALLOCATE_BUFFER
                       | FORMAT_MESSAGE_IGNORE_INSERTS,
                       NULL,
@@ -413,26 +432,22 @@ xmlSecMSCryptoGetErrorMessage(DWORD dwError, xmlChar * out, xmlSecSize outSize) 
                       (LPTSTR)&errorText,
                       0,
                       NULL);
-    if((ret <= 0) || (errorText == NULL)) {
-        out[0] = '\0';
+    if((dwRet <= 0) || (errorText == NULL)) {
         goto done;
     }
 
 #ifdef UNICODE
-    ret = WideCharToMultiByte(CP_UTF8, 0, errorText, -1, (LPSTR)out, outSize, NULL, NULL);
+    ret = WideCharToMultiByte(CP_UTF8, 0, errorText, -1, (LPSTR)out, outLen, NULL, NULL);
     if(ret <= 0) {
-        out[0] = '\0';
         goto done;
     }
 #else /* UNICODE */
     ret = MultiByteToWideChar(CP_ACP, 0, errorText, -1, errorTextW, XMLSEC_MSCRYPTO_ERROR_MSG_BUFFER_SIZE);
     if(ret <= 0) {
-        out[0] = '\0';
         goto done;
     }
-    ret = WideCharToMultiByte(CP_UTF8, 0, errorTextW, -1, (LPSTR)out, outSize, NULL, NULL);
+    ret = WideCharToMultiByte(CP_UTF8, 0, errorTextW, -1, (LPSTR)out, outLen, NULL, NULL);
     if(ret <= 0) {
-        out[0] = '\0';
         goto done;
     }
 #endif /* UNICODE */
@@ -462,97 +477,6 @@ xmlSecMSCryptoErrorsDefaultCallback(const char* file, int line, const char* func
                                 const char* errorObject, const char* errorSubject,
                                 int reason, const char* msg) {
     xmlSecErrorsDefaultCallback(file, line, func, errorObject, errorSubject, reason, msg);
-}
-
-/**
- * xmlSecMSCryptoConvertUtf8ToUnicode:
- * @str:         the string to convert.
- *
- * Converts input string from UTF8 to Unicode.
- *
- * Returns: a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.
- */
-LPWSTR
-xmlSecMSCryptoConvertUtf8ToUnicode(const xmlChar* str) {
-    return(xmlSecWin32ConvertUtf8ToUnicode(str));
-}
-
-/**
- * xmlSecMSCryptoConvertUnicodeToUtf8:
- * @str:         the string to convert.
- *
- * Converts input string from Unicode to UTF8.
- *
- * Returns: a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.
- */
-xmlChar*
-xmlSecMSCryptoConvertUnicodeToUtf8(LPCWSTR str) {
-    return(xmlSecWin32ConvertUnicodeToUtf8(str));
-}
-
-/**
- * xmlSecMSCryptoConvertLocaleToUnicode:
- * @str:         the string to convert.
- *
- * Converts input string from current system locale to Unicode.
- *
- * Returns: a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.
- */
-LPWSTR
-xmlSecMSCryptoConvertLocaleToUnicode(const char* str) {
-    return(xmlSecWin32ConvertLocaleToUnicode(str));
-}
-
-/**
- * xmlSecMSCryptoConvertLocaleToUtf8:
- * @str:         the string to convert.
- *
- * Converts input string from locale to UTF8.
- *
- * Returns: a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.
- */
-xmlChar* 
-xmlSecMSCryptoConvertLocaleToUtf8(const char * str) {
-    return(xmlSecWin32ConvertLocaleToUtf8(str));
-}
-
-/**
- * xmlSecMSCryptoConvertUtf8ToLocale:
- * @str:         the string to convert.
- *
- * Converts input string from UTF8 to locale.
- *
- * Returns: a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.
- */
-char * 
-xmlSecMSCryptoConvertUtf8ToLocale(const xmlChar* str) {
-    return(xmlSecWin32ConvertUtf8ToLocale(str));
-}
-
-/**
- * xmlSecMSCryptoConvertTstrToUtf8:
- * @str:         the string to convert.
- *
- * Converts input string from TSTR (locale or Unicode) to UTF8.
- *
- * Returns: a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.
- */
-xmlChar* 
-xmlSecMSCryptoConvertTstrToUtf8(LPCTSTR str) {
-    return(xmlSecWin32ConvertTstrToUtf8(str));
-}
-
-/**
- * xmlSecMSCryptoConvertUtf8ToTstr:
- * @str:         the string to convert.
- *
- * Converts input string from UTF8 to TSTR (locale or Unicode).
- *
- * Returns: a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.
- */
-LPTSTR
-xmlSecMSCryptoConvertUtf8ToTstr(const xmlChar*  str) {
-    return(xmlSecWin32ConvertUtf8ToTstr(str));
 }
 
 /********************************************************************
@@ -597,7 +521,7 @@ xmlSecMSCryptoFindProvider(const xmlSecMSCryptoProviderInfo * providers,
 
         /* check errors */
         dwLastError = GetLastError();
-        switch(dwLastError) {
+        switch(HRESULT_FROM_WIN32(dwLastError)) {
         case NTE_BAD_KEYSET:
             /* This error can indicate that a newly installed provider
              * does not have a usable key container yet. It needs to be
@@ -682,5 +606,3 @@ ConvertEndianInPlace(xmlSecByte * buf, xmlSecSize size) {
     }
     return (0);
 }
-
-

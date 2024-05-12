@@ -295,7 +295,6 @@ xmlSecGCryptAsymKeyDataGenerate(xmlSecKeyDataPtr data, const char * alg, xmlSecS
         xmlSecInternalError("xmlSecGCryptAsymKeyDataAdopt", NULL);
         goto done;
     }
-    key_pair = NULL; /* now owned by data */
 
     /* success */
     res = 0;

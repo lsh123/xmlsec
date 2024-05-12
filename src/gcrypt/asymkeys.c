@@ -194,7 +194,7 @@ done:
         gcry_sexp_release(priv_key);
     }
 
-    /* Adopt functions assumes ownership thus the caller would expect this to be released */
+    /* Adopt functions assume ownership thus the caller would expect this to be released */
     gcry_sexp_release(key_pair);
 
     /* done */

@@ -4,7 +4,7 @@
 #
 
 # ensure this script is called from testrun.sh
-if [ -z "$xmlsec_app" -o -z "$crypto_config_folder" ]; then
+if [ -z "$xmlsec_app" -o -z "$xmlsec_params" ]; then
     echo "This script needs to be called from testrun.sh script"
     exit 1
 fi
@@ -24,12 +24,6 @@ echo "--- testKeys started for xmlsec-$crypto library ($timestamp) ---" >> $logf
 echo "--- LD_LIBRARY_PATH=$LD_LIBRARY_PATH" >> $logfile
 echo "--- LTDL_LIBRARY_PATH=$LTDL_LIBRARY_PATH" >> $logfile
 
-# cleanup crypto config folder
-mkdir -p $crypto_config_folder
-rm -rf $crypto_config_folder/*
-
-# remove old keys file
-rm -rf $keysfile
 
 ##########################################################################
 ##########################################################################

@@ -5,7 +5,7 @@
 
 
 # ensure this script is called from testrun.sh
-if [ -z "$xmlsec_app" -o -z "$crypto_config_folder" ]; then
+if [ -z "$xmlsec_app" -o -z "$xmlsec_params" ]; then
     echo "This script needs to be called from testrun.sh script"
     exit 1
 fi
@@ -471,8 +471,8 @@ execEncTest $res_success \
     "tripledes-cbc" \
     "" \
     "--keys-file $topfolder/keys/keys.xml" \
-    "--keys-file $keysfile --binary-data $topfolder/aleksey-xmlenc-01/enc-des3cbc-keyname.data" \
-    "--keys-file $keysfile"
+    "--keys-file $topfolder/keys/keys.xml --binary-data $topfolder/aleksey-xmlenc-01/enc-des3cbc-keyname.data" \
+    "--keys-file $topfolder/keys/keys.xml"
 
 execEncTest $res_success \
     "" \
@@ -480,8 +480,8 @@ execEncTest $res_success \
     "tripledes-cbc" \
     "" \
     "--keys-file $topfolder/keys/keys.xml" \
-    "--keys-file $keysfile --binary-data $topfolder/aleksey-xmlenc-01/enc-des3cbc-keyname2.data" \
-    "--keys-file $keysfile"
+    "--keys-file $topfolder/keys/keys.xml --binary-data $topfolder/aleksey-xmlenc-01/enc-des3cbc-keyname2.data" \
+    "--keys-file $topfolder/keys/keys.xml"
 
 execEncTest $res_success \
     "" \
@@ -489,8 +489,8 @@ execEncTest $res_success \
     "aes128-cbc" \
     "" \
     "--keys-file $topfolder/keys/keys.xml" \
-    "--keys-file $keysfile --binary-data $topfolder/aleksey-xmlenc-01/enc-aes128cbc-keyname.data" \
-    "--keys-file $keysfile"
+    "--keys-file $topfolder/keys/keys.xml --binary-data $topfolder/aleksey-xmlenc-01/enc-aes128cbc-keyname.data" \
+    "--keys-file $topfolder/keys/keys.xml"
 
 execEncTest $res_success \
     "" \
@@ -498,8 +498,8 @@ execEncTest $res_success \
     "aes192-cbc" \
     "" \
     "--keys-file $topfolder/keys/keys.xml" \
-    "--keys-file $keysfile --binary-data $topfolder/aleksey-xmlenc-01/enc-aes192cbc-keyname.data" \
-    "--keys-file $keysfile"
+    "--keys-file $topfolder/keys/keys.xml --binary-data $topfolder/aleksey-xmlenc-01/enc-aes192cbc-keyname.data" \
+    "--keys-file $topfolder/keys/keys.xml"
 
 execEncTest $res_success \
     "" \
@@ -523,8 +523,8 @@ execEncTest $res_success \
     "aes256-cbc" \
     "" \
     "--keys-file $topfolder/keys/keys.xml" \
-    "--keys-file $keysfile --binary-data $topfolder/aleksey-xmlenc-01/enc-aes256cbc-keyname.data" \
-    "--keys-file $keysfile"
+    "--keys-file $topfolder/keys/keys.xml --binary-data $topfolder/aleksey-xmlenc-01/enc-aes256cbc-keyname.data" \
+    "--keys-file $topfolder/keys/keys.xml"
 
 execEncTest $res_success \
     "" \
@@ -532,8 +532,8 @@ execEncTest $res_success \
     "tripledes-cbc" \
     " " \
     "--keys-file $topfolder/keys/keys.xml" \
-    "--keys-file $keysfile --xml-data $topfolder/aleksey-xmlenc-01/enc-des3cbc-keyname-content.data --node-id Test" \
-    "--keys-file $keysfile"
+    "--keys-file $topfolder/keys/keys.xml --xml-data $topfolder/aleksey-xmlenc-01/enc-des3cbc-keyname-content.data --node-id Test" \
+    "--keys-file $topfolder/keys/keys.xml"
 
 execEncTest $res_success \
     "" \
@@ -541,8 +541,8 @@ execEncTest $res_success \
     "tripledes-cbc" \
     " " \
     "--keys-file $topfolder/keys/keys.xml" \
-    "--keys-file $keysfile --xml-data $topfolder/aleksey-xmlenc-01/enc-des3cbc-keyname-element.data --node-id Test" \
-    "--keys-file $keysfile"
+    "--keys-file $topfolder/keys/keys.xml --xml-data $topfolder/aleksey-xmlenc-01/enc-des3cbc-keyname-element.data --node-id Test" \
+    "--keys-file $topfolder/keys/keys.xml"
 
 execEncTest $res_success \
     "" \
@@ -550,8 +550,8 @@ execEncTest $res_success \
     "tripledes-cbc" \
     " " \
     "--keys-file $topfolder/keys/keys.xml" \
-    "--keys-file $keysfile --xml-data $topfolder/aleksey-xmlenc-01/enc-des3cbc-keyname-element-root.data --node-id Test" \
-    "--keys-file $keysfile"
+    "--keys-file $topfolder/keys/keys.xml --xml-data $topfolder/aleksey-xmlenc-01/enc-des3cbc-keyname-element-root.data --node-id Test" \
+    "--keys-file $topfolder/keys/keys.xml"
 
 execEncTest $res_success \
     "" \
@@ -559,8 +559,8 @@ execEncTest $res_success \
     "tripledes-cbc kw-aes192" \
     "enc-key aes des" \
     "--keys-file $topfolder/keys/keys.xml" \
-    "--keys-file $keysfile  --session-key des-192  --binary-data $topfolder/aleksey-xmlenc-01/enc-des3cbc-aes192-keyname.data" \
-    "--keys-file $keysfile"
+    "--keys-file $topfolder/keys/keys.xml  --session-key des-192  --binary-data $topfolder/aleksey-xmlenc-01/enc-des3cbc-aes192-keyname.data" \
+    "--keys-file $topfolder/keys/keys.xml"
 
 execEncTest $res_success \
     "" \
@@ -1182,7 +1182,7 @@ for aesgcm_k_l in $aesgcm_key_lengths ; do
                 # generate binary file out of base64
                 DECODE="-d"
                 if [ "`uname`" = "Darwin" ]; then
-		    DECODE="-D"
+		            DECODE="-D"
                 fi
                 cat "$topfolder/$base_test_name.data" | base64 $DECODE > $tmpfile.3
                 execEncTest "$res_success" \
@@ -1206,15 +1206,16 @@ done
 #
 ##########################################################################
 if [ -n "$XMLSEC_TEST_NAME" -a "$XMLSEC_TEST_NAME" = "enc-dynamic" ]; then
-echo "Dynamic encryption template"
-printf "    Encrypt template                                     "
-echo "$VALGRIND $xmlsec_app encrypt-tmpl $xmlsec_params --keys-file $keysfile --output $tmpfile" >> $logfile
-$VALGRIND $xmlsec_app encrypt-tmpl $xmlsec_params --keys-file $keysfile --output $tmpfile >> $logfile 2>> $logfile
-printRes $res_success $?
-printf "    Decrypt document                                     "
-echo "$VALGRIND $xmlsec_app decrypt $xmlsec_params $keysfile $tmpfile" >> $logfile
-$VALGRIND $xmlsec_app decrypt $xmlsec_params --keys-file $keysfile $tmpfile >> $logfile 2>> $logfile
-printRes $res_success $?
+    echo "Dynamic encryption template"
+    printf "    Encrypt template                                     "
+    echo "$VALGRIND $xmlsec_app encrypt-tmpl $xmlsec_params --crypto-config $crypto_config --keys-file $topfolder/keys/keys.xml --output $tmpfile" >> $logfile
+    $VALGRIND $xmlsec_app encrypt-tmpl $xmlsec_params --crypto-config $crypto_config --keys-file $topfolder/keys/keys.xml --output $tmpfile >> $logfile 2>> $logfile
+    printRes $res_success $?
+
+    printf "    Decrypt document                                     "
+    echo "$VALGRIND $xmlsec_app decrypt $xmlsec_params --crypto-config $crypto_config --keys-file $topfolder/keys/keys.xml $tmpfile" >> $logfile
+    $VALGRIND $xmlsec_app decrypt $xmlsec_params --crypto-config $crypto_config --keys-file $topfolder/keys/keys.xml $tmpfile >> $logfile 2>> $logfile
+    printRes $res_success $?
 fi
 
 

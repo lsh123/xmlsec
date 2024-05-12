@@ -29,16 +29,19 @@ if [ "z$TMPFOLDER" = "z" ] ; then
     TMPFOLDER=/tmp
 fi
 testname=`basename $testfile`
+testfolder=$TMPFOLDER/xmlsec-$testname-$crypto-$timestamp
+mkdir -p $testfolder
+
 if test "z$OS_ARCH" = "zCygwin" || test "z$OS_ARCH" = "zMsys" ; then
-    tmpfile=`cygpath -wa $TMPFOLDER/$testname.$timestamp-$$.tmp`
-    logfile=`cygpath -wa $TMPFOLDER/$testname.$timestamp-$$.log`
-    curlogfile=`cygpath -wa $TMPFOLDER/$testname.$timestamp-$$.cur.log`
-    failedlogfile=`cygpath -wa $TMPFOLDER/$testname.$timestamp-$$.failed.log`
+    tmpfile=`cygpath -wa $testfolder/tmp.tmp`
+    logfile=`cygpath -wa $testfolder/full.log`
+    curlogfile=`cygpath -wa $testfolder/cur.log`
+    failedlogfile=`cygpath -wa $testfolder/failed.log`
 else
-    tmpfile=$TMPFOLDER/$testname.$timestamp-$$.tmp
-    logfile=$TMPFOLDER/$testname.$timestamp-$$.log
-    curlogfile=$TMPFOLDER/$testname.$timestamp-$$.cur.log
-    failedlogfile=$TMPFOLDER/$testname.$timestamp-$$.failed.log
+    tmpfile=$testfolder/tmp.tmp
+    logfile=$testfolder/full.log
+    curlogfile=$testfolder/cur.log
+    failedlogfile=$testfolder/failed.log
 fi
 
 #
@@ -63,12 +66,6 @@ if [ -n "$DEBUG_MEMORY" ] ; then
     xmlsec_params="$xmlsec_params --repeat $REPEAT"
 fi
 
-#
-# Setup crypto config folder
-#
-crypto_config_folder=$TMPFOLDER/xmlsec-crypto-config
-keysfile=$crypto_config_folder/keys.xml
-mkdir -p $crypto_config_folder
 
 #
 # Setup crypto engine
@@ -78,14 +75,6 @@ if [ "z$XMLSEC_DEFAULT_CRYPTO" != "z" ] ; then
 elif [ "z$crypto" != "z" ] ; then
     xmlsec_params="$xmlsec_params --crypto $crypto"
 fi
-
-# see https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certopensystemstorea
-if [ "z$crypto" = "zmscng" ] ; then
-    crypto_config="MY"
-else
-    crypto_config="$crypto_config_folder"
-fi
-xmlsec_params="$xmlsec_params --crypto-config $crypto_config"
 
 # What flavour of OpenSSL do we have?
 case $XMLSEC_OPENSSL_VERSION in
@@ -191,21 +180,51 @@ else
     diff_param=-u
 fi
 
-#
-# NSS specific:
-# - Cert name we need to delete for tests to work
-# - Ignore NSS system policies in tests since we have legacy algorithms and small key sizes
-#
-NSS_TEST_CERT_NICKNAME="NSS Certificate DB:Aleksey Sanin - XML Security Library (http://www.aleksey.com/xmlsec)"
-export NSS_IGNORE_SYSTEM_POLICY=1
 
 
-cleanupNssCerts() {
-    echo "certutil  -D -n \"$NSS_TEST_CERT_NICKNAME\" -d \"$crypto_config_folder\""  >> $logfile
-    certutil  -D -n "$NSS_TEST_CERT_NICKNAME" -d "$crypto_config_folder"   >> $logfile 2>> $logfile
-    if [ $? -ne 0 ]; then
-        echo "--- FAILED TO DELETE TRUSTED TEST CERTIFICATE FROM NSS CERT DB. THE NEXT TEST MIGHT FAIL" >> $logfile
+#
+# Setup crypto config folder
+#
+config_number=0
+setupCryptoConfig() {
+    config_number=$((config_number + 1))
+    if test "z$OS_ARCH" = "zCygwin" || test "z$OS_ARCH" = "zMsys" ; then
+        crypto_config_folder=`cygpath -wa $testfolder/crypto-config-$config_number`
+    else
+        crypto_config_folder=$testfolder/crypto-config-$config_number
     fi
+    mkdir $crypto_config_folder
+
+    # see https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certopensystemstorea
+    if [ "z$crypto" = "zmscng" ] ; then
+        crypto_config="MY"
+    else
+        crypto_config="$crypto_config_folder"
+    fi
+}
+
+tearDownCryptoConfig() {
+    if [ -n "$crypto_config_folder" ]; then
+        rm -rf $crypto_config_folder
+    fi
+    unset crypto_config_folder
+    unset crypto_config
+}
+
+setupTest() {
+    # prepare
+    old_pwd=`pwd`
+    setupCryptoConfig
+}
+
+tearDownTest() {
+    # cleanup
+    tearDownCryptoConfig
+    rm -f $tmpfile $tmpfile.2 $tmpfile.3
+    if [ -n "$old_pwd" ]; then
+        cd $old_pwd
+    fi
+    unset old_pwd
 }
 
 #
@@ -279,13 +298,18 @@ execKeysTest() {
     fi
 
     # prepare
-    rm -f $tmpfile
-    old_pwd=`pwd`
+    setupTest
+
+    if test "z$OS_ARCH" = "zCygwin" || test "z$OS_ARCH" = "zMsys" ; then
+        keysfile=`cygpath -wa $crypto_config_folder/keys.xml`
+    else
+        keysfile=$crypto_config_folder/keys.xml
+    fi
 
     # check params
     if [ "z$expected_res" != "z$res_success" -a "z$expected_res" != "z$res_fail" ] ; then
         echo " Bad parameter: expected_res=$expected_res"
-        cd $old_pwd
+        tearDownTest
         return
     fi
 
@@ -297,13 +321,13 @@ execKeysTest() {
     # check key data
     if [ -n "$req_key_data" ] ; then
         printf "    Checking required key data                            "
-        echo "$extra_vars $xmlsec_app check-key-data $xmlsec_params $req_key_data" >> $curlogfile
-        $xmlsec_app check-key-data $xmlsec_params $req_key_data >> $curlogfile 2>> $curlogfile
+        echo "$extra_vars $xmlsec_app check-key-data $xmlsec_params --crypto-config $crypto_config $req_key_data" >> $curlogfile
+        $xmlsec_app check-key-data $xmlsec_params --crypto-config $crypto_config $req_key_data >> $curlogfile 2>> $curlogfile
         printCheckStatus $?
         res=$?
         if [ $res -ne 0 ]; then
 	        cat $curlogfile >> $logfile
-	        cd $old_pwd
+	        tearDownTest
             return
         fi
     fi
@@ -317,8 +341,8 @@ execKeysTest() {
         if [ -f $keysfile ] ; then
             params="$params --keys-file $keysfile"
         fi
-        echo "$extra_vars $VALGRIND $xmlsec_app keys $params $xmlsec_params $keysfile" >>  $curlogfile
-        $VALGRIND $xmlsec_app keys $params $xmlsec_params $keysfile >> $curlogfile 2>> $curlogfile
+        echo "$extra_vars $VALGRIND $xmlsec_app keys $params $xmlsec_params  --crypto-config $crypto_config $keysfile" >>  $curlogfile
+        $VALGRIND $xmlsec_app keys $params $xmlsec_params  --crypto-config $crypto_config $keysfile >> $curlogfile 2>> $curlogfile
         printRes $expected_res $?
         if [ $? -ne 0 ]; then
             failures=`expr $failures + 1`
@@ -332,8 +356,8 @@ execKeysTest() {
             printf "    Reading private key from pkcs12 file                  "
             rm -f $tmpfile
             params="--lax-key-search --pkcs12 $privkey_file.p12 $pkcs12_key_extra_options $key_test_options --output $tmpfile $asym_key_test.tmpl"
-            echo "$extra_vars $VALGRIND $xmlsec_app sign $xmlsec_params $params" >>  $curlogfile
-            $VALGRIND $xmlsec_app sign $xmlsec_params $params >> $curlogfile 2>> $curlogfile
+            echo "$extra_vars $VALGRIND $xmlsec_app sign $xmlsec_params --crypto-config $crypto_config $params" >>  $curlogfile
+            $VALGRIND $xmlsec_app sign $xmlsec_params --crypto-config $crypto_config $params >> $curlogfile 2>> $curlogfile
             printRes $expected_res $?
             if [ $? -ne 0 ]; then
                 failures=`expr $failures + 1`
@@ -344,8 +368,8 @@ execKeysTest() {
             printf "    Reading private key name from pkcs12 file             "
             rm -f $tmpfile
             params="--pkcs12 $privkey_file.p12 $pkcs12_key_extra_options $key_test_options --output $tmpfile $asym_key_test.tmpl"
-            echo "$extra_vars $VALGRIND $xmlsec_app sign $xmlsec_params $params" >>  $curlogfile
-            $VALGRIND $xmlsec_app sign $xmlsec_params $params >> $curlogfile 2>> $curlogfile
+            echo "$extra_vars $VALGRIND $xmlsec_app sign $xmlsec_params --crypto-config $crypto_config $params" >>  $curlogfile
+            $VALGRIND $xmlsec_app sign $xmlsec_params --crypto-config $crypto_config $params >> $curlogfile 2>> $curlogfile
             printRes $expected_res $?
             if [ $? -ne 0 ]; then
                 failures=`expr $failures + 1`
@@ -357,8 +381,8 @@ execKeysTest() {
             printf "    Reading private key from pkcs12 file using ossl-store "
             rm -f $tmpfile
             params="--lax-key-search --privkey-openssl-store $privkey_file.p12 $pkcs12_key_extra_options $key_test_options --output $tmpfile $asym_key_test.tmpl"
-            echo "$extra_vars $VALGRIND $xmlsec_app sign $xmlsec_params $params" >>  $curlogfile
-            $VALGRIND $xmlsec_app sign $xmlsec_params $params >> $curlogfile 2>> $curlogfile
+            echo "$extra_vars $VALGRIND $xmlsec_app sign $xmlsec_params --crypto-config $crypto_config $params" >>  $curlogfile
+            $VALGRIND $xmlsec_app sign $xmlsec_params --crypto-config $crypto_config $params >> $curlogfile 2>> $curlogfile
             printRes $expected_res $?
             if [ $? -ne 0 ]; then
                 failures=`expr $failures + 1`
@@ -370,8 +394,8 @@ execKeysTest() {
             printf "    Reading private key from pkcs8 pem file               "
             rm -f $tmpfile
             params="--lax-key-search --pkcs8-pem $privkey_file.p8-pem $key_test_options --output $tmpfile $asym_key_test.tmpl"
-            echo "$extra_vars $VALGRIND $xmlsec_app sign $xmlsec_params $params" >>  $curlogfile
-            $VALGRIND $xmlsec_app  sign $xmlsec_params $params >> $curlogfile 2>> $curlogfile
+            echo "$extra_vars $VALGRIND $xmlsec_app sign $xmlsec_params --crypto-config $crypto_config $params" >>  $curlogfile
+            $VALGRIND $xmlsec_app  sign $xmlsec_params --crypto-config $crypto_config $params >> $curlogfile 2>> $curlogfile
             printRes $expected_res $?
             if [ $? -ne 0 ]; then
                 failures=`expr $failures + 1`
@@ -383,8 +407,8 @@ execKeysTest() {
             printf "    Reading private key from pkcs8 der file               "
             rm -f $tmpfile
             params="--lax-key-search --pkcs8-der $privkey_file.p8-der $key_test_options --output $tmpfile $asym_key_test.tmpl"
-            echo "$extra_vars $VALGRIND $xmlsec_app sign $xmlsec_params $params" >>  $curlogfile
-            $VALGRIND $xmlsec_app  sign $xmlsec_params $params >> $curlogfile 2>> $curlogfile
+            echo "$extra_vars $VALGRIND $xmlsec_app sign $xmlsec_params --crypto-config $crypto_config $params" >>  $curlogfile
+            $VALGRIND $xmlsec_app  sign $xmlsec_params --crypto-config $crypto_config $params >> $curlogfile 2>> $curlogfile
             printRes $expected_res $?
             if [ $? -ne 0 ]; then
                 failures=`expr $failures + 1`
@@ -397,8 +421,8 @@ execKeysTest() {
             printf "    Reading private key from pem file                     "
             rm -f $tmpfile
             params="--lax-key-search --privkey-pem $privkey_file.pem $key_test_options --output $tmpfile $asym_key_test.tmpl"
-            echo "$extra_vars $VALGRIND $xmlsec_app sign $xmlsec_params $params" >>  $curlogfile
-            $VALGRIND $xmlsec_app  sign $xmlsec_params $params >> $curlogfile 2>> $curlogfile
+            echo "$extra_vars $VALGRIND $xmlsec_app sign $xmlsec_params --crypto-config $crypto_config $params" >>  $curlogfile
+            $VALGRIND $xmlsec_app  sign $xmlsec_params --crypto-config $crypto_config $params >> $curlogfile 2>> $curlogfile
             printRes $expected_res $?
             if [ $? -ne 0 ]; then
                 failures=`expr $failures + 1`
@@ -410,8 +434,8 @@ execKeysTest() {
             printf "    Reading private key from der file                     "
             rm -f $tmpfile
             params="--lax-key-search --privkey-der $privkey_file.der $key_test_options --output $tmpfile $asym_key_test.tmpl"
-            echo "$extra_vars $VALGRIND $xmlsec_app sign $xmlsec_params $params" >>  $curlogfile
-            $VALGRIND $xmlsec_app  sign $xmlsec_params $params >> $curlogfile 2>> $curlogfile
+            echo "$extra_vars $VALGRIND $xmlsec_app sign $xmlsec_params --crypto-config $crypto_config $params" >>  $curlogfile
+            $VALGRIND $xmlsec_app  sign $xmlsec_params --crypto-config $crypto_config $params >> $curlogfile 2>> $curlogfile
             printRes $expected_res $?
             if [ $? -ne 0 ]; then
                 failures=`expr $failures + 1`
@@ -426,8 +450,8 @@ execKeysTest() {
             printf "    Reading public key from pem file using ossl-store     "
             rm -f $tmpfile
             params="--lax-key-search --pubkey-openssl-store $pubkey_file.pem $key_test_options $asym_key_test.xml"
-            echo "$extra_vars $VALGRIND $xmlsec_app verify $xmlsec_params $params" >>  $curlogfile
-            $VALGRIND $xmlsec_app verify $xmlsec_params $params >> $curlogfile 2>> $curlogfile
+            echo "$extra_vars $VALGRIND $xmlsec_app verify $xmlsec_params --crypto-config $crypto_config $params" >>  $curlogfile
+            $VALGRIND $xmlsec_app verify $xmlsec_params --crypto-config $crypto_config $params >> $curlogfile 2>> $curlogfile
             printRes $expected_res $?
             if [ $? -ne 0 ]; then
                 failures=`expr $failures + 1`
@@ -441,8 +465,8 @@ execKeysTest() {
             printf "    Reading public key from pem file                      "
             rm -f $tmpfile
             params="--lax-key-search --pubkey-pem $pubkey_file.pem $key_test_options $asym_key_test.xml"
-            echo "$extra_vars $VALGRIND $xmlsec_app verify $xmlsec_params $params" >>  $curlogfile
-            $VALGRIND $xmlsec_app verify $xmlsec_params $params >> $curlogfile 2>> $curlogfile
+            echo "$extra_vars $VALGRIND $xmlsec_app verify $xmlsec_params --crypto-config $crypto_config $params" >>  $curlogfile
+            $VALGRIND $xmlsec_app verify $xmlsec_params --crypto-config $crypto_config $params >> $curlogfile 2>> $curlogfile
             printRes $expected_res $?
             if [ $? -ne 0 ]; then
                 failures=`expr $failures + 1`
@@ -458,8 +482,8 @@ execKeysTest() {
             printf "    Reading public key from der file                      "
             rm -f $tmpfile
             params="--lax-key-search --pubkey-der $pubkey_file.der $key_test_options $asym_key_test.xml"
-            echo "$extra_vars $VALGRIND $xmlsec_app verify $xmlsec_params $params" >>  $curlogfile
-            $VALGRIND $xmlsec_app verify $xmlsec_params $params >> $curlogfile 2>> $curlogfile
+            echo "$extra_vars $VALGRIND $xmlsec_app verify $xmlsec_params --crypto-config $crypto_config $params" >>  $curlogfile
+            $VALGRIND $xmlsec_app verify $xmlsec_params --crypto-config $crypto_config $params >> $curlogfile 2>> $curlogfile
             printRes $expected_res $?
             if [ $? -ne 0 ]; then
                 failures=`expr $failures + 1`
@@ -474,8 +498,8 @@ execKeysTest() {
             printf "    Reading public key from pem cert file                 "
             rm -f $tmpfile
             params="--lax-key-search --pubkey-cert-pem $certkey_file.pem $key_test_options $asym_key_test.xml"
-            echo "$extra_vars $VALGRIND $xmlsec_app verify $xmlsec_params $params" >>  $curlogfile
-            $VALGRIND $xmlsec_app verify $xmlsec_params $params >> $curlogfile 2>> $curlogfile
+            echo "$extra_vars $VALGRIND $xmlsec_app verify $xmlsec_params --crypto-config $crypto_config $params" >>  $curlogfile
+            $VALGRIND $xmlsec_app verify $xmlsec_params --crypto-config $crypto_config $params >> $curlogfile 2>> $curlogfile
             printRes $expected_res $?
             if [ $? -ne 0 ]; then
                 failures=`expr $failures + 1`
@@ -487,8 +511,8 @@ execKeysTest() {
             printf "    Reading public key from der cert file                 "
             rm -f $tmpfile
             params="--lax-key-search --pubkey-cert-der $certkey_file.der $key_test_options $asym_key_test.xml"
-            echo "$extra_vars $VALGRIND $xmlsec_app verify $xmlsec_params $params" >>  $curlogfile
-            $VALGRIND $xmlsec_app verify $xmlsec_params $params >> $curlogfile 2>> $curlogfile
+            echo "$extra_vars $VALGRIND $xmlsec_app verify $xmlsec_params --crypto-config $crypto_config $params" >>  $curlogfile
+            $VALGRIND $xmlsec_app verify $xmlsec_params --crypto-config $crypto_config $params >> $curlogfile 2>> $curlogfile
             printRes $expected_res $?
             if [ $? -ne 0 ]; then
                 failures=`expr $failures + 1`
@@ -503,8 +527,7 @@ execKeysTest() {
     fi
 
     # cleanup
-    cd $old_pwd
-    rm -f $tmpfile
+    tearDownTest
 }
 
 #
@@ -526,17 +549,12 @@ execDSigTest() {
     fi
 
     # prepare
-    rm -f $tmpfile
-    old_pwd=`pwd`
-
-    if [ "z$crypto" = "znss" ] ; then
-        cleanupNssCerts
-    fi
+    setupTest
 
     # check params
     if [ "z$expected_res" != "z$res_success" -a "z$expected_res" != "z$res_fail" ] ; then
         echo " Bad parameter: expected_res=$expected_res"
-        cd $old_pwd
+        tearDownTest
         return
     fi
 
@@ -556,13 +574,13 @@ execDSigTest() {
     # check transforms
     if [ -n "$req_transforms" ] ; then
         printf "    Checking required transforms                         "
-        echo "$extra_vars $xmlsec_app check-transforms $xmlsec_params $req_transforms" >> $curlogfile
-        $xmlsec_app check-transforms $xmlsec_params $req_transforms >> $curlogfile 2>> $curlogfile
+        echo "$extra_vars $xmlsec_app check-transforms  --crypto-config $crypto_config $xmlsec_params $req_transforms" >> $curlogfile
+        $xmlsec_app check-transforms $xmlsec_params  --crypto-config $crypto_config $req_transforms >> $curlogfile 2>> $curlogfile
         printCheckStatus $?
         res=$?
         if [ $res -ne 0 ]; then
             cat $curlogfile >> $logfile
-	    cd $old_pwd
+	        tearDownTest
             return
         fi
     fi
@@ -570,13 +588,13 @@ execDSigTest() {
     # check key data
     if [ -n "$req_key_data" ] ; then
         printf "    Checking required key data                           "
-        echo "$extra_vars $xmlsec_app check-key-data $xmlsec_params $req_key_data" >> $curlogfile
-        $xmlsec_app check-key-data $xmlsec_params $req_key_data >> $curlogfile 2>> $curlogfile
+        echo "$extra_vars $xmlsec_app check-key-data $xmlsec_params --crypto-config $crypto_config $req_key_data" >> $curlogfile
+        $xmlsec_app check-key-data $xmlsec_params --crypto-config $crypto_config $req_key_data >> $curlogfile 2>> $curlogfile
         printCheckStatus $?
         res=$?
         if [ $res -ne 0 ]; then
             cat $curlogfile >> $logfile
-	    cd $old_pwd
+	        tearDownTest
             return
         fi
     fi
@@ -584,8 +602,8 @@ execDSigTest() {
     # run tests
     if [ -n "$params1" ] ; then
         printf "    Verify existing signature                            "
-        echo "$extra_vars $VALGRIND $xmlsec_app verify --X509-skip-strict-checks $xmlsec_params $params1 $full_file.xml" >> $curlogfile
-        $VALGRIND $xmlsec_app verify --X509-skip-strict-checks $xmlsec_params $params1 $full_file.xml >> $curlogfile 2>> $curlogfile
+        echo "$extra_vars $VALGRIND $xmlsec_app verify --X509-skip-strict-checks $xmlsec_params  --crypto-config $crypto_config $params1 $full_file.xml" >> $curlogfile
+        $VALGRIND $xmlsec_app verify --X509-skip-strict-checks $xmlsec_params --crypto-config $crypto_config $params1 $full_file.xml >> $curlogfile 2>> $curlogfile
         printRes $expected_res $?
         if [ $? -ne 0 ]; then
             failures=`expr $failures + 1`
@@ -594,8 +612,8 @@ execDSigTest() {
 
     if [ -n "$params2" -a -z "$PERF_TEST" ] ; then
         printf "    Create new signature                                 "
-        echo "$extra_vars $VALGRIND $xmlsec_app sign $xmlsec_params $params2 --output $tmpfile $full_file.tmpl" >> $curlogfile
-        $VALGRIND $xmlsec_app sign $xmlsec_params $params2 --output $tmpfile $full_file.tmpl >> $curlogfile 2>> $curlogfile
+        echo "$extra_vars $VALGRIND $xmlsec_app sign $xmlsec_params --crypto-config $crypto_config $params2 --output $tmpfile $full_file.tmpl" >> $curlogfile
+        $VALGRIND $xmlsec_app sign $xmlsec_params --crypto-config $crypto_config $params2 --output $tmpfile $full_file.tmpl >> $curlogfile 2>> $curlogfile
         printRes $res_success $?
         if [ $? -ne 0 ]; then
             failures=`expr $failures + 1`
@@ -604,8 +622,8 @@ execDSigTest() {
 
     if [ -n "$params3" -a -z "$PERF_TEST" ] ; then
         printf "    Verify new signature                                 "
-        echo "$extra_vars $VALGRIND $xmlsec_app verify --X509-skip-strict-checks $xmlsec_params $params3 $tmpfile" >> $curlogfile
-        $VALGRIND $xmlsec_app verify --X509-skip-strict-checks $xmlsec_params $params3 $tmpfile >> $curlogfile 2>> $curlogfile
+        echo "$extra_vars $VALGRIND $xmlsec_app verify --X509-skip-strict-checks $xmlsec_params --crypto-config $crypto_config $params3 $tmpfile" >> $curlogfile
+        $VALGRIND $xmlsec_app verify --X509-skip-strict-checks $xmlsec_params --crypto-config $crypto_config $params3 $tmpfile >> $curlogfile 2>> $curlogfile
         printRes $res_success $?
         if [ $? -ne  0 ]; then
             failures=`expr $failures + 1`
@@ -619,8 +637,7 @@ execDSigTest() {
     fi
 
     # cleanup
-    cd $old_pwd
-    rm -f $tmpfile
+    tearDownTest
 }
 
 #
@@ -643,18 +660,12 @@ execEncTest() {
     fi
 
     # prepare
-    rm -f $tmpfile $tmpfile.2
-    old_pwd=`pwd`
-
-
-    if [ "z$crypto" = "znss" ] ; then
-        cleanupNssCerts
-    fi
+    setupTest
 
     # check params
     if [ "z$expected_res" != "z$res_success" -a "z$expected_res" != "z$res_fail" ] ; then
         echo " Bad parameter: expected_res=$expected_res"
-        cd $old_pwd
+        tearDownTest
         return
     fi
 
@@ -674,13 +685,13 @@ execEncTest() {
     # check transforms
     if [ -n "$req_transforms" ] ; then
         printf "    Checking required transforms                         "
-        echo "$extra_vars $xmlsec_app check-transforms $xmlsec_params $req_transforms" >> $curlogfile
-        $xmlsec_app check-transforms $xmlsec_params $req_transforms >> $curlogfile 2>> $curlogfile
+        echo "$extra_vars $xmlsec_app check-transforms $xmlsec_params  --crypto-config $crypto_config $req_transforms" >> $curlogfile
+        $xmlsec_app check-transforms $xmlsec_params  --crypto-config $crypto_config $req_transforms >> $curlogfile 2>> $curlogfile
         printCheckStatus $?
         res=$?
         if [ $res -ne 0 ]; then
-	    cat $curlogfile >> $logfile
-	    cd $old_pwd
+	        cat $curlogfile >> $logfile
+	        tearDownTest
             return
         fi
     fi
@@ -688,13 +699,13 @@ execEncTest() {
     # check key data
     if [ -n "$req_key_data" ] ; then
         printf "    Checking required key data                           "
-        echo "$extra_vars $xmlsec_app check-key-data $xmlsec_params $req_key_data" >> $curlogfile
-        $xmlsec_app check-key-data $xmlsec_params $req_key_data >> $curlogfile 2>> $curlogfile
+        echo "$extra_vars $xmlsec_app check-key-data $xmlsec_params --crypto-config $crypto_config $req_key_data" >> $curlogfile
+        $xmlsec_app check-key-data $xmlsec_params --crypto-config $crypto_config $req_key_data >> $curlogfile 2>> $curlogfile
         printCheckStatus $?
         res=$?
         if [ $res -ne 0 ]; then
             cat $curlogfile >> $logfile
-	    cd $old_pwd
+	        tearDownTest
             return
         fi
     fi
@@ -703,8 +714,8 @@ execEncTest() {
     if [ -n "$params1" ] ; then
         rm -f $tmpfile
         printf "    Decrypt existing document                            "
-        echo "$extra_vars $VALGRIND $xmlsec_app decrypt $xmlsec_params $params1 $full_file.xml" >>  $curlogfile
-        $VALGRIND $xmlsec_app decrypt $xmlsec_params $params1 --output $tmpfile $full_file.xml >> $curlogfile  2>> $curlogfile
+        echo "$extra_vars $VALGRIND $xmlsec_app decrypt $xmlsec_params --crypto-config $crypto_config $params1 $full_file.xml" >>  $curlogfile
+        $VALGRIND $xmlsec_app decrypt $xmlsec_params --crypto-config $crypto_config $params1 --output $tmpfile $full_file.xml >> $curlogfile  2>> $curlogfile
         res=$?
         echo "=== TEST RESULT: $res; expected: $expected_res" >> $curlogfile
         if [ $res -eq 0 -a "$expected_res" = "$res_success" ]; then
@@ -725,8 +736,8 @@ execEncTest() {
     if [ -n "$params2" -a -z "$PERF_TEST" ] ; then
         rm -f $tmpfile
         printf "    Encrypt document                                     "
-        echo "$extra_vars $VALGRIND $xmlsec_app encrypt $xmlsec_params $params2 --output $tmpfile $full_file.tmpl" >>  $curlogfile
-        $VALGRIND $xmlsec_app encrypt $xmlsec_params $params2 --output $tmpfile $full_file.tmpl >> $curlogfile 2>> $curlogfile
+        echo "$extra_vars $VALGRIND $xmlsec_app encrypt $xmlsec_params --crypto-config $crypto_config $params2 --output $tmpfile $full_file.tmpl" >>  $curlogfile
+        $VALGRIND $xmlsec_app encrypt $xmlsec_params --crypto-config $crypto_config $params2 --output $tmpfile $full_file.tmpl >> $curlogfile 2>> $curlogfile
         printRes $res_success $?
         if [ $? -ne 0 ]; then
             failures=`expr $failures + 1`
@@ -736,8 +747,8 @@ execEncTest() {
     if [ -n "$params3" -a -z "$PERF_TEST" ] ; then
         rm -f $tmpfile.2
         printf "    Decrypt new document                                 "
-        echo "$extra_vars $VALGRIND $xmlsec_app decrypt $xmlsec_params $params3 --output $tmpfile.2 $tmpfile" >>  $curlogfile
-        $VALGRIND $xmlsec_app decrypt $xmlsec_params $params3 --output $tmpfile.2 $tmpfile >> $curlogfile 2>> $curlogfile
+        echo "$extra_vars $VALGRIND $xmlsec_app decrypt $xmlsec_params --crypto-config $crypto_config $params3 --output $tmpfile.2 $tmpfile" >>  $curlogfile
+        $VALGRIND $xmlsec_app decrypt $xmlsec_params --crypto-config $crypto_config $params3 --output $tmpfile.2 $tmpfile >> $curlogfile 2>> $curlogfile
         res=$?
         if [ $res -eq 0 ]; then
             if [ "z$outputTransform" != "z" ] ; then
@@ -761,12 +772,11 @@ execEncTest() {
     fi
 
     # cleanup
-    cd $old_pwd
-    rm -f $tmpfile $tmpfile.2
+    tearDownTest
 }
 
 # prepare
-rm -rf $tmpfile $tmpfile.2 tmpfile.3
+rm -rf $tmpfile $tmpfile.2 $tmpfile.3
 
 # run tests
 source "$testfile"

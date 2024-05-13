@@ -1156,6 +1156,9 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, const 
                             goto done;
                         }
                         if(name != NULL) {
+                            xmlSecGnuTLSError2("gnutls_pkcs12_bag_get_friendly_name", GNUTLS_E_SUCCESS, NULL,
+                                "name: %s", name);
+
                             (*keyName) = xmlStrdup(BAD_CAST name);
                             if((*keyName) == NULL) {
                                 xmlSecStrdupError(BAD_CAST name, NULL);

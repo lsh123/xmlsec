@@ -198,6 +198,22 @@
  *
  *****************************************************************************/
 
+ /* Safe cast with limits check: unsigned int -> long (assume uint >= 0) */
+#if (UINT_MAX > LONG_MAX)
+
+#define XMLSEC_SAFE_CAST_UINT_TO_LONG(srcVal, dstVal, errorAction, errorObject) \
+    XMLSEC_SAFE_CAST_MAX_CHECK(unsigned int, (srcVal), "%u",                    \
+        int, (dstVal), "%ld", LONG_MIN, LONG_MAX,                               \
+        errorAction, (errorObject))
+
+#else  /* UINT_MAX > LONG_MAX */
+
+#define XMLSEC_SAFE_CAST_UINT_TO_LONG(srcVal, dstVal, errorAction, errorObject) \
+    (dstVal) = (srcVal);
+
+#endif /* UINT_MAX > LONG_MAX */
+
+
 /* Safe cast with limits check: size_t -> long (assume size_t >= 0) */
 #if (SIZE_MAX > LONG_MAX)
 

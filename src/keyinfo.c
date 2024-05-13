@@ -97,6 +97,8 @@ xmlSecKeyInfoNodeRead(xmlNodePtr keyInfoNode, xmlSecKeyPtr key, xmlSecKeyInfoCtx
     xmlSecAssert2(keyInfoCtx != NULL, -1);
     xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeRead, -1);
 
+    fprintf(stderr, "DEBUG: xmlSecKeyInfoNodeRead: keyInfoCtx->keyReq.keyType: %d\n", (int)(keyInfoCtx->keyReq.keyType));
+
     for(cur = xmlSecGetNextElementNode(keyInfoNode->children);
         (cur != NULL) &&
         (((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_DONT_STOP_ON_KEY_FOUND) != 0) ||
@@ -117,6 +119,8 @@ xmlSecKeyInfoNodeRead(xmlNodePtr keyInfoNode, xmlSecKeyPtr key, xmlSecKeyInfoCtx
                             nodeName, nodeNs, xmlSecKeyDataUsageKeyInfoNodeRead);
         }
         if(dataId != xmlSecKeyDataIdUnknown) {
+            fprintf(stderr, "DEBUG: xmlSecKeyInfoNodeRead: keyInfoCtx->keyReq.keyType: %d, node: %s\n", (int)(keyInfoCtx->keyReq.keyType), (char*)cur->name);
+
             /* read data node */
             ret = xmlSecKeyDataXmlRead(dataId, key, cur, keyInfoCtx);
             if(ret < 0) {

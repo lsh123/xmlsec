@@ -404,11 +404,9 @@ xmlSecKeyReqMatchKey(xmlSecKeyReqPtr keyReq, xmlSecKeyPtr key) {
     xmlSecAssert2(xmlSecKeyIsValid(key), -1);
 
     if((keyReq->keyType != xmlSecKeyDataTypeUnknown) && ((xmlSecKeyGetType(key) & keyReq->keyType) == 0)) {
-        fprintf(stderr, "DEBUG: xmlSecKeyReqMatchKey: keyReq->keyType=%i; xmlSecKeyGetType(key)=%i\n", (int)keyReq->keyType, (int)xmlSecKeyGetType(key));
         return(0);
     }
     if((keyReq->keyUsage != xmlSecKeyDataUsageUnknown) && ((keyReq->keyUsage & key->usage) == 0)) {
-        fprintf(stderr, "DEBUG: xmlSecKeyReqMatchKey: keyReq->keyUsage=%i; key->usage=%i\n", (int)keyReq->keyUsage, (int)key->usage);
         return(0);
     }
 
@@ -432,13 +430,11 @@ xmlSecKeyReqMatchKeyValue(xmlSecKeyReqPtr keyReq, xmlSecKeyDataPtr value) {
 
     if((keyReq->keyId != xmlSecKeyDataIdUnknown) &&
        (!xmlSecKeyDataCheckId(value, keyReq->keyId))) {
-        fprintf(stderr, "DEBUG: xmlSecKeyReqMatchKey: keyReq->keyId=%p; value->id=%p\n", (void*)keyReq->keyId, (void*)value->id);
         return(0);
     }
     if((keyReq->keyBitsSize > 0) &&
        (xmlSecKeyDataGetSize(value) > 0) &&
        (xmlSecKeyDataGetSize(value) < keyReq->keyBitsSize)) {
-        fprintf(stderr, "DEBUG: xmlSecKeyReqMatchKey: keyReq->keyBitsSize=%i; xmlSecKeyDataGetSize(value)=%i\n", (int)keyReq->keyBitsSize, (int)xmlSecKeyDataGetSize(value));
         return(0);
     }
     return(1);
@@ -1306,6 +1302,9 @@ xmlSecKeysMngrGetKey(xmlNodePtr keyInfoNode, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     int ret;
 
     xmlSecAssert2(keyInfoCtx != NULL, NULL);
+
+    fprintf(stderr, "DEBUG: xmlSecKeysMngrGetKey: keyInfoCtx->keyReq.keyType: %d\n", (int)(keyInfoCtx->keyReq.keyType));
+
 
     /* first try to read data from &lt;dsig:KeyInfo/&gt; node */
     key = xmlSecKeyCreate();

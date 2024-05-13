@@ -786,7 +786,7 @@ xmlSecSimpleKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name, xmlSe
 
     size = xmlSecPtrListGetSize(list);
     for(pos = 0; pos < size; ++pos) {
-        fprintf(stderr, "DEBUG: xmlSecSimpleKeysStoreFindKey %i out of %i, name: %s\n", (int)pos, (int)size, name != NULL ? name : BAD_CAST "NULL");
+        fprintf(stderr, "DEBUG: xmlSecSimpleKeysStoreFindKey %i out of %i, keyInfoCtx->keyReq.keyType: %d, name: %s\n", (int)pos, (int)size, (int)(keyInfoCtx->keyReq.keyType), name != NULL ? name : BAD_CAST "NULL");
         key = (xmlSecKeyPtr)xmlSecPtrListGetItem(list, pos);
         if((key != NULL) && (xmlSecKeyMatch(key, name, &(keyInfoCtx->keyReq)) == 1)) {
             fprintf(stderr, "DEBUG: xmlSecSimpleKeysStoreFindKey: found %i out of %i\n", (int)pos, (int)size);

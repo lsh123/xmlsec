@@ -786,6 +786,7 @@ xmlSecSimpleKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name, xmlSe
 
     size = xmlSecPtrListGetSize(list);
     for(pos = 0; pos < size; ++pos) {
+        fprintf(stderr, "DEBUG: xmlSecSimpleKeysStoreFindKey %i out of %i\n", (int)pos, (int)size);
         key = (xmlSecKeyPtr)xmlSecPtrListGetItem(list, pos);
         if((key != NULL) && (xmlSecKeyMatch(key, name, &(keyInfoCtx->keyReq)) == 1)) {
             return(xmlSecKeyDuplicate(key));

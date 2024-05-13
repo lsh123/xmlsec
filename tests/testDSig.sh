@@ -4,7 +4,7 @@
 #
 
 # ensure this script is called from testrun.sh
-if [ -z "$xmlsec_app" -o -z "$crypto_config_folder" ]; then
+if [ -z "$xmlsec_app" -o -z "$xmlsec_params" ]; then
     echo "This script needs to be called from testrun.sh script"
     exit 1
 fi
@@ -1785,12 +1785,12 @@ execDSigTest $res_fail \
 if [ -n "$XMLSEC_TEST_NAME" -a "$XMLSEC_TEST_NAME" = "dsig-dynamic" ]; then
 echo "Dynamic signature template"
 printf "    Create new signature                                 "
-echo "$VALGRIND $xmlsec_app sign-tmpl $xmlsec_params --keys-file $keysfile --output $tmpfile" >> $logfile
-$VALGRIND $xmlsec_app sign-tmpl $xmlsec_params --keys-file $keysfile --output $tmpfile >> $logfile 2>> $logfile
+echo "$VALGRIND $xmlsec_app sign-tmpl $xmlsec_params --crypto-config $crypto_config --keys-file $topfolder/keys/keys.xml --output $tmpfile" >> $logfile
+$VALGRIND $xmlsec_app sign-tmpl $xmlsec_params --crypto-config $crypto_config --keys-file $topfolder/keys/keys.xml --output $tmpfile >> $logfile 2>> $logfile
 printRes $res_success $?
 printf "    Verify new signature                                 "
-echo "$VALGRIND $xmlsec_app verify --keys-file $keysfile $tmpfile" >> $logfile
-$VALGRIND $xmlsec_app verify $xmlsec_params --keys-file $keysfile $tmpfile >> $logfile 2>> $logfile
+echo "$VALGRIND $xmlsec_app verify --keys-file $topfolder/keys/keys.xml $tmpfile" >> $logfile
+$VALGRIND $xmlsec_app verify $xmlsec_params --crypto-config $crypto_config --keys-file $topfolder/keys/keys.xml $tmpfile >> $logfile 2>> $logfile
 printRes $res_success $?
 fi
 

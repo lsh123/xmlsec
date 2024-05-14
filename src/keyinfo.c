@@ -123,6 +123,7 @@ xmlSecKeyInfoNodeRead(xmlNodePtr keyInfoNode, xmlSecKeyPtr key, xmlSecKeyInfoCtx
 
             /* read data node */
             ret = xmlSecKeyDataXmlRead(dataId, key, cur, keyInfoCtx);
+            fprintf(stderr, "DEBUG: xmlSecKeyInfoNodeRead: keyInfoCtx->keyReq.keyType: %d, node: %s, ret: %d, kv: %p\n", (int)(keyInfoCtx->keyReq.keyType), (char*)cur->name, ret, (void*)xmlSecKeyGetValue(key));
             if(ret < 0) {
                 xmlSecInternalError2("xmlSecKeyDataXmlRead",
                                      xmlSecKeyDataKlassGetName(dataId),

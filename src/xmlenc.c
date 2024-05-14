@@ -608,6 +608,8 @@ xmlSecEncCtxDecryptToBuffer(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
     encCtx->operation = xmlSecTransformOperationDecrypt;
     xmlSecAddIDs(node->doc, node, xmlSecEncIds);
 
+    fprintf(stderr, "DEBUG: xmlSecEncCtxDecryptToBuffer: start: node: %s\n", (char*)node->name);
+
     ret = xmlSecEncCtxEncDataNodeRead(encCtx, node);
     if(ret < 0) {
         xmlSecInternalError("xmlSecEncCtxEncDataNodeRead", NULL);
@@ -638,6 +640,7 @@ xmlSecEncCtxDecryptToBuffer(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
     /* success  */
     res = encCtx->result = encCtx->transformCtx.result;
     xmlSecAssert2(encCtx->result != NULL, NULL);
+    fprintf(stderr, "DEBUG: xmlSecEncCtxDecryptToBuffer: success: node: %s, res: %p\n", (char*)node->name, (void*)res);
 
 done:
     if(data != NULL) {

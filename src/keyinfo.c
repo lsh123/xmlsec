@@ -1582,6 +1582,9 @@ xmlSecKeyDataEncryptedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePt
     xmlSecAssert2(keyInfoCtx != NULL, -1);
     xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeRead, -1);
 
+    fprintf(stderr, "DEBUG: xmlSecKeyDataEncryptedKeyXmlRead: start: node: %s\n", (char*)node->name);
+
+
     /* check the enc level */
     if(keyInfoCtx->curEncryptedKeyLevel >= keyInfoCtx->maxEncryptedKeyLevel) {
         xmlSecOtherError3(XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL, xmlSecKeyDataKlassGetName(id),
@@ -1626,6 +1629,8 @@ xmlSecKeyDataEncryptedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePt
             xmlSecInternalError("xmlSecEncCtxDecryptToBuffer", xmlSecKeyDataKlassGetName(id));
             return(-1);
         }
+        fprintf(stderr, "DEBUG: xmlSecKeyDataEncryptedKeyXmlRead: no key: node: %s\n", (char*)node->name);
+
         return(0);
     }
 
@@ -1638,6 +1643,8 @@ xmlSecKeyDataEncryptedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePt
                             xmlSecKeyDataKlassGetName(id));
         return(-1);
     }
+
+    fprintf(stderr, "DEBUG: xmlSecKeyDataEncryptedKeyXmlRead: done: node: %s\n", (char*)node->name);
 
     return(0);
 }

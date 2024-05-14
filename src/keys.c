@@ -1303,9 +1303,6 @@ xmlSecKeysMngrGetKey(xmlNodePtr keyInfoNode, xmlSecKeyInfoCtxPtr keyInfoCtx) {
 
     xmlSecAssert2(keyInfoCtx != NULL, NULL);
 
-    fprintf(stderr, "DEBUG: xmlSecKeysMngrGetKey: keyInfoCtx->keyReq.keyType: %d\n", (int)(keyInfoCtx->keyReq.keyType));
-
-
     /* first try to read data from &lt;dsig:KeyInfo/&gt; node */
     key = xmlSecKeyCreate();
     if(key == NULL) {
@@ -1324,15 +1321,10 @@ xmlSecKeysMngrGetKey(xmlNodePtr keyInfoNode, xmlSecKeyInfoCtxPtr keyInfoCtx) {
             return(NULL);
         }
 
-        fprintf(stderr, "DEBUG: xmlSecKeysMngrGetKey: keyInfoCtx->keyReq.keyType: %d, kv: %p\n", (int)(keyInfoCtx->keyReq.keyType), (void*)xmlSecKeyGetValue(key));
         if((xmlSecKeyGetValue(key) != NULL) &&
            (xmlSecKeyMatch(key, NULL, &(keyInfoCtx->keyReq)) != 0)) {
-
-            fprintf(stderr, "DEBUG: xmlSecKeysMngrGetKey: keyInfoCtx->keyReq.keyType: %d, good key\n", (int)(keyInfoCtx->keyReq.keyType));
             return(key);
         }
-
-        fprintf(stderr, "DEBUG: xmlSecKeysMngrGetKey: keyInfoCtx->keyReq.keyType: %d, bad key\n", (int)(keyInfoCtx->keyReq.keyType));
     }
     xmlSecKeyDestroy(key);
 

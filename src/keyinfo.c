@@ -97,8 +97,6 @@ xmlSecKeyInfoNodeRead(xmlNodePtr keyInfoNode, xmlSecKeyPtr key, xmlSecKeyInfoCtx
     xmlSecAssert2(keyInfoCtx != NULL, -1);
     xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeRead, -1);
 
-    fprintf(stderr, "DEBUG: xmlSecKeyInfoNodeRead: keyInfoCtx->keyReq.keyType: %d\n", (int)(keyInfoCtx->keyReq.keyType));
-
     for(cur = xmlSecGetNextElementNode(keyInfoNode->children);
         (cur != NULL) &&
         (((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_DONT_STOP_ON_KEY_FOUND) != 0) ||
@@ -119,11 +117,8 @@ xmlSecKeyInfoNodeRead(xmlNodePtr keyInfoNode, xmlSecKeyPtr key, xmlSecKeyInfoCtx
                             nodeName, nodeNs, xmlSecKeyDataUsageKeyInfoNodeRead);
         }
         if(dataId != xmlSecKeyDataIdUnknown) {
-            fprintf(stderr, "DEBUG: xmlSecKeyInfoNodeRead: keyInfoCtx->keyReq.keyType: %d, node: %s\n", (int)(keyInfoCtx->keyReq.keyType), (char*)cur->name);
-
             /* read data node */
             ret = xmlSecKeyDataXmlRead(dataId, key, cur, keyInfoCtx);
-            fprintf(stderr, "DEBUG: xmlSecKeyInfoNodeRead: keyInfoCtx->keyReq.keyType: %d, node: %s, ret: %d, kv: %p\n", (int)(keyInfoCtx->keyReq.keyType), (char*)cur->name, ret, (void*)xmlSecKeyGetValue(key));
             if(ret < 0) {
                 xmlSecInternalError2("xmlSecKeyDataXmlRead",
                                      xmlSecKeyDataKlassGetName(dataId),
@@ -1582,9 +1577,6 @@ xmlSecKeyDataEncryptedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePt
     xmlSecAssert2(keyInfoCtx != NULL, -1);
     xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeRead, -1);
 
-    fprintf(stderr, "DEBUG: xmlSecKeyDataEncryptedKeyXmlRead: start: node: %s\n", (char*)node->name);
-
-
     /* check the enc level */
     if(keyInfoCtx->curEncryptedKeyLevel >= keyInfoCtx->maxEncryptedKeyLevel) {
         xmlSecOtherError3(XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL, xmlSecKeyDataKlassGetName(id),
@@ -1629,8 +1621,6 @@ xmlSecKeyDataEncryptedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePt
             xmlSecInternalError("xmlSecEncCtxDecryptToBuffer", xmlSecKeyDataKlassGetName(id));
             return(-1);
         }
-        fprintf(stderr, "DEBUG: xmlSecKeyDataEncryptedKeyXmlRead: no key: node: %s\n", (char*)node->name);
-
         return(0);
     }
 
@@ -1643,9 +1633,6 @@ xmlSecKeyDataEncryptedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePt
                             xmlSecKeyDataKlassGetName(id));
         return(-1);
     }
-
-    fprintf(stderr, "DEBUG: xmlSecKeyDataEncryptedKeyXmlRead: done: node: %s\n", (char*)node->name);
-
     return(0);
 }
 

@@ -640,7 +640,7 @@ xmlSecEncCtxDecryptToBuffer(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
     /* success  */
     res = encCtx->result = encCtx->transformCtx.result;
     xmlSecAssert2(encCtx->result != NULL, NULL);
-    fprintf(stderr, "DEBUG: xmlSecEncCtxDecryptToBuffer: success: node: %s, res: %p\n", (char*)node->name, (void*)res);
+    fprintf(stderr, "DEBUG: xmlSecEncCtxDecryptToBuffer: success: node: %s, res: %p, value: %p, size: %i\n", (char*)node->name, (void*)res, (void*)(res != NULL ? xmlSecBufferGetData(res) : NULL), (int)(res != NULL ? xmlSecBufferGetSize(res) : 0));
 
 done:
     if(data != NULL) {

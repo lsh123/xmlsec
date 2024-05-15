@@ -618,6 +618,8 @@ xmlSecEncCtxDecryptToBuffer(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
 
     /* decrypt the data */
     if(encCtx->cipherValueNode != NULL) {
+        fprintf(stderr, "DEBUG: xmlSecEncCtxDecryptToBuffer: cipher value: node: %s\n", (char*)node->name);
+
         data = xmlNodeGetContent(encCtx->cipherValueNode);
         if(data == NULL) {
             xmlSecInvalidNodeContentError(encCtx->cipherValueNode, NULL, "empty");

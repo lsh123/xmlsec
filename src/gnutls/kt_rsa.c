@@ -248,6 +248,8 @@ xmlSecGnuTLSKeyTransportDecrypt(xmlSecGnuTLSKeyTransportCtxPtr ctx, xmlSecBuffer
     inSize = xmlSecBufferGetSize(inBuf);
     xmlSecAssert2(inSize > 0, -1);
 
+    fprintf(stderr, "DEBUG: xmlSecGnuTLSKeyTransportDecrypt: start: size=%d\n", (int)xmlSecBufferGetSize(inBuf));
+
     /* get key */
     privkey = ctx->getPrivKey(ctx->keyData);
     if(privkey == NULL) {
@@ -276,6 +278,8 @@ xmlSecGnuTLSKeyTransportDecrypt(xmlSecGnuTLSKeyTransportCtxPtr ctx, xmlSecBuffer
     }
     gnutls_free(plaintext.data);
 
+    fprintf(stderr, "DEBUG: xmlSecGnuTLSKeyTransportDecrypt: end: size=%d\n", (int)xmlSecBufferGetSize(outBuf));
+
     /* success */
     return(0);
 }
@@ -291,6 +295,8 @@ xmlSecGnuTLSKeyTransportExecute(xmlSecTransformPtr transform, int last, xmlSecTr
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGnuTLSKeyTransportSize), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(transformCtx != NULL, -1);
+
+    fprintf(stderr, "DEBUG: xmlSecGnuTLSKeyTransportExecute: start: last=%d, status=%d\n", last, (int)transform->status);
 
     ctx = xmlSecGnuTLSKeyTransportGetCtx(transform);
     if(ctx == NULL) {
@@ -348,6 +354,8 @@ xmlSecGnuTLSKeyTransportExecute(xmlSecTransformPtr transform, int last, xmlSecTr
             return(-1);
         }
     }
+
+    fprintf(stderr, "DEBUG: xmlSecGnuTLSKeyTransportExecute: end\n");
 
     return(0);
 }

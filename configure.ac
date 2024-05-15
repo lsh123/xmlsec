@@ -1224,6 +1224,313 @@ AC_SUBST(NSPR_MIN_VERSION)
 AC_SUBST(MOZILLA_MIN_VERSION)
 
 dnl ==========================================================================
+dnl See if we can find GnuTLS
+dnl ==========================================================================
+GNUTLS_MIN_VERSION="3.6.13"
+GNUTLS_INCLUDE_DIR="$COMMON_INCLUDE_DIR /usr/local/gnutls/include"
+GNUTLS_LIB_DIR="$COMMON_LIB_DIR /usr/local/gnutls/lib"
+GNUTLS_INCLUDE_MARKER="gnutls/gnutls.h"
+GNUTLS_LIB_MARKER="libgnutls$shrext"
+GNUTLS_CRYPTO_LIB="$XMLSEC_PACKAGE-gnutls"
+GNUTLS_LIBS_LIST="-lgnutls"
+
+XMLSEC_NO_GNUTLS="1"
+GNUTLS_INCLUDE_PATH=
+GNUTLS_LIB_PATH=
+GNUTLS_FOUND="no"
+AC_ARG_WITH([gnutls], [AS_HELP_STRING([--with-gnutls@<:@=PFX@:>@],[gnutls location])])
+
+dnl Priority 0: Check if library is not needed
+if test "z$with_gnutls" = "zno" ; then
+    GNUTLS_FOUND="disabled"
+fi
+
+dnl Priority 1: User specifies the path to installation
+if test "z$GNUTLS_FOUND" = "zno" -a "z$with_gnutls" != "z" -a "z$with_gnutls" != "zyes" ; then
+    AC_MSG_CHECKING(for libgnutls library installation in "$with_gnutls" folder)
+    if test -f "$with_gnutls/include/$GNUTLS_INCLUDE_MARKER" -a -f "$with_gnutls/lib/$GNUTLS_LIB_MARKER" ; then
+        GNUTLS_INCLUDE_PATH="$with_gnutls/include"
+        GNUTLS_LIB_PATH="$with_gnutls/lib"
+        GNUTLS_FOUND="yes"
+        AC_MSG_RESULT([yes])
+    else
+        AC_MSG_ERROR([not found: "$with_gnutls/bin/$GNUTLS_CONFIG" tool, or "$with_gnutls/include/$GNUTLS_INCLUDE_MARKER" and/or "$with_gnutls/lib/$GNUTLS_LIB_MARKER" files don't exist), typo?])
+    fi
+fi
+
+dnl Priority 2: User sets both CFLAGS and LIBS flags
+if test "z$GNUTLS_FOUND" = "zno" -a  "z$GNUTLS_CFLAGS" != "z" -a "z$GNUTLS_LIBS" != "z" ; then
+    GNUTLS_FOUND="yes"
+fi
+
+dnl Priority 3: Guess with pkg_config
+if test "z$GNUTLS_FOUND" = "zno" -a "z$PKGCONFIG_FOUND" = "zyes" ; then
+    if test "z$GNUTLS_FOUND" = "zno" ; then
+        PKG_CHECK_MODULES(GNUTLS, gnutls >= $GNUTLS_MIN_VERSION,
+            [GNUTLS_FOUND=yes],
+            [GNUTLS_FOUND=no])
+    fi
+    if test "z$GNUTLS_FOUND" = "zno" ; then
+        PKG_CHECK_MODULES(GNUTLS, libgnutls >= $GNUTLS_MIN_VERSION,
+            [GNUTLS_FOUND=yes],
+            [GNUTLS_FOUND=no])
+    fi
+fi
+
+dnl Priority 4: Guess using a list of folders.
+if test "z$GNUTLS_FOUND" = "zno" -a "z$ENABLE_FOLDERS_SEARCH" = "zyes" ; then
+    AC_MSG_CHECKING(for libgnutls library installation in the typical folders)
+    if test "z$GNUTLS_INCLUDE_PATH" = "z" ; then
+        AX_FIND_FOLDER(GNUTLS_INCLUDE_PATH, $GNUTLS_INCLUDE_MARKER, $GNUTLS_INCLUDE_DIR)
+    fi
+    if test "z$GNUTLS_LIB_PATH" = "z" ; then
+        AX_FIND_FOLDER(GNUTLS_LIB_PATH, $GNUTLS_LIB_MARKER, $GNUTLS_LIB_DIR)
+    fi
+    if test "z$GNUTLS_INCLUDE_PATH" != "z" -a "z$GNUTLS_LIB_PATH" != "z" ; then
+        GNUTLS_FOUND="yes"
+        AC_MSG_RESULT([yes ("-I$GNUTLS_INCLUDE_PATH -L$GNUTLS_LIB_PATH")])
+    else
+        AC_MSG_RESULT([not found])
+    fi
+fi
+
+dnl Priority 5: Just try to compile/link and hope for the best
+if test "z$GNUTLS_FOUND" = "zno" ; then
+    AC_MSG_CHECKING(for gnutls library installation)
+    OLD_CPPFLAGS=$CPPFLAGS
+    CPPFLAGS="$CPPFLAGS $GNUTLS_CFLAGS"
+    OLD_LIBS=$LIBS
+    LIBS="$LIBS $GNUTLS_LIBS $GNUTLS_LIBS_LIST"
+    AC_LINK_IFELSE([
+        AC_LANG_PROGRAM([[
+            #include <gnutls/gnutls.h>
+        ]],[[
+            gnutls_global_init();
+        ]])
+    ],[
+        GNUTLS_FOUND=yes
+        GNUTLS_LIBS="$GNUTLS_LIBS $GNUTLS_LIBS_LIST"
+        AC_MSG_RESULT([yes])
+    ],[
+        GNUTLS_FOUND=no
+        AC_MSG_RESULT([not found])
+    ])
+    CPPFLAGS=$OLD_CPPFLAGS
+    LIBS=$OLD_LIBS
+fi
+
+dnl Set CFLAGS/LIBS flags
+if test "z$GNUTLS_FOUND" = "zyes" ; then
+    dnl Set flags if INCLUDE_PATH or LIB_PATH are set (do NOT overwrite CFLAGS/LIBS!)
+    if test "z$GNUTLS_INCLUDE_PATH" != "z" ; then
+        GNUTLS_CFLAGS="$GNUTLS_CFLAGS -I$GNUTLS_INCLUDE_PATH"
+    fi
+    if test "z$GNUTLS_LIB_PATH" != "z" ; then
+        if test "z$with_gnu_ld" = "zyes" ; then
+            GNUTLS_LIBS="$GNUTLS_LIBS -Wl,-rpath-link -Wl,$GNUTLS_LIB_PATH"
+        fi
+        GNUTLS_LIBS="$GNUTLS_LIBS -L$GNUTLS_LIB_PATH $GNUTLS_LIBS_LIST"
+    fi
+fi
+
+dnl Verify the version
+AC_MSG_CHECKING(for libgnutls library >= $GNUTLS_MIN_VERSION)
+if test "z$GNUTLS_FOUND" = "zyes" ; then
+    OLD_CPPFLAGS=$CPPFLAGS
+    CPPFLAGS="$CPPFLAGS $GNUTLS_CFLAGS"
+    dnl gnutls uses hex digits for version number
+    minvers=`echo $GNUTLS_MIN_VERSION | awk -F. '{ printf "%d", ($1 * 256 + $2) * 256 + $3;}'`
+    AC_EGREP_CPP(greater-than-minvers, [
+        #include <gnutls/gnutls.h>
+        #if GNUTLS_VERSION_NUMBER >= $minvers
+        greater-than-minvers
+        #endif
+    ],[
+        GNUTLS_FOUND=yes
+    ],[
+        GNUTLS_FOUND=no
+    ])
+    CPPFLAGS=$OLD_CPPFLAGS
+fi
+AC_MSG_RESULT([$GNUTLS_FOUND])
+
+dnl Finally set all the flags
+if test "z$GNUTLS_FOUND" = "zyes" ; then
+    XMLSEC_NO_GNUTLS="0"
+    GNUTLS_CFLAGS="$GNUTLS_CFLAGS -DXMLSEC_CRYPTO_GNUTLS=1"
+    XMLSEC_CRYPTO_LIST="$XMLSEC_CRYPTO_LIST gnutls"
+else
+    XMLSEC_CRYPTO_DISABLED_LIST="$XMLSEC_CRYPTO_DISABLED_LIST gnutls"
+fi
+
+AM_CONDITIONAL(XMLSEC_NO_GNUTLS, test "z$XMLSEC_NO_GNUTLS" = "z1")
+AC_SUBST(XMLSEC_NO_GNUTLS)
+AC_SUBST(GNUTLS_CFLAGS)
+AC_SUBST(GNUTLS_LIBS)
+AC_SUBST(GNUTLS_CRYPTO_LIB)
+AC_SUBST(GNUTLS_MIN_VERSION)
+
+
+
+dnl ==========================================================================
+dnl See if we can find MSCng
+dnl ==========================================================================
+MSCNG_CRYPTO_LIB="$XMLSEC_PACKAGE-mscng"
+dnl This is tested on w64-mingw only so far.
+MSCNG_XMLSEC_DEFINES=
+MSCNG_LIBS_LIST="-lcrypt32 -lbcrypt -lncrypt"
+
+XMLSEC_NO_MSCNG="1"
+MSCNG_FOUND="no"
+AC_ARG_ENABLE([mscng], [AS_HELP_STRING([--enable-mscng],[enable mscng (no)])])
+AC_MSG_CHECKING(for mscng)
+
+dnl Priority 0: Check if library is not needed
+if test "z$enable_mscng" != "zyes" ; then
+    MSCNG_FOUND="disabled"
+    AC_MSG_RESULT([disabled])
+fi
+
+dnl Priority 1: User sets both CFLAGS and LIBS flags
+if test "z$MSCNG_FOUND" = "zno" -a "z$MSCNG_CFLAGS" != "z" -a "z$MSCNG_LIBS" != "z" ; then
+    MSCNG_FOUND=yes
+    AC_MSG_RESULT([yes])
+fi
+
+dnl Priority 2: Just try to compile/link and hope for the best
+if test "z$MSCNG_FOUND" = "zno" ; then
+    OLD_CPPFLAGS=$CPPFLAGS
+    CPPFLAGS="$CPPFLAGS $MSCNG_CFLAGS"
+    OLD_LIBS=$LIBS
+    LIBS="$LIBS $MSCNG_LIBS $MSCNG_LIBS_LIST"
+    AC_LINK_IFELSE([
+        AC_LANG_PROGRAM([[
+            #include <windows.h>
+            #include <wincrypt.h>
+        ]],[[
+            BCRYPT_ALG_HANDLE hAlg;
+            BCryptOpenAlgorithmProvider(&hAlg, BCRYPT_SHA256_ALGORITHM, NULL, 0);
+        ]])
+    ],[
+        MSCNG_FOUND=yes
+        AC_MSG_RESULT([yes])
+    ],[
+        MSCNG_FOUND=no
+        AC_MSG_RESULT([not found])
+    ])
+    CPPFLAGS=$OLD_CPPFLAGS
+    LIBS=$OLD_LIBS
+fi
+
+dnl Set CFLAGS/LIBS flags, do not change CFLAGS/LIBS if both are set
+if test "z$MSCNG_FOUND" = "zyes" ; then
+    if test "z$MSCNG_CFLAGS" = "z" -o "z$MSCNG_LIBS" = "z" ; then
+        XMLSEC_DEFINES="$XMLSEC_DEFINES $MSCNG_XMLSEC_DEFINES"
+        MSCNG_LIBS="$MSCNG_LIBS $MSCNG_LIBS_LIST"
+    fi
+fi
+
+dnl Finally set all the flags
+if test "z$MSCNG_FOUND" = "zyes" ; then
+    XMLSEC_NO_MSCNG="0"
+    MSCNG_CFLAGS="$MSCNG_CFLAGS -DXMLSEC_CRYPTO_MSCNG=1"
+    XMLSEC_CRYPTO_LIST="$XMLSEC_CRYPTO_LIST mscng"
+else
+    XMLSEC_CRYPTO_DISABLED_LIST="$XMLSEC_CRYPTO_DISABLED_LIST mscng"
+fi
+
+AM_CONDITIONAL(XMLSEC_NO_MSCNG, [test "z$XMLSEC_NO_MSCNG" = "z1"])
+AC_SUBST(XMLSEC_NO_MSCNG)
+AC_SUBST(MSCNG_CFLAGS)
+AC_SUBST(MSCNG_LIBS)
+AC_SUBST(MSCNG_CRYPTO_LIB)
+
+dnl ==========================================================================
+dnl See if we can find MSCrypto
+dnl ==========================================================================
+MSCRYPTO_CRYPTO_LIB="$XMLSEC_PACKAGE-mscrypto"
+case $host in
+*-w64-mingw*)
+    MSCRYPTO_XMLSEC_DEFINES=
+    MSCRYPTO_LIBS_LIST="-lcrypt32"
+    ;;
+*-*-mingw*)
+    dnl use own def-file and header as mingw.org crypt32
+    dnl is limited (library and header)
+    MSCRYPTO_XMLSEC_DEFINES="-DXMLSEC_CUSTOM_CRYPT32=1"
+    MSCRYPTO_LIBS_LIST="-Wl,$(srcdir)/mingw-crypt32.def"
+    ;;
+*)
+    MSCRYPTO_XMLSEC_DEFINES=
+    MSCRYPTO_LIBS_LIST="-lcrypt32"
+    ;;
+esac
+
+XMLSEC_NO_MSCRYPTO="1"
+MSCRYPTO_FOUND="no"
+AC_ARG_ENABLE([mscrypto], [AS_HELP_STRING([--enable-mscrypto],[enable mscrypto (no)])])
+AC_MSG_CHECKING(for mscrypto)
+
+dnl Priority 0: Check if library is not needed
+if test "z$enable_mscrypto" != "zyes" ; then
+    MSCRYPTO_FOUND="disabled"
+    AC_MSG_RESULT([disabled])
+fi
+
+dnl Priority 1: User sets both CFLAGS and LIBS flags
+if test "z$MSCRYPTO_FOUND" = "zno" -a "z$MSCRYPTO_CFLAGS" != "z" -a "z$MSCRYPTO_LIBS" != "z" ; then
+    MSCRYPTO_FOUND=yes
+    AC_MSG_RESULT([yes])
+fi
+
+dnl Priority 2: Just try to compile/link and hope for the best
+if test "z$MSCRYPTO_FOUND" = "zno" ; then
+    OLD_CPPFLAGS=$CPPFLAGS
+    CPPFLAGS="$CPPFLAGS $MSCRYPTO_CFLAGS"
+    OLD_LIBS=$LIBS
+    LIBS="$LIBS $MSCRYPTO_LIBS $MSCRYPTO_LIBS_LIST"
+    AC_LINK_IFELSE([
+        AC_LANG_PROGRAM([[
+            #include <windows.h>
+            #include <wincrypt.h>
+        ]],[[
+            CertOpenStore(0,0,0,0,0);
+        ]])
+    ],[
+        MSCRYPTO_FOUND=yes
+        AC_MSG_RESULT([yes])
+    ],[
+        MSCRYPTO_FOUND=no
+        AC_MSG_RESULT([not found])
+    ])
+    CPPFLAGS=$OLD_CPPFLAGS
+    LIBS=$OLD_LIBS
+fi
+
+dnl Set CFLAGS/LIBS flags, do not change CFLAGS/LIBS if both are set
+if test "z$MSCRYPTO_FOUND" = "zyes" ; then
+    if test "z$MSCRYPTO_CFLAGS" = "z" -o "z$MSCRYPTO_LIBS" = "z" ; then
+        XMLSEC_DEFINES="$XMLSEC_DEFINES $MSCRYPTO_XMLSEC_DEFINES"
+        MSCRYPTO_LIBS="$MSCRYPTO_LIBS $MSCRYPTO_LIBS_LIST"
+    fi
+fi
+
+dnl Finally set all the flags
+if test "z$MSCRYPTO_FOUND" = "zyes" ; then
+    XMLSEC_NO_MSCRYPTO="0"
+    MSCRYPTO_CFLAGS="$MSCRYPTO_CFLAGS -DXMLSEC_CRYPTO_MSCRYPTO=1"
+    XMLSEC_CRYPTO_LIST="$XMLSEC_CRYPTO_LIST mscrypto"
+else
+    XMLSEC_CRYPTO_DISABLED_LIST="$XMLSEC_CRYPTO_DISABLED_LIST mscrypto"
+fi
+
+AM_CONDITIONAL(XMLSEC_NO_MSCRYPTO, [test "z$XMLSEC_NO_MSCRYPTO" = "z1"])
+AC_SUBST(XMLSEC_NO_MSCRYPTO)
+AC_SUBST(MSCRYPTO_CFLAGS)
+AC_SUBST(MSCRYPTO_LIBS)
+AC_SUBST(MSCRYPTO_CRYPTO_LIB)
+
+dnl ==========================================================================
 dnl See if we can find GCrypt
 dnl ==========================================================================
 GCRYPT_MIN_VERSION="1.4.0"
@@ -1405,313 +1712,6 @@ AC_SUBST(GCRYPT_CFLAGS)
 AC_SUBST(GCRYPT_LIBS)
 AC_SUBST(GCRYPT_CRYPTO_LIB)
 AC_SUBST(GCRYPT_MIN_VERSION)
-
-dnl ==========================================================================
-dnl See if we can find GnuTLS
-dnl ==========================================================================
-GNUTLS_MIN_VERSION="3.6.13"
-GNUTLS_INCLUDE_DIR="$COMMON_INCLUDE_DIR /usr/local/gnutls/include"
-GNUTLS_LIB_DIR="$COMMON_LIB_DIR /usr/local/gnutls/lib"
-GNUTLS_INCLUDE_MARKER="gnutls/gnutls.h"
-GNUTLS_LIB_MARKER="libgnutls$shrext"
-GNUTLS_CRYPTO_LIB="$XMLSEC_PACKAGE-gnutls"
-GNUTLS_LIBS_LIST="-lgnutls"
-
-XMLSEC_NO_GNUTLS="1"
-GNUTLS_INCLUDE_PATH=
-GNUTLS_LIB_PATH=
-GNUTLS_FOUND="no"
-AC_ARG_WITH([gnutls], [AS_HELP_STRING([--with-gnutls@<:@=PFX@:>@],[gnutls location])])
-
-dnl Priority 0: Check if library is not needed
-if test "z$with_gnutls" = "zno" ; then
-    GNUTLS_FOUND="disabled"
-fi
-
-dnl Priority 1: User specifies the path to installation
-if test "z$GNUTLS_FOUND" = "zno" -a "z$with_gnutls" != "z" -a "z$with_gnutls" != "zyes" ; then
-    AC_MSG_CHECKING(for libgnutls library installation in "$with_gnutls" folder)
-    if test -f "$with_gnutls/include/$GNUTLS_INCLUDE_MARKER" -a -f "$with_gnutls/lib/$GNUTLS_LIB_MARKER" ; then
-        GNUTLS_INCLUDE_PATH="$with_gnutls/include"
-        GNUTLS_LIB_PATH="$with_gnutls/lib"
-        GNUTLS_FOUND="yes"
-        AC_MSG_RESULT([yes])
-    else
-        AC_MSG_ERROR([not found: "$with_gnutls/bin/$GNUTLS_CONFIG" tool, or "$with_gnutls/include/$GNUTLS_INCLUDE_MARKER" and/or "$with_gnutls/lib/$GNUTLS_LIB_MARKER" files don't exist), typo?])
-    fi
-fi
-
-dnl Priority 2: User sets both CFLAGS and LIBS flags
-if test "z$GNUTLS_FOUND" = "zno" -a  "z$GNUTLS_CFLAGS" != "z" -a "z$GNUTLS_LIBS" != "z" ; then
-    GNUTLS_FOUND="yes"
-fi
-
-dnl Priority 3: Guess with pkg_config
-if test "z$GNUTLS_FOUND" = "zno" -a "z$PKGCONFIG_FOUND" = "zyes" ; then
-    if test "z$GNUTLS_FOUND" = "zno" ; then
-        PKG_CHECK_MODULES(GNUTLS, gnutls >= $GNUTLS_MIN_VERSION,
-            [GNUTLS_FOUND=yes],
-            [GNUTLS_FOUND=no])
-    fi
-    if test "z$GNUTLS_FOUND" = "zno" ; then
-        PKG_CHECK_MODULES(GNUTLS, libgnutls >= $GNUTLS_MIN_VERSION,
-            [GNUTLS_FOUND=yes],
-            [GNUTLS_FOUND=no])
-    fi
-fi
-
-dnl Priority 4: Guess using a list of folders.
-if test "z$GNUTLS_FOUND" = "zno" -a "z$ENABLE_FOLDERS_SEARCH" = "zyes" ; then
-    AC_MSG_CHECKING(for libgnutls library installation in the typical folders)
-    if test "z$GNUTLS_INCLUDE_PATH" = "z" ; then
-        AX_FIND_FOLDER(GNUTLS_INCLUDE_PATH, $GNUTLS_INCLUDE_MARKER, $GNUTLS_INCLUDE_DIR)
-    fi
-    if test "z$GNUTLS_LIB_PATH" = "z" ; then
-        AX_FIND_FOLDER(GNUTLS_LIB_PATH, $GNUTLS_LIB_MARKER, $GNUTLS_LIB_DIR)
-    fi
-    if test "z$GNUTLS_INCLUDE_PATH" != "z" -a "z$GNUTLS_LIB_PATH" != "z" ; then
-        GNUTLS_FOUND="yes"
-        AC_MSG_RESULT([yes ("-I$GNUTLS_INCLUDE_PATH -L$GNUTLS_LIB_PATH")])
-    else
-        AC_MSG_RESULT([not found])
-    fi
-fi
-
-dnl Priority 5: Just try to compile/link and hope for the best
-if test "z$GNUTLS_FOUND" = "zno" ; then
-    AC_MSG_CHECKING(for gnutls library installation)
-    OLD_CPPFLAGS=$CPPFLAGS
-    CPPFLAGS="$CPPFLAGS $GNUTLS_CFLAGS"
-    OLD_LIBS=$LIBS
-    LIBS="$LIBS $GNUTLS_LIBS $GNUTLS_LIBS_LIST"
-    AC_LINK_IFELSE([
-        AC_LANG_PROGRAM([[
-            #include <gnutls/gnutls.h>
-        ]],[[
-            gnutls_global_init();
-        ]])
-    ],[
-        GNUTLS_FOUND=yes
-        GNUTLS_LIBS="$GNUTLS_LIBS $GNUTLS_LIBS_LIST"
-        AC_MSG_RESULT([yes])
-    ],[
-        GNUTLS_FOUND=no
-        AC_MSG_RESULT([not found])
-    ])
-    CPPFLAGS=$OLD_CPPFLAGS
-    LIBS=$OLD_LIBS
-fi
-
-dnl Set CFLAGS/LIBS flags
-if test "z$GNUTLS_FOUND" = "zyes" ; then
-    dnl Set flags if INCLUDE_PATH or LIB_PATH are set (do NOT overwrite CFLAGS/LIBS!)
-    if test "z$GNUTLS_INCLUDE_PATH" != "z" ; then
-        GNUTLS_CFLAGS="$GNUTLS_CFLAGS -I$GNUTLS_INCLUDE_PATH"
-    fi
-    if test "z$GNUTLS_LIB_PATH" != "z" ; then
-        if test "z$with_gnu_ld" = "zyes" ; then
-            GNUTLS_LIBS="$GNUTLS_LIBS -Wl,-rpath-link -Wl,$GNUTLS_LIB_PATH"
-        fi
-        GNUTLS_LIBS="$GNUTLS_LIBS -L$GNUTLS_LIB_PATH $GNUTLS_LIBS_LIST"
-    fi
-fi
-
-dnl Verify the version
-AC_MSG_CHECKING(for libgnutls library >= $GNUTLS_MIN_VERSION)
-if test "z$GNUTLS_FOUND" = "zyes" ; then
-    OLD_CPPFLAGS=$CPPFLAGS
-    CPPFLAGS="$CPPFLAGS $GNUTLS_CFLAGS"
-    dnl gnutls uses hex digits for version number
-    minvers=`echo $GNUTLS_MIN_VERSION | awk -F. '{ printf "%d", ($1 * 256 + $2) * 256 + $3;}'`
-    AC_EGREP_CPP(greater-than-minvers, [
-        #include <gnutls/gnutls.h>
-        #if GNUTLS_VERSION_NUMBER >= $minvers
-        greater-than-minvers
-        #endif
-    ],[
-        GNUTLS_FOUND=yes
-    ],[
-        GNUTLS_FOUND=no
-    ])
-    CPPFLAGS=$OLD_CPPFLAGS
-fi
-AC_MSG_RESULT([$GNUTLS_FOUND])
-
-dnl Finally set all the flags
-if test "z$GNUTLS_FOUND" = "zyes" ; then
-    XMLSEC_NO_GNUTLS="0"
-    GNUTLS_CFLAGS="$GNUTLS_CFLAGS -DXMLSEC_CRYPTO_GNUTLS=1"
-    XMLSEC_CRYPTO_LIST="$XMLSEC_CRYPTO_LIST gnutls"
-else
-    XMLSEC_CRYPTO_DISABLED_LIST="$XMLSEC_CRYPTO_DISABLED_LIST gnutls"
-fi
-
-AM_CONDITIONAL(XMLSEC_NO_GNUTLS, test "z$XMLSEC_NO_GNUTLS" = "z1")
-AC_SUBST(XMLSEC_NO_GNUTLS)
-AC_SUBST(GNUTLS_CFLAGS)
-AC_SUBST(GNUTLS_LIBS)
-AC_SUBST(GNUTLS_CRYPTO_LIB)
-AC_SUBST(GNUTLS_MIN_VERSION)
-
-
-dnl ==========================================================================
-dnl See if we can find MSCrypto
-dnl ==========================================================================
-MSCRYPTO_CRYPTO_LIB="$XMLSEC_PACKAGE-mscrypto"
-case $host in
-*-w64-mingw*)
-    MSCRYPTO_XMLSEC_DEFINES=
-    MSCRYPTO_LIBS_LIST="-lcrypt32"
-    ;;
-*-*-mingw*)
-    dnl use own def-file and header as mingw.org crypt32
-    dnl is limited (library and header)
-    MSCRYPTO_XMLSEC_DEFINES="-DXMLSEC_CUSTOM_CRYPT32=1"
-    MSCRYPTO_LIBS_LIST="-Wl,$(srcdir)/mingw-crypt32.def"
-    ;;
-*)
-    MSCRYPTO_XMLSEC_DEFINES=
-    MSCRYPTO_LIBS_LIST="-lcrypt32"
-    ;;
-esac
-
-XMLSEC_NO_MSCRYPTO="1"
-MSCRYPTO_FOUND="no"
-AC_ARG_ENABLE([mscrypto], [AS_HELP_STRING([--enable-mscrypto],[enable mscrypto (no)])])
-AC_MSG_CHECKING(for mscrypto)
-
-dnl Priority 0: Check if library is not needed
-if test "z$enable_mscrypto" != "zyes" ; then
-    MSCRYPTO_FOUND="disabled"
-    AC_MSG_RESULT([disabled])
-fi
-
-dnl Priority 1: User sets both CFLAGS and LIBS flags
-if test "z$MSCRYPTO_FOUND" = "zno" -a "z$MSCRYPTO_CFLAGS" != "z" -a "z$MSCRYPTO_LIBS" != "z" ; then
-    MSCRYPTO_FOUND=yes
-    AC_MSG_RESULT([yes])
-fi
-
-dnl Priority 2: Just try to compile/link and hope for the best
-if test "z$MSCRYPTO_FOUND" = "zno" ; then
-    OLD_CPPFLAGS=$CPPFLAGS
-    CPPFLAGS="$CPPFLAGS $MSCRYPTO_CFLAGS"
-    OLD_LIBS=$LIBS
-    LIBS="$LIBS $MSCRYPTO_LIBS $MSCRYPTO_LIBS_LIST"
-    AC_LINK_IFELSE([
-        AC_LANG_PROGRAM([[
-            #include <windows.h>
-            #include <wincrypt.h>
-        ]],[[
-            CertOpenStore(0,0,0,0,0);
-        ]])
-    ],[
-        MSCRYPTO_FOUND=yes
-        AC_MSG_RESULT([yes])
-    ],[
-        MSCRYPTO_FOUND=no
-        AC_MSG_RESULT([not found])
-    ])
-    CPPFLAGS=$OLD_CPPFLAGS
-    LIBS=$OLD_LIBS
-fi
-
-dnl Set CFLAGS/LIBS flags, do not change CFLAGS/LIBS if both are set
-if test "z$MSCRYPTO_FOUND" = "zyes" ; then
-    if test "z$MSCRYPTO_CFLAGS" = "z" -o "z$MSCRYPTO_LIBS" = "z" ; then
-        XMLSEC_DEFINES="$XMLSEC_DEFINES $MSCRYPTO_XMLSEC_DEFINES"
-        MSCRYPTO_LIBS="$MSCRYPTO_LIBS $MSCRYPTO_LIBS_LIST"
-    fi
-fi
-
-dnl Finally set all the flags
-if test "z$MSCRYPTO_FOUND" = "zyes" ; then
-    XMLSEC_NO_MSCRYPTO="0"
-    MSCRYPTO_CFLAGS="$MSCRYPTO_CFLAGS -DXMLSEC_CRYPTO_MSCRYPTO=1"
-    XMLSEC_CRYPTO_LIST="$XMLSEC_CRYPTO_LIST mscrypto"
-else
-    XMLSEC_CRYPTO_DISABLED_LIST="$XMLSEC_CRYPTO_DISABLED_LIST mscrypto"
-fi
-
-AM_CONDITIONAL(XMLSEC_NO_MSCRYPTO, [test "z$XMLSEC_NO_MSCRYPTO" = "z1"])
-AC_SUBST(XMLSEC_NO_MSCRYPTO)
-AC_SUBST(MSCRYPTO_CFLAGS)
-AC_SUBST(MSCRYPTO_LIBS)
-AC_SUBST(MSCRYPTO_CRYPTO_LIB)
-
-
-dnl ==========================================================================
-dnl See if we can find MSCng
-dnl ==========================================================================
-MSCNG_CRYPTO_LIB="$XMLSEC_PACKAGE-mscng"
-dnl This is tested on w64-mingw only so far.
-MSCNG_XMLSEC_DEFINES=
-MSCNG_LIBS_LIST="-lcrypt32 -lbcrypt -lncrypt"
-
-XMLSEC_NO_MSCNG="1"
-MSCNG_FOUND="no"
-AC_ARG_ENABLE([mscng], [AS_HELP_STRING([--enable-mscng],[enable mscng (no)])])
-AC_MSG_CHECKING(for mscng)
-
-dnl Priority 0: Check if library is not needed
-if test "z$enable_mscng" != "zyes" ; then
-    MSCNG_FOUND="disabled"
-    AC_MSG_RESULT([disabled])
-fi
-
-dnl Priority 1: User sets both CFLAGS and LIBS flags
-if test "z$MSCNG_FOUND" = "zno" -a "z$MSCNG_CFLAGS" != "z" -a "z$MSCNG_LIBS" != "z" ; then
-    MSCNG_FOUND=yes
-    AC_MSG_RESULT([yes])
-fi
-
-dnl Priority 2: Just try to compile/link and hope for the best
-if test "z$MSCNG_FOUND" = "zno" ; then
-    OLD_CPPFLAGS=$CPPFLAGS
-    CPPFLAGS="$CPPFLAGS $MSCNG_CFLAGS"
-    OLD_LIBS=$LIBS
-    LIBS="$LIBS $MSCNG_LIBS $MSCNG_LIBS_LIST"
-    AC_LINK_IFELSE([
-        AC_LANG_PROGRAM([[
-            #include <windows.h>
-            #include <wincrypt.h>
-        ]],[[
-            BCRYPT_ALG_HANDLE hAlg;
-            BCryptOpenAlgorithmProvider(&hAlg, BCRYPT_SHA256_ALGORITHM, NULL, 0);
-        ]])
-    ],[
-        MSCNG_FOUND=yes
-        AC_MSG_RESULT([yes])
-    ],[
-        MSCNG_FOUND=no
-        AC_MSG_RESULT([not found])
-    ])
-    CPPFLAGS=$OLD_CPPFLAGS
-    LIBS=$OLD_LIBS
-fi
-
-dnl Set CFLAGS/LIBS flags, do not change CFLAGS/LIBS if both are set
-if test "z$MSCNG_FOUND" = "zyes" ; then
-    if test "z$MSCNG_CFLAGS" = "z" -o "z$MSCNG_LIBS" = "z" ; then
-        XMLSEC_DEFINES="$XMLSEC_DEFINES $MSCNG_XMLSEC_DEFINES"
-        MSCNG_LIBS="$MSCNG_LIBS $MSCNG_LIBS_LIST"
-    fi
-fi
-
-dnl Finally set all the flags
-if test "z$MSCNG_FOUND" = "zyes" ; then
-    XMLSEC_NO_MSCNG="0"
-    MSCNG_CFLAGS="$MSCNG_CFLAGS -DXMLSEC_CRYPTO_MSCNG=1"
-    XMLSEC_CRYPTO_LIST="$XMLSEC_CRYPTO_LIST mscng"
-else
-    XMLSEC_CRYPTO_DISABLED_LIST="$XMLSEC_CRYPTO_DISABLED_LIST mscng"
-fi
-
-AM_CONDITIONAL(XMLSEC_NO_MSCNG, [test "z$XMLSEC_NO_MSCNG" = "z1"])
-AC_SUBST(XMLSEC_NO_MSCNG)
-AC_SUBST(MSCNG_CFLAGS)
-AC_SUBST(MSCNG_LIBS)
-AC_SUBST(MSCNG_CRYPTO_LIB)
 
 
 dnl ==========================================================================
@@ -2078,22 +2078,6 @@ else
 fi
 AM_CONDITIONAL(XMLSEC_NO_DSA, test "z$XMLSEC_NO_DSA" = "z1")
 AC_SUBST(XMLSEC_NO_DSA)
-
-dnl ==========================================================================
-dnl Check if we need MD5 support
-dnl ==========================================================================
-AC_MSG_CHECKING(for MD5 support)
-AC_ARG_ENABLE([md5], [AS_HELP_STRING([--enable-md5],[enable MD5 support (no, deprecated)])])
-if test "z$enable_md5" = "zyes" ; then
-    XMLSEC_NO_MD5="0"
-    AC_MSG_RESULT([yes (deprecated)])
-else
-    XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_MD5=1"
-    XMLSEC_NO_MD5="1"
-    AC_MSG_RESULT([disabled])
-fi
-AM_CONDITIONAL(XMLSEC_NO_MD5, test "z$XMLSEC_NO_MD5" = "z1")
-AC_SUBST(XMLSEC_NO_MD5)
 
 dnl ==========================================================================
 dnl Check if we need RSA support
@@ -2669,25 +2653,26 @@ if test "z$XMLSEC_NO_OPENSSL" != "z1" ; then
 AC_CONFIG_FILES([include/xmlsec/openssl/Makefile src/openssl/Makefile])
 fi
 
+if test "z$XMLSEC_NO_NSS" != "z1" ; then
+AC_CONFIG_FILES([include/xmlsec/nss/Makefile src/nss/Makefile])
+fi
+
 if test "z$XMLSEC_NO_GNUTLS" != "z1" ; then
 AC_CONFIG_FILES([include/xmlsec/gnutls/Makefile src/gnutls/Makefile])
+fi
+
+if test "z$XMLSEC_NO_MSCNG" != "z1" ; then
+AC_CONFIG_FILES([include/xmlsec/mscng/Makefile src/mscng/Makefile])
 fi
 
 if test "z$XMLSEC_NO_GCRYPT" != "z1" ; then
 AC_CONFIG_FILES([include/xmlsec/gcrypt/Makefile src/gcrypt/Makefile])
 fi
 
-if test "z$XMLSEC_NO_NSS" != "z1" ; then
-AC_CONFIG_FILES([include/xmlsec/nss/Makefile src/nss/Makefile])
-fi
-
 if test "z$XMLSEC_NO_MSCRYPTO" != "z1" ; then
 AC_CONFIG_FILES([include/xmlsec/mscrypto/Makefile src/mscrypto/Makefile])
 fi
 
-if test "z$XMLSEC_NO_MSCNG" != "z1" ; then
-AC_CONFIG_FILES([include/xmlsec/mscng/Makefile src/mscng/Makefile])
-fi
 
 if test "z$XMLSEC_NO_CRYPTO_DYNAMIC_LOADING" = "z1" ; then
 (rm -f xmlsec1.pc && $LN_S xmlsec1-$XMLSEC_DEFAULT_CRYPTO.pc xmlsec1.pc)
@@ -2707,8 +2692,8 @@ docs/api/Makefile
 man/Makefile
 xmlsec1-openssl.pc:xmlsec-openssl.pc.in
 xmlsec1-gnutls.pc:xmlsec-gnutls.pc.in
-xmlsec1-gcrypt.pc:xmlsec-gcrypt.pc.in
 xmlsec1-nss.pc:xmlsec-nss.pc.in
+xmlsec1-gcrypt.pc:xmlsec-gcrypt.pc.in
 xmlsec1.spec:xmlsec.spec.in
 ])
 AC_CONFIG_FILES([xmlsec1Conf.sh:xmlsecConf.sh.in], [chmod +x xmlsec1Conf.sh])

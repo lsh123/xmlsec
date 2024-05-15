@@ -1650,7 +1650,7 @@ xmlSecGnuTLSKeyDataEcPubKeyFromPrivKey(gnutls_privkey_t privkey) {
     err = gnutls_privkey_export_ecc_raw2(privkey,
                 &curve, &x, &y, &k,
                 0);
-    if((err != GNUTLS_E_SUCCESS) && (curve != GNUTLS_ECC_CURVE_INVALID)) {
+    if((err != GNUTLS_E_SUCCESS) || (curve == GNUTLS_ECC_CURVE_INVALID)) {
         xmlSecGnuTLSError("gnutls_privkey_export_ecc_raw2", err, NULL);
         goto done;
     }
@@ -2190,7 +2190,7 @@ xmlSecGnuTLSKeyDataGostPubKeyFromPrivKey(gnutls_privkey_t privkey) {
         &curve, &digest, &paramset,
         &x, &y, &k,
         0);
-    if((err != GNUTLS_E_SUCCESS) && (curve != GNUTLS_ECC_CURVE_INVALID)) {
+    if((err != GNUTLS_E_SUCCESS) || (curve == GNUTLS_ECC_CURVE_INVALID)) {
         xmlSecGnuTLSError("gnutls_privkey_export_gost_raw2", err, NULL);
         goto done;
     }

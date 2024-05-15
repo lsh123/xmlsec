@@ -213,7 +213,7 @@ xmlSecGnuTLSKeyTransportEncrypt(xmlSecGnuTLSKeyTransportCtxPtr ctx, xmlSecBuffer
 			     0 /* flags */,
 			     &plaintext,
 			     &encrypted);
-    if((err != GNUTLS_E_SUCCESS) && (encrypted.data != NULL)) {
+    if((err != GNUTLS_E_SUCCESS) || (encrypted.data == NULL)) {
         xmlSecGnuTLSError("gnutls_pubkey_encrypt_data", err, NULL);
         return(-1);
     }
@@ -264,7 +264,7 @@ xmlSecGnuTLSKeyTransportDecrypt(xmlSecGnuTLSKeyTransportCtxPtr ctx, xmlSecBuffer
 			     0 /* flags */,
 			     &ciphertext,
 			     &plaintext);
-    if((err != GNUTLS_E_SUCCESS) && (plaintext.data != NULL)) {
+    if((err != GNUTLS_E_SUCCESS) || (plaintext.data == NULL)) {
         xmlSecGnuTLSError("gnutls_privkey_decrypt_data", err, NULL);
         return(-1);
     }
@@ -295,8 +295,6 @@ xmlSecGnuTLSKeyTransportExecute(xmlSecTransformPtr transform, int last, xmlSecTr
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGnuTLSKeyTransportSize), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(transformCtx != NULL, -1);
-
-    fprintf(stderr, "DEBUG: xmlSecGnuTLSKeyTransportExecute: start: last=%d, status=%d\n", last, (int)transform->status);
 
     ctx = xmlSecGnuTLSKeyTransportGetCtx(transform);
     if(ctx == NULL) {
@@ -354,8 +352,6 @@ xmlSecGnuTLSKeyTransportExecute(xmlSecTransformPtr transform, int last, xmlSecTr
             return(-1);
         }
     }
-
-    fprintf(stderr, "DEBUG: xmlSecGnuTLSKeyTransportExecute: end\n");
 
     return(0);
 }

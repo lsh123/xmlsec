@@ -192,8 +192,8 @@ jobs:
     - name: make check
       working-directory: build.dir
       run: |
-          mkdir -p /etc/gnutls && touch /etc/gnutls/config
-          mkdir -p /c/etc/gnutls && touch /c/etc/gnutls/config
+          mkdir -p /etc/gnutls && touch /etc/gnutls/config && cat /etc/gnutls/config
+          mkdir -p /c/etc/gnutls && touch /c/etc/gnutls/config && cat /c/etc/gnutls/config
           make check
     - name: make install
       working-directory: build.dir

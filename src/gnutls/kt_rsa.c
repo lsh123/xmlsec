@@ -34,6 +34,7 @@
 
 #include "../cast_helpers.h"
 #include "../transform_helpers.h"
+#include "private.h"
 
 
 /*********************************************************************
@@ -248,7 +249,7 @@ xmlSecGnuTLSKeyTransportDecrypt(xmlSecGnuTLSKeyTransportCtxPtr ctx, xmlSecBuffer
     inSize = xmlSecBufferGetSize(inBuf);
     xmlSecAssert2(inSize > 0, -1);
 
-    fprintf(stderr, "DEBUG: xmlSecGnuTLSKeyTransportDecrypt: start: size=%d\n", (int)xmlSecBufferGetSize(inBuf));
+    fprintf(stderr, "DEBUG: xmlSecGnuTLSKeyTransportDecrypt: start: size=%d, key size=%d\n", (int)xmlSecBufferGetSize(inBuf), (int)xmlSecGnuTLSAsymKeyDataGetSize(ctx->keyData));
 
     /* get key */
     privkey = ctx->getPrivKey(ctx->keyData);
@@ -256,6 +257,8 @@ xmlSecGnuTLSKeyTransportDecrypt(xmlSecGnuTLSKeyTransportCtxPtr ctx, xmlSecBuffer
         xmlSecInternalError("ctx->getPrivKey", NULL);
         return(-1);
     }
+
+    fprintf(stderr, "DEBUG: xmlSecGnuTLSKeyTransportDecrypt: start: algo=%d\n", gnutls_privkey_get_pk_algorithm(privkey, NULL));
 
     /* decrypt: only PKCS 1.5 is currently supported by gnutls */
     ciphertext.data = xmlSecBufferGetData(inBuf);
@@ -277,8 +280,6 @@ xmlSecGnuTLSKeyTransportDecrypt(xmlSecGnuTLSKeyTransportCtxPtr ctx, xmlSecBuffer
         return(-1);
     }
     gnutls_free(plaintext.data);
-
-    fprintf(stderr, "DEBUG: xmlSecGnuTLSKeyTransportDecrypt: end: size=%d\n", (int)xmlSecBufferGetSize(outBuf));
 
     /* success */
     return(0);

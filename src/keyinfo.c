@@ -1633,7 +1633,6 @@ xmlSecKeyDataEncryptedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePt
                             xmlSecKeyDataKlassGetName(id));
         return(-1);
     }
-
     return(0);
 }
 

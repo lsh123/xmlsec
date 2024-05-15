@@ -35,7 +35,6 @@
 #include "../cast_helpers.h"
 #include "../transform_helpers.h"
 
-
 /*********************************************************************
  *
  * Key transport transforms context
@@ -213,7 +212,7 @@ xmlSecGnuTLSKeyTransportEncrypt(xmlSecGnuTLSKeyTransportCtxPtr ctx, xmlSecBuffer
 			     0 /* flags */,
 			     &plaintext,
 			     &encrypted);
-    if((err != GNUTLS_E_SUCCESS) && (encrypted.data != NULL)) {
+    if((err != GNUTLS_E_SUCCESS) || (encrypted.data == NULL)) {
         xmlSecGnuTLSError("gnutls_pubkey_encrypt_data", err, NULL);
         return(-1);
     }
@@ -262,7 +261,7 @@ xmlSecGnuTLSKeyTransportDecrypt(xmlSecGnuTLSKeyTransportCtxPtr ctx, xmlSecBuffer
 			     0 /* flags */,
 			     &ciphertext,
 			     &plaintext);
-    if((err != GNUTLS_E_SUCCESS) && (plaintext.data != NULL)) {
+    if((err != GNUTLS_E_SUCCESS) || (plaintext.data == NULL)) {
         xmlSecGnuTLSError("gnutls_privkey_decrypt_data", err, NULL);
         return(-1);
     }

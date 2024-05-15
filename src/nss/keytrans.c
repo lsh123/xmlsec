@@ -347,6 +347,8 @@ xmlSecNssKeyTransportCtxUpdate(xmlSecNssKeyTransportCtxPtr ctx, xmlSecBufferPtr 
 #ifndef XMLSEC_NO_RSA_OAEP
 static int
 xmlSecNssKeyTransportSetOaepParams(xmlSecNssKeyTransportCtxPtr ctx, CK_RSA_PKCS_OAEP_PARAMS* oaepParams) {
+    xmlSecSize size;
+
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(oaepParams != NULL, -1);
 
@@ -354,7 +356,9 @@ xmlSecNssKeyTransportSetOaepParams(xmlSecNssKeyTransportCtxPtr ctx, CK_RSA_PKCS_
     oaepParams->mgf     = ctx->oaepMgf ;
     oaepParams->source  = CKZ_DATA_SPECIFIED;
     oaepParams->pSourceData      = xmlSecBufferGetData(&(ctx->oaepParams));
-    oaepParams->ulSourceDataLen  = xmlSecBufferGetSize(&(ctx->oaepParams));
+
+    size = xmlSecBufferGetSize(&(ctx->oaepParams));
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(size, oaepParams->ulSourceDataLen, return(-1), NULL);
 
     return(0);
 }

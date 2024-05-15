@@ -49,7 +49,7 @@ struct _xmlSecNssSignatureCtx {
     PLArenaPool*        arena;
     SECOidTag           pssHashAlgTag;
     SECOidTag           pssMaskAlgTag;
-    long                pssSaltLength;
+    unsigned int        pssSaltLength;
 
     union {
         struct {
@@ -424,6 +424,7 @@ xmlSecNssSignatureCreatePssParams(xmlSecNssSignatureCtxPtr ctx) {
     SECAlgorithmID maskHashAlg;
     SECItem *maskHashAlgItem;
     SECItem *saltLengthItem;
+    long saltLength;
     SECStatus rv;
     SECItem* res;
 
@@ -470,7 +471,8 @@ xmlSecNssSignatureCreatePssParams(xmlSecNssSignatureCtxPtr ctx) {
     }
 
     /* salt length */
-    saltLengthItem = SEC_ASN1EncodeInteger(ctx->arena, &(params.saltLength), ctx->pssSaltLength);
+    XMLSEC_SAFE_CAST_UINT_TO_LONG(ctx->pssSaltLength, saltLength, return(NULL), NULL);
+    saltLengthItem = SEC_ASN1EncodeInteger(ctx->arena, &(params.saltLength), saltLength);
     if(saltLengthItem != &(params.saltLength)) {
         xmlSecNssError("SEC_ASN1EncodeInteger(saltLength)", NULL);
         return(NULL);

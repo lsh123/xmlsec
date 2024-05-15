@@ -34,8 +34,6 @@
 
 #include "../cast_helpers.h"
 #include "../transform_helpers.h"
-#include "private.h"
-
 
 /*********************************************************************
  *
@@ -240,6 +238,8 @@ xmlSecGnuTLSKeyTransportDecrypt(xmlSecGnuTLSKeyTransportCtxPtr ctx, xmlSecBuffer
     xmlSecSize inSize;
     int ret;
     int err;
+    int algo;
+    unsigned int bits = 0;
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->keyData != NULL, -1);
@@ -249,8 +249,6 @@ xmlSecGnuTLSKeyTransportDecrypt(xmlSecGnuTLSKeyTransportCtxPtr ctx, xmlSecBuffer
     inSize = xmlSecBufferGetSize(inBuf);
     xmlSecAssert2(inSize > 0, -1);
 
-    fprintf(stderr, "DEBUG: xmlSecGnuTLSKeyTransportDecrypt: start: size=%d, key size=%d\n", (int)xmlSecBufferGetSize(inBuf), (int)xmlSecGnuTLSAsymKeyDataGetSize(ctx->keyData));
-
     /* get key */
     privkey = ctx->getPrivKey(ctx->keyData);
     if(privkey == NULL) {
@@ -258,7 +256,8 @@ xmlSecGnuTLSKeyTransportDecrypt(xmlSecGnuTLSKeyTransportCtxPtr ctx, xmlSecBuffer
         return(-1);
     }
 
-    fprintf(stderr, "DEBUG: xmlSecGnuTLSKeyTransportDecrypt: start: algo=%d\n", gnutls_privkey_get_pk_algorithm(privkey, NULL));
+    algo = gnutls_privkey_get_pk_algorithm(privkey, &bits);
+    fprintf(stderr, "DEBUG: xmlSecGnuTLSKeyTransportDecrypt: start: algo=%d, key size=%d, config=%s\n", algo, (int)bits, gnutls_get_system_config_file());
 
     /* decrypt: only PKCS 1.5 is currently supported by gnutls */
     ciphertext.data = xmlSecBufferGetData(inBuf);

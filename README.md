@@ -64,6 +64,7 @@ To build and install XMLSec library on Unix-like systems run the following comma
 ```
   gunzip -c xmlsec1-xxx.tar.gz | tar xvf -
   cd xmlsec1-xxxx
+  ./autogen.sh
   ./configure [possible options]
   make
   make check

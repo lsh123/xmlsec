@@ -32,50 +32,60 @@ And at least one of the following cryptographic libraries:
 For example, the following packages need to be installed on Ubuntu to build
 XMLSec library:
 ```
-  # common build tools
-  apt install automake autoconf libtool libtool-bin gcc
+# common build tools
+apt install automake autoconf libtool libtool-bin gcc
 
-  # ltdl is required to support dynamic crypto libs loading
-  apt install libltdl7 libltdl-dev
+# ltdl is required to support dynamic crypto libs loading
+apt install libltdl7 libltdl-dev
 
-  # core libxml2 and libxslt libraries
-  apt install libxml2 libxml2-dev libxslt1.1 libxslt1-dev
+# core libxml2 and libxslt libraries
+apt install libxml2 libxml2-dev libxslt1.1 libxslt1-dev
 
-  # openssl libraries
-  apt install openssl libssl3 libssl-dev
+# openssl libraries
+apt install openssl libssl3 libssl-dev
 
-  # nspr/nss libraries
-  apt install libnspr4 libnspr4-dev libnss3 libnss3-dev libnss3-tools
+# nspr/nss libraries
+apt install libnspr4 libnspr4-dev libnss3 libnss3-dev libnss3-tools
 
-  # gnutls libraries
-  apt install libgnutls30
+# gnutls libraries
+apt install libgnutls30
 
-  # gnutls libraries
-  apt install libgcrypt20 libgcrypt20-dev
+# gnutls libraries
+apt install libgcrypt20 libgcrypt20-dev
 
-  # required for building man pages and docs
-  apt install help2man man2html gtk-doc-tools
+# required for building man pages and docs
+apt install help2man man2html gtk-doc-tools
 ```
 
 ### Building XMLSec on Linux, Unix, MacOSX, MinGW, Cygwin, etc
 
-To build and install XMLSec library on Unix-like systems run the following commands:
+To build and install XMLSec library on Unix-like systems from a release tarball, run the following commands:
 
 ```
-  gunzip -c xmlsec1-xxx.tar.gz | tar xvf -
-  cd xmlsec1-xxxx
-  ./configure [possible options]
-  make
-  make check
-  make install
+gunzip -c xmlsec1-<version>.tar.gz | tar xvf -
+cd xmlsec1-<version>
+./configure [possible configure options]
+make
+make check
+make install
 ```
 
 To see the configuration options, run:
 
 ```
-  ./configure --help
+./configure --help
 ```
 
+To build from GitHub, run the following commands:
+
+```
+git clone https://github.com/lsh123/xmlsec.git
+cd xmlsec
+./autogen.sh [possible configure options]
+make
+make check
+make install
+```
 
 ### Building XMLSec on Windows
 

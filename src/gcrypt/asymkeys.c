@@ -182,6 +182,9 @@ xmlSecGCryptAsymKeyDataAdoptKey(xmlSecKeyDataPtr data, gcry_sexp_t key_pair) {
     pub_key = NULL; /* data owns it now */
     priv_key = NULL; /* data owns it now */
 
+   /* Adopt functions assume ownership on success thus the caller would expect this to be released */
+    gcry_sexp_release(key_pair);
+
     /* success */
     res = 0;
 
@@ -193,9 +196,6 @@ done:
     if(priv_key != NULL) {
         gcry_sexp_release(priv_key);
     }
-
-    /* Adopt functions assume ownership thus the caller would expect this to be released */
-    gcry_sexp_release(key_pair);
 
     /* done */
     return(res);

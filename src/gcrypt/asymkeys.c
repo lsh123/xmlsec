@@ -294,11 +294,11 @@ xmlSecGCryptAsymKeyDataGenerate(xmlSecKeyDataPtr data, const char * alg, xmlSecS
     }
 
     ret = xmlSecGCryptAsymKeyDataAdoptKey(data, key_pair);
+    key_pair = NULL; /* now owned by data */
     if(ret < 0) {
         xmlSecInternalError("xmlSecGCryptAsymKeyDataAdopt", NULL);
         goto done;
     }
-    key_pair = NULL; /* now owned by data */
 
     /* success */
     res = 0;

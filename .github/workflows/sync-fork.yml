@@ -1,0 +1,41 @@
+---
+    name: Sync Fork with Upstream
+    on:
+      workflow_dispatch:
+      schedule:
+        # 00:00 UTC on Tuesdays
+        - cron:  '0 0 * * 2'
+    
+    env:
+      UPSTREAM_REPO: lsh123/xmlsec
+      ORG_TOKEN: ${{ secrets.ORG_TOKEN }}
+      GIT_EMAIL: systems@ycharts.com
+      GIT_NAME: ychartsdeployer
+      GITHUB_TEAM: DevOps
+  
+    jobs:
+      merge:
+        runs-on: ubuntu-latest
+        steps:
+          - name: Checkout fork
+            uses: actions/checkout@v4
+            with:
+              token: ${{ env.ORG_TOKEN }}
+              fetch-depth: 0
+  
+          - name: Merge upstream
+            run: |
+              git config --global user.email ${{ env.GIT_EMAIL }}
+              git config --global user.name ${{ env.GIT_NAME }}
+              git remote add upstream https://github.com/${{ env.UPSTREAM_REPO }}
+              git fetch upstream
+              git merge --no-edit upstream/master
+  
+          - name: Create Pull Request
+            uses: peter-evans/create-pull-request@v6
+            with:
+              token: ${{ env.ORG_TOKEN }}
+              branch: upstream-sync
+              title: Sync with upstream
+              team-reviewers: DevOps
+        

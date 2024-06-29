@@ -342,7 +342,7 @@ xmlSecIOFileOpen(char const* filename) {
         xmlFree(wpath);
     }
 #else
-    fd = fopen(filename, write ? "wb" : "rb");
+    fd = fopen(filename, "rb");
 #endif /* WIN32 */
 
     if (fd == NULL) {

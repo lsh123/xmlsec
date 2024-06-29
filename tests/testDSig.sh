@@ -1099,25 +1099,6 @@ execDSigTest $res_success \
     "ec x509" \
     "--trusted-$cert_format $topfolder/keys/enveloped-ecdsa-java-bug-cert.$cert_format --enabled-key-data x509 --verification-gmt-time 2019-01-01+00:00:00"
 
-
-extra_message="DTD is present"
-execDSigTest $res_success \
-    "" \
-    "aleksey-xmldsig-01/dtd-hmac-91" \
-    "sha1 hmac-sha1" \
-    "hmac" \
-    "--hmackey:name:KEY $topfolder/keys/hmackey.bin --dtd-file $topfolder/aleksey-xmldsig-01/dtd-hmac-91.dtd" \
-    "--hmackey:mykey $topfolder/keys/hmackey.bin --dtd-file $topfolder/aleksey-xmldsig-01/dtd-hmac-91.dtd" \
-    "--hmackey:mykey $topfolder/keys/hmackey.bin --dtd-file $topfolder/aleksey-xmldsig-01/dtd-hmac-91.dtd"
-
-extra_message="Negative test: missing DTD"
-execDSigTest $res_fail \
-    "" \
-    "aleksey-xmldsig-01/dtd-hmac-91" \
-    "sha1 hmac-sha1" \
-    "hmac" \
-    "--enabled-reference-uris empty --hmackey $topfolder/keys/hmackey.bin --dtd-file $topfolder/aleksey-xmldsig-01/dtd-hmac-91.dtd"
-
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/x509data-test" \

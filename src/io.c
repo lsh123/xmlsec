@@ -333,7 +333,7 @@ xmlSecIOFileOpen(char const* filename) {
             return(NULL);
         }
         err = _wfopen_s(&fd, wpath, L"rb");
-        if (err != 0) {
+        if ((err != 0) || (fd == NULL)) {
             xmlSecInternalError("_wfopen_s", NULL);
             xmlFree(wpath);
             xmlFree(tmp);
@@ -341,15 +341,24 @@ xmlSecIOFileOpen(char const* filename) {
         }
         xmlFree(wpath);
     }
-#else
+#elif defined(XMLSEC_WINDOWS)  
+    {
+        errno_t err;
+        err = fopen_s(&fd, filename, "rb");
+        if ((err != 0) || (fd == NULL)) {
+            xmlSecInternalError("_wfopen_s", NULL);
+            xmlFree(tmp);
+            return(NULL);
+        }
+    }
+#else /* defined(XMLSEC_WINDOWS) && defined(UNICODE) */
     fd = fopen(filename, "rb");
-#endif /* WIN32 */
-
     if (fd == NULL) {
         xmlSecInternalError("fopen", NULL);
         xmlFree(tmp);
         return(NULL);
     }
+#endif /* defined(XMLSEC_WINDOWS) && defined(UNICODE) */
 
     /* done */
     xmlFree(tmp);

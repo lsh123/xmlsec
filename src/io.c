@@ -346,7 +346,7 @@ xmlSecIOFileOpen(char const* filename) {
         errno_t err;
         err = fopen_s(&fd, filename, "rb");
         if ((err != 0) || (fd == NULL)) {
-            xmlSecInternalError("_wfopen_s", NULL);
+            xmlSecInternalError("fopen_s", NULL);
             xmlFree(tmp);
             return(NULL);
         }

@@ -265,11 +265,11 @@ xmlSecOpenSSLAppKeyLoadEx(const char *filename, xmlSecKeyDataType type, xmlSecKe
         if(key == NULL) {
             xmlSecInternalError2("xmlSecOpenSSLAppKeyLoadBIO", NULL,
                                 "filename=%s", xmlSecErrorsSafeString(filename));
-            BIO_free(bio);
+            BIO_free_all(bio);
             return(NULL);
         }
 
-        BIO_free(bio);
+        BIO_free_all(bio);
     }
 
     return(key);
@@ -309,11 +309,11 @@ xmlSecOpenSSLAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     key = xmlSecOpenSSLAppKeyLoadBIO (bio, format, pwd, pwdCallback, pwdCallbackCtx);
     if(key == NULL) {
         xmlSecInternalError("xmlSecOpenSSLAppKeyLoadBIO", NULL);
-        BIO_free(bio);
+        BIO_free_all(bio);
         return(NULL);
     }
 
-    BIO_free(bio);
+    BIO_free_all(bio);
     return(key);
 }
 

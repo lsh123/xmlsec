@@ -1149,10 +1149,10 @@ execDSigTest $res_success \
 # 'Verify existing signature' MUST fail here, as --trusted-... is not passed.
 # If this passes, that's a bug. Note that we need to cleanup NSS certs DB
 # since it automaticall stores trusted certs
-extra_message="Missing trusted cert but there is --insecure bypass"
+extra_message="Missing trusted cert "
 execDSigTest $res_fail \
     "aleksey-xmldsig-01" \
-    "enveloping-sha256-rsa-sha256-verify" \
+    "enveloping-sha256-rsa-sha256" \
     "sha256 rsa-sha256" \
     "rsa x509" \
     "--enabled-key-data x509"
@@ -1160,10 +1160,10 @@ execDSigTest $res_fail \
 # This is the same, but due to --insecure it must pass.
 # If this fails, that means avoiding the certificate verification doesn't
 # happen correctly
-extra_message="Negative test: missing trusted cert"
+extra_message="Negative test: missing trusted cert but there is --insecure bypass"
 execDSigTest $res_success \
     "aleksey-xmldsig-01" \
-    "enveloping-sha256-rsa-sha256-verify" \
+    "enveloping-sha256-rsa-sha256" \
     "sha256 rsa-sha256" \
     "rsa x509" \
     "--enabled-key-data x509 --insecure"

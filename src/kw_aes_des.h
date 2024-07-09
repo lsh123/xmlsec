@@ -76,7 +76,7 @@ struct _xmlSecKWDes3Klass {
     void*                               reserved0;
     void*                               reserved1;
 };
-typedef struct _xmlSecKWDes3Klass                   xmlSecKWDes3Klass,
+typedef const struct _xmlSecKWDes3Klass              xmlSecKWDes3Klass,
                                                     *xmlSecKWDes3Id;
 
 #define xmlSecKWDes3CheckId(id) \
@@ -156,7 +156,7 @@ struct _xmlSecKWAesKlass {
     void*                               reserved0;
     void*                               reserved1;
 };
-typedef struct _xmlSecKWAesKlass                    xmlSecKWAesKlass,
+typedef const struct _xmlSecKWAesKlass              xmlSecKWAesKlass,
                                                     *xmlSecKWAesId;
 
 /*********************************************************************

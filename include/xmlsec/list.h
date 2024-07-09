@@ -19,7 +19,7 @@
 extern "C" {
 #endif /* __cplusplus */
 
-typedef const struct _xmlSecPtrListKlass                        xmlSecPtrListKlass,
+typedef struct _xmlSecPtrListKlass                        xmlSecPtrListKlass,
                                                                 *xmlSecPtrListId;
 typedef struct _xmlSecPtrList                                   xmlSecPtrList,
                                                                 *xmlSecPtrListPtr;

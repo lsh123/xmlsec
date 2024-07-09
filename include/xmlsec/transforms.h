@@ -29,7 +29,7 @@
 extern "C" {
 #endif /* __cplusplus */
 
-typedef const struct _xmlSecTransformKlass              xmlSecTransformKlass,
+typedef struct _xmlSecTransformKlass                    xmlSecTransformKlass,
                                                         *xmlSecTransformId;
 
 /**********************************************************************

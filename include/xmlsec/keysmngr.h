@@ -22,9 +22,9 @@
 extern "C" {
 #endif /* __cplusplus */
 
-typedef const struct _xmlSecKeyKlass                    xmlSecKeyKlass,
+typedef struct _xmlSecKeyKlass                          xmlSecKeyKlass,
                                                         *xmlSecKeyId;
-typedef const struct _xmlSecKeyStoreKlass               xmlSecKeyStoreKlass,
+typedef struct _xmlSecKeyStoreKlass                     xmlSecKeyStoreKlass,
                                                         *xmlSecKeyStoreId;
 
 typedef struct _xmlSecKeyX509DataValue                  xmlSecKeyX509DataValue,

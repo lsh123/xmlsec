@@ -27,9 +27,9 @@ extern "C" {
  * Forward declarations
  *
  ****************************************************************************/
-typedef struct _xmlSecKeyDataKlass                xmlSecKeyDataKlass,
+typedef struct _xmlSecKeyDataKlass                      xmlSecKeyDataKlass,
                                                         *xmlSecKeyDataId;
-typedef struct _xmlSecKeyDataStoreKlass           xmlSecKeyDataStoreKlass,
+typedef struct _xmlSecKeyDataStoreKlass                 xmlSecKeyDataStoreKlass,
                                                         *xmlSecKeyDataStoreId;
 typedef struct _xmlSecKeyDataList                       xmlSecKeyDataList,
                                                         *xmlSecKeyDataListPtr;

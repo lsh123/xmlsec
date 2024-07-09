@@ -156,7 +156,7 @@ struct _xmlSecKWAesKlass {
     void*                               reserved0;
     void*                               reserved1;
 };
-typedef struct _xmlSecKWAesKlass              xmlSecKWAesKlass,
+typedef struct _xmlSecKWAesKlass                    xmlSecKWAesKlass,
                                                     *xmlSecKWAesId;
 
 /*********************************************************************

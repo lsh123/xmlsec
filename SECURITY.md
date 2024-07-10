@@ -5,7 +5,7 @@
 The XMLSec library WILL provide security updates / fixes for the released versions for 5 years since [the day of the release](https://www.aleksey.com/xmlsec/news.html).
 After 5 years, the support MIGHT be provided on case-by-case basis.
 
-| Version   | Rekease date       | Supported          |
+| Version   | Release date       | Supported          |
 | --------- | -------------------|------------------- |
 | <= 1.2.28 | April 16, 2019     | :x:                |
 | >= 1.2.29 | October 15, 2019   | :white_check_mark: |

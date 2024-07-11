@@ -23,7 +23,7 @@
 #include <string.h>
 
 #include <nss.h>
-#include <pk11func.h>
+#include <pk11pub.h>
 #include <hasht.h>
 
 #include <xmlsec/xmlsec.h>

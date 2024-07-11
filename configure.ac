@@ -1918,14 +1918,14 @@ dnl ==========================================================================
 dnl See do we need HTTP support
 dnl ==========================================================================
 AC_MSG_CHECKING(for HTTP support)
-AC_ARG_ENABLE([http], [AS_HELP_STRING([--enable-http],[enable HTTP support (yes)])])
-if test "z$enable_http" = "zno" ; then
+AC_ARG_ENABLE([http], [AS_HELP_STRING([--enable-http],[enable HTTP support (no, deprecated)])])
+if test "z$enable_http" = "zyes" ; then
+    XMLSEC_NO_HTTP="0"
+    AC_MSG_RESULT([yes])
+else
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_HTTP=1"
     XMLSEC_NO_HTTP="1"
     AC_MSG_RESULT([no])
-else
-    XMLSEC_NO_HTTP="0"
-    AC_MSG_RESULT([yes])
 fi
 AM_CONDITIONAL(XMLSEC_NO_HTTP, test "z$XMLSEC_NO_HTTP" = "z1")
 AC_SUBST(XMLSEC_NO_HTTP)

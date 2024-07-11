@@ -47,6 +47,7 @@
 #include <xmlsec/keys.h>
 #include <xmlsec/io.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/xmltree.h>
 
 #include "cast_helpers.h"
 
@@ -256,6 +257,157 @@ xmlSecIORegisterCallbacks(xmlInputMatchCallback matchFunc,
 }
 
 
+/** File IO **/
+static int
+xmlSecIOFileExtractFilename(char const* filename, char** out) {
+    const char* escaped;
+    char* unescaped = NULL;
+
+    xmlSecAssert2(filename != NULL, -1);
+
+    if (!xmlStrncasecmp(BAD_CAST filename, BAD_CAST "file://localhost/", 17)) {
+        escaped = &filename[16];
+    }
+    else if (!xmlStrncasecmp(BAD_CAST filename, BAD_CAST "file:///", 8)) {
+        escaped = &filename[7];
+    }
+    else if (!xmlStrncasecmp(BAD_CAST filename, BAD_CAST "file://", 7)) {
+        /* lots of generators seems to lazy to read RFC 1738 */
+        escaped = &filename[6];
+    }
+    else if (!xmlStrncasecmp(BAD_CAST filename, BAD_CAST "file:/", 6)) {
+        /* lots of generators seems to lazy to read RFC 1738 */
+        escaped = &filename[5];
+    }
+    else {
+        (*out) = NULL;
+        return(0); /* hope for the best */
+    }
+
+#ifdef _WIN32
+    /* Ignore slash like in file:///C:/file.txt */
+    escaped += 1;
+#endif
+
+    unescaped = xmlURIUnescapeString(escaped, 0, NULL);
+    if (unescaped == NULL) {
+        xmlSecXmlError("xmlURIUnescapeString", NULL);
+        return(-1);
+    }
+
+    /* done */
+    (*out) = unescaped;
+    return(0);
+}
+
+
+static int
+xmlSecIOFileMatch(char const* filename) {
+    xmlSecAssert2(filename != NULL, -1);
+    return(1); /* hope for the best */
+}
+
+static void*
+xmlSecIOFileOpen(char const* filename) {
+    char* tmp = NULL;
+    FILE* fd = NULL;
+    int ret;
+
+    xmlSecAssert2(filename != NULL, NULL);
+
+    /* extract the filename */
+    ret = xmlSecIOFileExtractFilename(filename, &tmp);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecIOFileExtractFilename", NULL);
+        return(NULL);
+    }
+    if (tmp != NULL) {
+        filename = tmp;
+    }
+
+    /* open file */
+#if defined(XMLSEC_WINDOWS) && defined(UNICODE)
+    {
+        LPTSTR wpath;
+        errno_t err;
+
+        wpath = xmlSecWin32ConvertUtf8ToTstr(BAD_CAST filename);
+        if (wpath == NULL) {
+            xmlSecInternalError("xmlSecWin32ConvertUtf8ToTstr", NULL);
+            xmlFree(tmp);
+            return(NULL);
+        }
+        err = _wfopen_s(&fd, wpath, L"rb");
+        if ((err != 0) || (fd == NULL)) {
+            xmlSecInternalError("_wfopen_s", NULL);
+            xmlFree(wpath);
+            xmlFree(tmp);
+            return(NULL);
+        }
+        xmlFree(wpath);
+    }
+#elif defined(XMLSEC_WINDOWS)  
+    {
+        errno_t err;
+        err = fopen_s(&fd, filename, "rb");
+        if ((err != 0) || (fd == NULL)) {
+            xmlSecInternalError("fopen_s", NULL);
+            xmlFree(tmp);
+            return(NULL);
+        }
+    }
+#else /* defined(XMLSEC_WINDOWS) && defined(UNICODE) */
+    fd = fopen(filename, "rb");
+    if (fd == NULL) {
+        xmlSecInternalError("fopen", NULL);
+        xmlFree(tmp);
+        return(NULL);
+    }
+#endif /* defined(XMLSEC_WINDOWS) && defined(UNICODE) */
+
+    /* done */
+    xmlFree(tmp);
+    return(fd);
+}
+
+static int
+xmlSecIOFileRead(void* context, char* buffer, int len) {
+    FILE* fd = (FILE*)context;
+    xmlSecSize szLen, szBytes;
+    size_t bytes;
+    int res;
+
+    xmlSecAssert2(fd != NULL, -1);
+    xmlSecAssert2(buffer != NULL, -1);
+
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(len, szLen, return(-1), NULL);
+    bytes = fread(buffer, 1, szLen, fd);
+    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(bytes, szBytes, return(-1), NULL);
+
+    if ((szBytes < szLen) && (ferror(fd))) {
+        xmlSecInternalError("fread", NULL);
+        return(-1);
+    }
+
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(szBytes, res, return(-1), NULL);
+    return(res);
+}
+
+static int
+xmlSecIOFilClose(void* context) {
+    FILE* fd = (FILE*)context;
+    int ret;
+
+    xmlSecAssert2(fd != NULL, -1);
+
+    ret = fclose(fd);
+    if (ret != 0) {
+        xmlSecInternalError("fclose", NULL);
+        return(-1);
+    }
+    return(0);
+}
+
 /**
  * xmlSecIORegisterDefaultCallbacks:
  *
@@ -269,8 +421,12 @@ xmlSecIORegisterDefaultCallbacks(void) {
 
 #ifndef XMLSEC_NO_FILES
     /* Callbacks added later are picked up first */
-    ret = xmlSecIORegisterCallbacks(xmlFileMatch, xmlFileOpen,
-                              xmlFileRead, xmlFileClose);
+    ret = xmlSecIORegisterCallbacks(
+        xmlSecIOFileMatch,
+        xmlSecIOFileOpen,
+        xmlSecIOFileRead,
+        xmlSecIOFilClose
+    );
     if(ret < 0) {
         xmlSecInternalError("xmlSecIORegisterCallbacks(file)", NULL);
         return(-1);

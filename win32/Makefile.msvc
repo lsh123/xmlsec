@@ -465,6 +465,18 @@ SOLIBS 			= $(SOLIBS) iconv.lib
 ALIBS 			= $(ALIBS) iconv_a.lib
 !endif
 
+!if "$(WITH_FTP)" == "1"
+CFLAGS = $(CFLAGS)
+!else
+CFLAGS = $(CFLAGS) /D "XMLSEC_NO_FTP"
+!endif
+
+!if "$(WITH_HTTP)" == "1"
+CFLAGS = $(CFLAGS)
+!else
+CFLAGS = $(CFLAGS) /D "XMLSEC_NO_HTTP"
+!endif
+
 !if "$(WITH_LIBXSLT)" == "1"
 SOLIBS 			= $(SOLIBS) libxslt.lib
 ALIBS 			= $(ALIBS) libxslt_a.lib

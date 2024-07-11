@@ -1133,8 +1133,8 @@ extra_message="Negative test: expired cert"
 execDSigTest $res_fail \
     "" \
     "aleksey-xmldsig-01/enveloping-expired-cert" \
-    "sha1 dsa-sha1" \
-    "dsa x509" \
+    "sha1 rsa-sha1" \
+    "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509 --verification-gmt-time 2022-12-20+00:00:00"
 
 # Expired cert but there is verification time overwrite

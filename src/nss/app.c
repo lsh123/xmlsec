@@ -21,7 +21,7 @@
 
 #include <nspr.h>
 #include <nss.h>
-#include <pk11func.h>
+#include <pk11pub.h>
 #include <cert.h>
 #include <keyhi.h>
 #include <pkcs12.h>

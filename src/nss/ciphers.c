@@ -22,7 +22,7 @@
 #include <nspr.h>
 #include <nss.h>
 #include <secoid.h>
-#include <pk11func.h>
+#include <pk11pub.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>

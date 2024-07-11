@@ -30,7 +30,7 @@
 #include <keyhi.h>
 #include <cert.h>
 #include <certdb.h>
-#include <pk11func.h>
+#include <pk11pub.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/base64.h>

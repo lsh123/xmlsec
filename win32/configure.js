@@ -50,6 +50,7 @@ var withMSCrypto = 0;
 var withMSCng = 0;
 var withLibXSLT = 1;
 var withIconv = 1;
+var withFTP = 1;
 var withNT4 = 1;
 var withFTP = 0; /* disable ftp by default */
 var withHTTP = 0; /* disable http by default */
@@ -144,7 +145,7 @@ function usage()
 	txt += "  lib:        Additional search path for the linker, particularily\n";
 	txt += "              where libxml library can be found (" + buildLib + ")\n";
 	txt += "\nCrypto options, default value given in parentheses:\n\n";
-	txt += "  with-openssl3-engines:    Enable dynamic loading of xmlsec-crypto libraries (" + (withOpenSSL3Engines ? "yes" : "no") + ")\n";	
+	txt += "  with-openssl3-engines:    Enable dynamic loading of xmlsec-crypto libraries (" + (withOpenSSL3Engines ? "yes" : "no") + ")\n";
 	WScript.Echo(txt);
 }
 
@@ -367,7 +368,7 @@ for (i = 0; (i < WScript.Arguments.length) && (error == 0); i++) {
 		else if (opt == "cruntime")
 			cruntime = arg.substring(opt.length + 1, arg.length);
 		else if (opt == "with-openssl3-engines")
-			withOpenSSL3Engines = strToBool(arg.substring(opt.length + 1, arg.length));		
+			withOpenSSL3Engines = strToBool(arg.substring(opt.length + 1, arg.length));
 		else
 			error = 1;
 	} else if (i == 0) {

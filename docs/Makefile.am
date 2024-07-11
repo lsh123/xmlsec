@@ -112,7 +112,7 @@ clean-local:
 
 distclean-local: clean-local
 
-install-data-local: 
+install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)
 	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)/images
 	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)/css

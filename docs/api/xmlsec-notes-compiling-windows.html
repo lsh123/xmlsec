@@ -1,6 +1,6 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Compiling and linking on Windows.: XML Security Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
@@ -66,19 +66,19 @@
 	However, there are few general things, that you need to remember:
 	</p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
-<li class="listitem"><p>	
+<li class="listitem"><p>
 	     <span class="emphasis"><em>All libraries linked to your application must be compiled
 	    with the same Microsoft Runtime Libraries.</em></span>
 	    </p></li>
 <li class="listitem">
-<p>	
-	     <span class="emphasis"><em>Static linking with XML Security Library requires 
+<p>
+	     <span class="emphasis"><em>Static linking with XML Security Library requires
 	     additional global defines:</em></span>
 	      </p>
 <div class="informalexample"><pre class="programlisting">
 #define LIBXML_STATIC
 #define LIBXSLT_STATIC
-#define XMLSEC_STATIC	    
+#define XMLSEC_STATIC
 	     </pre></div>
 <p>
 	    </p>
@@ -86,7 +86,7 @@
 <li class="listitem"><p>
 	    If you do not want to dynamicaly load xmlsec-crypto library
 	    and prefer to select crypto engine at linking then you should
-	    link your application with xmlsec and at least one of 
+	    link your application with xmlsec and at least one of
 	    xmlsec-crypto libraries.
 	    </p></li>
 <li class="listitem">
@@ -97,7 +97,7 @@
 <div class="informalexample"><pre class="programlisting">
 #define XMLSEC_CRYPTO_DYNAMIC_LOADING
 	     </pre></div>
-<p>	    
+<p>
 	    </p>
 </li>
 </ul></div>

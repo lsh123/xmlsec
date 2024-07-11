@@ -1,6 +1,6 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Verifying a signed document: XML Security Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
@@ -73,12 +73,12 @@
 		functions.
 	    </p></li>
 <li class="listitem"><p>
-		Select start verification 
+		Select start verification
     		<a class="ulink" href="" target="_top">&lt;dsig:Signature/&gt;</a>
 		node in the signed XML document.
 	    </p></li>
 <li class="listitem"><p>
-		Verify signature by calling <a class="link" href="xmlsec-xmldsig.html#xmlSecDSigCtxVerify" title="xmlSecDSigCtxVerify ()">xmlSecDSigCtxVerify</a> 
+		Verify signature by calling <a class="link" href="xmlsec-xmldsig.html#xmlSecDSigCtxVerify" title="xmlSecDSigCtxVerify ()">xmlSecDSigCtxVerify</a>
 		function.
 	    </p></li>
 <li class="listitem"><p>
@@ -101,7 +101,7 @@
 <a name="id-1.2.8.3.3.1"></a><p class="title"><b>Example 14. Verifying a document.</b></p>
 <div class="example-contents">
 <pre class="programlisting">
-/** 
+/**
  * verify_file:
  * @xml_file:		the signed XML file name.
  * @key_file:		the PEM public key file name.
@@ -110,13 +110,13 @@
  *
  * Returns 0 on success or a negative value if an error occurs.
  */
-int 
+int
 verify_file(const char* xml_file, const char* key_file) {
     xmlDocPtr doc = NULL;
     xmlNodePtr node = NULL;
     xmlSecDSigCtxPtr dsigCtx = NULL;
     int res = -1;
-    
+
     assert(xml_file);
     assert(key_file);
 
@@ -124,14 +124,14 @@ verify_file(const char* xml_file, const char* key_file) {
     doc = xmlParseFile(xml_file);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
 	fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
-	goto done;	
+	goto done;
     }
-    
+
     /* find start node */
     node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeSignature, xmlSecDSigNs);
     if(node == NULL) {
 	fprintf(stderr, "Error: start node not found in \"%s\"\n", xml_file);
-	goto done;	
+	goto done;
     }
 
     /* create signature context, we don't need keys manager in this example */
@@ -159,25 +159,25 @@ verify_file(const char* xml_file, const char* key_file) {
         fprintf(stderr,"Error: signature verify\n");
 	goto done;
     }
-        
+
     /* print verification result to stdout */
     if(dsigCtx-&gt;status == xmlSecDSigStatusSucceeded) {
 	fprintf(stdout, "Signature is OK\n");
     } else {
 	fprintf(stdout, "Signature is INVALID\n");
-    }    
+    }
 
     /* success */
     res = 0;
 
-done:    
+done:
     /* cleanup */
     if(dsigCtx != NULL) {
 	xmlSecDSigCtxDestroy(dsigCtx);
     }
-    
+
     if(doc != NULL) {
-	xmlFreeDoc(doc); 
+	xmlFreeDoc(doc);
     }
     return(res);
 }

@@ -1,6 +1,6 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Initialization and shutdown.: XML Security Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
@@ -60,7 +60,7 @@
 <div class="chapter">
 <div class="titlepage"><div><div><h2 class="title">
 <a name="xmlsec-notes-init-shutdown"></a>Initialization and shutdown.</h2></div></div></div>
-<p>XML Security Library initialization/shutdown 
+<p>XML Security Library initialization/shutdown
 	process includes initialization and shutdown of the
 	dependent libraries:
 	</p>
@@ -68,24 +68,24 @@
 <li class="listitem"><p>libxml library;</p></li>
 <li class="listitem"><p>libxslt library;</p></li>
 <li class="listitem"><p>crypto library (OpenSSL, GnuTLS, GCrypt, NSS, ...);</p></li>
-<li class="listitem"><p>xmlsec library 
-		(<a class="link" href="xmlsec-xmlsec.html#xmlSecInit" title="xmlSecInit ()">xmlSecInit</a> 
-		and <a class="link" href="xmlsec-xmlsec.html#xmlSecShutdown" title="xmlSecShutdown ()">xmlSecShutdown</a> 
+<li class="listitem"><p>xmlsec library
+		(<a class="link" href="xmlsec-xmlsec.html#xmlSecInit" title="xmlSecInit ()">xmlSecInit</a>
+		and <a class="link" href="xmlsec-xmlsec.html#xmlSecShutdown" title="xmlSecShutdown ()">xmlSecShutdown</a>
 		functions);
 	    </p></li>
 <li class="listitem"><p>xmlsec-crypto library
-		(<a class="link" href="xmlsec-dl.html#xmlSecCryptoDLLoadLibrary" title="xmlSecCryptoDLLoadLibrary ()">xmlSecCryptoDLLoadLibrary</a> 
-		to load xmlsec-crypto library dynamicaly if needed, 
-		<a class="link" href="xmlsec-app.html#xmlSecCryptoInit" title="xmlSecCryptoInit ()">xmlSecCryptoInit</a> 
-		and <a class="link" href="xmlsec-app.html#xmlSecCryptoShutdown" title="xmlSecCryptoShutdown ()">xmlSecCryptoShutdown</a> 
+		(<a class="link" href="xmlsec-dl.html#xmlSecCryptoDLLoadLibrary" title="xmlSecCryptoDLLoadLibrary ()">xmlSecCryptoDLLoadLibrary</a>
+		to load xmlsec-crypto library dynamicaly if needed,
+		<a class="link" href="xmlsec-app.html#xmlSecCryptoInit" title="xmlSecCryptoInit ()">xmlSecCryptoInit</a>
+		and <a class="link" href="xmlsec-app.html#xmlSecCryptoShutdown" title="xmlSecCryptoShutdown ()">xmlSecCryptoShutdown</a>
 		functions);
 	    </p></li>
 </ul></div>
 <p>
-	xmlsec-crypto library also provides a convinient functions 
-	<font>xmlSecAppCryptoInit</font> 
-	and <font>xmlSecAppCryptoShutdown</font> 
-	to initialize the crypto library itself but application can do it 
+	xmlsec-crypto library also provides a convinient functions
+	<font>xmlSecAppCryptoInit</font>
+	and <font>xmlSecAppCryptoShutdown</font>
+	to initialize the crypto library itself but application can do it
 	by itself.
 	</p>
 <p>
@@ -99,9 +99,9 @@
     xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
     xmlSubstituteEntitiesDefault(1);
 #ifndef XMLSEC_NO_XSLT
-    xmlIndentTreeOutput = 1; 
+    xmlIndentTreeOutput = 1;
 #endif /* XMLSEC_NO_XSLT */
-        	
+
     /* Init xmlsec library */
     if(xmlSecInit() &lt; 0) {
 	fprintf(stderr, "Error: xmlsec initialization failed.\n");
@@ -112,11 +112,11 @@
     if(xmlSecCheckVersion() != 1) {
 	fprintf(stderr, "Error: loaded xmlsec library version is not compatible.\n");
 	return(-1);
-    }    
+    }
 
     /* Load default crypto engine if we are supporting dynamic
      * loading for xmlsec-crypto libraries. Use the crypto library
-     * name ("openssl", "nss", etc.) to load corresponding 
+     * name ("openssl", "nss", etc.) to load corresponding
      * xmlsec-crypto library.
      */
 #ifdef XMLSEC_CRYPTO_DYNAMIC_LOADING
@@ -124,7 +124,7 @@
 	fprintf(stderr, "Error: unable to load default xmlsec-crypto library. Make sure\n"
 			"that you have it installed and check shared libraries path\n"
 			"(LD_LIBRARY_PATH) envornment variable.\n");
-	return(-1);	
+	return(-1);
     }
 #endif /* XMLSEC_CRYPTO_DYNAMIC_LOADING */
 
@@ -150,18 +150,18 @@
 <div class="example-contents"><pre class="programlisting">
     /* Shutdown xmlsec-crypto library */
     xmlSecCryptoShutdown();
-    
+
     /* Shutdown crypto library */
     xmlSecCryptoAppShutdown();
-    
+
     /* Shutdown xmlsec library */
     xmlSecShutdown();
 
     /* Shutdown libxslt/libxml */
 #ifndef XMLSEC_NO_XSLT
-    xsltCleanupGlobals();            
+    xsltCleanupGlobals();
 #endif /* XMLSEC_NO_XSLT */
-    xmlCleanupParser();		
+    xmlCleanupParser();
 		</pre></div>
 </div>
 <p><br class="example-break">

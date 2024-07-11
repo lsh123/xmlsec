@@ -1,6 +1,6 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Signing a document.: XML Security Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
@@ -78,13 +78,13 @@
 		functions.
 	    </p></li>
 <li class="listitem"><p>
-		Load signature key in <a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr">keys manager</a> 
-		or generate a session key and set it in the signature context 
-		(<em class="structfield"><code>signKey</code></em> member of 
+		Load signature key in <a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr">keys manager</a>
+		or generate a session key and set it in the signature context
+		(<em class="structfield"><code>signKey</code></em> member of
 		<a class="link" href="xmlsec-xmldsig.html#xmlSecDSigCtx" title="struct xmlSecDSigCtx">xmlSecDSigCtx</a> structure).
 	    </p></li>
 <li class="listitem"><p>
-		Sign data by calling <a class="link" href="xmlsec-xmldsig.html#xmlSecDSigCtxSign" title="xmlSecDSigCtxSign ()">xmlSecDSigCtxSign</a> 
+		Sign data by calling <a class="link" href="xmlsec-xmldsig.html#xmlSecDSigCtxSign" title="xmlSecDSigCtxSign ()">xmlSecDSigCtxSign</a>
 		function.
 	    </p></li>
 <li class="listitem"><p>
@@ -105,7 +105,7 @@
 <a name="id-1.2.6.3.3.1"></a><p class="title"><b>Example 10. Signing a template.</b></p>
 <div class="example-contents">
 <pre class="programlisting">
-/** 
+/**
  * sign_file:
  * @tmpl_file:		the signature template file name.
  * @key_file:		the PEM private key file name.
@@ -114,13 +114,13 @@
  *
  * Returns 0 on success or a negative value if an error occurs.
  */
-int 
+int
 sign_file(const char* tmpl_file, const char* key_file) {
     xmlDocPtr doc = NULL;
     xmlNodePtr node = NULL;
     xmlSecDSigCtxPtr dsigCtx = NULL;
     int res = -1;
-    
+
     assert(tmpl_file);
     assert(key_file);
 
@@ -128,14 +128,14 @@ sign_file(const char* tmpl_file, const char* key_file) {
     doc = xmlParseFile(tmpl_file);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
 	fprintf(stderr, "Error: unable to parse file \"%s\"\n", tmpl_file);
-	goto done;	
+	goto done;
     }
-    
+
     /* find start node */
     node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeSignature, xmlSecDSigNs);
     if(node == NULL) {
 	fprintf(stderr, "Error: start node not found in \"%s\"\n", tmpl_file);
-	goto done;	
+	goto done;
     }
 
     /* create signature context, we don't need keys manager in this example */
@@ -163,21 +163,21 @@ sign_file(const char* tmpl_file, const char* key_file) {
         fprintf(stderr,"Error: signature failed\n");
 	goto done;
     }
-        
+
     /* print signed document to stdout */
     xmlDocDump(stdout, doc);
-    
+
     /* success */
     res = 0;
 
-done:    
+done:
     /* cleanup */
     if(dsigCtx != NULL) {
 	xmlSecDSigCtxDestroy(dsigCtx);
     }
-    
+
     if(doc != NULL) {
-	xmlFreeDoc(doc); 
+	xmlFreeDoc(doc);
     }
     return(res);
 }

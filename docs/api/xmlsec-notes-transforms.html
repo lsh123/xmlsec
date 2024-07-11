@@ -1,6 +1,6 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Transforms and transforms chain.: XML Security Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
@@ -60,16 +60,16 @@
 <div class="chapter">
 <div class="titlepage"><div><div><h2 class="title">
 <a name="xmlsec-notes-transforms"></a>Transforms and transforms chain.</h2></div></div></div>
-<p>XML Digital Signature and XML Encryption standards are 
-	very flexible and provide an XML developer many different ways to 
-	sign or encrypt any part (or even parts) of an XML document. 
+<p>XML Digital Signature and XML Encryption standards are
+	very flexible and provide an XML developer many different ways to
+	sign or encrypt any part (or even parts) of an XML document.
 	The key for such great flexibility is the "transforms" model.
-	Transform is defined as a method of pre-processing binary or XML data 
-	before calculating digest or signature. XML Security Library extends 
-	this definition and names "transform" any operation performed on 
-	the data: reading data from an URI, xml parsing, xml transformation, 
+	Transform is defined as a method of pre-processing binary or XML data
+	before calculating digest or signature. XML Security Library extends
+	this definition and names "transform" any operation performed on
+	the data: reading data from an URI, xml parsing, xml transformation,
 	calculation digest, encrypting or decrypting. Each XML Security Library
-	transform provides at least one of the following callbacks: 
+	transform provides at least one of the following callbacks:
 	    </p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem"><p>
@@ -88,29 +88,29 @@
 <p>
     </p>
 <p>One additional <a class="link" href="xmlsec-transforms.html#xmlSecTransformExecuteMethod" title="xmlSecTransformExecuteMethod ()">execute</a>
-	callback was added to simplify the development and reduce code size. 
+	callback was added to simplify the development and reduce code size.
 	This callback is used by default
 	implementations of the four external callbacks from the list above.
-	For example, most of the crypto transforms could be implemented by 
-	just implementing one "execute" callback and using default push/pop 
-	binary data callbacks. However, in some cases using push/pop callbacks 
+	For example, most of the crypto transforms could be implemented by
+	just implementing one "execute" callback and using default push/pop
+	binary data callbacks. However, in some cases using push/pop callbacks
 	directly is more efficient.
     </p>
 <div class="figure">
 <a name="id-1.2.12.4"></a><p class="title"><b>Figure 9. The XML Security Library transform.</b></p>
 <div class="figure-contents"><div align="center"><img src="images/transform.png" align="middle" alt="The XML Security Library transform."></div></div>
 </div>
-<br class="figure-break"><p>XML Security Library constructs transforms chain according to the 
-	signature/encryption template or signed/encrypted document. 
+<br class="figure-break"><p>XML Security Library constructs transforms chain according to the
+	signature/encryption template or signed/encrypted document.
 	If necessary, XML Security Library inserts XML parser or defaul
-	canonicalization to ensure that the output data type (binary or XML) 
+	canonicalization to ensure that the output data type (binary or XML)
 	of previous transform matches the input of the next transform.
     </p>
 <p>The data are processed by pushing through or poping from the chain
-	depending on the transforms in the chain.  For example, then binary 
-	data chunk is pushed through a binary-to-binary transform, it 
-	processes this chunk and pushes the result to the next transform 
-	in the chain. 
+	depending on the transforms in the chain.  For example, then binary
+	data chunk is pushed through a binary-to-binary transform, it
+	processes this chunk and pushes the result to the next transform
+	in the chain.
     </p>
 <div class="figure">
 <a name="id-1.2.12.7"></a><p class="title"><b>Figure 10. Transforms chain created for &lt;dsig:Reference/&gt; element processing.</b></p>

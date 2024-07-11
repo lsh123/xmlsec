@@ -1,6 +1,6 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Verifing document signed with X509 certificates.: XML Security Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
@@ -67,7 +67,7 @@
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem"><p>Creating and verifing X509 certificates chain.
 	    </p></li>
-<li class="listitem"><p>Verifing signature itself using key exrtacted from 
+<li class="listitem"><p>Verifing signature itself using key exrtacted from
 	    a certificate verified on previous step.
 	    </p></li>
 </ul></div>
@@ -92,10 +92,10 @@ Certificate A (signed with B) &lt;- Certificate B (signed with C) &lt;- ... &lt;
 	function to load both "trusted" and "un-trusted"
 	certificates. However, the selection of "trusted"
 	certificates is very sensitive process and this function might be
-	not implemented for some crypto engines. In this case, the 
+	not implemented for some crypto engines. In this case, the
 	"trusted" certificates list is loaded during initialization
 	or specified in crypto engine configuration files.
-	Check XML Security Library API reference for more details. 
+	Check XML Security Library API reference for more details.
 	</p>
 <div class="example">
 <a name="id-1.2.11.4.3.2"></a><p class="title"><b>Example 22. Loading trusted X509 certificate.</b></p>
@@ -113,17 +113,17 @@ Certificate A (signed with B) &lt;- Certificate B (signed with C) &lt;- ... &lt;
  * Returns the pointer to newly created keys manager or NULL if an error
  * occurs.
  */
-xmlSecKeysMngrPtr 
+xmlSecKeysMngrPtr
 load_trusted_certs(char** files, int files_size) {
     xmlSecKeysMngrPtr mngr;
     int i;
-        
+
     assert(files);
     assert(files_size &gt; 0);
-    
+
     /* create and initialize keys manager, we use a simple list based
      * keys manager, implement your own xmlSecKeysStore klass if you need
-     * something more sophisticated 
+     * something more sophisticated
      */
     mngr = xmlSecKeysMngrCreate();
     if(mngr == NULL) {
@@ -134,8 +134,8 @@ load_trusted_certs(char** files, int files_size) {
 	fprintf(stderr, "Error: failed to initialize keys manager.\n");
 	xmlSecKeysMngrDestroy(mngr);
 	return(NULL);
-    }    
-    
+    }
+
     for(i = 0; i &lt; files_size; ++i) {
 	assert(files[i]);
 

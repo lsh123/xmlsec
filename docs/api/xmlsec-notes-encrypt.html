@@ -1,6 +1,6 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Encrypting data.: XML Security Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
@@ -77,9 +77,9 @@
 		functions.
 	    </p></li>
 <li class="listitem"><p>
-		Load encryption key in <a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr">keys manager</a> 
+		Load encryption key in <a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr">keys manager</a>
 		or generate a session key and set it in the encryption context
-		(<em class="structfield"><code>encKey</code></em> member of 
+		(<em class="structfield"><code>encKey</code></em> member of
 		<a class="link" href="xmlsec-xmlenc.html#xmlSecEncCtx" title="struct xmlSecEncCtx">xmlSecEncCtx</a> structure).
 	    </p></li>
 <li class="listitem">
@@ -130,13 +130,13 @@
  *
  * Returns 0 on success or a negative value if an error occurs.
  */
-int 
+int
 encrypt_file(const char* tmpl_file, const char* key_file, const unsigned char* data, size_t dataSize) {
     xmlDocPtr doc = NULL;
     xmlNodePtr node = NULL;
     xmlSecEncCtxPtr encCtx = NULL;
     int res = -1;
-    
+
     assert(tmpl_file);
     assert(key_file);
     assert(data);
@@ -145,14 +145,14 @@ encrypt_file(const char* tmpl_file, const char* key_file, const unsigned char* d
     doc = xmlParseFile(tmpl_file);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
 	fprintf(stderr, "Error: unable to parse file \"%s\"\n", tmpl_file);
-	goto done;	
+	goto done;
     }
-    
+
     /* find start node */
     node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeEncryptedData, xmlSecEncNs);
     if(node == NULL) {
 	fprintf(stderr, "Error: start node not found in \"%s\"\n", tmpl_file);
-	goto done;	
+	goto done;
     }
 
     /* create encryption context, we don't need keys manager in this example */
@@ -180,21 +180,21 @@ encrypt_file(const char* tmpl_file, const char* key_file, const unsigned char* d
         fprintf(stderr,"Error: encryption failed\n");
     	goto done;
     }
-        
+
     /* print encrypted data with document to stdout */
     xmlDocDump(stdout, doc);
-    
+
     /* success */
     res = 0;
 
-done:    
+done:
     /* cleanup */
     if(encCtx != NULL) {
 	xmlSecEncCtxDestroy(encCtx);
     }
-    
+
     if(doc != NULL) {
-	xmlFreeDoc(doc); 
+	xmlFreeDoc(doc);
     }
     return(res);
 }

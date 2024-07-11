@@ -1,6 +1,6 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Signing data with X509 certificate.: XML Security Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
@@ -60,8 +60,8 @@
 <div class="sect1">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="xmlsec-notes-sign-x509"></a>Signing data with X509 certificate.</h2></div></div></div>
-<p>To sign a file using X509 certificate, 
-	an application need to associate the certificate (or certificates) 
+<p>To sign a file using X509 certificate,
+	an application need to associate the certificate (or certificates)
 	with the private key using one of the following functions:
 	</p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
@@ -78,7 +78,7 @@
 	    function to add key data (including X509 key data) to the key.
 	    </p></li>
 </ul></div>
-<p>	    
+<p>
 	</p>
 <div class="example">
 <a name="id-1.2.11.3.2.2"></a><p class="title"><b>Example 20. Loading private key and X509 certificate.</b></p>
@@ -90,7 +90,7 @@
         fprintf(stderr,"Error: failed to load private pem key from \"%s\"\n", key_file);
 	goto done;
     }
-    
+
     /* load certificate and add to the key */
     if(xmlSecCryptoAppKeyCertLoad(key, cert_file, xmlSecKeyDataFormatPem) &lt; 0) {
         fprintf(stderr,"Error: failed to load pem certificate \"%s\"\n", cert_file);
@@ -104,9 +104,9 @@
 	</p>
 <p>Next step is to prepare signature template with &lt;dsig:X509Data/&gt;
 	child of the &lt;dsig:KeyInfo/&gt; element. When XML Security Library finds
-	this node in the template, it automaticaly creates &lt;dsig:X509Certificate/&gt; 
+	this node in the template, it automaticaly creates &lt;dsig:X509Certificate/&gt;
 	children of the &lt;dsig:X509Data/&gt; element and writes to result XML document
-	all the certificates associated with the signature key. 
+	all the certificates associated with the signature key.
 	</p>
 <div class="example">
 <a name="id-1.2.11.3.3.1"></a><p class="title"><b>Example 21. Dynamicaly creating a signature template for signing document using X509 certificate.</b></p>
@@ -117,36 +117,36 @@
 				         xmlSecTransformRsaSha1Id, NULL);
     if(signNode == NULL) {
 	fprintf(stderr, "Error: failed to create signature template\n");
-	goto done;		
+	goto done;
     }
 
     /* add &lt;dsig:Signature/&gt; node to the doc */
     xmlAddChild(xmlDocGetRootElement(doc), signNode);
-    
+
     /* add reference */
     refNode = xmlSecTmplSignatureAddReference(signNode, xmlSecTransformSha1Id,
 					NULL, NULL, NULL);
     if(refNode == NULL) {
 	fprintf(stderr, "Error: failed to add reference to signature template\n");
-	goto done;		
+	goto done;
     }
 
     /* add enveloped transform */
     if(xmlSecTmplReferenceAddTransform(refNode, xmlSecTransformEnvelopedId) == NULL) {
 	fprintf(stderr, "Error: failed to add enveloped transform to reference\n");
-	goto done;		
+	goto done;
     }
-    
+
     /* add &lt;dsig:KeyInfo/&gt; and &lt;dsig:X509Data/&gt; */
     keyInfoNode = xmlSecTmplSignatureEnsureKeyInfo(signNode, NULL);
     if(keyInfoNode == NULL) {
 	fprintf(stderr, "Error: failed to add key info\n");
-	goto done;		
+	goto done;
     }
-    
+
     if(xmlSecTmplKeyInfoAddX509Data(keyInfoNode) == NULL) {
 	fprintf(stderr, "Error: failed to add X509Data node\n");
-	goto done;		
+	goto done;
     }
 	    </pre>
 <p><a class="link" href="xmlsec-examples-sign-x509.html#xmlsec-example-sign3" title="sign3.c">Full program listing</a></p>

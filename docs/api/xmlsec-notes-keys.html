@@ -1,6 +1,6 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Keys.: XML Security Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
@@ -60,27 +60,27 @@
 <div class="chapter">
 <div class="titlepage"><div><div><h2 class="title">
 <a name="xmlsec-notes-keys"></a>Keys.</h2></div></div></div>
-<p>A key in XML Security Library is a representation of the 
+<p>A key in XML Security Library is a representation of the
 	<a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a>
-	element and consist of several key data objects. 
-	The "value" key data usually contains raw key material (or handlers to 
-	key material) required to execute particular crypto transform. Other 
-	key data objects may contain any additional information about the key. 
-	All the key data objects in the key are associated with the same key 
-	material. For example, if a DSA key material has both an X509 
-	certificate and a PGP data associated with it then such a key can 
-	have a DSA key "value" and two key data objects for X509 certificate 
+	element and consist of several key data objects.
+	The "value" key data usually contains raw key material (or handlers to
+	key material) required to execute particular crypto transform. Other
+	key data objects may contain any additional information about the key.
+	All the key data objects in the key are associated with the same key
+	material. For example, if a DSA key material has both an X509
+	certificate and a PGP data associated with it then such a key can
+	have a DSA key "value" and two key data objects for X509 certificate
 	and PGP key data.
     </p>
 <div class="figure">
 <a name="id-1.2.9.3"></a><p class="title"><b>Figure 6. The key structure.</b></p>
 <div class="figure-contents"><div align="center"><img src="images/key.png" align="middle" alt="The key structure."></div></div>
 </div>
-<br class="figure-break"><p>XML Security Library has several "invisible" key data classes. 
-	These classes never show up in the keys data list of a key but are used for 
+<br class="figure-break"><p>XML Security Library has several "invisible" key data classes.
+	These classes never show up in the keys data list of a key but are used for
 	<a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a>
-	children processing (<a class="ulink" href="" target="_top">&lt;dsig:KeyName/&gt;</a>, 
-	&lt;enc:EncryptedKey/&gt;, ...). As with transforms, application might 
+	children processing (<a class="ulink" href="" target="_top">&lt;dsig:KeyName/&gt;</a>,
+	&lt;enc:EncryptedKey/&gt;, ...). As with transforms, application might
 	add any new key data objects or replace the default ones.
     </p>
 </div>

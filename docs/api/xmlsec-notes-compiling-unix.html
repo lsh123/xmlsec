@@ -1,6 +1,6 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Compiling and linking on Unix.: XML Security Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
@@ -64,7 +64,7 @@
 	and linking information on Unix and application can use
 	any of these methods to do crypto engine selection either
 	at linking or run time.
-	
+
 	</p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">
@@ -74,7 +74,7 @@
 <a name="id-1.2.4.4.2.1.1.1.1"></a><p class="title"><b>Example 2. Using PKG_CHECK_MODULES() macro in a configure.in file
 		    to select crypto engine (openssl) at linking time.</b></p>
 <div class="example-contents"><pre class="programlisting">
-dnl 
+dnl
 dnl Check for xmlsec and friends
 dnl
 PKG_CHECK_MODULES(XMLSEC, xmlsec1-openssl &gt;= 1.0.0 xml2 libxslt,,exit)
@@ -90,7 +90,7 @@ LDFLAGS="$LDFLAGS $XMLSEC_LIBS"
 <a name="id-1.2.4.4.2.1.1.1.2"></a><p class="title"><b>Example 3. Using PKG_CHECK_MODULES() macro in a configure.in file
 		    to enable dynamical loading of xmlsec-crypto library.</b></p>
 <div class="example-contents"><pre class="programlisting">
-dnl 
+dnl
 dnl Check for xmlsec and friends
 dnl
 PKG_CHECK_MODULES(XMLSEC, xmlsec1 &gt;= 1.0.0 xml2 libxslt,,exit)
@@ -115,11 +115,11 @@ PROGRAM_FILES = test.c
 
 CFLAGS	+= -g $(shell pkg-config --cflags xmlsec1-nss)
 LDFLAGS	+= -g
-LIBS 	+= $(shell pkg-config --libs xmlsec1-nss) 
+LIBS 	+= $(shell pkg-config --libs xmlsec1-nss)
 
 all: $(PROGRAM)
 
-%: %.c 
+%: %.c
 	$(cc) $(PROGRAM_FILES) $(CFLAGS) $(LDFLAGS) -o $(PROGRAM) $(LIBS)
 
 clean:
@@ -139,11 +139,11 @@ PROGRAM_FILES = test.c
 
 CFLAGS	+= -g $(shell pkg-config --cflags xmlsec1)
 LDFLAGS	+= -g
-LIBS 	+= $(shell pkg-config --libs xmlsec1) 
+LIBS 	+= $(shell pkg-config --libs xmlsec1)
 
 all: $(PROGRAM)
 
-%: %.c 
+%: %.c
 	$(cc) $(PROGRAM_FILES) $(CFLAGS) $(LDFLAGS) -o $(PROGRAM) $(LIBS)
 
 clean:
@@ -166,11 +166,11 @@ PROGRAM_FILES = test.c
 
 CFLAGS	+= -g $(shell xmlsec1-config --crypto gnutls --cflags)
 LDFLAGS	+= -g
-LIBS 	+= $(shell xmlsec1-config --crypto gnutls --libs) 
+LIBS 	+= $(shell xmlsec1-config --crypto gnutls --libs)
 
 all: $(PROGRAM)
 
-%: %.c 
+%: %.c
 	$(cc) $(PROGRAM_FILES) $(CFLAGS) $(LDFLAGS) -o $(PROGRAM) $(LIBS)
 
 clean:
@@ -189,11 +189,11 @@ PROGRAM_FILES = test.c
 
 CFLAGS	+= -g $(shell xmlsec1-config --cflags)
 LDFLAGS	+= -g
-LIBS 	+= $(shell xmlsec1-config --libs) 
+LIBS 	+= $(shell xmlsec1-config --libs)
 
 all: $(PROGRAM)
 
-%: %.c 
+%: %.c
 	$(cc) $(PROGRAM_FILES) $(CFLAGS) $(LDFLAGS) -o $(PROGRAM) $(LIBS)
 
 clean:

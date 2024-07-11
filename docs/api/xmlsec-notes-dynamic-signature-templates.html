@@ -1,6 +1,6 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Creating dynamic signature templates.: XML Security Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
@@ -60,8 +60,8 @@
 <div class="sect1">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="xmlsec-notes-dynamic-signature-templates"></a>Creating dynamic signature templates.</h2></div></div></div>
-<p>The signature template has structure similar 
-	to the XML Digital Signature structure as it is described in 
+<p>The signature template has structure similar
+	to the XML Digital Signature structure as it is described in
 	<a class="ulink" href="" target="_top">specification</a>.
 	The only difference is that some nodes (for example,
 	&lt;dsig:DigestValue/&gt; or &lt;SignatureValue/&gt;)
@@ -71,7 +71,7 @@
 <div class="figure">
 <a name="id-1.2.7.3.3"></a><p class="title"><b>Figure 3. XML Digital Signature structure</b></p>
 <div class="figure-contents"><pre class="programlisting">
-&lt;dsig:Signature ID?&gt; 
+&lt;dsig:Signature ID?&gt;
     &lt;dsig:SignedInfo&gt;
         &lt;dsig:CanonicalizationMethod Algorithm /&gt;
         &lt;dsig:SignatureMethod Algorithm /&gt;
@@ -83,7 +83,7 @@
 	    &lt;dsig:DigestValue&gt;
 	&lt;/dsig:Reference&gt;)+
     &lt;/dsig:SignedInfo&gt;
-    &lt;dsig:SignatureValue&gt; 
+    &lt;dsig:SignatureValue&gt;
     (&lt;dsig:KeyInfo&gt;
 	&lt;dsig:KeyName&gt;?
 	&lt;dsig:KeyValue&gt;?
@@ -106,7 +106,7 @@
 <a name="id-1.2.7.3.4.1"></a><p class="title"><b>Example 12. Creating dynamic signature template.</b></p>
 <div class="example-contents">
 <pre class="programlisting">
-/** 
+/**
  * sign_file:
  * @xml_file:		the XML file name.
  * @key_file:		the PEM private key file name.
@@ -116,7 +116,7 @@
  *
  * Returns 0 on success or a negative value if an error occurs.
  */
-int 
+int
 sign_file(const char* xml_file, const char* key_file) {
     xmlDocPtr doc = NULL;
     xmlNodePtr signNode = NULL;
@@ -124,7 +124,7 @@ sign_file(const char* xml_file, const char* key_file) {
     xmlNodePtr keyInfoNode = NULL;
     xmlSecDSigCtxPtr dsigCtx = NULL;
     int res = -1;
-    
+
     assert(xml_file);
     assert(key_file);
 
@@ -132,44 +132,44 @@ sign_file(const char* xml_file, const char* key_file) {
     doc = xmlParseFile(xml_file);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
 	fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
-	goto done;	
+	goto done;
     }
-    
+
     /* create signature template for RSA-SHA1 enveloped signature */
     signNode = xmlSecTmplSignatureCreate(doc, xmlSecTransformExclC14NId,
 				         xmlSecTransformRsaSha1Id, NULL);
     if(signNode == NULL) {
 	fprintf(stderr, "Error: failed to create signature template\n");
-	goto done;		
+	goto done;
     }
 
     /* add &lt;dsig:Signature/&gt; node to the doc */
     xmlAddChild(xmlDocGetRootElement(doc), signNode);
-    
+
     /* add reference */
     refNode = xmlSecTmplSignatureAddReference(signNode, xmlSecTransformSha1Id,
 					NULL, NULL, NULL);
     if(refNode == NULL) {
 	fprintf(stderr, "Error: failed to add reference to signature template\n");
-	goto done;		
+	goto done;
     }
 
     /* add enveloped transform */
     if(xmlSecTmplReferenceAddTransform(refNode, xmlSecTransformEnvelopedId) == NULL) {
 	fprintf(stderr, "Error: failed to add enveloped transform to reference\n");
-	goto done;		
+	goto done;
     }
 
     /* add &lt;dsig:KeyInfo/&gt; and &lt;dsig:KeyName/&gt; nodes to put key name in the signed document */
     keyInfoNode = xmlSecTmplSignatureEnsureKeyInfo(signNode, NULL);
     if(keyInfoNode == NULL) {
 	fprintf(stderr, "Error: failed to add key info\n");
-	goto done;		
+	goto done;
     }
 
     if(xmlSecTmplKeyInfoAddKeyName(keyInfoNode, NULL) == NULL) {
 	fprintf(stderr, "Error: failed to add key name\n");
-	goto done;		
+	goto done;
     }
 
     /* create signature context, we don't need keys manager in this example */
@@ -197,21 +197,21 @@ sign_file(const char* xml_file, const char* key_file) {
         fprintf(stderr,"Error: signature failed\n");
 	goto done;
     }
-        
+
     /* print signed document to stdout */
     xmlDocDump(stdout, doc);
-    
+
     /* success */
     res = 0;
 
-done:    
+done:
     /* cleanup */
     if(dsigCtx != NULL) {
 	xmlSecDSigCtxDestroy(dsigCtx);
     }
-    
+
     if(doc != NULL) {
-	xmlFreeDoc(doc); 
+	xmlFreeDoc(doc);
     }
     return(res);
 }

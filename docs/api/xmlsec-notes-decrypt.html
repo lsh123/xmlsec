@@ -1,6 +1,6 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Decrypting an encrypted document: XML Security Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
@@ -76,7 +76,7 @@
 		Select start decryption &lt;enc:EncryptedData&gt; node.
 	    </p></li>
 <li class="listitem"><p>
-		Decrypt by calling <a class="link" href="xmlsec-xmlenc.html#xmlSecEncCtxDecrypt" title="xmlSecEncCtxDecrypt ()">xmlSecencCtxDecrypt</a> 
+		Decrypt by calling <a class="link" href="xmlsec-xmlenc.html#xmlSecEncCtxDecrypt" title="xmlSecEncCtxDecrypt ()">xmlSecencCtxDecrypt</a>
 		function.
 	    </p></li>
 <li class="listitem"><p>
@@ -97,13 +97,13 @@
 <a name="id-1.2.8.4.3.1"></a><p class="title"><b>Example 15. Decrypting a document.</b></p>
 <div class="example-contents">
 <pre class="programlisting">
-int 
+int
 decrypt_file(const char* enc_file, const char* key_file) {
     xmlDocPtr doc = NULL;
     xmlNodePtr node = NULL;
     xmlSecEncCtxPtr encCtx = NULL;
     int res = -1;
-    
+
     assert(enc_file);
     assert(key_file);
 
@@ -111,14 +111,14 @@ decrypt_file(const char* enc_file, const char* key_file) {
     doc = xmlParseFile(enc_file);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
 	fprintf(stderr, "Error: unable to parse file \"%s\"\n", enc_file);
-	goto done;	
+	goto done;
     }
-    
+
     /* find start node */
     node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeEncryptedData, xmlSecEncNs);
     if(node == NULL) {
 	fprintf(stderr, "Error: start node not found in \"%s\"\n", enc_file);
-	goto done;	
+	goto done;
     }
 
     /* create encryption context, we don't need keys manager in this example */
@@ -146,7 +146,7 @@ decrypt_file(const char* enc_file, const char* key_file) {
         fprintf(stderr,"Error: decryption failed\n");
 	goto done;
     }
-        
+
     /* print decrypted data to stdout */
     if(encCtx-&gt;resultReplaced != 0) {
 	fprintf(stdout, "Decrypted XML data:\n");
@@ -154,25 +154,25 @@ decrypt_file(const char* enc_file, const char* key_file) {
     } else {
 	fprintf(stdout, "Decrypted binary data (%d bytes):\n", xmlSecBufferGetSize(encCtx-&gt;result));
 	if(xmlSecBufferGetData(encCtx-&gt;result) != NULL) {
-	    fwrite(xmlSecBufferGetData(encCtx-&gt;result), 
-	          1, 
+	    fwrite(xmlSecBufferGetData(encCtx-&gt;result),
+	          1,
 	          xmlSecBufferGetSize(encCtx-&gt;result),
 	          stdout);
 	}
     }
     fprintf(stdout, "\n");
-        
+
     /* success */
     res = 0;
 
-done:    
+done:
     /* cleanup */
     if(encCtx != NULL) {
 	xmlSecEncCtxDestroy(encCtx);
     }
-    
+
     if(doc != NULL) {
-	xmlFreeDoc(doc); 
+	xmlFreeDoc(doc);
     }
     return(res);
 }

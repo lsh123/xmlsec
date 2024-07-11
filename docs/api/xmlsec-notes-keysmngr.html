@@ -1,6 +1,6 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Keys manager.: XML Security Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
@@ -70,36 +70,36 @@
 <div class="sect1">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="xmlsec-notes-keysmngr-overview"></a>Overview.</h2></div></div></div>
-<p>Processing some of the key data objects require additional 
-	information which is global across the application (or in the 
-	particular area of the application). For example, X509 certificates 
-	processing require a common list of trusted certificates to be 
-	available. XML Security Library keeps all the common information 
-	for key data processing in a a collection of key data stores called 
+<p>Processing some of the key data objects require additional
+	information which is global across the application (or in the
+	particular area of the application). For example, X509 certificates
+	processing require a common list of trusted certificates to be
+	available. XML Security Library keeps all the common information
+	for key data processing in a a collection of key data stores called
 	"keys manager".
         </p>
 <div class="figure">
 <a name="id-1.2.10.2.3"></a><p class="title"><b>Figure 7. The keys manager structure.</b></p>
 <div class="figure-contents"><div align="center"><img src="images/keysmngr.png" align="middle" alt="The keys manager structure."></div></div>
 </div>
-<br class="figure-break"><p>Keys manager has a special "keys store" which lists the keys 
-	known to the application. This "keys store" is used by XML Security 
+<br class="figure-break"><p>Keys manager has a special "keys store" which lists the keys
+	known to the application. This "keys store" is used by XML Security
 	Library to lookup keys by name, type and crypto algorithm (for example,
-	during 
+	during
     	<a class="ulink" href="" target="_top">&lt;dsig:KeyName/&gt;</a>
-	processing). The XML Security Library 
-	provides default simple "flat list" based implementation of a default keys 
-	store. The application can replace it with any other keys store 
+	processing). The XML Security Library
+	provides default simple "flat list" based implementation of a default keys
+	store. The application can replace it with any other keys store
 	(for example, based on an SQL database).
 	</p>
-<p>Keys manager is the only object in XML Security Library which 
-	is supposed to be shared by many different operations. Usually keys 
-	manager is initialized once at the application startup and later is 
-	used by XML Security library routines in "read-only" mode. If 
-	application or crypto function need to modify any of the key data 
-	stores inside keys manager then proper synchronization must be 
-	implemented. In the same time, application can create a new keys 
-	manager each time it needs to perform XML signature, verification, 
+<p>Keys manager is the only object in XML Security Library which
+	is supposed to be shared by many different operations. Usually keys
+	manager is initialized once at the application startup and later is
+	used by XML Security library routines in "read-only" mode. If
+	application or crypto function need to modify any of the key data
+	stores inside keys manager then proper synchronization must be
+	implemented. In the same time, application can create a new keys
+	manager each time it needs to perform XML signature, verification,
 	encryption or decryption.
 	</p>
 </div>

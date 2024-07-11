@@ -373,15 +373,17 @@ xmlSecIOFileOpen(char const* filename) {
 static int
 xmlSecIOFileRead(void* context, char* buffer, int len) {
     FILE* fd = (FILE*)context;
-    size_t szLen, szBytes;
+    xmlSecSize szLen, szBytes;
+    size_t bytes;
     int res;
 
     xmlSecAssert2(fd != NULL, -1);
     xmlSecAssert2(buffer != NULL, -1);
 
     XMLSEC_SAFE_CAST_INT_TO_SIZE(len, szLen, return(-1), NULL);
+    bytes = fread(buffer, 1, szLen, fd);
+    XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(bytes, szBytes, return(-1), NULL);
 
-    szBytes = fread(buffer, 1, szLen, fd);
     if ((szBytes < szLen) && (ferror(fd))) {
         xmlSecInternalError("fread", NULL);
         return(-1);

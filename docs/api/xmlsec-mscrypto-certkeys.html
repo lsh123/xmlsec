@@ -1,7 +1,6 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>certkeys: XML Security Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
@@ -11,10 +10,49 @@
 <meta name="generator" content="GTK-Doc V1.33.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<body><table width="100%" valign="top"><tr valign="top">
+<td valign="top" align="left" width="210">
+<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../download.html">Download</a></li>
+<ul><li><a href="../https://github.com/lsh123/xmlsec">GitHub</a></li></ul>
+<li><a href="../news.html">News</a></li>
+<li><a href="../documentation.html">Documentation</a></li>
+<ul>
+<li><a href="../faq.html">FAQ</a></li>
+<li><a href="../api/xmlsec-notes.html">Tutorial</a></li>
+<li><a href="../api/xmlsec-reference.html">API reference</a></li>
+<li><a href="../api/xmlsec-examples.html">Examples</a></li>
+</ul>
+<li><a href="../xmldsig.html">XML Digital Signature</a></li>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
+<li><a href="../bugs.html">Reporting Bugs</a></li>
+<li><a href="mailing-list.html">Mailing list</a></li>
+<li><a href="../related.html">Related</a></li>
+<li><a href="../authors.html">Authors</a></li>
+</ul>
+<table width="100%">
+<tr>
+<td width="15"></td>
+<td><a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a></td>
+</tr>
+<tr>
+<td width="15"></td>
+<td><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a></td>
+</tr>
+<tr>
+<td width="15"></td>
+<td><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a></td>
+</tr>
+<!--Links - start--><!--Links - end-->
+</table>
+</td>
+<td valign="top"><table width="80%" valign="top" style="margin-left:10px;"><tr><td valign="top" align="left" id="xmlsecContent">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
 <td width="100%" align="left" class="shortcuts">
-<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
                   <a href="#xmlsec-mscrypto-certkeys.description" class="shortcut">Description</a></span>
 </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
@@ -27,7 +65,7 @@
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="xmlsec-mscrypto-certkeys.top_of_page"></a>certkeys</span></h2>
-<p>certkeys — Certificate keys support functions for Microsoft Crypto API.</p>
+<p>certkeys &#8212; Certificate keys support functions for Microsoft Crypto API.</p>
 </td>
 <td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
@@ -48,7 +86,7 @@
 <font><span class="returnvalue">PCCERT_CONTEXT</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-mscrypto-certkeys.html#xmlSecMSCryptoKeyDataGetCert" title="xmlSecMSCryptoKeyDataGetCert ()">xmlSecMSCryptoKeyDataGetCert</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-mscrypto-certkeys.html#xmlSecMSCryptoKeyDataGetCert" title="xmlSecMSCryptoKeyDataGetCert ()">xmlSecMSCryptoKeyDataGetCert</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -56,7 +94,7 @@
 <font><span class="returnvalue">HCRYPTKEY</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-mscrypto-certkeys.html#xmlSecMSCryptoKeyDataGetKey" title="xmlSecMSCryptoKeyDataGetKey ()">xmlSecMSCryptoKeyDataGetKey</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-mscrypto-certkeys.html#xmlSecMSCryptoKeyDataGetKey" title="xmlSecMSCryptoKeyDataGetKey ()">xmlSecMSCryptoKeyDataGetKey</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -64,7 +102,7 @@
 <font><span class="returnvalue">HCRYPTKEY</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-mscrypto-certkeys.html#xmlSecMSCryptoKeyDataGetDecryptKey" title="xmlSecMSCryptoKeyDataGetDecryptKey ()">xmlSecMSCryptoKeyDataGetDecryptKey</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-mscrypto-certkeys.html#xmlSecMSCryptoKeyDataGetDecryptKey" title="xmlSecMSCryptoKeyDataGetDecryptKey ()">xmlSecMSCryptoKeyDataGetDecryptKey</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -72,7 +110,7 @@
 <font><span class="returnvalue">PCCERT_CONTEXT</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-mscrypto-certkeys.html#xmlSecMSCryptoCertDup" title="xmlSecMSCryptoCertDup ()">xmlSecMSCryptoCertDup</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-mscrypto-certkeys.html#xmlSecMSCryptoCertDup" title="xmlSecMSCryptoCertDup ()">xmlSecMSCryptoCertDup</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -80,7 +118,7 @@
 <a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="returnvalue">xmlSecKeyDataPtr</span></a>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-mscrypto-certkeys.html#xmlSecMSCryptoCertAdopt" title="xmlSecMSCryptoCertAdopt ()">xmlSecMSCryptoCertAdopt</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-mscrypto-certkeys.html#xmlSecMSCryptoCertAdopt" title="xmlSecMSCryptoCertAdopt ()">xmlSecMSCryptoCertAdopt</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -88,7 +126,7 @@
 <font><span class="returnvalue">HCRYPTPROV</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-mscrypto-certkeys.html#xmlSecMSCryptoKeyDataGetMSCryptoProvider" title="xmlSecMSCryptoKeyDataGetMSCryptoProvider ()">xmlSecMSCryptoKeyDataGetMSCryptoProvider</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-mscrypto-certkeys.html#xmlSecMSCryptoKeyDataGetMSCryptoProvider" title="xmlSecMSCryptoKeyDataGetMSCryptoProvider ()">xmlSecMSCryptoKeyDataGetMSCryptoProvider</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -96,7 +134,7 @@
 <font><span class="returnvalue">DWORD</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-mscrypto-certkeys.html#xmlSecMSCryptoKeyDataGetMSCryptoKeySpec" title="xmlSecMSCryptoKeyDataGetMSCryptoKeySpec ()">xmlSecMSCryptoKeyDataGetMSCryptoKeySpec</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-mscrypto-certkeys.html#xmlSecMSCryptoKeyDataGetMSCryptoKeySpec" title="xmlSecMSCryptoKeyDataGetMSCryptoKeySpec ()">xmlSecMSCryptoKeyDataGetMSCryptoKeySpec</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -104,7 +142,7 @@
 <font><span class="returnvalue">PCRYPT_KEY_PROV_INFO</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-mscrypto-certkeys.html#xmlSecMSCryptoKeyDataGetMSCryptoProviderInfo" title="xmlSecMSCryptoKeyDataGetMSCryptoProviderInfo ()">xmlSecMSCryptoKeyDataGetMSCryptoProviderInfo</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-mscrypto-certkeys.html#xmlSecMSCryptoKeyDataGetMSCryptoProviderInfo" title="xmlSecMSCryptoKeyDataGetMSCryptoProviderInfo ()">xmlSecMSCryptoKeyDataGetMSCryptoProviderInfo</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 </tbody>
@@ -117,7 +155,7 @@
 <div class="refsect1">
 <a name="xmlsec-mscrypto-certkeys.functions_details"></a><h2>Functions</h2>
 <div class="refsect2">
-<a name="xmlSecMSCryptoKeyDataGetCert"></a><h3>xmlSecMSCryptoKeyDataGetCert ()</h3>
+<a name="xmlSecMSCryptoKeyDataGetCert"></a><h3>xmlSecMSCryptoKeyDataGetCert ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">PCCERT_CONTEXT</span></font>
 xmlSecMSCryptoKeyDataGetCert (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
 <p>Native MSCrypto certificate retrieval from xmlsec keydata. The
@@ -133,7 +171,7 @@ returned PCCERT_CONTEXT must not be released by the caller.</p>
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
 <td class="parameter_description"><p>the key data to retrieve certificate from.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
@@ -144,7 +182,7 @@ returned PCCERT_CONTEXT must not be released by the caller.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecMSCryptoKeyDataGetKey"></a><h3>xmlSecMSCryptoKeyDataGetKey ()</h3>
+<a name="xmlSecMSCryptoKeyDataGetKey"></a><h3>xmlSecMSCryptoKeyDataGetKey ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">HCRYPTKEY</span></font>
 xmlSecMSCryptoKeyDataGetKey (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
                              <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataType" title="xmlSecKeyDataType"><span class="type">xmlSecKeyDataType</span></a> type</code></em>);</pre>
@@ -162,12 +200,12 @@ returned HKEY must not be destroyed by the caller.</p>
 <tr>
 <td class="parameter_name"><p>data</p></td>
 <td class="parameter_description"><p>the key data to retrieve certificate from.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>type</p></td>
 <td class="parameter_description"><p>type of key requested (public/private)</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -179,7 +217,7 @@ returned HKEY must not be destroyed by the caller.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecMSCryptoKeyDataGetDecryptKey"></a><h3>xmlSecMSCryptoKeyDataGetDecryptKey ()</h3>
+<a name="xmlSecMSCryptoKeyDataGetDecryptKey"></a><h3>xmlSecMSCryptoKeyDataGetDecryptKey ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">HCRYPTKEY</span></font>
 xmlSecMSCryptoKeyDataGetDecryptKey (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
 <p>Native MSCrypto decrypt key retrieval from xmlsec keydata. The
@@ -195,7 +233,7 @@ returned HKEY must not be destroyed by the caller.</p>
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
 <td class="parameter_description"><p>the key data pointer</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
@@ -206,7 +244,7 @@ returned HKEY must not be destroyed by the caller.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecMSCryptoCertDup"></a><h3>xmlSecMSCryptoCertDup ()</h3>
+<a name="xmlSecMSCryptoCertDup"></a><h3>xmlSecMSCryptoCertDup ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">PCCERT_CONTEXT</span></font>
 xmlSecMSCryptoCertDup (<em class="parameter"><code><font><span class="type">PCCERT_CONTEXT</span></font> pCert</code></em>);</pre>
 <p>Duplicates the <em class="parameter"><code>pCert</code></em>
@@ -222,7 +260,7 @@ xmlSecMSCryptoCertDup (<em class="parameter"><code><font><span class="type">PCCE
 <tbody><tr>
 <td class="parameter_name"><p>pCert</p></td>
 <td class="parameter_description"><p>the pointer to cert.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
@@ -234,7 +272,7 @@ NULL if an error occurs.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecMSCryptoCertAdopt"></a><h3>xmlSecMSCryptoCertAdopt ()</h3>
+<a name="xmlSecMSCryptoCertAdopt"></a><h3>xmlSecMSCryptoCertAdopt ()</h3>
 <pre class="programlisting"><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="returnvalue">xmlSecKeyDataPtr</span></a>
 xmlSecMSCryptoCertAdopt (<em class="parameter"><code><font><span class="type">PCCERT_CONTEXT</span></font> pCert</code></em>,
                          <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataType" title="xmlSecKeyDataType"><span class="type">xmlSecKeyDataType</span></a> type</code></em>);</pre>
@@ -251,12 +289,12 @@ xmlSecMSCryptoCertAdopt (<em class="parameter"><code><font><span class="type">PC
 <tr>
 <td class="parameter_name"><p>pCert</p></td>
 <td class="parameter_description"><p>the pointer to cert.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>type</p></td>
 <td class="parameter_description"><p>the expected key type.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -268,7 +306,7 @@ xmlSecMSCryptoCertAdopt (<em class="parameter"><code><font><span class="type">PC
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecMSCryptoKeyDataGetMSCryptoProvider"></a><h3>xmlSecMSCryptoKeyDataGetMSCryptoProvider ()</h3>
+<a name="xmlSecMSCryptoKeyDataGetMSCryptoProvider"></a><h3>xmlSecMSCryptoKeyDataGetMSCryptoProvider ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">HCRYPTPROV</span></font>
 xmlSecMSCryptoKeyDataGetMSCryptoProvider
                                (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
@@ -284,7 +322,7 @@ xmlSecMSCryptoKeyDataGetMSCryptoProvider
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
 <td class="parameter_description"><p>the key data</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
@@ -295,7 +333,7 @@ xmlSecMSCryptoKeyDataGetMSCryptoProvider
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecMSCryptoKeyDataGetMSCryptoKeySpec"></a><h3>xmlSecMSCryptoKeyDataGetMSCryptoKeySpec ()</h3>
+<a name="xmlSecMSCryptoKeyDataGetMSCryptoKeySpec"></a><h3>xmlSecMSCryptoKeyDataGetMSCryptoKeySpec ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">DWORD</span></font>
 xmlSecMSCryptoKeyDataGetMSCryptoKeySpec
                                (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
@@ -311,7 +349,7 @@ xmlSecMSCryptoKeyDataGetMSCryptoKeySpec
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
 <td class="parameter_description"><p>the key data</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
@@ -322,7 +360,7 @@ xmlSecMSCryptoKeyDataGetMSCryptoKeySpec
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecMSCryptoKeyDataGetMSCryptoProviderInfo"></a><h3>xmlSecMSCryptoKeyDataGetMSCryptoProviderInfo ()</h3>
+<a name="xmlSecMSCryptoKeyDataGetMSCryptoProviderInfo"></a><h3>xmlSecMSCryptoKeyDataGetMSCryptoProviderInfo ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">PCRYPT_KEY_PROV_INFO</span></font>
 xmlSecMSCryptoKeyDataGetMSCryptoProviderInfo
                                (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
@@ -338,7 +376,7 @@ xmlSecMSCryptoKeyDataGetMSCryptoProviderInfo
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
 <td class="parameter_description"><p>the key data</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
@@ -351,5 +389,6 @@ xmlSecMSCryptoKeyDataGetMSCryptoProviderInfo
 </div>
 <div class="footer">
 <hr>Generated by GTK-Doc V1.33.1</div>
-</body>
+</td></tr></table></td>
+</tr></table></body>
 </html>

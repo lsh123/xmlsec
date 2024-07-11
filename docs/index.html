@@ -1,7 +1,6 @@
-<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>XML Security Library</title>
 <link rel="stylesheet" href="css/main.css">
 </head>
@@ -11,6 +10,7 @@
 <ul>
 <li><a href="index.html">Home</a></li>
 <li><a href="download.html">Download</a></li>
+<ul><li><a href="https://github.com/lsh123/xmlsec">GitHub</a></li></ul>
 <li><a href="news.html">News</a></li>
 <li><a href="documentation.html">Documentation</a></li>
 <ul>
@@ -43,7 +43,7 @@
 <!--Links - start--><!--Links - end-->
 </table>
 </td>
-<td valign="top"><table width="80%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
+<td valign="top"><table width="80%" valign="top" style="margin-left:10px;"><tr><td valign="top" align="left" id="xmlsecContent">
 <div align="center">
 <h1>XML Security Library</h1>
 </div>
@@ -79,6 +79,17 @@ see the Copyright file in the distribution  for details.<br><br></p>
         </ul>
 	</li>
 	<br>
+
+    <li>July 11 2024<br>
+        The legacy <a href="https://www.aleksey.com/xmlsec/download/xmlsec1-1.2.40.tar.gz">XML Security Library 1.2.40</a> release includes the following changes:
+        <ul>
+           <li>(xmlsec-core) Fixed functions deprecated in LibXML2 2.13.1 (including disabling HTTP support by default).</li>
+           <li>(xmlsec-nss) Increased keys size in all tests to support NSS 3.101.</li>
+           <li>(windows) Added "ftp" and "http" flags in 'configure.js' (both are disabled by default).</li>
+           <li>Several other small fixes (<a href="https://github.com/lsh123/xmlsec/commits/xmlsec-1_2_x">more details</a>).</li>
+        </ul>
+    </li>
+    <br>
 
     <li>April 9, 2024<br>
 		The <a href="download.html">XML Security Library 1.3.4</a> release includes the following changes:
@@ -185,7 +196,8 @@ see the Copyright file in the distribution  for details.<br><br></p>
         <br>
 		<br>
 		<ul>
-			<li><b>core xmlsec and all xmlsec-crypto libraries:</b>
+			<li>
+<b>core xmlsec and all xmlsec-crypto libraries:</b>
 				<ul>
                     <li>(<b>ABI breaking change</b>) Added support for the <a href="https://www.w3.org/TR/xmldsig-core1/#sec-KeyInfoReference">KeyInfoReference Element</a>.</li>
 					<li>(<b>ABI breaking change</b>) Switched xmlSecSize to use size_t by default. Use "--enable-size-t=no" configure option ("size_t=no" on Windows) to
@@ -208,7 +220,8 @@ see the Copyright file in the distribution  for details.<br><br></p>
                     </li>
 				</ul>
 			</li>
-			<li><b>xmlsec-openssl library:</b>
+			<li>
+<b>xmlsec-openssl library:</b>
 				<ul>
 					<li>Added support for <a href="https://www.ietf.org/rfc/rfc9231.html#name-sha-3-algorithms">SHA3 digests</a>.</li>
 					<li>Added support for <a href="https://www.ietf.org/rfc/rfc9231.html#name-ecdsa-sha-ecdsa-ripemd160-e">ECDSA-SHA3 signatures</a>.</li>
@@ -226,7 +239,8 @@ see the Copyright file in the distribution  for details.<br><br></p>
 					<li>Removed support for OpenSSL 1.0.0 and LibreSSL before 2.7.0.</li>
 				</ul>
 			</li>
-			<li><b>xmlsec-nss llegacyibrary:</b>
+			<li>
+<b>xmlsec-nss llegacyibrary:</b>
 				<ul>
 					<li>Added support for <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.3.10">RSA PSS signatures (withtout parameters)</a>.</li>
 					<li>Added support for <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP">RSA OAEP key transport including MGF1 algorithms</a>.</li>
@@ -237,7 +251,8 @@ see the Copyright file in the distribution  for details.<br><br></p>
                     <li>Automatically set key name from PKCS12 key name.</li>
 				</ul>
 			</li>
-			<li><b>xmlsec-gnutls library:</b>
+			<li>
+<b>xmlsec-gnutls library:</b>
 				<ul>
                     <li>(<b>API/ABI breaking change</b>) Removed dependency on xmlsec-gcrypt and libgcrypt libraries (including API functions) to enable support for different GnuTLS backends.</li>
                     <li>Bumped minimal GnuTLS version to 3.6.13.</li>
@@ -253,7 +268,8 @@ see the Copyright file in the distribution  for details.<br><br></p>
                     <li>Automatically set key name from PKCS12 key name.</li>
 				</ul>
 			</li>
-			<li><b>xmlsec-mscng library:</b>
+			<li>
+<b>xmlsec-mscng library:</b>
                 <ul>
                     <li>Added support for <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.3.10">RSA PSS signatures (withtout parameters)</a>.</li>
                     <li>Added support for <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP">MGF1 algorithm to RSA OAEP key transport</a>.</li>
@@ -267,13 +283,15 @@ see the Copyright file in the distribution  for details.<br><br></p>
                     <li>Automatically set key name from PKCS12 key name.</li>
                 </ul>
 			</li>
-			<li><b>xmlsec-mscrypto library:</b>
+			<li>
+<b>xmlsec-mscrypto library:</b>
 				<ul>
 					<li>In maintenance mode starting from this release.</li>
 					<li>Disabled by default support for NT4. Use "nt4=yes" configure option on Windows to re-enable it.</li>
 				</ul>
 			</li>
-			<li><b>xmlsec-gcrypt library:</b>
+			<li>
+<b>xmlsec-gcrypt library:</b>
 				<ul>
 					<li>In maintenance mode starting from this release.</li>
                     <li>Added support for <a href="https://www.ietf.org/rfc/rfc9231.html#name-sha-3-algorithms">SHA3 digests</a>.</li>
@@ -283,7 +301,8 @@ see the Copyright file in the distribution  for details.<br><br></p>
 					<li>Added support for <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP">RSA OAEP key transport including MGF1 algorithms</a>.</li>
 				</ul>
 			</li>
-			<li><b>xmlsec command line utility:</b>
+			<li>
+<b>xmlsec command line utility:</b>
 				<ul>
                     <li>(<b>API breaking change</b>) The XMLSec command line utility is using 'strict' key search mode by default. To restore the old 'lax'
                         key search mode, use the new '--lax-key-search' option.</li>
@@ -355,9 +374,7 @@ see the Copyright file in the distribution  for details.<br><br></p>
     </li>
     <br>
 </ul>
-<br>
-<br>
-See <a href="news.html">News page</a> for older announcements.
+<br><br><a href="news.html">News page</a>
 </td></tr></table></td>
 </tr></table></body>
 </html>

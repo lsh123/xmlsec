@@ -1,7 +1,6 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Cryptographic transforms.: XML Security Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
@@ -11,7 +10,46 @@
 <meta name="generator" content="GTK-Doc V1.33.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<body><table width="100%" valign="top"><tr valign="top">
+<td valign="top" align="left" width="210">
+<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../download.html">Download</a></li>
+<ul><li><a href="../https://github.com/lsh123/xmlsec">GitHub</a></li></ul>
+<li><a href="../news.html">News</a></li>
+<li><a href="../documentation.html">Documentation</a></li>
+<ul>
+<li><a href="../faq.html">FAQ</a></li>
+<li><a href="../api/xmlsec-notes.html">Tutorial</a></li>
+<li><a href="../api/xmlsec-reference.html">API reference</a></li>
+<li><a href="../api/xmlsec-examples.html">Examples</a></li>
+</ul>
+<li><a href="../xmldsig.html">XML Digital Signature</a></li>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
+<li><a href="../bugs.html">Reporting Bugs</a></li>
+<li><a href="mailing-list.html">Mailing list</a></li>
+<li><a href="../related.html">Related</a></li>
+<li><a href="../authors.html">Authors</a></li>
+</ul>
+<table width="100%">
+<tr>
+<td width="15"></td>
+<td><a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a></td>
+</tr>
+<tr>
+<td width="15"></td>
+<td><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a></td>
+</tr>
+<tr>
+<td width="15"></td>
+<td><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a></td>
+</tr>
+<!--Links - start--><!--Links - end-->
+</table>
+</td>
+<td valign="top"><table width="80%" valign="top" style="margin-left:10px;"><tr><td valign="top" align="left" id="xmlsecContent">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
 <td width="100%" align="left" class="shortcuts"></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
@@ -26,8 +64,8 @@
 	implementation is the main goal of "xmlsec-&lt;crypto&gt;" library.
 	Most of the cryptographic <a class="link" href="xmlsec-notes-transforms.html" title="Transforms and transforms chain.">transforms</a>
 	use default <em class="structfield"><code>pushBin</code></em> and <em class="structfield"><code>popBin</code></em>
-	methods and provide custom <a class="link" href="xmlsec-transforms.html#xmlSecTransformExecuteMethod" title="xmlSecTransformExecuteMethod ()">execute</a> method.
-	The binary transform <a class="link" href="xmlsec-transforms.html#xmlSecTransformExecuteMethod" title="xmlSecTransformExecuteMethod ()">execute</a> method
+	methods and provide custom <a class="link" href="xmlsec-transforms.html#xmlSecTransformExecuteMethod" title="xmlSecTransformExecuteMethod ()">execute</a> method.
+	The binary transform <a class="link" href="xmlsec-transforms.html#xmlSecTransformExecuteMethod" title="xmlSecTransformExecuteMethod ()">execute</a> method
 	processes data from the input buffer
 	<em class="structfield"><code>inBuf</code></em> and pushes results to
 	<em class="structfield"><code>outBuf</code></em>. The transform should try to
@@ -37,12 +75,12 @@
 	RSA-PKCS1 algorithm requires that all the data are available in
 	one buffer). In this case, transform might keep the data in the
 	input buffer till the next call to
-	<a class="link" href="xmlsec-transforms.html#xmlSecTransformExecuteMethod" title="xmlSecTransformExecuteMethod ()">execute</a>
+	<a class="link" href="xmlsec-transforms.html#xmlSecTransformExecuteMethod" title="xmlSecTransformExecuteMethod ()">execute</a>
 	method. The "last" parameter of the
-	<a class="link" href="xmlsec-transforms.html#xmlSecTransformExecuteMethod" title="xmlSecTransformExecuteMethod ()">execute</a>
+	<a class="link" href="xmlsec-transforms.html#xmlSecTransformExecuteMethod" title="xmlSecTransformExecuteMethod ()">execute</a>
 	indicates that transform MUST process all the data in the input buffer
 	and return as much as possible in the output buffer. The
-	<a class="link" href="xmlsec-transforms.html#xmlSecTransformExecuteMethod" title="xmlSecTransformExecuteMethod ()">execute</a> method
+	<a class="link" href="xmlsec-transforms.html#xmlSecTransformExecuteMethod" title="xmlSecTransformExecuteMethod ()">execute</a> method
 	might be called multiple times with non-zero "last" parameter until
 	the transforms returns nothing
 	in the output buffer. In addition, the transform implementation is
@@ -50,7 +88,7 @@
 	variable.
 	</p>
 <div class="table">
-<a name="id-1.2.14.5.2.13"></a><p class="title"><b>Table 2. Typical transform status managing.</b></p>
+<a name="id-1.2.14.5.2.13"></a><p class="title"><b>Table 2. Typical transform status managing.</b></p>
 <div class="table-contents"><table class="table" summary="Typical transform status managing." border="1">
 <colgroup>
 <col>
@@ -81,12 +119,12 @@
 </div>
 <p><br class="table-break">
 	</p>
-<p>In adition to <a class="link" href="xmlsec-transforms.html#xmlSecTransformExecuteMethod" title="xmlSecTransformExecuteMethod ()">execute</a>
+<p>In adition to <a class="link" href="xmlsec-transforms.html#xmlSecTransformExecuteMethod" title="xmlSecTransformExecuteMethod ()">execute</a>
 	methods, signature, hmac or digest transforms
-	MUST implement <a class="link" href="xmlsec-transforms.html#xmlSecTransformVerifyMethod" title="xmlSecTransformVerifyMethod ()">verify</a> method.
-	The <a class="link" href="xmlsec-transforms.html#xmlSecTransformVerifyMethod" title="xmlSecTransformVerifyMethod ()">verify</a> method is called
+	MUST implement <a class="link" href="xmlsec-transforms.html#xmlSecTransformVerifyMethod" title="xmlSecTransformVerifyMethod ()">verify</a> method.
+	The <a class="link" href="xmlsec-transforms.html#xmlSecTransformVerifyMethod" title="xmlSecTransformVerifyMethod ()">verify</a> method is called
 	after transform execution is finished. The
-	<a class="link" href="xmlsec-transforms.html#xmlSecTransformVerifyMethod" title="xmlSecTransformVerifyMethod ()">verify</a> method implementation
+	<a class="link" href="xmlsec-transforms.html#xmlSecTransformVerifyMethod" title="xmlSecTransformVerifyMethod ()">verify</a> method implementation
 	must set the "status" member to <a class="link" href="xmlsec-transforms.html#xmlSecTransformStatusOk">xmlSecTransformStatusOk</a>
 	if signature, hmac or digest is successfully verified or to
 	<a class="link" href="xmlsec-transforms.html#xmlSecTransformStatusFail">xmlSecTransformStatusFail</a>
@@ -94,14 +132,15 @@
 	</p>
 <p>The transforms that require a key (signature or encryption
 	transforms, for example) MUST imlpement
-	<a class="link" href="xmlsec-transforms.html#xmlSecTransformSetKeyRequirementsMethod" title="xmlSecTransformSetKeyRequirementsMethod ()">setKeyReq</a>
+	<a class="link" href="xmlsec-transforms.html#xmlSecTransformSetKeyRequirementsMethod" title="xmlSecTransformSetKeyRequirementsMethod ()">setKeyReq</a>
 	(prepares the <a class="link" href="xmlsec-keys.html#xmlSecKeyReq" title="struct xmlSecKeyReq">key requirements</a>
 	for key search) and
-	<a class="link" href="xmlsec-transforms.html#xmlSecTransformSetKeyMethod" title="xmlSecTransformSetKeyMethod ()">setKey</a>
+	<a class="link" href="xmlsec-transforms.html#xmlSecTransformSetKeyMethod" title="xmlSecTransformSetKeyMethod ()">setKey</a>
 	(sets the key in the transform) methods.
 	</p>
 </div>
 <div class="footer">
 <hr>Generated by GTK-Doc V1.33.1</div>
-</body>
+</td></tr></table></td>
+</tr></table></body>
 </html>

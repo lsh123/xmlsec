@@ -1,17 +1,55 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Transforms and transforms chain.: XML Security Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
-<link rel="up" href="xmlsec-notes.html" title="Part I. XML Security Library Tutorial">
+<link rel="up" href="xmlsec-notes.html" title="Part I. XML Security Library Tutorial">
 <link rel="prev" href="xmlsec-notes-verify-x509.html" title="Verifing document signed with X509 certificates.">
 <link rel="next" href="xmlsec-notes-contexts.html" title="Using context objects.">
 <meta name="generator" content="GTK-Doc V1.33.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<body><table width="100%" valign="top"><tr valign="top">
+<td valign="top" align="left" width="210">
+<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../download.html">Download</a></li>
+<ul><li><a href="../https://github.com/lsh123/xmlsec">GitHub</a></li></ul>
+<li><a href="../news.html">News</a></li>
+<li><a href="../documentation.html">Documentation</a></li>
+<ul>
+<li><a href="../faq.html">FAQ</a></li>
+<li><a href="../api/xmlsec-notes.html">Tutorial</a></li>
+<li><a href="../api/xmlsec-reference.html">API reference</a></li>
+<li><a href="../api/xmlsec-examples.html">Examples</a></li>
+</ul>
+<li><a href="../xmldsig.html">XML Digital Signature</a></li>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
+<li><a href="../bugs.html">Reporting Bugs</a></li>
+<li><a href="mailing-list.html">Mailing list</a></li>
+<li><a href="../related.html">Related</a></li>
+<li><a href="../authors.html">Authors</a></li>
+</ul>
+<table width="100%">
+<tr>
+<td width="15"></td>
+<td><a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a></td>
+</tr>
+<tr>
+<td width="15"></td>
+<td><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a></td>
+</tr>
+<tr>
+<td width="15"></td>
+<td><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a></td>
+</tr>
+<!--Links - start--><!--Links - end-->
+</table>
+</td>
+<td valign="top"><table width="80%" valign="top" style="margin-left:10px;"><tr><td valign="top" align="left" id="xmlsecContent">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
 <td width="100%" align="left" class="shortcuts"></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
@@ -35,21 +73,21 @@
 	    </p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem"><p>
-		    <a class="link" href="xmlsec-transforms.html#xmlSecTransformPushBinMethod" title="xmlSecTransformPushBinMethod ()">push binary data</a>;
+		    <a class="link" href="xmlsec-transforms.html#xmlSecTransformPushBinMethod" title="xmlSecTransformPushBinMethod ()">push binary data</a>;
 		</p></li>
 <li class="listitem"><p>
-		    <a class="link" href="xmlsec-transforms.html#xmlSecTransformPushXmlMethod" title="xmlSecTransformPushXmlMethod ()">push xml data</a>;
+		    <a class="link" href="xmlsec-transforms.html#xmlSecTransformPushXmlMethod" title="xmlSecTransformPushXmlMethod ()">push xml data</a>;
 		</p></li>
 <li class="listitem"><p>
-		    <a class="link" href="xmlsec-transforms.html#xmlSecTransformPopBinMethod" title="xmlSecTransformPopBinMethod ()">pop binary data</a>;
+		    <a class="link" href="xmlsec-transforms.html#xmlSecTransformPopBinMethod" title="xmlSecTransformPopBinMethod ()">pop binary data</a>;
 		</p></li>
 <li class="listitem"><p>
-		    <a class="link" href="xmlsec-transforms.html#xmlSecTransformPopXmlMethod" title="xmlSecTransformPopXmlMethod ()">pop xml data</a>.
+		    <a class="link" href="xmlsec-transforms.html#xmlSecTransformPopXmlMethod" title="xmlSecTransformPopXmlMethod ()">pop xml data</a>.
     		</p></li>
 </ul></div>
 <p>
     </p>
-<p>One additional <a class="link" href="xmlsec-transforms.html#xmlSecTransformExecuteMethod" title="xmlSecTransformExecuteMethod ()">execute</a>
+<p>One additional <a class="link" href="xmlsec-transforms.html#xmlSecTransformExecuteMethod" title="xmlSecTransformExecuteMethod ()">execute</a>
 	callback was added to simplify the development and reduce code size. 
 	This callback is used by default
 	implementations of the four external callbacks from the list above.
@@ -59,7 +97,7 @@
 	directly is more efficient.
     </p>
 <div class="figure">
-<a name="id-1.2.12.4"></a><p class="title"><b>Figure 9. The XML Security Library transform.</b></p>
+<a name="id-1.2.12.4"></a><p class="title"><b>Figure 9. The XML Security Library transform.</b></p>
 <div class="figure-contents"><div align="center"><img src="images/transform.png" align="middle" alt="The XML Security Library transform."></div></div>
 </div>
 <br class="figure-break"><p>XML Security Library constructs transforms chain according to the 
@@ -75,13 +113,13 @@
 	in the chain. 
     </p>
 <div class="figure">
-<a name="id-1.2.12.7"></a><p class="title"><b>Figure 10. Transforms chain created for &lt;dsig:Reference/&gt; element processing.</b></p>
+<a name="id-1.2.12.7"></a><p class="title"><b>Figure 10. Transforms chain created for &lt;dsig:Reference/&gt; element processing.</b></p>
 <div class="figure-contents"><div align="center"><img src="images/transforms-chain.png" align="middle" alt="Transforms chain created for &lt;dsig:Reference/&gt; element processing."></div></div>
 </div>
 <br class="figure-break"><p>
 	</p>
 <div class="example">
-<a name="id-1.2.12.8.1"></a><p class="title"><b>Example 23. Walking through transforms chain.</b></p>
+<a name="id-1.2.12.8.1"></a><p class="title"><b>Example 23. Walking through transforms chain.</b></p>
 <div class="example-contents"><pre class="programlisting">
 TODO
 	    </pre></div>
@@ -91,5 +129,6 @@ TODO
 </div>
 <div class="footer">
 <hr>Generated by GTK-Doc V1.33.1</div>
-</body>
+</td></tr></table></td>
+</tr></table></body>
 </html>

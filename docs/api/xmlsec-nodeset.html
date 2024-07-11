@@ -1,7 +1,6 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>nodeset: XML Security Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
@@ -11,10 +10,49 @@
 <meta name="generator" content="GTK-Doc V1.33.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<body><table width="100%" valign="top"><tr valign="top">
+<td valign="top" align="left" width="210">
+<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../download.html">Download</a></li>
+<ul><li><a href="../https://github.com/lsh123/xmlsec">GitHub</a></li></ul>
+<li><a href="../news.html">News</a></li>
+<li><a href="../documentation.html">Documentation</a></li>
+<ul>
+<li><a href="../faq.html">FAQ</a></li>
+<li><a href="../api/xmlsec-notes.html">Tutorial</a></li>
+<li><a href="../api/xmlsec-reference.html">API reference</a></li>
+<li><a href="../api/xmlsec-examples.html">Examples</a></li>
+</ul>
+<li><a href="../xmldsig.html">XML Digital Signature</a></li>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
+<li><a href="../bugs.html">Reporting Bugs</a></li>
+<li><a href="mailing-list.html">Mailing list</a></li>
+<li><a href="../related.html">Related</a></li>
+<li><a href="../authors.html">Authors</a></li>
+</ul>
+<table width="100%">
+<tr>
+<td width="15"></td>
+<td><a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a></td>
+</tr>
+<tr>
+<td width="15"></td>
+<td><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a></td>
+</tr>
+<tr>
+<td width="15"></td>
+<td><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a></td>
+</tr>
+<!--Links - start--><!--Links - end-->
+</table>
+</td>
+<td valign="top"><table width="80%" valign="top" style="margin-left:10px;"><tr><td valign="top" align="left" id="xmlsecContent">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
 <td width="100%" align="left" class="shortcuts">
-<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
                   <a href="#xmlsec-nodeset.description" class="shortcut">Description</a></span>
 </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
@@ -27,7 +65,7 @@
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="xmlsec-nodeset.top_of_page"></a>nodeset</span></h2>
-<p>nodeset — XML nodes set functions</p>
+<p>nodeset &#8212; XML nodes set functions</p>
 </td>
 <td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
@@ -48,7 +86,7 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<span class="c_punctuation">(</span><a class="link" href="xmlsec-nodeset.html#xmlSecNodeSetWalkCallback" title="xmlSecNodeSetWalkCallback ()">*xmlSecNodeSetWalkCallback</a><span class="c_punctuation">)</span> <span class="c_punctuation">()</span>
+<span class="c_punctuation">(</span><a class="link" href="xmlsec-nodeset.html#xmlSecNodeSetWalkCallback" title="xmlSecNodeSetWalkCallback ()">*xmlSecNodeSetWalkCallback</a><span class="c_punctuation">)</span> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -56,7 +94,7 @@
 <a class="link" href="xmlsec-nodeset.html#xmlSecNodeSet" title="struct xmlSecNodeSet"><span class="returnvalue">xmlSecNodeSetPtr</span></a>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-nodeset.html#xmlSecNodeSetCreate" title="xmlSecNodeSetCreate ()">xmlSecNodeSetCreate</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-nodeset.html#xmlSecNodeSetCreate" title="xmlSecNodeSetCreate ()">xmlSecNodeSetCreate</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -64,7 +102,7 @@
 <font><span class="returnvalue">void</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-nodeset.html#xmlSecNodeSetDestroy" title="xmlSecNodeSetDestroy ()">xmlSecNodeSetDestroy</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-nodeset.html#xmlSecNodeSetDestroy" title="xmlSecNodeSetDestroy ()">xmlSecNodeSetDestroy</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -72,7 +110,7 @@
 <font><span class="returnvalue">void</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-nodeset.html#xmlSecNodeSetDocDestroy" title="xmlSecNodeSetDocDestroy ()">xmlSecNodeSetDocDestroy</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-nodeset.html#xmlSecNodeSetDocDestroy" title="xmlSecNodeSetDocDestroy ()">xmlSecNodeSetDocDestroy</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -80,7 +118,7 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-nodeset.html#xmlSecNodeSetContains" title="xmlSecNodeSetContains ()">xmlSecNodeSetContains</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-nodeset.html#xmlSecNodeSetContains" title="xmlSecNodeSetContains ()">xmlSecNodeSetContains</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -88,7 +126,7 @@
 <a class="link" href="xmlsec-nodeset.html#xmlSecNodeSet" title="struct xmlSecNodeSet"><span class="returnvalue">xmlSecNodeSetPtr</span></a>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-nodeset.html#xmlSecNodeSetAdd" title="xmlSecNodeSetAdd ()">xmlSecNodeSetAdd</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-nodeset.html#xmlSecNodeSetAdd" title="xmlSecNodeSetAdd ()">xmlSecNodeSetAdd</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -96,7 +134,7 @@
 <a class="link" href="xmlsec-nodeset.html#xmlSecNodeSet" title="struct xmlSecNodeSet"><span class="returnvalue">xmlSecNodeSetPtr</span></a>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-nodeset.html#xmlSecNodeSetAddList" title="xmlSecNodeSetAddList ()">xmlSecNodeSetAddList</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-nodeset.html#xmlSecNodeSetAddList" title="xmlSecNodeSetAddList ()">xmlSecNodeSetAddList</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -104,7 +142,7 @@
 <a class="link" href="xmlsec-nodeset.html#xmlSecNodeSet" title="struct xmlSecNodeSet"><span class="returnvalue">xmlSecNodeSetPtr</span></a>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-nodeset.html#xmlSecNodeSetGetChildren" title="xmlSecNodeSetGetChildren ()">xmlSecNodeSetGetChildren</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-nodeset.html#xmlSecNodeSetGetChildren" title="xmlSecNodeSetGetChildren ()">xmlSecNodeSetGetChildren</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -112,7 +150,7 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-nodeset.html#xmlSecNodeSetWalk" title="xmlSecNodeSetWalk ()">xmlSecNodeSetWalk</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-nodeset.html#xmlSecNodeSetWalk" title="xmlSecNodeSetWalk ()">xmlSecNodeSetWalk</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -120,7 +158,7 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-nodeset.html#xmlSecNodeSetDumpTextNodes" title="xmlSecNodeSetDumpTextNodes ()">xmlSecNodeSetDumpTextNodes</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-nodeset.html#xmlSecNodeSetDumpTextNodes" title="xmlSecNodeSetDumpTextNodes ()">xmlSecNodeSetDumpTextNodes</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -128,7 +166,7 @@
 <font><span class="returnvalue">void</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-nodeset.html#xmlSecNodeSetDebugDump" title="xmlSecNodeSetDebugDump ()">xmlSecNodeSetDebugDump</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-nodeset.html#xmlSecNodeSetDebugDump" title="xmlSecNodeSetDebugDump ()">xmlSecNodeSetDebugDump</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 </tbody>
@@ -164,7 +202,7 @@
 <div class="refsect1">
 <a name="xmlsec-nodeset.functions_details"></a><h2>Functions</h2>
 <div class="refsect2">
-<a name="xmlSecNodeSetWalkCallback"></a><h3>xmlSecNodeSetWalkCallback ()</h3>
+<a name="xmlSecNodeSetWalkCallback"></a><h3>xmlSecNodeSetWalkCallback ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 <span class="c_punctuation">(</span>*xmlSecNodeSetWalkCallback<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="xmlsec-nodeset.html#xmlSecNodeSet" title="struct xmlSecNodeSet"><span class="type">xmlSecNodeSetPtr</span></a> nset</code></em>,
                               <em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> cur</code></em>,
@@ -183,23 +221,23 @@
 <tr>
 <td class="parameter_name"><p>nset</p></td>
 <td class="parameter_description"><p>the pointer to <a class="link" href="xmlsec-nodeset.html#xmlSecNodeSet" title="struct xmlSecNodeSet"><span class="type">xmlSecNodeSet</span></a> structure.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>cur</p></td>
 <td class="parameter_description"><p>the pointer current XML node.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>parent</p></td>
 <td class="parameter_description"><p>the pointer to the <em class="parameter"><code>cur</code></em>
 parent node.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>data</p></td>
 <td class="parameter_description"><p>the pointer to application specific data.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -212,13 +250,13 @@ an walk procedure should be interrupted.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecNodeSetCreate"></a><h3>xmlSecNodeSetCreate ()</h3>
+<a name="xmlSecNodeSetCreate"></a><h3>xmlSecNodeSetCreate ()</h3>
 <pre class="programlisting"><a class="link" href="xmlsec-nodeset.html#xmlSecNodeSet" title="struct xmlSecNodeSet"><span class="returnvalue">xmlSecNodeSetPtr</span></a>
 xmlSecNodeSetCreate (<em class="parameter"><code><font><span class="type">xmlDocPtr</span></font> doc</code></em>,
                      <em class="parameter"><code><font><span class="type">xmlNodeSetPtr</span></font> nodes</code></em>,
                      <em class="parameter"><code><a class="link" href="xmlsec-nodeset.html#xmlSecNodeSetType" title="enum xmlSecNodeSetType"><span class="type">xmlSecNodeSetType</span></a> type</code></em>);</pre>
 <p>Creates new nodes set. Caller is responsible for freeing returned object
-by calling <a class="link" href="xmlsec-nodeset.html#xmlSecNodeSetDestroy" title="xmlSecNodeSetDestroy ()"><span class="type">xmlSecNodeSetDestroy</span></a> function.</p>
+by calling <a class="link" href="xmlsec-nodeset.html#xmlSecNodeSetDestroy" title="xmlSecNodeSetDestroy ()"><span class="type">xmlSecNodeSetDestroy</span></a> function.</p>
 <div class="refsect3">
 <a name="xmlSecNodeSetCreate.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -231,17 +269,17 @@ by calling <a class="link" href="xmlsec-nodeset.html#xmlSecNodeSetDestroy" title
 <tr>
 <td class="parameter_name"><p>doc</p></td>
 <td class="parameter_description"><p>the pointer to parent XML document.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>nodes</p></td>
 <td class="parameter_description"><p>the list of nodes.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>type</p></td>
 <td class="parameter_description"><p>the nodes set type.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -253,10 +291,10 @@ by calling <a class="link" href="xmlsec-nodeset.html#xmlSecNodeSetDestroy" title
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecNodeSetDestroy"></a><h3>xmlSecNodeSetDestroy ()</h3>
+<a name="xmlSecNodeSetDestroy"></a><h3>xmlSecNodeSetDestroy ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
 xmlSecNodeSetDestroy (<em class="parameter"><code><a class="link" href="xmlsec-nodeset.html#xmlSecNodeSet" title="struct xmlSecNodeSet"><span class="type">xmlSecNodeSetPtr</span></a> nset</code></em>);</pre>
-<p>Destroys the nodes set created with <a class="link" href="xmlsec-nodeset.html#xmlSecNodeSetCreate" title="xmlSecNodeSetCreate ()"><span class="type">xmlSecNodeSetCreate</span></a> function.</p>
+<p>Destroys the nodes set created with <a class="link" href="xmlsec-nodeset.html#xmlSecNodeSetCreate" title="xmlSecNodeSetCreate ()"><span class="type">xmlSecNodeSetCreate</span></a> function.</p>
 <div class="refsect3">
 <a name="xmlSecNodeSetDestroy.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -268,14 +306,14 @@ xmlSecNodeSetDestroy (<em class="parameter"><code><a class="link" href="xmlsec-n
 <tbody><tr>
 <td class="parameter_name"><p>nset</p></td>
 <td class="parameter_description"><p>the pointer to node set.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecNodeSetDocDestroy"></a><h3>xmlSecNodeSetDocDestroy ()</h3>
+<a name="xmlSecNodeSetDocDestroy"></a><h3>xmlSecNodeSetDocDestroy ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
 xmlSecNodeSetDocDestroy (<em class="parameter"><code><a class="link" href="xmlsec-nodeset.html#xmlSecNodeSet" title="struct xmlSecNodeSet"><span class="type">xmlSecNodeSetPtr</span></a> nset</code></em>);</pre>
 <p>Instructs node set to destroy nodes parent doc when node set is destroyed.</p>
@@ -290,14 +328,14 @@ xmlSecNodeSetDocDestroy (<em class="parameter"><code><a class="link" href="xmlse
 <tbody><tr>
 <td class="parameter_name"><p>nset</p></td>
 <td class="parameter_description"><p>the pointer to node set.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecNodeSetContains"></a><h3>xmlSecNodeSetContains ()</h3>
+<a name="xmlSecNodeSetContains"></a><h3>xmlSecNodeSetContains ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecNodeSetContains (<em class="parameter"><code><a class="link" href="xmlsec-nodeset.html#xmlSecNodeSet" title="struct xmlSecNodeSet"><span class="type">xmlSecNodeSetPtr</span></a> nset</code></em>,
                        <em class="parameter"><code><font><span class="type">xmlNodePtr</span></font> node</code></em>,
@@ -316,18 +354,18 @@ xmlSecNodeSetContains (<em class="parameter"><code><a class="link" href="xmlsec-
 <tr>
 <td class="parameter_name"><p>nset</p></td>
 <td class="parameter_description"><p>the pointer to node set.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>node</p></td>
 <td class="parameter_description"><p>the pointer to XML node to check.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>parent</p></td>
 <td class="parameter_description"><p>the pointer to <em class="parameter"><code>node</code></em>
 parent node.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -342,7 +380,7 @@ and a negative value if an error occurs.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecNodeSetAdd"></a><h3>xmlSecNodeSetAdd ()</h3>
+<a name="xmlSecNodeSetAdd"></a><h3>xmlSecNodeSetAdd ()</h3>
 <pre class="programlisting"><a class="link" href="xmlsec-nodeset.html#xmlSecNodeSet" title="struct xmlSecNodeSet"><span class="returnvalue">xmlSecNodeSetPtr</span></a>
 xmlSecNodeSetAdd (<em class="parameter"><code><a class="link" href="xmlsec-nodeset.html#xmlSecNodeSet" title="struct xmlSecNodeSet"><span class="type">xmlSecNodeSetPtr</span></a> nset</code></em>,
                   <em class="parameter"><code><a class="link" href="xmlsec-nodeset.html#xmlSecNodeSet" title="struct xmlSecNodeSet"><span class="type">xmlSecNodeSetPtr</span></a> newNSet</code></em>,
@@ -363,17 +401,17 @@ xmlSecNodeSetAdd (<em class="parameter"><code><a class="link" href="xmlsec-nodes
 <tr>
 <td class="parameter_name"><p>nset</p></td>
 <td class="parameter_description"><p>the pointer to current nodes set (or NULL).</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>newNSet</p></td>
 <td class="parameter_description"><p>the pointer to new nodes set.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>op</p></td>
 <td class="parameter_description"><p>the operation type.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -386,7 +424,7 @@ occurs.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecNodeSetAddList"></a><h3>xmlSecNodeSetAddList ()</h3>
+<a name="xmlSecNodeSetAddList"></a><h3>xmlSecNodeSetAddList ()</h3>
 <pre class="programlisting"><a class="link" href="xmlsec-nodeset.html#xmlSecNodeSet" title="struct xmlSecNodeSet"><span class="returnvalue">xmlSecNodeSetPtr</span></a>
 xmlSecNodeSetAddList (<em class="parameter"><code><a class="link" href="xmlsec-nodeset.html#xmlSecNodeSet" title="struct xmlSecNodeSet"><span class="type">xmlSecNodeSetPtr</span></a> nset</code></em>,
                       <em class="parameter"><code><a class="link" href="xmlsec-nodeset.html#xmlSecNodeSet" title="struct xmlSecNodeSet"><span class="type">xmlSecNodeSetPtr</span></a> newNSet</code></em>,
@@ -407,17 +445,17 @@ xmlSecNodeSetAddList (<em class="parameter"><code><a class="link" href="xmlsec-n
 <tr>
 <td class="parameter_name"><p>nset</p></td>
 <td class="parameter_description"><p>the pointer to current nodes set (or NULL).</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>newNSet</p></td>
 <td class="parameter_description"><p>the pointer to new nodes set.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>op</p></td>
 <td class="parameter_description"><p>the operation type.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -430,7 +468,7 @@ occurs.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecNodeSetGetChildren"></a><h3>xmlSecNodeSetGetChildren ()</h3>
+<a name="xmlSecNodeSetGetChildren"></a><h3>xmlSecNodeSetGetChildren ()</h3>
 <pre class="programlisting"><a class="link" href="xmlsec-nodeset.html#xmlSecNodeSet" title="struct xmlSecNodeSet"><span class="returnvalue">xmlSecNodeSetPtr</span></a>
 xmlSecNodeSetGetChildren (<em class="parameter"><code><font><span class="type">xmlDocPtr</span></font> doc</code></em>,
                           <em class="parameter"><code>const <font><span class="type">xmlNodePtr</span></font> parent</code></em>,
@@ -474,22 +512,22 @@ and comment nodes.</p></li>
 <tr>
 <td class="parameter_name"><p>doc</p></td>
 <td class="parameter_description"><p>the pointer to an XML document.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>parent</p></td>
 <td class="parameter_description"><p>the pointer to parent XML node or NULL if we want to include all document nodes.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>withComments</p></td>
 <td class="parameter_description"><p>the flag include  comments or not.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>invert</p></td>
 <td class="parameter_description"><p>the "invert" flag.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -502,10 +540,10 @@ or NULL if an error occurs.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecNodeSetWalk"></a><h3>xmlSecNodeSetWalk ()</h3>
+<a name="xmlSecNodeSetWalk"></a><h3>xmlSecNodeSetWalk ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecNodeSetWalk (<em class="parameter"><code><a class="link" href="xmlsec-nodeset.html#xmlSecNodeSet" title="struct xmlSecNodeSet"><span class="type">xmlSecNodeSetPtr</span></a> nset</code></em>,
-                   <em class="parameter"><code><a class="link" href="xmlsec-nodeset.html#xmlSecNodeSetWalkCallback" title="xmlSecNodeSetWalkCallback ()"><span class="type">xmlSecNodeSetWalkCallback</span></a> walkFunc</code></em>,
+                   <em class="parameter"><code><a class="link" href="xmlsec-nodeset.html#xmlSecNodeSetWalkCallback" title="xmlSecNodeSetWalkCallback ()"><span class="type">xmlSecNodeSetWalkCallback</span></a> walkFunc</code></em>,
                    <em class="parameter"><code><font><span class="type">void</span></font> *data</code></em>);</pre>
 <p>Calls the function <em class="parameter"><code>walkFunc</code></em>
  once per each node in the nodes set <em class="parameter"><code>nset</code></em>
@@ -525,18 +563,18 @@ is interrupted.</p>
 <tr>
 <td class="parameter_name"><p>nset</p></td>
 <td class="parameter_description"><p>the pointer to node set.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>walkFunc</p></td>
 <td class="parameter_description"><p>the callback functions.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>data</p></td>
 <td class="parameter_description"><p>the application specific data passed to the <em class="parameter"><code>walkFunc</code></em>
 .</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -548,7 +586,7 @@ is interrupted.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecNodeSetDumpTextNodes"></a><h3>xmlSecNodeSetDumpTextNodes ()</h3>
+<a name="xmlSecNodeSetDumpTextNodes"></a><h3>xmlSecNodeSetDumpTextNodes ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecNodeSetDumpTextNodes (<em class="parameter"><code><a class="link" href="xmlsec-nodeset.html#xmlSecNodeSet" title="struct xmlSecNodeSet"><span class="type">xmlSecNodeSetPtr</span></a> nset</code></em>,
                             <em class="parameter"><code><font><span class="type">xmlOutputBufferPtr</span></font> out</code></em>);</pre>
@@ -567,12 +605,12 @@ xmlSecNodeSetDumpTextNodes (<em class="parameter"><code><a class="link" href="xm
 <tr>
 <td class="parameter_name"><p>nset</p></td>
 <td class="parameter_description"><p>the pointer to node set.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>out</p></td>
 <td class="parameter_description"><p>the output buffer.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -584,7 +622,7 @@ xmlSecNodeSetDumpTextNodes (<em class="parameter"><code><a class="link" href="xm
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecNodeSetDebugDump"></a><h3>xmlSecNodeSetDebugDump ()</h3>
+<a name="xmlSecNodeSetDebugDump"></a><h3>xmlSecNodeSetDebugDump ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
 xmlSecNodeSetDebugDump (<em class="parameter"><code><a class="link" href="xmlsec-nodeset.html#xmlSecNodeSet" title="struct xmlSecNodeSet"><span class="type">xmlSecNodeSetPtr</span></a> nset</code></em>,
                         <em class="parameter"><code><font><span class="type">FILE</span></font> *output</code></em>);</pre>
@@ -603,12 +641,12 @@ xmlSecNodeSetDebugDump (<em class="parameter"><code><a class="link" href="xmlsec
 <tr>
 <td class="parameter_name"><p>nset</p></td>
 <td class="parameter_description"><p>the pointer to node set.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>output</p></td>
 <td class="parameter_description"><p>the pointer to output FILE.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -632,41 +670,41 @@ xmlSecNodeSetDebugDump (<em class="parameter"><code><a class="link" href="xmlsec
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecNodeSetNormal"></a>xmlSecNodeSetNormal</p></td>
 <td class="enum_member_description"><p>nodes set = nodes in the list.</p></td>
-<td class="enum_member_annotations"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecNodeSetInvert"></a>xmlSecNodeSetInvert</p></td>
 <td class="enum_member_description"><p>nodes set = all document nodes minus nodes in the list.</p></td>
-<td class="enum_member_annotations"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecNodeSetTree"></a>xmlSecNodeSetTree</p></td>
 <td class="enum_member_description"><p>nodes set = nodes in the list and all their subtress.</p></td>
-<td class="enum_member_annotations"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecNodeSetTreeWithoutComments"></a>xmlSecNodeSetTreeWithoutComments</p></td>
 <td class="enum_member_description"><p>nodes set = nodes in the list and
 all their subtress but no comment nodes.</p></td>
-<td class="enum_member_annotations"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecNodeSetTreeInvert"></a>xmlSecNodeSetTreeInvert</p></td>
 <td class="enum_member_description"><p>nodes set = all document nodes minus nodes in the
 list and all their subtress.</p></td>
-<td class="enum_member_annotations"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecNodeSetTreeWithoutCommentsInvert"></a>xmlSecNodeSetTreeWithoutCommentsInvert</p></td>
 <td class="enum_member_description"><p>nodes set = all document nodes
 minus (nodes in the list and all their subtress
 plus all comment nodes).</p></td>
-<td class="enum_member_annotations"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecNodeSetList"></a>xmlSecNodeSetList</p></td>
 <td class="enum_member_description"><p>nodes set = all nodes in the children list of nodes sets.</p></td>
-<td class="enum_member_annotations"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -688,17 +726,17 @@ plus all comment nodes).</p></td>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecNodeSetIntersection"></a>xmlSecNodeSetIntersection</p></td>
 <td class="enum_member_description"><p>intersection.</p></td>
-<td class="enum_member_annotations"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecNodeSetSubtraction"></a>xmlSecNodeSetSubtraction</p></td>
 <td class="enum_member_description"><p>subtraction.</p></td>
-<td class="enum_member_annotations"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecNodeSetUnion"></a>xmlSecNodeSetUnion</p></td>
 <td class="enum_member_description"><p>union.</p></td>
-<td class="enum_member_annotations"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -729,47 +767,47 @@ plus all comment nodes).</p></td>
 </colgroup>
 <tbody>
 <tr>
-<td class="struct_member_name"><p><font><span class="type">xmlNodeSetPtr</span></font> <em class="structfield"><code><a name="xmlSecNodeSet.nodes"></a>nodes</code></em>;</p></td>
+<td class="struct_member_name"><p><font><span class="type">xmlNodeSetPtr</span></font> <em class="structfield"><code><a name="xmlSecNodeSet.nodes"></a>nodes</code></em>;</p></td>
 <td class="struct_member_description"><p>the nodes list.</p></td>
-<td class="struct_member_annotations"> </td>
+<td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><font><span class="type">xmlDocPtr</span></font> <em class="structfield"><code><a name="xmlSecNodeSet.doc"></a>doc</code></em>;</p></td>
+<td class="struct_member_name"><p><font><span class="type">xmlDocPtr</span></font> <em class="structfield"><code><a name="xmlSecNodeSet.doc"></a>doc</code></em>;</p></td>
 <td class="struct_member_description"><p>the parent XML document.</p></td>
-<td class="struct_member_annotations"> </td>
+<td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><font><span class="type">int</span></font> <em class="structfield"><code><a name="xmlSecNodeSet.destroyDoc"></a>destroyDoc</code></em>;</p></td>
+<td class="struct_member_name"><p><font><span class="type">int</span></font> <em class="structfield"><code><a name="xmlSecNodeSet.destroyDoc"></a>destroyDoc</code></em>;</p></td>
 <td class="struct_member_description"><p>the flag: if set to 1 then <em class="parameter"><code>doc</code></em>
 will
 be destroyed when node set is destroyed.</p></td>
-<td class="struct_member_annotations"> </td>
+<td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a class="link" href="xmlsec-nodeset.html#xmlSecNodeSetType" title="enum xmlSecNodeSetType"><span class="type">xmlSecNodeSetType</span></a> <em class="structfield"><code><a name="xmlSecNodeSet.type"></a>type</code></em>;</p></td>
+<td class="struct_member_name"><p><a class="link" href="xmlsec-nodeset.html#xmlSecNodeSetType" title="enum xmlSecNodeSetType"><span class="type">xmlSecNodeSetType</span></a> <em class="structfield"><code><a name="xmlSecNodeSet.type"></a>type</code></em>;</p></td>
 <td class="struct_member_description"><p>the nodes set type.</p></td>
-<td class="struct_member_annotations"> </td>
+<td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a class="link" href="xmlsec-nodeset.html#xmlSecNodeSetOp" title="enum xmlSecNodeSetOp"><span class="type">xmlSecNodeSetOp</span></a> <em class="structfield"><code><a name="xmlSecNodeSet.op"></a>op</code></em>;</p></td>
+<td class="struct_member_name"><p><a class="link" href="xmlsec-nodeset.html#xmlSecNodeSetOp" title="enum xmlSecNodeSetOp"><span class="type">xmlSecNodeSetOp</span></a> <em class="structfield"><code><a name="xmlSecNodeSet.op"></a>op</code></em>;</p></td>
 <td class="struct_member_description"><p>the operation type.</p></td>
-<td class="struct_member_annotations"> </td>
+<td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a class="link" href="xmlsec-nodeset.html#xmlSecNodeSet" title="struct xmlSecNodeSet"><span class="type">xmlSecNodeSetPtr</span></a> <em class="structfield"><code><a name="xmlSecNodeSet.next"></a>next</code></em>;</p></td>
+<td class="struct_member_name"><p><a class="link" href="xmlsec-nodeset.html#xmlSecNodeSet" title="struct xmlSecNodeSet"><span class="type">xmlSecNodeSetPtr</span></a> <em class="structfield"><code><a name="xmlSecNodeSet.next"></a>next</code></em>;</p></td>
 <td class="struct_member_description"><p>the next nodes set.</p></td>
-<td class="struct_member_annotations"> </td>
+<td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a class="link" href="xmlsec-nodeset.html#xmlSecNodeSet" title="struct xmlSecNodeSet"><span class="type">xmlSecNodeSetPtr</span></a> <em class="structfield"><code><a name="xmlSecNodeSet.prev"></a>prev</code></em>;</p></td>
+<td class="struct_member_name"><p><a class="link" href="xmlsec-nodeset.html#xmlSecNodeSet" title="struct xmlSecNodeSet"><span class="type">xmlSecNodeSetPtr</span></a> <em class="structfield"><code><a name="xmlSecNodeSet.prev"></a>prev</code></em>;</p></td>
 <td class="struct_member_description"><p>the previous nodes set.</p></td>
-<td class="struct_member_annotations"> </td>
+<td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a class="link" href="xmlsec-nodeset.html#xmlSecNodeSet" title="struct xmlSecNodeSet"><span class="type">xmlSecNodeSetPtr</span></a> <em class="structfield"><code><a name="xmlSecNodeSet.children"></a>children</code></em>;</p></td>
+<td class="struct_member_name"><p><a class="link" href="xmlsec-nodeset.html#xmlSecNodeSet" title="struct xmlSecNodeSet"><span class="type">xmlSecNodeSetPtr</span></a> <em class="structfield"><code><a name="xmlSecNodeSet.children"></a>children</code></em>;</p></td>
 <td class="struct_member_description"><p>the children list (valid only if type
 equal to <a class="link" href="xmlsec-nodeset.html#xmlSecNodeSetList"><span class="type">xmlSecNodeSetList</span></a>).</p></td>
-<td class="struct_member_annotations"> </td>
+<td class="struct_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -779,5 +817,6 @@ equal to <a class="link" href="xmlsec-nodeset.html#xmlSecNodeSetList"><span clas
 </div>
 <div class="footer">
 <hr>Generated by GTK-Doc V1.33.1</div>
-</body>
+</td></tr></table></td>
+</tr></table></body>
 </html>

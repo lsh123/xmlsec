@@ -1,7 +1,6 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>keysdata: XML Security Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
@@ -11,10 +10,49 @@
 <meta name="generator" content="GTK-Doc V1.33.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<body><table width="100%" valign="top"><tr valign="top">
+<td valign="top" align="left" width="210">
+<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../download.html">Download</a></li>
+<ul><li><a href="../https://github.com/lsh123/xmlsec">GitHub</a></li></ul>
+<li><a href="../news.html">News</a></li>
+<li><a href="../documentation.html">Documentation</a></li>
+<ul>
+<li><a href="../faq.html">FAQ</a></li>
+<li><a href="../api/xmlsec-notes.html">Tutorial</a></li>
+<li><a href="../api/xmlsec-reference.html">API reference</a></li>
+<li><a href="../api/xmlsec-examples.html">Examples</a></li>
+</ul>
+<li><a href="../xmldsig.html">XML Digital Signature</a></li>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
+<li><a href="../bugs.html">Reporting Bugs</a></li>
+<li><a href="mailing-list.html">Mailing list</a></li>
+<li><a href="../related.html">Related</a></li>
+<li><a href="../authors.html">Authors</a></li>
+</ul>
+<table width="100%">
+<tr>
+<td width="15"></td>
+<td><a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a></td>
+</tr>
+<tr>
+<td width="15"></td>
+<td><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a></td>
+</tr>
+<tr>
+<td width="15"></td>
+<td><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a></td>
+</tr>
+<!--Links - start--><!--Links - end-->
+</table>
+</td>
+<td valign="top"><table width="80%" valign="top" style="margin-left:10px;"><tr><td valign="top" align="left" id="xmlsecContent">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
 <td width="100%" align="left" class="shortcuts">
-<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
                   <a href="#xmlsec-keysdata.description" class="shortcut">Description</a></span>
 </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
@@ -27,7 +65,7 @@
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="xmlsec-keysdata.top_of_page"></a>keysdata</span></h2>
-<p>keysdata — Crypto key data object functions.</p>
+<p>keysdata &#8212; Crypto key data object functions.</p>
 </td>
 <td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
@@ -48,7 +86,7 @@
 <a class="link" href="xmlsec-list.html#xmlSecPtrList" title="struct xmlSecPtrList"><span class="returnvalue">xmlSecPtrListPtr</span></a>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataIdsGet" title="xmlSecKeyDataIdsGet ()">xmlSecKeyDataIdsGet</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataIdsGet" title="xmlSecKeyDataIdsGet ()">xmlSecKeyDataIdsGet</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -56,7 +94,7 @@
 <a class="link" href="xmlsec-list.html#xmlSecPtrList" title="struct xmlSecPtrList"><span class="returnvalue">xmlSecPtrListPtr</span></a>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataIdsGetEnabled" title="xmlSecKeyDataIdsGetEnabled ()">xmlSecKeyDataIdsGetEnabled</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataIdsGetEnabled" title="xmlSecKeyDataIdsGetEnabled ()">xmlSecKeyDataIdsGetEnabled</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -64,7 +102,7 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataIdsInit" title="xmlSecKeyDataIdsInit ()">xmlSecKeyDataIdsInit</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataIdsInit" title="xmlSecKeyDataIdsInit ()">xmlSecKeyDataIdsInit</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -72,7 +110,7 @@
 <font><span class="returnvalue">void</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataIdsShutdown" title="xmlSecKeyDataIdsShutdown ()">xmlSecKeyDataIdsShutdown</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataIdsShutdown" title="xmlSecKeyDataIdsShutdown ()">xmlSecKeyDataIdsShutdown</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -80,7 +118,7 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataIdsRegisterDefault" title="xmlSecKeyDataIdsRegisterDefault ()">xmlSecKeyDataIdsRegisterDefault</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataIdsRegisterDefault" title="xmlSecKeyDataIdsRegisterDefault ()">xmlSecKeyDataIdsRegisterDefault</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -88,7 +126,7 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataIdsRegister" title="xmlSecKeyDataIdsRegister ()">xmlSecKeyDataIdsRegister</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataIdsRegister" title="xmlSecKeyDataIdsRegister ()">xmlSecKeyDataIdsRegister</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -96,7 +134,7 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataIdsRegisterDisabled" title="xmlSecKeyDataIdsRegisterDisabled ()">xmlSecKeyDataIdsRegisterDisabled</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataIdsRegisterDisabled" title="xmlSecKeyDataIdsRegisterDisabled ()">xmlSecKeyDataIdsRegisterDisabled</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -104,7 +142,7 @@
 <a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="returnvalue">xmlSecKeyDataPtr</span></a>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataCreate" title="xmlSecKeyDataCreate ()">xmlSecKeyDataCreate</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataCreate" title="xmlSecKeyDataCreate ()">xmlSecKeyDataCreate</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -112,7 +150,7 @@
 <a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="returnvalue">xmlSecKeyDataPtr</span></a>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataDuplicate" title="xmlSecKeyDataDuplicate ()">xmlSecKeyDataDuplicate</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataDuplicate" title="xmlSecKeyDataDuplicate ()">xmlSecKeyDataDuplicate</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -120,7 +158,7 @@
 <font><span class="returnvalue">void</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataDestroy" title="xmlSecKeyDataDestroy ()">xmlSecKeyDataDestroy</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataDestroy" title="xmlSecKeyDataDestroy ()">xmlSecKeyDataDestroy</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -128,7 +166,7 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataGenerate" title="xmlSecKeyDataGenerate ()">xmlSecKeyDataGenerate</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataGenerate" title="xmlSecKeyDataGenerate ()">xmlSecKeyDataGenerate</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -136,7 +174,7 @@
 <a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataType" title="xmlSecKeyDataType"><span class="returnvalue">xmlSecKeyDataType</span></a>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataGetType" title="xmlSecKeyDataGetType ()">xmlSecKeyDataGetType</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataGetType" title="xmlSecKeyDataGetType ()">xmlSecKeyDataGetType</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -144,22 +182,14 @@
 <a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="returnvalue">xmlSecSize</span></a>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataGetSize" title="xmlSecKeyDataGetSize ()">xmlSecKeyDataGetSize</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataGetSize" title="xmlSecKeyDataGetSize ()">xmlSecKeyDataGetSize</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
-<td class="function_type">const <font><span class="returnvalue">xmlChar</span></font> *
+<td class="function_type">const <font><span class="returnvalue">xmlChar</span></font> *
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataGetIdentifier" title="xmlSecKeyDataGetIdentifier ()">xmlSecKeyDataGetIdentifier</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
-<font><span class="returnvalue">void</span></font>
-</td>
-<td class="function_name">
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataDebugDump" title="xmlSecKeyDataDebugDump ()">xmlSecKeyDataDebugDump</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataGetIdentifier" title="xmlSecKeyDataGetIdentifier ()">xmlSecKeyDataGetIdentifier</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -167,7 +197,15 @@
 <font><span class="returnvalue">void</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataDebugXmlDump" title="xmlSecKeyDataDebugXmlDump ()">xmlSecKeyDataDebugXmlDump</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataDebugDump" title="xmlSecKeyDataDebugDump ()">xmlSecKeyDataDebugDump</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">void</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataDebugXmlDump" title="xmlSecKeyDataDebugXmlDump ()">xmlSecKeyDataDebugXmlDump</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -175,7 +213,7 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataXmlRead" title="xmlSecKeyDataXmlRead ()">xmlSecKeyDataXmlRead</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataXmlRead" title="xmlSecKeyDataXmlRead ()">xmlSecKeyDataXmlRead</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -183,7 +221,7 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataXmlWrite" title="xmlSecKeyDataXmlWrite ()">xmlSecKeyDataXmlWrite</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataXmlWrite" title="xmlSecKeyDataXmlWrite ()">xmlSecKeyDataXmlWrite</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -191,7 +229,7 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataBinRead" title="xmlSecKeyDataBinRead ()">xmlSecKeyDataBinRead</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataBinRead" title="xmlSecKeyDataBinRead ()">xmlSecKeyDataBinRead</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -199,7 +237,7 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataBinWrite" title="xmlSecKeyDataBinWrite ()">xmlSecKeyDataBinWrite</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataBinWrite" title="xmlSecKeyDataBinWrite ()">xmlSecKeyDataBinWrite</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -237,7 +275,7 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<span class="c_punctuation">(</span><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataInitMethod" title="xmlSecKeyDataInitMethod ()">*xmlSecKeyDataInitMethod</a><span class="c_punctuation">)</span> <span class="c_punctuation">()</span>
+<span class="c_punctuation">(</span><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataInitMethod" title="xmlSecKeyDataInitMethod ()">*xmlSecKeyDataInitMethod</a><span class="c_punctuation">)</span> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -245,7 +283,7 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<span class="c_punctuation">(</span><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataDuplicateMethod" title="xmlSecKeyDataDuplicateMethod ()">*xmlSecKeyDataDuplicateMethod</a><span class="c_punctuation">)</span> <span class="c_punctuation">()</span>
+<span class="c_punctuation">(</span><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataDuplicateMethod" title="xmlSecKeyDataDuplicateMethod ()">*xmlSecKeyDataDuplicateMethod</a><span class="c_punctuation">)</span> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -253,7 +291,7 @@
 <font><span class="returnvalue">void</span></font>
 </td>
 <td class="function_name">
-<span class="c_punctuation">(</span><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataFinalizeMethod" title="xmlSecKeyDataFinalizeMethod ()">*xmlSecKeyDataFinalizeMethod</a><span class="c_punctuation">)</span> <span class="c_punctuation">()</span>
+<span class="c_punctuation">(</span><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataFinalizeMethod" title="xmlSecKeyDataFinalizeMethod ()">*xmlSecKeyDataFinalizeMethod</a><span class="c_punctuation">)</span> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -261,7 +299,7 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<span class="c_punctuation">(</span><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataXmlReadMethod" title="xmlSecKeyDataXmlReadMethod ()">*xmlSecKeyDataXmlReadMethod</a><span class="c_punctuation">)</span> <span class="c_punctuation">()</span>
+<span class="c_punctuation">(</span><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataXmlReadMethod" title="xmlSecKeyDataXmlReadMethod ()">*xmlSecKeyDataXmlReadMethod</a><span class="c_punctuation">)</span> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -269,7 +307,7 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<span class="c_punctuation">(</span><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataXmlWriteMethod" title="xmlSecKeyDataXmlWriteMethod ()">*xmlSecKeyDataXmlWriteMethod</a><span class="c_punctuation">)</span> <span class="c_punctuation">()</span>
+<span class="c_punctuation">(</span><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataXmlWriteMethod" title="xmlSecKeyDataXmlWriteMethod ()">*xmlSecKeyDataXmlWriteMethod</a><span class="c_punctuation">)</span> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -277,7 +315,7 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<span class="c_punctuation">(</span><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataBinReadMethod" title="xmlSecKeyDataBinReadMethod ()">*xmlSecKeyDataBinReadMethod</a><span class="c_punctuation">)</span> <span class="c_punctuation">()</span>
+<span class="c_punctuation">(</span><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataBinReadMethod" title="xmlSecKeyDataBinReadMethod ()">*xmlSecKeyDataBinReadMethod</a><span class="c_punctuation">)</span> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -285,7 +323,7 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<span class="c_punctuation">(</span><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataBinWriteMethod" title="xmlSecKeyDataBinWriteMethod ()">*xmlSecKeyDataBinWriteMethod</a><span class="c_punctuation">)</span> <span class="c_punctuation">()</span>
+<span class="c_punctuation">(</span><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataBinWriteMethod" title="xmlSecKeyDataBinWriteMethod ()">*xmlSecKeyDataBinWriteMethod</a><span class="c_punctuation">)</span> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -293,7 +331,7 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<span class="c_punctuation">(</span><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataGenerateMethod" title="xmlSecKeyDataGenerateMethod ()">*xmlSecKeyDataGenerateMethod</a><span class="c_punctuation">)</span> <span class="c_punctuation">()</span>
+<span class="c_punctuation">(</span><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataGenerateMethod" title="xmlSecKeyDataGenerateMethod ()">*xmlSecKeyDataGenerateMethod</a><span class="c_punctuation">)</span> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -301,7 +339,7 @@
 <a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataType" title="xmlSecKeyDataType"><span class="returnvalue">xmlSecKeyDataType</span></a>
 </td>
 <td class="function_name">
-<span class="c_punctuation">(</span><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataGetTypeMethod" title="xmlSecKeyDataGetTypeMethod ()">*xmlSecKeyDataGetTypeMethod</a><span class="c_punctuation">)</span> <span class="c_punctuation">()</span>
+<span class="c_punctuation">(</span><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataGetTypeMethod" title="xmlSecKeyDataGetTypeMethod ()">*xmlSecKeyDataGetTypeMethod</a><span class="c_punctuation">)</span> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -309,14 +347,14 @@
 <a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="returnvalue">xmlSecSize</span></a>
 </td>
 <td class="function_name">
-<span class="c_punctuation">(</span><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataGetSizeMethod" title="xmlSecKeyDataGetSizeMethod ()">*xmlSecKeyDataGetSizeMethod</a><span class="c_punctuation">)</span> <span class="c_punctuation">()</span>
+<span class="c_punctuation">(</span><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataGetSizeMethod" title="xmlSecKeyDataGetSizeMethod ()">*xmlSecKeyDataGetSizeMethod</a><span class="c_punctuation">)</span> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
-<td class="function_type">const <font><span class="returnvalue">xmlChar</span></font> *
+<td class="function_type">const <font><span class="returnvalue">xmlChar</span></font> *
 </td>
 <td class="function_name">
-<span class="c_punctuation">(</span><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataGetIdentifierMethod" title="xmlSecKeyDataGetIdentifierMethod ()">*xmlSecKeyDataGetIdentifierMethod</a><span class="c_punctuation">)</span> <span class="c_punctuation">()</span>
+<span class="c_punctuation">(</span><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataGetIdentifierMethod" title="xmlSecKeyDataGetIdentifierMethod ()">*xmlSecKeyDataGetIdentifierMethod</a><span class="c_punctuation">)</span> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -324,7 +362,7 @@
 <font><span class="returnvalue">void</span></font>
 </td>
 <td class="function_name">
-<span class="c_punctuation">(</span><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataDebugDumpMethod" title="xmlSecKeyDataDebugDumpMethod ()">*xmlSecKeyDataDebugDumpMethod</a><span class="c_punctuation">)</span> <span class="c_punctuation">()</span>
+<span class="c_punctuation">(</span><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataDebugDumpMethod" title="xmlSecKeyDataDebugDumpMethod ()">*xmlSecKeyDataDebugDumpMethod</a><span class="c_punctuation">)</span> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -338,7 +376,7 @@
 <a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="returnvalue">xmlSecSize</span></a>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataBinaryValueGetSize" title="xmlSecKeyDataBinaryValueGetSize ()">xmlSecKeyDataBinaryValueGetSize</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataBinaryValueGetSize" title="xmlSecKeyDataBinaryValueGetSize ()">xmlSecKeyDataBinaryValueGetSize</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -346,7 +384,7 @@
 <a class="link" href="xmlsec-buffer.html#xmlSecBuffer" title="struct xmlSecBuffer"><span class="returnvalue">xmlSecBufferPtr</span></a>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataBinaryValueGetBuffer" title="xmlSecKeyDataBinaryValueGetBuffer ()">xmlSecKeyDataBinaryValueGetBuffer</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataBinaryValueGetBuffer" title="xmlSecKeyDataBinaryValueGetBuffer ()">xmlSecKeyDataBinaryValueGetBuffer</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -354,7 +392,7 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataBinaryValueSetBuffer" title="xmlSecKeyDataBinaryValueSetBuffer ()">xmlSecKeyDataBinaryValueSetBuffer</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataBinaryValueSetBuffer" title="xmlSecKeyDataBinaryValueSetBuffer ()">xmlSecKeyDataBinaryValueSetBuffer</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -362,7 +400,7 @@
 <font><span class="returnvalue">xmlSecPtrListId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataListGetKlass" title="xmlSecKeyDataListGetKlass ()">xmlSecKeyDataListGetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataListGetKlass" title="xmlSecKeyDataListGetKlass ()">xmlSecKeyDataListGetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -370,7 +408,7 @@
 <font><span class="returnvalue">xmlSecPtrListId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataIdListGetKlass" title="xmlSecKeyDataIdListGetKlass ()">xmlSecKeyDataIdListGetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataIdListGetKlass" title="xmlSecKeyDataIdListGetKlass ()">xmlSecKeyDataIdListGetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -378,7 +416,7 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataIdListFind" title="xmlSecKeyDataIdListFind ()">xmlSecKeyDataIdListFind</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataIdListFind" title="xmlSecKeyDataIdListFind ()">xmlSecKeyDataIdListFind</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -386,7 +424,7 @@
 <font><span class="returnvalue">xmlSecKeyDataId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataIdListFindByNode" title="xmlSecKeyDataIdListFindByNode ()">xmlSecKeyDataIdListFindByNode</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataIdListFindByNode" title="xmlSecKeyDataIdListFindByNode ()">xmlSecKeyDataIdListFindByNode</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -394,7 +432,7 @@
 <font><span class="returnvalue">xmlSecKeyDataId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataIdListFindByHref" title="xmlSecKeyDataIdListFindByHref ()">xmlSecKeyDataIdListFindByHref</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataIdListFindByHref" title="xmlSecKeyDataIdListFindByHref ()">xmlSecKeyDataIdListFindByHref</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -402,7 +440,7 @@
 <font><span class="returnvalue">xmlSecKeyDataId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataIdListFindByName" title="xmlSecKeyDataIdListFindByName ()">xmlSecKeyDataIdListFindByName</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataIdListFindByName" title="xmlSecKeyDataIdListFindByName ()">xmlSecKeyDataIdListFindByName</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -410,7 +448,7 @@
 <font><span class="returnvalue">void</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataIdListDebugDump" title="xmlSecKeyDataIdListDebugDump ()">xmlSecKeyDataIdListDebugDump</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataIdListDebugDump" title="xmlSecKeyDataIdListDebugDump ()">xmlSecKeyDataIdListDebugDump</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -418,7 +456,7 @@
 <font><span class="returnvalue">void</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataIdListDebugXmlDump" title="xmlSecKeyDataIdListDebugXmlDump ()">xmlSecKeyDataIdListDebugXmlDump</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataIdListDebugXmlDump" title="xmlSecKeyDataIdListDebugXmlDump ()">xmlSecKeyDataIdListDebugXmlDump</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -426,7 +464,7 @@
 <a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataStore" title="struct xmlSecKeyDataStore"><span class="returnvalue">xmlSecKeyDataStorePtr</span></a>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataStoreCreate" title="xmlSecKeyDataStoreCreate ()">xmlSecKeyDataStoreCreate</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataStoreCreate" title="xmlSecKeyDataStoreCreate ()">xmlSecKeyDataStoreCreate</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -434,7 +472,7 @@
 <font><span class="returnvalue">void</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataStoreDestroy" title="xmlSecKeyDataStoreDestroy ()">xmlSecKeyDataStoreDestroy</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataStoreDestroy" title="xmlSecKeyDataStoreDestroy ()">xmlSecKeyDataStoreDestroy</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -466,7 +504,7 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<span class="c_punctuation">(</span><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataStoreInitializeMethod" title="xmlSecKeyDataStoreInitializeMethod ()">*xmlSecKeyDataStoreInitializeMethod</a><span class="c_punctuation">)</span> <span class="c_punctuation">()</span>
+<span class="c_punctuation">(</span><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataStoreInitializeMethod" title="xmlSecKeyDataStoreInitializeMethod ()">*xmlSecKeyDataStoreInitializeMethod</a><span class="c_punctuation">)</span> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -474,7 +512,7 @@
 <font><span class="returnvalue">void</span></font>
 </td>
 <td class="function_name">
-<span class="c_punctuation">(</span><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataStoreFinalizeMethod" title="xmlSecKeyDataStoreFinalizeMethod ()">*xmlSecKeyDataStoreFinalizeMethod</a><span class="c_punctuation">)</span> <span class="c_punctuation">()</span>
+<span class="c_punctuation">(</span><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataStoreFinalizeMethod" title="xmlSecKeyDataStoreFinalizeMethod ()">*xmlSecKeyDataStoreFinalizeMethod</a><span class="c_punctuation">)</span> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -488,7 +526,7 @@
 <font><span class="returnvalue">xmlSecPtrListId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataStorePtrListGetKlass" title="xmlSecKeyDataStorePtrListGetKlass ()">xmlSecKeyDataStorePtrListGetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataStorePtrListGetKlass" title="xmlSecKeyDataStorePtrListGetKlass ()">xmlSecKeyDataStorePtrListGetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -496,7 +534,7 @@
 <font><span class="returnvalue">void</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-keysdata.html#xmlSecImportSetPersistKey" title="xmlSecImportSetPersistKey ()">xmlSecImportSetPersistKey</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-keysdata.html#xmlSecImportSetPersistKey" title="xmlSecImportSetPersistKey ()">xmlSecImportSetPersistKey</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -504,7 +542,7 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-keysdata.html#xmlSecImportGetPersistKey" title="xmlSecImportGetPersistKey ()">xmlSecImportGetPersistKey</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-keysdata.html#xmlSecImportGetPersistKey" title="xmlSecImportGetPersistKey ()">xmlSecImportGetPersistKey</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 </tbody>
@@ -660,7 +698,7 @@
 <div class="refsect1">
 <a name="xmlsec-keysdata.functions_details"></a><h2>Functions</h2>
 <div class="refsect2">
-<a name="xmlSecKeyDataIdsGet"></a><h3>xmlSecKeyDataIdsGet ()</h3>
+<a name="xmlSecKeyDataIdsGet"></a><h3>xmlSecKeyDataIdsGet ()</h3>
 <pre class="programlisting"><a class="link" href="xmlsec-list.html#xmlSecPtrList" title="struct xmlSecPtrList"><span class="returnvalue">xmlSecPtrListPtr</span></a>
 xmlSecKeyDataIdsGet (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>Gets global registered key data klasses list.</p>
@@ -671,7 +709,7 @@ xmlSecKeyDataIdsGet (<em class="parameter"><code><span class="type">void</span><
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataIdsGetEnabled"></a><h3>xmlSecKeyDataIdsGetEnabled ()</h3>
+<a name="xmlSecKeyDataIdsGetEnabled"></a><h3>xmlSecKeyDataIdsGetEnabled ()</h3>
 <pre class="programlisting"><a class="link" href="xmlsec-list.html#xmlSecPtrList" title="struct xmlSecPtrList"><span class="returnvalue">xmlSecPtrListPtr</span></a>
 xmlSecKeyDataIdsGetEnabled (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>Gets global enabled key data klasses list.</p>
@@ -682,11 +720,11 @@ xmlSecKeyDataIdsGetEnabled (<em class="parameter"><code><span class="type">void<
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataIdsInit"></a><h3>xmlSecKeyDataIdsInit ()</h3>
+<a name="xmlSecKeyDataIdsInit"></a><h3>xmlSecKeyDataIdsInit ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecKeyDataIdsInit (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>Initializes the key data klasses. This function is called from the
-<a class="link" href="xmlsec-xmlsec.html#xmlSecInit" title="xmlSecInit ()"><span class="type">xmlSecInit</span></a> function and the application should not call it directly.</p>
+<a class="link" href="xmlsec-xmlsec.html#xmlSecInit" title="xmlSecInit ()"><span class="type">xmlSecInit</span></a> function and the application should not call it directly.</p>
 <div class="refsect3">
 <a name="xmlSecKeyDataIdsInit.returns"></a><h4>Returns</h4>
 <p> 0 on success or a negative value if an error occurs.</p>
@@ -694,15 +732,15 @@ xmlSecKeyDataIdsInit (<em class="parameter"><code><span class="type">void</span>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataIdsShutdown"></a><h3>xmlSecKeyDataIdsShutdown ()</h3>
+<a name="xmlSecKeyDataIdsShutdown"></a><h3>xmlSecKeyDataIdsShutdown ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
 xmlSecKeyDataIdsShutdown (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>Shuts down the keys data klasses. This function is called from the
-<a class="link" href="xmlsec-xmlsec.html#xmlSecShutdown" title="xmlSecShutdown ()"><span class="type">xmlSecShutdown</span></a> function and the application should not call it directly.</p>
+<a class="link" href="xmlsec-xmlsec.html#xmlSecShutdown" title="xmlSecShutdown ()"><span class="type">xmlSecShutdown</span></a> function and the application should not call it directly.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataIdsRegisterDefault"></a><h3>xmlSecKeyDataIdsRegisterDefault ()</h3>
+<a name="xmlSecKeyDataIdsRegisterDefault"></a><h3>xmlSecKeyDataIdsRegisterDefault ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecKeyDataIdsRegisterDefault (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>Registers default (implemented by XML Security Library)
@@ -715,7 +753,7 @@ key data klasses: <a class="ulink" href="" target="_top">&lt;dsig:KeyName/&gt;</
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataIdsRegister"></a><h3>xmlSecKeyDataIdsRegister ()</h3>
+<a name="xmlSecKeyDataIdsRegister"></a><h3>xmlSecKeyDataIdsRegister ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecKeyDataIdsRegister (<em class="parameter"><code><font><span class="type">xmlSecKeyDataId</span></font> id</code></em>);</pre>
 <p>Registers <em class="parameter"><code>id</code></em>
@@ -731,7 +769,7 @@ xmlSecKeyDataIdsRegister (<em class="parameter"><code><font><span class="type">x
 <tbody><tr>
 <td class="parameter_name"><p>id</p></td>
 <td class="parameter_description"><p>the key data klass.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
@@ -742,7 +780,7 @@ xmlSecKeyDataIdsRegister (<em class="parameter"><code><font><span class="type">x
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataIdsRegisterDisabled"></a><h3>xmlSecKeyDataIdsRegisterDisabled ()</h3>
+<a name="xmlSecKeyDataIdsRegisterDisabled"></a><h3>xmlSecKeyDataIdsRegisterDisabled ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecKeyDataIdsRegisterDisabled (<em class="parameter"><code><font><span class="type">xmlSecKeyDataId</span></font> id</code></em>);</pre>
 <p>Registers <em class="parameter"><code>id</code></em>
@@ -758,7 +796,7 @@ xmlSecKeyDataIdsRegisterDisabled (<em class="parameter"><code><font><span class=
 <tbody><tr>
 <td class="parameter_name"><p>id</p></td>
 <td class="parameter_description"><p>the key data klass.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
@@ -769,13 +807,13 @@ xmlSecKeyDataIdsRegisterDisabled (<em class="parameter"><code><font><span class=
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataCreate"></a><h3>xmlSecKeyDataCreate ()</h3>
+<a name="xmlSecKeyDataCreate"></a><h3>xmlSecKeyDataCreate ()</h3>
 <pre class="programlisting"><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="returnvalue">xmlSecKeyDataPtr</span></a>
 xmlSecKeyDataCreate (<em class="parameter"><code><font><span class="type">xmlSecKeyDataId</span></font> id</code></em>);</pre>
 <p>Allocates and initializes new key data of the specified type <em class="parameter"><code>id</code></em>
 .
 Caller is responsible for destroying returned object with
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataDestroy" title="xmlSecKeyDataDestroy ()"><span class="type">xmlSecKeyDataDestroy</span></a> function.</p>
+<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataDestroy" title="xmlSecKeyDataDestroy ()"><span class="type">xmlSecKeyDataDestroy</span></a> function.</p>
 <div class="refsect3">
 <a name="xmlSecKeyDataCreate.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -787,7 +825,7 @@ Caller is responsible for destroying returned object with
 <tbody><tr>
 <td class="parameter_name"><p>id</p></td>
 <td class="parameter_description"><p>the data id.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
@@ -799,12 +837,12 @@ or NULL if an error occurs.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataDuplicate"></a><h3>xmlSecKeyDataDuplicate ()</h3>
+<a name="xmlSecKeyDataDuplicate"></a><h3>xmlSecKeyDataDuplicate ()</h3>
 <pre class="programlisting"><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="returnvalue">xmlSecKeyDataPtr</span></a>
 xmlSecKeyDataDuplicate (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
 <p>Creates a duplicate of the given <em class="parameter"><code>data</code></em>
 . Caller is responsible for
-destroying returned object with <a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataDestroy" title="xmlSecKeyDataDestroy ()"><span class="type">xmlSecKeyDataDestroy</span></a> function.</p>
+destroying returned object with <a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataDestroy" title="xmlSecKeyDataDestroy ()"><span class="type">xmlSecKeyDataDestroy</span></a> function.</p>
 <div class="refsect3">
 <a name="xmlSecKeyDataDuplicate.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -816,7 +854,7 @@ destroying returned object with <a class="link" href="xmlsec-keysdata.html#xmlSe
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
 <td class="parameter_description"><p>the pointer to the key data.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
@@ -828,7 +866,7 @@ or NULL if an error occurs.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataDestroy"></a><h3>xmlSecKeyDataDestroy ()</h3>
+<a name="xmlSecKeyDataDestroy"></a><h3>xmlSecKeyDataDestroy ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
 xmlSecKeyDataDestroy (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
 <p>Destroys the data and frees all allocated memory.</p>
@@ -843,14 +881,14 @@ xmlSecKeyDataDestroy (<em class="parameter"><code><a class="link" href="xmlsec-k
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
 <td class="parameter_description"><p>the pointer to the key data.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataGenerate"></a><h3>xmlSecKeyDataGenerate ()</h3>
+<a name="xmlSecKeyDataGenerate"></a><h3>xmlSecKeyDataGenerate ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecKeyDataGenerate (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
                        <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> sizeBits</code></em>,
@@ -868,17 +906,17 @@ xmlSecKeyDataGenerate (<em class="parameter"><code><a class="link" href="xmlsec-
 <tr>
 <td class="parameter_name"><p>data</p></td>
 <td class="parameter_description"><p>the pointer to key data.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>sizeBits</p></td>
 <td class="parameter_description"><p>the desired key data size (in bits).</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>type</p></td>
 <td class="parameter_description"><p>the desired key data type.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -890,7 +928,7 @@ xmlSecKeyDataGenerate (<em class="parameter"><code><a class="link" href="xmlsec-
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataGetType"></a><h3>xmlSecKeyDataGetType ()</h3>
+<a name="xmlSecKeyDataGetType"></a><h3>xmlSecKeyDataGetType ()</h3>
 <pre class="programlisting"><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataType" title="xmlSecKeyDataType"><span class="returnvalue">xmlSecKeyDataType</span></a>
 xmlSecKeyDataGetType (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
 <p>Gets key data type.</p>
@@ -905,7 +943,7 @@ xmlSecKeyDataGetType (<em class="parameter"><code><a class="link" href="xmlsec-k
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
 <td class="parameter_description"><p>the pointer to key data.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
@@ -916,7 +954,7 @@ xmlSecKeyDataGetType (<em class="parameter"><code><a class="link" href="xmlsec-k
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataGetSize"></a><h3>xmlSecKeyDataGetSize ()</h3>
+<a name="xmlSecKeyDataGetSize"></a><h3>xmlSecKeyDataGetSize ()</h3>
 <pre class="programlisting"><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="returnvalue">xmlSecSize</span></a>
 xmlSecKeyDataGetSize (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
 <p>Gets key data size.</p>
@@ -931,7 +969,7 @@ xmlSecKeyDataGetSize (<em class="parameter"><code><a class="link" href="xmlsec-k
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
 <td class="parameter_description"><p>the pointer to key data.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
@@ -942,8 +980,8 @@ xmlSecKeyDataGetSize (<em class="parameter"><code><a class="link" href="xmlsec-k
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataGetIdentifier"></a><h3>xmlSecKeyDataGetIdentifier ()</h3>
-<pre class="programlisting">const <font><span class="returnvalue">xmlChar</span></font> *
+<a name="xmlSecKeyDataGetIdentifier"></a><h3>xmlSecKeyDataGetIdentifier ()</h3>
+<pre class="programlisting">const <font><span class="returnvalue">xmlChar</span></font> *
 xmlSecKeyDataGetIdentifier (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
 <p>Gets key data identifier string.</p>
 <div class="refsect3">
@@ -957,7 +995,7 @@ xmlSecKeyDataGetIdentifier (<em class="parameter"><code><a class="link" href="xm
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
 <td class="parameter_description"><p>the pointer to key data.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
@@ -968,7 +1006,7 @@ xmlSecKeyDataGetIdentifier (<em class="parameter"><code><a class="link" href="xm
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataDebugDump"></a><h3>xmlSecKeyDataDebugDump ()</h3>
+<a name="xmlSecKeyDataDebugDump"></a><h3>xmlSecKeyDataDebugDump ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
 xmlSecKeyDataDebugDump (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
                         <em class="parameter"><code><font><span class="type">FILE</span></font> *output</code></em>);</pre>
@@ -985,12 +1023,12 @@ xmlSecKeyDataDebugDump (<em class="parameter"><code><a class="link" href="xmlsec
 <tr>
 <td class="parameter_name"><p>data</p></td>
 <td class="parameter_description"><p>the pointer to key data.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>output</p></td>
 <td class="parameter_description"><p>the pointer to output FILE.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -998,7 +1036,7 @@ xmlSecKeyDataDebugDump (<em class="parameter"><code><a class="link" href="xmlsec
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataDebugXmlDump"></a><h3>xmlSecKeyDataDebugXmlDump ()</h3>
+<a name="xmlSecKeyDataDebugXmlDump"></a><h3>xmlSecKeyDataDebugXmlDump ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
 xmlSecKeyDataDebugXmlDump (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
                            <em class="parameter"><code><font><span class="type">FILE</span></font> *output</code></em>);</pre>
@@ -1015,12 +1053,12 @@ xmlSecKeyDataDebugXmlDump (<em class="parameter"><code><a class="link" href="xml
 <tr>
 <td class="parameter_name"><p>data</p></td>
 <td class="parameter_description"><p>the pointer to key data.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>output</p></td>
 <td class="parameter_description"><p>the pointer to output FILE.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -1028,7 +1066,7 @@ xmlSecKeyDataDebugXmlDump (<em class="parameter"><code><a class="link" href="xml
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataXmlRead"></a><h3>xmlSecKeyDataXmlRead ()</h3>
+<a name="xmlSecKeyDataXmlRead"></a><h3>xmlSecKeyDataXmlRead ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecKeyDataXmlRead (<em class="parameter"><code><font><span class="type">xmlSecKeyDataId</span></font> id</code></em>,
                       <em class="parameter"><code><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="type">xmlSecKeyPtr</span></a> key</code></em>,
@@ -1050,22 +1088,22 @@ xmlSecKeyDataXmlRead (<em class="parameter"><code><font><span class="type">xmlSe
 <tr>
 <td class="parameter_name"><p>id</p></td>
 <td class="parameter_description"><p>the data klass.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>key</p></td>
 <td class="parameter_description"><p>the destination key.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>node</p></td>
 <td class="parameter_description"><p>the pointer to an XML node.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>keyInfoCtx</p></td>
 <td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> element processing context.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -1077,7 +1115,7 @@ xmlSecKeyDataXmlRead (<em class="parameter"><code><font><span class="type">xmlSe
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataXmlWrite"></a><h3>xmlSecKeyDataXmlWrite ()</h3>
+<a name="xmlSecKeyDataXmlWrite"></a><h3>xmlSecKeyDataXmlWrite ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecKeyDataXmlWrite (<em class="parameter"><code><font><span class="type">xmlSecKeyDataId</span></font> id</code></em>,
                        <em class="parameter"><code><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="type">xmlSecKeyPtr</span></a> key</code></em>,
@@ -1099,22 +1137,22 @@ xmlSecKeyDataXmlWrite (<em class="parameter"><code><font><span class="type">xmlS
 <tr>
 <td class="parameter_name"><p>id</p></td>
 <td class="parameter_description"><p>the data klass.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>key</p></td>
 <td class="parameter_description"><p>the source key.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>node</p></td>
 <td class="parameter_description"><p>the pointer to an XML node.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>keyInfoCtx</p></td>
 <td class="parameter_description"><p>the pointer to <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> element processing context.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -1126,7 +1164,7 @@ xmlSecKeyDataXmlWrite (<em class="parameter"><code><font><span class="type">xmlS
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataBinRead"></a><h3>xmlSecKeyDataBinRead ()</h3>
+<a name="xmlSecKeyDataBinRead"></a><h3>xmlSecKeyDataBinRead ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecKeyDataBinRead (<em class="parameter"><code><font><span class="type">xmlSecKeyDataId</span></font> id</code></em>,
                       <em class="parameter"><code><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="type">xmlSecKeyPtr</span></a> key</code></em>,
@@ -1149,27 +1187,27 @@ xmlSecKeyDataBinRead (<em class="parameter"><code><font><span class="type">xmlSe
 <tr>
 <td class="parameter_name"><p>id</p></td>
 <td class="parameter_description"><p>the data klass.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>key</p></td>
 <td class="parameter_description"><p>the destination key.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>buf</p></td>
 <td class="parameter_description"><p>the input binary buffer.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>bufSize</p></td>
 <td class="parameter_description"><p>the input buffer size.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>keyInfoCtx</p></td>
 <td class="parameter_description"><p>the <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> node processing context.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -1181,7 +1219,7 @@ xmlSecKeyDataBinRead (<em class="parameter"><code><font><span class="type">xmlSe
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataBinWrite"></a><h3>xmlSecKeyDataBinWrite ()</h3>
+<a name="xmlSecKeyDataBinWrite"></a><h3>xmlSecKeyDataBinWrite ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecKeyDataBinWrite (<em class="parameter"><code><font><span class="type">xmlSecKeyDataId</span></font> id</code></em>,
                        <em class="parameter"><code><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="type">xmlSecKeyPtr</span></a> key</code></em>,
@@ -1204,27 +1242,27 @@ xmlSecKeyDataBinWrite (<em class="parameter"><code><font><span class="type">xmlS
 <tr>
 <td class="parameter_name"><p>id</p></td>
 <td class="parameter_description"><p>the data klass.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>key</p></td>
 <td class="parameter_description"><p>the source key.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>buf</p></td>
 <td class="parameter_description"><p>the output binary buffer.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>bufSize</p></td>
 <td class="parameter_description"><p>the output buffer size.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>keyInfoCtx</p></td>
 <td class="parameter_description"><p>the <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> node processing context.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -1250,7 +1288,7 @@ xmlSecKeyDataBinWrite (<em class="parameter"><code><font><span class="type">xmlS
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
 <td class="parameter_description"><p>the pointer to key data.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
@@ -1274,7 +1312,7 @@ or 0 otherwise.</p>
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
 <td class="parameter_description"><p>the pointer to data.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
@@ -1299,12 +1337,12 @@ or 0 otherwise.</p>
 <tr>
 <td class="parameter_name"><p>data</p></td>
 <td class="parameter_description"><p>the pointer to data.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>dataId</p></td>
 <td class="parameter_description"><p>the data Id.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -1329,12 +1367,12 @@ or 0 otherwise.</p>
 <tr>
 <td class="parameter_name"><p>data</p></td>
 <td class="parameter_description"><p>the pointer to data.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>usg</p></td>
 <td class="parameter_description"><p>the data usage.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -1360,12 +1398,12 @@ or 0 otherwise.</p>
 <tr>
 <td class="parameter_name"><p>data</p></td>
 <td class="parameter_description"><p>the pointer to data.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>size</p></td>
 <td class="parameter_description"><p>the expected size.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -1373,7 +1411,7 @@ or 0 otherwise.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataInitMethod"></a><h3>xmlSecKeyDataInitMethod ()</h3>
+<a name="xmlSecKeyDataInitMethod"></a><h3>xmlSecKeyDataInitMethod ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 <span class="c_punctuation">(</span>*xmlSecKeyDataInitMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
 <p>Key data specific initialization method.</p>
@@ -1388,7 +1426,7 @@ or 0 otherwise.</p>
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
 <td class="parameter_description"><p>the pointer to key data.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
@@ -1399,7 +1437,7 @@ or 0 otherwise.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataDuplicateMethod"></a><h3>xmlSecKeyDataDuplicateMethod ()</h3>
+<a name="xmlSecKeyDataDuplicateMethod"></a><h3>xmlSecKeyDataDuplicateMethod ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 <span class="c_punctuation">(</span>*xmlSecKeyDataDuplicateMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> dst</code></em>,
                                  <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> src</code></em>);</pre>
@@ -1416,12 +1454,12 @@ or 0 otherwise.</p>
 <tr>
 <td class="parameter_name"><p>dst</p></td>
 <td class="parameter_description"><p>the pointer to destination key data.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>src</p></td>
 <td class="parameter_description"><p>the pointer to source key data.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -1433,7 +1471,7 @@ or 0 otherwise.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataFinalizeMethod"></a><h3>xmlSecKeyDataFinalizeMethod ()</h3>
+<a name="xmlSecKeyDataFinalizeMethod"></a><h3>xmlSecKeyDataFinalizeMethod ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
 <span class="c_punctuation">(</span>*xmlSecKeyDataFinalizeMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
 <p>Key data specific finalization method. All the objects and resources allocated
@@ -1449,14 +1487,14 @@ by the key data object must be freed inside this method.</p>
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
 <td class="parameter_description"><p>the data.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataXmlReadMethod"></a><h3>xmlSecKeyDataXmlReadMethod ()</h3>
+<a name="xmlSecKeyDataXmlReadMethod"></a><h3>xmlSecKeyDataXmlReadMethod ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 <span class="c_punctuation">(</span>*xmlSecKeyDataXmlReadMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><font><span class="type">xmlSecKeyDataId</span></font> id</code></em>,
                                <em class="parameter"><code><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="type">xmlSecKeyPtr</span></a> key</code></em>,
@@ -1475,22 +1513,22 @@ by the key data object must be freed inside this method.</p>
 <tr>
 <td class="parameter_name"><p>id</p></td>
 <td class="parameter_description"><p>the data id.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>key</p></td>
 <td class="parameter_description"><p>the key.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>node</p></td>
 <td class="parameter_description"><p>the pointer to data's value XML node.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>keyInfoCtx</p></td>
 <td class="parameter_description"><p>the <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> node processing context.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -1502,7 +1540,7 @@ by the key data object must be freed inside this method.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataXmlWriteMethod"></a><h3>xmlSecKeyDataXmlWriteMethod ()</h3>
+<a name="xmlSecKeyDataXmlWriteMethod"></a><h3>xmlSecKeyDataXmlWriteMethod ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 <span class="c_punctuation">(</span>*xmlSecKeyDataXmlWriteMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><font><span class="type">xmlSecKeyDataId</span></font> id</code></em>,
                                 <em class="parameter"><code><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="type">xmlSecKeyPtr</span></a> key</code></em>,
@@ -1521,22 +1559,22 @@ by the key data object must be freed inside this method.</p>
 <tr>
 <td class="parameter_name"><p>id</p></td>
 <td class="parameter_description"><p>the data id.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>key</p></td>
 <td class="parameter_description"><p>the key.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>node</p></td>
 <td class="parameter_description"><p>the pointer to data's value XML node.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>keyInfoCtx</p></td>
 <td class="parameter_description"><p>the <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> node processing context.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -1548,7 +1586,7 @@ by the key data object must be freed inside this method.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataBinReadMethod"></a><h3>xmlSecKeyDataBinReadMethod ()</h3>
+<a name="xmlSecKeyDataBinReadMethod"></a><h3>xmlSecKeyDataBinReadMethod ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 <span class="c_punctuation">(</span>*xmlSecKeyDataBinReadMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><font><span class="type">xmlSecKeyDataId</span></font> id</code></em>,
                                <em class="parameter"><code><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="type">xmlSecKeyPtr</span></a> key</code></em>,
@@ -1568,27 +1606,27 @@ by the key data object must be freed inside this method.</p>
 <tr>
 <td class="parameter_name"><p>id</p></td>
 <td class="parameter_description"><p>the data id.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>key</p></td>
 <td class="parameter_description"><p>the key.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>buf</p></td>
 <td class="parameter_description"><p>the input buffer.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>bufSize</p></td>
 <td class="parameter_description"><p>the buffer size.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>keyInfoCtx</p></td>
 <td class="parameter_description"><p>the <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> node processing context.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -1600,7 +1638,7 @@ by the key data object must be freed inside this method.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataBinWriteMethod"></a><h3>xmlSecKeyDataBinWriteMethod ()</h3>
+<a name="xmlSecKeyDataBinWriteMethod"></a><h3>xmlSecKeyDataBinWriteMethod ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 <span class="c_punctuation">(</span>*xmlSecKeyDataBinWriteMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><font><span class="type">xmlSecKeyDataId</span></font> id</code></em>,
                                 <em class="parameter"><code><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="type">xmlSecKeyPtr</span></a> key</code></em>,
@@ -1620,27 +1658,27 @@ by the key data object must be freed inside this method.</p>
 <tr>
 <td class="parameter_name"><p>id</p></td>
 <td class="parameter_description"><p>the data id.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>key</p></td>
 <td class="parameter_description"><p>the key.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>buf</p></td>
 <td class="parameter_description"><p>the output buffer.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>bufSize</p></td>
 <td class="parameter_description"><p>the buffer size.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>keyInfoCtx</p></td>
 <td class="parameter_description"><p>the <a class="ulink" href="" target="_top">&lt;dsig:KeyInfo/&gt;</a> node processing context.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -1652,7 +1690,7 @@ by the key data object must be freed inside this method.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataGenerateMethod"></a><h3>xmlSecKeyDataGenerateMethod ()</h3>
+<a name="xmlSecKeyDataGenerateMethod"></a><h3>xmlSecKeyDataGenerateMethod ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 <span class="c_punctuation">(</span>*xmlSecKeyDataGenerateMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
                                 <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> sizeBits</code></em>,
@@ -1670,17 +1708,17 @@ by the key data object must be freed inside this method.</p>
 <tr>
 <td class="parameter_name"><p>data</p></td>
 <td class="parameter_description"><p>the pointer to key data.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>sizeBits</p></td>
 <td class="parameter_description"><p>the key data specific size.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>type</p></td>
 <td class="parameter_description"><p>the required key type (session/permanent, etc.)</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -1692,7 +1730,7 @@ by the key data object must be freed inside this method.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataGetTypeMethod"></a><h3>xmlSecKeyDataGetTypeMethod ()</h3>
+<a name="xmlSecKeyDataGetTypeMethod"></a><h3>xmlSecKeyDataGetTypeMethod ()</h3>
 <pre class="programlisting"><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataType" title="xmlSecKeyDataType"><span class="returnvalue">xmlSecKeyDataType</span></a>
 <span class="c_punctuation">(</span>*xmlSecKeyDataGetTypeMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
 <p>Key data specific method to get the key type.</p>
@@ -1707,7 +1745,7 @@ by the key data object must be freed inside this method.</p>
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
 <td class="parameter_description"><p>the data.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
@@ -1718,7 +1756,7 @@ by the key data object must be freed inside this method.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataGetSizeMethod"></a><h3>xmlSecKeyDataGetSizeMethod ()</h3>
+<a name="xmlSecKeyDataGetSizeMethod"></a><h3>xmlSecKeyDataGetSizeMethod ()</h3>
 <pre class="programlisting"><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="returnvalue">xmlSecSize</span></a>
 <span class="c_punctuation">(</span>*xmlSecKeyDataGetSizeMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
 <p>Key data specific method to get the key size.</p>
@@ -1733,7 +1771,7 @@ by the key data object must be freed inside this method.</p>
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
 <td class="parameter_description"><p>the pointer to key data.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
@@ -1744,8 +1782,8 @@ by the key data object must be freed inside this method.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataGetIdentifierMethod"></a><h3>xmlSecKeyDataGetIdentifierMethod ()</h3>
-<pre class="programlisting">const <font><span class="returnvalue">xmlChar</span></font> *
+<a name="xmlSecKeyDataGetIdentifierMethod"></a><h3>xmlSecKeyDataGetIdentifierMethod ()</h3>
+<pre class="programlisting">const <font><span class="returnvalue">xmlChar</span></font> *
 <span class="c_punctuation">(</span>*xmlSecKeyDataGetIdentifierMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
 <p>Key data specific method to get the key data identifier string (for example,
 X509 data identifier is the subject of the verified cert).</p>
@@ -1760,7 +1798,7 @@ X509 data identifier is the subject of the verified cert).</p>
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
 <td class="parameter_description"><p>the pointer to key data.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
@@ -1771,7 +1809,7 @@ X509 data identifier is the subject of the verified cert).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataDebugDumpMethod"></a><h3>xmlSecKeyDataDebugDumpMethod ()</h3>
+<a name="xmlSecKeyDataDebugDumpMethod"></a><h3>xmlSecKeyDataDebugDumpMethod ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
 <span class="c_punctuation">(</span>*xmlSecKeyDataDebugDumpMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
                                  <em class="parameter"><code><font><span class="type">FILE</span></font> *output</code></em>);</pre>
@@ -1788,12 +1826,12 @@ X509 data identifier is the subject of the verified cert).</p>
 <tr>
 <td class="parameter_name"><p>data</p></td>
 <td class="parameter_description"><p>the data.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>output</p></td>
 <td class="parameter_description"><p>the FILE to print debug info (should be open for writing).</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -1815,14 +1853,14 @@ X509 data identifier is the subject of the verified cert).</p>
 <tbody><tr>
 <td class="parameter_name"><p>klass</p></td>
 <td class="parameter_description"><p>the data klass.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataBinaryValueGetSize"></a><h3>xmlSecKeyDataBinaryValueGetSize ()</h3>
+<a name="xmlSecKeyDataBinaryValueGetSize"></a><h3>xmlSecKeyDataBinaryValueGetSize ()</h3>
 <pre class="programlisting"><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="returnvalue">xmlSecSize</span></a>
 xmlSecKeyDataBinaryValueGetSize (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
 <p>Gets the binary key data size.</p>
@@ -1837,7 +1875,7 @@ xmlSecKeyDataBinaryValueGetSize (<em class="parameter"><code><a class="link" hre
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
 <td class="parameter_description"><p>the pointer to binary key data.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
@@ -1848,7 +1886,7 @@ xmlSecKeyDataBinaryValueGetSize (<em class="parameter"><code><a class="link" hre
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataBinaryValueGetBuffer"></a><h3>xmlSecKeyDataBinaryValueGetBuffer ()</h3>
+<a name="xmlSecKeyDataBinaryValueGetBuffer"></a><h3>xmlSecKeyDataBinaryValueGetBuffer ()</h3>
 <pre class="programlisting"><a class="link" href="xmlsec-buffer.html#xmlSecBuffer" title="struct xmlSecBuffer"><span class="returnvalue">xmlSecBufferPtr</span></a>
 xmlSecKeyDataBinaryValueGetBuffer (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
 <p>Gets the binary key data buffer.</p>
@@ -1863,7 +1901,7 @@ xmlSecKeyDataBinaryValueGetBuffer (<em class="parameter"><code><a class="link" h
 <tbody><tr>
 <td class="parameter_name"><p>data</p></td>
 <td class="parameter_description"><p>the pointer to binary key data.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
@@ -1874,7 +1912,7 @@ xmlSecKeyDataBinaryValueGetBuffer (<em class="parameter"><code><a class="link" h
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataBinaryValueSetBuffer"></a><h3>xmlSecKeyDataBinaryValueSetBuffer ()</h3>
+<a name="xmlSecKeyDataBinaryValueSetBuffer"></a><h3>xmlSecKeyDataBinaryValueSetBuffer ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecKeyDataBinaryValueSetBuffer (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>,
                                    <em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *buf</code></em>,
@@ -1894,17 +1932,17 @@ xmlSecKeyDataBinaryValueSetBuffer (<em class="parameter"><code><a class="link" h
 <tr>
 <td class="parameter_name"><p>data</p></td>
 <td class="parameter_description"><p>the pointer to binary key data.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>buf</p></td>
 <td class="parameter_description"><p>the pointer to binary buffer.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>bufSize</p></td>
 <td class="parameter_description"><p>the binary buffer size.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -1916,7 +1954,7 @@ xmlSecKeyDataBinaryValueSetBuffer (<em class="parameter"><code><a class="link" h
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataListGetKlass"></a><h3>xmlSecKeyDataListGetKlass ()</h3>
+<a name="xmlSecKeyDataListGetKlass"></a><h3>xmlSecKeyDataListGetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecPtrListId</span></font>
 xmlSecKeyDataListGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The key data list klass.</p>
@@ -1927,7 +1965,7 @@ xmlSecKeyDataListGetKlass (<em class="parameter"><code><span class="type">void</
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataIdListGetKlass"></a><h3>xmlSecKeyDataIdListGetKlass ()</h3>
+<a name="xmlSecKeyDataIdListGetKlass"></a><h3>xmlSecKeyDataIdListGetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecPtrListId</span></font>
 xmlSecKeyDataIdListGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The key data id list klass.</p>
@@ -1938,7 +1976,7 @@ xmlSecKeyDataIdListGetKlass (<em class="parameter"><code><span class="type">void
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataIdListFind"></a><h3>xmlSecKeyDataIdListFind ()</h3>
+<a name="xmlSecKeyDataIdListFind"></a><h3>xmlSecKeyDataIdListFind ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecKeyDataIdListFind (<em class="parameter"><code><a class="link" href="xmlsec-list.html#xmlSecPtrList" title="struct xmlSecPtrList"><span class="type">xmlSecPtrListPtr</span></a> list</code></em>,
                          <em class="parameter"><code><font><span class="type">xmlSecKeyDataId</span></font> dataId</code></em>);</pre>
@@ -1957,12 +1995,12 @@ xmlSecKeyDataIdListFind (<em class="parameter"><code><a class="link" href="xmlse
 <tr>
 <td class="parameter_name"><p>list</p></td>
 <td class="parameter_description"><p>the pointer to key data ids list.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>dataId</p></td>
 <td class="parameter_description"><p>the key data klass.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -1977,7 +2015,7 @@ value if an error occurs.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataIdListFindByNode"></a><h3>xmlSecKeyDataIdListFindByNode ()</h3>
+<a name="xmlSecKeyDataIdListFindByNode"></a><h3>xmlSecKeyDataIdListFindByNode ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
 xmlSecKeyDataIdListFindByNode (<em class="parameter"><code><a class="link" href="xmlsec-list.html#xmlSecPtrList" title="struct xmlSecPtrList"><span class="type">xmlSecPtrListPtr</span></a> list</code></em>,
                                <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *nodeName</code></em>,
@@ -2001,22 +2039,22 @@ xmlSecKeyDataIdListFindByNode (<em class="parameter"><code><a class="link" href=
 <tr>
 <td class="parameter_name"><p>list</p></td>
 <td class="parameter_description"><p>the pointer to key data ids list.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>nodeName</p></td>
 <td class="parameter_description"><p>the desired key data klass XML node name.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>nodeNs</p></td>
 <td class="parameter_description"><p>the desired key data klass XML node namespace.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>usage</p></td>
 <td class="parameter_description"><p>the desired key data usage.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -2028,7 +2066,7 @@ xmlSecKeyDataIdListFindByNode (<em class="parameter"><code><a class="link" href=
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataIdListFindByHref"></a><h3>xmlSecKeyDataIdListFindByHref ()</h3>
+<a name="xmlSecKeyDataIdListFindByHref"></a><h3>xmlSecKeyDataIdListFindByHref ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
 xmlSecKeyDataIdListFindByHref (<em class="parameter"><code><a class="link" href="xmlsec-list.html#xmlSecPtrList" title="struct xmlSecPtrList"><span class="type">xmlSecPtrListPtr</span></a> list</code></em>,
                                <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *href</code></em>,
@@ -2049,17 +2087,17 @@ xmlSecKeyDataIdListFindByHref (<em class="parameter"><code><a class="link" href=
 <tr>
 <td class="parameter_name"><p>list</p></td>
 <td class="parameter_description"><p>the pointer to key data ids list.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>href</p></td>
 <td class="parameter_description"><p>the desired key data klass href.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>usage</p></td>
 <td class="parameter_description"><p>the desired key data usage.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -2071,7 +2109,7 @@ xmlSecKeyDataIdListFindByHref (<em class="parameter"><code><a class="link" href=
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataIdListFindByName"></a><h3>xmlSecKeyDataIdListFindByName ()</h3>
+<a name="xmlSecKeyDataIdListFindByName"></a><h3>xmlSecKeyDataIdListFindByName ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
 xmlSecKeyDataIdListFindByName (<em class="parameter"><code><a class="link" href="xmlsec-list.html#xmlSecPtrList" title="struct xmlSecPtrList"><span class="type">xmlSecPtrListPtr</span></a> list</code></em>,
                                <em class="parameter"><code>const <font><span class="type">xmlChar</span></font> *name</code></em>,
@@ -2092,17 +2130,17 @@ xmlSecKeyDataIdListFindByName (<em class="parameter"><code><a class="link" href=
 <tr>
 <td class="parameter_name"><p>list</p></td>
 <td class="parameter_description"><p>the pointer to key data ids list.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>name</p></td>
 <td class="parameter_description"><p>the desired key data klass name.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>usage</p></td>
 <td class="parameter_description"><p>the desired key data usage.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -2114,7 +2152,7 @@ xmlSecKeyDataIdListFindByName (<em class="parameter"><code><a class="link" href=
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataIdListDebugDump"></a><h3>xmlSecKeyDataIdListDebugDump ()</h3>
+<a name="xmlSecKeyDataIdListDebugDump"></a><h3>xmlSecKeyDataIdListDebugDump ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
 xmlSecKeyDataIdListDebugDump (<em class="parameter"><code><a class="link" href="xmlsec-list.html#xmlSecPtrList" title="struct xmlSecPtrList"><span class="type">xmlSecPtrListPtr</span></a> list</code></em>,
                               <em class="parameter"><code><font><span class="type">FILE</span></font> *output</code></em>);</pre>
@@ -2132,12 +2170,12 @@ xmlSecKeyDataIdListDebugDump (<em class="parameter"><code><a class="link" href="
 <tr>
 <td class="parameter_name"><p>list</p></td>
 <td class="parameter_description"><p>the pointer to key data ids list.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>output</p></td>
 <td class="parameter_description"><p>the pointer to output FILE.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -2145,7 +2183,7 @@ xmlSecKeyDataIdListDebugDump (<em class="parameter"><code><a class="link" href="
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataIdListDebugXmlDump"></a><h3>xmlSecKeyDataIdListDebugXmlDump ()</h3>
+<a name="xmlSecKeyDataIdListDebugXmlDump"></a><h3>xmlSecKeyDataIdListDebugXmlDump ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
 xmlSecKeyDataIdListDebugXmlDump (<em class="parameter"><code><a class="link" href="xmlsec-list.html#xmlSecPtrList" title="struct xmlSecPtrList"><span class="type">xmlSecPtrListPtr</span></a> list</code></em>,
                                  <em class="parameter"><code><font><span class="type">FILE</span></font> *output</code></em>);</pre>
@@ -2163,12 +2201,12 @@ xmlSecKeyDataIdListDebugXmlDump (<em class="parameter"><code><a class="link" hre
 <tr>
 <td class="parameter_name"><p>list</p></td>
 <td class="parameter_description"><p>the pointer to key data ids list.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>output</p></td>
 <td class="parameter_description"><p>the pointer to output FILE.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -2176,12 +2214,12 @@ xmlSecKeyDataIdListDebugXmlDump (<em class="parameter"><code><a class="link" hre
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataStoreCreate"></a><h3>xmlSecKeyDataStoreCreate ()</h3>
+<a name="xmlSecKeyDataStoreCreate"></a><h3>xmlSecKeyDataStoreCreate ()</h3>
 <pre class="programlisting"><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataStore" title="struct xmlSecKeyDataStore"><span class="returnvalue">xmlSecKeyDataStorePtr</span></a>
 xmlSecKeyDataStoreCreate (<em class="parameter"><code><font><span class="type">xmlSecKeyDataStoreId</span></font> id</code></em>);</pre>
 <p>Creates new key data store of the specified klass <em class="parameter"><code>id</code></em>
 . Caller is responsible
-for freeing returned object with <a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataStoreDestroy" title="xmlSecKeyDataStoreDestroy ()"><span class="type">xmlSecKeyDataStoreDestroy</span></a> function.</p>
+for freeing returned object with <a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataStoreDestroy" title="xmlSecKeyDataStoreDestroy ()"><span class="type">xmlSecKeyDataStoreDestroy</span></a> function.</p>
 <div class="refsect3">
 <a name="xmlSecKeyDataStoreCreate.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -2193,7 +2231,7 @@ for freeing returned object with <a class="link" href="xmlsec-keysdata.html#xmlS
 <tbody><tr>
 <td class="parameter_name"><p>id</p></td>
 <td class="parameter_description"><p>the store id.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
@@ -2205,10 +2243,10 @@ or NULL if an error occurs.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataStoreDestroy"></a><h3>xmlSecKeyDataStoreDestroy ()</h3>
+<a name="xmlSecKeyDataStoreDestroy"></a><h3>xmlSecKeyDataStoreDestroy ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
 xmlSecKeyDataStoreDestroy (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataStore" title="struct xmlSecKeyDataStore"><span class="type">xmlSecKeyDataStorePtr</span></a> store</code></em>);</pre>
-<p>Destroys the key data store created with <a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataStoreCreate" title="xmlSecKeyDataStoreCreate ()"><span class="type">xmlSecKeyDataStoreCreate</span></a>
+<p>Destroys the key data store created with <a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataStoreCreate" title="xmlSecKeyDataStoreCreate ()"><span class="type">xmlSecKeyDataStoreCreate</span></a>
 function.</p>
 <div class="refsect3">
 <a name="xmlSecKeyDataStoreDestroy.parameters"></a><h4>Parameters</h4>
@@ -2221,7 +2259,7 @@ function.</p>
 <tbody><tr>
 <td class="parameter_name"><p>store</p></td>
 <td class="parameter_description"><p>the pointer to the key data store..</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
@@ -2242,7 +2280,7 @@ function.</p>
 <tbody><tr>
 <td class="parameter_name"><p>store</p></td>
 <td class="parameter_description"><p>the pointer to store.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
@@ -2266,7 +2304,7 @@ or 0 otherwise.</p>
 <tbody><tr>
 <td class="parameter_name"><p>store</p></td>
 <td class="parameter_description"><p>the pointer to store.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
@@ -2291,12 +2329,12 @@ or 0 otherwise.</p>
 <tr>
 <td class="parameter_name"><p>store</p></td>
 <td class="parameter_description"><p>the pointer to store.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>storeId</p></td>
 <td class="parameter_description"><p>the store Id.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -2322,12 +2360,12 @@ or 0 otherwise.</p>
 <tr>
 <td class="parameter_name"><p>store</p></td>
 <td class="parameter_description"><p>the pointer to store.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>size</p></td>
 <td class="parameter_description"><p>the expected size.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -2335,7 +2373,7 @@ or 0 otherwise.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataStoreInitializeMethod"></a><h3>xmlSecKeyDataStoreInitializeMethod ()</h3>
+<a name="xmlSecKeyDataStoreInitializeMethod"></a><h3>xmlSecKeyDataStoreInitializeMethod ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 <span class="c_punctuation">(</span>*xmlSecKeyDataStoreInitializeMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataStore" title="struct xmlSecKeyDataStore"><span class="type">xmlSecKeyDataStorePtr</span></a> store</code></em>);</pre>
 <p>Key data store specific initialization method.</p>
@@ -2350,7 +2388,7 @@ or 0 otherwise.</p>
 <tbody><tr>
 <td class="parameter_name"><p>store</p></td>
 <td class="parameter_description"><p>the data store.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
@@ -2361,7 +2399,7 @@ or 0 otherwise.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataStoreFinalizeMethod"></a><h3>xmlSecKeyDataStoreFinalizeMethod ()</h3>
+<a name="xmlSecKeyDataStoreFinalizeMethod"></a><h3>xmlSecKeyDataStoreFinalizeMethod ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
 <span class="c_punctuation">(</span>*xmlSecKeyDataStoreFinalizeMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataStore" title="struct xmlSecKeyDataStore"><span class="type">xmlSecKeyDataStorePtr</span></a> store</code></em>);</pre>
 <p>Key data store specific finalization (destroy) method.</p>
@@ -2376,7 +2414,7 @@ or 0 otherwise.</p>
 <tbody><tr>
 <td class="parameter_name"><p>store</p></td>
 <td class="parameter_description"><p>the data store.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
@@ -2397,14 +2435,14 @@ or 0 otherwise.</p>
 <tbody><tr>
 <td class="parameter_name"><p>klass</p></td>
 <td class="parameter_description"><p>the pointer to store klass.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataStorePtrListGetKlass"></a><h3>xmlSecKeyDataStorePtrListGetKlass ()</h3>
+<a name="xmlSecKeyDataStorePtrListGetKlass"></a><h3>xmlSecKeyDataStorePtrListGetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecPtrListId</span></font>
 xmlSecKeyDataStorePtrListGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>Key data stores list.</p>
@@ -2415,7 +2453,7 @@ xmlSecKeyDataStorePtrListGetKlass (<em class="parameter"><code><span class="type
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecImportSetPersistKey"></a><h3>xmlSecImportSetPersistKey ()</h3>
+<a name="xmlSecImportSetPersistKey"></a><h3>xmlSecImportSetPersistKey ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">void</span></font>
 xmlSecImportSetPersistKey (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>Sets global flag to import keys to persistent storage (MSCrypto and MSCNG).
@@ -2423,7 +2461,7 @@ Also see PKCS12_NO_PERSIST_KEY.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecImportGetPersistKey"></a><h3>xmlSecImportGetPersistKey ()</h3>
+<a name="xmlSecImportGetPersistKey"></a><h3>xmlSecImportGetPersistKey ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecImportGetPersistKey (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>Gets global flag to import keys to persistent storage (MSCrypto and MSCNG).
@@ -2612,57 +2650,57 @@ in any format.</p>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecKeyDataFormatUnknown"></a>xmlSecKeyDataFormatUnknown</p></td>
 <td class="enum_member_description"><p>the key data format is unknown.</p></td>
-<td class="enum_member_annotations"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecKeyDataFormatBinary"></a>xmlSecKeyDataFormatBinary</p></td>
 <td class="enum_member_description"><p>the binary key data.</p></td>
-<td class="enum_member_annotations"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecKeyDataFormatPem"></a>xmlSecKeyDataFormatPem</p></td>
 <td class="enum_member_description"><p>the PEM key data (cert or public/private key).</p></td>
-<td class="enum_member_annotations"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecKeyDataFormatDer"></a>xmlSecKeyDataFormatDer</p></td>
 <td class="enum_member_description"><p>the DER key data (cert or public/private key).</p></td>
-<td class="enum_member_annotations"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecKeyDataFormatPkcs8Pem"></a>xmlSecKeyDataFormatPkcs8Pem</p></td>
 <td class="enum_member_description"><p>the PKCS8 PEM private key.</p></td>
-<td class="enum_member_annotations"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecKeyDataFormatPkcs8Der"></a>xmlSecKeyDataFormatPkcs8Der</p></td>
 <td class="enum_member_description"><p>the PKCS8 DER private key.</p></td>
-<td class="enum_member_annotations"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecKeyDataFormatPkcs12"></a>xmlSecKeyDataFormatPkcs12</p></td>
 <td class="enum_member_description"><p>the PKCS12 format (bag of keys and certs)</p></td>
-<td class="enum_member_annotations"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecKeyDataFormatCertPem"></a>xmlSecKeyDataFormatCertPem</p></td>
 <td class="enum_member_description"><p>the PEM cert.</p></td>
-<td class="enum_member_annotations"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecKeyDataFormatCertDer"></a>xmlSecKeyDataFormatCertDer</p></td>
 <td class="enum_member_description"><p>the DER cert.</p></td>
-<td class="enum_member_annotations"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecKeyDataFormatEngine"></a>xmlSecKeyDataFormatEngine</p></td>
 <td class="enum_member_description"><p>the crypto engine (e.g. OpenSSL ENGINE).</p></td>
-<td class="enum_member_annotations"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecKeyDataFormatStore"></a>xmlSecKeyDataFormatStore</p></td>
 <td class="enum_member_description"><p>the crypto store (e.g. OpenSSL ossl_store).</p></td>
-<td class="enum_member_annotations"> </td>
+<td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -2688,19 +2726,19 @@ in any format.</p>
 </colgroup>
 <tbody>
 <tr>
-<td class="struct_member_name"><p><font><span class="type">xmlSecKeyDataId</span></font> <em class="structfield"><code><a name="xmlSecKeyData.id"></a>id</code></em>;</p></td>
+<td class="struct_member_name"><p><font><span class="type">xmlSecKeyDataId</span></font> <em class="structfield"><code><a name="xmlSecKeyData.id"></a>id</code></em>;</p></td>
 <td class="struct_member_description"><p>the data id (<font><span class="type">xmlSecKeyDataId</span></font>).</p></td>
-<td class="struct_member_annotations"> </td>
+<td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><font><span class="type">void</span></font> *<em class="structfield"><code><a name="xmlSecKeyData.reserved0"></a>reserved0</code></em>;</p></td>
+<td class="struct_member_name"><p><font><span class="type">void</span></font> *<em class="structfield"><code><a name="xmlSecKeyData.reserved0"></a>reserved0</code></em>;</p></td>
 <td class="struct_member_description"><p>reserved for the future.</p></td>
-<td class="struct_member_annotations"> </td>
+<td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><font><span class="type">void</span></font> *<em class="structfield"><code><a name="xmlSecKeyData.reserved1"></a>reserved1</code></em>;</p></td>
+<td class="struct_member_name"><p><font><span class="type">void</span></font> *<em class="structfield"><code><a name="xmlSecKeyData.reserved1"></a>reserved1</code></em>;</p></td>
 <td class="struct_member_description"><p>reserved for the future.</p></td>
-<td class="struct_member_annotations"> </td>
+<td class="struct_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -2764,114 +2802,114 @@ in any format.</p>
 </colgroup>
 <tbody>
 <tr>
-<td class="struct_member_name"><p><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> <em class="structfield"><code><a name="xmlSecKeyDataKlass.klassSize"></a>klassSize</code></em>;</p></td>
+<td class="struct_member_name"><p><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> <em class="structfield"><code><a name="xmlSecKeyDataKlass.klassSize"></a>klassSize</code></em>;</p></td>
 <td class="struct_member_description"><p>the klass size.</p></td>
-<td class="struct_member_annotations"> </td>
+<td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> <em class="structfield"><code><a name="xmlSecKeyDataKlass.objSize"></a>objSize</code></em>;</p></td>
+<td class="struct_member_name"><p><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> <em class="structfield"><code><a name="xmlSecKeyDataKlass.objSize"></a>objSize</code></em>;</p></td>
 <td class="struct_member_description"><p>the object size.</p></td>
-<td class="struct_member_annotations"> </td>
+<td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p>const <font><span class="type">xmlChar</span></font> *<em class="structfield"><code><a name="xmlSecKeyDataKlass.name"></a>name</code></em>;</p></td>
+<td class="struct_member_name"><p>const <font><span class="type">xmlChar</span></font> *<em class="structfield"><code><a name="xmlSecKeyDataKlass.name"></a>name</code></em>;</p></td>
 <td class="struct_member_description"><p>the object name.</p></td>
-<td class="struct_member_annotations"> </td>
+<td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataUsage" title="xmlSecKeyDataUsage"><span class="type">xmlSecKeyDataUsage</span></a> <em class="structfield"><code><a name="xmlSecKeyDataKlass.usage"></a>usage</code></em>;</p></td>
+<td class="struct_member_name"><p><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataUsage" title="xmlSecKeyDataUsage"><span class="type">xmlSecKeyDataUsage</span></a> <em class="structfield"><code><a name="xmlSecKeyDataKlass.usage"></a>usage</code></em>;</p></td>
 <td class="struct_member_description"><p>the allowed data usage.</p></td>
-<td class="struct_member_annotations"> </td>
+<td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p>const <font><span class="type">xmlChar</span></font> *<em class="structfield"><code><a name="xmlSecKeyDataKlass.href"></a>href</code></em>;</p></td>
+<td class="struct_member_name"><p>const <font><span class="type">xmlChar</span></font> *<em class="structfield"><code><a name="xmlSecKeyDataKlass.href"></a>href</code></em>;</p></td>
 <td class="struct_member_description"><p>the identification string (href).</p></td>
-<td class="struct_member_annotations"> </td>
+<td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p>const <font><span class="type">xmlChar</span></font> *<em class="structfield"><code><a name="xmlSecKeyDataKlass.dataNodeName"></a>dataNodeName</code></em>;</p></td>
+<td class="struct_member_name"><p>const <font><span class="type">xmlChar</span></font> *<em class="structfield"><code><a name="xmlSecKeyDataKlass.dataNodeName"></a>dataNodeName</code></em>;</p></td>
 <td class="struct_member_description"><p>the data's XML node name.</p></td>
-<td class="struct_member_annotations"> </td>
+<td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p>const <font><span class="type">xmlChar</span></font> *<em class="structfield"><code><a name="xmlSecKeyDataKlass.dataNodeNs"></a>dataNodeNs</code></em>;</p></td>
+<td class="struct_member_name"><p>const <font><span class="type">xmlChar</span></font> *<em class="structfield"><code><a name="xmlSecKeyDataKlass.dataNodeNs"></a>dataNodeNs</code></em>;</p></td>
 <td class="struct_member_description"><p>the data's XML node namespace.</p></td>
-<td class="struct_member_annotations"> </td>
+<td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataInitMethod" title="xmlSecKeyDataInitMethod ()"><span class="type">xmlSecKeyDataInitMethod</span></a> <em class="structfield"><code><a name="xmlSecKeyDataKlass.initialize"></a>initialize</code></em>;</p></td>
+<td class="struct_member_name"><p><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataInitMethod" title="xmlSecKeyDataInitMethod ()"><span class="type">xmlSecKeyDataInitMethod</span></a> <em class="structfield"><code><a name="xmlSecKeyDataKlass.initialize"></a>initialize</code></em>;</p></td>
 <td class="struct_member_description"><p>the initialization method.</p></td>
-<td class="struct_member_annotations"> </td>
+<td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataDuplicateMethod" title="xmlSecKeyDataDuplicateMethod ()"><span class="type">xmlSecKeyDataDuplicateMethod</span></a> <em class="structfield"><code><a name="xmlSecKeyDataKlass.duplicate"></a>duplicate</code></em>;</p></td>
+<td class="struct_member_name"><p><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataDuplicateMethod" title="xmlSecKeyDataDuplicateMethod ()"><span class="type">xmlSecKeyDataDuplicateMethod</span></a> <em class="structfield"><code><a name="xmlSecKeyDataKlass.duplicate"></a>duplicate</code></em>;</p></td>
 <td class="struct_member_description"><p>the duplicate (copy) method.</p></td>
-<td class="struct_member_annotations"> </td>
+<td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataFinalizeMethod" title="xmlSecKeyDataFinalizeMethod ()"><span class="type">xmlSecKeyDataFinalizeMethod</span></a> <em class="structfield"><code><a name="xmlSecKeyDataKlass.finalize"></a>finalize</code></em>;</p></td>
+<td class="struct_member_name"><p><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataFinalizeMethod" title="xmlSecKeyDataFinalizeMethod ()"><span class="type">xmlSecKeyDataFinalizeMethod</span></a> <em class="structfield"><code><a name="xmlSecKeyDataKlass.finalize"></a>finalize</code></em>;</p></td>
 <td class="struct_member_description"><p>the finalization (destroy) method.</p></td>
-<td class="struct_member_annotations"> </td>
+<td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataGenerateMethod" title="xmlSecKeyDataGenerateMethod ()"><span class="type">xmlSecKeyDataGenerateMethod</span></a> <em class="structfield"><code><a name="xmlSecKeyDataKlass.generate"></a>generate</code></em>;</p></td>
+<td class="struct_member_name"><p><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataGenerateMethod" title="xmlSecKeyDataGenerateMethod ()"><span class="type">xmlSecKeyDataGenerateMethod</span></a> <em class="structfield"><code><a name="xmlSecKeyDataKlass.generate"></a>generate</code></em>;</p></td>
 <td class="struct_member_description"><p>the new data generation method.</p></td>
-<td class="struct_member_annotations"> </td>
+<td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataGetTypeMethod" title="xmlSecKeyDataGetTypeMethod ()"><span class="type">xmlSecKeyDataGetTypeMethod</span></a> <em class="structfield"><code><a name="xmlSecKeyDataKlass.getType"></a>getType</code></em>;</p></td>
+<td class="struct_member_name"><p><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataGetTypeMethod" title="xmlSecKeyDataGetTypeMethod ()"><span class="type">xmlSecKeyDataGetTypeMethod</span></a> <em class="structfield"><code><a name="xmlSecKeyDataKlass.getType"></a>getType</code></em>;</p></td>
 <td class="struct_member_description"><p>the method to access data's type information.</p></td>
-<td class="struct_member_annotations"> </td>
+<td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataGetSizeMethod" title="xmlSecKeyDataGetSizeMethod ()"><span class="type">xmlSecKeyDataGetSizeMethod</span></a> <em class="structfield"><code><a name="xmlSecKeyDataKlass.getSize"></a>getSize</code></em>;</p></td>
+<td class="struct_member_name"><p><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataGetSizeMethod" title="xmlSecKeyDataGetSizeMethod ()"><span class="type">xmlSecKeyDataGetSizeMethod</span></a> <em class="structfield"><code><a name="xmlSecKeyDataKlass.getSize"></a>getSize</code></em>;</p></td>
 <td class="struct_member_description"><p>the method to access data's size.</p></td>
-<td class="struct_member_annotations"> </td>
+<td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataGetIdentifierMethod" title="xmlSecKeyDataGetIdentifierMethod ()"><span class="type">xmlSecKeyDataGetIdentifierMethod</span></a> <em class="structfield"><code><a name="xmlSecKeyDataKlass.getIdentifier"></a>getIdentifier</code></em>;</p></td>
+<td class="struct_member_name"><p><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataGetIdentifierMethod" title="xmlSecKeyDataGetIdentifierMethod ()"><span class="type">xmlSecKeyDataGetIdentifierMethod</span></a> <em class="structfield"><code><a name="xmlSecKeyDataKlass.getIdentifier"></a>getIdentifier</code></em>;</p></td>
 <td class="struct_member_description"><p>the method to access data's string identifier.</p></td>
-<td class="struct_member_annotations"> </td>
+<td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataXmlReadMethod" title="xmlSecKeyDataXmlReadMethod ()"><span class="type">xmlSecKeyDataXmlReadMethod</span></a> <em class="structfield"><code><a name="xmlSecKeyDataKlass.xmlRead"></a>xmlRead</code></em>;</p></td>
+<td class="struct_member_name"><p><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataXmlReadMethod" title="xmlSecKeyDataXmlReadMethod ()"><span class="type">xmlSecKeyDataXmlReadMethod</span></a> <em class="structfield"><code><a name="xmlSecKeyDataKlass.xmlRead"></a>xmlRead</code></em>;</p></td>
 <td class="struct_member_description"><p>the method for reading data from XML node.</p></td>
-<td class="struct_member_annotations"> </td>
+<td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataXmlWriteMethod" title="xmlSecKeyDataXmlWriteMethod ()"><span class="type">xmlSecKeyDataXmlWriteMethod</span></a> <em class="structfield"><code><a name="xmlSecKeyDataKlass.xmlWrite"></a>xmlWrite</code></em>;</p></td>
+<td class="struct_member_name"><p><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataXmlWriteMethod" title="xmlSecKeyDataXmlWriteMethod ()"><span class="type">xmlSecKeyDataXmlWriteMethod</span></a> <em class="structfield"><code><a name="xmlSecKeyDataKlass.xmlWrite"></a>xmlWrite</code></em>;</p></td>
 <td class="struct_member_description"><p>the method for writing data to XML node.</p></td>
-<td class="struct_member_annotations"> </td>
+<td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataBinReadMethod" title="xmlSecKeyDataBinReadMethod ()"><span class="type">xmlSecKeyDataBinReadMethod</span></a> <em class="structfield"><code><a name="xmlSecKeyDataKlass.binRead"></a>binRead</code></em>;</p></td>
+<td class="struct_member_name"><p><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataBinReadMethod" title="xmlSecKeyDataBinReadMethod ()"><span class="type">xmlSecKeyDataBinReadMethod</span></a> <em class="structfield"><code><a name="xmlSecKeyDataKlass.binRead"></a>binRead</code></em>;</p></td>
 <td class="struct_member_description"><p>the method for reading data from a binary buffer.</p></td>
-<td class="struct_member_annotations"> </td>
+<td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataBinWriteMethod" title="xmlSecKeyDataBinWriteMethod ()"><span class="type">xmlSecKeyDataBinWriteMethod</span></a> <em class="structfield"><code><a name="xmlSecKeyDataKlass.binWrite"></a>binWrite</code></em>;</p></td>
+<td class="struct_member_name"><p><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataBinWriteMethod" title="xmlSecKeyDataBinWriteMethod ()"><span class="type">xmlSecKeyDataBinWriteMethod</span></a> <em class="structfield"><code><a name="xmlSecKeyDataKlass.binWrite"></a>binWrite</code></em>;</p></td>
 <td class="struct_member_description"><p>the method for writing data to binary buffer.</p></td>
-<td class="struct_member_annotations"> </td>
+<td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataDebugDumpMethod" title="xmlSecKeyDataDebugDumpMethod ()"><span class="type">xmlSecKeyDataDebugDumpMethod</span></a> <em class="structfield"><code><a name="xmlSecKeyDataKlass.debugDump"></a>debugDump</code></em>;</p></td>
+<td class="struct_member_name"><p><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataDebugDumpMethod" title="xmlSecKeyDataDebugDumpMethod ()"><span class="type">xmlSecKeyDataDebugDumpMethod</span></a> <em class="structfield"><code><a name="xmlSecKeyDataKlass.debugDump"></a>debugDump</code></em>;</p></td>
 <td class="struct_member_description"><p>the method for printing debug data information.</p></td>
-<td class="struct_member_annotations"> </td>
+<td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataDebugDumpMethod" title="xmlSecKeyDataDebugDumpMethod ()"><span class="type">xmlSecKeyDataDebugDumpMethod</span></a> <em class="structfield"><code><a name="xmlSecKeyDataKlass.debugXmlDump"></a>debugXmlDump</code></em>;</p></td>
+<td class="struct_member_name"><p><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataDebugDumpMethod" title="xmlSecKeyDataDebugDumpMethod ()"><span class="type">xmlSecKeyDataDebugDumpMethod</span></a> <em class="structfield"><code><a name="xmlSecKeyDataKlass.debugXmlDump"></a>debugXmlDump</code></em>;</p></td>
 <td class="struct_member_description"><p>the method for printing debug data information in XML format.</p></td>
-<td class="struct_member_annotations"> </td>
+<td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><font><span class="type">void</span></font> *<em class="structfield"><code><a name="xmlSecKeyDataKlass.reserved0"></a>reserved0</code></em>;</p></td>
+<td class="struct_member_name"><p><font><span class="type">void</span></font> *<em class="structfield"><code><a name="xmlSecKeyDataKlass.reserved0"></a>reserved0</code></em>;</p></td>
 <td class="struct_member_description"><p>reserved for the future.</p></td>
-<td class="struct_member_annotations"> </td>
+<td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><font><span class="type">void</span></font> *<em class="structfield"><code><a name="xmlSecKeyDataKlass.reserved1"></a>reserved1</code></em>;</p></td>
+<td class="struct_member_name"><p><font><span class="type">void</span></font> *<em class="structfield"><code><a name="xmlSecKeyDataKlass.reserved1"></a>reserved1</code></em>;</p></td>
 <td class="struct_member_description"><p>reserved for the future.</p></td>
-<td class="struct_member_annotations"> </td>
+<td class="struct_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -2915,19 +2953,19 @@ information about trusted (root) certificates.</p>
 </colgroup>
 <tbody>
 <tr>
-<td class="struct_member_name"><p><font><span class="type">xmlSecKeyDataStoreId</span></font> <em class="structfield"><code><a name="xmlSecKeyDataStore.id"></a>id</code></em>;</p></td>
+<td class="struct_member_name"><p><font><span class="type">xmlSecKeyDataStoreId</span></font> <em class="structfield"><code><a name="xmlSecKeyDataStore.id"></a>id</code></em>;</p></td>
 <td class="struct_member_description"><p>the store id (<font><span class="type">xmlSecKeyDataStoreId</span></font>).</p></td>
-<td class="struct_member_annotations"> </td>
+<td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><font><span class="type">void</span></font> *<em class="structfield"><code><a name="xmlSecKeyDataStore.reserved0"></a>reserved0</code></em>;</p></td>
+<td class="struct_member_name"><p><font><span class="type">void</span></font> *<em class="structfield"><code><a name="xmlSecKeyDataStore.reserved0"></a>reserved0</code></em>;</p></td>
 <td class="struct_member_description"><p>reserved for the future.</p></td>
-<td class="struct_member_annotations"> </td>
+<td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><font><span class="type">void</span></font> *<em class="structfield"><code><a name="xmlSecKeyDataStore.reserved1"></a>reserved1</code></em>;</p></td>
+<td class="struct_member_name"><p><font><span class="type">void</span></font> *<em class="structfield"><code><a name="xmlSecKeyDataStore.reserved1"></a>reserved1</code></em>;</p></td>
 <td class="struct_member_description"><p>reserved for the future.</p></td>
-<td class="struct_member_annotations"> </td>
+<td class="struct_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -2970,39 +3008,39 @@ information about trusted (root) certificates.</p>
 </colgroup>
 <tbody>
 <tr>
-<td class="struct_member_name"><p><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> <em class="structfield"><code><a name="xmlSecKeyDataStoreKlass.klassSize"></a>klassSize</code></em>;</p></td>
+<td class="struct_member_name"><p><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> <em class="structfield"><code><a name="xmlSecKeyDataStoreKlass.klassSize"></a>klassSize</code></em>;</p></td>
 <td class="struct_member_description"><p>the data store klass size.</p></td>
-<td class="struct_member_annotations"> </td>
+<td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> <em class="structfield"><code><a name="xmlSecKeyDataStoreKlass.objSize"></a>objSize</code></em>;</p></td>
+<td class="struct_member_name"><p><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> <em class="structfield"><code><a name="xmlSecKeyDataStoreKlass.objSize"></a>objSize</code></em>;</p></td>
 <td class="struct_member_description"><p>the data store obj size.</p></td>
-<td class="struct_member_annotations"> </td>
+<td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p>const <font><span class="type">xmlChar</span></font> *<em class="structfield"><code><a name="xmlSecKeyDataStoreKlass.name"></a>name</code></em>;</p></td>
+<td class="struct_member_name"><p>const <font><span class="type">xmlChar</span></font> *<em class="structfield"><code><a name="xmlSecKeyDataStoreKlass.name"></a>name</code></em>;</p></td>
 <td class="struct_member_description"><p>the store's name.</p></td>
-<td class="struct_member_annotations"> </td>
+<td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataStoreInitializeMethod" title="xmlSecKeyDataStoreInitializeMethod ()"><span class="type">xmlSecKeyDataStoreInitializeMethod</span></a> <em class="structfield"><code><a name="xmlSecKeyDataStoreKlass.initialize"></a>initialize</code></em>;</p></td>
+<td class="struct_member_name"><p><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataStoreInitializeMethod" title="xmlSecKeyDataStoreInitializeMethod ()"><span class="type">xmlSecKeyDataStoreInitializeMethod</span></a> <em class="structfield"><code><a name="xmlSecKeyDataStoreKlass.initialize"></a>initialize</code></em>;</p></td>
 <td class="struct_member_description"><p>the store's initialization method.</p></td>
-<td class="struct_member_annotations"> </td>
+<td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataStoreFinalizeMethod" title="xmlSecKeyDataStoreFinalizeMethod ()"><span class="type">xmlSecKeyDataStoreFinalizeMethod</span></a> <em class="structfield"><code><a name="xmlSecKeyDataStoreKlass.finalize"></a>finalize</code></em>;</p></td>
+<td class="struct_member_name"><p><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataStoreFinalizeMethod" title="xmlSecKeyDataStoreFinalizeMethod ()"><span class="type">xmlSecKeyDataStoreFinalizeMethod</span></a> <em class="structfield"><code><a name="xmlSecKeyDataStoreKlass.finalize"></a>finalize</code></em>;</p></td>
 <td class="struct_member_description"><p>the store's finalization (destroy) method.</p></td>
-<td class="struct_member_annotations"> </td>
+<td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><font><span class="type">void</span></font> *<em class="structfield"><code><a name="xmlSecKeyDataStoreKlass.reserved0"></a>reserved0</code></em>;</p></td>
+<td class="struct_member_name"><p><font><span class="type">void</span></font> *<em class="structfield"><code><a name="xmlSecKeyDataStoreKlass.reserved0"></a>reserved0</code></em>;</p></td>
 <td class="struct_member_description"><p>reserved for the future.</p></td>
-<td class="struct_member_annotations"> </td>
+<td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><font><span class="type">void</span></font> *<em class="structfield"><code><a name="xmlSecKeyDataStoreKlass.reserved1"></a>reserved1</code></em>;</p></td>
+<td class="struct_member_name"><p><font><span class="type">void</span></font> *<em class="structfield"><code><a name="xmlSecKeyDataStoreKlass.reserved1"></a>reserved1</code></em>;</p></td>
 <td class="struct_member_description"><p>reserved for the future.</p></td>
-<td class="struct_member_annotations"> </td>
+<td class="struct_member_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -3019,5 +3057,6 @@ information about trusted (root) certificates.</p>
 </div>
 <div class="footer">
 <hr>Generated by GTK-Doc V1.33.1</div>
-</body>
+</td></tr></table></td>
+</tr></table></body>
 </html>

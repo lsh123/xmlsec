@@ -59,6 +59,14 @@
 		    <xsl:with-param name="text">Download</xsl:with-param>
 		</xsl:call-template>
 	    </li>
+		<ul>
+			<li>
+			<xsl:call-template name="linkto">
+				<xsl:with-param name="href">https://github.com/lsh123/xmlsec</xsl:with-param>
+				<xsl:with-param name="text">GitHub</xsl:with-param>
+			</xsl:call-template>
+			</li>
+		</ul>
 	    <li>
 		<xsl:call-template name="linkto">
 		    <xsl:with-param name="href">news.html</xsl:with-param>
@@ -72,30 +80,30 @@
 		</xsl:call-template>
 	    </li>
 	    <ul>
-	    <li>
-		<xsl:call-template name="linkto">
-		    <xsl:with-param name="href">faq.html</xsl:with-param>
-		    <xsl:with-param name="text">FAQ</xsl:with-param>
-		</xsl:call-template>
-	    </li>
-	    <li>
-		<xsl:call-template name="linkto">
-		    <xsl:with-param name="href">api/xmlsec-notes.html</xsl:with-param>
-		    <xsl:with-param name="text">Tutorial</xsl:with-param>
-		</xsl:call-template>
-	    </li>
-	    <li>
-		<xsl:call-template name="linkto">
-		    <xsl:with-param name="href">api/xmlsec-reference.html</xsl:with-param>
-		    <xsl:with-param name="text">API reference</xsl:with-param>
-		</xsl:call-template>
-	    </li>
-	    <li>
-		<xsl:call-template name="linkto">
-		    <xsl:with-param name="href">api/xmlsec-examples.html</xsl:with-param>
-		    <xsl:with-param name="text">Examples</xsl:with-param>
-		</xsl:call-template>
-	    </li>
+			<li>
+			<xsl:call-template name="linkto">
+				<xsl:with-param name="href">faq.html</xsl:with-param>
+				<xsl:with-param name="text">FAQ</xsl:with-param>
+			</xsl:call-template>
+			</li>
+			<li>
+			<xsl:call-template name="linkto">
+				<xsl:with-param name="href">api/xmlsec-notes.html</xsl:with-param>
+				<xsl:with-param name="text">Tutorial</xsl:with-param>
+			</xsl:call-template>
+			</li>
+			<li>
+			<xsl:call-template name="linkto">
+				<xsl:with-param name="href">api/xmlsec-reference.html</xsl:with-param>
+				<xsl:with-param name="text">API reference</xsl:with-param>
+			</xsl:call-template>
+			</li>
+			<li>
+			<xsl:call-template name="linkto">
+				<xsl:with-param name="href">api/xmlsec-examples.html</xsl:with-param>
+				<xsl:with-param name="text">Examples</xsl:with-param>
+			</xsl:call-template>
+			</li>
 	    </ul>
 	    <li>
 		<xsl:call-template name="linkto">

@@ -6,7 +6,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  * Copyright (C) 2018 Miklos Vajna. All Rights Reserved.
  */
 /**
@@ -717,7 +717,7 @@ xmlSecMSCngUnixTimeToFileTime(time_t in, LPFILETIME out) {
  * Returns: 1 on success (cert verified), 0 if cert can't be verified, or a negative value if an error occurs.
  */
 static int
-xmlSecMSCngX509StoreVerifyCertificate(xmlSecMSCngX509StoreCtxPtr ctx, PCCERT_CONTEXT cert, 
+xmlSecMSCngX509StoreVerifyCertificate(xmlSecMSCngX509StoreCtxPtr ctx, PCCERT_CONTEXT cert,
     HCERTSTORE certStore, xmlSecKeyInfoCtx* keyInfoCtx
 ) {
     FILETIME fTime;
@@ -744,7 +744,7 @@ xmlSecMSCngX509StoreVerifyCertificate(xmlSecMSCngX509StoreCtxPtr ctx, PCCERT_CON
     }
 
     /* verify based on the own trusted certificates */
-    ret = xmlSecMSCngX509StoreVerifyCertificateOwn(cert, &fTime, 
+    ret = xmlSecMSCngX509StoreVerifyCertificateOwn(cert, &fTime,
         ctx->trusted, ctx->untrusted, certStore);
     if(ret < 0){
         xmlSecInternalError("xmlSecMSCngX509StoreVerifyCertificateOwn", NULL);
@@ -755,7 +755,7 @@ xmlSecMSCngX509StoreVerifyCertificate(xmlSecMSCngX509StoreCtxPtr ctx, PCCERT_CON
     }
 
     /* verify based on the system certificates */
-    ret = xmlSecMSCngX509StoreVerifyCertificateSystem(cert, &fTime, 
+    ret = xmlSecMSCngX509StoreVerifyCertificateSystem(cert, &fTime,
         ctx->untrusted, certStore);
     if (ret < 0) {
         xmlSecInternalError("xmlSecMSCngX509StoreVerifyCertificateSystem", NULL);

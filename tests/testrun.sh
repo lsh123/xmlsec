@@ -121,7 +121,7 @@ fi
 # in the pkcs12 file to ensure it is loaded correctly to be used
 # with SHA2 algorithms. Worse, the CSP is different for XP and older
 # versions
-if test "z$OS_ARCH" = "zCygwin" || test "z$OS_ARCH" = "zMsys" ; then
+if [ "z$crypto" = "zmscrypto" -o "z$crypto" = "zmscng" ] ; then
     # Samples:
     #   Cygwin	: CYGWIN_NT-5.1
     #   Msys	: MINGW32_NT-5.1

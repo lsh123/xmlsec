@@ -10,9 +10,9 @@
       <Reference URI="">
         <Transforms>
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
-	<Transform Algorithm="http://www.w3.org/TR/1999/REC-xpath-19991116">
-	<XPath xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">not(ancestor-or-self::dsig:Signature)</XPath>
-	</Transform>
+          <Transform Algorithm="http://www.w3.org/TR/1999/REC-xpath-19991116">
+            <XPath xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">not(ancestor-or-self::dsig:Signature)</XPath>
+          </Transform>
         </Transforms>
         <DigestMethod Algorithm="urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34112012-256"/>
         <DigestValue></DigestValue>
@@ -20,6 +20,7 @@
     </SignedInfo>
     <SignatureValue/>
     <KeyInfo>
+      <KeyName>TestGost2012_256Key</KeyName>
       <X509Data>
       </X509Data>
     </KeyInfo>

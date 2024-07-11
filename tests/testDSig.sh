@@ -472,7 +472,7 @@ execDSigTest $res_success \
     "aleksey-xmldsig-01/enveloping-expired-cert" \
     "sha1 rsa-sha1" \
     "rsa x509" \
-    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509 --verification-gmt-time 2014-05-24+00:00:00"
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509 --verification-gmt-time 2022-12-14+00:00:00"
 
 execDSigTest $res_success \
     "" \
@@ -1034,7 +1034,7 @@ fi
 
 execDSigTest $res_fail \
     "aleksey-xmldsig-01" \
-    "enveloping-sha256-rsa-sha256-verify" \
+    "enveloping-sha256-rsa-sha256" \
     "sha256 rsa-sha256" \
     "rsa x509" \
     "--enabled-key-data x509"
@@ -1044,7 +1044,7 @@ execDSigTest $res_fail \
 # happen correctly.
 execDSigTest $res_success \
     "aleksey-xmldsig-01" \
-    "enveloping-sha256-rsa-sha256-verify" \
+    "enveloping-sha256-rsa-sha256" \
     "sha256 rsa-sha256" \
     "rsa x509" \
     "--enabled-key-data x509 --insecure"

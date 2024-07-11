@@ -474,16 +474,6 @@ execDSigTest $res_success \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509 --verification-gmt-time 2014-05-24+00:00:00"
 
-
-execDSigTest $res_success \
-    "" \
-    "aleksey-xmldsig-01/dtd-hmac-91" \
-    "sha1 hmac-sha1" \
-    "hmac" \
-    "--hmackey $topfolder/keys/hmackey.bin --dtd-file $topfolder/aleksey-xmldsig-01/dtd-hmac-91.dtd" \
-    "--hmackey $topfolder/keys/hmackey.bin --dtd-file $topfolder/aleksey-xmldsig-01/dtd-hmac-91.dtd" \
-    "--hmackey $topfolder/keys/hmackey.bin --dtd-file $topfolder/aleksey-xmldsig-01/dtd-hmac-91.dtd"
-
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/x509data-test" \

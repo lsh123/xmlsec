@@ -18,7 +18,7 @@
 
 #include <string.h>
 
-#include <pk11func.h>
+#include <pk11pub.h>
 #include <keyhi.h>
 #include <pk11pqg.h>
 

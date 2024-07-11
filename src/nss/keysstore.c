@@ -29,7 +29,7 @@
 
 #include <nss.h>
 #include <cert.h>
-#include <pk11func.h>
+#include <pk11pub.h>
 #include <keyhi.h>
 
 #include <xmlsec/xmlsec.h>

@@ -24,7 +24,7 @@
 #include <string.h>
 
 #include <nss.h>
-#include <pk11func.h>
+#include <pk11pub.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>

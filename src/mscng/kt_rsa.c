@@ -6,7 +6,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  * Copyright (C) 2018 Miklos Vajna. All Rights Reserved.
  */
 /**
@@ -355,7 +355,7 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
                     xmlSecTransformGetName(transform), securityStatus);
                 return(-1);
             }
-        } else 
+        } else
 #endif /* XMLSEC_NO_RSA_OAEP */
         {
             xmlSecInvalidTransfromError(transform)

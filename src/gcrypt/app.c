@@ -5,7 +5,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2022 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * SECTION:app
@@ -97,7 +97,7 @@ Noteworthy changes in version 1.4.3 (2008-09-18)
     err = gcry_control(GCRYCTL_INIT_SECMEM, 32768, 0);
     if(err != GPG_ERR_NO_ERROR) {
         xmlSecGCryptError("gcry_control(GCRYCTL_INIT_SECMEM)", err, NULL);
-        /* ignore this error because of libgrcypt bug in allocating memory, 
+        /* ignore this error because of libgrcypt bug in allocating memory,
         see https://github.com/lsh123/xmlsec/issues/415 for more details */
     }
 

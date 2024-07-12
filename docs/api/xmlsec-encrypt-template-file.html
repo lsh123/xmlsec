@@ -43,7 +43,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2022 Aleksey Sanin &lt;aleksey@aleksey.com&gt;. All Rights Reserved.
+ * Copyright (C) 2002-2024 Aleksey Sanin &lt;aleksey@aleksey.com&gt;. All Rights Reserved.
  */
 #include &lt;stdlib.h&gt;
 #include &lt;string.h&gt;
@@ -252,14 +252,14 @@ done:
 <a name="xmlsec-example-encrypt1-tmpl"></a>encrypt1-tmpl.xml</h3></div></div></div>
 <div class="informalexample"><pre class="programlisting">
 &lt;?xml version="1.0"?&gt;
-&lt;!-- 
-XML Security Library example: Simple encryption template file for encrypt1 example. 
+&lt;!--
+XML Security Library example: Simple encryption template file for encrypt1 example.
 --&gt;
 &lt;EncryptedData xmlns="http://www.w3.org/2001/04/xmlenc#"&gt;
     &lt;EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#tripledes-cbc"/&gt;
     &lt;KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#"&gt;
 	&lt;KeyName/&gt;
-    &lt;/KeyInfo&gt;   
+    &lt;/KeyInfo&gt;
     &lt;CipherData&gt;
 	&lt;CipherValue&gt;&lt;/CipherValue&gt;
     &lt;/CipherData&gt;
@@ -271,14 +271,14 @@ XML Security Library example: Simple encryption template file for encrypt1 examp
 <a name="xmlsec-example-encrypt1-res"></a>encrypt1-res.xml</h3></div></div></div>
 <div class="informalexample"><pre class="programlisting">
 &lt;?xml version="1.0"?&gt;
-&lt;!-- 
+&lt;!--
 XML Security Library example: Encrypted binary data (encrypt1 example).
 --&gt;
 &lt;EncryptedData xmlns="http://www.w3.org/2001/04/xmlenc#"&gt;
     &lt;EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#tripledes-cbc"/&gt;
     &lt;KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#"&gt;
 	&lt;KeyName&gt;deskey.bin&lt;/KeyName&gt;
-    &lt;/KeyInfo&gt;   
+    &lt;/KeyInfo&gt;
     &lt;CipherData&gt;
 	&lt;CipherValue&gt;t6JVBMihIgRyiK8AS8AX5NcXTfkdXPTK&lt;/CipherValue&gt;
     &lt;/CipherData&gt;

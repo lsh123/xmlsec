@@ -448,38 +448,38 @@ static int
 xmlSecMSCngX509StoreContainsCert(HCERTSTORE store, CERT_NAME_BLOB* name,
         PCCERT_CONTEXT cert)
 {
-    PCCERT_CONTEXT issuerCert = NULL;
+    PCCERT_CONTEXT storeCert = NULL;
     int ret;
 
     xmlSecAssert2(store != NULL, -1);
     xmlSecAssert2(name != NULL, -1);
     xmlSecAssert2(cert != NULL, -1);
 
-    issuerCert = CertFindCertificateInStore(store,
+    storeCert = CertFindCertificateInStore(store,
         X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
         0,
         CERT_FIND_SUBJECT_NAME,
         name,
         NULL);
-    if (issuerCert == NULL) {
+    if (storeCert == NULL) {
         return (0);
     }
 
-    ret = xmlSecMSCngX509StoreVerifySubject(cert, issuerCert);
+    ret = xmlSecMSCngX509StoreVerifySubject(cert, storeCert);
     if (ret < 0) {
         xmlSecInternalError("xmlSecMSCngX509StoreVerifySubject", NULL);
-        CertFreeCertificateContext(issuerCert);
+        CertFreeCertificateContext(storeCert);
         return(-1);
     } else if (ret == 0) {
         xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
             NULL,
             "xmlSecMSCngX509StoreVerifySubject");
-        CertFreeCertificateContext(issuerCert);
+        CertFreeCertificateContext(storeCert);
         return(-1);
     }
 
     /* success */
-    CertFreeCertificateContext(issuerCert);
+    CertFreeCertificateContext(storeCert);
     return(1);
 }
 
@@ -489,14 +489,14 @@ xmlSecMSCngVerifyCertTime(PCCERT_CONTEXT cert, LPFILETIME time) {
     xmlSecAssert2(cert->pCertInfo != NULL, -1);
     xmlSecAssert2(time != NULL, -1);
 
-    if(CompareFileTime(&cert->pCertInfo->NotBefore, time) == 1) {
+    if(CompareFileTime(&(cert->pCertInfo->NotBefore), time) == 1) {
         xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
             NULL,
             "CompareFileTime");
         return(-1);
     }
 
-    if(CompareFileTime(&cert->pCertInfo->NotAfter, time) == -1) {
+    if(CompareFileTime(&(cert->pCertInfo->NotAfter), time) == -1) {
         xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
             NULL,
             "CompareFileTime");
@@ -529,6 +529,7 @@ xmlSecMSCngX509StoreVerifyCertificateOwn(PCCERT_CONTEXT cert, FILETIME* time,
     xmlSecAssert2(trustedStore != NULL, -1);
     xmlSecAssert2(certStore != NULL, -1);
 
+    /* check certificate validity and revokation */
     ret = xmlSecMSCngVerifyCertTime(cert, time);
     if(ret < 0) {
         xmlSecInternalError("xmlSecMSCngVerifyCertTime", NULL);
@@ -543,19 +544,18 @@ xmlSecMSCngX509StoreVerifyCertificateOwn(PCCERT_CONTEXT cert, FILETIME* time,
 
     /* does trustedStore contain cert directly? */
     ret = xmlSecMSCngX509StoreContainsCert(trustedStore,
-        &cert->pCertInfo->Subject, cert);
+        &(cert->pCertInfo->Subject), cert);
     if(ret < 0) {
         xmlSecInternalError("xmlSecMSCngX509StoreContainsCert", NULL);
         return(-1);
-    }
-    if(ret == 1) {
+    } else  if(ret == 1) {
         /* success */
         return(1);
     }
 
     /* does trustedStore contain the issuer cert? */
     ret = xmlSecMSCngX509StoreContainsCert(trustedStore,
-        &cert->pCertInfo->Issuer, cert);
+        &(cert->pCertInfo->Issuer), cert);
     if(ret < 0) {
         xmlSecInternalError("xmlSecMSCngX509StoreContainsCert", NULL);
         return(-1);
@@ -566,8 +566,8 @@ xmlSecMSCngX509StoreVerifyCertificateOwn(PCCERT_CONTEXT cert, FILETIME* time,
 
     /* is cert self-signed? no recursion in that case */
     if(CertCompareCertificateName(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-            &cert->pCertInfo->Subject,
-            &cert->pCertInfo->Issuer)) {
+            &(cert->pCertInfo->Subject),
+            &(cert->pCertInfo->Issuer))) {
         /* not verified */
         return(0);
     }
@@ -577,7 +577,7 @@ xmlSecMSCngX509StoreVerifyCertificateOwn(PCCERT_CONTEXT cert, FILETIME* time,
         X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
         0,
         CERT_FIND_SUBJECT_NAME,
-        &cert->pCertInfo->Issuer,
+        &(cert->pCertInfo->Issuer),
         NULL);
     if(issuerCert != NULL) {
         ret = xmlSecMSCngX509StoreVerifySubject(cert, issuerCert);
@@ -613,7 +613,7 @@ xmlSecMSCngX509StoreVerifyCertificateOwn(PCCERT_CONTEXT cert, FILETIME* time,
         X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
         0,
         CERT_FIND_SUBJECT_NAME,
-        &cert->pCertInfo->Issuer,
+        &(cert->pCertInfo->Issuer),
         NULL);
     if(issuerCert != NULL) {
         ret = xmlSecMSCngX509StoreVerifySubject(cert, issuerCert);

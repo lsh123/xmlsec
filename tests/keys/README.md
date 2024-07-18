@@ -223,6 +223,20 @@ openssl verify -CAfile cacert.pem -untrusted ca2cert.pem dh1024-first-pubkey.crt
 rm dh1024-first-req.pem
 ```
 
+
+### Generate two certs and keys with the same certificate
+```
+openssl req -x509 -newkey rsa:2048 -keyout same-subj-key1.pem -out same-subj-cert1.pem -sha256 -days 3650 -nodes -subj "/C=XX/ST=StateName/L=CityName/O=CompanyName/OU=CompanySectionName/CN=CommonNameOrHostname"
+openssl req -x509 -newkey rsa:2048 -keyout same-subj-key2.pem -out same-subj-cert2.pem -sha256 -days 3650 -nodes -subj "/C=XX/ST=StateName/L=CityName/O=CompanyName/OU=CompanySectionName/CN=CommonNameOrHostname"
+
+openssl x509 -in same-subj-cert1.pem -out same-subj-cert1.der --outform DER
+openssl x509 -in same-subj-cert2.pem -out same-subj-cert2.der --outform DER
+
+openssl rsa -in same-subj-key1.pem -out same-subj-key1.der --outform DER
+openssl rsa -in same-subj-key2.pem -out same-subj-key2.der --outform DER
+```
+
+
 ### Generate and sign GOST2001 and GOST2012 keys with second level CA
 To enable GOST support, modify openssl.conf file:
 - uncomment the `# gost = gost_section` line'

@@ -352,6 +352,47 @@ xmlSecMSCryptoX509StoreVerifySubject(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT
     return(1);
 }
 
+static int
+xmlSecMSCryptoX509StoreContainsCert(HCERTSTORE store, CERT_NAME_BLOB* name,
+    PCCERT_CONTEXT cert, xmlSecKeyDataStorePtr keyDataStore)
+{
+    PCCERT_CONTEXT storeCert = NULL;
+    int ret;
+
+    xmlSecAssert2(store != NULL, -1);
+    xmlSecAssert2(name != NULL, -1);
+    xmlSecAssert2(cert != NULL, -1);
+    xmlSecAssert2(keyDataStore != NULL, -1);
+
+    storeCert = CertFindCertificateInStore(store,
+        X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+        0,
+        CERT_FIND_SUBJECT_NAME,
+        name,
+        NULL);
+    if (storeCert == NULL) {
+        return (0);
+    }
+
+    ret = xmlSecMSCryptoX509StoreVerifySubject(keyDataStore, cert, storeCert);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecMSCryptoX509StoreVerifySubject", NULL);
+        CertFreeCertificateContext(storeCert);
+        return(-1);
+    } else if (ret == 0) {
+        xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
+            NULL,
+            "xmlSecMSCryptoX509StoreVerifySubject");
+        CertFreeCertificateContext(storeCert);
+        return(-1);
+    }
+
+    /* success */
+    CertFreeCertificateContext(storeCert);
+    return(1);
+}
+
+
 /**
  * xmlSecMSCryptoBuildCertChainManually:
  * @cert: the certificate we check
@@ -372,6 +413,7 @@ xmlSecMSCryptoBuildCertChainManually (PCCERT_CONTEXT cert, LPFILETIME pfTime,
     PCCERT_CONTEXT issuerCert = NULL;
     int ret;
 
+    /* check certificate validity and revokation */
     if (!xmlSecMSCryptoVerifyCertTime(cert, pfTime)) {
         xmlSecOtherError(XMLSEC_ERRORS_R_CERT_HAS_EXPIRED,
             xmlSecKeyDataStoreGetName(store),
@@ -386,31 +428,34 @@ xmlSecMSCryptoBuildCertChainManually (PCCERT_CONTEXT cert, LPFILETIME pfTime,
         return(FALSE);
     }
 
-    /* try to find issuer cert in the trusted cert in the store */
-    issuerCert = CertFindCertificateInStore(store_trusted,
-                X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-                0,
-                CERT_FIND_SUBJECT_NAME,
-                &(cert->pCertInfo->Issuer),
-                NULL);
-    if(issuerCert != NULL) {
-        ret = xmlSecMSCryptoX509StoreVerifySubject(store, cert, issuerCert);
-        if (ret < 0) {
-            xmlSecInternalError("xmlSecMSCryptoX509StoreVerifySubject", NULL);
-            CertFreeCertificateContext(issuerCert);
-            return(FALSE);
-        }
-        else if (ret == 0) {
-            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
-                NULL,
-                "xmlSecMSCryptoX509StoreVerifySubject");
-            CertFreeCertificateContext(issuerCert);
-            return(FALSE);
-        }
-
+    /* does trustedStore contain cert directly? */
+    ret = xmlSecMSCryptoX509StoreContainsCert(store_trusted,
+        &(cert->pCertInfo->Subject), cert, store);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecMSCryptoX509StoreContainsCert", NULL);
+        return(FALSE);
+    } else if (ret == 1) {
         /* success */
-        CertFreeCertificateContext(issuerCert);
         return(TRUE);
+    }
+
+    /* does trustedStore contain the issuer cert? */
+    ret = xmlSecMSCryptoX509StoreContainsCert(store_trusted,
+        &(cert->pCertInfo->Issuer), cert, store);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecMSCryptoX509StoreContainsCert", NULL);
+        return(FALSE);
+    } else if (ret == 1) {
+        /* success */
+        return(TRUE);
+    }
+
+    /* is cert self-signed? no recursion in that case */
+    if (CertCompareCertificateName(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+        &(cert->pCertInfo->Subject),
+        &(cert->pCertInfo->Issuer))) {
+        /* not verified */
+        return(FALSE);
     }
 
     /* try the untrusted certs in the chain */
@@ -479,6 +524,7 @@ xmlSecMSCryptoBuildCertChainManually (PCCERT_CONTEXT cert, LPFILETIME pfTime,
         return(TRUE);
     }
 
+    /* no luck */
     return(FALSE);
 }
 

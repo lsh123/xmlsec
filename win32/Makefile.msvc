@@ -490,8 +490,8 @@ LDFLAGS 		= $(LDFLAGS) /OPT:REF,ICF
 LDFLAGS = $(LDFLAGS) /WX
 !endif
 
-SOLIBS 			= $(LIBS) libxml2.lib ws2_32.lib
-ALIBS 			= $(LIBS) libxml2_a.lib ws2_32.lib
+SOLIBS 			= $(LIBS) libxml2.lib bcrypt.lib ws2_32.lib
+ALIBS           = $(LIBS) libxml2_a.lib bcrypt.lib ws2_32.lib
 
 !if "$(WITH_ICONV)" == "1"
 CFLAGS          = $(CFLAGS) /D "LIBXML_ICONV_ENABLED"

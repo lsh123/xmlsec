@@ -1,6 +1,6 @@
 # Makefile for xmlsec, specific for Windows, MSVC and NMAKE.
 #
-# Take a look at the beginning and modify the variables to suit your 
+# Take a look at the beginning and modify the variables to suit your
 # environment.
 XMLSEC_STATIC          = yes
 XMLSEC_DEFAULT_CRYPTO  = openssl
@@ -24,11 +24,11 @@ XMLSEC_EXAMPLES = \
 	$(XMLSEC_OBJS_DIR)\decrypt2.exe \
 	$(XMLSEC_OBJS_DIR)\decrypt3.exe \
 
-# 
+#
 !IF "$(XMLSEC_DEFAULT_CRYPTO)" == "openssl"
 XMLSEC_CFLAGS = $(XMLSEC_CFLAGS) /D "XMLSEC_CRYPTO_OPENSSL" /D "XMLSEC_DEFAULT_CRYPTO=\"openssl\""
-XMLSEC_SOLIBS = libxmlsec-openssl.lib libeay32.lib wsock32.lib user32.lib gdi32.lib 
-XMLSEC_ALIBS  = libxmlsec-openssl_a.lib libeay32.lib wsock32.lib user32.lib gdi32.lib 
+XMLSEC_SOLIBS = libxmlsec-openssl.lib libeay32.lib wsock32.lib user32.lib gdi32.lib
+XMLSEC_ALIBS  = libxmlsec-openssl_a.lib libeay32.lib wsock32.lib user32.lib gdi32.lib
 !ENDIF
 
 !IF "$(XMLSEC_DEFAULT_CRYPTO)" == "nss"
@@ -46,10 +46,10 @@ XMLSEC_ALIBS  = libxmlsec-mscrypto_a.lib user32.lib gdi32.lib crypt32.lib advapi
 !IF "$(XMLSEC_STATIC)" == "yes"
 XMLSEC_CFLAGS = $(XMLSEC_CFLAGS) /D "LIBXML_STATIC" /D "LIBXSLT_STATIC" /D "XMLSEC_STATIC"
 XMLSEC_LIBS   = $(XMLSEC_LIBS) $(XMLSEC_ALIBS) libxmlsec_a.lib \
-		libxml2_a.lib libxslt_a.lib libexslt_a.lib 
+		libxml2_a.lib libxslt_a.lib libexslt_a.lib bcrypt.lib
 !ELSE
 XMLSEC_LIBS   = $(XMLSEC_LIBS) $(XMLSEC_SOLIBS) libxmlsec.lib libxml2.lib \
-		libxslt.lib libexslt.lib
+		libxslt.lib libexslt.lib bcrypt.lib
 !ENDIF
 
 # The preprocessor and its options.
@@ -58,7 +58,7 @@ CPPFLAGS = /nologo
 
 # The compiler and its options.
 CC = cl.exe
-CFLAGS = /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" /DWIN32_SOCKETS /W1 /MD $(XMLSEC_CFLAGS)  
+CFLAGS = /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" /DWIN32_SOCKETS /W1 /MD $(XMLSEC_CFLAGS)
 
 # The linker and its options.
 LD = link.exe
@@ -69,7 +69,7 @@ LDFLAGS = /nologo $(XMLSEC_LIBS) wsock32.lib
 CFLAGS = $(CFLAGS) /D "_DEBUG" /Od /Z7
 LDFLAGS = $(LDFLAGS) /DEBUG
 !else
-CFLAGS = $(CFLAGS) /D "NDEBUG" /O2 
+CFLAGS = $(CFLAGS) /D "NDEBUG" /O2
 LDFLAGS = $(LDFLAGS) /OPT:NOWIN98
 !endif
 

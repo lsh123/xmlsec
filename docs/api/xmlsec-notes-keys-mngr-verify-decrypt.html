@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -10,46 +11,7 @@
 <meta name="generator" content="GTK-Doc V1.33.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
-<body><table width="100%" valign="top"><tr valign="top">
-<td valign="top" align="left" width="210">
-<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
-<ul>
-<li><a href="../index.html">Home</a></li>
-<li><a href="../download.html">Download</a></li>
-<ul><li><a href="../https://github.com/lsh123/xmlsec">GitHub</a></li></ul>
-<li><a href="../news.html">News</a></li>
-<li><a href="../documentation.html">Documentation</a></li>
-<ul>
-<li><a href="../faq.html">FAQ</a></li>
-<li><a href="../api/xmlsec-notes.html">Tutorial</a></li>
-<li><a href="../api/xmlsec-reference.html">API reference</a></li>
-<li><a href="../api/xmlsec-examples.html">Examples</a></li>
-</ul>
-<li><a href="../xmldsig.html">XML Digital Signature</a></li>
-<li><a href="../xmlenc.html">XML Encryption</a></li>
-<li><a href="../c14n.html">XML Canonicalization</a></li>
-<li><a href="../bugs.html">Reporting Bugs</a></li>
-<li><a href="mailing-list.html">Mailing list</a></li>
-<li><a href="../related.html">Related</a></li>
-<li><a href="../authors.html">Authors</a></li>
-</ul>
-<table width="100%">
-<tr>
-<td width="15"></td>
-<td><a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a></td>
-</tr>
-<tr>
-<td width="15"></td>
-<td><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a></td>
-</tr>
-<tr>
-<td width="15"></td>
-<td><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a></td>
-</tr>
-<!--Links - start--><!--Links - end-->
-</table>
-</td>
-<td valign="top"><table width="80%" valign="top" style="margin-left:10px;"><tr><td valign="top" align="left" id="xmlsecContent">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
 <td width="100%" align="left" class="shortcuts"></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
@@ -61,18 +23,18 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="xmlsec-notes-keys-mngr-verify-decrypt"></a>Using keys manager for verification/decryption.</h2></div></div></div>
 <p>If more than one key could be used for signature or encryption,
-	then using <em class="structfield"><code>signKey</code></em> member of
-	<a class="link" href="xmlsec-xmldsig.html#xmlSecDSigCtx" title="struct xmlSecDSigCtx">xmlSecDSigCtx</a> structure or
-	<em class="structfield"><code>encKey</code></em> member of
-	<a class="link" href="xmlsec-xmlenc.html#xmlSecEncCtx" title="struct xmlSecEncCtx">xmlSecEncCtx</a> structure
-	is not possible. Instead, the application should load known keys in
-	the keys manager and use &lt;dsig:KeyName/&gt; element to specify
+	then using <em class="structfield"><code>signKey</code></em> member of 
+	<a class="link" href="xmlsec-xmldsig.html#xmlSecDSigCtx" title="struct xmlSecDSigCtx">xmlSecDSigCtx</a> structure or 
+	<em class="structfield"><code>encKey</code></em> member of 
+	<a class="link" href="xmlsec-xmlenc.html#xmlSecEncCtx" title="struct xmlSecEncCtx">xmlSecEncCtx</a> structure 
+	is not possible. Instead, the application should load known keys in 
+	the keys manager and use &lt;dsig:KeyName/&gt; element to specify 
 	the key name.
 	</p>
 <p>
 	     </p>
 <div class="example">
-<a name="id-1.2.10.5.3.1"></a><p class="title"><b>Example 18. Initializing keys manager and loading DES keys from binary files.</b></p>
+<a name="id-1.2.10.5.3.1"></a><p class="title"><b>Example 18. Initializing keys manager and loading DES keys from binary files.</b></p>
 <div class="example-contents">
 <pre class="programlisting">
 /**
@@ -87,18 +49,18 @@
  * Returns the pointer to newly created keys manager or NULL if an error
  * occurs.
  */
-xmlSecKeysMngrPtr
+xmlSecKeysMngrPtr 
 load_des_keys(char** files, int files_size) {
     xmlSecKeysMngrPtr mngr;
     xmlSecKeyPtr key;
     int i;
-
+    
     assert(files);
     assert(files_size &gt; 0);
-
+    
     /* create and initialize keys manager, we use a default list based
      * keys manager, implement your own xmlSecKeysStore klass if you need
-     * something more sophisticated
+     * something more sophisticated 
      */
     mngr = xmlSecKeysMngrCreate();
     if(mngr == NULL) {
@@ -109,8 +71,8 @@ load_des_keys(char** files, int files_size) {
 	fprintf(stderr, "Error: failed to initialize keys manager.\n");
 	xmlSecKeysMngrDestroy(mngr);
 	return(NULL);
-    }
-
+    }    
+    
     for(i = 0; i &lt; files_size; ++i) {
 	assert(files[i]);
 
@@ -129,9 +91,9 @@ load_des_keys(char** files, int files_size) {
 	    xmlSecKeysMngrDestroy(mngr);
 	    return(NULL);
 	}
-
-	/* add key to keys manager, from now on keys manager is responsible
-	 * for destroying key
+	
+	/* add key to keys manager, from now on keys manager is responsible 
+	 * for destroying key 
 	 */
 	if(xmlSecCryptoAppDefaultKeysMngrAdoptKey(mngr, key) &lt; 0) {
     	    fprintf(stderr,"Error: failed to add key from \"%s\" to keys manager\n", files[i]);
@@ -152,6 +114,5 @@ load_des_keys(char** files, int files_size) {
 </div>
 <div class="footer">
 <hr>Generated by GTK-Doc V1.33.1</div>
-</td></tr></table></td>
-</tr></table></body>
+</body>
 </html>

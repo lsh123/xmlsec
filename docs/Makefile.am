@@ -52,7 +52,7 @@ man-docs:
 endif
 
 if HAS_XSLTPROC
-docs-format:
+docs-format: docs-copy man-docs
 	@(echo "Formatting html documents"; \
 	for i in `find $(builddir) -name "*.html" -print`; \
 	do \
@@ -90,7 +90,7 @@ docs-format-ga:
 	done)
 else
 # do nothing
-docs-format:
+docs-format: docs-copy man-docs
 
 endif
 

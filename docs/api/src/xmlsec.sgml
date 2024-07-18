@@ -1,4 +1,4 @@
-<?xml version="1.0" standalone="no"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN" "
 http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
 <!ENTITY chapter-compiling-and-linking 	SYSTEM "chapters/compiling-and-linking.sgml">
@@ -119,9 +119,9 @@ http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
       </author>
     </authorgroup>
     <copyright>
-      <year>2002-2022</year>
+      <year>2002-2024</year>
       <holder>Aleksey Sanin</holder>
-    </copyright>	
+    </copyright>
     <legalnotice>
       <para>Permission is granted to make and distribute verbatim
       copies of this manual provided the copyright notice and this
@@ -131,7 +131,7 @@ http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
       copying, provided also that the entire resulting derived work is
       distributed under the terms of a permission notice identical to
       this one.</para>
-      
+
       <para>Permission is granted to copy and distribute translations
       of this manual into another language, under the above conditions
       for modified versions.</para>
@@ -148,35 +148,35 @@ http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
     <title>XML Security Library Tutorial</title>
     <chapter id="xmlsec-notes-overview">
 	<title>Overview.</title>
-	<para>XML Security Library provides support for XML Digital Signature 
+	<para>XML Security Library provides support for XML Digital Signature
 	and XML Encryption. It is based on LibXML/LibXSLT and can use
-	practicaly any crypto library (currently there is "out of the box" 
+	practicaly any crypto library (currently there is "out of the box"
 	support for OpenSSL, Microsoft Crypto API, Microsoft Cryptography API:
 	Next Generation (CNG), GnuTLS, GCrypt and NSS).
 	</para>
     </chapter>
     <chapter id="xmlsec-notes-structure">
 	<title>XML Security Library Structure.</title>
-	<para>In order to provide the an ability to use different crypto engines, 
+	<para>In order to provide the an ability to use different crypto engines,
 	the XML Security Library is splitted in two parts: core library (xmlsec)
-	and crypto library (xmlsec-openssl, xmlsec-mscrypt, xmlsec-mscng, xmlsec-gnutls, 
+	and crypto library (xmlsec-openssl, xmlsec-mscrypt, xmlsec-mscng, xmlsec-gnutls,
 	xmlsec-gcrypt, xmlsec-nss, ...).
 	<figure>
 	    <title>The library structure and dependencies.</title>
 	    <graphic fileref="images/structure.png" align="center"></graphic>
-	</figure>	 
+	</figure>
 	</para>
-	<para>The core library has no dependency on any crypto library and provides 
-	implementation of all the engines as well as support for all the non 
-	crypto transforms (xml parser, c14n transforms, xpath and xslt 
-	transforms,...). The XML Security Crypto library provides 
-	implementations for crypto transforms, crypto keys data and key 
-	data stores. Application is linked with particular XML Security 
-	Crypto library (or even libraries), but the actual application 
-	code might be general enough so switching crypto engine would be 
+	<para>The core library has no dependency on any crypto library and provides
+	implementation of all the engines as well as support for all the non
+	crypto transforms (xml parser, c14n transforms, xpath and xslt
+	transforms,...). The XML Security Crypto library provides
+	implementations for crypto transforms, crypto keys data and key
+	data stores. Application is linked with particular XML Security
+	Crypto library (or even libraries), but the actual application
+	code might be general enough so switching crypto engine would be
 	a matter of changing several #include directives.</para>
     </chapter>
-    
+
     &chapter-compiling-and-linking;
     &chapter-init-and-shutdown;
     &chapter-sign-and-encrypt;
@@ -189,13 +189,13 @@ http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
     &chapter-using-contexts;
     &chapter-new-crypto;
     &chapter-examples;
-    
+
     <chapter id="xmlsec-signature-klasses">
     <title>APPENDIX A. XML Security Library Signature Klasses.</title>
 	<figure>
 	    <title>XML Security Library Signature Klasses.</title>
 	    <graphic fileref="images/signature-structure.png" align="center"></graphic>
-	</figure>	 
+	</figure>
     </chapter>
 
     <chapter id="xmlsec-encryption-klasses">
@@ -203,13 +203,13 @@ http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
 	<figure>
 	    <title>XML Security Library Encryption Klasses.</title>
 	    <graphic fileref="images/encryption-structure.png" align="center"></graphic>
-	</figure>	 
+	</figure>
     </chapter>
   </part>
 
   <part id="xmlsec-reference">
     <title>XML Security Library API Reference.</title>
-    
+
     <chapter id="xmlsec-ref">
     <title>XML Security Core Library API Reference.</title>
     <para>This section contains the API reference for xmlsec. All
@@ -299,12 +299,12 @@ http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
     <xi:include href="&xmlsec-mscrypto-keysstore;"/>
     <xi:include href="&xmlsec-mscrypto-x509;"/>
     </chapter>
-    
+
 
     <chapter id="xmlsec-msccng-ref">
     <title>XML Security Library for Microsoft Cryptography API: Next Generation (CNG) Reference.</title>
     <para>This section contains the API reference for xmlsec-mscng (based on
-    <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa376210(v=vs.85).aspx">Microsoft 
+    <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa376210(v=vs.85).aspx">Microsoft
     Cryptography API: Next Generation (CNG)</a>). All the public interfaces are
     documented here. This reference guide is build by extracting comments from
     the code sources. </para>
@@ -322,7 +322,7 @@ http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
 	<itemizedlist>
         &xmlsec-index;
 	</itemizedlist>
-    </para>	
+    </para>
     </chapter>
   </part>
 </book>

@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -10,46 +11,7 @@
 <meta name="generator" content="GTK-Doc V1.33.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
-<body><table width="100%" valign="top"><tr valign="top">
-<td valign="top" align="left" width="210">
-<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
-<ul>
-<li><a href="../index.html">Home</a></li>
-<li><a href="../download.html">Download</a></li>
-<ul><li><a href="../https://github.com/lsh123/xmlsec">GitHub</a></li></ul>
-<li><a href="../news.html">News</a></li>
-<li><a href="../documentation.html">Documentation</a></li>
-<ul>
-<li><a href="../faq.html">FAQ</a></li>
-<li><a href="../api/xmlsec-notes.html">Tutorial</a></li>
-<li><a href="../api/xmlsec-reference.html">API reference</a></li>
-<li><a href="../api/xmlsec-examples.html">Examples</a></li>
-</ul>
-<li><a href="../xmldsig.html">XML Digital Signature</a></li>
-<li><a href="../xmlenc.html">XML Encryption</a></li>
-<li><a href="../c14n.html">XML Canonicalization</a></li>
-<li><a href="../bugs.html">Reporting Bugs</a></li>
-<li><a href="mailing-list.html">Mailing list</a></li>
-<li><a href="../related.html">Related</a></li>
-<li><a href="../authors.html">Authors</a></li>
-</ul>
-<table width="100%">
-<tr>
-<td width="15"></td>
-<td><a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a></td>
-</tr>
-<tr>
-<td width="15"></td>
-<td><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a></td>
-</tr>
-<tr>
-<td width="15"></td>
-<td><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a></td>
-</tr>
-<!--Links - start--><!--Links - end-->
-</table>
-</td>
-<td valign="top"><table width="80%" valign="top" style="margin-left:10px;"><tr><td valign="top" align="left" id="xmlsecContent">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
 <td width="100%" align="left" class="shortcuts"></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
@@ -60,25 +22,25 @@
 <div class="sect1">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="xmlsec-notes-keys-manager-sign-enc"></a>Using keys manager for signatures/encryption.</h2></div></div></div>
-<p>Instead of specifiying signature or encryption key in the
-	corresponding context object (<em class="structfield"><code>signKey</code></em>
-	member of <a class="link" href="xmlsec-xmldsig.html#xmlSecDSigCtx" title="struct xmlSecDSigCtx">xmlSecDSigCtx</a>
-	structure or <em class="structfield"><code>encKey</code></em> member of
-	<a class="link" href="xmlsec-xmlenc.html#xmlSecEncCtx" title="struct xmlSecEncCtx">xmlSecEncCtx</a> structure),
+<p>Instead of specifiying signature or encryption key in the 
+	corresponding context object (<em class="structfield"><code>signKey</code></em> 
+	member of <a class="link" href="xmlsec-xmldsig.html#xmlSecDSigCtx" title="struct xmlSecDSigCtx">xmlSecDSigCtx</a> 
+	structure or <em class="structfield"><code>encKey</code></em> member of 
+	<a class="link" href="xmlsec-xmlenc.html#xmlSecEncCtx" title="struct xmlSecEncCtx">xmlSecEncCtx</a> structure), 
 	the application can use keys manager to select the
 	signature or encryption key. This is especialy useful
 	when you are encrypting or signing something with a session key
-	which is by itself should be encrypted. The key for the
-	session key encryption in the
+	which is by itself should be encrypted. The key for the 
+	session key encryption in the 
 	<a class="ulink" href="" target="_top">&lt;EncryptedKey/&gt;</a>
 	node could be selected using
-	<a class="ulink" href="" target="_top">&lt;dsig:KeyName/&gt;</a>
+	<a class="ulink" href="" target="_top">&lt;dsig:KeyName/&gt;</a> 
 	node in the template.
 	</p>
 <p>
 	     </p>
 <div class="example">
-<a name="id-1.2.10.4.3.1"></a><p class="title"><b>Example 17. Encrypting file using a session key and a permanent key from keys manager.</b></p>
+<a name="id-1.2.10.4.3.1"></a><p class="title"><b>Example 17. Encrypting file using a session key and a permanent key from keys manager.</b></p>
 <div class="example-contents">
 <pre class="programlisting">
 /**
@@ -92,16 +54,16 @@
  * Returns the pointer to newly created keys manager or NULL if an error
  * occurs.
  */
-xmlSecKeysMngrPtr
+xmlSecKeysMngrPtr 
 load_rsa_keys(char* key_file) {
     xmlSecKeysMngrPtr mngr;
     xmlSecKeyPtr key;
-
+    
     assert(key_file);
-
+    
     /* create and initialize keys manager, we use a default list based
      * keys manager, implement your own xmlSecKeysStore klass if you need
-     * something more sophisticated
+     * something more sophisticated 
      */
     mngr = xmlSecKeysMngrCreate();
     if(mngr == NULL) {
@@ -112,8 +74,8 @@ load_rsa_keys(char* key_file) {
 	fprintf(stderr, "Error: failed to initialize keys manager.\n");
 	xmlSecKeysMngrDestroy(mngr);
 	return(NULL);
-    }
-
+    }    
+    
     /* load private RSA key */
     key = xmlSecCryptoAppKeyLoad(key_file, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
     if(key == NULL) {
@@ -125,13 +87,13 @@ load_rsa_keys(char* key_file) {
     /* set key name to the file name, this is just an example! */
     if(xmlSecKeySetName(key, BAD_CAST key_file) &lt; 0) {
         fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
-        xmlSecKeyDestroy(key);
+        xmlSecKeyDestroy(key);	
 	xmlSecKeysMngrDestroy(mngr);
 	return(NULL);
     }
-
-    /* add key to keys manager, from now on keys manager is responsible
-     * for destroying key
+	
+    /* add key to keys manager, from now on keys manager is responsible 
+     * for destroying key 
      */
     if(xmlSecCryptoAppDefaultKeysMngrAdoptKey(mngr, key) &lt; 0) {
         fprintf(stderr,"Error: failed to add key from \"%s\" to keys manager\n", key_file);
@@ -149,12 +111,12 @@ load_rsa_keys(char* key_file) {
  * @xml_file:		the encryption template file name.
  * @key_name:		the RSA key name.
  *
- * Encrypts #xml_file using a dynamicaly created template, a session DES key
+ * Encrypts #xml_file using a dynamicaly created template, a session DES key 
  * and an RSA key from keys manager.
  *
  * Returns 0 on success or a negative value if an error occurs.
  */
-int
+int 
 encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* key_name) {
     xmlDocPtr doc = NULL;
     xmlNodePtr encDataNode = NULL;
@@ -163,7 +125,7 @@ encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* key_name)
     xmlNodePtr keyInfoNode2 = NULL;
     xmlSecEncCtxPtr encCtx = NULL;
     int res = -1;
-
+    
     assert(mngr);
     assert(xml_file);
     assert(key_name);
@@ -172,57 +134,57 @@ encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* key_name)
     doc = xmlParseFile(xml_file);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
 	fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
-	goto done;
+	goto done;	
     }
-
-    /* create encryption template to encrypt XML file and replace
+    
+    /* create encryption template to encrypt XML file and replace 
      * its content with encryption result */
     encDataNode = xmlSecTmplEncDataCreate(doc, xmlSecTransformDes3CbcId,
 				NULL, xmlSecTypeEncElement, NULL, NULL);
     if(encDataNode == NULL) {
 	fprintf(stderr, "Error: failed to create encryption template\n");
-	goto done;
+	goto done;   
     }
 
     /* we want to put encrypted data in the &lt;enc:CipherValue/&gt; node */
     if(xmlSecTmplEncDataEnsureCipherValue(encDataNode) == NULL) {
 	fprintf(stderr, "Error: failed to add CipherValue node\n");
-	goto done;
+	goto done;   
     }
 
     /* add &lt;dsig:KeyInfo/&gt; */
     keyInfoNode = xmlSecTmplEncDataEnsureKeyInfo(encDataNode, NULL);
     if(keyInfoNode == NULL) {
 	fprintf(stderr, "Error: failed to add key info\n");
-	goto done;
+	goto done;		
     }
 
     /* add &lt;enc:EncryptedKey/&gt; to store the encrypted session key */
-    encKeyNode = xmlSecTmplKeyInfoAddEncryptedKey(keyInfoNode,
-				    xmlSecTransformRsaOaepId,
+    encKeyNode = xmlSecTmplKeyInfoAddEncryptedKey(keyInfoNode, 
+				    xmlSecTransformRsaOaepId, 
 				    NULL, NULL, NULL);
     if(encKeyNode == NULL) {
 	fprintf(stderr, "Error: failed to add key info\n");
-	goto done;
+	goto done;		
     }
 
     /* we want to put encrypted key in the &lt;enc:CipherValue/&gt; node */
     if(xmlSecTmplEncDataEnsureCipherValue(encKeyNode) == NULL) {
 	fprintf(stderr, "Error: failed to add CipherValue node\n");
-	goto done;
+	goto done;   
     }
 
     /* add &lt;dsig:KeyInfo/&gt; and &lt;dsig:KeyName/&gt; nodes to &lt;enc:EncryptedKey/&gt; */
     keyInfoNode2 = xmlSecTmplEncDataEnsureKeyInfo(encKeyNode, NULL);
     if(keyInfoNode2 == NULL) {
 	fprintf(stderr, "Error: failed to add key info\n");
-	goto done;
+	goto done;		
     }
-
+    
     /* set key name so we can lookup key when needed */
     if(xmlSecTmplKeyInfoAddKeyName(keyInfoNode2, key_name) == NULL) {
 	fprintf(stderr, "Error: failed to add key name\n");
-	goto done;
+	goto done;		
     }
 
     /* create encryption context */
@@ -244,17 +206,17 @@ encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* key_name)
         fprintf(stderr,"Error: encryption failed\n");
 	goto done;
     }
-
+    
     /* we template is inserted in the doc */
     encDataNode = NULL;
-
+        
     /* print encrypted data with document to stdout */
     xmlDocDump(stdout, doc);
-
+    
     /* success */
     res = 0;
 
-done:
+done:    
 
     /* cleanup */
     if(encCtx != NULL) {
@@ -264,9 +226,9 @@ done:
     if(encDataNode != NULL) {
 	xmlFreeNode(encDataNode);
     }
-
+        
     if(doc != NULL) {
-	xmlFreeDoc(doc);
+	xmlFreeDoc(doc); 
     }
     return(res);
 }
@@ -280,6 +242,5 @@ done:
 </div>
 <div class="footer">
 <hr>Generated by GTK-Doc V1.33.1</div>
-</td></tr></table></td>
-</tr></table></body>
+</body>
 </html>

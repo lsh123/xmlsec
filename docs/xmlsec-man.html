@@ -2,7 +2,6 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Man page of XMLSEC1</title>
-<link rel="stylesheet" href="css/main.css">
 </head>
 <body><table width="100%" valign="top"><tr valign="top">
 <td valign="top" align="left" width="210">
@@ -45,9 +44,10 @@
 </td>
 <td valign="top"><table width="80%" valign="top" style="margin-left:10px;"><tr><td valign="top" align="left" id="xmlsecContent">
 <h1>XMLSEC1</h1>
-<br><a name="lbAB"> </a><h2>NAME</h2>
-<a name="lbAC"> </a><h2>SYNOPSIS</h2>
-<b>xmlsec</b><i>,&lt;command&gt; /</i><i>,&lt;options&gt;/</i><i>,&lt;files&gt;/</i><a name="lbAD"> </a><h2>DESCRIPTION</h2>
+<br><br><a href="#index">Index</a><a href="/cgi-bin/man/man2html">Return to Main Contents</a><hr>
+<a name="lbAB">Â </a><h2>NAME</h2>
+<a name="lbAC">Â </a><h2>SYNOPSIS</h2>
+<b>xmlsec</b><i>,&lt;command&gt; /</i><i>,&lt;options&gt;/</i><i>,&lt;files&gt;/</i><a name="lbAD">Â </a><h2>DESCRIPTION</h2>
 <dl compact> <dt><b>--help</b></dt>
 <dd> display this help information and exit </dd>
 <dt><b>--help-all</b></dt>
@@ -70,7 +70,7 @@
 <dt><b>--decrypt</b></dt>
 <dd> decrypt data from XML document </dd>
 </dl>
-<a name="lbAE"> </a><h2>OPTIONS</h2>
+<a name="lbAE">Â </a><h2>OPTIONS</h2>
 <dl compact> <dt> <b>--ignore-manifests</b> <dt></dt>
 </dt>
 <dd> <dd>do not process &lt;dsig:Manifest&gt; elements </dd>
@@ -91,6 +91,10 @@
 </dt>
 <dd> <dd>enables Visa3D protocol specific hack for URI attributes processing when we are trying not to use XPath/XPointer engine; this is a hack and I don't know what else might be broken in your application when you use it (also check "--id-attr" option because you might need it) </dd>
 </dd>
+<dt> <b>--hmac-min-out-len</b> &lt;bits&gt; <dt></dt>
+</dt>
+<dd> <dd>sets minimum HMAC output length to &lt;bits&gt; </dd>
+</dd>
 <dt> <b>--binary-data</b> &lt;file&gt; <dt></dt>
 </dt>
 <dd> <dd>binary &lt;file&gt; to encrypt </dd>
@@ -109,7 +113,7 @@
 </dd>
 <dt> <b>--output</b> &lt;filename&gt; <dt></dt>
 </dt>
-<dd> <dd>write result document to file &lt;filename&gt; </dd>
+<dd> <dd>write result document to file &lt;filename&gt;; the &lt;filename&gt; can be a template and include '{inputfile}' which will be repaced with the input filename </dd>
 </dd>
 <dt> <b>--print-debug</b> <dt></dt>
 </dt>
@@ -143,9 +147,13 @@
 </dt>
 <dd> <dd>comma separated list of enabled key data (list of registered key data klasses is available with "--list-key-data" command); by default, all registered key data are enabled </dd>
 </dd>
-<dt> <b>--enabled-retrieval-uris</b> &lt;list&gt; <dt></dt>
+<dt> <b>--enabled-retrieval-method-uris</b> &lt;list&gt; <dt></dt>
 </dt>
 <dd> <dd>comma separated list of of the following values: "empty", "same-doc", "local","remote" to restrict possible URI attribute values for the &lt;dsig:RetrievalMethod&gt; element. </dd>
+</dd>
+<dt> <b>--enabled-key-info-reference-uris</b> &lt;list&gt; <dt></dt>
+</dt>
+<dd> <dd>comma separated list of of the following values: "empty", "same-doc", "local","remote" to restrict possible URI attribute values for the &lt;dsig11:KeyInfoReference&gt; element. </dd>
 </dd>
 <dt> <b>--gen-key[</b>:&lt;name&gt;] &lt;keyKlass&gt;-&lt;keySize&gt; <dt></dt>
 </dt>
@@ -171,6 +179,14 @@
 </dt>
 <dd> <dd>load private key from PKCS8 DER file and DER certificates that verify this key </dd>
 </dd>
+<dt> <b>--privkey-openssl-store[</b>:&lt;name&gt;] &lt;uri&gt; <dt></dt>
+</dt>
+<dd> <dd>load private key and certs through OpenSSL ossl_store interface (e.g. from HSM) </dd>
+</dd>
+<dt> <b>--privkey-openssl-engine[</b>:&lt;name&gt;] &lt;openssl-engine&gt;;&lt;openssl-key-id&gt;[,&lt;crtfile&gt;[,&lt;crtfile&gt;[...]]] <dt></dt>
+</dt>
+<dd> <dd>load private key by OpenSSL ENGINE interface; specify the name of engine (like with <b>-engine</b> params), the key specs (like with <b>-inkey</b> or <b>-key</b> params) and optionally certificates that verify this key </dd>
+</dd>
 <dt> <b>--pubkey-pem[</b>:&lt;name&gt;] &lt;file&gt; <dt></dt>
 </dt>
 <dd> <dd>load public key from PEM file </dd>
@@ -179,21 +195,45 @@
 </dt>
 <dd> <dd>load public key from DER file </dd>
 </dd>
-<dt> <b>--aeskey[</b>:&lt;name&gt;] &lt;file&gt; <dt></dt>
+<dt> <b>--pubkey-openssl-store[</b>:&lt;name&gt;] &lt;uri&gt; <dt></dt>
 </dt>
-<dd> <dd>load AES key from binary file &lt;file&gt; </dd>
+<dd> <dd>load pubkey key and certs through OpenSSL ossl_store interface (e.g. from HSM) </dd>
 </dd>
-<dt> <b>--deskey[</b>:&lt;name&gt;] &lt;file&gt; <dt></dt>
+<dt> <b>--pubkey-openssl-engine[</b>:&lt;name&gt;] &lt;openssl-engine&gt;;&lt;openssl-key-id&gt;[,&lt;crtfile&gt;[,&lt;crtfile&gt;[...]]] <dt></dt>
 </dt>
-<dd> <dd>load DES key from binary file &lt;file&gt; </dd>
-</dd>
-<dt> <b>--hmackey[</b>:&lt;name&gt;] &lt;file&gt; <dt></dt>
-</dt>
-<dd> <dd>load HMAC key from binary file &lt;file&gt; </dd>
+<dd> <dd>load public key by OpenSSL ENGINE interface; specify the name of engine (like with <b>-engine</b> params), the key specs (like with <b>-inkey</b> or <b>-key</b> params) and optionally certificates that verify this key </dd>
 </dd>
 <dt> <b>--pwd</b> &lt;password&gt; <dt></dt>
 </dt>
 <dd> <dd>the password to use for reading keys and certs </dd>
+</dd>
+<dt> <b>--lax-key-search</b> <dt></dt>
+</dt>
+<dd> <dd>enable lax key search (e.g. by key type like "rsa") vs default strict key search mode using only information from &lt;dsig:KeyInfo/&gt; node (e.g. key name) </dd>
+</dd>
+<dt> <b>--verify-keys</b> <dt></dt>
+</dt>
+<dd> <dd>force verification of public/private keys loaded from the command: keys are required to have a key certificate that will be verified against the certificates in the key store </dd>
+</dd>
+<dt> <b>--aes-key[</b>:&lt;name&gt;] &lt;file&gt; <dt></dt>
+</dt>
+<dd> <dd>load AES key from binary file &lt;file&gt; </dd>
+</dd>
+<dt> <b>--concatkdf-key[</b>:&lt;name&gt;] &lt;file&gt; <dt></dt>
+</dt>
+<dd> <dd>load ConcatKDF key from binary file &lt;file&gt; </dd>
+</dd>
+<dt> <b>--des-key[</b>:&lt;name&gt;] &lt;file&gt; <dt></dt>
+</dt>
+<dd> <dd>load DES key from binary file &lt;file&gt; </dd>
+</dd>
+<dt> <b>--hmac-key[</b>:&lt;name&gt;] &lt;file&gt; <dt></dt>
+</dt>
+<dd> <dd>load HMAC key from binary file &lt;file&gt; </dd>
+</dd>
+<dt> <b>--pbkdf2-key[</b>:&lt;name&gt;] &lt;file&gt; <dt></dt>
+</dt>
+<dd> <dd>load Pbkdf2 key from binary file &lt;file&gt; </dd>
 </dd>
 <dt> <b>--pkcs12[</b>:&lt;name&gt;] &lt;file&gt; <dt></dt>
 </dt>
@@ -227,9 +267,21 @@
 </dt>
 <dd> <dd>load untrusted certificate from DER file &lt;file&gt; </dd>
 </dd>
+<dt> <b>--crl-pem</b> &lt;file&gt; <dt></dt>
+</dt>
+<dd> <dd>load CRLs from PEM file &lt;file&gt; </dd>
+</dd>
+<dt> <b>--crl-der</b> &lt;file&gt; <dt></dt>
+</dt>
+<dd> <dd>load CRLs from DER file &lt;file&gt; </dd>
+</dd>
 <dt> <b>--verification-time</b> &lt;time&gt; <dt></dt>
 </dt>
 <dd> <dd>the local time in "YYYY-MM-DD HH:MM:SS" format used certificates verification </dd>
+</dd>
+<dt> <b>--verification-gmt-time</b> &lt;time&gt; <dt></dt>
+</dt>
+<dd> <dd>the GMT time in "YYYY-MM-DD HH:MM:SS" format used certificates verification </dd>
 </dd>
 <dt> <b>--depth</b> &lt;number&gt; <dt></dt>
 </dt>
@@ -251,21 +303,21 @@
 </dt>
 <dd> <dd>path to crypto engine configuration </dd>
 </dd>
+<dt> <b>--verbose</b> <dt></dt>
+</dt>
+<dd> <dd>print detailed error messages </dd>
+</dd>
 <dt> <b>--repeat</b> &lt;number&gt; <dt></dt>
 </dt>
 <dd> <dd>repeat the operation &lt;number&gt; times </dd>
 </dd>
-<dt> <b>--disable-error-msgs</b> <dt></dt>
+<dt> <b>--base64-line-size</b> &lt;size&gt; <dt></dt>
 </dt>
-<dd> <dd>do not print xmlsec error messages </dd>
+<dd> <dd>sets the max line size for base64 encodings to &lt;size&gt; </dd>
 </dd>
-<dt> <b>--print-crypto-error-msgs</b> <dt></dt>
+<dt> <b>--transform-binary-chunk-size</b> &lt;size&gt; <dt></dt>
 </dt>
-<dd> <dd>print errors stack at the end </dd>
-</dd>
-<dt> <b>--help</b> <dt></dt>
-</dt>
-<dd> <dd>print help information about the command </dd>
+<dd> <dd>sets the transforms binary processing chunk size to &lt;size&gt;; increasing chunk size might improve performance at the expense of increased memory usage </dd>
 </dd>
 <dt> <b>--xxe</b> <dt></dt>
 </dt>
@@ -275,13 +327,17 @@
 </dt>
 <dd> <dd>maps a given &lt;url&gt; to the given &lt;file&gt; for loading external resources </dd>
 </dd>
+<dt> <b>--help</b> <dt></dt>
+</dt>
+<dd> <dd>print help information about the command </dd>
+</dd>
 </dl>
-<a name="lbAF"> </a><h2>AUTHOR</h2>
-<a href="mailto:aleksey@aleksey.com">aleksey@aleksey.com</a><a name="lbAG"> </a><h2>REPORTING BUGS</h2>
-<a href="http://www.aleksey.com/xmlsec/bugs.html">http://www.aleksey.com/xmlsec/bugs.html</a><a name="lbAH"> </a><h2>COPYRIGHT</h2>
+<a name="lbAF">Â </a><h2>AUTHOR</h2>
+<a href="mailto:aleksey@aleksey.com">aleksey@aleksey.com</a><a name="lbAG">Â </a><h2>REPORTING BUGS</h2>
+<a href="http://www.aleksey.com/xmlsec/bugs.html">http://www.aleksey.com/xmlsec/bugs.html</a><a name="lbAH">Â </a><h2>COPYRIGHT</h2>
 <a href="mailto:aleksey@aleksey.com">aleksey@aleksey.com</a><br><p>  </p>
 <hr>
-<a name="index"> </a><h2>Index</h2>
+<a name="index">Â </a><h2>Index</h2>
 <dl> <dt><a href="#lbAB">NAME</a></dt>
 <dd> </dd>
 <dt><a href="#lbAC">SYNOPSIS</a></dt>
@@ -297,6 +353,8 @@
 <dt><a href="#lbAH">COPYRIGHT</a></dt>
 <dd> </dd>
 </dl>
+<hr>
+<a href="/cgi-bin/man/man2html">man2html</a><br>
 </td></tr></table></td>
 </tr></table></body>
 </html>

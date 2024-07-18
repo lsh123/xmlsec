@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -10,46 +11,7 @@
 <meta name="generator" content="GTK-Doc V1.33.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
-<body><table width="100%" valign="top"><tr valign="top">
-<td valign="top" align="left" width="210">
-<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
-<ul>
-<li><a href="../index.html">Home</a></li>
-<li><a href="../download.html">Download</a></li>
-<ul><li><a href="../https://github.com/lsh123/xmlsec">GitHub</a></li></ul>
-<li><a href="../news.html">News</a></li>
-<li><a href="../documentation.html">Documentation</a></li>
-<ul>
-<li><a href="../faq.html">FAQ</a></li>
-<li><a href="../api/xmlsec-notes.html">Tutorial</a></li>
-<li><a href="../api/xmlsec-reference.html">API reference</a></li>
-<li><a href="../api/xmlsec-examples.html">Examples</a></li>
-</ul>
-<li><a href="../xmldsig.html">XML Digital Signature</a></li>
-<li><a href="../xmlenc.html">XML Encryption</a></li>
-<li><a href="../c14n.html">XML Canonicalization</a></li>
-<li><a href="../bugs.html">Reporting Bugs</a></li>
-<li><a href="mailing-list.html">Mailing list</a></li>
-<li><a href="../related.html">Related</a></li>
-<li><a href="../authors.html">Authors</a></li>
-</ul>
-<table width="100%">
-<tr>
-<td width="15"></td>
-<td><a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a></td>
-</tr>
-<tr>
-<td width="15"></td>
-<td><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a></td>
-</tr>
-<tr>
-<td width="15"></td>
-<td><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a></td>
-</tr>
-<!--Links - start--><!--Links - end-->
-</table>
-</td>
-<td valign="top"><table width="80%" valign="top" style="margin-left:10px;"><tr><td valign="top" align="left" id="xmlsecContent">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
 <td width="100%" align="left" class="shortcuts"></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
@@ -68,17 +30,17 @@
 	    </p></li>
 <li class="listitem"><p>
 		Create signature context <a class="link" href="xmlsec-xmldsig.html#xmlSecDSigCtx" title="struct xmlSecDSigCtx">xmlSecDSigCtx</a>
-		using <a class="link" href="xmlsec-xmldsig.html#xmlSecDSigCtxCreate" title="xmlSecDSigCtxCreate ()">xmlSecDSigCtxCreate</a> or
-		<a class="link" href="xmlsec-xmldsig.html#xmlSecDSigCtxInitialize" title="xmlSecDSigCtxInitialize ()">xmlSecDSigCtxInitialize</a>
+		using <a class="link" href="xmlsec-xmldsig.html#xmlSecDSigCtxCreate" title="xmlSecDSigCtxCreate ()">xmlSecDSigCtxCreate</a> or
+		<a class="link" href="xmlsec-xmldsig.html#xmlSecDSigCtxInitialize" title="xmlSecDSigCtxInitialize ()">xmlSecDSigCtxInitialize</a>
 		functions.
 	    </p></li>
 <li class="listitem"><p>
-		Select start verification
+		Select start verification 
     		<a class="ulink" href="" target="_top">&lt;dsig:Signature/&gt;</a>
 		node in the signed XML document.
 	    </p></li>
 <li class="listitem"><p>
-		Verify signature by calling <a class="link" href="xmlsec-xmldsig.html#xmlSecDSigCtxVerify" title="xmlSecDSigCtxVerify ()">xmlSecDSigCtxVerify</a>
+		Verify signature by calling <a class="link" href="xmlsec-xmldsig.html#xmlSecDSigCtxVerify" title="xmlSecDSigCtxVerify ()">xmlSecDSigCtxVerify</a> 
 		function.
 	    </p></li>
 <li class="listitem"><p>
@@ -88,8 +50,8 @@
 	    </p></li>
 <li class="listitem"><p>
 		Destroy signature context <a class="link" href="xmlsec-xmldsig.html#xmlSecDSigCtx" title="struct xmlSecDSigCtx">xmlSecDSigCtx</a>
-		using <a class="link" href="xmlsec-xmldsig.html#xmlSecDSigCtxDestroy" title="xmlSecDSigCtxDestroy ()">xmlSecDSigCtxDestroy</a> or
-		<a class="link" href="xmlsec-xmldsig.html#xmlSecDSigCtxFinalize" title="xmlSecDSigCtxFinalize ()">xmlSecDSigCtxFinalize</a>
+		using <a class="link" href="xmlsec-xmldsig.html#xmlSecDSigCtxDestroy" title="xmlSecDSigCtxDestroy ()">xmlSecDSigCtxDestroy</a> or
+		<a class="link" href="xmlsec-xmldsig.html#xmlSecDSigCtxFinalize" title="xmlSecDSigCtxFinalize ()">xmlSecDSigCtxFinalize</a>
 		functions.
 	    </p></li>
 </ul></div>
@@ -98,10 +60,10 @@
 <p>
 	     </p>
 <div class="example">
-<a name="id-1.2.8.3.3.1"></a><p class="title"><b>Example 14. Verifying a document.</b></p>
+<a name="id-1.2.8.3.3.1"></a><p class="title"><b>Example 14. Verifying a document.</b></p>
 <div class="example-contents">
 <pre class="programlisting">
-/**
+/** 
  * verify_file:
  * @xml_file:		the signed XML file name.
  * @key_file:		the PEM public key file name.
@@ -110,13 +72,13 @@
  *
  * Returns 0 on success or a negative value if an error occurs.
  */
-int
+int 
 verify_file(const char* xml_file, const char* key_file) {
     xmlDocPtr doc = NULL;
     xmlNodePtr node = NULL;
     xmlSecDSigCtxPtr dsigCtx = NULL;
     int res = -1;
-
+    
     assert(xml_file);
     assert(key_file);
 
@@ -124,14 +86,14 @@ verify_file(const char* xml_file, const char* key_file) {
     doc = xmlParseFile(xml_file);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
 	fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
-	goto done;
+	goto done;	
     }
-
+    
     /* find start node */
     node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeSignature, xmlSecDSigNs);
     if(node == NULL) {
 	fprintf(stderr, "Error: start node not found in \"%s\"\n", xml_file);
-	goto done;
+	goto done;	
     }
 
     /* create signature context, we don't need keys manager in this example */
@@ -159,25 +121,25 @@ verify_file(const char* xml_file, const char* key_file) {
         fprintf(stderr,"Error: signature verify\n");
 	goto done;
     }
-
+        
     /* print verification result to stdout */
     if(dsigCtx-&gt;status == xmlSecDSigStatusSucceeded) {
 	fprintf(stdout, "Signature is OK\n");
     } else {
 	fprintf(stdout, "Signature is INVALID\n");
-    }
+    }    
 
     /* success */
     res = 0;
 
-done:
+done:    
     /* cleanup */
     if(dsigCtx != NULL) {
 	xmlSecDSigCtxDestroy(dsigCtx);
     }
-
+    
     if(doc != NULL) {
-	xmlFreeDoc(doc);
+	xmlFreeDoc(doc); 
     }
     return(res);
 }
@@ -190,6 +152,5 @@ done:
 </div>
 <div class="footer">
 <hr>Generated by GTK-Doc V1.33.1</div>
-</td></tr></table></td>
-</tr></table></body>
+</body>
 </html>

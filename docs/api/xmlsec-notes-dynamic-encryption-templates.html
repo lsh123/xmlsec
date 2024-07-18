@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -10,46 +11,7 @@
 <meta name="generator" content="GTK-Doc V1.33.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
-<body><table width="100%" valign="top"><tr valign="top">
-<td valign="top" align="left" width="210">
-<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
-<ul>
-<li><a href="../index.html">Home</a></li>
-<li><a href="../download.html">Download</a></li>
-<ul><li><a href="../https://github.com/lsh123/xmlsec">GitHub</a></li></ul>
-<li><a href="../news.html">News</a></li>
-<li><a href="../documentation.html">Documentation</a></li>
-<ul>
-<li><a href="../faq.html">FAQ</a></li>
-<li><a href="../api/xmlsec-notes.html">Tutorial</a></li>
-<li><a href="../api/xmlsec-reference.html">API reference</a></li>
-<li><a href="../api/xmlsec-examples.html">Examples</a></li>
-</ul>
-<li><a href="../xmldsig.html">XML Digital Signature</a></li>
-<li><a href="../xmlenc.html">XML Encryption</a></li>
-<li><a href="../c14n.html">XML Canonicalization</a></li>
-<li><a href="../bugs.html">Reporting Bugs</a></li>
-<li><a href="mailing-list.html">Mailing list</a></li>
-<li><a href="../related.html">Related</a></li>
-<li><a href="../authors.html">Authors</a></li>
-</ul>
-<table width="100%">
-<tr>
-<td width="15"></td>
-<td><a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a></td>
-</tr>
-<tr>
-<td width="15"></td>
-<td><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a></td>
-</tr>
-<tr>
-<td width="15"></td>
-<td><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a></td>
-</tr>
-<!--Links - start--><!--Links - end-->
-</table>
-</td>
-<td valign="top"><table width="80%" valign="top" style="margin-left:10px;"><tr><td valign="top" align="left" id="xmlsecContent">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
 <td width="100%" align="left" class="shortcuts"></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
@@ -60,8 +22,8 @@
 <div class="sect1">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="xmlsec-notes-dynamic-encryption-templates"></a>Creating dynamic encryption templates.</h2></div></div></div>
-<p>The encryption template has structure similar
-	to the XML Encryption structure as it is described in
+<p>The encryption template has structure similar 
+	to the XML Encryption structure as it is described in 
 	<a class="ulink" href="" target="_top">specification</a>.
 	The only difference is that some nodes (for example,
 	&lt;enc:CipherValue/&gt;)
@@ -69,7 +31,7 @@
 	nodes after doing necessary calculations.
 	</p>
 <div class="figure">
-<a name="id-1.2.7.4.3"></a><p class="title"><b>Figure 4. XML Encryption structure</b></p>
+<a name="id-1.2.7.4.3"></a><p class="title"><b>Figure 4. XML Encryption structure</b></p>
 <div class="figure-contents"><pre class="programlisting">
 &lt;enc:EncryptedData Id? Type? MimeType? Encoding?&gt;
     &lt;enc:EncryptionMethod Algorithm /&gt;?
@@ -90,13 +52,13 @@
 	&lt;enc:CipherReference URI?&gt;?
     &lt;/enc:CipherData&gt;
     &lt;enc:EncryptionProperties&gt;?
-&lt;/enc:EncryptedData&gt;
+&lt;/enc:EncryptedData&gt;	
 	    </pre></div>
 </div>
 <br class="figure-break"><p>
 	     </p>
 <div class="example">
-<a name="id-1.2.7.4.4.1"></a><p class="title"><b>Example 13. Creating dynamic encrytion template.</b></p>
+<a name="id-1.2.7.4.4.1"></a><p class="title"><b>Example 13. Creating dynamic encrytion template.</b></p>
 <div class="example-contents">
 <pre class="programlisting">
 /**
@@ -109,14 +71,14 @@
  *
  * Returns 0 on success or a negative value if an error occurs.
  */
-int
+int 
 encrypt_file(const char* xml_file, const char* key_file) {
     xmlDocPtr doc = NULL;
     xmlNodePtr encDataNode = NULL;
     xmlNodePtr keyInfoNode = NULL;
     xmlSecEncCtxPtr encCtx = NULL;
     int res = -1;
-
+    
     assert(xml_file);
     assert(key_file);
 
@@ -124,34 +86,34 @@ encrypt_file(const char* xml_file, const char* key_file) {
     doc = xmlParseFile(xml_file);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
 	fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
-	goto done;
+	goto done;	
     }
-
-    /* create encryption template to encrypt XML file and replace
+    
+    /* create encryption template to encrypt XML file and replace 
      * its content with encryption result */
     encDataNode = xmlSecTmplEncDataCreate(doc, xmlSecTransformDes3CbcId,
 				NULL, xmlSecTypeEncElement, NULL, NULL);
     if(encDataNode == NULL) {
 	fprintf(stderr, "Error: failed to create encryption template\n");
-	goto done;
+	goto done;   
     }
 
     /* we want to put encrypted data in the &lt;enc:CipherValue/&gt; node */
     if(xmlSecTmplEncDataEnsureCipherValue(encDataNode) == NULL) {
 	fprintf(stderr, "Error: failed to add CipherValue node\n");
-	goto done;
+	goto done;   
     }
 
     /* add &lt;dsig:KeyInfo/&gt; and &lt;dsig:KeyName/&gt; nodes to put key name in the signed document */
     keyInfoNode = xmlSecTmplEncDataEnsureKeyInfo(encDataNode, NULL);
     if(keyInfoNode == NULL) {
 	fprintf(stderr, "Error: failed to add key info\n");
-	goto done;
+	goto done;		
     }
 
     if(xmlSecTmplKeyInfoAddKeyName(keyInfoNode, NULL) == NULL) {
 	fprintf(stderr, "Error: failed to add key name\n");
-	goto done;
+	goto done;		
     }
 
     /* create encryption context, we don't need keys manager in this example */
@@ -179,17 +141,17 @@ encrypt_file(const char* xml_file, const char* key_file) {
         fprintf(stderr,"Error: encryption failed\n");
 	goto done;
     }
-
+    
     /* we template is inserted in the doc */
     encDataNode = NULL;
-
+        
     /* print encrypted data with document to stdout */
     xmlDocDump(stdout, doc);
-
+    
     /* success */
     res = 0;
 
-done:
+done:    
 
     /* cleanup */
     if(encCtx != NULL) {
@@ -199,9 +161,9 @@ done:
     if(encDataNode != NULL) {
 	xmlFreeNode(encDataNode);
     }
-
+        
     if(doc != NULL) {
-	xmlFreeDoc(doc);
+	xmlFreeDoc(doc); 
     }
     return(res);
 }
@@ -214,6 +176,5 @@ done:
 </div>
 <div class="footer">
 <hr>Generated by GTK-Doc V1.33.1</div>
-</td></tr></table></td>
-</tr></table></body>
+</body>
 </html>

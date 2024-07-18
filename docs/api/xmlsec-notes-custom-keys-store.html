@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -10,46 +11,7 @@
 <meta name="generator" content="GTK-Doc V1.33.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
-<body><table width="100%" valign="top"><tr valign="top">
-<td valign="top" align="left" width="210">
-<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
-<ul>
-<li><a href="../index.html">Home</a></li>
-<li><a href="../download.html">Download</a></li>
-<ul><li><a href="../https://github.com/lsh123/xmlsec">GitHub</a></li></ul>
-<li><a href="../news.html">News</a></li>
-<li><a href="../documentation.html">Documentation</a></li>
-<ul>
-<li><a href="../faq.html">FAQ</a></li>
-<li><a href="../api/xmlsec-notes.html">Tutorial</a></li>
-<li><a href="../api/xmlsec-reference.html">API reference</a></li>
-<li><a href="../api/xmlsec-examples.html">Examples</a></li>
-</ul>
-<li><a href="../xmldsig.html">XML Digital Signature</a></li>
-<li><a href="../xmlenc.html">XML Encryption</a></li>
-<li><a href="../c14n.html">XML Canonicalization</a></li>
-<li><a href="../bugs.html">Reporting Bugs</a></li>
-<li><a href="mailing-list.html">Mailing list</a></li>
-<li><a href="../related.html">Related</a></li>
-<li><a href="../authors.html">Authors</a></li>
-</ul>
-<table width="100%">
-<tr>
-<td width="15"></td>
-<td><a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a></td>
-</tr>
-<tr>
-<td width="15"></td>
-<td><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a></td>
-</tr>
-<tr>
-<td width="15"></td>
-<td><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a></td>
-</tr>
-<!--Links - start--><!--Links - end-->
-</table>
-</td>
-<td valign="top"><table width="80%" valign="top" style="margin-left:10px;"><tr><td valign="top" align="left" id="xmlsecContent">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
 <td width="100%" align="left" class="shortcuts"></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
@@ -61,25 +23,25 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="xmlsec-notes-custom-keys-store"></a>Implementing a custom keys store.</h2></div></div></div>
 <p>In many cases, a default built-in list based keys store
-	is not good enough. For example, XML Security Library (and
-	the built-in default keys store) have no synchronization and
-	you'll need to implement a custom keys store if you want to
+	is not good enough. For example, XML Security Library (and 
+	the built-in default keys store) have no synchronization and 
+	you'll need to implement a custom keys store if you want to 
 	add or remove keys while other threads use the store.</p>
 <p>
 	     </p>
 <div class="example">
-<a name="id-1.2.10.6.3.1"></a><p class="title"><b>Example 19. Creating a custom keys manager.</b></p>
+<a name="id-1.2.10.6.3.1"></a><p class="title"><b>Example 19. Creating a custom keys manager.</b></p>
 <div class="example-contents">
 <pre class="programlisting">
 /**
  * create_files_keys_mngr:
- *
- * Creates a files based keys manager: we assume that key name is
+ *  
+ * Creates a files based keys manager: we assume that key name is 
  * the key file name,
  *
  * Returns pointer to newly created keys manager or NULL if an error occurs.
  */
-xmlSecKeysMngrPtr
+xmlSecKeysMngrPtr 
 create_files_keys_mngr(void) {
     xmlSecKeyStorePtr keysStore;
     xmlSecKeysMngrPtr mngr;
@@ -90,7 +52,7 @@ create_files_keys_mngr(void) {
 	fprintf(stderr, "Error: failed to create keys store.\n");
 	return(NULL);
     }
-
+    
     /* create keys manager */
     mngr = xmlSecKeysMngrCreate();
     if(mngr == NULL) {
@@ -106,7 +68,7 @@ create_files_keys_mngr(void) {
 	xmlSecKeysMngrDestroy(mngr);
 	return(NULL);
     }
-
+    
     /* initialize crypto library specific data in keys manager */
     if(xmlSecCryptoKeysMngrInit(mngr) &lt; 0) {
 	fprintf(stderr, "Error: failed to initialize crypto data in keys manager.\n");
@@ -121,10 +83,10 @@ create_files_keys_mngr(void) {
 
 /****************************************************************************
  *
- * Files Keys Store: we assume that key's name (content of the
+ * Files Keys Store: we assume that key's name (content of the 
  * &lt;dsig:KeyName/&gt; element is a name of the file with a key.
  * Attention: this probably not a good solution for high traffic systems.
- *
+ * 
  ***************************************************************************/
 static xmlSecKeyPtr		files_keys_store_find_key	(xmlSecKeyStorePtr store,
 								 const xmlChar* name,
@@ -132,7 +94,7 @@ static xmlSecKeyPtr		files_keys_store_find_key	(xmlSecKeyStorePtr store,
 static xmlSecKeyStoreKlass files_keys_store_klass = {
     sizeof(xmlSecKeyStoreKlass),
     sizeof(xmlSecKeyStore),
-    BAD_CAST "files-based-keys-store",	/* const xmlChar* name; */
+    BAD_CAST "files-based-keys-store",	/* const xmlChar* name; */         
     NULL,				/* xmlSecKeyStoreInitializeMethod initialize; */
     NULL,				/* xmlSecKeyStoreFinalizeMethod finalize; */
     files_keys_store_find_key,		/* xmlSecKeyStoreFindKeyMethod findKey; */
@@ -144,13 +106,13 @@ static xmlSecKeyStoreKlass files_keys_store_klass = {
 
 /**
  * files_keys_store_get_klass:
- *
+ * 
  * The files based keys store klass: we assume that key name is the
  * key file name,
  *
  * Returns files based keys store klass.
  */
-xmlSecKeyStoreId
+xmlSecKeyStoreId 
 files_keys_store_get_klass(void) {
     return(&amp;files_keys_store_klass);
 }
@@ -160,7 +122,7 @@ files_keys_store_get_klass(void) {
  * @store:		the pointer to default keys store.
  * @name:		the desired key name.
  * @keyInfoCtx:		the pointer to &lt;dsig:KeyInfo/&gt; node processing context.
- *
+ *  
  * Lookups key in the @store.
  *
  * Returns pointer to key or NULL if key not found or an error occurs.
@@ -169,11 +131,11 @@ static xmlSecKeyPtr
 files_keys_store_find_key(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecKeyPtr key;
     const xmlChar* p;
-
+    
     assert(store);
     assert(keyInfoCtx);
 
-    /* it's possible to do not have the key name or desired key type
+    /* it's possible to do not have the key name or desired key type 
      * but we could do nothing in this case */
     if((name == NULL) || (keyInfoCtx-&gt;keyReq.keyId == xmlSecKeyDataIdUnknown)){
 	return(NULL);
@@ -187,8 +149,8 @@ files_keys_store_find_key(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
 	if(!isalnum((*p)) &amp;&amp; ((*p) != '.') &amp;&amp; ((*p) != '-') &amp;&amp; ((*p) != '_')) {
 	    return(NULL);
 	}
-    }
-
+    }    
+    
     if((keyInfoCtx-&gt;keyReq.keyId == xmlSecKeyDataDsaId) || (keyInfoCtx-&gt;keyReq.keyId == xmlSecKeyDataRsaId)) {
 	/* load key from a pem file, if key is not found then it's an error (is it?) */
 	key = xmlSecCryptoAppKeyLoad(name, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
@@ -209,7 +171,7 @@ files_keys_store_find_key(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
     if(xmlSecKeySetName(key, name) &lt; 0) {
         fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", name);
         xmlSecKeyDestroy(key);
-        return(NULL);
+        return(NULL);	
     }
 
     return(key);
@@ -223,6 +185,5 @@ files_keys_store_find_key(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
 </div>
 <div class="footer">
 <hr>Generated by GTK-Doc V1.33.1</div>
-</td></tr></table></td>
-</tr></table></body>
+</body>
 </html>

@@ -655,16 +655,25 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
             goto done;
         }
 
-        /* check if we are the "leaf" node in the certs chain */
-        if(xmlSecGnuTLSX509FindSignedCert(certs, cert) != NULL) {
-            continue;
-        }
+        if(xmlSecGnuTLSX509CertIsSelfSigned(cert) != 1) {
+            /* check if we are the "leaf" node in the certs chain */
+            if(xmlSecGnuTLSX509FindSignedCert(certs, cert) != NULL) {
+                continue;
+            }
 
-        /* build the chain */
-        ret = xmlSecGnuTLSX509StoreGetCertsChain(ctx, cert, certs, certs_chain, certs_chain_size, &certs_chain_cur_size);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecPtrListGetItem(certs)", xmlSecKeyDataStoreGetName(store));
-            goto done;
+            /* build the chain */
+            ret = xmlSecGnuTLSX509StoreGetCertsChain(ctx, cert, certs, certs_chain, certs_chain_size, &certs_chain_cur_size);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecPtrListGetItem(certs)", xmlSecKeyDataStoreGetName(store));
+                goto done;
+            }
+        } else if (certs_size == 1) {
+            /* only do self signed cert when it is the only cert */
+            /* chain for self signed cert is easy */
+            certs_chain[0] = cert;
+            certs_chain_cur_size = 1;
+        } else {
+            continue;
         }
 
         /* try to verify */

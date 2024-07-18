@@ -1174,7 +1174,7 @@ execDSigTest $res_success \
 # xmlsec.exe sign --crypto openssl  --lax-key-search --privkey-pem tests/keys/same-subj-key1.pem,tests/keys/same-subj-cert1.pem tests/aleksey-xmldsig-01/enveloped-x509-same-subj-cert.tmpl
 
 # this should succeeed with good cert
-extra_message="Cert chaing is good"
+extra_message="Cert chain is good"
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloped-x509-same-subj-cert" \
@@ -1192,7 +1192,7 @@ execDSigTest $res_fail \
     "--trusted-$cert_format $topfolder/keys/same-subj-cert2.$cert_format --enabled-key-data x509"
 
 # this should succeeed with both good (cert1) and bad (cert2) certs present (simulating key rotation)
-extra_message="Cert chaing is good: both good (cert1) and bad (cert2) certs present"
+extra_message="Cert chain is good: both good (cert1) and bad (cert2) certs present"
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloped-x509-same-subj-cert" \
@@ -1201,7 +1201,7 @@ execDSigTest $res_success \
     "--trusted-$cert_format $topfolder/keys/same-subj-cert1.$cert_format --trusted-$cert_format $topfolder/keys/same-subj-cert2.$cert_format --enabled-key-data x509"
 
 # this should succeeed with both bad (cert2) and good (cert1) certs present (simulating key rotation)
-extra_message="Cert chaing is good: both bad (cert2) and good (cert1) certs present"
+extra_message="Cert chain is good: both bad (cert2) and good (cert1) certs present"
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloped-x509-same-subj-cert" \

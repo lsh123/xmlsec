@@ -397,6 +397,42 @@ xmlSecMSCngCheckRevocation(HCERTSTORE store, PCCERT_CONTEXT cert) {
     return(0);
 }
 
+/* this function does NOT check for time validity (see xmlSecMSCngVerifyCertTime)
+*  returns <0 if there is an error; 0 if verification failed and >0 if verification succeeded */
+static int
+xmlSecMSCngX509StoreVerifySubject(PCCERT_CONTEXT cert, PCCERT_CONTEXT issuerCert) {
+    DWORD flags;
+    BOOL ret;
+
+    xmlSecAssert2(cert != NULL, -1);
+    xmlSecAssert2(issuerCert != NULL, -1);
+
+    flags = CERT_STORE_REVOCATION_FLAG | CERT_STORE_SIGNATURE_FLAG;
+    ret = CertVerifySubjectCertificateContext(cert, issuerCert, &flags);
+    if (!ret) {
+        xmlSecMSCngLastError("CertVerifySubjectCertificateContext", NULL);
+        return(-1);
+    }
+
+    /* parse returned flags: https://learn.microsoft.com/en-us/previous-versions/windows/embedded/ms883939(v=msdn.10) */
+    if ((flags & CERT_STORE_SIGNATURE_FLAG) != 0) {
+        xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
+            NULL,
+            "CertVerifySubjectCertificateContext: CERT_STORE_SIGNATURE_FLAG");
+        return(0);
+    } else if (((flags & CERT_STORE_REVOCATION_FLAG) != 0) && ((flags & CERT_STORE_NO_CRL_FLAG) == 0)) {
+        /* If CERT_STORE_REVOCATION_FLAG is enabled and the issuer does not have a CRL in the store,
+        then CERT_STORE_NO_CRL_FLAG is set in addition to CERT_STORE_REVOCATION_FLAG. */
+        xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
+            NULL,
+            "CertVerifySubjectCertificateContext: CERT_STORE_REVOCATION_FLAG");
+        return(0);
+    }
+
+    /* success */
+    return(1);
+}
+
 /**
  * xmlSecMSCngX509StoreContainsCert:
  * @store: the certificate store
@@ -413,7 +449,6 @@ xmlSecMSCngX509StoreContainsCert(HCERTSTORE store, CERT_NAME_BLOB* name,
         PCCERT_CONTEXT cert)
 {
     PCCERT_CONTEXT issuerCert = NULL;
-    DWORD flags;
     int ret;
 
     xmlSecAssert2(store != NULL, -1);
@@ -426,23 +461,26 @@ xmlSecMSCngX509StoreContainsCert(HCERTSTORE store, CERT_NAME_BLOB* name,
         CERT_FIND_SUBJECT_NAME,
         name,
         NULL);
-    if(issuerCert != NULL) {
-        flags = CERT_STORE_REVOCATION_FLAG | CERT_STORE_SIGNATURE_FLAG;
-        ret = CertVerifySubjectCertificateContext(cert,
-            issuerCert,
-            &flags);
-        if(ret == 0) {
-            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
-                NULL,
-                "CertVerifySubjectCertificateContext");
-            CertFreeCertificateContext(issuerCert);
-            return(-1);
-        }
-        CertFreeCertificateContext(issuerCert);
-        return(1);
+    if (issuerCert == NULL) {
+        return (0);
     }
 
-    return(0);
+    ret = xmlSecMSCngX509StoreVerifySubject(cert, issuerCert);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecMSCngX509StoreVerifySubject", NULL);
+        CertFreeCertificateContext(issuerCert);
+        return(-1);
+    } else if (ret == 0) {
+        xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
+            NULL,
+            "xmlSecMSCngX509StoreVerifySubject");
+        CertFreeCertificateContext(issuerCert);
+        return(-1);
+    }
+
+    /* success */
+    CertFreeCertificateContext(issuerCert);
+    return(1);
 }
 
 static int
@@ -485,7 +523,6 @@ xmlSecMSCngX509StoreVerifyCertificateOwn(PCCERT_CONTEXT cert, FILETIME* time,
     HCERTSTORE trustedStore, HCERTSTORE untrustedStore, HCERTSTORE certStore
 ) {
     PCCERT_CONTEXT issuerCert = NULL;
-    DWORD flags;
     int ret;
 
     xmlSecAssert2(cert != NULL, -1);
@@ -543,11 +580,16 @@ xmlSecMSCngX509StoreVerifyCertificateOwn(PCCERT_CONTEXT cert, FILETIME* time,
         &cert->pCertInfo->Issuer,
         NULL);
     if(issuerCert != NULL) {
-        flags = CERT_STORE_REVOCATION_FLAG | CERT_STORE_SIGNATURE_FLAG;
-        ret = CertVerifySubjectCertificateContext(cert, issuerCert, &flags);
-        if(ret == 0) {
-            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED, NULL,
-                "CertVerifySubjectCertificateContext");
+        ret = xmlSecMSCngX509StoreVerifySubject(cert, issuerCert);
+        if (ret < 0) {
+            xmlSecInternalError("xmlSecMSCngX509StoreVerifySubject", NULL);
+            CertFreeCertificateContext(issuerCert);
+            return(-1);
+        }
+        else if (ret == 0) {
+            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
+                NULL,
+                "xmlSecMSCngX509StoreVerifySubject");
             CertFreeCertificateContext(issuerCert);
             return(-1);
         }
@@ -574,11 +616,16 @@ xmlSecMSCngX509StoreVerifyCertificateOwn(PCCERT_CONTEXT cert, FILETIME* time,
         &cert->pCertInfo->Issuer,
         NULL);
     if(issuerCert != NULL) {
-        flags = CERT_STORE_REVOCATION_FLAG | CERT_STORE_SIGNATURE_FLAG;
-        ret = CertVerifySubjectCertificateContext(cert, issuerCert, &flags);
-        if(ret == 0) {
-            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED, NULL,
-                "CertVerifySubjectCertificateContext");
+        ret = xmlSecMSCngX509StoreVerifySubject(cert, issuerCert);
+        if (ret < 0) {
+            xmlSecInternalError("xmlSecMSCngX509StoreVerifySubject", NULL);
+            CertFreeCertificateContext(issuerCert);
+            return(-1);
+        }
+        else if (ret == 0) {
+            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
+                NULL,
+                "xmlSecMSCngX509StoreVerifySubject");
             CertFreeCertificateContext(issuerCert);
             return(-1);
         }

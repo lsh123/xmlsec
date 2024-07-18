@@ -234,53 +234,6 @@ xmlSecMSCryptoCheckRevocation(HCERTSTORE hStore, PCCERT_CONTEXT pCert) {
     return(TRUE);
 }
 
-static void
-xmlSecMSCryptoX509StoreCertError(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT cert, DWORD flags) {
-    xmlChar * subject = NULL;
-
-    xmlSecAssert(xmlSecKeyDataStoreCheckId(store, xmlSecMSCryptoX509StoreId));
-    xmlSecAssert(cert != NULL);
-    xmlSecAssert(flags != 0);
-
-    /* get certs subject */
-    subject = xmlSecMSCryptoX509GetNameString(cert, CERT_NAME_RDN_TYPE, 0, NULL);
-    if(subject == NULL) {
-        xmlSecInternalError("xmlSecMSCryptoX509GetNameString", NULL);
-        return;
-    }
-
-    /* print error */
-    if (flags & CERT_STORE_SIGNATURE_FLAG) {
-        xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
-                          xmlSecKeyDataStoreGetName(store),
-                          "signature failed, subject=%s",
-                          xmlSecErrorsSafeString(subject));
-    } else if (flags & CERT_STORE_TIME_VALIDITY_FLAG) {
-        xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_HAS_EXPIRED,
-                          xmlSecKeyDataStoreGetName(store),
-                          "subject=%s",
-                          xmlSecErrorsSafeString(subject));
-    } else if (flags & CERT_STORE_REVOCATION_FLAG) {
-        if (flags & CERT_STORE_NO_CRL_FLAG) {
-            xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_REVOKED,
-                              xmlSecKeyDataStoreGetName(store),
-                              "no crl, subject=%s",
-                              xmlSecErrorsSafeString(subject));
-        } else {
-            xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_REVOKED,
-                              xmlSecKeyDataStoreGetName(store),
-                              "subject=%s",
-                              xmlSecErrorsSafeString(subject));
-        }
-    } else {
-        xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
-                          xmlSecKeyDataStoreGetName(store),
-                          "subject=%s",
-                          xmlSecErrorsSafeString(subject));
-    }
-
-    xmlFree(subject);
-}
 
 /**
  * xmlSecBuildChainUsingWinapi:
@@ -359,6 +312,46 @@ end:
     return (rc);
 }
 
+
+
+/* this function does NOT check for time validity (see xmlSecMSCngVerifyCertTime)
+*  returns <0 if there is an error; 0 if verification failed and >0 if verification succeeded */
+static int
+xmlSecMSCryptoX509StoreVerifySubject(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT cert, PCCERT_CONTEXT issuerCert) {
+    DWORD flags;
+    BOOL ret;
+
+    xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecMSCryptoX509StoreId), -1);
+    xmlSecAssert2(cert != NULL, -1);
+    xmlSecAssert2(issuerCert != NULL, -1);
+
+    flags = CERT_STORE_REVOCATION_FLAG | CERT_STORE_SIGNATURE_FLAG;
+    ret = CertVerifySubjectCertificateContext(cert, issuerCert, &flags);
+    if (!ret) {
+        xmlSecMSCryptoError("CertVerifySubjectCertificateContext", NULL);
+        return(-1);
+    }
+
+    /* parse returned flags: https://learn.microsoft.com/en-us/previous-versions/windows/embedded/ms883939(v=msdn.10) */
+    if ((flags & CERT_STORE_SIGNATURE_FLAG) != 0) {
+        xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
+            xmlSecKeyDataStoreGetName(store),
+            "CertVerifySubjectCertificateContext: CERT_STORE_SIGNATURE_FLAG");
+        return(0);
+    }
+    else if (((flags & CERT_STORE_REVOCATION_FLAG) != 0) && ((flags & CERT_STORE_NO_CRL_FLAG) == 0)) {
+        /* If CERT_STORE_REVOCATION_FLAG is enabled and the issuer does not have a CRL in the store,
+        then CERT_STORE_NO_CRL_FLAG is set in addition to CERT_STORE_REVOCATION_FLAG. */
+        xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
+            xmlSecKeyDataStoreGetName(store),
+            "CertVerifySubjectCertificateContext: CERT_STORE_REVOCATION_FLAG");
+        return(0);
+    }
+
+    /* success */
+    return(1);
+}
+
 /**
  * xmlSecMSCryptoBuildCertChainManually:
  * @cert: the certificate we check
@@ -377,36 +370,19 @@ xmlSecMSCryptoBuildCertChainManually (PCCERT_CONTEXT cert, LPFILETIME pfTime,
         HCERTSTORE store_trusted, HCERTSTORE store_untrusted, HCERTSTORE certs,
         xmlSecKeyDataStorePtr store) {
     PCCERT_CONTEXT issuerCert = NULL;
-    DWORD flags;
+    int ret;
 
     if (!xmlSecMSCryptoVerifyCertTime(cert, pfTime)) {
-        xmlSecMSCryptoX509StoreCertError(store, cert, CERT_STORE_TIME_VALIDITY_FLAG);
+        xmlSecOtherError(XMLSEC_ERRORS_R_CERT_HAS_EXPIRED,
+            xmlSecKeyDataStoreGetName(store),
+            "certificate expired");
         return(FALSE);
     }
 
     if (!xmlSecMSCryptoCheckRevocation(certs, cert)) {
-        return(FALSE);
-    }
-
-    /*
-     * Try to find the cert in the trusted cert store. We will trust
-     * the certificate in the trusted store.
-     */
-    issuerCert = CertFindCertificateInStore(store_trusted,
-                X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-                0,
-                CERT_FIND_SUBJECT_NAME,
-                &(cert->pCertInfo->Subject),
-                NULL);
-    if( issuerCert != NULL) {
-        /* We have found the trusted cert, so return true */
-        /* todo: do we want to verify the trusted cert's revocation? we must, I think */
-        CertFreeCertificateContext( issuerCert ) ;
-        return( TRUE ) ;
-    }
-
-    /* Check whether the certificate is self signed certificate */
-    if(CertCompareCertificateName(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, &(cert->pCertInfo->Subject), &(cert->pCertInfo->Issuer))) {
+        xmlSecOtherError(XMLSEC_ERRORS_R_CRL_VERIFY_FAILED,
+            xmlSecKeyDataStoreGetName(store),
+            "certificate revoked");;
         return(FALSE);
     }
 
@@ -418,14 +394,21 @@ xmlSecMSCryptoBuildCertChainManually (PCCERT_CONTEXT cert, LPFILETIME pfTime,
                 &(cert->pCertInfo->Issuer),
                 NULL);
     if(issuerCert != NULL) {
-        flags = CERT_STORE_REVOCATION_FLAG | CERT_STORE_SIGNATURE_FLAG;
-        if(!CertVerifySubjectCertificateContext(cert, issuerCert, &flags)) {
-            xmlSecMSCryptoX509StoreCertError(store, issuerCert, flags);
+        ret = xmlSecMSCryptoX509StoreVerifySubject(store, cert, issuerCert);
+        if (ret < 0) {
+            xmlSecInternalError("xmlSecMSCryptoX509StoreVerifySubject", NULL);
             CertFreeCertificateContext(issuerCert);
             return(FALSE);
         }
-            /* todo: do we want to verify the trusted cert? we must check
-                 * revocation, I think */
+        else if (ret == 0) {
+            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
+                NULL,
+                "xmlSecMSCryptoX509StoreVerifySubject");
+            CertFreeCertificateContext(issuerCert);
+            return(FALSE);
+        }
+
+        /* success */
         CertFreeCertificateContext(issuerCert);
         return(TRUE);
     }
@@ -438,17 +421,27 @@ xmlSecMSCryptoBuildCertChainManually (PCCERT_CONTEXT cert, LPFILETIME pfTime,
                 &(cert->pCertInfo->Issuer),
                 NULL);
     if(issuerCert != NULL) {
-        flags = CERT_STORE_REVOCATION_FLAG | CERT_STORE_SIGNATURE_FLAG;
-        if(!CertVerifySubjectCertificateContext(cert, issuerCert, &flags)) {
-            xmlSecMSCryptoX509StoreCertError(store, issuerCert, flags);
+        ret = xmlSecMSCryptoX509StoreVerifySubject(store, cert, issuerCert);
+        if (ret < 0) {
+            xmlSecInternalError("xmlSecMSCryptoX509StoreVerifySubject", NULL);
             CertFreeCertificateContext(issuerCert);
             return(FALSE);
         }
-        if(!xmlSecMSCryptoBuildCertChainManually(issuerCert, pfTime, store_trusted, store_untrusted, certs, store)) {
-            xmlSecMSCryptoX509StoreCertError(store, issuerCert, flags);
+        else if (ret == 0) {
+            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
+                NULL,
+                "xmlSecMSCryptoX509StoreVerifySubject");
             CertFreeCertificateContext(issuerCert);
             return(FALSE);
         }
+
+        if (!xmlSecMSCryptoBuildCertChainManually(issuerCert, pfTime, store_trusted, store_untrusted, certs, store)) {
+            xmlSecInternalError("xmlSecMSCryptoBuildCertChainManually", NULL);
+            CertFreeCertificateContext(issuerCert);
+            return(FALSE);
+        }
+
+        /* success */
         CertFreeCertificateContext(issuerCert);
         return(TRUE);
     }
@@ -461,16 +454,27 @@ xmlSecMSCryptoBuildCertChainManually (PCCERT_CONTEXT cert, LPFILETIME pfTime,
                 &(cert->pCertInfo->Issuer),
                 NULL);
     if(issuerCert != NULL) {
-        flags = CERT_STORE_REVOCATION_FLAG | CERT_STORE_SIGNATURE_FLAG;
-        if(!CertVerifySubjectCertificateContext(cert, issuerCert, &flags)) {
-            xmlSecMSCryptoX509StoreCertError(store, issuerCert, flags);
+        ret = xmlSecMSCryptoX509StoreVerifySubject(store, cert, issuerCert);
+        if (ret < 0) {
+            xmlSecInternalError("xmlSecMSCryptoX509StoreVerifySubject", NULL);
             CertFreeCertificateContext(issuerCert);
             return(FALSE);
         }
-        if(!xmlSecMSCryptoBuildCertChainManually(issuerCert, pfTime, store_trusted, store_untrusted, certs, store)) {
+        else if (ret == 0) {
+            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
+                NULL,
+                "xmlSecMSCryptoX509StoreVerifySubject");
             CertFreeCertificateContext(issuerCert);
             return(FALSE);
         }
+
+        if (!xmlSecMSCryptoBuildCertChainManually(issuerCert, pfTime, store_trusted, store_untrusted, certs, store)) {
+            xmlSecInternalError("xmlSecMSCryptoBuildCertChainManually", NULL);
+            CertFreeCertificateContext(issuerCert);
+            return(FALSE);
+        }
+
+        /* success */
         CertFreeCertificateContext(issuerCert);
         return(TRUE);
     }

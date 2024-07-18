@@ -347,6 +347,13 @@ extern "C" {
  */
 #define XMLSEC_ERRORS_R_CERT_HAS_EXPIRED                76
 
+ /**
+  * XMLSEC_ERRORS_R_CRL_VERIFY_FAILED:
+  *
+  * CRL verification failed.
+  */
+#define XMLSEC_ERRORS_R_CRL_VERIFY_FAILED               77
+
 /**
  * XMLSEC_ERRORS_R_DSIG_NO_REFERENCES:
  *

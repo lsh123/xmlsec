@@ -11,7 +11,7 @@ on:
           - xmlsec-1_2_x
 
 jobs:
-  check-ubuntu-openssl300:
+  check-ubuntu:
     runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
@@ -45,7 +45,7 @@ jobs:
       run: |
           make check
 
-  check-ubuntu-openssl110:
+  check-ubuntu-openssl-111:
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: false

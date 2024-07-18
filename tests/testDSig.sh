@@ -492,6 +492,27 @@ execDSigTest $res_success \
     "$priv_key_option $topfolder/keys/rsakey.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format  --untrusted-$cert_format $topfolder/keys/rsacert.$cert_format --enabled-key-data x509"
 
+
+# Test was created using the following command:
+# xmlsec.exe sign --crypto openssl  --lax-key-search --privkey-pem tests/keys/same-subj-key1.pem,tests/keys/same-subj-cert1.pem tests/aleksey-xmldsig-01/enveloped-x509-same-subj-cert.tmpl
+# this should succeeed with both intermidiate and trusted certs provided
+extra_message="Cert chaing is good"
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloped-x509-same-subj-cert" \
+    "sha256 rsa-sha256" \
+    "x509" \
+    "--trusted-$cert_format $topfolder/keys/same-subj-cert1.$cert_format --enabled-key-data x509"
+
+# this should fail: missing intermidiate cert (ca2cert)
+extra_message="Negative test: Same subject but wrong cert"
+execDSigTest $res_fail \
+    "" \
+    "aleksey-xmldsig-01/enveloped-x509-same-subj-cert" \
+    "sha256 rsa-sha256" \
+    "x509" \
+    "--trusted-$cert_format $topfolder/keys/same-subj-cert2.$cert_format --enabled-key-data x509"
+
 ##########################################################################
 #
 # merlin-xmldsig-twenty-three

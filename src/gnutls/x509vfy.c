@@ -364,27 +364,36 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
             goto done;
         }
 
-        /* check if we are the "leaf" node in the certs chain */
-        if(xmlSecGnuTLSX509FindSignedCert(certs, cert) != NULL) {
-            continue;
-        }
-
-        /* build the chain */
-        for(cert2 = cert, cert_list_cur_size = 0;
-            (cert2 != NULL) && (cert_list_cur_size < cert_list_size);
-            ++cert_list_cur_size)
-        {
-            gnutls_x509_crt_t tmp;
-
-            /* store */
-            cert_list[cert_list_cur_size] = cert2;
-
-            /* find next */
-            tmp = xmlSecGnuTLSX509FindSignerCert(certs, cert2);
-            if(tmp == NULL) {
-                tmp = xmlSecGnuTLSX509FindSignerCert(&(ctx->certsUntrusted), cert2);
+        if (xmlSecGnuTLSX509CertIsSelfSigned(cert) != 1) {
+            /* check if we are the "leaf" node in the certs chain */
+            if (xmlSecGnuTLSX509FindSignedCert(certs, cert) != NULL) {
+                continue;
             }
-            cert2 = tmp;
+
+            /* build the chain */
+            for (cert2 = cert, cert_list_cur_size = 0;
+                (cert2 != NULL) && (cert_list_cur_size < cert_list_size);
+                ++cert_list_cur_size)
+            {
+                gnutls_x509_crt_t tmp;
+
+                /* store */
+                cert_list[cert_list_cur_size] = cert2;
+
+                /* find next */
+                tmp = xmlSecGnuTLSX509FindSignerCert(certs, cert2);
+                if (tmp == NULL) {
+                    tmp = xmlSecGnuTLSX509FindSignerCert(&(ctx->certsUntrusted), cert2);
+                }
+                cert2 = tmp;
+            }
+        } else if (certs_size == 1) {
+            /* only do self signed cert when it is the only cert */
+            /* chain for self signed cert is easy */
+            cert_list[0] = cert;
+            cert_list_cur_size = 1;
+        } else {
+            continue;
         }
 
         /* try to verify */

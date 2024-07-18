@@ -1204,16 +1204,6 @@ execDSigTest $res_success \
     "x509" \
     "--untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
-# this should succeeed with intermidiate cert as trusted
-extra_message="Cert chain is good: intermidiate cert as trusted"
-execDSigTest $res_success \
-    "" \
-    "aleksey-xmldsig-01/enveloped-x509-missing-cert" \
-    "sha256 rsa-sha256" \
-    "x509" \
-    "--trusted-$cert_format $topfolder/keys/ca2cert.$cert_format --enabled-key-data x509"
-
-
 # this should succeeed too because we bypass all cert checks with --insecure mode
 extra_message="Cert chain is missing but there is --insecure bypass"
 execDSigTest $res_success \

@@ -46,6 +46,7 @@ xmlSecPtrListId         xmlSecGnuTLSX509CrlListGetKlass         (void);
  *
  ************************************************************************/
 gnutls_x509_crt_t       xmlSecGnuTLSX509CertDup                 (gnutls_x509_crt_t src);
+int                     xmlSecGnuTLSX509CertIsSelfSigned        (gnutls_x509_crt_t cert);
 xmlChar *               xmlSecGnuTLSX509CertGetSubjectDN        (gnutls_x509_crt_t cert);
 xmlChar *               xmlSecGnuTLSX509CertGetIssuerDN         (gnutls_x509_crt_t cert);
 xmlChar *               xmlSecGnuTLSX509CertGetIssuerSerial     (gnutls_x509_crt_t cert);

@@ -199,6 +199,17 @@ xmlSecGnuTLSX509CertDup(gnutls_x509_crt_t src) {
     return (res);
 }
 
+
+/* returns 1 if self signed; 0 - if not; <0 on error*/
+int
+xmlSecGnuTLSX509CertIsSelfSigned(gnutls_x509_crt_t cert) {
+    unsigned ret;
+
+    xmlSecAssert2(cert != NULL, -1);
+    ret = gnutls_x509_crt_check_issuer(cert, cert);
+    return ((ret != 0) ? 1 : 0);
+}
+
 xmlChar *
 xmlSecGnuTLSX509CertGetSubjectDN(gnutls_x509_crt_t cert) {
     char* buf = NULL;

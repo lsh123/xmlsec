@@ -60,7 +60,7 @@ xmlSecMSCngKeyDataCertGetPubkey(PCCERT_CONTEXT cert, BCRYPT_KEY_HANDLE* key) {
     xmlSecAssert2(key != NULL, -1);
 
     if(!CryptImportPublicKeyInfoEx2(X509_ASN_ENCODING,
-            &cert->pCertInfo->SubjectPublicKeyInfo,
+            &(cert->pCertInfo->SubjectPublicKeyInfo),
             0,
             NULL,
             key)) {

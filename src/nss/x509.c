@@ -1213,7 +1213,7 @@ xmlSecNssX509CertDebugDump(CERTCertificate* cert, FILE* output) {
 
     fprintf(output, "==== Subject Name: %s\n", cert->subjectName);
     fprintf(output, "==== Issuer Name: %s\n", cert->issuerName);
-    sn = &cert->serialNumber;
+    sn = &(cert->serialNumber);
 
     for (i = 0; i < sn->len; i++) {
         if (i != sn->len - 1) {
@@ -1243,7 +1243,7 @@ xmlSecNssX509CertDebugXmlDump(CERTCertificate* cert, FILE* output) {
     fprintf(output, "</IssuerName>\n");
 
     fprintf(output, "<SerialNumber>");
-    sn = &cert->serialNumber;
+    sn = &(cert->serialNumber);
     for (i = 0; i < sn->len; i++) {
         if (i != sn->len - 1) {
             fprintf(output, "%02x:", sn->data[i]);

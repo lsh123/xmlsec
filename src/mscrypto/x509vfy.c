@@ -364,32 +364,35 @@ xmlSecMSCryptoX509StoreContainsCert(HCERTSTORE store, CERT_NAME_BLOB* name,
     xmlSecAssert2(cert != NULL, -1);
     xmlSecAssert2(keyDataStore != NULL, -1);
 
-    storeCert = CertFindCertificateInStore(store,
-        X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-        0,
-        CERT_FIND_SUBJECT_NAME,
-        name,
-        NULL);
-    if (storeCert == NULL) {
-        return (0);
+    while (TRUE) {
+        storeCert = CertFindCertificateInStore(store,
+            X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+            0,
+            CERT_FIND_SUBJECT_NAME,
+            name,
+            storeCert);
+        if (storeCert == NULL) {
+            return (0);
+        }
+
+        ret = xmlSecMSCryptoX509StoreVerifySubject(keyDataStore, cert, storeCert);
+        if (ret < 0) {
+            xmlSecInternalError("xmlSecMSCryptoX509StoreVerifySubject", NULL);
+            continue; /* storeCert will be released in the next CertFindCertificateInStore() call */
+        } else if (ret == 0) {
+            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
+                NULL,
+                "xmlSecMSCryptoX509StoreVerifySubject");
+            continue; /* storeCert will be released in the next CertFindCertificateInStore() call */
+        }
+
+        /* success */
+        CertFreeCertificateContext(storeCert);
+        return(1);
     }
 
-    ret = xmlSecMSCryptoX509StoreVerifySubject(keyDataStore, cert, storeCert);
-    if (ret < 0) {
-        xmlSecInternalError("xmlSecMSCryptoX509StoreVerifySubject", NULL);
-        CertFreeCertificateContext(storeCert);
-        return(-1);
-    } else if (ret == 0) {
-        xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
-            NULL,
-            "xmlSecMSCryptoX509StoreVerifySubject");
-        CertFreeCertificateContext(storeCert);
-        return(-1);
-    }
-
-    /* success */
-    CertFreeCertificateContext(storeCert);
-    return(1);
+    /* no luck */
+    return (0);
 }
 
 

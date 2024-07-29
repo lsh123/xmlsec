@@ -18,7 +18,7 @@ jobs:
       matrix:
         include:
           - config_flags:
-          - config_flags: --enable-static --enable-static-linking --without-nss --without-gcrypt --without-gnutls
+          - config_flags: --enable-static --enable-static-linking --disable-openssl3-engines --without-nss --without-gcrypt --without-gnutls
           - config_flags: --enable-static --enable-static-linking --enable-ftp --enable-md5 --enable-gost --enable-gost2012 --without-openssl --without-nss --without-gcrypt
     steps:
     - name: install dependencies

@@ -24,7 +24,9 @@
 #include <openssl/pem.h>
 #include <openssl/pkcs12.h>
 #include <openssl/conf.h>
+#if !defined(OPENSSL_NO_ENGINE) && (!defined(XMLSEC_OPENSSL_API_300) || defined(XMLSEC_OPENSSL3_ENGINES))
 #include <openssl/engine.h>
+#endif /* !defined(OPENSSL_NO_ENGINE) && (!defined(XMLSEC_OPENSSL_API_300) || defined(XMLSEC_OPENSSL3_ENGINES)) */
 #include <openssl/ui.h>
 
 #include <xmlsec/xmlsec.h>

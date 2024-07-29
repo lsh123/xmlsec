@@ -43,9 +43,12 @@
 #include <openssl/pem.h>
 #include <openssl/pkcs12.h>
 #include <openssl/conf.h>
-#include <openssl/engine.h>
 #include <openssl/x509_vfy.h>
 #include <openssl/x509.h>
+
+#if !defined(OPENSSL_NO_ENGINE) && (!defined(XMLSEC_OPENSSL_API_300) || defined(XMLSEC_OPENSSL3_ENGINES))
+#include <openssl/engine.h>
+#endif /* !defined(OPENSSL_NO_ENGINE) && (!defined(XMLSEC_OPENSSL_API_300) || defined(XMLSEC_OPENSSL3_ENGINES)) */
 
 #ifndef OPENSSL_IS_BORINGSSL
 #include <openssl/ui.h>

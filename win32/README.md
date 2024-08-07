@@ -164,7 +164,7 @@ In MSVC x64 native tools shell:
 cd c:\<openssl-src-dir>
 C:\Strawberry\perl\bin\perl.exe Configure --prefix=c:\local\distro\openssl --release VC-WIN64A
 nmake
-nmake install_sw_
+nmake install_sw
 ```
 
 ## XMLSec

@@ -12,7 +12,7 @@ $ git clone git@github.com:GNOME/libxml2.git
 
 2) Inside  "x64 Native tools command prompt":
 > cd c:\local\dev\libxml2\win32
-> cscript configure.js prefix=c:\local static=no iconv=no debug=yes
+> cscript configure.js prefix=c:\local static=no debug=yes
 > nmake
 > nmake install
 
@@ -23,7 +23,7 @@ $ git clone git@github.com:GNOME/libxslt.git
 
 2) Inside  "x64 Native tools command prompt":
 > cd c:\local\dev\libxslt\win32
-> cscript configure.js prefix=c:\local static=no iconv=no debug=yes include=c:\local\include\libxml2 lib=c:\local\lib
+> cscript configure.js prefix=c:\local static=no debug=yes include=c:\local\include\libxml2 lib=c:\local\lib
 > nmake
 > nmake install
 

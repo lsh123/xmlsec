@@ -493,12 +493,6 @@ LDFLAGS = $(LDFLAGS) /WX
 SOLIBS 			= $(LIBS) libxml2.lib bcrypt.lib ws2_32.lib
 ALIBS           = $(LIBS) libxml2_a.lib bcrypt.lib ws2_32.lib
 
-!if "$(WITH_ICONV)" == "1"
-CFLAGS          = $(CFLAGS) /D "LIBXML_ICONV_ENABLED"
-SOLIBS 			= $(SOLIBS) iconv.lib
-ALIBS 			= $(ALIBS) iconv_a.lib
-!endif
-
 !if "$(WITH_LIBXSLT)" == "1"
 SOLIBS 			= $(SOLIBS) libxslt.lib
 ALIBS 			= $(ALIBS) libxslt_a.lib

@@ -49,7 +49,6 @@ var withNss = 0;
 var withMSCrypto = 0;
 var withMSCng = 0;
 var withLibXSLT = 1;
-var withIconv = 1;
 var withFTP = 0; /* disable ftp by default */
 var withHTTP = 0; /* disable http by default */
 var withGost = 0;
@@ -120,7 +119,6 @@ function usage()
 	txt += "              \"openssl-300\", \"nss\", \"mscrypto\", \"mscng\"\n";
 	txt += "              (\"" + withCrypto + "\");\n"
  	txt += "  xslt:       LibXSLT is used (" + (withLibXSLT? "yes" : "no")  + ")\n";
- 	txt += "  iconv:      Use the iconv library (" + (withIconv? "yes" : "no")  + ")\n";
 	txt += "  ftp:        Enable FTP support (" + (withFTP ? "yes" : "no") + ")\n";
 	txt += "  http:       Enable HTTP support (" + (withHTTP ? "yes" : "no") + ")\n";
 	txt += "  rsa-pkcs15: Enable RSA PKCS#1.5 key transport (" + (withRsaPkcs15 ? "yes" : "no") + ")\n";
@@ -196,7 +194,6 @@ function discoverVersion()
 	vf.WriteLine("WITH_MSCRYPTO=" + withMSCrypto);
 	vf.WriteLine("WITH_MSCNG=" + withMSCng);
 	vf.WriteLine("WITH_LIBXSLT=" + (withLibXSLT ? "1" : "0"));
-	vf.WriteLine("WITH_ICONV=" + (withIconv ? "1" : "0"));
 	vf.WriteLine("WITH_FTP=" + (withFTP ? "1" : "0"));
 	vf.WriteLine("WITH_HTTP=" + (withHTTP ? "1" : "0"));
 	vf.WriteLine("WITH_GOST=" + (withGost ? "1" : "0"));
@@ -334,8 +331,6 @@ for (i = 0; (i < WScript.Arguments.length) && (error == 0); i++) {
 			withCrypto = arg.substring(opt.length + 1, arg.length);
 		else if (opt == "xslt")
 			withLibXSLT = strToBool(arg.substring(opt.length + 1, arg.length));
-		else if (opt == "iconv")
-			withIconv = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "ftp")
 			withFTP = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "http")
@@ -487,7 +482,6 @@ txtOut += "             Use NSS: " + boolToStr(withNss) + "\n";
 txtOut += "        Use MSCrypto: " + boolToStr(withMSCrypto) + "\n";
 txtOut += "           Use MSCng: " + boolToStr(withMSCng) + "\n";
 txtOut += "         Use LibXSLT: " + boolToStr(withLibXSLT) + "\n";
-txtOut += "           Use iconv: " + boolToStr(withIconv) + "\n";
 txtOut += " Enable RSA PKCS#1.5: " + boolToStr(withRsaPkcs15) + "\n";
 txtOut += "         Enable GOST: " + boolToStr(withGost) + "\n";
 txtOut += "Enable legacy crypto: " + boolToStr(withLegacyCrypto) + "\n";

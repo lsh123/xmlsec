@@ -107,7 +107,7 @@ Library compilation (`XMLSEC_NO_AES`, `XMLSEC_NO_X509`,...).
 ### Setting include and library paths.
 
 As usual, you need to have correct include and library paths to xmlsec, libxml,
-libxslt, iconv, openssl or any other library used in your application.
+libxslt, openssl or any other library used in your application.
 
 ### Selecting correct Windows runtime libraries.
 
@@ -140,7 +140,7 @@ In MSVC x64 native tools shell:
 
 ```
 cd c:\<path to libxml2 sources>\win32
-cscript configure.js iconv=no zlib=no cruntime=/MD prefix=c:\local\distro\libxml2
+cscript configure.js zlib=no cruntime=/MD prefix=c:\local\distro\libxml2
 nmake
 nmake install
 ```
@@ -158,7 +158,7 @@ In MSVC x64 native tools shell:
 
 ```
 cd c:\<libxslt-src-dir>\win32
-cscript configure.js iconv=no zlib=no cruntime=/MD prefix=c:\local\distro\libxslt\ include=c:\local\distro\libxml2\include\libxml2 lib=c:\local\distro\libxml2\lib
+cscript configure.js zlib=no cruntime=/MD prefix=c:\local\distro\libxslt\ include=c:\local\distro\libxml2\include\libxml2 lib=c:\local\distro\libxml2\lib
 nmake
 nmake install
 ```
@@ -212,7 +212,7 @@ In MSVC x64 native tools shell:
 
 ```
 cd c:\<xmlsec-src-dir>
-cscript configure.js pedantic=yes with-dl=yes iconv=no cruntime=/MD xslt=yes crypto=openssl unicode=yes prefix=C:\local\distro\xmlsec include=C:\local\distro\libxml2\include;C:\local\distro\libxml2\include\libxml2;C:\local\distro\libxslt\include;C:\local\distro\openssl\include; lib=C:\local\distro\libxml2\lib;C:\local\distro\libxslt\lib;C:\local\distro\openssl\lib
+cscript configure.js pedantic=yes with-dl=yes cruntime=/MD xslt=yes crypto=openssl unicode=yes prefix=C:\local\distro\xmlsec include=C:\local\distro\libxml2\include;C:\local\distro\libxml2\include\libxml2;C:\local\distro\libxslt\include;C:\local\distro\openssl\include; lib=C:\local\distro\libxml2\lib;C:\local\distro\libxslt\lib;C:\local\distro\openssl\lib
 nmake
 nmake install
 ```

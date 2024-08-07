@@ -2356,7 +2356,7 @@ dnl check if we need dynamic loading support
 dnl ==========================================================================
 LIBLTDL_INCLUDE_MARKER="ltdl.h"
 LIBLTDL_LIB_MARKER="libltdl$shrext"
-
+LIBLTDL_MIN_VERSION=1.0.0
 LIBLTDL_CFLAGS=""
 LIBLTDL_LIBS=""
 LIBLTDL_FOUND="no"
@@ -2387,7 +2387,28 @@ if test "z$LIBLTDL_FOUND" = "zno" -a  "z$LIBLTDL_CFLAGS" != "z" -a "z$LIBLTDL_LI
     LIBLTDL_FOUND="yes"
 fi
 
-dnl Priority 3: Just try to compile/link and hope for the best
+dnl Priority 3: Guess with pkg_config
+if test "z$LIBLTDL_FOUND" = "zno" -a "z$PKGCONFIG_FOUND" = "zyes" ; then
+    PKG_CHECK_MODULES(LIBLTDL, libltdl >= $LIBLTDL_MIN_VERSION,
+        [LIBLTDL_FOUND=yes],
+        [LIBLTDL_FOUND=no])
+fi
+
+dnl Priority 4: on MacOSX libltdl is in the 'libtool' brew package 
+if test "z$LIBLTDL_FOUND" = "zno" -a "z$build_on_mac" = "zyes" ; then
+    AC_MSG_CHECKING(for libltdl library installation in 'brew')
+    LIBTOOL_PATH=`brew --prefix libtool`
+    if test -f "$LIBTOOL_PATH/include/$LIBLTDL_INCLUDE_MARKER" ; then
+        LIBLTDL_CFLAGS="-I$LIBTOOL_PATH/include"
+        LIBLTDL_LIBS="-L$LIBTOOL_PATH/lib -lltdl"
+        LIBLTDL_FOUND="yes"
+        AC_MSG_RESULT([yes])
+    else
+        AC_MSG_RESULT([not found: "$LIBTOOL_PATH/include/$LIBLTDL_INCLUDE_MARKER" file doesn't exist)])
+    fi
+fi
+
+dnl Priority 5: Just try to compile/link and hope for the best
 if test "z$LIBLTDL_FOUND" = "zno" ; then
     AC_CHECK_HEADER([ltdl.h], [
        AC_CHECK_LIB(
@@ -2407,7 +2428,7 @@ if test "z$LIBLTDL_FOUND" = "zno" ; then
         LIBLTDL_FOUND="yes"
         AC_MSG_RESULT([yes])
     else
-	   AC_MSG_RESULT([not found])
+	AC_MSG_RESULT([not found])
     fi
 fi
 

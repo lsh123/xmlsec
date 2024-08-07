@@ -18,7 +18,7 @@ SET XMLSEC_PREFIX=%PREFIX%\xmlsec
 
 SET XMLSEC_INCLUDE=%LIBXML2_PREFIX%\include;%LIBXML2_PREFIX%\include\libxml2;%LIBXSLT_PREFIX%\include;%OPENSSL_PREFIX%\include;%MSSDK_INCLUDE%
 SET XMLSEC_LIB=%LIBXML2_PREFIX%\lib;%LIBXSLT_PREFIX%\lib;%OPENSSL_PREFIX%\lib;%MSSDK_LIB%
-SET XMLSEC_OPTIONS=debug=yes pedantic=yes werror=yes  with-dl=yes iconv=no cruntime=/MD xslt=yes crypto=%XMLSEC_CRYPTO% unicode=yes legacy-crypto=yes http=no
+SET XMLSEC_OPTIONS=debug=yes pedantic=yes werror=yes  with-dl=yes cruntime=/MD xslt=yes crypto=%XMLSEC_CRYPTO% unicode=yes legacy-crypto=yes http=no
 
 nmake clean
 del /F Makefile configure.txt

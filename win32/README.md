@@ -145,13 +145,6 @@ nmake
 nmake install
 ```
 
-In CygWin shell:
-
-```
-cd /cygdrive/c/local/distro/libxml2
-7z a ../libxml2-<version>-noiconv-win-x64.7z bin/ include/ lib/
-```
-
 ### LibXSLT
 
 In MSVC x64 native tools shell:
@@ -163,47 +156,15 @@ nmake
 nmake install
 ```
 
-In Cygwin shell:
-
-```
-cd /cygdrive/c/local/distro/libxslt
-7z a ../libxslt-<version>-noiconv-win-x64.7z bin/ include/ lib/
-```
-
-## OpenSSL 1.1
-
-In MSVC x64 native tools shell:
-
-```
-cd c:\<openssl-1.1-src-dir>
-C:\Strawberry\perl\bin\perl.exe Configure no-asm --prefix=c:\local\distro\openssl-1.1 VC-WIN64A
-nmake
-nmake install
-```
-
-In Cygwin shell:
-
-```
-cd /cygdrive/c/local/distro/openssl-1.1
-7z a ../openssl-<version>-x64.7z bin/ html/ include/ lib/
-```
-
 ## OpenSSL 3.x
 
 In MSVC x64 native tools shell:
 
 ```
-cd c:\<openssl-3.x-src-dir>
-C:\Strawberry\perl\bin\perl.exe Configure no-asm --prefix=c:\local\distro\openssl --release VC-WIN64A
+cd c:\<openssl-src-dir>
+C:\Strawberry\perl\bin\perl.exe Configure --prefix=c:\local\distro\openssl --release VC-WIN64A
 nmake
-nmake install
-```
-
-In Cygwin shell:
-
-```
-cd /cygdrive/c/local/distro/openssl
-7z a ../openssl-<version>-x64.7z bin/ html/ include/ lib/
+nmake install_sw_
 ```
 
 ## XMLSec
@@ -212,25 +173,10 @@ In MSVC x64 native tools shell:
 
 ```
 cd c:\<xmlsec-src-dir>
-cscript configure.js pedantic=yes with-dl=yes iconv=no cruntime=/MD xslt=yes crypto=openssl unicode=yes prefix=C:\local\distro\xmlsec include=C:\local\distro\libxml2\include;C:\local\distro\libxml2\include\libxml2;C:\local\distro\libxslt\include;C:\local\distro\openssl\include; lib=C:\local\distro\libxml2\lib;C:\local\distro\libxslt\lib;C:\local\distro\openssl\lib
+cscript configure.js crypto=openssl,mscng xslt=yes unicode=yes with-dl=yes pedantic=yes werror=yes cruntime=/MD prefix=C:\local\distro\xmlsec include=C:\local\distro\libxml2\include;C:\local\distro\libxml2\include\libxml2;C:\local\distro\libxslt\include;C:\local\distro\openssl\include; lib=C:\local\distro\libxml2\lib;C:\local\distro\libxslt\lib;C:\local\distro\openssl\lib
 nmake
 nmake install
 ```
-
-In Cygwin shell:
-
-```
-cd /cygdrive/c/local/distro/openssl
-7z a ../openssl-<version>-x64.7z bin/ html/ include/ lib/
-```
-
-## Archive
-In Cygwin shell:
-```
-cd C:\local\distro
-zip -r xmlsec1-<version>-win64.zip libxml2 libxslt openssl xmlsec README.md
-```
-
 
 ## Authors
 - March 2002, Igor Zlatkovic <igor@stud.fh-frankfurt.de>

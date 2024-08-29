@@ -29,26 +29,20 @@
 #include <xmlsec/transforms.h>
 #include <xmlsec/app.h>
 #include <xmlsec/io.h>
+#include <xmlsec/parser.h>
 #include <xmlsec/errors.h>
 
 #include "cast_helpers.h"
 
+
+/* default external entity loader, pointer saved during xmlInit */
+static xmlExternalEntityLoader xmlSecDefaultExternalEntityLoader = NULL;
+
+/* new parser option XML_PARSE_NO_XXE available since 2.13.0 */
+#if LIBXML_VERSION < 21300
 /*
  * Custom external entity handler, denies all files except the initial
  * document we're parsing (input_id == 1)
- */
-/* default external entity loader, pointer saved during xmlInit */
-static xmlExternalEntityLoader
-xmlSecDefaultExternalEntityLoader = NULL;
-
-/*
- * xmlSecNoXxeExternalEntityLoader:
- * @URL:        the URL for the entity to load
- * @ID:         public ID for the entity to load
- * @ctxt:       XML parser context, or NULL
- *
- * See libxml2's xmlLoadExternalEntity and xmlNoNetExternalEntityLoader.
- * This function prevents any external (file or network) entities from being loaded.
  */
 static xmlParserInputPtr
 xmlSecNoXxeExternalEntityLoader(const char *URL, const char *ID,
@@ -63,6 +57,8 @@ xmlSecNoXxeExternalEntityLoader(const char *URL, const char *ID,
                     "illegal external entity='%s'", xmlSecErrorsSafeString(URL));
     return(NULL);
 }
+
+#endif /* LIBXML_VERSION < 21300 */
 
 /**
  * xmlSecSetExternalEntityLoader:
@@ -113,8 +109,11 @@ xmlSecInit(void) {
     if (!xmlSecDefaultExternalEntityLoader) {
         xmlSecDefaultExternalEntityLoader = xmlGetExternalEntityLoader();
     }
-    xmlSetExternalEntityLoader(xmlSecNoXxeExternalEntityLoader);
 
+    /* new parser option XML_PARSE_NO_XXE available since 2.13.0 and is set as default options for parsers */
+#if LIBXML_VERSION < 21300
+    xmlSetExternalEntityLoader(xmlSecNoXxeExternalEntityLoader);
+#endif /* LIBXML_VERSION < 21300 */
 
     /* we use rand() function to generate id attributes */
     srand((unsigned int)time(NULL));

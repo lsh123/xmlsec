@@ -26,6 +26,7 @@
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/xmltree.h>
+#include <xmlsec/private.h>
 
 #include <xmlsec/mscng/certkeys.h>
 #include <xmlsec/mscng/crypto.h>

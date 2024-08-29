@@ -22,6 +22,26 @@
 extern "C" {
 #endif /* __cplusplus */
 
+/**
+ * XMLSEC_DEPRECATED:
+ *
+ * Marks function as deprecated.
+ */
+#if !defined(IN_XMLSEC) && !defined(IN_XMLSEC_CRYPTO)
+#if defined(__GNUC__)
+#define XMLSEC_DEPRECATED __attribute__((deprecated))
+#elif defined(__clang__)
+#define XMLSEC_DEPRECATED __attribute__((deprecated))
+#elif defined(_MSC_VER)
+#define XMLSEC_DEPRECATED __declspec(deprecated)
+#else /* defined(_MSC_VER) */
+#warning "WARNING: You need to implement XMLSEC_DEPRECATED for this compiler"
+#define XMLSEC_DEPRECATED
+#endif /* defined(_MSC_VER) */
+#else  /* !defined(IN_XMLSEC) && !defined(IN_XMLSEC_CRYPTO) */
+#define XMLSEC_DEPRECATED
+#endif /* !defined(IN_XMLSEC) && !defined(IN_XMLSEC_CRYPTO) */
+
 /***********************************************************************
  *
  * Basic types to make ports to exotic platforms easier
@@ -93,28 +113,11 @@ typedef struct _xmlSecEncCtx                    xmlSecEncCtx, *xmlSecEncCtxPtr;
 XMLSEC_EXPORT int                               xmlSecInit              (void);
 XMLSEC_EXPORT int                               xmlSecShutdown          (void);
 XMLSEC_EXPORT const xmlChar *                   xmlSecGetDefaultCrypto  (void);
+
 XMLSEC_EXPORT void                              xmlSecSetExternalEntityLoader (xmlExternalEntityLoader entityLoader);
 XMLSEC_EXPORT xmlSecSize                        xmlSecStrlen            (const xmlChar * str);
 
-/**
- * XMLSEC_DEPRECATED:
- *
- * Marks function as deprecated.
- */
-#if !defined(IN_XMLSEC) && !defined(IN_XMLSEC_CRYPTO)
-#if defined(__GNUC__)
-#define XMLSEC_DEPRECATED __attribute__((deprecated))
-#elif defined(__clang__)
-#define XMLSEC_DEPRECATED __attribute__((deprecated))
-#elif defined(_MSC_VER)
-#define XMLSEC_DEPRECATED __declspec(deprecated)
-#else /* defined(_MSC_VER) */
-#warning "WARNING: You need to implement XMLSEC_DEPRECATED for this compiler"
-#define XMLSEC_DEPRECATED
-#endif /* defined(_MSC_VER) */
-#else  /* !defined(IN_XMLSEC) && !defined(IN_XMLSEC_CRYPTO) */
-#define XMLSEC_DEPRECATED
-#endif /* !defined(IN_XMLSEC) && !defined(IN_XMLSEC_CRYPTO) */
+
 
 /***********************************************************************
  *

@@ -111,9 +111,9 @@ xmlSecXPathDataCreate(xmlSecXPathDataType type) {
         }
         break;
     case xmlSecXPathDataTypeXPointer:
-        data->ctx = xmlXPtrNewContext(NULL, NULL, NULL); /* we'll set doc in the context later */
+        data->ctx = xmlXPathNewContext(NULL); /* we'll set doc in the context later */
         if(data->ctx == NULL) {
-            xmlSecXmlError("xmlXPtrNewContext", NULL);
+            xmlSecXmlError("xmlXPathNewContext", NULL);
             xmlSecXPathDataDestroy(data);
             return(NULL);
         }

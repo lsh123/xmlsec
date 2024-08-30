@@ -38,6 +38,7 @@
 #include <xmlsec/base64.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/keysmngr.h>
+#include <xmlsec/private.h>
 
 #include <xmlsec/nss/crypto.h>
 #include <xmlsec/nss/keysstore.h>

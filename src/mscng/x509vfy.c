@@ -27,6 +27,7 @@
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/xmltree.h>
+#include <xmlsec/private.h>
 
 #include <xmlsec/mscng/crypto.h>
 #include <xmlsec/mscng/x509.h>

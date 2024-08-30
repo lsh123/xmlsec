@@ -567,20 +567,39 @@ void
 xmlSecParsePrepareCtxt(xmlParserCtxtPtr ctxt) {
     xmlSecAssert(ctxt != NULL);
 
+#if LIBXML_VERSION < 21300
     /* required for c14n! */
     ctxt->loadsubset = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
     ctxt->replaceEntities = 1;
+#else  /* LIBXML_VERSION < 21300 */
+    xmlCtxtSetOptions(ctxt, xmlSecParserGetDefaultOptions());
+#endif /* LIBXML_VERSION < 21300 */
 
     xmlCtxtUseOptions(ctxt, xmlSecParserGetDefaultOptions());
 }
 
-/*
- * XML_PARSE_NONET  to support c14n
- * XML_PARSE_NODICT to avoid problems with moving nodes around
- * XML_PARSE_HUGE   to enable parsing of XML documents with large text nodes
- */
-static int g_xmlsec_parser_default_options = XML_PARSE_NONET | XML_PARSE_NODICT | XML_PARSE_HUGE;
 
+/*
+ * To block network access and loading of external entities:
+ * - XML_PARSE_NO_XXE: disable loading of external content (available >= 2.13.0),
+ *   it disables XML_PARSE_DTDLOAD | XML_PARSE_DTDATTR ut we keep those in defaults
+ *   to make it work if XML_PARSE_NO_XXE is disabled (e.g. with --xxe option)
+ * - XML_PARSE_NONET: forbid network access
+ *
+ * To support c14n:
+ * - XML_PARSE_NOENT: substitute entities
+ * - XML_PARSE_DTDLOAD: load the external subset (disabled with XML_PARSE_NO_XXE)
+ * - XML_PARSE_DTDATTR: default DTD attributes (disabled with XML_PARSE_NO_XXE)
+ *
+ * Misc:
+ * XML_PARSE_NODICT: do not reuse the context dictionary (to avoid problems with moving nodes around)
+ * XML_PARSE_HUGE: relax any hardcoded limit from the parser (to enable parsing of XML documents with large text nodes)
+ */
+#if LIBXML_VERSION < 21300
+static int g_xmlsec_parser_default_options = XML_PARSE_NONET | XML_PARSE_NOENT | XML_PARSE_DTDLOAD | XML_PARSE_DTDATTR | XML_PARSE_NODICT | XML_PARSE_HUGE;
+#else  /* LIBXML_VERSION < 21300 */
+static int g_xmlsec_parser_default_options = XML_PARSE_NO_XXE | XML_PARSE_NONET | XML_PARSE_NOENT | XML_PARSE_DTDLOAD | XML_PARSE_DTDATTR | XML_PARSE_NODICT | XML_PARSE_HUGE;
+#endif /* LIBXML_VERSION < 21300 */
 /**
  * xmlSecParserGetDefaultOptions:
  *

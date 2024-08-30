@@ -1356,7 +1356,14 @@ xmlSecAppExecute(xmlSecAppCommand command, const char** utf8_argv, int argc) {
 
     /* enable XXE? */
     if(xmlSecAppCmdLineParamIsSet(&xxeParam)) {
-        xmlSecSetExternalEntityLoader( NULL );     // reset to libxml2's default handler
+        /* new parser option XML_PARSE_NO_XXE available since 2.13.0 */
+#if LIBXML_VERSION < 21300
+        xmlSecSetExternalEntityLoader(NULL);     /* reset to libxml2's default handler */
+#else  /* LIBXML_VERSION < 21300 */
+        int options = xmlSecParserGetDefaultOptions();
+        options &= (~(XML_PARSE_NO_XXE));
+        xmlSecParserSetDefaultOptions(options);
+#endif /* LIBXML_VERSION < 21300 */
     }
 
     /* enable verbose mode? */

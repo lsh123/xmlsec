@@ -31,6 +31,7 @@
 #include <xmlsec/bn.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/xmltree.h>
+#include <xmlsec/private.h>
 
 #include <xmlsec/mscrypto/crypto.h>
 #include <xmlsec/mscrypto/x509.h>

@@ -30,6 +30,7 @@
 #include <xmlsec/transforms.h>
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/parser.h>
 #include <xmlsec/private.h>
 
 #include "cast_helpers.h"
@@ -503,7 +504,7 @@ xmlSecSimpleKeysStoreLoad_ex(xmlSecKeyStorePtr store, const char *uri,
     xmlSecAssert2(adoptKeyFunc != NULL, -1);
     UNREFERENCED_PARAMETER(keysMngr);
 
-    doc = xmlReadFile(uri, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET);
+    doc = xmlReadFile(uri, NULL, xmlSecParserGetDefaultOptions() | XML_PARSE_PEDANTIC);
     if(doc == NULL) {
         xmlSecXmlError2("xmlReadFile ", xmlSecKeyStoreGetName(store),
                         "uri=%s", xmlSecErrorsSafeString(uri));

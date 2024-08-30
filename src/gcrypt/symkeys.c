@@ -22,6 +22,7 @@
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/private.h>
 
 #include <xmlsec/gcrypt/crypto.h>
 #include "../keysdata_helpers.h"

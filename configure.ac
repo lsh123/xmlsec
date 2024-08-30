@@ -35,9 +35,11 @@ dnl
 dnl Check the environment
 dnl
 AC_PROG_CC
+AC_EGREP_CPP(yes, foo)
 AC_PROG_INSTALL
 LT_INIT
 AC_PROG_EGREP
+
 
 LT_INIT
 
@@ -249,13 +251,14 @@ else
     AC_MSG_RESULT("no")
 fi
 
+
 dnl ==========================================================================
 dnl Check if pkg-config is enabled and installed
 dnl ==========================================================================
 PKGCONFIG_FOUND="no"
 AC_ARG_ENABLE([pkgconfig], [AS_HELP_STRING([--enable-pkgconfig],[enable pkgconfig for configuration (yes)])])
 if test "z$enable_pkgconfig" != "zno" ; then
-    PKG_PROG_PKG_CONFIG
+    PKG_PROG_PKG_CONFIG()
     PKGCONFIG_FOUND="yes"
 else
     PKGCONFIG_FOUND="no"
@@ -322,40 +325,42 @@ LIBXML_LIB_PATH=
 LIBXML_CONFIG_PATH=
 LIBXML_FOUND="no"
 AC_ARG_WITH([libxml], [AS_HELP_STRING([--with-libxml@<:@=PFX@:>@],[libxml2 location])])
-AC_ARG_WITH([libxml-src], [AS_HELP_STRING([--with-libxml-src@<:@=PFX@:>@],[libxml2 source tree location])])
-
 dnl Priority 0: LibXML2 is disabled: hard error.
 if test "z$with_libxml" = "zno" -o "z$with_libxml_src" = "zno"; then
     LIBXML_FOUND="disabled"
 fi
 
-dnl Priority 1: User specifies the path to source code
-if test "z$LIBXML_FOUND" = "zno" -a "z$with_libxml_src" != "z" -a "z$with_libxml_src" != "zyes" ; then
-    AC_MSG_CHECKING(for libxml2 library source tree in "$with_libxml_src" folder)
-    if test [ -f "$with_libxml_src/include/$LIBXML_INCLUDE_MARKER" ] -a [ -f "$with_libxml_src/.libs/$LIBXML_SHARED_LIB_MARKER" -o -f "$with_libxml_src/.libs/$LIBXML_STATIC_LIB_MARKER"] ; then
-        LIBXML_INCLUDE_PATH="$with_libxml_src/include"
-        LIBXML_LIB_PATH="$with_libxml_src/.libs"
-        LIBXML_FOUND="yes"
-        AC_MSG_RESULT([yes])
-    else
-        AC_MSG_ERROR([not found: "$with_libxml_src/include/$LIBXML_INCLUDE_MARKER" or "$with_libxml_src/.libs/$LIBXML_SHARED_LIB_MARKER" or "$with_libxml_src/.libs/$LIBXML_STATIC_LIB_MARKER" files don't exist), typo?])
-    fi
-fi
-
-dnl Priority 2: User specifies path to installation
+dnl Priority 1: User specifies path to installation (--with-libxml)
 if test "z$LIBXML_FOUND" = "zno" -a "z$with_libxml" != "z" -a "z$with_libxml" != "zyes" ; then
     AC_MSG_CHECKING(for libxml2 library installation in "$with_libxml" folder)
     if test "z$ENABLE_CUSTOM_CONFIGS" = "zyes" -a -f "$with_libxml/bin/$LIBXML_CONFIG" ; then
         LIBXML_CONFIG_PATH="$with_libxml/bin/$LIBXML_CONFIG"
         LIBXML_FOUND="yes"
-        AC_MSG_RESULT([yes])
+        AC_MSG_RESULT([yes ("$with_libxml/bin/$LIBXML_CONFIG")])
     elif test [ -f "$with_libxml/include/libxml2/$LIBXML_INCLUDE_MARKER" ] -a [ -f "$with_libxml/lib/$LIBXML_SHARED_LIB_MARKER" -o -f "$with_libxml/lib/$LIBXML_STATIC_LIB_MARKER" ] ; then
         LIBXML_INCLUDE_PATH="$with_libxml/include/libxml2"
         LIBXML_LIB_PATH="$with_libxml/lib"
         LIBXML_FOUND="yes"
-        AC_MSG_RESULT([yes])
+        AC_MSG_RESULT([yes ("$with_libxml")])
     else
-        AC_MSG_ERROR([not found: "$with_libxml/bin/$LIBXML_CONFIG" tool, or "$with_libxml/include/libxml2/$LIBXML_INCLUDE_MARKER" and/or "$with_libxml/lib/$LIBXML_SHARED_LIB_MARKER" or "$with_libxml/lib/$LIBXML_STATIC_LIB_MARKER" files don't exist), typo?])
+        AC_MSG_ERROR([not found: "$with_libxml/bin/$LIBXML_CONFIG" tool, or "$with_libxml/include/libxml2/$LIBXML_INCLUDE_MARKER" and/or "$with_libxml/lib/$LIBXML_SHARED_LIB_MARKER" or "$with_libxml/lib/$LIBXML_STATIC_LIB_MARKER"])
+    fi
+fi
+
+dnl Priority 2: User specifies path to installation (--with-libxml2)
+if test "z$LIBXML_FOUND" = "zno" -a "z$with_libxml2" != "z" -a "z$with_libxml2" != "zyes" ; then
+    AC_MSG_CHECKING(for libxml2 library installation in "$with_libxml2" folder)
+    if test "z$ENABLE_CUSTOM_CONFIGS" = "zyes" -a -f "$with_libxml2/bin/$LIBXML_CONFIG" ; then
+        LIBXML_CONFIG_PATH="$with_libxml2/bin/$LIBXML_CONFIG"
+        LIBXML_FOUND="yes"
+        AC_MSG_RESULT([yes ("$with_libxml2/bin/$LIBXML_CONFIG")])
+    elif test [ -f "$with_libxml2/include/libxml2/$LIBXML_INCLUDE_MARKER" ] -a [ -f "$with_libxml2/lib/$LIBXML_SHARED_LIB_MARKER" -o -f "$with_libxml2/lib/$LIBXML_STATIC_LIB_MARKER" ] ; then
+        LIBXML_INCLUDE_PATH="$with_libxml2/include/libxml2"
+        LIBXML_LIB_PATH="$with_libxml2/lib"
+        LIBXML_FOUND="yes"
+        AC_MSG_RESULT([yes ("$with_libxml2")])
+    else
+        AC_MSG_ERROR([not found: "$with_libxml2/bin/$LIBXML_CONFIG" tool, or "$with_libxml2/include/libxml2/$LIBXML_INCLUDE_MARKER" and/or "$with_libxml2/lib/$LIBXML_SHARED_LIB_MARKER" or "$with_libxml2/lib/$LIBXML_STATIC_LIB_MARKER"])
     fi
 fi
 
@@ -499,56 +504,42 @@ LIBXSLT_LIB_PATH=
 LIBXSLT_CONFIG_PATH=
 LIBXSLT_FOUND="no"
 AC_ARG_WITH([libxslt], [AS_HELP_STRING([--with-libxslt@<:@=PFX@:>@],[libxslt location])])
-AC_ARG_WITH([libxslt-src], [AS_HELP_STRING([--with-libxslt-src@<:@=PFX@:>@],[libxslt source tree location])])
 
 dnl Priority 0: Check if library is not needed
 if test "z$with_libxslt" = "zno" -o "z$with_libxslt_src" = "zno" ; then
     LIBXSLT_FOUND="disabled"
 fi
 
-dnl Priority 1: User specifies the path to source code
-if test "z$LIBXSLT_FOUND" = "zno" -a "z$with_libxslt_src" != "z" -a "z$with_libxslt_src" != "zyes" ; then
-    AC_MSG_CHECKING(for libxslt library source tree in "$with_libxslt_src" folder)
-    if test [ -f "$with_libxslt_src/$LIBXSLT_INCLUDE_MARKER" ] -a [ -f "$with_libxslt_src/libxslt/.libs/$LIBXSLT_SHARED_LIB_MARKER" -o -f "$with_libxslt_src/libxslt/.libs/$LIBXSLT_STATIC_LIB_MARKER" ] ; then
-        LIBXSLT_INCLUDE_PATH="$with_libxslt_src"
-        LIBXSLT_LIB_PATH="$with_libxslt_src/libxslt/.libs"
-        LIBXSLT_FOUND="yes"
-        AC_MSG_RESULT([yes])
-    else
-        AC_MSG_ERROR([not found: "$with_libxslt_src/$LIBXSLT_INCLUDE_MARKER" and/or "$with_libxslt_src/libxslt/.libs/$LIBXSLT_SHARED_LIB_MARKER" or "$with_libxslt_src/libxslt/.libs/$LIBXSLT_STATIC_LIB_MARKER" files don't exist), typo?])
-    fi
-fi
-
-dnl Priority 2: User specifies path to installation
+dnl Priority 1: User specifies path to installation
 if test "z$LIBXSLT_FOUND" = "zno" -a "z$with_libxslt" != "z" -a "z$with_libxslt" != "zyes" ; then
     AC_MSG_CHECKING(for libxslt library installation in "$with_libxslt" folder)
     if test "z$ENABLE_CUSTOM_CONFIGS" = "zyes" -a -f "$with_libxslt/bin/$LIBXSLT_CONFIG" ; then
         LIBXSLT_CONFIG_PATH="$with_libxslt/bin/$LIBXSLT_CONFIG"
         LIBXSLT_FOUND="yes"
-        AC_MSG_RESULT([yes])
+        AC_MSG_RESULT([yes ($with_libxslt/bin/$LIBXSLT_CONFIG)])
     elif test [ -f "$with_libxslt/include/$LIBXSLT_INCLUDE_MARKER" ] -a [ -f "$with_libxslt/lib/$LIBXSLT_SHARED_LIB_MARKER" -o -f "$with_libxslt/lib/$LIBXSLT_STATIC_LIB_MARKER" ] ; then
         LIBXSLT_INCLUDE_PATH="$with_libxslt/include"
         LIBXSLT_LIB_PATH="$with_libxslt/lib"
         LIBXSLT_FOUND="yes"
-        AC_MSG_RESULT([yes])
+        AC_MSG_RESULT([ye ($with_libxslt)])
     else
-        AC_MSG_ERROR([not found: "$with_libxslt/bin/$LIBXSLT_CONFIG" tool, or "$with_libxslt/include/$LIBXSLT_INCLUDE_MARKER" and/or "$with_libxslt/lib/$LIBXSLT_SHARED_LIB_MARKER" or "$with_libxslt/lib/$LIBXSLT_STATIC_LIB_MARKER" files don't exist), typo?])
+        AC_MSG_ERROR([not found: "$with_libxslt/bin/$LIBXSLT_CONFIG" tool, or "$with_libxslt/include/$LIBXSLT_INCLUDE_MARKER" and/or "$with_libxslt/lib/$LIBXSLT_SHARED_LIB_MARKER" or "$with_libxslt/lib/$LIBXSLT_STATIC_LIB_MARKER"])
     fi
 fi
 
-dnl Priority 3: User sets both CFLAGS and LIBS flags
+dnl Priority 2: User sets both CFLAGS and LIBS flags
 if test "z$LIBXSLT_FOUND" = "zno" -a  "z$LIBXSLT_CFLAGS" != "z" -a "z$LIBXSLT_LIBS" != "z" ; then
     LIBXSLT_FOUND="yes"
 fi
 
-dnl Priority 4: Guess with pkg_config
+dnl Priority 3: Guess with pkg_config
 if test "z$LIBXSLT_FOUND" = "zno" -a "z$PKGCONFIG_FOUND" = "zyes" ; then
     PKG_CHECK_MODULES(LIBXSLT, libxslt >= $LIBXSLT_MIN_VERSION,
         [LIBXSLT_FOUND=yes],
         [LIBXSLT_FOUND=no])
 fi
 
-dnl Priority 5: Guess the config tool location
+dnl Priority 4: Guess the config tool location
 if test "z$LIBXSLT_FOUND" = "zno" -a "z$ENABLE_CUSTOM_CONFIGS" = "zyes" ; then
     AC_PATH_PROG(LIBXSLT_CONFIG_PATH, [$LIBXSLT_CONFIG], [], [$PATH])
     if test "z$LIBXSLT_CONFIG_PATH" != "z" ; then
@@ -556,7 +547,7 @@ if test "z$LIBXSLT_FOUND" = "zno" -a "z$ENABLE_CUSTOM_CONFIGS" = "zyes" ; then
     fi
 fi
 
-dnl Priority 6: Guess using a list of folders.
+dnl Priority 5: Guess using a list of folders.
 if test "z$LIBXSLT_FOUND" = "zno" -a "z$ENABLE_FOLDERS_SEARCH" = "zyes" ; then
     AC_MSG_CHECKING(for libxslt library installation in the typical folders)
     if test "z$LIBXSLT_INCLUDE_PATH" = "z" ; then
@@ -576,7 +567,7 @@ if test "z$LIBXSLT_FOUND" = "zno" -a "z$ENABLE_FOLDERS_SEARCH" = "zyes" ; then
     fi
 fi
 
-dnl Priority 7: Just try to compile/link and hope for the best
+dnl Priority 6: Just try to compile/link and hope for the best
 if test "z$LIBXSLT_FOUND" = "zno" ; then
     AC_MSG_CHECKING(for libxslt library installation)
     OLD_CPPFLAGS=$CPPFLAGS
@@ -718,7 +709,7 @@ if test "z$OPENSSL_FOUND" = "zno" -a "z$with_openssl" != "z" -a "z$with_openssl"
         OPENSSL_FOUND="yes"
         AC_MSG_RESULT([yes])
     else
-        AC_MSG_ERROR([not found: "$with_openssl/include/$OPENSSL_INCLUDE_MARKER" or "$with_openssl/lib(64)/$OPENSSL_LIB_SHARED_MARKER" or "$with_openssl/lib(64)/$OPENSSL_LIB_STATIC_MARKER" files don't exist), typo?])
+        AC_MSG_ERROR([not found: "$with_openssl/include/$OPENSSL_INCLUDE_MARKER" or "$with_openssl/lib(64)/$OPENSSL_LIB_SHARED_MARKER" or "$with_openssl/lib(64)/$OPENSSL_LIB_STATIC_MARKER"])
     fi
 fi
 
@@ -964,7 +955,7 @@ if test "z$NSPR_FOUND" = "zno" -a "z$with_nspr" != "z" -a "z$with_nspr" != "zyes
         NSPR_FOUND="yes"
         AC_MSG_RESULT([yes])
     else
-        AC_MSG_ERROR([not found: "$with_nspr/include/$NSPR_INCLUDE_MARKER" and/or "$with_nspr/lib/$NSPR_LIB_MARKER" files don't exist), typo?])
+        AC_MSG_ERROR([not found: "$with_nspr/include/$NSPR_INCLUDE_MARKER" and/or "$with_nspr/lib/$NSPR_LIB_MARKER"])
     fi
 fi
 if test "z$NSS_FOUND" = "zno" -a "z$with_nss" != "z" -a "z$with_nss" != "zyes" ; then
@@ -975,7 +966,7 @@ if test "z$NSS_FOUND" = "zno" -a "z$with_nss" != "z" -a "z$with_nss" != "zyes" ;
         NSS_FOUND="yes"
         AC_MSG_RESULT([yes])
     else
-        AC_MSG_ERROR([not found: "$with_nss/include/$NSS_INCLUDE_MARKER" and/or "$with_nss/lib/$NSS_LIB_MARKER" files don't exist), typo?])
+        AC_MSG_ERROR([not found: "$with_nss/include/$NSS_INCLUDE_MARKER" and/or "$with_nss/lib/$NSS_LIB_MARKER"])
     fi
 fi
 
@@ -1254,7 +1245,7 @@ if test "z$GNUTLS_FOUND" = "zno" -a "z$with_gnutls" != "z" -a "z$with_gnutls" !=
         GNUTLS_FOUND="yes"
         AC_MSG_RESULT([yes])
     else
-        AC_MSG_ERROR([not found: "$with_gnutls/bin/$GNUTLS_CONFIG" tool, or "$with_gnutls/include/$GNUTLS_INCLUDE_MARKER" and/or "$with_gnutls/lib/$GNUTLS_LIB_MARKER" files don't exist), typo?])
+        AC_MSG_ERROR([not found: "$with_gnutls/bin/$GNUTLS_CONFIG" tool, or "$with_gnutls/include/$GNUTLS_INCLUDE_MARKER" and/or "$with_gnutls/lib/$GNUTLS_LIB_MARKER"])
     fi
 fi
 
@@ -1567,7 +1558,7 @@ if test "z$GCRYPT_FOUND" = "zno" -a "z$with_gcrypt" != "z" -a "z$with_gcrypt" !=
         GCRYPT_FOUND="yes"
         AC_MSG_RESULT([yes])
     else
-        AC_MSG_ERROR([not found: "$with_gcrypt/bin/$GCRYPT_CONFIG" tool, or "$with_gcrypt/include/$GCRYPT_INCLUDE_MARKER" and/or "$with_gcrypt/lib/$GCRYPT_LIB_MARKER" files don't exist), typo?])
+        AC_MSG_ERROR([not found: "$with_gcrypt/bin/$GCRYPT_CONFIG" tool, or "$with_gcrypt/include/$GCRYPT_INCLUDE_MARKER" and/or "$with_gcrypt/lib/$GCRYPT_LIB_MARKER"])
     fi
 fi
 
@@ -2378,7 +2369,7 @@ if test "z$LIBLTDL_FOUND" = "zno" -a "z$with_libltdl" != "z" -a "z$with_libltdl"
         LIBLTDL_FOUND="yes"
         AC_MSG_RESULT([yes])
     else
-        AC_MSG_ERROR([not found: "$with_libltdl/include/$LIBLTDL_INCLUDE_MARKER" file doesn't exist), typo?])
+        AC_MSG_ERROR([not found: "$with_libltdl/include/$LIBLTDL_INCLUDE_MARKER"])
     fi
 fi
 

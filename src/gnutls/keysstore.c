@@ -25,6 +25,7 @@
 #include <xmlsec/base64.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/keysmngr.h>
+#include <xmlsec/private.h>
 
 #include <xmlsec/gnutls/crypto.h>
 #include <xmlsec/gnutls/keysstore.h>

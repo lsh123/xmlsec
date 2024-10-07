@@ -205,7 +205,10 @@ function create_readme {
 function create_distro {
   echo "*** Creating zip file..."
   cd "${distro_dir}"
-  find ${zip_folders_and_files} -name "*.pdb" -exec rm {} \;
+  for ii in ${zip_folders_and_files} ; do
+    echo "*** Removing pdb files from ${ii}..." 
+    rm -f ${ii}/bin/*.pdb ${ii}/lib/*.pdb
+  done
   rm -f "${zip_output_file}"
   zip -r "${zip_output_file}" ${zip_folders_and_files} >> "${LOG_FILE}"
   echo "*** Done with zip file: \"${zip_output_file}\""

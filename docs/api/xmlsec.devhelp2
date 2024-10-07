@@ -1014,6 +1014,7 @@
     <keyword type="macro" name="xmlSecCheckVersionExact" link="xmlsec-xmlsec.html#xmlSecCheckVersionExact"/>
     <keyword type="macro" name="xmlSecCheckVersion" link="xmlsec-xmlsec.html#xmlSecCheckVersion"/>
     <keyword type="function" name="xmlSecCheckVersionExt ()" link="xmlsec-xmlsec.html#xmlSecCheckVersionExt"/>
+    <keyword type="macro" name="XMLSEC_DEPRECATED" link="xmlsec-xmlsec.html#XMLSEC-DEPRECATED:CAPS"/>
     <keyword type="typedef" name="xmlSecPtr" link="xmlsec-xmlsec.html#xmlSecPtr"/>
     <keyword type="macro" name="XMLSEC_SIZE_T_FMT" link="xmlsec-xmlsec.html#XMLSEC-SIZE-T-FMT:CAPS"/>
     <keyword type="typedef" name="xmlSecSize" link="xmlsec-xmlsec.html#xmlSecSize"/>
@@ -1021,7 +1022,6 @@
     <keyword type="macro" name="XMLSEC_SIZE_MAX" link="xmlsec-xmlsec.html#XMLSEC-SIZE-MAX:CAPS"/>
     <keyword type="macro" name="XMLSEC_SIZE_FMT" link="xmlsec-xmlsec.html#XMLSEC-SIZE-FMT:CAPS"/>
     <keyword type="typedef" name="xmlSecByte" link="xmlsec-xmlsec.html#xmlSecByte"/>
-    <keyword type="macro" name="XMLSEC_DEPRECATED" link="xmlsec-xmlsec.html#XMLSEC-DEPRECATED:CAPS"/>
     <keyword type="enum" name="enum xmlSecCheckVersionMode" link="xmlsec-xmlsec.html#xmlSecCheckVersionMode"/>
     <keyword type="macro" name="xmlSecNodeGetName()" link="xmlsec-xmltree.html#xmlSecNodeGetName"/>
     <keyword type="function" name="xmlSecGetDefaultLineFeed ()" link="xmlsec-xmltree.html#xmlSecGetDefaultLineFeed"/>

@@ -110,6 +110,10 @@
 </colgroup>
 <tbody>
 <tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-xmlsec.html#XMLSEC-DEPRECATED:CAPS" title="XMLSEC_DEPRECATED">XMLSEC_DEPRECATED</a></td>
+</tr>
+<tr>
 <td class="typedef_keyword">typedef</td>
 <td class="function_name"><font>xmlSecPtr</font></td>
 </tr>
@@ -136,10 +140,6 @@
 <tr>
 <td class="typedef_keyword">typedef</td>
 <td class="function_name"><a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte">xmlSecByte</a></td>
-</tr>
-<tr>
-<td class="define_keyword">#define</td>
-<td class="function_name"><a class="link" href="xmlsec-xmlsec.html#XMLSEC-DEPRECATED:CAPS" title="XMLSEC_DEPRECATED">XMLSEC_DEPRECATED</a></td>
 </tr>
 <tr>
 <td class="datatype_keyword">enum</td>
@@ -302,6 +302,13 @@ xmlSecCheckVersionExt (<em class="parameter"><code><font><span class="type">int<
 <div class="refsect1">
 <a name="xmlsec-xmlsec.other_details"></a><h2>Types and Values</h2>
 <div class="refsect2">
+<a name="XMLSEC-DEPRECATED:CAPS"></a><h3>XMLSEC_DEPRECATED</h3>
+<pre class="programlisting">#define XMLSEC_DEPRECATED __attribute__((deprecated))
+</pre>
+<p>Marks function as deprecated.</p>
+</div>
+<hr>
+<div class="refsect2">
 <a name="xmlSecPtr"></a><h3>xmlSecPtr</h3>
 <pre class="programlisting">typedef void*                                   xmlSecPtr;
 </pre>
@@ -346,13 +353,6 @@ despite the fact that MSVC runtime supports it for 10+ years.</p>
 <pre class="programlisting">typedef unsigned char xmlSecByte;
 </pre>
 <p>One byte.</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="XMLSEC-DEPRECATED:CAPS"></a><h3>XMLSEC_DEPRECATED</h3>
-<pre class="programlisting">#define XMLSEC_DEPRECATED __attribute__((deprecated))
-</pre>
-<p>Marks function as deprecated.</p>
 </div>
 <hr>
 <div class="refsect2">

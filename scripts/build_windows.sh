@@ -1,13 +1,13 @@
 #!/bin/bash
-# 
-# MUST BE RUN FROM x64 Native Tools Command Prompt 
-# 
+#
+# MUST BE RUN FROM x64 Native Tools Command Prompt
+#
 # $ bash build_windows.sh
 #
 libxml2_version="2.13.4"
 libxslt_version="1.1.42"
-openssl_version="3.3.2"
-xmlsec_version="1.3.6-rc1"
+openssl_version="3.4.0"
+xmlsec_version="1.3.7-rc1"
 
 pwd=`pwd`
 script_dir=`dirname $0`
@@ -138,7 +138,7 @@ function build_openssl {
   PATH="$PATH;$PERL_PATH"
   cd "${full_name}"
   perl Configure no-unit-test --prefix="${openssl_output_dir}" --release VC-WIN64A
-  PATH="$OLD_PATH"  
+  PATH="$OLD_PATH"
 
   echo "*** Building \"${full_name}\" ..."
   nmake >> "${LOG_FILE}"
@@ -206,14 +206,14 @@ function create_distro {
   echo "*** Creating zip file..."
   cd "${distro_dir}"
   for ii in ${zip_folders_and_files} ; do
-    echo "*** Removing pdb files from ${ii}..." 
+    echo "*** Removing pdb files from ${ii}..."
     rm -f ${ii}/bin/*.pdb ${ii}/bin/*/*.pdb ${ii}/lib/*.pdb  ${ii}/lib/*/*.pdb
   done
   rm -f "${zip_output_file}"
   zip -r "${zip_output_file}" ${zip_folders_and_files} >> "${LOG_FILE}"
   echo "*** Done with zip file: \"${zip_output_file}\""
   return 0
-   
+
 }
 
 rm "${LOG_FILE}"

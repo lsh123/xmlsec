@@ -11,15 +11,21 @@ on:
           - xmlsec-1_2_x
 
 jobs:
+  # linux: check against latest versions of everything
   check-ubuntu:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         include:
+          # default build
           - config_flags:
-          - config_flags: --enable-static --enable-static-linking --disable-openssl3-engines --without-nss --without-gcrypt --without-gnutls
-          - config_flags: --enable-static --enable-static-linking --enable-ftp --enable-md5 --enable-gost --enable-gost2012 --without-openssl --without-nss --without-gcrypt
+          # default build with all legacy features
+          - config_flags: --enable-legacy-features --enable-ftp --enable-http
+          # static openssl build
+          - config_flags: --enable-static --enable-static-linking --disable-openssl3-engines --without-nss --without-gnutls --without-gcrypt --enable-legacy-features
+          # static gnutls build with GOST
+          - config_flags: --enable-static --enable-static-linking --without-openssl --without-nss --without-gcrypt --enable-gost --enable-gost2012 --enable-legacy-features
     steps:
     - name: install dependencies
       run: |
@@ -48,14 +54,17 @@ jobs:
       run: |
           make install
 
+  # linux: check against old versions including openssl 1.1.1
   check-ubuntu-openssl-111:
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
       matrix:
         include:
+          # default build
           - config_flags:
-          - config_flags: --enable-static-linking=yes --without-nss --without-gcrypt --without-gnutls
+          # static openssl build
+          - config_flags: --enable-static --enable-static-linking --without-nss --without-gnutls --without-gcrypt --enable-legacy-features
     steps:
     - name: install dependencies
       run: |
@@ -86,13 +95,17 @@ jobs:
       run: |
           make install
 
+  # macosx
   check-osx:
     runs-on: macos-latest
     strategy:
       fail-fast: false
       matrix:
         include:
+          # default build
           - config_flags:
+          # default build with all legacy features -- not possible because MacOSX disables RIPEMD160 in OpenSSL
+          # - config_flags: --enable-legacy-features --enable-ftp --enable-http
     steps:
     - name: Set up Homebrew
       id: set-up-homebrew
@@ -135,18 +148,25 @@ jobs:
       run: |
           make install
 
+  # mingw
   check-mingw:
     runs-on: windows-latest
     strategy:
       fail-fast: false
       matrix:
         include:
+          # default build
           - msystem: MINGW64
             arch: x86_64
-            config_flags: --enable-unicode=yes
+            config_flags:
+          # default build with all legacy features
           - msystem: MINGW64
             arch: x86_64
-            config_flags: --enable-static --enable-static-linking --enable-unicode=no --enable-md5 --enable-ftp
+            config_flags: --enable-legacy-features --enable-ftp --enable-http
+          # no unicode static build for mscng
+          - msystem: MINGW64
+            arch: x86_64
+            config_flags: --enable-static --enable-static-linking --enable-unicode=no --without-openssl --without-nss --without-gnutls --without-gcrypt --disable-mscrypto
     defaults:
       run:
         shell: msys2 {0}
@@ -198,12 +218,14 @@ jobs:
       run: |
           make install
 
+  # msvc
   check-msvc:
     runs-on: windows-latest
     strategy:
       fail-fast: false
       matrix:
         include:
+          # default build
           - crypto: mscng
             config_flags: unicode=yes with-dl=yes
           - crypto: mscng

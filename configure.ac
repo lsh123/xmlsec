@@ -182,13 +182,30 @@ if test "z$enable_development" = "zyes" ; then
     enable_manpages_build="no"
     enable_docs_build="no"
     enable_crypto_dl="no"
+    enable_legacy_features="yes"
+    AC_MSG_RESULT([yes])
+else
+    AC_MSG_RESULT([no])
+fi
 
-    dnl legacy crypto
+dnl ==========================================================================
+dnl Do we want to with legacy features?
+dnl ==========================================================================
+AC_MSG_CHECKING(for legacy features support)
+AC_ARG_ENABLE([legacy_features], [AS_HELP_STRING([--enable-legacy_features],[legacy features (no)])])
+if test "z$enable_legacy_features" = "zyes" ; then
+
+    dnl legacy crypto engines
+    enable_mscrypto="yes"
+    with_gcrypt="yes"
+
+    dnl legacy crypto algos
     enable_md5="yes"
+    enable_ripemd160="yes"
 
     AC_MSG_RESULT([yes])
 else
-    AC_MSG_RESULT([disabled])
+    AC_MSG_RESULT([no])
 fi
 
 dnl ==========================================================================
@@ -1362,7 +1379,6 @@ AC_SUBST(GNUTLS_CRYPTO_LIB)
 AC_SUBST(GNUTLS_MIN_VERSION)
 
 
-
 dnl ==========================================================================
 dnl See if we can find MSCng
 dnl ==========================================================================
@@ -1377,7 +1393,7 @@ AC_ARG_ENABLE([mscng], [AS_HELP_STRING([--enable-mscng],[enable mscng (no)])])
 AC_MSG_CHECKING(for mscng)
 
 dnl Priority 0: Check if library is not needed
-if test "z$enable_mscng" != "zyes" ; then
+if test "z$enable_mscng" = "zno" ; then
     MSCNG_FOUND="disabled"
     AC_MSG_RESULT([disabled])
 fi
@@ -1459,7 +1475,7 @@ esac
 
 XMLSEC_NO_MSCRYPTO="1"
 MSCRYPTO_FOUND="no"
-AC_ARG_ENABLE([mscrypto], [AS_HELP_STRING([--enable-mscrypto],[enable mscrypto (no)])])
+AC_ARG_ENABLE([mscrypto], [AS_HELP_STRING([--enable-mscrypto],[enable mscrypto (no,deprecated)])])
 AC_MSG_CHECKING(for mscrypto)
 
 dnl Priority 0: Check if library is not needed
@@ -1538,10 +1554,10 @@ GCRYPT_VERSION=
 GCRYPT_INCLUDE_PATH=
 GCRYPT_LIB_PATH=
 GCRYPT_FOUND="no"
-AC_ARG_WITH([gcrypt], [AS_HELP_STRING([--with-gcrypt@<:@=PFX@:>@],[gcrypt location])])
+AC_ARG_WITH([gcrypt], [AS_HELP_STRING([--with-gcrypt@<:@=PFX@:>@],[gcrypt location (no,deprecated)])])
 
 dnl Priority 0: Check if library is not needed
-if test "z$with_gcrypt" = "zno" ; then
+if test "z$with_gcrypt" = "z" -o "z$with_gcrypt" = "zno" ; then
     GCRYPT_FOUND="disabled"
 fi
 
@@ -1913,14 +1929,14 @@ dnl ==========================================================================
 dnl Check if we need RIPEMD-160 support
 dnl ==========================================================================
 AC_MSG_CHECKING(for RIPEMD-160 support)
-AC_ARG_ENABLE([ripemd160], [AS_HELP_STRING([--enable-ripemd160],[enable RIPEMD-160 support (yes)])])
-if test "z$enable_ripemd160" = "zno" ; then
+AC_ARG_ENABLE([ripemd160], [AS_HELP_STRING([--enable-ripemd160],[enable RIPEMD-160 support (no, deprecated))])])
+if test "z$enable_ripemd160" = "zyes" ; then
+    XMLSEC_NO_RIPEMD160="0"
+    AC_MSG_RESULT([yes (deprecated)])
+else
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_RIPEMD160=1"
     XMLSEC_NO_RIPEMD160="1"
     AC_MSG_RESULT([disabled])
-else
-    XMLSEC_NO_RIPEMD160="0"
-    AC_MSG_RESULT([yes])
 fi
 AM_CONDITIONAL(XMLSEC_NO_RIPEMD160, test "z$XMLSEC_NO_RIPEMD160" = "z1")
 AC_SUBST(XMLSEC_NO_RIPEMD160)
@@ -2058,14 +2074,14 @@ dnl ==========================================================================
 dnl Check if we need DSA support
 dnl ==========================================================================
 AC_MSG_CHECKING(for DSA support)
-AC_ARG_ENABLE([dsa], [AS_HELP_STRING([--enable-dsa],[enable DSA support (yes)])])
+AC_ARG_ENABLE([dsa], [AS_HELP_STRING([--enable-dsa],[enable DSA support (yes, use discouraged)])])
 if test "z$enable_dsa" = "zno" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_DSA=1"
     XMLSEC_NO_DSA="1"
     AC_MSG_RESULT([disabled])
 else
     XMLSEC_NO_DSA="0"
-    AC_MSG_RESULT([yes])
+    AC_MSG_RESULT([yes (use discouraged)])
 fi
 AM_CONDITIONAL(XMLSEC_NO_DSA, test "z$XMLSEC_NO_DSA" = "z1")
 AC_SUBST(XMLSEC_NO_DSA)
@@ -2154,14 +2170,14 @@ dnl ==========================================================================
 dnl Check if we need DES support
 dnl ==========================================================================
 AC_MSG_CHECKING(for DES support)
-AC_ARG_ENABLE([des], [AS_HELP_STRING([--enable-des],[enable DES support (yes, deprecated)])])
+AC_ARG_ENABLE([des], [AS_HELP_STRING([--enable-des],[enable DES support (yes, use discouraged)])])
 if test "z$enable_des" = "zno" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_DES=1"
     XMLSEC_NO_DES="1"
     AC_MSG_RESULT([disabled])
 else
     XMLSEC_NO_DES="0"
-    AC_MSG_RESULT([yes (deprecated)])
+    AC_MSG_RESULT([yes (use discouraged)])
 fi
 AM_CONDITIONAL(XMLSEC_NO_DES, test "z$XMLSEC_NO_DES" = "z1")
 AC_SUBST(XMLSEC_NO_DES)

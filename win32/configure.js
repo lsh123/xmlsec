@@ -41,26 +41,26 @@ var verMinorXmlSec;
 var verMicroXmlSec;
 
 /* Libxmlsec features. */
-var withCrypto = "openssl";
-var withDefaultCrypto = "openssl";
+var withCrypto = "mscng";
+var withDefaultCrypto = "mscng";
 var withOpenSSL = 0;
 var withOpenSSLVersion = "";
 var withNss = 0;
 var withMSCrypto = 0;
-var withMSCng = 0;
+var withMSCng = 1;
 var withLibXSLT = 1;
 var withIconv = 0;     /* disable iconv by default */
 var withFTP = 0;       /* disable ftp by default */
 var withHTTP = 0;      /* disable http by default */
 var withGost = 0;
 var withRsaPkcs15 = 1;
-var withLegacyCrypto = 0;
+var withLegacyFeatures = 0;
 
 /* Win32 build options. */
 var buildUnicode = 1;
 var buildDebug = 0;
 var buildWithMemcheck = 0;
-var buildWerror = 0;
+var buildWerror = 1;
 var buildPedantic = 1;
 var buildCc = "cl.exe";
 var buildCflags = "";
@@ -125,7 +125,7 @@ function usage()
 	txt += "  http:       Enable HTTP support (" + (withHTTP ? "yes" : "no") + ")\n";
 	txt += "  rsa-pkcs15: Enable RSA PKCS#1.5 key transport (" + (withRsaPkcs15 ? "yes" : "no") + ")\n";
 	txt += "  gost:	      Enable GOST algorithms (" + (withGost ? "yes" : "no") + ")\n";
-	txt += "  legacy-crypto: Enable legacy crypto algorithms (" + (withLegacyCrypto ? "yes" : "no") + ")\n";
+	txt += "  legacy-features: Enable legacy features and crypto algorithms (" + (withLegacyFeatures ? "yes" : "no") + ")\n";
 	txt += "\nWin32 build options, default value given in parentheses:\n\n";
 	txt += "  unicode:    Build Unicode version (" + (buildUnicode? "yes" : "no")  + ")\n";
 	txt += "  debug:      Build unoptimised debug executables (" + (buildDebug? "yes" : "no")  + ")\n";
@@ -201,7 +201,7 @@ function discoverVersion()
 	vf.WriteLine("WITH_HTTP=" + (withHTTP ? "1" : "0"));
 	vf.WriteLine("WITH_GOST=" + (withGost ? "1" : "0"));
 	vf.WriteLine("WITH_RSA_PKCS15=" + (withRsaPkcs15 ? "1" : "0"));
-	vf.WriteLine("WITH_LEGACY_CRYPTO=" + (withLegacyCrypto ? "1" : "0"));
+	vf.WriteLine("WITH_LEGACY_FEATURES=" + (withLegacyFeatures ? "1" : "0"));
 	vf.WriteLine("UNICODE=" + (buildUnicode? "1" : "0"));
 	vf.WriteLine("DEBUG=" + (buildDebug? "1" : "0"));
 	vf.WriteLine("MEMCHECK=" + (buildWithMemcheck ? "1" : "0"));
@@ -344,8 +344,10 @@ for (i = 0; (i < WScript.Arguments.length) && (error == 0); i++) {
 			withRsaPkcs15 = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "gost")
 			withGost = strToBool(arg.substring(opt.length + 1, arg.length));
+		else if (opt == "legacy-features")
+			withLegacyFeatures = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "legacy-crypto")
-			withLegacyCrypto = strToBool(arg.substring(opt.length + 1, arg.length));
+			withLegacyFeatures = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "unicode")
 			buildUnicode = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "debug")
@@ -481,29 +483,29 @@ var txtOut = "\nXMLSEC configuration\n";
 txtOut += "----------------------------\n";
 txtOut += "          Use Crypto: " + withCrypto + "\n";
 txtOut += "  Use Default Crypto: " + withDefaultCrypto + "\n";
+txtOut += "           Use MSCng: " + boolToStr(withMSCng) + "\n";
 txtOut += "         Use OpenSSL: " + boolToStr(withOpenSSL) + "\n";
 txtOut += " Use OpenSSL Version: " + withOpenSSLVersion + "\n";
 txtOut += "             Use NSS: " + boolToStr(withNss) + "\n";
 txtOut += "        Use MSCrypto: " + boolToStr(withMSCrypto) + "\n";
-txtOut += "           Use MSCng: " + boolToStr(withMSCng) + "\n";
 txtOut += "         Use LibXSLT: " + boolToStr(withLibXSLT) + "\n";
 txtOut += "           Use iconv: " + boolToStr(withIconv) + "\n";
 txtOut += " Enable RSA PKCS#1.5: " + boolToStr(withRsaPkcs15) + "\n";
 txtOut += "         Enable GOST: " + boolToStr(withGost) + "\n";
-txtOut += "Enable legacy crypto: " + boolToStr(withLegacyCrypto) + "\n";
+txtOut += "Enable legacy crypto: " + boolToStr(withLegacyFeatures) + "\n";
 txtOut += "         Support FTP: " + boolToStr(withFTP) + "\n";
 txtOut += "        Support HTTP: " + boolToStr(withHTTP) + "\n";
 txtOut += "\n";
 txtOut += "Win32 build configuration\n";
 txtOut += "-------------------------\n";
+txtOut += "           Pedantic: " + boolToStr(buildPedantic) + "\n";
+txtOut += "         C compiler: " + buildCc + "\n";
+txtOut += "   C compiler flags: " + buildCflags + "\n";
 txtOut += "   C-Runtime option: " + cruntime + "\n";
 txtOut += "            Unicode: " + boolToStr(buildUnicode) + "\n";
 txtOut += "      Debug symbols: " + boolToStr(buildDebug) + "\n";
 txtOut += "           Memcheck: " + boolToStr(buildWithMemcheck) + "\n";
 txtOut += " Warnings as errors: " + boolToStr(buildWerror) + "\n";
-txtOut += "           Pedantic: " + boolToStr(buildPedantic) + "\n";
-txtOut += "         C compiler: " + buildCc + "\n";
-txtOut += "   C compiler flags: " + buildCflags + "\n";
 txtOut += " Static xmlsec libs: " + boolToStr(buildStatic) + "\n";
 txtOut += "  Enable DL support: " + boolToStr(buildWithDLSupport) + "\n";
 txtOut += "     Install prefix: " + buildPrefix + "\n";

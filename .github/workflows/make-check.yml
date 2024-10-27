@@ -225,17 +225,22 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # default build
+          # mscng: default build
           - crypto: mscng
             config_flags: unicode=yes with-dl=yes
+          # mscng: no unicode, legacy crypto
           - crypto: mscng
-            config_flags: unicode=no with-dl=no static=yes legacy-crypto=yes
+            config_flags: unicode=no with-dl=no static=yes legacy-features=yes
+          # mscrypto: default build
           - crypto: mscrypto
-            config_flags: unicode=yes with-dl=yes
+            config_flags:
+          # mscrypto: no unicode, legacy crypto
           - crypto: mscrypto
-            config_flags:  unicode=no with-dl=no static=yes legacy-crypto=yes
+            config_flags:  unicode=no with-dl=no static=yes legacy-features=yes
+          # mscng: default build
           - crypto: openssl-300
-            config_flags: unicode=yes with-dl=yes
+            config_flags:
+          # mscng: no unicode, legacy crypto
           - crypto: openssl-300
             config_flags: unicode=no with-dl=no static=yes
     env:

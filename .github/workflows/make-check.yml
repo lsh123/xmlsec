@@ -104,8 +104,8 @@ jobs:
         include:
           # default build
           - config_flags:
-          # default build with all legacy features
-          - config_flags: --enable-legacy-features --enable-ftp --enable-http
+          # default build with all legacy features -- not possible because MacOSX disables RIPEMD160 in OpenSSL
+          # - config_flags: --enable-legacy-features --enable-ftp --enable-http
     steps:
     - name: Set up Homebrew
       id: set-up-homebrew

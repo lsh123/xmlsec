@@ -166,6 +166,13 @@ typedef enum {
 #define XMLSEC_KEYINFO_FLAGS_LAX_KEY_SEARCH                     0x00008000
 
 /**
+ * XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_TIME_CHECKS:
+ *
+ * If the flag is set then we'll skip time checks of certs and CRLs
+ */
+#define XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_TIME_CHECKS          0x00010000
+
+/**
  * xmlSecKeyInfoCtx:
  * @userData:           the pointer to user data (xmlsec and xmlsec-crypto
  *                      never touch this).

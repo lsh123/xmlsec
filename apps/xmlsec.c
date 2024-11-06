@@ -945,6 +945,17 @@ static xmlSecAppCmdLineParam verificationGmtTimeParam = {
     NULL
 };
 
+static xmlSecAppCmdLineParam X509SkipTimeChecksParam = {
+    xmlSecAppCmdLineTopicX509Certs,
+    "--X509-skip-time-checks",
+    NULL,
+    "--X509-skip-time-checks"
+    "\n\tskip time checking of X509 certificates and CLRs",
+    xmlSecAppCmdLineParamTypeFlag,
+    xmlSecAppCmdLineParamFlagNone,
+    NULL
+};
+
 static xmlSecAppCmdLineParam depthParam = {
     xmlSecAppCmdLineTopicX509Certs,
     "--depth",
@@ -1065,6 +1076,7 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
     &crlDerParam,
     &verificationTimeParam,
     &verificationGmtTimeParam,
+    &X509SkipTimeChecksParam,
     &depthParam,
     &X509SkipStrictChecksParam,
     &X509DontVerifyCerts,
@@ -2271,6 +2283,9 @@ xmlSecAppPrepareKeyInfoCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
     }
     if(xmlSecAppCmdLineParamIsSet(&verificationGmtTimeParam)) {
         keyInfoCtx->certsVerificationTime = xmlSecAppCmdLineParamGetTime(&verificationGmtTimeParam, 0);
+    }
+    if(xmlSecAppCmdLineParamIsSet(&X509SkipTimeChecksParam)) {
+        keyInfoCtx->flags |= XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_TIME_CHECKS;
     }
     if(xmlSecAppCmdLineParamIsSet(&depthParam)) {
         keyInfoCtx->certsVerificationDepth = xmlSecAppCmdLineParamGetInt(&depthParam, 0);

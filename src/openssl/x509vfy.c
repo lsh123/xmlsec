@@ -674,6 +674,10 @@ xmlSecOpenSSLX509StoreSetCtx(X509_STORE_CTX* xsc, xmlSecKeyInfoCtx* keyInfoCtx) 
         vpm_flags |= X509_V_FLAG_USE_CHECK_TIME;
         X509_VERIFY_PARAM_set_time(vpm, keyInfoCtx->certsVerificationTime);
     }
+    if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_TIME_CHECKS) != 0) {
+        vpm_flags |= X509_V_FLAG_NO_CHECK_TIME;
+    }
+
     X509_VERIFY_PARAM_set_flags(vpm, vpm_flags);
     X509_VERIFY_PARAM_set_depth(vpm, keyInfoCtx->certsVerificationDepth);
 

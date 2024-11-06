@@ -1146,6 +1146,19 @@ execDSigTest $res_success \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509 --verification-gmt-time 2022-12-14+00:00:00"
 
+
+# currently only openssl supports skipping time checks
+# https://github.com/lsh123/xmlsec/issues/852
+if [ "z$crypto" = "zopenssl" ] ; then
+extra_message="Expired cert but we skip timestamp checks"
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloping-expired-cert" \
+    "sha1 rsa-sha1" \
+    "rsa x509" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509 --X509-skip-time-checks"
+fi
+
 # 'Verify existing signature' MUST fail here, as --trusted-... is not passed.
 # If this passes, that's a bug. Note that we need to cleanup NSS certs DB
 # since it automaticall stores trusted certs

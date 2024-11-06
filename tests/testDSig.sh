@@ -1147,9 +1147,9 @@ execDSigTest $res_success \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509 --verification-gmt-time 2022-12-14+00:00:00"
 
 
-# currently only openssl supports skipping time checks
+# currently only openssl and gnutls support skipping time checks
 # https://github.com/lsh123/xmlsec/issues/852
-if [ "z$crypto" = "zopenssl" ] ; then
+if [ "z$crypto" = "zopenssl" -o "z$crypto" = "zgnutls"  ] ; then
 extra_message="Expired cert but we skip timestamp checks"
 execDSigTest $res_success \
     "" \

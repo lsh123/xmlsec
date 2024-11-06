@@ -406,6 +406,9 @@ xmlSecGnuTLSX509StoreVerifyCert(xmlSecGnuTLSX509StoreCtxPtr ctx,
     if(keyInfoCtx->certsVerificationTime > 0) {
         flags |= GNUTLS_VERIFY_DISABLE_TIME_CHECKS;
     }
+    if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_TIME_CHECKS) != 0) {
+        flags |= GNUTLS_VERIFY_DISABLE_TIME_CHECKS;
+    }
 
     flags |= GNUTLS_VERIFY_ALLOW_UNSORTED_CHAIN;
     if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_STRICT_CHECKS) != 0) {

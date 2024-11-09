@@ -1149,14 +1149,14 @@ execDSigTest $res_success \
 
 # currently only openssl and gnutls support skipping time checks
 # https://github.com/lsh123/xmlsec/issues/852
-if [ "z$crypto" = "zopenssl" -o "z$crypto" = "zgnutls"  ] ; then
-extra_message="Expired cert but we skip timestamp checks"
-execDSigTest $res_success \
-    "" \
-    "aleksey-xmldsig-01/enveloping-expired-cert" \
-    "sha1 rsa-sha1" \
-    "rsa x509" \
-    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509 --X509-skip-time-checks"
+if [ "z$crypto" = "zopenssl" -o "z$crypto" = "zgnutls" -o "z$crypto" = "zmscng"  ] ; then
+    extra_message="Expired cert but we skip timestamp checks"
+    execDSigTest $res_success \
+        "" \
+        "aleksey-xmldsig-01/enveloping-expired-cert" \
+        "sha1 rsa-sha1" \
+        "rsa x509" \
+        "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509 --X509-skip-time-checks"
 fi
 
 # 'Verify existing signature' MUST fail here, as --trusted-... is not passed.

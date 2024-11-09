@@ -511,7 +511,7 @@ xmlSecMSCngVerifyCertTime(PCCERT_CONTEXT cert, LPFILETIME time) {
 /**
  * xmlSecMSCngX509StoreVerifyCertificateOwn:
  * @cert: the certificate to verify.
- * @time: pointer to FILETIME that we are interested in
+ * @time: pointer to FILETIME that we are interested in (if NULL, don't check certificate notBefore/notAfter)
  * @trustedStore: trusted certificates added via xmlSecMSCngX509StoreAdoptCert().
  * @certStore: the untrusted certificates stack.
  * @store: key data store, name used for error reporting only.
@@ -531,13 +531,16 @@ xmlSecMSCngX509StoreVerifyCertificateOwn(PCCERT_CONTEXT cert, FILETIME* time,
     xmlSecAssert2(trustedStore != NULL, -1);
     xmlSecAssert2(certStore != NULL, -1);
 
-    /* check certificate validity and revokation */
-    ret = xmlSecMSCngVerifyCertTime(cert, time);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecMSCngVerifyCertTime", NULL);
-        return(-1);
+    /* if time is specified, check certificate notBefore/notAfter */
+    if (time != NULL) {
+        ret = xmlSecMSCngVerifyCertTime(cert, time);
+        if (ret < 0) {
+            xmlSecInternalError("xmlSecMSCngVerifyCertTime", NULL);
+            return(-1);
+        }
     }
 
+    /* check certificate revokation */
     ret = xmlSecMSCngCheckRevocation(certStore, cert);
     if(ret < 0) {
         xmlSecInternalError("xmlSecMSCngCheckRevocation", NULL);
@@ -769,7 +772,8 @@ static int
 xmlSecMSCngX509StoreVerifyCertificate(xmlSecMSCngX509StoreCtxPtr ctx, PCCERT_CONTEXT cert,
     HCERTSTORE certStore, xmlSecKeyInfoCtx* keyInfoCtx
 ) {
-    FILETIME fTime;
+    FILETIME timeContainer;
+    FILETIME* time = &timeContainer;
     int ret;
 
     xmlSecAssert2(ctx != NULL, -1);
@@ -785,15 +789,18 @@ xmlSecMSCngX509StoreVerifyCertificate(xmlSecMSCngX509StoreCtxPtr ctx, PCCERT_CON
         return(1);
     }
 
+    /* do we need to check certificate notBefore/notAfter times? */
     if(keyInfoCtx->certsVerificationTime > 0) {
-        xmlSecMSCngUnixTimeToFileTime(keyInfoCtx->certsVerificationTime, &fTime);
+        xmlSecMSCngUnixTimeToFileTime(keyInfoCtx->certsVerificationTime, time);
+    } else if ((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_TIME_CHECKS) != 0) {
+        time = NULL;
     } else {
         /* current time */
-        GetSystemTimeAsFileTime(&fTime);
+        GetSystemTimeAsFileTime(time);
     }
 
     /* verify based on the own trusted certificates */
-    ret = xmlSecMSCngX509StoreVerifyCertificateOwn(cert, &fTime,
+    ret = xmlSecMSCngX509StoreVerifyCertificateOwn(cert, time,
         ctx->trusted, ctx->untrusted, certStore);
     if(ret < 0){
         xmlSecInternalError("xmlSecMSCngX509StoreVerifyCertificateOwn", NULL);
@@ -804,8 +811,7 @@ xmlSecMSCngX509StoreVerifyCertificate(xmlSecMSCngX509StoreCtxPtr ctx, PCCERT_CON
     }
 
     /* verify based on the system certificates */
-    ret = xmlSecMSCngX509StoreVerifyCertificateSystem(cert, &fTime,
-        ctx->untrusted, certStore);
+    ret = xmlSecMSCngX509StoreVerifyCertificateSystem(cert, time, ctx->untrusted, certStore);
     if (ret < 0) {
         xmlSecInternalError("xmlSecMSCngX509StoreVerifyCertificateSystem", NULL);
         return(-1);

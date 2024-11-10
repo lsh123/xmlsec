@@ -1071,7 +1071,8 @@ xmlSecOpenSSLKeyDataDsaGetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueDsaP
     }
 
     /* TODO: implement check for private key on a token (similar to keys on ENGINE) */
-    dsaKeyValue->externalPrivKey = 0;
+    /* https://github.com/openssl/openssl/issues/9467 */
+    dsaKeyValue->externalPrivKey = 1;
 
     /* success */
     return(0);
@@ -2506,7 +2507,8 @@ xmlSecOpenSSLKeyDataRsaGetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueRsaP
     }
 
     /* TODO: implement check for private key on a token (similar to keys on ENGINE) */
-    rsaKeyValue->externalPrivKey = 0;
+    /* https://github.com/openssl/openssl/issues/9467 */
+    rsaKeyValue->externalPrivKey = 1;
 
     /* success */
     return(0);

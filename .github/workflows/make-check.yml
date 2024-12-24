@@ -32,7 +32,7 @@ jobs:
           sudo apt update
           sudo apt install automake autoconf libtool libtool-bin libltdl-dev libltdl7
           sudo apt install libxml2 libxml2-dev libxslt1.1 libxslt1-dev
-          sudo apt install libssl1.1 libssl-dev libnspr4 libnspr4-dev libnss3 libnss3-dev libnss3-tools libgcrypt20 libgcrypt20-dev libgnutls28-dev
+          sudo apt install libssl3 libssl-dev libnspr4 libnspr4-dev libnss3 libnss3-dev libnss3-tools libgcrypt20 libgcrypt20-dev libgnutls28-dev
     - uses: actions/checkout@v2
     - name: create-build-dirs
       run: |
@@ -159,10 +159,6 @@ jobs:
           - msystem: MINGW64
             arch: x86_64
             config_flags:
-          # default build with all legacy features
-          - msystem: MINGW64
-            arch: x86_64
-            config_flags: --enable-legacy-features --enable-ftp --enable-http
           # no unicode static build for mscng
           - msystem: MINGW64
             arch: x86_64

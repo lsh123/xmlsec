@@ -186,7 +186,7 @@ sign_file(const char* xml_file, const char* key_file, const char* cert_file) {
 
     /* add reference */
     refNode = xmlSecTmplSignatureAddReference(signNode, xmlSecTransformSha1Id,
-                                        NULL, NULL, NULL);
+                                        NULL, BAD_CAST "", NULL);
     if(refNode == NULL) {
         fprintf(stderr, "Error: failed to add reference to signature template\n");
         goto done;

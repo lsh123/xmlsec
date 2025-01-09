@@ -10,7 +10,7 @@ XML Security Library example: Original XML doc file for sign2 example.
 <SignedInfo>
 <CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
 <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
-<Reference>
+<Reference URI="">
 <Transforms>
 <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
 </Transforms>
@@ -18,8 +18,8 @@ XML Security Library example: Original XML doc file for sign2 example.
 <DigestValue>HjY8ilZAIEM2tBbPn5mYO1ieIX4=</DigestValue>
 </Reference>
 </SignedInfo>
-<SignatureValue>GnYgZdzPeXd/gPTJmQ506qmxWkd3VK1Y23kh5Qpq8y4LMNY+LJJeCWK5wpo/vufR
-nIH/KUqvIvtk9nb2IjF5Uw==</SignatureValue>
+<SignatureValue>fUkinGC3hXEUrjJoq8Uc1Gtky7+4AumhtYV5804diUqbFh/SbQI5iPOnJojz0xZK
+WFG9pbfsiWyiqTYlenqDng==</SignatureValue>
 <KeyInfo>
 <KeyName>rsakey.pem</KeyName>
 </KeyInfo>

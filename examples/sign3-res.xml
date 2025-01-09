@@ -10,7 +10,7 @@ XML Security Library example: Original XML doc file for sign3 example.
 <SignedInfo>
 <CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
 <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
-<Reference>
+<Reference URI="">
 <Transforms>
 <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
 </Transforms>
@@ -18,10 +18,11 @@ XML Security Library example: Original XML doc file for sign3 example.
 <DigestValue>HjY8ilZAIEM2tBbPn5mYO1ieIX4=</DigestValue>
 </Reference>
 </SignedInfo>
-<SignatureValue>GnYgZdzPeXd/gPTJmQ506qmxWkd3VK1Y23kh5Qpq8y4LMNY+LJJeCWK5wpo/vufR
-nIH/KUqvIvtk9nb2IjF5Uw==</SignatureValue>
+<SignatureValue>fUkinGC3hXEUrjJoq8Uc1Gtky7+4AumhtYV5804diUqbFh/SbQI5iPOnJojz0xZK
+WFG9pbfsiWyiqTYlenqDng==</SignatureValue>
 <KeyInfo>
 <X509Data>
+<X509SubjectName>emailAddress=xmlsec@aleksey.com,CN=Aleksey Sanin,OU=Test Third Level RSA Certificate,O=XML Security Library (http://www.aleksey.com/xmlsec),ST=California,C=US</X509SubjectName>
 <X509Certificate>MIIDpzCCA1GgAwIBAgIJAK+ii7kzrdqvMA0GCSqGSIb3DQEBBQUAMIGcMQswCQYD
 VQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTE9MDsGA1UEChM0WE1MIFNlY3Vy
 aXR5IExpYnJhcnkgKGh0dHA6Ly93d3cuYWxla3NleS5jb20veG1sc2VjKTEWMBQG
@@ -41,7 +42,8 @@ IFNlY3VyaXR5IExpYnJhcnkgKGh0dHA6Ly93d3cuYWxla3NleS5jb20veG1sc2Vj
 KTEQMA4GA1UECxMHUm9vdCBDQTEWMBQGA1UEAxMNQWxla3NleSBTYW5pbjEhMB8G
 CSqGSIb3DQEJARYSeG1sc2VjQGFsZWtzZXkuY29tggkAr6KLuTOt2q0wDQYJKoZI
 hvcNAQEFBQADQQAOXBj0yICp1RmHXqnUlsppryLCW3pKBD1dkb4HWarO7RjA1yJJ
-fBjXssrERn05kpBcrRfzou4r3DCgQFPhjxga</X509Certificate>
+fBjXssrERn05kpBcrRfzou4r3DCgQFPhjxga
+</X509Certificate>
 </X509Data>
 </KeyInfo>
 </Signature></Envelope>

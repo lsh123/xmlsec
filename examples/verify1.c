@@ -34,6 +34,7 @@
 #include <xmlsec/crypto.h>
 
 int verify_file(const char* xml_file, const char* key_file);
+int verify_signature_results(xmlSecDSigCtxPtr dsigCtx);
 
 int
 main(int argc, char **argv) {
@@ -186,12 +187,12 @@ verify_file(const char* xml_file, const char* key_file) {
 
     /* Verify signature */
     if(xmlSecDSigCtxVerify(dsigCtx, node) < 0) {
-        fprintf(stderr,"Error: signature verify\n");
+        fprintf(stderr,"Error: signature verificaton failed\n");
         goto done;
     }
 
-    /* print verification result to stdout */
-    if(dsigCtx->status == xmlSecDSigStatusSucceeded) {
+    /* verif results and print outcome to stdout */
+    if(verify_signature_results(dsigCtx) == 0) {
         fprintf(stdout, "Signature is OK\n");
     } else {
         fprintf(stdout, "Signature is INVALID\n");
@@ -211,3 +212,65 @@ done:
     }
     return(res);
 }
+
+/**
+ * verify_signature_results:
+ * @dsigCtx:            the XMLDSig context
+ *
+ * Verifies XML signature results to ensure that signature was applied
+ * to the expected data.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
+int
+verify_signature_results(xmlSecDSigCtxPtr dsigCtx) {
+    xmlSecDSigReferenceCtxPtr dsigRefCtx;
+    xmlSecTransformPtr transform;
+
+    assert(dsigCtx);
+
+    /* check that signature verification succeeded */
+    if(dsigCtx->status != xmlSecDSigStatusSucceeded) {
+        fprintf(stderr,"Error: Signature verificaton result is not SUCCESS\n");
+        return(-1);
+    }
+
+    /* in this example we expect exactly ONE reference with URI="" and
+    *  exactly ONE enveloped signature transform (i.e. the whole document is signed)*/
+    if(xmlSecPtrListGetSize(&(dsigCtx->signedInfoReferences)) != 1) {
+        fprintf(stderr,"Error: Exactly one Reference is expected\n");
+        return(-1);
+    }
+    dsigRefCtx = (xmlSecDSigReferenceCtxPtr)xmlSecPtrListGetItem(&(dsigCtx->signedInfoReferences), 0);
+    if((dsigRefCtx == NULL) || (dsigRefCtx->status != xmlSecDSigStatusSucceeded)) {
+        fprintf(stderr,"Error: Reference verification result is not SUCCESS\n");
+        return(-1);
+    }
+
+    /* check URI */
+    if(!xmlStrEqual(dsigRefCtx->uri, BAD_CAST "")) {
+        fprintf(stderr,"Error: Reference URI value doesn't match expected one\n");
+        return(-1);
+    }
+
+    /* check transforms: we expect only one "enveloped signature" transform */
+    transform = dsigRefCtx->transformCtx.first;
+    if((transform == NULL) || (!xmlStrEqual(transform->id->name, xmlSecNameEnveloped))) {
+        fprintf(stderr,"Error: First Transform name '%s' doesn't match expected '%s'\n", (transform != NULL ? transform->id->name : BAD_CAST "NULL"), xmlSecNameEnveloped);
+        return(-1);
+    }
+
+    /* all other transforms should be inserted by XMLSec */
+    transform = transform->next;
+    while(transform != NULL) {
+        if((transform->flags & XMLSEC_TRANSFORM_FLAGS_USER_SPECIFIED) != 0) {
+            fprintf(stderr,"Error: Found unexpected Transform name '%s'\n", transform->id->name);
+            return(-1);
+        }
+        transform = transform->next;
+    }
+
+    /* all good! */
+    return(0);
+}
+

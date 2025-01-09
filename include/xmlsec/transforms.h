@@ -445,8 +445,8 @@ struct _xmlSecTransform {
     /* used for some transform (e.g. KDF) to determine the desired output size */
     xmlSecSize                          expectedOutputSize;
 
-    /* transform flags */
-    intptr_t                            flags;
+    /* transform flags (use uintptr_t to insure struct size stays the same) )*/
+    uintptr_t                           flags;
 
     /* reserved for the future */
     void*                               reserved0;

@@ -51,7 +51,7 @@ typedef struct _xmlSecNssHmacCtx                xmlSecNssHmacCtx, *xmlSecNssHmac
 struct _xmlSecNssHmacCtx {
     CK_MECHANISM_TYPE   digestType;
     PK11Context*        digestCtx;
-    xmlSecByte          dgst[XMLSEC_TRASNFORM_HMAC_MAX_OUTPUT_SIZE];
+    xmlSecByte          dgst[XMLSEC_TRANSFORM_HMAC_MAX_OUTPUT_SIZE];
     xmlSecSize          dgstSizeInBits;       /* dgst size in bits */
 };
 
@@ -230,7 +230,7 @@ xmlSecNssHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
             xmlSecTransformGetName(transform));
         return(-1);
     }
-    xmlSecAssert2(XMLSEC_TRASNFORM_HMAC_BITS_TO_BYTES(ctx->dgstSizeInBits) <= XMLSEC_TRASNFORM_HMAC_MAX_OUTPUT_SIZE, -1);
+    xmlSecAssert2(XMLSEC_TRANSFORM_HMAC_BITS_TO_BYTES(ctx->dgstSizeInBits) <= XMLSEC_TRANSFORM_HMAC_MAX_OUTPUT_SIZE, -1);
 
     return(0);
 }

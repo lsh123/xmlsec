@@ -40,7 +40,7 @@ typedef struct _xmlSecGCryptHmacCtx             xmlSecGCryptHmacCtx, *xmlSecGCry
 struct _xmlSecGCryptHmacCtx {
     int                 digest;
     gcry_md_hd_t        digestCtx;
-    xmlSecByte          dgst[XMLSEC_TRASNFORM_HMAC_MAX_OUTPUT_SIZE];
+    xmlSecByte          dgst[XMLSEC_TRANSFORM_HMAC_MAX_OUTPUT_SIZE];
     xmlSecSize          dgstSizeInBits;       /* dgst size in bits */
 };
 
@@ -179,7 +179,7 @@ xmlSecGCryptHmacInitialize(xmlSecTransformPtr transform) {
 
     hmacSize = gcry_md_get_algo_dlen(ctx->digest);
     xmlSecAssert2(hmacSize > 0, -1);
-    xmlSecAssert2(hmacSize <= XMLSEC_TRASNFORM_HMAC_MAX_OUTPUT_SIZE, -1);
+    xmlSecAssert2(hmacSize <= XMLSEC_TRANSFORM_HMAC_MAX_OUTPUT_SIZE, -1);
     ctx->dgstSizeInBits = 8 * hmacSize;
 
     /* open context */
@@ -230,7 +230,7 @@ xmlSecGCryptHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
         return(-1);
     }
     xmlSecAssert2(ctx->dgstSizeInBits > 0, -1);
-    xmlSecAssert2(XMLSEC_TRASNFORM_HMAC_BITS_TO_BYTES(ctx->dgstSizeInBits) < XMLSEC_TRASNFORM_HMAC_MAX_OUTPUT_SIZE, -1);
+    xmlSecAssert2(XMLSEC_TRANSFORM_HMAC_BITS_TO_BYTES(ctx->dgstSizeInBits) < XMLSEC_TRANSFORM_HMAC_MAX_OUTPUT_SIZE, -1);
 
     return(0);
 }
@@ -378,11 +378,11 @@ xmlSecGCryptHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformC
                                   xmlSecTransformGetName(transform));
                 return(-1);
             }
-            memcpy(ctx->dgst, dgst, XMLSEC_TRASNFORM_HMAC_BITS_TO_BYTES(ctx->dgstSizeInBits));
+            memcpy(ctx->dgst, dgst, XMLSEC_TRANSFORM_HMAC_BITS_TO_BYTES(ctx->dgstSizeInBits));
 
             /* write results if needed */
             if(transform->operation == xmlSecTransformOperationSign) {
-                ret = xmlSecTransformHmacWriteOutput(ctx->dgst, ctx->dgstSizeInBits, XMLSEC_TRASNFORM_HMAC_MAX_OUTPUT_SIZE, out);
+                ret = xmlSecTransformHmacWriteOutput(ctx->dgst, ctx->dgstSizeInBits, XMLSEC_TRANSFORM_HMAC_MAX_OUTPUT_SIZE, out);
                 if(ret < 0) {
                     xmlSecInternalError("xmlSecTransformHmacWriteOutput", xmlSecTransformGetName(transform));
                     return(-1);

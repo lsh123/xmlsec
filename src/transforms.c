@@ -678,6 +678,7 @@ xmlSecTransformCtxNodesListRead(xmlSecTransformCtxPtr ctx, xmlNodePtr node, xmlS
                                 xmlSecNodeGetName(cur));
             return(-1);
         }
+        transform->flags |= XMLSEC_TRANSFORM_FLAGS_USER_SPECIFIED;
 
         ret = xmlSecTransformCtxAppend(ctx, transform);
         if(ret < 0) {

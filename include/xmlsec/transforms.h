@@ -392,6 +392,15 @@ XMLSEC_EXPORT xmlSecSize                xmlSecTransformCtxGetDefaultBinaryChunkS
 XMLSEC_EXPORT void                      xmlSecTransformCtxSetDefaultBinaryChunkSize(xmlSecSize binaryChunkSize);
 
 
+/**
+ * XMLSEC_TRANSFORM_FLAGS_USER_SPECIFIED:
+ *
+ * If this flag is set then this transform was specified in the XML file
+ * (vs a transform added by the XMLSec library).
+ */
+#define XMLSEC_TRANSFORM_FLAGS_USER_SPECIFIED               0x00000001
+
+
 /**************************************************************************
  *
  * xmlSecTransform
@@ -436,9 +445,11 @@ struct _xmlSecTransform {
     /* used for some transform (e.g. KDF) to determine the desired output size */
     xmlSecSize                          expectedOutputSize;
 
+    /* transform flags (use uintptr_t to insure struct size stays the same) )*/
+    uintptr_t                           flags;
+
     /* reserved for the future */
     void*                               reserved0;
-    void*                               reserved1;
 };
 
 XMLSEC_EXPORT xmlSecTransformPtr        xmlSecTransformCreate   (xmlSecTransformId id);

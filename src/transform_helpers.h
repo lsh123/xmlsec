@@ -8,8 +8,8 @@
  *
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
-#ifndef __XMLSEC_TRASNFORMS_HELPERS_H__
-#define __XMLSEC_TRASNFORMS_HELPERS_H__
+#ifndef __XMLSEC_TRANSFORMS_HELPERS_H__
+#define __XMLSEC_TRANSFORMS_HELPERS_H__
 
 
 #ifndef XMLSEC_PRIVATE
@@ -73,9 +73,9 @@ XMLSEC_EXPORT int   xmlSecTransformConcatKdfParamsGetFixedInfo  (xmlSecTransform
 #ifndef XMLSEC_NO_HMAC
 
 /* max HMAC output size in bytes */
-#define XMLSEC_TRASNFORM_HMAC_MAX_OUTPUT_SIZE       128U
+#define XMLSEC_TRANSFORM_HMAC_MAX_OUTPUT_SIZE       128U
 
-#define XMLSEC_TRASNFORM_HMAC_BITS_TO_BYTES(bits)   (((bits) + 7) / 8)
+#define XMLSEC_TRANSFORM_HMAC_BITS_TO_BYTES(bits)   (((bits) + 7) / 8)
 
 XMLSEC_EXPORT int xmlSecTransformHmacReadOutputBitsSize (xmlNodePtr node,
                                                          xmlSecSize defaultSize,
@@ -131,4 +131,4 @@ XMLSEC_EXPORT int  xmlSecTransformRsaOaepParamsRead         (xmlSecTransformRsaO
 
 #endif /* XMLSEC_NO_RSA */
 
-#endif /* __XMLSEC_TRASNFORMS_HELPERS_H__ */
+#endif /* __XMLSEC_TRANSFORMS_HELPERS_H__ */

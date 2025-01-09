@@ -446,7 +446,7 @@ struct _xmlSecTransform {
     xmlSecSize                          expectedOutputSize;
 
     /* transform flags */
-    xmlSecSize                          flags;
+    intptr_t                            flags;
 
     /* reserved for the future */
     void*                               reserved0;

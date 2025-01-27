@@ -192,10 +192,7 @@ xmlSecNssX509StoreFindCert_ex(xmlSecKeyDataStorePtr store, xmlChar *subjectName,
     ctx = xmlSecNssX509StoreGetCtx(store);
     xmlSecAssert2(ctx != NULL, NULL);
 
-    /* do we have any certs to look through? */
-    if(ctx->certsList == NULL) {
-        return(NULL);
-    }
+    /* ctx->certsList CAN be NULL since we are searching NSSDB as well */
 
     ret = xmlSecNssX509FindCertCtxInitialize(&findCertCtx,
             subjectName,
@@ -228,11 +225,7 @@ xmlSecNssX509StoreFindCertByValue(xmlSecKeyDataStorePtr store, xmlSecKeyX509Data
     ctx = xmlSecNssX509StoreGetCtx(store);
     xmlSecAssert2(ctx != NULL, NULL);
 
-    /* do we have any certs to look through? */
-    if(ctx->certsList == NULL) {
-        return(NULL);
-    }
-
+    /* ctx->certsList CAN be NULL since we are searching NSSDB as well */
 
     ret = xmlSecNssX509FindCertCtxInitializeFromValue(&findCertCtx, x509Value);
     if(ret < 0) {

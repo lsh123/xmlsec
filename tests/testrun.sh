@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/sh -x
 
 OS_ARCH=`uname -o`
 OS_KERNEL=`uname -s`
@@ -197,9 +197,9 @@ setupCryptoConfig() {
 
     # see https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certopensystemstorea
     if [ "z$crypto" = "zmscng" ] ; then
-        crypto_config="MY"
+        default_crypto_config="MY"
     else
-        crypto_config="$crypto_config_folder"
+        default_crypto_config="$crypto_config_folder"
     fi
 }
 
@@ -208,7 +208,7 @@ tearDownCryptoConfig() {
         rm -rf $crypto_config_folder
     fi
     unset crypto_config_folder
-    unset crypto_config
+    unset default_crypto_config
 }
 
 setupTest() {
@@ -282,6 +282,10 @@ extra_message=""
 # Keys test function
 #
 execKeysTest() {
+    execKeysTestWithCryptoConfig "$1" "$2" "$3" "$4" "$5" "$6" "$7" "$8" "$9" ""
+}
+
+execKeysTestWithCryptoConfig() {
     expected_res="$1"
     req_key_data="$2"
     key_name="$3"
@@ -291,6 +295,7 @@ execKeysTest() {
     certkey_file="$7"
     asym_key_test="$8"
     key_test_options="$9"
+    crypto_config="${10}"
     failures=0
 
     if [ -n "$XMLSEC_TEST_NAME" -a "$XMLSEC_TEST_NAME" != "$key_name" ]; then
@@ -311,6 +316,9 @@ execKeysTest() {
         echo " Bad parameter: expected_res=$expected_res"
         tearDownTest
         return
+    fi
+    if [ "z$crypto_config" = "z" ] ; then
+        crypto_config="$default_crypto_config"
     fi
 
     # starting test
@@ -394,7 +402,7 @@ execKeysTest() {
             printf "    Reading private key from pkcs8 pem file               "
             rm -f $tmpfile
             params="--lax-key-search --pkcs8-pem $privkey_file.p8-pem $key_test_options --output $tmpfile $asym_key_test.tmpl"
-            echo "$extra_vars $VALGRIND $xmlsec_app sign $xmlsec_params --crypto-config $crypto_config $params" >>  $curlogfile
+            echo "$extra_vars $VALGRIND $xmlsec_app sign $xmlsec_params --crypto-config $v $params" >>  $curlogfile
             $VALGRIND $xmlsec_app  sign $xmlsec_params --crypto-config $crypto_config $params >> $curlogfile 2>> $curlogfile
             printRes $expected_res $?
             if [ $? -ne 0 ]; then
@@ -534,6 +542,10 @@ execKeysTest() {
 # DSig test function
 #
 execDSigTest() {
+    execDSigTestWithCryptoConfig "$1" "$2" "$3" "$4" "$5" "$6" "$7" "$8" ""
+}
+
+execDSigTestWithCryptoConfig() {
     expected_res="$1"
     folder="$2"
     filename="$3"
@@ -542,6 +554,7 @@ execDSigTest() {
     params1="$6"
     params2="$7"
     params3="$8"
+    crypto_config="$9"
     failures=0
 
     if [ -n "$XMLSEC_TEST_NAME" -a "$XMLSEC_TEST_NAME" != "$filename" ]; then
@@ -556,6 +569,9 @@ execDSigTest() {
         echo " Bad parameter: expected_res=$expected_res"
         tearDownTest
         return
+    fi
+    if [ "z$crypto_config" = "z" ] ; then
+        crypto_config="$default_crypto_config"
     fi
 
     # starting test
@@ -644,6 +660,10 @@ execDSigTest() {
 # Enc test function
 #
 execEncTest() {
+    execEncTestWithCryptoConfig "$1" "$2" "$3" "$4" "$5" "$6" "$7" "$8" "$9" ""
+}
+
+execEncTestWithCryptoConfig() {
     expected_res="$1"
     folder="$2"
     filename="$3"
@@ -653,6 +673,7 @@ execEncTest() {
     params2="$7"
     params3="$8"
     outputTransform="$9"
+    crypto_config="${10}"
     failures=0
 
     if [ -n "$XMLSEC_TEST_NAME" -a "$XMLSEC_TEST_NAME" != "$filename" ]; then
@@ -667,6 +688,9 @@ execEncTest() {
         echo " Bad parameter: expected_res=$expected_res"
         tearDownTest
         return
+    fi
+    if [ "z$crypto_config" = "z" ] ; then
+        crypto_config="$default_crypto_config"
     fi
 
     # starting test

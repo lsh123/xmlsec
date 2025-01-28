@@ -452,6 +452,16 @@ OPENSSL_CONF=./openssl.cnf openssl pkcs12 -export -in all-gost2012_512.pem -name
 rm all-gost2012_512.pem
 ```
 
+### Load keys into NSS DB
+The following process loads a few keys into NSS DB for testing that XMLSec can find keys in NSS DB  (the tests password is `secret123`, do NOT specify password for nssdb):
+
+```
+rm -rf nssdb
+mkdir nssdb
+pk12util -d nssdb -i largersakey.p12
+chmod a-w nssdb/*
+```
+
 ### Creating self-signed cert for DSA/RSA private keys and loading it into NSS store
 The following process takes a DSA/RSA private key in PEM or DER format and
 creates a PKCS12 file containing the private key, and a self-signed

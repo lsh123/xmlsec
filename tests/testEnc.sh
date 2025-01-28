@@ -1208,13 +1208,13 @@ done
 if [ -n "$XMLSEC_TEST_NAME" -a "$XMLSEC_TEST_NAME" = "enc-dynamic" ]; then
     echo "Dynamic encryption template"
     printf "    Encrypt template                                     "
-    echo "$VALGRIND $xmlsec_app encrypt-tmpl $xmlsec_params --crypto-config $crypto_config --keys-file $topfolder/keys/keys.xml --output $tmpfile" >> $logfile
-    $VALGRIND $xmlsec_app encrypt-tmpl $xmlsec_params --crypto-config $crypto_config --keys-file $topfolder/keys/keys.xml --output $tmpfile >> $logfile 2>> $logfile
+    echo "$VALGRIND $xmlsec_app encrypt-tmpl $xmlsec_params --crypto-config $default_crypto_config --keys-file $topfolder/keys/keys.xml --output $tmpfile" >> $logfile
+    $VALGRIND $xmlsec_app encrypt-tmpl $xmlsec_params --crypto-config $default_crypto_config --keys-file $topfolder/keys/keys.xml --output $tmpfile >> $logfile 2>> $logfile
     printRes $res_success $?
 
     printf "    Decrypt document                                     "
-    echo "$VALGRIND $xmlsec_app decrypt $xmlsec_params --crypto-config $crypto_config --keys-file $topfolder/keys/keys.xml $tmpfile" >> $logfile
-    $VALGRIND $xmlsec_app decrypt $xmlsec_params --crypto-config $crypto_config --keys-file $topfolder/keys/keys.xml $tmpfile >> $logfile 2>> $logfile
+    echo "$VALGRIND $xmlsec_app decrypt $xmlsec_params --crypto-config $default_crypto_config --keys-file $topfolder/keys/keys.xml $tmpfile" >> $logfile
+    $VALGRIND $xmlsec_app decrypt $xmlsec_params --crypto-config $default_crypto_config --keys-file $topfolder/keys/keys.xml $tmpfile >> $logfile 2>> $logfile
     printRes $res_success $?
 fi
 

@@ -516,7 +516,31 @@ if [ "z$crypto" = "zopenssl" -o "z$crypto" = "znss" -o "z$crypto" = "zgnutls" ] 
         "--untrusted-$cert_format $topfolder/keys/largersacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
         "$priv_key_option $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
         "--untrusted-$cert_format $topfolder/keys/largersacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+fi
 
+# Only NSS can lookup certs in NSS DB, skip certs verification for signatures
+if [ "z$crypto" = "znss"  ] ; then
+    extra_message="Signature cert lookup in NSS DB"
+    execDSigTestWithCryptoConfig $res_success \
+        "" \
+        "aleksey-xmldsig-01/enveloped-x509-subjectname" \
+        "sha512 rsa-sha512" \
+        "rsa x509" \
+        "--untrusted-$cert_format $topfolder/keys/largersacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+        "--insecure" \
+        "--untrusted-$cert_format $topfolder/keys/largersacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+        "$topfolder/keys/nssdb"
+
+    extra_message="Signature cert lookup in NSS DB"
+    execDSigTestWithCryptoConfig $res_success \
+        "" \
+        "aleksey-xmldsig-01/enveloped-x509-issuerserial" \
+        "sha512 rsa-sha512" \
+        "rsa x509" \
+        "--untrusted-$cert_format $topfolder/keys/largersacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+        "--insecure" \
+        "--untrusted-$cert_format $topfolder/keys/largersacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+        "$topfolder/keys/nssdb"
 fi
 
 # MSCng only supports SHA1 as cert digests and cannot lookup the key
@@ -1821,12 +1845,12 @@ execDSigTest $res_fail \
 if [ -n "$XMLSEC_TEST_NAME" -a "$XMLSEC_TEST_NAME" = "dsig-dynamic" ]; then
 echo "Dynamic signature template"
 printf "    Create new signature                                 "
-echo "$VALGRIND $xmlsec_app sign-tmpl $xmlsec_params --crypto-config $crypto_config --keys-file $topfolder/keys/keys.xml --output $tmpfile" >> $logfile
-$VALGRIND $xmlsec_app sign-tmpl $xmlsec_params --crypto-config $crypto_config --keys-file $topfolder/keys/keys.xml --output $tmpfile >> $logfile 2>> $logfile
+echo "$VALGRIND $xmlsec_app sign-tmpl $xmlsec_params --crypto-config $default_crypto_config --keys-file $topfolder/keys/keys.xml --output $tmpfile" >> $logfile
+$VALGRIND $xmlsec_app sign-tmpl $xmlsec_params --crypto-config $default_crypto_config --keys-file $topfolder/keys/keys.xml --output $tmpfile >> $logfile 2>> $logfile
 printRes $res_success $?
 printf "    Verify new signature                                 "
 echo "$VALGRIND $xmlsec_app verify --keys-file $topfolder/keys/keys.xml $tmpfile" >> $logfile
-$VALGRIND $xmlsec_app verify $xmlsec_params --crypto-config $crypto_config --keys-file $topfolder/keys/keys.xml $tmpfile >> $logfile 2>> $logfile
+$VALGRIND $xmlsec_app verify $xmlsec_params --crypto-config $default_crypto_config --keys-file $topfolder/keys/keys.xml $tmpfile >> $logfile 2>> $logfile
 printRes $res_success $?
 fi
 

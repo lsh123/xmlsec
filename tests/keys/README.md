@@ -459,6 +459,7 @@ The following process loads a few keys into NSS DB for testing that XMLSec can f
 rm -rf nssdb
 mkdir nssdb
 pk12util -d nssdb -i largersakey.p12
+chmod a-w nssdb/*
 ```
 
 ### Creating self-signed cert for DSA/RSA private keys and loading it into NSS store

@@ -510,6 +510,7 @@
     <keyword type="macro" name="XMLSEC_KEYINFO_FLAGS_STOP_ON_EMPTY_NODE" link="xmlsec-keyinfo.html#XMLSEC-KEYINFO-FLAGS-STOP-ON-EMPTY-NODE:CAPS"/>
     <keyword type="macro" name="XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_STRICT_CHECKS" link="xmlsec-keyinfo.html#XMLSEC-KEYINFO-FLAGS-X509DATA-SKIP-STRICT-CHECKS:CAPS"/>
     <keyword type="macro" name="XMLSEC_KEYINFO_FLAGS_LAX_KEY_SEARCH" link="xmlsec-keyinfo.html#XMLSEC-KEYINFO-FLAGS-LAX-KEY-SEARCH:CAPS"/>
+    <keyword type="macro" name="XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_TIME_CHECKS" link="xmlsec-keyinfo.html#XMLSEC-KEYINFO-FLAGS-X509DATA-SKIP-TIME-CHECKS:CAPS"/>
     <keyword type="struct" name="struct xmlSecKeyInfoCtx" link="xmlsec-keyinfo.html#xmlSecKeyInfoCtx"/>
     <keyword type="macro" name="xmlSecKeyDataNameId" link="xmlsec-keyinfo.html#xmlSecKeyDataNameId"/>
     <keyword type="macro" name="xmlSecKeyDataValueId" link="xmlsec-keyinfo.html#xmlSecKeyDataValueId"/>
@@ -928,6 +929,7 @@
     <keyword type="macro" name="xmlSecTransformUsageAny" link="xmlsec-transforms.html#xmlSecTransformUsageAny"/>
     <keyword type="macro" name="XMLSEC_TRANSFORMCTX_FLAGS_USE_VISA3D_HACK" link="xmlsec-transforms.html#XMLSEC-TRANSFORMCTX-FLAGS-USE-VISA3D-HACK:CAPS"/>
     <keyword type="struct" name="struct xmlSecTransformCtx" link="xmlsec-transforms.html#xmlSecTransformCtx"/>
+    <keyword type="macro" name="XMLSEC_TRANSFORM_FLAGS_USER_SPECIFIED" link="xmlsec-transforms.html#XMLSEC-TRANSFORM-FLAGS-USER-SPECIFIED:CAPS"/>
     <keyword type="struct" name="struct xmlSecTransform" link="xmlsec-transforms.html#xmlSecTransform"/>
     <keyword type="struct" name="struct xmlSecTransformKlass" link="xmlsec-transforms.html#xmlSecTransformKlass"/>
     <keyword type="macro" name="xmlSecTransformIdListId" link="xmlsec-transforms.html#xmlSecTransformIdListId"/>
@@ -2342,8 +2344,8 @@
     <keyword type="member" name="xmlSecTransform.inNodes" link="xmlsec-transforms.html#xmlSecTransform.inNodes"/>
     <keyword type="member" name="xmlSecTransform.outNodes" link="xmlsec-transforms.html#xmlSecTransform.outNodes"/>
     <keyword type="member" name="xmlSecTransform.expectedOutputSize" link="xmlsec-transforms.html#xmlSecTransform.expectedOutputSize"/>
+    <keyword type="member" name="xmlSecTransform.flags" link="xmlsec-transforms.html#xmlSecTransform.flags"/>
     <keyword type="member" name="xmlSecTransform.reserved0" link="xmlsec-transforms.html#xmlSecTransform.reserved0"/>
-    <keyword type="member" name="xmlSecTransform.reserved1" link="xmlsec-transforms.html#xmlSecTransform.reserved1"/>
     <keyword type="member" name="xmlSecTransformKlass.klassSize" link="xmlsec-transforms.html#xmlSecTransformKlass.klassSize"/>
     <keyword type="member" name="xmlSecTransformKlass.objSize" link="xmlsec-transforms.html#xmlSecTransformKlass.objSize"/>
     <keyword type="member" name="xmlSecTransformKlass.name" link="xmlsec-transforms.html#xmlSecTransformKlass.name"/>

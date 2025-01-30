@@ -2,16 +2,16 @@
 #
 # MUST BE RUN FROM x64 Native Tools Command Prompt
 #
-# $ bash build_windows.sh
+# $ c:\cygwin64\bin\bash build_windows.sh
 #
-libxml2_version="2.13.4"
+libxml2_version="2.13.5"
 libxslt_version="1.1.42"
 openssl_version="3.4.0"
 xmlsec_version="1.3.7-rc1"
 
 pwd=`pwd`
 script_dir=`dirname $0`
-work_dir="c:\\local\\dev"
+work_dir=`cygpath "c:\\local\\dev"`
 distro_dir="c:\\local\\distro"
 libxml2_output_dir="${distro_dir}\libxml2"
 libxslt_output_dir="${distro_dir}\libxslt"
@@ -22,7 +22,7 @@ zip_folders_and_files="libxml2 libxslt openssl xmlsec README.md"
 zip_output_file="${distro_dir}\\xmlsec1-${xmlsec_version}-win64.zip"
 
 PERL_PATH="C:\\Strawberry\\perl\\bin"
-LOG_FILE="C:\\temp\\build-windows.log"
+LOG_FILE=`cygpath "C:\\temp\\build-windows.log"`
 
 function build_libxml2 {
   # check if already built

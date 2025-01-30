@@ -826,9 +826,9 @@ xmlSecKeySetValue(xmlSecKeyPtr key, xmlSecKeyDataPtr value) {
  * xmlSecKeyGetSize:
  * @key:                the pointer to key.
  *
- * Gets key size (see also #xmlSecKeyDataGetSize function).
+ * Gets key size (in bits). Also see #xmlSecKeyDataGetSize function.
  *
- * Returns: key size.
+ * Returns: key size (in bits).
  */
 xmlSecSize
 xmlSecKeyGetSize(xmlSecKeyPtr key) {

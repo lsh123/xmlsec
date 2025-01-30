@@ -84,7 +84,7 @@ struct _xmlSecOpenSSLEvpSignatureCtx {
     EVP_MD_CTX*         digestCtx;
     xmlSecKeyDataId     keyId;
     EVP_PKEY*           pKey;
-    xmlSecSize          keySize;
+    xmlSecSize          keySizeBits;
     xmlSecOpenSSLEvpSignatureMode mode;
     int                 rsaPadding;
 };
@@ -101,12 +101,12 @@ static int      xmlSecOpenSSLEvpSignatureDsa_OpenSSL2XmlDSig    (const xmlSecTra
 #endif /* XMLSEC_NO_DSA */
 
 #ifndef XMLSEC_NO_EC
-static int      xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL  (xmlSecSize keySize,
+static int      xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL  (xmlSecSize keySizeBits,
                                                                  const xmlSecByte * data,
                                                                  xmlSecSize dataSize,
                                                                  unsigned char ** out,
                                                                  int * outLen);
-static int      xmlSecOpenSSLEvpSignatureEcdsa_OpenSSL2XmlDSig  (xmlSecSize keySize,
+static int      xmlSecOpenSSLEvpSignatureEcdsa_OpenSSL2XmlDSig  (xmlSecSize keySizeBits,
                                                                  xmlSecBufferPtr data);
 #endif /* XMLSEC_NO_EC */
 
@@ -809,8 +809,8 @@ xmlSecOpenSSLEvpSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) 
     xmlSecAssert2(ctx->keyId != NULL, -1);
     xmlSecAssert2(xmlSecKeyCheckId(key, ctx->keyId), -1);
 
-    ctx->keySize = xmlSecKeyGetSize(key);
-    if(ctx->keySize <= 0) {
+    ctx->keySizeBits = xmlSecKeyGetSize(key);
+    if(ctx->keySizeBits <= 0) {
         xmlSecInternalError("xmlSecKeyGetSize", xmlSecTransformGetName(transform));
         return(-1);
     }
@@ -999,7 +999,7 @@ xmlSecOpenSSLEvpSignatureVerify(xmlSecTransformPtr transform,
     xmlSecAssert2(ctx->digest != NULL, -1);
     xmlSecAssert2(ctx->digestCtx != NULL, -1);
     xmlSecAssert2(ctx->pKey != NULL, -1);
-    xmlSecAssert2(ctx->keySize > 0, -1);
+    xmlSecAssert2(ctx->keySizeBits > 0, -1);
 
     /* calculate digest */
     ret = xmlSecOpenSSLEvpSignatureCalculateDigest(transform, ctx, dgst, &dgstSize);
@@ -1042,7 +1042,7 @@ xmlSecOpenSSLEvpSignatureVerify(xmlSecTransformPtr transform,
     case xmlSecOpenSSLEvpSignatureMode_Ecdsa:
 #ifndef XMLSEC_NO_EC
         /* convert XMLDSig data to the format expected by OpenSSL */
-        ret =  xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL(ctx->keySize, data, dataSize, &fixedData, &fixedDataLen);
+        ret =  xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL(ctx->keySizeBits, data, dataSize, &fixedData, &fixedDataLen);
         if((ret < 0) || (fixedData == NULL) || (fixedDataLen <= 0)) {
             xmlSecInternalError("xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL", xmlSecTransformGetName(transform));
             goto done;
@@ -1096,7 +1096,7 @@ xmlSecOpenSSLEvpSignatureSign(xmlSecTransformPtr transform, xmlSecOpenSSLEvpSign
     xmlSecAssert2(transform != NULL, -1);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->pKey != NULL, -1);
-    xmlSecAssert2(ctx->keySize > 0, -1);
+    xmlSecAssert2(ctx->keySizeBits > 0, -1);
     xmlSecAssert2(out != NULL, -1);
 
     /* calculate digest */
@@ -1168,7 +1168,7 @@ xmlSecOpenSSLEvpSignatureSign(xmlSecTransformPtr transform, xmlSecOpenSSLEvpSign
     case xmlSecOpenSSLEvpSignatureMode_Ecdsa:
 #ifndef XMLSEC_NO_EC
         /* convert XMLDSig data to the format expected by OpenSSL */
-        ret =  xmlSecOpenSSLEvpSignatureEcdsa_OpenSSL2XmlDSig(ctx->keySize, out);
+        ret =  xmlSecOpenSSLEvpSignatureEcdsa_OpenSSL2XmlDSig(ctx->keySizeBits, out);
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLEvpSignatureEcdsa_OpenSSL2XmlDSig", xmlSecTransformGetName(transform));
             goto done;
@@ -1831,7 +1831,7 @@ xmlSecOpenSSLTransformDsaSha256GetKlass(void) {
 #ifndef XMLSEC_NO_EC
 
 static int
-xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL(xmlSecSize keySize, const xmlSecByte * data, xmlSecSize dataSize,
+xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL(xmlSecSize keySizeBits, const xmlSecByte * data, xmlSecSize dataSize,
     unsigned char ** out, int * outLen
 ) {
     ECDSA_SIG* sig = NULL;
@@ -1841,15 +1841,15 @@ xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL(xmlSecSize keySize, const xmlSecB
     int res = -1;
     int ret;
 
-    xmlSecAssert2(keySize > 0, 0);
+    xmlSecAssert2(keySizeBits > 0, 0);
     xmlSecAssert2(data != NULL, 0);
     xmlSecAssert2(dataSize > 0, 0);
     xmlSecAssert2(out != NULL, 0);
     xmlSecAssert2((*out) == NULL, 0);
     xmlSecAssert2(outLen != NULL, 0);
 
-    /* get signature size */
-    XMLSEC_SAFE_CAST_SIZE_TO_INT(keySize, signHalfLen, goto done, NULL);
+    /* get half of signature size in bytes */
+    XMLSEC_SAFE_CAST_SIZE_TO_INT((keySizeBits + 7) / 8, signHalfLen, goto done, NULL);
 
     /* check size: we expect the r and s to be the same size and match the size of
      * the key (RFC 6931); however some  implementations (e.g. Java) cut leading zeros:
@@ -1914,7 +1914,7 @@ done:
 }
 
 static int
-xmlSecOpenSSLEvpSignatureEcdsa_OpenSSL2XmlDSig(xmlSecSize keySize, xmlSecBufferPtr data) {
+xmlSecOpenSSLEvpSignatureEcdsa_OpenSSL2XmlDSig(xmlSecSize keySizeBits, xmlSecBufferPtr data) {
     xmlSecByte * buf;
     xmlSecSize bufSize;
     int bufLen, signHalfLen, rLen, sLen;
@@ -1924,7 +1924,7 @@ xmlSecOpenSSLEvpSignatureEcdsa_OpenSSL2XmlDSig(xmlSecSize keySize, xmlSecBufferP
     int ret;
     int res = -1;
 
-    xmlSecAssert2(keySize > 0, 0);
+    xmlSecAssert2(keySizeBits > 0, 0);
     xmlSecAssert2(data != NULL, 0);
 
     buf = xmlSecBufferGetData(data);
@@ -1932,8 +1932,8 @@ xmlSecOpenSSLEvpSignatureEcdsa_OpenSSL2XmlDSig(xmlSecSize keySize, xmlSecBufferP
     xmlSecAssert2(buf != NULL, 0);
     xmlSecAssert2(bufSize > 0, 0);
 
-    /* get signature size */
-    XMLSEC_SAFE_CAST_SIZE_TO_INT(keySize, signHalfLen, goto done, NULL);
+    /* get half of signature size in bytes */
+    XMLSEC_SAFE_CAST_SIZE_TO_INT((keySizeBits + 7) / 8, signHalfLen, goto done, NULL);
 
     /* extract signature */
     XMLSEC_SAFE_CAST_SIZE_TO_INT(bufSize, bufLen, goto done, NULL);

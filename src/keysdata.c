@@ -459,7 +459,7 @@ xmlSecKeyDataGetType(xmlSecKeyDataPtr data) {
  * xmlSecKeyDataGetSize:
  * @data:               the pointer to key data.
  *
- * Gets key data size.
+ * Gets key data size (in bits).
  *
  * Returns: key data size (in bits).
  */

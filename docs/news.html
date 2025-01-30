@@ -48,11 +48,20 @@
 <h1>XML Security Library News</h1>
 </div>
 <ul>
-    <li>TBD<br>
-		<!-- TODO: copy from index.html -->
+    <li>February 11, 2025<br>
+		The <a href="download.html">XML Security Library 1.3.7</a> release includes the following changes:
+        <ul>
+            <li>(xmlsec-core) Added XMLSEC_TRANSFORM_FLAGS_USER_SPECIFIED flag to the xmlSecTransform to differentiate transforms specified in the input XML file vs transforms automatically added by XMLSec library.</li>
+            <li>(xmlsec-core) Added signature result verification to the examples to demonstrate the need to ensure the correct data is actually signed.</li>
+            <li>(xmlsec-core) Disabled old crypto algorithms (MD5, RIPEMD160) and the old crypto engines (MSCrypto, GCrypt) by default (use "--with-legacy-features" option to reenable everything).</li>
+            <li>(xmlsec-openssl) Fixed excess padding in ECDSA signature generation.</li>
+            <li>(xmlsec-nss) Fixed certificates search in NSS DB.</li>
+            <li>(xmlsec-openssl, xmlsec-gnutls, xmlsec-mscng) Added an option to skip timestamp checks for certificates and CLRs.</li>
+            <li>(xmlsec-windows) Disabled old crypto algorithms (MD5, RIPEMD160), made "mscng" the default crypto engine on Windows, and added support for "legacy-features" flag for "configure.js".<li>
+            <li>Several other small fixes (see <a href="https://github.com/lsh123/xmlsec/commits/master">more details</a>).</li>
+        </ul>
 	</li>
 	<br>
-
 
 	<li>October 22, 2024<br>
 		The <a href="download.html">XML Security Library 1.3.6</a> release includes the following changes:

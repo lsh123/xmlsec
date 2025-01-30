@@ -11,6 +11,8 @@
 #ifndef __XMLSEC_TRANSFORMS_H__
 #define __XMLSEC_TRANSFORMS_H__
 
+#include <stdint.h>
+
 #include <libxml/tree.h>
 #include <libxml/xpath.h>
 

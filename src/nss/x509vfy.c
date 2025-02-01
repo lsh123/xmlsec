@@ -40,6 +40,8 @@
 #include <xmlsec/nss/x509.h>
 
 #include "../cast_helpers.h"
+#include "../keysdata_helpers.h"
+
 #include "private.h"
 
 /**************************************************************************
@@ -75,13 +77,6 @@ XMLSEC_KEY_DATA_STORE_DECLARE(NssX509Store, xmlSecNssX509StoreCtx)
 
 static int              xmlSecNssX509StoreInitialize    (xmlSecKeyDataStorePtr store);
 static void             xmlSecNssX509StoreFinalize      (xmlSecKeyDataStorePtr store);
-static int              xmlSecNssX509NameStringRead     (const xmlSecByte **in,
-                                                         xmlSecSize *inSize,
-                                                         xmlSecByte *out,
-                                                         xmlSecSize outSize,
-                                                         xmlSecSize *outWritten,
-                                                         xmlSecByte delim,
-                                                         int ingoreTrailingSpaces);
 static xmlSecByte *     xmlSecNssX509NameRead           (const xmlChar *str);
 
 static int              xmlSecNssNumToItem              (PLArenaPool *arena,
@@ -866,10 +861,10 @@ xmlSecNssX509NameRead(const xmlChar *str) {
         }
 
         nameSize = 0;
-        ret = xmlSecNssX509NameStringRead(&str, &strSize,
+        ret = xmlSecsX509NameStringRead(&str, &strSize,
             name, sizeof(name), &nameSize, '=', 0);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecNssX509NameStringRead", NULL);
+            xmlSecInternalError("xmlSecsX509NameStringRead", NULL);
             goto done;
         }
 
@@ -881,10 +876,10 @@ xmlSecNssX509NameRead(const xmlChar *str) {
             ++str; --strSize;
             if((*str) == '\"') {
                 valueSize = 0;
-                ret = xmlSecNssX509NameStringRead(&str, &strSize,
+                ret = xmlSecsX509NameStringRead(&str, &strSize,
                     value, sizeof(value), &valueSize, '"', 1);
                 if(ret < 0) {
-                    xmlSecInternalError("xmlSecNssX509NameStringRead", NULL);
+                    xmlSecInternalError("xmlSecsX509NameStringRead", NULL);
                     goto done;
                 }
                 *(p++) = '\"';
@@ -908,10 +903,10 @@ xmlSecNssX509NameRead(const xmlChar *str) {
                 xmlSecNotImplementedError("reading octect values is not implemented yet");
                 goto done;
             } else {
-                ret = xmlSecNssX509NameStringRead(&str, &strSize,
+                ret = xmlSecsX509NameStringRead(&str, &strSize,
                     value, sizeof(value), &valueSize, ',', 1);
                 if(ret < 0) {
-                    xmlSecInternalError("xmlSecNssX509NameStringRead", NULL);
+                    xmlSecInternalError("xmlSecsX509NameStringRead", NULL);
                     goto done;
                 }
 
@@ -933,80 +928,6 @@ xmlSecNssX509NameRead(const xmlChar *str) {
 done:
     PORT_Free(retval);
     return (NULL);
-}
-
-static int
-xmlSecNssX509NameStringRead(const xmlSecByte **in, xmlSecSize *inSize,
-                            xmlSecByte *out, xmlSecSize outSize,
-                            xmlSecSize *outWritten,
-                            xmlSecByte delim, int ingoreTrailingSpaces) {
-    xmlSecSize ii, jj, nonSpace;
-
-    xmlSecAssert2(in != NULL, -1);
-    xmlSecAssert2((*in) != NULL, -1);
-    xmlSecAssert2(inSize != NULL, -1);
-    xmlSecAssert2(out != NULL, -1);
-
-    ii = jj = nonSpace = 0;
-    while (ii < (*inSize)) {
-        xmlSecByte inCh, inCh2, outCh;
-
-        inCh = (*in)[ii];
-        if (inCh == delim) {
-            break;
-        }
-        if (jj >= outSize) {
-            xmlSecInvalidSizeOtherError("output buffer is too small", NULL);
-            return(-1);
-        }
-
-        if (inCh == '\\') {
-            /* try to move to next char after \\ */
-            ++ii;
-            if (ii >= (*inSize)) {
-                break;
-            }
-            inCh = (*in)[ii];
-
-            /* if next char after \\ is a hex then we expect \\XX, otherwise we just remove \\ */
-            if (xmlSecIsHex(inCh)) {
-                /* try to move to next char after \\X */
-                ++ii;
-                if (ii >= (*inSize)) {
-                    xmlSecInvalidDataError("two hex digits expected", NULL);
-                    return(-1);
-                }
-                inCh2 = (*in)[ii];
-                if (!xmlSecIsHex(inCh2)) {
-                    xmlSecInvalidDataError("two hex digits expected", NULL);
-                    return(-1);
-                }
-                outCh = xmlSecFromHex2(inCh, inCh2);
-            } else {
-                outCh = inCh;
-            }
-        } else {
-            outCh = inCh;
-        }
-
-        out[jj] = outCh;
-        ++ii;
-        ++jj;
-
-        if (ingoreTrailingSpaces && !isspace(outCh)) {
-            nonSpace = jj;
-        }
-    }
-
-    (*inSize) -= ii;
-    (*in) += ii;
-
-    if (ingoreTrailingSpaces) {
-        (*outWritten) = nonSpace;
-    } else {
-        (*outWritten) = (jj);
-    }
-    return(0);
 }
 
 /* code lifted from NSS */

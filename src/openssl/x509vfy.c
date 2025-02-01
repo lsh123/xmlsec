@@ -42,6 +42,8 @@
 #include <openssl/x509v3.h>
 
 #include "../cast_helpers.h"
+#include "../keysdata_helpers.h"
+
 #include "openssl_compat.h"
 #include "private.h"
 
@@ -100,13 +102,6 @@ static int              xmlSecOpenSSLX509VerifyCRL                      (X509_ST
 static X509*            xmlSecOpenSSLX509FindChildCert                  (STACK_OF(X509) *chain,
                                                                          X509 *cert);
 static X509_NAME*       xmlSecOpenSSLX509NameRead                       (const xmlChar *str);
-static int              xmlSecOpenSSLX509NameStringRead                 (const xmlChar **in,
-                                                                         xmlSecSize *inSize,
-                                                                         xmlSecByte *out,
-                                                                         xmlSecSize outSize,
-                                                                         xmlSecSize *outWritten,
-                                                                         xmlSecByte delim,
-                                                                         int ingoreTrailingSpaces);
 static int              xmlSecOpenSSLX509NamesCompare                   (X509_NAME *a,
                                                                          X509_NAME *b);
 static STACK_OF(X509_NAME_ENTRY)*  xmlSecOpenSSLX509_NAME_ENTRIES_copy  (X509_NAME *a);
@@ -1800,10 +1795,10 @@ xmlSecOpenSSLX509NameRead(const xmlChar *str) {
         }
 
         nameSize = 0;
-        ret = xmlSecOpenSSLX509NameStringRead(&str, &strSize,
+        ret = xmlSecsX509NameStringRead(&str, &strSize,
             name, sizeof(name), &nameSize, '=', 0);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecOpenSSLX509NameStringRead", NULL);
+            xmlSecInternalError("xmlSecsX509NameStringRead", NULL);
             goto done;
         }
         name[nameSize] = '\0';
@@ -1821,10 +1816,10 @@ xmlSecOpenSSLX509NameRead(const xmlChar *str) {
             ++str; --strSize;
             if((*str) == '\"') {
                 ++str; --strSize;
-                ret = xmlSecOpenSSLX509NameStringRead(&str, &strSize,
+                ret = xmlSecsX509NameStringRead(&str, &strSize,
                     value, sizeof(value), &valueSize, '"', 1);
                 if(ret < 0) {
-                    xmlSecInternalError("xmlSecOpenSSLX509NameStringRead", NULL);
+                    xmlSecInternalError("xmlSecsX509NameStringRead", NULL);
                     goto done;
                 }
 
@@ -1852,10 +1847,10 @@ xmlSecOpenSSLX509NameRead(const xmlChar *str) {
                 xmlSecNotImplementedError("reading octect values is not implemented yet");
                 goto done;
             } else {
-                ret = xmlSecOpenSSLX509NameStringRead(&str, &strSize,
+                ret = xmlSecsX509NameStringRead(&str, &strSize,
                                         value, sizeof(value), &valueSize, ',', 1);
                 if(ret < 0) {
-                    xmlSecInternalError("xmlSecOpenSSLX509NameStringRead", NULL);
+                    xmlSecInternalError("xmlSecsX509NameStringRead", NULL);
                     goto done;
                 }
                 type = MBSTRING_ASC;
@@ -1885,91 +1880,6 @@ done:
         X509_NAME_free(nm);
     }
     return(res);
-}
-
-static int
-xmlSecOpenSSLX509NameStringRead(const xmlChar **in, xmlSecSize *inSize,
-                            xmlSecByte *out, xmlSecSize outSize,
-                            xmlSecSize *outWritten,
-                            xmlSecByte delim, int ingoreTrailingSpaces) {
-    xmlSecSize ii, jj, nonSpace;
-    xmlSecByte hexCh1, hexCh2;
-    int afterReverseSlash = 0;
-
-    xmlSecAssert2(in != NULL, -1);
-    xmlSecAssert2((*in) != NULL, -1);
-    xmlSecAssert2(inSize != NULL, -1);
-    xmlSecAssert2(out != NULL, -1);
-
-    /* afterReverseSlash:
-     *   0: not after '\'
-     *   1: first char after '\'
-     *   2: second char after '\'
-     */
-    ii = jj = nonSpace = 0;
-    while (ii < (*inSize)) {
-        xmlSecByte inCh, outCh;
-
-        inCh = (*in)[ii];
-        ++ii;
-
-        if ((afterReverseSlash == 1) && (xmlSecIsHex(inCh))) {
-            /* if next char after '\' is a hex then we expect '\XX' */
-            afterReverseSlash = 2;
-            hexCh1 = inCh;
-        } else if ((afterReverseSlash == 1) && (!xmlSecIsHex(inCh))) {
-            /* if next char after '\' is a NOT hex then we just remove '\' and copy next char as-is */
-            afterReverseSlash = 0;
-            outCh = inCh;
-        } else if ((afterReverseSlash == 2) && (xmlSecIsHex(inCh))) {
-            /* if next char after '\' is a hex then we expect '\XX' */
-            afterReverseSlash = 0;
-            hexCh2 = inCh;
-            outCh = xmlSecFromHex2(hexCh1, hexCh2);
-        } else if ((afterReverseSlash == 2) && (!xmlSecIsHex(inCh))) {
-            /* if next char after '\' is a hex then we expect \\XX */
-            xmlSecInvalidDataError("two hex digits expected in an escape sequence starting with '\'", NULL);
-            return(-1);
-        } else if (inCh == '\\') {
-            /* handle ecaped chars on next loop */
-            afterReverseSlash = 1;
-        } else if (inCh == delim) {
-            /* stop and make sure that ii points to the delimiter */
-            --ii;
-            break;
-        } else {
-            /* regular character, copy over */
-            outCh = inCh;
-        }
-
-        if (afterReverseSlash == 0) {
-            if (jj >= outSize) {
-                xmlSecInvalidSizeOtherError("output buffer is too small", NULL);
-                return(-1);
-            }
-            out[jj] = outCh;
-            ++jj;
-
-            if (ingoreTrailingSpaces && !isspace(outCh)) {
-                nonSpace = jj;
-            }
-        }
-    }
-
-    if (afterReverseSlash != 0) {
-        xmlSecInvalidDataError("incomplete escape sequence starting with '\' at the end of the string", NULL);
-        return(-1);
-    }
-
-    (*inSize) -= ii;
-    (*in) += ii;
-
-    if (ingoreTrailingSpaces) {
-        (*outWritten) = nonSpace;
-    } else {
-        (*outWritten) = (jj);
-    }
-    return(0);
 }
 
 /*

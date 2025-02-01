@@ -3623,6 +3623,104 @@ xmlSecKeyX509DataValueXmlWrite(xmlSecKeyX509DataValuePtr x509Value, xmlNodePtr n
     return(0);
 }
 
+/**
+ * xmlSecsX509NameStringRead:
+ * @in:                     the x509 name input string.
+ * @inSize:                 the size of @in.
+ * @out:                    the x509 name output string.
+ * @outSize:                the size ouf @out.
+ * @outWritten:             the actual size written in @out.
+ * @delim:                  the stop character.
+ * @ingoreTrailingSpaces:   if non-zero then trailing spaces are ignored and not written into @out.
+ *
+ * Reads XML name and un-escapes '\XX' and '\C' from @in to @out stoppping at @delim or end of the @in.
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecsX509NameStringRead(const xmlChar **in, xmlSecSize *inSize,
+                            xmlSecByte *out, xmlSecSize outSize,
+                            xmlSecSize *outWritten,
+                            xmlSecByte delim, int ingoreTrailingSpaces) {
+    xmlSecSize ii, jj, nonSpace;
+    xmlSecByte hexCh1, hexCh2;
+    int afterReverseSlash = 0;
+
+    xmlSecAssert2(in != NULL, -1);
+    xmlSecAssert2((*in) != NULL, -1);
+    xmlSecAssert2(inSize != NULL, -1);
+    xmlSecAssert2(out != NULL, -1);
+
+    /* afterReverseSlash:
+     *   0: not after '\'
+     *   1: first char after '\'
+     *   2: second char after '\'
+     */
+    ii = jj = nonSpace = 0;
+    while (ii < (*inSize)) {
+        xmlSecByte inCh, outCh;
+
+        inCh = (*in)[ii];
+        ++ii;
+
+        if ((afterReverseSlash == 1) && (xmlSecIsHex(inCh))) {
+            /* if next char after '\' is a hex then we expect '\XX' */
+            afterReverseSlash = 2;
+            hexCh1 = inCh;
+        } else if ((afterReverseSlash == 1) && (!xmlSecIsHex(inCh))) {
+            /* if next char after '\' is a NOT hex then we just remove '\' and copy next char as-is */
+            afterReverseSlash = 0;
+            outCh = inCh;
+        } else if ((afterReverseSlash == 2) && (xmlSecIsHex(inCh))) {
+            /* if next char after '\' is a hex then we expect '\XX' */
+            afterReverseSlash = 0;
+            hexCh2 = inCh;
+            outCh = xmlSecFromHex2(hexCh1, hexCh2);
+        } else if ((afterReverseSlash == 2) && (!xmlSecIsHex(inCh))) {
+            /* if next char after '\' is a hex then we expect \\XX */
+            xmlSecInvalidDataError("two hex digits expected in an escape sequence starting with '\'", NULL);
+            return(-1);
+        } else if (inCh == '\\') {
+            /* handle ecaped chars on next loop */
+            afterReverseSlash = 1;
+        } else if (inCh == delim) {
+            /* stop and make sure that ii points to the delimiter */
+            --ii;
+            break;
+        } else {
+            /* regular character, copy over */
+            outCh = inCh;
+        }
+
+        if (afterReverseSlash == 0) {
+            if (jj >= outSize) {
+                xmlSecInvalidSizeOtherError("output buffer is too small", NULL);
+                return(-1);
+            }
+            out[jj] = outCh;
+            ++jj;
+
+            if (ingoreTrailingSpaces && !isspace(outCh)) {
+                nonSpace = jj;
+            }
+        }
+    }
+
+    if (afterReverseSlash != 0) {
+        xmlSecInvalidDataError("incomplete escape sequence starting with '\' at the end of the string", NULL);
+        return(-1);
+    }
+
+    (*inSize) -= ii;
+    (*in) += ii;
+
+    if (ingoreTrailingSpaces) {
+        (*outWritten) = nonSpace;
+    } else {
+        (*outWritten) = (jj);
+    }
+    return(0);
+}
 
 #endif /* !defined(XMLSEC_NO_X509) */
 

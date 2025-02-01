@@ -3624,6 +3624,137 @@ xmlSecKeyX509DataValueXmlWrite(xmlSecKeyX509DataValuePtr x509Value, xmlNodePtr n
 }
 
 
+static int
+xmlSecsX509NameStringReadAddOutput(xmlChar outCh, xmlSecByte *out, xmlSecSize outSize,
+                                  xmlSecSize *outPos, xmlSecSize *outPosNonSpace,
+                                  int ingoreTrailingSpaces)
+{
+    xmlSecAssert2(out != NULL, -1);
+    xmlSecAssert2(outPos != NULL, -1);
+    xmlSecAssert2(outPosNonSpace != NULL, -1);
+
+    if ((*outPos) >= outSize) {
+        xmlSecInvalidSizeOtherError("output buffer is too small", NULL);
+        return(-1);
+    }
+    out[(*outPos)] = outCh;
+    ++(*outPos);
+
+    if (ingoreTrailingSpaces && !isspace(outCh)) {
+        (*outPosNonSpace) = (*outPos);
+    }
+
+    return (0);
+}
+
+/**
+ * xmlSecsX509NameStringRead:
+ * @in:                     the x509 name input string.
+ * @inSize:                 the size of @in.
+ * @out:                    the x509 name output string.
+ * @outSize:                the size ouf @out.
+ * @outWritten:             the actual size written in @out.
+ * @delim:                  the stop character.
+ * @ingoreTrailingSpaces:   if non-zero then trailing spaces are ignored and not written into @out.
+ *
+ * Reads X509 name and un-escapes '\XX' and '\C' from @in to @out stoppping at @delim or end of the @in.
+ * The @in and @inSize are updated to the position of the @delim or past end of @in string.
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecsX509NameStringRead(const xmlChar **in, xmlSecSize *inSize,
+                            xmlSecByte *out, xmlSecSize outSize,
+                            xmlSecSize *outWritten,
+                            xmlSecByte delim, int ingoreTrailingSpaces)
+{
+    xmlSecSize inPos, outPos, outPosNonSpace;
+    xmlSecByte inCh, hexCh1 = 0, hexCh2 = 0;
+    int afterReverseSlash = 0;
+    int ret;
+
+    xmlSecAssert2(in != NULL, -1);
+    xmlSecAssert2((*in) != NULL, -1);
+    xmlSecAssert2(inSize != NULL, -1);
+    xmlSecAssert2(out != NULL, -1);
+    xmlSecAssert2(outWritten != NULL, -1);
+
+    /* afterReverseSlash:
+     *   0: not after '\'
+     *   1: first char after '\'
+     *   2: second char after '\'
+     */
+    inPos = outPos = outPosNonSpace = 0;
+    while (inPos < (*inSize)) {
+        /* get next char form @in */
+        inCh = (*in)[inPos];
+        ++inPos;
+
+        if ((afterReverseSlash == 1) && (xmlSecIsHex(inCh))) {
+            /* if next char after '\' is a hex then we expect '\XX' */
+            afterReverseSlash = 2;
+            hexCh1 = inCh;
+        } else if ((afterReverseSlash == 1) && (!xmlSecIsHex(inCh))) {
+            /* if next char after '\' is a NOT hex then we just remove '\' and copy next char as-is */
+            afterReverseSlash = 0;
+
+            ret = xmlSecsX509NameStringReadAddOutput(inCh, out, outSize, &outPos, &outPosNonSpace, ingoreTrailingSpaces);
+            if(ret != 0) {
+                xmlSecInternalError("xmlSecsX509NameStringReadAddOutput", NULL);
+                return(-1);
+            }
+        } else if ((afterReverseSlash == 2) && (xmlSecIsHex(inCh))) {
+            /* if next char after '\' is a hex then we expect '\XX' */
+            afterReverseSlash = 0;
+            hexCh2 = inCh;
+
+            ret = xmlSecsX509NameStringReadAddOutput(xmlSecFromHex2(hexCh1, hexCh2), out, outSize, &outPos, &outPosNonSpace, ingoreTrailingSpaces);
+            if(ret != 0) {
+                xmlSecInternalError("xmlSecsX509NameStringReadAddOutput", NULL);
+                return(-1);
+            }
+        } else if ((afterReverseSlash == 2) && (!xmlSecIsHex(inCh))) {
+            /* if next char after '\' is a hex then we expect '\\XX' */
+            xmlSecInvalidDataError("two hex digits expected in an escape sequence starting with '\'", NULL);
+            return(-1);
+        } else if (inCh == '\\') {
+            /* handle ecaped chars on next loop */
+            afterReverseSlash = 1;
+        } else if (inCh == delim) {
+            /* stop and make sure that inPos points to the delimiter */
+            --inPos;
+            break;
+        } else {
+            /* regular character, copy over */
+            ret = xmlSecsX509NameStringReadAddOutput(inCh, out, outSize, &outPos, &outPosNonSpace, ingoreTrailingSpaces);
+            if(ret != 0) {
+                xmlSecInternalError("xmlSecsX509NameStringReadAddOutput", NULL);
+                return(-1);
+            }
+        }
+    }
+
+    /* make sure that escape sequence was completed */
+    if (afterReverseSlash != 0) {
+        xmlSecInvalidDataError("incomplete escape sequence starting with '\' at the end of the string", NULL);
+        return(-1);
+    }
+
+    /* adjust inputs */
+    (*inSize) -= inPos;
+    (*in) += inPos;
+
+    /* set the actual size of the @out */
+    if (ingoreTrailingSpaces) {
+        (*outWritten) = outPosNonSpace;
+    } else {
+        (*outWritten) = outPos;
+    }
+
+    /* done */
+    return(0);
+}
+
 #endif /* !defined(XMLSEC_NO_X509) */
 
 /***********************************************************************

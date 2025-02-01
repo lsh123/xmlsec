@@ -3633,7 +3633,7 @@ xmlSecKeyX509DataValueXmlWrite(xmlSecKeyX509DataValuePtr x509Value, xmlNodePtr n
  * @delim:                  the stop character.
  * @ingoreTrailingSpaces:   if non-zero then trailing spaces are ignored and not written into @out.
  *
- * Reads XML name and un-escapes '\XX' and '\C' from @in to @out stoppping at @delim or end of the @in.
+ * Reads X509 name and un-escapes '\XX' and '\C' from @in to @out stoppping at @delim or end of the @in.
  * The @in and @inSize are updated to the position of the @delim or past end of @in string.
  *
  * Returns: 0 on success or a negative value if an error occurs.
@@ -3677,7 +3677,7 @@ xmlSecsX509NameStringRead(const xmlChar **in, xmlSecSize *inSize,
             hexCh2 = inCh;
             outCh = xmlSecFromHex2(hexCh1, hexCh2);
         } else if ((afterReverseSlash == 2) && (!xmlSecIsHex(inCh))) {
-            /* if next char after '\' is a hex then we expect \\XX */
+            /* if next char after '\' is a hex then we expect '\\XX' */
             xmlSecInvalidDataError("two hex digits expected in an escape sequence starting with '\'", NULL);
             return(-1);
         } else if (inCh == '\\') {

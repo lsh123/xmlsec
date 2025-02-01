@@ -955,28 +955,26 @@ xmlSecNssX509NameStringRead(const xmlSecByte **in, xmlSecSize *inSize,
         if (inCh == delim) {
             break;
         }
-        if (jj >= outSize) {
-            xmlSecInvalidSizeOtherError("output buffer is too small", NULL);
-            return(-1);
-        }
+        ++ii;
 
         if (inCh == '\\') {
             /* try to move to next char after \\ */
-            ++ii;
             if (ii >= (*inSize)) {
                 break;
             }
             inCh = (*in)[ii];
+            ++ii;
 
             /* if next char after \\ is a hex then we expect \\XX, otherwise we just remove \\ */
             if (xmlSecIsHex(inCh)) {
                 /* try to move to next char after \\X */
-                ++ii;
                 if (ii >= (*inSize)) {
                     xmlSecInvalidDataError("two hex digits expected", NULL);
                     return(-1);
                 }
                 inCh2 = (*in)[ii];
+                ++ii;
+
                 if (!xmlSecIsHex(inCh2)) {
                     xmlSecInvalidDataError("two hex digits expected", NULL);
                     return(-1);
@@ -989,8 +987,11 @@ xmlSecNssX509NameStringRead(const xmlSecByte **in, xmlSecSize *inSize,
             outCh = inCh;
         }
 
+        if (jj >= outSize) {
+            xmlSecInvalidSizeOtherError("output buffer is too small", NULL);
+            return(-1);
+        }
         out[jj] = outCh;
-        ++ii;
         ++jj;
 
         if (ingoreTrailingSpaces && !isspace(outCh)) {

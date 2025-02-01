@@ -3623,6 +3623,30 @@ xmlSecKeyX509DataValueXmlWrite(xmlSecKeyX509DataValuePtr x509Value, xmlNodePtr n
     return(0);
 }
 
+
+static int
+xmlSecsX509NameStringReadAddOutput(xmlChar outCh, xmlSecByte *out, xmlSecSize outSize,
+                                  xmlSecSize *outPos, xmlSecSize *outPosNonSpace,
+                                  int ingoreTrailingSpaces)
+{
+    xmlSecAssert2(out != NULL, -1);
+    xmlSecAssert2(outPos != NULL, -1);
+    xmlSecAssert2(outPosNonSpace != NULL, -1);
+
+    if ((*outPos) >= outSize) {
+        xmlSecInvalidSizeOtherError("output buffer is too small", NULL);
+        return(-1);
+    }
+    out[(*outPos)] = outCh;
+    ++(*outPos);
+
+    if (ingoreTrailingSpaces && !isspace(outCh)) {
+        (*outPosNonSpace) = (*outPos);
+    }
+
+    return (0);
+}
+
 /**
  * xmlSecsX509NameStringRead:
  * @in:                     the x509 name input string.
@@ -3642,26 +3666,29 @@ int
 xmlSecsX509NameStringRead(const xmlChar **in, xmlSecSize *inSize,
                             xmlSecByte *out, xmlSecSize outSize,
                             xmlSecSize *outWritten,
-                            xmlSecByte delim, int ingoreTrailingSpaces) {
-    xmlSecSize ii, jj, nonSpace;
-    xmlSecByte inCh, outCh, hexCh1, hexCh2;
+                            xmlSecByte delim, int ingoreTrailingSpaces)
+{
+    xmlSecSize inPos, outPos, outPosNonSpace;
+    xmlSecByte inCh, hexCh1 = 0, hexCh2 = 0;
     int afterReverseSlash = 0;
+    int ret;
 
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2((*in) != NULL, -1);
     xmlSecAssert2(inSize != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
+    xmlSecAssert2(outWritten != NULL, -1);
 
     /* afterReverseSlash:
      *   0: not after '\'
      *   1: first char after '\'
      *   2: second char after '\'
      */
-    ii = jj = nonSpace = 0;
-    while (ii < (*inSize)) {
+    inPos = outPos = outPosNonSpace = 0;
+    while (inPos < (*inSize)) {
         /* get next char form @in */
-        inCh = (*in)[ii];
-        ++ii;
+        inCh = (*in)[inPos];
+        ++inPos;
 
         if ((afterReverseSlash == 1) && (xmlSecIsHex(inCh))) {
             /* if next char after '\' is a hex then we expect '\XX' */
@@ -3670,12 +3697,22 @@ xmlSecsX509NameStringRead(const xmlChar **in, xmlSecSize *inSize,
         } else if ((afterReverseSlash == 1) && (!xmlSecIsHex(inCh))) {
             /* if next char after '\' is a NOT hex then we just remove '\' and copy next char as-is */
             afterReverseSlash = 0;
-            outCh = inCh;
+
+            ret = xmlSecsX509NameStringReadAddOutput(inCh, out, outSize, &outPos, &outPosNonSpace, ingoreTrailingSpaces);
+            if(ret != 0) {
+                xmlSecInternalError("xmlSecsX509NameStringReadAddOutput", NULL);
+                return(-1);
+            }
         } else if ((afterReverseSlash == 2) && (xmlSecIsHex(inCh))) {
             /* if next char after '\' is a hex then we expect '\XX' */
             afterReverseSlash = 0;
             hexCh2 = inCh;
-            outCh = xmlSecFromHex2(hexCh1, hexCh2);
+
+            ret = xmlSecsX509NameStringReadAddOutput(xmlSecFromHex2(hexCh1, hexCh2), out, outSize, &outPos, &outPosNonSpace, ingoreTrailingSpaces);
+            if(ret != 0) {
+                xmlSecInternalError("xmlSecsX509NameStringReadAddOutput", NULL);
+                return(-1);
+            }
         } else if ((afterReverseSlash == 2) && (!xmlSecIsHex(inCh))) {
             /* if next char after '\' is a hex then we expect '\\XX' */
             xmlSecInvalidDataError("two hex digits expected in an escape sequence starting with '\'", NULL);
@@ -3684,25 +3721,15 @@ xmlSecsX509NameStringRead(const xmlChar **in, xmlSecSize *inSize,
             /* handle ecaped chars on next loop */
             afterReverseSlash = 1;
         } else if (inCh == delim) {
-            /* stop and make sure that ii points to the delimiter */
-            --ii;
+            /* stop and make sure that inPos points to the delimiter */
+            --inPos;
             break;
         } else {
             /* regular character, copy over */
-            outCh = inCh;
-        }
-
-        /* if we got the next output char (i.e. not in the middle of escape sequence) then write it out */
-        if (afterReverseSlash == 0) {
-            if (jj >= outSize) {
-                xmlSecInvalidSizeOtherError("output buffer is too small", NULL);
+            ret = xmlSecsX509NameStringReadAddOutput(inCh, out, outSize, &outPos, &outPosNonSpace, ingoreTrailingSpaces);
+            if(ret != 0) {
+                xmlSecInternalError("xmlSecsX509NameStringReadAddOutput", NULL);
                 return(-1);
-            }
-            out[jj] = outCh;
-            ++jj;
-
-            if (ingoreTrailingSpaces && !isspace(outCh)) {
-                nonSpace = jj;
             }
         }
     }
@@ -3714,14 +3741,14 @@ xmlSecsX509NameStringRead(const xmlChar **in, xmlSecSize *inSize,
     }
 
     /* adjust inputs */
-    (*inSize) -= ii;
-    (*in) += ii;
+    (*inSize) -= inPos;
+    (*in) += inPos;
 
     /* set the actual size of the @out */
     if (ingoreTrailingSpaces) {
-        (*outWritten) = nonSpace;
+        (*outWritten) = outPosNonSpace;
     } else {
-        (*outWritten) = (jj);
+        (*outWritten) = outPos;
     }
 
     /* done */

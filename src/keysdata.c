@@ -3634,6 +3634,7 @@ xmlSecKeyX509DataValueXmlWrite(xmlSecKeyX509DataValuePtr x509Value, xmlNodePtr n
  * @ingoreTrailingSpaces:   if non-zero then trailing spaces are ignored and not written into @out.
  *
  * Reads XML name and un-escapes '\XX' and '\C' from @in to @out stoppping at @delim or end of the @in.
+ * The @in and @inSize are updated to the position of the @delim or past end of @in string.
  *
  * Returns: 0 on success or a negative value if an error occurs.
  */
@@ -3643,7 +3644,7 @@ xmlSecsX509NameStringRead(const xmlChar **in, xmlSecSize *inSize,
                             xmlSecSize *outWritten,
                             xmlSecByte delim, int ingoreTrailingSpaces) {
     xmlSecSize ii, jj, nonSpace;
-    xmlSecByte hexCh1, hexCh2;
+    xmlSecByte inCh, outCh, hexCh1, hexCh2;
     int afterReverseSlash = 0;
 
     xmlSecAssert2(in != NULL, -1);
@@ -3658,8 +3659,7 @@ xmlSecsX509NameStringRead(const xmlChar **in, xmlSecSize *inSize,
      */
     ii = jj = nonSpace = 0;
     while (ii < (*inSize)) {
-        xmlSecByte inCh, outCh;
-
+        /* get next char form @in */
         inCh = (*in)[ii];
         ++ii;
 
@@ -3692,6 +3692,7 @@ xmlSecsX509NameStringRead(const xmlChar **in, xmlSecSize *inSize,
             outCh = inCh;
         }
 
+        /* if we got the next output char (i.e. not in the middle of escape sequence) then write it out */
         if (afterReverseSlash == 0) {
             if (jj >= outSize) {
                 xmlSecInvalidSizeOtherError("output buffer is too small", NULL);
@@ -3706,19 +3707,24 @@ xmlSecsX509NameStringRead(const xmlChar **in, xmlSecSize *inSize,
         }
     }
 
+    /* make sure that escape sequence was completed */
     if (afterReverseSlash != 0) {
         xmlSecInvalidDataError("incomplete escape sequence starting with '\' at the end of the string", NULL);
         return(-1);
     }
 
+    /* adjust inputs */
     (*inSize) -= ii;
     (*in) += ii;
 
+    /* set the actual size of the @out */
     if (ingoreTrailingSpaces) {
         (*outWritten) = nonSpace;
     } else {
         (*outWritten) = (jj);
     }
+
+    /* done */
     return(0);
 }
 

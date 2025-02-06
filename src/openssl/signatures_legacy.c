@@ -721,8 +721,8 @@ xmlSecOpenSSLSignatureLegacyEcdsaSign(xmlSecOpenSSLSignatureLegacyCtxPtr ctx, xm
     /* write components */
     xmlSecAssert2((rLen + sLen) <= 2 * signHalfLen, -1);
     memset(outData, 0, outSize);
-    BN_bn2bin(rr, outData + signHalfLen - rLen);
-    BN_bn2bin(ss, outData + 2 * signHalfLen - sLen);
+    (void)BN_bn2bin(rr, outData + signHalfLen - rLen);
+    (void)BN_bn2bin(ss, outData + 2 * signHalfLen - sLen);
 
     /* success */
     res = 0;

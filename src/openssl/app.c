@@ -656,7 +656,7 @@ xmlSecOpenSSLCreateKey(EVP_PKEY ** pKey,  X509 ** keyCert, STACK_OF(X509) ** cer
 
     /* try to get key name from x509 cert */
     if((*keyCert) != NULL) {
-        unsigned char * name = NULL;
+        const unsigned char * name = NULL;
         int nameLen = 0;
 
         if(name == NULL) {

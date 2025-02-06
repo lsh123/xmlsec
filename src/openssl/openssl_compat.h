@@ -33,7 +33,7 @@
 #define ENGINE_cleanup(...)                 {}
 #define CONF_modules_unload(...)            {}
 
-#define RAND_priv_bytes(buf,len)            RAND_bytes((buf), (len))
+#define RAND_priv_bytes(buf,len)            RAND_bytes((buf), (size_t)(len))
 #define RAND_write_file(file)               (0)
 
 #define EVP_PKEY_base_id(pkey)              EVP_PKEY_id(pkey)

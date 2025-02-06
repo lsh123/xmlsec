@@ -30,6 +30,28 @@
 #define XMLSEC_NO_SHA3                      1
 
 
+#define EVP_CIPHER_key_length   (int)EVP_CIPHER_key_length
+#define EVP_CIPHER_iv_length    (int)EVP_CIPHER_iv_length
+#define EVP_CIPHER_block_size   (int)EVP_CIPHER_block_size
+
+#define EVP_MD_size (int)EVP_MD_size
+#define RSA_size    (int)RSA_size
+
+#define BN_num_bytes (int)BN_num_bytes
+#define BN_num_bits  (int)BN_num_bits
+#define BN_bn2bin    (int)BN_bn2bin
+
+#define sk_X509_insert   (int)sk_X509_insert
+#define sk_X509_push     (int)sk_X509_push
+#define sk_X509_num      (int)sk_X509_num
+#define sk_X509_CRL_num  (int)sk_X509_CRL_num
+#define sk_X509_CRL_push (int)sk_X509_CRL_push
+
+#define BIO_pending      (int)BIO_pending
+
+#define sk_X509_NAME_ENTRY_num (int)sk_X509_NAME_ENTRY_num
+#define sk_X509_NAME_ENTRY_push (int)sk_X509_NAME_ENTRY_push
+
 #define ENGINE_cleanup(...)                 {}
 #define CONF_modules_unload(...)            {}
 

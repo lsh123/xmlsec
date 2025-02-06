@@ -38,10 +38,10 @@
  *
  * Macro. The XMLSec library macro for reporting OpenSSL crypro errors.
  */
-#define xmlSecOpenSSLError(errorFunction, errorObject)      \
+#define __xmlSecOpenSSLError(errorType, errorFunction, errorObject)      \
     {                                                       \
         char _openssl_error_buf[XMLSEC_OPENSSL_ERROR_BUFFER_SIZE]; \
-        unsigned long _openssl_error_code = ERR_peek_last_error(); \
+        errorType _openssl_error_code = ERR_peek_last_error(); \
         ERR_error_string_n(_openssl_error_code, _openssl_error_buf, sizeof(_openssl_error_buf)); \
         xmlSecError(XMLSEC_ERRORS_HERE,                     \
                     (const char*)(errorObject),             \
@@ -62,9 +62,9 @@
  *
  * Macro. The XMLSec library macro for reporting OpenSSL crypro errors.
  */
-#define xmlSecOpenSSLError2(errorFunction, errorObject, msg, param) \
+#define __xmlSecOpenSSLError2(errorType, errorFunction, errorObject, msg, param) \
         char _openssl_error_buf[XMLSEC_OPENSSL_ERROR_BUFFER_SIZE];  \
-        unsigned long _openssl_error_code = ERR_peek_last_error();  \
+        errorType _openssl_error_code = ERR_peek_last_error();  \
         ERR_error_string_n(_openssl_error_code, _openssl_error_buf, sizeof(_openssl_error_buf)); \
         xmlSecError(XMLSEC_ERRORS_HERE,                     \
                     (const char*)(errorObject),             \
@@ -85,9 +85,9 @@
   *
   * Macro. The XMLSec library macro for reporting OpenSSL crypro errors.
   */
-#define xmlSecOpenSSLError3(errorFunction, errorObject, msg, param1, param2) \
+#define __xmlSecOpenSSLError3(errorType, errorFunction, errorObject, msg, param1, param2) \
         char _openssl_error_buf[XMLSEC_OPENSSL_ERROR_BUFFER_SIZE];  \
-        unsigned long _openssl_error_code = ERR_peek_last_error();  \
+        errorType _openssl_error_code = ERR_peek_last_error();  \
         ERR_error_string_n(_openssl_error_code, _openssl_error_buf, sizeof(_openssl_error_buf)); \
         xmlSecError(XMLSEC_ERRORS_HERE,                     \
                     (const char*)(errorObject),             \
@@ -101,5 +101,24 @@
 
 
 
+#ifdef OPENSSL_IS_BORINGSSL
+
+#define xmlSecOpenSSLError(errorFunction, errorObject) \
+	__xmlSecOpenSSLError(uint32_t, errorFunction, errorObject)
+#define xmlSecOpenSSLError2(errorFunction, errorObject, msg, param) \
+	__xmlSecOpenSSLError2(uint32_t, errorFunction, errorObject, msg, param)
+#define xmlSecOpenSSLError3(errorFunction, errorObject, msg, param1, param2) \
+	__xmlSecOpenSSLError3(uint32_t, errorFunction, errorObject, msg, param1, param2)
+
+#else /* OPENSSL_IS_BORINGSSL */
+
+#define xmlSecOpenSSLError(errorFunction, errorObject) \
+	__xmlSecOpenSSLError(unsigned long, errorFunction, errorObject)
+#define xmlSecOpenSSLError2(errorFunction, errorObject, msg, param) \
+	__xmlSecOpenSSLError2(unsigned long, errorFunction, errorObject, msg, param)
+#define xmlSecOpenSSLError3(errorFunction, errorObject, msg, param1, param2) \
+	__xmlSecOpenSSLError3(unsigned long, errorFunction, errorObject, msg, param1, param2)
+
+#endif /* ! OPENSSL_IS_BORINGSSL */
 
 #endif /* ! __XMLSEC_GLOBALS_H__ */

@@ -45,12 +45,6 @@
 #include "openssl_compat.h"
 #include "private.h"
 
-#ifdef OPENSSL_IS_BORINGSSL
-typedef size_t x509_size_t;
-#else /* OPENSSL_IS_BORINGSSL */
-typedef int x509_size_t;
-#endif /* OPENSSL_IS_BORINGSSL */
-
 /**************************************************************************
  *
  * Internal OpenSSL X509 store CTX
@@ -192,7 +186,7 @@ xmlSecOpenSSLX509StoreFindCert_ex(xmlSecKeyDataStorePtr store,
 ) {
     xmlSecOpenSSLX509StoreCtxPtr ctx;
     xmlSecOpenSSLX509FindCertCtx findCertCtx;
-    x509_size_t ii;
+    int ii;
     int ret;
     X509* res = NULL;
 
@@ -241,7 +235,7 @@ X509*
 xmlSecOpenSSLX509StoreFindCertByValue(xmlSecKeyDataStorePtr store, xmlSecKeyX509DataValuePtr x509Value) {
     xmlSecOpenSSLX509StoreCtxPtr ctx;
     xmlSecOpenSSLX509FindCertCtx findCertCtx;
-    x509_size_t ii;
+    int ii;
     int ret;
     X509* res = NULL;
 
@@ -344,7 +338,7 @@ xmlSecOpenSSLX509StoreVerifyAndCopyCrls(X509_STORE* xst, X509_STORE_CTX* xsc, ST
     xmlSecKeyInfoCtx* keyInfoCtx
 ) {
     STACK_OF(X509_CRL)* verified_crls = NULL;
-    x509_size_t ii, num;
+    int ii, num;
     int ret;
 
     xmlSecAssert2(xst != NULL, NULL);
@@ -408,7 +402,7 @@ xmlSecOpenSSLX509StoreVerifyCertAgainstRevoked(X509 * cert, STACK_OF(X509_REVOKE
     X509_REVOKED * revoked_cert;
     const ASN1_INTEGER * revoked_cert_serial;
     const ASN1_INTEGER * cert_serial;
-    x509_size_t ii, num;
+    int ii, num;
     int ret;
 
     xmlSecAssert2(cert != NULL, -1);
@@ -494,7 +488,7 @@ xmlSecOpenSSLX509StoreFindBestCrl(X509_NAME *cert_issuer, STACK_OF(X509_CRL) *cr
     X509_NAME *crl_issuer;
     const ASN1_TIME * lastUpdate;
     time_t resLastUpdateTime = 0;
-    x509_size_t ii, num;
+    int ii, num;
     int ret;
 
     xmlSecAssert2(cert_issuer != NULL, -1);
@@ -622,7 +616,7 @@ xmlSecOpenSSLX509StoreVerifyCertAgainstCrls(STACK_OF(X509_CRL) *crls, X509* cert
 static int
 xmlSecOpenSSLX509StoreVerifyCertsAgainstCrls(STACK_OF(X509)* chain, STACK_OF(X509_CRL)* crls, xmlSecKeyInfoCtx* keyInfoCtx) {
     X509 * cert;
-    x509_size_t ii, num_certs;
+    int ii, num_certs;
     int ret;
 
     xmlSecAssert2(chain != NULL, -1);
@@ -830,7 +824,7 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
     X509 * res = NULL;
     X509 * cert;
     X509_STORE_CTX *xsc = NULL;
-    x509_size_t ii, num;
+    int ii, num;
     int ret;
 
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecOpenSSLX509StoreId), NULL);
@@ -1691,7 +1685,7 @@ xmlSecOpenSSLX509StoreCombineCerts(STACK_OF(X509)* certs1, STACK_OF(X509)* certs
         }
     } else if(certs2 != NULL) {
         X509 * cert;
-        x509_size_t ii, num;
+        int ii, num;
         int ret;
 
         /* append certs2 to result */
@@ -1728,7 +1722,7 @@ static X509*
 xmlSecOpenSSLX509FindChildCert(STACK_OF(X509) *chain, X509 *cert) {
     unsigned long certNameHash;
     unsigned long certNameHash2;
-    x509_size_t ii;
+    int ii;
 
     xmlSecAssert2(chain != NULL, NULL);
     xmlSecAssert2(cert != NULL, NULL);

@@ -34,18 +34,40 @@
 #define EVP_CIPHER_iv_length    (int)EVP_CIPHER_iv_length
 #define EVP_CIPHER_block_size   (int)EVP_CIPHER_block_size
 
+#define ECDSA_do_verify(digest, digest_len, sig, key) \
+    ECDSA_do_verify(digest, (size_t)(digest_len), sig, key)
+#define ECDSA_do_sign(digest, digest_len, key) \
+    ECDSA_do_sign(digest, (size_t)(digest_len), key)
+
+#define HMAC_Init_ex(ctx, key, key_len, md, impl) \
+       HMAC_Init_ex(ctx, key, (size_t)(key_len), md, impl)
+#define AES_set_encrypt_key(user_key, bits, aes_key) \
+       AES_set_encrypt_key(user_key, (unsigned)(bits), aes_key)
+#define AES_set_decrypt_key(user_key, bits, aes_key) \
+       AES_set_decrypt_key(user_key, (unsigned)(bits), aes_key)
+
+#define RSA_public_encrypt(flen, from, to, rsa, padding) \
+       RSA_public_encrypt((size_t)(flen), from, to, rsa, padding)
+#define RSA_private_decrypt(flen, from, to, rsa, padding) \
+       RSA_private_decrypt((size_t)(flen), from, to, rsa, padding)
+
+
 #define EVP_MD_size (int)EVP_MD_size
 #define RSA_size    (int)RSA_size
 
 #define BN_num_bytes (int)BN_num_bytes
 #define BN_num_bits  (int)BN_num_bits
 #define BN_bn2bin    (int)BN_bn2bin
+#define BN_bin2bn(in, len, ret) BN_bin2bn(in, (size_t)(len), ret)
 
 #define sk_X509_insert   (int)sk_X509_insert
 #define sk_X509_push     (int)sk_X509_push
 #define sk_X509_num      (int)sk_X509_num
 #define sk_X509_CRL_num  (int)sk_X509_CRL_num
 #define sk_X509_CRL_push (int)sk_X509_CRL_push
+#define sk_X509_CRL_value(sk, idx)        sk_X509_CRL_value(sk, (size_t)(idx))
+#define sk_X509_value(sk, idx)            sk_X509_value(sk, (size_t)(idx))
+#define sk_X509_NAME_ENTRY_value(sk, idx) sk_X509_NAME_ENTRY_value(sk, (size_t)(idx))
 
 #define BIO_pending      (int)BIO_pending
 

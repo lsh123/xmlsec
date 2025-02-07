@@ -45,11 +45,7 @@
 #include "openssl_compat.h"
 #include "private.h"
 
-#ifdef OPENSSL_IS_BORINGSSL
-typedef size_t x509_size_t;
-#else /* OPENSSL_IS_BORINGSSL */
 typedef int x509_size_t;
-#endif /* OPENSSL_IS_BORINGSSL */
 
 /**************************************************************************
  *

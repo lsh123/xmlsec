@@ -7,9 +7,58 @@
 #ifndef __XMLSEC_OPENSSL_OPENSSL_COMPAT_H__
 #define __XMLSEC_OPENSSL_OPENSSL_COMPAT_H__
 
+#include <openssl/crypto.h>
 #include <openssl/rand.h>
 
 #include "../cast_helpers.h"
+
+
+/******************************************************************************
+ *
+ * AWS LC compatibility (based on BoringSSL)
+ *
+ *****************************************************************************/
+#ifdef OPENSSL_IS_AWSLC
+
+#ifndef OPENSSL_IS_BORINGSSL
+#define OPENSSL_IS_BORINGSSL
+#endif /* OPENSSL_IS_BORINGSSL */
+
+#define EVP_CIPHER_key_length   (int)EVP_CIPHER_key_length
+#define EVP_CIPHER_iv_length    (int)EVP_CIPHER_iv_length
+#define EVP_CIPHER_block_size   (int)EVP_CIPHER_block_size
+
+#define ECDSA_do_verify(digest, digest_len, sig, key) \
+       ECDSA_do_verify(digest, (size_t)(digest_len), sig, key)
+#define ECDSA_do_sign(digest, digest_len, key) \
+       ECDSA_do_sign(digest, (size_t)(digest_len), key)
+
+#define HMAC_Init_ex(ctx, key, key_len, md, impl) \
+       HMAC_Init_ex(ctx, key, (size_t)(key_len), md, impl)
+
+#define AES_set_encrypt_key(user_key, bits, aes_key) \
+       AES_set_encrypt_key(user_key, (unsigned)(bits), aes_key)
+#define AES_set_decrypt_key(user_key, bits, aes_key) \
+       AES_set_decrypt_key(user_key, (unsigned)(bits), aes_key)
+
+#define RSA_public_encrypt(flen, from, to, rsa, padding) \
+       RSA_public_encrypt((size_t)(flen), from, to, rsa, padding)
+#define RSA_private_decrypt(flen, from, to, rsa, padding) \
+       RSA_private_decrypt((size_t)(flen), from, to, rsa, padding)
+
+#define EVP_MD_size (int)EVP_MD_size
+#define RSA_size    (int)RSA_size
+
+#define BN_num_bytes (int)BN_num_bytes
+#define BN_num_bits  (int)BN_num_bits
+#define BN_bn2bin    (int)BN_bn2bin
+#define BN_bin2bn(in, len, ret) BN_bin2bn(in, (size_t)(len), ret)
+
+#define BIO_pending      (int)BIO_pending
+
+#define RAND_priv_bytes_ex(ctx,buf,num,strength)        RAND_priv_bytes((buf), (num))
+
+#endif /* ! OPENSSL_IS_AWSLC */
 
 
 /******************************************************************************
@@ -30,59 +79,14 @@
 #define XMLSEC_NO_SHA3                      1
 
 
-#define EVP_CIPHER_key_length   (int)EVP_CIPHER_key_length
-#define EVP_CIPHER_iv_length    (int)EVP_CIPHER_iv_length
-#define EVP_CIPHER_block_size   (int)EVP_CIPHER_block_size
-
-#define ECDSA_do_verify(digest, digest_len, sig, key) \
-    ECDSA_do_verify(digest, (size_t)(digest_len), sig, key)
-#define ECDSA_do_sign(digest, digest_len, key) \
-    ECDSA_do_sign(digest, (size_t)(digest_len), key)
-
-#define HMAC_Init_ex(ctx, key, key_len, md, impl) \
-       HMAC_Init_ex(ctx, key, (size_t)(key_len), md, impl)
-#define AES_set_encrypt_key(user_key, bits, aes_key) \
-       AES_set_encrypt_key(user_key, (unsigned)(bits), aes_key)
-#define AES_set_decrypt_key(user_key, bits, aes_key) \
-       AES_set_decrypt_key(user_key, (unsigned)(bits), aes_key)
-
-#define RSA_public_encrypt(flen, from, to, rsa, padding) \
-       RSA_public_encrypt((size_t)(flen), from, to, rsa, padding)
-#define RSA_private_decrypt(flen, from, to, rsa, padding) \
-       RSA_private_decrypt((size_t)(flen), from, to, rsa, padding)
-
-
-#define EVP_MD_size (int)EVP_MD_size
-#define RSA_size    (int)RSA_size
-
-#define BN_num_bytes (int)BN_num_bytes
-#define BN_num_bits  (int)BN_num_bits
-#define BN_bn2bin    (int)BN_bn2bin
-#define BN_bin2bn(in, len, ret) BN_bin2bn(in, (size_t)(len), ret)
-
-#define sk_X509_insert   (int)sk_X509_insert
-#define sk_X509_push     (int)sk_X509_push
-#define sk_X509_num      (int)sk_X509_num
-#define sk_X509_CRL_num  (int)sk_X509_CRL_num
-#define sk_X509_CRL_push (int)sk_X509_CRL_push
-#define sk_X509_CRL_value(sk, idx)        sk_X509_CRL_value(sk, (size_t)(idx))
-#define sk_X509_value(sk, idx)            sk_X509_value(sk, (size_t)(idx))
-#define sk_X509_NAME_ENTRY_value(sk, idx) sk_X509_NAME_ENTRY_value(sk, (size_t)(idx))
-#define sk_X509_REVOKED_value(sk, idx)    sk_X509_REVOKED_value(sk, (size_t)(idx))
-
-#define BIO_pending      (int)BIO_pending
-
-#define sk_X509_NAME_ENTRY_num (int)sk_X509_NAME_ENTRY_num
-#define sk_X509_NAME_ENTRY_push (int)sk_X509_NAME_ENTRY_push
-
 #define ENGINE_cleanup(...)                 {}
 #define CONF_modules_unload(...)            {}
 
-#define RAND_priv_bytes(buf,len)            RAND_bytes((buf), (size_t)(len))
+#define RAND_priv_bytes(buf,len)            RAND_bytes((buf), (len))
 #define RAND_write_file(file)               (0)
 
 #define EVP_PKEY_base_id(pkey)              EVP_PKEY_id(pkey)
-#define EVP_CipherFinal(ctx, out, out_len)  EVP_CipherFinal_ex(ctx, out, out_len)
+#define EVP_CipherFinal(ctx, out, out_len)  EVP_CipherFinal_ex((ctx), (out), (out_len))
 #define EVP_read_pw_string(...)             (-1)
 
 #define X509_get0_pubkey(cert)              X509_get_pubkey((cert))
@@ -93,6 +97,30 @@
 #define sk_X509_CRL_reserve(crls, num)      (1)
 
 #endif /* OPENSSL_IS_BORINGSSL */
+
+
+/* BoringSSL redefines int->size_t for bunch of x509 functions */
+#if defined(OPENSSL_IS_BORINGSSL)
+
+typedef size_t xmlSecOpenSSLX509Size;
+
+#define XMLSEC_OPENSSL_SAFE_CAST_X509_SIZE_TO_SIZE(srcVal, dstVal, errorAction, errorObject)  \
+       (dstVal) = (srcVal)
+#define XMLSEC_OPENSSL_SAFE_CAST_SIZE_TO_X509_SIZE(srcVal, dstVal, errorAction, errorObject) \
+       (dstVal) = (srcVal)
+
+#else /* defined(OPENSSL_IS_BORINGSSL) */
+
+typedef int xmlSecOpenSSLX509Size;
+
+#define XMLSEC_OPENSSL_SAFE_CAST_X509_SIZE_TO_SIZE(srcVal, dstVal, errorAction, errorObject) \
+       XMLSEC_SAFE_CAST_INT_TO_SIZE((srcVal), (dstVal), errorAction, (errorObject))
+
+#define XMLSEC_OPENSSL_SAFE_CAST_SIZE_TO_X509_SIZE(srcVal, dstVal, errorAction, errorObject) \
+       XMLSEC_SAFE_CAST_SIZE_TO_INT((srcVal), (dstVal), errorAction, (errorObject))
+
+#endif /* defined(OPENSSL_IS_BORINGSSL) */
+
 
 /******************************************************************************
  *
@@ -123,7 +151,6 @@
 #endif /* (LIBRESSL_VERSION_NUMBER < 0x3070200fL) */
 
 #endif /* defined(LIBRESSL_VERSION_NUMBER) */
-
 
 /******************************************************************************
  *
@@ -156,12 +183,14 @@
 #define X509_STORE_set_default_paths_ex(ctx,libctx,propq)           X509_STORE_set_default_paths((ctx))
 #define X509_NAME_hash_ex(x,libctx,propq,ok)                        X509_NAME_hash((x))
 
+#ifndef RAND_priv_bytes_ex
 #define RAND_priv_bytes_ex(ctx,buf,num,strength)                    xmlSecOpenSSLCompatRand((buf),(num))
 static inline int xmlSecOpenSSLCompatRand(unsigned char *buf, xmlSecSize size) {
     int num;
     XMLSEC_SAFE_CAST_SIZE_TO_INT(size, num, return(0), NULL);
     return(RAND_priv_bytes(buf, num));
 }
+#endif /* RAND_priv_bytes_ex */
 
 #endif /* !defined(XMLSEC_OPENSSL_API_300) */
 

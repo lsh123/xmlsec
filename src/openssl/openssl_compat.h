@@ -68,6 +68,7 @@
 #define sk_X509_CRL_value(sk, idx)        sk_X509_CRL_value(sk, (size_t)(idx))
 #define sk_X509_value(sk, idx)            sk_X509_value(sk, (size_t)(idx))
 #define sk_X509_NAME_ENTRY_value(sk, idx) sk_X509_NAME_ENTRY_value(sk, (size_t)(idx))
+#define sk_X509_REVOKED_value(sk, idx)    sk_X509_REVOKED_value(sk, (size_t)(idx))
 
 #define BIO_pending      (int)BIO_pending
 

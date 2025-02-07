@@ -981,8 +981,10 @@ xmlSecOpenSSLEvpSignatureVerify(xmlSecTransformPtr transform,
     xmlSecByte dgst[EVP_MAX_MD_SIZE];
     unsigned int dgstSize = sizeof(dgst);
     EVP_PKEY_CTX *pKeyCtx = NULL;
+#if !defined(XMLSEC_NO_DSA) || !defined(XMLSEC_NO_EC)
     unsigned char * fixedData = NULL;
     int fixedDataLen = 0;
+#endif
     unsigned int dataLen;
     int ret;
     int res = -1;
@@ -1073,9 +1075,11 @@ xmlSecOpenSSLEvpSignatureVerify(xmlSecTransformPtr transform,
     res = 0;
 
 done:
+#if !defined(XMLSEC_NO_DSA) || !defined(XMLSEC_NO_EC)
     if(fixedData != NULL) {
         OPENSSL_free(fixedData);
     }
+#endif
     if(pKeyCtx != NULL) {
         EVP_PKEY_CTX_free(pKeyCtx);
     }

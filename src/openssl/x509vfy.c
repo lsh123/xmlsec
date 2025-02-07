@@ -1347,6 +1347,11 @@ done:
 
 #else /* XMLSEC_OPENSSL_NO_CRL_VERIFICATION */
     /* boringssl doesn't have X509_OBJECT_new() or public definition of X509_OBJECT */
+    UNREFERENCED_PARAMETER(xst);
+    UNREFERENCED_PARAMETER(xsc);
+    UNREFERENCED_PARAMETER(untrusted);
+    UNREFERENCED_PARAMETER(crl);
+    UNREFERENCED_PARAMETER(keyInfoCtx);
     return(1);
 #endif /* XMLSEC_OPENSSL_NO_CRL_VERIFICATION */
 }

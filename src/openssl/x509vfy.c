@@ -73,6 +73,14 @@ struct _xmlSecOpenSSLX509StoreCtx {
 XMLSEC_KEY_DATA_STORE_DECLARE(OpenSSLX509Store, xmlSecOpenSSLX509StoreCtx)
 #define xmlSecOpenSSLX509StoreSize XMLSEC_KEY_DATA_STORE_SIZE(OpenSSLX509Store)
 
+#ifndef XMLSEC_OPENSSL_NO_CRL_VERIFICATION
+#define xmlSecOpenSSLX509VerifyCRL(xst, xsc, untrusted, crl, keyInfoCtx) \
+        __xmlSecOpenSSLX509VerifyCRL(xst, xsc, untrusted, crl, keyInfoCtx)
+#else
+#define xmlSecOpenSSLX509VerifyCRL(xst, xsc, untrusted, crl, keyInfoCtx) \
+        __xmlSecOpenSSLX509VerifyCRL()
+#endif
+
 static int              xmlSecOpenSSLX509StoreInitialize        (xmlSecKeyDataStorePtr store);
 static void             xmlSecOpenSSLX509StoreFinalize          (xmlSecKeyDataStorePtr store);
 
@@ -92,11 +100,15 @@ static xmlSecKeyDataStoreKlass xmlSecOpenSSLX509StoreKlass = {
     NULL,                                       /* void* reserved1; */
 };
 
-static int              xmlSecOpenSSLX509VerifyCRL                      (X509_STORE* xst,
+#ifndef XMLSEC_OPENSSL_NO_CRL_VERIFICATION
+static int              __xmlSecOpenSSLX509VerifyCRL                     (X509_STORE* xst,
                                                                          X509_STORE_CTX* xsc,
                                                                          STACK_OF(X509)* untrusted,
                                                                          X509_CRL *crl,
                                                                          xmlSecKeyInfoCtx* keyInfoCtx);
+#else
+static int __xmlSecOpenSSLX509VerifyCRL(void);
+#endif
 static X509*            xmlSecOpenSSLX509FindChildCert                  (STACK_OF(X509) *chain,
                                                                          X509 *cert);
 static X509_NAME*       xmlSecOpenSSLX509NameRead                       (const xmlChar *str);
@@ -1273,9 +1285,10 @@ xmlSecOpenSSLX509StoreFinalize(xmlSecKeyDataStorePtr store) {
  * Low-level x509 functions
  *
  *****************************************************************************/
-static int
-xmlSecOpenSSLX509VerifyCRL(X509_STORE* xst, X509_STORE_CTX* xsc, STACK_OF(X509)* untrusted, X509_CRL *crl, xmlSecKeyInfoCtx* keyInfoCtx) {
 #ifndef XMLSEC_OPENSSL_NO_CRL_VERIFICATION
+/* Do not directly call this function, but xmlSecOpenSSLX509VerifyCRL() */
+static int
+__xmlSecOpenSSLX509VerifyCRL(X509_STORE* xst, X509_STORE_CTX* xsc, STACK_OF(X509)* untrusted, X509_CRL *crl, xmlSecKeyInfoCtx* keyInfoCtx) {
     X509_OBJECT *xobj = NULL;
     EVP_PKEY *pKey = NULL;
     int ret;
@@ -1344,12 +1357,17 @@ done:
     }
     X509_STORE_CTX_cleanup(xsc);
     return(res);
+}
 
 #else /* XMLSEC_OPENSSL_NO_CRL_VERIFICATION */
+
+static int __xmlSecOpenSSLX509VerifyCRL(void)
+{
     /* boringssl doesn't have X509_OBJECT_new() or public definition of X509_OBJECT */
     return(1);
-#endif /* XMLSEC_OPENSSL_NO_CRL_VERIFICATION */
 }
+
+#endif /* XMLSEC_OPENSSL_NO_CRL_VERIFICATION */
 
 
 int xmlSecOpenSSLX509FindCertCtxInitialize(xmlSecOpenSSLX509FindCertCtxPtr ctx,

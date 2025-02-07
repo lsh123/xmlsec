@@ -1274,7 +1274,11 @@ xmlSecOpenSSLX509StoreFinalize(xmlSecKeyDataStorePtr store) {
  *
  *****************************************************************************/
 static int
-xmlSecOpenSSLX509VerifyCRL(X509_STORE* xst, X509_STORE_CTX* xsc, STACK_OF(X509)* untrusted, X509_CRL *crl, xmlSecKeyInfoCtx* keyInfoCtx) {
+xmlSecOpenSSLX509VerifyCRL(__attribute__((unused)) X509_STORE* xst,
+                           __attribute__((unused)) X509_STORE_CTX* xsc,
+                           __attribute__((unused)) STACK_OF(X509)* untrusted,
+                           __attribute__((unused)) X509_CRL *crl,
+                           __attribute__((unused)) xmlSecKeyInfoCtx* keyInfoCtx) {
 #ifndef XMLSEC_OPENSSL_NO_CRL_VERIFICATION
     X509_OBJECT *xobj = NULL;
     EVP_PKEY *pKey = NULL;

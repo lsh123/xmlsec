@@ -27,11 +27,6 @@
 #define EVP_MD_size (int)EVP_MD_size
 #define RSA_size    (int)RSA_size
 
-#define BN_num_bytes (int)BN_num_bytes
-#define BN_num_bits  (int)BN_num_bits
-#define BN_bn2bin    (int)BN_bn2bin
-#define BN_bin2bn(in, len, ret) BN_bin2bn(in, (size_t)(len), ret)
-
 #define BIO_pending      (int)BIO_pending
 
 #endif /* ! OPENSSL_IS_AWSLC */

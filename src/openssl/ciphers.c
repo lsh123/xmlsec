@@ -117,14 +117,14 @@ xmlSecOpenSSLEvpBlockCipherCtxInit(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
         /* generate random iv */
         ret = RAND_priv_bytes_ex(xmlSecOpenSSLGetLibCtx(), ctx->iv, ivSize, XMLSEEC_OPENSSL_RAND_BYTES_STRENGTH);
         if(ret != 1) {
-            xmlSecOpenSSLError2("RAND_priv_bytes_ex", cipherName, "size=" XMLSEC_SIZE_T_FMT, ivSize);
+            xmlSecOpenSSLError2("RAND_priv_bytes_ex", cipherName, "size=" XMLSEC_SIZE_FMT, ivSize);
             return(-1);
         }
 
         /* write iv to the output */
         ret = xmlSecBufferAppend(out, ctx->iv, ivSize);
         if(ret < 0) {
-            xmlSecInternalError2("xmlSecBufferAppend", cipherName, "size=" XMLSEC_SIZE_T_FMT, ivSize);
+            xmlSecInternalError2("xmlSecBufferAppend", cipherName, "size=" XMLSEC_SIZE_FMT, ivSize);
             return(-1);
         }
     } else {
@@ -141,7 +141,7 @@ xmlSecOpenSSLEvpBlockCipherCtxInit(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
         /* and remove from input */
         ret = xmlSecBufferRemoveHead(in, ivSize);
         if(ret < 0) {
-            xmlSecInternalError2("xmlSecBufferRemoveHead", cipherName, "size=" XMLSEC_SIZE_T_FMT, ivSize);
+            xmlSecInternalError2("xmlSecBufferRemoveHead", cipherName, "size=" XMLSEC_SIZE_FMT, ivSize);
             return(-1);
         }
     }

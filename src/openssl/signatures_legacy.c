@@ -578,7 +578,7 @@ static ECDSA_SIG*
 xmlSecOpenSSLSignatureLegacyEcdsaSignImpl(EVP_PKEY* pKey, const xmlSecByte* buf, xmlSecSize bufSize) {
     EC_KEY* ecKey = NULL;
     ECDSA_SIG* sig = NULL;
-    int dgstLen;
+    xmlSecOpenSSLSizeT dgstLen;
     ECDSA_SIG* res = NULL;
 
     xmlSecAssert2(pKey != NULL, NULL);
@@ -593,7 +593,7 @@ xmlSecOpenSSLSignatureLegacyEcdsaSignImpl(EVP_PKEY* pKey, const xmlSecByte* buf,
     }
 
     /* sign */
-    XMLSEC_SAFE_CAST_SIZE_TO_INT(bufSize, dgstLen, goto done, NULL);
+    XMLSEC_OPENSSL_SAFE_CAST_SIZE_TO_SIZE_T(bufSize, dgstLen, goto done, NULL);
     sig = ECDSA_do_sign(buf, dgstLen, ecKey);
     if(sig == NULL) {
         xmlSecOpenSSLError("ECDSA_do_sign", NULL);
@@ -618,7 +618,7 @@ static int
 xmlSecOpenSSLSignatureLegacyEcdsaVerifyImpl(EVP_PKEY* pKey, ECDSA_SIG* sig,
                                      const xmlSecByte* buf, xmlSecSize bufSize) {
     EC_KEY* ecKey = NULL;
-    int bufLen;
+    xmlSecOpenSSLSizeT bufLen;
     int ret;
     int res = -1;
 
@@ -635,7 +635,7 @@ xmlSecOpenSSLSignatureLegacyEcdsaVerifyImpl(EVP_PKEY* pKey, ECDSA_SIG* sig,
     }
 
     /* verify */
-    XMLSEC_SAFE_CAST_SIZE_TO_INT(bufSize, bufLen, goto done, NULL);
+    XMLSEC_OPENSSL_SAFE_CAST_SIZE_TO_SIZE_T(bufSize, bufLen, goto done, NULL);
     ret = ECDSA_do_verify(buf, bufLen, sig, ecKey);
     if(ret < 0) {
         xmlSecOpenSSLError("ECDSA_do_verify", NULL);

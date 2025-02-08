@@ -326,7 +326,7 @@ xmlSecOpenSSLHmacSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq
 #ifndef XMLSEC_OPENSSL_API_300
 static int
 xmlSecOpenSSLHmacSetKeyImpl(xmlSecOpenSSLHmacCtxPtr ctx, const xmlSecByte* key, xmlSecSize keySize) {
-    int keyLen;
+    xmlSecOpenSSLSizeT keyLen;
     int ret;
 
     xmlSecAssert2(ctx != NULL, -1);
@@ -335,7 +335,7 @@ xmlSecOpenSSLHmacSetKeyImpl(xmlSecOpenSSLHmacCtxPtr ctx, const xmlSecByte* key, 
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(keySize > 0, -1);
 
-    XMLSEC_SAFE_CAST_SIZE_TO_INT(keySize, keyLen, return(-1), NULL);
+    XMLSEC_OPENSSL_SAFE_CAST_SIZE_TO_SIZE_T(keySize, keyLen, return(-1), NULL);
     ret = HMAC_Init_ex(ctx->hmacCtx, key, keyLen, ctx->hmacDgst, NULL);
     if(ret != 1) {
         xmlSecOpenSSLError("HMAC_Init_ex", NULL);

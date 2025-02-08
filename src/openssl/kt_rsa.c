@@ -120,7 +120,7 @@ xmlSecOpenSSLTransformRsaPkcs1GetKlass(void) {
     return(&xmlSecOpenSSLRsaPkcs1Klass);
 }
 
-#ifndef XMLSEC_OPENSSL_API_300
+#if !defined(XMLSEC_OPENSSL_API_300)
 
 static int
 xmlSecOpenSSLRsaPkcs1SetKeyImpl(xmlSecOpenSSLRsaPkcs1CtxPtr ctx, EVP_PKEY* pKey,
@@ -157,7 +157,7 @@ static int
 xmlSecOpenSSLRsaPkcs1ProcessImpl(xmlSecOpenSSLRsaPkcs1CtxPtr ctx, const xmlSecByte* inBuf, xmlSecSize inSize,
                                  xmlSecByte* outBuf, xmlSecSize* outSize, int encrypt) {
     RSA* rsa;
-    int inLen;
+    xmlSecOpenSSLSizeT inLen;
     int ret;
 
     xmlSecAssert2(ctx != NULL, -1);
@@ -171,7 +171,7 @@ xmlSecOpenSSLRsaPkcs1ProcessImpl(xmlSecOpenSSLRsaPkcs1CtxPtr ctx, const xmlSecBy
     rsa = EVP_PKEY_get0_RSA(ctx->pKey);
     xmlSecAssert2(rsa != NULL, -1);
 
-    XMLSEC_SAFE_CAST_SIZE_TO_INT(inSize, inLen, return(-1), NULL);
+    XMLSEC_OPENSSL_SAFE_CAST_SIZE_TO_SIZE_T(inSize, inLen, return(-1), NULL);
     if(encrypt != 0) {
         ret = RSA_public_encrypt(inLen, inBuf, outBuf, rsa, RSA_PKCS1_PADDING);
         if(ret <= 0) {
@@ -194,7 +194,7 @@ xmlSecOpenSSLRsaPkcs1ProcessImpl(xmlSecOpenSSLRsaPkcs1CtxPtr ctx, const xmlSecBy
    return(0);
 }
 
-#else /* XMLSEC_OPENSSL_API_300 */
+#else /* !defined(XMLSEC_OPENSSL_API_300) */
 
 static int
 xmlSecOpenSSLRsaPkcs1SetKeyImpl(xmlSecOpenSSLRsaPkcs1CtxPtr ctx, EVP_PKEY* pKey,
@@ -277,7 +277,7 @@ xmlSecOpenSSLRsaPkcs1ProcessImpl(xmlSecOpenSSLRsaPkcs1CtxPtr ctx, const xmlSecBy
     /* success */
     return(0);
 }
-#endif /* XMLSEC_OPENSSL_API_300 */
+#endif /* !defined(XMLSEC_OPENSSL_API_300) */
 
 static int
 xmlSecOpenSSLRsaPkcs1Initialize(xmlSecTransformPtr transform) {

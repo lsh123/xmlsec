@@ -24,25 +24,6 @@
 #define OPENSSL_IS_BORINGSSL
 #endif /* OPENSSL_IS_BORINGSSL */
 
-
-#define ECDSA_do_verify(digest, digest_len, sig, key) \
-       ECDSA_do_verify(digest, (size_t)(digest_len), sig, key)
-#define ECDSA_do_sign(digest, digest_len, key) \
-       ECDSA_do_sign(digest, (size_t)(digest_len), key)
-
-#define HMAC_Init_ex(ctx, key, key_len, md, impl) \
-       HMAC_Init_ex(ctx, key, (size_t)(key_len), md, impl)
-
-#define AES_set_encrypt_key(user_key, bits, aes_key) \
-       AES_set_encrypt_key(user_key, (unsigned)(bits), aes_key)
-#define AES_set_decrypt_key(user_key, bits, aes_key) \
-       AES_set_decrypt_key(user_key, (unsigned)(bits), aes_key)
-
-#define RSA_public_encrypt(flen, from, to, rsa, padding) \
-       RSA_public_encrypt((size_t)(flen), from, to, rsa, padding)
-#define RSA_private_decrypt(flen, from, to, rsa, padding) \
-       RSA_private_decrypt((size_t)(flen), from, to, rsa, padding)
-
 #define EVP_MD_size (int)EVP_MD_size
 #define RSA_size    (int)RSA_size
 

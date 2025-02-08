@@ -186,7 +186,7 @@ xmlSecOpenSSLX509StoreFindCert_ex(xmlSecKeyDataStorePtr store,
 ) {
     xmlSecOpenSSLX509StoreCtxPtr ctx;
     xmlSecOpenSSLX509FindCertCtx findCertCtx;
-    xmlSecOpenSSLX509Size ii;
+    xmlSecOpenSSLSizeT ii;
     int ret;
     X509* res = NULL;
 
@@ -235,7 +235,7 @@ X509*
 xmlSecOpenSSLX509StoreFindCertByValue(xmlSecKeyDataStorePtr store, xmlSecKeyX509DataValuePtr x509Value) {
     xmlSecOpenSSLX509StoreCtxPtr ctx;
     xmlSecOpenSSLX509FindCertCtx findCertCtx;
-    xmlSecOpenSSLX509Size ii;
+    xmlSecOpenSSLSizeT ii;
     int ret;
     X509* res = NULL;
 
@@ -338,7 +338,7 @@ xmlSecOpenSSLX509StoreVerifyAndCopyCrls(X509_STORE* xst, X509_STORE_CTX* xsc, ST
     xmlSecKeyInfoCtx* keyInfoCtx
 ) {
     STACK_OF(X509_CRL)* verified_crls = NULL;
-    xmlSecOpenSSLX509Size ii, num, num2;
+    xmlSecOpenSSLSizeT ii, num, num2;
     int ret;
 
     xmlSecAssert2(xst != NULL, NULL);
@@ -402,7 +402,7 @@ xmlSecOpenSSLX509StoreVerifyCertAgainstRevoked(X509 * cert, STACK_OF(X509_REVOKE
     X509_REVOKED * revoked_cert;
     const ASN1_INTEGER * revoked_cert_serial;
     const ASN1_INTEGER * cert_serial;
-    xmlSecOpenSSLX509Size ii, num;
+    xmlSecOpenSSLSizeT ii, num;
     int ret;
 
     xmlSecAssert2(cert != NULL, -1);
@@ -488,7 +488,7 @@ xmlSecOpenSSLX509StoreFindBestCrl(X509_NAME *cert_issuer, STACK_OF(X509_CRL) *cr
     X509_NAME *crl_issuer;
     const ASN1_TIME * lastUpdate;
     time_t resLastUpdateTime = 0;
-    xmlSecOpenSSLX509Size ii, num;
+    xmlSecOpenSSLSizeT ii, num;
     int ret;
 
     xmlSecAssert2(cert_issuer != NULL, -1);
@@ -616,7 +616,7 @@ xmlSecOpenSSLX509StoreVerifyCertAgainstCrls(STACK_OF(X509_CRL) *crls, X509* cert
 static int
 xmlSecOpenSSLX509StoreVerifyCertsAgainstCrls(STACK_OF(X509)* chain, STACK_OF(X509_CRL)* crls, xmlSecKeyInfoCtx* keyInfoCtx) {
     X509 * cert;
-    xmlSecOpenSSLX509Size ii, num_certs;
+    xmlSecOpenSSLSizeT ii, num_certs;
     int ret;
 
     xmlSecAssert2(chain != NULL, -1);
@@ -824,7 +824,7 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
     X509 * res = NULL;
     X509 * cert;
     X509_STORE_CTX *xsc = NULL;
-    xmlSecOpenSSLX509Size ii, num;
+    xmlSecOpenSSLSizeT ii, num;
     int ret;
 
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecOpenSSLX509StoreId), NULL);
@@ -1040,7 +1040,7 @@ xmlSecOpenSSLX509StoreAdoptCert(xmlSecKeyDataStorePtr store, X509* cert, xmlSecK
         /* add cert increments the reference */
         X509_free(cert);
     } else {
-        xmlSecOpenSSLX509Size ret;
+        xmlSecOpenSSLSizeT ret;
 
         xmlSecAssert2(ctx->untrusted != NULL, -1);
 
@@ -1065,7 +1065,7 @@ xmlSecOpenSSLX509StoreAdoptCert(xmlSecKeyDataStorePtr store, X509* cert, xmlSecK
 int
 xmlSecOpenSSLX509StoreAdoptCrl(xmlSecKeyDataStorePtr store, X509_CRL* crl) {
     xmlSecOpenSSLX509StoreCtxPtr ctx;
-    xmlSecOpenSSLX509Size ret;
+    xmlSecOpenSSLSizeT ret;
 
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecOpenSSLX509StoreId), -1);
     xmlSecAssert2(crl != NULL, -1);
@@ -1693,8 +1693,8 @@ xmlSecOpenSSLX509StoreCombineCerts(STACK_OF(X509)* certs1, STACK_OF(X509)* certs
         }
     } else if(certs2 != NULL) {
         X509 * cert;
-        xmlSecOpenSSLX509Size ii, num;
-        xmlSecOpenSSLX509Size ret;
+        xmlSecOpenSSLSizeT ii, num;
+        xmlSecOpenSSLSizeT ret;
 
         /* append certs2 to result */
         num = sk_X509_num(certs2);
@@ -1730,7 +1730,7 @@ static X509*
 xmlSecOpenSSLX509FindChildCert(STACK_OF(X509) *chain, X509 *cert) {
     unsigned long certNameHash;
     unsigned long certNameHash2;
-    xmlSecOpenSSLX509Size ii;
+    xmlSecOpenSSLSizeT ii;
 
     xmlSecAssert2(chain != NULL, NULL);
     xmlSecAssert2(cert != NULL, NULL);
@@ -1970,7 +1970,7 @@ static STACK_OF(X509_NAME_ENTRY)*
 xmlSecOpenSSLX509_NAME_ENTRIES_copy(X509_NAME * a) {
     STACK_OF(X509_NAME_ENTRY) * res = NULL;
     int ii;
-    xmlSecOpenSSLX509Size ret;
+    xmlSecOpenSSLSizeT ret;
 
     res = sk_X509_NAME_ENTRY_new(xmlSecOpenSSLX509_NAME_ENTRY_cmp);
     if(res == NULL) {
@@ -1994,8 +1994,8 @@ static
 int xmlSecOpenSSLX509_NAME_ENTRIES_cmp(STACK_OF(X509_NAME_ENTRY)* a,  STACK_OF(X509_NAME_ENTRY)* b) {
     const X509_NAME_ENTRY *na;
     const X509_NAME_ENTRY *nb;
-    xmlSecOpenSSLX509Size ii;
-    xmlSecOpenSSLX509Size num_a, num_b;
+    xmlSecOpenSSLSizeT ii;
+    xmlSecOpenSSLSizeT num_a, num_b;
     int ret;
 
     xmlSecAssert2(a != NULL, -1);

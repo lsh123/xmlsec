@@ -56,8 +56,6 @@
 
 #define BIO_pending      (int)BIO_pending
 
-#define RAND_priv_bytes_ex(ctx,buf,num,strength)        RAND_priv_bytes((buf), (num))
-
 #endif /* ! OPENSSL_IS_AWSLC */
 
 
@@ -102,21 +100,21 @@
 /* BoringSSL redefines int->size_t for bunch of x509 functions */
 #if defined(OPENSSL_IS_BORINGSSL)
 
-typedef size_t xmlSecOpenSSLX509Size;
+typedef size_t xmlSecOpenSSLSizeT;
 
-#define XMLSEC_OPENSSL_SAFE_CAST_X509_SIZE_TO_SIZE(srcVal, dstVal, errorAction, errorObject)  \
+#define XMLSEC_OPENSSL_SAFE_CAST_SIZE_T_TO_SIZE(srcVal, dstVal, errorAction, errorObject)  \
        (dstVal) = (srcVal)
-#define XMLSEC_OPENSSL_SAFE_CAST_SIZE_TO_X509_SIZE(srcVal, dstVal, errorAction, errorObject) \
+#define XMLSEC_OPENSSL_SAFE_CAST_SIZE_TO_SIZE_T(srcVal, dstVal, errorAction, errorObject) \
        (dstVal) = (srcVal)
 
 #else /* defined(OPENSSL_IS_BORINGSSL) */
 
-typedef int xmlSecOpenSSLX509Size;
+typedef int xmlSecOpenSSLSizeT;
 
-#define XMLSEC_OPENSSL_SAFE_CAST_X509_SIZE_TO_SIZE(srcVal, dstVal, errorAction, errorObject) \
+#define XMLSEC_OPENSSL_SAFE_CAST_SIZE_T_TO_SIZE(srcVal, dstVal, errorAction, errorObject) \
        XMLSEC_SAFE_CAST_INT_TO_SIZE((srcVal), (dstVal), errorAction, (errorObject))
 
-#define XMLSEC_OPENSSL_SAFE_CAST_SIZE_TO_X509_SIZE(srcVal, dstVal, errorAction, errorObject) \
+#define XMLSEC_OPENSSL_SAFE_CAST_SIZE_TO_SIZE_T(srcVal, dstVal, errorAction, errorObject) \
        XMLSEC_SAFE_CAST_SIZE_TO_INT((srcVal), (dstVal), errorAction, (errorObject))
 
 #endif /* defined(OPENSSL_IS_BORINGSSL) */
@@ -183,14 +181,12 @@ typedef int xmlSecOpenSSLX509Size;
 #define X509_STORE_set_default_paths_ex(ctx,libctx,propq)           X509_STORE_set_default_paths((ctx))
 #define X509_NAME_hash_ex(x,libctx,propq,ok)                        X509_NAME_hash((x))
 
-#ifndef RAND_priv_bytes_ex
 #define RAND_priv_bytes_ex(ctx,buf,num,strength)                    xmlSecOpenSSLCompatRand((buf),(num))
 static inline int xmlSecOpenSSLCompatRand(unsigned char *buf, xmlSecSize size) {
-    int num;
-    XMLSEC_SAFE_CAST_SIZE_TO_INT(size, num, return(0), NULL);
+    xmlSecOpenSSLSizeT num;
+    XMLSEC_OPENSSL_SAFE_CAST_SIZE_TO_SIZE_T(size, num, return(0), NULL);
     return(RAND_priv_bytes(buf, num));
 }
-#endif /* RAND_priv_bytes_ex */
 
 #endif /* !defined(XMLSEC_OPENSSL_API_300) */
 

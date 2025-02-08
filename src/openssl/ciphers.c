@@ -127,7 +127,6 @@ xmlSecOpenSSLEvpBlockCipherCtxInit(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
             xmlSecInternalError2("xmlSecBufferAppend", cipherName, "size=%d", ivLen);
             return(-1);
         }
-
     } else {
         /* if we don't have enough data, exit and hope that
          * we'll have iv next time */

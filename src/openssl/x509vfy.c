@@ -45,12 +45,6 @@
 #include "openssl_compat.h"
 #include "private.h"
 
-#ifdef OPENSSL_IS_BORINGSSL
-typedef size_t x509_size_t;
-#else /* OPENSSL_IS_BORINGSSL */
-typedef int x509_size_t;
-#endif /* OPENSSL_IS_BORINGSSL */
-
 /**************************************************************************
  *
  * Internal OpenSSL X509 store CTX
@@ -192,7 +186,7 @@ xmlSecOpenSSLX509StoreFindCert_ex(xmlSecKeyDataStorePtr store,
 ) {
     xmlSecOpenSSLX509StoreCtxPtr ctx;
     xmlSecOpenSSLX509FindCertCtx findCertCtx;
-    x509_size_t ii;
+    xmlSecOpenSSLSizeT ii;
     int ret;
     X509* res = NULL;
 
@@ -241,7 +235,7 @@ X509*
 xmlSecOpenSSLX509StoreFindCertByValue(xmlSecKeyDataStorePtr store, xmlSecKeyX509DataValuePtr x509Value) {
     xmlSecOpenSSLX509StoreCtxPtr ctx;
     xmlSecOpenSSLX509FindCertCtx findCertCtx;
-    x509_size_t ii;
+    xmlSecOpenSSLSizeT ii;
     int ret;
     X509* res = NULL;
 
@@ -344,7 +338,7 @@ xmlSecOpenSSLX509StoreVerifyAndCopyCrls(X509_STORE* xst, X509_STORE_CTX* xsc, ST
     xmlSecKeyInfoCtx* keyInfoCtx
 ) {
     STACK_OF(X509_CRL)* verified_crls = NULL;
-    x509_size_t ii, num;
+    xmlSecOpenSSLSizeT ii, num, num2;
     int ret;
 
     xmlSecAssert2(xst != NULL, NULL);
@@ -391,8 +385,8 @@ xmlSecOpenSSLX509StoreVerifyAndCopyCrls(X509_STORE* xst, X509_STORE_CTX* xsc, ST
         }
         /* dont duplicate or up_ref the crl since we own
          * pointer to it */
-        ret = sk_X509_CRL_push(verified_crls, crl);
-        if(ret <= 0) {
+        num2 = sk_X509_CRL_push(verified_crls, crl);
+        if(num2 <= 0) {
             xmlSecOpenSSLError("sk_X509_CRL_push", NULL);
             sk_X509_CRL_free(verified_crls);
             return(NULL);
@@ -408,7 +402,7 @@ xmlSecOpenSSLX509StoreVerifyCertAgainstRevoked(X509 * cert, STACK_OF(X509_REVOKE
     X509_REVOKED * revoked_cert;
     const ASN1_INTEGER * revoked_cert_serial;
     const ASN1_INTEGER * cert_serial;
-    x509_size_t ii, num;
+    xmlSecOpenSSLSizeT ii, num;
     int ret;
 
     xmlSecAssert2(cert != NULL, -1);
@@ -494,7 +488,7 @@ xmlSecOpenSSLX509StoreFindBestCrl(X509_NAME *cert_issuer, STACK_OF(X509_CRL) *cr
     X509_NAME *crl_issuer;
     const ASN1_TIME * lastUpdate;
     time_t resLastUpdateTime = 0;
-    x509_size_t ii, num;
+    xmlSecOpenSSLSizeT ii, num;
     int ret;
 
     xmlSecAssert2(cert_issuer != NULL, -1);
@@ -622,7 +616,7 @@ xmlSecOpenSSLX509StoreVerifyCertAgainstCrls(STACK_OF(X509_CRL) *crls, X509* cert
 static int
 xmlSecOpenSSLX509StoreVerifyCertsAgainstCrls(STACK_OF(X509)* chain, STACK_OF(X509_CRL)* crls, xmlSecKeyInfoCtx* keyInfoCtx) {
     X509 * cert;
-    x509_size_t ii, num_certs;
+    xmlSecOpenSSLSizeT ii, num_certs;
     int ret;
 
     xmlSecAssert2(chain != NULL, -1);
@@ -830,7 +824,7 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
     X509 * res = NULL;
     X509 * cert;
     X509_STORE_CTX *xsc = NULL;
-    x509_size_t ii, num;
+    xmlSecOpenSSLSizeT ii, num;
     int ret;
 
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecOpenSSLX509StoreId), NULL);
@@ -1025,7 +1019,6 @@ done:
 int
 xmlSecOpenSSLX509StoreAdoptCert(xmlSecKeyDataStorePtr store, X509* cert, xmlSecKeyDataType type) {
     xmlSecOpenSSLX509StoreCtxPtr ctx;
-    int ret;
 
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecOpenSSLX509StoreId), -1);
     xmlSecAssert2(cert != NULL, -1);
@@ -1034,6 +1027,8 @@ xmlSecOpenSSLX509StoreAdoptCert(xmlSecKeyDataStorePtr store, X509* cert, xmlSecK
     xmlSecAssert2(ctx != NULL, -1);
 
     if((type & xmlSecKeyDataTypeTrusted) != 0) {
+        int ret;
+
         xmlSecAssert2(ctx->xst != NULL, -1);
 
         ret = X509_STORE_add_cert(ctx->xst, cert);
@@ -1045,6 +1040,8 @@ xmlSecOpenSSLX509StoreAdoptCert(xmlSecKeyDataStorePtr store, X509* cert, xmlSecK
         /* add cert increments the reference */
         X509_free(cert);
     } else {
+        xmlSecOpenSSLSizeT ret;
+
         xmlSecAssert2(ctx->untrusted != NULL, -1);
 
         ret = sk_X509_push(ctx->untrusted, cert);
@@ -1068,7 +1065,7 @@ xmlSecOpenSSLX509StoreAdoptCert(xmlSecKeyDataStorePtr store, X509* cert, xmlSecK
 int
 xmlSecOpenSSLX509StoreAdoptCrl(xmlSecKeyDataStorePtr store, X509_CRL* crl) {
     xmlSecOpenSSLX509StoreCtxPtr ctx;
-    int ret;
+    xmlSecOpenSSLSizeT ret;
 
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecOpenSSLX509StoreId), -1);
     xmlSecAssert2(crl != NULL, -1);
@@ -1696,8 +1693,8 @@ xmlSecOpenSSLX509StoreCombineCerts(STACK_OF(X509)* certs1, STACK_OF(X509)* certs
         }
     } else if(certs2 != NULL) {
         X509 * cert;
-        x509_size_t ii, num;
-        int ret;
+        xmlSecOpenSSLSizeT ii, num;
+        xmlSecOpenSSLSizeT ret;
 
         /* append certs2 to result */
         num = sk_X509_num(certs2);
@@ -1733,7 +1730,7 @@ static X509*
 xmlSecOpenSSLX509FindChildCert(STACK_OF(X509) *chain, X509 *cert) {
     unsigned long certNameHash;
     unsigned long certNameHash2;
-    x509_size_t ii;
+    xmlSecOpenSSLSizeT ii;
 
     xmlSecAssert2(chain != NULL, NULL);
     xmlSecAssert2(cert != NULL, NULL);
@@ -1973,7 +1970,7 @@ static STACK_OF(X509_NAME_ENTRY)*
 xmlSecOpenSSLX509_NAME_ENTRIES_copy(X509_NAME * a) {
     STACK_OF(X509_NAME_ENTRY) * res = NULL;
     int ii;
-    int ret;
+    xmlSecOpenSSLSizeT ret;
 
     res = sk_X509_NAME_ENTRY_new(xmlSecOpenSSLX509_NAME_ENTRY_cmp);
     if(res == NULL) {
@@ -1997,16 +1994,23 @@ static
 int xmlSecOpenSSLX509_NAME_ENTRIES_cmp(STACK_OF(X509_NAME_ENTRY)* a,  STACK_OF(X509_NAME_ENTRY)* b) {
     const X509_NAME_ENTRY *na;
     const X509_NAME_ENTRY *nb;
-    int ii, ret;
+    xmlSecOpenSSLSizeT ii;
+    xmlSecOpenSSLSizeT num_a, num_b;
+    int ret;
 
     xmlSecAssert2(a != NULL, -1);
     xmlSecAssert2(b != NULL, 1);
 
-    if (sk_X509_NAME_ENTRY_num(a) != sk_X509_NAME_ENTRY_num(b)) {
-        return sk_X509_NAME_ENTRY_num(a) - sk_X509_NAME_ENTRY_num(b);
+    num_a = sk_X509_NAME_ENTRY_num(a);
+    num_b = sk_X509_NAME_ENTRY_num(b);
+    if (num_a > num_b) {
+        return(1);
+    } else if (num_a < num_b) {
+        return(-1);
     }
 
-    for (ii = sk_X509_NAME_ENTRY_num(a) - 1; ii >= 0; --ii) {
+    /* num_a == num_b */
+    for (ii = 0; ii < num_a; ++ii) {
         na = sk_X509_NAME_ENTRY_value(a, ii);
         nb = sk_X509_NAME_ENTRY_value(b, ii);
 

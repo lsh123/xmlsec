@@ -760,7 +760,7 @@ xmlSecOpenSSLAppCheckCertMatchesKey(EVP_PKEY * pKey,  X509 * cert) {
 static X509 *
 xmlSecOpenSSLAppFindKeyCert(EVP_PKEY * pKey, STACK_OF(X509) * certs) {
     X509 * cert;
-    int ii, size;
+    xmlSecOpenSSLSizeT ii, size;
     int ret;
 
     xmlSecAssert2(pKey != NULL, NULL);

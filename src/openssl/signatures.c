@@ -860,6 +860,7 @@ xmlSecOpenSSLEvpSignatureSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPt
 
 static int
 xmlSecOpenSSLEvpSignatureCalculateDigest(xmlSecTransformPtr transform, xmlSecOpenSSLEvpSignatureCtxPtr ctx, xmlSecByte* dgst, unsigned int* dgstSize) {
+    xmlSecOpenSSLSizeT mdSize;
     unsigned int dgstLen;
     int ret;
 
@@ -869,12 +870,12 @@ xmlSecOpenSSLEvpSignatureCalculateDigest(xmlSecTransformPtr transform, xmlSecOpe
     xmlSecAssert2(dgstSize != NULL, -1);
     xmlSecAssert2((*dgstSize) > 0, -1);
 
-    ret = EVP_MD_size(ctx->digest);
-    if (ret <= 0) {
+    mdSize = EVP_MD_size(ctx->digest);
+    if (mdSize <= 0) {
         xmlSecOpenSSLError("EVP_MD_size", xmlSecTransformGetName(transform));
         return(-1);
     }
-    XMLSEC_SAFE_CAST_INT_TO_UINT(ret, dgstLen,  return(-1), xmlSecTransformGetName(transform));
+    XMLSEC_OPENSSL_SAFE_CAST_SIZE_T_TO_UINT(mdSize, dgstLen,  return(-1), xmlSecTransformGetName(transform));
     xmlSecAssert2(dgstLen > 0, -1);
     xmlSecAssert2(dgstLen <= (*dgstSize), -1);
 
@@ -944,15 +945,16 @@ xmlSecOpenSSLEvpSignatureCreatePkeyCtx(xmlSecTransformPtr transform, xmlSecOpenS
         }
 
         if(ctx->rsaPadding == RSA_PKCS1_PSS_PADDING) {
+            xmlSecOpenSSLSizeT mdSize;
             int saltlen;
 
             /*  The default salt length is the length of the hash function.*/
-            ret = EVP_MD_size(ctx->digest);
-            if (ret <= 0) {
+            mdSize = EVP_MD_size(ctx->digest);
+            if (mdSize <= 0) {
                 xmlSecOpenSSLError("EVP_MD_size", xmlSecTransformGetName(transform));
                 goto error;
             }
-            saltlen = ret;
+            XMLSEC_OPENSSL_SAFE_CAST_SIZE_T_TO_INT(mdSize, saltlen, goto error, xmlSecTransformGetName(transform));
 
             ret = EVP_PKEY_CTX_set_rsa_pss_saltlen(pKeyCtx, saltlen);
             if(ret <= 0) {

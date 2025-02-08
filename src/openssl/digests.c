@@ -444,16 +444,16 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
             }
         }
         if(last) {
-            unsigned int dgstSize;
+            xmlSecOpenSSLSizeT mdSize;
             xmlSecSize size;
+            unsigned int dgstSize;
 
-            ret = EVP_MD_size(ctx->digest);
-            if (ret < 0) {
-                xmlSecOpenSSLError("EVP_MD_size",
-                                    xmlSecTransformGetName(transform));
+            mdSize = EVP_MD_size(ctx->digest);
+            if (mdSize <= 0) {
+                xmlSecOpenSSLError("EVP_MD_size", xmlSecTransformGetName(transform));
                 return(-1);
             }
-            XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, return(-1), xmlSecTransformGetName(transform));
+            XMLSEC_OPENSSL_SAFE_CAST_SIZE_T_TO_SIZE(mdSize, size, return(-1), xmlSecTransformGetName(transform));
             xmlSecAssert2(size <= sizeof(ctx->dgst), -1);
 
             ret = EVP_DigestFinal(ctx->digestCtx, ctx->dgst, &dgstSize);

@@ -126,7 +126,7 @@ static int
 xmlSecOpenSSLRsaPkcs1SetKeyImpl(xmlSecOpenSSLRsaPkcs1CtxPtr ctx, EVP_PKEY* pKey,
                                 int encrypt ATTRIBUTE_UNUSED) {
     RSA *rsa = NULL;
-    int keyLen;
+    xmlSecOpenSSLSizeT keyLen;
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->pKey == NULL, -1);
@@ -141,7 +141,7 @@ xmlSecOpenSSLRsaPkcs1SetKeyImpl(xmlSecOpenSSLRsaPkcs1CtxPtr ctx, EVP_PKEY* pKey,
         xmlSecOpenSSLError("RSA_size", NULL);
         return (-1);
     }
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(keyLen, ctx->keySize, return(-1), NULL);
+    XMLSEC_OPENSSL_SAFE_CAST_SIZE_T_TO_SIZE(keyLen, ctx->keySize, return(-1), NULL);
 
     ctx->pKey = xmlSecOpenSSLEvpKeyDup(pKey);
     if(ctx->pKey == NULL) {

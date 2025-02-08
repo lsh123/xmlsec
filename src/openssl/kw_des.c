@@ -429,6 +429,7 @@ xmlSecOpenSSLKWDes3Encrypt(const xmlSecByte* key, xmlSecSize keySize,
     EVP_CIPHER_CTX* cipherCtx = NULL;
     xmlSecSize size;
     int inLen, outLen, updateLen, finalLen;
+    xmlSecOpenSSLUInt len;
     int ret;
     int res = -1;
 
@@ -440,20 +441,20 @@ xmlSecOpenSSLKWDes3Encrypt(const xmlSecByte* key, xmlSecSize keySize,
     xmlSecAssert2(outSize >= inSize, -1);
     xmlSecAssert2(outWritten != NULL, -1);
 
-    ret = EVP_CIPHER_key_length(EVP_des_ede3_cbc());
-    if(ret <= 0) {
+    len = EVP_CIPHER_key_length(EVP_des_ede3_cbc());
+    if(len <= 0) {
         xmlSecOpenSSLError("EVP_CIPHER_key_length(EVP_des_ede3_cbc)", NULL);
         goto done;
     }
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, goto done, NULL);
+    XMLSEC_OPENSSL_SAFE_CAST_UINT_TO_SIZE(len, size, goto done, NULL);
     xmlSecAssert2(keySize == size, -1);
 
-    ret = EVP_CIPHER_iv_length(EVP_des_ede3_cbc());
-    if (ret <= 0) {
+    len = EVP_CIPHER_iv_length(EVP_des_ede3_cbc());
+    if (len <= 0) {
         xmlSecOpenSSLError("EVP_CIPHER_iv_length(EVP_des_ede3_cbc)", NULL);
         goto done;
     }
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, goto done, NULL);
+    XMLSEC_OPENSSL_SAFE_CAST_UINT_TO_SIZE(len, size, goto done, NULL);
     xmlSecAssert2(ivSize == size, -1);
 
 #ifndef XMLSEC_OPENSSL_API_300

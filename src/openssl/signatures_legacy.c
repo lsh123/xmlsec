@@ -523,15 +523,15 @@ xmlSecOpenSSLSignatureLegacyExecute(xmlSecTransformPtr transform, int last, xmlS
  * P-256 curve and 66 for the P-521 curve).
  *
  ***************************************************************************/
-static int
+static xmlSecOpenSSLSizeT
 xmlSecOpenSSLSignatureLegacyEcdsaSignatureHalfLen(EVP_PKEY* pKey) {
     const EC_GROUP *group = NULL;
     BIGNUM *order = NULL;
     EC_KEY* ecKey = NULL;
-    int signHalfLen;
-    int res = -1;
+    xmlSecOpenSSLSizeT signHalfLen;
+    xmlSecOpenSSLSizeT res = 0;
 
-    xmlSecAssert2(pKey != NULL, -1);
+    xmlSecAssert2(pKey != NULL, 0);
 
     /* get key */
     ecKey = EVP_PKEY_get1_EC_KEY(pKey);
@@ -578,7 +578,7 @@ static ECDSA_SIG*
 xmlSecOpenSSLSignatureLegacyEcdsaSignImpl(EVP_PKEY* pKey, const xmlSecByte* buf, xmlSecSize bufSize) {
     EC_KEY* ecKey = NULL;
     ECDSA_SIG* sig = NULL;
-    int dgstLen;
+    xmlSecOpenSSLSizeT dgstLen;
     ECDSA_SIG* res = NULL;
 
     xmlSecAssert2(pKey != NULL, NULL);
@@ -593,7 +593,7 @@ xmlSecOpenSSLSignatureLegacyEcdsaSignImpl(EVP_PKEY* pKey, const xmlSecByte* buf,
     }
 
     /* sign */
-    XMLSEC_SAFE_CAST_SIZE_TO_INT(bufSize, dgstLen, goto done, NULL);
+    XMLSEC_OPENSSL_SAFE_CAST_SIZE_TO_SIZE_T(bufSize, dgstLen, goto done, NULL);
     sig = ECDSA_do_sign(buf, dgstLen, ecKey);
     if(sig == NULL) {
         xmlSecOpenSSLError("ECDSA_do_sign", NULL);
@@ -618,7 +618,7 @@ static int
 xmlSecOpenSSLSignatureLegacyEcdsaVerifyImpl(EVP_PKEY* pKey, ECDSA_SIG* sig,
                                      const xmlSecByte* buf, xmlSecSize bufSize) {
     EC_KEY* ecKey = NULL;
-    int bufLen;
+    xmlSecOpenSSLSizeT bufLen;
     int ret;
     int res = -1;
 
@@ -635,7 +635,7 @@ xmlSecOpenSSLSignatureLegacyEcdsaVerifyImpl(EVP_PKEY* pKey, ECDSA_SIG* sig,
     }
 
     /* verify */
-    XMLSEC_SAFE_CAST_SIZE_TO_INT(bufSize, bufLen, goto done, NULL);
+    XMLSEC_OPENSSL_SAFE_CAST_SIZE_TO_SIZE_T(bufSize, bufLen, goto done, NULL);
     ret = ECDSA_do_verify(buf, bufLen, sig, ecKey);
     if(ret < 0) {
         xmlSecOpenSSLError("ECDSA_do_verify", NULL);
@@ -661,7 +661,7 @@ xmlSecOpenSSLSignatureLegacyEcdsaSign(xmlSecOpenSSLSignatureLegacyCtxPtr ctx, xm
     const BIGNUM* ss = NULL;
     xmlSecByte* outData = NULL;
     xmlSecSize outSize;
-    int signHalfLen, rLen, sLen;
+    xmlSecOpenSSLSizeT signHalfLen, rLen, sLen;
     int res = -1;
     int ret;
 
@@ -695,20 +695,18 @@ xmlSecOpenSSLSignatureLegacyEcdsaSign(xmlSecOpenSSLSignatureLegacyCtxPtr ctx, xm
     /* check sizes */
     rLen = BN_num_bytes(rr);
     if ((rLen <= 0) || (rLen > signHalfLen)) {
-        xmlSecOpenSSLError3("BN_num_bytes(rr)", NULL,
-            "signHalfLen=%d; rLen=%d", signHalfLen, rLen);
+        xmlSecInvalidDataError("Signature rr length is zero or greater than expected based on key size", NULL);
         goto done;
     }
 
     sLen = BN_num_bytes(ss);
     if ((sLen <= 0) || (sLen > signHalfLen)) {
-        xmlSecOpenSSLError3("BN_num_bytes(ss)", NULL,
-            "signHalfLen=%d; sLen=%d", signHalfLen, sLen);
+        xmlSecInvalidDataError("Signature ss length is zero or greater than expected based on key size", NULL);
         goto done;
     }
 
     /* allocate buffer */
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(2 * signHalfLen, outSize, goto done, NULL);
+    XMLSEC_OPENSSL_SAFE_CAST_SIZE_T_TO_SIZE(2 * signHalfLen, outSize, goto done, NULL);
     ret = xmlSecBufferSetSize(out, outSize);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetSize", NULL,
@@ -743,7 +741,7 @@ xmlSecOpenSSLSignatureLegacyEcdsaVerify(xmlSecOpenSSLSignatureLegacyCtxPtr ctx,
     ECDSA_SIG* sig = NULL;
     BIGNUM* rr = NULL;
     BIGNUM* ss = NULL;
-    int signLen, signHalfLen;
+    xmlSecOpenSSLSizeT signLen, signHalfLen;
     int res = -1;
     int ret;
 
@@ -763,12 +761,11 @@ xmlSecOpenSSLSignatureLegacyEcdsaVerify(xmlSecOpenSSLSignatureLegacyCtxPtr ctx,
     /* check size: we expect the r and s to be the same size and match the size of
      * the key (RFC 6931); however some  implementations (e.g. Java) cut leading zeros:
      * https://github.com/lsh123/xmlsec/issues/228 */
-    XMLSEC_SAFE_CAST_SIZE_TO_INT(signSize, signLen, goto done, NULL);
+     XMLSEC_OPENSSL_SAFE_CAST_SIZE_TO_SIZE_T(signSize, signLen, goto done, NULL);
     if((signLen < 2 * signHalfLen) && (signLen % 2 == 0)) {
         signHalfLen = signLen / 2;
     } else if(signLen != 2 * signHalfLen) {
-        xmlSecInternalError3("xmlSecOpenSSLSignatureLegacyEcdsaSignatureHalfLen", NULL,
-            "signLen=%d; signHalfLen=%d", signLen, signHalfLen);
+        xmlSecInvalidDataError("Signature length doesn't match key size", NULL);
         goto done;
     }
 

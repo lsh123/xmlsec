@@ -55,6 +55,7 @@
             <li>(xmlsec-core) Added signature result verification to the examples to demonstrate the need to ensure the correct data is actually signed.</li>
             <li>(xmlsec-core) Disabled old crypto algorithms (MD5, RIPEMD160) and the old crypto engines (MSCrypto, GCrypt) by default (use "--with-legacy-features" option to reenable everything).</li>
             <li>(xmlsec-openssl) Fixed excess padding in ECDSA signature generation.</li>
+			<li>(xmlsec-openssl) Fixed build warnings for BoringSSL / AWS-LC.</li>
             <li>(xmlsec-nss) Fixed certificates search in NSS DB.</li>
             <li>(xmlsec-openssl, xmlsec-gnutls, xmlsec-mscng) Added an option to skip timestamp checks for certificates and CLRs.</li>
             <li>(xmlsec-windows) Disabled old crypto algorithms (MD5, RIPEMD160), made "mscng" the default crypto engine on Windows, and added support for "legacy-features" flag for "configure.js".</li>

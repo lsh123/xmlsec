@@ -24,38 +24,6 @@
 #define OPENSSL_IS_BORINGSSL
 #endif /* OPENSSL_IS_BORINGSSL */
 
-#define EVP_CIPHER_key_length   (int)EVP_CIPHER_key_length
-#define EVP_CIPHER_iv_length    (int)EVP_CIPHER_iv_length
-#define EVP_CIPHER_block_size   (int)EVP_CIPHER_block_size
-
-#define ECDSA_do_verify(digest, digest_len, sig, key) \
-       ECDSA_do_verify(digest, (size_t)(digest_len), sig, key)
-#define ECDSA_do_sign(digest, digest_len, key) \
-       ECDSA_do_sign(digest, (size_t)(digest_len), key)
-
-#define HMAC_Init_ex(ctx, key, key_len, md, impl) \
-       HMAC_Init_ex(ctx, key, (size_t)(key_len), md, impl)
-
-#define AES_set_encrypt_key(user_key, bits, aes_key) \
-       AES_set_encrypt_key(user_key, (unsigned)(bits), aes_key)
-#define AES_set_decrypt_key(user_key, bits, aes_key) \
-       AES_set_decrypt_key(user_key, (unsigned)(bits), aes_key)
-
-#define RSA_public_encrypt(flen, from, to, rsa, padding) \
-       RSA_public_encrypt((size_t)(flen), from, to, rsa, padding)
-#define RSA_private_decrypt(flen, from, to, rsa, padding) \
-       RSA_private_decrypt((size_t)(flen), from, to, rsa, padding)
-
-#define EVP_MD_size (int)EVP_MD_size
-#define RSA_size    (int)RSA_size
-
-#define BN_num_bytes (int)BN_num_bytes
-#define BN_num_bits  (int)BN_num_bits
-#define BN_bn2bin    (int)BN_bn2bin
-#define BN_bin2bn(in, len, ret) BN_bin2bn(in, (size_t)(len), ret)
-
-#define BIO_pending      (int)BIO_pending
-
 #endif /* ! OPENSSL_IS_AWSLC */
 
 
@@ -97,18 +65,51 @@
 #endif /* OPENSSL_IS_BORINGSSL */
 
 
-/* BoringSSL redefines int->size_t for bunch of x509 functions */
+/* BoringSSL redefines int->size_t or int->unsigned */
 #if defined(OPENSSL_IS_BORINGSSL)
 
+/* when BoringSSL replaced int with unisgned */
+typedef unsigned xmlSecOpenSSLUInt;
+
+#define XMLSEC_OPENSSL_SAFE_CAST_UINT_TO_SIZE(srcVal, dstVal, errorAction, errorObject) \
+       XMLSEC_SAFE_CAST_UINT_TO_SIZE((srcVal), (dstVal), errorAction, (errorObject))
+
+#define XMLSEC_OPENSSL_SAFE_CAST_SIZE_TO_UINT(srcVal, dstVal, errorAction, errorObject) \
+       XMLSEC_SAFE_CAST_SIZE_TO_UINT((srcVal), (dstVal), errorAction, (errorObject))
+
+#define XMLSEC_OPENSSL_SAFE_CAST_UINT_TO_BYTE(srcVal, dstVal, errorAction, errorObject) \
+       XMLSEC_SAFE_CAST_UINT_TO_BYTE((srcVal), (dstVal), errorAction, (errorObject))
+
+/* when BoringSSL replaced int with size_t */
 typedef size_t xmlSecOpenSSLSizeT;
 
 #define XMLSEC_OPENSSL_SAFE_CAST_SIZE_T_TO_SIZE(srcVal, dstVal, errorAction, errorObject)  \
        (dstVal) = (srcVal)
+
 #define XMLSEC_OPENSSL_SAFE_CAST_SIZE_TO_SIZE_T(srcVal, dstVal, errorAction, errorObject) \
        (dstVal) = (srcVal)
 
+#define XMLSEC_OPENSSL_SAFE_CAST_SIZE_T_TO_UINT(srcVal, dstVal, errorAction, errorObject) \
+       XMLSEC_SAFE_CAST_SIZE_T_TO_UINT((srcVal), (dstVal), errorAction, (errorObject))
+
+#define XMLSEC_OPENSSL_SAFE_CAST_SIZE_T_TO_INT(srcVal, dstVal, errorAction, errorObject) \
+       XMLSEC_SAFE_CAST_SIZE_T_TO_INT((srcVal), (dstVal), errorAction, (errorObject))
+
 #else /* defined(OPENSSL_IS_BORINGSSL) */
 
+/* when BoringSSL replaced int with unisgned */
+typedef int xmlSecOpenSSLUInt;
+
+#define XMLSEC_OPENSSL_SAFE_CAST_UINT_TO_SIZE(srcVal, dstVal, errorAction, errorObject) \
+       XMLSEC_SAFE_CAST_INT_TO_SIZE((srcVal), (dstVal), errorAction, (errorObject))
+
+#define XMLSEC_OPENSSL_SAFE_CAST_SIZE_TO_UINT(srcVal, dstVal, errorAction, errorObject) \
+       XMLSEC_SAFE_CAST_SIZE_TO_INT((srcVal), (dstVal), errorAction, (errorObject))
+
+#define XMLSEC_OPENSSL_SAFE_CAST_UINT_TO_BYTE(srcVal, dstVal, errorAction, errorObject) \
+       XMLSEC_SAFE_CAST_INT_TO_BYTE((srcVal), (dstVal), errorAction, (errorObject))
+
+/* when BoringSSL replaced int with size_t */
 typedef int xmlSecOpenSSLSizeT;
 
 #define XMLSEC_OPENSSL_SAFE_CAST_SIZE_T_TO_SIZE(srcVal, dstVal, errorAction, errorObject) \
@@ -116,6 +117,12 @@ typedef int xmlSecOpenSSLSizeT;
 
 #define XMLSEC_OPENSSL_SAFE_CAST_SIZE_TO_SIZE_T(srcVal, dstVal, errorAction, errorObject) \
        XMLSEC_SAFE_CAST_SIZE_TO_INT((srcVal), (dstVal), errorAction, (errorObject))
+
+#define XMLSEC_OPENSSL_SAFE_CAST_SIZE_T_TO_UINT(srcVal, dstVal, errorAction, errorObject) \
+       XMLSEC_SAFE_CAST_INT_TO_UINT((srcVal), (dstVal), errorAction, (errorObject))
+
+#define XMLSEC_OPENSSL_SAFE_CAST_SIZE_T_TO_INT(srcVal, dstVal, errorAction, errorObject) \
+       (dstVal) = (srcVal)
 
 #endif /* defined(OPENSSL_IS_BORINGSSL) */
 

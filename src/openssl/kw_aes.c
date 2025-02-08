@@ -371,7 +371,7 @@ xmlSecOpenSSLKWAesEncryptDecrypt(xmlSecOpenSSLKWAesCtxPtr ctx, const xmlSecByte 
     xmlSecByte* keyData;
     xmlSecSize keySize;
     AES_KEY aesKey;
-    int keyLen;
+    xmlSecOpenSSLUInt keyLen;
     int ret;
 
     xmlSecAssert2(ctx != NULL, -1);
@@ -388,7 +388,7 @@ xmlSecOpenSSLKWAesEncryptDecrypt(xmlSecOpenSSLKWAesCtxPtr ctx, const xmlSecByte 
     xmlSecAssert2(keySize == ctx->parentCtx.keyExpectedSize, -1);
 
     /* prepare key and encrypt/decrypt */
-    XMLSEC_SAFE_CAST_SIZE_TO_INT(keySize, keyLen, return(-1), NULL);
+    XMLSEC_OPENSSL_SAFE_CAST_SIZE_TO_UINT(keySize, keyLen, return(-1), NULL);
     if(encrypt != 0) {
         ret = AES_set_encrypt_key(keyData, 8 * keyLen, &aesKey);
         if(ret != 0) {

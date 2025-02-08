@@ -46,18 +46,18 @@ static int
 xmlSecOpenSSLGetBNValue(const xmlSecBufferPtr buf, BIGNUM **bigNum) {
     xmlSecByte* bufPtr;
     xmlSecSize bufSize;
-    int bufLen;
+    xmlSecOpenSSLSizeT bufLen;
 
     xmlSecAssert2(buf != NULL, -1);
     xmlSecAssert2(bigNum!= NULL, -1);
 
     bufPtr = xmlSecBufferGetData(buf);
     bufSize = xmlSecBufferGetSize(buf);
-    XMLSEC_SAFE_CAST_SIZE_TO_INT(bufSize, bufLen, return(-1), NULL);
+    XMLSEC_OPENSSL_SAFE_CAST_SIZE_TO_SIZE_T(bufSize, bufLen, return(-1), NULL);
 
     (*bigNum) = BN_bin2bn(bufPtr, bufLen, (*bigNum));
     if((*bigNum) == NULL) {
-        xmlSecOpenSSLError2("BN_bin2bn", NULL, "size=%d", bufLen);
+        xmlSecOpenSSLError2("BN_bin2bn", NULL, "size=" XMLSEC_SIZE_FMT, bufSize);
         return(-1);
     }
     return(0);
@@ -65,37 +65,37 @@ xmlSecOpenSSLGetBNValue(const xmlSecBufferPtr buf, BIGNUM **bigNum) {
 
 static int
 xmlSecOpenSSLSetBNValue(const BIGNUM *bigNum, xmlSecBufferPtr buf) {
+    xmlSecOpenSSLUInt numBytes;
+    xmlSecOpenSSLSizeT numBytes2;
     xmlSecSize size;
     int ret;
 
     xmlSecAssert2(bigNum != NULL, -1);
     xmlSecAssert2(buf != NULL, -1);
 
-    ret = BN_num_bytes(bigNum);
-    if(ret < 0) {
+    numBytes = BN_num_bytes(bigNum);
+    if(numBytes <= 0) {
         xmlSecOpenSSLError("BN_num_bytes", NULL);
         return(-1);
     }
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, return(-1), NULL);
+    XMLSEC_OPENSSL_SAFE_CAST_UINT_TO_SIZE(numBytes, size, return(-1), NULL);
 
     ret = xmlSecBufferSetMaxSize(buf, size + 1);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetMaxSize", NULL,
-            "size=" XMLSEC_SIZE_FMT, (size + 1));
+        xmlSecInternalError2("xmlSecBufferSetMaxSize", NULL, "size=" XMLSEC_SIZE_FMT, (size + 1));
         return(-1);
     }
 
-    ret = BN_bn2bin(bigNum, xmlSecBufferGetData(buf));
-    if(ret < 0) {
+    numBytes2 = BN_bn2bin(bigNum, xmlSecBufferGetData(buf));
+    if(numBytes2 <= 0) {
         xmlSecOpenSSLError("BN_bn2bin", NULL);
         return(-1);
     }
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(ret, size, return(-1), NULL);
+    XMLSEC_OPENSSL_SAFE_CAST_SIZE_T_TO_SIZE(numBytes2, size, return(-1), NULL);
 
     ret = xmlSecBufferSetSize(buf, size);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetSize", NULL,
-                             "size=" XMLSEC_SIZE_FMT, size);
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=" XMLSEC_SIZE_FMT, size);
         return(-1);
     }
 
@@ -2775,9 +2775,9 @@ xmlSecOpenSSLKeyDataEcGetSize(xmlSecKeyDataPtr data) {
     const EC_GROUP *group;
     const EC_KEY *ecKey;
     BIGNUM * order = NULL;
-    int numBits;
-    int ret;
+    xmlSecOpenSSLUInt numBits;
     xmlSecSize res = 0;
+    int ret;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcId), 0);
 
@@ -2805,11 +2805,15 @@ xmlSecOpenSSLKeyDataEcGetSize(xmlSecKeyDataPtr data) {
         goto done;
     }
 
-    numBits = BN_num_bytes(order);
-    if(numBits < 0) {
+    numBits = BN_num_bits(order);
+    if(numBits <= 0) {
         xmlSecOpenSSLError("BN_num_bits", xmlSecKeyDataGetName(data));
         goto done;
     }
+
+    /* success */
+    XMLSEC_OPENSSL_SAFE_CAST_UINT_TO_SIZE(numBits, res, goto done, xmlSecKeyDataGetName(data));
+
 done:
     if(order != NULL) {
         BN_clear_free(order);
@@ -3600,7 +3604,7 @@ static xmlSecSize
 xmlSecOpenSSLKeyDataRsaGetSize(xmlSecKeyDataPtr data) {
     RSA* rsa = NULL;
     const BIGNUM* n = NULL;
-    int numBits;
+    xmlSecOpenSSLSizeT numBits;
     xmlSecSize res;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataRsaId), 0);
@@ -3618,12 +3622,12 @@ xmlSecOpenSSLKeyDataRsaGetSize(xmlSecKeyDataPtr data) {
     }
 
     numBits = BN_num_bits(n);
-    if(numBits < 0) {
+    if(numBits <= 0) {
         xmlSecOpenSSLError("BN_num_bits", xmlSecKeyDataGetName(data));
         return(0);
     }
 
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(numBits, res, return(0), xmlSecKeyDataGetName(data));
+    XMLSEC_OPENSSL_SAFE_CAST_SIZE_T_TO_SIZE(numBits, res, return(0), xmlSecKeyDataGetName(data));
     return(res);
 }
 

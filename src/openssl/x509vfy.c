@@ -2004,9 +2004,9 @@ int xmlSecOpenSSLX509_NAME_ENTRIES_cmp(STACK_OF(X509_NAME_ENTRY)* a,  STACK_OF(X
     num_a = sk_X509_NAME_ENTRY_num(a);
     num_b = sk_X509_NAME_ENTRY_num(b);
     if (num_a > num_b) {
-        return(-1);
-    } else if (num_a < num_b) {
         return(1);
+    } else if (num_a < num_b) {
+        return(-1);
     }
 
     /* num_a == num_b */

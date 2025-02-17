@@ -141,6 +141,10 @@ XMLSEC_EXPORT int       xmlSecTmplTransformAddHmacOutputLength  (xmlNodePtr tran
 XMLSEC_EXPORT int       xmlSecTmplTransformAddRsaOaepParam      (xmlNodePtr transformNode,
                                                                  const xmlSecByte *buf,
                                                                  xmlSecSize size);
+XMLSEC_EXPORT int       xmlSecTmplTransformAddRsaMgf            (xmlNodePtr transformNode,
+                                                                 const xmlChar* algorithm);
+XMLSEC_EXPORT int       xmlSecTmplTransformAddRsaDigest         (xmlNodePtr transformNode,
+                                                                 const xmlChar* algorithm);
 XMLSEC_EXPORT int       xmlSecTmplTransformAddXsltStylesheet    (xmlNodePtr transformNode,
                                                                  const xmlChar *xslt);
 XMLSEC_EXPORT int       xmlSecTmplTransformAddC14NInclNamespaces(xmlNodePtr transformNode,

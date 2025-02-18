@@ -1554,6 +1554,84 @@ xmlSecTmplTransformAddRsaOaepParam(xmlNodePtr transformNode, const xmlSecByte *b
 }
 
 /**
+ * xmlSecTmplTransformAddRsaMgf:
+ * @transformNode:      the pointer to &lt;dsig:Transform/&gt; node.
+ * @algorithm:          MGF1 algorithm href.
+ *
+ * Creates &lt;enc:MGF/&gt; child node in the @node.
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecTmplTransformAddRsaMgf(xmlNodePtr transformNode,
+                        const xmlChar *algorithm) {
+    xmlNodePtr mgfNode;
+
+    xmlSecAssert2(transformNode != NULL, -1);
+
+    mgfNode = xmlSecFindChild(transformNode, xmlSecNodeRsaMGF, xmlSecEnc11Ns);
+    if(mgfNode != NULL) {
+        xmlSecNodeAlreadyPresentError(transformNode, xmlSecNodeRsaMGF, NULL);
+        return(-1);
+    }
+
+    mgfNode = xmlSecAddChild(transformNode, xmlSecNodeRsaMGF, xmlSecEnc11Ns);
+    if(mgfNode == NULL) {
+        xmlSecInternalError("xmlSecAddChild(xmlSecNodeRsaMgf)", NULL);
+        return(-1);
+    }
+
+    if(xmlSetProp(mgfNode, xmlSecAttrAlgorithm, algorithm) == NULL) {
+        xmlSecXmlError2("xmlSetProp", NULL,
+                        "name=%s", xmlSecErrorsSafeString(xmlSecAttrAlgorithm));
+        xmlUnlinkNode(mgfNode);
+        xmlFreeNode(mgfNode);
+        return(-1);
+    }
+
+    return(0);
+}
+
+/**
+ * xmlSecTmplTransformAddRsaDigest:
+ * @transformNode:      the pointer to &lt;dsig:Transform/&gt; node.
+ * @algorithm:          digest algorithm href.
+ *
+ * Creates &lt;dsig:DigestMethod/&gt; child node in the @node.
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecTmplTransformAddRsaDigest(xmlNodePtr transformNode,
+                        const xmlChar *algorithm) {
+    xmlNodePtr digestNode;
+
+    xmlSecAssert2(transformNode != NULL, -1);
+
+    digestNode = xmlSecFindChild(transformNode, xmlSecNodeDigestMethod, xmlSecDSigNs);
+    if(digestNode != NULL) {
+        xmlSecNodeAlreadyPresentError(transformNode, xmlSecNodeDigestMethod, NULL);
+        return(-1);
+    }
+
+    digestNode = xmlSecAddChild(transformNode, xmlSecNodeDigestMethod, xmlSecDSigNs);
+    if(digestNode == NULL) {
+        xmlSecInternalError("xmlSecAddChild(xmlSecNodeDigestMethod)", NULL);
+        return(-1);
+    }
+
+    if(xmlSetProp(digestNode, xmlSecAttrAlgorithm, algorithm) == NULL) {
+        xmlSecXmlError2("xmlSetProp", NULL,
+                        "name=%s", xmlSecErrorsSafeString(xmlSecAttrAlgorithm));
+        xmlUnlinkNode(digestNode);
+        xmlFreeNode(digestNode);
+        return(-1);
+    }
+
+    return(0);
+}
+
+/**
  * xmlSecTmplTransformAddXsltStylesheet:
  * @transformNode:      the pointer to &lt;dsig:Transform/&gt; node.
  * @xslt:               the XSLT transform expression.

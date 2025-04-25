@@ -229,7 +229,7 @@ xmlSecGCryptKWDes3SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
 static int
 xmlSecGCryptKWDes3Execute(xmlSecTransformPtr transform, int last,
-                          xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
+                          xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecGCryptKWDes3CtxPtr ctx;
     int ret;
 
@@ -309,7 +309,7 @@ xmlSecGCryptKWDes3Sha1(xmlSecTransformPtr transform,
 }
 
 static int
-xmlSecGCryptKWDes3GenerateRandom(xmlSecTransformPtr transform ATTRIBUTE_UNUSED,
+xmlSecGCryptKWDes3GenerateRandom(xmlSecTransformPtr transform XMLSEC_ATTRIBUTE_UNUSED,
                                  xmlSecByte * out, xmlSecSize outSize,
                                  xmlSecSize * outWritten) {
     UNREFERENCED_PARAMETER(transform);

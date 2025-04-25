@@ -494,7 +494,7 @@ xmlSecNodeSetGetChildren(xmlDocPtr doc, const xmlNodePtr parent, int withComment
 
 static int
 xmlSecNodeSetDumpTextNodesWalkCallback(xmlSecNodeSetPtr nset, xmlNodePtr cur,
-                                   xmlNodePtr parent ATTRIBUTE_UNUSED,
+                                   xmlNodePtr parent XMLSEC_ATTRIBUTE_UNUSED,
                                    void* data) {
     int ret;
     xmlSecAssert2(nset != NULL, -1);

@@ -933,7 +933,7 @@ done:
 static int
 xmlSecMSCngKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
                         xmlSecKeyValueDsaPtr dsaValue,
-                        int writePrivateKey ATTRIBUTE_UNUSED) {
+                        int writePrivateKey XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecMSCngKeyDataCtxPtr ctx;
     NTSTATUS status;
     xmlSecBuffer buf;
@@ -1375,7 +1375,7 @@ done:
 static int
 xmlSecMSCngKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
                            xmlSecKeyValueRsaPtr rsaValue,
-                           int writePrivateKey ATTRIBUTE_UNUSED) {
+                           int writePrivateKey XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecMSCngKeyDataCtxPtr ctx;
     NTSTATUS status;
     xmlSecBuffer buf;

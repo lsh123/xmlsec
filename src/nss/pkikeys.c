@@ -855,7 +855,7 @@ xmlSecNssKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 }
 
 static int
-xmlSecNssKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
+xmlSecNssKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKeyDataType type XMLSEC_ATTRIBUTE_UNUSED) {
     PQGParams    *pqgParams = NULL;
     PQGVerify    *pqgVerify = NULL;
     SECStatus     rv;
@@ -1110,7 +1110,7 @@ done:
 static int
 xmlSecNssKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
                          xmlSecKeyValueDsaPtr dsaValue,
-                         int writePrivateKey ATTRIBUTE_UNUSED) {
+                         int writePrivateKey XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecNssPKIKeyDataCtxPtr ctx;
     int ret;
 
@@ -1469,7 +1469,7 @@ done:
 static int
 xmlSecNssKeyDataRsaWrite(xmlSecKeyDataId id,xmlSecKeyDataPtr data,
                          xmlSecKeyValueRsaPtr rsaValue,
-                         int writePrivateKey ATTRIBUTE_UNUSED) {
+                         int writePrivateKey XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecNssPKIKeyDataCtxPtr ctx;
     int ret;
 
@@ -1506,7 +1506,7 @@ xmlSecNssKeyDataRsaWrite(xmlSecKeyDataId id,xmlSecKeyDataPtr data,
 }
 
 static int
-xmlSecNssKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
+xmlSecNssKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKeyDataType type XMLSEC_ATTRIBUTE_UNUSED) {
     PK11RSAGenParams  params;
     PK11SlotInfo *slot = NULL;
     SECKEYPrivateKey *privkey = NULL;

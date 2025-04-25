@@ -288,7 +288,7 @@ xmlSecMSCryptoKWDes3SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
 static int
 xmlSecMSCryptoKWDes3Execute(xmlSecTransformPtr transform, int last,
-                            xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
+                            xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecMSCryptoKWDes3CtxPtr ctx;
     int ret;
 

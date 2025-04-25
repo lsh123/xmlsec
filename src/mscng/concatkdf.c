@@ -26,8 +26,8 @@
 #include <xmlsec/base64.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/errors.h>
-#include <xmlsec/private.h>
 #include <xmlsec/xmltree.h>
+#include <xmlsec/private.h>
 
 #include <xmlsec/mscng/crypto.h>
 
@@ -217,7 +217,7 @@ xmlSecMSCngConcatKdfGetDigestFromHref(const xmlChar* href) {
 
 static int
 xmlSecMSCngConcatKdfNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
-                          xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
+                          xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecMSCngConcatKdfCtxPtr ctx;
     xmlNodePtr cur;
     int ret;

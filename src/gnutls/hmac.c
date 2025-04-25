@@ -24,8 +24,8 @@
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/keys.h>
-#include <xmlsec/private.h>
 #include <xmlsec/transforms.h>
+#include <xmlsec/private.h>
 
 #include <xmlsec/gnutls/app.h>
 #include <xmlsec/gnutls/crypto.h>
@@ -181,7 +181,7 @@ xmlSecGnuTLSHmacFinalize(xmlSecTransformPtr transform) {
 
 static int
 xmlSecGnuTLSHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
-                      xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
+                      xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecGnuTLSHmacCtxPtr ctx;
     int ret;
 
@@ -271,7 +271,7 @@ xmlSecGnuTLSHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 static int
 xmlSecGnuTLSHmacVerify(xmlSecTransformPtr transform,
                         const xmlSecByte* data, xmlSecSize dataSize,
-                        xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
+                        xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecGnuTLSHmacCtxPtr ctx;
     int ret;
 

@@ -23,8 +23,8 @@
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/errors.h>
-#include <xmlsec/private.h>
 #include <xmlsec/transforms.h>
+#include <xmlsec/private.h>
 
 #include <xmlsec/gcrypt/app.h>
 #include <xmlsec/gcrypt/crypto.h>
@@ -43,7 +43,7 @@
  * Returns: 0 on success or a negative value otherwise.
  */
 int
-xmlSecGCryptAppInit(const char* config ATTRIBUTE_UNUSED) {
+xmlSecGCryptAppInit(const char* config XMLSEC_ATTRIBUTE_UNUSED) {
     gcry_error_t err;
     /* Secure memory initialisation based on documentation from:
          http://www.gnupg.org/documentation/manuals/gcrypt/Initializing-the-library.html
@@ -161,7 +161,7 @@ xmlSecGCryptAppShutdown(void) {
  * Returns: pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
-xmlSecGCryptAppKeyLoadEx(const char *filename, xmlSecKeyDataType type ATTRIBUTE_UNUSED, xmlSecKeyDataFormat format,
+xmlSecGCryptAppKeyLoadEx(const char *filename, xmlSecKeyDataType type XMLSEC_ATTRIBUTE_UNUSED, xmlSecKeyDataFormat format,
     const char *pwd, void* pwdCallback, void* pwdCallbackCtx
 ) {
     xmlSecKeyPtr key;
@@ -217,9 +217,9 @@ xmlSecGCryptAppKeyLoadEx(const char *filename, xmlSecKeyDataType type ATTRIBUTE_
 xmlSecKeyPtr
 xmlSecGCryptAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
                         xmlSecKeyDataFormat format,
-                        const char *pwd ATTRIBUTE_UNUSED,
-                        void* pwdCallback ATTRIBUTE_UNUSED,
-                        void* pwdCallbackCtx ATTRIBUTE_UNUSED)
+                        const char *pwd XMLSEC_ATTRIBUTE_UNUSED,
+                        void* pwdCallback XMLSEC_ATTRIBUTE_UNUSED,
+                        void* pwdCallbackCtx XMLSEC_ATTRIBUTE_UNUSED)
 {
     xmlSecKeyPtr key = NULL;
     xmlSecKeyDataPtr key_data = NULL;
@@ -342,9 +342,9 @@ xmlSecGCryptAppKeyCertLoadMemory(xmlSecKeyPtr key,
  */
 xmlSecKeyPtr
 xmlSecGCryptAppPkcs12Load(const char *filename,
-                          const char *pwd ATTRIBUTE_UNUSED,
-                          void* pwdCallback ATTRIBUTE_UNUSED,
-                          void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
+                          const char *pwd XMLSEC_ATTRIBUTE_UNUSED,
+                          void* pwdCallback XMLSEC_ATTRIBUTE_UNUSED,
+                          void* pwdCallbackCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecAssert2(filename != NULL, NULL);
 
     /* GCrypt  does not support X509 certificates */
@@ -370,9 +370,9 @@ xmlSecGCryptAppPkcs12Load(const char *filename,
  */
 xmlSecKeyPtr
 xmlSecGCryptAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
-                           const char *pwd ATTRIBUTE_UNUSED,
-                           void* pwdCallback ATTRIBUTE_UNUSED,
-                           void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
+                           const char *pwd XMLSEC_ATTRIBUTE_UNUSED,
+                           void* pwdCallback XMLSEC_ATTRIBUTE_UNUSED,
+                           void* pwdCallbackCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecAssert2(data != NULL, NULL);
     xmlSecAssert2(dataSize > 0, NULL);
 
@@ -400,7 +400,7 @@ int
 xmlSecGCryptAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr,
                                 const char *filename,
                                 xmlSecKeyDataFormat format,
-                                xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
+                                xmlSecKeyDataType type XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(filename != NULL, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
@@ -453,7 +453,7 @@ xmlSecGCryptAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr,
                                       const xmlSecByte* data,
                                       xmlSecSize dataSize,
                                       xmlSecKeyDataFormat format,
-                                      xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
+                                      xmlSecKeyDataType type XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(dataSize > 0, -1);

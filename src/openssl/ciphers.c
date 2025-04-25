@@ -387,7 +387,7 @@ xmlSecOpenSSLEvpBlockCipherCBCCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
         xmlSecBufferPtr in,
         xmlSecBufferPtr out,
         const xmlChar* cipherName,
-        xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED)
+        xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED)
 {
     xmlSecSize size, inSize, outSize;
     xmlSecOpenSSLUInt inLen, outLen, padLen, blockLen;

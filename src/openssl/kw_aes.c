@@ -221,7 +221,7 @@ xmlSecOpenSSLKWAesSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
 static int
 xmlSecOpenSSLKWAesExecute(xmlSecTransformPtr transform, int last,
-                          xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
+                          xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecOpenSSLKWAesCtxPtr ctx;
     int ret;
 

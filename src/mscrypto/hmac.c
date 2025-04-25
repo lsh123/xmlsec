@@ -24,8 +24,8 @@
 #include <xmlsec/base64.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/keys.h>
-#include <xmlsec/private.h>
 #include <xmlsec/transforms.h>
+#include <xmlsec/private.h>
 
 #include <xmlsec/mscrypto/crypto.h>
 
@@ -250,7 +250,7 @@ xmlSecMSCryptoHmacFinalize(xmlSecTransformPtr transform) {
 
 static int
 xmlSecMSCryptoHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
-                           xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
+                           xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecMSCryptoHmacCtxPtr ctx;
     int ret;
 
@@ -378,7 +378,7 @@ xmlSecMSCryptoHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 static int
 xmlSecMSCryptoHmacVerify(xmlSecTransformPtr transform,
                         const xmlSecByte* data, xmlSecSize dataSize,
-                        xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
+                        xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecMSCryptoHmacCtxPtr ctx;
     int ret;
 

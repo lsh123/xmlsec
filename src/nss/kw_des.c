@@ -231,7 +231,7 @@ xmlSecNssKWDes3SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
 static int
 xmlSecNssKWDes3Execute(xmlSecTransformPtr transform, int last,
-                       xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
+                       xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecNssKWDes3CtxPtr ctx;
     int ret;
 
@@ -255,7 +255,7 @@ xmlSecNssKWDes3Execute(xmlSecTransformPtr transform, int last,
  *
  *********************************************************************/
 static int
-xmlSecNssKWDes3Sha1(xmlSecTransformPtr transform ATTRIBUTE_UNUSED,
+xmlSecNssKWDes3Sha1(xmlSecTransformPtr transform XMLSEC_ATTRIBUTE_UNUSED,
                     const xmlSecByte * in, xmlSecSize inSize,
                     xmlSecByte * out, xmlSecSize outSize,
                     xmlSecSize * outWritten) {
@@ -310,7 +310,7 @@ xmlSecNssKWDes3Sha1(xmlSecTransformPtr transform ATTRIBUTE_UNUSED,
 }
 
 static int
-xmlSecNssKWDes3GenerateRandom(xmlSecTransformPtr transform ATTRIBUTE_UNUSED,
+xmlSecNssKWDes3GenerateRandom(xmlSecTransformPtr transform XMLSEC_ATTRIBUTE_UNUSED,
                               xmlSecByte * out, xmlSecSize outSize,
                               xmlSecSize * outWritten) {
     SECStatus status;

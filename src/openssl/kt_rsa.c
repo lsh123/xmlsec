@@ -124,7 +124,7 @@ xmlSecOpenSSLTransformRsaPkcs1GetKlass(void) {
 
 static int
 xmlSecOpenSSLRsaPkcs1SetKeyImpl(xmlSecOpenSSLRsaPkcs1CtxPtr ctx, EVP_PKEY* pKey,
-                                int encrypt ATTRIBUTE_UNUSED) {
+                                int encrypt XMLSEC_ATTRIBUTE_UNUSED) {
     RSA *rsa = NULL;
     xmlSecOpenSSLSizeT keyLen;
 
@@ -391,7 +391,7 @@ xmlSecOpenSSLRsaPkcs1SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
 static int
 xmlSecOpenSSLRsaPkcs1Execute(xmlSecTransformPtr transform, int last,
-                             xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
+                             xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecOpenSSLRsaPkcs1CtxPtr ctx;
     int ret;
 
@@ -653,7 +653,7 @@ xmlSecOpenSSLRsaOaepCheckId(xmlSecTransformPtr transform) {
 
 static int
 xmlSecOpenSSLRsaOaepSetKeyImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, EVP_PKEY* pKey,
-                            int encrypt ATTRIBUTE_UNUSED) {
+                            int encrypt XMLSEC_ATTRIBUTE_UNUSED) {
     RSA *rsa = NULL;
     int keyLen;
 
@@ -1020,7 +1020,7 @@ xmlSecOpenSSLRsaOaepFinalize(xmlSecTransformPtr transform) {
 
 static int
 xmlSecOpenSSLRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
-                             xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
+                             xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecOpenSSLRsaOaepCtxPtr ctx;
     xmlSecTransformRsaOaepParams oaepParams;
     int ret;
@@ -1250,7 +1250,7 @@ xmlSecOpenSSLRsaOaepSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
 static int
 xmlSecOpenSSLRsaOaepExecute(xmlSecTransformPtr transform, int last,
-                            xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
+                            xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecOpenSSLRsaOaepCtxPtr ctx;
     int ret;
 

@@ -439,7 +439,7 @@ xmlSecOpenSSLConcatKdfSetDigestNameFromHref(xmlSecOpenSSLKdfCtxPtr ctx, const xm
 
 static int
 xmlSecOpenSSLConcatKdfNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
-                          xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
+                          xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecOpenSSLKdfCtxPtr ctx;
     xmlSecTransformConcatKdfParams params;
     int paramsInitialized = 0;
@@ -644,7 +644,7 @@ xmlSecOpenSSLPbkdf2SetDigestNameFromHref(xmlSecOpenSSLKdfCtxPtr ctx, const xmlCh
 
 static int
 xmlSecOpenSSLPbkdf2NodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
-                          xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
+                          xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecOpenSSLKdfCtxPtr ctx;
     xmlSecTransformPbkdf2Params params;
     int paramsInitialized = 0;

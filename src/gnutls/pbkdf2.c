@@ -30,8 +30,8 @@
 #include <xmlsec/base64.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/errors.h>
-#include <xmlsec/private.h>
 #include <xmlsec/xmltree.h>
+#include <xmlsec/private.h>
 
 #include <xmlsec/gnutls/crypto.h>
 
@@ -211,7 +211,7 @@ xmlSecGnuTLSPbkdf2GetMacFromHref(const xmlChar* href) {
 
 static int
 xmlSecGnuTLSPbkdf2NodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
-                          xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
+                          xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecGnuTLSPbkdf2CtxPtr ctx;
     xmlNodePtr cur;
     int ret;

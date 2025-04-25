@@ -826,7 +826,7 @@ xmlSecGCryptAppendMpi(gcry_mpi_t a, xmlSecBufferPtr out, xmlSecSize min_size) {
 #define XMLSEC_GCRYPT_DSA_SIG_SIZE  20
 
 static int
-xmlSecGCryptDsaSign(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
+xmlSecGCryptDsaSign(int digest XMLSEC_ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
                       const xmlSecByte* dgst, xmlSecSize dgstSize,
                       xmlSecBufferPtr out) {
     gcry_mpi_t m_hash = NULL;
@@ -962,7 +962,7 @@ done:
 }
 
 static int
-xmlSecGCryptDsaVerify(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
+xmlSecGCryptDsaVerify(int digest XMLSEC_ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
                         const xmlSecByte* dgst, xmlSecSize dgstSize,
                         const xmlSecByte* data, xmlSecSize dataSize) {
     gcry_mpi_t m_hash = NULL;

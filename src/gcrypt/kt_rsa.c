@@ -442,7 +442,7 @@ done:
 
 static int
 xmlSecGCryptRsaPkcs1Execute(xmlSecTransformPtr transform, int last,
-                             xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
+                             xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecGCryptRsaPkcs1CtxPtr ctx;
     int ret;
 
@@ -668,7 +668,7 @@ xmlSecGCryptRsaOaepFinalize(xmlSecTransformPtr transform) {
 
 static int
 xmlSecGCryptRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
-                            xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
+                            xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecGCryptRsaOaepCtxPtr ctx;
     xmlSecTransformRsaOaepParams oaepParams;
     const char* mgf1Alg = NULL;
@@ -1011,7 +1011,7 @@ done:
 
 static int
 xmlSecGCryptRsaOaepExecute(xmlSecTransformPtr transform, int last,
-                             xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
+                             xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecGCryptRsaOaepCtxPtr ctx;
     int ret;
 

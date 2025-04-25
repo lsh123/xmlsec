@@ -208,7 +208,7 @@ xmlSecGnuTLSKeysStoreAdoptKey(xmlSecKeyStorePtr store, xmlSecKeyPtr key) {
  */
 int
 xmlSecGnuTLSKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
-                            xmlSecKeysMngrPtr keysMngr ATTRIBUTE_UNUSED) {
+                            xmlSecKeysMngrPtr keysMngr XMLSEC_ATTRIBUTE_UNUSED) {
     return(xmlSecSimpleKeysStoreLoad_ex(store, uri, keysMngr,
         xmlSecGnuTLSKeysStoreAdoptKey));
 }

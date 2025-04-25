@@ -26,8 +26,8 @@
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/strings.h>
-#include <xmlsec/private.h>
 #include <xmlsec/transforms.h>
+#include <xmlsec/private.h>
 
 #include <xmlsec/mscrypto/crypto.h>
 #include <xmlsec/mscrypto/certkeys.h>
@@ -202,7 +202,7 @@ xmlSecMSCryptoRsaPkcs1OaepSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key)
 
 static int
 xmlSecMSCryptoRsaPkcs1OaepExecute(xmlSecTransformPtr transform, int last,
-                                  xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
+                                  xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecMSCryptoRsaPkcs1OaepCtxPtr ctx;
     int ret;
 
@@ -512,7 +512,7 @@ xmlSecMSCryptoTransformRsaOaepGetKlass(void) {
 
 static int
 xmlSecMSCryptoRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
-                              xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
+                              xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecMSCryptoRsaPkcs1OaepCtxPtr ctx;
     xmlSecTransformRsaOaepParams oaepParams;
     int ret;

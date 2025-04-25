@@ -650,17 +650,17 @@ struct _xmlSecCryptoDLFunctions {
 };
 
 /**
- * ATTRIBUTE_UNUSED:
+ * XMLSEC_ATTRIBUTE_UNUSED:
  *
- * Macro used to signal to GCC unused function parameters
+ * Macro used to signal unused function parameters
  */
-#ifndef ATTRIBUTE_UNUSED
-#ifdef __GNUC__
-#define ATTRIBUTE_UNUSED __attribute__((unused))
-#else  /* __GNUC__ */
-#define ATTRIBUTE_UNUSED
-#endif /* __GNUC__ */
-#endif  /* ATTRIBUTE_UNUSED */
+#ifndef XMLSEC_ATTRIBUTE_UNUSED
+#if defined(__GNUC__) || defined(__clang__)
+#define XMLSEC_ATTRIBUTE_UNUSED __attribute__((unused))
+#else  /*  defined(__GNUC__) || defined(__clang__) */
+#define XMLSEC_ATTRIBUTE_UNUSED
+#endif /*  defined(__GNUC__) || defined(__clang__) */
+#endif  /* XMLSEC_ATTRIBUTE_UNUSED */
 
 /**
  * UNREFERENCED_PARAMETER:

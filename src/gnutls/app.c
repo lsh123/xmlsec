@@ -25,8 +25,8 @@
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/errors.h>
-#include <xmlsec/private.h>
 #include <xmlsec/transforms.h>
+#include <xmlsec/private.h>
 
 #include <xmlsec/gnutls/app.h>
 #include <xmlsec/gnutls/crypto.h>
@@ -66,7 +66,7 @@ static xmlSecKeyPtr     xmlSecGnuTLSAppKeyFromCertLoadMemory    (const xmlSecByt
  * Returns: 0 on success or a negative value otherwise.
  */
 int
-xmlSecGnuTLSAppInit(const char* config ATTRIBUTE_UNUSED) {
+xmlSecGnuTLSAppInit(const char* config XMLSEC_ATTRIBUTE_UNUSED) {
     int err;
 
     err = gnutls_global_init();
@@ -107,7 +107,7 @@ xmlSecGnuTLSAppShutdown(void) {
  * Returns: pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
-xmlSecGnuTLSAppKeyLoadEx(const char *filename, xmlSecKeyDataType type ATTRIBUTE_UNUSED, xmlSecKeyDataFormat format,
+xmlSecGnuTLSAppKeyLoadEx(const char *filename, xmlSecKeyDataType type XMLSEC_ATTRIBUTE_UNUSED, xmlSecKeyDataFormat format,
     const char *pwd, void* pwdCallback, void* pwdCallbackCtx
 ) {
     xmlSecKeyPtr key;
@@ -455,7 +455,7 @@ xmlSecGnuTLSAppPkcs12Load(const char *filename,
  */
 xmlSecKeyPtr
 xmlSecGnuTLSAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
-    const char *pwd, void* pwdCallback ATTRIBUTE_UNUSED, void* pwdCallbackCtx ATTRIBUTE_UNUSED
+    const char *pwd, void* pwdCallback XMLSEC_ATTRIBUTE_UNUSED, void* pwdCallbackCtx XMLSEC_ATTRIBUTE_UNUSED
 ) {
     xmlSecKeyPtr key = NULL;
     xmlSecKeyPtr res = NULL;
@@ -704,7 +704,7 @@ xmlSecGnuTLSAppPemDerKeyLoadMemory(const xmlSecByte * data, xmlSecSize dataSize,
 
 static xmlSecKeyPtr
 xmlSecGnuTLSAppPkcs8KeyLoadMemory(const xmlSecByte * data, xmlSecSize dataSize, gnutls_x509_crt_fmt_t fmt,
-    const char *pwd, void* pwdCallback ATTRIBUTE_UNUSED, void* pwdCallbackCtx ATTRIBUTE_UNUSED)
+    const char *pwd, void* pwdCallback XMLSEC_ATTRIBUTE_UNUSED, void* pwdCallbackCtx XMLSEC_ATTRIBUTE_UNUSED)
 {
     gnutls_x509_privkey_t x509_privkey = NULL;
     gnutls_privkey_t privkey = NULL;

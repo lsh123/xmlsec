@@ -54,47 +54,6 @@ jobs:
       run: |
           make install
 
-  # linux: check against old versions including openssl 1.1.1
-  check-ubuntu-openssl-111:
-    runs-on: ubuntu-20.04
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          # default build
-          - config_flags:
-          # static openssl build
-          - config_flags: --enable-static --enable-static-linking --without-nss --without-gnutls --without-gcrypt --enable-legacy-features
-    steps:
-    - name: install dependencies
-      run: |
-          sudo apt update
-          sudo apt install automake autoconf libtool libtool-bin libltdl-dev libltdl7
-          sudo apt install libxml2 libxml2-dev libxslt1.1 libxslt1-dev
-          sudo apt install wget
-    - uses: actions/checkout@v2
-    - name: create-build-dirs
-      run: |
-          mkdir build.dir install.dir
-    - name: configure
-      working-directory: build.dir
-      run: |
-          export LD_LIBRARY_PATH="/usr/local/openssl3/lib:/usr/local/openssl3/lib64:$LD_LIBRARY_PATH"
-          ../autogen.sh --prefix=${GITHUB_WORKSPACE}/install.dir --enable-werror --enable-pedantic ${{ matrix.config_flags }}
-    - name: make
-      working-directory: build.dir
-      run: |
-          make
-    - name: make check
-      working-directory: build.dir
-      run: |
-          export LD_LIBRARY_PATH="/usr/local/openssl3/lib:/usr/local/openssl3/lib64:$LD_LIBRARY_PATH"
-          make check
-    - name: make install
-      working-directory: build.dir
-      run: |
-          make install
-
   # macosx
   check-osx:
     runs-on: macos-latest

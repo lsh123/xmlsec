@@ -1256,8 +1256,8 @@ xmlSecOpenSSLAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
  */
 xmlSecKeyPtr
 xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
-                           void* pwdCallback ATTRIBUTE_UNUSED,
-                           void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
+                           void* pwdCallback XMLSEC_ATTRIBUTE_UNUSED,
+                           void* pwdCallbackCtx XMLSEC_ATTRIBUTE_UNUSED) {
 
     PKCS12 *p12 = NULL;
     EVP_PKEY * pKey = NULL;
@@ -2017,7 +2017,7 @@ xmlSecOpenSSLDefaultPasswordCallback(char *buf, int buflen, int verify, void *us
 
 static int
 xmlSecOpenSSLDummyPasswordCallback(char *buf, int bufLen,
-                                   int verify ATTRIBUTE_UNUSED,
+                                   int verify XMLSEC_ATTRIBUTE_UNUSED,
                                    void *userdata) {
 #if defined(_MSC_VER)
     xmlSecSize bufSize;

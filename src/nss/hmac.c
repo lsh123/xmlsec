@@ -212,7 +212,7 @@ xmlSecNssHmacFinalize(xmlSecTransformPtr transform) {
 
 static int
 xmlSecNssHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
-                      xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
+                      xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecNssHmacCtxPtr ctx;
     int ret;
 
@@ -327,7 +327,7 @@ xmlSecNssHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 static int
 xmlSecNssHmacVerify(xmlSecTransformPtr transform,
                         const xmlSecByte* data, xmlSecSize dataSize,
-                        xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
+                        xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecNssHmacCtxPtr ctx;
     int ret;
 

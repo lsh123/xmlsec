@@ -23,9 +23,9 @@
 #include <xmlsec/keys.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/keysmngr.h>
-#include <xmlsec/private.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/xmltree.h>
+#include <xmlsec/private.h>
 
 #include <xmlsec/mscng/app.h>
 #include <xmlsec/mscng/crypto.h>
@@ -120,7 +120,7 @@ xmlSecMSCngAppGetCertStoreName(void) {
  * Returns: pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
-xmlSecMSCngAppKeyLoadEx(const char *filename, xmlSecKeyDataType type ATTRIBUTE_UNUSED, xmlSecKeyDataFormat format,
+xmlSecMSCngAppKeyLoadEx(const char *filename, xmlSecKeyDataType type XMLSEC_ATTRIBUTE_UNUSED, xmlSecKeyDataFormat format,
     const char *pwd, void* pwdCallback, void* pwdCallbackCtx
 ) {
     xmlSecBuffer buffer;

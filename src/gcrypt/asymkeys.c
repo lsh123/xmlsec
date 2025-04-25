@@ -734,7 +734,7 @@ xmlSecGCryptKeyDataDsaFinalize(xmlSecKeyDataPtr data) {
 }
 
 static int
-xmlSecGCryptKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
+xmlSecGCryptKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKeyDataType type XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataDsaId), -1);
     xmlSecAssert2(sizeBits > 0, -1);
 
@@ -1248,7 +1248,7 @@ xmlSecGCryptKeyDataRsaFinalize(xmlSecKeyDataPtr data) {
 }
 
 static int
-xmlSecGCryptKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
+xmlSecGCryptKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKeyDataType type XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGCryptKeyDataRsaId), -1);
     xmlSecAssert2(sizeBits > 0, -1);
 

@@ -1065,7 +1065,7 @@ done:
 }
 
 static int
-xmlSecOpenSSLKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
+xmlSecOpenSSLKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKeyDataType type XMLSEC_ATTRIBUTE_UNUSED) {
     DSA* dsa = NULL;
     int counter_ret, bitsLen;
     unsigned long h_ret;
@@ -1298,7 +1298,7 @@ done:
 }
 
 static int
-xmlSecOpenSSLKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
+xmlSecOpenSSLKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKeyDataType type XMLSEC_ATTRIBUTE_UNUSED) {
     EVP_PKEY_CTX* pctx = NULL;
     OSSL_PARAM_BLD* param_bld = NULL;
     OSSL_PARAM* params = NULL;
@@ -1957,7 +1957,7 @@ done:
 }
 
 static int
-xmlSecOpenSSLKeyDataDhGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
+xmlSecOpenSSLKeyDataDhGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKeyDataType type XMLSEC_ATTRIBUTE_UNUSED) {
     DH* dh = NULL;
     int bitsLen;
     int ret;
@@ -2210,7 +2210,7 @@ done:
 }
 
 static int
-xmlSecOpenSSLKeyDataDhGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
+xmlSecOpenSSLKeyDataDhGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKeyDataType type XMLSEC_ATTRIBUTE_UNUSED) {
     EVP_PKEY_CTX* pctx = NULL;
     OSSL_PARAM_BLD* param_bld = NULL;
     OSSL_PARAM* params = NULL;
@@ -2419,7 +2419,7 @@ done:
 
 static int
 xmlSecOpenSSLKeyDataDhWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKeyValueDhPtr dhValue,
-    int writePrivateKey ATTRIBUTE_UNUSED
+    int writePrivateKey XMLSEC_ATTRIBUTE_UNUSED
 ) {
     xmlSecOpenSSLKeyValueDh dhKeyValue;
     int ret;
@@ -2664,7 +2664,7 @@ xmlSecOpenSSLKeyDataEcFinalize(xmlSecKeyDataPtr data) {
 }
 
 static xmlSecKeyDataType
-xmlSecOpenSSLKeyDataEcGetType(xmlSecKeyDataPtr data ATTRIBUTE_UNUSED) {
+xmlSecOpenSSLKeyDataEcGetType(xmlSecKeyDataPtr data XMLSEC_ATTRIBUTE_UNUSED) {
     UNREFERENCED_PARAMETER(data);
     /* XXX-MAK: Fix this. */
     return(xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate);
@@ -3541,7 +3541,7 @@ xmlSecOpenSSLKeyDataRsaGetRsa(xmlSecKeyDataPtr data) {
 }
 
 static int
-xmlSecOpenSSLKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
+xmlSecOpenSSLKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKeyDataType type XMLSEC_ATTRIBUTE_UNUSED) {
     RSA* rsa = NULL;
     int lenBits;
     BIGNUM* publicExponent = NULL;
@@ -3723,7 +3723,7 @@ done:
 #else /* XMLSEC_OPENSSL_API_300 */
 
 static int
-xmlSecOpenSSLKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
+xmlSecOpenSSLKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKeyDataType type XMLSEC_ATTRIBUTE_UNUSED) {
     EVP_PKEY_CTX* pctx = NULL;
     OSSL_PARAM_BLD* param_bld = NULL;
     OSSL_PARAM* params = NULL;
@@ -4237,7 +4237,7 @@ xmlSecOpenSSLKeyDataGost2001Finalize(xmlSecKeyDataPtr data) {
 }
 
 static xmlSecKeyDataType
-xmlSecOpenSSLKeyDataGost2001GetType(xmlSecKeyDataPtr data ATTRIBUTE_UNUSED) {
+xmlSecOpenSSLKeyDataGost2001GetType(xmlSecKeyDataPtr data XMLSEC_ATTRIBUTE_UNUSED) {
     UNREFERENCED_PARAMETER(data);
 
     /* Now I don't know how to find whether we have both private and public key
@@ -4365,7 +4365,7 @@ xmlSecOpenSSLKeyDataGostR3410_2012_256Finalize(xmlSecKeyDataPtr data) {
 }
 
 static xmlSecKeyDataType
-xmlSecOpenSSLKeyDataGostR3410_2012_256GetType(xmlSecKeyDataPtr data ATTRIBUTE_UNUSED) {
+xmlSecOpenSSLKeyDataGostR3410_2012_256GetType(xmlSecKeyDataPtr data XMLSEC_ATTRIBUTE_UNUSED) {
     UNREFERENCED_PARAMETER(data);
 
     /* I don't know how to find whether we have both private and public key
@@ -4493,7 +4493,7 @@ xmlSecOpenSSLKeyDataGostR3410_2012_512Finalize(xmlSecKeyDataPtr data) {
 }
 
 static xmlSecKeyDataType
-xmlSecOpenSSLKeyDataGostR3410_2012_512GetType(xmlSecKeyDataPtr data ATTRIBUTE_UNUSED) {
+xmlSecOpenSSLKeyDataGostR3410_2012_512GetType(xmlSecKeyDataPtr data XMLSEC_ATTRIBUTE_UNUSED) {
     UNREFERENCED_PARAMETER(data);
 
     /* I don't know how to find whether we have both private and public key

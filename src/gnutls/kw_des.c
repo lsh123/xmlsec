@@ -229,7 +229,7 @@ xmlSecGnuTLSKWDes3SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
 static int
 xmlSecGnuTLSKWDes3Execute(xmlSecTransformPtr transform, int last,
-                           xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
+                           xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecGnuTLSKWDes3CtxPtr ctx;
     int ret;
 

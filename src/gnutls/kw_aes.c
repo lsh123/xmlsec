@@ -210,7 +210,7 @@ xmlSecGnuTLSKWAesSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
 static int
 xmlSecGnuTLSKWAesExecute(xmlSecTransformPtr transform, int last,
-                          xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
+                          xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecGnuTLSKWAesCtxPtr ctx;
     int ret;
 

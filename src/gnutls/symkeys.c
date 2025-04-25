@@ -131,7 +131,7 @@ xmlSecGnuTLSSymKeyDataBinWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 }
 
 static int
-xmlSecGnuTLSSymKeyDataGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
+xmlSecGnuTLSSymKeyDataGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKeyDataType type XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecBufferPtr buffer;
 
     xmlSecAssert2(xmlSecGnuTLSSymKeyDataCheckId(data), -1);

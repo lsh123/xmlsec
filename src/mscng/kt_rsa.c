@@ -23,9 +23,9 @@
 #include <xmlsec/errors.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keyinfo.h>
-#include <xmlsec/private.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/xmltree.h>
+#include <xmlsec/private.h>
 
 #include <xmlsec/mscng/crypto.h>
 #include <xmlsec/mscng/certkeys.h>
@@ -384,7 +384,7 @@ xmlSecMSCngRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
 
 static int
 xmlSecMSCngRsaPkcs1OaepExecute(xmlSecTransformPtr transform, int last,
-                               xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
+                               xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecMSCngRsaPkcs1OaepCtxPtr ctx;
     int ret;
 
@@ -424,7 +424,7 @@ xmlSecMSCngRsaPkcs1OaepExecute(xmlSecTransformPtr transform, int last,
 
 static int
 xmlSecMSCngRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
-                           xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
+                           xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecMSCngRsaPkcs1OaepCtxPtr ctx;
     xmlSecTransformRsaOaepParams oaepParams;
     LPCWSTR mgf1AlgId = NULL;

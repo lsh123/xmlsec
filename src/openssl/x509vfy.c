@@ -182,7 +182,7 @@ xmlSecOpenSSLX509StoreFindCert_ex(xmlSecKeyDataStorePtr store,
     xmlChar *subjectName,
     xmlChar *issuerName, xmlChar *issuerSerial,
     xmlSecByte * ski, xmlSecSize skiSize,
-    xmlSecKeyInfoCtx* keyInfoCtx ATTRIBUTE_UNUSED
+    xmlSecKeyInfoCtx* keyInfoCtx XMLSEC_ATTRIBUTE_UNUSED
 ) {
     xmlSecOpenSSLX509StoreCtxPtr ctx;
     xmlSecOpenSSLX509FindCertCtx findCertCtx;

@@ -3,7 +3,7 @@
 ## What version of OpenSSL?
 OpenSSL 3.0.0 or later is strongly recommended.
 
-Also LibreSSL (>= 3.5.0) and Boring SSL (>= 1.1.0) should work but those are
+Also LibreSSL (>= 3.5.0) and Boring SSL (>= 1.1.0) should work but those libraries
 have less stable API/ABI and are not tested as frequently as OpenSSL.
 
 ## Keys manager

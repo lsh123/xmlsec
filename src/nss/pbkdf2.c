@@ -210,7 +210,7 @@ xmlSecNssPbkdf2GetMacFromHref(const xmlChar* href) {
 
 static int
 xmlSecNssPbkdf2NodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
-                          xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
+                          xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecNssPbkdf2CtxPtr ctx;
     xmlNodePtr cur;
     int ret;

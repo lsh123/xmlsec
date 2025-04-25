@@ -21,8 +21,8 @@
 #include <xmlsec/errors.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keyinfo.h>
-#include <xmlsec/private.h>
 #include <xmlsec/transforms.h>
+#include <xmlsec/private.h>
 
 #include <xmlsec/mscng/crypto.h>
 
@@ -165,7 +165,7 @@ xmlSecMSCngHmacFinalize(xmlSecTransformPtr transform) {
 
 static int
 xmlSecMSCngHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
-                        xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
+                        xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecMSCngHmacCtxPtr ctx;
     int ret;
 
@@ -290,7 +290,7 @@ xmlSecMSCngHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
 static int
 xmlSecMSCngHmacVerify(xmlSecTransformPtr transform, const xmlSecByte* data,
-        xmlSecSize dataSize, xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
+        xmlSecSize dataSize, xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecMSCngHmacCtxPtr ctx;
     int ret;
 

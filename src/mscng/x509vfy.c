@@ -1306,7 +1306,7 @@ PCCERT_CONTEXT
 xmlSecMSCngX509StoreFindCert_ex(xmlSecKeyDataStorePtr store, xmlChar* subjectName,
                                 xmlChar* issuerName, xmlChar* issuerSerial,
                                 xmlSecByte* ski, xmlSecSize skiSize,
-                                xmlSecKeyInfoCtx* keyInfoCtx ATTRIBUTE_UNUSED) {
+                                xmlSecKeyInfoCtx* keyInfoCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecMSCngX509FindCertCtx findCertCtx;
     xmlSecMSCngX509StoreCtxPtr ctx;
     PCCERT_CONTEXT cert = NULL;

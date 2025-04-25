@@ -328,7 +328,7 @@ xmlSecNssKWAesSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
 static int
 xmlSecNssKWAesExecute(xmlSecTransformPtr transform, int last,
-                      xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
+                      xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecNssKWAesCtxPtr ctx;
     int ret;
 

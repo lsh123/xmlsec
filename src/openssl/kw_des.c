@@ -235,7 +235,7 @@ xmlSecOpenSSLKWDes3SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
 static int
 xmlSecOpenSSLKWDes3Execute(xmlSecTransformPtr transform, int last,
-                           xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
+                           xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecOpenSSLKWDes3CtxPtr ctx;
     int ret;
 
@@ -262,7 +262,7 @@ xmlSecOpenSSLKWDes3Execute(xmlSecTransformPtr transform, int last,
 #ifndef XMLSEC_OPENSSL_API_300
 
 static int
-xmlSecOpenSSLKWDes3Sha1(xmlSecTransformPtr transform ATTRIBUTE_UNUSED,
+xmlSecOpenSSLKWDes3Sha1(xmlSecTransformPtr transform XMLSEC_ATTRIBUTE_UNUSED,
                        const xmlSecByte * in, xmlSecSize inSize,
                        xmlSecByte * out, xmlSecSize outSize,
                        xmlSecSize * outWritten) {
@@ -286,7 +286,7 @@ xmlSecOpenSSLKWDes3Sha1(xmlSecTransformPtr transform ATTRIBUTE_UNUSED,
 #else /* XMLSEC_OPENSSL_API_300 */
 
 static int
-xmlSecOpenSSLKWDes3Sha1(xmlSecTransformPtr transform ATTRIBUTE_UNUSED,
+xmlSecOpenSSLKWDes3Sha1(xmlSecTransformPtr transform XMLSEC_ATTRIBUTE_UNUSED,
                        const xmlSecByte * in, xmlSecSize inSize,
                        xmlSecByte * out, xmlSecSize outSize,
                        xmlSecSize * outWritten) {
@@ -317,7 +317,7 @@ xmlSecOpenSSLKWDes3Sha1(xmlSecTransformPtr transform ATTRIBUTE_UNUSED,
 
 
 static int
-xmlSecOpenSSLKWDes3GenerateRandom(xmlSecTransformPtr transform ATTRIBUTE_UNUSED,
+xmlSecOpenSSLKWDes3GenerateRandom(xmlSecTransformPtr transform XMLSEC_ATTRIBUTE_UNUSED,
                                  xmlSecByte * out, xmlSecSize outSize,
                                  xmlSecSize * outWritten) {
     int ret;

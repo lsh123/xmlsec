@@ -209,7 +209,7 @@ xmlSecOpenSSLKeysStoreAdoptKey(xmlSecKeyStorePtr store, xmlSecKeyPtr key) {
  */
 int
 xmlSecOpenSSLKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
-                            xmlSecKeysMngrPtr keysMngr ATTRIBUTE_UNUSED) {
+                            xmlSecKeysMngrPtr keysMngr XMLSEC_ATTRIBUTE_UNUSED) {
     return(xmlSecSimpleKeysStoreLoad_ex(store, uri, keysMngr,
         xmlSecOpenSSLKeysStoreAdoptKey));
 }

@@ -1135,7 +1135,7 @@ xmlSecMSCryptoKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
 static int
 xmlSecMSCryptoKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits,
-                                xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
+                                xmlSecKeyDataType type XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecMSCryptoKeyDataCtxPtr ctx;
     HCRYPTPROV hProv = 0;
     HCRYPTKEY hKey = 0;
@@ -1376,7 +1376,7 @@ done:
 
 static int
 xmlSecMSCryptoKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
-    xmlSecKeyValueRsaPtr rsaValue, int writePrivateKey ATTRIBUTE_UNUSED) {
+    xmlSecKeyValueRsaPtr rsaValue, int writePrivateKey XMLSEC_ATTRIBUTE_UNUSED) {
 
     xmlSecMSCryptoKeyDataCtxPtr ctx;
     xmlSecBuffer buf;
@@ -1725,7 +1725,7 @@ xmlSecMSCryptoKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 }
 
 static int
-xmlSecMSCryptoKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
+xmlSecMSCryptoKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKeyDataType type XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecMSCryptoKeyDataCtxPtr ctx;
     HCRYPTPROV hProv = 0;
     HCRYPTKEY hKey = 0;
@@ -2006,7 +2006,7 @@ done:
 static int
 xmlSecMSCryptoKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
                               xmlSecKeyValueDsaPtr dsaValue,
-                              int writePrivateKey ATTRIBUTE_UNUSED)  {
+                              int writePrivateKey XMLSEC_ATTRIBUTE_UNUSED)  {
     xmlSecMSCryptoKeyDataCtxPtr ctx;
     xmlSecBuffer buf;
     int bufInitialized = 0;

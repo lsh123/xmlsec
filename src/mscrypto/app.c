@@ -24,9 +24,9 @@
 #include <xmlsec/keys.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/keysdata.h>
-#include <xmlsec/private.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/xmltree.h>
+#include <xmlsec/private.h>
 
 #include <xmlsec/mscrypto/app.h>
 #include <xmlsec/mscrypto/crypto.h>
@@ -133,7 +133,7 @@ xmlSecMSCryptoAppGetCertStoreName(void) {
  * Returns: pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
-xmlSecMSCryptoAppKeyLoadEx(const char *filename, xmlSecKeyDataType type ATTRIBUTE_UNUSED, xmlSecKeyDataFormat format,
+xmlSecMSCryptoAppKeyLoadEx(const char *filename, xmlSecKeyDataType type XMLSEC_ATTRIBUTE_UNUSED, xmlSecKeyDataFormat format,
     const char *pwd, void* pwdCallback, void* pwdCallbackCtx
 ) {
     xmlSecBuffer buffer;
@@ -447,8 +447,8 @@ xmlSecMSCryptoAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xml
 xmlSecKeyPtr
 xmlSecMSCryptoAppPkcs12Load(const char *filename,
                             const char *pwd,
-                            void* pwdCallback ATTRIBUTE_UNUSED,
-                            void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
+                            void* pwdCallback XMLSEC_ATTRIBUTE_UNUSED,
+                            void* pwdCallbackCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecBuffer buffer;
     xmlSecKeyPtr key;
     int ret;
@@ -504,8 +504,8 @@ xmlSecKeyPtr
 xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
                                   xmlSecSize dataSize,
                                   const char *pwd,
-                                  void* pwdCallback ATTRIBUTE_UNUSED,
-                                  void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
+                                  void* pwdCallback XMLSEC_ATTRIBUTE_UNUSED,
+                                  void* pwdCallbackCtx XMLSEC_ATTRIBUTE_UNUSED) {
     CRYPT_DATA_BLOB pfx;
     HCERTSTORE hCertStore = NULL;
     PCCERT_CONTEXT tmpcert = NULL;
@@ -688,7 +688,7 @@ done:
 int
 xmlSecMSCryptoAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
                                 xmlSecKeyDataFormat format,
-                                xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
+                                xmlSecKeyDataType type XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecBuffer buffer;
     int ret;
 

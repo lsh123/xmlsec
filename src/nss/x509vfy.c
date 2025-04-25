@@ -179,7 +179,7 @@ CERTCertificate *
 xmlSecNssX509StoreFindCert_ex(xmlSecKeyDataStorePtr store, xmlChar *subjectName,
                                 xmlChar *issuerName, xmlChar *issuerSerial,
                                  xmlSecByte * ski, xmlSecSize skiSize,
-                                 xmlSecKeyInfoCtx* keyInfoCtx ATTRIBUTE_UNUSED) {
+                                 xmlSecKeyInfoCtx* keyInfoCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecNssX509StoreCtxPtr ctx;
     xmlSecNssX509FindCertCtx findCertCtx;
     CERTCertificate * cert;

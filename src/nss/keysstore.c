@@ -37,6 +37,7 @@
 #include <xmlsec/base64.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/keysmngr.h>
+#include <xmlsec/private.h>
 
 #include <xmlsec/nss/crypto.h>
 #include <xmlsec/nss/keysstore.h>
@@ -124,7 +125,7 @@ xmlSecNssKeysStoreAdoptKey(xmlSecKeyStorePtr store, xmlSecKeyPtr key) {
  */
 int
 xmlSecNssKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
-                            xmlSecKeysMngrPtr keysMngr ATTRIBUTE_UNUSED) {
+                            xmlSecKeysMngrPtr keysMngr XMLSEC_ATTRIBUTE_UNUSED) {
     return(xmlSecSimpleKeysStoreLoad_ex(store, uri, keysMngr,
         xmlSecNssKeysStoreAdoptKey));
 }

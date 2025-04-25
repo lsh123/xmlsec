@@ -33,6 +33,7 @@
 #include <xmlsec/bn.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/xmltree.h>
+#include <xmlsec/private.h>
 
 #include <xmlsec/mscrypto/crypto.h>
 #include <xmlsec/mscrypto/x509.h>
@@ -158,7 +159,7 @@ PCCERT_CONTEXT
 xmlSecMSCryptoX509StoreFindCert_ex(xmlSecKeyDataStorePtr store, xmlChar* subjectName,
                                    xmlChar* issuerName, xmlChar* issuerSerial,
                                    xmlSecByte* ski, xmlSecSize skiSize,
-                                   xmlSecKeyInfoCtx* keyInfoCtx ATTRIBUTE_UNUSED) {
+                                   xmlSecKeyInfoCtx* keyInfoCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecMSCryptoX509StoreCtxPtr ctx;
     PCCERT_CONTEXT pCert = NULL;
 

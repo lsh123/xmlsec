@@ -30,6 +30,7 @@
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/xmltree.h>
+#include <xmlsec/private.h>
 
 #include <xmlsec/mscng/crypto.h>
 #include <xmlsec/mscng/x509.h>
@@ -1171,7 +1172,7 @@ PCCERT_CONTEXT
 xmlSecMSCngX509StoreFindCert_ex(xmlSecKeyDataStorePtr store, xmlChar* subjectName,
                                 xmlChar* issuerName, xmlChar* issuerSerial,
                                 xmlSecByte* ski, xmlSecSize skiSize,
-                                xmlSecKeyInfoCtx* keyInfoCtx ATTRIBUTE_UNUSED) {
+                                xmlSecKeyInfoCtx* keyInfoCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecMSCngX509StoreCtxPtr ctx;
     PCCERT_CONTEXT cert = NULL;
 

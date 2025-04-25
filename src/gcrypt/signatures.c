@@ -24,6 +24,7 @@
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/private.h>
 
 #include <xmlsec/gcrypt/crypto.h>
 
@@ -597,7 +598,7 @@ xmlSecGCryptAppendMpi(gcry_mpi_t a, xmlSecBufferPtr out, xmlSecSize min_size) {
  *
  ***************************************************************************/
 static int
-xmlSecGCryptDsaPkSign(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
+xmlSecGCryptDsaPkSign(int digest XMLSEC_ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
                       const xmlSecByte* dgst, xmlSecSize dgstSize,
                       xmlSecBufferPtr out) {
     gcry_mpi_t m_hash = NULL;
@@ -729,7 +730,7 @@ done:
 }
 
 static int
-xmlSecGCryptDsaPkVerify(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
+xmlSecGCryptDsaPkVerify(int digest XMLSEC_ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
                         const xmlSecByte* dgst, xmlSecSize dgstSize,
                         const xmlSecByte* data, xmlSecSize dataSize) {
     gcry_mpi_t m_hash = NULL;

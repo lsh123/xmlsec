@@ -30,8 +30,8 @@
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/base64.h>
 #include <xmlsec/errors.h>
-#include <xmlsec/private.h>
 #include <xmlsec/xmltree.h>
+#include <xmlsec/private.h>
 
 #include <xmlsec/openssl/crypto.h>
 #include <xmlsec/openssl/evp.h>
@@ -192,7 +192,7 @@ X509*
 xmlSecOpenSSLX509StoreFindCert_ex(xmlSecKeyDataStorePtr store, xmlChar *subjectName,
                                  xmlChar *issuerName,  xmlChar *issuerSerial,
                                  xmlSecByte * ski, xmlSecSize skiSize,
-                                 xmlSecKeyInfoCtx* keyInfoCtx ATTRIBUTE_UNUSED) {
+                                 xmlSecKeyInfoCtx* keyInfoCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecOpenSSLX509StoreCtxPtr ctx;
     X509* res = NULL;
 

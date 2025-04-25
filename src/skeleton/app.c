@@ -24,6 +24,7 @@
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/private.h>
 
 #include <xmlsec/skeleton/app.h>
 #include <xmlsec/skeleton/crypto.h>
@@ -39,7 +40,7 @@
  * Returns: 0 on success or a negative value otherwise.
  */
 int
-xmlSecSkeletonAppInit(const char* config ATTRIBUTE_UNUSED) {
+xmlSecSkeletonAppInit(const char* config XMLSEC_ATTRIBUTE_UNUSED) {
     /* TODO: initialize Skeleton crypto engine */
     return(0);
 }
@@ -174,9 +175,9 @@ xmlSecSkeletonAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xml
  */
 xmlSecKeyPtr
 xmlSecSkeletonAppPkcs12Load(const char *filename,
-                          const char *pwd ATTRIBUTE_UNUSED,
-                          void* pwdCallback ATTRIBUTE_UNUSED,
-                          void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
+                          const char *pwd XMLSEC_ATTRIBUTE_UNUSED,
+                          void* pwdCallback XMLSEC_ATTRIBUTE_UNUSED,
+                          void* pwdCallbackCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecAssert2(filename != NULL, NULL);
 
     /* TODO: load pkcs12 file */
@@ -200,8 +201,8 @@ xmlSecSkeletonAppPkcs12Load(const char *filename,
  */
 xmlSecKeyPtr
 xmlSecSkeletonAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, const char *pwd,
-                       void *pwdCallback ATTRIBUTE_UNUSED,
-                       void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
+                       void *pwdCallback XMLSEC_ATTRIBUTE_UNUSED,
+                       void* pwdCallbackCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecAssert2(data != NULL, NULL);
 
     /* TODO: load pkcs12 file */
@@ -227,7 +228,7 @@ xmlSecSkeletonAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, c
 int
 xmlSecSkeletonAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
                                 xmlSecKeyDataFormat format,
-                                xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
+                                xmlSecKeyDataType type XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(filename != NULL, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);

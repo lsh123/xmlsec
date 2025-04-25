@@ -207,7 +207,7 @@ xmlSecGCryptKWAesSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
 static int
 xmlSecGCryptKWAesExecute(xmlSecTransformPtr transform, int last,
-                         xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
+                         xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecGCryptKWAesCtxPtr ctx;
     int ret;
 

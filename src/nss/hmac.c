@@ -28,8 +28,8 @@
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/errors.h>
-#include <xmlsec/private.h>
 #include <xmlsec/transforms.h>
+#include <xmlsec/private.h>
 
 #include <xmlsec/nss/app.h>
 #include <xmlsec/nss/crypto.h>
@@ -248,7 +248,7 @@ xmlSecNssHmacFinalize(xmlSecTransformPtr transform) {
  */
 static int
 xmlSecNssHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
-                      xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
+                      xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecNssHmacCtxPtr ctx;
     int ret;
 
@@ -362,7 +362,7 @@ xmlSecNssHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 static int
 xmlSecNssHmacVerify(xmlSecTransformPtr transform,
                         const xmlSecByte* data, xmlSecSize dataSize,
-                        xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
+                        xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED) {
     static xmlSecByte last_byte_masks[] =
                 { 0xFF, 0x80, 0xC0, 0xE0, 0xF0, 0xF8, 0xFC, 0xFE };
 

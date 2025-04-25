@@ -30,9 +30,9 @@
 #include <xmlsec/buffer.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/keys.h>
-#include <xmlsec/private.h>
 #include <xmlsec/strings.h>
 #include <xmlsec/transforms.h>
+#include <xmlsec/private.h>
 
 #include <xmlsec/openssl/crypto.h>
 #include <xmlsec/openssl/evp.h>
@@ -161,7 +161,7 @@ xmlSecOpenSSLTransformRsaPkcs1GetKlass(void) {
 
 static int
 xmlSecOpenSSLRsaPkcs1SetKeyImpl(xmlSecOpenSSLRsaPkcs1CtxPtr ctx, EVP_PKEY* pKey,
-                                int encrypt ATTRIBUTE_UNUSED) {
+                                int encrypt XMLSEC_ATTRIBUTE_UNUSED) {
     RSA *rsa = NULL;
     int keyLen;
 
@@ -428,7 +428,7 @@ xmlSecOpenSSLRsaPkcs1SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
 static int
 xmlSecOpenSSLRsaPkcs1Execute(xmlSecTransformPtr transform, int last,
-                             xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
+                             xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecOpenSSLRsaPkcs1CtxPtr ctx;
     int ret;
 
@@ -631,7 +631,7 @@ xmlSecOpenSSLTransformRsaOaepGetKlass(void) {
 
 static int
 xmlSecOpenSSLRsaOaepSetKeyImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, EVP_PKEY* pKey,
-                            int encrypt ATTRIBUTE_UNUSED) {
+                            int encrypt XMLSEC_ATTRIBUTE_UNUSED) {
     RSA *rsa = NULL;
     int keyLen;
 
@@ -983,7 +983,7 @@ xmlSecOpenSSLRsaOaepFinalize(xmlSecTransformPtr transform) {
 
 static int
 xmlSecOpenSSLRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
-                             xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
+                             xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecOpenSSLRsaOaepCtxPtr ctx;
     xmlChar* algorithm = NULL;
     int ret;
@@ -1092,7 +1092,7 @@ xmlSecOpenSSLRsaOaepSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
 static int
 xmlSecOpenSSLRsaOaepExecute(xmlSecTransformPtr transform, int last,
-                            xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
+                            xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecOpenSSLRsaOaepCtxPtr ctx;
     int ret;
 

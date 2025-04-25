@@ -28,6 +28,7 @@
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/private.h>
 
 #include <xmlsec/mscrypto/crypto.h>
 
@@ -140,7 +141,7 @@ xmlSecMSCryptoSymKeyDataBinWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 }
 
 static int
-xmlSecMSCryptoSymKeyDataGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
+xmlSecMSCryptoSymKeyDataGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKeyDataType type XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecBufferPtr buffer;
 
     xmlSecAssert2(xmlSecMSCryptoSymKeyDataCheckId(data), -1);

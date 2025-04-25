@@ -22,6 +22,7 @@
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/private.h>
 
 #include <xmlsec/gnutls/app.h>
 #include <xmlsec/gnutls/crypto.h>
@@ -356,8 +357,8 @@ xmlSecGnuTLSAppPkcs12Load(const char *filename,
 xmlSecKeyPtr
 xmlSecGnuTLSAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
                                 const char *pwd,
-                                void* pwdCallback ATTRIBUTE_UNUSED,
-                                void* pwdCallbackCtx ATTRIBUTE_UNUSED)
+                                void* pwdCallback XMLSEC_ATTRIBUTE_UNUSED,
+                                void* pwdCallbackCtx XMLSEC_ATTRIBUTE_UNUSED)
 {
     xmlSecKeyPtr key = NULL;
     xmlSecKeyPtr res = NULL;

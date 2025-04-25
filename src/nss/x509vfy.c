@@ -33,8 +33,8 @@
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/base64.h>
 #include <xmlsec/errors.h>
-#include <xmlsec/private.h>
 #include <xmlsec/xmltree.h>
+#include <xmlsec/private.h>
 
 #include <xmlsec/nss/crypto.h>
 #include <xmlsec/nss/x509.h>
@@ -179,7 +179,7 @@ CERTCertificate *
 xmlSecNssX509StoreFindCert_ex(xmlSecKeyDataStorePtr store, xmlChar *subjectName,
                                 xmlChar *issuerName, xmlChar *issuerSerial,
                                  xmlSecByte * ski, xmlSecSize skiSize,
-                                 xmlSecKeyInfoCtx* keyInfoCtx ATTRIBUTE_UNUSED) {
+                                 xmlSecKeyInfoCtx* keyInfoCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecNssX509StoreCtxPtr ctx;
 
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecNssX509StoreId), NULL);

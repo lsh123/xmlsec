@@ -28,6 +28,7 @@
 #include <xmlsec/errors.h>
 #include <xmlsec/keysdata.h>
 #include <xmlsec/xmltree.h>
+#include <xmlsec/private.h>
 
 #include <xmlsec/mscrypto/app.h>
 #include <xmlsec/mscrypto/crypto.h>
@@ -445,8 +446,8 @@ xmlSecMSCryptoAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xml
 xmlSecKeyPtr
 xmlSecMSCryptoAppPkcs12Load(const char *filename,
                             const char *pwd,
-                            void* pwdCallback ATTRIBUTE_UNUSED,
-                            void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
+                            void* pwdCallback XMLSEC_ATTRIBUTE_UNUSED,
+                            void* pwdCallbackCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecBuffer buffer;
     xmlSecKeyPtr key;
     int ret;
@@ -502,8 +503,8 @@ xmlSecKeyPtr
 xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
                                   xmlSecSize dataSize,
                                   const char *pwd,
-                                  void* pwdCallback ATTRIBUTE_UNUSED,
-                                  void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
+                                  void* pwdCallback XMLSEC_ATTRIBUTE_UNUSED,
+                                  void* pwdCallbackCtx XMLSEC_ATTRIBUTE_UNUSED) {
     CRYPT_DATA_BLOB pfx;
     HCERTSTORE hCertStore = NULL;
     PCCERT_CONTEXT tmpcert = NULL;
@@ -683,7 +684,7 @@ done:
 int
 xmlSecMSCryptoAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
                                 xmlSecKeyDataFormat format,
-                                xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
+                                xmlSecKeyDataType type XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecBuffer buffer;
     int ret;
 
@@ -735,7 +736,7 @@ xmlSecMSCryptoAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
 int
 xmlSecMSCryptoAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* data,
                                         xmlSecSize dataSize, xmlSecKeyDataFormat format,
-                                        xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
+                                        xmlSecKeyDataType type XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecKeyDataStorePtr x509Store;
     PCCERT_CONTEXT pCert = NULL;
     DWORD dwDataSize;

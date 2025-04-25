@@ -247,7 +247,7 @@ xmlSecGCryptHmacFinalize(xmlSecTransformPtr transform) {
  */
 static int
 xmlSecGCryptHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
-                         xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
+                         xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecGCryptHmacCtxPtr ctx;
     int ret;
 
@@ -333,7 +333,7 @@ xmlSecGCryptHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 static int
 xmlSecGCryptHmacVerify(xmlSecTransformPtr transform,
                         const xmlSecByte* data, xmlSecSize dataSize,
-                        xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
+                        xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED) {
     static xmlSecByte last_byte_masks[] =
                 { 0xFF, 0x80, 0xC0, 0xE0, 0xF0, 0xF8, 0xFC, 0xFE };
 

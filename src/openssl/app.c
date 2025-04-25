@@ -32,8 +32,8 @@
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
-#include <xmlsec/private.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/private.h>
 
 #include <xmlsec/openssl/app.h>
 #include <xmlsec/openssl/crypto.h>
@@ -454,8 +454,8 @@ xmlSecOpenSSLAppKeyLoadBIO(BIO* bio, xmlSecKeyDataFormat format,
 
 static xmlSecKeyPtr
 xmlSecOpenSSLAppEngineKeyLoad(const char *engineName, const char *engineKeyId,
-                        xmlSecKeyDataFormat format, const char *pwd ATTRIBUTE_UNUSED,
-                        void* pwdCallback ATTRIBUTE_UNUSED, void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
+                        xmlSecKeyDataFormat format, const char *pwd XMLSEC_ATTRIBUTE_UNUSED,
+                        void* pwdCallback XMLSEC_ATTRIBUTE_UNUSED, void* pwdCallbackCtx XMLSEC_ATTRIBUTE_UNUSED) {
 
 #if !defined(OPENSSL_NO_ENGINE) && (!defined(XMLSEC_OPENSSL_API_300) || defined(XMLSEC_OPENSSL3_ENGINES))
     ENGINE* engine = NULL;
@@ -825,8 +825,8 @@ xmlSecOpenSSLAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
  */
 xmlSecKeyPtr
 xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
-                           void* pwdCallback ATTRIBUTE_UNUSED,
-                           void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
+                           void* pwdCallback XMLSEC_ATTRIBUTE_UNUSED,
+                           void* pwdCallbackCtx XMLSEC_ATTRIBUTE_UNUSED) {
 
     PKCS12 *p12 = NULL;
     EVP_PKEY *pKey = NULL;
@@ -1601,7 +1601,7 @@ xmlSecOpenSSLDefaultPasswordCallback(char *buf, int buflen, int verify, void *us
 
 static int
 xmlSecOpenSSLDummyPasswordCallback(char *buf, int bufLen,
-                                   int verify ATTRIBUTE_UNUSED,
+                                   int verify XMLSEC_ATTRIBUTE_UNUSED,
                                    void *userdata) {
 #if defined(_MSC_VER)
     xmlSecSize bufSize;

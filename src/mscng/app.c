@@ -26,6 +26,7 @@
 #include <xmlsec/errors.h>
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/xmltree.h>
+#include <xmlsec/private.h>
 
 #include <xmlsec/mscng/app.h>
 #include <xmlsec/mscng/crypto.h>
@@ -588,7 +589,7 @@ cleanup:
 int
 xmlSecMSCngAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
                                xmlSecKeyDataFormat format,
-                               xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
+                               xmlSecKeyDataType type XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecBuffer buffer;
     int ret;
 

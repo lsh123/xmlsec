@@ -24,8 +24,8 @@
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/keys.h>
-#include <xmlsec/private.h>
 #include <xmlsec/transforms.h>
+#include <xmlsec/private.h>
 
 #include <xmlsec/openssl/crypto.h>
 #include <xmlsec/openssl/evp.h>
@@ -388,7 +388,7 @@ xmlSecOpenSSLEvpBlockCipherCBCCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
         xmlSecBufferPtr in,
         xmlSecBufferPtr out,
         const xmlChar* cipherName,
-        xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED)
+        xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED)
 {
     xmlSecSize size, inSize, outSize;
     int inLen, outLen, padLen, blockLen;

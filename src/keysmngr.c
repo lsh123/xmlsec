@@ -405,7 +405,7 @@ xmlSecSimpleKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
  */
 int
 xmlSecSimpleKeysStoreLoad_ex(xmlSecKeyStorePtr store, const char *uri,
-                            xmlSecKeysMngrPtr keysMngr ATTRIBUTE_UNUSED,
+                            xmlSecKeysMngrPtr keysMngr XMLSEC_ATTRIBUTE_UNUSED,
                             xmlSecSimpleKeysStoreAdoptKeyFunc adoptKeyFunc) {
     xmlDocPtr doc;
     xmlNodePtr root;

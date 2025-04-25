@@ -57,7 +57,7 @@ XMLSEC_TRANSFORM_DECLARE(MSCngKWDes3, xmlSecMSCngKWDes3Ctx)
 #define xmlSecMSCngKWDes3Size XMLSEC_TRANSFORM_SIZE(MSCngKWDes3)
 
 static int
-xmlSecMSCngKWDes3GenerateRandom(xmlSecTransformPtr transform ATTRIBUTE_UNUSED, xmlSecByte * out,
+xmlSecMSCngKWDes3GenerateRandom(xmlSecTransformPtr transform XMLSEC_ATTRIBUTE_UNUSED, xmlSecByte * out,
         xmlSecSize outSize, xmlSecSize* outWritten)
 {
     NTSTATUS status;
@@ -647,7 +647,7 @@ xmlSecMSCngKWDes3SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
 static int
 xmlSecMSCngKWDes3Execute(xmlSecTransformPtr transform, int last,
-                         xmlSecTransformCtxPtr transformCtx ATTRIBUTE_UNUSED) {
+                         xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecMSCngKWDes3CtxPtr ctx;
     int ret;
 

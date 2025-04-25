@@ -33,6 +33,7 @@
 #include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/bn.h>
+#include <xmlsec/private.h>
 
 #include <xmlsec/mscng/crypto.h>
 #include <xmlsec/mscng/certkeys.h>
@@ -610,7 +611,7 @@ done:
 static int
 xmlSecMSCngKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
                         xmlSecKeyValueDsaPtr dsaValue,
-                        int writePrivateKey ATTRIBUTE_UNUSED) {
+                        int writePrivateKey XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecMSCngKeyDataCtxPtr ctx;
     NTSTATUS status;
     xmlSecBuffer buf;
@@ -1052,7 +1053,7 @@ done:
 static int
 xmlSecMSCngKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
                            xmlSecKeyValueRsaPtr rsaValue,
-                           int writePrivateKey ATTRIBUTE_UNUSED) {
+                           int writePrivateKey XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecMSCngKeyDataCtxPtr ctx;
     NTSTATUS status;
     xmlSecBuffer buf;

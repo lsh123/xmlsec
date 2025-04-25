@@ -173,7 +173,7 @@ gnutls_x509_crt_t
 xmlSecGnuTLSX509StoreFindCert_ex(const xmlSecKeyDataStorePtr store, const xmlChar *subjectName,
                               const xmlChar *issuerName, const xmlChar *issuerSerial,
                               const xmlSecByte * ski, xmlSecSize skiSize,
-                              const xmlSecKeyInfoCtx* keyInfoCtx ATTRIBUTE_UNUSED) {
+                              const xmlSecKeyInfoCtx* keyInfoCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecGnuTLSX509StoreCtxPtr ctx;
     gnutls_x509_crt_t res = NULL;
 

@@ -34,6 +34,7 @@
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/private.h>
 
 #include <xmlsec/nss/app.h>
 #include <xmlsec/nss/crypto.h>
@@ -218,7 +219,7 @@ xmlSecNssAppAscii2UCS2Conv(PRBool toUnicode,
                            unsigned char *outBuf,
                            unsigned int   maxOutBufLen,
                            unsigned int  *outBufLen,
-                           PRBool         swapBytes ATTRIBUTE_UNUSED)
+                           PRBool         swapBytes XMLSEC_ATTRIBUTE_UNUSED)
 {
     SECItem it;
 
@@ -235,9 +236,9 @@ xmlSecNssAppAscii2UCS2Conv(PRBool toUnicode,
 }
 
 static SECItem *
-xmlSecNssAppNicknameCollisionCallback(SECItem *old_nick ATTRIBUTE_UNUSED,
+xmlSecNssAppNicknameCollisionCallback(SECItem *old_nick XMLSEC_ATTRIBUTE_UNUSED,
                                       PRBool *cancel,
-                                      void *wincx ATTRIBUTE_UNUSED)
+                                      void *wincx XMLSEC_ATTRIBUTE_UNUSED)
 {
     if (cancel == NULL) {
         return (NULL);
@@ -657,8 +658,8 @@ done:
  */
 xmlSecKeyPtr
 xmlSecNssAppPkcs12Load(const char *filename, const char *pwd,
-                       void *pwdCallback ATTRIBUTE_UNUSED,
-                       void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
+                       void *pwdCallback XMLSEC_ATTRIBUTE_UNUSED,
+                       void* pwdCallbackCtx XMLSEC_ATTRIBUTE_UNUSED) {
     SECItem secItem;
     xmlSecKeyPtr res;
     int ret;
@@ -700,8 +701,8 @@ xmlSecNssAppPkcs12Load(const char *filename, const char *pwd,
  */
 xmlSecKeyPtr
 xmlSecNssAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, const char *pwd,
-                       void *pwdCallback ATTRIBUTE_UNUSED,
-                       void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
+                       void *pwdCallback XMLSEC_ATTRIBUTE_UNUSED,
+                       void* pwdCallbackCtx XMLSEC_ATTRIBUTE_UNUSED) {
     SECItem secItem;
     xmlSecKeyPtr res;
     int ret;
@@ -742,8 +743,8 @@ xmlSecNssAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, const 
  */
 xmlSecKeyPtr
 xmlSecNssAppPkcs12LoadSECItem(SECItem* secItem, const char *pwd,
-                       void *pwdCallback ATTRIBUTE_UNUSED,
-                       void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
+                       void *pwdCallback XMLSEC_ATTRIBUTE_UNUSED,
+                       void* pwdCallbackCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecKeyPtr key = NULL;
     xmlSecKeyDataPtr data = NULL;
     xmlSecKeyDataPtr x509Data = NULL;

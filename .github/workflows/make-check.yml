@@ -45,42 +45,6 @@ jobs:
       run: |
           make check
 
-  check-ubuntu-openssl-111:
-    runs-on: ubuntu-20.04
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - config_flags:
-          - config_flags: --enable-size-t=yes
-          - config_flags: --enable-static-linking=yes --without-nss --without-gcrypt --without-gnutls
-    steps:
-    - name: install dependencies
-      run: |
-          sudo apt update
-          sudo apt install automake autoconf libtool libtool-bin libltdl-dev libltdl7
-          sudo apt install libxml2 libxml2-dev libxslt1.1 libxslt1-dev
-          sudo apt install wget
-    - uses: actions/checkout@v2
-    - name: create-build-dirs
-      run: |
-          mkdir build
-    - name: configure
-      working-directory: build
-      run: |
-          export LD_LIBRARY_PATH="/usr/local/openssl3/lib:/usr/local/openssl3/lib64:$LD_LIBRARY_PATH"
-          ../autogen.sh --enable-werror --enable-pedantic \
-              ${{ matrix.config_flags }}
-    - name: make
-      working-directory: build
-      run: |
-          make
-    - name: make check
-      working-directory: build
-      run: |
-          export LD_LIBRARY_PATH="/usr/local/openssl3/lib:/usr/local/openssl3/lib64:$LD_LIBRARY_PATH"
-          make check
-
   check-osx:
     runs-on: macos-12
     strategy:

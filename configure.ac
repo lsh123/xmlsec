@@ -876,7 +876,11 @@ if test "z$OPENSSL_FOUND" = "zyes" ; then
     fi
 fi
 if test "z$OPENSSL_FOUND" = "zyes" ; then
-    AC_MSG_RESULT([yes (openssl version '$OPENSSL_VERSION')])
+    if test "z$OPENSSL_VERSION" = "z1.1.1" ; then
+        AC_MSG_RESULT([yes (openssl version '$OPENSSL_VERSION' --- DEPRECATED)])
+    else
+        AC_MSG_RESULT([yes (openssl version '$OPENSSL_VERSION')])
+    fi
 else
     AC_MSG_RESULT([$OPENSSL_FOUND])
 fi

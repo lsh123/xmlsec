@@ -1,10 +1,10 @@
 # XMLSec Library: XMLSEC-OPENSSL
 
 ## What version of OpenSSL?
-OpenSSL 1.1.1 or later is required.
+OpenSSL 3.0.0 or later is strongly recommended.
 
 Also LibreSSL (>= 3.5.0) and Boring SSL (>= 1.1.0) should work but those are
-less tested than OpenSSL.
+have less stable API/ABI and are not tested as frequently as OpenSSL.
 
 ## Keys manager
 OpenSSL does not have a keys or certificates storage implementation. The

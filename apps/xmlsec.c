@@ -3053,10 +3053,6 @@ xmlSecAppInit(void) {
     /* Init libxml */
     xmlInitParser();
     LIBXML_TEST_VERSION
-#ifndef XMLSEC_NO_XSLT
-    xmlIndentTreeOutput = 1;
-#endif /* XMLSEC_NO_XSLT */
-
 
     /* Init libxslt */
 #ifndef XMLSEC_NO_XSLT

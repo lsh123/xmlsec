@@ -58,9 +58,6 @@ main(int argc, char **argv) {
     LIBXML_TEST_VERSION
     xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
     xmlSubstituteEntitiesDefault(1);
-#ifndef XMLSEC_NO_XSLT
-    xmlIndentTreeOutput = 1;
-#endif /* XMLSEC_NO_XSLT */
 
     /* Init libxslt */
 #ifndef XMLSEC_NO_XSLT

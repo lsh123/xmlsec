@@ -352,6 +352,11 @@ XMLSEC_EXPORT int               xmlSecKeyDataX509XmlWrite               (xmlSecK
                                                                          int addLineBreaks,
                                                                          xmlSecKeyDataX509Write writeFunc,
                                                                          void* writeFuncContext);
+
+XMLSEC_EXPORT int               xmlSecsX509NameStringRead               (const xmlChar **in, xmlSecSize *inSize,
+                                                                         xmlSecByte *out, xmlSecSize outSize,
+                                                                         xmlSecSize *outWritten,
+                                                                         xmlSecByte delim, int ingoreTrailingSpaces);
 #endif /* !defined(XMLSEC_NO_X509) */
 
 #endif /* __XMLSEC_KEYSDATA_HELPERS_H__ */

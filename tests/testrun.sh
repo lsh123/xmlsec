@@ -110,9 +110,9 @@ esac
 
 # only original openssl supports --privkey-openssl-store
 if [ "z$crypto" = "zopenssl" -a "z$xmlsec_openssl_flavor" = "zopenssl" ] ; then
-    xmlsec_feature_openssl_store = "yes"
+    xmlsec_feature_openssl_store="yes"
 else
-    xmlsec_feature_openssl_store = "no"
+    xmlsec_feature_openssl_store="no"
 fi
 
 # phaos certs use RSA-MD5 which might be disabled
@@ -120,10 +120,147 @@ if [ "z$crypto" = "zopenssl" -a "z$xmlsec_openssl_flavor" != "zaws-lc" ] ; then
     extra_vars="$extra_vars OPENSSL_ENABLE_MD5_VERIFY=1"
     export OPENSSL_ENABLE_MD5_VERIFY=1
 
-    xmlsec_feature_md5_certs = "yes"
+    xmlsec_feature_md5_certs="yes"
 else
-    xmlsec_feature_md5_certs = "no"
+    xmlsec_feature_md5_certs="no"
 fi
+
+# gcrypt doesn't support pkcs12
+if [ "z$crypto" != "zgcrypt" ] ; then
+    xmlsec_feature_pkcs12="yes"
+else
+    xmlsec_feature_pkcs12="no"
+fi
+
+# gcrypt and mscrypto don't support keynames in pkcs12
+if [ "z$crypto" != "zgcrypt" -a "z$crypto" != "zmscrypto" ] ; then
+    xmlsec_feature_pkcs12_keyname="yes"
+else
+    xmlsec_feature_pkcs12_keyname="no"
+fi
+
+# gcrypt, mscrypto, mscng, nss don't support pkcs8
+if [ "z$crypto" != "zgcrypt" -a "z$crypto" != "znss" -a "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" ] ; then
+    xmlsec_feature_pkcs8="yes"
+else
+    xmlsec_feature_pkcs8="no"
+fi
+
+# gcrypt doesn't support pem
+# nss, mscrypto, mscng don't like private keys in pem / der
+if [ "z$crypto" != "zgcrypt" -a "z$crypto" != "znss" -a "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" ] ; then
+    xmlsec_feature_privkey_pem="yes"
+else
+    xmlsec_feature_privkey_pem="no"
+fi
+
+# nss, mscrypto, mscng don't like private keys in pem / der
+if [ "z$crypto" != "znss"  -a "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" ] ; then
+    xmlsec_feature_privkey_der="yes"
+else
+    xmlsec_feature_privkey_der="no"
+fi
+
+# nss, gcrypt don't support pem
+# mscrypto, mscng don't support standalong pubkeys
+if [ "z$crypto" != "zgcrypt" -a "z$crypto" != "znss" -a "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" ] ; then
+    xmlsec_feature_pubkey_pem="yes"
+else
+    xmlsec_feature_pubkey_pem="no"
+fi
+
+# mscrypto, mscng don't support standalong pubkeys
+if [ "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" ] ; then
+    xmlsec_feature_pubkey_der="yes"
+else
+    xmlsec_feature_pubkey_der="no"
+fi
+
+# gcrypt doesn't support certs
+# mscrypto, mscng don't support pem
+if [ "z$crypto" != "zgcrypt" -a "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" ] ; then
+    xmlsec_feature_cert_pem="yes"
+else
+    xmlsec_feature_cert_pem="no"
+fi
+
+# gcrypt doesn't support certs
+if [ "z$crypto" != "zgcrypt" ] ; then
+    xmlsec_feature_cert_der="yes"
+else
+    xmlsec_feature_cert_der="no"
+fi
+
+# Only OpenSSL / NSS / GnuTLS currently has capability to lookup the certs/keys using X509 data
+if [ "z$crypto" = "zopenssl" -o "z$crypto" = "znss" -o "z$crypto" = "zgnutls" ] ; then
+    xmlsec_feature_x509_data_lookup="yes"
+else
+    xmlsec_feature_x509_data_lookup="no"
+fi
+
+# Only NSS can lookup certs in NSS DB, skip certs verification for signatures
+if [ "z$crypto" = "znss"  ] ; then
+    xmlsec_feature_nssdb_lookup="yes"
+else
+    xmlsec_feature_nssdb_lookup="no"
+fi
+
+# MSCng only supports SHA1 as cert digests and cannot lookup the key
+if [ "z$crypto" = "zmscng" ] ; then
+    xmlsec_feature_x509_data_lookup_digest="yes"
+else
+    xmlsec_feature_x509_data_lookup_digest="no"
+fi
+
+# currently only openssl and gnutls support skipping time checks
+# https://github.com/lsh123/xmlsec/issues/852
+if [ "z$crypto" = "zopenssl" -o "z$crypto" = "zgnutls" -o "z$crypto" = "zmscng"  ] ; then
+    xmlsec_feature_cert_check_skip_time="yes"
+else
+    xmlsec_feature_cert_check_skip_time="no"
+fi
+
+# currently only openssl/gnutls/nss support loading CRL from the command line
+# https://github.com/lsh123/xmlsec/issues/583
+if [ "z$crypto" = "zopenssl" -o  "z$crypto" = "zgnutls" -o "z$crypto" = "znss" ] ; then
+    xmlsec_feature_crl_load="yes"
+else
+    xmlsec_feature_crl_load="no"
+fi
+
+# currently only openssl/nss support CRL verification by time
+# https://github.com/lsh123/xmlsec/issues/579
+if [ "z$crypto" = "zopenssl" -o "z$crypto" = "znss"  ] ; then
+    xmlsec_feature_crl_check_skip_time="yes"
+else
+    xmlsec_feature_crl_check_skip_time="no"
+fi
+
+# only openssl, gnutls, nss, and mcng supports key verification
+# https://github.com/lsh123/xmlsec/issues/587
+if [ "z$crypto" = "zopenssl" -o  "z$crypto" = "zgnutls" -o "z$crypto" = "znss" -o "z$crypto" = "zmscng" ] ; then
+    xmlsec_feature_key_check="yes"
+else
+    xmlsec_feature_key_check="no"
+fi
+
+# Advanced RSA OAEP modes:
+# - MSCrypto only supports SHA1 for digest and mgf1
+if [ "z$crypto" != "zmscrypto" ] ; then
+    xmlsec_feature_rsa_oaep_non_sha1="yes"
+else
+    xmlsec_feature_rsa_oaep_non_sha1="no"
+fi
+
+# Advanced RSA OAEP modes:
+# - MSCrypto only supports SHA1 for digest and mgf1
+# - GCrypt/GnuTLS and MSCng only supoprts the *same* algorithm for *both* digest and mgf1
+if [ "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" -a "z$crypto" != "zgcrypt" ] ; then
+    xmlsec_feature_rsa_oaep_different_digest_and_mgf1="yes"
+else
+    xmlsec_feature_rsa_oaep_different_digest_and_mgf1="no"
+fi
+
 
 #
 # Setup keys config
@@ -197,7 +334,6 @@ else
 fi
 
 
-
 #
 # Setup crypto config folder
 #
@@ -245,7 +381,7 @@ tearDownTest() {
 
 #
 # Check the command result and print it to stdout
-#
+#"z$crypto
 res_success="success"
 res_fail="fail"
 count_success=0
@@ -375,8 +511,7 @@ execKeysTestWithCryptoConfig() {
 
     # test reading private keys
     if [ -n "$privkey_file" -a -n "$asym_key_test" ]; then
-        # gcrypt doesn't support pkcs12
-        if [ "z$crypto" != "zgcrypt" ] ; then
+        if [ "z$xmlsec_feature_pkcs12" != "zyes" ] ; then
             printf "    Reading private key from pkcs12 file                  "
             rm -f $tmpfile
             params="--lax-key-search --pkcs12 $privkey_file.p12 $pkcs12_key_extra_options $key_test_options --output $tmpfile $asym_key_test.tmpl"
@@ -387,8 +522,7 @@ execKeysTestWithCryptoConfig() {
                 failures=`expr $failures + 1`
             fi
         fi
-        # only gcrypt and mscrypto doesn't support keynames in pkcs12
-        if [ "z$crypto" != "zgcrypt" -a "z$crypto" != "zmscrypto" ] ; then
+        if [ "z$xmlsec_feature_pkcs12_keyname" != "zyes" ] ; then
             printf "    Reading private key name from pkcs12 file             "
             rm -f $tmpfile
             params="--pkcs12 $privkey_file.p12 $pkcs12_key_extra_options $key_test_options --output $tmpfile $asym_key_test.tmpl"
@@ -412,8 +546,7 @@ execKeysTestWithCryptoConfig() {
             fi
         fi
 
-        # gcrypt, mscrypto, mscng, nss don't support pkcs8
-        if [ "z$crypto" != "zgcrypt" -a "z$crypto" != "znss" -a "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" ] ; then
+        if [ "z$xmlsec_feature_pkcs8" = "zyes" ] ; then
             printf "    Reading private key from pkcs8 pem file               "
             rm -f $tmpfile
             params="--lax-key-search --pkcs8-pem $privkey_file.p8-pem $key_test_options --output $tmpfile $asym_key_test.tmpl"
@@ -425,8 +558,7 @@ execKeysTestWithCryptoConfig() {
             fi
         fi
 
-        # gcrypt, mscrypto, mscng, nss don't support pkcs8
-        if [ "z$crypto" != "zgcrypt" -a "z$crypto" != "znss" -a "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" ] ; then
+        if [ "z$xmlsec_feature_pkcs8" = "zyes" ] ; then
             printf "    Reading private key from pkcs8 der file               "
             rm -f $tmpfile
             params="--lax-key-search --pkcs8-der $privkey_file.p8-der $key_test_options --output $tmpfile $asym_key_test.tmpl"
@@ -438,9 +570,7 @@ execKeysTestWithCryptoConfig() {
             fi
         fi
 
-        # gcrypt doesn't support pem
-        # nss, mscrypto, mscng don't like private keys in pem / der
-        if [ "z$crypto" != "zgcrypt" -a "z$crypto" != "znss" -a "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" ] ; then
+        if [ "z$xmlsec_feature_privkey_pem" = "zyes" ] ; then
             printf "    Reading private key from pem file                     "
             rm -f $tmpfile
             params="--lax-key-search --privkey-pem $privkey_file.pem $key_test_options --output $tmpfile $asym_key_test.tmpl"
@@ -452,8 +582,7 @@ execKeysTestWithCryptoConfig() {
             fi
         fi
 
-        # nss, mscrypto, mscng don't like private keys in pem / der
-        if [ "z$crypto" != "znss"  -a "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" ] ; then
+        if [ "z$xmlsec_feature_privkey_der" = "zyes" ] ; then
             printf "    Reading private key from der file                     "
             rm -f $tmpfile
             params="--lax-key-search --privkey-der $privkey_file.der $key_test_options --output $tmpfile $asym_key_test.tmpl"
@@ -481,9 +610,7 @@ execKeysTestWithCryptoConfig() {
 
         fi
 
-        # nss, gcrypt don't support pem
-        # mscrypto, mscng don't support standalong pubkeys
-        if [ "z$crypto" != "zgcrypt" -a "z$crypto" != "znss" -a "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" ] ; then
+        if [ "z$xmlsec_feature_pubkey_pem" = "zyes" ] ; then
             printf "    Reading public key from pem file                      "
             rm -f $tmpfile
             params="--lax-key-search --pubkey-pem $pubkey_file.pem $key_test_options $asym_key_test.xml"
@@ -499,8 +626,7 @@ execKeysTestWithCryptoConfig() {
         if [ "z$crypto" = "zgcrypt" -a "z$req_key_data" = "zrsa" ] ; then
             pubkey_file="$pubkey_file-gcrypt"
         fi
-        # mscrypto, mscng don't support standalong pubkeys
-        if [ "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" ] ; then
+        if [ "z$xmlsec_feature_pubkey_der" = "zyes" ] ; then
             printf "    Reading public key from der file                      "
             rm -f $tmpfile
             params="--lax-key-search --pubkey-der $pubkey_file.der $key_test_options $asym_key_test.xml"
@@ -514,9 +640,7 @@ execKeysTestWithCryptoConfig() {
     fi
 
     if [ -n "$certkey_file" -a -n "$asym_key_test" ]; then
-        # gcrypt doesn't support cert
-        # mscrypto, mscng don't support pem
-        if [ "z$crypto" != "zgcrypt" -a "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" ] ; then
+        if [ "z$xmlsec_feature_cert_pem" = "zyes" ] ; then
             printf "    Reading public key from pem cert file                 "
             rm -f $tmpfile
             params="--lax-key-search --pubkey-cert-pem $certkey_file.pem $key_test_options $asym_key_test.xml"
@@ -528,8 +652,7 @@ execKeysTestWithCryptoConfig() {
             fi
         fi
 
-        # gcrypt doesn't support cert
-        if [ "z$crypto" != "zgcrypt" ] ; then
+        if [ "z$xmlsec_feature_cert_der" = "zyes" ] ; then
             printf "    Reading public key from der cert file                 "
             rm -f $tmpfile
             params="--lax-key-search --pubkey-cert-der $certkey_file.der $key_test_options $asym_key_test.xml"

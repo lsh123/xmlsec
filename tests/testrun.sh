@@ -76,19 +76,6 @@ elif [ "z$crypto" != "z" ] ; then
     xmlsec_params="$xmlsec_params --crypto $crypto"
 fi
 
-# What flavour of OpenSSL do we have?
-case $XMLSEC_OPENSSL_VERSION in
-*LibreSSL*)
-    xmlsec_openssl_flavor="libressl"
-    ;;
-*BoringSSL*)
-    xmlsec_openssl_flavor="boringssl"
-    ;;
-*)
-    xmlsec_openssl_flavor="openssl"
-    ;;
-esac
-
 #
 # Setup extra vars
 #
@@ -103,10 +90,39 @@ if [ "z$crypto" = "zopenssl" -a "z$XMLSEC_OPENSSL_TEST_CONFIG" != "z" ] ; then
     export OPENSSL_CONF="$opensslconf"
 fi
 
-if [ "z$crypto" = "zopenssl" ] ; then
-    # phaos certs use RSA-MD5 which might be disabled
+#
+#  Configure supported features
+#
+case $XMLSEC_OPENSSL_VERSION in
+*LibreSSL*)
+    xmlsec_openssl_flavor="libressl"
+    ;;
+*BoringSSL*)
+    xmlsec_openssl_flavor="boringssl"
+    ;;
+*AWSLC*)
+    xmlsec_openssl_flavor="aws-lc"
+    ;;
+*)
+    xmlsec_openssl_flavor="openssl"
+    ;;
+esac
+
+# only original openssl supports --privkey-openssl-store
+if [ "z$crypto" = "zopenssl" -a "z$xmlsec_openssl_flavor" = "zopenssl" ] ; then
+    xmlsec_feature_openssl_store = "yes"
+else
+    xmlsec_feature_openssl_store = "no"
+fi
+
+# phaos certs use RSA-MD5 which might be disabled
+if [ "z$crypto" = "zopenssl" -a "z$xmlsec_openssl_flavor" != "zaws-lc" ] ; then
     extra_vars="$extra_vars OPENSSL_ENABLE_MD5_VERIFY=1"
     export OPENSSL_ENABLE_MD5_VERIFY=1
+
+    xmlsec_feature_md5_certs = "yes"
+else
+    xmlsec_feature_md5_certs = "no"
 fi
 
 #
@@ -384,8 +400,7 @@ execKeysTestWithCryptoConfig() {
             fi
         fi
 
-        # only openssl supports --privkey-openssl-store
-        if [ "z$crypto" = "zopenssl" -a "z$xmlsec_openssl_flavor" != "zlibressl" -a "z$xmlsec_openssl_flavor" != "zboringssl" ] ; then
+        if [ "z$xmlsec_feature_openssl_store" = "zyes" ] ; then
             printf "    Reading private key from pkcs12 file using ossl-store "
             rm -f $tmpfile
             params="--lax-key-search --privkey-openssl-store $privkey_file.p12 $pkcs12_key_extra_options $key_test_options --output $tmpfile $asym_key_test.tmpl"
@@ -453,8 +468,7 @@ execKeysTestWithCryptoConfig() {
 
     # test reading public keys
     if [ -n "$pubkey_file" -a -n "$asym_key_test" ]; then
-        # only openssl supports --pubkey-openssl-store
-        if [ "z$crypto" = "zopenssl" -a "z$xmlsec_openssl_flavor" != "zlibressl" -a "z$xmlsec_openssl_flavor" != "zboringssl" ] ; then
+        if [ "z$xmlsec_feature_openssl_store" = "zyes" ] ; then
             printf "    Reading public key from pem file using ossl-store     "
             rm -f $tmpfile
             params="--lax-key-search --pubkey-openssl-store $pubkey_file.pem $key_test_options $asym_key_test.xml"
@@ -812,8 +826,10 @@ if [ $count_total -gt 0 ] ; then
     percent_success=`expr 100 \* $count_success / $count_total`
 fi
 
-if [ "z$crypto" = "zopenssl" ] ; then
+if [ "z$crypto" = "zopenssl" -a "z$xmlsec_openssl_flavor" != "zaws-lc" ] ; then
     min_percent_success=90
+elif [ "z$crypto" = "zopenssl" -a "z$xmlsec_openssl_flavor" = "zaws-lc" ] ; then
+    min_percent_success=80
 elif [ "z$crypto" = "znss" ] ; then
     min_percent_success=90
 elif [ "z$crypto" = "zgnutls" ] ; then

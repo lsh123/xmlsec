@@ -15,24 +15,10 @@
 
 /******************************************************************************
  *
- * AWS LC compatibility (based on BoringSSL)
+ * boringssl and aws-lc compatibility
  *
  *****************************************************************************/
-#ifdef OPENSSL_IS_AWSLC
-
-#ifndef OPENSSL_IS_BORINGSSL
-#define OPENSSL_IS_BORINGSSL
-#endif /* OPENSSL_IS_BORINGSSL */
-
-#endif /* ! OPENSSL_IS_AWSLC */
-
-
-/******************************************************************************
- *
- * boringssl compatibility
- *
- *****************************************************************************/
-#ifdef OPENSSL_IS_BORINGSSL
+#if defined(OPENSSL_IS_BORINGSSL) || defined(OPENSSL_IS_AWSLC)
 
 /* Not implemented by LibreSSL (yet?) */
 #define XMLSEC_OPENSSL_NO_ASN1_TIME_TO_TM   1
@@ -66,7 +52,7 @@
 
 
 /* BoringSSL redefines int->size_t or int->unsigned */
-#if defined(OPENSSL_IS_BORINGSSL)
+#if defined(OPENSSL_IS_BORINGSSL) || defined(OPENSSL_IS_AWSLC)
 
 /* when BoringSSL replaced int with unisgned */
 typedef unsigned xmlSecOpenSSLUInt;

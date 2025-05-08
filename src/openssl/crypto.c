@@ -46,7 +46,7 @@ static void             xmlSecOpenSSLErrorsShutdown             (void);
 static xmlSecCryptoDLFunctionsPtr gXmlSecOpenSSLFunctions = NULL;
 static xmlChar* gXmlSecOpenSSLTrustedCertsFolder = NULL;
 
-#if !defined(XMLSEC_OPENSSL_API_300) && !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_NO_ERR)
+#if !defined(XMLSEC_OPENSSL_API_300) && !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_IS_AWSLC) && !defined(OPENSSL_NO_ERR)
 
 #define XMLSEC_OPENSSL_ERRORS_FUNCTION                  0
 
@@ -566,7 +566,7 @@ void
 xmlSecOpenSSLErrorsDefaultCallback(const char* file, int line, const char* func,
                                 const char* errorObject, const char* errorSubject,
                                 int reason, const char* msg) {
-#if !defined(XMLSEC_OPENSSL_API_300) && !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_NO_ERR)
+#if !defined(XMLSEC_OPENSSL_API_300) && !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_IS_AWSLC) && !defined(OPENSSL_NO_ERR)
     ERR_put_error(gXmlSecOpenSSLErrorsLib,
                 XMLSEC_OPENSSL_ERRORS_FUNCTION,
                 reason, file, line);
@@ -579,7 +579,7 @@ xmlSecOpenSSLErrorsDefaultCallback(const char* file, int line, const char* func,
 
 static int
 xmlSecOpenSSLErrorsInit(void) {
-#if !defined(XMLSEC_OPENSSL_API_300) && !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_NO_ERR)
+#if !defined(XMLSEC_OPENSSL_API_300) && !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_IS_AWSLC) && !defined(OPENSSL_NO_ERR)
     xmlSecSize pos;
 
     /* get XMLSec library id */
@@ -620,7 +620,7 @@ xmlSecOpenSSLErrorsShutdown(void) {
     /* remove callback */
     xmlSecErrorsSetCallback(NULL);
 
-#if !defined(XMLSEC_OPENSSL_API_300) && !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_NO_ERR)
+#if !defined(XMLSEC_OPENSSL_API_300) && !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_IS_AWSLC) && !defined(OPENSSL_NO_ERR)
     /* unload xmlsec strings from OpenSSL */
     ERR_unload_strings(gXmlSecOpenSSLErrorsLib, xmlSecOpenSSLStrLib);
     ERR_unload_strings(gXmlSecOpenSSLErrorsLib, xmlSecOpenSSLStrDefReason);

@@ -381,7 +381,7 @@ tearDownTest() {
 
 #
 # Check the command result and print it to stdout
-#"z$crypto
+#
 res_success="success"
 res_fail="fail"
 count_success=0

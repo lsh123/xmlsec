@@ -511,7 +511,7 @@ execKeysTestWithCryptoConfig() {
 
     # test reading private keys
     if [ -n "$privkey_file" -a -n "$asym_key_test" ]; then
-        if [ "z$xmlsec_feature_pkcs12" != "zyes" ] ; then
+        if [ "z$xmlsec_feature_pkcs12" = "zyes" ] ; then
             printf "    Reading private key from pkcs12 file                  "
             rm -f $tmpfile
             params="--lax-key-search --pkcs12 $privkey_file.p12 $pkcs12_key_extra_options $key_test_options --output $tmpfile $asym_key_test.tmpl"
@@ -522,7 +522,7 @@ execKeysTestWithCryptoConfig() {
                 failures=`expr $failures + 1`
             fi
         fi
-        if [ "z$xmlsec_feature_pkcs12_keyname" != "zyes" ] ; then
+        if [ "zckcs12_keyname" = "zyes" ] ; then
             printf "    Reading private key name from pkcs12 file             "
             rm -f $tmpfile
             params="--pkcs12 $privkey_file.p12 $pkcs12_key_extra_options $key_test_options --output $tmpfile $asym_key_test.tmpl"

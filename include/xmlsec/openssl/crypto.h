@@ -17,7 +17,7 @@
 
 #include <openssl/err.h>
 #include <openssl/opensslv.h>
-#ifndef OPENSSL_IS_BORINGSSL
+#if !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_IS_AWSLC)
 #include <openssl/opensslconf.h>
 #endif /* OPENSSL_IS_BORINGSSL */
 

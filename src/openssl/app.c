@@ -50,7 +50,7 @@
 #include <openssl/engine.h>
 #endif /* !defined(OPENSSL_NO_ENGINE) && (!defined(XMLSEC_OPENSSL_API_300) || defined(XMLSEC_OPENSSL3_ENGINES)) */
 
-#ifndef OPENSSL_IS_BORINGSSL
+#if !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_IS_AWSLC)
 #include <openssl/ui.h>
 #endif /* OPENSSL_IS_BORINGSSL */
 
@@ -150,11 +150,11 @@ xmlSecOpenSSLAppInit(const char* config) {
     opts |= OPENSSL_INIT_ADD_ALL_DIGESTS;
     opts |= OPENSSL_INIT_LOAD_CONFIG;
 
-#if !defined(OPENSSL_IS_BORINGSSL)
+#if !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_IS_AWSLC)
     opts |= OPENSSL_INIT_ASYNC;
 #endif /* !defined(OPENSSL_IS_BORINGSSL) */
 
-#if !defined(OPENSSL_IS_BORINGSSL) && !defined(XMLSEC_OPENSSL_API_300)
+#if !defined(OPENSSL_IS_BORINGSSL) && !defined(XMLSEC_OPENSSL_API_300) && !defined(OPENSSL_IS_AWSLC)
     opts |= OPENSSL_INIT_ENGINE_ALL_BUILTIN;
 #endif /* !defined(OPENSSL_IS_BORINGSSL) && !defined(XMLSEC_OPENSSL_API_300) */
 

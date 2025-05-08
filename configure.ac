@@ -819,6 +819,26 @@ if test "z$OPENSSL_FOUND" = "zyes" ; then
             OPENSSL_VERSION=""
         ])
     fi
+    
+    if test "z$OPENSSL_VERSION" = "z" ; then
+        AC_EGREP_CPP(greater-than-minvers, [
+            #include <openssl/opensslv.h>
+            #include <openssl/crypto.h>
+            #if OPENSSL_VERSION_NUMBER >= 0x10100010L
+            #ifdef OPENSSL_IS_AWSLC
+            greater-than-minvers
+            #endif
+            #endif
+        ],[
+            OPENSSL_VERSION="AWSLC >= 1.1.1"
+            enable_ripemd160=no
+            enable_dsa=no
+            enable_dh=no
+            enable_sha3=no
+        ],[
+            OPENSSL_VERSION=""
+        ])
+    fi
 
     if test "z$OPENSSL_VERSION" = "z" ; then
         AC_EGREP_CPP(greater-than-minvers, [

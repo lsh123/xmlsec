@@ -340,8 +340,7 @@ execDSigTest $res_success \
     "--enabled-key-data der-encoded-key-value,ec"
 
 
-# Only OpenSSL / NSS / GnuTLS currently has capability to lookup the certs/keys using X509 data
-if [ "z$crypto" = "zopenssl" -o "z$crypto" = "znss" -o "z$crypto" = "zgnutls" ] ; then
+if [ "z$xmlsec_feature_x509_data_lookup" = "zyes" ] ; then
     execDSigTest $res_success \
         "xmldsig11-interop-2012" \
         "signature-enveloping-x509digest-rsa" \
@@ -442,9 +441,8 @@ execDSigTest $res_success \
 #
 ##########################################################################
 
-# Only OpenSSL / NSS / GnuTLS currently has capability to lookup the certs/keys using X509 data
 # These tests verify certificates lookup, keys lookup is tested in XMLEnc.sh
-if [ "z$crypto" = "zopenssl" -o "z$crypto" = "znss" -o "z$crypto" = "zgnutls" ] ; then
+if [ "z$xmlsec_feature_x509_data_lookup" = "zyes" ] ; then
     execDSigTest $res_success \
         "" \
         "aleksey-xmldsig-01/enveloped-x509-subjectname" \
@@ -518,8 +516,7 @@ if [ "z$crypto" = "zopenssl" -o "z$crypto" = "znss" -o "z$crypto" = "zgnutls" ] 
         "--untrusted-$cert_format $topfolder/keys/largersacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 fi
 
-# Only NSS can lookup certs in NSS DB, skip certs verification for signatures
-if [ "z$crypto" = "znss"  ] ; then
+if [ "z$xmlsec_feature_nssdb_lookup" = "zyes" ] ; then
     extra_message="Signature cert lookup in NSS DB"
     execDSigTestWithCryptoConfig $res_success \
         "" \
@@ -543,8 +540,7 @@ if [ "z$crypto" = "znss"  ] ; then
         "$topfolder/keys/nssdb"
 fi
 
-# MSCng only supports SHA1 as cert digests and cannot lookup the key
-if [ "z$crypto" = "zmscng" ] ; then
+if [ "z$xmlsec_feature_x509_data_lookup_digest" = "zyes" ] ; then
     execDSigTest $res_success \
         "" \
         "aleksey-xmldsig-01/enveloped-x509-digest-sha1" \
@@ -1170,10 +1166,7 @@ execDSigTest $res_success \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509 --verification-gmt-time 2022-12-14+00:00:00"
 
-
-# currently only openssl and gnutls support skipping time checks
-# https://github.com/lsh123/xmlsec/issues/852
-if [ "z$crypto" = "zopenssl" -o "z$crypto" = "zgnutls" -o "z$crypto" = "zmscng"  ] ; then
+if [ "z$xmlsec_feature_cert_check_skip_time" = "zyes" ] ; then
     extra_message="Expired cert but we skip timestamp checks"
     execDSigTest $res_success \
         "" \
@@ -1287,9 +1280,7 @@ execDSigTest $res_fail \
     "x509" \
     "--untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/largersacert.$cert_format --enabled-key-data x509"
 
-# currently only openssl/gnutls/nss support loading CRL from the command line
-# https://github.com/lsh123/xmlsec/issues/583
-if [ "z$crypto" = "zopenssl" -o  "z$crypto" = "zgnutls" -o "z$crypto" = "znss" ] ; then
+if [ "z$xmlsec_feature_crl_load" = "zyes" ] ; then
     # this should fail because there is a CRL for the cert used for signing
     extra_message="Negative test: CRL present"
     execDSigTest $res_fail \
@@ -1309,7 +1300,7 @@ if [ "z$crypto" = "zopenssl" -o  "z$crypto" = "zgnutls" -o "z$crypto" = "znss" ]
         "--verification-gmt-time 2023-05-01+00:00:00 --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --crl-$cert_format $topfolder/keys/rsacert-revoked-crl.$cert_format --enabled-key-data x509"
 
     # GnuTLS doesn't allow CRL verification by time (https://github.com/lsh123/xmlsec/issues/579)
-    if [ "z$crypto" != "zgnutls" ] ; then
+    if [ "z$xmlsec_feature_crl_check_skip_time" = "zyes" ] ; then
         # this should succeeed because CRL is not valid yet
         extra_message="CRL is not valid yet"
         execDSigTest $res_success \
@@ -1330,10 +1321,7 @@ if [ "z$crypto" = "zopenssl" -o  "z$crypto" = "zgnutls" -o "z$crypto" = "znss" ]
         "--insecure --crl-$cert_format $topfolder/keys/rsacert-revoked-crl.$cert_format --enabled-key-data x509"
 fi
 
-
-# only openssl, gnutls, nss, and mcng supports key verification
-# https://github.com/lsh123/xmlsec/issues/587
-if [ "z$crypto" = "zopenssl" -o  "z$crypto" = "zgnutls" -o "z$crypto" = "znss" -o "z$crypto" = "zmscng" ] ; then
+if [ "z$xmlsec_feature_key_check" = "zyes" ] ; then
     # this should succeeed because key verification is not requested (no --verify-keys option)
     extra_message="Successfully use key without verification"
     execDSigTest $res_success \
@@ -1569,14 +1557,11 @@ execDSigTest $res_success \
     "hmac rsa" \
     "--lax-key-search $priv_key_option $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --pwd secret --verification-gmt-time 2005-01-01+10:00:00 $url_map_xml_stylesheet_2005"
 
-# Advanced RSA OAEP modes:
-# - MSCrypto only supports SHA1 for digest and mgf1
-# - GCrypt/GnuTLS and MSCng only supoprts the *same* algorithm for *both* digest and mgf1
-if [ "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" -a "z$crypto" != "zgcrypt" ] ; then
+if [ "z$xmlsec_feature_rsa_oaep_different_digest_and_mgf1" = "zyes" ] ; then
     execDSigTest $res_success \
         "" \
         "merlin-xmlenc-five/encsig-hmac-sha256-rsa-oaep-mgf1p" \
-        "sha1 hmac-sha256 rsa-oaep-mgf1p sha1  sha1" \
+        "sha1 hmac-sha256 rsa-oaep-mgf1p sha1 sha1" \
         "hmac rsa" \
         "--lax-key-search $priv_key_option $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --pwd secret $url_map_xml_stylesheet_2005"
 fi
@@ -1705,15 +1690,6 @@ execDSigTest $res_success \
     "hmac" \
     "--lax-key-search --hmackey certs/hmackey.bin"
 
-if [ "z$xmlsec_feature_md5_certs" = "zyes" ] ; then
-    execDSigTest $res_success \
-        "phaos-xmldsig-three" \
-        "signature-rsa-detached" \
-        "sha1 rsa-sha1" \
-        "rsa x509" \
-        "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00  $url_map_rfc3161"
-fi
-
 execDSigTest $res_success \
     "phaos-xmldsig-three" \
     "signature-rsa-detached-b64-transform" \
@@ -1728,14 +1704,6 @@ execDSigTest $res_success \
     "rsa x509" \
     "--enabled-key-data key-value,rsa,x509 --trusted-$cert_format certs/rsa-ca-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00  $url_map_rfc3161"
 
-if [ "z$xmlsec_feature_md5_certs" = "zyes" ] ; then
-    execDSigTest $res_success \
-        "phaos-xmldsig-three" \
-        "signature-rsa-detached-xslt-transform-retrieval-method" \
-        "xslt sha1 rsa-sha1" \
-        "rsa x509" \
-        "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00  $url_map_rfc3161"
-fi
 
 execDSigTest $res_success \
     "phaos-xmldsig-three" \
@@ -1743,69 +1711,6 @@ execDSigTest $res_success \
     "xslt sha1 rsa-sha1" \
     "rsa x509" \
     "--enabled-key-data key-value,rsa,x509 --trusted-$cert_format certs/rsa-ca-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00  $url_map_rfc3161"
-
-if [ "z$xmlsec_feature_md5_certs" = "zyes" ] ; then
-    execDSigTest $res_success \
-        "phaos-xmldsig-three" \
-        "signature-rsa-enveloped" \
-        "enveloped-signature sha1 rsa-sha1" \
-        "rsa x509" \
-        "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00"
-fi
-
-if [ "z$xmlsec_feature_md5_certs" = "zyes" ] ; then
-    execDSigTest $res_success \
-        "phaos-xmldsig-three" \
-        "signature-rsa-enveloping" \
-        "sha1 rsa-sha1" \
-        "rsa x509" \
-        "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00"
-fi
-
-if [ "z$xmlsec_feature_md5_certs" = "zyes" ] ; then
-    execDSigTest $res_success \
-        "phaos-xmldsig-three" \
-        "signature-rsa-manifest-x509-data-cert-chain" \
-        "sha1 rsa-sha1" \
-        "rsa x509" \
-        "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00 $url_map_rfc3161"
-fi
-
-if [ "z$xmlsec_feature_md5_certs" = "zyes" ] ; then
-    execDSigTest $res_success \
-        "phaos-xmldsig-three" \
-        "signature-rsa-manifest-x509-data-cert" \
-        "sha1 rsa-sha1" \
-        "rsa x509" \
-        "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00 $url_map_rfc3161"
-fi
-
-if [ "z$xmlsec_feature_md5_certs" = "zyes" ] ; then
-    execDSigTest $res_success \
-        "phaos-xmldsig-three" \
-        "signature-rsa-manifest-x509-data-issuer-serial" \
-        "sha1 rsa-sha1" \
-        "rsa x509" \
-        "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --untrusted-$cert_format certs/rsa-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00 $url_map_rfc3161"
-fi
-
-if [ "z$xmlsec_feature_md5_certs" = "zyes" ] ; then
-    execDSigTest $res_success \
-        "phaos-xmldsig-three" \
-        "signature-rsa-manifest-x509-data-ski" \
-        "sha1 rsa-sha1" \
-        "rsa x509" \
-        "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --untrusted-$cert_format certs/rsa-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00 $url_map_rfc3161"
-fi
-
-if [ "z$xmlsec_feature_md5_certs" = "zyes" ] ; then
-    execDSigTest $res_success \
-        "phaos-xmldsig-three" \
-        "signature-rsa-manifest-x509-data-subject-name" \
-        "sha1 rsa-sha1" \
-        "rsa x509" \
-        "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --untrusted-$cert_format certs/rsa-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00 $url_map_rfc3161"
-fi
 
 execDSigTest $res_success \
     "phaos-xmldsig-three" \
@@ -1815,6 +1720,69 @@ execDSigTest $res_success \
     "--enabled-key-data key-value,rsa,x509 --trusted-$cert_format certs/rsa-ca-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00 $url_map_rfc3161"
 
 if [ "z$xmlsec_feature_md5_certs" = "zyes" ] ; then
+    execDSigTest $res_success \
+        "phaos-xmldsig-three" \
+        "signature-rsa-detached" \
+        "sha1 rsa-sha1" \
+        "rsa x509" \
+        "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00  $url_map_rfc3161"
+
+    execDSigTest $res_success \
+        "phaos-xmldsig-three" \
+        "signature-rsa-detached-xslt-transform-retrieval-method" \
+        "xslt sha1 rsa-sha1" \
+        "rsa x509" \
+        "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00  $url_map_rfc3161"
+
+    execDSigTest $res_success \
+        "phaos-xmldsig-three" \
+        "signature-rsa-enveloped" \
+        "enveloped-signature sha1 rsa-sha1" \
+        "rsa x509" \
+        "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00"
+
+    execDSigTest $res_success \
+        "phaos-xmldsig-three" \
+        "signature-rsa-enveloping" \
+        "sha1 rsa-sha1" \
+        "rsa x509" \
+        "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00"
+
+    execDSigTest $res_success \
+        "phaos-xmldsig-three" \
+        "signature-rsa-manifest-x509-data-cert-chain" \
+        "sha1 rsa-sha1" \
+        "rsa x509" \
+        "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00 $url_map_rfc3161"
+
+    execDSigTest $res_success \
+        "phaos-xmldsig-three" \
+        "signature-rsa-manifest-x509-data-cert" \
+        "sha1 rsa-sha1" \
+        "rsa x509" \
+        "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00 $url_map_rfc3161"
+
+    execDSigTest $res_success \
+        "phaos-xmldsig-three" \
+        "signature-rsa-manifest-x509-data-issuer-serial" \
+        "sha1 rsa-sha1" \
+        "rsa x509" \
+        "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --untrusted-$cert_format certs/rsa-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00 $url_map_rfc3161"
+
+    execDSigTest $res_success \
+        "phaos-xmldsig-three" \
+        "signature-rsa-manifest-x509-data-ski" \
+        "sha1 rsa-sha1" \
+        "rsa x509" \
+        "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --untrusted-$cert_format certs/rsa-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00 $url_map_rfc3161"
+
+    execDSigTest $res_success \
+        "phaos-xmldsig-three" \
+        "signature-rsa-manifest-x509-data-subject-name" \
+        "sha1 rsa-sha1" \
+        "rsa x509" \
+        "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --untrusted-$cert_format certs/rsa-cert.$cert_format --verification-gmt-time 2009-01-01+10:00:00 $url_map_rfc3161"
+
     execDSigTest $res_success \
         "phaos-xmldsig-three" \
         "signature-rsa-xpath-transform-enveloped" \

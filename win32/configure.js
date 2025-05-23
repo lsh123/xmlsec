@@ -150,7 +150,7 @@ function usage()
 	txt += "  lib:        Additional search path for the linker, particularily\n";
 	txt += "              where libxml library can be found (" + buildLib + ")\n";
 	txt += "\nCrypto options, default value given in parentheses:\n\n";
-	txt += "  with-openssl3-engines:    Enable dynamic loading of xmlsec-crypto libraries (" + (withOpenSSL3Engines ? "yes" : "no") + ")\n";
+	txt += "  with-openssl3-engines:    Enable ENGINE interface support for OpenSSL (" + (withOpenSSL3Engines ? "yes" : "no") + ")\n";
 	WScript.Echo(txt);
 }
 

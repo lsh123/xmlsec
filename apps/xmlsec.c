@@ -47,6 +47,10 @@
 #include <xmlsec/parser.h>
 #include <xmlsec/templates.h>
 #include <xmlsec/errors.h>
+#ifdef XMLSEC_CRYPTO_OPENSSL
+#include <openssl/evp.h>
+#include <openssl/rsa.h>
+#endif /* XMLSEC_CRYPTO_OPENSSL */
 
 #include "crypto.h"
 #include "cmdline.h"
@@ -560,6 +564,17 @@ static xmlSecAppCmdLineParam sessionKeyParam = {
     NULL
 };
 
+static xmlSecAppCmdLineParam addKeyValueParam = {
+    xmlSecAppCmdLineTopicDSigSign,
+    "--add-key-value",
+    NULL,
+    "--add-key-value"
+    "\n\tadd full <KeyValue> (public key) in <KeyInfo>",
+    xmlSecAppCmdLineParamTypeFlag,
+    xmlSecAppCmdLineParamFlagNone,
+    NULL
+};
+
 static xmlSecAppCmdLineParam outputParam = {
     xmlSecAppCmdLineTopicDSigCommon |
     xmlSecAppCmdLineTopicEncCommon,
@@ -1014,6 +1029,7 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
 
     /* common dsig and enc parameters */
     &sessionKeyParam,
+    &addKeyValueParam,
     &outputParam,
     &printDebugParam,
     &printXmlDebugParam,
@@ -1175,6 +1191,8 @@ static int                      xmlSecAppWriteResult            (const char* inp
                                                                  xmlDocPtr doc,
                                                                  xmlSecBufferPtr buffer,
                                                                  const xmlChar* encoding);
+static int                      xmlSecAppInjectKeyValue         (xmlSecDSigCtxPtr dsigCtx,
+                                                                 xmlNodePtr sigNode);
 static int                      xmlSecAppAddIDAttr              (xmlNodePtr cur,
                                                                  const xmlChar* attr,
                                                                  const xmlChar* node,
@@ -1575,7 +1593,6 @@ xmlSecAppSignFile(const char* inputFileName, const char* outputFileNameTmpl) {
         goto done;
     }
 
-
     /* sign */
     start_time = clock();
     if(xmlSecDSigCtxSign(&dsigCtx, data->startNode) < 0) {
@@ -1584,11 +1601,18 @@ xmlSecAppSignFile(const char* inputFileName, const char* outputFileNameTmpl) {
     }
     g_totalTime += clock() - start_time;
 
-    /* return an error if siganture failed */
+    /* return an error if signature failed */
     if(dsigCtx.status != xmlSecDSigStatusSucceeded) {
         goto done;
     }
-
+    #ifdef XMLSEC_CRYPTO_OPENSSL
+    if(xmlSecAppCmdLineParamIsSet(&addKeyValueParam)) {
+        if(xmlSecAppInjectKeyValue(&dsigCtx, data->startNode) < 0) {
+            goto done;
+        }
+    }
+    #endif /* XMLSEC_CRYPTO_OPENSSL */
+    
     if(g_repeats <= 1) {
         int ret;
 
@@ -1802,9 +1826,14 @@ xmlSecAppSignTmpl(const char* outputFileNameTmpl) {
     }
     g_totalTime += clock() - start_time;
 
-    /* return an error if siganture failed */
+    /* return an error if signature failed */
     if(dsigCtx.status != xmlSecDSigStatusSucceeded) {
         goto done;
+    }
+    if(xmlSecAppCmdLineParamIsSet(&addKeyValueParam)) {
+        if(xmlSecAppInjectKeyValue(&dsigCtx, xmlDocGetRootElement(doc)) < 0) {
+            goto done;
+        }
     }
 
     if(g_repeats <= 1) {
@@ -3708,6 +3737,154 @@ done:
     }
     return(res);
 }
+
+#ifdef XMLSEC_CRYPTO_OPENSSL
+static int
+xmlSecAppBnSetNode(const BIGNUM* bn, xmlNodePtr node) {
+    xmlSecByte* buf = NULL;
+    xmlChar* b64 = NULL;
+    size_t size;
+    int ret = -1;
+
+    xmlSecAssert2(bn != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+
+    size = (size_t)BN_num_bytes(bn);
+    if(size == 0) {
+        fprintf(stderr, "Error: BN_num_bytes failed\n");
+        return(-1);
+    }
+
+    buf = (xmlSecByte*)xmlMalloc(size);
+    if(buf == NULL) {
+        fprintf(stderr, "Error: malloc failed\n");
+        return(-1);
+    }
+    if(BN_bn2bin(bn, buf) != (int)size) {
+        fprintf(stderr, "Error: BN_bn2bin failed\n");
+        goto done;
+    }
+    b64 = xmlSecBase64Encode(buf, size, 0);
+    if(b64 == NULL) {
+        fprintf(stderr, "Error: base64 encode failed\n");
+        goto done;
+    }
+    xmlNodeSetContent(node, b64);
+
+    ret = 0;
+
+done:
+    if(b64 != NULL) {
+        xmlFree(b64);
+    }
+    if(buf != NULL) {
+        xmlFree(buf);
+    }
+    return(ret);
+}
+
+static int
+xmlSecAppInjectKeyValue(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr sigNode) {
+    xmlNodePtr keyInfoNode = NULL;
+    xmlNodePtr keyValueNode = NULL;
+    xmlNodePtr rsaNode = NULL;
+    xmlNodePtr cur = NULL;
+    EVP_PKEY* pKey = NULL;
+    BIGNUM* n = NULL;
+    BIGNUM* e = NULL;
+
+    xmlSecAssert2(dsigCtx != NULL, -1);
+    xmlSecAssert2(sigNode != NULL, -1);
+
+    if ((dsigCtx->signKey == NULL) ||
+        (xmlSecKeyGetValue(dsigCtx->signKey) == NULL) ||
+        (!xmlSecKeyDataCheckId(xmlSecKeyGetValue(dsigCtx->signKey), xmlSecOpenSSLKeyDataRsaId))) {
+        return(0);
+    }
+
+    pKey = xmlSecOpenSSLKeyDataRsaGetEvp(xmlSecKeyGetValue(dsigCtx->signKey));
+    if (pKey == NULL) {
+        fprintf(stderr, "Error: failed to get EVP_PKEY from sign key\n");
+        return(-1);
+    }
+
+    // OpenSSL 3.x: Get the parameters using the public API.
+    if (!EVP_PKEY_get_bn_param(pKey, "n", &n) || !EVP_PKEY_get_bn_param(pKey, "e", &e)) {
+        fprintf(stderr, "Error: EVP_PKEY_get_bn_param failed\n");
+        if (n) BN_free(n);
+        if (e) BN_free(e);
+        return(-1);
+    }
+
+    keyInfoNode = xmlSecTmplSignatureEnsureKeyInfo(sigNode, NULL);
+    if (keyInfoNode == NULL) {
+        fprintf(stderr, "Error: failed to ensure KeyInfo\n");
+        goto cleanup;
+    }
+    keyValueNode = xmlSecFindChild(keyInfoNode, xmlSecNodeKeyValue, xmlSecDSigNs);
+    if (keyValueNode == NULL) {
+        xmlNodePtr first = xmlSecGetNextElementNode(keyInfoNode->children);
+        if (first != NULL) {
+            keyValueNode = xmlSecAddPrevSibling(first, xmlSecNodeKeyValue, xmlSecDSigNs);
+        } else {
+            keyValueNode = xmlSecAddChild(keyInfoNode, xmlSecNodeKeyValue, xmlSecDSigNs);
+        }
+        if (keyValueNode == NULL) {
+            fprintf(stderr, "Error: failed to add KeyValue\n");
+            goto cleanup;
+        }
+    }
+
+    rsaNode = xmlSecFindChild(keyValueNode, xmlSecNodeRSAKeyValue, xmlSecDSigNs);
+    if (rsaNode == NULL) {
+        rsaNode = xmlSecAddChild(keyValueNode, xmlSecNodeRSAKeyValue, xmlSecDSigNs);
+        if (rsaNode == NULL) {
+            fprintf(stderr, "Error: failed to add RSAKeyValue\n");
+            goto cleanup;
+        }
+    }
+
+    cur = xmlSecFindChild(rsaNode, xmlSecNodeRSAModulus, xmlSecDSigNs);
+    if (cur == NULL) {
+        cur = xmlSecAddChild(rsaNode, xmlSecNodeRSAModulus, xmlSecDSigNs);
+        if (cur == NULL) {
+            fprintf(stderr, "Error: failed to add Modulus node\n");
+            goto cleanup;
+        }
+    }
+    if (xmlSecAppBnSetNode(n, cur) < 0) {
+        goto cleanup;
+    }
+
+    cur = xmlSecFindChild(rsaNode, xmlSecNodeRSAExponent, xmlSecDSigNs);
+    if (cur == NULL) {
+        cur = xmlSecAddChild(rsaNode, xmlSecNodeRSAExponent, xmlSecDSigNs);
+        if (cur == NULL) {
+            fprintf(stderr, "Error: failed to add Exponent node\n");
+            goto cleanup;
+        }
+    }
+    if (xmlSecAppBnSetNode(e, cur) < 0) {
+        goto cleanup;
+    }
+
+    BN_free(n);
+    BN_free(e);
+    return 0;
+
+cleanup:
+    if (n) BN_free(n);
+    if (e) BN_free(e);
+    return -1;
+}
+#else  /* XMLSEC_CRYPTO_OPENSSL */
+static int
+xmlSecAppInjectKeyValue(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr sigNode) {
+    (void)dsigCtx;
+    (void)sigNode;
+    return(0);
+}
+#endif /* XMLSEC_CRYPTO_OPENSSL */
 
 static int
 xmlSecAppWriteResult(const char* inputFileName, const char* outputFileNameTmpl, xmlDocPtr doc, xmlSecBufferPtr buffer, const xmlChar* encoding) {

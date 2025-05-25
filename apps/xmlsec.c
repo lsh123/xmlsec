@@ -484,9 +484,13 @@ static xmlSecAppCmdLineParam enabledKeyDataParam = {
     "--enabled-key-data",
     NULL,
     "--enabled-key-data <list>"
-    "\n\tcomma separated list of enabled key data (list of "
-    "\n\tregistered key data klasses is available with \"--list-key-data\""
-    "\n\tcommand); by default, all registered key data are enabled",
+    "\n\tcomma-separated list of key-data types to enable."
+    "\n\tExample:"
+    "\n\t  rsa,key-value,x509  -> populates <RSAKeyValue> and keeps <X509Data>"
+    "\n\t                         when <KeyValue/> and <X509Data/> placeholders"
+    "\n\t                         are present in the template."
+    "\n\tUse \"--list-key-data\" to view full list of registered key data klasses."
+    "\n\tBy default, all registered key data are enabled.",
     xmlSecAppCmdLineParamTypeStringList,
     xmlSecAppCmdLineParamFlagParamNameValue | xmlSecAppCmdLineParamFlagMultipleValues,
     NULL

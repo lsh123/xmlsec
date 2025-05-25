@@ -4,7 +4,7 @@
 #
 # $ c:\cygwin64\bin\bash build_windows.sh
 #
-libxml2_version="2.14.0"
+libxml2_version="2.14.3"
 libxslt_version="1.1.43"
 openssl_version="3.5.0"
 xmlsec_version="1.3.8-rc1"

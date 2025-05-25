@@ -127,6 +127,13 @@ check-crypto-%: $(TEST_APP)
 		der \
 	&& \
 	$(SHELL) ./tests/testrun.sh \
+		$(ABS_SRCDIR)/tests/testAddKeyValue.sh \
+		$* \
+		$(ABS_SRCDIR)/tests \
+		$(ABS_BUILDDIR)/$(TEST_APP) \
+		der \
+	&& \
+	$(SHELL) ./tests/testrun.sh \
 		$(ABS_SRCDIR)/tests/testEnc.sh \
 		$* \
 		$(ABS_SRCDIR)/tests \
@@ -156,6 +163,16 @@ check-dsig: $(TEST_APP)
 	@($(PRECHECK_COMMANDS) && \
 	$(SHELL) ./tests/testrun.sh \
 	    $(ABS_SRCDIR)/tests/testDSig.sh \
+	    $(DEFAULT_CRYPTO) \
+	    $(ABS_SRCDIR)/tests \
+	    $(ABS_BUILDDIR)/$(TEST_APP) \
+	    der \
+	)
+
+check-addkeyvalue: $(TEST_APP)
+	@($(PRECHECK_COMMANDS) && \
+	$(SHELL) ./tests/testrun.sh \
+	    $(ABS_SRCDIR)/tests/testAddKeyValue.sh \
 	    $(DEFAULT_CRYPTO) \
 	    $(ABS_SRCDIR)/tests \
 	    $(ABS_BUILDDIR)/$(TEST_APP) \

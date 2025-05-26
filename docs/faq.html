@@ -302,6 +302,9 @@
         re-enable <code>KeyValue</code> and <code>DEREncodedKeyValue</code> nodes using the <code>--enabled-key-data</code> option
         for the <a href="xmlsec-man.html">xmlsec command line utility</a>, or by setting the <code>keyInfoCtx-&gt;enabledKeyData</code>
         parameter in your application.
+        For example, <code>--enabled-key-data rsa,key-value,x509</code> will populate an <code>&lt;RSAKeyValue&gt;</code> element (and keep
+        <code>&lt;X509Data&gt;</code> enabled) when the template contains matching <code>&lt;KeyValue/&gt;</code> and 
+        <code>&lt;X509Data/&gt;</code> placeholders.
         <b>THIS IS NOT SECURE AND NOT RECOMMENDED.</b>
       </li>
 <li>

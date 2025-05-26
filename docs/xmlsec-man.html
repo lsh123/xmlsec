@@ -145,7 +145,10 @@
 </dd>
 <dt> <b>--enabled-key-data</b> &lt;list&gt; <dt></dt>
 </dt>
-<dd> <dd>comma separated list of enabled key data (list of registered key data klasses is available with "--list-key-data" command); by default, all registered key data are enabled </dd>
+<dd>comma-separated list of key-data types to enable.  
+  Use <code>--list-key-data</code> to see all registered key-data klasses.
+  By default, all registered key data are enabled.<br>
+  <b>Example:</b> <code>--enabled-key-data rsa,key-value,x509</code> populates an <code>&lt;RSAKeyValue&gt;</code> element (and keeps <code>&lt;X509Data&gt;</code> enabled) when the template contains the matching <code>&lt;KeyValue/&gt;</code> and <code>&lt;X509Data/&gt;</code> placeholders.</dd>
 </dd>
 <dt> <b>--enabled-retrieval-method-uris</b> &lt;list&gt; <dt></dt>
 </dt>

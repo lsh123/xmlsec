@@ -1,6 +1,6 @@
 #!/bin/sh -x
 
-OS_ARCH=`uname -o`
+OS_ARCH=`uname -o 2>/dev/null || echo ""`
 OS_KERNEL=`uname -s`
 
 #

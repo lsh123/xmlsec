@@ -17,13 +17,12 @@ After 5 years, the support MIGHT be provided on case-by-case basis.
 | xmlsec-gcrypt     | >= 1.3.0  | April 12, 2023     | :x:                   | :white_check_mark:  |
 | xmlsec-mscrypto   | >= 1.3.0  | April 12, 2023     | :x:                   | :white_check_mark:  |
 
-### 1.2.x (mainanance mode)
-
+### 1.2.x (mainanance mode from April 2023)
 
 | Component/Version | Version   | Release date       | Full Support          | Security Support    |
 | ------------------|-----------| -------------------|-----------------------|---------------------|
-| all               | >= 1.2.30 | April 21, 2020     | :x:                   | :white_check_mark:  |
-| all               | <= 1.2.29 | October 15, 2019   | :x:                   | :x:                 |
+| all               | >= 1.2.38 | July 5, 2023       | :x:                   | :white_check_mark:  |
+| all               | < 1.2.38  | October 15, 2019   | :x:                   | :x:                 |
 
 ## Reporting a Vulnerability
 

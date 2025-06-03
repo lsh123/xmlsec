@@ -63,6 +63,8 @@ struct _xmlSecNssGcmCipherCtx {
  * Cipher transforms
  *
  *****************************************************************************/
+#ifndef XMLSEC_NO_AES
+
 XMLSEC_TRANSFORM_DECLARE(NssGcmCipher, xmlSecNssGcmCipherCtx)
 #define xmlSecNssGcmCipherSize XMLSEC_TRANSFORM_SIZE(NssGcmCipher)
 
@@ -78,17 +80,14 @@ static int      xmlSecNssGcmCipherExecute       (xmlSecTransformPtr transform,
 static int      xmlSecNssGcmCipherCheckId       (xmlSecTransformPtr transform);
 
 
-
 static int
 xmlSecNssGcmCipherCheckId(xmlSecTransformPtr transform) {
-#ifndef XMLSEC_NO_AES
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformAes128GcmId) ||
        xmlSecTransformCheckId(transform, xmlSecNssTransformAes192GcmId) ||
        xmlSecTransformCheckId(transform, xmlSecNssTransformAes256GcmId) )
     {
        return(1);
     }
-#endif /* XMLSEC_NO_AES */
 
     return(0);
 }
@@ -105,7 +104,6 @@ xmlSecNssGcmCipherInitialize(xmlSecTransformPtr transform) {
 
     memset(ctx, 0, sizeof(xmlSecNssGcmCipherCtx));
 
-#ifndef XMLSEC_NO_AES
     if(transform->id == xmlSecNssTransformAes128GcmId) {
         ctx->keyId      = xmlSecNssKeyDataAesId;
         ctx->keySize    = XMLSEC_KW_AES128_KEY_SIZE;
@@ -116,7 +114,6 @@ xmlSecNssGcmCipherInitialize(xmlSecTransformPtr transform) {
         ctx->keyId      = xmlSecNssKeyDataAesId;
         ctx->keySize    = XMLSEC_KW_AES256_KEY_SIZE;
     } else
-#endif /* XMLSEC_NO_AES */
 
     if(1) {
         xmlSecInvalidTransfromError(transform)
@@ -470,6 +467,7 @@ xmlSecNssGcmCipherExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
 
     return(0);
 }
+#endif /* XMLSEC_NO_AES */
 
 
 #ifndef XMLSEC_NO_AES

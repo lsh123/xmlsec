@@ -672,6 +672,7 @@ xmlSecOpenSSLCreateReadFileBio(const char* path) {
     if(BIO_read_filename(bio, path) != 1) {
         xmlSecOpenSSLError2("BIO_read_filename", NULL,
             "path=%s", xmlSecErrorsSafeString(path));
+        BIO_free_all(bio);
         return(NULL);
     }
     return(bio);

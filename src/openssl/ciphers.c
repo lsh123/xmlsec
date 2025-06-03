@@ -603,7 +603,12 @@ xmlSecOpenSSLEvpBlockCipherCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     if (ctx->cbcMode) {
         return xmlSecOpenSSLEvpBlockCipherCBCCtxFinal(ctx, in, out, cipherName, transformCtx);
     } else {
+#ifndef XMLSEC_NO_AES
         return xmlSecOpenSSLEvpBlockCipherGCMCtxFinal(ctx, in, out, cipherName, transformCtx);
+#else /* XMLSEC_NO_AES */
+        xmlSecNotImplementedError("AES-GCM support is disabled");
+        return(-1);
+#endif /* XMLSEC_NO_AES */
     }
 }
 

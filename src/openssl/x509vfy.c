@@ -1684,7 +1684,7 @@ xmlSecOpenSSLX509StoreCombineCerts(STACK_OF(X509)* certs1, STACK_OF(X509)* certs
     }
 
     /* certs 1 */
-    ret = X509_add_certs(res, certs1, X509_ADD_FLAG_UP_REF | X509_ADD_FLAG_NO_DUP);
+    ret = X509_add_certs(res, certs1, X509_ADD_FLAG_UP_REF);
     if (ret != 1) {
         xmlSecOpenSSLError("X509_add_certs(certs1)", NULL);
         return(NULL);
@@ -1692,7 +1692,7 @@ xmlSecOpenSSLX509StoreCombineCerts(STACK_OF(X509)* certs1, STACK_OF(X509)* certs
 
 
     /* certs 2 */
-    ret = X509_add_certs(res, certs2, X509_ADD_FLAG_UP_REF | X509_ADD_FLAG_NO_DUP);
+    ret = X509_add_certs(res, certs2, X509_ADD_FLAG_UP_REF);
     if (ret != 1) {
         xmlSecOpenSSLError("X509_add_certs(certs2)", NULL);
         return(NULL);

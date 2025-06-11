@@ -122,6 +122,12 @@ static int              xmlSecOpenSSLX509_NAME_ENTRY_cmp                (const X
                                                                          const X509_NAME_ENTRY * const *b);
 
 
+static int              xmlSecOpenSSLX509StoreRemoveRevokedCerts        (xmlSecOpenSSLX509StoreCtxPtr ctx,
+                                                                         XMLSEC_STACK_OF_X509* certs,
+                                                                         XMLSEC_STACK_OF_X509_CRL* crls);
+static int              xmlSecOpenSSLX509StoreVerifySetParams           (X509_STORE_CTX *xsc,
+                                                                         xmlSecKeyInfoCtx* keyInfoCtx);
+
 /**
  * xmlSecOpenSSLX509StoreGetKlass:
  *
@@ -225,14 +231,16 @@ X509*
 xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* certs,
                              XMLSEC_STACK_OF_X509_CRL* crls, xmlSecKeyInfoCtx* keyInfoCtx) {
     xmlSecOpenSSLX509StoreCtxPtr ctx;
-    STACK_OF(X509)* certs2 = NULL;
-    STACK_OF(X509_CRL)* crls2 = NULL;
+    STACK_OF(X509_CRL)* verified_crls = NULL;
+    STACK_OF(X509)* certs_not_revoked = NULL;
+    STACK_OF(X509)* all_untrusted_certs = NULL;
     X509 * res = NULL;
     X509 * cert;
+    X509_CRL * crl;
     X509 * err_cert = NULL;
     X509_STORE_CTX *xsc;
     int err = 0;
-    x509_size_t i;
+    x509_size_t ii;
     int ret;
 
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecOpenSSLX509StoreId), NULL);
@@ -241,8 +249,7 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
 
     xsc = X509_STORE_CTX_new_ex(xmlSecOpenSSLGetLibCtx(), NULL);
     if(xsc == NULL) {
-        xmlSecOpenSSLError("X509_STORE_CTX_new",
-                           xmlSecKeyDataStoreGetName(store));
+        xmlSecOpenSSLError("X509_STORE_CTX_new", xmlSecKeyDataStoreGetName(store));
         goto done;
     }
 
@@ -250,148 +257,117 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
     xmlSecAssert2(ctx != NULL, NULL);
     xmlSecAssert2(ctx->xst != NULL, NULL);
 
-    certs2 = sk_X509_dup(certs);
-    if(certs2 == NULL) {
-        xmlSecOpenSSLError("sk_X509_dup",
-                           xmlSecKeyDataStoreGetName(store));
-        goto done;
-    }
-
-    /* add untrusted certs from the store */
-    if(ctx->untrusted != NULL) {
-        for(i = 0; i < sk_X509_num(ctx->untrusted); ++i) {
-            ret = sk_X509_push(certs2, sk_X509_value(ctx->untrusted, i));
-            if(ret < 1) {
-                xmlSecOpenSSLError("sk_X509_push",
-                                   xmlSecKeyDataStoreGetName(store));
-                goto done;
-            }
-        }
-    }
-
-    /* dup crls but remove all non-verified */
+    /* create a list of verfied crls */
     if(crls != NULL) {
-        crls2 = sk_X509_CRL_dup(crls);
-        if(crls2 == NULL) {
-            xmlSecOpenSSLError("sk_X509_CRL_dup",
-                               xmlSecKeyDataStoreGetName(store));
+        verified_crls = sk_X509_CRL_dup(crls);
+        if(verified_crls == NULL) {
+            xmlSecOpenSSLError("sk_X509_CRL_dup", xmlSecKeyDataStoreGetName(store));
             goto done;
         }
 
-        for(i = 0; i < sk_X509_CRL_num(crls2); ) {
-            ret = xmlSecOpenSSLX509VerifyCRL(ctx->xst, sk_X509_CRL_value(crls2, i));
+        for(ii = 0; ii < sk_X509_CRL_num(verified_crls); ) {
+            crl = sk_X509_CRL_value(verified_crls, ii);
+            ret = xmlSecOpenSSLX509VerifyCRL(ctx->xst, crl);
             if(ret == 1) {
-                ++i;
+                ++ii;
             } else if(ret == 0) {
-                (void)sk_X509_CRL_delete(crls2, i);
+                (void)sk_X509_CRL_delete(verified_crls, ii);
             } else {
-                xmlSecInternalError("xmlSecOpenSSLX509VerifyCRL",
-                                    xmlSecKeyDataStoreGetName(store));
+                xmlSecInternalError("xmlSecOpenSSLX509VerifyCRL", xmlSecKeyDataStoreGetName(store));
                 goto done;
             }
         }
     }
 
-    /* remove all revoked certs */
-    for(i = 0; i < sk_X509_num(certs2);) {
-        cert = sk_X509_value(certs2, i);
+    /* filter out revoked certs from certs list */
+    certs_not_revoked = sk_X509_dup(certs);
+    if(certs_not_revoked == NULL) {
+        xmlSecOpenSSLError("sk_X509_dup", xmlSecKeyDataStoreGetName(store));
+        goto done;
+    }
+    ret = xmlSecOpenSSLX509StoreRemoveRevokedCerts(ctx, certs_not_revoked, verified_crls);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecOpenSSLX509StoreRemoveRevokedCerts(certs_not_revoked)", xmlSecKeyDataStoreGetName(store));
+        goto done;
+    }
 
-        if(crls2 != NULL) {
-            ret = xmlSecOpenSSLX509VerifyCertAgainstCrls(crls2, cert);
-            if(ret == 0) {
-                (void)sk_X509_delete(certs2, i);
-                continue;
-            } else if(ret != 1) {
-                xmlSecInternalError("xmlSecOpenSSLX509VerifyCertAgainstCrls",
-                                    xmlSecKeyDataStoreGetName(store));
+    /* create a list of all untrusted and not revoked certs (from both the xml and the store) */
+    all_untrusted_certs = sk_X509_dup(certs);
+    if(all_untrusted_certs == NULL) {
+        xmlSecOpenSSLError("sk_X509_dup", xmlSecKeyDataStoreGetName(store));
+        goto done;
+    }
+
+    if(ctx->untrusted != NULL) {
+        for(ii = 0; ii < sk_X509_num(ctx->untrusted); ++ii) {
+            cert = sk_X509_value(ctx->untrusted, ii);
+            ret = sk_X509_push(all_untrusted_certs, cert);
+            if(ret < 1) {
+                xmlSecOpenSSLError("sk_X509_push", xmlSecKeyDataStoreGetName(store));
                 goto done;
             }
         }
-
-        if(ctx->crls != NULL) {
-            ret = xmlSecOpenSSLX509VerifyCertAgainstCrls(ctx->crls, cert);
-            if(ret == 0) {
-                (void)sk_X509_delete(certs2, i);
-                continue;
-            } else if(ret != 1) {
-                xmlSecInternalError("xmlSecOpenSSLX509VerifyCertAgainstCrls",
-                                    xmlSecKeyDataStoreGetName(store));
-                goto done;
-            }
-        }
-        ++i;
+    }
+    ret = xmlSecOpenSSLX509StoreRemoveRevokedCerts(ctx, all_untrusted_certs, verified_crls);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecOpenSSLX509StoreRemoveRevokedCerts(all_untrusted_certs)", xmlSecKeyDataStoreGetName(store));
+        goto done;
     }
 
     /* get one cert after another and try to verify */
-    for(i = 0; i < sk_X509_num(certs2); ++i) {
-        cert = sk_X509_value(certs2, i);
-        if(xmlSecOpenSSLX509FindNextChainCert(certs2, cert) == NULL) {
-            ret = X509_STORE_CTX_init(xsc, ctx->xst, cert, certs2);
-            if(ret != 1) {
-                xmlSecOpenSSLError("X509_STORE_CTX_init",
-                                   xmlSecKeyDataStoreGetName(store));
-                goto done;
-            }
+    for(ii = 0; ii < sk_X509_num(certs_not_revoked); ++ii) {
+        cert = sk_X509_value(certs_not_revoked, ii);
 
-            if(keyInfoCtx->certsVerificationTime > 0) {
-                X509_STORE_CTX_set_time(xsc, 0, keyInfoCtx->certsVerificationTime);
-            }
+        /* check if this is a leaft cert?  */
+        if(xmlSecOpenSSLX509FindNextChainCert(all_untrusted_certs, cert) != NULL) {
+            continue;
+        }
 
-            {
-                X509_VERIFY_PARAM * vpm = NULL;
-                unsigned long vpm_flags = 0;
+        /* setup context */
+        ret = X509_STORE_CTX_init(xsc, ctx->xst, cert, all_untrusted_certs);
+        if(ret != 1) {
+            xmlSecOpenSSLError("X509_STORE_CTX_init", xmlSecKeyDataStoreGetName(store));
+            goto done;
+        }
+        ret = xmlSecOpenSSLX509StoreVerifySetParams(xsc, keyInfoCtx);
+        if (ret < 0) {
+            xmlSecInternalError("xmlSecOpenSSLX509StoreVerifySetParams()", xmlSecKeyDataStoreGetName(store));
+            goto done;
+        }
 
-                vpm = X509_VERIFY_PARAM_new();
-                if(vpm == NULL) {
-                    xmlSecOpenSSLError("X509_VERIFY_PARAM_new",
-                                       xmlSecKeyDataStoreGetName(store));
-                    goto done;
-                }
-                vpm_flags = X509_VERIFY_PARAM_get_flags(vpm);
-                vpm_flags &= (~((unsigned long)X509_V_FLAG_CRL_CHECK));
+        /* verify */
+        if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS) == 0) {
+            ret = X509_verify_cert(xsc);
+        } else {
+            ret = 1;
+        }
 
-                if(keyInfoCtx->certsVerificationTime > 0) {
-                    vpm_flags |= X509_V_FLAG_USE_CHECK_TIME;
-                    X509_VERIFY_PARAM_set_time(vpm, keyInfoCtx->certsVerificationTime);
-                }
+        /* get errors (if any) and cleanup */
+        err_cert    = X509_STORE_CTX_get_current_cert(xsc);
+        err         = X509_STORE_CTX_get_error(xsc);
+        X509_STORE_CTX_cleanup (xsc);
 
-                X509_VERIFY_PARAM_set_depth(vpm, keyInfoCtx->certsVerificationDepth);
-                X509_VERIFY_PARAM_set_flags(vpm, vpm_flags);
-                X509_STORE_CTX_set0_param(xsc, vpm);
-            }
+        /* check result */
+        if(ret == 1) {
+            res = cert;
+            goto done;
+        } else if(ret < 0) {
+            /* real error */
+            xmlSecOpenSSLError("X509_verify_cert", xmlSecKeyDataStoreGetName(store));
+            goto done;
+        } else if(ret == 0) {
+            const char* err_msg;
+            char subject[256], issuer[256];
 
+            X509_NAME_oneline(X509_get_subject_name(err_cert), subject, sizeof(subject));
+            X509_NAME_oneline(X509_get_issuer_name(err_cert), issuer, sizeof(issuer));
+            err_msg = X509_verify_cert_error_string(err);
 
-            if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS) == 0) {
-                ret         = X509_verify_cert(xsc);
-            } else {
-                ret = 1;
-            }
-            err_cert    = X509_STORE_CTX_get_current_cert(xsc);
-            err         = X509_STORE_CTX_get_error(xsc);
-
-            X509_STORE_CTX_cleanup (xsc);
-
-            if(ret == 1) {
-                res = cert;
-                goto done;
-            } else if(ret < 0) {
-                /* real error */
-                xmlSecOpenSSLError("X509_verify_cert", xmlSecKeyDataStoreGetName(store));
-                goto done;
-            } else if(ret == 0) {
-                const char* err_msg;
-                char subject[256], issuer[256];
-
-                X509_NAME_oneline(X509_get_subject_name(err_cert), subject, sizeof(subject));
-                X509_NAME_oneline(X509_get_issuer_name(err_cert), issuer, sizeof(issuer));
-                err_msg = X509_verify_cert_error_string(err);
-
-                xmlSecOtherError5(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
-                                  xmlSecKeyDataStoreGetName(store),
-                                  "X509_verify_cert: subject=%s; issuer=%s; err=%d; msg=%s",
-                                  subject, issuer, err, xmlSecErrorsSafeString(err_msg));
-                /* ignore error */
-            }
+            xmlSecOtherError5(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
+                                xmlSecKeyDataStoreGetName(store),
+                                "X509_verify_cert: subject=%s; issuer=%s; err=%d; msg=%s",
+                                subject, issuer, err, xmlSecErrorsSafeString(err_msg));
+            /* ignore error */
         }
     }
 
@@ -438,11 +414,14 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
     }
 
 done:
-    if(certs2 != NULL) {
-        sk_X509_free(certs2);
+    if(all_untrusted_certs != NULL) {
+        sk_X509_free(all_untrusted_certs);
     }
-    if(crls2 != NULL) {
-        sk_X509_CRL_free(crls2);
+    if(certs_not_revoked != NULL) {
+        sk_X509_free(certs_not_revoked);
+    }
+    if(verified_crls != NULL) {
+        sk_X509_CRL_free(verified_crls);
     }
     if(xsc != NULL) {
         X509_STORE_CTX_free(xsc);
@@ -1366,6 +1345,81 @@ xmlSecOpenSSLX509_NAME_ENTRY_cmp(const X509_NAME_ENTRY * const *a, const X509_NA
     }
 
     return(OBJ_cmp(a_name, b_name));
+}
+
+
+static int
+xmlSecOpenSSLX509StoreRemoveRevokedCerts(xmlSecOpenSSLX509StoreCtxPtr ctx, XMLSEC_STACK_OF_X509* certs, XMLSEC_STACK_OF_X509_CRL* crls) {
+    X509 * cert;
+    x509_size_t ii;
+    int ret;
+
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(certs != NULL, -1);
+
+    for(ii = 0; ii < sk_X509_num(certs);) {
+        cert = sk_X509_value(certs, ii);
+
+        if(crls != NULL) {
+            ret = xmlSecOpenSSLX509VerifyCertAgainstCrls(crls, cert);
+            if(ret == 0) {
+                (void)sk_X509_delete(certs, ii);
+                continue;
+            } else if(ret != 1) {
+                xmlSecInternalError("xmlSecOpenSSLX509VerifyCertAgainstCrls", NULL);
+                return(-1);
+            }
+        }
+
+        if(ctx->crls != NULL) {
+            ret = xmlSecOpenSSLX509VerifyCertAgainstCrls(ctx->crls, cert);
+            if(ret == 0) {
+                (void)sk_X509_delete(certs, ii);
+                continue;
+            } else if(ret != 1) {
+                xmlSecInternalError("xmlSecOpenSSLX509VerifyCertAgainstCrls", NULL);
+                return(-1);
+            }
+        }
+        ++ii;
+    }
+
+    /* done */
+    return(0);
+}
+
+
+static int
+xmlSecOpenSSLX509StoreVerifySetParams(X509_STORE_CTX *xsc, xmlSecKeyInfoCtx* keyInfoCtx) {
+    X509_VERIFY_PARAM * vpm = NULL;
+    unsigned long vpm_flags = 0;
+
+    xmlSecAssert2(xsc != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+
+    if(keyInfoCtx->certsVerificationTime > 0) {
+        X509_STORE_CTX_set_time(xsc, 0, keyInfoCtx->certsVerificationTime);
+    }
+
+    vpm = X509_VERIFY_PARAM_new();
+    if(vpm == NULL) {
+        xmlSecOpenSSLError("X509_VERIFY_PARAM_new", NULL);
+        return(-1);
+    }
+    vpm_flags = X509_VERIFY_PARAM_get_flags(vpm);
+    vpm_flags &= (~((unsigned long)X509_V_FLAG_CRL_CHECK));
+
+    if(keyInfoCtx->certsVerificationTime > 0) {
+        vpm_flags |= X509_V_FLAG_USE_CHECK_TIME;
+        X509_VERIFY_PARAM_set_time(vpm, keyInfoCtx->certsVerificationTime);
+    }
+
+    X509_VERIFY_PARAM_set_depth(vpm, keyInfoCtx->certsVerificationDepth);
+    X509_VERIFY_PARAM_set_flags(vpm, vpm_flags);
+    X509_STORE_CTX_set0_param(xsc, vpm);
+
+    /* done */
+    return(0);
 }
 
 #endif /* XMLSEC_NO_X509 */

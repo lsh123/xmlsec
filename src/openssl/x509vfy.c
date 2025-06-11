@@ -1673,6 +1673,36 @@ xmlSecOpenSSLX509GetIssuerHash(X509* x) {
 
 static STACK_OF(X509)*
 xmlSecOpenSSLX509StoreCombineCerts(STACK_OF(X509)* certs1, STACK_OF(X509)* certs2) {
+#if defined(XMLSEC_OPENSSL_API_300)
+    STACK_OF(X509)* res = NULL;
+    int ret;
+
+    res = sk_X509_new_null();
+    if (res == NULL) {
+        xmlSecOpenSSLError("sk_X509_new_null()", NULL);
+        return(NULL);
+    }
+
+    /* certs 1 */
+    ret = X509_add_certs(res, certs1, X509_ADD_FLAG_UP_REF);
+    if (ret != 1) {
+        xmlSecOpenSSLError("X509_add_certs(certs1)", NULL);
+        return(NULL);
+    }
+
+
+    /* certs 2 */
+    ret = X509_add_certs(res, certs2, X509_ADD_FLAG_UP_REF);
+    if (ret != 1) {
+        xmlSecOpenSSLError("X509_add_certs(certs2)", NULL);
+        return(NULL);
+    }
+
+    /* done
+    */
+    return (res);
+
+#else /* defined(XMLSEC_OPENSSL_API_300) */
     STACK_OF(X509)* res = NULL;
 
     /* certs1 */
@@ -1722,6 +1752,7 @@ xmlSecOpenSSLX509StoreCombineCerts(STACK_OF(X509)* certs1, STACK_OF(X509)* certs
 
     /* done */
     return(res);
+#endif /* defined(XMLSEC_OPENSSL_API_300) */
 }
 
 

@@ -386,10 +386,12 @@ for (i = 0; (i < WScript.Arguments.length) && (error == 0); i++) {
 		else if (opt == "cruntime") {
 			cruntime = arg.substring(opt.length + 1, arg.length);
 			cruntimeSet = 1;
-		} else if (opt == "with-openssl3-engines")
+		} else if (opt == "with-openssl3-engines") {
 			withOpenSSL3Engines = strToBool(arg.substring(opt.length + 1, arg.length));
-		else
+		} else {
 			error = 1;
+                        WScript.Echo("ERROR: Unknown option'" + opt + "'\n");
+		}
 	} else if (i == 0) {
 		if (arg == "genreadme") {
 			// This command comes from the Makefile and will not be checked

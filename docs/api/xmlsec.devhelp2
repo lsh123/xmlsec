@@ -398,6 +398,7 @@
     <keyword type="macro" name="XMLSEC_ERRORS_R_CERT_ISSUER_FAILED" link="xmlsec-errors.html#XMLSEC-ERRORS-R-CERT-ISSUER-FAILED:CAPS"/>
     <keyword type="macro" name="XMLSEC_ERRORS_R_CERT_NOT_YET_VALID" link="xmlsec-errors.html#XMLSEC-ERRORS-R-CERT-NOT-YET-VALID:CAPS"/>
     <keyword type="macro" name="XMLSEC_ERRORS_R_CERT_HAS_EXPIRED" link="xmlsec-errors.html#XMLSEC-ERRORS-R-CERT-HAS-EXPIRED:CAPS"/>
+    <keyword type="macro" name="XMLSEC_ERRORS_R_CRL_VERIFY_FAILED" link="xmlsec-errors.html#XMLSEC-ERRORS-R-CRL-VERIFY-FAILED:CAPS"/>
     <keyword type="macro" name="XMLSEC_ERRORS_R_DSIG_NO_REFERENCES" link="xmlsec-errors.html#XMLSEC-ERRORS-R-DSIG-NO-REFERENCES:CAPS"/>
     <keyword type="macro" name="XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE" link="xmlsec-errors.html#XMLSEC-ERRORS-R-DSIG-INVALID-REFERENCE:CAPS"/>
     <keyword type="macro" name="XMLSEC_ERRORS_R_ASSERTION" link="xmlsec-errors.html#XMLSEC-ERRORS-R-ASSERTION:CAPS"/>

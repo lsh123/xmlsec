@@ -17,7 +17,7 @@ After 5 years, the support MIGHT be provided on case-by-case basis.
 | xmlsec-gcrypt     | >= 1.3.0  | April 12, 2023     | :x:                   | :white_check_mark:  |
 | xmlsec-mscrypto   | >= 1.3.0  | April 12, 2023     | :x:                   | :white_check_mark:  |
 
-### 1.2.x (mainanance mode from April 2023)
+### 1.2.x (mainanance mode from April 2023, planned End-Of-Life in April 2028)
 
 | Component/Version | Version   | Release date       | Full Support          | Security Support    |
 | ------------------|-----------| -------------------|-----------------------|---------------------|

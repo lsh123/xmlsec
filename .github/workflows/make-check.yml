@@ -83,7 +83,7 @@ jobs:
     - name: configure
       working-directory: build.dir
       run: |
-          ../autogen.sh --prefix=${GITHUB_WORKSPACE}/install.dir  --enable-werror \
+          ../autogen.sh --prefix=${GITHUB_WORKSPACE}/install.dir --enable-pedantic \
             --with-openssl=`brew --prefix openssl` \
             --with-nspr=`brew --prefix nspr` \
             --with-nss=`brew --prefix nss` \

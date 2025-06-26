@@ -28,6 +28,16 @@ extern "C" {
 #endif /* __cplusplus */
 
 
+/******************************************************************************
+ *
+ * RSA Util functions
+ *
+ ******************************************************************************/
+#ifndef XMLSEC_NO_RSA
+
+int             xmlSecOpenSSLKeyValueRsaCheckKeyType            (EVP_PKEY* pKey);
+
+#endif /* XMLSEC_NO_RSA */
 
 /******************************************************************************
  *
@@ -84,7 +94,6 @@ int             xmlSecOpenSSLX509Asn1TimeToTime                 (const ASN1_TIME
 
 STACK_OF(X509)*        xmlSecOpenSSLKeyDataX509GetCerts         (xmlSecKeyDataPtr data);
 STACK_OF(X509_CRL)*    xmlSecOpenSSLKeyDataX509GetCrls          (xmlSecKeyDataPtr data);
-
 
 #endif /* XMLSEC_NO_X509 */
 

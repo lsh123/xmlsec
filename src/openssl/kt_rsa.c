@@ -34,7 +34,6 @@
 
 #include <xmlsec/openssl/crypto.h>
 #include <xmlsec/openssl/evp.h>
-#include "openssl_compat.h"
 
 #ifdef XMLSEC_OPENSSL_API_300
 #include <openssl/core_names.h>
@@ -43,6 +42,8 @@
 
 #include "../cast_helpers.h"
 #include "../transform_helpers.h"
+#include "openssl_compat.h"
+#include "private.h"
 
 #ifndef XMLSEC_NO_RSA_PKCS15
 
@@ -162,7 +163,7 @@ xmlSecOpenSSLRsaPkcs1ProcessImpl(xmlSecOpenSSLRsaPkcs1CtxPtr ctx, const xmlSecBy
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->pKey != NULL, -1);
-    xmlSecAssert2(EVP_PKEY_base_id(ctx->pKey) == EVP_PKEY_RSA, -1);
+    xmlSecAssert2(xmlSecOpenSSLKeyValueRsaCheckKeyType(ctx->pKey) == 0, -1);
     xmlSecAssert2(inBuf != NULL, -1);
     xmlSecAssert2(inSize > 0, -1);
     xmlSecAssert2(outBuf != NULL, -1);
@@ -364,7 +365,7 @@ xmlSecOpenSSLRsaPkcs1SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
                             xmlSecTransformGetName(transform));
         return(-1);
     }
-    xmlSecAssert2(EVP_PKEY_base_id(pKey) == EVP_PKEY_RSA, -1);
+    xmlSecAssert2(xmlSecOpenSSLKeyValueRsaCheckKeyType(pKey) == 0, -1);
 
     if (transform->operation == xmlSecTransformOperationEncrypt) {
         encrypt = 1;
@@ -693,7 +694,7 @@ xmlSecOpenSSLRsaOaepProcessImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, const xmlSecByte
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->pKey != NULL, -1);
-    xmlSecAssert2(EVP_PKEY_base_id(ctx->pKey) == EVP_PKEY_RSA, -1);
+    xmlSecAssert2(xmlSecOpenSSLKeyValueRsaCheckKeyType(pKey) == 0, -1);
     xmlSecAssert2(inBuf != NULL, -1);
     xmlSecAssert2(inSize > 0, -1);
     xmlSecAssert2(outBuf != NULL, -1);
@@ -1223,7 +1224,7 @@ xmlSecOpenSSLRsaOaepSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
             xmlSecTransformGetName(transform));
         return(-1);
     }
-    xmlSecAssert2(EVP_PKEY_base_id(pKey) == EVP_PKEY_RSA, -1);
+    xmlSecAssert2(xmlSecOpenSSLKeyValueRsaCheckKeyType(pKey) == 0, -1);
 
     if (transform->operation == xmlSecTransformOperationEncrypt) {
         encrypt = 1;

@@ -325,6 +325,7 @@ xmlSecOpenSSLEvpKeyAdopt(EVP_PKEY *pKey) {
     switch(EVP_PKEY_base_id(pKey)) {
 #ifndef XMLSEC_NO_RSA
     case EVP_PKEY_RSA:
+    case EVP_PKEY_RSA_PSS:
         data = xmlSecKeyDataCreate(xmlSecOpenSSLKeyDataRsaId);
         if(data == NULL) {
             xmlSecInternalError("xmlSecKeyDataCreate(xmlSecOpenSSLKeyDataRsaId)", NULL);

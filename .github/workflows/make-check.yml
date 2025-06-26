@@ -88,6 +88,7 @@ jobs:
       run: |
           ../autogen.sh --prefix=${GITHUB_WORKSPACE}/install.dir  --enable-werror --enable-pedantic \
             --with-openssl=`brew --prefix openssl` \
+            --without-nss \
             --with-gnutls=`brew --prefix gnutls` \
             --with-gcrypt=`brew --prefix libgcrypt` \
             ${{ matrix.config_flags }}

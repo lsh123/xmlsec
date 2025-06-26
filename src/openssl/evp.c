@@ -32,7 +32,6 @@
 #include <xmlsec/openssl/app.h>
 #include <xmlsec/openssl/crypto.h>
 #include <xmlsec/openssl/evp.h>
-#include "openssl_compat.h"
 
 #ifdef XMLSEC_OPENSSL_API_300
 #include <openssl/core_names.h>
@@ -41,6 +40,8 @@
 
 #include "../cast_helpers.h"
 #include "../keysdata_helpers.h"
+#include "openssl_compat.h"
+#include "private.h"
 
 static int
 xmlSecOpenSSLGetBNValue(const xmlSecBufferPtr buf, BIGNUM **bigNum) {
@@ -325,6 +326,7 @@ xmlSecOpenSSLEvpKeyAdopt(EVP_PKEY *pKey) {
     switch(EVP_PKEY_base_id(pKey)) {
 #ifndef XMLSEC_NO_RSA
     case EVP_PKEY_RSA:
+    case EVP_PKEY_RSA2:
     case EVP_PKEY_RSA_PSS:
         data = xmlSecKeyDataCreate(xmlSecOpenSSLKeyDataRsaId);
         if(data == NULL) {
@@ -3259,6 +3261,26 @@ done:
 
 #ifndef XMLSEC_NO_RSA
 
+/**
+ * xmlSecOpenSSLKeyValueRsaCheckKeyType:
+ * @pKey: the EVP key to check
+ *
+ * Returns 0 if @pKey is a valid RSA key type, 1 if it is not, or a negative value if an error occurs.
+ */
+int
+xmlSecOpenSSLKeyValueRsaCheckKeyType(EVP_PKEY* pKey) {
+    xmlSecAssert2(pKey != NULL, -1);
+
+    switch(EVP_PKEY_base_id(pKey)) {
+    case EVP_PKEY_RSA:
+    case EVP_PKEY_RSA2:
+    case EVP_PKEY_RSA_PSS:
+        return(0);
+    default:
+        return(1);
+    }
+}
+
 /*
  * @xmlSecOpenSSLKeyValueRsa: holds the parts of OpenSSL RSA key
  */
@@ -3431,7 +3453,7 @@ int
 xmlSecOpenSSLKeyDataRsaAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataRsaId), -1);
     xmlSecAssert2(pKey != NULL, -1);
-    xmlSecAssert2(EVP_PKEY_base_id(pKey) == EVP_PKEY_RSA, -1);
+    xmlSecAssert2(xmlSecOpenSSLKeyValueRsaCheckKeyType(pKey) == 0, -1);
 
     return(xmlSecOpenSSLEvpKeyDataAdoptEvp(data, pKey));
 }
@@ -3536,9 +3558,11 @@ xmlSecOpenSSLKeyDataRsaGetRsa(xmlSecKeyDataPtr data) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataRsaId), NULL);
 
     pKey = xmlSecOpenSSLKeyDataRsaGetEvp(data);
-    xmlSecAssert2((pKey == NULL) || (EVP_PKEY_base_id(pKey) == EVP_PKEY_RSA), NULL);
-
-    return((pKey != NULL) ? EVP_PKEY_get0_RSA(pKey) : NULL);
+    if (pKey == NULL) {
+        return(NULL);
+    }
+    xmlSecAssert2(xmlSecOpenSSLKeyValueRsaCheckKeyType(pKey) == 0, NULL);
+    return(EVP_PKEY_get0_RSA(pKey));
 }
 
 static int

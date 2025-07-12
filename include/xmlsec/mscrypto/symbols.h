@@ -54,33 +54,45 @@ extern "C" {
  *
  * Crypto transforms ids
  *
+ * https://www.aleksey.com/xmlsec/xmldsig.html
+ * https://www.aleksey.com/xmlsec/xmlenc.html
+ *
  ********************************************************************/
 #define xmlSecTransformAes128CbcId              xmlSecMSCryptoTransformAes128CbcId
 #define xmlSecTransformAes192CbcId              xmlSecMSCryptoTransformAes192CbcId
 #define xmlSecTransformAes256CbcId              xmlSecMSCryptoTransformAes256CbcId
+
 #define xmlSecTransformKWAes128Id               xmlSecMSCryptoTransformKWAes128Id
 #define xmlSecTransformKWAes192Id               xmlSecMSCryptoTransformKWAes192Id
 #define xmlSecTransformKWAes256Id               xmlSecMSCryptoTransformKWAes256Id
+
 #define xmlSecTransformDes3CbcId                xmlSecMSCryptoTransformDes3CbcId
 #define xmlSecTransformKWDes3Id                 xmlSecMSCryptoTransformKWDes3Id
+
 #define xmlSecTransformDsaSha1Id                xmlSecMSCryptoTransformDsaSha1Id
-#define xmlSecTransformGost2001GostR3411_94Id   xmlSecMSCryptoTransformGost2001GostR3411_94Id
-#define xmlSecTransformGost2012_256Id           xmlSecMSCryptoTransformGost2012_256Id
-#define xmlSecTransformGost2012_512Id           xmlSecMSCryptoTransformGost2012_512Id
+
 #define xmlSecTransformHmacMd5Id                xmlSecMSCryptoTransformHmacMd5Id
 #define xmlSecTransformHmacRipemd160Id          xmlSecMSCryptoTransformHmacRipemd160Id
 #define xmlSecTransformHmacSha1Id               xmlSecMSCryptoTransformHmacSha1Id
+
 #define xmlSecTransformRipemd160Id              xmlSecMSCryptoTransformRipemd160Id
+
 #define xmlSecTransformRsaSha1Id                xmlSecMSCryptoTransformRsaSha1Id
 #define xmlSecTransformRsaSha256Id              xmlSecMSCryptoTransformRsaSha256Id
 #define xmlSecTransformRsaSha384Id              xmlSecMSCryptoTransformRsaSha384Id
 #define xmlSecTransformRsaSha512Id              xmlSecMSCryptoTransformRsaSha512Id
 #define xmlSecTransformRsaPkcs1Id               xmlSecMSCryptoTransformRsaPkcs1Id
 #define xmlSecTransformRsaOaepId                xmlSecMSCryptoTransformRsaOaepId
+
 #define xmlSecTransformSha1Id                   xmlSecMSCryptoTransformSha1Id
 #define xmlSecTransformSha256Id                 xmlSecMSCryptoTransformSha256Id
 #define xmlSecTransformSha384Id                 xmlSecMSCryptoTransformSha384Id
 #define xmlSecTransformSha512Id                 xmlSecMSCryptoTransformSha512Id
+
+#define xmlSecTransformGost2012_256Id           xmlSecMSCryptoTransformGost2012_256Id
+#define xmlSecTransformGost2012_512Id           xmlSecMSCryptoTransformGost2012_512Id
+#define xmlSecTransformGost2001GostR3411_94Id   xmlSecMSCryptoTransformGost2001GostR3411_94Id
+
 #define xmlSecTransformGostR3411_94Id           xmlSecMSCryptoTransformGostR3411_94Id
 #define xmlSecTransformGostR3411_2012_256Id     xmlSecMSCryptoTransformGostR3411_2012_256Id
 #define xmlSecTransformGostR3411_2012_512Id     xmlSecMSCryptoTransformGostR3411_2012_512Id

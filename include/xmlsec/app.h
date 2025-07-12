@@ -164,9 +164,12 @@ XMLSEC_EXPORT xmlSecKeyDataId                   xmlSecKeyDataDEREncodedKeyValueG
 #define xmlSecX509StoreId                       xmlSecX509StoreGetKlass()
 XMLSEC_EXPORT xmlSecKeyDataStoreId              xmlSecX509StoreGetKlass(void);
 
-/*********************************************************************
+/********************************************************************
  *
  * Crypto transforms ids
+ *
+ * https://www.aleksey.com/xmlsec/xmldsig.html
+ * https://www.aleksey.com/xmlsec/xmlenc.html
  *
  ********************************************************************/
 /**

@@ -56,6 +56,9 @@ extern "C" {
  *
  * Crypto transforms ids
  *
+ * https://www.aleksey.com/xmlsec/xmldsig.html
+ * https://www.aleksey.com/xmlsec/xmlenc.html
+ *
  ********************************************************************/
 #define xmlSecTransformAes128CbcId              xmlSecNssTransformAes128CbcId
 #define xmlSecTransformAes192CbcId              xmlSecNssTransformAes192CbcId

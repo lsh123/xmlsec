@@ -54,7 +54,10 @@ extern "C" {
 
 /********************************************************************
  *
- * Crypto transforms ids
+ * Crypto transforms ids:
+ *
+ * https://www.aleksey.com/xmlsec/xmldsig.html
+ * https://www.aleksey.com/xmlsec/xmlenc.html
  *
  ********************************************************************/
 #define xmlSecTransformAes128CbcId              xmlSecGCryptTransformAes128CbcId
@@ -83,8 +86,6 @@ extern "C" {
 #define xmlSecTransformEcdsaSha3_384Id          xmlSecGCryptTransformEcdsaSha3_384Id
 #define xmlSecTransformEcdsaSha3_512Id          xmlSecGCryptTransformRsaSha512Id
 
-
-#define xmlSecTransformHmacSha224Id             xmlSecGCryptTransformHmacSha224Id
 #define xmlSecTransformHmacSha256Id             xmlSecGCryptTransformHmacSha256Id
 #define xmlSecTransformHmacSha384Id             xmlSecGCryptTransformHmacSha384Id
 #define xmlSecTransformHmacSha512Id             xmlSecGCryptTransformHmacSha512Id
@@ -112,12 +113,10 @@ extern "C" {
 
 #define xmlSecTransformSha1Id                   xmlSecGCryptTransformSha1Id
 
-#define xmlSecTransformSha224Id                 xmlSecGCryptTransformSha224Id
 #define xmlSecTransformSha256Id                 xmlSecGCryptTransformSha256Id
 #define xmlSecTransformSha384Id                 xmlSecGCryptTransformSha384Id
 #define xmlSecTransformSha512Id                 xmlSecGCryptTransformSha512Id
 
-#define xmlSecTransformSha3_224Id               xmlSecGCryptTransformSha3_224Id
 #define xmlSecTransformSha3_256Id               xmlSecGCryptTransformSha3_256Id
 #define xmlSecTransformSha3_384Id               xmlSecGCryptTransformSha3_384Id
 #define xmlSecTransformSha3_512Id               xmlSecGCryptTransformSha3_512Id

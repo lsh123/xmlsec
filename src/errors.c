@@ -41,7 +41,7 @@ struct _xmlSecErrorDescription {
     const char*         errorMsg;
 };
 
-static xmlSecErrorDescription xmlSecErrorsTable[XMLSEC_ERRORS_MAX_NUMBER + 1] = {
+static const xmlSecErrorDescription xmlSecErrorsTable[XMLSEC_ERRORS_MAX_NUMBER + 1] = {
   { XMLSEC_ERRORS_R_XMLSEC_FAILED,              "xmlsec library function failed" },
   { XMLSEC_ERRORS_R_MALLOC_FAILED,              "malloc function failed" },
   { XMLSEC_ERRORS_R_STRDUP_FAILED,              "strdup function failed" },

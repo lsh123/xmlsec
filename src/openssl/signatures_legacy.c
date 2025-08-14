@@ -759,12 +759,19 @@ xmlSecOpenSSLSignatureLegacyEcdsaVerify(xmlSecOpenSSLSignatureLegacyCtxPtr ctx,
     }
 
     /* check size: we expect the r and s to be the same size and match the size of
-     * the key (RFC 6931); however some  implementations (e.g. Java) cut leading zeros:
-     * https://github.com/lsh123/xmlsec/issues/228 */
+     * the key (RFC 6931) */
      XMLSEC_OPENSSL_SAFE_CAST_SIZE_TO_SIZE_T(signSize, signLen, goto done, NULL);
-    if((signLen < 2 * signHalfLen) && (signLen % 2 == 0)) {
+    if(signLen == 2 * signHalfLen) {
+        /* good, do nothing */
+    } else if((signLen < 2 * signHalfLen) && (signLen % 2 == 0)) {
+        /* however some implementations (e.g. Java) cut leading zeros:
+         * https://github.com/lsh123/xmlsec/issues/228 */
         signHalfLen = signLen / 2;
-    } else if(signLen != 2 * signHalfLen) {
+    } else if((signLen > 2 * signHalfLen) && (signLen % 2 == 0)) {
+        /* however some implementations (e.g. Java) add leading zeros:
+         * https://github.com/lsh123/xmlsec/issues/941*/
+        signHalfLen = signLen / 2;
+    } else {
         xmlSecInvalidDataError("Signature length doesn't match key size", NULL);
         goto done;
     }

@@ -1635,12 +1635,19 @@ xmlSecOpenSSLEvpSignatureDsa_XmlDSig2OpenSSL(const xmlSecTransformId transformId
     }
 
     /* check size: we expect the r and s to be the same size and match the size of
-     * the key (RFC 6931); however some  implementations (e.g. Java) cut leading zeros:
-     * https://github.com/lsh123/xmlsec/issues/228 */
+     * the key (RFC 6931) */
     XMLSEC_SAFE_CAST_SIZE_TO_INT(dataSize, signLen, goto done, NULL);
-    if((signLen < 2 * signHalfLen) && (signLen % 2 == 0)) {
+    if(signLen == 2 * signHalfLen) {
+        /* good, do nothing */
+    } else if((signLen < 2 * signHalfLen) && (signLen % 2 == 0)) {
+        /* however some implementations (e.g. Java) cut leading zeros:
+         * https://github.com/lsh123/xmlsec/issues/228 */
         signHalfLen = signLen / 2;
-    } else if(signLen != 2 * signHalfLen) {
+    } else if((signLen > 2 * signHalfLen) && (signLen % 2 == 0)) {
+        /* however some implementations (e.g. Java) add leading zeros:
+         * https://github.com/lsh123/xmlsec/issues/941 */
+        signHalfLen = signLen / 2;
+    } else {
         xmlSecInternalError3("xmlSecOpenSSLEvpSignatureDsaHalfLen", NULL,
             "signLen=%d; signHalfLen=%d", signLen, signHalfLen);
         goto done;
@@ -1858,12 +1865,19 @@ xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL(xmlSecSize keySizeBits, const xml
     XMLSEC_SAFE_CAST_SIZE_TO_INT((keySizeBits + 7) / 8, signHalfLen, goto done, NULL);
 
     /* check size: we expect the r and s to be the same size and match the size of
-     * the key (RFC 6931); however some  implementations (e.g. Java) cut leading zeros:
-     * https://github.com/lsh123/xmlsec/issues/228 */
+     * the key (RFC 6931) */
     XMLSEC_SAFE_CAST_SIZE_TO_INT(dataSize, signLen, goto done, NULL);
-    if((signLen < 2 * signHalfLen) && (signLen % 2 == 0)) {
-        signHalfLen = signLen / 2;
-    } else if(signLen != 2 * signHalfLen) {
+    if(signLen == 2 * signHalfLen) {
+        /* good, do nothing */
+    } else if((signLen < 2 * signHalfLen) && (signLen % 2 == 0)) {
+        /* however some implementations (e.g. Java) cut leading zeros:
+         * https://github.com/lsh123/xmlsec/issues/228 */
+         signHalfLen = signLen / 2;
+    } else if((signLen > 2 * signHalfLen) && (signLen % 2 == 0)) {
+        /* however some implementations (e.g. Java) add leading zeros:
+         * https://github.com/lsh123/xmlsec/issues/941 */
+         signHalfLen = signLen / 2;
+    } else {
         xmlSecInternalError3("xmlSecOpenSSLEvpSignatureEcdsaHalfLen", NULL,
             "signLen=%d; signHalfLen=%d", signLen, signHalfLen);
         goto done;

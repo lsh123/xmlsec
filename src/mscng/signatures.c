@@ -424,7 +424,7 @@ static int xmlSecMSCngSignatureSetKeyReq(xmlSecTransformPtr transform,  xmlSecKe
 
 /*
 * https://www.w3.org/TR/xmldsig-core1/#sec-ECDSA
-* 
+*
 * The output of the ECDSA algorithm consists of a pair of integers usually
 * referred by the pair(r, s).The signature value consists of the base64
 * encoding of the concatenation of two octet - streams that respectively result
@@ -464,32 +464,60 @@ xmlSecMSCngSignatureFixBrokenJava(xmlSecMSCngSignatureCtxPtr ctx,
         return(0);
     }
 
-    /* check the size */
+    /* check the size: we expect the DSA/ECDSA r and s to be the same size and either have
+     * fixed size (DSA) or match the size of the key (ECDSA) */
     if (2 * halfSize == dataSize) {
         return(0);
     }
-    else if ((dataSize > 2 * halfSize) || (dataSize % 2 != 0)) {
-        xmlSecInternalError3("xmlSecOpenSSLEvpSignatureEcdsaHalfLen", NULL,
+
+    if ((dataSize < 2 * halfSize) && (dataSize % 2 == 0)) {
+        /* however some implementations (e.g. Java) cut leading zeros:
+         * https://github.com/lsh123/xmlsec/issues/228 */
+
+        /* let's fix it! */
+        res = (xmlSecByte*)xmlMalloc(2 * halfSize);
+        if (res == NULL) {
+            xmlSecMallocError(2 * halfSize, NULL);
+            return(-1);
+        }
+        memset(res, 0, 2 * halfSize);
+
+        /* add zeros at the beggining of both r and s */
+        offset = (2 * halfSize - dataSize) / 2;
+        memcpy(res + offset, data, dataSize / 2);
+        memcpy(res + halfSize + offset, data + dataSize / 2, dataSize / 2);
+
+        /* success */
+        (*out) = res;
+        (*outSize) = 2 * halfSize;
+    } else if ((dataSize > 2 * halfSize) && (dataSize % 2 == 0)) {
+        /* however some implementations (e.g. Java) add leading zeros:
+         * https://github.com/lsh123/xmlsec/issues/941 */
+
+        /* let's fix it! */
+        res = (xmlSecByte*)xmlMalloc(2 * halfSize);
+        if (res == NULL) {
+            xmlSecMallocError(2 * halfSize, NULL);
+            return(-1);
+        }
+        memset(res, 0, 2 * halfSize);
+
+        /* remove zeros at the beggining of both r and s (note: we don't check if those
+         * are actually zeros, just hope for the best) */
+        offset = (dataSize - 2 * halfSize) / 2;
+        memcpy(res, data + offset, halfSize);
+        memcpy(res + halfSize, data + dataSize / 2 + offset, halfSize);
+
+        /* success */
+        (*out) = res;
+        (*outSize) = 2 * halfSize;
+    } else {
+        xmlSecInternalError3("xmlSecMSCngSignatureFixBrokenJava", NULL,
             "expectedSignLen=" XMLSEC_SIZE_FMT "; actualSignLen=" XMLSEC_SIZE_FMT, 2 * halfSize, dataSize);
         return(-1);
     }
 
-    /* let's fix it! */
-    res = (xmlSecByte*)xmlMalloc(2 * halfSize);
-    if (res == NULL) {
-        xmlSecMallocError(2 * halfSize, NULL);
-        return(-1);
-    }
-    memset(res, 0, 2 * halfSize);
-
-    /* add zeros at the beggining of both r and s */
-    offset = (2 * halfSize - dataSize) / 2;
-    memcpy(res + offset, data, dataSize / 2);
-    memcpy(res + halfSize + offset, data + dataSize / 2, dataSize / 2);
-
-    /* success */
-    (*out) = res;
-    (*outSize) = 2 * halfSize;
+    /* done */
     return(0);
 }
 
@@ -538,8 +566,7 @@ xmlSecMSCngSignatureVerify(xmlSecTransformPtr transform,
         pPaddingInfo = &pssPadingInfo;
     } else {
         /* we expect the DSA/ECDSA r and s to be the same size and either have fixed size (DSA) or match
-         * the size of the key (ECDSA); however some implementations (e.g. Java) cut leading zeros:
-         * https://github.com/lsh123/xmlsec/issues/228 */
+         * the size of the key (ECDSA); however some implementations (e.g. Java) cut or add leading zeros */
         ret = xmlSecMSCngSignatureFixBrokenJava(ctx, data, dataSize, (const xmlSecByte**)&fixedData, &fixedDataSize);
         if (ret < 0) {
             xmlSecInternalError("xmlSecMSCngSignatureFixBrokenJava", xmlSecTransformGetName(transform));

@@ -1119,6 +1119,14 @@ execDSigTest $res_success \
     "ec x509" \
     "--trusted-$cert_format $topfolder/keys/enveloped-ecdsa-java-bug-cert.$cert_format --enabled-key-data x509 --verification-gmt-time 2019-01-01+00:00:00"
 
+# see issue https://github.com/lsh123/xmlsec/issues/941 (another java bug)
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloping-sha256-ecdsa-sha256_padded" \
+    "sha256 ecdsa-sha256" \
+    "ec x509" \
+    "--insecure --enabled-key-data x509"
+
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/x509data-test" \

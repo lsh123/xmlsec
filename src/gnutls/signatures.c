@@ -591,11 +591,18 @@ xmlSecGnuTLSToDer(const gnutls_datum_t* src, gnutls_datum_t* dst, xmlSecSize siz
 
 
     /* check size: we expect the r and s to be the same size and match the size of
-     * the key (RFC 6931); however some  implementations (e.g. Java) cut leading zeros:
-     * https://github.com/lsh123/xmlsec/issues/228 */
-    if((src->size < 2 * size) && (src->size % 2 == 0)) {
+     * the key (RFC 6931) */
+    if(src->size == 2 * size) {
+        /* good, do nothing */
+    } else if((src->size < 2 * size) && (src->size % 2 == 0)) {
+        /* however some implementations (e.g. Java) cut leading zeros:
+         * https://github.com/lsh123/xmlsec/issues/228 */
         size = src->size / 2;
-    } else if(src->size != 2 * size) {
+    } else if((src->size > 2 * size) && (src->size % 2 == 0)) {
+        /* however some implementations (e.g. Java) add leading zeros:
+         * https://github.com/lsh123/xmlsec/issues/941*/
+        size = src->size / 2;
+    } else {
         xmlSecInternalError3("Invalid signature size", NULL,
             "actual=%u; expected=" XMLSEC_SIZE_FMT, src->size, 2 * size);
         return(-1);

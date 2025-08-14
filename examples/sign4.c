@@ -2,21 +2,20 @@
  * XML Security Library example: Signing a file with a dynamicaly created template and an X509 certificate.
  *
  * Signs a file using a dynamicaly created template, key from PEM file and
- * an X509 certificate. The signature has one reference with one enveloped
- * transform to sign the whole document except the <dsig:Signature/> node
- * itself. The key certificate is written in the <dsig:X509Data/> node.
+ * an X509 certificate. The signature has one reference using "ID" attribute
+ * of the node to be signed. The key certificate is written in the <dsig:X509Data/> node.
  *
  * This example was developed and tested with OpenSSL crypto library. The
  * certificates management policies for another crypto library may break it.
  *
  * Usage:
- *      sign3 <xml-doc> <pem-key-file> <pem-cert-file>
+ *      sign4 <xml-doc> <id-attribute-to-sign> <pem-key-file> <pem-cert-file>
  *
  * Example:
- *      ./sign3 sign3-doc.xml rsakey.pem rsacert.pem > sign3-res.xml
+ *      ./sign4 sign4-doc.xml "data" rsakey.pem rsacert.pem > sign4-res.xml
  *
  * The result signature could be validated using verify3 example:
- *      ./verify3 sign3-res.xml ca2cert.pem cacert.pem
+ *      ./verify3 sign4-res.xml ca2cert.pem cacert.pem
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -42,7 +41,7 @@
 #include <xmlsec/templates.h>
 #include <xmlsec/crypto.h>
 
-int sign_file(const char* xml_file, const char* key_file, const char* cert_file);
+int sign_file(const char* xml_file, const char* id_attr, const char* key_file, const char* cert_file);
 
 int
 main(int argc, char **argv) {
@@ -52,9 +51,9 @@ main(int argc, char **argv) {
 
     assert(argv);
 
-    if(argc != 4) {
+    if(argc != 5) {
         fprintf(stderr, "Error: wrong number of arguments.\n");
-        fprintf(stderr, "Usage: %s <xml-file> <key-file> <cert-file>\n", argv[0]);
+        fprintf(stderr, "Usage: %s <xml-file> <id-attr> <key-file> <cert-file>\n", argv[0]);
         return(1);
     }
 
@@ -114,7 +113,7 @@ main(int argc, char **argv) {
         return(-1);
     }
 
-    if(sign_file(argv[1], argv[2], argv[3]) < 0) {
+    if(sign_file(argv[1], argv[2], argv[3], argv[4]) < 0) {
         return(-1);
     }
 
@@ -140,6 +139,7 @@ main(int argc, char **argv) {
 /**
  * sign_file:
  * @xml_file:           the XML file name.
+ * @id_attr:            the ID attribute of the node to sign.
  * @key_file:           the PEM private key file name.
  * @cert_file:          the x509 certificate PEM file.
  *
@@ -150,16 +150,19 @@ main(int argc, char **argv) {
  * Returns 0 on success or a negative value if an error occurs.
  */
 int
-sign_file(const char* xml_file, const char* key_file, const char* cert_file) {
+sign_file(const char* xml_file, const char* id_attr, const char* key_file, const char* cert_file) {
     xmlDocPtr doc = NULL;
     xmlNodePtr signNode = NULL;
     xmlNodePtr refNode = NULL;
     xmlNodePtr keyInfoNode = NULL;
     xmlNodePtr x509DataNode = NULL;
     xmlSecDSigCtxPtr dsigCtx = NULL;
+    char uri[1024];
+    const xmlChar* id_attributes[] = { BAD_CAST "id", BAD_CAST "ID", NULL };
     int res = -1;
 
     assert(xml_file);
+    assert(id_attr);
     assert(key_file);
     assert(cert_file);
 
@@ -170,9 +173,8 @@ sign_file(const char* xml_file, const char* key_file, const char* cert_file) {
         goto done;
     }
 
-    /* create signature template for RSA-SHA1 enveloped signature */
-    signNode = xmlSecTmplSignatureCreate(doc, xmlSecTransformExclC14NId,
-                                         xmlSecTransformRsaSha1Id, NULL);
+    /* create signature template for RSA-SHA256 signature */
+    signNode = xmlSecTmplSignatureCreate(doc, xmlSecTransformExclC14NId, xmlSecTransformRsaSha256Id, NULL);
     if(signNode == NULL) {
         fprintf(stderr, "Error: failed to create signature template\n");
         goto done;
@@ -182,16 +184,16 @@ sign_file(const char* xml_file, const char* key_file, const char* cert_file) {
     xmlAddChild(xmlDocGetRootElement(doc), signNode);
 
     /* add reference */
-    refNode = xmlSecTmplSignatureAddReference(signNode, xmlSecTransformSha1Id,
-                                        NULL, BAD_CAST "", NULL);
-    if(refNode == NULL) {
-        fprintf(stderr, "Error: failed to add reference to signature template\n");
+    if (strlen(id_attr) + 2 > sizeof(uri)) {
+        fprintf(stderr, "Error: id attribute is too long\n");
         goto done;
     }
+    sprintf(uri, "#%s", id_attr);
 
-    /* add enveloped transform */
-    if(xmlSecTmplReferenceAddTransform(refNode, xmlSecTransformEnvelopedId) == NULL) {
-        fprintf(stderr, "Error: failed to add enveloped transform to reference\n");
+    refNode = xmlSecTmplSignatureAddReference(signNode, xmlSecTransformSha256Id,
+                                        NULL, BAD_CAST uri, NULL);
+    if(refNode == NULL) {
+        fprintf(stderr, "Error: failed to add reference to signature template\n");
         goto done;
     }
 
@@ -217,6 +219,9 @@ sign_file(const char* xml_file, const char* key_file, const char* cert_file) {
         fprintf(stderr, "Error: failed to add X509Certificate node\n");
         goto done;
     }
+
+    /* add ID attributes to the doc context since we don't have DTDs */
+    xmlSecAddIDs(doc, NULL, id_attributes);
 
     /* create signature context, we don't need keys manager in this example */
     dsigCtx = xmlSecDSigCtxCreate(NULL);

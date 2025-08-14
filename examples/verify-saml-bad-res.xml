@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
-XML Security Library example: A simple SAML response template (verify4 example). 
+<!--
+XML Security Library example: A simple bad SAML response template (verify-saml example).
 
 Sign it using the following command (replace __ with double dashes):
 
- ../apps/xmlsec sign __privkey rsakey.pem,rsacert.pem __output verify4-res.xml verify4-tmpl.xml
+ $ xmlsec1 sign __privkey:MyKey rsakey.pem,rsacert.pem __output verify-saml-bad-res.xml verify-saml-bad-tmpl.xml
 -->
 <Response xmlns="urn:oasis:names:tc:SAML:1.0:protocol" xmlns:samlp="urn:oasis:names:tc:SAML:1.0:protocol" IssueInstant="2002-04-18T16:56:54Z" MajorVersion="1" MinorVersion="0" Recipient="https://shire.target.com" ResponseID="7ddc31-ed4a03d703-FB24AD27D96135B68C99FB9AACFE2FFC">
   <dsig:Signature xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
@@ -14,14 +14,22 @@ Sign it using the following command (replace __ with double dashes):
       <dsig:Reference URI="">
         <dsig:Transforms>
           <dsig:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
+          <dsig:Transform Algorithm="http://www.w3.org/TR/1999/REC-xpath-19991116">
+            <dsig:XPath xmlns:samlp_xpath="urn:oasis:names:tc:SAML:1.0:protocol">
+              count(ancestor-or-self::samlp_xpath:Response |
+              here()/ancestor::samlp_xpath:Response[1]) =
+              count(ancestor-or-self::samlp_xpath:Response)
+            </dsig:XPath>
+          </dsig:Transform>
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
         <dsig:DigestValue>t1nvDq1bZXEhBIXc/DHcqIrjRyI=</dsig:DigestValue>
       </dsig:Reference>
     </dsig:SignedInfo>
-    <dsig:SignatureValue>cj28Qr33wTqwHJzpI+7Mth7HUTr9MKACSH4x/1/AO64FEGiQRoOBB8XuUHZ8tzkP
-Azy8FwoZE/Jv5d/0N3ru4Q==</dsig:SignatureValue>
+    <dsig:SignatureValue>qYsjCJcQqJRYkbUJ1DgbzFiqfYaXr/YxwLp8kWWg54lWU+bDqxjzTrFLa2QE52hq
+1Oc3xO93fNWhErpfrzFfQA==</dsig:SignatureValue>
     <dsig:KeyInfo>
+      <dsig:KeyName>MyKey</dsig:KeyName>
       <dsig:X509Data>
 <dsig:X509Certificate>MIIDpzCCA1GgAwIBAgIJAK+ii7kzrdqvMA0GCSqGSIb3DQEBBQUAMIGcMQswCQYD
 VQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTE9MDsGA1UEChM0WE1MIFNlY3Vy
@@ -42,7 +50,8 @@ IFNlY3VyaXR5IExpYnJhcnkgKGh0dHA6Ly93d3cuYWxla3NleS5jb20veG1sc2Vj
 KTEQMA4GA1UECxMHUm9vdCBDQTEWMBQGA1UEAxMNQWxla3NleSBTYW5pbjEhMB8G
 CSqGSIb3DQEJARYSeG1sc2VjQGFsZWtzZXkuY29tggkAr6KLuTOt2q0wDQYJKoZI
 hvcNAQEFBQADQQAOXBj0yICp1RmHXqnUlsppryLCW3pKBD1dkb4HWarO7RjA1yJJ
-fBjXssrERn05kpBcrRfzou4r3DCgQFPhjxga</dsig:X509Certificate>
+fBjXssrERn05kpBcrRfzou4r3DCgQFPhjxga
+</dsig:X509Certificate>
 </dsig:X509Data>
     </dsig:KeyInfo>
   </dsig:Signature>

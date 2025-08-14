@@ -470,7 +470,7 @@ xmlSecMSCngSignatureFixBrokenJava(xmlSecMSCngSignatureCtxPtr ctx,
         return(0);
     }
 
-    if ((dataSize < 2 * halfSize) && (dataSize % 2 != 0)) {
+    if ((dataSize < 2 * halfSize) && (dataSize % 2 == 0)) {
         /* however some implementations (e.g. Java) cut leading zeros:
          * https://github.com/lsh123/xmlsec/issues/228 */
 
@@ -490,7 +490,7 @@ xmlSecMSCngSignatureFixBrokenJava(xmlSecMSCngSignatureCtxPtr ctx,
         /* success */
         (*out) = res;
         (*outSize) = 2 * halfSize;
-    } else if ((dataSize > 2 * halfSize) && (dataSize % 2 != 0)) {
+    } else if ((dataSize > 2 * halfSize) && (dataSize % 2 == 0)) {
         /* however some implementations (e.g. Java) add leading zeros:
          * https://github.com/lsh123/xmlsec/issues/941 */
 

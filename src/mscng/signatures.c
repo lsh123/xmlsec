@@ -505,8 +505,8 @@ xmlSecMSCngSignatureFixBrokenJava(xmlSecMSCngSignatureCtxPtr ctx,
         /* remove zeros at the beggining of both r and s (note: we don't check if those
          * are actually zeros, just hope for the best) */
         offset = (dataSize - 2 * halfSize) / 2;
-        memcpy(res, data + offset, dataSize / 2);
-        memcpy(res, data + dataSize / 2 + offset, dataSize / 2);
+        memcpy(res, data + offset, halfSize);
+        memcpy(res + halfSize, data + dataSize / 2 + offset, halfSize);
 
         /* success */
         (*out) = res;

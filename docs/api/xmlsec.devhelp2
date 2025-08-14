@@ -55,10 +55,12 @@
         <sub name="XML Security Library Examples." link="xmlsec-examples.html#xmlsec-examples-overview"/>
         <sub name="Signing a template file." link="xmlsec-examples-sign-template-file.html"/>
         <sub name="Signing a dynamicaly created template." link="xmlsec-examples-sign-dynamimc-template.html"/>
-        <sub name="Signing with X509 certificate." link="xmlsec-examples-sign-x509.html"/>
+        <sub name="Signing enveloped signature with X509 certificate." link="xmlsec-examples-sign-enveloped-x509.html"/>
+        <sub name="Signing a node by ID with X509 certificate." link="xmlsec-examples-sign-id-attr-x509.html"/>
         <sub name="Verifying a signature with a single key." link="xmlsec-verify-with-key.html"/>
         <sub name="Verifying a signature with keys manager." link="xmlsec-verify-with-keys-mngr.html"/>
-        <sub name="Verifying a signature with X509 certificates." link="xmlsec-verify-with-x509.html"/>
+        <sub name="Verifying an enveloped signature with X509 certificates." link="xmlsec-verify-enveloped-with-x509.html"/>
+        <sub name="Verifying a signature of a node with X509 certificates." link="xmlsec-verify-node-with-x509.html"/>
         <sub name="Verifying a signature with additional restrictions." link="xmlsec-verify-with-restrictions.html"/>
         <sub name="Encrypting data with a template file." link="xmlsec-encrypt-template-file.html"/>
         <sub name="Encrypting data with a dynamicaly created template." link="xmlsec-encrypt-dynamic-template.html"/>
@@ -799,6 +801,8 @@
     <keyword type="function" name="xmlSecTmplX509DataAddCRL ()" link="xmlsec-templates.html#xmlSecTmplX509DataAddCRL"/>
     <keyword type="function" name="xmlSecTmplTransformAddHmacOutputLength ()" link="xmlsec-templates.html#xmlSecTmplTransformAddHmacOutputLength"/>
     <keyword type="function" name="xmlSecTmplTransformAddRsaOaepParam ()" link="xmlsec-templates.html#xmlSecTmplTransformAddRsaOaepParam"/>
+    <keyword type="function" name="xmlSecTmplTransformAddRsaMgf ()" link="xmlsec-templates.html#xmlSecTmplTransformAddRsaMgf"/>
+    <keyword type="function" name="xmlSecTmplTransformAddRsaDigest ()" link="xmlsec-templates.html#xmlSecTmplTransformAddRsaDigest"/>
     <keyword type="function" name="xmlSecTmplTransformAddXsltStylesheet ()" link="xmlsec-templates.html#xmlSecTmplTransformAddXsltStylesheet"/>
     <keyword type="function" name="xmlSecTmplTransformAddC14NInclNamespaces ()" link="xmlsec-templates.html#xmlSecTmplTransformAddC14NInclNamespaces"/>
     <keyword type="function" name="xmlSecTmplTransformAddXPath ()" link="xmlsec-templates.html#xmlSecTmplTransformAddXPath"/>

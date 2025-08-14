@@ -68,6 +68,20 @@ To run this example:
 ./sign3 sign3-doc.xml rsakey.pem rsacert.pem
 ```
 
+### sign3: signing a node in a file with a dynamicaly created template and an X509 certificate
+
+Files:
+```
+sign4.c             The source code
+sign4-doc.xml       An example XML file for signing by sign4.c
+sign4-res.xml       The result of signing sign4-doc.xml by sign4.c
+```
+
+To run this example:
+```
+./sign4 sign4-doc.xml "data" rsakey.pem rsacert.pem
+```
+
 ### verify1: verifying a signed document with a public key
 
 Files:
@@ -100,7 +114,7 @@ xmlsec1 verify --pubkey rsapub.pem sign1-res.xml
 xmlsec1 verify --pubkey rsapub.pem sign2-res.xml
 ```
 
-### verify3: verifying a signed document using X509 certificate
+### verify3: verifying an enveloped signature using X509 certificate
 
 Files:
 ```
@@ -118,24 +132,42 @@ utility (use `xmlsec` on Windows):
 xmlsec1 verify --trusted ca2cert.pem --trusted cacert.pem sign3-res.xml
 ```
 
-### verify4: verifying a simple SAML response using X509 certificate
+### verify4: verifying a signature over a node using X509 certificate
 
 Files:
 ```
 verify4.c           The source code
-verify4-tmpl.xml    An example template file with a simple SAML response for verify4 example
-verify4-res.xml     Signed simple SAML response for verification by verify4.c
 ```
 
 To run this example:
 ```
-./verify4 verify4-res.xml ca2cert.pem cacert.pem
+./verify4 sign4-res.xml "data" ca2cert.pem cacert.pem
+```
+
+To verify a signed document using X509 certificate with `xmlsec1` command line
+utility (use `xmlsec` on Windows):
+```
+xmlsec1 verify --trusted ca2cert.pem --trusted cacert.pem sign3-res.xml
+```
+
+### verify-saml: verifying a simple SAML response using X509 certificate
+
+Files:
+```
+verify-saml.c           The source code
+verify-saml-tmpl.xml    An example template file with a simple SAML response for verify-saml example
+verify-saml-res.xml     Signed simple SAML response for verification by verify-saml.c
+```
+
+To run this example:
+```
+./verify-saml verify-saml-res.xml ca2cert.pem cacert.pem
 ```
 
 To verify a signed SAML response using X509 certificate with `xmlsec1` command line
 utility (use `xmlsec` on Windows):
 ```
-xmlsec1 verify --trusted ca2cert.pem --trusted cacert.pem verify4-res.xml
+xmlsec1 verify --trusted ca2cert.pem --trusted cacert.pem verify-saml-res.xml
 ```
 
 ### encrypt1: encrypting binary data with a template file

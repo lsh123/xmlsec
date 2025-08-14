@@ -421,8 +421,8 @@ XMLSEC_EXPORT void                      xmlSecTransformCtxSetDefaultBinaryChunkS
  * @inNodes:            the input XML nodes.
  * @outNodes:           the output XML nodes.
  * @expectedOutputSize: the expected transform output size (used for key wraps).
+ * @flags:              the transform flags (eg user specified vs inserted by XMLSec).
  * @reserved0:          reserved for the future.
- * @reserved1:          reserved for the future.
  *
  * The transform structure.
  */

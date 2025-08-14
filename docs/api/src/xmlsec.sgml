@@ -95,6 +95,8 @@ http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
 <!ENTITY xmlsec-example-sign2-res	SYSTEM "examples/sign2-res.sgml">
 <!ENTITY xmlsec-example-sign3-doc	SYSTEM "examples/sign3-doc.sgml">
 <!ENTITY xmlsec-example-sign3-res	SYSTEM "examples/sign3-res.sgml">
+<!ENTITY xmlsec-example-sign4-doc	SYSTEM "examples/sign4-doc.sgml">
+<!ENTITY xmlsec-example-sign4-res	SYSTEM "examples/sign4-res.sgml">
 <!ENTITY xmlsec-example-verify-saml-res 	   SYSTEM "examples/verify-saml-res.sgml">
 <!ENTITY xmlsec-example-verify-saml-tmpl 	   SYSTEM "examples/verify-saml-tmpl.sgml">
 <!ENTITY xmlsec-example-verify-saml-bad-res  SYSTEM "examples/verify-saml-bad-res.sgml">

@@ -2,12 +2,12 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Signing a dynamicaly created template.: XML Security Library Reference Manual</title>
+<title>Signing enveloped signature with X509 certificate.: XML Security Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
 <link rel="up" href="xmlsec-examples.html" title="Examples.">
-<link rel="prev" href="xmlsec-examples-sign-template-file.html" title="Signing a template file.">
-<link rel="next" href="xmlsec-examples-sign-enveloped-x509.html" title="Signing enveloped signature with X509 certificate.">
+<link rel="prev" href="xmlsec-examples-sign-dynamimc-template.html" title="Signing a dynamicaly created template.">
+<link rel="next" href="xmlsec-examples-sign-id-attr-x509.html" title="Signing a node by ID with X509 certificate.">
 <meta name="generator" content="GTK-Doc V1.34.0 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
@@ -16,31 +16,35 @@
 <td width="100%" align="left" class="shortcuts"></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <td><a accesskey="u" href="xmlsec-examples.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
-<td><a accesskey="p" href="xmlsec-examples-sign-template-file.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="n" href="xmlsec-examples-sign-enveloped-x509.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+<td><a accesskey="p" href="xmlsec-examples-sign-dynamimc-template.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="xmlsec-examples-sign-id-attr-x509.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="sect1">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="xmlsec-examples-sign-dynamimc-template"></a>Signing a dynamicaly created template.</h2></div></div></div>
+<a name="xmlsec-examples-sign-enveloped-x509"></a>Signing enveloped signature with X509 certificate.</h2></div></div></div>
 <div class="sect2">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="xmlsec-example-sign2"></a>sign2.c</h3></div></div></div>
+<a name="xmlsec-example-sign3"></a>sign3.c</h3></div></div></div>
 <div class="informalexample"><pre class="programlisting">
 /**
- * XML Security Library example: Signing a file with a dynamicaly created template.
+ * XML Security Library example: Signing a file with a dynamicaly created template and an X509 certificate.
  *
- * Signs a file using a dynamicaly created template and key from PEM file.
- * The signature has one reference with one enveloped transform to sign
- * the whole document except the &lt;dsig:Signature/&gt; node itself.
+ * Signs a file using a dynamicaly created template, key from PEM file and
+ * an X509 certificate. The signature has one reference with one enveloped
+ * transform to sign the whole document except the &lt;dsig:Signature/&gt; node
+ * itself. The key certificate is written in the &lt;dsig:X509Data/&gt; node.
+ *
+ * This example was developed and tested with OpenSSL crypto library. The
+ * certificates management policies for another crypto library may break it.
  *
  * Usage:
- *      sign2 &lt;xml-doc&gt; &lt;pem-key&gt;
+ *      sign3 &lt;xml-doc&gt; &lt;pem-key-file&gt; &lt;pem-cert-file&gt;
  *
  * Example:
- *      ./sign2 sign2-doc.xml rsakey.pem &gt; sign2-res.xml
+ *      ./sign3 sign3-doc.xml rsakey.pem rsacert.pem &gt; sign3-res.xml
  *
- * The result signature could be validated using verify1 example:
- *      ./verify1 sign2-res.xml rsapub.pem
+ * The result signature could be validated using verify3 example:
+ *      ./verify3 sign3-res.xml ca2cert.pem cacert.pem
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -66,7 +70,7 @@
 #include &lt;xmlsec/templates.h&gt;
 #include &lt;xmlsec/crypto.h&gt;
 
-int sign_file(const char* xml_file, const char* key_file);
+int sign_file(const char* xml_file, const char* key_file, const char* cert_file);
 
 int
 main(int argc, char **argv) {
@@ -76,9 +80,9 @@ main(int argc, char **argv) {
 
     assert(argv);
 
-    if(argc != 3) {
+    if(argc != 4) {
         fprintf(stderr, "Error: wrong number of arguments.\n");
-        fprintf(stderr, "Usage: %s &lt;xml-file&gt; &lt;key-file&gt;\n", argv[0]);
+        fprintf(stderr, "Usage: %s &lt;xml-file&gt; &lt;key-file&gt; &lt;cert-file&gt;\n", argv[0]);
         return(1);
     }
 
@@ -138,7 +142,7 @@ main(int argc, char **argv) {
         return(-1);
     }
 
-    if(sign_file(argv[1], argv[2]) &lt; 0) {
+    if(sign_file(argv[1], argv[2], argv[3]) &lt; 0) {
         return(-1);
     }
 
@@ -165,23 +169,27 @@ main(int argc, char **argv) {
  * sign_file:
  * @xml_file:           the XML file name.
  * @key_file:           the PEM private key file name.
+ * @cert_file:          the x509 certificate PEM file.
  *
- * Signs the #xml_file using private key from #key_file and dynamicaly
- * created enveloped signature template.
+ * Signs the @xml_file using private key from @key_file and dynamicaly
+ * created enveloped signature template. The certificate from @cert_file
+ * is placed in the &lt;dsig:X509Data/&gt; node.
  *
  * Returns 0 on success or a negative value if an error occurs.
  */
 int
-sign_file(const char* xml_file, const char* key_file) {
+sign_file(const char* xml_file, const char* key_file, const char* cert_file) {
     xmlDocPtr doc = NULL;
     xmlNodePtr signNode = NULL;
     xmlNodePtr refNode = NULL;
     xmlNodePtr keyInfoNode = NULL;
+    xmlNodePtr x509DataNode = NULL;
     xmlSecDSigCtxPtr dsigCtx = NULL;
     int res = -1;
 
     assert(xml_file);
     assert(key_file);
+    assert(cert_file);
 
     /* load doc file */
     doc = xmlReadFile(xml_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET);
@@ -215,15 +223,26 @@ sign_file(const char* xml_file, const char* key_file) {
         goto done;
     }
 
-    /* add &lt;dsig:KeyInfo/&gt; and &lt;dsig:KeyName/&gt; nodes to put key name in the signed document */
+    /* add &lt;dsig:KeyInfo/&gt; and &lt;dsig:X509Data/&gt; */
     keyInfoNode = xmlSecTmplSignatureEnsureKeyInfo(signNode, NULL);
     if(keyInfoNode == NULL) {
         fprintf(stderr, "Error: failed to add key info\n");
         goto done;
     }
 
-    if(xmlSecTmplKeyInfoAddKeyName(keyInfoNode, NULL) == NULL) {
-        fprintf(stderr, "Error: failed to add key name\n");
+    x509DataNode = xmlSecTmplKeyInfoAddX509Data(keyInfoNode);
+    if(x509DataNode == NULL) {
+        fprintf(stderr, "Error: failed to add X509Data node\n");
+        goto done;
+    }
+
+    if(xmlSecTmplX509DataAddSubjectName(x509DataNode) == NULL) {
+        fprintf(stderr, "Error: failed to add X509SubjectName node\n");
+        goto done;
+    }
+
+    if(xmlSecTmplX509DataAddCertificate(x509DataNode) == NULL) {
+        fprintf(stderr, "Error: failed to add X509Certificate node\n");
         goto done;
     }
 
@@ -238,6 +257,12 @@ sign_file(const char* xml_file, const char* key_file) {
     dsigCtx-&gt;signKey = xmlSecCryptoAppKeyLoadEx(key_file, xmlSecKeyDataTypePrivate, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
     if(dsigCtx-&gt;signKey == NULL) {
         fprintf(stderr,"Error: failed to load private pem key from \"%s\"\n", key_file);
+        goto done;
+    }
+
+    /* load certificate and add to the key */
+    if(xmlSecCryptoAppKeyCertLoad(dsigCtx-&gt;signKey, cert_file, xmlSecKeyDataFormatPem) &lt; 0) {
+        fprintf(stderr,"Error: failed to load pem certificate \"%s\"\n", cert_file);
         goto done;
     }
 
@@ -274,11 +299,11 @@ done:
 </div>
 <div class="sect2">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="xmlsec-example-sign2-doc"></a>sign2-doc.xml</h3></div></div></div>
+<a name="xmlsec-example-sign3-doc"></a>sign3-doc.xml</h3></div></div></div>
 <div class="informalexample"><pre class="programlisting">
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!-- 
-XML Security Library example: Original XML doc file for sign2 example. 
+XML Security Library example: Original XML doc file for sign3 example. 
 --&gt;
 &lt;Envelope xmlns="urn:envelope"&gt;
   &lt;Data&gt;
@@ -289,11 +314,11 @@ XML Security Library example: Original XML doc file for sign2 example.
 </div>
 <div class="sect2">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="xmlsec-example-sign2-res"></a>sign2-res.xml</h3></div></div></div>
+<a name="xmlsec-example-sign3-res"></a>sign3-res.xml</h3></div></div></div>
 <div class="informalexample"><pre class="programlisting">
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!-- 
-XML Security Library example: Original XML doc file for sign2 example. 
+XML Security Library example: Original XML doc file for sign3 example. 
 --&gt;
 &lt;Envelope xmlns="urn:envelope"&gt;
   &lt;Data&gt;
@@ -314,7 +339,30 @@ XML Security Library example: Original XML doc file for sign2 example.
 &lt;SignatureValue&gt;fUkinGC3hXEUrjJoq8Uc1Gtky7+4AumhtYV5804diUqbFh/SbQI5iPOnJojz0xZK
 WFG9pbfsiWyiqTYlenqDng==&lt;/SignatureValue&gt;
 &lt;KeyInfo&gt;
-&lt;KeyName&gt;rsakey.pem&lt;/KeyName&gt;
+&lt;X509Data&gt;
+&lt;X509SubjectName&gt;emailAddress=xmlsec@aleksey.com,CN=Aleksey Sanin,OU=Test Third Level RSA Certificate,O=XML Security Library (http://www.aleksey.com/xmlsec),ST=California,C=US&lt;/X509SubjectName&gt;
+&lt;X509Certificate&gt;MIIDpzCCA1GgAwIBAgIJAK+ii7kzrdqvMA0GCSqGSIb3DQEBBQUAMIGcMQswCQYD
+VQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTE9MDsGA1UEChM0WE1MIFNlY3Vy
+aXR5IExpYnJhcnkgKGh0dHA6Ly93d3cuYWxla3NleS5jb20veG1sc2VjKTEWMBQG
+A1UEAxMNQWxla3NleSBTYW5pbjEhMB8GCSqGSIb3DQEJARYSeG1sc2VjQGFsZWtz
+ZXkuY29tMCAXDTE0MDUyMzE3NTUzNFoYDzIxMTQwNDI5MTc1NTM0WjCBxzELMAkG
+A1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExPTA7BgNVBAoTNFhNTCBTZWN1
+cml0eSBMaWJyYXJ5IChodHRwOi8vd3d3LmFsZWtzZXkuY29tL3htbHNlYykxKTAn
+BgNVBAsTIFRlc3QgVGhpcmQgTGV2ZWwgUlNBIENlcnRpZmljYXRlMRYwFAYDVQQD
+Ew1BbGVrc2V5IFNhbmluMSEwHwYJKoZIhvcNAQkBFhJ4bWxzZWNAYWxla3NleS5j
+b20wXDANBgkqhkiG9w0BAQEFAANLADBIAkEA09BtD3aeVt6DVDkk0dI7Vh7Ljqdn
+sYmW0tbDVxxK+nume+Z9Sb4znbUKkWl+vgQATdRUEyhT2P+Gqrd0UBzYfQIDAQAB
+o4IBRTCCAUEwDAYDVR0TBAUwAwEB/zAsBglghkgBhvhCAQ0EHxYdT3BlblNTTCBH
+ZW5lcmF0ZWQgQ2VydGlmaWNhdGUwHQYDVR0OBBYEFNf0xkZ3zjcEI60pVPuwDqTM
+QygZMIHjBgNVHSMEgdswgdiAFP7k7FMk8JWVxxC14US1XTllWuN+oYG0pIGxMIGu
+MQswCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTE9MDsGA1UEChM0WE1M
+IFNlY3VyaXR5IExpYnJhcnkgKGh0dHA6Ly93d3cuYWxla3NleS5jb20veG1sc2Vj
+KTEQMA4GA1UECxMHUm9vdCBDQTEWMBQGA1UEAxMNQWxla3NleSBTYW5pbjEhMB8G
+CSqGSIb3DQEJARYSeG1sc2VjQGFsZWtzZXkuY29tggkAr6KLuTOt2q0wDQYJKoZI
+hvcNAQEFBQADQQAOXBj0yICp1RmHXqnUlsppryLCW3pKBD1dkb4HWarO7RjA1yJJ
+fBjXssrERn05kpBcrRfzou4r3DCgQFPhjxga
+&lt;/X509Certificate&gt;
+&lt;/X509Data&gt;
 &lt;/KeyInfo&gt;
 &lt;/Signature&gt;&lt;/Envelope&gt;
 </pre></div>

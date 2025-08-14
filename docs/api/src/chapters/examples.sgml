@@ -22,7 +22,7 @@
     	&xmlsec-example-sign2-res;
     </sect1>
 
-    <sect1 id="xmlsec-examples-sign-x509">
+    <sect1 id="xmlsec-examples-sign-enveloped-x509">
 	<title>Signing enveloped signature with X509 certificate.</title>
 
 	&xmlsec-example-sign3;
@@ -30,7 +30,7 @@
     &xmlsec-example-sign3-res;
     </sect1>
 
-    <sect1 id="xmlsec-examples-sign-x509">
+    <sect1 id="xmlsec-examples-sign-id-attr-x509">
 	<title>Signing a node by ID with X509 certificate.</title>
 
 	&xmlsec-example-sign4;
@@ -50,13 +50,13 @@
 	&xmlsec-example-verify2;
     </sect1>
 
-    <sect1 id="xmlsec-verify-with-x509">
+    <sect1 id="xmlsec-verify-enveloped-with-x509">
 	<title>Verifying an enveloped signature with X509 certificates.</title>
 
 	&xmlsec-example-verify3;
     </sect1>
 
-    <sect1 id="xmlsec-verify-with-x509">
+    <sect1 id="xmlsec-verify-node-with-x509">
 	<title>Verifying a signature of a node with X509 certificates.</title>
 
 	&xmlsec-example-verify4;

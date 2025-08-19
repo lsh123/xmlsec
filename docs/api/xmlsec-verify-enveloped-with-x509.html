@@ -2,12 +2,12 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Decrypting data with keys manager.: XML Security Library Reference Manual</title>
+<title>Verifying an enveloped signature with X509 certificates.: XML Security Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
 <link rel="up" href="xmlsec-examples.html" title="Examples.">
-<link rel="prev" href="xmlsec-decrypt-with-signle-key.html" title="Decrypting data with a single key.">
-<link rel="next" href="xmlsec-custom-keys-manager.html" title="Writing a custom keys manager.">
+<link rel="prev" href="xmlsec-verify-with-keys-mngr.html" title="Verifying a signature with keys manager.">
+<link rel="next" href="xmlsec-verify-node-with-x509.html" title="Verifying a signature of a node with X509 certificates.">
 <meta name="generator" content="GTK-Doc V1.34.0 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
@@ -16,28 +16,29 @@
 <td width="100%" align="left" class="shortcuts"></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <td><a accesskey="u" href="xmlsec-examples.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
-<td><a accesskey="p" href="xmlsec-decrypt-with-signle-key.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="n" href="xmlsec-custom-keys-manager.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+<td><a accesskey="p" href="xmlsec-verify-with-keys-mngr.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="xmlsec-verify-node-with-x509.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="sect1">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="xmlsec-decrypt-with-keys-mngr"></a>Decrypting data with keys manager.</h2></div></div></div>
+<a name="xmlsec-verify-enveloped-with-x509"></a>Verifying an enveloped signature with X509 certificates.</h2></div></div></div>
 <div class="sect2">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="xmlsec-example-decrypt2"></a>decrypt2.c</h3></div></div></div>
+<a name="xmlsec-example-verify3"></a>verify3.c</h3></div></div></div>
 <div class="informalexample"><pre class="programlisting">
 /**
- * XML Security Library example: Decrypting an encrypted file using keys manager.
+ * XML Security Library example: Verifying a file signed with X509 certificate
  *
- * Decrypts encrypted XML file using keys manager and a list of
- * DES key from a binary file
+ * Verifies a file signed with X509 certificate.
+ *
+ * This example was developed and tested with OpenSSL crypto library. The
+ * certificates management policies for another crypto library may break it.
  *
  * Usage:
- *      ./decrypt2 &lt;xml-enc&gt; &lt;des-key-file1&gt; [&lt;des-key-file2&gt; [...]]
+ *      verify3 &lt;signed-file&gt; &lt;trusted-cert-pem-file1&gt; [&lt;trusted-cert-pem-file2&gt; [...]]
  *
  * Example:
- *      ./decrypt2 encrypt1-res.xml deskey.bin
- *      ./decrypt2 encrypt2-res.xml deskey.bin
+ *      ./verify3 sign3-res.xml ca2cert.pem cacert.pem
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -59,24 +60,25 @@
 
 #include &lt;xmlsec/xmlsec.h&gt;
 #include &lt;xmlsec/xmltree.h&gt;
-#include &lt;xmlsec/xmlenc.h&gt;
+#include &lt;xmlsec/xmldsig.h&gt;
 #include &lt;xmlsec/crypto.h&gt;
 
-xmlSecKeysMngrPtr load_des_keys(char** files, int files_size);
-int decrypt_file(xmlSecKeysMngrPtr mngr, const char* enc_file);
+xmlSecKeysMngrPtr load_trusted_certs(char** files, int files_size);
+int verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file);
+int verify_signature_results(xmlSecDSigCtxPtr dsigCtx);
 
 int
 main(int argc, char **argv) {
-    xmlSecKeysMngrPtr mngr;
 #ifndef XMLSEC_NO_XSLT
     xsltSecurityPrefsPtr xsltSecPrefs = NULL;
 #endif /* XMLSEC_NO_XSLT */
+    xmlSecKeysMngrPtr mngr;
 
     assert(argv);
 
-    if(argc != 3) {
+    if(argc &lt; 3) {
         fprintf(stderr, "Error: wrong number of arguments.\n");
-        fprintf(stderr, "Usage: %s &lt;enc-file&gt; &lt;key-file1&gt; [&lt;key-file2&gt; [...]]\n", argv[0]);
+        fprintf(stderr, "Usage: %s &lt;xml-file&gt; &lt;cert-file1&gt; [&lt;cert-file2&gt; [...]]\n", argv[0]);
         return(1);
     }
 
@@ -97,7 +99,6 @@ main(int argc, char **argv) {
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_NETWORK,    xsltSecurityForbid);
     xsltSetDefaultSecurityPrefs(xsltSecPrefs);
 #endif /* XMLSEC_NO_XSLT */
-
 
     /* Init xmlsec library */
     if(xmlSecInit() &lt; 0) {
@@ -137,13 +138,14 @@ main(int argc, char **argv) {
         return(-1);
     }
 
-    /* create keys manager and load keys */
-    mngr = load_des_keys(&amp;(argv[2]), argc - 2);
+    /* create keys manager and load trusted certificates */
+    mngr = load_trusted_certs(&amp;(argv[2]), argc - 2);
     if(mngr == NULL) {
         return(-1);
     }
 
-    if(decrypt_file(mngr, argv[1]) &lt; 0) {
+    /* verify file */
+    if(verify_file(mngr, argv[1]) &lt; 0) {
         xmlSecKeysMngrDestroy(mngr);
         return(-1);
     }
@@ -171,11 +173,11 @@ main(int argc, char **argv) {
 }
 
 /**
- * load_des_keys:
+ * load_trusted_certs:
  * @files:              the list of filenames.
  * @files_size:         the number of filenames in #files.
  *
- * Creates simple keys manager and load DES keys from #files in it.
+ * Creates simple keys manager and load trusted certificates from PEM #files.
  * The caller is responsible for destroying returned keys manager using
  * @xmlSecKeysMngrDestroy.
  *
@@ -183,9 +185,8 @@ main(int argc, char **argv) {
  * occurs.
  */
 xmlSecKeysMngrPtr
-load_des_keys(char** files, int files_size) {
+load_trusted_certs(char** files, int files_size) {
     xmlSecKeysMngrPtr mngr;
-    xmlSecKeyPtr key;
     int i;
 
     assert(files);
@@ -209,28 +210,9 @@ load_des_keys(char** files, int files_size) {
     for(i = 0; i &lt; files_size; ++i) {
         assert(files[i]);
 
-        /* load DES key */
-        key = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, files[i]);
-        if(key == NULL) {
-            fprintf(stderr,"Error: failed to load des key from binary file \"%s\"\n", files[i]);
-            xmlSecKeysMngrDestroy(mngr);
-            return(NULL);
-        }
-
-        /* set key name to the file name, this is just an example! */
-        if(xmlSecKeySetName(key, BAD_CAST files[i]) &lt; 0) {
-            fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", files[i]);
-            xmlSecKeyDestroy(key);
-            xmlSecKeysMngrDestroy(mngr);
-            return(NULL);
-        }
-
-        /* add key to keys manager, from now on keys manager is responsible
-         * for destroying key
-         */
-        if(xmlSecCryptoAppDefaultKeysMngrAdoptKey(mngr, key) &lt; 0) {
-            fprintf(stderr,"Error: failed to add key from \"%s\" to keys manager\n", files[i]);
-            xmlSecKeyDestroy(key);
+        /* load trusted cert */
+        if(xmlSecCryptoAppKeysMngrCertLoad(mngr, files[i], xmlSecKeyDataFormatPem, xmlSecKeyDataTypeTrusted) &lt; 0) {
+            fprintf(stderr,"Error: failed to load pem certificate from \"%s\"\n", files[i]);
             xmlSecKeysMngrDestroy(mngr);
             return(NULL);
         }
@@ -240,81 +222,132 @@ load_des_keys(char** files, int files_size) {
 }
 
 /**
- * decrypt_file:
+ * verify_file:
  * @mngr:               the pointer to keys manager.
- * @enc_file:           the encrypted XML  file name.
+ * @xml_file:           the signed XML file name.
  *
- * Decrypts the XML file #enc_file using DES key from #key_file and
- * prints results to stdout.
+ * Verifies XML signature in #xml_file.
  *
  * Returns 0 on success or a negative value if an error occurs.
  */
 int
-decrypt_file(xmlSecKeysMngrPtr mngr, const char* enc_file) {
+verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
     xmlDocPtr doc = NULL;
     xmlNodePtr node = NULL;
-    xmlSecEncCtxPtr encCtx = NULL;
+    xmlSecDSigCtxPtr dsigCtx = NULL;
     int res = -1;
 
     assert(mngr);
-    assert(enc_file);
+    assert(xml_file);
 
-    /* load template */
-    doc = xmlReadFile(enc_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET);
+    /* load file */
+    doc = xmlReadFile(xml_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
-        fprintf(stderr, "Error: unable to parse file \"%s\"\n", enc_file);
+        fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
         goto done;
     }
 
     /* find start node */
-    node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeEncryptedData, xmlSecEncNs);
+    node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeSignature, xmlSecDSigNs);
     if(node == NULL) {
-        fprintf(stderr, "Error: start node not found in \"%s\"\n", enc_file);
+        fprintf(stderr, "Error: start node not found in \"%s\"\n", xml_file);
         goto done;
     }
 
-    /* create encryption context */
-    encCtx = xmlSecEncCtxCreate(mngr);
-    if(encCtx == NULL) {
-        fprintf(stderr,"Error: failed to create encryption context\n");
+    /* create signature context */
+    dsigCtx = xmlSecDSigCtxCreate(mngr);
+    if(dsigCtx == NULL) {
+        fprintf(stderr,"Error: failed to create signature context\n");
         goto done;
     }
 
-    /* decrypt the data */
-    if((xmlSecEncCtxDecrypt(encCtx, node) &lt; 0) || (encCtx-&gt;result == NULL)) {
-        fprintf(stderr,"Error: decryption failed\n");
+    /* Verify signature */
+    if(xmlSecDSigCtxVerify(dsigCtx, node) &lt; 0) {
+        fprintf(stderr,"Error: signature verify\n");
         goto done;
     }
 
-    /* print decrypted data to stdout */
-    if(encCtx-&gt;resultReplaced != 0) {
-        fprintf(stdout, "Decrypted XML data:\n");
-        xmlDocDump(stdout, doc);
+    /* verif results and print outcome to stdout */
+    if(verify_signature_results(dsigCtx) == 0) {
+        fprintf(stdout, "Signature is OK\n");
     } else {
-        fprintf(stdout, "Decrypted binary data (" XMLSEC_SIZE_FMT " bytes):\n",
-            xmlSecBufferGetSize(encCtx-&gt;result));
-        if(xmlSecBufferGetData(encCtx-&gt;result) != NULL) {
-            fwrite(xmlSecBufferGetData(encCtx-&gt;result),
-                  1,
-                  xmlSecBufferGetSize(encCtx-&gt;result),
-                  stdout);
-        }
+        fprintf(stdout, "Signature is INVALID\n");
     }
-    fprintf(stdout, "\n");
 
     /* success */
     res = 0;
 
 done:
     /* cleanup */
-    if(encCtx != NULL) {
-        xmlSecEncCtxDestroy(encCtx);
+    if(dsigCtx != NULL) {
+        xmlSecDSigCtxDestroy(dsigCtx);
     }
 
     if(doc != NULL) {
         xmlFreeDoc(doc);
     }
     return(res);
+}
+
+/**
+ * verify_signature_results:
+ * @dsigCtx:            the XMLDSig context
+ *
+ * Verifies XML signature results to ensure that signature was applied
+ * to the expected data.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
+int
+verify_signature_results(xmlSecDSigCtxPtr dsigCtx) {
+    xmlSecDSigReferenceCtxPtr dsigRefCtx;
+    xmlSecTransformPtr transform;
+
+    assert(dsigCtx);
+
+    /* check that signature verification succeeded */
+    if(dsigCtx-&gt;status != xmlSecDSigStatusSucceeded) {
+        fprintf(stderr,"Error: Signature verificaton result is not SUCCESS\n");
+        return(-1);
+    }
+
+    /* in this example we expect exactly ONE reference with URI="" and
+    *  exactly ONE enveloped signature transform (i.e. the whole document is signed)*/
+    if(xmlSecPtrListGetSize(&amp;(dsigCtx-&gt;signedInfoReferences)) != 1) {
+        fprintf(stderr,"Error: Exactly one Reference is expected\n");
+        return(-1);
+    }
+    dsigRefCtx = (xmlSecDSigReferenceCtxPtr)xmlSecPtrListGetItem(&amp;(dsigCtx-&gt;signedInfoReferences), 0);
+    if((dsigRefCtx == NULL) || (dsigRefCtx-&gt;status != xmlSecDSigStatusSucceeded)) {
+        fprintf(stderr,"Error: Reference verification result is not SUCCESS\n");
+        return(-1);
+    }
+
+    /* check URI */
+    if(!xmlStrEqual(dsigRefCtx-&gt;uri, BAD_CAST "")) {
+        fprintf(stderr,"Error: Reference URI value doesn't match expected one\n");
+        return(-1);
+    }
+
+    /* check transforms: we expect only one "enveloped signature" transform */
+    transform = dsigRefCtx-&gt;transformCtx.first;
+    if((transform == NULL) || (!xmlStrEqual(transform-&gt;id-&gt;name, xmlSecNameEnveloped))) {
+        fprintf(stderr,"Error: First Transform name '%s' doesn't match expected '%s'\n", (transform != NULL ? transform-&gt;id-&gt;name : BAD_CAST "NULL"), xmlSecNameEnveloped);
+        return(-1);
+    }
+
+    /* all other transforms should be inserted by XMLSec */
+    transform = transform-&gt;next;
+    while(transform != NULL) {
+        if((transform-&gt;flags &amp; XMLSEC_TRANSFORM_FLAGS_USER_SPECIFIED) != 0) {
+            fprintf(stderr,"Error: Found unexpected Transform name '%s'\n", transform-&gt;id-&gt;name);
+            return(-1);
+        }
+        transform = transform-&gt;next;
+    }
+
+    /* all good! */
+    return(0);
 }
 
 </pre></div>

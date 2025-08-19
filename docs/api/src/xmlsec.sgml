@@ -72,11 +72,14 @@ http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
 <!ENTITY xmlsec-example-sign1 		SYSTEM "examples/sign1.sgml">
 <!ENTITY xmlsec-example-sign2 		SYSTEM "examples/sign2.sgml">
 <!ENTITY xmlsec-example-sign3 		SYSTEM "examples/sign3.sgml">
+<!ENTITY xmlsec-example-sign4 		SYSTEM "examples/sign4.sgml">
 
 <!ENTITY xmlsec-example-verify1 	SYSTEM "examples/verify1.sgml">
 <!ENTITY xmlsec-example-verify2 	SYSTEM "examples/verify2.sgml">
 <!ENTITY xmlsec-example-verify3 	SYSTEM "examples/verify3.sgml">
 <!ENTITY xmlsec-example-verify4 	SYSTEM "examples/verify4.sgml">
+<!ENTITY xmlsec-example-verify-saml 	SYSTEM "examples/verify-saml.sgml">
+
 
 <!ENTITY xmlsec-example-encrypt1 	SYSTEM "examples/encrypt1.sgml">
 <!ENTITY xmlsec-example-encrypt2 	SYSTEM "examples/encrypt2.sgml">
@@ -92,10 +95,12 @@ http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
 <!ENTITY xmlsec-example-sign2-res	SYSTEM "examples/sign2-res.sgml">
 <!ENTITY xmlsec-example-sign3-doc	SYSTEM "examples/sign3-doc.sgml">
 <!ENTITY xmlsec-example-sign3-res	SYSTEM "examples/sign3-res.sgml">
-<!ENTITY xmlsec-example-verify4-res 	SYSTEM "examples/verify4-res.sgml">
-<!ENTITY xmlsec-example-verify4-tmpl 	SYSTEM "examples/verify4-tmpl.sgml">
-<!ENTITY xmlsec-example-verify4-bad-res  SYSTEM "examples/verify4-bad-res.sgml">
-<!ENTITY xmlsec-example-verify4-bad-tmpl SYSTEM "examples/verify4-bad-tmpl.sgml">
+<!ENTITY xmlsec-example-sign4-doc	SYSTEM "examples/sign4-doc.sgml">
+<!ENTITY xmlsec-example-sign4-res	SYSTEM "examples/sign4-res.sgml">
+<!ENTITY xmlsec-example-verify-saml-res 	   SYSTEM "examples/verify-saml-res.sgml">
+<!ENTITY xmlsec-example-verify-saml-tmpl 	   SYSTEM "examples/verify-saml-tmpl.sgml">
+<!ENTITY xmlsec-example-verify-saml-bad-res  SYSTEM "examples/verify-saml-bad-res.sgml">
+<!ENTITY xmlsec-example-verify-saml-bad-tmpl SYSTEM "examples/verify-saml-bad-tmpl.sgml">
 
 <!ENTITY xmlsec-example-encrypt1-tmpl	SYSTEM "examples/encrypt1-tmpl.sgml">
 <!ENTITY xmlsec-example-encrypt1-res	SYSTEM "examples/encrypt1-res.sgml">

@@ -1,19 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Signing enveloped signature with X509 certificate.: XML Security Library Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
+<link rel="home" href="index.html" title="XML Security Library Reference Manual">
+<link rel="up" href="xmlsec-examples.html" title="Examples.">
+<link rel="prev" href="xmlsec-examples-sign-dynamimc-template.html" title="Signing a dynamicaly created template.">
+<link rel="next" href="xmlsec-examples-sign-id-attr-x509.html" title="Signing a node by ID with X509 certificate.">
+<meta name="generator" content="GTK-Doc V1.34.0 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts"></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="xmlsec-examples.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="xmlsec-examples-sign-dynamimc-template.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="xmlsec-examples-sign-id-attr-x509.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="sect1">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="xmlsec-examples-sign-enveloped-x509"></a>Signing enveloped signature with X509 certificate.</h2></div></div></div>
+<div class="sect2">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="xmlsec-example-sign3"></a>sign3.c</h3></div></div></div>
+<div class="informalexample"><pre class="programlisting">
 /**
  * XML Security Library example: Signing a file with a dynamicaly created template and an X509 certificate.
  *
  * Signs a file using a dynamicaly created template, key from PEM file and
  * an X509 certificate. The signature has one reference with one enveloped
- * transform to sign the whole document except the <dsig:Signature/> node
- * itself. The key certificate is written in the <dsig:X509Data/> node.
+ * transform to sign the whole document except the &lt;dsig:Signature/&gt; node
+ * itself. The key certificate is written in the &lt;dsig:X509Data/&gt; node.
  *
  * This example was developed and tested with OpenSSL crypto library. The
  * certificates management policies for another crypto library may break it.
  *
  * Usage:
- *      sign3 <xml-doc> <pem-key-file> <pem-cert-file>
+ *      sign3 &lt;xml-doc&gt; &lt;pem-key-file&gt; &lt;pem-cert-file&gt;
  *
  * Example:
- *      ./sign3 sign3-doc.xml rsakey.pem rsacert.pem > sign3-res.xml
+ *      ./sign3 sign3-doc.xml rsakey.pem rsacert.pem &gt; sign3-res.xml
  *
  * The result signature could be validated using verify3 example:
  *      ./verify3 sign3-res.xml ca2cert.pem cacert.pem
@@ -21,26 +49,26 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2024 Aleksey Sanin &lt;aleksey@aleksey.com&gt;. All Rights Reserved.
  */
-#include <stdlib.h>
-#include <string.h>
-#include <assert.h>
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#include &lt;assert.h&gt;
 
-#include <libxml/tree.h>
-#include <libxml/xmlmemory.h>
-#include <libxml/parser.h>
+#include &lt;libxml/tree.h&gt;
+#include &lt;libxml/xmlmemory.h&gt;
+#include &lt;libxml/parser.h&gt;
 
 #ifndef XMLSEC_NO_XSLT
-#include <libxslt/xslt.h>
-#include <libxslt/security.h>
+#include &lt;libxslt/xslt.h&gt;
+#include &lt;libxslt/security.h&gt;
 #endif /* XMLSEC_NO_XSLT */
 
-#include <xmlsec/xmlsec.h>
-#include <xmlsec/xmltree.h>
-#include <xmlsec/xmldsig.h>
-#include <xmlsec/templates.h>
-#include <xmlsec/crypto.h>
+#include &lt;xmlsec/xmlsec.h&gt;
+#include &lt;xmlsec/xmltree.h&gt;
+#include &lt;xmlsec/xmldsig.h&gt;
+#include &lt;xmlsec/templates.h&gt;
+#include &lt;xmlsec/crypto.h&gt;
 
 int sign_file(const char* xml_file, const char* key_file, const char* cert_file);
 
@@ -54,7 +82,7 @@ main(int argc, char **argv) {
 
     if(argc != 4) {
         fprintf(stderr, "Error: wrong number of arguments.\n");
-        fprintf(stderr, "Usage: %s <xml-file> <key-file> <cert-file>\n", argv[0]);
+        fprintf(stderr, "Usage: %s &lt;xml-file&gt; &lt;key-file&gt; &lt;cert-file&gt;\n", argv[0]);
         return(1);
     }
 
@@ -77,7 +105,7 @@ main(int argc, char **argv) {
 #endif /* XMLSEC_NO_XSLT */
 
     /* Init xmlsec library */
-    if(xmlSecInit() < 0) {
+    if(xmlSecInit() &lt; 0) {
         fprintf(stderr, "Error: xmlsec initialization failed.\n");
         return(-1);
     }
@@ -94,7 +122,7 @@ main(int argc, char **argv) {
      * xmlsec-crypto library.
      */
 #ifdef XMLSEC_CRYPTO_DYNAMIC_LOADING
-    if(xmlSecCryptoDLLoadLibrary(NULL) < 0) {
+    if(xmlSecCryptoDLLoadLibrary(NULL) &lt; 0) {
         fprintf(stderr, "Error: unable to load default xmlsec-crypto library. Make sure\n"
                         "that you have it installed and check shared libraries path\n"
                         "(LD_LIBRARY_PATH and/or LTDL_LIBRARY_PATH) environment variables.\n");
@@ -103,18 +131,18 @@ main(int argc, char **argv) {
 #endif /* XMLSEC_CRYPTO_DYNAMIC_LOADING */
 
     /* Init crypto library */
-    if(xmlSecCryptoAppInit(NULL) < 0) {
+    if(xmlSecCryptoAppInit(NULL) &lt; 0) {
         fprintf(stderr, "Error: crypto initialization failed.\n");
         return(-1);
     }
 
     /* Init xmlsec-crypto library */
-    if(xmlSecCryptoInit() < 0) {
+    if(xmlSecCryptoInit() &lt; 0) {
         fprintf(stderr, "Error: xmlsec-crypto initialization failed.\n");
         return(-1);
     }
 
-    if(sign_file(argv[1], argv[2], argv[3]) < 0) {
+    if(sign_file(argv[1], argv[2], argv[3]) &lt; 0) {
         return(-1);
     }
 
@@ -145,7 +173,7 @@ main(int argc, char **argv) {
  *
  * Signs the @xml_file using private key from @key_file and dynamicaly
  * created enveloped signature template. The certificate from @cert_file
- * is placed in the <dsig:X509Data/> node.
+ * is placed in the &lt;dsig:X509Data/&gt; node.
  *
  * Returns 0 on success or a negative value if an error occurs.
  */
@@ -178,7 +206,7 @@ sign_file(const char* xml_file, const char* key_file, const char* cert_file) {
         goto done;
     }
 
-    /* add <dsig:Signature/> node to the doc */
+    /* add &lt;dsig:Signature/&gt; node to the doc */
     xmlAddChild(xmlDocGetRootElement(doc), signNode);
 
     /* add reference */
@@ -195,7 +223,7 @@ sign_file(const char* xml_file, const char* key_file, const char* cert_file) {
         goto done;
     }
 
-    /* add <dsig:KeyInfo/> and <dsig:X509Data/> */
+    /* add &lt;dsig:KeyInfo/&gt; and &lt;dsig:X509Data/&gt; */
     keyInfoNode = xmlSecTmplSignatureEnsureKeyInfo(signNode, NULL);
     if(keyInfoNode == NULL) {
         fprintf(stderr, "Error: failed to add key info\n");
@@ -226,26 +254,26 @@ sign_file(const char* xml_file, const char* key_file, const char* cert_file) {
     }
 
     /* load private key, assuming that there is not password */
-    dsigCtx->signKey = xmlSecCryptoAppKeyLoadEx(key_file, xmlSecKeyDataTypePrivate, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
-    if(dsigCtx->signKey == NULL) {
+    dsigCtx-&gt;signKey = xmlSecCryptoAppKeyLoadEx(key_file, xmlSecKeyDataTypePrivate, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
+    if(dsigCtx-&gt;signKey == NULL) {
         fprintf(stderr,"Error: failed to load private pem key from \"%s\"\n", key_file);
         goto done;
     }
 
     /* load certificate and add to the key */
-    if(xmlSecCryptoAppKeyCertLoad(dsigCtx->signKey, cert_file, xmlSecKeyDataFormatPem) < 0) {
+    if(xmlSecCryptoAppKeyCertLoad(dsigCtx-&gt;signKey, cert_file, xmlSecKeyDataFormatPem) &lt; 0) {
         fprintf(stderr,"Error: failed to load pem certificate \"%s\"\n", cert_file);
         goto done;
     }
 
     /* set key name to the file name, this is just an example! */
-    if(xmlSecKeySetName(dsigCtx->signKey, BAD_CAST key_file) < 0) {
+    if(xmlSecKeySetName(dsigCtx-&gt;signKey, BAD_CAST key_file) &lt; 0) {
         fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
         goto done;
     }
 
     /* sign the template */
-    if(xmlSecDSigCtxSign(dsigCtx, signNode) < 0) {
+    if(xmlSecDSigCtxSign(dsigCtx, signNode) &lt; 0) {
         fprintf(stderr,"Error: signature failed\n");
         goto done;
     }
@@ -267,3 +295,80 @@ done:
     }
     return(res);
 }
+</pre></div>
+</div>
+<div class="sect2">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="xmlsec-example-sign3-doc"></a>sign3-doc.xml</h3></div></div></div>
+<div class="informalexample"><pre class="programlisting">
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!-- 
+XML Security Library example: Original XML doc file for sign3 example. 
+--&gt;
+&lt;Envelope xmlns="urn:envelope"&gt;
+  &lt;Data&gt;
+	Hello, World!
+  &lt;/Data&gt;
+&lt;/Envelope&gt;
+</pre></div>
+</div>
+<div class="sect2">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="xmlsec-example-sign3-res"></a>sign3-res.xml</h3></div></div></div>
+<div class="informalexample"><pre class="programlisting">
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!-- 
+XML Security Library example: Original XML doc file for sign3 example. 
+--&gt;
+&lt;Envelope xmlns="urn:envelope"&gt;
+  &lt;Data&gt;
+	Hello, World!
+  &lt;/Data&gt;
+&lt;Signature xmlns="http://www.w3.org/2000/09/xmldsig#"&gt;
+&lt;SignedInfo&gt;
+&lt;CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/&gt;
+&lt;SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/&gt;
+&lt;Reference URI=""&gt;
+&lt;Transforms&gt;
+&lt;Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/&gt;
+&lt;/Transforms&gt;
+&lt;DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/&gt;
+&lt;DigestValue&gt;HjY8ilZAIEM2tBbPn5mYO1ieIX4=&lt;/DigestValue&gt;
+&lt;/Reference&gt;
+&lt;/SignedInfo&gt;
+&lt;SignatureValue&gt;fUkinGC3hXEUrjJoq8Uc1Gtky7+4AumhtYV5804diUqbFh/SbQI5iPOnJojz0xZK
+WFG9pbfsiWyiqTYlenqDng==&lt;/SignatureValue&gt;
+&lt;KeyInfo&gt;
+&lt;X509Data&gt;
+&lt;X509SubjectName&gt;emailAddress=xmlsec@aleksey.com,CN=Aleksey Sanin,OU=Test Third Level RSA Certificate,O=XML Security Library (http://www.aleksey.com/xmlsec),ST=California,C=US&lt;/X509SubjectName&gt;
+&lt;X509Certificate&gt;MIIDpzCCA1GgAwIBAgIJAK+ii7kzrdqvMA0GCSqGSIb3DQEBBQUAMIGcMQswCQYD
+VQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTE9MDsGA1UEChM0WE1MIFNlY3Vy
+aXR5IExpYnJhcnkgKGh0dHA6Ly93d3cuYWxla3NleS5jb20veG1sc2VjKTEWMBQG
+A1UEAxMNQWxla3NleSBTYW5pbjEhMB8GCSqGSIb3DQEJARYSeG1sc2VjQGFsZWtz
+ZXkuY29tMCAXDTE0MDUyMzE3NTUzNFoYDzIxMTQwNDI5MTc1NTM0WjCBxzELMAkG
+A1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExPTA7BgNVBAoTNFhNTCBTZWN1
+cml0eSBMaWJyYXJ5IChodHRwOi8vd3d3LmFsZWtzZXkuY29tL3htbHNlYykxKTAn
+BgNVBAsTIFRlc3QgVGhpcmQgTGV2ZWwgUlNBIENlcnRpZmljYXRlMRYwFAYDVQQD
+Ew1BbGVrc2V5IFNhbmluMSEwHwYJKoZIhvcNAQkBFhJ4bWxzZWNAYWxla3NleS5j
+b20wXDANBgkqhkiG9w0BAQEFAANLADBIAkEA09BtD3aeVt6DVDkk0dI7Vh7Ljqdn
+sYmW0tbDVxxK+nume+Z9Sb4znbUKkWl+vgQATdRUEyhT2P+Gqrd0UBzYfQIDAQAB
+o4IBRTCCAUEwDAYDVR0TBAUwAwEB/zAsBglghkgBhvhCAQ0EHxYdT3BlblNTTCBH
+ZW5lcmF0ZWQgQ2VydGlmaWNhdGUwHQYDVR0OBBYEFNf0xkZ3zjcEI60pVPuwDqTM
+QygZMIHjBgNVHSMEgdswgdiAFP7k7FMk8JWVxxC14US1XTllWuN+oYG0pIGxMIGu
+MQswCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTE9MDsGA1UEChM0WE1M
+IFNlY3VyaXR5IExpYnJhcnkgKGh0dHA6Ly93d3cuYWxla3NleS5jb20veG1sc2Vj
+KTEQMA4GA1UECxMHUm9vdCBDQTEWMBQGA1UEAxMNQWxla3NleSBTYW5pbjEhMB8G
+CSqGSIb3DQEJARYSeG1sc2VjQGFsZWtzZXkuY29tggkAr6KLuTOt2q0wDQYJKoZI
+hvcNAQEFBQADQQAOXBj0yICp1RmHXqnUlsppryLCW3pKBD1dkb4HWarO7RjA1yJJ
+fBjXssrERn05kpBcrRfzou4r3DCgQFPhjxga
+&lt;/X509Certificate&gt;
+&lt;/X509Data&gt;
+&lt;/KeyInfo&gt;
+&lt;/Signature&gt;&lt;/Envelope&gt;
+</pre></div>
+</div>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.34.0</div>
+</body>
+</html>

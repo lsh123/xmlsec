@@ -1,8 +1,8 @@
 #
 #
 #
-PROGRAMS_SIGN   = sign1 sign2 sign3
-PROGRAMS_VERIFY = verify1 verify2 verify3 verify4
+PROGRAMS_SIGN   = sign1 sign2 sign3 sign4
+PROGRAMS_VERIFY = verify1 verify2 verify3 verify4 verify-saml
 PROGRAMS_ENC    = encrypt1 encrypt2 encrypt3
 PROGRAMS_DEC    = decrypt1 decrypt2 decrypt3
 PROGRAMS = \
@@ -27,6 +27,7 @@ check-sign: $(PROGRAMS_SIGN)
 	./sign1    sign1-tmpl.xml    rsakey.pem
 	./sign2    sign2-doc.xml     rsakey.pem
 	./sign3    sign3-doc.xml     rsakey.pem rsacert.pem
+	./sign4    sign4-doc.xml "data" rsakey.pem rsacert.pem
 
 check-verify: $(PROGRAMS_VERIFY)
 	./verify1  sign1-res.xml     rsapub.pem
@@ -34,7 +35,8 @@ check-verify: $(PROGRAMS_VERIFY)
 	./verify2  sign1-res.xml     rsakey.pem
 	./verify2  sign2-res.xml     rsakey.pem
 	./verify3  sign3-res.xml     ca2cert.pem cacert.pem
-	./verify4  verify4-res.xml   ca2cert.pem cacert.pem
+	./verify4  sign4-res.xml "data" ca2cert.pem cacert.pem
+	./verify-saml  verify-saml-res.xml   ca2cert.pem cacert.pem
 
 check-enc: $(PROGRAMS_ENC)
 	./encrypt1 encrypt1-tmpl.xml deskey.bin

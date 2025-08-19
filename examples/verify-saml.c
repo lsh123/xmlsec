@@ -1,16 +1,24 @@
 /**
- * XML Security Library example: Verifying a file signed with X509 certificate
+ * XML Security Library example: Verifying a simple SAML response with X509 certificate
  *
- * Verifies a file signed with X509 certificate.
+ * Verifies a simple SAML response. In addition to regular verification
+ * we ensure that the signature has only one <dsig:Reference/> element
+ * with an empty or NULL URI attribute and one enveloped signature transform
+ * as it is required by SAML specification.
  *
  * This example was developed and tested with OpenSSL crypto library. The
  * certificates management policies for another crypto library may break it.
  *
  * Usage:
- *      verify4 <signed-file> <id-attribute-to-verify> <trusted-cert-pem-file1> [<trusted-cert-pem-file2> [...]]
+ *      verify-saml <signed-file> <trusted-cert-pem-file1> [<trusted-cert-pem-file2> [...]]
  *
- * Example:
- *      ./verify4 sign4-res.xml "data" ca2cert.pem cacert.pem
+ * Example (success):
+ *      ./verify-saml verify-saml-res.xml ca2cert.pem cacert.pem
+ *
+ * Example (failure):
+ *      ./verify-saml verify-saml-bad-res.xml ca2cert.pem cacert.pem
+ * In the same time, verify3 example successfully verifies this signature:
+ *      ./verify3 verify-saml-bad-res.xml ca2cert.pem cacert.pem
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -36,8 +44,8 @@
 #include <xmlsec/crypto.h>
 
 xmlSecKeysMngrPtr load_trusted_certs(char** files, int files_size);
-int verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* id_attr);
-int verify_signature_results(xmlSecDSigCtxPtr dsigCtx, const char* id_attr);
+int verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file);
+int verify_signature_results(xmlSecDSigCtxPtr dsigCtx);
 
 int
 main(int argc, char **argv) {
@@ -48,9 +56,9 @@ main(int argc, char **argv) {
 
     assert(argv);
 
-    if(argc < 4) {
+    if(argc < 3) {
         fprintf(stderr, "Error: wrong number of arguments.\n");
-        fprintf(stderr, "Usage: %s <xml-file> <id-attribute-to-verify> <cert-file1> [<cert-file2> [...]]\n", argv[0]);
+        fprintf(stderr, "Usage: %s <xml-file> <cert-file1> [<cert-file2> [...]]\n", argv[0]);
         return(1);
     }
 
@@ -111,13 +119,13 @@ main(int argc, char **argv) {
     }
 
     /* create keys manager and load trusted certificates */
-    mngr = load_trusted_certs(&(argv[3]), argc - 3);
+    mngr = load_trusted_certs(&(argv[2]), argc - 2);
     if(mngr == NULL) {
         return(-1);
     }
 
     /* verify file */
-    if(verify_file(mngr, argv[1], argv[2]) < 0) {
+    if(verify_file(mngr, argv[1]) < 0) {
         xmlSecKeysMngrDestroy(mngr);
         return(-1);
     }
@@ -197,15 +205,13 @@ load_trusted_certs(char** files, int files_size) {
  * verify_file:
  * @mngr:               the pointer to keys manager.
  * @xml_file:           the signed XML file name.
- * @id__attr:           the expected ID attribute for the node that was signed
  *
  * Verifies XML signature in #xml_file.
  *
  * Returns 0 on success or a negative value if an error occurs.
  */
 int
-verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* id_attr) {
-    const xmlChar* id_attributes[] = { BAD_CAST "id", BAD_CAST "ID", NULL };
+verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
     xmlDocPtr doc = NULL;
     xmlNodePtr node = NULL;
     xmlSecDSigCtxPtr dsigCtx = NULL;
@@ -213,7 +219,6 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* id_attr) {
 
     assert(mngr);
     assert(xml_file);
-    assert(id_attr);
 
     /* load file */
     doc = xmlReadFile(xml_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET);
@@ -221,9 +226,6 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* id_attr) {
         fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
         goto done;
     }
-
-    /* add ID attributes to the doc context since we don't have DTDs */
-    xmlSecAddIDs(doc, NULL, id_attributes);
 
     /* find start node */
     node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeSignature, xmlSecDSigNs);
@@ -239,14 +241,53 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* id_attr) {
         goto done;
     }
 
+    /* limit the Reference URI attributes to empty or NULL */
+    dsigCtx->enabledReferenceUris = xmlSecTransformUriTypeEmpty;
+
+    /* limit allowed transforms for signature and reference processing */
+    if((xmlSecDSigCtxEnableSignatureTransform(dsigCtx, xmlSecTransformInclC14NId) < 0) ||
+       (xmlSecDSigCtxEnableSignatureTransform(dsigCtx, xmlSecTransformExclC14NId) < 0) ||
+       (xmlSecDSigCtxEnableSignatureTransform(dsigCtx, xmlSecTransformSha1Id) < 0) ||
+       (xmlSecDSigCtxEnableSignatureTransform(dsigCtx, xmlSecTransformRsaSha1Id) < 0)) {
+
+        fprintf(stderr,"Error: failed to limit allowed signature transforms\n");
+        goto done;
+    }
+    if((xmlSecDSigCtxEnableReferenceTransform(dsigCtx, xmlSecTransformInclC14NId) < 0) ||
+       (xmlSecDSigCtxEnableReferenceTransform(dsigCtx, xmlSecTransformExclC14NId) < 0) ||
+       (xmlSecDSigCtxEnableReferenceTransform(dsigCtx, xmlSecTransformSha1Id) < 0) ||
+       (xmlSecDSigCtxEnableReferenceTransform(dsigCtx, xmlSecTransformEnvelopedId) < 0)) {
+
+        fprintf(stderr,"Error: failed to limit allowed reference transforms\n");
+        goto done;
+    }
+
+    /* in addition, limit possible key data to valid X509 certificates only */
+    if(xmlSecPtrListAdd(&(dsigCtx->keyInfoReadCtx.enabledKeyData), BAD_CAST xmlSecKeyDataX509Id) < 0) {
+        fprintf(stderr,"Error: failed to limit allowed key data\n");
+        goto done;
+    }
+    if(xmlSecPtrListAdd(&(dsigCtx->keyInfoReadCtx.enabledKeyData), BAD_CAST xmlSecKeyDataNameId) < 0) {
+        fprintf(stderr,"Error: failed to limit allowed key data\n");
+        goto done;
+    }
+
     /* Verify signature */
     if(xmlSecDSigCtxVerify(dsigCtx, node) < 0) {
         fprintf(stderr,"Error: signature verify\n");
         goto done;
     }
 
+    /* check that we have only one Reference */
+    if((dsigCtx->status == xmlSecDSigStatusSucceeded) &&
+        (xmlSecPtrListGetSize(&(dsigCtx->signedInfoReferences)) != 1)) {
+
+        fprintf(stderr,"Error: only one reference is allowed\n");
+        goto done;
+    }
+
     /* verif results and print outcome to stdout */
-    if(verify_signature_results(dsigCtx, id_attr) == 0) {
+    if(verify_signature_results(dsigCtx) == 0) {
         fprintf(stdout, "Signature is OK\n");
     } else {
         fprintf(stdout, "Signature is INVALID\n");
@@ -267,10 +308,10 @@ done:
     return(res);
 }
 
+
 /**
  * verify_signature_results:
  * @dsigCtx:            the XMLDSig context
- * @id__attr:           the expected ID attribute for the node that was signed
  *
  * Verifies XML signature results to ensure that signature was applied
  * to the expected data.
@@ -278,13 +319,11 @@ done:
  * Returns 0 on success or a negative value if an error occurs.
  */
 int
-verify_signature_results(xmlSecDSigCtxPtr dsigCtx, const char* id_attr) {
+verify_signature_results(xmlSecDSigCtxPtr dsigCtx) {
     xmlSecDSigReferenceCtxPtr dsigRefCtx;
     xmlSecTransformPtr transform;
-    char uri[1024];
 
     assert(dsigCtx);
-    assert(id_attr);
 
     /* check that signature verification succeeded */
     if(dsigCtx->status != xmlSecDSigStatusSucceeded) {
@@ -305,19 +344,20 @@ verify_signature_results(xmlSecDSigCtxPtr dsigCtx, const char* id_attr) {
     }
 
     /* check URI */
-    if (strlen(id_attr) + 2 > sizeof(uri)) {
-        fprintf(stderr, "Error: id attribute is too long\n");
-        return(-1);
-    }
-    sprintf(uri, "#%s", id_attr);
-
-    if(!xmlStrEqual(dsigRefCtx->uri, BAD_CAST uri)) {
+    if(!xmlStrEqual(dsigRefCtx->uri, BAD_CAST "")) {
         fprintf(stderr,"Error: Reference URI value doesn't match expected one\n");
         return(-1);
     }
 
-    /* check transforms: all transforms should be inserted by XMLSec */
+    /* check transforms: we expect only one "enveloped signature" transform */
     transform = dsigRefCtx->transformCtx.first;
+    if((transform == NULL) || (!xmlStrEqual(transform->id->name, xmlSecNameEnveloped))) {
+        fprintf(stderr,"Error: First Transform name '%s' doesn't match expected '%s'\n", (transform != NULL ? transform->id->name : BAD_CAST "NULL"), xmlSecNameEnveloped);
+        return(-1);
+    }
+
+    /* all other transforms should be inserted by XMLSec */
+    transform = transform->next;
     while(transform != NULL) {
         if((transform->flags & XMLSEC_TRANSFORM_FLAGS_USER_SPECIFIED) != 0) {
             fprintf(stderr,"Error: Found unexpected Transform name '%s'\n", transform->id->name);
@@ -329,4 +369,5 @@ verify_signature_results(xmlSecDSigCtxPtr dsigCtx, const char* id_attr) {
     /* all good! */
     return(0);
 }
+
 

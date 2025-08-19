@@ -661,14 +661,25 @@ static xmlSecAppCmdLineParam idAttrParam = {
     "\n\tadds attributes <attr-name> (default value \"id\") from all nodes"
     "\n\twith<node-name> and namespace <node-namespace-uri> to the list of"
     "\n\tknown ID attributes; this is a hack and if you can use DTD or schema"
-    "\n\tto declare ID attributes instead (see \"--dtd-file\" option),"
-    "\n\tI don't know what else might be broken in your application when"
-    "\n\tyou use this hack",
+    "\n\tto declare ID attributes instead (see \"--dtd-file\" option)",
     xmlSecAppCmdLineParamTypeString,
     xmlSecAppCmdLineParamFlagParamNameValue | xmlSecAppCmdLineParamFlagMultipleValues,
     NULL
 };
 
+static xmlSecAppCmdLineParam addIdAttrParam = {
+    xmlSecAppCmdLineTopicDSigCommon |
+    xmlSecAppCmdLineTopicEncCommon,
+    "--add-id-attr",
+    NULL,
+    "--add-id-attr <id-attribute-name>"
+    "\n\tadds attribute <id-attribute-name> to all nodes in the document;"
+    "\n\tthis is a hack and if you can use DTD or schema to declare ID attributes"
+    "\n\tinstead (see \"--dtd-file\" option)",
+    xmlSecAppCmdLineParamTypeString,
+    xmlSecAppCmdLineParamFlagParamNameValue | xmlSecAppCmdLineParamFlagMultipleValues,
+    NULL
+};
 
 static xmlSecAppCmdLineParam xxeParam = {
     xmlSecAppCmdLineTopicAll,
@@ -1026,6 +1037,7 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
     &nodeNameParam,
     &nodeXPathParam,
     &idAttrParam,
+    &addIdAttrParam,
 
     /* Keys Manager params */
     &enabledKeyDataParam,
@@ -3225,6 +3237,20 @@ xmlSecAppXmlDataCreate(const char* filename, const xmlChar* defStartNodeName, co
         xmlFree(buf);
     }
 
+    /* add ID attributes from command line */
+    for(value = addIdAttrParam.value; value != NULL; value = value->next) {
+        const xmlChar* idAttr[] = { NULL, NULL };
+
+        if(value->strValue == NULL) {
+            fprintf(stderr, "Error: invalid value for option \"%s\".\n",
+                    idAttrParam.fullName);
+            xmlSecAppXmlDataDestroy(data);
+            return(NULL);
+        }
+
+        idAttr[0] = BAD_CAST value->strValue;
+        xmlSecAddIDs(data->doc, NULL, idAttr);
+    }
 
     /* now find the start node */
     if(xmlSecAppCmdLineParamGetString(&nodeIdParam) != NULL) {

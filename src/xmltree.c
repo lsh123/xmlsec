@@ -718,7 +718,7 @@ xmlSecReplaceNodeBufferAndReturn(xmlNodePtr node, const xmlSecByte *buffer, xmlS
     node->doc->encoding = NULL;
     ret = xmlParseInNodeContext(node->parent, (const char*)buffer, len,
             xmlSecParserGetDefaultOptions(), &results);
-    node->doc->encoding = oldenc;
+    node->doc->encoding = (xmlChar*)oldenc;
     if(ret != XML_ERR_OK) {
         xmlSecXmlError("xmlParseInNodeContext", NULL);
         return(-1);

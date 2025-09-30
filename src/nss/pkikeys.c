@@ -149,41 +149,53 @@ xmlSecNssPKIKeyDataAdoptKey(xmlSecKeyDataPtr data,
                             SECKEYPublicKey  *pubkey)
 {
     xmlSecNssPKIKeyDataCtxPtr ctx;
+    SECKEYPublicKey *pubkey2 = NULL;
     KeyType pubType = nullKey;
     KeyType priType = nullKey;
 
     xmlSecAssert2(xmlSecKeyDataIsValid(data), -1);
     xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecNssPKIKeyDataSize), -1);
 
-    if(privkey != NULL) {
-        priType = SECKEY_GetPrivateKeyType(privkey);
-    }
-
-    if(pubkey != NULL) {
-        pubType = SECKEY_GetPublicKeyType(pubkey);
-    }
-
-    if(priType != nullKey && pubType != nullKey) {
-        if(pubType != priType) {
-            xmlSecNssError3("SECKEY_GetPrivateKeyType/SECKEY_GetPublicKeyType", NULL,
-                "pubType=%u; priType=%u", pubType, priType);
-            return -1;
-        }
-    }
-
     ctx = xmlSecNssPKIKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
 
-    if (ctx->privkey) {
+    /* get public key if needed from private */
+    if ((pubkey == NULL) && (privkey != NULL)) {
+        pubkey2 = SECKEY_ConvertToPublicKey(privkey);
+        if(pubkey2 == NULL) {
+            xmlSecNssError("SECKEY_ConvertToPublicKey", NULL);
+            return(-1);
+        }
+    }
+
+    /* ensure key types match */
+    if (privkey != NULL) {
+        priType = SECKEY_GetPrivateKeyType(privkey);
+    }
+
+    if (pubkey != NULL) {
+        pubType = SECKEY_GetPublicKeyType(pubkey);
+    }
+    if ((priType != nullKey) && (pubType != nullKey) && (pubType != priType)) {
+        xmlSecNssError3("SECKEY_GetPrivateKeyType/SECKEY_GetPublicKeyType", NULL, "pubType=%u; priType=%u", pubType, priType);
+        if (pubkey2 != NULL) {
+            SECKEY_DestroyPublicKey(pubkey2);
+        }
+        return(-1);
+    }
+
+    /* destroy old keys (if needed) and set new ones */
+    if (ctx->privkey != NULL) {
         SECKEY_DestroyPrivateKey(ctx->privkey);
     }
     ctx->privkey = privkey;
 
-    if (ctx->pubkey) {
+    if (ctx->pubkey != NULL) {
         SECKEY_DestroyPublicKey(ctx->pubkey);
     }
-    ctx->pubkey = pubkey;
+    ctx->pubkey = (pubkey != NULL) ? pubkey : pubkey2;
 
+    /* done */
     return(0);
 }
 

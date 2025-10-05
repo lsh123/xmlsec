@@ -15,5 +15,4 @@ make
 
 echo "============== Cleanup"
 cd "$cur_pwd"
-
-
+make distclean

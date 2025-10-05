@@ -67,12 +67,14 @@ XML Security Library is released under the
 see the Copyright file in the distribution  for details.<br><br></p>
 <p><b>News</b></p>
 <ul>
-    <li>TODO<br>
+    <li>October 15, 2025<br>
 		The <a href="download.html">XML Security Library 1.3.8</a> release includes the following changes:
         <ul>
             <li>(xmlsec-openssl) Deprecated support for OpenSSL 1.1.1 (<a href="https://openssl-corporation.org/post/2023-09-11-eol-111/">reached its End of Life in September, 2023</a>)</li>
+            <li>(xmlsec-openssl) Added AWS-LC support</li>
             <li>(xmlsec-openssl, xmlsec-gnutls, xmlsec-mscng) Added support for longer than expected DSA and ECDSA sigantures to support broken Java implementations.</li>
             <li>(xmlsec command line tool) Added option "--add-id-attr" to add ID attributes by name to all nodes in the document.</li>
+            <li>(xmlsec-core) Added RSA MGF1 and digest template API</li>
             <li>(xmlsec-core) Added example of signing / verifying signature by ID attribute.</li>
             <li>Several other small fixes (see <a href="https://github.com/lsh123/xmlsec/commits/master">more details</a>).</li>
         </ul>
@@ -239,146 +241,6 @@ see the Copyright file in the distribution  for details.<br><br></p>
 	</li>
 	<br>
 
-	<li>
-		April 12, 2023<br>
-		The <a href="download.html">XML Security Library 1.3.0</a> release includes the following changes:
-        <br>
-		<br>
-		<ul>
-			<li>
-<b>core xmlsec and all xmlsec-crypto libraries:</b>
-				<ul>
-                    <li>(<b>ABI breaking change</b>) Added support for the <a href="https://www.w3.org/TR/xmldsig-core1/#sec-KeyInfoReference">KeyInfoReference Element</a>.</li>
-					<li>(<b>ABI breaking change</b>) Switched xmlSecSize to use size_t by default. Use "--enable-size-t=no" configure option ("size_t=no" on Windows) to
-						restore the old behaviour (note that support for xmlSecSize being different from size_t will be removed in the future).</li>
-					<li>(<b>API breaking change</b>) Changed the key search to strict mode: only keys referenced by KeyInfo are used. To restore the old "lax" mode,
-						set XMLSEC_KEYINFO_FLAGS_LAX_KEY_SEARCH flag on xmlSecKeyInfoCtx or use '--lax-key-search' option for XMLSec command line utility.
-					</li>
-					<li>(<b>API breaking change</b>) The KeyName element content is now trimmed before key search is performed.</li>
-					<li>(<b>API breaking change</b>) Disabled FTP support by default. Use "--enable-ftp" configure option to restore it. Also added
-                        "--enable-http" and "--enable-files" configure options to control support for loading files over HTTP or locally.</li>
-                    <li>(<b>API/ABI breaking change</b>) Disabled MD5 digest method by default. Use "--enable-md5" configure options ("legacy-crypto" option on Windows) to re-enable MD5.</li>
-					<li>(<b>ABI breaking change</b>) Added "failureReason" file to xmlSecDSigCtx and xmlEncCtx to provide more granular operation failure reason.</li>
-                    <li>(<b>ABI breaking change</b>) Removed deprecated functions.</li>
-                    <li>Added support for loading keys through <a href="https://www.openssl.org/docs/man3.0/man7/ossl_store.html">ossl-store</a> interface (e.g.
-                        for using keys from an HSM). Also see '--privkey-openssl-store' and '--pubkey-openssl-store ' command line options for XMLSec utility.</li>
-                    <li>Added ability to control transforms binary chunk size to improve performance (see '--transform-binary-chunk-size' command line option for XMLSec utility).</li>
-                    <li>Fixed all potentially unsafe integer conversions and all the other warnings.</li>
-					<li>Added <a href="https://www.w3.org/TR/2012/NOTE-xmldsig-core1-interop-20121113/">XML Signature 1.1 interop (2012)</a>
-                        and <a href="https://www.w3.org/TR/2012/NOTE-xmlenc-core1-interop-20121113/">XML Encryption 1.1 interop (2012)</a> tests.
-                    </li>
-				</ul>
-			</li>
-			<li>
-<b>xmlsec-openssl library:</b>
-				<ul>
-					<li>Added support for <a href="https://www.ietf.org/rfc/rfc9231.html#name-sha-3-algorithms">SHA3 digests</a>.</li>
-					<li>Added support for <a href="https://www.ietf.org/rfc/rfc9231.html#name-ecdsa-sha-ecdsa-ripemd160-e">ECDSA-SHA3 signatures</a>.</li>
-					<li>Added support for <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.3.10">RSA PSS signatures (withtout parameters)</a>.</li>
-					<li>
-						Added support for <a href="https://www.w3.org/TR/xmlenc-core1/#sec-ConcatKDF">ConcatKDF key</a> and
-						<a href="https://www.w3.org/TR/xmlenc-core1/#sec-PBKDF2">PBKDF2</a> derivation algorithms.
-					</li>
-					<li>(<b>ABI breaking change</b>) Added support for <a href="https://www.w3.org/TR/xmlenc-core1/#sec-ECDH-ES">ECDH-ES Key Agreement algorithm</a>.</li>
-					<li>(<b>ABI breaking change</b>) Added support for <a href="https://www.w3.org/TR/xmlenc-core1/#sec-DHKeyAgreementExplicitKDF">DH-ES Key Agreement algorithm</a> with explicit KDF.</li>
-                    <li>Added support for <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP">MGF1 algorithm to RSA OAEP key transport</a>.</li>
-                    <li>Added support for <a href="https://www.w3.org/TR/xmldsig-core1/#sec-X509Data">X509Digest</a> element and ability to lookup keys using other X509Data elements.</li>
-					<li>Added support for <a href="https://www.w3.org/TR/xmldsig-core1/#sec-DEREncodedKeyValue">DEREncodedKeyValue</a> element.</li>
-                    <li>Automatically set key name from PKCS12 key name.</li>
-					<li>Removed support for OpenSSL 1.0.0 and LibreSSL before 2.7.0.</li>
-				</ul>
-			</li>
-			<li>
-<b>xmlsec-nss library:</b>
-				<ul>
-					<li>Added support for <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.3.10">RSA PSS signatures (withtout parameters)</a>.</li>
-					<li>Added support for <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP">RSA OAEP key transport including MGF1 algorithms</a>.</li>
-                    <li>Added support for <a href="https://www.w3.org/TR/xmlenc-core1/#sec-AES-GCM">AES GCM ciphers</a>.</li>
-                    <li>Added support for <a href="https://www.w3.org/TR/xmlenc-core1/#sec-PBKDF2">PBKDF2</a> derivation algorithm.</li>
-                    <li>Added support for <a href="https://www.w3.org/TR/xmldsig-core1/#sec-X509Data">X509Digest</a> element and ability to lookup keys using other X509Data elements.</li>
-					<li>Added support for <a href="https://www.w3.org/TR/xmldsig-core1/#sec-DEREncodedKeyValue">DEREncodedKeyValue</a> element.</li>
-                    <li>Automatically set key name from PKCS12 key name.</li>
-				</ul>
-			</li>
-			<li>
-<b>xmlsec-gnutls library:</b>
-				<ul>
-                    <li>(<b>API/ABI breaking change</b>) Removed dependency on xmlsec-gcrypt and libgcrypt libraries (including API functions) to enable support for different GnuTLS backends.</li>
-                    <li>Bumped minimal GnuTLS version to 3.6.13.</li>
-                    <li>Added support for <a href="https://www.ietf.org/rfc/rfc9231.html#name-sha-3-algorithms">SHA3 digests</a>.</li>
-					<li>Added support for <a href="https://www.w3.org/TR/xmldsig-core1/#sec-ECDSA">ECDSA signatures</a>.</li>
-                    <li>Added support for <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP">DSA-SHA256 signatures</a>.</li>
-					<li>Added support for <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.3.10">RSA PSS signatures (withtout parameters)</a>.</li>
-					<li>Added support for <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-1_5">RSA PKCS 1.5 key transport</a>.</li>
-					<li>Added support for <a href="https://www.w3.org/TR/xmlenc-core1/#sec-AES-GCM">AES GCM ciphers</a>.</li>
-                    <li>Added support for <a href="https://www.w3.org/TR/xmlenc-core1/#sec-PBKDF2">PBKDF2</a> derivation algorithm.</li>
-                    <li>Added support for <a href="https://www.w3.org/TR/xmldsig-core1/#sec-X509Data">X509Digest</a> element and ability to lookup keys using other X509Data elements.</li>
-					<li>Added support for <a href="https://www.w3.org/TR/xmldsig-core1/#sec-DEREncodedKeyValue">DEREncodedKeyValue</a> element.</li>
-                    <li>Automatically set key name from PKCS12 key name.</li>
-				</ul>
-			</li>
-			<li>
-<b>xmlsec-mscng library:</b>
-                <ul>
-                    <li>Added support for <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.3.10">RSA PSS signatures (withtout parameters)</a>.</li>
-                    <li>Added support for <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP">MGF1 algorithm to RSA OAEP key transport</a>.</li>
-                    <li>(<b>ABI breaking change</b>) Added support for <a href="https://www.w3.org/TR/xmlenc-core1/#sec-ECDH-ES">ECDH-ES Key Agreement algorithm</a>.</li>
-                    <li>
-                        Added support for <a href="https://www.w3.org/TR/xmlenc-core1/#sec-ConcatKDF">ConcatKDF key</a> and
-                        <a href="https://www.w3.org/TR/xmlenc-core1/#sec-PBKDF2">PBKDF2</a> derivation algorithms.
-                    </li>
-                    <li>Added support for <a href="https://www.w3.org/TR/xmldsig-core1/#sec-X509Data">X509Digest</a> element for keys and certificates lookup from the system stores (only SHA1 is supported).</li>
-                    <li>Added support for <a href="https://www.w3.org/TR/xmldsig-core1/#sec-DEREncodedKeyValue">DEREncodedKeyValue</a> element.</li>
-                    <li>Automatically set key name from PKCS12 key name.</li>
-                </ul>
-			</li>
-			<li>
-<b>xmlsec-mscrypto library:</b>
-				<ul>
-					<li>In maintenance mode starting from this release.</li>
-					<li>Disabled by default support for NT4. Use "nt4=yes" configure option on Windows to re-enable it.</li>
-				</ul>
-			</li>
-			<li>
-<b>xmlsec-gcrypt library:</b>
-				<ul>
-					<li>In maintenance mode starting from this release.</li>
-                    <li>Added support for <a href="https://www.ietf.org/rfc/rfc9231.html#name-sha-3-algorithms">SHA3 digests</a>.</li>
-					<li>Added support for <a href="https://www.w3.org/TR/xmldsig-core1/#sec-ECDSA">ECDSA signatures</a>.</li>
-					<li>Added support for <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.3.10">RSA PSS signatures (withtout parameters)</a>.</li>
-					<li>Added support for <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-1_5">RSA PKCS 1.5 key transport</a>.</li>
-					<li>Added support for <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP">RSA OAEP key transport including MGF1 algorithms</a>.</li>
-				</ul>
-			</li>
-			<li>
-<b>xmlsec command line utility:</b>
-				<ul>
-                    <li>(<b>API breaking change</b>) The XMLSec command line utility is using 'strict' key search mode by default. To restore the old 'lax'
-                        key search mode, use the new '--lax-key-search' option.</li>
-                    <li>(<b>API breaking change</b>) The XMLSec command line utility is no longer prints detailed errors by default. To restore the detailed
-                        errors, use the new '--verbose' option.</li>
-                    <li>Added '--transform-binary-chunk-size' option to control transforms binary chunk size (increasing the chunk size should improve performance
-                        at the expense of memory usage.
-                    </li>
-                    <li>Added support for loading keys through <a href="https://www.openssl.org/docs/man3.0/man7/ossl_store.html">ossl-store</a> interface (e.g.
-                        for using keys from an HSM). Also see '--privkey-openssl-store' and '--pubkey-openssl-store ' command line options for XMLSec utility.</li>
-                    <li>Added '--enabled-key-info-reference-uris' option to control processing of the
-                        the <a href="https://www.w3.org/TR/xmldsig-core1/#sec-KeyInfoReference">KeyInfoReference Element</a>.
-                    </li>
-                    <li>Added '--pbkdf2-key' option for loading PBKDF2 keys.</li>
-                    <li>Added '--concatkdf-key' option for loading ConcatKDF keys.</li>
-                    <li>Added '--hmac-min-out-len' option to control the min accepted HMAC Output length.</li>
-                    <li>Added '--pubkey-openssl-engine' option to load public keys from OpenSSL engine.</li>
-                    <li>Added '--crl-pem' and '--crl-der' options to load CRLs.</li>
-                    <li>Added '--verify-keys' option to verify key's certificate before loading into Keys Manager (only supported for OpenSSL currently).</li>
-					<li>Enabled templatized output filenames to facilitate batch operations on multiple input files.</li>
-				</ul>
-			</li>
-		</ul>
-		<p>Detailed information about supported algorithms can be found here: <a href="xmldsig.html">XMLDsig</a> and <a href="xmlenc.html">XMLEnc</a>
-            interoperability reports.</p>
-	</li>
-    <br>
 </ul>
 <br><br><a href="news.html">News page</a>
 </td></tr></table></td>

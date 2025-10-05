@@ -32,6 +32,11 @@
 
 #include "cast_helpers.h"
 
+/* inputPush was renamed into xmlCtxtPushInput in libxml2 2.15.0 */
+#if (LIBXML_VERSION < 21500)
+#define xmlCtxtPushInput    inputPush
+#endif /* (LIBXML_VERSION < 21500) */
+
 /**************************************************************************
  *
  * Internal parser

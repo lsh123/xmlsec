@@ -999,6 +999,21 @@ execDSigTest $res_success \
     "$priv_key_option:largersakey $topfolder/keys/largersakey.$priv_key_format --pwd secret123" \
     "$priv_key_option:largersakey $topfolder/keys/largersakey.$priv_key_format --pwd secret123"
 
+
+if [ "z$xmlsec_feature_nssdb_lookup" = "zyes" ] ; then
+    # this test expects "largersakey" in the NSS DB
+    extra_message="Lookup key in NSS DB"
+    execDSigTestWithCryptoConfig $res_success \
+        "" \
+        "aleksey-xmldsig-01/enveloped-sha1-rsa-sha1" \
+        "sha1 rsa-sha1" \
+        "" \
+        "" \
+        "--enabled-key-data key-name,rsa" \
+        "--enabled-key-data key-name,rsa" \
+        "$topfolder/keys/nssdb"
+fi
+
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloped-sha224-ecdsa-sha224" \

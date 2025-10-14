@@ -65,7 +65,6 @@ var buildPedantic = 1;
 var buildCc = "cl.exe";
 var buildCflags = "";
 var buildStatic = 1;
-var buildWithDLSupport = 1;
 var buildPrefix = ".";
 var buildBinPrefix = "$(PREFIX)\\bin";
 var buildIncPrefix = "$(PREFIX)\\include";
@@ -135,7 +134,6 @@ function usage()
 	txt += "  cc:         Build with the specified compiler(" + buildCc  + ")\n";
 	txt += "  cflags:     Build with the specified compiler flags('" + buildCflags  + "')\n";
 	txt += "  static:     Build static xmlsec libraries (" + (buildStatic? "yes" : "no")  + ")\n";
-	txt += "  with-dl:    Enable dynamic loading of xmlsec-crypto libraries (" + (buildWithDLSupport ? "yes" : "no") + ")\n";
 	txt += "  prefix:     Base directory for the installation (" + buildPrefix + ")\n";
 	txt += "  bindir:     Directory where xmlsec and friends should be installed\n";
 	txt += "              (" + buildBinPrefix + ")\n";
@@ -210,7 +208,6 @@ function discoverVersion()
 	vf.WriteLine("CC=" + buildCc);
 	vf.WriteLine("CFLAGS=" + buildCflags);
 	vf.WriteLine("STATIC=" + (buildStatic? "1" : "0"));
-	vf.WriteLine("WITH_DL=" + (buildWithDLSupport ? "1" : "0"));
 	vf.WriteLine("PREFIX=" + buildPrefix);
 	vf.WriteLine("BINPREFIX=" + buildBinPrefix);
 	vf.WriteLine("INCPREFIX=" + buildIncPrefix);
@@ -365,8 +362,6 @@ for (i = 0; (i < WScript.Arguments.length) && (error == 0); i++) {
 			buildCflags = arg.substring(opt.length + 1, arg.length);
 		else if (opt == "static")
 			buildStatic = strToBool(arg.substring(opt.length + 1, arg.length));
-		else if (opt == "with-dl")
-			buildWithDLSupport = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "prefix")
 			buildPrefix = arg.substring(opt.length + 1, arg.length);
 		else if (opt == "incdir")
@@ -390,7 +385,7 @@ for (i = 0; (i < WScript.Arguments.length) && (error == 0); i++) {
 			withOpenSSL3Engines = strToBool(arg.substring(opt.length + 1, arg.length));
 		} else {
 			error = 1;
-                        WScript.Echo("ERROR: Unknown option'" + opt + "'\n");
+            WScript.Echo("ERROR: Unknown option'" + opt + "'\n");
 		}
 	} else if (i == 0) {
 		if (arg == "genreadme") {
@@ -509,7 +504,6 @@ txtOut += "      Debug symbols: " + boolToStr(buildDebug) + "\n";
 txtOut += "           Memcheck: " + boolToStr(buildWithMemcheck) + "\n";
 txtOut += " Warnings as errors: " + boolToStr(buildWerror) + "\n";
 txtOut += " Static xmlsec libs: " + boolToStr(buildStatic) + "\n";
-txtOut += "  Enable DL support: " + boolToStr(buildWithDLSupport) + "\n";
 txtOut += "     Install prefix: " + buildPrefix + "\n";
 txtOut += "       Put tools in: " + buildBinPrefix + "\n";
 txtOut += "     Put headers in: " + buildIncPrefix + "\n";

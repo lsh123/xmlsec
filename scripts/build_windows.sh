@@ -29,7 +29,7 @@ CMAKE_XMLSEC_ARCH="x64"
 CMAKE_XMLSEC_GENERATOR="Visual Studio 17 2022"
 CMAKE_XMLSEC_RUNTIME="MultiThreadedDLL"
 CMAKE_XMLSEC_CONFIG=Release
-CMAKE_XMLSEC_SHARED_LIBS=OFFF
+CMAKE_XMLSEC_SHARED_LIBS=ON
 
 function build_libxml2 {
   # check if already built
@@ -215,7 +215,7 @@ function build_xmlsec {
 
   echo "*** Configuring \"${full_name}\" ..."
   cd "${full_name_without_rc}\win32"
-  cscript configure.js pedantic=yes werror=yes with-dl=yes cruntime=/MD xslt=yes crypto=openssl,mscng unicode=yes prefix="${xmlsec_output_dir}" include="${libxml2_output_dir}\include;${libxml2_output_dir}\include\libxml2;${libxslt_output_dir}\include;${openssl_output_dir}\include" lib="${libxml2_output_dir}\lib;${libxslt_output_dir}\lib;${openssl_output_dir}\lib"
+  cscript configure.js pedantic=yes werror=yes static=no cruntime=/MD xslt=yes crypto=openssl,mscng unicode=yes prefix="${xmlsec_output_dir}" include="${libxml2_output_dir}\include;${libxml2_output_dir}\include\libxml2;${libxslt_output_dir}\include;${openssl_output_dir}\include" lib="${libxml2_output_dir}\lib;${libxslt_output_dir}\lib;${openssl_output_dir}\lib"
   if [ $? -ne 0 ]; then
     exit $?
   fi

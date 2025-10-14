@@ -189,19 +189,19 @@ jobs:
             config_flags: unicode=yes with-dl=yes
           # mscng: no unicode, legacy crypto
           - crypto: mscng
-            config_flags: unicode=no with-dl=no static=yes legacy-features=yes
+            config_flags: unicode=no with-dl=no legacy-features=yes
           # mscrypto: default build
           - crypto: mscrypto
             config_flags:
           # mscrypto: no unicode, legacy crypto
           - crypto: mscrypto
-            config_flags:  unicode=no with-dl=no static=yes legacy-features=yes
+            config_flags:  unicode=no with-dl=no legacy-features=yes
           # mscng: default build
           - crypto: openssl-300
             config_flags:
           # mscng: no unicode, legacy crypto
           - crypto: openssl-300
-            config_flags: unicode=no with-dl=no static=yes
+            config_flags: unicode=no with-dl=no
     env:
       VISUAL_STUDIO_ROOT: "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise"
       INSTALL_FOLDER: c:\install.dir

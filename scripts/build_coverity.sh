@@ -12,10 +12,12 @@ fi
 cov_url="https://scan.coverity.com/builds?project=xmlsec"
 cov_email="aleksey@aleksey.com"
 cur_pwd=`pwd`
+script_pwd=$(dirname "$0")
 today=`date +%F-%H-%M-%S`
 tar_file="xmlsec1-$version-$today.tar.gz"
 
 echo "============= Building xmlsec"
+"$script_pwd/../configure" --enable-legacy-features
 make clean
 rm -rf cov-int/
 cov-build --dir cov-int make -j4

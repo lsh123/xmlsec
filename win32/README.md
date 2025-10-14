@@ -173,7 +173,7 @@ In MSVC x64 native tools shell:
 
 ```
 cd c:\<xmlsec-src-dir>
-cscript configure.js crypto=openssl,mscng xslt=yes unicode=yes with-dl=yes pedantic=yes werror=yes cruntime=/MD prefix=C:\local\distro\xmlsec include=C:\local\distro\libxml2\include;C:\local\distro\libxml2\include\libxml2;C:\local\distro\libxslt\include;C:\local\distro\openssl\include; lib=C:\local\distro\libxml2\lib;C:\local\distro\libxslt\lib;C:\local\distro\openssl\lib
+cscript configure.js crypto=openssl,mscng xslt=yes unicode=yes static=no pedantic=yes werror=yes cruntime=/MD prefix=C:\local\distro\xmlsec include=C:\local\distro\libxml2\include;C:\local\distro\libxml2\include\libxml2;C:\local\distro\libxslt\include;C:\local\distro\openssl\include; lib=C:\local\distro\libxml2\lib;C:\local\distro\libxslt\lib;C:\local\distro\openssl\lib
 nmake
 nmake install
 ```

@@ -186,22 +186,22 @@ jobs:
         include:
           # mscng: default build
           - crypto: mscng
-            config_flags: unicode=yes with-dl=yes
+            config_flags: unicode=yes
           # mscng: no unicode, legacy crypto
           - crypto: mscng
-            config_flags: unicode=no with-dl=no static=yes legacy-features=yes
+            config_flags: unicode=no legacy-features=yes
           # mscrypto: default build
           - crypto: mscrypto
             config_flags:
           # mscrypto: no unicode, legacy crypto
           - crypto: mscrypto
-            config_flags:  unicode=no with-dl=no static=yes legacy-features=yes
+            config_flags:  unicode=no legacy-features=yes
           # mscng: default build
           - crypto: openssl-300
             config_flags:
           # mscng: no unicode, legacy crypto
           - crypto: openssl-300
-            config_flags: unicode=no with-dl=no static=yes
+            config_flags: unicode=no
     env:
       VISUAL_STUDIO_ROOT: "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise"
       INSTALL_FOLDER: c:\install.dir
@@ -229,7 +229,7 @@ jobs:
       shell: cmd
       run: |
           call "${{ env.VISUAL_STUDIO_ROOT }}\VC\Auxiliary\Build\vcvars64.bat"
-          cscript configure.js pedantic=yes werror=yes static=yes ^
+          cscript configure.js pedantic=yes werror=yes static=no ^
               crypto=${{ matrix.crypto }} ${{ matrix.config_flags }} ^
               prefix=${{ env.INSTALL_FOLDER }}\xmlsec.build ^
               include=${{ env.INSTALL_FOLDER }}\libxml2\include;${{ env.INSTALL_FOLDER }}\libxml2\include\libxml2;${{ env.INSTALL_FOLDER }}\libxslt\include;${{ env.INSTALL_FOLDER }}\openssl\include;%MSSDK_INCLUDE% ^

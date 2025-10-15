@@ -175,7 +175,8 @@ XMLSEC_OBJS = \
 	$(XMLSEC_INTDIR)\xmlsec.obj \
 	$(XMLSEC_INTDIR)\xmltree.obj \
 	$(XMLSEC_INTDIR)\xpath.obj \
-	$(XMLSEC_INTDIR)\xslt.obj
+	$(XMLSEC_INTDIR)\xslt.obj \
+	$(XMLSEC_INTDIR)\x509.obj
 XMLSEC_OBJS_A = \
 	$(XMLSEC_INTDIR_A)\app.obj\
 	$(XMLSEC_INTDIR_A)\base64.obj\
@@ -204,7 +205,8 @@ XMLSEC_OBJS_A = \
 	$(XMLSEC_INTDIR_A)\xmlsec.obj \
 	$(XMLSEC_INTDIR_A)\xmltree.obj \
 	$(XMLSEC_INTDIR_A)\xpath.obj \
-	$(XMLSEC_INTDIR_A)\xslt.obj
+	$(XMLSEC_INTDIR_A)\xslt.obj \
+	$(XMLSEC_INTDIR_A)\x509.obj
 
 XMLSEC_OPENSSL_OBJS = \
 	$(XMLSEC_OPENSSL_INTDIR)\app.obj\

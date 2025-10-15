@@ -350,6 +350,7 @@ xmlSecAppCmdLineParamRead(xmlSecAppCmdLineParamPtr param, const char** argv, int
 static time_t
 xmlSecAppGetGmtTime(struct tm* timeptr) {
     time_t t1, t2;
+    struct tm * tm1;
 
     if(timeptr == NULL) {
         return(0);
@@ -357,9 +358,18 @@ xmlSecAppGetGmtTime(struct tm* timeptr) {
 
     /* t1 is gmt time "mapped" to localtime as-is */
     t1 = mktime(timeptr);
+    if(t1 == -1) {
+        fprintf(stderr, "Error: mktime() failed");
+        return(0);
+    }
+    tm1 = gmtime(&t1);
+    if(tm1 == NULL) {
+        fprintf(stderr, "Error: gmtime() failed for time=%lld.\n", (long long)t1);
+        return(0);
+    }
 
     /* t2 is "mapped" gmt time converted to gmt */
-    t2 = mktime(gmtime(&t1));
+    t2 = mktime(tm1);
 
     /* shift t1 back by the (t2 - t1) delta */
     return(t1 - (t2 - t1));

@@ -175,8 +175,10 @@ xmlSecNssPKIKeyDataAdoptKey(xmlSecKeyDataPtr data,
 
     if (pubkey != NULL) {
         pubType = SECKEY_GetPublicKeyType(pubkey);
+    } else if (pubkey2 != NULL) {
+        pubType = SECKEY_GetPublicKeyType(pubkey2);
     }
-    if ((priType != nullKey) && (pubType != nullKey) && (pubType != priType)) {
+    if ((priType != nullKey) && (pubType != priType)) {
         xmlSecNssError3("SECKEY_GetPrivateKeyType/SECKEY_GetPublicKeyType", NULL, "pubType=%u; priType=%u", pubType, priType);
         if (pubkey2 != NULL) {
             SECKEY_DestroyPublicKey(pubkey2);

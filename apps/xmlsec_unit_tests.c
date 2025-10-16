@@ -77,7 +77,7 @@ int main(int argc, const char **argv) {
     }
 
     /* run tests */
-    fprintf(stdout, "== START\n");
+    fprintf(stdout, "=================== Checking xmlsec-core =================================\n");
 
     if(test_xmlSec509NameStringRead() != 0) {
         fprintf(stderr, "Error: test_xmlSec509NameStringRead() failed\n");
@@ -85,7 +85,7 @@ int main(int argc, const char **argv) {
     }
 
     /* sucecss! */
-    fprintf(stdout, "== SUCCESS\n");
+    fprintf(stdout, "== Checking xmlsec-core: SUCCESS\n");
     res = 0;
 
 done:
@@ -173,7 +173,7 @@ static int test_xmlSec509NameStringRead_failure(const char* name, const xmlChar 
 }
 
 
-static int test_xmlSec509NameStringRead() {
+static int test_xmlSec509NameStringRead(void) {
     /* start */
     fprintf(stdout, "=== START: test_xmlSec509NameStringRead()\n");
 

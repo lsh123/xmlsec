@@ -60,11 +60,13 @@ AUTOCONF = .\configure.txt
 # Names of various input and output components.
 #
 !if "$(STATIC)" == "1"
-APP_NAME 		= xmlseca.exe
+APP_NAME = xmlseca.exe
+UNIT_TESTS_APP_NAME = xmlsec_unit_testsa.exe
 !else
-APP_NAME 		= xmlsec.exe
+APP_NAME = xmlsec.exe
+UNIT_TESTS_APP_NAME = xmlsec_unit_tests.exe
 !endif
-APP_NAME_MANIFEST	= $(APP_NAME).manifest
+APP_NAME_MANIFEST = $(APP_NAME).manifest
 
 XMLSEC_NAME 		= xmlsec
 XMLSEC_BASENAME 	= lib$(XMLSEC_NAME)
@@ -625,7 +627,7 @@ EXTRA_CRYPTO_TARGETS = $(EXTRA_CRYPTO_TARGETS) $(XMLSEC_MSCRYPTO_TARGETS)
 
 all: apps $(XMLSEC_APP_TARGETS) $(EXTRA_CRYPTO_TARGETS)
 
-apps: $(BINDIR)\$(APP_NAME)
+apps: $(BINDIR)\$(APP_NAME) $(BINDIR)\$(UNIT_TESTS_APP_NAME)
 
 xmlseca: $(BINDIR)\$(XMLSEC_A) $(XMLSEC_DEFAULT_CRYPTO_A)
 xmlsec: $(BINDIR)\$(XMLSEC_SO) $(XMLSEC_DEFAULT_CRYPTO)
@@ -642,7 +644,12 @@ mscrypto: $(BINDIR)\$(XMLSEC_MSCRYPTO_SO)
 mscnga: $(BINDIR)\$(XMLSEC_MSCNG_A)
 mscng: $(BINDIR)\$(XMLSEC_MSCNG_SO)
 
-check : check-keys check-dsig check-enc
+check : check-unit-tests check-keys check-dsig check-enc
+
+check-unit-tests : $(BINDIR)\$(UNIT_TESTS_APP_NAME)
+	cd ..
+	win32\$(BINDIR)\$(UNIT_TESTS_APP_NAME)
+	cd win32
 
 check-keys : $(BINDIR)\$(APP_NAME)
 	cd ..
@@ -944,7 +951,7 @@ $(BINDIR)\xmlsec.exe: xmlsec $(XMLSEC_APPS_INTDIR) $(BINDIR) $(XMLSEC_APPS_OBJS)
 
 $(BINDIR)\xmlsec_unit_testsa.exe: xmlseca $(XMLSEC_APPS_INTDIR_A) $(BINDIR) $(XMLSEC_UNIT_TESTS_OBJS_A)
 	$(LD) $(LDFLAGS) /OUT:$@ $(XMLSEC_A) $(XMLSEC_CRYPTO_A) $(APP_LIBS) $(XMLSEC_UNIT_TESTS_OBJS_A)
-$(BINDIR)\xmlsecunit_tests.exe: xmlsec $(XMLSEC_APPS_INTDIR) $(BINDIR) $(XMLSEC_UNIT_TESTS_OBJS)
+$(BINDIR)\xmlsec_unit_tests.exe: xmlsec $(XMLSEC_APPS_INTDIR) $(BINDIR) $(XMLSEC_UNIT_TESTS_OBJS)
 	$(LD) $(LDFLAGS) /OUT:$@ $(XMLSEC_IMP) $(XMLSEC_CRYPTO_IMP) $(APP_LIBS) $(XMLSEC_UNIT_TESTS_OBJS)
 
 # This is a target for me, to make a binary distribution. Not for the public use,

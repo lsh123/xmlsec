@@ -616,7 +616,7 @@ xmlSecEncCtxDecryptToBuffer(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
 
     /* decrypt the data */
     if(encCtx->cipherValueNode != NULL) {
-        data = xmlNodeGetContent(encCtx->cipherValueNode);
+        data = xmlSecGetNodeContentAndTrim(encCtx->cipherValueNode);
         if(data == NULL) {
             xmlSecInvalidNodeContentError(encCtx->cipherValueNode, NULL, "empty");
             goto done;
@@ -729,7 +729,7 @@ xmlSecEncCtxEncDataNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
 
         /* next is optional CarriedKeyName node (we simply ignore it) */
         if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeCarriedKeyName, xmlSecEncNs))) {
-            encCtx->carriedKeyName = xmlNodeGetContent(cur);
+            encCtx->carriedKeyName = xmlSecGetNodeContentAndTrim(cur);
             if(encCtx->carriedKeyName == NULL) {
                 xmlSecInvalidNodeContentError(cur, NULL, "empty");
                 return(-1);
@@ -1294,7 +1294,7 @@ xmlSecEncCtxDerivedKeyGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xm
 
     /* third node is optional DerivedKeyName */
     if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeDerivedKeyName, xmlSecEnc11Ns))) {
-        derivedKeyName = xmlNodeGetContent(cur);
+        derivedKeyName = xmlSecGetNodeContentAndTrim(cur);
         if(derivedKeyName == NULL) {
             xmlSecInvalidNodeContentError(cur, NULL, "empty");
             goto done;
@@ -1306,7 +1306,7 @@ xmlSecEncCtxDerivedKeyGenerate(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xm
 
     /* forth node is optional MasterKeyName */
     if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeMasterKeyName, xmlSecEnc11Ns))) {
-        masterKeyName = xmlNodeGetContent(cur);
+        masterKeyName = xmlSecGetNodeContentAndTrim(cur);
         if(masterKeyName == NULL) {
             xmlSecInvalidNodeContentError(cur, NULL, "empty");
             goto done;

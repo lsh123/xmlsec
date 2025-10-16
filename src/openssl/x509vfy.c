@@ -41,6 +41,7 @@
 #include <openssl/x509v3.h>
 
 #include "../cast_helpers.h"
+#include "../x509_helpers.h"
 #include "openssl_compat.h"
 #include "private.h"
 
@@ -93,13 +94,7 @@ static int              xmlSecOpenSSLX509VerifyCRL                      (X509_ST
 static X509*            xmlSecOpenSSLX509FindChildCert                  (STACK_OF(X509) *chain,
                                                                          X509 *cert);
 static X509_NAME*       xmlSecOpenSSLX509NameRead                       (const xmlChar *str);
-static int              xmlSecOpenSSLX509NameStringRead                 (const xmlChar **in,
-                                                                         xmlSecSize *inSize,
-                                                                         xmlSecByte *out,
-                                                                         xmlSecSize outSize,
-                                                                         xmlSecSize *outWritten,
-                                                                         xmlSecByte delim,
-                                                                         int ingoreTrailingSpaces);
+
 static int              xmlSecOpenSSLX509NamesCompare                   (X509_NAME *a,
                                                                          X509_NAME *b);
 static STACK_OF(X509_NAME_ENTRY)*  xmlSecOpenSSLX509_NAME_ENTRIES_copy  (X509_NAME *a);
@@ -1832,10 +1827,9 @@ xmlSecOpenSSLX509NameRead(const xmlChar *str) {
         }
 
         nameSize = 0;
-        ret = xmlSecOpenSSLX509NameStringRead(&str, &strSize,
-            name, sizeof(name), &nameSize, '=', 0);
+        ret = xmlSec509NameStringRead(&str, &strSize, name, sizeof(name), &nameSize, '=', 0);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecOpenSSLX509NameStringRead", NULL);
+            xmlSecInternalError("xmlSec509NameStringRead", NULL);
             goto done;
         }
         name[nameSize] = '\0';
@@ -1853,10 +1847,9 @@ xmlSecOpenSSLX509NameRead(const xmlChar *str) {
             ++str; --strSize;
             if((*str) == '\"') {
                 ++str; --strSize;
-                ret = xmlSecOpenSSLX509NameStringRead(&str, &strSize,
-                    value, sizeof(value), &valueSize, '"', 1);
+                ret = xmlSec509NameStringRead(&str, &strSize, value, sizeof(value), &valueSize, '"', 1);
                 if(ret < 0) {
-                    xmlSecInternalError("xmlSecOpenSSLX509NameStringRead", NULL);
+                    xmlSecInternalError("xmlSec509NameStringRead", NULL);
                     goto done;
                 }
 
@@ -1884,10 +1877,9 @@ xmlSecOpenSSLX509NameRead(const xmlChar *str) {
                 xmlSecNotImplementedError("reading octect values is not implemented yet");
                 goto done;
             } else {
-                ret = xmlSecOpenSSLX509NameStringRead(&str, &strSize,
-                                        value, sizeof(value), &valueSize, ',', 1);
+                ret = xmlSec509NameStringRead(&str, &strSize, value, sizeof(value), &valueSize, ',', 1);
                 if(ret < 0) {
-                    xmlSecInternalError("xmlSecOpenSSLX509NameStringRead", NULL);
+                    xmlSecInternalError("xmlSec509NameStringRead", NULL);
                     goto done;
                 }
                 type = MBSTRING_ASC;
@@ -1917,80 +1909,6 @@ done:
         X509_NAME_free(nm);
     }
     return(res);
-}
-
-static int
-xmlSecOpenSSLX509NameStringRead(const xmlChar **in, xmlSecSize *inSize,
-                            xmlSecByte *out, xmlSecSize outSize,
-                            xmlSecSize *outWritten,
-                            xmlSecByte delim, int ingoreTrailingSpaces) {
-    xmlSecSize ii, jj, nonSpace;
-
-    xmlSecAssert2(in != NULL, -1);
-    xmlSecAssert2((*in) != NULL, -1);
-    xmlSecAssert2(inSize != NULL, -1);
-    xmlSecAssert2(out != NULL, -1);
-
-    ii = jj = nonSpace = 0;
-    while (ii < (*inSize)) {
-        xmlSecByte inCh, inCh2, outCh;
-
-        inCh = (*in)[ii];
-        if (inCh == delim) {
-            break;
-        }
-        if (jj >= outSize) {
-            xmlSecInvalidSizeOtherError("output buffer is too small", NULL);
-            return(-1);
-        }
-
-        if (inCh == '\\') {
-            /* try to move to next char after \\ */
-            ++ii;
-            if (ii >= (*inSize)) {
-                break;
-            }
-            inCh = (*in)[ii];
-
-            /* if next char after \\ is a hex then we expect \\XX, otherwise we just remove \\ */
-            if (xmlSecIsHex(inCh)) {
-                /* try to move to next char after \\X */
-                ++ii;
-                if (ii >= (*inSize)) {
-                    xmlSecInvalidDataError("two hex digits expected", NULL);
-                    return(-1);
-                }
-                inCh2 = (*in)[ii];
-                if (!xmlSecIsHex(inCh2)) {
-                    xmlSecInvalidDataError("two hex digits expected", NULL);
-                    return(-1);
-                }
-                outCh = xmlSecFromHex2(inCh, inCh2);
-            } else {
-                outCh = inCh;
-            }
-        } else {
-            outCh = inCh;
-        }
-
-        out[jj] = outCh;
-        ++ii;
-        ++jj;
-
-        if (ingoreTrailingSpaces && !isspace(outCh)) {
-            nonSpace = jj;
-        }
-    }
-
-    (*inSize) -= ii;
-    (*in) += ii;
-
-    if (ingoreTrailingSpaces) {
-        (*outWritten) = nonSpace;
-    } else {
-        (*outWritten) = (jj);
-    }
-    return(0);
 }
 
 /*

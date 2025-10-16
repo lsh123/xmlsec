@@ -12,6 +12,7 @@ if XMLSEC_DOCS
 SUBDIRS += docs
 endif
 TEST_APP 	    = apps/xmlsec1$(EXEEXT)
+UNIT_TEST_APP 	= apps/xmlsec_unit_tests$(EXEEXT)
 DEFAULT_CRYPTO	= @XMLSEC_DEFAULT_CRYPTO@
 
 bin_SCRIPTS 	= xmlsec1-config
@@ -105,7 +106,10 @@ docs-man:
 
 check: check-all check-info
 
-check-all: $(TEST_APP)
+check-unit-tests: $(UNIT_TEST_APP)
+	@($(PRECHECK_COMMANDS) && $(ABS_BUILDDIR)/$(UNIT_TEST_APP))
+
+check-all: $(TEST_APP) check-unit-tests
 	for crypto in $(CHECK_CRYPTO_LIST) ; do \
 		make check-crypto-$$crypto || exit 1 ; \
 	done

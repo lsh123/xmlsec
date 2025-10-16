@@ -18,6 +18,7 @@ EXTRA_DIST = \
 	errors_helpers.h \
 	keysdata_helpers.h \
 	transform_helpers.h \
+	x509_helpers.h \
 	globals.h \
 	kw_aes_des.h \
 	xslt.h \
@@ -59,6 +60,7 @@ libxmlsec1_la_SOURCES = \
 	xmltree.c \
 	xpath.c \
 	xslt.c \
+	x509.c \
 	$(NULL)
 
 libxmlsec1_la_LIBADD = \

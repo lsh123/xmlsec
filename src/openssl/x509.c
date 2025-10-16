@@ -1412,6 +1412,9 @@ my_timegm(struct tm *t) {
         tl += 3600;
     }
     tg = gmtime (&tl);
+    if(tg == NULL) {
+        return (-1);
+    }
     tg->tm_isdst = 0;
     tb = mktime (tg);
     if (tb == -1) {

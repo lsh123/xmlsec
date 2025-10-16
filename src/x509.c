@@ -25,15 +25,37 @@
 
 #ifndef XMLSEC_NO_X509
 
+
+#define XMLSEC_X509_NAME_SIZE                       256
+#define XMLSEC_X509_VALUE_SIZE                      1024
+
+
 #define XMLSEC_X509_NAME_READ_STATE_NORMAL          0
 #define XMLSEC_X509_NAME_READ_STATE_AFTER_SLASH1    1
 #define XMLSEC_X509_NAME_READ_STATE_AFTER_SLASH2    2
 #define XMLSEC_X509_NAME_READ_STATE_DELIMETER       3
 
+/**
+ * xmlSec509EscapedStringRead:
+ * @in:                     the in/out pointer to the parsed string.
+ * @inSize:                 the in/out size of the parsed string.
+ * @out:                    the pointer to output string.
+ * @outSize:                the size of the output string.
+ * @outWritten:             the number of characters written to the output string.
+ * @delim:                  the delimiter (stop char).
+ * @ingoreTrailingSpaces:   the flag indicating if trailing spaces should not be copied to output.
+ *
+ * Reads X509 escaped string (see https://datatracker.ietf.org/doc/html/rfc4514#section-3).
+ * The function parses the string in the @in paramter until end of string or @delim is encountered.
+ * The @in and @inSize parameters are moved to the next character (e.g. delimeter if it was encountered
+ * during parsing).
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
 int
-xmlSec509NameStringRead(const xmlChar **in, xmlSecSize *inSize,
-                            xmlSecByte *out, xmlSecSize outSize, xmlSecSize *outWritten,
-                            xmlSecByte delim, int ingoreTrailingSpaces
+xmlSec509EscapedStringRead(const xmlChar **in, xmlSecSize *inSize,
+                        xmlSecByte *out, xmlSecSize outSize, xmlSecSize *outWritten,
+                        xmlSecByte delim, int ingoreTrailingSpaces
 ) {
     xmlSecByte inCh, inFirstHex = 0;
     xmlSecSize ii, jj, nonSpaceJJ;
@@ -123,11 +145,9 @@ xmlSec509NameStringRead(const xmlChar **in, xmlSecSize *inSize,
     }
 
     /* success */
-
     (*inSize) -= ii;
     (*in) += ii;
-
-    if (ingoreTrailingSpaces) {
+    if (ingoreTrailingSpaces != 0) {
         (*outWritten) = nonSpaceJJ;
     } else {
         (*outWritten) = (jj);
@@ -135,5 +155,178 @@ xmlSec509NameStringRead(const xmlChar **in, xmlSecSize *inSize,
 
     return(0);
 }
+
+/**
+ * xmlSec509AttrValueStringRead:
+ * @in:                     the in/out pointer to the parsed string.
+ * @inSize:                 the in/out size of the parsed string.
+ * @out:                    the pointer to output string.
+ * @outSize:                the size of the output string.
+ * @outWritten:             the number of characters written to the output string.
+ * @outType:                the type of string (UTF8 or octet).
+ * @delim:                  the delimiter (stop char).
+ * @ingoreTrailingSpaces:   the flag indicating if trailing spaces should not be copied to output.
+ *
+ * Reads X509 attr value string (see https://datatracker.ietf.org/doc/html/rfc4514#section-3) of one of the
+ * three types:
+ *   - string (eg 'abc')
+ *   - quoted string (eg '"abc"')
+ *   - hexstring (eg '#A0B0')
+ * The function parses the string in the @in paramter until end of string or @delim is encountered.
+ * The @in and @inSize parameters are moved to the next character (e.g. delimeter if it was encountered
+ * during parsing).
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSec509AttrValueStringRead(
+    const xmlChar **in,
+    xmlSecSize *inSize,
+    xmlSecByte *out,
+    xmlSecSize outSize,
+    xmlSecSize *outWritten,
+    int *outType,
+    xmlSecByte delim,
+    int ingoreTrailingSpaces
+) {
+    int ret;
+
+    xmlSecAssert2(in != NULL, -1);
+    xmlSecAssert2((*in) != NULL, -1);
+    xmlSecAssert2(inSize != NULL, -1);
+    xmlSecAssert2(out != NULL, -1);
+    xmlSecAssert2(0 < outSize, -1);
+    xmlSecAssert2(outType != NULL, -1);
+
+    /* read value */
+    if ((*inSize) == 0) {
+        /* empty value */
+        (*outWritten) = 0;
+        (*outType) = XMLSEC_X509_VALUE_TYPE_UF8_STRING;
+    } else if((**in) == '\"') {
+        /* read quoted string */
+        ++(*in); --(*inSize);
+        ret = xmlSec509EscapedStringRead(in, inSize, out, outSize, outWritten, '\"', 0);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSec509EscapedStringRead", NULL);
+            return(-1);
+        }
+        (*outType) = XMLSEC_X509_VALUE_TYPE_UF8_STRING;
+
+        /* skip quote */
+        if(((*inSize) <= 0) || ((**in) != '\"')) {
+            xmlSecInvalidDataError("A double quote '\"' is expected at the end of the quoted string", NULL);
+            return(-1);
+        }
+        ++(*in); --(*inSize);
+
+        /* skip spaces before comma or semicolon */
+        if(ingoreTrailingSpaces != 0) {
+            while(((*inSize) > 0) && isspace(**in)) {
+                ++(*in); --(*inSize);
+            }
+        }
+    } else if((**in) == '#') {
+        /* TODO: read octect values */
+        xmlSecNotImplementedError("reading octect values is not implemented yet");
+        return(-1);
+    } else {
+        /* read string */
+        ret = xmlSec509EscapedStringRead(in, inSize, out, outSize, outWritten, delim, ingoreTrailingSpaces);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSec509EscapedStringRead", NULL);
+            return(-1);
+        }
+        (*outType) = XMLSEC_X509_VALUE_TYPE_UF8_STRING;
+    }
+
+    /* success */
+    return(0);
+}
+
+/**
+ * xmlSecX509NameRead:
+ * @str:                    the pointer to the parsed string.
+ * @callback:               the callback to be called on every found name / value pair.
+ * @context:                the context to be passed to callback.
+ *
+ * Reads X509 name (see https://datatracker.ietf.org/doc/html/rfc4514#section-3) and calls
+ * @callback on every name / value pair found.
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecX509NameRead(const xmlChar *str, xmlSecX509NameReadCallback callback, void * context) {
+    xmlSecByte name[XMLSEC_X509_NAME_SIZE];
+    xmlSecByte value[XMLSEC_X509_VALUE_SIZE];
+    xmlSecSize strSize, nameSize, valueSize;
+    int type;
+    int ret;
+
+    xmlSecAssert2(str != NULL, -1);
+    xmlSecAssert2(callback != NULL, -1);
+
+    strSize = xmlSecStrlen(str);
+    while(strSize > 0) {
+        /* skip spaces after comma or semicolon */
+        while((strSize > 0) && isspace(*str)) {
+            ++str; --strSize;
+        }
+
+        /* read name */
+        nameSize = 0;
+        ret = xmlSec509EscapedStringRead(&str, &strSize, name, sizeof(name) - 1, &nameSize, '=', 1);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSec509EscapedStringRead", NULL);
+            return(-1);
+        }
+        xmlSecAssert2(nameSize < sizeof(name), -1);
+        name[nameSize] = '\0';
+
+        /* handle synonymous */
+        if(xmlStrcmp(name, BAD_CAST "E") == 0) {
+            ret = xmlStrPrintf(name, sizeof(name), "emailAddress");
+            if(ret < 0) {
+                xmlSecInternalError("xmlStrPrintf(emailAddress)", NULL);
+                return(-1);
+            }
+        }
+
+        /* expect and skip '=' */
+        if((strSize <= 0) || (*str != '=')) {
+            xmlSecInvalidDataError("An equal sign '=' is expected between name and value", NULL);
+            return(-1);
+        }
+        ++str; --strSize;
+
+        /* read value */
+        ret = xmlSec509AttrValueStringRead(&str, &strSize, value, sizeof(value) - 1, &valueSize, &type, ',', 1);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSec509EscapedStringRead", NULL);
+            return(-1);
+        }
+        xmlSecAssert2(valueSize < sizeof(value), -1);
+        value[valueSize] = '\0';
+
+        /* callback */
+        ret = callback(name, value, valueSize, type, context);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecX509NameReadCallback", NULL);
+            return(-1);
+        }
+
+        /* we expect either end of string or quote separating name / value pairs */
+        if((strSize > 0) && ((*str) == ',')) {
+            ++str; --strSize;
+        } else if (strSize > 0) {
+            xmlSecInvalidDataError("A quote ',' is expected between name and value pairs", NULL);
+            return(-1);
+        }
+    }
+
+    /* success */
+    return(0);
+}
+
 
 #endif /* XMLSEC_NO_X509 */

@@ -1800,115 +1800,77 @@ xmlSecOpenSSLX509FindChildCert(STACK_OF(X509) *chain, X509 *cert) {
     return(NULL);
 }
 
+static int
+xmlSecOpenSSLX509NameReadCallback(
+    const xmlChar * name,
+    const xmlChar * value,
+    xmlSecSize valueSize,
+    int type,
+    void * context
+) {
+    X509_NAME *nm = NULL;
+    int valueLen;
+    int valueType;
+    int ret;
+
+    xmlSecAssert2(name != NULL, -1);
+    xmlSecAssert2(value != NULL, -1);
+    xmlSecAssert2(context != NULL, -1);
+
+    nm = (X509_NAME *)context;
+    xmlSecAssert2(nm != NULL, -1);
+
+    switch(type) {
+    case XMLSEC_X509_VALUE_TYPE_UF8_STRING:
+        valueType = MBSTRING_UTF8 ;
+        break;
+    case XMLSEC_X509_VALUE_TYPE_OCTET_STRING:
+        valueType = B_ASN1_OCTET_STRING;
+        break;
+    default:
+        xmlSecInvalidIntegerDataError("type", type, "should be either utf8 or octet string", NULL);
+        return(-1);
+    }
+
+    printf("DEBUG: xmlSecOpenSSLX509NameReadCallback: '%s' ==> '%s'\n", (const char*)name, (const char*)value);
+
+    /* add to X509_NAME */
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(valueSize, valueLen, return(-1), NULL);
+    ret = X509_NAME_add_entry_by_txt(nm, (char*)name, valueType, value, valueLen, -1, 0);
+    if(ret != 1) {
+        xmlSecOpenSSLError3("X509_NAME_add_entry_by_txt", NULL,
+            "name=%s; type=%d", xmlSecErrorsSafeString(name), type);
+        return(-1);
+    }
+
+    /* success */
+    return(0);
+}
+
 static X509_NAME *
 xmlSecOpenSSLX509NameRead(const xmlChar *str) {
-    xmlSecByte name[256];
-    xmlSecByte value[256];
-    xmlSecSize strSize, nameSize, valueSize;
     X509_NAME *nm = NULL;
-    X509_NAME *res = NULL;
-    int type = MBSTRING_ASC;
-    int valueLen;
     int ret;
+
+    printf("DEBUG: xmlSecOpenSSLX509NameRead: %s\n", (const char*)str);
 
     xmlSecAssert2(str != NULL, NULL);
 
     nm = X509_NAME_new();
     if(nm == NULL) {
         xmlSecOpenSSLError("X509_NAME_new", NULL);
-        goto done;
+        return(NULL);
     }
 
-    strSize = xmlSecStrlen(str);
-    while(strSize > 0) {
-        /* skip spaces after comma or semicolon */
-        while((strSize > 0) && isspace(*str)) {
-            ++str; --strSize;
-        }
-
-        nameSize = 0;
-        ret = xmlSec509NameStringRead(&str, &strSize, name, sizeof(name), &nameSize, '=', 0);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSec509NameStringRead", NULL);
-            goto done;
-        }
-        name[nameSize] = '\0';
-
-        /* handle synonymous */
-        if(xmlStrcmp(name, BAD_CAST "E") == 0) {
-            ret = xmlStrPrintf(name, sizeof(name), "emailAddress");
-            if(ret < 0) {
-                xmlSecInternalError("xmlStrPrintf(emailAddress)", NULL);
-                goto done;
-            }
-        }
-
-        if(strSize > 0) {
-            ++str; --strSize;
-            if((*str) == '\"') {
-                ++str; --strSize;
-                ret = xmlSec509NameStringRead(&str, &strSize, value, sizeof(value), &valueSize, '"', 1);
-                if(ret < 0) {
-                    xmlSecInternalError("xmlSec509NameStringRead", NULL);
-                    goto done;
-                }
-
-                /* skip quote */
-                if((strSize <= 0) || ((*str) != '\"')) {
-                    xmlSecInvalidIntegerDataError("char", (*str), "quote '\"'", NULL);
-                    goto done;
-                }
-                ++str; --strSize;
-
-                /* skip spaces before comma or semicolon */
-                while((strSize > 0) && isspace(*str)) {
-                    ++str; --strSize;
-                }
-                if((strSize > 0) && ((*str) != ',')) {
-                    xmlSecInvalidIntegerDataError("char", (*str), "comma ','", NULL);
-                    goto done;
-                }
-                if(strSize > 0) {
-                    ++str; --strSize;
-                }
-                type = MBSTRING_ASC;
-            } else if((*str) == '#') {
-                /* TODO: read octect values */
-                xmlSecNotImplementedError("reading octect values is not implemented yet");
-                goto done;
-            } else {
-                ret = xmlSec509NameStringRead(&str, &strSize, value, sizeof(value), &valueSize, ',', 1);
-                if(ret < 0) {
-                    xmlSecInternalError("xmlSec509NameStringRead", NULL);
-                    goto done;
-                }
-                type = MBSTRING_ASC;
-            }
-        } else {
-            valueSize = 0;
-        }
-        value[valueSize] = '\0';
-        if(strSize > 0) {
-            ++str; --strSize;
-        }
-        XMLSEC_SAFE_CAST_SIZE_TO_INT(valueSize, valueLen, goto done, NULL);
-        ret = X509_NAME_add_entry_by_txt(nm, (char*)name, type, value, valueLen, -1, 0);
-        if(ret != 1) {
-            xmlSecOpenSSLError2("X509_NAME_add_entry_by_txt", NULL,
-                "name=%s", xmlSecErrorsSafeString(name));
-            goto done;
-        }
-    }
-
-    /* success */
-    res = nm;
-    nm = NULL;
-
-done:
-    if(nm != NULL) {
+    ret = xmlSecX509NameRead(str, xmlSecOpenSSLX509NameReadCallback, (void*)nm);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecX509NameRead", NULL);
         X509_NAME_free(nm);
+        return(NULL);
     }
-    return(res);
+
+    /* succcess */
+    return(nm);
 }
 
 /*

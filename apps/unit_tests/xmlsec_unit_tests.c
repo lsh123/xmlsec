@@ -44,7 +44,7 @@ int main(int argc, const char **argv) {
     if (test_base64() != 1) {
         success = 0;
     }
-    if (test_xmlSec509NameStringRead() != 1) {
+    if (test_xmlSec509EscapedStringRead() != 1) {
         success = 0;
     }
 

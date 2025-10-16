@@ -861,9 +861,9 @@ xmlSecNssX509NameRead(const xmlChar *str) {
         }
 
         nameSize = 0;
-        ret = xmlSec509NameStringRead(&str, &strSize, name, sizeof(name), &nameSize, '=', 0);
+        ret = xmlSec509EscapedStringRead(&str, &strSize, name, sizeof(name), &nameSize, '=', 0);
         if(ret < 0) {
-            xmlSecInternalError("xmlSec509NameStringRead", NULL);
+            xmlSecInternalError("xmlSec509EscapedStringRead", NULL);
             goto done;
         }
 
@@ -875,9 +875,9 @@ xmlSecNssX509NameRead(const xmlChar *str) {
             ++str; --strSize;
             if((*str) == '\"') {
                 valueSize = 0;
-                ret = xmlSec509NameStringRead(&str, &strSize, value, sizeof(value), &valueSize, '"', 1);
+                ret = xmlSec509EscapedStringRead(&str, &strSize, value, sizeof(value), &valueSize, '"', 1);
                 if(ret < 0) {
-                    xmlSecInternalError("xmlSec509NameStringRead", NULL);
+                    xmlSecInternalError("xmlSec509EscapedStringRead", NULL);
                     goto done;
                 }
                 *(p++) = '\"';
@@ -901,9 +901,9 @@ xmlSecNssX509NameRead(const xmlChar *str) {
                 xmlSecNotImplementedError("reading octect values is not implemented yet");
                 goto done;
             } else {
-                ret = xmlSec509NameStringRead(&str, &strSize, value, sizeof(value), &valueSize, ',', 1);
+                ret = xmlSec509EscapedStringRead(&str, &strSize, value, sizeof(value), &valueSize, ',', 1);
                 if(ret < 0) {
-                    xmlSecInternalError("xmlSec509NameStringRead", NULL);
+                    xmlSecInternalError("xmlSec509EscapedStringRead", NULL);
                     goto done;
                 }
 

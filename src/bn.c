@@ -777,9 +777,9 @@ xmlSecBnGetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int 
         }
         break;
     case xmlSecBnHex:
-        content = xmlNodeGetContent(cur);
+        content = xmlSecGetNodeContentAndTrim(cur);
         if(content == NULL) {
-            xmlSecXmlError("xmlNodeGetContent", NULL);
+            xmlSecInternalError("xmlSecGetNodeContentAndTrim", NULL);
             return(-1);
         }
         ret = xmlSecBnFromHexString(bn, content);
@@ -791,9 +791,9 @@ xmlSecBnGetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int 
         xmlFree(content);
         break;
     case xmlSecBnDec:
-        content = xmlNodeGetContent(cur);
+        content = xmlSecGetNodeContentAndTrim(cur);
         if(content == NULL) {
-            xmlSecXmlError("xmlNodeGetContent", NULL);
+            xmlSecInternalError("xmlSecGetNodeContentAndTrim", NULL);
             return(-1);
         }
         ret = xmlSecBnFromDecString(bn, content);

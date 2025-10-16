@@ -118,7 +118,7 @@ xmlSecGetNodeContentAsSize(const xmlNodePtr cur, xmlSecSize defValue, xmlSecSize
     xmlSecAssert2(cur != NULL, -1);
     xmlSecAssert2(res != NULL, -1);
 
-    content = xmlNodeGetContent(cur);
+    content = xmlSecGetNodeContentAndTrim(cur);
     if(content == NULL) {
         (*res) = defValue;
         return(0);
@@ -1212,9 +1212,9 @@ xmlSecQName2IntegerNodeRead(xmlSecQName2IntegerInfoConstPtr info, xmlNodePtr nod
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(intValue != NULL, -1);
 
-    content = xmlNodeGetContent(node);
+    content = xmlSecGetNodeContentAndTrim(node);
     if(content == NULL) {
-        xmlSecXmlError2("xmlNodeGetContent", NULL,
+        xmlSecInternalError2("xmlSecGetNodeContentAndTrim", NULL,
                         "node=%s", xmlSecErrorsSafeString(node->name));
         return(-1);
     }
@@ -1629,9 +1629,9 @@ xmlSecQName2BitMaskNodesRead(xmlSecQName2BitMaskInfoConstPtr info, xmlNodePtr* n
     (*mask) = 0;
     cur = (*node);
     while((cur != NULL) && (xmlSecCheckNodeName(cur, nodeName, nodeNs))) {
-        content = xmlNodeGetContent(cur);
+        content = xmlSecGetNodeContentAndTrim(cur);
         if(content == NULL) {
-            xmlSecXmlError2("xmlNodeGetContent", NULL,
+            xmlSecInternalError2("xmlSecGetNodeContentAndTrim", NULL,
                             "node=%s", xmlSecErrorsSafeString(cur->name));
             return(-1);
         }

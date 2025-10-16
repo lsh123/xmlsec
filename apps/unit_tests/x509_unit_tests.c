@@ -17,9 +17,15 @@
 #include "xmlsec_unit_tests.h"
 #include "../src/x509_helpers.h"
 
-
-static int
-test_xmlSec509NameStringRead_success(const char* name, const xmlChar * str, const xmlChar delim, int ingoreTrailingSpaces, const xmlChar* expectedOut, xmlSecSize expectedInSize) {
+static void
+test_xmlSec509NameStringRead_success(
+    const char* name,
+    const char * str,
+    const char delim,
+    int ingoreTrailingSpaces,
+    const char* expectedIn,
+    const char* expectedOut
+) {
     const xmlChar *inStr;
     xmlSecSize size, inSize;
     int len;
@@ -27,36 +33,46 @@ test_xmlSec509NameStringRead_success(const char* name, const xmlChar * str, cons
     xmlSecSize outSize;
     int ret;
 
-    fprintf(stdout, "=== test_xmlSec509NameStringRead: test %s\n", name);
-    len = xmlStrlen(str);
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, return(-1), NULL);
-    inStr = str;
+    testStart(name);
+
+    len = xmlStrlen(BAD_CAST str);
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, return, NULL);
+    inStr = BAD_CAST str;
     inSize = size;
     outSize = 0;
 
-    ret = xmlSec509NameStringRead(&inStr, &inSize, out, sizeof(out) - 1, &outSize, delim, ingoreTrailingSpaces);
+    ret = xmlSec509NameStringRead(&inStr, &inSize, out, sizeof(out) - 1, &outSize, (xmlChar)delim, ingoreTrailingSpaces);
     if(ret < 0) {
         fprintf(stderr, "Error: xmlSec509NameStringRead failed for '%s'\n", (const char*)str);
-        return (-1);
+        testFinishedFailure();
+        return;
     }
     out[outSize] = '\0';
 
-    if(xmlStrcmp(out, expectedOut) != 0) {
+    /* check results */
+    if(xmlStrcmp(inStr, BAD_CAST  expectedIn) != 0) {
+        fprintf(stderr, "Error: xmlSec509NameStringRead retruned in='%s' (expected: '%s')\n", (const char*)inStr, (const char*)expectedIn);
+        testFinishedFailure();
+        return;
+    }
+
+    if(xmlStrcmp(out, BAD_CAST expectedOut) != 0) {
         fprintf(stderr, "Error: xmlSec509NameStringRead retruned out='%s' (expected: '%s')\n", (const char*)out, (const char*)expectedOut);
-        return (-1);
+        testFinishedFailure();
+        return;
     }
 
-    if(inSize != expectedInSize) {
-        fprintf(stderr, "Error: xmlSec509NameStringRead retruned inSize='%d' (expected: '%d')\n", (int)inSize, (int)expectedInSize);
-        return (-1);
-    }
-
-    fprintf(stdout, "=== test_xmlSec509NameStringRead: test %s: '%s' -> '%s' (ingoreTrailingSpaces=%d, remaining=%d)\n", name, (const char*)str, (const char*)out, ingoreTrailingSpaces, (int)inSize);
-    return(0);
+    /* DONE */
+    testFinishedSuccess();
 }
 
-static int
-test_xmlSec509NameStringRead_failure(const char* name, const xmlChar * str, const xmlChar delim, int ingoreTrailingSpaces) {
+static void
+test_xmlSec509NameStringRead_failure(
+    const char* name,
+    const char * str,
+    const char delim,
+    int ingoreTrailingSpaces
+) {
     const xmlChar *inStr;
     xmlSecSize size, inSize;
     int len;
@@ -64,69 +80,53 @@ test_xmlSec509NameStringRead_failure(const char* name, const xmlChar * str, cons
     xmlSecSize outSize;
     int ret;
 
-    fprintf(stdout, "=== test_xmlSec509NameStringRead: negative test %s\n", name);
-    len = xmlStrlen(str);
-    XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, return(-1), NULL);
-    inStr = str;
+    testStart(name);
+
+    len = xmlStrlen(BAD_CAST str);
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, return, NULL);
+    inStr = BAD_CAST str;
     inSize = size;
     outSize = 0;
 
-    ret = xmlSec509NameStringRead(&inStr, &inSize, out, sizeof(out) - 1, &outSize, delim, ingoreTrailingSpaces);
+    ret = xmlSec509NameStringRead(&inStr, &inSize, out, sizeof(out) - 1, &outSize, (xmlChar)delim, ingoreTrailingSpaces);
     if(ret >= 0) {
         fprintf(stderr, "Error: xmlSec509NameStringRead expected to fail for '%s'\n", (const char*)str);
-        return (-1);
+        testFinishedFailure();
+        return;
     }
     if(inSize != size) {
         fprintf(stderr, "Error: xmlSec509NameStringRead retruned inSize='%d' (expected: '%d')\n", (int)inSize, (int)size);
-        return (-1);
+        testFinishedFailure();
+        return;
     }
     if(outSize != 0) {
         fprintf(stderr, "Error: xmlSec509NameStringRead retruned outSize='%d' (expected: '%d')\n", (int)outSize, (int)0);
-        return (-1);
+        testFinishedFailure();
+        return;
     }
 
-    fprintf(stdout, "=== test_xmlSec509NameStringRead: negative test %s failed (as expected)\n", name);
-    return(0);
+    /* DONE */
+    testFinishedSuccess();
 }
 
 
 int test_xmlSec509NameStringRead(void) {
     /* start */
-    fprintf(stdout, "=== START: test_xmlSec509NameStringRead()\n");
+    testGroupStart("xmlSec509NameStringRead");
 
     /* positive tests */
-    if(test_xmlSec509NameStringRead_success("check empty string", BAD_CAST "=", '=', 0, BAD_CAST "", 1) != 0) {
-        return(-1);
-    }
-    if(test_xmlSec509NameStringRead_success("check end of line with trailing spaces", BAD_CAST "Foo   ", '=', 0, BAD_CAST "Foo   ", 0) != 0) {
-        return(-1);
-    }
-    if(test_xmlSec509NameStringRead_success("check end of line without trailing spaces", BAD_CAST "Foo   ", '=', 1, BAD_CAST "Foo", 0) != 0) {
-        return(-1);
-    }
-    if(test_xmlSec509NameStringRead_success("check with trailing spaces", BAD_CAST "Foo   =", '=', 0, BAD_CAST "Foo   ", 1) != 0) {
-        return(-1);
-    }
-    if(test_xmlSec509NameStringRead_success("check without trailing spaces", BAD_CAST "Foo   =", '=', 1, BAD_CAST "Foo", 1) != 0) {
-        return(-1);
-    }
-    if(test_xmlSec509NameStringRead_success("check \\<char> converted to <char> ", BAD_CAST "Fo\\oBar=", '=', 0, BAD_CAST "FooBar", 1) != 0) {
-        return(-1);
-    }
-    if(test_xmlSec509NameStringRead_success("check \\XXX converted to <char> ", BAD_CAST "Fo\\6FBar=", '=', 0, BAD_CAST "FooBar", 1) != 0) {
-        return(-1);
-    }
-
+    test_xmlSec509NameStringRead_success("check empty string", "=", '=', 0, "=", "");
+    test_xmlSec509NameStringRead_success("check end of line with trailing spaces", "Foo Bar  ", '=', 0, "", "Foo Bar  ");
+    test_xmlSec509NameStringRead_success("check end of line without trailing spaces", "Foo Bar  ", '=', 1, "", "Foo Bar");
+    test_xmlSec509NameStringRead_success("check with trailing spaces", "Foo Bar  =Value", '=', 0, "=Value", "Foo Bar  ");
+    test_xmlSec509NameStringRead_success("check without trailing spaces", "Foo Bar  =Value", '=', 1, "=Value", "Foo Bar");
+    test_xmlSec509NameStringRead_success("check \\<char> converted to <char> ", "Fo\\o Bar=Value", '=', 0, "=Value", "Foo Bar");
+    test_xmlSec509NameStringRead_success("check \\XXX converted to <char> ", "Fo\\6F Bar=Value", '=', 0, "=Value", "Foo Bar");
 
     /* negative tests */
-    if(test_xmlSec509NameStringRead_failure("check bad hex char", BAD_CAST "Foo\\6XBar", '=', 0) != 0) {
-        return(-1);
-    }
-    if(test_xmlSec509NameStringRead_failure("check output buffer too small", BAD_CAST "FooBarFooBarFooBarFooBarFooBarFooBarFooBarFooBarFooBar=", '=', 0) != 0) {
-        return(-1);
-    }
+    test_xmlSec509NameStringRead_failure("check bad hex char", "Foo\\6XBar", '=', 0);
+    test_xmlSec509NameStringRead_failure("check output buffer too small", "FooBarFooBarFooBarFooBarFooBarFooBarFooBarFooBarFooBar=Value", '=', 0);
 
-    /* success */
-     fprintf(stdout, "=== SUCCESS: test_xmlSec509NameStringRead()\n");
-    return(0);
+    /* done */
+    return (testGroupFinished());
 }

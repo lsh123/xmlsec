@@ -40,14 +40,14 @@ int main(int argc, const char **argv) {
     /* run tests */
     fprintf(stdout, "=================== Checking xmlsec-core =================================\n");
 
-    if(test_xmlSec509NameStringRead() != 0) {
-        fprintf(stderr, "Error: test_xmlSec509NameStringRead() failed\n");
-        goto done;
+    if(test_xmlSec509NameStringRead() == 1) {
+        /* sucecss! */
+        fprintf(stdout, "=================== Checking xmlsec-core: SUCCESS =================================\n");
+        res = 0;
+    } else {
+        fprintf(stdout, "=================== Checking xmlsec-core: FAILURE =================================\n");
+        res = 1;
     }
-
-    /* sucecss! */
-    fprintf(stdout, "== Checking xmlsec-core: SUCCESS\n");
-    res = 0;
 
 done:
 #if defined(_MSC_VER) && defined(_CRTDBG_MAP_ALLOC)
@@ -62,4 +62,54 @@ done:
 #endif /*  defined(_MSC_VER) && defined(_CRTDBG_MAP_ALLOC) */
 
     return(res);
+}
+
+
+static const char * testsGroupName = NULL;
+static const char * testsName = NULL;
+static int testsStarted = 0;
+static int testsFinishedSuccess = 0;
+static int testFinishedFailed = 0;
+
+void testGroupStart(const char * name) {
+    xmlSecAssert(name != NULL);
+
+    testsGroupName = name;
+    testsStarted = 0;
+    testsFinishedSuccess = 0;
+    testFinishedFailed = 0;
+    fprintf(stdout, "=== STARTED TESTS FOR '%s'\n", testsGroupName);
+}
+
+int testGroupFinished(void) {
+    xmlSecAssert2(testsGroupName != NULL, 0);
+    fprintf(stdout, "=== FINSIHED TESTS FOR '%s': TOTAL=%d, SUCCESS=%d, FAILURE=%d, NOT FIISHED=%d\n",
+        testsGroupName,
+        testsStarted,
+        testsFinishedSuccess,
+        testFinishedFailed,
+        (testsStarted - (testsFinishedSuccess + testFinishedFailed))
+    );
+    testsGroupName = NULL;
+    return testsStarted == testsFinishedSuccess ? 1 : 0;
+}
+
+void testStart(const char * name) {
+    xmlSecAssert(name != NULL);
+
+    testsName = name;
+    testsStarted += 1;
+    fprintf(stdout, "    %s ...\n", testsName);
+}
+
+void testFinishedSuccess(void) {
+    fprintf(stdout, "    %s     OK\n", testsName);
+    testsFinishedSuccess += 1;
+    testsName = NULL;
+}
+
+void testFinishedFailure(void) {
+    fprintf(stdout, "    %s     FAILED\n", testsName);
+    testFinishedFailed += 1;
+    testsName = NULL;
 }

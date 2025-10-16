@@ -20,6 +20,14 @@
 extern "C" {
 #endif /* __cplusplus */
 
+
+void testGroupStart(const char * name);
+int  testGroupFinished(void);
+
+void testStart(const char * name);
+void testFinishedSuccess(void);
+void testFinishedFailure(void);
+
 int test_xmlSec509NameStringRead(void);
 
 #ifdef __cplusplus

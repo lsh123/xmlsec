@@ -35,7 +35,7 @@ xmlSec509NameStringRead(const xmlChar **in, xmlSecSize *inSize,
                             xmlSecByte *out, xmlSecSize outSize, xmlSecSize *outWritten,
                             xmlSecByte delim, int ingoreTrailingSpaces
 ) {
-    xmlSecByte inCh, inCh2;
+    xmlSecByte inCh, inFirstHex = 0;
     xmlSecSize ii, jj, nonSpaceJJ;
     int state = XMLSEC_X509_NAME_READ_STATE_NORMAL;
 
@@ -76,7 +76,7 @@ xmlSec509NameStringRead(const xmlChar **in, xmlSecSize *inSize,
         case XMLSEC_X509_NAME_READ_STATE_AFTER_SLASH1:
              /* if next char after \\ is a hex then we expect \\XX, otherwise we just remove \\ */
              if (xmlSecIsHex(inCh)) {
-                inCh2 = inCh;
+                inFirstHex = inCh;
                 state = XMLSEC_X509_NAME_READ_STATE_AFTER_SLASH2;
                 ++ii;
              } else {
@@ -96,9 +96,10 @@ xmlSec509NameStringRead(const xmlChar **in, xmlSecSize *inSize,
             break;
         case XMLSEC_X509_NAME_READ_STATE_AFTER_SLASH2:
             /* two XX chars are expected */
-            if (xmlSecIsHex(inCh)) {
+            if ((xmlSecIsHex(inCh)) && (inFirstHex > 0)) {
                 state = XMLSEC_X509_NAME_READ_STATE_NORMAL;
-                inCh = xmlSecFromHex2(inCh2, inCh);
+                inCh = xmlSecFromHex2(inFirstHex, inCh);
+                inFirstHex = 0;
 
                 /* copy char and move to next */
                 out[jj] = inCh;

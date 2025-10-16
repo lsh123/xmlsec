@@ -143,7 +143,7 @@ static int test_xmlSec509NameStringRead_failure(const char* name, const xmlChar 
     const xmlChar *inStr;
     xmlSecSize size, inSize;
     int len;
-    xmlChar out[256];
+    xmlChar out[16];
     xmlSecSize outSize;
     int ret;
 
@@ -201,6 +201,9 @@ static int test_xmlSec509NameStringRead(void) {
 
 
     if(test_xmlSec509NameStringRead_failure("check bad hex char", BAD_CAST "Foo\\6XBar", '=', 0) != 0) {
+        return(-1);
+    }
+    if(test_xmlSec509NameStringRead_failure("check output buffer too small", BAD_CAST "FooBarFooBarFooBarFooBarFooBarFooBarFooBarFooBarFooBar=", '=', 0) != 0) {
         return(-1);
     }
 

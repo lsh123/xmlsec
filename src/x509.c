@@ -116,7 +116,8 @@ xmlSec509NameStringRead(const xmlChar **in, xmlSecSize *inSize,
             }
             break;
         default:
-            xmlSecInternalError2("", NULL, "invalid state while parsing name=%d", state);
+            /* This should not be possible: logical error! */
+            xmlSecInternalError2("", NULL, "invalid state=%d while parsing x509 name", state);
             return(-1);
         }
     }

@@ -76,9 +76,6 @@ XMLSEC_KEY_DATA_STORE_DECLARE(NssX509Store, xmlSecNssX509StoreCtx)
 
 static int              xmlSecNssX509StoreInitialize    (xmlSecKeyDataStorePtr store);
 static void             xmlSecNssX509StoreFinalize      (xmlSecKeyDataStorePtr store);
-
-static xmlSecByte *     xmlSecNssX509NameRead           (const xmlChar *str);
-
 static int              xmlSecNssNumToItem              (PLArenaPool *arena,
                                                          SECItem *it,
                                                          PRUint64 num);
@@ -729,7 +726,7 @@ xmlSecNssX509StoreFinalize(xmlSecKeyDataStorePtr store) {
  *****************************************************************************/
 static CERTName *
 xmlSecNssGetCertName(const xmlChar * name) {
-    xmlChar *tmp, *name2;
+    xmlChar *name2;
     xmlChar *p;
     CERTName *res;
 
@@ -749,26 +746,13 @@ xmlSecNssGetCertName(const xmlChar * name) {
         memcpy(p, "           E=", 13);
     }
 
-    tmp = xmlSecNssX509NameRead(name2);
-    if(tmp == NULL) {
-        xmlSecInternalError2("xmlSecNssX509NameRead", NULL,
-                             "name2=\"%s\"", xmlSecErrorsSafeString(name2));
-        xmlFree(name2);
-        return(NULL);
-    }
-
-    res = CERT_AsciiToName((char*)tmp);
+    res = CERT_AsciiToName((char*)name2);
     if (res == NULL) {
-        xmlSecNssError3("CERT_AsciiToName", NULL,
-                        "name2=\"%s\";tmp=\"%s\"",
-                        xmlSecErrorsSafeString((char*)name2),
-                        xmlSecErrorsSafeString((char*)tmp));
-        PORT_Free(tmp);
+        xmlSecNssError2("CERT_AsciiToName", NULL, "name2=\"%s\"", xmlSecErrorsSafeString((char*)name2));
         xmlFree(name2);
         return(NULL);
     }
 
-    PORT_Free(tmp);
     xmlFree(name2);
     return(res);
 }
@@ -832,99 +816,6 @@ xmlSecNssX509FindCert(CERTCertList* certsList, xmlSecNssX509FindCertCtxPtr findC
 
     /* done */
     return(cert);
-}
-
-static xmlSecByte *
-xmlSecNssX509NameRead(const xmlChar *str) {
-    xmlSecByte name[256];
-    xmlSecByte value[256];
-    xmlSecByte *retval = NULL;
-    xmlSecByte *p = NULL;
-    xmlSecSize strSize, nameSize, valueSize;
-    int ret;
-
-    xmlSecAssert2(str != NULL, NULL);
-
-    /* return string should be no longer than input string */
-    strSize = xmlSecStrlen(str);
-    retval = (xmlSecByte *)PORT_Alloc(strSize + 1);
-    if(retval == NULL) {
-        xmlSecNssError2("PORT_Alloc", NULL, "size=" XMLSEC_SIZE_FMT, (strSize + 1));
-        return(NULL);
-    }
-    p = retval;
-
-    while(strSize > 0) {
-        /* skip spaces after comma or semicolon */
-        while((strSize > 0) && isspace(*str)) {
-            ++str; --strSize;
-        }
-
-        nameSize = 0;
-        ret = xmlSec509NameStringRead(&str, &strSize, name, sizeof(name), &nameSize, '=', 0);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSec509NameStringRead", NULL);
-            goto done;
-        }
-
-        memcpy(p, name, nameSize);
-        p += nameSize;
-        *(p++) = '=';
-
-        if(strSize > 0) {
-            ++str; --strSize;
-            if((*str) == '\"') {
-                valueSize = 0;
-                ret = xmlSec509NameStringRead(&str, &strSize, value, sizeof(value), &valueSize, '"', 1);
-                if(ret < 0) {
-                    xmlSecInternalError("xmlSec509NameStringRead", NULL);
-                    goto done;
-                }
-                *(p++) = '\"';
-                memcpy(p, value, valueSize);
-                p += valueSize;
-                *(p++) = '\"';
-
-                /* skip spaces before comma or semicolon */
-                while((strSize > 0) && isspace(*str)) {
-                    ++str; --strSize;
-                }
-                if((strSize > 0) && ((*str) != ',')) {
-                    xmlSecInvalidIntegerDataError("char", (*str), "comma ','", NULL);
-                    goto done;
-                }
-                if(strSize > 0) {
-                    ++str; --strSize;
-                }
-            } else if((*str) == '#') {
-                /* TODO: read octect values */
-                xmlSecNotImplementedError("reading octect values is not implemented yet");
-                goto done;
-            } else {
-                ret = xmlSec509NameStringRead(&str, &strSize, value, sizeof(value), &valueSize, ',', 1);
-                if(ret < 0) {
-                    xmlSecInternalError("xmlSec509NameStringRead", NULL);
-                    goto done;
-                }
-
-                memcpy(p, value, valueSize);
-                p += valueSize;
-                if (strSize > 0) {
-                    *(p++) = ',';
-                }
-            }
-        }
-        if(strSize > 0) {
-            ++str; --strSize;
-        }
-    }
-
-    *p = 0;
-    return(retval);
-
-done:
-    PORT_Free(retval);
-    return (NULL);
 }
 
 /* code lifted from NSS */

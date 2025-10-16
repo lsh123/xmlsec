@@ -635,7 +635,7 @@ xmlSecKeyDataBinaryValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
-    str = xmlNodeGetContent(node);
+    str = xmlSecGetNodeContentAndTrim(node);
     if(str == NULL) {
         xmlSecInvalidNodeContentError(node, xmlSecKeyDataKlassGetName(id), "empty");
         goto done;
@@ -2920,6 +2920,8 @@ xmlSecKeyDataX509XmlRead(xmlSecKeyPtr key, xmlSecKeyDataPtr data, xmlNodePtr nod
             goto done;
         }
 
+        fprintf(stderr, "DEBUG: xmlSecKeyDataX509XmlRead node=%s\n", cur->name);
+
         /* first try to lookup key in keys manager using x509 data */
         if(keyFound == 0) {
             xmlSecKeyPtr tmpKey;
@@ -3225,7 +3227,7 @@ xmlSecKeyX509DataValueXmlReadBase64Blob(xmlSecBufferPtr buf, xmlNodePtr node, xm
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
-    content = xmlNodeGetContent(node);
+    content = xmlSecGetNodeContentAndTrim(node);
     if((content == NULL) || (xmlSecIsEmptyString(content) == 1)) {
         if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_STOP_ON_EMPTY_NODE) != 0) {
             xmlSecInvalidNodeContentError(node, NULL, "empty");
@@ -3266,43 +3268,6 @@ done:
     return(res);
 }
 
-static void
-xmlSecKeyX509DataValueTrim(xmlChar * str) {
-    xmlChar * p, * q;
-    int len;
-
-    xmlSecAssert(str != NULL);
-
-    len = xmlStrlen(str);
-    if(len <= 0) {
-        return;
-    }
-
-    /* skip spaces from the beggining */
-    p = str;
-    q = str + len - 1;
-    while(isspace(*p) && (p != q)) {
-        ++p;
-    }
-    while(isspace(*q) && (p != q)) {
-        --q;
-    }
-
-    /* all the cases */
-    if((p == q) && isspace(*p)) {
-        (*str) = '\0';
-        return;
-    } else if(p == str) {
-        *(q + 1) = '\0';
-    } else {
-        xmlSecAssert(q >= p);
-
-        len = (int)(q - p + 1);
-        memmove(str, p, (size_t)len);
-        str[len] = '\0';
-    }
-}
-
 static int
 xmlSecKeyX509DataValueXmlReadString(xmlChar **str, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlChar *content;
@@ -3313,10 +3278,7 @@ xmlSecKeyX509DataValueXmlReadString(xmlChar **str, xmlNodePtr node, xmlSecKeyInf
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
-    content = xmlNodeGetContent(node);
-    if(content != NULL) {
-        xmlSecKeyX509DataValueTrim(content);
-    }
+    content = xmlSecGetNodeContentAndTrim(node);
     if((content == NULL) || (xmlStrlen(content) <= 0)) {
         if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_STOP_ON_EMPTY_NODE) != 0) {
             xmlSecInvalidNodeContentError(node, NULL, "empty");
@@ -3367,7 +3329,7 @@ xmlSecKeyX509DataValueXmlReadIssuerSerial(xmlSecKeyX509DataValuePtr x509Value, x
         xmlSecInvalidNodeError(cur, xmlSecNodeX509IssuerName, NULL);
         return(-1);
     }
-    x509Value->issuerName = xmlNodeGetContent(cur);
+    x509Value->issuerName = xmlSecGetNodeContentAndTrim(cur);
     if((x509Value->issuerName == NULL) || (xmlSecIsEmptyString(x509Value->issuerName) == 1)) {
         xmlSecInvalidNodeContentError(cur, NULL, "empty");
         return(-1);
@@ -3379,7 +3341,7 @@ xmlSecKeyX509DataValueXmlReadIssuerSerial(xmlSecKeyX509DataValuePtr x509Value, x
         xmlSecInvalidNodeError(cur, xmlSecNodeX509SerialNumber, NULL);
         return(-1);
     }
-    x509Value->issuerSerial  = xmlNodeGetContent(cur);
+    x509Value->issuerSerial  = xmlSecGetNodeContentAndTrim(cur);
     if((x509Value->issuerSerial == NULL) || (xmlSecIsEmptyString(x509Value->issuerSerial) == 1)) {
         xmlSecInvalidNodeContentError(cur, NULL, "empty");
         return(-1);

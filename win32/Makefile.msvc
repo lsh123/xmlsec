@@ -791,8 +791,12 @@ $(BINDIR) :
 #
 $(XMLSEC_APPS_INTDIR) :
 	if not exist $(XMLSEC_APPS_INTDIR) mkdir $(XMLSEC_APPS_INTDIR)
+$(XMLSEC_APPS_INTDIR)\unit_tests : $(XMLSEC_APPS_INTDIR)
+	if not exist $(XMLSEC_APPS_INTDIR)\unit_tests mkdir $(XMLSEC_APPS_INTDIR)\unit_tests
 $(XMLSEC_APPS_INTDIR_A) :
 	if not exist $(XMLSEC_APPS_INTDIR_A) mkdir $(XMLSEC_APPS_INTDIR_A)
+$(XMLSEC_APPS_INTDIR_A)\unit_tests : $(XMLSEC_APPS_INTDIR_A)
+	if not exist $(XMLSEC_APPS_INTDIR_A)\unit_tests mkdir $(XMLSEC_APPS_INTDIR_A)\unit_tests
 
 $(XMLSEC_INTDIR) :
 	if not exist $(XMLSEC_INTDIR) mkdir $(XMLSEC_INTDIR)
@@ -824,8 +828,8 @@ $(XMLSEC_MSCNG_INTDIR_A) :
 #
 {$(APPS_SRCDIR)}.c{$(XMLSEC_APPS_INTDIR)}.obj::
 	$(CC) $(CFLAGS) $(APP_CFLAGS) /Fo$(XMLSEC_APPS_INTDIR)\ /c $<
-{$(APPS_SRCDIR)\unit_tests}.c{$(XMLSEC_APPS_INTDIR)}.obj::
-	$(CC) $(CFLAGS) $(APP_CFLAGS) /Fo$(XMLSEC_APPS_INTDIR)\ /c $<
+{$(APPS_SRCDIR)\unit_tests}.c{$(XMLSEC_APPS_INTDIR)\unit_tests}.obj::
+	$(CC) $(CFLAGS) $(APP_CFLAGS) /Fo$(XMLSEC_APPS_INTDIR)\unit_tests\ /c $<
 
 {$(XMLSEC_SRCDIR)}.c{$(XMLSEC_INTDIR)}.obj::
 	$(CC) $(CFLAGS) /Fo$(XMLSEC_INTDIR)\ /c $<
@@ -856,9 +860,9 @@ $(XMLSEC_MSCNG_INTDIR_A) :
 {$(APPS_SRCDIR)}.c{$(XMLSEC_APPS_INTDIR_A)}.obj::
 	$(CC) /D "LIBXML_STATIC" /D "LIBXSLT_STATIC" /D "XMLSEC_STATIC" \
 		$(CFLAGS) $(APP_CFLAGS) /Fo$(XMLSEC_APPS_INTDIR_A)\ /c $<
-{$(APPS_SRCDIR)\unit_tests}.c{$(XMLSEC_APPS_INTDIR_A)}.obj::
+{$(APPS_SRCDIR)\unit_tests}.c{$(XMLSEC_APPS_INTDIR_A)\unit_tests}.obj:: 
 	$(CC) /D "LIBXML_STATIC" /D "LIBXSLT_STATIC" /D "XMLSEC_STATIC" \
-		$(CFLAGS) $(APP_CFLAGS) /Fo$(XMLSEC_APPS_INTDIR_A)\ /c $<
+		$(CFLAGS) $(APP_CFLAGS) /Fo$(XMLSEC_APPS_INTDIR_A)\unit_tests\ /c $<
 
 {$(XMLSEC_SRCDIR)}.c{$(XMLSEC_INTDIR_A)}.obj::
 	$(CC) /D "LIBXML_STATIC" /D "LIBXSLT_STATIC" /D "XMLSEC_STATIC" \
@@ -956,9 +960,9 @@ $(BINDIR)\xmlseca.exe: xmlseca $(XMLSEC_APPS_INTDIR_A) $(BINDIR) $(XMLSEC_APPS_O
 $(BINDIR)\xmlsec.exe: xmlsec $(XMLSEC_APPS_INTDIR) $(BINDIR) $(XMLSEC_APPS_OBJS)
 	$(LD) $(LDFLAGS) /OUT:$@ $(XMLSEC_IMP) $(XMLSEC_CRYPTO_IMP) $(APP_LIBS) $(XMLSEC_APPS_OBJS)
 
-$(BINDIR)\xmlsec_unit_testsa.exe: xmlseca $(XMLSEC_APPS_INTDIR_A) $(BINDIR) $(XMLSEC_UNIT_TESTS_OBJS_A)
+$(BINDIR)\xmlsec_unit_testsa.exe: xmlseca $(XMLSEC_APPS_INTDIR_A)\unit_tests $(BINDIR) $(XMLSEC_UNIT_TESTS_OBJS_A)
 	$(LD) $(LDFLAGS) /OUT:$@ $(XMLSEC_A) $(XMLSEC_CRYPTO_A) $(APP_LIBS) $(XMLSEC_UNIT_TESTS_OBJS_A)
-$(BINDIR)\xmlsec_unit_tests.exe: xmlsec $(XMLSEC_APPS_INTDIR) $(BINDIR) $(XMLSEC_UNIT_TESTS_OBJS)
+$(BINDIR)\xmlsec_unit_tests.exe: xmlsec $(XMLSEC_APPS_INTDIR)\unit_tests $(BINDIR) $(XMLSEC_UNIT_TESTS_OBJS)
 	$(LD) $(LDFLAGS) /OUT:$@ $(XMLSEC_IMP) $(XMLSEC_CRYPTO_IMP) $(APP_LIBS) $(XMLSEC_UNIT_TESTS_OBJS)
 
 # This is a target for me, to make a binary distribution. Not for the public use,

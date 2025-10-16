@@ -29,6 +29,7 @@ int wmain(int argc, wchar_t *argv[]) {
 #else /* defined(XMLSEC_WINDOWS) && defined(UNICODE) */
 int main(int argc, const char **argv) {
 #endif /* defined(XMLSEC_WINDOWS) && defined(UNICODE) */
+    int success = 1;
     int res = 1;
 
     /* check command line params */
@@ -40,7 +41,14 @@ int main(int argc, const char **argv) {
     /* run tests */
     fprintf(stdout, "=================== Checking xmlsec-core =================================\n");
 
-    if(test_xmlSec509NameStringRead() == 1) {
+    if (test_base64() != 1) {
+        success = 0;
+    }
+    if (test_xmlSec509NameStringRead() != 1) {
+        success = 0;
+    }
+
+    if(success == 1) {
         /* sucecss! */
         fprintf(stdout, "=================== Checking xmlsec-core: SUCCESS =================================\n");
         res = 0;

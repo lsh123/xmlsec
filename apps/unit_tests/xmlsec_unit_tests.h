@@ -21,6 +21,7 @@ extern "C" {
 #endif /* __cplusplus */
 
 
+/* helper functions */
 void testGroupStart(const char * name);
 int  testGroupFinished(void);
 
@@ -28,6 +29,9 @@ void testStart(const char * name);
 void testFinishedSuccess(void);
 void testFinishedFailure(void);
 
+
+/* tests */
+int test_base64(void);
 int test_xmlSec509NameStringRead(void);
 
 #ifdef __cplusplus

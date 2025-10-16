@@ -106,7 +106,7 @@ docs-man:
 
 check: check-all check-info
 
-check-unit-tests: $(ABS_BUILDDIR)/$(UNIT_TEST_APP)
+check-unit-tests: $(UNIT_TEST_APP)
 	@($(PRECHECK_COMMANDS) && $(ABS_BUILDDIR)/$(UNIT_TEST_APP))
 
 check-all: $(TEST_APP) check-unit-tests

@@ -1,5 +1,7 @@
 /**
- * XML Security standards test: XMLDSig
+ * XML Security Library (http://www.aleksey.com/xmlsec).
+ *
+ * Command line utility.
  *
  * See Copyright for the status of this software.
  *

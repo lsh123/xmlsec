@@ -147,6 +147,11 @@ XMLSEC_APPS_OBJS_A = \
 	$(XMLSEC_APPS_INTDIR_A)\cmdline.obj\
 	$(XMLSEC_APPS_INTDIR_A)\xmlsec.obj
 
+XMLSEC_UNIT_TESTS_OBJS = \
+	$(XMLSEC_APPS_INTDIR)\xmlsec_unit_tests.obj
+XMLSEC_UNIT_TESTS_OBJS_A = \
+	$(XMLSEC_APPS_INTDIR_A)\xmlsec_unit_tests.obj
+
 XMLSEC_OBJS = \
 	$(XMLSEC_INTDIR)\app.obj\
 	$(XMLSEC_INTDIR)\base64.obj\
@@ -622,8 +627,8 @@ all: apps $(XMLSEC_APP_TARGETS) $(EXTRA_CRYPTO_TARGETS)
 
 apps: $(BINDIR)\$(APP_NAME)
 
-xmlseca:  $(XMLSEC_APPS_INTDIR_A) $(BINDIR)\$(XMLSEC_A) $(XMLSEC_DEFAULT_CRYPTO_A)
-xmlsec: $(XMLSEC_APPS_INTDIR) $(BINDIR)\$(XMLSEC_SO) $(XMLSEC_DEFAULT_CRYPTO)
+xmlseca: $(BINDIR)\$(XMLSEC_A) $(XMLSEC_DEFAULT_CRYPTO_A)
+xmlsec: $(BINDIR)\$(XMLSEC_SO) $(XMLSEC_DEFAULT_CRYPTO)
 
 openssla: $(BINDIR)\$(XMLSEC_OPENSSL_A)
 openssl: $(BINDIR)\$(XMLSEC_OPENSSL_SO)
@@ -932,11 +937,15 @@ $(BINDIR)\$(XMLSEC_MSCNG_A) : $(BINDIR) $(BINDIR)\$(XMLSEC_A) $(XMLSEC_MSCNG_OBJ
 #
 # An implicit rule for xmlsec command line tool
 #
-$(BINDIR)\xmlseca.exe: xmlseca $(BINDIR) $(XMLSEC_APPS_OBJS_A)
+$(BINDIR)\xmlseca.exe: xmlseca $(XMLSEC_APPS_INTDIR_A) $(BINDIR) $(XMLSEC_APPS_OBJS_A)
 	$(LD) $(LDFLAGS) /OUT:$@ $(XMLSEC_A) $(XMLSEC_CRYPTO_A) $(APP_LIBS) $(XMLSEC_APPS_OBJS_A)
-$(BINDIR)\xmlsec.exe: xmlsec $(BINDIR) $(XMLSEC_APPS_OBJS)
+$(BINDIR)\xmlsec.exe: xmlsec $(XMLSEC_APPS_INTDIR) $(BINDIR) $(XMLSEC_APPS_OBJS)
 	$(LD) $(LDFLAGS) /OUT:$@ $(XMLSEC_IMP) $(XMLSEC_CRYPTO_IMP) $(APP_LIBS) $(XMLSEC_APPS_OBJS)
 
+$(BINDIR)\xmlsec_unit_testsa.exe: xmlseca $(XMLSEC_APPS_INTDIR_A) $(BINDIR) $(XMLSEC_UNIT_TESTS_OBJS_A)
+	$(LD) $(LDFLAGS) /OUT:$@ $(XMLSEC_A) $(XMLSEC_CRYPTO_A) $(APP_LIBS) $(XMLSEC_UNIT_TESTS_OBJS_A)
+$(BINDIR)\xmlsecunit_tests.exe: xmlsec $(XMLSEC_APPS_INTDIR) $(BINDIR) $(XMLSEC_UNIT_TESTS_OBJS)
+	$(LD) $(LDFLAGS) /OUT:$@ $(XMLSEC_IMP) $(XMLSEC_CRYPTO_IMP) $(APP_LIBS) $(XMLSEC_UNIT_TESTS_OBJS)
 
 # This is a target for me, to make a binary distribution. Not for the public use,
 # keep your hands off :-)

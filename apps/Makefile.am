@@ -1,6 +1,6 @@
 NULL =
 
-bin_PROGRAMS = xmlsec1
+bin_PROGRAMS = xmlsec1 xmlsec_unit_tests
 
 XMLSEC_LIBS = $(top_builddir)/src/libxmlsec1.la
 
@@ -77,6 +77,31 @@ xmlsec1_LDADD = \
 	$(NULL)
 
 xmlsec1_DEPENDENCIES = \
+	$(CRYPTO_DEPS) \
+	$(XMLSEC_LIBS) \
+	$(NULL)
+
+# xmlsec unit tests
+xmlsec_unit_tests_SOURCES = \
+	xmlsec_unit_tests.c \
+	$(NULL)
+
+
+xmlsec_unit_tests_LDFLAGS = \
+	@XMLSEC_STATIC_BINARIES@ \
+	@XMLSEC_EXTRA_LDFLAGS@ \
+	$(CRYPTO_LD_FLAGS) \
+	$(NULL)
+
+xmlsec_unit_tests_LDADD = \
+	$(LIBXSLT_LIBS) \
+	$(LIBXML_LIBS) \
+	$(CRYPTO_LD_ADD) \
+	$(XMLSEC_LIBS) \
+	$(LIBLTDL_LIBS) \
+	$(NULL)
+
+xmlsec_unit_tests_DEPENDENCIES = \
 	$(CRYPTO_DEPS) \
 	$(XMLSEC_LIBS) \
 	$(NULL)

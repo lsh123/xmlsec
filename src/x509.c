@@ -25,77 +25,112 @@
 
 #ifndef XMLSEC_NO_X509
 
+#define XMLSEC_X509_NAME_READ_STATE_NORMAL          0
+#define XMLSEC_X509_NAME_READ_STATE_AFTER_SLASH1    1
+#define XMLSEC_X509_NAME_READ_STATE_AFTER_SLASH2    2
+#define XMLSEC_X509_NAME_READ_STATE_DELIMETER       3
+
 int
 xmlSec509NameStringRead(const xmlChar **in, xmlSecSize *inSize,
-                            xmlSecByte *out, xmlSecSize outSize,
-                            xmlSecSize *outWritten,
-                            xmlSecByte delim, int ingoreTrailingSpaces) {
-    xmlSecSize ii, jj, nonSpace;
+                            xmlSecByte *out, xmlSecSize outSize, xmlSecSize *outWritten,
+                            xmlSecByte delim, int ingoreTrailingSpaces
+) {
+    xmlSecByte inCh, inCh2;
+    xmlSecSize ii, jj, nonSpaceJJ;
+    int state = XMLSEC_X509_NAME_READ_STATE_NORMAL;
 
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2((*in) != NULL, -1);
     xmlSecAssert2(inSize != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
 
-    ii = jj = nonSpace = 0;
-    while (ii < (*inSize)) {
-        xmlSecByte inCh, inCh2, outCh;
-
+    ii = jj = nonSpaceJJ = 0;
+    while ((ii < (*inSize)) && (state != XMLSEC_X509_NAME_READ_STATE_DELIMETER)) {
         inCh = (*in)[ii];
-        if (inCh == delim) {
-            break;
-        }
         if (jj >= outSize) {
             xmlSecInvalidSizeOtherError("output buffer is too small", NULL);
             return(-1);
         }
 
-        if (inCh == '\\') {
-            /* try to move to next char after \\ */
-            ++ii;
-            if (ii >= (*inSize)) {
-                break;
-            }
-            inCh = (*in)[ii];
-
-            /* if next char after \\ is a hex then we expect \\XX, otherwise we just remove \\ */
-            if (xmlSecIsHex(inCh)) {
-                /* try to move to next char after \\X */
+        switch(state) {
+        case XMLSEC_X509_NAME_READ_STATE_NORMAL:
+            if (inCh == delim) {
+                /* stop */
+                state = XMLSEC_X509_NAME_READ_STATE_DELIMETER;
+            } else if (inCh == '\\') {
+                /* do not update output, move to next chat */
+                state = XMLSEC_X509_NAME_READ_STATE_AFTER_SLASH1;
                 ++ii;
-                if (ii >= (*inSize)) {
-                    xmlSecInvalidDataError("two hex digits expected", NULL);
-                    return(-1);
-                }
-                inCh2 = (*in)[ii];
-                if (!xmlSecIsHex(inCh2)) {
-                    xmlSecInvalidDataError("two hex digits expected", NULL);
-                    return(-1);
-                }
-                outCh = xmlSecFromHex2(inCh, inCh2);
             } else {
-                outCh = inCh;
+                /* copy char and move to next */
+                out[jj] = inCh;
+                ++ii;
+                ++jj;
+
+                /* remember position of last non-spaceChar */
+                if (ingoreTrailingSpaces && !isspace(inCh)) {
+                    nonSpaceJJ = jj;
+                }
             }
-        } else {
-            outCh = inCh;
-        }
+            break;
+        case XMLSEC_X509_NAME_READ_STATE_AFTER_SLASH1:
+             /* if next char after \\ is a hex then we expect \\XX, otherwise we just remove \\ */
+             if (xmlSecIsHex(inCh)) {
+                inCh2 = inCh;
+                state = XMLSEC_X509_NAME_READ_STATE_AFTER_SLASH2;
+                ++ii;
+             } else {
+                /* just remove \\ */
+                state = XMLSEC_X509_NAME_READ_STATE_NORMAL;
 
-        out[jj] = outCh;
-        ++ii;
-        ++jj;
+                /* copy char and move to next */
+                out[jj] = inCh;
+                ++ii;
+                ++jj;
 
-        if (ingoreTrailingSpaces && !isspace(outCh)) {
-            nonSpace = jj;
+                /* remember position of last non-spaceChar */
+                if (ingoreTrailingSpaces && !isspace(inCh)) {
+                    nonSpaceJJ = jj;
+                }
+             }
+            break;
+        case XMLSEC_X509_NAME_READ_STATE_AFTER_SLASH2:
+            /* two XX chars are expected */
+            if (xmlSecIsHex(inCh)) {
+                state = XMLSEC_X509_NAME_READ_STATE_NORMAL;
+                inCh = xmlSecFromHex2(inCh2, inCh);
+
+                /* copy char and move to next */
+                out[jj] = inCh;
+                ++ii;
+                ++jj;
+
+                /* remember position of last non-spaceChar */
+                if (ingoreTrailingSpaces && !isspace(inCh)) {
+                    nonSpaceJJ = jj;
+                }
+            } else {
+                xmlSecInvalidDataError("two hex digits expected", NULL);
+                return(-1);
+            }
+            break;
+        default:
+            xmlSecInternalError2("", NULL, "invalid state while parsing name=%d", state);
+            return(-1);
         }
     }
+
+    /* success */
 
     (*inSize) -= ii;
     (*in) += ii;
 
     if (ingoreTrailingSpaces) {
-        (*outWritten) = nonSpace;
+        (*outWritten) = nonSpaceJJ;
     } else {
         (*outWritten) = (jj);
     }
+
     return(0);
 }
 

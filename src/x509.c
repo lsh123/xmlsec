@@ -206,7 +206,7 @@ xmlSec509AttrValueStringRead(
     } else if((**in) == '\"') {
         /* read quoted string */
         ++(*in); --(*inSize);
-        ret = xmlSec509EscapedStringRead(in, inSize, out, outSize, outWritten, '\"', 0);
+        ret = xmlSec509EscapedStringRead(in, inSize, out, outSize, outWritten, '\"', ingoreTrailingSpaces);
         if(ret < 0) {
             xmlSecInternalError("xmlSec509EscapedStringRead", NULL);
             return(-1);

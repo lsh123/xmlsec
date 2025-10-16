@@ -1832,8 +1832,6 @@ xmlSecOpenSSLX509NameReadCallback(
         return(-1);
     }
 
-    printf("DEBUG: xmlSecOpenSSLX509NameReadCallback: '%s' ==> '%s'\n", (const char*)name, (const char*)value);
-
     /* add to X509_NAME */
     XMLSEC_SAFE_CAST_SIZE_TO_INT(valueSize, valueLen, return(-1), NULL);
     ret = X509_NAME_add_entry_by_txt(nm, (char*)name, valueType, value, valueLen, -1, 0);
@@ -1851,8 +1849,6 @@ static X509_NAME *
 xmlSecOpenSSLX509NameRead(const xmlChar *str) {
     X509_NAME *nm = NULL;
     int ret;
-
-    printf("DEBUG: xmlSecOpenSSLX509NameRead: %s\n", (const char*)str);
 
     xmlSecAssert2(str != NULL, NULL);
 

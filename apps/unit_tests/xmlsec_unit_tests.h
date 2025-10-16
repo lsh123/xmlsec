@@ -33,6 +33,7 @@ void testFinishedFailure(void);
 /* tests */
 int test_base64(void);
 int test_xmlSec509EscapedStringRead(void);
+int test_xmlSec509AttrValueStringRead(void);
 
 #ifdef __cplusplus
 }

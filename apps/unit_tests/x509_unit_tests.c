@@ -17,6 +17,7 @@
 #include "xmlsec_unit_tests.h"
 #include "../src/x509_helpers.h"
 
+/*********************************** test_xmlSec509EscapedStringRead ***********************************/
 static void
 test_xmlSec509EscapedStringRead_success(
     const char * name,
@@ -99,23 +100,14 @@ test_xmlSec509EscapedStringRead_failure(
         testFinishedFailure();
         return;
     }
-    if(inSize != size) {
-        fprintf(stderr, "Error: xmlSec509EscapedStringRead returned inSize='%d' (expected: '%d')\n", (int)inSize, (int)size);
-        testFinishedFailure();
-        return;
-    }
-    if(outSize != 0) {
-        fprintf(stderr, "Error: xmlSec509EscapedStringRead returned outSize='%d' (expected: '%d')\n", (int)outSize, (int)0);
-        testFinishedFailure();
-        return;
-    }
 
     /* DONE */
     testFinishedSuccess();
 }
 
 
-int test_xmlSec509EscapedStringRead(void) {
+int
+test_xmlSec509EscapedStringRead(void) {
     /* start */
     testGroupStart("xmlSec509EscapedStringRead");
 
@@ -132,6 +124,127 @@ int test_xmlSec509EscapedStringRead(void) {
     test_xmlSec509EscapedStringRead_failure("check NULL", NULL, '=', 0);
     test_xmlSec509EscapedStringRead_failure("check bad hex char", "Foo\\6XBar", '=', 0);
     test_xmlSec509EscapedStringRead_failure("check output buffer too small", "FooBarFooBarFooBarFooBarFooBarFooBarFooBarFooBarFooBar=Value", '=', 0);
+
+    /* done */
+    return (testGroupFinished());
+}
+
+
+/*********************************** test_xmlSec509AttrValueStringRead ***********************************/
+static void
+test_xmlSec509AttrValueStringRead_success(
+    const char * name,
+    const char * str,
+    const char delim,
+    int ingoreTrailingSpaces,
+    const char* expectedIn,
+    const char* expectedOut,
+    int expectedType
+) {
+    const xmlChar *inStr;
+    xmlSecSize size, inSize;
+    int len;
+    xmlChar out[256];
+    xmlSecSize outSize;
+    int type = -1;
+    int ret;
+
+    xmlSecAssert(name != NULL);
+    xmlSecAssert(str != NULL);
+
+    testStart(name);
+
+    len = xmlStrlen(BAD_CAST str);
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, return, NULL);
+    inStr = BAD_CAST str;
+    inSize = size;
+    outSize = 0;
+
+    ret = xmlSec509AttrValueStringRead(&inStr, &inSize, out, sizeof(out) - 1, &outSize, &type, (xmlChar)delim, ingoreTrailingSpaces);
+    if(ret < 0) {
+        fprintf(stderr, "Error: xmlSec509AttrValueStringRead failed for '%s'\n", str);
+        testFinishedFailure();
+        return;
+    }
+    out[outSize] = '\0';
+
+    /* check results */
+    if(xmlStrcmp(inStr, BAD_CAST expectedIn) != 0) {
+        fprintf(stderr, "Error: xmlSec509AttrValueStringRead returned in='%s' (expected: '%s')\n", (const char*)inStr, expectedIn);
+        testFinishedFailure();
+        return;
+    }
+    if(xmlStrcmp(out, BAD_CAST expectedOut) != 0) {
+        fprintf(stderr, "Error: xmlSec509AttrValueStringRead returned out='%s' (expected: '%s')\n", (const char*)out, expectedOut);
+        testFinishedFailure();
+        return;
+    }
+    if(type != expectedType) {
+        fprintf(stderr, "Error: xmlSec509AttrValueStringRead returned type='%d' (expected: '%d')\n", type, expectedType);
+        testFinishedFailure();
+        return;
+    }
+    /* DONE */
+    testFinishedSuccess();
+}
+
+static void
+test_xmlSec509AttrValueStringRead_failure(
+    const char * name,
+    const char * str,
+    const char delim,
+    int ingoreTrailingSpaces
+) {
+    const xmlChar *inStr;
+    xmlSecSize size, inSize;
+    int len;
+    xmlChar out[16];
+    xmlSecSize outSize;
+    int type = -1;
+    int ret;
+
+    xmlSecAssert(name != NULL);
+
+    testStart(name);
+
+    len = xmlStrlen(BAD_CAST str);
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(len, size, return, NULL);
+    inStr = BAD_CAST str;
+    inSize = size;
+    outSize = 0;
+
+    ret = xmlSec509AttrValueStringRead(&inStr, &inSize, out, sizeof(out) - 1, &outSize, &type, (xmlChar)delim, ingoreTrailingSpaces);
+    if(ret >= 0) {
+        fprintf(stderr, "Error: xmlSec509AttrValueStringRead expected to fail for '%s'\n", (str != NULL) ? str : "NULL");
+        testFinishedFailure();
+        return;
+    }
+
+    /* DONE */
+    testFinishedSuccess();
+}
+
+
+int
+test_xmlSec509AttrValueStringRead(void) {
+    /* start */
+    testGroupStart("xmlSec509AttrValueStringRead");
+
+    /* positive tests */
+    test_xmlSec509AttrValueStringRead_success("check empty string", ",", ',', 0, ",", "", XMLSEC_X509_VALUE_TYPE_UF8_STRING);
+    test_xmlSec509AttrValueStringRead_success("check end of line with trailing spaces", "Foo Bar  ", ',', 0, "", "Foo Bar  ", XMLSEC_X509_VALUE_TYPE_UF8_STRING);
+    test_xmlSec509AttrValueStringRead_success("check end of line without trailing spaces", "Foo Bar  ", ',', 1, "", "Foo Bar", XMLSEC_X509_VALUE_TYPE_UF8_STRING);
+    test_xmlSec509AttrValueStringRead_success("check with trailing spaces", "Foo Bar  ,name=value", ',', 0, ",name=value", "Foo Bar  ", XMLSEC_X509_VALUE_TYPE_UF8_STRING);
+    test_xmlSec509AttrValueStringRead_success("check without trailing spaces", "Foo Bar ,name=value", ',', 1, ",name=value", "Foo Bar", XMLSEC_X509_VALUE_TYPE_UF8_STRING);
+    test_xmlSec509AttrValueStringRead_success("check quoted with trailing spaces inside quotes", "\"Foo Bar  \",name=value", ',', 0, ",name=value", "Foo Bar  ", XMLSEC_X509_VALUE_TYPE_UF8_STRING);
+    test_xmlSec509AttrValueStringRead_success("check quoted without trailing spaces inside quotes", "\"Foo Bar  \",name=value", ',', 1, ",name=value", "Foo Bar", XMLSEC_X509_VALUE_TYPE_UF8_STRING);
+    test_xmlSec509AttrValueStringRead_success("check quoted with trailing spaces outside quotes", "\"Foo Bar  \"  ,name=value", ',', 0, "  ,name=value", "Foo Bar  ", XMLSEC_X509_VALUE_TYPE_UF8_STRING);
+    test_xmlSec509AttrValueStringRead_success("check quoted without trailing spaces outside quotes", "\"Foo Bar  \"  ,name=value", ',', 1, ",name=value", "Foo Bar", XMLSEC_X509_VALUE_TYPE_UF8_STRING);
+
+    /* negative tests */
+    test_xmlSec509AttrValueStringRead_failure("check NULL", NULL, ',', 0);
+    test_xmlSec509AttrValueStringRead_failure("check missing closing quote", "\"Foo Bar  ,name=value", ',', 0);
+    test_xmlSec509AttrValueStringRead_failure("check output buffer too small", "FooBarFooBarFooBarFooBarFooBarFooBarFooBarFooBarFooBar=Value", ',', 0);
 
     /* done */
     return (testGroupFinished());

@@ -141,18 +141,20 @@ XMLSEC_MSCNG_SRCDIR  = $(XMLSEC_SRCDIR)\mscng
 # Object files for libraries and apps.
 #
 XMLSEC_APPS_OBJS = \
-	$(XMLSEC_APPS_INTDIR)\crypto.obj\
-	$(XMLSEC_APPS_INTDIR)\cmdline.obj\
+	$(XMLSEC_APPS_INTDIR)\crypto.obj \
+	$(XMLSEC_APPS_INTDIR)\cmdline.obj \
 	$(XMLSEC_APPS_INTDIR)\xmlsec.obj
 XMLSEC_APPS_OBJS_A = \
-	$(XMLSEC_APPS_INTDIR_A)\crypto.obj\
-	$(XMLSEC_APPS_INTDIR_A)\cmdline.obj\
+	$(XMLSEC_APPS_INTDIR_A)\crypto.obj \
+	$(XMLSEC_APPS_INTDIR_A)\cmdline.obj \
 	$(XMLSEC_APPS_INTDIR_A)\xmlsec.obj
 
 XMLSEC_UNIT_TESTS_OBJS = \
-	$(XMLSEC_APPS_INTDIR)\xmlsec_unit_tests.obj
+	$(XMLSEC_APPS_INTDIR)\unit_tests\x509_unit_tests.obj \
+	$(XMLSEC_APPS_INTDIR)\unit_tests\xmlsec_unit_tests.obj
 XMLSEC_UNIT_TESTS_OBJS_A = \
-	$(XMLSEC_APPS_INTDIR_A)\xmlsec_unit_tests.obj
+	$(XMLSEC_APPS_INTDIR_A)\unit_tests\x509_unit_tests.obj \
+	$(XMLSEC_APPS_INTDIR_A)\unit_tests\xmlsec_unit_tests.obj
 
 XMLSEC_OBJS = \
 	$(XMLSEC_INTDIR)\app.obj\

@@ -1,7 +1,7 @@
 /**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * Unit tests
+ * x509 util Unit tests
  *
  * See Copyright for the status of this software.
  *
@@ -11,99 +11,15 @@
 #include <string.h>
 #include <time.h>
 
-#if !defined(_MSC_VER)
-#include <libgen.h>
-#endif /* defined(_MSC_VER) */
-
-#if defined(_MSC_VER) && _MSC_VER < 1900
-#define snprintf _snprintf
-#endif /* defined(_MSC_VER) && _MSC_VER < 1900 */
-
-
 #include <libxml/tree.h>
-#include <libxml/xmlmemory.h>
-#include <libxml/parser.h>
-#include <libxml/xpath.h>
-#include <libxml/xmlsave.h>
-#include <libxml/xpathInternals.h>
 
-#ifndef XMLSEC_NO_XSLT
-#include <libxslt/xslt.h>
-#include <libxslt/extensions.h>
-#include <libxslt/xsltInternals.h>
-#include <libxslt/xsltutils.h>
-#include <libxslt/security.h>
-#include <libexslt/exslt.h>
-#endif /* XMLSEC_NO_XSLT */
-
-#include <xmlsec/xmlsec.h>
-#include <xmlsec/xmltree.h>
-#include <xmlsec/base64.h>
-#include <xmlsec/keys.h>
-#include <xmlsec/keyinfo.h>
-#include <xmlsec/keysmngr.h>
-#include <xmlsec/io.h>
-#include <xmlsec/transforms.h>
-#include <xmlsec/xmldsig.h>
-#include <xmlsec/xmlenc.h>
-#include <xmlsec/parser.h>
-#include <xmlsec/templates.h>
-#include <xmlsec/errors.h>
-
-#define XMLSEC_PRIVATE 1
-
-#include "../src/cast_helpers.h"
+/* must be included before any other xmlsec header */
+#include "xmlsec_unit_tests.h"
 #include "../src/x509_helpers.h"
 
 
-static int test_xmlSec509NameStringRead(void);
-
-#if defined(XMLSEC_WINDOWS) && defined(UNICODE) && defined(__MINGW32__)
-int wmain(int argc, wchar_t* argv[]);
-#endif /* defined(XMLSEC_WINDOWS) && defined(UNICODE) && defined(__MINGW32__) */
-
-
-#if defined(XMLSEC_WINDOWS) && defined(UNICODE)
-int wmain(int argc, wchar_t *argv[]) {
-#else /* defined(XMLSEC_WINDOWS) && defined(UNICODE) */
-int main(int argc, const char **argv) {
-#endif /* defined(XMLSEC_WINDOWS) && defined(UNICODE) */
-    int res = 1;
-
-    /* check command line params */
-    if((argc > 1) || (argv == NULL)) {
-        fprintf(stderr, "Error: no command line parameters expected\n");
-        goto done;
-    }
-
-    /* run tests */
-    fprintf(stdout, "=================== Checking xmlsec-core =================================\n");
-
-    if(test_xmlSec509NameStringRead() != 0) {
-        fprintf(stderr, "Error: test_xmlSec509NameStringRead() failed\n");
-        goto done;
-    }
-
-    /* sucecss! */
-    fprintf(stdout, "== Checking xmlsec-core: SUCCESS\n");
-    res = 0;
-
-done:
-#if defined(_MSC_VER) && defined(_CRTDBG_MAP_ALLOC)
-    _CrtSetReportMode(_CRT_WARN,    _CRTDBG_MODE_FILE);
-    _CrtSetReportMode(_CRT_ERROR,   _CRTDBG_MODE_FILE);
-    _CrtSetReportMode(_CRT_ASSERT,  _CRTDBG_MODE_FILE);
-
-    _CrtSetReportFile(_CRT_WARN,    _CRTDBG_FILE_STDERR);
-    _CrtSetReportFile(_CRT_ERROR,   _CRTDBG_FILE_STDERR);
-    _CrtSetReportFile(_CRT_ASSERT,  _CRTDBG_FILE_STDERR);
-    _CrtDumpMemoryLeaks();
-#endif /*  defined(_MSC_VER) && defined(_CRTDBG_MAP_ALLOC) */
-
-    return(res);
-}
-
-static int test_xmlSec509NameStringRead_success(const char* name, const xmlChar * str, const xmlChar delim, int ingoreTrailingSpaces, const xmlChar* expectedOut, xmlSecSize expectedInSize) {
+static int
+test_xmlSec509NameStringRead_success(const char* name, const xmlChar * str, const xmlChar delim, int ingoreTrailingSpaces, const xmlChar* expectedOut, xmlSecSize expectedInSize) {
     const xmlChar *inStr;
     xmlSecSize size, inSize;
     int len;
@@ -139,7 +55,8 @@ static int test_xmlSec509NameStringRead_success(const char* name, const xmlChar 
     return(0);
 }
 
-static int test_xmlSec509NameStringRead_failure(const char* name, const xmlChar * str, const xmlChar delim, int ingoreTrailingSpaces) {
+static int
+test_xmlSec509NameStringRead_failure(const char* name, const xmlChar * str, const xmlChar delim, int ingoreTrailingSpaces) {
     const xmlChar *inStr;
     xmlSecSize size, inSize;
     int len;
@@ -173,10 +90,11 @@ static int test_xmlSec509NameStringRead_failure(const char* name, const xmlChar 
 }
 
 
-static int test_xmlSec509NameStringRead(void) {
+int test_xmlSec509NameStringRead(void) {
     /* start */
     fprintf(stdout, "=== START: test_xmlSec509NameStringRead()\n");
 
+    /* positive tests */
     if(test_xmlSec509NameStringRead_success("check empty string", BAD_CAST "=", '=', 0, BAD_CAST "", 1) != 0) {
         return(-1);
     }
@@ -200,6 +118,7 @@ static int test_xmlSec509NameStringRead(void) {
     }
 
 
+    /* negative tests */
     if(test_xmlSec509NameStringRead_failure("check bad hex char", BAD_CAST "Foo\\6XBar", '=', 0) != 0) {
         return(-1);
     }

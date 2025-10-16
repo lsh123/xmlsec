@@ -205,7 +205,11 @@ xmlSec509AttrValueStringRead(
         (*outType) = XMLSEC_X509_VALUE_TYPE_UF8_STRING;
     } else if((**in) == '\"') {
         /* read quoted string */
+
+        /* skip quote */
         ++(*in); --(*inSize);
+
+        /* read string till next un-escaped quote */
         ret = xmlSec509EscapedStringRead(in, inSize, out, outSize, outWritten, '\"', ingoreTrailingSpaces);
         if(ret < 0) {
             xmlSecInternalError("xmlSec509EscapedStringRead", NULL);
@@ -220,16 +224,50 @@ xmlSec509AttrValueStringRead(
         }
         ++(*in); --(*inSize);
 
-        /* skip spaces before comma or semicolon */
+        /* skip trailing spaces if needed */
         if(ingoreTrailingSpaces != 0) {
             while(((*inSize) > 0) && isspace(**in)) {
                 ++(*in); --(*inSize);
             }
         }
     } else if((**in) == '#') {
-        /* TODO: read octect values */
-        xmlSecNotImplementedError("reading octect values is not implemented yet");
-        return(-1);
+        /* read octect value:
+                hexstring = SHARP 1*hexpair
+                hexpair = HEX HEX
+        */
+        xmlSecSize jj = 0;
+        xmlChar hex1, hex2;
+
+        /* skip sharp '#' */
+        ++(*in); --(*inSize);
+
+        /* process pair hex hex from input */
+        while((jj < outSize) && ((*inSize) > 0) && (xmlSecIsHex(**in))) {
+            /* we always expect pairs of hex digits*/
+            if((*inSize) < 2) {
+                xmlSecInvalidDataError("Expected two hex characters in octet string but got only one", NULL);
+                return(-1);
+            }
+            hex1 = (**in); ++(*in); --(*inSize);
+            hex2 = (**in); ++(*in); --(*inSize);
+            if(!(xmlSecIsHex(hex2))) {
+                xmlSecInvalidDataError("Expected two hex characters in octet string but second char is not hex", NULL);
+                return(-1);
+            }
+
+            /* convert and save to output */
+            out[jj] = xmlSecFromHex2(hex1, hex2);
+            ++jj;
+        }
+        (*outWritten) = jj;
+        (*outType) = XMLSEC_X509_VALUE_TYPE_OCTET_STRING;
+
+        /* skip trailing spaces if needed */
+        if(ingoreTrailingSpaces != 0) {
+            while(((*inSize) > 0) && isspace(**in)) {
+                ++(*in); --(*inSize);
+            }
+        }
     } else {
         /* read string */
         ret = xmlSec509EscapedStringRead(in, inSize, out, outSize, outWritten, delim, ingoreTrailingSpaces);

@@ -1836,8 +1836,7 @@ xmlSecOpenSSLX509NameReadCallback(
     XMLSEC_SAFE_CAST_SIZE_TO_INT(valueSize, valueLen, return(-1), NULL);
     ret = X509_NAME_add_entry_by_txt(nm, (char*)name, valueType, value, valueLen, -1, 0);
     if(ret != 1) {
-        xmlSecOpenSSLError3("X509_NAME_add_entry_by_txt", NULL,
-            "name=%s; type=%d", xmlSecErrorsSafeString(name), type);
+        xmlSecOpenSSLError3("X509_NAME_add_entry_by_txt", NULL, "name=%s; type=%d", xmlSecErrorsSafeString(name), type);
         return(-1);
     }
 

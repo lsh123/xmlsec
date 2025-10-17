@@ -33,7 +33,7 @@ XMLSEC_EXPORT int       xmlSecX509NameRead              (const xmlChar *str,
                                                          xmlSecX509NameReadCallback callback,
                                                          void * context);
 
-XMLSEC_EXPORT int       xmlSec509EscapedStringRead      (const xmlChar **in,
+XMLSEC_EXPORT int       xmlSecX509EscapedStringRead      (const xmlChar **in,
                                                          xmlSecSize *inSize,
                                                          xmlSecByte *out,
                                                          xmlSecSize outSize,
@@ -41,7 +41,7 @@ XMLSEC_EXPORT int       xmlSec509EscapedStringRead      (const xmlChar **in,
                                                          xmlSecByte delim,
                                                          int ingoreTrailingSpaces);
 
-XMLSEC_EXPORT int       xmlSec509AttrValueStringRead    (const xmlChar **in,
+XMLSEC_EXPORT int       xmlSecX509AttrValueStringRead    (const xmlChar **in,
                                                          xmlSecSize *inSize,
                                                          xmlSecByte *out,
                                                          xmlSecSize outSize,

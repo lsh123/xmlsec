@@ -36,7 +36,7 @@
 #define XMLSEC_X509_NAME_READ_STATE_DELIMETER       3
 
 /**
- * xmlSec509EscapedStringRead:
+ * xmlSecX509EscapedStringRead:
  * @in:                     the in/out pointer to the parsed string.
  * @inSize:                 the in/out size of the parsed string.
  * @out:                    the pointer to output string.
@@ -53,7 +53,7 @@
  * Returns: 0 on success or a negative value if an error occurs.
  */
 int
-xmlSec509EscapedStringRead(const xmlChar **in, xmlSecSize *inSize,
+xmlSecX509EscapedStringRead(const xmlChar **in, xmlSecSize *inSize,
                         xmlSecByte *out, xmlSecSize outSize, xmlSecSize *outWritten,
                         xmlSecByte delim, int ingoreTrailingSpaces
 ) {
@@ -157,7 +157,7 @@ xmlSec509EscapedStringRead(const xmlChar **in, xmlSecSize *inSize,
 }
 
 /**
- * xmlSec509AttrValueStringRead:
+ * xmlSecX509AttrValueStringRead:
  * @in:                     the in/out pointer to the parsed string.
  * @inSize:                 the in/out size of the parsed string.
  * @out:                    the pointer to output string.
@@ -179,7 +179,7 @@ xmlSec509EscapedStringRead(const xmlChar **in, xmlSecSize *inSize,
  * Returns: 0 on success or a negative value if an error occurs.
  */
 int
-xmlSec509AttrValueStringRead(
+xmlSecX509AttrValueStringRead(
     const xmlChar **in,
     xmlSecSize *inSize,
     xmlSecByte *out,
@@ -210,9 +210,9 @@ xmlSec509AttrValueStringRead(
         ++(*in); --(*inSize);
 
         /* read string till next un-escaped quote */
-        ret = xmlSec509EscapedStringRead(in, inSize, out, outSize, outWritten, '\"', ingoreTrailingSpaces);
+        ret = xmlSecX509EscapedStringRead(in, inSize, out, outSize, outWritten, '\"', ingoreTrailingSpaces);
         if(ret < 0) {
-            xmlSecInternalError("xmlSec509EscapedStringRead", NULL);
+            xmlSecInternalError("xmlSecX509EscapedStringRead", NULL);
             return(-1);
         }
         (*outType) = XMLSEC_X509_VALUE_TYPE_UF8_STRING;
@@ -270,9 +270,9 @@ xmlSec509AttrValueStringRead(
         }
     } else {
         /* read string */
-        ret = xmlSec509EscapedStringRead(in, inSize, out, outSize, outWritten, delim, ingoreTrailingSpaces);
+        ret = xmlSecX509EscapedStringRead(in, inSize, out, outSize, outWritten, delim, ingoreTrailingSpaces);
         if(ret < 0) {
-            xmlSecInternalError("xmlSec509EscapedStringRead", NULL);
+            xmlSecInternalError("xmlSecX509EscapedStringRead", NULL);
             return(-1);
         }
         (*outType) = XMLSEC_X509_VALUE_TYPE_UF8_STRING;
@@ -313,9 +313,9 @@ xmlSecX509NameRead(const xmlChar *str, xmlSecX509NameReadCallback callback, void
 
         /* read name */
         nameSize = 0;
-        ret = xmlSec509EscapedStringRead(&str, &strSize, name, sizeof(name) - 1, &nameSize, '=', 1);
+        ret = xmlSecX509EscapedStringRead(&str, &strSize, name, sizeof(name) - 1, &nameSize, '=', 1);
         if(ret < 0) {
-            xmlSecInternalError("xmlSec509EscapedStringRead", NULL);
+            xmlSecInternalError("xmlSecX509EscapedStringRead", NULL);
             return(-1);
         }
         xmlSecAssert2(nameSize < sizeof(name), -1);
@@ -338,9 +338,9 @@ xmlSecX509NameRead(const xmlChar *str, xmlSecX509NameReadCallback callback, void
         ++str; --strSize;
 
         /* read value */
-        ret = xmlSec509AttrValueStringRead(&str, &strSize, value, sizeof(value) - 1, &valueSize, &type, ',', 1);
+        ret = xmlSecX509AttrValueStringRead(&str, &strSize, value, sizeof(value) - 1, &valueSize, &type, ',', 1);
         if(ret < 0) {
-            xmlSecInternalError("xmlSec509EscapedStringRead", NULL);
+            xmlSecInternalError("xmlSecX509EscapedStringRead", NULL);
             return(-1);
         }
         xmlSecAssert2(valueSize < sizeof(value), -1);

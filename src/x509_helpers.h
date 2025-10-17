@@ -20,11 +20,33 @@
 
 #ifndef XMLSEC_NO_X509
 
-XMLSEC_EXPORT int       xmlSec509NameStringRead         (const xmlChar **in,
+#define XMLSEC_X509_VALUE_TYPE_UF8_STRING           0
+#define XMLSEC_X509_VALUE_TYPE_OCTET_STRING         1
+
+typedef int             (*xmlSecX509NameReadCallback)   (const xmlChar * name,
+                                                         const xmlChar * value,
+                                                         xmlSecSize valueSize,
+                                                         int type,
+                                                         void * context);
+
+XMLSEC_EXPORT int       xmlSecX509NameRead              (const xmlChar *str,
+                                                         xmlSecX509NameReadCallback callback,
+                                                         void * context);
+
+XMLSEC_EXPORT int       xmlSecX509EscapedStringRead      (const xmlChar **in,
                                                          xmlSecSize *inSize,
                                                          xmlSecByte *out,
                                                          xmlSecSize outSize,
                                                          xmlSecSize *outWritten,
+                                                         xmlSecByte delim,
+                                                         int ingoreTrailingSpaces);
+
+XMLSEC_EXPORT int       xmlSecX509AttrValueStringRead    (const xmlChar **in,
+                                                         xmlSecSize *inSize,
+                                                         xmlSecByte *out,
+                                                         xmlSecSize outSize,
+                                                         xmlSecSize *outWritten,
+                                                         int *outType,
                                                          xmlSecByte delim,
                                                          int ingoreTrailingSpaces);
 

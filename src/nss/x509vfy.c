@@ -40,7 +40,6 @@
 #include <xmlsec/nss/x509.h>
 
 #include "../cast_helpers.h"
-#include "../x509_helpers.h"
 #include "private.h"
 
 /**************************************************************************

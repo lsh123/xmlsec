@@ -1845,7 +1845,7 @@ xmlSecOpenSSLX509NameReadCallback(
 }
 
 
-/* OpenSSL doesn't accept "E" so we need to replcae it */
+/* OpenSSL doesn't accept "E" so we need to replace it */
 static xmlSecx509NameReplacements xmlSecOpenSSLX509NameReplacements[]  = {
     { BAD_CAST "E", BAD_CAST  "emailAddress"},
     { NULL, NULL }

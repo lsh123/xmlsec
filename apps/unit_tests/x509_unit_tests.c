@@ -288,8 +288,18 @@ test_xmlSecX509NameReadCallback(
 
     nm = (test_X509Name*)context;
     xmlSecAssert2(0 <= nm->pos && nm->pos < TEST_X509_NAME_MAX_COUNT, -1);
+
+#if defined(_MSC_VER)
+    strcpy_s(char*)nm->names[nm->pos], (const char*)name, sizeof(nm->names[nm->pos]));
+    strcpy_s((char*)nm->values[nm->pos], (const char*)value, sizeof(nm->values[nm->pos]));
+#else  /* defined(_MSC_VER) */
     strncpy((char*)nm->names[nm->pos], (const char*)name, sizeof(nm->names[nm->pos]));
+    nm->names[nm->pos][sizeof(nm->names[nm->pos]) - 1] = '\0'; /* ensure \0 terminated */
+
     strncpy((char*)nm->values[nm->pos], (const char*)value, sizeof(nm->values[nm->pos]));
+    nm->values[nm->pos][sizeof(nm->values[nm->pos]) - 1] = '\0'; /* ensure \0 terminated */
+#endif /* defined(_MSC_VER) */
+
     nm->valueSizes[nm->pos] = valueSize;
     nm->types[nm->pos] = type;
     nm->pos += 1;

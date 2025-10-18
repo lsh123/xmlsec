@@ -1844,6 +1844,13 @@ xmlSecOpenSSLX509NameReadCallback(
     return(0);
 }
 
+
+/* OpenSSL doesn't accept "E" so we need to replace it */
+static xmlSecx509NameReplacements xmlSecOpenSSLX509NameReplacements[]  = {
+    { BAD_CAST "E", BAD_CAST  "emailAddress"},
+    { NULL, NULL }
+};
+
 static X509_NAME *
 xmlSecOpenSSLX509NameRead(const xmlChar *str) {
     X509_NAME *nm = NULL;
@@ -1857,7 +1864,7 @@ xmlSecOpenSSLX509NameRead(const xmlChar *str) {
         return(NULL);
     }
 
-    ret = xmlSecX509NameRead(str, xmlSecOpenSSLX509NameReadCallback, (void*)nm);
+    ret = xmlSecX509NameRead(str, xmlSecOpenSSLX509NameReplacements, xmlSecOpenSSLX509NameReadCallback, (void*)nm);
     if(ret < 0) {
         xmlSecInternalError("xmlSecX509NameRead", NULL);
         X509_NAME_free(nm);

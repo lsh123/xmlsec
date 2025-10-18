@@ -294,7 +294,7 @@ xmlSecX509AttrValueStringRead(
  * Returns: 0 on success or a negative value if an error occurs.
  */
 int
-xmlSecX509NameRead(const xmlChar *str, xmlSecX509NameReadCallback callback, void * context) {
+xmlSecX509NameRead(const xmlChar *str, xmlSecx509NameReplacements *replacements, xmlSecX509NameReadCallback callback, void * context) {
     xmlSecByte name[XMLSEC_X509_NAME_SIZE];
     xmlSecByte value[XMLSEC_X509_VALUE_SIZE];
     xmlSecSize strSize, nameSize, valueSize;
@@ -321,21 +321,17 @@ xmlSecX509NameRead(const xmlChar *str, xmlSecX509NameReadCallback callback, void
         xmlSecAssert2(nameSize < sizeof(name), -1);
         name[nameSize] = '\0';
 
-        /* handle synonymous */
-        if(xmlStrcmp(name, BAD_CAST "E") == 0) {
-            ret = xmlStrPrintf(name, sizeof(name), "emailAddress");
-            if(ret < 0) {
-                xmlSecInternalError("xmlStrPrintf(emailAddress)", NULL);
-                return(-1);
-            }
-        }
-
         /* expect and skip '=' */
         if((strSize <= 0) || (*str != '=')) {
             xmlSecInvalidDataError("An equal sign '=' is expected between name and value", NULL);
             return(-1);
         }
         ++str; --strSize;
+
+        /* skip spaces after '=' */
+        while((strSize > 0) && isspace(*str)) {
+            ++str; --strSize;
+        }
 
         /* read value */
         ret = xmlSecX509AttrValueStringRead(&str, &strSize, value, sizeof(value) - 1, &valueSize, &type, ',', 1);
@@ -345,6 +341,24 @@ xmlSecX509NameRead(const xmlChar *str, xmlSecX509NameReadCallback callback, void
         }
         xmlSecAssert2(valueSize < sizeof(value), -1);
         value[valueSize] = '\0';
+
+
+        /* handle replacements */
+        if (replacements != NULL) {
+            for(xmlSecx509NameReplacements *cur = replacements; (cur->original != NULL) && (cur->replacement != NULL); ++cur) {
+                if (xmlStrcmp(name, cur->original) != 0) {
+                    continue;
+                }
+
+                /* found replacement */
+                ret = xmlStrPrintf(name, sizeof(name), "%s", cur->replacement);
+                if(ret < 0) {
+                    xmlSecInternalError("xmlStrPrintf()", NULL);
+                    return(-1);
+                }
+                break;
+             }
+        }
 
         /* callback */
         ret = callback(name, value, valueSize, type, context);

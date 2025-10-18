@@ -2019,13 +2019,14 @@ static int
 xmlSecOpenSSLDummyPasswordCallback(char *buf, int bufLen,
                                    int verify XMLSEC_ATTRIBUTE_UNUSED,
                                    void *userdata) {
-#if defined(_MSC_VER)
     xmlSecSize bufSize;
-#endif /* defined(_MSC_VER) */
     char* password;
     size_t passwordSize;
     int passwordLen;
     UNREFERENCED_PARAMETER(verify);
+
+    xmlSecAssert2(buf != NULL, -1);
+    xmlSecAssert2(bufLen > 1, -1);
 
     password = (char*)userdata;
     if(password == NULL) {
@@ -2038,11 +2039,12 @@ xmlSecOpenSSLDummyPasswordCallback(char *buf, int bufLen,
         return(-1);
     }
 
-#if defined(_MSC_VER)
     XMLSEC_SAFE_CAST_INT_TO_SIZE(bufLen, bufSize, return(-1), NULL);
+#if defined(_MSC_VER)
     strcpy_s(buf, bufSize, password);
 #else  /* defined(_MSC_VER) */
-    strcpy(buf, password);
+    strncpy(buf, password, bufSize);
+    buf[bufLen - 1] = '\0'; /* ensure \0 terminated */
 #endif /* defined(_MSC_VER) */
 
     return (passwordLen);

@@ -28,10 +28,17 @@ typedef int             (*xmlSecX509NameReadCallback)   (const xmlChar * name,
                                                          xmlSecSize valueSize,
                                                          int type,
                                                          void * context);
+typedef struct _xmlSecx509NameReplacements {
+    const xmlChar * original;
+    const xmlChar * replacement;
+} xmlSecx509NameReplacements;
 
 XMLSEC_EXPORT int       xmlSecX509NameRead              (const xmlChar *str,
+                                                         xmlSecx509NameReplacements *replacements,
                                                          xmlSecX509NameReadCallback callback,
                                                          void * context);
+
+
 
 XMLSEC_EXPORT int       xmlSecX509EscapedStringRead      (const xmlChar **in,
                                                          xmlSecSize *inSize,

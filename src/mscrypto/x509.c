@@ -600,14 +600,6 @@ xmlSecMSCryptoKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     return(0);
 }
 
-static xmlSecKeyDataType
-xmlSecMSCryptoKeyDataX509GetType(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataX509Id), xmlSecKeyDataTypeUnknown);
-
-    xmlSecNotImplementedError("MSCrypto doesn't support X509 certifiate type");
-    return(xmlSecKeyDataTypeUnknown);
-}
-
 static void
 xmlSecMSCryptoKeyDataX509DebugDump(xmlSecKeyDataPtr data, FILE* output) {
     PCCERT_CONTEXT cert;

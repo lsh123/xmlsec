@@ -92,8 +92,6 @@ static int              xmlSecGnuTLSKeyDataX509XmlWrite        (xmlSecKeyDataId 
                                                                  xmlSecKeyPtr key,
                                                                  xmlNodePtr node,
                                                                  xmlSecKeyInfoCtxPtr keyInfoCtx);
-static xmlSecKeyDataType xmlSecGnuTLSKeyDataX509GetType        (xmlSecKeyDataPtr data);
-static const xmlChar*   xmlSecGnuTLSKeyDataX509GetIdentifier   (xmlSecKeyDataPtr data);
 
 static void             xmlSecGnuTLSKeyDataX509DebugDump       (xmlSecKeyDataPtr data,
                                                                  FILE* output);
@@ -133,25 +131,25 @@ static xmlSecKeyDataKlass xmlSecGnuTLSKeyDataX509Klass = {
     xmlSecDSigNs,                               /* const xmlChar* dataNodeNs; */
 
     /* constructors/destructor */
-    xmlSecGnuTLSKeyDataX509Initialize,         /* xmlSecKeyDataInitializeMethod initialize; */
-    xmlSecGnuTLSKeyDataX509Duplicate,          /* xmlSecKeyDataDuplicateMethod duplicate; */
-    xmlSecGnuTLSKeyDataX509Finalize,           /* xmlSecKeyDataFinalizeMethod finalize; */
+    xmlSecGnuTLSKeyDataX509Initialize,          /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecGnuTLSKeyDataX509Duplicate,           /* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecGnuTLSKeyDataX509Finalize,            /* xmlSecKeyDataFinalizeMethod finalize; */
     NULL,                                       /* xmlSecKeyDataGenerateMethod generate; */
 
     /* get info */
-    xmlSecGnuTLSKeyDataX509GetType,            /* xmlSecKeyDataGetTypeMethod getType; */
+    NULL,                                       /* xmlSecKeyDataGetTypeMethod getType; */
     NULL,                                       /* xmlSecKeyDataGetSizeMethod getSize; */
-    xmlSecGnuTLSKeyDataX509GetIdentifier,      /* xmlSecKeyDataGetIdentifier getIdentifier; */
+    NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
 
     /* read/write */
-    xmlSecGnuTLSKeyDataX509XmlRead,            /* xmlSecKeyDataXmlReadMethod xmlRead; */
-    xmlSecGnuTLSKeyDataX509XmlWrite,           /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    xmlSecGnuTLSKeyDataX509XmlRead,             /* xmlSecKeyDataXmlReadMethod xmlRead; */
+    xmlSecGnuTLSKeyDataX509XmlWrite,            /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
     NULL,                                       /* xmlSecKeyDataBinReadMethod binRead; */
     NULL,                                       /* xmlSecKeyDataBinWriteMethod binWrite; */
 
     /* debug */
-    xmlSecGnuTLSKeyDataX509DebugDump,          /* xmlSecKeyDataDebugDumpMethod debugDump; */
-    xmlSecGnuTLSKeyDataX509DebugXmlDump,       /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+    xmlSecGnuTLSKeyDataX509DebugDump,           /* xmlSecKeyDataDebugDumpMethod debugDump; */
+    xmlSecGnuTLSKeyDataX509DebugXmlDump,        /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
 
     /* reserved for the future */
     NULL,                                       /* void* reserved0; */
@@ -616,23 +614,6 @@ xmlSecGnuTLSKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     /* success */
     return(0);
-}
-
-
-static xmlSecKeyDataType
-xmlSecGnuTLSKeyDataX509GetType(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataX509Id), xmlSecKeyDataTypeUnknown);
-
-    /* TODO: return verified/not verified status */
-    return(xmlSecKeyDataTypeUnknown);
-}
-
-static const xmlChar*
-xmlSecGnuTLSKeyDataX509GetIdentifier(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataX509Id), NULL);
-
-    /* TODO: return X509 cert identifier */
-    return(NULL);
 }
 
 static void
@@ -1168,7 +1149,7 @@ static xmlSecKeyDataKlass xmlSecGnuTLSKeyDataRawX509CertKlass = {
     /* get info */
     NULL,                                       /* xmlSecKeyDataGetTypeMethod getType; */
     NULL,                                       /* xmlSecKeyDataGetSizeMethod getSize; */
-    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
+    NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
 
     /* read/write */
     NULL,                                       /* xmlSecKeyDataXmlReadMethod xmlRead; */

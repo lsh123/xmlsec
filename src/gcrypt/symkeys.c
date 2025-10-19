@@ -224,7 +224,7 @@ static xmlSecKeyDataKlass xmlSecGCryptKeyDataAesKlass = {
     /* get info */
     xmlSecGCryptSymKeyDataGetType,              /* xmlSecKeyDataGetTypeMethod getType; */
     xmlSecGCryptSymKeyDataGetSize,              /* xmlSecKeyDataGetSizeMethod getSize; */
-    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
+    NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
 
     /* read/write */
     xmlSecGCryptSymKeyDataXmlRead,              /* xmlSecKeyDataXmlReadMethod xmlRead; */
@@ -305,7 +305,7 @@ static xmlSecKeyDataKlass xmlSecGCryptKeyDataDesKlass = {
     /* get info */
     xmlSecGCryptSymKeyDataGetType,              /* xmlSecKeyDataGetTypeMethod getType; */
     xmlSecGCryptSymKeyDataGetSize,              /* xmlSecKeyDataGetSizeMethod getSize; */
-    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
+    NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
 
     /* read/write */
     xmlSecGCryptSymKeyDataXmlRead,              /* xmlSecKeyDataXmlReadMethod xmlRead; */
@@ -387,7 +387,7 @@ static xmlSecKeyDataKlass xmlSecGCryptKeyDataHmacKlass = {
     /* get info */
     xmlSecGCryptSymKeyDataGetType,              /* xmlSecKeyDataGetTypeMethod getType; */
     xmlSecGCryptSymKeyDataGetSize,              /* xmlSecKeyDataGetSizeMethod getSize; */
-    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
+    NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
 
     /* read/write */
     xmlSecGCryptSymKeyDataXmlRead,              /* xmlSecKeyDataXmlReadMethod xmlRead; */

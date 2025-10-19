@@ -118,8 +118,6 @@ static int              xmlSecNssKeyDataX509XmlWrite    (xmlSecKeyDataId id,
                                                          xmlSecKeyPtr key,
                                                          xmlNodePtr node,
                                                          xmlSecKeyInfoCtxPtr keyInfoCtx);
-static xmlSecKeyDataType xmlSecNssKeyDataX509GetType    (xmlSecKeyDataPtr data);
-static const xmlChar* xmlSecNssKeyDataX509GetIdentifier (xmlSecKeyDataPtr data);
 
 static void             xmlSecNssKeyDataX509DebugDump   (xmlSecKeyDataPtr data,
                                                          FILE* output);
@@ -161,9 +159,9 @@ static xmlSecKeyDataKlass xmlSecNssKeyDataX509Klass = {
     NULL,                                       /* xmlSecKeyDataGenerateMethod generate; */
 
     /* get info */
-    xmlSecNssKeyDataX509GetType,                /* xmlSecKeyDataGetTypeMethod getType; */
+    NULL,                                       /* xmlSecKeyDataGetTypeMethod getType; */
     NULL,                                       /* xmlSecKeyDataGetSizeMethod getSize; */
-    xmlSecNssKeyDataX509GetIdentifier,          /* xmlSecKeyDataGetIdentifier getIdentifier; */
+    NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
 
     /* read/write */
     xmlSecNssKeyDataX509XmlRead,                /* xmlSecKeyDataXmlReadMethod xmlRead; */
@@ -683,22 +681,6 @@ xmlSecNssKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     /* success */
     return(0);
-}
-
-static xmlSecKeyDataType
-xmlSecNssKeyDataX509GetType(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecNssKeyDataX509Id), xmlSecKeyDataTypeUnknown);
-
-    /* TODO: return verified/not verified status */
-    return(xmlSecKeyDataTypeUnknown);
-}
-
-static const xmlChar*
-xmlSecNssKeyDataX509GetIdentifier(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecNssKeyDataX509Id), NULL);
-
-    /* TODO: return X509 certificate identifier */
-    return(NULL);
 }
 
 static void
@@ -1535,7 +1517,7 @@ static xmlSecKeyDataKlass xmlSecNssKeyDataRawX509CertKlass = {
     /* get info */
     NULL,                                       /* xmlSecKeyDataGetTypeMethod getType; */
     NULL,                                       /* xmlSecKeyDataGetSizeMethod getSize; */
-    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
+    NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
 
     /* read/write */
     NULL,                                       /* xmlSecKeyDataXmlReadMethod xmlRead; */

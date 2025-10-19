@@ -475,16 +475,15 @@ xmlSecKeyDataGetSize(xmlSecKeyDataPtr data) {
  * xmlSecKeyDataGetIdentifier:
  * @data:               the pointer to key data.
  *
- * Gets key data identifier string.
+ * DEPRECATED. Gets key data identifier string.
  *
  * Returns: key data id string.
  */
 const xmlChar*
 xmlSecKeyDataGetIdentifier(xmlSecKeyDataPtr data) {
     xmlSecAssert2(xmlSecKeyDataIsValid(data), NULL);
-    xmlSecAssert2(data->id->getIdentifier != NULL, NULL);
-
-    return(data->id->getIdentifier(data));
+    xmlSecNotImplementedError("Key data identifier method is deprecated");
+    return(NULL);
 }
 
 /**

@@ -287,11 +287,12 @@ XMLSEC_EXPORT int               xmlSecKeyDataGenerate           (xmlSecKeyDataPt
                                                                  xmlSecKeyDataType type);
 XMLSEC_EXPORT xmlSecKeyDataType xmlSecKeyDataGetType            (xmlSecKeyDataPtr data);
 XMLSEC_EXPORT xmlSecSize        xmlSecKeyDataGetSize            (xmlSecKeyDataPtr data);
-XMLSEC_EXPORT const xmlChar*    xmlSecKeyDataGetIdentifier      (xmlSecKeyDataPtr data);
+
 XMLSEC_EXPORT void              xmlSecKeyDataDebugDump          (xmlSecKeyDataPtr data,
                                                                  FILE *output);
 XMLSEC_EXPORT void              xmlSecKeyDataDebugXmlDump       (xmlSecKeyDataPtr data,
                                                                  FILE *output);
+
 XMLSEC_EXPORT int               xmlSecKeyDataXmlRead            (xmlSecKeyDataId id,
                                                                  xmlSecKeyPtr key,
                                                                  xmlNodePtr node,
@@ -300,6 +301,7 @@ XMLSEC_EXPORT int               xmlSecKeyDataXmlWrite           (xmlSecKeyDataId
                                                                  xmlSecKeyPtr key,
                                                                  xmlNodePtr node,
                                                                  xmlSecKeyInfoCtxPtr keyInfoCtx);
+
 XMLSEC_EXPORT int               xmlSecKeyDataBinRead            (xmlSecKeyDataId id,
                                                                  xmlSecKeyPtr key,
                                                                  const xmlSecByte* buf,
@@ -311,7 +313,10 @@ XMLSEC_EXPORT int               xmlSecKeyDataBinWrite           (xmlSecKeyDataId
                                                                  xmlSecSize* bufSize,
                                                                  xmlSecKeyInfoCtxPtr keyInfoCtx);
 
-/**
+
+XMLSEC_DEPRECATED XMLSEC_EXPORT const xmlChar*    xmlSecKeyDataGetIdentifier      (xmlSecKeyDataPtr data);
+
+                                                                 /**
  * xmlSecKeyDataGetName:
  * @data:               the pointer to key data.
  *
@@ -510,17 +515,6 @@ typedef xmlSecKeyDataType       (*xmlSecKeyDataGetTypeMethod)   (xmlSecKeyDataPt
 typedef xmlSecSize              (*xmlSecKeyDataGetSizeMethod)   (xmlSecKeyDataPtr data);
 
 /**
- * xmlSecKeyDataGetIdentifierMethod:
- * @data:               the pointer to key data.
- *
- * Key data specific method to get the key data identifier string (for example,
- * X509 data identifier is the subject of the verified cert).
- *
- * Returns: the identifier string or NULL if an error occurs.
- */
-typedef const xmlChar*          (*xmlSecKeyDataGetIdentifierMethod) (xmlSecKeyDataPtr data);
-
-/**
  * xmlSecKeyDataDebugDumpMethod:
  * @data:               the data.
  * @output:             the FILE to print debug info (should be open for writing).
@@ -577,7 +571,7 @@ struct _xmlSecKeyDataKlass {
     /* get info */
     xmlSecKeyDataGetTypeMethod          getType;
     xmlSecKeyDataGetSizeMethod          getSize;
-    xmlSecKeyDataGetIdentifierMethod    getIdentifier;
+    void*                               deprecated0; /* DEPRECATED: xmlSecKeyDataGetIdentifierMethod    getIdentifier; */
 
     /* read/write */
     xmlSecKeyDataXmlReadMethod          xmlRead;

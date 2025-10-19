@@ -606,7 +606,7 @@ xmlSecOpenSSLEvpBlockCipherCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
 #ifndef XMLSEC_NO_AES
         return xmlSecOpenSSLEvpBlockCipherGCMCtxFinal(ctx, in, out, cipherName, transformCtx);
 #else /* XMLSEC_NO_AES */
-        xmlSecNotImplementedError("AES-GCM support is disabled");
+        xmlSecNotImplementedError("AES-GCM support is disabled during compilation");
         return(-1);
 #endif /* XMLSEC_NO_AES */
     }

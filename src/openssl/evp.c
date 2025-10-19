@@ -707,7 +707,8 @@ done:
  * ============================================================================
  *
  * To support reading/writing private keys an X element added (before Y).
- * todo: The current implementation does not support Seed and PgenCounter!
+ *
+ * The current implementation does not support Seed and PgenCounter!
  * by this the P, Q and G are *required*!
  *
  *************************************************************************/

@@ -441,7 +441,7 @@ xmlSecMSCngKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
                 break;
 #endif
             default:
-                xmlSecNotImplementedError(NULL);
+                xmlSecNotImplementedError2("Unexpected key magic value: %llu", (unsigned long long)(((BCRYPT_KEY_BLOB*)pbBlob)->Magic));
                 xmlFree(pbBlob);
                 return(-1);
         }
@@ -452,8 +452,7 @@ xmlSecMSCngKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
             NULL,
             0);
         if(status != STATUS_SUCCESS) {
-            xmlSecMSCngNtError("BCryptOpenAlgorithmProvider",
-                NULL, status);
+            xmlSecMSCngNtError("BCryptOpenAlgorithmProvider", NULL, status);
             xmlFree(pbBlob);
             return(-1);
         }
@@ -467,8 +466,7 @@ xmlSecMSCngKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
             cbBlob,
             0);
         if(status != STATUS_SUCCESS) {
-            xmlSecMSCngNtError("BCryptImportKeyPair",
-                NULL, status);
+            xmlSecMSCngNtError("BCryptImportKeyPair", NULL, status);
             xmlFree(pbBlob);
             BCryptCloseAlgorithmProvider(hAlg, 0);
             return(-1);
@@ -852,7 +850,6 @@ xmlSecMSCngKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
     dsakey->dwMagic = BCRYPT_DSA_PUBLIC_MAGIC;
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(pSize, dsakey->cbKey, goto done, xmlSecKeyDataKlassGetName(id));
 
-    /* todo: add support for J, seed, pgencounter */
     memset(dsakey->Count, -1, sizeof(dsakey->Count));
     memset(dsakey->Seed, -1, sizeof(dsakey->Seed));
 
@@ -1544,7 +1541,7 @@ xmlSecMSCngKeyDataGetSize(xmlSecKeyDataPtr data) {
         }
         xmlSecAssert2(lenlen == sizeof(length), 0);
     } else if(ctx->privkey != 0) {
-        xmlSecNotImplementedError(NULL);
+        xmlSecNotImplementedError("MSCNG doesn't support getting key length from private key");
         return(0);
     }
 

@@ -563,7 +563,8 @@ done:
  * ============================================================================
  *
  * To support reading/writing private keys an X element added (before Y).
- * todo: The current implementation does not support Seed and PgenCounter!
+ *
+ * The current implementation does not support Seed and PgenCounter!
  * by this the P, Q and G are *required*!
  *
  *************************************************************************/
@@ -861,8 +862,6 @@ xmlSecGCryptKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
             xmlSecKeyDataKlassGetName(id));
         goto done;
     }
-
-    /* todo: add support for J , seed, pgencounter */
 
     /* Convert from OpenSSL parameter ordering to the OpenPGP order. */
     /* First check that x < y; if not swap x and y  */

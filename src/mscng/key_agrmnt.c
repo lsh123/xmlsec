@@ -287,7 +287,7 @@ xmlSecMSCngEcdhGetPublicKey(xmlSecMSCngEcdhCtxPtr ctx, xmlSecKeyDataPtr keyValue
         break;
 #endif /* XMLSEC_NO_EC */
     default:
-        xmlSecNotImplementedError(NULL);
+        xmlSecNotImplementedError2("Unexpected key magic value: %llu", (unsigned long long)(pKeyBlob->Magic));
         goto done;
     }
 

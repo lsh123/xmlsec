@@ -339,7 +339,7 @@ xmlSecMSCngX509StoreAdoptCert(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT pCert,
     } else if(type == xmlSecKeyDataTypeNone) {
         hCertStore = ctx->untrusted;
     } else {
-        xmlSecNotImplementedError(NULL);
+        xmlSecNotImplementedError2("MSCNG doesn't support key data type: %d", (int)type);
         return(-1);
     }
 

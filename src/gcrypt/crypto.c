@@ -352,8 +352,6 @@ xmlSecGCryptShutdown(void) {
 int
 xmlSecGCryptKeysMngrInit(xmlSecKeysMngrPtr mngr) {
     xmlSecAssert2(mngr != NULL, -1);
-
-    /* TODO: add key data stores */
     return(0);
 }
 

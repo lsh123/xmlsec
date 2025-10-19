@@ -697,7 +697,7 @@ static const xmlChar*
 xmlSecNssKeyDataX509GetIdentifier(xmlSecKeyDataPtr data) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecNssKeyDataX509Id), NULL);
 
-    /* TODO */
+    /* TODO: return X509 certificate identifier */
     return(NULL);
 }
 

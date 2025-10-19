@@ -304,7 +304,7 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
 
     /* OK, I give up, I'm gone :( */
 
-    /* aleksey todo: is it a right idea to close store if we have a handle to
+    /* todo: is it a right idea to close store if we have a handle to
      * a cert in this store? */
     xmlFree(wcName);
     CertCloseStore(hStoreHandle, 0);

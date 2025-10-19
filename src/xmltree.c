@@ -1218,7 +1218,6 @@ xmlSecQName2IntegerNodeRead(xmlSecQName2IntegerInfoConstPtr info, xmlNodePtr nod
                         "node=%s", xmlSecErrorsSafeString(node->name));
         return(-1);
     }
-    /* todo: trim content? */
 
     ret = xmlSecQName2IntegerGetIntegerFromString(info, node, content, intValue);
     if(ret < 0) {
@@ -1306,8 +1305,7 @@ xmlSecQName2IntegerAttributeRead(xmlSecQName2IntegerInfoConstPtr info, xmlNodePt
 
     attrValue = xmlGetProp(node, attrName);
     if(attrValue == NULL) {
-        xmlSecXmlError2("xmlGetProp", NULL,
-                        "node=%s", xmlSecErrorsSafeString(node->name));
+        xmlSecXmlError2("xmlGetProp", NULL, "node=%s", xmlSecErrorsSafeString(node->name));
         return(-1);
     }
     /* todo: trim value? */

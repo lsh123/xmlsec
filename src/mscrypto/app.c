@@ -800,8 +800,7 @@ xmlSecMSCryptoAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, x
     xmlSecAssert2(filename != NULL, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
-    /* TODO */
-    xmlSecNotImplementedError(NULL);
+    xmlSecNotImplementedError("MSCrypto doesn't support loading X509 CRLs at runtime");
     return(-1);
 }
 
@@ -823,8 +822,7 @@ xmlSecMSCryptoAppKeysMngrCrlLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte*
     xmlSecAssert2(dataSize > 0, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
-    /* TODO */
-    xmlSecNotImplementedError(NULL);
+    xmlSecNotImplementedError("MSCrypto doesn't support loading X509 CRLs at runtime");
     return(-1);
 }
 
@@ -1026,7 +1024,7 @@ xmlSecMSCryptoAppDefaultKeysMngrVerifyKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr k
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
-    xmlSecNotImplementedError("xmlSecMSCryptoAppDefaultKeysMngrVerifyKey");
+    xmlSecNotImplementedError("MSCrypto doesn't support key verification while loading key into keys manager");
     return(-1);
 }
 
@@ -1091,8 +1089,7 @@ xmlSecMSCryptoAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filenam
 
     ret = xmlSecMSCryptoKeysStoreSave(store, filename, type);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecMSCryptoKeysStoreSave", NULL,
-                             "filename%s", xmlSecErrorsSafeString(filename));
+        xmlSecInternalError2("xmlSecMSCryptoKeysStoreSave", NULL, "filename%s", xmlSecErrorsSafeString(filename));
         return(-1);
     }
 
@@ -1113,7 +1110,7 @@ xmlSecMSCryptoAppDefaultKeysMngrPrivateKeyLoad(xmlSecKeysMngrPtr mngr, HCRYPTKEY
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(hKey != 0, -1);
 
-    /* TODO */
+    xmlSecNotImplementedError("MSCrypto doesn't support loading private keys at runtime");
     return(0);
 }
 
@@ -1131,7 +1128,7 @@ xmlSecMSCryptoAppDefaultKeysMngrPublicKeyLoad(xmlSecKeysMngrPtr mngr, HCRYPTKEY 
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(hKey != 0, -1);
 
-    /* TODO */
+    xmlSecNotImplementedError("MSCrypto doesn't support loading public keys at runtime");
     return(0);
 }
 
@@ -1149,7 +1146,7 @@ xmlSecMSCryptoAppDefaultKeysMngrSymKeyLoad(xmlSecKeysMngrPtr mngr, HCRYPTKEY hKe
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(hKey != 0, -1);
 
-    /* TODO */
+    xmlSecNotImplementedError("MSCrypto doesn't support loading symmetric keys at runtime");
     return(0);
 }
 
@@ -1162,5 +1159,6 @@ xmlSecMSCryptoAppDefaultKeysMngrSymKeyLoad(xmlSecKeysMngrPtr mngr, HCRYPTKEY hKe
  */
 void*
 xmlSecMSCryptoAppGetDefaultPwdCallback(void) {
+    xmlSecNotImplementedError("MSCrypto doesn't support password callback");
     return(NULL);
 }

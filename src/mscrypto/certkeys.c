@@ -1575,7 +1575,8 @@ done:
  * ============================================================================
  *
  * To support reading/writing private keys an X element added (before Y).
- * todo: The current implementation does not support Seed and PgenCounter!
+ *
+ * The current implementation does not support Seed and PgenCounter!
  * by this the P, Q and G are *required*!
  *
  *************************************************************************/
@@ -1947,8 +1948,6 @@ xmlSecMSCryptoKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) 
     /* set public key and pad with zeros */
     memcpy(buf, xmlSecBufferGetData(&(dsaValue->y)), ySize);
     buf += pSize; /* ySize <= pSize */
-
-    /* todo: add support for J, seed, pgencounter */
 
     /* Set seed to 0xFFFFFFFFF */
     seed = (DSSSEED*)buf;

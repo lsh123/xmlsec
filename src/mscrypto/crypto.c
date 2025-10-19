@@ -548,7 +548,7 @@ xmlSecMSCryptoFindProvider(const xmlSecMSCryptoProviderInfo * providers,
                             providers[ii].providerType,
                             CRYPT_NEWKEYSET | dwFlags);
                 if((ret == TRUE) && (res != 0)) {
-                    /* ALEKSEY TODO - NEED TO DELETE ALL THE TEMP CONTEXTS ON SHUTDOWN
+                    /* TODO - NEED TO DELETE ALL THE TEMP CONTEXTS ON SHUTDOWN
 
                         CryptAcquireContext(&tmp, XMLSEC_CONTAINER_NAME,
                             providers[ii].providerName,

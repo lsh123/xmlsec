@@ -306,8 +306,7 @@ xmlSecMSCngAppKeyCertLoad(xmlSecKeyPtr key, const char* filename,
     xmlSecAssert2(filename != NULL, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
-    /* TODO */
-    xmlSecNotImplementedError(NULL);
+    xmlSecNotImplementedError("MSCNG doesn't support loading X509 certificates at runtime");
     return(-1);
 }
 
@@ -330,8 +329,7 @@ xmlSecMSCngAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSec
     xmlSecAssert2(dataSize > 0, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
-    /* TODO */
-    xmlSecNotImplementedError(NULL);
+    xmlSecNotImplementedError("MSCNG doesn't support loading X509 certificates at runtime");
     return(-1);
 }
 
@@ -723,8 +721,7 @@ xmlSecMSCngAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, xmlS
     xmlSecAssert2(filename != NULL, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
-    /* TODO */
-    xmlSecNotImplementedError(NULL);
+    xmlSecNotImplementedError("MSCNG doesn't support loading X509 CRLs at runtime");
     return(-1);
 }
 
@@ -746,8 +743,7 @@ xmlSecMSCngAppKeysMngrCrlLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* da
     xmlSecAssert2(dataSize > 0, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
-    /* TODO */
-    xmlSecNotImplementedError(NULL);
+    xmlSecNotImplementedError("MSCNG doesn't support loading X509 CRLs at runtime");
     return(-1);
 }
 
@@ -869,7 +865,7 @@ xmlSecMSCngAppDefaultKeysMngrVerifyKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key,
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
-    xmlSecNotImplementedError("X509 support is disabled");
+    xmlSecNotImplementedError("X509 support is disabled during compilation");
     return(-1);
 
 #endif /* XMLSEC_NO_X509 */
@@ -952,6 +948,6 @@ xmlSecMSCngAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename, 
  */
 void*
 xmlSecMSCngAppGetDefaultPwdCallback(void) {
-    /* TODO */
+    xmlSecNotImplementedError("MSCNG doesn't support password callback");
     return(NULL);
 }

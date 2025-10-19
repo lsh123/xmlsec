@@ -238,11 +238,11 @@ xmlSecGCryptAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
         }
         break;
     case xmlSecKeyDataFormatPem:
-        xmlSecNotImplementedError("xmlSecKeyDataFormatPem");
+        xmlSecNotImplementedError("GCrypt doesn't support PEM keys");
         return (NULL);
 #ifndef XMLSEC_NO_X509
     case xmlSecKeyDataFormatPkcs12:
-        xmlSecNotImplementedError("xmlSecKeyDataFormatPkcs12");
+        xmlSecNotImplementedError("GCrypt doesn't support PKCS12");
         return (NULL);
 #endif /* XMLSEC_NO_X509 */
     default:
@@ -293,8 +293,7 @@ xmlSecGCryptAppKeyCertLoad(xmlSecKeyPtr key, const char* filename,
     xmlSecAssert2(filename != NULL, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
-    /* GCrypt  does not support X509 certificates */
-    xmlSecNotImplementedError(NULL);
+    xmlSecNotImplementedError("GCrypt doesn't support X509 certificates");
     return(-1);
 }
 
@@ -320,8 +319,7 @@ xmlSecGCryptAppKeyCertLoadMemory(xmlSecKeyPtr key,
     xmlSecAssert2(dataSize > 0, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
-    /* GCrypt  does not support X509 certificates */
-    xmlSecNotImplementedError(NULL);
+    xmlSecNotImplementedError("GCrypt doesn't support X509 certificates");
     return(-1);
 }
 
@@ -347,8 +345,7 @@ xmlSecGCryptAppPkcs12Load(const char *filename,
                           void* pwdCallbackCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecAssert2(filename != NULL, NULL);
 
-    /* GCrypt  does not support X509 certificates */
-    xmlSecNotImplementedError(NULL);
+    xmlSecNotImplementedError("GCrypt doesn't support X509 certificates");
     return(NULL);
 }
 
@@ -376,8 +373,7 @@ xmlSecGCryptAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     xmlSecAssert2(data != NULL, NULL);
     xmlSecAssert2(dataSize > 0, NULL);
 
-    /* GCrypt  does not support X509 certificates */
-    xmlSecNotImplementedError(NULL);
+    xmlSecNotImplementedError("GCrypt doesn't support X509 certificates");
     return(NULL);
 }
 
@@ -405,8 +401,7 @@ xmlSecGCryptAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr,
     xmlSecAssert2(filename != NULL, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
-    /* GCrypt  does not support X509 certificates */
-    xmlSecNotImplementedError(NULL);
+    xmlSecNotImplementedError("GCrypt doesn't support X509 certificates");
     return(-1);
 }
 
@@ -428,8 +423,7 @@ xmlSecGCryptAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, xml
     xmlSecAssert2(filename != NULL, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
-    /* GCrypt  does not support X509 certificates */
-    xmlSecNotImplementedError(NULL);
+    xmlSecNotImplementedError("GCrypt doesn't support X509 certificates");
     return(-1);
 }
 
@@ -459,8 +453,7 @@ xmlSecGCryptAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr,
     xmlSecAssert2(dataSize > 0, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
-    /* GCrypt  does not support X509 certificates */
-    xmlSecNotImplementedError(NULL);
+    xmlSecNotImplementedError("GCrypt doesn't support X509 certificates");
     return(-1);
 }
 
@@ -505,7 +498,6 @@ xmlSecGCryptAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
         return(-1);
     }
 
-    /* TODO */
     mngr->getKey = xmlSecKeysMngrGetKey;
     return(0);
 }
@@ -566,7 +558,7 @@ xmlSecGCryptAppDefaultKeysMngrVerifyKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
-    xmlSecNotImplementedError("xmlSecGCryptAppDefaultKeysMngrVerifyKey");
+    xmlSecNotImplementedError("GCrypt doesn't support X509 certificates");
     return(-1);
 }
 

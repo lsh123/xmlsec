@@ -2279,18 +2279,18 @@ xmlSecKeyValueDsaXmlRead(xmlSecKeyValueDsaPtr data, xmlNodePtr node) {
     }
     cur = xmlSecGetNextElementNode(cur->next);
 
-    /* todo: add support for J */
     if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeDSAJ, xmlSecDSigNs))) {
+        xmlSecNotImplementedError("DSA key value J parameter is not supported");
         cur = xmlSecGetNextElementNode(cur->next);
     }
 
-    /* todo: add support for seed */
     if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeDSASeed, xmlSecDSigNs))) {
+        xmlSecNotImplementedError("DSA key value seed parameter is not supported");
         cur = xmlSecGetNextElementNode(cur->next);
     }
 
-    /* todo: add support for pgencounter */
     if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeDSAPgenCounter, xmlSecDSigNs))) {
+        xmlSecNotImplementedError("DSA key value pgencounter parameter is not supported");
         cur = xmlSecGetNextElementNode(cur->next);
     }
 

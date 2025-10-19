@@ -587,8 +587,7 @@ xmlSecDSigCtxProcessSignatureNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
         }
         xmlSecNodeSetDestroy(nodeset);
     } else {
-        /* TODO */
-        xmlSecNotImplementedError("binary c14n transforms");
+        xmlSecNotImplementedError("Binary c14n transforms are not supported");
         return(-1);
     }
     return(0);

@@ -743,7 +743,8 @@ done:
  * ============================================================================
  *
  * To support reading/writing private keys an X element added (before Y).
- * todo: The current implementation does not support Seed and PgenCounter!
+ *
+ * The current implementation does not support Seed and PgenCounter!
  * by this the P, Q and G are *required*!
  *
  *************************************************************************/
@@ -1075,8 +1076,6 @@ xmlSecNssKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
                             xmlSecKeyDataKlassGetName(id));
         goto done;
     }
-
-    /* todo: add support for J , seed, pgencounter */
 
     /* create key */
     handle = PK11_ImportPublicKey(slot, pubkey, PR_FALSE);

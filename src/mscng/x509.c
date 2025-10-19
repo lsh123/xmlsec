@@ -949,7 +949,7 @@ xmlSecMSCngKeyDataX509DebugDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataX509Id));
     xmlSecAssert(output != NULL);
 
-    xmlSecNotImplementedError(NULL);
+    xmlSecNotImplementedError("MSCNG doesn't support debug information for X509 certificates");
     /* ignore error */
 }
 
@@ -958,7 +958,7 @@ xmlSecMSCngKeyDataX509DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataX509Id));
     xmlSecAssert(output != NULL);
 
-    xmlSecNotImplementedError(NULL);
+    xmlSecNotImplementedError("MSCNG doesn't support debug information for X509 certificates");
     /* ignore error */
 }
 

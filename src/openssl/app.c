@@ -613,7 +613,7 @@ done:
     UNREFERENCED_PARAMETER(pwd);
     UNREFERENCED_PARAMETER(pwdCallback);
     UNREFERENCED_PARAMETER(pwdCallbackCtx);
-    xmlSecNotImplementedError("OpenSSL Engine interface is not enabled");
+    xmlSecNotImplementedError("OpenSSL Engine interface is disabled during compilation");
     return (NULL);
 #endif /* !defined(OPENSSL_NO_ENGINE) && (!defined(XMLSEC_OPENSSL_API_300) || defined(XMLSEC_OPENSSL3_ENGINES)) */
 }
@@ -981,7 +981,7 @@ done:
     UNREFERENCED_PARAMETER(pwdCallback);
     UNREFERENCED_PARAMETER(pwdCallbackCtx);
 
-    xmlSecNotImplementedError("X509 or OpenSSL Stores support is disabled");
+    xmlSecNotImplementedError("X509 or OpenSSL Stores support is disabled during compilation");
     return(NULL);
 #endif /* !defined(XMLSEC_OPENSSL_NO_STORE) && !defined(XMLSEC_NO_X509) */
 }
@@ -1775,7 +1775,6 @@ xmlSecOpenSSLAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
         return(-1);
     }
 
-    /* TODO */
     mngr->getKey = xmlSecKeysMngrGetKey;
     return(0);
 }
@@ -1845,7 +1844,7 @@ xmlSecOpenSSLAppDefaultKeysMngrVerifyKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr ke
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
-    xmlSecNotImplementedError("X509 support is disabled");
+    xmlSecNotImplementedError("X509 support is disabled during compilation");
     return(-1);
 
 #endif /* XMLSEC_NO_X509 */

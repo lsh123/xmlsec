@@ -1039,7 +1039,7 @@ xmlSecOpenSSLEvpSignatureVerify(xmlSecTransformPtr transform,
         ret = EVP_PKEY_verify(pKeyCtx, fixedData, dataLen, dgst, dgstSize);
         break;
 #else  /* XMLSEC_NO_DSA */
-        xmlSecNotImplementedError("DSA signatures are disabled");
+        xmlSecNotImplementedError("DSA signatures support is disabled during compilation");
         goto done;
 #endif /* XMLSEC_NO_DSA */
 
@@ -1055,7 +1055,7 @@ xmlSecOpenSSLEvpSignatureVerify(xmlSecTransformPtr transform,
         ret = EVP_PKEY_verify(pKeyCtx, fixedData, dataLen, dgst, dgstSize);
         break;
 #else  /* XMLSEC_NO_EC */
-        xmlSecNotImplementedError("DSA signatures are disabled");
+        xmlSecNotImplementedError("DSA signatures support is disabled during compilation");
         goto done;
 #endif /* XMLSEC_NO_EC */
     }
@@ -1167,7 +1167,7 @@ xmlSecOpenSSLEvpSignatureSign(xmlSecTransformPtr transform, xmlSecOpenSSLEvpSign
         }
         break;
 #else  /* XMLSEC_NO_DSA */
-        xmlSecNotImplementedError("DSA signatures are disabled");
+        xmlSecNotImplementedError("DSA signatures support is disabled during compilation");
         goto done;
 #endif /* XMLSEC_NO_DSA */
 
@@ -1181,7 +1181,7 @@ xmlSecOpenSSLEvpSignatureSign(xmlSecTransformPtr transform, xmlSecOpenSSLEvpSign
         }
         break;
 #else  /* XMLSEC_NO_EC */
-        xmlSecNotImplementedError("ECDSA signatures are disabled");
+        xmlSecNotImplementedError("ECDSA signatures support is disabled during compilation");
         goto done;
 #endif /* XMLSEC_NO_EC */
     }

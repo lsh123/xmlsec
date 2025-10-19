@@ -666,7 +666,7 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecNameX509Store[];
 
 /*************************************************************************
  *
- * PGP strings
+ * DEPRECATD PGP strings
  *
  ************************************************************************/
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNamePGPData[];

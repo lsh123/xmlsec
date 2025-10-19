@@ -539,7 +539,7 @@ typedef void                    (*xmlSecKeyDataDebugDumpMethod) (xmlSecKeyDataPt
  * @generate:           the new data generation method.
  * @getType:            the method to access data's type information.
  * @getSize:            the method to access data's size.
- * @getIdentifier:      the method to access data's string identifier.
+ * @deprecated0:        DEPRECAED: the method to access data's string identifier.
  * @xmlRead:            the method for reading data from XML node.
  * @xmlWrite:           the method for writing data to XML node.
  * @binRead:            the method for reading data from a binary buffer.

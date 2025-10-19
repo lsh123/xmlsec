@@ -624,7 +624,7 @@ static xmlSecKeyDataKlass xmlSecKeyDataNameKlass = {
     /* get info */
     NULL,                                       /* xmlSecKeyDataGetTypeMethod getType; */
     NULL,                                       /* xmlSecKeyDataGetSizeMethod getSize; */
-    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
+    NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
 
     /* read/write */
     xmlSecKeyDataNameXmlRead,                   /* xmlSecKeyDataXmlReadMethod xmlRead; */
@@ -808,7 +808,7 @@ static xmlSecKeyDataKlass xmlSecKeyDataValueKlass = {
     /* get info */
     NULL,                                       /* xmlSecKeyDataGetTypeMethod getType; */
     NULL,                                       /* xmlSecKeyDataGetSizeMethod getSize; */
-    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
+    NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
 
     /* read/write */
     xmlSecKeyDataValueXmlRead,                  /* xmlSecKeyDataXmlReadMethod xmlRead; */
@@ -993,7 +993,7 @@ static xmlSecKeyDataKlass xmlSecKeyDataRetrievalMethodKlass = {
     /* get info */
     NULL,                                       /* xmlSecKeyDataGetTypeMethod getType; */
     NULL,                                       /* xmlSecKeyDataGetSizeMethod getSize; */
-    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
+    NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
 
     /* read/write */
     xmlSecKeyDataRetrievalMethodXmlRead,        /* xmlSecKeyDataXmlReadMethod xmlRead; */
@@ -1295,7 +1295,7 @@ static xmlSecKeyDataKlass xmlSecKeyDataKeyInfoReferenceKlass = {
     /* get info */
     NULL,                                       /* xmlSecKeyDataGetTypeMethod getType; */
     NULL,                                       /* xmlSecKeyDataGetSizeMethod getSize; */
-    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
+    NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
 
     /* read/write */
     xmlSecKeyDataKeyInfoReferenceXmlRead,        /* xmlSecKeyDataXmlReadMethod xmlRead; */
@@ -1528,7 +1528,7 @@ static xmlSecKeyDataKlass xmlSecKeyDataEncryptedKeyKlass = {
     /* get info */
     NULL,                                       /* xmlSecKeyDataGetTypeMethod getType; */
     NULL,                                       /* xmlSecKeyDataGetSizeMethod getSize; */
-    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
+    NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
 
     /* read/write */
     xmlSecKeyDataEncryptedKeyXmlRead,           /* xmlSecKeyDataXmlReadMethod xmlRead; */
@@ -1753,7 +1753,7 @@ static xmlSecKeyDataKlass xmlSecKeyDataDerivedKeyKlass = {
     /* get info */
     NULL,                                       /* xmlSecKeyDataGetTypeMethod getType; */
     NULL,                                       /* xmlSecKeyDataGetSizeMethod getSize; */
-    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
+    NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
 
     /* read/write */
     xmlSecKeyDataDerivedKeyXmlRead,             /* xmlSecKeyDataXmlReadMethod xmlRead; */
@@ -1926,7 +1926,7 @@ static xmlSecKeyDataKlass xmlSecKeyDataAgreementMethodKlass = {
     /* get info */
     NULL,                                       /* xmlSecKeyDataGetTypeMethod getType; */
     NULL,                                       /* xmlSecKeyDataGetSizeMethod getSize; */
-    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
+    NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
 
     /* read/write */
     xmlSecKeyDataAgreementMethodXmlRead,        /* xmlSecKeyDataXmlReadMethod xmlRead; */

@@ -208,7 +208,7 @@ static xmlSecKeyDataKlass xmlSecMSCngKeyDataAesKlass = {
     /* get info */
     xmlSecMSCngSymKeyDataGetType,               /* xmlSecKeyDataGetTypeMethod getType; */
     xmlSecMSCngSymKeyDataGetSize,               /* xmlSecKeyDataGetSizeMethod getSize; */
-    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
+    NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
 
     /* read/write */
     xmlSecMSCngSymKeyDataXmlRead,               /* xmlSecKeyDataXmlReadMethod xmlRead; */
@@ -267,7 +267,7 @@ static xmlSecKeyDataKlass xmlSecMSCngKeyDataConcatKdfKlass = {
     /* get info */
     xmlSecMSCngSymKeyDataGetType,       /* xmlSecKeyDataGetTypeMethod getType; */
     xmlSecMSCngSymKeyDataGetSize,       /* xmlSecKeyDataGetSizeMethod getSize; */
-    NULL,                               /* xmlSecKeyDataGetIdentifier getIdentifier; */
+    NULL,                               /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
 
     /* read/write */
     xmlSecMSCngSymKeyDataXmlRead,       /* xmlSecKeyDataXmlReadMethod xmlRead; */
@@ -326,7 +326,7 @@ static xmlSecKeyDataKlass xmlSecMSCngKeyDataDesKlass = {
     /* get info */
     xmlSecMSCngSymKeyDataGetType,               /* xmlSecKeyDataGetTypeMethod getType; */
     xmlSecMSCngSymKeyDataGetSize,               /* xmlSecKeyDataGetSizeMethod getSize; */
-        NULL,                                   /* xmlSecKeyDataGetIdentifier getIdentifier; */
+        NULL,                                   /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
 
     /* read/write */
     xmlSecMSCngSymKeyDataXmlRead,               /* xmlSecKeyDataXmlReadMethod xmlRead; */
@@ -386,7 +386,7 @@ static xmlSecKeyDataKlass xmlSecMSCngKeyDataHmacKlass = {
     /* get info */
     xmlSecMSCngSymKeyDataGetType,               /* xmlSecKeyDataGetTypeMethod getType; */
     xmlSecMSCngSymKeyDataGetSize,               /* xmlSecKeyDataGetSizeMethod getSize; */
-    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
+    NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
 
     /* read/write */
     xmlSecMSCngSymKeyDataXmlRead,               /* xmlSecKeyDataXmlReadMethod xmlRead; */
@@ -445,7 +445,7 @@ static xmlSecKeyDataKlass xmlSecMSCngKeyDataPbkdf2Klass = {
     /* get info */
     xmlSecMSCngSymKeyDataGetType,       /* xmlSecKeyDataGetTypeMethod getType; */
     xmlSecMSCngSymKeyDataGetSize,       /* xmlSecKeyDataGetSizeMethod getSize; */
-    NULL,                               /* xmlSecKeyDataGetIdentifier getIdentifier; */
+    NULL,                               /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
 
     /* read/write */
     xmlSecMSCngSymKeyDataXmlRead,       /* xmlSecKeyDataXmlReadMethod xmlRead; */

@@ -1038,7 +1038,7 @@ static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataRsaKlass = {
     /* get info */
     xmlSecMSCryptoKeyDataRsaGetType,            /* xmlSecKeyDataGetTypeMethod getType; */
     xmlSecMSCryptoKeyDataRsaGetSize,            /* xmlSecKeyDataGetSizeMethod getSize; */
-    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
+    NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
 
     /* read/write */
     xmlSecMSCryptoKeyDataRsaXmlRead,            /* xmlSecKeyDataXmlReadMethod xmlRead; */
@@ -1632,7 +1632,7 @@ static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataDsaKlass = {
     /* get info */
     xmlSecMSCryptoKeyDataDsaGetType,    /* xmlSecKeyDataGetTypeMethod getType; */
     xmlSecMSCryptoKeyDataDsaGetSize,    /* xmlSecKeyDataGetSizeMethod getSize; */
-    NULL,                               /* xmlSecKeyDataGetIdentifier getIdentifier; */
+    NULL,                               /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
 
     /* read/write */
     xmlSecMSCryptoKeyDataDsaXmlRead,    /* xmlSecKeyDataXmlReadMethod xmlRead; */
@@ -2221,7 +2221,7 @@ static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataGost2001Klass = {
     /* get info */
     xmlSecMSCryptoKeyDataGost2001GetType,       /* xmlSecKeyDataGetTypeMethod getType; */
     xmlSecMSCryptoKeyDataGost2001GetSize,       /* xmlSecKeyDataGetSizeMethod getSize; */
-    NULL,                               /* xmlSecKeyDataGetIdentifier getIdentifier; */
+    NULL,                               /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
 
     /* read/write */
     NULL,       /* xmlSecKeyDataXmlReadMethod xmlRead; */
@@ -2381,7 +2381,7 @@ static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataGost2012_256Klass = {
     /* get info */
     xmlSecMSCryptoKeyDataGost2012_256GetType,       /* xmlSecKeyDataGetTypeMethod getType; */
     xmlSecMSCryptoKeyDataGost2012_256GetSize,       /* xmlSecKeyDataGetSizeMethod getSize; */
-    NULL,                               /* xmlSecKeyDataGetIdentifier getIdentifier; */
+    NULL,                               /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
 
     /* read/write */
     NULL,       /* xmlSecKeyDataXmlReadMethod xmlRead; */
@@ -2536,7 +2536,7 @@ static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataGost2012_512Klass = {
     /* get info */
     xmlSecMSCryptoKeyDataGost2012_512GetType,       /* xmlSecKeyDataGetTypeMethod getType; */
     xmlSecMSCryptoKeyDataGost2012_512GetSize,       /* xmlSecKeyDataGetSizeMethod getSize; */
-    NULL,                               /* xmlSecKeyDataGetIdentifier getIdentifier; */
+    NULL,                               /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
 
     /* read/write */
     NULL,       /* xmlSecKeyDataXmlReadMethod xmlRead; */

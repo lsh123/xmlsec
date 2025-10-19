@@ -517,7 +517,7 @@ static xmlSecKeyDataKlass xmlSecMSCngKeyDataDEREncodedKeyValueKlass = {
     /* get info */
     NULL,                                       /* xmlSecKeyDataGetTypeMethod getType; */
     NULL,                                       /* xmlSecKeyDataGetSizeMethod getSize; */
-    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
+    NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
 
     /* read/write */
     xmlSecMSCngKeyDataDEREncodedKeyValueXmlRead,     /* xmlSecKeyDataXmlReadMethod xmlRead; */
@@ -1208,7 +1208,7 @@ static xmlSecKeyDataKlass xmlSecMSCngKeyDataDsaKlass = {
     /* get info */
     xmlSecMSCngKeyDataDsaGetType,               /* xmlSecKeyDataGetTypeMethod getType; */
     xmlSecMSCngKeyDataDsaGetSize,               /* xmlSecKeyDataGetSizeMethod getSize; */
-    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
+    NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
 
     /* read/write */
     xmlSecMSCngKeyDataDsaXmlRead,               /* xmlSecKeyDataXmlReadMethod xmlRead; */
@@ -1677,7 +1677,7 @@ static xmlSecKeyDataKlass xmlSecMSCngKeyDataRsaKlass = {
     /* get info */
     xmlSecMSCngKeyDataRsaGetType,               /* xmlSecKeyDataGetTypeMethod getType; */
     xmlSecMSCngKeyDataRsaGetSize,               /* xmlSecKeyDataGetSizeMethod getSize; */
-    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
+    NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
 
     /* read/write */
     xmlSecMSCngKeyDataRsaXmlRead,               /* xmlSecKeyDataXmlReadMethod xmlRead; */
@@ -2081,7 +2081,7 @@ static xmlSecKeyDataKlass xmlSecMSCngKeyDataEcKlass = {
     /* get info */
     xmlSecMSCngKeyDataEcGetType,                /* xmlSecKeyDataGetTypeMethod getType; */
     xmlSecMSCngKeyDataEcGetSize,                /* xmlSecKeyDataGetSizeMethod getSize; */
-    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
+    NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
 
     /* read/write */
     xmlSecMSCngKeyDataEcXmlRead,                /* xmlSecKeyDataXmlReadMethod xmlRead; */

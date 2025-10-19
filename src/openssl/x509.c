@@ -110,8 +110,6 @@ static int              xmlSecOpenSSLKeyDataX509XmlWrite        (xmlSecKeyDataId
                                                                  xmlSecKeyPtr key,
                                                                  xmlNodePtr node,
                                                                  xmlSecKeyInfoCtxPtr keyInfoCtx);
-static xmlSecKeyDataType xmlSecOpenSSLKeyDataX509GetType        (xmlSecKeyDataPtr data);
-static const xmlChar*   xmlSecOpenSSLKeyDataX509GetIdentifier   (xmlSecKeyDataPtr data);
 
 static void             xmlSecOpenSSLKeyDataX509DebugDump       (xmlSecKeyDataPtr data,
                                                                  FILE* output);
@@ -155,9 +153,9 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataX509Klass = {
     NULL,                                       /* xmlSecKeyDataGenerateMethod generate; */
 
     /* get info */
-    xmlSecOpenSSLKeyDataX509GetType,            /* xmlSecKeyDataGetTypeMethod getType; */
+    NULL,                                       /* xmlSecKeyDataGetTypeMethod getType; */
     NULL,                                       /* xmlSecKeyDataGetSizeMethod getSize; */
-    xmlSecOpenSSLKeyDataX509GetIdentifier,      /* xmlSecKeyDataGetIdentifier getIdentifier; */
+    NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
 
     /* read/write */
     xmlSecOpenSSLKeyDataX509XmlRead,            /* xmlSecKeyDataXmlReadMethod xmlRead; */
@@ -730,23 +728,6 @@ xmlSecOpenSSLKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     /* success */
     return(0);
-}
-
-
-static xmlSecKeyDataType
-xmlSecOpenSSLKeyDataX509GetType(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataX509Id), xmlSecKeyDataTypeUnknown);
-
-    /* TODO: return verified/not verified status */
-    return(xmlSecKeyDataTypeUnknown);
-}
-
-static const xmlChar*
-xmlSecOpenSSLKeyDataX509GetIdentifier(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataX509Id), NULL);
-
-    /* TODO: return X509 certificate identifier */
-    return(NULL);
 }
 
 static void
@@ -1926,7 +1907,7 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataRawX509CertKlass = {
     /* get info */
     NULL,                                       /* xmlSecKeyDataGetTypeMethod getType; */
     NULL,                                       /* xmlSecKeyDataGetSizeMethod getSize; */
-    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
+    NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
 
     /* read/write */
     NULL,                                       /* xmlSecKeyDataXmlReadMethod xmlRead; */

@@ -204,7 +204,7 @@ typedef enum {
  *                      then we verify certificates against the system's
  *                      clock "now".
  * @certsVerificationDepth: the max certifications chain length (default is 9).
- * @pgpReserved:        reserved for PGP.
+ * @deprecated0:        DEPRECATED: reserved for PGP.
  * @curRetrievalMethodLevel: the current&lt;dsig:RetrievalMethod/&gt; element
  *                      processing level (see @maxRetrievalMethodLevel).
  * @curKeyInfoReferenceLevel: the current&lt;dsig11:KeyInfoReference/&gt; element
@@ -247,8 +247,8 @@ struct _xmlSecKeyInfoCtx {
     int                                 certsVerificationDepth;
 #endif /* XMLSEC_NO_X509 */
 
-    /* PGP */
-    void*                               pgpReserved;    /* TODO */
+    /* DEPRECATED: PGP */
+    void*                               deprecated0;
 
     /* internal data */
     int                                 curRetrievalMethodLevel;

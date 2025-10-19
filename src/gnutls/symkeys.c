@@ -233,7 +233,7 @@ static xmlSecKeyDataKlass xmlSecGnuTLSKeyDataAesKlass = {
     /* get info */
     xmlSecGnuTLSSymKeyDataGetType,             /* xmlSecKeyDataGetTypeMethod getType; */
     xmlSecGnuTLSSymKeyDataGetSize,             /* xmlSecKeyDataGetSizeMethod getSize; */
-    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
+    NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
 
     /* read/write */
     xmlSecGnuTLSSymKeyDataXmlRead,             /* xmlSecKeyDataXmlReadMethod xmlRead; */
@@ -314,7 +314,7 @@ static xmlSecKeyDataKlass xmlSecGnuTLSKeyDataDesKlass = {
     /* get info */
     xmlSecGnuTLSSymKeyDataGetType,             /* xmlSecKeyDataGetTypeMethod getType; */
     xmlSecGnuTLSSymKeyDataGetSize,             /* xmlSecKeyDataGetSizeMethod getSize; */
-    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
+    NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
 
     /* read/write */
     xmlSecGnuTLSSymKeyDataXmlRead,             /* xmlSecKeyDataXmlReadMethod xmlRead; */
@@ -396,7 +396,7 @@ static xmlSecKeyDataKlass xmlSecGnuTLSKeyDataHmacKlass = {
     /* get info */
     xmlSecGnuTLSSymKeyDataGetType,             /* xmlSecKeyDataGetTypeMethod getType; */
     xmlSecGnuTLSSymKeyDataGetSize,             /* xmlSecKeyDataGetSizeMethod getSize; */
-    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
+    NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
 
     /* read/write */
     xmlSecGnuTLSSymKeyDataXmlRead,             /* xmlSecKeyDataXmlReadMethod xmlRead; */
@@ -478,7 +478,7 @@ static xmlSecKeyDataKlass xmlSecGnuTLSKeyDataPbkdf2Klass = {
     /* get info */
     xmlSecGnuTLSSymKeyDataGetType,             /* xmlSecKeyDataGetTypeMethod getType; */
     xmlSecGnuTLSSymKeyDataGetSize,             /* xmlSecKeyDataGetSizeMethod getSize; */
-    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
+    NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
 
     /* read/write */
     xmlSecGnuTLSSymKeyDataXmlRead,             /* xmlSecKeyDataXmlReadMethod xmlRead; */

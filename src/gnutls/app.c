@@ -1235,5 +1235,6 @@ xmlSecGnuTLSAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename,
  */
 void*
 xmlSecGnuTLSAppGetDefaultPwdCallback(void) {
+    /* TODO: GnuTLS doesn't support password callback */
     return(NULL);
 }

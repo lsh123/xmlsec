@@ -948,6 +948,6 @@ xmlSecMSCngAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename, 
  */
 void*
 xmlSecMSCngAppGetDefaultPwdCallback(void) {
-    xmlSecNotImplementedError("MSCNG doesn't support password callback");
+    /* TODO: MSCNG doesn't support password callback */
     return(NULL);
 }

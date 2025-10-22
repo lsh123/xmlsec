@@ -42,6 +42,7 @@ struct _xmlSecMSCngKeyDataCtx {
     PCCERT_CONTEXT cert;
     NCRYPT_KEY_HANDLE privkey;
     BCRYPT_KEY_HANDLE pubkey;
+    BOOL privkeyNeedsFree;
 };
 
 XMLSEC_KEY_DATA_DECLARE(MSCngKeyData, xmlSecMSCngKeyDataCtx)
@@ -65,28 +66,47 @@ xmlSecMSCngKeyDataCertGetPubkey(PCCERT_CONTEXT cert, BCRYPT_KEY_HANDLE* key) {
 }
 
 static int
-xmlSecMSCngKeyDataCertGetPrivkey(PCCERT_CONTEXT cert, NCRYPT_KEY_HANDLE* key) {
+xmlSecMSCngKeyDataCertGetPrivkey(PCCERT_CONTEXT cert, NCRYPT_KEY_HANDLE* key, BOOL* needsFree) {
     int ret;
 
     xmlSecAssert2(cert != NULL, -1);
     xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(needsFree != NULL, -1);
 
-    DWORD keySpec = 0;
-    BOOL callerFree = FALSE;
-
-    ret = CryptAcquireCertificatePrivateKey(
-        cert,
-        CRYPT_ACQUIRE_COMPARE_KEY_FLAG | CRYPT_ACQUIRE_ONLY_NCRYPT_KEY_FLAG,
-        NULL,
-        key,
-        &keySpec,
-        &callerFree);
-    if(ret == FALSE) {
-        xmlSecMSCngLastError("CryptAcquireCertificatePrivateKey", NULL);
-        return(-1);
+    /* try non persistent key */
+    CERT_KEY_CONTEXT ckc;
+    DWORD dwCkcLen = sizeof(ckc);
+    if (CertGetCertificateContextProperty(cert, CERT_KEY_CONTEXT_PROP_ID, &ckc, &dwCkcLen)) {
+        (*key) = ckc.hNCryptKey;
+        (*needsFree) = FALSE; /* this key doesnt need NCryptFreeObject */
+        return(0);
     }
 
-    return(0);
+    /* try persistent key */
+    DWORD dwData = 0;
+    DWORD dwDataLen = sizeof(dwData);
+    if (CertGetCertificateContextProperty(cert, CERT_KEY_SPEC_PROP_ID, &dwData, &dwDataLen)) {
+        DWORD keySpec = 0;
+        BOOL fCallerFreeProvOrNCryptKey = FALSE;
+        ret = CryptAcquireCertificatePrivateKey(
+            cert,
+            CRYPT_ACQUIRE_COMPARE_KEY_FLAG | CRYPT_ACQUIRE_ONLY_NCRYPT_KEY_FLAG,
+            NULL,
+            key,
+            &keySpec,
+            &fCallerFreeProvOrNCryptKey);
+        if (ret == FALSE) {
+            xmlSecMSCngLastError("CryptAcquireCertificatePrivateKey", NULL);
+            return(-1);
+        }
+        (*needsFree) = TRUE;
+        return(0);
+    }
+
+
+    /* no luck */
+    xmlSecMSCngLastError("CertGetCertificateContextProperty(): cert doesn't have private key", NULL);
+    return(-1);
 }
 
 /**
@@ -117,15 +137,17 @@ xmlSecMSCngKeyDataAdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert, xmlSecKe
 
     /* acquire the CNG key handle from the certificate */
     if((type & xmlSecKeyDataTypePrivate) != 0) {
-        NCRYPT_KEY_HANDLE hPrivKey;
+        NCRYPT_KEY_HANDLE hPrivKey = 0;
+        BOOL needsFree = TRUE;
 
-        ret = xmlSecMSCngKeyDataCertGetPrivkey(cert, &hPrivKey);
+        ret = xmlSecMSCngKeyDataCertGetPrivkey(cert, &hPrivKey, &needsFree);
         if(ret < 0) {
             xmlSecInternalError("xmlSecMSCngKeyDataCertGetPrivkey", NULL);
             return(-1);
         }
 
         ctx->privkey = hPrivKey;
+        ctx->privkeyNeedsFree = needsFree;
     }
 
     ret = xmlSecMSCngKeyDataCertGetPubkey(cert, &hPubKey);
@@ -308,7 +330,7 @@ xmlSecMSCngKeyDataFinalize(xmlSecKeyDataPtr data) {
     ctx = xmlSecMSCngKeyDataGetCtx(data);
     xmlSecAssert(ctx != NULL);
 
-    if(ctx->privkey != 0) {
+    if((ctx->privkey != 0) && (ctx->privkeyNeedsFree == TRUE)) {
         status = NCryptFreeObject(ctx->privkey);
         if(status != STATUS_SUCCESS) {
             xmlSecMSCngNtError("BCryptDestroyKey", NULL, status);
@@ -365,7 +387,7 @@ xmlSecMSCngKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     }
 
     if(srcCtx->privkey != 0) {
-        ret = xmlSecMSCngKeyDataCertGetPrivkey(dstCtx->cert, &dstCtx->privkey);
+        ret = xmlSecMSCngKeyDataCertGetPrivkey(dstCtx->cert, &dstCtx->privkey, &dstCtx->privkeyNeedsFree);
         if(ret < 0) {
             xmlSecInternalError("xmlSecMSCngKeyDataCertGetPrivkey", NULL);
             return(-1);

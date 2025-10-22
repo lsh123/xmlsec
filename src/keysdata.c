@@ -2919,8 +2919,6 @@ xmlSecKeyDataX509XmlRead(xmlSecKeyPtr key, xmlSecKeyDataPtr data, xmlNodePtr nod
             goto done;
         }
 
-        fprintf(stderr, "DEBUG: xmlSecKeyDataX509XmlRead node=%s\n", cur->name);
-
         /* first try to lookup key in keys manager using x509 data */
         if(keyFound == 0) {
             xmlSecKeyPtr tmpKey;

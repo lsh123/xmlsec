@@ -1666,5 +1666,6 @@ xmlSecNssAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename, xm
  */
 void*
 xmlSecNssAppGetDefaultPwdCallback(void) {
+    /* TODO: NSS doesn't support password callback */
     return(NULL);
 }

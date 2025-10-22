@@ -639,5 +639,6 @@ xmlSecGCryptAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename,
  */
 void*
 xmlSecGCryptAppGetDefaultPwdCallback(void) {
+    /* TODO: GCrypt doesn't support password callback */
     return(NULL);
 }

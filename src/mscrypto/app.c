@@ -1159,6 +1159,6 @@ xmlSecMSCryptoAppDefaultKeysMngrSymKeyLoad(xmlSecKeysMngrPtr mngr, HCRYPTKEY hKe
  */
 void*
 xmlSecMSCryptoAppGetDefaultPwdCallback(void) {
-    xmlSecNotImplementedError("MSCrypto doesn't support password callback");
+    /* TODO: MSCrypto doesn't support password callback */
     return(NULL);
 }

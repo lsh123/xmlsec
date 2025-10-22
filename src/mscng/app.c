@@ -392,6 +392,21 @@ xmlSecMSCngAppPkcs12Load(const char *filename,
     return(key);
 }
 
+static BOOL
+xmlSecMSCngIsPrivateKeyCert(PCCERT_CONTEXT cert, BOOL isPersistentKey) {
+    xmlSecAssert2(cert != NULL, FALSE);
+
+    if (isPersistentKey) {
+        DWORD dwData = 0;
+        DWORD dwDataLen = sizeof(dwData);
+        return(CertGetCertificateContextProperty(cert, CERT_KEY_SPEC_PROP_ID, &dwData, &dwDataLen));
+    } else {
+        CERT_KEY_CONTEXT ckc;
+        DWORD dwDataLen = sizeof(ckc);
+        return CertGetCertificateContextProperty(cert, CERT_KEY_CONTEXT_PROP_ID, &ckc, &dwDataLen);
+    }
+}
+
 /**
  * xmlSecMSCngAppPkcs12LoadMemory:
  * @data:               the key binary data.
@@ -449,7 +464,7 @@ xmlSecMSCngAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, cons
         goto cleanup;
     }
 
-    DWORD flags = CRYPT_EXPORTABLE | PKCS12_PREFER_CNG_KSP;
+    DWORD flags = CRYPT_EXPORTABLE | PKCS12_ALWAYS_CNG_KSP;
     if (!xmlSecImportGetPersistKey()) {
         flags |= PKCS12_NO_PERSIST_KEY;
     }
@@ -467,17 +482,8 @@ xmlSecMSCngAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, cons
 
     /* enumerate over certifiates in the store */
     while((cert = CertEnumCertificatesInStore(certStore, cert)) != NULL) {
-        DWORD dwData = 0;
-        DWORD dwDataLen = sizeof(dwData);
-
-        ret = CertGetCertificateContextProperty(cert, CERT_KEY_SPEC_PROP_ID,
-            &dwData, &dwDataLen);
-        if(ret == TRUE) {
-            if (privKeyData != NULL) {
-                /* multiple private keys, use the first one */
-                continue;
-            }
-
+        /* multiple private keys, use the first one */
+        if ((privKeyData == NULL) && (xmlSecMSCngIsPrivateKeyCert(cert, xmlSecImportGetPersistKey()) == TRUE)) {
             /* get key name */
             if (keyName == NULL) {
                 keyName = xmlSecMSCngX509GetFriendlyNameUtf8(cert);
@@ -485,14 +491,13 @@ xmlSecMSCngAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, cons
 
             /* adopt private key */
             certDuplicate = CertDuplicateCertificateContext(cert);
-            if(certDuplicate == NULL) {
+            if (certDuplicate == NULL) {
                 xmlSecMSCngLastError("CertDuplicateCertificateContext", NULL);
                 goto cleanup;
             }
 
-            privKeyData = xmlSecMSCngCertAdopt(certDuplicate,
-                xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic);
-            if(privKeyData == NULL) {
+            privKeyData = xmlSecMSCngCertAdopt(certDuplicate, xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic);
+            if (privKeyData == NULL) {
                 xmlSecInternalError("xmlSecMSCngCertAdopt", NULL);
                 goto cleanup;
             }

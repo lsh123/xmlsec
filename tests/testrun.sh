@@ -132,6 +132,13 @@ else
     xmlsec_feature_pkcs12="no"
 fi
 
+# only MSCrypto and MSCNG support pkcs12-persist
+if [ "z$crypto" = "zmscrypto" -o "z$crypto" = "zmscng" ] ; then
+    xmlsec_feature_pkcs12_persist="yes"
+else
+    xmlsec_feature_pkcs12_persist="no"
+fi
+
 # gcrypt and mscrypto don't support keynames in pkcs12
 if [ "z$crypto" != "zgcrypt" -a "z$crypto" != "zmscrypto" ] ; then
     xmlsec_feature_pkcs12_keyname="yes"
@@ -268,10 +275,10 @@ fi
 cert_format=$file_format
 
 #
-# On Windows, we need to force persistence for pkcs12
+# MSCrypto needs persistent keys for pkcs12
 #
 pkcs12_key_extra_options=""
-if [ "z$crypto" = "zmscrypto" -o "z$crypto" = "zmscng" ] ; then
+if [ "z$crypto" = "zmscrypto" ] ; then
     pkcs12_key_extra_options="--pkcs12-persist $pkcs12_key_extra_options"
 fi
 
@@ -522,7 +529,18 @@ execKeysTestWithCryptoConfig() {
                 failures=`expr $failures + 1`
             fi
         fi
-        if [ "zckcs12_keyname" = "zyes" ] ; then
+        if [ "z$xmlsec_feature_pkcs12_persist" = "zyes" ] ; then
+            printf "    Reading private key from pkcs12 file (persist)        "
+            rm -f $tmpfile
+            params="--lax-key-search --pkcs12-persist --pkcs12 $privkey_file.p12 $pkcs12_key_extra_options $key_test_options --output $tmpfile $asym_key_test.tmpl"
+            echo "$extra_vars $VALGRIND $xmlsec_app sign $xmlsec_params --crypto-config $crypto_config $params" >>  $curlogfile
+            $VALGRIND $xmlsec_app sign $xmlsec_params --crypto-config $crypto_config $params >> $curlogfile 2>> $curlogfile
+            printRes $expected_res $?
+            if [ $? -ne 0 ]; then
+                failures=`expr $failures + 1`
+            fi
+        fi
+        if [ "z$xmlsec_feature_pkcs12_keyname" = "zyes" ] ; then
             printf "    Reading private key name from pkcs12 file             "
             rm -f $tmpfile
             params="--pkcs12 $privkey_file.p12 $pkcs12_key_extra_options $key_test_options --output $tmpfile $asym_key_test.tmpl"

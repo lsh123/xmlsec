@@ -101,8 +101,6 @@ xmlSecCryptoDLLibraryCreate(const xmlChar* name) {
 
     xmlSecAssert2(name != NULL, NULL);
 
-    /* fprintf (stderr, "loading \"library %s\"...\n", name); */
-
     /* Allocate a new xmlSecCryptoDLLibrary and fill the fields. */
     lib = (xmlSecCryptoDLLibraryPtr)xmlMalloc(sizeof(xmlSecCryptoDLLibrary));
     if(lib == NULL) {
@@ -195,7 +193,6 @@ xmlSecCryptoDLLibraryCreate(const xmlChar* name) {
         return(NULL);
     }
 
-    /* fprintf (stderr, "library %s loaded\n", name); */
     return(lib);
 }
 
@@ -203,7 +200,6 @@ static void
 xmlSecCryptoDLLibraryDestroy(xmlSecCryptoDLLibraryPtr lib) {
     xmlSecAssert(lib != NULL);
 
-    /* fprintf (stderr, "unloading \"library %s\"...\n", lib->name); */
     if(lib->name != NULL) {
         xmlFree(lib->name);
     }

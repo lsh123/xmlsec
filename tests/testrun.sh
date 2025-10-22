@@ -132,8 +132,8 @@ else
     xmlsec_feature_pkcs12="no"
 fi
 
-# only MSCrypto and MSCNG support pkcs12-persist
-if [ "z$crypto" = "zmscrypto" -o "z$crypto" = "zmscng" ] ; then
+# only MSCNG supports both persistent and non persistent keys (pkcs12-persist flag)
+if [ "z$crypto" = "zmscng" ] ; then
     xmlsec_feature_pkcs12_persist="yes"
 else
     xmlsec_feature_pkcs12_persist="no"
@@ -532,7 +532,7 @@ execKeysTestWithCryptoConfig() {
         if [ "z$xmlsec_feature_pkcs12_persist" = "zyes" ] ; then
             printf "    Reading private key from pkcs12 file (persist)        "
             rm -f $tmpfile
-            params="--lax-key-search --pkcs12-persist --pkcs12 $privkey_file.p12 $pkcs12_key_extra_options $key_test_options --output $tmpfile $asym_key_test.tmpl"
+            params="--lax-key-search --pkcs12 $privkey_file.p12 $pkcs12_key_extra_options $key_test_options --output $tmpfile $asym_key_test.tmpl"
             echo "$extra_vars $VALGRIND $xmlsec_app sign $xmlsec_params --crypto-config $crypto_config $params" >>  $curlogfile
             $VALGRIND $xmlsec_app sign $xmlsec_params --crypto-config $crypto_config $params >> $curlogfile 2>> $curlogfile
             printRes $expected_res $?
@@ -544,6 +544,17 @@ execKeysTestWithCryptoConfig() {
             printf "    Reading private key name from pkcs12 file             "
             rm -f $tmpfile
             params="--pkcs12 $privkey_file.p12 $pkcs12_key_extra_options $key_test_options --output $tmpfile $asym_key_test.tmpl"
+            echo "$extra_vars $VALGRIND $xmlsec_app sign $xmlsec_params --crypto-config $crypto_config $params" >>  $curlogfile
+            $VALGRIND $xmlsec_app sign $xmlsec_params --crypto-config $crypto_config $params >> $curlogfile 2>> $curlogfile
+            printRes $expected_res $?
+            if [ $? -ne 0 ]; then
+                failures=`expr $failures + 1`
+            fi
+        fi
+        if [ "z$xmlsec_feature_pkcs12_keyname" = "zyes" -a "z$xmlsec_feature_pkcs12_persist" = "zyes" ] ; then
+            printf "    Reading private key name from pkcs12 file (persist)   "
+            rm -f $tmpfile
+            params="--pkcs12-persist  --pkcs12 $privkey_file.p12 $pkcs12_key_extra_options $key_test_options --output $tmpfile $asym_key_test.tmpl"
             echo "$extra_vars $VALGRIND $xmlsec_app sign $xmlsec_params --crypto-config $crypto_config $params" >>  $curlogfile
             $VALGRIND $xmlsec_app sign $xmlsec_params --crypto-config $crypto_config $params >> $curlogfile 2>> $curlogfile
             printRes $expected_res $?

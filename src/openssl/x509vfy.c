@@ -836,7 +836,7 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
         goto done;
     }
 
-    /* create a combined list of all untrusted certs*/
+    /* create a combined list of all untrusted certs (new list doesn't OWN certs)*/
     all_untrusted_certs = xmlSecOpenSSLX509StoreCombineCerts(certs, ctx->untrusted);
     if(all_untrusted_certs == NULL) {
         xmlSecInternalError("xmlSecOpenSSLX509StoreCombineCerts", NULL);
@@ -961,7 +961,7 @@ xmlSecOpenSSLX509StoreVerifyKey(xmlSecKeyDataStorePtr store, xmlSecKeyPtr key, x
         goto done;
     }
 
-    /* create a combined list of all untrusted certs*/
+    /* create a combined list of all untrusted certs (new list doesn't OWN certs) */
     all_untrusted_certs = xmlSecOpenSSLX509StoreCombineCerts(certs, ctx->untrusted);
     if(all_untrusted_certs == NULL) {
         xmlSecInternalError("xmlSecOpenSSLX509StoreCombineCerts", xmlSecKeyDataStoreGetName(store));
@@ -1665,6 +1665,7 @@ xmlSecOpenSSLX509GetIssuerHash(X509* x) {
     return(res);
 }
 
+/* new list doesn't OWN certs */
 static STACK_OF(X509)*
 xmlSecOpenSSLX509StoreCombineCerts(STACK_OF(X509)* certs1, STACK_OF(X509)* certs2) {
 #if defined(XMLSEC_OPENSSL_API_300)
@@ -1678,17 +1679,19 @@ xmlSecOpenSSLX509StoreCombineCerts(STACK_OF(X509)* certs1, STACK_OF(X509)* certs
     }
 
     /* certs 1 */
-    ret = X509_add_certs(res, certs1, X509_ADD_FLAG_UP_REF);
+    ret = X509_add_certs(res, certs1, 0);
     if (ret != 1) {
         xmlSecOpenSSLError("X509_add_certs(certs1)", NULL);
+        sk_X509_free(res);
         return(NULL);
     }
 
 
     /* certs 2 */
-    ret = X509_add_certs(res, certs2, X509_ADD_FLAG_UP_REF);
+    ret = X509_add_certs(res, certs2, 0);
     if (ret != 1) {
         xmlSecOpenSSLError("X509_add_certs(certs2)", NULL);
+        sk_X509_free(res);
         return(NULL);
     }
 

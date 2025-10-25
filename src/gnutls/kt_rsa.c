@@ -108,7 +108,7 @@ xmlSecGnuTLSKeyTransportInitialize(xmlSecTransformPtr transform) {
 
     /* not found */
     {
-        xmlSecNotImplementedError2("Unexpected Key Transport: %s", xmlSecErrorsSafeString(xmlSecTransformGetName(transform)));
+        xmlSecInvalidTransfromError(transform);
         return(-1);
     }
 

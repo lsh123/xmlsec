@@ -306,7 +306,7 @@ xmlSecMSCryptoInit (void)  {
  */
 int
 xmlSecMSCryptoShutdown(void) {
-    /* TODO: if necessary, do additional shutdown here */
+    /* if necessary, do additional shutdown here */
     return(0);
 }
 

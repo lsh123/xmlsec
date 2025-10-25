@@ -199,8 +199,7 @@ xmlSecParserPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
         }
 
         /* todo: check that document is well formed? */
-        transform->outNodes = xmlSecNodeSetCreate(ctx->parserCtx->myDoc,
-                                                  NULL, xmlSecNodeSetTree);
+        transform->outNodes = xmlSecNodeSetCreate(ctx->parserCtx->myDoc, NULL, xmlSecNodeSetTree);
         if(transform->outNodes == NULL) {
             xmlSecInternalError("xmlSecNodeSetCreate", xmlSecTransformGetName(transform));
             xmlFreeDoc(ctx->parserCtx->myDoc);

@@ -140,7 +140,7 @@ xmlSecNssKeyTransportInitialize(xmlSecTransformPtr transform) {
 
     /* not found */
     {
-        xmlSecNotImplementedError(xmlSecErrorsSafeString(xmlSecTransformGetName(transform)));
+        xmlSecInvalidTransfromError(transform);
         return(-1);
     }
 

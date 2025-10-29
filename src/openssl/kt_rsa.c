@@ -694,7 +694,7 @@ xmlSecOpenSSLRsaOaepProcessImpl(xmlSecOpenSSLRsaOaepCtxPtr ctx, const xmlSecByte
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->pKey != NULL, -1);
-    xmlSecAssert2(xmlSecOpenSSLKeyValueRsaCheckKeyType(pKey) == 0, -1);
+    xmlSecAssert2(xmlSecOpenSSLKeyValueRsaCheckKeyType(ctx->pKey) == 0, -1);
     xmlSecAssert2(inBuf != NULL, -1);
     xmlSecAssert2(inSize > 0, -1);
     xmlSecAssert2(outBuf != NULL, -1);

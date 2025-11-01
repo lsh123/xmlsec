@@ -2770,7 +2770,7 @@ xmlSecOpenSSLKeyDataEcGetType(xmlSecKeyDataPtr data) {
     const EC_KEY *ecKey;
 #else  /*XMLSEC_OPENSSL_API_300 */
     const EVP_PKEY* pKey = NULL;
-    BIGNUM *privkey;
+    BIGNUM *privkey = NULL;
     int ret;
 #endif /*XMLSEC_OPENSSL_API_300 */
 
@@ -2798,7 +2798,7 @@ xmlSecOpenSSLKeyDataEcGetType(xmlSecKeyDataPtr data) {
         res = xmlSecKeyDataTypePublic;
     }
 #else  /*XMLSEC_OPENSSL_API_300 */
-    pKey = xmlSecOpenSSLKeyDataDsaGetEvp(data);
+    pKey = xmlSecOpenSSLKeyDataEcGetEvp(data);
     xmlSecAssert2(pKey != NULL, xmlSecKeyDataTypeUnknown);
 
     ret = EVP_PKEY_get_bn_param(pKey, OSSL_PKEY_PARAM_PRIV_KEY, &(privkey));

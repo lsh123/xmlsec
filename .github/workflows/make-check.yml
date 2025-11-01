@@ -76,10 +76,10 @@ jobs:
       working-directory:
       run: |
           mkdir ../aws-lc && cd ../aws-lc
-          wget "https://github.com/aws/aws-lc/archive/refs/tags/v{{ env.AWS_LC_VERSION }}.zip"
-          unzip "v{{ env.AWS_LC_VERSION }}.zip"
+          wget "https://github.com/aws/aws-lc/archive/refs/tags/v${{ env.AWS_LC_VERSION }}.zip"
+          unzip "v${{ env.AWS_LC_VERSION }}.zip"
           mkdir build && cd build
-          cmake -GNinja -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/../aws-lc/install ../aws-lc-{{ env.AWS_LC_VERSION }}
+          cmake -GNinja -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/../aws-lc/install ../aws-lc-${{ env.AWS_LC_VERSION }}
           ninja install
     - uses: actions/checkout@v2
     - name: create-build-dirs

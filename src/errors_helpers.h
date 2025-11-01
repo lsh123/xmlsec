@@ -17,6 +17,7 @@
 #endif /* XMLSEC_PRIVATE */
 
 #include <errno.h>
+#include <xmlsec/exports.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -1029,6 +1030,10 @@ extern "C" {
                     (code),                                 \
                     (msg), (param1), (param2), (param3), (param4) \
         )
+
+
+XMLSEC_EXPORT int   xmlSecErrorsPrintCryptoLibraryLogOnExitIsEnabled    (void);
+
 
 #ifdef __cplusplus
 }

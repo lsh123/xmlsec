@@ -101,6 +101,8 @@ static const xmlSecErrorDescription xmlSecErrorsTable[XMLSEC_ERRORS_MAX_NUMBER +
 static xmlSecErrorsCallback xmlSecErrorsClbk = xmlSecErrorsDefaultCallback;
 static int  xmlSecPrintErrorMessages = 1;       /* whether the error messages will be printed immediately */
 
+static int gXmlSecErrorsPrintCryptoLibraryLogOnExitIsEnabled = 0;
+
 /**
  * xmlSecErrorsInit:
  *
@@ -260,4 +262,26 @@ xmlSecError(const char* file, int line, const char* func,
         }
         xmlSecErrorsClbk(file, line, func, errorObject, errorSubject, reason, (char*)error_msg);
     }
+}
+
+/**
+ * xmlSecErrorsPrintCryptoLibraryLogOnExitSet:
+ * @enabled:                the flag
+ *
+ * Enables or disables the crypto library error log dump on exit (only supported by OpenSSL).
+ */
+void
+xmlSecErrorsPrintCryptoLibraryLogOnExitSet(int enabled) {
+    gXmlSecErrorsPrintCryptoLibraryLogOnExitIsEnabled = enabled;
+}
+
+/**
+ * xmlSecErrorsPrintCryptoLibraryLogOnExitIsEnabled:
+ * @enabled:                the flag
+ *
+ * Returns 1 if the crypto library error log dump on exit is enabled or 0 otherwise (only supported by OpenSSL).
+ */
+int
+xmlSecErrorsPrintCryptoLibraryLogOnExitIsEnabled(void) {
+    return(gXmlSecErrorsPrintCryptoLibraryLogOnExitIsEnabled);
 }

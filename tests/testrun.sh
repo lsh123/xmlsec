@@ -20,7 +20,7 @@ if test "z$OS_ARCH" = "zCygwin" || test "z$OS_ARCH" = "zMsys" ; then
 fi
 
 # Ensure we get detailed errors
-xmlsec_params="--verbose"
+xmlsec_params="--verbose --print-crypto-library-errors"
 
 #
 # Prepare folders
@@ -116,7 +116,7 @@ else
 fi
 
 # phaos certs use RSA-MD5 which might be disabled
-if [ "z$crypto" = "zopenssl" -a "z$xmlsec_openssl_flavor" != "zaws-lc" ] ; then
+if [ "z$crypto" = "zopenssl" -a "z$xmlsec_openssl_flavor" != "zaws-lc" -a "z$xmlsec_openssl_flavor" != "zboringssl" ] ; then
     extra_vars="$extra_vars OPENSSL_ENABLE_MD5_VERIFY=1"
     export OPENSSL_ENABLE_MD5_VERIFY=1
 
@@ -978,10 +978,20 @@ if [ $count_total -gt 0 ] ; then
     percent_success=`expr 100 \* $count_success / $count_total`
 fi
 
-if [ "z$crypto" = "zopenssl" -a "z$xmlsec_openssl_flavor" != "zaws-lc" ] ; then
-    min_percent_success=90
-elif [ "z$crypto" = "zopenssl" -a "z$xmlsec_openssl_flavor" = "zaws-lc" ] ; then
+if [ "z$crypto" = "zopenssl" -a "z$xmlsec_openssl_flavor" = "zaws-lc" ] ; then
+    # bunch of tests with MD5 certificates are disabled
+    echo "--- OPENSSL FLAVOR: $xmlsec_openssl_flavor" >> $logfile
+    echo "--- OPENSSL FLAVOR: $xmlsec_openssl_flavor"
     min_percent_success=80
+elif [ "z$crypto" = "zopenssl" -a "z$xmlsec_openssl_flavor" = "zboringssl" ] ; then
+    # bunch of tests with MD5 certificates are disabled
+    echo "--- OPENSSL FLAVOR: $xmlsec_openssl_flavor" >> $logfile
+    echo "--- OPENSSL FLAVOR: $xmlsec_openssl_flavor"
+    min_percent_success=80
+elif [ "z$crypto" = "zopenssl" ] ; then
+    echo "--- OPENSSL FLAVOR: $xmlsec_openssl_flavor" >> $logfile
+    echo "--- OPENSSL FLAVOR: $xmlsec_openssl_flavor"
+    min_percent_success=90
 elif [ "z$crypto" = "znss" ] ; then
     min_percent_success=90
 elif [ "z$crypto" = "zgnutls" ] ; then

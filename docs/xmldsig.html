@@ -375,7 +375,7 @@
                         </td>
                         <td valign="top">Optional</td>
 <!--Requirements -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#xslt"><sup>(1)</sup></a>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#xslt"><sup>(2)</sup></a>
 </td>
                       </tr>
                       <tr>
@@ -411,8 +411,8 @@
                         <td valign="top"><b>XMLSec with NSS</b></td>
                         <td valign="top"><b>XMLSec with GnuTLS</b></td>
                         <td valign="top"><b>XMLSec with MSCng</b></td>
-                        <td valign="top"><b>XMLSec with MSCrypto</b></td>
-                        <td valign="top"><b>XMLSec with GCrypt</b></td>
+                        <td valign="top"><b>XMLSec with MSCrypto</b> <a href="#feature-disabled"><sup>(1)</sup></a></td>
+                        <td valign="top"><b>XMLSec with GCrypt</b> <a href="#feature-disabled"><sup>(1)</sup></a></td>
                       </tr>
                       <tr>
                         <td valign="top" colspan="8"><b>Message Digests</b></td>
@@ -592,9 +592,9 @@
                         <td valign="top">
                           <a href="https://www.w3.org/TR/xmlenc-core1/#sec-RIPEMD-160">RIPEMD160</a>
                         </td>
-                        <td valign="top">Optional</td>
+                        <td valign="top">DEPRECATED</td>
 <!-- Requirements-->
-                        <td valign="top" bgcolor="#C1E1C1">Yes</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#feature-disabled"><sup>(1)</sup></a></td>
 <!-- OpenSSL-->
                         <td valign="top">No</td>
 <!-- NSS -->
@@ -604,14 +604,14 @@
 <!-- MSCng -->
                         <td valign="top">No</td>
 <!-- MSCrypto -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#feature-disabled"><sup>(1)</sup></a></td>
 <!-- GCrypt -->
                       </tr>
                       <tr>
                         <td valign="top">GOST-R3411-94</td>
                         <td valign="top">Optional</td>
 <!-- Requirements-->
-                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#gost-openssl"><sup>(2)</sup></a>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#gost-openssl"><sup>(3)</sup></a>
 </td>
 <!-- OpenSSL-->
                         <td valign="top">No</td>
@@ -620,7 +620,7 @@
 <!-- GnuTLS -->
                         <td valign="top">No</td>
 <!-- MSCng -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#gost-mscrypto"><sup>(3)</sup></a>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#gost-mscrypto"><sup>(4)</sup></a>
 </td>
 <!-- MSCrypto -->
                         <td valign="top">No</td>
@@ -630,7 +630,7 @@
                         <td valign="top">GOST-R3411-2012 (256 bit)</td>
                         <td valign="top">Optional</td>
 <!-- Requirements-->
-                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#gost-openssl"><sup>(2)</sup></a>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#gost-openssl"><sup>(3)</sup></a>
 </td>
 <!-- OpenSSL-->
                         <td valign="top">No</td>
@@ -639,7 +639,7 @@
 <!-- GnuTLS -->
                         <td valign="top">No</td>
 <!-- MSCng -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#gost-mscrypto"><sup>(3)</sup></a>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#gost-mscrypto"><sup>(4)</sup></a>
 </td>
 <!-- MSCrypto -->
                         <td valign="top">No</td>
@@ -649,7 +649,7 @@
                         <td valign="top">GOST-R3411-2012 (512 bit)</td>
                         <td valign="top">Optional</td>
 <!-- Requirements-->
-                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#gost-openssl"><sup>(2)</sup></a>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#gost-openssl"><sup>(3)</sup></a>
 </td>
 <!-- OpenSSL-->
                         <td valign="top">No</td>
@@ -658,7 +658,7 @@
 <!-- GnuTLS -->
                         <td valign="top">No</td>
 <!-- MSCng -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#gost-mscrypto"><sup>(3)</sup></a>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#gost-mscrypto"><sup>(4)</sup></a>
 </td>
 <!-- MSCrypto -->
                         <td valign="top">No</td>
@@ -670,17 +670,17 @@
                         </td>
                         <td valign="top">DEPRECATED</td>
 <!-- Requirements-->
-                        <td valign="top" bgcolor="#C1E1C1">Yes</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#feature-disabled"><sup>(1)</sup></a></td>
 <!-- OpenSSL-->
-                        <td valign="top" bgcolor="#C1E1C1">Yes</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#feature-disabled"><sup>(1)</sup></a></td>
 <!-- NSS -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#feature-disabled"><sup>(1)</sup></a></td>
 <!-- GnuTLS -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#feature-disabled"><sup>(1)</sup></a></td>
 <!-- MSCng -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#feature-disabled"><sup>(1)</sup></a></td>
 <!-- MSCrypto -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#feature-disabled"><sup>(1)</sup></a></td>
 <!-- GCrypt -->
                       </tr>
                       <tr>
@@ -787,11 +787,11 @@
                         <td valign="top">
                           <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.2.3">HMAC-RIPEMD160</a>
                         </td>
-                        <td valign="top">Optional</td>
+                        <td valign="top">DEPRECATED</td>
 <!-- Requirements-->
-                        <td valign="top" bgcolor="#C1E1C1">Yes</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#feature-disabled"><sup>(1)</sup></a></td>
 <!-- OpenSSL-->
-                        <td valign="top" bgcolor="#C1E1C1">Yes</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#feature-disabled"><sup>(1)</sup></a></td>
 <!-- NSS -->
                         <td valign="top">No</td>
 <!-- GnuTLS -->
@@ -799,7 +799,7 @@
 <!-- MSCng -->
                         <td valign="top">No</td>
 <!-- MSCrypto -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#feature-disabled"><sup>(1)</sup></a></td>
 <!-- GCrypt -->
                       </tr>
                       <tr>
@@ -808,17 +808,17 @@
                         </td>
                         <td valign="top">DEPRECATED</td>
 <!-- Requirements-->
-                        <td valign="top" bgcolor="#C1E1C1">Yes</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#feature-disabled"><sup>(1)</sup></a></td>
 <!-- OpenSSL-->
-                        <td valign="top" bgcolor="#C1E1C1">Yes</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#feature-disabled"><sup>(1)</sup></a></td>
 <!-- NSS -->
                         <td valign="top">No</td>
 <!-- GnuTLS -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#feature-disabled"><sup>(1)</sup></a></td>
 <!-- MSCng -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#feature-disabled"><sup>(1)</sup></a></td>
 <!-- MSCrypto -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#feature-disabled"><sup>(1)</sup></a></td>
 <!-- GCrypt -->
                       </tr>
 
@@ -962,9 +962,9 @@
                         <td valign="top">
                           <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.3.5">PKCS1 RSA-RIPEMD160</a>
                         </td>
-                        <td valign="top">Optional</td>
+                        <td valign="top">DEPRECATED</td>
 <!-- Requirements-->
-                        <td valign="top" bgcolor="#C1E1C1">Yes</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#feature-disabled"><sup>(1)</sup></a></td>
 <!-- OpenSSL-->
                         <td valign="top">No</td>
 <!-- NSS -->
@@ -974,7 +974,7 @@
 <!-- MSCng -->
                         <td valign="top">No</td>
 <!-- MSCrypto -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#feature-disabled"><sup>(1)</sup></a></td>
 <!-- GCrypt -->
                       </tr>
                       <tr>
@@ -983,26 +983,26 @@
                         </td>
                         <td valign="top">DEPRECATED</td>
 <!-- Requirements-->
-                        <td valign="top" bgcolor="#C1E1C1">Yes</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#feature-disabled"><sup>(1)</sup></a></td>
 <!-- OpenSSL-->
-                        <td valign="top" bgcolor="#C1E1C1">Yes</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#feature-disabled"><sup>(1)</sup></a></td>
 <!-- NSS -->
                         <td valign="top">No</td>
 <!-- GnuTLS -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#feature-disabled"><sup>(1)</sup></a></td>
 <!-- MSCng -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#feature-disabled"><sup>(1)</sup></a></td>
 <!-- MSCrypto -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#feature-disabled"><sup>(1)</sup></a></td>
 <!-- GCrypt -->
                       </tr>
                       <tr>
                         <td valign="top">
                           <a href="https://www.ietf.org/rfc/rfc9231.html#section-2.3.6">ECDSA-RIPEMD160</a>
                         </td>
-                        <td valign="top">Optional</td>
+                        <td valign="top">DEPRECATED</td>
 <!-- Requirements-->
-                        <td valign="top" bgcolor="#C1E1C1">Yes</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#feature-disabled"><sup>(1)</sup></a></td>
 <!-- OpenSSL-->
                         <td valign="top">No</td>
 <!-- NSS -->
@@ -1370,7 +1370,7 @@
                         <td valign="top">GOST-R3410-2001</td>
                         <td valign="top">Optional</td>
 <!-- Requirements-->
-                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#gost-openssl"><sup>(2)</sup></a>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#gost-openssl"><sup>(3)</sup></a>
 </td>
 <!-- OpenSSL-->
                         <td valign="top">No</td>
@@ -1379,7 +1379,7 @@
 <!-- GnuTLS -->
                         <td valign="top">No</td>
 <!-- MSCng -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#gost-mscrypto"><sup>(3)</sup></a>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#gost-mscrypto"><sup>(4)</sup></a>
 </td>
 <!-- MSCrypto -->
                         <td valign="top">No</td>
@@ -1389,7 +1389,7 @@
                         <td valign="top">GOST-R3410-2012 (256 bit)</td>
                         <td valign="top">Optional</td>
 <!-- Requirements-->
-                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#gost-openssl"><sup>(2)</sup></a>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#gost-openssl"><sup>(3)</sup></a>
 </td>
 <!-- OpenSSL-->
                         <td valign="top">No</td>
@@ -1398,7 +1398,7 @@
 <!-- GnuTLS -->
                         <td valign="top">No</td>
 <!-- MSCng -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#gost-mscrypto"><sup>(3)</sup></a>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#gost-mscrypto"><sup>(4)</sup></a>
 </td>
 <!-- MSCrypto -->
                         <td valign="top">No</td>
@@ -1408,7 +1408,7 @@
                         <td valign="top">GOST-R3411-2012 (512 bit)</td>
                         <td valign="top">Optional</td>
 <!-- Requirements-->
-                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#gost-openssl"><sup>(2)</sup></a>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#gost-openssl"><sup>(3)</sup></a>
 </td>
 <!-- OpenSSL-->
                         <td valign="top">No</td>
@@ -1417,7 +1417,7 @@
 <!-- GnuTLS -->
                         <td valign="top">No</td>
 <!-- MSCng -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#gost-mscrypto"><sup>(3)</sup></a>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#gost-mscrypto"><sup>(4)</sup></a>
 </td>
 <!-- MSCrypto -->
                         <td valign="top">No</td>
@@ -1432,22 +1432,22 @@
                         </td>
                         <td valign="top">Optional</td>
 <!-- Requirements-->
-                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#dsa-key-value"><sup>(4)</sup></a>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#dsa-key-value"><sup>(5)</sup> <a href="#feature-disabled"><sup>(1)</sup></a></a>
 </td>
 <!-- OpenSSL-->
-                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#dsa-key-value"><sup>(4)</sup></a>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#dsa-key-value"><sup>(5)</sup> <a href="#feature-disabled"><sup>(1)</sup></a></a>
 </td>
 <!-- NSS -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#dsa-key-value"><sup>(4)</sup></a>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#dsa-key-value"><sup>(5)</sup> <a href="#feature-disabled"><sup>(1)</sup></a></a>
 </td>
 <!-- GnuTLS -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#dsa-key-value"><sup>(4)</sup></a>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#dsa-key-value"><sup>(5)</sup> <a href="#feature-disabled"><sup>(1)</sup></a></a>
 </td>
 <!-- MSCng -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#dsa-key-value"><sup>(4)</sup></a>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#dsa-key-value"><sup>(5)</sup> <a href="#feature-disabled"><sup>(1)</sup></a></a>
 </td>
 <!-- MSCrypto -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#dsa-key-value"><sup>(4)</sup></a>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#dsa-key-value"><sup>(5)</sup> <a href="#feature-disabled"><sup>(1)</sup></a></a>
 </td>
 <!-- GCrypt -->
                       </tr>
@@ -1457,17 +1457,17 @@
                         </td>
                         <td valign="top">Optional</td>
 <!-- Requirements-->
-                        <td valign="top" bgcolor="#C1E1C1">Yes</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#feature-disabled"><sup>(1)</sup></a></td>
 <!-- OpenSSL-->
-                        <td valign="top" bgcolor="#C1E1C1">Yes</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#feature-disabled"><sup>(1)</sup></a></td>
 <!-- NSS -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#feature-disabled"><sup>(1)</sup></a></td>
 <!-- GnuTLS -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#feature-disabled"><sup>(1)</sup></a></td>
 <!-- MSCng -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#feature-disabled"><sup>(1)</sup></a></td>
 <!-- MSCrypto -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#feature-disabled"><sup>(1)</sup></a></td>
 <!-- GCrypt -->
                       </tr>
                       <tr>
@@ -1476,13 +1476,13 @@
                         </td>
                         <td valign="top">Optional</td>
 <!-- Requirements-->
-                        <td valign="top" bgcolor="#C1E1C1">Yes</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#feature-disabled"><sup>(1)</sup></a></td>
 <!-- OpenSSL-->
-                        <td valign="top" bgcolor="#C1E1C1">Yes</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#feature-disabled"><sup>(1)</sup></a></td>
 <!-- NSS -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#feature-disabled"><sup>(1)</sup></a></td>
 <!-- GnuTLS -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#feature-disabled"><sup>(1)</sup></a></td>
 <!-- MSCng -->
                         <td valign="top">No</td>
 <!-- MSCrypto -->
@@ -1495,7 +1495,7 @@
                         </td>
                         <td valign="top">Optional</td>
 <!-- Requirements-->
-                        <td valign="top" bgcolor="#C1E1C1">Yes</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#feature-disabled"><sup>(1)</sup></a></td>
 <!-- OpenSSL-->
                         <td valign="top">No</td>
 <!-- NSS -->
@@ -1539,7 +1539,7 @@
 <!-- NSS -->
                         <td valign="top" bgcolor="#C1E1C1">Yes</td>
 <!-- GnuTLS -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#mscng-x509-digest"><sup>(5)</sup></a>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#mscng-x509-digest"><sup>(6)</sup></a>
 </td>
 <!-- MSCng -->
                         <td valign="top">No</td>
@@ -1592,13 +1592,13 @@
                         </td>
                         <td valign="top">Optional</td>
 <!-- Requirements-->
-                        <td valign="top" bgcolor="#C1E1C1">Yes (disabled by default)</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#feature-disabled"><sup>(1)</sup></a></td>
 <!-- OpenSSL-->
-                        <td valign="top" bgcolor="#C1E1C1">Yes (disabled by default)</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#feature-disabled"><sup>(1)</sup></a></td>
 <!-- NSS -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes (disabled by default)</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#feature-disabled"><sup>(1)</sup></a></td>
 <!-- GnuTLS -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes (disabled by default)</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#feature-disabled"><sup>(1)</sup></a></td>
 <!-- MSCng -->
                         <td valign="top">No</td>
 <!-- MSCrypto -->
@@ -1612,19 +1612,22 @@
                 <div id="notes">
                     <ul>
                         <li>
-                            <a id="xslt"></a><sup>(1)</sup> Requires <a href="http://xmlsoft.org/XSLT/downloads.html">LibXSLT</a> library.
+                            <a id="feature-disabled"></a><sup>(1)</sup> The feature is disabled by default but can be re-enabled at build time.
                         </li>
                         <li>
-                            <a id="gost-openssl"></a><sup>(2)</sup> GOST support for the xmlsec-openssl library requires installation of the <a href="https://github.com/gost-engine/engine">GOST OpenSSL Engine</a>.
+                            <a id="xslt"></a><sup>(2)</sup> Requires <a href="http://xmlsoft.org/XSLT/downloads.html">LibXSLT</a> library.
                         </li>
                         <li>
-                            <a id="gost-mscrypto"></a><sup>(3)</sup> GOST support for the xmlsec-mscrypto library requires installation of a GOST CSP.
+                            <a id="gost-openssl"></a><sup>(3)</sup> GOST support for the xmlsec-openssl library requires installation of the <a href="https://github.com/gost-engine/engine">GOST OpenSSL Engine</a>.
                         </li>
                         <li>
-                            <a id="dsa-ke-value"></a><sup>(4)</sup> Seed and PgenCounter are not supported in DSAKeyValue element.
+                            <a id="gost-mscrypto"></a><sup>(4)</sup> GOST support for the xmlsec-mscrypto library requires installation of a GOST CSP.
                         </li>
                         <li>
-                            <a id="mscng-x509-digest"></a><sup>(5)</sup> The xmlsec-mscng library only supports SHA1 digest algorithm for X509Digest element.
+                            <a id="dsa-ke-value"></a><sup>(5)</sup> Seed and PgenCounter are not supported in DSAKeyValue element.
+                        </li>
+                        <li>
+                            <a id="mscng-x509-digest"></a><sup>(6)</sup> The xmlsec-mscng library only supports SHA1 digest algorithm for X509Digest element.
                         </li>
                     </ul>
                 </div>

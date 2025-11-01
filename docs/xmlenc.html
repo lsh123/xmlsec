@@ -172,7 +172,7 @@
                         </td>
                         <td valign="top">Required</td>
 <!--Requirements -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#derived-key"><sup>(1)</sup></a>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#derived-key"><sup>(2)</sup></a>
 </td>
                       </tr>
                       <tr>
@@ -226,8 +226,8 @@
                         <td valign="top"><b>XMLSec with NSS</b></td>
                         <td valign="top"><b>XMLSec with GnuTLS</b></td>
                         <td valign="top"><b>XMLSec with MSCng</b></td>
-                        <td valign="top"><b>XMLSec with MSCrypto</b></td>
-                        <td valign="top"><b>XMLSec with GCrypt</b></td>
+                        <td valign="top"><b>XMLSec with MSCrypto</b> <a href="#feature-disabled"><sup>(1)</sup></a></td>
+                        <td valign="top"><b>XMLSec with GCrypt</b> <a href="#feature-disabled"><sup>(1)</sup></a></td>
                       </tr>
                       <tr>
                         <td valign="top" colspan="8">
@@ -395,14 +395,14 @@
                         </td>
                         <td valign="top">Required</td>
 <!--Requirements -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#openssl3-required"><sup>(2)</sup></a> <a href="#concatkdf"><sup>(3)</sup></a>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#openssl3-required"><sup>(3)</sup></a> <a href="#concatkdf"><sup>(4)</sup></a>
 </td>
 <!-- OpenSSL-->
                         <td valign="top">No</td>
 <!-- NSS -->
                         <td valign="top">No</td>
 <!-- GnuTLS -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#concatkdf"><sup>(3)</sup></a> <a href="#mscng-old-win"><sup>(4)</sup></a>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#concatkdf"><sup>(4)</sup></a> <a href="#mscng-old-win"><sup>(5)</sup></a>
 </td>
 <!-- MSCng -->
                         <td valign="top">No</td>
@@ -416,16 +416,16 @@
                         </td>
                         <td valign="top">Optional</td>
 <!--Requirements -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#openssl3-required"><sup>(2)</sup></a> <a href="#pbkdf2"><sup>(5)</sup></a>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#openssl3-required"><sup>(3)</sup></a> <a href="#pbkdf2"><sup>(6)</sup></a>
 </td>
 <!-- OpenSSL-->
-                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#pbkdf2"><sup>(5)</sup></a>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#pbkdf2"><sup>(6)</sup></a>
 </td>
 <!-- NSS -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#pbkdf2"><sup>(5)</sup></a>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#pbkdf2"><sup>(6)</sup></a>
 </td>
 <!-- GnuTLS -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes  <a href="#mscng-old-win"><sup>(4)</sup></a> <a href="#pbkdf2"><sup>(5)</sup></a>
+                        <td valign="top" bgcolor="#C1E1C1">Yes  <a href="#mscng-old-win"><sup>(5)</sup></a> <a href="#pbkdf2"><sup>(6)</sup></a>
 </td>
 <!-- MSCng -->
                         <td valign="top">No</td>
@@ -486,12 +486,12 @@
 <!-- NSS -->
                         <td valign="top">No</td>
 <!-- GnuTLS -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#rsa-oaep-same-algo"><sup>(6)</sup></a>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#rsa-oaep-same-algo"><sup>(7)</sup></a>
 </td>
 <!-- MSCng -->
                         <td valign="top">No</td>
 <!-- MSCrypto -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#rsa-oaep-same-algo"><sup>(6)</sup></a>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#rsa-oaep-same-algo"><sup>(7)</sup></a>
 </td>
 <!-- GCrypt -->
                       </tr>
@@ -511,7 +511,7 @@
 <!-- MSCng -->
                         <td valign="top">No</td>
 <!-- MSCrypto -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#rsa-oaep-same-algo"><sup>(6)</sup></a>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#rsa-oaep-same-algo"><sup>(7)</sup></a>
 </td>
 <!-- GCrypt -->
                       </tr>
@@ -527,12 +527,12 @@
 <!-- NSS -->
                         <td valign="top">No</td>
 <!-- GnuTLS -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#rsa-oaep-same-algo"><sup>(6)</sup></a>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#rsa-oaep-same-algo"><sup>(7)</sup></a>
 </td>
 <!-- MSCng -->
                         <td valign="top">No</td>
 <!-- MSCrypto -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#rsa-oaep-same-algo"><sup>(6)</sup></a>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#rsa-oaep-same-algo"><sup>(7)</sup></a>
 </td>
 <!-- GCrypt -->
                       </tr>
@@ -548,12 +548,12 @@
 <!-- NSS -->
                         <td valign="top">No</td>
 <!-- GnuTLS -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#rsa-oaep-same-algo"><sup>(6)</sup></a>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#rsa-oaep-same-algo"><sup>(7)</sup></a>
 </td>
 <!-- MSCng -->
                         <td valign="top">No</td>
 <!-- MSCrypto -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#rsa-oaep-same-algo"><sup>(6)</sup></a>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#rsa-oaep-same-algo"><sup>(7)</sup></a>
 </td>
 <!-- GCrypt -->
                       </tr>
@@ -569,12 +569,12 @@
 <!-- NSS -->
                         <td valign="top">No</td>
 <!-- GnuTLS -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#rsa-oaep-same-algo"><sup>(6)</sup></a>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#rsa-oaep-same-algo"><sup>(7)</sup></a>
 </td>
 <!-- MSCng -->
                         <td valign="top">No</td>
 <!-- MSCrypto -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#rsa-oaep-same-algo"><sup>(6)</sup></a>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#rsa-oaep-same-algo"><sup>(7)</sup></a>
 </td>
 <!-- GCrypt -->
                       </tr>
@@ -588,14 +588,14 @@
                         </td>
                         <td valign="top">Required</td>
 <!--Requirements -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#openssl3-required"><sup>(2)</sup></a>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#openssl3-required"><sup>(3)</sup></a>
 </td>
 <!-- OpenSSL-->
                         <td valign="top">No</td>
 <!-- NSS -->
                         <td valign="top">No</td>
 <!-- GnuTLS -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#mscng-old-win"><sup>(4)</sup></a>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#mscng-old-win"><sup>(5)</sup></a>
 </td>
 <!-- MSCng -->
                         <td valign="top">No</td>
@@ -628,7 +628,7 @@
                         </td>
                         <td valign="top">Optional</td>
 <!--Requirements -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#openssl3-required"><sup>(2)</sup></a> <a href="#openssl-dhx"><sup>(7)</sup></a>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#openssl3-required"><sup>(3)</sup></a> <a href="#openssl-dhx"><sup>(8)</sup></a>
 </td>
 <!-- OpenSSL-->
                         <td valign="top">No</td>
@@ -738,29 +738,32 @@
                 <div id="notes">
                     <ul>
                         <li>
-                            <a id="derived-key"><sup>(1)</sup></a> Some optional features in DerivedKey element are not supported
+                            <a id="feature-disabled"></a><sup>(1)</sup> The feature is disabled by default but can be re-enabled at build time.
+                        </li>
+                        <li>
+                            <a id="derived-key"><sup>(2)</sup></a> Some optional features in DerivedKey element are not supported
                             (<a href="https://github.com/lsh123/xmlsec/issues/515">more details</a>).
                         </li>
                         <li>
-                            <a id="openssl3-required"><sup>(2)</sup></a> Requires OpenSSL 3.0.0 or greater.
+                            <a id="openssl3-required"><sup>(3)</sup></a> Requires OpenSSL 3.0.0 or greater.
                         </li>
                         <li>
-                            <a id="concatkdf"><sup>(3)</sup></a> Only byte-aligned bit strings in ConcatKDFParams element are supported
+                            <a id="concatkdf"><sup>(4)</sup></a> Only byte-aligned bit strings in ConcatKDFParams element are supported
                             (<a href="https://github.com/lsh123/xmlsec/issues/514">more details</a>).
                         </li>
                         <li>
-                            <a id="mscng-old-win"><sup>(4)</sup></a> The xmlsec-mscng library does not support some cryptographic algortihms
+                            <a id="mscng-old-win"><sup>(5)</sup></a> The xmlsec-mscng library does not support some cryptographic algortihms
                             on Windows 8, Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP.
                         </li>
                         <li>
-                            <a id="pbkdf2"><sup>(5)</sup></a> Only "specified" salt is supported for PBKDF2.
+                            <a id="pbkdf2"><sup>(6)</sup></a> Only "specified" salt is supported for PBKDF2.
                         </li>
                         <li>
-                            <a id="rsa-oaep-same-algo"><sup>(6)</sup></a> RSA-OAEP digest algorithm and MGF1 algorithm
+                            <a id="rsa-oaep-same-algo"><sup>(7)</sup></a> RSA-OAEP digest algorithm and MGF1 algorithm
                             must be the same.
                         </li>
                         <li>
-                          <a id="openssl-dhx"><sup>(7)</sup></a> The xmlsec-openssl library only supports DHX (X9.42 format) keys for DH algorithm.
+                          <a id="openssl-dhx"><sup>(8)</sup></a> The xmlsec-openssl library only supports DHX (X9.42 format) keys for DH algorithm.
                         </li>
                     </ul>
                 </div>

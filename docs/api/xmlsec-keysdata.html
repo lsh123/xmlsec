@@ -148,13 +148,6 @@
 </td>
 </tr>
 <tr>
-<td class="function_type">const <font><span class="returnvalue">xmlChar</span></font> *
-</td>
-<td class="function_name">
-<a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataGetIdentifier" title="xmlSecKeyDataGetIdentifier ()">xmlSecKeyDataGetIdentifier</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
 <td class="function_type">
 <font><span class="returnvalue">void</span></font>
 </td>
@@ -310,13 +303,6 @@
 </td>
 <td class="function_name">
 <span class="c_punctuation">(</span><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataGetSizeMethod" title="xmlSecKeyDataGetSizeMethod ()">*xmlSecKeyDataGetSizeMethod</a><span class="c_punctuation">)</span> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">const <font><span class="returnvalue">xmlChar</span></font> *
-</td>
-<td class="function_name">
-<span class="c_punctuation">(</span><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataGetIdentifierMethod" title="xmlSecKeyDataGetIdentifierMethod ()">*xmlSecKeyDataGetIdentifierMethod</a><span class="c_punctuation">)</span> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -938,32 +924,6 @@ xmlSecKeyDataGetSize (<em class="parameter"><code><a class="link" href="xmlsec-k
 <div class="refsect3">
 <a name="xmlSecKeyDataGetSize.returns"></a><h4>Returns</h4>
 <p> key data size (in bits).</p>
-</div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="xmlSecKeyDataGetIdentifier"></a><h3>xmlSecKeyDataGetIdentifier ()</h3>
-<pre class="programlisting">const <font><span class="returnvalue">xmlChar</span></font> *
-xmlSecKeyDataGetIdentifier (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
-<p>Gets key data identifier string.</p>
-<div class="refsect3">
-<a name="xmlSecKeyDataGetIdentifier.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
-<colgroup>
-<col>
-<col>
-<col>
-</colgroup>
-<tbody><tr>
-<td class="parameter_name"><p>data</p></td>
-<td class="parameter_description"><p>the pointer to key data.</p></td>
-<td class="parameter_annotations"> </td>
-</tr></tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="xmlSecKeyDataGetIdentifier.returns"></a><h4>Returns</h4>
-<p> key data id string.</p>
 </div>
 </div>
 <hr>
@@ -1740,33 +1700,6 @@ by the key data object must be freed inside this method.</p>
 <div class="refsect3">
 <a name="xmlSecKeyDataGetSizeMethod.returns"></a><h4>Returns</h4>
 <p> the key size in bits.</p>
-</div>
-</div>
-<hr>
-<div class="refsect2">
-<a name="xmlSecKeyDataGetIdentifierMethod"></a><h3>xmlSecKeyDataGetIdentifierMethod ()</h3>
-<pre class="programlisting">const <font><span class="returnvalue">xmlChar</span></font> *
-<span class="c_punctuation">(</span>*xmlSecKeyDataGetIdentifierMethod<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyData" title="struct xmlSecKeyData"><span class="type">xmlSecKeyDataPtr</span></a> data</code></em>);</pre>
-<p>Key data specific method to get the key data identifier string (for example,
-X509 data identifier is the subject of the verified cert).</p>
-<div class="refsect3">
-<a name="xmlSecKeyDataGetIdentifierMethod.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
-<colgroup>
-<col>
-<col>
-<col>
-</colgroup>
-<tbody><tr>
-<td class="parameter_name"><p>data</p></td>
-<td class="parameter_description"><p>the pointer to key data.</p></td>
-<td class="parameter_annotations"> </td>
-</tr></tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="xmlSecKeyDataGetIdentifierMethod.returns"></a><h4>Returns</h4>
-<p> the identifier string or NULL if an error occurs.</p>
 </div>
 </div>
 <hr>
@@ -2736,7 +2669,7 @@ in any format.</p>
     /* get info */
     xmlSecKeyDataGetTypeMethod          getType;
     xmlSecKeyDataGetSizeMethod          getSize;
-    xmlSecKeyDataGetIdentifierMethod    getIdentifier;
+    void*                               deprecated0; /* DEPRECATED: xmlSecKeyDataGetIdentifierMethod    getIdentifier; */
 
     /* read/write */
     xmlSecKeyDataXmlReadMethod          xmlRead;
@@ -2829,8 +2762,8 @@ in any format.</p>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataGetIdentifierMethod" title="xmlSecKeyDataGetIdentifierMethod ()"><span class="type">xmlSecKeyDataGetIdentifierMethod</span></a> <em class="structfield"><code><a name="xmlSecKeyDataKlass.getIdentifier"></a>getIdentifier</code></em>;</p></td>
-<td class="struct_member_description"><p>the method to access data's string identifier.</p></td>
+<td class="struct_member_name"><p><font><span class="type">void</span></font> *<em class="structfield"><code><a name="xmlSecKeyDataKlass.deprecated0"></a>deprecated0</code></em>;</p></td>
+<td class="struct_member_description"><p>DEPRECAED: the method to access data's string identifier.</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>

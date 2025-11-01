@@ -4,10 +4,10 @@
 #
 # $ c:\cygwin64\bin\bash build_windows.sh
 #
-libxml2_version="2.15.0"
+libxml2_version="2.15.1"
 libxslt_version="1.1.43"
 openssl_version="3.6.0"
-xmlsec_version="1.3.9"
+xmlsec_version="1.3.9-rc1"
 
 pwd=`pwd`
 script_dir=`dirname $0`

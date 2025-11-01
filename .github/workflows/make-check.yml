@@ -73,9 +73,8 @@ jobs:
           sudo apt install automake autoconf libtool libtool-bin libltdl-dev libltdl7
           sudo apt install libxml2 libxml2-dev libxslt1.1 libxslt1-dev
     - name: build aws lc
-      working-directory: ${GITHUB_WORKSPACE}
+      working-directory: ../aws-lc
       run: |
-          mkdir aws-lc && cd aws-lc
           wget "https://github.com/aws/aws-lc/archive/refs/tags/v{{ env.AWS_LC_VERSION }}.zip"
           unzip "v{{ env.AWS_LC_VERSION }}.zip"
           mkdir aws-lc-build && cd aws-lc-build
@@ -90,7 +89,7 @@ jobs:
       run: |
           ../autogen.sh --prefix=${GITHUB_WORKSPACE}/install.dir ${{ matrix.config_flags }} \
             --enable-werror --enable-pedantic \
-            --with-openssl=${GITHUB_WORKSPACE}/aws-lc-install \
+            --with-openssl=../../aws-lc/aws-lc-install \
             --without-gnutls --without-nss --without-gcrypt
     - name: make
       working-directory: build.dir

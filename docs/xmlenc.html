@@ -226,8 +226,8 @@
                         <td valign="top"><b>XMLSec with NSS</b></td>
                         <td valign="top"><b>XMLSec with GnuTLS</b></td>
                         <td valign="top"><b>XMLSec with MSCng</b></td>
-                        <td valign="top"><b>XMLSec with MSCrypto</b></td>
-                        <td valign="top"><b>XMLSec with GCrypt</b></td>
+                        <td valign="top"><b>XMLSec with MSCrypto</b> <a href="#feature-disabled"><sup>(8)</sup></a></td>
+                        <td valign="top"><b>XMLSec with GCrypt</b> <a href="#feature-disabled"><sup>(8)</sup></a></td>
                       </tr>
                       <tr>
                         <td valign="top" colspan="8">
@@ -761,6 +761,9 @@
                         </li>
                         <li>
                           <a id="openssl-dhx"><sup>(7)</sup></a> The xmlsec-openssl library only supports DHX (X9.42 format) keys for DH algorithm.
+                        </li>
+                        <li>
+                            <a id="feature-disabled"></a><sup>(8)</sup> The feature is disabled by default but can be re-enabled at build time.
                         </li>
                     </ul>
                 </div>

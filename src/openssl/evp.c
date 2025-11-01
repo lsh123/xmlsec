@@ -2809,7 +2809,7 @@ xmlSecOpenSSLKeyDataEcGetType(xmlSecKeyDataPtr data) {
         res = xmlSecKeyDataTypePublic;
     }
     if(privkey != NULL) {
-        BN_free(privkey);
+        BN_clear_free(privkey);
     }
 #endif /*XMLSEC_OPENSSL_API_300 */
 

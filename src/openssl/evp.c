@@ -43,6 +43,15 @@
 #include "openssl_compat.h"
 #include "private.h"
 
+
+#if !defined(OPENSSL_NO_ENGINE) && (!defined(XMLSEC_OPENSSL_API_300) || defined(XMLSEC_OPENSSL3_ENGINES))
+#include <openssl/engine.h>
+#endif /* !defined(OPENSSL_NO_ENGINE) && (!defined(XMLSEC_OPENSSL_API_300) || defined(XMLSEC_OPENSSL3_ENGINES)) */
+
+#ifdef XMLSEC_OPENSSL_API_300
+#include <openssl/provider.h>
+#endif /* XMLSEC_OPENSSL_API_300 */
+
 static int
 xmlSecOpenSSLGetBNValue(const xmlSecBufferPtr buf, BIGNUM **bigNum) {
     xmlSecByte* bufPtr;
@@ -108,10 +117,15 @@ xmlSecOpenSSLSetBNValue(const BIGNUM *bigNum, xmlSecBufferPtr buf) {
  * Internal OpenSSL EVP key CTX
  *
  *************************************************************************/
+#define XMLSEC_OPENSSL_EVP_KEY_IMPLEMENTATION_UNKNOWN               0
+#define XMLSEC_OPENSSL_EVP_KEY_IMPLEMENTATION_MEMORY                1
+#define XMLSEC_OPENSSL_EVP_KEY_IMPLEMENTATION_PROVIDER_OR_ENGINE    2
+
 typedef struct _xmlSecOpenSSLEvpKeyDataCtx      xmlSecOpenSSLEvpKeyDataCtx,
                                                 *xmlSecOpenSSLEvpKeyDataCtxPtr;
 struct _xmlSecOpenSSLEvpKeyDataCtx {
     EVP_PKEY*           pKey;
+    int                 implementation;
 };
 
 /******************************************************************************
@@ -126,6 +140,52 @@ static int              xmlSecOpenSSLEvpKeyDataInitialize       (xmlSecKeyDataPt
 static int              xmlSecOpenSSLEvpKeyDataDuplicate        (xmlSecKeyDataPtr dst,
                                                                  xmlSecKeyDataPtr src);
 static void             xmlSecOpenSSLEvpKeyDataFinalize         (xmlSecKeyDataPtr data);
+
+
+/* Returns one of the XMLSEC_OPENSSL_EVP_KEY_IMPLEMENTATION values, on error returns XMLSEC_OPENSSL_EVP_KEY_IMPLEMENTATION_UNKNOWN */
+static int
+xmlSecOpenSSLEvpIsKeyInMemory(EVP_PKEY* pKey) {
+#ifdef XMLSEC_OPENSSL_API_300
+    const OSSL_PROVIDER *provider;
+#endif /* XMLSEC_OPENSSL_API_300 */
+
+    xmlSecAssert2(pKey != NULL, XMLSEC_OPENSSL_EVP_KEY_IMPLEMENTATION_UNKNOWN);
+
+#if !defined(OPENSSL_NO_ENGINE) && (!defined(XMLSEC_OPENSSL_API_300) || defined(XMLSEC_OPENSSL3_ENGINES))
+    if (EVP_PKEY_get0_engine(pKey) != NULL) {
+        return(XMLSEC_OPENSSL_EVP_KEY_IMPLEMENTATION_PROVIDER_OR_ENGINE);
+    }
+#endif /* !defined(OPENSSL_NO_ENGINE) && (!defined(XMLSEC_OPENSSL_API_300) || defined(XMLSEC_OPENSSL3_ENGINES)) */
+
+#ifdef XMLSEC_OPENSSL_API_300
+    provider = EVP_PKEY_get0_provider(pKey);
+    if (provider != NULL) {
+        const char * name;
+
+        /* don't bother checking for 'legacy' and 'null' providers */
+        name = OSSL_PROVIDER_get0_name(provider);
+        if((name != NULL) && (strcmp(name, "default") != 0) && (strcmp(name, "base") != 0) && (strcmp(name, "fips") != 0)) {
+            return(XMLSEC_OPENSSL_EVP_KEY_IMPLEMENTATION_PROVIDER_OR_ENGINE);
+        }
+    }
+#endif /* XMLSEC_OPENSSL_API_300 */
+
+    /* looks like the key is in memory */
+    return(XMLSEC_OPENSSL_EVP_KEY_IMPLEMENTATION_MEMORY);
+}
+
+/* Returns one of the XMLSEC_OPENSSL_EVP_KEY_IMPLEMENTATION values, on error returns XMLSEC_OPENSSL_EVP_KEY_IMPLEMENTATION_UNKNOWN */
+
+static int
+xmlSecOpenSSLEvpKeyDataIsKeyInMemory(xmlSecKeyDataPtr data) {
+    xmlSecOpenSSLEvpKeyDataCtxPtr ctx;
+
+    xmlSecAssert2(xmlSecKeyDataIsValid(data), XMLSEC_OPENSSL_EVP_KEY_IMPLEMENTATION_UNKNOWN);
+
+    ctx = xmlSecOpenSSLEvpKeyDataGetCtx(data);
+    xmlSecAssert2(ctx != NULL, XMLSEC_OPENSSL_EVP_KEY_IMPLEMENTATION_UNKNOWN);
+    return (ctx->implementation);
+}
 
 /**
  * xmlSecOpenSSLEvpKeyDataAdoptEvp:
@@ -151,6 +211,7 @@ xmlSecOpenSSLEvpKeyDataAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
         EVP_PKEY_free(ctx->pKey);
     }
     ctx->pKey = pKey;
+    ctx->implementation = xmlSecOpenSSLEvpIsKeyInMemory(pKey);
     return(0);
 }
 
@@ -237,7 +298,9 @@ xmlSecOpenSSLEvpKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
             return(-1);
         }
     }
+    ctxDst->implementation = ctxSrc->implementation;
 
+    /* done */
     return(0);
 }
 
@@ -256,6 +319,7 @@ xmlSecOpenSSLEvpKeyDataFinalize(xmlSecKeyDataPtr data) {
     }
     memset(ctx, 0, sizeof(xmlSecOpenSSLEvpKeyDataCtx));
 }
+
 
 #ifdef XMLSEC_OPENSSL_API_300
 static xmlSecSize
@@ -722,7 +786,6 @@ typedef struct _xmlSecOpenSSLKeyValueDsa {
     BIGNUM* g;
     BIGNUM* pub_key;
     BIGNUM* priv_key;
-    int externalPrivKey;
     int notOwner;
 } xmlSecOpenSSLKeyValueDsa, *xmlSecOpenSSLKeyValueDsaPtr;
 
@@ -991,22 +1054,6 @@ xmlSecOpenSSLKeyDataDsaGetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueDsaP
         return(-1);
     }
 
-    if(dsaKeyValue->priv_key == NULL) {
-        /*
-        * !!! HACK !!! Also see RSA key
-        * We assume here that engine *always* has private key.
-        * This might be incorrect but it seems that there is no
-        * way to ask engine if given key is private or not.
-        */
-        const ENGINE* dsa_eng = NULL;
-        dsa_eng = DSA_get0_engine(dsa);
-        if(dsa_eng != NULL) {
-            dsaKeyValue->externalPrivKey = 1;
-        } else {
-            dsaKeyValue->externalPrivKey = 0;
-        }
-    }
-
     /* success */
     return(0);
 }
@@ -1186,10 +1233,6 @@ xmlSecOpenSSLKeyDataDsaGetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueDsaP
     if((ret != 1) || (dsaKeyValue->priv_key == NULL)) {
        /* ignore the error -- public key doesn't have private component */
     }
-
-    /* TODO: implement check for private key on a token (similar to keys on ENGINE) */
-    /* https://github.com/openssl/openssl/issues/9467 */
-    dsaKeyValue->externalPrivKey = 1;
 
     /* success */
     return(0);
@@ -1391,11 +1434,20 @@ xmlSecOpenSSLKeyDataDsaGetType(xmlSecKeyDataPtr data) {
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataDsaId), xmlSecKeyDataTypeUnknown);
 
+    /* check if the key is in memory */
+    if(xmlSecOpenSSLEvpKeyDataIsKeyInMemory(data) != XMLSEC_OPENSSL_EVP_KEY_IMPLEMENTATION_MEMORY) {
+        /* there is no way to determine if a key is public or private when
+         * key is stored on HSM (engine or provder) so we assume it is private
+         * (see https://github.com/lsh123/xmlsec/issues/588)
+         */
+        return(xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic);
+    }
+
+    /* key is in memory, load the key and check if it has priv key */
     ret = xmlSecOpenSSLKeyValueDsaInitialize(&dsaKeyValue);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecOpenSSLKeyValueDsaInitialize",
-            xmlSecKeyDataGetName(data));
-        goto done;
+        xmlSecInternalError("xmlSecOpenSSLKeyValueDsaInitialize", xmlSecKeyDataGetName(data));
+        return(xmlSecKeyDataTypeUnknown);
     }
 
     ret = xmlSecOpenSSLKeyDataDsaGetValue(data, &dsaKeyValue);
@@ -1405,7 +1457,7 @@ xmlSecOpenSSLKeyDataDsaGetType(xmlSecKeyDataPtr data) {
         goto done;
     }
 
-    if((dsaKeyValue.priv_key != NULL) || (dsaKeyValue.externalPrivKey != 0)) {
+    if(dsaKeyValue.priv_key != NULL) {
         res = xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic;
     } else {
         res = xmlSecKeyDataTypePublic;
@@ -1617,6 +1669,7 @@ typedef struct _xmlSecOpenSSLKeyValueDh {
     BIGNUM* q;
     BIGNUM* generator;
     BIGNUM* public;
+    BIGNUM* private;
     BIGNUM* seed;
     BIGNUM* pgenCounter;
     int notOwner;
@@ -1653,6 +1706,9 @@ xmlSecOpenSSLKeyValueDhFinalize(xmlSecOpenSSLKeyValueDhPtr dhKeyValue) {
     }
     if((dhKeyValue->notOwner == 0) && (dhKeyValue->public != NULL)) {
         BN_clear_free(dhKeyValue->public);
+    }
+    if((dhKeyValue->notOwner == 0) && (dhKeyValue->private != NULL)) {
+        BN_clear_free(dhKeyValue->private);
     }
     if((dhKeyValue->notOwner == 0) && (dhKeyValue->seed != NULL)) {
         BN_clear_free(dhKeyValue->seed);
@@ -1895,7 +1951,7 @@ xmlSecOpenSSLKeyDataDhGetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueDhPtr
     */
     DH_get0_key(dh,
         (const BIGNUM**)&(dhKeyValue->public),
-        NULL);
+        (const BIGNUM**)&(dhKeyValue->private));
     if(dhKeyValue->public == NULL) {
         xmlSecOpenSSLError("DH_get0_key", xmlSecKeyDataGetName(data));
         return(-1);
@@ -2072,6 +2128,10 @@ xmlSecOpenSSLKeyDataDhGetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueDhPtr
     if((ret != 1) || (dhKeyValue->public == NULL)) {
         xmlSecOpenSSLError("EVP_PKEY_get_bn_param(public)", xmlSecKeyDataGetName(data));
         return(-1);
+    }
+    ret = EVP_PKEY_get_bn_param(pKey, OSSL_PKEY_PARAM_PRIV_KEY, &(dhKeyValue->private));
+    if((ret != 1) || (dhKeyValue->private == NULL)) {
+        /* ignore the error since public keys don't have private component */
     }
 
     /* Ignore seed and pgenCounter
@@ -2301,10 +2361,42 @@ xmlSecOpenSSLKeyDataDhGetSize(xmlSecKeyDataPtr data) {
 
 static xmlSecKeyDataType
 xmlSecOpenSSLKeyDataDhGetType(xmlSecKeyDataPtr data) {
+    xmlSecKeyDataType res = xmlSecKeyDataTypeUnknown;
+    xmlSecOpenSSLKeyValueDh dhKeyValue;
+    int ret;
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataDhId), xmlSecKeyDataTypeUnknown);
 
-    /* no easy way to find out */
-    return(xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic);
+    /* check if the key is in memory */
+    if(xmlSecOpenSSLEvpKeyDataIsKeyInMemory(data) != XMLSEC_OPENSSL_EVP_KEY_IMPLEMENTATION_MEMORY) {
+        /* there is no way to determine if a key is public or private when
+         * key is stored on HSM (engine or provder) so we assume it is private
+         * (see https://github.com/lsh123/xmlsec/issues/588)
+         */
+        return(xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic);
+    }
+
+    /* key is in memory, load the key and check if it has priv key */
+    ret = xmlSecOpenSSLKeyValueDhInitialize(&dhKeyValue);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecOpenSSLKeyValueDhInitialize", xmlSecKeyDataGetName(data));
+        return(xmlSecKeyDataTypeUnknown);
+    }
+
+    ret = xmlSecOpenSSLKeyDataDhGetValue(data, &dhKeyValue);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecOpenSSLKeyDataDhGetValue", xmlSecKeyDataGetName(data));
+        goto done;
+    }
+
+    if(dhKeyValue.private != NULL) {
+        res = xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic;
+    } else {
+        res = xmlSecKeyDataTypePublic;
+    }
+
+done:
+    xmlSecOpenSSLKeyValueDhFinalize(&dhKeyValue);
+    return(res);
 }
 
 static void
@@ -2564,6 +2656,10 @@ static int              xmlSecOpenSSLKeyDataEcWrite              (xmlSecKeyDataI
                                                                  xmlSecKeyValueEcPtr ecValue);
 
 
+#ifndef XMLSEC_OPENSSL_API_300
+static const EC_KEY*    xmlSecOpenSSLKeyDataEcGetEcKey          (xmlSecKeyDataPtr data);
+#endif /*XMLSEC_OPENSSL_API_300 */
+
 static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataEcKlass = {
     sizeof(xmlSecKeyDataKlass),
     xmlSecOpenSSLEvpKeyDataSize,
@@ -2668,10 +2764,57 @@ xmlSecOpenSSLKeyDataEcFinalize(xmlSecKeyDataPtr data) {
 }
 
 static xmlSecKeyDataType
-xmlSecOpenSSLKeyDataEcGetType(xmlSecKeyDataPtr data XMLSEC_ATTRIBUTE_UNUSED) {
-    UNREFERENCED_PARAMETER(data);
-    /* XXX-MAK: Fix this. */
-    return(xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate);
+xmlSecOpenSSLKeyDataEcGetType(xmlSecKeyDataPtr data) {
+    xmlSecKeyDataType res = xmlSecKeyDataTypeUnknown;
+#ifndef XMLSEC_OPENSSL_API_300
+    const EC_KEY *ecKey;
+#else  /*XMLSEC_OPENSSL_API_300 */
+    const EVP_PKEY* pKey = NULL;
+    BIGNUM *privkey;
+    int ret;
+#endif /*XMLSEC_OPENSSL_API_300 */
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcId), xmlSecKeyDataTypeUnknown);
+
+    /* check if the key is in memory */
+    if(xmlSecOpenSSLEvpKeyDataIsKeyInMemory(data) != XMLSEC_OPENSSL_EVP_KEY_IMPLEMENTATION_MEMORY) {
+        /* there is no way to determine if a key is public or private when
+         * key is stored on HSM (engine or provder) so we assume it is private
+         * (see https://github.com/lsh123/xmlsec/issues/588)
+         */
+        return(xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic);
+    }
+
+    /* key is in memory, load the key and check if it has priv key */
+#ifndef XMLSEC_OPENSSL_API_300
+    ecKey = xmlSecOpenSSLKeyDataEcGetEcKey(data);
+    if(ecKey == NULL) {
+        xmlSecInternalError("xmlSecOpenSSLKeyDataEcGetEcKey", xmlSecKeyDataGetName(data));
+        return(xmlSecKeyDataTypeUnknown);
+    }
+    if(EC_KEY_get0_private_key(ecKey) != NULL) {
+        res = xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate;
+    } else {
+        res = xmlSecKeyDataTypePublic;
+    }
+#else  /*XMLSEC_OPENSSL_API_300 */
+    pKey = xmlSecOpenSSLKeyDataDsaGetEvp(data);
+    xmlSecAssert2(pKey != NULL, xmlSecKeyDataTypeUnknown);
+
+    ret = EVP_PKEY_get_bn_param(pKey, OSSL_PKEY_PARAM_PRIV_KEY, &(privkey));
+    if((ret == 1) && (privkey != NULL)) {
+        res = xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic;
+    } else {
+        /* ignore the error -- public key doesn't have private component */
+        res = xmlSecKeyDataTypePublic;
+    }
+    if(privkey != NULL) {
+        BN_free(privkey);
+    }
+#endif /*XMLSEC_OPENSSL_API_300 */
+
+    /* done */
+    return(res);
 }
 
 typedef struct _xmlSecOpenSSLKeyDataEcCurveNameAndOID {
@@ -3289,7 +3432,6 @@ typedef struct _xmlSecOpenSSLKeyValueRsa {
     BIGNUM* n;
     BIGNUM* e;
     BIGNUM* d;
-    int externalPrivKey;
     int notOwner;
 } xmlSecOpenSSLKeyValueRsa, *xmlSecOpenSSLKeyValueRsaPtr;
 
@@ -3684,20 +3826,6 @@ xmlSecOpenSSLKeyDataRsaGetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueRsaP
         return(-1);
     }
 
-    if(rsaKeyValue->d == NULL) {
-        /*
-        * !!! HACK !!! Also see DSA key
-        * We assume here that engine *always* has private key.
-        * This might be incorrect but it seems that there is no
-        * way to ask engine if given key is private or not.
-        */
-        if(RSA_test_flags(rsa, (RSA_FLAG_EXT_PKEY)) != 0) {
-            rsaKeyValue->externalPrivKey = 1;
-        } else {
-            rsaKeyValue->externalPrivKey = 0;
-        }
-    }
-
     /* success */
     return(0);
 }
@@ -3887,10 +4015,6 @@ xmlSecOpenSSLKeyDataRsaGetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueRsaP
         /* ignore the error since public keys don't have private component */
     }
 
-    /* TODO: implement check for private key on a token (similar to keys on ENGINE) */
-    /* https://github.com/openssl/openssl/issues/9467 */
-    rsaKeyValue->externalPrivKey = 1;
-
     /* success */
     return(0);
 }
@@ -3994,21 +4118,29 @@ xmlSecOpenSSLKeyDataRsaGetType(xmlSecKeyDataPtr data) {
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataRsaId), xmlSecKeyDataTypeUnknown);
 
+    /* check if the key is in memory */
+    if(xmlSecOpenSSLEvpKeyDataIsKeyInMemory(data) != XMLSEC_OPENSSL_EVP_KEY_IMPLEMENTATION_MEMORY) {
+        /* there is no way to determine if a key is public or private when
+         * key is stored on HSM (engine or provder) so we assume it is private
+         * (see https://github.com/lsh123/xmlsec/issues/588)
+         */
+        return(xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic);
+    }
+
+    /* key is in memory, load the key and check if it has priv key */
     ret = xmlSecOpenSSLKeyValueRsaInitialize(&rsaKeyValue);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecOpenSSLKeyValueRsaInitialize",
-            xmlSecKeyDataGetName(data));
-        goto done;
+        xmlSecInternalError("xmlSecOpenSSLKeyValueRsaInitialize", xmlSecKeyDataGetName(data));
+        return(xmlSecKeyDataTypeUnknown);
     }
 
     ret = xmlSecOpenSSLKeyDataRsaGetValue(data, &rsaKeyValue);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecOpenSSLKeyDataRsaGetValue",
-            xmlSecKeyDataGetName(data));
+        xmlSecInternalError("xmlSecOpenSSLKeyDataRsaGetValue", xmlSecKeyDataGetName(data));
         goto done;
     }
 
-    if((rsaKeyValue.d != NULL) || (rsaKeyValue.externalPrivKey != 0)) {
+    if(rsaKeyValue.d != NULL) {
         res = xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic;
     } else {
         res = xmlSecKeyDataTypePublic;
@@ -4267,7 +4399,7 @@ xmlSecOpenSSLKeyDataGost2001GetType(xmlSecKeyDataPtr data XMLSEC_ATTRIBUTE_UNUSE
     UNREFERENCED_PARAMETER(data);
 
     /* Now I don't know how to find whether we have both private and public key
-    or the public only*/
+    or the public only (see https://github.com/lsh123/xmlsec/issues/588) */
     return(xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate);
 }
 
@@ -4395,7 +4527,7 @@ xmlSecOpenSSLKeyDataGostR3410_2012_256GetType(xmlSecKeyDataPtr data XMLSEC_ATTRI
     UNREFERENCED_PARAMETER(data);
 
     /* I don't know how to find whether we have both private and public key
-    or the public only*/
+    or the public only (see https://github.com/lsh123/xmlsec/issues/588) */
     return(xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate);
 }
 
@@ -4523,7 +4655,7 @@ xmlSecOpenSSLKeyDataGostR3410_2012_512GetType(xmlSecKeyDataPtr data XMLSEC_ATTRI
     UNREFERENCED_PARAMETER(data);
 
     /* I don't know how to find whether we have both private and public key
-    or the public only*/
+    or the public only (see https://github.com/lsh123/xmlsec/issues/588) */
     return(xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate);
 }
 

@@ -462,6 +462,7 @@ XMLSEC_EXPORT int               xmlSecErrorsGetCode             (xmlSecSize pos)
 XMLSEC_EXPORT const char*       xmlSecErrorsGetMsg              (xmlSecSize pos);
 
 
+XMLSEC_EXPORT void              xmlSecErrorsPrintCryptoLibraryLogOnExitSet      (int enabled);
 
 #if !defined(__XMLSEC_FUNCTION__)
 

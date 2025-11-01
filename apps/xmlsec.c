@@ -239,6 +239,17 @@ static xmlSecAppCmdLineParam verboseParam = {
     NULL
 };
 
+static xmlSecAppCmdLineParam printCryptoErrorsParam = {
+    xmlSecAppCmdLineTopicGeneral,
+    "--print-crypto-library-errors",
+    NULL,
+    "--print-crypto-library-errors"
+    "\n\tprint errors from crypto library (OpenSSL only)",
+    xmlSecAppCmdLineParamTypeFlag,
+    xmlSecAppCmdLineParamFlagNone,
+    NULL
+};
+
 
 /****************************************************************
  *
@@ -1105,6 +1116,7 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
     &cryptoParam,
     &cryptoConfigParam,
     &verboseParam,
+    &printCryptoErrorsParam,
     &repeatParam,
     &base64LineSizeParam,
     &transformBinChunkSizeParam,
@@ -1412,6 +1424,11 @@ xmlSecAppExecute(xmlSecAppCommand command, const char** utf8_argv, int argc) {
        xmlSecErrorsDefaultCallbackEnableOutput(1);
     } else {
        xmlSecErrorsDefaultCallbackEnableOutput(0);
+    }
+
+    /* enable deatiled crypto library errors on exit */
+    if(xmlSecAppCmdLineParamIsSet(&printCryptoErrorsParam)) {
+       xmlSecErrorsPrintCryptoLibraryLogOnExitSet(1);
     }
 
 

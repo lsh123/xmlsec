@@ -188,6 +188,10 @@ error:
  */
 int
 xmlSecOpenSSLAppShutdown(void) {
+    /* debug only feature, should not be used in production */
+    if(xmlSecErrorsPrintCryptoLibraryLogOnExitIsEnabled() == 1) {
+        ERR_print_errors_fp(stderr);
+    }
     /* OpenSSL 1.1.0+ does not require explicit cleanup */
     return(0);
 }

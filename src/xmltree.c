@@ -88,8 +88,8 @@ xmlSecGetNodeContentAndTrim(const xmlNodePtr cur) {
     while(((*bb) != '\0') && isspace(*bb)) { ++bb; }
 
     /* rtrim */
-    ee = bb + xmlStrlen(bb);
-    while((ee != bb) && isspace(*(--ee))) { }
+    ee = bb + xmlStrlen(bb) - 1;
+    while((bb <= ee) && isspace(*ee)) { --ee; }
     *(ee + 1) = '\0';
 
     /* move string to the beggining */

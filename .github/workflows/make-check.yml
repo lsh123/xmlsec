@@ -54,6 +54,56 @@ jobs:
       run: |
           make install
 
+  # linux: check AWS-LC
+  check-ubuntu_aws_lc:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # default static build
+          - config_flags: --enable-static --enable-static-linking
+    env:
+      AWS_LC_VERSION: "1.63.0"
+    steps:
+    - name: install dependencies
+      run: |
+          sudo apt update
+          sudo apt install cmake ninja-build clang perl golang wget
+          sudo apt install automake autoconf libtool libtool-bin libltdl-dev libltdl7
+          sudo apt install libxml2 libxml2-dev libxslt1.1 libxslt1-dev
+    - name: build aws lc
+      working-directory: ${GITHUB_WORKSPACE}
+      run: |
+          mkdir aws-lc && cd aws-lc
+          wget "https://github.com/aws/aws-lc/archive/refs/tags/v{{ env.AWS_LC_VERSION }}.zip"
+          unzip "v{{ env.AWS_LC_VERSION }}.zip"
+          mkdir aws-lc-build && cd aws-lc-build
+          cmake -GNinja -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=../aws-lc-install ../aws-lc-{{ env.AWS_LC_VERSION }}
+          ninja install
+    - uses: actions/checkout@v2
+    - name: create-build-dirs
+      run: |
+          mkdir build.dir install.dir
+    - name: configure
+      working-directory: build.dir
+      run: |
+          ../autogen.sh --prefix=${GITHUB_WORKSPACE}/install.dir ${{ matrix.config_flags }} \
+            --enable-werror --enable-pedantic \
+            --with-openssl=${GITHUB_WORKSPACE}/aws-lc-install \
+            --without-gnutls --without-nss --without-gcrypt
+    - name: make
+      working-directory: build.dir
+      run: |
+          make
+    - name: make check
+      working-directory: build.dir
+      run: |
+          make check
+    - name: make install
+      working-directory: build.dir
+      run: |
+          make install
   # macosx
   check-osx:
     runs-on: macos-latest
@@ -121,7 +171,7 @@ jobs:
           # default build
           - msystem: MINGW64
             arch: x86_64
-            config_flags:
+            config_flags: --without-openssl --without-nss --without-gnutls --without-gcrypt
           # no unicode static build for mscng
           - msystem: MINGW64
             arch: x86_64

@@ -541,7 +541,7 @@
     <keyword type="function" name="xmlSecKeyDataXmlWrite ()" link="xmlsec-keysdata.html#xmlSecKeyDataXmlWrite"/>
     <keyword type="function" name="xmlSecKeyDataBinRead ()" link="xmlsec-keysdata.html#xmlSecKeyDataBinRead"/>
     <keyword type="function" name="xmlSecKeyDataBinWrite ()" link="xmlsec-keysdata.html#xmlSecKeyDataBinWrite"/>
-    <keyword type="macro" name="xmlSecKeyDataGetName()" link="xmlsec-keysdata.html#xmlSecKeyDataGetName" deprecated=""/>
+    <keyword type="macro" name="xmlSecKeyDataGetName()" link="xmlsec-keysdata.html#xmlSecKeyDataGetName"/>
     <keyword type="macro" name="xmlSecKeyDataIsValid()" link="xmlsec-keysdata.html#xmlSecKeyDataIsValid"/>
     <keyword type="macro" name="xmlSecKeyDataCheckId()" link="xmlsec-keysdata.html#xmlSecKeyDataCheckId"/>
     <keyword type="macro" name="xmlSecKeyDataCheckUsage()" link="xmlsec-keysdata.html#xmlSecKeyDataCheckUsage"/>
@@ -1348,7 +1348,7 @@
     <keyword type="function" name="xmlSecOpenSSLX509CertGetKey ()" link="xmlsec-openssl-x509.html#xmlSecOpenSSLX509CertGetKey"/>
     <keyword type="function" name="xmlSecOpenSSLKeyDataRawX509CertGetKlass ()" link="xmlsec-openssl-x509.html#xmlSecOpenSSLKeyDataRawX509CertGetKlass"/>
     <keyword type="function" name="xmlSecOpenSSLX509StoreGetKlass ()" link="xmlsec-openssl-x509.html#xmlSecOpenSSLX509StoreGetKlass"/>
-    <keyword type="function" name="xmlSecOpenSSLX509StoreVerify ()" link="xmlsec-openssl-x509.html#xmlSecOpenSSLX509StoreVerify" deprecated=""/>
+    <keyword type="function" name="xmlSecOpenSSLX509StoreVerify ()" link="xmlsec-openssl-x509.html#xmlSecOpenSSLX509StoreVerify"/>
     <keyword type="function" name="xmlSecOpenSSLX509StoreVerifyKey ()" link="xmlsec-openssl-x509.html#xmlSecOpenSSLX509StoreVerifyKey"/>
     <keyword type="function" name="xmlSecOpenSSLX509StoreAdoptCert ()" link="xmlsec-openssl-x509.html#xmlSecOpenSSLX509StoreAdoptCert"/>
     <keyword type="function" name="xmlSecOpenSSLX509StoreAdoptCrl ()" link="xmlsec-openssl-x509.html#xmlSecOpenSSLX509StoreAdoptCrl"/>
@@ -1849,7 +1849,7 @@
     <keyword type="function" name="xmlSecNssX509CertGetKey ()" link="xmlsec-nss-x509.html#xmlSecNssX509CertGetKey"/>
     <keyword type="function" name="xmlSecNssKeyDataRawX509CertGetKlass ()" link="xmlsec-nss-x509.html#xmlSecNssKeyDataRawX509CertGetKlass"/>
     <keyword type="function" name="xmlSecNssX509StoreGetKlass ()" link="xmlsec-nss-x509.html#xmlSecNssX509StoreGetKlass"/>
-    <keyword type="function" name="xmlSecNssX509StoreVerify ()" link="xmlsec-nss-x509.html#xmlSecNssX509StoreVerify" deprecated=""/>
+    <keyword type="function" name="xmlSecNssX509StoreVerify ()" link="xmlsec-nss-x509.html#xmlSecNssX509StoreVerify"/>
     <keyword type="function" name="xmlSecNssX509StoreAdoptCert ()" link="xmlsec-nss-x509.html#xmlSecNssX509StoreAdoptCert"/>
     <keyword type="function" name="xmlSecNssX509StoreAdoptCrl ()" link="xmlsec-nss-x509.html#xmlSecNssX509StoreAdoptCrl"/>
     <keyword type="macro" name="xmlSecNssKeyDataX509Id" link="xmlsec-nss-x509.html#xmlSecNssKeyDataX509Id"/>

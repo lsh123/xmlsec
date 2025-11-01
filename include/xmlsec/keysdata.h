@@ -314,9 +314,7 @@ XMLSEC_EXPORT int               xmlSecKeyDataBinWrite           (xmlSecKeyDataId
                                                                  xmlSecKeyInfoCtxPtr keyInfoCtx);
 
 
-XMLSEC_DEPRECATED XMLSEC_EXPORT const xmlChar*    xmlSecKeyDataGetIdentifier      (xmlSecKeyDataPtr data);
-
-                                                                 /**
+/**
  * xmlSecKeyDataGetName:
  * @data:               the pointer to key data.
  *
@@ -339,6 +337,7 @@ XMLSEC_DEPRECATED XMLSEC_EXPORT const xmlChar*    xmlSecKeyDataGetIdentifier    
          (( data )->id->klassSize >= sizeof(xmlSecKeyDataKlass)) && \
          (( data )->id->objSize >= sizeof(xmlSecKeyData)) && \
          (( data )->id->name != NULL))
+
 /**
  * xmlSecKeyDataCheckId:
  * @data:               the pointer to data.
@@ -805,6 +804,15 @@ XMLSEC_EXPORT xmlSecPtrListId   xmlSecKeyDataStorePtrListGetKlass       (void);
 
 XMLSEC_EXPORT void xmlSecImportSetPersistKey                            (void);
 XMLSEC_EXPORT int xmlSecImportGetPersistKey                             (void);
+
+
+/***********************************************************************
+ *
+ * DEPRECATED
+ *
+ **********************************************************************/
+XMLSEC_EXPORT XMLSEC_DEPRECATED const xmlChar*    xmlSecKeyDataGetIdentifier      (xmlSecKeyDataPtr data);
+
 
 #ifdef __cplusplus
 }

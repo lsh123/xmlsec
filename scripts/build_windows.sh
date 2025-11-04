@@ -11,8 +11,8 @@ xmlsec_version="1.3.9-rc1"
 
 pwd=`pwd`
 script_dir=`dirname $0`
-work_dir=`cygpath "c:\\local\\dev"`
-distro_dir="c:\\local\\distro"
+work_dir=`cygpath "d:\\home\\aleksey\\dev"`
+distro_dir="d:\\home\\aleksey\\distro"
 libxml2_output_dir="${distro_dir}\libxml2"
 libxslt_output_dir="${distro_dir}\libxslt"
 openssl_output_dir="${distro_dir}\openssl"
@@ -22,7 +22,7 @@ zip_folders_and_files="libxml2 libxslt openssl xmlsec README.md"
 zip_output_file="${distro_dir}\\xmlsec1-${xmlsec_version}-win64.zip"
 
 PERL_PATH="C:\\Strawberry\\perl\\bin"
-LOG_FILE=`cygpath "C:\\temp\\build-windows.log"`
+LOG_FILE=`cygpath "d:\\home\\aleksey\\tmp\\build-windows.log"`
 
 CMAKE_XMLSEC_BUILDDIR=builddir
 CMAKE_XMLSEC_ARCH="x64"
@@ -60,7 +60,15 @@ function build_libxml2 {
 
   echo "*** Configuring \"${full_name}\" ..."
   cd "${full_name}"
-  cmake -B "${CMAKE_XMLSEC_BUILDDIR}" -A "${CMAKE_XMLSEC_ARCH}" -G "${CMAKE_XMLSEC_GENERATOR}" -D CMAKE_MSVC_RUNTIME_LIBRARY="${CMAKE_XMLSEC_RUNTIME}" -D BUILD_SHARED_LIBS="${CMAKE_XMLSEC_SHARED_LIBS}" -D CMAKE_PREFIX_PATH="${distro_dir}" -D CMAKE_INSTALL_PREFIX="${libxml2_output_dir}" -D LIBXML2_WITH_ICONV=OFF -D LIBXML2_WITH_PYTHON=OFF -D LIBXML2_WITH_ZLIB=OFF >> "${LOG_FILE}"
+  cmake -B "${CMAKE_XMLSEC_BUILDDIR}" -A "${CMAKE_XMLSEC_ARCH}" -G "${CMAKE_XMLSEC_GENERATOR}" \
+	  -D CMAKE_MSVC_RUNTIME_LIBRARY="${CMAKE_XMLSEC_RUNTIME}" \
+	  -D BUILD_SHARED_LIBS="${CMAKE_XMLSEC_SHARED_LIBS}" \
+	  -D CMAKE_PREFIX_PATH="${distro_dir}" \
+	  -D CMAKE_INSTALL_PREFIX="${libxml2_output_dir}" \
+	  -D LIBXML2_WITH_ICONV=OFF \
+	  -D LIBXML2_WITH_PYTHON=OFF \
+	  -D LIBXML2_WITH_ZLIB=OFF \
+      -D LIBXML2_WITH_TESTS=OFF
   if [ $? -ne 0 ]; then
     exit $?
   fi
@@ -109,8 +117,15 @@ function build_libxslt {
   tar xvfz "${full_name}.tar.gz" 2>> "${LOG_FILE}"
 
   echo "*** Configuring \"${full_name}\" ..."
-  cd "${full_name}"
-  cmake -B "${CMAKE_XMLSEC_BUILDDIR}" -A "${CMAKE_XMLSEC_ARCH}" -G "${CMAKE_XMLSEC_GENERATOR}" -D CMAKE_MSVC_RUNTIME_LIBRARY="${CMAKE_XMLSEC_RUNTIME}" -D BUILD_SHARED_LIBS="${CMAKE_XMLSEC_SHARED_LIBS}" -D CMAKE_PREFIX_PATH="${distro_dir}" -D CMAKE_INSTALL_PREFIX="${libxslt_output_dir}" >> "${LOG_FILE}"
+
+  cd "${full_name}"  
+  cmake -B "${CMAKE_XMLSEC_BUILDDIR}" -A "${CMAKE_XMLSEC_ARCH}" -G "${CMAKE_XMLSEC_GENERATOR}" \
+	  -D CMAKE_MSVC_RUNTIME_LIBRARY="${CMAKE_XMLSEC_RUNTIME}" \
+	  -D BUILD_SHARED_LIBS="${CMAKE_XMLSEC_SHARED_LIBS}" \
+	  -D CMAKE_PREFIX_PATH="${distro_dir}" \
+	  -D CMAKE_INSTALL_PREFIX="${libxslt_output_dir}" \
+	  -D LIBXSLT_WITH_PYTHON=OFF \
+      -D LIBXSLT_WITH_TESTS=OFF
   if [ $? -ne 0 ]; then
     exit $?
   fi
@@ -215,7 +230,11 @@ function build_xmlsec {
 
   echo "*** Configuring \"${full_name}\" ..."
   cd "${full_name_without_rc}\win32"
-  cscript configure.js pedantic=yes werror=yes static=no cruntime=/MD xslt=yes crypto=openssl,mscng unicode=yes prefix="${xmlsec_output_dir}" include="${libxml2_output_dir}\include;${libxml2_output_dir}\include\libxml2;${libxslt_output_dir}\include;${openssl_output_dir}\include" lib="${libxml2_output_dir}\lib;${libxslt_output_dir}\lib;${openssl_output_dir}\lib"
+  cscript configure.js pedantic=yes werror=yes static=no cruntime=/MD unicode=yes \
+    xslt=yes crypto=openssl,mscng \
+    prefix="${xmlsec_output_dir}" \
+    include="${libxml2_output_dir}\include;${libxml2_output_dir}\include\libxml2;${libxslt_output_dir}\include;${openssl_output_dir}\include" \
+    lib="${libxml2_output_dir}\lib;${libxslt_output_dir}\lib;${openssl_output_dir}\lib"
   if [ $? -ne 0 ]; then
     exit $?
   fi

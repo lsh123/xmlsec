@@ -7,7 +7,7 @@
 libxml2_version="2.15.1"
 libxslt_version="1.1.43"
 openssl_version="3.6.0"
-xmlsec_version="1.3.9-rc1"
+xmlsec_version="1.3.10-rc1"
 
 pwd=`pwd`
 script_dir=`dirname $0`
@@ -118,7 +118,7 @@ function build_libxslt {
 
   echo "*** Configuring \"${full_name}\" ..."
 
-  cd "${full_name}"  
+  cd "${full_name}"
   cmake -B "${CMAKE_XMLSEC_BUILDDIR}" -A "${CMAKE_XMLSEC_ARCH}" -G "${CMAKE_XMLSEC_GENERATOR}" \
 	  -D CMAKE_MSVC_RUNTIME_LIBRARY="${CMAKE_XMLSEC_RUNTIME}" \
 	  -D BUILD_SHARED_LIBS="${CMAKE_XMLSEC_SHARED_LIBS}" \

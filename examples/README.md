@@ -265,16 +265,6 @@ To run this example:
 ./decrypt3 encrypt3-res.xml
 ```
 
-### xmldsigverify: CGI script for signatures verifications
-
-Files:
-```
-xmldsigverify.c     The source code
-```
-
-To run this example, install compiled xmldsigverify script into
-your web server cgi-bin directory.
-
 ### Keys and certificates
 ```
 cacert.pem          Root (trusted) certificate

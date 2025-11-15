@@ -11,13 +11,13 @@ XML Security Library example: Original XML doc file before encryption (encrypt3 
 <KeyName>rsakey.pem</KeyName>
 </KeyInfo>
 <CipherData>
-<CipherValue>QYYKljhcX20QyP20hYmq8CSES875oIdbrsjMOxnb0VnYDn01Jk00OIPpb9gdIdZg
-MLOtSy26mWrQ+XqfPGuyaA==</CipherValue>
+<CipherValue>pFfhaCpQfHTOJ+mRN919Ia3JimY2AS/8u9pimLEWGGjh3egy3pE2st4+YoVkpS4G
+XyUU4Ps+KRzsdJcKI4moXQ==</CipherValue>
 </CipherData>
 </EncryptedKey>
 </KeyInfo>
 <CipherData>
-<CipherValue>+UiDv73SE8K8KwXuOmHLHK7N2hNWDakTAEu6NprbCdULC1w/LXT9FLtNRJetmwwO
-XpBqTY56AAMeMgpxPWN3SPO0ETeQw7pR+bp0IjUvcGlFSXz6yE1qgQ==</CipherValue>
+<CipherValue>PMuoILFXjCmMg2pCzrmJYZcySLsTzgGYRX2ymYV9tLVrNSPhWV2mwMHWMchSWH9b
+8pRgdaJ3msWmN3EqqElV1Y5wEDQjB5nMz7Tsz3+QmrAxGfxj7bCPyw==</CipherValue>
 </CipherData>
 </EncryptedData>

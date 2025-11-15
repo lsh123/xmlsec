@@ -9,8 +9,7 @@ PROGRAMS = \
 	$(PROGRAMS_SIGN) \
 	$(PROGRAMS_VERIFY) \
 	$(PROGRAMS_ENC) \
-	$(PROGRAMS_DEC) \
-	xmldsigverify
+	$(PROGRAMS_DEC)
 
 CC	= gcc
 CFLAGS	+= -g $(shell xmlsec1-config --cflags) -DUNIX_SOCKETS -Wall -Wextra

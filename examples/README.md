@@ -35,9 +35,10 @@ To run this example:
 ./sign1 sign1-tmpl.xml rsakey.pem
 ```
 
-To sign a template file with `xmlsec1` command line utility (use `xmlsec` on Windows):
+To sign a template file with `xmlsec1` command line utility (use `xmlsec` on Windows).
+Note that in this example we set KeyName to be the same as the filename of the private key:
 ```
-xmlsec1 sign --privkey rsakey.pem --output sign1.xml sign1-tmpl.xml
+xmlsec1 sign --privkey:rsakey.pem rsakey.pem --output sign1.xml sign1-tmpl.xml
 ```
 
 ### sign2: signing a file with a dynamicaly created template
@@ -108,10 +109,11 @@ To run this example:
 ./verify2 sign2-res.xml rsapub.pem
 ```
 
-To verify a signed document with `xmlsec1` command line utility (use `xmlsec` on Windows):
+To verify a signed document with `xmlsec1` command line utility (use `xmlsec` on Windows).
+Note that in this example we set KeyName to be the same as the filename of the private key:
 ```
-xmlsec1 verify --pubkey rsapub.pem sign1-res.xml
-xmlsec1 verify --pubkey rsapub.pem sign2-res.xml
+xmlsec1 verify --pubkey:rsakey.pem rsapub.pem sign1-res.xml
+xmlsec1 verify --pubkey:rsakey.pem rsapub.pem sign2-res.xml
 ```
 
 ### verify3: verifying an enveloped signature using X509 certificate
@@ -185,9 +187,10 @@ To run this example:
 ```
 
 To encrypt binary data with a template file with `xmlsec1` command line
-utility (use `xmlsec` on Windows):
+utility (use `xmlsec` on Windows). Note that in this example we set KeyName to be
+the same as the filename of the key:
 ```
-xmlsec1 encrypt --deskey deskey.bin  --binary-data binary.dat --output encrypt1.xml encrypt1-tmpl.xml
+xmlsec1 encrypt --deskey:deskey.bin deskey.bin  --binary-data binary.dat --output encrypt1.xml encrypt1-tmpl.xml
 ```
 
 ### encrypt2: encrypting XML file using a dynamicaly created template
@@ -213,7 +216,8 @@ encrypt3-doc.xml    An example XML file for encryption by encrypt3.c
 encrypt3-res.xml    The result of encryptin encrypt3-doc.xml by encrypt3.c
 ```
 
-To run this example:
+To run this example (note: we are using the private key here instead of the public
+key to make decrypt3 example work)):
 ```
 ./encrypt3 encrypt3-doc.xml rsakey.pem
 ```
@@ -244,11 +248,13 @@ To run this example:
 ./decrypt2 encrypt2-res.xml deskey.bin
 ```
 
-To decrypt binary data with `xmlsec1` command line utility (use `xmlsec` on Windows):
+To decrypt binary data with `xmlsec1` command line utility (use `xmlsec` on Windows).
+Note that in this example we set KeyName to be the same as the filename of the
+(private) key:
 ```
-xmlsec1 decrypt --deskey deskey.bin encrypt1-res.xml
-xmlsec1 decrypt --deskey deskey.bin encrypt2-res.xml
-xmlsec1 decrypt --privkey rsakey.pem encrypt3-res.xml
+xmlsec1 decrypt --deskey:deskey.bin deskey.bin encrypt1-res.xml
+xmlsec1 decrypt --deskey:deskey.bin deskey.bin encrypt2-res.xml
+xmlsec1 decrypt --privkey:rsakey.pem rsakey.pem encrypt3-res.xml
 ```
 
 ### decrypt3: decrypting binary file using custom keys manager
@@ -264,16 +270,6 @@ To run this example:
 ./decrypt3 encrypt2-res.xml
 ./decrypt3 encrypt3-res.xml
 ```
-
-### xmldsigverify: CGI script for signatures verifications
-
-Files:
-```
-xmldsigverify.c     The source code
-```
-
-To run this example, install compiled xmldsigverify script into
-your web server cgi-bin directory.
 
 ### Keys and certificates
 ```

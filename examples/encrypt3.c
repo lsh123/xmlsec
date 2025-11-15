@@ -7,7 +7,8 @@
  * Usage:
  *      ./encrypt3 <xml-doc> <rsa-pem-key-file>
  *
- * Example:
+ * Example (note: we are using the private key here instead of the public
+ * key to make decrypt3 example work):
  *      ./encrypt3 encrypt3-doc.xml rsakey.pem > encrypt3-res.xml
  *
  * The result could be decrypted with decrypt3 example:
@@ -58,8 +59,6 @@ main(int argc, char **argv) {
     /* Init libxml and libxslt libraries */
     xmlInitParser();
     LIBXML_TEST_VERSION
-    xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
-    xmlSubstituteEntitiesDefault(1);
 
     /* Init libxslt */
 #ifndef XMLSEC_NO_XSLT
@@ -233,7 +232,7 @@ encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* key_name)
     assert(key_name);
 
     /* load template */
-    doc = xmlReadFile(xml_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET);
+    doc = xmlReadFile(xml_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET | XML_PARSE_NOENT);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
         fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
         goto done;

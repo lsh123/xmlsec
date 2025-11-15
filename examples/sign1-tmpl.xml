@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
-XML Security Library example: Simple signature template file for sign1 example. 
+<!--
+XML Security Library example: Simple signature template file for sign1 example.
 -->
 <Envelope xmlns="urn:envelope">
   <Data>
@@ -20,7 +20,7 @@ XML Security Library example: Simple signature template file for sign1 example.
     </SignedInfo>
     <SignatureValue/>
     <KeyInfo>
-	<KeyName/>
+      <KeyName>rsakey.pem</KeyName>
     </KeyInfo>
   </Signature>
 </Envelope>

@@ -7,7 +7,8 @@
  * Usage:
  *      ./encrypt3 <xml-doc> <rsa-pem-key-file>
  *
- * Example:
+ * Example (note: we are using the private key here instead of the public
+ * key to make decrypt3 example work):
  *      ./encrypt3 encrypt3-doc.xml rsakey.pem > encrypt3-res.xml
  *
  * The result could be decrypted with decrypt3 example:

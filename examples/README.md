@@ -38,7 +38,7 @@ To run this example:
 To sign a template file with `xmlsec1` command line utility (use `xmlsec` on Windows).
 Note that in this example we set KeyName to be the same as the filename of the private key:
 ```
-xmlsec1 sign --privkey:rsakey.pem rsakey.pem --output sign1.xml sign1-tmpl.xml
+xmlsec1 sign --privkey:rsakey.pem rsakey.pem --output sign1-res.xml sign1-tmpl.xml
 ```
 
 ### sign2: signing a file with a dynamicaly created template
@@ -69,7 +69,7 @@ To run this example:
 ./sign3 sign3-doc.xml rsakey.pem rsacert.pem
 ```
 
-### sign3: signing a node in a file with a dynamicaly created template and an X509 certificate
+### sign4: signing a node in a file with a dynamicaly created template and an X509 certificate
 
 Files:
 ```
@@ -131,7 +131,7 @@ To run this example:
 To verify a signed document using X509 certificate with `xmlsec1` command line
 utility (use `xmlsec` on Windows):
 ```
-xmlsec1 verify --trusted ca2cert.pem --trusted cacert.pem sign3-res.xml
+xmlsec1 verify --untrusted ca2cert.pem --trusted cacert.pem sign3-res.xml
 ```
 
 ### verify4: verifying a signature over a node using X509 certificate
@@ -149,7 +149,7 @@ To run this example:
 To verify a signed document using X509 certificate with `xmlsec1` command line
 utility (use `xmlsec` on Windows):
 ```
-xmlsec1 verify --trusted ca2cert.pem --trusted cacert.pem sign3-res.xml
+xmlsec1 verify --add-id-attr ID  --untrusted ca2cert.pem --trusted cacert.pem sign4-res.xml
 ```
 
 ### verify-saml: verifying a simple SAML response using X509 certificate
@@ -190,7 +190,7 @@ To encrypt binary data with a template file with `xmlsec1` command line
 utility (use `xmlsec` on Windows). Note that in this example we set KeyName to be
 the same as the filename of the key:
 ```
-xmlsec1 encrypt --deskey:deskey.bin deskey.bin  --binary-data binary.dat --output encrypt1.xml encrypt1-tmpl.xml
+xmlsec1 encrypt --deskey:deskey.bin deskey.bin  --binary-data binary.dat --output encrypt1-res.xml encrypt1-tmpl.xml
 ```
 
 ### encrypt2: encrypting XML file using a dynamicaly created template

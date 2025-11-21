@@ -343,7 +343,7 @@ LIBXML_CONFIG_PATH=
 LIBXML_FOUND="no"
 AC_ARG_WITH([libxml], [AS_HELP_STRING([--with-libxml@<:@=PFX@:>@],[libxml2 location])])
 dnl Priority 0: LibXML2 is disabled: hard error.
-if test "z$with_libxml" = "zno" -o "z$with_libxml_src" = "zno"; then
+if test "z$with_libxml" = "zno" ; then
     LIBXML_FOUND="disabled"
 fi
 
@@ -523,7 +523,7 @@ LIBXSLT_FOUND="no"
 AC_ARG_WITH([libxslt], [AS_HELP_STRING([--with-libxslt@<:@=PFX@:>@],[libxslt location])])
 
 dnl Priority 0: Check if library is not needed
-if test "z$with_libxslt" = "zno" -o "z$with_libxslt_src" = "zno" ; then
+if test "z$with_libxslt" = "zno" ; then
     LIBXSLT_FOUND="disabled"
 fi
 

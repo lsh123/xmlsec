@@ -54,7 +54,7 @@
 	</para>
 	<para>Next step is to prepare signature template with &lt;dsig:X509Data/&gt;
 	child of the &lt;dsig:KeyInfo/&gt; element. When XML Security Library finds
-	this node in the template, it automaticaly creates &lt;dsig:X509Certificate/&gt; 
+	this node in the template, it automatically creates &lt;dsig:X509Certificate/&gt; 
 	children of the &lt;dsig:X509Data/&gt; element and writes to result XML document
 	all the certificates associated with the signature key. 
 	<example>
@@ -194,4 +194,3 @@ load_trusted_certs(char** files, int files_size) {
 	</para>
     </sect1>
 </chapter>
-

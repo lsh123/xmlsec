@@ -192,7 +192,7 @@
 </div>
 <div class="refsect1">
 <a name="xmlsec-gnutls-app.description"></a><h2>Description</h2>
-<p>Common functions for xmlsec1 command line utility tool for GnuTLS.</p>
+<p>Common functions for the xmlsec1 command-line utility for GnuTLS.</p>
 </div>
 <div class="refsect1">
 <a name="xmlsec-gnutls-app.functions_details"></a><h2>Functions</h2>
@@ -201,7 +201,7 @@
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecGnuTLSAppInit (<em class="parameter"><code>const <font><span class="type">char</span></font> *config</code></em>);</pre>
 <p>General crypto engine initialization. This function is used
-by XMLSec command line utility and called before
+by the XMLSec command-line utility and is called before the
 <em class="parameter"><code>xmlSecInit</code></em>
  function.</p>
 <div class="refsect3">
@@ -230,7 +230,7 @@ by XMLSec command line utility and called before
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecGnuTLSAppShutdown (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>General crypto engine shutdown. This function is used
-by XMLSec command line utility and called after
+by the XMLSec command-line utility and is called after the
 <em class="parameter"><code>xmlSecShutdown</code></em>
  function.</p>
 <div class="refsect3">
@@ -244,8 +244,8 @@ by XMLSec command line utility and called after
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecGnuTLSAppDefaultKeysMngrInit (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>);</pre>
 <p>Initializes <em class="parameter"><code>mngr</code></em>
- with simple keys store <font><span class="type">xmlSecGnuTLSKeysStoreId</span></font>
-and a default GnuTLS crypto key data stores.</p>
+with the simple keys store <font><span class="type">xmlSecGnuTLSKeysStoreId</span></font>
+and the default GnuTLS crypto key data stores.</p>
 <div class="refsect3">
 <a name="xmlSecGnuTLSAppDefaultKeysMngrInit.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">

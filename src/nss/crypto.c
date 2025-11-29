@@ -3,8 +3,8 @@
  *
  * Crypto key dat and transforms implementation for NSS.
  *
- * This is free software; see Copyright file in the source
- * distribution for preciese wording.
+ * This is free software; see the Copyright file in the source
+ * distribution for precise wording.
  *
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  * Copyright (c) 2003 America Online, Inc.  All rights reserved.
@@ -334,7 +334,7 @@ xmlSecCryptoGetFunctions_nss(void) {
 
     /********************************************************************
      *
-     * High level routines form xmlsec command line utility
+     * High-level routines for the xmlsec command-line utility
      *
      ********************************************************************/
     gXmlSecNssFunctions->cryptoAppInit                  = xmlSecNssAppInit;

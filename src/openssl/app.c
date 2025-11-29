@@ -4,8 +4,8 @@
  *
  * Application support functions for OpenSSL.
  *
- * This is free software; see Copyright file in the source
- * distribution for preciese wording.
+ * This is free software; see the Copyright file in the source
+ * distribution for precise wording.
  *
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
@@ -14,7 +14,7 @@
  * @Short_description: Application support functions for OpenSSL.
  * @Stability: Stable
  *
- * Common functions for xmlsec1 command line utility tool for OpenSSL.
+ * Common functions for the xmlsec1 command-line utility for OpenSSL.
  */
 
 #include "globals.h"
@@ -120,7 +120,7 @@ XMLSEC_FUNC_TO_PTR_IMPL(pem_password_cb)
  * @config:             the path to certs.
  *
  * General crypto engine initialization. This function is used
- * by XMLSec command line utility and called before
+ * by the XMLSec command-line utility and is called before the
  * @xmlSecInit function.
  *
  * Returns: 0 on success or a negative value otherwise.
@@ -181,7 +181,7 @@ error:
  * xmlSecOpenSSLAppShutdown:
  *
  * General crypto engine shutdown. This function is used
- * by XMLSec command line utility and called after
+ * by the XMLSec command-line utility and is called after the
  * @xmlSecShutdown function.
  *
  * Returns: 0 on success or a negative value otherwise.
@@ -205,7 +205,7 @@ xmlSecOpenSSLAppShutdown(void) {
  * @pwdCallback:        the key password callback.
  * @pwdCallbackCtx:     the user context for password callback.
  *
- * Reads key from the a file.
+ * Reads a key from a file.
  *
  * Returns: pointer to the key or NULL if an error occurs.
  */
@@ -291,7 +291,7 @@ xmlSecOpenSSLAppKeyLoadEx(const char *filename, xmlSecKeyDataType type, xmlSecKe
  * @pwdCallback:        the key password callback.
  * @pwdCallbackCtx:     the user context for password callback.
  *
- * Reads key from the memory buffer.
+ * Reads a key from the memory buffer.
  *
  * Returns: pointer to the key or NULL if an error occurs.
  */
@@ -333,7 +333,7 @@ xmlSecOpenSSLAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
  * @pwdCallback:        the key password callback.
  * @pwdCallbackCtx:     the user context for password callback.
  *
- * Reads key from the an OpenSSL BIO object.
+ * Reads a key from an OpenSSL BIO object.
  *
  * Returns: pointer to the key or NULL if an error occurs.
  */
@@ -1170,7 +1170,7 @@ done:
  * @pwdCallback:        the password callback.
  * @pwdCallbackCtx:     the user context for password callback.
  *
- * Reads key and all associated certificates from the PKCS12 file.
+ * Reads a key and all associated certificates from the PKCS12 file.
  * For uniformity, call @xmlSecOpenSSLAppKeyLoadEX instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
  *
@@ -1211,7 +1211,7 @@ xmlSecOpenSSLAppPkcs12Load(const char *filename, const char *pwd,
  * @pwdCallback:        the password callback.
  * @pwdCallbackCtx:     the user context for password callback.
  *
- * Reads key and all associated certificates from the PKCS12 data in memory buffer.
+ * Reads a key and all associated certificates from the PKCS12 data in the memory buffer.
  * For uniformity, call @xmlSecOpenSSLAppKeyLoadEx instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
  *
@@ -1252,7 +1252,7 @@ xmlSecOpenSSLAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
  * @pwdCallback:        the password callback.
  * @pwdCallbackCtx:     the user context for password callback.
  *
- * Reads key and all associated certificates from the PKCS12 data in an OpenSSL BIO object.
+ * Reads a key and all associated certificates from the PKCS12 data in an OpenSSL BIO object.
  * For uniformity, call @xmlSecOpenSSLAppKeyLoadEx instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
  *

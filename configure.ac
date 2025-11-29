@@ -54,7 +54,7 @@ AC_PATH_PROG(MV, mv, /bin/mv)
 AC_PATH_PROG(TAR, tar, /bin/tar)
 AC_PATH_PROG(PERL, perl)
 
-dnl Programs for man pahes and html docs
+dnl Programs for man pages and HTML docs
 AC_PATH_PROG(HELP2MAN, help2man)
 AC_PATH_PROG(XSLTPROC, xsltproc)
 AC_PATH_PROG(MAN2HTML, man2html)
@@ -111,8 +111,8 @@ build_on_mac=no
 build_on_linux=no
 AC_MSG_CHECKING(for build OS)
 
-dnl should separate extra LDFLAGS for xmlsec and crypto libs ?
-dnl should --enable-runtime-pseudo-reloc for mingw and cygwin ?
+dnl Should we separate extra LDFLAGS for the xmlsec and crypto libraries?
+dnl Should we enable --enable-runtime-pseudo-reloc for MinGW and Cygwin?
 if test -n "$shrext"; then
   XMLSEC_SHLIBSFX="$shrext"
 else
@@ -121,7 +121,7 @@ else
 fi
 
 #
-# prevent weird behaviour on gcc (see https://news.ycombinator.com/item?id=33770277)
+# Prevent unusual behavior in GCC (see https://news.ycombinator.com/item?id=33770277)
 #
 CFLAGS="$CFLAGS -fno-strict-overflow -fno-strict-aliasing"
 
@@ -167,11 +167,11 @@ esac
 
 dnl ==========================================================================
 dnl Specific setup for Aleksey's development environment:
-dnl	- with debug
-dnl - with pedantic compiler flags
-dnl - with docs build
-dnl	- with static binaries
-dnl	- without dynamic xmlsec-crypto loading
+dnl  - Enable debug builds
+dnl  - Enable pedantic compiler flags
+dnl  - Enable docs build
+dnl  - Enable static binaries
+dnl  - Disable dynamic xmlsec-crypto loading
 dnl ==========================================================================
 AC_MSG_CHECKING(for development environment)
 AC_ARG_ENABLE([development], [AS_HELP_STRING([--enable-development],[enable development environment (no)])])
@@ -189,7 +189,7 @@ else
 fi
 
 dnl ==========================================================================
-dnl Do we want to with legacy features?
+dnl Do we want to enable legacy features?
 dnl ==========================================================================
 AC_MSG_CHECKING(for legacy features support)
 AC_ARG_ENABLE([legacy_features], [AS_HELP_STRING([--enable-legacy_features],[legacy features (no)])])
@@ -538,7 +538,7 @@ if test "z$LIBXSLT_FOUND" = "zno" -a "z$with_libxslt" != "z" -a "z$with_libxslt"
         LIBXSLT_INCLUDE_PATH="$with_libxslt/include"
         LIBXSLT_LIB_PATH="$with_libxslt/lib"
         LIBXSLT_FOUND="yes"
-        AC_MSG_RESULT([ye ($with_libxslt)])
+        AC_MSG_RESULT([yes ($with_libxslt)])
     else
         AC_MSG_ERROR([not found: "$with_libxslt/bin/$LIBXSLT_CONFIG" tool, or "$with_libxslt/include/$LIBXSLT_INCLUDE_MARKER" and/or "$with_libxslt/lib/$LIBXSLT_SHARED_LIB_MARKER" or "$with_libxslt/lib/$LIBXSLT_STATIC_LIB_MARKER"])
     fi
@@ -1803,7 +1803,7 @@ case "z$with_default_crypto" in
         dnl The first crypto library wins:
         dnl    - if on Windows and MSCng is available -- use it
         dnl    - Then choose one with most supported features: OpenSSL > NSS > GnuTLS
-        dnl    - MSCrypto and GCrypt are in maintanance mode and go last
+        dnl    - MSCrypto and GCrypt are in maintenance mode and go last
         if test "z$XMLSEC_NO_MSCNG" != "z1" ; then
             XMLSEC_DEFAULT_CRYPTO="mscng"
         elif test "z$XMLSEC_NO_OPENSSL" != "z1" ; then
@@ -1821,7 +1821,7 @@ case "z$with_default_crypto" in
         fi
         ;;
     *)
-        AC_MSG_ERROR(The value '$with_default_crypto' is not a recongnized crypto library name)
+        AC_MSG_ERROR(The value '$with_default_crypto' is not a recognized crypto library name)
         ;;
 esac
 
@@ -1858,7 +1858,7 @@ case "$XMLSEC_DEFAULT_CRYPTO" in
         XMLSEC_CRYPTO_LIBS="$GCRYPT_LIBS"
         ;;
     *)
-        AC_MSG_ERROR(The value '$XMLSEC_DEFAULT_CRYPTO' is not a recongnized crypto library name)
+        AC_MSG_ERROR(The value '$XMLSEC_DEFAULT_CRYPTO' is not a recognized crypto library name)
         ;;
 esac
 AC_MSG_RESULT([yes ("$XMLSEC_DEFAULT_CRYPTO")])

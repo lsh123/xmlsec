@@ -2,8 +2,8 @@
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  *
- * This is free software; see Copyright file in the source
- * distribution for preciese wording.
+ * This is free software; see the Copyright file in the source
+ * distribution for precise wording.
  *
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
@@ -1761,7 +1761,7 @@ xmlSecTransformSha3_512GetKlass(void) {
 
 /******************************************************************************
  *
- * High level routines form xmlsec command line utility
+ * High-level routines for the xmlsec command-line utility
  *
  *****************************************************************************/
 /**
@@ -1769,7 +1769,7 @@ xmlSecTransformSha3_512GetKlass(void) {
  * @config:             the path to crypto library configuration.
  *
  * General crypto engine initialization. This function is used
- * by XMLSec command line utility and called before
+ * by the XMLSec command-line utility and is called before the
  * @xmlSecInit function.
  *
  * Returns: 0 on success or a negative value otherwise.
@@ -1789,7 +1789,7 @@ xmlSecCryptoAppInit(const char* config) {
  * xmlSecCryptoAppShutdown:
  *
  * General crypto engine shutdown. This function is used
- * by XMLSec command line utility and called after
+ * by the XMLSec command-line utility and is called after the
  * @xmlSecShutdown function.
  *
  * Returns: 0 on success or a negative value otherwise.
@@ -2012,7 +2012,7 @@ xmlSecCryptoAppKeysMngrCrlLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* d
  * @pwdCallback:        the key password callback.
  * @pwdCallbackCtx:     the user context for password callback.
  *
- * Reads key from the a file.
+ * Reads a key from a file.
  *
  * Returns: pointer to the key or NULL if an error occurs.
  */
@@ -2036,7 +2036,7 @@ xmlSecCryptoAppKeyLoadEx(const char *filename, xmlSecKeyDataType type, xmlSecKey
  * @pwdCallback:        the key password callback.
  * @pwdCallbackCtx:     the user context for password callback.
  *
- * Reads key from the memory buffer.
+ * Reads a key from the memory buffer.
  *
  * Returns: pointer to the key or NULL if an error occurs.
  */
@@ -2058,7 +2058,7 @@ xmlSecCryptoAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlSec
  * @pwdCallback:        the password callback.
  * @pwdCallbackCtx:     the user context for password callback.
  *
- * Reads key and all associated certificates from the PKCS12 file.
+ * Reads a key and all associated certificates from the PKCS12 file.
  * For uniformity, call xmlSecCryptoAppKeyLoadEx instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
  *
@@ -2083,7 +2083,7 @@ xmlSecCryptoAppPkcs12Load(const char* filename, const char* pwd, void* pwdCallba
  * @pwdCallback:        the password callback.
  * @pwdCallbackCtx:     the user context for password callback.
  *
- * Reads key and all associated certificates from the PKCS12 data in memory buffer.
+ * Reads a key and all associated certificates from the PKCS12 data in the memory buffer.
  * For uniformity, call xmlSecCryptoAppKeyLoadMemory instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
  *

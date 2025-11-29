@@ -2,8 +2,8 @@
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  *
- * This is free software; see Copyright file in the source
- * distribution for preciese wording.
+ * This is free software; see the Copyright file in the source
+ * distribution for precise wording.
  *
  * Copyright (C) 2018 Miklos Vajna. All Rights Reserved.
  */
@@ -12,7 +12,7 @@
  * @Short_description: Application support functions for Microsoft Cryptography API: Next Generation (CNG).
  * @Stability: Stable
  *
- * Common functions for xmlsec1 command line utility tool for Microsoft Cryptography API: Next Generation (CNG).
+ * Common functions for the xmlsec1 command-line utility for the Microsoft Cryptography API: Next Generation (CNG).
  */
 
 #include "globals.h"
@@ -45,7 +45,7 @@ static LPTSTR gXmlSecMSCngAppCertStoreName = NULL;
  * @config:             the path to MSCng configuration (unused).
  *
  * General crypto engine initialization. This function is used
- * by XMLSec command line utility and called before
+ * by the XMLSec command-line utility and is called before the
  * @xmlSecInit function.
  *
  * Returns: 0 on success or a negative value otherwise.
@@ -79,7 +79,7 @@ xmlSecMSCngAppInit(const char* config) {
  * xmlSecMSCngAppShutdown:
  *
  * General crypto engine shutdown. This function is used
- * by XMLSec command line utility and called after
+ * by the XMLSec command-line utility and is called after the
  * @xmlSecShutdown function.
  *
  * Returns: 0 on success or a negative value otherwise.
@@ -115,7 +115,7 @@ xmlSecMSCngAppGetCertStoreName(void) {
  * @pwdCallback:        the key password callback.
  * @pwdCallbackCtx:     the user context for password callback.
  *
- * Reads key from the a file.
+ * Reads a key from a file.
  *
  * Returns: pointer to the key or NULL if an error occurs.
  */
@@ -180,11 +180,11 @@ xmlSecMSCngAppKeyLoadEx(const char *filename, xmlSecKeyDataType type XMLSEC_ATTR
  * @data:               the key binary data.
  * @dataSize:           the key binary data size.
  * @format:             the key data format.
- * @pwd:                the key data2 password.
+ * @pwd:                the key data password.
  * @pwdCallback:        the key password callback.
  * @pwdCallbackCtx:     the user context for password callback.
  *
- * Reads key from a binary @data.
+ * Reads a key from the binary @data.
  *
  * Returns: pointer to the key or NULL if an error occurs.
  */
@@ -340,7 +340,7 @@ xmlSecMSCngAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSec
  * @pwdCallback:        the password callback.
  * @pwdCallbackCtx:     the user context for password callback.
  *
- * Reads key and all associated certificates from the PKCS12 file.
+ * Reads a key and all associated certificates from the PKCS12 file.
  *
  * For uniformity, call @xmlSecMSCngAppKeyLoadEx instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
@@ -415,7 +415,7 @@ xmlSecMSCngIsPrivateKeyCert(PCCERT_CONTEXT cert, BOOL isPersistentKey) {
  * @pwdCallback:        the password callback.
  * @pwdCallbackCtx:     the user context for password callback.
  *
- * Reads key and all associated certificates from the PKCS12 binary data.
+ * Reads a key and all associated certificates from the PKCS12 binary data.
  * For uniformity, call @xmlSecMSCngAppKeyLoadEx instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
  *

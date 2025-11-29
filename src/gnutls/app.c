@@ -2,8 +2,8 @@
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  *
- * This is free software; see Copyright file in the source
- * distribution for preciese wording.
+ * This is free software; see the Copyright file in the source
+ * distribution for precise wording.
  *
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
@@ -12,7 +12,7 @@
  * @Short_description: Application support functions for GnuTLS.
  * @Stability: Stable
  *
- * Common functions for xmlsec1 command line utility tool for GnuTLS.
+ * Common functions for the xmlsec1 command-line utility for GnuTLS.
  */
 
 #include "globals.h"
@@ -60,7 +60,7 @@ static xmlSecKeyPtr     xmlSecGnuTLSAppKeyFromCertLoadMemory    (const xmlSecByt
  * @config:             the path to GnuTLS configuration (unused).
  *
  * General crypto engine initialization. This function is used
- * by XMLSec command line utility and called before
+ * by the XMLSec command-line utility and is called before the
  * @xmlSecInit function.
  *
  * Returns: 0 on success or a negative value otherwise.
@@ -82,7 +82,7 @@ xmlSecGnuTLSAppInit(const char* config XMLSEC_ATTRIBUTE_UNUSED) {
  * xmlSecGnuTLSAppShutdown:
  *
  * General crypto engine shutdown. This function is used
- * by XMLSec command line utility and called after
+ * by the XMLSec command-line utility and is called after the
  * @xmlSecShutdown function.
  *
  * Returns: 0 on success or a negative value otherwise.
@@ -102,7 +102,7 @@ xmlSecGnuTLSAppShutdown(void) {
  * @pwdCallback:        the key password callback.
  * @pwdCallbackCtx:     the user context for password callback.
  *
- * Reads key from the a file.
+ * Reads a key from a file.
  *
  * Returns: pointer to the key or NULL if an error occurs.
  */
@@ -165,7 +165,7 @@ xmlSecGnuTLSAppKeyLoadEx(const char *filename, xmlSecKeyDataType type XMLSEC_ATT
  * @pwdCallback:        the key password callback.
  * @pwdCallbackCtx:     the user context for password callback.
  *
- * Reads key from the memory buffer.
+ * Reads a key from the memory buffer.
  *
  * Returns: pointer to the key or NULL if an error occurs.
  */
@@ -424,7 +424,7 @@ done:
  * @pwdCallback:        the password callback.
  * @pwdCallbackCtx:     the user context for password callback.
  *
- * Reads key and all associated certificates from the PKCS12 file.
+ * Reads a key and all associated certificates from the PKCS12 file.
  * For uniformity, call @xmlSecGnuTLSAppKeyLoadEx instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
  *
@@ -447,7 +447,7 @@ xmlSecGnuTLSAppPkcs12Load(const char *filename,
  * @pwdCallback:        the password callback.
  * @pwdCallbackCtx:     the user context for password callback.
  *
- * Reads key and all associated certificates from the PKCS12 data in memory buffer.
+ * Reads a key and all associated certificates from the PKCS12 data in the memory buffer.
  * For uniformity, call xmlSecGnuTLSAppKeyLoadMemory instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
  *

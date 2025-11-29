@@ -3,8 +3,8 @@
  *
  * Base64 encode/decode transform and utility functions.
  *
- * This is free software; see Copyright file in the source
- * distribution for preciese wording.
+ * This is free software; see the Copyright file in the source
+ * distribution for precise wording.
  *
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
@@ -71,4 +71,3 @@ XMLSEC_EXPORT int                xmlSecBase64DecodeInPlace      (xmlChar* str,
 #endif /* __cplusplus */
 
 #endif /* __XMLSEC_BASE64_H__ */
-

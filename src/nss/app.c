@@ -3,8 +3,8 @@
  *
  * Application support functions for NSS.
  *
- * This is free software; see Copyright file in the source
- * distribution for preciese wording.
+ * This is free software; see the Copyright file in the source
+ * distribution for precise wording.
  *
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  * Copyright (c) 2003 America Online, Inc.  All rights reserved.
@@ -14,7 +14,7 @@
  * @Short_description: Application support functions for NSS.
  * @Stability: Stable
  *
- * Common functions for xmlsec1 command line utility tool for NSS.
+ * Common functions for the xmlsec1 command-line utility for NSS.
  */
 
 #include "globals.h"
@@ -74,7 +74,7 @@ static SECItem *xmlSecNssAppNicknameCollisionCallback           (SECItem *old_ni
  * @config:             the path to NSS database files.
  *
  * General crypto engine initialization. This function is used
- * by XMLSec command line utility and called before
+ * by the XMLSec command-line utility and is called before the
  * @xmlSecInit function.
  *
  * Returns: 0 on success or a negative value otherwise.
@@ -123,7 +123,7 @@ xmlSecNssAppInit(const char* config) {
  * xmlSecNssAppShutdown:
  *
  * General crypto engine shutdown. This function is used
- * by XMLSec command line utility and called after
+ * by the XMLSec command-line utility and is called after the
  * @xmlSecShutdown function.
  *
  * Returns: 0 on success or a negative value otherwise.
@@ -281,7 +281,7 @@ xmlSecNssAppNicknameCollisionCallback(SECItem *old_nick XMLSEC_ATTRIBUTE_UNUSED,
  * @pwdCallback:        the key password callback.
  * @pwdCallbackCtx:     the user context for password callback.
  *
- * Reads key from a file
+ * Reads a key from a file.
  *
  * Returns: pointer to the key or NULL if an error occurs.
  */
@@ -321,11 +321,11 @@ xmlSecNssAppKeyLoadEx(const char *filename, xmlSecKeyDataType type XMLSEC_ATTRIB
  * @data:               the key binary data.
  * @dataSize:           the key binary data size.
  * @format:             the key data format.
- * @pwd:                the key data2 password.
+ * @pwd:                the key data password.
  * @pwdCallback:        the key password callback.
  * @pwdCallbackCtx:     the user context for password callback.
  *
- * Reads key from a binary @data.
+ * Reads a key from the binary @data.
  *
  * Returns: pointer to the key or NULL if an error occurs.
  */
@@ -365,7 +365,7 @@ xmlSecNssAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlSecKey
  * @pwdCallback:        the key password callback.
  * @pwdCallbackCtx:     the user context for password callback.
  *
- * Reads key from a file
+ * Reads a key from a file.
  *
  * Returns: pointer to the key or NULL if an error occurs.
  */
@@ -756,7 +756,7 @@ done:
  * @pwdCallback:        the password callback.
  * @pwdCallbackCtx:     the user context for password callback.
  *
- * Reads key and all associated certificates from the PKCS12 file.
+ * Reads a key and all associated certificates from the PKCS12 file.
  * For uniformity, call @xmlSecNssAppKeyLoadEx instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
  *
@@ -799,7 +799,7 @@ xmlSecNssAppPkcs12Load(const char *filename, const char *pwd,
  * @pwdCallback:        the password callback.
  * @pwdCallbackCtx:     the user context for password callback.
  *
- * Reads key and all associated certificates from the PKCS12 binary data.
+ * Reads a key and all associated certificates from the PKCS12 binary data.
  * For uniformity, call @xmlSecNssAppKeyLoadEx instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
  *
@@ -841,7 +841,7 @@ xmlSecNssAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, const 
  * @pwdCallback:        the password callback.
  * @pwdCallbackCtx:     the user context for password callback.
  *
- * Reads key and all associated certificates from the PKCS12 SECItem.
+ * Reads a key and all associated certificates from the PKCS12 SECItem.
  * For uniformity, call @xmlSecNssAppKeyLoadEx instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
  *
@@ -1650,7 +1650,7 @@ xmlSecNssAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename, xm
     ret = xmlSecNssKeysStoreSave(store, filename, type);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecNssKeysStoreSave", NULL,
-                             "filename%s", xmlSecErrorsSafeString(filename));
+                             "filename=%s", xmlSecErrorsSafeString(filename));
         return(-1);
     }
 

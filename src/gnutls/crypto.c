@@ -2,8 +2,8 @@
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  *
- * This is free software; see Copyright file in the source
- * distribution for preciese wording.
+ * This is free software; see the Copyright file in the source
+ * distribution for precise wording.
  *
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
@@ -289,7 +289,7 @@ xmlSecCryptoGetFunctions_gnutls(void) {
 
     /********************************************************************
      *
-     * High level routines form xmlsec command line utility
+     * High-level routines for the xmlsec command-line utility
      *
      ********************************************************************/
     gXmlSecGnuTLSFunctions->cryptoAppInit                       = xmlSecGnuTLSAppInit;

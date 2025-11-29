@@ -14,8 +14,8 @@
  * The result could be decrypted with decrypt3 example:
  *      ./decrypt3 encrypt3-res.xml
  *
- * This is free software; see Copyright file in the source
- * distribution for preciese wording.
+ * This is free software; see the Copyright file in the source
+ * distribution for precise wording.
  *
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */

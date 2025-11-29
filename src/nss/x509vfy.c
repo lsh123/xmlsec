@@ -3,8 +3,8 @@
  *
  * X509 certificates verification support functions for NSS.
  *
- * This is free software; see Copyright file in the source
- * distribution for preciese wording.
+ * This is free software; see the Copyright file in the source
+ * distribution for precise wording.
  *
  * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
@@ -927,7 +927,7 @@ xmlSecNssX509GetDigestFromAlgorithm(const xmlChar* href) {
         return(SEC_OID_SHA256);
 #else  /* XMLSEC_NO_SHA256 */
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
-            "sha256 disabled and href=%s", xmlSecErrorsSafeString(href));
+            "SHA256 is disabled; href=%s", xmlSecErrorsSafeString(href));
         return(SEC_OID_UNKNOWN);
 #endif /* XMLSEC_NO_SHA256 */
     } else

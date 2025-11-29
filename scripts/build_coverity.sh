@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# input
+# Input parameters.
 cov_token=$1
 version=$2
 if [ "x$version" = "x" ]; then
@@ -8,7 +8,7 @@ if [ "x$version" = "x" ]; then
     exit 1
 fi
 
-# config
+# Configuration.
 cov_url="https://scan.coverity.com/builds?project=xmlsec"
 cov_email="aleksey@aleksey.com"
 cur_pwd=`pwd`
@@ -35,5 +35,3 @@ curl \
 echo "============== Cleanup"
 cd "$cur_pwd"
 #rm -rf "$build_root"
-
-

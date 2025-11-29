@@ -3,8 +3,8 @@
  *
  * KDF (key derivation) transforms implementation for OpenSSL.
  *
- * This is free software; see Copyright file in the source
- * distribution for preciese wording.
+ * This is free software; see the Copyright file in the source
+ * distribution for precise wording.
  *
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
@@ -366,7 +366,7 @@ xmlSecOpenSSLConcatKdfSetDigestNameFromHref(xmlSecOpenSSLKdfCtxPtr ctx, const xm
         digestName = SN_sha256;
 #else  /* XMLSEC_NO_SHA256 */
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
-            "sha256 disabled and href=%s", xmlSecErrorsSafeString(href));
+            "SHA256 is disabled; href=%s", xmlSecErrorsSafeString(href));
         return(-1);
 #endif /* XMLSEC_NO_SHA256 */
     } else

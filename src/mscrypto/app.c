@@ -2,8 +2,8 @@
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  *
- * This is free software; see Copyright file in the source
- * distribution for preciese wording.
+ * This is free software; see the Copyright file in the source
+ * distribution for precise wording.
  *
  * Copyright (C) 2003 Cordys R&D BV, All rights reserved.
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
@@ -13,7 +13,7 @@
  * @Short_description: Application support functions for Microsoft Crypto API.
  * @Stability: Stable
  *
-* Common functions for xmlsec1 command line utility tool for MSCrypto.
+ * Common functions for the xmlsec1 command-line utility for MSCrypto.
  */
 
 #include "globals.h"
@@ -42,17 +42,17 @@
 #  define PKCS12_NO_PERSIST_KEY    0x00008000
 #endif
 
-/* I don't see any other way then to use a global var to get the
+/* I don't see any other way than to use a global var to get the
  * config info to the mscrypto keysstore :(  WK
  */
 static LPTSTR gXmlSecMSCryptoAppCertStoreName = NULL;
 
 /**
  * xmlSecMSCryptoAppInit:
- * @config:             the name of another then the default ms certificate store.
+ * @config:             the name of a certificate store other than the default Microsoft certificate store.
  *
  * General crypto engine initialization. This function is used
- * by XMLSec command line utility and called before
+ * by the XMLSec command-line utility and is called before the
  * @xmlSecInit function.
  *
  * Returns: 0 on success or a negative value otherwise.
@@ -61,8 +61,8 @@ int
 xmlSecMSCryptoAppInit(const char* config) {
     /* initialize MSCrypto crypto engine */
 
-    /* config parameter can contain *another* ms certs store name
-     * then the default (MY)
+    /* The config parameter can contain *another* MS cert store name
+     * than the default (MY).
      */
     if (NULL != config && strlen(config) > 0) {
         if (gXmlSecMSCryptoAppCertStoreName != NULL) {
@@ -88,7 +88,7 @@ xmlSecMSCryptoAppInit(const char* config) {
  * xmlSecMSCryptoAppShutdown:
  *
  * General crypto engine shutdown. This function is used
- * by XMLSec command line utility and called after
+ * by the XMLSec command-line utility and is called after the
  * @xmlSecShutdown function.
  *
  * Returns: 0 on success or a negative value otherwise.
@@ -196,7 +196,7 @@ xmlSecMSCryptoAppKeyLoadEx(const char *filename, xmlSecKeyDataType type XMLSEC_A
  * @pwdCallback:        the key password callback.
  * @pwdCallbackCtx:     the user context for password callback.
  *
- * Reads key from the a file.
+ * Reads a key from a file.
  *
  * Returns: pointer to the key or NULL if an error occurs.
  */
@@ -440,7 +440,7 @@ xmlSecMSCryptoAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xml
  * @pwdCallback:        the password callback.
  * @pwdCallbackCtx:     the user context for password callback.
  *
- * Reads key and all associated certificates from the PKCS12 file
+ * Reads a key and all associated certificates from the PKCS12 file.
  *
  * Returns: pointer to the key or NULL if an error occurs.
  */
@@ -496,7 +496,7 @@ xmlSecMSCryptoAppPkcs12Load(const char *filename,
  * @pwdCallback:        the password callback.
  * @pwdCallbackCtx:     the user context for password callback.
  *
- * Reads key and all associated certificates from the PKCS12 binary
+ * Reads a key and all associated certificates from the PKCS12 binary.
  *
  * Returns: pointer to the key or NULL if an error occurs.
  */
@@ -1089,7 +1089,7 @@ xmlSecMSCryptoAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filenam
 
     ret = xmlSecMSCryptoKeysStoreSave(store, filename, type);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecMSCryptoKeysStoreSave", NULL, "filename%s", xmlSecErrorsSafeString(filename));
+        xmlSecInternalError2("xmlSecMSCryptoKeysStoreSave", NULL, "filename=%s", xmlSecErrorsSafeString(filename));
         return(-1);
     }
 

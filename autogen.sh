@@ -52,13 +52,13 @@ if test "$DIE" -eq 1; then
 fi
 
 test -f include/xmlsec/xmldsig.h  || {
-	echo "You must run this script in the top-level xmlsec directory"
+	echo "You must run this script in the top-level xmlsec directory."
 	exit 1
 }
 
 if test -z "$*"; then
-	echo "I am going to run ./configure with no arguments - if you wish "
-        echo "to pass any to it, please specify them on the $0 command line."
+	echo "I am going to run ./configure with no arguments."
+	echo "If you want to pass any, specify them on the $0 command line."
 fi
 
 LIBTOOLIZE="libtoolize"

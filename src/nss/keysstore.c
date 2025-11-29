@@ -3,7 +3,7 @@
  *
  * Keys store implementation for NSS.
  *
- * This is free software; see Copyright file in the source
+ * This is free software; see the Copyright file in the source
  * distribution for precise wording.
  *
  * Copyright (c) 2003 America Online, Inc.  All rights reserved.

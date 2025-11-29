@@ -4,7 +4,7 @@
 #
 
 
-# config
+# Configuration.
 version=$1
 rc=$2
 cur_pwd=`pwd`
@@ -36,7 +36,7 @@ rm -rf "$build_root"
 mkdir -p "$build_root"
 cd "$build_root"
 
-echo "============== Checking out the module '$git_url'"
+echo "============== Checking out the module '$git_uri'"
 git clone $git_uri
 cd xmlsec
 find . -name ".git" | xargs rm -r
@@ -44,7 +44,7 @@ find . -name ".git" | xargs rm -r
 echo "============== Building xmlsec1-${full_version}"
 ./autogen.sh --prefix=/usr --sysconfdir=/etc
 make tar-release
-# can't build rpm on ubuntu
+# Cannot build RPM on Ubuntu.
 # make rpm-release
 
 echo "============== Moving tar file"
@@ -54,28 +54,28 @@ cd "$cur_pwd"
 echo "============== Signing tar file"
 gpg --output "${sig_file}" --detach-sig "${tar_file}"
 
-echo "============== Tagging the release ${full_version} in the github"
+echo "============== Tagging the release ${full_version} on GitHub"
 echo "RUN MANUALLY: git tag -a "${full_version}" -m 'XMLSec release ${full_version}'"
 echo "RUN MANUALLY: git tag -a "xmlsec_${git_version_tag}" -m 'XMLSec release ${full_version}'"
 echo "RUN MANUALLY: git push --follow-tags"
 
-echo "======== Publish release to website:"
+echo "======== Publish the release to the website:"
 echo "RUN MANUALLY: scp ${tar_file} ${sig_file} smtp.aleksey.com:"
 echo "RUN MANUALLY: ssh smtp.aleksey.com"
 echo "RUN MANUALLY (smtp): ./bin/push-xmlsec-docs.sh ${full_version}"
 echo "RUN MANUALLY (smtp): cd /home/apps/www/aleksey.com/xmlsec/ && sudo ln -sfn xmlsec1-${full_version} ${website_symlink_path}"
 
-echo "Verify that website is working correctly"
-echo "Check windows build script, build windows version, and upload it to smtp.aleksey.com:"
-echo "RUN MANUALLY (windows): scp d:\home\aleksey\distro\xmlsec1-${full_version}-win64.zip smtp.aleksey.com:"
+echo "Verify that the website is working correctly."
+echo "Check the Windows build script, build the Windows version, and upload it to smtp.aleksey.com:"
+echo "RUN MANUALLY (Windows): scp d:\home\aleksey\distro\xmlsec1-${full_version}-win64.zip smtp.aleksey.com:"
 echo "RUN MANUALLY (smtp): sudo cp ~/xmlsec1-${full_version}-win64.zip /home/apps/www/aleksey.com/xmlsec/download/win64/"
 echo "RUN MANUALLY (smtp): cd /home/apps/www/aleksey.com/xmlsec/download/"
 echo "Move old versions to the 'older-releases' folder"
 
-echo "========= Publish release to github:"
-echo "Download release from website, go to github releases, use newly created tag and "
-echo "tarball to publish release; after that create announcement about the release in the "
-echo "github dicussions"
+echo "========= Publish the release to GitHub:"
+echo "Download the release from the website, open GitHub Releases, and use the newly created tag and "
+echo "tarball to publish the release; after that create an announcement about the release in "
+echo "GitHub discussions."
 
 echo "============== Cleanup"
 #rm -rf "$build_root"

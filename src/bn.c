@@ -2,8 +2,8 @@
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  *
- * This is free software; see Copyright file in the source
- * distribution for preciese wording.
+ * This is free software; see the Copyright file in the source
+ * distribution for precise wording.
  *
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  * Copyright (C) 2003 Cordys R&D BV, All rights reserved.
@@ -933,5 +933,3 @@ xmlSecBnBlobSetNodeValue(const xmlSecByte* data, xmlSecSize dataSize,
     xmlSecBnFinalize(&bn);
     return(0);
 }
-
-

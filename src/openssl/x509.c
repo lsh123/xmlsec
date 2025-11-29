@@ -1065,7 +1065,7 @@ xmlSecOpenSSLX509GetDigestFromAlgorithm(const xmlChar* href) {
         return(EVP_sha256());
 #else  /* XMLSEC_NO_SHA256 */
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
-            "sha256 disabled and href=%s", xmlSecErrorsSafeString(href));
+            "SHA256 is disabled; href=%s", xmlSecErrorsSafeString(href));
         return(NULL);
 #endif /* XMLSEC_NO_SHA256 */
     } else

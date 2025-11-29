@@ -35,5 +35,3 @@ curl \
 echo "============== Cleanup"
 cd "$cur_pwd"
 #rm -rf "$build_root"
-
-

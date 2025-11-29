@@ -742,7 +742,7 @@ xmlSecGnuTLSX509GetDigestFromAlgorithm(const xmlChar* href) {
         return(GNUTLS_DIG_SHA256);
 #else  /* XMLSEC_NO_SHA256 */
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
-            "sha256 disabled and href=%s", xmlSecErrorsSafeString(href));
+            "SHA256 is disabled; href=%s", xmlSecErrorsSafeString(href));
         return(GNUTLS_DIG_UNKNOWN);
 #endif /* XMLSEC_NO_SHA256 */
     } else

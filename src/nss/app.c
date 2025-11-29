@@ -1650,7 +1650,7 @@ xmlSecNssAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename, xm
     ret = xmlSecNssKeysStoreSave(store, filename, type);
     if(ret < 0) {
         xmlSecInternalError2("xmlSecNssKeysStoreSave", NULL,
-                             "filename%s", xmlSecErrorsSafeString(filename));
+                             "filename=%s", xmlSecErrorsSafeString(filename));
         return(-1);
     }
 

@@ -1089,7 +1089,7 @@ xmlSecMSCryptoAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filenam
 
     ret = xmlSecMSCryptoKeysStoreSave(store, filename, type);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecMSCryptoKeysStoreSave", NULL, "filename%s", xmlSecErrorsSafeString(filename));
+        xmlSecInternalError2("xmlSecMSCryptoKeysStoreSave", NULL, "filename=%s", xmlSecErrorsSafeString(filename));
         return(-1);
     }
 

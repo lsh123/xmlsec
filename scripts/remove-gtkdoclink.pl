@@ -4,7 +4,7 @@ use strict;
 
 my $file;
 while ($file = shift @ARGV) {
-    print "Processing $file..\n";
+    print "Processing $file...\n";
     open (IN, $file) || die "Can't open $file: $!";
     my $entire_file = '';
     while(<IN>) {
@@ -19,4 +19,3 @@ while ($file = shift @ARGV) {
     print OUT $entire_file;
     close (OUT);	
 }
-

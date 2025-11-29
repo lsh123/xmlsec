@@ -405,7 +405,7 @@ xmlSecCryptoGetFunctions_openssl(void) {
 
     /********************************************************************
      *
-     * High level routines form xmlsec command line utility
+     * High-level routines for the xmlsec command-line utility
      *
      ********************************************************************/
     gXmlSecOpenSSLFunctions->cryptoAppInit                      = xmlSecOpenSSLAppInit;

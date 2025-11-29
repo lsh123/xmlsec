@@ -129,7 +129,7 @@ typedef xmlSecTransformId       (*xmlSecCryptoTransformGetKlassMethod)  (void);
  * @config:             the path to crypto library configuration.
  *
  * General crypto engine initialization. This function is used
- * by XMLSec command line utility and called before
+ * by the XMLSec command-line utility and is called before the
  * @xmlSecInit function.
  *
  * Returns: 0 on success or a negative value otherwise.
@@ -139,7 +139,7 @@ typedef int                     (*xmlSecCryptoAppInitMethod)            (const c
  * xmlSecCryptoAppShutdownMethod:
  *
  * General crypto engine shutdown. This function is used
- * by XMLSec command line utility and called after
+ * by the XMLSec command-line utility and is called after the
  * @xmlSecShutdown function.
  *
  * Returns: 0 on success or a negative value otherwise.
@@ -149,8 +149,8 @@ typedef int                     (*xmlSecCryptoAppShutdownMethod)        (void);
  * xmlSecCryptoAppDefaultKeysMngrInitMethod:
  * @mngr:               the pointer to keys manager.
  *
- * Initializes @mngr with simple keys store #xmlSecSimpleKeysStoreId
- * and a default crypto key data stores.
+ * Initializes @mngr with the simple keys store #xmlSecSimpleKeysStoreId
+ * and the default crypto key data stores.
  *
  * Returns: 0 on success or a negative value otherwise.
  */
@@ -286,7 +286,7 @@ typedef int                     (*xmlSecCryptoAppKeysMngrCrlLoadMemoryMethod)(xm
  * @pwdCallback:        the key password callback.
  * @pwdCallbackCtx:     the user context for password callback.
  *
- * Reads key from the a file.
+ * Reads a key from a file.
  *
  * Returns: pointer to the key or NULL if an error occurs.
  */
@@ -305,7 +305,7 @@ typedef xmlSecKeyPtr            (*xmlSecCryptoAppKeyLoadMethod)         (const c
  * @pwdCallback:        the key password callback.
  * @pwdCallbackCtx:     the user context for password callback.
  *
- * Reads key from the a file.
+ * Reads a key from a file.
  *
  * Returns: pointer to the key or NULL if an error occurs.
  */
@@ -325,7 +325,7 @@ typedef xmlSecKeyPtr            (*xmlSecCryptoAppKeyLoadExMethod)       (const c
  * @pwdCallback:        the key password callback.
  * @pwdCallbackCtx:     the user context for password callback.
  *
- * Reads key from the binary data buffer.
+ * Reads a key from the binary data buffer.
  *
  * Returns: pointer to the key or NULL if an error occurs.
  */
@@ -344,7 +344,7 @@ typedef xmlSecKeyPtr            (*xmlSecCryptoAppKeyLoadMemoryMethod)   (const x
  * @pwdCallback:        the password callback.
  * @pwdCallbackCtx:     the user context for password callback.
  *
- * Reads key and all associated certificates from the PKCS12 file.
+ * Reads a key and all associated certificates from the PKCS12 file.
  * For uniformity, call xmlSecCryptoAppKeyLoadEx instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
  *
@@ -362,7 +362,7 @@ typedef xmlSecKeyPtr            (*xmlSecCryptoAppPkcs12LoadMethod)      (const c
  * @pwdCallback:        the password callback.
  * @pwdCallbackCtx:     the user context for password callback.
  *
- * Reads key and all associated certificates from the PKCS12 binary data.
+ * Reads a key and all associated certificates from the PKCS12 binary data.
  * For uniformity, call xmlSecCryptoAppKeyLoadEx instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
  *

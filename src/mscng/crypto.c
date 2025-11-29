@@ -278,7 +278,7 @@ xmlSecCryptoGetFunctions_mscng(void) {
 
     /********************************************************************
      *
-     * High level routines form xmlsec command line utility
+     * High-level routines for the xmlsec command-line utility
      *
      ********************************************************************/
     gXmlSecMSCngFunctions->cryptoAppInit                        = xmlSecMSCngAppInit;

@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Usage: build_release.sh <crypto> [<optional configure params>]
+# Usage: build_memcheck.sh <crypto> [<optional configure params>]
 #
 
 # config
@@ -9,7 +9,7 @@ top_dir=`realpath "${script_dir}/.."`
 crypto=$1
 cur_pwd=`pwd`
 today=`date +%F-%H-%M-%S`
-shift 
+shift
 
 if [ x"$crypto" = x ]; then
     echo "Usage: $0 <crypto> [<optional configure params>]"

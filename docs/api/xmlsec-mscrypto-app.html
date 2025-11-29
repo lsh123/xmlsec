@@ -248,7 +248,7 @@
 </div>
 <div class="refsect1">
 <a name="xmlsec-mscrypto-app.description"></a><h2>Description</h2>
-<p>Common functions for xmlsec1 command line utility tool for MSCrypto.</p>
+<p>Common functions for the xmlsec1 command-line utility for MSCrypto.</p>
 </div>
 <div class="refsect1">
 <a name="xmlsec-mscrypto-app.functions_details"></a><h2>Functions</h2>
@@ -257,7 +257,7 @@
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecMSCryptoAppInit (<em class="parameter"><code>const <font><span class="type">char</span></font> *config</code></em>);</pre>
 <p>General crypto engine initialization. This function is used
-by XMLSec command line utility and called before
+by the XMLSec command-line utility and is called before the
 <em class="parameter"><code>xmlSecInit</code></em>
  function.</p>
 <div class="refsect3">
@@ -270,7 +270,7 @@ by XMLSec command line utility and called before
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>config</p></td>
-<td class="parameter_description"><p>the name of another then the default ms certificate store.</p></td>
+<td class="parameter_description"><p>the name of a certificate store other than the default Microsoft certificate store.</p></td>
 <td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
@@ -286,7 +286,7 @@ by XMLSec command line utility and called before
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecMSCryptoAppShutdown (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>General crypto engine shutdown. This function is used
-by XMLSec command line utility and called after
+by the XMLSec command-line utility and is called after the
 <em class="parameter"><code>xmlSecShutdown</code></em>
  function.</p>
 <div class="refsect3">
@@ -312,8 +312,8 @@ xmlSecMSCryptoAppGetCertStoreName (<em class="parameter"><code><span class="type
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecMSCryptoAppDefaultKeysMngrInit (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>);</pre>
 <p>Initializes <em class="parameter"><code>mngr</code></em>
- with simple keys store <a class="link" href="xmlsec-keysmngr.html#xmlSecSimpleKeysStoreId" title="xmlSecSimpleKeysStoreId"><span class="type">xmlSecSimpleKeysStoreId</span></a>
-and a default MSCrypto crypto key data stores.</p>
+with the simple keys store <a class="link" href="xmlsec-keysmngr.html#xmlSecSimpleKeysStoreId" title="xmlSecSimpleKeysStoreId"><span class="type">xmlSecSimpleKeysStoreId</span></a>
+and the default MSCrypto crypto key data stores.</p>
 <div class="refsect3">
 <a name="xmlSecMSCryptoAppDefaultKeysMngrInit.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">

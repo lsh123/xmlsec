@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# MUST BE RUN FROM x64 Native Tools Command Prompt
+# Must be run from the x64 Native Tools Command Prompt.
 #
 # $ c:\cygwin64\bin\bash build_windows.sh
 #
@@ -41,7 +41,7 @@ function build_libxml2 {
     echo "Found ${full_name}, skipping build"
     return 0
   else
-    echo "Folder \"${work_dir}\\${full_name}\" and/or \"${libxml2_output_dir}\" are missing, rebuilding ${full_name}"
+    echo "Either \"${work_dir}\\${full_name}\" or \"${libxml2_output_dir}\" is missing; rebuilding ${full_name}."
   fi
 
   # build it!
@@ -99,7 +99,7 @@ function build_libxslt {
     echo "Found ${full_name}, skipping build"
     return 0
   else
-    echo "Folder \"${work_dir}\\${full_name}\" and/or \"${libxslt_output_dir}\" are missing, rebuilding ${full_name}"
+    echo "Either \"${work_dir}\\${full_name}\" or \"${libxslt_output_dir}\" is missing; rebuilding ${full_name}."
   fi
 
   # build it!
@@ -156,7 +156,7 @@ function build_openssl {
     echo "Found ${full_name}, skipping build"
     return 0
   else
-    echo "Folder \"${work_dir}\\${full_name}\" and/or \"${openssl_output_dir}\" are missing, rebuilding ${full_name}"
+    echo "Either \"${work_dir}\\${full_name}\" or \"${openssl_output_dir}\" is missing; rebuilding ${full_name}."
   fi
 
   # build it!
@@ -211,7 +211,7 @@ function build_xmlsec {
     echo "Found ${full_name}, skipping build"
     return 0
   else
-    echo "Folder \"${work_dir}\\${full_name_without_rc}\" and/or \"${xmlsec_output_dir}\" are missing, rebuilding ${full_name}"
+    echo "Either \"${work_dir}\\${full_name_without_rc}\" or \"${xmlsec_output_dir}\" is missing; rebuilding ${full_name}."
   fi
 
   # build it!
@@ -312,5 +312,3 @@ else
 fi
 
 exit 0
-
-

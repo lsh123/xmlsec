@@ -282,7 +282,7 @@ xmlSecCryptoGetFunctions_gcrypt(void) {
 
     /********************************************************************
      *
-     * High level routines form xmlsec command line utility
+     * High-level routines for the xmlsec command-line utility
      *
      ********************************************************************/
     gXmlSecGCryptFunctions->cryptoAppInit                       = xmlSecGCryptAppInit;

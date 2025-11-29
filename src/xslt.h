@@ -3,8 +3,8 @@
  *
  * XSLT helper functions
  *
- * This is free software; see Copyright file in the source
- * distribution for preciese wording.
+ * This is free software; see the Copyright file in the source
+ * distribution for precise wording.
  *
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
@@ -31,4 +31,3 @@ void xmlSecTransformXsltShutdown                            (void);
 #endif /* XMLSEC_NO_XSLT */
 
 #endif /* __XMLSEC_PRIVATE_XSLT_H__ */
-

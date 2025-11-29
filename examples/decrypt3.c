@@ -12,8 +12,8 @@
  *      ./decrypt3 encrypt1-res.xml
  *      ./decrypt3 encrypt2-res.xml
  *
- * This is free software; see Copyright file in the source
- * distribution for preciese wording.
+ * This is free software; see the Copyright file in the source
+ * distribution for precise wording.
  *
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */

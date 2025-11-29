@@ -3,7 +3,7 @@
  *
  * MSCrypto keys store
  *
- * This is free software; see Copyright file in the source
+ * This is free software; see the Copyright file in the source
  * distribution for precise wording.
  *
  * Copyright (C) 2003 Cordys R&D BV, All rights reserved.
@@ -46,4 +46,3 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecMSCryptoKeysStoreSave     (xmlSecK
 #endif /* __cplusplus */
 
 #endif /* __XMLSEC_MSCRYPTO_KEYSSTORE_H__ */
-

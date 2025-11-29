@@ -20,8 +20,8 @@
  * In the same time, verify3 example successfully verifies this signature:
  *      ./verify3 verify-saml-bad-res.xml ca2cert.pem cacert.pem
  *
- * This is free software; see Copyright file in the source
- * distribution for preciese wording.
+ * This is free software; see the Copyright file in the source
+ * distribution for precise wording.
  *
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
@@ -367,5 +367,3 @@ verify_signature_results(xmlSecDSigCtxPtr dsigCtx) {
     /* all good! */
     return(0);
 }
-
-

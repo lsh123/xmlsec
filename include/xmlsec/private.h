@@ -4,8 +4,8 @@
  * These are internal private declarations. You don't want to use this file
  * unless you are building xmlsec or xmlsec-$crypto library.
  *
- * This is free software; see Copyright file in the source
- * distribution for preciese wording.
+ * This is free software; see the Copyright file in the source
+ * distribution for precise wording.
  *
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
@@ -121,7 +121,7 @@ typedef xmlSecTransformId       (*xmlSecCryptoTransformGetKlassMethod)  (void);
 
 /*****************************************************************************
  *
- * High level routines form xmlsec command line utility
+ * High-level routines for the xmlsec command-line utility
  *
  ****************************************************************************/
 /**
@@ -627,7 +627,7 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoTransformGetKlassMethod          transformSha3_384GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformSha3_512GetKlass;
 
-    /* High level routines form xmlsec command line utility */
+    /* High-level routines for the xmlsec command-line utility */
     xmlSecCryptoAppInitMethod                    cryptoAppInit;
     xmlSecCryptoAppShutdownMethod                cryptoAppShutdown;
     xmlSecCryptoAppDefaultKeysMngrInitMethod     cryptoAppDefaultKeysMngrInit;

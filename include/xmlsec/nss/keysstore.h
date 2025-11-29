@@ -3,7 +3,7 @@
  *
  * Nss keys store
  *
- * This is free software; see Copyright file in the source
+ * This is free software; see the Copyright file in the source
  * distribution for precise wording.
  *
  * Copyright (c) 2003 America Online, Inc. All rights reserved
@@ -44,4 +44,3 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecNssKeysStoreSave  (xmlSecKeyStoreP
 #endif /* __cplusplus */
 
 #endif /* __XMLSEC_NSS_KEYSSTORE_H__ */
-

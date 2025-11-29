@@ -1,8 +1,8 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * This is free software; see Copyright file in the source
- * distribution for preciese wording.
+ * This is free software; see the Copyright file in the source
+ * distribution for precise wording.
  *
  * Copyright (C) 2018 Miklos Vajna. All Rights Reserved.
  */
@@ -38,5 +38,3 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecMSCngKeysStoreSave    (xmlSecKeySt
 #endif /* __cplusplus */
 
 #endif /* __XMLSEC_MSCNG_PCCERT_CONTEXT_H__ */
-
-

@@ -10,8 +10,8 @@
  *      ./verify1 sign1-res.xml rsapub.pem
  *      ./verify1 sign2-res.xml rsapub.pem
  *
- * This is free software; see Copyright file in the source
- * distribution for preciese wording.
+ * This is free software; see the Copyright file in the source
+ * distribution for precise wording.
  *
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
@@ -268,4 +268,3 @@ verify_signature_results(xmlSecDSigCtxPtr dsigCtx) {
     /* all good! */
     return(0);
 }
-

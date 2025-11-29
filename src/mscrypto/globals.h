@@ -4,8 +4,8 @@
  * THIS IS A PRIVATE XMLSEC HEADER FILE
  * DON'T USE IT IN YOUR APPLICATION
  *
- * This is free software; see Copyright file in the source
- * distribution for preciese wording.
+ * This is free software; see the Copyright file in the source
+ * distribution for precise wording.
  *
  * Copyright (C) 2003 Cordys R&D BV, All rights reserved.
  */

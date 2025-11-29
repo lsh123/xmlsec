@@ -3,8 +3,8 @@
  *
  * RSA Key Transport transforms implementation for NSS.
  *
- * This is free software; see Copyright file in the source
- * distribution for preciese wording.
+ * This is free software; see the Copyright file in the source
+ * distribution for precise wording.
  *
  * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */

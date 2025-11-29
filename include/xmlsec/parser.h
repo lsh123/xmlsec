@@ -3,8 +3,8 @@
  *
  * XML Parser transform and utility functions.
  *
- * This is free software; see Copyright file in the source
- * distribution for preciese wording.
+ * This is free software; see the Copyright file in the source
+ * distribution for precise wording.
  *
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
@@ -52,4 +52,3 @@ XMLSEC_EXPORT xmlSecTransformId xmlSecTransformXmlParserGetKlass        (void);
 #endif /* __cplusplus */
 
 #endif /* __XMLSEC_PARSER_H__ */
-

@@ -1,8 +1,8 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * This is free software; see Copyright file in the source
- * distribution for preciese wording.
+ * This is free software; see the Copyright file in the source
+ * distribution for precise wording.
  *
  * Copyright (C) 2003 Cordys R&D BV, All rights reserved.
  */
@@ -99,7 +99,7 @@ extern "C" {
 
 /********************************************************************
  *
- * High level routines form xmlsec command line utility
+ * High-level routines for the xmlsec command-line utility
  *
  ********************************************************************/
 #define xmlSecCryptoAppInit                     xmlSecMSCryptoAppInit

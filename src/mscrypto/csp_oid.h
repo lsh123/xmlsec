@@ -1,8 +1,8 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * This is free software; see Copyright file in the source
- * distribution for preciese wording.
+ * This is free software; see the Copyright file in the source
+ * distribution for precise wording.
  *
  * Copyright (c) 2005-2006 Cryptocom LTD (http://www.cryptocom.ru).
  * All rights reserved.

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# config
+# Configuration options.
 configure_options=""
 configure_options="$configure_options --enable-static-linking --enable-crypto-dl=no"
 configure_options="$configure_options --enable-manpages-build --enable-docs-build"

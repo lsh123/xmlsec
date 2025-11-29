@@ -4,7 +4,7 @@
 #
 
 
-# config
+# Configuration.
 version=$1
 rc=$2
 cur_pwd=`pwd`
@@ -44,7 +44,7 @@ find . -name ".git" | xargs rm -r
 echo "============== Building xmlsec1-${full_version}"
 ./autogen.sh --prefix=/usr --sysconfdir=/etc
 make tar-release
-# can't build rpm on ubuntu
+# Cannot build RPM on Ubuntu.
 # make rpm-release
 
 echo "============== Moving tar file"

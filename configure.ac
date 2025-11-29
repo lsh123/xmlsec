@@ -111,8 +111,8 @@ build_on_mac=no
 build_on_linux=no
 AC_MSG_CHECKING(for build OS)
 
-dnl should separate extra LDFLAGS for xmlsec and crypto libs ?
-dnl should --enable-runtime-pseudo-reloc for mingw and cygwin ?
+dnl Should we separate extra LDFLAGS for the xmlsec and crypto libraries?
+dnl Should we enable --enable-runtime-pseudo-reloc for MinGW and Cygwin?
 if test -n "$shrext"; then
   XMLSEC_SHLIBSFX="$shrext"
 else
@@ -121,7 +121,7 @@ else
 fi
 
 #
-# prevent weird behaviour on gcc (see https://news.ycombinator.com/item?id=33770277)
+# Prevent unusual behavior in GCC (see https://news.ycombinator.com/item?id=33770277)
 #
 CFLAGS="$CFLAGS -fno-strict-overflow -fno-strict-aliasing"
 
@@ -167,11 +167,11 @@ esac
 
 dnl ==========================================================================
 dnl Specific setup for Aleksey's development environment:
-dnl	- with debug
-dnl - with pedantic compiler flags
-dnl - with docs build
-dnl	- with static binaries
-dnl	- without dynamic xmlsec-crypto loading
+dnl  - Enable debug builds
+dnl  - Enable pedantic compiler flags
+dnl  - Enable docs build
+dnl  - Enable static binaries
+dnl  - Disable dynamic xmlsec-crypto loading
 dnl ==========================================================================
 AC_MSG_CHECKING(for development environment)
 AC_ARG_ENABLE([development], [AS_HELP_STRING([--enable-development],[enable development environment (no)])])

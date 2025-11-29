@@ -3,7 +3,7 @@
 # Usage: build_memcheck.sh <crypto> [<optional configure params>]
 #
 
-# config
+# Configuration.
 script_dir=`dirname $0`
 top_dir=`realpath "${script_dir}/.."`
 crypto=$1
@@ -16,7 +16,7 @@ if [ x"$crypto" = x ]; then
     exit 1
 fi
 
-echo "============== Starting memcheck for ${crypto} with source root: '${top_dir}'"
+echo "============== Starting memcheck for ${crypto} using source root '${top_dir}'"
 rm -f /tmp/*.log
 make distclean
 ${top_dir}/autogen.sh --enable-development --with-default-crypto=${crypto} "$@"

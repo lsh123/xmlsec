@@ -32,7 +32,7 @@ CMAKE_XMLSEC_CONFIG=Release
 CMAKE_XMLSEC_SHARED_LIBS=ON
 
 function build_libxml2 {
-  # check if already built
+  # Check whether the component is already built.
   full_name="libxml2-v${libxml2_version}"
   full_url="https://gitlab.gnome.org/GNOME/libxml2/-/archive/v${libxml2_version}/${full_name}.tar.gz"
 
@@ -44,7 +44,7 @@ function build_libxml2 {
     echo "Either \"${work_dir}\\${full_name}\" or \"${libxml2_output_dir}\" is missing; rebuilding ${full_name}."
   fi
 
-  # build it!
+  # Build it.
   cd "${work_dir}"
   rm -rf "${work_dir}\\${full_name}" "${libxml2_output_dir}"
 
@@ -90,7 +90,7 @@ function build_libxml2 {
 }
 
 function build_libxslt {
-  # check if already built
+  # Check whether the component is already built.
   full_name="libxslt-v${libxslt_version}"
   full_url="https://gitlab.gnome.org/GNOME/libxslt/-/archive/v${libxslt_version}/${full_name}.tar.gz"
 
@@ -102,7 +102,7 @@ function build_libxslt {
     echo "Either \"${work_dir}\\${full_name}\" or \"${libxslt_output_dir}\" is missing; rebuilding ${full_name}."
   fi
 
-  # build it!
+  # Build it.
   cd "${work_dir}"
   rm -rf "${work_dir}\\${full_name}" "${libxslt_output_dir}"
 
@@ -147,7 +147,7 @@ function build_libxslt {
 }
 
 function build_openssl {
-  # check if already built
+  # Check whether the component is already built.
   full_name="openssl-${openssl_version}"
   full_url="https://github.com/openssl/openssl/releases/download/openssl-${openssl_version}/${full_name}.tar.gz"
 
@@ -159,7 +159,7 @@ function build_openssl {
     echo "Either \"${work_dir}\\${full_name}\" or \"${openssl_output_dir}\" is missing; rebuilding ${full_name}."
   fi
 
-  # build it!
+  # Build it.
   cd "${work_dir}"
   rm -rf "${work_dir}\\${full_name}" "${openssl_output_dir}"
 
@@ -200,7 +200,7 @@ function build_openssl {
 }
 
 function build_xmlsec {
-  # check if already built
+  # Check whether the component is already built.
   xmlsec_version_without_rc=`echo "${xmlsec_version}" | sed 's/-rc.*//g'`
   full_name="xmlsec1-${xmlsec_version}"
   full_name_without_rc="xmlsec1-${xmlsec_version_without_rc}"
@@ -214,7 +214,7 @@ function build_xmlsec {
     echo "Either \"${work_dir}\\${full_name_without_rc}\" or \"${xmlsec_output_dir}\" is missing; rebuilding ${full_name}."
   fi
 
-  # build it!
+  # Build it.
   cd "${work_dir}"
   rm -rf "${work_dir}\\${full_name_without_rc}" "${xmlsec_output_dir}"
 

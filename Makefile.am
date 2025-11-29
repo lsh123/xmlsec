@@ -141,9 +141,9 @@ check-crypto-%: $(TEST_APP)
 
 check-info:
 	@echo "---------------------------- ATTENTION -----------------------------------"
-	@echo "--- Some of the tests use resources located on external HTTP servers.  ---"
-	@echo "--- If you have no Internet connection or the external resource is not ---"
-	@echo "--- responding then the test will fail.                                ---"
+	@echo "--- Some tests use resources hosted on external HTTP servers.        ---"
+	@echo "--- If you lack an Internet connection or an external resource is    ---"
+	@echo "--- unavailable, the test will fail.                                ---"
 	@echo "---------------------------- ATTENTION -----------------------------------"
 
 check-keys: $(TEST_APP)

@@ -836,9 +836,12 @@ xmlSecGnuTLSSignatureGetDerHalfSize(gnutls_sign_algorithm_t algo, xmlSecSize key
 }
 
 static int
-xmlSecGnuTLSSignatureVerify(xmlSecTransformPtr transform,
-                        const xmlSecByte* data, xmlSecSize dataSize,
-                        xmlSecTransformCtxPtr transformCtx) {
+xmlSecGnuTLSSignatureVerify(
+    xmlSecTransformPtr transform,
+    const xmlSecByte* data,
+    xmlSecSize dataSize,
+    xmlSecTransformCtxPtr transformCtx
+) {
     xmlSecGnuTLSSignatureCtxPtr ctx;
     gnutls_datum_t hash, signature;
     gnutls_pubkey_t pubkey;
@@ -886,8 +889,11 @@ xmlSecGnuTLSSignatureVerify(xmlSecTransformPtr transform,
     signature.data = (xmlSecByte*)data;
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(dataSize, signature.size, return(-1), xmlSecTransformGetName(transform));
 
-    /* conver if neeeded and verify */
-    if(signHalfSize > 0) {
+
+    /* however some implementations (e.g. Java) just put ASN1 structure in the signature
+     * and in this case we ALREADY have ASN1
+     * https://github.com/lsh123/xmlsec/issues/995 */
+    if((signHalfSize > 0) && ((transformCtx->flags & XMLSEC_TRANSFORMCTX_FLAGS_SUPPORT_ASN1_SIGNATURE_VALUES) == 0)) {
         gnutls_datum_t der_signature = { NULL, 0 };
 
         ret = xmlSecGnuTLSToDer(&signature, &der_signature, signHalfSize);
@@ -923,7 +929,12 @@ xmlSecGnuTLSSignatureVerify(xmlSecTransformPtr transform,
 }
 
 static int
-xmlSecGnuTLSSignatureSign(xmlSecTransformPtr transform, xmlSecGnuTLSSignatureCtxPtr ctx, xmlSecBufferPtr out) {
+xmlSecGnuTLSSignatureSign(
+    xmlSecTransformPtr transform,
+    xmlSecGnuTLSSignatureCtxPtr ctx,
+    xmlSecBufferPtr out,
+    xmlSecTransformCtxPtr transformCtx
+) {
     gnutls_datum_t hash, signature = { NULL, 0 };
     gnutls_privkey_t privkey;
     xmlSecSize keySize, signHalfSize = 0;
@@ -935,6 +946,7 @@ xmlSecGnuTLSSignatureSign(xmlSecTransformPtr transform, xmlSecGnuTLSSignatureCtx
     xmlSecAssert2(ctx->keyData != NULL, -1);
     xmlSecAssert2(ctx->getPrivKey != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
 
     /* get key */
     privkey = ctx->getPrivKey(ctx->keyData);
@@ -966,8 +978,10 @@ xmlSecGnuTLSSignatureSign(xmlSecTransformPtr transform, xmlSecGnuTLSSignatureCtx
         return(-1);
     }
 
-    /* conver if neeeded */
-    if(signHalfSize > 0) {
+    /* however some implementations (e.g. Java) just put ASN1 structure in the signature
+     * and in this case we ALREADY have ASN1
+     * https://github.com/lsh123/xmlsec/issues/995 */
+    if((signHalfSize > 0) && ((transformCtx->flags & XMLSEC_TRANSFORMCTX_FLAGS_SUPPORT_ASN1_SIGNATURE_VALUES) == 0)) {
         gnutls_datum_t xmldsig_signature = { NULL, 0 };
 
         ret = xmlSecGnuTLSFromDer(&signature, &xmldsig_signature, signHalfSize);
@@ -1046,7 +1060,7 @@ xmlSecGnuTLSSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTrans
     if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
         xmlSecAssert2(outSize == 0, -1);
         if(transform->operation == xmlSecTransformOperationSign) {
-            ret = xmlSecGnuTLSSignatureSign(transform, ctx, out);
+            ret = xmlSecGnuTLSSignatureSign(transform, ctx, out, transformCtx);
             if(ret < 0) {
                 xmlSecInternalError("xmlSecGnuTLSSignatureSign", xmlSecTransformGetName(transform));
                 return(-1);

@@ -1844,6 +1844,38 @@ xmlSecOpenSSLTransformDsaSha256GetKlass(void) {
 #ifndef XMLSEC_NO_EC
 
 static int
+xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL_TryASN1(const xmlSecByte * data, xmlSecSize dataSize, unsigned char ** out, int * outLen)
+{
+    ECDSA_SIG* sig = NULL;
+    int dataLen;
+    int ret;
+
+    xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(dataSize > 0, -1);
+    xmlSecAssert2(out != NULL, -1);
+    xmlSecAssert2((*out) == NULL, -1);
+    xmlSecAssert2(outLen != NULL, -1);
+
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(dataSize, dataLen, return(-1), NULL);
+
+    sig = d2i_ECDSA_SIG(NULL, (const unsigned char **)&data, dataLen);
+    if (sig == NULL) {
+        return(-1);
+    }
+
+    ret = i2d_ECDSA_SIG(sig, out); /* ret is size of signature on success */
+    if (ret < 0) {
+        ECDSA_SIG_free(sig);
+        return(-1);
+    }
+    ECDSA_SIG_free(sig);
+
+    /* success */
+    (*outLen) = ret;
+    return(0);
+}
+
+static int
 xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL(xmlSecSize keySizeBits, const xmlSecByte * data, xmlSecSize dataSize,
     unsigned char ** out, int * outLen
 ) {
@@ -1874,6 +1906,12 @@ xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL(xmlSecSize keySizeBits, const xml
          * https://github.com/lsh123/xmlsec/issues/228 */
          signHalfLen = signLen / 2;
     } else if((signLen > 2 * signHalfLen) && (signLen % 2 == 0)) {
+        /* however some implementations (e.g. Java) just put ASN1 structure in the signature
+         * https://github.com/lsh123/xmlsec/issues/995 */
+        ret = xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL_TryASN1(data, dataSize, out, outLen);
+        if(ret == 0) {
+            return(0);
+        }
         /* however some implementations (e.g. Java) add leading zeros:
          * https://github.com/lsh123/xmlsec/issues/941 */
          signHalfLen = signLen / 2;

@@ -101,12 +101,14 @@ static int      xmlSecOpenSSLEvpSignatureDsa_OpenSSL2XmlDSig    (const xmlSecTra
 #endif /* XMLSEC_NO_DSA */
 
 #ifndef XMLSEC_NO_EC
-static int      xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL  (xmlSecSize keySizeBits,
+static int      xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL  (xmlSecTransformCtxPtr transformCtx,
+                                                                 xmlSecSize keySizeBits,
                                                                  const xmlSecByte * data,
                                                                  xmlSecSize dataSize,
                                                                  unsigned char ** out,
                                                                  int * outLen);
-static int      xmlSecOpenSSLEvpSignatureEcdsa_OpenSSL2XmlDSig  (xmlSecSize keySizeBits,
+static int      xmlSecOpenSSLEvpSignatureEcdsa_OpenSSL2XmlDSig  (xmlSecTransformCtxPtr transformCtx,
+                                                                 xmlSecSize keySizeBits,
                                                                  xmlSecBufferPtr data);
 #endif /* XMLSEC_NO_EC */
 
@@ -1046,7 +1048,7 @@ xmlSecOpenSSLEvpSignatureVerify(xmlSecTransformPtr transform,
     case xmlSecOpenSSLEvpSignatureMode_Ecdsa:
 #ifndef XMLSEC_NO_EC
         /* convert XMLDSig data to the format expected by OpenSSL */
-        ret =  xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL(ctx->keySizeBits, data, dataSize, &fixedData, &fixedDataLen);
+        ret =  xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL(transformCtx, ctx->keySizeBits, data, dataSize, &fixedData, &fixedDataLen);
         if((ret < 0) || (fixedData == NULL) || (fixedDataLen <= 0)) {
             xmlSecInternalError("xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL", xmlSecTransformGetName(transform));
             goto done;
@@ -1090,7 +1092,7 @@ done:
 }
 
 static int
-xmlSecOpenSSLEvpSignatureSign(xmlSecTransformPtr transform, xmlSecOpenSSLEvpSignatureCtxPtr ctx, xmlSecBufferPtr out) {
+xmlSecOpenSSLEvpSignatureSign(xmlSecTransformPtr transform, xmlSecTransformCtxPtr transformCtx, xmlSecOpenSSLEvpSignatureCtxPtr ctx, xmlSecBufferPtr out) {
     xmlSecByte dgst[EVP_MAX_MD_SIZE];
     unsigned int dgstSize = sizeof(dgst);
     EVP_PKEY_CTX *pKeyCtx = NULL;
@@ -1100,6 +1102,7 @@ xmlSecOpenSSLEvpSignatureSign(xmlSecTransformPtr transform, xmlSecOpenSSLEvpSign
     int res = -1;
 
     xmlSecAssert2(transform != NULL, -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->pKey != NULL, -1);
     xmlSecAssert2(ctx->keySizeBits > 0, -1);
@@ -1174,7 +1177,7 @@ xmlSecOpenSSLEvpSignatureSign(xmlSecTransformPtr transform, xmlSecOpenSSLEvpSign
     case xmlSecOpenSSLEvpSignatureMode_Ecdsa:
 #ifndef XMLSEC_NO_EC
         /* convert XMLDSig data to the format expected by OpenSSL */
-        ret =  xmlSecOpenSSLEvpSignatureEcdsa_OpenSSL2XmlDSig(ctx->keySizeBits, out);
+        ret =  xmlSecOpenSSLEvpSignatureEcdsa_OpenSSL2XmlDSig(transformCtx, ctx->keySizeBits, out);
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLEvpSignatureEcdsa_OpenSSL2XmlDSig", xmlSecTransformGetName(transform));
             goto done;
@@ -1258,7 +1261,7 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
         /* sign */
         xmlSecAssert2(outSize == 0, -1);
         if(transform->operation == xmlSecTransformOperationSign) {
-            ret = xmlSecOpenSSLEvpSignatureSign(transform, ctx, out);
+            ret = xmlSecOpenSSLEvpSignatureSign(transform, transformCtx, ctx, out);
             if(ret < 0) {
                 xmlSecInternalError("xmlSecOpenSSLEvpSignatureSign", xmlSecTransformGetName(transform));
                 return(-1);
@@ -1843,8 +1846,10 @@ xmlSecOpenSSLTransformDsaSha256GetKlass(void) {
  ************************************************************************/
 #ifndef XMLSEC_NO_EC
 
+/* however some implementations (e.g. Java) just put ASN1 structure in the signature
+ * https://github.com/lsh123/xmlsec/issues/995 */
 static int
-xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL_TryASN1(const xmlSecByte * data, xmlSecSize dataSize, unsigned char ** out, int * outLen)
+xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL_WithASN1(const xmlSecByte * data, xmlSecSize dataSize, unsigned char ** out, int * outLen)
 {
     ECDSA_SIG* sig = NULL;
     int dataLen;
@@ -1860,24 +1865,31 @@ xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL_TryASN1(const xmlSecByte * data, 
 
     sig = d2i_ECDSA_SIG(NULL, (const unsigned char **)&data, dataLen);
     if (sig == NULL) {
+        xmlSecOpenSSLError("d2i_ECDSA_SIG()", NULL);
         return(-1);
     }
 
     ret = i2d_ECDSA_SIG(sig, out); /* ret is size of signature on success */
     if (ret < 0) {
+        xmlSecOpenSSLError("i2d_ECDSA_SIG()", NULL);
         ECDSA_SIG_free(sig);
         return(-1);
     }
-    ECDSA_SIG_free(sig);
 
     /* success */
     (*outLen) = ret;
+    ECDSA_SIG_free(sig);
     return(0);
 }
 
 static int
-xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL(xmlSecSize keySizeBits, const xmlSecByte * data, xmlSecSize dataSize,
-    unsigned char ** out, int * outLen
+xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL(
+    xmlSecTransformCtxPtr transformCtx,
+    xmlSecSize keySizeBits,
+    const xmlSecByte * data,
+    xmlSecSize dataSize,
+    unsigned char ** out,
+    int * outLen
 ) {
     ECDSA_SIG* sig = NULL;
     BIGNUM* rr = NULL;
@@ -1886,12 +1898,23 @@ xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL(xmlSecSize keySizeBits, const xml
     int res = -1;
     int ret;
 
-    xmlSecAssert2(keySizeBits > 0, 0);
-    xmlSecAssert2(data != NULL, 0);
-    xmlSecAssert2(dataSize > 0, 0);
-    xmlSecAssert2(out != NULL, 0);
-    xmlSecAssert2((*out) == NULL, 0);
-    xmlSecAssert2(outLen != NULL, 0);
+    xmlSecAssert2(transformCtx != NULL, -1);
+    xmlSecAssert2(keySizeBits > 0, -1);
+    xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(dataSize > 0, -1);
+    xmlSecAssert2(out != NULL, -1);
+    xmlSecAssert2((*out) == NULL, -1);
+    xmlSecAssert2(outLen != NULL, -1);
+
+    /* if we need to support ASN1 signatures then simply re-parse it in the output */
+    if((transformCtx->flags & XMLSEC_TRANSFORMCTX_FLAGS_SUPPORT_ASN1_SIGNATURE_VALUES) != 0) {
+        ret = xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL_WithASN1(data, dataSize, out, outLen);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL_WithASN1", NULL);
+            return(-1);
+        }
+        return(0);
+    }
 
     /* get half of signature size in bytes */
     XMLSEC_SAFE_CAST_SIZE_TO_INT((keySizeBits + 7) / 8, signHalfLen, goto done, NULL);
@@ -1906,12 +1929,6 @@ xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL(xmlSecSize keySizeBits, const xml
          * https://github.com/lsh123/xmlsec/issues/228 */
          signHalfLen = signLen / 2;
     } else if((signLen > 2 * signHalfLen) && (signLen % 2 == 0)) {
-        /* however some implementations (e.g. Java) just put ASN1 structure in the signature
-         * https://github.com/lsh123/xmlsec/issues/995 */
-        ret = xmlSecOpenSSLEvpSignatureEcdsa_XmlDSig2OpenSSL_TryASN1(data, dataSize, out, outLen);
-        if(ret == 0) {
-            return(0);
-        }
         /* however some implementations (e.g. Java) add leading zeros:
          * https://github.com/lsh123/xmlsec/issues/941 */
          signHalfLen = signLen / 2;
@@ -1972,7 +1989,7 @@ done:
 }
 
 static int
-xmlSecOpenSSLEvpSignatureEcdsa_OpenSSL2XmlDSig(xmlSecSize keySizeBits, xmlSecBufferPtr data) {
+xmlSecOpenSSLEvpSignatureEcdsa_OpenSSL2XmlDSig(xmlSecTransformCtxPtr transformCtx, xmlSecSize keySizeBits, xmlSecBufferPtr data) {
     xmlSecByte * buf;
     xmlSecSize bufSize;
     int bufLen, signHalfLen, rLen, sLen;
@@ -1982,13 +1999,20 @@ xmlSecOpenSSLEvpSignatureEcdsa_OpenSSL2XmlDSig(xmlSecSize keySizeBits, xmlSecBuf
     int ret;
     int res = -1;
 
-    xmlSecAssert2(keySizeBits > 0, 0);
-    xmlSecAssert2(data != NULL, 0);
+    xmlSecAssert2(transformCtx != NULL, -1);
+    xmlSecAssert2(keySizeBits > 0, -1);
+    xmlSecAssert2(data != NULL, -1);
 
+    /* if we need to generate ASN1 signatures then simply do nothing since OpenSSL already did it for us */
+    if((transformCtx->flags & XMLSEC_TRANSFORMCTX_FLAGS_SUPPORT_ASN1_SIGNATURE_VALUES) != 0) {
+        return(0);
+    }
+
+    /* Otherwise, re-parse the signature */
     buf = xmlSecBufferGetData(data);
     bufSize = xmlSecBufferGetSize(data);
-    xmlSecAssert2(buf != NULL, 0);
-    xmlSecAssert2(bufSize > 0, 0);
+    xmlSecAssert2(buf != NULL, -1);
+    xmlSecAssert2(bufSize > 0, -1);
 
     /* get half of signature size in bytes */
     XMLSEC_SAFE_CAST_SIZE_TO_INT((keySizeBits + 7) / 8, signHalfLen, goto done, NULL);
@@ -2015,8 +2039,7 @@ xmlSecOpenSSLEvpSignatureEcdsa_OpenSSL2XmlDSig(xmlSecSize keySizeBits, xmlSecBuf
     }
     sLen = BN_num_bytes(ss);
     if ((sLen <= 0) || (sLen > signHalfLen)) {
-        xmlSecOpenSSLError3("BN_num_bytes(ss)", NULL,
-            "signHalfLen=%d; sLen=%d", signHalfLen, sLen);
+        xmlSecOpenSSLError3("BN_num_bytes(ss)", NULL, "signHalfLen=%d; sLen=%d", signHalfLen, sLen);
         goto done;
     }
 
@@ -2024,8 +2047,7 @@ xmlSecOpenSSLEvpSignatureEcdsa_OpenSSL2XmlDSig(xmlSecSize keySizeBits, xmlSecBuf
     XMLSEC_SAFE_CAST_INT_TO_SIZE(2 * signHalfLen, bufSize, goto done, NULL);
     ret = xmlSecBufferSetSize(data, bufSize);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetSize", NULL,
-            "size=" XMLSEC_SIZE_FMT, bufSize);
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=" XMLSEC_SIZE_FMT, bufSize);
         goto done;
     }
     buf = xmlSecBufferGetData(data);

@@ -256,7 +256,7 @@
   </ul>
 
   <h4>
-<a name="section_3_3"></a>3.3.<span style="font-weight: bold;"> </span>I am trying to sign an XML document and
+  <a name="section_3_3"></a>3.3.<span style="font-weight: bold;"> </span>I am trying to sign an XML document and
     I have a warning about "empty nodes set". Should I worry about this?</h4>
   <p>Most likely <b>yes</b>. When it's not an error from specification point of view, I can hardly imagine
     a real world case that requires signing an empty nodes set (i.e. signing an empty string). Most likely,
@@ -264,7 +264,7 @@
     (see <a href="faq.html#section_3_2">section 3.2</a> about ID attributes).</p>
 
   <h4>
-<a name="section_3_4"></a>3.4. I am trying to sign/validate a document but xmlXPtrEval function can't
+  <a name="section_3_4"></a>3.4. I am trying to sign/validate a document but xmlXPtrEval function can't
     evaluate "xpointer(id('XXXXXXX'))" expression. What's wrong?</h4>
   <p>First of all, read <a href="#section_3_2">section 3.2</a> about ID attributes. If you have tried to declare
     the required ID attribute and you still have problems then it is likely working with the Visa 3D protocol.
@@ -303,7 +303,7 @@
         for the <a href="xmlsec-man.html">xmlsec command line utility</a>, or by setting the <code>keyInfoCtx-&gt;enabledKeyData</code>
         parameter in your application.
         For example, <code>--enabled-key-data rsa,key-value,x509</code> will populate an <code>&lt;RSAKeyValue&gt;</code> element (and keep
-        <code>&lt;X509Data&gt;</code> enabled) when the template contains matching <code>&lt;KeyValue/&gt;</code> and 
+        <code>&lt;X509Data&gt;</code> enabled) when the template contains matching <code>&lt;KeyValue/&gt;</code> and
         <code>&lt;X509Data/&gt;</code> placeholders.
         <b>THIS IS NOT SECURE AND NOT RECOMMENDED.</b>
       </li>
@@ -370,6 +370,24 @@
 <a name="section_3_8"></a>3.8. I really like the XMLSec library but it does not have cipher or transform that I need. Can you write code for me?</h4>
   <p>The XMLSec library has a very modular structure and it is easy to add any cipher or other transform. You can either
     write intergration yourself or contact me to discuss possible options.
+  </p>
+
+  <h4>
+  <a name="section_3_9"></a>3.9. I am trying to validate a signature created by another software but validation fails. What's wrong?</h4>
+  <p>There might be many reasons for the failures and most likely cause is the incorrect implementation of the XMLDSig specification
+    by the other software package. XMLSec library tries to handle as many issues as possible automatically (e.g. missing or added leading
+    zeros in the signature value in many Java implementations). Another known problem is using ASN1 encoding for ECDSA signatures and
+    you can try <code>--enable-asn1-signatures-hack</code> option for <a href="xmlsec-man.html">xmlsec command line utility</a> or
+    set <code>dsigCtx->flags |= XMLSEC_DSIG_FLAGS_USE_ASN1_SIGNATURE_VALUES;</code> flag on the XML DSig context (this is a hack and
+    can cause interoperability problems). If nothing works, then you will need to reach out to the authors of another software packet
+    and ask them to help you debug the issue. Use <code>--store-references</code> and <code>--store-signatures</code> options for
+    the <a href="xmlsec-man.html">xmlsec command line utility</a> to get pre-digest and pre-signatures buffers from XMLSec and compare
+    those against the similar buffers from the another software as a first step in debugging process.
+  </p>
+
+  <h4>
+  <a name="section_3_10"></a>3.10. I am trying to validate a signature created by XMLSec with another software but validation fails. What's wrong?</h4>
+  <p><a href="#section_3_9">Same advice</a> as above applies.
   </p>
 
 </div>

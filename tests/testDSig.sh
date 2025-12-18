@@ -1160,6 +1160,27 @@ execDSigTest $res_success \
     "$priv_key_option:mykey $topfolder/keys/rsakey.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format  --untrusted-$cert_format $topfolder/keys/rsacert.$cert_format --enabled-key-data x509"
 
+if [ "z$xmlsec_feature_asn1_signatures" = "zyes" ] ; then
+    execDSigTest $res_success \
+        "" \
+        "aleksey-xmldsig-01/enveloped-sha256-ecdsa-sha256-with-asn1" \
+        "sha256 ecdsa-sha256" \
+        "ec" \
+        "--enable-asn1-signatures-hack $pub_key_option:mykey $topfolder/keys/ecdsa-secp256r1-pubkey.$pub_key_format" \
+        "--enable-asn1-signatures-hack $priv_key_option:mykey $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123" \
+        "--enable-asn1-signatures-hack $pub_key_option:mykey $topfolder/keys/ecdsa-secp256r1-pubkey.$pub_key_format"
+
+    execDSigTest $res_success \
+        "" \
+        "aleksey-xmldsig-01/enveloping-sha512-ecdsa-sha512-with-asn1" \
+        "sha512 ecdsa-sha512" \
+        "ec x509" \
+        "--enable-asn1-signatures-hack --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+        "--enable-asn1-signatures-hack $priv_key_option:mykey $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
+        "--enable-asn1-signatures-hack --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+
+fi
+
 
 ##########################################################################
 ##########################################################################

@@ -294,6 +294,15 @@ typedef int             (*xmlSecTransformCtxPreExecuteCallback)         (xmlSecT
 #define XMLSEC_TRANSFORMCTX_FLAGS_USE_VISA3D_HACK               0x00000001
 
 /**
+ * XMLSEC_TRANSFORMCTX_FLAGS_SUPPORT_ASN1_SIGNATURE_VALUES:
+ *
+ * If this flag is set then ASN1 encoded ECDSA signature values will be
+ * used (see https://github.com/lsh123/xmlsec/issues/995).
+ */
+#define XMLSEC_TRANSFORMCTX_FLAGS_SUPPORT_ASN1_SIGNATURE_VALUES 0x00000002
+
+
+/**
  * xmlSecTransformCtx:
  * @userData:           the pointer to user data (xmlsec and xmlsec-crypto never
  *                      touch this).

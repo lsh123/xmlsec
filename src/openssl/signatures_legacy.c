@@ -50,8 +50,10 @@ typedef struct _xmlSecOpenSSLSignatureLegacyCtx    xmlSecOpenSSLSignatureLegacyC
 
 
 static int  xmlSecOpenSSLSignatureLegacyEcdsaSign            (xmlSecOpenSSLSignatureLegacyCtxPtr ctx,
+                                                              xmlSecTransformCtxPtr transformCtx,
                                                               xmlSecBufferPtr out);
 static int  xmlSecOpenSSLSignatureLegacyEcdsaVerify          (xmlSecOpenSSLSignatureLegacyCtxPtr ctx,
+                                                              xmlSecTransformCtxPtr transformCtx,
                                                               const xmlSecByte* signData,
                                                               xmlSecSize signSize);
 
@@ -62,8 +64,10 @@ static int  xmlSecOpenSSLSignatureLegacyEcdsaVerify          (xmlSecOpenSSLSigna
  *
  *****************************************************************************/
 typedef int  (*xmlSecOpenSSLSignatureLegacySignCallback)     (xmlSecOpenSSLSignatureLegacyCtxPtr ctx,
+                                                              xmlSecTransformCtxPtr transformCtx,
                                                               xmlSecBufferPtr out);
 typedef int  (*xmlSecOpenSSLSignatureLegacyVerifyCallback)   (xmlSecOpenSSLSignatureLegacyCtxPtr ctx,
+                                                              xmlSecTransformCtxPtr transformCtx,
                                                               const xmlSecByte* signData,
                                                               xmlSecSize signSize);
 
@@ -394,10 +398,9 @@ xmlSecOpenSSLSignatureLegacyVerify(xmlSecTransformPtr transform,
     xmlSecAssert2(ctx->verifyCallback != NULL, -1);
     xmlSecAssert2(ctx->dgstSize > 0, -1);
 
-    ret = (ctx->verifyCallback)(ctx, data, dataSize);
+    ret = (ctx->verifyCallback)(ctx, transformCtx, data, dataSize);
     if(ret < 0) {
-        xmlSecInternalError("verifyCallback",
-                            xmlSecTransformGetName(transform));
+        xmlSecInternalError("verifyCallback", xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -405,9 +408,7 @@ xmlSecOpenSSLSignatureLegacyVerify(xmlSecTransformPtr transform,
     if(ret == 1) {
         transform->status = xmlSecTransformStatusOk;
     } else {
-        xmlSecOtherError(XMLSEC_ERRORS_R_DATA_NOT_MATCH,
-                         xmlSecTransformGetName(transform),
-                         "ctx->verifyCallback: signature verification failed");
+        xmlSecOtherError(XMLSEC_ERRORS_R_DATA_NOT_MATCH, xmlSecTransformGetName(transform), "ctx->verifyCallback: signature verification failed");
         transform->status = xmlSecTransformStatusFail;
     }
 
@@ -454,15 +455,13 @@ xmlSecOpenSSLSignatureLegacyExecute(xmlSecTransformPtr transform, int last, xmlS
 
         ret = EVP_DigestUpdate(ctx->digestCtx, xmlSecBufferGetData(in), inSize);
         if(ret != 1) {
-            xmlSecOpenSSLError("EVP_DigestUpdate",
-                               xmlSecTransformGetName(transform));
+            xmlSecOpenSSLError("EVP_DigestUpdate", xmlSecTransformGetName(transform));
             return(-1);
         }
 
         ret = xmlSecBufferRemoveHead(in, inSize);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecBufferRemoveHead",
-                                xmlSecTransformGetName(transform));
+            xmlSecInternalError("xmlSecBufferRemoveHead", xmlSecTransformGetName(transform));
             return(-1);
         }
     }
@@ -472,18 +471,16 @@ xmlSecOpenSSLSignatureLegacyExecute(xmlSecTransformPtr transform, int last, xmlS
 
         ret = EVP_DigestFinal(ctx->digestCtx, ctx->dgst, &ctx->dgstSize);
         if(ret != 1) {
-            xmlSecOpenSSLError("EVP_DigestFinal",
-                               xmlSecTransformGetName(transform));
+            xmlSecOpenSSLError("EVP_DigestFinal", xmlSecTransformGetName(transform));
             return(-1);
         }
         xmlSecAssert2(ctx->dgstSize > 0, -1);
 
         /* sign right away, verify will wait till separate call */
         if(transform->operation == xmlSecTransformOperationSign) {
-            ret = (ctx->signCallback)(ctx, out);
+            ret = (ctx->signCallback)(ctx, transformCtx, out);
             if(ret < 0) {
-                xmlSecInternalError("signCallback",
-                                    xmlSecTransformGetName(transform));
+                xmlSecInternalError("signCallback", xmlSecTransformGetName(transform));
                 return(-1);
             }
         }
@@ -615,8 +612,12 @@ done:
 }
 
 static int
-xmlSecOpenSSLSignatureLegacyEcdsaVerifyImpl(EVP_PKEY* pKey, ECDSA_SIG* sig,
-                                     const xmlSecByte* buf, xmlSecSize bufSize) {
+xmlSecOpenSSLSignatureLegacyEcdsaVerifyImpl(
+    EVP_PKEY* pKey,
+    ECDSA_SIG* sig,
+    const xmlSecByte* buf,
+    xmlSecSize bufSize
+) {
     EC_KEY* ecKey = NULL;
     xmlSecOpenSSLSizeT bufLen;
     int ret;
@@ -655,63 +656,81 @@ done:
 }
 
 static int
-xmlSecOpenSSLSignatureLegacyEcdsaSign(xmlSecOpenSSLSignatureLegacyCtxPtr ctx, xmlSecBufferPtr out) {
-    ECDSA_SIG* sig = NULL;
+xmlSecOpenSSLSignatureLegacyEcdsa_OpenSSLToXmlDsig(
+    xmlSecOpenSSLSignatureLegacyCtxPtr ctx,
+    xmlSecTransformCtxPtr transformCtx,
+    ECDSA_SIG* sig,
+    xmlSecBufferPtr out
+) {
     const BIGNUM* rr = NULL;
     const BIGNUM* ss = NULL;
     xmlSecByte* outData = NULL;
     xmlSecSize outSize;
     xmlSecOpenSSLSizeT signHalfLen, rLen, sLen;
-    int res = -1;
     int ret;
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->pKey != NULL, -1);
-    xmlSecAssert2(ctx->dgstSize > 0, -1);
-    xmlSecAssert2(ctx->dgstSize <= sizeof(ctx->dgst), -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
+    xmlSecAssert2(sig != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
 
-    /* sign */
-    sig = xmlSecOpenSSLSignatureLegacyEcdsaSignImpl(ctx->pKey, ctx->dgst, ctx->dgstSize);
-    if(sig == NULL) {
-        xmlSecInternalError("xmlSecOpenSSLSignatureLegacyEcdsaSignImpl", NULL);
-        goto done;
+
+    /* however some implementations (e.g. Java) just put ASN1 structure in the signature
+     * https://github.com/lsh123/xmlsec/issues/995 */
+    if((transformCtx->flags & XMLSEC_TRANSFORMCTX_FLAGS_SUPPORT_ASN1_SIGNATURE_VALUES) != 0) {
+        ret = i2d_ECDSA_SIG(sig, &outData); /* ret is size of signature on success */
+        if (ret < 0) {
+            xmlSecOpenSSLError("i2d_ECDSA_SIG", NULL);
+            return(-1);
+        }
+        outSize = (xmlSecSize)ret;
+
+        ret = xmlSecBufferSetData(out, outData, outSize);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecBufferSetData", NULL);
+            OPENSSL_free(outData);
+            return(-1);
+        }
+
+        /* done */
+        OPENSSL_free(outData);
+        return(0);
     }
 
     /* calculate signature size */
     signHalfLen = xmlSecOpenSSLSignatureLegacyEcdsaSignatureHalfLen(ctx->pKey);
     if(signHalfLen <= 0) {
         xmlSecInternalError("xmlSecOpenSSLSignatureLegacyEcdsaSignatureHalfLen", NULL);
-        goto done;
+        return(-1);
     }
 
     /* get signature components */
     ECDSA_SIG_get0(sig, &rr, &ss);
     if((rr == NULL) || (ss == NULL)) {
         xmlSecOpenSSLError("ECDSA_SIG_get0", NULL);
-        goto done;
+        return(-1);
     }
 
     /* check sizes */
     rLen = BN_num_bytes(rr);
     if ((rLen <= 0) || (rLen > signHalfLen)) {
         xmlSecInvalidDataError("Signature rr length is zero or greater than expected based on key size", NULL);
-        goto done;
+        return(-1);
     }
 
     sLen = BN_num_bytes(ss);
     if ((sLen <= 0) || (sLen > signHalfLen)) {
         xmlSecInvalidDataError("Signature ss length is zero or greater than expected based on key size", NULL);
-        goto done;
+        return(-1);
     }
 
     /* allocate buffer */
-    XMLSEC_OPENSSL_SAFE_CAST_SIZE_T_TO_SIZE(2 * signHalfLen, outSize, goto done, NULL);
+    XMLSEC_OPENSSL_SAFE_CAST_SIZE_T_TO_SIZE(2 * signHalfLen, outSize, return(-1), NULL);
     ret = xmlSecBufferSetSize(out, outSize);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetSize", NULL,
-                             "size=" XMLSEC_SIZE_FMT, outSize);
-        goto done;
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=" XMLSEC_SIZE_FMT, outSize);
+        return(-1);
     }
     outData = xmlSecBufferGetData(out);
     xmlSecAssert2(outData != NULL, -1);
@@ -723,44 +742,88 @@ xmlSecOpenSSLSignatureLegacyEcdsaSign(xmlSecOpenSSLSignatureLegacyCtxPtr ctx, xm
     (void)BN_bn2bin(ss, outData + 2 * signHalfLen - sLen);
 
     /* success */
-    res = 0;
-
-done:
-    /* cleanup */
-    if(sig != NULL) {
-        ECDSA_SIG_free(sig);
-    }
-
-    /* done */
-    return(res);
+    return(0);
 }
 
+
 static int
-xmlSecOpenSSLSignatureLegacyEcdsaVerify(xmlSecOpenSSLSignatureLegacyCtxPtr ctx,
-                    const xmlSecByte* signData, xmlSecSize signSize) {
+xmlSecOpenSSLSignatureLegacyEcdsaSign(
+    xmlSecOpenSSLSignatureLegacyCtxPtr ctx,
+    xmlSecTransformCtxPtr transformCtx,
+    xmlSecBufferPtr out
+) {
     ECDSA_SIG* sig = NULL;
-    BIGNUM* rr = NULL;
-    BIGNUM* ss = NULL;
-    xmlSecOpenSSLSizeT signLen, signHalfLen;
-    int res = -1;
     int ret;
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->pKey != NULL, -1);
     xmlSecAssert2(ctx->dgstSize > 0, -1);
     xmlSecAssert2(ctx->dgstSize <= sizeof(ctx->dgst), -1);
-    xmlSecAssert2(signData != NULL, -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
+    xmlSecAssert2(out != NULL, -1);
+
+    /* sign */
+    sig = xmlSecOpenSSLSignatureLegacyEcdsaSignImpl(ctx->pKey, ctx->dgst, ctx->dgstSize);
+    if(sig == NULL) {
+        xmlSecInternalError("xmlSecOpenSSLSignatureLegacyEcdsaSignImpl", NULL);
+        return(-1);
+    }
+
+    /* convert to XMLDSig format */
+    ret = xmlSecOpenSSLSignatureLegacyEcdsa_OpenSSLToXmlDsig(ctx, transformCtx, sig, out);
+    if(ret < 0) {
+         xmlSecInternalError("xmlSecOpenSSLSignatureLegacyEcdsaSignImpl", NULL);
+         ECDSA_SIG_free(sig);
+        return(-1);
+    }
+    ECDSA_SIG_free(sig);
+
+    /* done */
+    return(0);
+}
+
+static ECDSA_SIG*
+xmlSecOpenSSLSignatureLegacyEcdsa_XmlDSigToOpenSSL(
+    xmlSecOpenSSLSignatureLegacyCtxPtr ctx,
+    xmlSecTransformCtxPtr transformCtx,
+    const xmlSecByte* signData,
+    xmlSecSize signSize
+) {
+    ECDSA_SIG* sig = NULL;
+    BIGNUM* rr = NULL;
+    BIGNUM* ss = NULL;
+    xmlSecOpenSSLSizeT signLen, signHalfLen;
+    int ret;
+
+    xmlSecAssert2(ctx != NULL, NULL);
+    xmlSecAssert2(ctx->pKey != NULL, NULL);
+    xmlSecAssert2(transformCtx != NULL, NULL);
+    xmlSecAssert2(signData != NULL, NULL);
+
+    /* however some implementations (e.g. Java) just put ASN1 structure in the signature
+     * https://github.com/lsh123/xmlsec/issues/995 */
+    if((transformCtx->flags & XMLSEC_TRANSFORMCTX_FLAGS_SUPPORT_ASN1_SIGNATURE_VALUES) != 0) {
+        int dataLen;
+
+        XMLSEC_SAFE_CAST_SIZE_TO_INT(signSize, dataLen, return(NULL), NULL);
+        sig = d2i_ECDSA_SIG(NULL, (const unsigned char **)&signData, dataLen);
+        if (sig == NULL) {
+            xmlSecOpenSSLError("d2i_ECDSA_SIG()", NULL);
+            return(NULL);
+        }
+        return(sig);
+    }
 
     /* calculate signature size */
     signHalfLen = xmlSecOpenSSLSignatureLegacyEcdsaSignatureHalfLen(ctx->pKey);
     if(signHalfLen <= 0) {
         xmlSecInternalError("xmlSecOpenSSLSignatureLegacyEcdsaSignatureHalfSize", NULL);
-        goto done;
+        return(NULL);
     }
 
     /* check size: we expect the r and s to be the same size and match the size of
      * the key (RFC 6931) */
-     XMLSEC_OPENSSL_SAFE_CAST_SIZE_TO_SIZE_T(signSize, signLen, goto done, NULL);
+    XMLSEC_OPENSSL_SAFE_CAST_SIZE_TO_SIZE_T(signSize, signLen, return(NULL), NULL);
     if(signLen == 2 * signHalfLen) {
         /* good, do nothing */
     } else if((signLen < 2 * signHalfLen) && (signLen % 2 == 0)) {
@@ -773,62 +836,78 @@ xmlSecOpenSSLSignatureLegacyEcdsaVerify(xmlSecOpenSSLSignatureLegacyCtxPtr ctx,
         signHalfLen = signLen / 2;
     } else {
         xmlSecInvalidDataError("Signature length doesn't match key size", NULL);
-        goto done;
+        return(NULL);
     }
 
     /* create/read signature */
     sig = ECDSA_SIG_new();
     if (sig == NULL) {
         xmlSecOpenSSLError("DSA_SIG_new", NULL);
-        goto done;
+        return(NULL);
     }
 
     rr = BN_bin2bn(signData, signHalfLen, NULL);
     if(rr == NULL) {
         xmlSecOpenSSLError("BN_bin2bn(sig->r)", NULL);
-        goto done;
+        ECDSA_SIG_free(sig);
+        return(NULL);
     }
     ss = BN_bin2bn(signData + signHalfLen, signHalfLen, NULL);
     if(ss == NULL) {
         xmlSecOpenSSLError("BN_bin2bn(sig->s)", NULL);
-        goto done;
+        BN_clear_free(rr);
+        ECDSA_SIG_free(sig);
+        return(NULL);
     }
 
     ret = ECDSA_SIG_set0(sig, rr, ss);
     if(ret == 0) {
         xmlSecOpenSSLError("ECDSA_SIG_set0()", NULL);
-        goto done;
+        BN_clear_free(rr);
+        BN_clear_free(ss);
+        ECDSA_SIG_free(sig);
+        return(NULL);
     }
-    rr = NULL;
-    ss = NULL;
+
+    /* done */
+    return(sig);
+}
+
+static int
+xmlSecOpenSSLSignatureLegacyEcdsaVerify(
+    xmlSecOpenSSLSignatureLegacyCtxPtr ctx,
+    xmlSecTransformCtxPtr transformCtx,
+    const xmlSecByte* signData,
+    xmlSecSize signSize
+){
+    ECDSA_SIG* sig = NULL;
+    int ret;
+
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->pKey != NULL, -1);
+    xmlSecAssert2(ctx->dgstSize > 0, -1);
+    xmlSecAssert2(ctx->dgstSize <= sizeof(ctx->dgst), -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
+    xmlSecAssert2(signData != NULL, -1);
+
+    /* get signature value */
+    sig = xmlSecOpenSSLSignatureLegacyEcdsa_XmlDSigToOpenSSL(ctx, transformCtx, signData, signSize);
+    if(sig == NULL) {
+        xmlSecInternalError("xmlSecOpenSSLSignatureLegacyEcdsa_XmlDSigToOpenSSL", NULL);
+        return(-1);
+    }
 
     /* verify signature */
     ret = xmlSecOpenSSLSignatureLegacyEcdsaVerifyImpl(ctx->pKey, sig, ctx->dgst, ctx->dgstSize);
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLSignatureLegacyEcdsaVerifyImpl", NULL);
-        goto done;
+        ECDSA_SIG_free(sig);
+        return(-1);
     }
+    ECDSA_SIG_free(sig);
 
     /* return 1 for good signatures and 0 for bad */
-    if(ret > 0) {
-        res = 1;
-    } else if(ret == 0) {
-        res = 0;
-    }
-
-done:
-    /* cleanup */
-    if (sig != NULL) {
-        ECDSA_SIG_free(sig);
-    }
-    if(rr != NULL) {
-        BN_clear_free(rr);
-    }
-    if(ss != NULL) {
-        BN_clear_free(ss);
-    }
-    /* done */
-    return(res);
+    return ((ret > 0) ? 1 : 0);
 }
 
 #ifndef XMLSEC_NO_RIPEMD160

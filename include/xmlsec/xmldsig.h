@@ -112,6 +112,15 @@ typedef enum {
  */
 #define XMLSEC_DSIG_FLAGS_USE_VISA3D_HACK                       0x00000010
 
+
+/**
+ * XMLSEC_DSIG_FLAGS_USE_ASN1_SIGNATURE_VALUES:
+ *
+ * If this flag is set then ASN1 encoded ECDSA signature values will be
+ * used (see https://github.com/lsh123/xmlsec/issues/995).
+ */
+#define XMLSEC_DSIG_FLAGS_USE_ASN1_SIGNATURE_VALUES             0x00000020
+
 /**
  * xmlSecDSigCtx:
  * @userData:                   the pointer to user data (xmlsec and xmlsec-crypto libraries

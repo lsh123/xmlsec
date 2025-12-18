@@ -521,6 +521,106 @@ xmlSecMSCngSignatureFixBrokenJava(xmlSecMSCngSignatureCtxPtr ctx,
     return(0);
 }
 
+static void
+ConvertEndianInPlace(xmlSecByte* buf, xmlSecSize size) {
+    xmlSecByte* start = buf;
+    xmlSecByte* end = buf + size - 1;
+    while (start < end) {
+        xmlSecByte tmp = *end;
+        *end = *start;
+        *start = tmp;
+        start++;
+        end--;
+    }
+}
+
+static int
+xmlSecMSCngSignatureFixBrokenASN1(xmlSecMSCngSignatureCtxPtr ctx,
+    const xmlSecByte* data, xmlSecSize dataSize,
+    const xmlSecByte** out, xmlSecSize* outSize
+) {
+    xmlSecSize keySize;
+    xmlSecSize halfSize;
+    PCERT_ECC_SIGNATURE eccSignature = NULL;
+    DWORD eccSignatureLen = 0;
+    DWORD dataLen;
+    BOOL status;
+    xmlSecByte* res;
+
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->data != NULL, -1);
+    xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(out != NULL, -1);
+    xmlSecAssert2(outSize != NULL, -1);
+
+    /* only ECDSA signatures are supported for ASN1 */
+    if (ctx->keyId != xmlSecMSCngKeyDataEcId) {
+        xmlSecNotImplementedError("MSCNG only supports ASN1 signature values for ECDSA");
+        return(-1);
+    }
+
+    /* get half signature size */
+    keySize = xmlSecMSCngKeyDataGetSize(ctx->data);
+    if (keySize <= 0) {
+        xmlSecInternalError("xmlSecMSCngKeyDataGetSize", NULL);
+        return(-1);
+    }
+    halfSize = (keySize + 7) / 8;
+
+    /* parse asn1 structure */
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(dataSize, dataLen, return(-1), NULL);
+    status = CryptDecodeObjectEx(
+        X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+        X509_ECC_SIGNATURE,
+        data,
+        dataLen,
+        CRYPT_DECODE_ALLOC_FLAG,
+        NULL,
+        &eccSignature,
+        &eccSignatureLen
+    );
+    if ((status != TRUE) || (eccSignature == NULL) || (eccSignatureLen <= 0)) {
+        xmlSecMSCngNtError("CryptDecodeObjectEx", NULL, STATUS_SUCCESS);
+        return(-1);
+    }
+
+    /* check sizes */
+    if ((eccSignature->r.cbData <= 0) || (halfSize < eccSignature->r.cbData)) {
+        xmlSecInternalError3("xmlSecMSCngSignatureFixBrokenASN1", NULL,
+            "halfSize=" XMLSEC_SIZE_FMT "; eccSignature->r.cbData=" XMLSEC_SIZE_FMT, halfSize, (xmlSecSize)eccSignature->r.cbData);
+        LocalFree(eccSignature);
+        return(-1);
+    }
+    if ((eccSignature->s.cbData <= 0) || (halfSize < eccSignature->s.cbData)) {
+        xmlSecInternalError3("xmlSecMSCngSignatureFixBrokenASN1", NULL,
+            "halfSize=" XMLSEC_SIZE_FMT "; eccSignature->s.cbData=" XMLSEC_SIZE_FMT, halfSize, (xmlSecSize)eccSignature->s.cbData);
+        LocalFree(eccSignature);
+        return(-1);
+    }
+
+    /* copy r and s other */
+    res = (xmlSecByte*)xmlMalloc(2 * halfSize);
+    if (res == NULL) {
+        xmlSecMallocError(2 * halfSize, NULL);
+        LocalFree(eccSignature);
+        return(-1);
+    }
+    memset(res, 0, 2 * halfSize);
+
+    /* r and s are in little-endian order */
+    memcpy(res, eccSignature->r.pbData, eccSignature->r.cbData);
+    ConvertEndianInPlace(res, halfSize);
+
+    memcpy(res + halfSize, eccSignature->s.pbData, eccSignature->s.cbData);
+    ConvertEndianInPlace(res + halfSize, halfSize);
+
+    /* success */
+    (*out) = res;
+    (*outSize) = 2 * halfSize;
+    LocalFree(eccSignature);
+    return(0);
+}
+
 static int
 xmlSecMSCngSignatureVerify(xmlSecTransformPtr transform,
     const xmlSecByte* data, xmlSecSize dataSize,
@@ -564,6 +664,18 @@ xmlSecMSCngSignatureVerify(xmlSecTransformPtr transform,
         pssPadingInfo.pszAlgId = ctx->pszHashAlgId;
         pssPadingInfo.cbSalt = ctx->dwRsaPssSaltSize;
         pPaddingInfo = &pssPadingInfo;
+    } else if ((transformCtx->flags & XMLSEC_TRANSFORMCTX_FLAGS_SUPPORT_ASN1_SIGNATURE_VALUES) != 0) {
+        /* however some implementations (e.g. Java) just put ASN1 structure in the signature
+         * https://github.com/lsh123/xmlsec/issues/995 */
+        ret = xmlSecMSCngSignatureFixBrokenASN1(ctx, data, dataSize, (const xmlSecByte**)&fixedData, &fixedDataSize);
+        if (ret < 0) {
+            xmlSecInternalError("xmlSecMSCngSignatureFixBrokenASN1", xmlSecTransformGetName(transform));
+            goto done;
+        }
+        if ((fixedData != NULL) && (fixedDataSize > 0)) {
+            data = fixedData;
+            dataSize = fixedDataSize;
+        }
     } else {
         /* we expect the DSA/ECDSA r and s to be the same size and either have fixed size (DSA) or match
          * the size of the key (ECDSA); however some implementations (e.g. Java) cut or add leading zeros */
@@ -577,7 +689,7 @@ xmlSecMSCngSignatureVerify(xmlSecTransformPtr transform,
             dataSize = fixedDataSize;
         }
     }
-
+    
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(dataSize, dwDataSize, goto done, xmlSecTransformGetName(transform));
     status = BCryptVerifySignature(
         pubkey,
@@ -613,16 +725,318 @@ done:
 }
 
 static int
-xmlSecMSCngSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
-    xmlSecMSCngSignatureCtxPtr ctx;
-    xmlSecSize inSize;
-    xmlSecSize outSize;
-    NTSTATUS status;
-    DWORD cbData = 0;
-    DWORD cbHashObject = 0;
+xmlSecMSCngSignatureConvertToASN1(xmlSecMSCngSignatureCtxPtr ctx, xmlSecBufferPtr buf) {
+    xmlSecByte* data;
+    xmlSecSize dataSize, halfSize; 
+    CERT_ECC_SIGNATURE eccSignature;
+    xmlSecByte* encodedData = NULL;
+    DWORD encodedDataSize = 0;
+    BOOL status;
+    int ret;
+
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(buf != NULL, -1);
+    
+    /* only ECDSA signatures are supported for ASN1 */
+    if (ctx->keyId != xmlSecMSCngKeyDataEcId) {
+        xmlSecNotImplementedError("MSCNG only supports ASN1 signature values for ECDSA");
+        return(-1);
+    }
+    
+    /* MSCng expect little-endian */
+    data = xmlSecBufferGetData(buf);
+    dataSize = xmlSecBufferGetSize(buf);
+    halfSize = dataSize / 2;
+    xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(dataSize > 0, -1);
+    xmlSecAssert2((dataSize % 2) == 0, -1);
+
+    ConvertEndianInPlace(data, halfSize);
+    ConvertEndianInPlace(data + halfSize, halfSize);
+
+    /* encode */
+    eccSignature.r.cbData = (DWORD)halfSize;
+    eccSignature.r.pbData = data;
+    eccSignature.s.cbData = (DWORD)halfSize;
+    eccSignature.s.pbData = data + halfSize;
+
+    status = CryptEncodeObjectEx(
+        X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+        X509_ECC_SIGNATURE,
+        &eccSignature,
+        CRYPT_ENCODE_ALLOC_FLAG,
+        NULL,
+        &encodedData,
+        &encodedDataSize
+    );
+    if ((status != TRUE) || (encodedData == NULL) || (encodedDataSize <= 0)) {
+        xmlSecMSCngNtError("CryptEncodeObjectEx", NULL, STATUS_SUCCESS);
+        return(-1);
+    }
+
+    ret = xmlSecBufferSetData(buf, encodedData, encodedDataSize);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecBufferSetData", NULL);
+        LocalFree(encodedData);
+        return(-1);
+    }
+
+    /* done */
+    LocalFree(encodedData);
+    return(0);
+}
+
+static int
+xmlSecMSCngSignatureSign(
+    xmlSecTransformPtr transform,
+    xmlSecMSCngSignatureCtxPtr ctx,
+    xmlSecTransformCtxPtr transformCtx
+) {
+    NCRYPT_KEY_HANDLE privkey;
     BCRYPT_PKCS1_PADDING_INFO pkcs1PaddingInfo;
     BCRYPT_PSS_PADDING_INFO pssPadingInfo;
     VOID* pPaddingInfo = NULL;
+    DWORD cbSignature;
+    NTSTATUS status;
+    xmlSecSize outSize;
+    int ret;
+
+    xmlSecAssert2(transform != NULL, -1);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
+
+    outSize = xmlSecBufferGetSize(&transform->outBuf);
+    xmlSecAssert2(outSize == 0, -1);
+
+
+    privkey = xmlSecMSCngKeyDataGetPrivKey(ctx->data);
+    if (privkey == 0) {
+        xmlSecInternalError("xmlSecMSCngKeyDataGetPrivKey", xmlSecTransformGetName(transform));
+        return(-1);
+    }
+
+    /* calculate the length of the signature */
+    status = NCryptSignHash(
+        privkey,
+        NULL,
+        ctx->pbHash,
+        ctx->cbHash,
+        NULL,
+        0,
+        &cbSignature,
+        0);
+    if (status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("NCryptSignHash", xmlSecTransformGetName(transform), status);
+        return(-1);
+    }
+    XMLSEC_SAFE_CAST_ULONG_TO_SIZE(cbSignature, outSize, return(-1), xmlSecTransformGetName(transform));
+
+    /* allocate the signature buffer on the heap */
+    ret = xmlSecBufferSetSize(&(transform->outBuf), outSize);
+    if (ret < 0) {
+        xmlSecInternalError2("xmlSecBufferSetSize", xmlSecTransformGetName(transform),
+            "size=" XMLSEC_SIZE_FMT, outSize);
+        return(-1);
+    }
+
+    /* RSA needs explicit padding, otherwise STATUS_INVALID_PARAMETER is
+     * returned */
+    if (ctx->dwInfoFlags == BCRYPT_PAD_PKCS1) {
+        pkcs1PaddingInfo.pszAlgId = ctx->pszHashAlgId;
+        pPaddingInfo = &pkcs1PaddingInfo;
+    }
+    else if (ctx->dwInfoFlags == BCRYPT_PAD_PSS) {
+        pssPadingInfo.pszAlgId = ctx->pszHashAlgId;
+        pssPadingInfo.cbSalt = ctx->dwRsaPssSaltSize;
+        pPaddingInfo = &pssPadingInfo;
+    }
+
+    /* sign the hash */
+    status = NCryptSignHash(
+        privkey,
+        pPaddingInfo,
+        ctx->pbHash,
+        ctx->cbHash,
+        (PBYTE)xmlSecBufferGetData(&(transform->outBuf)),
+        cbSignature,
+        &cbSignature,
+        ctx->dwInfoFlags);
+    if (status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("NCryptSignHash", xmlSecTransformGetName(transform), status);
+        return(-1);
+    }
+
+    if ((transformCtx->flags & XMLSEC_TRANSFORMCTX_FLAGS_SUPPORT_ASN1_SIGNATURE_VALUES) != 0) {
+        /* however some implementations (e.g. Java) just put ASN1 structure in the signature
+         * https://github.com/lsh123/xmlsec/issues/995 */
+        ret = xmlSecMSCngSignatureConvertToASN1(ctx, &(transform->outBuf));
+        if (ret < 0) {
+            xmlSecInternalError("xmlSecMSCngSignatureConvertToASN1", xmlSecTransformGetName(transform));
+            return(-1);
+        }
+    }
+
+    /* done */
+    return(0);
+}
+
+static int
+xmlSecMSCngSignatureStartHash(
+    xmlSecTransformPtr transform, 
+    xmlSecMSCngSignatureCtxPtr ctx)
+{
+    NTSTATUS status;
+    DWORD cbData = 0;
+    DWORD cbHashObject = 0;
+
+    xmlSecAssert2(transform != NULL, -1);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->pszHashAlgId != NULL, -1);
+
+    /* open an algorithm handle */
+    status = BCryptOpenAlgorithmProvider(
+        &ctx->hHashAlg,
+        ctx->pszHashAlgId,
+        NULL,
+        0);
+    if (status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptOpenAlgorithmProvider",
+            xmlSecTransformGetName(transform), status);
+        return(-1);
+    }
+
+    /* calculate the size of the buffer to hold the hash object */
+    status = BCryptGetProperty(
+        ctx->hHashAlg,
+        BCRYPT_OBJECT_LENGTH,
+        (PBYTE)&cbHashObject,
+        sizeof(DWORD),
+        &cbData,
+        0);
+    if (status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptGetProperty",
+            xmlSecTransformGetName(transform), status);
+        return(-1);
+    }
+
+    /* allocate the hash object on the heap */
+    ctx->pbHashObject = (PBYTE)xmlMalloc(cbHashObject);
+    if (ctx->pbHashObject == NULL) {
+        xmlSecMallocError(cbHashObject, NULL);
+        return(-1);
+    }
+
+    /* calculate the length of the hash */
+    status = BCryptGetProperty(
+        ctx->hHashAlg,
+        BCRYPT_HASH_LENGTH,
+        (PBYTE)&ctx->cbHash,
+        sizeof(DWORD),
+        &cbData,
+        0);
+    if (status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptGetProperty", xmlSecTransformGetName(transform), status);
+        return(-1);
+    }
+
+    /* allocate the hash buffer on the heap */
+    ctx->pbHash = (PBYTE)xmlMalloc(ctx->cbHash);
+    if (ctx->pbHash == NULL) {
+        xmlSecMallocError(ctx->cbHash, NULL);
+        return(-1);
+    }
+
+    /* create the hash */
+    status = BCryptCreateHash(
+        ctx->hHashAlg,
+        &ctx->hHash,
+        ctx->pbHashObject,
+        cbHashObject,
+        NULL,
+        0,
+        0);
+    if (status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptCreateHash", xmlSecTransformGetName(transform), status);
+        return(-1);
+    }
+
+    /* done */
+    return (0);
+}
+
+
+static int
+xmlSecMSCngSignatureUpdateHash(
+    xmlSecTransformPtr transform,
+    xmlSecMSCngSignatureCtxPtr ctx)
+{
+    xmlSecByte* inData;
+    xmlSecSize inSize;
+    DWORD dwInSize;
+    NTSTATUS status;
+    int ret;
+
+    xmlSecAssert2(transform != NULL, -1);
+    xmlSecAssert2(ctx != NULL, -1);
+
+    inData = xmlSecBufferGetData(&transform->inBuf);
+    inSize = xmlSecBufferGetSize(&transform->inBuf);
+    if ((inData == NULL) || (inSize <= 0)) {
+        /* nothing to do */
+        return(0);
+    }
+
+    /* hash some data */
+    XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, dwInSize, return(-1), xmlSecTransformGetName(transform));
+    status = BCryptHashData(
+        ctx->hHash,
+        (PBYTE)inData,
+        dwInSize,
+        0);
+    if (status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptHashData", xmlSecTransformGetName(transform), status);
+        return(-1);
+    }
+
+    /* remove processed data */
+    ret = xmlSecBufferRemoveHead(&transform->inBuf, inSize);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecBufferRemoveHead", xmlSecTransformGetName(transform));
+        return(-1);
+    }
+
+    /* done */
+    return(0);
+}
+
+static int
+xmlSecMSCngSignatureFinishHash(
+    xmlSecTransformPtr transform,
+    xmlSecMSCngSignatureCtxPtr ctx)
+{
+    NTSTATUS status;
+
+    xmlSecAssert2(transform != NULL, -1);
+    xmlSecAssert2(ctx != NULL, -1);
+
+    status = BCryptFinishHash(
+        ctx->hHash,
+        ctx->pbHash,
+        ctx->cbHash,
+        0);
+    if (status != STATUS_SUCCESS) {
+        xmlSecMSCngNtError("BCryptFinishHash", xmlSecTransformGetName(transform), status);
+        return(-1);
+    }
+
+    xmlSecAssert2(ctx->cbHash > 0, -1);
+    return(0);
+}
+
+
+static int
+xmlSecMSCngSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
+    xmlSecMSCngSignatureCtxPtr ctx;
     int ret;
 
     xmlSecAssert2(xmlSecMSCngSignatureCheckId(transform), -1);
@@ -632,80 +1046,12 @@ xmlSecMSCngSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
 
     ctx = xmlSecMSCngSignatureGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->pszHashAlgId != NULL, -1);
-
-    inSize = xmlSecBufferGetSize(&transform->inBuf);
-    outSize = xmlSecBufferGetSize(&transform->outBuf);
 
     if(transform->status == xmlSecTransformStatusNone) {
-        xmlSecAssert2(outSize == 0, -1);
-
-        /* open an algorithm handle */
-        status = BCryptOpenAlgorithmProvider(
-            &ctx->hHashAlg,
-            ctx->pszHashAlgId,
-            NULL,
-            0);
-        if(status != STATUS_SUCCESS) {
-            xmlSecMSCngNtError("BCryptOpenAlgorithmProvider",
-                xmlSecTransformGetName(transform), status);
-            return(-1);
-        }
-
-        /* calculate the size of the buffer to hold the hash object */
-        status = BCryptGetProperty(
-            ctx->hHashAlg,
-            BCRYPT_OBJECT_LENGTH,
-            (PBYTE)&cbHashObject,
-            sizeof(DWORD),
-            &cbData,
-            0);
-        if(status != STATUS_SUCCESS) {
-            xmlSecMSCngNtError("BCryptGetProperty",
-                xmlSecTransformGetName(transform), status);
-            return(-1);
-        }
-
-        /* allocate the hash object on the heap */
-        ctx->pbHashObject = (PBYTE)xmlMalloc(cbHashObject);
-        if(ctx->pbHashObject == NULL) {
-            xmlSecMallocError(cbHashObject, NULL);
-            return(-1);
-        }
-
-        /* calculate the length of the hash */
-        status = BCryptGetProperty(
-            ctx->hHashAlg,
-            BCRYPT_HASH_LENGTH,
-            (PBYTE)&ctx->cbHash,
-            sizeof(DWORD),
-            &cbData,
-            0);
-        if(status != STATUS_SUCCESS) {
-            xmlSecMSCngNtError("BCryptGetProperty",
-                xmlSecTransformGetName(transform), status);
-            return(-1);
-        }
-
-        /* allocate the hash buffer on the heap */
-        ctx->pbHash = (PBYTE)xmlMalloc(ctx->cbHash);
-        if(ctx->pbHash == NULL) {
-            xmlSecMallocError(ctx->cbHash, NULL);
-            return(-1);
-        }
-
-        /* create the hash */
-        status = BCryptCreateHash(
-            ctx->hHashAlg,
-            &ctx->hHash,
-            ctx->pbHashObject,
-            cbHashObject,
-            NULL,
-            0,
-            0);
-        if(status != STATUS_SUCCESS) {
-            xmlSecMSCngNtError("BCryptCreateHash",
-                xmlSecTransformGetName(transform), status);
+        /* start hash */
+        ret = xmlSecMSCngSignatureStartHash(transform, ctx);
+        if (ret < 0) {
+            xmlSecInternalError("xmlSecMSCngSignatureStartHash", xmlSecTransformGetName(transform));
             return(-1);
         }
 
@@ -713,117 +1059,44 @@ xmlSecMSCngSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
     }
 
     if(transform->status == xmlSecTransformStatusWorking) {
-        if(inSize > 0) {
-            DWORD dwInSize;
-
-            xmlSecAssert2(outSize == 0, -1);
-
-            /* hash some data */
-            XMLSEC_SAFE_CAST_SIZE_TO_ULONG(inSize, dwInSize, return(-1), xmlSecTransformGetName(transform));
-            status = BCryptHashData(
-                ctx->hHash,
-                (PBYTE)xmlSecBufferGetData(&transform->inBuf),
-                dwInSize,
-                0);
-            if(status != STATUS_SUCCESS) {
-                xmlSecMSCngNtError("BCryptHashData", xmlSecTransformGetName(transform), status);
-                return(-1);
-            }
-
-            ret = xmlSecBufferRemoveHead(&transform->inBuf, inSize);
-            if(ret < 0) {
-                xmlSecInternalError("xmlSecBufferRemoveHead", xmlSecTransformGetName(transform));
-                return(-1);
-            }
+        /* update hash (if we have data) */
+        ret = xmlSecMSCngSignatureUpdateHash(transform, ctx);
+        if (ret < 0) {
+            xmlSecInternalError("xmlSecMSCngSignatureUpdateHash", xmlSecTransformGetName(transform));
+            return(-1);
         }
 
         if(last != 0) {
-            /* close the hash */
-            status = BCryptFinishHash(
-                ctx->hHash,
-                ctx->pbHash,
-                ctx->cbHash,
-                0);
-            if(status != STATUS_SUCCESS) {
-                xmlSecMSCngNtError("BCryptFinishHash", xmlSecTransformGetName(transform), status);
+            /* finish the hash */
+            ret = xmlSecMSCngSignatureFinishHash(transform, ctx);
+            if (ret < 0) {
+                xmlSecInternalError("xmlSecMSCngSignatureFinishHash", xmlSecTransformGetName(transform));
                 return(-1);
             }
 
-            xmlSecAssert2(ctx->cbHash > 0, -1);
-
+            /* create signature if needed */
             if(transform->operation == xmlSecTransformOperationSign) {
-                NCRYPT_KEY_HANDLE privkey;
-                DWORD cbSignature;
-
-                privkey = xmlSecMSCngKeyDataGetPrivKey(ctx->data);
-                if(privkey == 0) {
-                    xmlSecInternalError("xmlSecMSCngKeyDataGetPrivKey", xmlSecTransformGetName(transform));
-                    return(-1);
-                }
-
-                /* calculate the length of the signature */
-                status = NCryptSignHash(
-                    privkey,
-                    NULL,
-                    ctx->pbHash,
-                    ctx->cbHash,
-                    NULL,
-                    0,
-                    &cbSignature,
-                    0);
-                if(status != STATUS_SUCCESS) {
-                    xmlSecMSCngNtError("NCryptSignHash", xmlSecTransformGetName(transform), status);
-                    return(-1);
-                }
-                XMLSEC_SAFE_CAST_ULONG_TO_SIZE(cbSignature, outSize, return(-1), xmlSecTransformGetName(transform));
-
-                /* allocate the signature buffer on the heap */
-                ret = xmlSecBufferSetSize(&transform->outBuf, outSize);
-                if(ret < 0) {
-                    xmlSecInternalError2("xmlSecBufferSetSize", xmlSecTransformGetName(transform),
-                            "size=" XMLSEC_SIZE_FMT, outSize);
-                    return(-1);
-                }
-
-                /* RSA needs explicit padding, otherwise STATUS_INVALID_PARAMETER is
-                * returned */
-                if(ctx->dwInfoFlags == BCRYPT_PAD_PKCS1) {
-                    pkcs1PaddingInfo.pszAlgId = ctx->pszHashAlgId;
-                    pPaddingInfo = &pkcs1PaddingInfo;
-                } else if (ctx->dwInfoFlags == BCRYPT_PAD_PSS) {
-                    pssPadingInfo.pszAlgId = ctx->pszHashAlgId;
-                    pssPadingInfo.cbSalt = ctx->dwRsaPssSaltSize;
-                    pPaddingInfo = &pssPadingInfo;
-                }
-
-                /* sign the hash */
-                status = NCryptSignHash(
-                    privkey,
-                    pPaddingInfo,
-                    ctx->pbHash,
-                    ctx->cbHash,
-                    (PBYTE)xmlSecBufferGetData(&transform->outBuf),
-                    cbSignature,
-                    &cbSignature,
-                    ctx->dwInfoFlags);
-                if(status != STATUS_SUCCESS) {
-                    xmlSecMSCngNtError("NCryptSignHash",
-                        xmlSecTransformGetName(transform), status);
+                ret = xmlSecMSCngSignatureSign(transform, ctx, transformCtx);
+                if (ret < 0) {
+                    xmlSecInternalError("xmlSecMSCngSignatureSign", xmlSecTransformGetName(transform));
                     return(-1);
                 }
             }
+
+            /* done */
             transform->status = xmlSecTransformStatusFinished;
         }
     }
 
-    if((transform->status == xmlSecTransformStatusWorking) ||
-            (transform->status == xmlSecTransformStatusFinished)) {
+    /* check state */
+    if((transform->status == xmlSecTransformStatusWorking) || (transform->status == xmlSecTransformStatusFinished)) {
         xmlSecAssert2(xmlSecBufferGetSize(&transform->inBuf) == 0, -1);
     } else {
         xmlSecInvalidTransfromStatusError(transform);
         return(-1);
     }
 
+    /* done */
     return(0);
 }
 

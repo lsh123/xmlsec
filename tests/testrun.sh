@@ -269,7 +269,7 @@ else
 fi
 
 # Only OpenSSL supports ASN1 signatures for now
-if [ "z$crypto" = "zopenssl"  ] ; then
+if [ "z$crypto" = "zopenssl" -o "z$crypto" = "znss"  ] ; then
     xmlsec_feature_asn1_signatures="yes"
 else
     xmlsec_feature_asn1_signatures="no"

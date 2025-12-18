@@ -637,7 +637,15 @@ xmlSecNssSignatureSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyRe
  * Determines if the given algorithm requires a signature which is ASN1 encoded.
  */
 static int
-xmlSecNssSignatureAlgorithmEncoded(SECOidTag alg) {
+xmlSecNssSignatureAlgorithmEncoded(xmlSecTransformCtxPtr transformCtx, SECOidTag alg) {
+
+    /* however some implementations (e.g. Java) just put ASN1 structure in the signature
+     * and in this case we ALREADY have ASN1
+     * https://github.com/lsh123/xmlsec/issues/995 */
+    if((transformCtx->flags & XMLSEC_TRANSFORMCTX_FLAGS_SUPPORT_ASN1_SIGNATURE_VALUES) != 0) {
+        return(0);
+    }
+
     switch(alg) {
     case SEC_OID_ANSIX9_DSA_SIGNATURE_WITH_SHA1_DIGEST:
     case SEC_OID_NIST_DSA_SIGNATURE_WITH_SHA256_DIGEST:
@@ -673,7 +681,7 @@ xmlSecNssSignatureVerify(xmlSecTransformPtr transform,
     signature.data = (unsigned char *)data;
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(dataSize, signature.len, return(-1), xmlSecTransformGetName(transform));
 
-    if(xmlSecNssSignatureAlgorithmEncoded(ctx->alg)) {
+    if(xmlSecNssSignatureAlgorithmEncoded(transformCtx, ctx->alg)) {
         /* This creates a signature which is ASN1 encoded */
         SECItem   signatureDer = { siBuffer, NULL, 0 };
         SECStatus statusDer;
@@ -848,7 +856,7 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
                 return(-1);
             }
 
-            if(xmlSecNssSignatureAlgorithmEncoded(ctx->alg)) {
+            if(xmlSecNssSignatureAlgorithmEncoded(transformCtx, ctx->alg)) {
                 /* This creates a signature which is ASN1 encoded */
                 SECItem * signatureClr;
 

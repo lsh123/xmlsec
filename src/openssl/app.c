@@ -193,7 +193,7 @@ xmlSecOpenSSLAppShutdown(void) {
     /* debug only feature, should not be used in production, on windows OpenSSL is not happy about FILE* */
 #if !defined(_MSC_VER)
     if(xmlSecErrorsPrintCryptoLibraryLogOnExitIsEnabled() == 1) {
-        ERR_print_errors(bio_err);
+        ERR_print_errors_fp(stderr);
     }
 #endif /* _MSC_VER */
     /* OpenSSL 1.1.0+ does not require explicit cleanup */

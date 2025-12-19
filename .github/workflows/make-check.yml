@@ -73,7 +73,6 @@ jobs:
           sudo apt install automake autoconf libtool libtool-bin libltdl-dev libltdl7
           sudo apt install libxml2 libxml2-dev libxslt1.1 libxslt1-dev
     - name: build aws lc
-      working-directory:
       run: |
           mkdir ../aws-lc && cd ../aws-lc
           wget "https://github.com/aws/aws-lc/archive/refs/tags/v${{ env.AWS_LC_VERSION }}.zip"
@@ -242,13 +241,13 @@ jobs:
             config_flags: unicode=no legacy-features=yes
           # mscrypto: default build
           - crypto: mscrypto
-            config_flags:
+            config_flags: unicode=yes
           # mscrypto: no unicode, legacy crypto
           - crypto: mscrypto
             config_flags:  unicode=no legacy-features=yes
           # mscng: default build
           - crypto: openssl-300
-            config_flags:
+            config_flags: unicode=yes
           # mscng: no unicode, legacy crypto
           - crypto: openssl-300
             config_flags: unicode=no
@@ -279,7 +278,7 @@ jobs:
       shell: cmd
       run: |
           call "${{ env.VISUAL_STUDIO_ROOT }}\VC\Auxiliary\Build\vcvars64.bat"
-          cscript configure.js pedantic=yes werror=yes static=no ^
+          cscript configure.js pedantic=yes memcheck=leaks static=no ^
               crypto=${{ matrix.crypto }} ${{ matrix.config_flags }} ^
               prefix=${{ env.INSTALL_FOLDER }}\xmlsec.build ^
               include=${{ env.INSTALL_FOLDER }}\libxml2\include;${{ env.INSTALL_FOLDER }}\libxml2\include\libxml2;${{ env.INSTALL_FOLDER }}\libxslt\include;${{ env.INSTALL_FOLDER }}\openssl\include;%MSSDK_INCLUDE% ^

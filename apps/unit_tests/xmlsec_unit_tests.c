@@ -19,6 +19,11 @@
 #include "xmlsec_unit_tests.h"
 #include "../src/x509_helpers.h"
 
+
+#if defined(_MSC_VER) && defined(_CRTDBG_MAP_ALLOC)
+#include <crtdbg.h>
+#endif /*defined(_MSC_VER) && defined(_CRTDBG_MAP_ALLOC) */
+
 #if defined(XMLSEC_WINDOWS) && defined(UNICODE) && defined(__MINGW32__)
 int wmain(int argc, wchar_t* argv[]);
 #endif /* defined(XMLSEC_WINDOWS) && defined(UNICODE) && defined(__MINGW32__) */
@@ -31,6 +36,12 @@ int main(int argc, const char **argv) {
 #endif /* defined(XMLSEC_WINDOWS) && defined(UNICODE) */
     int success = 1;
     int res = 1;
+
+#if defined(_MSC_VER) && defined(_CRTDBG_MAP_ALLOC)
+    fprintf(stderr, "Enabling memory leaks detection\n");
+    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_CHECK_ALWAYS_DF | _CRTDBG_DELAY_FREE_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+#endif /* defined(_MSC_VER) && defined(_CRTDBG_MAP_ALLOC) */
+
 
     /* check command line params */
     if((argc > 1) || (argv == NULL)) {

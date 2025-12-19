@@ -59,8 +59,7 @@ var withLegacyFeatures = 0;
 /* Win32 build options. */
 var buildUnicode = 1;
 var buildDebug = 0;
-var buildWithMemcheck = 0;
-var buildWerror = 1;
+var buildWithMemcheck = "no";
 var buildPedantic = 1;
 var buildCc = "cl.exe";
 var buildCflags = "";
@@ -111,8 +110,7 @@ function usage()
 	txt = "Usage:\n";
 	txt += "  cscript " + WScript.ScriptName + " <options>\n";
 	txt += "  cscript " + WScript.ScriptName + " help\n\n";
-	txt += "Options can be specified in the form <option>=<value>, where the value is\n";
-	txt += "either 'yes' or 'no'.\n\n";
+	txt += "Options can be specified in the form <option>=<value>.\n\n";
 	txt += "XmlSec Library options, default value given in parentheses:\n\n";
 	txt += "  crypto:     Crypto engines list, first is default: \"openssl\",\n";
 	txt += "              \"openssl=111\", \"openssl-111\", \"openssl=300\",\n";
@@ -128,8 +126,8 @@ function usage()
 	txt += "\nWin32 build options, default value given in parentheses:\n\n";
 	txt += "  unicode:    Build Unicode version (" + (buildUnicode? "yes" : "no")  + ")\n";
 	txt += "  debug:      Build unoptimised debug executables (" + (buildDebug? "yes" : "no")  + ")\n";
-	txt += "  memcheck:   Build unoptimised debug executables with memcheck reporting (" + (buildWithMemcheck ? "yes" : "no") + ")\n";
-	txt += "  werror:     Build with warnings as errors (" + (buildWerror? "yes" : "no")  + ")\n";
+	txt += "  memcheck:   Build unoptimised debug executables with memcheck reporting (" + buildWithMemcheck + ")\n";
+	txt += "              with possible options: 'yes' or 'leaks', 'asan', and 'no' (default)."
     txt += "  pedantic:   Build with more warnings enabled (" + (buildPedantic? "yes" : "no") + ")\n";
 	txt += "  cc:         Build with the specified compiler(" + buildCc  + ")\n";
 	txt += "  cflags:     Build with the specified compiler flags('" + buildCflags  + "')\n";
@@ -202,8 +200,7 @@ function discoverVersion()
 	vf.WriteLine("WITH_LEGACY_FEATURES=" + (withLegacyFeatures ? "1" : "0"));
 	vf.WriteLine("UNICODE=" + (buildUnicode? "1" : "0"));
 	vf.WriteLine("DEBUG=" + (buildDebug? "1" : "0"));
-	vf.WriteLine("MEMCHECK=" + (buildWithMemcheck ? "1" : "0"));
-	vf.WriteLine("WERROR=" + (buildWerror? "1" : "0"));
+	vf.WriteLine("MEMCHECK=" + buildWithMemcheck);
 	vf.WriteLine("PEDANTIC=" + (buildPedantic? "1" : "0"));
 	vf.WriteLine("CC=" + buildCc);
 	vf.WriteLine("CFLAGS=" + buildCflags);
@@ -280,6 +277,19 @@ function configureXmlSecVersion()
 	of.Close();
 }
 
+function validateMemcheckOption(opt) {
+	if (opt == "yes" || opt == "leaks") {
+		return "leaks";
+	} else if (opt == "asan") {
+		return "asan";
+	} else if (opt == "no") {
+		return "no";
+	} else {
+		// error, caller will handle it
+		return "";
+	}
+}
+
 /* Creates the readme file for the binary distribution of 'bname', for the
    version 'ver' in the file 'file'. This one is called from the Makefile when
    generating a binary distribution. The parameters are passed by make. */
@@ -350,11 +360,13 @@ for (i = 0; (i < WScript.Arguments.length) && (error == 0); i++) {
 		else if (opt == "debug")
 			buildDebug = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "memcheck") {
-			buildWithMemcheck = strToBool(arg.substring(opt.length + 1, arg.length));
+			buildWithMemcheck = validateMemcheckOption(arg.substring(opt.length + 1, arg.length));
+			if (buildWithMemcheck == "") {
+				error = 1;
+				WScript.Echo("ERROR: Invalid value for 'memcheck' parameter, supported options are 'yes' or 'leaks', 'asan', and 'no'.\n");
+			}
 			buildDebug = true;
-		} else if (opt == "werror")
-			buildWerror = strToBool(arg.substring(opt.length + 1, arg.length));
-		else if (opt == "pedantic")
+		} else if (opt == "pedantic")
 			buildPedantic = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "cc")
 			buildCc = arg.substring(opt.length + 1, arg.length);
@@ -501,8 +513,7 @@ txtOut += "   C compiler flags: " + buildCflags + "\n";
 txtOut += "   C-Runtime option: " + cruntime + "\n";
 txtOut += "            Unicode: " + boolToStr(buildUnicode) + "\n";
 txtOut += "      Debug symbols: " + boolToStr(buildDebug) + "\n";
-txtOut += "           Memcheck: " + boolToStr(buildWithMemcheck) + "\n";
-txtOut += " Warnings as errors: " + boolToStr(buildWerror) + "\n";
+txtOut += "           Memcheck: " + buildWithMemcheck + "\n";
 txtOut += " Static xmlsec libs: " + boolToStr(buildStatic) + "\n";
 txtOut += "     Install prefix: " + buildPrefix + "\n";
 txtOut += "       Put tools in: " + buildBinPrefix + "\n";

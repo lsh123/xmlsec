@@ -43,7 +43,6 @@ AUTOCONF = .\configure.txt
 #WITH_MSCNG=0
 #WITH_LIBXSLT=1
 #STATIC = 0
-#WERROR = 0
 #PEDANTIC = 1
 #PREFIX = . # set this to the right value.
 #BINPREFIX = $(PREFIX)\bin
@@ -417,7 +416,7 @@ CFLAGS = $(CFLAGS) /D "XMLSEC_NO_HTTP"
 !endif
 
 !if "$(PEDANTIC)" == "1"
-CFLAGS = $(CFLAGS) /W4
+CFLAGS = $(CFLAGS) /W4 /WX
 !else
 CFLAGS = $(CFLAGS) /W1
 !endif
@@ -432,10 +431,6 @@ CFLAGS = $(CFLAGS) /W1
 #     this generates a false warning for functions used in structs
 CFLAGS = $(CFLAGS) /wd4127 /wd4130 /wd4152 /wd4232
 
-!if "$(WERROR)" == "1"
-CFLAGS = $(CFLAGS) /WX
-!endif
-
 !if "$(UNICODE)" == "1"
 CFLAGS = $(CFLAGS) /D "UNICODE" /D "_UNICODE"
 !endif
@@ -447,9 +442,13 @@ CFLAGS = $(CFLAGS) /D "_DEBUG" /Od /Zi
 CFLAGS = $(CFLAGS) /D "NDEBUG" /O2 /Zi
 !endif
 
+
 # Enable memcheck.
-!if "$(MEMCHECK)" == "1"
-# CFLAGS = $(CFLAGS) /D "_CRTDBG_MAP_ALLOC"
+!if "$(MEMCHECK)" == "leaks"
+CFLAGS = $(CFLAGS) /EHsc /D "_CRTDBG_MAP_ALLOC" /D_DEBUG
+!endif
+!if "$(MEMCHECK)" == "asan"
+CFLAGS = $(CFLAGS) /fsanitize=address
 !endif
 
 CFLAGS = $(CFLAGS) $(CRUNTIME)
@@ -651,33 +650,41 @@ mscng: $(BINDIR)\$(XMLSEC_MSCNG_SO)
 check : check-unit-tests check-keys check-dsig check-enc
 
 check-unit-tests : $(BINDIR)\$(UNIT_TESTS_APP_NAME)
+	set ASAN_OPTIONS=continue_on_error=0
 	cd ..
 	win32\$(BINDIR)\$(UNIT_TESTS_APP_NAME)
 	cd win32
+	set ASAN_OPTIONS=
 
 check-keys : $(BINDIR)\$(APP_NAME)
+	set ASAN_OPTIONS=continue_on_error=0
 	cd ..
 	if not exist %MAKEDIR%\tmp mkdir %MAKEDIR%\tmp
 	set TMPFOLDER=%MAKEDIR%\tmp
 	set XMLSEC_OPENSSL_TEST_CONFIG=$(XMLSEC_OPENSSL_TEST_CONFIG)
 	sh ./tests/testrun.sh ./tests/testKeys.sh "$(WITH_DEFAULT_CRYPTO)" ./tests win32/$(BINDIR)/$(APP_NAME) der
 	cd win32
+	set ASAN_OPTIONS=
 
 check-dsig : $(BINDIR)\$(APP_NAME)
+	set ASAN_OPTIONS=continue_on_error=0
 	cd ..
 	if not exist %MAKEDIR%\tmp mkdir %MAKEDIR%\tmp
 	set TMPFOLDER=%MAKEDIR%\tmp
 	set XMLSEC_OPENSSL_TEST_CONFIG=$(XMLSEC_OPENSSL_TEST_CONFIG)
 	sh ./tests/testrun.sh ./tests/testDSig.sh "$(WITH_DEFAULT_CRYPTO)" ./tests win32/$(BINDIR)/$(APP_NAME) der
 	cd win32
+	set ASAN_OPTIONS=
 
 check-enc : $(BINDIR)\$(APP_NAME)
+	set ASAN_OPTIONS=continue_on_error=0
 	cd ..
 	if not exist %MAKEDIR%\tmp mkdir %MAKEDIR%\tmp
 	set TMPFOLDER=%MAKEDIR%\tmp
 	set XMLSEC_OPENSSL_TEST_CONFIG=$(XMLSEC_OPENSSL_TEST_CONFIG)
 	sh ./tests/testrun.sh ./tests/testEnc.sh "$(WITH_DEFAULT_CRYPTO)" ./tests win32/$(BINDIR)/$(APP_NAME) der
 	cd win32
+	set ASAN_OPTIONS=
 
 clean :
 	if exist $(XMLSEC_INTDIR) rmdir /S /Q $(XMLSEC_INTDIR)

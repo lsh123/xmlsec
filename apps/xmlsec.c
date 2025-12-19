@@ -54,9 +54,9 @@
 #include "cmdline.h"
 
 
-#if defined(_MSC_VER) && defined(_DEBUG)
+#if defined(_MSC_VER) && defined(_CRTDBG_MAP_ALLOC)
 #include <crtdbg.h>
-#endif /*defined(_MSC_VER) && defined(_DEBUG) */
+#endif /*defined(_MSC_VER) && defined(_CRTDBG_MAP_ALLOC) */
 
 static const char copyright[] =
     "Written by Aleksey Sanin <aleksey@aleksey.com>.\n\n"
@@ -1266,10 +1266,10 @@ int main(int argc, const char **argv) {
     int res = 1;
     int ret;
 
-#if defined(_MSC_VER) && defined(_DEBUG)
+#if defined(_MSC_VER) && defined(_CRTDBG_MAP_ALLOC)
     fprintf(stderr, "Enabling memory leaks detection\n");
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_CHECK_ALWAYS_DF | _CRTDBG_DELAY_FREE_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-#endif /* */
+#endif /* defined(_MSC_VER) && defined(_CRTDBG_MAP_ALLOC) */
 
 #if defined(XMLSEC_WINDOWS)
     /* convert command line to UTF8 from locale or UNICODE */
@@ -1373,7 +1373,7 @@ done:
     }
 #endif /* defined(XMLSEC_WINDOWS) */
 
-#if defined(_MSC_VER) && defined(_DEBUG)
+#if defined(_MSC_VER) && defined(_CRTDBG_MAP_ALLOC)
     fprintf(stderr, "Printing memory leaks detected:\n");
 
     _CrtSetReportMode(_CRT_WARN,    _CRTDBG_MODE_FILE);

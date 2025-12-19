@@ -5,9 +5,9 @@
 # $ c:\cygwin64\bin\bash build_windows.sh
 #
 libxml2_version="2.15.1"
-libxslt_version="1.1.43"
+libxslt_version="1.1.45"
 openssl_version="3.6.0"
-xmlsec_version="1.3.10-rc1"
+xmlsec_version="1.3.10-preview-1"
 
 pwd=`pwd`
 script_dir=`dirname $0`
@@ -201,7 +201,7 @@ function build_openssl {
 
 function build_xmlsec {
   # Check whether the component is already built.
-  xmlsec_version_without_rc=`echo "${xmlsec_version}" | sed 's/-rc.*//g'`
+  xmlsec_version_without_rc=`echo "${xmlsec_version}" | sed 's/-rc.*//g' | sed 's/-preview.*//g'`
   full_name="xmlsec1-${xmlsec_version}"
   full_name_without_rc="xmlsec1-${xmlsec_version_without_rc}"
   full_url="https://www.aleksey.com/xmlsec/download/${full_name}.tar.gz"
@@ -230,7 +230,7 @@ function build_xmlsec {
 
   echo "*** Configuring \"${full_name}\" ..."
   cd "${full_name_without_rc}\win32"
-  cscript configure.js pedantic=yes werror=yes static=no cruntime=/MD unicode=yes \
+  cscript configure.js pedantic=yes static=no cruntime=/MD unicode=yes \
     xslt=yes crypto=openssl,mscng \
     prefix="${xmlsec_output_dir}" \
     include="${libxml2_output_dir}\include;${libxml2_output_dir}\include\libxml2;${libxslt_output_dir}\include;${openssl_output_dir}\include" \

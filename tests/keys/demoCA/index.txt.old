@@ -26,3 +26,10 @@ V	21251126200534Z		AFA28BB933ADDAC4	unknown	/C=US/ST=California/O=XML Security L
 V	21251126223007Z		AFA28BB933ADDAC5	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=ML-DSA-44 Key
 V	21251126223340Z		AFA28BB933ADDAC6	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=ML-DSA-65 Key
 V	21251126223345Z		AFA28BB933ADDAC7	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=ML-DSA-87 Key
+V	21251126223350Z		AFA28BB933ADDAC8	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=SLH-DSA-SHA2-128f Key
+V	21251126224653Z		AFA28BB933ADDAC9	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=EC Key
+V	21251126225526Z		AFA28BB933ADDACA	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=Test Key ec-prime256v1
+V	21251126225555Z		AFA28BB933ADDACB	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=Test Key ec-prime256v1-second
+V	21251126225657Z		AFA28BB933ADDACC	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=Test Key ml-dsa-44
+V	21251126225719Z		AFA28BB933ADDACD	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=Test Key ml-dsa-65
+V	21251126225737Z		AFA28BB933ADDACE	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=Test Key ml-dsa-87

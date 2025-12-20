@@ -920,6 +920,7 @@ execEncTestWithCryptoConfig() {
     fi
 
     # run tests
+    xml_verification_failed="no"
     if [ -n "$params1" ] ; then
         rm -f $tmpfile
         printf "    Decrypt existing document                            "
@@ -938,6 +939,7 @@ execEncTestWithCryptoConfig() {
             printRes $expected_res $res
         fi
     	if [ $? -ne 0 ]; then
+            xml_verification_failed="yes"
             failures=`expr $failures + 1`
     	fi
     fi
@@ -973,6 +975,18 @@ execEncTestWithCryptoConfig() {
             failures=`expr $failures + 1`
         fi
     fi
+
+    # update existing signature if verification failed
+    if [ -z "$XMLSEC_TEST_UPDATE_XML_ON_FAILURE" -a "z$xml_verification_failed" = "zyes" ] ; then
+        printf "    Update existing signature                            "
+        echo "cp $tmpfile $full_file.xml" >> $curlogfile 2>> $curlogfile
+        cp $tmpfile $full_file.xml
+        printRes $res_success $?
+        if [ $? -ne  0 ]; then
+            failures=`expr $failures + 1`
+        fi
+    fi
+
 
     # save logs
     cat $curlogfile >> $logfile

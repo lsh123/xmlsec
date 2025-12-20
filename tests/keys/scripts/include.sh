@@ -15,16 +15,18 @@ if [ ! -f "${openssl_conf}" ] ; then
 fi
 
 create_key_with_second_level_ca() {
-    local algorithm="$1"
-    local keyname="$2"
-    local subject="$3"
-    local pkcs12_name="TestKeyName-${algorithm}"
+    local keyname="$1"
+    local algorithm="$2"
+    local genpkey_options="$3"
+    local subject="/C=US/ST=California/O=XML Security Library \(http:\/\/www.aleksey.com\/xmlsec\)/CN=Test Key ${keyname}"
+    local pkcs12_name="TestKeyName-${keyname}"
+
 
     ###
     echo
     echo "*** Generating ${algorithm} key with key name ${pkcs12_name} using second level CA...."
     echo
-    openssl genpkey -algorithm "${algorithm}" -out "${keyname}-key.pem"
+    openssl genpkey -algorithm "${algorithm}" ${genpkey_options} -out "${keyname}-key.pem"
     openssl pkey -in "${keyname}-key.pem" -pubout -out "${keyname}-pubkey.pem"
 
     openssl req -config "${openssl_conf}" -new -key "${keyname}-key.pem" -subj "${subject}" -out "${keyname}-req.pem"

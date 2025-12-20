@@ -3393,6 +3393,57 @@ xmlSecTransformMLDSAReadContextString(xmlNodePtr node, xmlSecBufferPtr res) {
 #endif /* XMLSEC_NO_MLDSA */
 
 
+/********************************** SLH-DSA *******************************/
+#ifndef XMLSEC_NO_SLHDSA
+
+/**
+ * THIS IS EXPERIMENTAL AND NON-STANDARD
+ *
+ * <SignatureMethod Algorithm="http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#ml-dsa-44">
+ *   <slhdsa:SLHDSAContextString>base64 encoded context string</slhdsa:SLHDSAContextString>
+ * </SignatureMethod>
+ */
+int
+xmlSecTransformSLHDSAReadContextString(xmlNodePtr node, xmlSecBufferPtr res) {
+    xmlNodePtr cur;
+    int ret;
+
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(res != NULL, -1);
+
+    cur = xmlSecGetNextElementNode(node->children);
+    if ((cur != NULL) && xmlSecCheckNodeName(cur, xmlSecNodeSLHDSAContextString, xmlSecSLHDSANs)) {
+
+        ret = xmlSecBufferBase64NodeContentRead(res, cur);
+        if (ret != 0) {
+            xmlSecInternalError("xmlSecBufferBase64NodeContentRead(SLHDSAContextString)", NULL);
+            return(-1);
+        }
+
+        /* ensure length is not exceeded */
+        if (xmlSecBufferGetSize(res) > XMLSEC_SLHDSA_MAX_SIZE) {
+            xmlSecInvalidNodeContentError3(cur, NULL,
+                "SLHDSA context string length=" XMLSEC_SIZE_FMT " exceeds max expected length =" XMLSEC_SIZE_FMT,
+                xmlSecBufferGetSize(res), XMLSEC_SLHDSA_MAX_SIZE);
+            return(-1);
+        }
+
+        cur = xmlSecGetNextElementNode(cur->next);
+    }
+
+    /* no other nodes expected */
+    if (cur != NULL) {
+        xmlSecUnexpectedNodeError(cur, NULL);
+        return(-1);
+    }
+    return(0);
+}
+#endif /* XMLSEC_NO_SLHDSA */
+
+
+
+/********************************** PBKDF2 *******************************/
+
 #ifndef XMLSEC_NO_PBKDF2
 
 #define XMLSEC_TRANSFORM_PBKDF2_DEFAULT_BUF_SIZE       64

@@ -276,6 +276,26 @@ cp ml-dsa-87-cert.der ml-dsa-87-pubkey.crt
 
 ```
 
+
+### Generate SLH-DSA keys with second level CA
+
+SLH-DSA-SHA2-128f key
+```
+openssl genpkey -algorithm SLH-DSA-SHA2-128f -out slh-dsa-sha2-128f-key.pem
+openssl pkey -in slh-dsa-sha2-128f-key.pem -pubout -out slh-dsa-sha2-128f-pubkey.pem
+
+*** Use 'SLH-DSA-SHA2-128F Key' for Common Name:
+openssl req -config ./openssl.cnf -new -key slh-dsa-sha2-128f-key.pem -out slh-dsa-sha2-128f-req.pem
+openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem \
+        -out slh-dsa-sha2-128f-cert.pem -infiles slh-dsa-sha2-128f-req.pem
+openssl verify -CAfile cacert.pem -untrusted ca2cert.pem slh-dsa-sha2-128f-cert.pem
+rm slh-dsa-sha2-128f-req.pem
+
+openssl x509 -in slh-dsa-sha2-128f-cert.pem -inform PEM -out slh-dsa-sha2-128f-cert.der -outform DER
+cp slh-dsa-sha2-128f-cert.der slh-dsa-sha2-128f-pubkey.crt
+
+```
+
 ### Generate two certs and keys with the same certificate
 ```
 openssl req -x509 -newkey rsa:2048 -keyout same-subj-key1.pem -out same-subj-cert1.pem -sha256 -days 3650 -nodes -subj "/C=XX/ST=StateName/L=CityName/O=CompanyName/OU=CompanySectionName/CN=CommonNameOrHostname"
@@ -367,6 +387,11 @@ openssl pkey -in ml-dsa-87-key.pem -outform DER -out ml-dsa-87-key.der
 openssl pkey -in ml-dsa-87-key.pem -pubout -outform DER -out ml-dsa-87-pubkey.der
 ``
 
+SLH-DSA keys
+```
+openssl pkey -in slh-dsa-sha2-128f-key.pem -outform DER -out slh-dsa-sha2-128f-key.der
+openssl pkey -in slh-dsa-sha2-128f-key.pem -pubout -outform DER -out slh-dsa-sha2-128f-pubkey.der
+```
 
 ### Convert PEM cert file to DER file (IMPORTANT: use OpenSSL 1.x for generating DER files!!!)
 ```
@@ -415,33 +440,37 @@ Converting an unencrypted PEM or DER file containing a private key to an encrypt
 PEM or DER file containing the same private key but encrypted (the tests password
 is `secret123`):
 ```
- openssl pkcs8 -in dsakey.pem -inform pem -out dsakey.p8-pem -outform pem -topk8
- openssl pkcs8 -in dsakey.der -inform der -out dsakey.p8-der -outform der -topk8
- openssl pkcs8 -in dsa2048key.pem -inform pem -out dsa2048key.p8-pem -outform pem -topk8
- openssl pkcs8 -in dsa2048key.der -inform der -out dsa2048key.p8-der -outform der -topk8
- openssl pkcs8 -in dsa3072key.pem -inform pem -out dsa3072key.p8-pem -outform pem -topk8
- openssl pkcs8 -in dsa3072key.der -inform der -out dsa3072key.p8-der -outform der -topk8
- openssl pkcs8 -in rsakey.pem -inform pem -out rsakey.p8-pem -outform pem -topk8
- openssl pkcs8 -in rsakey.der -inform der -out rsakey.p8-der -outform der -topk8
+openssl pkcs8 -in dsakey.pem -inform pem -out dsakey.p8-pem -outform pem -topk8
+openssl pkcs8 -in dsakey.der -inform der -out dsakey.p8-der -outform der -topk8
+openssl pkcs8 -in dsa2048key.pem -inform pem -out dsa2048key.p8-pem -outform pem -topk8
+openssl pkcs8 -in dsa2048key.der -inform der -out dsa2048key.p8-der -outform der -topk8
+openssl pkcs8 -in dsa3072key.pem -inform pem -out dsa3072key.p8-pem -outform pem -topk8
+openssl pkcs8 -in dsa3072key.der -inform der -out dsa3072key.p8-der -outform der -topk8
+openssl pkcs8 -in rsakey.pem -inform pem -out rsakey.p8-pem -outform pem -topk8
+openssl pkcs8 -in rsakey.der -inform der -out rsakey.p8-der -outform der -topk8
 
- openssl pkcs8 -in expiredkey.pem -inform pem -out expiredkey.p8-pem -outform pem -topk8
- openssl pkcs8 -in expiredkey.der -inform der -out expiredkey.p8-der -outform der -topk8
+openssl pkcs8 -in expiredkey.pem -inform pem -out expiredkey.p8-pem -outform pem -topk8
+openssl pkcs8 -in expiredkey.der -inform der -out expiredkey.p8-der -outform der -topk8
 
- openssl pkcs8 -in largersakey.pem -inform pem -out largersakey.p8-pem -outform pem -topk8
- openssl pkcs8 -in largersakey.der -inform der -out largersakey.p8-der -outform der -topk8
- openssl pkcs8 -in ecdsa-secp256r1-key.der -inform der -out ecdsa-secp256r1-key.p8-der -outform der -topk8
- openssl pkcs8 -in ecdsa-secp256r1-key.der -inform der -out ecdsa-secp256r1-key.p8-pem -outform pem -topk8
- openssl pkcs8 -in ecdsa-secp384r1-key.der -inform der -out ecdsa-secp384r1-key.p8-der -outform der -topk8
- openssl pkcs8 -in ecdsa-secp384r1-key.der -inform der -out ecdsa-secp384r1-key.p8-pem -outform pem -topk8
- openssl pkcs8 -in ecdsa-secp521r1-key.der -inform der -out ecdsa-secp521r1-key.p8-der -outform der -topk8
- openssl pkcs8 -in ecdsa-secp521r1-key.der -inform der -out ecdsa-secp521r1-key.p8-pem -outform pem -topk8
+openssl pkcs8 -in largersakey.pem -inform pem -out largersakey.p8-pem -outform pem -topk8
+openssl pkcs8 -in largersakey.der -inform der -out largersakey.p8-der -outform der -topk8
+openssl pkcs8 -in ecdsa-secp256r1-key.der -inform der -out ecdsa-secp256r1-key.p8-der -outform der -topk8
+openssl pkcs8 -in ecdsa-secp256r1-key.der -inform der -out ecdsa-secp256r1-key.p8-pem -outform pem -topk8
+openssl pkcs8 -in ecdsa-secp384r1-key.der -inform der -out ecdsa-secp384r1-key.p8-der -outform der -topk8
+openssl pkcs8 -in ecdsa-secp384r1-key.der -inform der -out ecdsa-secp384r1-key.p8-pem -outform pem -topk8
+openssl pkcs8 -in ecdsa-secp521r1-key.der -inform der -out ecdsa-secp521r1-key.p8-der -outform der -topk8
+openssl pkcs8 -in ecdsa-secp521r1-key.der -inform der -out ecdsa-secp521r1-key.p8-pem -outform pem -topk8
 
- openssl pkcs8 -in ml-dsa-44-key.der -inform der -out ml-dsa-44-key.p8-pem -outform pem -topk8
- openssl pkcs8 -in ml-dsa-44-key.der -inform der -out ml-dsa-44-key.p8-der -outform der -topk8
- openssl pkcs8 -in ml-dsa-65-key.der -inform der -out ml-dsa-65-key.p8-pem -outform pem -topk8
- openssl pkcs8 -in ml-dsa-65-key.der -inform der -out ml-dsa-65-key.p8-der -outform der -topk8
- openssl pkcs8 -in ml-dsa-87-key.der -inform der -out ml-dsa-87-key.p8-pem -outform pem -topk8
- openssl pkcs8 -in ml-dsa-87-key.der -inform der -out ml-dsa-87-key.p8-der -outform der -topk8
+openssl pkcs8 -in ml-dsa-44-key.der -inform der -out ml-dsa-44-key.p8-pem -outform pem -topk8
+openssl pkcs8 -in ml-dsa-44-key.der -inform der -out ml-dsa-44-key.p8-der -outform der -topk8
+openssl pkcs8 -in ml-dsa-65-key.der -inform der -out ml-dsa-65-key.p8-pem -outform pem -topk8
+openssl pkcs8 -in ml-dsa-65-key.der -inform der -out ml-dsa-65-key.p8-der -outform der -topk8
+openssl pkcs8 -in ml-dsa-87-key.der -inform der -out ml-dsa-87-key.p8-pem -outform pem -topk8
+openssl pkcs8 -in ml-dsa-87-key.der -inform der -out ml-dsa-87-key.p8-der -outform der -topk8
+
+openssl pkcs8 -in slh-dsa-sha2-128f-key.der -inform der -out slh-dsa-sha2-128f-key.p8-pem -outform pem -topk8
+openssl pkcs8 -in slh-dsa-sha2-128f-key.der -inform der -out slh-dsa-sha2-128f-key.p8-der -outform der -topk8
+
 ```
 
 
@@ -520,6 +549,10 @@ rm all-ml-dsa-65.pem
 cat ml-dsa-87-key.pem ml-dsa-87-cert.pem ca2cert.pem cacert.pem > all-ml-dsa-87.pem
 openssl pkcs12 -export -in all-ml-dsa-87.pem -name TestMLDSA87KeName -out ml-dsa-87-key.p12
 rm all-ml-dsa-87.pem
+
+cat slh-dsa-sha2-128f-key.pem slh-dsa-sha2-128f-cert.pem ca2cert.pem cacert.pem > all-slh-dsa-sha2-128f.pem
+openssl pkcs12 -export -in all-slh-dsa-sha2-128f.pem -name TestKeyName-SLH-DSA-SHA2-128f -out slh-dsa-sha2-128f-key.p12
+rm all-slh-dsa-sha2-128f.pem
 ```
 
 GOST keys (see above the instructions to configure GOST engine):

@@ -22,3 +22,4 @@ V	21230202173233Z		AFA28BB933ADDAC0	unknown	/C=US/ST=California/O=XML Security L
 V	21251126052607Z		AFA28BB933ADDAC1	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=ML-DSA-44 Key/emailAddress=xmlsec@aleksey.com
 V	21251126052735Z		AFA28BB933ADDAC2	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/OU=ML-DSA-65 Key/CN=Aleksey Sanin/emailAddress=xmlsec@aleksey.com
 V	21251126052906Z		AFA28BB933ADDAC3	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/OU=ML-DSA-87 Key/CN=Aleksey Sanin/emailAddress=xmlsec@aleksey.com
+V	21251126200534Z		AFA28BB933ADDAC4	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=SLH-DSA-SHA2-128F Key/emailAddress=xmlsec@aleksey.com

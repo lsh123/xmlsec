@@ -374,6 +374,26 @@ const xmlChar xmlSecHrefMLDSA87[]             = "http://www.aleksey.com/xmlsec/2
 
 /*************************************************************************
  *
+ * SLH-DSA key strings
+ *
+ ************************************************************************/
+const xmlChar xmlSecNameSLHDSAKeyValue[]      = "slh-dsa";
+const xmlChar xmlSecHrefSLHDSAKeyValue[]      = "http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#slh-dsa";
+
+/*************************************************************************
+ *
+ * SLH-DSA signature trasnsform strings
+ *
+ ************************************************************************/
+const xmlChar xmlSecSLHDSANs[]                = "http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#";
+const xmlChar xmlSecNodeSLHDSAContextString[] = "SLHDSAContextString";
+
+const xmlChar xmlSecNameSLHDSA_SHA2_128f[]    = "slh-dsa-sha2-128f";
+const xmlChar xmlSecHrefSLHDSA_SHA2_128f[]    = "http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#slh-dsa-sha2-128f";
+
+
+/*************************************************************************
+ *
  * EncryptedKey
  *
  ************************************************************************/

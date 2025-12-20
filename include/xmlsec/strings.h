@@ -272,7 +272,6 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefECKeyValue[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeNamedCurve[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodePublicKey[];
 
-
 /*************************************************************************
  *
  * ECDH key agreement strings
@@ -346,6 +345,28 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefGostR3410_2012GostR3411_2012_256[];
 
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameGostR3410_2012GostR3411_2012_512[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefGostR3410_2012GostR3411_2012_512[];
+
+/*************************************************************************
+ *
+ * ML-DSA key strings
+ *
+ ************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameMLDSAKeyValue[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefMLDSAKeyValue[];
+
+/*************************************************************************
+ *
+ * ML-DSA signature trasnsform strings
+ *
+ ************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameMLDSA44[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefMLDSA44[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameMLDSA65[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefMLDSA65[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameMLDSA87[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefMLDSA87[];
 
 /*************************************************************************
  *

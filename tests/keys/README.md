@@ -223,6 +223,58 @@ openssl verify -CAfile cacert.pem -untrusted ca2cert.pem dh1024-first-pubkey.crt
 rm dh1024-first-req.pem
 ```
 
+### Generate ML-DSA keys with second level CA
+
+ML-DSA-44 keys
+```
+openssl genpkey -algorithm ML-DSA-44 -out ml-dsa-44-key.pem
+openssl pkey -in ml-dsa-44-key.pem -pubout -out ml-dsa-44-pubkey.pem
+
+*** Use 'ML-DSA-44 Key' for Common Name:
+openssl req -config ./openssl.cnf -new -key ml-dsa-44-key.pem -out ml-dsa-44-req.pem
+openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem \
+        -out ml-dsa-44-cert.pem -infiles ml-dsa-44-req.pem
+openssl verify -CAfile cacert.pem -untrusted ca2cert.pem ml-dsa-44-cert.pem
+rm ml-dsa-44-req.pem
+
+openssl x509 -in ml-dsa-44-cert.pem -inform PEM -out ml-dsa-44-cert.der -outform DER
+cp ml-dsa-44-cert.der ml-dsa-44-pubkey.crt
+
+```
+
+ML-DSA-65 keys
+```
+openssl genpkey -algorithm ML-DSA-65 -out ml-dsa-65-key.pem
+openssl pkey -in ml-dsa-65-key.pem -pubout -out ml-dsa-65-pubkey.pem
+
+*** Use 'ML-DSA-65 Key' for Common Name:
+openssl req -config ./openssl.cnf -new -key ml-dsa-65-key.pem -out ml-dsa-65-req.pem
+openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem \
+        -out ml-dsa-65-cert.pem -infiles ml-dsa-65-req.pem
+openssl verify -CAfile cacert.pem -untrusted ca2cert.pem ml-dsa-65-cert.pem
+rm ml-dsa-65-req.pem
+
+openssl x509 -in ml-dsa-65-cert.pem -inform PEM -out ml-dsa-65-cert.der -outform DER
+cp ml-dsa-65-cert.der ml-dsa-65-pubkey.crt
+
+```
+
+ML-DSA-87 keys
+```
+openssl genpkey -algorithm ML-DSA-87 -out ml-dsa-87-key.pem
+openssl pkey -in ml-dsa-87-key.pem -pubout -out ml-dsa-87-pubkey.pem
+
+*** Use 'ML-DSA-87 Key' for Common Name:
+openssl req -config ./openssl.cnf -new -key ml-dsa-87-key.pem -out ml-dsa-87-req.pem
+openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem \
+        -out ml-dsa-87-cert.pem -infiles ml-dsa-87-req.pem
+openssl verify -CAfile cacert.pem -untrusted ca2cert.pem ml-dsa-87-cert.pem
+rm ml-dsa-87-req.pem
+
+openssl x509 -in ml-dsa-87-cert.pem -inform PEM -out ml-dsa-87-cert.der -outform DER
+cp ml-dsa-87-cert.der ml-dsa-87-pubkey.crt
+
+```
 
 ### Generate two certs and keys with the same certificate
 ```
@@ -266,6 +318,7 @@ OPENSSL_CONF=./openssl.cnf openssl verify -CAfile cacert.pem -untrusted ca2cert.
 rm gost2012_512req.pem
 ```
 
+
 ## Converting key and certs between PEM and DER formats
 
 ### Convert PEM private key file to DER file
@@ -300,6 +353,20 @@ openssl ec -inform PEM -outform DER -in ecdsa-secp256r1-key.pem -pubout -out ecd
 openssl ec -inform PEM -outform DER -in ecdsa-secp384r1-key.pem -pubout -out ecdsa-secp384r1-pubkey.der
 openssl ec -inform PEM -outform DER -in ecdsa-secp521r1-key.pem -pubout -out ecdsa-secp521r1-pubkey.der
 ```
+
+
+ML-DSA keys
+```
+openssl pkey -in ml-dsa-44-key.pem -outform DER -out ml-dsa-44-key.der
+openssl pkey -in ml-dsa-44-key.pem -pubout -outform DER -out ml-dsa-44-pubkey.der
+
+openssl pkey -in ml-dsa-65-key.pem -outform DER -out ml-dsa-65-key.der
+openssl pkey -in ml-dsa-65-key.pem -pubout -outform DER -out ml-dsa-65-pubkey.der
+
+openssl pkey -in ml-dsa-87-key.pem -outform DER -out ml-dsa-87-key.der
+openssl pkey -in ml-dsa-87-key.pem -pubout -outform DER -out ml-dsa-87-pubkey.der
+``
+
 
 ### Convert PEM cert file to DER file (IMPORTANT: use OpenSSL 1.x for generating DER files!!!)
 ```
@@ -368,8 +435,14 @@ is `secret123`):
  openssl pkcs8 -in ecdsa-secp384r1-key.der -inform der -out ecdsa-secp384r1-key.p8-pem -outform pem -topk8
  openssl pkcs8 -in ecdsa-secp521r1-key.der -inform der -out ecdsa-secp521r1-key.p8-der -outform der -topk8
  openssl pkcs8 -in ecdsa-secp521r1-key.der -inform der -out ecdsa-secp521r1-key.p8-pem -outform pem -topk8
-```
 
+ openssl pkcs8 -in ml-dsa-44-key.der -inform der -out ml-dsa-44-key.p8-pem -outform pem -topk8
+ openssl pkcs8 -in ml-dsa-44-key.der -inform der -out ml-dsa-44-key.p8-der -outform der -topk8
+ openssl pkcs8 -in ml-dsa-65-key.der -inform der -out ml-dsa-65-key.p8-pem -outform pem -topk8
+ openssl pkcs8 -in ml-dsa-65-key.der -inform der -out ml-dsa-65-key.p8-der -outform der -topk8
+ openssl pkcs8 -in ml-dsa-87-key.der -inform der -out ml-dsa-87-key.p8-pem -outform pem -topk8
+ openssl pkcs8 -in ml-dsa-87-key.der -inform der -out ml-dsa-87-key.p8-der -outform der -topk8
+```
 
 
 GOST keys (see above the instructions to configure GOST engine):
@@ -435,6 +508,18 @@ rm all-ecdsa-secp384r1.pem
 cat ecdsa-secp521r1-key.pem ecdsa-secp521r1-cert.pem ca2cert.pem cacert.pem > all-ecdsa-secp521r1.pem
 openssl pkcs12 -export -in all-ecdsa-secp521r1.pem -name TestEcdsaSecp521r1Key -out ecdsa-secp521r1-key.p12
 rm all-ecdsa-secp521r1.pem
+
+cat ml-dsa-44-key.pem ml-dsa-44-cert.pem ca2cert.pem cacert.pem > all-ml-dsa-44.pem
+openssl pkcs12 -export -in all-ml-dsa-44.pem -name TestMLDSA44KeName -out ml-dsa-44-key.p12
+rm all-ml-dsa-44.pem
+
+cat ml-dsa-65-key.pem ml-dsa-65-cert.pem ca2cert.pem cacert.pem > all-ml-dsa-65.pem
+openssl pkcs12 -export -in all-ml-dsa-65.pem -name TestMLDSA65KeName -out ml-dsa-65-key.p12
+rm all-ml-dsa-65.pem
+
+cat ml-dsa-87-key.pem ml-dsa-87-cert.pem ca2cert.pem cacert.pem > all-ml-dsa-87.pem
+openssl pkcs12 -export -in all-ml-dsa-87.pem -name TestMLDSA87KeName -out ml-dsa-87-key.p12
+rm all-ml-dsa-87.pem
 ```
 
 GOST keys (see above the instructions to configure GOST engine):
@@ -451,6 +536,7 @@ cat gost2012_512key.pem gost2012_512cert.pem ca2cert.pem cacert.pem > all-gost20
 OPENSSL_CONF=./openssl.cnf openssl pkcs12 -export -in all-gost2012_512.pem -name TestGost2012_512Key -out gost2012_512key.p12
 rm all-gost2012_512.pem
 ```
+
 
 ### Load keys into NSS DB
 The following process loads a few keys into NSS DB for testing that XMLSec can find keys in NSS DB  (the tests password is `secret123`, do NOT specify password for nssdb):

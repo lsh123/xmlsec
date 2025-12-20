@@ -136,6 +136,10 @@ xmlSecCryptoGetFunctions_openssl(void) {
     gXmlSecOpenSSLFunctions->keyDataRsaGetKlass         = xmlSecOpenSSLKeyDataRsaGetKlass;
 #endif /* XMLSEC_NO_RSA */
 
+#ifndef XMLSEC_NO_MDSA
+    gXmlSecOpenSSLFunctions->keyDataMLDSAGetKlass     = xmlSecOpenSSLKeyDataMLDSAGetKlass;
+#endif /* XMLSEC_NO_MDSA */
+
 #ifndef XMLSEC_NO_X509
     gXmlSecOpenSSLFunctions->keyDataX509GetKlass        = xmlSecOpenSSLKeyDataX509GetKlass;
     gXmlSecOpenSSLFunctions->keyDataRawX509CertGetKlass = xmlSecOpenSSLKeyDataRawX509CertGetKlass;
@@ -291,6 +295,14 @@ xmlSecCryptoGetFunctions_openssl(void) {
 #ifndef XMLSEC_NO_MD5
     gXmlSecOpenSSLFunctions->transformMd5GetKlass               = xmlSecOpenSSLTransformMd5GetKlass;
 #endif /* XMLSEC_NO_MD5 */
+
+    /******************************* ML-DSA ********************************/
+#ifndef XMLSEC_NO_MLDSA
+    gXmlSecOpenSSLFunctions->transformMLDSA44GetKlass            = xmlSecOpenSSLTransformMLDSA44GetKlass;
+    gXmlSecOpenSSLFunctions->transformMLDSA65GetKlass            = xmlSecOpenSSLTransformMLDSA65GetKlass;
+    gXmlSecOpenSSLFunctions->transformMLDSA87GetKlass            = xmlSecOpenSSLTransformMLDSA87GetKlass;
+#endif /* XMLSEC_NO_MLDSA */
+
 
     /******************************* PBKDF2 ********************************/
 #ifndef XMLSEC_NO_PBKDF2

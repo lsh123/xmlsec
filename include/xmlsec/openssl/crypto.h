@@ -36,6 +36,10 @@
 #include <openssl/evp.h>
 #endif /* XMLSEC_NO_RSA */
 
+#ifndef XMLSEC_NO_MLDSA
+#include <openssl/evp.h>
+#endif /* XMLSEC_NO_MLDSA */
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
@@ -133,6 +137,10 @@ XMLSEC_CRYPTO_EXPORT BIO*               xmlSecOpenSSLCreateReadFileBio (const ch
 #ifdef OPENSSL_NO_RSA
 #define XMLSEC_NO_RSA       1
 #endif /* OPENSSL_NO_RSA */
+
+#ifdef OPENSSL_NO_ML_DSA
+#define XMLSEC_NO_MLDSA      1
+#endif /* OPENSSL_NO_ML_DSA */
 
 #ifdef OPENSSL_NO_SHA1
 #define XMLSEC_NO_SHA1      1
@@ -1027,6 +1035,57 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformRsaPssSha3_512GetKl
 
 #endif /* XMLSEC_NO_RSA */
 
+/********************************************************************
+ *
+ * ML DSA key and transforms (EXPERIMENTAL)
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_MLDSA
+
+/**
+ * xmlSecOpenSSLKeyDataMLDSAId:
+ *
+ * The RSA key klass.
+ */
+#define xmlSecOpenSSLKeyDataMLDSAId \
+        xmlSecOpenSSLKeyDataMLDSAGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataMLDSAGetKlass   (void);
+XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeyDataMLDSAAdoptEvp   (xmlSecKeyDataPtr data,
+                                                                             EVP_PKEY* pKey);
+XMLSEC_CRYPTO_EXPORT EVP_PKEY*          xmlSecOpenSSLKeyDataMLDSAGetEvp     (xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeyDataMLDSAGetKL      (xmlSecKeyDataPtr data);
+
+
+/**
+ * xmlSecOpenSSLTransformMLDSA44Id:
+ *
+ * The ML-DSA-44 signature transform klass.
+ */
+#define xmlSecOpenSSLTransformMLDSA44Id  \
+        xmlSecOpenSSLTransformMLDSA44GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformMLDSA44GetKlass(void);
+
+
+/**
+ * xmlSecOpenSSLTransformMLDSA65Id:
+ *
+ * The ML-DSA-65 signature transform klass.
+ */
+#define xmlSecOpenSSLTransformMLDSA65Id  \
+        xmlSecOpenSSLTransformMLDSA65GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformMLDSA65GetKlass(void);
+
+
+/**
+ * xmlSecOpenSSLTransformMLDSA87Id:
+ *
+ * The ML-DSA-87 signature transform klass.
+ */
+#define xmlSecOpenSSLTransformMLDSA87Id  \
+        xmlSecOpenSSLTransformMLDSA87GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformMLDSA87GetKlass(void);
+
+#endif /* XMLSEC_NO_MLDSA */
 
 /********************************************************************
  *

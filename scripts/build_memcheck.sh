@@ -17,7 +17,7 @@ if [ x"$crypto" = x ]; then
 fi
 
 echo "============== Starting memcheck for ${crypto} using source root '${top_dir}'"
-rm -f /tmp/*.log
+rm -rf /tmp/xmlsec-test*
 make distclean
 ${top_dir}/autogen.sh --enable-development --with-default-crypto=${crypto} "$@"
 make -j12

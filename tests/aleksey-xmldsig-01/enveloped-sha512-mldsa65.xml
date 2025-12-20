@@ -89,7 +89,7 @@ ZxYHfaCuOdWo5xKgLEHOL8PG0rcPupZe6ibOE4YuEx8EXSADIwLX4mapDrH9tCBw
 wqGQ0CpsI8RRMlngo82Siw+xnYx7yXszwCm2Fwm+b8gJDSRJT1qi/CgvYYKp0Nb5
 YYGdDCY5ZGhucoOHlK1skKDiDRFDZG5vcHl7f5++wgAAAAAAAAAACBATHiIv</SignatureValue>
     <KeyInfo>
-      <KeyName>TestMLDSA65KeName</KeyName>
+      <KeyName>TestKeyName-ML-DSA-65</KeyName>
     </KeyInfo>
   </Signature>
 </Envelope>

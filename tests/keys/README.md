@@ -539,15 +539,15 @@ openssl pkcs12 -export -in all-ecdsa-secp521r1.pem -name TestEcdsaSecp521r1Key -
 rm all-ecdsa-secp521r1.pem
 
 cat ml-dsa-44-key.pem ml-dsa-44-cert.pem ca2cert.pem cacert.pem > all-ml-dsa-44.pem
-openssl pkcs12 -export -in all-ml-dsa-44.pem -name TestMLDSA44KeName -out ml-dsa-44-key.p12
+openssl pkcs12 -export -in all-ml-dsa-44.pem -name TestKeyName-ML-DSA-44 -out ml-dsa-44-key.p12
 rm all-ml-dsa-44.pem
 
 cat ml-dsa-65-key.pem ml-dsa-65-cert.pem ca2cert.pem cacert.pem > all-ml-dsa-65.pem
-openssl pkcs12 -export -in all-ml-dsa-65.pem -name TestMLDSA65KeName -out ml-dsa-65-key.p12
+openssl pkcs12 -export -in all-ml-dsa-65.pem -name TestKeyName-ML-DSA-65 -out ml-dsa-65-key.p12
 rm all-ml-dsa-65.pem
 
 cat ml-dsa-87-key.pem ml-dsa-87-cert.pem ca2cert.pem cacert.pem > all-ml-dsa-87.pem
-openssl pkcs12 -export -in all-ml-dsa-87.pem -name TestMLDSA87KeName -out ml-dsa-87-key.p12
+openssl pkcs12 -export -in all-ml-dsa-87.pem -name TestKeyName-ML-DSA-87 -out ml-dsa-87-key.p12
 rm all-ml-dsa-87.pem
 
 cat slh-dsa-sha2-128f-key.pem slh-dsa-sha2-128f-cert.pem ca2cert.pem cacert.pem > all-slh-dsa-sha2-128f.pem

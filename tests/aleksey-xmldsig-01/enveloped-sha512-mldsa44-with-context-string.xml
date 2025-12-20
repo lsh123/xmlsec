@@ -73,7 +73,7 @@ D0LFf8n5PmYUDzar6o77HP1eVCzaeDFQNUlDlQ19CWrmR4/rtDiOTvOyAP5Hh/fO
 8/T/AAEYHCZWXnaBg5uhvOPn8gEEESMyS2lxnMDl/gYXLzU6QldiZHfAwdMAAAAA
 AAAAAAAAAAAAAAAAAAAAABMjLzw=</SignatureValue>
     <KeyInfo>
-      <KeyName>TestMLDSA44KeName</KeyName>
+      <KeyName>TestKeyName-ML-DSA-44</KeyName>
     </KeyInfo>
   </Signature>
 </Envelope>

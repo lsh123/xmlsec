@@ -117,7 +117,7 @@ c7S4orXSzAIGMRGj5yrU9YbQsmsAEZyxRsjMPQQFe+8fdxxMTmq02/Dx+EZOWHBz
 1kFMcXaLrucOO0yfw/H6AQYhOJLI3ipOXmdqvdJUmb71AAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAACCxEYHyYtMQ==</SignatureValue>
     <KeyInfo>
-      <KeyName>TestMLDSA87KeName</KeyName>
+      <KeyName>TestKeyName-ML-DSA-87</KeyName>
     </KeyInfo>
   </Signature>
 </Envelope>

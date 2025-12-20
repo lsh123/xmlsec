@@ -21,7 +21,7 @@ jobs:
           # default build
           - config_flags:
           # default build with all legacy features
-          - config_flags: --enable-legacy-features --enable-ftp --enable-http
+          - config_flags: --enable-legacy-features --enable-experimental-features --enable-ftp --enable-http
           # static openssl build
           - config_flags: --enable-static --enable-static-linking --disable-openssl3-engines --without-nss --without-gnutls --without-gcrypt --enable-legacy-features
           # static gnutls build with GOST

@@ -29,7 +29,6 @@
 #define XMLSEC_NO_DH                        1
 #define XMLSEC_NO_DSA                       1
 #define XMLSEC_NO_SHA3                      1
-#define XMLSEC_NO_MLDSA                     1
 
 
 #define ENGINE_cleanup(...)                 {}
@@ -127,7 +126,6 @@ typedef int xmlSecOpenSSLSizeT;
 #define XMLSEC_OPENSSL_NO_PWD_CALLBACK      1
 #define XMLSEC_OPENSSL_NO_DEEP_COPY         1
 #define XMLSEC_NO_DH                        1
-#define XMLSEC_NO_MLDSA                     1
 
 #define RAND_priv_bytes(buf,len)            RAND_bytes((buf), (len))
 
@@ -144,6 +142,16 @@ typedef int xmlSecOpenSSLSizeT;
 #endif /* (LIBRESSL_VERSION_NUMBER < 0x3070200fL) */
 
 #endif /* defined(LIBRESSL_VERSION_NUMBER) */
+
+
+/******************************************************************************
+ *
+ * OpenSSL 3.5.0 compatibility
+ *
+ *****************************************************************************/
+#if !defined(XMLSEC_OPENSSL_API_350)
+#define XMLSEC_NO_MLDSA                     1
+#endif /* !defined(XMLSEC_OPENSSL_API_350) */
 
 /******************************************************************************
  *

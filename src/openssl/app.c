@@ -143,7 +143,6 @@ xmlSecOpenSSLAppInit(const char* config) {
     xmlSecOpenSSLSetLibCtx(libCtx);
     */
 #endif /* XMLSEC_OPENSSL_API_300 */
-
     int ret;
     uint64_t opts = 0;
 

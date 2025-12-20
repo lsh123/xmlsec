@@ -803,6 +803,8 @@ done:
  *
  *************************************************************************/
 
+#define XMLSEC_OPENSSL_DSA_EVP_NAME              "DSA"
+
 /*
  * @xmlSecOpenSSLKeyValueDsa: holds the parts of OpenSSL DSA key
  */
@@ -1324,7 +1326,7 @@ xmlSecOpenSSLKeyDataDsaSetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueDsaP
             xmlSecKeyDataGetName(data));
         goto done;
     }
-    ctx = EVP_PKEY_CTX_new_from_name(xmlSecOpenSSLGetLibCtx(), "DSA", NULL);
+    ctx = EVP_PKEY_CTX_new_from_name(xmlSecOpenSSLGetLibCtx(), XMLSEC_OPENSSL_DSA_EVP_NAME, NULL);
     if(ctx == NULL) {
         xmlSecOpenSSLError("EVP_PKEY_CTX_new_from_name",
             xmlSecKeyDataGetName(data));
@@ -1383,7 +1385,7 @@ xmlSecOpenSSLKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
     xmlSecAssert2(sizeBits > 0, -1);
     UNREFERENCED_PARAMETER(type);
 
-    pctx = EVP_PKEY_CTX_new_from_name(xmlSecOpenSSLGetLibCtx(), "DSA", NULL);
+    pctx = EVP_PKEY_CTX_new_from_name(xmlSecOpenSSLGetLibCtx(), XMLSEC_OPENSSL_DSA_EVP_NAME, NULL);
     if(pctx == NULL) {
         xmlSecOpenSSLError("EVP_PKEY_CTX_new_from_name", xmlSecKeyDataGetName(data));
         goto done;
@@ -2652,6 +2654,9 @@ done:
  *
  *************************************************************************/
 
+#define XMLSEC_OPENSSL_EC_EVP_NAME                  "EC"
+
+
 static int              xmlSecOpenSSLKeyDataEcInitialize        (xmlSecKeyDataPtr data);
 static int              xmlSecOpenSSLKeyDataEcDuplicate         (xmlSecKeyDataPtr dst,
                                                                  xmlSecKeyDataPtr src);
@@ -3303,7 +3308,7 @@ xmlSecOpenSSLKeyDataEcSetValue(xmlSecKeyDataPtr data, const xmlChar* curveOid, x
     }
 
     /* create pkey ctx */
-    ctx = EVP_PKEY_CTX_new_from_name(xmlSecOpenSSLGetLibCtx(), "ec", NULL);
+    ctx = EVP_PKEY_CTX_new_from_name(xmlSecOpenSSLGetLibCtx(), XMLSEC_OPENSSL_EC_EVP_NAME, NULL);
     if(ctx == NULL) {
         xmlSecOpenSSLError("EVP_PKEY_CTX_new_from_name", xmlSecKeyDataGetName(data));
         goto done;
@@ -3526,6 +3531,7 @@ xmlSecOpenSSLKeyValueRsaFinalize(xmlSecOpenSSLKeyValueRsaPtr rsaKeyValue) {
  * to the end
  *
  *************************************************************************/
+#define XMLSEC_OPENSSL_RSA_EVP_NAME                  "RSA"
 
 static int              xmlSecOpenSSLKeyDataRsaInitialize       (xmlSecKeyDataPtr data);
 static int              xmlSecOpenSSLKeyDataRsaDuplicate        (xmlSecKeyDataPtr dst,
@@ -3931,7 +3937,7 @@ xmlSecOpenSSLKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
         goto done;
     }
 
-    pctx = EVP_PKEY_CTX_new_from_name(xmlSecOpenSSLGetLibCtx(), "RSA", NULL);
+    pctx = EVP_PKEY_CTX_new_from_name(xmlSecOpenSSLGetLibCtx(), XMLSEC_OPENSSL_RSA_EVP_NAME, NULL);
     if(pctx == NULL) {
         xmlSecOpenSSLError("EVP_PKEY_CTX_new_from_name",
             xmlSecKeyDataGetName(data));
@@ -4089,7 +4095,7 @@ xmlSecOpenSSLKeyDataRsaSetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueRsaP
             xmlSecKeyDataGetName(data));
         goto done;
     }
-    ctx = EVP_PKEY_CTX_new_from_name(xmlSecOpenSSLGetLibCtx(), "RSA", NULL);
+    ctx = EVP_PKEY_CTX_new_from_name(xmlSecOpenSSLGetLibCtx(), XMLSEC_OPENSSL_RSA_EVP_NAME, NULL);
     if(ctx == NULL) {
         xmlSecOpenSSLError("EVP_PKEY_CTX_new_from_name",
             xmlSecKeyDataGetName(data));

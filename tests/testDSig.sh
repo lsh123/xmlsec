@@ -1207,6 +1207,15 @@ execDSigTest $res_success \
     "$priv_key_option:TestMLDSA87KeName $topfolder/keys/ml-dsa-87-key.$priv_key_format --pwd secret123" \
     "$pub_key_option:TestMLDSA87KeName $topfolder/keys/ml-dsa-87-pubkey.$pub_key_format"
 
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloped-sha512-mldsa44-with-context-string" \
+    "sha512 ml-dsa-44" \
+    "ml-dsa" \
+    "$pub_key_option:TestMLDSA44KeName $topfolder/keys/ml-dsa-44-pubkey.$pub_key_format" \
+    "$priv_key_option:TestMLDSA44KeName $topfolder/keys/ml-dsa-44-key.$priv_key_format --pwd secret123" \
+    "$pub_key_option:TestMLDSA44KeName $topfolder/keys/ml-dsa-44-pubkey.$pub_key_format"
+
 ##########################################################################
 ##########################################################################
 ##########################################################################

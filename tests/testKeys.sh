@@ -67,32 +67,23 @@ execKeysTest $res_success   \
 execKeysTest $res_success   \
     "ml-dsa"                \
     ""                      \
-    "ml-dsa-44"                \
-    "$topfolder/keys/ml-dsa-44-key" \
-    "$topfolder/keys/ml-dsa-44-pubkey" \
-    "" \
+    "ml-dsa-44"                         \
+    "$topfolder/keys/ml-dsa-44-key"     \
+    "$topfolder/keys/ml-dsa-44-pubkey"  \
+    ""                      \
     "$topfolder/aleksey-xmldsig-01/enveloped-sha512-mldsa44" \
     "--pwd secret123 --enabled-key-data key-name"
 
 execKeysTest $res_success   \
-    "ml-dsa"                \
+    "slh-dsa"               \
     ""                      \
-    "ml-dsa-65"                \
-    "$topfolder/keys/ml-dsa-65-key" \
-    "$topfolder/keys/ml-dsa-65-pubkey" \
-    "" \
-    "$topfolder/aleksey-xmldsig-01/enveloped-sha512-mldsa65" \
+    "slh-dsa-sha2-128f"                         \
+    "$topfolder/keys/slh-dsa-sha2-128f-key"     \
+    "$topfolder/keys/slh-dsa-sha2-128f-pubkey"  \
+    ""                      \
+    "$topfolder/aleksey-xmldsig-01/enveloped-sha512-slhdsa-sha2-128f" \
     "--pwd secret123 --enabled-key-data key-name"
 
-execKeysTest $res_success   \
-    "ml-dsa"                \
-    ""                      \
-    "ml-dsa-87"                \
-    "$topfolder/keys/ml-dsa-87-key" \
-    "$topfolder/keys/ml-dsa-87-pubkey" \
-    "" \
-    "$topfolder/aleksey-xmldsig-01/enveloped-sha512-mldsa87" \
-    "--pwd secret123 --enabled-key-data key-name"
 
 # generating large dh keys takes forever
 execKeysTest $res_success   \

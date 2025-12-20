@@ -4941,5 +4941,4 @@ xmlSecOpenSSLKeyDataMLDSADebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     fprintf(output, "<MLDSAKey kl=\"%d\" />\n", xmlSecOpenSSLKeyDataMLDSAGetKL(data));
 }
 
-
 #endif /* XMLSEC_NO_MLDSA */

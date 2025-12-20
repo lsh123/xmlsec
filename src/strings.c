@@ -359,6 +359,9 @@ const xmlChar xmlSecHrefMLDSAKeyValue[]       = "http://www.aleksey.com/xmlsec/2
  * ML-DSA signature trasnsform strings
  *
  ************************************************************************/
+const xmlChar xmlSecMLDSANs[]                 = "http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#";
+const xmlChar xmlSecNodeMLDSAContextString[]  = "MLDSAContextString";
+
 const xmlChar xmlSecNameMLDSA44[]             = "ml-dsa-44";
 const xmlChar xmlSecHrefMLDSA44[]             = "http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#ml-dsa-44";
 

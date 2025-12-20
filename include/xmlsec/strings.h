@@ -359,6 +359,9 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefMLDSAKeyValue[];
  * ML-DSA signature trasnsform strings
  *
  ************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecMLDSANs[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeMLDSAContextString[];
+
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameMLDSA44[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefMLDSA44[];
 

@@ -192,7 +192,7 @@ dnl ==========================================================================
 dnl Do we want to enable legacy features?
 dnl ==========================================================================
 AC_MSG_CHECKING(for legacy features support)
-AC_ARG_ENABLE([legacy_features], [AS_HELP_STRING([--enable-legacy_features],[legacy features (no)])])
+AC_ARG_ENABLE([legacy_features], [AS_HELP_STRING([--enable-legacy-features],[legacy features (no)])])
 if test "z$enable_legacy_features" = "zyes" ; then
 
     dnl legacy crypto engines
@@ -202,6 +202,21 @@ if test "z$enable_legacy_features" = "zyes" ; then
     dnl legacy crypto algos
     enable_md5="yes"
     enable_ripemd160="yes"
+
+    AC_MSG_RESULT([yes])
+else
+    AC_MSG_RESULT([no])
+fi
+
+dnl ==========================================================================
+dnl Do we want to enable experimental features?
+dnl ==========================================================================
+AC_MSG_CHECKING(for experimental features support)
+AC_ARG_ENABLE([experimental_features], [AS_HELP_STRING([--enable-experimental-features],[experimental features (no)])])
+if test "z$enable_experimental_features" = "zyes" ; then
+
+    dnl experimental crypto engines
+    enable_mldsa="yes"
 
     AC_MSG_RESULT([yes])
 else

@@ -386,9 +386,9 @@ xmlSecOpenSSLEvpKeyGetId(EVP_PKEY *pKey) {
     if(id != EVP_PKEY_NONE) {
         return(id);
     }
-
     typeName = EVP_PKEY_get0_type_name(pKey);
     if(typeName != NULL) {
+#ifndef XMLSEC_NO_MLDSA
         if(strcmp(LN_ML_DSA_44, typeName) == 0) {
             return (EVP_PKEY_ML_DSA_44);
         } else  if(strcmp(LN_ML_DSA_65, typeName) == 0) {
@@ -397,6 +397,7 @@ xmlSecOpenSSLEvpKeyGetId(EVP_PKEY *pKey) {
             return (EVP_PKEY_ML_DSA_87);
         }
     }
+#endif /* XMLSEC_NO_MLDSA */
 
     /* no luck */
     return(EVP_PKEY_NONE);

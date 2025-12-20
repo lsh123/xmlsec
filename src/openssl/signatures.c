@@ -394,6 +394,17 @@ xmlSecOpenSSLEvpSignatureCheckId(xmlSecTransformPtr transform) {
 
     /*************************************************************************
      *
+     * SLH-DSA
+     *
+     ************************************************************************/
+#ifndef XMLSEC_NO_SLHDSA
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSLHDSA_SHA2_128fId)) {
+        return(1);
+    } else
+#endif /* XMLSEC_NO_SLHDSA */
+
+    /*************************************************************************
+     *
      * Unknown
      *
      ************************************************************************/
@@ -724,6 +735,43 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
 
 #endif /* XMLSEC_NO_EC */
 
+
+    /*************************************************************************
+     *
+     * ML-DSA
+     *
+     ************************************************************************/
+#ifndef XMLSEC_NO_MLDSA
+    /* ML-DSA uses hard coded  SHAKE-128 and SHAKE-256 so no need to have digest here */
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformMLDSA44Id)) {
+        ctx->keyId           = xmlSecOpenSSLKeyDataMLDSAId;
+        ctx->signatureFormat = xmlSecOpenSSLEvpSignatureFormat_DoNothing;
+        ctx->signatureName   = LN_ML_DSA_44;
+    } else if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformMLDSA65Id)) {
+        ctx->keyId           = xmlSecOpenSSLKeyDataMLDSAId;
+        ctx->signatureFormat = xmlSecOpenSSLEvpSignatureFormat_DoNothing;
+        ctx->signatureName   = LN_ML_DSA_65;
+    } else if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformMLDSA87Id)) {
+        ctx->keyId           = xmlSecOpenSSLKeyDataMLDSAId;
+        ctx->signatureFormat = xmlSecOpenSSLEvpSignatureFormat_DoNothing;
+        ctx->signatureName   = LN_ML_DSA_87;
+    } else
+#endif /* XMLSEC_NO_MLDSA */
+
+    /*************************************************************************
+     *
+     * SLH-DSA
+     *
+     ************************************************************************/
+#ifndef XMLSEC_NO_SLHDSA
+    /* ML-DSA uses hard coded  SHAKE-128 and SHAKE-256 so no need to have digest here */
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSLHDSA_SHA2_128fId)) {
+        ctx->keyId           = xmlSecOpenSSLKeyDataSLHDSAId;
+        ctx->signatureFormat = xmlSecOpenSSLEvpSignatureFormat_DoNothing;
+        ctx->signatureName   = LN_SLH_DSA_SHA2_128f;
+    } else
+#endif /* XMLSEC_NO_SLHDSA */
+
     /*************************************************************************
      *
      * GOST
@@ -753,29 +801,6 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
         ctx->rsaPadding      = RSA_PKCS1_PADDING;
     } else
 #endif /* XMLSEC_NO_GOST2012 */
-
-    /*************************************************************************
-     *
-     * ML-DSA
-     *
-     ************************************************************************/
-
-#ifndef XMLSEC_NO_MLDSA
-    /* ML-DSA uses hard coded  SHAKE-128 and SHAKE-256 so no need to have digest here */
-    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformMLDSA44Id)) {
-        ctx->keyId           = xmlSecOpenSSLKeyDataMLDSAId;
-        ctx->signatureFormat = xmlSecOpenSSLEvpSignatureFormat_DoNothing;
-        ctx->signatureName   = LN_ML_DSA_44;
-    } else if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformMLDSA65Id)) {
-        ctx->keyId           = xmlSecOpenSSLKeyDataMLDSAId;
-        ctx->signatureFormat = xmlSecOpenSSLEvpSignatureFormat_DoNothing;
-        ctx->signatureName   = LN_ML_DSA_65;
-    } else if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformMLDSA87Id)) {
-        ctx->keyId           = xmlSecOpenSSLKeyDataMLDSAId;
-        ctx->signatureFormat = xmlSecOpenSSLEvpSignatureFormat_DoNothing;
-        ctx->signatureName   = LN_ML_DSA_87;
-    } else
-#endif /* XMLSEC_NO_MLDSA */
 
     /*************************************************************************
      *
@@ -2429,62 +2454,6 @@ xmlSecOpenSSLTransformEcdsaSha3_512GetKlass(void) {
 
 #endif /* XMLSEC_NO_EC */
 
-/*************************************************************************
- *
- * GOST
- *
- ************************************************************************/
-#ifndef XMLSEC_NO_GOST
-/* GOST2001-GOSTR3411_94 signature transform: xmlSecOpenSSLGost2001GostR3411_94Klass */
-XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS(Gost2001GostR3411_94)
-
-/**
- * xmlSecOpenSSLTransformGost2001GostR3411_94GetKlass:
- *
- * The GOST2001-GOSTR3411_94 signature transform klass.
- *
- * Returns: GOST2001-GOSTR3411_94 signature transform klass.
- */
-xmlSecTransformId
-xmlSecOpenSSLTransformGost2001GostR3411_94GetKlass(void) {
-    return(&xmlSecOpenSSLGost2001GostR3411_94Klass);
-}
-#endif /* XMLSEC_NO_GOST */
-
-#ifndef XMLSEC_NO_GOST2012
-
-/* GOST R 34.10-2012 - GOST R 34.11-2012 256 bit signature transform: xmlSecOpenSSLGostR3410_2012GostR3411_2012_256Klass */
-XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS(GostR3410_2012GostR3411_2012_256)
-
-/**
- * xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_256GetKlass:
- *
- * The GOST R 34.10-2012 - GOST R 34.11-2012 256 bit signature transform klass.
- *
- * Returns: GOST R 34.10-2012 - GOST R 34.11-2012 256 bit signature transform klass.
- */
-xmlSecTransformId
-xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_256GetKlass(void) {
-    return(&xmlSecOpenSSLGostR3410_2012GostR3411_2012_256Klass);
-}
-
-/* GOST R 34.10-2012 - GOST R 34.11-2012 512 bit signature transform: xmlSecOpenSSLGostR3410_2012GostR3411_2012_512Klass */
-XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS(GostR3410_2012GostR3411_2012_512)
-
-/**
- * xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_512GetKlass:
- *
- * The GOST R 34.10-2012 - GOST R 34.11-2012 512 bit signature transform klass.
- *
- * Returns: GOST R 34.10-2012 - GOST R 34.11-2012 512 bit signature transform klass.
- */
-xmlSecTransformId
-xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_512GetKlass(void) {
-    return(&xmlSecOpenSSLGostR3410_2012GostR3411_2012_512Klass);
-}
-
-#endif /* XMLSEC_NO_GOST2012 */
-
 
 /*************************************************************************
  *
@@ -2576,3 +2545,122 @@ xmlSecOpenSSLTransformMLDSA87GetKlass(void) {
 }
 
 #endif /* XMLSEC_NO_MLDSA */
+
+
+/*************************************************************************
+ *
+ * SLH-DSA
+ *
+ ************************************************************************/
+
+#ifndef XMLSEC_NO_SLHDSA
+
+static int
+xmlSecOpenSSLTransformSLHDSANodeRead(
+    xmlSecTransformPtr transform,
+    xmlNodePtr node,
+    xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED
+) {
+    xmlSecOpenSSLEvpSignatureCtxPtr ctx;
+    int ret;
+
+    xmlSecAssert2(xmlSecOpenSSLEvpSignatureCheckId(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLEvpSignatureSize), -1);
+    UNREFERENCED_PARAMETER(transformCtx);
+
+    ctx = xmlSecOpenSSLEvpSignatureGetCtx(transform);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->contextString == NULL, -1);
+
+    /* set max size to make sure we have non-NULL buffer for OpenSSL params */
+    ctx->contextString = xmlSecBufferCreate(XMLSEC_SLHDSA_MAX_SIZE);
+    if (ctx->contextString == NULL) {
+        xmlSecInternalError("xmlSecBufferCreate()",  xmlSecTransformGetName(transform));
+        return(-1);
+    }
+
+    ret = xmlSecTransformSLHDSAReadContextString(node, ctx->contextString);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecTransformSLHDSAReadContextString()",  xmlSecTransformGetName(transform));
+        return(-1);
+    }
+
+    /* done */
+    return(0);
+}
+
+/* SLH-DSA-SHA2-128f signature transform: xmlSecOpenSSLSLHDSA_SHA2_128fKlass */
+XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS_EX(SLHDSA_SHA2_128f, xmlSecOpenSSLTransformSLHDSANodeRead)
+
+/**
+ * xmlSecOpenSSLTransformSLHDSA_SHA2_128fGetKlass:
+ *
+ * The SLH-DSA-SHA2-128f signature transform klass.
+ *
+ * Returns: SLH-DSA-SHA2-128fsignature transform klass.
+ */
+xmlSecTransformId
+xmlSecOpenSSLTransformSLHDSA_SHA2_128fGetKlass(void) {
+    return(&xmlSecOpenSSLSLHDSA_SHA2_128fKlass);
+}
+
+#endif /* XMLSEC_NO_SLHDSA */
+
+
+
+/*************************************************************************
+ *
+ * GOST
+ *
+ ************************************************************************/
+#ifndef XMLSEC_NO_GOST
+/* GOST2001-GOSTR3411_94 signature transform: xmlSecOpenSSLGost2001GostR3411_94Klass */
+XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS(Gost2001GostR3411_94)
+
+/**
+ * xmlSecOpenSSLTransformGost2001GostR3411_94GetKlass:
+ *
+ * The GOST2001-GOSTR3411_94 signature transform klass.
+ *
+ * Returns: GOST2001-GOSTR3411_94 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecOpenSSLTransformGost2001GostR3411_94GetKlass(void) {
+    return(&xmlSecOpenSSLGost2001GostR3411_94Klass);
+}
+#endif /* XMLSEC_NO_GOST */
+
+#ifndef XMLSEC_NO_GOST2012
+
+/* GOST R 34.10-2012 - GOST R 34.11-2012 256 bit signature transform: xmlSecOpenSSLGostR3410_2012GostR3411_2012_256Klass */
+XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS(GostR3410_2012GostR3411_2012_256)
+
+/**
+ * xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_256GetKlass:
+ *
+ * The GOST R 34.10-2012 - GOST R 34.11-2012 256 bit signature transform klass.
+ *
+ * Returns: GOST R 34.10-2012 - GOST R 34.11-2012 256 bit signature transform klass.
+ */
+xmlSecTransformId
+xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_256GetKlass(void) {
+    return(&xmlSecOpenSSLGostR3410_2012GostR3411_2012_256Klass);
+}
+
+/* GOST R 34.10-2012 - GOST R 34.11-2012 512 bit signature transform: xmlSecOpenSSLGostR3410_2012GostR3411_2012_512Klass */
+XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS(GostR3410_2012GostR3411_2012_512)
+
+/**
+ * xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_512GetKlass:
+ *
+ * The GOST R 34.10-2012 - GOST R 34.11-2012 512 bit signature transform klass.
+ *
+ * Returns: GOST R 34.10-2012 - GOST R 34.11-2012 512 bit signature transform klass.
+ */
+xmlSecTransformId
+xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_512GetKlass(void) {
+    return(&xmlSecOpenSSLGostR3410_2012GostR3411_2012_512Klass);
+}
+
+#endif /* XMLSEC_NO_GOST2012 */
+

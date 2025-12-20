@@ -373,6 +373,26 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefMLDSA87[];
 
 /*************************************************************************
  *
+ * SLH-DSA key strings
+ *
+ ************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameSLHDSAKeyValue[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefSLHDSAKeyValue[];
+
+/*************************************************************************
+ *
+ * SLH-DSA signature trasnsform strings
+ *
+ ************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecSLHDSANs[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeSLHDSAContextString[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameSLHDSA_SHA2_128f[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefSLHDSA_SHA2_128f[];
+
+
+/*************************************************************************
+ *
  * EncryptedKey
  *
  ************************************************************************/

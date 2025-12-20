@@ -216,7 +216,8 @@ AC_ARG_ENABLE([experimental_features], [AS_HELP_STRING([--enable-experimental-fe
 if test "z$enable_experimental_features" = "zyes" ; then
 
     dnl experimental crypto engines
-    enable_mldsa="yes"
+    enable_ml_dsa="yes"
+    enable_slh_dsa="yes"
 
     AC_MSG_RESULT([yes])
 else
@@ -2190,11 +2191,11 @@ AM_CONDITIONAL(XMLSEC_NO_EC, test "z$XMLSEC_NO_EC" = "z1")
 AC_SUBST(XMLSEC_NO_EC)
 
 dnl ==========================================================================
-dnl Check if we need MLDSA support (experimental)
+dnl Check if we need ML-DSA support (experimental)
 dnl ==========================================================================
 AC_MSG_CHECKING(for experimental ML-DSA support)
-AC_ARG_ENABLE([mldsa], [AS_HELP_STRING([--enable-mldsa],[enable experimental MLDSA support (no)])])
-if test "z$enable_mldsa" = "zyes" ; then
+AC_ARG_ENABLE([ml-dsa], [AS_HELP_STRING([--enable-ml-dsa],[enable experimental ML-DSA support (no)])])
+if test "z$enable_ml_dsa" = "zyes" ; then
     XMLSEC_NO_MLDSA="0"
     AC_MSG_RESULT([yes])
 else
@@ -2204,6 +2205,24 @@ else
 fi
 AM_CONDITIONAL(XMLSEC_NO_MLDSA, test "z$XMLSEC_NO_MLDSA" = "z1")
 AC_SUBST(XMLSEC_NO_MLDSA)
+
+
+dnl ==========================================================================
+dnl Check if we need SLH-DSA support (experimental)
+dnl ==========================================================================
+AC_MSG_CHECKING(for experimental SLH-DSA support)
+AC_ARG_ENABLE([slh-dsa], [AS_HELP_STRING([--enable-slh-dsa],[enable experimental SLH-DSA support (no)])])
+if test "z$enable_slh_dsa" = "zyes" ; then
+    XMLSEC_NO_SLHDSA="0"
+    AC_MSG_RESULT([yes])
+else
+    XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_SLHDSA=1"
+    XMLSEC_NO_SLHDSA="1"
+    AC_MSG_RESULT([disabled])
+fi
+AM_CONDITIONAL(XMLSEC_NO_SLHDSA, test "z$XMLSEC_NO_SLHDSA" = "z1")
+AC_SUBST(XMLSEC_NO_SLHDSA)
+
 
 dnl ==========================================================================
 dnl Check if we need x509 support

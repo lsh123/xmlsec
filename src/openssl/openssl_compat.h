@@ -151,6 +151,7 @@ typedef int xmlSecOpenSSLSizeT;
  *****************************************************************************/
 #if !defined(XMLSEC_OPENSSL_API_350)
 #define XMLSEC_NO_MLDSA                     1
+#define XMLSEC_NO_SLHDSA                    1
 #endif /* !defined(XMLSEC_OPENSSL_API_350) */
 
 /******************************************************************************

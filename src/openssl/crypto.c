@@ -137,8 +137,12 @@ xmlSecCryptoGetFunctions_openssl(void) {
 #endif /* XMLSEC_NO_RSA */
 
 #ifndef XMLSEC_NO_MLDSA
-    gXmlSecOpenSSLFunctions->keyDataMLDSAGetKlass     = xmlSecOpenSSLKeyDataMLDSAGetKlass;
+    gXmlSecOpenSSLFunctions->keyDataMLDSAGetKlass       = xmlSecOpenSSLKeyDataMLDSAGetKlass;
 #endif /* XMLSEC_NO_MLDSA */
+
+#ifndef XMLSEC_NO_SLHDSA
+    gXmlSecOpenSSLFunctions->keyDataSLHDSAGetKlass      = xmlSecOpenSSLKeyDataSLHDSAGetKlass;
+#endif /* XMLSEC_NO_SLHDSA */
 
 #ifndef XMLSEC_NO_X509
     gXmlSecOpenSSLFunctions->keyDataX509GetKlass        = xmlSecOpenSSLKeyDataX509GetKlass;
@@ -385,6 +389,12 @@ xmlSecCryptoGetFunctions_openssl(void) {
 #endif /* XMLSEC_NO_RSA_OAEP */
 
 #endif /* XMLSEC_NO_RSA */
+
+    /******************************* SLH-DSA ********************************/
+#ifndef XMLSEC_NO_SLHDSA
+    gXmlSecOpenSSLFunctions->transformSLHDSA_SHA2_128fGetKlass = xmlSecOpenSSLTransformSLHDSA_SHA2_128fGetKlass;
+#endif /* XMLSEC_NO_SLHDSA */
+
 
     /******************************* SHA ********************************/
 #ifndef XMLSEC_NO_SHA1

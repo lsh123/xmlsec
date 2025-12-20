@@ -40,6 +40,10 @@
 #include <openssl/evp.h>
 #endif /* XMLSEC_NO_MLDSA */
 
+#ifndef XMLSEC_NO_SLHDSA
+#include <openssl/evp.h>
+#endif /* XMLSEC_NO_SLHDSA */
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
@@ -144,6 +148,10 @@ XMLSEC_CRYPTO_EXPORT BIO*               xmlSecOpenSSLCreateReadFileBio (const ch
 #ifdef OPENSSL_NO_ML_DSA
 #define XMLSEC_NO_MLDSA      1
 #endif /* OPENSSL_NO_ML_DSA */
+
+#ifdef OPENSSL_NO_SLH_DSA
+#define XMLSEC_NO_SLHDSA      1
+#endif /* OPENSSL_NO_SLH_DSA */
 
 #ifdef OPENSSL_NO_SHA1
 #define XMLSEC_NO_SHA1      1
@@ -1048,7 +1056,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformRsaPssSha3_512GetKl
 /**
  * xmlSecOpenSSLKeyDataMLDSAId:
  *
- * The RSA key klass.
+ * The ML-DSA key klass.
  */
 #define xmlSecOpenSSLKeyDataMLDSAId \
         xmlSecOpenSSLKeyDataMLDSAGetKlass()
@@ -1089,6 +1097,40 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformMLDSA65GetKlass(voi
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformMLDSA87GetKlass(void);
 
 #endif /* XMLSEC_NO_MLDSA */
+
+
+/********************************************************************
+ *
+ * SLH-DSA key and transforms (EXPERIMENTAL)
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_SLHDSA
+
+/**
+ * xmlSecOpenSSLKeyDataSLHDSAId:
+ *
+ * The SLH-DSA key klass.
+ */
+#define xmlSecOpenSSLKeyDataSLHDSAId \
+        xmlSecOpenSSLKeyDataSLHDSAGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataSLHDSAGetKlass   (void);
+XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeyDataSLHDSAAdoptEvp   (xmlSecKeyDataPtr data,
+                                                                             EVP_PKEY* pKey);
+XMLSEC_CRYPTO_EXPORT EVP_PKEY*          xmlSecOpenSSLKeyDataSLHDSAGetEvp     (xmlSecKeyDataPtr data);
+
+
+/**
+ * xmlSecOpenSSLTransformSLHDSA_SHA2_128fId:
+ *
+ * The SLH-DSA-SHA2-128f signature transform klass.
+ */
+#define xmlSecOpenSSLTransformSLHDSA_SHA2_128fId  \
+        xmlSecOpenSSLTransformSLHDSA_SHA2_128fGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformSLHDSA_SHA2_128fGetKlass(void);
+
+
+#endif /* XMLSEC_NO_SLHDSA */
+
 
 /********************************************************************
  *

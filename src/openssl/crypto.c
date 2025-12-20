@@ -136,9 +136,9 @@ xmlSecCryptoGetFunctions_openssl(void) {
     gXmlSecOpenSSLFunctions->keyDataRsaGetKlass         = xmlSecOpenSSLKeyDataRsaGetKlass;
 #endif /* XMLSEC_NO_RSA */
 
-#ifndef XMLSEC_NO_MDSA
+#ifndef XMLSEC_NO_MLDSA
     gXmlSecOpenSSLFunctions->keyDataMLDSAGetKlass     = xmlSecOpenSSLKeyDataMLDSAGetKlass;
-#endif /* XMLSEC_NO_MDSA */
+#endif /* XMLSEC_NO_MLDSA */
 
 #ifndef XMLSEC_NO_X509
     gXmlSecOpenSSLFunctions->keyDataX509GetKlass        = xmlSecOpenSSLKeyDataX509GetKlass;

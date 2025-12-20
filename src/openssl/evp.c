@@ -396,8 +396,8 @@ xmlSecOpenSSLEvpKeyGetId(EVP_PKEY *pKey) {
         } else  if(strcmp(LN_ML_DSA_87, typeName) == 0) {
             return (EVP_PKEY_ML_DSA_87);
         }
-    }
 #endif /* XMLSEC_NO_MLDSA */
+    }
 
     /* no luck */
     return(EVP_PKEY_NONE);
@@ -4712,7 +4712,7 @@ xmlSecOpenSSLKeyDataGostR3410_2012_512DebugXmlDump(xmlSecKeyDataPtr data, FILE* 
 #endif /* XMLSEC_NO_GOST2012 */
 
 
-#ifndef XMLSEC_NO_ML_DSA
+#ifndef XMLSEC_NO_MLDSA
 /**
  * EXPERIMENTAL SUPPORT FOR ML-DSA
  */
@@ -4942,4 +4942,4 @@ xmlSecOpenSSLKeyDataMLDSADebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
 }
 
 
-#endif /* XMLSEC_NO_ML_DSA */
+#endif /* XMLSEC_NO_MLDSA */

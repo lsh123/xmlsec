@@ -1078,12 +1078,12 @@ xmlSecOpenSSLEvpSignatureVerify(xmlSecTransformPtr transform,
         dataToSign = ctx->digestResult;
         dataToSignSize = ctx->digestResultSize;
     }
-#ifndef XMLSEC_NO_MDSA
+#ifndef XMLSEC_NO_MLDSA
     else if(xmlSecBufferGetSize(&(ctx->buffer)) > 0) {
         dataToSign = xmlSecBufferGetData(&(ctx->buffer));
         dataToSignSize = xmlSecBufferGetSize(&(ctx->buffer));
     }
-#endif /* XMLSEC_NO_MDSA */
+#endif /* XMLSEC_NO_MLDSA */
     else {
         xmlSecInternalError("Digest is not ready", xmlSecTransformGetName(transform));
         goto done;
@@ -1100,16 +1100,16 @@ xmlSecOpenSSLEvpSignatureVerify(xmlSecTransformPtr transform,
 
     switch(ctx->mode) {
     case xmlSecOpenSSLEvpSignatureMode_MLDSA:
-#ifndef XMLSEC_NO_MDSA
+#ifndef XMLSEC_NO_MLDSA
         /* no padding */
         XMLSEC_SAFE_CAST_SIZE_TO_UINT(dataSize, dataLen, goto done, xmlSecTransformGetName(transform));
         ret = EVP_PKEY_verify(pKeyCtx, (xmlSecByte*)data, dataLen, dataToSign, dataToSignSize);
         break;
 
-#else  /* XMLSEC_NO_MDSA */
+#else  /* XMLSEC_NO_MLDSA */
         xmlSecNotImplementedError("ML-DSA signatures support is disabled during compilation");
         goto done;
-#endif /* XMLSEC_NO_MDSA */
+#endif /* XMLSEC_NO_MLDSA */
 
 case xmlSecOpenSSLEvpSignatureMode_RsaPadding:
     case xmlSecOpenSSLEvpSignatureMode_Gost:
@@ -1206,12 +1206,12 @@ xmlSecOpenSSLEvpSignatureSign(xmlSecTransformPtr transform, xmlSecTransformCtxPt
         dataToSign = ctx->digestResult;
         dataToSignSize = ctx->digestResultSize;
     }
-#ifndef XMLSEC_NO_MDSA
+#ifndef XMLSEC_NO_MLDSA
     else if(xmlSecBufferGetSize(&(ctx->buffer)) > 0) {
         dataToSign = xmlSecBufferGetData(&(ctx->buffer));
         dataToSignSize = xmlSecBufferGetSize(&(ctx->buffer));
     }
-#endif /* XMLSEC_NO_MDSA */
+#endif /* XMLSEC_NO_MLDSA */
     else {
         xmlSecInternalError("Digest is not ready", xmlSecTransformGetName(transform));
         goto done;

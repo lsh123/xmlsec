@@ -788,12 +788,14 @@ execDSigTestWithCryptoConfig() {
     fi
 
     # run tests
+    xml_verification_failed="no"
     if [ -n "$params1" ] ; then
         printf "    Verify existing signature                            "
         echo "$extra_vars $VALGRIND $xmlsec_app verify --X509-skip-strict-checks $xmlsec_params  --crypto-config $crypto_config $params1 $full_file.xml" >> $curlogfile
         $VALGRIND $xmlsec_app verify --X509-skip-strict-checks $xmlsec_params --crypto-config $crypto_config $params1 $full_file.xml >> $curlogfile 2>> $curlogfile
         printRes $expected_res $?
         if [ $? -ne 0 ]; then
+            xml_verification_failed="yes"
             failures=`expr $failures + 1`
         fi
     fi
@@ -812,6 +814,17 @@ execDSigTestWithCryptoConfig() {
         printf "    Verify new signature                                 "
         echo "$extra_vars $VALGRIND $xmlsec_app verify --X509-skip-strict-checks $xmlsec_params --crypto-config $crypto_config $params3 $tmpfile" >> $curlogfile
         $VALGRIND $xmlsec_app verify --X509-skip-strict-checks $xmlsec_params --crypto-config $crypto_config $params3 $tmpfile >> $curlogfile 2>> $curlogfile
+        printRes $res_success $?
+        if [ $? -ne  0 ]; then
+            failures=`expr $failures + 1`
+        fi
+    fi
+
+    # update existing signature if verification failed
+    if [ -z "$XMLSEC_TEST_UPDATE_XML_ON_FAILURE" -a "z$xml_verification_failed" = "zyes" ] ; then
+        printf "    Update existing signature                            "
+        echo "cp $tmpfile $full_file.xml" >> $curlogfile 2>> $curlogfile
+        cp $tmpfile $full_file.xml
         printRes $res_success $?
         if [ $? -ne  0 ]; then
             failures=`expr $failures + 1`

@@ -225,75 +225,16 @@ rm dh1024-first-req.pem
 
 ### Generate ML-DSA keys with second level CA
 
-ML-DSA-44 keys
 ```
-openssl genpkey -algorithm ML-DSA-44 -out ml-dsa-44-key.pem
-openssl pkey -in ml-dsa-44-key.pem -pubout -out ml-dsa-44-pubkey.pem
-
-*** Use 'ML-DSA-44 Key' for Common Name:
-openssl req -config ./openssl.cnf -new -key ml-dsa-44-key.pem -out ml-dsa-44-req.pem
-openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem \
-        -out ml-dsa-44-cert.pem -infiles ml-dsa-44-req.pem
-openssl verify -CAfile cacert.pem -untrusted ca2cert.pem ml-dsa-44-cert.pem
-rm ml-dsa-44-req.pem
-
-openssl x509 -in ml-dsa-44-cert.pem -inform PEM -out ml-dsa-44-cert.der -outform DER
-cp ml-dsa-44-cert.der ml-dsa-44-pubkey.crt
-
+./scripts/create-ml-dsa-44.sh
+./scripts/create-ml-dsa-86.sh
+./scripts/create-ml-dsa-87.sh
 ```
-
-ML-DSA-65 keys
-```
-openssl genpkey -algorithm ML-DSA-65 -out ml-dsa-65-key.pem
-openssl pkey -in ml-dsa-65-key.pem -pubout -out ml-dsa-65-pubkey.pem
-
-*** Use 'ML-DSA-65 Key' for Common Name:
-openssl req -config ./openssl.cnf -new -key ml-dsa-65-key.pem -out ml-dsa-65-req.pem
-openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem \
-        -out ml-dsa-65-cert.pem -infiles ml-dsa-65-req.pem
-openssl verify -CAfile cacert.pem -untrusted ca2cert.pem ml-dsa-65-cert.pem
-rm ml-dsa-65-req.pem
-
-openssl x509 -in ml-dsa-65-cert.pem -inform PEM -out ml-dsa-65-cert.der -outform DER
-cp ml-dsa-65-cert.der ml-dsa-65-pubkey.crt
-
-```
-
-ML-DSA-87 keys
-```
-openssl genpkey -algorithm ML-DSA-87 -out ml-dsa-87-key.pem
-openssl pkey -in ml-dsa-87-key.pem -pubout -out ml-dsa-87-pubkey.pem
-
-*** Use 'ML-DSA-87 Key' for Common Name:
-openssl req -config ./openssl.cnf -new -key ml-dsa-87-key.pem -out ml-dsa-87-req.pem
-openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem \
-        -out ml-dsa-87-cert.pem -infiles ml-dsa-87-req.pem
-openssl verify -CAfile cacert.pem -untrusted ca2cert.pem ml-dsa-87-cert.pem
-rm ml-dsa-87-req.pem
-
-openssl x509 -in ml-dsa-87-cert.pem -inform PEM -out ml-dsa-87-cert.der -outform DER
-cp ml-dsa-87-cert.der ml-dsa-87-pubkey.crt
-
-```
-
 
 ### Generate SLH-DSA keys with second level CA
 
-SLH-DSA-SHA2-128f key
 ```
-openssl genpkey -algorithm SLH-DSA-SHA2-128f -out slh-dsa-sha2-128f-key.pem
-openssl pkey -in slh-dsa-sha2-128f-key.pem -pubout -out slh-dsa-sha2-128f-pubkey.pem
-
-*** Use 'SLH-DSA-SHA2-128F Key' for Common Name:
-openssl req -config ./openssl.cnf -new -key slh-dsa-sha2-128f-key.pem -out slh-dsa-sha2-128f-req.pem
-openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem \
-        -out slh-dsa-sha2-128f-cert.pem -infiles slh-dsa-sha2-128f-req.pem
-openssl verify -CAfile cacert.pem -untrusted ca2cert.pem slh-dsa-sha2-128f-cert.pem
-rm slh-dsa-sha2-128f-req.pem
-
-openssl x509 -in slh-dsa-sha2-128f-cert.pem -inform PEM -out slh-dsa-sha2-128f-cert.der -outform DER
-cp slh-dsa-sha2-128f-cert.der slh-dsa-sha2-128f-pubkey.crt
-
+./scripts/create-slh-dsa-sha2-128f.sh
 ```
 
 ### Generate two certs and keys with the same certificate
@@ -375,24 +316,6 @@ openssl ec -inform PEM -outform DER -in ecdsa-secp521r1-key.pem -pubout -out ecd
 ```
 
 
-ML-DSA keys
-```
-openssl pkey -in ml-dsa-44-key.pem -outform DER -out ml-dsa-44-key.der
-openssl pkey -in ml-dsa-44-key.pem -pubout -outform DER -out ml-dsa-44-pubkey.der
-
-openssl pkey -in ml-dsa-65-key.pem -outform DER -out ml-dsa-65-key.der
-openssl pkey -in ml-dsa-65-key.pem -pubout -outform DER -out ml-dsa-65-pubkey.der
-
-openssl pkey -in ml-dsa-87-key.pem -outform DER -out ml-dsa-87-key.der
-openssl pkey -in ml-dsa-87-key.pem -pubout -outform DER -out ml-dsa-87-pubkey.der
-``
-
-SLH-DSA keys
-```
-openssl pkey -in slh-dsa-sha2-128f-key.pem -outform DER -out slh-dsa-sha2-128f-key.der
-openssl pkey -in slh-dsa-sha2-128f-key.pem -pubout -outform DER -out slh-dsa-sha2-128f-pubkey.der
-```
-
 ### Convert PEM cert file to DER file (IMPORTANT: use OpenSSL 1.x for generating DER files!!!)
 ```
 openssl x509 -outform DER -in cacert.pem -out cacert.der
@@ -461,16 +384,6 @@ openssl pkcs8 -in ecdsa-secp384r1-key.der -inform der -out ecdsa-secp384r1-key.p
 openssl pkcs8 -in ecdsa-secp521r1-key.der -inform der -out ecdsa-secp521r1-key.p8-der -outform der -topk8
 openssl pkcs8 -in ecdsa-secp521r1-key.der -inform der -out ecdsa-secp521r1-key.p8-pem -outform pem -topk8
 
-openssl pkcs8 -in ml-dsa-44-key.der -inform der -out ml-dsa-44-key.p8-pem -outform pem -topk8
-openssl pkcs8 -in ml-dsa-44-key.der -inform der -out ml-dsa-44-key.p8-der -outform der -topk8
-openssl pkcs8 -in ml-dsa-65-key.der -inform der -out ml-dsa-65-key.p8-pem -outform pem -topk8
-openssl pkcs8 -in ml-dsa-65-key.der -inform der -out ml-dsa-65-key.p8-der -outform der -topk8
-openssl pkcs8 -in ml-dsa-87-key.der -inform der -out ml-dsa-87-key.p8-pem -outform pem -topk8
-openssl pkcs8 -in ml-dsa-87-key.der -inform der -out ml-dsa-87-key.p8-der -outform der -topk8
-
-openssl pkcs8 -in slh-dsa-sha2-128f-key.der -inform der -out slh-dsa-sha2-128f-key.p8-pem -outform pem -topk8
-openssl pkcs8 -in slh-dsa-sha2-128f-key.der -inform der -out slh-dsa-sha2-128f-key.p8-der -outform der -topk8
-
 ```
 
 
@@ -538,21 +451,6 @@ cat ecdsa-secp521r1-key.pem ecdsa-secp521r1-cert.pem ca2cert.pem cacert.pem > al
 openssl pkcs12 -export -in all-ecdsa-secp521r1.pem -name TestEcdsaSecp521r1Key -out ecdsa-secp521r1-key.p12
 rm all-ecdsa-secp521r1.pem
 
-cat ml-dsa-44-key.pem ml-dsa-44-cert.pem ca2cert.pem cacert.pem > all-ml-dsa-44.pem
-openssl pkcs12 -export -in all-ml-dsa-44.pem -name TestKeyName-ML-DSA-44 -out ml-dsa-44-key.p12
-rm all-ml-dsa-44.pem
-
-cat ml-dsa-65-key.pem ml-dsa-65-cert.pem ca2cert.pem cacert.pem > all-ml-dsa-65.pem
-openssl pkcs12 -export -in all-ml-dsa-65.pem -name TestKeyName-ML-DSA-65 -out ml-dsa-65-key.p12
-rm all-ml-dsa-65.pem
-
-cat ml-dsa-87-key.pem ml-dsa-87-cert.pem ca2cert.pem cacert.pem > all-ml-dsa-87.pem
-openssl pkcs12 -export -in all-ml-dsa-87.pem -name TestKeyName-ML-DSA-87 -out ml-dsa-87-key.p12
-rm all-ml-dsa-87.pem
-
-cat slh-dsa-sha2-128f-key.pem slh-dsa-sha2-128f-cert.pem ca2cert.pem cacert.pem > all-slh-dsa-sha2-128f.pem
-openssl pkcs12 -export -in all-slh-dsa-sha2-128f.pem -name TestKeyName-SLH-DSA-SHA2-128f -out slh-dsa-sha2-128f-key.p12
-rm all-slh-dsa-sha2-128f.pem
 ```
 
 GOST keys (see above the instructions to configure GOST engine):

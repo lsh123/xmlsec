@@ -327,6 +327,24 @@ xmlSecKeyDataRsaGetKlass(void) {
 
     return(xmlSecCryptoDLGetFunctions()->keyDataRsaGetKlass());
 }
+/**
+ * xmlSecKeyDataMLDSAGetKlass:
+ *
+ * The MLDSA key data klass.
+ *
+ * Returns: MLDSA key data klass or NULL if an error occurs
+ * (xmlsec-crypto library is not loaded or the MLDSA key data
+ * klass is not implemented).
+ */
+xmlSecKeyDataId
+xmlSecKeyDataMLDSAGetKlass(void) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->keyDataMLDSAGetKlass == NULL)) {
+        xmlSecNotImplementedError2(missingMethodError, "keyDataMLDSAGetKlass");
+        return(xmlSecKeyDataIdUnknown);
+    }
+
+    return(xmlSecCryptoDLGetFunctions()->keyDataMLDSAGetKlass());
+}
 
 /**
  * xmlSecKeyDataX509GetKlass:
@@ -1124,6 +1142,62 @@ xmlSecTransformMd5GetKlass(void) {
     return(xmlSecCryptoDLGetFunctions()->transformMd5GetKlass());
 }
 
+/**
+ * xmlSecTransformMLDSA44GetKlass:
+ *
+ * The ML-DSA-44 signature transform klass.
+ *
+ * Returns: ML-DSA-44 signature transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
+xmlSecTransformId
+xmlSecTransformMLDSA44GetKlass(void) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformMLDSA44GetKlass == NULL)) {
+        xmlSecNotImplementedError2(missingMethodError, "transformMLDSA44GetKlass");
+        return(xmlSecTransformIdUnknown);
+    }
+
+    return(xmlSecCryptoDLGetFunctions()->transformMLDSA44GetKlass());
+}
+
+/**
+ * xmlSecTransformMLDSA65GetKlass:
+ *
+ * The ML-DSA-65 signature transform klass.
+ *
+ * Returns: ML-DSA-65 signature transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
+xmlSecTransformId
+xmlSecTransformMLDSA65GetKlass(void) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformMLDSA65GetKlass == NULL)) {
+        xmlSecNotImplementedError2(missingMethodError, "transformMLDSA65GetKlass");
+        return(xmlSecTransformIdUnknown);
+    }
+
+    return(xmlSecCryptoDLGetFunctions()->transformMLDSA65GetKlass());
+}
+
+/**
+ * xmlSecTransformMLDSA87GetKlass:
+ *
+ * The ML-DSA-87 signature transform klass.
+ *
+ * Returns: ML-DSA-87 signature transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
+xmlSecTransformId
+xmlSecTransformMLDSA87GetKlass(void) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformMLDSA87GetKlass == NULL)) {
+        xmlSecNotImplementedError2(missingMethodError, "transformMLDSA87GetKlass");
+        return(xmlSecTransformIdUnknown);
+    }
+
+    return(xmlSecCryptoDLGetFunctions()->transformMLDSA87GetKlass());
+}
 /**
 * xmlSecTransformPbkdf2GetKlass:
 *

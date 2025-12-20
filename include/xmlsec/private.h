@@ -417,6 +417,7 @@ typedef int                     (*xmlSecCryptoAppKeyCertLoadMemoryMethod)(xmlSec
  * @keyDataGostR3410_2012_256GetKlass: the method to get pointer to GOST R 34.10-2012 256 bit key data klass.
  * @keyDataGostR3410_2012_512GetKlass: the method to get pointer to GOST R 34.10-2012 512 bit key data klass.
  * @keyDataHmacGetKlass:        the method to get pointer to HMAC key data klass.
+ * @keyDataMLDSAGetKlass:       the method to get pointer to ML-DSA key data klass.
  * @keyDataPbkdf2GetKlass:      the method to get pointer to PBKDF2 key data klass.
  * @keyDataRsaGetKlass:         the method to get pointer to RSA key data klass.
  * @keyDataX509GetKlass:        the method to get pointer to X509 key data klass.
@@ -460,6 +461,9 @@ typedef int                     (*xmlSecCryptoAppKeyCertLoadMemoryMethod)(xmlSec
  * @transformHmacSha384GetKlass: the method to get pointer to HMAC-SHA384 transform.
  * @transformHmacSha512GetKlass: the method to get pointer to HMAC-SHA512 transform.
  * @transformMd5GetKlass:       the method to get pointer to MD5 digest transform.
+ * @transformMLDSA44GetKlass:   the method to get pointer to ML-DSA-44 signature transform.
+ * @transformMLDSA65GetKlass:   the method to get pointer to ML-DSA-65 signature transform.
+ * @transformMLDSA87GetKlass:   the method to get pointer to ML-DSA-87 signature transform.
  * @transformPbkdf2GetKlass: the method to get pointer to Pbkdf2 KDF transform.
  * @transformRipemd160GetKlass: the method to get pointer to RIPEMD160 digest transform.
  * @transformRsaMd5GetKlass:    the method to get pointer to RSA-MD5 signature transform.
@@ -532,6 +536,7 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoKeyDataGetKlassMethod            keyDataGostR3410_2012_256GetKlass;
     xmlSecCryptoKeyDataGetKlassMethod            keyDataGostR3410_2012_512GetKlass;
     xmlSecCryptoKeyDataGetKlassMethod            keyDataHmacGetKlass;
+    xmlSecCryptoKeyDataGetKlassMethod            keyDataMLDSAGetKlass;
     xmlSecCryptoKeyDataGetKlassMethod            keyDataPbkdf2GetKlass;
     xmlSecCryptoKeyDataGetKlassMethod            keyDataRsaGetKlass;
     xmlSecCryptoKeyDataGetKlassMethod            keyDataX509GetKlass;
@@ -584,6 +589,9 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoTransformGetKlassMethod          transformHmacSha256GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformHmacSha384GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformHmacSha512GetKlass;
+    xmlSecCryptoTransformGetKlassMethod          transformMLDSA44GetKlass;
+    xmlSecCryptoTransformGetKlassMethod          transformMLDSA65GetKlass;
+    xmlSecCryptoTransformGetKlassMethod          transformMLDSA87GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformMd5GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformPbkdf2GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformRipemd160GetKlass;

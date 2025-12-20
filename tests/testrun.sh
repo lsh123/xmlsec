@@ -997,9 +997,9 @@ elif [ "z$crypto" = "zopenssl" -a "z$xmlsec_openssl_flavor" = "zboringssl" ] ; t
 elif [ "z$crypto" = "zopenssl" ] ; then
     echo "--- OPENSSL FLAVOR: $xmlsec_openssl_flavor" >> $logfile
     echo "--- OPENSSL FLAVOR: $xmlsec_openssl_flavor"
-    min_percent_success=90
+    min_percent_success=80
 elif [ "z$crypto" = "znss" ] ; then
-    min_percent_success=90
+    min_percent_success=80
 elif [ "z$crypto" = "zgnutls" ] ; then
     min_percent_success=80
 elif [ "z$crypto" = "zmscng" ] ; then

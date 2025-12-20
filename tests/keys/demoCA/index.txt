@@ -19,3 +19,6 @@ V	21230120193208Z		AFA28BB933ADDABD	unknown	/C=US/ST=California/O=XML Security L
 V	21230202052913Z		AFA28BB933ADDABE	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/OU=ECDSA secp256r1 Second Key/CN=Aleksey Sanin/emailAddress=xmlsec@aleksey.com
 V	21230202173122Z		AFA28BB933ADDABF	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/OU=EC prime256v1 Key/CN=Aleksey Sanin/emailAddress=xmlsec@aleksey.com
 V	21230202173233Z		AFA28BB933ADDAC0	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/OU=EC prime256v1 Second Key/CN=Aleksey Sanin/emailAddress=xmlsec@aleksey.com
+V	21251126052607Z		AFA28BB933ADDAC1	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=ML-DSA-44 Key/emailAddress=xmlsec@aleksey.com
+V	21251126052735Z		AFA28BB933ADDAC2	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/OU=ML-DSA-65 Key/CN=Aleksey Sanin/emailAddress=xmlsec@aleksey.com
+V	21251126052906Z		AFA28BB933ADDAC3	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/OU=ML-DSA-87 Key/CN=Aleksey Sanin/emailAddress=xmlsec@aleksey.com

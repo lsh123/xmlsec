@@ -2175,6 +2175,22 @@ AM_CONDITIONAL(XMLSEC_NO_EC, test "z$XMLSEC_NO_EC" = "z1")
 AC_SUBST(XMLSEC_NO_EC)
 
 dnl ==========================================================================
+dnl Check if we need MLDSA support (experimental)
+dnl ==========================================================================
+AC_MSG_CHECKING(for experimental ML-DSA support)
+AC_ARG_ENABLE([mldsa], [AS_HELP_STRING([--enable-mldsa],[enable experimental MLDSA support (no)])])
+if test "z$enable_mldsa" = "zyes" ; then
+    XMLSEC_NO_MLDSA="0"
+    AC_MSG_RESULT([yes])
+else
+    XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_MLDSA=1"
+    XMLSEC_NO_MLDSA="1"
+    AC_MSG_RESULT([disabled])
+fi
+AM_CONDITIONAL(XMLSEC_NO_MLDSA, test "z$XMLSEC_NO_MLDSA" = "z1")
+AC_SUBST(XMLSEC_NO_MLDSA)
+
+dnl ==========================================================================
 dnl Check if we need x509 support
 dnl ==========================================================================
 AC_MSG_CHECKING(for x509 support)

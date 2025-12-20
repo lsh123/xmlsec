@@ -348,6 +348,29 @@ const xmlChar xmlSecHrefEcdsaSha3_512[]         = "http://www.w3.org/2021/04/xml
 
 /*************************************************************************
  *
+ * ML-DSA key strings
+ *
+ ************************************************************************/
+const xmlChar xmlSecNameMLDSAKeyValue[]       = "ml-dsa";
+const xmlChar xmlSecHrefMLDSAKeyValue[]       = "http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#ml-dsa";
+
+/*************************************************************************
+ *
+ * ML-DSA signature trasnsform strings
+ *
+ ************************************************************************/
+const xmlChar xmlSecNameMLDSA44[]             = "ml-dsa-44";
+const xmlChar xmlSecHrefMLDSA44[]             = "http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#ml-dsa-44";
+
+const xmlChar xmlSecNameMLDSA65[]             = "ml-dsa-65";
+const xmlChar xmlSecHrefMLDSA65[]             = "http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#ml-dsa-65";
+
+const xmlChar xmlSecNameMLDSA87[]             = "ml-dsa-87";
+const xmlChar xmlSecHrefMLDSA87[]             = "http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#ml-dsa-87";
+
+
+/*************************************************************************
+ *
  * EncryptedKey
  *
  ************************************************************************/

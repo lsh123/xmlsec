@@ -116,6 +116,13 @@ XMLSEC_EXPORT xmlSecKeyDataId                   xmlSecKeyDataGostR3410_2012_512G
 #define xmlSecKeyDataHmacId                     xmlSecKeyDataHmacGetKlass()
 XMLSEC_EXPORT xmlSecKeyDataId                   xmlSecKeyDataHmacGetKlass(void);
 /**
+ * xmlSecKeyDataMLDSAId:
+ *
+ * The MLDSA key klass.
+ */
+#define xmlSecKeyDataMLDSAId                    xmlSecKeyDataMLDSAGetKlass()
+XMLSEC_EXPORT xmlSecKeyDataId                   xmlSecKeyDataMLDSAGetKlass(void);
+/**
  * xmlSecKeyDataPbkdf2Id:
  *
  * The PBKDF2 key klass.
@@ -437,6 +444,28 @@ XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformHmacSha512GetKlas
  */
 #define xmlSecTransformMd5Id                    xmlSecTransformMd5GetKlass()
 XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformMd5GetKlass(void);
+/**
+ * xmlSecTransformMLDSA44Id:
+ *
+ * The ML-DSA-44 signature transform klass.
+ */
+#define xmlSecTransformMLDSA44Id                xmlSecTransformMLDSA44GetKlass()
+XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformMLDSA44GetKlass(void);
+/**
+ * xmlSecTransformMLDSA65Id:
+ *
+ * The ML-DSA-65 signature transform klass.
+ */
+#define xmlSecTransformMLDSA65Id                xmlSecTransformMLDSA65GetKlass()
+XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformMLDSA65GetKlass(void);
+/**
+ * xmlSecTransformMLDSA87Id:
+ *
+ * The ML-DSA-87 signature transform klass.
+ */
+#define xmlSecTransformMLDSA87Id                xmlSecTransformMLDSA87GetKlass()
+XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformMLDSA87GetKlass(void);
+
 /**
 * xmlSecTransformPbkdf2Id:
 *

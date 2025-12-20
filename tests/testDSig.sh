@@ -38,7 +38,6 @@ echo "--- testDSig started for xmlsec-$crypto library ($timestamp)" >> $logfile
 echo "--- LD_LIBRARY_PATH=$LD_LIBRARY_PATH" >> $logfile
 echo "--- LTDL_LIBRARY_PATH=$LTDL_LIBRARY_PATH" >> $logfile
 
-
 ##########################################################################
 ##########################################################################
 ##########################################################################
@@ -1181,6 +1180,32 @@ if [ "z$xmlsec_feature_asn1_signatures" = "zyes" ] ; then
 
 fi
 
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloped-sha512-mldsa44" \
+    "sha512 ml-dsa-44" \
+    "ml-dsa" \
+    "$pub_key_option:TestMLDSA44KeName $topfolder/keys/ml-dsa-44-pubkey.$pub_key_format" \
+    "$priv_key_option:TestMLDSA44KeName $topfolder/keys/ml-dsa-44-key.$priv_key_format --pwd secret123" \
+    "$pub_key_option:TestMLDSA44KeName $topfolder/keys/ml-dsa-44-pubkey.$pub_key_format"
+
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloped-sha512-mldsa65" \
+    "sha512 ml-dsa-65" \
+    "ml-dsa" \
+    "$pub_key_option:TestMLDSA65KeName $topfolder/keys/ml-dsa-65-pubkey.$pub_key_format" \
+    "$priv_key_option:TestMLDSA65KeName $topfolder/keys/ml-dsa-65-key.$priv_key_format --pwd secret123" \
+    "$pub_key_option:TestMLDSA65KeName $topfolder/keys/ml-dsa-65-pubkey.$pub_key_format"
+
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloped-sha512-mldsa87" \
+    "sha512 ml-dsa-87" \
+    "ml-dsa" \
+    "$pub_key_option:TestMLDSA87KeName $topfolder/keys/ml-dsa-87-pubkey.$pub_key_format" \
+    "$priv_key_option:TestMLDSA87KeName $topfolder/keys/ml-dsa-87-key.$priv_key_format --pwd secret123" \
+    "$pub_key_option:TestMLDSA87KeName $topfolder/keys/ml-dsa-87-pubkey.$pub_key_format"
 
 ##########################################################################
 ##########################################################################

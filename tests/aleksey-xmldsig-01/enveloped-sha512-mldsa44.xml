@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Envelope xmlns="urn:envelope">
+  <Data>
+	Hello, World!
+  </Data>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+      <SignatureMethod Algorithm="http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#ml-dsa-44"/>
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
+	        <Transform Algorithm="http://www.w3.org/TR/1999/REC-xpath-19991116">
+	          <XPath xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">not(ancestor-or-self::dsig:Signature)</XPath>
+	        </Transform>
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/>
+        <DigestValue>j12SN+LRqX4RricEwl5iEpjyand0nCMO8T5dNYR5P661F2ZrUS5wSbyMdu826KrG
+IQbvvjmkI+9+QmCrcJyXXA==</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>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
+AAAAAAAAAAAAAAAAAAAAABIkLzw=</SignatureValue>
+    <KeyInfo>
+      <KeyName>TestMLDSA44KeName</KeyName>
+    </KeyInfo>
+  </Signature>
+</Envelope>

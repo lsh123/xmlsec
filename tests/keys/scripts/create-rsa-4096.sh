@@ -15,8 +15,15 @@ echo "*** Generating RSA key ${keyname}...."
 openssl genrsa -out "${keyname}-key.pem" "${keysize}"
 echo "*** Private key '${keyname}-key.pem' was created successfully"
 
+
+
 ### Create all key files from private key
 create_all_key_files_from_private_key "${keyname}"
+
+### Some libraries (e.g GCrypt) don't like the newer versions of DER formats. So we use
+### old (traditional, ASN1, etc) formats instead
+openssl rsa -inform PEM -outform DER -traditional -pubin -RSAPublicKey_out -in ${keyname}-pubkey.pem -out ${keyname}-pubkey-gcrypt.der
+
 
 ### Create certificate signed by second level CA
 create_certificate_from_private_key "${keyname}" "${gencert_options}"

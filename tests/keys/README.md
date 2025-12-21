@@ -25,14 +25,7 @@ openssl ca -config ./openssl.cnf -cert cacert.pem -keyfile cakey.pem \
 openssl verify -CAfile cacert.pem ca2cert.pem
 rm ca2req.pem
 ```
-### Creating NSS DB
 
-```
-rm -rf nssdb
-mkdir nssdb
-pk12util -d nssdb -i rsa-4096-key.p12
-chmod a-w nssdb/*
-```
 
 ### Generate and sign DSA keys with second level CA
 ```
@@ -58,7 +51,7 @@ pk12util -d nssdb -i rsa-4096-key.p12
 chmod a-w nssdb/*
 ```
 
-Revoke rsacert and generate CRL
+### Revoke rsacert and generate CRL
 ```
 openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem -revoke rsacert.pem
 openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem -gencrl -out rsacert-revoked-crl.pem
@@ -156,8 +149,6 @@ old (traditional, ASN1, etc) formats instead
 RSA keys:
 ```
 openssl rsa -inform PEM -outform DER -traditional -in rsakey.pem -out rsakey.der
-openssl rsa -inform PEM -outform DER -traditional -in rsa-4096-key.pem -out rsa-4096-key.der
-openssl rsa -inform PEM -outform DER -traditional -pubin -RSAPublicKey_out -in rsa-4096-pubkey.pem -out rsa-4096-pubkey-gcrypt.der
 openssl rsa -inform PEM -outform DER -traditional -in expiredkey.pem -out expiredkey.der
 openssl rsa -inform PEM -outform DER -traditional -in ca2key.pem -out ca2key.der
 ```

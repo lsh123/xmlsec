@@ -132,8 +132,8 @@ execEncTest $res_success \
     "aes128-gcm kw-aes128 concatkdf ecdh-es sha256" \
     "agreement-method enc-key ec" \
     "--enabled-key-data agreement-method,enc-key,key-value,key-name,ec $priv_key_option:EC-P256 $topfolder/xmlenc11-interop-2012/EC-P256_SHA256WithECDSA-orig.$priv_key_format --pwd passwd" \
-    "--enabled-key-data agreement-method,enc-key,key-value,key-name,ec --session-key aes-128 $priv_key_option:EC-P256 $topfolder/xmlenc11-interop-2012/EC-P256_SHA256WithECDSA.$priv_key_format $pub_key_option:ecdsa-secp256r1 $topfolder/keys/ecdsa-secp256r1-cert.$pub_key_format --pwd secret123 --xml-data $topfolder/xmlenc11-interop-2012/cipherText__EC-P256__aes128-gcm__kw-aes128__ECDH-ES__ConcatKDF.data" \
-    "--enabled-key-data agreement-method,enc-key,key-value,key-name,ec $priv_key_option:ecdsa-secp256r1 $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format  --pwd secret123"
+    "--enabled-key-data agreement-method,enc-key,key-value,key-name,ec --session-key aes-128 $priv_key_option:EC-P256 $topfolder/xmlenc11-interop-2012/EC-P256_SHA256WithECDSA.$priv_key_format $pub_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec-prime256v1-pubkey.$pub_key_format --pwd secret123 --xml-data $topfolder/xmlenc11-interop-2012/cipherText__EC-P256__aes128-gcm__kw-aes128__ECDH-ES__ConcatKDF.data" \
+    "--enabled-key-data agreement-method,enc-key,key-value,key-name,ec $priv_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec-prime256v1-key.$priv_key_format  --pwd secret123"
 
 execEncTest $res_success \
     "" \
@@ -177,46 +177,45 @@ execEncTest $res_success \
     "aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha1_kw_aes256_aes128gcm" \
     "aes256-gcm kw-aes256 ecdh-es concatkdf sha1" \
     "agreement-method enc-key ec" \
-    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123" \
-    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec --session-key aes-256 $priv_key_option:originator-key-name $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123 $pub_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$pub_key_format --xml-data $topfolder/aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha1_kw_aes256_aes128gcm.data" \
-    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123"
-
+    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ec-prime256v1-second-key.$priv_key_format --pwd secret123" \
+    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec --session-key aes-256 $priv_key_option:originator-key-name $topfolder/keys/ec-prime256v1-key.$priv_key_format --pwd secret123 $pub_key_option:recipient-key-name $topfolder/keys/ec-prime256v1-second-pubkey.$pub_key_format --xml-data $topfolder/aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha1_kw_aes256_aes128gcm.data" \
+    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ec-prime256v1-second-key.$priv_key_format --pwd secret123"
 # ECDH + ConcatKDF + SHA2
 execEncTest $res_success \
     "" \
     "aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha224_kw_aes256_aes128gcm" \
     "aes256-gcm kw-aes256 ecdh-es concatkdf sha224" \
     "agreement-method enc-key ec" \
-    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123" \
-    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec --session-key aes-256 $priv_key_option:originator-key-name $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123 $pub_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$pub_key_format --xml-data $topfolder/aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha224_kw_aes256_aes128gcm.data" \
-    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123"
+    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ec-prime256v1-second-key.$priv_key_format --pwd secret123" \
+    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec --session-key aes-256 $priv_key_option:originator-key-name $topfolder/keys/ec-prime256v1-key.$priv_key_format --pwd secret123 $pub_key_option:recipient-key-name $topfolder/keys/ec-prime256v1-second-pubkey.$pub_key_format --xml-data $topfolder/aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha224_kw_aes256_aes128gcm.data" \
+    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ec-prime256v1-second-key.$priv_key_format --pwd secret123"
 
 execEncTest $res_success \
     "" \
     "aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha256_kw_aes256_aes128gcm" \
     "aes256-gcm kw-aes256 ecdh-es concatkdf sha256" \
     "agreement-method enc-key ec" \
-    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123" \
-    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec --session-key aes-256 $priv_key_option:originator-key-name $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123 $pub_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$pub_key_format --xml-data $topfolder/aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha256_kw_aes256_aes128gcm.data" \
-    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123"
+    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ec-prime256v1-second-key.$priv_key_format --pwd secret123" \
+    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec --session-key aes-256 $priv_key_option:originator-key-name $topfolder/keys/ec-prime256v1-key.$priv_key_format --pwd secret123 $pub_key_option:recipient-key-name $topfolder/keys/ec-prime256v1-second-pubkey.$pub_key_format --xml-data $topfolder/aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha256_kw_aes256_aes128gcm.data" \
+    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ec-prime256v1-second-key.$priv_key_format --pwd secret123"
 
 execEncTest $res_success \
     "" \
     "aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha384_kw_aes256_aes128gcm" \
     "aes256-gcm kw-aes256 ecdh-es concatkdf sha384" \
     "agreement-method enc-key ec" \
-    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123" \
-    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec --session-key aes-256 $priv_key_option:originator-key-name $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123 $pub_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$pub_key_format --xml-data $topfolder/aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha384_kw_aes256_aes128gcm.data" \
-    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123"
+    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ec-prime256v1-second-key.$priv_key_format --pwd secret123" \
+    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec --session-key aes-256 $priv_key_option:originator-key-name $topfolder/keys/ec-prime256v1-key.$priv_key_format --pwd secret123 $pub_key_option:recipient-key-name $topfolder/keys/ec-prime256v1-second-pubkey.$pub_key_format --xml-data $topfolder/aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha384_kw_aes256_aes128gcm.data" \
+    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ec-prime256v1-second-key.$priv_key_format --pwd secret123"
 
 execEncTest $res_success \
     "" \
     "aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha512_kw_aes256_aes128gcm" \
     "aes256-gcm kw-aes256 ecdh-es concatkdf sha512" \
     "agreement-method enc-key ec" \
-    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123" \
-    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec --session-key aes-256 $priv_key_option:originator-key-name $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123 $pub_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$pub_key_format --xml-data $topfolder/aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha512_kw_aes256_aes128gcm.data" \
-    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123"
+    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ec-prime256v1-second-key.$priv_key_format --pwd secret123" \
+    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec --session-key aes-256 $priv_key_option:originator-key-name $topfolder/keys/ec-prime256v1-key.$priv_key_format --pwd secret123 $pub_key_option:recipient-key-name $topfolder/keys/ec-prime256v1-second-pubkey.$pub_key_format --xml-data $topfolder/aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha512_kw_aes256_aes128gcm.data" \
+    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ec-prime256v1-second-key.$priv_key_format --pwd secret123"
 
 # ECDH + ConcatKDF + SHA3
 execEncTest $res_success \
@@ -224,36 +223,36 @@ execEncTest $res_success \
     "aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha3_224_kw_aes256_aes128gcm" \
     "aes256-gcm kw-aes256 ecdh-es concatkdf sha3-224" \
     "agreement-method enc-key ec" \
-    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123" \
-    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec --session-key aes-256 $priv_key_option:originator-key-name $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123 $pub_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$pub_key_format --xml-data $topfolder/aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha3_224_kw_aes256_aes128gcm.data" \
-    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123"
+    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ec-prime256v1-second-key.$priv_key_format --pwd secret123" \
+    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec --session-key aes-256 $priv_key_option:originator-key-name $topfolder/keys/ec-prime256v1-key.$priv_key_format --pwd secret123 $pub_key_option:recipient-key-name $topfolder/keys/ec-prime256v1-second-pubkey.$pub_key_format --xml-data $topfolder/aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha3_224_kw_aes256_aes128gcm.data" \
+    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ec-prime256v1-second-key.$priv_key_format --pwd secret123"
 
 execEncTest $res_success \
     "" \
     "aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha3_256_kw_aes256_aes128gcm" \
     "aes256-gcm kw-aes256 ecdh-es concatkdf sha3-256" \
     "agreement-method enc-key ec" \
-    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123" \
-    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec --session-key aes-256 $priv_key_option:originator-key-name $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123 $pub_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$pub_key_format --xml-data $topfolder/aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha3_256_kw_aes256_aes128gcm.data" \
-    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123"
+    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ec-prime256v1-second-key.$priv_key_format --pwd secret123" \
+    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec --session-key aes-256 $priv_key_option:originator-key-name $topfolder/keys/ec-prime256v1-key.$priv_key_format --pwd secret123 $pub_key_option:recipient-key-name $topfolder/keys/ec-prime256v1-second-pubkey.$pub_key_format --xml-data $topfolder/aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha3_256_kw_aes256_aes128gcm.data" \
+    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ec-prime256v1-second-key.$priv_key_format --pwd secret123"
 
 execEncTest $res_success \
     "" \
     "aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha3_384_kw_aes256_aes128gcm" \
     "aes256-gcm kw-aes256 ecdh-es concatkdf sha3-384" \
     "agreement-method enc-key ec" \
-    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123" \
-    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec --session-key aes-256 $priv_key_option:originator-key-name $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123 $pub_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$pub_key_format --xml-data $topfolder/aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha3_384_kw_aes256_aes128gcm.data" \
-    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123"
+    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ec-prime256v1-second-key.$priv_key_format --pwd secret123" \
+    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec --session-key aes-256 $priv_key_option:originator-key-name $topfolder/keys/ec-prime256v1-key.$priv_key_format --pwd secret123 $pub_key_option:recipient-key-name $topfolder/keys/ec-prime256v1-second-pubkey.$pub_key_format --xml-data $topfolder/aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha3_384_kw_aes256_aes128gcm.data" \
+    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ec-prime256v1-second-key.$priv_key_format --pwd secret123"
 
 execEncTest $res_success \
     "" \
     "aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha3_512_kw_aes256_aes128gcm" \
     "aes256-gcm kw-aes256 ecdh-es concatkdf sha3-512" \
     "agreement-method enc-key ec" \
-    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123" \
-    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec --session-key aes-256 $priv_key_option:originator-key-name $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123 $pub_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$pub_key_format --xml-data $topfolder/aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha3_512_kw_aes256_aes128gcm.data" \
-    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123"
+    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ec-prime256v1-second-key.$priv_key_format --pwd secret123" \
+    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec --session-key aes-256 $priv_key_option:originator-key-name $topfolder/keys/ec-prime256v1-key.$priv_key_format --pwd secret123 $pub_key_option:recipient-key-name $topfolder/keys/ec-prime256v1-second-pubkey.$pub_key_format --xml-data $topfolder/aleksey-xmlenc-01/enc_ecdh_p256_concatkdf_sha3_512_kw_aes256_aes128gcm.data" \
+    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ec-prime256v1-second-key.$priv_key_format --pwd secret123"
 
 # ECDH + PBKDF2+SHA1
 execEncTest $res_success \
@@ -261,9 +260,9 @@ execEncTest $res_success \
     "aleksey-xmlenc-01/enc_ecdh_p256_pbkdf2_1000_hmac_sha1_kw_aes256_aes128gcm" \
     "aes256-gcm kw-aes256 ecdh-es pbkdf2 hmac-sha1" \
     "agreement-method enc-key ec" \
-    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123" \
-    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec --session-key aes-256 $priv_key_option:originator-key-name $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123 $pub_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$pub_key_format --xml-data $topfolder/aleksey-xmlenc-01/enc_ecdh_p256_pbkdf2_1000_hmac_sha1_kw_aes256_aes128gcm.data" \
-    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123"
+    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ec-prime256v1-second-key.$priv_key_format --pwd secret123" \
+    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec --session-key aes-256 $priv_key_option:originator-key-name $topfolder/keys/ec-prime256v1-key.$priv_key_format --pwd secret123 $pub_key_option:recipient-key-name $topfolder/keys/ec-prime256v1-second-pubkey.$pub_key_format --xml-data $topfolder/aleksey-xmlenc-01/enc_ecdh_p256_pbkdf2_1000_hmac_sha1_kw_aes256_aes128gcm.data" \
+    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ec-prime256v1-second-key.$priv_key_format --pwd secret123"
 
 # ECDH + PBKDF2+SHA2
 execEncTest $res_success \
@@ -271,36 +270,36 @@ execEncTest $res_success \
     "aleksey-xmlenc-01/enc_ecdh_p256_pbkdf2_1000_hmac_sha224_kw_aes256_aes128gcm" \
     "aes256-gcm kw-aes256 ecdh-es pbkdf2 hmac-sha224" \
     "agreement-method enc-key ec" \
-    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123" \
-    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec --session-key aes-256 $priv_key_option:originator-key-name $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123 $pub_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$pub_key_format --xml-data $topfolder/aleksey-xmlenc-01/enc_ecdh_p256_pbkdf2_1000_hmac_sha224_kw_aes256_aes128gcm.data" \
-    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123"
+    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ec-prime256v1-second-key.$priv_key_format --pwd secret123" \
+    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec --session-key aes-256 $priv_key_option:originator-key-name $topfolder/keys/ec-prime256v1-key.$priv_key_format --pwd secret123 $pub_key_option:recipient-key-name $topfolder/keys/ec-prime256v1-second-pubkey.$pub_key_format --xml-data $topfolder/aleksey-xmlenc-01/enc_ecdh_p256_pbkdf2_1000_hmac_sha224_kw_aes256_aes128gcm.data" \
+    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ec-prime256v1-second-key.$priv_key_format --pwd secret123"
 
 execEncTest $res_success \
     "" \
     "aleksey-xmlenc-01/enc_ecdh_p256_pbkdf2_1000_hmac_sha256_kw_aes256_aes128gcm" \
     "aes256-gcm kw-aes256 ecdh-es pbkdf2 hmac-sha256" \
     "agreement-method enc-key ec" \
-    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123" \
-    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec --session-key aes-256 $priv_key_option:originator-key-name $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123 $pub_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$pub_key_format --xml-data $topfolder/aleksey-xmlenc-01/enc_ecdh_p256_pbkdf2_1000_hmac_sha256_kw_aes256_aes128gcm.data" \
-    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123"
+    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ec-prime256v1-second-key.$priv_key_format --pwd secret123" \
+    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec --session-key aes-256 $priv_key_option:originator-key-name $topfolder/keys/ec-prime256v1-key.$priv_key_format --pwd secret123 $pub_key_option:recipient-key-name $topfolder/keys/ec-prime256v1-second-pubkey.$pub_key_format --xml-data $topfolder/aleksey-xmlenc-01/enc_ecdh_p256_pbkdf2_1000_hmac_sha256_kw_aes256_aes128gcm.data" \
+    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ec-prime256v1-second-key.$priv_key_format --pwd secret123"
 
 execEncTest $res_success \
     "" \
     "aleksey-xmlenc-01/enc_ecdh_p256_pbkdf2_1000_hmac_sha384_kw_aes256_aes128gcm" \
     "aes256-gcm kw-aes256 ecdh-es pbkdf2 hmac-sha384" \
     "agreement-method enc-key ec" \
-    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123" \
-    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec --session-key aes-256 $priv_key_option:originator-key-name $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123 $pub_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$pub_key_format --xml-data $topfolder/aleksey-xmlenc-01/enc_ecdh_p256_pbkdf2_1000_hmac_sha384_kw_aes256_aes128gcm.data" \
-    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123"
+    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ec-prime256v1-second-key.$priv_key_format --pwd secret123" \
+    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec --session-key aes-256 $priv_key_option:originator-key-name $topfolder/keys/ec-prime256v1-key.$priv_key_format --pwd secret123 $pub_key_option:recipient-key-name $topfolder/keys/ec-prime256v1-second-pubkey.$pub_key_format --xml-data $topfolder/aleksey-xmlenc-01/enc_ecdh_p256_pbkdf2_1000_hmac_sha384_kw_aes256_aes128gcm.data" \
+    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ec-prime256v1-second-key.$priv_key_format --pwd secret123"
 
 execEncTest $res_success \
     "" \
     "aleksey-xmlenc-01/enc_ecdh_p256_pbkdf2_1000_hmac_sha512_kw_aes256_aes128gcm" \
     "aes256-gcm kw-aes256 ecdh-es pbkdf2 hmac-sha512" \
     "agreement-method enc-key ec" \
-    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123" \
-    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec --session-key aes-256 $priv_key_option:originator-key-name $topfolder/keys/ecdsa-secp256r1-key.$priv_key_format --pwd secret123 $pub_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$pub_key_format --xml-data $topfolder/aleksey-xmlenc-01/enc_ecdh_p256_pbkdf2_1000_hmac_sha512_kw_aes256_aes128gcm.data" \
-    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ecdsa-secp256r1-second-key.$priv_key_format --pwd secret123"
+    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ec-prime256v1-second-key.$priv_key_format --pwd secret123" \
+    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec --session-key aes-256 $priv_key_option:originator-key-name $topfolder/keys/ec-prime256v1-key.$priv_key_format --pwd secret123 $pub_key_option:recipient-key-name $topfolder/keys/ec-prime256v1-second-pubkey.$pub_key_format --xml-data $topfolder/aleksey-xmlenc-01/enc_ecdh_p256_pbkdf2_1000_hmac_sha512_kw_aes256_aes128gcm.data" \
+    "--enabled-key-data agreement-method,enc-key,key-name,key-value,ec $priv_key_option:recipient-key-name $topfolder/keys/ec-prime256v1-second-key.$priv_key_format --pwd secret123"
 
 if [ "z$xmlsec_feature_x509_data_lookup" = "zyes" ] ; then
     execEncTest $res_success \

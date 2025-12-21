@@ -114,39 +114,6 @@ rm expiredreq.pem
 ```
 
 
-### Generate ECDSA secp256r1 key with second level CA
-```
-openssl ecparam -list_curves
-openssl ecparam -name secp256r1 -genkey -noout -out ecdsa-secp256r1-key.pem
-    Here use 'ECDSA secp256r1 Key' for Common Name:
-openssl req -config ./openssl.cnf -new -key ecdsa-secp256r1-key.pem -out ecdsa-secp256r1-req.pem
-openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem \
-        -out ecdsa-secp256r1-cert.pem -infiles ecdsa-secp256r1-req.pem
-openssl verify -CAfile cacert.pem -untrusted ca2cert.pem ecdsa-secp256r1-cert.pem
-rm ecdsa-secp256r1-req.pem
-
-openssl pkey -inform DER -in ecdsa-secp256r1-key.der --outform DER --pubout --out  ecdsa-secp256r1-pubkey.der
-openssl pkey -inform DER -in ecdsa-secp256r1-key.der --outform PEM --pubout --out  ecdsa-secp256r1-pubkey.pem
-```
-
-### Generate second ECDSA secp256r1 key with second level CA
-```
-openssl ecparam -list_curves
-openssl ecparam -name secp256r1 -genkey -noout -out ecdsa-secp256r1-second-key.pem
-    Here use 'ECDSA secp256r1 Second Key' for OU:
-openssl req -config ./openssl.cnf -new -key ecdsa-secp256r1-second-key.pem -out ecdsa-secp256r1-second-req.pem
-openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem -out ecdsa-secp256r1-second-cert.pem -infiles ecdsa-secp256r1-second-req.pem
-openssl verify -CAfile cacert.pem -untrusted ca2cert.pem ecdsa-secp256r1-second-cert.pem
-rm ecdsa-secp256r1-second-req.pem
-
-openssl x509 -in ecdsa-secp256r1-second-cert.pem -inform PEM -out ecdsa-secp256r1-second-cert.der -outform DER
-cp ecdsa-secp256r1-second-cert.der ecdsa-secp256r1-second-key.crt
-
-openssl pkey -inform PEM -in ecdsa-secp256r1-second-key.pem --outform DER --out  ecdsa-secp256r1-second-key.der
-openssl pkey -inform PEM -in ecdsa-secp256r1-second-key.pem --outform DER --pubout --out  ecdsa-secp256r1-second-pubkey.der
-openssl pkey -inform PEM -in ecdsa-secp256r1-second-key.pem --outform PEM --pubout --out  ecdsa-secp256r1-second-pubkey.pem
-```
-
 ### Generate ECDSA 384 key with second level CA
 ```
 openssl ecparam -list_curves
@@ -280,11 +247,9 @@ openssl dsa -inform PEM -outform DER -in dsa3072key.pem -out dsa3072key.der
 
 EC keys:
 ```
-openssl ec -inform PEM -outform DER -in ecdsa-secp256r1-key.pem -out ecdsa-secp256r1-key.der
 openssl ec -inform PEM -outform DER -in ecdsa-secp384r1-key.pem -out ecdsa-secp384r1-key.der
 openssl ec -inform PEM -outform DER -in ecdsa-secp521r1-key.pem -out ecdsa-secp521r1-key.der
 
-openssl ec -inform PEM -outform DER -in ecdsa-secp256r1-key.pem -pubout -out ecdsa-secp256r1-pubkey.der
 openssl ec -inform PEM -outform DER -in ecdsa-secp384r1-key.pem -pubout -out ecdsa-secp384r1-pubkey.der
 openssl ec -inform PEM -outform DER -in ecdsa-secp521r1-key.pem -pubout -out ecdsa-secp521r1-pubkey.der
 ```
@@ -300,7 +265,6 @@ openssl x509 -outform DER -in dsa3072cert.pem -out dsa3072cert.der
 openssl x509 -outform DER -in rsacert.pem -out rsacert.der
 openssl x509 -outform DER -in largersacert.pem -out largersacert.der
 openssl x509 -outform DER -in expiredcert.pem -out expiredcert.der
-openssl x509 -outform DER -in ecdsa-secp256r1-cert.pem -out ecdsa-secp256r1-cert.der
 openssl x509 -outform DER -in ecdsa-secp384r1-cert.pem -out ecdsa-secp384r1-cert.der
 openssl x509 -outform DER -in ecdsa-secp521r1-cert.pem -out ecdsa-secp521r1-cert.der
 ```
@@ -351,8 +315,6 @@ openssl pkcs8 -in expiredkey.der -inform der -out expiredkey.p8-der -outform der
 
 openssl pkcs8 -in largersakey.pem -inform pem -out largersakey.p8-pem -outform pem -topk8
 openssl pkcs8 -in largersakey.der -inform der -out largersakey.p8-der -outform der -topk8
-openssl pkcs8 -in ecdsa-secp256r1-key.der -inform der -out ecdsa-secp256r1-key.p8-der -outform der -topk8
-openssl pkcs8 -in ecdsa-secp256r1-key.der -inform der -out ecdsa-secp256r1-key.p8-pem -outform pem -topk8
 openssl pkcs8 -in ecdsa-secp384r1-key.der -inform der -out ecdsa-secp384r1-key.p8-der -outform der -topk8
 openssl pkcs8 -in ecdsa-secp384r1-key.der -inform der -out ecdsa-secp384r1-key.p8-pem -outform pem -topk8
 openssl pkcs8 -in ecdsa-secp521r1-key.der -inform der -out ecdsa-secp521r1-key.p8-der -outform der -topk8
@@ -399,15 +361,6 @@ openssl pkcs12 -export -in alllargersa.pem -name largersakey -out largersakey.p1
 
 cat expiredkey.pem expiredcert.pem ca2cert.pem cacert.pem > allexpired.pem
 openssl pkcs12 -export -in allexpired.pem -name TestExpiredRsaKey -out expiredkey.p12
-
-cat ecdsa-secp256r1-key.pem ecdsa-secp256r1-cert.pem ca2cert.pem cacert.pem > all-ecdsa-secp256r1.pem
-openssl pkcs12 -export -in all-ecdsa-secp256r1.pem -name TestEcdsaSecp256r1Key -out ecdsa-secp256r1-key.p12
-rm all-ecdsa-secp256r1.pem
-
-cat ecdsa-secp256r1-second-key.pem ecdsa-secp256r1-second-cert.pem ca2cert.pem cacert.pem > all-ecdsa-secp256r1-second.pem
-openssl pkcs12 -export -in all-ecdsa-secp256r1-second.pem -name TestEcdsaSecp256r1Key -out ecdsa-secp256r1-second-key.p12
-rm all-ecdsa-secp256r1-second.pem
-
 
 cat ecdsa-secp384r1-key.pem ecdsa-secp384r1-cert.pem ca2cert.pem cacert.pem > all-ecdsa-secp384r1.pem
 openssl pkcs12 -export -in all-ecdsa-secp384r1.pem -name TestEcdsaSecp384r1Key -out ecdsa-secp384r1-key.p12

@@ -18,10 +18,10 @@
         <DigestValue>4eFM4tAZ1DS8K31g9ylGlRdmBSe/j8sbFbmgYQ==</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>qHnEErVV20YeEpZnUHIXddwNzm6j+5mhS5a0xrR2/Y2kXKX6geQMkR+FiXCZfPVs
-jCuANoo8fv4iyL9fZ+eXVw==</SignatureValue>
+    <SignatureValue>dSAkwzbmF/jK1nxML1/X6RD9/NXlzK1C6ZSUvSMqB0R0bT1ZC3jzdWtmNi92CtDv
+JPKPZxVz299y+J5+hzo5aw==</SignatureValue>
     <KeyInfo>
-      <KeyName>EcdsaSecp256r1</KeyName>
+      <KeyName>TestKeyName-ec-prime256v1</KeyName>
     </KeyInfo>
   </Signature>
 </Envelope>

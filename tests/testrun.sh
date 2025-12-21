@@ -810,21 +810,21 @@ execDSigTestWithCryptoConfig() {
         fi
     fi
 
-    if [ -n "$params3" -a -z "$PERF_TEST" ] ; then
-        printf "    Verify new signature                                 "
-        echo "$extra_vars $VALGRIND $xmlsec_app verify --X509-skip-strict-checks $xmlsec_params --crypto-config $crypto_config $params3 $tmpfile" >> $curlogfile
-        $VALGRIND $xmlsec_app verify --X509-skip-strict-checks $xmlsec_params --crypto-config $crypto_config $params3 $tmpfile >> $curlogfile 2>> $curlogfile
+    # update existing signature if verification failed
+    if [  "z$XMLSEC_TEST_UPDATE_XML_ON_FAILURE" = "zyes" -a "z$xml_verification_failed" = "zyes" ] ; then
+        printf "    Update existing signature                            "
+        echo "cp $tmpfile $full_file.xml" >> $curlogfile 2>> $curlogfile
+        cp $tmpfile $full_file.xml
         printRes $res_success $?
         if [ $? -ne  0 ]; then
             failures=`expr $failures + 1`
         fi
     fi
 
-    # update existing signature if verification failed
-    if [ -z "$XMLSEC_TEST_UPDATE_XML_ON_FAILURE" -a "z$xml_verification_failed" = "zyes" ] ; then
-        printf "    Update existing signature                            "
-        echo "cp $tmpfile $full_file.xml" >> $curlogfile 2>> $curlogfile
-        cp $tmpfile $full_file.xml
+    if [ -n "$params3" -a -z "$PERF_TEST" ] ; then
+        printf "    Verify new signature                                 "
+        echo "$extra_vars $VALGRIND $xmlsec_app verify --X509-skip-strict-checks $xmlsec_params --crypto-config $crypto_config $params3 $tmpfile" >> $curlogfile
+        $VALGRIND $xmlsec_app verify --X509-skip-strict-checks $xmlsec_params --crypto-config $crypto_config $params3 $tmpfile >> $curlogfile 2>> $curlogfile
         printRes $res_success $?
         if [ $? -ne  0 ]; then
             failures=`expr $failures + 1`
@@ -955,6 +955,17 @@ execEncTestWithCryptoConfig() {
         fi
     fi
 
+    # update existing decryption failed
+    if [  "z$XMLSEC_TEST_UPDATE_XML_ON_FAILURE" = "zyes" -a "z$xml_verification_failed" = "zyes" ] ; then
+        printf "    Update existing enc document                         "
+        echo "cp $tmpfile $full_file.xml" >> $curlogfile 2>> $curlogfile
+        cp $tmpfile $full_file.xml
+        printRes $res_success $?
+        if [ $? -ne  0 ]; then
+            failures=`expr $failures + 1`
+        fi
+    fi
+
     if [ -n "$params3" -a -z "$PERF_TEST" ] ; then
         rm -f $tmpfile.2
         printf "    Decrypt new document                                 "
@@ -975,18 +986,6 @@ execEncTestWithCryptoConfig() {
             failures=`expr $failures + 1`
         fi
     fi
-
-    # update existing signature if verification failed
-    if [ -z "$XMLSEC_TEST_UPDATE_XML_ON_FAILURE" -a "z$xml_verification_failed" = "zyes" ] ; then
-        printf "    Update existing signature                            "
-        echo "cp $tmpfile $full_file.xml" >> $curlogfile 2>> $curlogfile
-        cp $tmpfile $full_file.xml
-        printRes $res_success $?
-        if [ $? -ne  0 ]; then
-            failures=`expr $failures + 1`
-        fi
-    fi
-
 
     # save logs
     cat $curlogfile >> $logfile

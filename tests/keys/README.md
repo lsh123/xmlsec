@@ -28,7 +28,6 @@ rm ca2req.pem
 
 ### Generate and sign DSA keys with second level CA (IMPORTANT: use OpenSSL 1.x for generating DSA keys!!!)
 
-
 ```
 ./scripts/create-dsa-1024.sh
 ./scripts/create-dsa-2048.sh
@@ -36,35 +35,18 @@ rm ca2req.pem
 ```
 
 ### Generate and sign RSA keys with second level CA
-RSA 2048 bits (OU="Test Third Level RSA Certificate"):
+
 ```
-openssl genrsa -out rsakey.pem 2048
-openssl req -config ./openssl.cnf -new -key rsakey.pem -out rsareq.pem
-openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem \
-        -out rsacert.pem -infiles rsareq.pem
-openssl verify -CAfile cacert.pem -untrusted ca2cert.pem rsacert.pem
-rm rsareq.pem
+./scripts/create-rsa-2048.sh
+./scripts/create-rsa-4096.sh
 ```
+
 
 Revoke rsacert and generate CRL
 ```
 openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem -revoke rsacert.pem
 openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem -gencrl -out rsacert-revoked-crl.pem
 openssl crl -in rsacert-revoked-crl.pem -inform PEM -outform DER -out rsacert-revoked-crl.der
-```
-
-
-RSA 4096 bits:
-```
-openssl genrsa -out largersakey.pem 4096
-openssl req -config ./openssl.cnf -new -key largersakey.pem -out largersareq.pem
-openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem \
-        -out largersacert.pem -infiles largersareq.pem
-openssl verify -CAfile cacert.pem -untrusted ca2cert.pem largersacert.pem
-rm largersareq.pem
-
-openssl pkey -inform DER -in largersakey.der --outform DER --pubout --out largersapubkey.der
-openssl pkey -inform DER -in largersakey.der --outform PEM --pubout --out largersapubkey.pem
 ```
 
 
@@ -158,8 +140,8 @@ old (traditional, ASN1, etc) formats instead
 RSA keys:
 ```
 openssl rsa -inform PEM -outform DER -traditional -in rsakey.pem -out rsakey.der
-openssl rsa -inform PEM -outform DER -traditional -in largersakey.pem -out largersakey.der
-openssl rsa -inform PEM -outform DER -traditional -pubin -RSAPublicKey_out -in largersapubkey.pem -out largersapubkey-gcrypt.der
+openssl rsa -inform PEM -outform DER -traditional -in rsa-4096-key.pem -out rsa-4096-key.der
+openssl rsa -inform PEM -outform DER -traditional -pubin -RSAPublicKey_out -in rsa-4096-pubkey.pem -out rsa-4096-pubkey-gcrypt.der
 openssl rsa -inform PEM -outform DER -traditional -in expiredkey.pem -out expiredkey.der
 openssl rsa -inform PEM -outform DER -traditional -in ca2key.pem -out ca2key.der
 ```
@@ -170,7 +152,6 @@ openssl rsa -inform PEM -outform DER -traditional -in ca2key.pem -out ca2key.der
 openssl x509 -outform DER -in cacert.pem -out cacert.der
 openssl x509 -outform DER -in ca2cert.pem -out ca2cert.der
 openssl x509 -outform DER -in rsacert.pem -out rsacert.der
-openssl x509 -outform DER -in largersacert.pem -out largersacert.der
 openssl x509 -outform DER -in expiredcert.pem -out expiredcert.der
 ```
 
@@ -212,8 +193,8 @@ openssl pkcs8 -in rsakey.der -inform der -out rsakey.p8-der -outform der -topk8
 openssl pkcs8 -in expiredkey.pem -inform pem -out expiredkey.p8-pem -outform pem -topk8
 openssl pkcs8 -in expiredkey.der -inform der -out expiredkey.p8-der -outform der -topk8
 
-openssl pkcs8 -in largersakey.pem -inform pem -out largersakey.p8-pem -outform pem -topk8
-openssl pkcs8 -in largersakey.der -inform der -out largersakey.p8-der -outform der -topk8
+openssl pkcs8 -in rsa-4096-key.pem -inform pem -out rsa-4096-key.p8-pem -outform pem -topk8
+openssl pkcs8 -in rsa-4096-key.der -inform der -out rsa-4096-key.p8-der -outform der -topk8
 
 ```
 
@@ -243,9 +224,6 @@ rm allca2key.pem
 cat rsakey.pem rsacert.pem ca2cert.pem cacert.pem > allrsa.pem
 openssl pkcs12 -export -in allrsa.pem -name TestRsaKey -out rsakey.p12
 
-cat largersakey.pem largersacert.pem ca2cert.pem cacert.pem > alllargersa.pem
-openssl pkcs12 -export -in alllargersa.pem -name largersakey -out largersakey.p12
-
 cat expiredkey.pem expiredcert.pem ca2cert.pem cacert.pem > allexpired.pem
 openssl pkcs12 -export -in allexpired.pem -name TestExpiredRsaKey -out expiredkey.p12
 
@@ -274,7 +252,7 @@ The following process loads a few keys into NSS DB for testing that XMLSec can f
 ```
 rm -rf nssdb
 mkdir nssdb
-pk12util -d nssdb -i largersakey.p12
+pk12util -d nssdb -i rsa-4096-key.p12
 chmod a-w nssdb/*
 ```
 
@@ -346,11 +324,6 @@ cat rsakey.pem rsacert.pem ca2cert.pem cacert.pem > allrsa.pem
 openssl pkcs12 -export -in allrsa.pem -name TestRsaKey -out rsakey-winxp.p12 -CSP "Microsoft Enhanced RSA and AES Cryptographic Provider (Prototype)"
 openssl pkcs12 -export -in allrsa.pem -name TestRsaKey -out rsakey-win.p12 -CSP "Microsoft Enhanced RSA and AES Cryptographic Provider"
 rm allrsa.pem
-
-cat largersakey.pem largersacert.pem ca2cert.pem cacert.pem > alllargersa.pem
-openssl pkcs12 -export -in alllargersa.pem -name largersakey -out largersakey-winxp.p12 -CSP "Microsoft Enhanced RSA and AES Cryptographic Provider (Prototype)"
-openssl pkcs12 -export -in alllargersa.pem -name largersakey -out largersakey-win.p12 -CSP "Microsoft Enhanced RSA and AES Cryptographic Provider"
-rm alllargersa.pem
 
 cat expiredkey.pem expiredcert.pem ca2cert.pem cacert.pem > allexpired.pem
 openssl pkcs12 -export -in allexpired.pem -name TestExpiredRsaKey -out expiredkey-win.p12 -CSP "Microsoft Enhanced RSA and AES Cryptographic Provider"

@@ -18,11 +18,11 @@
         <DigestValue>qLTg42nGDACNpd3s/550RxL+qjn68swOr4Vp9PIOngvR72LYrsCcDCnrotZb2bdJ</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>AWCSXyB6l0rtU59UtmVLujOaPf9lwnbtjwcotEqcW0HBH9IVl3FS5+otBkS7Ow1u
-QSyu+8Jg2qnbeTS5zyGTo/9/AEkY3hcyEtjOCKT9s04N6RbkLA4F1uqh+OeKqdtQ
-3Ro/2tsH1Q8awMU4Pam3Ary/BZgjvluoR+jjFnpxfXZgRAoU</SignatureValue>
+    <SignatureValue>AKRIcJAbuBdxs6D3wQkbk6PWZW0p2kWmZz28gpS7aj6jjbVsGkQEwUYeJJczTvf1
+4D04bEMRO1zbOjle2ZpHqW7MAB0GjOybXrP0cSNQ9Ry7I4ygKdR2S2HFM6mtmEkf
+bRroMtOvPO/AiDz9dSlt/Vw4y6v8/YZFbbN7Of9U+91a1/B9</SignatureValue>
     <KeyInfo>
-      <KeyName>EcdsaSecp521r1</KeyName>
+      <KeyName>TestKeyName-ec-prime521v1</KeyName>
     </KeyInfo>
   </Signature>
 </Envelope>

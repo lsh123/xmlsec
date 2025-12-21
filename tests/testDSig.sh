@@ -168,7 +168,7 @@ execDSigTest $res_success \
     "c14n sha1 ecdsa-sha1" \
     "key-value ec" \
     "--enabled-key-data key-value,ec" \
-    "--enabled-key-data key-name,key-value,ec $priv_key_option:key-p384 $topfolder/keys/ecdsa-secp384r1-key.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-name,key-value,ec $priv_key_option:key-p384 $topfolder/keys/ec-prime384v1-key.$priv_key_format --pwd secret123" \
     "--enabled-key-data key-value,ec"
 
 execDSigTest $res_success \
@@ -177,7 +177,7 @@ execDSigTest $res_success \
     "c14n sha1 ecdsa-sha224" \
     "key-value ec" \
     "--enabled-key-data key-value,ec" \
-    "--enabled-key-data key-name,key-value,ec $priv_key_option:key-p384 $topfolder/keys/ecdsa-secp384r1-key.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-name,key-value,ec $priv_key_option:key-p384 $topfolder/keys/ec-prime384v1-key.$priv_key_format --pwd secret123" \
     "--enabled-key-data key-value,ec"
 
 execDSigTest $res_success \
@@ -186,7 +186,7 @@ execDSigTest $res_success \
     "c14n sha1 ecdsa-sha256" \
     "key-value ec" \
     "--enabled-key-data key-value,ec" \
-    "--enabled-key-data key-name,key-value,ec $priv_key_option:key-p384 $topfolder/keys/ecdsa-secp384r1-key.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-name,key-value,ec $priv_key_option:key-p384 $topfolder/keys/ec-prime384v1-key.$priv_key_format --pwd secret123" \
     "--enabled-key-data key-value,ec"
 
 execDSigTest $res_success \
@@ -195,7 +195,7 @@ execDSigTest $res_success \
     "c14n sha1 ecdsa-sha384" \
     "key-value ec" \
     "--enabled-key-data key-value,ec" \
-    "--enabled-key-data key-name,key-value,ec $priv_key_option:key-p384 $topfolder/keys/ecdsa-secp384r1-key.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-name,key-value,ec $priv_key_option:key-p384 $topfolder/keys/ec-prime384v1-key.$priv_key_format --pwd secret123" \
     "--enabled-key-data key-value,ec"
 
 execDSigTest $res_success \
@@ -204,7 +204,7 @@ execDSigTest $res_success \
     "c14n sha1 ecdsa-sha512" \
     "key-value ec" \
     "--enabled-key-data key-value,ec" \
-    "--enabled-key-data key-name,key-value,ec $priv_key_option:key-p384 $topfolder/keys/ecdsa-secp384r1-key.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-name,key-value,ec $priv_key_option:key-p384 $topfolder/keys/ec-prime384v1-key.$priv_key_format --pwd secret123" \
     "--enabled-key-data key-value,ec"
 
 execDSigTest $res_success \
@@ -213,7 +213,7 @@ execDSigTest $res_success \
     "c14n sha1 ecdsa-sha1" \
     "key-value ec" \
     "--enabled-key-data key-value,ec" \
-    "--enabled-key-data key-name,key-value,ec $priv_key_option:key-p521 $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-name,key-value,ec $priv_key_option:TestKeyName-ec-prime521v1 $topfolder/keys/ec-prime521v1-key.$priv_key_format --pwd secret123" \
     "--enabled-key-data key-value,ec"
 
 execDSigTest $res_success \
@@ -222,7 +222,7 @@ execDSigTest $res_success \
     "c14n sha1 ecdsa-sha224" \
     "key-value ec" \
     "--enabled-key-data key-value,ec" \
-    "--enabled-key-data key-name,key-value,ec $priv_key_option:key-p521 $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-name,key-value,ec $priv_key_option:TestKeyName-ec-prime521v1 $topfolder/keys/ec-prime521v1-key.$priv_key_format --pwd secret123" \
     "--enabled-key-data key-value,ec"
 
 execDSigTest $res_success \
@@ -231,7 +231,7 @@ execDSigTest $res_success \
     "c14n sha1 ecdsa-sha256" \
     "key-value ec" \
     "--enabled-key-data key-value,ec" \
-    "--enabled-key-data key-name,key-value,ec $priv_key_option:key-p521 $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-name,key-value,ec $priv_key_option:TestKeyName-ec-prime521v1 $topfolder/keys/ec-prime521v1-key.$priv_key_format --pwd secret123" \
     "--enabled-key-data key-value,ec"
 
 execDSigTest $res_success \
@@ -240,7 +240,7 @@ execDSigTest $res_success \
     "c14n sha1 ecdsa-sha384" \
     "key-value ec" \
     "--enabled-key-data key-value,ec" \
-    "--enabled-key-data key-name,key-value,ec $priv_key_option:key-p521 $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-name,key-value,ec $priv_key_option:TestKeyName-ec-prime521v1 $topfolder/keys/ec-prime521v1-key.$priv_key_format --pwd secret123" \
     "--enabled-key-data key-value,ec"
 
 execDSigTest $res_success \
@@ -249,7 +249,7 @@ execDSigTest $res_success \
     "c14n sha1 ecdsa-sha512" \
     "key-value ec" \
     "--enabled-key-data key-value,ec" \
-    "--enabled-key-data key-name,key-value,ec $priv_key_option:key-p521 $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-name,key-value,ec $priv_key_option:TestKeyName-ec-prime521v1 $topfolder/keys/ec-prime521v1-key.$priv_key_format --pwd secret123" \
     "--enabled-key-data key-value,ec"
 
 # RSA
@@ -984,9 +984,9 @@ execDSigTest $res_success \
     "aleksey-xmldsig-01/enveloped-ripemd160-ecdsa-ripemd160" \
     "ripemd160 ecdsa-ripemd160" \
     "ec" \
-    "$priv_key_option:mykey $topfolder/keys/ec-prime256v1-key.$priv_key_format --pwd secret123" \
-    "$priv_key_option:mykey $topfolder/keys/ec-prime256v1-key.$priv_key_format --pwd secret123" \
-    "$priv_key_option:mykey $topfolder/keys/ec-prime256v1-key.$priv_key_format --pwd secret123"
+    "$priv_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec-prime256v1-key.$priv_key_format --pwd secret123" \
+    "$priv_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec-prime256v1-key.$priv_key_format --pwd secret123" \
+    "$priv_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec-prime256v1-key.$priv_key_format --pwd secret123"
 
 
 execDSigTest $res_success \
@@ -1038,18 +1038,18 @@ execDSigTest $res_success \
     "aleksey-xmldsig-01/enveloped-sha384-ecdsa-sha384" \
     "sha384 ecdsa-sha384" \
     "ec" \
-    "$pub_key_option:EcdsaSecp521r1 $topfolder/keys/ecdsa-secp521r1-pubkey.$pub_key_format" \
-    "$priv_key_option:mykey $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
-    "$pub_key_option:mykey $topfolder/keys/ecdsa-secp521r1-pubkey.$pub_key_format"
+    "$pub_key_option:TestKeyName-ec-prime521v1 $topfolder/keys/ec-prime521v1-pubkey.$pub_key_format" \
+    "$priv_key_option:TestKeyName-ec-prime521v1 $topfolder/keys/ec-prime521v1-key.$priv_key_format --pwd secret123" \
+    "$pub_key_option:TestKeyName-ec-prime521v1 $topfolder/keys/ec-prime521v1-pubkey.$pub_key_format"
 
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloped-sha512-ecdsa-sha512" \
     "sha512 ecdsa-sha512" \
     "ec" \
-    "$pub_key_option:EcdsaSecp521r1 $topfolder/keys/ecdsa-secp521r1-pubkey.$pub_key_format" \
-    "$priv_key_option:mykey $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
-    "$pub_key_option:mykey $topfolder/keys/ecdsa-secp521r1-pubkey.$pub_key_format"
+    "$pub_key_option:TestKeyName-ec-prime521v1 $topfolder/keys/ec-prime521v1-pubkey.$pub_key_format" \
+    "$priv_key_option:TestKeyName-ec-prime521v1 $topfolder/keys/ec-prime521v1-key.$priv_key_format --pwd secret123" \
+    "$pub_key_option:TestKeyName-ec-prime521v1 $topfolder/keys/ec-prime521v1-pubkey.$pub_key_format"
 
 
 execDSigTest $res_success \
@@ -1075,18 +1075,18 @@ execDSigTest $res_success \
     "aleksey-xmldsig-01/enveloped-sha3_384-ecdsa-sha3_384" \
     "sha3-384 ecdsa-sha3-384" \
     "ec" \
-    "$pub_key_option:EcdsaSecp521r1 $topfolder/keys/ecdsa-secp521r1-pubkey.$pub_key_format" \
-    "$priv_key_option:mykey $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
-    "$pub_key_option:mykey $topfolder/keys/ecdsa-secp521r1-pubkey.$pub_key_format"
+    "$pub_key_option:TestKeyName-ec-prime521v1 $topfolder/keys/ec-prime521v1-pubkey.$pub_key_format" \
+    "$priv_key_option:TestKeyName-ec-prime521v1 $topfolder/keys/ec-prime521v1-key.$priv_key_format --pwd secret123" \
+    "$pub_key_option:TestKeyName-ec-prime521v1 $topfolder/keys/ec-prime521v1-pubkey.$pub_key_format"
 
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloped-sha3_512-ecdsa-sha3_512" \
     "sha3-512 ecdsa-sha3-512" \
     "ec" \
-    "$pub_key_option:EcdsaSecp521r1 $topfolder/keys/ecdsa-secp521r1-pubkey.$pub_key_format" \
-    "$priv_key_option:mykey $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
-    "$pub_key_option:mykey $topfolder/keys/ecdsa-secp521r1-pubkey.$pub_key_format"
+    "$pub_key_option:TestKeyName-ec-prime521v1 $topfolder/keys/ec-prime521v1-pubkey.$pub_key_format" \
+    "$priv_key_option:TestKeyName-ec-prime521v1 $topfolder/keys/ec-prime521v1-key.$priv_key_format --pwd secret123" \
+    "$pub_key_option:TestKeyName-ec-prime521v1 $topfolder/keys/ec-prime521v1-pubkey.$pub_key_format"
 
 
 execDSigTest $res_success \
@@ -1095,7 +1095,7 @@ execDSigTest $res_success \
     "sha1 ecdsa-sha1" \
     "ec x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option:mykey $topfolder/keys/ec-prime256v1-key.$priv_key_format --pwd secret123" \
+    "$priv_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec-prime256v1-key.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -1104,7 +1104,7 @@ execDSigTest $res_success \
     "sha256 ecdsa-sha256" \
     "ec x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option:mykey $topfolder/keys/ec-prime256v1-key.$priv_key_format --pwd secret123" \
+    "$priv_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec-prime256v1-key.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -1113,7 +1113,7 @@ execDSigTest $res_success \
     "sha384 ecdsa-sha384" \
     "ec x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option:mykey $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
+    "$priv_key_option:TestKeyName-ec-prime521v1 $topfolder/keys/ec-prime521v1-key.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -1122,7 +1122,7 @@ execDSigTest $res_success \
     "sha512 ecdsa-sha512" \
     "ec x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option:mykey $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
+    "$priv_key_option:TestKeyName-ec-prime521v1 $topfolder/keys/ec-prime521v1-key.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 # see issue https://github.com/lsh123/xmlsec/issues/228
@@ -1165,9 +1165,9 @@ if [ "z$xmlsec_feature_asn1_signatures" = "zyes" ] ; then
         "aleksey-xmldsig-01/enveloped-sha256-ecdsa-sha256-with-asn1" \
         "sha256 ecdsa-sha256" \
         "ec" \
-        "--enable-asn1-signatures-hack $pub_key_option:mykey $topfolder/keys/ec-prime256v1-pubkey.$pub_key_format" \
-        "--enable-asn1-signatures-hack $priv_key_option:mykey $topfolder/keys/ec-prime256v1-key.$priv_key_format --pwd secret123" \
-        "--enable-asn1-signatures-hack $pub_key_option:mykey $topfolder/keys/ec-prime256v1-pubkey.$pub_key_format"
+        "--enable-asn1-signatures-hack $pub_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec-prime256v1-pubkey.$pub_key_format" \
+        "--enable-asn1-signatures-hack $priv_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec-prime256v1-key.$priv_key_format --pwd secret123" \
+        "--enable-asn1-signatures-hack $pub_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec-prime256v1-pubkey.$pub_key_format"
 
     execDSigTest $res_success \
         "" \
@@ -1175,7 +1175,7 @@ if [ "z$xmlsec_feature_asn1_signatures" = "zyes" ] ; then
         "sha512 ecdsa-sha512" \
         "ec x509" \
         "--enable-asn1-signatures-hack --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-        "--enable-asn1-signatures-hack $priv_key_option:mykey $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format --pwd secret123" \
+        "--enable-asn1-signatures-hack $priv_key_option:TestKeyName-ec-prime521v1 $topfolder/keys/ec-prime521v1-key.$priv_key_format --pwd secret123" \
         "--enable-asn1-signatures-hack --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 fi

@@ -13,7 +13,7 @@ XDnbRaf22WqerzX1vL0QzA==</DigestValue>
 Pu2aRBgfR1Uw31zUyHLlGONFLGg7mDwCQgDVU3TosUlEerBYNCnx1GsV9+yCj6CN
 Ismh2/AmMNUgmAxpnijj3acKq2ZLPzQup+suUpjWxKdz+NQSF4Xm+fu6NQ==</SignatureValue>
   <KeyInfo>
-    <KeyName>mykey</KeyName>
+    <KeyName>TestKeyName-ec-prime521v1</KeyName>
     <X509Data>
 <X509Certificate>MIID4DCCA4qgAwIBAgIJAK+ii7kzrdq8MA0GCSqGSIb3DQEBBQUAMIGcMQswCQYD
 VQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTE9MDsGA1UEChM0WE1MIFNlY3Vy

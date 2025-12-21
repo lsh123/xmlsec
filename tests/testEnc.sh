@@ -141,8 +141,8 @@ execEncTest $res_success \
     "aes192-gcm kw-aes192 concatkdf ecdh-es sha256" \
     "agreement-method enc-key ec" \
     "--enabled-key-data agreement-method,enc-key,key-value,key-name,ec  $priv_key_option:EC-P384 $topfolder/xmlenc11-interop-2012/EC-P384_SHA256WithECDSA-orig.$priv_key_format --pwd passwd" \
-    "--enabled-key-data agreement-method,enc-key,key-value,key-name,ec --session-key aes-192 $priv_key_option:EC-P384 $topfolder/xmlenc11-interop-2012/EC-P384_SHA256WithECDSA.$priv_key_format $pub_key_option:ecdsa-secp384r1 $topfolder/keys/ecdsa-secp384r1-cert.$pub_key_format --pwd secret123 --xml-data $topfolder/xmlenc11-interop-2012/cipherText__EC-P384__aes192-gcm__kw-aes192__ECDH-ES__ConcatKDF.data" \
-    "--enabled-key-data agreement-method,enc-key,key-value,key-name,ec $priv_key_option:ecdsa-secp384r1 $topfolder/keys/ecdsa-secp384r1-key.$priv_key_format  --pwd secret123"
+    "--enabled-key-data agreement-method,enc-key,key-value,key-name,ec --session-key aes-192 $priv_key_option:EC-P384 $topfolder/xmlenc11-interop-2012/EC-P384_SHA256WithECDSA.$priv_key_format $pub_key_option:TestKeyName-ec-prime384v1 $topfolder/keys/ec-prime384v1-pubkey.$pub_key_format --pwd secret123 --xml-data $topfolder/xmlenc11-interop-2012/cipherText__EC-P384__aes192-gcm__kw-aes192__ECDH-ES__ConcatKDF.data" \
+    "--enabled-key-data agreement-method,enc-key,key-value,key-name,ec $priv_key_option:TestKeyName-ec-prime384v1 $topfolder/keys/ec-prime384v1-key.$priv_key_format  --pwd secret123"
 
 execEncTest $res_success \
     "" \
@@ -150,8 +150,8 @@ execEncTest $res_success \
     "aes256-gcm kw-aes256 concatkdf ecdh-es sha256" \
     "agreement-method enc-key ec" \
     "--enabled-key-data agreement-method,enc-key,key-value,key-name,ec $priv_key_option:EC-P521 $topfolder/xmlenc11-interop-2012/EC-P521_SHA256WithECDSA-orig.$priv_key_format --pwd passwd" \
-    "--enabled-key-data agreement-method,enc-key,key-value,key-name,ec --session-key aes-256 $priv_key_option:EC-P521 $topfolder/xmlenc11-interop-2012/EC-P521_SHA256WithECDSA.$priv_key_format $pub_key_option:ecdsa-secp521r1 $topfolder/keys/ecdsa-secp521r1-cert.$pub_key_format --pwd secret123 --xml-data $topfolder/xmlenc11-interop-2012/cipherText__EC-P521__aes256-gcm__kw-aes256__ECDH-ES__ConcatKDF.data" \
-    "--enabled-key-data agreement-method,enc-key,key-value,key-name,ec $priv_key_option:ecdsa-secp521r1 $topfolder/keys/ecdsa-secp521r1-key.$priv_key_format  --pwd secret123"
+    "--enabled-key-data agreement-method,enc-key,key-value,key-name,ec --session-key aes-256 $priv_key_option:EC-P521 $topfolder/xmlenc11-interop-2012/EC-P521_SHA256WithECDSA.$priv_key_format $pub_key_option:TestKeyName-ec-prime521v1 $topfolder/keys/ec-prime521v1-pubkey.$pub_key_format --pwd secret123 --xml-data $topfolder/xmlenc11-interop-2012/cipherText__EC-P521__aes256-gcm__kw-aes256__ECDH-ES__ConcatKDF.data" \
+    "--enabled-key-data agreement-method,enc-key,key-value,key-name,ec $priv_key_option:TestKeyName-ec-prime521v1 $topfolder/keys/ec-prime521v1-key.$priv_key_format  --pwd secret123"
 
 # DH-ES
 execEncTest $res_success \

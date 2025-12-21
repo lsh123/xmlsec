@@ -33,3 +33,5 @@ V	21251126225555Z		AFA28BB933ADDACB	unknown	/C=US/ST=California/O=XML Security L
 V	21251126225657Z		AFA28BB933ADDACC	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=Test Key ml-dsa-44
 V	21251126225719Z		AFA28BB933ADDACD	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=Test Key ml-dsa-65
 V	21251126225737Z		AFA28BB933ADDACE	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=Test Key ml-dsa-87
+V	21251126225758Z		AFA28BB933ADDACF	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=Test Key slh-dsa-sha2-128f
+V	21251127001237Z		AFA28BB933ADDAD0	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=Test Key ec-prime384v1

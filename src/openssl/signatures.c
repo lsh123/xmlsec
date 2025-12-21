@@ -1944,12 +1944,12 @@ xmlSecOpenSSLEvpSignatureDsa_OpenSSL2XmlDSig(const xmlSecTransformId transformId
     XMLSEC_SAFE_CAST_SIZE_TO_INT(bufSize, bufLen, goto done, NULL);
     sig = d2i_DSA_SIG(NULL, (const unsigned char **)&buf, bufLen);
     if (sig == NULL) {
-        xmlSecOpenSSLError("d2i_ECDSA_SIG", NULL);
+        xmlSecOpenSSLError("d2i_DSA_SIG", NULL);
         goto done;
     }
     DSA_SIG_get0(sig, &rr, &ss);
     if((rr == NULL) || (ss == NULL)) {
-        xmlSecOpenSSLError("ECDSA_SIG_get0", NULL);
+        xmlSecOpenSSLError("DSA_SIG_get0", NULL);
         goto done;
     }
 

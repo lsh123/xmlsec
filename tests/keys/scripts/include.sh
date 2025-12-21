@@ -20,35 +20,38 @@ create_key() {
     local algorithm="$2"
     local genpkey_options="$3"
 
-    ###
+    ### Create private key
     echo
     echo "*** Generating ${algorithm} key ${keyname}...."
     echo
-    openssl genpkey -algorithm "${algorithm}" ${genpkey_options} -out "${keyname}-key.pem"
+    openssl genpkey -genparam  -algorithm "${algorithm}" ${genpkey_options} -out "${keyname}-param.pem"
+    openssl genpkey -paramfile "${keyname}-param.pem" -out "${keyname}-key.pem"
+    rm "${keyname}-param.pem"
+
+    ### Create public key
     openssl pkey -in "${keyname}-key.pem" -pubout -out "${keyname}-pubkey.pem"
 
-    ###
+    ### Create DER files
     echo
     echo "*** Creating DER files.."
     echo
     openssl pkey -in "${keyname}-key.pem" -outform DER -out "${keyname}-key.der"
     openssl pkey -in "${keyname}-key.pem" -pubout -outform DER -out "${keyname}-pubkey.der"
 
-    ###
+    ### Create PKCS8 files
     echo
     echo "*** Creating PKCS8 files..."
     echo
     openssl pkcs8 -in "${keyname}-key.der" -inform der -out "${keyname}-key.p8-pem" -outform pem -topk8 -passout pass:"${password}"
     openssl pkcs8 -in "${keyname}-key.der" -inform der -out "${keyname}-key.p8-der" -outform der -topk8 -passout pass:"${password}"
 
-    ###
+    ### Done
+    openssl pkey -in "${keyname}-key.pem" -text -noout
     echo
     echo "*** Key created successfully in files starting from '${keyname}'"
     echo "Use XMLSEC_TEST_UPDATE_XML_ON_FAILURE=yes make check-dsig to update the test files if needed."
     echo
-
 }
-
 
 create_key_with_second_level_ca() {
     local keyname="$1"
@@ -56,30 +59,39 @@ create_key_with_second_level_ca() {
     local genpkey_options="$3"
     local subject="/C=US/ST=California/O=XML Security Library \(http:\/\/www.aleksey.com\/xmlsec\)/CN=Test Key ${keyname}"
     local pkcs12_name="TestKeyName-${keyname}"
+    local ms_csp="Microsoft Enhanced Cryptographic Provider v1.0"
 
     create_key "${keyname}" "${algorithm}" "${genpkey_options}"
 
-    ###
+    ### Create certificate signed by second level CA
     echo
     echo "*** Signing using second level CA...."
     echo
     openssl req -config "${openssl_conf}" -new -key "${keyname}-key.pem" -subj "${subject}" -out "${keyname}-req.pem"
-    yes | openssl ca -config "${openssl_conf}" -cert "${second_level_ca_file}" -keyfile "${second_level_ca_key_file}" -out "${keyname}-cert.pem" -infiles "${keyname}-req.pem"
+    yes | openssl ca -config "${openssl_conf}" -cert "${second_level_ca_file}" -keyfile "${second_level_ca_key_file}" -notext -out "${keyname}-cert.pem" -infiles "${keyname}-req.pem"
     openssl verify -CAfile "${ca_file}" -untrusted "${second_level_ca_file}" "${keyname}-cert.pem"
     rm "${keyname}-req.pem"
 
     openssl x509 -in "${keyname}-cert.pem" -inform PEM -out "${keyname}-cert.der" -outform DER
     cp "${keyname}-cert.der" "${keyname}-pubkey.crt"
 
-    ###
+    ### Create PKCS12 file
     echo
-    echo "*** Creating PKCS12 file..."
+    echo "*** Creating PKCS12 files..."
     echo
     cat "${keyname}-key.pem" "${keyname}-cert.pem" "${second_level_ca_file}" "${ca_file}" > "all-${keyname}.pem"
     openssl pkcs12 -export -in "all-${keyname}.pem" -name "${pkcs12_name}" -out "${keyname}-key.p12" -passout pass:"${password}"
+
+    ### Add Crypto Service Provider (CSP) for Windows
+    # On Windows, one needs to specify Crypto Service Provider (CSP) in the pkcs12 file
+    # to ensure it is loaded correctly to be used with SHA2 algorithms. Worse, the CSP is
+    # different for XP and older versions.
+    openssl pkcs12 -export -in "all-${keyname}.pem" -name "${pkcs12_name}" -out "${keyname}-key-win.p12" -CSP "${ms_csp}" -passout pass:"${password}"
+
+    # cleanup
     rm "all-${keyname}.pem"
 
-    ###
+    ### Done
     echo
     echo "*** Certitifcates and PKCS12 file with key name '${pkcs12_name}' created successfully in files starting from '${keyname}'"
     echo "Use XMLSEC_TEST_UPDATE_XML_ON_FAILURE=yes make check-dsig to update the test files if needed."

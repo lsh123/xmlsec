@@ -29,36 +29,10 @@ rm ca2req.pem
 ### Generate and sign DSA keys with second level CA (IMPORTANT: use OpenSSL 1.x for generating DSA keys!!!)
 
 
-DSA 1024 bits (OU = Test Third Level DSA Certificate) :
 ```
-openssl dsaparam -out dsakey.pem -genkey 1024
-openssl req -config ./openssl.cnf -new -key dsakey.pem -out dsareq.pem
-openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem -out dsacert.pem -infiles dsareq.pem
-openssl verify -CAfile cacert.pem -untrusted ca2cert.pem dsacert.pem
-rm dsareq.pem
-
-openssl pkey -inform DER -in dsakey.der --outform DER --pubout --out dsapubkey.der
-openssl pkey -inform DER -in dsakey.der --outform PEM --pubout --out dsapubkey.pem
-```
-
-DSA 2048 bits:
-```
-openssl dsaparam -out dsa2048key.pem -genkey 2048
-openssl req -config ./openssl.cnf -new -key dsa2048key.pem -out dsa2048req.pem
-openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem \
-        -out dsa2048cert.pem -infiles dsa2048req.pem
-openssl verify -CAfile cacert.pem -untrusted ca2cert.pem dsa2048cert.pem
-rm dsa2048req.pem
-```
-
-DSA 3072 bits:
-```
-openssl dsaparam -out dsa3072key.pem -genkey 3072
-openssl req -config ./openssl.cnf -new -key dsa3072key.pem -out dsa3072req.pem
-openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem \
-        -out dsa3072cert.pem -infiles dsa3072req.pem
-openssl verify -CAfile cacert.pem -untrusted ca2cert.pem dsa3072cert.pem
-rm dsa3072req.pem
+./scripts/create-dsa-1024.sh
+./scripts/create-dsa-2048.sh
+./scripts/create-dsa-3072.sh
 ```
 
 ### Generate and sign RSA keys with second level CA
@@ -190,22 +164,11 @@ openssl rsa -inform PEM -outform DER -traditional -in expiredkey.pem -out expire
 openssl rsa -inform PEM -outform DER -traditional -in ca2key.pem -out ca2key.der
 ```
 
-DSA keys:
-```
-openssl dsa -inform PEM -outform DER -in dsakey.pem -out dsakey.der
-openssl dsa --inform PEM -in dsapubkey.pem -pubin -outform D -out dsapubkey.der
-openssl dsa -inform PEM -outform DER -in dsa2048key.pem -out dsa2048key.der
-openssl dsa -inform PEM -outform DER -in dsa3072key.pem -out dsa3072key.der
-```
-
 
 ### Convert PEM cert file to DER file (IMPORTANT: use OpenSSL 1.x for generating DER files!!!)
 ```
 openssl x509 -outform DER -in cacert.pem -out cacert.der
 openssl x509 -outform DER -in ca2cert.pem -out ca2cert.der
-openssl x509 -outform DER -in dsacert.pem -out dsacert.der
-openssl x509 -outform DER -in dsa2048cert.pem -out dsa2048cert.der
-openssl x509 -outform DER -in dsa3072cert.pem -out dsa3072cert.der
 openssl x509 -outform DER -in rsacert.pem -out rsacert.der
 openssl x509 -outform DER -in largersacert.pem -out largersacert.der
 openssl x509 -outform DER -in expiredcert.pem -out expiredcert.der
@@ -243,12 +206,6 @@ Converting an unencrypted PEM or DER file containing a private key to an encrypt
 PEM or DER file containing the same private key but encrypted (the tests password
 is `secret123`):
 ```
-openssl pkcs8 -in dsakey.pem -inform pem -out dsakey.p8-pem -outform pem -topk8
-openssl pkcs8 -in dsakey.der -inform der -out dsakey.p8-der -outform der -topk8
-openssl pkcs8 -in dsa2048key.pem -inform pem -out dsa2048key.p8-pem -outform pem -topk8
-openssl pkcs8 -in dsa2048key.der -inform der -out dsa2048key.p8-der -outform der -topk8
-openssl pkcs8 -in dsa3072key.pem -inform pem -out dsa3072key.p8-pem -outform pem -topk8
-openssl pkcs8 -in dsa3072key.der -inform der -out dsa3072key.p8-der -outform der -topk8
 openssl pkcs8 -in rsakey.pem -inform pem -out rsakey.p8-pem -outform pem -topk8
 openssl pkcs8 -in rsakey.der -inform der -out rsakey.p8-der -outform der -topk8
 
@@ -282,14 +239,6 @@ cat ca2key.pem ca2cert.pem cacert.pem  > allca2key.pem
 openssl pkcs12 -export -in allca2key.pem -name CA2RsaKey -out ca2key.p12
 rm allca2key.pem
 
-cat dsakey.pem dsacert.pem ca2cert.pem cacert.pem > alldsa.pem
-openssl pkcs12 -export -in alldsa.pem -name dsakey -out dsakey.p12
-
-cat dsa2048key.pem dsa2048cert.pem ca2cert.pem cacert.pem > alldsa2048.pem
-openssl pkcs12 -export -in alldsa2048.pem -name TestDsa2048Key -out dsa2048key.p12
-
-cat dsa3072key.pem dsa3072cert.pem ca2cert.pem cacert.pem > alldsa3072.pem
-openssl pkcs12 -export -in alldsa3072.pem -name TestDsa3072Key -out dsa3072key.p12
 
 cat rsakey.pem rsacert.pem ca2cert.pem cacert.pem > allrsa.pem
 openssl pkcs12 -export -in allrsa.pem -name TestRsaKey -out rsakey.p12
@@ -402,19 +351,6 @@ cat largersakey.pem largersacert.pem ca2cert.pem cacert.pem > alllargersa.pem
 openssl pkcs12 -export -in alllargersa.pem -name largersakey -out largersakey-winxp.p12 -CSP "Microsoft Enhanced RSA and AES Cryptographic Provider (Prototype)"
 openssl pkcs12 -export -in alllargersa.pem -name largersakey -out largersakey-win.p12 -CSP "Microsoft Enhanced RSA and AES Cryptographic Provider"
 rm alllargersa.pem
-
-cat dsakey.pem dsacert.pem ca2cert.pem cacert.pem > alldsa.pem
-openssl pkcs12 -export -in alldsa.pem -name dsakey -out dsakey-win.p12 -CSP "Microsoft Enhanced RSA and AES Cryptographic Provider"
-rm alldsa.pem
-
-cat dsa2048key.pem dsa2048cert.pem ca2cert.pem cacert.pem > alldsa2048.pem
-openssl pkcs12 -export -in alldsa2048.pem -name TestDsa2048Key -out dsa2048key-win.p12 -CSP "Microsoft Enhanced RSA and AES Cryptographic Provider"
-rm alldsa2048.pem
-
-cat dsa3072key.pem dsa3072cert.pem ca2cert.pem cacert.pem > alldsa3072.pem
-openssl pkcs12 -export -in alldsa3072.pem -name TestDsa3072Key -out dsa3072key-win.p12 -CSP "Microsoft Enhanced RSA and AES Cryptographic Provider"
-rm alldsa3072.pem
-
 
 cat expiredkey.pem expiredcert.pem ca2cert.pem cacert.pem > allexpired.pem
 openssl pkcs12 -export -in allexpired.pem -name TestExpiredRsaKey -out expiredkey-win.p12 -CSP "Microsoft Enhanced RSA and AES Cryptographic Provider"

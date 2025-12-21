@@ -565,7 +565,7 @@ execDSigTest $res_success \
     "sha1 dsa-sha1" \
     "dsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option:mykey $topfolder/keys/dsakey.$priv_key_format --pwd secret123" \
+    "$priv_key_option:TestKeyName-dsa-1024 $topfolder/keys/dsa-1024-key.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -947,7 +947,7 @@ execDSigTest $res_success \
     "sha256 dsa-sha256" \
     "dsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option:mykey $topfolder/keys/dsa2048key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$priv_key_option:TestKeyName-dsa-2048 $topfolder/keys/dsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -956,7 +956,7 @@ execDSigTest $res_success \
     "sha256 dsa-sha256" \
     "dsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option:mykey $topfolder/keys/dsa3072key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$priv_key_option:TestKeyName-dsa-3072 $topfolder/keys/dsa-3072-key$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -964,9 +964,9 @@ execDSigTest $res_success \
     "aleksey-xmldsig-01/enveloped-sha1-dsa-sha1" \
     "sha1 dsa-sha1" \
     "" \
-    "$priv_key_option:DsaKey $topfolder/keys/dsakey.$priv_key_format --pwd secret123" \
-    "$priv_key_option:dsakey $topfolder/keys/dsakey.$priv_key_format --pwd secret123" \
-    "$priv_key_option:dsakey $topfolder/keys/dsakey.$priv_key_format --pwd secret123"
+    "$pub_key_option:TestKeyName-dsa-1024 $topfolder/keys/dsa-1024-pubkey.$pub_key_format" \
+    "$priv_key_option:TestKeyName-dsa-1024 $topfolder/keys/dsa-1024-key.$priv_key_format --pwd secret123" \
+    "$pub_key_option:TestKeyName-dsa-1024 $topfolder/keys/dsa-1024-pubkey.$pub_key_format"
 
 
 execDSigTest $res_success \
@@ -1472,7 +1472,7 @@ execDSigTest $res_success \
     "enveloped-signature sha1 dsa-sha1" \
     "dsa" \
     "--enabled-key-data key-value,key-name,dsa" \
-    "--enabled-key-data key-value,key-name,dsa $priv_key_option:mykey $topfolder/keys/dsakey.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-value,key-name,dsa $priv_key_option:TestKeyName-dsa-1024 $topfolder/keys/dsa-1024-key.$priv_key_format --pwd secret123" \
     "--enabled-key-data key-value,key-name,dsa"
 
 execDSigTest $res_success \
@@ -1481,7 +1481,7 @@ execDSigTest $res_success \
     "sha1 dsa-sha1" \
     "dsa" \
     "--enabled-key-data key-value,key-name,dsa" \
-    "--enabled-key-data key-value,key-name,dsa $priv_key_option:mykey $topfolder/keys/dsakey.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-value,key-name,dsa $priv_key_option:TestKeyName-dsa-1024 $topfolder/keys/dsa-1024-key.$priv_key_format --pwd secret123" \
     "--enabled-key-data key-value,key-name,dsa"
 
 execDSigTest $res_success \
@@ -1490,7 +1490,7 @@ execDSigTest $res_success \
     "base64 sha1 dsa-sha1" \
     "dsa" \
     "--enabled-key-data key-value,key-name,dsa" \
-    "--enabled-key-data key-value,key-name,dsa $priv_key_option:mykey $topfolder/keys/dsakey.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-value,key-name,dsa $priv_key_option:TestKeyName-dsa-1024 $topfolder/keys/dsa-1024-key.$priv_key_format --pwd secret123" \
     "--enabled-key-data key-value,key-name,dsa"
 
 execDSigTest $res_success \
@@ -1526,7 +1526,7 @@ execDSigTest $res_success \
     "base64 sha1 dsa-sha1" \
     "dsa" \
     "--enabled-key-data key-value,key-name,dsa $url_map_xml_stylesheet_b64_2005" \
-    "--enabled-key-data key-value,key-name,dsa $priv_key_option:mykey $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_b64_2005" \
+    "--enabled-key-data key-value,key-name,dsa $priv_key_option:TestKeyName-dsa-1024 $topfolder/keys/dsa-1024-key.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_b64_2005" \
     "--enabled-key-data key-value,key-name,dsa $url_map_xml_stylesheet_b64_2005"
 
 execDSigTest $res_success \
@@ -1535,7 +1535,7 @@ execDSigTest $res_success \
     "sha1 dsa-sha1" \
     "dsa" \
     "--enabled-key-data key-value,key-name,dsa $url_map_xml_stylesheet_2005" \
-    "--enabled-key-data key-value,key-name,dsa $priv_key_option:mykey $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005" \
+    "--enabled-key-data key-value,key-name,dsa $priv_key_option:TestKeyName-dsa-1024 $topfolder/keys/dsa-1024-key.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005" \
     "--enabled-key-data key-value,key-name,dsa $url_map_xml_stylesheet_2005"
 
 execDSigTest $res_success \
@@ -1544,8 +1544,8 @@ execDSigTest $res_success \
     "sha1 dsa-sha1" \
     "dsa x509" \
     "--pubkey-cert-$cert_format:Lugh $topfolder/merlin-xmldsig-twenty-three/certs/lugh-cert.$cert_format $url_map_xml_stylesheet_2005" \
-    "$priv_key_option:mykey $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005" \
-    "$priv_key_option:mykey $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005"
+    "$priv_key_option:TestKeyName-dsa-1024 $topfolder/keys/dsa-1024-key.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005" \
+    "$priv_key_option:TestKeyName-dsa-1024 $topfolder/keys/dsa-1024-key.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005"
 
 execDSigTest $res_success \
     "" \
@@ -1553,7 +1553,7 @@ execDSigTest $res_success \
     "sha1 dsa-sha1" \
     "dsa x509" \
     "--trusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/ca.$cert_format --verification-gmt-time 2005-01-01+10:00:00 $url_map_xml_stylesheet_2005" \
-    "$priv_key_option:mykey $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005"\
+    "$priv_key_option:TestKeyName-dsa-1024 $topfolder/keys/dsa-1024-key.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005"\
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format $url_map_xml_stylesheet_2005"
 
 extra_message="Negative test: CRL is present"
@@ -1571,7 +1571,7 @@ execDSigTest $res_success \
     "sha1 dsa-sha1" \
     "dsa x509" \
     "--trusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/ca.$cert_format --untrusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/badb.$cert_format --verification-gmt-time 2005-01-01+10:00:00 $url_map_xml_stylesheet_2005" \
-    "$priv_key_option:mykey $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005"\
+    "$priv_key_option:TestKeyName-dsa-1024 $topfolder/keys/dsa-1024-key.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005"\
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format $url_map_xml_stylesheet_2005"
 
 execDSigTest $res_success \
@@ -1580,7 +1580,7 @@ execDSigTest $res_success \
     "sha1 dsa-sha1" \
     "dsa x509" \
     "--trusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/ca.$cert_format --untrusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/macha.$cert_format --verification-gmt-time 2005-01-01+10:00:00 $url_map_xml_stylesheet_2005" \
-    "$priv_key_option:mykey $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005"\
+    "$priv_key_option:TestKeyName-dsa-1024 $topfolder/keys/dsa-1024-key.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005"\
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format $url_map_xml_stylesheet_2005"
 
 execDSigTest $res_success \
@@ -1589,7 +1589,7 @@ execDSigTest $res_success \
     "sha1 dsa-sha1" \
     "dsa x509" \
     "--trusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/ca.$cert_format --untrusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/nemain.$cert_format --verification-gmt-time 2005-01-01+10:00:00 $url_map_xml_stylesheet_2005" \
-    "$priv_key_option:mykey $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005"\
+    "$priv_key_option:TestKeyName-dsa-1024 $topfolder/keys/dsa-1024-key.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005"\
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format $url_map_xml_stylesheet_2005"
 
 execDSigTest $res_success \
@@ -1598,7 +1598,7 @@ execDSigTest $res_success \
     "sha1 dsa-sha1" \
     "dsa x509" \
     "--trusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/ca.$cert_format --untrusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/nemain.$cert_format --verification-gmt-time 2005-01-01+10:00:00 $url_map_xml_stylesheet_2005" \
-    "--lax-key-search $priv_key_option:mykey $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005"\
+    "--lax-key-search $priv_key_option:TestKeyName-dsa-1024 $topfolder/keys/dsa-1024-key.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005"\
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --trusted-$cert_format $topfolder/keys/ca2cert.$cert_format $url_map_xml_stylesheet_2005"
 
 execDSigTest $res_success \
@@ -1607,7 +1607,7 @@ execDSigTest $res_success \
     "base64 xpath xslt enveloped-signature c14n-with-comments sha1 dsa-sha1" \
     "dsa x509" \
     "--trusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/merlin.$cert_format --verification-gmt-time 2005-01-01+10:00:00 $url_map_xml_stylesheet_2005 $url_map_xml_stylesheet_b64_2005" \
-    "--lax-key-search $priv_key_option:mykey $topfolder/keys/dsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005 $url_map_xml_stylesheet_b64_2005" \
+    "--lax-key-search $priv_key_option:TestKeyName-dsa-1024 $topfolder/keys/dsa-1024-key.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005 $url_map_xml_stylesheet_b64_2005" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format $url_map_xml_stylesheet_2005 $url_map_xml_stylesheet_b64_2005"
 
 
@@ -1678,7 +1678,7 @@ execDSigTest $res_success \
     "exc-c14n sha1 dsa-sha1" \
     "dsa" \
     "--enabled-key-data key-value,key-name,dsa" \
-    "--enabled-key-data key-value,key-name,dsa $priv_key_option:mykey $topfolder/keys/dsakey.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-value,key-name,dsa $priv_key_option:TestKeyName-dsa-1024 $topfolder/keys/dsa-1024-key.$priv_key_format --pwd secret123" \
     "--enabled-key-data key-value,key-name,dsa"
 
 

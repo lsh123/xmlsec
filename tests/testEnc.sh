@@ -160,8 +160,8 @@ execEncTest $res_success \
     "aes128-gcm kw-aes128 concatkdf dh-es sha256" \
     "agreement-method enc-key dh" \
     "--enabled-key-data agreement-method,enc-key,key-value,key-name,dh $priv_key_option:DH-1024 $topfolder/xmlenc11-interop-2012/DH-1024_SHA256WithDSA.$priv_key_format --pwd passwd" \
-    "--enabled-key-data agreement-method,enc-key,key-value,key-name,dh --session-key aes-128 --privkey-pem:dh1024-first $topfolder/keys/dh1024-first-key.pem --pubkey-pem:dh1024-second $topfolder/keys/dh1024-second-pubkey.pem --xml-data $topfolder/xmlenc11-interop-2012/cipherText__DH-1024__aes128-gcm__kw-aes128__dh-es__ConcatKDF.data" \
-    "--enabled-key-data agreement-method,enc-key,key-value,key-name,dh --privkey-pem:dh1024-second $topfolder/keys/dh1024-second-key.pem"
+    "--enabled-key-data agreement-method,enc-key,key-value,key-name,dh --session-key aes-128 --privkey-pem:dhx-rfc5114-3-first $topfolder/keys/dhx-rfc5114-3-first-key.pem --pubkey-pem:dhx-rfc5114-3-second $topfolder/keys/dhx-rfc5114-3-second-pubkey.pem --xml-data $topfolder/xmlenc11-interop-2012/cipherText__DH-1024__aes128-gcm__kw-aes128__dh-es__ConcatKDF.data" \
+    "--enabled-key-data agreement-method,enc-key,key-value,key-name,dh --privkey-pem:dhx-rfc5114-3-second $topfolder/keys/dhx-rfc5114-3-second-key.pem"
 
 
 

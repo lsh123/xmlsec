@@ -18,10 +18,10 @@
         <DigestValue>c+MKDdISIXzF0N/++RWgJ52RFPo=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>3M5Z/1sHaUMvGch63LLrBJwbEYYhC2NDXAMmcowoB4tlHTJD7lSX3xwE2WnCpPQf
-GGL+Or6J+e5AqKM+PiTrRA==</SignatureValue>
+    <SignatureValue>I4+fzVs45mr5UfFfFAlIyU5e5P15hSEylNXBFnF9xDvjfJxc2SWvrHukvqrCMl21
+X5r5vEehCFDZAk8UCAbz+A==</SignatureValue>
     <KeyInfo>
-      <KeyName>mykey</KeyName>
+      <KeyName>TestKeyName-ec-prime256v1</KeyName>
     </KeyInfo>
   </Signature>
 </Envelope>

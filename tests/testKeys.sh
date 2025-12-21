@@ -58,9 +58,9 @@ execKeysTest $res_success   \
     "ec"                    \
     ""                      \
     "ec"                    \
-    "$topfolder/keys/ecdsa-secp256r1-key" \
-    "$topfolder/keys/ecdsa-secp256r1-pubkey" \
-    "$topfolder/keys/ecdsa-secp256r1-cert" \
+    "$topfolder/keys/ec-prime256v1-key" \
+    "$topfolder/keys/ec-prime256v1-pubkey" \
+    "$topfolder/keys/ec-prime256v1-cert" \
     "$topfolder/aleksey-xmldsig-01/enveloped-sha1-ecdsa-sha1" \
     "--pwd secret123 --enabled-key-data key-name"
 

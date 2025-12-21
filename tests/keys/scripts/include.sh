@@ -72,7 +72,7 @@ create_pkcs8_keys_from_private_key()
 create_certificate_from_private_key() {
     local keyname="$1"
     local gencert_options="$2"
-    local subject="/C=US/ST=California/O=XML Security Library \(http:\/\/www.aleksey.com\/xmlsec\)/CN=Test Key ${keyname}"
+    local subject="/CN=Test Key ${keyname}/O=XML Security Library \(http:\/\/www.aleksey.com\/xmlsec\)/ST=California/C=US"
 
     ### Create certificate signed by second level CA
     echo

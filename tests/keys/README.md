@@ -25,9 +25,16 @@ openssl ca -config ./openssl.cnf -cert cacert.pem -keyfile cakey.pem \
 openssl verify -CAfile cacert.pem ca2cert.pem
 rm ca2req.pem
 ```
+### Creating NSS DB
 
-### Generate and sign DSA keys with second level CA (IMPORTANT: use OpenSSL 1.x for generating DSA keys!!!)
+```
+rm -rf nssdb
+mkdir nssdb
+pk12util -d nssdb -i rsa-4096-key.p12
+chmod a-w nssdb/*
+```
 
+### Generate and sign DSA keys with second level CA
 ```
 ./scripts/create-dsa-1024.sh
 ./scripts/create-dsa-2048.sh
@@ -41,6 +48,15 @@ rm ca2req.pem
 ./scripts/create-rsa-4096.sh
 ```
 
+### Creating NSS DB
+DO NOT SPECIFY PASSWORD FOR NSS DB (private keys pkcs12 password is 'secret123')
+
+```
+rm -rf nssdb
+mkdir nssdb
+pk12util -d nssdb -i rsa-4096-key.p12
+chmod a-w nssdb/*
+```
 
 Revoke rsacert and generate CRL
 ```

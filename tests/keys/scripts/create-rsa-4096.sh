@@ -71,4 +71,6 @@ echo "** Digest( SHA3-512 ): ***"
 openssl x509 -in "${keyname}-cert.pem" -noout -fingerprint -sha3-512 | cut -d'=' -f2 | xxd -r -p | openssl base64
 
 
+echo "NOTE: NSS is very particular about the order of DN fields, make sure to tests nss to confirm subject/issuer names work as expected."
+
 echo "*** Done ***"

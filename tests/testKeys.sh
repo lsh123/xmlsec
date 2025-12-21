@@ -48,9 +48,9 @@ execKeysTest $res_success       \
     "dsa"                       \
     "test-dsa"                  \
     "dsa-1024"                  \
-    "$topfolder/keys/dsakey"    \
-    "$topfolder/keys/dsapubkey" \
-    "$topfolder/keys/dsacert"   \
+    "$topfolder/keys/dsa-1024-key"    \
+    "$topfolder/keys/dsa-1024-pubkey" \
+    "$topfolder/keys/dsa-1024-cert"   \
     "$topfolder/aleksey-xmldsig-01/enveloped-sha1-dsa-sha1" \
     "--pwd secret123 --enabled-key-data key-name"
 

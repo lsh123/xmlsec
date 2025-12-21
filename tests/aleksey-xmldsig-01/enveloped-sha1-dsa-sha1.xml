@@ -18,9 +18,9 @@
         <DigestValue>9H/rQr2Axe9hYTV2n/tCp+3UIQQ=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>PaqfuCl8L6U0vKZswrGN0xj29mkBxAS4XlCw5vxMgBdv+Xon0Xf77w==</SignatureValue>
+    <SignatureValue>God1pk1tGcCZPXHAvouf7BRr1jMpLY4ON12g06mEffLT2qsUARyPzg==</SignatureValue>
     <KeyInfo>
-      <KeyName>DsaKey</KeyName>
+      <KeyName>TestKeyName-dsa-1024</KeyName>
     </KeyInfo>
   </Signature>
 </Envelope>

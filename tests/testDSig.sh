@@ -555,9 +555,9 @@ execDSigTest $res_success \
     "aleksey-xmldsig-01/signature-two-keynames" \
     "sha1 rsa-sha1" \
     "rsa x509" \
-    "$priv_key_option:key2 $topfolder/keys/rsa/rsa-2048-key.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2018" \
-    "$priv_key_option:key2 $topfolder/keys/rsa/rsa-2048-key.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2018" \
-    "$priv_key_option:key2 $topfolder/keys/rsa/rsa-2048-key.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2018"
+    "$url_map_xml_stylesheet_2018 $pub_key_option:key2  $topfolder/keys/rsa/rsa-2048-pubkey$pub_key_suffix.$pub_key_format \
+    "$url_map_xml_stylesheet_2018 $priv_key_option:key2 $topfolder/keys/rsa/rsa-2048-key.$priv_key_format --pwd secret123" \
+    "$url_map_xml_stylesheet_2018 $pub_key_option:key2  $topfolder/keys/rsa/rsa-2048-pubkey$pub_key_suffix.$pub_key_format"
 
 execDSigTest $res_success \
     "" \

@@ -409,6 +409,8 @@ xmlSecOpenSSLEvpKeyGetId(EVP_PKEY *pKey) {
             return (EVP_PKEY_SLH_DSA_SHA2_192S);
         } else if(strcmp(LN_SLH_DSA_SHA2_256f, typeName) == 0) {
             return (EVP_PKEY_SLH_DSA_SHA2_256F);
+        } else if(strcmp(LN_SLH_DSA_SHA2_256s, typeName) == 0) {
+            return (EVP_PKEY_SLH_DSA_SHA2_256S);
         }
 #endif /* XMLSEC_NO_SLHDSA */
 
@@ -472,6 +474,7 @@ xmlSecOpenSSLEvpKeyGetKeyDataId(EVP_PKEY *pKey) {
     case EVP_PKEY_SLH_DSA_SHA2_192F:
     case EVP_PKEY_SLH_DSA_SHA2_192S:
     case EVP_PKEY_SLH_DSA_SHA2_256F:
+    case EVP_PKEY_SLH_DSA_SHA2_256S:
         return (xmlSecOpenSSLKeyDataSLHDSAId);
 #endif /* XMLSEC_NO_SLHDSA */
 
@@ -5003,6 +5006,7 @@ xmlSecOpenSSLKeyValueSLHDSACheckKeyType(EVP_PKEY* pKey)
     case EVP_PKEY_SLH_DSA_SHA2_192F:
     case EVP_PKEY_SLH_DSA_SHA2_192S:
     case EVP_PKEY_SLH_DSA_SHA2_256F:
+    case EVP_PKEY_SLH_DSA_SHA2_256S:
         return(0);
     default:
         return(1);

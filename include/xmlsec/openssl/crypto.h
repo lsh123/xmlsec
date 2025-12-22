@@ -1159,6 +1159,14 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformSLHDSA_SHA2_192sGet
 #define xmlSecOpenSSLTransformSLHDSA_SHA2_256fId  \
         xmlSecOpenSSLTransformSLHDSA_SHA2_256fGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformSLHDSA_SHA2_256fGetKlass(void);
+/**
+ * xmlSecOpenSSLTransformSLHDSA_SHA2_256sId:
+ *
+ * The SLH-DSA-SHA2-256s signature transform klass.
+ */
+#define xmlSecOpenSSLTransformSLHDSA_SHA2_256sId  \
+        xmlSecOpenSSLTransformSLHDSA_SHA2_256sGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformSLHDSA_SHA2_256sGetKlass(void);
 
 
 #endif /* XMLSEC_NO_SLHDSA */

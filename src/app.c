@@ -1756,6 +1756,25 @@ xmlSecTransformSLHDSA_SHA2_256fGetKlass(void) {
     return(xmlSecCryptoDLGetFunctions()->transformSLHDSA_SHA2_256fGetKlass());
 }
 
+/**
+ * xmlSecTransformSLHDSA_SHA2_256sGetKlass:
+ *
+ * The SLH-DSA-SHA2-256s signature transform klass.
+ *
+ * Returns: SLH-DSA-SHA2-256s signature transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
+xmlSecTransformId
+xmlSecTransformSLHDSA_SHA2_256sGetKlass(void) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformSLHDSA_SHA2_256sGetKlass == NULL)) {
+        xmlSecNotImplementedError2(missingMethodError, "transformSLHDSA_SHA2_256sGetKlass");
+        return(xmlSecTransformIdUnknown);
+    }
+
+    return(xmlSecCryptoDLGetFunctions()->transformSLHDSA_SHA2_256sGetKlass());
+}
+
 
 /**
  * xmlSecTransformGostR3411_2012_512GetKlass:

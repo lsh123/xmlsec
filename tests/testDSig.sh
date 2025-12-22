@@ -1232,7 +1232,7 @@ execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloped-sha512-slhdsa-sha2-128f-with-context-string" \
     "sha512 slh-dsa-sha2-128f" \
-    "ml-dsa" \
+    "slh-dsa" \
     "$pub_key_option:TestKeyName-slh-dsa-sha2-128f $topfolder/keys/slh-dsa-sha2-128f-pubkey.$pub_key_format" \
     "$priv_key_option:TestKeyName-slh-dsa-sha2-128f $topfolder/keys/slh-dsa-sha2-128f-key.$priv_key_format --pwd secret123" \
     "$pub_key_option:TestKeyName-slh-dsa-sha2-128f $topfolder/keys/slh-dsa-sha2-128f-pubkey.$pub_key_format"
@@ -1240,8 +1240,8 @@ execDSigTest $res_success \
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloped-sha512-slhdsa-sha2-128s" \
-    "sha512 ml-dsa-44" \
-    "ml-dsa" \
+    "sha512 slh-dsa-sha2-128s" \
+    "slh-dsa" \
     "$pub_key_option:TestKeyName-slh-dsa-sha2-128s $topfolder/keys/slh-dsa-sha2-128s-pubkey.$pub_key_format" \
     "$priv_key_option:TestKeyName-slh-dsa-sha2-128s $topfolder/keys/slh-dsa-sha2-128s-key.$priv_key_format --pwd secret123" \
     "$pub_key_option:TestKeyName-slh-dsa-sha2-128s $topfolder/keys/slh-dsa-sha2-128s-pubkey.$pub_key_format"
@@ -1251,7 +1251,7 @@ execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloped-sha512-slhdsa-sha2-192f" \
     "sha512 slh-dsa-sha2-192f" \
-    "ml-dsa" \
+    "slh-dsa" \
     "$pub_key_option:TestKeyName-slh-dsa-sha2-192f $topfolder/keys/slh-dsa-sha2-192f-pubkey.$pub_key_format" \
     "$priv_key_option:TestKeyName-slh-dsa-sha2-192f $topfolder/keys/slh-dsa-sha2-192f-key.$priv_key_format --pwd secret123" \
     "$pub_key_option:TestKeyName-slh-dsa-sha2-192f $topfolder/keys/slh-dsa-sha2-192f-pubkey.$pub_key_format"
@@ -1260,7 +1260,7 @@ execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloped-sha512-slhdsa-sha2-192s" \
     "sha512 slh-dsa-sha2-192s" \
-    "ml-dsa" \
+    "slh-dsa" \
     "$pub_key_option:TestKeyName-slh-dsa-sha2-192s $topfolder/keys/slh-dsa-sha2-192s-pubkey.$pub_key_format" \
     "$priv_key_option:TestKeyName-slh-dsa-sha2-192s $topfolder/keys/slh-dsa-sha2-192s-key.$priv_key_format --pwd secret123" \
     "$pub_key_option:TestKeyName-slh-dsa-sha2-192s $topfolder/keys/slh-dsa-sha2-192s-pubkey.$pub_key_format"
@@ -1269,10 +1269,20 @@ execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloped-sha512-slhdsa-sha2-256f" \
     "sha512 slh-dsa-sha2-256f" \
-    "ml-dsa" \
+    "slh-dsa" \
     "$pub_key_option:TestKeyName-slh-dsa-sha2-256f $topfolder/keys/slh-dsa-sha2-256f-pubkey.$pub_key_format" \
     "$priv_key_option:TestKeyName-slh-dsa-sha2-256f $topfolder/keys/slh-dsa-sha2-256f-key.$priv_key_format --pwd secret123" \
     "$pub_key_option:TestKeyName-slh-dsa-sha2-256f $topfolder/keys/slh-dsa-sha2-256f-pubkey.$pub_key_format"
+
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloped-sha512-slhdsa-sha2-256s" \
+    "sha512 slh-dsa-sha2-256s" \
+    "slh-dsa" \
+    "$pub_key_option:TestKeyName-slh-dsa-sha2-256s $topfolder/keys/slh-dsa-sha2-256s-pubkey.$pub_key_format" \
+    "$priv_key_option:TestKeyName-slh-dsa-sha2-256s $topfolder/keys/slh-dsa-sha2-256s-key.$priv_key_format --pwd secret123" \
+    "$pub_key_option:TestKeyName-slh-dsa-sha2-256s $topfolder/keys/slh-dsa-sha2-256s-pubkey.$pub_key_format"
+
 
 
 ##########################################################################

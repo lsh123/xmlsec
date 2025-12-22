@@ -413,6 +413,9 @@ xmlSecOpenSSLEvpSignatureCheckId(xmlSecTransformPtr transform) {
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSLHDSA_SHA2_256fId)) {
         return(1);
     } else
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSLHDSA_SHA2_256sId)) {
+        return(1);
+    } else
 #endif /* XMLSEC_NO_SLHDSA */
 
     /*************************************************************************
@@ -801,6 +804,11 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
         ctx->keyId           = xmlSecOpenSSLKeyDataSLHDSAId;
         ctx->signatureFormat = xmlSecOpenSSLEvpSignatureFormat_DoNothing;
         ctx->signatureName   = LN_SLH_DSA_SHA2_256f;
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSLHDSA_SHA2_256sId)) {
+        ctx->keyId           = xmlSecOpenSSLKeyDataSLHDSAId;
+        ctx->signatureFormat = xmlSecOpenSSLEvpSignatureFormat_DoNothing;
+        ctx->signatureName   = LN_SLH_DSA_SHA2_256s;
     } else
 #endif /* XMLSEC_NO_SLHDSA */
 
@@ -2694,6 +2702,21 @@ XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS_EX(SLHDSA_SHA2_256f, xmlSecOpenSSLTransformSL
 xmlSecTransformId
 xmlSecOpenSSLTransformSLHDSA_SHA2_256fGetKlass(void) {
     return(&xmlSecOpenSSLSLHDSA_SHA2_256fKlass);
+}
+
+/* SLH-DSA-SHA2-256s signature transform: xmlSecOpenSSLSLHDSA_SHA2_256sKlass */
+XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS_EX(SLHDSA_SHA2_256s, xmlSecOpenSSLTransformSLHDSANodeRead)
+
+/**
+ * xmlSecOpenSSLTransformSLHDSA_SHA2_256sGetKlass:
+ *
+ * The SLH-DSA-SHA2-256s signature transform klass.
+ *
+ * Returns: SLH-DSA-SHA2-256s signature transform klass.
+ */
+xmlSecTransformId
+xmlSecOpenSSLTransformSLHDSA_SHA2_256sGetKlass(void) {
+    return(&xmlSecOpenSSLSLHDSA_SHA2_256sKlass);
 }
 
 #endif /* XMLSEC_NO_SLHDSA */

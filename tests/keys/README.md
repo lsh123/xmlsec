@@ -114,43 +114,20 @@ To enable GOST support, modify openssl.conf file:
 - uncomment the `# gost = gost_section` line'
 - specify correct path to `gost.so` in the `dynamic_path` variable in the `gost_section` section
 
-GOST2001:
 ```
-openssl req -config ./openssl.cnf -newkey gost2001 -pkeyopt paramset:A -nodes -keyout gost2001key.pem -out gost2001req.pem
-openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem -out gost2001cert.pem -infiles gost2001req.pem
-OPENSSL_CONF=./openssl.cnf openssl verify -CAfile cacert.pem -untrusted ca2cert.pem gost2001cert.pem
-rm gost2001req.pem
+export OPENSSL_TOP_DIR=<path to openssl>
+export PATH=$OPENSSL_TOP_DIR/bin:$PATH
+export LD_LIBRARY_PATH=$OPENSSL_TOP_DIR/lib64:$OPENSSL_TOP_DIR/lib:$LD_LIBRARY_PATH
+OPENSSL_CONF=./openssl.cnf openssl version -e
+OPENSSL_CONF=./openssl.cnf openssl engine
 
 
-openssl x509 -outform DER -in gost2001cert.pem -out gost2001cert.der
-
-OPENSSL_CONF=./openssl.cnf openssl pkcs8 -in gost2001key.pem -inform pem -out gost2001key.p8-pem -outform pem -topk8
-
-
-cat gost2001key.pem gost2001cert.pem ca2cert.pem cacert.pem > all-gost2001.pem
-OPENSSL_CONF=./openssl.cnf openssl pkcs12 -export -in all-gost2001.pem -name TestGost2001_Key -out gost2001key.p12
-rm all-gost2001.pem
+OPENSSL_CONF=./openssl.cnf ./scripts/create-gost-2001.sh
+OPENSSL_CONF=./openssl.cnf ./scripts/create-gost-2012-256.sh
 
 ```
 
-GOST2012 256 bits:
-```
-openssl req -config ./openssl.cnf -newkey gost2012_256 -pkeyopt paramset:A -nodes -keyout gost2012_256key.pem -out gost2012_256req.pem
-openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem -out gost2012_256cert.pem -infiles gost2012_256req.pem
-OPENSSL_CONF=./openssl.cnf openssl verify -CAfile cacert.pem -untrusted ca2cert.pem gost2012_256cert.pem
-rm gost2012_256req.pem
 
-
-openssl x509 -outform DER -in gost2012_256cert.pem -out gost2012_256cert.der
-
-OPENSSL_CONF=./openssl.cnf openssl pkcs8 -in gost2012_256key.pem -inform pem -out gost2012_256key.p8-pem -outform pem -topk8
-
-
-cat gost2012_256key.pem gost2012_256cert.pem ca2cert.pem cacert.pem > all-gost2012_256.pem
-OPENSSL_CONF=./openssl.cnf openssl pkcs12 -export -in all-gost2012_256.pem -name TestGost2012_256Key -out gost2012_256key.p12
-rm all-gost2012_256.pem
-
-```
 
 GOST2012 512 bits:
 ```

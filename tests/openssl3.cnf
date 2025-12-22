@@ -29,7 +29,7 @@ activate = 1
 
 [gost_section]
 engine_id = gost
-dynamic_path = (path to openssl)/gost.so
+dynamic_path = path to gost.so
 # default_algorithms = ALL
 init = 1
 

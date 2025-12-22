@@ -17,7 +17,7 @@ if [ $? -ne 0 ]; then
 fi
 
 # move to the right place
-mv "${keyname}*" "${folder}/"
+mv ${keyname}* "${folder}/"
 if [ $? -ne 0 ]; then
 exit $?
 fi

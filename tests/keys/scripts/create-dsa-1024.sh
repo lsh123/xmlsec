@@ -19,7 +19,7 @@ fi
 echo "*** MANUAL UPDATE REQUIRED: put the ceritiificate from 'dsa-1024-cert.pem' in the 'merlin-xmldsig-twenty-three/signature.tmpl' file"
 
 # move to the right place
-mv "${keyname}*" "${folder}/"
+mv ${keyname}* "${folder}/"
 if [ $? -ne 0 ]; then
 exit $?
 fi

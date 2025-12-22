@@ -393,6 +393,7 @@ xmlSecCryptoGetFunctions_openssl(void) {
     /******************************* SLH-DSA ********************************/
 #ifndef XMLSEC_NO_SLHDSA
     gXmlSecOpenSSLFunctions->transformSLHDSA_SHA2_128fGetKlass = xmlSecOpenSSLTransformSLHDSA_SHA2_128fGetKlass;
+    gXmlSecOpenSSLFunctions->transformSLHDSA_SHA2_128sGetKlass = xmlSecOpenSSLTransformSLHDSA_SHA2_128sGetKlass;
     gXmlSecOpenSSLFunctions->transformSLHDSA_SHA2_192fGetKlass = xmlSecOpenSSLTransformSLHDSA_SHA2_192fGetKlass;
     gXmlSecOpenSSLFunctions->transformSLHDSA_SHA2_256fGetKlass = xmlSecOpenSSLTransformSLHDSA_SHA2_256fGetKlass;
 #endif /* XMLSEC_NO_SLHDSA */

@@ -391,6 +391,9 @@ const xmlChar xmlSecNodeSLHDSAContextString[] = "SLHDSAContextString";
 const xmlChar xmlSecNameSLHDSA_SHA2_128f[]    = "slh-dsa-sha2-128f";
 const xmlChar xmlSecHrefSLHDSA_SHA2_128f[]    = "http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#slh-dsa-sha2-128f";
 
+const xmlChar xmlSecNameSLHDSA_SHA2_128s[]    = "slh-dsa-sha2-128s";
+const xmlChar xmlSecHrefSLHDSA_SHA2_128s[]    = "http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#slh-dsa-sha2-128s";
+
 const xmlChar xmlSecNameSLHDSA_SHA2_192f[]    = "slh-dsa-sha2-192f";
 const xmlChar xmlSecHrefSLHDSA_SHA2_192f[]    = "http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#slh-dsa-sha2-192f";
 

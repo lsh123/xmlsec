@@ -6,6 +6,7 @@
 # load include
 . "${0%/*}/include.sh"
 
+folder="rsa"
 keyname="rsa-4096"
 keysize="4096"
 
@@ -28,11 +29,6 @@ create_certificate_from_private_key "${keyname}" "${gencert_options}"
 
 ### Create PKCS12 file
 create_pkcs12_from_private_key_and_cert "${keyname}"
-
-### Done
-echo
-echo "*** Key and certificate were created successfully: Use XMLSEC_TEST_UPDATE_XML_ON_FAILURE=yes make check-dsig to update the test files if needed."
-echo
 
 # Print cert info
 echo "*** Certificate info: update tests accordingly in: ***"
@@ -78,4 +74,17 @@ openssl x509 -in "${keyname}-cert.pem" -noout -fingerprint -sha3-512 | cut -d'='
 
 echo "NOTE: NSS is very particular about the order of DN fields, make sure to tests nss to confirm subject/issuer names work as expected."
 
-echo "*** Done ***"
+
+# move to the right place
+mv "${keyname}"* "${folder}/"
+if [ $? -ne 0 ]; then
+exit $?
+fi
+
+### Done
+echo
+echo "*** Key and certificate were created successfully and moved to '${folder}' folder"
+echo "*** Use XMLSEC_TEST_UPDATE_XML_ON_FAILURE=yes make check-dsig to update the test files if needed."
+echo
+
+

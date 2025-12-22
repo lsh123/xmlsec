@@ -964,9 +964,9 @@ execDSigTest $res_success \
     "aleksey-xmldsig-01/enveloped-sha1-dsa-sha1" \
     "sha1 dsa-sha1" \
     "" \
-    "$pub_key_option:TestKeyName-dsa-1024 $topfolder/keys/dsa/dsa-1024-pubkey.$pub_key_format" \
+    "$pub_key_option:TestKeyName-dsa-1024 $topfolder/keys/dsa/dsa-1024-pubkey$pub_key_suffix.$pub_key_format" \
     "$priv_key_option:TestKeyName-dsa-1024 $topfolder/keys/dsa/dsa-1024-key.$priv_key_format --pwd secret123" \
-    "$pub_key_option:TestKeyName-dsa-1024 $topfolder/keys/dsa/dsa-1024-pubkey.$pub_key_format"
+    "$pub_key_option:TestKeyName-dsa-1024 $topfolder/keys/dsa/dsa-1024-pubkey$pub_key_suffix.$pub_key_format"
 
 
 execDSigTest $res_success \
@@ -974,9 +974,9 @@ execDSigTest $res_success \
     "aleksey-xmldsig-01/enveloped-sha1-ecdsa-sha1" \
     "sha1 ecdsa-sha1" \
     "" \
-    "$pub_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-pubkey.$pub_key_format" \
+    "$pub_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-pubkey$pub_key_suffix.$pub_key_format" \
     "$priv_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-key.$priv_key_format --pwd secret123" \
-    "$pub_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-pubkey.$pub_key_format"
+    "$pub_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-pubkey$pub_key_suffix.$pub_key_format"
 
 
 execDSigTest $res_success \
@@ -984,9 +984,9 @@ execDSigTest $res_success \
     "aleksey-xmldsig-01/enveloped-ripemd160-ecdsa-ripemd160" \
     "ripemd160 ecdsa-ripemd160" \
     "ec" \
-    "$pub_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-pubkey.$pub_key_format" \
+    "$pub_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-pubkey$pub_key_suffix.$pub_key_format" \
     "$priv_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-key.$priv_key_format --pwd secret123" \
-    "$pub_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-pubkey.$pub_key_format"
+    "$pub_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-pubkey$pub_key_suffix.$pub_key_format"
 
 
 execDSigTest $res_success \
@@ -994,9 +994,9 @@ execDSigTest $res_success \
     "aleksey-xmldsig-01/enveloped-sha1-rsa-sha1" \
     "sha1 rsa-sha1" \
     "" \
-    "$pub_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-pubkey.$pub_key_format" \
+    "$pub_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-pubkey$pub_key_suffix.$pub_key_format" \
     "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123" \
-    "$pub_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-pubkey.$pub_key_format"
+    "$pub_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-pubkey$pub_key_suffix.$pub_key_format"
 
 
 if [ "z$xmlsec_feature_nssdb_lookup" = "zyes" ] ; then
@@ -1018,9 +1018,9 @@ execDSigTest $res_success \
     "aleksey-xmldsig-01/enveloped-sha224-ecdsa-sha224" \
     "sha224 ecdsa-sha224" \
     "ec" \
-    "$pub_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-pubkey.$pub_key_format" \
+    "$pub_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-pubkey$pub_key_suffix.$pub_key_format" \
     "$priv_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-key.$priv_key_format --pwd secret123" \
-    "$pub_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-pubkey.$pub_key_format"
+    "$pub_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-pubkey$pub_key_suffix.$pub_key_format"
 
 
 execDSigTest $res_success \
@@ -1028,9 +1028,9 @@ execDSigTest $res_success \
     "aleksey-xmldsig-01/enveloped-sha256-ecdsa-sha256" \
     "sha256 ecdsa-sha256" \
     "ec" \
-    "$pub_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-pubkey.$pub_key_format" \
+    "$pub_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-pubkey$pub_key_suffix.$pub_key_format" \
     "$priv_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-key.$priv_key_format --pwd secret123" \
-    "$pub_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-pubkey.$pub_key_format"
+    "$pub_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-pubkey$pub_key_suffix.$pub_key_format"
 
 
 execDSigTest $res_success \
@@ -1038,18 +1038,18 @@ execDSigTest $res_success \
     "aleksey-xmldsig-01/enveloped-sha384-ecdsa-sha384" \
     "sha384 ecdsa-sha384" \
     "ec" \
-    "$pub_key_option:TestKeyName-ec-prime521v1 $topfolder/keys/ec/ec-prime521v1-pubkey.$pub_key_format" \
+    "$pub_key_option:TestKeyName-ec-prime521v1 $topfolder/keys/ec/ec-prime521v1-pubkey$pub_key_suffix.$pub_key_format" \
     "$priv_key_option:TestKeyName-ec-prime521v1 $topfolder/keys/ec/ec-prime521v1-key.$priv_key_format --pwd secret123" \
-    "$pub_key_option:TestKeyName-ec-prime521v1 $topfolder/keys/ec/ec-prime521v1-pubkey.$pub_key_format"
+    "$pub_key_option:TestKeyName-ec-prime521v1 $topfolder/keys/ec/ec-prime521v1-pubkey$pub_key_suffix.$pub_key_format"
 
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloped-sha512-ecdsa-sha512" \
     "sha512 ecdsa-sha512" \
     "ec" \
-    "$pub_key_option:TestKeyName-ec-prime521v1 $topfolder/keys/ec/ec-prime521v1-pubkey.$pub_key_format" \
+    "$pub_key_option:TestKeyName-ec-prime521v1 $topfolder/keys/ec/ec-prime521v1-pubkey$pub_key_suffix.$pub_key_format" \
     "$priv_key_option:TestKeyName-ec-prime521v1 $topfolder/keys/ec/ec-prime521v1-key.$priv_key_format --pwd secret123" \
-    "$pub_key_option:TestKeyName-ec-prime521v1 $topfolder/keys/ec/ec-prime521v1-pubkey.$pub_key_format"
+    "$pub_key_option:TestKeyName-ec-prime521v1 $topfolder/keys/ec/ec-prime521v1-pubkey$pub_key_suffix.$pub_key_format"
 
 
 execDSigTest $res_success \
@@ -1057,36 +1057,36 @@ execDSigTest $res_success \
     "aleksey-xmldsig-01/enveloped-sha3_224-ecdsa-sha3_224" \
     "sha3-224 ecdsa-sha3-224" \
     "ec" \
-    "$pub_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-pubkey.$pub_key_format" \
+    "$pub_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-pubkey$pub_key_suffix.$pub_key_format" \
     "$priv_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-key.$priv_key_format --pwd secret123" \
-    "$pub_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-pubkey.$pub_key_format"
+    "$pub_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-pubkey$pub_key_suffix.$pub_key_format"
 
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloped-sha3_256-ecdsa-sha3_256" \
     "sha3-256 ecdsa-sha3-256" \
     "ec" \
-    "$pub_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-pubkey.$pub_key_format" \
+    "$pub_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-pubkey$pub_key_suffix.$pub_key_format" \
     "$priv_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-key.$priv_key_format --pwd secret123" \
-    "$pub_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-pubkey.$pub_key_format"
+    "$pub_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-pubkey$pub_key_suffix.$pub_key_format"
 
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloped-sha3_384-ecdsa-sha3_384" \
     "sha3-384 ecdsa-sha3-384" \
     "ec" \
-    "$pub_key_option:TestKeyName-ec-prime521v1 $topfolder/keys/ec/ec-prime521v1-pubkey.$pub_key_format" \
+    "$pub_key_option:TestKeyName-ec-prime521v1 $topfolder/keys/ec/ec-prime521v1-pubkey$pub_key_suffix.$pub_key_format" \
     "$priv_key_option:TestKeyName-ec-prime521v1 $topfolder/keys/ec/ec-prime521v1-key.$priv_key_format --pwd secret123" \
-    "$pub_key_option:TestKeyName-ec-prime521v1 $topfolder/keys/ec/ec-prime521v1-pubkey.$pub_key_format"
+    "$pub_key_option:TestKeyName-ec-prime521v1 $topfolder/keys/ec/ec-prime521v1-pubkey$pub_key_suffix.$pub_key_format"
 
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloped-sha3_512-ecdsa-sha3_512" \
     "sha3-512 ecdsa-sha3-512" \
     "ec" \
-    "$pub_key_option:TestKeyName-ec-prime521v1 $topfolder/keys/ec/ec-prime521v1-pubkey.$pub_key_format" \
+    "$pub_key_option:TestKeyName-ec-prime521v1 $topfolder/keys/ec/ec-prime521v1-pubkey$pub_key_suffix.$pub_key_format" \
     "$priv_key_option:TestKeyName-ec-prime521v1 $topfolder/keys/ec/ec-prime521v1-key.$priv_key_format --pwd secret123" \
-    "$pub_key_option:TestKeyName-ec-prime521v1 $topfolder/keys/ec/ec-prime521v1-pubkey.$pub_key_format"
+    "$pub_key_option:TestKeyName-ec-prime521v1 $topfolder/keys/ec/ec-prime521v1-pubkey$pub_key_suffix.$pub_key_format"
 
 
 execDSigTest $res_success \
@@ -1165,9 +1165,9 @@ if [ "z$xmlsec_feature_asn1_signatures" = "zyes" ] ; then
         "aleksey-xmldsig-01/enveloped-sha256-ecdsa-sha256-with-asn1" \
         "sha256 ecdsa-sha256" \
         "ec" \
-        "--enable-asn1-signatures-hack $pub_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-pubkey.$pub_key_format" \
+        "--enable-asn1-signatures-hack $pub_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-pubkey$pub_key_suffix.$pub_key_format" \
         "--enable-asn1-signatures-hack $priv_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-key.$priv_key_format --pwd secret123" \
-        "--enable-asn1-signatures-hack $pub_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-pubkey.$pub_key_format"
+        "--enable-asn1-signatures-hack $pub_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-pubkey$pub_key_suffix.$pub_key_format"
 
     execDSigTest $res_success \
         "" \
@@ -1186,36 +1186,36 @@ execDSigTest $res_success \
     "aleksey-xmldsig-01/enveloped-sha512-mldsa44" \
     "sha512 ml-dsa-44" \
     "ml-dsa" \
-    "$pub_key_option:TestKeyName-ml-dsa-44 $topfolder/keys/ml-dsa/ml-dsa-44-pubkey.$pub_key_format" \
+    "$pub_key_option:TestKeyName-ml-dsa-44 $topfolder/keys/ml-dsa/ml-dsa-44-pubkey$pub_key_suffix.$pub_key_format" \
     "$priv_key_option:TestKeyName-ml-dsa-44 $topfolder/keys/ml-dsa/ml-dsa-44-key.$priv_key_format --pwd secret123" \
-    "$pub_key_option:TestKeyName-ml-dsa-44 $topfolder/keys/ml-dsa/ml-dsa-44-pubkey.$pub_key_format"
+    "$pub_key_option:TestKeyName-ml-dsa-44 $topfolder/keys/ml-dsa/ml-dsa-44-pubkey$pub_key_suffix.$pub_key_format"
 
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloped-sha512-mldsa44-with-context-string" \
     "sha512 ml-dsa-44" \
     "ml-dsa" \
-    "$pub_key_option:TestKeyName-ml-dsa-44 $topfolder/keys/ml-dsa/ml-dsa-44-pubkey.$pub_key_format" \
+    "$pub_key_option:TestKeyName-ml-dsa-44 $topfolder/keys/ml-dsa/ml-dsa-44-pubkey$pub_key_suffix.$pub_key_format" \
     "$priv_key_option:TestKeyName-ml-dsa-44 $topfolder/keys/ml-dsa/ml-dsa-44-key.$priv_key_format --pwd secret123" \
-    "$pub_key_option:TestKeyName-ml-dsa-44 $topfolder/keys/ml-dsa/ml-dsa-44-pubkey.$pub_key_format"
+    "$pub_key_option:TestKeyName-ml-dsa-44 $topfolder/keys/ml-dsa/ml-dsa-44-pubkey$pub_key_suffix.$pub_key_format"
 
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloped-sha512-mldsa65" \
     "sha512 ml-dsa-65" \
     "ml-dsa" \
-    "$pub_key_option:TestKeyName-ml-dsa-65 $topfolder/keys/ml-dsa/ml-dsa-65-pubkey.$pub_key_format" \
+    "$pub_key_option:TestKeyName-ml-dsa-65 $topfolder/keys/ml-dsa/ml-dsa-65-pubkey$pub_key_suffix.$pub_key_format" \
     "$priv_key_option:TestKeyName-ml-dsa-65 $topfolder/keys/ml-dsa/ml-dsa-65-key.$priv_key_format --pwd secret123" \
-    "$pub_key_option:TestKeyName-ml-dsa-65 $topfolder/keys/ml-dsa/ml-dsa-65-pubkey.$pub_key_format"
+    "$pub_key_option:TestKeyName-ml-dsa-65 $topfolder/keys/ml-dsa/ml-dsa-65-pubkey$pub_key_suffix.$pub_key_format"
 
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloped-sha512-mldsa87" \
     "sha512 ml-dsa-87" \
     "ml-dsa" \
-    "$pub_key_option:TestKeyName-ml-dsa-87 $topfolder/keys/ml-dsa/ml-dsa-87-pubkey.$pub_key_format" \
+    "$pub_key_option:TestKeyName-ml-dsa-87 $topfolder/keys/ml-dsa/ml-dsa-87-pubkey$pub_key_suffix.$pub_key_format" \
     "$priv_key_option:TestKeyName-ml-dsa-87 $topfolder/keys/ml-dsa/ml-dsa-87-key.$priv_key_format --pwd secret123" \
-    "$pub_key_option:TestKeyName-ml-dsa-87 $topfolder/keys/ml-dsa/ml-dsa-87-pubkey.$pub_key_format"
+    "$pub_key_option:TestKeyName-ml-dsa-87 $topfolder/keys/ml-dsa/ml-dsa-87-pubkey$pub_key_suffix.$pub_key_format"
 
 
 ## SLH-DSA
@@ -1224,27 +1224,27 @@ execDSigTest $res_success \
     "aleksey-xmldsig-01/enveloped-sha512-slhdsa-sha2-128f" \
     "sha512 ml-dsa-44" \
     "ml-dsa" \
-    "$pub_key_option:TestKeyName-slh-dsa-sha2-128f $topfolder/keys/slh-dsa/slh-dsa-sha2-128f-pubkey.$pub_key_format" \
+    "$pub_key_option:TestKeyName-slh-dsa-sha2-128f $topfolder/keys/slh-dsa/slh-dsa-sha2-128f-pubkey$pub_key_suffix.$pub_key_format" \
     "$priv_key_option:TestKeyName-slh-dsa-sha2-128f $topfolder/keys/slh-dsa/slh-dsa-sha2-128f-key.$priv_key_format --pwd secret123" \
-    "$pub_key_option:TestKeyName-slh-dsa-sha2-128f $topfolder/keys/slh-dsa/slh-dsa-sha2-128f-pubkey.$pub_key_format"
+    "$pub_key_option:TestKeyName-slh-dsa-sha2-128f $topfolder/keys/slh-dsa/slh-dsa-sha2-128f-pubkey$pub_key_suffix.$pub_key_format"
 
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloped-sha512-slhdsa-sha2-128f-with-context-string" \
     "sha512 slh-dsa-sha2-128f" \
     "slh-dsa" \
-    "$pub_key_option:TestKeyName-slh-dsa-sha2-128f $topfolder/keys/slh-dsa/slh-dsa-sha2-128f-pubkey.$pub_key_format" \
+    "$pub_key_option:TestKeyName-slh-dsa-sha2-128f $topfolder/keys/slh-dsa/slh-dsa-sha2-128f-pubkey$pub_key_suffix.$pub_key_format" \
     "$priv_key_option:TestKeyName-slh-dsa-sha2-128f $topfolder/keys/slh-dsa/slh-dsa-sha2-128f-key.$priv_key_format --pwd secret123" \
-    "$pub_key_option:TestKeyName-slh-dsa-sha2-128f $topfolder/keys/slh-dsa/slh-dsa-sha2-128f-pubkey.$pub_key_format"
+    "$pub_key_option:TestKeyName-slh-dsa-sha2-128f $topfolder/keys/slh-dsa/slh-dsa-sha2-128f-pubkey$pub_key_suffix.$pub_key_format"
 
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloped-sha512-slhdsa-sha2-128s" \
     "sha512 slh-dsa-sha2-128s" \
     "slh-dsa" \
-    "$pub_key_option:TestKeyName-slh-dsa-sha2-128s $topfolder/keys/slh-dsa/slh-dsa-sha2-128s-pubkey.$pub_key_format" \
+    "$pub_key_option:TestKeyName-slh-dsa-sha2-128s $topfolder/keys/slh-dsa/slh-dsa-sha2-128s-pubkey$pub_key_suffix.$pub_key_format" \
     "$priv_key_option:TestKeyName-slh-dsa-sha2-128s $topfolder/keys/slh-dsa/slh-dsa-sha2-128s-key.$priv_key_format --pwd secret123" \
-    "$pub_key_option:TestKeyName-slh-dsa-sha2-128s $topfolder/keys/slh-dsa/slh-dsa-sha2-128s-pubkey.$pub_key_format"
+    "$pub_key_option:TestKeyName-slh-dsa-sha2-128s $topfolder/keys/slh-dsa/slh-dsa-sha2-128s-pubkey$pub_key_suffix.$pub_key_format"
 
 
 execDSigTest $res_success \
@@ -1252,36 +1252,36 @@ execDSigTest $res_success \
     "aleksey-xmldsig-01/enveloped-sha512-slhdsa-sha2-192f" \
     "sha512 slh-dsa-sha2-192f" \
     "slh-dsa" \
-    "$pub_key_option:TestKeyName-slh-dsa-sha2-192f $topfolder/keys/slh-dsa/slh-dsa-sha2-192f-pubkey.$pub_key_format" \
+    "$pub_key_option:TestKeyName-slh-dsa-sha2-192f $topfolder/keys/slh-dsa/slh-dsa-sha2-192f-pubkey$pub_key_suffix.$pub_key_format" \
     "$priv_key_option:TestKeyName-slh-dsa-sha2-192f $topfolder/keys/slh-dsa/slh-dsa-sha2-192f-key.$priv_key_format --pwd secret123" \
-    "$pub_key_option:TestKeyName-slh-dsa-sha2-192f $topfolder/keys/slh-dsa/slh-dsa-sha2-192f-pubkey.$pub_key_format"
+    "$pub_key_option:TestKeyName-slh-dsa-sha2-192f $topfolder/keys/slh-dsa/slh-dsa-sha2-192f-pubkey$pub_key_suffix.$pub_key_format"
 
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloped-sha512-slhdsa-sha2-192s" \
     "sha512 slh-dsa-sha2-192s" \
     "slh-dsa" \
-    "$pub_key_option:TestKeyName-slh-dsa-sha2-192s $topfolder/keys/slh-dsa/slh-dsa-sha2-192s-pubkey.$pub_key_format" \
+    "$pub_key_option:TestKeyName-slh-dsa-sha2-192s $topfolder/keys/slh-dsa/slh-dsa-sha2-192s-pubkey$pub_key_suffix.$pub_key_format" \
     "$priv_key_option:TestKeyName-slh-dsa-sha2-192s $topfolder/keys/slh-dsa/slh-dsa-sha2-192s-key.$priv_key_format --pwd secret123" \
-    "$pub_key_option:TestKeyName-slh-dsa-sha2-192s $topfolder/keys/slh-dsa/slh-dsa-sha2-192s-pubkey.$pub_key_format"
+    "$pub_key_option:TestKeyName-slh-dsa-sha2-192s $topfolder/keys/slh-dsa/slh-dsa-sha2-192s-pubkey$pub_key_suffix.$pub_key_format"
 
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloped-sha512-slhdsa-sha2-256f" \
     "sha512 slh-dsa-sha2-256f" \
     "slh-dsa" \
-    "$pub_key_option:TestKeyName-slh-dsa-sha2-256f $topfolder/keys/slh-dsa/slh-dsa-sha2-256f-pubkey.$pub_key_format" \
+    "$pub_key_option:TestKeyName-slh-dsa-sha2-256f $topfolder/keys/slh-dsa/slh-dsa-sha2-256f-pubkey$pub_key_suffix.$pub_key_format" \
     "$priv_key_option:TestKeyName-slh-dsa-sha2-256f $topfolder/keys/slh-dsa/slh-dsa-sha2-256f-key.$priv_key_format --pwd secret123" \
-    "$pub_key_option:TestKeyName-slh-dsa-sha2-256f $topfolder/keys/slh-dsa/slh-dsa-sha2-256f-pubkey.$pub_key_format"
+    "$pub_key_option:TestKeyName-slh-dsa-sha2-256f $topfolder/keys/slh-dsa/slh-dsa-sha2-256f-pubkey$pub_key_suffix.$pub_key_format"
 
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloped-sha512-slhdsa-sha2-256s" \
     "sha512 slh-dsa-sha2-256s" \
     "slh-dsa" \
-    "$pub_key_option:TestKeyName-slh-dsa-sha2-256s $topfolder/keys/slh-dsa/slh-dsa-sha2-256s-pubkey.$pub_key_format" \
+    "$pub_key_option:TestKeyName-slh-dsa-sha2-256s $topfolder/keys/slh-dsa/slh-dsa-sha2-256s-pubkey$pub_key_suffix.$pub_key_format" \
     "$priv_key_option:TestKeyName-slh-dsa-sha2-256s $topfolder/keys/slh-dsa/slh-dsa-sha2-256s-key.$priv_key_format --pwd secret123" \
-    "$pub_key_option:TestKeyName-slh-dsa-sha2-256s $topfolder/keys/slh-dsa/slh-dsa-sha2-256s-pubkey.$pub_key_format"
+    "$pub_key_option:TestKeyName-slh-dsa-sha2-256s $topfolder/keys/slh-dsa/slh-dsa-sha2-256s-pubkey$pub_key_suffix.$pub_key_format"
 
 
 
@@ -1593,7 +1593,7 @@ execDSigTest $res_success \
     "dsa x509" \
     "$url_map_xml_stylesheet_2005 --pubkey-cert-$cert_format:Lugh $topfolder/merlin-xmldsig-twenty-three/certs/lugh-cert.$cert_format" \
     "$url_map_xml_stylesheet_2005 $priv_key_option:TestKeyName-dsa-1024 $topfolder/keys/dsa/dsa-1024-key.$priv_key_format --pwd secret123" \
-    "$url_map_xml_stylesheet_2005 $pub_key_option:TestKeyName-dsa-1024 $topfolder/keys/dsa/dsa-1024-pubkey.$pub_key_format"
+    "$url_map_xml_stylesheet_2005 $pub_key_option:TestKeyName-dsa-1024 $topfolder/keys/dsa/dsa-1024-pubkey$pub_key_suffix.$pub_key_format"
 
 execDSigTest $res_success \
     "" \

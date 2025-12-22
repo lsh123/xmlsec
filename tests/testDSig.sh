@@ -555,9 +555,9 @@ execDSigTest $res_success \
     "aleksey-xmldsig-01/signature-two-keynames" \
     "sha1 rsa-sha1" \
     "rsa x509" \
-    "$priv_key_option:key2 $topfolder/keys/rsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2018" \
-    "$priv_key_option:key2 $topfolder/keys/rsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2018" \
-    "$priv_key_option:key2 $topfolder/keys/rsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2018"
+    "$priv_key_option:key2 $topfolder/keys/rsa-2048-key.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2018" \
+    "$priv_key_option:key2 $topfolder/keys/rsa-2048-key.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2018" \
+    "$priv_key_option:key2 $topfolder/keys/rsa-2048-key.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2018"
 
 execDSigTest $res_success \
     "" \
@@ -574,7 +574,7 @@ execDSigTest $res_success \
     "sha1 rsa-sha1" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option:mykey $topfolder/keys/rsakey.$priv_key_format --pwd secret123" \
+    "$priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa-2048-key.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -718,7 +718,7 @@ execDSigTest $res_success \
     "md5 rsa-md5" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option:mykey $topfolder/keys/rsakey.$priv_key_format --pwd secret123" \
+    "$priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa-2048-key.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -727,7 +727,7 @@ execDSigTest $res_success \
     "ripemd160 rsa-ripemd160" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option:mykey $topfolder/keys/rsakey.$priv_key_format --pwd secret123" \
+    "$priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa-2048-key.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -736,7 +736,7 @@ execDSigTest $res_success \
     "sha1 rsa-sha1" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option:mykey $topfolder/keys/rsakey.$priv_key_format --pwd secret123" \
+    "$priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa-2048-key.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -745,7 +745,7 @@ execDSigTest $res_success \
     "sha224 rsa-sha224" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option:mykey $topfolder/keys/rsakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -754,7 +754,7 @@ execDSigTest $res_success \
     "sha256 rsa-sha256" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option:mykey $topfolder/keys/rsakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -763,7 +763,7 @@ execDSigTest $res_success \
     "sha256 rsa-sha256 relationship" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option:mykey $topfolder/keys/rsakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -1147,7 +1147,7 @@ execDSigTest $res_success \
     "xpath2 sha1 rsa-sha1" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format" \
-    "$priv_key_option:mykey $topfolder/keys/rsakey.$priv_key_format --pwd secret123" \
+    "$priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa-2048-key.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format"
 
 execDSigTest $res_success \
@@ -1155,9 +1155,9 @@ execDSigTest $res_success \
     "aleksey-xmldsig-01/x509data-sn-test" \
     "xpath2 sha1 rsa-sha1" \
     "rsa x509" \
-    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format  --untrusted-$cert_format $topfolder/keys/rsacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option:mykey $topfolder/keys/rsakey.$priv_key_format --pwd secret123" \
-    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format  --untrusted-$cert_format $topfolder/keys/rsacert.$cert_format --enabled-key-data x509"
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format  --untrusted-$cert_format $topfolder/keys/rsa-2048-cert.$cert_format --enabled-key-data x509" \
+    "$priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa-2048-key.$priv_key_format --pwd secret123" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format  --untrusted-$cert_format $topfolder/keys/rsa-2048-cert.$cert_format --enabled-key-data x509"
 
 if [ "z$xmlsec_feature_asn1_signatures" = "zyes" ] ; then
     execDSigTest $res_success \
@@ -1341,7 +1341,7 @@ execDSigTest $res_success \
 
 
 # Test was created using the following command:
-# xmlsec1 sign --lax-key-search --privkey-pem tests/keys/rsakey.pem,tests/keys/rsacert.pem tests/aleksey-xmldsig-01/enveloped-x509-missing-cert.tmpl
+# xmlsec1 sign --lax-key-search --privkey-pem tests/keys/rsa-2048-key.pem,tests/keys/rsa-2048-cert.pem tests/aleksey-xmldsig-01/enveloped-x509-missing-cert.tmpl
 #
 
 # this should succeeed with both intermidiate and trusted certs provided
@@ -1388,7 +1388,7 @@ if [ "z$xmlsec_feature_crl_load" = "zyes" ] ; then
         "aleksey-xmldsig-01/enveloped-x509-missing-cert" \
         "sha256 rsa-sha256" \
         "x509" \
-        "--untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --crl-$cert_format $topfolder/keys/rsacert-revoked-crl.$cert_format --enabled-key-data x509"
+        "--untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --crl-$cert_format $topfolder/keys/rsa-2048-cert-revoked-crl.$cert_format --enabled-key-data x509"
 
     # this should fail because while CRL is past due, it's still better than nothing
     extra_message="Negative test: CRL is past due"
@@ -1397,7 +1397,7 @@ if [ "z$xmlsec_feature_crl_load" = "zyes" ] ; then
         "aleksey-xmldsig-01/enveloped-x509-missing-cert" \
         "sha256 rsa-sha256" \
         "x509" \
-        "--verification-gmt-time 2023-05-01+00:00:00 --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --crl-$cert_format $topfolder/keys/rsacert-revoked-crl.$cert_format --enabled-key-data x509"
+        "--verification-gmt-time 2023-05-01+00:00:00 --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --crl-$cert_format $topfolder/keys/rsa-2048-cert-revoked-crl.$cert_format --enabled-key-data x509"
 
     # GnuTLS doesn't allow CRL verification by time (https://github.com/lsh123/xmlsec/issues/579)
     if [ "z$xmlsec_feature_crl_check_skip_time" = "zyes" ] ; then
@@ -1408,7 +1408,7 @@ if [ "z$xmlsec_feature_crl_load" = "zyes" ] ; then
             "aleksey-xmldsig-01/enveloped-x509-missing-cert" \
             "sha256 rsa-sha256" \
             "x509" \
-            "--verification-gmt-time 2023-03-01+00:00:00 --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --crl-$cert_format $topfolder/keys/rsacert-revoked-crl.$cert_format --enabled-key-data x509"
+            "--verification-gmt-time 2023-03-01+00:00:00 --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --crl-$cert_format $topfolder/keys/rsa-2048-cert-revoked-crl.$cert_format --enabled-key-data x509"
     fi
 
     # this should succeeed too because we bypass all cert checks with --insecure mode
@@ -1418,7 +1418,7 @@ if [ "z$xmlsec_feature_crl_load" = "zyes" ] ; then
         "aleksey-xmldsig-01/enveloped-x509-missing-cert" \
         "sha256 rsa-sha256" \
         "x509" \
-        "--insecure --crl-$cert_format $topfolder/keys/rsacert-revoked-crl.$cert_format --enabled-key-data x509"
+        "--insecure --crl-$cert_format $topfolder/keys/rsa-2048-cert-revoked-crl.$cert_format --enabled-key-data x509"
 fi
 
 if [ "z$xmlsec_feature_key_check" = "zyes" ] ; then
@@ -1517,7 +1517,7 @@ execDSigTest $res_success \
     "sha1 rsa-sha1" \
     "rsa" \
     "--enabled-key-data key-value,key-name,rsa" \
-    "--enabled-key-data key-value,key-name,rsa $priv_key_option:mykey $topfolder/keys/rsakey.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-value,key-name,rsa $priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa-2048-key.$priv_key_format --pwd secret123" \
     "--enabled-key-data key-value,key-name,rsa"
 
 execDSigTest $res_success \

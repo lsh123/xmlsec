@@ -1,7 +1,7 @@
 # XMLSec Library: Unit test keys
 
 ## Passwords
-The same password `secret` should be used unless specified otherwise.
+The same password `secret123` should be used unless specified otherwise.
 
 ## Creating keys and certificates
 
@@ -50,14 +50,6 @@ mkdir nssdb
 pk12util -d nssdb -i rsa-4096-key.p12
 chmod a-w nssdb/*
 ```
-
-### Revoke rsacert and generate CRL
-```
-openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem -revoke rsacert.pem
-openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem -gencrl -out rsacert-revoked-crl.pem
-openssl crl -in rsacert-revoked-crl.pem -inform PEM -outform DER -out rsacert-revoked-crl.der
-```
-
 
 ### Generate and sign short-live RSA cert for "expired cert" test (OU = "Test Expired RSA Certificate")
 ```
@@ -148,7 +140,6 @@ old (traditional, ASN1, etc) formats instead
 
 RSA keys:
 ```
-openssl rsa -inform PEM -outform DER -traditional -in rsakey.pem -out rsakey.der
 openssl rsa -inform PEM -outform DER -traditional -in expiredkey.pem -out expiredkey.der
 openssl rsa -inform PEM -outform DER -traditional -in ca2key.pem -out ca2key.der
 ```
@@ -158,7 +149,7 @@ openssl rsa -inform PEM -outform DER -traditional -in ca2key.pem -out ca2key.der
 ```
 openssl x509 -outform DER -in cacert.pem -out cacert.der
 openssl x509 -outform DER -in ca2cert.pem -out ca2cert.der
-openssl x509 -outform DER -in rsacert.pem -out rsacert.der
+openssl x509 -outform DER -in rsa-2048-cert.pem -out rsa-2048-cert.der
 openssl x509 -outform DER -in expiredcert.pem -out expiredcert.der
 ```
 
@@ -194,9 +185,6 @@ Converting an unencrypted PEM or DER file containing a private key to an encrypt
 PEM or DER file containing the same private key but encrypted (the tests password
 is `secret123`):
 ```
-openssl pkcs8 -in rsakey.pem -inform pem -out rsakey.p8-pem -outform pem -topk8
-openssl pkcs8 -in rsakey.der -inform der -out rsakey.p8-der -outform der -topk8
-
 openssl pkcs8 -in expiredkey.pem -inform pem -out expiredkey.p8-pem -outform pem -topk8
 openssl pkcs8 -in expiredkey.der -inform der -out expiredkey.p8-der -outform der -topk8
 
@@ -228,8 +216,6 @@ openssl pkcs12 -export -in allca2key.pem -name CA2RsaKey -out ca2key.p12
 rm allca2key.pem
 
 
-cat rsakey.pem rsacert.pem ca2cert.pem cacert.pem > allrsa.pem
-openssl pkcs12 -export -in allrsa.pem -name TestRsaKey -out rsakey.p12
 
 cat expiredkey.pem expiredcert.pem ca2cert.pem cacert.pem > allexpired.pem
 openssl pkcs12 -export -in allexpired.pem -name TestExpiredRsaKey -out expiredkey.p12
@@ -327,11 +313,6 @@ to ensure it is loaded correctly to be used with SHA2 algorithms. Worse, the CSP
 different for XP and older versions.
 
 ```
-cat rsakey.pem rsacert.pem ca2cert.pem cacert.pem > allrsa.pem
-openssl pkcs12 -export -in allrsa.pem -name TestRsaKey -out rsakey-winxp.p12 -CSP "Microsoft Enhanced RSA and AES Cryptographic Provider (Prototype)"
-openssl pkcs12 -export -in allrsa.pem -name TestRsaKey -out rsakey-win.p12 -CSP "Microsoft Enhanced RSA and AES Cryptographic Provider"
-rm allrsa.pem
-
 cat expiredkey.pem expiredcert.pem ca2cert.pem cacert.pem > allexpired.pem
 openssl pkcs12 -export -in allexpired.pem -name TestExpiredRsaKey -out expiredkey-win.p12 -CSP "Microsoft Enhanced RSA and AES Cryptographic Provider"
 rm allexpired.pem

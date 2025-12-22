@@ -2,7 +2,7 @@
 
 ## xmlsec-mscng
 
-- Import `tests/keys/rsakey-win.p12` (double-click on the file in Windows Explorer).
+- Import `tests/keys/rsa-2048-key-win.p12` (double-click on the file in Windows Explorer).
 
 - Verify that the import happened, using `certmgr.msc`.
 

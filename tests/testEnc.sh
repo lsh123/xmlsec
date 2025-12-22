@@ -787,16 +787,16 @@ execEncTest $res_success \
     "aleksey-xmlenc-01/enc-two-recipients" \
     "tripledes-cbc rsa-1_5" \
     "x509" \
-    "--lax-key-search $priv_key_option:pub1 $topfolder/keys/rsakey.$priv_key_format --pwd secret123" \
-    "--pubkey-cert-$cert_format:pub1 $topfolder/keys/rsacert.$cert_format --pubkey-cert-$cert_format:pub2 $topfolder/keys/rsa-4096-cert.$cert_format --session-key des-192 --xml-data $topfolder/aleksey-xmlenc-01/enc-two-recipients.data" \
-    "--lax-key-search $priv_key_option:pub1 $topfolder/keys/rsakey.$priv_key_format --pwd secret123"
+    "--lax-key-search $priv_key_option:pub1 $topfolder/keys/rsa-2048-key.$priv_key_format --pwd secret123" \
+    "--pubkey-cert-$cert_format:pub1 $topfolder/keys/rsa-2048-cert.$cert_format --pubkey-cert-$cert_format:pub2 $topfolder/keys/rsa-4096-cert.$cert_format --session-key des-192 --xml-data $topfolder/aleksey-xmlenc-01/enc-two-recipients.data" \
+    "--lax-key-search $priv_key_option:pub1 $topfolder/keys/rsa-2048-key.$priv_key_format --pwd secret123"
 execEncTest $res_success \
     "" \
     "aleksey-xmlenc-01/enc-two-recipients" \
     "tripledes-cbc rsa-1_5" \
     "x509" \
     "--lax-key-search $priv_key_option:pub1 $topfolder/keys/rsa-4096-key.$priv_key_format --pwd secret123" \
-    "--pubkey-cert-$cert_format:pub1 $topfolder/keys/rsacert.$cert_format --pubkey-cert-$cert_format:pub2 $topfolder/keys/rsa-4096-cert.$cert_format --session-key des-192 --xml-data $topfolder/aleksey-xmlenc-01/enc-two-recipients.data" \
+    "--pubkey-cert-$cert_format:pub1 $topfolder/keys/rsa-2048-cert.$cert_format --pubkey-cert-$cert_format:pub2 $topfolder/keys/rsa-4096-cert.$cert_format --session-key des-192 --xml-data $topfolder/aleksey-xmlenc-01/enc-two-recipients.data" \
     "--lax-key-search $priv_key_option:pub1 $topfolder/keys/rsa-4096-key.$priv_key_format --pwd secret123"
 
 
@@ -846,8 +846,8 @@ execEncTest $res_success \
     "aes128-cbc rsa-1_5" \
     "" \
     "--lax-key-search $priv_key_option $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --pwd secret --verification-gmt-time 2003-01-01+10:00:00" \
-    "--keys-file $topfolder/merlin-xmlenc-five/keys.xml --session-key aes-128 $priv_key_option:mykey $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --xml-data $topfolder/merlin-xmlenc-five/encrypt-element-aes128-cbc-rsa-1_5.data --node-id Purchase --pwd secret"  \
-    "$priv_key_option:mykey $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --pwd secret"
+    "--keys-file $topfolder/merlin-xmlenc-five/keys.xml --session-key aes-128 $priv_key_option:merlin-rsa-key $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --xml-data $topfolder/merlin-xmlenc-five/encrypt-element-aes128-cbc-rsa-1_5.data --node-id Purchase --pwd secret"  \
+    "$priv_key_option:merlin-rsa-key $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --pwd secret"
 
 execEncTest $res_success \
     "" \
@@ -855,8 +855,8 @@ execEncTest $res_success \
     "tripledes-cbc rsa-oaep-mgf1p sha1" \
     "" \
     "--lax-key-search $priv_key_option $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --pwd secret" \
-    "--keys-file $topfolder/merlin-xmlenc-five/keys.xml --session-key des-192 $priv_key_option:mykey $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --binary-data $topfolder/merlin-xmlenc-five/encrypt-data-tripledes-cbc-rsa-oaep-mgf1p.data --pwd secret"  \
-    "$priv_key_option:mykey $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --pwd secret"
+    "--keys-file $topfolder/merlin-xmlenc-five/keys.xml --session-key des-192 $priv_key_option:merlin-rsa-key $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --binary-data $topfolder/merlin-xmlenc-five/encrypt-data-tripledes-cbc-rsa-oaep-mgf1p.data --pwd secret"  \
+    "$priv_key_option:merlin-rsa-key $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --pwd secret"
 
 if [ "z$xmlsec_feature_rsa_oaep_different_digest_and_mgf1" = "zyes" ] ; then
     execEncTest $res_success \
@@ -865,8 +865,8 @@ if [ "z$xmlsec_feature_rsa_oaep_different_digest_and_mgf1" = "zyes" ] ; then
         "tripledes-cbc rsa-oaep-mgf1p sha256 sha1" \
         "" \
         "--lax-key-search $priv_key_option $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --pwd secret" \
-        "--keys-file $topfolder/merlin-xmlenc-five/keys.xml --session-key des-192 $priv_key_option:mykey $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --binary-data $topfolder/merlin-xmlenc-five/encrypt-data-tripledes-cbc-rsa-oaep-mgf1p-sha256.data --pwd secret"  \
-        "$priv_key_option:mykey $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --pwd secret"
+        "--keys-file $topfolder/merlin-xmlenc-five/keys.xml --session-key des-192 $priv_key_option:merlin-rsa-key $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --binary-data $topfolder/merlin-xmlenc-five/encrypt-data-tripledes-cbc-rsa-oaep-mgf1p-sha256.data --pwd secret"  \
+        "$priv_key_option:merlin-rsa-key $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --pwd secret"
 fi
 
 execEncTest $res_success \

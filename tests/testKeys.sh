@@ -38,9 +38,9 @@ execKeysTest $res_success       \
     "rsa"                       \
     "test-rsa"                  \
     "rsa-1024"                  \
-    "$topfolder/keys/rsa-4096-key"    \
-    "$topfolder/keys/rsa-4096-pubkey" \
-    "$topfolder/keys/rsa-4096-cert"   \
+    "$topfolder/keys/rsa/rsa-4096-key"    \
+    "$topfolder/keys/rsa/rsa-4096-pubkey" \
+    "$topfolder/keys/rsa/rsa-4096-cert"   \
     "$topfolder/aleksey-xmldsig-01/enveloped-sha1-rsa-sha1" \
     "--pwd secret123 --enabled-key-data key-name"
 
@@ -48,9 +48,9 @@ execKeysTest $res_success       \
     "dsa"                       \
     "test-dsa"                  \
     "dsa-1024"                  \
-    "$topfolder/keys/dsa-1024-key"    \
-    "$topfolder/keys/dsa-1024-pubkey" \
-    "$topfolder/keys/dsa-1024-cert"   \
+    "$topfolder/keys/dsa/dsa-1024-key"    \
+    "$topfolder/keys/dsa/dsa-1024-pubkey" \
+    "$topfolder/keys/dsa/dsa-1024-cert"   \
     "$topfolder/aleksey-xmldsig-01/enveloped-sha1-dsa-sha1" \
     "--pwd secret123 --enabled-key-data key-name"
 
@@ -58,9 +58,9 @@ execKeysTest $res_success   \
     "ec"                    \
     ""                      \
     "ec"                    \
-    "$topfolder/keys/ec-prime256v1-key" \
-    "$topfolder/keys/ec-prime256v1-pubkey" \
-    "$topfolder/keys/ec-prime256v1-cert" \
+    "$topfolder/keys/ec/ec-prime256v1-key" \
+    "$topfolder/keys/ec/ec-prime256v1-pubkey" \
+    "$topfolder/keys/ec/ec-prime256v1-cert" \
     "$topfolder/aleksey-xmldsig-01/enveloped-sha1-ecdsa-sha1" \
     "--pwd secret123 --enabled-key-data key-name"
 
@@ -68,8 +68,8 @@ execKeysTest $res_success   \
     "ml-dsa"                \
     ""                      \
     "ml-dsa-44"                         \
-    "$topfolder/keys/ml-dsa-44-key"     \
-    "$topfolder/keys/ml-dsa-44-pubkey"  \
+    "$topfolder/keys/ml-dsa/ml-dsa-44-key"     \
+    "$topfolder/keys/ml-dsa/ml-dsa-44-pubkey"  \
     ""                      \
     "$topfolder/aleksey-xmldsig-01/enveloped-sha512-mldsa44" \
     "--pwd secret123 --enabled-key-data key-name"
@@ -78,8 +78,8 @@ execKeysTest $res_success   \
     "slh-dsa"               \
     ""                      \
     "slh-dsa-sha2-128f"                         \
-    "$topfolder/keys/slh-dsa-sha2-128f-key"     \
-    "$topfolder/keys/slh-dsa-sha2-128f-pubkey"  \
+    "$topfolder/keys/slh-dsa/slh-dsa-sha2-128f-key"     \
+    "$topfolder/keys/slh-dsa/slh-dsa-sha2-128f-pubkey"  \
     ""                      \
     "$topfolder/aleksey-xmldsig-01/enveloped-sha512-slhdsa-sha2-128f" \
     "--pwd secret123 --enabled-key-data key-name"

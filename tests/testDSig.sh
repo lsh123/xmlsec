@@ -2008,8 +2008,8 @@ execDSigTest $res_success \
     "aleksey-xmldsig-01/enveloped-gost2012-256" \
     "enveloped-signature gostr34112012-256 gostr34102012-gostr34112012-256" \
     "gostr34102012-256 x509" \
-    "--insecure --enabled-key-data x509" \
-    "$priv_key_option $topfolder/keys/gost/gost2012_256key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+    "$priv_key_option $topfolder/keys/gost/gost-2012-256-key$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -2017,8 +2017,8 @@ execDSigTest $res_success \
     "aleksey-xmldsig-01/enveloped-gost2012-512" \
     "enveloped-signature gostr34112012-512 gostr34102012-gostr34112012-512" \
     "gostr34102012-512 x509" \
-    "--insecure --enabled-key-data x509" \
-    "$priv_key_option $topfolder/keys/gost/gost2012_512key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+    "$priv_key_option $topfolder/keys/gost/gost-2012-512-key$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 

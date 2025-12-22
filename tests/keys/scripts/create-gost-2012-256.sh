@@ -7,8 +7,8 @@
 . "${0%/*}/include.sh"
 
 folder="gost"
-keyname="gost-2001"
-algorithm="gost2001"
+keyname="gost-2012-256"
+algorithm="gost2012_256"
 genpkey_options="-pkeyopt paramset:A"
 
 openssl genpkey -algorithm "${algorithm}" ${genpkey_options} -out "${keyname}-key.pem"

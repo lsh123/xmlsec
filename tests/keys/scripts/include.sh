@@ -63,8 +63,8 @@ create_pkcs8_keys_from_private_key()
     echo
     echo "*** Creating PKCS8 files..."
     echo
-    openssl pkcs8 -in "${keyname}-key.der" -inform der -out "${keyname}-key.p8-pem" -outform pem -topk8 -passout pass:"${password}"
-    openssl pkcs8 -in "${keyname}-key.der" -inform der -out "${keyname}-key.p8-der" -outform der -topk8 -passout pass:"${password}"
+    openssl pkcs8 -in "${keyname}-key.pem" -inform pem -out "${keyname}-key.p8-pem" -outform pem -topk8 -passout pass:"${password}"
+    openssl pkcs8 -in "${keyname}-key.pem" -inform pem -out "${keyname}-key.p8-der" -outform der -topk8 -passout pass:"${password}"
 
     echo "*** PKCS8 files '${keyname}-key.p8-pem' and '${keyname}-key.p8-der' were created successfully"
 }
@@ -74,12 +74,20 @@ create_certificate_from_private_key() {
     local gencert_options="$2"
     local subject="/CN=Test Key ${keyname}/O=XML Security Library \(http:\/\/www.aleksey.com\/xmlsec\)/ST=California/C=US"
 
+    # allow overwrites
+    local config_option=""
+    if [ -n "$OPENSSL_CONF" ]; then
+        echo "*** Using OPENSSL_CONF from environment: ${OPENSSL_CONF} ***"
+    else
+        config_option="-config ${openssl_conf}"
+    fi
+
     ### Create certificate signed by second level CA
     echo
     echo "*** Signing using second level CA...."
     echo
-    openssl req -config "${openssl_conf}" -new -key "${keyname}-key.pem" ${gencert_options} -subj "${subject}" -out "${keyname}-req.pem"
-    yes | openssl ca -config "${openssl_conf}" ${gencert_options} -cert "${second_level_ca_file}" -keyfile "${second_level_ca_key_file}" -notext -out "${keyname}-cert.pem" -infiles "${keyname}-req.pem"
+    openssl req ${config_option} -new -key "${keyname}-key.pem" ${gencert_options} -subj "${subject}" -out "${keyname}-req.pem"
+    yes | openssl ca ${config_option} ${gencert_options} -cert "${second_level_ca_file}" -keyfile "${second_level_ca_key_file}" -notext -out "${keyname}-cert.pem" -infiles "${keyname}-req.pem"
     openssl verify -CAfile "${ca_file}" -untrusted "${second_level_ca_file}" "${keyname}-cert.pem"
     rm "${keyname}-req.pem"
 

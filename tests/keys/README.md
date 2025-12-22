@@ -114,6 +114,17 @@ To enable GOST support, modify openssl.conf file:
 - uncomment the `# gost = gost_section` line'
 - specify correct path to `gost.so` in the `dynamic_path` variable in the `gost_section` section
 
+```
+export PATH=$HOME/local/openssl-3.4.3/bin:$PATH
+export LD_LIBRARY_PATH=$HOME/local/openssl-3.4.3/lib64:$HOME/local/openssl-3.4.3/lib:$LD_LIBRARY_PATH
+OPENSSL_CONF=./openssl.cnf openssl version -e
+OPENSSL_CONF=./openssl.cnf openssl engine
+
+
+OPENSSL_CONF=./openssl.cnf ./scripts/create-gost-2001.sh
+
+```
+
 GOST2001:
 ```
 openssl req -config ./openssl.cnf -newkey gost2001 -pkeyopt paramset:A -nodes -keyout gost2001key.pem -out gost2001req.pem

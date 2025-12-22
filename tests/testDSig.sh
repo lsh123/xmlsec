@@ -1999,8 +1999,8 @@ execDSigTest $res_success \
     "aleksey-xmldsig-01/enveloped-gost2001" \
     "enveloped-signature gostr34102001-gostr3411" \
     "gost2001 x509" \
-    "--trusted-$cert_format $topfolder/keys/gost/gost2001ca.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format  --enabled-key-data x509 --verification-gmt-time 2007-01-01+10:00:00" \
-    "$priv_key_option $topfolder/keys/gost/gost2001key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+    "$priv_key_option $topfolder/keys/gost/gost-2001-key$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \

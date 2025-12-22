@@ -974,9 +974,9 @@ execDSigTest $res_success \
     "aleksey-xmldsig-01/enveloped-sha1-ecdsa-sha1" \
     "sha1 ecdsa-sha1" \
     "" \
+    "$pub_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-pubkey.$pub_key_format" \
     "$priv_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-key.$priv_key_format --pwd secret123" \
-    "$priv_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-key.$priv_key_format --pwd secret123" \
-    "$priv_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-key.$priv_key_format --pwd secret123"
+    "$pub_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-pubkey.$pub_key_format"
 
 
 execDSigTest $res_success \
@@ -984,9 +984,9 @@ execDSigTest $res_success \
     "aleksey-xmldsig-01/enveloped-ripemd160-ecdsa-ripemd160" \
     "ripemd160 ecdsa-ripemd160" \
     "ec" \
+    "$pub_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-pubkey.$pub_key_format" \
     "$priv_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-key.$priv_key_format --pwd secret123" \
-    "$priv_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-key.$priv_key_format --pwd secret123" \
-    "$priv_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-key.$priv_key_format --pwd secret123"
+    "$pub_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-pubkey.$pub_key_format"
 
 
 execDSigTest $res_success \
@@ -994,9 +994,9 @@ execDSigTest $res_success \
     "aleksey-xmldsig-01/enveloped-sha1-rsa-sha1" \
     "sha1 rsa-sha1" \
     "" \
+    "$pub_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-pubkey.$pub_key_format" \
     "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123" \
-    "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123" \
-    "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123"
+    "$pub_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-pubkey.$pub_key_format"
 
 
 if [ "z$xmlsec_feature_nssdb_lookup" = "zyes" ] ; then

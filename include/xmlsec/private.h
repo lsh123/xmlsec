@@ -490,6 +490,7 @@ typedef int                     (*xmlSecCryptoAppKeyCertLoadMemoryMethod)(xmlSec
  * @transformRsaOaepGetKlass:   the method to get pointer to RSA-OAEP key transport transform (XMLEnc 1.0).
  * @transformRsaOaepEnc11GetKlass: the method to get pointer to RSA-OAEP key transport transform (XMLEnc 1.1).
  * @transformSLHDSA_SHA2_128fGetKlass:   the method to get pointer to SLH-DSA-SHA2-128f signature transform.
+ * @transformSLHDSA_SHA2_256fGetKlass:   the method to get pointer to SLH-DSA-SHA2-256f signature transform.
  * @transformSha1GetKlass:      the method to get pointer to SHA1 digest transform.
  * @transformSha224GetKlass:    the method to get pointer to SHA2-224 digest transform.
  * @transformSha256GetKlass:    the method to get pointer to SHA2-256 digest transform.
@@ -634,6 +635,7 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoTransformGetKlassMethod          transformRsaOaepEnc11GetKlass;
 
     xmlSecCryptoTransformGetKlassMethod          transformSLHDSA_SHA2_128fGetKlass;
+    xmlSecCryptoTransformGetKlassMethod          transformSLHDSA_SHA2_256fGetKlass;
 
     xmlSecCryptoTransformGetKlassMethod          transformSha1GetKlass;
 

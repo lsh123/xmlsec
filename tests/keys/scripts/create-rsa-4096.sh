@@ -15,8 +15,6 @@ echo "*** Generating RSA key ${keyname}...."
 openssl genrsa -out "${keyname}-key.pem" "${keysize}"
 echo "*** Private key '${keyname}-key.pem' was created successfully"
 
-
-
 ### Create all key files from private key
 create_all_key_files_from_private_key "${keyname}"
 

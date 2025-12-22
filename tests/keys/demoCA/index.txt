@@ -42,3 +42,4 @@ V	21251127030039Z		AFA28BB933ADDAD4	unknown	/C=US/ST=California/O=XML Security L
 R	21251127152830Z	251221235908Z	AFA28BB933ADDAD5	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=Test Key rsa-2048
 V	21251127153308Z		AFA28BB933ADDAD6	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=Test Key rsa-4096
 V	251215050000Z		AFA28BB933ADDAD7	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=Test Key rsa-expired
+V	21251128020705Z		AFA28BB933ADDAD8	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=Test Key slh-dsa-sha2-256f

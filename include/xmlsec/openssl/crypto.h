@@ -1127,6 +1127,14 @@ XMLSEC_CRYPTO_EXPORT EVP_PKEY*          xmlSecOpenSSLKeyDataSLHDSAGetEvp     (xm
 #define xmlSecOpenSSLTransformSLHDSA_SHA2_128fId  \
         xmlSecOpenSSLTransformSLHDSA_SHA2_128fGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformSLHDSA_SHA2_128fGetKlass(void);
+/**
+ * xmlSecOpenSSLTransformSLHDSA_SHA2_256fId:
+ *
+ * The SLH-DSA-SHA2-256f signature transform klass.
+ */
+#define xmlSecOpenSSLTransformSLHDSA_SHA2_256fId  \
+        xmlSecOpenSSLTransformSLHDSA_SHA2_256fGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformSLHDSA_SHA2_256fGetKlass(void);
 
 
 #endif /* XMLSEC_NO_SLHDSA */

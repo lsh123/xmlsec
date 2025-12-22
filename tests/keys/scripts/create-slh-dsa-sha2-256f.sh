@@ -6,11 +6,10 @@
 # load include
 . "${0%/*}/include.sh"
 
-keyname="slh-dsa-sha2-128f"
-algorithm="SLH-DSA-SHA2-128f"
+keyname="slh-dsa-sha2-256f"
+algorithm="SLH-DSA-SHA2-256f"
 genpkey_options=""
 gencert_options=""
-
 
 echo "*** Generating ${algorithm} key ${keyname}...."
 openssl genpkey -algorithm  ${algorithm} ${genpkey_options} -out "${keyname}-key.pem"

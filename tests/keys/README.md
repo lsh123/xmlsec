@@ -149,7 +149,6 @@ openssl rsa -inform PEM -outform DER -traditional -in ca2key.pem -out ca2key.der
 ```
 openssl x509 -outform DER -in cacert.pem -out cacert.der
 openssl x509 -outform DER -in ca2cert.pem -out ca2cert.der
-openssl x509 -outform DER -in rsa-2048-cert.pem -out rsa-2048-cert.der
 openssl x509 -outform DER -in expiredcert.pem -out expiredcert.der
 ```
 
@@ -160,20 +159,6 @@ openssl x509 -outform DER -in gost2001cert.pem -out gost2001cert.der
 openssl x509 -outform DER -in gost2012_256cert.pem -out gost2012_256cert.der
 openssl x509 -outform DER -in gost2012_512cert.pem -out gost2012_512cert.der
 ```
-
-### (optional) Convert PEM public key file to DER file
-RSA key:
-```
-openssl rsa -inform PEM -outform DER -pubin -pubout -in lugh.key -out lugh.der
-```
-
-DSA key:
-```
-openssl dsa -inform PEM -outform DER -pubin -pubout -in lugh.key -out lugh.der
-```
-
-If you aren't sure if the public key is RSA or DSA, just run one of
-the above commands, and the error messaging will make it clear :)
 
 ### (optional) Convert DER cert file to PEM file
 ```
@@ -188,11 +173,7 @@ is `secret123`):
 openssl pkcs8 -in expiredkey.pem -inform pem -out expiredkey.p8-pem -outform pem -topk8
 openssl pkcs8 -in expiredkey.der -inform der -out expiredkey.p8-der -outform der -topk8
 
-openssl pkcs8 -in rsa-4096-key.pem -inform pem -out rsa-4096-key.p8-pem -outform pem -topk8
-openssl pkcs8 -in rsa-4096-key.der -inform der -out rsa-4096-key.p8-der -outform der -topk8
-
 ```
-
 
 GOST keys (see above the instructions to configure GOST engine):
 ```
@@ -207,14 +188,6 @@ keys into PKCS12 form that is suitable for not only NSS but all crypto engines (
 password is `secret123`):
 
 ```
-cat cakey.pem cacert.pem  > allcakey.pem
-openssl pkcs12 -export -in allcakey.pem -name CARsaKey -out cakey.p12
-rm allcakey.pem
-
-cat ca2key.pem ca2cert.pem cacert.pem  > allca2key.pem
-openssl pkcs12 -export -in allca2key.pem -name CA2RsaKey -out ca2key.p12
-rm allca2key.pem
-
 
 
 cat expiredkey.pem expiredcert.pem ca2cert.pem cacert.pem > allexpired.pem
@@ -238,75 +211,6 @@ OPENSSL_CONF=./openssl.cnf openssl pkcs12 -export -in all-gost2012_512.pem -name
 rm all-gost2012_512.pem
 ```
 
-
-### Load keys into NSS DB
-The following process loads a few keys into NSS DB for testing that XMLSec can find keys in NSS DB  (the tests password is `secret123`, do NOT specify password for nssdb):
-
-```
-rm -rf nssdb
-mkdir nssdb
-pk12util -d nssdb -i rsa-4096-key.p12
-chmod a-w nssdb/*
-```
-
-### Creating self-signed cert for DSA/RSA private keys and loading it into NSS store
-The following process takes a DSA/RSA private key in PEM or DER format and
-creates a PKCS12 file containing the private key, and a self-signed
-certificate with the corresponding public key.
-
-```
-# first convert key file to PEM format, if not already in that format
-openssl <dsa|rsa> -inform der -outform pem -in key.der -out key.pem
-
-# answer questions at the prompt
-# Note: use a unique subject (=issuer) for each self-signed cert you
-# create (since there is no way to specify serial # using the command
-# below)
-openssl req -new -keyform <der|pem> -key key.<der|pem> -x509 -sha1 -days 999999 -outform pem -out cert.pem
-
-# now using the cert and key in PEM format, conver them to a PKCS12 file
-# enter some password on prompt
-openssl pkcs12 -export -in cert.pem -inkey key.pem -name <nickname> -out keycert.p12
-
-# This pkcs12 file can be used directly on the xmlsec command line, or
-# can be pre-loaded into the crypto engine database (if any).
-
-# In the case of NSS, you can pre-load the key using pk12util.
-# The key and cert will have the nickname "nickname" (used in above step)
-pk12util -d <nss_config_dir> -i keycert.p12
-```
-
-### Creating certs chain for DSA/RSA private keys and loading it into NSS store
-The following process takes a DSA/RSA private key in PEM or DER format
-plus all certs in the chain and creates a PKCS12 file containing the private key
-and certs chain.
-
-```
-# first convert key file to PEM format, if not already in that format
-openssl <dsa|rsa> -inform der -outform pem -in key.der -out key.pem
-
-# convert all cert files to PEM format, if not already in that format
-openssl x509 -inform der -outform pem -in cert.der -out cert.pem
-
-# concatenate all cert.pem files created above to 1 file - allcerts.pem
-cat keycert.pem cert1.pem cert2.pem  .... > allcerts.pem
-
-# now using the certs and key in PEM format, conver them to a PKCS12 file
-# enter some password on prompt
-openssl pkcs12 -export -in allcerts.pem -inkey key.pem \
-    -name <nickname of key & keycert>
-[-caname <nickname of cert1> -caname <nickname of cert2>.... ]
--out keycert.p12
-
-# This pkcs12 file can be used directly on the xmlsec command line, or
-# can be pre-loaded into the crypto engine database (if any).
-
-# In the case of NSS, you can pre-load the key using pk12util.
-# The key and certs will have the nickname "nickname"
-# (used in above step)
-pk12util -d <nss_config_dir> -i keycert.p12
-```
-
 ## Add Crypto Service Provider (CSP) for Windows
 On Windows, one needs to specify Crypto Service Provider (CSP) in the pkcs12 file
 to ensure it is loaded correctly to be used with SHA2 algorithms. Worse, the CSP is
@@ -317,17 +221,3 @@ cat expiredkey.pem expiredcert.pem ca2cert.pem cacert.pem > allexpired.pem
 openssl pkcs12 -export -in allexpired.pem -name TestExpiredRsaKey -out expiredkey-win.p12 -CSP "Microsoft Enhanced RSA and AES Cryptographic Provider"
 rm allexpired.pem
 ```
-
-## Convert DER private keys for GCrypt to understand
-GCrypt doesn't have its own parser for DER/PEM format and the one implemented in xmlsec-gcrypt is pretty basic.
-Thus, we need to convert DER private keys generated by modern OpenSSL to the original / traditional format:
-
-``
-openssl rsa -inform DER -outform DER -traditional -in input-priv-key.der  -out output-priv-key.der
-``
-
-To view the results, use the following command:
-
-``
-openssl asn1parse -inform DER -in some-priv-key.der
-``

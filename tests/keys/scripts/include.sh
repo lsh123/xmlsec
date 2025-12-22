@@ -79,7 +79,7 @@ create_certificate_from_private_key() {
     echo "*** Signing using second level CA...."
     echo
     openssl req -config "${openssl_conf}" -new -key "${keyname}-key.pem" ${gencert_options} -subj "${subject}" -out "${keyname}-req.pem"
-    yes | openssl ca -config "${openssl_conf}" -cert "${second_level_ca_file}" -keyfile "${second_level_ca_key_file}" -notext -out "${keyname}-cert.pem" -infiles "${keyname}-req.pem"
+    yes | openssl ca -config "${openssl_conf}" ${gencert_options} -cert "${second_level_ca_file}" -keyfile "${second_level_ca_key_file}" -notext -out "${keyname}-cert.pem" -infiles "${keyname}-req.pem"
     openssl verify -CAfile "${ca_file}" -untrusted "${second_level_ca_file}" "${keyname}-cert.pem"
     rm "${keyname}-req.pem"
 

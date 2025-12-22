@@ -14,6 +14,11 @@ CA.pl -newca
 cp ./demoCA/cacert.pem .
 cp ./demoCA/private/cakey.pem .
 openssl x509 -text -in cacert.pem
+
+
+openssl rsa -inform PEM -outform DER -traditional -in cakey.pem -out cakey.der
+openssl x509 -outform DER -in cacert.pem -out cacert.der
+
 ```
 
 ### Generate RSA key and a second level certificate
@@ -24,6 +29,11 @@ openssl ca -config ./openssl.cnf -cert cacert.pem -keyfile cakey.pem \
         -out ca2cert.pem -infiles ca2req.pem
 openssl verify -CAfile cacert.pem ca2cert.pem
 rm ca2req.pem
+
+
+openssl rsa -inform PEM -outform DER -traditional -in ca2key.pem -out ca2key.der
+openssl x509 -outform DER -in ca2cert.pem -out ca2cert.der
+
 ```
 
 
@@ -39,9 +49,10 @@ rm ca2req.pem
 ```
 ./scripts/create-rsa-2048.sh
 ./scripts/create-rsa-4096.sh
+./scripts/create-rsa-expired.sh
 ```
 
-### Creating NSS DB
+* Creating NSS DB
 DO NOT SPECIFY PASSWORD FOR NSS DB (private keys pkcs12 password is 'secret123')
 
 ```
@@ -51,14 +62,6 @@ pk12util -d nssdb -i rsa-4096-key.p12
 chmod a-w nssdb/*
 ```
 
-### Generate and sign short-live RSA cert for "expired cert" test (OU = "Test Expired RSA Certificate")
-```
-openssl genrsa -out expiredkey.pem 2048
-openssl req -config ./openssl.cnf -new -days 1 -key expiredkey.pem -out expiredreq.pem
-openssl ca -config ./openssl.cnf -days 1 -cert ca2cert.pem -keyfile ca2key.pem -out expiredcert.pem -infiles expiredreq.pem
-openssl verify -CAfile cacert.pem -untrusted ca2cert.pem expiredcert.pem
-rm expiredreq.pem
-```
 
 ### Generate EC keys with second level CA
 ```
@@ -112,6 +115,17 @@ openssl req -config ./openssl.cnf -newkey gost2001 -pkeyopt paramset:A -nodes -k
 openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem -out gost2001cert.pem -infiles gost2001req.pem
 OPENSSL_CONF=./openssl.cnf openssl verify -CAfile cacert.pem -untrusted ca2cert.pem gost2001cert.pem
 rm gost2001req.pem
+
+
+openssl x509 -outform DER -in gost2001cert.pem -out gost2001cert.der
+
+OPENSSL_CONF=./openssl.cnf openssl pkcs8 -in gost2001key.pem -inform pem -out gost2001key.p8-pem -outform pem -topk8
+
+
+cat gost2001key.pem gost2001cert.pem ca2cert.pem cacert.pem > all-gost2001.pem
+OPENSSL_CONF=./openssl.cnf openssl pkcs12 -export -in all-gost2001.pem -name TestGost2001_Key -out gost2001key.p12
+rm all-gost2001.pem
+
 ```
 
 GOST2012 256 bits:
@@ -120,6 +134,17 @@ openssl req -config ./openssl.cnf -newkey gost2012_256 -pkeyopt paramset:A -node
 openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem -out gost2012_256cert.pem -infiles gost2012_256req.pem
 OPENSSL_CONF=./openssl.cnf openssl verify -CAfile cacert.pem -untrusted ca2cert.pem gost2012_256cert.pem
 rm gost2012_256req.pem
+
+
+openssl x509 -outform DER -in gost2012_256cert.pem -out gost2012_256cert.der
+
+OPENSSL_CONF=./openssl.cnf openssl pkcs8 -in gost2012_256key.pem -inform pem -out gost2012_256key.p8-pem -outform pem -topk8
+
+
+cat gost2012_256key.pem gost2012_256cert.pem ca2cert.pem cacert.pem > all-gost2012_256.pem
+OPENSSL_CONF=./openssl.cnf openssl pkcs12 -export -in all-gost2012_256.pem -name TestGost2012_256Key -out gost2012_256key.p12
+rm all-gost2012_256.pem
+
 ```
 
 GOST2012 512 bits:
@@ -128,96 +153,13 @@ openssl req -config ./openssl.cnf -newkey gost2012_512 -pkeyopt paramset:A -node
 openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem -out gost2012_512cert.pem -infiles gost2012_512req.pem
 OPENSSL_CONF=./openssl.cnf openssl verify -CAfile cacert.pem -untrusted ca2cert.pem gost2012_512cert.pem
 rm gost2012_512req.pem
-```
 
-
-## Converting key and certs between PEM and DER formats
-
-### Convert PEM private key file to DER file
-
-Some libraries (e.g GCrypt) don't like the newer versions of DER formats. So we use
-old (traditional, ASN1, etc) formats instead
-
-RSA keys:
-```
-openssl rsa -inform PEM -outform DER -traditional -in expiredkey.pem -out expiredkey.der
-openssl rsa -inform PEM -outform DER -traditional -in ca2key.pem -out ca2key.der
-```
-
-
-### Convert PEM cert file to DER file (IMPORTANT: use OpenSSL 1.x for generating DER files!!!)
-```
-openssl x509 -outform DER -in cacert.pem -out cacert.der
-openssl x509 -outform DER -in ca2cert.pem -out ca2cert.der
-openssl x509 -outform DER -in expiredcert.pem -out expiredcert.der
-```
-
-
-Certs for GOST keys (see above the instructions to configure GOST engine):
-```
-openssl x509 -outform DER -in gost2001cert.pem -out gost2001cert.der
-openssl x509 -outform DER -in gost2012_256cert.pem -out gost2012_256cert.der
 openssl x509 -outform DER -in gost2012_512cert.pem -out gost2012_512cert.der
-```
 
-### (optional) Convert DER cert file to PEM file
-```
-openssl x509 -inform DER -outform PEM -in ca2cert.der -out ca2cert.pem
-```
-
-## Creating encrypted PEM or DER files
-Converting an unencrypted PEM or DER file containing a private key to an encrypted
-PEM or DER file containing the same private key but encrypted (the tests password
-is `secret123`):
-```
-openssl pkcs8 -in expiredkey.pem -inform pem -out expiredkey.p8-pem -outform pem -topk8
-openssl pkcs8 -in expiredkey.der -inform der -out expiredkey.p8-der -outform der -topk8
-
-```
-
-GOST keys (see above the instructions to configure GOST engine):
-```
-OPENSSL_CONF=./openssl.cnf openssl pkcs8 -in gost2001key.pem -inform pem -out gost2001key.p8-pem -outform pem -topk8
-OPENSSL_CONF=./openssl.cnf openssl pkcs8 -in gost2012_256key.pem -inform pem -out gost2012_256key.p8-pem -outform pem -topk8
 OPENSSL_CONF=./openssl.cnf openssl pkcs8 -in gost2012_512key.pem -inform pem -out gost2012_512key.p8-pem -outform pem -topk8
-```
-
-## Creating PKCS12 private keys
-NSS is unfriendly towards standalone private keys. This procedure helps convert private
-keys into PKCS12 form that is suitable for not only NSS but all crypto engines (the tests
-password is `secret123`):
-
-```
-
-
-cat expiredkey.pem expiredcert.pem ca2cert.pem cacert.pem > allexpired.pem
-openssl pkcs12 -export -in allexpired.pem -name TestExpiredRsaKey -out expiredkey.p12
-
-
-```
-
-GOST keys (see above the instructions to configure GOST engine):
-```
-cat gost2001key.pem gost2001cert.pem ca2cert.pem cacert.pem > all-gost2001.pem
-OPENSSL_CONF=./openssl.cnf openssl pkcs12 -export -in all-gost2001.pem -name TestGost2001_Key -out gost2001key.p12
-rm all-gost2001.pem
-
-cat gost2012_256key.pem gost2012_256cert.pem ca2cert.pem cacert.pem > all-gost2012_256.pem
-OPENSSL_CONF=./openssl.cnf openssl pkcs12 -export -in all-gost2012_256.pem -name TestGost2012_256Key -out gost2012_256key.p12
-rm all-gost2012_256.pem
 
 cat gost2012_512key.pem gost2012_512cert.pem ca2cert.pem cacert.pem > all-gost2012_512.pem
 OPENSSL_CONF=./openssl.cnf openssl pkcs12 -export -in all-gost2012_512.pem -name TestGost2012_512Key -out gost2012_512key.p12
 rm all-gost2012_512.pem
-```
 
-## Add Crypto Service Provider (CSP) for Windows
-On Windows, one needs to specify Crypto Service Provider (CSP) in the pkcs12 file
-to ensure it is loaded correctly to be used with SHA2 algorithms. Worse, the CSP is
-different for XP and older versions.
-
-```
-cat expiredkey.pem expiredcert.pem ca2cert.pem cacert.pem > allexpired.pem
-openssl pkcs12 -export -in allexpired.pem -name TestExpiredRsaKey -out expiredkey-win.p12 -CSP "Microsoft Enhanced RSA and AES Cryptographic Provider"
-rm allexpired.pem
 ```

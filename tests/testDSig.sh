@@ -1245,7 +1245,8 @@ echo "--------- Certificate verification testing ----------"
 
 #
 # To generate output with an expired cert run the following command
-# > xmlsec1 sign --pkcs12 tests/keys/expiredkey.p12 --pwd secret123 --output out.xml ./tests/aleksey-xmldsig-01/enveloping-expired-cert.tmpl
+#
+# xmlsec1 sign --pkcs12 ./tests/keys/rsa-expired-key.p12 --pwd secret123 --output ./tests/aleksey-xmldsig-01/enveloping-expired-cert.xml ./tests/aleksey-xmldsig-01/enveloping-expired-cert.tmpl
 #
 
 # This should fail: expired cert
@@ -1255,7 +1256,7 @@ execDSigTest $res_fail \
     "aleksey-xmldsig-01/enveloping-expired-cert" \
     "sha1 rsa-sha1" \
     "rsa x509" \
-    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509 --verification-gmt-time 2022-12-20+00:00:00"
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 # Expired cert but there is verification time overwrite
 extra_message="Expired cert but there is verification timestamp overwrite"
@@ -1264,7 +1265,7 @@ execDSigTest $res_success \
     "aleksey-xmldsig-01/enveloping-expired-cert" \
     "sha1 rsa-sha1" \
     "rsa x509" \
-    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509 --verification-gmt-time 2022-12-14+00:00:00"
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509 --verification-gmt-time 2025-12-10+00:00:00"
 
 if [ "z$xmlsec_feature_cert_check_skip_time" = "zyes" ] ; then
     extra_message="Expired cert but we skip timestamp checks"

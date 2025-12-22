@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Creates ml-dsa-44 key
+# Creates test key
 #
 
 # load include

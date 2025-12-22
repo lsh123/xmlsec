@@ -14,8 +14,8 @@ if [ ! -f "${openssl_conf}" ] ; then
     exit 1
 fi
 
-
-create_key() {
+create_private_key()
+{
     local keyname="$1"
     local algorithm="$2"
     local genpkey_options="$3"
@@ -28,8 +28,22 @@ create_key() {
     openssl genpkey -paramfile "${keyname}-param.pem" -out "${keyname}-key.pem"
     rm "${keyname}-param.pem"
 
+    echo "*** Private key '${keyname}-key.pem' was created successfully"
+}
+
+create_public_key_from_private_key()
+{
+    local keyname="$1"
+
     ### Create public key
     openssl pkey -in "${keyname}-key.pem" -pubout -out "${keyname}-pubkey.pem"
+
+    echo "*** Public key '${keyname}-pubkey.pem' was created successfully"
+}
+
+create_der_keys_from_private_and_public_key()
+{
+    local keyname="$1"
 
     ### Create DER files
     echo
@@ -38,6 +52,13 @@ create_key() {
     openssl pkey -in "${keyname}-key.pem" -outform DER -out "${keyname}-key.der"
     openssl pkey -in "${keyname}-key.pem" -pubout -outform DER -out "${keyname}-pubkey.der"
 
+    echo "*** DER files '${keyname}-key.der' and '${keyname}-pubkey.der' were created successfully"
+}
+
+create_pkcs8_keys_from_private_key()
+{
+    local keyname="$1"
+
     ### Create PKCS8 files
     echo
     echo "*** Creating PKCS8 files..."
@@ -45,35 +66,33 @@ create_key() {
     openssl pkcs8 -in "${keyname}-key.der" -inform der -out "${keyname}-key.p8-pem" -outform pem -topk8 -passout pass:"${password}"
     openssl pkcs8 -in "${keyname}-key.der" -inform der -out "${keyname}-key.p8-der" -outform der -topk8 -passout pass:"${password}"
 
-    ### Done
-    openssl pkey -in "${keyname}-key.pem" -text -noout
-    echo
-    echo "*** Key created successfully in files starting from '${keyname}'"
-    echo "Use XMLSEC_TEST_UPDATE_XML_ON_FAILURE=yes make check-dsig to update the test files if needed."
-    echo
+    echo "*** PKCS8 files '${keyname}-key.p8-pem' and '${keyname}-key.p8-der' were created successfully"
 }
 
-create_key_with_second_level_ca() {
+create_certificate_from_private_key() {
     local keyname="$1"
-    local algorithm="$2"
-    local genpkey_options="$3"
-    local subject="/C=US/ST=California/O=XML Security Library \(http:\/\/www.aleksey.com\/xmlsec\)/CN=Test Key ${keyname}"
-    local pkcs12_name="TestKeyName-${keyname}"
-    local ms_csp="Microsoft Enhanced Cryptographic Provider v1.0"
-
-    create_key "${keyname}" "${algorithm}" "${genpkey_options}"
+    local gencert_options="$2"
+    local subject="/CN=Test Key ${keyname}/O=XML Security Library \(http:\/\/www.aleksey.com\/xmlsec\)/ST=California/C=US"
 
     ### Create certificate signed by second level CA
     echo
     echo "*** Signing using second level CA...."
     echo
-    openssl req -config "${openssl_conf}" -new -key "${keyname}-key.pem" -subj "${subject}" -out "${keyname}-req.pem"
-    yes | openssl ca -config "${openssl_conf}" -cert "${second_level_ca_file}" -keyfile "${second_level_ca_key_file}" -notext -out "${keyname}-cert.pem" -infiles "${keyname}-req.pem"
+    openssl req -config "${openssl_conf}" -new -key "${keyname}-key.pem" ${gencert_options} -subj "${subject}" -out "${keyname}-req.pem"
+    yes | openssl ca -config "${openssl_conf}" ${gencert_options} -cert "${second_level_ca_file}" -keyfile "${second_level_ca_key_file}" -notext -out "${keyname}-cert.pem" -infiles "${keyname}-req.pem"
     openssl verify -CAfile "${ca_file}" -untrusted "${second_level_ca_file}" "${keyname}-cert.pem"
     rm "${keyname}-req.pem"
 
     openssl x509 -in "${keyname}-cert.pem" -inform PEM -out "${keyname}-cert.der" -outform DER
     cp "${keyname}-cert.der" "${keyname}-pubkey.crt"
+
+    echo "*** Certificate files '${keyname}-cert.pem' and '${keyname}-cert.der' were created successfully"
+}
+
+create_pkcs12_from_private_key_and_cert() {
+    local keyname="$1"
+    local pkcs12_name="TestKeyName-${keyname}"
+    local ms_csp="Microsoft Enhanced Cryptographic Provider v1.0"
 
     ### Create PKCS12 file
     echo
@@ -88,13 +107,63 @@ create_key_with_second_level_ca() {
     # different for XP and older versions.
     openssl pkcs12 -export -in "all-${keyname}.pem" -name "${pkcs12_name}" -out "${keyname}-key-win.p12" -CSP "${ms_csp}" -passout pass:"${password}"
 
-    # cleanup
+    ### cleanup
     rm "all-${keyname}.pem"
+
+    ### done
+    echo "*** PKCS12 file '${keyname}-key.p12' with key name '${pkcs12_name}' was created successfully"
+}
+
+create_all_key_files_from_private_key()
+{
+    local keyname="$1"
+
+    create_public_key_from_private_key "${keyname}"
+    create_der_keys_from_private_and_public_key "${keyname}"
+    create_pkcs8_keys_from_private_key "${keyname}"
+}
+
+#
+# High level key creation function
+#
+create_key() {
+    local keyname="$1"
+    local algorithm="$2"
+    local genpkey_options="$3"
+
+    ### Create private key
+    create_private_key "${keyname}" "${algorithm}" "${genpkey_options}"
+
+    ### Create all key files from private key
+    create_all_key_files_from_private_key "${keyname}"
 
     ### Done
     echo
-    echo "*** Certitifcates and PKCS12 file with key name '${pkcs12_name}' created successfully in files starting from '${keyname}'"
-    echo "Use XMLSEC_TEST_UPDATE_XML_ON_FAILURE=yes make check-dsig to update the test files if needed."
+    echo "*** Key was created successfully: Use XMLSEC_TEST_UPDATE_XML_ON_FAILURE=yes make check-dsig to update the test files if needed."
+    echo
+}
+
+create_key_with_second_level_ca() {
+    local keyname="$1"
+    local algorithm="$2"
+    local genpkey_options="$3"
+    local gencert_options="$4"
+
+    ### Create private key
+    create_private_key "${keyname}" "${algorithm}" "${genpkey_options}"
+
+    ### Create all key files from private key
+    create_all_key_files_from_private_key "${keyname}"
+
+    ### Create certificate signed by second level CA
+    create_certificate_from_private_key "${keyname}" "${gencert_options}"
+
+    ### Create PKCS12 file
+    create_pkcs12_from_private_key_and_cert "${keyname}"
+
+    ### Done
+    echo
+    echo "*** Key and certificate were created successfully: Use XMLSEC_TEST_UPDATE_XML_ON_FAILURE=yes make check-dsig to update the test files if needed."
     echo
 }
 

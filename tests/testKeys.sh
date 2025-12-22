@@ -38,9 +38,9 @@ execKeysTest $res_success       \
     "rsa"                       \
     "test-rsa"                  \
     "rsa-1024"                  \
-    "$topfolder/keys/largersakey$priv_key_suffix"    \
-    "$topfolder/keys/largersapubkey" \
-    "$topfolder/keys/largersacert"   \
+    "$topfolder/keys/rsa-4096-key"    \
+    "$topfolder/keys/rsa-4096-pubkey" \
+    "$topfolder/keys/rsa-4096-cert"   \
     "$topfolder/aleksey-xmldsig-01/enveloped-sha1-rsa-sha1" \
     "--pwd secret123 --enabled-key-data key-name"
 

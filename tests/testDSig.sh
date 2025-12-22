@@ -316,8 +316,8 @@ execDSigTest $res_success \
     "c14n sha256 rsa-sha256" \
     "key-info-reference key-name key-value rsa" \
     "--enabled-key-data key-info-reference,key-name,key-value,rsa" \
-    "$priv_key_option:largersakey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
-    "--enabled-key-data key-info-reference,key-name,rsa $pub_key_option:largersakey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format"
+    "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-info-reference,key-name,rsa $pub_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-pubkey$pub_key_suffix.$pub_key_format"
 
 # DEREncodedKeyValue
 execDSigTest $res_success \
@@ -326,7 +326,7 @@ execDSigTest $res_success \
     "c14n sha256 rsa-sha256" \
     "der-encoded-key-value rsa" \
     "--enabled-key-data der-encoded-key-value,rsa" \
-    "--enabled-key-data der-encoded-key-value,key-name,rsa $priv_key_option:largersakey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-key-data der-encoded-key-value,key-name,rsa $priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-key$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--enabled-key-data der-encoded-key-value,rsa"
 
 execDSigTest $res_success \
@@ -346,8 +346,8 @@ if [ "z$xmlsec_feature_x509_data_lookup" = "zyes" ] ; then
         "c14n sha256 rsa-sha256" \
         "x509" \
         "--enabled-key-data x509 --pubkey-cert-der ./keys/rsa-key.crt" \
-        "--enabled-key-data x509 --pkcs12 $topfolder/keys/largersakey.p12 --pwd secret123" \
-        "--enabled-key-data x509 --pubkey-cert-der $topfolder/keys/largersacert.der"
+        "--enabled-key-data x509 --pkcs12 $topfolder/keys/rsa-4096-key.p12 --pwd secret123" \
+        "--enabled-key-data x509 --pubkey-cert-der $topfolder/keys/rsa-4096-cert.der"
 fi
 
 
@@ -447,72 +447,72 @@ if [ "z$xmlsec_feature_x509_data_lookup" = "zyes" ] ; then
         "aleksey-xmldsig-01/enveloped-x509-subjectname" \
         "sha512 rsa-sha512" \
         "rsa x509" \
-        "--untrusted-$cert_format $topfolder/keys/largersacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-        "$priv_key_option $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
-        "--untrusted-$cert_format $topfolder/keys/largersacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+        "--untrusted-$cert_format $topfolder/keys/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+        "$priv_key_option $topfolder/keys/rsa-4096-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+        "--untrusted-$cert_format $topfolder/keys/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
     execDSigTest $res_success \
         "" \
         "aleksey-xmldsig-01/enveloped-x509-issuerserial" \
         "sha512 rsa-sha512" \
         "rsa x509" \
-        "--untrusted-$cert_format $topfolder/keys/largersacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-        "$priv_key_option $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
-        "--untrusted-$cert_format $topfolder/keys/largersacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+        "--untrusted-$cert_format $topfolder/keys/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+        "$priv_key_option $topfolder/keys/rsa-4096-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+        "--untrusted-$cert_format $topfolder/keys/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
     execDSigTest $res_success \
         "" \
         "aleksey-xmldsig-01/enveloped-x509-ski" \
         "sha512 rsa-sha512" \
         "rsa x509" \
-        "--untrusted-$cert_format $topfolder/keys/largersacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-        "$priv_key_option $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
-        "--untrusted-$cert_format $topfolder/keys/largersacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+        "--untrusted-$cert_format $topfolder/keys/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+        "$priv_key_option $topfolder/keys/rsa-4096-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+        "--untrusted-$cert_format $topfolder/keys/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
     execDSigTest $res_success \
         "" \
         "aleksey-xmldsig-01/enveloped-x509-digest-sha1" \
         "sha1 rsa-sha1" \
         "rsa x509" \
-        "--untrusted-$cert_format $topfolder/keys/largersacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-        "$priv_key_option $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
-        "--untrusted-$cert_format $topfolder/keys/largersacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+        "--untrusted-$cert_format $topfolder/keys/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+        "$priv_key_option $topfolder/keys/rsa-4096-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+        "--untrusted-$cert_format $topfolder/keys/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
     execDSigTest $res_success \
         "" \
         "aleksey-xmldsig-01/enveloped-x509-digest-sha224" \
         "sha224 rsa-sha224" \
         "rsa x509" \
-        "--untrusted-$cert_format $topfolder/keys/largersacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-        "$priv_key_option $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
-        "--untrusted-$cert_format $topfolder/keys/largersacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+        "--untrusted-$cert_format $topfolder/keys/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+        "$priv_key_option $topfolder/keys/rsa-4096-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+        "--untrusted-$cert_format $topfolder/keys/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
     execDSigTest $res_success \
         "" \
         "aleksey-xmldsig-01/enveloped-x509-digest-sha256" \
         "sha256 rsa-sha256" \
         "rsa x509" \
-        "--untrusted-$cert_format $topfolder/keys/largersacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-        "$priv_key_option $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
-        "--untrusted-$cert_format $topfolder/keys/largersacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+        "--untrusted-$cert_format $topfolder/keys/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+        "$priv_key_option $topfolder/keys/rsa-4096-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+        "--untrusted-$cert_format $topfolder/keys/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
     execDSigTest $res_success \
         "" \
         "aleksey-xmldsig-01/enveloped-x509-digest-sha384" \
         "sha384 rsa-sha384" \
         "rsa x509" \
-        "--untrusted-$cert_format $topfolder/keys/largersacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-        "$priv_key_option $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
-        "--untrusted-$cert_format $topfolder/keys/largersacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+        "--untrusted-$cert_format $topfolder/keys/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+        "$priv_key_option $topfolder/keys/rsa-4096-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+        "--untrusted-$cert_format $topfolder/keys/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
     execDSigTest $res_success \
         "" \
         "aleksey-xmldsig-01/enveloped-x509-digest-sha512" \
         "sha512 rsa-sha512" \
         "rsa x509" \
-        "--untrusted-$cert_format $topfolder/keys/largersacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-        "$priv_key_option $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
-        "--untrusted-$cert_format $topfolder/keys/largersacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+        "--untrusted-$cert_format $topfolder/keys/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+        "$priv_key_option $topfolder/keys/rsa-4096-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+        "--untrusted-$cert_format $topfolder/keys/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 fi
 
 if [ "z$xmlsec_feature_nssdb_lookup" = "zyes" ] ; then
@@ -522,9 +522,9 @@ if [ "z$xmlsec_feature_nssdb_lookup" = "zyes" ] ; then
         "aleksey-xmldsig-01/enveloped-x509-subjectname" \
         "sha512 rsa-sha512" \
         "rsa x509" \
-        "--untrusted-$cert_format $topfolder/keys/largersacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+        "--untrusted-$cert_format $topfolder/keys/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
         "--insecure" \
-        "--untrusted-$cert_format $topfolder/keys/largersacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+        "--untrusted-$cert_format $topfolder/keys/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
         "$topfolder/keys/nssdb"
 
     extra_message="Signature cert lookup in NSS DB"
@@ -533,9 +533,9 @@ if [ "z$xmlsec_feature_nssdb_lookup" = "zyes" ] ; then
         "aleksey-xmldsig-01/enveloped-x509-issuerserial" \
         "sha512 rsa-sha512" \
         "rsa x509" \
-        "--untrusted-$cert_format $topfolder/keys/largersacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+        "--untrusted-$cert_format $topfolder/keys/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
         "--insecure" \
-        "--untrusted-$cert_format $topfolder/keys/largersacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+        "--untrusted-$cert_format $topfolder/keys/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
         "$topfolder/keys/nssdb"
 fi
 
@@ -545,9 +545,9 @@ if [ "z$xmlsec_feature_x509_data_lookup_digest" = "zyes" ] ; then
         "aleksey-xmldsig-01/enveloped-x509-digest-sha1" \
         "sha1 rsa-sha1" \
         "rsa x509" \
-        "--untrusted-$cert_format $topfolder/keys/largersacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-        "--lax-key-search $priv_key_option $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
-        "--untrusted-$cert_format $topfolder/keys/largersacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+        "--untrusted-$cert_format $topfolder/keys/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+        "--lax-key-search $priv_key_option $topfolder/keys/rsa-4096-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+        "--untrusted-$cert_format $topfolder/keys/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 fi
 
 execDSigTest $res_success \
@@ -555,9 +555,9 @@ execDSigTest $res_success \
     "aleksey-xmldsig-01/signature-two-keynames" \
     "sha1 rsa-sha1" \
     "rsa x509" \
-    "$priv_key_option:key2 $topfolder/keys/rsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2018" \
-    "$priv_key_option:key2 $topfolder/keys/rsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2018" \
-    "$priv_key_option:key2 $topfolder/keys/rsakey.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2018"
+    "$priv_key_option:key2 $topfolder/keys/rsa-2048-key.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2018" \
+    "$priv_key_option:key2 $topfolder/keys/rsa-2048-key.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2018" \
+    "$priv_key_option:key2 $topfolder/keys/rsa-2048-key.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2018"
 
 execDSigTest $res_success \
     "" \
@@ -574,7 +574,7 @@ execDSigTest $res_success \
     "sha1 rsa-sha1" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option:mykey $topfolder/keys/rsakey.$priv_key_format --pwd secret123" \
+    "$priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa-2048-key.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -718,7 +718,7 @@ execDSigTest $res_success \
     "md5 rsa-md5" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option:mykey $topfolder/keys/rsakey.$priv_key_format --pwd secret123" \
+    "$priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa-2048-key.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -727,7 +727,7 @@ execDSigTest $res_success \
     "ripemd160 rsa-ripemd160" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option:mykey $topfolder/keys/rsakey.$priv_key_format --pwd secret123" \
+    "$priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa-2048-key.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -736,7 +736,7 @@ execDSigTest $res_success \
     "sha1 rsa-sha1" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option:mykey $topfolder/keys/rsakey.$priv_key_format --pwd secret123" \
+    "$priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa-2048-key.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -745,7 +745,7 @@ execDSigTest $res_success \
     "sha224 rsa-sha224" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option:mykey $topfolder/keys/rsakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -754,7 +754,7 @@ execDSigTest $res_success \
     "sha256 rsa-sha256" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option:mykey $topfolder/keys/rsakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -763,7 +763,7 @@ execDSigTest $res_success \
     "sha256 rsa-sha256 relationship" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option:mykey $topfolder/keys/rsakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -772,7 +772,7 @@ execDSigTest $res_success \
     "sha384 rsa-sha384" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option:mykey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-key$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -781,7 +781,7 @@ execDSigTest $res_success \
     "sha512 rsa-sha512" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option:mykey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-key$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -789,36 +789,36 @@ execDSigTest $res_success \
     "aleksey-xmldsig-01/enveloped-sha224-rsa-pss-sha224" \
     "sha224 rsa-pss-sha224" \
     "rsa" \
-    "$pub_key_option:largersakey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format" \
-    "$priv_key_option:mykey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
-    "$pub_key_option:mykey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format"
+    "$pub_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-pubkey$pub_key_suffix.$pub_key_format" \
+    "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$pub_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-pubkey$pub_key_suffix.$pub_key_format"
 
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloped-sha256-rsa-pss-sha256" \
     "sha256 rsa-pss-sha256" \
     "rsa" \
-    "$pub_key_option:largersakey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format" \
-    "$priv_key_option:mykey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
-    "$pub_key_option:mykey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format"
+    "$pub_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-pubkey$pub_key_suffix.$pub_key_format" \
+    "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$pub_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-pubkey$pub_key_suffix.$pub_key_format"
 
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloped-sha384-rsa-pss-sha384" \
     "sha384 rsa-pss-sha384" \
     "rsa" \
-    "$pub_key_option:largersakey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format" \
-    "$priv_key_option:mykey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
-    "$pub_key_option:mykey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format"
+    "$pub_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-pubkey$pub_key_suffix.$pub_key_format" \
+    "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$pub_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-pubkey$pub_key_suffix.$pub_key_format"
 
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloped-sha512-rsa-pss-sha512" \
     "sha512 rsa-pss-sha512" \
     "rsa" \
-    "$pub_key_option:largersakey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format" \
-    "$priv_key_option:mykey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
-    "$pub_key_option:mykey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format"
+    "$pub_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-pubkey$pub_key_suffix.$pub_key_format" \
+    "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$pub_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-pubkey$pub_key_suffix.$pub_key_format"
 
 
 execDSigTest $res_success \
@@ -826,36 +826,36 @@ execDSigTest $res_success \
     "aleksey-xmldsig-01/enveloped-sha3_224-rsa-pss-sha3_224" \
     "sha3-224 rsa-pss-sha3-224" \
     "rsa" \
-    "$pub_key_option:largersakey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format" \
-    "$priv_key_option:mykey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
-    "$pub_key_option:mykey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format"
+    "$pub_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-pubkey$pub_key_suffix.$pub_key_format" \
+    "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$pub_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-pubkey$pub_key_suffix.$pub_key_format"
 
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloped-sha3_256-rsa-pss-sha3_256" \
     "sha3-256 rsa-pss-sha3-256" \
     "rsa" \
-    "$pub_key_option:largersakey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format" \
-    "$priv_key_option:mykey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
-    "$pub_key_option:mykey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format"
+    "$pub_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-pubkey$pub_key_suffix.$pub_key_format" \
+    "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$pub_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-pubkey$pub_key_suffix.$pub_key_format"
 
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloped-sha3_384-rsa-pss-sha3_384" \
     "sha3-384 rsa-pss-sha3-384" \
     "rsa" \
-    "$pub_key_option:largersakey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format" \
-    "$priv_key_option:mykey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
-    "$pub_key_option:mykey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format"
+    "$pub_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-pubkey$pub_key_suffix.$pub_key_format" \
+    "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$pub_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-pubkey$pub_key_suffix.$pub_key_format"
 
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloped-sha3_512-rsa-pss-sha3_512" \
     "sha3-512 rsa-pss-sha3-512" \
     "rsa" \
-    "$pub_key_option:largersakey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format" \
-    "$priv_key_option:mykey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
-    "$pub_key_option:mykey $topfolder/keys/largersapubkey$pub_key_suffix.$pub_key_format"
+    "$pub_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-pubkey$pub_key_suffix.$pub_key_format" \
+    "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$pub_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-pubkey$pub_key_suffix.$pub_key_format"
 
 
 execDSigTest $res_success \
@@ -864,7 +864,7 @@ execDSigTest $res_success \
     "sha1 rsa-pss-sha1" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option:mykey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-key$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -873,7 +873,7 @@ execDSigTest $res_success \
     "sha224 rsa-pss-sha224" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option:mykey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-key$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -882,7 +882,7 @@ execDSigTest $res_success \
     "sha256 rsa-pss-sha256" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option:mykey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-key$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -891,7 +891,7 @@ execDSigTest $res_success \
     "sha384 rsa-pss-sha384" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option:mykey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-key$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -900,7 +900,7 @@ execDSigTest $res_success \
     "sha512 rsa-pss-sha512" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option:mykey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-key$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 
@@ -910,7 +910,7 @@ execDSigTest $res_success \
     "sha3-224 rsa-pss-sha3-224" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option:mykey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-key$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -919,7 +919,7 @@ execDSigTest $res_success \
     "sha3-256 rsa-pss-sha3-256" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option:mykey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-key$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -928,7 +928,7 @@ execDSigTest $res_success \
     "sha3-384 rsa-pss-sha3-384" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option:mykey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-key$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest $res_success \
@@ -937,7 +937,7 @@ execDSigTest $res_success \
     "sha3-512 rsa-pss-sha3-512" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option:mykey $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-key$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 
@@ -994,13 +994,13 @@ execDSigTest $res_success \
     "aleksey-xmldsig-01/enveloped-sha1-rsa-sha1" \
     "sha1 rsa-sha1" \
     "" \
-    "$priv_key_option:mykey $topfolder/keys/largersakey.$priv_key_format --pwd secret123" \
-    "$priv_key_option:largersakey $topfolder/keys/largersakey.$priv_key_format --pwd secret123" \
-    "$priv_key_option:largersakey $topfolder/keys/largersakey.$priv_key_format --pwd secret123"
+    "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-key.$priv_key_format --pwd secret123" \
+    "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-key.$priv_key_format --pwd secret123" \
+    "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-key.$priv_key_format --pwd secret123"
 
 
 if [ "z$xmlsec_feature_nssdb_lookup" = "zyes" ] ; then
-    # this test expects "largersakey" in the NSS DB
+    # this test expects "rsa-4096-key" in the NSS DB
     extra_message="Lookup key in NSS DB"
     execDSigTestWithCryptoConfig $res_success \
         "" \
@@ -1147,7 +1147,7 @@ execDSigTest $res_success \
     "xpath2 sha1 rsa-sha1" \
     "rsa x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format" \
-    "$priv_key_option:mykey $topfolder/keys/rsakey.$priv_key_format --pwd secret123" \
+    "$priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa-2048-key.$priv_key_format --pwd secret123" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format"
 
 execDSigTest $res_success \
@@ -1155,9 +1155,9 @@ execDSigTest $res_success \
     "aleksey-xmldsig-01/x509data-sn-test" \
     "xpath2 sha1 rsa-sha1" \
     "rsa x509" \
-    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format  --untrusted-$cert_format $topfolder/keys/rsacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option:mykey $topfolder/keys/rsakey.$priv_key_format --pwd secret123" \
-    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format  --untrusted-$cert_format $topfolder/keys/rsacert.$cert_format --enabled-key-data x509"
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format  --untrusted-$cert_format $topfolder/keys/rsa-2048-cert.$cert_format --enabled-key-data x509" \
+    "$priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa-2048-key.$priv_key_format --pwd secret123" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format  --untrusted-$cert_format $topfolder/keys/rsa-2048-cert.$cert_format --enabled-key-data x509"
 
 if [ "z$xmlsec_feature_asn1_signatures" = "zyes" ] ; then
     execDSigTest $res_success \
@@ -1245,7 +1245,8 @@ echo "--------- Certificate verification testing ----------"
 
 #
 # To generate output with an expired cert run the following command
-# > xmlsec1 sign --pkcs12 tests/keys/expiredkey.p12 --pwd secret123 --output out.xml ./tests/aleksey-xmldsig-01/enveloping-expired-cert.tmpl
+#
+# xmlsec1 sign --pkcs12 ./tests/keys/rsa-expired-key.p12 --pwd secret123 --output ./tests/aleksey-xmldsig-01/enveloping-expired-cert.xml ./tests/aleksey-xmldsig-01/enveloping-expired-cert.tmpl
 #
 
 # This should fail: expired cert
@@ -1255,7 +1256,7 @@ execDSigTest $res_fail \
     "aleksey-xmldsig-01/enveloping-expired-cert" \
     "sha1 rsa-sha1" \
     "rsa x509" \
-    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509 --verification-gmt-time 2022-12-20+00:00:00"
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 # Expired cert but there is verification time overwrite
 extra_message="Expired cert but there is verification timestamp overwrite"
@@ -1264,7 +1265,7 @@ execDSigTest $res_success \
     "aleksey-xmldsig-01/enveloping-expired-cert" \
     "sha1 rsa-sha1" \
     "rsa x509" \
-    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509 --verification-gmt-time 2022-12-14+00:00:00"
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509 --verification-gmt-time 2025-12-10+00:00:00"
 
 if [ "z$xmlsec_feature_cert_check_skip_time" = "zyes" ] ; then
     extra_message="Expired cert but we skip timestamp checks"
@@ -1341,7 +1342,7 @@ execDSigTest $res_success \
 
 
 # Test was created using the following command:
-# xmlsec1 sign --lax-key-search --privkey-pem tests/keys/rsakey.pem,tests/keys/rsacert.pem tests/aleksey-xmldsig-01/enveloped-x509-missing-cert.tmpl
+# xmlsec1 sign --lax-key-search --privkey-pem tests/keys/rsa-2048-key.pem,tests/keys/rsa-2048-cert.pem tests/aleksey-xmldsig-01/enveloped-x509-missing-cert.tmpl
 #
 
 # this should succeeed with both intermidiate and trusted certs provided
@@ -1371,14 +1372,14 @@ execDSigTest $res_fail \
     "x509" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
-# this should fail: wront trusted cert (largersacert)
+# this should fail: wront trusted cert (rsa-4096-cert)
 extra_message="Negative test: Wront trusted cert"
 execDSigTest $res_fail \
     "" \
     "aleksey-xmldsig-01/enveloped-x509-missing-cert" \
     "sha256 rsa-sha256" \
     "x509" \
-    "--untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/largersacert.$cert_format --enabled-key-data x509"
+    "--untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/rsa-4096-cert.$cert_format --enabled-key-data x509"
 
 if [ "z$xmlsec_feature_crl_load" = "zyes" ] ; then
     # this should fail because there is a CRL for the cert used for signing
@@ -1388,7 +1389,7 @@ if [ "z$xmlsec_feature_crl_load" = "zyes" ] ; then
         "aleksey-xmldsig-01/enveloped-x509-missing-cert" \
         "sha256 rsa-sha256" \
         "x509" \
-        "--untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --crl-$cert_format $topfolder/keys/rsacert-revoked-crl.$cert_format --enabled-key-data x509"
+        "--untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --crl-$cert_format $topfolder/keys/rsa-2048-cert-revoked-crl.$cert_format --enabled-key-data x509"
 
     # this should fail because while CRL is past due, it's still better than nothing
     extra_message="Negative test: CRL is past due"
@@ -1397,7 +1398,7 @@ if [ "z$xmlsec_feature_crl_load" = "zyes" ] ; then
         "aleksey-xmldsig-01/enveloped-x509-missing-cert" \
         "sha256 rsa-sha256" \
         "x509" \
-        "--verification-gmt-time 2023-05-01+00:00:00 --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --crl-$cert_format $topfolder/keys/rsacert-revoked-crl.$cert_format --enabled-key-data x509"
+        "--verification-gmt-time 2023-05-01+00:00:00 --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --crl-$cert_format $topfolder/keys/rsa-2048-cert-revoked-crl.$cert_format --enabled-key-data x509"
 
     # GnuTLS doesn't allow CRL verification by time (https://github.com/lsh123/xmlsec/issues/579)
     if [ "z$xmlsec_feature_crl_check_skip_time" = "zyes" ] ; then
@@ -1408,7 +1409,7 @@ if [ "z$xmlsec_feature_crl_load" = "zyes" ] ; then
             "aleksey-xmldsig-01/enveloped-x509-missing-cert" \
             "sha256 rsa-sha256" \
             "x509" \
-            "--verification-gmt-time 2023-03-01+00:00:00 --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --crl-$cert_format $topfolder/keys/rsacert-revoked-crl.$cert_format --enabled-key-data x509"
+            "--verification-gmt-time 2023-03-01+00:00:00 --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --crl-$cert_format $topfolder/keys/rsa-2048-cert-revoked-crl.$cert_format --enabled-key-data x509"
     fi
 
     # this should succeeed too because we bypass all cert checks with --insecure mode
@@ -1418,7 +1419,7 @@ if [ "z$xmlsec_feature_crl_load" = "zyes" ] ; then
         "aleksey-xmldsig-01/enveloped-x509-missing-cert" \
         "sha256 rsa-sha256" \
         "x509" \
-        "--insecure --crl-$cert_format $topfolder/keys/rsacert-revoked-crl.$cert_format --enabled-key-data x509"
+        "--insecure --crl-$cert_format $topfolder/keys/rsa-2048-cert-revoked-crl.$cert_format --enabled-key-data x509"
 fi
 
 if [ "z$xmlsec_feature_key_check" = "zyes" ] ; then
@@ -1429,7 +1430,7 @@ if [ "z$xmlsec_feature_key_check" = "zyes" ] ; then
         "aleksey-xmldsig-01/enveloped-sha1-rsa-sha1" \
         "sha1 rsa-sha1" \
         "x509" \
-        "--pubkey-cert-$cert_format:mykey $topfolder/keys/largersacert.$cert_format --enabled-key-data key-name"
+        "--pubkey-cert-$cert_format:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-cert.$cert_format --enabled-key-data key-name"
 
     # this should fail because key cannot be verified without certificates
     extra_message="Negative test: key cannot be verified"
@@ -1438,7 +1439,7 @@ if [ "z$xmlsec_feature_key_check" = "zyes" ] ; then
         "aleksey-xmldsig-01/enveloped-sha1-rsa-sha1" \
         "sha1 rsa-sha1" \
         "x509" \
-        "--verify-keys --pubkey-cert-$cert_format:mykey $topfolder/keys/largersacert.$cert_format --enabled-key-data key-name"
+        "--verify-keys --pubkey-cert-$cert_format:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-cert.$cert_format --enabled-key-data key-name"
 
     # this should fail because key cannot be verified at specified time
     extra_message="Negative test: key cannot be verified (cert is not yet valid)"
@@ -1447,7 +1448,7 @@ if [ "z$xmlsec_feature_key_check" = "zyes" ] ; then
         "aleksey-xmldsig-01/enveloped-sha1-rsa-sha1" \
         "sha1 rsa-sha1" \
         "x509" \
-        "--verify-keys --verification-gmt-time 1980-01-01+00:00:00  --pubkey-cert-$cert_format:mykey  $topfolder/keys/largersacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data key-name"
+        "--verify-keys --verification-gmt-time 1980-01-01+00:00:00  --pubkey-cert-$cert_format:TestKeyName-rsa-4096  $topfolder/keys/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data key-name"
 
     # this should succeeed because key can be verified
     extra_message="Successfully verify key"
@@ -1456,7 +1457,7 @@ if [ "z$xmlsec_feature_key_check" = "zyes" ] ; then
         "aleksey-xmldsig-01/enveloped-sha1-rsa-sha1" \
         "sha1 rsa-sha1" \
         "x509" \
-        "--verify-keys --pubkey-cert-$cert_format:mykey  $topfolder/keys/largersacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data key-name"
+        "--verify-keys --pubkey-cert-$cert_format:TestKeyName-rsa-4096  $topfolder/keys/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data key-name"
 
 
 fi
@@ -1517,7 +1518,7 @@ execDSigTest $res_success \
     "sha1 rsa-sha1" \
     "rsa" \
     "--enabled-key-data key-value,key-name,rsa" \
-    "--enabled-key-data key-value,key-name,rsa $priv_key_option:mykey $topfolder/keys/rsakey.$priv_key_format --pwd secret123" \
+    "--enabled-key-data key-value,key-name,rsa $priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa-2048-key.$priv_key_format --pwd secret123" \
     "--enabled-key-data key-value,key-name,rsa"
 
 execDSigTest $res_success \

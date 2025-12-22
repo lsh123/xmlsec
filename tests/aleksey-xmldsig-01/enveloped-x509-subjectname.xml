@@ -19,22 +19,20 @@
 IQbvvjmkI+9+QmCrcJyXXA==</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>oSQazmnGpiLXxuDQXrhB5w4qz2QMUPT9LPbQ4+UqhxFYdGxhRRe4/ITwjZ6XG32h
-/5wcrScI0dUGfklofgPuDSuxa3A9ueXRahOtN3hUL1gDTRGxhPW+EAOzqBGb/9Yc
-zSG4Y7jo4LDA9ebWYQhRMpYsXRPQqh2/JSqHtAo/GQvTi3hcIZ3NbjPjCaScW6Gq
-rDSvFLRnWUAl8CimYRs3D4QdzvqrMDxVnsamDsUAn8oroMBtbC3m8ELvElgZ0xq9
-qv17kqc5P5d0Xl18tNvlx/wKPpAcAcPrAmUkb+oWpCycFSc68aLws6VJj3rCZV6U
-4QMQHcW6zFQfbG5/wPchJIBlxx2FdJu7RMeGbx7pwLIsEkU6RcKRniVcxVNKhIbD
-7owZxRPJ7LP/PnQ6v9zSZmvz1+f5sNG7GIqGDde2iWlg67AtmtMaW0KIAMGoOA1t
-O+RHySxxB/5uss4ANlJZF1Ehm0Zgo7S11D00Vq24aCjMEz9FRSkhq0X4kW1a2BjX
-o1rJBk7cQOFfSqmUblPEh41SrYtrSkqUNNiSQwI2XfhTAKwUn4c7HBDpagWOorFr
-k8QSLUdcYlYLcDM6YRIeDIqXv2ieV5t/m+Na0B37Ef5GH27bBshAETsON05wYlaq
-ZmudHZxyIKRkwdo3341b8p8rQEE9tcnUOzgbqs0qmZQ=</SignatureValue>
+    <SignatureValue>I7zw3oL/+cUbeXJCqb06PM/AMXLH8WRJw/zIBSxh87/5qsM9mXrjMYt0qwBKBynJ
+JjPKtvJzGXB+oQDJS/SaPL+z/mcFn5ojITRkh7ipw5l+1tT7jqZlmafGcCjV6H4E
+NYI4jHdBN5qdeK4E5ZgxBKwlaJPBurGPQvasjI5o6jV16KNPScnWOh3NGX8Vh+7h
+G0VBlkDsR/S8q0r8WSiLT8PTDeYySh3tAmG3qSe200fXTFSEfZQMYCMd/+rb9P+y
+kwYCdmeMpf0RBO2mWLpnHJS1ar2v7Dt6k+PEweyUH1BEriOezkT500bLJTW2qUBI
+imoJMNO8+kirHMTe2LiHV4S6rJoucWdAJnzlSjw/wzVNhA2FZ6fJdnMY3+f9Dodt
+mQmYhHWoUPGb06YWB+TL0HDPz8UZW2zLO3rLxGPHkG7oTp5XOXMAMrIE84VY32PN
+Zs2tntczqezULOBK3P7YFjDo6RUIARJwZz0r0bWbcpL12rHQ7QycAw9uVC1vqVSv
+tMG+QLhUW9Y6TWLEReV6Z1M0+GavH0RFPTsyihVoyH27hGvTCV4X4aRgaK3HWhsw
+mGRgT/dbPhdfZehaq19Iz12r95vRC2sInggfS7Vk5VPOCvBokaolf/R3k/gWArjN
+9DP60iX/iHmWfDWHgCIFBRI9L+rYKPYW9dq5+9M5QoY=</SignatureValue>
     <KeyInfo>
       <X509Data>
-        <X509SubjectName>emailAddress=xmlsec@aleksey.com,CN=Aleksey Sanin,O=XML Security Library (http://www.aleksey.com/xmlsec),ST=California,C=US</X509SubjectName>
-<X509SubjectName>emailAddress=xmlsec@aleksey.com,CN=Aleksey Sanin,OU=Root CA,O=XML Security Library (http://www.aleksey.com/xmlsec),ST=California,C=US</X509SubjectName>
-<X509SubjectName>emailAddress=xmlsec@aleksey.com,CN=Aleksey Sanin,OU=Test Large RSA Key,O=XML Security Library (http://www.aleksey.com/xmlsec),ST=California,C=US</X509SubjectName>
+        <X509SubjectName>CN=Test Key rsa-4096,O=XML Security Library (http://www.aleksey.com/xmlsec),ST=California,C=US</X509SubjectName>
       </X509Data>
     </KeyInfo>
   </Signature>

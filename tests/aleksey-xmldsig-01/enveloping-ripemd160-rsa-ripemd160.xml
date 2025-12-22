@@ -15,7 +15,7 @@ fxjK44tl4UL09VKn25BqskOkwYor0utRnbrrFP4lKyC3mB8f1KGsxUKN4sbsk21c
 2KBuB9XiRoYgHTKVIqvPOYFXctOJVWrLh7JbRDZTTw7IyaT8mH/cD3yixXLciL2I
 I6E6XtkiWyfPpOLmXxucjw==</SignatureValue>
   <KeyInfo>
-    <KeyName>mykey</KeyName>
+    <KeyName>TestKeyName-rsa-2048</KeyName>
     <X509Data>
 <X509Certificate>MIIEbzCCBBmgAwIBAgIJAK+ii7kzrdq5MA0GCSqGSIb3DQEBBQUAMIGcMQswCQYD
 VQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTE9MDsGA1UEChM0WE1MIFNlY3Vy

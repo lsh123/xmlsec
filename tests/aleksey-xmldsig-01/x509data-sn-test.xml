@@ -17,25 +17,26 @@
         <DigestValue>3om1gINPzaogcdLuDdjIQlls4NE=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>X/W6AuFxAJ2ptVFSpVR1Z1hMyn3Ss9wRDjlJlB1xC9XmUD42ZrAGsUPoNc7Ye97k
-qu9lPZa7GnQEFWDjE/tNzT/G9zZBcDs0VnXr14y5/h1kDoOPNDDTFPGhKqzirLw8
-QUpgVXyR8+aMAGtSHAO74cnB0usdg0wK3c4zh1LwnCbZ0aHKySyhzG/HhH03ErMq
-XMLgfJUCpT/J8RYMyXMWDeb/bKOsOtiGhnLzJC1WhtzKKN0P1oEJ2jUxa98ZBeea
-aND8AoD1K5x0a5CvU/KA3Pwgo+zIAk60tSzjO7/qC9Qz2ULsm2lIq/JEXghp+Y//
-yQaKF4+whsEadEc7wAtQzQ==</SignatureValue>
+    <SignatureValue>iRRTlr+ZbfpU4bWQMmL0IenrDboqSU87WKnYE44dp5RijPO7V8KjKrO4jZ6k0BR1
+zx/qw5PLyHqAMNms1f3PhDIldtUPOKuj64DFOKv8Tz0EX7eRl45PRU3FJamKU/tI
+jJzKaK7dNJWdx2y17XsaHkqExRUTfwd7UI4jd36kTA37N7L+qOunI9U0976VjP1q
+K+x6BPqLsWDvkZTI5QKLVn65/aIctRjIW0kUW2BJDb02kBXJvI4ncNqhYPcZeURg
+7BqZu0/sr2oPZWwB9QgQoENtW52wHTNISgRme2lGVmtYX9tUwqZyKuXu2DqYFI4g
+i7h/IrAELcvMwLtN5qvvbw==</SignatureValue>
     <KeyInfo>
+      <KeyName>TestKeyName-rsa-2048</KeyName>
       <X509Data>
         <X509IssuerSerial>
-<X509IssuerName>emailAddress=xmlsec@aleksey.com,CN=Aleksey Sanin,OU=Root CA,O=XML Security Library (http://www.aleksey.com/xmlsec),ST=California,C=US</X509IssuerName>
-<X509SerialNumber>12655831530416757421</X509SerialNumber>
+<X509IssuerName>emailAddress=xmlsec@aleksey.com,CN=Aleksey Sanin,O=XML Security Library (http://www.aleksey.com/xmlsec),ST=California,C=US</X509IssuerName>
+<X509SerialNumber>12655831530416757461</X509SerialNumber>
 </X509IssuerSerial>
 <X509IssuerSerial>
 <X509IssuerName>emailAddress=xmlsec@aleksey.com,CN=Aleksey Sanin,OU=Root CA,O=XML Security Library (http://www.aleksey.com/xmlsec),ST=California,C=US</X509IssuerName>
 <X509SerialNumber>12655831530416757420</X509SerialNumber>
 </X509IssuerSerial>
 <X509IssuerSerial>
-<X509IssuerName>emailAddress=xmlsec@aleksey.com,CN=Aleksey Sanin,O=XML Security Library (http://www.aleksey.com/xmlsec),ST=California,C=US</X509IssuerName>
-<X509SerialNumber>12655831530416757433</X509SerialNumber>
+<X509IssuerName>emailAddress=xmlsec@aleksey.com,CN=Aleksey Sanin,OU=Root CA,O=XML Security Library (http://www.aleksey.com/xmlsec),ST=California,C=US</X509IssuerName>
+<X509SerialNumber>12655831530416757421</X509SerialNumber>
 </X509IssuerSerial>
       </X509Data>
     </KeyInfo>

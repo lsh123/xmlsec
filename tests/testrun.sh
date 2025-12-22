@@ -309,10 +309,11 @@ else
     pub_key_option="--pubkey-der"
     pub_key_format="der"
 fi
+# GCrypt has problems reading public RSA keys and needs special handling
 if [ "z$crypto" = "zgcrypt" ] ; then
-    pub_key_suffix="-gcrypt"
+    rsa_pub_key_suffix="-gcrypt"
 else
-    pub_key_suffix=""
+    rsa_pub_key_suffix=""
 fi
 
 # On Windows, we needs to specify Crypto Service Provider (CSP)

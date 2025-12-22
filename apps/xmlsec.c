@@ -263,8 +263,8 @@ static xmlSecAppCmdLineParam genKeyParam = {
     "--gen-key[:<name>] <keyKlass>-<keySize>"
     "\n\tgenerate new <keyKlass> key of <keySize> bits size,"
     "\n\tset the key name to <name> and add the result to keys"
-    "\n\tmanager (for example, \"--gen:mykey rsa-1024\" generates"
-    "\n\ta new 1024 bits RSA key and sets it's name to \"mykey\")",
+    "\n\tmanager (for example, \"--gen:MyKeyName rsa-1024\" generates"
+    "\n\ta new 1024 bits RSA key and sets it's name to \"MyKeyName\")",
     xmlSecAppCmdLineParamTypeString,
     xmlSecAppCmdLineParamFlagParamNameValue | xmlSecAppCmdLineParamFlagMultipleValues,
     NULL

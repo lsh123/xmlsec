@@ -367,8 +367,8 @@ execDSigTest $res_success \
     "c14n11 sha1 hmac-sha1" \
     "hmac" \
     "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey:mykey $topfolder/keys/hmackey.bin" \
-    "--hmackey:mykey $topfolder/keys/hmackey.bin"
+    "--hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin" \
+    "--hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin"
 
 execDSigTest $res_success \
     "xmldsig2ed-tests" \
@@ -376,8 +376,8 @@ execDSigTest $res_success \
     "c14n11 xslt xpath sha1 hmac-sha1" \
     "hmac" \
     "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey:mykey $topfolder/keys/hmackey.bin" \
-    "--hmackey:mykey $topfolder/keys/hmackey.bin"
+    "--hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin" \
+    "--hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin"
 
 #
 # differences in XSLT transform output, tbd
@@ -583,8 +583,8 @@ execDSigTest $res_success \
     "md5 hmac-md5" \
     "hmac" \
     "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey:mykey $topfolder/keys/hmackey.bin" \
-    "--hmackey:mykey $topfolder/keys/hmackey.bin"
+    "--hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin" \
+    "--hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin"
 
 execDSigTest $res_success \
     "" \
@@ -592,8 +592,8 @@ execDSigTest $res_success \
     "md5 hmac-md5" \
     "hmac" \
     "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey:mykey $topfolder/keys/hmackey.bin" \
-    "--hmackey:mykey $topfolder/keys/hmackey.bin"
+    "--hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin" \
+    "--hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin"
 
 execDSigTest $res_success \
     "" \
@@ -601,8 +601,8 @@ execDSigTest $res_success \
     "ripemd160 hmac-ripemd160" \
     "hmac" \
     "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey:mykey $topfolder/keys/hmackey.bin" \
-    "--hmackey:mykey $topfolder/keys/hmackey.bin"
+    "--hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin" \
+    "--hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin"
 
 execDSigTest $res_success \
     "" \
@@ -610,8 +610,8 @@ execDSigTest $res_success \
     "ripemd160 hmac-ripemd160" \
     "hmac" \
     "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey:mykey $topfolder/keys/hmackey.bin" \
-    "--hmackey:mykey $topfolder/keys/hmackey.bin"
+    "--hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin" \
+    "--hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin"
 
 execDSigTest $res_success \
     "" \
@@ -619,8 +619,8 @@ execDSigTest $res_success \
     "xpointer sha1 hmac-sha1" \
     "hmac" \
     "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey:mykey $topfolder/keys/hmackey.bin" \
-    "--hmackey:mykey $topfolder/keys/hmackey.bin"
+    "--hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin" \
+    "--hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin"
 
 execDSigTest $res_success \
     "" \
@@ -628,8 +628,8 @@ execDSigTest $res_success \
     "sha1 hmac-sha1" \
     "hmac" \
     "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey:mykey $topfolder/keys/hmackey.bin" \
-    "--hmackey:mykey $topfolder/keys/hmackey.bin"
+    "--hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin" \
+    "--hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin"
 
 execDSigTest $res_success \
     "" \
@@ -637,8 +637,8 @@ execDSigTest $res_success \
     "sha1 hmac-sha1" \
     "hmac" \
     "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey:mykey $topfolder/keys/hmackey.bin" \
-    "--hmackey:mykey $topfolder/keys/hmackey.bin"
+    "--hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin" \
+    "--hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin"
 
 execDSigTest $res_success \
     "" \
@@ -646,8 +646,8 @@ execDSigTest $res_success \
     "sha224 hmac-sha224" \
     "hmac" \
     "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey:mykey $topfolder/keys/hmackey.bin" \
-    "--hmackey:mykey $topfolder/keys/hmackey.bin"
+    "--hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin" \
+    "--hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin"
 
 execDSigTest $res_success \
     "" \
@@ -655,8 +655,8 @@ execDSigTest $res_success \
     "sha224 hmac-sha224" \
     "hmac" \
     "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey:mykey $topfolder/keys/hmackey.bin" \
-    "--hmackey:mykey $topfolder/keys/hmackey.bin"
+    "--hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin" \
+    "--hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin"
 
 execDSigTest $res_success \
     "" \
@@ -664,8 +664,8 @@ execDSigTest $res_success \
     "sha256 hmac-sha256" \
     "hmac" \
     "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey:mykey $topfolder/keys/hmackey.bin" \
-    "--hmackey:mykey $topfolder/keys/hmackey.bin"
+    "--hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin" \
+    "--hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin"
 
 execDSigTest $res_success \
     "" \
@@ -673,8 +673,8 @@ execDSigTest $res_success \
     "sha256 hmac-sha256" \
     "hmac" \
     "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey:mykey $topfolder/keys/hmackey.bin" \
-    "--hmackey:mykey $topfolder/keys/hmackey.bin"
+    "--hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin" \
+    "--hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin"
 
 execDSigTest $res_success \
     "" \
@@ -682,8 +682,8 @@ execDSigTest $res_success \
     "sha384 hmac-sha384" \
     "hmac" \
     "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey:mykey $topfolder/keys/hmackey.bin" \
-    "--hmackey:mykey $topfolder/keys/hmackey.bin"
+    "--hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin" \
+    "--hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin"
 
 execDSigTest $res_success \
     "" \
@@ -691,8 +691,8 @@ execDSigTest $res_success \
     "sha384 hmac-sha384" \
     "hmac" \
     "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey:mykey $topfolder/keys/hmackey.bin" \
-    "--hmackey:mykey $topfolder/keys/hmackey.bin"
+    "--hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin" \
+    "--hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin"
 
 execDSigTest $res_success \
     "" \
@@ -700,8 +700,8 @@ execDSigTest $res_success \
     "sha512 hmac-sha512" \
     "hmac" \
     "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey:mykey $topfolder/keys/hmackey.bin" \
-    "--hmackey:mykey $topfolder/keys/hmackey.bin"
+    "--hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin" \
+    "--hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin"
 
 execDSigTest $res_success \
     "" \
@@ -709,8 +709,8 @@ execDSigTest $res_success \
     "sha512 hmac-sha512" \
     "hmac" \
     "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey:mykey $topfolder/keys/hmackey.bin" \
-    "--hmackey:mykey $topfolder/keys/hmackey.bin"
+    "--hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin" \
+    "--hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin"
 
 execDSigTest $res_success \
     "" \
@@ -1500,8 +1500,8 @@ execDSigTest $res_success \
     "sha1 hmac-sha1" \
     "hmac" \
     "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey:mykey $topfolder/keys/hmackey.bin" \
-    "--hmackey:mykey $topfolder/keys/hmackey.bin"
+    "--hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin" \
+    "--hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin"
 
 execDSigTest $res_success \
     "" \
@@ -1509,8 +1509,8 @@ execDSigTest $res_success \
     "sha1 hmac-sha1" \
     "hmac" \
     "--lax-key-search --hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey:mykey $topfolder/keys/hmackey.bin" \
-    "--hmackey:mykey $topfolder/keys/hmackey.bin"
+    "--hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin" \
+    "--hmackey:TeskKeyName-Hmac $topfolder/keys/hmackey.bin"
 
 execDSigTest $res_success \
     "" \

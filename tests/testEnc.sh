@@ -45,8 +45,8 @@ execEncTest $res_success \
     "aes128-gcm" \
     "" \
     "--lax-key-search --aeskey $topfolder/xmlenc11-interop-2012/xenc11-example-AES128-GCM.key" \
-    "--aeskey:mykey $topfolder/xmlenc11-interop-2012/xenc11-example-AES128-GCM.key --binary-data $topfolder/xmlenc11-interop-2012/xenc11-example-AES128-GCM.data" \
-    "--aeskey:mykey $topfolder/xmlenc11-interop-2012/xenc11-example-AES128-GCM.key"
+    "--aeskey:TestKeyName_GCM $topfolder/xmlenc11-interop-2012/xenc11-example-AES128-GCM.key --binary-data $topfolder/xmlenc11-interop-2012/xenc11-example-AES128-GCM.data" \
+    "--aeskey:TestKeyName_GCM $topfolder/xmlenc11-interop-2012/xenc11-example-AES128-GCM.key"
 
 if [ "z$xmlsec_feature_rsa_oaep_different_digest_and_mgf1" = "zyes" ] ; then
     execEncTest $res_success \

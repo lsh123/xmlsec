@@ -1681,6 +1681,25 @@ xmlSecTransformSLHDSA_SHA2_128fGetKlass(void) {
 }
 
 /**
+ * xmlSecTransformSLHDSA_SHA2_192fGetKlass:
+ *
+ * The SLH-DSA-SHA2-192f signature transform klass.
+ *
+ * Returns: SLH-DSA-SHA2-192f signature transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
+xmlSecTransformId
+xmlSecTransformSLHDSA_SHA2_192fGetKlass(void) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformSLHDSA_SHA2_192fGetKlass == NULL)) {
+        xmlSecNotImplementedError2(missingMethodError, "transformSLHDSA_SHA2_192fGetKlass");
+        return(xmlSecTransformIdUnknown);
+    }
+
+    return(xmlSecCryptoDLGetFunctions()->transformSLHDSA_SHA2_192fGetKlass());
+}
+
+/**
  * xmlSecTransformSLHDSA_SHA2_256fGetKlass:
  *
  * The SLH-DSA-SHA2-256f signature transform klass.

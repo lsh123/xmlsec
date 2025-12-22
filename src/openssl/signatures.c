@@ -401,6 +401,9 @@ xmlSecOpenSSLEvpSignatureCheckId(xmlSecTransformPtr transform) {
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSLHDSA_SHA2_128fId)) {
         return(1);
     } else
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSLHDSA_SHA2_192fId)) {
+        return(1);
+    } else
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSLHDSA_SHA2_256fId)) {
         return(1);
     } else
@@ -767,11 +770,16 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
      *
      ************************************************************************/
 #ifndef XMLSEC_NO_SLHDSA
-    /* ML-DSA uses hard coded  SHAKE-128 and SHAKE-256 so no need to have digest here */
+    /* SLH-DSA uses hard coded SHA2 so no need to have digest here */
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSLHDSA_SHA2_128fId)) {
         ctx->keyId           = xmlSecOpenSSLKeyDataSLHDSAId;
         ctx->signatureFormat = xmlSecOpenSSLEvpSignatureFormat_DoNothing;
         ctx->signatureName   = LN_SLH_DSA_SHA2_128f;
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSLHDSA_SHA2_192fId)) {
+        ctx->keyId           = xmlSecOpenSSLKeyDataSLHDSAId;
+        ctx->signatureFormat = xmlSecOpenSSLEvpSignatureFormat_DoNothing;
+        ctx->signatureName   = LN_SLH_DSA_SHA2_192f;
     } else
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSLHDSA_SHA2_256fId)) {
         ctx->keyId           = xmlSecOpenSSLKeyDataSLHDSAId;
@@ -2605,11 +2613,26 @@ XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS_EX(SLHDSA_SHA2_128f, xmlSecOpenSSLTransformSL
  *
  * The SLH-DSA-SHA2-128f signature transform klass.
  *
- * Returns: SLH-DSA-SHA2-128fsignature transform klass.
+ * Returns: SLH-DSA-SHA2-128f signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformSLHDSA_SHA2_128fGetKlass(void) {
     return(&xmlSecOpenSSLSLHDSA_SHA2_128fKlass);
+}
+
+/* SLH-DSA-SHA2-192f signature transform: xmlSecOpenSSLSLHDSA_SHA2_192fKlass */
+XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS_EX(SLHDSA_SHA2_192f, xmlSecOpenSSLTransformSLHDSANodeRead)
+
+/**
+ * xmlSecOpenSSLTransformSLHDSA_SHA2_192fGetKlass:
+ *
+ * The SLH-DSA-SHA2-192f signature transform klass.
+ *
+ * Returns: SLH-DSA-SHA2-192f signature transform klass.
+ */
+xmlSecTransformId
+xmlSecOpenSSLTransformSLHDSA_SHA2_192fGetKlass(void) {
+    return(&xmlSecOpenSSLSLHDSA_SHA2_192fKlass);
 }
 
 /* SLH-DSA-SHA2-256f signature transform: xmlSecOpenSSLSLHDSA_SHA2_256fKlass */

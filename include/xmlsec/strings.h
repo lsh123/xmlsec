@@ -396,6 +396,9 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefSLHDSA_SHA2_128s[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameSLHDSA_SHA2_192f[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefSLHDSA_SHA2_192f[];
 
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameSLHDSA_SHA2_192s[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefSLHDSA_SHA2_192s[];
+
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameSLHDSA_SHA2_256f[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefSLHDSA_SHA2_256f[];
 

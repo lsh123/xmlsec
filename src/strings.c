@@ -397,6 +397,9 @@ const xmlChar xmlSecHrefSLHDSA_SHA2_128s[]    = "http://www.aleksey.com/xmlsec/2
 const xmlChar xmlSecNameSLHDSA_SHA2_192f[]    = "slh-dsa-sha2-192f";
 const xmlChar xmlSecHrefSLHDSA_SHA2_192f[]    = "http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#slh-dsa-sha2-192f";
 
+const xmlChar xmlSecNameSLHDSA_SHA2_192s[]    = "slh-dsa-sha2-192s";
+const xmlChar xmlSecHrefSLHDSA_SHA2_192s[]    = "http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#slh-dsa-sha2-192s";
+
 const xmlChar xmlSecNameSLHDSA_SHA2_256f[]    = "slh-dsa-sha2-256f";
 const xmlChar xmlSecHrefSLHDSA_SHA2_256f[]    = "http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#slh-dsa-sha2-256f";
 

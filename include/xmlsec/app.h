@@ -646,6 +646,13 @@ XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformSLHDSA_SHA2_128sG
 #define xmlSecTransformSLHDSA_SHA2_192f_Id      xmlSecTransformSLHDSA_SHA2_192fGetKlass()
 XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformSLHDSA_SHA2_192fGetKlass(void);
 /**
+ * xmlSecTransformSLHDSA_SHA2_192s_Id:
+ *
+ * The SLH-DSA-SHA2-192s signature transform klass.
+ */
+#define xmlSecTransformSLHDSA_SHA2_192s_Id      xmlSecTransformSLHDSA_SHA2_192sGetKlass()
+XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformSLHDSA_SHA2_192sGetKlass(void);
+/**
  * xmlSecTransformSLHDSA_SHA2_256f_Id:
  *
  * The SLH-DSA-SHA2-256f signature transform klass.

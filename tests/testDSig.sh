@@ -1258,6 +1258,15 @@ execDSigTest $res_success \
 
 execDSigTest $res_success \
     "" \
+    "aleksey-xmldsig-01/enveloped-sha512-slhdsa-sha2-192s" \
+    "sha512 slh-dsa-sha2-192s" \
+    "ml-dsa" \
+    "$pub_key_option:TestKeyName-slh-dsa-sha2-192s $topfolder/keys/slh-dsa-sha2-192s-pubkey.$pub_key_format" \
+    "$priv_key_option:TestKeyName-slh-dsa-sha2-192s $topfolder/keys/slh-dsa-sha2-192s-key.$priv_key_format --pwd secret123" \
+    "$pub_key_option:TestKeyName-slh-dsa-sha2-192s $topfolder/keys/slh-dsa-sha2-192s-pubkey.$pub_key_format"
+
+execDSigTest $res_success \
+    "" \
     "aleksey-xmldsig-01/enveloped-sha512-slhdsa-sha2-256f" \
     "sha512 slh-dsa-sha2-256f" \
     "ml-dsa" \

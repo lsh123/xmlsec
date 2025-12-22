@@ -407,6 +407,9 @@ xmlSecOpenSSLEvpSignatureCheckId(xmlSecTransformPtr transform) {
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSLHDSA_SHA2_192fId)) {
         return(1);
     } else
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSLHDSA_SHA2_192sId)) {
+        return(1);
+    } else
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSLHDSA_SHA2_256fId)) {
         return(1);
     } else
@@ -788,6 +791,11 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
         ctx->keyId           = xmlSecOpenSSLKeyDataSLHDSAId;
         ctx->signatureFormat = xmlSecOpenSSLEvpSignatureFormat_DoNothing;
         ctx->signatureName   = LN_SLH_DSA_SHA2_192f;
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSLHDSA_SHA2_192sId)) {
+        ctx->keyId           = xmlSecOpenSSLKeyDataSLHDSAId;
+        ctx->signatureFormat = xmlSecOpenSSLEvpSignatureFormat_DoNothing;
+        ctx->signatureName   = LN_SLH_DSA_SHA2_192s;
     } else
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSLHDSA_SHA2_256fId)) {
         ctx->keyId           = xmlSecOpenSSLKeyDataSLHDSAId;
@@ -2656,6 +2664,21 @@ XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS_EX(SLHDSA_SHA2_192f, xmlSecOpenSSLTransformSL
 xmlSecTransformId
 xmlSecOpenSSLTransformSLHDSA_SHA2_192fGetKlass(void) {
     return(&xmlSecOpenSSLSLHDSA_SHA2_192fKlass);
+}
+
+/* SLH-DSA-SHA2-192s signature transform: xmlSecOpenSSLSLHDSA_SHA2_192sKlass */
+XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS_EX(SLHDSA_SHA2_192s, xmlSecOpenSSLTransformSLHDSANodeRead)
+
+/**
+ * xmlSecOpenSSLTransformSLHDSA_SHA2_192sGetKlass:
+ *
+ * The SLH-DSA-SHA2-192s signature transform klass.
+ *
+ * Returns: SLH-DSA-SHA2-192s signature transform klass.
+ */
+xmlSecTransformId
+xmlSecOpenSSLTransformSLHDSA_SHA2_192sGetKlass(void) {
+    return(&xmlSecOpenSSLSLHDSA_SHA2_192sKlass);
 }
 
 /* SLH-DSA-SHA2-256f signature transform: xmlSecOpenSSLSLHDSA_SHA2_256fKlass */

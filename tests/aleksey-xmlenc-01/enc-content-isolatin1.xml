@@ -7,7 +7,7 @@
 <EncryptedKey xmlns="http://www.w3.org/2001/04/xmlenc#">
 <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#rsa-1_5"/>
 <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
-<KeyName>my-key</KeyName>
+<KeyName>TestKeyName-rsa-4096</KeyName>
 </KeyInfo>
 <CipherData>
 <CipherValue>GYpOn4ImHoF39Sdq6PWhF8q+4jLlJDjyHdtyNOI2n1Mdnxl8WbqKbcOqt0B9I0EL

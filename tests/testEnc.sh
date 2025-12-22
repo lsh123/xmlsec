@@ -417,18 +417,18 @@ execEncTest $res_success \
     "aleksey-xmlenc-01/enc-two-enc-keys" \
     "aes256-cbc rsa-1_5" \
     "x509" \
-    "$priv_key_option:key1 $topfolder/keys/cakey.$priv_key_format --pwd secret123" \
-    "--session-key aes-256 --xml-data $topfolder/aleksey-xmlenc-01/enc-two-enc-keys.data --pubkey-cert-$cert_format:key1 $topfolder/keys/cacert.$cert_format --pubkey-cert-$cert_format:key2 $topfolder/keys/ca2cert.$cert_format" \
-    "$priv_key_option:key1 $topfolder/keys/cakey.$priv_key_format --pwd secret123"
+    "$priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa-2048-key.$priv_key_format --pwd secret123" \
+    "--session-key aes-256 --xml-data $topfolder/aleksey-xmlenc-01/enc-two-enc-keys.data --pubkey-cert-$cert_format:TestKeyName-rsa-2048 $topfolder/keys/rsa-2048-cert.$cert_format --pubkey-cert-$cert_format:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-cert.$cert_format" \
+    "$priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa-2048-key.$priv_key_format --pwd secret123"
 
 execEncTest $res_success \
     "" \
     "aleksey-xmlenc-01/enc-two-enc-keys" \
     "aes256-cbc rsa-1_5" \
     "x509" \
-    "$priv_key_option:key2 $topfolder/keys/ca2key.$priv_key_format --pwd secret123" \
-    "--session-key aes-256 --xml-data $topfolder/aleksey-xmlenc-01/enc-two-enc-keys.data --pubkey-cert-$cert_format:key1 $topfolder/keys/cacert.$cert_format --pubkey-cert-$cert_format:key2 $topfolder/keys/ca2cert.$cert_format" \
-    "$priv_key_option:key2 $topfolder/keys/ca2key.$priv_key_format --pwd secret123"
+    "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-key.$priv_key_format --pwd secret123" \
+    "--session-key aes-256 --xml-data $topfolder/aleksey-xmlenc-01/enc-two-enc-keys.data --pubkey-cert-$cert_format:TestKeyName-rsa-2048 $topfolder/keys/rsa-2048-cert.$cert_format --pubkey-cert-$cert_format:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-cert.$cert_format" \
+    "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-key.$priv_key_format --pwd secret123"
 
 
 execEncTest $res_success \
@@ -436,27 +436,27 @@ execEncTest $res_success \
     "aleksey-xmlenc-01/large_input" \
     "aes256-cbc rsa-1_5" \
     "x509" \
-    "$priv_key_option:my-key $topfolder/keys/rsa-4096-key.$priv_key_format --pwd secret123" \
-    "--session-key aes-256 --xml-data $topfolder/aleksey-xmlenc-01/large_input.data --pubkey-cert-$cert_format:my-key $topfolder/keys/rsa-4096-cert.$cert_format" \
-    "$priv_key_option:my-key $topfolder/keys/rsa-4096-key.$priv_key_format --pwd secret123"
+    "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-key.$priv_key_format --pwd secret123" \
+    "--session-key aes-256 --xml-data $topfolder/aleksey-xmlenc-01/large_input.data --pubkey-cert-$cert_format:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-cert.$cert_format" \
+    "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-key.$priv_key_format --pwd secret123"
 
 execEncTest $res_success \
     "" \
     "aleksey-xmlenc-01/enc-element-isolatin1" \
     "aes256-cbc rsa-1_5" \
     "x509" \
-    "$priv_key_option:my-key $topfolder/keys/rsa-4096-key.$priv_key_format --pwd secret123" \
-    "--session-key aes-256 --xml-data $topfolder/aleksey-xmlenc-01/enc-element-isolatin1.data --pubkey-cert-$cert_format:my-key $topfolder/keys/rsa-4096-cert.$cert_format" \
-    "$priv_key_option:my-key $topfolder/keys/rsa-4096-key.$priv_key_format --pwd secret123"
+    "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-key.$priv_key_format --pwd secret123" \
+    "--session-key aes-256 --xml-data $topfolder/aleksey-xmlenc-01/enc-element-isolatin1.data --pubkey-cert-$cert_format:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-cert.$cert_format" \
+    "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-key.$priv_key_format --pwd secret123"
 
 execEncTest $res_success \
     "" \
     "aleksey-xmlenc-01/enc-content-isolatin1" \
     "aes256-cbc rsa-1_5" \
     "x509" \
-    "$priv_key_option:my-key $topfolder/keys/rsa-4096-key.$priv_key_format --pwd secret123" \
-    "--session-key aes-256 --xml-data $topfolder/aleksey-xmlenc-01/enc-content-isolatin1.data --node-name http://example.org/paymentv2:CreditCard --pubkey-cert-$cert_format:my-key $topfolder/keys/rsa-4096-cert.$cert_format" \
-    "$priv_key_option:my-key $topfolder/keys/rsa-4096-key.$priv_key_format --pwd secret123"
+    "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-key.$priv_key_format --pwd secret123" \
+    "--session-key aes-256 --xml-data $topfolder/aleksey-xmlenc-01/enc-content-isolatin1.data --node-name http://example.org/paymentv2:CreditCard --pubkey-cert-$cert_format:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-cert.$cert_format" \
+    "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa-4096-key.$priv_key_format --pwd secret123"
 
 execEncTest $res_success \
     "" \

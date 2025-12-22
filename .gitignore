@@ -69,3 +69,4 @@ docs/api/*.types
 docs/api/sgml.stamp
 docs/html.stamp
 .vscode/
+build-*/*

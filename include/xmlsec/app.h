@@ -631,6 +631,41 @@ XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformRsaOaepEnc11GetKl
  */
 #define xmlSecTransformSLHDSA_SHA2_128f_Id      xmlSecTransformSLHDSA_SHA2_128fGetKlass()
 XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformSLHDSA_SHA2_128fGetKlass(void);
+/**
+ * xmlSecTransformSLHDSA_SHA2_128s_Id:
+ *
+ * The SLH-DSA-SHA2-128s signature transform klass.
+ */
+#define xmlSecTransformSLHDSA_SHA2_128s_Id      xmlSecTransformSLHDSA_SHA2_128sGetKlass()
+XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformSLHDSA_SHA2_128sGetKlass(void);
+/**
+ * xmlSecTransformSLHDSA_SHA2_192f_Id:
+ *
+ * The SLH-DSA-SHA2-192f signature transform klass.
+ */
+#define xmlSecTransformSLHDSA_SHA2_192f_Id      xmlSecTransformSLHDSA_SHA2_192fGetKlass()
+XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformSLHDSA_SHA2_192fGetKlass(void);
+/**
+ * xmlSecTransformSLHDSA_SHA2_192s_Id:
+ *
+ * The SLH-DSA-SHA2-192s signature transform klass.
+ */
+#define xmlSecTransformSLHDSA_SHA2_192s_Id      xmlSecTransformSLHDSA_SHA2_192sGetKlass()
+XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformSLHDSA_SHA2_192sGetKlass(void);
+/**
+ * xmlSecTransformSLHDSA_SHA2_256f_Id:
+ *
+ * The SLH-DSA-SHA2-256f signature transform klass.
+ */
+#define xmlSecTransformSLHDSA_SHA2_256f_Id      xmlSecTransformSLHDSA_SHA2_256fGetKlass()
+XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformSLHDSA_SHA2_256fGetKlass(void);
+/**
+ * xmlSecTransformSLHDSA_SHA2_256s_Id:
+ *
+ * The SLH-DSA-SHA2-256s signature transform klass.
+ */
+#define xmlSecTransformSLHDSA_SHA2_256s_Id      xmlSecTransformSLHDSA_SHA2_256sGetKlass()
+XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformSLHDSA_SHA2_256sGetKlass(void);
 
 
 

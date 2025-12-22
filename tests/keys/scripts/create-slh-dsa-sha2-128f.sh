@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Creates slh-dsa-sha2-128f key
+# Creates test key
 #
 
 # load include
@@ -9,5 +9,23 @@
 keyname="slh-dsa-sha2-128f"
 algorithm="SLH-DSA-SHA2-128f"
 genpkey_options=""
+gencert_options=""
 
-create_key_with_second_level_ca "${keyname}" "${algorithm}" "${genpkey_options}"
+
+echo "*** Generating ${algorithm} key ${keyname}...."
+openssl genpkey -algorithm  ${algorithm} ${genpkey_options} -out "${keyname}-key.pem"
+echo "*** Private key '${keyname}-key.pem' was created successfully"
+
+### Create all key files from private key
+create_all_key_files_from_private_key "${keyname}"
+
+### Create certificate signed by second level CA
+create_certificate_from_private_key "${keyname}" "${gencert_options}"
+
+### Create PKCS12 file
+create_pkcs12_from_private_key_and_cert "${keyname}"
+
+### Done
+echo
+echo "*** Key and certificate were created successfully: Use XMLSEC_TEST_UPDATE_XML_ON_FAILURE=yes make check-dsig to update the test files if needed."
+echo

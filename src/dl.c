@@ -710,6 +710,11 @@ xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(struct _xmlSecCryptoDLFuncti
     XMLSEC_REGISTER_TRANSFORM(RsaOaepEnc11);                        // transformRsaOaepEnc11GetKlass
 
     XMLSEC_REGISTER_TRANSFORM(SLHDSA_SHA2_128f);                     // transformSLHDSA_SHA2_128fGetKlass
+    XMLSEC_REGISTER_TRANSFORM(SLHDSA_SHA2_128s);                     // transformSLHDSA_SHA2_128sGetKlass
+    XMLSEC_REGISTER_TRANSFORM(SLHDSA_SHA2_192f);                     // transformSLHDSA_SHA2_192fGetKlass
+    XMLSEC_REGISTER_TRANSFORM(SLHDSA_SHA2_192s);                     // transformSLHDSA_SHA2_192sGetKlass
+    XMLSEC_REGISTER_TRANSFORM(SLHDSA_SHA2_256f);                     // transformSLHDSA_SHA2_256fGetKlass
+    XMLSEC_REGISTER_TRANSFORM(SLHDSA_SHA2_256s);                     // transformSLHDSA_SHA2_256sGetKlass
 
     XMLSEC_REGISTER_TRANSFORM(Sha1);                                // transformSha1GetKlass
 

@@ -489,7 +489,12 @@ typedef int                     (*xmlSecCryptoAppKeyCertLoadMemoryMethod)(xmlSec
  * @transformRsaPkcs1GetKlass:  the method to get pointer to RSA-PKCS1_5 key transport transform.
  * @transformRsaOaepGetKlass:   the method to get pointer to RSA-OAEP key transport transform (XMLEnc 1.0).
  * @transformRsaOaepEnc11GetKlass: the method to get pointer to RSA-OAEP key transport transform (XMLEnc 1.1).
- * @transformSLHDSA_SHA2_128fGetKlass:   the method to get pointer to SLH-DSA-SHA2-128f signature transform.
+ * @transformSLHDSA_SHA2_128sGetKlass:   the method to get pointer to SLH-DSA-SHA2-128s signature transform.
+ * @transformSLHDSA_SHA2_128sGetKlass:   the method to get pointer to SLH-DSA-SHA2-128s signature transform.
+ * @transformSLHDSA_SHA2_192fGetKlass:   the method to get pointer to SLH-DSA-SHA2-192f signature transform.
+ * @transformSLHDSA_SHA2_192sGetKlass:   the method to get pointer to SLH-DSA-SHA2-192f signature transform.
+ * @transformSLHDSA_SHA2_256fGetKlass:   the method to get pointer to SLH-DSA-SHA2-256f signature transform.
+ * @transformSLHDSA_SHA2_256sGetKlass:   the method to get pointer to SLH-DSA-SHA2-256f signature transform.
  * @transformSha1GetKlass:      the method to get pointer to SHA1 digest transform.
  * @transformSha224GetKlass:    the method to get pointer to SHA2-224 digest transform.
  * @transformSha256GetKlass:    the method to get pointer to SHA2-256 digest transform.
@@ -634,6 +639,11 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoTransformGetKlassMethod          transformRsaOaepEnc11GetKlass;
 
     xmlSecCryptoTransformGetKlassMethod          transformSLHDSA_SHA2_128fGetKlass;
+    xmlSecCryptoTransformGetKlassMethod          transformSLHDSA_SHA2_128sGetKlass;
+    xmlSecCryptoTransformGetKlassMethod          transformSLHDSA_SHA2_192fGetKlass;
+    xmlSecCryptoTransformGetKlassMethod          transformSLHDSA_SHA2_192sGetKlass;
+    xmlSecCryptoTransformGetKlassMethod          transformSLHDSA_SHA2_256fGetKlass;
+    xmlSecCryptoTransformGetKlassMethod          transformSLHDSA_SHA2_256sGetKlass;
 
     xmlSecCryptoTransformGetKlassMethod          transformSha1GetKlass;
 

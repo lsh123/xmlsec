@@ -89,6 +89,11 @@ chmod a-w nssdb/*
 
 ```
 ./scripts/create-slh-dsa-sha2-128f.sh
+./scripts/create-slh-dsa-sha2-128s.sh
+./scripts/create-slh-dsa-sha2-192f.sh
+./scripts/create-slh-dsa-sha2-192s.sh
+./scripts/create-slh-dsa-sha2-256f.sh
+./scripts/create-slh-dsa-sha2-256s.sh
 ```
 
 ### Generate two certs and keys with the same certificate

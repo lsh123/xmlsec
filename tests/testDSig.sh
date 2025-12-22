@@ -555,9 +555,9 @@ execDSigTest $res_success \
     "aleksey-xmldsig-01/signature-two-keynames" \
     "sha1 rsa-sha1" \
     "rsa x509" \
-    "$url_map_xml_stylesheet_2018 $pub_key_option:key2  $topfolder/keys/rsa/rsa-2048-pubkey$pub_key_suffix.$pub_key_format \
-    "$url_map_xml_stylesheet_2018 $priv_key_option:key2 $topfolder/keys/rsa/rsa-2048-key.$priv_key_format --pwd secret123" \
-    "$url_map_xml_stylesheet_2018 $pub_key_option:key2  $topfolder/keys/rsa/rsa-2048-pubkey$pub_key_suffix.$pub_key_format"
+    "$pub_key_option:key2  $topfolder/keys/rsa/rsa-2048-pubkey$pub_key_suffix.$pub_key_format $url_map_xml_stylesheet_2018" \
+    "$priv_key_option:key2 $topfolder/keys/rsa/rsa-2048-key.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2018" \
+    "$pub_key_option:key2  $topfolder/keys/rsa/rsa-2048-pubkey$pub_key_suffix.$pub_key_format $url_map_xml_stylesheet_2018"
 
 execDSigTest $res_success \
     "" \
@@ -994,9 +994,9 @@ execDSigTest $res_success \
     "aleksey-xmldsig-01/enveloped-sha1-rsa-sha1" \
     "sha1 rsa-sha1" \
     "" \
-    "$pub_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-pubkey$pub_key_suffix.$pub_key_format" \
+    "$pub_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-pubkey$pub_key_suffix.$pub_key_format" \
     "$priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key.$priv_key_format --pwd secret123" \
-    "$pub_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-pubkey$pub_key_suffix.$pub_key_format"
+    "$pub_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-pubkey$pub_key_suffix.$pub_key_format"
 
 
 if [ "z$xmlsec_feature_nssdb_lookup" = "zyes" ] ; then

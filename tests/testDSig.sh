@@ -1582,18 +1582,18 @@ execDSigTest $res_success \
     "merlin-xmldsig-twenty-three/signature-external-dsa" \
     "sha1 dsa-sha1" \
     "dsa" \
-    "--enabled-key-data key-value,key-name,dsa $url_map_xml_stylesheet_2005" \
-    "--enabled-key-data key-value,key-name,dsa $priv_key_option:TestKeyName-dsa-1024 $topfolder/keys/dsa/dsa-1024-key.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005" \
-    "--enabled-key-data key-value,key-name,dsa $url_map_xml_stylesheet_2005"
+    "$url_map_xml_stylesheet_2005 --enabled-key-data key-value,key-name,dsa" \
+    "$url_map_xml_stylesheet_2005 --enabled-key-data key-value,key-name,dsa $priv_key_option:TestKeyName-dsa-1024 $topfolder/keys/dsa/dsa-1024-key.$priv_key_format --pwd secret123" \
+    "$url_map_xml_stylesheet_2005 --enabled-key-data key-value,key-name,dsa"
 
 execDSigTest $res_success \
     "" \
     "merlin-xmldsig-twenty-three/signature-keyname" \
     "sha1 dsa-sha1" \
     "dsa x509" \
-    "--pubkey-cert-$cert_format:Lugh $topfolder/merlin-xmldsig-twenty-three/certs/lugh-cert.$cert_format $url_map_xml_stylesheet_2005" \
-    "$priv_key_option:TestKeyName-dsa-1024 $topfolder/keys/dsa/dsa-1024-key.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005" \
-    "$priv_key_option:TestKeyName-dsa-1024 $topfolder/keys/dsa/dsa-1024-key.$priv_key_format --pwd secret123 $url_map_xml_stylesheet_2005"
+    "$url_map_xml_stylesheet_2005 --pubkey-cert-$cert_format:Lugh $topfolder/merlin-xmldsig-twenty-three/certs/lugh-cert.$cert_format" \
+    "$url_map_xml_stylesheet_2005 $priv_key_option:TestKeyName-dsa-1024 $topfolder/keys/dsa/dsa-1024-key.$priv_key_format --pwd secret123" \
+    "$url_map_xml_stylesheet_2005 $pub_key_option:TestKeyName-dsa-1024 $topfolder/keys/dsa/dsa-1024-pubkey.$pub_key_format"
 
 execDSigTest $res_success \
     "" \

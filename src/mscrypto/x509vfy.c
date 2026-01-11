@@ -190,11 +190,7 @@ xmlSecMSCryptoUnixTimeToFileTime(time_t t, LPFILETIME pft) {
 
     xmlSecAssert(pft != NULL);
 
-#if defined( __MINGW32__)
-    ll = Int32x32To64(t, 10000000) + 116444736000000000LL;
-#else
-    ll = Int32x32To64(t, 10000000) + 116444736000000000;
-#endif
+    ll = t * 10000000LL + 116444736000000000LL;
     pft->dwLowDateTime  = (DWORD)ll;
     pft->dwHighDateTime = (DWORD)(ll >> 32);
 }

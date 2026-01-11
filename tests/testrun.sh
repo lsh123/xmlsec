@@ -268,11 +268,18 @@ else
     xmlsec_feature_rsa_oaep_different_digest_and_mgf1="no"
 fi
 
-# Only OpenSSL supports ASN1 signatures for now
+# Support for ASN1 signatures
 if [ "z$crypto" = "zopenssl" -o  "z$crypto" = "zgnutls" -o "z$crypto" = "znss" -o  "z$crypto" = "zmscng"  ] ; then
     xmlsec_feature_asn1_signatures="yes"
 else
     xmlsec_feature_asn1_signatures="no"
+fi
+
+# Support for context string in ML-DSA or SLH-DSA signatures
+if [ "z$crypto" = "zopenssl" ] ; then
+    xmlsec_feature_context_string ="yes"
+else
+    xmlsec_feature_context_string ="no"
 fi
 
 #

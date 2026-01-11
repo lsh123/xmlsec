@@ -1150,6 +1150,8 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, const 
                         goto done;
                     }
 
+                    fprintf(stderr, "DEBUG: Importing private key from PKCS#12 bag type %d, pwd %s\n", bag_type, pwd);
+
                     err = gnutls_x509_privkey_import_pkcs8((*priv_key),
                                 &datum, GNUTLS_X509_FMT_DER,
                                 pwd,

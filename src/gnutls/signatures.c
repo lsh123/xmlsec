@@ -169,6 +169,19 @@ xmlSecGnuTLSSignatureCheckId(xmlSecTransformPtr transform) {
     }
 #endif /* XMLSEC_NO_GOST2012 */
 
+    /********************************* ML-DSA *******************************/
+#ifndef XMLSEC_NO_MLDSA
+    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformMLDSA44Id)) {
+        return(1);
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformMLDSA65Id)) {
+        return(1);
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformMLDSA87Id)) {
+        return(1);
+    } else
+#endif /* XMLSEC_NO_MLDSA */
+
     /********************************* RSA *******************************/
 #ifndef XMLSEC_NO_RSA
 
@@ -353,6 +366,32 @@ xmlSecGnuTLSSignatureInitialize(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_GOST2012 */
 
+    /********************************* ML-DSA *******************************/
+#ifndef XMLSEC_NO_MLDSA
+    /* ML-DSA uses hard coded SHAKE-128 and SHAKE-256 so no need to have digest here */
+    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformMLDSA44Id)) {
+        ctx->keyId      = xmlSecGnuTLSKeyDataMLDSAId;
+        ctx->dgstAlgo   = GNUTLS_DIG_UNKNOWN;
+        ctx->signAlgo   = GNUTLS_SIGN_MLDSA44;
+        ctx->getPubKey  = xmlSecGnuTLSKeyDataMLDSAGetPublicKey;
+        ctx->getPrivKey = xmlSecGnuTLSKeyDataMLDSAGetPrivateKey;
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformMLDSA65Id)) {
+        ctx->keyId      = xmlSecGnuTLSKeyDataMLDSAId;
+        ctx->dgstAlgo   = GNUTLS_DIG_UNKNOWN;
+        ctx->signAlgo   = GNUTLS_SIGN_MLDSA65;
+        ctx->getPubKey  = xmlSecGnuTLSKeyDataMLDSAGetPublicKey;
+        ctx->getPrivKey = xmlSecGnuTLSKeyDataMLDSAGetPrivateKey;
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformMLDSA87Id)) {
+        ctx->keyId      = xmlSecGnuTLSKeyDataMLDSAId;
+        ctx->dgstAlgo   = GNUTLS_DIG_UNKNOWN;
+        ctx->signAlgo   = GNUTLS_SIGN_MLDSA87;
+        ctx->getPubKey  = xmlSecGnuTLSKeyDataMLDSAGetPublicKey;
+        ctx->getPrivKey = xmlSecGnuTLSKeyDataMLDSAGetPrivateKey;
+    } else
+#endif /* XMLSEC_NO_MLDSA */
+
     /********************************* RSA *******************************/
 #ifndef XMLSEC_NO_RSA
 
@@ -433,11 +472,13 @@ xmlSecGnuTLSSignatureInitialize(xmlSecTransformPtr transform) {
         return(-1);
     }
 
-    /* create hash */
-    err =  gnutls_hash_init(&(ctx->hash), ctx->dgstAlgo);
-    if(err != GNUTLS_E_SUCCESS) {
-        xmlSecGnuTLSError("gnutls_hash_init", err, NULL);
-        return(-1);
+    /* create hash (skip for algorithms that don't use separate digest like ML-DSA) */
+    if(ctx->dgstAlgo != GNUTLS_DIG_UNKNOWN) {
+        err =  gnutls_hash_init(&(ctx->hash), ctx->dgstAlgo);
+        if(err != GNUTLS_E_SUCCESS) {
+            xmlSecGnuTLSError("gnutls_hash_init", err, NULL);
+            return(-1);
+        }
     }
 
     /* create buffer */
@@ -838,30 +879,45 @@ xmlSecGnuTLSSignatureGetDerHalfSize(gnutls_sign_algorithm_t algo, xmlSecSize key
 static int
 xmlSecGnuTLSSignatureGetDataToSign(xmlSecGnuTLSSignatureCtxPtr ctx, gnutls_datum_t* dataToSign)
 {
-    unsigned int dgstSize;
     int ret;
 
     xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->hash != NULL, -1);
     xmlSecAssert2(dataToSign != NULL, -1);
 
-    /* get hash size and setup buffer */
-    dgstSize = gnutls_hash_get_len(ctx->dgstAlgo);
-    if(dgstSize <= 0) {
-        xmlSecInternalError("gnutls_hash_get_len", NULL);
-        return(-1);
-    }
+    if (ctx->hash != NULL) {
+        unsigned int hashSize;
 
-    ret = xmlSecBufferSetSize(&(ctx->preSignBuffer), dgstSize);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecBufferSetSize", NULL);
-        return(-1);
-    }
+        /* get hash size and setup buffer */
+        hashSize = gnutls_hash_get_len(ctx->dgstAlgo);
+        if(hashSize <= 0) {
+            xmlSecInternalError("gnutls_hash_get_len", NULL);
+            return(-1);
+        }
 
-    /* get hash */
-    gnutls_hash_output(ctx->hash, xmlSecBufferGetData(&(ctx->preSignBuffer)));
-    dataToSign->data = xmlSecBufferGetData(&(ctx->preSignBuffer));
-    dataToSign->size = dgstSize;
+        ret = xmlSecBufferSetSize(&(ctx->preSignBuffer), hashSize);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecBufferSetSize", NULL);
+            return(-1);
+        }
+
+        /* get hash */
+        gnutls_hash_output(ctx->hash, xmlSecBufferGetData(&(ctx->preSignBuffer)));
+        dataToSign->data = xmlSecBufferGetData(&(ctx->preSignBuffer));
+        dataToSign->size = hashSize;
+    } else {
+        xmlSecSize dataSize;
+
+        /* get data size -- we should have SOME data and zero size is an error */
+        dataSize = xmlSecBufferGetSize(&(ctx->preSignBuffer));
+        if(dataSize <= 0) {
+            xmlSecInternalError("xmlSecBufferGetSize", NULL);
+            return(-1);
+        }
+
+        /* no hash, sign the whole data */
+        dataToSign->data = xmlSecBufferGetData(&(ctx->preSignBuffer));
+        XMLSEC_SAFE_CAST_SIZE_TO_UINT(dataSize, dataToSign->size, return(-1), NULL);
+   }
 
     /* done */
     return(0);
@@ -934,10 +990,18 @@ xmlSecGnuTLSSignatureVerify(
             return(-1);
         }
 
-        err = gnutls_pubkey_verify_hash2(pubkey, ctx->signAlgo, ctx->verifyFlags, &dataToSign, &der_signature);
+        if(ctx->hash != NULL) {
+            err = gnutls_pubkey_verify_hash2(pubkey, ctx->signAlgo, ctx->verifyFlags, &dataToSign, &der_signature);
+        } else {
+            err = gnutls_pubkey_verify_data2(pubkey, ctx->signAlgo, ctx->verifyFlags, &dataToSign, &der_signature);
+        }
         gnutls_free(der_signature.data);
     } else {
-        err = gnutls_pubkey_verify_hash2(pubkey, ctx->signAlgo, ctx->verifyFlags, &dataToSign, &signature);
+        if(ctx->hash != NULL) {
+            err = gnutls_pubkey_verify_hash2(pubkey, ctx->signAlgo, ctx->verifyFlags, &dataToSign, &signature);
+        } else {
+            err = gnutls_pubkey_verify_data2(pubkey, ctx->signAlgo, ctx->verifyFlags, &dataToSign, &signature);
+        }
     }
 
     /* In case of a verification failure GNUTLS_E_PK_SIG_VERIFY_FAILED
@@ -952,7 +1016,11 @@ xmlSecGnuTLSSignatureVerify(
         transform->status = xmlSecTransformStatusFail;
     } else {
         /* an error */
-        xmlSecGnuTLSError("gnutls_pubkey_verify_hash2", err, xmlSecTransformGetName(transform));
+        if(ctx->hash != NULL) {
+            xmlSecGnuTLSError("gnutls_pubkey_verify_hash2", err, xmlSecTransformGetName(transform));
+        } else {
+            xmlSecGnuTLSError("gnutls_pubkey_verify_data2", err, xmlSecTransformGetName(transform));
+        }
         return(-1);
     }
 
@@ -1006,10 +1074,18 @@ xmlSecGnuTLSSignatureSign(
     }
 
     /* sign */
-    err = gnutls_privkey_sign_hash2(privkey, ctx->signAlgo, ctx->signFlags, &dataToSign, &signature);
-    if((err != GNUTLS_E_SUCCESS) || (signature.data == NULL)) {
-        xmlSecGnuTLSError("gnutls_privkey_sign_hash2", err, xmlSecTransformGetName(transform));
-        return(-1);
+    if(ctx->hash != NULL) {
+        err = gnutls_privkey_sign_hash2(privkey, ctx->signAlgo, ctx->signFlags, &dataToSign, &signature);
+        if((err != GNUTLS_E_SUCCESS) || (signature.data == NULL)) {
+            xmlSecGnuTLSError("gnutls_privkey_sign_hash2", err, xmlSecTransformGetName(transform));
+            return(-1);
+        }
+    } else {
+        err = gnutls_privkey_sign_data2(privkey, ctx->signAlgo, ctx->signFlags, &dataToSign, &signature);
+        if((err != GNUTLS_E_SUCCESS) || (signature.data == NULL)) {
+            xmlSecGnuTLSError("gnutls_privkey_sign_data2", err, xmlSecTransformGetName(transform));
+            return(-1);
+        }
     }
 
     /* however some implementations (e.g. Java) just put ASN1 structure in the signature
@@ -1067,7 +1143,6 @@ xmlSecGnuTLSSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTrans
 
     ctx = xmlSecGnuTLSSignatureGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->hash != NULL, -1);
 
     if(transform->status == xmlSecTransformStatusNone) {
         xmlSecAssert2(outSize == 0, -1);
@@ -1075,13 +1150,22 @@ xmlSecGnuTLSSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTrans
     }
 
     if((transform->status == xmlSecTransformStatusWorking) && (inSize > 0)) {
-        /* update hash */
-        err = gnutls_hash(ctx->hash, xmlSecBufferGetData(in), inSize);
-        if(err != GNUTLS_E_SUCCESS) {
-            xmlSecGnuTLSError("gnutls_hash", err, xmlSecTransformGetName(transform));
-            return(-1);
+        /* update hash or buffer */
+        if(ctx->hash != NULL) {
+            err = gnutls_hash(ctx->hash, xmlSecBufferGetData(in), inSize);
+            if(err != GNUTLS_E_SUCCESS) {
+                xmlSecGnuTLSError("gnutls_hash", err, xmlSecTransformGetName(transform));
+                return(-1);
+            }
+        } else {
+            ret = xmlSecBufferAppend(&(ctx->preSignBuffer), xmlSecBufferGetData(in), inSize);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecBufferAppend(preSignBuffer)", xmlSecTransformGetName(transform));
+                return(-1);
+            }
         }
 
+        /* remove input */
         ret = xmlSecBufferRemoveHead(in, inSize);
         if(ret < 0) {
             xmlSecInternalError2("xmlSecBufferRemoveHead", xmlSecTransformGetName(transform),
@@ -2042,3 +2126,150 @@ xmlSecGnuTLSTransformRsaPssSha512GetKlass(void) {
 #endif /* XMLSEC_NO_SHA512 */
 
 #endif /* XMLSEC_NO_RSA */
+
+
+/********************************************************************
+ *
+ * ML-DSA signatures
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_MLDSA
+
+/****************************************************************************
+ *
+ * ML-DSA-44 signature transform
+ *
+ ***************************************************************************/
+
+static xmlSecTransformKlass xmlSecGnuTLSMLDSA44Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecGnuTLSSignatureSize,                  /* xmlSecSize objSize */
+
+    xmlSecNameMLDSA44,                          /* const xmlChar* name; */
+    xmlSecHrefMLDSA44,                          /* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
+
+    xmlSecGnuTLSSignatureInitialize,            /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecGnuTLSSignatureFinalize,              /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecGnuTLSSignatureSetKeyReq,             /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGnuTLSSignatureSetKey,                /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecGnuTLSSignatureVerify,                /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecGnuTLSSignatureExecute,               /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecGnuTLSTransformMLDSA44GetKlass:
+ *
+ * The ML-DSA-44 signature transform klass.
+ *
+ * Returns: ML-DSA-44 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecGnuTLSTransformMLDSA44GetKlass(void) {
+    return(&xmlSecGnuTLSMLDSA44Klass);
+}
+
+
+/****************************************************************************
+ *
+ * ML-DSA-65 signature transform
+ *
+ ***************************************************************************/
+
+static xmlSecTransformKlass xmlSecGnuTLSMLDSA65Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecGnuTLSSignatureSize,                  /* xmlSecSize objSize */
+
+    xmlSecNameMLDSA65,                          /* const xmlChar* name; */
+    xmlSecHrefMLDSA65,                          /* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
+
+    xmlSecGnuTLSSignatureInitialize,            /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecGnuTLSSignatureFinalize,              /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecGnuTLSSignatureSetKeyReq,             /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGnuTLSSignatureSetKey,                /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecGnuTLSSignatureVerify,                /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecGnuTLSSignatureExecute,               /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecGnuTLSTransformMLDSA65GetKlass:
+ *
+ * The ML-DSA-65 signature transform klass.
+ *
+ * Returns: ML-DSA-65 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecGnuTLSTransformMLDSA65GetKlass(void) {
+    return(&xmlSecGnuTLSMLDSA65Klass);
+}
+
+
+/****************************************************************************
+ *
+ * ML-DSA-87 signature transform
+ *
+ ***************************************************************************/
+
+static xmlSecTransformKlass xmlSecGnuTLSMLDSA87Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecGnuTLSSignatureSize,                  /* xmlSecSize objSize */
+
+    xmlSecNameMLDSA87,                          /* const xmlChar* name; */
+    xmlSecHrefMLDSA87,                          /* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
+
+    xmlSecGnuTLSSignatureInitialize,            /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecGnuTLSSignatureFinalize,              /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecGnuTLSSignatureSetKeyReq,             /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGnuTLSSignatureSetKey,                /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecGnuTLSSignatureVerify,                /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecGnuTLSSignatureExecute,               /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecGnuTLSTransformMLDSA87GetKlass:
+ *
+ * The ML-DSA-87 signature transform klass.
+ *
+ * Returns: ML-DSA-87 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecGnuTLSTransformMLDSA87GetKlass(void) {
+    return(&xmlSecGnuTLSMLDSA87Klass);
+}
+
+#endif /* XMLSEC_NO_MLDSA */

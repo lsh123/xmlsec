@@ -1190,14 +1190,16 @@ execDSigTest $res_success \
     "$priv_key_option:TestKeyName-ml-dsa-44 $topfolder/keys/ml-dsa/ml-dsa-44-key.$priv_key_format --pwd secret123" \
     "$pub_key_option:TestKeyName-ml-dsa-44 $topfolder/keys/ml-dsa/ml-dsa-44-pubkey.$pub_key_format"
 
-execDSigTest $res_success \
-    "" \
-    "aleksey-xmldsig-01/enveloped-sha512-mldsa44-with-context-string" \
-    "sha512 ml-dsa-44" \
-    "ml-dsa" \
-    "$pub_key_option:TestKeyName-ml-dsa-44 $topfolder/keys/ml-dsa/ml-dsa-44-pubkey.$pub_key_format" \
-    "$priv_key_option:TestKeyName-ml-dsa-44 $topfolder/keys/ml-dsa/ml-dsa-44-key.$priv_key_format --pwd secret123" \
-    "$pub_key_option:TestKeyName-ml-dsa-44 $topfolder/keys/ml-dsa/ml-dsa-44-pubkey.$pub_key_format"
+if [ "z$xmlsec_feature_context_string" = "zyes" ] ; then
+    execDSigTest $res_success \
+        "" \
+        "aleksey-xmldsig-01/enveloped-sha512-mldsa44-with-context-string" \
+        "sha512 ml-dsa-44" \
+        "ml-dsa" \
+        "$pub_key_option:TestKeyName-ml-dsa-44 $topfolder/keys/ml-dsa/ml-dsa-44-pubkey.$pub_key_format" \
+        "$priv_key_option:TestKeyName-ml-dsa-44 $topfolder/keys/ml-dsa/ml-dsa-44-key.$priv_key_format --pwd secret123" \
+        "$pub_key_option:TestKeyName-ml-dsa-44 $topfolder/keys/ml-dsa/ml-dsa-44-pubkey.$pub_key_format"
+fi
 
 execDSigTest $res_success \
     "" \
@@ -1222,20 +1224,23 @@ execDSigTest $res_success \
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloped-sha512-slhdsa-sha2-128f" \
-    "sha512 ml-dsa-44" \
+    "sha512 slh-dsa-sha2-128f" \
     "ml-dsa" \
     "$pub_key_option:TestKeyName-slh-dsa-sha2-128f $topfolder/keys/slh-dsa/slh-dsa-sha2-128f-pubkey.$pub_key_format" \
     "$priv_key_option:TestKeyName-slh-dsa-sha2-128f $topfolder/keys/slh-dsa/slh-dsa-sha2-128f-key.$priv_key_format --pwd secret123" \
     "$pub_key_option:TestKeyName-slh-dsa-sha2-128f $topfolder/keys/slh-dsa/slh-dsa-sha2-128f-pubkey.$pub_key_format"
 
-execDSigTest $res_success \
-    "" \
-    "aleksey-xmldsig-01/enveloped-sha512-slhdsa-sha2-128f-with-context-string" \
-    "sha512 slh-dsa-sha2-128f" \
-    "slh-dsa" \
-    "$pub_key_option:TestKeyName-slh-dsa-sha2-128f $topfolder/keys/slh-dsa/slh-dsa-sha2-128f-pubkey.$pub_key_format" \
-    "$priv_key_option:TestKeyName-slh-dsa-sha2-128f $topfolder/keys/slh-dsa/slh-dsa-sha2-128f-key.$priv_key_format --pwd secret123" \
-    "$pub_key_option:TestKeyName-slh-dsa-sha2-128f $topfolder/keys/slh-dsa/slh-dsa-sha2-128f-pubkey.$pub_key_format"
+if [ "z$xmlsec_feature_context_string" = "zyes" ] ; then
+    execDSigTest $res_success \
+        "" \
+        "aleksey-xmldsig-01/enveloped-sha512-slhdsa-sha2-128f-with-context-string" \
+        "sha512 slh-dsa-sha2-128f" \
+        "slh-dsa" \
+        "$pub_key_option:TestKeyName-slh-dsa-sha2-128f $topfolder/keys/slh-dsa/slh-dsa-sha2-128f-pubkey.$pub_key_format" \
+        "$priv_key_option:TestKeyName-slh-dsa-sha2-128f $topfolder/keys/slh-dsa/slh-dsa-sha2-128f-key.$priv_key_format --pwd secret123" \
+        "$pub_key_option:TestKeyName-slh-dsa-sha2-128f $topfolder/keys/slh-dsa/slh-dsa-sha2-128f-pubkey.$pub_key_format"
+fi
+
 
 execDSigTest $res_success \
     "" \

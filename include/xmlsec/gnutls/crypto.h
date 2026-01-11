@@ -477,6 +477,36 @@ XMLSEC_CRYPTO_EXPORT gnutls_pubkey_t    xmlSecGnuTLSKeyDataMLDSAGetPublicKey    
 XMLSEC_CRYPTO_EXPORT gnutls_privkey_t   xmlSecGnuTLSKeyDataMLDSAGetPrivateKey   (xmlSecKeyDataPtr data);
 XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataMLDSAGetKL           (xmlSecKeyDataPtr data);
 
+
+/**
+ * xmlSecGnuTLSTransformMLDSA44Id:
+ *
+ * The ML-DSA-44 signature transform klass.
+ */
+#define xmlSecGnuTLSTransformMLDSA44Id  \
+        xmlSecGnuTLSTransformMLDSA44GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformMLDSA44GetKlass(void);
+
+
+/**
+ * xmlSecGnuTLSTransformMLDSA65Id:
+ *
+ * The ML-DSA-65 signature transform klass.
+ */
+#define xmlSecGnuTLSTransformMLDSA65Id  \
+        xmlSecGnuTLSTransformMLDSA65GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformMLDSA65GetKlass(void);
+
+
+/**
+ * xmlSecGnuTLSTransformMLDSA87Id:
+ *
+ * The ML-DSA-87 signature transform klass.
+ */
+#define xmlSecGnuTLSTransformMLDSA87Id  \
+        xmlSecGnuTLSTransformMLDSA87GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformMLDSA87GetKlass(void);
+
 #endif /* XMLSEC_NO_MLDSA */
 
 /********************************************************************

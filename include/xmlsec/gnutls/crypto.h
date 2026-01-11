@@ -458,6 +458,29 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformGostR3410_2012GostR3
 
 /********************************************************************
  *
+ * ML-DSA keys and transforms
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_MLDSA
+
+/**
+ * xmlSecGnuTLSKeyDataMLDSAId:
+ *
+ * The ML-DSA key klass (post-quantum signature algorithm per FIPS 204).
+ */
+#define xmlSecGnuTLSKeyDataMLDSAId   xmlSecGnuTLSKeyDataMLDSAGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecGnuTLSKeyDataMLDSAGetKlass        (void);
+XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataMLDSAAdoptKey        (xmlSecKeyDataPtr data,
+                                                                                 gnutls_pubkey_t pubkey,
+                                                                                 gnutls_privkey_t privkey);
+XMLSEC_CRYPTO_EXPORT gnutls_pubkey_t    xmlSecGnuTLSKeyDataMLDSAGetPublicKey    (xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT gnutls_privkey_t   xmlSecGnuTLSKeyDataMLDSAGetPrivateKey   (xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataMLDSAGetKL           (xmlSecKeyDataPtr data);
+
+#endif /* XMLSEC_NO_MLDSA */
+
+/********************************************************************
+ *
  * HMAC transforms
  *
  *******************************************************************/

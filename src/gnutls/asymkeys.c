@@ -2767,6 +2767,256 @@ xmlSecGnuTLSKeyDataGost2012_512DebugXmlDump(xmlSecKeyDataPtr data, FILE* output)
 
 
 
+#ifndef XMLSEC_NO_MLDSA
+/**************************************************************************
+ *
+ * ML-DSA key (https://csrc.nist.gov/pubs/fips/204/final)
+ *
+ * ML-DSA is a post-quantum digital signature algorithm standardized in FIPS 204.
+ * Three parameter sets are defined: ML-DSA-44, ML-DSA-65, and ML-DSA-87.
+ *
+ **************************************************************************/
+
+static int              xmlSecGnuTLSKeyDataMLDSAInitialize      (xmlSecKeyDataPtr data);
+static void             xmlSecGnuTLSKeyDataMLDSAFinalize        (xmlSecKeyDataPtr data);
+static int              xmlSecGnuTLSKeyDataMLDSADuplicate       (xmlSecKeyDataPtr dst,
+                                                                 xmlSecKeyDataPtr src);
+static xmlSecKeyDataType xmlSecGnuTLSKeyDataMLDSAGetType        (xmlSecKeyDataPtr data);
+static xmlSecSize       xmlSecGnuTLSKeyDataMLDSAGetSize         (xmlSecKeyDataPtr data);
+static void             xmlSecGnuTLSKeyDataMLDSADebugDump       (xmlSecKeyDataPtr data,
+                                                                 FILE* output);
+static void             xmlSecGnuTLSKeyDataMLDSADebugXmlDump    (xmlSecKeyDataPtr data,
+                                                                 FILE* output);
+
+static xmlSecKeyDataKlass xmlSecGnuTLSKeyDataMLDSAKlass = {
+    sizeof(xmlSecKeyDataKlass),
+    xmlSecGnuTLSAsymKeyDataSize,
+
+    /* data */
+    xmlSecNameMLDSAKeyValue,
+    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+                                                /* xmlSecKeyDataUsage usage; */
+    xmlSecHrefMLDSAKeyValue,                    /* const xmlChar* href; */
+    NULL,                                       /* const xmlChar* dataNodeName; */
+    NULL,                                       /* const xmlChar* dataNodeNs; */
+
+    /* constructors/destructor */
+    xmlSecGnuTLSKeyDataMLDSAInitialize,         /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecGnuTLSKeyDataMLDSADuplicate,          /* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecGnuTLSKeyDataMLDSAFinalize,           /* xmlSecKeyDataFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecKeyDataGenerateMethod generate; */
+
+    /* get info */
+    xmlSecGnuTLSKeyDataMLDSAGetType,            /* xmlSecKeyDataGetTypeMethod getType; */
+    xmlSecGnuTLSKeyDataMLDSAGetSize,            /* xmlSecKeyDataGetSizeMethod getSize; */
+    NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
+
+    /* read/write */
+    NULL,                                       /* xmlSecKeyDataXmlReadMethod xmlRead; */
+    NULL,                                       /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    NULL,                                       /* xmlSecKeyDataBinReadMethod binRead; */
+    NULL,                                       /* xmlSecKeyDataBinWriteMethod binWrite; */
+
+    /* debug */
+    xmlSecGnuTLSKeyDataMLDSADebugDump,          /* xmlSecKeyDataDebugDumpMethod debugDump; */
+    xmlSecGnuTLSKeyDataMLDSADebugXmlDump,       /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+
+    /* reserved for the future */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecGnuTLSKeyDataMLDSAGetKlass:
+ *
+ * The GnuTLS ML-DSA key data klass.
+ *
+ * Returns: pointer to GnuTLS ML-DSA key data klass.
+ */
+xmlSecKeyDataId
+xmlSecGnuTLSKeyDataMLDSAGetKlass(void) {
+    return(&xmlSecGnuTLSKeyDataMLDSAKlass);
+}
+
+/**
+ * xmlSecGnuTLSKeyDataMLDSAAdoptKey:
+ * @data:               the pointer to ML-DSA key data.
+ * @pubkey:             the pointer to GnuTLS ML-DSA key.
+ * @privkey:            the pointer to GnuTLS ML-DSA key.
+ *
+ * Sets the value of ML-DSA key data. The @pubkey and @privkey will be owned by the @data on success.
+ *
+ * Returns: 0 on success or a negative value otherwise.
+ */
+int
+xmlSecGnuTLSKeyDataMLDSAAdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, gnutls_privkey_t privkey) {
+    int ret;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataMLDSAId), -1);
+
+    /* verify key type */
+    if(pubkey != NULL) {
+        ret = gnutls_pubkey_get_pk_algorithm(pubkey, NULL);
+        if((ret != GNUTLS_PK_MLDSA44) && (ret != GNUTLS_PK_MLDSA65) && (ret != GNUTLS_PK_MLDSA87)) {
+            xmlSecInternalError2("Invalid pubkey algorithm", NULL, "type=%d", ret);
+            return(-1);
+        }
+    }
+    if(privkey != NULL) {
+        ret = gnutls_privkey_get_pk_algorithm(privkey, NULL);
+        if((ret != GNUTLS_PK_MLDSA44) && (ret != GNUTLS_PK_MLDSA65) && (ret != GNUTLS_PK_MLDSA87)) {
+            xmlSecInternalError2("Invalid privkey algorithm", NULL, "type=%d", ret);
+            return(-1);
+        }
+    }
+
+    /* do the work */
+    return xmlSecGnuTLSAsymKeyDataAdoptKey(data, pubkey, privkey);
+}
+
+/**
+ * xmlSecGnuTLSKeyDataMLDSAGetPublicKey:
+ * @data:               the pointer to ML-DSA key data.
+ *
+ * Gets the GnuTLS ML-DSA public key from ML-DSA key data.
+ *
+ * Returns: pointer to GnuTLS public ML-DSA key or NULL if an error occurs.
+ */
+gnutls_pubkey_t
+xmlSecGnuTLSKeyDataMLDSAGetPublicKey(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataMLDSAId), NULL);
+    return xmlSecGnuTLSAsymKeyDataGetPublicKey(data);
+}
+
+/**
+ * xmlSecGnuTLSKeyDataMLDSAGetPrivateKey:
+ * @data:               the pointer to ML-DSA key data.
+ *
+ * Gets the GnuTLS ML-DSA private key from ML-DSA key data.
+ *
+ * Returns: pointer to GnuTLS private ML-DSA key or NULL if an error occurs.
+ */
+gnutls_privkey_t
+xmlSecGnuTLSKeyDataMLDSAGetPrivateKey(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataMLDSAId), NULL);
+    return xmlSecGnuTLSAsymKeyDataGetPrivateKey(data);
+}
+
+/**
+ * xmlSecGnuTLSKeyDataMLDSAGetKL:
+ * @data:               the pointer to ML-DSA key data.
+ *
+ * Gets ML-DSA key (k, l) value: 44 corresponds to (4,4),
+ * 65 to (6,5) or 87 to (8,7).
+ *
+ * Returns: 44, 65, or 87 on success or a negative value otherwise.
+ */
+int
+xmlSecGnuTLSKeyDataMLDSAGetKL(xmlSecKeyDataPtr data) {
+    gnutls_pubkey_t pubkey;
+    gnutls_privkey_t privkey;
+    int algo;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataMLDSAId), -1);
+
+    /* Try pubkey first */
+    pubkey = xmlSecGnuTLSKeyDataMLDSAGetPublicKey(data);
+    if(pubkey != NULL) {
+        algo = gnutls_pubkey_get_pk_algorithm(pubkey, NULL);
+        switch(algo) {
+        case GNUTLS_PK_MLDSA44:
+            return 44;
+        case GNUTLS_PK_MLDSA65:
+            return 65;
+        case GNUTLS_PK_MLDSA87:
+            return 87;
+        default:
+            xmlSecInvalidIntegerTypeError("pubkey algorithm", algo,
+                    "unsupported ML-DSA algorithm", NULL);
+            return(-1);
+        }
+    }
+
+    /* Try privkey */
+    privkey = xmlSecGnuTLSKeyDataMLDSAGetPrivateKey(data);
+    if(privkey != NULL) {
+        algo = gnutls_privkey_get_pk_algorithm(privkey, NULL);
+        switch(algo) {
+        case GNUTLS_PK_MLDSA44:
+            return 44;
+        case GNUTLS_PK_MLDSA65:
+            return 65;
+        case GNUTLS_PK_MLDSA87:
+            return 87;
+        default:
+            xmlSecInvalidIntegerTypeError("privkey algorithm", algo,
+                    "unsupported ML-DSA algorithm", NULL);
+            return(-1);
+        }
+    }
+
+    xmlSecInternalError("No key found", NULL);
+    return(-1);
+}
+
+static int
+xmlSecGnuTLSKeyDataMLDSAInitialize(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataMLDSAId), -1);
+
+    return(xmlSecGnuTLSAsymKeyDataInitialize(data));
+}
+
+static int
+xmlSecGnuTLSKeyDataMLDSADuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecGnuTLSKeyDataMLDSAId), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecGnuTLSKeyDataMLDSAId), -1);
+
+    return(xmlSecGnuTLSAsymKeyDataDuplicate(dst, src));
+}
+
+static void
+xmlSecGnuTLSKeyDataMLDSAFinalize(xmlSecKeyDataPtr data) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataMLDSAId));
+
+    xmlSecGnuTLSAsymKeyDataFinalize(data);
+}
+
+static xmlSecKeyDataType
+xmlSecGnuTLSKeyDataMLDSAGetType(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataMLDSAId), xmlSecKeyDataTypeUnknown);
+
+    return xmlSecGnuTLSAsymKeyDataGetType(data);
+}
+
+static xmlSecSize
+xmlSecGnuTLSKeyDataMLDSAGetSize(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataMLDSAId), 0);
+
+    return xmlSecGnuTLSAsymKeyDataGetSize(data);
+}
+
+static void
+xmlSecGnuTLSKeyDataMLDSADebugDump(xmlSecKeyDataPtr data, FILE* output) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataMLDSAId));
+    xmlSecAssert(output != NULL);
+
+    fprintf(output, "=== ML-DSA key: kl = %d\n",
+            xmlSecGnuTLSKeyDataMLDSAGetKL(data));
+}
+
+static void
+xmlSecGnuTLSKeyDataMLDSADebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataMLDSAId));
+    xmlSecAssert(output != NULL);
+
+    fprintf(output, "<MLDSAKeyValue kl=\"%d\" />\n",
+            xmlSecGnuTLSKeyDataMLDSAGetKL(data));
+}
+
+#endif /* XMLSEC_NO_MLDSA */
+
+
+
 /**************************************************************************
  *
  * Internal helper functions
@@ -2909,6 +3159,26 @@ xmlSecGnuTLSAsymKeyDataCreate(gnutls_pubkey_t pubkey, gnutls_privkey_t privkey) 
 
         break;
 #endif /* XMLSEC_NO_GOST2012 */
+
+#ifndef XMLSEC_NO_MLDSA
+    case GNUTLS_PK_MLDSA44:
+    case GNUTLS_PK_MLDSA65:
+    case GNUTLS_PK_MLDSA87:
+        keyData = xmlSecKeyDataCreate(xmlSecGnuTLSKeyDataMLDSAId);
+        if(keyData == NULL) {
+            xmlSecInternalError("xmlSecKeyDataCreate(MLDSAId)", NULL);
+            return(NULL);
+        }
+
+        ret = xmlSecGnuTLSKeyDataMLDSAAdoptKey(keyData, pubkey, privkey);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecGnuTLSKeyDataMLDSAAdoptKey", NULL);
+            xmlSecKeyDataDestroy(keyData);
+            return(NULL);
+        }
+
+        break;
+#endif /* XMLSEC_NO_MLDSA */
 
         default:
             xmlSecInternalError2("Public / private key algorithm is not supported", NULL,

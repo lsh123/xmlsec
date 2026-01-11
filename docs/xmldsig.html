@@ -1428,11 +1428,11 @@
                         <!-- Requirements-->
                         <td valign="top">EXPERIMENTAL</td>
                         <!-- OpenSSL-->
-                        <td valign="top" bgcolor="#C1E1C1">Yes</a></td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#feature-disabled"><sup>(1)</sup></a></td>
                         <!-- NSS -->
                         <td valign="top">No</td>
                         <!-- GnuTLS -->
-                        <td valign="top">No</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#feature-disabled"><sup>(1)</sup></a> <a href="#no-context-string"><sup>(7)</sup></a></td>
                         <!-- MSCng -->
                         <td valign="top">No</td>
                         <!-- MSCrypto -->
@@ -1445,7 +1445,7 @@
                         <!-- Requirements-->
                         <td valign="top">EXPERIMENTAL</td>
                         <!-- OpenSSL-->
-                        <td valign="top" bgcolor="#C1E1C1">Yes</a></td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#feature-disabled"><sup>(1)</sup></a></td>
                         <!-- NSS -->
                         <td valign="top">No</td>
                         <!-- GnuTLS -->
@@ -1466,22 +1466,22 @@
                         </td>
                         <td valign="top">Optional</td>
 <!-- Requirements-->
-                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#dsa-key-value"><sup>(5)</sup> <a href="#feature-disabled"><sup>(1)</sup></a></a>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#feature-disabled"><sup>(1)</sup></a> <a href="#dsa-key-value"><sup>(5)</sup></a>
 </td>
 <!-- OpenSSL-->
-                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#dsa-key-value"><sup>(5)</sup> <a href="#feature-disabled"><sup>(1)</sup></a></a>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#feature-disabled"><sup>(1)</sup></a> <a href="#dsa-key-value"><sup>(5)</sup></a>
 </td>
 <!-- NSS -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#dsa-key-value"><sup>(5)</sup> <a href="#feature-disabled"><sup>(1)</sup></a></a>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#feature-disabled"><sup>(1)</sup></a> <a href="#dsa-key-value"><sup>(5)</sup></a>
 </td>
 <!-- GnuTLS -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#dsa-key-value"><sup>(5)</sup> <a href="#feature-disabled"><sup>(1)</sup></a></a>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#feature-disabled"><sup>(1)</sup></a> <a href="#dsa-key-value"><sup>(5)</sup></a>
 </td>
 <!-- MSCng -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#dsa-key-value"><sup>(5)</sup> <a href="#feature-disabled"><sup>(1)</sup></a></a>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#feature-disabled"><sup>(1)</sup></a> <a href="#dsa-key-value"><sup>(5)</sup></a>
 </td>
 <!-- MSCrypto -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#dsa-key-value"><sup>(5)</sup> <a href="#feature-disabled"><sup>(1)</sup></a></a>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#feature-disabled"><sup>(1)</sup></a> <a href="#dsa-key-value"><sup>(5)</sup></a>
 </td>
 <!-- GCrypt -->
                       </tr>
@@ -1658,10 +1658,13 @@
                             <a id="gost-mscrypto"></a><sup>(4)</sup> GOST support for the xmlsec-mscrypto library requires installation of a GOST CSP.
                         </li>
                         <li>
-                            <a id="dsa-ke-value"></a><sup>(5)</sup> Seed and PgenCounter are not supported in DSAKeyValue element.
+                            <a id="dsa-ke-value"></a><sup>(5)</sup> The Seed and PgenCounter are not supported in DSAKeyValue element.
                         </li>
                         <li>
                             <a id="mscng-x509-digest"></a><sup>(6)</sup> The xmlsec-mscng library only supports SHA1 digest algorithm for X509Digest element.
+                        </li>
+                        <li>
+                            <a id="no-context-string"></a><sup>(7)</sup> The ML-DSA or SLH-DSA ContextString is not supported.
                         </li>
                     </ul>
                 </div>

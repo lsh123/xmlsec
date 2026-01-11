@@ -55,9 +55,10 @@ struct _xmlSecGnuTLSSignatureCtx {
     xmlSecGnuTLSKeyDataGetPrivateKeyMethod  getPrivKey;
 
     gnutls_digest_algorithm_t   dgstAlgo;
-    unsigned int                dgstSize;
     gnutls_hash_hd_t            hash;
-    xmlSecByte                  dgst[XMLSEC_GNUTLS_MAX_DIGEST_SIZE];
+
+    /* either digest of content; or the content to be signed */
+    xmlSecBuffer                preSignBuffer;
 
     xmlSecKeyDataId             keyId;
     xmlSecKeyDataPtr            keyData;
@@ -432,18 +433,16 @@ xmlSecGnuTLSSignatureInitialize(xmlSecTransformPtr transform) {
         return(-1);
     }
 
-    /* check hash output size */
-    ctx->dgstSize = gnutls_hash_get_len(ctx->dgstAlgo);
-    if(ctx->dgstSize <= 0) {
-        xmlSecGnuTLSError("gnutls_hash_get_len", 0, NULL);
-        return(-1);
-    }
-    xmlSecAssert2(ctx->dgstSize < XMLSEC_GNUTLS_MAX_DIGEST_SIZE, -1);
-
     /* create hash */
     err =  gnutls_hash_init(&(ctx->hash), ctx->dgstAlgo);
     if(err != GNUTLS_E_SUCCESS) {
         xmlSecGnuTLSError("gnutls_hash_init", err, NULL);
+        return(-1);
+    }
+
+    /* create buffer */
+    if(xmlSecBufferInitialize(&(ctx->preSignBuffer), 0) < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize(preSignBuffer)", xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -468,6 +467,7 @@ xmlSecGnuTLSSignatureFinalize(xmlSecTransformPtr transform) {
     if(ctx->hash != NULL) {
         gnutls_hash_deinit(ctx->hash, NULL);
     }
+    xmlSecBufferFinalize(&(ctx->preSignBuffer));
     memset(ctx, 0, sizeof(xmlSecGnuTLSSignatureCtx));
 }
 
@@ -836,6 +836,38 @@ xmlSecGnuTLSSignatureGetDerHalfSize(gnutls_sign_algorithm_t algo, xmlSecSize key
 }
 
 static int
+xmlSecGnuTLSSignatureGetDataToSign(xmlSecGnuTLSSignatureCtxPtr ctx, gnutls_datum_t* dataToSign)
+{
+    unsigned int dgstSize;
+    int ret;
+
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->hash != NULL, -1);
+    xmlSecAssert2(dataToSign != NULL, -1);
+
+    /* get hash size and setup buffer */
+    dgstSize = gnutls_hash_get_len(ctx->dgstAlgo);
+    if(dgstSize <= 0) {
+        xmlSecInternalError("gnutls_hash_get_len", NULL);
+        return(-1);
+    }
+
+    ret = xmlSecBufferSetSize(&(ctx->preSignBuffer), dgstSize);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferSetSize", NULL);
+        return(-1);
+    }
+
+    /* get hash */
+    gnutls_hash_output(ctx->hash, xmlSecBufferGetData(&(ctx->preSignBuffer)));
+    dataToSign->data = xmlSecBufferGetData(&(ctx->preSignBuffer));
+    dataToSign->size = dgstSize;
+
+    /* done */
+    return(0);
+}
+
+static int
 xmlSecGnuTLSSignatureVerify(
     xmlSecTransformPtr transform,
     const xmlSecByte* data,
@@ -843,7 +875,7 @@ xmlSecGnuTLSSignatureVerify(
     xmlSecTransformCtxPtr transformCtx
 ) {
     xmlSecGnuTLSSignatureCtxPtr ctx;
-    gnutls_datum_t hash, signature;
+    gnutls_datum_t dataToSign, signature;
     gnutls_pubkey_t pubkey;
     xmlSecSize keySize, signHalfSize = 0;
     int err;
@@ -857,7 +889,6 @@ xmlSecGnuTLSSignatureVerify(
     xmlSecAssert2(transformCtx != NULL, -1);
 
     ctx = xmlSecGnuTLSSignatureGetCtx(transform);
-    xmlSecAssert2(ctx->hash != NULL, -1);
     xmlSecAssert2(ctx->keyData != NULL, -1);
     xmlSecAssert2(ctx->getPubKey != NULL, -1);
 
@@ -880,15 +911,16 @@ xmlSecGnuTLSSignatureVerify(
         return(-1);
     }
 
-    /* get hash */
-    gnutls_hash_output(ctx->hash, ctx->dgst);
-    hash.data = ctx->dgst;
-    hash.size = ctx->dgstSize;
+    /* get data to sign */
+    ret = xmlSecGnuTLSSignatureGetDataToSign(ctx, &dataToSign);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecGnuTLSSignatureGetDataToSign", xmlSecTransformGetName(transform));
+        return(-1);
+    }
 
     /* verify */
     signature.data = (xmlSecByte*)data;
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(dataSize, signature.size, return(-1), xmlSecTransformGetName(transform));
-
 
     /* however some implementations (e.g. Java) just put ASN1 structure in the signature
      * and in this case we ALREADY have ASN1
@@ -902,10 +934,10 @@ xmlSecGnuTLSSignatureVerify(
             return(-1);
         }
 
-        err = gnutls_pubkey_verify_hash2(pubkey, ctx->signAlgo, ctx->verifyFlags, &hash, &der_signature);
+        err = gnutls_pubkey_verify_hash2(pubkey, ctx->signAlgo, ctx->verifyFlags, &dataToSign, &der_signature);
         gnutls_free(der_signature.data);
     } else {
-        err = gnutls_pubkey_verify_hash2(pubkey, ctx->signAlgo, ctx->verifyFlags, &hash, &signature);
+        err = gnutls_pubkey_verify_hash2(pubkey, ctx->signAlgo, ctx->verifyFlags, &dataToSign, &signature);
     }
 
     /* In case of a verification failure GNUTLS_E_PK_SIG_VERIFY_FAILED
@@ -935,14 +967,13 @@ xmlSecGnuTLSSignatureSign(
     xmlSecBufferPtr out,
     xmlSecTransformCtxPtr transformCtx
 ) {
-    gnutls_datum_t hash, signature = { NULL, 0 };
+    gnutls_datum_t dataToSign, signature = { NULL, 0 };
     gnutls_privkey_t privkey;
     xmlSecSize keySize, signHalfSize = 0;
     int err;
     int ret;
 
     xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->hash != NULL, -1);
     xmlSecAssert2(ctx->keyData != NULL, -1);
     xmlSecAssert2(ctx->getPrivKey != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
@@ -967,12 +998,15 @@ xmlSecGnuTLSSignatureSign(
         return(-1);
     }
 
-    /* get hash */
-    gnutls_hash_output(ctx->hash, ctx->dgst);
-    hash.data = ctx->dgst;
-    hash.size = ctx->dgstSize;
+    /* get data to sign */
+    ret = xmlSecGnuTLSSignatureGetDataToSign(ctx, &dataToSign);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecGnuTLSSignatureGetDataToSign", xmlSecTransformGetName(transform));
+        return(-1);
+    }
 
-    err = gnutls_privkey_sign_hash2(privkey, ctx->signAlgo, ctx->signFlags, &hash, &signature);
+    /* sign */
+    err = gnutls_privkey_sign_hash2(privkey, ctx->signAlgo, ctx->signFlags, &dataToSign, &signature);
     if((err != GNUTLS_E_SUCCESS) || (signature.data == NULL)) {
         xmlSecGnuTLSError("gnutls_privkey_sign_hash2", err, xmlSecTransformGetName(transform));
         return(-1);

@@ -277,9 +277,9 @@ fi
 
 # Support for context string in ML-DSA or SLH-DSA signatures
 if [ "z$crypto" = "zopenssl" ] ; then
-    xmlsec_feature_context_string ="yes"
+    xmlsec_feature_context_string="yes"
 else
-    xmlsec_feature_context_string ="no"
+    xmlsec_feature_context_string="no"
 fi
 
 #

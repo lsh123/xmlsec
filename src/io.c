@@ -67,7 +67,7 @@ static xmlSecIOCallbackPtr      xmlSecIOCallbackCreate  (xmlInputMatchCallback m
                                                          xmlInputOpenCallback openFunc,
                                                          xmlInputReadCallback readFunc,
                                                          xmlInputCloseCallback closeFunc);
-static void                     xmlSecIOCallbackDestroy (xmlSecIOCallbackPtr callbacks);
+static void                     xmlSecIOCallbackDestroy (void *callbacks);
 
 static xmlSecIOCallbackPtr
 xmlSecIOCallbackCreate(xmlInputMatchCallback matchFunc, xmlInputOpenCallback openFunc,
@@ -93,7 +93,7 @@ xmlSecIOCallbackCreate(xmlInputMatchCallback matchFunc, xmlInputOpenCallback ope
 }
 
 static void
-xmlSecIOCallbackDestroy(xmlSecIOCallbackPtr callbacks) {
+xmlSecIOCallbackDestroy(void* callbacks) {
     xmlSecAssert(callbacks != NULL);
 
     memset(callbacks, 0, sizeof(xmlSecIOCallback));
@@ -107,10 +107,10 @@ xmlSecIOCallbackDestroy(xmlSecIOCallbackPtr callbacks) {
  ******************************************************************/
 static xmlSecPtrListKlass xmlSecIOCallbackPtrListKlass = {
     BAD_CAST "io-callbacks-list",
-    NULL,                                               /* xmlSecPtrDuplicateItemMethod duplicateItem; */
-    (xmlSecPtrDestroyItemMethod)xmlSecIOCallbackDestroy,/* xmlSecPtrDestroyItemMethod destroyItem; */
-    NULL,                                               /* xmlSecPtrDebugDumpItemMethod debugDumpItem; */
-    NULL                                                /* xmlSecPtrDebugDumpItemMethod debugXmlDumpItem; */
+    NULL,                       /* xmlSecPtrDuplicateItemMethod duplicateItem; */
+    xmlSecIOCallbackDestroy,    /* xmlSecPtrDestroyItemMethod destroyItem; */
+    NULL,                       /* xmlSecPtrDebugDumpItemMethod debugDumpItem; */
+    NULL                        /* xmlSecPtrDebugDumpItemMethod debugXmlDumpItem; */
 };
 
 #define xmlSecIOCallbackPtrListId       xmlSecIOCallbackPtrListGetKlass ()

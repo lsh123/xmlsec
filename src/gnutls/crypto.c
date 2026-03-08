@@ -314,6 +314,7 @@ xmlSecCryptoGetFunctions_gnutls(void) {
     gXmlSecGnuTLSFunctions->cryptoAppKeysMngrCertLoad           = xmlSecGnuTLSAppKeysMngrCertLoad;
     gXmlSecGnuTLSFunctions->cryptoAppKeysMngrCertLoadMemory     = xmlSecGnuTLSAppKeysMngrCertLoadMemory;
     gXmlSecGnuTLSFunctions->cryptoAppKeysMngrCrlLoad            = xmlSecGnuTLSAppKeysMngrCrlLoad;
+    gXmlSecGnuTLSFunctions->cryptoAppKeysMngrCrlLoadAndVerify   = xmlSecGnuTLSAppKeysMngrCrlLoadAndVerify;
     gXmlSecGnuTLSFunctions->cryptoAppKeysMngrCrlLoadMemory      = xmlSecGnuTLSAppKeysMngrCrlLoadMemory;
     gXmlSecGnuTLSFunctions->cryptoAppPkcs12Load                 = xmlSecGnuTLSAppPkcs12Load;
     gXmlSecGnuTLSFunctions->cryptoAppKeyCertLoad                = xmlSecGnuTLSAppKeyCertLoad;

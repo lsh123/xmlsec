@@ -428,6 +428,31 @@ xmlSecGCryptAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, xml
 }
 
 /**
+ * xmlSecGCryptAppKeysMngrCrlLoadAndVerify:
+ * @mngr:               the keys manager.
+ * @filename:           the CRL filename.
+ * @format:             the CRL format (PEM or DER).
+ * @keyInfoCtx:         the key info context for verification parameters.
+ *
+ * Placeholder. GCrypt does not support X509 certificates.
+ *
+ * Atomically loads and verifies a CRL from @filename.
+ *
+ * Returns: 0 on success or a negative value otherwise.
+ */
+int
+xmlSecGCryptAppKeysMngrCrlLoadAndVerify(xmlSecKeysMngrPtr mngr, const char *filename,
+    xmlSecKeyDataFormat format, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlSecAssert2(mngr != NULL, -1);
+    xmlSecAssert2(filename != NULL, -1);
+    xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+
+    xmlSecNotImplementedError("GCrypt doesn't support X509 certificates");
+    return(-1);
+}
+
+/**
  * xmlSecGCryptAppKeysMngrCertLoadMemory:
  * @mngr:               the keys manager.
  * @data:               the certificate binary data.

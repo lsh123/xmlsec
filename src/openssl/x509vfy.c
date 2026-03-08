@@ -1001,6 +1001,68 @@ done:
 }
 
 /**
+ * xmlSecOpenSSLX509StoreVerifyCrl:
+ * @store:              the pointer to X509 key data store klass.
+ * @crl:                the CRL to verify.
+ * @keyInfoCtx:         the key info context for verification parameters.
+ *
+ * Verifies @crl by checking:
+ * 1. Signature is valid (signed by issuer cert in store)
+ * 2. thisUpdate <= verification_time <= nextUpdate
+ *
+ * Returns: 1 if verified, 0 if not verified, or a negative value on error.
+ */
+int
+xmlSecOpenSSLX509StoreVerifyCrl(xmlSecKeyDataStorePtr store, X509_CRL* crl,
+    xmlSecKeyInfoCtxPtr keyInfoCtx
+) {
+    xmlSecOpenSSLX509StoreCtxPtr ctx;
+    X509_STORE_CTX *xsc = NULL;
+    int ret;
+    int res = -1;
+
+    xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecOpenSSLX509StoreId), -1);
+    xmlSecAssert2(crl != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+
+    /* do we even need to verify the CRL? */
+    if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS) != 0) {
+        return(1);
+    }
+
+    ctx = xmlSecOpenSSLX509StoreGetCtx(store);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->xst != NULL, -1);
+
+    /* Create store context */
+    xsc = X509_STORE_CTX_new_ex(xmlSecOpenSSLGetLibCtx(), NULL);
+    if(xsc == NULL) {
+        xmlSecOpenSSLError("X509_STORE_CTX_new", xmlSecKeyDataStoreGetName(store));
+        goto done;
+    }
+
+    /* Verify CRL signature, issuer, and time validity */
+    ret = xmlSecOpenSSLX509VerifyCRL(ctx->xst, xsc, ctx->untrusted, crl, keyInfoCtx);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecOpenSSLX509VerifyCRL", xmlSecKeyDataStoreGetName(store));
+        goto done;
+    } else if(ret != 1) {
+        /* Verification failed */
+        res = 0;
+        goto done;
+    }
+
+    /* Success */
+    res = 1;
+
+done:
+    if(xsc != NULL) {
+        X509_STORE_CTX_free(xsc);
+    }
+    return(res);
+}
+
+/**
  * xmlSecOpenSSLX509StoreAdoptCert:
  * @store:              the pointer to X509 key data store klass.
  * @cert:               the pointer to OpenSSL X509 certificate.
@@ -1264,10 +1326,214 @@ xmlSecOpenSSLX509StoreFinalize(xmlSecKeyDataStorePtr store) {
  * Low-level x509 functions
  *
  *****************************************************************************/
+static X509*
+xmlSecOpenSSLX509FindTrustedIssuer(X509_STORE* xst, X509_NAME* issuer) {
+    STACK_OF(X509_OBJECT)* objects = NULL;
+    xmlSecOpenSSLSizeT ii, num;
+    X509* issuer_cert = NULL;
+
+    xmlSecAssert2(xst != NULL, NULL);
+    xmlSecAssert2(issuer != NULL, NULL);
+
+    /* Get all objects from the trusted store */
+    objects = X509_STORE_get0_objects(xst);
+    if(objects == NULL) {
+        return(NULL);
+    }
+
+    /* Search for a certificate with matching subject */
+    num = sk_X509_OBJECT_num(objects);
+    for(ii = 0; ii < num; ++ii) {
+        X509_OBJECT* obj = sk_X509_OBJECT_value(objects, ii);
+        X509* cert;
+        X509_NAME* cert_subject;
+
+        if(obj == NULL) {
+            continue;
+        }
+
+        /* Check if this object is a certificate */
+        if(X509_OBJECT_get_type(obj) != X509_LU_X509) {
+            continue;
+        }
+
+        cert = X509_OBJECT_get0_X509(obj);
+        if(cert == NULL) {
+            continue;
+        }
+
+        cert_subject = X509_get_subject_name(cert);
+        if(cert_subject == NULL) {
+            continue;
+        }
+
+        /* Check if subject matches the issuer we're looking for */
+        if(X509_NAME_cmp(cert_subject, issuer) == 0) {
+            /* Found a match, duplicate and return */
+            issuer_cert = X509_dup(cert);
+            if(issuer_cert == NULL) {
+                xmlSecOpenSSLError("X509_dup", NULL);
+            }
+            break;
+        }
+    }
+
+    return(issuer_cert);
+}
+
+static X509*
+xmlSecOpenSSLX509FindUntrustedIssuer(X509_NAME* issuer, X509_STORE* xst, X509_STORE_CTX* xsc, STACK_OF(X509)* untrusted, xmlSecKeyInfoCtx* keyInfoCtx) {
+    X509* issuer_cert = NULL;
+    xmlSecOpenSSLSizeT ii, num;
+    int ret;
+    int ctx_initialized = 0;
+
+    xmlSecAssert2(xst != NULL, NULL);
+    xmlSecAssert2(xsc != NULL, NULL);
+    xmlSecAssert2(issuer != NULL, NULL);
+    xmlSecAssert2(keyInfoCtx != NULL, NULL);
+
+    if(untrusted == NULL) {
+        return(NULL);
+    }
+
+    num = sk_X509_num(untrusted);
+    for(ii = 0; ii < num; ++ii) {
+        X509* cert = sk_X509_value(untrusted, ii);
+        X509_NAME* cert_subject;
+
+        if(cert == NULL) {
+            continue;
+        }
+
+        cert_subject = X509_get_subject_name(cert);
+        if(cert_subject == NULL) {
+            continue;
+        }
+
+        /* Check if subject matches the issuer we're looking for */
+        if(X509_NAME_cmp(cert_subject, issuer) != 0) {
+            continue;
+        }
+
+        /* Found a candidate, verify the chain to a trusted root using passed xsc */
+        ret = X509_STORE_CTX_init(xsc, xst, cert, untrusted);
+        if(ret != 1) {
+            xmlSecOpenSSLError("X509_STORE_CTX_init", NULL);
+            goto done;
+        }
+        ctx_initialized = 1;
+
+        ret = xmlSecOpenSSLX509StoreSetCtx(xsc, keyInfoCtx);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecOpenSSLX509StoreSetCtx", NULL);
+            goto done;
+        }
+
+        ret = X509_verify_cert(xsc);
+        if(ret == 1) {
+            /* Chain verified successfully, return a copy */
+            issuer_cert = X509_dup(cert);
+            if(issuer_cert == NULL) {
+                xmlSecOpenSSLError("X509_dup", NULL);
+            }
+            goto done;
+        }
+
+        /* Chain verification failed, try next candidate */
+        X509_STORE_CTX_cleanup(xsc);
+        ctx_initialized = 0;
+    }
+
+done:
+    if(ctx_initialized != 0) {
+        X509_STORE_CTX_cleanup(xsc);
+    }
+    return(issuer_cert);
+}
+
+static X509*
+xmlSecOpenSSLX509FindIssuer(X509_NAME* issuer, X509_STORE* xst, X509_STORE_CTX* xsc, STACK_OF(X509)* untrusted, xmlSecKeyInfoCtx* keyInfoCtx) {
+    X509* issuer_cert = NULL;
+
+    xmlSecAssert2(xst != NULL, NULL);
+    xmlSecAssert2(xsc != NULL, NULL);
+    xmlSecAssert2(issuer != NULL, NULL);
+    xmlSecAssert2(keyInfoCtx != NULL, NULL);
+
+    /* First, search in the untrusted certificates */
+    issuer_cert = xmlSecOpenSSLX509FindUntrustedIssuer(issuer, xst, xsc, untrusted, keyInfoCtx);
+    if(issuer_cert != NULL) {
+        return(issuer_cert);
+    }
+
+    /* Not found in untrusted certs, search in trusted store */
+    issuer_cert = xmlSecOpenSSLX509FindTrustedIssuer(xst, issuer);
+    if(issuer_cert != NULL) {
+        return(issuer_cert);
+    }
+
+    /* no luck */
+    return(NULL);
+}
+
 static int
-xmlSecOpenSSLX509VerifyCRL(X509_STORE* xst, X509_STORE_CTX* xsc, STACK_OF(X509)* untrusted, X509_CRL *crl, xmlSecKeyInfoCtx* keyInfoCtx) {
-#ifndef XMLSEC_OPENSSL_NO_CRL_VERIFICATION
-    X509_OBJECT *xobj = NULL;
+xmlSecOpenSSLX509VerifyCRLTimeValidity(X509_CRL *crl, xmlSecKeyInfoCtx* keyInfoCtx) {
+    const ASN1_TIME *thisUpdate, *nextUpdate;
+    time_t verification_time;
+    int ret;
+
+    xmlSecAssert2(crl != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+
+    /* Get verification time */
+    verification_time = (keyInfoCtx->certsVerificationTime > 0) ?
+                        keyInfoCtx->certsVerificationTime : time(NULL);
+
+    thisUpdate = X509_CRL_get0_lastUpdate(crl);
+    nextUpdate = X509_CRL_get0_nextUpdate(crl);
+
+    /* Verify thisUpdate */
+    if(thisUpdate != NULL) {
+        ret = X509_cmp_time(thisUpdate, &verification_time);
+        if(ret == 0) {
+            xmlSecOpenSSLError("X509_cmp_time(thisUpdate)", NULL);
+            return(-1);
+        }
+        if(ret > 0) {
+            /* thisUpdate > verification_time: CRL not yet valid */
+            char issuer[256];
+            X509_NAME_oneline(X509_CRL_get_issuer(crl), issuer, sizeof(issuer));
+            xmlSecOtherError2(XMLSEC_ERRORS_R_CRL_NOT_YET_VALID, NULL,
+                            "issuer=%s", issuer);
+            return(0);
+        }
+    }
+
+    /* Verify nextUpdate */
+    if(nextUpdate != NULL) {
+        ret = X509_cmp_time(nextUpdate, &verification_time);
+        if(ret == 0) {
+            xmlSecOpenSSLError("X509_cmp_time(nextUpdate)", NULL);
+            return(-1);
+        }
+        if(ret < 0) {
+            /* nextUpdate < verification_time: CRL expired */
+            char issuer[256];
+            X509_NAME_oneline(X509_CRL_get_issuer(crl), issuer, sizeof(issuer));
+            xmlSecOtherError2(XMLSEC_ERRORS_R_CRL_HAS_EXPIRED, NULL,
+                            "issuer=%s", issuer);
+            return(0);
+        }
+    }
+
+    /* Success */
+    return(1);
+}
+
+static int
+xmlSecOpenSSLX509VerifyCRLSignature(X509_STORE* xst, X509_STORE_CTX* xsc, STACK_OF(X509)* untrusted, X509_CRL *crl, xmlSecKeyInfoCtx* keyInfoCtx) {
+    X509 *issuer_cert = NULL;
     EVP_PKEY *pKey = NULL;
     int ret;
     int res = -1;
@@ -1277,31 +1543,16 @@ xmlSecOpenSSLX509VerifyCRL(X509_STORE* xst, X509_STORE_CTX* xsc, STACK_OF(X509)*
     xmlSecAssert2(crl != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
-    xobj = (X509_OBJECT *)X509_OBJECT_new();
-    if(xobj == NULL) {
-        xmlSecOpenSSLError("X509_OBJECT_new", NULL);
+    /* Find the CRL issuer certificate (searches untrusted first, then trusted) */
+    issuer_cert = xmlSecOpenSSLX509FindIssuer(X509_CRL_get_issuer(crl), xst, xsc, untrusted, keyInfoCtx);
+    if(issuer_cert == NULL) {
+        char issuer[256];
+        X509_NAME_oneline(X509_CRL_get_issuer(crl), issuer, sizeof(issuer));
+        xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_NOT_FOUND, NULL, "issuer=%s", issuer);
         goto done;
     }
 
-    /* init contenxt and set verification params from keyinfo ctx*/
-    ret = X509_STORE_CTX_init(xsc, xst, NULL, untrusted);
-    if(ret != 1) {
-        xmlSecOpenSSLError("X509_STORE_CTX_init", NULL);
-        goto done;
-    }
-    ret = xmlSecOpenSSLX509StoreSetCtx(xsc, keyInfoCtx);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecOpenSSLX509StoreSetCtx", NULL);
-        goto done;
-    }
-
-    ret = X509_STORE_CTX_get_by_subject(xsc, X509_LU_X509, X509_CRL_get_issuer(crl), xobj);
-    if(ret <= 0) {
-        xmlSecOpenSSLError("X509_STORE_CTX_get_by_subject", NULL);
-        goto done;
-    }
-
-    pKey = X509_get_pubkey(X509_OBJECT_get0_X509(xobj));
+    pKey = X509_get_pubkey(issuer_cert);
     if(pKey == NULL) {
         xmlSecOpenSSLError("X509_get_pubkey", NULL);
         goto done;
@@ -1311,7 +1562,7 @@ xmlSecOpenSSLX509VerifyCRL(X509_STORE* xst, X509_STORE_CTX* xsc, STACK_OF(X509)*
     if(ret < 0) {
         xmlSecOpenSSLError("X509_CRL_verify", NULL);
         goto done;
-    } if(ret != 0) {
+    } else if(ret == 0) {
         char issuer[256];
 
         /* cert was not verified */
@@ -1330,25 +1581,47 @@ done:
     if(pKey != NULL) {
         EVP_PKEY_free(pKey);
     }
-    if(xobj != NULL) {
-        X509_OBJECT_free(xobj);
+    if(issuer_cert != NULL) {
+        X509_free(issuer_cert);
     }
-    X509_STORE_CTX_cleanup(xsc);
     return(res);
-
-#else /* XMLSEC_OPENSSL_NO_CRL_VERIFICATION */
-    /* boringssl doesn't have X509_OBJECT_new() or public definition of X509_OBJECT */
-    UNREFERENCED_PARAMETER(xst);
-    UNREFERENCED_PARAMETER(xsc);
-    UNREFERENCED_PARAMETER(untrusted);
-    UNREFERENCED_PARAMETER(crl);
-    UNREFERENCED_PARAMETER(keyInfoCtx);
-    return(1);
-#endif /* XMLSEC_OPENSSL_NO_CRL_VERIFICATION */
 }
 
+static int
+xmlSecOpenSSLX509VerifyCRL(X509_STORE* xst, X509_STORE_CTX* xsc, STACK_OF(X509)* untrusted, X509_CRL *crl, xmlSecKeyInfoCtx* keyInfoCtx) {
+    int ret;
 
-int xmlSecOpenSSLX509FindCertCtxInitialize(xmlSecOpenSSLX509FindCertCtxPtr ctx,
+    xmlSecAssert2(xst != NULL, -1);
+    xmlSecAssert2(xsc != NULL, -1);
+    xmlSecAssert2(crl != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+
+    /* Verify time validity first (fast check) */
+    ret = xmlSecOpenSSLX509VerifyCRLTimeValidity(crl, keyInfoCtx);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecOpenSSLX509VerifyCRLTimeValidity", NULL);
+        return(-1);
+    } else if(ret != 1) {
+        /* Time validity check failed */
+        return(0);
+    }
+
+    /* Verify CRL signature (slower check) */
+    ret = xmlSecOpenSSLX509VerifyCRLSignature(xst, xsc, untrusted, crl, keyInfoCtx);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecOpenSSLX509VerifyCRLSignature", NULL);
+        return(-1);
+    } else if(ret != 1) {
+        /* Signature verification failed */
+        return(0);
+    }
+
+    /* success: verified */
+    return(1);
+}
+
+int
+xmlSecOpenSSLX509FindCertCtxInitialize(xmlSecOpenSSLX509FindCertCtxPtr ctx,
     const xmlChar *subjectName,
     const xmlChar *issuerName, const xmlChar *issuerSerial,
     const xmlSecByte * ski, xmlSecSize skiSize

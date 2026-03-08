@@ -559,6 +559,19 @@ static xmlSecAppCmdLineParam verifyKeysParam = {
     NULL
 };
 
+static xmlSecAppCmdLineParam verifyCrlsParam = {
+    xmlSecAppCmdLineTopicX509Certs,
+    "--verify-crls",
+    NULL,
+    "--verify-crls"
+    "\n\tforce verification of loaded CRLs: CRLs are required to have a valid signature"
+    "\n\tfrom an issuer certificate in the trusted or untrusted certificate store, and"
+    "\n\tmust be within their validity period (thisUpdate/nextUpdate)",
+    xmlSecAppCmdLineParamTypeFlag,
+    xmlSecAppCmdLineParamFlagNone,
+    NULL
+};
+
 /****************************************************************
  *
  * Common params
@@ -1024,7 +1037,7 @@ static xmlSecAppCmdLineParam X509DontVerifyCerts = {
     "--insecure",
     NULL,
     "--insecure"
-    "\n\tdo not verify certificates",
+    "\n\tdo not verify certificates or CRLs",
     xmlSecAppCmdLineParamTypeFlag,
     xmlSecAppCmdLineParamFlagNone,
     NULL
@@ -1117,6 +1130,7 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
     &untrustedDerParam,
     &crlPemParam,
     &crlDerParam,
+    &verifyCrlsParam,
     &verificationTimeParam,
     &verificationGmtTimeParam,
     &X509SkipTimeChecksParam,
@@ -2453,6 +2467,12 @@ xmlSecAppLoadKeys(void) {
        verifyKeys = 1;
     }
 
+    /* do we need to verify CRLs? */
+    int verifyCrls = 0;
+    if(xmlSecAppCmdLineParamIsSet(&verifyCrlsParam)) {
+       verifyCrls = 1;
+    }
+
     /* generate new keys */
     for(value = genKeyParam.value; value != NULL; value = value->next) {
         if(value->strValue == NULL) {
@@ -2540,12 +2560,23 @@ xmlSecAppLoadKeys(void) {
             fprintf(stderr, "Error: invalid value for option \"%s\".\n", crlPemParam.fullName);
             xmlSecKeyInfoCtxDestroy(keyInfoCtx);
             return(-1);
-        } else if(xmlSecAppCryptoSimpleKeysMngrCrlLoad(g_keysManager,
-                    value->strValue, xmlSecKeyDataFormatPem) < 0) {
-            fprintf(stderr, "Error: failed to load CRLs from \"%s\".\n",
-                    value->strValue);
-            xmlSecKeyInfoCtxDestroy(keyInfoCtx);
-            return(-1);
+        }
+        if(verifyCrls != 0) {
+            if(xmlSecAppCryptoSimpleKeysMngrCrlLoadAndVerify(g_keysManager,
+                        value->strValue, xmlSecKeyDataFormatPem, keyInfoCtx) < 0) {
+                fprintf(stderr, "Error: failed to load CRLs from \"%s\".\n",
+                        value->strValue);
+                xmlSecKeyInfoCtxDestroy(keyInfoCtx);
+                return(-1);
+            }
+        } else {
+            if(xmlSecAppCryptoSimpleKeysMngrCrlLoad(g_keysManager,
+                        value->strValue, xmlSecKeyDataFormatPem) < 0) {
+                fprintf(stderr, "Error: failed to load CRLs from \"%s\".\n",
+                        value->strValue);
+                xmlSecKeyInfoCtxDestroy(keyInfoCtx);
+                return(-1);
+            }
         }
     }
     for(value = crlDerParam.value; value != NULL; value = value->next) {
@@ -2553,12 +2584,23 @@ xmlSecAppLoadKeys(void) {
             fprintf(stderr, "Error: invalid value for option \"%s\".\n", crlDerParam.fullName);
             xmlSecKeyInfoCtxDestroy(keyInfoCtx);
             return(-1);
-        } else if(xmlSecAppCryptoSimpleKeysMngrCrlLoad(g_keysManager,
-                    value->strValue, xmlSecKeyDataFormatDer) < 0) {
-            fprintf(stderr, "Error: failed to load CRLs from \"%s\".\n",
-                    value->strValue);
-            xmlSecKeyInfoCtxDestroy(keyInfoCtx);
-            return(-1);
+        }
+        if(verifyCrls != 0) {
+            if(xmlSecAppCryptoSimpleKeysMngrCrlLoadAndVerify(g_keysManager,
+                        value->strValue, xmlSecKeyDataFormatDer, keyInfoCtx) < 0) {
+                fprintf(stderr, "Error: failed to load CRLs from \"%s\".\n",
+                        value->strValue);
+                xmlSecKeyInfoCtxDestroy(keyInfoCtx);
+                return(-1);
+            }
+        } else {
+            if(xmlSecAppCryptoSimpleKeysMngrCrlLoad(g_keysManager,
+                        value->strValue, xmlSecKeyDataFormatDer) < 0) {
+                fprintf(stderr, "Error: failed to load CRLs from \"%s\".\n",
+                        value->strValue);
+                xmlSecKeyInfoCtxDestroy(keyInfoCtx);
+                return(-1);
+            }
         }
     }
 #endif /* XMLSEC_NO_X509 */

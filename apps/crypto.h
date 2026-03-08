@@ -45,6 +45,10 @@ int     xmlSecAppCryptoSimpleKeysMngrCertLoad                   (xmlSecKeysMngrP
 int     xmlSecAppCryptoSimpleKeysMngrCrlLoad                    (xmlSecKeysMngrPtr mngr,
                                                                  const char* filename,
                                                                  xmlSecKeyDataFormat format);
+int     xmlSecAppCryptoSimpleKeysMngrCrlLoadAndVerify           (xmlSecKeysMngrPtr mngr,
+                                                                 const char* filename,
+                                                                 xmlSecKeyDataFormat format,
+                                                                 xmlSecKeyInfoCtxPtr keyInfoCtx);
 int     xmlSecAppCryptoSimpleKeysMngrKeyAndCertsLoad            (xmlSecKeysMngrPtr mngr,
                                                                  const char* files,
                                                                  const char* pwd,

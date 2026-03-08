@@ -279,6 +279,22 @@ typedef int                     (*xmlSecCryptoAppKeysMngrCrlLoadMemoryMethod)(xm
                                                                          xmlSecKeyDataFormat format);
 
 /**
+ * xmlSecCryptoAppKeysMngrCrlLoadAndVerifyMethod:
+ * @mngr:               the keys manager.
+ * @filename:           the CRL file.
+ * @format:             the CRL file format.
+ * @keyInfoCtx:         the key info context for verification parameters.
+ *
+ * Atomically loads and verifies a CRL from @filename.
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+typedef int                     (*xmlSecCryptoAppKeysMngrCrlLoadAndVerifyMethod)(xmlSecKeysMngrPtr mngr,
+                                                                         const char *filename,
+                                                                         xmlSecKeyDataFormat format,
+                                                                         xmlSecKeyInfoCtxPtr keyInfoCtx);
+
+/**
  * xmlSecCryptoAppKeyLoadMethod:
  * @filename:           the key filename.
  * @format:             the key file format.
@@ -668,6 +684,7 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoAppKeysMngrCertLoadMethod        cryptoAppKeysMngrCertLoad;
     xmlSecCryptoAppKeysMngrCertLoadMemoryMethod  cryptoAppKeysMngrCertLoadMemory;
     xmlSecCryptoAppKeysMngrCrlLoadMethod         cryptoAppKeysMngrCrlLoad;
+    xmlSecCryptoAppKeysMngrCrlLoadAndVerifyMethod cryptoAppKeysMngrCrlLoadAndVerify;
     xmlSecCryptoAppKeysMngrCrlLoadMemoryMethod   cryptoAppKeysMngrCrlLoadMemory;
     xmlSecCryptoAppKeyLoadMethod                 cryptoAppKeyLoad;
     xmlSecCryptoAppKeyLoadExMethod               cryptoAppKeyLoadEx;

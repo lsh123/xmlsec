@@ -446,6 +446,7 @@ xmlSecCryptoGetFunctions_openssl(void) {
     gXmlSecOpenSSLFunctions->cryptoAppKeysMngrCertLoad          = xmlSecOpenSSLAppKeysMngrCertLoad;
     gXmlSecOpenSSLFunctions->cryptoAppKeysMngrCertLoadMemory    = xmlSecOpenSSLAppKeysMngrCertLoadMemory;
     gXmlSecOpenSSLFunctions->cryptoAppKeysMngrCrlLoad           = xmlSecOpenSSLAppKeysMngrCrlLoad;
+    gXmlSecOpenSSLFunctions->cryptoAppKeysMngrCrlLoadAndVerify  = xmlSecOpenSSLAppKeysMngrCrlLoadAndVerify;
     gXmlSecOpenSSLFunctions->cryptoAppKeysMngrCrlLoadMemory     = xmlSecOpenSSLAppKeysMngrCrlLoadMemory;
     gXmlSecOpenSSLFunctions->cryptoAppPkcs12Load                = xmlSecOpenSSLAppPkcs12Load;
     gXmlSecOpenSSLFunctions->cryptoAppPkcs12LoadMemory          = xmlSecOpenSSLAppPkcs12LoadMemory;

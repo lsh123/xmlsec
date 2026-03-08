@@ -295,6 +295,7 @@ xmlSecCryptoGetFunctions_gcrypt(void) {
 #ifndef XMLSEC_NO_X509
     gXmlSecGCryptFunctions->cryptoAppKeysMngrCertLoad           = xmlSecGCryptAppKeysMngrCertLoad;
     gXmlSecGCryptFunctions->cryptoAppKeysMngrCrlLoad            = xmlSecGCryptAppKeysMngrCrlLoad;
+    gXmlSecGCryptFunctions->cryptoAppKeysMngrCrlLoadAndVerify   = xmlSecGCryptAppKeysMngrCrlLoadAndVerify;
     gXmlSecGCryptFunctions->cryptoAppPkcs12Load                 = xmlSecGCryptAppPkcs12Load;
     gXmlSecGCryptFunctions->cryptoAppKeyCertLoad                = xmlSecGCryptAppKeyCertLoad;
 #endif /* XMLSEC_NO_X509 */

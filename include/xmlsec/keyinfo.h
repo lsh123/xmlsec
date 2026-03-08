@@ -110,7 +110,7 @@ typedef enum {
 /**
  * XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS:
  *
- * If flag is set then we'll load certificates from <dsig:X509Data />
+ * If flag is set then we'll load certificates or CRLs from <dsig:X509Data />
  * element without verification.
  */
 #define XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS         0x00000200

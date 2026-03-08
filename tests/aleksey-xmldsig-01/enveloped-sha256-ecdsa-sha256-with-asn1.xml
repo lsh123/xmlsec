@@ -18,8 +18,8 @@
         <DigestValue>SsyGDfQDqAg9cuEzSIJDsrp8cSWGzoRqH8E3atXJ4Dw=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>MEUCIQDzktfWdZk0IsMMChhU+ddhyKrFdql6j/QhRDhDh1l6BwIgAVajjQbJsLzP
-XtalosVKuE7JXpHrFs3M5av3IlOVa5w=</SignatureValue>
+    <SignatureValue>MEUCIFZ5PkfNff7bUO0ghrdHE89IuVu/yjuDB4hFVQLrwCx+AiEAo3NIZs8P3KKy
+ukrtG+9rsBaTIIsd3KhWvVlnQo3bfUw=</SignatureValue>
     <KeyInfo>
       <KeyName>TestKeyName-ec-prime256v1</KeyName>
     </KeyInfo>

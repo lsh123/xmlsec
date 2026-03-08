@@ -18,7 +18,7 @@
         <DigestValue>9H/rQr2Axe9hYTV2n/tCp+3UIQQ=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>God1pk1tGcCZPXHAvouf7BRr1jMpLY4ON12g06mEffLT2qsUARyPzg==</SignatureValue>
+    <SignatureValue>Y4wecOk7lfct8omewBvJhhR8Ugd7HYsGppWVpMEwPSlMaDFKi/T5Ow==</SignatureValue>
     <KeyInfo>
       <KeyName>TestKeyName-dsa-1024</KeyName>
     </KeyInfo>

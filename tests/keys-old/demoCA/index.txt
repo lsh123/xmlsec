@@ -1,0 +1,52 @@
+V	21140429175059Z		AFA28BB933ADDAAC	unknown	/C=US/ST=California/O=XML Security Library (http://www.aleksey.com/xmlsec)/OU=Root CA/CN=Aleksey Sanin/emailAddress=xmlsec@aleksey.com
+V	21140429175238Z		AFA28BB933ADDAAD	unknown	/C=US/ST=California/O=XML Security Library (http://www.aleksey.com/xmlsec)/CN=Aleksey Sanin/emailAddress=xmlsec@aleksey.com
+V	21140429175426Z		AFA28BB933ADDAAE	unknown	/C=US/ST=California/O=XML Security Library (http://www.aleksey.com/xmlsec)/OU=Test Third Level DSA Certificate/CN=Aleksey Sanin/emailAddress=xmlsec@aleksey.com
+V	21140429175534Z		AFA28BB933ADDAAF	unknown	/C=US/ST=California/O=XML Security Library (http://www.aleksey.com/xmlsec)/OU=Test Third Level RSA Certificate/CN=Aleksey Sanin/emailAddress=xmlsec@aleksey.com
+V	21140429175706Z		AFA28BB933ADDAB0	unknown	/C=US/ST=California/O=XML Security Library (http://www.aleksey.com/xmlsec)/OU=Test Large RSA Key/CN=Aleksey Sanin/emailAddress=xmlsec@aleksey.com
+V	140524175816Z		AFA28BB933ADDAB1	unknown	/C=US/ST=California/O=XML Security Library (http://www.aleksey.com/xmlsec)/OU=Test Expired RSA Certificate/CN=Aleksey Sanin/emailAddress=xmlsec@aleksey.com
+V	21150209225409Z		AFA28BB933ADDAB2	unknown	/C=US/ST=California/O=XML Security Library (http://www.aleksey.com/xmlsec)/OU=Test Third Level DSA 2048 Certificate/CN=Aleksey Sanin/emailAddress=xmlsec@aleksey.com
+V	21150209225453Z		AFA28BB933ADDAB3	unknown	/C=US/ST=California/O=XML Security Library (http://www.aleksey.com/xmlsec)/OU=Test Third Level DSA 3072 Certificate/CN=Aleksey Sanin/emailAddress=xmlsec@aleksey.com
+V	21160105172612Z		AFA28BB933ADDAB4	unknown	/C=US/ST=California/O=XML Security Library (http://www.aleksey.com/xmlsec)/CN=ECDSA secp256k1 Key/emailAddress=xmlsec@aleksey.com
+V	21170122220821Z		AFA28BB933ADDAB5	unknown	/C=US/ST=California/O=XML Security Library (http://www.aleksey.com/xmlsec)/CN=ECDSA secp256r1 Key/emailAddress=xmlsec@aleksey.com
+V	21220529223446Z		AFA28BB933ADDAB6	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/OU=Test Third Level GOST2012 256 bits Certificate/CN=Aleksey Sanin/emailAddress=xmlsec@aleksey.com
+V	21220529224030Z		AFA28BB933ADDAB7	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/OU=Test Third Level GOST2012 512 bits Certificate/CN=Aleksey Sanin/emailAddress=xmlsec@aleksey.com
+V	21220529235043Z		AFA28BB933ADDAB8	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/OU=Test Third Level GOST2001 Certificate/CN=Aleksey Sanin/emailAddress=xmlsec@aleksey.com
+R	21221118201448Z	230304041857Z	AFA28BB933ADDAB9	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/OU=Test Third Level RSA Certificate/CN=Aleksey Sanin/emailAddress=xmlsec@aleksey.com
+V	221214013642Z		AFA28BB933ADDABA	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/OU=Test Expired RSA Certificate/CN=Aleksey Sanin/emailAddress=xmlsec@aleksey.com
+V	21221119024343Z		AFA28BB933ADDABB	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/OU=Test Third Level DSA Certificate/CN=Aleksey Sanin/emailAddress=xmlsec@aleksey.com
+V	21230114035413Z		AFA28BB933ADDABC	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/OU=ECDSA secp521r1 Key/CN=ECDSA secp521r1 Key/emailAddress=xmlsec@aleksey.com
+V	21230120193208Z		AFA28BB933ADDABD	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=ECDSA secp384r1 Key/emailAddress=xmlsec@aleksey.com
+V	21230202052913Z		AFA28BB933ADDABE	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/OU=ECDSA secp256r1 Second Key/CN=Aleksey Sanin/emailAddress=xmlsec@aleksey.com
+V	21230202173122Z		AFA28BB933ADDABF	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/OU=EC prime256v1 Key/CN=Aleksey Sanin/emailAddress=xmlsec@aleksey.com
+V	21230202173233Z		AFA28BB933ADDAC0	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/OU=EC prime256v1 Second Key/CN=Aleksey Sanin/emailAddress=xmlsec@aleksey.com
+V	21251126052607Z		AFA28BB933ADDAC1	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=ML-DSA-44 Key/emailAddress=xmlsec@aleksey.com
+V	21251126052735Z		AFA28BB933ADDAC2	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/OU=ML-DSA-65 Key/CN=Aleksey Sanin/emailAddress=xmlsec@aleksey.com
+V	21251126052906Z		AFA28BB933ADDAC3	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/OU=ML-DSA-87 Key/CN=Aleksey Sanin/emailAddress=xmlsec@aleksey.com
+V	21251126200534Z		AFA28BB933ADDAC4	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=SLH-DSA-SHA2-128F Key/emailAddress=xmlsec@aleksey.com
+V	21251126223007Z		AFA28BB933ADDAC5	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=ML-DSA-44 Key
+V	21251126223340Z		AFA28BB933ADDAC6	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=ML-DSA-65 Key
+V	21251126223345Z		AFA28BB933ADDAC7	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=ML-DSA-87 Key
+V	21251126223350Z		AFA28BB933ADDAC8	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=SLH-DSA-SHA2-128f Key
+V	21251126224653Z		AFA28BB933ADDAC9	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=EC Key
+V	21251126225526Z		AFA28BB933ADDACA	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=Test Key ec-prime256v1
+V	21251126225555Z		AFA28BB933ADDACB	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=Test Key ec-prime256v1-second
+V	21251126225657Z		AFA28BB933ADDACC	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=Test Key ml-dsa-44
+V	21251126225719Z		AFA28BB933ADDACD	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=Test Key ml-dsa-65
+V	21251126225737Z		AFA28BB933ADDACE	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=Test Key ml-dsa-87
+V	21251126225758Z		AFA28BB933ADDACF	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=Test Key slh-dsa-sha2-128f
+V	21251127001237Z		AFA28BB933ADDAD0	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=Test Key ec-prime384v1
+V	21251127002110Z		AFA28BB933ADDAD1	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=Test Key ec-prime521v1
+V	21251127023319Z		AFA28BB933ADDAD2	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=Test Key dsa-1024
+V	21251127024727Z		AFA28BB933ADDAD3	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=Test Key dsa-2048
+V	21251127030039Z		AFA28BB933ADDAD4	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=Test Key dsa-3072
+R	21251127152830Z	251221235908Z	AFA28BB933ADDAD5	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=Test Key rsa-2048
+V	21251127153308Z		AFA28BB933ADDAD6	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=Test Key rsa-4096
+V	251215050000Z		AFA28BB933ADDAD7	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=Test Key rsa-expired
+V	21251128020705Z		AFA28BB933ADDAD8	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=Test Key slh-dsa-sha2-256f
+V	21251128022212Z		AFA28BB933ADDAD9	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=Test Key slh-dsa-sha2-192f
+V	21251128022823Z		AFA28BB933ADDADA	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=Test Key slh-dsa-sha2-128s
+V	21251128023353Z		AFA28BB933ADDADB	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=Test Key slh-dsa-sha2-192s
+V	21251128023845Z		AFA28BB933ADDADC	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=Test Key slh-dsa-sha2-256s
+V	21251128181600Z		AFA28BB933ADDADD	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=Test Key gost-2001
+V	21251128182940Z		AFA28BB933ADDADE	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=Test Key gost-2012-256
+V	21251128183538Z		AFA28BB933ADDADF	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=Test Key gost-2012-512

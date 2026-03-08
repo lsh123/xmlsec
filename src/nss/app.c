@@ -1412,13 +1412,80 @@ xmlSecNssAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, xmlSec
 int
 xmlSecNssAppKeysMngrCrlLoadAndVerify(xmlSecKeysMngrPtr mngr, const char *filename,
     xmlSecKeyDataFormat format, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlSecKeyDataStorePtr x509Store;
+    CERTSignedCrl* crl = NULL;
+    SECItem secItem = { siBuffer, NULL, 0 };
+    int ret;
+    int res = -1;
+
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(filename != NULL, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
-    xmlSecNotImplementedError("NSS CRL verification not implemented yet");
-    return(-1);
+    /* Get X509 store from keys manager */
+    x509Store = xmlSecKeysMngrGetDataStore(mngr, xmlSecNssX509StoreId);
+    if(x509Store == NULL) {
+        xmlSecInternalError("xmlSecKeysMngrGetDataStore(xmlSecNssX509StoreId)", NULL);
+        return(-1);
+    }
+
+    /* Load CRL from file ONCE */
+    memset(&secItem, 0, sizeof(secItem));
+    ret = xmlSecNssAppReadSECItem(&secItem, filename);
+    if((ret < 0) || (secItem.type != siBuffer) ||(secItem.data == NULL) || (secItem.len <= 0)) {
+        xmlSecInternalError2("xmlSecNssAppReadSECItem", NULL,
+            "filename=%s", xmlSecErrorsSafeString(filename));
+        goto done;
+    }
+
+    /* Read CRL from memory - do NOT skip verification checks */
+    switch(format) {
+    case xmlSecKeyDataFormatDer:
+        crl = xmlSecNssX509CrlDerRead(secItem.data, secItem.len, XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_STRICT_CHECKS);
+        if(crl == NULL) {
+            xmlSecInternalError2("xmlSecNssX509CrlDerRead", NULL,
+                "filename=%s", xmlSecErrorsSafeString(filename));
+            goto done;
+        }
+        break;
+    default:
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
+            "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
+        goto done;
+    }
+
+    /* Verify the in-memory CRL */
+    ret = xmlSecNssX509StoreVerifyCrl(x509Store, crl, keyInfoCtx);
+    if(ret < 0) {
+        xmlSecInternalError2("xmlSecNssX509StoreVerifyCrl", NULL,
+            "filename=%s", xmlSecErrorsSafeString(filename));
+        goto done;
+    } else if(ret != 1) {
+        /* Verification failed - treat as error */
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_DATA, NULL,
+            "filename=%s", xmlSecErrorsSafeString(filename));
+        goto done;
+    }
+
+    /* Adopt the verified in-memory CRL */
+    ret = xmlSecNssX509StoreAdoptCrl(x509Store, crl);
+    if(ret < 0) {
+        xmlSecInternalError2("xmlSecNssX509StoreAdoptCrl", NULL,
+            "filename=%s", xmlSecErrorsSafeString(filename));
+        goto done;
+    }
+
+    /* Success - CRL is now owned by store, don't free it */
+    crl = NULL;
+    res = 0;
+
+done:
+    SECITEM_FreeItem(&secItem, PR_FALSE);
+    if(crl != NULL) {
+        SEC_DestroyCrl(crl);
+    }
+    return(res);
 }
 
 /**

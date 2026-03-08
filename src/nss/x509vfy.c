@@ -26,6 +26,7 @@
 #include <secerr.h>
 #include <secder.h>
 #include <sechash.h>
+#include <keyhi.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
@@ -401,12 +402,29 @@ xmlSecNssX509StoreFindChildCert(CERTCertificate* cert, CERTCertList* certs) {
      return(NULL);
 }
 
+static int64
+xmlSecNssX509SGetVerificationTime(xmlSecKeyInfoCtx* keyInfoCtx) {
+    int64 verificationTime;
+    int64 tmp1, tmp2;
+
+    xmlSecAssert2(keyInfoCtx != NULL, 0);
+
+    if(keyInfoCtx->certsVerificationTime > 0) {
+        /* convert the time since epoch in seconds to microseconds */
+        LL_UI2L(verificationTime, keyInfoCtx->certsVerificationTime);
+        tmp1 = (int64)PR_USEC_PER_SEC;
+        tmp2 = verificationTime;
+        LL_MUL(verificationTime, tmp1, tmp2);
+    } else {
+        verificationTime = PR_Now();
+    }
+    return verificationTime;
+}
 
 /* returns 1 if verified, 0 if not, an < 0 if an error occurs */
 static int
 xmlSecNssX509StoreVerifyCert(CERTCertDBHandle *handle, CERTCertificate* cert, xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    int64 timeboundary;
-    int64 tmp1, tmp2;
+    int64 verificationTime;
     SECStatus status;
     PRErrorCode err;
 
@@ -419,21 +437,14 @@ xmlSecNssX509StoreVerifyCert(CERTCertDBHandle *handle, CERTCertificate* cert, xm
         return(1);
     }
 
-    if(keyInfoCtx->certsVerificationTime > 0) {
-        /* convert the time since epoch in seconds to microseconds */
-        LL_UI2L(timeboundary, keyInfoCtx->certsVerificationTime);
-        tmp1 = (int64)PR_USEC_PER_SEC;
-        tmp2 = timeboundary;
-        LL_MUL(timeboundary, tmp1, tmp2);
-    } else {
-        timeboundary = PR_Now();
-    }
+    /* get verification time */
+    verificationTime = xmlSecNssX509SGetVerificationTime(keyInfoCtx);
 
     /* it's important to set the usage here, otherwise no real verification
      * is performed. */
     status = CERT_VerifyCertificate(handle, cert, PR_FALSE,
                 certificateUsageEmailSigner,
-                timeboundary , NULL, NULL, NULL);
+                verificationTime , NULL, NULL, NULL);
     if(status == SECSuccess) {
         return(1);
     }
@@ -680,6 +691,193 @@ xmlSecNssX509StoreAdoptCrl(xmlSecKeyDataStorePtr store, CERTSignedCrl * crl) {
         return(-1);
     }
     return(0);
+}
+
+/* Helper function to verify CRL time validity */
+static int
+xmlSecNssX509VerifyCRLTimeValidity(CERTSignedCrl* crl, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    PRTime verification_time;
+    PRTime thisUpdate = 0;
+    PRTime nextUpdate = 0;
+    time_t verification_ts;
+
+    xmlSecAssert2(crl != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+
+    /* Get verification time */
+    if(keyInfoCtx->certsVerificationTime > 0) {
+        verification_ts = keyInfoCtx->certsVerificationTime;
+    } else {
+        verification_ts = time(NULL);
+    }
+
+    /* Convert time_t to PRTime (microseconds since epoch) */
+    verification_time = ((PRTime)verification_ts) * PR_USEC_PER_SEC;
+
+    /* Get thisUpdate */
+    if(crl->crl.lastUpdate.data != NULL) {
+        SECStatus rv = DER_DecodeTimeChoice(&thisUpdate, &(crl->crl.lastUpdate));
+        if(rv != SECSuccess) {
+            xmlSecNssError("DER_DecodeTimeChoice(thisUpdate)", NULL);
+            return(-1);
+        }
+
+        /* Verify thisUpdate <= verification_time */
+        if(thisUpdate > verification_time) {
+            /* CRL not yet valid */
+            xmlSecOtherError(XMLSEC_ERRORS_R_CRL_NOT_YET_VALID, NULL, NULL);
+            return(0);
+        }
+    }
+
+    /* Get nextUpdate */
+    if(crl->crl.nextUpdate.data != NULL) {
+        SECStatus rv = DER_DecodeTimeChoice(&nextUpdate, &(crl->crl.nextUpdate));
+        if(rv != SECSuccess) {
+            xmlSecNssError("DER_DecodeTimeChoice(nextUpdate)", NULL);
+            return(-1);
+        }
+
+        /* Verify verification_time <= nextUpdate */
+        if(verification_time > nextUpdate) {
+            /* CRL expired */
+            xmlSecOtherError(XMLSEC_ERRORS_R_CRL_HAS_EXPIRED, NULL, NULL);
+            return(0);
+        }
+    }
+
+    /* Success */
+    return(1);
+}
+
+/* Helper function to verify CRL signature */
+static int
+xmlSecNssX509VerifyCRLSignature(xmlSecNssX509StoreCtxPtr ctx, CERTSignedCrl* crl, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    CERTCertificate* issuer_cert = NULL;
+    SECKEYPublicKey* pubkey = NULL;
+    SECStatus rv;
+    int64 verificationTime;
+    int res = -1;
+
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(crl != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+    UNREFERENCED_PARAMETER(keyInfoCtx);
+
+    /* Find the CRL issuer certificate in the store */
+    if((crl->crl.derName.data != NULL) && (crl->crl.derName.len > 0)) {
+        /* Search in the certs list */
+        if(ctx->certsList != NULL) {
+            CERTCertListNode* node;
+            for(node = CERT_LIST_HEAD(ctx->certsList);
+                !CERT_LIST_END(node, ctx->certsList);
+                node = CERT_LIST_NEXT(node)) {
+                if(node->cert != NULL) {
+                    /* Compare CRL issuer (derName) with certificate subject (derSubject) */
+                    if(SECITEM_CompareItem(&(crl->crl.derName), &(node->cert->derSubject)) == SECEqual) {
+                        issuer_cert = CERT_DupCertificate(node->cert);
+                        break;
+                    }
+                }
+            }
+        }
+
+        /* If not found in store, try to find in NSS database */
+        if(issuer_cert == NULL) {
+            issuer_cert = CERT_FindCertByName(CERT_GetDefaultCertDB(), &(crl->crl.derName));
+        }
+    }
+
+    if(issuer_cert == NULL) {
+        xmlSecOtherError(XMLSEC_ERRORS_R_CERT_NOT_FOUND, NULL, "CRL issuer certificate not found");
+        goto done;
+    }
+
+    /* Get the public key from the issuer certificate */
+    pubkey = CERT_ExtractPublicKey(issuer_cert);
+    if(pubkey == NULL) {
+        xmlSecNssError("CERT_ExtractPublicKey", NULL);
+        goto done;
+    }
+
+    /* get verification time */
+    verificationTime = xmlSecNssX509SGetVerificationTime(keyInfoCtx);
+
+    /* Verify the CRL signature */
+    rv = CERT_VerifySignedData(&(crl->signatureWrap), issuer_cert, verificationTime, NULL);
+    if(rv != SECSuccess) {
+        xmlSecNssError("CERT_VerifySignedData", NULL);
+        /* Verification failed */
+        res = 0;
+        goto done;
+    }
+
+    /* Success: verified */
+    res = 1;
+
+done:
+    if(pubkey != NULL) {
+        SECKEY_DestroyPublicKey(pubkey);
+    }
+    if(issuer_cert != NULL) {
+        CERT_DestroyCertificate(issuer_cert);
+    }
+    return(res);
+}
+
+/**
+ * xmlSecNssX509StoreVerifyCrl:
+ * @store:              the pointer to X509 key data store klass.
+ * @crl:                the CRL to verify.
+ * @keyInfoCtx:         the key info context for verification parameters.
+ *
+ * Verifies @crl by checking:
+ * 1. Signature is valid (signed by issuer cert in store)
+ * 2. thisUpdate <= verification_time <= nextUpdate
+ *
+ * Returns: 1 if verified, 0 if not verified, or a negative value on error.
+ */
+int
+xmlSecNssX509StoreVerifyCrl(xmlSecKeyDataStorePtr store, CERTSignedCrl* crl,
+    xmlSecKeyInfoCtxPtr keyInfoCtx
+) {
+    xmlSecNssX509StoreCtxPtr ctx;
+    int ret;
+
+    xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecNssX509StoreId), -1);
+    xmlSecAssert2(crl != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+
+    /* do we even need to verify the CRL? */
+    if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS) != 0) {
+        return(1);
+    }
+
+    ctx = xmlSecNssX509StoreGetCtx(store);
+    xmlSecAssert2(ctx != NULL, -1);
+
+    /* Verify time validity first (fast check) */
+    ret = xmlSecNssX509VerifyCRLTimeValidity(crl, keyInfoCtx);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecNssX509VerifyCRLTimeValidity", xmlSecKeyDataStoreGetName(store));
+        return(-1);
+    } else if(ret != 1) {
+        /* Time validity check failed */
+        return(0);
+    }
+
+    /* Verify CRL signature (slower check) */
+    ret = xmlSecNssX509VerifyCRLSignature(ctx, crl, keyInfoCtx);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecNssX509VerifyCRLSignature", xmlSecKeyDataStoreGetName(store));
+        return(-1);
+    } else if(ret != 1) {
+        /* Signature verification failed */
+        return(0);
+    }
+
+    /* Success */
+    return(1);
 }
 
 static int

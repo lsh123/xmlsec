@@ -82,6 +82,14 @@ static gnutls_x509_crt_t xmlSecGnuTLSX509FindSignedCert                 (xmlSecP
                                                                          gnutls_x509_crt_t cert);
 static gnutls_x509_crt_t xmlSecGnuTLSX509FindSignerCert                 (xmlSecPtrListPtr certs,
                                                                          gnutls_x509_crt_t cert);
+static int              xmlSecGnuTLSX509StoreVerifyCert                 (xmlSecGnuTLSX509StoreCtxPtr ctx,
+                                                                         gnutls_x509_crt_t* certs_chain,
+                                                                         xmlSecSize certs_chain_size,
+                                                                         gnutls_x509_crt_t* trusted,
+                                                                         xmlSecSize trusted_size,
+                                                                         gnutls_x509_crl_t* crls,
+                                                                         xmlSecSize crls_size,
+                                                                         const xmlSecKeyInfoCtx* keyInfoCtx);
 
 
 /**
@@ -945,7 +953,6 @@ xmlSecGnuTLSX509StoreVerifyCrlSignature(xmlSecGnuTLSX509StoreCtxPtr ctx, gnutls_
     xmlChar *issuer_dn = NULL;
     unsigned int verify_result = 0;
     xmlSecSize ii, trusted_size, untrusted_size;
-    int issuer_is_trusted = 0;
     unsigned int flags = 0;
     int err;
     int res = -1;
@@ -968,7 +975,6 @@ xmlSecGnuTLSX509StoreVerifyCrlSignature(xmlSecGnuTLSX509StoreCtxPtr ctx, gnutls_
         is_issuer = gnutls_x509_crl_check_issuer(crl, cert);
         if(is_issuer != 0) {
             issuer_cert = cert;
-            issuer_is_trusted = 1;
             break;
         }
     }
@@ -1010,8 +1016,6 @@ xmlSecGnuTLSX509StoreVerifyCrlSignature(xmlSecGnuTLSX509StoreCtxPtr ctx, gnutls_
         res = 0;
         goto done;
     }
-
-    xmlSecAssert2((issuer_is_trusted != 0) || (issuer_cert != NULL), -1);
 
     ret = xmlSecGnuTLSX509GetVerificationFlags(keyInfoCtx, &flags);
     if (ret < 0) {

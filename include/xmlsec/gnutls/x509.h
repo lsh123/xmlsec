@@ -91,7 +91,9 @@ XMLSEC_CRYPTO_EXPORT gnutls_x509_crt_t  xmlSecGnuTLSX509StoreVerify     (xmlSecK
 XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSX509StoreAdoptCert  (xmlSecKeyDataStorePtr store,
                                                                          gnutls_x509_crt_t cert,
                                                                          xmlSecKeyDataType type);
-
+XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSX509StoreVerifyCrl (xmlSecKeyDataStorePtr store,
+                                                                         gnutls_x509_crl_t crl,
+                                                                         xmlSecKeyInfoCtxPtr keyInfoCtx);
 XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSX509StoreAdoptCrl  (xmlSecKeyDataStorePtr store,
                                                                          gnutls_x509_crl_t crl);
 

@@ -1000,13 +1000,80 @@ xmlSecGnuTLSAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, xml
 int
 xmlSecGnuTLSAppKeysMngrCrlLoadAndVerify(xmlSecKeysMngrPtr mngr, const char *filename,
     xmlSecKeyDataFormat format, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlSecKeyDataStorePtr x509Store;
+    xmlSecBuffer buffer;
+    gnutls_x509_crl_t crl = NULL;
+    int ret;
+    int res = -1;
+
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(filename != NULL, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
-    xmlSecNotImplementedError("GnuTLS CRL verification not implemented yet");
-    return(-1);
+    /* Get X509 store from keys manager */
+    x509Store = xmlSecKeysMngrGetDataStore(mngr, xmlSecGnuTLSX509StoreId);
+    if(x509Store == NULL) {
+        xmlSecInternalError("xmlSecKeysMngrGetDataStore(xmlSecGnuTLSX509StoreId)", NULL);
+        return(-1);
+    }
+
+    /* Initialize buffer */
+    ret = xmlSecBufferInitialize(&buffer, 4*1024);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize", NULL);
+        return(-1);
+    }
+
+    /* Load CRL from file ONCE into memory */
+    ret = xmlSecBufferReadFile(&buffer, filename);
+    if((ret < 0) || (xmlSecBufferGetData(&buffer) == NULL) || (xmlSecBufferGetSize(&buffer) <= 0)) {
+        xmlSecInternalError2("xmlSecBufferReadFile", NULL,
+            "filename=%s", xmlSecErrorsSafeString(filename));
+        goto done;
+    }
+
+    /* Parse CRL from memory */
+    crl = xmlSecGnuTLSX509CrlRead(xmlSecBufferGetData(&buffer),
+                                   xmlSecBufferGetSize(&buffer),
+                                   format);
+    if(crl == NULL) {
+        xmlSecInternalError2("xmlSecGnuTLSX509CrlRead", NULL,
+            "filename=%s", xmlSecErrorsSafeString(filename));
+        goto done;
+    }
+
+    /* Verify the in-memory CRL */
+    ret = xmlSecGnuTLSX509StoreVerifyCrl(x509Store, crl, keyInfoCtx);
+    if(ret < 0) {
+        xmlSecInternalError2("xmlSecGnuTLSX509StoreVerifyCrl", NULL,
+            "filename=%s", xmlSecErrorsSafeString(filename));
+        goto done;
+    } else if(ret != 1) {
+        /* Verification failed - treat as error */
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_DATA, NULL,
+            "filename=%s", xmlSecErrorsSafeString(filename));
+        goto done;
+    }
+
+    /* Adopt the verified in-memory CRL */
+    ret = xmlSecGnuTLSX509StoreAdoptCrl(x509Store, crl);
+    if(ret < 0) {
+        xmlSecInternalError2("xmlSecGnuTLSX509StoreAdoptCrl", NULL,
+            "filename=%s", xmlSecErrorsSafeString(filename));
+        goto done;
+    }
+
+    /* Success - CRL is now owned by store, don't free it */
+    crl = NULL;
+    res = 0;
+
+done:
+    xmlSecBufferFinalize(&buffer);
+    if(crl != NULL) {
+        gnutls_x509_crl_deinit(crl);
+    }
+    return(res);
 }
 
 /**

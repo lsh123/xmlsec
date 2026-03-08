@@ -251,9 +251,9 @@ else
     xmlsec_feature_key_check="no"
 fi
 
-# only openssl supports crl verification
+# only openssl, gnutls support crl verification
 # https://github.com/lsh123/xmlsec/issues/585
-if [ "z$crypto" = "zopenssl" ] ; then
+if [ "z$crypto" = "zopenssl" -o  "z$crypto" = "zgnutls" ] ; then
     xmlsec_feature_crl_verification="yes"
 else
     xmlsec_feature_crl_verification="no"

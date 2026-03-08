@@ -243,12 +243,20 @@ else
     xmlsec_feature_crl_check_skip_time="no"
 fi
 
-# only openssl, gnutls, nss, and mcng supports key verification
+# only openssl, gnutls, nss, and mcng support key verification
 # https://github.com/lsh123/xmlsec/issues/587
 if [ "z$crypto" = "zopenssl" -o  "z$crypto" = "zgnutls" -o "z$crypto" = "znss" -o "z$crypto" = "zmscng" ] ; then
     xmlsec_feature_key_check="yes"
 else
     xmlsec_feature_key_check="no"
+fi
+
+# only openssl supports crl verification
+# https://github.com/lsh123/xmlsec/issues/585
+if [ "z$crypto" = "zopenssl" ] ; then
+    xmlsec_feature_crl_verification="yes"
+else
+    xmlsec_feature_crl_verification="no"
 fi
 
 # Advanced RSA OAEP modes:

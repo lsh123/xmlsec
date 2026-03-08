@@ -1674,6 +1674,93 @@ xmlSecOpenSSLAppKeysMngrCrlLoadBIO(xmlSecKeysMngrPtr mngr, BIO* bio, xmlSecKeyDa
 }
 
 /**
+ * xmlSecOpenSSLAppKeysMngrCrlLoadAndVerify:
+ * @mngr:               the keys manager.
+ * @filename:           the CRL filename.
+ * @format:             the CRL format (PEM or DER).
+ * @keyInfoCtx:         the key info context for verification parameters.
+ *
+ * Atomically loads and verifies a CRL from @filename. This function eliminates
+ * TOCTOU (Time-of-Check/Time-of-Use) vulnerabilities by loading the CRL once into memory,
+ * verifying it, and then adopting it to the store.
+ *
+ * The CRL is verified by:
+ * 1. Checking the signature against the issuer's certificate in the store
+ * 2. Validating thisUpdate and nextUpdate times
+ *
+ * Returns: 0 on success or a negative value on error.
+ */
+int
+xmlSecOpenSSLAppKeysMngrCrlLoadAndVerify(xmlSecKeysMngrPtr mngr, const char *filename,
+    xmlSecKeyDataFormat format, xmlSecKeyInfoCtxPtr keyInfoCtx
+) {
+    xmlSecKeyDataStorePtr x509Store;
+    X509_CRL* crl = NULL;
+    BIO* bio = NULL;
+    int ret;
+    int res = -1;
+
+    xmlSecAssert2(mngr != NULL, -1);
+    xmlSecAssert2(filename != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+
+    /* Get X509 store from keys manager */
+    x509Store = xmlSecKeysMngrGetDataStore(mngr, xmlSecOpenSSLX509StoreId);
+    if(x509Store == NULL) {
+        xmlSecInternalError("xmlSecKeysMngrGetDataStore(xmlSecOpenSSLX509StoreId)", NULL);
+        return(-1);
+    }
+
+    /* Load CRL from file ONCE */
+    bio = BIO_new_file(filename, "rb");
+    if(bio == NULL) {
+        xmlSecOpenSSLError2("BIO_new_file", NULL, "filename=%s", xmlSecErrorsSafeString(filename));
+        goto done;
+    }
+
+    crl = xmlSecOpenSSLX509CrlLoadBIO(bio, format);
+    if(crl == NULL) {
+        xmlSecInternalError2("xmlSecOpenSSLX509CrlLoadBIO", NULL,
+            "filename=%s", xmlSecErrorsSafeString(filename));
+        goto done;
+    }
+
+    /* Verify the in-memory CRL */
+    ret = xmlSecOpenSSLX509StoreVerifyCrl(x509Store, crl, keyInfoCtx);
+    if(ret < 0) {
+        xmlSecInternalError2("xmlSecOpenSSLX509StoreVerifyCrl", NULL,
+            "filename=%s", xmlSecErrorsSafeString(filename));
+        goto done;
+    } else if(ret != 1) {
+        /* Verification failed - treat as error */
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_DATA, NULL,
+            "filename=%s", xmlSecErrorsSafeString(filename));
+        goto done;
+    }
+
+    /* Adopt the verified in-memory CRL */
+    ret = xmlSecOpenSSLX509StoreAdoptCrl(x509Store, crl);
+    if(ret < 0) {
+        xmlSecInternalError2("xmlSecOpenSSLX509StoreAdoptCrl", NULL,
+            "filename=%s", xmlSecErrorsSafeString(filename));
+        goto done;
+    }
+
+    /* Success - CRL is now owned by store, don't free it */
+    crl = NULL;
+    res = 0;
+
+done:
+    if(bio != NULL) {
+        BIO_free(bio);
+    }
+    if(crl != NULL) {
+        X509_CRL_free(crl);
+    }
+    return(res);
+}
+
+/**
  * xmlSecOpenSSLAppKeysMngrAddCertsPath:
  * @mngr:               the keys manager.
  * @path:               the path to trusted certificates.

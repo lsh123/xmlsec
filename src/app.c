@@ -2188,6 +2188,31 @@ xmlSecCryptoAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, xml
     return(xmlSecCryptoDLGetFunctions()->cryptoAppKeysMngrCrlLoad(mngr, filename, format));
 }
 
+
+/**
+ * xmlSecCryptoAppKeysMngrCrlLoadAndVerify:
+ * @mngr:               the keys manager.
+ * @filename:           the CRL file.
+ * @format:             the CRL file format.
+ * @keyInfoCtx:         the key info context for verification parameters.
+ *
+ * Reads and verifies the CRL from @filename.  If verification is successful, the CRL is added to
+ * the keys manager @store.
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecCryptoAppKeysMngrCrlLoadAndVerify(xmlSecKeysMngrPtr mngr, const char *filename,
+    xmlSecKeyDataFormat format, xmlSecKeyInfoCtxPtr keyInfoCtx
+) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->cryptoAppKeysMngrCrlLoadAndVerify == NULL)) {
+        xmlSecNotImplementedError2(missingMethodError, "cryptoAppKeysMngrCrlLoadAndVerify");
+        return(-1);
+    }
+
+    return(xmlSecCryptoDLGetFunctions()->cryptoAppKeysMngrCrlLoadAndVerify(mngr, filename, format, keyInfoCtx));
+}
+
 /**
  * xmlSecCryptoAppKeysMngrCrlLoadMemory:
  * @mngr:               the keys manager.
@@ -2210,6 +2235,7 @@ xmlSecCryptoAppKeysMngrCrlLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* d
 
     return(xmlSecCryptoDLGetFunctions()->cryptoAppKeysMngrCrlLoadMemory(mngr, data, dataSize, format));
 }
+
 
 /**
  * xmlSecCryptoAppKeyLoadEx:

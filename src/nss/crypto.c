@@ -348,6 +348,7 @@ xmlSecCryptoGetFunctions_nss(void) {
     gXmlSecNssFunctions->cryptoAppKeysMngrCertLoad      = xmlSecNssAppKeysMngrCertLoad;
     gXmlSecNssFunctions->cryptoAppKeysMngrCertLoadMemory= xmlSecNssAppKeysMngrCertLoadMemory;
     gXmlSecNssFunctions->cryptoAppKeysMngrCrlLoad       = xmlSecNssAppKeysMngrCrlLoad;
+    gXmlSecNssFunctions->cryptoAppKeysMngrCrlLoadAndVerify= xmlSecNssAppKeysMngrCrlLoadAndVerify;
     gXmlSecNssFunctions->cryptoAppKeysMngrCrlLoadMemory = xmlSecNssAppKeysMngrCrlLoadMemory;
     gXmlSecNssFunctions->cryptoAppPkcs12Load            = xmlSecNssAppPkcs12Load;
     gXmlSecNssFunctions->cryptoAppPkcs12LoadMemory      = xmlSecNssAppPkcs12LoadMemory;

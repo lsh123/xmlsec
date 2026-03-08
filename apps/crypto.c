@@ -109,9 +109,29 @@ xmlSecAppCryptoSimpleKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filenam
 #else /* XMLSEC_NO_X509 */
 
     UNREFERENCED_PARAMETER(format);
-
     fprintf(stderr, "Error: X509 support is disabled\n");
     return(-1);
+
+#endif /* XMLSEC_NO_X509 */
+}
+
+int
+xmlSecAppCryptoSimpleKeysMngrCrlLoadAndVerify(xmlSecKeysMngrPtr mngr, const char *filename, xmlSecKeyDataFormat format,
+    xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlSecAssert2(mngr != NULL, -1);
+    xmlSecAssert2(filename != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+
+#ifndef XMLSEC_NO_X509
+
+    return(xmlSecCryptoAppKeysMngrCrlLoadAndVerify(mngr, filename, format, keyInfoCtx));
+
+#else /* XMLSEC_NO_X509 */
+
+    UNREFERENCED_PARAMETER(format);
+    fprintf(stderr, "Error: X509 support is disabled\n");
+    return(-1);
+
 #endif /* XMLSEC_NO_X509 */
 }
 
@@ -161,6 +181,7 @@ xmlSecAppCryptoSimpleKeysMngrKeyAndCertsLoad(xmlSecKeysMngrPtr mngr,
     cert_file = files + strlen(files) + 1;
     if(cert_file[0] != '\0') {
         fprintf(stderr, "Error: X509 support is disabled\n");
+        xmlSecKeyDestroy(key);
         return(-1);
     }
 #endif /* XMLSEC_NO_X509 */
@@ -303,18 +324,18 @@ xmlSecAppCryptoSimpleKeysMngrPkcs12KeyLoad(xmlSecKeysMngrPtr mngr, const char *f
     }
 
     if(verifyKey != 0) {
-            ret = xmlSecCryptoAppDefaultKeysMngrVerifyKey(mngr, key, keyInfoCtx);
-            if(ret < 0) {
-                fprintf(stderr, "Error: xmlSecCryptoAppDefaultKeysMngrVerifyKey failed: filename='%s'\n",
-                xmlSecErrorsSafeString(filename));
-                xmlSecKeyDestroy(key);
-                return(-1);
-            } else if(ret != 1) {
-                fprintf(stderr, "Error: key cannot be verified: filename='%s'\n",
-                xmlSecErrorsSafeString(filename));
-                xmlSecKeyDestroy(key);
-                return(-1);
-            }
+        ret = xmlSecCryptoAppDefaultKeysMngrVerifyKey(mngr, key, keyInfoCtx);
+        if(ret < 0) {
+            fprintf(stderr, "Error: xmlSecCryptoAppDefaultKeysMngrVerifyKey failed: filename='%s'\n",
+            xmlSecErrorsSafeString(filename));
+            xmlSecKeyDestroy(key);
+            return(-1);
+        } else if(ret != 1) {
+            fprintf(stderr, "Error: key cannot be verified: filename='%s'\n",
+            xmlSecErrorsSafeString(filename));
+            xmlSecKeyDestroy(key);
+            return(-1);
+        }
     }
 
     ret = xmlSecCryptoAppDefaultKeysMngrAdoptKey(mngr, key);

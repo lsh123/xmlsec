@@ -792,6 +792,10 @@ XMLSEC_EXPORT int                               xmlSecCryptoAppKeysMngrCrlLoadMe
                                                                                  const xmlSecByte* data,
                                                                                  xmlSecSize dataSize,
                                                                                  xmlSecKeyDataFormat format);
+XMLSEC_EXPORT int                               xmlSecCryptoAppKeysMngrCrlLoadAndVerify(xmlSecKeysMngrPtr mngr,
+                                                                                 const char *filename,
+                                                                                 xmlSecKeyDataFormat format,
+                                                                                 xmlSecKeyInfoCtxPtr keyInfoCtx);
 XMLSEC_EXPORT xmlSecKeyPtr                      xmlSecCryptoAppKeyLoadEx        (const char *filename,
                                                                                  xmlSecKeyDataType type,
                                                                                  xmlSecKeyDataFormat format,

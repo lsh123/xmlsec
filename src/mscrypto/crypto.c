@@ -258,6 +258,7 @@ xmlSecCryptoGetFunctions_mscrypto(void) {
     gXmlSecMSCryptoFunctions->cryptoAppKeysMngrCertLoad         = xmlSecMSCryptoAppKeysMngrCertLoad;
     gXmlSecMSCryptoFunctions->cryptoAppKeysMngrCertLoadMemory   = xmlSecMSCryptoAppKeysMngrCertLoadMemory;
     gXmlSecMSCryptoFunctions->cryptoAppKeysMngrCrlLoad          = xmlSecMSCryptoAppKeysMngrCrlLoad;
+    gXmlSecMSCryptoFunctions->cryptoAppKeysMngrCrlLoadAndVerify = xmlSecMSCryptoAppKeysMngrCrlLoadAndVerify;
     gXmlSecMSCryptoFunctions->cryptoAppKeysMngrCrlLoadMemory    = xmlSecMSCryptoAppKeysMngrCrlLoadMemory;
     gXmlSecMSCryptoFunctions->cryptoAppPkcs12Load               = xmlSecMSCryptoAppPkcs12Load;
     gXmlSecMSCryptoFunctions->cryptoAppPkcs12LoadMemory         = xmlSecMSCryptoAppPkcs12LoadMemory;

@@ -1037,7 +1037,7 @@ static xmlSecAppCmdLineParam X509DontVerifyCerts = {
     "--insecure",
     NULL,
     "--insecure"
-    "\n\tdo not verify certificates",
+    "\n\tdo not verify certificates or CRLs",
     xmlSecAppCmdLineParamTypeFlag,
     xmlSecAppCmdLineParamFlagNone,
     NULL

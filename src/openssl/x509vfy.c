@@ -1326,14 +1326,135 @@ xmlSecOpenSSLX509StoreFinalize(xmlSecKeyDataStorePtr store) {
  * Low-level x509 functions
  *
  *****************************************************************************/
-#ifndef XMLSEC_OPENSSL_NO_CRL_VERIFICATION
+static X509*
+xmlSecOpenSSLX509FindTrustedIssuer(X509_STORE* xst, X509_NAME* issuer) {
+    STACK_OF(X509_OBJECT)* objects = NULL;
+    xmlSecOpenSSLSizeT ii, num;
+    X509* issuer_cert = NULL;
+
+    xmlSecAssert2(xst != NULL, NULL);
+    xmlSecAssert2(issuer != NULL, NULL);
+
+    /* Get all objects from the trusted store */
+    objects = X509_STORE_get0_objects(xst);
+    if(objects == NULL) {
+        return(NULL);
+    }
+
+    /* Search for a certificate with matching subject */
+    num = sk_X509_OBJECT_num(objects);
+    for(ii = 0; ii < num; ++ii) {
+        X509_OBJECT* obj = sk_X509_OBJECT_value(objects, ii);
+        X509* cert;
+        X509_NAME* cert_subject;
+
+        if(obj == NULL) {
+            continue;
+        }
+
+        /* Check if this object is a certificate */
+        if(X509_OBJECT_get_type(obj) != X509_LU_X509) {
+            continue;
+        }
+
+        cert = X509_OBJECT_get0_X509(obj);
+        if(cert == NULL) {
+            continue;
+        }
+
+        cert_subject = X509_get_subject_name(cert);
+        if(cert_subject == NULL) {
+            continue;
+        }
+
+        /* Check if subject matches the issuer we're looking for */
+        if(X509_NAME_cmp(cert_subject, issuer) == 0) {
+            /* Found a match, duplicate and return */
+            issuer_cert = X509_dup(cert);
+            if(issuer_cert == NULL) {
+                xmlSecOpenSSLError("X509_dup", NULL);
+            }
+            break;
+        }
+    }
+
+    return(issuer_cert);
+}
+
+static X509*
+xmlSecOpenSSLX509FindUntrustedIssuer(X509_NAME* issuer, X509_STORE* xst, X509_STORE_CTX* xsc, STACK_OF(X509)* untrusted, xmlSecKeyInfoCtx* keyInfoCtx) {
+    X509* issuer_cert = NULL;
+    xmlSecOpenSSLSizeT ii, num;
+    int ret;
+    int ctx_initialized = 0;
+
+    xmlSecAssert2(xst != NULL, NULL);
+    xmlSecAssert2(xsc != NULL, NULL);
+    xmlSecAssert2(issuer != NULL, NULL);
+    xmlSecAssert2(keyInfoCtx != NULL, NULL);
+
+    if(untrusted == NULL) {
+        return(NULL);
+    }
+
+    num = sk_X509_num(untrusted);
+    for(ii = 0; ii < num; ++ii) {
+        X509* cert = sk_X509_value(untrusted, ii);
+        X509_NAME* cert_subject;
+
+        if(cert == NULL) {
+            continue;
+        }
+
+        cert_subject = X509_get_subject_name(cert);
+        if(cert_subject == NULL) {
+            continue;
+        }
+
+        /* Check if subject matches the issuer we're looking for */
+        if(X509_NAME_cmp(cert_subject, issuer) != 0) {
+            continue;
+        }
+
+        /* Found a candidate, verify the chain to a trusted root using passed xsc */
+        ret = X509_STORE_CTX_init(xsc, xst, cert, untrusted);
+        if(ret != 1) {
+            xmlSecOpenSSLError("X509_STORE_CTX_init", NULL);
+            goto done;
+        }
+        ctx_initialized = 1;
+
+        ret = xmlSecOpenSSLX509StoreSetCtx(xsc, keyInfoCtx);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecOpenSSLX509StoreSetCtx", NULL);
+            goto done;
+        }
+
+        ret = X509_verify_cert(xsc);
+        if(ret == 1) {
+            /* Chain verified successfully, return a copy */
+            issuer_cert = X509_dup(cert);
+            if(issuer_cert == NULL) {
+                xmlSecOpenSSLError("X509_dup", NULL);
+            }
+            goto done;
+        }
+
+        /* Chain verification failed, try next candidate */
+        X509_STORE_CTX_cleanup(xsc);
+        ctx_initialized = 0;
+    }
+
+done:
+    if(ctx_initialized != 0) {
+        X509_STORE_CTX_cleanup(xsc);
+    }
+    return(issuer_cert);
+}
 
 static X509*
 xmlSecOpenSSLX509FindIssuer(X509_NAME* issuer, X509_STORE* xst, X509_STORE_CTX* xsc, STACK_OF(X509)* untrusted, xmlSecKeyInfoCtx* keyInfoCtx) {
     X509* issuer_cert = NULL;
-    X509_OBJECT* xobj = NULL;
-    xmlSecOpenSSLSizeT ii, num;
-    int ret;
 
     xmlSecAssert2(xst != NULL, NULL);
     xmlSecAssert2(xsc != NULL, NULL);
@@ -1341,88 +1462,19 @@ xmlSecOpenSSLX509FindIssuer(X509_NAME* issuer, X509_STORE* xst, X509_STORE_CTX* 
     xmlSecAssert2(keyInfoCtx != NULL, NULL);
 
     /* First, search in the untrusted certificates */
-    if(untrusted != NULL) {
-        num = sk_X509_num(untrusted);
-        for(ii = 0; ii < num; ++ii) {
-            X509* cert = sk_X509_value(untrusted, ii);
-            X509_NAME* cert_subject;
-
-            if(cert == NULL) {
-                continue;
-            }
-
-            cert_subject = X509_get_subject_name(cert);
-            if(cert_subject == NULL) {
-                continue;
-            }
-
-            /* Check if subject matches the issuer we're looking for */
-            if(X509_NAME_cmp(cert_subject, issuer) != 0) {
-                continue;
-            }
-
-            /* Found a candidate, verify the chain to a trusted root using passed xsc */
-            ret = X509_STORE_CTX_init(xsc, xst, cert, untrusted);
-            if(ret != 1) {
-                xmlSecOpenSSLError("X509_STORE_CTX_init", NULL);
-                goto done;
-            }
-
-            ret = xmlSecOpenSSLX509StoreSetCtx(xsc, keyInfoCtx);
-            if(ret < 0) {
-                xmlSecInternalError("xmlSecOpenSSLX509StoreSetCtx", NULL);
-                goto done;
-            }
-
-            ret = X509_verify_cert(xsc);
-            if(ret == 1) {
-                /* Chain verified successfully, return a copy */
-                issuer_cert = X509_dup(cert);
-                if(issuer_cert == NULL) {
-                    xmlSecOpenSSLError("X509_dup", NULL);
-                }
-                goto done;
-            }
-
-            /* Chain verification failed, try next candidate */
-            X509_STORE_CTX_cleanup(xsc);
-        }
+    issuer_cert = xmlSecOpenSSLX509FindUntrustedIssuer(issuer, xst, xsc, untrusted, keyInfoCtx);
+    if(issuer_cert != NULL) {
+        return(issuer_cert);
     }
 
     /* Not found in untrusted certs, search in trusted store */
-    /* Re-init xsc to search trusted store */
-    ret = X509_STORE_CTX_init(xsc, xst, NULL, untrusted);
-    if(ret != 1) {
-        xmlSecOpenSSLError("X509_STORE_CTX_init", NULL);
-        goto done;
+    issuer_cert = xmlSecOpenSSLX509FindTrustedIssuer(xst, issuer);
+    if(issuer_cert != NULL) {
+        return(issuer_cert);
     }
 
-    xobj = X509_OBJECT_new();
-    if(xobj == NULL) {
-        xmlSecOpenSSLError("X509_OBJECT_new", NULL);
-        goto done;
-    }
-
-    ret = X509_STORE_CTX_get_by_subject(xsc, X509_LU_X509, issuer, xobj);
-    if(ret > 0) {
-        X509* cert = X509_OBJECT_get0_X509(xobj);
-        if(cert != NULL) {
-            /* Found in trusted store, return a copy */
-            issuer_cert = X509_dup(cert);
-            if(issuer_cert == NULL) {
-                xmlSecOpenSSLError("X509_dup", NULL);
-            }
-        }
-    }
-
-done:
-    if(xobj != NULL) {
-        X509_OBJECT_free(xobj);
-    }
-    X509_STORE_CTX_cleanup(xsc);
-
-    /* done */
-    return(issuer_cert);
+    /* no luck */
+    return(NULL);
 }
 
 static int
@@ -1568,24 +1620,8 @@ xmlSecOpenSSLX509VerifyCRL(X509_STORE* xst, X509_STORE_CTX* xsc, STACK_OF(X509)*
     return(1);
 }
 
-#else /* XMLSEC_OPENSSL_NO_CRL_VERIFICATION */
-
-static int
-xmlSecOpenSSLX509VerifyCRL(X509_STORE* xst, X509_STORE_CTX* xsc, STACK_OF(X509)* untrusted, X509_CRL *crl, xmlSecKeyInfoCtx* keyInfoCtx) {
-
-    /* boringssl doesn't have X509_OBJECT_new() or public definition of X509_OBJECT */
-    UNREFERENCED_PARAMETER(xst);
-    UNREFERENCED_PARAMETER(xsc);
-    UNREFERENCED_PARAMETER(untrusted);
-    UNREFERENCED_PARAMETER(crl);
-    UNREFERENCED_PARAMETER(keyInfoCtx);
-    return(1);
-}
-
-#endif /* XMLSEC_OPENSSL_NO_CRL_VERIFICATION */
-
-
-int xmlSecOpenSSLX509FindCertCtxInitialize(xmlSecOpenSSLX509FindCertCtxPtr ctx,
+int
+xmlSecOpenSSLX509FindCertCtxInitialize(xmlSecOpenSSLX509FindCertCtxPtr ctx,
     const xmlChar *subjectName,
     const xmlChar *issuerName, const xmlChar *issuerSerial,
     const xmlSecByte * ski, xmlSecSize skiSize

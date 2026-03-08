@@ -1485,13 +1485,16 @@ if [ "z$xmlsec_feature_crl_verification" = "zyes" ] ; then
         "rsa x509" \
         "--verification-gmt-time 2026-03-01+00:00:00 --crl-$cert_format $topfolder/keys/rsa/rsa-2048-cert-revoked-crl.$cert_format --untrusted-$cert_format $topfolder/keys/rsa/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
-    extra_message="Verify CRL: this should succeed because CRL is valid"
-    execDSigTest $res_success \
-        "" \
-        "aleksey-xmldsig-01/enveloped-x509-subjectname" \
-        "sha512 rsa-sha512" \
-        "rsa x509" \
-        "--verify-crls --verification-gmt-time 2026-01-01+00:00:00 --crl-$cert_format $topfolder/keys/rsa/rsa-2048-cert-revoked-crl.$cert_format --untrusted-$cert_format $topfolder/keys/rsa/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+    # GnuTLS doesn't allow CRL verification by time (https://github.com/lsh123/xmlsec/issues/579)
+    if [ "z$xmlsec_feature_crl_check_skip_time" = "zyes" ] ; then
+        extra_message="Verify CRL: this should succeed because CRL is valid"
+        execDSigTest $res_success \
+            "" \
+            "aleksey-xmldsig-01/enveloped-x509-subjectname" \
+            "sha512 rsa-sha512" \
+            "rsa x509" \
+            "--verify-crls --verification-gmt-time 2026-01-01+00:00:00 --crl-$cert_format $topfolder/keys/rsa/rsa-2048-cert-revoked-crl.$cert_format --untrusted-$cert_format $topfolder/keys/rsa/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+    fi
 
     # this should fail because CRL is past due
     extra_message="Verify CRL: this should fail becaused CRL is past due"

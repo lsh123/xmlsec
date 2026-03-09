@@ -227,9 +227,9 @@ else
     xmlsec_feature_cert_check_skip_time="no"
 fi
 
-# currently only openssl/gnutls/nss support loading CRL from the command line
+# currently only openssl/gnutls/nss/mscng support loading CRL from the command line
 # https://github.com/lsh123/xmlsec/issues/583
-if [ "z$crypto" = "zopenssl" -o  "z$crypto" = "zgnutls" -o "z$crypto" = "znss" ] ; then
+if [ "z$crypto" = "zopenssl" -o  "z$crypto" = "zgnutls" -o "z$crypto" = "znss" -o "z$crypto" = "zmscng" ] ; then
     xmlsec_feature_crl_load="yes"
 else
     xmlsec_feature_crl_load="no"

@@ -77,6 +77,7 @@ PCCERT_CONTEXT      xmlSecMSCngX509FindCert                         (HCERTSTORE 
 
 xmlChar*            xmlSecMSCngX509GetFriendlyNameUtf8              (PCCERT_CONTEXT cert);
 LPCWSTR             xmlSecMSCngX509GetFriendlyNameUnicode           (PCCERT_CONTEXT cert);
+PCCRL_CONTEXT       xmlSecMSCngX509CrlDerRead                       (const xmlSecByte* buf, xmlSecSize size);
 
 
 #endif /* XMLSEC_NO_X509 */

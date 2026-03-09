@@ -316,8 +316,8 @@ xmlSecMSCngKeyDataX509GetCertStore(xmlSecKeyDataPtr data) {
 }
 
 
-static PCCRL_CONTEXT
-xmlSecMSCngX509CrlDerRead(xmlSecByte* buf, xmlSecSize size) {
+PCCRL_CONTEXT
+xmlSecMSCngX509CrlDerRead(const xmlSecByte* buf, xmlSecSize size) {
     PCCRL_CONTEXT crl = NULL;
     DWORD dwSize;
 

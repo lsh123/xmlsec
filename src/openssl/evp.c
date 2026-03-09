@@ -5189,7 +5189,7 @@ xmlSecOpenSSLKeyDataSLHDSADebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
 
 #ifndef XMLSEC_NO_EDDSA
 /**
- * EXPERIMENTAL SUPPORT FOR EdDSA
+ * EdDSA support
  */
 
 static int               xmlSecOpenSSLKeyDataEdDSAInitialize      (xmlSecKeyDataPtr data);

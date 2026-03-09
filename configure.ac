@@ -218,7 +218,6 @@ if test "z$enable_experimental_features" = "zyes" ; then
     dnl experimental crypto engines
     enable_ml_dsa="yes"
     enable_slh_dsa="yes"
-    enable_eddsa="yes"
 
     AC_MSG_RESULT([yes])
 else
@@ -2226,17 +2225,17 @@ AC_SUBST(XMLSEC_NO_SLHDSA)
 
 
 dnl ==========================================================================
-dnl Check if we need EdDSA support (experimental)
+dnl Check if we need EdDSA support
 dnl ==========================================================================
-AC_MSG_CHECKING(for experimental EdDSA support)
-AC_ARG_ENABLE([eddsa], [AS_HELP_STRING([--enable-eddsa],[enable experimental EdDSA support (no)])])
-if test "z$enable_eddsa" = "zyes" ; then
-    XMLSEC_NO_EDDSA="0"
-    AC_MSG_RESULT([yes])
-else
+AC_MSG_CHECKING(for EdDSA support)
+AC_ARG_ENABLE([eddsa], [AS_HELP_STRING([--disable-eddsa],[disable EdDSA support (yes)])])
+if test "z$enable_eddsa" = "zno" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_EDDSA=1"
     XMLSEC_NO_EDDSA="1"
     AC_MSG_RESULT([disabled])
+else
+    XMLSEC_NO_EDDSA="0"
+    AC_MSG_RESULT([yes])
 fi
 AM_CONDITIONAL(XMLSEC_NO_EDDSA, test "z$XMLSEC_NO_EDDSA" = "z1")
 AC_SUBST(XMLSEC_NO_EDDSA)

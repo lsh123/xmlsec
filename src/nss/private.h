@@ -111,6 +111,10 @@ CERTSignedCrl*   xmlSecNssX509CrlDerRead                (xmlSecByte* buf,
                                                          xmlSecSize size,
                                                          unsigned int flags);
 
+int              xmlSecNssX509StoreVerifyCrl            (xmlSecKeyDataStorePtr store,
+                                                         CERTSignedCrl* crl,
+                                                         xmlSecKeyInfoCtxPtr keyInfoCtx);
+
 int              xmlSecNssX509CertGetTime               (PRTime* t,
                                                          time_t* res);
 

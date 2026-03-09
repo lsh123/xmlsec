@@ -280,7 +280,7 @@ xmlSecParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes,
 
     input = xmlNewIOInputStream(ctxt, buf, XML_CHAR_ENCODING_NONE);
     if(input == NULL) {
-        xmlSecXmlParserError("xmlNewParserCtxt", ctxt, xmlSecTransformGetName(transform));
+        xmlSecXmlParserError("xmlNewIOInputStream", ctxt, xmlSecTransformGetName(transform));
         xmlFreeParserCtxt(ctxt);
         xmlFreeParserInputBuffer(buf);
         return(-1);

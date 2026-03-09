@@ -147,9 +147,9 @@ xmlSecOpenSSLEvpBlockCipherCtxInit(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     }
 
     /* set iv */
-    ret = EVP_CipherInit(ctx->cipherCtx, ctx->cipher, ctx->key, ctx->iv, encrypt);
+    ret = EVP_CipherInit_ex(ctx->cipherCtx, ctx->cipher, NULL, ctx->key, ctx->iv, encrypt);
     if(ret != 1) {
-        xmlSecOpenSSLError("EVP_CipherIn", cipherName);
+        xmlSecOpenSSLError("EVP_CipherInit_ex", cipherName);
         return(-1);
     }
 
@@ -258,9 +258,9 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
             }
         }
 
-        ret = EVP_CipherFinal(ctx->cipherCtx, outBuf + outLen, &outLen2);
+        ret = EVP_CipherFinal_ex(ctx->cipherCtx, outBuf + outLen, &outLen2);
         if(ret != 1) {
-            xmlSecOpenSSLError("EVP_CipherFinal", cipherName);
+            xmlSecOpenSSLError("EVP_CipherFinal_ex", cipherName);
             return(-1);
         }
 

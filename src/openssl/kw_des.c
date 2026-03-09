@@ -474,9 +474,9 @@ xmlSecOpenSSLKWDes3Encrypt(const xmlSecByte* key, xmlSecSize keySize,
         goto done;
     }
 
-    ret = EVP_CipherInit(cipherCtx, cipher, key, iv, enc);
+    ret = EVP_CipherInit_ex(cipherCtx, cipher, NULL, key, iv, enc);
     if(ret != 1) {
-        xmlSecOpenSSLError("EVP_CipherInit", NULL);
+        xmlSecOpenSSLError("EVP_CipherInit_ex", NULL);
         goto done;
     }
 
@@ -489,9 +489,9 @@ xmlSecOpenSSLKWDes3Encrypt(const xmlSecByte* key, xmlSecSize keySize,
         goto done;
     }
 
-    ret = EVP_CipherFinal(cipherCtx, out + updateLen, &finalLen);
+    ret = EVP_CipherFinal_ex(cipherCtx, out + updateLen, &finalLen);
     if(ret != 1) {
-        xmlSecOpenSSLError("EVP_CipherFinal", NULL);
+        xmlSecOpenSSLError("EVP_CipherFinal_ex", NULL);
         goto done;
     }
 

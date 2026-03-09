@@ -115,7 +115,7 @@ xmlSecOpenSSLEvpBlockCipherCtxInit(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     xmlSecAssert2(ivSize <= sizeof(ctx->iv), -1);
     if(encrypt) {
         /* generate random iv */
-        ret = RAND_priv_bytes_ex(xmlSecOpenSSLGetLibCtx(), ctx->iv, ivSize, XMLSEEC_OPENSSL_RAND_BYTES_STRENGTH);
+        ret = RAND_priv_bytes_ex(xmlSecOpenSSLGetLibCtx(), ctx->iv, ivSize, XMLSEC_OPENSSL_RAND_BYTES_STRENGTH);
         if(ret != 1) {
             xmlSecOpenSSLError2("RAND_priv_bytes_ex", cipherName, "size=" XMLSEC_SIZE_FMT, ivSize);
             return(-1);
@@ -147,9 +147,9 @@ xmlSecOpenSSLEvpBlockCipherCtxInit(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     }
 
     /* set iv */
-    ret = EVP_CipherInit(ctx->cipherCtx, ctx->cipher, ctx->key, ctx->iv, encrypt);
+    ret = EVP_CipherInit_ex(ctx->cipherCtx, ctx->cipher, NULL, ctx->key, ctx->iv, encrypt);
     if(ret != 1) {
-        xmlSecOpenSSLError("EVP_CipherIn", cipherName);
+        xmlSecOpenSSLError("EVP_CipherInit_ex", cipherName);
         return(-1);
     }
 
@@ -258,9 +258,9 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdateBlock(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
             }
         }
 
-        ret = EVP_CipherFinal(ctx->cipherCtx, outBuf + outLen, &outLen2);
+        ret = EVP_CipherFinal_ex(ctx->cipherCtx, outBuf + outLen, &outLen2);
         if(ret != 1) {
-            xmlSecOpenSSLError("EVP_CipherFinal", cipherName);
+            xmlSecOpenSSLError("EVP_CipherFinal_ex", cipherName);
             return(-1);
         }
 
@@ -440,7 +440,7 @@ xmlSecOpenSSLEvpBlockCipherCBCCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
         if(padLen > 1) {
             XMLSEC_OPENSSL_SAFE_CAST_UINT_TO_SIZE(padLen, size, return(-1), NULL);
             ret = RAND_priv_bytes_ex(xmlSecOpenSSLGetLibCtx(), ctx->pad + inLen, size - 1,
-                                XMLSEEC_OPENSSL_RAND_BYTES_STRENGTH);
+                                XMLSEC_OPENSSL_RAND_BYTES_STRENGTH);
             if (ret != 1) {
                 xmlSecOpenSSLError("RAND_priv_bytes_ex", cipherName);
                 return(-1);
@@ -680,7 +680,7 @@ xmlSecOpenSSLEvpBlockCipherInitialize(xmlSecTransformPtr transform) {
 
 #ifndef XMLSEC_NO_DES
     if(transform->id == xmlSecOpenSSLTransformDes3CbcId) {
-        XMLSEC_OPENSSL_SET_CIPHER(ctx, EVP_des_ede3_cbc(), XMLSEEC_OPENSSL_CIPHER_NAME_DES3_EDE);
+        XMLSEC_OPENSSL_SET_CIPHER(ctx, EVP_des_ede3_cbc(), XMLSEC_OPENSSL_CIPHER_NAME_DES3_EDE);
         ctx->keyId      = xmlSecOpenSSLKeyDataDesId;
         ctx->cbcMode    = 1;
     } else
@@ -688,27 +688,27 @@ xmlSecOpenSSLEvpBlockCipherInitialize(xmlSecTransformPtr transform) {
 
 #ifndef XMLSEC_NO_AES
     if(transform->id == xmlSecOpenSSLTransformAes128CbcId) {
-        XMLSEC_OPENSSL_SET_CIPHER(ctx, EVP_aes_128_cbc(), XMLSEEC_OPENSSL_CIPHER_NAME_AES128_CBC);
+        XMLSEC_OPENSSL_SET_CIPHER(ctx, EVP_aes_128_cbc(), XMLSEC_OPENSSL_CIPHER_NAME_AES128_CBC);
         ctx->keyId      = xmlSecOpenSSLKeyDataAesId;
         ctx->cbcMode    = 1;
     } else if(transform->id == xmlSecOpenSSLTransformAes192CbcId) {
-        XMLSEC_OPENSSL_SET_CIPHER(ctx, EVP_aes_192_cbc(), XMLSEEC_OPENSSL_CIPHER_NAME_AES192_CBC);
+        XMLSEC_OPENSSL_SET_CIPHER(ctx, EVP_aes_192_cbc(), XMLSEC_OPENSSL_CIPHER_NAME_AES192_CBC);
         ctx->keyId      = xmlSecOpenSSLKeyDataAesId;
         ctx->cbcMode    = 1;
     } else if(transform->id == xmlSecOpenSSLTransformAes256CbcId) {
-        XMLSEC_OPENSSL_SET_CIPHER(ctx, EVP_aes_256_cbc(), XMLSEEC_OPENSSL_CIPHER_NAME_AES256_CBC);
+        XMLSEC_OPENSSL_SET_CIPHER(ctx, EVP_aes_256_cbc(), XMLSEC_OPENSSL_CIPHER_NAME_AES256_CBC);
         ctx->keyId      = xmlSecOpenSSLKeyDataAesId;
         ctx->cbcMode    = 1;
     } else if(transform->id == xmlSecOpenSSLTransformAes128GcmId) {
-        XMLSEC_OPENSSL_SET_CIPHER(ctx, EVP_aes_128_gcm(), XMLSEEC_OPENSSL_CIPHER_NAME_AES128_GCM);
+        XMLSEC_OPENSSL_SET_CIPHER(ctx, EVP_aes_128_gcm(), XMLSEC_OPENSSL_CIPHER_NAME_AES128_GCM);
         ctx->keyId      = xmlSecOpenSSLKeyDataAesId;
         ctx->cbcMode    = 0;
     } else if(transform->id == xmlSecOpenSSLTransformAes192GcmId) {
-        XMLSEC_OPENSSL_SET_CIPHER(ctx, EVP_aes_192_gcm(), XMLSEEC_OPENSSL_CIPHER_NAME_AES192_GCM);
+        XMLSEC_OPENSSL_SET_CIPHER(ctx, EVP_aes_192_gcm(), XMLSEC_OPENSSL_CIPHER_NAME_AES192_GCM);
         ctx->keyId      = xmlSecOpenSSLKeyDataAesId;
         ctx->cbcMode    = 0;
     } else if(transform->id == xmlSecOpenSSLTransformAes256GcmId) {
-        XMLSEC_OPENSSL_SET_CIPHER(ctx, EVP_aes_256_gcm(), XMLSEEC_OPENSSL_CIPHER_NAME_AES256_GCM);
+        XMLSEC_OPENSSL_SET_CIPHER(ctx, EVP_aes_256_gcm(), XMLSEC_OPENSSL_CIPHER_NAME_AES256_GCM);
         ctx->keyId      = xmlSecOpenSSLKeyDataAesId;
         ctx->cbcMode    = 0;
     } else

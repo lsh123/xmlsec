@@ -456,7 +456,7 @@ xmlSecOpenSSLX509StoreVerifyCertAgainstRevoked(X509 * cert, STACK_OF(X509_REVOKE
                 }
                 issuer = X509_get_issuer_name(cert);
                 if(issuer != NULL) {
-                    X509_NAME_oneline(issuer, issuer_name, sizeof(issuer_name));
+                    xmlSecOpenSSLX509NameToString(issuer, issuer_name, sizeof(issuer_name));
                     xmlSecOtherError3(XMLSEC_ERRORS_R_CRL_NOT_YET_VALID, NULL,
                         "issuer=%s; revocationDate=%lf", issuer_name, (double)ts);
                 } else {
@@ -596,8 +596,8 @@ xmlSecOpenSSLX509StoreVerifyCertAgainstCrls(STACK_OF(X509_CRL) *crls, X509* cert
         char subject[256], issuer[256];
 
         /* cert is revoked, fail */
-        X509_NAME_oneline(X509_get_subject_name(cert), subject, sizeof(subject));
-        X509_NAME_oneline(X509_get_issuer_name(cert), issuer, sizeof(issuer));
+        xmlSecOpenSSLX509NameToString(X509_get_subject_name(cert), subject, sizeof(subject));
+        xmlSecOpenSSLX509NameToString(X509_get_issuer_name(cert), issuer, sizeof(issuer));
         xmlSecOtherError3(XMLSEC_ERRORS_R_CERT_REVOKED, NULL, "subject=%s; issuer=%s", subject, issuer);
         return(0);
     }
@@ -718,8 +718,8 @@ xmlSecOpenSSLX509StoreVerifyCert(X509_STORE* xst, X509_STORE_CTX* xsc, X509* cer
             const char* err_msg;
             char subject[256], issuer[256];
 
-            X509_NAME_oneline(X509_get_subject_name(err_cert), subject, sizeof(subject));
-            X509_NAME_oneline(X509_get_issuer_name(err_cert), issuer, sizeof(issuer));
+            xmlSecOpenSSLX509NameToString(X509_get_subject_name(err_cert), subject, sizeof(subject));
+            xmlSecOpenSSLX509NameToString(X509_get_issuer_name(err_cert), issuer, sizeof(issuer));
             err_msg = X509_verify_cert_error_string(err);
 
             switch (err) {
@@ -1503,7 +1503,7 @@ xmlSecOpenSSLX509VerifyCRLTimeValidity(X509_CRL *crl, xmlSecKeyInfoCtx* keyInfoC
         if(ret > 0) {
             /* thisUpdate > verification_time: CRL not yet valid */
             char issuer[256];
-            X509_NAME_oneline(X509_CRL_get_issuer(crl), issuer, sizeof(issuer));
+            xmlSecOpenSSLX509NameToString(X509_CRL_get_issuer(crl), issuer, sizeof(issuer));
             xmlSecOtherError2(XMLSEC_ERRORS_R_CRL_NOT_YET_VALID, NULL,
                             "issuer=%s", issuer);
             return(0);
@@ -1520,7 +1520,7 @@ xmlSecOpenSSLX509VerifyCRLTimeValidity(X509_CRL *crl, xmlSecKeyInfoCtx* keyInfoC
         if(ret < 0) {
             /* nextUpdate < verification_time: CRL expired */
             char issuer[256];
-            X509_NAME_oneline(X509_CRL_get_issuer(crl), issuer, sizeof(issuer));
+            xmlSecOpenSSLX509NameToString(X509_CRL_get_issuer(crl), issuer, sizeof(issuer));
             xmlSecOtherError2(XMLSEC_ERRORS_R_CRL_HAS_EXPIRED, NULL,
                             "issuer=%s", issuer);
             return(0);
@@ -1547,7 +1547,7 @@ xmlSecOpenSSLX509VerifyCRLSignature(X509_STORE* xst, X509_STORE_CTX* xsc, STACK_
     issuer_cert = xmlSecOpenSSLX509FindIssuer(X509_CRL_get_issuer(crl), xst, xsc, untrusted, keyInfoCtx);
     if(issuer_cert == NULL) {
         char issuer[256];
-        X509_NAME_oneline(X509_CRL_get_issuer(crl), issuer, sizeof(issuer));
+        xmlSecOpenSSLX509NameToString(X509_CRL_get_issuer(crl), issuer, sizeof(issuer));
         xmlSecOtherError2(XMLSEC_ERRORS_R_CERT_NOT_FOUND, NULL, "issuer=%s", issuer);
         goto done;
     }
@@ -1566,7 +1566,7 @@ xmlSecOpenSSLX509VerifyCRLSignature(X509_STORE* xst, X509_STORE_CTX* xsc, STACK_
         char issuer[256];
 
         /* cert was not verified */
-        X509_NAME_oneline(X509_CRL_get_issuer(crl), issuer, sizeof(issuer));
+        xmlSecOpenSSLX509NameToString(X509_CRL_get_issuer(crl), issuer, sizeof(issuer));
         xmlSecOtherError2(XMLSEC_ERRORS_R_CRL_VERIFY_FAILED, NULL, "issuer=%s", issuer);
 
         /* not verified */

@@ -124,13 +124,13 @@ xmlSecOpenSSLKWAesInitialize(xmlSecTransformPtr transform) {
     memset(ctx, 0, sizeof(xmlSecOpenSSLKWAesCtx));
 
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformKWAes128Id)) {
-        XMLSEC_OPENSSL_KW_AES_SET_CIPHER(ctx, XMLSEEC_OPENSSL_CIPHER_NAME_AES128_CBC);
+        XMLSEC_OPENSSL_KW_AES_SET_CIPHER(ctx, XMLSEC_OPENSSL_CIPHER_NAME_AES128_CBC);
         keyExpectedSize = XMLSEC_KW_AES128_KEY_SIZE;
     } else if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformKWAes192Id)) {
-        XMLSEC_OPENSSL_KW_AES_SET_CIPHER(ctx, XMLSEEC_OPENSSL_CIPHER_NAME_AES192_CBC);
+        XMLSEC_OPENSSL_KW_AES_SET_CIPHER(ctx, XMLSEC_OPENSSL_CIPHER_NAME_AES192_CBC);
         keyExpectedSize = XMLSEC_KW_AES192_KEY_SIZE;
     } else if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformKWAes256Id)) {
-        XMLSEC_OPENSSL_KW_AES_SET_CIPHER(ctx, XMLSEEC_OPENSSL_CIPHER_NAME_AES256_CBC);
+        XMLSEC_OPENSSL_KW_AES_SET_CIPHER(ctx, XMLSEC_OPENSSL_CIPHER_NAME_AES256_CBC);
         keyExpectedSize = XMLSEC_KW_AES256_KEY_SIZE;
     } else {
         xmlSecInvalidTransfromError(transform)
@@ -373,6 +373,7 @@ xmlSecOpenSSLKWAesEncryptDecrypt(xmlSecOpenSSLKWAesCtxPtr ctx, const xmlSecByte 
     AES_KEY aesKey;
     xmlSecOpenSSLUInt keyLen;
     int ret;
+    int res = -1;
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(in != NULL, -1);
@@ -388,26 +389,31 @@ xmlSecOpenSSLKWAesEncryptDecrypt(xmlSecOpenSSLKWAesCtxPtr ctx, const xmlSecByte 
     xmlSecAssert2(keySize == ctx->parentCtx.keyExpectedSize, -1);
 
     /* prepare key and encrypt/decrypt */
-    XMLSEC_OPENSSL_SAFE_CAST_SIZE_TO_UINT(keySize, keyLen, return(-1), NULL);
+    XMLSEC_OPENSSL_SAFE_CAST_SIZE_TO_UINT(keySize, keyLen, goto done, NULL);
     if(encrypt != 0) {
         ret = AES_set_encrypt_key(keyData, 8 * keyLen, &aesKey);
         if(ret != 0) {
             xmlSecOpenSSLError("AES_set_encrypt_key", NULL);
-            return(-1);
+            goto done;
         }
         AES_encrypt(in, out, &aesKey);
     } else {
         ret = AES_set_decrypt_key(keyData, 8 * keyLen, &aesKey);
         if(ret != 0) {
             xmlSecOpenSSLError("AES_set_decrypt_key", NULL);
-            return(-1);
+            goto done;
         }
         AES_decrypt(in, out, &aesKey);
     }
 
     /* success */
     (*outWritten) = AES_BLOCK_SIZE;
-    return(0);
+    res = 0;
+
+done:
+    /* always zero out the key schedule to avoid leaking key material on the stack */
+    OPENSSL_cleanse(&aesKey, sizeof(aesKey));
+    return(res);
 }
 
 #else /* XMLSEC_OPENSSL_API_300 */

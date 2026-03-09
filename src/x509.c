@@ -65,6 +65,7 @@ xmlSecX509EscapedStringRead(const xmlChar **in, xmlSecSize *inSize,
     xmlSecAssert2((*in) != NULL, -1);
     xmlSecAssert2(inSize != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
+    xmlSecAssert2(outWritten != NULL, -1);
 
     ii = jj = nonSpaceJJ = 0;
     while ((ii < (*inSize)) && (state != XMLSEC_X509_NAME_READ_STATE_DELIMETER)) {
@@ -196,6 +197,7 @@ xmlSecX509AttrValueStringRead(
     xmlSecAssert2(inSize != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(0 < outSize, -1);
+    xmlSecAssert2(outWritten != NULL, -1);
     xmlSecAssert2(outType != NULL, -1);
 
     /* read value */

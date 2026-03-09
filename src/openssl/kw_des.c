@@ -326,7 +326,7 @@ xmlSecOpenSSLKWDes3GenerateRandom(xmlSecTransformPtr transform XMLSEC_ATTRIBUTE_
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize > 0, -1);
 
-    ret = RAND_priv_bytes_ex(xmlSecOpenSSLGetLibCtx(), out, outSize, XMLSEEC_OPENSSL_RAND_BYTES_STRENGTH);
+    ret = RAND_priv_bytes_ex(xmlSecOpenSSLGetLibCtx(), out, outSize, XMLSEC_OPENSSL_RAND_BYTES_STRENGTH);
     if(ret != 1) {
         xmlSecOpenSSLError2("RAND_priv_bytes_ex", NULL, "size=" XMLSEC_SIZE_FMT, outSize);
         return(-1);
@@ -460,7 +460,7 @@ xmlSecOpenSSLKWDes3Encrypt(const xmlSecByte* key, xmlSecSize keySize,
 #ifndef XMLSEC_OPENSSL_API_300
     cipher = EVP_des_ede3_cbc();
 #else /* XMLSEC_OPENSSL_API_300 */
-    cipher = EVP_CIPHER_fetch(xmlSecOpenSSLGetLibCtx(), XMLSEEC_OPENSSL_CIPHER_NAME_DES3_EDE, NULL);
+    cipher = EVP_CIPHER_fetch(xmlSecOpenSSLGetLibCtx(), XMLSEC_OPENSSL_CIPHER_NAME_DES3_EDE, NULL);
     if(cipher == NULL) {
         xmlSecOpenSSLError("EVP_CIPHER_fetch(DES3_EDE)", NULL);
         goto done;
@@ -474,9 +474,9 @@ xmlSecOpenSSLKWDes3Encrypt(const xmlSecByte* key, xmlSecSize keySize,
         goto done;
     }
 
-    ret = EVP_CipherInit(cipherCtx, cipher, key, iv, enc);
+    ret = EVP_CipherInit_ex(cipherCtx, cipher, NULL, key, iv, enc);
     if(ret != 1) {
-        xmlSecOpenSSLError("EVP_CipherInit", NULL);
+        xmlSecOpenSSLError("EVP_CipherInit_ex", NULL);
         goto done;
     }
 
@@ -489,9 +489,9 @@ xmlSecOpenSSLKWDes3Encrypt(const xmlSecByte* key, xmlSecSize keySize,
         goto done;
     }
 
-    ret = EVP_CipherFinal(cipherCtx, out + updateLen, &finalLen);
+    ret = EVP_CipherFinal_ex(cipherCtx, out + updateLen, &finalLen);
     if(ret != 1) {
-        xmlSecOpenSSLError("EVP_CipherFinal", NULL);
+        xmlSecOpenSSLError("EVP_CipherFinal_ex", NULL);
         goto done;
     }
 

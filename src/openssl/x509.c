@@ -473,7 +473,7 @@ xmlSecOpenSSLKeyDataX509GetCerts(xmlSecKeyDataPtr data) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataX509Id), NULL);
 
     ctx = xmlSecOpenSSLX509DataGetCtx(data);
-    xmlSecAssert2(ctx != NULL, 0);
+    xmlSecAssert2(ctx != NULL, NULL);
 
     return(ctx->certsList);
 }
@@ -485,7 +485,7 @@ xmlSecOpenSSLKeyDataX509GetCrls (xmlSecKeyDataPtr data) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataX509Id), NULL);
 
     ctx = xmlSecOpenSSLX509DataGetCtx(data);
-    xmlSecAssert2(ctx != NULL, 0);
+    xmlSecAssert2(ctx != NULL, NULL);
 
     return(ctx->crlsList);
 }
@@ -1820,6 +1820,35 @@ done:
     return(crl);
 }
 
+void
+xmlSecOpenSSLX509NameToString(X509_NAME* name, char* buf, int bufLen) {
+    BIO* mem;
+    char* data = NULL;
+    long len;
+
+    if(buf == NULL || bufLen <= 0) {
+        return;
+    }
+    buf[0] = '\0';
+    if(name == NULL) {
+        return;
+    }
+    mem = BIO_new(BIO_s_mem());
+    if(mem == NULL) {
+        return;
+    }
+    X509_NAME_print_ex(mem, name, 0, XN_FLAG_RFC2253);
+    len = BIO_get_mem_data(mem, &data);
+    if(data != NULL && len > 0) {
+        if(len > bufLen - 1) {
+            len = bufLen - 1;
+        }
+        memcpy(buf, data, (size_t)len);
+        buf[len] = '\0';
+    }
+    BIO_free(mem);
+}
+
 static void
 xmlSecOpenSSLX509CertDebugDump(X509* cert, FILE* output) {
     char buf[1024];
@@ -1828,10 +1857,10 @@ xmlSecOpenSSLX509CertDebugDump(X509* cert, FILE* output) {
     xmlSecAssert(cert != NULL);
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "==== Subject Name: %s\n",
-        X509_NAME_oneline(X509_get_subject_name(cert), buf, sizeof(buf)));
-    fprintf(output, "==== Issuer Name: %s\n",
-        X509_NAME_oneline(X509_get_issuer_name(cert), buf, sizeof(buf)));
+    xmlSecOpenSSLX509NameToString(X509_get_subject_name(cert), buf, sizeof(buf));
+    fprintf(output, "==== Subject Name: %s\n", buf);
+    xmlSecOpenSSLX509NameToString(X509_get_issuer_name(cert), buf, sizeof(buf));
+    fprintf(output, "==== Issuer Name: %s\n", buf);
     fprintf(output, "==== Issuer Serial: ");
     bn = ASN1_INTEGER_to_BN(X509_get_serialNumber(cert),NULL);
     if(bn != NULL) {
@@ -1853,15 +1882,14 @@ xmlSecOpenSSLX509CertDebugXmlDump(X509* cert, FILE* output) {
     xmlSecAssert(output != NULL);
 
     fprintf(output, "<SubjectName>");
-    xmlSecPrintXmlString(output,
-        BAD_CAST X509_NAME_oneline(X509_get_subject_name(cert), buf, sizeof(buf))
-    );
+    xmlSecOpenSSLX509NameToString(X509_get_subject_name(cert), buf, sizeof(buf));
+    xmlSecPrintXmlString(output, BAD_CAST buf);
     fprintf(output, "</SubjectName>\n");
 
 
     fprintf(output, "<IssuerName>");
-    xmlSecPrintXmlString(output,
-        BAD_CAST X509_NAME_oneline(X509_get_issuer_name(cert), buf, sizeof(buf)));
+    xmlSecOpenSSLX509NameToString(X509_get_issuer_name(cert), buf, sizeof(buf));
+    xmlSecPrintXmlString(output, BAD_CAST buf);
     fprintf(output, "</IssuerName>\n");
 
     fprintf(output, "<SerialNumber>");

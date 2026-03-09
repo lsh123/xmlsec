@@ -184,6 +184,8 @@ xmlSecOpenSSLEvpDigestSetDigestByName(xmlSecOpenSSLEvpDigestCtxPtr ctx, const ch
 #if !defined(XMLSEC_NO_GOST) || !defined(XMLSEC_NO_GOST2012)
 
 /* Not all algorithms have been converted to the new providers design (e.g. GOST) */
+/* TODO: EVP_get_digestbyname() is deprecated in OpenSSL 3.0. Replace with EVP_MD_fetch()
+ * once GOST algorithms become available as OpenSSL providers. */
 static int
 xmlSecOpenSSLEvpDigestSetGostDigestByName(xmlSecOpenSSLEvpDigestCtxPtr ctx, const char * digestName) {
     xmlSecAssert2(ctx != NULL, -1);

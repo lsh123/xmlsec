@@ -511,6 +511,48 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformMLDSA87GetKlass(void
 
 /********************************************************************
  *
+ * EdDSA keys and transforms
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_EDDSA
+
+/**
+ * xmlSecGnuTLSKeyDataEdDSAId:
+ *
+ * The EdDSA key klass (Ed25519 and Ed448).
+ */
+#define xmlSecGnuTLSKeyDataEdDSAId   xmlSecGnuTLSKeyDataEdDSAGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecGnuTLSKeyDataEdDSAGetKlass        (void);
+XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataEdDSAAdoptKey        (xmlSecKeyDataPtr data,
+                                                                                 gnutls_pubkey_t pubkey,
+                                                                                 gnutls_privkey_t privkey);
+XMLSEC_CRYPTO_EXPORT gnutls_pubkey_t    xmlSecGnuTLSKeyDataEdDSAGetPublicKey    (xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT gnutls_privkey_t   xmlSecGnuTLSKeyDataEdDSAGetPrivateKey   (xmlSecKeyDataPtr data);
+
+
+/**
+ * xmlSecGnuTLSTransformEdDSAEd25519Id:
+ *
+ * The EdDSA-Ed25519 signature transform klass.
+ */
+#define xmlSecGnuTLSTransformEdDSAEd25519Id  \
+        xmlSecGnuTLSTransformEdDSAEd25519GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformEdDSAEd25519GetKlass(void);
+
+
+/**
+ * xmlSecGnuTLSTransformEdDSAEd448Id:
+ *
+ * The EdDSA-Ed448 signature transform klass.
+ */
+#define xmlSecGnuTLSTransformEdDSAEd448Id  \
+        xmlSecGnuTLSTransformEdDSAEd448GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformEdDSAEd448GetKlass(void);
+
+#endif /* XMLSEC_NO_EDDSA */
+
+/********************************************************************
+ *
  * HMAC transforms
  *
  *******************************************************************/

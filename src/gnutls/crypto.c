@@ -97,6 +97,10 @@ xmlSecCryptoGetFunctions_gnutls(void) {
     gXmlSecGnuTLSFunctions->keyDataMLDSAGetKlass        = xmlSecGnuTLSKeyDataMLDSAGetKlass;
 #endif /* XMLSEC_NO_MLDSA */
 
+#ifndef XMLSEC_NO_EDDSA
+    gXmlSecGnuTLSFunctions->keyDataEdDSAGetKlass        = xmlSecGnuTLSKeyDataEdDSAGetKlass;
+#endif /* XMLSEC_NO_EDDSA */
+
 #ifndef XMLSEC_NO_HMAC
     gXmlSecGnuTLSFunctions->keyDataHmacGetKlass         = xmlSecGnuTLSKeyDataHmacGetKlass;
 #endif /* XMLSEC_NO_HMAC */
@@ -210,6 +214,12 @@ xmlSecCryptoGetFunctions_gnutls(void) {
     gXmlSecGnuTLSFunctions->transformMLDSA65GetKlass            = xmlSecGnuTLSTransformMLDSA65GetKlass;
     gXmlSecGnuTLSFunctions->transformMLDSA87GetKlass            = xmlSecGnuTLSTransformMLDSA87GetKlass;
 #endif /* XMLSEC_NO_MLDSA */
+
+    /******************************* EdDSA ********************************/
+#ifndef XMLSEC_NO_EDDSA
+    gXmlSecGnuTLSFunctions->transformEdDSAEd25519GetKlass       = xmlSecGnuTLSTransformEdDSAEd25519GetKlass;
+    gXmlSecGnuTLSFunctions->transformEdDSAEd448GetKlass         = xmlSecGnuTLSTransformEdDSAEd448GetKlass;
+#endif /* XMLSEC_NO_EDDSA */
 
 
     /******************************* HMAC ********************************/

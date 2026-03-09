@@ -3017,6 +3017,224 @@ xmlSecGnuTLSKeyDataMLDSADebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
 
 
 
+#ifndef XMLSEC_NO_EDDSA
+/**************************************************************************
+ *
+ * EdDSA key (Ed25519 and Ed448, RFC 8032)
+ *
+ **************************************************************************/
+
+static int              xmlSecGnuTLSKeyDataEdDSAInitialize      (xmlSecKeyDataPtr data);
+static void             xmlSecGnuTLSKeyDataEdDSAFinalize        (xmlSecKeyDataPtr data);
+static int              xmlSecGnuTLSKeyDataEdDSADuplicate       (xmlSecKeyDataPtr dst,
+                                                                 xmlSecKeyDataPtr src);
+static xmlSecKeyDataType xmlSecGnuTLSKeyDataEdDSAGetType        (xmlSecKeyDataPtr data);
+static xmlSecSize       xmlSecGnuTLSKeyDataEdDSAGetSize         (xmlSecKeyDataPtr data);
+static void             xmlSecGnuTLSKeyDataEdDSADebugDump       (xmlSecKeyDataPtr data,
+                                                                 FILE* output);
+static void             xmlSecGnuTLSKeyDataEdDSADebugXmlDump    (xmlSecKeyDataPtr data,
+                                                                 FILE* output);
+
+static xmlSecKeyDataKlass xmlSecGnuTLSKeyDataEdDSAKlass = {
+    sizeof(xmlSecKeyDataKlass),
+    xmlSecGnuTLSAsymKeyDataSize,
+
+    /* data */
+    xmlSecNameEdDSAKeyValue,
+    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+                                                /* xmlSecKeyDataUsage usage; */
+    xmlSecHrefEdDSAKeyValue,                    /* const xmlChar* href; */
+    NULL,                                       /* const xmlChar* dataNodeName; */
+    NULL,                                       /* const xmlChar* dataNodeNs; */
+
+    /* constructors/destructor */
+    xmlSecGnuTLSKeyDataEdDSAInitialize,         /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecGnuTLSKeyDataEdDSADuplicate,          /* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecGnuTLSKeyDataEdDSAFinalize,           /* xmlSecKeyDataFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecKeyDataGenerateMethod generate; */
+
+    /* get info */
+    xmlSecGnuTLSKeyDataEdDSAGetType,            /* xmlSecKeyDataGetTypeMethod getType; */
+    xmlSecGnuTLSKeyDataEdDSAGetSize,            /* xmlSecKeyDataGetSizeMethod getSize; */
+    NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
+
+    /* read/write */
+    NULL,                                       /* xmlSecKeyDataXmlReadMethod xmlRead; */
+    NULL,                                       /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    NULL,                                       /* xmlSecKeyDataBinReadMethod binRead; */
+    NULL,                                       /* xmlSecKeyDataBinWriteMethod binWrite; */
+
+    /* debug */
+    xmlSecGnuTLSKeyDataEdDSADebugDump,          /* xmlSecKeyDataDebugDumpMethod debugDump; */
+    xmlSecGnuTLSKeyDataEdDSADebugXmlDump,       /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+
+    /* reserved for the future */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecGnuTLSKeyDataEdDSAGetKlass:
+ *
+ * The GnuTLS EdDSA key data klass.
+ *
+ * Returns: pointer to GnuTLS EdDSA key data klass.
+ */
+xmlSecKeyDataId
+xmlSecGnuTLSKeyDataEdDSAGetKlass(void) {
+    return(&xmlSecGnuTLSKeyDataEdDSAKlass);
+}
+
+/**
+ * xmlSecGnuTLSKeyDataEdDSAAdoptKey:
+ * @data:               the pointer to EdDSA key data.
+ * @pubkey:             the pointer to GnuTLS EdDSA public key.
+ * @privkey:            the pointer to GnuTLS EdDSA private key.
+ *
+ * Sets the value of EdDSA key data. The @pubkey and @privkey will be owned by the @data on success.
+ *
+ * Returns: 0 on success or a negative value otherwise.
+ */
+int
+xmlSecGnuTLSKeyDataEdDSAAdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, gnutls_privkey_t privkey) {
+    int ret;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataEdDSAId), -1);
+
+    /* verify key type */
+    if(pubkey != NULL) {
+        ret = gnutls_pubkey_get_pk_algorithm(pubkey, NULL);
+        if((ret != GNUTLS_PK_EDDSA_ED25519) && (ret != GNUTLS_PK_EDDSA_ED448)) {
+            xmlSecInternalError2("Invalid pubkey algorithm", NULL, "type=%d", ret);
+            return(-1);
+        }
+    }
+    if(privkey != NULL) {
+        ret = gnutls_privkey_get_pk_algorithm(privkey, NULL);
+        if((ret != GNUTLS_PK_EDDSA_ED25519) && (ret != GNUTLS_PK_EDDSA_ED448)) {
+            xmlSecInternalError2("Invalid privkey algorithm", NULL, "type=%d", ret);
+            return(-1);
+        }
+    }
+
+    /* do the work */
+    return xmlSecGnuTLSAsymKeyDataAdoptKey(data, pubkey, privkey);
+}
+
+/**
+ * xmlSecGnuTLSKeyDataEdDSAGetPublicKey:
+ * @data:               the pointer to EdDSA key data.
+ *
+ * Gets the GnuTLS EdDSA public key from EdDSA key data.
+ *
+ * Returns: pointer to GnuTLS public EdDSA key or NULL if an error occurs.
+ */
+gnutls_pubkey_t
+xmlSecGnuTLSKeyDataEdDSAGetPublicKey(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataEdDSAId), NULL);
+    return xmlSecGnuTLSAsymKeyDataGetPublicKey(data);
+}
+
+/**
+ * xmlSecGnuTLSKeyDataEdDSAGetPrivateKey:
+ * @data:               the pointer to EdDSA key data.
+ *
+ * Gets the GnuTLS EdDSA private key from EdDSA key data.
+ *
+ * Returns: pointer to GnuTLS private EdDSA key or NULL if an error occurs.
+ */
+gnutls_privkey_t
+xmlSecGnuTLSKeyDataEdDSAGetPrivateKey(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataEdDSAId), NULL);
+    return xmlSecGnuTLSAsymKeyDataGetPrivateKey(data);
+}
+
+static int
+xmlSecGnuTLSKeyDataEdDSAInitialize(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataEdDSAId), -1);
+
+    return(xmlSecGnuTLSAsymKeyDataInitialize(data));
+}
+
+static int
+xmlSecGnuTLSKeyDataEdDSADuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecGnuTLSKeyDataEdDSAId), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecGnuTLSKeyDataEdDSAId), -1);
+
+    return(xmlSecGnuTLSAsymKeyDataDuplicate(dst, src));
+}
+
+static void
+xmlSecGnuTLSKeyDataEdDSAFinalize(xmlSecKeyDataPtr data) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataEdDSAId));
+
+    xmlSecGnuTLSAsymKeyDataFinalize(data);
+}
+
+static xmlSecKeyDataType
+xmlSecGnuTLSKeyDataEdDSAGetType(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataEdDSAId), xmlSecKeyDataTypeUnknown);
+
+    return xmlSecGnuTLSAsymKeyDataGetType(data);
+}
+
+static xmlSecSize
+xmlSecGnuTLSKeyDataEdDSAGetSize(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataEdDSAId), 0);
+
+    return xmlSecGnuTLSAsymKeyDataGetSize(data);
+}
+
+static void
+xmlSecGnuTLSKeyDataEdDSADebugDump(xmlSecKeyDataPtr data, FILE* output) {
+    gnutls_pubkey_t pubkey;
+    gnutls_privkey_t privkey;
+    int algo = GNUTLS_PK_UNKNOWN;
+
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataEdDSAId));
+    xmlSecAssert(output != NULL);
+
+    pubkey = xmlSecGnuTLSKeyDataEdDSAGetPublicKey(data);
+    if(pubkey != NULL) {
+        algo = gnutls_pubkey_get_pk_algorithm(pubkey, NULL);
+    } else {
+        privkey = xmlSecGnuTLSKeyDataEdDSAGetPrivateKey(data);
+        if(privkey != NULL) {
+            algo = gnutls_privkey_get_pk_algorithm(privkey, NULL);
+        }
+    }
+    fprintf(output, "=== EdDSA key: algo=%s\n",
+            (algo == GNUTLS_PK_EDDSA_ED25519) ? "Ed25519" :
+            (algo == GNUTLS_PK_EDDSA_ED448)   ? "Ed448" : "unknown");
+}
+
+static void
+xmlSecGnuTLSKeyDataEdDSADebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
+    gnutls_pubkey_t pubkey;
+    gnutls_privkey_t privkey;
+    int algo = GNUTLS_PK_UNKNOWN;
+
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataEdDSAId));
+    xmlSecAssert(output != NULL);
+
+    pubkey = xmlSecGnuTLSKeyDataEdDSAGetPublicKey(data);
+    if(pubkey != NULL) {
+        algo = gnutls_pubkey_get_pk_algorithm(pubkey, NULL);
+    } else {
+        privkey = xmlSecGnuTLSKeyDataEdDSAGetPrivateKey(data);
+        if(privkey != NULL) {
+            algo = gnutls_privkey_get_pk_algorithm(privkey, NULL);
+        }
+    }
+    fprintf(output, "<EdDSAKeyValue algo=\"%s\" />\n",
+            (algo == GNUTLS_PK_EDDSA_ED25519) ? "Ed25519" :
+            (algo == GNUTLS_PK_EDDSA_ED448)   ? "Ed448" : "unknown");
+}
+
+#endif /* XMLSEC_NO_EDDSA */
+
+
+
 /**************************************************************************
  *
  * Internal helper functions
@@ -3179,6 +3397,25 @@ xmlSecGnuTLSAsymKeyDataCreate(gnutls_pubkey_t pubkey, gnutls_privkey_t privkey) 
 
         break;
 #endif /* XMLSEC_NO_MLDSA */
+
+#ifndef XMLSEC_NO_EDDSA
+    case GNUTLS_PK_EDDSA_ED25519:
+    case GNUTLS_PK_EDDSA_ED448:
+        keyData = xmlSecKeyDataCreate(xmlSecGnuTLSKeyDataEdDSAId);
+        if(keyData == NULL) {
+            xmlSecInternalError("xmlSecKeyDataCreate(EdDSAId)", NULL);
+            return(NULL);
+        }
+
+        ret = xmlSecGnuTLSKeyDataEdDSAAdoptKey(keyData, pubkey, privkey);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecGnuTLSKeyDataEdDSAAdoptKey", NULL);
+            xmlSecKeyDataDestroy(keyData);
+            return(NULL);
+        }
+
+        break;
+#endif /* XMLSEC_NO_EDDSA */
 
         default:
             xmlSecInternalError2("Public / private key algorithm is not supported", NULL,

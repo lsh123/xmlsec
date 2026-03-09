@@ -1182,7 +1182,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformSLHDSA_SHA2_256sGet
 
 /********************************************************************
  *
- * EdDSA key and transforms (EXPERIMENTAL)
+ * EdDSA key and transforms
  *
  *******************************************************************/
 #ifndef XMLSEC_NO_EDDSA

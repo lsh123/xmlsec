@@ -235,6 +235,14 @@ else
     xmlsec_feature_crl_load="no"
 fi
 
+# only openssl/gnutls/nss/mscng support crl verification
+# https://github.com/lsh123/xmlsec/issues/585
+if [ "z$crypto" = "zopenssl" -o  "z$crypto" = "zgnutls" -o "z$crypto" = "znss" -o "z$crypto" = "zmscng" ] ; then
+    xmlsec_feature_crl_verification="yes"
+else
+    xmlsec_feature_crl_verification="no"
+fi
+
 # currently only openssl/nss support CRL verification by time
 # https://github.com/lsh123/xmlsec/issues/579
 if [ "z$crypto" = "zopenssl" -o "z$crypto" = "znss"  ] ; then
@@ -251,13 +259,6 @@ else
     xmlsec_feature_key_check="no"
 fi
 
-# only openssl, gnutls, and nss support crl verification
-# https://github.com/lsh123/xmlsec/issues/585
-if [ "z$crypto" = "zopenssl" -o  "z$crypto" = "zgnutls" -o "z$crypto" = "znss" ] ; then
-    xmlsec_feature_crl_verification="yes"
-else
-    xmlsec_feature_crl_verification="no"
-fi
 
 # Advanced RSA OAEP modes:
 # - MSCrypto only supports SHA1 for digest and mgf1

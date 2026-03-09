@@ -311,6 +311,22 @@ const xmlChar xmlSecHrefEcdh[]                  = "http://www.w3.org/2009/xmlenc
 
 /*************************************************************************
  *
+ * X25519 key agreement strings
+ *
+ ************************************************************************/
+const xmlChar xmlSecNameX25519[]                = "x25519";
+const xmlChar xmlSecHrefX25519[]                = "http://www.w3.org/2021/04/xmldsig-more#x25519";
+
+/*************************************************************************
+ *
+ * X448 key agreement strings
+ *
+ ************************************************************************/
+const xmlChar xmlSecNameX448[]                  = "x448";
+const xmlChar xmlSecHrefX448[]                  = "http://www.w3.org/2021/04/xmldsig-more#x448";
+
+/*************************************************************************
+ *
  * ECDSA sigantures strings
  *
  * https://www.ietf.org/rfc/rfc9231.html#name-ecdsa-sha-ecdsa-ripemd160-e

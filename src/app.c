@@ -384,6 +384,25 @@ xmlSecKeyDataEdDSAGetKlass(void) {
 }
 
 /**
+ * xmlSecKeyDataXdhGetKlass:
+ *
+ * The XDH key data klass.
+ *
+ * Returns: XDH key data klass or NULL if an error occurs
+ * (xmlsec-crypto library is not loaded or the XDH key data
+ * klass is not implemented).
+ */
+xmlSecKeyDataId
+xmlSecKeyDataXdhGetKlass(void) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->keyDataXdhGetKlass == NULL)) {
+        xmlSecNotImplementedError2(missingMethodError, "keyDataXdhGetKlass");
+        return(xmlSecKeyDataIdUnknown);
+    }
+
+    return(xmlSecCryptoDLGetFunctions()->keyDataXdhGetKlass());
+}
+
+/**
  * xmlSecKeyDataX509GetKlass:
  *
  * The X509 key data klass.
@@ -777,6 +796,46 @@ xmlSecTransformEcdhGetKlass(void)
     }
 
     return(xmlSecCryptoDLGetFunctions()->transformEcdhGetKlass());
+}
+
+/**
+ * xmlSecTransformX25519GetKlass:
+ *
+ * X25519 key agreement transform klass.
+ *
+ * Returns: pointer to X25519 key agreement transform or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
+xmlSecTransformId
+xmlSecTransformX25519GetKlass(void)
+{
+    if ((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformX25519GetKlass == NULL)) {
+        xmlSecNotImplementedError2(missingMethodError, "transformX25519GetKlass");
+        return(xmlSecTransformIdUnknown);
+    }
+
+    return(xmlSecCryptoDLGetFunctions()->transformX25519GetKlass());
+}
+
+/**
+ * xmlSecTransformX448GetKlass:
+ *
+ * X448 key agreement transform klass.
+ *
+ * Returns: pointer to X448 key agreement transform or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
+xmlSecTransformId
+xmlSecTransformX448GetKlass(void)
+{
+    if ((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformX448GetKlass == NULL)) {
+        xmlSecNotImplementedError2(missingMethodError, "transformX448GetKlass");
+        return(xmlSecTransformIdUnknown);
+    }
+
+    return(xmlSecCryptoDLGetFunctions()->transformX448GetKlass());
 }
 
 /**

@@ -151,6 +151,13 @@ XMLSEC_EXPORT xmlSecKeyDataId                   xmlSecKeyDataSLHDSAGetKlass(void
 #define xmlSecKeyDataEdDSAId                    xmlSecKeyDataEdDSAGetKlass()
 XMLSEC_EXPORT xmlSecKeyDataId                   xmlSecKeyDataEdDSAGetKlass(void);
 /**
+ * xmlSecKeyDataXdhId:
+ *
+ * The XDH key klass.
+ */
+#define xmlSecKeyDataXdhId                      xmlSecKeyDataXdhGetKlass()
+XMLSEC_EXPORT xmlSecKeyDataId                   xmlSecKeyDataXdhGetKlass(void);
+/**
  * xmlSecKeyDataX509Id:
  *
  * The X509 data klass.
@@ -305,6 +312,20 @@ XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformDsaSha256GetKlass
 */
 #define xmlSecTransformEcdhId                   xmlSecTransformEcdhGetKlass()
 XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformEcdhGetKlass(void);
+/**
+ * xmlSecTransformX25519Id:
+ *
+ * The X25519 key agreement transform klass.
+ */
+#define xmlSecTransformX25519Id                 xmlSecTransformX25519GetKlass()
+XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformX25519GetKlass(void);
+/**
+ * xmlSecTransformX448Id:
+ *
+ * The X448 key agreement transform klass.
+ */
+#define xmlSecTransformX448Id                   xmlSecTransformX448GetKlass()
+XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformX448GetKlass(void);
 /**
  * xmlSecTransformEcdsaSha1Id:
  *

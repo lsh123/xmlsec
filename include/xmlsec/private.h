@@ -437,6 +437,7 @@ typedef int                     (*xmlSecCryptoAppKeyCertLoadMemoryMethod)(xmlSec
  * @keyDataPbkdf2GetKlass:      the method to get pointer to PBKDF2 key data klass.
  * @keyDataRsaGetKlass:         the method to get pointer to RSA key data klass.
  * @keyDataSLHDSAGetKlass:      the method to get pointer to SLH-DSA key data klass.
+ * @keyDataXdhGetKlass:         the method to get pointer to XDH key data klass.
  * @keyDataX509GetKlass:        the method to get pointer to X509 key data klass.
  * @keyDataRawX509CertGetKlass: the method to get pointer to raw X509 cert key data klass.
  * @x509StoreGetKlass:          the method to get pointer to X509 key data store.
@@ -457,6 +458,8 @@ typedef int                     (*xmlSecCryptoAppKeyCertLoadMemoryMethod)(xmlSec
  * @transformDsaSha1GetKlass:   the method to get pointer to DSA-SHA1 signature transform.
  * @transformDsaSha256GetKlass: the method to get pointer to DSA-SHA2-256 signature transform.
  * @transformEcdhGetKlass:      the method to get pointer to ECDH key agreement transform.
+ * @transformX25519GetKlass:    the method to get pointer to X25519 key agreement transform.
+ * @transformX448GetKlass:      the method to get pointer to X448 key agreement transform.
  * @transformEcdsaRipemd160GetKlass: the method to get pointer to ECDSA-RIPEMD160 signature transform.
  * @transformEcdsaSha1GetKlass: the method to get pointer to ECDSA-SHA1 signature transform.
  * @transformEcdsaSha224GetKlass: the method to get pointer to ECDSA-SHA2-224 signature transform.
@@ -564,6 +567,7 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoKeyDataGetKlassMethod            keyDataRsaGetKlass;
     xmlSecCryptoKeyDataGetKlassMethod            keyDataSLHDSAGetKlass;
     xmlSecCryptoKeyDataGetKlassMethod            keyDataEdDSAGetKlass;
+    xmlSecCryptoKeyDataGetKlassMethod            keyDataXdhGetKlass;
     xmlSecCryptoKeyDataGetKlassMethod            keyDataX509GetKlass;
     xmlSecCryptoKeyDataGetKlassMethod            keyDataRawX509CertGetKlass;
     xmlSecCryptoKeyDataGetKlassMethod            keyDataDEREncodedKeyValueGetKlass;
@@ -594,6 +598,9 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoTransformGetKlassMethod          transformDsaSha256GetKlass;
 
     xmlSecCryptoTransformGetKlassMethod          transformEcdhGetKlass;
+
+    xmlSecCryptoTransformGetKlassMethod          transformX448GetKlass;
+    xmlSecCryptoTransformGetKlassMethod          transformX25519GetKlass;
 
     xmlSecCryptoTransformGetKlassMethod          transformEcdsaRipemd160GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformEcdsaSha1GetKlass;

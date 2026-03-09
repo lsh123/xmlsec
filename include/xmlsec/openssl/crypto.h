@@ -48,6 +48,10 @@
 #include <openssl/evp.h>
 #endif /* XMLSEC_NO_EDDSA */
 
+#ifndef XMLSEC_NO_XDH
+#include <openssl/evp.h>
+#endif /* XMLSEC_NO_XDH */
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
@@ -1243,6 +1247,47 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformEdDSAEd448phGetKlas
 
 
 #endif /* XMLSEC_NO_EDDSA */
+
+
+/********************************************************************
+ *
+ * XDH key and transforms
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_XDH
+
+/**
+ * xmlSecOpenSSLKeyDataXdhId:
+ *
+ * The XDH key klass.
+ */
+#define xmlSecOpenSSLKeyDataXdhId \
+        xmlSecOpenSSLKeyDataXdhGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataXdhGetKlass     (void);
+XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeyDataXdhAdoptEvp     (xmlSecKeyDataPtr data,
+                                                                             EVP_PKEY* pKey);
+XMLSEC_CRYPTO_EXPORT EVP_PKEY*          xmlSecOpenSSLKeyDataXdhGetEvp       (xmlSecKeyDataPtr data);
+
+
+/**
+ * xmlSecOpenSSLTransformX25519Id:
+ *
+ * The X25519 key agreement transform klass.
+ */
+#define xmlSecOpenSSLTransformX25519Id  \
+        xmlSecOpenSSLTransformX25519GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformX25519GetKlass(void);
+/**
+ * xmlSecOpenSSLTransformX448Id:
+ *
+ * The X448 key agreement transform klass.
+ */
+#define xmlSecOpenSSLTransformX448Id  \
+        xmlSecOpenSSLTransformX448GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformX448GetKlass(void);
+
+
+#endif /* XMLSEC_NO_XDH */
 
 
 /********************************************************************

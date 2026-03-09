@@ -484,6 +484,12 @@ xmlSecOpenSSLEvpKeyGetKeyDataId(EVP_PKEY *pKey) {
         return (xmlSecOpenSSLKeyDataEdDSAId);
 #endif /* XMLSEC_NO_EDDSA */
 
+#ifndef XMLSEC_NO_XDH
+    case EVP_PKEY_X25519:
+    case EVP_PKEY_X448:
+        return (xmlSecOpenSSLKeyDataXdhId);
+#endif /* XMLSEC_NO_XDH */
+
 #ifndef XMLSEC_NO_RSA
     case EVP_PKEY_RSA:
     case EVP_PKEY_RSA2:
@@ -5383,3 +5389,212 @@ xmlSecOpenSSLKeyDataEdDSADebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
 }
 
 #endif /* XMLSEC_NO_EDDSA */
+
+
+#ifndef XMLSEC_NO_XDH
+/**
+ * XDH support (X25519 and X448 key agreement)
+ */
+
+static int               xmlSecOpenSSLKeyDataXdhInitialize        (xmlSecKeyDataPtr data);
+static int               xmlSecOpenSSLKeyDataXdhDuplicate         (xmlSecKeyDataPtr dst,
+                                                                    xmlSecKeyDataPtr src);
+static void              xmlSecOpenSSLKeyDataXdhFinalize          (xmlSecKeyDataPtr data);
+
+static xmlSecKeyDataType xmlSecOpenSSLKeyDataXdhGetType           (xmlSecKeyDataPtr data);
+static xmlSecSize        xmlSecOpenSSLKeyDataXdhGetSize           (xmlSecKeyDataPtr data);
+static void              xmlSecOpenSSLKeyDataXdhDebugDump         (xmlSecKeyDataPtr data,
+                                                                    FILE* output);
+static void              xmlSecOpenSSLKeyDataXdhDebugXmlDump      (xmlSecKeyDataPtr data,
+                                                                    FILE* output);
+
+static int
+xmlSecOpenSSLKeyValueXdhCheckKeyType(EVP_PKEY* pKey)
+{
+    xmlSecAssert2(pKey != NULL, -1);
+
+    switch(xmlSecOpenSSLEvpKeyGetId(pKey)) {
+    case EVP_PKEY_X25519:
+    case EVP_PKEY_X448:
+        return(0);
+    default:
+        return(1);
+    }
+}
+
+static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataXdhKlass = {
+    sizeof(xmlSecKeyDataKlass),
+    xmlSecOpenSSLEvpKeyDataSize,
+
+    /* data */
+    xmlSecNameDEREncodedKeyValue,
+    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+                                                /* xmlSecKeyDataUsage usage; */
+    xmlSecHrefDEREncodedKeyValue,               /* const xmlChar* href; */
+    NULL,                                       /* const xmlChar* dataNodeName; */
+    NULL,                                       /* const xmlChar* dataNodeNs; */
+
+    /* constructors/destructor */
+    xmlSecOpenSSLKeyDataXdhInitialize,          /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecOpenSSLKeyDataXdhDuplicate,           /* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecOpenSSLKeyDataXdhFinalize,            /* xmlSecKeyDataFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecKeyDataGenerateMethod generate; */
+
+    /* get info */
+    xmlSecOpenSSLKeyDataXdhGetType,             /* xmlSecKeyDataGetTypeMethod getType; */
+    xmlSecOpenSSLKeyDataXdhGetSize,             /* xmlSecKeyDataGetSizeMethod getSize; */
+    NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
+
+    /* read/write */
+    NULL,                                       /* xmlSecKeyDataXmlReadMethod xmlRead; */
+    NULL,                                       /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    NULL,                                       /* xmlSecKeyDataBinReadMethod binRead; */
+    NULL,                                       /* xmlSecKeyDataBinWriteMethod binWrite; */
+
+    /* debug */
+    xmlSecOpenSSLKeyDataXdhDebugDump,           /* xmlSecKeyDataDebugDumpMethod debugDump; */
+    xmlSecOpenSSLKeyDataXdhDebugXmlDump,        /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+
+    /* reserved for the future */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecOpenSSLKeyDataXdhGetKlass:
+ *
+ * The OpenSSL XDH data klass.
+ *
+ * Returns: pointer to OpenSSL XDH key data klass.
+ */
+xmlSecKeyDataId
+xmlSecOpenSSLKeyDataXdhGetKlass(void) {
+    return(&xmlSecOpenSSLKeyDataXdhKlass);
+}
+
+/**
+ * xmlSecOpenSSLKeyDataXdhAdoptEvp:
+ * @data:               the pointer to XDH key data.
+ * @pKey:               the pointer to OpenSSL EVP key.
+ *
+ * Sets the XDH key data value to OpenSSL EVP key.
+ *
+ * Returns: 0 on success or a negative value otherwise.
+ */
+int
+xmlSecOpenSSLKeyDataXdhAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
+    int ret;
+
+    xmlSecAssert2(xmlSecKeyDataIsValid(data), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataXdhId), -1);
+    xmlSecAssert2(pKey != NULL, -1);
+
+    ret = xmlSecOpenSSLKeyValueXdhCheckKeyType(pKey);
+    if(ret != 0) {
+        xmlSecInternalError("xmlSecOpenSSLKeyValueXdhCheckKeyType",
+                            xmlSecKeyDataGetName(data));
+        return(-1);
+    }
+
+    return(xmlSecOpenSSLEvpKeyDataAdoptEvp(data, pKey));
+}
+
+
+/**
+ * xmlSecOpenSSLKeyDataXdhGetEvp:
+ * @data:               the pointer to XDH key data.
+ *
+ * Gets the OpenSSL EVP key from XDH key data.
+ *
+ * Returns: pointer to OpenSSL EVP key or NULL if an error occurs.
+ */
+EVP_PKEY*
+xmlSecOpenSSLKeyDataXdhGetEvp(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataIsValid(data), NULL);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataXdhId), NULL);
+
+    return(xmlSecOpenSSLEvpKeyDataGetEvp(data));
+}
+
+static int
+xmlSecOpenSSLKeyDataXdhInitialize(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataXdhId), -1);
+
+    return(xmlSecOpenSSLEvpKeyDataInitialize(data));
+}
+
+static int
+xmlSecOpenSSLKeyDataXdhDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecOpenSSLKeyDataXdhId), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecOpenSSLKeyDataXdhId), -1);
+
+    return(xmlSecOpenSSLEvpKeyDataDuplicate(dst, src));
+}
+
+static void
+xmlSecOpenSSLKeyDataXdhFinalize(xmlSecKeyDataPtr data) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataXdhId));
+
+    xmlSecOpenSSLEvpKeyDataFinalize(data);
+}
+
+
+static xmlSecSize
+xmlSecOpenSSLKeyDataXdhGetSize(xmlSecKeyDataPtr data) {
+    return(xmlSecOpenSSLKeyDataGetKeySize(data));
+}
+
+static xmlSecKeyDataType
+xmlSecOpenSSLKeyDataXdhGetType(xmlSecKeyDataPtr data) {
+    EVP_PKEY* pKey;
+    const OSSL_PARAM* params;
+    int ii;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataXdhId), xmlSecKeyDataTypeUnknown);
+
+    /* check if the key is in memory */
+    if(xmlSecOpenSSLEvpKeyDataIsKeyInMemory(data) != XMLSEC_OPENSSL_EVP_KEY_IMPLEMENTATION_MEMORY) {
+        /* there is no way to determine if a key is public or private when
+         * key is stored on HSM (engine or provider) so we assume it is private
+         * (see https://github.com/lsh123/xmlsec/issues/588)
+         */
+        return(xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic);
+    }
+
+    /* key is in memory, check if it has priv key */
+    pKey = xmlSecOpenSSLKeyDataXdhGetEvp(data);
+    xmlSecAssert2(pKey != NULL, xmlSecKeyDataTypeUnknown);
+
+    params = EVP_PKEY_gettable_params(pKey);
+    if(params == NULL) {
+        xmlSecInternalError("EVP_PKEY_gettable_params", xmlSecKeyDataGetName(data));
+        return(xmlSecKeyDataTypeUnknown);
+    }
+
+    for(ii = 0; params[ii].key != NULL; ++ii) {
+        if(strcmp(params[ii].key, OSSL_PKEY_PARAM_PRIV_KEY) == 0) {
+            return(xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic);
+        }
+    }
+
+    return(xmlSecKeyDataTypePublic);
+}
+
+static void
+xmlSecOpenSSLKeyDataXdhDebugDump(xmlSecKeyDataPtr data, FILE* output) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataXdhId));
+    xmlSecAssert(output != NULL);
+
+    fprintf(output, "=== xdh key: size = " XMLSEC_SIZE_FMT "\n",
+        xmlSecOpenSSLKeyDataXdhGetSize(data));
+}
+
+static void
+xmlSecOpenSSLKeyDataXdhDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataXdhId));
+    xmlSecAssert(output != NULL);
+
+    fprintf(output, "<XdhKey/>\n");
+}
+
+#endif /* XMLSEC_NO_XDH */

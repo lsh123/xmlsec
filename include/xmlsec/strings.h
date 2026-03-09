@@ -282,6 +282,22 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEcdh[];
 
 /*************************************************************************
  *
+ * X25519 key agreement strings
+ *
+ ************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameX25519[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefX25519[];
+
+/*************************************************************************
+ *
+ * X448 key agreement strings
+ *
+ ************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameX448[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefX448[];
+
+/*************************************************************************
+ *
  * ECDSA sigantures strings
  *
  ************************************************************************/

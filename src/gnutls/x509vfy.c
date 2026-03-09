@@ -194,20 +194,17 @@ xmlSecGnuTLSX509CheckCrtTime(const gnutls_x509_crt_t cert, time_t ts) {
     time_t notValidBefore, notValidAfter;
 
     xmlSecAssert2(cert != NULL, -1);
+    xmlSecAssert2(ts >= 0, -1);
 
     /* get expiration times */
     notValidBefore = gnutls_x509_crt_get_activation_time(cert);
     if(notValidBefore == (time_t)-1) {
-        xmlSecGnuTLSError2("gnutls_x509_crt_get_activation_time", GNUTLS_E_SUCCESS, NULL,
-            "cert activation time is invalid: %.lf",
-            difftime(notValidBefore, (time_t)0));
+        xmlSecGnuTLSError("gnutls_x509_crt_get_activation_time", GNUTLS_E_SUCCESS, NULL);
         return(-1);
     }
     notValidAfter = gnutls_x509_crt_get_expiration_time(cert);
     if(notValidAfter == (time_t)-1) {
-        xmlSecGnuTLSError2("gnutls_x509_crt_get_expiration_time", GNUTLS_E_SUCCESS, NULL,
-            "cert expiration time is invalid: %.lf",
-            difftime(notValidAfter, (time_t)0));
+        xmlSecGnuTLSError("gnutls_x509_crt_get_expiration_time", GNUTLS_E_SUCCESS, NULL);
         return(-1);
     }
 
@@ -368,13 +365,17 @@ xmlSecGnuTLSX509StoreGetCertsChain(xmlSecGnuTLSX509StoreCtxPtr ctx, gnutls_x509_
     xmlSecAssert2((extra_certs_size + ctx_certs_size + 1) <= certs_chain_max_size, -1);
 
     /* construct the chain starting at cert_to_verify */
-    for(cert = cert_to_verify, ii = 0; ((cert != 0) && (ii < certs_chain_max_size)); ++ii) {
+    for(cert = cert_to_verify, ii = 0; ((cert != NULL) && (ii < certs_chain_max_size)); ++ii) {
         certs_chain[ii] = cert;
 
         /* find the cert that signed this one */
         tmp = xmlSecGnuTLSX509FindSignerCert(extra_certs, cert);
         if(tmp == NULL) {
             tmp = xmlSecGnuTLSX509FindSignerCert(&(ctx->certsUntrusted), cert);
+        }
+
+        if(tmp == cert) {
+            break;
         }
         cert = tmp;
     }
@@ -404,7 +405,7 @@ xmlSecGnuTLSX509GetVerificationFlags(const xmlSecKeyInfoCtx* keyInfoCtx, unsigne
 
     (*flags) |= GNUTLS_VERIFY_ALLOW_UNSORTED_CHAIN;
     if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_STRICT_CHECKS) != 0) {
-        /* legacy digests are still needed for tests */
+        /* Compatibility mode requested by the caller/test harness. */
         (*flags) |= GNUTLS_VERIFY_ALLOW_SIGN_RSA_MD2;
         (*flags) |= GNUTLS_VERIFY_ALLOW_SIGN_RSA_MD5;
 #if GNUTLS_VERSION_NUMBER >= 0x030600
@@ -520,9 +521,9 @@ xmlSecGnuTLSX509StoreVerifyCert(xmlSecGnuTLSX509StoreCtxPtr ctx,
         return(-1);
     }
 
-    XMLSEC_SAFE_CAST_SIZE_TO_UINT(certs_chain_size, certs_chain_len, return(1), NULL);
-    XMLSEC_SAFE_CAST_SIZE_TO_UINT(trusted_size, trusted_len, return(1), NULL);
-    XMLSEC_SAFE_CAST_SIZE_TO_UINT(crls_size, crls_len, return(1), NULL);
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(certs_chain_size, certs_chain_len, return(-1), NULL);
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(trusted_size, trusted_len, return(-1), NULL);
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(crls_size, crls_len, return(-1), NULL);
     err = gnutls_x509_crt_list_verify(
             certs_chain, certs_chain_len,
             trusted, trusted_len,
@@ -546,8 +547,11 @@ xmlSecGnuTLSX509StoreVerifyCert(xmlSecGnuTLSX509StoreCtxPtr ctx,
      *  we have to do it ourselves */
     if(keyInfoCtx->certsVerificationTime > 0) {
         ret = xmlSecGnuTLSX509CheckCrtsTime(certs_chain, certs_chain_size, keyInfoCtx->certsVerificationTime);
-        if(ret != 1) {
+        if(ret < 0) {
             xmlSecInternalError("xmlSecGnuTLSX509CheckCrtsTime", NULL);
+            return(-1);
+        }
+        if(ret != 1) {
             return(0);
         }
     }

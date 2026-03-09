@@ -779,7 +779,7 @@ xmlSecGnuTLSReadDerInteger(const xmlSecByte * data, xmlSecSize dataSize, xmlSecS
         return(-1);
     }
     /* skip zeros if any */
-    while((data[(*ii)] == 0) && (len > 0)) {
+    while((len > 0) && (data[(*ii)] == 0)) {
         ++(*ii);
         --len;
     }
@@ -799,6 +799,7 @@ xmlSecGnuTLSFromDer(const gnutls_datum_t* src, gnutls_datum_t* dst, xmlSecSize s
     xmlSecSize ii = 0;
     xmlSecSize len, srcSize;
     int ret;
+    int res = -1;
 
     xmlSecAssert2(src != NULL, -1);
     xmlSecAssert2(src->data != NULL, -1);
@@ -816,17 +817,17 @@ xmlSecGnuTLSFromDer(const gnutls_datum_t* src, gnutls_datum_t* dst, xmlSecSize s
     }
     memset(dst->data, 0, dst->size);
 
-    XMLSEC_SAFE_CAST_UINT_TO_SIZE(src->size, srcSize, return(-1), NULL);
+    XMLSEC_SAFE_CAST_UINT_TO_SIZE(src->size, srcSize, goto done, NULL);
 
     /* sequence tag */
     if(srcSize < ii + 1) {
         xmlSecInvalidSizeLessThanError("Expected asn1 sequence tag",
                     srcSize, ii + 2, NULL);
-        return(-1);
+        goto done;
     }
     if(src->data[ii] != XMLSEC_GNUTLS_ASN1_TAG_SEQUENCE) {
         xmlSecInvalidDataError("Expected asn1 sequence tag", NULL);
-        return(-1);
+        goto done;
     }
     ++ii;
 
@@ -834,31 +835,41 @@ xmlSecGnuTLSFromDer(const gnutls_datum_t* src, gnutls_datum_t* dst, xmlSecSize s
     ret = xmlSecGnuTLSReadDerLength(src->data, srcSize, &ii, &len);
     if(ret < 0) {
         xmlSecInvalidDataError("Invalid DER sequence length", NULL);
-        return(-1);
+        goto done;
     }
 
     /* r */
     ret = xmlSecGnuTLSReadDerInteger(src->data, srcSize, &ii, dst->data, size);
     if(ret < 0) {
         xmlSecInvalidDataError("Cannot read DER integer r", NULL);
-        return(-1);
+        goto done;
     }
 
     /* s */
     ret = xmlSecGnuTLSReadDerInteger(src->data, srcSize, &ii, dst->data + size, size);
     if(ret < 0) {
         xmlSecInvalidDataError("Cannot read DER integer s", NULL);
-        return(-1);
+        goto done;
     }
 
     /* check leftovers */
     if(ii != srcSize) {
         xmlSecInvalidDataError("Unexpected data", NULL);
-        return(-1);
+        goto done;
     }
 
     /* success */
-    return(0);
+    res = 0;
+
+done:
+    if(res < 0) {
+        if(dst->data != NULL) {
+            gnutls_free(dst->data);
+            dst->data = NULL;
+        }
+        dst->size = 0;
+    }
+    return(res);
 }
 
 /* returns res = 0 if no der conversion is expected or the half size of the resulting signature

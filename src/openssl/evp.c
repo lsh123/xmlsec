@@ -5427,10 +5427,10 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataXdhKlass = {
     xmlSecOpenSSLEvpKeyDataSize,
 
     /* data */
-    xmlSecNameDEREncodedKeyValue,
+    xmlSecNameXDHKeyValue,
     xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageRetrievalMethodNodeXml,
                                                 /* xmlSecKeyDataUsage usage; */
-    xmlSecHrefDEREncodedKeyValue,               /* const xmlChar* href; */
+    xmlSecHrefXDHKeyValue,                      /* const xmlChar* href; */
     NULL,                                       /* const xmlChar* dataNodeName; */
     NULL,                                       /* const xmlChar* dataNodeNs; */
 

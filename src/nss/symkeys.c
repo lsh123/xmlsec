@@ -460,7 +460,7 @@ static xmlSecKeyDataKlass xmlSecNssKeyDataPbkdf2Klass = {
     xmlSecKeyDataBinarySize,
 
     /* data */
-    xmlSecNamePbkdf2KeyValue,
+    xmlSecNamePbkdf2Key,
     xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
                                     /* xmlSecKeyDataUsage usage; */
     NULL,                           /* const xmlChar* href; */

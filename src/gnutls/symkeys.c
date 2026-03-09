@@ -463,7 +463,7 @@ static xmlSecKeyDataKlass xmlSecGnuTLSKeyDataPbkdf2Klass = {
     xmlSecKeyDataBinarySize,
 
     /* data */
-    xmlSecNamePbkdf2KeyValue,
+    xmlSecNamePbkdf2Key,
     xmlSecKeyDataUsageReadFromFile,             /* xmlSecKeyDataUsage usage; */
     NULL,                                       /* const xmlChar* href; */
     NULL,                                       /* const xmlChar* dataNodeName; */

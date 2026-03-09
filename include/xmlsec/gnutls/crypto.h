@@ -44,15 +44,26 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSGenerateRandom      (xmlSecB
 
 /********************************************************************
  *
- * Asymetric keys helpers
+ * Asymmetric keys helpers
  *
  *******************************************************************/
 
-XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr       xmlSecGCryptAsymetricKeyCreatePub       (gnutls_pubkey_t pubkey);
-XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr       xmlSecGCryptAsymetricKeyCreatePriv      (gnutls_privkey_t privkey);
+XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr       xmlSecGnuTLSAsymmetricKeyCreatePub       (gnutls_pubkey_t pubkey);
+XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr       xmlSecGnuTLSAsymmetricKeyCreatePriv      (gnutls_privkey_t privkey);
 
-XMLSEC_CRYPTO_EXPORT gnutls_pubkey_t    xmlSecGCryptAsymetricKeyGetPub          (xmlSecKeyPtr key);
-XMLSEC_CRYPTO_EXPORT gnutls_privkey_t   xmlSecGCryptAsymetricKeyGetPriv         (xmlSecKeyPtr key);
+XMLSEC_CRYPTO_EXPORT gnutls_pubkey_t    xmlSecGnuTLSAsymmetricKeyGetPub          (xmlSecKeyPtr key);
+XMLSEC_CRYPTO_EXPORT gnutls_privkey_t   xmlSecGnuTLSAsymmetricKeyGetPriv         (xmlSecKeyPtr key);
+
+/********************************************************************
+ *
+ * DEPRECATED
+ *
+ *******************************************************************/
+XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED xmlSecKeyPtr    xmlSecGCryptAsymetricKeyCreatePub       (gnutls_pubkey_t pubkey);
+XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED xmlSecKeyPtr    xmlSecGCryptAsymetricKeyCreatePriv      (gnutls_privkey_t privkey);
+
+XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED gnutls_pubkey_t xmlSecGCryptAsymetricKeyGetPub          (xmlSecKeyPtr key);
+XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED gnutls_privkey_t xmlSecGCryptAsymetricKeyGetPriv         (xmlSecKeyPtr key);
 
 /********************************************************************
  *

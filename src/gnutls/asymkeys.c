@@ -335,7 +335,7 @@ xmlSecGnuTLSAsymKeyDataGetSize(xmlSecKeyDataPtr data) {
  *******************************************************************/
 
 /**
- * xmlSecGCryptAsymetricKeyCreatePub:
+ * xmlSecGnuTLSAsymmetricKeyCreatePub:
  * @pubkey:             the pointer to GnuTLS public key.
  *
  * Creates XMLSec key from GnuTLS public key.
@@ -343,7 +343,7 @@ xmlSecGnuTLSAsymKeyDataGetSize(xmlSecKeyDataPtr data) {
  * Returns: 0 on success or a negative value otherwise.
  */
 xmlSecKeyPtr
-xmlSecGCryptAsymetricKeyCreatePub(gnutls_pubkey_t pubkey) {
+xmlSecGnuTLSAsymmetricKeyCreatePub(gnutls_pubkey_t pubkey) {
     xmlSecKeyDataPtr keyData;
     xmlSecKeyPtr key;
     int ret;
@@ -378,9 +378,14 @@ xmlSecGCryptAsymetricKeyCreatePub(gnutls_pubkey_t pubkey) {
     return(key);
 }
 
+xmlSecKeyPtr
+xmlSecGCryptAsymetricKeyCreatePub(gnutls_pubkey_t pubkey) {
+    return(xmlSecGnuTLSAsymmetricKeyCreatePub(pubkey));
+}
+
 
 /**
- * xmlSecGCryptAsymetricKeyCreatePriv:
+ * xmlSecGnuTLSAsymmetricKeyCreatePriv:
  * @privkey:             the pointer to GnuTLS private key.
  *
  * Creates XMLSec key from GnuTLS private key.
@@ -388,7 +393,7 @@ xmlSecGCryptAsymetricKeyCreatePub(gnutls_pubkey_t pubkey) {
  * Returns: 0 on success or a negative value otherwise.
  */
 xmlSecKeyPtr
-xmlSecGCryptAsymetricKeyCreatePriv(gnutls_privkey_t privkey) {
+xmlSecGnuTLSAsymmetricKeyCreatePriv(gnutls_privkey_t privkey) {
     xmlSecKeyDataPtr keyData;
     xmlSecKeyPtr key;
     int ret;
@@ -423,9 +428,14 @@ xmlSecGCryptAsymetricKeyCreatePriv(gnutls_privkey_t privkey) {
     return(key);
 }
 
+xmlSecKeyPtr
+xmlSecGCryptAsymetricKeyCreatePriv(gnutls_privkey_t privkey) {
+    return(xmlSecGnuTLSAsymmetricKeyCreatePriv(privkey));
+}
+
 
 /**
- * xmlSecGCryptAsymetricKeyGetPub:
+ * xmlSecGnuTLSAsymmetricKeyGetPub:
  * @key:             the pointer to XMLSec key.
  *
  * Gets GnuTLS public key from an XMLSec @key .
@@ -433,7 +443,7 @@ xmlSecGCryptAsymetricKeyCreatePriv(gnutls_privkey_t privkey) {
  * Returns: GnuTLS public key on success or a NULL value otherwise.
  */
 gnutls_pubkey_t
-xmlSecGCryptAsymetricKeyGetPub(xmlSecKeyPtr key) {
+xmlSecGnuTLSAsymmetricKeyGetPub(xmlSecKeyPtr key) {
     xmlSecKeyDataPtr keyData;
 
     xmlSecAssert2(key != NULL, NULL);
@@ -447,8 +457,13 @@ xmlSecGCryptAsymetricKeyGetPub(xmlSecKeyPtr key) {
     return(xmlSecGnuTLSAsymKeyDataGetPublicKey(keyData));
 }
 
+gnutls_pubkey_t
+xmlSecGCryptAsymetricKeyGetPub(xmlSecKeyPtr key) {
+    return(xmlSecGnuTLSAsymmetricKeyGetPub(key));
+}
+
 /**
- * xmlSecGCryptAsymetricKeyGetPriv:
+ * xmlSecGnuTLSAsymmetricKeyGetPriv:
  * @key:             the pointer to XMLSec key.
  *
  * Gets GnuTLS private key from an XMLSec @key .
@@ -456,7 +471,7 @@ xmlSecGCryptAsymetricKeyGetPub(xmlSecKeyPtr key) {
  * Returns: GnuTLS private key on success or a NULL value otherwise.
  */
 gnutls_privkey_t
-xmlSecGCryptAsymetricKeyGetPriv(xmlSecKeyPtr key) {
+xmlSecGnuTLSAsymmetricKeyGetPriv(xmlSecKeyPtr key) {
     xmlSecKeyDataPtr keyData;
 
     xmlSecAssert2(key != NULL, NULL);
@@ -468,6 +483,11 @@ xmlSecGCryptAsymetricKeyGetPriv(xmlSecKeyPtr key) {
     }
 
     return(xmlSecGnuTLSAsymKeyDataGetPrivateKey(keyData));
+}
+
+gnutls_privkey_t
+xmlSecGCryptAsymetricKeyGetPriv(xmlSecKeyPtr key) {
+    return(xmlSecGnuTLSAsymmetricKeyGetPriv(key));
 }
 
 
@@ -657,9 +677,9 @@ xmlSecGnuTLSKeyDataDEREncodedKeyValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr k
     xmlSecAssert2(keyInfoCtx->mode == xmlSecKeyInfoModeWrite, -1);
 
     /* get pubkey */
-    pubkey = xmlSecGCryptAsymetricKeyGetPub(key);
+    pubkey = xmlSecGnuTLSAsymmetricKeyGetPub(key);
     if(pubkey == NULL) {
-        xmlSecInternalError("xmlSecGCryptAsymetricKeyGetPub", xmlSecKeyDataKlassGetName(id));
+        xmlSecInternalError("xmlSecGnuTLSAsymmetricKeyGetPub", xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 

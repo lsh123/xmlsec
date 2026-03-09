@@ -30,4 +30,4 @@ XMLSEC_CRYPTO_EXPORT NCRYPT_KEY_HANDLE  xmlSecMSCngKeyDataGetPrivKey (xmlSecKeyD
 }
 #endif /* __cplusplus */
 
-#endif /* __XMLSEC_MSCNG_PCCERT_CONTEXT_H__ */
+#endif /* __XMLSEC_MSCNG_CERTKEYS_H__ */

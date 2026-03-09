@@ -420,6 +420,29 @@ xmlSecOpenSSLEvpSignatureCheckId(xmlSecTransformPtr transform) {
 
     /*************************************************************************
      *
+     * EdDSA
+     *
+     ************************************************************************/
+#ifndef XMLSEC_NO_EDDSA
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformEdDSAEd25519Id)) {
+        return(1);
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformEdDSAEd25519ctxId)) {
+        return(1);
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformEdDSAEd25519phId)) {
+        return(1);
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformEdDSAEd448Id)) {
+        return(1);
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformEdDSAEd448phId)) {
+        return(1);
+    } else
+#endif /* XMLSEC_NO_EDDSA */
+
+    /*************************************************************************
+     *
      * Unknown
      *
      ************************************************************************/
@@ -811,6 +834,40 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
         ctx->signatureName   = LN_SLH_DSA_SHA2_256s;
     } else
 #endif /* XMLSEC_NO_SLHDSA */
+
+    /*************************************************************************
+     *
+     * EdDSA
+     *
+     ************************************************************************/
+#ifndef XMLSEC_NO_EDDSA
+    /* EdDSA does not use a separate digest */
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformEdDSAEd25519Id)) {
+        ctx->keyId           = xmlSecOpenSSLKeyDataEdDSAId;
+        ctx->signatureFormat = xmlSecOpenSSLEvpSignatureFormat_DoNothing;
+        ctx->signatureName   = SN_ED25519;
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformEdDSAEd25519ctxId)) {
+        ctx->keyId           = xmlSecOpenSSLKeyDataEdDSAId;
+        ctx->signatureFormat = xmlSecOpenSSLEvpSignatureFormat_DoNothing;
+        ctx->signatureName   = "ED25519ctx";
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformEdDSAEd25519phId)) {
+        ctx->keyId           = xmlSecOpenSSLKeyDataEdDSAId;
+        ctx->signatureFormat = xmlSecOpenSSLEvpSignatureFormat_DoNothing;
+        ctx->signatureName   = "ED25519ph";
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformEdDSAEd448Id)) {
+        ctx->keyId           = xmlSecOpenSSLKeyDataEdDSAId;
+        ctx->signatureFormat = xmlSecOpenSSLEvpSignatureFormat_DoNothing;
+        ctx->signatureName   = SN_ED448;
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformEdDSAEd448phId)) {
+        ctx->keyId           = xmlSecOpenSSLKeyDataEdDSAId;
+        ctx->signatureFormat = xmlSecOpenSSLEvpSignatureFormat_DoNothing;
+        ctx->signatureName   = "ED448ph";
+    } else
+#endif /* XMLSEC_NO_EDDSA */
 
     /*************************************************************************
      *
@@ -2720,6 +2777,127 @@ xmlSecOpenSSLTransformSLHDSA_SHA2_256sGetKlass(void) {
 }
 
 #endif /* XMLSEC_NO_SLHDSA */
+
+
+
+/*************************************************************************
+ *
+ * EdDSA
+ *
+ ************************************************************************/
+
+#ifndef XMLSEC_NO_EDDSA
+
+static int
+xmlSecOpenSSLTransformEdDSANodeRead(
+    xmlSecTransformPtr transform,
+    xmlNodePtr node,
+    xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED
+) {
+    xmlSecOpenSSLEvpSignatureCtxPtr ctx;
+    int ret;
+
+    xmlSecAssert2(xmlSecOpenSSLEvpSignatureCheckId(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLEvpSignatureSize), -1);
+    UNREFERENCED_PARAMETER(transformCtx);
+
+    ctx = xmlSecOpenSSLEvpSignatureGetCtx(transform);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->contextString == NULL, -1);
+
+    /* set max size to make sure we have non-NULL buffer for OpenSSL params */
+    ctx->contextString = xmlSecBufferCreate(XMLSEC_EDDSA_MAX_SIZE);
+    if (ctx->contextString == NULL) {
+        xmlSecInternalError("xmlSecBufferCreate()",  xmlSecTransformGetName(transform));
+        return(-1);
+    }
+
+    ret = xmlSecTransformEdDSAReadContextString(node, ctx->contextString);
+    if (ret < 0) {
+        xmlSecInternalError("xmlSecTransformEdDSAReadContextString()",  xmlSecTransformGetName(transform));
+        return(-1);
+    }
+
+    /* done */
+    return(0);
+}
+
+/* EdDSA-Ed25519 signature transform: xmlSecOpenSSLEdDSAEd25519Klass */
+XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS(EdDSAEd25519)
+
+/**
+ * xmlSecOpenSSLTransformEdDSAEd25519GetKlass:
+ *
+ * The EdDSA-Ed25519 signature transform klass.
+ *
+ * Returns: EdDSA-Ed25519 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecOpenSSLTransformEdDSAEd25519GetKlass(void) {
+    return(&xmlSecOpenSSLEdDSAEd25519Klass);
+}
+
+/* EdDSA-Ed25519ctx signature transform: xmlSecOpenSSLEdDSAEd25519ctxKlass */
+XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS_EX(EdDSAEd25519ctx, xmlSecOpenSSLTransformEdDSANodeRead)
+
+/**
+ * xmlSecOpenSSLTransformEdDSAEd25519ctxGetKlass:
+ *
+ * The EdDSA-Ed25519ctx signature transform klass.
+ *
+ * Returns: EdDSA-Ed25519ctx signature transform klass.
+ */
+xmlSecTransformId
+xmlSecOpenSSLTransformEdDSAEd25519ctxGetKlass(void) {
+    return(&xmlSecOpenSSLEdDSAEd25519ctxKlass);
+}
+
+/* EdDSA-Ed25519ph signature transform: xmlSecOpenSSLEdDSAEd25519phKlass */
+XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS_EX(EdDSAEd25519ph, xmlSecOpenSSLTransformEdDSANodeRead)
+
+/**
+ * xmlSecOpenSSLTransformEdDSAEd25519phGetKlass:
+ *
+ * The EdDSA-Ed25519ph signature transform klass.
+ *
+ * Returns: EdDSA-Ed25519ph signature transform klass.
+ */
+xmlSecTransformId
+xmlSecOpenSSLTransformEdDSAEd25519phGetKlass(void) {
+    return(&xmlSecOpenSSLEdDSAEd25519phKlass);
+}
+
+/* EdDSA-Ed448 signature transform: xmlSecOpenSSLEdDSAEd448Klass */
+XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS(EdDSAEd448)
+
+/**
+ * xmlSecOpenSSLTransformEdDSAEd448GetKlass:
+ *
+ * The EdDSA-Ed448 signature transform klass.
+ *
+ * Returns: EdDSA-Ed448 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecOpenSSLTransformEdDSAEd448GetKlass(void) {
+    return(&xmlSecOpenSSLEdDSAEd448Klass);
+}
+
+/* EdDSA-Ed448ph signature transform: xmlSecOpenSSLEdDSAEd448phKlass */
+XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS_EX(EdDSAEd448ph, xmlSecOpenSSLTransformEdDSANodeRead)
+
+/**
+ * xmlSecOpenSSLTransformEdDSAEd448phGetKlass:
+ *
+ * The EdDSA-Ed448ph signature transform klass.
+ *
+ * Returns: EdDSA-Ed448ph signature transform klass.
+ */
+xmlSecTransformId
+xmlSecOpenSSLTransformEdDSAEd448phGetKlass(void) {
+    return(&xmlSecOpenSSLEdDSAEd448phKlass);
+}
+
+#endif /* XMLSEC_NO_EDDSA */
 
 
 

@@ -599,6 +599,7 @@ xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(struct _xmlSecCryptoDLFuncti
     XMLSEC_REGISTER_KEY_DATA(Pbkdf2);               // keyDataPbkdf2GetKlass
     XMLSEC_REGISTER_KEY_DATA(Rsa);                  // keyDataRsaGetKlass
     XMLSEC_REGISTER_KEY_DATA(SLHDSA);               // keyDataSLHDSAGetKlass
+    XMLSEC_REGISTER_KEY_DATA(EdDSA);                // keyDataEdDSAGetKlass
     XMLSEC_REGISTER_KEY_DATA(X509);                 // keyDataX509GetKlass
     XMLSEC_REGISTER_KEY_DATA(RawX509Cert);          // keyDataRawX509CertGetKlass
 
@@ -715,6 +716,12 @@ xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(struct _xmlSecCryptoDLFuncti
     XMLSEC_REGISTER_TRANSFORM(SLHDSA_SHA2_192s);                     // transformSLHDSA_SHA2_192sGetKlass
     XMLSEC_REGISTER_TRANSFORM(SLHDSA_SHA2_256f);                     // transformSLHDSA_SHA2_256fGetKlass
     XMLSEC_REGISTER_TRANSFORM(SLHDSA_SHA2_256s);                     // transformSLHDSA_SHA2_256sGetKlass
+
+    XMLSEC_REGISTER_TRANSFORM(EdDSAEd25519);                        // transformEdDSAEd25519GetKlass
+    XMLSEC_REGISTER_TRANSFORM(EdDSAEd25519ctx);                     // transformEdDSAEd25519ctxGetKlass
+    XMLSEC_REGISTER_TRANSFORM(EdDSAEd25519ph);                      // transformEdDSAEd25519phGetKlass
+    XMLSEC_REGISTER_TRANSFORM(EdDSAEd448);                          // transformEdDSAEd448GetKlass
+    XMLSEC_REGISTER_TRANSFORM(EdDSAEd448ph);                        // transformEdDSAEd448phGetKlass
 
     XMLSEC_REGISTER_TRANSFORM(Sha1);                                // transformSha1GetKlass
 

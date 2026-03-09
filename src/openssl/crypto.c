@@ -144,6 +144,10 @@ xmlSecCryptoGetFunctions_openssl(void) {
     gXmlSecOpenSSLFunctions->keyDataSLHDSAGetKlass      = xmlSecOpenSSLKeyDataSLHDSAGetKlass;
 #endif /* XMLSEC_NO_SLHDSA */
 
+#ifndef XMLSEC_NO_EDDSA
+    gXmlSecOpenSSLFunctions->keyDataEdDSAGetKlass       = xmlSecOpenSSLKeyDataEdDSAGetKlass;
+#endif /* XMLSEC_NO_EDDSA */
+
 #ifndef XMLSEC_NO_X509
     gXmlSecOpenSSLFunctions->keyDataX509GetKlass        = xmlSecOpenSSLKeyDataX509GetKlass;
     gXmlSecOpenSSLFunctions->keyDataRawX509CertGetKlass = xmlSecOpenSSLKeyDataRawX509CertGetKlass;
@@ -399,6 +403,14 @@ xmlSecCryptoGetFunctions_openssl(void) {
     gXmlSecOpenSSLFunctions->transformSLHDSA_SHA2_256fGetKlass = xmlSecOpenSSLTransformSLHDSA_SHA2_256fGetKlass;
     gXmlSecOpenSSLFunctions->transformSLHDSA_SHA2_256sGetKlass = xmlSecOpenSSLTransformSLHDSA_SHA2_256sGetKlass;
 #endif /* XMLSEC_NO_SLHDSA */
+
+#ifndef XMLSEC_NO_EDDSA
+    gXmlSecOpenSSLFunctions->transformEdDSAEd25519GetKlass    = xmlSecOpenSSLTransformEdDSAEd25519GetKlass;
+    gXmlSecOpenSSLFunctions->transformEdDSAEd25519ctxGetKlass = xmlSecOpenSSLTransformEdDSAEd25519ctxGetKlass;
+    gXmlSecOpenSSLFunctions->transformEdDSAEd25519phGetKlass  = xmlSecOpenSSLTransformEdDSAEd25519phGetKlass;
+    gXmlSecOpenSSLFunctions->transformEdDSAEd448GetKlass      = xmlSecOpenSSLTransformEdDSAEd448GetKlass;
+    gXmlSecOpenSSLFunctions->transformEdDSAEd448phGetKlass    = xmlSecOpenSSLTransformEdDSAEd448phGetKlass;
+#endif /* XMLSEC_NO_EDDSA */
 
 
     /******************************* SHA ********************************/

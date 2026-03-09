@@ -3441,6 +3441,53 @@ xmlSecTransformSLHDSAReadContextString(xmlNodePtr node, xmlSecBufferPtr res) {
 #endif /* XMLSEC_NO_SLHDSA */
 
 
+/********************************** EdDSA *******************************/
+#ifndef XMLSEC_NO_EDDSA
+
+/**
+ * THIS IS EXPERIMENTAL AND NON-STANDARD
+ *
+ * <SignatureMethod Algorithm="http://www.w3.org/2021/04/xmldsig-more#eddsa-ed25519ctx">
+ *   <eddsa:EdDSAContextString>base64 encoded context string</eddsa:EdDSAContextString>
+ * </SignatureMethod>
+ */
+int
+xmlSecTransformEdDSAReadContextString(xmlNodePtr node, xmlSecBufferPtr res) {
+    xmlNodePtr cur;
+    int ret;
+
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(res != NULL, -1);
+
+    cur = xmlSecGetNextElementNode(node->children);
+    if ((cur != NULL) && xmlSecCheckNodeName(cur, xmlSecNodeEdDSAContextString, xmlSecEdDSANs)) {
+
+        ret = xmlSecBufferBase64NodeContentRead(res, cur);
+        if (ret != 0) {
+            xmlSecInternalError("xmlSecBufferBase64NodeContentRead(EdDSAContextString)", NULL);
+            return(-1);
+        }
+
+        /* ensure length is not exceeded */
+        if (xmlSecBufferGetSize(res) > XMLSEC_EDDSA_MAX_SIZE) {
+            xmlSecInvalidNodeContentError3(cur, NULL,
+                "EdDSA context string length=" XMLSEC_SIZE_FMT " exceeds max expected length =" XMLSEC_SIZE_FMT,
+                xmlSecBufferGetSize(res), XMLSEC_EDDSA_MAX_SIZE);
+            return(-1);
+        }
+
+        cur = xmlSecGetNextElementNode(cur->next);
+    }
+
+    /* no other nodes expected */
+    if (cur != NULL) {
+        xmlSecUnexpectedNodeError(cur, NULL);
+        return(-1);
+    }
+    return(0);
+}
+#endif /* XMLSEC_NO_EDDSA */
+
 
 /********************************** PBKDF2 *******************************/
 

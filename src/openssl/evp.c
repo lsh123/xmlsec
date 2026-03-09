@@ -5180,3 +5180,200 @@ xmlSecOpenSSLKeyDataSLHDSADebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
 #endif /* XMLSEC_NO_SLHDSA */
 
 
+
+#ifndef XMLSEC_NO_EDDSA
+/**
+ * EXPERIMENTAL SUPPORT FOR EdDSA
+ */
+
+static int               xmlSecOpenSSLKeyDataEdDSAInitialize      (xmlSecKeyDataPtr data);
+static int               xmlSecOpenSSLKeyDataEdDSADuplicate       (xmlSecKeyDataPtr dst,
+                                                                    xmlSecKeyDataPtr src);
+static void              xmlSecOpenSSLKeyDataEdDSAFinalize        (xmlSecKeyDataPtr data);
+
+static xmlSecKeyDataType xmlSecOpenSSLKeyDataEdDSAGetType         (xmlSecKeyDataPtr data);
+static xmlSecSize        xmlSecOpenSSLKeyDataEdDSAGetSize         (xmlSecKeyDataPtr data);
+static void              xmlSecOpenSSLKeyDataEdDSADebugDump       (xmlSecKeyDataPtr data,
+                                                                    FILE* output);
+static void              xmlSecOpenSSLKeyDataEdDSADebugXmlDump    (xmlSecKeyDataPtr data,
+                                                                    FILE* output);
+
+static int
+xmlSecOpenSSLKeyValueEdDSACheckKeyType(EVP_PKEY* pKey)
+{
+    xmlSecAssert2(pKey != NULL, -1);
+
+    switch(xmlSecOpenSSLEvpKeyGetId(pKey)) {
+    case EVP_PKEY_ED25519:
+    case EVP_PKEY_ED448:
+        return(0);
+    default:
+        return(1);
+    }
+}
+
+static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataEdDSAKlass = {
+    sizeof(xmlSecKeyDataKlass),
+    xmlSecOpenSSLEvpKeyDataSize,
+
+    /* data */
+    xmlSecNameEdDSAKeyValue,
+    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+                                                /* xmlSecKeyDataUsage usage; */
+    xmlSecHrefEdDSAKeyValue,                    /* const xmlChar* href; */
+    NULL,                                       /* const xmlChar* dataNodeName; */
+    NULL,                                       /* const xmlChar* dataNodeNs; */
+
+    /* constructors/destructor */
+    xmlSecOpenSSLKeyDataEdDSAInitialize,        /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecOpenSSLKeyDataEdDSADuplicate,         /* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecOpenSSLKeyDataEdDSAFinalize,          /* xmlSecKeyDataFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecKeyDataGenerateMethod generate; */
+
+    /* get info */
+    xmlSecOpenSSLKeyDataEdDSAGetType,           /* xmlSecKeyDataGetTypeMethod getType; */
+    xmlSecOpenSSLKeyDataEdDSAGetSize,           /* xmlSecKeyDataGetSizeMethod getSize; */
+    NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
+
+    /* read/write */
+    NULL,                                       /* xmlSecKeyDataXmlReadMethod xmlRead; */
+    NULL,                                       /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    NULL,                                       /* xmlSecKeyDataBinReadMethod binRead; */
+    NULL,                                       /* xmlSecKeyDataBinWriteMethod binWrite; */
+
+    /* debug */
+    xmlSecOpenSSLKeyDataEdDSADebugDump,         /* xmlSecKeyDataDebugDumpMethod debugDump; */
+    xmlSecOpenSSLKeyDataEdDSADebugXmlDump,      /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+
+    /* reserved for the future */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecOpenSSLKeyDataEdDSAGetKlass:
+ *
+ * The OpenSSL EdDSA data klass.
+ *
+ * Returns: pointer to OpenSSL EdDSA key data klass.
+ */
+xmlSecKeyDataId
+xmlSecOpenSSLKeyDataEdDSAGetKlass(void) {
+    return(&xmlSecOpenSSLKeyDataEdDSAKlass);
+}
+
+/**
+ * xmlSecOpenSSLKeyDataEdDSAAdoptEvp:
+ * @data:               the pointer to EdDSA key data.
+ * @pKey:               the pointer to OpenSSL EVP key.
+ *
+ * Sets the EdDSA key data value to OpenSSL EVP key.
+ *
+ * Returns: 0 on success or a negative value otherwise.
+ */
+int
+xmlSecOpenSSLKeyDataEdDSAAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEdDSAId), -1);
+    xmlSecAssert2(pKey != NULL, -1);
+    xmlSecAssert2(xmlSecOpenSSLKeyValueEdDSACheckKeyType(pKey) == 0, -1);
+
+    return(xmlSecOpenSSLEvpKeyDataAdoptEvp(data, pKey));
+}
+
+/**
+ * xmlSecOpenSSLKeyDataEdDSAGetEvp:
+ * @data:               the pointer to EdDSA key data.
+ *
+ * Gets the OpenSSL EVP key from EdDSA key data.
+ *
+ * Returns: pointer to OpenSSL EVP key or NULL if an error occurs.
+ */
+EVP_PKEY*
+xmlSecOpenSSLKeyDataEdDSAGetEvp(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEdDSAId), NULL);
+
+    return(xmlSecOpenSSLEvpKeyDataGetEvp(data));
+}
+
+static int
+xmlSecOpenSSLKeyDataEdDSAInitialize(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEdDSAId), -1);
+
+    return(xmlSecOpenSSLEvpKeyDataInitialize(data));
+}
+
+static int
+xmlSecOpenSSLKeyDataEdDSADuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecOpenSSLKeyDataEdDSAId), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecOpenSSLKeyDataEdDSAId), -1);
+
+    return(xmlSecOpenSSLEvpKeyDataDuplicate(dst, src));
+}
+
+static void
+xmlSecOpenSSLKeyDataEdDSAFinalize(xmlSecKeyDataPtr data) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEdDSAId));
+
+    xmlSecOpenSSLEvpKeyDataFinalize(data);
+}
+
+
+static xmlSecSize
+xmlSecOpenSSLKeyDataEdDSAGetSize(xmlSecKeyDataPtr data) {
+    return(xmlSecOpenSSLKeyDataGetKeySize(data));
+}
+
+static xmlSecKeyDataType
+xmlSecOpenSSLKeyDataEdDSAGetType(xmlSecKeyDataPtr data) {
+    EVP_PKEY* pKey;
+    const OSSL_PARAM* params;
+    int ii;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEdDSAId), xmlSecKeyDataTypeUnknown);
+
+    /* check if the key is in memory */
+    if(xmlSecOpenSSLEvpKeyDataIsKeyInMemory(data) != XMLSEC_OPENSSL_EVP_KEY_IMPLEMENTATION_MEMORY) {
+        /* there is no way to determine if a key is public or private when
+         * key is stored on HSM (engine or provider) so we assume it is private
+         * (see https://github.com/lsh123/xmlsec/issues/588)
+         */
+        return(xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic);
+    }
+
+    /* key is in memory, check if it has priv key */
+    pKey = xmlSecOpenSSLKeyDataEdDSAGetEvp(data);
+    xmlSecAssert2(pKey != NULL, xmlSecKeyDataTypeUnknown);
+
+    params = EVP_PKEY_gettable_params(pKey);
+    if(params == NULL) {
+        xmlSecInternalError("EVP_PKEY_gettable_params", xmlSecKeyDataGetName(data));
+        return(xmlSecKeyDataTypeUnknown);
+    }
+
+    for(ii = 0; params[ii].key != NULL; ++ii) {
+        if(strcmp(params[ii].key, OSSL_PKEY_PARAM_PRIV_KEY) == 0) {
+            return(xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic);
+        }
+    }
+
+    /* assume public key */
+    return(xmlSecKeyDataTypePublic);
+}
+
+static void
+xmlSecOpenSSLKeyDataEdDSADebugDump(xmlSecKeyDataPtr data, FILE* output) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEdDSAId));
+    xmlSecAssert(output != NULL);
+
+    fprintf(output, "=== EdDSA key\n");
+}
+
+static void
+xmlSecOpenSSLKeyDataEdDSADebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEdDSAId));
+    xmlSecAssert(output != NULL);
+
+    fprintf(output, "<EdDSAKey/>\n");
+}
+
+#endif /* XMLSEC_NO_EDDSA */

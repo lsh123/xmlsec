@@ -44,6 +44,10 @@
 #include <openssl/evp.h>
 #endif /* XMLSEC_NO_SLHDSA */
 
+#ifndef XMLSEC_NO_EDDSA
+#include <openssl/evp.h>
+#endif /* XMLSEC_NO_EDDSA */
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
@@ -152,6 +156,10 @@ XMLSEC_CRYPTO_EXPORT BIO*               xmlSecOpenSSLCreateReadFileBio (const ch
 #ifdef OPENSSL_NO_SLH_DSA
 #define XMLSEC_NO_SLHDSA      1
 #endif /* OPENSSL_NO_SLH_DSA */
+
+#ifdef OPENSSL_NO_ECX
+#define XMLSEC_NO_EDDSA       1
+#endif /* OPENSSL_NO_ECX */
 
 #ifdef OPENSSL_NO_SHA1
 #define XMLSEC_NO_SHA1      1
@@ -1170,6 +1178,71 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformSLHDSA_SHA2_256sGet
 
 
 #endif /* XMLSEC_NO_SLHDSA */
+
+
+/********************************************************************
+ *
+ * EdDSA key and transforms (EXPERIMENTAL)
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_EDDSA
+
+/**
+ * xmlSecOpenSSLKeyDataEdDSAId:
+ *
+ * The EdDSA key klass.
+ */
+#define xmlSecOpenSSLKeyDataEdDSAId \
+        xmlSecOpenSSLKeyDataEdDSAGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataEdDSAGetKlass   (void);
+XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeyDataEdDSAAdoptEvp   (xmlSecKeyDataPtr data,
+                                                                             EVP_PKEY* pKey);
+XMLSEC_CRYPTO_EXPORT EVP_PKEY*          xmlSecOpenSSLKeyDataEdDSAGetEvp     (xmlSecKeyDataPtr data);
+
+
+/**
+ * xmlSecOpenSSLTransformEdDSAEd25519Id:
+ *
+ * The EdDSA-Ed25519 signature transform klass.
+ */
+#define xmlSecOpenSSLTransformEdDSAEd25519Id  \
+        xmlSecOpenSSLTransformEdDSAEd25519GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformEdDSAEd25519GetKlass(void);
+/**
+ * xmlSecOpenSSLTransformEdDSAEd25519ctxId:
+ *
+ * The EdDSA-Ed25519ctx signature transform klass.
+ */
+#define xmlSecOpenSSLTransformEdDSAEd25519ctxId  \
+        xmlSecOpenSSLTransformEdDSAEd25519ctxGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformEdDSAEd25519ctxGetKlass(void);
+/**
+ * xmlSecOpenSSLTransformEdDSAEd25519phId:
+ *
+ * The EdDSA-Ed25519ph signature transform klass.
+ */
+#define xmlSecOpenSSLTransformEdDSAEd25519phId  \
+        xmlSecOpenSSLTransformEdDSAEd25519phGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformEdDSAEd25519phGetKlass(void);
+/**
+ * xmlSecOpenSSLTransformEdDSAEd448Id:
+ *
+ * The EdDSA-Ed448 signature transform klass.
+ */
+#define xmlSecOpenSSLTransformEdDSAEd448Id  \
+        xmlSecOpenSSLTransformEdDSAEd448GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformEdDSAEd448GetKlass(void);
+/**
+ * xmlSecOpenSSLTransformEdDSAEd448phId:
+ *
+ * The EdDSA-Ed448ph signature transform klass.
+ */
+#define xmlSecOpenSSLTransformEdDSAEd448phId  \
+        xmlSecOpenSSLTransformEdDSAEd448phGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformEdDSAEd448phGetKlass(void);
+
+
+#endif /* XMLSEC_NO_EDDSA */
 
 
 /********************************************************************

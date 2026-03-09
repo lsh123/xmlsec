@@ -365,6 +365,25 @@ xmlSecKeyDataSLHDSAGetKlass(void) {
 }
 
 /**
+ * xmlSecKeyDataEdDSAGetKlass:
+ *
+ * The EdDSA key data klass.
+ *
+ * Returns: EdDSA key data klass or NULL if an error occurs
+ * (xmlsec-crypto library is not loaded or the EdDSA key data
+ * klass is not implemented).
+ */
+xmlSecKeyDataId
+xmlSecKeyDataEdDSAGetKlass(void) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->keyDataEdDSAGetKlass == NULL)) {
+        xmlSecNotImplementedError2(missingMethodError, "keyDataEdDSAGetKlass");
+        return(xmlSecKeyDataIdUnknown);
+    }
+
+    return(xmlSecCryptoDLGetFunctions()->keyDataEdDSAGetKlass());
+}
+
+/**
  * xmlSecKeyDataX509GetKlass:
  *
  * The X509 key data klass.
@@ -1773,6 +1792,102 @@ xmlSecTransformSLHDSA_SHA2_256sGetKlass(void) {
     }
 
     return(xmlSecCryptoDLGetFunctions()->transformSLHDSA_SHA2_256sGetKlass());
+}
+
+
+/**
+ * xmlSecTransformEdDSAEd25519GetKlass:
+ *
+ * The EdDSA-Ed25519 signature transform klass.
+ *
+ * Returns: EdDSA-Ed25519 signature transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
+xmlSecTransformId
+xmlSecTransformEdDSAEd25519GetKlass(void) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformEdDSAEd25519GetKlass == NULL)) {
+        xmlSecNotImplementedError2(missingMethodError, "transformEdDSAEd25519GetKlass");
+        return(xmlSecTransformIdUnknown);
+    }
+
+    return(xmlSecCryptoDLGetFunctions()->transformEdDSAEd25519GetKlass());
+}
+
+/**
+ * xmlSecTransformEdDSAEd25519ctxGetKlass:
+ *
+ * The EdDSA-Ed25519ctx signature transform klass.
+ *
+ * Returns: EdDSA-Ed25519ctx signature transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
+xmlSecTransformId
+xmlSecTransformEdDSAEd25519ctxGetKlass(void) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformEdDSAEd25519ctxGetKlass == NULL)) {
+        xmlSecNotImplementedError2(missingMethodError, "transformEdDSAEd25519ctxGetKlass");
+        return(xmlSecTransformIdUnknown);
+    }
+
+    return(xmlSecCryptoDLGetFunctions()->transformEdDSAEd25519ctxGetKlass());
+}
+
+/**
+ * xmlSecTransformEdDSAEd25519phGetKlass:
+ *
+ * The EdDSA-Ed25519ph signature transform klass.
+ *
+ * Returns: EdDSA-Ed25519ph signature transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
+xmlSecTransformId
+xmlSecTransformEdDSAEd25519phGetKlass(void) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformEdDSAEd25519phGetKlass == NULL)) {
+        xmlSecNotImplementedError2(missingMethodError, "transformEdDSAEd25519phGetKlass");
+        return(xmlSecTransformIdUnknown);
+    }
+
+    return(xmlSecCryptoDLGetFunctions()->transformEdDSAEd25519phGetKlass());
+}
+
+/**
+ * xmlSecTransformEdDSAEd448GetKlass:
+ *
+ * The EdDSA-Ed448 signature transform klass.
+ *
+ * Returns: EdDSA-Ed448 signature transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
+xmlSecTransformId
+xmlSecTransformEdDSAEd448GetKlass(void) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformEdDSAEd448GetKlass == NULL)) {
+        xmlSecNotImplementedError2(missingMethodError, "transformEdDSAEd448GetKlass");
+        return(xmlSecTransformIdUnknown);
+    }
+
+    return(xmlSecCryptoDLGetFunctions()->transformEdDSAEd448GetKlass());
+}
+
+/**
+ * xmlSecTransformEdDSAEd448phGetKlass:
+ *
+ * The EdDSA-Ed448ph signature transform klass.
+ *
+ * Returns: EdDSA-Ed448ph signature transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
+xmlSecTransformId
+xmlSecTransformEdDSAEd448phGetKlass(void) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformEdDSAEd448phGetKlass == NULL)) {
+        xmlSecNotImplementedError2(missingMethodError, "transformEdDSAEd448phGetKlass");
+        return(xmlSecTransformIdUnknown);
+    }
+
+    return(xmlSecCryptoDLGetFunctions()->transformEdDSAEd448phGetKlass());
 }
 
 

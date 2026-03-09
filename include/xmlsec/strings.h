@@ -408,6 +408,38 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefSLHDSA_SHA2_256s[];
 
 /*************************************************************************
  *
+ * EdDSA key strings
+ *
+ ************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameEdDSAKeyValue[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEdDSAKeyValue[];
+
+/*************************************************************************
+ *
+ * EdDSA signature transform strings
+ *
+ ************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecEdDSANs[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeEdDSAContextString[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameEdDSAEd25519[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEdDSAEd25519[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameEdDSAEd25519ctx[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEdDSAEd25519ctx[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameEdDSAEd25519ph[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEdDSAEd25519ph[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameEdDSAEd448[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEdDSAEd448[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameEdDSAEd448ph[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEdDSAEd448ph[];
+
+
+/*************************************************************************
+ *
  * EncryptedKey
  *
  ************************************************************************/

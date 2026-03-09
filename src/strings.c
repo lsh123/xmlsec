@@ -409,6 +409,38 @@ const xmlChar xmlSecHrefSLHDSA_SHA2_256s[]    = "http://www.aleksey.com/xmlsec/2
 
 /*************************************************************************
  *
+ * EdDSA key strings
+ *
+ ************************************************************************/
+const xmlChar xmlSecNameEdDSAKeyValue[]       = "eddsa";
+const xmlChar xmlSecHrefEdDSAKeyValue[]       = "http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#eddsa";
+
+/*************************************************************************
+ *
+ * EdDSA signature transform strings
+ *
+ ************************************************************************/
+const xmlChar xmlSecEdDSANs[]                 = "http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#";
+const xmlChar xmlSecNodeEdDSAContextString[]  = "EdDSAContextString";
+
+const xmlChar xmlSecNameEdDSAEd25519[]        = "eddsa-ed25519";
+const xmlChar xmlSecHrefEdDSAEd25519[]        = "http://www.w3.org/2021/04/xmldsig-more#eddsa-ed25519";
+
+const xmlChar xmlSecNameEdDSAEd25519ctx[]     = "eddsa-ed25519ctx";
+const xmlChar xmlSecHrefEdDSAEd25519ctx[]     = "http://www.w3.org/2021/04/xmldsig-more#eddsa-ed25519ctx";
+
+const xmlChar xmlSecNameEdDSAEd25519ph[]      = "eddsa-ed25519ph";
+const xmlChar xmlSecHrefEdDSAEd25519ph[]      = "http://www.w3.org/2021/04/xmldsig-more#eddsa-ed25519ph";
+
+const xmlChar xmlSecNameEdDSAEd448[]          = "eddsa-ed448";
+const xmlChar xmlSecHrefEdDSAEd448[]          = "http://www.w3.org/2021/04/xmldsig-more#eddsa-ed448";
+
+const xmlChar xmlSecNameEdDSAEd448ph[]        = "eddsa-ed448ph";
+const xmlChar xmlSecHrefEdDSAEd448ph[]        = "http://www.w3.org/2021/04/xmldsig-more#eddsa-ed448ph";
+
+
+/*************************************************************************
+ *
  * EncryptedKey
  *
  ************************************************************************/

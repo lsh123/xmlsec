@@ -17,26 +17,26 @@
         <DigestValue>3om1gINPzaogcdLuDdjIQlls4NE=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>iRRTlr+ZbfpU4bWQMmL0IenrDboqSU87WKnYE44dp5RijPO7V8KjKrO4jZ6k0BR1
-zx/qw5PLyHqAMNms1f3PhDIldtUPOKuj64DFOKv8Tz0EX7eRl45PRU3FJamKU/tI
-jJzKaK7dNJWdx2y17XsaHkqExRUTfwd7UI4jd36kTA37N7L+qOunI9U0976VjP1q
-K+x6BPqLsWDvkZTI5QKLVn65/aIctRjIW0kUW2BJDb02kBXJvI4ncNqhYPcZeURg
-7BqZu0/sr2oPZWwB9QgQoENtW52wHTNISgRme2lGVmtYX9tUwqZyKuXu2DqYFI4g
-i7h/IrAELcvMwLtN5qvvbw==</SignatureValue>
+    <SignatureValue>Cvpql96eOfylGzfELcvI83yQgA9suLNoDgbQzsbaI/JpEmXgvI834cKSXsrEEypW
+yFSi7YWjDwtv+KYariVCAKBHKpNfv6ZpH5xGEd5j0dsnypzlQe5TejOuWUj+U0G3
+mW9lbH7ugtrTE+k6uPjpbOp/0tKOb86UyRYxDlDCkfZo7N/pETAkhL4KKk5CLENI
+qxZYjUn9DSC1jTzDGvWoSwyl6M2rl7Nz7t74rExvsN8hUiC1XgFMCe1pZ/QfaPzw
+oqq3j7Z6cELxAkokv+PpfVOMaIXiUCF6IMV8B2tgvqFd1WstfgBcgVgcNSOQURx4
+ToIYke7fdodJLFcjLxctcw==</SignatureValue>
     <KeyInfo>
       <KeyName>TestKeyName-rsa-2048</KeyName>
       <X509Data>
         <X509IssuerSerial>
-<X509IssuerName>emailAddress=xmlsec@aleksey.com,CN=Aleksey Sanin,O=XML Security Library (http://www.aleksey.com/xmlsec),ST=California,C=US</X509IssuerName>
-<X509SerialNumber>12655831530416757461</X509SerialNumber>
+<X509IssuerName>emailAddress=xmlsec@aleksey.com,CN=Aleksey Sanin,OU=Second level CA,O=XML Security Library (http://www.aleksey.com/xmlsec),ST=California,C=US</X509IssuerName>
+<X509SerialNumber>680572598617295163017172295025714171905498632019</X509SerialNumber>
 </X509IssuerSerial>
 <X509IssuerSerial>
 <X509IssuerName>emailAddress=xmlsec@aleksey.com,CN=Aleksey Sanin,OU=Root CA,O=XML Security Library (http://www.aleksey.com/xmlsec),ST=California,C=US</X509IssuerName>
-<X509SerialNumber>12655831530416757420</X509SerialNumber>
+<X509SerialNumber>680572598617295163017172295025714171905498632014</X509SerialNumber>
 </X509IssuerSerial>
 <X509IssuerSerial>
 <X509IssuerName>emailAddress=xmlsec@aleksey.com,CN=Aleksey Sanin,OU=Root CA,O=XML Security Library (http://www.aleksey.com/xmlsec),ST=California,C=US</X509IssuerName>
-<X509SerialNumber>12655831530416757421</X509SerialNumber>
+<X509SerialNumber>680572598617295163017172295025714171905498632015</X509SerialNumber>
 </X509IssuerSerial>
       </X509Data>
     </KeyInfo>

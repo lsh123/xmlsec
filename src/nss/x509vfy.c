@@ -40,6 +40,7 @@
 #include <xmlsec/nss/x509.h>
 
 #include "../cast_helpers.h"
+#include "../x509_helpers.h"
 #include "private.h"
 
 /**************************************************************************
@@ -75,9 +76,6 @@ XMLSEC_KEY_DATA_STORE_DECLARE(NssX509Store, xmlSecNssX509StoreCtx)
 
 static int              xmlSecNssX509StoreInitialize    (xmlSecKeyDataStorePtr store);
 static void             xmlSecNssX509StoreFinalize      (xmlSecKeyDataStorePtr store);
-static int              xmlSecNssNumToItem              (PLArenaPool *arena,
-                                                         SECItem *it,
-                                                         PRUint64 num);
 
 
 static xmlSecKeyDataStoreKlass xmlSecNssX509StoreKlass = {
@@ -817,49 +815,6 @@ xmlSecNssX509FindCert(CERTCertList* certsList, xmlSecNssX509FindCertCtxPtr findC
     return(cert);
 }
 
-/* code lifted from NSS */
-static int
-xmlSecNssNumToItem(PLArenaPool *arena, SECItem *it, PRUint64 ui)
-{
-    unsigned char bb[9];
-    unsigned int bb_len, zeros_len;
-    int res;
-
-    xmlSecAssert2(arena != NULL, -1);
-    xmlSecAssert2(it != NULL, -1);
-
-    bb[0] = 0; /* important: we should have 0 at the beginning! */
-    bb[1] = (unsigned char) (ui >> 56);
-    bb[2] = (unsigned char) (ui >> 48);
-    bb[3] = (unsigned char) (ui >> 40);
-    bb[4] = (unsigned char) (ui >> 32);
-    bb[5] = (unsigned char) (ui >> 24);
-    bb[6] = (unsigned char) (ui >> 16);
-    bb[7] = (unsigned char) (ui >> 8);
-    bb[8] = (unsigned char) (ui);
-
-    /*
-    ** Small integers are encoded in a single byte. Larger integers
-    ** require progressively more space. Start from 1 because byte at
-    ** position 0 is zero
-    */
-    bb_len = sizeof(bb) / sizeof(bb[0]);
-    for(zeros_len = 1; (zeros_len < bb_len) && (bb[zeros_len] == 0); ++zeros_len) {
-    }
-
-    it->len = bb_len - (zeros_len - 1);
-    it->data = (unsigned char *)PORT_ArenaAlloc(arena, it->len * sizeof(bb[0]));
-    if (it->data == NULL) {
-        it->len = 0;
-        return (-1);
-    }
-
-    PORT_Memcpy(it->data, bb + (zeros_len - 1), it->len);
-    XMLSEC_SAFE_CAST_UINT_TO_INT(it->len, res, return(-1), NULL);
-
-    return(res);
-}
-
 xmlSecKeyPtr
 xmlSecNssX509FindKeyByValue(xmlSecPtrListPtr keysList, xmlSecKeyX509DataValuePtr x509Value) {
     xmlSecNssX509FindCertCtx findCertCtx;
@@ -970,6 +925,37 @@ xmlSecNssX509GetDigestFromAlgorithm(const xmlChar* href) {
 }
 
 
+static int
+xmlSecNssX509SerialNumberRead(const xmlChar *str, SECItem *res, PLArenaPool *arena) {
+    xmlSecByte buf[XMLSEC_X509_MAX_SERIAL_NUMBER_BYTES];
+    xmlSecSize written = 0;
+    unsigned int uwritten;
+    int ret;
+
+    xmlSecAssert2(str != NULL, -1);
+    xmlSecAssert2(res != NULL, -1);
+    xmlSecAssert2(arena != NULL, -1);
+
+    ret = xmlSecX509SerialNumberRead(str, buf, sizeof(buf), &written);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecX509SerialNumberRead", NULL);
+        return(-1);
+    }
+    xmlSecAssert2(written > 0, -1);
+    XMLSEC_SAFE_CAST_SIZE_TO_UINT(written, uwritten, return(-1), NULL);
+
+    res->data = (unsigned char *)PORT_ArenaAlloc(arena, uwritten);
+    if(res->data == NULL) {
+        xmlSecNssError("PORT_ArenaAlloc", NULL);
+        return(-1);
+    }
+
+    memcpy(res->data, buf, written);
+    res->len = uwritten;
+    res->type = siBuffer;
+    return(0);
+}
+
 int xmlSecNssX509FindCertCtxInitialize(xmlSecNssX509FindCertCtxPtr ctx,
     const xmlChar *subjectName,
     const xmlChar *issuerName, const xmlChar *issuerSerial,
@@ -1035,15 +1021,9 @@ int xmlSecNssX509FindCertCtxInitialize(xmlSecNssX509FindCertCtxPtr ctx,
         ctx->issuerAndSN.derIssuer.data = ctx->issuerNameItem->data;
         ctx->issuerAndSN.derIssuer.len  = ctx->issuerNameItem->len;
 
-        /* TBD: serial num can be arbitrarily long */
-        if(PR_sscanf((char *)issuerSerial, "%llu", &(ctx->issuerSN)) != 1) {
-            xmlSecNssError("PR_sscanf(issuerSerial)", NULL);
-            xmlSecNssX509FindCertCtxFinalize(ctx);
-            return(-1);
-        }
-        ret = xmlSecNssNumToItem(ctx->arena, &(ctx->issuerAndSN.serialNumber), ctx->issuerSN);
-        if(ret <= 0) {
-            xmlSecInternalError("xmlSecNssNumToItem(serialNumber)", NULL);
+        ret = xmlSecNssX509SerialNumberRead(issuerSerial, &(ctx->issuerAndSN.serialNumber), ctx->arena);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecNssX509SerialNumberRead", NULL);
             xmlSecNssX509FindCertCtxFinalize(ctx);
             return(-1);
         }

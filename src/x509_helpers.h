@@ -20,6 +20,9 @@
 
 #ifndef XMLSEC_NO_X509
 
+#define XMLSEC_X509_MAX_SERIAL_NUMBER_BYTES     20  /* RFC 5280: max 20-octet DER INTEGER content (positive value, MSB=0 => max ~159-bit) */
+#define XMLSEC_X509_MAX_SERIAL_NUMBER_CHARS     50  /* RFC 5280: 20 bytes can hold at most ceil(20 * log10(256)) = 49 decimal digits; */
+
 #define XMLSEC_X509_VALUE_TYPE_UF8_STRING           0
 #define XMLSEC_X509_VALUE_TYPE_OCTET_STRING         1
 
@@ -56,6 +59,14 @@ XMLSEC_EXPORT int       xmlSecX509AttrValueStringRead    (const xmlChar **in,
                                                          int *outType,
                                                          xmlSecByte delim,
                                                          int ingoreTrailingSpaces);
+
+XMLSEC_EXPORT xmlChar*  xmlSecX509SerialNumberWrite      (const xmlSecByte *data,
+                                                         xmlSecSize dataSize);
+
+XMLSEC_EXPORT int       xmlSecX509SerialNumberRead       (const xmlChar *str,
+                                                         xmlSecByte *res,
+                                                         xmlSecSize resSize,
+                                                         xmlSecSize *written);
 
 #endif /* XMLSEC_NO_X509 */
 

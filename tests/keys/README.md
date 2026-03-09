@@ -7,17 +7,68 @@ The same password `secret123` should be used unless specified otherwise.
 
 ### Create new CA
 Change DAYS and CADAYS in the OpenSSL `CA.pl` script to 36500 (100 years)
+Change default digest to sha256
+Change key bits to 2048
 
 ```
 export SSLEAY_CONFIG="-config ./openssl.cnf"
-CA.pl -newca
+perl CA.pl -newca
 cp ./demoCA/cacert.pem .
 cp ./demoCA/private/cakey.pem .
-openssl x509 -text -in cacert.pem
-
 
 openssl rsa -inform PEM -outform DER -traditional -in cakey.pem -out cakey.der
 openssl x509 -outform DER -in cacert.pem -out cacert.der
+```
+
+#### Remember values and replace in all tests
+
+```
+./scripts/print-cert-info.sh cacert.pem
+
+** Validity: ***
+Not Before: Mar  8 22:04:47 2026 GMT
+Not After : Feb 12 22:04:47 2126 GMT
+
+** Subject Name: ***
+C=US, ST=California, O=XML Security Library (http://www.aleksey.com/xmlsec), OU=Root CA, CN=Aleksey Sanin, emailAddress=xmlsec@aleksey.com
+
+** Issuer Name: ***
+C=US, ST=California, O=XML Security Library (http://www.aleksey.com/xmlsec), OU=Root CA, CN=Aleksey Sanin, emailAddress=xmlsec@aleksey.com
+
+** Issuer Serial: ***
+680572598617295163017172295025714171905498632014
+
+** SKI: ***
+M3la5AFDTmB5BK2SzKDDAMxuEEQ=
+
+** Digest( SHA1 ): ***
+Yh1v2nkn8ey/lOQvZTLXEVEhezE=
+
+** Digest( SHA224 ): ***
+ELQkaCnnn/MzVvpDCXZf/ztKwet06I5YMsN6IQ==
+
+** Digest( SHA256 ): ***
+YRUR3UCYtsvTFvFnU9UHFRrZo9imcTVPdMfw8BpVKQk=
+
+** Digest( SHA384 ): ***
+4CSWJrlWO+1aNTLWCYCgumbRFw/6WwvMD6744HGpQDLoFVnguYeZ2r8S1QBX/H4C
+
+** Digest( SHA512 ): ***
+yEAfGbAx03oA3KW+y4Bl0A9lGY8AiS4Gzd4CCDNUor+UtQltf05VeO1OfkOjmSZQ
+5m59F7bTmgC9Yni/og1oRw==
+
+** Digest( SHA3-224 ): ***
++QdSnTAFutODDQGShgwjQQj0I+KW8g+/zDn/qQ==
+
+** Digest( SHA3-256 ): ***
+TCOnoMHzeio9NnqeIPP83iooC59siXC2Nd8hmY0ngNw=
+
+** Digest( SHA3-384 ): ***
+LkyiHFleOwHlX7DpaskX2AR8UHS3dkE2sluXAAKyj4dVPUmeBfwDhh+1C4tm8K8p
+
+** Digest( SHA3-512 ): ***
+9PfhTtLpiw70lVWAJ+aA4hy7nNnc7pHhagbgFrO11bbM7kLP34ESIsgS6HJwKWc3
+2l3Zb3bLPxMzm+w3p3NNkQ==
 
 ```
 
@@ -36,9 +87,63 @@ openssl x509 -outform DER -in ca2cert.pem -out ca2cert.der
 
 ```
 
+#### Remember values and replace in all tests
+
+
+```
+./scripts/print-cert-info.sh ca2cert.pem
+
+** Validity: ***
+Not Before: Mar  8 22:07:42 2026 GMT
+Not After : Feb 12 22:07:42 2126 GMT
+
+** Subject Name: ***
+C=US, ST=California, O=XML Security Library (http://www.aleksey.com/xmlsec), OU=Second level CA, CN=Aleksey Sanin, emailAddress=xmlsec@aleksey.com
+
+** Issuer Name: ***
+C=US, ST=California, O=XML Security Library (http://www.aleksey.com/xmlsec), OU=Root CA, CN=Aleksey Sanin, emailAddress=xmlsec@aleksey.com
+
+** Issuer Serial: ***
+680572598617295163017172295025714171905498632015
+
+** SKI: ***
+0X0XrEVCio75sBcl1TxymJ2IOiU=
+
+** Digest( SHA1 ): ***
+ITOr7qNHWZwjGjCxTeN4wj+c05w=
+
+** Digest( SHA224 ): ***
+Su1PcyQdCDXozZCb4tUNEKCT3Dg2W+Ek+b85HQ==
+
+** Digest( SHA256 ): ***
+f8KWWGMregazVv77Mw49A/Oicjd5+wKvabdY2YfCGJM=
+
+** Digest( SHA384 ): ***
+rH9qTN2cAcovTEY3r8hIwtMpl5O/TOCbsJhROqKi9rZWgkA6X8HQwS52n5yL71yb
+
+** Digest( SHA512 ): ***
+FNQ+V2gqs3/iDH0wVX4LgD9NrpUQhVZagsprDp42ZqmshnJjgRyPzOj++vqoghmv
+FLVP3GJNhVZAQ8t38EBmmw==
+
+** Digest( SHA3-224 ): ***
+HRaSUzyBXNVKYtsiWFvv3ttDSO/NjxxtQlBRbg==
+
+** Digest( SHA3-256 ): ***
+axK8pS4lQMuLbMBgpH8kTsa9e4zJto+5NWFIGKXh8aQ=
+
+** Digest( SHA3-384 ): ***
+qTsu2gcI21QgdajWv3dG4a8XyMHLzyeM269/LsU8255TxdhFnmOf6Y9bOXirRXZT
+
+** Digest( SHA3-512 ): ***
+54UFyARlf0bv8UxzmkPi1plr5D499QwrBCR2/UUeALpDzycbBSgVF6dQBNjUU2WC
+lvzO56h5b1ix79poJNuA3A==
+
+```
+
 
 ### Generate and sign DSA keys with second level CA
 ```
+mkdir dsa
 ./scripts/create-dsa-1024.sh
 ./scripts/create-dsa-2048.sh
 ./scripts/create-dsa-3072.sh
@@ -47,10 +152,65 @@ openssl x509 -outform DER -in ca2cert.pem -out ca2cert.der
 ### Generate and sign RSA keys with second level CA
 
 ```
+mkdir rsa
 ./scripts/create-rsa-2048.sh
 ./scripts/create-rsa-4096.sh
 ./scripts/create-rsa-expired.sh
 ```
+
+
+#### Remember values and replace in all tests
+```
+./scripts/print-cert-info.sh rsa/rsa-4096-cert.pem
+
+** Validity: ***
+Not Before: Mar  8 22:14:27 2026 GMT
+Not After : Feb 12 22:14:27 2126 GMT
+
+** Subject Name: ***
+C=US, ST=California, O=XML Security Library (http://www.aleksey.com/xmlsec), CN=Test Key rsa-4096
+
+** Issuer Name: ***
+C=US, ST=California, O=XML Security Library (http://www.aleksey.com/xmlsec), OU=Second level CA, CN=Aleksey Sanin, emailAddress=xmlsec@aleksey.com
+
+** Issuer Serial: ***
+680572598617295163017172295025714171905498632020
+
+** SKI: ***
+60zMLKCfzQ3qnXAzABzRNpdgQ8Q=
+
+** Digest( SHA1 ): ***
+EpvJf6ehbVr0WoYoT1XKQcc4cjY=
+
+** Digest( SHA224 ): ***
+PytiHkMJ7MTFN5hxIbADUE+nRFRwGOtyWXGEQQ==
+
+** Digest( SHA256 ): ***
+fZd23DD+/7HSo72ZyFMENaMmbxjDF2SfThmux0P6qTY=
+
+** Digest( SHA384 ): ***
+7sW11odRYIK2BK9UAs+iyfy/+JQhxNAhr3SzLSdNUxXxM8CzIwAAsxNAAL62uu+P
+
+** Digest( SHA512 ): ***
+KRwh8Pv3wdTVlPlwwfc1wEygbxzxCtffw/A0zv7ChDV2Wgm3hSrvCAQXE0+5grrE
+yTlxGTAsUCDBkpj+2LWRyw==
+
+** Digest( SHA3-224 ): ***
+/fhhzcIh8RAg+OY+Nsj4i7YB0Q6mrK6Hh8uHxQ==
+
+** Digest( SHA3-256 ): ***
+YR+o/+utXWp+dE+PMD175PFDp2SGIKPb+pCTlCbsads=
+
+** Digest( SHA3-384 ): ***
+CjKuz7An+LLYBlw4H352BkMvXi27+c64HdrHKCVN2bF9R7kex/ubildZGtCQpbjO
+
+** Digest( SHA3-512 ): ***
+AO4amGZNPllXK6SQLgWD+9FI1BG+hU3+tMzcuhwv3gYQW7VC2AdYb8oVC2jzHAr/
+Y35Ao0pe1DXmo6/+wGWDfA==
+
+
+```
+
 
 * Creating NSS DB
 DO NOT SPECIFY PASSWORD FOR NSS DB (private keys pkcs12 password is 'secret123')
@@ -58,13 +218,14 @@ DO NOT SPECIFY PASSWORD FOR NSS DB (private keys pkcs12 password is 'secret123')
 ```
 rm -rf nssdb
 mkdir nssdb
-pk12util -d nssdb -i rsa-4096-key.p12
+pk12util -d nssdb -i rsa/rsa-4096-key.p12
 chmod a-w nssdb/*
 ```
 
 
 ### Generate EC keys with second level CA
 ```
+mkdir ec
 ./scripts/create-ec-prime256v1.sh
 ./scripts/create-ec-prime256v1-second.sh
 ./scripts/create-ec-prime384v1.sh
@@ -73,6 +234,7 @@ chmod a-w nssdb/*
 
 ### Generate and sign DHX keys with second level CA
 ```
+mkdir dhx
 ./scripts/create-dhx-rfc5114-3-first.sh
 ./scripts/create-dhx-rfc5114-3-second.sh
 ```
@@ -80,14 +242,16 @@ chmod a-w nssdb/*
 ### Generate ML-DSA keys with second level CA
 
 ```
+mkdir ml-dsa
 ./scripts/create-ml-dsa-44.sh
-./scripts/create-ml-dsa-86.sh
+./scripts/create-ml-dsa-65.sh
 ./scripts/create-ml-dsa-87.sh
 ```
 
 ### Generate SLH-DSA keys with second level CA
 
 ```
+mkdir slh-dsa
 ./scripts/create-slh-dsa-sha2-128f.sh
 ./scripts/create-slh-dsa-sha2-128s.sh
 ./scripts/create-slh-dsa-sha2-192f.sh
@@ -121,27 +285,7 @@ export LD_LIBRARY_PATH=$OPENSSL_TOP_DIR/lib64:$OPENSSL_TOP_DIR/lib:$LD_LIBRARY_P
 OPENSSL_CONF=./openssl.cnf openssl version -e
 OPENSSL_CONF=./openssl.cnf openssl engine
 
-
 OPENSSL_CONF=./openssl.cnf ./scripts/create-gost-2001.sh
 OPENSSL_CONF=./openssl.cnf ./scripts/create-gost-2012-256.sh
-
-```
-
-
-
-GOST2012 512 bits:
-```
-openssl req -config ./openssl.cnf -newkey gost2012_512 -pkeyopt paramset:A -nodes -keyout gost2012_512key.pem -out gost2012_512req.pem
-openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem -out gost2012_512cert.pem -infiles gost2012_512req.pem
-OPENSSL_CONF=./openssl.cnf openssl verify -CAfile cacert.pem -untrusted ca2cert.pem gost2012_512cert.pem
-rm gost2012_512req.pem
-
-openssl x509 -outform DER -in gost2012_512cert.pem -out gost2012_512cert.der
-
-OPENSSL_CONF=./openssl.cnf openssl pkcs8 -in gost2012_512key.pem -inform pem -out gost2012_512key.p8-pem -outform pem -topk8
-
-cat gost2012_512key.pem gost2012_512cert.pem ca2cert.pem cacert.pem > all-gost2012_512.pem
-OPENSSL_CONF=./openssl.cnf openssl pkcs12 -export -in all-gost2012_512.pem -name TestGost2012_512Key -out gost2012_512key.p12
-rm all-gost2012_512.pem
-
+OPENSSL_CONF=./openssl.cnf ./scripts/create-gost-2012-512.sh
 ```

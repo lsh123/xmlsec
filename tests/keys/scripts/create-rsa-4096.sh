@@ -36,45 +36,6 @@ echo "      tests/xmldsig11-interop-2012/signature-enveloping-x509digest-rsa.tmp
 echo "      tests/aleksey-xmldsig-01/enveloped-x509-*.tmpl"
 echo "      tests/aleksey-xmlenc-01/enc_rsa_1_5_x509_*.tmpl"
 
-openssl x509 -in "${keyname}-cert.pem" -noout -text
-
-echo "** Issuer Serial: ***"
-openssl x509 -noout -serial -in "${keyname}-cert.pem" | cut -d'=' -f2 | tr -d '\n' | xargs -I {} printf "%u\n" "0x{}"
-
-echo "** SKI: ***"
-openssl x509 -in "${keyname}-cert.pem" -noout -ext subjectKeyIdentifier | tail -1 | xxd -r -p | openssl base64
-
-echo "** Digest( SHA1 ): ***"
-openssl x509 -in "${keyname}-cert.pem" -noout -fingerprint -sha1 | cut -d'=' -f2 | xxd -r -p | openssl base64
-
-echo "** Digest( SHA224 ): ***"
-openssl x509 -in "${keyname}-cert.pem" -noout -fingerprint -sha224 | cut -d'=' -f2 | xxd -r -p | openssl base64
-
-echo "** Digest( SHA256 ): ***"
-openssl x509 -in "${keyname}-cert.pem" -noout -fingerprint -sha256 | cut -d'=' -f2 | xxd -r -p | openssl base64
-
-echo "** Digest( SHA384 ): ***"
-openssl x509 -in "${keyname}-cert.pem" -noout -fingerprint -sha384 | cut -d'=' -f2 | xxd -r -p | openssl base64
-
-echo "** Digest( SHA512 ): ***"
-openssl x509 -in "${keyname}-cert.pem" -noout -fingerprint -sha512 | cut -d'=' -f2 | xxd -r -p | openssl base64
-
-echo "** Digest( SHA3-224 ): ***"
-openssl x509 -in "${keyname}-cert.pem" -noout -fingerprint -sha3-224 | cut -d'=' -f2 | xxd -r -p | openssl base64
-
-echo "** Digest( SHA3-256 ): ***"
-openssl x509 -in "${keyname}-cert.pem" -noout -fingerprint -sha3-256 | cut -d'=' -f2 | xxd -r -p | openssl base64
-
-echo "** Digest( SHA3-384 ): ***"
-openssl x509 -in "${keyname}-cert.pem" -noout -fingerprint -sha3-384 | cut -d'=' -f2 | xxd -r -p | openssl base64
-
-echo "** Digest( SHA3-512 ): ***"
-openssl x509 -in "${keyname}-cert.pem" -noout -fingerprint -sha3-512 | cut -d'=' -f2 | xxd -r -p | openssl base64
-
-
-echo "NOTE: NSS is very particular about the order of DN fields, make sure to tests nss to confirm subject/issuer names work as expected."
-
-
 # move to the right place
 mv "${keyname}"* "${folder}/"
 if [ $? -ne 0 ]; then

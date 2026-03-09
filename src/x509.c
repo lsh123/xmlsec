@@ -380,5 +380,223 @@ xmlSecX509NameRead(const xmlChar *str, xmlSecx509NameReplacements *replacements,
     return(0);
 }
 
+/**
+ * xmlSecX509SerialNumberWrite:
+ * @data:       the serial number bytes (big-endian, unsigned).
+ * @dataSize:   the number of bytes in @data.
+ *
+ * Converts a DER-encoded ASN.1 INTEGER (serial number) to its decimal string
+ * representation.
+ *
+ * Returns: the decimal string on success or NULL if an error occurs.
+ * Caller is responsible for freeing the returned string with xmlFree().
+ */
+xmlChar*
+xmlSecX509SerialNumberWrite(const xmlSecByte *data, xmlSecSize dataSize) {
+    xmlChar *resString = NULL;
+    unsigned char *workBytes = NULL;
+    size_t workBytesLen;
+    size_t resSize;
+    size_t resLen;
+    size_t ii;
+    unsigned int carry;
+    unsigned int remainder;
+    int allZero;
+    xmlChar *res = NULL;
+
+    xmlSecAssert2(data != NULL, NULL);
+    xmlSecAssert2(dataSize > 0, NULL);
+
+    /* Skip leading 0x00 bytes: DER INTEGER encoding of positive values with MSB=1
+     * requires a leading 0x00, so cert->serialNumber.len may be 21 for a 20-byte value. */
+    while((dataSize > 1U) && (data[0] == 0x00U)) {
+        ++data;
+        --dataSize;
+    }
+    xmlSecAssert2(dataSize <= XMLSEC_X509_MAX_SERIAL_NUMBER_BYTES, NULL);
+
+    workBytesLen = (size_t)dataSize;
+
+    /* Allocate buffer for result */
+    resSize = XMLSEC_X509_MAX_SERIAL_NUMBER_CHARS;
+    resString = (xmlChar*)xmlMalloc(resSize);
+    if(resString == NULL) {
+        xmlSecMallocError(resSize, NULL);
+        goto done;
+    }
+    memset(resString, 0, resSize);
+
+    /* Make a working copy of bytes */
+    workBytes = (unsigned char*)xmlMalloc(workBytesLen);
+    if(workBytes == NULL) {
+        xmlSecMallocError(workBytesLen, NULL);
+        goto done;
+    }
+    memcpy(workBytes, data, workBytesLen);
+
+    /* Build string from right to left using repeated division by 10 */
+    resLen = 0;
+
+    while(workBytesLen > 0) {
+        /* Check if all bytes are zero */
+        allZero = 1;
+        for(ii = 0; ii < workBytesLen; ii++) {
+            if(workBytes[ii] != 0) {
+                allZero = 0;
+                break;
+            }
+        }
+        if(allZero) {
+            break;
+        }
+
+        /* Divide by 10: for each byte, compute (carry * 256 + byte) / 10 */
+        carry = 0;
+        for(ii = 0; ii < workBytesLen; ii++) {
+            remainder = carry * 256 + workBytes[ii];
+            workBytes[ii] = (unsigned char)(remainder / 10);
+            carry = remainder % 10;
+        }
+
+        /* Add remainder as digit (building string in reverse order) */
+        if(resLen >= resSize - 1) {
+            xmlSecInternalError("result buffer too small", NULL);
+            goto done;
+        }
+        resString[resLen++] = (xmlChar)('0' + carry);
+
+        /* Remove leading zeros from workBytes */
+        while((workBytesLen > 0) && (workBytes[0] == 0)) {
+            memmove(workBytes, workBytes + 1, workBytesLen - 1);
+            workBytesLen--;
+        }
+    }
+
+    /* If number was zero */
+    if(resLen == 0) {
+        resString[resLen++] = '0';
+    }
+
+    /* Reverse the string (since we built it backwards) */
+    for(ii = 0; ii < (resLen / 2); ii++) {
+        xmlChar tmp = resString[ii];
+        size_t reverseIdx = resLen - 1 - (size_t)ii;
+        resString[ii] = resString[reverseIdx];
+        resString[reverseIdx] = tmp;
+    }
+
+    /* just to make sure */
+    resString[resLen] = '\0';
+
+    /* Done */
+    res = resString;
+    resString = NULL;
+
+done:
+    if(workBytes != NULL) {
+        xmlFree(workBytes);
+    }
+    if(resString != NULL) {
+        xmlFree(resString);
+    }
+    return(res);
+}
+
+/**
+ * xmlSecX509SerialNumberRead:
+ * @str:        the decimal string representation of the serial number.
+ * @res:        the output buffer for the DER-encoded big-endian bytes.
+ * @resSize:    the size of @res in bytes (must be >= XMLSEC_X509_MAX_SERIAL_NUMBER_BYTES).
+ * @written:    the number of bytes written to @res.
+ *
+ * Converts a decimal string serial number to its DER-encoded ASN.1 INTEGER
+ * byte representation (big-endian, with a leading 0x00 byte prepended when
+ * the most-significant bit is set, per RFC 5280).
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecX509SerialNumberRead(const xmlChar *str, xmlSecByte *res, xmlSecSize resSize, xmlSecSize *written) {
+    unsigned char buf[XMLSEC_X509_MAX_SERIAL_NUMBER_BYTES];
+    size_t start;
+    size_t len;
+    unsigned int idx;
+    unsigned int digit;
+    unsigned int carry;
+
+    xmlSecAssert2(str != NULL, -1);
+    xmlSecAssert2(res != NULL, -1);
+    xmlSecAssert2(resSize >= XMLSEC_X509_MAX_SERIAL_NUMBER_BYTES, -1);
+    xmlSecAssert2(written != NULL, -1);
+
+    /* reject empty string */
+    if(str[0] == '\0') {
+        xmlSecInternalError("empty integer string", NULL);
+        return(-1);
+    }
+
+    /* XMLSEC_X509_MAX_SERIAL_NUMBER_BYTES bytes can hold at most
+     * XMLSEC_X509_MAX_SERIAL_NUMBER_CHARS decimal digits; reject anything longer
+     * to avoid unnecessary CPU work on untrusted input */
+    if(xmlStrlen(str) >= XMLSEC_X509_MAX_SERIAL_NUMBER_CHARS) {
+        xmlSecInternalError("integer string is too long", NULL);
+        return(-1);
+    }
+
+    memset(buf, 0, sizeof(buf));
+    start = sizeof(buf) - 1;
+
+    for(idx = 0; str[idx] != '\0'; ++idx) {
+        if((str[idx] < '0') || (str[idx] > '9')) {
+            xmlSecInternalError("invalid integer string", NULL);
+            return(-1);
+        }
+
+        digit = (unsigned int)(str[idx] - '0');
+        carry = digit;
+
+        /* Multiply the current value by 10 and add the next decimal digit. */
+        for(len = sizeof(buf); len > start; --len) {
+            unsigned int value;
+
+            value = ((unsigned int)buf[len - 1]) * 10U + carry;
+            buf[len - 1] = (unsigned char)(value & 0xFFU);
+            carry = value >> 8;
+        }
+
+        while(carry > 0U) {
+            if(start == 0U) {
+                xmlSecInternalError("integer value is too large", NULL);
+                return(-1);
+            }
+            --start;
+            buf[start] = (unsigned char)(carry & 0xFFU);
+            carry >>= 8;
+        }
+    }
+
+    /* Keep a single zero byte for the zero value. */
+    while((start < (sizeof(buf) - 1U)) && (buf[start] == 0U)) {
+        ++start;
+    }
+
+    /* ASN.1 INTEGER is signed: prepend 0x00 for positive values with MSB set. */
+    if((buf[start] & 0x80U) != 0U) {
+        if(start == 0U) {
+            xmlSecInternalError("integer value is too large", NULL);
+            return(-1);
+        }
+        --start;
+        buf[start] = 0U;
+    }
+
+    len = sizeof(buf) - start;
+    xmlSecAssert2(len > 0, -1);
+
+    memcpy(res, buf + start, len);
+    (*written) = (xmlSecSize)len;
+    return(0);
+}
+
 
 #endif /* XMLSEC_NO_X509 */

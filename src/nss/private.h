@@ -54,7 +54,6 @@ typedef struct _xmlSecNssX509FindCertCtx {
 
     CERTName* issuerName;
     SECItem* issuerNameItem;
-    PRUint64 issuerSN;
     CERTIssuerAndSN issuerAndSN;
     int issuerAndSNInitialized;
 

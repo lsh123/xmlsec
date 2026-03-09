@@ -523,8 +523,14 @@ xmlSecMSCngSignatureFixBrokenJava(xmlSecMSCngSignatureCtxPtr ctx,
 
 static void
 ConvertEndianInPlace(xmlSecByte* buf, xmlSecSize size) {
-    xmlSecByte* start = buf;
-    xmlSecByte* end = buf + size - 1;
+    xmlSecByte* start;
+    xmlSecByte* end;
+
+    xmlSecAssert(buf != NULL);
+    xmlSecAssert(size > 0);
+
+    start = buf;
+    end = buf + size - 1;
     while (start < end) {
         xmlSecByte tmp = *end;
         *end = *start;

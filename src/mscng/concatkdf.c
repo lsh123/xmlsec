@@ -271,26 +271,28 @@ xmlSecMSCngConcatKdfPeformKeyDerivation(
     BCRYPT_ALG_HANDLE hKdfAlg = NULL;
     BCRYPT_KEY_HANDLE hKey= NULL;
     DWORD cbResultLength = 0;
-    BCryptBuffer paramBufferCONCATKDF2[] =
-    {
-         {
-            cbFixedInfo,
-            KDF_GENERIC_PARAMETER,
-            pbFixedInfo,
-        },
-        {
-            ((ULONG)wcslen(pszHashAlgo) + 1) * sizeof(WCHAR),
-            KDF_HASH_ALGORITHM,
-            (LPWSTR)pszHashAlgo,
-        }
-    };
-    BCryptBufferDesc paramsCONCATKDF2 =
-    {
-            BCRYPTBUFFER_VERSION,
-            2,
-            paramBufferCONCATKDF2
-    };
+    BCryptBuffer paramBufferCONCATKDF2[2];
+    BCryptBufferDesc paramsCONCATKDF2;
     int res = -1;
+
+    xmlSecAssert2(pszHashAlgo != NULL, -1);
+    xmlSecAssert2(pbSecret != NULL, -1);
+    xmlSecAssert2(cbSecret > 0, -1);
+    xmlSecAssert2(pbFixedInfo != NULL, -1);
+    xmlSecAssert2(cbFixedInfo > 0, -1);
+    xmlSecAssert2(pbOut != NULL, -1);
+    xmlSecAssert2(cbOut > 0, -1);
+
+    paramBufferCONCATKDF2[0].cbBuffer = cbFixedInfo;
+    paramBufferCONCATKDF2[0].BufferType = KDF_GENERIC_PARAMETER;
+    paramBufferCONCATKDF2[0].pvBuffer = pbFixedInfo;
+    paramBufferCONCATKDF2[1].cbBuffer = ((ULONG)wcslen(pszHashAlgo) + 1) * sizeof(WCHAR);
+    paramBufferCONCATKDF2[1].BufferType = KDF_HASH_ALGORITHM;
+    paramBufferCONCATKDF2[1].pvBuffer = (LPWSTR)pszHashAlgo;
+
+    paramsCONCATKDF2.ulVersion = BCRYPTBUFFER_VERSION;
+    paramsCONCATKDF2.cBuffers = 2;
+    paramsCONCATKDF2.pBuffers = paramBufferCONCATKDF2;
 
     /* get algo provider */
     status = BCryptOpenAlgorithmProvider(

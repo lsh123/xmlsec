@@ -89,8 +89,10 @@ struct _xmlSecOpenSSLEvpSignatureCtx {
     xmlSecBuffer        preSignBuffer;
 
     /* signature */
+#if defined(XMLSEC_OPENSSL_API_350)
     const char*         signatureName;
     xmlSecBufferPtr     contextString;
+#endif /* defined(XMLSEC_OPENSSL_API_350) */
 
     /* signature format and padding (if any)*/
     xmlSecOpenSSLEvpSignatureFormat signatureFormat;
@@ -484,8 +486,6 @@ xmlSecOpenSSLEvpSignatureSetByName(xmlSecOpenSSLEvpSignatureCtxPtr ctx, const ch
 
 #if !defined(XMLSEC_NO_GOST) || !defined(XMLSEC_NO_GOST2012)
 /* Not all algorithms have been converted to the new providers design (e.g. GOST) */
-/* TODO: EVP_get_digestbyname() is deprecated in OpenSSL 3.0. Replace with EVP_MD_fetch()
- * once GOST algorithms become available as OpenSSL providers. */
 static int
 xmlSecOpenSSLEvpSignatureSetGostDigestByName(xmlSecOpenSSLEvpSignatureCtxPtr ctx, const char * digestName) {
     xmlSecAssert2(ctx != NULL, -1);
@@ -963,9 +963,11 @@ xmlSecOpenSSLEvpSignatureFinalize(xmlSecTransformPtr transform) {
     /* cleanup buffer if needed */
     xmlSecBufferFinalize(&(ctx->preSignBuffer));
 
+#if defined(XMLSEC_OPENSSL_API_350)
     if(ctx->contextString != NULL) {
         xmlSecBufferDestroy(ctx->contextString);
     }
+#endif /* defined(XMLSEC_OPENSSL_API_350) */
 
     /* done */
     memset(ctx, 0, sizeof(xmlSecOpenSSLEvpSignatureCtx));

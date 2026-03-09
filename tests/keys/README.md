@@ -285,27 +285,7 @@ export LD_LIBRARY_PATH=$OPENSSL_TOP_DIR/lib64:$OPENSSL_TOP_DIR/lib:$LD_LIBRARY_P
 OPENSSL_CONF=./openssl.cnf openssl version -e
 OPENSSL_CONF=./openssl.cnf openssl engine
 
-
 OPENSSL_CONF=./openssl.cnf ./scripts/create-gost-2001.sh
 OPENSSL_CONF=./openssl.cnf ./scripts/create-gost-2012-256.sh
-
-```
-
-
-
-GOST2012 512 bits:
-```
-openssl req -config ./openssl.cnf -newkey gost2012_512 -pkeyopt paramset:A -nodes -keyout gost2012_512key.pem -out gost2012_512req.pem
-openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem -out gost2012_512cert.pem -infiles gost2012_512req.pem
-OPENSSL_CONF=./openssl.cnf openssl verify -CAfile cacert.pem -untrusted ca2cert.pem gost2012_512cert.pem
-rm gost2012_512req.pem
-
-openssl x509 -outform DER -in gost2012_512cert.pem -out gost2012_512cert.der
-
-OPENSSL_CONF=./openssl.cnf openssl pkcs8 -in gost2012_512key.pem -inform pem -out gost2012_512key.p8-pem -outform pem -topk8
-
-cat gost2012_512key.pem gost2012_512cert.pem ca2cert.pem cacert.pem > all-gost2012_512.pem
-OPENSSL_CONF=./openssl.cnf openssl pkcs12 -export -in all-gost2012_512.pem -name TestGost2012_512Key -out gost2012_512key.p12
-rm all-gost2012_512.pem
-
+OPENSSL_CONF=./openssl.cnf ./scripts/create-gost-2012-512.sh
 ```

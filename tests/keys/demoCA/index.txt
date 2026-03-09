@@ -19,3 +19,6 @@ V	21260212222730Z		7735EE487F6862DAF1B3956D961CCB0FA6F34F5F	unknown	/C=US/ST=Cal
 V	21260212222733Z		7735EE487F6862DAF1B3956D961CCB0FA6F34F60	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=Test Key slh-dsa-sha2-192s
 V	21260212222740Z		7735EE487F6862DAF1B3956D961CCB0FA6F34F61	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=Test Key slh-dsa-sha2-256f
 V	21260212222744Z		7735EE487F6862DAF1B3956D961CCB0FA6F34F62	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=Test Key slh-dsa-sha2-256s
+V	21260213024451Z		7735EE487F6862DAF1B3956D961CCB0FA6F34F63	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=Test Key gost-2001
+V	21260213024508Z		7735EE487F6862DAF1B3956D961CCB0FA6F34F64	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=Test Key gost-2012-256
+V	21260213024911Z		7735EE487F6862DAF1B3956D961CCB0FA6F34F65	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=Test Key gost-2012-512

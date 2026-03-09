@@ -241,7 +241,7 @@ xmlSecNssAppAscii2UCS2Conv(PRBool toUnicode,
 /* rename certificate if needed */
 static SECItem *
 xmlSecNssAppNicknameCollisionCallback(SECItem *old_nick XMLSEC_ATTRIBUTE_UNUSED,
-    PRBool *cancel, void *wincx XMLSEC_ATTRIBUTE_UNUSED
+    PRBool *cancel, void *wincx
 ) {
     CERTCertificate *cert = (CERTCertificate *)wincx;
     char *nick = NULL;

@@ -404,21 +404,14 @@ xmlSecNssX509StoreFindChildCert(CERTCertificate* cert, CERTCertList* certs) {
 
 static int64
 xmlSecNssX509SGetVerificationTime(xmlSecKeyInfoCtx* keyInfoCtx) {
-    int64 verificationTime;
-    int64 tmp1, tmp2;
-
     xmlSecAssert2(keyInfoCtx != NULL, 0);
 
     if(keyInfoCtx->certsVerificationTime > 0) {
         /* convert the time since epoch in seconds to microseconds */
-        LL_UI2L(verificationTime, keyInfoCtx->certsVerificationTime);
-        tmp1 = (int64)PR_USEC_PER_SEC;
-        tmp2 = verificationTime;
-        LL_MUL(verificationTime, tmp1, tmp2);
+        return (int64)keyInfoCtx->certsVerificationTime * PR_USEC_PER_SEC;
     } else {
-        verificationTime = PR_Now();
+        return PR_Now();
     }
-    return verificationTime;
 }
 
 /* returns 1 if verified, 0 if not, an < 0 if an error occurs */
@@ -654,7 +647,7 @@ xmlSecNssX509StoreAdoptCert(xmlSecKeyDataStorePtr store, CERTCertificate* cert, 
             xmlSecNssError("CERT_DecodeTrustString", xmlSecKeyDataStoreGetName(store));
             return(-1);
         }
-        CERT_ChangeCertTrust(CERT_GetDefaultCertDB(), cert, &trust);
+        status = CERT_ChangeCertTrust(CERT_GetDefaultCertDB(), cert, &trust);
         if(status != SECSuccess) {
             xmlSecNssError("CERT_ChangeCertTrust", xmlSecKeyDataStoreGetName(store));
             return(-1);
@@ -690,6 +683,7 @@ xmlSecNssX509StoreAdoptCrl(xmlSecKeyDataStorePtr store, CERTSignedCrl * crl) {
         xmlSecInternalError("xmlSecNssX509CrlListAdoptCrl", xmlSecKeyDataStoreGetName(store));
         return(-1);
     }
+    ++ctx->numCrls;
     return(0);
 }
 
@@ -762,16 +756,13 @@ xmlSecNssX509VerifyCRLSignature(xmlSecNssX509StoreCtxPtr ctx, CERTSignedCrl* crl
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(crl != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
-    UNREFERENCED_PARAMETER(keyInfoCtx);
 
     /* Find the CRL issuer certificate in the store */
     if((crl->crl.derName.data != NULL) && (crl->crl.derName.len > 0)) {
         /* Search in the certs list */
         if(ctx->certsList != NULL) {
             CERTCertListNode* node;
-            for(node = CERT_LIST_HEAD(ctx->certsList);
-                !CERT_LIST_END(node, ctx->certsList);
-                node = CERT_LIST_NEXT(node)) {
+            for(node = CERT_LIST_HEAD(ctx->certsList); !CERT_LIST_END(node, ctx->certsList); node = CERT_LIST_NEXT(node)) {
                 if(node->cert != NULL) {
                     /* Compare CRL issuer (derName) with certificate subject (derSubject) */
                     if(SECITEM_CompareItem(&(crl->crl.derName), &(node->cert->derSubject)) == SECEqual) {

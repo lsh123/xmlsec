@@ -261,7 +261,7 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
         key = xmlSecKeyCreate();
         if (key == NULL) {
             xmlSecInternalError("xmlSecKeyCreate", NULL);
-            return (NULL);
+            goto done;
         }
 
 #ifndef XMLSEC_NO_X509

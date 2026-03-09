@@ -930,21 +930,146 @@ xmlSecMSCngKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 }
 
 static void
+xmlSecMSCngX509CertDebugDump(PCCERT_CONTEXT cert, FILE* output) {
+    xmlChar* subject = NULL;
+    xmlChar* issuer = NULL;
+    PCRYPT_INTEGER_BLOB sn;
+    DWORD i;
+
+    xmlSecAssert(cert != NULL);
+    xmlSecAssert(output != NULL);
+
+    fprintf(output, "=== X509 Certificate\n");
+
+    /* subject */
+    subject = xmlSecMSCngX509NameWrite(&(cert->pCertInfo->Subject));
+    if(subject == NULL) {
+        xmlSecInternalError("xmlSecMSCngX509NameWrite(subject)", NULL);
+        goto done;
+    }
+    fprintf(output, "==== Subject Name: %s\n", subject);
+
+    /* issuer */
+    issuer = xmlSecMSCngX509NameWrite(&(cert->pCertInfo->Issuer));
+    if(issuer == NULL) {
+        xmlSecInternalError("xmlSecMSCngX509NameWrite(issuer)", NULL);
+        goto done;
+    }
+    fprintf(output, "==== Issuer Name: %s\n", issuer);
+
+    /* serial number */
+    sn = &(cert->pCertInfo->SerialNumber);
+    for(i = 0; i < sn->cbData; i++) {
+        if(i != sn->cbData - 1) {
+            fprintf(output, "%02x:", sn->pbData[i]);
+        } else {
+            fprintf(output, "%02x", sn->pbData[i]);
+        }
+    }
+    fprintf(output, "\n");
+
+done:
+    if(subject != NULL) xmlFree(subject);
+    if(issuer != NULL) xmlFree(issuer);
+}
+
+static void
+xmlSecMSCngX509CertDebugXmlDump(PCCERT_CONTEXT cert, FILE* output) {
+    xmlChar* subject = NULL;
+    xmlChar* issuer = NULL;
+    PCRYPT_INTEGER_BLOB sn;
+    DWORD i;
+
+    xmlSecAssert(cert != NULL);
+    xmlSecAssert(output != NULL);
+
+    /* subject */
+    subject = xmlSecMSCngX509NameWrite(&(cert->pCertInfo->Subject));
+    if(subject == NULL) {
+        xmlSecInternalError("xmlSecMSCngX509NameWrite(subject)", NULL);
+        goto done;
+    }
+    fprintf(output, "<SubjectName>");
+    xmlSecPrintXmlString(output, subject);
+    fprintf(output, "</SubjectName>\n");
+
+    /* issuer */
+    issuer = xmlSecMSCngX509NameWrite(&(cert->pCertInfo->Issuer));
+    if(issuer == NULL) {
+        xmlSecInternalError("xmlSecMSCngX509NameWrite(issuer)", NULL);
+        goto done;
+    }
+    fprintf(output, "<IssuerName>");
+    xmlSecPrintXmlString(output, issuer);
+    fprintf(output, "</IssuerName>\n");
+
+    /* serial number */
+    fprintf(output, "<SerialNumber>");
+    sn = &(cert->pCertInfo->SerialNumber);
+    for(i = 0; i < sn->cbData; i++) {
+        if(i != sn->cbData - 1) {
+            fprintf(output, "%02x:", sn->pbData[i]);
+        } else {
+            fprintf(output, "%02x", sn->pbData[i]);
+        }
+    }
+    fprintf(output, "</SerialNumber>\n");
+
+done:
+    if(subject != NULL) xmlFree(subject);
+    if(issuer != NULL) xmlFree(issuer);
+}
+
+static void
 xmlSecMSCngKeyDataX509DebugDump(xmlSecKeyDataPtr data, FILE* output) {
+    xmlSecMSCngX509DataCtxPtr ctx;
+    PCCERT_CONTEXT cert = NULL;
+
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataX509Id));
     xmlSecAssert(output != NULL);
 
-    xmlSecNotImplementedError("MSCNG doesn't support debug information for X509 certificates");
-    /* ignore error */
+    ctx = xmlSecMSCngX509DataGetCtx(data);
+    xmlSecAssert(ctx != NULL);
+
+    fprintf(output, "=== X509 Data:\n");
+    while((cert = CertEnumCertificatesInStore(ctx->hMemStore, cert)) != NULL) {
+        if((ctx->keyCert != NULL) && (CertCompareCertificate(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+                cert->pCertInfo, ctx->keyCert->pCertInfo) == TRUE)) {
+            fprintf(output, "==== Key Certificate:\n");
+        } else {
+            fprintf(output, "==== Certificate:\n");
+        }
+        xmlSecMSCngX509CertDebugDump(cert, output);
+    }
+    /* we don't print out crls */
 }
 
 static void
 xmlSecMSCngKeyDataX509DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
+    xmlSecMSCngX509DataCtxPtr ctx;
+    PCCERT_CONTEXT cert = NULL;
+
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecMSCngKeyDataX509Id));
     xmlSecAssert(output != NULL);
 
-    xmlSecNotImplementedError("MSCNG doesn't support debug information for X509 certificates");
-    /* ignore error */
+    ctx = xmlSecMSCngX509DataGetCtx(data);
+    xmlSecAssert(ctx != NULL);
+
+    fprintf(output, "<X509Data>\n");
+    while((cert = CertEnumCertificatesInStore(ctx->hMemStore, cert)) != NULL) {
+        if((ctx->keyCert != NULL) && (CertCompareCertificate(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+                cert->pCertInfo, ctx->keyCert->pCertInfo) == TRUE)) {
+            fprintf(output, "<KeyCertificate>\n");
+            xmlSecMSCngX509CertDebugXmlDump(cert, output);
+            fprintf(output, "</KeyCertificate>\n");
+        } else {
+            fprintf(output, "<Certificate>\n");
+            xmlSecMSCngX509CertDebugXmlDump(cert, output);
+            fprintf(output, "</Certificate>\n");
+        }
+    }
+    /* we don't print out crls */
+    fprintf(output, "</X509Data>\n");
 }
 
 static xmlSecKeyDataKlass xmlSecMSCngKeyDataX509Klass = {

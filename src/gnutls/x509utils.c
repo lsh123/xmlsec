@@ -42,6 +42,7 @@
 
 #include "private.h"
 #include "../cast_helpers.h"
+#include "../x509_helpers.h"
 
 /**************************************************************************
  *
@@ -308,9 +309,9 @@ xmlSecGnuTLSX509CertGetIssuerSerial(gnutls_x509_crt_t cert) {
     }
 
     /* convert to string */
-    res = xmlSecGnuTLSASN1IntegerWrite(buf, bufSize);
+    res = xmlSecX509SerialNumberWrite((const xmlSecByte*)buf, (xmlSecSize)bufSize);
     if(res == NULL) {
-        xmlSecInternalError("xmlSecGnuTLSASN1IntegerWrite", NULL);
+        xmlSecInternalError("xmlSecX509SerialNumberWrite", NULL);
         xmlFree(buf);
         return(NULL);
     }
@@ -989,44 +990,6 @@ xmlSecGnuTLSX509CrlDebugXmlDump(gnutls_x509_crl_t crl, FILE* output) {
     } else {
         fprintf(output, "<IssuerName>unknown</IssuerName>\n");
     }
-}
-
-/*************************************************************************
- *
- * Misc. utils/helpers
- *
- ************************************************************************/
-#define XMLSEC_GNUTLS_INT_TO_STR_MAX_SIZE 64
-xmlChar*
-xmlSecGnuTLSASN1IntegerWrite(const unsigned char * data, size_t len) {
-    xmlChar *res = NULL;
-    unsigned long long int val = 0;
-    size_t ii = 0;
-    int shift = 0;
-    int ret;
-
-    xmlSecAssert2(data != NULL, NULL);
-    xmlSecAssert2(len <= 9, NULL);
-
-    /* HACK : to be fixed after GnuTLS provides a way to read opaque ASN1 integer */
-    for(ii = len; ii > 0; --ii, shift += 8) {
-        val |= ((unsigned long long)data[ii - 1]) << shift;
-    }
-
-    res = (xmlChar*)xmlMalloc(XMLSEC_GNUTLS_INT_TO_STR_MAX_SIZE + 1);
-    if(res == NULL) {
-        xmlSecMallocError(XMLSEC_GNUTLS_INT_TO_STR_MAX_SIZE + 1, NULL);
-        return(NULL);
-    }
-
-    ret = xmlStrPrintf(res, XMLSEC_GNUTLS_INT_TO_STR_MAX_SIZE, "%llu", val);
-    if(ret < 0) {
-        xmlSecXmlError("xmlStrPrintf", NULL);
-        xmlFree(res);
-        return(NULL);
-    }
-
-    return(res);
 }
 
 /*************************************************************************

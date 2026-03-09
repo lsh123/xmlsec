@@ -153,9 +153,6 @@ void                    xmlSecGnuTLSX509CrlDebugXmlDump         (gnutls_x509_crl
  * Misc. utils/helpers
  *
  ************************************************************************/
-xmlChar*                xmlSecGnuTLSASN1IntegerWrite            (const unsigned char * data,
-                                                                 size_t len);
-
 int                     xmlSecGnuTLSX509DnsEqual                (const xmlChar * ll,
                                                                  const xmlChar * rr);
 int                     xmlSecGnuTLSX509CertCompareSKI          (gnutls_x509_crt_t cert,

@@ -406,6 +406,13 @@ xmlSecX509SerialNumberWrite(const xmlSecByte *data, xmlSecSize dataSize) {
 
     xmlSecAssert2(data != NULL, NULL);
     xmlSecAssert2(dataSize > 0, NULL);
+
+    /* Skip leading 0x00 bytes: DER INTEGER encoding of positive values with MSB=1
+     * requires a leading 0x00, so cert->serialNumber.len may be 21 for a 20-byte value. */
+    while((dataSize > 1U) && (data[0] == 0x00U)) {
+        ++data;
+        --dataSize;
+    }
     xmlSecAssert2(dataSize <= XMLSEC_X509_MAX_SERIAL_NUMBER_BYTES, NULL);
 
     workBytesLen = (size_t)dataSize;

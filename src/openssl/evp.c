@@ -478,6 +478,12 @@ xmlSecOpenSSLEvpKeyGetKeyDataId(EVP_PKEY *pKey) {
         return (xmlSecOpenSSLKeyDataSLHDSAId);
 #endif /* XMLSEC_NO_SLHDSA */
 
+#ifndef XMLSEC_NO_EDDSA
+    case EVP_PKEY_ED25519:
+    case EVP_PKEY_ED448:
+        return (xmlSecOpenSSLKeyDataEdDSAId);
+#endif /* XMLSEC_NO_EDDSA */
+
 #ifndef XMLSEC_NO_RSA
     case EVP_PKEY_RSA:
     case EVP_PKEY_RSA2:

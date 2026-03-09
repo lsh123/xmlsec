@@ -124,13 +124,13 @@ xmlSecOpenSSLKWAesInitialize(xmlSecTransformPtr transform) {
     memset(ctx, 0, sizeof(xmlSecOpenSSLKWAesCtx));
 
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformKWAes128Id)) {
-        XMLSEC_OPENSSL_KW_AES_SET_CIPHER(ctx, XMLSEEC_OPENSSL_CIPHER_NAME_AES128_CBC);
+        XMLSEC_OPENSSL_KW_AES_SET_CIPHER(ctx, XMLSEC_OPENSSL_CIPHER_NAME_AES128_CBC);
         keyExpectedSize = XMLSEC_KW_AES128_KEY_SIZE;
     } else if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformKWAes192Id)) {
-        XMLSEC_OPENSSL_KW_AES_SET_CIPHER(ctx, XMLSEEC_OPENSSL_CIPHER_NAME_AES192_CBC);
+        XMLSEC_OPENSSL_KW_AES_SET_CIPHER(ctx, XMLSEC_OPENSSL_CIPHER_NAME_AES192_CBC);
         keyExpectedSize = XMLSEC_KW_AES192_KEY_SIZE;
     } else if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformKWAes256Id)) {
-        XMLSEC_OPENSSL_KW_AES_SET_CIPHER(ctx, XMLSEEC_OPENSSL_CIPHER_NAME_AES256_CBC);
+        XMLSEC_OPENSSL_KW_AES_SET_CIPHER(ctx, XMLSEC_OPENSSL_CIPHER_NAME_AES256_CBC);
         keyExpectedSize = XMLSEC_KW_AES256_KEY_SIZE;
     } else {
         xmlSecInvalidTransfromError(transform)

@@ -1127,6 +1127,7 @@ xmlSecOpenSSLEvpSignatureCreatePkeyCtx(xmlSecTransformPtr transform, xmlSecOpenS
 #endif /* !defined(XMLSEC_OPENSSL_API_350) */
     else {
         xmlSecInternalError("Signature digest is not specified", xmlSecTransformGetName(transform));
+        goto error;
     }
 
     if(ctx->rsaPadding > 0) {

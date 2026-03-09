@@ -581,7 +581,7 @@ xmlSecOpenSSLGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
 
     /* get random data */
     ret = RAND_priv_bytes_ex(xmlSecOpenSSLGetLibCtx(), (xmlSecByte*)xmlSecBufferGetData(buffer), size,
-                        XMLSEEC_OPENSSL_RAND_BYTES_STRENGTH);
+                        XMLSEC_OPENSSL_RAND_BYTES_STRENGTH);
     if(ret != 1) {
         xmlSecOpenSSLError2("RAND_priv_bytes_ex", NULL,
                             "size=" XMLSEC_SIZE_FMT, size);

@@ -262,14 +262,22 @@ xmlSecOpenSSLEcdhGenerateSecret(xmlSecOpenSSLEcdhCtxPtr ctx, xmlSecTransformOper
     }
 
     /* create and init ctx */
+#ifndef XMLSEC_OPENSSL_API_300
     pKeyCtx = EVP_PKEY_CTX_new(myPrivKey, NULL);
     if(pKeyCtx == NULL) {
         xmlSecOpenSSLError("EVP_PKEY_CTX_new", NULL);
         goto done;
     }
+#else /* XMLSEC_OPENSSL_API_300 */
+    pKeyCtx = EVP_PKEY_CTX_new_from_pkey(xmlSecOpenSSLGetLibCtx(), myPrivKey, NULL);
+    if(pKeyCtx == NULL) {
+        xmlSecOpenSSLError("EVP_PKEY_CTX_new_from_pkey", NULL);
+        goto done;
+    }
+#endif /* XMLSEC_OPENSSL_API_300 */
     ret = EVP_PKEY_derive_init(pKeyCtx);
     if(ret != 1) {
-        xmlSecOpenSSLError("EVP_PKEY_CTX_new", NULL);
+        xmlSecOpenSSLError("EVP_PKEY_derive_init", NULL);
         goto done;
     }
 	ret = EVP_PKEY_derive_set_peer(pKeyCtx, otherPubKey);
@@ -281,7 +289,7 @@ xmlSecOpenSSLEcdhGenerateSecret(xmlSecOpenSSLEcdhCtxPtr ctx, xmlSecTransformOper
     /* determine output buffer size and get buffer */
     ret = EVP_PKEY_derive(pKeyCtx, NULL, &secret_len);
     if((ret != 1) || (secret_len == 0)) {
-        xmlSecOpenSSLError("EVP_PKEY_derive_set_peer", NULL);
+        xmlSecOpenSSLError("EVP_PKEY_derive", NULL);
         goto done;
     }
 
@@ -298,7 +306,7 @@ xmlSecOpenSSLEcdhGenerateSecret(xmlSecOpenSSLEcdhCtxPtr ctx, xmlSecTransformOper
     /* derive the shared secret */
 	ret = EVP_PKEY_derive(pKeyCtx, secretData, &secret_len);
     if((ret != 1) || (secret_len == 0)) {
-        xmlSecOpenSSLError("EVP_PKEY_derive_set_peer", NULL);
+        xmlSecOpenSSLError("EVP_PKEY_derive", NULL);
         goto done;
     }
 
@@ -432,7 +440,7 @@ xmlSecOpenSSLEcdhExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
         /* step 1: generate secret with ecdh */
         ret = xmlSecOpenSSLEcdhGenerateSecret(ctx, transform->operation, &secret);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecBufferInitialize", xmlSecTransformGetName(transform));
+            xmlSecInternalError("xmlSecOpenSSLEcdhGenerateSecret", xmlSecTransformGetName(transform));
             xmlSecBufferFinalize(&secret);
             return(-1);
         }
@@ -732,14 +740,22 @@ xmlSecOpenSSLDhGenerateSecret(xmlSecOpenSSLDhCtxPtr ctx, xmlSecTransformOperatio
     }
 
     /* create and init ctx */
+#ifndef XMLSEC_OPENSSL_API_300
     pKeyCtx = EVP_PKEY_CTX_new(myPrivKey, NULL);
     if(pKeyCtx == NULL) {
         xmlSecOpenSSLError("EVP_PKEY_CTX_new", NULL);
         goto done;
     }
+#else /* XMLSEC_OPENSSL_API_300 */
+    pKeyCtx = EVP_PKEY_CTX_new_from_pkey(xmlSecOpenSSLGetLibCtx(), myPrivKey, NULL);
+    if(pKeyCtx == NULL) {
+        xmlSecOpenSSLError("EVP_PKEY_CTX_new_from_pkey", NULL);
+        goto done;
+    }
+#endif /* XMLSEC_OPENSSL_API_300 */
     ret = EVP_PKEY_derive_init(pKeyCtx);
     if(ret != 1) {
-        xmlSecOpenSSLError("EVP_PKEY_CTX_new", NULL);
+        xmlSecOpenSSLError("EVP_PKEY_derive_init", NULL);
         goto done;
     }
 	ret = EVP_PKEY_derive_set_peer(pKeyCtx, otherPubKey);
@@ -751,7 +767,7 @@ xmlSecOpenSSLDhGenerateSecret(xmlSecOpenSSLDhCtxPtr ctx, xmlSecTransformOperatio
     /* determine output buffer size and get buffer */
     ret = EVP_PKEY_derive(pKeyCtx, NULL, &secret_len);
     if((ret != 1) || (secret_len == 0)) {
-        xmlSecOpenSSLError("EVP_PKEY_derive_set_peer", NULL);
+        xmlSecOpenSSLError("EVP_PKEY_derive", NULL);
         goto done;
     }
 
@@ -768,7 +784,7 @@ xmlSecOpenSSLDhGenerateSecret(xmlSecOpenSSLDhCtxPtr ctx, xmlSecTransformOperatio
     /* derive the shared secret */
 	ret = EVP_PKEY_derive(pKeyCtx, secretData, &secret_len);
     if((ret != 1) || (secret_len == 0)) {
-        xmlSecOpenSSLError("EVP_PKEY_derive_set_peer", NULL);
+        xmlSecOpenSSLError("EVP_PKEY_derive", NULL);
         goto done;
     }
 
@@ -902,7 +918,7 @@ xmlSecOpenSSLDhExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
         /* step 1: generate secret with dh */
         ret = xmlSecOpenSSLDhGenerateSecret(ctx, transform->operation, &secret);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecBufferInitialize", xmlSecTransformGetName(transform));
+            xmlSecInternalError("xmlSecOpenSSLDhGenerateSecret", xmlSecTransformGetName(transform));
             xmlSecBufferFinalize(&secret);
             return(-1);
         }

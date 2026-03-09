@@ -52,6 +52,7 @@
 
 #include "../cast_helpers.h"
 #include "../keysdata_helpers.h"
+#include "../x509_helpers.h"
 #include "private.h"
 
 /* workaround - NSS exports this but doesn't declare it */
@@ -73,7 +74,7 @@ static int              xmlSecNssVerifyAndAdoptX509KeyData     (xmlSecKeyPtr key
 static int              xmlSecNssX509SECItemWrite               (SECItem * secItem,
                                                                  xmlSecBufferPtr buf);
 static xmlChar*         xmlSecNssX509NameWrite                  (CERTName* nm);
-static xmlChar*         xmlSecNssASN1IntegerWrite               (SECItem *num);
+
 static int              xmlSecNssX509DigestWrite                (CERTCertificate* cert,
                                                                  const xmlChar* algorithm,
                                                                  xmlSecBufferPtr buf);
@@ -913,9 +914,9 @@ xmlSecNssKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr x509V
                     "pos=" XMLSEC_SIZE_FMT, ctx->crtPos);
                 return(-1);
             }
-            x509Value->issuerSerial = xmlSecNssASN1IntegerWrite(&(cert->serialNumber));
+            x509Value->issuerSerial = xmlSecX509SerialNumberWrite(cert->serialNumber.data, (xmlSecSize)cert->serialNumber.len);
             if(x509Value->issuerSerial == NULL) {
-                xmlSecInternalError2("xmlSecNssASN1IntegerWrite(serialNumber))",
+                xmlSecInternalError2("xmlSecX509SerialNumberWrite(serialNumber))",
                     xmlSecKeyDataGetName(data),
                     "pos=" XMLSEC_SIZE_FMT, ctx->crtPos);
                 return(-1);
@@ -1288,40 +1289,6 @@ xmlSecNssX509NameWrite(CERTName* nm) {
     return(res);
 }
 
-
-/* not more than 64 chars */
-#define XMLSEC_NSS_INT_TO_STR_MAX_SIZE     64
-
-static xmlChar*
-xmlSecNssASN1IntegerWrite(SECItem *num) {
-    xmlChar *res = NULL;
-    PRUint64 val = 0;
-    unsigned int ii = 0;
-    int shift = 0;
-
-    xmlSecAssert2(num != NULL, NULL);
-    xmlSecAssert2(num->type == siBuffer, NULL);
-    xmlSecAssert2(num->data != NULL, NULL);
-
-    /* HACK : to be fixed after
-     * NSS bug http://bugzilla.mozilla.org/show_bug.cgi?id=212864 is fixed
-     */
-    for(ii = num->len; ii > 0; --ii, shift += 8) {
-        xmlSecAssert2(shift < 64 || num->data[ii - 1] == 0, NULL);
-        if(num->data[ii - 1] != 0) {
-            val |= ((PRUint64)num->data[ii - 1]) << shift;
-        }
-    }
-
-    res = (xmlChar*)xmlMalloc(XMLSEC_NSS_INT_TO_STR_MAX_SIZE + 1);
-    if(res == NULL) {
-        xmlSecMallocError(XMLSEC_NSS_INT_TO_STR_MAX_SIZE + 1, NULL);
-        return (NULL);
-    }
-
-    PR_snprintf((char*)res, XMLSEC_NSS_INT_TO_STR_MAX_SIZE, "%llu", val);
-    return(res);
-}
 
 static int
 xmlSecNssX509DigestWrite(CERTCertificate* cert, const xmlChar* algorithm, xmlSecBufferPtr buf) {

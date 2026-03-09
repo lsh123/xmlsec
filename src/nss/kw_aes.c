@@ -407,7 +407,7 @@ xmlSecNSSKWAesBlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * in, 
     xmlSecAssert2(ctx != NULL, -1);
 
     /* create key if needed */
-    ret = xmlSecNSSKWAesEnsureKey(ctx, 1); /* encrypt */
+    ret = xmlSecNSSKWAesEnsureKey(ctx, 0); /* decrypt */
     if(ret < 0) {
         xmlSecInternalError("xmlSecNSSKWAesEnsureKey", NULL);
         return(-1);

@@ -55,13 +55,6 @@
 #include "../x509_helpers.h"
 #include "private.h"
 
-/* workaround - NSS exports this but doesn't declare it */
-extern CERTCertificate * __CERT_NewTempCertificate(CERTCertDBHandle *handle,
-                                                   SECItem *derCert,
-                                                   char *nickname,
-                                                   PRBool isperm,
-                                                   PRBool copyDER);
-
 /*************************************************************************
  *
  * X509 utility functions
@@ -1070,23 +1063,11 @@ xmlSecNssVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data,  xml
 
 int
 xmlSecNssX509CertGetTime(PRTime* t, time_t* res) {
-
-    PRTime tmp64_1, tmp64_2;
-    PRUint32 tmp32 = 1000000;
-
     xmlSecAssert2(t != NULL, -1);
     xmlSecAssert2(res != NULL, -1);
 
-    /* PRTime is time in microseconds since epoch. Divide by 1000000 to
-     * convert to seconds, then convert to an unsigned 32 bit number
-     */
-    (*res) = 0;
-    LL_UI2L(tmp64_1, tmp32);
-    LL_DIV(tmp64_2, *t, tmp64_1);
-    LL_L2UI(tmp32, tmp64_2);
-
-    (*res) = (time_t)(tmp32);
-
+    /* PRTime is the number of microseconds since the epoch, convert to seconds */
+    (*res) = (time_t)(*t / PR_USEC_PER_SEC);
     return(0);
 }
 
@@ -1161,9 +1142,9 @@ xmlSecNssX509CertDerRead(CERTCertDBHandle *handle, xmlSecByte* buf, xmlSecSize s
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, derCert.len, return(NULL), NULL);
 
     /* decode cert and import to temporary cert db */
-    cert = __CERT_NewTempCertificate(handle, &derCert, NULL, PR_FALSE, PR_TRUE);
+    cert = CERT_NewTempCertificate(handle, &derCert, NULL, PR_FALSE, PR_TRUE);
     if(cert == NULL) {
-        xmlSecNssError("__CERT_NewTempCertificate", NULL);
+        xmlSecNssError("CERT_NewTempCertificate", NULL);
         return(NULL);
     }
 
@@ -1254,9 +1235,9 @@ xmlSecNssX509CertPemRead(CERTCertDBHandle *handle, xmlSecByte* buf, xmlSecSize s
         return(NULL);
     }
 
-    cert = __CERT_NewTempCertificate(handle, &(result.cert), NULL, PR_FALSE, PR_TRUE);
+    cert = CERT_NewTempCertificate(handle, &(result.cert), NULL, PR_FALSE, PR_TRUE);
     if(cert == NULL) {
-        xmlSecNssError("__CERT_NewTempCertificate", NULL);
+        xmlSecNssError("CERT_NewTempCertificate", NULL);
         PORT_FreeArena(result.arena, PR_FALSE);
         return(NULL);
     }

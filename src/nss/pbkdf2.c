@@ -257,7 +257,7 @@ static int
 xmlSecNssPbkdf2Derive(xmlSecNssPbkdf2CtxPtr ctx, xmlSecBufferPtr out) {
     SECItem passItem = {siBuffer, NULL, 0 };
     SECItem saltItem = {siBuffer, NULL, 0 };
-    xmlSecSize size;
+    xmlSecSize size, actualSize, expectedSize;
     int keyLength, iterCount;
     SECAlgorithmID* pbkdf2AlgId = NULL;
     PK11SlotInfo* slot = NULL;
@@ -291,6 +291,11 @@ xmlSecNssPbkdf2Derive(xmlSecNssPbkdf2CtxPtr ctx, xmlSecBufferPtr out) {
     XMLSEC_SAFE_CAST_SIZE_TO_INT(ctx->params.keyLength, keyLength, goto done, NULL);
     xmlSecAssert2(keyLength > 0, -1);
 
+    /* We need raw PBKDF2 bytes here, not a key bound to a concrete cipher size.
+     * Using an AES cipher OID ties NSS key generation to AES-specific lengths
+     * (16/24/32 bytes). Keep using an HMAC OID as a generic extractable key type
+     * and request the actual output size via keyLength.
+     */
     pbkdf2AlgId = PK11_CreatePBEV2AlgorithmID(SEC_OID_PKCS5_PBKDF2,
                     ctx->hashAlgo, ctx->hashAlgo,
                     keyLength, iterCount, &saltItem);
@@ -321,6 +326,13 @@ xmlSecNssPbkdf2Derive(xmlSecNssPbkdf2CtxPtr ctx, xmlSecBufferPtr out) {
     keyItem = PK11_GetKeyData(symKey);
     if(keyItem == NULL) {
         xmlSecNssError("PK11_GetKeyData", NULL);
+        goto done;
+    }
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(keyLength, expectedSize, goto done, NULL);
+    XMLSEC_SAFE_CAST_UINT_TO_SIZE(keyItem->len, actualSize, goto done, NULL);
+    if(actualSize != expectedSize) {
+        xmlSecInvalidSizeError("PBKDF2 output size doesn't match expected",
+            actualSize, expectedSize, NULL);
         goto done;
     }
 

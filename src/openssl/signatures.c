@@ -89,10 +89,8 @@ struct _xmlSecOpenSSLEvpSignatureCtx {
     xmlSecBuffer        preSignBuffer;
 
     /* signature */
-#if defined(XMLSEC_OPENSSL_API_350)
     const char*         signatureName;
     xmlSecBufferPtr     contextString;
-#endif /* defined(XMLSEC_OPENSSL_API_350) */
 
     /* signature format and padding (if any)*/
     xmlSecOpenSSLEvpSignatureFormat signatureFormat;
@@ -965,11 +963,9 @@ xmlSecOpenSSLEvpSignatureFinalize(xmlSecTransformPtr transform) {
     /* cleanup buffer if needed */
     xmlSecBufferFinalize(&(ctx->preSignBuffer));
 
-#if defined(XMLSEC_OPENSSL_API_350)
     if(ctx->contextString != NULL) {
         xmlSecBufferDestroy(ctx->contextString);
     }
-#endif /* defined(XMLSEC_OPENSSL_API_350) */
 
     /* done */
     memset(ctx, 0, sizeof(xmlSecOpenSSLEvpSignatureCtx));

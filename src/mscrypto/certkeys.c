@@ -459,6 +459,9 @@ xmlSecMSCryptoKeyDataAdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT pCert, xmlS
         ret = xmlSecMSCryptoKeyDataCtxSetProvider(ctx, hProv, fCallerFreeProv);
         if(ret != 0) {
             xmlSecInternalError("xmlSecMSCryptoKeyDataCtxSetProvider", NULL);
+            if(fCallerFreeProv) {
+                CryptReleaseContext(hProv, 0);
+            }
             return(-1);
         }
     } else if((type & xmlSecKeyDataTypePublic) != 0){
@@ -472,6 +475,7 @@ xmlSecMSCryptoKeyDataAdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT pCert, xmlS
         ret = xmlSecMSCryptoKeyDataCtxSetProvider(ctx, hProv, TRUE);
         if(ret != 0) {
             xmlSecInternalError("xmlSecMSCryptoKeyDataCtxSetProvider", NULL);
+            CryptReleaseContext(hProv, 0);
             return(-1);
         }
         ctx->dwKeySpec = 0;
@@ -498,6 +502,7 @@ xmlSecMSCryptoKeyDataAdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT pCert, xmlS
     ret = xmlSecMSCryptoKeyDataCtxSetKey(ctx, hKey);
     if(ret != 0) {
         xmlSecInternalError("xmlSecMSCryptoKeyDataCtxSetKey", NULL);
+        CryptDestroyKey(hKey);
         return(-1);
     }
     ret = xmlSecMSCryptoKeyDataCtxSetCert(ctx, pCert);
@@ -677,7 +682,8 @@ xmlSecMSCryptoKeyDataGetMSCryptoProviderInfo(xmlSecKeyDataPtr data) {
     LPBYTE pInfoData = NULL;
     DWORD dwInfoDataLength = 0;
 
-    xmlSecAssert2(data != NULL, NULL);
+    xmlSecAssert2(xmlSecKeyDataIsValid(data), NULL);
+    xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecMSCryptoKeyDataSize), NULL);
 
     ctx = xmlSecMSCryptoKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, NULL);
@@ -689,11 +695,15 @@ xmlSecMSCryptoKeyDataGetMSCryptoProviderInfo(xmlSecKeyDataPtr data) {
     }
 
     if(dwInfoDataLength > 0) {
-        pInfoData = malloc(dwInfoDataLength * sizeof(BYTE));
+        pInfoData = (LPBYTE)xmlMalloc(dwInfoDataLength * sizeof(BYTE));
+        if(pInfoData == NULL) {
+            xmlSecMallocError(dwInfoDataLength * sizeof(BYTE), NULL);
+            return NULL;
+        }
 
         if(!CertGetCertificateContextProperty(ctx->pCert, CERT_KEY_PROV_INFO_PROP_ID, pInfoData, &dwInfoDataLength)) {
             xmlSecMSCryptoError("CertGetCertificateContextProperty", NULL);
-            free(pInfoData);
+            xmlFree(pInfoData);
             return NULL;
         }
     }

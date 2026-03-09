@@ -58,7 +58,7 @@ static int              xmlSecMSCryptoKeyDataX509VerifyAndExtractKey(xmlSecKeyDa
 
 static PCCERT_CONTEXT   xmlSecMSCryptoX509CertDerRead           (const xmlSecByte* buf,
                                                                  xmlSecSize size);
-static PCCRL_CONTEXT    xmlSecMSCryptoX509CrlDerRead            (xmlSecByte* buf,
+static PCCRL_CONTEXT    xmlSecMSCryptoX509CrlDerRead            (const xmlSecByte* buf,
                                                                  xmlSecSize size);
 static xmlChar*         xmlSecMSCryptoX509NameWrite(PCERT_NAME_BLOB nm);
 static xmlChar*         xmlSecMSCryptoASN1IntegerWrite          (PCRYPT_INTEGER_BLOB num);
@@ -856,8 +856,8 @@ xmlSecMSCryptoKeyDataX509Write(xmlSecKeyDataPtr data, xmlSecKeyX509DataValuePtr 
                 CertFreeCertificateContext(cert);
                 return(-1);
             }
-            CertFreeCertificateContext(cert);
         }
+        CertFreeCertificateContext(cert);
         ++ctx->crtPos;
     }
     else if (ctx->crlPos < ctx->crlSize) {
@@ -1042,7 +1042,7 @@ xmlSecMSCryptoX509CertDerRead(const xmlSecByte* buf, xmlSecSize size) {
 }
 
 static PCCRL_CONTEXT
-xmlSecMSCryptoX509CrlDerRead(xmlSecByte* buf, xmlSecSize size) {
+xmlSecMSCryptoX509CrlDerRead(const xmlSecByte* buf, xmlSecSize size) {
     PCCRL_CONTEXT crl = NULL;
     DWORD dwSize;
 

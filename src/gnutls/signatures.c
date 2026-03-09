@@ -182,7 +182,18 @@ xmlSecGnuTLSSignatureCheckId(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_MLDSA */
 
+    /********************************* EdDSA *******************************/
+#ifndef XMLSEC_NO_EDDSA
+    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformEdDSAEd25519Id)) {
+        return(1);
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformEdDSAEd448Id)) {
+        return(1);
+    } else
+#endif /* XMLSEC_NO_EDDSA */
+
     /********************************* RSA *******************************/
+
 #ifndef XMLSEC_NO_RSA
 
 #ifndef XMLSEC_NO_SHA1
@@ -391,6 +402,25 @@ xmlSecGnuTLSSignatureInitialize(xmlSecTransformPtr transform) {
         ctx->getPrivKey = xmlSecGnuTLSKeyDataMLDSAGetPrivateKey;
     } else
 #endif /* XMLSEC_NO_MLDSA */
+
+    /********************************* EdDSA *******************************/
+#ifndef XMLSEC_NO_EDDSA
+    /* EdDSA uses its own internally defined hash so no need to have digest here */
+    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformEdDSAEd25519Id)) {
+        ctx->keyId      = xmlSecGnuTLSKeyDataEdDSAId;
+        ctx->dgstAlgo   = GNUTLS_DIG_UNKNOWN;
+        ctx->signAlgo   = GNUTLS_SIGN_EDDSA_ED25519;
+        ctx->getPubKey  = xmlSecGnuTLSKeyDataEdDSAGetPublicKey;
+        ctx->getPrivKey = xmlSecGnuTLSKeyDataEdDSAGetPrivateKey;
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformEdDSAEd448Id)) {
+        ctx->keyId      = xmlSecGnuTLSKeyDataEdDSAId;
+        ctx->dgstAlgo   = GNUTLS_DIG_UNKNOWN;
+        ctx->signAlgo   = GNUTLS_SIGN_EDDSA_ED448;
+        ctx->getPubKey  = xmlSecGnuTLSKeyDataEdDSAGetPublicKey;
+        ctx->getPrivKey = xmlSecGnuTLSKeyDataEdDSAGetPrivateKey;
+    } else
+#endif /* XMLSEC_NO_EDDSA */
 
     /********************************* RSA *******************************/
 #ifndef XMLSEC_NO_RSA
@@ -2273,3 +2303,104 @@ xmlSecGnuTLSTransformMLDSA87GetKlass(void) {
 }
 
 #endif /* XMLSEC_NO_MLDSA */
+
+
+/********************************************************************
+ *
+ * EdDSA signatures
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_EDDSA
+
+/****************************************************************************
+ *
+ * EdDSA-Ed25519 signature transform
+ *
+ ***************************************************************************/
+
+static xmlSecTransformKlass xmlSecGnuTLSEdDSAEd25519Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecGnuTLSSignatureSize,                  /* xmlSecSize objSize */
+
+    xmlSecNameEdDSAEd25519,                     /* const xmlChar* name; */
+    xmlSecHrefEdDSAEd25519,                     /* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
+
+    xmlSecGnuTLSSignatureInitialize,            /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecGnuTLSSignatureFinalize,              /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecGnuTLSSignatureSetKeyReq,             /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGnuTLSSignatureSetKey,                /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecGnuTLSSignatureVerify,                /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecGnuTLSSignatureExecute,               /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecGnuTLSTransformEdDSAEd25519GetKlass:
+ *
+ * The EdDSA-Ed25519 signature transform klass.
+ *
+ * Returns: EdDSA-Ed25519 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecGnuTLSTransformEdDSAEd25519GetKlass(void) {
+    return(&xmlSecGnuTLSEdDSAEd25519Klass);
+}
+
+
+/****************************************************************************
+ *
+ * EdDSA-Ed448 signature transform
+ *
+ ***************************************************************************/
+
+static xmlSecTransformKlass xmlSecGnuTLSEdDSAEd448Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecGnuTLSSignatureSize,                  /* xmlSecSize objSize */
+
+    xmlSecNameEdDSAEd448,                       /* const xmlChar* name; */
+    xmlSecHrefEdDSAEd448,                       /* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
+
+    xmlSecGnuTLSSignatureInitialize,            /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecGnuTLSSignatureFinalize,              /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecGnuTLSSignatureSetKeyReq,             /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGnuTLSSignatureSetKey,                /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecGnuTLSSignatureVerify,                /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecGnuTLSSignatureExecute,               /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecGnuTLSTransformEdDSAEd448GetKlass:
+ *
+ * The EdDSA-Ed448 signature transform klass.
+ *
+ * Returns: EdDSA-Ed448 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecGnuTLSTransformEdDSAEd448GetKlass(void) {
+    return(&xmlSecGnuTLSEdDSAEd448Klass);
+}
+
+#endif /* XMLSEC_NO_EDDSA */

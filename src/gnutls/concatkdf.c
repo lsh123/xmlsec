@@ -253,6 +253,13 @@ xmlSecGnuTLSConcatKdfNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
         return(-1);
     }
 
+    /* if we have something else then it's an error */
+    cur = xmlSecGetNextElementNode(cur->next);
+    if(cur != NULL) {
+        xmlSecUnexpectedNodeError(cur,  NULL);
+        return(-1);
+    }
+
     /* set digest algorithm */
     ctx->dgstAlgo = xmlSecGnuTLSConcatKdfGetDigestFromHref(ctx->params.digestMethod);
     if(ctx->dgstAlgo == GNUTLS_DIG_UNKNOWN) {

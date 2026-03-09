@@ -157,7 +157,7 @@ xmlSecMSCryptoBlockCipherCtxUpdate(xmlSecMSCryptoBlockCipherCtxPtr ctx,
 
     dwBlockLenBitsLen = sizeof(dwBlockLenBits);
     if (!CryptGetKeyParam(ctx->cryptKey, KP_BLOCKLEN, (BYTE *)&dwBlockLenBits, &dwBlockLenBitsLen, 0)) {
-        xmlSecMSCryptoError("CryptSetKeyParam", cipherName);
+        xmlSecMSCryptoError("CryptGetKeyParam", cipherName);
         return(-1);
     }
     dwBlockLen = dwBlockLenBits / 8;

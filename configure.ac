@@ -2228,7 +2228,7 @@ dnl ==========================================================================
 dnl Check if we need EdDSA support
 dnl ==========================================================================
 AC_MSG_CHECKING(for EdDSA support)
-AC_ARG_ENABLE([eddsa], [AS_HELP_STRING([--disable-eddsa],[disable EdDSA support (yes)])])
+AC_ARG_ENABLE([eddsa], [AS_HELP_STRING([--enable-eddsa], [enable EdDSA support (yes)])])
 if test "z$enable_eddsa" = "zno" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_EDDSA=1"
     XMLSEC_NO_EDDSA="1"

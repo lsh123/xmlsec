@@ -48,7 +48,7 @@ extern "C" {
 /**
  * xmlSecCryptoInitMethod:
  *
- * xmlsec-crypto libraryinitialization method.
+ * xmlsec-crypto library initialization method.
  *
  * Returns: 0 on success or a negative value otherwise.
  */

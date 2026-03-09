@@ -502,9 +502,9 @@ xmlSecGnuTLSAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
 
 
     /* create key */
-    key = xmlSecGCryptAsymetricKeyCreatePriv(privkey);
+    key = xmlSecGnuTLSAsymmetricKeyCreatePriv(privkey);
     if(key == NULL) {
-        xmlSecInternalError("xmlSecGCryptAsymetricKeyCreatePriv", NULL);
+        xmlSecInternalError("xmlSecGnuTLSAsymmetricKeyCreatePriv", NULL);
         goto done;
     }
     privkey = NULL; /* owned by key now */
@@ -676,9 +676,9 @@ xmlSecGnuTLSAppPemDerKeyLoadMemory(const xmlSecByte * data, xmlSecSize dataSize,
     /* try private key first */
     privkey = xmlSecGnuTLSAppPemDerPrivKeyLoadMemory(&datum, fmt);
     if(privkey != NULL) {
-        key = xmlSecGCryptAsymetricKeyCreatePriv(privkey);
+        key = xmlSecGnuTLSAsymmetricKeyCreatePriv(privkey);
         if(key == NULL) {
-            xmlSecInternalError("xmlSecGCryptAsymetricKeyCreatePriv", NULL);
+            xmlSecInternalError("xmlSecGnuTLSAsymmetricKeyCreatePriv", NULL);
             gnutls_privkey_deinit(privkey);
             return(NULL);
         }
@@ -688,9 +688,9 @@ xmlSecGnuTLSAppPemDerKeyLoadMemory(const xmlSecByte * data, xmlSecSize dataSize,
     /* then public key */
     pubkey = xmlSecGnuTLSAppPemDerPubKeyLoadMemory(&datum, fmt);
     if(pubkey != NULL) {
-        key = xmlSecGCryptAsymetricKeyCreatePub(pubkey);
+        key = xmlSecGnuTLSAsymmetricKeyCreatePub(pubkey);
         if(key == NULL) {
-            xmlSecInternalError("xmlSecGCryptAsymetricKeyCreatePub", NULL);
+            xmlSecInternalError("xmlSecGnuTLSAsymmetricKeyCreatePub", NULL);
             gnutls_pubkey_deinit(pubkey);
             return(NULL);
         }
@@ -748,9 +748,9 @@ xmlSecGnuTLSAppPkcs8KeyLoadMemory(const xmlSecByte * data, xmlSecSize dataSize, 
     }
     x509_privkey = NULL; /* owned by privkey now */
 
-    key = xmlSecGCryptAsymetricKeyCreatePriv(privkey);
+    key = xmlSecGnuTLSAsymmetricKeyCreatePriv(privkey);
     if(key == NULL) {
-        xmlSecInternalError("xmlSecGCryptAsymetricKeyCreatePriv", NULL);
+        xmlSecInternalError("xmlSecGnuTLSAsymmetricKeyCreatePriv", NULL);
         gnutls_privkey_deinit(privkey);
         return(NULL);
     }

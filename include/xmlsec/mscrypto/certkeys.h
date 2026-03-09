@@ -38,4 +38,4 @@ XMLSEC_CRYPTO_EXPORT PCRYPT_KEY_PROV_INFO xmlSecMSCryptoKeyDataGetMSCryptoProvid
 }
 #endif /* __cplusplus */
 
-#endif /* __XMLSEC_MSCRYPTO_PCCERT_CONTEXT_H__ */
+#endif /* __XMLSEC_MSCRYPTO_CERTKEYS_H__ */

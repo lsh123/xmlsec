@@ -1,7 +1,7 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * Enchanced nodes Set
+ * Enhanced nodes Set
  *
  * This is free software; see the Copyright file in the source
  * distribution for precise wording.
@@ -76,7 +76,7 @@ typedef enum {
  * @children:                   the children list (valid only if type
  *                              equal to #xmlSecNodeSetList).
  *
- * The enchanced nodes set.
+ * The enhanced nodes set.
  */
 struct _xmlSecNodeSet {
     xmlNodeSetPtr       nodes;

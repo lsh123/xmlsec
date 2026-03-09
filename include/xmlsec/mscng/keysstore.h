@@ -37,4 +37,4 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecMSCngKeysStoreSave    (xmlSecKeySt
 }
 #endif /* __cplusplus */
 
-#endif /* __XMLSEC_MSCNG_PCCERT_CONTEXT_H__ */
+#endif /* __XMLSEC_MSCNG_KEYSSTORE_H__ */

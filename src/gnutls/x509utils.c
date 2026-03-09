@@ -934,7 +934,7 @@ xmlSecGnuTLSX509CrlDerWrite(gnutls_x509_crl_t crl, xmlSecBufferPtr buf) {
     /* get size */
     err = gnutls_x509_crl_export(crl, GNUTLS_X509_FMT_DER, NULL, &bufSizeT);
     if((err != GNUTLS_E_SHORT_MEMORY_BUFFER) || (bufSizeT <= 0)) {
-        xmlSecGnuTLSError("ggnutls_x509_crl_export(GNUTLS_X509_FMT_DER)", err, NULL);
+        xmlSecGnuTLSError("gnutls_x509_crl_export(GNUTLS_X509_FMT_DER)", err, NULL);
         return(-1);
     }
     XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(bufSizeT, bufSize, return(-1), NULL);
@@ -952,7 +952,7 @@ xmlSecGnuTLSX509CrlDerWrite(gnutls_x509_crl_t crl, xmlSecBufferPtr buf) {
     /* write it out */
     err = gnutls_x509_crl_export(crl,GNUTLS_X509_FMT_DER, bufData, &bufSizeT);
     if(err != GNUTLS_E_SUCCESS) {
-        xmlSecGnuTLSError("ggnutls_x509_crl_export(GNUTLS_X509_FMT_DER)", err, NULL);
+        xmlSecGnuTLSError("gnutls_x509_crl_export(GNUTLS_X509_FMT_DER)", err, NULL);
         return(-1);
     }
 

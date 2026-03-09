@@ -144,6 +144,13 @@ XMLSEC_EXPORT xmlSecKeyDataId                   xmlSecKeyDataRsaGetKlass(void);
 #define xmlSecKeyDataSLHDSAId                   xmlSecKeyDataSLHDSAGetKlass()
 XMLSEC_EXPORT xmlSecKeyDataId                   xmlSecKeyDataSLHDSAGetKlass(void);
 /**
+ * xmlSecKeyDataEdDSAId:
+ *
+ * The EdDSA key klass.
+ */
+#define xmlSecKeyDataEdDSAId                    xmlSecKeyDataEdDSAGetKlass()
+XMLSEC_EXPORT xmlSecKeyDataId                   xmlSecKeyDataEdDSAGetKlass(void);
+/**
  * xmlSecKeyDataX509Id:
  *
  * The X509 data klass.
@@ -667,6 +674,41 @@ XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformSLHDSA_SHA2_256fG
 #define xmlSecTransformSLHDSA_SHA2_256s_Id      xmlSecTransformSLHDSA_SHA2_256sGetKlass()
 XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformSLHDSA_SHA2_256sGetKlass(void);
 
+/**
+ * xmlSecTransformEdDSAEd25519Id:
+ *
+ * The EdDSA-Ed25519 signature transform klass.
+ */
+#define xmlSecTransformEdDSAEd25519Id           xmlSecTransformEdDSAEd25519GetKlass()
+XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformEdDSAEd25519GetKlass(void);
+/**
+ * xmlSecTransformEdDSAEd25519ctxId:
+ *
+ * The EdDSA-Ed25519ctx signature transform klass.
+ */
+#define xmlSecTransformEdDSAEd25519ctxId        xmlSecTransformEdDSAEd25519ctxGetKlass()
+XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformEdDSAEd25519ctxGetKlass(void);
+/**
+ * xmlSecTransformEdDSAEd25519phId:
+ *
+ * The EdDSA-Ed25519ph signature transform klass.
+ */
+#define xmlSecTransformEdDSAEd25519phId         xmlSecTransformEdDSAEd25519phGetKlass()
+XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformEdDSAEd25519phGetKlass(void);
+/**
+ * xmlSecTransformEdDSAEd448Id:
+ *
+ * The EdDSA-Ed448 signature transform klass.
+ */
+#define xmlSecTransformEdDSAEd448Id             xmlSecTransformEdDSAEd448GetKlass()
+XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformEdDSAEd448GetKlass(void);
+/**
+ * xmlSecTransformEdDSAEd448phId:
+ *
+ * The EdDSA-Ed448ph signature transform klass.
+ */
+#define xmlSecTransformEdDSAEd448phId           xmlSecTransformEdDSAEd448phGetKlass()
+XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformEdDSAEd448phGetKlass(void);
 
 
 /**

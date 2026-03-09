@@ -112,6 +112,16 @@ XMLSEC_EXPORT int xmlSecTransformSLHDSAReadContextString(xmlNodePtr node,
 #endif /* XMLSEC_NO_SLHDSA */
 
 
+/********************************** EdDSA *******************************/
+#ifndef XMLSEC_NO_EDDSA
+
+#define XMLSEC_EDDSA_MAX_SIZE   ((xmlSecSize)255)
+
+XMLSEC_EXPORT int xmlSecTransformEdDSAReadContextString(xmlNodePtr node,
+                                                        xmlSecBufferPtr res);
+#endif /* XMLSEC_NO_EDDSA */
+
+
 /**************************** PBKDF2 ********************************/
 #ifndef XMLSEC_NO_PBKDF2
 

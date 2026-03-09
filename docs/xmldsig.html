@@ -1458,6 +1458,23 @@
                         <td valign="top">No</td>
                       </tr>
                       <tr>
+                        <td valign="top"><a href="https://www.w3.org/2021/04/xmldsig-more">EdDSA</a> (Ed25519, Ed25519ctx <a href="#eddsa-ctx"><sup>(8)</sup></a>, Ed25519ph, Ed448, Ed448ph)</td>
+                        <!-- Requirements-->
+                        <td valign="top">EXPERIMENTAL</td>
+                        <!-- OpenSSL-->
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#feature-disabled"><sup>(1)</sup></a></td>
+                        <!-- NSS -->
+                        <td valign="top">No</td>
+                        <!-- GnuTLS -->
+                        <td valign="top">No</td>
+                        <!-- MSCng -->
+                        <td valign="top">No</td>
+                        <!-- MSCrypto -->
+                        <td valign="top">No</td>
+                        <!-- GCrypt -->
+                        <td valign="top">No</td>
+                      </tr>
+                      <tr>
                         <td valign="top" colspan="8"><b>The KeyInfo Element</b></td>
                       </tr>
                       <tr>
@@ -1665,6 +1682,9 @@
                         </li>
                         <li>
                             <a id="no-context-string"></a><sup>(7)</sup> The ML-DSA or SLH-DSA ContextString is not supported.
+                        </li>
+                        <li>
+                            <a id="eddsa-ctx"></a><sup>(8)</sup> Ed25519ctx requires a non-empty context string (per RFC 8032).
                         </li>
                     </ul>
                 </div>

@@ -756,6 +756,38 @@ xmlSecMSCngAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, xmlS
     return(ret);
 }
 
+/* Reads a CRL from raw input data for supported formats. */
+static PCCRL_CONTEXT
+xmlSecMSCngReadCrlFromBuffer(const xmlSecByte* data, xmlSecSize dataSize,
+    xmlSecKeyDataFormat format
+) {
+    PCCRL_CONTEXT pCrl = NULL;
+
+    xmlSecAssert2(data != NULL, NULL);
+    xmlSecAssert2(dataSize > 0, NULL);
+    xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
+
+    switch(format) {
+        case xmlSecKeyDataFormatDer:
+            pCrl = xmlSecMSCngX509CrlDerRead(data, dataSize);
+            if(pCrl == NULL) {
+                xmlSecInternalError("xmlSecMSCngX509CrlDerRead", NULL);
+                return(NULL);
+            }
+            break;
+        case xmlSecKeyDataFormatPem:
+            xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
+                "PEM format is not supported for CRL loading in MSCng");
+            return(NULL);
+        default:
+            xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
+                "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
+            return(NULL);
+    }
+
+    return(pCrl);
+}
+
 /**
  * xmlSecMSCngAppKeysMngrCrlLoadAndVerify:
  * @mngr:               the keys manager.
@@ -770,13 +802,64 @@ xmlSecMSCngAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, xmlS
 int
 xmlSecMSCngAppKeysMngrCrlLoadAndVerify(xmlSecKeysMngrPtr mngr, const char *filename,
     xmlSecKeyDataFormat format, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlSecKeyDataStorePtr x509Store;
+    xmlSecBuffer buffer;
+    PCCRL_CONTEXT pCrl = NULL;
+    int ret;
+    int res = -1;
+
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(filename != NULL, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
-    xmlSecNotImplementedError("MSCNG doesn't support loading X509 CRLs at runtime");
-    return(-1);
+    x509Store = xmlSecKeysMngrGetDataStore(mngr, xmlSecMSCngX509StoreId);
+    if(x509Store == NULL) {
+        xmlSecInternalError("xmlSecKeysMngrGetDataStore(xmlSecMSCngX509StoreId)", NULL);
+        return(-1);
+    }
+
+    ret = xmlSecBufferInitialize(&buffer, 0);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize", NULL);
+        return(-1);
+    }
+
+    ret = xmlSecBufferReadFile(&buffer, filename);
+    if(ret < 0) {
+        xmlSecInternalError2("xmlSecBufferReadFile", NULL, "filename=%s", xmlSecErrorsSafeString(filename));
+        goto done;
+    }
+
+    pCrl = xmlSecMSCngReadCrlFromBuffer(xmlSecBufferGetData(&buffer), xmlSecBufferGetSize(&buffer), format);
+    if(pCrl == NULL) {
+        xmlSecInternalError2("xmlSecMSCngReadCrlFromBuffer", NULL, "filename=%s", xmlSecErrorsSafeString(filename));
+        goto done;
+    }
+
+    ret = xmlSecMSCngX509StoreVerifyCrl(x509Store, pCrl, keyInfoCtx);
+    if(ret < 0) {
+        xmlSecInternalError2("xmlSecMSCngX509StoreVerifyCrl", NULL, "filename=%s", xmlSecErrorsSafeString(filename));
+        goto done;
+    } else if(ret != 1) {
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_DATA, NULL, "filename=%s", xmlSecErrorsSafeString(filename));
+        goto done;
+    }
+
+    ret = xmlSecMSCngX509StoreAdoptCrl(x509Store, pCrl);
+    if(ret < 0) {
+        xmlSecInternalError2("xmlSecMSCngX509StoreAdoptCrl", NULL, "filename=%s", xmlSecErrorsSafeString(filename));
+        goto done;
+    }
+    pCrl = NULL; /* owned by the store now */
+
+    res = 0;
+done:
+    if(pCrl != NULL) {
+        CertFreeCRLContext(pCrl);
+    }
+    xmlSecBufferFinalize(&buffer);
+    return(res);
 }
 
 /**
@@ -807,22 +890,10 @@ xmlSecMSCngAppKeysMngrCrlLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* da
         return(-1);
     }
 
-    switch(format) {
-        case xmlSecKeyDataFormatDer:
-            pCrl = xmlSecMSCngX509CrlDerRead(data, dataSize);
-            if(pCrl == NULL) {
-                xmlSecInternalError("xmlSecMSCngX509CrlDerRead", NULL);
-                return(-1);
-            }
-            break;
-        case xmlSecKeyDataFormatPem:
-            xmlSecOtherError(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
-                "PEM format is not supported for CRL loading in MSCng");
-            return(-1);
-        default:
-            xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
-                "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));
-            return(-1);
+    pCrl = xmlSecMSCngReadCrlFromBuffer(data, dataSize, format);
+    if(pCrl == NULL) {
+        xmlSecInternalError("xmlSecMSCngReadCrlFromBuffer", NULL);
+        return(-1);
     }
 
     xmlSecAssert2(pCrl != NULL, -1);

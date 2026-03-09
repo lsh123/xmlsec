@@ -963,6 +963,106 @@ xmlSecMSCngX509StoreVerifyKey(xmlSecKeyDataStorePtr store, xmlSecKeyPtr key, xml
 }
 
 /**
+ * xmlSecMSCngX509StoreVerifyCrl:
+ * @store:              the pointer to X509 key data store klass.
+ * @pCrl:               the CRL to verify.
+ * @keyInfoCtx:         the key info context for verification parameters.
+ *
+ * Verifies @pCrl by checking:
+ * - The CRL signature is valid (signed by a trusted issuer certificate)
+ * - thisUpdate <= verification_time <= nextUpdate
+ *
+ * Returns: 1 if verified, 0 if not verified, or a negative value if an error occurs.
+ */
+int
+xmlSecMSCngX509StoreVerifyCrl(xmlSecKeyDataStorePtr store, PCCRL_CONTEXT pCrl,
+    xmlSecKeyInfoCtxPtr keyInfoCtx
+) {
+    xmlSecMSCngX509StoreCtxPtr ctx;
+    PCCERT_CONTEXT issuerCert = NULL;
+    FILETIME timeContainer;
+    FILETIME* time = &timeContainer;
+    BOOL verified = FALSE;
+
+    xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecMSCngX509StoreId), -1);
+    xmlSecAssert2(pCrl != NULL, -1);
+    xmlSecAssert2(pCrl->pCrlInfo != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+
+    if ((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS) != 0) {
+        return(1);
+    }
+
+    ctx = xmlSecMSCngX509StoreGetCtx(store);
+    xmlSecAssert2(ctx != NULL, -1);
+
+    /* determine verification time */
+    if(keyInfoCtx->certsVerificationTime > 0) {
+        xmlSecMSCngUnixTimeToFileTime(keyInfoCtx->certsVerificationTime, time);
+    } else if ((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_TIME_CHECKS) != 0) {
+        time = NULL;
+    } else {
+        GetSystemTimeAsFileTime(time);
+    }
+
+    /* find the issuer certificate in the trusted store and verify the CRL signature */
+    issuerCert = CertFindCertificateInStore(ctx->trusted,
+        X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+        0,
+        CERT_FIND_SUBJECT_NAME,
+        &(pCrl->pCrlInfo->Issuer),
+        NULL);
+    while (issuerCert != NULL) {
+        verified = CryptVerifyCertificateSignatureEx(
+            (HCRYPTPROV_LEGACY)NULL,
+            X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+            CRYPT_VERIFY_CERT_SIGN_SUBJECT_CRL, (void*)pCrl,
+            CRYPT_VERIFY_CERT_SIGN_ISSUER_CERT, (void*)issuerCert,
+            0, NULL);
+        if (verified == TRUE) {
+            CertFreeCertificateContext(issuerCert);
+            issuerCert = NULL;
+            break;
+        }
+        /* try next matching cert; CertFindCertificateInStore frees issuerCert */
+        issuerCert = CertFindCertificateInStore(ctx->trusted,
+            X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+            0,
+            CERT_FIND_SUBJECT_NAME,
+            &(pCrl->pCrlInfo->Issuer),
+            issuerCert);
+    }
+
+    if (verified == FALSE) {
+        xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
+            xmlSecKeyDataStoreGetName(store),
+            "CRL signature verification failed");
+        return(0);
+    }
+
+    /* check time validity */
+    if (time != NULL) {
+        if (CompareFileTime(time, &(pCrl->pCrlInfo->ThisUpdate)) < 0) {
+            xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
+                xmlSecKeyDataStoreGetName(store),
+                "CRL is not yet valid (thisUpdate is in the future)");
+            return(0);
+        }
+        if ((pCrl->pCrlInfo->NextUpdate.dwLowDateTime != 0) ||
+                (pCrl->pCrlInfo->NextUpdate.dwHighDateTime != 0)) {
+            if (CompareFileTime(time, &(pCrl->pCrlInfo->NextUpdate)) > 0) {
+                xmlSecOtherError(XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
+                    xmlSecKeyDataStoreGetName(store),
+                    "CRL has expired (nextUpdate is in the past)");
+                return(0);
+            }
+        }
+    }
+
+    return(1);
+}
+
+/**
  * xmlSecMSCngX509StoreVerify:
  * @store: the pointer to X509 certificate context store klass.
  * @certs: the untrusted certificates stack.

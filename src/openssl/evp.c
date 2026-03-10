@@ -4026,7 +4026,7 @@ xmlSecOpenSSLKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
     }
     ret = xmlSecOpenSSLKeyDataRsaAdoptEvp(data, pKey);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecOpenSSLKeyDataDsaAdoptEvp",
+        xmlSecInternalError("xmlSecOpenSSLKeyDataRsaAdoptEvp",
             xmlSecKeyDataGetName(data));
         goto done;
     }
@@ -4155,7 +4155,7 @@ xmlSecOpenSSLKeyDataRsaSetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueRsaP
     }
     ret = xmlSecOpenSSLKeyDataRsaAdoptEvp(data, pKey);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecOpenSSLKeyDataDsaAdoptEvp",
+        xmlSecInternalError("xmlSecOpenSSLKeyDataRsaAdoptEvp",
             xmlSecKeyDataGetName(data));
         goto done;
     }

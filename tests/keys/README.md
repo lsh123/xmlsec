@@ -280,7 +280,6 @@ mkdir xdh
 ./scripts/create-xdh-x448-second.sh
 ```
 
-
 ### Generate two certs and keys with the same certificate
 ```
 openssl req -x509 -newkey rsa:2048 -keyout same-subj-key1.pem -out same-subj-cert1.pem -sha256 -days 3650 -nodes -subj "/C=XX/ST=StateName/L=CityName/O=CompanyName/OU=CompanySectionName/CN=CommonNameOrHostname"

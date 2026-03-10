@@ -19,25 +19,23 @@ if [ $? -ne 0 ]; then
 fi
 echo "*** Private key '${keyname}-key.pem' was created successfully"
 
-### Create public key from private key
-create_public_key_from_private_key "${keyname}"
+### Create all key files from private key
+create_all_key_files_from_private_key "${keyname}"
 if [ $? -ne 0 ]; then
     exit $?
 fi
 
-### Create DER files
-create_der_keys_from_private_and_public_key "${keyname}"
+### Create certificate signed by second level CA
+create_certificate_from_private_key "${keyname}" ""
 if [ $? -ne 0 ]; then
     exit $?
 fi
 
-### Create PKCS8 files
-create_pkcs8_keys_from_private_key "${keyname}"
+### Create PKCS12 file
+create_pkcs12_from_private_key_and_cert "${keyname}"
 if [ $? -ne 0 ]; then
     exit $?
 fi
-
-# Note: XDH keys cannot be used for signing, so we skip certificate and PKCS12 generation
 
 # move to the right place
 mv ${keyname}* "${folder}/"
@@ -47,7 +45,6 @@ fi
 
 ### Done
 echo
-echo "*** X25519 key files were created successfully and moved to '${folder}' folder."
-echo "*** Note: XDH keys are for key agreement only, certificates were not generated."
+echo "*** X25519 key and certificate files were created successfully and moved to '${folder}' folder."
 echo
 

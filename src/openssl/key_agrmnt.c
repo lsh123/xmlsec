@@ -1107,8 +1107,7 @@ xmlSecOpenSSLXdhNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTr
 
     ret = xmlSecTransformKeyAgreementParamsRead(&(ctx->params), node, transform, transformCtx);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformKeyAgreementParamsRead",
-                            xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecTransformKeyAgreementParamsRead", xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -1506,9 +1505,12 @@ xmlSecOpenSSLXdhExecute(xmlSecTransformPtr transform, int last, xmlSecTransformC
             return(-1);
         }
 
-        /* step 1: generate ephemeral key (if encrypting) and derive secret */
-        if(transform->operation == xmlSecTransformOperationEncrypt) {
-            /* For encryption, we need to generate an ephemeral key pair */
+        /*
+         * Step 1: derive shared secret.
+         * If originator key is explicitly provided (e.g. via KeyName), use it.
+         * Otherwise fall back to ephemeral originator key generation.
+         */
+        if((transform->operation == xmlSecTransformOperationEncrypt) && (ctx->params.keyOriginator == NULL)) {
             ret = xmlSecOpenSSLXdhGenerateEphemeralKeyAndSecret(ctx, transform->operation, &secret);
             if(ret < 0) {
                 xmlSecInternalError("xmlSecOpenSSLXdhGenerateEphemeralKeyAndSecret", xmlSecTransformGetName(transform));
@@ -1516,7 +1518,6 @@ xmlSecOpenSSLXdhExecute(xmlSecTransformPtr transform, int last, xmlSecTransformC
                 return(-1);
             }
         } else {
-            /* For decryption, we already have both keys */
             ret = xmlSecOpenSSLXdhGenerateSecret(ctx, transform->operation, &secret);
             if(ret < 0) {
                 xmlSecInternalError("xmlSecOpenSSLXdhGenerateSecret", xmlSecTransformGetName(transform));

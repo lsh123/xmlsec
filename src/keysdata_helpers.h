@@ -20,6 +20,10 @@
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/x509.h>
 
+
+XMLSEC_EXPORT void          xmlSecKeyDataDebugDumpImpl(xmlSecKeyDataPtr data, FILE* output);
+XMLSEC_EXPORT void          xmlSecKeyDataDebugXmlDumpImpl(xmlSecKeyDataPtr data, FILE* output);
+
 /**************************************************************************
  *
  * xmlSecKeyDataBinary (for HMAC, AES, DES, ...)

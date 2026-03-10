@@ -85,6 +85,36 @@ static int      xmlSecMSCngSignatureExecute             (xmlSecTransformPtr tran
                                                          xmlSecTransformCtxPtr transformCtx);
 
 
+/* Helper macros to define the transform klass */
+
+#define XMLSEC_MSCNG_SIGNATURE_KLASS_EX(name, readNode)                                              \
+static xmlSecTransformKlass xmlSecMSCng ## name ## Klass = {                                         \
+    sizeof(xmlSecTransformKlass),              /* xmlSecSize klassSize */                            \
+    xmlSecMSCngSignatureSize,                  /* xmlSecSize objSize */                              \
+    xmlSecName ## name,                        /* const xmlChar* name; */                            \
+    xmlSecHref ## name,                        /* const xmlChar* href; */                            \
+    xmlSecTransformUsageSignatureMethod,       /* xmlSecTransformUsage usage; */                     \
+    xmlSecMSCngSignatureInitialize,            /* xmlSecTransformInitializeMethod initialize; */     \
+    xmlSecMSCngSignatureFinalize,              /* xmlSecTransformFinalizeMethod finalize; */         \
+    readNode,                                  /* xmlSecTransformNodeReadMethod readNode; */         \
+    NULL,                                      /* xmlSecTransformNodeWriteMethod writeNode; */       \
+    xmlSecMSCngSignatureSetKeyReq,             /* xmlSecTransformSetKeyReqMethod setKeyReq; */       \
+    xmlSecMSCngSignatureSetKey,                /* xmlSecTransformSetKeyMethod setKey; */             \
+    xmlSecMSCngSignatureVerify,                /* xmlSecTransformVerifyMethod verify; */             \
+    xmlSecTransformDefaultGetDataType,         /* xmlSecTransformGetDataTypeMethod getDataType; */   \
+    xmlSecTransformDefaultPushBin,             /* xmlSecTransformPushBinMethod pushBin; */           \
+    xmlSecTransformDefaultPopBin,              /* xmlSecTransformPopBinMethod popBin; */             \
+    NULL,                                      /* xmlSecTransformPushXmlMethod pushXml; */           \
+    NULL,                                      /* xmlSecTransformPopXmlMethod popXml; */             \
+    xmlSecMSCngSignatureExecute,               /* xmlSecTransformExecuteMethod execute; */           \
+    NULL,                                      /* void* reserved0; */                                \
+    NULL,                                      /* void* reserved1; */                                \
+};
+
+#define XMLSEC_MSCNG_SIGNATURE_KLASS(name)                                                           \
+    XMLSEC_MSCNG_SIGNATURE_KLASS_EX(name, NULL)
+
+
 static int xmlSecMSCngSignatureCheckId(xmlSecTransformPtr transform) {
 
 #ifndef XMLSEC_NO_DSA
@@ -453,9 +483,9 @@ xmlSecMSCngSignatureFixBrokenJava(xmlSecMSCngSignatureCtxPtr ctx,
     if (ctx->keyId == xmlSecMSCngKeyDataDsaId) {
         halfSize = ctx->signatureHalfSize;
     } else if (ctx->keyId == xmlSecMSCngKeyDataEcId) {
-        keySize = xmlSecMSCngKeyDataGetSize(ctx->data);
+        keySize = xmlSecMSCngCertKeyDataGetSize(ctx->data);
         if (keySize <= 0) {
-            xmlSecInternalError("xmlSecMSCngKeyDataGetSize", NULL);
+            xmlSecInternalError("xmlSecMSCngCertKeyDataGetSize", NULL);
             return(-1);
         }
         halfSize = (keySize + 7) / 8;
@@ -566,9 +596,9 @@ xmlSecMSCngSignatureFixBrokenASN1(xmlSecMSCngSignatureCtxPtr ctx,
     }
 
     /* get half signature size */
-    keySize = xmlSecMSCngKeyDataGetSize(ctx->data);
+    keySize = xmlSecMSCngCertKeyDataGetSize(ctx->data);
     if (keySize <= 0) {
-        xmlSecInternalError("xmlSecMSCngKeyDataGetSize", NULL);
+        xmlSecInternalError("xmlSecMSCngCertKeyDataGetSize", NULL);
         return(-1);
     }
     halfSize = (keySize + 7) / 8;
@@ -1114,32 +1144,7 @@ xmlSecMSCngSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
  * DSA-SHA1 signature transform
  *
  ***************************************************************************/
-static xmlSecTransformKlass xmlSecMSCngDsaSha1Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),              /* xmlSecSize klassSize */
-    xmlSecMSCngSignatureSize,                  /* xmlSecSize objSize */
-
-    xmlSecNameDsaSha1,                         /* const xmlChar* name; */
-    xmlSecHrefDsaSha1,                         /* const xmlChar* href; */
-    xmlSecTransformUsageSignatureMethod,       /* xmlSecTransformUsage usage; */
-
-    xmlSecMSCngSignatureInitialize,            /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecMSCngSignatureFinalize,              /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                      /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                      /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCngSignatureSetKeyReq,             /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    xmlSecMSCngSignatureSetKey,                /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecMSCngSignatureVerify,                /* xmlSecTransformVerifyMethod verify; */
-    xmlSecTransformDefaultGetDataType,         /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,             /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,              /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                      /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                      /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecMSCngSignatureExecute,               /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                      /* void* reserved0; */
-    NULL,                                      /* void* reserved1; */
-};
+XMLSEC_MSCNG_SIGNATURE_KLASS(DsaSha1)
 
 /**
  * xmlSecMSCngTransformDsaSha1GetKlass:
@@ -1164,32 +1169,7 @@ xmlSecMSCngTransformDsaSha1GetKlass(void) {
  * RSA-MD5 signature transform
  *
  ***************************************************************************/
-static xmlSecTransformKlass xmlSecMSCngRsaMd5Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),              /* xmlSecSize klassSize */
-    xmlSecMSCngSignatureSize,                  /* xmlSecSize objSize */
-
-    xmlSecNameRsaMd5,                          /* const xmlChar* name; */
-    xmlSecHrefRsaMd5,                          /* const xmlChar* href; */
-    xmlSecTransformUsageSignatureMethod,       /* xmlSecTransformUsage usage; */
-
-    xmlSecMSCngSignatureInitialize,            /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecMSCngSignatureFinalize,              /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                      /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                      /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCngSignatureSetKeyReq,             /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    xmlSecMSCngSignatureSetKey,                /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecMSCngSignatureVerify,                /* xmlSecTransformVerifyMethod verify; */
-    xmlSecTransformDefaultGetDataType,         /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,             /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,              /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                      /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                      /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecMSCngSignatureExecute,               /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                      /* void* reserved0; */
-    NULL,                                      /* void* reserved1; */
-};
+XMLSEC_MSCNG_SIGNATURE_KLASS(RsaMd5)
 
 /**
  * xmlSecMSCngTransformRsaMd5GetKlass:
@@ -1210,32 +1190,7 @@ xmlSecMSCngTransformRsaMd5GetKlass(void) {
  * RSA-SHA1 signature transform
  *
  ***************************************************************************/
-static xmlSecTransformKlass xmlSecMSCngRsaSha1Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),              /* xmlSecSize klassSize */
-    xmlSecMSCngSignatureSize,                  /* xmlSecSize objSize */
-
-    xmlSecNameRsaSha1,                         /* const xmlChar* name; */
-    xmlSecHrefRsaSha1,                         /* const xmlChar* href; */
-    xmlSecTransformUsageSignatureMethod,       /* xmlSecTransformUsage usage; */
-
-    xmlSecMSCngSignatureInitialize,            /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecMSCngSignatureFinalize,              /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                      /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                      /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCngSignatureSetKeyReq,             /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    xmlSecMSCngSignatureSetKey,                /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecMSCngSignatureVerify,                /* xmlSecTransformVerifyMethod verify; */
-    xmlSecTransformDefaultGetDataType,         /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,             /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,              /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                      /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                      /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecMSCngSignatureExecute,               /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                      /* void* reserved0; */
-    NULL,                                      /* void* reserved1; */
-};
+XMLSEC_MSCNG_SIGNATURE_KLASS(RsaSha1)
 
 /**
  * xmlSecMSCngTransformRsaSha1GetKlass:
@@ -1256,32 +1211,7 @@ xmlSecMSCngTransformRsaSha1GetKlass(void) {
  * RSA-SHA2-256 signature transform
  *
  ***************************************************************************/
-static xmlSecTransformKlass xmlSecMSCngRsaSha256Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),              /* xmlSecSize klassSize */
-    xmlSecMSCngSignatureSize,                  /* xmlSecSize objSize */
-
-    xmlSecNameRsaSha256,                       /* const xmlChar* name; */
-    xmlSecHrefRsaSha256,                       /* const xmlChar* href; */
-    xmlSecTransformUsageSignatureMethod,       /* xmlSecTransformUsage usage; */
-
-    xmlSecMSCngSignatureInitialize,            /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecMSCngSignatureFinalize,              /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                      /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                      /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCngSignatureSetKeyReq,             /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    xmlSecMSCngSignatureSetKey,                /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecMSCngSignatureVerify,                /* xmlSecTransformVerifyMethod verify; */
-    xmlSecTransformDefaultGetDataType,         /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,             /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,              /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                      /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                      /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecMSCngSignatureExecute,               /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                      /* void* reserved0; */
-    NULL,                                      /* void* reserved1; */
-};
+XMLSEC_MSCNG_SIGNATURE_KLASS(RsaSha256)
 
 /**
  * xmlSecMSCngTransformRsaSha256GetKlass:
@@ -1302,32 +1232,7 @@ xmlSecMSCngTransformRsaSha256GetKlass(void) {
  * RSA-SHA2-384 signature transform
  *
  ***************************************************************************/
-static xmlSecTransformKlass xmlSecMSCngRsaSha384Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),              /* xmlSecSize klassSize */
-    xmlSecMSCngSignatureSize,                  /* xmlSecSize objSize */
-
-    xmlSecNameRsaSha384,                       /* const xmlChar* name; */
-    xmlSecHrefRsaSha384,                       /* const xmlChar* href; */
-    xmlSecTransformUsageSignatureMethod,       /* xmlSecTransformUsage usage; */
-
-    xmlSecMSCngSignatureInitialize,            /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecMSCngSignatureFinalize,              /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                      /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                      /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCngSignatureSetKeyReq,             /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    xmlSecMSCngSignatureSetKey,                /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecMSCngSignatureVerify,                /* xmlSecTransformVerifyMethod verify; */
-    xmlSecTransformDefaultGetDataType,         /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,             /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,              /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                      /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                      /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecMSCngSignatureExecute,               /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                      /* void* reserved0; */
-    NULL,                                      /* void* reserved1; */
-};
+XMLSEC_MSCNG_SIGNATURE_KLASS(RsaSha384)
 
 /**
  * xmlSecMSCngTransformRsaSha384GetKlass:
@@ -1348,32 +1253,7 @@ xmlSecMSCngTransformRsaSha384GetKlass(void) {
  * RSA-SHA2-512 signature transform
  *
  ***************************************************************************/
-static xmlSecTransformKlass xmlSecMSCngRsaSha512Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),              /* xmlSecSize klassSize */
-    xmlSecMSCngSignatureSize,                  /* xmlSecSize objSize */
-
-    xmlSecNameRsaSha512,                       /* const xmlChar* name; */
-    xmlSecHrefRsaSha512,                       /* const xmlChar* href; */
-    xmlSecTransformUsageSignatureMethod,       /* xmlSecTransformUsage usage; */
-
-    xmlSecMSCngSignatureInitialize,            /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecMSCngSignatureFinalize,              /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                      /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                      /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCngSignatureSetKeyReq,             /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    xmlSecMSCngSignatureSetKey,                /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecMSCngSignatureVerify,                /* xmlSecTransformVerifyMethod verify; */
-    xmlSecTransformDefaultGetDataType,         /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,             /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,              /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                      /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                      /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecMSCngSignatureExecute,               /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                      /* void* reserved0; */
-    NULL,                                      /* void* reserved1; */
-};
+XMLSEC_MSCNG_SIGNATURE_KLASS(RsaSha512)
 
 /**
  * xmlSecMSCngTransformRsaSha512GetKlass:
@@ -1395,32 +1275,7 @@ xmlSecMSCngTransformRsaSha512GetKlass(void) {
  * RSA-PSS-SHA1 signature transform
  *
  ***************************************************************************/
-static xmlSecTransformKlass xmlSecMSCngRsaPssSha1Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),              /* xmlSecSize klassSize */
-    xmlSecMSCngSignatureSize,                  /* xmlSecSize objSize */
-
-    xmlSecNameRsaPssSha1,                      /* const xmlChar* name; */
-    xmlSecHrefRsaPssSha1,                      /* const xmlChar* href; */
-    xmlSecTransformUsageSignatureMethod,       /* xmlSecTransformUsage usage; */
-
-    xmlSecMSCngSignatureInitialize,            /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecMSCngSignatureFinalize,              /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                      /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                      /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCngSignatureSetKeyReq,             /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    xmlSecMSCngSignatureSetKey,                /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecMSCngSignatureVerify,                /* xmlSecTransformVerifyMethod verify; */
-    xmlSecTransformDefaultGetDataType,         /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,             /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,              /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                      /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                      /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecMSCngSignatureExecute,               /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                      /* void* reserved0; */
-    NULL,                                      /* void* reserved1; */
-};
+XMLSEC_MSCNG_SIGNATURE_KLASS(RsaPssSha1)
 
 /**
  * xmlSecMSCngTransformRsaPssSha1GetKlass:
@@ -1441,32 +1296,7 @@ xmlSecMSCngTransformRsaPssSha1GetKlass(void) {
  * RSA-PSS-SHA2-256 signature transform
  *
  ***************************************************************************/
-static xmlSecTransformKlass xmlSecMSCngRsaPssSha256Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),              /* xmlSecSize klassSize */
-    xmlSecMSCngSignatureSize,                  /* xmlSecSize objSize */
-
-    xmlSecNameRsaPssSha256,                    /* const xmlChar* name; */
-    xmlSecHrefRsaPssSha256,                    /* const xmlChar* href; */
-    xmlSecTransformUsageSignatureMethod,       /* xmlSecTransformUsage usage; */
-
-    xmlSecMSCngSignatureInitialize,            /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecMSCngSignatureFinalize,              /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                      /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                      /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCngSignatureSetKeyReq,             /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    xmlSecMSCngSignatureSetKey,                /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecMSCngSignatureVerify,                /* xmlSecTransformVerifyMethod verify; */
-    xmlSecTransformDefaultGetDataType,         /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,             /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,              /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                      /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                      /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecMSCngSignatureExecute,               /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                      /* void* reserved0; */
-    NULL,                                      /* void* reserved1; */
-};
+XMLSEC_MSCNG_SIGNATURE_KLASS(RsaPssSha256)
 
 /**
  * xmlSecMSCngTransformRsaPssSha256GetKlass:
@@ -1487,32 +1317,7 @@ xmlSecMSCngTransformRsaPssSha256GetKlass(void) {
  * RSA-PSS-SHA2-384 signature transform
  *
  ***************************************************************************/
-static xmlSecTransformKlass xmlSecMSCngRsaPssSha384Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),              /* xmlSecSize klassSize */
-    xmlSecMSCngSignatureSize,                  /* xmlSecSize objSize */
-
-    xmlSecNameRsaPssSha384,                    /* const xmlChar* name; */
-    xmlSecHrefRsaPssSha384,                    /* const xmlChar* href; */
-    xmlSecTransformUsageSignatureMethod,       /* xmlSecTransformUsage usage; */
-
-    xmlSecMSCngSignatureInitialize,            /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecMSCngSignatureFinalize,              /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                      /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                      /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCngSignatureSetKeyReq,             /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    xmlSecMSCngSignatureSetKey,                /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecMSCngSignatureVerify,                /* xmlSecTransformVerifyMethod verify; */
-    xmlSecTransformDefaultGetDataType,         /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,             /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,              /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                      /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                      /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecMSCngSignatureExecute,               /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                      /* void* reserved0; */
-    NULL,                                      /* void* reserved1; */
-};
+XMLSEC_MSCNG_SIGNATURE_KLASS(RsaPssSha384)
 
 /**
  * xmlSecMSCngTransformRsaPssSha384GetKlass:
@@ -1533,32 +1338,7 @@ xmlSecMSCngTransformRsaPssSha384GetKlass(void) {
  * RSA-PSS-SHA2-512 signature transform
  *
  ***************************************************************************/
-static xmlSecTransformKlass xmlSecMSCngRsaPssSha512Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),              /* xmlSecSize klassSize */
-    xmlSecMSCngSignatureSize,                  /* xmlSecSize objSize */
-
-    xmlSecNameRsaPssSha512,                    /* const xmlChar* name; */
-    xmlSecHrefRsaPssSha512,                    /* const xmlChar* href; */
-    xmlSecTransformUsageSignatureMethod,       /* xmlSecTransformUsage usage; */
-
-    xmlSecMSCngSignatureInitialize,            /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecMSCngSignatureFinalize,              /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                      /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                      /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCngSignatureSetKeyReq,             /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    xmlSecMSCngSignatureSetKey,                /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecMSCngSignatureVerify,                /* xmlSecTransformVerifyMethod verify; */
-    xmlSecTransformDefaultGetDataType,         /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,             /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,              /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                      /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                      /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecMSCngSignatureExecute,               /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                      /* void* reserved0; */
-    NULL,                                      /* void* reserved1; */
-};
+XMLSEC_MSCNG_SIGNATURE_KLASS(RsaPssSha512)
 
 /**
  * xmlSecMSCngTransformRsaPssSha512GetKlass:
@@ -1583,32 +1363,7 @@ xmlSecMSCngTransformRsaPssSha512GetKlass(void) {
  * ECDSA-SHA1 signature transform
  *
  ***************************************************************************/
-static xmlSecTransformKlass xmlSecMSCngEcdsaSha1Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),              /* xmlSecSize klassSize */
-    xmlSecMSCngSignatureSize,                  /* xmlSecSize objSize */
-
-    xmlSecNameEcdsaSha1,                     /* const xmlChar* name; */
-    xmlSecHrefEcdsaSha1,                     /* const xmlChar* href; */
-    xmlSecTransformUsageSignatureMethod,       /* xmlSecTransformUsage usage; */
-
-    xmlSecMSCngSignatureInitialize,            /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecMSCngSignatureFinalize,              /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                      /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                      /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCngSignatureSetKeyReq,             /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    xmlSecMSCngSignatureSetKey,                /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecMSCngSignatureVerify,                /* xmlSecTransformVerifyMethod verify; */
-    xmlSecTransformDefaultGetDataType,         /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,             /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,              /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                      /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                      /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecMSCngSignatureExecute,               /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                      /* void* reserved0; */
-    NULL,                                      /* void* reserved1; */
-};
+XMLSEC_MSCNG_SIGNATURE_KLASS(EcdsaSha1)
 
 /**
  * xmlSecMSCngTransformEcdsaSha1GetKlass:
@@ -1629,32 +1384,7 @@ xmlSecMSCngTransformEcdsaSha1GetKlass(void) {
  * ECDSA-SHA2-256 signature transform
  *
  ***************************************************************************/
-static xmlSecTransformKlass xmlSecMSCngEcdsaSha256Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),              /* xmlSecSize klassSize */
-    xmlSecMSCngSignatureSize,                  /* xmlSecSize objSize */
-
-    xmlSecNameEcdsaSha256,                     /* const xmlChar* name; */
-    xmlSecHrefEcdsaSha256,                     /* const xmlChar* href; */
-    xmlSecTransformUsageSignatureMethod,       /* xmlSecTransformUsage usage; */
-
-    xmlSecMSCngSignatureInitialize,            /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecMSCngSignatureFinalize,              /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                      /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                      /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCngSignatureSetKeyReq,             /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    xmlSecMSCngSignatureSetKey,                /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecMSCngSignatureVerify,                /* xmlSecTransformVerifyMethod verify; */
-    xmlSecTransformDefaultGetDataType,         /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,             /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,              /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                      /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                      /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecMSCngSignatureExecute,               /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                      /* void* reserved0; */
-    NULL,                                      /* void* reserved1; */
-};
+XMLSEC_MSCNG_SIGNATURE_KLASS(EcdsaSha256)
 
 /**
  * xmlSecMSCngTransformEcdsaSha256GetKlass:
@@ -1675,32 +1405,7 @@ xmlSecMSCngTransformEcdsaSha256GetKlass(void) {
  * ECDSA-SHA2-384 signature transform
  *
  ***************************************************************************/
-static xmlSecTransformKlass xmlSecMSCngEcdsaSha384Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),              /* xmlSecSize klassSize */
-    xmlSecMSCngSignatureSize,                  /* xmlSecSize objSize */
-
-    xmlSecNameEcdsaSha384,                     /* const xmlChar* name; */
-    xmlSecHrefEcdsaSha384,                     /* const xmlChar* href; */
-    xmlSecTransformUsageSignatureMethod,       /* xmlSecTransformUsage usage; */
-
-    xmlSecMSCngSignatureInitialize,            /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecMSCngSignatureFinalize,              /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                      /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                      /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCngSignatureSetKeyReq,             /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    xmlSecMSCngSignatureSetKey,                /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecMSCngSignatureVerify,                /* xmlSecTransformVerifyMethod verify; */
-    xmlSecTransformDefaultGetDataType,         /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,             /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,              /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                      /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                      /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecMSCngSignatureExecute,               /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                      /* void* reserved0; */
-    NULL,                                      /* void* reserved1; */
-};
+XMLSEC_MSCNG_SIGNATURE_KLASS(EcdsaSha384)
 
 /**
  * xmlSecMSCngTransformEcdsaSha384GetKlass:
@@ -1721,32 +1426,7 @@ xmlSecMSCngTransformEcdsaSha384GetKlass(void) {
  * ECDSA-SHA2-512 signature transform
  *
  ***************************************************************************/
-static xmlSecTransformKlass xmlSecMSCngEcdsaSha512Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),              /* xmlSecSize klassSize */
-    xmlSecMSCngSignatureSize,                  /* xmlSecSize objSize */
-
-    xmlSecNameEcdsaSha512,                     /* const xmlChar* name; */
-    xmlSecHrefEcdsaSha512,                     /* const xmlChar* href; */
-    xmlSecTransformUsageSignatureMethod,       /* xmlSecTransformUsage usage; */
-
-    xmlSecMSCngSignatureInitialize,            /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecMSCngSignatureFinalize,              /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                      /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                      /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCngSignatureSetKeyReq,             /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    xmlSecMSCngSignatureSetKey,                /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecMSCngSignatureVerify,                /* xmlSecTransformVerifyMethod verify; */
-    xmlSecTransformDefaultGetDataType,         /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,             /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,              /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                      /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                      /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecMSCngSignatureExecute,               /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                      /* void* reserved0; */
-    NULL,                                      /* void* reserved1; */
-};
+XMLSEC_MSCNG_SIGNATURE_KLASS(EcdsaSha512)
 
 /**
  * xmlSecMSCngTransformEcdsaSha512GetKlass:

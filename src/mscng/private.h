@@ -32,7 +32,10 @@ extern "C" {
  * Key data functions
  *
  ******************************************************************************/
- xmlSecSize         xmlSecMSCngKeyDataGetSize                       (xmlSecKeyDataPtr data);
+xmlSecKeyDataPtr   xmlSecMSCngKeyDataFromAlgorithm                 (LPSTR pszObjId);
+int                xmlSecMSCngKeyDataAdoptKey                      (xmlSecKeyDataPtr data,
+                                                                    BCRYPT_KEY_HANDLE hPubKey);
+ xmlSecSize         xmlSecMSCngCertKeyDataGetSize                       (xmlSecKeyDataPtr data);
 
 /******************************************************************************
  *

@@ -1007,6 +1007,7 @@ struct _xmlSecOpenSSLXdhCtx {
     xmlSecTransformKeyAgreementParams params;
     xmlSecKeyPtr secretKey;
     int nid;  /* NID for X25519 or X448 */
+    size_t expected_secret_len;  /* Expected secret length: 32 for X25519, 56 for X448 */
 };
 
 /**************************************************************************
@@ -1050,11 +1051,13 @@ xmlSecOpenSSLXdhInitialize(xmlSecTransformPtr transform) {
     /* initialize context */
     memset(ctx, 0, sizeof(xmlSecOpenSSLXdhCtx));
 
-    /* set NID based on transform ID */
+    /* set NID and expected secret length based on transform ID */
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformX25519Id)) {
         ctx->nid = EVP_PKEY_X25519;
+        ctx->expected_secret_len = 32;
     } else if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformX448Id)) {
         ctx->nid = EVP_PKEY_X448;
+        ctx->expected_secret_len = 56;
     } else {
         xmlSecInternalError("Unknown XDH transform", xmlSecTransformGetName(transform));
         xmlSecOpenSSLXdhFinalize(transform);
@@ -1259,6 +1262,13 @@ xmlSecOpenSSLXdhGenerateSecret(xmlSecOpenSSLXdhCtxPtr ctx, xmlSecTransformOperat
         goto done;
     }
 
+    /* Validate secret size matches expected value */
+    if(secret_len != ctx->expected_secret_len) {
+        xmlSecInvalidSizeDataError("EVP_PKEY_derive secret size", secret_len,
+            (ctx->nid == EVP_PKEY_X25519) ? "32" : "56", NULL);
+        goto done;
+    }
+
     XMLSEC_SAFE_CAST_SIZE_T_TO_SIZE(secret_len, secretSize, goto done, NULL);
     ret = xmlSecBufferSetSize(secret, secretSize);
     if(ret < 0) {
@@ -1267,12 +1277,17 @@ xmlSecOpenSSLXdhGenerateSecret(xmlSecOpenSSLXdhCtxPtr ctx, xmlSecTransformOperat
         goto done;
     }
     secretData = xmlSecBufferGetData(secret);
-    xmlSecAssert2(secretData != NULL, -1);
+    if(secretData == NULL) {
+        xmlSecInternalError("xmlSecBufferGetData", NULL);
+        goto done;
+    }
 
     /* derive the shared secret */
     ret = EVP_PKEY_derive(pKeyCtx, secretData, &secret_len);
     if((ret != 1) || (secret_len == 0)) {
         xmlSecOpenSSLError("EVP_PKEY_derive", NULL);
+        /* Clear partial secret data on error */
+        xmlSecBufferEmpty(secret);
         goto done;
     }
 
@@ -1282,6 +1297,10 @@ xmlSecOpenSSLXdhGenerateSecret(xmlSecOpenSSLXdhCtxPtr ctx, xmlSecTransformOperat
 done:
     if(pKeyCtx != NULL) {
         EVP_PKEY_CTX_free(pKeyCtx);
+    }
+    /* Clear secret buffer on error path */
+    if((res != 0) && (secret != NULL)) {
+        xmlSecBufferEmpty(secret);
     }
     return(res);
 }
@@ -1340,6 +1359,7 @@ xmlSecOpenSSLXdhGenerateEphemeralKeyAndSecret(xmlSecOpenSSLXdhCtxPtr ctx, xmlSec
     ret = xmlSecOpenSSLKeyDataXdhAdoptEvp(keyData, ephemeralKey);
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLKeyDataXdhAdoptEvp", NULL);
+        /* ephemeralKey NOT adopted on error, will be freed in cleanup */
         goto done;
     }
     ephemeralKey = NULL; /* owned by keyData now */
@@ -1366,6 +1386,7 @@ xmlSecOpenSSLXdhGenerateEphemeralKeyAndSecret(xmlSecOpenSSLXdhCtxPtr ctx, xmlSec
     ret = xmlSecOpenSSLXdhGenerateSecret(ctx, operation, secret);
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLXdhGenerateSecret", NULL);
+        /* Secret buffer already cleared by xmlSecOpenSSLXdhGenerateSecret on error */
         goto done;
     }
 
@@ -1514,6 +1535,8 @@ xmlSecOpenSSLXdhExecute(xmlSecTransformPtr transform, int last, xmlSecTransformC
             ret = xmlSecOpenSSLXdhGenerateEphemeralKeyAndSecret(ctx, transform->operation, &secret);
             if(ret < 0) {
                 xmlSecInternalError("xmlSecOpenSSLXdhGenerateEphemeralKeyAndSecret", xmlSecTransformGetName(transform));
+                /* Securely clear secret before finalize */
+                xmlSecBufferEmpty(&secret);
                 xmlSecBufferFinalize(&secret);
                 return(-1);
             }
@@ -1521,6 +1544,8 @@ xmlSecOpenSSLXdhExecute(xmlSecTransformPtr transform, int last, xmlSecTransformC
             ret = xmlSecOpenSSLXdhGenerateSecret(ctx, transform->operation, &secret);
             if(ret < 0) {
                 xmlSecInternalError("xmlSecOpenSSLXdhGenerateSecret", xmlSecTransformGetName(transform));
+                /* Securely clear secret before finalize */
+                xmlSecBufferEmpty(&secret);
                 xmlSecBufferFinalize(&secret);
                 return(-1);
             }
@@ -1531,11 +1556,14 @@ xmlSecOpenSSLXdhExecute(xmlSecTransformPtr transform, int last, xmlSecTransformC
             transform->expectedOutputSize, transformCtx);
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLXdhGenerateExecuteKdf", xmlSecTransformGetName(transform));
+            /* Securely clear secret before finalize */
+            xmlSecBufferEmpty(&secret);
             xmlSecBufferFinalize(&secret);
             return(-1);
         }
 
-        /* done */
+        /* Securely clear secret before finalize */
+        xmlSecBufferEmpty(&secret);
         xmlSecBufferFinalize(&secret);
         transform->status = xmlSecTransformStatusFinished;
         return(0);

@@ -25,12 +25,21 @@
  *
  * RSA OAEP requires https://bugzilla.mozilla.org/show_bug.cgi?id=1666891
  * which was fixed in NSS 3.59 (https://firefox-source-docs.mozilla.org/security/nss/legacy/nss_releases/nss_3.59_release_notes/index.html)
+ *
+ * XDH support requires public NSS KeyType values for Ed25519/X25519/X448.
+ * In particular, ecMontKey used by xmlsec was added in NSS 3.103.
  */
 #if (NSS_VMAJOR < 3) || ((NSS_VMAJOR == 3) && (NSS_VMINOR < 59))
 #define XMLSEC_NO_RSA_OAEP 1
 #else  /* (NSS_VMAJOR < 3) || ((NSS_VMAJOR == 3) && (NSS_VMINOR < 59)) */
 #define XMLSEC_NO_MD5 1
 #endif /* (NSS_VMAJOR < 3) || ((NSS_VMAJOR == 3) && (NSS_VMINOR < 59)) */
+
+#ifndef XMLSEC_NO_XDH
+#if (NSS_VMAJOR < 3) || ((NSS_VMAJOR == 3) && (NSS_VMINOR < 103))
+#define XMLSEC_NO_XDH 1
+#endif /* (NSS_VMAJOR < 3) || ((NSS_VMAJOR == 3) && (NSS_VMINOR < 103)) */
+#endif /* XMLSEC_NO_XDH */
 
 #ifdef __cplusplus
 extern "C" {
@@ -322,6 +331,32 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformEcdsaSha512GetKlass(voi
 
 /********************************************************************
  *
+ * XDH key agreement (X25519 and X448)
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_XDH
+
+/**
+ * xmlSecNssKeyDataXdhId:
+ *
+ * The XDH key klass (X25519 and X448).
+ */
+#define xmlSecNssKeyDataXdhId           xmlSecNssKeyDataXdhGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecNssKeyDataXdhGetKlass(void);
+
+/**
+ * xmlSecNssTransformX25519Id:
+ *
+ * The X25519 key agreement transform klass.
+ */
+#define xmlSecNssTransformX25519Id      xmlSecNssTransformX25519GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecNssTransformX25519GetKlass(void);
+
+#endif /* XMLSEC_NO_XDH */
+
+
+/********************************************************************
+ *
  * HMAC transforms
  *
  *******************************************************************/
@@ -447,6 +482,35 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecNssKeyDataPbkdf2Set       (xmlSecK
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformPbkdf2GetKlass(void);
 
 #endif /* XMLSEC_NO_PBKDF2 */
+
+/********************************************************************
+ *
+ * ConcatKDF key and transform
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_CONCATKDF
+
+/**
+ * xmlSecNssKeyDataConcatKdfId:
+ *
+ * The ConcatKDF key data klass.
+ */
+#define xmlSecNssKeyDataConcatKdfId \
+        xmlSecNssKeyDataConcatKdfGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecNssKeyDataConcatKdfGetKlass  (void);
+XMLSEC_CRYPTO_EXPORT int                xmlSecNssKeyDataConcatKdfSet       (xmlSecKeyDataPtr data,
+                                                                             const xmlSecByte* buf,
+                                                                             xmlSecSize bufSize);
+/**
+ * xmlSecNssTransformConcatKdfId:
+ *
+ * The ConcatKDF key derivation transform klass.
+ */
+#define xmlSecNssTransformConcatKdfId \
+        xmlSecNssTransformConcatKdfGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformConcatKdfGetKlass(void);
+
+#endif /* XMLSEC_NO_CONCATKDF */
 
 
 /********************************************************************

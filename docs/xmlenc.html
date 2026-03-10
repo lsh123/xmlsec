@@ -398,7 +398,7 @@
                         <td valign="top" bgcolor="#C1E1C1">Yes <a href="#openssl3-required"><sup>(3)</sup></a> <a href="#concatkdf"><sup>(4)</sup></a>
 </td>
 <!-- OpenSSL-->
-                        <td valign="top">No</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td>
 <!-- NSS -->
                         <td valign="top" bgcolor="#C1E1C1">Yes <a href="#concatkdf"><sup>(4)</sup></a>
 </td>
@@ -594,7 +594,8 @@
 <!-- OpenSSL-->
                         <td valign="top">No</td>
 <!-- NSS -->
-                        <td valign="top">No</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#concatkdf"><sup>(4)</sup></a>
+</td>
 <!-- GnuTLS -->
                         <td valign="top" bgcolor="#C1E1C1">Yes <a href="#mscng-old-win"><sup>(5)</sup></a>
 </td>
@@ -613,7 +614,7 @@
                         <td valign="top" bgcolor="#C1E1C1">Yes <a href="#openssl3-required"><sup>(3)</sup></a>
 </td>
 <!-- OpenSSL-->
-                        <td valign="top">No</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#nss-x25519-only"><sup>(9)</sup></a></td>
 <!-- NSS -->
                         <td valign="top" bgcolor="#C1E1C1">Yes</td>
 <!-- GnuTLS -->
@@ -785,6 +786,9 @@
                         </li>
                         <li>
                           <a id="openssl-dhx"><sup>(8)</sup></a> The xmlsec-openssl library only supports DHX (X9.42 format) keys for DH algorithm.
+                        </li>
+                        <li>
+                          <a id="nss-x25519-only"><sup>(9)</sup></a> The xmlsec-nss library only supports X25519; X448 (Curve448) is not yet implemented in NSS.
                         </li>
                     </ul>
                 </div>

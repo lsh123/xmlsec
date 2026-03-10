@@ -282,6 +282,7 @@ xmlSecOpenSSLEvpKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     xmlSecAssert2(xmlSecKeyDataCheckSize(dst, xmlSecOpenSSLEvpKeyDataSize), -1);
     xmlSecAssert2(xmlSecKeyDataIsValid(src), -1);
     xmlSecAssert2(xmlSecKeyDataCheckSize(src, xmlSecOpenSSLEvpKeyDataSize), -1);
+    xmlSecAssert2(src->id == dst->id, -1);
 
     ctxDst = xmlSecOpenSSLEvpKeyDataGetCtx(dst);
     xmlSecAssert2(ctxDst != NULL, -1);
@@ -886,10 +887,6 @@ xmlSecOpenSSLKeyValueDsaFinalize(xmlSecOpenSSLKeyValueDsaPtr dsaKeyValue) {
 }
 
 
-static int              xmlSecOpenSSLKeyDataDsaInitialize       (xmlSecKeyDataPtr data);
-static int              xmlSecOpenSSLKeyDataDsaDuplicate        (xmlSecKeyDataPtr dst,
-                                                                 xmlSecKeyDataPtr src);
-static void             xmlSecOpenSSLKeyDataDsaFinalize         (xmlSecKeyDataPtr data);
 static int              xmlSecOpenSSLKeyDataDsaXmlRead          (xmlSecKeyDataId id,
                                                                  xmlSecKeyPtr key,
                                                                  xmlNodePtr node,
@@ -929,9 +926,9 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataDsaKlass = {
     xmlSecDSigNs,                               /* const xmlChar* dataNodeNs; */
 
     /* constructors/destructor */
-    xmlSecOpenSSLKeyDataDsaInitialize,          /* xmlSecKeyDataInitializeMethod initialize; */
-    xmlSecOpenSSLKeyDataDsaDuplicate,           /* xmlSecKeyDataDuplicateMethod duplicate; */
-    xmlSecOpenSSLKeyDataDsaFinalize,            /* xmlSecKeyDataFinalizeMethod finalize; */
+    xmlSecOpenSSLEvpKeyDataInitialize,          /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecOpenSSLEvpKeyDataDuplicate,           /* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecOpenSSLEvpKeyDataFinalize,            /* xmlSecKeyDataFinalizeMethod finalize; */
     xmlSecOpenSSLKeyDataDsaGenerate,            /* xmlSecKeyDataGenerateMethod generate; */
 
     /* get info */
@@ -999,27 +996,6 @@ xmlSecOpenSSLKeyDataDsaGetEvp(xmlSecKeyDataPtr data) {
     return(xmlSecOpenSSLEvpKeyDataGetEvp(data));
 }
 
-static int
-xmlSecOpenSSLKeyDataDsaInitialize(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataDsaId), -1);
-
-    return(xmlSecOpenSSLEvpKeyDataInitialize(data));
-}
-
-static int
-xmlSecOpenSSLKeyDataDsaDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecOpenSSLKeyDataDsaId), -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecOpenSSLKeyDataDsaId), -1);
-
-    return(xmlSecOpenSSLEvpKeyDataDuplicate(dst, src));
-}
-
-static void
-xmlSecOpenSSLKeyDataDsaFinalize(xmlSecKeyDataPtr data) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataDsaId));
-
-    xmlSecOpenSSLEvpKeyDataFinalize(data);
-}
 
 static int
 xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
@@ -1787,10 +1763,6 @@ xmlSecOpenSSLKeyValueDhFinalize(xmlSecOpenSSLKeyValueDhPtr dhKeyValue) {
 }
 
 
-static int              xmlSecOpenSSLKeyDataDhInitialize        (xmlSecKeyDataPtr data);
-static int              xmlSecOpenSSLKeyDataDhDuplicate         (xmlSecKeyDataPtr dst,
-                                                                 xmlSecKeyDataPtr src);
-static void             xmlSecOpenSSLKeyDataDhFinalize          (xmlSecKeyDataPtr data);
 static int              xmlSecOpenSSLKeyDataDhXmlRead           (xmlSecKeyDataId id,
                                                                  xmlSecKeyPtr key,
                                                                  xmlNodePtr node,
@@ -1830,9 +1802,9 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataDhKlass = {
     xmlSecEncNs,                                /* const xmlChar* dataNodeNs; */
 
     /* constructors/destructor */
-    xmlSecOpenSSLKeyDataDhInitialize,           /* xmlSecKeyDataInitializeMethod initialize; */
-    xmlSecOpenSSLKeyDataDhDuplicate,            /* xmlSecKeyDataDuplicateMethod duplicate; */
-    xmlSecOpenSSLKeyDataDhFinalize,             /* xmlSecKeyDataFinalizeMethod finalize; */
+    xmlSecOpenSSLEvpKeyDataInitialize,          /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecOpenSSLEvpKeyDataDuplicate,           /* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecOpenSSLEvpKeyDataFinalize,            /* xmlSecKeyDataFinalizeMethod finalize; */
     xmlSecOpenSSLKeyDataDhGenerate,             /* xmlSecKeyDataGenerateMethod generate; */
 
     /* get info */
@@ -1900,27 +1872,6 @@ xmlSecOpenSSLKeyDataDhGetEvp(xmlSecKeyDataPtr data) {
     return(xmlSecOpenSSLEvpKeyDataGetEvp(data));
 }
 
-static int
-xmlSecOpenSSLKeyDataDhInitialize(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataDhId), -1);
-
-    return(xmlSecOpenSSLEvpKeyDataInitialize(data));
-}
-
-static int
-xmlSecOpenSSLKeyDataDhDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecOpenSSLKeyDataDhId), -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecOpenSSLKeyDataDhId), -1);
-
-    return(xmlSecOpenSSLEvpKeyDataDuplicate(dst, src));
-}
-
-static void
-xmlSecOpenSSLKeyDataDhFinalize(xmlSecKeyDataPtr data) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataDhId));
-
-    xmlSecOpenSSLEvpKeyDataFinalize(data);
-}
 
 static int
 xmlSecOpenSSLKeyDataDhXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
@@ -2696,10 +2647,6 @@ done:
 #define XMLSEC_OPENSSL_EC_EVP_NAME                  "EC"
 
 
-static int              xmlSecOpenSSLKeyDataEcInitialize        (xmlSecKeyDataPtr data);
-static int              xmlSecOpenSSLKeyDataEcDuplicate         (xmlSecKeyDataPtr dst,
-                                                                 xmlSecKeyDataPtr src);
-static void             xmlSecOpenSSLKeyDataEcFinalize          (xmlSecKeyDataPtr data);
 
 static xmlSecKeyDataType xmlSecOpenSSLKeyDataEcGetType          (xmlSecKeyDataPtr data);
 static xmlSecSize        xmlSecOpenSSLKeyDataEcGetSize          (xmlSecKeyDataPtr data);
@@ -2743,9 +2690,9 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataEcKlass = {
     xmlSecDSig11Ns,                           /* const xmlChar* dataNodeNs; */
 
     /* constructors/destructor */
-    xmlSecOpenSSLKeyDataEcInitialize,        /* xmlSecKeyDataInitializeMethod initialize; */
-    xmlSecOpenSSLKeyDataEcDuplicate,         /* xmlSecKeyDataDuplicateMethod duplicate; */
-    xmlSecOpenSSLKeyDataEcFinalize,          /* xmlSecKeyDataFinalizeMethod finalize; */
+    xmlSecOpenSSLEvpKeyDataInitialize,          /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecOpenSSLEvpKeyDataDuplicate,           /* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecOpenSSLEvpKeyDataFinalize,            /* xmlSecKeyDataFinalizeMethod finalize; */
     NULL,                                       /* xmlSecKeyDataGenerateMethod generate; */
 
     /* get info */
@@ -2811,27 +2758,6 @@ xmlSecOpenSSLKeyDataEcGetEvp(xmlSecKeyDataPtr data) {
     return(xmlSecOpenSSLEvpKeyDataGetEvp(data));
 }
 
-static int
-xmlSecOpenSSLKeyDataEcInitialize(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcId), -1);
-
-    return(xmlSecOpenSSLEvpKeyDataInitialize(data));
-}
-
-static int
-xmlSecOpenSSLKeyDataEcDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecOpenSSLKeyDataEcId), -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecOpenSSLKeyDataEcId), -1);
-
-    return(xmlSecOpenSSLEvpKeyDataDuplicate(dst, src));
-}
-
-static void
-xmlSecOpenSSLKeyDataEcFinalize(xmlSecKeyDataPtr data) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcId));
-
-    xmlSecOpenSSLEvpKeyDataFinalize(data);
-}
 
 static xmlSecKeyDataType
 xmlSecOpenSSLKeyDataEcGetType(xmlSecKeyDataPtr data) {
@@ -3572,10 +3498,6 @@ xmlSecOpenSSLKeyValueRsaFinalize(xmlSecOpenSSLKeyValueRsaPtr rsaKeyValue) {
  *************************************************************************/
 #define XMLSEC_OPENSSL_RSA_EVP_NAME                  "RSA"
 
-static int              xmlSecOpenSSLKeyDataRsaInitialize       (xmlSecKeyDataPtr data);
-static int              xmlSecOpenSSLKeyDataRsaDuplicate        (xmlSecKeyDataPtr dst,
-                                                                 xmlSecKeyDataPtr src);
-static void             xmlSecOpenSSLKeyDataRsaFinalize         (xmlSecKeyDataPtr data);
 static int              xmlSecOpenSSLKeyDataRsaXmlRead          (xmlSecKeyDataId id,
                                                                  xmlSecKeyPtr key,
                                                                  xmlNodePtr node,
@@ -3615,9 +3537,9 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataRsaKlass = {
     xmlSecDSigNs,                               /* const xmlChar* dataNodeNs; */
 
     /* constructors/destructor */
-    xmlSecOpenSSLKeyDataRsaInitialize,          /* xmlSecKeyDataInitializeMethod initialize; */
-    xmlSecOpenSSLKeyDataRsaDuplicate,           /* xmlSecKeyDataDuplicateMethod duplicate; */
-    xmlSecOpenSSLKeyDataRsaFinalize,            /* xmlSecKeyDataFinalizeMethod finalize; */
+    xmlSecOpenSSLEvpKeyDataInitialize,          /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecOpenSSLEvpKeyDataDuplicate,           /* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecOpenSSLEvpKeyDataFinalize,            /* xmlSecKeyDataFinalizeMethod finalize; */
     xmlSecOpenSSLKeyDataRsaGenerate,            /* xmlSecKeyDataGenerateMethod generate; */
 
     /* get info */
@@ -3687,27 +3609,6 @@ xmlSecOpenSSLKeyDataRsaGetEvp(xmlSecKeyDataPtr data) {
     return(xmlSecOpenSSLEvpKeyDataGetEvp(data));
 }
 
-static int
-xmlSecOpenSSLKeyDataRsaInitialize(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataRsaId), -1);
-
-    return(xmlSecOpenSSLEvpKeyDataInitialize(data));
-}
-
-static int
-xmlSecOpenSSLKeyDataRsaDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecOpenSSLKeyDataRsaId), -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecOpenSSLKeyDataRsaId), -1);
-
-    return(xmlSecOpenSSLEvpKeyDataDuplicate(dst, src));
-}
-
-static void
-xmlSecOpenSSLKeyDataRsaFinalize(xmlSecKeyDataPtr data) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataRsaId));
-
-    xmlSecOpenSSLEvpKeyDataFinalize(data);
-}
 
 static int
 xmlSecOpenSSLKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
@@ -4379,10 +4280,6 @@ done:
  * GOST2001 xml key representation processing
  *
  *************************************************************************/
-static int              xmlSecOpenSSLKeyDataGost2001Initialize(xmlSecKeyDataPtr data);
-static int              xmlSecOpenSSLKeyDataGost2001Duplicate(xmlSecKeyDataPtr dst,
-                                                         xmlSecKeyDataPtr src);
-static void             xmlSecOpenSSLKeyDataGost2001Finalize(xmlSecKeyDataPtr data);
 
 static xmlSecKeyDataType xmlSecOpenSSLKeyDataGost2001GetType(xmlSecKeyDataPtr data);
 static xmlSecSize        xmlSecOpenSSLKeyDataGost2001GetSize(xmlSecKeyDataPtr data);
@@ -4404,9 +4301,9 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataGost2001Klass = {
     xmlSecDSigNs,                       /* const xmlChar* dataNodeNs; */
 
     /* constructors/destructor */
-    xmlSecOpenSSLKeyDataGost2001Initialize,    /* xmlSecKeyDataInitializeMethod initialize; */
-    xmlSecOpenSSLKeyDataGost2001Duplicate,     /* xmlSecKeyDataDuplicateMethod duplicate; */
-    xmlSecOpenSSLKeyDataGost2001Finalize,      /* xmlSecKeyDataFinalizeMethod finalize; */
+    xmlSecOpenSSLEvpKeyDataInitialize,          /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecOpenSSLEvpKeyDataDuplicate,           /* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecOpenSSLEvpKeyDataFinalize,            /* xmlSecKeyDataFinalizeMethod finalize; */
     NULL, /* xmlSecOpenSSLKeyDataGost2001Generate,*/   /* xmlSecKeyDataGenerateMethod generate; */
 
     /* get info */
@@ -4442,27 +4339,6 @@ xmlSecOpenSSLKeyDataGost2001GetKlass(void) {
 }
 
 
-static int
-xmlSecOpenSSLKeyDataGost2001Initialize(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataGost2001Id), -1);
-
-    return(xmlSecOpenSSLEvpKeyDataInitialize(data));
-}
-
-static int
-xmlSecOpenSSLKeyDataGost2001Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecOpenSSLKeyDataGost2001Id), -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecOpenSSLKeyDataGost2001Id), -1);
-
-    return(xmlSecOpenSSLEvpKeyDataDuplicate(dst, src));
-}
-
-static void
-xmlSecOpenSSLKeyDataGost2001Finalize(xmlSecKeyDataPtr data) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataGost2001Id));
-
-    xmlSecOpenSSLEvpKeyDataFinalize(data);
-}
 
 static xmlSecKeyDataType
 xmlSecOpenSSLKeyDataGost2001GetType(xmlSecKeyDataPtr data XMLSEC_ATTRIBUTE_UNUSED) {
@@ -4506,10 +4382,6 @@ xmlSecOpenSSLKeyDataGost2001DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
  * GOST R 34.10-2012 256 bit xml key representation processing
  *
  *************************************************************************/
-static int              xmlSecOpenSSLKeyDataGostR3410_2012_256Initialize(xmlSecKeyDataPtr data);
-static int              xmlSecOpenSSLKeyDataGostR3410_2012_256Duplicate(xmlSecKeyDataPtr dst,
-                                                         xmlSecKeyDataPtr src);
-static void             xmlSecOpenSSLKeyDataGostR3410_2012_256Finalize(xmlSecKeyDataPtr data);
 
 static xmlSecKeyDataType xmlSecOpenSSLKeyDataGostR3410_2012_256GetType(xmlSecKeyDataPtr data);
 static xmlSecSize        xmlSecOpenSSLKeyDataGostR3410_2012_256GetSize(xmlSecKeyDataPtr data);
@@ -4531,9 +4403,9 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataGostR3410_2012_256Klass = {
     xmlSecDSigNs,                       /* const xmlChar* dataNodeNs; */
 
     /* constructors/destructor */
-    xmlSecOpenSSLKeyDataGostR3410_2012_256Initialize,    /* xmlSecKeyDataInitializeMethod initialize; */
-    xmlSecOpenSSLKeyDataGostR3410_2012_256Duplicate,     /* xmlSecKeyDataDuplicateMethod duplicate; */
-    xmlSecOpenSSLKeyDataGostR3410_2012_256Finalize,      /* xmlSecKeyDataFinalizeMethod finalize; */
+    xmlSecOpenSSLEvpKeyDataInitialize,          /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecOpenSSLEvpKeyDataDuplicate,           /* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecOpenSSLEvpKeyDataFinalize,            /* xmlSecKeyDataFinalizeMethod finalize; */
     NULL, /* xmlSecOpenSSLKeyDataGostR3410_2012_256Generate,*/   /* xmlSecKeyDataGenerateMethod generate; */
 
     /* get info */
@@ -4569,28 +4441,6 @@ xmlSecOpenSSLKeyDataGostR3410_2012_256GetKlass(void) {
 }
 
 
-static int
-xmlSecOpenSSLKeyDataGostR3410_2012_256Initialize(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataGostR3410_2012_256Id), -1);
-
-    return(xmlSecOpenSSLEvpKeyDataInitialize(data));
-}
-
-static int
-xmlSecOpenSSLKeyDataGostR3410_2012_256Duplicate(xmlSecKeyDataPtr dst,
-xmlSecKeyDataPtr src) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecOpenSSLKeyDataGostR3410_2012_256Id), -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecOpenSSLKeyDataGostR3410_2012_256Id), -1);
-
-    return(xmlSecOpenSSLEvpKeyDataDuplicate(dst, src));
-}
-
-static void
-xmlSecOpenSSLKeyDataGostR3410_2012_256Finalize(xmlSecKeyDataPtr data) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataGostR3410_2012_256Id));
-
-    xmlSecOpenSSLEvpKeyDataFinalize(data);
-}
 
 static xmlSecKeyDataType
 xmlSecOpenSSLKeyDataGostR3410_2012_256GetType(xmlSecKeyDataPtr data XMLSEC_ATTRIBUTE_UNUSED) {
@@ -4634,10 +4484,6 @@ xmlSecOpenSSLKeyDataGostR3410_2012_256DebugXmlDump(xmlSecKeyDataPtr data, FILE* 
  * GOST R 34.10-2012 512 bit xml key representation processing
  *
  *************************************************************************/
-static int              xmlSecOpenSSLKeyDataGostR3410_2012_512Initialize(xmlSecKeyDataPtr data);
-static int              xmlSecOpenSSLKeyDataGostR3410_2012_512Duplicate(xmlSecKeyDataPtr dst,
-                                                         xmlSecKeyDataPtr src);
-static void             xmlSecOpenSSLKeyDataGostR3410_2012_512Finalize(xmlSecKeyDataPtr data);
 
 static xmlSecKeyDataType xmlSecOpenSSLKeyDataGostR3410_2012_512GetType(xmlSecKeyDataPtr data);
 static xmlSecSize        xmlSecOpenSSLKeyDataGostR3410_2012_512GetSize(xmlSecKeyDataPtr data);
@@ -4659,9 +4505,9 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataGostR3410_2012_512Klass = {
     xmlSecDSigNs,                       /* const xmlChar* dataNodeNs; */
 
     /* constructors/destructor */
-    xmlSecOpenSSLKeyDataGostR3410_2012_512Initialize,    /* xmlSecKeyDataInitializeMethod initialize; */
-    xmlSecOpenSSLKeyDataGostR3410_2012_512Duplicate,     /* xmlSecKeyDataDuplicateMethod duplicate; */
-    xmlSecOpenSSLKeyDataGostR3410_2012_512Finalize,      /* xmlSecKeyDataFinalizeMethod finalize; */
+    xmlSecOpenSSLEvpKeyDataInitialize,          /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecOpenSSLEvpKeyDataDuplicate,           /* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecOpenSSLEvpKeyDataFinalize,            /* xmlSecKeyDataFinalizeMethod finalize; */
     NULL, /* xmlSecOpenSSLKeyDataGostR3410_2012_512Generate,*/   /* xmlSecKeyDataGenerateMethod generate; */
 
     /* get info */
@@ -4697,28 +4543,6 @@ xmlSecOpenSSLKeyDataGostR3410_2012_512GetKlass(void) {
 }
 
 
-static int
-xmlSecOpenSSLKeyDataGostR3410_2012_512Initialize(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataGostR3410_2012_512Id), -1);
-
-    return(xmlSecOpenSSLEvpKeyDataInitialize(data));
-}
-
-static int
-xmlSecOpenSSLKeyDataGostR3410_2012_512Duplicate(xmlSecKeyDataPtr dst,
-xmlSecKeyDataPtr src) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecOpenSSLKeyDataGostR3410_2012_512Id), -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecOpenSSLKeyDataGostR3410_2012_512Id), -1);
-
-    return(xmlSecOpenSSLEvpKeyDataDuplicate(dst, src));
-}
-
-static void
-xmlSecOpenSSLKeyDataGostR3410_2012_512Finalize(xmlSecKeyDataPtr data) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataGostR3410_2012_512Id));
-
-    xmlSecOpenSSLEvpKeyDataFinalize(data);
-}
 
 static xmlSecKeyDataType
 xmlSecOpenSSLKeyDataGostR3410_2012_512GetType(xmlSecKeyDataPtr data XMLSEC_ATTRIBUTE_UNUSED) {
@@ -4762,10 +4586,6 @@ xmlSecOpenSSLKeyDataGostR3410_2012_512DebugXmlDump(xmlSecKeyDataPtr data, FILE* 
  * EXPERIMENTAL SUPPORT FOR ML-DSA
  */
 
-static int               xmlSecOpenSSLKeyDataMLDSAInitialize       (xmlSecKeyDataPtr data);
-static int               xmlSecOpenSSLKeyDataMLDSADuplicate        (xmlSecKeyDataPtr dst,
-                                                                    xmlSecKeyDataPtr src);
-static void              xmlSecOpenSSLKeyDataMLDSAFinalize         (xmlSecKeyDataPtr data);
 
 static xmlSecKeyDataType xmlSecOpenSSLKeyDataMLDSAGetType          (xmlSecKeyDataPtr data);
 static xmlSecSize        xmlSecOpenSSLKeyDataMLDSAGetSize          (xmlSecKeyDataPtr data);
@@ -4802,9 +4622,9 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataMLDSAKlass = {
     NULL,                                       /* const xmlChar* dataNodeNs; */
 
     /* constructors/destructor */
-    xmlSecOpenSSLKeyDataMLDSAInitialize,        /* xmlSecKeyDataInitializeMethod initialize; */
-    xmlSecOpenSSLKeyDataMLDSADuplicate,         /* xmlSecKeyDataDuplicateMethod duplicate; */
-    xmlSecOpenSSLKeyDataMLDSAFinalize,          /* xmlSecKeyDataFinalizeMethod finalize; */
+    xmlSecOpenSSLEvpKeyDataInitialize,          /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecOpenSSLEvpKeyDataDuplicate,           /* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecOpenSSLEvpKeyDataFinalize,            /* xmlSecKeyDataFinalizeMethod finalize; */
     NULL,                                       /* xmlSecKeyDataGenerateMethod generate; */
 
     /* get info */
@@ -4905,27 +4725,6 @@ xmlSecOpenSSLKeyDataMLDSAGetEvp(xmlSecKeyDataPtr data) {
     return(xmlSecOpenSSLEvpKeyDataGetEvp(data));
 }
 
-static int
-xmlSecOpenSSLKeyDataMLDSAInitialize(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataMLDSAId), -1);
-
-    return(xmlSecOpenSSLEvpKeyDataInitialize(data));
-}
-
-static int
-xmlSecOpenSSLKeyDataMLDSADuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecOpenSSLKeyDataMLDSAId), -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecOpenSSLKeyDataMLDSAId), -1);
-
-    return(xmlSecOpenSSLEvpKeyDataDuplicate(dst, src));
-}
-
-static void
-xmlSecOpenSSLKeyDataMLDSAFinalize(xmlSecKeyDataPtr data) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataMLDSAId));
-
-    xmlSecOpenSSLEvpKeyDataFinalize(data);
-}
 
 
 static xmlSecSize
@@ -4995,10 +4794,6 @@ xmlSecOpenSSLKeyDataMLDSADebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
  * EXPERIMENTAL SUPPORT FOR SLH-DSA
  */
 
-static int               xmlSecOpenSSLKeyDataSLHDSAInitialize      (xmlSecKeyDataPtr data);
-static int               xmlSecOpenSSLKeyDataSLHDSADuplicate       (xmlSecKeyDataPtr dst,
-                                                                    xmlSecKeyDataPtr src);
-static void              xmlSecOpenSSLKeyDataSLHDSAFinalize        (xmlSecKeyDataPtr data);
 
 static xmlSecKeyDataType xmlSecOpenSSLKeyDataSLHDSAGetType         (xmlSecKeyDataPtr data);
 static xmlSecSize        xmlSecOpenSSLKeyDataSLHDSAGetSize         (xmlSecKeyDataPtr data);
@@ -5038,9 +4833,9 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataSLHDSAKlass = {
     NULL,                                       /* const xmlChar* dataNodeNs; */
 
     /* constructors/destructor */
-    xmlSecOpenSSLKeyDataSLHDSAInitialize,       /* xmlSecKeyDataInitializeMethod initialize; */
-    xmlSecOpenSSLKeyDataSLHDSADuplicate,        /* xmlSecKeyDataDuplicateMethod duplicate; */
-    xmlSecOpenSSLKeyDataSLHDSAFinalize,         /* xmlSecKeyDataFinalizeMethod finalize; */
+    xmlSecOpenSSLEvpKeyDataInitialize,          /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecOpenSSLEvpKeyDataDuplicate,           /* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecOpenSSLEvpKeyDataFinalize,            /* xmlSecKeyDataFinalizeMethod finalize; */
     NULL,                                       /* xmlSecKeyDataGenerateMethod generate; */
 
     /* get info */
@@ -5108,27 +4903,6 @@ xmlSecOpenSSLKeyDataSLHDSAGetEvp(xmlSecKeyDataPtr data) {
     return(xmlSecOpenSSLEvpKeyDataGetEvp(data));
 }
 
-static int
-xmlSecOpenSSLKeyDataSLHDSAInitialize(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataSLHDSAId), -1);
-
-    return(xmlSecOpenSSLEvpKeyDataInitialize(data));
-}
-
-static int
-xmlSecOpenSSLKeyDataSLHDSADuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecOpenSSLKeyDataSLHDSAId), -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecOpenSSLKeyDataSLHDSAId), -1);
-
-    return(xmlSecOpenSSLEvpKeyDataDuplicate(dst, src));
-}
-
-static void
-xmlSecOpenSSLKeyDataSLHDSAFinalize(xmlSecKeyDataPtr data) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataSLHDSAId));
-
-    xmlSecOpenSSLEvpKeyDataFinalize(data);
-}
 
 
 static xmlSecSize
@@ -5198,10 +4972,6 @@ xmlSecOpenSSLKeyDataSLHDSADebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
  * EdDSA support
  */
 
-static int               xmlSecOpenSSLKeyDataEdDSAInitialize      (xmlSecKeyDataPtr data);
-static int               xmlSecOpenSSLKeyDataEdDSADuplicate       (xmlSecKeyDataPtr dst,
-                                                                    xmlSecKeyDataPtr src);
-static void              xmlSecOpenSSLKeyDataEdDSAFinalize        (xmlSecKeyDataPtr data);
 
 static xmlSecKeyDataType xmlSecOpenSSLKeyDataEdDSAGetType         (xmlSecKeyDataPtr data);
 static xmlSecSize        xmlSecOpenSSLKeyDataEdDSAGetSize         (xmlSecKeyDataPtr data);
@@ -5237,9 +5007,9 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataEdDSAKlass = {
     NULL,                                       /* const xmlChar* dataNodeNs; */
 
     /* constructors/destructor */
-    xmlSecOpenSSLKeyDataEdDSAInitialize,        /* xmlSecKeyDataInitializeMethod initialize; */
-    xmlSecOpenSSLKeyDataEdDSADuplicate,         /* xmlSecKeyDataDuplicateMethod duplicate; */
-    xmlSecOpenSSLKeyDataEdDSAFinalize,          /* xmlSecKeyDataFinalizeMethod finalize; */
+    xmlSecOpenSSLEvpKeyDataInitialize,          /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecOpenSSLEvpKeyDataDuplicate,           /* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecOpenSSLEvpKeyDataFinalize,            /* xmlSecKeyDataFinalizeMethod finalize; */
     NULL,                                       /* xmlSecKeyDataGenerateMethod generate; */
 
     /* get info */
@@ -5307,27 +5077,6 @@ xmlSecOpenSSLKeyDataEdDSAGetEvp(xmlSecKeyDataPtr data) {
     return(xmlSecOpenSSLEvpKeyDataGetEvp(data));
 }
 
-static int
-xmlSecOpenSSLKeyDataEdDSAInitialize(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEdDSAId), -1);
-
-    return(xmlSecOpenSSLEvpKeyDataInitialize(data));
-}
-
-static int
-xmlSecOpenSSLKeyDataEdDSADuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecOpenSSLKeyDataEdDSAId), -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecOpenSSLKeyDataEdDSAId), -1);
-
-    return(xmlSecOpenSSLEvpKeyDataDuplicate(dst, src));
-}
-
-static void
-xmlSecOpenSSLKeyDataEdDSAFinalize(xmlSecKeyDataPtr data) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEdDSAId));
-
-    xmlSecOpenSSLEvpKeyDataFinalize(data);
-}
 
 
 static xmlSecSize
@@ -5396,10 +5145,6 @@ xmlSecOpenSSLKeyDataEdDSADebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
  * XDH support (X25519 and X448 key agreement)
  */
 
-static int               xmlSecOpenSSLKeyDataXdhInitialize        (xmlSecKeyDataPtr data);
-static int               xmlSecOpenSSLKeyDataXdhDuplicate         (xmlSecKeyDataPtr dst,
-                                                                    xmlSecKeyDataPtr src);
-static void              xmlSecOpenSSLKeyDataXdhFinalize          (xmlSecKeyDataPtr data);
 
 static xmlSecKeyDataType xmlSecOpenSSLKeyDataXdhGetType           (xmlSecKeyDataPtr data);
 static xmlSecSize        xmlSecOpenSSLKeyDataXdhGetSize           (xmlSecKeyDataPtr data);
@@ -5435,9 +5180,9 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataXdhKlass = {
     NULL,                                       /* const xmlChar* dataNodeNs; */
 
     /* constructors/destructor */
-    xmlSecOpenSSLKeyDataXdhInitialize,          /* xmlSecKeyDataInitializeMethod initialize; */
-    xmlSecOpenSSLKeyDataXdhDuplicate,           /* xmlSecKeyDataDuplicateMethod duplicate; */
-    xmlSecOpenSSLKeyDataXdhFinalize,            /* xmlSecKeyDataFinalizeMethod finalize; */
+    xmlSecOpenSSLEvpKeyDataInitialize,          /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecOpenSSLEvpKeyDataDuplicate,           /* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecOpenSSLEvpKeyDataFinalize,            /* xmlSecKeyDataFinalizeMethod finalize; */
     NULL,                                       /* xmlSecKeyDataGenerateMethod generate; */
 
     /* get info */
@@ -5516,27 +5261,6 @@ xmlSecOpenSSLKeyDataXdhGetEvp(xmlSecKeyDataPtr data) {
     return(xmlSecOpenSSLEvpKeyDataGetEvp(data));
 }
 
-static int
-xmlSecOpenSSLKeyDataXdhInitialize(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataXdhId), -1);
-
-    return(xmlSecOpenSSLEvpKeyDataInitialize(data));
-}
-
-static int
-xmlSecOpenSSLKeyDataXdhDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecOpenSSLKeyDataXdhId), -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecOpenSSLKeyDataXdhId), -1);
-
-    return(xmlSecOpenSSLEvpKeyDataDuplicate(dst, src));
-}
-
-static void
-xmlSecOpenSSLKeyDataXdhFinalize(xmlSecKeyDataPtr data) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataXdhId));
-
-    xmlSecOpenSSLEvpKeyDataFinalize(data);
-}
 
 
 static xmlSecSize

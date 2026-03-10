@@ -13,8 +13,6 @@
  * @Short_description:
  * @Stability: Stable
  */
-#ifndef XMLSEC_NO_XDH
-
 #include "globals.h"
 
 #include <stdlib.h>
@@ -38,6 +36,8 @@
 #include "../cast_helpers.h"
 #include "../keysdata_helpers.h"
 #include "../transform_helpers.h"
+
+#ifndef XMLSEC_NO_XDH
 
 /*
  * NSS uses CKM_ECDH1_DERIVE (0x00001050) for key agreement on all elliptic-curve

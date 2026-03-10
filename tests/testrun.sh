@@ -198,6 +198,7 @@ else
     xmlsec_feature_cert_der="no"
 fi
 
+
 # Only OpenSSL / NSS / GnuTLS currently has capability to lookup the certs/keys using X509 data
 if [ "z$crypto" = "zopenssl" -o "z$crypto" = "znss" -o "z$crypto" = "zgnutls" ] ; then
     xmlsec_feature_x509_data_lookup="yes"
@@ -313,6 +314,19 @@ if [ "z$crypto" != "zgcrypt" ] ; then
 else
     priv_key_option="--privkey-der"
     priv_key_format="der"
+fi
+
+#
+# NSS cannot import XDH (X25519/X448) private keys from OpenSSL-3.x-generated
+# PKCS12 files (SEC_ERROR_PKCS12_UNABLE_TO_IMPORT_KEY).  Use unencrypted DER
+# (PrivateKeyInfo) format for XDH keys when running under NSS.
+#
+if [ "z$crypto" = "znss" ] ; then
+    xdh_priv_key_option="--privkey-der"
+    xdh_priv_key_format="der"
+else
+    xdh_priv_key_option="$priv_key_option"
+    xdh_priv_key_format="$priv_key_format"
 fi
 
 #

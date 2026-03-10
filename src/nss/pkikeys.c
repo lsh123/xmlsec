@@ -268,6 +268,15 @@ xmlSecNssPKIAdoptKey(SECKEYPrivateKey *privkey,
         }
         break;
 #endif /* XMLSEC_NO_EC */
+#ifndef XMLSEC_NO_XDH
+    case ecMontKey:
+        data = xmlSecKeyDataCreate(xmlSecNssKeyDataXdhId);
+        if(data == NULL) {
+            xmlSecInternalError("xmlSecKeyDataCreate", NULL);
+            return(NULL);
+        }
+        break;
+#endif /* XMLSEC_NO_XDH */
     default:
         xmlSecUnsupportedEnumValueError("pubType", pubType, NULL);
         return(NULL);
@@ -427,6 +436,8 @@ xmlSecNssPKIKeyDataGetSize(xmlSecKeyDataPtr data) {
         return(8 * SECKEY_PublicKeyStrength(ctx->pubkey));
     case ecKey:
         return(SECKEY_SignatureLen(ctx->pubkey));
+    case ecMontKey:
+        return(8 * ctx->pubkey->u.ec.publicValue.len);
     default:
         break;
     }
@@ -1492,3 +1503,60 @@ xmlSecNssKeyDataEcWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKeyValu
     return(0);
 }
 #endif /* XMLSEC_NO_EC */
+
+#ifndef XMLSEC_NO_XDH
+/**************************************************************************
+ *
+ * XDH key data (X25519 and X448, RFC 7748)
+ *
+ **************************************************************************/
+
+/* XDH klass: no XML KeyValue representation, load from file/DER/PEM only */
+#define XMLSEC_NSS_PKI_KEY_KLASS_XDH(lcname, ucname, generate)                          \
+static xmlSecKeyDataKlass xmlSecNssKeyData ## lcname ## Klass = {                        \
+    sizeof(xmlSecKeyDataKlass),                 /* xmlSecSize klassSize */                \
+    xmlSecNssPKIKeyDataSize,                    /* xmlSecSize objSize */                  \
+    /* data */                                                                            \
+    xmlSecName ## ucname ## KeyValue,           /* const xmlChar* name; */                \
+    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageRetrievalMethodNodeXml,            \
+                                                /* xmlSecKeyDataUsage usage; */           \
+    xmlSecHref ## ucname ## KeyValue,           /* const xmlChar* href; */                \
+    NULL,                                       /* const xmlChar* dataNodeName; */        \
+    NULL,                                       /* const xmlChar* dataNodeNs; */          \
+    /* constructors/destructor */                                                         \
+    xmlSecNssPKIKeyDataInitialize,              /* xmlSecKeyDataInitializeMethod initialize; */ \
+    xmlSecNssPKIKeyDataDuplicate,               /* xmlSecKeyDataDuplicateMethod duplicate; */   \
+    xmlSecNssPKIKeyDataFinalize,                /* xmlSecKeyDataFinalizeMethod finalize; */      \
+    generate,                                   /* xmlSecKeyDataGenerateMethod generate; */      \
+    /* get info */                                                                        \
+    xmlSecNssPKIKeyDataGetType,                 /* xmlSecKeyDataGetTypeMethod getType; */ \
+    xmlSecNssPKIKeyDataGetSize,                 /* xmlSecKeyDataGetSizeMethod getSize; */ \
+    NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */ \
+    /* read/write */                                                                      \
+    NULL,                                       /* xmlSecKeyDataXmlReadMethod xmlRead; */ \
+    NULL,                                       /* xmlSecKeyDataXmlWriteMethod xmlWrite; */ \
+    NULL,                                       /* xmlSecKeyDataBinReadMethod binRead; */ \
+    NULL,                                       /* xmlSecKeyDataBinWriteMethod binWrite; */ \
+    /* debug */                                                                           \
+    xmlSecKeyDataDebugDumpImpl,                 /* xmlSecKeyDataDebugDumpMethod debugDump; */ \
+    xmlSecKeyDataDebugXmlDumpImpl,              /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */ \
+    /* reserved for the future */                                                         \
+    NULL,                                       /* void* reserved0; */                   \
+    NULL,                                       /* void* reserved1; */                   \
+};
+
+XMLSEC_NSS_PKI_KEY_KLASS_XDH(Xdh, XDH, NULL)
+
+/**
+ * xmlSecNssKeyDataXdhGetKlass:
+ *
+ * The XDH key data klass (X25519 and X448).
+ *
+ * Returns: pointer to XDH key data klass.
+ */
+xmlSecKeyDataId
+xmlSecNssKeyDataXdhGetKlass(void) {
+    return(&xmlSecNssKeyDataXdhKlass);
+}
+
+#endif /* XMLSEC_NO_XDH */

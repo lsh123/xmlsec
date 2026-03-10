@@ -322,6 +322,32 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformEcdsaSha512GetKlass(voi
 
 /********************************************************************
  *
+ * XDH key agreement (X25519 and X448)
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_XDH
+
+/**
+ * xmlSecNssKeyDataXdhId:
+ *
+ * The XDH key klass (X25519 and X448).
+ */
+#define xmlSecNssKeyDataXdhId           xmlSecNssKeyDataXdhGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecNssKeyDataXdhGetKlass(void);
+
+/**
+ * xmlSecNssTransformX25519Id:
+ *
+ * The X25519 key agreement transform klass.
+ */
+#define xmlSecNssTransformX25519Id      xmlSecNssTransformX25519GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecNssTransformX25519GetKlass(void);
+
+#endif /* XMLSEC_NO_XDH */
+
+
+/********************************************************************
+ *
  * HMAC transforms
  *
  *******************************************************************/
@@ -447,6 +473,35 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecNssKeyDataPbkdf2Set       (xmlSecK
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformPbkdf2GetKlass(void);
 
 #endif /* XMLSEC_NO_PBKDF2 */
+
+/********************************************************************
+ *
+ * ConcatKDF key and transform
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_CONCATKDF
+
+/**
+ * xmlSecNssKeyDataConcatKdfId:
+ *
+ * The ConcatKDF key data klass.
+ */
+#define xmlSecNssKeyDataConcatKdfId \
+        xmlSecNssKeyDataConcatKdfGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecNssKeyDataConcatKdfGetKlass  (void);
+XMLSEC_CRYPTO_EXPORT int                xmlSecNssKeyDataConcatKdfSet       (xmlSecKeyDataPtr data,
+                                                                             const xmlSecByte* buf,
+                                                                             xmlSecSize bufSize);
+/**
+ * xmlSecNssTransformConcatKdfId:
+ *
+ * The ConcatKDF key derivation transform klass.
+ */
+#define xmlSecNssTransformConcatKdfId \
+        xmlSecNssTransformConcatKdfGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformConcatKdfGetKlass(void);
+
+#endif /* XMLSEC_NO_CONCATKDF */
 
 
 /********************************************************************

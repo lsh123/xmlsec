@@ -321,8 +321,59 @@ xmlSecOpenSSLEvpKeyDataFinalize(xmlSecKeyDataPtr data) {
     memset(ctx, 0, sizeof(xmlSecOpenSSLEvpKeyDataCtx));
 }
 
+#ifndef XMLSEC_OPENSSL_API_300
+static xmlSecSize
+xmlSecOpenSSLKeyDataGetKeySize(xmlSecKeyDataPtr data) {
+    EVP_PKEY* pKey;
+    xmlSecAssert2(data != NULL, 0);
 
-#ifdef XMLSEC_OPENSSL_API_300
+    pKey = xmlSecOpenSSLEvpKeyDataGetEvp(data);
+    xmlSecAssert2(pKey != NULL, 0);
+
+    switch(EVP_PKEY_base_id(pKey)) {
+#ifndef XMLSEC_NO_RSA
+    case EVP_PKEY_RSA:
+    case EVP_PKEY_RSA2:
+    case EVP_PKEY_RSA_PSS:
+        {
+            RSA* rsa = NULL;
+            const BIGNUM* n = NULL;
+            xmlSecOpenSSLSizeT numBits;
+            xmlSecSize res;
+
+            rsa = EVP_PKEY_get0_RSA(pKey);
+            if(rsa == NULL) {
+                xmlSecOpenSSLError("EVP_PKEY_get0_RSA", xmlSecKeyDataGetName(data));
+                return(0);
+            }
+
+            RSA_get0_key(rsa, &n, NULL, NULL);
+            if(n == NULL) {
+                xmlSecOpenSSLError("RSA_get0_key", xmlSecKeyDataGetName(data));
+                return(0);
+            }
+
+            numBits = BN_num_bits(n);
+            if(numBits <= 0) {
+                xmlSecOpenSSLError("BN_num_bits", xmlSecKeyDataGetName(data));
+                return(0);
+            }
+
+            XMLSEC_OPENSSL_SAFE_CAST_SIZE_T_TO_SIZE(numBits, res, return(0), xmlSecKeyDataGetName(data));
+            return(res);
+        }
+#endif /* XMLSEC_NO_RSA */
+    default:
+        {
+            /* for other keys we don't have a good way to get the key size, so return 0 */
+            xmlSecOpenSSLError2("EVP_PKEY_base_id", xmlSecKeyDataGetName(data),
+                "unsupported evp key type=%d", EVP_PKEY_base_id(pKey));
+            return(0);
+        }
+    }
+}
+
+#else /* XMLSEC_OPENSSL_API_300 */
 static xmlSecSize
 xmlSecOpenSSLKeyDataGetKeySize(xmlSecKeyDataPtr data) {
     EVP_PKEY* pKey;

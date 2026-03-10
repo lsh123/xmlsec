@@ -44,9 +44,9 @@
 #include "private.h"
 
 
-#if !defined(OPENSSL_NO_ENGINE) && (!defined(XMLSEC_OPENSSL_API_300) || defined(XMLSEC_OPENSSL3_ENGINES))
+#if !defined(OPENSSL_NO_ENGINE)
 #include <openssl/engine.h>
-#endif /* !defined(OPENSSL_NO_ENGINE) && (!defined(XMLSEC_OPENSSL_API_300) || defined(XMLSEC_OPENSSL3_ENGINES)) */
+#endif /* !defined(OPENSSL_NO_ENGINE) */
 
 #ifdef XMLSEC_OPENSSL_API_300
 #include <openssl/provider.h>
@@ -117,20 +117,15 @@ xmlSecOpenSSLSetBNValue(const BIGNUM *bigNum, xmlSecBufferPtr buf) {
  * Internal OpenSSL EVP key CTX
  *
  *************************************************************************/
-#define XMLSEC_OPENSSL_EVP_KEY_IMPLEMENTATION_UNKNOWN               0
-#define XMLSEC_OPENSSL_EVP_KEY_IMPLEMENTATION_MEMORY                1
-#define XMLSEC_OPENSSL_EVP_KEY_IMPLEMENTATION_PROVIDER_OR_ENGINE    2
-
 typedef struct _xmlSecOpenSSLEvpKeyDataCtx      xmlSecOpenSSLEvpKeyDataCtx,
                                                 *xmlSecOpenSSLEvpKeyDataCtxPtr;
 struct _xmlSecOpenSSLEvpKeyDataCtx {
     EVP_PKEY*           pKey;
-    int                 implementation;
 };
 
 /******************************************************************************
  *
- * EVP key data (dsa/rsa)
+ * EVP key data
  *
  *****************************************************************************/
 XMLSEC_KEY_DATA_DECLARE(OpenSSLEvpKeyData, xmlSecOpenSSLEvpKeyDataCtx)
@@ -143,50 +138,6 @@ static void              xmlSecOpenSSLEvpKeyDataFinalize         (xmlSecKeyDataP
 static xmlSecSize        xmlSecOpenSSLEvpKeyDataGetKeySize       (xmlSecKeyDataPtr data);
 static xmlSecKeyDataType xmlSecOpenSSLEvpKeyDataGetType          (xmlSecKeyDataPtr data);
 
-/* Returns one of the XMLSEC_OPENSSL_EVP_KEY_IMPLEMENTATION values, on error returns XMLSEC_OPENSSL_EVP_KEY_IMPLEMENTATION_UNKNOWN */
-static int
-xmlSecOpenSSLEvpIsKeyInMemory(EVP_PKEY* pKey) {
-#ifdef XMLSEC_OPENSSL_API_300
-    const OSSL_PROVIDER *provider;
-#endif /* XMLSEC_OPENSSL_API_300 */
-
-    xmlSecAssert2(pKey != NULL, XMLSEC_OPENSSL_EVP_KEY_IMPLEMENTATION_UNKNOWN);
-
-#if !defined(OPENSSL_NO_ENGINE) && (!defined(XMLSEC_OPENSSL_API_300) || defined(XMLSEC_OPENSSL3_ENGINES))
-    if (EVP_PKEY_get0_engine(pKey) != NULL) {
-        return(XMLSEC_OPENSSL_EVP_KEY_IMPLEMENTATION_PROVIDER_OR_ENGINE);
-    }
-#endif /* !defined(OPENSSL_NO_ENGINE) && (!defined(XMLSEC_OPENSSL_API_300) || defined(XMLSEC_OPENSSL3_ENGINES)) */
-
-#ifdef XMLSEC_OPENSSL_API_300
-    provider = EVP_PKEY_get0_provider(pKey);
-    if (provider != NULL) {
-        const char * name;
-
-        /* don't bother checking for 'legacy' and 'null' providers */
-        name = OSSL_PROVIDER_get0_name(provider);
-        if((name != NULL) && (strcmp(name, "default") != 0) && (strcmp(name, "base") != 0) && (strcmp(name, "fips") != 0)) {
-            return(XMLSEC_OPENSSL_EVP_KEY_IMPLEMENTATION_PROVIDER_OR_ENGINE);
-        }
-    }
-#endif /* XMLSEC_OPENSSL_API_300 */
-
-    /* looks like the key is in memory */
-    return(XMLSEC_OPENSSL_EVP_KEY_IMPLEMENTATION_MEMORY);
-}
-
-/* Returns one of the XMLSEC_OPENSSL_EVP_KEY_IMPLEMENTATION values, on error returns XMLSEC_OPENSSL_EVP_KEY_IMPLEMENTATION_UNKNOWN */
-
-static int
-xmlSecOpenSSLEvpKeyDataIsKeyInMemory(xmlSecKeyDataPtr data) {
-    xmlSecOpenSSLEvpKeyDataCtxPtr ctx;
-
-    xmlSecAssert2(xmlSecKeyDataIsValid(data), XMLSEC_OPENSSL_EVP_KEY_IMPLEMENTATION_UNKNOWN);
-
-    ctx = xmlSecOpenSSLEvpKeyDataGetCtx(data);
-    xmlSecAssert2(ctx != NULL, XMLSEC_OPENSSL_EVP_KEY_IMPLEMENTATION_UNKNOWN);
-    return (ctx->implementation);
-}
 
 /**
  * xmlSecOpenSSLEvpKeyDataAdoptEvp:
@@ -212,7 +163,6 @@ xmlSecOpenSSLEvpKeyDataAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
         EVP_PKEY_free(ctx->pKey);
     }
     ctx->pKey = pKey;
-    ctx->implementation = xmlSecOpenSSLEvpIsKeyInMemory(pKey);
     return(0);
 }
 
@@ -300,7 +250,6 @@ xmlSecOpenSSLEvpKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
             return(-1);
         }
     }
-    ctxDst->implementation = ctxSrc->implementation;
 
     /* done */
     return(0);
@@ -505,17 +454,19 @@ xmlSecOpenSSLEvpKeyDataGetType(xmlSecKeyDataPtr data) {
     xmlSecAssert2(xmlSecKeyDataIsValid(data), xmlSecKeyDataTypeUnknown);
     xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecOpenSSLEvpKeyDataSize), xmlSecKeyDataTypeUnknown);
 
+    pKey = xmlSecOpenSSLEvpKeyDataGetEvp(data);
+    xmlSecAssert2(pKey != NULL, xmlSecKeyDataTypeUnknown);
+
     /* check if the key is in memory */
-    if(xmlSecOpenSSLEvpKeyDataIsKeyInMemory(data) != XMLSEC_OPENSSL_EVP_KEY_IMPLEMENTATION_MEMORY) {
+#if !defined(OPENSSL_NO_ENGINE)
+    if (EVP_PKEY_get0_engine(pKey) != NULL) {
         /* there is no way to determine if a key is public or private when
          * key is stored on HSM (engine or provder) so we assume it is private
          * (see https://github.com/lsh123/xmlsec/issues/588)
          */
         return(xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic);
     }
-
-    pKey = xmlSecOpenSSLEvpKeyDataGetEvp(data);
-    xmlSecAssert2(pKey != NULL, xmlSecKeyDataTypeUnknown);
+#endif /* !defined(OPENSSL_NO_ENGINE) */
 
     switch(EVP_PKEY_base_id(pKey)) {
 #ifndef XMLSEC_NO_RSA
@@ -653,35 +604,14 @@ xmlSecOpenSSLEvpKeyDataGetKeySize(xmlSecKeyDataPtr data) {
 
 static xmlSecKeyDataType
 xmlSecOpenSSLEvpKeyDataGetType(xmlSecKeyDataPtr data) {
-    EVP_PKEY* pKey;
-    BIGNUM *priv_key = NULL;
-    int ret;
-
     xmlSecAssert2(xmlSecKeyDataIsValid(data), xmlSecKeyDataTypeUnknown);
     xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecOpenSSLEvpKeyDataSize), xmlSecKeyDataTypeUnknown);
+    return(xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic);
 
-    /* check if the key is in memory */
-    if(xmlSecOpenSSLEvpKeyDataIsKeyInMemory(data) != XMLSEC_OPENSSL_EVP_KEY_IMPLEMENTATION_MEMORY) {
-        /* there is no way to determine if a key is public or private when
-         * key is stored on HSM (engine or provder) so we assume it is private
-         * (see https://github.com/lsh123/xmlsec/issues/588)
-         */
-        return(xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic);
-    }
-
-    pKey = xmlSecOpenSSLEvpKeyDataGetEvp(data);
-    xmlSecAssert2(pKey != NULL,  xmlSecKeyDataTypeUnknown);
-
-    /* ignore return value */
-    ret = EVP_PKEY_get_bn_param(pKey, OSSL_PKEY_PARAM_PRIV_KEY, &(priv_key));
-    if(priv_key != NULL) {
-        BN_clear_free(priv_key);
-        return(xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic);
-    } else if(ret != 1) {
-        return(xmlSecKeyDataTypePublic);
-    } else  {
-        return(xmlSecKeyDataTypePublic);
-    }
+    /* there is no good way to determine if a key is public or private so
+     * we assume it is private (see https://github.com/lsh123/xmlsec/issues/588)
+     */
+    return(xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic);
 }
 #endif /* XMLSEC_OPENSSL_API_300 */
 
@@ -1575,6 +1505,7 @@ xmlSecOpenSSLKeyDataDsaGetValue(xmlSecKeyDataPtr data, xmlSecOpenSSLKeyValueDsaP
         xmlSecOpenSSLError("EVP_PKEY_get_bn_param(g)", xmlSecKeyDataGetName(data));
         return(-1);
     }
+
     ret = EVP_PKEY_get_bn_param(pKey, OSSL_PKEY_PARAM_PUB_KEY, &(dsaKeyValue->pub_key));
     if((ret != 1) || (dsaKeyValue->pub_key == NULL)) {
         xmlSecOpenSSLError("EVP_PKEY_get_bn_param(pub_key)", xmlSecKeyDataGetName(data));

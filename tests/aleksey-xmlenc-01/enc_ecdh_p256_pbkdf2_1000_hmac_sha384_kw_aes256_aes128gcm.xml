@@ -18,15 +18,6 @@
           </xenc11:KeyDerivationMethod>
           <xenc:OriginatorKeyInfo xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
             <dsig:KeyName>originator-key-name</dsig:KeyName>
-            <dsig:KeyValue>
-<ECKeyValue xmlns="http://www.w3.org/2009/xmldsig11#">
-<NamedCurve URI="urn:oid:1.2.840.10045.3.1.7"/>
-<PublicKey>
-BP4TDUMXanrPs0QmI8bGK0l7x3mhNCt11nlv3+6F6uWpSZjtZuPHnb+OCwBCcPHK
-eK1j24raHXg8Il5Xwzx2YNw=
-</PublicKey>
-</ECKeyValue>
-</dsig:KeyValue>
           </xenc:OriginatorKeyInfo>
           <xenc:RecipientKeyInfo xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
             <dsig:KeyName>recipient-key-name</dsig:KeyName>
@@ -34,17 +25,17 @@ eK1j24raHXg8Il5Xwzx2YNw=
         </xenc:AgreementMethod>
       </dsig:KeyInfo>
       <xenc:CipherData>
-        <xenc:CipherValue>vOjNKFAJewwlGMWiOnsYy18Y0a5KUS3Uy+GMuW89VqCi5I28wUh0pQ==</xenc:CipherValue>
+        <xenc:CipherValue>9w5TMly+HYLGETl2zoBF3ZeJX7pTJmWHEDz8VKcr6cGbXWWQA6fBTg==</xenc:CipherValue>
       </xenc:CipherData>
     </xenc:EncryptedKey>
   </dsig:KeyInfo>
   <xenc:CipherData>
-    <xenc:CipherValue>dN4ejjR3g5ShVVqvaVehj4fOPLNY/PVAPavLuBnV6acYogySrwEctQ4LVaSoxDrc
-OtpfdnrspWmvt8XAvesFPZlH0vU3LoxzMRReECWLMGyL+Yt7lg84mBpZeuLfGTSm
-AYSnmEsQbyUR06rR4DAMh/yPxWVW0vRhN8NnqVMJKPLAejnzguN2EcTP3w8E7QT7
-sX9fe7DXQ42z1hLfkK4xag0HPl/X6HmP6gH25QOQIrOGWbHLXfkCbf+S768Deyri
-LWIHd3u277RTnLn/AeSzGL2vkIasoQYPqMqgU58nIj1Cwpd/YL6El7yRUGl2HNwb
-hO0pi9lYqkR2Xr6aVu0uKNA8ocqwT3YgwUHwVrYhQm+JoDf0mZ32qFVnlqXGH1YD
-FW+EFCY=</xenc:CipherValue>
+    <xenc:CipherValue>XwXcO5+uK+wPxtesghVidKhBWJb9skcy1ardqzc0Xgkny88/t5fDZuhVuvblqZCN
+xFzVIMwKg7/Aj1Bg7CbSRK66dmPp8kQ8pna9elt2XhPwL8l4dSbxC+Pa/6ytCEFI
+Bcv9kysr3/mskzv4Wt7fxgd30IwfW+ND0wF1gfYVSxKf2SSVToy56YEftFqOCSyk
+RfLN8TJAL7lpEiqT1PjGHhbN1bvLduQC7HHXISfoFw3oEJxqjOIlTYjnCLE32MWe
+KhzcPE9pMhL3TmBZnZdflN1F8uDWMcUnvxsXGlUC/sSKOobXv4iU8c8HTGZUR+tW
+rtmSUhKyPdCjj7c7n14w44cjw6G6H3qfUi9W1XVQ8DOfav/UoHZxJdJDJW24+BLI
+8grx1bQ=</xenc:CipherValue>
   </xenc:CipherData>
 </xenc:EncryptedData>

@@ -37,8 +37,6 @@
 #include "../keysdata_helpers.h"
 #include "../transform_helpers.h"
 
-#ifndef XMLSEC_NO_XDH
-
 /*
  * NSS uses CKM_ECDH1_DERIVE (0x00001050) for key agreement on all elliptic-curve
  * types, including Montgomery-curve keys (X25519, X448).  The PKCS#11 v3.0 constant
@@ -120,9 +118,17 @@ xmlSecNssKeyAgreementInitialize(xmlSecTransformPtr transform) {
     memset(ctx, 0, sizeof(xmlSecNssKeyAgreementCtx));
 
     /* set algorithm-specific parameters */
+#ifndef XMLSEC_NO_EC
+    if(xmlSecTransformCheckId(transform, xmlSecNssTransformEcdhId)) {
+        ctx->expected_secret_len = 0;  /* dynamic - depends on curve */
+    } else
+#endif /* XMLSEC_NO_EC */
+#ifndef XMLSEC_NO_XDH
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformX25519Id)) {
         ctx->expected_secret_len = 32;
-    } else {
+    } else
+#endif /* XMLSEC_NO_XDH */
+    {
         xmlSecInternalError("Unknown key agreement transform",
                             xmlSecTransformGetName(transform));
         xmlSecNssKeyAgreementFinalize(transform);
@@ -166,9 +172,23 @@ xmlSecNssKeyAgreementSetKeyReq(xmlSecTransformPtr transform, xmlSecKeyReqPtr key
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssKeyAgreementSize), -1);
     xmlSecAssert2(keyReq != NULL, -1);
 
-    keyReq->keyId    = xmlSecNssKeyDataXdhId;
     keyReq->keyType  = xmlSecKeyDataTypePrivate;
     keyReq->keyUsage = xmlSecKeyUsageKeyAgreement;
+#ifndef XMLSEC_NO_EC
+    if(xmlSecTransformCheckId(transform, xmlSecNssTransformEcdhId)) {
+        keyReq->keyId = xmlSecNssKeyDataEcId;
+    } else
+#endif /* XMLSEC_NO_EC */
+#ifndef XMLSEC_NO_XDH
+    if(xmlSecTransformCheckId(transform, xmlSecNssTransformX25519Id)) {
+        keyReq->keyId = xmlSecNssKeyDataXdhId;
+    } else
+#endif /* XMLSEC_NO_XDH */
+    {
+        xmlSecInternalError("Unknown key agreement transform",
+                            xmlSecTransformGetName(transform));
+        return(-1);
+    }
     return(0);
 }
 
@@ -565,9 +585,32 @@ static xmlSecTransformKlass xmlSecNss ## name ## Klass = {                      
 
 /**************************************************************************
  *
+ * ECDH key agreement transform
+ *
+ **************************************************************************/
+#ifndef XMLSEC_NO_EC
+XMLSEC_NSS_KEY_AGREEMENT_KLASS(Ecdh)
+
+/**
+ * xmlSecNssTransformEcdhGetKlass:
+ *
+ * The ECDH key agreement transform klass.
+ *
+ * Returns: the ECDH key agreement transform klass.
+ */
+xmlSecTransformId
+xmlSecNssTransformEcdhGetKlass(void) {
+    return(&xmlSecNssEcdhKlass);
+}
+#endif /* XMLSEC_NO_EC */
+
+
+/**************************************************************************
+ *
  * X25519 key agreement transform
  *
  **************************************************************************/
+#ifndef XMLSEC_NO_XDH
 XMLSEC_NSS_KEY_AGREEMENT_KLASS(X25519)
 
 /**
@@ -581,11 +624,4 @@ xmlSecTransformId
 xmlSecNssTransformX25519GetKlass(void) {
     return(&xmlSecNssX25519Klass);
 }
-
-
-#else /* defined(XMLSEC_NO_XDH) */
-
-/* ISO C forbids an empty translation unit */
-typedef int make_iso_compilers_happy;
-
 #endif /* XMLSEC_NO_XDH */

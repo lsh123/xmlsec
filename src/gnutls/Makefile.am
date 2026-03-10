@@ -31,6 +31,8 @@ libxmlsec1_gnutls_la_SOURCES =\
 	kt_rsa.c \
 	kw_aes.c \
 	kw_des.c \
+	concatkdf.c \
+	key_agrmnt.c \
 	pbkdf2.c \
 	private.h \
 	symkeys.c \

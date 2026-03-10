@@ -203,6 +203,12 @@ xmlSecGnuTLSSymKeyDataKlassCheck(xmlSecKeyDataKlass* klass) {
     }
 #endif /* XMLSEC_NO_PBKDF2 */
 
+#ifndef XMLSEC_NO_CONCATKDF
+    if(klass == xmlSecGnuTLSKeyDataConcatKdfId) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_CONCATKDF */
+
     return(0);
 }
 
@@ -433,3 +439,49 @@ xmlSecGnuTLSKeyDataPbkdf2Set(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSe
 }
 
 #endif /* XMLSEC_NO_PBKDF2 */
+
+#ifndef XMLSEC_NO_CONCATKDF
+/**************************************************************************
+ *
+ * ConcatKDF key klass
+ *
+ *************************************************************************/
+XMLSEC_GNUTLS_SYMKEY_KLASS_EX(ConcatKdf, xmlSecNameConcatKdfKey, xmlSecKeyDataUsageReadFromFile, NULL, NULL, NULL)
+
+/**
+ * xmlSecGnuTLSKeyDataConcatKdfGetKlass:
+ *
+ * The ConcatKDF key data klass.
+ *
+ * Returns: ConcatKDF key data klass.
+ */
+xmlSecKeyDataId
+xmlSecGnuTLSKeyDataConcatKdfGetKlass(void) {
+    return(&xmlSecGnuTLSKeyDataConcatKdfKlass);
+}
+
+/**
+ * xmlSecGnuTLSKeyDataConcatKdfSet:
+ * @data:               the pointer to ConcatKDF key data.
+ * @buf:                the pointer to key value.
+ * @bufSize:            the key value size (in bytes).
+ *
+ * Sets the value of ConcatKDF key data.
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecGnuTLSKeyDataConcatKdfSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSize bufSize) {
+    xmlSecBufferPtr buffer;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataConcatKdfId), -1);
+    xmlSecAssert2(buf != NULL, -1);
+    xmlSecAssert2(bufSize > 0, -1);
+
+    buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
+    xmlSecAssert2(buffer != NULL, -1);
+
+    return(xmlSecBufferSetData(buffer, buf, bufSize));
+}
+
+#endif /* XMLSEC_NO_CONCATKDF */

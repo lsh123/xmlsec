@@ -2596,6 +2596,138 @@ xmlSecGnuTLSKeyDataEdDSAGetSize(xmlSecKeyDataPtr data) {
 #endif /* XMLSEC_NO_EDDSA */
 
 
+#ifndef XMLSEC_NO_XDH
+/**************************************************************************
+ *
+ * XDH key (X25519 and X448, RFC 7748)
+ *
+ **************************************************************************/
+
+static int              xmlSecGnuTLSKeyDataXdhInitialize        (xmlSecKeyDataPtr data);
+static void             xmlSecGnuTLSKeyDataXdhFinalize          (xmlSecKeyDataPtr data);
+static int              xmlSecGnuTLSKeyDataXdhDuplicate         (xmlSecKeyDataPtr dst,
+                                                                 xmlSecKeyDataPtr src);
+static xmlSecKeyDataType xmlSecGnuTLSKeyDataXdhGetType          (xmlSecKeyDataPtr data);
+static xmlSecSize       xmlSecGnuTLSKeyDataXdhGetSize           (xmlSecKeyDataPtr data);
+XMLSEC_GNUTLS_ASYMKEY_KLASS_EX(Xdh, xmlSecNameXDHKeyValue,
+    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+    xmlSecHrefXDHKeyValue, NULL, NULL,
+    NULL, NULL, NULL)
+
+/**
+ * xmlSecGnuTLSKeyDataXdhGetKlass:
+ *
+ * The GnuTLS XDH key data klass (X25519 and X448).
+ *
+ * Returns: pointer to GnuTLS XDH key data klass.
+ */
+xmlSecKeyDataId
+xmlSecGnuTLSKeyDataXdhGetKlass(void) {
+    return(&xmlSecGnuTLSKeyDataXdhKlass);
+}
+
+/**
+ * xmlSecGnuTLSKeyDataXdhAdoptKey:
+ * @data:               the pointer to XDH key data.
+ * @pubkey:             the pointer to GnuTLS XDH public key.
+ * @privkey:            the pointer to GnuTLS XDH private key.
+ *
+ * Sets the value of XDH key data. The @pubkey and @privkey will be owned by the @data on success.
+ *
+ * Returns: 0 on success or a negative value otherwise.
+ */
+int
+xmlSecGnuTLSKeyDataXdhAdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, gnutls_privkey_t privkey) {
+    int ret;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataXdhId), -1);
+
+    /* verify key type */
+    if(pubkey != NULL) {
+        ret = gnutls_pubkey_get_pk_algorithm(pubkey, NULL);
+        if((ret != GNUTLS_PK_ECDH_X25519) && (ret != GNUTLS_PK_ECDH_X448)) {
+            xmlSecInternalError2("Invalid pubkey algorithm", NULL, "type=%d", ret);
+            return(-1);
+        }
+    }
+    if(privkey != NULL) {
+        ret = gnutls_privkey_get_pk_algorithm(privkey, NULL);
+        if((ret != GNUTLS_PK_ECDH_X25519) && (ret != GNUTLS_PK_ECDH_X448)) {
+            xmlSecInternalError2("Invalid privkey algorithm", NULL, "type=%d", ret);
+            return(-1);
+        }
+    }
+
+    /* do the work */
+    return xmlSecGnuTLSAsymKeyDataAdoptKey(data, pubkey, privkey);
+}
+
+/**
+ * xmlSecGnuTLSKeyDataXdhGetPublicKey:
+ * @data:               the pointer to XDH key data.
+ *
+ * Gets the GnuTLS XDH public key from XDH key data.
+ *
+ * Returns: pointer to GnuTLS public XDH key or NULL if an error occurs.
+ */
+gnutls_pubkey_t
+xmlSecGnuTLSKeyDataXdhGetPublicKey(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataXdhId), NULL);
+    return xmlSecGnuTLSAsymKeyDataGetPublicKey(data);
+}
+
+/**
+ * xmlSecGnuTLSKeyDataXdhGetPrivateKey:
+ * @data:               the pointer to XDH key data.
+ *
+ * Gets the GnuTLS XDH private key from XDH key data.
+ *
+ * Returns: pointer to GnuTLS private XDH key or NULL if an error occurs.
+ */
+gnutls_privkey_t
+xmlSecGnuTLSKeyDataXdhGetPrivateKey(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataXdhId), NULL);
+    return xmlSecGnuTLSAsymKeyDataGetPrivateKey(data);
+}
+
+static int
+xmlSecGnuTLSKeyDataXdhInitialize(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataXdhId), -1);
+
+    return(xmlSecGnuTLSAsymKeyDataInitialize(data));
+}
+
+static int
+xmlSecGnuTLSKeyDataXdhDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecGnuTLSKeyDataXdhId), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecGnuTLSKeyDataXdhId), -1);
+
+    return(xmlSecGnuTLSAsymKeyDataDuplicate(dst, src));
+}
+
+static void
+xmlSecGnuTLSKeyDataXdhFinalize(xmlSecKeyDataPtr data) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataXdhId));
+
+    xmlSecGnuTLSAsymKeyDataFinalize(data);
+}
+
+static xmlSecKeyDataType
+xmlSecGnuTLSKeyDataXdhGetType(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataXdhId), xmlSecKeyDataTypeUnknown);
+
+    return xmlSecGnuTLSAsymKeyDataGetType(data);
+}
+
+static xmlSecSize
+xmlSecGnuTLSKeyDataXdhGetSize(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataXdhId), 0);
+
+    return xmlSecGnuTLSAsymKeyDataGetSize(data);
+}
+
+#endif /* XMLSEC_NO_XDH */
+
 
 /**************************************************************************
  *
@@ -2778,6 +2910,25 @@ xmlSecGnuTLSAsymKeyDataCreate(gnutls_pubkey_t pubkey, gnutls_privkey_t privkey) 
 
         break;
 #endif /* XMLSEC_NO_EDDSA */
+
+#ifndef XMLSEC_NO_XDH
+    case GNUTLS_PK_ECDH_X25519:
+    case GNUTLS_PK_ECDH_X448:
+        keyData = xmlSecKeyDataCreate(xmlSecGnuTLSKeyDataXdhId);
+        if(keyData == NULL) {
+            xmlSecInternalError("xmlSecKeyDataCreate(XdhId)", NULL);
+            return(NULL);
+        }
+
+        ret = xmlSecGnuTLSKeyDataXdhAdoptKey(keyData, pubkey, privkey);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecGnuTLSKeyDataXdhAdoptKey", NULL);
+            xmlSecKeyDataDestroy(keyData);
+            return(NULL);
+        }
+
+        break;
+#endif /* XMLSEC_NO_XDH */
 
         default:
             xmlSecInternalError2("Public / private key algorithm is not supported", NULL,

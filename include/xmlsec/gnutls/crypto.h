@@ -564,6 +564,78 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformEdDSAEd448GetKlass(v
 
 /********************************************************************
  *
+ * XDH keys and transforms (X25519 and X448)
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_XDH
+
+/**
+ * xmlSecGnuTLSKeyDataXdhId:
+ *
+ * The XDH key klass (X25519 and X448).
+ */
+#define xmlSecGnuTLSKeyDataXdhId   xmlSecGnuTLSKeyDataXdhGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecGnuTLSKeyDataXdhGetKlass          (void);
+XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataXdhAdoptKey          (xmlSecKeyDataPtr data,
+                                                                                 gnutls_pubkey_t pubkey,
+                                                                                 gnutls_privkey_t privkey);
+XMLSEC_CRYPTO_EXPORT gnutls_pubkey_t    xmlSecGnuTLSKeyDataXdhGetPublicKey      (xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT gnutls_privkey_t   xmlSecGnuTLSKeyDataXdhGetPrivateKey     (xmlSecKeyDataPtr data);
+
+
+/**
+ * xmlSecGnuTLSTransformX25519Id:
+ *
+ * The X25519 key agreement transform klass.
+ */
+#define xmlSecGnuTLSTransformX25519Id  \
+        xmlSecGnuTLSTransformX25519GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformX25519GetKlass(void);
+
+
+/**
+ * xmlSecGnuTLSTransformX448Id:
+ *
+ * The X448 key agreement transform klass.
+ */
+#define xmlSecGnuTLSTransformX448Id  \
+        xmlSecGnuTLSTransformX448GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformX448GetKlass(void);
+
+#endif /* XMLSEC_NO_XDH */
+
+/********************************************************************
+ *
+ * ConcatKDF transforms
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_CONCATKDF
+
+/**
+ * xmlSecGnuTLSKeyDataConcatKdfId:
+ *
+ * The ConcatKDF key klass.
+ */
+#define xmlSecGnuTLSKeyDataConcatKdfId \
+        xmlSecGnuTLSKeyDataConcatKdfGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecGnuTLSKeyDataConcatKdfGetKlass    (void);
+XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataConcatKdfSet         (xmlSecKeyDataPtr data,
+                                                                                 const xmlSecByte* buf,
+                                                                                 xmlSecSize bufSize);
+
+/**
+ * xmlSecGnuTLSTransformConcatKdfId:
+ *
+ * The ConcatKDF key derivation transform klass.
+ */
+#define xmlSecGnuTLSTransformConcatKdfId \
+        xmlSecGnuTLSTransformConcatKdfGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformConcatKdfGetKlass(void);
+
+#endif /* XMLSEC_NO_CONCATKDF */
+
+/********************************************************************
+ *
  * HMAC transforms
  *
  *******************************************************************/

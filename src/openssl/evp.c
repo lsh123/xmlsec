@@ -1064,6 +1064,51 @@ done:
     return(res);
 }
 
+/* Helper macro to define the key data klass */
+#define XMLSEC_OPENSSL_EVP_KEY_KLASS_EX(klassName, xmlName, usage, dataNodeName, dataNodeNs, generate, xmlRead, xmlWrite)  \
+static xmlSecKeyDataKlass xmlSecOpenSSLKeyData ## klassName ## Klass = {                                    \
+    sizeof(xmlSecKeyDataKlass),                 /* xmlSecSize klassSize */                                  \
+    xmlSecOpenSSLEvpKeyDataSize,                /* xmlSecSize objSize */                                    \
+                                                                                                            \
+    /* data */                                                                                              \
+    xmlSecName ## xmlName ## KeyValue,          /* const xmlChar* name; */                                  \
+    usage,                                      /* xmlSecKeyDataUsage usage; */                             \
+    xmlSecHref ## xmlName ## KeyValue,          /* const xmlChar* href; */                                  \
+    dataNodeName,                               /* const xmlChar* dataNodeName; */                          \
+    dataNodeNs,                                 /* const xmlChar* dataNodeNs; */                            \
+                                                                                                            \
+    /* constructors/destructor */                                                                           \
+    xmlSecOpenSSLEvpKeyDataInitialize,          /* xmlSecKeyDataInitializeMethod initialize; */             \
+    xmlSecOpenSSLEvpKeyDataDuplicate,           /* xmlSecKeyDataDuplicateMethod duplicate; */               \
+    xmlSecOpenSSLEvpKeyDataFinalize,            /* xmlSecKeyDataFinalizeMethod finalize; */                 \
+    generate,                                   /* xmlSecKeyDataGenerateMethod generate; */                 \
+                                                                                                            \
+    /* get info */                                                                                          \
+    xmlSecOpenSSLEvpKeyDataGetType,             /* xmlSecKeyDataGetTypeMethod getType; */                   \
+    xmlSecOpenSSLEvpKeyDataGetKeySize,          /* xmlSecKeyDataGetSizeMethod getSize; */                   \
+    NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */  \
+                                                                                                            \
+    /* read/write */                                                                                        \
+    xmlRead,                                    /* xmlSecKeyDataXmlReadMethod xmlRead; */                   \
+    xmlWrite,                                   /* xmlSecKeyDataXmlWriteMethod xmlWrite; */                 \
+    NULL,                                       /* xmlSecKeyDataBinReadMethod binRead; */                   \
+    NULL,                                       /* xmlSecKeyDataBinWriteMethod binWrite; */                 \
+                                                                                                            \
+    /* debug */                                                                                             \
+    xmlSecOpenSSLEvpKeyDataDebugDump,           /* xmlSecKeyDataDebugDumpMethod debugDump; */               \
+    xmlSecOpenSSLEvpKeyDataDebugXmlDump,        /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */            \
+                                                                                                            \
+    /* reserved for the future */                                                                           \
+    NULL,                                       /* void* reserved0; */                                      \
+    NULL,                                       /* void* reserved1; */                                      \
+};
+
+#define XMLSEC_OPENSSL_EVP_KEY_KLASS(klassName, xmlName)                                                    \
+    XMLSEC_OPENSSL_EVP_KEY_KLASS_EX(klassName, xmlName,                                                     \
+        xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageRetrievalMethodNodeXml,                          \
+        NULL, NULL, NULL, NULL, NULL)
+
+
 #ifndef XMLSEC_NO_DSA
 
 /**************************************************************************
@@ -1205,43 +1250,12 @@ static int              xmlSecOpenSSLKeyDataDsaWrite            (xmlSecKeyDataId
                                                                  xmlSecKeyValueDsaPtr dsaValue,
                                                                  int writePrivateKey);
 
-static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataDsaKlass = {
-    sizeof(xmlSecKeyDataKlass),
-    xmlSecOpenSSLEvpKeyDataSize,
-
-    /* data */
-    xmlSecNameDSAKeyValue,
+XMLSEC_OPENSSL_EVP_KEY_KLASS_EX(Dsa, DSA,
     xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
-                                                /* xmlSecKeyDataUsage usage; */
-    xmlSecHrefDSAKeyValue,                      /* const xmlChar* href; */
-    xmlSecNodeDSAKeyValue,                      /* const xmlChar* dataNodeName; */
-    xmlSecDSigNs,                               /* const xmlChar* dataNodeNs; */
-
-    /* constructors/destructor */
-    xmlSecOpenSSLEvpKeyDataInitialize,          /* xmlSecKeyDataInitializeMethod initialize; */
-    xmlSecOpenSSLEvpKeyDataDuplicate,           /* xmlSecKeyDataDuplicateMethod duplicate; */
-    xmlSecOpenSSLEvpKeyDataFinalize,            /* xmlSecKeyDataFinalizeMethod finalize; */
-    xmlSecOpenSSLKeyDataDsaGenerate,            /* xmlSecKeyDataGenerateMethod generate; */
-
-    /* get info */
-    xmlSecOpenSSLEvpKeyDataGetType,             /* xmlSecKeyDataGetTypeMethod getType; */
-    xmlSecOpenSSLEvpKeyDataGetKeySize,          /* xmlSecKeyDataGetSizeMethod getSize; */
-    NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
-
-    /* read/write */
-    xmlSecOpenSSLKeyDataDsaXmlRead,             /* xmlSecKeyDataXmlReadMethod xmlRead; */
-    xmlSecOpenSSLKeyDataDsaXmlWrite,            /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
-    NULL,                                       /* xmlSecKeyDataBinReadMethod binRead; */
-    NULL,                                       /* xmlSecKeyDataBinWriteMethod binWrite; */
-
-    /* debug */
-    xmlSecOpenSSLEvpKeyDataDebugDump,           /* xmlSecKeyDataDebugDumpMethod debugDump; */
-    xmlSecOpenSSLEvpKeyDataDebugXmlDump,        /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
-
-    /* reserved for the future */
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+    xmlSecNodeDSAKeyValue, xmlSecDSigNs,
+    xmlSecOpenSSLKeyDataDsaGenerate,
+    xmlSecOpenSSLKeyDataDsaXmlRead,
+    xmlSecOpenSSLKeyDataDsaXmlWrite)
 
 /**
  * xmlSecOpenSSLKeyDataDsaGetKlass:
@@ -2007,43 +2021,12 @@ static int              xmlSecOpenSSLKeyDataDhWrite             (xmlSecKeyDataId
                                                                  xmlSecKeyValueDhPtr dhValue,
                                                                  int writePrivateKey);
 
-static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataDhKlass = {
-    sizeof(xmlSecKeyDataKlass),
-    xmlSecOpenSSLEvpKeyDataSize,
-
-    /* data */
-    xmlSecNameDHKeyValue,
+XMLSEC_OPENSSL_EVP_KEY_KLASS_EX(Dh, DH,
     xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
-                                                /* xmlSecKeyDataUsage usage; */
-    xmlSecHrefDHKeyValue,                       /* const xmlChar* href; */
-    xmlSecNodeDHKeyValue,                       /* const xmlChar* dataNodeName; */
-    xmlSecEncNs,                                /* const xmlChar* dataNodeNs; */
-
-    /* constructors/destructor */
-    xmlSecOpenSSLEvpKeyDataInitialize,          /* xmlSecKeyDataInitializeMethod initialize; */
-    xmlSecOpenSSLEvpKeyDataDuplicate,           /* xmlSecKeyDataDuplicateMethod duplicate; */
-    xmlSecOpenSSLEvpKeyDataFinalize,            /* xmlSecKeyDataFinalizeMethod finalize; */
-    xmlSecOpenSSLKeyDataDhGenerate,             /* xmlSecKeyDataGenerateMethod generate; */
-
-    /* get info */
-    xmlSecOpenSSLEvpKeyDataGetType,              /* xmlSecKeyDataGetTypeMethod getType; */
-    xmlSecOpenSSLEvpKeyDataGetKeySize,              /* xmlSecKeyDataGetSizeMethod getSize; */
-    NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
-
-    /* read/write */
-    xmlSecOpenSSLKeyDataDhXmlRead,              /* xmlSecKeyDataXmlReadMethod xmlRead; */
-    xmlSecOpenSSLKeyDataDhXmlWrite,             /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
-    NULL,                                       /* xmlSecKeyDataBinReadMethod binRead; */
-    NULL,                                       /* xmlSecKeyDataBinWriteMethod binWrite; */
-
-    /* debug */
-    xmlSecOpenSSLEvpKeyDataDebugDump,            /* xmlSecKeyDataDebugDumpMethod debugDump; */
-    xmlSecOpenSSLEvpKeyDataDebugXmlDump,         /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
-
-    /* reserved for the future */
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+    xmlSecNodeDHKeyValue, xmlSecEncNs,
+    xmlSecOpenSSLKeyDataDhGenerate,
+    xmlSecOpenSSLKeyDataDhXmlRead,
+    xmlSecOpenSSLKeyDataDhXmlWrite)
 
 /**
  * xmlSecOpenSSLKeyDataDhGetKlass:
@@ -2821,43 +2804,12 @@ static int              xmlSecOpenSSLKeyDataEcWrite              (xmlSecKeyDataI
 static const EC_KEY*    xmlSecOpenSSLKeyDataEcGetEcKey          (xmlSecKeyDataPtr data);
 #endif /*XMLSEC_OPENSSL_API_300 */
 
-static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataEcKlass = {
-    sizeof(xmlSecKeyDataKlass),
-    xmlSecOpenSSLEvpKeyDataSize,
-
-    /* data */
-    xmlSecNameECKeyValue,
+XMLSEC_OPENSSL_EVP_KEY_KLASS_EX(Ec, EC,
     xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
-                                                /* xmlSecKeyDataUsage usage; */
-    xmlSecHrefECKeyValue,                    /* const xmlChar* href; */
-    xmlSecNodeECKeyValue,                    /* const xmlChar* dataNodeName; */
-    xmlSecDSig11Ns,                           /* const xmlChar* dataNodeNs; */
-
-    /* constructors/destructor */
-    xmlSecOpenSSLEvpKeyDataInitialize,          /* xmlSecKeyDataInitializeMethod initialize; */
-    xmlSecOpenSSLEvpKeyDataDuplicate,           /* xmlSecKeyDataDuplicateMethod duplicate; */
-    xmlSecOpenSSLEvpKeyDataFinalize,            /* xmlSecKeyDataFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecKeyDataGenerateMethod generate; */
-
-    /* get info */
-    xmlSecOpenSSLEvpKeyDataGetType,           /* xmlSecKeyDataGetTypeMethod getType; */
-    xmlSecOpenSSLEvpKeyDataGetKeySize,           /* xmlSecKeyDataGetSizeMethod getSize; */
-    NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
-
-    /* read/write */
-    xmlSecOpenSSLKeyDataEcXmlRead,           /* xmlSecKeyDataXmlReadMethod xmlRead; */
-    xmlSecOpenSSLKeyDataEcXmlWrite,          /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
-    NULL,                                       /* xmlSecKeyDataBinReadMethod binRead; */
-    NULL,                                       /* xmlSecKeyDataBinWriteMethod binWrite; */
-
-    /* debug */
-    xmlSecOpenSSLEvpKeyDataDebugDump,         /* xmlSecKeyDataDebugDumpMethod debugDump; */
-    xmlSecOpenSSLEvpKeyDataDebugXmlDump,      /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
-
-    /* reserved for the future */
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+    xmlSecNodeECKeyValue, xmlSecDSig11Ns,
+    NULL,
+    xmlSecOpenSSLKeyDataEcXmlRead,
+    xmlSecOpenSSLKeyDataEcXmlWrite)
 
 /**
  * xmlSecOpenSSLKeyDataEcGetKlass:
@@ -3534,43 +3486,12 @@ static int              xmlSecOpenSSLKeyDataRsaWrite            (xmlSecKeyDataId
                                                                  xmlSecKeyValueRsaPtr rsaValue,
                                                                  int writePrivateKey);
 
-static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataRsaKlass = {
-    sizeof(xmlSecKeyDataKlass),
-    xmlSecOpenSSLEvpKeyDataSize,
-
-    /* data */
-    xmlSecNameRSAKeyValue,
+XMLSEC_OPENSSL_EVP_KEY_KLASS_EX(Rsa, RSA,
     xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
-                                                /* xmlSecKeyDataUsage usage; */
-    xmlSecHrefRSAKeyValue,                      /* const xmlChar* href; */
-    xmlSecNodeRSAKeyValue,                      /* const xmlChar* dataNodeName; */
-    xmlSecDSigNs,                               /* const xmlChar* dataNodeNs; */
-
-    /* constructors/destructor */
-    xmlSecOpenSSLEvpKeyDataInitialize,          /* xmlSecKeyDataInitializeMethod initialize; */
-    xmlSecOpenSSLEvpKeyDataDuplicate,           /* xmlSecKeyDataDuplicateMethod duplicate; */
-    xmlSecOpenSSLEvpKeyDataFinalize,            /* xmlSecKeyDataFinalizeMethod finalize; */
-    xmlSecOpenSSLKeyDataRsaGenerate,            /* xmlSecKeyDataGenerateMethod generate; */
-
-    /* get info */
-    xmlSecOpenSSLEvpKeyDataGetType,             /* xmlSecKeyDataGetTypeMethod getType; */
-    xmlSecOpenSSLEvpKeyDataGetKeySize,              /* xmlSecKeyDataGetSizeMethod getSize; */
-    NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
-
-    /* read/write */
-    xmlSecOpenSSLKeyDataRsaXmlRead,             /* xmlSecKeyDataXmlReadMethod xmlRead; */
-    xmlSecOpenSSLKeyDataRsaXmlWrite,            /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
-    NULL,                                       /* xmlSecKeyDataBinReadMethod binRead; */
-    NULL,                                       /* xmlSecKeyDataBinWriteMethod binWrite; */
-
-    /* debug */
-    xmlSecOpenSSLEvpKeyDataDebugDump,           /* xmlSecKeyDataDebugDumpMethod debugDump; */
-    xmlSecOpenSSLEvpKeyDataDebugXmlDump,        /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
-
-    /* reserved for the future */
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+    xmlSecNodeRSAKeyValue, xmlSecDSigNs,
+    xmlSecOpenSSLKeyDataRsaGenerate,
+    xmlSecOpenSSLKeyDataRsaXmlRead,
+    xmlSecOpenSSLKeyDataRsaXmlWrite)
 
 /**
  * xmlSecOpenSSLKeyDataRsaGetKlass:
@@ -4196,43 +4117,7 @@ done:
  *
  *************************************************************************/
 
-static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataGost2001Klass = {
-    sizeof(xmlSecKeyDataKlass),
-    xmlSecOpenSSLEvpKeyDataSize,
-
-    /* data */
-    xmlSecNameGOST2001KeyValue,
-    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
-                                        /* xmlSecKeyDataUsage usage; */
-    xmlSecHrefGOST2001KeyValue,         /* const xmlChar* href; */
-    xmlSecNodeGOST2001KeyValue,         /* const xmlChar* dataNodeName; */
-    xmlSecDSigNs,                       /* const xmlChar* dataNodeNs; */
-
-    /* constructors/destructor */
-    xmlSecOpenSSLEvpKeyDataInitialize,          /* xmlSecKeyDataInitializeMethod initialize; */
-    xmlSecOpenSSLEvpKeyDataDuplicate,           /* xmlSecKeyDataDuplicateMethod duplicate; */
-    xmlSecOpenSSLEvpKeyDataFinalize,            /* xmlSecKeyDataFinalizeMethod finalize; */
-    NULL, /* xmlSecOpenSSLKeyDataGost2001Generate,*/   /* xmlSecKeyDataGenerateMethod generate; */
-
-    /* get info */
-    xmlSecOpenSSLEvpKeyDataGetType,       /* xmlSecKeyDataGetTypeMethod getType; */
-    xmlSecOpenSSLEvpKeyDataGetKeySize,             /* xmlSecKeyDataGetSizeMethod getSize; */
-    NULL,                                      /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
-
-    /* read/write */
-    NULL,                                      /* xmlSecKeyDataXmlReadMethod xmlRead; */
-    NULL,                                      /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
-    NULL,                                      /* xmlSecKeyDataBinReadMethod binRead; */
-    NULL,                                      /* xmlSecKeyDataBinWriteMethod binWrite; */
-
-    /* debug */
-    xmlSecOpenSSLEvpKeyDataDebugDump,           /* xmlSecKeyDataDebugDumpMethod debugDump; */
-    xmlSecOpenSSLEvpKeyDataDebugXmlDump,  /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
-
-    /* reserved for the future */
-    NULL,                               /* void* reserved0; */
-    NULL,                               /* void* reserved1; */
-};
+XMLSEC_OPENSSL_EVP_KEY_KLASS(Gost2001, GOST2001)
 
 /**
  * xmlSecOpenSSLKeyDataGost2001GetKlass:
@@ -4256,43 +4141,7 @@ xmlSecOpenSSLKeyDataGost2001GetKlass(void) {
  *
  *************************************************************************/
 
-static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataGostR3410_2012_256Klass = {
-    sizeof(xmlSecKeyDataKlass),
-    xmlSecOpenSSLEvpKeyDataSize,
-
-    /* data */
-    xmlSecNameGostR3410_2012_256KeyValue,
-    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
-                                        /* xmlSecKeyDataUsage usage; */
-    xmlSecHrefGostR3410_2012_256KeyValue,         /* const xmlChar* href; */
-    xmlSecNodeGostR3410_2012_256KeyValue,         /* const xmlChar* dataNodeName; */
-    xmlSecDSigNs,                       /* const xmlChar* dataNodeNs; */
-
-    /* constructors/destructor */
-    xmlSecOpenSSLEvpKeyDataInitialize,          /* xmlSecKeyDataInitializeMethod initialize; */
-    xmlSecOpenSSLEvpKeyDataDuplicate,           /* xmlSecKeyDataDuplicateMethod duplicate; */
-    xmlSecOpenSSLEvpKeyDataFinalize,            /* xmlSecKeyDataFinalizeMethod finalize; */
-    NULL, /* xmlSecOpenSSLKeyDataGostR3410_2012_256Generate,*/   /* xmlSecKeyDataGenerateMethod generate; */
-
-    /* get info */
-    xmlSecOpenSSLEvpKeyDataGetType,             /* xmlSecKeyDataGetTypeMethod getType; */
-    xmlSecOpenSSLEvpKeyDataGetKeySize,          /* xmlSecKeyDataGetSizeMethod getSize; */
-    NULL,                               /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
-
-    /* read/write */
-    NULL,       /* xmlSecKeyDataXmlReadMethod xmlRead; */
-    NULL,       /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
-    NULL,                               /* xmlSecKeyDataBinReadMethod binRead; */
-    NULL,                               /* xmlSecKeyDataBinWriteMethod binWrite; */
-
-    /* debug */
-    xmlSecOpenSSLEvpKeyDataDebugDump,     /* xmlSecKeyDataDebugDumpMethod debugDump; */
-    xmlSecOpenSSLEvpKeyDataDebugXmlDump,/* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
-
-    /* reserved for the future */
-    NULL,                               /* void* reserved0; */
-    NULL,                               /* void* reserved1; */
-};
+XMLSEC_OPENSSL_EVP_KEY_KLASS(GostR3410_2012_256, GostR3410_2012_256)
 
 /**
  * xmlSecOpenSSLKeyDataGostR3410_2012_256GetKlass:
@@ -4314,43 +4163,7 @@ xmlSecOpenSSLKeyDataGostR3410_2012_256GetKlass(void) {
  *************************************************************************/
 \
 
-static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataGostR3410_2012_512Klass = {
-    sizeof(xmlSecKeyDataKlass),
-    xmlSecOpenSSLEvpKeyDataSize,
-
-    /* data */
-    xmlSecNameGostR3410_2012_512KeyValue,
-    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
-                                        /* xmlSecKeyDataUsage usage; */
-    xmlSecHrefGostR3410_2012_512KeyValue,         /* const xmlChar* href; */
-    xmlSecNodeGostR3410_2012_512KeyValue,         /* const xmlChar* dataNodeName; */
-    xmlSecDSigNs,                       /* const xmlChar* dataNodeNs; */
-
-    /* constructors/destructor */
-    xmlSecOpenSSLEvpKeyDataInitialize,          /* xmlSecKeyDataInitializeMethod initialize; */
-    xmlSecOpenSSLEvpKeyDataDuplicate,           /* xmlSecKeyDataDuplicateMethod duplicate; */
-    xmlSecOpenSSLEvpKeyDataFinalize,            /* xmlSecKeyDataFinalizeMethod finalize; */
-    NULL, /* xmlSecOpenSSLKeyDataGostR3410_2012_512Generate,*/   /* xmlSecKeyDataGenerateMethod generate; */
-
-    /* get info */
-    xmlSecOpenSSLEvpKeyDataGetType,       /* xmlSecKeyDataGetTypeMethod getType; */
-    xmlSecOpenSSLEvpKeyDataGetKeySize,                    /* xmlSecKeyDataGetSizeMethod getSize; */
-    NULL,                               /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
-
-    /* read/write */
-    NULL,       /* xmlSecKeyDataXmlReadMethod xmlRead; */
-    NULL,       /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
-    NULL,                               /* xmlSecKeyDataBinReadMethod binRead; */
-    NULL,                               /* xmlSecKeyDataBinWriteMethod binWrite; */
-
-    /* debug */
-    xmlSecOpenSSLEvpKeyDataDebugDump,     /* xmlSecKeyDataDebugDumpMethod debugDump; */
-    xmlSecOpenSSLEvpKeyDataDebugXmlDump,/* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
-
-    /* reserved for the future */
-    NULL,                               /* void* reserved0; */
-    NULL,                               /* void* reserved1; */
-};
+XMLSEC_OPENSSL_EVP_KEY_KLASS(GostR3410_2012_512, GostR3410_2012_512)
 
 /**
  * xmlSecOpenSSLKeyDataGostR3410_2012_512GetKlass:
@@ -4386,43 +4199,7 @@ xmlSecOpenSSLKeyValueMLDSACheckKeyType(EVP_PKEY* pKey)
     }
 }
 
-static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataMLDSAKlass = {
-    sizeof(xmlSecKeyDataKlass),
-    xmlSecOpenSSLEvpKeyDataSize,
-
-    /* data */
-    xmlSecNameMLDSAKeyValue,
-    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageRetrievalMethodNodeXml,
-                                                /* xmlSecKeyDataUsage usage; */
-    xmlSecHrefMLDSAKeyValue,                  /* const xmlChar* href; */
-    NULL,                                       /* const xmlChar* dataNodeName; */
-    NULL,                                       /* const xmlChar* dataNodeNs; */
-
-    /* constructors/destructor */
-    xmlSecOpenSSLEvpKeyDataInitialize,          /* xmlSecKeyDataInitializeMethod initialize; */
-    xmlSecOpenSSLEvpKeyDataDuplicate,           /* xmlSecKeyDataDuplicateMethod duplicate; */
-    xmlSecOpenSSLEvpKeyDataFinalize,            /* xmlSecKeyDataFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecKeyDataGenerateMethod generate; */
-
-    /* get info */
-    xmlSecOpenSSLEvpKeyDataGetType,             /* xmlSecKeyDataGetTypeMethod getType; */
-    xmlSecOpenSSLEvpKeyDataGetKeySize,          /* xmlSecKeyDataGetSizeMethod getSize; */
-    NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
-
-    /* read/write */
-    NULL,                                       /* xmlSecKeyDataXmlReadMethod xmlRead; */
-    NULL,                                       /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
-    NULL,                                       /* xmlSecKeyDataBinReadMethod binRead; */
-    NULL,                                       /* xmlSecKeyDataBinWriteMethod binWrite; */
-
-    /* debug */
-    xmlSecOpenSSLEvpKeyDataDebugDump,           /* xmlSecKeyDataDebugDumpMethod debugDump; */
-    xmlSecOpenSSLEvpKeyDataDebugXmlDump,      /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
-
-    /* reserved for the future */
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+XMLSEC_OPENSSL_EVP_KEY_KLASS(MLDSA, MLDSA)
 
 /**
  * xmlSecOpenSSLKeyDataMLDSAGetKlass:
@@ -4529,43 +4306,7 @@ xmlSecOpenSSLKeyValueSLHDSACheckKeyType(EVP_PKEY* pKey)
     }
 }
 
-static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataSLHDSAKlass = {
-    sizeof(xmlSecKeyDataKlass),
-    xmlSecOpenSSLEvpKeyDataSize,
-
-    /* data */
-    xmlSecNameSLHDSAKeyValue,
-    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageRetrievalMethodNodeXml,
-                                                /* xmlSecKeyDataUsage usage; */
-    xmlSecHrefSLHDSAKeyValue,                   /* const xmlChar* href; */
-    NULL,                                       /* const xmlChar* dataNodeName; */
-    NULL,                                       /* const xmlChar* dataNodeNs; */
-
-    /* constructors/destructor */
-    xmlSecOpenSSLEvpKeyDataInitialize,          /* xmlSecKeyDataInitializeMethod initialize; */
-    xmlSecOpenSSLEvpKeyDataDuplicate,           /* xmlSecKeyDataDuplicateMethod duplicate; */
-    xmlSecOpenSSLEvpKeyDataFinalize,            /* xmlSecKeyDataFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecKeyDataGenerateMethod generate; */
-
-    /* get info */
-    xmlSecOpenSSLEvpKeyDataGetType,             /* xmlSecKeyDataGetTypeMethod getType; */
-    xmlSecOpenSSLEvpKeyDataGetKeySize,              /* xmlSecKeyDataGetSizeMethod getSize; */
-    NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
-
-    /* read/write */
-    NULL,                                       /* xmlSecKeyDataXmlReadMethod xmlRead; */
-    NULL,                                       /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
-    NULL,                                       /* xmlSecKeyDataBinReadMethod binRead; */
-    NULL,                                       /* xmlSecKeyDataBinWriteMethod binWrite; */
-
-    /* debug */
-    xmlSecOpenSSLEvpKeyDataDebugDump,        /* xmlSecKeyDataDebugDumpMethod debugDump; */
-    xmlSecOpenSSLEvpKeyDataDebugXmlDump,     /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
-
-    /* reserved for the future */
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+XMLSEC_OPENSSL_EVP_KEY_KLASS(SLHDSA, SLHDSA)
 
 /**
  * xmlSecOpenSSLKeyDataSLHDSAGetKlass:
@@ -4635,43 +4376,7 @@ xmlSecOpenSSLKeyValueEdDSACheckKeyType(EVP_PKEY* pKey)
     }
 }
 
-static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataEdDSAKlass = {
-    sizeof(xmlSecKeyDataKlass),
-    xmlSecOpenSSLEvpKeyDataSize,
-
-    /* data */
-    xmlSecNameEdDSAKeyValue,
-    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageRetrievalMethodNodeXml,
-                                                /* xmlSecKeyDataUsage usage; */
-    xmlSecHrefEdDSAKeyValue,                    /* const xmlChar* href; */
-    NULL,                                       /* const xmlChar* dataNodeName; */
-    NULL,                                       /* const xmlChar* dataNodeNs; */
-
-    /* constructors/destructor */
-    xmlSecOpenSSLEvpKeyDataInitialize,          /* xmlSecKeyDataInitializeMethod initialize; */
-    xmlSecOpenSSLEvpKeyDataDuplicate,           /* xmlSecKeyDataDuplicateMethod duplicate; */
-    xmlSecOpenSSLEvpKeyDataFinalize,            /* xmlSecKeyDataFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecKeyDataGenerateMethod generate; */
-
-    /* get info */
-    xmlSecOpenSSLEvpKeyDataGetType,             /* xmlSecKeyDataGetTypeMethod getType; */
-    xmlSecOpenSSLEvpKeyDataGetKeySize,               /* xmlSecKeyDataGetSizeMethod getSize; */
-    NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
-
-    /* read/write */
-    NULL,                                       /* xmlSecKeyDataXmlReadMethod xmlRead; */
-    NULL,                                       /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
-    NULL,                                       /* xmlSecKeyDataBinReadMethod binRead; */
-    NULL,                                       /* xmlSecKeyDataBinWriteMethod binWrite; */
-
-    /* debug */
-    xmlSecOpenSSLEvpKeyDataDebugDump,         /* xmlSecKeyDataDebugDumpMethod debugDump; */
-    xmlSecOpenSSLEvpKeyDataDebugXmlDump,      /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
-
-    /* reserved for the future */
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+XMLSEC_OPENSSL_EVP_KEY_KLASS(EdDSA, EdDSA)
 
 /**
  * xmlSecOpenSSLKeyDataEdDSAGetKlass:
@@ -4740,43 +4445,7 @@ xmlSecOpenSSLKeyValueXdhCheckKeyType(EVP_PKEY* pKey)
     }
 }
 
-static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataXdhKlass = {
-    sizeof(xmlSecKeyDataKlass),
-    xmlSecOpenSSLEvpKeyDataSize,
-
-    /* data */
-    xmlSecNameXDHKeyValue,
-    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageRetrievalMethodNodeXml,
-                                                /* xmlSecKeyDataUsage usage; */
-    xmlSecHrefXDHKeyValue,                      /* const xmlChar* href; */
-    NULL,                                       /* const xmlChar* dataNodeName; */
-    NULL,                                       /* const xmlChar* dataNodeNs; */
-
-    /* constructors/destructor */
-    xmlSecOpenSSLEvpKeyDataInitialize,          /* xmlSecKeyDataInitializeMethod initialize; */
-    xmlSecOpenSSLEvpKeyDataDuplicate,           /* xmlSecKeyDataDuplicateMethod duplicate; */
-    xmlSecOpenSSLEvpKeyDataFinalize,            /* xmlSecKeyDataFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecKeyDataGenerateMethod generate; */
-
-    /* get info */
-    xmlSecOpenSSLEvpKeyDataGetType,             /* xmlSecKeyDataGetTypeMethod getType; */
-    xmlSecOpenSSLEvpKeyDataGetKeySize,              /* xmlSecKeyDataGetSizeMethod getSize; */
-    NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */
-
-    /* read/write */
-    NULL,                                       /* xmlSecKeyDataXmlReadMethod xmlRead; */
-    NULL,                                       /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
-    NULL,                                       /* xmlSecKeyDataBinReadMethod binRead; */
-    NULL,                                       /* xmlSecKeyDataBinWriteMethod binWrite; */
-
-    /* debug */
-    xmlSecOpenSSLEvpKeyDataDebugDump,           /* xmlSecKeyDataDebugDumpMethod debugDump; */
-    xmlSecOpenSSLEvpKeyDataDebugXmlDump,        /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
-
-    /* reserved for the future */
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+XMLSEC_OPENSSL_EVP_KEY_KLASS(Xdh, XDH)
 
 /**
  * xmlSecOpenSSLKeyDataXdhGetKlass:

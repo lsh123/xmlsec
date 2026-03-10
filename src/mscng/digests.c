@@ -55,6 +55,31 @@ static int      xmlSecMSCngDigestExecute     (xmlSecTransformPtr transform,
                                               xmlSecTransformCtxPtr transformCtx);
 static int      xmlSecMSCngDigestCheckId     (xmlSecTransformPtr transform);
 
+#define XMLSEC_MSCNG_DIGEST_KLASS_EX(name)                                                         \
+static xmlSecTransformKlass xmlSecMSCng ## name ## Klass = {                                      \
+    sizeof(xmlSecTransformKlass),              /* size_t klassSize */                              \
+    xmlSecMSCngDigestSize,                     /* size_t objSize */                                \
+                                                                                                   \
+    xmlSecName ## name,                        /* const xmlChar* name; */                          \
+    xmlSecHref ## name,                        /* const xmlChar* href; */                          \
+    xmlSecTransformUsageDigestMethod,          /* xmlSecTransformUsage usage; */                   \
+    xmlSecMSCngDigestInitialize,               /* xmlSecTransformInitializeMethod initialize; */   \
+    xmlSecMSCngDigestFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */       \
+    NULL,                                      /* xmlSecTransformNodeReadMethod readNode; */       \
+    NULL,                                      /* xmlSecTransformNodeWriteMethod writeNode; */     \
+    NULL,                                      /* xmlSecTransformSetKeyReqMethod setKeyReq; */     \
+    NULL,                                      /* xmlSecTransformSetKeyMethod setKey; */           \
+    xmlSecMSCngDigestVerify,                   /* xmlSecTransformVerifyMethod verify; */           \
+    xmlSecTransformDefaultGetDataType,         /* xmlSecTransformGetDataTypeMethod getDataType; */ \
+    xmlSecTransformDefaultPushBin,             /* xmlSecTransformPushBinMethod pushBin; */         \
+    xmlSecTransformDefaultPopBin,              /* xmlSecTransformPopBinMethod popBin; */           \
+    NULL,                                      /* xmlSecTransformPushXmlMethod pushXml; */         \
+    NULL,                                      /* xmlSecTransformPopXmlMethod popXml; */           \
+    xmlSecMSCngDigestExecute,                  /* xmlSecTransformExecuteMethod execute; */         \
+    NULL,                                      /* void* reserved0; */                              \
+    NULL,                                      /* void* reserved1; */                              \
+};
+
 
 static int
 xmlSecMSCngDigestCheckId(xmlSecTransformPtr transform) {
@@ -366,30 +391,7 @@ xmlSecMSCngDigestExecute(xmlSecTransformPtr transform,
  * MD5
  *
  *****************************************************************************/
-static xmlSecTransformKlass xmlSecMSCngMd5Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),              /* size_t klassSize */
-    xmlSecMSCngDigestSize,                     /* size_t objSize */
-
-    xmlSecNameMd5,                             /* const xmlChar* name; */
-    xmlSecHrefMd5,                             /* const xmlChar* href; */
-    xmlSecTransformUsageDigestMethod,          /* xmlSecTransformUsage usage; */
-    xmlSecMSCngDigestInitialize,               /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecMSCngDigestFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                      /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                      /* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,                                      /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    NULL,                                      /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecMSCngDigestVerify,                   /* xmlSecTransformVerifyMethod verify; */
-    xmlSecTransformDefaultGetDataType,         /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,             /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,              /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                      /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                      /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecMSCngDigestExecute,                  /* xmlSecTransformExecuteMethod execute; */
-    NULL,                                      /* void* reserved0; */
-    NULL,                                      /* void* reserved1; */
-};
+XMLSEC_MSCNG_DIGEST_KLASS_EX(Md5)
 
 /**
  * xmlSecMSCngTransformMd5GetKlass:
@@ -410,30 +412,7 @@ xmlSecMSCngTransformMd5GetKlass(void) {
  * SHA1
  *
  *****************************************************************************/
-static xmlSecTransformKlass xmlSecMSCngSha1Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),              /* size_t klassSize */
-    xmlSecMSCngDigestSize,                  /* size_t objSize */
-
-    xmlSecNameSha1,                          /* const xmlChar* name; */
-    xmlSecHrefSha1,                          /* const xmlChar* href; */
-    xmlSecTransformUsageDigestMethod,          /* xmlSecTransformUsage usage; */
-    xmlSecMSCngDigestInitialize,               /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecMSCngDigestFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                      /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                      /* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,                                      /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    NULL,                                      /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecMSCngDigestVerify,                   /* xmlSecTransformVerifyMethod verify; */
-    xmlSecTransformDefaultGetDataType,         /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,             /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,              /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                      /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                      /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecMSCngDigestExecute,                  /* xmlSecTransformExecuteMethod execute; */
-    NULL,                                      /* void* reserved0; */
-    NULL,                                      /* void* reserved1; */
-};
+XMLSEC_MSCNG_DIGEST_KLASS_EX(Sha1)
 
 /**
  * xmlSecMSCngTransformSha1GetKlass:
@@ -454,30 +433,7 @@ xmlSecMSCngTransformSha1GetKlass(void) {
  * SHA256
  *
  *****************************************************************************/
-static xmlSecTransformKlass xmlSecMSCngSha256Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),              /* size_t klassSize */
-    xmlSecMSCngDigestSize,                  /* size_t objSize */
-
-    xmlSecNameSha256,                          /* const xmlChar* name; */
-    xmlSecHrefSha256,                          /* const xmlChar* href; */
-    xmlSecTransformUsageDigestMethod,          /* xmlSecTransformUsage usage; */
-    xmlSecMSCngDigestInitialize,               /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecMSCngDigestFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                      /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                      /* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,                                      /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    NULL,                                      /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecMSCngDigestVerify,                   /* xmlSecTransformVerifyMethod verify; */
-    xmlSecTransformDefaultGetDataType,         /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,             /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,              /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                      /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                      /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecMSCngDigestExecute,                  /* xmlSecTransformExecuteMethod execute; */
-    NULL,                                      /* void* reserved0; */
-    NULL,                                      /* void* reserved1; */
-};
+XMLSEC_MSCNG_DIGEST_KLASS_EX(Sha256)
 
 /**
  * xmlSecMSCngTransformSha256GetKlass:
@@ -498,30 +454,7 @@ xmlSecMSCngTransformSha256GetKlass(void) {
  * SHA384
  *
  *****************************************************************************/
-static xmlSecTransformKlass xmlSecMSCngSha384Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),              /* size_t klassSize */
-    xmlSecMSCngDigestSize,                  /* size_t objSize */
-
-    xmlSecNameSha384,                          /* const xmlChar* name; */
-    xmlSecHrefSha384,                          /* const xmlChar* href; */
-    xmlSecTransformUsageDigestMethod,          /* xmlSecTransformUsage usage; */
-    xmlSecMSCngDigestInitialize,               /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecMSCngDigestFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                      /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                      /* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,                                      /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    NULL,                                      /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecMSCngDigestVerify,                   /* xmlSecTransformVerifyMethod verify; */
-    xmlSecTransformDefaultGetDataType,         /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,             /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,              /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                      /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                      /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecMSCngDigestExecute,                  /* xmlSecTransformExecuteMethod execute; */
-    NULL,                                      /* void* reserved0; */
-    NULL,                                      /* void* reserved1; */
-};
+XMLSEC_MSCNG_DIGEST_KLASS_EX(Sha384)
 
 /**
  * xmlSecMSCngTransformSha384GetKlass:
@@ -542,30 +475,7 @@ xmlSecMSCngTransformSha384GetKlass(void) {
  * SHA512
  *
  *****************************************************************************/
-static xmlSecTransformKlass xmlSecMSCngSha512Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),              /* size_t klassSize */
-    xmlSecMSCngDigestSize,                  /* size_t objSize */
-
-    xmlSecNameSha512,                          /* const xmlChar* name; */
-    xmlSecHrefSha512,                          /* const xmlChar* href; */
-    xmlSecTransformUsageDigestMethod,          /* xmlSecTransformUsage usage; */
-    xmlSecMSCngDigestInitialize,               /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecMSCngDigestFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                      /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                      /* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,                                      /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    NULL,                                      /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecMSCngDigestVerify,                   /* xmlSecTransformVerifyMethod verify; */
-    xmlSecTransformDefaultGetDataType,         /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,             /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,              /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                      /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                      /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecMSCngDigestExecute,                  /* xmlSecTransformExecuteMethod execute; */
-    NULL,                                      /* void* reserved0; */
-    NULL,                                      /* void* reserved1; */
-};
+XMLSEC_MSCNG_DIGEST_KLASS_EX(Sha512)
 
 /**
  * xmlSecMSCngTransformSha512GetKlass:

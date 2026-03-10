@@ -68,6 +68,34 @@ struct _xmlSecMSCngKWAesCtx {
 XMLSEC_TRANSFORM_DECLARE(MSCngKWAes, xmlSecMSCngKWAesCtx)
 #define xmlSecMSCngKWAesSize XMLSEC_TRANSFORM_SIZE(MSCngKWAes)
 
+#define XMLSEC_MSCNG_KW_AES_KLASS_EX(name)                     \
+    static xmlSecTransformKlass xmlSecMSCng##name##Klass = {   \
+        /* klass/object sizes */                               \
+        sizeof(xmlSecTransformKlass),                          \
+        xmlSecMSCngKWAesSize,                                  \
+                                                                \
+        xmlSecName##name,                                      \
+        xmlSecHref##name,                                      \
+        xmlSecTransformUsageEncryptionMethod,                  \
+                                                                \
+        xmlSecMSCngKWAesInitialize,                            \
+        xmlSecMSCngKWAesFinalize,                              \
+        NULL,                                                  \
+        NULL,                                                  \
+        xmlSecMSCngKWAesSetKeyReq,                             \
+        xmlSecMSCngKWAesSetKey,                                \
+        NULL,                                                  \
+        xmlSecTransformDefaultGetDataType,                     \
+        xmlSecTransformDefaultPushBin,                         \
+        xmlSecTransformDefaultPopBin,                          \
+        NULL,                                                  \
+        NULL,                                                  \
+        xmlSecMSCngKWAesExecute,                               \
+                                                                \
+        NULL,                                                  \
+        NULL,                                                  \
+    };
+
 static int      xmlSecMSCngKWAesInitialize              (xmlSecTransformPtr transform);
 static void     xmlSecMSCngKWAesFinalize                (xmlSecTransformPtr transform);
 static int      xmlSecMSCngKWAesSetKeyReq               (xmlSecTransformPtr transform,
@@ -223,32 +251,7 @@ xmlSecMSCngKWAesExecute(xmlSecTransformPtr transform, int last,
 /*
  * The AES-128 key wrapper transform klass.
  */
-static xmlSecTransformKlass xmlSecMSCngKWAes128Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecMSCngKWAesSize,                       /* xmlSecSize objSize */
-
-    xmlSecNameKWAes128,                         /* const xmlChar* name; */
-    xmlSecHrefKWAes128,                         /* const xmlChar* href; */
-    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
-
-    xmlSecMSCngKWAesInitialize,                 /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecMSCngKWAesFinalize,                   /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCngKWAesSetKeyReq,                  /* xmlSecTransformSetKeyMethod setKeyReq; */
-    xmlSecMSCngKWAesSetKey,                     /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecMSCngKWAesExecute,                    /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+XMLSEC_MSCNG_KW_AES_KLASS_EX(KWAes128)
 
 /**
  * xmlSecMSCngTransformKWAes128GetKlass:
@@ -265,32 +268,7 @@ xmlSecMSCngTransformKWAes128GetKlass(void) {
 /*
  * The AES-192 key wrapper transform klass.
  */
-static xmlSecTransformKlass xmlSecMSCngKWAes192Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecMSCngKWAesSize,                       /* xmlSecSize objSize */
-
-    xmlSecNameKWAes192,                         /* const xmlChar* name; */
-    xmlSecHrefKWAes192,                         /* const xmlChar* href; */
-    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
-
-    xmlSecMSCngKWAesInitialize,                 /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecMSCngKWAesFinalize,                   /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCngKWAesSetKeyReq,                  /* xmlSecTransformSetKeyMethod setKeyReq; */
-    xmlSecMSCngKWAesSetKey,                     /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecMSCngKWAesExecute,                    /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+XMLSEC_MSCNG_KW_AES_KLASS_EX(KWAes192)
 
 /**
  * xmlSecMSCngTransformKWAes192GetKlass:
@@ -307,32 +285,7 @@ xmlSecMSCngTransformKWAes192GetKlass(void) {
 /*
  * The AES-256 key wrapper transform klass.
  */
-static xmlSecTransformKlass xmlSecMSCngKWAes256Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecMSCngKWAesSize,                       /* xmlSecSize objSize */
-
-    xmlSecNameKWAes256,                         /* const xmlChar* name; */
-    xmlSecHrefKWAes256,                         /* const xmlChar* href; */
-    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
-
-    xmlSecMSCngKWAesInitialize,                 /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecMSCngKWAesFinalize,                   /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCngKWAesSetKeyReq,                  /* xmlSecTransformSetKeyMethod setKeyReq; */
-    xmlSecMSCngKWAesSetKey,                     /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecMSCngKWAesExecute,                    /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+XMLSEC_MSCNG_KW_AES_KLASS_EX(KWAes256)
 
 /**
  * xmlSecMSCngTransformKWAes256GetKlass:

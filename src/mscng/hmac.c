@@ -45,6 +45,33 @@ struct _xmlSecMSCngHmacCtx {
 XMLSEC_TRANSFORM_DECLARE(MSCngHmac, xmlSecMSCngHmacCtx)
 #define xmlSecMSCngHmacSize XMLSEC_TRANSFORM_SIZE(MSCngHmac)
 
+#define XMLSEC_MSCNG_HMAC_KLASS_EX(name, readNode)                                                  \
+static xmlSecTransformKlass xmlSecMSCng ## name ## Klass = {                                        \
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                          \
+    xmlSecMSCngHmacSize,                        /* xmlSecSize objSize */                            \
+                                                                                                    \
+    xmlSecName ## name,                         /* const xmlChar* name; */                          \
+    xmlSecHref ## name,                         /* const xmlChar* href; */                          \
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */                   \
+                                                                                                    \
+    xmlSecMSCngHmacInitialize,                  /* xmlSecTransformInitializeMethod initialize; */   \
+    xmlSecMSCngHmacFinalize,                    /* xmlSecTransformFinalizeMethod finalize; */       \
+    readNode,                                   /* xmlSecTransformNodeReadMethod readNode; */       \
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */     \
+    xmlSecMSCngHmacSetKeyReq,                   /* xmlSecTransformSetKeyReqMethod setKeyReq; */     \
+    xmlSecMSCngHmacSetKey,                      /* xmlSecTransformSetKeyMethod setKey; */           \
+    xmlSecMSCngHmacVerify,                      /* xmlSecTransformValidateMethod validate; */       \
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */ \
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */         \
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */           \
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */         \
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */           \
+    xmlSecMSCngHmacExecute,                     /* xmlSecTransformExecuteMethod execute; */         \
+                                                                                                    \
+    NULL,                                       /* void* reserved0; */                              \
+    NULL,                                       /* void* reserved1; */                              \
+};
+
 /* 80 is a minimum value from: https://www.w3.org/TR/xmldsig-core1/#sec-SignatureMethod */
 #define XMLSEC_MSCNG_HMAC_MIN_LENGTH                     80
 
@@ -407,32 +434,7 @@ xmlSecMSCngHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
  * HMAC MD5
  *
  ******************************************************************************/
-static xmlSecTransformKlass xmlSecMSCngHmacMd5Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecMSCngHmacSize,                        /* xmlSecSize objSize */
-
-    xmlSecNameHmacMd5,                          /* const xmlChar* name; */
-    xmlSecHrefHmacMd5,                          /* const xmlChar* href; */
-    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
-
-    xmlSecMSCngHmacInitialize,                  /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecMSCngHmacFinalize,                    /* xmlSecTransformFinalizeMethod finalize; */
-    xmlSecMSCngHmacNodeRead,                    /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCngHmacSetKeyReq,                   /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    xmlSecMSCngHmacSetKey,                      /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecMSCngHmacVerify,                      /* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecMSCngHmacExecute,                     /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+XMLSEC_MSCNG_HMAC_KLASS_EX(HmacMd5, xmlSecMSCngHmacNodeRead)
 
 /**
  * xmlSecMSCngTransformHmacMd5GetKlass:
@@ -454,32 +456,7 @@ xmlSecMSCngTransformHmacMd5GetKlass(void) {
  * HMAC SHA1
  *
  ******************************************************************************/
-static xmlSecTransformKlass xmlSecMSCngHmacSha1Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecMSCngHmacSize,                        /* xmlSecSize objSize */
-
-    xmlSecNameHmacSha1,                         /* const xmlChar* name; */
-    xmlSecHrefHmacSha1,                         /* const xmlChar* href; */
-    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
-
-    xmlSecMSCngHmacInitialize,                  /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecMSCngHmacFinalize,                    /* xmlSecTransformFinalizeMethod finalize; */
-    xmlSecMSCngHmacNodeRead,                    /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCngHmacSetKeyReq,                   /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    xmlSecMSCngHmacSetKey,                      /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecMSCngHmacVerify,                      /* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecMSCngHmacExecute,                     /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+XMLSEC_MSCNG_HMAC_KLASS_EX(HmacSha1, xmlSecMSCngHmacNodeRead)
 
 /**
  * xmlSecMSCngTransformHmacSha1GetKlass:
@@ -501,32 +478,7 @@ xmlSecMSCngTransformHmacSha1GetKlass(void) {
  * HMAC SHA256
  *
  ******************************************************************************/
-static xmlSecTransformKlass xmlSecMSCngHmacSha256Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecMSCngHmacSize,                        /* xmlSecSize objSize */
-
-    xmlSecNameHmacSha256,                       /* const xmlChar* name; */
-    xmlSecHrefHmacSha256,                       /* const xmlChar* href; */
-    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
-
-    xmlSecMSCngHmacInitialize,                  /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecMSCngHmacFinalize,                    /* xmlSecTransformFinalizeMethod finalize; */
-    xmlSecMSCngHmacNodeRead,                    /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCngHmacSetKeyReq,                   /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    xmlSecMSCngHmacSetKey,                      /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecMSCngHmacVerify,                      /* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecMSCngHmacExecute,                     /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+XMLSEC_MSCNG_HMAC_KLASS_EX(HmacSha256, xmlSecMSCngHmacNodeRead)
 
 /**
  * xmlSecMSCngTransformHmacSha256GetKlass:
@@ -548,32 +500,7 @@ xmlSecMSCngTransformHmacSha256GetKlass(void) {
  * HMAC SHA384
  *
  ******************************************************************************/
-static xmlSecTransformKlass xmlSecMSCngHmacSha384Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecMSCngHmacSize,                        /* xmlSecSize objSize */
-
-    xmlSecNameHmacSha384,                       /* const xmlChar* name; */
-    xmlSecHrefHmacSha384,                       /* const xmlChar* href; */
-    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
-
-    xmlSecMSCngHmacInitialize,                  /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecMSCngHmacFinalize,                    /* xmlSecTransformFinalizeMethod finalize; */
-    xmlSecMSCngHmacNodeRead,                    /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCngHmacSetKeyReq,                   /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    xmlSecMSCngHmacSetKey,                      /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecMSCngHmacVerify,                      /* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecMSCngHmacExecute,                     /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+XMLSEC_MSCNG_HMAC_KLASS_EX(HmacSha384, xmlSecMSCngHmacNodeRead)
 
 /**
  * xmlSecMSCngTransformHmacSha384GetKlass:
@@ -595,32 +522,7 @@ xmlSecMSCngTransformHmacSha384GetKlass(void) {
  * HMAC SHA512
  *
  ******************************************************************************/
-static xmlSecTransformKlass xmlSecMSCngHmacSha512Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecMSCngHmacSize,                        /* xmlSecSize objSize */
-
-    xmlSecNameHmacSha512,                       /* const xmlChar* name; */
-    xmlSecHrefHmacSha512,                       /* const xmlChar* href; */
-    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
-
-    xmlSecMSCngHmacInitialize,                  /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecMSCngHmacFinalize,                    /* xmlSecTransformFinalizeMethod finalize; */
-    xmlSecMSCngHmacNodeRead,                    /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCngHmacSetKeyReq,                   /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    xmlSecMSCngHmacSetKey,                      /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecMSCngHmacVerify,                      /* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecMSCngHmacExecute,                     /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+XMLSEC_MSCNG_HMAC_KLASS_EX(HmacSha512, xmlSecMSCngHmacNodeRead)
 
 /**
  * xmlSecMSCngTransformHmacSha512GetKlass:

@@ -336,6 +336,31 @@ xmlSecGnuTLSDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
     return(0);
 }
 
+/* Helper macro to define the digest transform klass */
+#define XMLSEC_GNUTLS_DIGEST_KLASS(name)                                                                \
+static xmlSecTransformKlass xmlSecGnuTLS ## name ## Klass = {                                          \
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                              \
+    xmlSecGnuTLSDigestSize,                     /* xmlSecSize objSize */                                \
+    xmlSecName ## name,                         /* const xmlChar* name; */                              \
+    xmlSecHref ## name,                         /* const xmlChar* href; */                              \
+    xmlSecTransformUsageDigestMethod,           /* xmlSecTransformUsage usage; */                       \
+    xmlSecGnuTLSDigestInitialize,               /* xmlSecTransformInitializeMethod initialize; */       \
+    xmlSecGnuTLSDigestFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */           \
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */           \
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */         \
+    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */         \
+    NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */               \
+    xmlSecGnuTLSDigestVerify,                   /* xmlSecTransformVerifyMethod verify; */               \
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */     \
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */             \
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */               \
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */             \
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */               \
+    xmlSecGnuTLSDigestExecute,                  /* xmlSecTransformExecuteMethod execute; */             \
+    NULL,                                       /* void* reserved0; */                                  \
+    NULL,                                       /* void* reserved1; */                                  \
+};
+
 
 #ifndef XMLSEC_NO_SHA1
 /******************************************************************************
@@ -343,34 +368,7 @@ xmlSecGnuTLSDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
  * SHA1 Digest transforms
  *
  *****************************************************************************/
-static xmlSecTransformKlass xmlSecGnuTLSSha1Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecGnuTLSDigestSize,                        /* xmlSecSize objSize */
-
-    /* data */
-    xmlSecNameSha1,                             /* const xmlChar* name; */
-    xmlSecHrefSha1,                             /* const xmlChar* href; */
-    xmlSecTransformUsageDigestMethod,           /* xmlSecTransformUsage usage; */
-
-    /* methods */
-    xmlSecGnuTLSDigestInitialize,                  /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecGnuTLSDigestFinalize,                    /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecGnuTLSDigestVerify,                      /* xmlSecTransformVerifyMethod verify; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecGnuTLSDigestExecute,                     /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+XMLSEC_GNUTLS_DIGEST_KLASS(Sha1)
 
 /**
  * xmlSecGnuTLSTransformSha1GetKlass:
@@ -391,34 +389,7 @@ xmlSecGnuTLSTransformSha1GetKlass(void) {
  * SHA2-256 Digest transforms
  *
  *****************************************************************************/
-static xmlSecTransformKlass xmlSecGnuTLSSha256Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecGnuTLSDigestSize,                        /* xmlSecSize objSize */
-
-    /* data */
-    xmlSecNameSha256,                           /* const xmlChar* name; */
-    xmlSecHrefSha256,                           /* const xmlChar* href; */
-    xmlSecTransformUsageDigestMethod,           /* xmlSecTransformUsage usage; */
-
-    /* methods */
-    xmlSecGnuTLSDigestInitialize,                  /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecGnuTLSDigestFinalize,                    /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecGnuTLSDigestVerify,                      /* xmlSecTransformVerifyMethod verify; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecGnuTLSDigestExecute,                     /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+XMLSEC_GNUTLS_DIGEST_KLASS(Sha256)
 
 /**
  * xmlSecGnuTLSTransformSha256GetKlass:
@@ -440,34 +411,7 @@ xmlSecGnuTLSTransformSha256GetKlass(void) {
  * SHA2-384 Digest transforms
  *
  *****************************************************************************/
-static xmlSecTransformKlass xmlSecGnuTLSSha384Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecGnuTLSDigestSize,                        /* xmlSecSize objSize */
-
-    /* data */
-    xmlSecNameSha384,                           /* const xmlChar* name; */
-    xmlSecHrefSha384,                           /* const xmlChar* href; */
-    xmlSecTransformUsageDigestMethod,           /* xmlSecTransformUsage usage; */
-
-    /* methods */
-    xmlSecGnuTLSDigestInitialize,                  /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecGnuTLSDigestFinalize,                    /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecGnuTLSDigestVerify,                      /* xmlSecTransformVerifyMethod verify; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecGnuTLSDigestExecute,                     /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+XMLSEC_GNUTLS_DIGEST_KLASS(Sha384)
 
 /**
  * xmlSecGnuTLSTransformSha384GetKlass:
@@ -488,34 +432,7 @@ xmlSecGnuTLSTransformSha384GetKlass(void) {
  * SHA2-512 digest transforms
  *
  *****************************************************************************/
-static xmlSecTransformKlass xmlSecGnuTLSSha512Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecGnuTLSDigestSize,                        /* xmlSecSize objSize */
-
-    /* data */
-    xmlSecNameSha512,                           /* const xmlChar* name; */
-    xmlSecHrefSha512,                           /* const xmlChar* href; */
-    xmlSecTransformUsageDigestMethod,           /* xmlSecTransformUsage usage; */
-
-    /* methods */
-    xmlSecGnuTLSDigestInitialize,                  /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecGnuTLSDigestFinalize,                    /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecGnuTLSDigestVerify,                      /* xmlSecTransformVerifyMethod verify; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecGnuTLSDigestExecute,                     /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+XMLSEC_GNUTLS_DIGEST_KLASS(Sha512)
 
 /**
  * xmlSecGnuTLSTransformSha512GetKlass:
@@ -537,34 +454,7 @@ xmlSecGnuTLSTransformSha512GetKlass(void) {
  * SHA3-256 Digest transforms
  *
  *****************************************************************************/
-static xmlSecTransformKlass xmlSecGnuTLSSha3_256Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecGnuTLSDigestSize,                     /* xmlSecSize objSize */
-
-    /* data */
-    xmlSecNameSha3_256,                         /* const xmlChar* name; */
-    xmlSecHrefSha3_256,                         /* const xmlChar* href; */
-    xmlSecTransformUsageDigestMethod,           /* xmlSecTransformUsage usage; */
-
-    /* methods */
-    xmlSecGnuTLSDigestInitialize,               /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecGnuTLSDigestFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecGnuTLSDigestVerify,                   /* xmlSecTransformVerifyMethod verify; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecGnuTLSDigestExecute,                  /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+XMLSEC_GNUTLS_DIGEST_KLASS(Sha3_256)
 
 /**
  * xmlSecGnuTLSTransformSha3_256GetKlass:
@@ -583,34 +473,7 @@ xmlSecGnuTLSTransformSha3_256GetKlass(void) {
  * SHA3-384 Digest transforms
  *
  *****************************************************************************/
-static xmlSecTransformKlass xmlSecGnuTLSSha3_384Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecGnuTLSDigestSize,                     /* xmlSecSize objSize */
-
-    /* data */
-    xmlSecNameSha3_384,                         /* const xmlChar* name; */
-    xmlSecHrefSha3_384,                         /* const xmlChar* href; */
-    xmlSecTransformUsageDigestMethod,           /* xmlSecTransformUsage usage; */
-
-    /* methods */
-    xmlSecGnuTLSDigestInitialize,                /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecGnuTLSDigestFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecGnuTLSDigestVerify,                   /* xmlSecTransformVerifyMethod verify; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecGnuTLSDigestExecute,                  /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+XMLSEC_GNUTLS_DIGEST_KLASS(Sha3_384)
 
 /**
  * xmlSecGnuTLSTransformSha3_384GetKlass:
@@ -629,34 +492,7 @@ xmlSecGnuTLSTransformSha3_384GetKlass(void) {
  * SHA3-512 Digest transforms
  *
  *****************************************************************************/
-static xmlSecTransformKlass xmlSecGnuTLSSha3_512Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecGnuTLSDigestSize,                     /* xmlSecSize objSize */
-
-    /* data */
-    xmlSecNameSha3_512,                         /* const xmlChar* name; */
-    xmlSecHrefSha3_512,                         /* const xmlChar* href; */
-    xmlSecTransformUsageDigestMethod,           /* xmlSecTransformUsage usage; */
-
-    /* methods */
-    xmlSecGnuTLSDigestInitialize,               /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecGnuTLSDigestFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecGnuTLSDigestVerify,                   /* xmlSecTransformVerifyMethod verify; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecGnuTLSDigestExecute,                  /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+XMLSEC_GNUTLS_DIGEST_KLASS(Sha3_512)
 
 /**
  * xmlSecGnuTLSTransformSha3_512GetKlass:
@@ -677,34 +513,7 @@ xmlSecGnuTLSTransformSha3_512GetKlass(void) {
  * GOSTR3411_94 Digest transforms
  *
  *****************************************************************************/
-static xmlSecTransformKlass xmlSecGnuTLSGostR3411_94Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecGnuTLSDigestSize,                     /* xmlSecSize objSize */
-
-    /* data */
-    xmlSecNameGostR3411_94,                     /* const xmlChar* name; */
-    xmlSecHrefGostR3411_94,                     /* const xmlChar* href; */
-    xmlSecTransformUsageDigestMethod,           /* xmlSecTransformUsage usage; */
-
-    /* methods */
-    xmlSecGnuTLSDigestInitialize,               /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecGnuTLSDigestFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecGnuTLSDigestVerify,                   /* xmlSecTransformVerifyMethod verify; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecGnuTLSDigestExecute,                  /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+XMLSEC_GNUTLS_DIGEST_KLASS(GostR3411_94)
 
 /**
  * xmlSecGnuTLSTransformGostR3411_94GetKlass:
@@ -726,34 +535,7 @@ xmlSecGnuTLSTransformGostR3411_94GetKlass(void) {
  * GOST R 34.11-2012 256 bit
  *
  *****************************************************************************/
-static xmlSecTransformKlass xmlSecGnuTLSGostR3411_2012_256Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecGnuTLSDigestSize,                     /* xmlSecSize objSize */
-
-    /* data */
-    xmlSecNameGostR3411_2012_256,               /* const xmlChar* name; */
-    xmlSecHrefGostR3411_2012_256,               /* const xmlChar* href; */
-    xmlSecTransformUsageDigestMethod,           /* xmlSecTransformUsage usage; */
-
-    /* methods */
-    xmlSecGnuTLSDigestInitialize,               /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecGnuTLSDigestFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecGnuTLSDigestVerify,                   /* xmlSecTransformVerifyMethod verify; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecGnuTLSDigestExecute,                  /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+XMLSEC_GNUTLS_DIGEST_KLASS(GostR3411_2012_256)
 
 /**
  * xmlSecGnuTLSTransformGostR3411_2012_256GetKlass:
@@ -772,34 +554,7 @@ xmlSecGnuTLSTransformGostR3411_2012_256GetKlass(void) {
  * GOST R 34.11-2012 512 bit
  *
  *****************************************************************************/
-static xmlSecTransformKlass xmlSecGnuTLSGostR3411_2012_512Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecGnuTLSDigestSize,                     /* xmlSecSize objSize */
-
-    /* data */
-    xmlSecNameGostR3411_2012_512,               /* const xmlChar* name; */
-    xmlSecHrefGostR3411_2012_512,               /* const xmlChar* href; */
-    xmlSecTransformUsageDigestMethod,           /* xmlSecTransformUsage usage; */
-
-    /* methods */
-    xmlSecGnuTLSDigestInitialize,               /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecGnuTLSDigestFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecGnuTLSDigestVerify,                   /* xmlSecTransformVerifyMethod verify; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecGnuTLSDigestExecute,                  /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+XMLSEC_GNUTLS_DIGEST_KLASS(GostR3411_2012_512)
 
 /**
  * xmlSecGnuTLSTransformGostR3411_2012_512GetKlass:

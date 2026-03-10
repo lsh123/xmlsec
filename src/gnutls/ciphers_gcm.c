@@ -391,38 +391,40 @@ xmlSecGnuTLSGcmCipherExecute(xmlSecTransformPtr transform, int last, xmlSecTrans
 }
 #endif /* XMLSEC_NO_AES */
 
+/* Helper macro to define the GCM cipher transform klass */
+#define XMLSEC_GNUTLS_GCM_CIPHER_KLASS(name)                                                            \
+static xmlSecTransformKlass xmlSecGnuTLS ## name ## Klass = {                                           \
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                              \
+    xmlSecGnuTLSGcmCipherSize,                  /* xmlSecSize objSize */                                \
+    xmlSecName ## name,                         /* const xmlChar* name; */                              \
+    xmlSecHref ## name,                         /* const xmlChar* href; */                              \
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */                       \
+    xmlSecGnuTLSGcmCipherInitialize,            /* xmlSecTransformInitializeMethod initialize; */       \
+    xmlSecGnuTLSGcmCipherFinalize,              /* xmlSecTransformFinalizeMethod finalize; */           \
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */           \
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */         \
+    xmlSecGnuTLSGcmCipherSetKeyReq,             /* xmlSecTransformSetKeyMethod setKeyReq; */            \
+    xmlSecGnuTLSGcmCipherSetKey,                /* xmlSecTransformSetKeyMethod setKey; */               \
+    NULL,                                       /* xmlSecTransformValidateMethod validate; */           \
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */     \
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */             \
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */               \
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */             \
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */               \
+    xmlSecGnuTLSGcmCipherExecute,               /* xmlSecTransformExecuteMethod execute; */             \
+    NULL,                                       /* void* reserved0; */                                  \
+    NULL,                                       /* void* reserved1; */                                  \
+};
+
 #ifndef XMLSEC_NO_AES
 /*********************************************************************
  *
  * AES GCM cipher transforms
  *
  ********************************************************************/
-static xmlSecTransformKlass xmlSecGnuTLSAes128GcmKlass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecGnuTLSGcmCipherSize,                  /* xmlSecSize objSize */
 
-    xmlSecNameAes128Gcm,                        /* const xmlChar* name; */
-    xmlSecHrefAes128Gcm,                        /* const xmlChar* href; */
-    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
-
-    xmlSecGnuTLSGcmCipherInitialize,            /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecGnuTLSGcmCipherFinalize,              /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecGnuTLSGcmCipherSetKeyReq,             /* xmlSecTransformSetKeyMethod setKeyReq; */
-    xmlSecGnuTLSGcmCipherSetKey,                /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecGnuTLSGcmCipherExecute,               /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+/* AES 128 GCM cipher transform klass: xmlSecGnuTLSAes128GcmKlass */
+XMLSEC_GNUTLS_GCM_CIPHER_KLASS(Aes128Gcm)
 
 /**
  * xmlSecGnuTLSTransformAes128GcmGetKlass:
@@ -436,32 +438,8 @@ xmlSecGnuTLSTransformAes128GcmGetKlass(void) {
     return(&xmlSecGnuTLSAes128GcmKlass);
 }
 
-static xmlSecTransformKlass xmlSecGnuTLSAes192GcmKlass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecGnuTLSGcmCipherSize,                  /* xmlSecSize objSize */
-
-    xmlSecNameAes192Gcm,                        /* const xmlChar* name; */
-    xmlSecHrefAes192Gcm,                        /* const xmlChar* href; */
-    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
-
-    xmlSecGnuTLSGcmCipherInitialize,            /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecGnuTLSGcmCipherFinalize,              /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecGnuTLSGcmCipherSetKeyReq,             /* xmlSecTransformSetKeyMethod setKeyReq; */
-    xmlSecGnuTLSGcmCipherSetKey,                /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecGnuTLSGcmCipherExecute,               /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+/* AES 192 GCM cipher transform klass: xmlSecGnuTLSAes192GcmKlass */
+XMLSEC_GNUTLS_GCM_CIPHER_KLASS(Aes192Gcm)
 
 /**
  * xmlSecGnuTLSTransformAes192GcmGetKlass:
@@ -475,32 +453,8 @@ xmlSecGnuTLSTransformAes192GcmGetKlass(void) {
     return(&xmlSecGnuTLSAes192GcmKlass);
 }
 
-static xmlSecTransformKlass xmlSecGnuTLSAes256GcmKlass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecGnuTLSGcmCipherSize,                  /* xmlSecSize objSize */
-
-    xmlSecNameAes256Gcm,                        /* const xmlChar* name; */
-    xmlSecHrefAes256Gcm,                        /* const xmlChar* href; */
-    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
-
-    xmlSecGnuTLSGcmCipherInitialize,            /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecGnuTLSGcmCipherFinalize,              /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecGnuTLSGcmCipherSetKeyReq,             /* xmlSecTransformSetKeyMethod setKeyReq; */
-    xmlSecGnuTLSGcmCipherSetKey,                /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecGnuTLSGcmCipherExecute,               /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+/* AES 256 GCM cipher transform klass: xmlSecGnuTLSAes256GcmKlass */
+XMLSEC_GNUTLS_GCM_CIPHER_KLASS(Aes256Gcm)
 
 /**
  * xmlSecGnuTLSTransformAes256GcmGetKlass:

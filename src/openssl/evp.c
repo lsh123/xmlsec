@@ -137,10 +137,7 @@ static int               xmlSecOpenSSLEvpKeyDataDuplicate        (xmlSecKeyDataP
 static void              xmlSecOpenSSLEvpKeyDataFinalize         (xmlSecKeyDataPtr data);
 static xmlSecSize        xmlSecOpenSSLEvpKeyDataGetKeySize       (xmlSecKeyDataPtr data);
 static xmlSecKeyDataType xmlSecOpenSSLEvpKeyDataGetType          (xmlSecKeyDataPtr data);
-static void              xmlSecOpenSSLEvpKeyDataDebugDump        (xmlSecKeyDataPtr data,
-                                                                  FILE* output);
-static void              xmlSecOpenSSLEvpKeyDataDebugXmlDump     (xmlSecKeyDataPtr data,
-                                                                  FILE* output);
+
 
 
 /**
@@ -619,30 +616,6 @@ xmlSecOpenSSLEvpKeyDataGetType(xmlSecKeyDataPtr data) {
 #endif /* XMLSEC_OPENSSL_API_300 */
 
 
-static void
-xmlSecOpenSSLEvpKeyDataDebugDump(xmlSecKeyDataPtr data, FILE* output) {
-    xmlSecAssert(xmlSecKeyDataIsValid(data));
-    xmlSecAssert(xmlSecKeyDataCheckSize(data, xmlSecOpenSSLEvpKeyDataSize));
-    xmlSecAssert(data->id->name != NULL);
-    xmlSecAssert(output != NULL);
-
-    fprintf(output, "=== %s key: size = " XMLSEC_SIZE_FMT "\n",
-        data->id->name,
-        xmlSecOpenSSLEvpKeyDataGetKeySize(data));
-}
-
-static void
-xmlSecOpenSSLEvpKeyDataDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
-    xmlSecAssert(xmlSecKeyDataIsValid(data));
-    xmlSecAssert(xmlSecKeyDataCheckSize(data, xmlSecOpenSSLEvpKeyDataSize));
-    xmlSecAssert(data->id->name != NULL);
-    xmlSecAssert(output != NULL);
-
-    fprintf(output, "<%sKey size=" XMLSEC_SIZE_FMT "/>\n",
-        data->id->dataNodeName != NULL ? data->id->dataNodeName : data->id->name,
-        xmlSecOpenSSLEvpKeyDataGetKeySize(data));
-}
-
 /******************************************************************************
  *
  * EVP helper functions
@@ -872,8 +845,8 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyData ## klassName ## Klass = {        
     NULL,                                       /* xmlSecKeyDataBinWriteMethod binWrite; */                 \
                                                                                                             \
     /* debug */                                                                                             \
-    xmlSecOpenSSLEvpKeyDataDebugDump,           /* xmlSecKeyDataDebugDumpMethod debugDump; */               \
-    xmlSecOpenSSLEvpKeyDataDebugXmlDump,        /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */            \
+    xmlSecKeyDataDebugDumpImpl,                 /* xmlSecKeyDataDebugDumpMethod debugDump; */               \
+    xmlSecKeyDataDebugXmlDumpImpl,              /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */            \
                                                                                                             \
     /* reserved for the future */                                                                           \
     NULL,                                       /* void* reserved0; */                                      \

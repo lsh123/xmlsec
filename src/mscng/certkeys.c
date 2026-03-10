@@ -558,32 +558,6 @@ xmlSecMSCngCertKeyDataGetSize(xmlSecKeyDataPtr data) {
     return(res);
 }
 
-static void
-xmlSecMSCngCertKeyDataDebugDump(xmlSecKeyDataPtr data, FILE* output) {
-    xmlSecAssert(xmlSecKeyDataIsValid(data));
-    xmlSecAssert(xmlSecKeyDataCheckSize(data, xmlSecMSCngKeyDataSize));
-    xmlSecAssert(data->id != NULL);
-    xmlSecAssert(data->id->name != NULL);
-    xmlSecAssert(output != NULL);
-
-    fprintf(output, "=== %s key: size = " XMLSEC_SIZE_FMT "\n",
-        data->id->name,
-        xmlSecMSCngCertKeyDataGetSize(data));
-}
-
-static void
-xmlSecMSCngCertKeyDataDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
-    xmlSecAssert(xmlSecKeyDataIsValid(data));
-    xmlSecAssert(xmlSecKeyDataCheckSize(data, xmlSecMSCngKeyDataSize));
-    xmlSecAssert(data->id != NULL);
-    xmlSecAssert(data->id->name != NULL);
-    xmlSecAssert(output != NULL);
-
-    fprintf(output, "<%s size=\"" XMLSEC_SIZE_FMT "\" />\n",
-        data->id->name,
-        xmlSecMSCngCertKeyDataGetSize(data));
-}
-
 #define XMLSEC_MSCNG_CERTKEY_KLASS_EX(klassName, xmlName, usage, dataNodeName, dataNodeNs, generate, xmlRead, xmlWrite) \
 static xmlSecKeyDataKlass xmlSecMSCngKeyData ## klassName ## Klass = {                                  \
     sizeof(xmlSecKeyDataKlass),                 /* xmlSecSize klassSize */                               \
@@ -614,8 +588,8 @@ static xmlSecKeyDataKlass xmlSecMSCngKeyData ## klassName ## Klass = {          
     NULL,                                       /* xmlSecKeyDataBinWriteMethod binWrite; */              \
                                                                                                          \
     /* debug */                                                                                          \
-    xmlSecMSCngCertKeyDataDebugDump,            /* xmlSecKeyDataDebugDumpMethod debugDump; */            \
-    xmlSecMSCngCertKeyDataDebugXmlDump,         /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */         \
+    xmlSecKeyDataDebugDumpImpl,                 /* xmlSecKeyDataDebugDumpMethod debugDump; */            \
+    xmlSecKeyDataDebugXmlDumpImpl,              /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */         \
                                                                                                          \
     /* reserved for the future */                                                                        \
     NULL,                                       /* void* reserved0; */                                   \

@@ -64,8 +64,7 @@ static int              xmlSecNssPKIKeyDataInitialize   (xmlSecKeyDataPtr data);
 static void             xmlSecNssPKIKeyDataFinalize     (xmlSecKeyDataPtr data);
 static xmlSecKeyDataType xmlSecNssPKIKeyDataGetType     (xmlSecKeyDataPtr data);
 static xmlSecSize        xmlSecNssPKIKeyDataGetSize     (xmlSecKeyDataPtr data);
-static void              xmlSecNssPKIKeyDataDebugDump   (xmlSecKeyDataPtr data, FILE* output);
-static void              xmlSecNssPKIKeyDataDebugXmlDump(xmlSecKeyDataPtr data, FILE* output);
+
 
 
 static void             xmlSecNSSPKIKeyDataCtxFree      (xmlSecNssPKIKeyDataCtxPtr ctx);
@@ -434,26 +433,6 @@ xmlSecNssPKIKeyDataGetSize(xmlSecKeyDataPtr data) {
     return(0);
 }
 
-static void
-xmlSecNssPKIKeyDataDebugDump(xmlSecKeyDataPtr data, FILE* output) {
-    xmlSecAssert(xmlSecKeyDataIsValid(data));
-    xmlSecAssert(output != NULL);
-
-    fprintf(output, "=== %s key: size = " XMLSEC_SIZE_FMT "\n",
-        xmlSecKeyDataGetName(data),
-        xmlSecNssPKIKeyDataGetSize(data));
-}
-
-static void
-xmlSecNssPKIKeyDataDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
-    xmlSecAssert(xmlSecKeyDataIsValid(data));
-    xmlSecAssert(output != NULL);
-
-    fprintf(output, "<%sKeyValue size=\"" XMLSEC_SIZE_FMT "\" />\n",
-        xmlSecKeyDataGetName(data),
-        xmlSecNssPKIKeyDataGetSize(data));
-}
-
 /**************************************************************************
  *
  * Helpers
@@ -535,8 +514,8 @@ static xmlSecKeyDataKlass xmlSecNssKeyData ## lcname ## Klass = {               
     NULL,                                       /* xmlSecKeyDataBinReadMethod binRead; */        \
     NULL,                                       /* xmlSecKeyDataBinWriteMethod binWrite; */      \
     /* debug */                                                                                  \
-    xmlSecNssPKIKeyDataDebugDump,               /* xmlSecKeyDataDebugDumpMethod debugDump; */    \
-    xmlSecNssPKIKeyDataDebugXmlDump,            /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */ \
+    xmlSecKeyDataDebugDumpImpl,                 /* xmlSecKeyDataDebugDumpMethod debugDump; */    \
+    xmlSecKeyDataDebugXmlDumpImpl,              /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */ \
     /* reserved for the future */                                                                \
     NULL,                                       /* void* reserved0; */                          \
     NULL,                                       /* void* reserved1; */                          \

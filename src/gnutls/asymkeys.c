@@ -512,11 +512,6 @@ static int              xmlSecGnuTLSKeyDataDsaDuplicate         (xmlSecKeyDataPt
 
 static xmlSecKeyDataType xmlSecGnuTLSKeyDataDsaGetType          (xmlSecKeyDataPtr data);
 static xmlSecSize       xmlSecGnuTLSKeyDataDsaGetSize           (xmlSecKeyDataPtr data);
-static void             xmlSecGnuTLSKeyDataDsaDebugDump         (xmlSecKeyDataPtr data,
-                                                                 FILE* output);
-static void             xmlSecGnuTLSKeyDataDsaDebugXmlDump      (xmlSecKeyDataPtr data,
-                                                                 FILE* output);
-
 static int              xmlSecGnuTLSKeyDataDsaXmlRead           (xmlSecKeyDataId id,
                                                                  xmlSecKeyPtr key,
                                                                  xmlNodePtr node,
@@ -566,8 +561,8 @@ static xmlSecKeyDataKlass xmlSecGnuTLSKeyData ## klassName ## Klass = {         
     NULL,                                       /* xmlSecKeyDataBinWriteMethod binWrite; */                                        \
                                                                                                                                     \
     /* debug */                                                                                                                     \
-    xmlSecGnuTLSKeyData ## klassName ## DebugDump,      /* xmlSecKeyDataDebugDumpMethod debugDump; */                              \
-    xmlSecGnuTLSKeyData ## klassName ## DebugXmlDump,   /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */                           \
+    xmlSecKeyDataDebugDumpImpl,                         /* xmlSecKeyDataDebugDumpMethod debugDump; */                              \
+    xmlSecKeyDataDebugXmlDumpImpl,                      /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */                           \
                                                                                                                                     \
     /* reserved for the future */                                                                                                   \
     NULL,                                       /* void* reserved0; */                                                             \
@@ -706,24 +701,6 @@ xmlSecGnuTLSKeyDataDsaGetSize(xmlSecKeyDataPtr data) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataDsaId), 0);
 
     return xmlSecGnuTLSAsymKeyDataGetSize(data);
-}
-
-static void
-xmlSecGnuTLSKeyDataDsaDebugDump(xmlSecKeyDataPtr data, FILE* output) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataDsaId));
-    xmlSecAssert(output != NULL);
-
-    fprintf(output, "=== dsa key: size = " XMLSEC_SIZE_FMT "\n",
-            xmlSecGnuTLSKeyDataDsaGetSize(data));
-}
-
-static void
-xmlSecGnuTLSKeyDataDsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataDsaId));
-    xmlSecAssert(output != NULL);
-
-    fprintf(output, "<DSAKeyValue size=\"" XMLSEC_SIZE_FMT "\" />\n",
-            xmlSecGnuTLSKeyDataDsaGetSize(data));
 }
 
 static int
@@ -1058,11 +1035,6 @@ static int              xmlSecGnuTLSKeyDataEcWrite              (xmlSecKeyDataId
                                                                  xmlSecKeyDataPtr data,
                                                                  xmlSecKeyValueEcPtr ecValue);
 
-static void             xmlSecGnuTLSKeyDataEcDebugDump          (xmlSecKeyDataPtr data,
-                                                                 FILE* output);
-static void             xmlSecGnuTLSKeyDataEcDebugXmlDump       (xmlSecKeyDataPtr data,
-                                                                 FILE* output);
-
 static gnutls_pubkey_t  xmlSecGnuTLSKeyDataEcPubKeyFromPrivKey  (gnutls_privkey_t privkey);
 
 XMLSEC_GNUTLS_ASYMKEY_KLASS_EX(Ec, xmlSecNameECKeyValue,
@@ -1189,24 +1161,6 @@ xmlSecGnuTLSKeyDataEcGetSize(xmlSecKeyDataPtr data) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataEcId), 0);
 
     return xmlSecGnuTLSAsymKeyDataGetSize(data);
-}
-
-static void
-xmlSecGnuTLSKeyDataEcDebugDump(xmlSecKeyDataPtr data, FILE* output) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataEcId));
-    xmlSecAssert(output != NULL);
-
-    fprintf(output, "=== EC key: size = " XMLSEC_SIZE_FMT "\n",
-            xmlSecGnuTLSKeyDataEcGetSize(data));
-}
-
-static void
-xmlSecGnuTLSKeyDataEcDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataEcId));
-    xmlSecAssert(output != NULL);
-
-    fprintf(output, "<ECKeyValue size=\"" XMLSEC_SIZE_FMT "\" />\n",
-            xmlSecGnuTLSKeyDataEcGetSize(data));
 }
 
 static int
@@ -1478,11 +1432,6 @@ static int              xmlSecGnuTLSKeyDataRsaDuplicate         (xmlSecKeyDataPt
 
 static xmlSecKeyDataType xmlSecGnuTLSKeyDataRsaGetType          (xmlSecKeyDataPtr data);
 static xmlSecSize       xmlSecGnuTLSKeyDataRsaGetSize           (xmlSecKeyDataPtr data);
-static void             xmlSecGnuTLSKeyDataRsaDebugDump         (xmlSecKeyDataPtr data,
-                                                                 FILE* output);
-static void             xmlSecGnuTLSKeyDataRsaDebugXmlDump      (xmlSecKeyDataPtr data,
-                                                                 FILE* output);
-
 static int              xmlSecGnuTLSKeyDataRsaXmlRead           (xmlSecKeyDataId id,
                                                                  xmlSecKeyPtr key,
                                                                  xmlNodePtr node,
@@ -1633,24 +1582,6 @@ xmlSecGnuTLSKeyDataRsaGetSize(xmlSecKeyDataPtr data) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataRsaId), 0);
 
     return xmlSecGnuTLSAsymKeyDataGetSize(data);
-}
-
-static void
-xmlSecGnuTLSKeyDataRsaDebugDump(xmlSecKeyDataPtr data, FILE* output) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataRsaId));
-    xmlSecAssert(output != NULL);
-
-    fprintf(output, "=== rsa key: size = " XMLSEC_SIZE_FMT "\n",
-            xmlSecGnuTLSKeyDataRsaGetSize(data));
-}
-
-static void
-xmlSecGnuTLSKeyDataRsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataRsaId));
-    xmlSecAssert(output != NULL);
-
-    fprintf(output, "<RSAKeyValue size=\"" XMLSEC_SIZE_FMT "\" />\n",
-            xmlSecGnuTLSKeyDataRsaGetSize(data));
 }
 
 static int
@@ -2012,11 +1943,6 @@ static void             xmlSecGnuTLSKeyDataGost2001Finalize     (xmlSecKeyDataPt
 static xmlSecKeyDataType xmlSecGnuTLSKeyDataGost2001GetType     (xmlSecKeyDataPtr data);
 static xmlSecSize       xmlSecGnuTLSKeyDataGost2001GetSize      (xmlSecKeyDataPtr data);
 
-static void             xmlSecGnuTLSKeyDataGost2001DebugDump    (xmlSecKeyDataPtr data,
-                                                                 FILE* output);
-static void             xmlSecGnuTLSKeyDataGost2001DebugXmlDump (xmlSecKeyDataPtr data,
-                                                                 FILE* output);
-
 XMLSEC_GNUTLS_ASYMKEY_KLASS_EX(Gost2001, xmlSecNameGOST2001KeyValue,
     xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
     xmlSecHrefGOST2001KeyValue, xmlSecNodeGOST2001KeyValue, xmlSecDSigNs,
@@ -2114,24 +2040,6 @@ xmlSecGnuTLSKeyDataGost2001GetSize(xmlSecKeyDataPtr data) {
     return xmlSecGnuTLSAsymKeyDataGetSize(data);
 }
 
-static void
-xmlSecGnuTLSKeyDataGost2001DebugDump(xmlSecKeyDataPtr data, FILE* output) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataGost2001Id));
-    xmlSecAssert(output != NULL);
-
-    fprintf(output, "=== GOST 2001 key: size = " XMLSEC_SIZE_FMT "\n",
-            xmlSecGnuTLSKeyDataGost2001GetSize(data));
-}
-
-static void
-xmlSecGnuTLSKeyDataGost2001DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataGost2001Id));
-    xmlSecAssert(output != NULL);
-
-    fprintf(output, "<GOST2001KeyValue size=\"" XMLSEC_SIZE_FMT "\" />\n",
-            xmlSecGnuTLSKeyDataGost2001GetSize(data));
-}
-
 #endif /* XMLSEC_NO_GOST */
 
 
@@ -2149,11 +2057,6 @@ static void             xmlSecGnuTLSKeyDataGost2012_256Finalize     (xmlSecKeyDa
 
 static xmlSecKeyDataType xmlSecGnuTLSKeyDataGost2012_256GetType     (xmlSecKeyDataPtr data);
 static xmlSecSize       xmlSecGnuTLSKeyDataGost2012_256GetSize      (xmlSecKeyDataPtr data);
-
-static void             xmlSecGnuTLSKeyDataGost2012_256DebugDump    (xmlSecKeyDataPtr data,
-                                                                     FILE* output);
-static void             xmlSecGnuTLSKeyDataGost2012_256DebugXmlDump (xmlSecKeyDataPtr data,
-                                                                     FILE* output);
 
 XMLSEC_GNUTLS_ASYMKEY_KLASS_EX(Gost2012_256, xmlSecNameGostR3410_2012_256KeyValue,
     xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
@@ -2252,24 +2155,6 @@ xmlSecGnuTLSKeyDataGost2012_256GetSize(xmlSecKeyDataPtr data) {
     return xmlSecGnuTLSAsymKeyDataGetSize(data);
 }
 
-static void
-xmlSecGnuTLSKeyDataGost2012_256DebugDump(xmlSecKeyDataPtr data, FILE* output) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataGost2012_256Id));
-    xmlSecAssert(output != NULL);
-
-    fprintf(output, "=== GOST 2012 (256 bits) key: size = " XMLSEC_SIZE_FMT "\n",
-            xmlSecGnuTLSKeyDataGost2012_256GetSize(data));
-}
-
-static void
-xmlSecGnuTLSKeyDataGost2012_256DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataGost2012_256Id));
-    xmlSecAssert(output != NULL);
-
-    fprintf(output, "<GOST2012_256KeyValue size=\"" XMLSEC_SIZE_FMT "\" />\n",
-            xmlSecGnuTLSKeyDataGost2012_256GetSize(data));
-}
-
 /**************************************************************************
  *
  * GOST R 34.10-2012 512 bit xml key representation processing
@@ -2282,11 +2167,6 @@ static void             xmlSecGnuTLSKeyDataGost2012_512Finalize     (xmlSecKeyDa
 
 static xmlSecKeyDataType xmlSecGnuTLSKeyDataGost2012_512GetType     (xmlSecKeyDataPtr data);
 static xmlSecSize       xmlSecGnuTLSKeyDataGost2012_512GetSize      (xmlSecKeyDataPtr data);
-
-static void             xmlSecGnuTLSKeyDataGost2012_512DebugDump    (xmlSecKeyDataPtr data,
-                                                                     FILE* output);
-static void             xmlSecGnuTLSKeyDataGost2012_512DebugXmlDump (xmlSecKeyDataPtr data,
-                                                                     FILE* output);
 
 XMLSEC_GNUTLS_ASYMKEY_KLASS_EX(Gost2012_512, xmlSecNameGostR3410_2012_512KeyValue,
     xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
@@ -2385,24 +2265,6 @@ xmlSecGnuTLSKeyDataGost2012_512GetSize(xmlSecKeyDataPtr data) {
     return xmlSecGnuTLSAsymKeyDataGetSize(data);
 }
 
-static void
-xmlSecGnuTLSKeyDataGost2012_512DebugDump(xmlSecKeyDataPtr data, FILE* output) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataGost2012_512Id));
-    xmlSecAssert(output != NULL);
-
-    fprintf(output, "=== GOST 2012 (512 bits) key: size = " XMLSEC_SIZE_FMT "\n",
-            xmlSecGnuTLSKeyDataGost2012_512GetSize(data));
-}
-
-static void
-xmlSecGnuTLSKeyDataGost2012_512DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataGost2012_512Id));
-    xmlSecAssert(output != NULL);
-
-    fprintf(output, "<GOST2012_512KeyValue size=\"" XMLSEC_SIZE_FMT "\" />\n",
-            xmlSecGnuTLSKeyDataGost2012_512GetSize(data));
-}
-
 #endif /* XMLSEC_NO_GOST2012 */
 
 
@@ -2423,11 +2285,6 @@ static int              xmlSecGnuTLSKeyDataMLDSADuplicate       (xmlSecKeyDataPt
                                                                  xmlSecKeyDataPtr src);
 static xmlSecKeyDataType xmlSecGnuTLSKeyDataMLDSAGetType        (xmlSecKeyDataPtr data);
 static xmlSecSize       xmlSecGnuTLSKeyDataMLDSAGetSize         (xmlSecKeyDataPtr data);
-static void             xmlSecGnuTLSKeyDataMLDSADebugDump       (xmlSecKeyDataPtr data,
-                                                                 FILE* output);
-static void             xmlSecGnuTLSKeyDataMLDSADebugXmlDump    (xmlSecKeyDataPtr data,
-                                                                 FILE* output);
-
 XMLSEC_GNUTLS_ASYMKEY_KLASS_EX(MLDSA, xmlSecNameMLDSAKeyValue,
     xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageRetrievalMethodNodeXml,
     xmlSecHrefMLDSAKeyValue, NULL, NULL,
@@ -2602,24 +2459,6 @@ xmlSecGnuTLSKeyDataMLDSAGetSize(xmlSecKeyDataPtr data) {
     return xmlSecGnuTLSAsymKeyDataGetSize(data);
 }
 
-static void
-xmlSecGnuTLSKeyDataMLDSADebugDump(xmlSecKeyDataPtr data, FILE* output) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataMLDSAId));
-    xmlSecAssert(output != NULL);
-
-    fprintf(output, "=== ML-DSA key: kl = %d\n",
-            xmlSecGnuTLSKeyDataMLDSAGetKL(data));
-}
-
-static void
-xmlSecGnuTLSKeyDataMLDSADebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataMLDSAId));
-    xmlSecAssert(output != NULL);
-
-    fprintf(output, "<MLDSAKeyValue kl=\"%d\" />\n",
-            xmlSecGnuTLSKeyDataMLDSAGetKL(data));
-}
-
 #endif /* XMLSEC_NO_MLDSA */
 
 
@@ -2637,11 +2476,6 @@ static int              xmlSecGnuTLSKeyDataEdDSADuplicate       (xmlSecKeyDataPt
                                                                  xmlSecKeyDataPtr src);
 static xmlSecKeyDataType xmlSecGnuTLSKeyDataEdDSAGetType        (xmlSecKeyDataPtr data);
 static xmlSecSize       xmlSecGnuTLSKeyDataEdDSAGetSize         (xmlSecKeyDataPtr data);
-static void             xmlSecGnuTLSKeyDataEdDSADebugDump       (xmlSecKeyDataPtr data,
-                                                                 FILE* output);
-static void             xmlSecGnuTLSKeyDataEdDSADebugXmlDump    (xmlSecKeyDataPtr data,
-                                                                 FILE* output);
-
 XMLSEC_GNUTLS_ASYMKEY_KLASS_EX(EdDSA, xmlSecNameEdDSAKeyValue,
     xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageRetrievalMethodNodeXml,
     xmlSecHrefEdDSAKeyValue, NULL, NULL,
@@ -2757,52 +2591,6 @@ xmlSecGnuTLSKeyDataEdDSAGetSize(xmlSecKeyDataPtr data) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataEdDSAId), 0);
 
     return xmlSecGnuTLSAsymKeyDataGetSize(data);
-}
-
-static void
-xmlSecGnuTLSKeyDataEdDSADebugDump(xmlSecKeyDataPtr data, FILE* output) {
-    gnutls_pubkey_t pubkey;
-    gnutls_privkey_t privkey;
-    int algo = GNUTLS_PK_UNKNOWN;
-
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataEdDSAId));
-    xmlSecAssert(output != NULL);
-
-    pubkey = xmlSecGnuTLSKeyDataEdDSAGetPublicKey(data);
-    if(pubkey != NULL) {
-        algo = gnutls_pubkey_get_pk_algorithm(pubkey, NULL);
-    } else {
-        privkey = xmlSecGnuTLSKeyDataEdDSAGetPrivateKey(data);
-        if(privkey != NULL) {
-            algo = gnutls_privkey_get_pk_algorithm(privkey, NULL);
-        }
-    }
-    fprintf(output, "=== EdDSA key: algo=%s\n",
-            (algo == GNUTLS_PK_EDDSA_ED25519) ? "Ed25519" :
-            (algo == GNUTLS_PK_EDDSA_ED448)   ? "Ed448" : "unknown");
-}
-
-static void
-xmlSecGnuTLSKeyDataEdDSADebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
-    gnutls_pubkey_t pubkey;
-    gnutls_privkey_t privkey;
-    int algo = GNUTLS_PK_UNKNOWN;
-
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataEdDSAId));
-    xmlSecAssert(output != NULL);
-
-    pubkey = xmlSecGnuTLSKeyDataEdDSAGetPublicKey(data);
-    if(pubkey != NULL) {
-        algo = gnutls_pubkey_get_pk_algorithm(pubkey, NULL);
-    } else {
-        privkey = xmlSecGnuTLSKeyDataEdDSAGetPrivateKey(data);
-        if(privkey != NULL) {
-            algo = gnutls_privkey_get_pk_algorithm(privkey, NULL);
-        }
-    }
-    fprintf(output, "<EdDSAKeyValue algo=\"%s\" />\n",
-            (algo == GNUTLS_PK_EDDSA_ED25519) ? "Ed25519" :
-            (algo == GNUTLS_PK_EDDSA_ED448)   ? "Ed448" : "unknown");
 }
 
 #endif /* XMLSEC_NO_EDDSA */

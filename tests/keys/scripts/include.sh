@@ -73,6 +73,9 @@ create_certificate_from_private_key() {
     local keyname="$1"
     local gencert_options="$2"
     local subject="/CN=Test Key ${keyname}/O=XML Security Library \(http:\/\/www.aleksey.com\/xmlsec\)/ST=California/C=US"
+    local ext_file=""
+    local serial=""
+    local use_xdh_fallback=0
 
     # allow overwrites
     local config_option=""
@@ -86,13 +89,39 @@ create_certificate_from_private_key() {
     echo
     echo "*** Signing using second level CA...."
     echo
-    openssl req ${config_option} -new -key "${keyname}-key.pem" ${gencert_options} -subj "${subject}" -out "${keyname}-req.pem"
-    yes | openssl ca ${config_option} ${gencert_options} -cert "${second_level_ca_file}" -keyfile "${second_level_ca_key_file}" -notext -out "${keyname}-cert.pem" -infiles "${keyname}-req.pem"
-    openssl verify -CAfile "${ca_file}" -untrusted "${second_level_ca_file}" "${keyname}-cert.pem"
-    rm "${keyname}-req.pem"
 
-    openssl x509 -in "${keyname}-cert.pem" -inform PEM -out "${keyname}-cert.der" -outform DER
-    cp "${keyname}-cert.der" "${keyname}-pubkey.crt"
+    # XDH keys cannot sign CSR data; detect them and skip the CSR flow.
+    openssl pkey -in "${keyname}-key.pem" -text_pub -noout 2>/dev/null | grep -q "X25519\|X448"
+    if [ $? -eq 0 ]; then
+        use_xdh_fallback=1
+    fi
+
+    if [ ${use_xdh_fallback} -eq 0 ]; then
+        openssl req ${config_option} -new -key "${keyname}-key.pem" ${gencert_options} -subj "${subject}" -out "${keyname}-req.pem" || return $?
+        yes | openssl ca ${config_option} ${gencert_options} -cert "${second_level_ca_file}" -keyfile "${second_level_ca_key_file}" -notext -out "${keyname}-cert.pem" -infiles "${keyname}-req.pem" || return $?
+        openssl verify -CAfile "${ca_file}" -untrusted "${second_level_ca_file}" "${keyname}-cert.pem" || return $?
+        rm "${keyname}-req.pem" || return $?
+    else
+        # Issue an XDH certificate from the generated public key.
+        ext_file="$(mktemp "${TMPDIR:-/tmp}/xmlsec-xdh-${keyname}-ext.XXXXXX")"
+        cat <<EOF > "${ext_file}"
+[v3_xdh_cert]
+basicConstraints=CA:FALSE
+subjectKeyIdentifier=hash
+authorityKeyIdentifier=keyid,issuer
+keyUsage=critical,keyAgreement
+EOF
+        serial="0x$(openssl rand -hex 20)"
+        openssl x509 -new ${gencert_options} -sha256 -days 3650 \
+            -force_pubkey "${keyname}-pubkey.pem" -subj "${subject}" \
+            -CA "${second_level_ca_file}" -CAkey "${second_level_ca_key_file}" -set_serial "${serial}" \
+            -extensions v3_xdh_cert -extfile "${ext_file}" -out "${keyname}-cert.pem" || return $?
+        openssl verify -CAfile "${ca_file}" -untrusted "${second_level_ca_file}" "${keyname}-cert.pem" || return $?
+        rm -f "${ext_file}" || return $?
+    fi
+
+    openssl x509 -in "${keyname}-cert.pem" -inform PEM -out "${keyname}-cert.der" -outform DER || return $?
+    cp "${keyname}-cert.der" "${keyname}-pubkey.crt" || return $?
 
     echo "*** Certificate files '${keyname}-cert.pem' and '${keyname}-cert.der' were created successfully"
 }

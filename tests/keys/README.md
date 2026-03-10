@@ -269,7 +269,16 @@ mkdir eddsa
 ./scripts/create-eddsa-ed448.sh
 ```
 
+### Generate XDH keys
+```
+mkdir xdh
 
+./scripts/create-xdh-x25519-first.sh
+./scripts/create-xdh-x25519-second.sh
+
+./scripts/create-xdh-x448-first.sh
+./scripts/create-xdh-x448-second.sh
+```
 
 ### Generate two certs and keys with the same certificate
 ```

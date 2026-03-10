@@ -306,7 +306,7 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataConcatKdfKlass = {
     xmlSecKeyDataBinarySize,
 
     /* data */
-    xmlSecNameConcatKdfKeyValue,
+    xmlSecNameConcatKdfKey,
     xmlSecKeyDataUsageReadFromFile,             /* xmlSecKeyDataUsage usage; */
     NULL,                                       /* const xmlChar* href; */
     NULL,                                       /* const xmlChar* dataNodeName; */
@@ -551,7 +551,7 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataPbkdf2Klass = {
     xmlSecKeyDataBinarySize,
 
     /* data */
-    xmlSecNamePbkdf2KeyValue,
+    xmlSecNamePbkdf2Key,
     xmlSecKeyDataUsageReadFromFile,             /* xmlSecKeyDataUsage usage; */
     NULL,                                       /* const xmlChar* href; */
     NULL,                                       /* const xmlChar* dataNodeName; */

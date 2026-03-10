@@ -174,7 +174,7 @@ const xmlChar xmlSecAttrPrefixList[]            = "PrefixList";
  * ConcatKDF strings
  *
  ************************************************************************/
-const xmlChar xmlSecNameConcatKdfKeyValue[]     = "ConcatKDFKeyValue";
+const xmlChar xmlSecNameConcatKdfKey[]          = "concatkdf";
 
 const xmlChar xmlSecNameConcatKdf[]             = "concatkdf";
 const xmlChar xmlSecHrefConcatKdf[]             = "http://www.w3.org/2009/xmlenc11#ConcatKDF";
@@ -308,6 +308,30 @@ const xmlChar xmlSecNodePublicKey[]             = "PublicKey";
  ************************************************************************/
 const xmlChar xmlSecNameEcdh[]                  = "ecdh-es";
 const xmlChar xmlSecHrefEcdh[]                  = "http://www.w3.org/2009/xmlenc11#ECDH-ES";
+
+/*************************************************************************
+ *
+ * X25519 key agreement strings
+ *
+ ************************************************************************/
+const xmlChar xmlSecNameX25519[]                = "x25519";
+const xmlChar xmlSecHrefX25519[]                = "http://www.w3.org/2021/04/xmldsig-more#x25519";
+
+/*************************************************************************
+ *
+ * X448 key agreement strings
+ *
+ ************************************************************************/
+const xmlChar xmlSecNameX448[]                  = "x448";
+const xmlChar xmlSecHrefX448[]                  = "http://www.w3.org/2021/04/xmldsig-more#x448";
+
+/*************************************************************************
+ *
+ * XDH key strings
+ *
+ ************************************************************************/
+const xmlChar xmlSecNameXDHKeyValue[]           = "xdh";
+const xmlChar xmlSecHrefXDHKeyValue[]           = "http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#xdh";
 
 /*************************************************************************
  *
@@ -560,7 +584,7 @@ const xmlChar xmlSecHrefMd5[]                   = "http://www.w3.org/2001/04/xml
  * PBKDF2
  *
  ************************************************************************/
-const xmlChar xmlSecNamePbkdf2KeyValue[]        = "PBKDF2KeyValue";
+const xmlChar xmlSecNamePbkdf2Key[]             = "pbkdf2";
 
 const xmlChar xmlSecNamePbkdf2[]                = "pbkdf2";
 const xmlChar xmlSecHrefPbkdf2[]                = "http://www.w3.org/2009/xmlenc11#pbkdf2";

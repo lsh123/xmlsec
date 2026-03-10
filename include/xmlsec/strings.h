@@ -174,7 +174,7 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecAttrPrefixList[];
  * ConcatKDF strings
  *
  ************************************************************************/
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNameConcatKdfKeyValue[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameConcatKdfKey[];
 
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameConcatKdf[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefConcatKdf[];
@@ -279,6 +279,30 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecNodePublicKey[];
  ************************************************************************/
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameEcdh[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEcdh[];
+
+/*************************************************************************
+ *
+ * X25519 key agreement strings
+ *
+ ************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameX25519[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefX25519[];
+
+/*************************************************************************
+ *
+ * X448 key agreement strings
+ *
+ ************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameX448[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefX448[];
+
+/*************************************************************************
+ *
+ * XDH key strings
+ *
+ ************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameXDHKeyValue[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefXDHKeyValue[];
 
 /*************************************************************************
  *
@@ -559,7 +583,7 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefMd5[];
  * PBKDF2 strings
  *
  ************************************************************************/
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNamePbkdf2KeyValue[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNamePbkdf2Key[];
 
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNamePbkdf2[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefPbkdf2[];

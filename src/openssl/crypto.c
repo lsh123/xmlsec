@@ -148,6 +148,10 @@ xmlSecCryptoGetFunctions_openssl(void) {
     gXmlSecOpenSSLFunctions->keyDataEdDSAGetKlass       = xmlSecOpenSSLKeyDataEdDSAGetKlass;
 #endif /* XMLSEC_NO_EDDSA */
 
+#ifndef XMLSEC_NO_XDH
+    gXmlSecOpenSSLFunctions->keyDataXdhGetKlass         = xmlSecOpenSSLKeyDataXdhGetKlass;
+#endif /* XMLSEC_NO_XDH */
+
 #ifndef XMLSEC_NO_X509
     gXmlSecOpenSSLFunctions->keyDataX509GetKlass        = xmlSecOpenSSLKeyDataX509GetKlass;
     gXmlSecOpenSSLFunctions->keyDataRawX509CertGetKlass = xmlSecOpenSSLKeyDataRawX509CertGetKlass;
@@ -251,6 +255,12 @@ xmlSecCryptoGetFunctions_openssl(void) {
 #endif /* XMLSEC_NO_SHA3 */
 
 #endif /* XMLSEC_NO_EC */
+
+    /******************************* XDH ********************************/
+#ifndef XMLSEC_NO_XDH
+    gXmlSecOpenSSLFunctions->transformX25519GetKlass            = xmlSecOpenSSLTransformX25519GetKlass;
+    gXmlSecOpenSSLFunctions->transformX448GetKlass              = xmlSecOpenSSLTransformX448GetKlass;
+#endif /* XMLSEC_NO_XDH */
 
     /******************************* GOST ********************************/
 #ifndef XMLSEC_NO_GOST

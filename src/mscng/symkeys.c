@@ -251,7 +251,7 @@ static xmlSecKeyDataKlass xmlSecMSCngKeyDataConcatKdfKlass = {
     xmlSecKeyDataBinarySize,
 
     /* data */
-    xmlSecNameConcatKdfKeyValue,
+    xmlSecNameConcatKdfKey,
     xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
     /* xmlSecKeyDataUsage usage; */
     NULL,                               /* const xmlChar* href; */
@@ -429,7 +429,7 @@ static xmlSecKeyDataKlass xmlSecMSCngKeyDataPbkdf2Klass = {
     xmlSecKeyDataBinarySize,
 
     /* data */
-    xmlSecNamePbkdf2KeyValue,
+    xmlSecNamePbkdf2Key,
     xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
     /* xmlSecKeyDataUsage usage; */
     NULL,                               /* const xmlChar* href; */

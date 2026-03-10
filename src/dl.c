@@ -600,6 +600,7 @@ xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(struct _xmlSecCryptoDLFuncti
     XMLSEC_REGISTER_KEY_DATA(Rsa);                  // keyDataRsaGetKlass
     XMLSEC_REGISTER_KEY_DATA(SLHDSA);               // keyDataSLHDSAGetKlass
     XMLSEC_REGISTER_KEY_DATA(EdDSA);                // keyDataEdDSAGetKlass
+    XMLSEC_REGISTER_KEY_DATA(Xdh);                  // keyDataXdhGetKlass
     XMLSEC_REGISTER_KEY_DATA(X509);                 // keyDataX509GetKlass
     XMLSEC_REGISTER_KEY_DATA(RawX509Cert);          // keyDataRawX509CertGetKlass
 
@@ -646,6 +647,9 @@ xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(struct _xmlSecCryptoDLFuncti
     XMLSEC_REGISTER_TRANSFORM(DsaSha256);                           // transformDsaSha256GetKlass
 
     XMLSEC_REGISTER_TRANSFORM(Ecdh);                                // transformEcdhGetKlass
+
+    XMLSEC_REGISTER_TRANSFORM(X25519);                              // transformX25519GetKlass
+    XMLSEC_REGISTER_TRANSFORM(X448);                                // transformX448GetKlass
 
     XMLSEC_REGISTER_TRANSFORM(EcdsaRipemd160);                      // transformEcdsaRipemd160GetKlass
 

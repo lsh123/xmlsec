@@ -1808,7 +1808,7 @@ xmlSecOpenSSLKeyDataEcGetOidFromMagic(ULONG magic) {
 }
 
 static LPCWSTR
-xmlSecOpenSSLKeyDataEcGetTypeAndMagicFromOid(const xmlChar* oid, ULONG * magic) {
+xmlSecMSCngKeyDataEcGetTypeAndMagicFromOid(const xmlChar* oid, ULONG * magic) {
     xmlSecSize size = sizeof(g_xmlSecMSCngKeyDataEccCurveNameAndMagic) / sizeof(g_xmlSecMSCngKeyDataEccCurveNameAndMagic[0]);
 
     xmlSecAssert2(oid != NULL, 0);
@@ -1880,7 +1880,7 @@ xmlSecMSCngKeyDataEcRead(xmlSecKeyDataId id, xmlSecKeyValueEcPtr ecValue) {
 
     blobData = xmlSecBufferGetData(&blob);
     eckey = (BCRYPT_ECCKEY_BLOB*)blobData;
-    blobType = xmlSecOpenSSLKeyDataEcGetTypeAndMagicFromOid(ecValue->curve, &(eckey->dwMagic));
+    blobType = xmlSecMSCngKeyDataEcGetTypeAndMagicFromOid(ecValue->curve, &(eckey->dwMagic));
     if ((blobType == NULL) || (eckey->dwMagic == 0)) {
         xmlSecInternalError2("xmlSecOpenSSLKeyDataEcGetOidFromNid", xmlSecKeyDataKlassGetName(id),
             "curve=%s", xmlSecErrorsSafeString(ecValue->curve));

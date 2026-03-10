@@ -20,9 +20,11 @@ libxmlsec1_gnutls_la_CPPFLAGS = \
 
 libxmlsec1_gnutls_la_SOURCES =\
 	app.c \
+	asymkeys.c \
 	ciphers_cbc.c \
 	ciphers_gcm.c \
 	crypto.c \
+	der_encoded_value.c \
 	digests.c \
 	hmac.c \
 	keysstore.c \
@@ -32,7 +34,6 @@ libxmlsec1_gnutls_la_SOURCES =\
 	pbkdf2.c \
 	private.h \
 	symkeys.c \
-	asymkeys.c \
 	signatures.c \
 	x509utils.c \
 	x509.c \

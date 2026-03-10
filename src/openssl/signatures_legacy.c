@@ -177,6 +177,34 @@ xmlSecOpenSSLSignatureLegacyCheckId(xmlSecTransformPtr transform) {
 #define XMLSEC_OPENSSL_SIGNATURE_SET_DIGEST(ctx, digestVal) \
     (ctx)->digest = (digestVal)
 
+/* Helper macros to define the transform klass */
+#define XMLSEC_OPENSSL_EVP_SIGNATURE_LEGACY_KLASS_EX(name, readNode)                                    \
+static xmlSecTransformKlass xmlSecOpenSSL ## name ## Klass = {                                          \
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                              \
+    xmlSecOpenSSLSignatureLegacySize,           /* xmlSecSize objSize */                                \
+    xmlSecName ## name,                         /* const xmlChar* name; */                              \
+    xmlSecHref ## name,                         /* const xmlChar* href; */                              \
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */                       \
+    xmlSecOpenSSLSignatureLegacyInitialize,     /* xmlSecTransformInitializeMethod initialize; */       \
+    xmlSecOpenSSLSignatureLegacyFinalize,       /* xmlSecTransformFinalizeMethod finalize; */           \
+    readNode,                                   /* xmlSecTransformNodeReadMethod readNode; */           \
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */         \
+    xmlSecOpenSSLSignatureLegacySetKeyReq,      /* xmlSecTransformSetKeyReqMethod setKeyReq; */         \
+    xmlSecOpenSSLSignatureLegacySetKey,         /* xmlSecTransformSetKeyMethod setKey; */               \
+    xmlSecOpenSSLSignatureLegacyVerify,         /* xmlSecTransformVerifyMethod verify; */               \
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */     \
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */             \
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */               \
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */             \
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */               \
+    xmlSecOpenSSLSignatureLegacyExecute,        /* xmlSecTransformExecuteMethod execute; */             \
+    NULL,                                       /* void* reserved0; */                                  \
+    NULL,                                       /* void* reserved1; */                                  \
+};
+
+#define XMLSEC_OPENSSL_EVP_SIGNATURE_LEGACY_KLASS(name)                                                 \
+    XMLSEC_OPENSSL_EVP_SIGNATURE_LEGACY_KLASS_EX(name, NULL)
+
 static int
 xmlSecOpenSSLSignatureLegacyInitialize(xmlSecTransformPtr transform) {
     xmlSecOpenSSLSignatureLegacyCtxPtr ctx;
@@ -917,32 +945,7 @@ xmlSecOpenSSLSignatureLegacyEcdsaVerify(
  *
  ***************************************************************************/
 
-static xmlSecTransformKlass xmlSecOpenSSLEcdsaRipemd160Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecOpenSSLSignatureLegacySize,                 /* xmlSecSize objSize */
-
-    xmlSecNameEcdsaRipemd160,                   /* const xmlChar* name; */
-    xmlSecHrefEcdsaRipemd160,                   /* const xmlChar* href; */
-    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
-
-    xmlSecOpenSSLSignatureLegacyInitialize,           /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecOpenSSLSignatureLegacyFinalize,             /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecOpenSSLSignatureLegacySetKeyReq,            /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    xmlSecOpenSSLSignatureLegacySetKey,               /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecOpenSSLSignatureLegacyVerify,               /* xmlSecTransformVerifyMethod verify; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecOpenSSLSignatureLegacyExecute,              /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+XMLSEC_OPENSSL_EVP_SIGNATURE_LEGACY_KLASS(EcdsaRipemd160)
 
 /**
  * xmlSecOpenSSLTransformEcdsaRipemd160GetKlass:
@@ -965,32 +968,7 @@ xmlSecOpenSSLTransformEcdsaRipemd160GetKlass(void) {
  *
  ***************************************************************************/
 
-static xmlSecTransformKlass xmlSecOpenSSLEcdsaSha1Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecOpenSSLSignatureLegacySize,                 /* xmlSecSize objSize */
-
-    xmlSecNameEcdsaSha1,                        /* const xmlChar* name; */
-    xmlSecHrefEcdsaSha1,                        /* const xmlChar* href; */
-    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
-
-    xmlSecOpenSSLSignatureLegacyInitialize,           /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecOpenSSLSignatureLegacyFinalize,             /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecOpenSSLSignatureLegacySetKeyReq,            /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    xmlSecOpenSSLSignatureLegacySetKey,               /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecOpenSSLSignatureLegacyVerify,               /* xmlSecTransformVerifyMethod verify; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecOpenSSLSignatureLegacyExecute,              /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+XMLSEC_OPENSSL_EVP_SIGNATURE_LEGACY_KLASS(EcdsaSha1)
 
 /**
  * xmlSecOpenSSLTransformEcdsaSha1GetKlass:
@@ -1013,32 +991,7 @@ xmlSecOpenSSLTransformEcdsaSha1GetKlass(void) {
  *
  ***************************************************************************/
 
-static xmlSecTransformKlass xmlSecOpenSSLEcdsaSha224Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecOpenSSLSignatureLegacySize,                 /* xmlSecSize objSize */
-
-    xmlSecNameEcdsaSha224,                      /* const xmlChar* name; */
-    xmlSecHrefEcdsaSha224,                      /* const xmlChar* href; */
-    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
-
-    xmlSecOpenSSLSignatureLegacyInitialize,           /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecOpenSSLSignatureLegacyFinalize,             /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecOpenSSLSignatureLegacySetKeyReq,            /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    xmlSecOpenSSLSignatureLegacySetKey,               /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecOpenSSLSignatureLegacyVerify,               /* xmlSecTransformVerifyMethod verify; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecOpenSSLSignatureLegacyExecute,              /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+XMLSEC_OPENSSL_EVP_SIGNATURE_LEGACY_KLASS(EcdsaSha224)
 
 /**
  * xmlSecOpenSSLTransformEcdsaSha224GetKlass:
@@ -1061,32 +1014,7 @@ xmlSecOpenSSLTransformEcdsaSha224GetKlass(void) {
  *
  ***************************************************************************/
 
-static xmlSecTransformKlass xmlSecOpenSSLEcdsaSha256Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecOpenSSLSignatureLegacySize,                 /* xmlSecSize objSize */
-
-    xmlSecNameEcdsaSha256,                      /* const xmlChar* name; */
-    xmlSecHrefEcdsaSha256,                      /* const xmlChar* href; */
-    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
-
-    xmlSecOpenSSLSignatureLegacyInitialize,           /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecOpenSSLSignatureLegacyFinalize,             /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecOpenSSLSignatureLegacySetKeyReq,            /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    xmlSecOpenSSLSignatureLegacySetKey,               /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecOpenSSLSignatureLegacyVerify,               /* xmlSecTransformVerifyMethod verify; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecOpenSSLSignatureLegacyExecute,              /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+XMLSEC_OPENSSL_EVP_SIGNATURE_LEGACY_KLASS(EcdsaSha256)
 
 /**
  * xmlSecOpenSSLTransformEcdsaSha256GetKlass:
@@ -1109,32 +1037,7 @@ xmlSecOpenSSLTransformEcdsaSha256GetKlass(void) {
  *
  ***************************************************************************/
 
-static xmlSecTransformKlass xmlSecOpenSSLEcdsaSha384Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecOpenSSLSignatureLegacySize,                 /* xmlSecSize objSize */
-
-    xmlSecNameEcdsaSha384,                      /* const xmlChar* name; */
-    xmlSecHrefEcdsaSha384,                      /* const xmlChar* href; */
-    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
-
-    xmlSecOpenSSLSignatureLegacyInitialize,           /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecOpenSSLSignatureLegacyFinalize,             /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecOpenSSLSignatureLegacySetKeyReq,            /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    xmlSecOpenSSLSignatureLegacySetKey,               /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecOpenSSLSignatureLegacyVerify,               /* xmlSecTransformVerifyMethod verify; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecOpenSSLSignatureLegacyExecute,              /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+XMLSEC_OPENSSL_EVP_SIGNATURE_LEGACY_KLASS(EcdsaSha384)
 
 /**
  * xmlSecOpenSSLTransformEcdsaSha384GetKlass:
@@ -1157,32 +1060,7 @@ xmlSecOpenSSLTransformEcdsaSha384GetKlass(void) {
  *
  ***************************************************************************/
 
-static xmlSecTransformKlass xmlSecOpenSSLEcdsaSha512Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecOpenSSLSignatureLegacySize,                 /* xmlSecSize objSize */
-
-    xmlSecNameEcdsaSha512,                      /* const xmlChar* name; */
-    xmlSecHrefEcdsaSha512,                      /* const xmlChar* href; */
-    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
-
-    xmlSecOpenSSLSignatureLegacyInitialize,           /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecOpenSSLSignatureLegacyFinalize,             /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecOpenSSLSignatureLegacySetKeyReq,            /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    xmlSecOpenSSLSignatureLegacySetKey,               /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecOpenSSLSignatureLegacyVerify,               /* xmlSecTransformVerifyMethod verify; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecOpenSSLSignatureLegacyExecute,              /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+XMLSEC_OPENSSL_EVP_SIGNATURE_LEGACY_KLASS(EcdsaSha512)
 
 /**
  * xmlSecOpenSSLTransformEcdsaSha512GetKlass:
@@ -1206,32 +1084,7 @@ xmlSecOpenSSLTransformEcdsaSha512GetKlass(void) {
  *
  ***************************************************************************/
 
-static xmlSecTransformKlass xmlSecOpenSSLEcdsaSha3_224Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecOpenSSLSignatureLegacySize,                 /* xmlSecSize objSize */
-
-    xmlSecNameEcdsaSha3_224,                    /* const xmlChar* name; */
-    xmlSecHrefEcdsaSha3_224,                    /* const xmlChar* href; */
-    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
-
-    xmlSecOpenSSLSignatureLegacyInitialize,           /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecOpenSSLSignatureLegacyFinalize,             /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecOpenSSLSignatureLegacySetKeyReq,            /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    xmlSecOpenSSLSignatureLegacySetKey,               /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecOpenSSLSignatureLegacyVerify,               /* xmlSecTransformVerifyMethod verify; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecOpenSSLSignatureLegacyExecute,              /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+XMLSEC_OPENSSL_EVP_SIGNATURE_LEGACY_KLASS(EcdsaSha3_224)
 
 /**
  * xmlSecOpenSSLTransformEcdsaSha3_224GetKlass:
@@ -1245,32 +1098,7 @@ xmlSecOpenSSLTransformEcdsaSha3_224GetKlass(void) {
     return(&xmlSecOpenSSLEcdsaSha3_224Klass);
 }
 
-static xmlSecTransformKlass xmlSecOpenSSLEcdsaSha3_256Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecOpenSSLSignatureLegacySize,                 /* xmlSecSize objSize */
-
-    xmlSecNameEcdsaSha3_256,                    /* const xmlChar* name; */
-    xmlSecHrefEcdsaSha3_256,                    /* const xmlChar* href; */
-    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
-
-    xmlSecOpenSSLSignatureLegacyInitialize,           /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecOpenSSLSignatureLegacyFinalize,             /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecOpenSSLSignatureLegacySetKeyReq,            /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    xmlSecOpenSSLSignatureLegacySetKey,               /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecOpenSSLSignatureLegacyVerify,               /* xmlSecTransformVerifyMethod verify; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecOpenSSLSignatureLegacyExecute,              /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+XMLSEC_OPENSSL_EVP_SIGNATURE_LEGACY_KLASS(EcdsaSha3_256)
 
 /**
  * xmlSecOpenSSLTransformEcdsaSha3_256GetKlass:
@@ -1284,32 +1112,7 @@ xmlSecOpenSSLTransformEcdsaSha3_256GetKlass(void) {
     return(&xmlSecOpenSSLEcdsaSha3_256Klass);
 }
 
-static xmlSecTransformKlass xmlSecOpenSSLEcdsaSha3_384Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecOpenSSLSignatureLegacySize,                 /* xmlSecSize objSize */
-
-    xmlSecNameEcdsaSha3_384,                    /* const xmlChar* name; */
-    xmlSecHrefEcdsaSha3_384,                    /* const xmlChar* href; */
-    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
-
-    xmlSecOpenSSLSignatureLegacyInitialize,           /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecOpenSSLSignatureLegacyFinalize,             /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecOpenSSLSignatureLegacySetKeyReq,            /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    xmlSecOpenSSLSignatureLegacySetKey,               /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecOpenSSLSignatureLegacyVerify,               /* xmlSecTransformVerifyMethod verify; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecOpenSSLSignatureLegacyExecute,              /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+XMLSEC_OPENSSL_EVP_SIGNATURE_LEGACY_KLASS(EcdsaSha3_384)
 
 /**
  * xmlSecOpenSSLTransformEcdsaSha3_384GetKlass:
@@ -1323,32 +1126,7 @@ xmlSecOpenSSLTransformEcdsaSha3_384GetKlass(void) {
     return(&xmlSecOpenSSLEcdsaSha3_384Klass);
 }
 
-static xmlSecTransformKlass xmlSecOpenSSLEcdsaSha3_512Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecOpenSSLSignatureLegacySize,                 /* xmlSecSize objSize */
-
-    xmlSecNameEcdsaSha3_512,                    /* const xmlChar* name; */
-    xmlSecHrefEcdsaSha3_512,                    /* const xmlChar* href; */
-    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
-
-    xmlSecOpenSSLSignatureLegacyInitialize,           /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecOpenSSLSignatureLegacyFinalize,             /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecOpenSSLSignatureLegacySetKeyReq,            /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    xmlSecOpenSSLSignatureLegacySetKey,               /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecOpenSSLSignatureLegacyVerify,               /* xmlSecTransformVerifyMethod verify; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecOpenSSLSignatureLegacyExecute,              /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+XMLSEC_OPENSSL_EVP_SIGNATURE_LEGACY_KLASS(EcdsaSha3_512)
 
 /**
  * xmlSecOpenSSLTransformEcdsaSha3_512GetKlass:

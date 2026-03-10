@@ -337,6 +337,31 @@ xmlSecOpenSSLKdfExecute(xmlSecTransformPtr transform, int last, xmlSecTransformC
     return(0);
 }
 
+/* Helper macro to define the KDF transform klass */
+#define XMLSEC_OPENSSL_KDF_KLASS_EX(name, readNode)                                                     \
+static xmlSecTransformKlass xmlSecOpenSSL ## name ## Klass = {                                          \
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                              \
+    xmlSecOpenSSLKdfCtxSize,                    /* xmlSecSize objSize */                                \
+    xmlSecName ## name,                         /* const xmlChar* name; */                              \
+    xmlSecHref ## name,                         /* const xmlChar* href; */                              \
+    xmlSecTransformUsageKeyDerivationMethod,    /* xmlSecTransformUsage usage; */                       \
+    xmlSecOpenSSLKdfInitialize,                 /* xmlSecTransformInitializeMethod initialize; */       \
+    xmlSecOpenSSLKdfFinalize,                   /* xmlSecTransformFinalizeMethod finalize; */           \
+    readNode,                                   /* xmlSecTransformNodeReadMethod readNode; */           \
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */         \
+    xmlSecOpenSSLKdfSetKeyReq,                  /* xmlSecTransformSetKeyReqMethod setKeyReq; */         \
+    xmlSecOpenSSLKdfSetKey,                     /* xmlSecTransformSetKeyMethod setKey; */               \
+    NULL,                                       /* xmlSecTransformValidateMethod validate; */           \
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */     \
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */             \
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */               \
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */             \
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */               \
+    xmlSecOpenSSLKdfExecute,                    /* xmlSecTransformExecuteMethod execute; */             \
+    NULL,                                       /* void* reserved0; */                                  \
+    NULL,                                       /* void* reserved1; */                                  \
+};
+
 #ifndef XMLSEC_NO_CONCATKDF
 
 /**************************************************************************
@@ -526,32 +551,7 @@ done:
  * ConcatKDF key derivation algorithm
  *
  ********************************************************************/
-static xmlSecTransformKlass xmlSecOpenSSLConcatKdfKlass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),                   /* xmlSecSize klassSize */
-    xmlSecOpenSSLKdfCtxSize,                        /* xmlSecSize objSize */
-
-    xmlSecNameConcatKdf,                            /* const xmlChar* name; */
-    xmlSecHrefConcatKdf,                            /* const xmlChar* href; */
-    xmlSecTransformUsageKeyDerivationMethod,        /* xmlSecTransformUsage usage; */
-
-    xmlSecOpenSSLKdfInitialize,                     /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecOpenSSLKdfFinalize,                        /* xmlSecTransformFinalizeMethod finalize; */
-    xmlSecOpenSSLConcatKdfNodeRead,                 /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                           /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecOpenSSLKdfSetKeyReq,                      /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    xmlSecOpenSSLKdfSetKey,                         /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                           /* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,              /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,                  /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,                   /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                           /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                           /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecOpenSSLKdfExecute,                        /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                           /* void* reserved0; */
-    NULL,                                           /* void* reserved1; */
-};
+XMLSEC_OPENSSL_KDF_KLASS_EX(ConcatKdf, xmlSecOpenSSLConcatKdfNodeRead)
 
 /**
  * xmlSecOpenSSLTransformConcatKdfGetKlass:
@@ -743,32 +743,7 @@ done:
  * PBKDF2 key derivation algorithm
  *
  ********************************************************************/
-static xmlSecTransformKlass xmlSecOpenSSLPbkdf2Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),                   /* xmlSecSize klassSize */
-    xmlSecOpenSSLKdfCtxSize,                        /* xmlSecSize objSize */
-
-    xmlSecNamePbkdf2,                               /* const xmlChar* name; */
-    xmlSecHrefPbkdf2,                               /* const xmlChar* href; */
-    xmlSecTransformUsageKeyDerivationMethod,        /* xmlSecTransformUsage usage; */
-
-    xmlSecOpenSSLKdfInitialize,                     /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecOpenSSLKdfFinalize,                        /* xmlSecTransformFinalizeMethod finalize; */
-    xmlSecOpenSSLPbkdf2NodeRead,                    /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                           /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecOpenSSLKdfSetKeyReq,                      /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    xmlSecOpenSSLKdfSetKey,                         /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                           /* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,              /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,                  /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,                   /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                           /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                           /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecOpenSSLKdfExecute,                        /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                           /* void* reserved0; */
-    NULL,                                           /* void* reserved1; */
-};
+XMLSEC_OPENSSL_KDF_KLASS_EX(Pbkdf2, xmlSecOpenSSLPbkdf2NodeRead)
 
 /**
  * xmlSecOpenSSLTransformPbkdf2GetKlass:

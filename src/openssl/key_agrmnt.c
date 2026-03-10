@@ -541,6 +541,35 @@ xmlSecOpenSSLKeyAgreementGenerateExecuteKdf(xmlSecOpenSSLKeyAgreementCtxPtr ctx,
     return(0);
 }
 
+/* Helper macros to define the key agreement transform klass */
+
+#define XMLSEC_OPENSSL_KEY_AGREEMENT_KLASS_EX(name, transformName, transformHref)                       \
+static xmlSecTransformKlass xmlSecOpenSSL ## name ## Klass = {                                          \
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                              \
+    xmlSecOpenSSLKeyAgreementSize,              /* xmlSecSize objSize */                                \
+    transformName,                              /* const xmlChar* name; */                              \
+    transformHref,                              /* const xmlChar* href; */                              \
+    xmlSecTransformUsageAgreementMethod,        /* xmlSecTransformUsage usage; */                       \
+    xmlSecOpenSSLKeyAgreementInitialize,        /* xmlSecTransformInitializeMethod initialize; */       \
+    xmlSecOpenSSLKeyAgreementFinalize,          /* xmlSecTransformFinalizeMethod finalize; */           \
+    xmlSecOpenSSLKeyAgreementNodeRead,          /* xmlSecTransformNodeReadMethod readNode; */           \
+    xmlSecOpenSSLKeyAgreementNodeWrite,         /* xmlSecTransformNodeWriteMethod writeNode; */         \
+    xmlSecOpenSSLKeyAgreementSetKeyReq,         /* xmlSecTransformSetKeyReqMethod setKeyReq; */         \
+    xmlSecOpenSSLKeyAgreementSetKey,            /* xmlSecTransformSetKeyMethod setKey; */               \
+    NULL,                                       /* xmlSecTransformValidateMethod validate; */           \
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */     \
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */             \
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */               \
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */             \
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */               \
+    xmlSecOpenSSLKeyAgreementExecute,           /* xmlSecTransformExecuteMethod execute; */             \
+    NULL,                                       /* void* reserved0; */                                  \
+    NULL,                                       /* void* reserved1; */                                  \
+};
+
+#define XMLSEC_OPENSSL_KEY_AGREEMENT_KLASS(name)                                                        \
+    XMLSEC_OPENSSL_KEY_AGREEMENT_KLASS_EX(name, xmlSecName ## name, xmlSecHref ## name)
+
 #ifndef XMLSEC_NO_EC
 
 /**************************************************************************
@@ -556,32 +585,7 @@ xmlSecOpenSSLKeyAgreementGenerateExecuteKdf(xmlSecOpenSSLKeyAgreementCtxPtr ctx,
  * Ecdh key derivation algorithm
  *
  ********************************************************************/
-static xmlSecTransformKlass xmlSecOpenSSLEcdhKlass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecOpenSSLKeyAgreementSize,              /* xmlSecSize objSize */
-
-    xmlSecNameEcdh,                             /* const xmlChar* name; */
-    xmlSecHrefEcdh,                             /* const xmlChar* href; */
-    xmlSecTransformUsageAgreementMethod,        /* xmlSecTransformUsage usage; */
-
-    xmlSecOpenSSLKeyAgreementInitialize,        /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecOpenSSLKeyAgreementFinalize,          /* xmlSecTransformFinalizeMethod finalize; */
-    xmlSecOpenSSLKeyAgreementNodeRead,          /* xmlSecTransformNodeReadMethod readNode; */
-    xmlSecOpenSSLKeyAgreementNodeWrite,         /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecOpenSSLKeyAgreementSetKeyReq,         /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    xmlSecOpenSSLKeyAgreementSetKey,            /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecOpenSSLKeyAgreementExecute,           /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+XMLSEC_OPENSSL_KEY_AGREEMENT_KLASS(Ecdh)
 
 /**
  * xmlSecOpenSSLTransformEcdhGetKlass:
@@ -613,32 +617,7 @@ xmlSecOpenSSLTransformEcdhGetKlass(void) {
  * Dh key derivation algorithm
  *
  ********************************************************************/
-static xmlSecTransformKlass xmlSecOpenSSLDhKlass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecOpenSSLKeyAgreementSize,              /* xmlSecSize objSize */
-
-    xmlSecNameDhEs,                             /* const xmlChar* name; */
-    xmlSecHrefDhEs,                             /* const xmlChar* href; */
-    xmlSecTransformUsageAgreementMethod,        /* xmlSecTransformUsage usage; */
-
-    xmlSecOpenSSLKeyAgreementInitialize,        /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecOpenSSLKeyAgreementFinalize,          /* xmlSecTransformFinalizeMethod finalize; */
-    xmlSecOpenSSLKeyAgreementNodeRead,          /* xmlSecTransformNodeReadMethod readNode; */
-    xmlSecOpenSSLKeyAgreementNodeWrite,         /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecOpenSSLKeyAgreementSetKeyReq,         /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    xmlSecOpenSSLKeyAgreementSetKey,            /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecOpenSSLKeyAgreementExecute,           /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+XMLSEC_OPENSSL_KEY_AGREEMENT_KLASS_EX(Dh, xmlSecNameDhEs, xmlSecHrefDhEs)
 
 /**
  * xmlSecOpenSSLTransformDhEsGetKlass:
@@ -664,32 +643,7 @@ xmlSecOpenSSLTransformDhEsGetKlass(void) {
  *****************************************************************************/
 
 /* X25519 Transform Klass */
-static xmlSecTransformKlass xmlSecOpenSSLX25519Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecOpenSSLKeyAgreementSize,              /* xmlSecSize objSize */
-
-    xmlSecNameX25519,                           /* const xmlChar* name; */
-    xmlSecHrefX25519,                           /* const xmlChar* href; */
-    xmlSecTransformUsageAgreementMethod,        /* xmlSecTransformUsage usage; */
-
-    xmlSecOpenSSLKeyAgreementInitialize,        /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecOpenSSLKeyAgreementFinalize,          /* xmlSecTransformFinalizeMethod finalize; */
-    xmlSecOpenSSLKeyAgreementNodeRead,          /* xmlSecTransformNodeReadMethod readNode; */
-    xmlSecOpenSSLKeyAgreementNodeWrite,         /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecOpenSSLKeyAgreementSetKeyReq,         /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    xmlSecOpenSSLKeyAgreementSetKey,            /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecOpenSSLKeyAgreementExecute,           /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+XMLSEC_OPENSSL_KEY_AGREEMENT_KLASS(X25519)
 
 /**
  * xmlSecOpenSSLTransformX25519GetKlass:
@@ -704,32 +658,7 @@ xmlSecOpenSSLTransformX25519GetKlass(void) {
 }
 
 /* X448 Transform Klass */
-static xmlSecTransformKlass xmlSecOpenSSLX448Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecOpenSSLKeyAgreementSize,              /* xmlSecSize objSize */
-
-    xmlSecNameX448,                             /* const xmlChar* name; */
-    xmlSecHrefX448,                             /* const xmlChar* href; */
-    xmlSecTransformUsageAgreementMethod,        /* xmlSecTransformUsage usage; */
-
-    xmlSecOpenSSLKeyAgreementInitialize,        /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecOpenSSLKeyAgreementFinalize,          /* xmlSecTransformFinalizeMethod finalize; */
-    xmlSecOpenSSLKeyAgreementNodeRead,          /* xmlSecTransformNodeReadMethod readNode; */
-    xmlSecOpenSSLKeyAgreementNodeWrite,         /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecOpenSSLKeyAgreementSetKeyReq,         /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    xmlSecOpenSSLKeyAgreementSetKey,            /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecOpenSSLKeyAgreementExecute,           /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+XMLSEC_OPENSSL_KEY_AGREEMENT_KLASS(X448)
 
 /**
  * xmlSecOpenSSLTransformX448GetKlass:

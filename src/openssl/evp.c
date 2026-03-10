@@ -1629,8 +1629,10 @@ done:
 static int
 xmlSecOpenSSLKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKeyDataType type XMLSEC_ATTRIBUTE_UNUSED) {
     EVP_PKEY_CTX* pctx = NULL;
+    EVP_PKEY_CTX* kctx = NULL;
     OSSL_PARAM_BLD* param_bld = NULL;
     OSSL_PARAM* params = NULL;
+    EVP_PKEY* params_pKey = NULL;
     EVP_PKEY* pKey = NULL;
     int ret;
     int res = -1;
@@ -1639,6 +1641,7 @@ xmlSecOpenSSLKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
     xmlSecAssert2(sizeBits > 0, -1);
     UNREFERENCED_PARAMETER(type);
 
+    /* step 1: generate DSA parameters (p, q, g) */
     pctx = EVP_PKEY_CTX_new_from_name(xmlSecOpenSSLGetLibCtx(), XMLSEC_OPENSSL_DSA_EVP_NAME, NULL);
     if(pctx == NULL) {
         xmlSecOpenSSLError("EVP_PKEY_CTX_new_from_name", xmlSecKeyDataGetName(data));
@@ -1668,9 +1671,27 @@ xmlSecOpenSSLKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
         xmlSecOpenSSLError("EVP_PKEY_CTX_set_params", xmlSecKeyDataGetName(data));
         goto done;
     }
-    ret = EVP_PKEY_generate(pctx, &pKey);
+    ret = EVP_PKEY_generate(pctx, &params_pKey);
     if(ret <= 0) {
-        xmlSecOpenSSLError2("EVP_PKEY_generate", xmlSecKeyDataGetName(data),
+        xmlSecOpenSSLError2("EVP_PKEY_generate(params)", xmlSecKeyDataGetName(data),
+            "sizeBits=" XMLSEC_SIZE_FMT, sizeBits);
+        goto done;
+    }
+
+    /* step 2: generate the key pair from the DSA parameters */
+    kctx = EVP_PKEY_CTX_new_from_pkey(xmlSecOpenSSLGetLibCtx(), params_pKey, NULL);
+    if(kctx == NULL) {
+        xmlSecOpenSSLError("EVP_PKEY_CTX_new_from_pkey", xmlSecKeyDataGetName(data));
+        goto done;
+    }
+    ret = EVP_PKEY_keygen_init(kctx);
+    if(ret <= 0) {
+        xmlSecOpenSSLError("EVP_PKEY_keygen_init", xmlSecKeyDataGetName(data));
+        goto done;
+    }
+    ret = EVP_PKEY_generate(kctx, &pKey);
+    if(ret <= 0) {
+        xmlSecOpenSSLError2("EVP_PKEY_generate(key)", xmlSecKeyDataGetName(data),
             "sizeBits=" XMLSEC_SIZE_FMT, sizeBits);
         goto done;
     }
@@ -1688,11 +1709,17 @@ done:
     if(pKey != NULL) {
         EVP_PKEY_free(pKey);
     }
+    if(params_pKey != NULL) {
+        EVP_PKEY_free(params_pKey);
+    }
     if(params != NULL) {
         OSSL_PARAM_free(params);
     }
     if(param_bld != NULL) {
         OSSL_PARAM_BLD_free(param_bld);
+    }
+    if(kctx != NULL) {
+        EVP_PKEY_CTX_free(kctx);
     }
     if(pctx != NULL) {
         EVP_PKEY_CTX_free(pctx);
@@ -2454,8 +2481,10 @@ done:
 static int
 xmlSecOpenSSLKeyDataDhGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKeyDataType type XMLSEC_ATTRIBUTE_UNUSED) {
     EVP_PKEY_CTX* pctx = NULL;
+    EVP_PKEY_CTX* kctx = NULL;
     OSSL_PARAM_BLD* param_bld = NULL;
     OSSL_PARAM* params = NULL;
+    EVP_PKEY* params_pKey = NULL;
     EVP_PKEY* pKey = NULL;
     int ret;
     int res = -1;
@@ -2464,6 +2493,7 @@ xmlSecOpenSSLKeyDataDhGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSe
     xmlSecAssert2(sizeBits > 0, -1);
     UNREFERENCED_PARAMETER(type);
 
+    /* step 1: generate DH parameters (p, g) */
     pctx = EVP_PKEY_CTX_new_from_name(xmlSecOpenSSLGetLibCtx(), XMLSEC_OPENSSL_DH_EVP_NAME, NULL);
     if(pctx == NULL) {
         xmlSecOpenSSLError("EVP_PKEY_CTX_new_from_name", xmlSecKeyDataGetName(data));
@@ -2486,7 +2516,6 @@ xmlSecOpenSSLKeyDataDhGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSe
         goto done;
     }
 
-
     params = OSSL_PARAM_BLD_to_param(param_bld);
     if(params == NULL) {
         xmlSecOpenSSLError("OSSL_PARAM_BLD_to_param", xmlSecKeyDataGetName(data));
@@ -2497,9 +2526,27 @@ xmlSecOpenSSLKeyDataDhGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSe
         xmlSecOpenSSLError("EVP_PKEY_CTX_set_params", xmlSecKeyDataGetName(data));
         goto done;
     }
-    ret = EVP_PKEY_generate(pctx, &pKey);
+    ret = EVP_PKEY_generate(pctx, &params_pKey);
     if(ret <= 0) {
-        xmlSecOpenSSLError2("EVP_PKEY_generate", xmlSecKeyDataGetName(data),
+        xmlSecOpenSSLError2("EVP_PKEY_generate(params)", xmlSecKeyDataGetName(data),
+            "sizeBits=" XMLSEC_SIZE_FMT, sizeBits);
+        goto done;
+    }
+
+    /* step 2: generate the key pair from the DH parameters */
+    kctx = EVP_PKEY_CTX_new_from_pkey(xmlSecOpenSSLGetLibCtx(), params_pKey, NULL);
+    if(kctx == NULL) {
+        xmlSecOpenSSLError("EVP_PKEY_CTX_new_from_pkey", xmlSecKeyDataGetName(data));
+        goto done;
+    }
+    ret = EVP_PKEY_keygen_init(kctx);
+    if(ret <= 0) {
+        xmlSecOpenSSLError("EVP_PKEY_keygen_init", xmlSecKeyDataGetName(data));
+        goto done;
+    }
+    ret = EVP_PKEY_generate(kctx, &pKey);
+    if(ret <= 0) {
+        xmlSecOpenSSLError2("EVP_PKEY_generate(key)", xmlSecKeyDataGetName(data),
             "sizeBits=" XMLSEC_SIZE_FMT, sizeBits);
         goto done;
     }
@@ -2517,11 +2564,17 @@ done:
     if(pKey != NULL) {
         EVP_PKEY_free(pKey);
     }
+    if(params_pKey != NULL) {
+        EVP_PKEY_free(params_pKey);
+    }
     if(params != NULL) {
         OSSL_PARAM_free(params);
     }
     if(param_bld != NULL) {
         OSSL_PARAM_BLD_free(param_bld);
+    }
+    if(kctx != NULL) {
+        EVP_PKEY_CTX_free(kctx);
     }
     if(pctx != NULL) {
         EVP_PKEY_CTX_free(pctx);

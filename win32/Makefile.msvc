@@ -222,6 +222,7 @@ XMLSEC_OPENSSL_OBJS = \
 	$(XMLSEC_OPENSSL_INTDIR)\app.obj\
 	$(XMLSEC_OPENSSL_INTDIR)\ciphers.obj \
 	$(XMLSEC_OPENSSL_INTDIR)\crypto.obj \
+	$(XMLSEC_OPENSSL_INTDIR)\der_encoded_value.obj \
 	$(XMLSEC_OPENSSL_INTDIR)\digests.obj \
 	$(XMLSEC_OPENSSL_INTDIR)\evp.obj \
 	$(XMLSEC_OPENSSL_INTDIR)\hmac.obj \
@@ -241,6 +242,7 @@ XMLSEC_OPENSSL_OBJS_A = \
 	$(XMLSEC_OPENSSL_INTDIR_A)\app.obj\
 	$(XMLSEC_OPENSSL_INTDIR_A)\ciphers.obj \
 	$(XMLSEC_OPENSSL_INTDIR_A)\crypto.obj \
+	$(XMLSEC_OPENSSL_INTDIR_A)\der_encoded_value.obj \
 	$(XMLSEC_OPENSSL_INTDIR_A)\digests.obj \
 	$(XMLSEC_OPENSSL_INTDIR_A)\evp.obj \
 	$(XMLSEC_OPENSSL_INTDIR_A)\hmac.obj \

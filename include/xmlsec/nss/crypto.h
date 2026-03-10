@@ -25,12 +25,21 @@
  *
  * RSA OAEP requires https://bugzilla.mozilla.org/show_bug.cgi?id=1666891
  * which was fixed in NSS 3.59 (https://firefox-source-docs.mozilla.org/security/nss/legacy/nss_releases/nss_3.59_release_notes/index.html)
+ *
+ * XDH support requires public NSS KeyType values for Ed25519/X25519/X448.
+ * In particular, ecMontKey used by xmlsec was added in NSS 3.103.
  */
 #if (NSS_VMAJOR < 3) || ((NSS_VMAJOR == 3) && (NSS_VMINOR < 59))
 #define XMLSEC_NO_RSA_OAEP 1
 #else  /* (NSS_VMAJOR < 3) || ((NSS_VMAJOR == 3) && (NSS_VMINOR < 59)) */
 #define XMLSEC_NO_MD5 1
 #endif /* (NSS_VMAJOR < 3) || ((NSS_VMAJOR == 3) && (NSS_VMINOR < 59)) */
+
+#ifndef XMLSEC_NO_XDH
+#if (NSS_VMAJOR < 3) || ((NSS_VMAJOR == 3) && (NSS_VMINOR < 103))
+#define XMLSEC_NO_XDH 1
+#endif /* (NSS_VMAJOR < 3) || ((NSS_VMAJOR == 3) && (NSS_VMINOR < 103)) */
+#endif /* XMLSEC_NO_XDH */
 
 #ifdef __cplusplus
 extern "C" {

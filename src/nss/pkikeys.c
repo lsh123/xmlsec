@@ -436,8 +436,10 @@ xmlSecNssPKIKeyDataGetSize(xmlSecKeyDataPtr data) {
         return(8 * SECKEY_PublicKeyStrength(ctx->pubkey));
     case ecKey:
         return(SECKEY_SignatureLen(ctx->pubkey));
+#ifndef XMLSEC_NO_XDH
     case ecMontKey:
         return(8 * ctx->pubkey->u.ec.publicValue.len);
+#endif /* XMLSEC_NO_XDH */
     default:
         break;
     }

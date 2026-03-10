@@ -67,6 +67,37 @@ static int      xmlSecNssDigestExecute                  (xmlSecTransformPtr tran
                                                          int last,
                                                          xmlSecTransformCtxPtr transformCtx);
 
+/* Helper macros to define the transform klass */
+#define XMLSEC_NSS_DIGEST_KLASS_EX(name, readNode)                                                      \
+static xmlSecTransformKlass xmlSecNss ## name ## Klass = {                                              \
+    /* klass/object sizes */                                                                            \
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                              \
+    xmlSecNssDigestSize,                        /* xmlSecSize objSize */                                \
+    /* data */                                                                                          \
+    xmlSecName ## name,                         /* const xmlChar* name; */                              \
+    xmlSecHref ## name,                         /* const xmlChar* href; */                              \
+    xmlSecTransformUsageDigestMethod,           /* xmlSecTransformUsage usage; */                       \
+    /* methods */                                                                                       \
+    xmlSecNssDigestInitialize,                  /* xmlSecTransformInitializeMethod initialize; */       \
+    xmlSecNssDigestFinalize,                    /* xmlSecTransformFinalizeMethod finalize; */           \
+    readNode,                                   /* xmlSecTransformNodeReadMethod readNode; */           \
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */         \
+    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */         \
+    NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */               \
+    xmlSecNssDigestVerify,                      /* xmlSecTransformVerifyMethod verify; */               \
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */     \
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */             \
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */               \
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */             \
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */               \
+    xmlSecNssDigestExecute,                     /* xmlSecTransformExecuteMethod execute; */             \
+    NULL,                                       /* void* reserved0; */                                  \
+    NULL,                                       /* void* reserved1; */                                  \
+};
+
+#define XMLSEC_NSS_DIGEST_KLASS(name)                                                                   \
+    XMLSEC_NSS_DIGEST_KLASS_EX(name, NULL)
+
 static int
 xmlSecNssDigestCheckId(xmlSecTransformPtr transform) {
 
@@ -317,34 +348,7 @@ xmlSecNssDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
  * Md5 Digest transforms
  *
  *****************************************************************************/
-static xmlSecTransformKlass xmlSecNssMd5Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecNssDigestSize,                        /* xmlSecSize objSize */
-
-    /* data */
-    xmlSecNameMd5,                              /* const xmlChar* name; */
-    xmlSecHrefMd5,                              /* const xmlChar* href; */
-    xmlSecTransformUsageDigestMethod,           /* xmlSecTransformUsage usage; */
-
-    /* methods */
-    xmlSecNssDigestInitialize,                  /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecNssDigestFinalize,                    /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecNssDigestVerify,                      /* xmlSecTransformVerifyMethod verify; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecNssDigestExecute,                     /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+XMLSEC_NSS_DIGEST_KLASS(Md5)
 
 /**
  * xmlSecNssTransformMd5GetKlass:
@@ -366,34 +370,7 @@ xmlSecNssTransformMd5GetKlass(void) {
  * SHA1 Digest transforms
  *
  *****************************************************************************/
-static xmlSecTransformKlass xmlSecNssSha1Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecNssDigestSize,                        /* xmlSecSize objSize */
-
-    /* data */
-    xmlSecNameSha1,                             /* const xmlChar* name; */
-    xmlSecHrefSha1,                             /* const xmlChar* href; */
-    xmlSecTransformUsageDigestMethod,           /* xmlSecTransformUsage usage; */
-
-    /* methods */
-    xmlSecNssDigestInitialize,                  /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecNssDigestFinalize,                    /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecNssDigestVerify,                      /* xmlSecTransformVerifyMethod verify; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecNssDigestExecute,                     /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+XMLSEC_NSS_DIGEST_KLASS(Sha1)
 
 /**
  * xmlSecNssTransformSha1GetKlass:
@@ -414,34 +391,7 @@ xmlSecNssTransformSha1GetKlass(void) {
  * SHA2-224 digest transforms
  *
  *****************************************************************************/
-static xmlSecTransformKlass xmlSecNssSha224Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecNssDigestSize,                        /* xmlSecSize objSize */
-
-    /* data */
-    xmlSecNameSha224,                           /* const xmlChar* name; */
-    xmlSecHrefSha224,                           /* const xmlChar* href; */
-    xmlSecTransformUsageDigestMethod,           /* xmlSecTransformUsage usage; */
-
-    /* methods */
-    xmlSecNssDigestInitialize,                  /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecNssDigestFinalize,                    /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecNssDigestVerify,                      /* xmlSecTransformVerifyMethod verify; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecNssDigestExecute,                     /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+XMLSEC_NSS_DIGEST_KLASS(Sha224)
 
 /**
  * xmlSecNssTransformSha224GetKlass:
@@ -462,34 +412,7 @@ xmlSecNssTransformSha224GetKlass(void) {
  * SHA2-256 digest transforms
  *
  *****************************************************************************/
-static xmlSecTransformKlass xmlSecNssSha256Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecNssDigestSize,                        /* xmlSecSize objSize */
-
-    /* data */
-    xmlSecNameSha256,                           /* const xmlChar* name; */
-    xmlSecHrefSha256,                           /* const xmlChar* href; */
-    xmlSecTransformUsageDigestMethod,           /* xmlSecTransformUsage usage; */
-
-    /* methods */
-    xmlSecNssDigestInitialize,                  /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecNssDigestFinalize,                    /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecNssDigestVerify,                      /* xmlSecTransformVerifyMethod verify; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecNssDigestExecute,                     /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+XMLSEC_NSS_DIGEST_KLASS(Sha256)
 
 /**
  * xmlSecNssTransformSha256GetKlass:
@@ -511,34 +434,7 @@ xmlSecNssTransformSha256GetKlass(void) {
  * SHA2-384 digest transforms
  *
  *****************************************************************************/
-static xmlSecTransformKlass xmlSecNssSha384Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecNssDigestSize,                        /* xmlSecSize objSize */
-
-    /* data */
-    xmlSecNameSha384,                           /* const xmlChar* name; */
-    xmlSecHrefSha384,                           /* const xmlChar* href; */
-    xmlSecTransformUsageDigestMethod,           /* xmlSecTransformUsage usage; */
-
-    /* methods */
-    xmlSecNssDigestInitialize,                  /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecNssDigestFinalize,                    /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecNssDigestVerify,                      /* xmlSecTransformVerifyMethod verify; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecNssDigestExecute,                     /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+XMLSEC_NSS_DIGEST_KLASS(Sha384)
 
 /**
  * xmlSecNssTransformSha384GetKlass:
@@ -559,34 +455,7 @@ xmlSecNssTransformSha384GetKlass(void) {
  * SHA2-512 digest transforms
  *
  *****************************************************************************/
-static xmlSecTransformKlass xmlSecNssSha512Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecNssDigestSize,                        /* xmlSecSize objSize */
-
-    /* data */
-    xmlSecNameSha512,                           /* const xmlChar* name; */
-    xmlSecHrefSha512,                           /* const xmlChar* href; */
-    xmlSecTransformUsageDigestMethod,           /* xmlSecTransformUsage usage; */
-
-    /* methods */
-    xmlSecNssDigestInitialize,                  /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecNssDigestFinalize,                    /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecNssDigestVerify,                      /* xmlSecTransformVerifyMethod verify; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecNssDigestExecute,                     /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+XMLSEC_NSS_DIGEST_KLASS(Sha512)
 
 /**
  * xmlSecNssTransformSha512GetKlass:

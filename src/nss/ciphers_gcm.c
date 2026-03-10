@@ -476,32 +476,37 @@ xmlSecNssGcmCipherExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
  * AES GCM cipher transforms
  *
  ********************************************************************/
-static xmlSecTransformKlass xmlSecNssAes128GcmKlass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecNssGcmCipherSize,                     /* xmlSecSize objSize */
 
-    xmlSecNameAes128Gcm,                        /* const xmlChar* name; */
-    xmlSecHrefAes128Gcm,                        /* const xmlChar* href; */
-    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
-
-    xmlSecNssGcmCipherInitialize,               /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecNssGcmCipherFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecNssGcmCipherSetKeyReq,                /* xmlSecTransformSetKeyMethod setKeyReq; */
-    xmlSecNssGcmCipherSetKey,                   /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecNssGcmCipherExecute,                  /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
+/* Helper macro to define the AES GCM transform klass */
+#define XMLSEC_NSS_CIPHER_GCM_KLASS_EX(name)                                                           \
+static xmlSecTransformKlass xmlSecNss ## name ## Klass = {                                              \
+    /* klass/object sizes */                                                                            \
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                              \
+    xmlSecNssGcmCipherSize,                     /* xmlSecSize objSize */                                \
+                                                                                                        \
+    xmlSecName ## name,                         /* const xmlChar* name; */                              \
+    xmlSecHref ## name,                         /* const xmlChar* href; */                              \
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */                       \
+                                                                                                        \
+    xmlSecNssGcmCipherInitialize,               /* xmlSecTransformInitializeMethod initialize; */       \
+    xmlSecNssGcmCipherFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */           \
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */           \
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */         \
+    xmlSecNssGcmCipherSetKeyReq,                /* xmlSecTransformSetKeyMethod setKeyReq; */            \
+    xmlSecNssGcmCipherSetKey,                   /* xmlSecTransformSetKeyMethod setKey; */               \
+    NULL,                                       /* xmlSecTransformValidateMethod validate; */           \
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */     \
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */             \
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */               \
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */             \
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */               \
+    xmlSecNssGcmCipherExecute,                  /* xmlSecTransformExecuteMethod execute; */             \
+                                                                                                        \
+    NULL,                                       /* void* reserved0; */                                  \
+    NULL,                                       /* void* reserved1; */                                  \
 };
+
+XMLSEC_NSS_CIPHER_GCM_KLASS_EX(Aes128Gcm)
 
 /**
  * xmlSecNssTransformAes128GcmGetKlass:
@@ -515,32 +520,7 @@ xmlSecNssTransformAes128GcmGetKlass(void) {
     return(&xmlSecNssAes128GcmKlass);
 }
 
-static xmlSecTransformKlass xmlSecNssAes192GcmKlass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecNssGcmCipherSize,                     /* xmlSecSize objSize */
-
-    xmlSecNameAes192Gcm,                        /* const xmlChar* name; */
-    xmlSecHrefAes192Gcm,                        /* const xmlChar* href; */
-    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
-
-    xmlSecNssGcmCipherInitialize,               /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecNssGcmCipherFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecNssGcmCipherSetKeyReq,                /* xmlSecTransformSetKeyMethod setKeyReq; */
-    xmlSecNssGcmCipherSetKey,                   /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecNssGcmCipherExecute,                  /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+XMLSEC_NSS_CIPHER_GCM_KLASS_EX(Aes192Gcm)
 
 /**
  * xmlSecNssTransformAes192GcmGetKlass:
@@ -554,32 +534,7 @@ xmlSecNssTransformAes192GcmGetKlass(void) {
     return(&xmlSecNssAes192GcmKlass);
 }
 
-static xmlSecTransformKlass xmlSecNssAes256GcmKlass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecNssGcmCipherSize,                     /* xmlSecSize objSize */
-
-    xmlSecNameAes256Gcm,                        /* const xmlChar* name; */
-    xmlSecHrefAes256Gcm,                        /* const xmlChar* href; */
-    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
-
-    xmlSecNssGcmCipherInitialize,               /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecNssGcmCipherFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecNssGcmCipherSetKeyReq,                /* xmlSecTransformSetKeyMethod setKeyReq; */
-    xmlSecNssGcmCipherSetKey,                   /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecNssGcmCipherExecute,                  /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+XMLSEC_NSS_CIPHER_GCM_KLASS_EX(Aes256Gcm)
 
 /**
  * xmlSecNssTransformAes256GcmGetKlass:

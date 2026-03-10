@@ -117,32 +117,33 @@ static int              xmlSecNssKWAesExecute           (xmlSecTransformPtr tran
                                                          int last,
                                                          xmlSecTransformCtxPtr transformCtx);
 
-static xmlSecTransformKlass xmlSecNssKWAes128Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecNssKWAesSize,                         /* xmlSecSize objSize */
-
-    xmlSecNameKWAes128,                         /* const xmlChar* name; */
-    xmlSecHrefKWAes128,                         /* const xmlChar* href; */
-    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
-
-    xmlSecNssKWAesInitialize,                   /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecNssKWAesFinalize,                     /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecNssKWAesSetKeyReq,                    /* xmlSecTransformSetKeyMethod setKeyReq; */
-    xmlSecNssKWAesSetKey,                       /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecNssKWAesExecute,                      /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
+/* Helper macro to define the AES KW transform klass */
+#define XMLSEC_NSS_KW_AES_KLASS_EX(name)                                                                \
+static xmlSecTransformKlass xmlSecNssKWAes ## name ## Klass = {                                         \
+    /* klass/object sizes */                                                                             \
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                              \
+    xmlSecNssKWAesSize,                         /* xmlSecSize objSize */                                \
+    xmlSecNameKWAes ## name,                    /* const xmlChar* name; */                              \
+    xmlSecHrefKWAes ## name,                    /* const xmlChar* href; */                              \
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */                       \
+    xmlSecNssKWAesInitialize,                   /* xmlSecTransformInitializeMethod initialize; */       \
+    xmlSecNssKWAesFinalize,                     /* xmlSecTransformFinalizeMethod finalize; */           \
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */           \
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */         \
+    xmlSecNssKWAesSetKeyReq,                    /* xmlSecTransformSetKeyMethod setKeyReq; */            \
+    xmlSecNssKWAesSetKey,                       /* xmlSecTransformSetKeyMethod setKey; */               \
+    NULL,                                       /* xmlSecTransformValidateMethod validate; */           \
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */     \
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */             \
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */               \
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */             \
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */               \
+    xmlSecNssKWAesExecute,                      /* xmlSecTransformExecuteMethod execute; */             \
+    NULL,                                       /* void* reserved0; */                                  \
+    NULL,                                       /* void* reserved1; */                                  \
 };
+
+XMLSEC_NSS_KW_AES_KLASS_EX(128)
 
 /**
  * xmlSecNssTransformKWAes128GetKlass:
@@ -156,32 +157,7 @@ xmlSecNssTransformKWAes128GetKlass(void) {
     return(&xmlSecNssKWAes128Klass);
 }
 
-static xmlSecTransformKlass xmlSecNssKWAes192Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecNssKWAesSize,                         /* xmlSecSize objSize */
-
-    xmlSecNameKWAes192,                         /* const xmlChar* name; */
-    xmlSecHrefKWAes192,                         /* const xmlChar* href; */
-    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
-
-    xmlSecNssKWAesInitialize,                   /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecNssKWAesFinalize,                     /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecNssKWAesSetKeyReq,                    /* xmlSecTransformSetKeyMethod setKeyReq; */
-    xmlSecNssKWAesSetKey,                       /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecNssKWAesExecute,                      /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+XMLSEC_NSS_KW_AES_KLASS_EX(192)
 
 /**
  * xmlSecNssTransformKWAes192GetKlass:
@@ -195,32 +171,7 @@ xmlSecNssTransformKWAes192GetKlass(void) {
     return(&xmlSecNssKWAes192Klass);
 }
 
-static xmlSecTransformKlass xmlSecNssKWAes256Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecNssKWAesSize,                         /* xmlSecSize objSize */
-
-    xmlSecNameKWAes256,                         /* const xmlChar* name; */
-    xmlSecHrefKWAes256,                         /* const xmlChar* href; */
-    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
-
-    xmlSecNssKWAesInitialize,                   /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecNssKWAesFinalize,                     /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecNssKWAesSetKeyReq,                    /* xmlSecTransformSetKeyMethod setKeyReq; */
-    xmlSecNssKWAesSetKey,                       /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecNssKWAesExecute,                      /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+XMLSEC_NSS_KW_AES_KLASS_EX(256)
 
 /**
  * xmlSecNssTransformKWAes256GetKlass:

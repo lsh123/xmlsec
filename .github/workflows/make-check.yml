@@ -105,7 +105,7 @@ jobs:
           make install
   # macosx
   check-osx:
-    runs-on: macos-latest
+    runs-on: macos-26
     strategy:
       fail-fast: false
       matrix:

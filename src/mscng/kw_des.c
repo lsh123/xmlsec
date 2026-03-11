@@ -28,7 +28,7 @@
 
 #include <xmlsec/mscng/crypto.h>
 
-#include "../kw_aes_des.h"
+#include "../kw_helpers.h"
 #include "../cast_helpers.h"
 
 /*********************************************************************

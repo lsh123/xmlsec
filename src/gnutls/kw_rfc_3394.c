@@ -1,7 +1,7 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * AES Key Transport transforms implementation for GnuTLS.
+ * AES/Camellia Key Transport (RFC 3394) implementation for GnuTLS.
  *
  * This is free software; see the Copyright file in the source
  * distribution for precise wording.
@@ -30,7 +30,7 @@
 
 #include <xmlsec/gnutls/crypto.h>
 
-#include "../kw_aes_des.h"
+#include "../kw_helpers.h"
 #include "../cast_helpers.h"
 
 /*********************************************************************

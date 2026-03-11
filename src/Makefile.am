@@ -20,7 +20,7 @@ EXTRA_DIST = \
 	transform_helpers.h \
 	x509_helpers.h \
 	globals.h \
-	kw_aes_des.h \
+	kw_helpers.h \
 	xslt.h \
 	mscrypto \
 	$(XMLSEC_CRYPTO_DISABLED_LIST) \
@@ -45,7 +45,7 @@ libxmlsec1_la_SOURCES = \
 	keys.c \
 	keysdata.c \
 	keysmngr.c \
-	kw_aes_des.c \
+	kw_helpers.c \
 	list.c \
 	membuf.c \
 	nodeset.c \

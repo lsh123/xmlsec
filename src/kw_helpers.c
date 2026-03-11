@@ -1,7 +1,7 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * AES/DES Key Transport implementation.
+ * Key wrap helper functions (AES/DES/Camellia).
  *
  * This is free software; see the Copyright file in the source
  * distribution for precise wording.
@@ -23,7 +23,7 @@
 #include <xmlsec/buffer.h>
 #include <xmlsec/errors.h>
 
-#include "kw_aes_des.h"
+#include "kw_helpers.h"
 #include "cast_helpers.h"
 #include "keysdata_helpers.h"
 

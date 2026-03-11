@@ -28,7 +28,7 @@
 #include <xmlsec/gnutls/crypto.h>
 
 #include "../cast_helpers.h"
-#include "../kw_aes_des.h"
+#include "../kw_helpers.h"
 
 /* https://www.w3.org/TR/xmlenc-core1/#sec-AES-GCM
  *

@@ -32,7 +32,7 @@ libxmlsec1_mscng_la_SOURCES =\
 	key_agrmnt.c \
 	keysstore.c \
 	kt_rsa.c \
-	kw_aes.c \
+	kw_rfc_3394.c \
 	kw_des.c \
 	pbkdf2.c \
 	private.h \

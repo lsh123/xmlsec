@@ -416,6 +416,32 @@ static xmlSecAppCmdLineParam aesKeyParam = {
 };
 #endif /* XMLSEC_NO_AES */
 
+#ifndef XMLSEC_NO_CAMELLIA
+static xmlSecAppCmdLineParam camelliaKeyParam = {
+    xmlSecAppCmdLineTopicKeysMngr,
+    "--camellia-key",
+    "--camelliakey",
+    "--camellia-key[:<name>] <file>"
+    "\n\tload Camellia key from binary file <file>",
+    xmlSecAppCmdLineParamTypeString,
+    xmlSecAppCmdLineParamFlagParamNameValue | xmlSecAppCmdLineParamFlagMultipleValues,
+    NULL
+};
+#endif /* XMLSEC_NO_CAMELLIA */
+
+#ifndef XMLSEC_NO_CHACHA20
+static xmlSecAppCmdLineParam chacha20KeyParam = {
+    xmlSecAppCmdLineTopicKeysMngr,
+    "--chacha20-key",
+    "--chacha20key",
+    "--chacha20-key[:<name>] <file>"
+    "\n\tload ChaCha20 key from binary file <file>",
+    xmlSecAppCmdLineParamTypeString,
+    xmlSecAppCmdLineParamFlagParamNameValue | xmlSecAppCmdLineParamFlagMultipleValues,
+    NULL
+};
+#endif /* XMLSEC_NO_CHACHA20 */
+
 #ifndef XMLSEC_NO_CONCATKDF
 static xmlSecAppCmdLineParam concatKdfKeyParam = {
     xmlSecAppCmdLineTopicKeysMngr,
@@ -1115,6 +1141,14 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
 #ifndef XMLSEC_NO_AES
     &aesKeyParam,
 #endif  /* XMLSEC_NO_AES */
+
+#ifndef XMLSEC_NO_CAMELLIA
+    &camelliaKeyParam,
+#endif  /* XMLSEC_NO_CAMELLIA */
+
+#ifndef XMLSEC_NO_CHACHA20
+    &chacha20KeyParam,
+#endif  /* XMLSEC_NO_CHACHA20 */
 
 #ifndef XMLSEC_NO_CONCATKDF
     &concatKdfKeyParam,
@@ -2961,6 +2995,42 @@ xmlSecAppLoadKeys(void) {
         }
     }
 #endif /* XMLSEC_NO_AES */
+
+#ifndef XMLSEC_NO_CAMELLIA
+    /* read all Camellia keys */
+    for(value = camelliaKeyParam.value; value != NULL; value = value->next) {
+        if(value->strValue == NULL) {
+            fprintf(stderr, "Error: invalid value for option \"%s\".\n",
+                    camelliaKeyParam.fullName);
+            xmlSecKeyInfoCtxDestroy(keyInfoCtx);
+            return(-1);
+        } else if(xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad(g_keysManager,
+                    (const char*)xmlSecNameCamelliaKeyValue, value->strValue, value->paramNameValue) < 0) {
+            fprintf(stderr, "Error: failed to load Camellia key from \"%s\".\n",
+                    value->strValue);
+            xmlSecKeyInfoCtxDestroy(keyInfoCtx);
+            return(-1);
+        }
+    }
+#endif /* XMLSEC_NO_CAMELLIA */
+
+#ifndef XMLSEC_NO_CHACHA20
+    /* read all ChaCha20 keys */
+    for(value = chacha20KeyParam.value; value != NULL; value = value->next) {
+        if(value->strValue == NULL) {
+            fprintf(stderr, "Error: invalid value for option \"%s\".\n",
+                    chacha20KeyParam.fullName);
+            xmlSecKeyInfoCtxDestroy(keyInfoCtx);
+            return(-1);
+        } else if(xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad(g_keysManager,
+                    (const char*)xmlSecNameChaCha20KeyValue, value->strValue, value->paramNameValue) < 0) {
+            fprintf(stderr, "Error: failed to load ChaCha20 key from \"%s\".\n",
+                    value->strValue);
+            xmlSecKeyInfoCtxDestroy(keyInfoCtx);
+            return(-1);
+        }
+    }
+#endif /* XMLSEC_NO_CHACHA20 */
 
 #ifndef XMLSEC_NO_CONCATKDF
     /* read all ConcatKDF keys */

@@ -37,6 +37,11 @@
 #define xmlCtxtPushInput    inputPush
 #endif /* (LIBXML_VERSION < 21500) */
 
+/* XML_PARSE_NO_XXE was introduced in libxml2 2.13.0 */
+#ifndef XML_PARSE_NO_XXE
+#define XML_PARSE_NO_XXE 0
+#endif /* XML_PARSE_NO_XXE */
+
 /**************************************************************************
  *
  * Internal parser
@@ -562,7 +567,7 @@ xmlSecParsePrepareCtxt(xmlParserCtxtPtr ctxt) {
 
 /*
  * To block network access and loading of external entities:
- * - XML_PARSE_NO_XXE: disable loading of external content (available >= 2.13.0),
+ * - XML_PARSE_NO_XXE: disable loading of external content (available >= 2.13.0, silently ignored on older versions),
  *   it disables XML_PARSE_DTDLOAD | XML_PARSE_DTDATTR ut we keep those in defaults
  *   to make it work if XML_PARSE_NO_XXE is disabled (e.g. with --xxe option)
  * - XML_PARSE_NONET: forbid network access

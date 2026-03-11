@@ -344,7 +344,7 @@ AC_DEFUN([AX_FIND_FOLDER],[
 dnl ==========================================================================
 dnl find libxml
 dnl ==========================================================================
-LIBXML_MIN_VERSION="2.13.0"
+LIBXML_MIN_VERSION="2.9.14"
 LIBXML_INCLUDE_DIR="$COMMON_INCLUDE_DIR /usr/include/libxml2 /usr/local/include/libxml2 /usr/local/libxml2/include"
 LIBXML_LIB_DIR="$COMMON_LIB_DIR /usr/local/libxml2/lib"
 LIBXML_INCLUDE_MARKER="libxml/xmlversion.h"
@@ -522,7 +522,7 @@ AC_SUBST(LIBXML_MIN_VERSION)
 dnl ==========================================================================
 dnl find libxslt
 dnl ==========================================================================
-LIBXSLT_MIN_VERSION=1.1.40
+LIBXSLT_MIN_VERSION=1.1.39
 LIBXSLT_INCLUDE_DIR="$COMMON_INCLUDE_DIR /usr/local/libxslt/include"
 LIBXSLT_LIB_DIR="$COMMON_LIB_DIR /usr/local/libxslt/lib"
 LIBXSLT_CONFIG="xslt-config"
@@ -697,7 +697,7 @@ dnl ==========================================================================
 dnl OpenSSL
 dnl ==========================================================================
 OPENSSL_MIN_VERSION="1.1.1"
-OPENSSL3_MIN_VERSION="3.3.0"
+OPENSSL3_MIN_VERSION="3.0.13"
 OPENSSL_INCLUDE_DIR="$COMMON_INCLUDE_DIR /usr/local/ssl/include"
 OPENSSL_LIB_DIR="$COMMON_LIB_DIR /usr/local/ssl/lib /usr/local/ssl/lib64"
 OPENSSL_CRYPTO_LIB="$XMLSEC_PACKAGE-openssl"
@@ -880,11 +880,11 @@ if test "z$OPENSSL_FOUND" = "zyes" ; then
     if test "z$OPENSSL_VERSION" = "z" ; then
         AC_EGREP_CPP(greater-than-minvers, [
             #include <openssl/opensslv.h>
-            #if OPENSSL_VERSION_NUMBER >= 0x30300000L
+            #if OPENSSL_VERSION_NUMBER >= 0x30000000L
             greater-than-minvers
             #endif
         ],[
-            OPENSSL_VERSION="3.3.0"
+            OPENSSL_VERSION="3.0.0"
             OPENSSL_TEST_CONFIG="openssl3.cnf"
         ],[
             OPENSSL_VERSION=""
@@ -943,7 +943,7 @@ AC_SUBST(OPENSSL_VERSION)
 
 dnl See if we should build OpenSSL 3+ with engines support
 AC_ARG_ENABLE([openssl3_engines],[AS_HELP_STRING([--enable-openssl3-engines],[enable engines support for OpenSSL 3+ (no)])])
-if test "z$OPENSSL_VERSION" = "z3.3.0" ; then
+if test "z$OPENSSL_VERSION" = "z3.0.0" ; then
     AC_MSG_CHECKING(for OpenSSL 3+ engines support)
     if test "z$enable_openssl3_engines" = "zyes" ; then
         XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_OPENSSL3_ENGINES=1"

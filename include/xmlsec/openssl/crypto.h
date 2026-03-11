@@ -288,6 +288,79 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecOpenSSLTransformKWAes256GetKlass(v
 
 /********************************************************************
  *
+ * Camellia transforms
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_CAMELLIA
+/**
+ * xmlSecOpenSSLKeyDataCamelliaId:
+ *
+ * The Camellia key klass.
+ */
+#define xmlSecOpenSSLKeyDataCamelliaId \
+        xmlSecOpenSSLKeyDataCamelliaGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataCamelliaGetKlass(void);
+XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeyDataCamelliaSet     (xmlSecKeyDataPtr data,
+                                                                             const xmlSecByte* buf,
+                                                                             xmlSecSize bufSize);
+/**
+ * xmlSecOpenSSLTransformCamellia128CbcId:
+ *
+ * The Camellia128 CBC cipher transform klass.
+ */
+#define xmlSecOpenSSLTransformCamellia128CbcId \
+        xmlSecOpenSSLTransformCamellia128CbcGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecOpenSSLTransformCamellia128CbcGetKlass(void);
+
+/**
+ * xmlSecOpenSSLTransformCamellia192CbcId:
+ *
+ * The Camellia192 CBC cipher transform klass.
+ */
+#define xmlSecOpenSSLTransformCamellia192CbcId \
+        xmlSecOpenSSLTransformCamellia192CbcGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecOpenSSLTransformCamellia192CbcGetKlass(void);
+
+/**
+ * xmlSecOpenSSLTransformCamellia256CbcId:
+ *
+ * The Camellia256 CBC cipher transform klass.
+ */
+#define xmlSecOpenSSLTransformCamellia256CbcId \
+        xmlSecOpenSSLTransformCamellia256CbcGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecOpenSSLTransformCamellia256CbcGetKlass(void);
+
+/**
+ * xmlSecOpenSSLTransformKWCamellia128Id:
+ *
+ * The Camellia 128 key wrap transform klass.
+ */
+#define xmlSecOpenSSLTransformKWCamellia128Id \
+        xmlSecOpenSSLTransformKWCamellia128GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecOpenSSLTransformKWCamellia128GetKlass(void);
+
+/**
+ * xmlSecOpenSSLTransformKWCamellia192Id:
+ *
+ * The Camellia 192 key wrap transform klass.
+ */
+#define xmlSecOpenSSLTransformKWCamellia192Id \
+        xmlSecOpenSSLTransformKWCamellia192GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecOpenSSLTransformKWCamellia192GetKlass(void);
+
+/**
+ * xmlSecOpenSSLTransformKWCamellia256Id:
+ *
+ * The Camellia 256 key wrap transform klass.
+ */
+#define xmlSecOpenSSLTransformKWCamellia256Id \
+        xmlSecOpenSSLTransformKWCamellia256GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecOpenSSLTransformKWCamellia256GetKlass(void);
+
+#endif /* XMLSEC_NO_CAMELLIA */
+
+/********************************************************************
+ *
  * ConcatKDF key derivation transforms
  *
  *******************************************************************/

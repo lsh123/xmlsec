@@ -134,6 +134,35 @@ const xmlChar xmlSecHrefKWAes256[]              = "http://www.w3.org/2001/04/xml
 
 /*************************************************************************
  *
+ * Camellia strings
+ *
+ ************************************************************************/
+#ifndef XMLSEC_NO_CAMELLIA
+const xmlChar xmlSecNameCamelliaKeyValue[]      = "camellia";
+const xmlChar xmlSecNodeCamelliaKeyValue[]      = "CamelliaKeyValue";
+const xmlChar xmlSecHrefCamelliaKeyValue[]      = "http://www.aleksey.com/xmlsec/2002#CamelliaKeyValue";
+
+const xmlChar xmlSecNameCamellia128Cbc[]        = "camellia128-cbc";
+const xmlChar xmlSecHrefCamellia128Cbc[]        = "http://www.w3.org/2001/04/xmldsig-more#camellia128-cbc";
+
+const xmlChar xmlSecNameCamellia192Cbc[]        = "camellia192-cbc";
+const xmlChar xmlSecHrefCamellia192Cbc[]        = "http://www.w3.org/2001/04/xmldsig-more#camellia192-cbc";
+
+const xmlChar xmlSecNameCamellia256Cbc[]        = "camellia256-cbc";
+const xmlChar xmlSecHrefCamellia256Cbc[]        = "http://www.w3.org/2001/04/xmldsig-more#camellia256-cbc";
+
+const xmlChar xmlSecNameKWCamellia128[]         = "kw-camellia128";
+const xmlChar xmlSecHrefKWCamellia128[]         = "http://www.w3.org/2001/04/xmldsig-more#kw-camellia128";
+
+const xmlChar xmlSecNameKWCamellia192[]         = "kw-camellia192";
+const xmlChar xmlSecHrefKWCamellia192[]         = "http://www.w3.org/2001/04/xmldsig-more#kw-camellia192";
+
+const xmlChar xmlSecNameKWCamellia256[]         = "kw-camellia256";
+const xmlChar xmlSecHrefKWCamellia256[]         = "http://www.w3.org/2001/04/xmldsig-more#kw-camellia256";
+#endif /* XMLSEC_NO_CAMELLIA */
+
+/*************************************************************************
+ *
  * BASE64 strings
  *
  ************************************************************************/

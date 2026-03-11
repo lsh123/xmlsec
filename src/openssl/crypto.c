@@ -95,6 +95,10 @@ xmlSecCryptoGetFunctions_openssl(void) {
     gXmlSecOpenSSLFunctions->keyDataAesGetKlass         = xmlSecOpenSSLKeyDataAesGetKlass;
 #endif /* XMLSEC_NO_AES */
 
+#ifndef XMLSEC_NO_CAMELLIA
+    gXmlSecOpenSSLFunctions->keyDataCamelliaGetKlass    = xmlSecOpenSSLKeyDataCamelliaGetKlass;
+#endif /* XMLSEC_NO_CAMELLIA */
+
 #ifndef XMLSEC_NO_CONCATKDF
     gXmlSecOpenSSLFunctions->keyDataConcatKdfGetKlass   = xmlSecOpenSSLKeyDataConcatKdfGetKlass;
 #endif /* XMLSEC_NO_CONCATKDF */
@@ -190,6 +194,17 @@ xmlSecCryptoGetFunctions_openssl(void) {
     gXmlSecOpenSSLFunctions->transformKWAes192GetKlass          = xmlSecOpenSSLTransformKWAes192GetKlass;
     gXmlSecOpenSSLFunctions->transformKWAes256GetKlass          = xmlSecOpenSSLTransformKWAes256GetKlass;
 #endif /* XMLSEC_NO_AES */
+
+
+    /******************************* CAMELLIA ********************************/
+#ifndef XMLSEC_NO_CAMELLIA
+    gXmlSecOpenSSLFunctions->transformCamellia128CbcGetKlass    = xmlSecOpenSSLTransformCamellia128CbcGetKlass;
+    gXmlSecOpenSSLFunctions->transformCamellia192CbcGetKlass    = xmlSecOpenSSLTransformCamellia192CbcGetKlass;
+    gXmlSecOpenSSLFunctions->transformCamellia256CbcGetKlass    = xmlSecOpenSSLTransformCamellia256CbcGetKlass;
+    gXmlSecOpenSSLFunctions->transformKWCamellia128GetKlass     = xmlSecOpenSSLTransformKWCamellia128GetKlass;
+    gXmlSecOpenSSLFunctions->transformKWCamellia192GetKlass     = xmlSecOpenSSLTransformKWCamellia192GetKlass;
+    gXmlSecOpenSSLFunctions->transformKWCamellia256GetKlass     = xmlSecOpenSSLTransformKWCamellia256GetKlass;
+#endif /* XMLSEC_NO_CAMELLIA */
 
 
     /******************************* CONCATKDF ********************************/

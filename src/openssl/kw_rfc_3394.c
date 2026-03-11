@@ -20,6 +20,7 @@
 #include <string.h>
 
 #include <openssl/aes.h>
+#include <openssl/camellia.h>
 #include <openssl/rand.h>
 
 #include <xmlsec/xmlsec.h>
@@ -497,7 +498,465 @@ xmlSecOpenSSLKWAesBlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * 
     return(0);
 }
 
-#else /* XMLSEC_NO_AES */
+#endif /* XMLSEC_NO_AES */
+
+/*********************************************************************
+ *
+ * Camellia KW implementation
+ *
+ *********************************************************************/
+#ifndef XMLSEC_NO_CAMELLIA
+
+static int        xmlSecOpenSSLKWCamelliaBlockEncrypt           (xmlSecTransformPtr transform,
+                                                                 const xmlSecByte * in,
+                                                                 xmlSecSize inSize,
+                                                                 xmlSecByte * out,
+                                                                 xmlSecSize outSize,
+                                                                 xmlSecSize * outWritten);
+static int        xmlSecOpenSSLKWCamelliaBlockDecrypt           (xmlSecTransformPtr transform,
+                                                                 const xmlSecByte * in,
+                                                                 xmlSecSize inSize,
+                                                                 xmlSecByte * out,
+                                                                 xmlSecSize outSize,
+                                                                 xmlSecSize * outWritten);
+static xmlSecKWAesKlass xmlSecOpenSSLKWCamelliaKlass = {
+    /* callbacks */
+    xmlSecOpenSSLKWCamelliaBlockEncrypt,        /* xmlSecKWAesBlockEncryptMethod       encrypt; */
+    xmlSecOpenSSLKWCamelliaBlockDecrypt,        /* xmlSecKWAesBlockDecryptMethod       decrypt; */
+
+    /* for the future */
+    NULL,                                       /* void*                               reserved0; */
+    NULL                                        /* void*                               reserved1; */
+};
+
+/*********************************************************************
+ *
+ * Camellia KW transforms context
+ *
+ ********************************************************************/
+typedef struct _xmlSecOpenSSLKWCamelliaCtx   xmlSecOpenSSLKWCamelliaCtx,
+                                             *xmlSecOpenSSLKWCamelliaCtxPtr;
+struct _xmlSecOpenSSLKWCamelliaCtx {
+    xmlSecTransformKWAesCtx parentCtx;
+
+#ifdef XMLSEC_OPENSSL_API_300
+    const char*  cipherName;
+    EVP_CIPHER*  cipher;
+#endif /* XMLSEC_OPENSSL_API_300 */
+};
+
+/*********************************************************************
+ *
+ * Camellia KW transforms
+ *
+ ********************************************************************/
+XMLSEC_TRANSFORM_DECLARE(OpenSSLKWCamellia, xmlSecOpenSSLKWCamelliaCtx)
+#define xmlSecOpenSSLKWCamelliaSize XMLSEC_TRANSFORM_SIZE(OpenSSLKWCamellia)
+
+#define xmlSecOpenSSLKWCamelliaCheckId(transform) \
+    (xmlSecTransformCheckId((transform), xmlSecOpenSSLTransformKWCamellia128Id) || \
+     xmlSecTransformCheckId((transform), xmlSecOpenSSLTransformKWCamellia192Id) || \
+     xmlSecTransformCheckId((transform), xmlSecOpenSSLTransformKWCamellia256Id))
+
+static int      xmlSecOpenSSLKWCamelliaInitialize               (xmlSecTransformPtr transform);
+static void     xmlSecOpenSSLKWCamelliaFinalize                 (xmlSecTransformPtr transform);
+static int      xmlSecOpenSSLKWCamelliaSetKeyReq                (xmlSecTransformPtr transform,
+                                                                 xmlSecKeyReqPtr keyReq);
+static int      xmlSecOpenSSLKWCamelliaSetKey                   (xmlSecTransformPtr transform,
+                                                                 xmlSecKeyPtr key);
+static int      xmlSecOpenSSLKWCamelliaExecute                  (xmlSecTransformPtr transform,
+                                                                 int last,
+                                                                 xmlSecTransformCtxPtr transformCtx);
+
+/* small helper macro to reduce clutter in the code */
+#ifndef XMLSEC_OPENSSL_API_300
+#define XMLSEC_OPENSSL_KW_CAMELLIA_SET_CIPHER(ctx, cipherNameVal)
+
+#else /* XMLSEC_OPENSSL_API_300 */
+#define XMLSEC_OPENSSL_KW_CAMELLIA_SET_CIPHER(ctx, cipherNameVal) \
+    (ctx)->cipherName = (cipherNameVal)
+#endif /* XMLSEC_OPENSSL_API_300 */
+
+static int
+xmlSecOpenSSLKWCamelliaInitialize(xmlSecTransformPtr transform) {
+    xmlSecOpenSSLKWCamelliaCtxPtr ctx;
+    xmlSecSize keyExpectedSize;
+    int ret;
+
+    xmlSecAssert2(xmlSecOpenSSLKWCamelliaCheckId(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLKWCamelliaSize), -1);
+
+    ctx = xmlSecOpenSSLKWCamelliaGetCtx(transform);
+    xmlSecAssert2(ctx != NULL, -1);
+    memset(ctx, 0, sizeof(xmlSecOpenSSLKWCamelliaCtx));
+
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformKWCamellia128Id)) {
+        XMLSEC_OPENSSL_KW_CAMELLIA_SET_CIPHER(ctx, XMLSEC_OPENSSL_CIPHER_NAME_CAMELLIA128_CBC);
+        keyExpectedSize = XMLSEC_KW_AES128_KEY_SIZE;
+    } else if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformKWCamellia192Id)) {
+        XMLSEC_OPENSSL_KW_CAMELLIA_SET_CIPHER(ctx, XMLSEC_OPENSSL_CIPHER_NAME_CAMELLIA192_CBC);
+        keyExpectedSize = XMLSEC_KW_AES192_KEY_SIZE;
+    } else if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformKWCamellia256Id)) {
+        XMLSEC_OPENSSL_KW_CAMELLIA_SET_CIPHER(ctx, XMLSEC_OPENSSL_CIPHER_NAME_CAMELLIA256_CBC);
+        keyExpectedSize = XMLSEC_KW_AES256_KEY_SIZE;
+    } else {
+        xmlSecInvalidTransfromError(transform)
+        return(-1);
+    }
+
+    ret = xmlSecTransformKWAesInitialize(transform, &(ctx->parentCtx),
+        &xmlSecOpenSSLKWCamelliaKlass, xmlSecOpenSSLKeyDataCamelliaId,
+        keyExpectedSize);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecTransformKWAesInitialize", xmlSecTransformGetName(transform));
+        xmlSecOpenSSLKWCamelliaFinalize(transform);
+        return(-1);
+    }
+
+#ifdef XMLSEC_OPENSSL_API_300
+    /* fetch cipher */
+    xmlSecAssert2(ctx->cipherName != NULL, -1);
+    ctx->cipher = EVP_CIPHER_fetch(xmlSecOpenSSLGetLibCtx(), ctx->cipherName, NULL);
+    if(ctx->cipher == NULL) {
+        xmlSecOpenSSLError2("EVP_CIPHER_fetch", xmlSecTransformGetName(transform),
+            "cipherName=%s", xmlSecErrorsSafeString(ctx->cipherName));
+        xmlSecOpenSSLKWCamelliaFinalize(transform);
+        return(-1);
+    }
+#endif /* XMLSEC_OPENSSL_API_300 */
+
+    return(0);
+}
+
+static void
+xmlSecOpenSSLKWCamelliaFinalize(xmlSecTransformPtr transform) {
+    xmlSecOpenSSLKWCamelliaCtxPtr ctx;
+
+    xmlSecAssert(xmlSecOpenSSLKWCamelliaCheckId(transform));
+    xmlSecAssert(xmlSecTransformCheckSize(transform, xmlSecOpenSSLKWCamelliaSize));
+
+    ctx = xmlSecOpenSSLKWCamelliaGetCtx(transform);
+    xmlSecAssert(ctx != NULL);
+
+#ifdef XMLSEC_OPENSSL_API_300
+    if(ctx->cipher != NULL) {
+        EVP_CIPHER_free(ctx->cipher);
+    }
+#endif /* XMLSEC_OPENSSL_API_300 */
+
+    xmlSecTransformKWAesFinalize(transform, &(ctx->parentCtx));
+    memset(ctx, 0, sizeof(xmlSecOpenSSLKWCamelliaCtx));
+}
+
+static int
+xmlSecOpenSSLKWCamelliaSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
+    xmlSecOpenSSLKWCamelliaCtxPtr ctx;
+    int ret;
+
+    xmlSecAssert2(xmlSecOpenSSLKWCamelliaCheckId(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLKWCamelliaSize), -1);
+
+    ctx = xmlSecOpenSSLKWCamelliaGetCtx(transform);
+    xmlSecAssert2(ctx != NULL, -1);
+
+    ret = xmlSecTransformKWAesSetKeyReq(transform, &(ctx->parentCtx), keyReq);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecTransformKWAesSetKeyReq", xmlSecTransformGetName(transform));
+        return(-1);
+    }
+    return(0);
+}
+
+static int
+xmlSecOpenSSLKWCamelliaSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
+    xmlSecOpenSSLKWCamelliaCtxPtr ctx;
+    int ret;
+
+    xmlSecAssert2(xmlSecOpenSSLKWCamelliaCheckId(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLKWCamelliaSize), -1);
+
+    ctx = xmlSecOpenSSLKWCamelliaGetCtx(transform);
+    xmlSecAssert2(ctx != NULL, -1);
+
+    ret = xmlSecTransformKWAesSetKey(transform, &(ctx->parentCtx), key);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecTransformKWAesSetKey", xmlSecTransformGetName(transform));
+        return(-1);
+    }
+    return(0);
+}
+
+static int
+xmlSecOpenSSLKWCamelliaExecute(xmlSecTransformPtr transform, int last,
+                               xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED) {
+    xmlSecOpenSSLKWCamelliaCtxPtr ctx;
+    int ret;
+
+    xmlSecAssert2(xmlSecOpenSSLKWCamelliaCheckId(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLKWCamelliaSize), -1);
+    UNREFERENCED_PARAMETER(transformCtx);
+
+    ctx = xmlSecOpenSSLKWCamelliaGetCtx(transform);
+    xmlSecAssert2(ctx != NULL, -1);
+
+    ret = xmlSecTransformKWAesExecute(transform, &(ctx->parentCtx), last);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecTransformKWAesExecute", xmlSecTransformGetName(transform));
+        return(-1);
+    }
+    return(0);
+}
+
+#define XMLSEC_OPENSSL_EVP_KW_CAMELLIA_KLASS_EX(name)                                                   \
+static xmlSecTransformKlass xmlSecOpenSSLKW ## name ## Klass = {                                        \
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                              \
+    xmlSecOpenSSLKWCamelliaSize,                /* xmlSecSize objSize */                                \
+    xmlSecNameKW ## name,                       /* const xmlChar* name; */                              \
+    xmlSecHrefKW ## name,                       /* const xmlChar* href; */                              \
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */                       \
+    xmlSecOpenSSLKWCamelliaInitialize,          /* xmlSecTransformInitializeMethod initialize; */       \
+    xmlSecOpenSSLKWCamelliaFinalize,            /* xmlSecTransformFinalizeMethod finalize; */           \
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */           \
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */         \
+    xmlSecOpenSSLKWCamelliaSetKeyReq,           /* xmlSecTransformSetKeyMethod setKeyReq; */            \
+    xmlSecOpenSSLKWCamelliaSetKey,              /* xmlSecTransformSetKeyMethod setKey; */               \
+    NULL,                                       /* xmlSecTransformValidateMethod validate; */           \
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */     \
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */             \
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */               \
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */             \
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */               \
+    xmlSecOpenSSLKWCamelliaExecute,             /* xmlSecTransformExecuteMethod execute; */             \
+    NULL,                                       /* void* reserved0; */                                  \
+    NULL,                                       /* void* reserved1; */                                  \
+};
+
+XMLSEC_OPENSSL_EVP_KW_CAMELLIA_KLASS_EX(Camellia128)
+
+/**
+ * xmlSecOpenSSLTransformKWCamellia128GetKlass:
+ *
+ * The Camellia-128 key wrapper transform klass.
+ *
+ * Returns: Camellia-128 key wrapper transform klass.
+ */
+xmlSecTransformId
+xmlSecOpenSSLTransformKWCamellia128GetKlass(void) {
+    return(&xmlSecOpenSSLKWCamellia128Klass);
+}
+
+XMLSEC_OPENSSL_EVP_KW_CAMELLIA_KLASS_EX(Camellia192)
+
+/**
+ * xmlSecOpenSSLTransformKWCamellia192GetKlass:
+ *
+ * The Camellia-192 key wrapper transform klass.
+ *
+ * Returns: Camellia-192 key wrapper transform klass.
+ */
+xmlSecTransformId
+xmlSecOpenSSLTransformKWCamellia192GetKlass(void) {
+    return(&xmlSecOpenSSLKWCamellia192Klass);
+}
+
+XMLSEC_OPENSSL_EVP_KW_CAMELLIA_KLASS_EX(Camellia256)
+
+/**
+ * xmlSecOpenSSLTransformKWCamellia256GetKlass:
+ *
+ * The Camellia-256 key wrapper transform klass.
+ *
+ * Returns: Camellia-256 key wrapper transform klass.
+ */
+xmlSecTransformId
+xmlSecOpenSSLTransformKWCamellia256GetKlass(void) {
+    return(&xmlSecOpenSSLKWCamellia256Klass);
+}
+
+/* Camellia block encrypt/decrypt implementation */
+#ifndef XMLSEC_OPENSSL_API_300
+
+static int
+xmlSecOpenSSLKWCamelliaEncryptDecrypt(xmlSecOpenSSLKWCamelliaCtxPtr ctx, const xmlSecByte * in, xmlSecSize inSize,
+                                      xmlSecByte * out, xmlSecSize outSize, xmlSecSize * outWritten,
+                                      int encrypt) {
+    xmlSecByte* keyData;
+    xmlSecSize keySize;
+    CAMELLIA_KEY camelliaKey;
+    int res = -1;
+
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(in != NULL, -1);
+    xmlSecAssert2(inSize == AES_BLOCK_SIZE, -1);
+    xmlSecAssert2(out != NULL, -1);
+    xmlSecAssert2(outSize >= AES_BLOCK_SIZE, -1);
+    xmlSecAssert2(outWritten != NULL, -1);
+
+    keyData = xmlSecBufferGetData(&(ctx->parentCtx.keyBuffer));
+    keySize = xmlSecBufferGetSize(&(ctx->parentCtx.keyBuffer));
+    xmlSecAssert2(keyData != NULL, -1);
+    xmlSecAssert2(keySize > 0, -1);
+
+    /* set key schedule */
+    if(encrypt != 0) {
+        if(Camellia_set_key(keyData, XMLSEC_SIZE_BAD_CAST(keySize * 8), &camelliaKey) < 0) {
+            xmlSecOpenSSLError("Camellia_set_key(encrypt)", NULL);
+            goto done;
+        }
+        Camellia_encrypt(in, out, &camelliaKey);
+    } else {
+        if(Camellia_set_key(keyData, XMLSEC_SIZE_BAD_CAST(keySize * 8), &camelliaKey) < 0) {
+            xmlSecOpenSSLError("Camellia_set_key(decrypt)", NULL);
+            goto done;
+        }
+        Camellia_decrypt(in, out, &camelliaKey);
+    }
+    (*outWritten) = AES_BLOCK_SIZE;
+
+    /* success */
+    res = 0;
+
+done:
+    /* always zero out the key schedule to avoid leaking key material on the stack */
+    OPENSSL_cleanse(&camelliaKey, sizeof(camelliaKey));
+    return(res);
+}
+
+#else /* XMLSEC_OPENSSL_API_300 */
+
+static int
+xmlSecOpenSSLKWCamelliaEncryptDecrypt(xmlSecOpenSSLKWCamelliaCtxPtr ctx, const xmlSecByte * in, xmlSecSize inSize,
+                                      xmlSecByte * out, xmlSecSize outSize, xmlSecSize * outWritten,
+                                      int encrypt) {
+    xmlSecByte* keyData;
+    xmlSecSize keySize;
+    EVP_CIPHER_CTX* cctx = NULL;
+    int nOut, inLen, outLen, totalLen;
+    int ret;
+    int res = -1;
+
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->cipher != NULL, -1);
+    xmlSecAssert2(in != NULL, -1);
+    xmlSecAssert2(inSize == AES_BLOCK_SIZE, -1);
+    xmlSecAssert2(out != NULL, -1);
+    xmlSecAssert2(outSize >= AES_BLOCK_SIZE, -1);
+    xmlSecAssert2(outWritten != NULL, -1);
+
+    keyData = xmlSecBufferGetData(&(ctx->parentCtx.keyBuffer));
+    keySize = xmlSecBufferGetSize(&(ctx->parentCtx.keyBuffer));
+    xmlSecAssert2(keyData != NULL, -1);
+    xmlSecAssert2(keySize > 0, -1);
+
+    /* prepare for one EVP block operation */
+    cctx = EVP_CIPHER_CTX_new();
+    if(cctx == NULL) {
+        xmlSecOpenSSLError("EVP_CIPHER_CTX_new", NULL);
+        goto done;
+    }
+    ret = EVP_CipherInit_ex(cctx, ctx->cipher, NULL, keyData, NULL, encrypt);
+    if(ret != 1) {
+        xmlSecOpenSSLError("EVP_CipherInit_ex", NULL);
+        goto done;
+    }
+    ret = EVP_CIPHER_CTX_set_padding(cctx, 0);
+    if(ret != 1) {
+        xmlSecOpenSSLError("EVP_CIPHER_CTX_set_padding", NULL);
+        goto done;
+    }
+
+    /* do one block */
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(inSize, inLen, goto done, NULL);
+    XMLSEC_SAFE_CAST_SIZE_TO_INT(outSize, outLen, goto done, NULL);
+    totalLen = 0;
+    ret = EVP_CipherUpdate(cctx, out, &nOut, in, inLen);
+    if(ret != 1) {
+        xmlSecOpenSSLError("EVP_CipherUpdate", NULL);
+        goto done;
+    }
+    totalLen += nOut;
+
+    ret = EVP_CipherFinal_ex(cctx, out + totalLen, &nOut);
+    if(ret != 1) {
+        xmlSecOpenSSLError("EVP_CipherFinal_ex", NULL);
+        goto done;
+    }
+    totalLen += nOut;
+
+    /* success */
+    XMLSEC_SAFE_CAST_INT_TO_SIZE(totalLen, (*outWritten), goto done, NULL);
+    res = 0;
+
+done:
+    if(cctx != NULL) {
+        EVP_CIPHER_CTX_free(cctx);
+    }
+    return(res);
+}
+
+#endif /* XMLSEC_OPENSSL_API_300 */
+
+static int
+xmlSecOpenSSLKWCamelliaBlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * in, xmlSecSize inSize,
+                                    xmlSecByte * out, xmlSecSize outSize, xmlSecSize * outWritten) {
+    xmlSecOpenSSLKWCamelliaCtxPtr ctx;
+    int ret;
+
+    xmlSecAssert2(xmlSecOpenSSLKWCamelliaCheckId(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLKWCamelliaSize), -1);
+    xmlSecAssert2(in != NULL, -1);
+    xmlSecAssert2(inSize >= AES_BLOCK_SIZE, -1);
+    xmlSecAssert2(out != NULL, -1);
+    xmlSecAssert2(outSize >= AES_BLOCK_SIZE, -1);
+    xmlSecAssert2(outWritten != NULL, -1);
+
+    ctx = xmlSecOpenSSLKWCamelliaGetCtx(transform);
+    xmlSecAssert2(ctx != NULL, -1);
+
+    ret = xmlSecOpenSSLKWCamelliaEncryptDecrypt(ctx, in, inSize, out, outSize, outWritten, 1); /* encrypt */
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecOpenSSLKWCamelliaEncryptDecrypt",
+            xmlSecTransformGetName(transform));
+        return(-1);
+    }
+
+    /* success */
+    return(0);
+}
+
+static int
+xmlSecOpenSSLKWCamelliaBlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * in, xmlSecSize inSize,
+                                    xmlSecByte * out, xmlSecSize outSize, xmlSecSize * outWritten) {
+    xmlSecOpenSSLKWCamelliaCtxPtr ctx;
+    int ret;
+
+    xmlSecAssert2(xmlSecOpenSSLKWCamelliaCheckId(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLKWCamelliaSize), -1);
+    xmlSecAssert2(in != NULL, -1);
+    xmlSecAssert2(inSize >= AES_BLOCK_SIZE, -1);
+    xmlSecAssert2(out != NULL, -1);
+    xmlSecAssert2(outSize >= AES_BLOCK_SIZE, -1);
+    xmlSecAssert2(outWritten != NULL, -1);
+
+    ctx = xmlSecOpenSSLKWCamelliaGetCtx(transform);
+    xmlSecAssert2(ctx != NULL, -1);
+
+    ret = xmlSecOpenSSLKWCamelliaEncryptDecrypt(ctx, in, inSize, out, outSize, outWritten, 0); /* decrypt */
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecOpenSSLKWCamelliaEncryptDecrypt",
+            xmlSecTransformGetName(transform));
+        return(-1);
+    }
+
+    /* success */
+    return(0);
+}
+
+#endif /* XMLSEC_NO_CAMELLIA */
+
+#if !defined(XMLSEC_NO_AES) || !defined(XMLSEC_NO_CAMELLIA)
+
+#else /* !XMLSEC_NO_AES && !XMLSEC_NO_CAMELLIA */
 
 /* ISO C forbids an empty translation unit */
 typedef int make_iso_compilers_happy;

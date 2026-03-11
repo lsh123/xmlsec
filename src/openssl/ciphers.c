@@ -654,6 +654,15 @@ xmlSecOpenSSLEvpBlockCipherCheckId(xmlSecTransformPtr transform) {
     }
 #endif /* XMLSEC_NO_AES */
 
+#ifndef XMLSEC_NO_CAMELLIA
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformCamellia128CbcId) ||
+       xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformCamellia192CbcId) ||
+       xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformCamellia256CbcId)) {
+
+       return(1);
+    }
+#endif /* XMLSEC_NO_CAMELLIA */
+
     return(0);
 }
 
@@ -713,6 +722,22 @@ xmlSecOpenSSLEvpBlockCipherInitialize(xmlSecTransformPtr transform) {
         ctx->cbcMode    = 0;
     } else
 #endif /* XMLSEC_NO_AES */
+
+#ifndef XMLSEC_NO_CAMELLIA
+    if(transform->id == xmlSecOpenSSLTransformCamellia128CbcId) {
+        XMLSEC_OPENSSL_SET_CIPHER(ctx, EVP_camellia_128_cbc(), XMLSEC_OPENSSL_CIPHER_NAME_CAMELLIA128_CBC);
+        ctx->keyId      = xmlSecOpenSSLKeyDataCamelliaId;
+        ctx->cbcMode    = 1;
+    } else if(transform->id == xmlSecOpenSSLTransformCamellia192CbcId) {
+        XMLSEC_OPENSSL_SET_CIPHER(ctx, EVP_camellia_192_cbc(), XMLSEC_OPENSSL_CIPHER_NAME_CAMELLIA192_CBC);
+        ctx->keyId      = xmlSecOpenSSLKeyDataCamelliaId;
+        ctx->cbcMode    = 1;
+    } else if(transform->id == xmlSecOpenSSLTransformCamellia256CbcId) {
+        XMLSEC_OPENSSL_SET_CIPHER(ctx, EVP_camellia_256_cbc(), XMLSEC_OPENSSL_CIPHER_NAME_CAMELLIA256_CBC);
+        ctx->keyId      = xmlSecOpenSSLKeyDataCamelliaId;
+        ctx->cbcMode    = 1;
+    } else
+#endif /* XMLSEC_NO_CAMELLIA */
 
     if(1) {
         xmlSecInvalidTransfromError(transform)
@@ -1041,6 +1066,59 @@ xmlSecOpenSSLTransformAes256GcmGetKlass(void)
 }
 
 #endif /* XMLSEC_NO_AES */
+
+#ifndef XMLSEC_NO_CAMELLIA
+/*********************************************************************
+ *
+ * Camellia CBC cipher transforms
+ *
+ ********************************************************************/
+/* Camellia 128 CBC cipher transform: xmlSecOpenSSLCamellia128CbcKlass */
+XMLSEC_OPENSSL_BLOCK_CIPHER_KLASS(Camellia128Cbc)
+
+/**
+ * xmlSecOpenSSLTransformCamellia128CbcGetKlass:
+ *
+ * Camellia 128 CBC encryption transform klass.
+ *
+ * Returns: pointer to Camellia 128 CBC encryption transform.
+ */
+xmlSecTransformId
+xmlSecOpenSSLTransformCamellia128CbcGetKlass(void) {
+    return(&xmlSecOpenSSLCamellia128CbcKlass);
+}
+
+/* Camellia 192 CBC cipher transform: xmlSecOpenSSLCamellia192CbcKlass */
+XMLSEC_OPENSSL_BLOCK_CIPHER_KLASS(Camellia192Cbc)
+
+/**
+ * xmlSecOpenSSLTransformCamellia192CbcGetKlass:
+ *
+ * Camellia 192 CBC encryption transform klass.
+ *
+ * Returns: pointer to Camellia 192 CBC encryption transform.
+ */
+xmlSecTransformId
+xmlSecOpenSSLTransformCamellia192CbcGetKlass(void) {
+    return(&xmlSecOpenSSLCamellia192CbcKlass);
+}
+
+/* Camellia 256 CBC cipher transform: xmlSecOpenSSLCamellia256CbcKlass */
+XMLSEC_OPENSSL_BLOCK_CIPHER_KLASS(Camellia256Cbc)
+
+/**
+ * xmlSecOpenSSLTransformCamellia256CbcGetKlass:
+ *
+ * Camellia 256 CBC encryption transform klass.
+ *
+ * Returns: pointer to Camellia 256 CBC encryption transform.
+ */
+xmlSecTransformId
+xmlSecOpenSSLTransformCamellia256CbcGetKlass(void) {
+    return(&xmlSecOpenSSLCamellia256CbcKlass);
+}
+
+#endif /* XMLSEC_NO_CAMELLIA */
 
 #ifndef XMLSEC_NO_DES
 /* Triple DES CBC cipher transform: xmlSecOpenSSLDes3CbcKlass */

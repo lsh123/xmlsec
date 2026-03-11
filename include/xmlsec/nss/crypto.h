@@ -266,6 +266,14 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformDsaSha256GetKlass(void)
 #define xmlSecNssKeyDataEcId            xmlSecNsskeyDataEcGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecNsskeyDataEcGetKlass(void);
 
+/**
+ * xmlSecNssTransformEcdhId:
+ *
+ * The ECDH key agreement transform klass.
+ */
+#define xmlSecNssTransformEcdhId        xmlSecNssTransformEcdhGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecNssTransformEcdhGetKlass(void);
+
 #ifndef XMLSEC_NO_SHA1
 
 /**

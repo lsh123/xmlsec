@@ -197,6 +197,12 @@ xmlSecNssConcatKdfGetDigestFromHref(const xmlChar* href) {
     }
 #endif /* XMLSEC_NO_SHA1 */
 
+#ifndef XMLSEC_NO_SHA224
+    if(xmlStrcmp(href, xmlSecHrefSha224) == 0) {
+        return(SEC_OID_SHA224);
+    }
+#endif /* XMLSEC_NO_SHA224 */
+
 #ifndef XMLSEC_NO_SHA256
     if(xmlStrcmp(href, xmlSecHrefSha256) == 0) {
         return(SEC_OID_SHA256);

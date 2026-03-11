@@ -71,9 +71,9 @@ see the Copyright file in the distribution  for details.<br><br></p>
 		The <a href="download.html">XML Security Library 1.3.10</a> release includes the following changes:
         <ul>
             <li>(xmlsec-openssl) Added support for EdDSA signatures, and added <b>experimental</b> support for ML-DSA and SLH-DSA-SHA2 signatures.</li>
-            <li>(xmlsec-openssl) Added support for XDH key agreement algorithms (X25519 and X448).</li>
-            <li>(xmlsec-gnutls) Added support for EdDSA signatures, XDH key agreement (X25519 and X448) with ConcatKDF, and added <b>experimental</b> support for ML-DSA signatures.</li>
-            <li>(xmlsec-nss) Added support for XDH key agreement (X25519) with ConcatKDF; added standalone ConcatKDF key derivation transform support. Note: X448 is not yet supported by NSS.</li>
+            <li>(xmlsec-openssl) Added support for XDH (X25519 and X448) key agreement algorithms.</li>
+            <li>(xmlsec-gnutls) Added support for EdDSA signatures, XDH (X25519 and X448) key agreement with ConcatKDF, and added <b>experimental</b> support for ML-DSA signatures.</li>
+            <li>(xmlsec-nss) Added support for ECDH and XDH (X25519) key agreements with ConcatKDF; added standalone ConcatKDF key derivation transform support. Note: X448 is not yet supported by NSS.</li>
             <li>(xmlsec-core) Added '--enable-asn1-signatures-hack' option to allow generation / verification of ASN1 signature values.</li>
             <li>(xmlsec-core) Added '--verify-crls' option to verify CRLs when loading from command line.</li>
             <li>(xmlsec-mscng) Added support for loading CRLs from command line.</li>

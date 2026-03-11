@@ -330,6 +330,19 @@ else
 fi
 
 #
+# GnuTLS cannot import EC keys from OpenSSL-3.x-generated xmlenc11-interop-2012
+# PKCS12 files (PBES2/PBKDF2/AES-256-CBC encryption not supported).
+# Use unencrypted DER (PrivateKeyInfo) format for those specific interop tests.
+#
+if [ "z$crypto" = "zgnutls" ] ; then
+    ec_interop_priv_key_option="--privkey-der"
+    ec_interop_priv_key_format="der"
+else
+    ec_interop_priv_key_option="$priv_key_option"
+    ec_interop_priv_key_format="$priv_key_format"
+fi
+
+#
 # GCrypt only supports DER format for now, others are good to go with certs for public keys
 #
 if [ "z$crypto" != "zgcrypt" ] ; then

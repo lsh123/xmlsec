@@ -412,6 +412,18 @@ xmlSecGnuTLSConcatKdfGetDigestFromHref(const xmlChar* href) {
     } else
 #endif /* XMLSEC_NO_SHA512 */
 
+#ifndef XMLSEC_NO_SHA3
+    if(xmlStrcmp(href, xmlSecHrefSha3_224) == 0) {
+        return(GNUTLS_DIG_SHA3_224);
+    } else if(xmlStrcmp(href, xmlSecHrefSha3_256) == 0) {
+        return(GNUTLS_DIG_SHA3_256);
+    } else if(xmlStrcmp(href, xmlSecHrefSha3_384) == 0) {
+        return(GNUTLS_DIG_SHA3_384);
+    } else if(xmlStrcmp(href, xmlSecHrefSha3_512) == 0) {
+        return(GNUTLS_DIG_SHA3_512);
+    } else
+#endif /* XMLSEC_NO_SHA3 */
+
     {
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
             "href=%s", xmlSecErrorsSafeString(href));
@@ -634,18 +646,46 @@ static gnutls_mac_algorithm_t
 xmlSecGnuTLSPbkdf2GetMacFromHref(const xmlChar* href) {
     /* use SHA256 by default */
     if(href == NULL) {
+#ifndef XMLSEC_NO_SHA256
         return(GNUTLS_MAC_SHA256);
-    } else if(xmlStrcmp(href, xmlSecHrefHmacSha1) == 0) {
+#else  /* XMLSEC_NO_SHA256 */
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
+            "SHA256 is disabled; href=%s", xmlSecErrorsSafeString(href));
+        return(GNUTLS_MAC_UNKNOWN);
+#endif /* XMLSEC_NO_SHA256 */
+    } else
+
+#ifndef XMLSEC_NO_SHA1
+    if(xmlStrcmp(href, xmlSecHrefHmacSha1) == 0) {
         return(GNUTLS_MAC_SHA1);
-    } else if(xmlStrcmp(href, xmlSecHrefHmacSha224) == 0) {
+    } else
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA224
+    if(xmlStrcmp(href, xmlSecHrefHmacSha224) == 0) {
         return(GNUTLS_MAC_SHA224);
-    } else if(xmlStrcmp(href, xmlSecHrefHmacSha256) == 0) {
+    } else
+#endif /* XMLSEC_NO_SHA224 */
+
+#ifndef XMLSEC_NO_SHA256
+    if(xmlStrcmp(href, xmlSecHrefHmacSha256) == 0) {
         return(GNUTLS_MAC_SHA256);
-    } else if(xmlStrcmp(href, xmlSecHrefHmacSha384) == 0) {
+    } else
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+    if(xmlStrcmp(href, xmlSecHrefHmacSha384) == 0) {
         return(GNUTLS_MAC_SHA384);
-    } else if(xmlStrcmp(href, xmlSecHrefHmacSha512) == 0) {
+    } else
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+    if(xmlStrcmp(href, xmlSecHrefHmacSha512) == 0) {
         return(GNUTLS_MAC_SHA512);
-    } else {
+    } else
+#endif /* XMLSEC_NO_SHA512 */
+
+    {
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
             "href=%s", xmlSecErrorsSafeString(href));
         return(GNUTLS_MAC_UNKNOWN);

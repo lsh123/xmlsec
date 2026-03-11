@@ -606,6 +606,24 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformX448GetKlass(void);
 
 /********************************************************************
  *
+ * ECDH transforms
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_EC
+
+/**
+ * xmlSecGnuTLSTransformEcdhId:
+ *
+ * The ECDH-ES key agreement transform klass.
+ */
+#define xmlSecGnuTLSTransformEcdhId  \
+        xmlSecGnuTLSTransformEcdhGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformEcdhGetKlass(void);
+
+#endif /* XMLSEC_NO_EC */
+
+/********************************************************************
+ *
  * ConcatKDF transforms
  *
  *******************************************************************/

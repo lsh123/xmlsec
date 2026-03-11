@@ -37,6 +37,12 @@
 #endif /* (NSS_VMAJOR < 3) || ((NSS_VMAJOR == 3) && (NSS_VMINOR < 103)) */
 #endif /* XMLSEC_NO_XDH */
 
+#ifndef XMLSEC_NO_HKDF
+#if !defined(CKM_HKDF_DERIVE) || !defined(CKM_HKDF_DATA) || !defined(CKF_HKDF_SALT_NULL) || !defined(CKF_HKDF_SALT_DATA)
+#define XMLSEC_NO_HKDF 1
+#endif /* !defined(CKM_HKDF_DERIVE) || !defined(CKM_HKDF_DATA) || !defined(CKF_HKDF_SALT_NULL) || !defined(CKF_HKDF_SALT_DATA) */
+#endif /* XMLSEC_NO_HKDF */
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
@@ -515,6 +521,35 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecNssKeyDataConcatKdfSet       (xmlS
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformConcatKdfGetKlass(void);
 
 #endif /* XMLSEC_NO_CONCATKDF */
+
+/********************************************************************
+ *
+ * HKDF key and transform
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_HKDF
+
+/**
+ * xmlSecNssKeyDataHkdfId:
+ *
+ * The HKDF key data klass.
+ */
+#define xmlSecNssKeyDataHkdfId \
+        xmlSecNssKeyDataHkdfGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecNssKeyDataHkdfGetKlass      (void);
+XMLSEC_CRYPTO_EXPORT int                xmlSecNssKeyDataHkdfSet           (xmlSecKeyDataPtr data,
+                                                                            const xmlSecByte* buf,
+                                                                            xmlSecSize bufSize);
+/**
+ * xmlSecNssTransformHkdfId:
+ *
+ * The HKDF key derivation transform klass.
+ */
+#define xmlSecNssTransformHkdfId \
+        xmlSecNssTransformHkdfGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformHkdfGetKlass(void);
+
+#endif /* XMLSEC_NO_HKDF */
 
 
 /********************************************************************

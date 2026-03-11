@@ -171,6 +171,9 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecNameChaCha20[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefChaCha20[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeChaCha20Nonce[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeChaCha20Counter[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameChaCha20KeyValue[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeChaCha20KeyValue[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefChaCha20KeyValue[];
 
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameChaCha20Poly1305[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefChaCha20Poly1305[];

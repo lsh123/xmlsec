@@ -1381,7 +1381,7 @@ xmlSecOpenSSLChaCha20SetKeyReq(xmlSecTransformPtr transform, xmlSecKeyReqPtr key
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformChaCha20Id), -1);
     xmlSecAssert2(keyReq != NULL, -1);
 
-    keyReq->keyId = xmlSecOpenSSLKeyDataAesId; /* ChaCha20 uses same key data as AES */
+    keyReq->keyId = xmlSecOpenSSLKeyDataChaCha20Id;
     keyReq->keyType = xmlSecKeyDataTypeSymmetric;
     if(transform->operation == xmlSecTransformOperationEncrypt) {
         keyReq->keyUsage = xmlSecKeyUsageEncrypt;
@@ -1716,7 +1716,7 @@ xmlSecOpenSSLChaCha20Poly1305SetKeyReq(xmlSecTransformPtr transform, xmlSecKeyRe
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformChaCha20Poly1305Id), -1);
     xmlSecAssert2(keyReq != NULL, -1);
 
-    keyReq->keyId = xmlSecOpenSSLKeyDataAesId; /* ChaCha20-Poly1305 uses same key data as AES */
+    keyReq->keyId = xmlSecOpenSSLKeyDataChaCha20Id;
     keyReq->keyType = xmlSecKeyDataTypeSymmetric;
     if(transform->operation == xmlSecTransformOperationEncrypt) {
         keyReq->keyUsage = xmlSecKeyUsageEncrypt;

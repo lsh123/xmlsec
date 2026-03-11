@@ -76,6 +76,18 @@ zBFljViy/Qhd8AG0vGxf+SekrJ1ttpIz
 </KeyValue>
 </KeyInfo>
 <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+<KeyName>test-chacha20</KeyName>
+<KeyValue>
+<ChaCha20KeyValue xmlns="http://www.aleksey.com/xmlsec/2002">zAKV37t4gV9srAUvRFjxERSJ13wGpDwoIMkcJxlD0MU=</ChaCha20KeyValue>
+</KeyValue>
+</KeyInfo>
+<KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+<KeyName>test-chacha20poly1305</KeyName>
+<KeyValue>
+<ChaCha20KeyValue xmlns="http://www.aleksey.com/xmlsec/2002">rSyWevC59TMmFuoDBdEC4VvlwiJOqalHn3GffX4CcPA=</ChaCha20KeyValue>
+</KeyValue>
+</KeyInfo>
+<KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
 <KeyName>test-camellia128</KeyName>
 <KeyValue>
 <CamelliaKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">0Xfy3ES+Fbv/OfWuQHKvPA==</CamelliaKeyValue>

@@ -99,6 +99,10 @@ xmlSecCryptoGetFunctions_openssl(void) {
     gXmlSecOpenSSLFunctions->keyDataCamelliaGetKlass    = xmlSecOpenSSLKeyDataCamelliaGetKlass;
 #endif /* XMLSEC_NO_CAMELLIA */
 
+#ifndef XMLSEC_NO_CHACHA20
+    gXmlSecOpenSSLFunctions->keyDataChaCha20GetKlass    = xmlSecOpenSSLKeyDataChaCha20GetKlass;
+#endif /* XMLSEC_NO_CHACHA20 */
+
 #ifndef XMLSEC_NO_CONCATKDF
     gXmlSecOpenSSLFunctions->keyDataConcatKdfGetKlass   = xmlSecOpenSSLKeyDataConcatKdfGetKlass;
 #endif /* XMLSEC_NO_CONCATKDF */

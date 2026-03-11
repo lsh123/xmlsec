@@ -558,6 +558,7 @@ struct _xmlSecCryptoDLFunctions {
     /* Key data ids */
     xmlSecCryptoKeyDataGetKlassMethod            keyDataAesGetKlass;
     xmlSecCryptoKeyDataGetKlassMethod            keyDataCamelliaGetKlass;
+    xmlSecCryptoKeyDataGetKlassMethod            keyDataChaCha20GetKlass;
     xmlSecCryptoKeyDataGetKlassMethod            keyDataConcatKdfGetKlass;
     xmlSecCryptoKeyDataGetKlassMethod            keyDataDesGetKlass;
     xmlSecCryptoKeyDataGetKlassMethod            keyDataDhGetKlass;

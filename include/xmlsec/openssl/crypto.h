@@ -388,6 +388,27 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecOpenSSLTransformChaCha20Poly1305Ge
 
 /********************************************************************
  *
+ * ChaCha20 key data
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_CHACHA20
+
+/**
+ * xmlSecOpenSSLKeyDataChaCha20Id:
+ *
+ * The ChaCha20 key data klass.
+ */
+#define xmlSecOpenSSLKeyDataChaCha20Id \
+        xmlSecOpenSSLKeyDataChaCha20GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataChaCha20GetKlass(void);
+XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeyDataChaCha20Set     (xmlSecKeyDataPtr data,
+                                                                             const xmlSecByte* buf,
+                                                                             xmlSecSize bufSize);
+
+#endif /* XMLSEC_NO_CHACHA20 */
+
+/********************************************************************
+ *
  * ConcatKDF key derivation transforms
  *
  *******************************************************************/

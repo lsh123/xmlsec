@@ -50,10 +50,10 @@ static int        xmlSecGnuTLSKWAesBlockDecrypt                (xmlSecTransformP
                                                                  xmlSecByte * out,
                                                                  xmlSecSize outSize,
                                                                  xmlSecSize * outWritten);
-static xmlSecKWAesKlass xmlSecGnuTLSKWAesKlass = {
+static xmlSecKWRfc3394Klass xmlSecGnuTLSKWAesKlass = {
     /* callbacks */
-    xmlSecGnuTLSKWAesBlockEncrypt,         /* xmlSecKWAesBlockEncryptMethod       encrypt; */
-    xmlSecGnuTLSKWAesBlockDecrypt,         /* xmlSecKWAesBlockDecryptMethod       decrypt; */
+    xmlSecGnuTLSKWAesBlockEncrypt,         /* xmlSecKWRfc3394BlockEncryptMethod       encrypt; */
+    xmlSecGnuTLSKWAesBlockDecrypt,         /* xmlSecKWRfc3394BlockDecryptMethod       decrypt; */
 
     /* for the future */
     NULL,                                   /* void*                               reserved0; */
@@ -68,7 +68,7 @@ static xmlSecKWAesKlass xmlSecGnuTLSKWAesKlass = {
 typedef struct _xmlSecGnuTLSKWAesCtx   xmlSecGnuTLSKWAesCtx,
                                         *xmlSecGnuTLSKWAesCtxPtr;
 struct _xmlSecGnuTLSKWAesCtx {
-    xmlSecTransformKWAesCtx     parentCtx;
+    xmlSecTransformKWRfc3394Ctx     parentCtx;
     gnutls_cipher_algorithm_t   algorithm;
     xmlSecSize                  blockSize;
     xmlSecSize                  ivSize;
@@ -113,13 +113,13 @@ xmlSecGnuTLSKWAesInitialize(xmlSecTransformPtr transform) {
 
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformKWAes128Id)) {
         ctx->algorithm = GNUTLS_CIPHER_AES_128_CBC;
-        keySize = XMLSEC_KW_AES128_KEY_SIZE;
+        keySize = XMLSEC_KW_RFC3394_KEY_SIZE_128;
     } else if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformKWAes192Id)) {
         ctx->algorithm = GNUTLS_CIPHER_AES_192_CBC;
-        keySize = XMLSEC_KW_AES192_KEY_SIZE;
+        keySize = XMLSEC_KW_RFC3394_KEY_SIZE_192;
     } else if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformKWAes256Id)) {
         ctx->algorithm = GNUTLS_CIPHER_AES_256_CBC;
-        keySize = XMLSEC_KW_AES256_KEY_SIZE;
+        keySize = XMLSEC_KW_RFC3394_KEY_SIZE_256;
     } else {
         xmlSecInvalidTransfromError(transform)
         return(-1);
@@ -131,20 +131,20 @@ xmlSecGnuTLSKWAesInitialize(xmlSecTransformPtr transform) {
         xmlSecGnuTLSError("gnutls_cipher_get_block_size", 0, NULL);
         return(-1);
     }
-    xmlSecAssert2(ctx->blockSize <= XMLSEC_KW_AES_BLOCK_SIZE, -1);
+    xmlSecAssert2(ctx->blockSize <= XMLSEC_KW_RFC3394_BLOCK_SIZE, -1);
 
     ctx->ivSize = gnutls_cipher_get_iv_size(ctx->algorithm);
     if(ctx->ivSize <= 0) {
         xmlSecGnuTLSError("gnutls_cipher_get_iv_size", 0, NULL);
         return(-1);
     }
-    xmlSecAssert2(ctx->ivSize <= XMLSEC_KW_AES_BLOCK_SIZE, -1);
+    xmlSecAssert2(ctx->ivSize <= XMLSEC_KW_RFC3394_BLOCK_SIZE, -1);
 
-    ret = xmlSecTransformKWAesInitialize(transform, &(ctx->parentCtx),
+    ret = xmlSecTransformKWRfc3394Initialize(transform, &(ctx->parentCtx),
         &xmlSecGnuTLSKWAesKlass, xmlSecGnuTLSKeyDataAesId,
         keySize);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformKWAesInitialize", xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecTransformKWRfc3394Initialize", xmlSecTransformGetName(transform));
         xmlSecGnuTLSKWAesFinalize(transform);
         return(-1);
     }
@@ -166,7 +166,7 @@ xmlSecGnuTLSKWAesFinalize(xmlSecTransformPtr transform) {
     if(ctx->cipher != NULL) {
         gnutls_cipher_deinit(ctx->cipher);
     }
-    xmlSecTransformKWAesFinalize(transform, &(ctx->parentCtx));
+    xmlSecTransformKWRfc3394Finalize(transform, &(ctx->parentCtx));
     memset(ctx, 0, sizeof(xmlSecGnuTLSKWAesCtx));
 }
 
@@ -181,9 +181,9 @@ xmlSecGnuTLSKWAesSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq
     ctx = xmlSecGnuTLSKWAesGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    ret = xmlSecTransformKWAesSetKeyReq(transform, &(ctx->parentCtx),keyReq);
+    ret = xmlSecTransformKWRfc3394SetKeyReq(transform, &(ctx->parentCtx),keyReq);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformKWAesSetKeyReq", xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecTransformKWRfc3394SetKeyReq", xmlSecTransformGetName(transform));
         return(-1);
     }
     return(0);
@@ -200,9 +200,9 @@ xmlSecGnuTLSKWAesSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     ctx = xmlSecGnuTLSKWAesGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    ret = xmlSecTransformKWAesSetKey(transform, &(ctx->parentCtx), key);
+    ret = xmlSecTransformKWRfc3394SetKey(transform, &(ctx->parentCtx), key);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformKWAesSetKey", xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecTransformKWRfc3394SetKey", xmlSecTransformGetName(transform));
         return(-1);
     }
     return(0);
@@ -221,9 +221,9 @@ xmlSecGnuTLSKWAesExecute(xmlSecTransformPtr transform, int last,
     ctx = xmlSecGnuTLSKWAesGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    ret = xmlSecTransformKWAesExecute(transform, &(ctx->parentCtx), last);
+    ret = xmlSecTransformKWRfc3394Execute(transform, &(ctx->parentCtx), last);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformKWAesExecute", xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecTransformKWRfc3394Execute", xmlSecTransformGetName(transform));
         return(-1);
     }
     return(0);
@@ -305,7 +305,7 @@ xmlSecGnuTLSTransformKWAes256GetKlass(void) {
  * AES KW implementation
  *
  *********************************************************************/
-static unsigned char g_zero_iv[XMLSEC_KW_AES_BLOCK_SIZE] =
+static unsigned char g_zero_iv[XMLSEC_KW_RFC3394_BLOCK_SIZE] =
     { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
 static int
@@ -356,7 +356,7 @@ xmlSecGnuTLSKWAesBlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * i
     ctx = xmlSecGnuTLSKWAesGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->ivSize > 0, -1);
-    xmlSecAssert2(ctx->ivSize <= XMLSEC_KW_AES_BLOCK_SIZE, -1);
+    xmlSecAssert2(ctx->ivSize <= XMLSEC_KW_RFC3394_BLOCK_SIZE, -1);
     xmlSecAssert2(ctx->blockSize > 0, -1);
     xmlSecAssert2(inSize >= ctx->blockSize, -1);
     xmlSecAssert2((inSize % ctx->blockSize) == 0, -1);
@@ -402,7 +402,7 @@ xmlSecGnuTLSKWAesBlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * i
     ctx = xmlSecGnuTLSKWAesGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->ivSize > 0, -1);
-    xmlSecAssert2(ctx->ivSize <= XMLSEC_KW_AES_BLOCK_SIZE, -1);
+    xmlSecAssert2(ctx->ivSize <= XMLSEC_KW_RFC3394_BLOCK_SIZE, -1);
     xmlSecAssert2(ctx->blockSize > 0, -1);
     xmlSecAssert2(inSize >= ctx->blockSize, -1);
     xmlSecAssert2((inSize % ctx->blockSize) == 0, -1);

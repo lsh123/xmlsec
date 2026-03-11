@@ -103,13 +103,13 @@ xmlSecNssGcmCipherInitialize(xmlSecTransformPtr transform) {
 
     if(transform->id == xmlSecNssTransformAes128GcmId) {
         ctx->keyId      = xmlSecNssKeyDataAesId;
-        ctx->keySize    = XMLSEC_KW_AES128_KEY_SIZE;
+        ctx->keySize    = XMLSEC_KW_RFC3394_KEY_SIZE_128;
     } else if(transform->id == xmlSecNssTransformAes192GcmId) {
         ctx->keyId      = xmlSecNssKeyDataAesId;
-        ctx->keySize    = XMLSEC_KW_AES192_KEY_SIZE;
+        ctx->keySize    = XMLSEC_KW_RFC3394_KEY_SIZE_192;
     } else if(transform->id == xmlSecNssTransformAes256GcmId) {
         ctx->keyId      = xmlSecNssKeyDataAesId;
-        ctx->keySize    = XMLSEC_KW_AES256_KEY_SIZE;
+        ctx->keySize    = XMLSEC_KW_RFC3394_KEY_SIZE_256;
     } else
 
     if(1) {

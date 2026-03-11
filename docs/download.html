@@ -79,8 +79,8 @@
                             </div>
 <div align="left">
                                 <h2>Requirements</h2>
-                                <p>The XML Security Library requires <a href="http://xmlsoft.org/downloads.html">LibXML</a> library,
-                                    <a href="http://xmlsoft.org/XSLT/downloads.html">LibXSLT</a> library (optional) and one of the
+                                <p>The XML Security Library requires <a href="http://xmlsoft.org/downloads.html">LibXML2</a> 2.13.0 or above,
+                                    <a href="http://xmlsoft.org/XSLT/downloads.html">LibXSLT</a> 1.1.40 or above (optional) and one of the
                                     following cryptographic libraries:
                                 </p>
                                 <table style="width: 85%;" border="1" cellpadding="2" cellspacing="2">
@@ -97,8 +97,8 @@
                                             <td><b>xmlsec-openssl</b></td>
                                             <td>
                                                 <ul>
-                                                    <li><a href="http://www.openssl.org/">OpenSSL</a> 3.0.0 or above is strongly recommended.</li>
-                                                    <li><a href="https://www.libressl.org/">LibreSSL</a> (3.5 or above) and
+                                                    <li><a href="http://www.openssl.org/">OpenSSL</a> 3.3.0 or above is strongly recommended.</li>
+                                                    <li><a href="https://www.libressl.org/">LibreSSL</a> (3.9.0 or above) and
                                                         <a href="https://boringssl.googlesource.com/boringssl/">BoringSSL</a> (1.1.0 or above)
                                                         should work but your mileage may vary as those libraries tend to change API / ABI
                                                         and break backward compaibility.
@@ -118,7 +118,7 @@
                                             <td>
                                                 <ul>
                                                     <li>
-<b>xmlsec-openssl with OpenSSL 3.0.0 or greater is recommended</b> (supports all REQUIRED and all RECOMMENDED
+                                                    <b>xmlsec-openssl with OpenSSL 3.3.0 or greater is recommended</b> (supports all REQUIRED and all RECOMMENDED
                                                         <a href="xmldsig.html">XML Digital Signature 1.1</a> and <a href="xmlenc.html">XML Encryption 1.1</a> algorithms).</li>
                                                     <li>BoringSSL API is unstable and the latest versions might not work with XMLSec Library.</li>
                                                 </ul>
@@ -126,8 +126,7 @@
                                         </tr>
                                         <tr valign="top">
                                             <td><b>xmlsec-gnutls</b></td>
-                                            <td>
-<a href="http://www.gnu.org/software/gnutls/">GnuTLS</a> 3.6.13 or above</td>
+                                            <td><a href="http://www.gnu.org/software/gnutls/">GnuTLS</a> 3.8.3 or above</td>
                                             <!-- key formats -->
                                             <td>
                                                 <ul>
@@ -141,9 +140,7 @@
                                         </tr>
                                         <tr valign="top">
                                             <td><b>xmlsec-nss</b></td>
-                                            <td>
-<a href="http://www.mozilla.org/projects/security/pki/nss/">NSS</a>
-                                                (Mozilla cryptographic library) 3.35 or above
+                                            <td><a href="http://www.mozilla.org/projects/security/pki/nss/">NSS</a> (Mozilla cryptographic library) 3.91 or above
                                             </td>
                                             <!-- key formats -->
                                             <td>
@@ -155,7 +152,7 @@
                                                 </ul>
                                             </td>
                                             <!-- notes -->
-                                            <td>Requires <a href="https://firefox-source-docs.mozilla.org/nspr/index.html">NSPR</a> 4.25.0 or above</td>
+                                            <td>Requires <a href="https://firefox-source-docs.mozilla.org/nspr/index.html">NSPR</a> 4.34.1 or above</td>
                                         </tr>
                                         <tr valign="top">
                                             <td><b>xmlsec-mscng</b></td>

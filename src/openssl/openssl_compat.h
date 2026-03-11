@@ -132,14 +132,6 @@ typedef int xmlSecOpenSSLSizeT;
 #define sk_X509_reserve(crts, num)          (1)
 #define sk_X509_CRL_reserve(crls, num)      (1)
 
-#if (LIBRESSL_VERSION_NUMBER < 0x3080000fL)
-#define XMLSEC_NO_SHA3                      1
-#endif /* (LIBRESSL_VERSION_NUMBER < 0x3080000fL) */
-
-#if (LIBRESSL_VERSION_NUMBER < 0x3070200fL)
-#define UI_null()                           NULL
-#endif /* (LIBRESSL_VERSION_NUMBER < 0x3070200fL) */
-
 #endif /* defined(LIBRESSL_VERSION_NUMBER) */
 
 

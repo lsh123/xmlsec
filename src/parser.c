@@ -555,14 +555,7 @@ void
 xmlSecParsePrepareCtxt(xmlParserCtxtPtr ctxt) {
     xmlSecAssert(ctxt != NULL);
 
-#if LIBXML_VERSION < 21300
-    /* required for c14n! */
-    ctxt->loadsubset = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
-    ctxt->replaceEntities = 1;
-#else  /* LIBXML_VERSION < 21300 */
     xmlCtxtSetOptions(ctxt, xmlSecParserGetDefaultOptions());
-#endif /* LIBXML_VERSION < 21300 */
-
     xmlCtxtUseOptions(ctxt, xmlSecParserGetDefaultOptions());
 }
 
@@ -583,11 +576,7 @@ xmlSecParsePrepareCtxt(xmlParserCtxtPtr ctxt) {
  * XML_PARSE_NODICT: do not reuse the context dictionary (to avoid problems with moving nodes around)
  * XML_PARSE_HUGE: relax any hardcoded limit from the parser (to enable parsing of XML documents with large text nodes)
  */
-#if LIBXML_VERSION < 21300
-static int g_xmlsec_parser_default_options = XML_PARSE_NONET | XML_PARSE_NOENT | XML_PARSE_DTDLOAD | XML_PARSE_DTDATTR | XML_PARSE_NODICT | XML_PARSE_HUGE;
-#else  /* LIBXML_VERSION < 21300 */
 static int g_xmlsec_parser_default_options = XML_PARSE_NO_XXE | XML_PARSE_NONET | XML_PARSE_NOENT | XML_PARSE_DTDLOAD | XML_PARSE_DTDATTR | XML_PARSE_NODICT | XML_PARSE_HUGE;
-#endif /* LIBXML_VERSION < 21300 */
 /**
  * xmlSecParserGetDefaultOptions:
  *

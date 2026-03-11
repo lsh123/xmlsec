@@ -13,7 +13,7 @@
  * SECTION:crypto
  */
 
-#ifndef XMLSEC_NO_AES
+#if !defined(XMLSEC_NO_AES) || !defined(XMLSEC_NO_CAMELLIA)
 
 #include "globals.h"
 
@@ -44,210 +44,216 @@
  */
 /*********************************************************************
  *
- * AES KW implementation
+ * AES/Camellia KW implementation (RFC 3394)
  *
  *********************************************************************/
-static int        xmlSecNSSKWAesBlockEncrypt                (xmlSecTransformPtr transform,
+static int        xmlSecNssKWRfc3394BlockEncrypt            (xmlSecTransformPtr transform,
                                                              const xmlSecByte * in,
                                                              xmlSecSize inSize,
                                                              xmlSecByte * out,
                                                              xmlSecSize outSize,
                                                              xmlSecSize * outWritten);
-static int        xmlSecNSSKWAesBlockDecrypt                (xmlSecTransformPtr transform,
+static int        xmlSecNssKWRfc3394BlockDecrypt            (xmlSecTransformPtr transform,
                                                              const xmlSecByte * in,
                                                              xmlSecSize inSize,
                                                              xmlSecByte * out,
                                                              xmlSecSize outSize,
                                                              xmlSecSize * outWritten);
-static xmlSecKWRfc3394Klass xmlSecNssKWAesKlass = {
+static xmlSecKWRfc3394Klass xmlSecNssKWRfc3394Klass = {
     /* callbacks */
-    xmlSecNSSKWAesBlockEncrypt,         /* xmlSecKWRfc3394BlockEncryptMethod       encrypt; */
-    xmlSecNSSKWAesBlockDecrypt,         /* xmlSecKWRfc3394BlockDecryptMethod       decrypt; */
+    xmlSecNssKWRfc3394BlockEncrypt,     /* xmlSecKWRfc3394BlockEncryptMethod       encrypt; */
+    xmlSecNssKWRfc3394BlockDecrypt,     /* xmlSecKWRfc3394BlockDecryptMethod       decrypt; */
 
     /* for the future */
     NULL,                               /* void*                               reserved0; */
     NULL                                /* void*                               reserved1; */
 };
 
-
-static int              xmlSecNssAesOp                          (PK11SymKey *aeskey,
-                                                                 const xmlSecByte *in,
-                                                                 xmlSecByte *out,
-                                                                 int enc);
-
-
 /*********************************************************************
  *
- * AES KW transforms context
+ * AES/Camellia KW transforms context
  *
  ********************************************************************/
-typedef struct _xmlSecNssKWAesCtx   xmlSecNssKWAesCtx,
-                                    *xmlSecNssKWAesCtxPtr;
+typedef struct _xmlSecNssKWRfc3394Ctx   xmlSecNssKWRfc3394Ctx,
+                                        *xmlSecNssKWRfc3394CtxPtr;
 
-struct _xmlSecNssKWAesCtx {
+struct _xmlSecNssKWRfc3394Ctx {
     xmlSecTransformKWRfc3394Ctx parentCtx;
-    PK11SymKey* aesKey;
+    PK11SymKey* symKey;
+    CK_MECHANISM_TYPE cipherMech;
 };
 
-static int              xmlSecNSSKWAesEnsureKey         (xmlSecNssKWAesCtxPtr ctx,
+static int              xmlSecNssKWRfc3394EnsureKey     (xmlSecNssKWRfc3394CtxPtr ctx,
+                                                         xmlSecKeyDataId keyId,
+                                                         int enc);
+static int              xmlSecNssRfc3394CipherOp        (PK11SymKey *symKey,
+                                                         CK_MECHANISM_TYPE cipherMech,
+                                                         const xmlSecByte *in,
+                                                         xmlSecByte *out,
                                                          int enc);
 
 
 /*********************************************************************
  *
- * AES KW transform
+ * AES/Camellia KW transforms
  *
- ********************************************************************/
-XMLSEC_TRANSFORM_DECLARE(NssKWAes, xmlSecNssKWAesCtx)
-#define xmlSecNssKWAesSize XMLSEC_TRANSFORM_SIZE(NssKWAes)
-
-#define xmlSecNssKWAesCheckId(transform) \
-    (xmlSecTransformCheckId((transform), xmlSecNssTransformKWAes128Id) || \
-     xmlSecTransformCheckId((transform), xmlSecNssTransformKWAes192Id) || \
-     xmlSecTransformCheckId((transform), xmlSecNssTransformKWAes256Id))
+ *********************************************************************/
+XMLSEC_TRANSFORM_DECLARE(NssKWRfc3394, xmlSecNssKWRfc3394Ctx)
+#define xmlSecNssKWRfc3394Size XMLSEC_TRANSFORM_SIZE(NssKWRfc3394)
 
 
-static int              xmlSecNssKWAesInitialize        (xmlSecTransformPtr transform);
-static void             xmlSecNssKWAesFinalize          (xmlSecTransformPtr transform);
-static int              xmlSecNssKWAesSetKeyReq         (xmlSecTransformPtr transform,
+static int              xmlSecNssKWRfc3394CheckId       (xmlSecTransformPtr transform);
+static int              xmlSecNssKWRfc3394Initialize    (xmlSecTransformPtr transform);
+static void             xmlSecNssKWRfc3394Finalize      (xmlSecTransformPtr transform);
+static int              xmlSecNssKWRfc3394SetKeyReq     (xmlSecTransformPtr transform,
                                                          xmlSecKeyReqPtr keyReq);
-static int              xmlSecNssKWAesSetKey            (xmlSecTransformPtr transform,
+static int              xmlSecNssKWRfc3394SetKey        (xmlSecTransformPtr transform,
                                                          xmlSecKeyPtr key);
-static int              xmlSecNssKWAesExecute           (xmlSecTransformPtr transform,
+static int              xmlSecNssKWRfc3394Execute       (xmlSecTransformPtr transform,
                                                          int last,
                                                          xmlSecTransformCtxPtr transformCtx);
 
-/* Helper macro to define the AES KW transform klass */
-#define XMLSEC_NSS_KW_AES_KLASS_EX(name)                                                                \
-static xmlSecTransformKlass xmlSecNssKWAes ## name ## Klass = {                                         \
-    /* klass/object sizes */                                                                             \
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                              \
-    xmlSecNssKWAesSize,                         /* xmlSecSize objSize */                                \
-    xmlSecNameKWAes ## name,                    /* const xmlChar* name; */                              \
-    xmlSecHrefKWAes ## name,                    /* const xmlChar* href; */                              \
-    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */                       \
-    xmlSecNssKWAesInitialize,                   /* xmlSecTransformInitializeMethod initialize; */       \
-    xmlSecNssKWAesFinalize,                     /* xmlSecTransformFinalizeMethod finalize; */           \
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */           \
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */         \
-    xmlSecNssKWAesSetKeyReq,                    /* xmlSecTransformSetKeyMethod setKeyReq; */            \
-    xmlSecNssKWAesSetKey,                       /* xmlSecTransformSetKeyMethod setKey; */               \
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */           \
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */     \
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */             \
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */               \
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */             \
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */               \
-    xmlSecNssKWAesExecute,                      /* xmlSecTransformExecuteMethod execute; */             \
-    NULL,                                       /* void* reserved0; */                                  \
-    NULL,                                       /* void* reserved1; */                                  \
+/* Helper macro to define the RFC 3394 KW transform klass */
+#define XMLSEC_NSS_KW_RFC3394_KLASS(name)                                                               \
+static xmlSecTransformKlass xmlSecNssKW ## name ## Klass = {                                           \
+    /* klass/object sizes */                                                                            \
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                             \
+    xmlSecNssKWRfc3394Size,                     /* xmlSecSize objSize */                               \
+    xmlSecNameKW ## name,                       /* const xmlChar* name; */                             \
+    xmlSecHrefKW ## name,                       /* const xmlChar* href; */                             \
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */                      \
+    xmlSecNssKWRfc3394Initialize,               /* xmlSecTransformInitializeMethod initialize; */      \
+    xmlSecNssKWRfc3394Finalize,                 /* xmlSecTransformFinalizeMethod finalize; */          \
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */          \
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */        \
+    xmlSecNssKWRfc3394SetKeyReq,                /* xmlSecTransformSetKeyMethod setKeyReq; */           \
+    xmlSecNssKWRfc3394SetKey,                   /* xmlSecTransformSetKeyMethod setKey; */              \
+    NULL,                                       /* xmlSecTransformValidateMethod validate; */          \
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */    \
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */            \
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */              \
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */            \
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */              \
+    xmlSecNssKWRfc3394Execute,                  /* xmlSecTransformExecuteMethod execute; */            \
+    NULL,                                       /* void* reserved0; */                                 \
+    NULL,                                       /* void* reserved1; */                                 \
 };
 
-XMLSEC_NSS_KW_AES_KLASS_EX(128)
 
-/**
- * xmlSecNssTransformKWAes128GetKlass:
- *
- * The AES-128 key wrapper transform klass.
- *
- * Returns: AES-128 key wrapper transform klass.
- */
-xmlSecTransformId
-xmlSecNssTransformKWAes128GetKlass(void) {
-    return(&xmlSecNssKWAes128Klass);
-}
 
-XMLSEC_NSS_KW_AES_KLASS_EX(192)
+static int
+xmlSecNssKWRfc3394CheckId(xmlSecTransformPtr transform) {
+#ifndef XMLSEC_NO_AES
+    if(xmlSecTransformCheckId(transform, xmlSecNssTransformKWAes128Id) ||
+       xmlSecTransformCheckId(transform, xmlSecNssTransformKWAes192Id) ||
+       xmlSecTransformCheckId(transform, xmlSecNssTransformKWAes256Id)) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_AES */
 
-/**
- * xmlSecNssTransformKWAes192GetKlass:
- *
- * The AES-192 key wrapper transform klass.
- *
- * Returns: AES-192 key wrapper transform klass.
- */
-xmlSecTransformId
-xmlSecNssTransformKWAes192GetKlass(void) {
-    return(&xmlSecNssKWAes192Klass);
-}
+#ifndef XMLSEC_NO_CAMELLIA
+    if(xmlSecTransformCheckId(transform, xmlSecNssTransformKWCamellia128Id) ||
+       xmlSecTransformCheckId(transform, xmlSecNssTransformKWCamellia192Id) ||
+       xmlSecTransformCheckId(transform, xmlSecNssTransformKWCamellia256Id)) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_CAMELLIA */
 
-XMLSEC_NSS_KW_AES_KLASS_EX(256)
-
-/**
- * xmlSecNssTransformKWAes256GetKlass:
- *
- * The AES-256 key wrapper transform klass.
- *
- * Returns: AES-256 key wrapper transform klass.
- */
-xmlSecTransformId
-xmlSecNssTransformKWAes256GetKlass(void) {
-    return(&xmlSecNssKWAes256Klass);
+    return(0);
 }
 
 static int
-xmlSecNssKWAesInitialize(xmlSecTransformPtr transform) {
-    xmlSecNssKWAesCtxPtr ctx;
+xmlSecNssKWRfc3394Initialize(xmlSecTransformPtr transform) {
+    xmlSecNssKWRfc3394CtxPtr ctx;
+    xmlSecKeyDataId keyId = NULL;
     xmlSecSize keyExpectedSize;
     int ret;
 
-    xmlSecAssert2(xmlSecNssKWAesCheckId(transform), -1);
-    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssKWAesSize), -1);
+    xmlSecAssert2(xmlSecNssKWRfc3394CheckId(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssKWRfc3394Size), -1);
 
-    ctx = xmlSecNssKWAesGetCtx(transform);
+    ctx = xmlSecNssKWRfc3394GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
-    memset(ctx, 0, sizeof(xmlSecNssKWAesCtx));
+    memset(ctx, 0, sizeof(xmlSecNssKWRfc3394Ctx));
 
+#ifndef XMLSEC_NO_AES
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformKWAes128Id)) {
+        keyId = xmlSecNssKeyDataAesId;
+        ctx->cipherMech = CKM_AES_ECB;
         keyExpectedSize = XMLSEC_KW_RFC3394_KEY_SIZE_128;
     } else if(xmlSecTransformCheckId(transform, xmlSecNssTransformKWAes192Id)) {
+        keyId = xmlSecNssKeyDataAesId;
+        ctx->cipherMech = CKM_AES_ECB;
         keyExpectedSize = XMLSEC_KW_RFC3394_KEY_SIZE_192;
     } else if(xmlSecTransformCheckId(transform, xmlSecNssTransformKWAes256Id)) {
+        keyId = xmlSecNssKeyDataAesId;
+        ctx->cipherMech = CKM_AES_ECB;
         keyExpectedSize = XMLSEC_KW_RFC3394_KEY_SIZE_256;
-    } else {
+    } else
+#endif /* XMLSEC_NO_AES */
+
+#ifndef XMLSEC_NO_CAMELLIA
+    if(xmlSecTransformCheckId(transform, xmlSecNssTransformKWCamellia128Id)) {
+        keyId = xmlSecNssKeyDataCamelliaId;
+        ctx->cipherMech = CKM_CAMELLIA_ECB;
+        keyExpectedSize = XMLSEC_KW_RFC3394_KEY_SIZE_128;
+    } else if(xmlSecTransformCheckId(transform, xmlSecNssTransformKWCamellia192Id)) {
+        keyId = xmlSecNssKeyDataCamelliaId;
+        ctx->cipherMech = CKM_CAMELLIA_ECB;
+        keyExpectedSize = XMLSEC_KW_RFC3394_KEY_SIZE_192;
+    } else if(xmlSecTransformCheckId(transform, xmlSecNssTransformKWCamellia256Id)) {
+        keyId = xmlSecNssKeyDataCamelliaId;
+        ctx->cipherMech = CKM_CAMELLIA_ECB;
+        keyExpectedSize = XMLSEC_KW_RFC3394_KEY_SIZE_256;
+    } else
+#endif /* XMLSEC_NO_CAMELLIA */
+
+    {
         xmlSecInvalidTransfromError(transform)
         return(-1);
     }
 
     ret = xmlSecTransformKWRfc3394Initialize(transform, &(ctx->parentCtx),
-        &xmlSecNssKWAesKlass, xmlSecNssKeyDataAesId,
+        &xmlSecNssKWRfc3394Klass, keyId,
         keyExpectedSize);
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformKWRfc3394Initialize", xmlSecTransformGetName(transform));
-        xmlSecNssKWAesFinalize(transform);
+        xmlSecNssKWRfc3394Finalize(transform);
         return(-1);
     }
 
+    /* done */
     return(0);
 }
 
+
 static void
-xmlSecNssKWAesFinalize(xmlSecTransformPtr transform) {
-    xmlSecNssKWAesCtxPtr ctx;
+xmlSecNssKWRfc3394Finalize(xmlSecTransformPtr transform) {
+    xmlSecNssKWRfc3394CtxPtr ctx;
 
-    xmlSecAssert(xmlSecNssKWAesCheckId(transform));
-    xmlSecAssert(xmlSecTransformCheckSize(transform, xmlSecNssKWAesSize));
+    xmlSecAssert(xmlSecNssKWRfc3394CheckId(transform));
+    xmlSecAssert(xmlSecTransformCheckSize(transform, xmlSecNssKWRfc3394Size));
 
-    ctx = xmlSecNssKWAesGetCtx(transform);
+    ctx = xmlSecNssKWRfc3394GetCtx(transform);
     xmlSecAssert(ctx != NULL);
 
-    if(ctx->aesKey != NULL) {
-        PK11_FreeSymKey(ctx->aesKey);
+    if(ctx->symKey != NULL) {
+        PK11_FreeSymKey(ctx->symKey);
     }
 
     xmlSecTransformKWRfc3394Finalize(transform, &(ctx->parentCtx));
-    memset(ctx, 0, sizeof(xmlSecNssKWAesCtx));
+    memset(ctx, 0, sizeof(xmlSecNssKWRfc3394Ctx));
 }
 
 static int
-xmlSecNssKWAesSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
-    xmlSecNssKWAesCtxPtr ctx;
+xmlSecNssKWRfc3394SetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
+    xmlSecNssKWRfc3394CtxPtr ctx;
     int ret;
 
-    xmlSecAssert2(xmlSecNssKWAesCheckId(transform), -1);
-    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssKWAesSize), -1);
+    xmlSecAssert2(xmlSecNssKWRfc3394CheckId(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssKWRfc3394Size), -1);
 
-    ctx = xmlSecNssKWAesGetCtx(transform);
+    ctx = xmlSecNssKWRfc3394GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
     ret = xmlSecTransformKWRfc3394SetKeyReq(transform, &(ctx->parentCtx),keyReq);
@@ -259,14 +265,14 @@ xmlSecNssKWAesSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
 }
 
 static int
-xmlSecNssKWAesSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
-    xmlSecNssKWAesCtxPtr ctx;
+xmlSecNssKWRfc3394SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
+    xmlSecNssKWRfc3394CtxPtr ctx;
     int ret;
 
-    xmlSecAssert2(xmlSecNssKWAesCheckId(transform), -1);
-    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssKWAesSize), -1);
+    xmlSecAssert2(xmlSecNssKWRfc3394CheckId(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssKWRfc3394Size), -1);
 
-    ctx = xmlSecNssKWAesGetCtx(transform);
+    ctx = xmlSecNssKWRfc3394GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
     ret = xmlSecTransformKWRfc3394SetKey(transform, &(ctx->parentCtx), key);
@@ -278,16 +284,16 @@ xmlSecNssKWAesSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 }
 
 static int
-xmlSecNssKWAesExecute(xmlSecTransformPtr transform, int last,
-                      xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED) {
-    xmlSecNssKWAesCtxPtr ctx;
+xmlSecNssKWRfc3394Execute(xmlSecTransformPtr transform, int last,
+                          xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED) {
+    xmlSecNssKWRfc3394CtxPtr ctx;
     int ret;
 
-    xmlSecAssert2(xmlSecNssKWAesCheckId(transform), -1);
-    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssKWAesSize), -1);
+    xmlSecAssert2(xmlSecNssKWRfc3394CheckId(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssKWRfc3394Size), -1);
     UNREFERENCED_PARAMETER(transformCtx);
 
-    ctx = xmlSecNssKWAesGetCtx(transform);
+    ctx = xmlSecNssKWRfc3394GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
     ret = xmlSecTransformKWRfc3394Execute(transform, &(ctx->parentCtx), last);
@@ -298,41 +304,37 @@ xmlSecNssKWAesExecute(xmlSecTransformPtr transform, int last,
     return(0);
 }
 
-/*********************************************************************
- *
- * AES KW implementation
- *
- *********************************************************************/
 static int
-xmlSecNSSKWAesBlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * in, xmlSecSize inSize,
-                           xmlSecByte * out, xmlSecSize outSize,
-                           xmlSecSize * outWritten) {
-    xmlSecNssKWAesCtxPtr ctx;
+xmlSecNssKWRfc3394BlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * in, xmlSecSize inSize,
+                               xmlSecByte * out, xmlSecSize outSize,
+                               xmlSecSize * outWritten) {
+    xmlSecNssKWRfc3394CtxPtr ctx;
     int ret;
 
-    xmlSecAssert2(xmlSecNssKWAesCheckId(transform), -1);
-    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssKWAesSize), -1);
+    xmlSecAssert2(xmlSecNssKWRfc3394CheckId(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssKWRfc3394Size), -1);
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(inSize >= XMLSEC_KW_RFC3394_BLOCK_SIZE, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize >= XMLSEC_KW_RFC3394_BLOCK_SIZE, -1);
     xmlSecAssert2(outWritten != NULL, -1);
 
-    ctx = xmlSecNssKWAesGetCtx(transform);
+    ctx = xmlSecNssKWRfc3394GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->parentCtx.keyId != NULL, -1);
 
     /* create key if needed */
-    ret = xmlSecNSSKWAesEnsureKey(ctx, 1); /* encrypt */
+    ret = xmlSecNssKWRfc3394EnsureKey(ctx, ctx->parentCtx.keyId, 1); /* encrypt */
     if(ret < 0) {
-        xmlSecInternalError("xmlSecNSSKWAesEnsureKey", NULL);
+        xmlSecInternalError("xmlSecNssKWRfc3394EnsureKey", NULL);
         return(-1);
     }
-    xmlSecAssert2(ctx->aesKey != NULL, -1);
+    xmlSecAssert2(ctx->symKey != NULL, -1);
 
     /* one block */
-    ret = xmlSecNssAesOp(ctx->aesKey, in, out, 1); /* encrypt */
+    ret = xmlSecNssRfc3394CipherOp(ctx->symKey, ctx->cipherMech, in, out, 1); /* encrypt */
     if(ret < 0) {
-        xmlSecInternalError("xmlSecNssAesOp", NULL);
+        xmlSecInternalError("xmlSecNssRfc3394CipherOp", NULL);
         return(-1);
     }
     (*outWritten) = XMLSEC_KW_RFC3394_BLOCK_SIZE;
@@ -340,35 +342,36 @@ xmlSecNSSKWAesBlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * in, 
 }
 
 static int
-xmlSecNSSKWAesBlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * in, xmlSecSize inSize,
-                           xmlSecByte * out, xmlSecSize outSize,
-                           xmlSecSize * outWritten) {
-    xmlSecNssKWAesCtxPtr ctx;
+xmlSecNssKWRfc3394BlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * in, xmlSecSize inSize,
+                               xmlSecByte * out, xmlSecSize outSize,
+                               xmlSecSize * outWritten) {
+    xmlSecNssKWRfc3394CtxPtr ctx;
     int ret;
 
-    xmlSecAssert2(xmlSecNssKWAesCheckId(transform), -1);
-    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssKWAesSize), -1);
+    xmlSecAssert2(xmlSecNssKWRfc3394CheckId(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssKWRfc3394Size), -1);
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(inSize >= XMLSEC_KW_RFC3394_BLOCK_SIZE, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize >= XMLSEC_KW_RFC3394_BLOCK_SIZE, -1);
     xmlSecAssert2(outWritten != NULL, -1);
 
-    ctx = xmlSecNssKWAesGetCtx(transform);
+    ctx = xmlSecNssKWRfc3394GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->parentCtx.keyId != NULL, -1);
 
     /* create key if needed */
-    ret = xmlSecNSSKWAesEnsureKey(ctx, 0); /* decrypt */
+    ret = xmlSecNssKWRfc3394EnsureKey(ctx, ctx->parentCtx.keyId, 0); /* decrypt */
     if(ret < 0) {
-        xmlSecInternalError("xmlSecNSSKWAesEnsureKey", NULL);
+        xmlSecInternalError("xmlSecNssKWRfc3394EnsureKey", NULL);
         return(-1);
     }
-    xmlSecAssert2(ctx->aesKey != NULL, -1);
+    xmlSecAssert2(ctx->symKey != NULL, -1);
 
     /* one block */
-    ret = xmlSecNssAesOp(ctx->aesKey, in, out, 0); /* decrypt */
+    ret = xmlSecNssRfc3394CipherOp(ctx->symKey, ctx->cipherMech, in, out, 0); /* decrypt */
     if(ret < 0) {
-        xmlSecInternalError("xmlSecNssAesOp", NULL);
+        xmlSecInternalError("xmlSecNssRfc3394CipherOp", NULL);
         return(-1);
     }
     (*outWritten) = XMLSEC_KW_RFC3394_BLOCK_SIZE;
@@ -376,16 +379,18 @@ xmlSecNSSKWAesBlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * in, 
 }
 
 static int
-xmlSecNSSKWAesEnsureKey(xmlSecNssKWAesCtxPtr ctx, int enc) {
+xmlSecNssKWRfc3394EnsureKey(xmlSecNssKWRfc3394CtxPtr ctx, xmlSecKeyDataId keyId, int enc) {
     xmlSecByte* keyData;
     xmlSecSize keySize;
-    CK_MECHANISM_TYPE cipherMech;
     PK11SlotInfo* slot = NULL;
     SECItem  keyItem = { siBuffer, NULL, 0 };
     int res = -1;
 
     xmlSecAssert2(ctx != NULL, -1);
-    if(ctx->aesKey != NULL) {
+    xmlSecAssert2(keyId != NULL, -1);
+    xmlSecAssert2(ctx->parentCtx.keyId != NULL, -1);
+    xmlSecAssert2(keyId == ctx->parentCtx.keyId, -1);
+    if(ctx->symKey != NULL) {
         return(0);
     }
 
@@ -394,8 +399,7 @@ xmlSecNSSKWAesEnsureKey(xmlSecNssKWAesCtxPtr ctx, int enc) {
     xmlSecAssert2(keySize > 0, -1);
     xmlSecAssert2(keySize == ctx->parentCtx.keyExpectedSize, -1);
 
-    cipherMech = CKM_AES_ECB;
-    slot = PK11_GetBestSlot(cipherMech, NULL);
+    slot = PK11_GetBestSlot(ctx->cipherMech, NULL);
     if (slot == NULL) {
         xmlSecNssError("PK11_GetBestSlot", NULL);
         goto done;
@@ -404,9 +408,9 @@ xmlSecNSSKWAesEnsureKey(xmlSecNssKWAesCtxPtr ctx, int enc) {
     keyItem.data = keyData;
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(keySize, keyItem.len, goto done, -1);
 
-    ctx->aesKey = PK11_ImportSymKey(slot, cipherMech, PK11_OriginUnwrap,
+    ctx->symKey = PK11_ImportSymKey(slot, ctx->cipherMech, PK11_OriginUnwrap,
         enc ? CKA_ENCRYPT : CKA_DECRYPT, &keyItem, NULL);
-    if (ctx->aesKey == NULL) {
+    if (ctx->symKey == NULL) {
         xmlSecNssError("PK11_ImportSymKey", NULL);
         goto done;
     }
@@ -421,21 +425,19 @@ done:
     return(res);
 }
 
-/* encrypt a block (XMLSEC_KW_RFC3394_BLOCK_SIZE), in and out can overlap */
+/* encrypt/decrypt a block (XMLSEC_KW_RFC3394_BLOCK_SIZE), in and out can overlap */
 static int
-xmlSecNssAesOp(PK11SymKey *aeskey, const xmlSecByte *in, xmlSecByte *out, int enc) {
-
-    CK_MECHANISM_TYPE  cipherMech;
+xmlSecNssRfc3394CipherOp(PK11SymKey *symKey, CK_MECHANISM_TYPE cipherMech, const xmlSecByte *in, xmlSecByte *out, int enc) {
     SECItem*           secParam = NULL;
     PK11Context*       ctxt = NULL;
     SECStatus          rv;
     int                outlen;
     int                ret = -1;
 
+    xmlSecAssert2(symKey != NULL, -1);
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
 
-    cipherMech = CKM_AES_ECB;
     secParam = PK11_ParamFromIV(cipherMech, NULL);
     if (secParam == NULL) {
         xmlSecNssError("PK11_ParamFromIV", NULL);
@@ -443,7 +445,7 @@ xmlSecNssAesOp(PK11SymKey *aeskey, const xmlSecByte *in, xmlSecByte *out, int en
     }
 
     ctxt = PK11_CreateContextBySymKey(cipherMech, enc ? CKA_ENCRYPT : CKA_DECRYPT,
-        aeskey, secParam);
+        symKey, secParam);
     if (ctxt == NULL) {
         xmlSecNssError("PK11_CreateContextBySymKey", NULL);
         goto done;
@@ -478,9 +480,108 @@ done:
     return (ret);
 }
 
-#else /* XMLSEC_NO_AES */
+/*********************************************************************
+ *
+ * AES KW implementation
+ *
+ *********************************************************************/
+#ifndef XMLSEC_NO_AES
+XMLSEC_NSS_KW_RFC3394_KLASS(Aes128)
+
+/**
+ * xmlSecNssTransformKWAes128GetKlass:
+ *
+ * The AES-128 key wrapper transform klass.
+ *
+ * Returns: AES-128 key wrapper transform klass.
+ */
+xmlSecTransformId
+xmlSecNssTransformKWAes128GetKlass(void) {
+    return(&xmlSecNssKWAes128Klass);
+}
+
+XMLSEC_NSS_KW_RFC3394_KLASS(Aes192)
+
+/**
+ * xmlSecNssTransformKWAes192GetKlass:
+ *
+ * The AES-192 key wrapper transform klass.
+ *
+ * Returns: AES-192 key wrapper transform klass.
+ */
+xmlSecTransformId
+xmlSecNssTransformKWAes192GetKlass(void) {
+    return(&xmlSecNssKWAes192Klass);
+}
+
+XMLSEC_NSS_KW_RFC3394_KLASS(Aes256)
+
+/**
+ * xmlSecNssTransformKWAes256GetKlass:
+ *
+ * The AES-256 key wrapper transform klass.
+ *
+ * Returns: AES-256 key wrapper transform klass.
+ */
+xmlSecTransformId
+xmlSecNssTransformKWAes256GetKlass(void) {
+    return(&xmlSecNssKWAes256Klass);
+}
+
+#endif /* XMLSEC_NO_AES */
+
+/*********************************************************************
+ *
+ * Camellia KW implementation
+ *
+ *********************************************************************/
+#ifndef XMLSEC_NO_CAMELLIA
+XMLSEC_NSS_KW_RFC3394_KLASS(Camellia128)
+
+/**
+ * xmlSecNssTransformKWCamellia128GetKlass:
+ *
+ * The Camellia-128 key wrapper transform klass.
+ *
+ * Returns: Camellia-128 key wrapper transform klass.
+ */
+xmlSecTransformId
+xmlSecNssTransformKWCamellia128GetKlass(void) {
+    return(&xmlSecNssKWCamellia128Klass);
+}
+
+XMLSEC_NSS_KW_RFC3394_KLASS(Camellia192)
+
+/**
+ * xmlSecNssTransformKWCamellia192GetKlass:
+ *
+ * The Camellia-192 key wrapper transform klass.
+ *
+ * Returns: Camellia-192 key wrapper transform klass.
+ */
+xmlSecTransformId
+xmlSecNssTransformKWCamellia192GetKlass(void) {
+    return(&xmlSecNssKWCamellia192Klass);
+}
+
+XMLSEC_NSS_KW_RFC3394_KLASS(Camellia256)
+
+/**
+ * xmlSecNssTransformKWCamellia256GetKlass:
+ *
+ * The Camellia-256 key wrapper transform klass.
+ *
+ * Returns: Camellia-256 key wrapper transform klass.
+ */
+xmlSecTransformId
+xmlSecNssTransformKWCamellia256GetKlass(void) {
+    return(&xmlSecNssKWCamellia256Klass);
+}
+#endif /* XMLSEC_NO_CAMELLIA */
+
+#else /* !defined(XMLSEC_NO_AES) || !defined(XMLSEC_NO_CAMELLIA) */
 
 /* ISO C forbids an empty translation unit */
 typedef int make_iso_compilers_happy;
 
-#endif /* XMLSEC_NO_AES */
+#endif /* !defined(XMLSEC_NO_AES) || !defined(XMLSEC_NO_CAMELLIA) */

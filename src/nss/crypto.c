@@ -133,6 +133,10 @@ xmlSecCryptoGetFunctions_nss(void) {
     gXmlSecNssFunctions->keyDataConcatKdfGetKlass       = xmlSecNssKeyDataConcatKdfGetKlass;
 #endif /* XMLSEC_NO_CONCATKDF */
 
+#ifndef XMLSEC_NO_HKDF
+    gXmlSecNssFunctions->keyDataHkdfGetKlass            = xmlSecNssKeyDataHkdfGetKlass;
+#endif /* XMLSEC_NO_HKDF */
+
 #ifndef XMLSEC_NO_RSA
     gXmlSecNssFunctions->keyDataRsaGetKlass             = xmlSecNssKeyDataRsaGetKlass;
 #endif /* XMLSEC_NO_RSA */
@@ -267,6 +271,10 @@ xmlSecCryptoGetFunctions_nss(void) {
 #ifndef XMLSEC_NO_CONCATKDF
     gXmlSecNssFunctions->transformConcatKdfGetKlass    = xmlSecNssTransformConcatKdfGetKlass;
 #endif /* XMLSEC_NO_CONCATKDF */
+
+#ifndef XMLSEC_NO_HKDF
+    gXmlSecNssFunctions->transformHkdfGetKlass         = xmlSecNssTransformHkdfGetKlass;
+#endif /* XMLSEC_NO_HKDF */
 
     /******************************* RSA ********************************/
 #ifndef XMLSEC_NO_RSA

@@ -116,6 +116,13 @@ XMLSEC_EXPORT xmlSecKeyDataId                   xmlSecKeyDataGostR3410_2012_512G
 #define xmlSecKeyDataHmacId                     xmlSecKeyDataHmacGetKlass()
 XMLSEC_EXPORT xmlSecKeyDataId                   xmlSecKeyDataHmacGetKlass(void);
 /**
+ * xmlSecKeyDataHkdfId:
+ *
+ * The HKDF key klass.
+ */
+#define xmlSecKeyDataHkdfId                     xmlSecKeyDataHkdfGetKlass()
+XMLSEC_EXPORT xmlSecKeyDataId                   xmlSecKeyDataHkdfGetKlass(void);
+/**
  * xmlSecKeyDataMLDSAId:
  *
  * The ML-DSA key klass.
@@ -291,6 +298,13 @@ XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformKWDes3GetKlass(vo
 */
 #define xmlSecTransformDhEsId                   xmlSecTransformDhEsGetKlass()
 XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformDhEsGetKlass(void);
+/**
+* xmlSecTransformHkdfId:
+*
+* The HKDF key derivation transform klass.
+*/
+#define xmlSecTransformHkdfId                   xmlSecTransformHkdfGetKlass()
+XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformHkdfGetKlass(void);
 /**
  * xmlSecTransformDsaSha1Id:
  *

@@ -207,6 +207,12 @@ xmlSecNssSymKeyDataKlassCheck(xmlSecKeyDataKlass* klass) {
     }
 #endif /* XMLSEC_NO_CONCATKDF */
 
+#ifndef XMLSEC_NO_HKDF
+    if(klass == xmlSecNssKeyDataHkdfId) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_HKDF */
+
     return(0);
 }
 
@@ -481,3 +487,49 @@ xmlSecNssKeyDataConcatKdfSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSe
 }
 
 #endif /* XMLSEC_NO_CONCATKDF */
+
+#ifndef XMLSEC_NO_HKDF
+/**************************************************************************
+ *
+ * HKDF key
+ *
+ *************************************************************************/
+XMLSEC_NSS_SYMKEY_KLASS_EX(KeyDataHkdf, xmlSecNameHkdfKey, NULL, NULL, NULL)
+
+/**
+ * xmlSecNssKeyDataHkdfGetKlass:
+ *
+ * The HKDF key data klass.
+ *
+ * Returns: HKDF key data klass.
+ */
+xmlSecKeyDataId
+xmlSecNssKeyDataHkdfGetKlass(void) {
+    return(&xmlSecNssKeyDataHkdfKlass);
+}
+
+/**
+ * xmlSecNssKeyDataHkdfSet:
+ * @data:               the pointer to HKDF key data.
+ * @buf:                the pointer to key value.
+ * @bufSize:            the key value size (in bytes).
+ *
+ * Sets the value of HKDF key data.
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecNssKeyDataHkdfSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSize bufSize) {
+    xmlSecBufferPtr buffer;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecNssKeyDataHkdfId), -1);
+    xmlSecAssert2(buf != NULL, -1);
+    xmlSecAssert2(bufSize > 0, -1);
+
+    buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
+    xmlSecAssert2(buffer != NULL, -1);
+
+    return(xmlSecBufferSetData(buffer, buf, bufSize));
+}
+
+#endif /* XMLSEC_NO_HKDF */

@@ -292,6 +292,25 @@ xmlSecKeyDataHmacGetKlass(void) {
 }
 
 /**
+ * xmlSecKeyDataHkdfGetKlass:
+ *
+ * The HKDF key data klass.
+ *
+ * Returns: HKDF key data klass or NULL if an error occurs
+ * (xmlsec-crypto library is not loaded or the HKDF key data
+ * klass is not implemented).
+ */
+xmlSecKeyDataId
+xmlSecKeyDataHkdfGetKlass(void) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->keyDataHkdfGetKlass == NULL)) {
+        xmlSecNotImplementedError2(missingMethodError, "keyDataHkdfGetKlass");
+        return(xmlSecKeyDataIdUnknown);
+    }
+
+    return(xmlSecCryptoDLGetFunctions()->keyDataHkdfGetKlass());
+}
+
+/**
  * xmlSecKeyDataPbkdf2GetKlass:
  *
  * The PBKDF2 key data klass.
@@ -757,6 +776,25 @@ xmlSecTransformDsaSha1GetKlass(void) {
     }
 
     return(xmlSecCryptoDLGetFunctions()->transformDsaSha1GetKlass());
+}
+
+/**
+ * xmlSecTransformHkdfGetKlass:
+ *
+ * HKDF key derivation transform klass.
+ *
+ * Returns: pointer to HKDF key derivation transform or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
+xmlSecTransformId
+xmlSecTransformHkdfGetKlass(void) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformHkdfGetKlass == NULL)) {
+        xmlSecNotImplementedError2(missingMethodError, "transformHkdfGetKlass");
+        return(xmlSecTransformIdUnknown);
+    }
+
+    return(xmlSecCryptoDLGetFunctions()->transformHkdfGetKlass());
 }
 
 /**

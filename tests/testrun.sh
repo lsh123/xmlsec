@@ -330,6 +330,19 @@ else
 fi
 
 #
+# NSS cannot import EdDSA (ED25519/ED448) private keys from OpenSSL-3.x-generated
+# PKCS12 files (SEC_ERROR_PKCS12_UNABLE_TO_IMPORT_KEY).  Use unencrypted DER
+# (PrivateKeyInfo) format for EdDSA keys when running under NSS.
+#
+if [ "z$crypto" = "znss" ] ; then
+    eddsa_priv_key_option="--privkey-der"
+    eddsa_priv_key_format="der"
+else
+    eddsa_priv_key_option="$priv_key_option"
+    eddsa_priv_key_format="$priv_key_format"
+fi
+
+#
 # GnuTLS cannot import EC keys from OpenSSL-3.x-generated xmlenc11-interop-2012
 # PKCS12 files (PBES2/PBKDF2/AES-256-CBC encryption not supported).
 # Use unencrypted DER (PrivateKeyInfo) format for those specific interop tests.

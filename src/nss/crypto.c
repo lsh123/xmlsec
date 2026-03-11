@@ -223,6 +223,12 @@ xmlSecCryptoGetFunctions_nss(void) {
 #endif /* XMLSEC_NO_SHA512 */
 #endif /* XMLSEC_NO_EC */
 
+    /******************************* EdDSA ********************************/
+#ifndef XMLSEC_NO_EDDSA
+    gXmlSecNssFunctions->keyDataEdDSAGetKlass   = xmlSecNssKeyDataEdDSAGetKlass;
+    gXmlSecNssFunctions->transformEdDSAEd25519GetKlass = xmlSecNssTransformEdDSAEd25519GetKlass;
+#endif /* XMLSEC_NO_EDDSA */
+
     /******************************* XDH ********************************/
 #ifndef XMLSEC_NO_XDH
     gXmlSecNssFunctions->keyDataXdhGetKlass      = xmlSecNssKeyDataXdhGetKlass;
@@ -473,6 +479,14 @@ xmlSecNssUpdateAvailableCryptoTransforms(xmlSecCryptoDLFunctionsPtr functions) {
     if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_ANSIX962_ECDSA_SHA512_SIGNATURE) == 0) {
         functions->transformEcdsaSha512GetKlass = NULL;
     }
+
+    /******************************* EdDSA ********************************/
+#ifndef XMLSEC_NO_EDDSA
+    /* Check if EdDSA is available in this NSS version */
+    if (xmlSecNssCryptoCheckAlgorithm(SEC_OID_ED25519_SIGNATURE) == 0) {
+        functions->transformEdDSAEd25519GetKlass = NULL;
+    }
+#endif /* XMLSEC_NO_EDDSA */
 
     /******************************* HMAC ********************************/
     if (xmlSecNssCryptoCheckMechanism(CKM_MD5_HMAC) == 0) {

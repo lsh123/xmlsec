@@ -1296,7 +1296,7 @@ execDSigTest $res_success \
     "sha256 eddsa-ed25519" \
     "eddsa" \
     "$pub_key_option:TestKeyName-eddsa-ed25519 $topfolder/keys/eddsa/eddsa-ed25519-pubkey.$pub_key_format" \
-    "$priv_key_option:TestKeyName-eddsa-ed25519 $topfolder/keys/eddsa/eddsa-ed25519-key.$priv_key_format --pwd secret123" \
+    "$eddsa_priv_key_option:TestKeyName-eddsa-ed25519 $topfolder/keys/eddsa/eddsa-ed25519-key.$eddsa_priv_key_format --pwd secret123" \
     "$pub_key_option:TestKeyName-eddsa-ed25519 $topfolder/keys/eddsa/eddsa-ed25519-pubkey.$pub_key_format"
 
 execDSigTest $res_success \
@@ -1305,7 +1305,7 @@ execDSigTest $res_success \
     "sha256 eddsa-ed25519ph" \
     "eddsa" \
     "$pub_key_option:TestKeyName-eddsa-ed25519 $topfolder/keys/eddsa/eddsa-ed25519-pubkey.$pub_key_format" \
-    "$priv_key_option:TestKeyName-eddsa-ed25519 $topfolder/keys/eddsa/eddsa-ed25519-key.$priv_key_format --pwd secret123" \
+    "$eddsa_priv_key_option:TestKeyName-eddsa-ed25519 $topfolder/keys/eddsa/eddsa-ed25519-key.$eddsa_priv_key_format --pwd secret123" \
     "$pub_key_option:TestKeyName-eddsa-ed25519 $topfolder/keys/eddsa/eddsa-ed25519-pubkey.$pub_key_format"
 
 # context string is required for Ed25519ctx so no point in checking feature flag
@@ -1315,7 +1315,7 @@ execDSigTest $res_success \
     "sha256 eddsa-ed25519ctx" \
     "eddsa" \
     "$pub_key_option:TestKeyName-eddsa-ed25519 $topfolder/keys/eddsa/eddsa-ed25519-pubkey.$pub_key_format" \
-    "$priv_key_option:TestKeyName-eddsa-ed25519 $topfolder/keys/eddsa/eddsa-ed25519-key.$priv_key_format --pwd secret123" \
+    "$eddsa_priv_key_option:TestKeyName-eddsa-ed25519 $topfolder/keys/eddsa/eddsa-ed25519-key.$eddsa_priv_key_format --pwd secret123" \
     "$pub_key_option:TestKeyName-eddsa-ed25519 $topfolder/keys/eddsa/eddsa-ed25519-pubkey.$pub_key_format"
 
 if [ "z$xmlsec_feature_context_string" = "zyes" ] ; then
@@ -1326,7 +1326,7 @@ if [ "z$xmlsec_feature_context_string" = "zyes" ] ; then
         "sha256 eddsa-ed25519ph" \
         "eddsa" \
         "$pub_key_option:TestKeyName-eddsa-ed25519 $topfolder/keys/eddsa/eddsa-ed25519-pubkey.$pub_key_format" \
-        "$priv_key_option:TestKeyName-eddsa-ed25519 $topfolder/keys/eddsa/eddsa-ed25519-key.$priv_key_format --pwd secret123" \
+        "$eddsa_priv_key_option:TestKeyName-eddsa-ed25519 $topfolder/keys/eddsa/eddsa-ed25519-key.$eddsa_priv_key_format --pwd secret123" \
         "$pub_key_option:TestKeyName-eddsa-ed25519 $topfolder/keys/eddsa/eddsa-ed25519-pubkey.$pub_key_format"
 fi
 
@@ -1336,7 +1336,7 @@ execDSigTest $res_success \
     "sha256 eddsa-ed448" \
     "eddsa" \
     "$pub_key_option:TestKeyName-eddsa-ed448 $topfolder/keys/eddsa/eddsa-ed448-pubkey.$pub_key_format" \
-    "$priv_key_option:TestKeyName-eddsa-ed448 $topfolder/keys/eddsa/eddsa-ed448-key.$priv_key_format --pwd secret123" \
+    "$eddsa_priv_key_option:TestKeyName-eddsa-ed448 $topfolder/keys/eddsa/eddsa-ed448-key.$eddsa_priv_key_format --pwd secret123" \
     "$pub_key_option:TestKeyName-eddsa-ed448 $topfolder/keys/eddsa/eddsa-ed448-pubkey.$pub_key_format"
 
 execDSigTest $res_success \
@@ -1345,7 +1345,7 @@ execDSigTest $res_success \
     "sha256 eddsa-ed448ph" \
     "eddsa" \
     "$pub_key_option:TestKeyName-eddsa-ed448 $topfolder/keys/eddsa/eddsa-ed448-pubkey.$pub_key_format" \
-    "$priv_key_option:TestKeyName-eddsa-ed448 $topfolder/keys/eddsa/eddsa-ed448-key.$priv_key_format --pwd secret123" \
+    "$eddsa_priv_key_option:TestKeyName-eddsa-ed448 $topfolder/keys/eddsa/eddsa-ed448-key.$eddsa_priv_key_format --pwd secret123" \
     "$pub_key_option:TestKeyName-eddsa-ed448 $topfolder/keys/eddsa/eddsa-ed448-pubkey.$pub_key_format"
 
 if [ "z$xmlsec_feature_context_string" = "zyes" ] ; then
@@ -1355,7 +1355,7 @@ if [ "z$xmlsec_feature_context_string" = "zyes" ] ; then
         "sha256 eddsa-ed448ph" \
         "eddsa" \
         "$pub_key_option:TestKeyName-eddsa-ed448 $topfolder/keys/eddsa/eddsa-ed448-pubkey.$pub_key_format" \
-        "$priv_key_option:TestKeyName-eddsa-ed448 $topfolder/keys/eddsa/eddsa-ed448-key.$priv_key_format --pwd secret123" \
+        "$eddsa_priv_key_option:TestKeyName-eddsa-ed448 $topfolder/keys/eddsa/eddsa-ed448-key.$eddsa_priv_key_format --pwd secret123" \
         "$pub_key_option:TestKeyName-eddsa-ed448 $topfolder/keys/eddsa/eddsa-ed448-pubkey.$pub_key_format"
 fi
 

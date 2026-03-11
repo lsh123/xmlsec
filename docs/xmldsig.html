@@ -1464,7 +1464,7 @@
                         <!-- OpenSSL-->
                         <td valign="top" bgcolor="#C1E1C1">Yes</td>
                         <!-- NSS -->
-                        <td valign="top">No</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#eddsa-nss"><sup>(9)</sup></a></td>
                         <!-- GnuTLS -->
                         <td valign="top" bgcolor="#C1E1C1">Yes</td>
                         <!-- MSCng -->
@@ -1666,6 +1666,9 @@
                         </li>
                         <li>
                             <a id="eddsa-ctx"></a><sup>(8)</sup> Ed25519ctx requires a non-empty context string (per RFC 8032).
+                        </li>
+                        <li>
+                            <a id="eddsa-nss"></a><sup>(9)</sup> The xmlsec-nss library only supports Ed25519 (Ed448 is not supported). Additionally, NSS cannot import EdDSA private keys from PKCS#12 files; use unencrypted PKCS#8 DER format instead.
                         </li>
                     </ul>
                 </div>

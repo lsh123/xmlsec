@@ -193,16 +193,40 @@ static LPCWSTR
 xmlSecMSCngPbkdf2GetMacFromHref(const xmlChar* href) {
     /* use SHA256 by default */
     if(href == NULL) {
+#ifndef XMLSEC_NO_SHA256
         return(BCRYPT_SHA256_ALGORITHM);
-    } else if(xmlStrcmp(href, xmlSecHrefHmacSha1) == 0) {
+#else  /* XMLSEC_NO_SHA256 */
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
+            "SHA256 is disabled; href=%s", xmlSecErrorsSafeString(href));
+        return(NULL);
+#endif /* XMLSEC_NO_SHA256 */
+    } else
+
+#ifndef XMLSEC_NO_SHA1
+    if(xmlStrcmp(href, xmlSecHrefHmacSha1) == 0) {
         return(BCRYPT_SHA1_ALGORITHM);
-    } else if(xmlStrcmp(href, xmlSecHrefHmacSha256) == 0) {
+    } else
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA256
+    if(xmlStrcmp(href, xmlSecHrefHmacSha256) == 0) {
         return(BCRYPT_SHA256_ALGORITHM);
-    } else if(xmlStrcmp(href, xmlSecHrefHmacSha384) == 0) {
+    } else
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+    if(xmlStrcmp(href, xmlSecHrefHmacSha384) == 0) {
         return(BCRYPT_SHA384_ALGORITHM);
-    } else if(xmlStrcmp(href, xmlSecHrefHmacSha512) == 0) {
+    } else
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+    if(xmlStrcmp(href, xmlSecHrefHmacSha512) == 0) {
         return(BCRYPT_SHA512_ALGORITHM);
-    } else {
+    } else
+#endif /* XMLSEC_NO_SHA512 */
+
+    {
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
             "href=%s", xmlSecErrorsSafeString(href));
         return(NULL);

@@ -381,6 +381,15 @@ xmlSecGnuTLSCbcCipherCheckId(xmlSecTransformPtr transform) {
     }
 #endif /* XMLSEC_NO_AES */
 
+#ifndef XMLSEC_NO_CAMELLIA
+    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformCamellia128CbcId) ||
+       xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformCamellia192CbcId) ||
+       xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformCamellia256CbcId) )
+    {
+       return(1);
+    }
+#endif /* XMLSEC_NO_CAMELLIA */
+
     return(0);
 }
 
@@ -419,6 +428,22 @@ xmlSecGnuTLSCbcCipherInitialize(xmlSecTransformPtr transform) {
         ctx->keySize    = XMLSEC_KW_RFC3394_KEY_SIZE_256;
     } else
 #endif /* XMLSEC_NO_AES */
+
+#ifndef XMLSEC_NO_CAMELLIA
+    if(transform->id == xmlSecGnuTLSTransformCamellia128CbcId) {
+        ctx->keyId      = xmlSecGnuTLSKeyDataCamelliaId;
+        ctx->algorithm  = GNUTLS_CIPHER_CAMELLIA_128_CBC;
+        ctx->keySize    = XMLSEC_KW_RFC3394_KEY_SIZE_128;
+    } else if(transform->id == xmlSecGnuTLSTransformCamellia192CbcId) {
+        ctx->keyId      = xmlSecGnuTLSKeyDataCamelliaId;
+        ctx->algorithm  = GNUTLS_CIPHER_CAMELLIA_192_CBC;
+        ctx->keySize    = XMLSEC_KW_RFC3394_KEY_SIZE_192;
+    } else if(transform->id == xmlSecGnuTLSTransformCamellia256CbcId) {
+        ctx->keyId      = xmlSecGnuTLSKeyDataCamelliaId;
+        ctx->algorithm  = GNUTLS_CIPHER_CAMELLIA_256_CBC;
+        ctx->keySize    = XMLSEC_KW_RFC3394_KEY_SIZE_256;
+    } else
+#endif /* XMLSEC_NO_CAMELLIA */
 
     if(1) {
         xmlSecInvalidTransfromError(transform)
@@ -683,6 +708,56 @@ xmlSecGnuTLSTransformAes256CbcGetKlass(void) {
 }
 
 #endif /* XMLSEC_NO_AES */
+
+#ifndef XMLSEC_NO_CAMELLIA
+/*********************************************************************
+ *
+ * Camellia CBC cipher transforms
+ *
+ ********************************************************************/
+XMLSEC_GNUTLS_CBC_CIPHER_KLASS(Camellia128Cbc)
+
+/**
+ * xmlSecGnuTLSTransformCamellia128CbcGetKlass:
+ *
+ * Camellia 128 CBC encryption transform klass.
+ *
+ * Returns: pointer to Camellia 128 CBC encryption transform.
+ */
+xmlSecTransformId
+xmlSecGnuTLSTransformCamellia128CbcGetKlass(void) {
+    return(&xmlSecGnuTLSCamellia128CbcKlass);
+}
+
+XMLSEC_GNUTLS_CBC_CIPHER_KLASS(Camellia192Cbc)
+
+/**
+ * xmlSecGnuTLSTransformCamellia192CbcGetKlass:
+ *
+ * Camellia 192 CBC encryption transform klass.
+ *
+ * Returns: pointer to Camellia 192 CBC encryption transform.
+ */
+xmlSecTransformId
+xmlSecGnuTLSTransformCamellia192CbcGetKlass(void) {
+    return(&xmlSecGnuTLSCamellia192CbcKlass);
+}
+
+XMLSEC_GNUTLS_CBC_CIPHER_KLASS(Camellia256Cbc)
+
+/**
+ * xmlSecGnuTLSTransformCamellia256CbcGetKlass:
+ *
+ * Camellia 256 CBC encryption transform klass.
+ *
+ * Returns: pointer to Camellia 256 CBC encryption transform.
+ */
+xmlSecTransformId
+xmlSecGnuTLSTransformCamellia256CbcGetKlass(void) {
+    return(&xmlSecGnuTLSCamellia256CbcKlass);
+}
+
+#endif /* XMLSEC_NO_CAMELLIA */
 
 #ifndef XMLSEC_NO_DES
 XMLSEC_GNUTLS_CBC_CIPHER_KLASS(Des3Cbc)

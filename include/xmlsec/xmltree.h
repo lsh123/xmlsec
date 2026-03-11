@@ -18,6 +18,7 @@
 
 #include <xmlsec/exports.h>
 #include <xmlsec/xmlsec.h>
+#include <xmlsec/buffer.h>
 
 
 #if defined(XMLSEC_WINDOWS)
@@ -45,6 +46,8 @@ XMLSEC_EXPORT xmlChar*          xmlSecGetNodeContentAndTrim(const xmlNodePtr cur
 XMLSEC_EXPORT int               xmlSecGetNodeContentAsSize(const xmlNodePtr cur,
                                                          xmlSecSize defValue,
                                                          xmlSecSize* res);
+XMLSEC_EXPORT int               xmlSecGetNodeContentAsHex (const xmlNodePtr cur,
+                                                         xmlSecBufferPtr res);
 XMLSEC_EXPORT int               xmlSecCheckNodeName     (const xmlNodePtr cur,
                                                          const xmlChar *name,
                                                          const xmlChar *ns);

@@ -32,6 +32,7 @@
 
 #include "../cast_helpers.h"
 #include "../keysdata_helpers.h"
+#include "../transform_helpers.h"
 
 #define XMLSEC_OPENSSL_EVP_CIPHER_PAD_SIZE    (2 * EVP_MAX_BLOCK_LENGTH)
 #define XMLSEC_OPENSSL_AES_GCM_NONCE_SIZE     12
@@ -1274,8 +1275,7 @@ static int
 xmlSecOpenSSLChaCha20NodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
                                xmlSecTransformCtxPtr transformCtx) {
     xmlSecOpenSSLChaCha20CtxPtr ctx;
-    xmlNodePtr cur;
-    xmlSecBuffer nonceBuf, counterBuf;
+    xmlSecTransformChaCha20Params params;
     int ret;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformChaCha20Id), -1);
@@ -1286,92 +1286,17 @@ xmlSecOpenSSLChaCha20NodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     ctx = xmlSecOpenSSLChaCha20GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    ret = xmlSecBufferInitialize(&nonceBuf, 0);
+    ret = xmlSecTransformChaCha20ParamsRead(&params, node);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecBufferInitialize(nonce)", xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecTransformChaCha20ParamsRead",
+                            xmlSecTransformGetName(transform));
         return(-1);
     }
 
-    ret = xmlSecBufferInitialize(&counterBuf, 0);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecBufferInitialize(counter)", xmlSecTransformGetName(transform));
-        xmlSecBufferFinalize(&nonceBuf);
-        return(-1);
-    }
-
-    /* Read Nonce */
-    cur = xmlSecGetNextElementNode(node->children);
-    while((cur != NULL) && (!xmlSecCheckNodeName(cur, xmlSecNodeChaCha20Nonce, xmlSecXmldsig2021MoreNs))) {
-        cur = xmlSecGetNextElementNode(cur->next);
-    }
-    if(cur != NULL) {
-        xmlChar* nonceHex = xmlNodeGetContent(cur);
-        if(nonceHex != NULL) {
-            ret = xmlSecBufferHexRead(&nonceBuf, nonceHex);
-            xmlFree(nonceHex);
-            if(ret < 0) {
-                xmlSecInternalError("xmlSecBufferHexRead(nonce)", xmlSecTransformGetName(transform));
-                xmlSecBufferFinalize(&nonceBuf);
-                xmlSecBufferFinalize(&counterBuf);
-                return(-1);
-            }
-            if(xmlSecBufferGetSize(&nonceBuf) != XMLSEC_OPENSSL_CHACHA20_NONCE_SIZE) {
-                xmlSecInvalidSizeDataError("Nonce", xmlSecBufferGetSize(&nonceBuf),
-                                          "12 bytes",
-                                          xmlSecTransformGetName(transform));
-                xmlSecBufferFinalize(&nonceBuf);
-                xmlSecBufferFinalize(&counterBuf);
-                return(-1);
-            }
-            memcpy(ctx->nonce, xmlSecBufferGetData(&nonceBuf), XMLSEC_OPENSSL_CHACHA20_NONCE_SIZE);
-            ctx->nonceInitialized = 1;
-        }
-    }
-
-    /* Read Counter */
-    cur = xmlSecGetNextElementNode(node->children);
-    while((cur != NULL) && (!xmlSecCheckNodeName(cur, xmlSecNodeChaCha20Counter, xmlSecXmldsig2021MoreNs))) {
-        cur = xmlSecGetNextElementNode(cur->next);
-    }
-    if(cur != NULL) {
-        xmlChar* counterHex = xmlNodeGetContent(cur);
-        if(counterHex != NULL) {
-            ret = xmlSecBufferHexRead(&counterBuf, counterHex);
-            xmlFree(counterHex);
-            if(ret < 0) {
-                xmlSecInternalError("xmlSecBufferHexRead(counter)", xmlSecTransformGetName(transform));
-                xmlSecBufferFinalize(&nonceBuf);
-                xmlSecBufferFinalize(&counterBuf);
-                return(-1);
-            }
-            if(xmlSecBufferGetSize(&counterBuf) != XMLSEC_OPENSSL_CHACHA20_COUNTER_SIZE) {
-                xmlSecInvalidSizeDataError("Counter", xmlSecBufferGetSize(&counterBuf),
-                                          "4 bytes",
-                                          xmlSecTransformGetName(transform));
-                xmlSecBufferFinalize(&nonceBuf);
-                xmlSecBufferFinalize(&counterBuf);
-                return(-1);
-            }
-            memcpy(ctx->counter, xmlSecBufferGetData(&counterBuf), XMLSEC_OPENSSL_CHACHA20_COUNTER_SIZE);
-            ctx->counterInitialized = 1;
-        }
-    }
-
-    xmlSecBufferFinalize(&nonceBuf);
-    xmlSecBufferFinalize(&counterBuf);
-
-    if(!ctx->nonceInitialized) {
-        xmlSecNodeNotFoundError("xmlSecOpenSSLChaCha20NodeRead", node,
-                                xmlSecNodeChaCha20Nonce,
-                                xmlSecTransformGetName(transform));
-        return(-1);
-    }
-    if(!ctx->counterInitialized) {
-        xmlSecNodeNotFoundError("xmlSecOpenSSLChaCha20NodeRead", node,
-                                xmlSecNodeChaCha20Counter,
-                                xmlSecTransformGetName(transform));
-        return(-1);
-    }
+    memcpy(ctx->nonce, params.nonce, XMLSEC_OPENSSL_CHACHA20_NONCE_SIZE);
+    memcpy(ctx->counter, params.counter, XMLSEC_OPENSSL_CHACHA20_COUNTER_SIZE);
+    ctx->nonceInitialized = 1;
+    ctx->counterInitialized = 1;
 
     return(0);
 }
@@ -1637,8 +1562,7 @@ static int
 xmlSecOpenSSLChaCha20Poly1305NodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
                                        xmlSecTransformCtxPtr transformCtx) {
     xmlSecOpenSSLChaCha20Poly1305CtxPtr ctx;
-    xmlNodePtr cur;
-    xmlSecBuffer nonceBuf;
+    xmlSecTransformChaCha20Poly1305Params params;
     int ret;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformChaCha20Poly1305Id), -1);
@@ -1649,65 +1573,38 @@ xmlSecOpenSSLChaCha20Poly1305NodeRead(xmlSecTransformPtr transform, xmlNodePtr n
     ctx = xmlSecOpenSSLChaCha20Poly1305GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    ret = xmlSecBufferInitialize(&nonceBuf, 0);
+    ret = xmlSecTransformChaCha20Poly1305ParamsInitialize(&params);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecBufferInitialize(nonce)", xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecTransformChaCha20Poly1305ParamsInitialize",
+                            xmlSecTransformGetName(transform));
         return(-1);
     }
 
-    /* Read Nonce */
-    cur = xmlSecGetNextElementNode(node->children);
-    while((cur != NULL) && (!xmlSecCheckNodeName(cur, xmlSecNodeChaCha20Nonce, xmlSecXmldsig2021MoreNs))) {
-        cur = xmlSecGetNextElementNode(cur->next);
-    }
-    if(cur != NULL) {
-        xmlChar* nonceHex = xmlNodeGetContent(cur);
-        if(nonceHex != NULL) {
-            ret = xmlSecBufferHexRead(&nonceBuf, nonceHex);
-            xmlFree(nonceHex);
-            if(ret < 0) {
-                xmlSecInternalError("xmlSecBufferHexRead(nonce)", xmlSecTransformGetName(transform));
-                xmlSecBufferFinalize(&nonceBuf);
-                return(-1);
-            }
-            if(xmlSecBufferGetSize(&nonceBuf) != XMLSEC_OPENSSL_CHACHA20_NONCE_SIZE) {
-                xmlSecInvalidSizeDataError("Nonce", xmlSecBufferGetSize(&nonceBuf),
-                                          "12 bytes",
-                                          xmlSecTransformGetName(transform));
-                xmlSecBufferFinalize(&nonceBuf);
-                return(-1);
-            }
-            memcpy(ctx->nonce, xmlSecBufferGetData(&nonceBuf), XMLSEC_OPENSSL_CHACHA20_NONCE_SIZE);
-            ctx->nonceInitialized = 1;
-        }
+    ret = xmlSecTransformChaCha20Poly1305ParamsRead(&params, node);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecTransformChaCha20Poly1305ParamsRead",
+                            xmlSecTransformGetName(transform));
+        xmlSecTransformChaCha20Poly1305ParamsFinalize(&params);
+        return(-1);
     }
 
-    xmlSecBufferFinalize(&nonceBuf);
+    memcpy(ctx->nonce, params.nonce, XMLSEC_OPENSSL_CHACHA20_NONCE_SIZE);
+    ctx->nonceInitialized = 1;
 
-    if(!ctx->nonceInitialized) {
-        xmlSecNodeNotFoundError("xmlSecOpenSSLChaCha20Poly1305NodeRead", node,
-                                xmlSecNodeChaCha20Nonce,
+    /* move AAD data from params into ctx (swap buffers) */
+    if(xmlSecBufferGetSize(&(params.aad)) > 0) {
+        ret = xmlSecBufferSetData(&(ctx->aad),
+                                  xmlSecBufferGetData(&(params.aad)),
+                                  xmlSecBufferGetSize(&(params.aad)));
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecBufferSetData(aad)",
                                 xmlSecTransformGetName(transform));
-        return(-1);
-    }
-
-    /* Read AAD (optional) */
-    cur = xmlSecGetNextElementNode(node->children);
-    while((cur != NULL) && (!xmlSecCheckNodeName(cur, xmlSecNodeChaCha20Poly1305AAD, xmlSecXmldsig2021MoreNs))) {
-        cur = xmlSecGetNextElementNode(cur->next);
-    }
-    if(cur != NULL) {
-        xmlChar* aadStr = xmlNodeGetContent(cur);
-        if(aadStr != NULL && xmlStrlen(aadStr) > 0) {
-            ret = xmlSecBufferSetData(&(ctx->aad), aadStr, (xmlSecSize)xmlStrlen(aadStr));
-            xmlFree(aadStr);
-            if(ret < 0) {
-                xmlSecInternalError("xmlSecBufferSetData(aad)", xmlSecTransformGetName(transform));
-                return(-1);
-            }
+            xmlSecTransformChaCha20Poly1305ParamsFinalize(&params);
+            return(-1);
         }
     }
 
+    xmlSecTransformChaCha20Poly1305ParamsFinalize(&params);
     return(0);
 }
 

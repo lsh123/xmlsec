@@ -3774,6 +3774,185 @@ xmlSecTransformHkdfParamsRead(xmlSecTransformHkdfParamsPtr params, xmlNodePtr no
 #endif /* XMLSEC_NO_HKDF */
 
 
+/********************************** ChaCha20 *******************************/
+#ifndef XMLSEC_NO_CHACHA
+
+/*
+ * https://www.w3.org/TR/draft-eastlake-rfc9231bis-xmlsec-uris-06/#sec-ChaCha20
+ *
+ * <xenc:EncryptionMethod Algorithm="...#chacha20">
+ *   <dsig-more:Nonce>0123456789abcdef01234567</dsig-more:Nonce>
+ *   <dsig-more:Counter>fedcba09</dsig-more:Counter>
+ * </xenc:EncryptionMethod>
+ */
+int
+xmlSecTransformChaCha20ParamsRead(xmlSecTransformChaCha20ParamsPtr params, xmlNodePtr node) {
+    xmlNodePtr cur;
+    xmlSecBuffer buf;
+    int ret;
+
+    xmlSecAssert2(params != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+
+    memset(params, 0, sizeof(xmlSecTransformChaCha20Params));
+
+    ret = xmlSecBufferInitialize(&buf, 0);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize", NULL);
+        return(-1);
+    }
+
+    /* required: Nonce (12 bytes, hex-encoded) */
+    cur = xmlSecGetNextElementNode(node->children);
+    while((cur != NULL) && (!xmlSecCheckNodeName(cur, xmlSecNodeChaCha20Nonce, xmlSecXmldsig2021MoreNs))) {
+        cur = xmlSecGetNextElementNode(cur->next);
+    }
+    if(cur == NULL) {
+        xmlSecNodeNotFoundError("xmlSecTransformChaCha20ParamsRead", node, xmlSecNodeChaCha20Nonce, NULL);
+        xmlSecBufferFinalize(&buf);
+        return(-1);
+    }
+    ret = xmlSecGetNodeContentAsHex(cur, &buf);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecGetNodeContentAsHex(Nonce)", NULL);
+        xmlSecBufferFinalize(&buf);
+        return(-1);
+    }
+    if(xmlSecBufferGetSize(&buf) != sizeof(params->nonce)) {
+        xmlSecInvalidSizeDataError("Nonce", xmlSecBufferGetSize(&buf), "12 bytes", NULL);
+        xmlSecBufferFinalize(&buf);
+        return(-1);
+    }
+    memcpy(params->nonce, xmlSecBufferGetData(&buf), sizeof(params->nonce));
+
+    /* required: Counter (4 bytes, hex-encoded) */
+    xmlSecBufferEmpty(&buf);
+    cur = xmlSecGetNextElementNode(node->children);
+    while((cur != NULL) && (!xmlSecCheckNodeName(cur, xmlSecNodeChaCha20Counter, xmlSecXmldsig2021MoreNs))) {
+        cur = xmlSecGetNextElementNode(cur->next);
+    }
+    if(cur == NULL) {
+        xmlSecNodeNotFoundError("xmlSecTransformChaCha20ParamsRead", node, xmlSecNodeChaCha20Counter, NULL);
+        xmlSecBufferFinalize(&buf);
+        return(-1);
+    }
+    ret = xmlSecGetNodeContentAsHex(cur, &buf);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecGetNodeContentAsHex(Counter)", NULL);
+        xmlSecBufferFinalize(&buf);
+        return(-1);
+    }
+    if(xmlSecBufferGetSize(&buf) != sizeof(params->counter)) {
+        xmlSecInvalidSizeDataError("Counter", xmlSecBufferGetSize(&buf), "4 bytes", NULL);
+        xmlSecBufferFinalize(&buf);
+        return(-1);
+    }
+    memcpy(params->counter, xmlSecBufferGetData(&buf), sizeof(params->counter));
+
+    xmlSecBufferFinalize(&buf);
+    return(0);
+}
+
+/*
+ * https://www.w3.org/TR/draft-eastlake-rfc9231bis-xmlsec-uris-06/#sec-ChaCha20-Poly1305
+ *
+ * <xenc:EncryptionMethod Algorithm="...#chacha20poly1305">
+ *   <dsig-more:Nonce>0123456789abcdef01234567</dsig-more:Nonce>
+ *   <dsig-more:AAD>optional additional authenticated data</dsig-more:AAD>
+ * </xenc:EncryptionMethod>
+ */
+int
+xmlSecTransformChaCha20Poly1305ParamsInitialize(xmlSecTransformChaCha20Poly1305ParamsPtr params) {
+    int ret;
+
+    xmlSecAssert2(params != NULL, -1);
+
+    memset(params, 0, sizeof(xmlSecTransformChaCha20Poly1305Params));
+
+    ret = xmlSecBufferInitialize(&(params->aad), 0);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize(aad)", NULL);
+        return(-1);
+    }
+
+    return(0);
+}
+
+void
+xmlSecTransformChaCha20Poly1305ParamsFinalize(xmlSecTransformChaCha20Poly1305ParamsPtr params) {
+    xmlSecAssert(params != NULL);
+
+    xmlSecBufferFinalize(&(params->aad));
+    memset(params, 0, sizeof(xmlSecTransformChaCha20Poly1305Params));
+}
+
+int
+xmlSecTransformChaCha20Poly1305ParamsRead(xmlSecTransformChaCha20Poly1305ParamsPtr params, xmlNodePtr node) {
+    xmlNodePtr cur;
+    xmlSecBuffer buf;
+    int ret;
+
+    xmlSecAssert2(params != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+
+    ret = xmlSecBufferInitialize(&buf, 0);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize", NULL);
+        return(-1);
+    }
+
+    /* required: Nonce (12 bytes, hex-encoded) */
+    cur = xmlSecGetNextElementNode(node->children);
+    while((cur != NULL) && (!xmlSecCheckNodeName(cur, xmlSecNodeChaCha20Nonce, xmlSecXmldsig2021MoreNs))) {
+        cur = xmlSecGetNextElementNode(cur->next);
+    }
+    if(cur == NULL) {
+        xmlSecNodeNotFoundError("xmlSecTransformChaCha20Poly1305ParamsRead", node, xmlSecNodeChaCha20Nonce, NULL);
+        xmlSecBufferFinalize(&buf);
+        return(-1);
+    }
+    ret = xmlSecGetNodeContentAsHex(cur, &buf);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecGetNodeContentAsHex(Nonce)", NULL);
+        xmlSecBufferFinalize(&buf);
+        return(-1);
+    }
+    if(xmlSecBufferGetSize(&buf) != sizeof(params->nonce)) {
+        xmlSecInvalidSizeDataError("Nonce", xmlSecBufferGetSize(&buf), "12 bytes", NULL);
+        xmlSecBufferFinalize(&buf);
+        return(-1);
+    }
+    memcpy(params->nonce, xmlSecBufferGetData(&buf), sizeof(params->nonce));
+
+    xmlSecBufferFinalize(&buf);
+
+    /* optional: AAD (plain text string) */
+    cur = xmlSecGetNextElementNode(node->children);
+    while((cur != NULL) && (!xmlSecCheckNodeName(cur, xmlSecNodeChaCha20Poly1305AAD, xmlSecXmldsig2021MoreNs))) {
+        cur = xmlSecGetNextElementNode(cur->next);
+    }
+    if(cur != NULL) {
+        xmlChar* aadContent = xmlNodeGetContent(cur);
+        if((aadContent != NULL) && (xmlStrlen(aadContent) > 0)) {
+            ret = xmlSecBufferSetData(&(params->aad), aadContent, (xmlSecSize)xmlStrlen(aadContent));
+            xmlFree(aadContent);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecBufferSetData(aad)", NULL);
+                return(-1);
+            }
+        } else {
+            if(aadContent != NULL) {
+                xmlFree(aadContent);
+            }
+        }
+    }
+
+    return(0);
+}
+
+#endif /* XMLSEC_NO_CHACHA */
+
+
 #ifndef XMLSEC_NO_RSA
 #ifndef XMLSEC_NO_RSA_OAEP
 int

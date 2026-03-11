@@ -28,6 +28,7 @@
 #define XMLSEC_NO_DH                        1
 #define XMLSEC_NO_DSA                       1
 #define XMLSEC_NO_SHA3                      1
+#define XMLSEC_NO_CAMELLIA                  1
 
 
 #define ENGINE_cleanup(...)                 {}
@@ -125,6 +126,7 @@ typedef int xmlSecOpenSSLSizeT;
 #define XMLSEC_OPENSSL_NO_PWD_CALLBACK      1
 #define XMLSEC_OPENSSL_NO_DEEP_COPY         1
 #define XMLSEC_NO_DH                        1
+#define XMLSEC_NO_CAMELLIA                  1
 
 #define RAND_priv_bytes(buf,len)            RAND_bytes((buf), (len))
 

@@ -19,8 +19,8 @@ XMLSec library is released under the MIT Licence (see the [Copyright file](Copyr
 
 ### Prerequisites
 XMLSec requires the following libraries:
-- [LibXML2](http://xmlsoft.org) >= 2.9.14
-- [LibXSLT](http://xmlsoft.org/XSLT/) >= 1.1.39 (optional)
+- [LibXML2](http://xmlsoft.org) >= 2.9.13
+- [LibXSLT](http://xmlsoft.org/XSLT/) >= 1.1.35 (optional)
 
 And at least one of the following cryptographic libraries:
 - [OpenSSL](http://www.openssl.org) >= 3.0.13 (recommended)

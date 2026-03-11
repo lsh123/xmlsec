@@ -344,7 +344,7 @@ AC_DEFUN([AX_FIND_FOLDER],[
 dnl ==========================================================================
 dnl find libxml
 dnl ==========================================================================
-LIBXML_MIN_VERSION="2.9.14"
+LIBXML_MIN_VERSION="2.9.13"
 LIBXML_INCLUDE_DIR="$COMMON_INCLUDE_DIR /usr/include/libxml2 /usr/local/include/libxml2 /usr/local/libxml2/include"
 LIBXML_LIB_DIR="$COMMON_LIB_DIR /usr/local/libxml2/lib"
 LIBXML_INCLUDE_MARKER="libxml/xmlversion.h"
@@ -522,7 +522,7 @@ AC_SUBST(LIBXML_MIN_VERSION)
 dnl ==========================================================================
 dnl find libxslt
 dnl ==========================================================================
-LIBXSLT_MIN_VERSION=1.1.39
+LIBXSLT_MIN_VERSION=1.1.35
 LIBXSLT_INCLUDE_DIR="$COMMON_INCLUDE_DIR /usr/local/libxslt/include"
 LIBXSLT_LIB_DIR="$COMMON_LIB_DIR /usr/local/libxslt/lib"
 LIBXSLT_CONFIG="xslt-config"

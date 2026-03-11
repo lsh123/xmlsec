@@ -3775,7 +3775,7 @@ xmlSecTransformHkdfParamsRead(xmlSecTransformHkdfParamsPtr params, xmlNodePtr no
 
 
 /********************************** ChaCha20 *******************************/
-#ifndef XMLSEC_NO_CHACHA
+#ifndef XMLSEC_NO_CHACHA20
 
 /*
  * https://www.w3.org/TR/draft-eastlake-rfc9231bis-xmlsec-uris-06/#sec-ChaCha20
@@ -3950,7 +3950,7 @@ xmlSecTransformChaCha20Poly1305ParamsRead(xmlSecTransformChaCha20Poly1305ParamsP
     return(0);
 }
 
-#endif /* XMLSEC_NO_CHACHA */
+#endif /* XMLSEC_NO_CHACHA20 */
 
 
 #ifndef XMLSEC_NO_RSA

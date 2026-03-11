@@ -364,7 +364,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecOpenSSLTransformKWCamellia256GetKl
  * ChaCha20 transforms
  *
  *******************************************************************/
-#ifndef XMLSEC_NO_CHACHA
+#ifndef XMLSEC_NO_CHACHA20
 
 /**
  * xmlSecOpenSSLTransformChaCha20Id:
@@ -384,7 +384,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecOpenSSLTransformChaCha20GetKlass(v
         xmlSecOpenSSLTransformChaCha20Poly1305GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecOpenSSLTransformChaCha20Poly1305GetKlass(void);
 
-#endif /* XMLSEC_NO_CHACHA */
+#endif /* XMLSEC_NO_CHACHA20 */
 
 /********************************************************************
  *

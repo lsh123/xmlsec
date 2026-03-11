@@ -161,7 +161,7 @@ XMLSEC_EXPORT int   xmlSecTransformHkdfParamsRead       (xmlSecTransformHkdfPara
 
 
 /********************************** ChaCha20 *******************************/
-#ifndef XMLSEC_NO_CHACHA
+#ifndef XMLSEC_NO_CHACHA20
 
 #define XMLSEC_CHACHA20_NONCE_SIZE      ((xmlSecSize)12)
 #define XMLSEC_CHACHA20_COUNTER_SIZE    ((xmlSecSize)4)
@@ -188,7 +188,7 @@ XMLSEC_EXPORT void  xmlSecTransformChaCha20Poly1305ParamsFinalize   (xmlSecTrans
 XMLSEC_EXPORT int   xmlSecTransformChaCha20Poly1305ParamsRead       (xmlSecTransformChaCha20Poly1305ParamsPtr params,
                                                                      xmlNodePtr node);
 
-#endif /* XMLSEC_NO_CHACHA */
+#endif /* XMLSEC_NO_CHACHA20 */
 
 
 /********************************** RSA *******************************/

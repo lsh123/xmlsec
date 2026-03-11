@@ -723,11 +723,13 @@ xmlSecNssSignatureVerify(xmlSecTransformPtr transform,
 
     if (ctx->isEdDSA) {
         /* EdDSA: verify using PK11_Verify with the entire message */
+        xmlSecSize eddsaDataSize;
         SECItem dataItem = { siBuffer, NULL, 0 };
 
+        eddsaDataSize = xmlSecBufferGetSize(&(ctx->eddsaData));
+        XMLSEC_SAFE_CAST_SIZE_TO_UINT(eddsaDataSize, dataItem.len, return(-1), xmlSecTransformGetName(transform));
+
         dataItem.data = xmlSecBufferGetData(&(ctx->eddsaData));
-        XMLSEC_SAFE_CAST_SIZE_TO_UINT(xmlSecBufferGetSize(&(ctx->eddsaData)), dataItem.len,
-                                      return(-1), xmlSecTransformGetName(transform));
 
         status = PK11_Verify(ctx->u.vfy.pubkey, &signature, &dataItem, NULL);
     } else if(xmlSecNssSignatureAlgorithmEncoded(transformCtx, ctx->alg)) {
@@ -916,13 +918,15 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
         if(transform->operation == xmlSecTransformOperationSign) {
             if (ctx->isEdDSA) {
                 /* EdDSA: sign the entire message using PK11_Sign */
+                xmlSecSize eddsaDataSize;
                 SECItem dataItem = { siBuffer, NULL, 0 };
                 unsigned int sigLen = 0;
                 int signatureLen;
 
+                eddsaDataSize = xmlSecBufferGetSize(&(ctx->eddsaData));
+                XMLSEC_SAFE_CAST_SIZE_TO_UINT(eddsaDataSize, dataItem.len, return(-1), xmlSecTransformGetName(transform));
+
                 dataItem.data = xmlSecBufferGetData(&(ctx->eddsaData));
-                XMLSEC_SAFE_CAST_SIZE_TO_UINT(xmlSecBufferGetSize(&(ctx->eddsaData)), dataItem.len,
-                                              return(-1), xmlSecTransformGetName(transform));
 
                 /* Get signature length */
                 signatureLen = PK11_SignatureLen(ctx->u.sig.privkey);

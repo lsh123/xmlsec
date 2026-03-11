@@ -563,18 +563,46 @@ xmlSecNssConcatKdfGenerateKey(xmlSecNssKdfCtxPtr ctx, xmlSecSize outLen, xmlSecB
 static SECOidTag
 xmlSecNssPbkdf2GetMacFromHref(const xmlChar* href) {
     if(href == NULL) {
+#ifndef XMLSEC_NO_SHA256
         return(SEC_OID_HMAC_SHA256);
-    } else if(xmlStrcmp(href, xmlSecHrefHmacSha1) == 0) {
+#else  /* XMLSEC_NO_SHA256 */
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
+            "SHA256 is disabled; href=%s", xmlSecErrorsSafeString(href));
+        return(SEC_OID_UNKNOWN);
+#endif /* XMLSEC_NO_SHA256 */
+    } else
+
+#ifndef XMLSEC_NO_SHA1
+    if(xmlStrcmp(href, xmlSecHrefHmacSha1) == 0) {
         return(SEC_OID_HMAC_SHA1);
-    } else if(xmlStrcmp(href, xmlSecHrefHmacSha224) == 0) {
+    } else
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA224
+    if(xmlStrcmp(href, xmlSecHrefHmacSha224) == 0) {
         return(SEC_OID_HMAC_SHA224);
-    } else if(xmlStrcmp(href, xmlSecHrefHmacSha256) == 0) {
+    } else
+#endif /* XMLSEC_NO_SHA224 */
+
+#ifndef XMLSEC_NO_SHA256
+    if(xmlStrcmp(href, xmlSecHrefHmacSha256) == 0) {
         return(SEC_OID_HMAC_SHA256);
-    } else if(xmlStrcmp(href, xmlSecHrefHmacSha384) == 0) {
+    } else
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+    if(xmlStrcmp(href, xmlSecHrefHmacSha384) == 0) {
         return(SEC_OID_HMAC_SHA384);
-    } else if(xmlStrcmp(href, xmlSecHrefHmacSha512) == 0) {
+    } else
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+    if(xmlStrcmp(href, xmlSecHrefHmacSha512) == 0) {
         return(SEC_OID_HMAC_SHA512);
-    } else {
+    } else
+#endif /* XMLSEC_NO_SHA512 */
+
+    {
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
             "href=%s", xmlSecErrorsSafeString(href));
         return(SEC_OID_UNKNOWN);

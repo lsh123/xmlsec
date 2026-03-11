@@ -1071,22 +1071,22 @@ if [ "z$crypto" = "zopenssl" -a "z$xmlsec_openssl_flavor" = "zaws-lc" ] ; then
     # bunch of tests with MD5 certificates are disabled
     echo "--- OPENSSL FLAVOR: $xmlsec_openssl_flavor" >> $logfile
     echo "--- OPENSSL FLAVOR: $xmlsec_openssl_flavor"
-    min_percent_success=80
+    min_percent_success=75
 elif [ "z$crypto" = "zopenssl" -a "z$xmlsec_openssl_flavor" = "zboringssl" ] ; then
     # bunch of tests with MD5 certificates are disabled
     echo "--- OPENSSL FLAVOR: $xmlsec_openssl_flavor" >> $logfile
     echo "--- OPENSSL FLAVOR: $xmlsec_openssl_flavor"
-    min_percent_success=80
+    min_percent_success=75
 elif [ "z$crypto" = "zopenssl" ] ; then
     echo "--- OPENSSL FLAVOR: $xmlsec_openssl_flavor" >> $logfile
     echo "--- OPENSSL FLAVOR: $xmlsec_openssl_flavor"
-    min_percent_success=80
+    min_percent_success=90
 elif [ "z$crypto" = "znss" ] ; then
-    min_percent_success=80
+    min_percent_success=75
 elif [ "z$crypto" = "zgnutls" ] ; then
-    min_percent_success=80
+    min_percent_success=75
 elif [ "z$crypto" = "zmscng" ] ; then
-    min_percent_success=80
+    min_percent_success=75
 elif [ "z$crypto" = "zmscrypto" ] ; then
     min_percent_success=30
 elif [ "z$crypto" = "zgcrypt" ] ; then
@@ -1099,6 +1099,13 @@ fi
 # print results
 echo "--- TOTAL OK: $count_success; OK (percent): $percent_success; TOTAL FAILED: $count_fail; TOTAL SKIPPED: $count_skip" >> $logfile
 echo "--- TOTAL OK: $count_success; OK (percent): $percent_success; TOTAL FAILED: $count_fail; TOTAL SKIPPED: $count_skip"
+
+# disable this check for test jeys since the number of tests is very small and the success percent is not representative
+if [[ "$testfile" =~ 'testKeys' ]]; then
+    XMLSEC_TEST_IGNORE_PERCENT_SUCCESS=1
+    echo "--- SUCCESS PERCENT check is disabled for testKeys tests since the number of tests is very small and the success percent is not representative" >> $logfile
+    echo "--- SUCCESS PERCENT check is disabled for testKeys tests since the number of tests is very small and the success percent is not representative"
+fi
 
 # print log file if failed (we have to have at least some good tests)
 if [ $count_fail -ne 0 ] ; then

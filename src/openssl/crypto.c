@@ -207,6 +207,15 @@ xmlSecCryptoGetFunctions_openssl(void) {
 #endif /* XMLSEC_NO_CAMELLIA */
 
 
+    /******************************* CHACHA20 ********************************/
+#ifndef XMLSEC_NO_CHACHA
+#if !defined(XMLSEC_OPENSSL_API_100)
+    gXmlSecOpenSSLFunctions->transformChaCha20GetKlass          = xmlSecOpenSSLTransformChaCha20GetKlass;
+    gXmlSecOpenSSLFunctions->transformChaCha20Poly1305GetKlass  = xmlSecOpenSSLTransformChaCha20Poly1305GetKlass;
+#endif /* !defined(XMLSEC_OPENSSL_API_100) */
+#endif /* XMLSEC_NO_CHACHA */
+
+
     /******************************* CONCATKDF ********************************/
 #ifndef XMLSEC_NO_CONCATKDF
     gXmlSecOpenSSLFunctions->transformConcatKdfGetKlass         = xmlSecOpenSSLTransformConcatKdfGetKlass;

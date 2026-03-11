@@ -163,6 +163,20 @@ const xmlChar xmlSecHrefKWCamellia256[]         = "http://www.w3.org/2001/04/xml
 
 /*************************************************************************
  *
+ * ChaCha20 strings
+ *
+ ************************************************************************/
+const xmlChar xmlSecNameChaCha20[]              = "chacha20";
+const xmlChar xmlSecHrefChaCha20[]              = "http://www.w3.org/2021/04/xmldsig-more#chacha20";
+const xmlChar xmlSecNodeChaCha20Nonce[]         = "Nonce";
+const xmlChar xmlSecNodeChaCha20Counter[]       = "Counter";
+
+const xmlChar xmlSecNameChaCha20Poly1305[]      = "chacha20-poly1305";
+const xmlChar xmlSecHrefChaCha20Poly1305[]      = "http://www.w3.org/2021/04/xmldsig-more#chacha20poly1305";
+const xmlChar xmlSecNodeChaCha20Poly1305AAD[]   = "AAD";
+
+/*************************************************************************
+ *
  * BASE64 strings
  *
  ************************************************************************/

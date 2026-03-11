@@ -361,6 +361,33 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecOpenSSLTransformKWCamellia256GetKl
 
 /********************************************************************
  *
+ * ChaCha20 transforms
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_CHACHA
+
+/**
+ * xmlSecOpenSSLTransformChaCha20Id:
+ *
+ * The ChaCha20 stream cipher transform klass.
+ */
+#define xmlSecOpenSSLTransformChaCha20Id \
+        xmlSecOpenSSLTransformChaCha20GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecOpenSSLTransformChaCha20GetKlass(void);
+
+/**
+ * xmlSecOpenSSLTransformChaCha20Poly1305Id:
+ *
+ * The ChaCha20-Poly1305 AEAD transform klass.
+ */
+#define xmlSecOpenSSLTransformChaCha20Poly1305Id \
+        xmlSecOpenSSLTransformChaCha20Poly1305GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecOpenSSLTransformChaCha20Poly1305GetKlass(void);
+
+#endif /* XMLSEC_NO_CHACHA */
+
+/********************************************************************
+ *
  * ConcatKDF key derivation transforms
  *
  *******************************************************************/

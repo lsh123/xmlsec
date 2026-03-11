@@ -164,6 +164,20 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefKWCamellia256[];
 
 /*************************************************************************
  *
+ * ChaCha20 strings
+ *
+ ************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameChaCha20[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefChaCha20[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeChaCha20Nonce[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeChaCha20Counter[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameChaCha20Poly1305[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefChaCha20Poly1305[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeChaCha20Poly1305AAD[];
+
+/*************************************************************************
+ *
  * BASE64 strings
  *
  ************************************************************************/

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xenc:EncryptedData xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:xenc="http://www.w3.org/2001/04/xmlenc#" xmlns:xenc11="http://www.w3.org/2009/xmlenc11#">
+  <xenc:EncryptionMethod Algorithm="http://www.w3.org/2009/xmlenc11#aes256-gcm"/>
+  <ds:KeyInfo>
+    <xenc11:DerivedKey>
+      <xenc11:KeyDerivationMethod Algorithm="http://www.w3.org/2021/04/xmldsig-more#hkdf">
+        <dsig-more:HKDFParams xmlns:dsig-more="http://www.w3.org/2021/04/xmldsig-more#">
+          <dsig-more:PRF Algorithm="http://www.w3.org/2001/04/xmldsig-more#hmac-sha256"/>
+        </dsig-more:HKDFParams>
+      </xenc11:KeyDerivationMethod>
+      <xenc11:MasterKeyName>hkdf-ikm</xenc11:MasterKeyName>
+    </xenc11:DerivedKey>
+  </ds:KeyInfo>
+  <xenc:CipherData>
+    <xenc:CipherValue>avGJu+vstKqkdTVIQpzknbTlAN4tRaHXv9swzPJqWa0RXoIEPt5C3kPmLIVxHFUy
+2eU0XLye/Mxd759JAB7qgbPpDyE/RJnZaL275MSKbdZ/fjAXT9VVGpD3yBr5W8Ch
+9gbs7oJCGLEy0vy8kn/0l3V6fuJYfRDJIqaZEBPjiuP+4FdELIU//adr8qmzOe7x
+IUlPJZW9IhBjJpMvKlxNY/Z5kORh95OeIMyxah3FTRyTLm5tV6QeOeOaxJ9wi9aP
+QHvsJtFAn76/FL8KtVKzwhRHzykq9SYHCgDrKuIDyGhUT6rB0TZdaLjwu83BkED9
+tnhIW7txLN1AIgRJoAbZN+0p818eNxx4enGnmGBBkBgUdcqDJAT2LafPALKifQmw
+IAXNXtfjgwTk/neyHoLQ2xN3ZE+kL4KVDV284iyvzzbfkEuZLC9uYx2SGYah</xenc:CipherValue>
+  </xenc:CipherData>
+</xenc:EncryptedData>

@@ -154,6 +154,16 @@ execEncTest $res_success \
     "--hkdf-key:hkdf-ikm $topfolder/aleksey-xmlenc-01/hkdf-ikm.bin --binary $topfolder/aleksey-xmlenc-01/enc_hkdf_hmac_sha512_aes256gcm.data" \
     "--hkdf-key:hkdf-ikm $topfolder/aleksey-xmlenc-01/hkdf-ikm.bin"
 
+# HKDF + PRF only (no Salt, no Info, no KeyLength) + AES-256-GCM
+execEncTest $res_success \
+    "" \
+    "aleksey-xmlenc-01/enc_hkdf_prf_only_aes256gcm" \
+    "aes256-gcm hkdf hmac-sha256" \
+    "derived-key" \
+    "--hkdf-key:hkdf-ikm $topfolder/aleksey-xmlenc-01/hkdf-ikm.bin" \
+    "--hkdf-key:hkdf-ikm $topfolder/aleksey-xmlenc-01/hkdf-ikm.bin --binary $topfolder/aleksey-xmlenc-01/enc_hkdf_prf_only_aes256gcm.data" \
+    "--hkdf-key:hkdf-ikm $topfolder/aleksey-xmlenc-01/hkdf-ikm.bin"
+
 
 # ECDH-ES
 execEncTest $res_success \

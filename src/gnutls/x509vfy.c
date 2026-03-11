@@ -408,9 +408,7 @@ xmlSecGnuTLSX509GetVerificationFlags(const xmlSecKeyInfoCtx* keyInfoCtx, unsigne
         /* Compatibility mode requested by the caller/test harness. */
         (*flags) |= GNUTLS_VERIFY_ALLOW_SIGN_RSA_MD2;
         (*flags) |= GNUTLS_VERIFY_ALLOW_SIGN_RSA_MD5;
-#if GNUTLS_VERSION_NUMBER >= 0x030600
         (*flags) |= GNUTLS_VERIFY_ALLOW_SIGN_WITH_SHA1;
-#endif /* GNUTLS_VERSION_NUMBER >= 0x030600 */
     }
 
     return(0);

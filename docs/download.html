@@ -73,14 +73,14 @@
 				<code>00FD D6A7 DFB8 1C88 F34B  9BF0 E63E CDEF 9E1D 829E</code>
 				(<a href="https://www.cyberciti.biz/faq/pgp-tarball-file-signature-keys-verification/">how to verify release tarball signature</a>).</p>
                             </div>
-<div align="left">
+                                <div align="left">
                                 <h2>Source code on GitHub</h2>
                                 <p>XML Security Library source code is available on <a href="https://github.com/lsh123/xmlsec">GitHub</a>.</p>
-                            </div>
-<div align="left">
+                                </div>
+                                <div align="left">
                                 <h2>Requirements</h2>
-                                <p>The XML Security Library requires <a href="http://xmlsoft.org/downloads.html">LibXML</a> library,
-                                    <a href="http://xmlsoft.org/XSLT/downloads.html">LibXSLT</a> library (optional) and one of the
+                                <p>The XML Security Library requires <a href="http://xmlsoft.org/downloads.html">LibXML2</a> 2.9.13 or newer, and optionally
+                                    <a href="http://xmlsoft.org/XSLT/downloads.html">LibXSLT</a> 1.1.35 or newer. Plus one of the
                                     following cryptographic libraries:
                                 </p>
                                 <table style="width: 85%;" border="1" cellpadding="2" cellspacing="2">
@@ -97,9 +97,9 @@
                                             <td><b>xmlsec-openssl</b></td>
                                             <td>
                                                 <ul>
-                                                    <li><a href="http://www.openssl.org/">OpenSSL</a> 3.0.0 or above is strongly recommended.</li>
-                                                    <li><a href="https://www.libressl.org/">LibreSSL</a> (3.5 or above) and
-                                                        <a href="https://boringssl.googlesource.com/boringssl/">BoringSSL</a> (1.1.0 or above)
+                                                    <li><a href="http://www.openssl.org/">OpenSSL</a> 3.0.13 or newer (3.5.0 or newer is strongly recommended).</li>
+                                                    <li><a href="https://www.libressl.org/">LibreSSL</a> (3.9.0 or newer) and
+                                                        <a href="https://boringssl.googlesource.com/boringssl/">BoringSSL</a> (1.1.0 or newer)
                                                         should work but your mileage may vary as those libraries tend to change API / ABI
                                                         and break backward compaibility.
                                                     </li>
@@ -118,16 +118,15 @@
                                             <td>
                                                 <ul>
                                                     <li>
-<b>xmlsec-openssl with OpenSSL 3.0.0 or greater is recommended</b> (supports all REQUIRED and all RECOMMENDED
-                                                        <a href="xmldsig.html">XML Digital Signature 1.1</a> and <a href="xmlenc.html">XML Encryption 1.1</a> algorithms).</li>
+                                                    <b>xmlsec-openssl with OpenSSL 3.5.0 or newer is recommended</b> (supports all REQUIRED and all RECOMMENDED
+                                                    <a href="xmldsig.html">XML Digital Signature 1.1</a> and <a href="xmlenc.html">XML Encryption 1.1</a> algorithms).</li>
                                                     <li>BoringSSL API is unstable and the latest versions might not work with XMLSec Library.</li>
                                                 </ul>
                                             </td>
                                         </tr>
                                         <tr valign="top">
                                             <td><b>xmlsec-gnutls</b></td>
-                                            <td>
-<a href="http://www.gnu.org/software/gnutls/">GnuTLS</a> 3.6.13 or above</td>
+                                            <td><a href="http://www.gnu.org/software/gnutls/">GnuTLS</a> 3.8.3 or newer</td>
                                             <!-- key formats -->
                                             <td>
                                                 <ul>
@@ -141,9 +140,7 @@
                                         </tr>
                                         <tr valign="top">
                                             <td><b>xmlsec-nss</b></td>
-                                            <td>
-<a href="http://www.mozilla.org/projects/security/pki/nss/">NSS</a>
-                                                (Mozilla cryptographic library) 3.35 or above
+                                            <td><a href="http://www.mozilla.org/projects/security/pki/nss/">NSS</a> (Mozilla cryptographic library) 3.91 or newer
                                             </td>
                                             <!-- key formats -->
                                             <td>
@@ -155,13 +152,13 @@
                                                 </ul>
                                             </td>
                                             <!-- notes -->
-                                            <td>Requires <a href="https://firefox-source-docs.mozilla.org/nspr/index.html">NSPR</a> 4.25.0 or above</td>
+                                            <td>Requires <a href="https://firefox-source-docs.mozilla.org/nspr/index.html">NSPR</a> 4.34.1 or newer</td>
                                         </tr>
                                         <tr valign="top">
                                             <td><b>xmlsec-mscng</b></td>
                                             <td>
-                                                <a href="https://learn.microsoft.com/en-us/windows/win32/seccng/cng-portal">Microsoft
-                                                    Cryptography API: Next Generation</a> (requires Windows 7, Windows Server 2008 R2, or above)
+                                                <a href="https://learn.microsoft.com/en-us/windows/win32/seccng/cng-portal">Microsoft Cryptography API: Next Generation</a>
+                                                (requires Windows 7, Windows Server 2008 R2, or newer)
                                             </td>
                                             <!-- key formats -->
                                             <td>
@@ -180,8 +177,8 @@
                                         <tr valign="top">
                                             <td><b>xmlsec-mscrypto</b></td>
                                             <td>
-                                                <a href="https://learn.microsoft.com/en-us/windows/win32/seccrypto/cryptography--cryptoapi--and-capicom">Microsoft
-                                                    CryptogAPI: (MSCrypto)</a> (requires Windows XP, Windows Server 2003, or above)
+                                                <a href="https://learn.microsoft.com/en-us/windows/win32/seccrypto/cryptography--cryptoapi--and-capicom">Microsoft CryptogAPI: (MSCrypto)</a>
+                                                (requires Windows Server 2003, or newer)
                                             </td>
                                             <!-- key formats -->
                                             <td>
@@ -198,7 +195,7 @@
                                         <tr valign="top">
                                             <td><b>xmlsec-gcrypt</b></td>
                                             <td>
-                                                <a href="http://www.gnu.org/directory/security/libgcrypt.html">LibGCrypt</a> 1.4.0 or above
+                                                <a href="http://www.gnu.org/directory/security/libgcrypt.html">LibGCrypt</a> 1.4.0 or newer
                                             </td>
                                             <!-- key formats -->
                                             <td>

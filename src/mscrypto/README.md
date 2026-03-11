@@ -6,8 +6,7 @@ In maintenance mode starting from xmlsec 1.3.0, April 2023.
 ## What version of MS Windows?
 
 The MS Crypto API has been evolving a lot with the new releases of MS Windows.
-Full functionality will only be achieved on MS Windows XP or greater (e.g. AES is
-not supported on pre Windows XP versions of Windows).
+Full functionality will only be achieved on MS Windows Server 2003 or newer.
 
 ## Keys Manager with MS Certificate store support.
 

@@ -43,7 +43,7 @@
 
 /***********************************************************************************************************
  *
- * Internal KDF CTX FOR OpenSSL 3.0 or above (https://www.openssl.org/docs/man3.0/man3/EVP_KDF_CTX_new.html)
+ * Internal KDF CTX FOR OpenSSL 3.0 or newer (https://www.openssl.org/docs/man3.0/man3/EVP_KDF_CTX_new.html)
  *
  **********************************************************************************************************/
 

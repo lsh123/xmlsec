@@ -344,7 +344,7 @@ AC_DEFUN([AX_FIND_FOLDER],[
 dnl ==========================================================================
 dnl find libxml
 dnl ==========================================================================
-LIBXML_MIN_VERSION="2.8.0"
+LIBXML_MIN_VERSION="2.9.13"
 LIBXML_INCLUDE_DIR="$COMMON_INCLUDE_DIR /usr/include/libxml2 /usr/local/include/libxml2 /usr/local/libxml2/include"
 LIBXML_LIB_DIR="$COMMON_LIB_DIR /usr/local/libxml2/lib"
 LIBXML_INCLUDE_MARKER="libxml/xmlversion.h"
@@ -522,7 +522,7 @@ AC_SUBST(LIBXML_MIN_VERSION)
 dnl ==========================================================================
 dnl find libxslt
 dnl ==========================================================================
-LIBXSLT_MIN_VERSION=1.0.20
+LIBXSLT_MIN_VERSION=1.1.35
 LIBXSLT_INCLUDE_DIR="$COMMON_INCLUDE_DIR /usr/local/libxslt/include"
 LIBXSLT_LIB_DIR="$COMMON_LIB_DIR /usr/local/libxslt/lib"
 LIBXSLT_CONFIG="xslt-config"
@@ -697,6 +697,7 @@ dnl ==========================================================================
 dnl OpenSSL
 dnl ==========================================================================
 OPENSSL_MIN_VERSION="1.1.1"
+OPENSSL3_MIN_VERSION="3.0.13"
 OPENSSL_INCLUDE_DIR="$COMMON_INCLUDE_DIR /usr/local/ssl/include"
 OPENSSL_LIB_DIR="$COMMON_LIB_DIR /usr/local/ssl/lib /usr/local/ssl/lib64"
 OPENSSL_CRYPTO_LIB="$XMLSEC_PACKAGE-openssl"
@@ -825,11 +826,11 @@ if test "z$OPENSSL_FOUND" = "zyes" ; then
     if test "z$OPENSSL_VERSION" = "z" ; then
         AC_EGREP_CPP(greater-than-minvers, [
             #include <openssl/opensslv.h>
-            #if defined(LIBRESSL_VERSION_NUMBER) && LIBRESSL_VERSION_NUMBER >= 0x30500000L
+            #if defined(LIBRESSL_VERSION_NUMBER) && LIBRESSL_VERSION_NUMBER >= 0x30900000L
             greater-than-minvers
             #endif
         ],[
-            OPENSSL_VERSION="LibreSSL >= 3.5"
+            OPENSSL_VERSION="LibreSSL >= 3.9"
             enable_dh=no
         ],[
             OPENSSL_VERSION=""
@@ -937,6 +938,7 @@ AC_SUBST(OPENSSL_LIBS)
 AC_SUBST(OPENSSL_CRYPTO_LIB)
 AC_SUBST(OPENSSL_TEST_CONFIG)
 AC_SUBST(OPENSSL_MIN_VERSION)
+AC_SUBST(OPENSSL3_MIN_VERSION)
 AC_SUBST(OPENSSL_VERSION)
 
 dnl See if we should build OpenSSL 3+ with engines support
@@ -970,11 +972,9 @@ dnl   2 overrides 1
 dnl
 dnl ==========================================================================
 
-dnl After upgrading min ver >= 3.59, remove the check in include/nss/crypto.h (search for NSS_VMAJOR)
-NSS_MIN_VERSION="3.35"
-NSPR_MIN_VERSION="4.18.0"
-SEAMONKEY_MIN_VERSION="1.0"
-MOZILLA_MIN_VERSION="1.4"
+NSS_MIN_VERSION="3.91"
+NSPR_MIN_VERSION="4.34.1"
+MOZILLA_MIN_VERSION="102.8"
 NSS_CRYPTO_LIB="$XMLSEC_PACKAGE-nss"
 NSPR_PACKAGE=mozilla-nspr
 NSS_PACKAGE=mozilla-nss
@@ -994,7 +994,6 @@ NSS_FOUND="no"
 NSPR_FOUND="no"
 AC_ARG_WITH([nss], [AS_HELP_STRING([--with-nss@<:@=PFX@:>@],[nss location])])
 AC_ARG_WITH([nspr], [AS_HELP_STRING([--with-nspr@<:@=PFX@:>@],[nspr location (needed for NSS)])])
-AC_ARG_WITH([seamonkey_ver], [AS_HELP_STRING([--with-seamonkey-ver@<:@=VER@:>@],[mozilla version (alt to --with-nss, --with-nspr)])])
 AC_ARG_WITH([mozilla_ver], [AS_HELP_STRING([--with-mozilla-ver@<:@=VER@:>@],[mozilla version (alt to --with-nss, --with-nspr)])])
 
 dnl Priority 0: Check if library is disabled
@@ -1039,16 +1038,10 @@ dnl Priority 3: Guess with pkg_config
 dnl
 dnl Mozilla's NSS/NSPR are distributed under different names in different distribution,
 dnl we are going to try all options:
-dnl     seamonkey-nspr and seamonkey-nss
 dnl     mozilla-nspr and mozilla-nss
 dnl     xulrunner-nspr and xulrunner-nss
 dnl     nspr and nss
-if test "z$NSPR_FOUND" = "zno" -a "z$PKGCONFIG_FOUND" = "zyes" -a "z$with_mozilla_ver" = "z" -a "z$with_seamonkey_ver" ; then
-    if test "z$NSPR_FOUND" = "zno" ; then
-        PKG_CHECK_MODULES(NSPR, seamonkey-nspr >= $NSPR_MIN_VERSION,
-           [NSPR_FOUND=yes NSPR_PACKAGE=seamonkey-nspr],
-           [NSPR_FOUND=no])
-    fi
+if test "z$NSPR_FOUND" = "zno" -a "z$PKGCONFIG_FOUND" = "zyes" -a "z$with_mozilla_ver" = "z" ; then
     if test "z$NSPR_FOUND" = "zno" ; then
         PKG_CHECK_MODULES(NSPR, mozilla-nspr >= $MOZILLA_MIN_VERSION,
            [NSPR_FOUND=yes NSPR_PACKAGE=mozilla-nspr],
@@ -1065,12 +1058,7 @@ if test "z$NSPR_FOUND" = "zno" -a "z$PKGCONFIG_FOUND" = "zyes" -a "z$with_mozill
            [NSPR_FOUND=no])
     fi
 fi
-if test "z$NSS_FOUND" = "zno" -a "z$PKGCONFIG_FOUND" = "zyes" -a "z$with_mozilla_ver" = "z" -a "z$with_seamonkey_ver" ; then
-    if test "z$NSS_FOUND" = "zno" ; then
-        PKG_CHECK_MODULES(NSS, seamonkey-nss >= $SEAMONKEY_MIN_VERSION,
-    	   [NSS_FOUND=yes NSS_PACKAGE=seamonkey-nss],
-	       [NSS_FOUND=no])
-    fi
+if test "z$NSS_FOUND" = "zno" -a "z$PKGCONFIG_FOUND" = "zyes" -a "z$with_mozilla_ver" = "z" ; then
     if test "z$NSS_FOUND" = "zno" ; then
         PKG_CHECK_MODULES(NSS, mozilla-nss >= $MOZILLA_MIN_VERSION,
     	   [NSS_FOUND=yes NSS_PACKAGE=mozilla-nss],
@@ -1088,10 +1076,8 @@ if test "z$NSS_FOUND" = "zno" -a "z$PKGCONFIG_FOUND" = "zyes" -a "z$with_mozilla
     fi
 fi
 
-dnl Priority 4: Guess using a list of folders using mozilla/seamonkey version hints (if any)
-if test "z$with_seamonkey_ver" != "z" ; then
-    NSS_MOZILLA_NAME=seamonkey-$with_seamonkey_ver
-elif test "z$with_mozilla_ver" != "z" ; then
+dnl Priority 4: Guess using a list of folders using mozilla version hints (if any)
+if test "z$with_mozilla_ver" != "z" ; then
     NSS_MOZILLA_NAME=mozilla-$with_mozilla_ver
 else
     NSS_MOZILLA_NAME=mozilla-$MOZILLA_MIN_VERSION
@@ -1274,7 +1260,7 @@ AC_SUBST(MOZILLA_MIN_VERSION)
 dnl ==========================================================================
 dnl See if we can find GnuTLS
 dnl ==========================================================================
-GNUTLS_MIN_VERSION="3.6.13"
+GNUTLS_MIN_VERSION="3.8.3"
 GNUTLS_INCLUDE_DIR="$COMMON_INCLUDE_DIR /usr/local/gnutls/include"
 GNUTLS_LIB_DIR="$COMMON_LIB_DIR /usr/local/gnutls/lib"
 GNUTLS_INCLUDE_MARKER="gnutls/gnutls.h"

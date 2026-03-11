@@ -1,4 +1,4 @@
 # XMLSec Library: XMLSEC-GNUTLS
 
 ## What version of GnuTLS?
-GnuTLS 3.6.13 or later is required.
+GnuTLS 3.8.3 or newer is required.

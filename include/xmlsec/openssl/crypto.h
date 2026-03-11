@@ -61,7 +61,7 @@ extern "C" {
  * What version of the openssl API do we have? (also see configure.ac)
  *
  *******************************************************************/
-#if defined(LIBRESSL_VERSION_NUMBER) && LIBRESSL_VERSION_NUMBER >= 0x30500000L
+#if defined(LIBRESSL_VERSION_NUMBER) && LIBRESSL_VERSION_NUMBER >= 0x30900000L
 /* LibreSSL implements (most of) OpenSSL 1.1 API */
 #define XMLSEC_OPENSSL_API_111      1
 #elif OPENSSL_VERSION_NUMBER >= 0x30500000L

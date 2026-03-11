@@ -13,7 +13,7 @@
  * @Short_description:
  * @Stability: Stable
  */
-#ifndef XMLSEC_NO_XDH
+#if !defined(XMLSEC_NO_XDH) || !defined(XMLSEC_NO_EC)
 
 #include "globals.h"
 
@@ -43,8 +43,9 @@
 
 /**************************************************************************
  *
- * XDH KeyAgreement context (X25519 and X448, RFC 7748)
- * - XMLDSig spec: https://www.w3.org/2021/04/xmldsig-more
+ * Key Agreement context (ECDH and XDH)
+ * - ECDH spec: https://www.w3.org/TR/xmlenc-core1/#sec-ECDH-ES
+ * - XDH spec: https://www.w3.org/2021/04/xmldsig-more
  *
  *****************************************************************************/
 
@@ -52,7 +53,7 @@ typedef struct _xmlSecGnuTLSKeyAgreementCtx    xmlSecGnuTLSKeyAgreementCtx, *xml
 struct _xmlSecGnuTLSKeyAgreementCtx {
     xmlSecTransformKeyAgreementParams params;
     xmlSecKeyPtr secretKey;
-    xmlSecSize expected_secret_len; /* 32 for X25519, 56 for X448 */
+    xmlSecSize expected_secret_len; /* 32 for X25519, 56 for X448, 0 for ECDH (dynamic) */
 };
 
 /* Unified transform functions */
@@ -114,11 +115,19 @@ xmlSecGnuTLSKeyAgreementInitialize(xmlSecTransformPtr transform) {
     memset(ctx, 0, sizeof(xmlSecGnuTLSKeyAgreementCtx));
 
     /* set algorithm-specific parameters */
+#ifndef XMLSEC_NO_EC
+    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformEcdhId)) {
+        ctx->expected_secret_len = 0;  /* dynamic: 32 bytes for P-256, 48 for P-384, 66 for P-521 */
+    } else
+#endif /* XMLSEC_NO_EC */
+#ifndef XMLSEC_NO_XDH
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformX25519Id)) {
         ctx->expected_secret_len = 32;
     } else if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformX448Id)) {
         ctx->expected_secret_len = 56;
-    } else {
+    } else
+#endif /* XMLSEC_NO_XDH */
+    {
         xmlSecInternalError("Unknown key agreement transform",
                             xmlSecTransformGetName(transform));
         xmlSecGnuTLSKeyAgreementFinalize(transform);
@@ -162,7 +171,23 @@ xmlSecGnuTLSKeyAgreementSetKeyReq(xmlSecTransformPtr transform, xmlSecKeyReqPtr 
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGnuTLSKeyAgreementSize), -1);
     xmlSecAssert2(keyReq != NULL, -1);
 
-    keyReq->keyId    = xmlSecGnuTLSKeyDataXdhId;
+#ifndef XMLSEC_NO_EC
+    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformEcdhId)) {
+        keyReq->keyId = xmlSecGnuTLSKeyDataEcId;
+    } else
+#endif /* XMLSEC_NO_EC */
+#ifndef XMLSEC_NO_XDH
+    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformX25519Id) ||
+       xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformX448Id)) {
+        keyReq->keyId = xmlSecGnuTLSKeyDataXdhId;
+    } else
+#endif /* XMLSEC_NO_XDH */
+    {
+        xmlSecInternalError("Unknown key agreement transform",
+                            xmlSecTransformGetName(transform));
+        return(-1);
+    }
+
     keyReq->keyType  = xmlSecKeyDataTypePrivate;
     keyReq->keyUsage = xmlSecKeyUsageKeyAgreement;
     return(0);
@@ -350,16 +375,39 @@ xmlSecGnuTLSKeyAgreementGenerateSecret(xmlSecGnuTLSKeyAgreementCtxPtr ctx,
         }
     }
 
-    /* get the GnuTLS key handles */
-    myPrivKey = xmlSecGnuTLSKeyDataXdhGetPrivateKey(myKeyValue);
-    if(myPrivKey == NULL) {
-        xmlSecInternalError("xmlSecGnuTLSKeyDataXdhGetPrivateKey", NULL);
-        goto done;
-    }
+    /* get the GnuTLS key handles based on key data type */
+#ifndef XMLSEC_NO_EC
+    if(xmlSecKeyDataCheckId(myKeyValue, xmlSecGnuTLSKeyDataEcId)) {
+        myPrivKey = xmlSecGnuTLSKeyDataEcGetPrivateKey(myKeyValue);
+        if(myPrivKey == NULL) {
+            xmlSecInternalError("xmlSecGnuTLSKeyDataEcGetPrivateKey", NULL);
+            goto done;
+        }
 
-    otherPubKey = xmlSecGnuTLSKeyDataXdhGetPublicKey(otherKeyValue);
-    if(otherPubKey == NULL) {
-        xmlSecInternalError("xmlSecGnuTLSKeyDataXdhGetPublicKey", NULL);
+        otherPubKey = xmlSecGnuTLSKeyDataEcGetPublicKey(otherKeyValue);
+        if(otherPubKey == NULL) {
+            xmlSecInternalError("xmlSecGnuTLSKeyDataEcGetPublicKey", NULL);
+            goto done;
+        }
+    } else
+#endif /* XMLSEC_NO_EC */
+#ifndef XMLSEC_NO_XDH
+    if(xmlSecKeyDataCheckId(myKeyValue, xmlSecGnuTLSKeyDataXdhId)) {
+        myPrivKey = xmlSecGnuTLSKeyDataXdhGetPrivateKey(myKeyValue);
+        if(myPrivKey == NULL) {
+            xmlSecInternalError("xmlSecGnuTLSKeyDataXdhGetPrivateKey", NULL);
+            goto done;
+        }
+
+        otherPubKey = xmlSecGnuTLSKeyDataXdhGetPublicKey(otherKeyValue);
+        if(otherPubKey == NULL) {
+            xmlSecInternalError("xmlSecGnuTLSKeyDataXdhGetPublicKey", NULL);
+            goto done;
+        }
+    } else
+#endif /* XMLSEC_NO_XDH */
+    {
+        xmlSecInternalError("Unknown key data type", NULL);
         goto done;
     }
 
@@ -518,9 +566,31 @@ static xmlSecTransformKlass xmlSecGnuTLS ## name ## Klass = {                   
 
 /**************************************************************************
  *
+ * ECDH key agreement transform
+ *
+ **************************************************************************/
+#ifndef XMLSEC_NO_EC
+XMLSEC_GNUTLS_KEY_AGREEMENT_KLASS(Ecdh)
+
+/**
+ * xmlSecGnuTLSTransformEcdhGetKlass:
+ *
+ * The ECDH-ES key agreement transform klass.
+ *
+ * Returns: the ECDH-ES key agreement transform klass.
+ */
+xmlSecTransformId
+xmlSecGnuTLSTransformEcdhGetKlass(void) {
+    return(&xmlSecGnuTLSEcdhKlass);
+}
+#endif /* XMLSEC_NO_EC */
+
+/**************************************************************************
+ *
  * X25519 key agreement transform
  *
  **************************************************************************/
+#ifndef XMLSEC_NO_XDH
 XMLSEC_GNUTLS_KEY_AGREEMENT_KLASS(X25519)
 
 /**
@@ -554,10 +624,11 @@ xmlSecTransformId
 xmlSecGnuTLSTransformX448GetKlass(void) {
     return(&xmlSecGnuTLSX448Klass);
 }
+#endif /* XMLSEC_NO_XDH */
 
-#else /* defined(XMLSEC_NO_XDH) */
+#else /* !defined(XMLSEC_NO_XDH) || !defined(XMLSEC_NO_EC) */
 
 /* ISO C forbids an empty translation unit */
 typedef int make_iso_compilers_happy;
 
-#endif /* XMLSEC_NO_XDH */
+#endif /* !defined(XMLSEC_NO_XDH) || !defined(XMLSEC_NO_EC) */

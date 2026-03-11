@@ -239,6 +239,11 @@ xmlSecCryptoGetFunctions_gnutls(void) {
     gXmlSecGnuTLSFunctions->transformX448GetKlass               = xmlSecGnuTLSTransformX448GetKlass;
 #endif /* XMLSEC_NO_XDH */
 
+    /******************************* ECDH ********************************/
+#ifndef XMLSEC_NO_EC
+    gXmlSecGnuTLSFunctions->transformEcdhGetKlass               = xmlSecGnuTLSTransformEcdhGetKlass;
+#endif /* XMLSEC_NO_EC */
+
     /******************************* ConcatKDF ********************************/
 #ifndef XMLSEC_NO_CONCATKDF
     gXmlSecGnuTLSFunctions->transformConcatKdfGetKlass          = xmlSecGnuTLSTransformConcatKdfGetKlass;

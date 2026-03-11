@@ -111,6 +111,21 @@ execKeysTest $res_success   \
     "test-aes256"           \
     "aes-256"
 
+execKeysTest $res_success   \
+    "camellia"              \
+    "test-camellia128"      \
+    "camellia-128"
+
+execKeysTest $res_success   \
+    "camellia"              \
+    "test-camellia192"      \
+    "camellia-192"
+
+execKeysTest $res_success   \
+    "camellia"              \
+    "test-camellia256"      \
+    "camellia-256"
+
 ##########################################################################
 ##########################################################################
 ##########################################################################

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EncryptedData xmlns="http://www.w3.org/2001/04/xmlenc#" MimeType="text/plain">
+  <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#camellia128-cbc"/>
+  <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+     <KeyName>
+	test-camellia128
+    </KeyName>
+  </KeyInfo>   
+  <CipherData>
+     <CipherValue>Iub9PvM78lxDYexS97yK9KgLJDSaEJPgO1io5Z84+UkhZ6NGg+gfouBRZhM9Lutt</CipherValue>
+  </CipherData>
+</EncryptedData>

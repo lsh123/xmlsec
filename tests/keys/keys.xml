@@ -75,4 +75,22 @@ zBFljViy/Qhd8AG0vGxf+SekrJ1ttpIz
 <AESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">fpCPQLCMZCw9WipH8kk1J75CqYgWBhbJDMFPiUS0hzE=</AESKeyValue>
 </KeyValue>
 </KeyInfo>
+<KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+<KeyName>test-camellia128</KeyName>
+<KeyValue>
+<CamelliaKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">0Xfy3ES+Fbv/OfWuQHKvPA==</CamelliaKeyValue>
+</KeyValue>
+</KeyInfo>
+<KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+<KeyName>test-camellia192</KeyName>
+<KeyValue>
+<CamelliaKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">lk9DyA07xL/m45fUb7zbLoy3c0hLhw80</CamelliaKeyValue>
+</KeyValue>
+</KeyInfo>
+<KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+<KeyName>test-camellia256</KeyName>
+<KeyValue>
+<CamelliaKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">fpCPQLCMZCw9WipH8kk1J75CqYgWBhbJDMFPiUS0hzE=</CamelliaKeyValue>
+</KeyValue>
+</KeyInfo>
 </Keys>

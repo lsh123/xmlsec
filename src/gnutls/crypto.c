@@ -117,6 +117,10 @@ xmlSecCryptoGetFunctions_gnutls(void) {
     gXmlSecGnuTLSFunctions->keyDataPbkdf2GetKlass       = xmlSecGnuTLSKeyDataPbkdf2GetKlass;
 #endif /* XMLSEC_NO_PBKDF2 */
 
+#ifndef XMLSEC_NO_HKDF
+    gXmlSecGnuTLSFunctions->keyDataHkdfGetKlass         = xmlSecGnuTLSKeyDataHkdfGetKlass;
+#endif /* XMLSEC_NO_HKDF */
+
 #ifndef XMLSEC_NO_RSA
     gXmlSecGnuTLSFunctions->keyDataRsaGetKlass          = xmlSecGnuTLSKeyDataRsaGetKlass;
 #endif /* XMLSEC_NO_RSA */
@@ -266,6 +270,11 @@ xmlSecCryptoGetFunctions_gnutls(void) {
 #ifndef XMLSEC_NO_PBKDF2
     gXmlSecGnuTLSFunctions->transformPbkdf2GetKlass             = xmlSecGnuTLSTransformPbkdf2GetKlass;
 #endif /* XMLSEC_NO_PBKDF2 */
+
+    /******************************* HKDF ********************************/
+#ifndef XMLSEC_NO_HKDF
+    gXmlSecGnuTLSFunctions->transformHkdfGetKlass               = xmlSecGnuTLSTransformHkdfGetKlass;
+#endif /* XMLSEC_NO_HKDF */
 
     /******************************* RSA ********************************/
 #ifndef XMLSEC_NO_RSA

@@ -445,7 +445,7 @@
 <!-- OpenSSL-->
                         <td valign="top">No</td>
 <!-- NSS -->
-                        <td valign="top">No</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#hkdf"><sup>(10)</sup></a></td>
 <!-- GnuTLS -->
                         <td valign="top">No</td>
 <!-- MSCng -->
@@ -609,16 +609,13 @@
                         </td>
                         <td valign="top">Required</td>
 <!--Requirements -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#openssl3-required"><sup>(3)</sup></a>
-</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#openssl3-required"><sup>(3)</sup></a></td>
 <!-- OpenSSL-->
                         <td valign="top" bgcolor="#C1E1C1">Yes</td>
 <!-- NSS -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#concatkdf"><sup>(4)</sup></a>
-</td>
+                        <td valign="top">No</td>
 <!-- GnuTLS -->
-                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#mscng-old-win"><sup>(5)</sup></a>
-</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#mscng-old-win"><sup>(5)</sup></a></td>
 <!-- MSCng -->
                         <td valign="top">No</td>
 <!-- MSCrypto -->
@@ -813,7 +810,7 @@
                         <li>
                           <a id="hkdf"><sup>(10)</sup></a> HKDF algorithm URI is defined in
                           <a href="https://datatracker.ietf.org/doc/draft-eastlake-rfc9231bis-xmlsec-uris/">draft-eastlake-rfc9231bis-xmlsec-uris</a>
-                          (the successor to RFC 9231); currently only supported in xmlsec-openssl.
+                          (the successor to RFC 9231); currently supported in xmlsec-openssl and xmlsec-gnutls.
                         </li>
                     </ul>
                 </div>

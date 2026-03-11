@@ -37,6 +37,12 @@
 #endif /* (NSS_VMAJOR < 3) || ((NSS_VMAJOR == 3) && (NSS_VMINOR < 103)) */
 #endif /* XMLSEC_NO_XDH */
 
+#ifndef XMLSEC_NO_EDDSA
+#if (NSS_VMAJOR < 3) || ((NSS_VMAJOR == 3) && (NSS_VMINOR < 99))
+#define XMLSEC_NO_EDDSA 1
+#endif /* (NSS_VMAJOR < 3) || ((NSS_VMAJOR == 3) && (NSS_VMINOR < 99)) */
+#endif /* XMLSEC_NO_EDDSA */
+
 #ifndef XMLSEC_NO_HKDF
 #if !defined(CKM_HKDF_DERIVE) || !defined(CKM_HKDF_DATA) || !defined(CKF_HKDF_SALT_NULL) || !defined(CKF_HKDF_SALT_DATA)
 #define XMLSEC_NO_HKDF 1
@@ -337,6 +343,31 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformEcdsaSha512GetKlass(voi
 #endif /* XMLSEC_NO_SHA512 */
 
 #endif /* XMLSEC_NO_EC */
+
+/********************************************************************
+ *
+ * EdDSA keys and signatures
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_EDDSA
+
+/**
+ * xmlSecNssKeyDataEdDSAId:
+ *
+ * The EdDSA key klass (Ed25519 and Ed448).
+ */
+#define xmlSecNssKeyDataEdDSAId \
+        xmlSecNssKeyDataEdDSAGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecNssKeyDataEdDSAGetKlass(void);
+
+/**
+ * xmlSecNssTransformEdDSAEd25519Id:
+ *
+ * The EdDSA-Ed25519 signature transform klass.
+ */
+#define xmlSecNssTransformEdDSAEd25519Id    xmlSecNssTransformEdDSAEd25519GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformEdDSAEd25519GetKlass(void);
+#endif /* XMLSEC_NO_EDDSA */
 
 
 /********************************************************************

@@ -268,6 +268,15 @@ xmlSecNssPKIAdoptKey(SECKEYPrivateKey *privkey,
         }
         break;
 #endif /* XMLSEC_NO_EC */
+#ifndef XMLSEC_NO_EDDSA
+    case edKey:
+        data = xmlSecKeyDataCreate(xmlSecNssKeyDataEdDSAId);
+        if(data == NULL) {
+            xmlSecInternalError("xmlSecKeyDataCreate", NULL);
+            return(NULL);
+        }
+        break;
+#endif /* XMLSEC_NO_EDDSA */
 #ifndef XMLSEC_NO_XDH
     case ecMontKey:
         data = xmlSecKeyDataCreate(xmlSecNssKeyDataXdhId);
@@ -436,6 +445,10 @@ xmlSecNssPKIKeyDataGetSize(xmlSecKeyDataPtr data) {
         return(8 * SECKEY_PublicKeyStrength(ctx->pubkey));
     case ecKey:
         return(SECKEY_SignatureLen(ctx->pubkey));
+#ifndef XMLSEC_NO_EDDSA
+    case edKey:
+        return(SECKEY_SignatureLen(ctx->pubkey));
+#endif /* XMLSEC_NO_EDDSA */
 #ifndef XMLSEC_NO_XDH
     case ecMontKey:
         return(8 * ctx->pubkey->u.ec.publicValue.len);
@@ -1505,6 +1518,63 @@ xmlSecNssKeyDataEcWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKeyValu
     return(0);
 }
 #endif /* XMLSEC_NO_EC */
+
+#ifndef XMLSEC_NO_EDDSA
+/**************************************************************************
+ *
+ * EdDSA key data (Ed25519 and Ed448)
+ *
+ **************************************************************************/
+
+/* EdDSA klass: no XML KeyValue representation, load from file/DER/PEM only */
+#define XMLSEC_NSS_PKI_KEY_KLASS_EDDSA(lcname, ucname, generate)                          \
+static xmlSecKeyDataKlass xmlSecNssKeyData ## lcname ## Klass = {                        \
+    sizeof(xmlSecKeyDataKlass),                 /* xmlSecSize klassSize */                \
+    xmlSecNssPKIKeyDataSize,                    /* xmlSecSize objSize */                  \
+    /* data */                                                                            \
+    xmlSecName ## ucname ## KeyValue,           /* const xmlChar* name; */                \
+    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageRetrievalMethodNodeXml,            \
+                                                /* xmlSecKeyDataUsage usage; */           \
+    xmlSecHref ## ucname ## KeyValue,           /* const xmlChar* href; */                \
+    NULL,                                       /* const xmlChar* dataNodeName; */        \
+    NULL,                                       /* const xmlChar* dataNodeNs; */          \
+    /* constructors/destructor */                                                         \
+    xmlSecNssPKIKeyDataInitialize,              /* xmlSecKeyDataInitializeMethod initialize; */ \
+    xmlSecNssPKIKeyDataDuplicate,               /* xmlSecKeyDataDuplicateMethod duplicate; */   \
+    xmlSecNssPKIKeyDataFinalize,                /* xmlSecKeyDataFinalizeMethod finalize; */      \
+    generate,                                   /* xmlSecKeyDataGenerateMethod generate; */      \
+    /* get info */                                                                        \
+    xmlSecNssPKIKeyDataGetType,                 /* xmlSecKeyDataGetTypeMethod getType; */ \
+    xmlSecNssPKIKeyDataGetSize,                 /* xmlSecKeyDataGetSizeMethod getSize; */ \
+    NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */ \
+    /* read/write */                                                                      \
+    NULL,                                       /* xmlSecKeyDataXmlReadMethod xmlRead; */ \
+    NULL,                                       /* xmlSecKeyDataXmlWriteMethod xmlWrite; */ \
+    NULL,                                       /* xmlSecKeyDataBinReadMethod binRead; */ \
+    NULL,                                       /* xmlSecKeyDataBinWriteMethod binWrite; */ \
+    /* debug */                                                                           \
+    xmlSecKeyDataDebugDumpImpl,                 /* xmlSecKeyDataDebugDumpMethod debugDump; */ \
+    xmlSecKeyDataDebugXmlDumpImpl,              /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */ \
+    /* reserved for the future */                                                         \
+    NULL,                                       /* void* reserved0; */                   \
+    NULL,                                       /* void* reserved1; */                   \
+};
+
+XMLSEC_NSS_PKI_KEY_KLASS_EDDSA(EdDSA, EdDSA, NULL)
+
+/**
+ * xmlSecNssKeyDataEdDSAGetKlass:
+ *
+ * The EdDSA key data klass (Ed25519 and Ed448).
+ *
+ * Returns: pointer to EdDSA key data klass.
+ */
+xmlSecKeyDataId
+xmlSecNssKeyDataEdDSAGetKlass(void) {
+    return(&xmlSecNssKeyDataEdDSAKlass);
+}
+
+#endif /* XMLSEC_NO_EDDSA */
 
 #ifndef XMLSEC_NO_XDH
 /**************************************************************************

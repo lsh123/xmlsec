@@ -1186,15 +1186,11 @@ struct _xmlSecOpenSSLChaCha20Poly1305Ctx {
     int                 nonceInitialized;
 };
 
-#define xmlSecOpenSSLChaCha20Size \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecOpenSSLChaCha20Ctx))
-#define xmlSecOpenSSLChaCha20GetCtx(transform) \
-    ((xmlSecOpenSSLChaCha20CtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
+XMLSEC_TRANSFORM_DECLARE(OpenSSLChaCha20, xmlSecOpenSSLChaCha20Ctx)
+#define xmlSecOpenSSLChaCha20Size XMLSEC_TRANSFORM_SIZE(OpenSSLChaCha20)
 
-#define xmlSecOpenSSLChaCha20Poly1305Size \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecOpenSSLChaCha20Poly1305Ctx))
-#define xmlSecOpenSSLChaCha20Poly1305GetCtx(transform) \
-    ((xmlSecOpenSSLChaCha20Poly1305CtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
+XMLSEC_TRANSFORM_DECLARE(OpenSSLChaCha20Poly1305, xmlSecOpenSSLChaCha20Poly1305Ctx)
+#define xmlSecOpenSSLChaCha20Poly1305Size XMLSEC_TRANSFORM_SIZE(OpenSSLChaCha20Poly1305)
 
 /* Forward declarations */
 static int  xmlSecOpenSSLChaCha20Initialize     (xmlSecTransformPtr transform);

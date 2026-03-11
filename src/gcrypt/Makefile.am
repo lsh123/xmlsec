@@ -28,7 +28,7 @@ libxmlsec1_gcrypt_la_SOURCES =\
 	digests.c \
 	hmac.c \
 	kt_rsa.c \
-	kw_aes.c \
+	kw_rfc_3394.c \
 	kw_des.c \
 	symkeys.c \
 	asymkeys.c \

@@ -28,7 +28,7 @@
 #include <xmlsec/gnutls/crypto.h>
 
 #include "../cast_helpers.h"
-#include "../kw_aes_des.h"
+#include "../kw_helpers.h"
 
 #define XMLSEC_GNUTLS_CBC_CIPHER_MAX_BLOCK_SIZE             32
 #define XMLSEC_GNUTLS_CBC_CIPHER_MAX_IV_SIZE                32

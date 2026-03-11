@@ -1,6 +1,7 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * AES/Camellia Key Transport (RFC 3394) implementation for GCrypt.
  *
  * This is free software; see the Copyright file in the source
  * distribution for precise wording.
@@ -28,7 +29,7 @@
 
 #include <xmlsec/gcrypt/crypto.h>
 
-#include "../kw_aes_des.h"
+#include "../kw_helpers.h"
 #include "../cast_helpers.h"
 
 /*********************************************************************

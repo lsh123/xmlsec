@@ -732,6 +732,36 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformPbkdf2GetKlass(void)
 
 /********************************************************************
  *
+ * HKDF transforms
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_HKDF
+
+/**
+ * xmlSecGnuTLSKeyDataHkdfId:
+ *
+ * The HKDF key klass.
+ */
+#define xmlSecGnuTLSKeyDataHkdfId \
+        xmlSecGnuTLSKeyDataHkdfGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecGnuTLSKeyDataHkdfGetKlass (void);
+XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataHkdfSet      (xmlSecKeyDataPtr data,
+                                                                         const xmlSecByte* buf,
+                                                                         xmlSecSize bufSize);
+
+/**
+ * xmlSecGnuTLSTransformHkdfId:
+ *
+ * The HKDF key derivation transform klass.
+ */
+#define xmlSecGnuTLSTransformHkdfId \
+        xmlSecGnuTLSTransformHkdfGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformHkdfGetKlass(void);
+
+#endif /* XMLSEC_NO_HKDF */
+
+/********************************************************************
+ *
  * RSA transforms
  *
  *******************************************************************/

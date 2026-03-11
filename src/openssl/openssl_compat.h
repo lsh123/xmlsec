@@ -154,17 +154,17 @@ typedef int xmlSecOpenSSLSizeT;
  *****************************************************************************/
 #if !defined(XMLSEC_OPENSSL_API_300)
 
-/* ConcatKDF (SSKDF) key derivation algorithm is only available on OpenSSL 3.0.0 or above
+/* ConcatKDF (SSKDF) key derivation algorithm is only available on OpenSSL 3.0.0 or newer
  * (https://www.openssl.org/docs/man3.0/man7/EVP_KDF-SS.html)
  */
 #define XMLSEC_NO_CONCATKDF     1
 
-/* PBKDF2 key derivation algorithm is only available on OpenSSL 3.0.0 or above
+/* PBKDF2 key derivation algorithm is only available on OpenSSL 3.0.0 or newer
  * (https://www.openssl.org/docs/man3.0/man7/EVP_KDF-PBKDF2.html)
  */
 #define XMLSEC_NO_PBKDF2        1
 
-/* HKDF key derivation algorithm is only available on OpenSSL 3.0.0 or above
+/* HKDF key derivation algorithm is only available on OpenSSL 3.0.0 or newer
  * (https://www.openssl.org/docs/man3.0/man7/EVP_KDF-HKDF.html)
  */
 #define XMLSEC_NO_HKDF          1

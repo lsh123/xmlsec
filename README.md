@@ -23,7 +23,7 @@ XMLSec requires the following libraries:
 - [LibXSLT](http://xmlsoft.org/XSLT/) >= 1.1.35 (optional)
 
 And at least one of the following cryptographic libraries:
-- [OpenSSL](http://www.openssl.org) >= 3.0.13 (recommended)
+- [OpenSSL](http://www.openssl.org) >= 3.0.13 (>= 3.5.0 is recommended)
 - [LibreSSL](https://www.libressl.org/) >= 3.9.0
 - [BoringSSL](https://boringssl.googlesource.com/boringssl/) >= 1.1.0
 - [NSS](https://firefox-source-docs.mozilla.org/security/nss/index.html) >= 3.91 (with [NSPR](https://firefox-source-docs.mozilla.org/nspr/index.html) >= 4.34.1)

@@ -38,7 +38,7 @@
 #include "private.h"
 
 #ifndef PKCS12_NO_PERSIST_KEY
-/* Windows Server 2003 and Windows XP:  This value is not supported. */
+/* Windows Server 2003:  This value is not supported. */
 #  define PKCS12_NO_PERSIST_KEY    0x00008000
 #endif
 

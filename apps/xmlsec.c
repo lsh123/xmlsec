@@ -480,6 +480,19 @@ static xmlSecAppCmdLineParam pbkdf2KeyParam = {
 };
 #endif /* XMLSEC_NO_PBKDF2 */
 
+#ifndef XMLSEC_NO_HKDF
+static xmlSecAppCmdLineParam hkdfKeyParam = {
+    xmlSecAppCmdLineTopicKeysMngr,
+    "--hkdfkey",
+    "--hkdf-key",
+    "--hkdf-key[:<name>] <file>"
+    "\n\tload HKDF key (IKM) from binary file <file>",
+    xmlSecAppCmdLineParamTypeString,
+    xmlSecAppCmdLineParamFlagParamNameValue | xmlSecAppCmdLineParamFlagMultipleValues,
+    NULL
+};
+#endif /* XMLSEC_NO_HKDF */
+
 
 static xmlSecAppCmdLineParam pwdParam = {
     xmlSecAppCmdLineTopicKeysMngr,
@@ -1118,6 +1131,10 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
 #ifndef XMLSEC_NO_PBKDF2
     &pbkdf2KeyParam,
 #endif  /* XMLSEC_NO_PBKDF2 */
+
+#ifndef XMLSEC_NO_HKDF
+    &hkdfKeyParam,
+#endif  /* XMLSEC_NO_HKDF */
 
 #ifndef XMLSEC_NO_X509
     &pkcs12Param,
@@ -3016,6 +3033,24 @@ xmlSecAppLoadKeys(void) {
         }
     }
 #endif /* XMLSEC_NO_PBKDF2 */
+
+#ifndef XMLSEC_NO_HKDF
+    /* read all HKDF keys (IKM) */
+    for(value = hkdfKeyParam.value; value != NULL; value = value->next) {
+        if(value->strValue == NULL) {
+            fprintf(stderr, "Error: invalid value for option \"%s\".\n",
+                    hkdfKeyParam.fullName);
+            xmlSecKeyInfoCtxDestroy(keyInfoCtx);
+            return(-1);
+        } else if(xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad(g_keysManager,
+                    (const char*)xmlSecNameHkdfKey, value->strValue, value->paramNameValue) < 0) {
+            fprintf(stderr, "Error: failed to load HKDF key from \"%s\".\n",
+                    value->strValue);
+            xmlSecKeyInfoCtxDestroy(keyInfoCtx);
+            return(-1);
+        }
+    }
+#endif /* XMLSEC_NO_HKDF */
 
 
     /* DONE */

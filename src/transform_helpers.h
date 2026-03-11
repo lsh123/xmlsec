@@ -141,6 +141,25 @@ XMLSEC_EXPORT int   xmlSecTransformPbkdf2ParamsRead          (xmlSecTransformPbk
 #endif /* XMLSEC_NO_PBKDF2 */
 
 
+/********************************** HKDF *******************************/
+#ifndef XMLSEC_NO_HKDF
+
+struct _xmlSecTransformHkdfParams {
+    xmlChar*        prfAlgorithmHref;
+    xmlSecBuffer    salt;
+    xmlSecBuffer    info;
+    xmlSecSize      keyLength;
+};
+typedef struct _xmlSecTransformHkdfParams   xmlSecTransformHkdfParams, *xmlSecTransformHkdfParamsPtr;
+
+XMLSEC_EXPORT int   xmlSecTransformHkdfParamsInitialize (xmlSecTransformHkdfParamsPtr params);
+XMLSEC_EXPORT void  xmlSecTransformHkdfParamsFinalize   (xmlSecTransformHkdfParamsPtr params);
+XMLSEC_EXPORT int   xmlSecTransformHkdfParamsRead       (xmlSecTransformHkdfParamsPtr params,
+                                                         xmlNodePtr node);
+
+#endif /* XMLSEC_NO_HKDF */
+
+
 /********************************** RSA *******************************/
 #ifndef XMLSEC_NO_RSA
 

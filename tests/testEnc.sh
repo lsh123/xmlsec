@@ -124,6 +124,36 @@ execEncTest $res_success \
     "--pbkdf2-key:dkey3-pbkdf2 $topfolder/xmlenc11-interop-2012/dkey3-pbkdf2.bin --binary $topfolder/xmlenc11-interop-2012/dkey3-example-PBKDF2-crypto.data" \
     "--pbkdf2-key:dkey3-pbkdf2 $topfolder/xmlenc11-interop-2012/dkey3-pbkdf2.bin"
 
+# HKDF + HMAC-SHA256 + AES-256-GCM
+execEncTest $res_success \
+    "" \
+    "aleksey-xmlenc-01/enc_hkdf_hmac_sha256_aes256gcm" \
+    "aes256-gcm hkdf hmac-sha256" \
+    "derived-key" \
+    "--hkdf-key:hkdf-ikm $topfolder/aleksey-xmlenc-01/hkdf-ikm.bin" \
+    "--hkdf-key:hkdf-ikm $topfolder/aleksey-xmlenc-01/hkdf-ikm.bin --binary $topfolder/aleksey-xmlenc-01/enc_hkdf_hmac_sha256_aes256gcm.data" \
+    "--hkdf-key:hkdf-ikm $topfolder/aleksey-xmlenc-01/hkdf-ikm.bin"
+
+# HKDF + HMAC-SHA384 + AES-256-GCM
+execEncTest $res_success \
+    "" \
+    "aleksey-xmlenc-01/enc_hkdf_hmac_sha384_aes256gcm" \
+    "aes256-gcm hkdf hmac-sha384" \
+    "derived-key" \
+    "--hkdf-key:hkdf-ikm $topfolder/aleksey-xmlenc-01/hkdf-ikm.bin" \
+    "--hkdf-key:hkdf-ikm $topfolder/aleksey-xmlenc-01/hkdf-ikm.bin --binary $topfolder/aleksey-xmlenc-01/enc_hkdf_hmac_sha384_aes256gcm.data" \
+    "--hkdf-key:hkdf-ikm $topfolder/aleksey-xmlenc-01/hkdf-ikm.bin"
+
+# HKDF + HMAC-SHA512 + AES-256-GCM
+execEncTest $res_success \
+    "" \
+    "aleksey-xmlenc-01/enc_hkdf_hmac_sha512_aes256gcm" \
+    "aes256-gcm hkdf hmac-sha512" \
+    "derived-key" \
+    "--hkdf-key:hkdf-ikm $topfolder/aleksey-xmlenc-01/hkdf-ikm.bin" \
+    "--hkdf-key:hkdf-ikm $topfolder/aleksey-xmlenc-01/hkdf-ikm.bin --binary $topfolder/aleksey-xmlenc-01/enc_hkdf_hmac_sha512_aes256gcm.data" \
+    "--hkdf-key:hkdf-ikm $topfolder/aleksey-xmlenc-01/hkdf-ikm.bin"
+
 
 # ECDH-ES
 execEncTest $res_success \

@@ -135,6 +135,35 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefKWAes256[];
 
 /*************************************************************************
  *
+ * Camellia strings
+ *
+ ************************************************************************/
+#ifndef XMLSEC_NO_CAMELLIA
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameCamelliaKeyValue[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeCamelliaKeyValue[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefCamelliaKeyValue[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameCamellia128Cbc[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefCamellia128Cbc[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameCamellia192Cbc[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefCamellia192Cbc[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameCamellia256Cbc[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefCamellia256Cbc[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameKWCamellia128[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefKWCamellia128[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameKWCamellia192[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefKWCamellia192[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameKWCamellia256[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefKWCamellia256[];
+#endif /* XMLSEC_NO_CAMELLIA */
+
+/*************************************************************************
+ *
  * BASE64 strings
  *
  ************************************************************************/

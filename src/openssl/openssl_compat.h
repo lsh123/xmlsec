@@ -28,6 +28,7 @@
 #define XMLSEC_NO_DH                        1
 #define XMLSEC_NO_DSA                       1
 #define XMLSEC_NO_SHA3                      1
+#define XMLSEC_NO_CAMELLIA                  1
 
 
 #define ENGINE_cleanup(...)                 {}
@@ -125,6 +126,7 @@ typedef int xmlSecOpenSSLSizeT;
 #define XMLSEC_OPENSSL_NO_PWD_CALLBACK      1
 #define XMLSEC_OPENSSL_NO_DEEP_COPY         1
 #define XMLSEC_NO_DH                        1
+#define XMLSEC_NO_CAMELLIA                  1
 
 #define RAND_priv_bytes(buf,len)            RAND_bytes((buf), (len))
 
@@ -213,13 +215,16 @@ static inline int xmlSecOpenSSLCompatRand(unsigned char *buf, xmlSecSize size) {
 #define XMLSEC_OPENSSL_RAND_BYTES_STRENGTH     0
 
 /* Cipher names, hopefully OpenSSL defines them one day */
-#define XMLSEC_OPENSSL_CIPHER_NAME_DES3_EDE    "DES3"
-#define XMLSEC_OPENSSL_CIPHER_NAME_AES128_CBC  "AES-128-CBC"
-#define XMLSEC_OPENSSL_CIPHER_NAME_AES192_CBC  "AES-192-CBC"
-#define XMLSEC_OPENSSL_CIPHER_NAME_AES256_CBC  "AES-256-CBC"
-#define XMLSEC_OPENSSL_CIPHER_NAME_AES128_GCM  "AES-128-GCM"
-#define XMLSEC_OPENSSL_CIPHER_NAME_AES192_GCM  "AES-192-GCM"
-#define XMLSEC_OPENSSL_CIPHER_NAME_AES256_GCM  "AES-256-GCM"
+#define XMLSEC_OPENSSL_CIPHER_NAME_DES3_EDE         "DES3"
+#define XMLSEC_OPENSSL_CIPHER_NAME_AES128_CBC       "AES-128-CBC"
+#define XMLSEC_OPENSSL_CIPHER_NAME_AES192_CBC       "AES-192-CBC"
+#define XMLSEC_OPENSSL_CIPHER_NAME_AES256_CBC       "AES-256-CBC"
+#define XMLSEC_OPENSSL_CIPHER_NAME_AES128_GCM       "AES-128-GCM"
+#define XMLSEC_OPENSSL_CIPHER_NAME_AES192_GCM       "AES-192-GCM"
+#define XMLSEC_OPENSSL_CIPHER_NAME_AES256_GCM       "AES-256-GCM"
+#define XMLSEC_OPENSSL_CIPHER_NAME_CAMELLIA128_CBC  "CAMELLIA-128-CBC"
+#define XMLSEC_OPENSSL_CIPHER_NAME_CAMELLIA192_CBC  "CAMELLIA-192-CBC"
+#define XMLSEC_OPENSSL_CIPHER_NAME_CAMELLIA256_CBC  "CAMELLIA-256-CBC"
 
 #endif /* XMLSEC_OPENSSL_API_300 */
 

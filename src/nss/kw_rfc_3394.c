@@ -59,10 +59,10 @@ static int        xmlSecNSSKWAesBlockDecrypt                (xmlSecTransformPtr 
                                                              xmlSecByte * out,
                                                              xmlSecSize outSize,
                                                              xmlSecSize * outWritten);
-static xmlSecKWAesKlass xmlSecNssKWAesKlass = {
+static xmlSecKWRfc3394Klass xmlSecNssKWAesKlass = {
     /* callbacks */
-    xmlSecNSSKWAesBlockEncrypt,         /* xmlSecKWAesBlockEncryptMethod       encrypt; */
-    xmlSecNSSKWAesBlockDecrypt,         /* xmlSecKWAesBlockDecryptMethod       decrypt; */
+    xmlSecNSSKWAesBlockEncrypt,         /* xmlSecKWRfc3394BlockEncryptMethod       encrypt; */
+    xmlSecNSSKWAesBlockDecrypt,         /* xmlSecKWRfc3394BlockDecryptMethod       decrypt; */
 
     /* for the future */
     NULL,                               /* void*                               reserved0; */
@@ -85,7 +85,7 @@ typedef struct _xmlSecNssKWAesCtx   xmlSecNssKWAesCtx,
                                     *xmlSecNssKWAesCtxPtr;
 
 struct _xmlSecNssKWAesCtx {
-    xmlSecTransformKWAesCtx parentCtx;
+    xmlSecTransformKWRfc3394Ctx parentCtx;
     PK11SymKey* aesKey;
 };
 
@@ -199,21 +199,21 @@ xmlSecNssKWAesInitialize(xmlSecTransformPtr transform) {
     memset(ctx, 0, sizeof(xmlSecNssKWAesCtx));
 
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformKWAes128Id)) {
-        keyExpectedSize = XMLSEC_KW_AES128_KEY_SIZE;
+        keyExpectedSize = XMLSEC_KW_RFC3394_KEY_SIZE_128;
     } else if(xmlSecTransformCheckId(transform, xmlSecNssTransformKWAes192Id)) {
-        keyExpectedSize = XMLSEC_KW_AES192_KEY_SIZE;
+        keyExpectedSize = XMLSEC_KW_RFC3394_KEY_SIZE_192;
     } else if(xmlSecTransformCheckId(transform, xmlSecNssTransformKWAes256Id)) {
-        keyExpectedSize = XMLSEC_KW_AES256_KEY_SIZE;
+        keyExpectedSize = XMLSEC_KW_RFC3394_KEY_SIZE_256;
     } else {
         xmlSecInvalidTransfromError(transform)
         return(-1);
     }
 
-    ret = xmlSecTransformKWAesInitialize(transform, &(ctx->parentCtx),
+    ret = xmlSecTransformKWRfc3394Initialize(transform, &(ctx->parentCtx),
         &xmlSecNssKWAesKlass, xmlSecNssKeyDataAesId,
         keyExpectedSize);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformKWAesInitialize", xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecTransformKWRfc3394Initialize", xmlSecTransformGetName(transform));
         xmlSecNssKWAesFinalize(transform);
         return(-1);
     }
@@ -235,7 +235,7 @@ xmlSecNssKWAesFinalize(xmlSecTransformPtr transform) {
         PK11_FreeSymKey(ctx->aesKey);
     }
 
-    xmlSecTransformKWAesFinalize(transform, &(ctx->parentCtx));
+    xmlSecTransformKWRfc3394Finalize(transform, &(ctx->parentCtx));
     memset(ctx, 0, sizeof(xmlSecNssKWAesCtx));
 }
 
@@ -250,9 +250,9 @@ xmlSecNssKWAesSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
     ctx = xmlSecNssKWAesGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    ret = xmlSecTransformKWAesSetKeyReq(transform, &(ctx->parentCtx),keyReq);
+    ret = xmlSecTransformKWRfc3394SetKeyReq(transform, &(ctx->parentCtx),keyReq);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformKWAesSetKeyReq", xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecTransformKWRfc3394SetKeyReq", xmlSecTransformGetName(transform));
         return(-1);
     }
     return(0);
@@ -269,9 +269,9 @@ xmlSecNssKWAesSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     ctx = xmlSecNssKWAesGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    ret = xmlSecTransformKWAesSetKey(transform, &(ctx->parentCtx), key);
+    ret = xmlSecTransformKWRfc3394SetKey(transform, &(ctx->parentCtx), key);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformKWAesSetKey", xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecTransformKWRfc3394SetKey", xmlSecTransformGetName(transform));
         return(-1);
     }
     return(0);
@@ -290,9 +290,9 @@ xmlSecNssKWAesExecute(xmlSecTransformPtr transform, int last,
     ctx = xmlSecNssKWAesGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    ret = xmlSecTransformKWAesExecute(transform, &(ctx->parentCtx), last);
+    ret = xmlSecTransformKWRfc3394Execute(transform, &(ctx->parentCtx), last);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformKWAesExecute", xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecTransformKWRfc3394Execute", xmlSecTransformGetName(transform));
         return(-1);
     }
     return(0);
@@ -313,9 +313,9 @@ xmlSecNSSKWAesBlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * in, 
     xmlSecAssert2(xmlSecNssKWAesCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssKWAesSize), -1);
     xmlSecAssert2(in != NULL, -1);
-    xmlSecAssert2(inSize >= XMLSEC_KW_AES_BLOCK_SIZE, -1);
+    xmlSecAssert2(inSize >= XMLSEC_KW_RFC3394_BLOCK_SIZE, -1);
     xmlSecAssert2(out != NULL, -1);
-    xmlSecAssert2(outSize >= XMLSEC_KW_AES_BLOCK_SIZE, -1);
+    xmlSecAssert2(outSize >= XMLSEC_KW_RFC3394_BLOCK_SIZE, -1);
     xmlSecAssert2(outWritten != NULL, -1);
 
     ctx = xmlSecNssKWAesGetCtx(transform);
@@ -335,7 +335,7 @@ xmlSecNSSKWAesBlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * in, 
         xmlSecInternalError("xmlSecNssAesOp", NULL);
         return(-1);
     }
-    (*outWritten) = XMLSEC_KW_AES_BLOCK_SIZE;
+    (*outWritten) = XMLSEC_KW_RFC3394_BLOCK_SIZE;
     return(0);
 }
 
@@ -349,9 +349,9 @@ xmlSecNSSKWAesBlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * in, 
     xmlSecAssert2(xmlSecNssKWAesCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssKWAesSize), -1);
     xmlSecAssert2(in != NULL, -1);
-    xmlSecAssert2(inSize >= XMLSEC_KW_AES_BLOCK_SIZE, -1);
+    xmlSecAssert2(inSize >= XMLSEC_KW_RFC3394_BLOCK_SIZE, -1);
     xmlSecAssert2(out != NULL, -1);
-    xmlSecAssert2(outSize >= XMLSEC_KW_AES_BLOCK_SIZE, -1);
+    xmlSecAssert2(outSize >= XMLSEC_KW_RFC3394_BLOCK_SIZE, -1);
     xmlSecAssert2(outWritten != NULL, -1);
 
     ctx = xmlSecNssKWAesGetCtx(transform);
@@ -371,7 +371,7 @@ xmlSecNSSKWAesBlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte * in, 
         xmlSecInternalError("xmlSecNssAesOp", NULL);
         return(-1);
     }
-    (*outWritten) = XMLSEC_KW_AES_BLOCK_SIZE;
+    (*outWritten) = XMLSEC_KW_RFC3394_BLOCK_SIZE;
     return(0);
 }
 
@@ -421,7 +421,7 @@ done:
     return(res);
 }
 
-/* encrypt a block (XMLSEC_KW_AES_BLOCK_SIZE), in and out can overlap */
+/* encrypt a block (XMLSEC_KW_RFC3394_BLOCK_SIZE), in and out can overlap */
 static int
 xmlSecNssAesOp(PK11SymKey *aeskey, const xmlSecByte *in, xmlSecByte *out, int enc) {
 
@@ -451,9 +451,9 @@ xmlSecNssAesOp(PK11SymKey *aeskey, const xmlSecByte *in, xmlSecByte *out, int en
 
     outlen = 0;
     rv = PK11_CipherOp(ctxt, out, &outlen,
-                       XMLSEC_KW_AES_BLOCK_SIZE, (unsigned char *)in,
-                       XMLSEC_KW_AES_BLOCK_SIZE);
-    if ((rv != SECSuccess) || (outlen != XMLSEC_KW_AES_BLOCK_SIZE)) {
+                       XMLSEC_KW_RFC3394_BLOCK_SIZE, (unsigned char *)in,
+                       XMLSEC_KW_RFC3394_BLOCK_SIZE);
+    if ((rv != SECSuccess) || (outlen != XMLSEC_KW_RFC3394_BLOCK_SIZE)) {
         xmlSecNssError("PK11_CipherOp", NULL);
         goto done;
     }

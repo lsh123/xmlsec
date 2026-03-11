@@ -120,26 +120,26 @@ XMLSEC_EXPORT int      xmlSecTransformKWDes3Execute             (xmlSecTransform
                                                                  int last);
 #endif /* XMLSEC_NO_DES */
 
-#ifndef XMLSEC_NO_AES
+#if !defined(XMLSEC_NO_AES) || !defined(XMLSEC_NO_CAMELLIA)
 /********************************************************************
  *
- * KT AES
+ * KW RFC 3394 (AES and Camellia)
  *
  ********************************************************************/
-#define XMLSEC_KW_AES_IN_SIZE_MULTIPLY              ((xmlSecSize)8)
-#define XMLSEC_KW_AES_MAGIC_BLOCK_SIZE              ((xmlSecSize)8)
-#define XMLSEC_KW_AES_BLOCK_SIZE                    ((xmlSecSize)16)
-#define XMLSEC_KW_AES128_KEY_SIZE                   ((xmlSecSize)16)
-#define XMLSEC_KW_AES192_KEY_SIZE                   ((xmlSecSize)24)
-#define XMLSEC_KW_AES256_KEY_SIZE                   ((xmlSecSize)32)
+#define XMLSEC_KW_RFC3394_IN_SIZE_MULTIPLY              ((xmlSecSize)8)
+#define XMLSEC_KW_RFC3394_MAGIC_BLOCK_SIZE              ((xmlSecSize)8)
+#define XMLSEC_KW_RFC3394_BLOCK_SIZE                    ((xmlSecSize)16)
+#define XMLSEC_KW_RFC3394_KEY_SIZE_128                   ((xmlSecSize)16)
+#define XMLSEC_KW_RFC3394_KEY_SIZE_192                   ((xmlSecSize)24)
+#define XMLSEC_KW_RFC3394_KEY_SIZE_256                   ((xmlSecSize)32)
 
-typedef int  (*xmlSecKWAesBlockEncryptMethod)       (xmlSecTransformPtr transform,
+typedef int  (*xmlSecKWRfc3394BlockEncryptMethod)       (xmlSecTransformPtr transform,
                                                      const xmlSecByte * in,
                                                      xmlSecSize inSize,
                                                      xmlSecByte * out,
                                                      xmlSecSize outSize,
                                                      xmlSecSize * outWritten);
-typedef int  (*xmlSecKWAesBlockDecryptMethod)       (xmlSecTransformPtr transform,
+typedef int  (*xmlSecKWRfc3394BlockDecryptMethod)       (xmlSecTransformPtr transform,
                                                      const xmlSecByte * in,
                                                      xmlSecSize inSize,
                                                      xmlSecByte * out,
@@ -147,51 +147,51 @@ typedef int  (*xmlSecKWAesBlockDecryptMethod)       (xmlSecTransformPtr transfor
                                                      xmlSecSize * outWritten);
 
 
-struct _xmlSecKWAesKlass {
+struct _xmlSecKWRfc3394Klass {
     /* callbacks */
-    xmlSecKWAesBlockEncryptMethod       encrypt;
-    xmlSecKWAesBlockDecryptMethod       decrypt;
+    xmlSecKWRfc3394BlockEncryptMethod       encrypt;
+    xmlSecKWRfc3394BlockDecryptMethod       decrypt;
 
     /* for the future */
     void*                               reserved0;
     void*                               reserved1;
 };
-typedef const struct _xmlSecKWAesKlass              xmlSecKWAesKlass,
-                                                    *xmlSecKWAesId;
+typedef const struct _xmlSecKWRfc3394Klass          xmlSecKWRfc3394Klass,
+                                                    *xmlSecKWRfc3394Id;
 
 /*********************************************************************
  *
- * AES KW transforms context
+ * RFC 3394 KW transforms context (AES and Camellia)
  *
  ********************************************************************/
-typedef struct _xmlSecTransformKWAesCtx xmlSecTransformKWAesCtx,
-                                       *xmlSecTransformKWAesCtxPtr;
-struct _xmlSecTransformKWAesCtx {
-    xmlSecKWAesId       kwAesId;
+typedef struct _xmlSecTransformKWRfc3394Ctx xmlSecTransformKWRfc3394Ctx,
+                                           *xmlSecTransformKWRfc3394CtxPtr;
+struct _xmlSecTransformKWRfc3394Ctx {
+    xmlSecKWRfc3394Id       kwRfc3394Id;
     xmlSecKeyDataId     keyId;
     xmlSecBuffer        keyBuffer;
     xmlSecSize          keyExpectedSize;
 };
 
 
-XMLSEC_EXPORT int       xmlSecTransformKWAesInitialize  (xmlSecTransformPtr transform,
-                                                        xmlSecTransformKWAesCtxPtr ctx,
-                                                        xmlSecKWAesId kwAesId,
+XMLSEC_EXPORT int       xmlSecTransformKWRfc3394Initialize  (xmlSecTransformPtr transform,
+                                                        xmlSecTransformKWRfc3394CtxPtr ctx,
+                                                        xmlSecKWRfc3394Id kwRfc3394Id,
                                                         xmlSecKeyDataId keyId,
                                                         xmlSecSize keyExpectedSize);
-XMLSEC_EXPORT void      xmlSecTransformKWAesFinalize    (xmlSecTransformPtr transform,
-                                                        xmlSecTransformKWAesCtxPtr ctx);
-XMLSEC_EXPORT int       xmlSecTransformKWAesSetKeyReq   (xmlSecTransformPtr transform,
-                                                        xmlSecTransformKWAesCtxPtr ctx,
+XMLSEC_EXPORT void      xmlSecTransformKWRfc3394Finalize    (xmlSecTransformPtr transform,
+                                                        xmlSecTransformKWRfc3394CtxPtr ctx);
+XMLSEC_EXPORT int       xmlSecTransformKWRfc3394SetKeyReq   (xmlSecTransformPtr transform,
+                                                        xmlSecTransformKWRfc3394CtxPtr ctx,
                                                         xmlSecKeyReqPtr keyReq);
-XMLSEC_EXPORT int       xmlSecTransformKWAesSetKey      (xmlSecTransformPtr transform,
-                                                        xmlSecTransformKWAesCtxPtr ctx,
+XMLSEC_EXPORT int       xmlSecTransformKWRfc3394SetKey      (xmlSecTransformPtr transform,
+                                                        xmlSecTransformKWRfc3394CtxPtr ctx,
                                                         xmlSecKeyPtr key);
-XMLSEC_EXPORT int       xmlSecTransformKWAesExecute     (xmlSecTransformPtr transform,
-                                                        xmlSecTransformKWAesCtxPtr ctx,
+XMLSEC_EXPORT int       xmlSecTransformKWRfc3394Execute     (xmlSecTransformPtr transform,
+                                                        xmlSecTransformKWRfc3394CtxPtr ctx,
                                                         int last);
 
-#endif /* XMLSEC_NO_AES */
+#endif /* !XMLSEC_NO_AES || !XMLSEC_NO_CAMELLIA */
 
 
 #ifdef __cplusplus

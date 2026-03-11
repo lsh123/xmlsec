@@ -631,6 +631,42 @@ execEncTest $res_success \
 
 execEncTest $res_success \
     "" \
+    "aleksey-xmlenc-01/enc-camellia128cbc-keyname" \
+    "camellia128-cbc" \
+    "" \
+    "--keys-file $topfolder/keys/keys.xml" \
+    "--keys-file $topfolder/keys/keys.xml --binary-data $topfolder/aleksey-xmlenc-01/enc-camellia128cbc-keyname.data" \
+    "--keys-file $topfolder/keys/keys.xml"
+
+execEncTest $res_success \
+    "" \
+    "aleksey-xmlenc-01/enc-camellia192cbc-keyname" \
+    "camellia192-cbc" \
+    "" \
+    "--keys-file $topfolder/keys/keys.xml" \
+    "--keys-file $topfolder/keys/keys.xml --binary-data $topfolder/aleksey-xmlenc-01/enc-camellia192cbc-keyname.data" \
+    "--keys-file $topfolder/keys/keys.xml"
+
+execEncTest $res_success \
+    "" \
+    "aleksey-xmlenc-01/enc-camellia256cbc-keyname" \
+    "camellia256-cbc" \
+    "" \
+    "--keys-file $topfolder/keys/keys.xml" \
+    "--keys-file $topfolder/keys/keys.xml --binary-data $topfolder/aleksey-xmlenc-01/enc-camellia256cbc-keyname.data" \
+    "--keys-file $topfolder/keys/keys.xml"
+
+execEncTest $res_success \
+    "" \
+    "aleksey-xmlenc-01/enc-camellia128cbc-kw-camellia256-keyname" \
+    "camellia128-cbc kw-camellia256" \
+    "enc-key camellia" \
+    "--keys-file $topfolder/keys/keys.xml" \
+    "--keys-file $topfolder/keys/keys.xml  --session-key camellia-128  --binary-data $topfolder/aleksey-xmlenc-01/enc-camellia128cbc-kw-camellia256-keyname.data" \
+    "--keys-file $topfolder/keys/keys.xml"
+
+execEncTest $res_success \
+    "" \
     "aleksey-xmlenc-01/enc-des3cbc-keyname-content" \
     "tripledes-cbc" \
     " " \

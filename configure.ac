@@ -2292,6 +2292,22 @@ AM_CONDITIONAL(XMLSEC_NO_AES, test "z$XMLSEC_NO_AES" = "z1")
 AC_SUBST(XMLSEC_NO_AES)
 
 dnl ==========================================================================
+dnl Check if we need Camellia support
+dnl ==========================================================================
+AC_MSG_CHECKING(for Camellia support)
+AC_ARG_ENABLE([camellia], [AS_HELP_STRING([--enable-camellia],[enable Camellia support (yes)])])
+if test "z$enable_camellia" = "zno" ; then
+    XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_CAMELLIA=1"
+    XMLSEC_NO_CAMELLIA="1"
+    AC_MSG_RESULT([disabled])
+else
+    XMLSEC_NO_CAMELLIA="0"
+    AC_MSG_RESULT([yes])
+fi
+AM_CONDITIONAL(XMLSEC_NO_CAMELLIA, test "z$XMLSEC_NO_CAMELLIA" = "z1")
+AC_SUBST(XMLSEC_NO_CAMELLIA)
+
+dnl ==========================================================================
 dnl Check if we need ConcatKDF support
 dnl ==========================================================================
 AC_MSG_CHECKING(for ConcatKDF support)

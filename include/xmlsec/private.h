@@ -555,6 +555,7 @@ struct _xmlSecCryptoDLFunctions {
 
     /* Key data ids */
     xmlSecCryptoKeyDataGetKlassMethod            keyDataAesGetKlass;
+    xmlSecCryptoKeyDataGetKlassMethod            keyDataCamelliaGetKlass;
     xmlSecCryptoKeyDataGetKlassMethod            keyDataConcatKdfGetKlass;
     xmlSecCryptoKeyDataGetKlassMethod            keyDataDesGetKlass;
     xmlSecCryptoKeyDataGetKlassMethod            keyDataDhGetKlass;
@@ -589,6 +590,14 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoTransformGetKlassMethod          transformKWAes128GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformKWAes192GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformKWAes256GetKlass;
+
+    xmlSecCryptoTransformGetKlassMethod          transformCamellia128CbcGetKlass;
+    xmlSecCryptoTransformGetKlassMethod          transformCamellia192CbcGetKlass;
+    xmlSecCryptoTransformGetKlassMethod          transformCamellia256CbcGetKlass;
+
+    xmlSecCryptoTransformGetKlassMethod          transformKWCamellia128GetKlass;
+    xmlSecCryptoTransformGetKlassMethod          transformKWCamellia192GetKlass;
+    xmlSecCryptoTransformGetKlassMethod          transformKWCamellia256GetKlass;
 
     xmlSecCryptoTransformGetKlassMethod          transformConcatKdfGetKlass;
 

@@ -187,6 +187,12 @@ xmlSecOpenSSLSymKeyDataKlassCheck(xmlSecKeyDataKlass* klass) {
     }
 #endif /* XMLSEC_NO_AES */
 
+#ifndef XMLSEC_NO_CAMELLIA
+    if(klass == xmlSecOpenSSLKeyDataCamelliaId) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_CAMELLIA */
+
 #ifndef XMLSEC_NO_CONCATKDF
     if(klass == xmlSecOpenSSLKeyDataConcatKdfId) {
         return(1);
@@ -312,6 +318,51 @@ xmlSecOpenSSLKeyDataAesSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecS
     return(xmlSecBufferSetData(buffer, buf, bufSize));
 }
 #endif /* XMLSEC_NO_AES */
+
+#ifndef XMLSEC_NO_CAMELLIA
+/**************************************************************************
+ *
+ * <xmlsec:CamelliaKeyValue> processing
+ *
+ *************************************************************************/
+XMLSEC_OPENSSL_SYMKEY_KLASS(Camellia, Camellia)
+
+/**
+ * xmlSecOpenSSLKeyDataCamelliaGetKlass:
+ *
+ * The Camellia key data klass.
+ *
+ * Returns: Camellia key data klass.
+ */
+xmlSecKeyDataId
+xmlSecOpenSSLKeyDataCamelliaGetKlass(void) {
+    return(&xmlSecOpenSSLKeyDataCamelliaKlass);
+}
+
+/**
+ * xmlSecOpenSSLKeyDataCamelliaSet:
+ * @data:               the pointer to Camellia key data.
+ * @buf:                the pointer to key value.
+ * @bufSize:            the key value size (in bytes).
+ *
+ * Sets the value of Camellia key data.
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecOpenSSLKeyDataCamelliaSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSize bufSize) {
+    xmlSecBufferPtr buffer;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataCamelliaId), -1);
+    xmlSecAssert2(buf != NULL, -1);
+    xmlSecAssert2(bufSize > 0, -1);
+
+    buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
+    xmlSecAssert2(buffer != NULL, -1);
+
+    return(xmlSecBufferSetData(buffer, buf, bufSize));
+}
+#endif /* XMLSEC_NO_CAMELLIA */
 
 
 #ifndef XMLSEC_NO_CONCATKDF

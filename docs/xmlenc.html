@@ -435,6 +435,26 @@
 <!-- GCrypt -->
                       </tr>
                       <tr>
+                        <td valign="top">
+                          <a href="https://datatracker.ietf.org/doc/draft-eastlake-rfc9231bis-xmlsec-uris/">HKDF</a>
+                        </td>
+                        <td valign="top">Optional</td>
+<!--Requirements -->
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#openssl3-required"><sup>(3)</sup></a> <a href="#hkdf"><sup>(10)</sup></a>
+</td>
+<!-- OpenSSL-->
+                        <td valign="top">No</td>
+<!-- NSS -->
+                        <td valign="top">No</td>
+<!-- GnuTLS -->
+                        <td valign="top">No</td>
+<!-- MSCng -->
+                        <td valign="top">No</td>
+<!-- MSCrypto -->
+                        <td valign="top">No</td>
+<!-- GCrypt -->
+                      </tr>
+                      <tr>
                         <td valign="top" colspan="8"><b>Key Transport</b></td>
                       </tr>
                       <tr>
@@ -789,6 +809,11 @@
                         </li>
                         <li>
                           <a id="nss-x25519-only"><sup>(9)</sup></a> The xmlsec-nss library only supports X25519; X448 (Curve448) is not yet implemented in NSS.
+                        </li>
+                        <li>
+                          <a id="hkdf"><sup>(10)</sup></a> HKDF algorithm URI is defined in
+                          <a href="https://datatracker.ietf.org/doc/draft-eastlake-rfc9231bis-xmlsec-uris/">draft-eastlake-rfc9231bis-xmlsec-uris</a>
+                          (the successor to RFC 9231); currently only supported in xmlsec-openssl.
                         </li>
                     </ul>
                 </div>

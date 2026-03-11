@@ -3666,6 +3666,114 @@ xmlSecTransformPbkdf2ParamsRead(xmlSecTransformPbkdf2ParamsPtr params, xmlNodePt
 #endif /* XMLSEC_NO_CONCATKDF */
 
 
+#ifndef XMLSEC_NO_HKDF
+
+/**************************************************************************
+ *
+ * HKDF params
+ *
+ **************************************************************************/
+int
+xmlSecTransformHkdfParamsInitialize(xmlSecTransformHkdfParamsPtr params) {
+    int ret;
+
+    xmlSecAssert2(params != NULL, -1);
+
+    memset(params, 0, sizeof(xmlSecTransformHkdfParams));
+
+    ret = xmlSecBufferInitialize(&(params->salt), 0);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize(salt)", NULL);
+        return(-1);
+    }
+
+    ret = xmlSecBufferInitialize(&(params->info), 0);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize(info)", NULL);
+        xmlSecBufferFinalize(&(params->salt));
+        return(-1);
+    }
+
+    return(0);
+}
+
+void
+xmlSecTransformHkdfParamsFinalize(xmlSecTransformHkdfParamsPtr params) {
+    xmlSecAssert(params != NULL);
+
+    if(params->prfAlgorithmHref != NULL) {
+        xmlFree(params->prfAlgorithmHref);
+    }
+    xmlSecBufferFinalize(&(params->salt));
+    xmlSecBufferFinalize(&(params->info));
+    memset(params, 0, sizeof(xmlSecTransformHkdfParams));
+}
+
+int
+xmlSecTransformHkdfParamsRead(xmlSecTransformHkdfParamsPtr params, xmlNodePtr node) {
+    xmlNodePtr cur;
+    int ret;
+
+    xmlSecAssert2(params != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+
+    /* iterate over child nodes */
+    cur = xmlSecGetNextElementNode(node->children);
+
+    /* required: PRF */
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeHkdfPRF, xmlSecXmldsig2021MoreNs))) {
+        xmlSecInvalidNodeError(cur, xmlSecNodeHkdfPRF, NULL);
+        return(-1);
+    }
+    params->prfAlgorithmHref = xmlGetProp(cur, xmlSecAttrAlgorithm);
+    if(params->prfAlgorithmHref == NULL) {
+        xmlSecInvalidNodeAttributeError(cur, xmlSecAttrAlgorithm, NULL, "empty");
+        return(-1);
+    }
+    cur = xmlSecGetNextElementNode(cur->next);
+
+    /* optional: Salt */
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeHkdfSalt, xmlSecXmldsig2021MoreNs))) {
+        ret = xmlSecBufferBase64NodeContentRead(&(params->salt), cur);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecBufferBase64NodeContentRead(salt)", NULL);
+            return(-1);
+        }
+        cur = xmlSecGetNextElementNode(cur->next);
+    }
+
+    /* optional: Info */
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeHkdfInfo, xmlSecXmldsig2021MoreNs))) {
+        ret = xmlSecBufferBase64NodeContentRead(&(params->info), cur);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecBufferBase64NodeContentRead(info)", NULL);
+            return(-1);
+        }
+        cur = xmlSecGetNextElementNode(cur->next);
+    }
+
+    /* optional: KeyLength */
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeHkdfKeyLength, xmlSecXmldsig2021MoreNs))) {
+        ret = xmlSecGetNodeContentAsSize(cur, 1, &(params->keyLength));
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecGetNodeContentAsSize(KeyLength)", NULL);
+            return(-1);
+        }
+        cur = xmlSecGetNextElementNode(cur->next);
+    }
+
+    /* no more nodes allowed */
+    if(cur != NULL) {
+        xmlSecUnexpectedNodeError(cur, NULL);
+        return(-1);
+    }
+
+    return(0);
+}
+
+#endif /* XMLSEC_NO_HKDF */
+
+
 #ifndef XMLSEC_NO_RSA
 #ifndef XMLSEC_NO_RSA_OAEP
 int

@@ -69,6 +69,7 @@ struct _xmlSecOpenSSLKdfCtx {
     xmlChar* mac;
 
     xmlSecBuffer buffer;
+    xmlSecBuffer buffer2;
     unsigned int param1;
 };
 XMLSEC_TRANSFORM_DECLARE(OpenSSLKdf, xmlSecOpenSSLKdfCtx)
@@ -100,6 +101,12 @@ xmlSecOpenSSLKdfCheckId(xmlSecTransformPtr transform) {
         return(1);
     }
 #endif /* XMLSEC_NO_PBKDF2 */
+
+#ifndef XMLSEC_NO_HKDF
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformHkdfId)) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_HKDF */
 
     /* not found */
     return(0);
@@ -137,6 +144,14 @@ xmlSecOpenSSLKdfInitialize(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_PBKDF2 */
 
+#ifndef XMLSEC_NO_HKDF
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformHkdfId)) {
+        ctx->keyId = xmlSecOpenSSLKeyDataHkdfId;
+        ctx->kdfName = OSSL_KDF_NAME_HKDF;
+        ctx->keyParamName = OSSL_KDF_PARAM_KEY;
+    } else
+#endif /* XMLSEC_NO_HKDF */
+
     /* not found */
     {
         xmlSecInvalidTransfromError(transform)
@@ -169,6 +184,13 @@ xmlSecOpenSSLKdfInitialize(xmlSecTransformPtr transform) {
         return(-1);
     }
 
+    ret = xmlSecBufferInitialize(&(ctx->buffer2), 0);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize(buffer2)", NULL);
+        xmlSecOpenSSLKdfFinalize(transform);
+        return(-1);
+    }
+
     /* done */
     return(0);
 }
@@ -196,6 +218,7 @@ xmlSecOpenSSLKdfFinalize(xmlSecTransformPtr transform) {
     }
 
     xmlSecBufferFinalize(&(ctx->buffer));
+    xmlSecBufferFinalize(&(ctx->buffer2));
 
     memset(ctx, 0, sizeof(xmlSecOpenSSLKdfCtx));
 }
@@ -758,6 +781,224 @@ xmlSecOpenSSLTransformPbkdf2GetKlass(void) {
 }
 
 #endif /* XMLSEC_NO_PBKDF2 */
+
+
+#ifndef XMLSEC_NO_HKDF
+
+/**************************************************************************
+ *
+ * HKDF transform (https://www.openssl.org/docs/man3.0/man7/EVP_KDF-HKDF.html)
+ *
+ *****************************************************************************/
+
+static int      xmlSecOpenSSLHkdfNodeRead               (xmlSecTransformPtr transform,
+                                                         xmlNodePtr node,
+                                                         xmlSecTransformCtxPtr transformCtx);
+
+/* convert PRF algorithm href to OpenSSL digest name and set it in the params */
+static int
+xmlSecOpenSSLHkdfSetDigestNameFromHref(xmlSecOpenSSLKdfCtxPtr ctx, const xmlChar* href) {
+    const char * digestName = NULL;
+
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->digest == NULL, -1);
+
+    /* use SHA256 by default */
+    if(href == NULL) {
+#ifndef XMLSEC_NO_SHA256
+        digestName = SN_sha256;
+#else  /* XMLSEC_NO_SHA256 */
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
+            "SHA256 is disabled; href=%s", xmlSecErrorsSafeString(href));
+        return(-1);
+#endif /* XMLSEC_NO_SHA256 */
+    } else
+
+#ifndef XMLSEC_NO_SHA1
+    if(xmlStrcmp(href, xmlSecHrefHmacSha1) == 0) {
+        digestName = SN_sha1;
+    } else
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA224
+    if(xmlStrcmp(href, xmlSecHrefHmacSha224) == 0) {
+        digestName = SN_sha224;
+    } else
+#endif /* XMLSEC_NO_SHA224 */
+
+#ifndef XMLSEC_NO_SHA256
+    if(xmlStrcmp(href, xmlSecHrefHmacSha256) == 0) {
+        digestName = SN_sha256;
+    } else
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+    if(xmlStrcmp(href, xmlSecHrefHmacSha384) == 0) {
+        digestName = SN_sha384;
+    } else
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+    if(xmlStrcmp(href, xmlSecHrefHmacSha512) == 0) {
+        digestName = SN_sha512;
+    } else
+#endif /* XMLSEC_NO_SHA512 */
+
+    {
+        xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
+            "href=%s", xmlSecErrorsSafeString(href));
+        return(-1);
+    }
+
+    /* save algorithm in the context, params just holds a pointer */
+    xmlSecAssert2(digestName != NULL, -1);
+    ctx->digest = xmlStrdup(BAD_CAST digestName);
+    if(ctx->digest == NULL) {
+        xmlSecStrdupError(BAD_CAST digestName, NULL);
+        return(-1);
+    }
+
+    if(ctx->paramsPos >= XMLSEC_OPENSSL_KDF_MAX_PARAMS) {
+        xmlSecInvalidSizeDataError("Kdf Params Number", ctx->paramsPos, "too big", NULL);
+        return(-1);
+    }
+    ctx->params[ctx->paramsPos++] = OSSL_PARAM_construct_utf8_string(OSSL_KDF_PARAM_DIGEST, (char*)ctx->digest, strlen((char*)ctx->digest));
+
+    /* done */
+    return(0);
+}
+
+static int
+xmlSecOpenSSLHkdfNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
+                          xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED) {
+    xmlSecOpenSSLKdfCtxPtr ctx;
+    xmlSecTransformHkdfParams params;
+    int paramsInitialized = 0;
+    xmlSecByte * saltData;
+    xmlSecSize saltSize;
+    xmlSecByte * infoData;
+    xmlSecSize infoSize;
+    xmlNodePtr cur;
+    int ret;
+    int res = -1;
+
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformHkdfId), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLKdfCtxSize), -1);
+    xmlSecAssert2(node != NULL, -1);
+    UNREFERENCED_PARAMETER(transformCtx);
+
+    ctx = xmlSecOpenSSLKdfGetCtx(transform);
+    xmlSecAssert2(ctx != NULL, -1);
+
+    ret = xmlSecTransformHkdfParamsInitialize(&params);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecTransformHkdfParamsInitialize", NULL);
+        goto done;
+    }
+    paramsInitialized = 1;
+
+    /* first (and only) node is required HKDFParams */
+    cur = xmlSecGetNextElementNode(node->children);
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeHkdfParams, xmlSecXmldsig2021MoreNs))) {
+        xmlSecInvalidNodeError(cur, xmlSecNodeHkdfParams, NULL);
+        goto done;
+    }
+    ret = xmlSecTransformHkdfParamsRead(&params, cur);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecTransformHkdfParamsRead", NULL);
+        goto done;
+    }
+
+    /* set PRF digest (required) */
+    ret = xmlSecOpenSSLHkdfSetDigestNameFromHref(ctx, params.prfAlgorithmHref);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecOpenSSLHkdfSetDigestNameFromHref", xmlSecTransformGetName(transform));
+        goto done;
+    }
+
+    /* if we have something else then it's an error */
+    cur = xmlSecGetNextElementNode(cur->next);
+    if(cur != NULL) {
+        xmlSecUnexpectedNodeError(cur, NULL);
+        goto done;
+    }
+
+    /* set HKDF mode: EXTRACT_AND_EXPAND */
+    ctx->mac = xmlStrdup(BAD_CAST "EXTRACT_AND_EXPAND");
+    if(ctx->mac == NULL) {
+        xmlSecStrdupError(BAD_CAST "EXTRACT_AND_EXPAND", NULL);
+        goto done;
+    }
+    if(ctx->paramsPos >= XMLSEC_OPENSSL_KDF_MAX_PARAMS) {
+        xmlSecInvalidSizeDataError("Kdf Params Number", ctx->paramsPos, "too big", xmlSecTransformGetName(transform));
+        goto done;
+    }
+    ctx->params[ctx->paramsPos++] = OSSL_PARAM_construct_utf8_string(OSSL_KDF_PARAM_MODE, (char*)ctx->mac, strlen((char*)ctx->mac));
+
+    /* set output key length (optional; 0 means caller-specified via expectedOutputSize) */
+    if(params.keyLength > 0) {
+        ctx->expectedOutputSize = params.keyLength;
+    }
+
+    /* set salt (optional) */
+    saltData = xmlSecBufferGetData(&(params.salt));
+    saltSize = xmlSecBufferGetSize(&(params.salt));
+    if((saltData != NULL) && (saltSize > 0)) {
+        xmlSecBufferSwap(&(ctx->buffer), &(params.salt));
+        saltData = xmlSecBufferGetData(&(ctx->buffer));
+        saltSize = xmlSecBufferGetSize(&(ctx->buffer));
+        if(ctx->paramsPos >= XMLSEC_OPENSSL_KDF_MAX_PARAMS) {
+            xmlSecInvalidSizeDataError("Kdf Params Number", ctx->paramsPos, "too big", xmlSecTransformGetName(transform));
+            goto done;
+        }
+        ctx->params[ctx->paramsPos++] = OSSL_PARAM_construct_octet_string(OSSL_KDF_PARAM_SALT, saltData, saltSize);
+    }
+
+    /* set info (optional) */
+    infoData = xmlSecBufferGetData(&(params.info));
+    infoSize = xmlSecBufferGetSize(&(params.info));
+    if((infoData != NULL) && (infoSize > 0)) {
+        /* swap info into ctx->buffer2 so the data remains valid after params finalize */
+        xmlSecBufferSwap(&(ctx->buffer2), &(params.info));
+        infoData = xmlSecBufferGetData(&(ctx->buffer2));
+        infoSize = xmlSecBufferGetSize(&(ctx->buffer2));
+        if(ctx->paramsPos >= XMLSEC_OPENSSL_KDF_MAX_PARAMS) {
+            xmlSecInvalidSizeDataError("Kdf Params Number", ctx->paramsPos, "too big", xmlSecTransformGetName(transform));
+            goto done;
+        }
+        ctx->params[ctx->paramsPos++] = OSSL_PARAM_construct_octet_string(OSSL_KDF_PARAM_INFO, infoData, infoSize);
+    }
+
+    /* success */
+    res = 0;
+
+done:
+    if(paramsInitialized != 0) {
+        xmlSecTransformHkdfParamsFinalize(&params);
+    }
+    return(res);
+}
+
+/********************************************************************
+ *
+ * HKDF key derivation algorithm
+ *
+ ********************************************************************/
+XMLSEC_OPENSSL_KDF_KLASS_EX(Hkdf, xmlSecOpenSSLHkdfNodeRead)
+
+/**
+ * xmlSecOpenSSLTransformHkdfGetKlass:
+ *
+ * The HKDF key derivation transform klass.
+ *
+ * Returns: the HKDF key derivation transform klass.
+ */
+xmlSecTransformId
+xmlSecOpenSSLTransformHkdfGetKlass(void) {
+    return(&xmlSecOpenSSLHkdfKlass);
+}
+
+#endif /* XMLSEC_NO_HKDF */
 
 #else /* defined(XMLSEC_OPENSSL_API_300) */
 

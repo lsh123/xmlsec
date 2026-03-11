@@ -32,6 +32,7 @@ const xmlChar xmlSecEnc11Ns[]                   = "http://www.w3.org/2009/xmlenc
 const xmlChar xmlSecXPathNs[]                   = "http://www.w3.org/TR/1999/REC-xpath-19991116";
 const xmlChar xmlSecXPath2Ns[]                  = "http://www.w3.org/2002/06/xmldsig-filter2";
 const xmlChar xmlSecXPointerNs[]                = "http://www.w3.org/2001/04/xmldsig-more/xptr";
+const xmlChar xmlSecXmldsig2021MoreNs[]         = "http://www.w3.org/2021/04/xmldsig-more#";
 
 /*************************************************************************
  *
@@ -595,6 +596,22 @@ const xmlChar xmlSecNodePbkdf2SaltSpecified[]   = "Specified";
 const xmlChar xmlSecNodePbkdf2IterationCount[]  = "IterationCount";
 const xmlChar xmlSecNodePbkdf2KeyLength[]       = "KeyLength";
 const xmlChar xmlSecNodePbkdf2PRF[]             = "PRF";
+
+/*************************************************************************
+ *
+ * HKDF strings
+ *
+ ************************************************************************/
+const xmlChar xmlSecNameHkdfKey[]               = "hkdf";
+
+const xmlChar xmlSecNameHkdf[]                  = "hkdf";
+const xmlChar xmlSecHrefHkdf[]                  = "http://www.w3.org/2021/04/xmldsig-more#hkdf";
+
+const xmlChar xmlSecNodeHkdfParams[]            = "HKDFParams";
+const xmlChar xmlSecNodeHkdfPRF[]               = "PRF";
+const xmlChar xmlSecNodeHkdfSalt[]              = "Salt";
+const xmlChar xmlSecNodeHkdfInfo[]              = "Info";
+const xmlChar xmlSecNodeHkdfKeyLength[]         = "KeyLength";
 
 /*************************************************************************
  *

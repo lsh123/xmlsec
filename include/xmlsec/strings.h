@@ -33,6 +33,7 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecEnc11Ns[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecXPathNs[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecXPath2Ns[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecXPointerNs[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecXmldsig2021MoreNs[];
 
 
 /*************************************************************************
@@ -594,6 +595,22 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecNodePbkdf2SaltSpecified[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodePbkdf2IterationCount[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodePbkdf2KeyLength[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodePbkdf2PRF[];
+
+/*************************************************************************
+ *
+ * HKDF strings
+ *
+ ************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameHkdfKey[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameHkdf[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefHkdf[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeHkdfParams[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeHkdfPRF[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeHkdfSalt[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeHkdfInfo[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeHkdfKeyLength[];
 
 
 /*************************************************************************

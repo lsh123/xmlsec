@@ -132,6 +132,10 @@ xmlSecCryptoGetFunctions_openssl(void) {
     gXmlSecOpenSSLFunctions->keyDataPbkdf2GetKlass      = xmlSecOpenSSLKeyDataPbkdf2GetKlass;
 #endif /* XMLSEC_NO_PBKDF2 */
 
+#ifndef XMLSEC_NO_HKDF
+    gXmlSecOpenSSLFunctions->keyDataHkdfGetKlass        = xmlSecOpenSSLKeyDataHkdfGetKlass;
+#endif /* XMLSEC_NO_HKDF */
+
 #ifndef XMLSEC_NO_RSA
     gXmlSecOpenSSLFunctions->keyDataRsaGetKlass         = xmlSecOpenSSLKeyDataRsaGetKlass;
 #endif /* XMLSEC_NO_RSA */
@@ -326,6 +330,11 @@ xmlSecCryptoGetFunctions_openssl(void) {
 #ifndef XMLSEC_NO_PBKDF2
     gXmlSecOpenSSLFunctions->transformPbkdf2GetKlass            = xmlSecOpenSSLTransformPbkdf2GetKlass;
 #endif /* XMLSEC_NO_PBKDF2 */
+
+    /******************************* HKDF ********************************/
+#ifndef XMLSEC_NO_HKDF
+    gXmlSecOpenSSLFunctions->transformHkdfGetKlass              = xmlSecOpenSSLTransformHkdfGetKlass;
+#endif /* XMLSEC_NO_HKDF */
 
     /******************************* RIPEMD160 ********************************/
 #ifndef XMLSEC_NO_RIPEMD160

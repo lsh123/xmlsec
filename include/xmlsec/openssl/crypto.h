@@ -118,6 +118,7 @@ XMLSEC_CRYPTO_EXPORT BIO*               xmlSecOpenSSLCreateReadFileBio (const ch
 #ifdef OPENSSL_NO_KDF
 #define XMLSEC_NO_CONCATKDF  1
 #define XMLSEC_NO_PBKDF2     1
+#define XMLSEC_NO_HKDF       1
 #endif /* OPENSSL_NO_KDF */
 
 #ifdef OPENSSL_NO_DES
@@ -818,6 +819,36 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeyDataPbkdf2Set(xmlSecKeyD
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformPbkdf2GetKlass(void);
 
 #endif /* XMLSEC_NO_PBKDF2 */
+
+/********************************************************************
+ *
+ * HKDF key derivation transforms
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_HKDF
+
+/**
+ * xmlSecOpenSSLKeyDataHkdfId:
+ *
+ * The Hkdf key derivation key klass.
+ */
+#define xmlSecOpenSSLKeyDataHkdfId \
+        xmlSecOpenSSLKeyDataHkdfGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataHkdfGetKlass(void);
+XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeyDataHkdfSet(xmlSecKeyDataPtr data,
+                                                                    const xmlSecByte* buf,
+                                                                    xmlSecSize bufSize);
+
+/**
+ * xmlSecOpenSSLTransformHkdfId:
+ *
+ * The HKDF key derivation transform klass.
+ */
+#define xmlSecOpenSSLTransformHkdfId \
+        xmlSecOpenSSLTransformHkdfGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformHkdfGetKlass(void);
+
+#endif /* XMLSEC_NO_HKDF */
 
 /********************************************************************
  *

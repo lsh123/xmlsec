@@ -210,6 +210,12 @@ xmlSecOpenSSLSymKeyDataKlassCheck(xmlSecKeyDataKlass* klass) {
         return(1);
     }
 #endif /* XMLSEC_NO_PBKDF2 */
+
+#ifndef XMLSEC_NO_HKDF
+    if(klass == xmlSecOpenSSLKeyDataHkdfId) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_HKDF */
     return(0);
 }
 
@@ -504,3 +510,55 @@ xmlSecOpenSSLKeyDataPbkdf2Set(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlS
     return(xmlSecBufferSetData(buffer, buf, bufSize));
 }
 #endif /* XMLSEC_NO_PBKDF2 */
+
+#ifndef XMLSEC_NO_HKDF
+/**************************************************************************
+ *
+ * The HKDF key derivation key
+ *
+ *************************************************************************/
+XMLSEC_OPENSSL_SYMKEY_KLASS_EX(Hkdf,
+    xmlSecNameHkdfKey,
+    xmlSecKeyDataUsageReadFromFile,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL)
+
+/**
+ * xmlSecOpenSSLKeyDataHkdfGetKlass:
+ *
+ * The HKDF key data klass.
+ *
+ * Returns: HKDF key data klass.
+ */
+xmlSecKeyDataId
+xmlSecOpenSSLKeyDataHkdfGetKlass(void) {
+    return(&xmlSecOpenSSLKeyDataHkdfKlass);
+}
+
+/**
+ * xmlSecOpenSSLKeyDataHkdfSet:
+ * @data:               the pointer to Hkdf key data.
+ * @buf:                the pointer to key value.
+ * @bufSize:            the key value size (in bytes).
+ *
+ * Sets the value of HKDF key data (IKM).
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecOpenSSLKeyDataHkdfSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSize bufSize) {
+    xmlSecBufferPtr buffer;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataHkdfId), -1);
+    xmlSecAssert2(buf != NULL, -1);
+    xmlSecAssert2(bufSize > 0, -1);
+
+    buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
+    xmlSecAssert2(buffer != NULL, -1);
+
+    return(xmlSecBufferSetData(buffer, buf, bufSize));
+}
+#endif /* XMLSEC_NO_HKDF */

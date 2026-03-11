@@ -2338,6 +2338,22 @@ AM_CONDITIONAL(XMLSEC_NO_PBKDF2, test "z$XMLSEC_NO_PBKDF2" = "z1")
 AC_SUBST(XMLSEC_NO_PBKDF2)
 
 dnl ==========================================================================
+dnl Check if we need HKDF support
+dnl ==========================================================================
+AC_MSG_CHECKING(for HKDF support)
+AC_ARG_ENABLE([hkdf], [AS_HELP_STRING([--enable-hkdf],[enable HKDF support (yes)])])
+if test "z$enable_hkdf" = "zno" ; then
+    XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_HKDF=1"
+    XMLSEC_NO_HKDF="1"
+    AC_MSG_RESULT([disabled])
+else
+    XMLSEC_NO_HKDF="0"
+    AC_MSG_RESULT([yes])
+fi
+AM_CONDITIONAL(XMLSEC_NO_HKDF, test "z$XMLSEC_NO_HKDF" = "z1")
+AC_SUBST(XMLSEC_NO_HKDF)
+
+dnl ==========================================================================
 dnl Check if we need GOST 2001 support
 dnl ==========================================================================
 AC_MSG_CHECKING(for GOST 2001 support)

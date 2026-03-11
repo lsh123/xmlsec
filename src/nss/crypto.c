@@ -109,6 +109,10 @@ xmlSecCryptoGetFunctions_nss(void) {
     gXmlSecNssFunctions->keyDataAesGetKlass             = xmlSecNssKeyDataAesGetKlass;
 #endif /* XMLSEC_NO_AES */
 
+#ifndef XMLSEC_NO_CAMELLIA
+    gXmlSecNssFunctions->keyDataCamelliaGetKlass        = xmlSecNssKeyDataCamelliaGetKlass;
+#endif /* XMLSEC_NO_CAMELLIA */
+
 #ifndef XMLSEC_NO_DES
     gXmlSecNssFunctions->keyDataDesGetKlass             = xmlSecNssKeyDataDesGetKlass;
 #endif /* XMLSEC_NO_DES */
@@ -180,6 +184,19 @@ xmlSecCryptoGetFunctions_nss(void) {
     gXmlSecNssFunctions->transformKWAes192GetKlass      = xmlSecNssTransformKWAes192GetKlass;
     gXmlSecNssFunctions->transformKWAes256GetKlass      = xmlSecNssTransformKWAes256GetKlass;
 #endif /* XMLSEC_NO_AES */
+
+    /******************************* Camellia ********************************/
+#ifndef XMLSEC_NO_CAMELLIA
+    /* cbc */
+    gXmlSecNssFunctions->transformCamellia128CbcGetKlass = xmlSecNssTransformCamellia128CbcGetKlass;
+    gXmlSecNssFunctions->transformCamellia192CbcGetKlass = xmlSecNssTransformCamellia192CbcGetKlass;
+    gXmlSecNssFunctions->transformCamellia256CbcGetKlass = xmlSecNssTransformCamellia256CbcGetKlass;
+
+    /* kw: uses Camellia ECB */
+    gXmlSecNssFunctions->transformKWCamellia128GetKlass  = xmlSecNssTransformKWCamellia128GetKlass;
+    gXmlSecNssFunctions->transformKWCamellia192GetKlass  = xmlSecNssTransformKWCamellia192GetKlass;
+    gXmlSecNssFunctions->transformKWCamellia256GetKlass  = xmlSecNssTransformKWCamellia256GetKlass;
+#endif /* XMLSEC_NO_CAMELLIA */
 
     /******************************* DES ********************************/
 #ifndef XMLSEC_NO_DES

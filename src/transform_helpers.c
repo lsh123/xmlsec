@@ -1215,43 +1215,26 @@ xmlSecTransformHkdfParamsRead(xmlSecTransformHkdfParamsPtr params, xmlNodePtr no
  *   <dsig-more:Counter>fedcba09</dsig-more:Counter>
  * </xenc:EncryptionMethod>
  */
+
+/* Reads ChaCha20 stream cipher: IV = counter (4 bytes LE) || nonce (12 bytes) from XML params */
 int
-xmlSecTransformChaCha20ParamsInitialize(xmlSecTransformChaCha20ParamsPtr params) {
-    int ret;
-
-    xmlSecAssert2(params != NULL, -1);
-
-    memset(params, 0, sizeof(xmlSecTransformChaCha20Params));
-    ret = xmlSecBufferInitialize(&(params->nonce), XMLSEC_CHACHA20_NONCE_SIZE);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecBufferInitialize(nonce)", NULL);
-        return(-1);
-    }
-    ret = xmlSecBufferInitialize(&(params->counter), XMLSEC_CHACHA20_COUNTER_SIZE);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecBufferInitialize(counter)", NULL);
-        xmlSecBufferFinalize(&(params->nonce));
-        return(-1);
-    }
-    return(0);
-}
-
-void
-xmlSecTransformChaCha20ParamsFinalize(xmlSecTransformChaCha20ParamsPtr params) {
-    xmlSecAssert(params != NULL);
-
-    xmlSecBufferFinalize(&(params->nonce));
-    xmlSecBufferFinalize(&(params->counter));
-    memset(params, 0, sizeof(xmlSecTransformChaCha20Params));
-}
-
-int
-xmlSecTransformChaCha20ParamsRead(xmlSecTransformChaCha20ParamsPtr params, xmlNodePtr node) {
+xmlSecTransformChaCha20ParamsRead(xmlNodePtr node, xmlSecByte* iv, xmlSecSize ivSize, xmlSecSize* resIvSize) {
+    xmlSecBuffer buffer;
+    xmlSecByte * data;
+    xmlSecSize dataSize;
     xmlNodePtr cur;
     int ret;
 
-    xmlSecAssert2(params != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(iv != NULL, -1);
+    xmlSecAssert2(ivSize >= XMLSEC_CHACHA20_IV_SIZE, -1);
+    xmlSecAssert2(resIvSize != NULL, -1);
+
+    ret = xmlSecBufferInitialize(&buffer, (XMLSEC_CHACHA20_COUNTER_SIZE + XMLSEC_CHACHA20_NONCE_SIZE));
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize", NULL);
+        return(-1);
+    }
 
     /* required: Nonce (12 bytes, hex-encoded) */
     cur = xmlSecGetNextElementNode(node->children);
@@ -1260,17 +1243,26 @@ xmlSecTransformChaCha20ParamsRead(xmlSecTransformChaCha20ParamsPtr params, xmlNo
     }
     if(cur == NULL) {
         xmlSecNodeNotFoundError("xmlSecTransformChaCha20ParamsRead", node, xmlSecNodeChaCha20Nonce, NULL);
+        xmlSecBufferFinalize(&buffer);
         return(-1);
     }
-    ret = xmlSecGetNodeContentAsHex(cur, &(params->nonce));
+    ret = xmlSecGetNodeContentAsHex(cur, &buffer);
     if(ret < 0) {
         xmlSecInternalError("xmlSecGetNodeContentAsHex(Nonce)", NULL);
+        xmlSecBufferFinalize(&buffer);
         return(-1);
     }
-    if(xmlSecBufferGetSize(&(params->nonce)) != XMLSEC_CHACHA20_NONCE_SIZE) {
-        xmlSecInvalidSizeDataError("Nonce", xmlSecBufferGetSize(&(params->nonce)), "12 bytes", NULL);
+
+    /* nonce goes at the end of the IV */
+    data = xmlSecBufferGetData(&buffer);
+    dataSize = xmlSecBufferGetSize(&buffer);
+    if((data == NULL) || (dataSize != XMLSEC_CHACHA20_NONCE_SIZE)) {
+        xmlSecInvalidSizeDataError("Nonce", dataSize, "12 bytes", NULL);
+        xmlSecBufferFinalize(&buffer);
         return(-1);
     }
+    memcpy(iv + XMLSEC_CHACHA20_COUNTER_SIZE, data, dataSize);
+    xmlSecBufferEmpty(&buffer);
 
     /* required: Counter (4 bytes, hex-encoded) */
     cur = xmlSecGetNextElementNode(node->children);
@@ -1279,19 +1271,30 @@ xmlSecTransformChaCha20ParamsRead(xmlSecTransformChaCha20ParamsPtr params, xmlNo
     }
     if(cur == NULL) {
         xmlSecNodeNotFoundError("xmlSecTransformChaCha20ParamsRead", node, xmlSecNodeChaCha20Counter, NULL);
+        xmlSecBufferFinalize(&buffer);
         return(-1);
     }
-    ret = xmlSecGetNodeContentAsHex(cur, &(params->counter));
+    ret = xmlSecGetNodeContentAsHex(cur, &buffer);
     if(ret < 0) {
         xmlSecInternalError("xmlSecGetNodeContentAsHex(Counter)", NULL);
-        return(-1);
-    }
-    if(xmlSecBufferGetSize(&(params->counter)) != XMLSEC_CHACHA20_COUNTER_SIZE) {
-        xmlSecInvalidSizeDataError("Counter", xmlSecBufferGetSize(&(params->counter)), "4 bytes", NULL);
+        xmlSecBufferFinalize(&buffer);
         return(-1);
     }
 
+    /* counter goes at the beginning of the IV */
+    data = xmlSecBufferGetData(&buffer);
+    dataSize = xmlSecBufferGetSize(&buffer);
+    if((data == NULL) || (dataSize != XMLSEC_CHACHA20_COUNTER_SIZE)) {
+        xmlSecInvalidSizeDataError("Counter", dataSize, "4 bytes", NULL);
+        xmlSecBufferFinalize(&buffer);
+        return(-1);
+    }
+    memcpy(iv, data, dataSize);
+    xmlSecBufferEmpty(&buffer);
+
     /* done */
+    (*resIvSize) = XMLSEC_CHACHA20_IV_SIZE;
+    xmlSecBufferFinalize(&buffer);
     return(0);
 }
 

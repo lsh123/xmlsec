@@ -165,21 +165,15 @@ XMLSEC_EXPORT int   xmlSecTransformHkdfParamsRead       (xmlSecTransformHkdfPara
 
 #define XMLSEC_CHACHA20_NONCE_SIZE          ((xmlSecSize)12)
 #define XMLSEC_CHACHA20_COUNTER_SIZE        ((xmlSecSize)4)
+#define XMLSEC_CHACHA20_IV_SIZE             (XMLSEC_CHACHA20_COUNTER_SIZE + XMLSEC_CHACHA20_NONCE_SIZE)
 #define XMLSEC_CHACHA20_KEY_SIZE            ((xmlSecSize)32)
 #define XMLSEC_CHACHA20_POLY1305_TAG_SIZE   ((xmlSecSize)16)
 
 
-struct _xmlSecTransformChaCha20Params {
-    xmlSecBuffer nonce;
-    xmlSecBuffer counter;
-};
-typedef struct _xmlSecTransformChaCha20Params   xmlSecTransformChaCha20Params,
-                                                *xmlSecTransformChaCha20ParamsPtr;
-
-XMLSEC_EXPORT int   xmlSecTransformChaCha20ParamsInitialize     (xmlSecTransformChaCha20ParamsPtr params);
-XMLSEC_EXPORT void  xmlSecTransformChaCha20ParamsFinalize       (xmlSecTransformChaCha20ParamsPtr params);
-XMLSEC_EXPORT int   xmlSecTransformChaCha20ParamsRead           (xmlSecTransformChaCha20ParamsPtr params,
-                                                                 xmlNodePtr node);
+XMLSEC_EXPORT int   xmlSecTransformChaCha20ParamsRead               (xmlNodePtr node,
+                                                                     xmlSecByte* iv,
+                                                                     xmlSecSize ivSize,
+                                                                     xmlSecSize* resIvSize);
 
 struct _xmlSecTransformChaCha20Poly1305Params {
     xmlSecBuffer    nonce;

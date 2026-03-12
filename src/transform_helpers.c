@@ -1307,45 +1307,26 @@ xmlSecTransformChaCha20ParamsRead(xmlNodePtr node, xmlSecByte *iv, xmlSecSize iv
  *   <dsig-more:AAD>optional additional authenticated data</dsig-more:AAD>
  * </xenc:EncryptionMethod>
  */
-int
-xmlSecTransformChaCha20Poly1305ParamsInitialize(xmlSecTransformChaCha20Poly1305ParamsPtr params) {
-    int ret;
-
-    xmlSecAssert2(params != NULL, -1);
-
-    memset(params, 0, sizeof(xmlSecTransformChaCha20Poly1305Params));
-
-    ret = xmlSecBufferInitialize(&(params->nonce), 0);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecBufferInitialize(nonce)", NULL);
-        return(-1);
-    }
-    ret = xmlSecBufferInitialize(&(params->aad), 0);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecBufferInitialize(aad)", NULL);
-        xmlSecBufferFinalize(&(params->nonce));
-        return(-1);
-    }
-
-    return(0);
-}
-
-void
-xmlSecTransformChaCha20Poly1305ParamsFinalize(xmlSecTransformChaCha20Poly1305ParamsPtr params) {
-    xmlSecAssert(params != NULL);
-
-    xmlSecBufferFinalize(&(params->nonce));
-    xmlSecBufferFinalize(&(params->aad));
-    memset(params, 0, sizeof(xmlSecTransformChaCha20Poly1305Params));
-}
 
 int
-xmlSecTransformChaCha20Poly1305ParamsRead(xmlSecTransformChaCha20Poly1305ParamsPtr params, xmlNodePtr node) {
+xmlSecTransformChaCha20Poly1305ParamsRead(xmlNodePtr node, xmlSecBufferPtr aad, xmlSecByte *iv, xmlSecSize ivSize, xmlSecSize *ivSizeOut) {
+    xmlSecBuffer buf;
+    xmlSecByte* bufData;
+    xmlSecSize bufSize;
     xmlNodePtr cur;
     int ret;
 
-    xmlSecAssert2(params != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(aad != NULL, -1);
+    xmlSecAssert2(iv != NULL, -1);
+    xmlSecAssert2(ivSize >= XMLSEC_CHACHA20_NONCE_SIZE, -1);
+    xmlSecAssert2(ivSizeOut != NULL, -1);
+
+    ret = xmlSecBufferInitialize(&buf, XMLSEC_CHACHA20_NONCE_SIZE);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecGetNodeContentAsHex(Nonce)", NULL);
+        return(-1);
+    }
 
     /* required: Nonce (12 bytes, hex-encoded) */
     cur = xmlSecGetNextElementNode(node->children);
@@ -1354,17 +1335,25 @@ xmlSecTransformChaCha20Poly1305ParamsRead(xmlSecTransformChaCha20Poly1305ParamsP
     }
     if(cur == NULL) {
         xmlSecNodeNotFoundError("xmlSecTransformChaCha20Poly1305ParamsRead", node, xmlSecNodeChaCha20Nonce, NULL);
+        xmlSecBufferFinalize(&buf);
         return(-1);
     }
-    ret = xmlSecGetNodeContentAsHex(cur, &(params->nonce));
+    ret = xmlSecGetNodeContentAsHex(cur, &buf);
     if(ret < 0) {
         xmlSecInternalError("xmlSecGetNodeContentAsHex(Nonce)", NULL);
+        xmlSecBufferFinalize(&buf);
         return(-1);
     }
-    if(xmlSecBufferGetSize(&(params->nonce)) != XMLSEC_CHACHA20_NONCE_SIZE) {
-        xmlSecInvalidSizeDataError("Nonce", xmlSecBufferGetSize(&(params->nonce)), "12 bytes", NULL);
+    bufData = xmlSecBufferGetData(&buf);
+    bufSize = xmlSecBufferGetSize(&buf);
+    if((bufData == NULL) || (bufSize != XMLSEC_CHACHA20_NONCE_SIZE)) {
+        xmlSecInvalidSizeDataError("Nonce", bufSize, "12 bytes", NULL);
+        xmlSecBufferFinalize(&buf);
         return(-1);
     }
+    memcpy(iv, bufData, bufSize);
+    (*ivSizeOut) = XMLSEC_CHACHA20_NONCE_SIZE;
+    xmlSecBufferFinalize(&buf);
 
     /* optional: AAD (plain text string) */
     cur = xmlSecGetNextElementNode(node->children);
@@ -1373,17 +1362,18 @@ xmlSecTransformChaCha20Poly1305ParamsRead(xmlSecTransformChaCha20Poly1305ParamsP
     }
     if(cur != NULL) {
         xmlChar* aadContent = xmlNodeGetContent(cur);
-        if((aadContent != NULL) && (xmlStrlen(aadContent) > 0)) {
-            ret = xmlSecBufferSetData(&(params->aad), aadContent, (xmlSecSize)xmlStrlen(aadContent));
+        if(aadContent != NULL) {
+            int aadContentLen = xmlStrlen(aadContent);
+
+            if(aadContentLen > 0) {
+                ret = xmlSecBufferSetData(aad, aadContent, (xmlSecSize)aadContentLen);
+                if(ret < 0) {
+                    xmlSecInternalError("xmlSecBufferSetData(aad)", NULL);
+                    xmlFree(aadContent);
+                    return(-1);
+                }
+            }
             xmlFree(aadContent);
-            if(ret < 0) {
-                xmlSecInternalError("xmlSecBufferSetData(aad)", NULL);
-                return(-1);
-            }
-        } else {
-            if(aadContent != NULL) {
-                xmlFree(aadContent);
-            }
         }
     }
 

@@ -728,6 +728,15 @@ execEncTest $res_success \
 
 execEncTest $res_success \
     "" \
+    "aleksey-xmlenc-01/enc-chacha20poly1305-aad-keyname" \
+    "chacha20-poly1305" \
+    "" \
+    "--keys-file $topfolder/keys/keys.xml" \
+    "--keys-file $topfolder/keys/keys.xml --binary-data $topfolder/aleksey-xmlenc-01/enc-chacha20poly1305-aad-keyname.data" \
+    "--keys-file $topfolder/keys/keys.xml"
+
+execEncTest $res_success \
+    "" \
     "aleksey-xmlenc-01/enc-des3cbc-keyname-content" \
     "tripledes-cbc" \
     " " \

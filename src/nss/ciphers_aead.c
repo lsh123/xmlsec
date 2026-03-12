@@ -72,6 +72,8 @@ struct _xmlSecNssAeadCipherCtx {
     xmlSecSize              keySize;
     xmlSecKeyDataPtr        keyData;
     xmlSecByte              iv[XMLSEC_NSS_AEAD_CIPHER_IV_SIZE];   /* Nonce/IV storage */
+    int                     ivInitialized;
+    xmlSecBuffer            aad;
 
 #ifndef XMLSEC_NO_AES
     CK_GCM_PARAMS_V3 gcm;
@@ -79,9 +81,7 @@ struct _xmlSecNssAeadCipherCtx {
 
 #ifndef XMLSEC_NO_CHACHA20
     CK_SALSA20_CHACHA20_POLY1305_PARAMS     nssChachaPolyParams;
-    xmlSecBuffer                            chachaAad;
 #endif /* XMLSEC_NO_CHACHA20 */
-    int                                     chachaPolyParamsInitialized; /* 1 if chacha20 ctx is initialized */
 };
 
 /******************************************************************************
@@ -192,18 +192,17 @@ xmlSecNssAeadCipherInitialize(xmlSecTransformPtr transform) {
         ctx->setupParams = xmlSecNssAeadCipherCtxSetupParamsChaCha20Poly1305;
         ctx->keyId       = xmlSecNssKeyDataChaCha20Id;
         ctx->keySize     = XMLSEC_BINARY_KEY_BYTES_SIZE_256;
-
-        ret = xmlSecBufferInitialize(&(ctx->chachaAad), 0);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecBufferInitialize", xmlSecTransformGetName(transform));
-            return(-1);
-        }
-        ctx->chachaPolyParamsInitialized = 1;
     } else
 #endif /* XMLSEC_NO_CHACHA20 */
-
     if(1) {
         xmlSecInvalidTransfromError(transform)
+        return(-1);
+    }
+
+    ret = xmlSecBufferInitialize(&(ctx->aad), 0);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferInitialize", xmlSecTransformGetName(transform));
+        xmlSecNssAeadCipherFinalize(transform);
         return(-1);
     }
 
@@ -225,11 +224,7 @@ xmlSecNssAeadCipherFinalize(xmlSecTransformPtr transform) {
         xmlSecKeyDataDestroy(ctx->keyData);
     }
 
-#ifndef XMLSEC_NO_CHACHA20
-    if(ctx->chachaPolyParamsInitialized) {
-        xmlSecBufferFinalize(&(ctx->chachaAad));
-    }
-#endif /* XMLSEC_NO_CHACHA20 */
+    xmlSecBufferFinalize(&(ctx->aad));
 
     /* done */
     memset(ctx, 0, sizeof(xmlSecNssAeadCipherCtx));
@@ -361,7 +356,7 @@ xmlSecNssAeadCipherEncrypt(xmlSecNssAeadCipherCtxPtr ctx, xmlSecBufferPtr in, xm
     xmlSecAssert2(plaintext != NULL, -1);
 
     /* Handle IV/Nonce differently for GCM vs ChaCha20-Poly1305 */
-    if(ctx->chachaPolyParamsInitialized) {
+    if(ctx->ivInitialized) {
         /* ChaCha20-Poly1305: nonce was read from XML, output is just ciphertext+tag */
         outSize = inSize + XMLSEC_NSS_AEAD_CIPHER_TAG_SIZE + 2 * XMLSEC_NSS_AEAD_CIPHER_MAX_BLOCK_SIZE;
         ret = xmlSecBufferSetMaxSize(out, outSize);
@@ -430,7 +425,7 @@ xmlSecNssAeadCipherEncrypt(xmlSecNssAeadCipherCtxPtr ctx, xmlSecBufferPtr in, xm
 
     /* set correct output size */
     XMLSEC_SAFE_CAST_UINT_TO_SIZE(outputlen, outSize, return(-1), NULL);
-    if(ctx->chachaPolyParamsInitialized) {
+    if(ctx->ivInitialized) {
         /* ChaCha20-Poly1305: output is just ciphertext+tag */
         ret = xmlSecBufferSetSize(out, outSize);
     } else {
@@ -466,7 +461,7 @@ xmlSecNssAeadCipherDecrypt(xmlSecNssAeadCipherCtxPtr ctx, xmlSecBufferPtr in, xm
     inSize = xmlSecBufferGetSize(in);
 
     /* Handle IV/Nonce differently for GCM vs ChaCha20-Poly1305 */
-    if(ctx->chachaPolyParamsInitialized) {
+    if(ctx->ivInitialized) {
         /* ChaCha20-Poly1305: nonce was read from XML, input is just ciphertext+tag */
         inData = xmlSecBufferGetData(in);
         xmlSecAssert2(inData != NULL, -1);
@@ -669,13 +664,12 @@ xmlSecNssTransformAes256GcmGetKlass(void) {
 static int
 xmlSecNssAeadCipherCtxSetupParamsChaCha20Poly1305(xmlSecNssAeadCipherCtxPtr ctx, SECItem* param) {
     xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->chachaPolyParamsInitialized != 0, -1);
     xmlSecAssert2(param != NULL, -1);
 
     ctx->nssChachaPolyParams.pNonce      = ctx->iv;
     ctx->nssChachaPolyParams.ulNonceLen  = XMLSEC_CHACHA20_NONCE_SIZE;
-    ctx->nssChachaPolyParams.pAAD        = xmlSecBufferGetData(&(ctx->chachaAad));
-    ctx->nssChachaPolyParams.ulAADLen    = xmlSecBufferGetSize(&(ctx->chachaAad));
+    ctx->nssChachaPolyParams.pAAD        = xmlSecBufferGetData(&(ctx->aad));
+    ctx->nssChachaPolyParams.ulAADLen    = xmlSecBufferGetSize(&(ctx->aad));
 
     param->data  = (unsigned char *)&(ctx->nssChachaPolyParams);
     param->len   = sizeof(ctx->nssChachaPolyParams);
@@ -700,11 +694,12 @@ xmlSecNssAeadCipherNodeReadChaCha20Poly1305(xmlSecTransformPtr transform, xmlNod
     ctx = xmlSecNssAeadCipherGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    ret = xmlSecTransformChaCha20Poly1305ParamsRead(node, &(ctx->chachaAad), ctx->iv, sizeof(ctx->iv), &ivSize);
+    ret = xmlSecTransformChaCha20Poly1305ParamsRead(node, &(ctx->aad), ctx->iv, sizeof(ctx->iv), &ivSize);
     if((ret < 0) || (ivSize != XMLSEC_CHACHA20_NONCE_SIZE)) {
         xmlSecInternalError("xmlSecTransformChaCha20Poly1305ParamsRead", xmlSecTransformGetName(transform));
         return(-1);
     }
+    ctx->ivInitialized = 1;
 
     /* done */
     return(0);

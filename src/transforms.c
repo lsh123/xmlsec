@@ -3923,7 +3923,6 @@ xmlSecTransformChaCha20Poly1305ParamsRead(xmlSecTransformChaCha20Poly1305ParamsP
         return(-1);
     }
     memcpy(params->nonce, xmlSecBufferGetData(&buf), sizeof(params->nonce));
-
     xmlSecBufferFinalize(&buf);
 
     /* optional: AAD (plain text string) */

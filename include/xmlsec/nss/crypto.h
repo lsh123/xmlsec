@@ -294,6 +294,45 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformKWDes3GetKlass(void);
 
 /********************************************************************
  *
+ * ChaCha20 transforms
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_CHACHA20
+
+/**
+ * xmlSecNssKeyDataChaCha20Id:
+ *
+ * The ChaCha20 key data klass.
+ */
+#define xmlSecNssKeyDataChaCha20Id \
+        xmlSecNssKeyDataChaCha20GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecNssKeyDataChaCha20GetKlass(void);
+XMLSEC_CRYPTO_EXPORT int                xmlSecNssKeyDataChaCha20Set     (xmlSecKeyDataPtr data,
+                                                                         const xmlSecByte* buf,
+                                                                         xmlSecSize bufSize);
+
+/**
+ * xmlSecNssTransformChaCha20Id:
+ *
+ * The ChaCha20 stream cipher transform klass.
+ */
+#define xmlSecNssTransformChaCha20Id \
+        xmlSecNssTransformChaCha20GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecNssTransformChaCha20GetKlass(void);
+
+/**
+ * xmlSecNssTransformChaCha20Poly1305Id:
+ *
+ * The ChaCha20-Poly1305 AEAD transform klass.
+ */
+#define xmlSecNssTransformChaCha20Poly1305Id \
+        xmlSecNssTransformChaCha20Poly1305GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecNssTransformChaCha20Poly1305GetKlass(void);
+
+#endif /* XMLSEC_NO_CHACHA20 */
+
+/********************************************************************
+ *
  * DSA transform
  *
  *******************************************************************/

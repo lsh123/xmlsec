@@ -21,7 +21,7 @@ libxmlsec1_nss_la_CPPFLAGS = \
 libxmlsec1_nss_la_SOURCES =\
 	app.c \
 	ciphers_cbc.c \
-	ciphers_gcm.c \
+	ciphers_aead.c \
 	crypto.c \
 	digests.c \
 	globals.h \

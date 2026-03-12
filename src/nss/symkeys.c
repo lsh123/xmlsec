@@ -195,6 +195,12 @@ xmlSecNssSymKeyDataKlassCheck(xmlSecKeyDataKlass* klass) {
     }
 #endif /* XMLSEC_NO_CAMELLIA */
 
+#ifndef XMLSEC_NO_CHACHA20
+    if(klass == xmlSecNssKeyDataChaCha20Id) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_CHACHA20 */
+
 #ifndef XMLSEC_NO_HMAC
     if(klass == xmlSecNssKeyDataHmacId) {
         return(1);
@@ -400,6 +406,52 @@ xmlSecNssKeyDataDesSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSize 
 }
 
 #endif /* XMLSEC_NO_DES */
+
+#ifndef XMLSEC_NO_CHACHA20
+/**************************************************************************
+ *
+ * <xmlsec:ChaCha20KeyValue> processing
+ *
+ *************************************************************************/
+XMLSEC_NSS_SYMKEY_KLASS_EX(KeyDataChaCha20, xmlSecNameChaCha20KeyValue, xmlSecHrefChaCha20KeyValue, xmlSecNodeChaCha20KeyValue, xmlSecNs)
+
+/**
+ * xmlSecNssKeyDataChaCha20GetKlass:
+ *
+ * The ChaCha20 key data klass.
+ *
+ * Returns: ChaCha20 key data klass.
+ */
+xmlSecKeyDataId
+xmlSecNssKeyDataChaCha20GetKlass(void) {
+    return(&xmlSecNssKeyDataChaCha20Klass);
+}
+
+/**
+ * xmlSecNssKeyDataChaCha20Set:
+ * @data:               the pointer to ChaCha20 key data.
+ * @buf:                the pointer to key value.
+ * @bufSize:            the key value size (in bytes).
+ *
+ * Sets the value of ChaCha20 key data.
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecNssKeyDataChaCha20Set(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSize bufSize) {
+    xmlSecBufferPtr buffer;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecNssKeyDataChaCha20Id), -1);
+    xmlSecAssert2(buf != NULL, -1);
+    xmlSecAssert2(bufSize > 0, -1);
+
+    buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
+    xmlSecAssert2(buffer != NULL, -1);
+
+    return(xmlSecBufferSetData(buffer, buf, bufSize));
+}
+
+#endif /* XMLSEC_NO_CHACHA20 */
 
 #ifndef XMLSEC_NO_HMAC
 /**************************************************************************

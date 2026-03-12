@@ -35,6 +35,9 @@ typedef struct _xmlSecKeyDataList                       xmlSecKeyDataList,
                                                         *xmlSecKeyDataListPtr;
 
 
+typedef struct _xmlSecKeyX509DataValue                  xmlSecKeyX509DataValue,
+                                                        *xmlSecKeyX509DataValuePtr;
+
 /**************************************************************************
  *
  * xmlSecKeyDataUsage

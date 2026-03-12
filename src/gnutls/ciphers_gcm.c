@@ -103,15 +103,15 @@ xmlSecGnuTLSGcmCipherInitialize(xmlSecTransformPtr transform) {
     if(transform->id == xmlSecGnuTLSTransformAes128GcmId) {
         ctx->keyId      = xmlSecGnuTLSKeyDataAesId;
         ctx->algorithm  = GNUTLS_CIPHER_AES_128_GCM;
-        ctx->keySize    = XMLSEC_KW_RFC3394_KEY_SIZE_128;
+        ctx->keySize    = XMLSEC_BINARY_KEY_BYTES_SIZE_128;
     } else if(transform->id == xmlSecGnuTLSTransformAes192GcmId) {
         ctx->keyId      = xmlSecGnuTLSKeyDataAesId;
         ctx->algorithm  = GNUTLS_CIPHER_AES_192_GCM;
-        ctx->keySize    = XMLSEC_KW_RFC3394_KEY_SIZE_192;
+        ctx->keySize    = XMLSEC_BINARY_KEY_BYTES_SIZE_192;
     } else if(transform->id == xmlSecGnuTLSTransformAes256GcmId) {
         ctx->keyId      = xmlSecGnuTLSKeyDataAesId;
         ctx->algorithm  = GNUTLS_CIPHER_AES_256_GCM;
-        ctx->keySize    = XMLSEC_KW_RFC3394_KEY_SIZE_256;
+        ctx->keySize    = XMLSEC_BINARY_KEY_BYTES_SIZE_256;
     } else
 
     if(1) {

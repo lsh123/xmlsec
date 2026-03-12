@@ -2607,6 +2607,7 @@ xmlSecTransformIOBufferClose(xmlSecTransformIOBufferPtr buffer) {
     return(0);
 }
 
+<<<<<<< HEAD
 
 /*********************************************************************
  *
@@ -4041,3 +4042,5 @@ xmlSecTransformRsaOaepParamsRead(xmlSecTransformRsaOaepParamsPtr oaepParams, xml
 }
 #endif /* XMLSEC_NO_RSA_OAEP */
 #endif /* XMLSEC_NO_RSA */
+=======
+>>>>>>> 9bb2adee (Create helpers to reduce file sizes)

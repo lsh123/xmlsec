@@ -51,7 +51,6 @@
 #include <xmlsec/nss/pkikeys.h>
 
 #include "../cast_helpers.h"
-#include "../keysdata_helpers.h"
 #include "../x509_helpers.h"
 #include "private.h"
 

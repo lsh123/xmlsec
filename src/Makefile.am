@@ -44,6 +44,7 @@ libxmlsec1_la_SOURCES = \
 	keyinfo.c \
 	keys.c \
 	keysdata.c \
+	keysdata_helpers.c \
 	keysmngr.c \
 	kw_helpers.c \
 	list.c \
@@ -53,6 +54,7 @@ libxmlsec1_la_SOURCES = \
 	relationship.c \
 	strings.c \
 	templates.c \
+	transform_helpers.c \
 	transforms.c \
 	xmldsig.c \
 	xmlenc.c \
@@ -60,7 +62,7 @@ libxmlsec1_la_SOURCES = \
 	xmltree.c \
 	xpath.c \
 	xslt.c \
-	x509.c \
+	x509_helpers.c \
 	$(NULL)
 
 libxmlsec1_la_LIBADD = \

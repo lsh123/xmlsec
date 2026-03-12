@@ -170,6 +170,7 @@ XMLSEC_OBJS = \
 	$(XMLSEC_INTDIR)\keyinfo.obj \
 	$(XMLSEC_INTDIR)\keys.obj \
 	$(XMLSEC_INTDIR)\keysdata.obj \
+	$(XMLSEC_INTDIR)\keysdata_helpers.obj \
 	$(XMLSEC_INTDIR)\keysmngr.obj \
 	$(XMLSEC_INTDIR)\kw_helpers.obj \
 	$(XMLSEC_INTDIR)\list.obj \
@@ -179,6 +180,7 @@ XMLSEC_OBJS = \
 	$(XMLSEC_INTDIR)\relationship.obj \
 	$(XMLSEC_INTDIR)\strings.obj \
 	$(XMLSEC_INTDIR)\templates.obj \
+	$(XMLSEC_INTDIR)\transform_helpers.obj \
 	$(XMLSEC_INTDIR)\transforms.obj \
 	$(XMLSEC_INTDIR)\xmldsig.obj \
 	$(XMLSEC_INTDIR)\xmlenc.obj \
@@ -186,7 +188,7 @@ XMLSEC_OBJS = \
 	$(XMLSEC_INTDIR)\xmltree.obj \
 	$(XMLSEC_INTDIR)\xpath.obj \
 	$(XMLSEC_INTDIR)\xslt.obj \
-	$(XMLSEC_INTDIR)\x509.obj
+	$(XMLSEC_INTDIR)\x509_helpers.obj
 XMLSEC_OBJS_A = \
 	$(XMLSEC_INTDIR_A)\app.obj\
 	$(XMLSEC_INTDIR_A)\base64.obj\
@@ -200,6 +202,7 @@ XMLSEC_OBJS_A = \
 	$(XMLSEC_INTDIR_A)\keyinfo.obj \
 	$(XMLSEC_INTDIR_A)\keys.obj \
 	$(XMLSEC_INTDIR_A)\keysdata.obj \
+	$(XMLSEC_INTDIR_A)\keysdata_helpers.obj \
 	$(XMLSEC_INTDIR_A)\keysmngr.obj \
 	$(XMLSEC_INTDIR_A)\kw_helpers.obj \
 	$(XMLSEC_INTDIR_A)\list.obj \
@@ -209,6 +212,7 @@ XMLSEC_OBJS_A = \
 	$(XMLSEC_INTDIR_A)\relationship.obj \
 	$(XMLSEC_INTDIR_A)\strings.obj \
 	$(XMLSEC_INTDIR_A)\templates.obj \
+	$(XMLSEC_INTDIR_A)\transform_helpers.obj \
 	$(XMLSEC_INTDIR_A)\transforms.obj \
 	$(XMLSEC_INTDIR_A)\xmldsig.obj \
 	$(XMLSEC_INTDIR_A)\xmlenc.obj \
@@ -216,7 +220,7 @@ XMLSEC_OBJS_A = \
 	$(XMLSEC_INTDIR_A)\xmltree.obj \
 	$(XMLSEC_INTDIR_A)\xpath.obj \
 	$(XMLSEC_INTDIR_A)\xslt.obj \
-	$(XMLSEC_INTDIR_A)\x509.obj
+	$(XMLSEC_INTDIR_A)\x509_helpers.obj
 
 XMLSEC_OPENSSL_OBJS = \
 	$(XMLSEC_OPENSSL_INTDIR)\app.obj\

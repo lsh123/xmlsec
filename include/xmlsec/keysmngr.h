@@ -27,8 +27,6 @@ typedef const struct _xmlSecKeyKlass                    xmlSecKeyKlass,
 typedef const struct _xmlSecKeyStoreKlass               xmlSecKeyStoreKlass,
                                                         *xmlSecKeyStoreId;
 
-typedef struct _xmlSecKeyX509DataValue                  xmlSecKeyX509DataValue,
-                                                        *xmlSecKeyX509DataValuePtr;
 
 /****************************************************************************
  *

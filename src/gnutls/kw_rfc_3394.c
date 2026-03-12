@@ -160,15 +160,15 @@ xmlSecGnuTLSKWRfc3394Initialize(xmlSecTransformPtr transform) {
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformKWAes128Id)) {
         ctx->algorithm = GNUTLS_CIPHER_AES_128_CBC;
         keyId = xmlSecGnuTLSKeyDataAesId;
-        keySize = XMLSEC_KW_RFC3394_KEY_SIZE_128;
+        keySize = XMLSEC_BINARY_KEY_BYTES_SIZE_128;
     } else if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformKWAes192Id)) {
         ctx->algorithm = GNUTLS_CIPHER_AES_192_CBC;
         keyId = xmlSecGnuTLSKeyDataAesId;
-        keySize = XMLSEC_KW_RFC3394_KEY_SIZE_192;
+        keySize = XMLSEC_BINARY_KEY_BYTES_SIZE_192;
     } else if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformKWAes256Id)) {
         ctx->algorithm = GNUTLS_CIPHER_AES_256_CBC;
         keyId = xmlSecGnuTLSKeyDataAesId;
-        keySize = XMLSEC_KW_RFC3394_KEY_SIZE_256;
+        keySize = XMLSEC_BINARY_KEY_BYTES_SIZE_256;
     } else
 #endif /* XMLSEC_NO_AES */
 
@@ -176,15 +176,15 @@ xmlSecGnuTLSKWRfc3394Initialize(xmlSecTransformPtr transform) {
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformKWCamellia128Id)) {
         ctx->algorithm = GNUTLS_CIPHER_CAMELLIA_128_CBC;
         keyId = xmlSecGnuTLSKeyDataCamelliaId;
-        keySize = XMLSEC_KW_RFC3394_KEY_SIZE_128;
+        keySize = XMLSEC_BINARY_KEY_BYTES_SIZE_128;
     } else if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformKWCamellia192Id)) {
         ctx->algorithm = GNUTLS_CIPHER_CAMELLIA_192_CBC;
         keyId = xmlSecGnuTLSKeyDataCamelliaId;
-        keySize = XMLSEC_KW_RFC3394_KEY_SIZE_192;
+        keySize = XMLSEC_BINARY_KEY_BYTES_SIZE_192;
     } else if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformKWCamellia256Id)) {
         ctx->algorithm = GNUTLS_CIPHER_CAMELLIA_256_CBC;
         keyId = xmlSecGnuTLSKeyDataCamelliaId;
-        keySize = XMLSEC_KW_RFC3394_KEY_SIZE_256;
+        keySize = XMLSEC_BINARY_KEY_BYTES_SIZE_256;
     } else
 #endif /* XMLSEC_NO_CAMELLIA */
 

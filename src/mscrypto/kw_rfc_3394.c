@@ -140,15 +140,15 @@ xmlSecMSCryptoKWAesInitialize(xmlSecTransformPtr transform) {
     if(transform->id == xmlSecMSCryptoTransformKWAes128Id) {
         ctx->algorithmIdentifier    = CALG_AES_128;
         ctx->providers              = xmlSecMSCryptoProviderInfo_Aes;
-        keyExpectedSize             = XMLSEC_KW_RFC3394_KEY_SIZE_128;
+        keyExpectedSize             = XMLSEC_BINARY_KEY_BYTES_SIZE_128;
     } else if(transform->id == xmlSecMSCryptoTransformKWAes192Id) {
         ctx->algorithmIdentifier    = CALG_AES_192;
         ctx->providers              = xmlSecMSCryptoProviderInfo_Aes;
-        keyExpectedSize             = XMLSEC_KW_RFC3394_KEY_SIZE_192;
+        keyExpectedSize             = XMLSEC_BINARY_KEY_BYTES_SIZE_192;
     } else if(transform->id == xmlSecMSCryptoTransformKWAes256Id) {
         ctx->algorithmIdentifier    = CALG_AES_256;
         ctx->providers              = xmlSecMSCryptoProviderInfo_Aes;
-        keyExpectedSize             = XMLSEC_KW_RFC3394_KEY_SIZE_256;
+        keyExpectedSize             = XMLSEC_BINARY_KEY_BYTES_SIZE_256;
     } else {
         xmlSecInvalidTransfromError(transform)
         return(-1);

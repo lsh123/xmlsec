@@ -536,6 +536,13 @@ xmlSecNssAeadCipherExecute(xmlSecTransformPtr transform, int last, xmlSecTransfo
     ctx = xmlSecNssAeadCipherGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
+#ifndef XMLSEC_NO_CHACHA20
+    /* ChaCha20-Poly1305 requires nonce from transform parameters. */
+    if(xmlSecTransformCheckId(transform, xmlSecNssTransformChaCha20Poly1305Id)) {
+        xmlSecAssert2(ctx->ivInitialized != 0, -1);
+    }
+#endif /* XMLSEC_NO_CHACHA20 */
+
     if(transform->status == xmlSecTransformStatusNone) {
         transform->status = xmlSecTransformStatusWorking;
     }

@@ -213,13 +213,7 @@ xmlSecCryptoGetFunctions_nss(void) {
 
     /******************************* CHACHA20 ********************************/
 #ifndef XMLSEC_NO_CHACHA20
-/* Plain ChaCha20 stream cipher not implemented yet - only ChaCha20-Poly1305 AEAD is supported */
-/*#if defined(CKM_CHACHA20)
-    gXmlSecNssFunctions->transformChaCha20GetKlass          = xmlSecNssTransformChaCha20GetKlass;
-#endif*/ /* defined(CKM_CHACHA20) */
-#if defined(CKM_CHACHA20_POLY1305)
     gXmlSecNssFunctions->transformChaCha20Poly1305GetKlass  = xmlSecNssTransformChaCha20Poly1305GetKlass;
-#endif /* defined(CKM_CHACHA20_POLY1305) */
 #endif /* XMLSEC_NO_CHACHA20 */
 
     /******************************* DSA ********************************/

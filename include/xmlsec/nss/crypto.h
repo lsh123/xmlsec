@@ -312,15 +312,6 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecNssKeyDataChaCha20Set     (xmlSecK
                                                                          xmlSecSize bufSize);
 
 /**
- * xmlSecNssTransformChaCha20Id:
- *
- * The ChaCha20 stream cipher transform klass.
- */
-#define xmlSecNssTransformChaCha20Id \
-        xmlSecNssTransformChaCha20GetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecNssTransformChaCha20GetKlass(void);
-
-/**
  * xmlSecNssTransformChaCha20Poly1305Id:
  *
  * The ChaCha20-Poly1305 AEAD transform klass.

@@ -152,6 +152,40 @@ test_xmlSecTransformChaCha20ParamsRead_missing_counter(void) {
 }
 
 static void
+test_xmlSecTransformChaCha20ParamsRead_missing_nonce_strict(void) {
+    static const char xml[] =
+        "<EncryptionMethod xmlns=\"http://www.w3.org/2001/04/xmlenc#\" "
+        "xmlns:dsig-more=\"http://www.w3.org/2021/04/xmldsig-more#\">"
+        "<dsig-more:Counter>01020304</dsig-more:Counter>"
+        "</EncryptionMethod>";
+    xmlDocPtr doc = NULL;
+    xmlNodePtr node;
+    xmlSecByte iv[XMLSEC_CHACHA20_IV_SIZE];
+    xmlSecSize ivSize = 0;
+    int ret;
+
+    testStart("ChaCha20 read missing nonce strict");
+
+    node = xmlSecUnitTestParseNode(xml, &doc);
+    if(node == NULL) {
+        testFinishedFailure();
+        return;
+    }
+
+    memset(iv, 0xFF, sizeof(iv));
+    ret = xmlSecTransformChaCha20ParamsRead(node, iv, sizeof(iv), &ivSize, NULL, NULL);
+    if(ret >= 0) {
+        fprintf(stderr, "Error: strict ChaCha20 params read accepted missing nonce\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
+static void
 test_xmlSecTransformChaCha20ParamsWrite_roundtrip(void) {
     static const char xml[] =
         "<EncryptionMethod xmlns=\"http://www.w3.org/2001/04/xmlenc#\"/>";
@@ -296,6 +330,46 @@ test_xmlSecTransformChaCha20Poly1305ParamsWrite_roundtrip(void) {
     testFinishedSuccess();
 }
 
+static void
+test_xmlSecTransformChaCha20Poly1305ParamsRead_missing_nonce_strict(void) {
+    static const char xml[] =
+        "<EncryptionMethod xmlns=\"http://www.w3.org/2001/04/xmlenc#\"/>";
+    xmlDocPtr doc = NULL;
+    xmlNodePtr node;
+    xmlSecBuffer aad;
+    xmlSecByte iv[XMLSEC_CHACHA20_NONCE_SIZE];
+    xmlSecSize ivSize = 0;
+    int ret;
+
+    testStart("ChaCha20-Poly1305 read missing nonce strict");
+
+    node = xmlSecUnitTestParseNode(xml, &doc);
+    if(node == NULL) {
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecBufferInitialize(&aad, 0);
+    if(ret < 0) {
+        fprintf(stderr, "Error: failed to initialize AAD buffer\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    ret = xmlSecTransformChaCha20Poly1305ParamsRead(node, &aad, iv, sizeof(iv), &ivSize, NULL);
+    xmlSecBufferFinalize(&aad);
+    if(ret >= 0) {
+        fprintf(stderr, "Error: strict ChaCha20-Poly1305 params read accepted missing nonce\n");
+        xmlFreeDoc(doc);
+        testFinishedFailure();
+        return;
+    }
+
+    xmlFreeDoc(doc);
+    testFinishedSuccess();
+}
+
 #endif /* XMLSEC_NO_CHACHA20 */
 
 int
@@ -305,7 +379,9 @@ test_transform_helpers(void) {
 
     test_xmlSecTransformChaCha20ParamsRead_missing_nonce();
     test_xmlSecTransformChaCha20ParamsRead_missing_counter();
+    test_xmlSecTransformChaCha20ParamsRead_missing_nonce_strict();
     test_xmlSecTransformChaCha20ParamsWrite_roundtrip();
+    test_xmlSecTransformChaCha20Poly1305ParamsRead_missing_nonce_strict();
     test_xmlSecTransformChaCha20Poly1305ParamsWrite_roundtrip();
 
     return(testGroupFinished());

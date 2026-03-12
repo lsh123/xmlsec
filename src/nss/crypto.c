@@ -117,6 +117,10 @@ xmlSecCryptoGetFunctions_nss(void) {
     gXmlSecNssFunctions->keyDataDesGetKlass             = xmlSecNssKeyDataDesGetKlass;
 #endif /* XMLSEC_NO_DES */
 
+#ifndef XMLSEC_NO_CHACHA20
+    gXmlSecNssFunctions->keyDataChaCha20GetKlass        = xmlSecNssKeyDataChaCha20GetKlass;
+#endif /* XMLSEC_NO_CHACHA20 */
+
 #ifndef XMLSEC_NO_DSA
     gXmlSecNssFunctions->keyDataDsaGetKlass             = xmlSecNssKeyDataDsaGetKlass;
 #endif /* XMLSEC_NO_DSA */
@@ -206,6 +210,11 @@ xmlSecCryptoGetFunctions_nss(void) {
     /* kw: uses DES3_CBC */
     gXmlSecNssFunctions->transformKWDes3GetKlass        = xmlSecNssTransformKWDes3GetKlass;
 #endif /* XMLSEC_NO_DES */
+
+    /******************************* CHACHA20 ********************************/
+#ifndef XMLSEC_NO_CHACHA20
+    gXmlSecNssFunctions->transformChaCha20Poly1305GetKlass  = xmlSecNssTransformChaCha20Poly1305GetKlass;
+#endif /* XMLSEC_NO_CHACHA20 */
 
     /******************************* DSA ********************************/
 #ifndef XMLSEC_NO_DSA

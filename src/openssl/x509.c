@@ -55,7 +55,7 @@
 #endif /* OPENSSL_IS_BORINGSSL */
 
 #include "../cast_helpers.h"
-#include "../keysdata_helpers.h"
+#include "../x509_helpers.h"
 
 #include "private.h"
 #include "openssl_compat.h"

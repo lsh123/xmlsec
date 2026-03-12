@@ -9,6 +9,8 @@
 #ifndef __XMLSEC_X509_H__
 #define __XMLSEC_X509_H__
 
+#include <xmlsec/buffer.h>
+
 /**
  * xmlSecKeyX509DataValue:
  * @cert:              the certificate from &lt;dsig:X509Certificate/&gt; node.

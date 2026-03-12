@@ -39,7 +39,7 @@
 #include <xmlsec/mscng/x509.h>
 
 #include "../cast_helpers.h"
-#include "../keysdata_helpers.h"
+#include "../x509_helpers.h"
 #include "private.h"
 
 typedef struct _xmlSecMSCngX509DataCtx xmlSecMSCngX509DataCtx,

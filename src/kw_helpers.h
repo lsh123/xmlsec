@@ -129,9 +129,8 @@ XMLSEC_EXPORT int      xmlSecTransformKWDes3Execute             (xmlSecTransform
 #define XMLSEC_KW_RFC3394_IN_SIZE_MULTIPLY              ((xmlSecSize)8)
 #define XMLSEC_KW_RFC3394_MAGIC_BLOCK_SIZE              ((xmlSecSize)8)
 #define XMLSEC_KW_RFC3394_BLOCK_SIZE                    ((xmlSecSize)16)
-#define XMLSEC_KW_RFC3394_KEY_SIZE_128                   ((xmlSecSize)16)
-#define XMLSEC_KW_RFC3394_KEY_SIZE_192                   ((xmlSecSize)24)
-#define XMLSEC_KW_RFC3394_KEY_SIZE_256                   ((xmlSecSize)32)
+
+#include "keysdata_helpers.h"
 
 typedef int  (*xmlSecKWRfc3394BlockEncryptMethod)       (xmlSecTransformPtr transform,
                                                      const xmlSecByte * in,

@@ -417,15 +417,15 @@ xmlSecGnuTLSCbcCipherInitialize(xmlSecTransformPtr transform) {
     if(transform->id == xmlSecGnuTLSTransformAes128CbcId) {
         ctx->keyId      = xmlSecGnuTLSKeyDataAesId;
         ctx->algorithm  = GNUTLS_CIPHER_AES_128_CBC;
-        ctx->keySize    = XMLSEC_KW_RFC3394_KEY_SIZE_128;
+        ctx->keySize    = XMLSEC_BINARY_KEY_BYTES_SIZE_128;
     } else if(transform->id == xmlSecGnuTLSTransformAes192CbcId) {
         ctx->keyId      = xmlSecGnuTLSKeyDataAesId;
         ctx->algorithm  = GNUTLS_CIPHER_AES_192_CBC;
-        ctx->keySize    = XMLSEC_KW_RFC3394_KEY_SIZE_192;
+        ctx->keySize    = XMLSEC_BINARY_KEY_BYTES_SIZE_192;
     } else if(transform->id == xmlSecGnuTLSTransformAes256CbcId) {
         ctx->keyId      = xmlSecGnuTLSKeyDataAesId;
         ctx->algorithm  = GNUTLS_CIPHER_AES_256_CBC;
-        ctx->keySize    = XMLSEC_KW_RFC3394_KEY_SIZE_256;
+        ctx->keySize    = XMLSEC_BINARY_KEY_BYTES_SIZE_256;
     } else
 #endif /* XMLSEC_NO_AES */
 
@@ -433,15 +433,15 @@ xmlSecGnuTLSCbcCipherInitialize(xmlSecTransformPtr transform) {
     if(transform->id == xmlSecGnuTLSTransformCamellia128CbcId) {
         ctx->keyId      = xmlSecGnuTLSKeyDataCamelliaId;
         ctx->algorithm  = GNUTLS_CIPHER_CAMELLIA_128_CBC;
-        ctx->keySize    = XMLSEC_KW_RFC3394_KEY_SIZE_128;
+        ctx->keySize    = XMLSEC_BINARY_KEY_BYTES_SIZE_128;
     } else if(transform->id == xmlSecGnuTLSTransformCamellia192CbcId) {
         ctx->keyId      = xmlSecGnuTLSKeyDataCamelliaId;
         ctx->algorithm  = GNUTLS_CIPHER_CAMELLIA_192_CBC;
-        ctx->keySize    = XMLSEC_KW_RFC3394_KEY_SIZE_192;
+        ctx->keySize    = XMLSEC_BINARY_KEY_BYTES_SIZE_192;
     } else if(transform->id == xmlSecGnuTLSTransformCamellia256CbcId) {
         ctx->keyId      = xmlSecGnuTLSKeyDataCamelliaId;
         ctx->algorithm  = GNUTLS_CIPHER_CAMELLIA_256_CBC;
-        ctx->keySize    = XMLSEC_KW_RFC3394_KEY_SIZE_256;
+        ctx->keySize    = XMLSEC_BINARY_KEY_BYTES_SIZE_256;
     } else
 #endif /* XMLSEC_NO_CAMELLIA */
 

@@ -19,7 +19,6 @@
 #include "xmlsec_unit_tests.h"
 #include "../src/x509_helpers.h"
 
-
 #if defined(_MSC_VER) && defined(_CRTDBG_MAP_ALLOC)
 #include <crtdbg.h>
 #endif /*defined(_MSC_VER) && defined(_CRTDBG_MAP_ALLOC) */

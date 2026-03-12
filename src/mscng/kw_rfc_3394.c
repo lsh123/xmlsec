@@ -151,11 +151,11 @@ xmlSecMSCngKWAesInitialize(xmlSecTransformPtr transform) {
 
 
     if(transform->id == xmlSecMSCngTransformKWAes128Id) {
-        keyExpectedSize = XMLSEC_KW_RFC3394_KEY_SIZE_128;
+        keyExpectedSize = XMLSEC_BINARY_KEY_BYTES_SIZE_128;
     } else if(transform->id == xmlSecMSCngTransformKWAes192Id) {
-        keyExpectedSize = XMLSEC_KW_RFC3394_KEY_SIZE_192;
+        keyExpectedSize = XMLSEC_BINARY_KEY_BYTES_SIZE_192;
     } else if(transform->id == xmlSecMSCngTransformKWAes256Id) {
-        keyExpectedSize = XMLSEC_KW_RFC3394_KEY_SIZE_256;
+        keyExpectedSize = XMLSEC_BINARY_KEY_BYTES_SIZE_256;
     } else {
         xmlSecInvalidTransfromError(transform)
         return(-1);

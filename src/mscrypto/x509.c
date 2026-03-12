@@ -45,7 +45,7 @@
 #include "private.h"
 
 #include "../cast_helpers.h"
-#include "../keysdata_helpers.h"
+#include "../x509_helpers.h"
 
 /*************************************************************************
  *

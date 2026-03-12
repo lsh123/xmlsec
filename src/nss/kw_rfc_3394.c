@@ -180,15 +180,15 @@ xmlSecNssKWRfc3394Initialize(xmlSecTransformPtr transform) {
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformKWAes128Id)) {
         keyId = xmlSecNssKeyDataAesId;
         ctx->cipherMech = CKM_AES_ECB;
-        keyExpectedSize = XMLSEC_KW_RFC3394_KEY_SIZE_128;
+        keyExpectedSize = XMLSEC_BINARY_KEY_BYTES_SIZE_128;
     } else if(xmlSecTransformCheckId(transform, xmlSecNssTransformKWAes192Id)) {
         keyId = xmlSecNssKeyDataAesId;
         ctx->cipherMech = CKM_AES_ECB;
-        keyExpectedSize = XMLSEC_KW_RFC3394_KEY_SIZE_192;
+        keyExpectedSize = XMLSEC_BINARY_KEY_BYTES_SIZE_192;
     } else if(xmlSecTransformCheckId(transform, xmlSecNssTransformKWAes256Id)) {
         keyId = xmlSecNssKeyDataAesId;
         ctx->cipherMech = CKM_AES_ECB;
-        keyExpectedSize = XMLSEC_KW_RFC3394_KEY_SIZE_256;
+        keyExpectedSize = XMLSEC_BINARY_KEY_BYTES_SIZE_256;
     } else
 #endif /* XMLSEC_NO_AES */
 
@@ -196,15 +196,15 @@ xmlSecNssKWRfc3394Initialize(xmlSecTransformPtr transform) {
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformKWCamellia128Id)) {
         keyId = xmlSecNssKeyDataCamelliaId;
         ctx->cipherMech = CKM_CAMELLIA_ECB;
-        keyExpectedSize = XMLSEC_KW_RFC3394_KEY_SIZE_128;
+        keyExpectedSize = XMLSEC_BINARY_KEY_BYTES_SIZE_128;
     } else if(xmlSecTransformCheckId(transform, xmlSecNssTransformKWCamellia192Id)) {
         keyId = xmlSecNssKeyDataCamelliaId;
         ctx->cipherMech = CKM_CAMELLIA_ECB;
-        keyExpectedSize = XMLSEC_KW_RFC3394_KEY_SIZE_192;
+        keyExpectedSize = XMLSEC_BINARY_KEY_BYTES_SIZE_192;
     } else if(xmlSecTransformCheckId(transform, xmlSecNssTransformKWCamellia256Id)) {
         keyId = xmlSecNssKeyDataCamelliaId;
         ctx->cipherMech = CKM_CAMELLIA_ECB;
-        keyExpectedSize = XMLSEC_KW_RFC3394_KEY_SIZE_256;
+        keyExpectedSize = XMLSEC_BINARY_KEY_BYTES_SIZE_256;
     } else
 #endif /* XMLSEC_NO_CAMELLIA */
 

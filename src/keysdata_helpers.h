@@ -18,7 +18,6 @@
 
 #include <xmlsec/keysdata.h>
 #include <xmlsec/keysmngr.h>
-#include <xmlsec/x509.h>
 
 
 XMLSEC_EXPORT void          xmlSecKeyDataDebugDumpImpl(xmlSecKeyDataPtr data, FILE* output);
@@ -31,6 +30,15 @@ XMLSEC_EXPORT void          xmlSecKeyDataDebugXmlDumpImpl(xmlSecKeyDataPtr data,
  * xmlSecKeyData + xmlSecBuffer (key)
  *
  *************************************************************************/
+
+/**************************************************************************
+ *
+ * Binary key sizes (in bytes)
+ *
+ *************************************************************************/
+#define XMLSEC_BINARY_KEY_BYTES_SIZE_128            ((xmlSecSize)16)
+#define XMLSEC_BINARY_KEY_BYTES_SIZE_192            ((xmlSecSize)24)
+#define XMLSEC_BINARY_KEY_BYTES_SIZE_256            ((xmlSecSize)32)
 
 /**
  * xmlSecKeyDataiBinary:
@@ -304,58 +312,5 @@ XMLSEC_EXPORT int               xmlSecKeyDataDsaXmlWrite                (xmlSecK
                                                                          xmlSecKeyDataDsaWrite writeFunc);
 #endif /* !defined(XMLSEC_NO_DSA) */
 
-#if !defined(XMLSEC_NO_X509)
-/**************************************************************************
- *
- * Helper functions to read/write X509 Keys
- *
- *************************************************************************/
-
-
-/**
- * xmlSecKeyDataX509Read:
- * @data:               the pointer to X509 key data
- * @x509Value:          the pointer to input @xmlSecKeyX509DataValue.
- * @keysMngr:           the pointer to @xmlSecKeysMngr.
- * @flags:              the flags for certs processing.
- *
- *
- * Returns: 0 on success and a negative value otherwise.
- */
-typedef int                    (*xmlSecKeyDataX509Read)                 (xmlSecKeyDataPtr data,
-                                                                         xmlSecKeyX509DataValuePtr x509Value,
-                                                                         xmlSecKeysMngrPtr keysMngr,
-                                                                         unsigned int flags);
-
-/**
- * xmlSecKeyDataX509Write:
- * @data:               the pointer to result @xmlSecKeyData.
- * @x509Value:          the pointer to result @xmlSecKeyX509DataValue.
- * @content:            the bitmask of what should be output to @x509Value.
- * @context:            the writer function context.
- *
- * If available, writes the next X509 object (cert or crl) into @x509Value.
- *
- * Returns: 1 on success, 0 if no more certs/crls are available, or a negative
- * value if an error occurs.
- */
-typedef int                    (*xmlSecKeyDataX509Write)                (xmlSecKeyDataPtr data,
-                                                                         xmlSecKeyX509DataValuePtr x509Value,
-                                                                         int content,
-                                                                         void* context);
-
-XMLSEC_EXPORT int               xmlSecKeyDataX509XmlRead                (xmlSecKeyPtr key,
-                                                                         xmlSecKeyDataPtr data,
-                                                                         xmlNodePtr node,
-                                                                         xmlSecKeyInfoCtxPtr keyInfoCtx,
-                                                                         xmlSecKeyDataX509Read readFunc);
-XMLSEC_EXPORT int               xmlSecKeyDataX509XmlWrite               (xmlSecKeyDataPtr data,
-                                                                         xmlNodePtr node,
-                                                                         xmlSecKeyInfoCtxPtr keyInfoCtx,
-                                                                         int base64LineSize,
-                                                                         int addLineBreaks,
-                                                                         xmlSecKeyDataX509Write writeFunc,
-                                                                         void* writeFuncContext);
-#endif /* !defined(XMLSEC_NO_X509) */
 
 #endif /* __XMLSEC_KEYSDATA_HELPERS_H__ */

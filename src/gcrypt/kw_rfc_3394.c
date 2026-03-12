@@ -117,13 +117,13 @@ xmlSecGCryptKWAesInitialize(xmlSecTransformPtr transform) {
 
     if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformKWAes128Id)) {
         ctx->cipher     = GCRY_CIPHER_AES128;
-        keyExpectedSize = XMLSEC_KW_RFC3394_KEY_SIZE_128;
+        keyExpectedSize = XMLSEC_BINARY_KEY_BYTES_SIZE_128;
     } else if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformKWAes192Id)) {
         ctx->cipher     = GCRY_CIPHER_AES192;
-        keyExpectedSize = XMLSEC_KW_RFC3394_KEY_SIZE_192;
+        keyExpectedSize = XMLSEC_BINARY_KEY_BYTES_SIZE_192;
     } else if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformKWAes256Id)) {
         ctx->cipher     = GCRY_CIPHER_AES256;
-        keyExpectedSize = XMLSEC_KW_RFC3394_KEY_SIZE_256;
+        keyExpectedSize = XMLSEC_BINARY_KEY_BYTES_SIZE_256;
     } else {
         xmlSecInvalidTransfromError(transform)
         return(-1);

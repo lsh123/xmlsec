@@ -32,8 +32,9 @@
 #include <xmlsec/mscng/crypto.h>
 #include <xmlsec/mscng/x509.h>
 
-#include "../cast_helpers.h"
 #include "private.h"
+#include "../cast_helpers.h"
+#include "../x509_helpers.h"
 
 typedef struct _xmlSecMSCngX509StoreCtx xmlSecMSCngX509StoreCtx,
                                        *xmlSecMSCngX509StoreCtxPtr;
@@ -771,7 +772,7 @@ xmlSecMSCngX509StoreVerifyCertificateOwn(PCCERT_CONTEXT cert, FILETIME* time,
  * Returns: 1 on success (cert verified), 0 if cert can't be verified, or a negative value if an error occurs.
  */
 static int
-xmlSecMSCngX509StoreVerifyCertificateSystem(PCCERT_CONTEXT cert, FILETIME* time, 
+xmlSecMSCngX509StoreVerifyCertificateSystem(PCCERT_CONTEXT cert, FILETIME* time,
     HCERTSTORE untrustedStore, HCERTSTORE docStore, HCERTSTORE crlStore
 ) {
     PCCERT_CHAIN_CONTEXT pChainContext = NULL;

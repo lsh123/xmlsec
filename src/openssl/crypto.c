@@ -213,10 +213,8 @@ xmlSecCryptoGetFunctions_openssl(void) {
 
     /******************************* CHACHA20 ********************************/
 #ifndef XMLSEC_NO_CHACHA20
-#if !defined(XMLSEC_OPENSSL_API_100)
     gXmlSecOpenSSLFunctions->transformChaCha20GetKlass          = xmlSecOpenSSLTransformChaCha20GetKlass;
     gXmlSecOpenSSLFunctions->transformChaCha20Poly1305GetKlass  = xmlSecOpenSSLTransformChaCha20Poly1305GetKlass;
-#endif /* !defined(XMLSEC_OPENSSL_API_100) */
 #endif /* XMLSEC_NO_CHACHA20 */
 
 

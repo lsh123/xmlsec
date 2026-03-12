@@ -224,7 +224,7 @@ XMLSEC_OBJS_A = \
 
 XMLSEC_OPENSSL_OBJS = \
 	$(XMLSEC_OPENSSL_INTDIR)\app.obj\
-	$(XMLSEC_OPENSSL_INTDIR)\ciphers.obj \
+	$(XMLSEC_OPENSSL_INTDIR)\ciphers_block.obj \
 	$(XMLSEC_OPENSSL_INTDIR)\ciphers_aead.obj \
 	$(XMLSEC_OPENSSL_INTDIR)\crypto.obj \
 	$(XMLSEC_OPENSSL_INTDIR)\der_encoded_value.obj \
@@ -245,7 +245,7 @@ XMLSEC_OPENSSL_OBJS = \
 	$(XMLSEC_OPENSSL_INTDIR)\x509vfy.obj
 XMLSEC_OPENSSL_OBJS_A = \
 	$(XMLSEC_OPENSSL_INTDIR_A)\app.obj\
-	$(XMLSEC_OPENSSL_INTDIR_A)\ciphers.obj \
+	$(XMLSEC_OPENSSL_INTDIR_A)\ciphers_block.obj \
 	$(XMLSEC_OPENSSL_INTDIR_A)\ciphers_aead.obj \
 	$(XMLSEC_OPENSSL_INTDIR_A)\crypto.obj \
 	$(XMLSEC_OPENSSL_INTDIR_A)\der_encoded_value.obj \
@@ -267,7 +267,7 @@ XMLSEC_OPENSSL_OBJS_A = \
 
 XMLSEC_NSS_OBJS = \
 	$(XMLSEC_NSS_INTDIR)\app.obj \
-	$(XMLSEC_NSS_INTDIR)\ciphers_cbc.obj \
+	$(XMLSEC_NSS_INTDIR)\ciphers_block.obj \
 	$(XMLSEC_NSS_INTDIR)\ciphers_aead.obj \
 	$(XMLSEC_NSS_INTDIR)\concatkdf.obj \
 	$(XMLSEC_NSS_INTDIR)\crypto.obj \
@@ -288,7 +288,7 @@ XMLSEC_NSS_OBJS = \
 	$(XMLSEC_NSS_INTDIR)\x509vfy.obj
 XMLSEC_NSS_OBJS_A = \
 	$(XMLSEC_NSS_INTDIR_A)\app.obj \
-	$(XMLSEC_NSS_INTDIR_A)\ciphers_cbc.obj \
+	$(XMLSEC_NSS_INTDIR_A)\ciphers_block.obj \
 	$(XMLSEC_NSS_INTDIR_A)\ciphers_aead.obj \
 	$(XMLSEC_NSS_INTDIR_A)\concatkdf.obj \
 	$(XMLSEC_NSS_INTDIR_A)\crypto.obj \

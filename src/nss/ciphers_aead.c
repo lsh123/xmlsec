@@ -71,10 +71,10 @@ struct _xmlSecNssAeadCipherCtx {
     xmlSecKeyDataId         keyId;
     xmlSecSize              keySize;
     xmlSecKeyDataPtr        keyData;
+    xmlSecByte              iv[XMLSEC_NSS_AEAD_CIPHER_IV_SIZE];   /* Nonce/IV storage */
 
 #ifndef XMLSEC_NO_AES
     CK_GCM_PARAMS_V3 gcm;
-    xmlSecByte              iv[XMLSEC_NSS_AEAD_CIPHER_IV_SIZE];   /* Nonce/IV storage */
 #endif /* XMLSEC_NO_AES */
 
 #ifndef XMLSEC_NO_CHACHA20

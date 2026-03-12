@@ -40,6 +40,7 @@ typedef uint32_t xmlSecOpenSSLErrorType;
 typedef unsigned long xmlSecOpenSSLErrorType;
 #endif /* ! OPENSSL_IS_AWSLC */
 
+
 /**
  * xmlSecOpenSSLError:
  * @errorFunction:      the failed function name.

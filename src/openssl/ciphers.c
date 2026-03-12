@@ -121,9 +121,9 @@ xmlSecOpenSSLEvpBlockCipherCtxInit(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     if(!ctx->ivInitialized) {
         if(encrypt) {
             /* generate random iv */
-            ret = RAND_priv_bytes_ex(xmlSecOpenSSLGetLibCtx(), ctx->iv, ivSize, XMLSEC_OPENSSL_RAND_BYTES_STRENGTH);
-            if(ret != 1) {
-                xmlSecOpenSSLError2("RAND_priv_bytes_ex", cipherName, "size=" XMLSEC_SIZE_FMT, ivSize);
+            ret = xmlSecOpenSSLGenerateRandomBytes(ctx->iv, ivSize);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecOpenSSLGenerateRandom", cipherName);
                 return(-1);
             }
 
@@ -498,10 +498,9 @@ xmlSecOpenSSLEvpBlockCipherCBCCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
         /* generate random padding */
         if(padLen > 1) {
             XMLSEC_OPENSSL_SAFE_CAST_UINT_TO_SIZE(padLen, size, return(-1), NULL);
-            ret = RAND_priv_bytes_ex(xmlSecOpenSSLGetLibCtx(), ctx->pad + inLen, size - 1,
-                                XMLSEC_OPENSSL_RAND_BYTES_STRENGTH);
-            if (ret != 1) {
-                xmlSecOpenSSLError("RAND_priv_bytes_ex", cipherName);
+            ret = xmlSecOpenSSLGenerateRandomBytes(ctx->pad + inLen, size - 1);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecOpenSSLGenerateRandom", cipherName);
                 return(-1);
             }
         }
@@ -1017,7 +1016,7 @@ xmlSecOpenSSLEvpBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSe
 }
 
 /* Helper macros to define block cipher transform klasses */
-#define XMLSEC_OPENSSL_BLOCK_CIPHER_KLASS_EX(name, readNode)                                            \
+#define XMLSEC_OPENSSL_BLOCK_CIPHER_KLASS_EX(name, readNode, writeNode)                                 \
 static xmlSecTransformKlass xmlSecOpenSSL ## name ## Klass = {                                          \
     /* klass/object sizes */                                                                            \
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                              \
@@ -1028,7 +1027,7 @@ static xmlSecTransformKlass xmlSecOpenSSL ## name ## Klass = {                  
     xmlSecOpenSSLEvpBlockCipherInitialize,      /* xmlSecTransformInitializeMethod initialize; */       \
     xmlSecOpenSSLEvpBlockCipherFinalize,        /* xmlSecTransformFinalizeMethod finalize; */           \
     readNode,                                   /* xmlSecTransformNodeReadMethod readNode; */           \
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */         \
+    writeNode,                                  /* xmlSecTransformNodeWriteMethod writeNode; */         \
     xmlSecOpenSSLEvpBlockCipherSetKeyReq,       /* xmlSecTransformSetKeyReqMethod setKeyReq; */         \
     xmlSecOpenSSLEvpBlockCipherSetKey,          /* xmlSecTransformSetKeyMethod setKey; */               \
     NULL,                                       /* xmlSecTransformValidateMethod validate; */           \
@@ -1043,7 +1042,7 @@ static xmlSecTransformKlass xmlSecOpenSSL ## name ## Klass = {                  
 };
 
 #define XMLSEC_OPENSSL_BLOCK_CIPHER_KLASS(name)                                                         \
-    XMLSEC_OPENSSL_BLOCK_CIPHER_KLASS_EX(name, NULL)
+    XMLSEC_OPENSSL_BLOCK_CIPHER_KLASS_EX(name, NULL, NULL)
 
 
 #ifndef XMLSEC_NO_AES
@@ -1235,6 +1234,8 @@ xmlSecOpenSSLChaCha20NodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
                                xmlSecTransformCtxPtr transformCtx) {
     xmlSecOpenSSLEvpBlockCipherCtxPtr ctx;
     xmlSecSize ivSize = 0;
+    int noncePresent = 0;
+    int counterPresent = 0;
     int ret;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformChaCha20Id), -1);
@@ -1246,10 +1247,26 @@ xmlSecOpenSSLChaCha20NodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->ivInitialized == 0, -1);
 
-    ret = xmlSecTransformChaCha20ParamsRead(node, ctx->iv, sizeof(ctx->iv), &ivSize);
+    ret = xmlSecTransformChaCha20ParamsRead(node, ctx->iv, sizeof(ctx->iv), &ivSize,
+        &noncePresent, &counterPresent);
     if((ret < 0) || (ivSize != XMLSEC_CHACHA20_IV_SIZE)) {
         xmlSecInternalError("xmlSecTransformChaCha20ParamsRead", xmlSecTransformGetName(transform));
         return(-1);
+    }
+
+    if(noncePresent == 0) {
+        ret = xmlSecOpenSSLGenerateRandomBytes(ctx->iv + XMLSEC_CHACHA20_COUNTER_SIZE, XMLSEC_CHACHA20_NONCE_SIZE);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecOpenSSLGenerateRandomBytes(Nonce)", xmlSecTransformGetName(transform));
+            return(-1);
+        }
+    }
+    if(counterPresent == 0) {
+        ret = xmlSecOpenSSLGenerateRandomBytes(ctx->iv, XMLSEC_CHACHA20_COUNTER_SIZE);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecOpenSSLGenerateRandomBytes(Counter)", xmlSecTransformGetName(transform));
+            return(-1);
+        }
     }
     ctx->ivInitialized = 1;
 
@@ -1257,8 +1274,32 @@ xmlSecOpenSSLChaCha20NodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     return(0);
 }
 
+static int
+xmlSecOpenSSLChaCha20NodeWrite(xmlSecTransformPtr transform, xmlNodePtr node,
+                               xmlSecTransformCtxPtr transformCtx) {
+    xmlSecOpenSSLEvpBlockCipherCtxPtr ctx;
+    int ret;
+
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformChaCha20Id), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLEvpBlockCipherSize), -1);
+    xmlSecAssert2(node != NULL, -1);
+    UNREFERENCED_PARAMETER(transformCtx);
+
+    ctx = xmlSecOpenSSLEvpBlockCipherGetCtx(transform);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->ivInitialized != 0, -1);
+
+    ret = xmlSecTransformChaCha20ParamsWrite(node, ctx->iv, XMLSEC_CHACHA20_IV_SIZE);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecTransformChaCha20ParamsWrite", xmlSecTransformGetName(transform));
+        return(-1);
+    }
+
+    return(0);
+}
+
 /* ChaCha20 cipher transform: xmlSecOpenSSLChaCha20Klass */
-XMLSEC_OPENSSL_BLOCK_CIPHER_KLASS_EX(ChaCha20, xmlSecOpenSSLChaCha20NodeRead)
+XMLSEC_OPENSSL_BLOCK_CIPHER_KLASS_EX(ChaCha20, xmlSecOpenSSLChaCha20NodeRead, xmlSecOpenSSLChaCha20NodeWrite)
 
 /**
  * xmlSecOpenSSLTransformChaCha20GetKlass:
@@ -1284,6 +1325,7 @@ xmlSecOpenSSLChaCha20Poly1305NodeRead(xmlSecTransformPtr transform, xmlNodePtr n
                                       xmlSecTransformCtxPtr transformCtx) {
     xmlSecOpenSSLEvpBlockCipherCtxPtr ctx;
     xmlSecSize ivSize = 0;
+    int noncePresent = 0;
     int ret;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformChaCha20Poly1305Id), -1);
@@ -1295,10 +1337,19 @@ xmlSecOpenSSLChaCha20Poly1305NodeRead(xmlSecTransformPtr transform, xmlNodePtr n
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->ivInitialized == 0, -1);
 
-    ret = xmlSecTransformChaCha20Poly1305ParamsRead(node, &(ctx->aad), ctx->iv, sizeof(ctx->iv), &ivSize);
+    ret = xmlSecTransformChaCha20Poly1305ParamsRead(node, &(ctx->aad), ctx->iv, sizeof(ctx->iv), &ivSize,
+        &noncePresent);
     if((ret < 0) || (ivSize != XMLSEC_CHACHA20_NONCE_SIZE)) {
         xmlSecInternalError("xmlSecTransformChaCha20Poly1305ParamsRead", xmlSecTransformGetName(transform));
         return(-1);
+    }
+
+    if(noncePresent == 0) {
+        ret = xmlSecOpenSSLGenerateRandomBytes(ctx->iv, XMLSEC_CHACHA20_NONCE_SIZE);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecOpenSSLGenerateRandomBytes(Nonce)", xmlSecTransformGetName(transform));
+            return(-1);
+        }
     }
     ctx->ivInitialized = 1;
 
@@ -1306,8 +1357,32 @@ xmlSecOpenSSLChaCha20Poly1305NodeRead(xmlSecTransformPtr transform, xmlNodePtr n
     return(0);
 }
 
+static int
+xmlSecOpenSSLChaCha20Poly1305NodeWrite(xmlSecTransformPtr transform, xmlNodePtr node,
+                                       xmlSecTransformCtxPtr transformCtx) {
+    xmlSecOpenSSLEvpBlockCipherCtxPtr ctx;
+    int ret;
+
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformChaCha20Poly1305Id), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLEvpBlockCipherSize), -1);
+    xmlSecAssert2(node != NULL, -1);
+    UNREFERENCED_PARAMETER(transformCtx);
+
+    ctx = xmlSecOpenSSLEvpBlockCipherGetCtx(transform);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->ivInitialized != 0, -1);
+
+    ret = xmlSecTransformChaCha20Poly1305ParamsWrite(node, ctx->iv, XMLSEC_CHACHA20_NONCE_SIZE);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecTransformChaCha20Poly1305ParamsWrite", xmlSecTransformGetName(transform));
+        return(-1);
+    }
+
+    return(0);
+}
+
 /* ChaCha20-Poly1305 AEAD cipher transform: xmlSecOpenSSLChaCha20Poly1305Klass */
-XMLSEC_OPENSSL_BLOCK_CIPHER_KLASS_EX(ChaCha20Poly1305, xmlSecOpenSSLChaCha20Poly1305NodeRead)
+XMLSEC_OPENSSL_BLOCK_CIPHER_KLASS_EX(ChaCha20Poly1305, xmlSecOpenSSLChaCha20Poly1305NodeRead, xmlSecOpenSSLChaCha20Poly1305NodeWrite)
 
 /**
  * xmlSecOpenSSLTransformChaCha20Poly1305GetKlass:

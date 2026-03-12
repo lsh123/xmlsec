@@ -54,6 +54,9 @@ int main(int argc, const char **argv) {
     if (test_base64() != 1) {
         success = 0;
     }
+    if (test_transform_helpers() != 1) {
+        success = 0;
+    }
     if (test_xmlSecX509EscapedStringRead() != 1) {
         success = 0;
     }

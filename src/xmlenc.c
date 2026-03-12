@@ -830,6 +830,14 @@ xmlSecEncCtxEncDataNodeWrite(xmlSecEncCtxPtr encCtx) {
     xmlSecAssert2(encCtx->result != NULL, -1);
     xmlSecAssert2(encCtx->encKey != NULL, -1);
 
+    if((encCtx->encMethodNode != NULL) && (encCtx->encMethod != NULL) && (encCtx->encMethod->id->writeNode != NULL)) {
+        ret = encCtx->encMethod->id->writeNode(encCtx->encMethod, encCtx->encMethodNode, &(encCtx->transformCtx));
+        if(ret < 0) {
+            xmlSecInternalError("writeNode", xmlSecNodeGetName(encCtx->encMethodNode));
+            return(-1);
+        }
+    }
+
     /* write encrypted data to xml (if requested) */
     if(encCtx->cipherValueNode != NULL) {
         xmlSecByte* inBuf;

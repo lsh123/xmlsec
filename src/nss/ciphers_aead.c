@@ -105,7 +105,7 @@ static int      xmlSecNssAeadCipherCheckId       (xmlSecTransformPtr transform);
 
 
 /* Helper macro to define the AES GCM transform klass */
-#define XMLSEC_NSS_CIPHER_AEAD_KLASS_EX(name, nodeRead)                                                     \
+#define XMLSEC_NSS_CIPHER_AEAD_KLASS_EX(name, nodeRead, nodeWrite)                                          \
 static xmlSecTransformKlass xmlSecNss ## name ## Klass = {                                                  \
     /* klass/object sizes */                                                                                \
     sizeof(xmlSecTransformKlass),                   /* xmlSecSize klassSize */                              \
@@ -118,7 +118,7 @@ static xmlSecTransformKlass xmlSecNss ## name ## Klass = {                      
     xmlSecNssAeadCipherInitialize,                  /* xmlSecTransformInitializeMethod initialize; */       \
     xmlSecNssAeadCipherFinalize,                    /* xmlSecTransformFinalizeMethod finalize; */           \
     nodeRead,                                       /* xmlSecTransformNodeReadMethod readNode; */           \
-    NULL,                                           /* xmlSecTransformNodeWriteMethod writeNode; */         \
+    nodeWrite,                                      /* xmlSecTransformNodeWriteMethod writeNode; */         \
     xmlSecNssAeadCipherSetKeyReq,                   /* xmlSecTransformSetKeyMethod setKeyReq; */            \
     xmlSecNssAeadCipherSetKey,                      /* xmlSecTransformSetKeyMethod setKey; */               \
     NULL,                                           /* xmlSecTransformValidateMethod validate; */           \
@@ -611,7 +611,7 @@ xmlSecNssAeadCipherCtxSetupParamsGcm(xmlSecNssAeadCipherCtxPtr ctx, SECItem* par
 }
 
 
-XMLSEC_NSS_CIPHER_AEAD_KLASS_EX(Aes128Gcm, NULL)
+XMLSEC_NSS_CIPHER_AEAD_KLASS_EX(Aes128Gcm, NULL, NULL)
 
 /**
  * xmlSecNssTransformAes128GcmGetKlass:
@@ -625,7 +625,7 @@ xmlSecNssTransformAes128GcmGetKlass(void) {
     return(&xmlSecNssAes128GcmKlass);
 }
 
-XMLSEC_NSS_CIPHER_AEAD_KLASS_EX(Aes192Gcm, NULL)
+XMLSEC_NSS_CIPHER_AEAD_KLASS_EX(Aes192Gcm, NULL, NULL)
 
 /**
  * xmlSecNssTransformAes192GcmGetKlass:
@@ -639,7 +639,7 @@ xmlSecNssTransformAes192GcmGetKlass(void) {
     return(&xmlSecNssAes192GcmKlass);
 }
 
-XMLSEC_NSS_CIPHER_AEAD_KLASS_EX(Aes256Gcm, NULL)
+XMLSEC_NSS_CIPHER_AEAD_KLASS_EX(Aes256Gcm, NULL, NULL)
 
 /**
  * xmlSecNssTransformAes256GcmGetKlass:
@@ -684,6 +684,9 @@ static int
 xmlSecNssAeadCipherNodeReadChaCha20Poly1305(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransformCtxPtr transformCtx XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecNssAeadCipherCtxPtr ctx;
     xmlSecSize ivSize = 0;
+    int noncePresent = 0;
+    int len;
+    SECStatus rv;
     int ret;
 
     xmlSecAssert2(xmlSecNssAeadCipherCheckId(transform), -1);
@@ -694,10 +697,20 @@ xmlSecNssAeadCipherNodeReadChaCha20Poly1305(xmlSecTransformPtr transform, xmlNod
     ctx = xmlSecNssAeadCipherGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    ret = xmlSecTransformChaCha20Poly1305ParamsRead(node, &(ctx->aad), ctx->iv, sizeof(ctx->iv), &ivSize);
+    ret = xmlSecTransformChaCha20Poly1305ParamsRead(node, &(ctx->aad), ctx->iv, sizeof(ctx->iv), &ivSize, &noncePresent);
     if((ret < 0) || (ivSize != XMLSEC_CHACHA20_NONCE_SIZE)) {
         xmlSecInternalError("xmlSecTransformChaCha20Poly1305ParamsRead", xmlSecTransformGetName(transform));
         return(-1);
+    }
+
+    if(noncePresent == 0) {
+        XMLSEC_SAFE_CAST_SIZE_TO_INT(XMLSEC_CHACHA20_NONCE_SIZE, len, return(-1), xmlSecTransformGetName(transform));
+        rv = PK11_GenerateRandom(ctx->iv, len);
+        if(rv != SECSuccess) {
+            xmlSecNssError2("PK11_GenerateRandom", xmlSecTransformGetName(transform),
+                "size=" XMLSEC_SIZE_FMT, XMLSEC_CHACHA20_NONCE_SIZE);
+            return(-1);
+        }
     }
     ctx->ivInitialized = 1;
 
@@ -705,8 +718,32 @@ xmlSecNssAeadCipherNodeReadChaCha20Poly1305(xmlSecTransformPtr transform, xmlNod
     return(0);
 }
 
+static int
+xmlSecNssAeadCipherNodeWriteChaCha20Poly1305(xmlSecTransformPtr transform, xmlNodePtr node,
+    xmlSecTransformCtxPtr transformCtx) {
+    xmlSecNssAeadCipherCtxPtr ctx;
+    int ret;
 
-XMLSEC_NSS_CIPHER_AEAD_KLASS_EX(ChaCha20Poly1305, xmlSecNssAeadCipherNodeReadChaCha20Poly1305)
+    xmlSecAssert2(xmlSecNssAeadCipherCheckId(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssAeadCipherSize), -1);
+    xmlSecAssert2(node != NULL, -1);
+    UNREFERENCED_PARAMETER(transformCtx);
+
+    ctx = xmlSecNssAeadCipherGetCtx(transform);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->ivInitialized != 0, -1);
+
+    ret = xmlSecTransformChaCha20Poly1305ParamsWrite(node, ctx->iv, XMLSEC_CHACHA20_NONCE_SIZE);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecTransformChaCha20Poly1305ParamsWrite", xmlSecTransformGetName(transform));
+        return(-1);
+    }
+
+    return(0);
+}
+
+
+XMLSEC_NSS_CIPHER_AEAD_KLASS_EX(ChaCha20Poly1305, xmlSecNssAeadCipherNodeReadChaCha20Poly1305, xmlSecNssAeadCipherNodeWriteChaCha20Poly1305)
 
 /**
  * xmlSecNssTransformChaCha20Poly1305GetKlass:

@@ -13,6 +13,10 @@
 #include "../cast_helpers.h"
 
 
+/* internal helpers */
+int             xmlSecOpenSSLGenerateRandomBytes             (xmlSecByte* data, xmlSecSize size);
+
+
 /******************************************************************************
  *
  * boringssl and aws-lc compatibility
@@ -188,20 +192,13 @@ typedef int xmlSecOpenSSLSizeT;
 #define X509_STORE_set_default_paths_ex(ctx,libctx,propq)           X509_STORE_set_default_paths((ctx))
 #define X509_NAME_hash_ex(x,libctx,propq,ok)                        X509_NAME_hash((x))
 
-#define RAND_priv_bytes_ex(ctx,buf,num,strength)                    xmlSecOpenSSLCompatRand((buf),(num))
-static inline int xmlSecOpenSSLCompatRand(unsigned char *buf, xmlSecSize size) {
-    xmlSecOpenSSLSizeT num;
-    XMLSEC_OPENSSL_SAFE_CAST_SIZE_TO_SIZE_T(size, num, return(0), NULL);
-    return(RAND_priv_bytes(buf, num));
-}
-
 #endif /* !defined(XMLSEC_OPENSSL_API_300) */
 
 
 /******************************************************************************
  *
  * Common constants that aren't defined anywhere.
- *
+ *xmlSecOpenSSLGenerateRandom
  *****************************************************************************/
 #ifndef XMLSEC_NO_GOST
 #define XMLSEC_OPENSSL_DIGEST_NAME_GOST94       "md_gost94"
@@ -214,7 +211,6 @@ static inline int xmlSecOpenSSLCompatRand(unsigned char *buf, xmlSecSize size) {
 
 
 #ifdef XMLSEC_OPENSSL_API_300
-#define XMLSEC_OPENSSL_RAND_BYTES_STRENGTH     0
 
 /* Cipher names, hopefully OpenSSL defines them one day */
 #define XMLSEC_OPENSSL_CIPHER_NAME_DES3_EDE         "DES3"

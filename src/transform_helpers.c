@@ -1362,17 +1362,17 @@ xmlSecTransformChaCha20Poly1305ParamsRead(xmlNodePtr node, xmlSecBufferPtr aad, 
     }
     if(cur != NULL) {
         xmlChar* aadContent = xmlNodeGetContent(cur);
-        int aadContentLen = xmlStrlen(aadContent);
-
-        if((aadContent != NULL) && (aadContentLen > 0)) {
-            ret = xmlSecBufferSetData(aad, aadContent, (xmlSecSize)aadContentLen);
-            if(ret < 0) {
-                xmlSecInternalError("xmlSecBufferSetData(aad)", NULL);
-                xmlFree(aadContent);
-                return(-1);
-            }
-        }
         if(aadContent != NULL) {
+            int aadContentLen = xmlStrlen(aadContent);
+
+            if(aadContentLen > 0) {
+                ret = xmlSecBufferSetData(aad, aadContent, (xmlSecSize)aadContentLen);
+                if(ret < 0) {
+                    xmlSecInternalError("xmlSecBufferSetData(aad)", NULL);
+                    xmlFree(aadContent);
+                    return(-1);
+                }
+            }
             xmlFree(aadContent);
         }
     }

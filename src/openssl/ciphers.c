@@ -1191,39 +1191,6 @@ xmlSecOpenSSLTransformDes3CbcGetKlass(void) {
  *
  *******************************************************************/
 
-/*
- * ChaCha20-Poly1305 AEAD context (ChaCha20 stream cipher uses the EvpBlockCipher framework)
- */
-typedef struct _xmlSecOpenSSLChaCha20Poly1305Ctx  xmlSecOpenSSLChaCha20Poly1305Ctx,
-                                                   *xmlSecOpenSSLChaCha20Poly1305CtxPtr;
-struct _xmlSecOpenSSLChaCha20Poly1305Ctx {
-    const EVP_CIPHER*                       cipher;
-    EVP_CIPHER_CTX*                         cipherCtx;
-    xmlSecByte                              key[EVP_MAX_KEY_LENGTH];
-    xmlSecTransformChaCha20Poly1305Params   params;
-
-    int                                     ctxInitialized;
-    int                                     keyInitialized;
-    int                                     paramsInitialized;
-};
-
-XMLSEC_TRANSFORM_DECLARE(OpenSSLChaCha20Poly1305, xmlSecOpenSSLChaCha20Poly1305Ctx)
-#define xmlSecOpenSSLChaCha20Poly1305Size XMLSEC_TRANSFORM_SIZE(OpenSSLChaCha20Poly1305)
-
-/* Forward declarations for ChaCha20-Poly1305 */
-static int  xmlSecOpenSSLChaCha20Poly1305Initialize   (xmlSecTransformPtr transform);
-static void xmlSecOpenSSLChaCha20Poly1305Finalize     (xmlSecTransformPtr transform);
-static int  xmlSecOpenSSLChaCha20Poly1305NodeRead     (xmlSecTransformPtr transform,
-                                                        xmlNodePtr node,
-                                                        xmlSecTransformCtxPtr transformCtx);
-static int  xmlSecOpenSSLChaCha20Poly1305SetKeyReq    (xmlSecTransformPtr transform,
-                                                        xmlSecKeyReqPtr keyReq);
-static int  xmlSecOpenSSLChaCha20Poly1305SetKey       (xmlSecTransformPtr transform,
-                                                        xmlSecKeyPtr key);
-static int  xmlSecOpenSSLChaCha20Poly1305Execute      (xmlSecTransformPtr transform,
-                                                        int last,
-                                                        xmlSecTransformCtxPtr transformCtx);
-
 /******************************************************************************
  *
  * ChaCha20 stream cipher transform (uses xmlSecOpenSSLEvpBlockCipher framework,
@@ -1272,6 +1239,40 @@ xmlSecOpenSSLTransformChaCha20GetKlass(void) {
     return(&xmlSecOpenSSLChaCha20Klass);
 }
 
+
+/*
+ * ChaCha20-Poly1305 AEAD context (ChaCha20 stream cipher uses the EvpBlockCipher framework)
+ */
+typedef struct _xmlSecOpenSSLChaCha20Poly1305Ctx  xmlSecOpenSSLChaCha20Poly1305Ctx,
+                                                   *xmlSecOpenSSLChaCha20Poly1305CtxPtr;
+struct _xmlSecOpenSSLChaCha20Poly1305Ctx {
+    const EVP_CIPHER*                       cipher;
+    EVP_CIPHER_CTX*                         cipherCtx;
+    xmlSecByte                              key[EVP_MAX_KEY_LENGTH];
+    xmlSecByte                              iv[EVP_MAX_IV_LENGTH];
+    xmlSecBuffer                            aad;
+
+    int                                     ctxInitialized;
+    int                                     keyInitialized;
+};
+
+XMLSEC_TRANSFORM_DECLARE(OpenSSLChaCha20Poly1305, xmlSecOpenSSLChaCha20Poly1305Ctx)
+#define xmlSecOpenSSLChaCha20Poly1305Size XMLSEC_TRANSFORM_SIZE(OpenSSLChaCha20Poly1305)
+
+/* Forward declarations for ChaCha20-Poly1305 */
+static int  xmlSecOpenSSLChaCha20Poly1305Initialize   (xmlSecTransformPtr transform);
+static void xmlSecOpenSSLChaCha20Poly1305Finalize     (xmlSecTransformPtr transform);
+static int  xmlSecOpenSSLChaCha20Poly1305NodeRead     (xmlSecTransformPtr transform,
+                                                        xmlNodePtr node,
+                                                        xmlSecTransformCtxPtr transformCtx);
+static int  xmlSecOpenSSLChaCha20Poly1305SetKeyReq    (xmlSecTransformPtr transform,
+                                                        xmlSecKeyReqPtr keyReq);
+static int  xmlSecOpenSSLChaCha20Poly1305SetKey       (xmlSecTransformPtr transform,
+                                                        xmlSecKeyPtr key);
+static int  xmlSecOpenSSLChaCha20Poly1305Execute      (xmlSecTransformPtr transform,
+                                                        int last,
+                                                        xmlSecTransformCtxPtr transformCtx);
+
 /******************************************************************************
  *
  * ChaCha20-Poly1305 AEAD transform
@@ -1290,24 +1291,24 @@ xmlSecOpenSSLChaCha20Poly1305Initialize(xmlSecTransformPtr transform) {
 
     memset(ctx, 0, sizeof(xmlSecOpenSSLChaCha20Poly1305Ctx));
 
-    ret = xmlSecTransformChaCha20Poly1305ParamsInitialize(&(ctx->params));
+    ret = xmlSecBufferInitialize(&(ctx->aad), 0);
     if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformChaCha20Poly1305ParamsInitialize", xmlSecTransformGetName(transform));
+        xmlSecInternalError("xmlSecBufferInitialize", xmlSecTransformGetName(transform));
+        xmlSecOpenSSLChaCha20Poly1305Finalize(transform);
         return(-1);
     }
-    ctx->paramsInitialized = 1;
 
     ctx->cipher = EVP_chacha20_poly1305();
     if(ctx->cipher == NULL) {
         xmlSecOpenSSLError("EVP_chacha20_poly1305", xmlSecTransformGetName(transform));
-        xmlSecTransformChaCha20Poly1305ParamsFinalize(&(ctx->params));
+        xmlSecOpenSSLChaCha20Poly1305Finalize(transform);
         return(-1);
     }
 
     ctx->cipherCtx = EVP_CIPHER_CTX_new();
     if(ctx->cipherCtx == NULL) {
         xmlSecOpenSSLError("EVP_CIPHER_CTX_new", xmlSecTransformGetName(transform));
-        xmlSecTransformChaCha20Poly1305ParamsFinalize(&(ctx->params));
+        xmlSecOpenSSLChaCha20Poly1305Finalize(transform);
         return(-1);
     }
 
@@ -1327,14 +1328,15 @@ xmlSecOpenSSLChaCha20Poly1305Finalize(xmlSecTransformPtr transform) {
     if(ctx->cipherCtx != NULL) {
         EVP_CIPHER_CTX_free(ctx->cipherCtx);
     }
-    xmlSecTransformChaCha20Poly1305ParamsFinalize(&(ctx->params));
+    xmlSecBufferFinalize(&(ctx->aad));
+
     memset(ctx, 0, sizeof(xmlSecOpenSSLChaCha20Poly1305Ctx));
 }
 
 static int
-xmlSecOpenSSLChaCha20Poly1305NodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
-                                       xmlSecTransformCtxPtr transformCtx) {
+xmlSecOpenSSLChaCha20Poly1305NodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransformCtxPtr transformCtx) {
     xmlSecOpenSSLChaCha20Poly1305CtxPtr ctx;
+    xmlSecSize ivSize = 0;
     int ret;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformChaCha20Poly1305Id), -1);
@@ -1344,12 +1346,10 @@ xmlSecOpenSSLChaCha20Poly1305NodeRead(xmlSecTransformPtr transform, xmlNodePtr n
 
     ctx = xmlSecOpenSSLChaCha20Poly1305GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->paramsInitialized != 0, -1);
 
-    ret = xmlSecTransformChaCha20Poly1305ParamsRead(&(ctx->params), node);
-    if(ret < 0) {
-        xmlSecInternalError("xmlSecTransformChaCha20Poly1305ParamsRead",
-                            xmlSecTransformGetName(transform));
+    ret = xmlSecTransformChaCha20Poly1305ParamsRead(node, &(ctx->aad), ctx->iv, sizeof(ctx->iv), &ivSize);
+    if((ret < 0) || (ivSize != XMLSEC_CHACHA20_NONCE_SIZE)) {
+        xmlSecInternalError("xmlSecTransformChaCha20Poly1305ParamsRead", xmlSecTransformGetName(transform));
         return(-1);
     }
 
@@ -1402,8 +1402,7 @@ xmlSecOpenSSLChaCha20Poly1305SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr k
 }
 
 static int
-xmlSecOpenSSLChaCha20Poly1305Execute(xmlSecTransformPtr transform, int last,
-                                      xmlSecTransformCtxPtr transformCtx) {
+xmlSecOpenSSLChaCha20Poly1305Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
     xmlSecOpenSSLChaCha20Poly1305CtxPtr ctx;
     xmlSecBufferPtr in, out;
     xmlSecByte* inData;
@@ -1414,7 +1413,6 @@ xmlSecOpenSSLChaCha20Poly1305Execute(xmlSecTransformPtr transform, int last,
     int ret;
     int outLen;
     int inLen;
-    int aadLen;
     int encrypt;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformChaCha20Poly1305Id), -1);
@@ -1433,31 +1431,31 @@ xmlSecOpenSSLChaCha20Poly1305Execute(xmlSecTransformPtr transform, int last,
 
     if(transform->status == xmlSecTransformStatusWorking) {
         if(ctx->ctxInitialized == 0) {
+            xmlSecByte *aadData;
+            xmlSecSize aadSize;
+
             xmlSecAssert2(ctx->keyInitialized != 0, -1);
-            xmlSecAssert2(ctx->paramsInitialized != 0, -1);
-            xmlSecAssert2(xmlSecBufferGetSize(&(ctx->params.nonce)) == XMLSEC_CHACHA20_NONCE_SIZE, -1);
 
             /* Initialize cipher */
-            ret = EVP_CipherInit_ex(ctx->cipherCtx, ctx->cipher, NULL, ctx->key, xmlSecBufferGetData(&(ctx->params.nonce)), encrypt);
+            ret = EVP_CipherInit_ex(ctx->cipherCtx, ctx->cipher, NULL, ctx->key, ctx->iv, encrypt);
             if(ret != 1) {
                 xmlSecOpenSSLError("EVP_CipherInit_ex", xmlSecTransformGetName(transform));
                 return(-1);
             }
 
             /* Set AAD if present */
-            if(xmlSecBufferGetSize(&(ctx->params.aad)) > 0) {
-                xmlSecSize aadDataSize = xmlSecBufferGetSize(&(ctx->params.aad));
+            aadData = xmlSecBufferGetData(&(ctx->aad));
+            aadSize = xmlSecBufferGetSize(&(ctx->aad));
+            if((aadData != NULL) && (aadSize > 0)) {
+                int aadLen;
 
-                XMLSEC_SAFE_CAST_SIZE_TO_INT(aadDataSize, aadLen, return(-1), xmlSecTransformGetName(transform));
-                ret = EVP_CipherUpdate(ctx->cipherCtx, NULL, &outLen,
-                                      xmlSecBufferGetData(&(ctx->params.aad)),
-                                      aadLen);
+                XMLSEC_SAFE_CAST_SIZE_TO_INT(aadSize, aadLen, return(-1), xmlSecTransformGetName(transform));
+                ret = EVP_CipherUpdate(ctx->cipherCtx, NULL, &outLen, aadData, aadLen);
                 if(ret != 1) {
                     xmlSecOpenSSLError("EVP_CipherUpdate(aad)", xmlSecTransformGetName(transform));
                     return(-1);
                 }
             }
-
             ctx->ctxInitialized = 1;
         }
 

@@ -587,6 +587,7 @@ xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(struct _xmlSecCryptoDLFuncti
      ****************************************************************************/
     XMLSEC_REGISTER_KEY_DATA(Aes);                  // keyDataAesGetKlass
     XMLSEC_REGISTER_KEY_DATA(Camellia);             // keyDataCamelliaGetKlass
+    XMLSEC_REGISTER_KEY_DATA(ChaCha20);             // keyDataChaCha20GetKlass
     XMLSEC_REGISTER_KEY_DATA(ConcatKdf);            // keyDataConcatKdfGetKlass
     XMLSEC_REGISTER_KEY_DATA(Des);                  // keyDataDesGetKlass
     XMLSEC_REGISTER_KEY_DATA(Dh);                   // keyDataDhGetKlass
@@ -637,6 +638,9 @@ xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(struct _xmlSecCryptoDLFuncti
     XMLSEC_REGISTER_TRANSFORM(KWCamellia128);                       // transformKWCamellia128GetKlass
     XMLSEC_REGISTER_TRANSFORM(KWCamellia192);                       // transformKWCamellia192GetKlass
     XMLSEC_REGISTER_TRANSFORM(KWCamellia256);                       // transformKWCamellia256GetKlass
+
+    XMLSEC_REGISTER_TRANSFORM(ChaCha20);                            // transformChaCha20GetKlass
+    XMLSEC_REGISTER_TRANSFORM(ChaCha20Poly1305);                    // transformChaCha20Poly1305GetKlass
 
     XMLSEC_REGISTER_TRANSFORM(Des3Cbc);                             // transformDes3CbcGetKlass
 

@@ -2308,6 +2308,22 @@ AM_CONDITIONAL(XMLSEC_NO_CAMELLIA, test "z$XMLSEC_NO_CAMELLIA" = "z1")
 AC_SUBST(XMLSEC_NO_CAMELLIA)
 
 dnl ==========================================================================
+dnl Check if we need ChaCha20 support
+dnl ==========================================================================
+AC_MSG_CHECKING(for ChaCha20 support)
+AC_ARG_ENABLE([chacha20], [AS_HELP_STRING([--enable-chacha20],[enable ChaCha20 support (yes)])])
+if test "z$enable_chacha20" = "zno" ; then
+    XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_CHACHA20=1"
+    XMLSEC_NO_CHACHA20="1"
+    AC_MSG_RESULT([disabled])
+else
+    XMLSEC_NO_CHACHA20="0"
+    AC_MSG_RESULT([yes])
+fi
+AM_CONDITIONAL(XMLSEC_NO_CHACHA20, test "z$XMLSEC_NO_CHACHA20" = "z1")
+AC_SUBST(XMLSEC_NO_CHACHA20)
+
+dnl ==========================================================================
 dnl Check if we need ConcatKDF support
 dnl ==========================================================================
 AC_MSG_CHECKING(for ConcatKDF support)

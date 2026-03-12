@@ -577,6 +577,16 @@ execEncTest $res_success \
     "--keys-file $topfolder/keys/keys.xml --binary-data $topfolder/aleksey-xmlenc-01/enc-des3cbc-keyname.data" \
     "--keys-file $topfolder/keys/keys.xml"
 
+extra_message="Test '--des-key' option"
+execEncTest $res_success \
+    "" \
+    "aleksey-xmlenc-01/enc-des3cbc-keyname" \
+    "tripledes-cbc" \
+    "" \
+    "--des-key:test-des $topfolder/aleksey-xmlenc-01/test-des.bin" \
+    "--des-key:test-des $topfolder/aleksey-xmlenc-01/test-des.bin --binary-data $topfolder/aleksey-xmlenc-01/enc-des3cbc-keyname.data" \
+    "--des-key:test-des $topfolder/aleksey-xmlenc-01/test-des.bin"
+
 execEncTest $res_success \
     "" \
     "aleksey-xmlenc-01/enc-des3cbc-keyname2" \
@@ -586,6 +596,7 @@ execEncTest $res_success \
     "--keys-file $topfolder/keys/keys.xml --binary-data $topfolder/aleksey-xmlenc-01/enc-des3cbc-keyname2.data" \
     "--keys-file $topfolder/keys/keys.xml"
 
+
 execEncTest $res_success \
     "" \
     "aleksey-xmlenc-01/enc-aes128cbc-keyname" \
@@ -594,6 +605,16 @@ execEncTest $res_success \
     "--keys-file $topfolder/keys/keys.xml" \
     "--keys-file $topfolder/keys/keys.xml --binary-data $topfolder/aleksey-xmlenc-01/enc-aes128cbc-keyname.data" \
     "--keys-file $topfolder/keys/keys.xml"
+
+extra_message="Test '--aes-key' option"
+execEncTest $res_success \
+    "" \
+    "aleksey-xmlenc-01/enc-aes128cbc-keyname" \
+    "aes128-cbc" \
+    "" \
+    "--aes-key:test-aes128 $topfolder/aleksey-xmlenc-01/test-aes128.bin" \
+    "--aes-key:test-aes128 $topfolder/aleksey-xmlenc-01/test-aes128.bin --binary-data $topfolder/aleksey-xmlenc-01/enc-aes128cbc-keyname.data" \
+    "--aes-key:test-aes128 $topfolder/aleksey-xmlenc-01/test-aes128.bin"
 
 execEncTest $res_success \
     "" \
@@ -656,6 +677,17 @@ execEncTest $res_success \
     "--keys-file $topfolder/keys/keys.xml --binary-data $topfolder/aleksey-xmlenc-01/enc-camellia256cbc-keyname.data" \
     "--keys-file $topfolder/keys/keys.xml"
 
+
+extra_message="Test '--camellia-key' option"
+execEncTest $res_success \
+    "" \
+    "aleksey-xmlenc-01/enc-camellia256cbc-keyname" \
+    "camellia256-cbc" \
+    "" \
+    "--camellia-key:test-camellia256 $topfolder/aleksey-xmlenc-01/test-camellia256.bin" \
+    "--camellia-key:test-camellia256 $topfolder/aleksey-xmlenc-01/test-camellia256.bin --binary-data $topfolder/aleksey-xmlenc-01/enc-camellia256cbc-keyname.data" \
+    "--camellia-key:test-camellia256 $topfolder/aleksey-xmlenc-01/test-camellia256.bin"
+
 execEncTest $res_success \
     "" \
     "aleksey-xmlenc-01/enc-camellia128cbc-kw-camellia256-keyname" \
@@ -663,6 +695,35 @@ execEncTest $res_success \
     "enc-key camellia" \
     "--keys-file $topfolder/keys/keys.xml" \
     "--keys-file $topfolder/keys/keys.xml  --session-key camellia-128  --binary-data $topfolder/aleksey-xmlenc-01/enc-camellia128cbc-kw-camellia256-keyname.data" \
+    "--keys-file $topfolder/keys/keys.xml"
+
+execEncTest $res_success \
+    "" \
+    "aleksey-xmlenc-01/enc-chacha20-keyname" \
+    "chacha20" \
+    "" \
+    "--keys-file $topfolder/keys/keys.xml" \
+    "--keys-file $topfolder/keys/keys.xml --binary-data $topfolder/aleksey-xmlenc-01/enc-chacha20-keyname.data" \
+    "--keys-file $topfolder/keys/keys.xml"
+
+extra_message="Test '--chacha20-key' option"
+execEncTest $res_success \
+    "" \
+    "aleksey-xmlenc-01/enc-chacha20-keyname" \
+    "chacha20" \
+    "" \
+    "--chacha20-key:test-chacha20 $topfolder/aleksey-xmlenc-01/test-chacha20.bin" \
+    "--chacha20-key:test-chacha20 $topfolder/aleksey-xmlenc-01/test-chacha20.bin --binary-data $topfolder/aleksey-xmlenc-01/enc-chacha20-keyname.data" \
+    "--chacha20-key:test-chacha20 $topfolder/aleksey-xmlenc-01/test-chacha20.bin"
+
+
+execEncTest $res_success \
+    "" \
+    "aleksey-xmlenc-01/enc-chacha20poly1305-keyname" \
+    "chacha20-poly1305" \
+    "" \
+    "--keys-file $topfolder/keys/keys.xml" \
+    "--keys-file $topfolder/keys/keys.xml --binary-data $topfolder/aleksey-xmlenc-01/enc-chacha20poly1305-keyname.data" \
     "--keys-file $topfolder/keys/keys.xml"
 
 execEncTest $res_success \

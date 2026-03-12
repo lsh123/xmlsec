@@ -449,6 +449,8 @@ typedef int                     (*xmlSecCryptoAppKeyCertLoadMemoryMethod)(xmlSec
  * @transformAes128GcmGetKlass: the method to get pointer to AES 128 GCM encryption transform.
  * @transformAes192GcmGetKlass: the method to get pointer to AES 192 GCM encryption transform.
  * @transformAes256GcmGetKlass: the method to get pointer to AES 256 GCM encryption transform.
+ * @transformChaCha20GetKlass:  the method to get pointer to ChaCha20 stream cipher encryption transform.
+ * @transformChaCha20Poly1305GetKlass: the method to get pointer to ChaCha20-Poly1305 AEAD encryption transform.
  * @transformConcatKdfGetKlass: the method to get pointer to PBKDF2 KDF transform.
  * @transformKWAes128GetKlass:  the method to get pointer to AES 128 key wrapper transform.
  * @transformKWAes192GetKlass:  the method to get pointer to AES 192 key wrapper transform.
@@ -556,6 +558,7 @@ struct _xmlSecCryptoDLFunctions {
     /* Key data ids */
     xmlSecCryptoKeyDataGetKlassMethod            keyDataAesGetKlass;
     xmlSecCryptoKeyDataGetKlassMethod            keyDataCamelliaGetKlass;
+    xmlSecCryptoKeyDataGetKlassMethod            keyDataChaCha20GetKlass;
     xmlSecCryptoKeyDataGetKlassMethod            keyDataConcatKdfGetKlass;
     xmlSecCryptoKeyDataGetKlassMethod            keyDataDesGetKlass;
     xmlSecCryptoKeyDataGetKlassMethod            keyDataDhGetKlass;
@@ -598,6 +601,9 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoTransformGetKlassMethod          transformKWCamellia128GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformKWCamellia192GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformKWCamellia256GetKlass;
+
+    xmlSecCryptoTransformGetKlassMethod          transformChaCha20GetKlass;
+    xmlSecCryptoTransformGetKlassMethod          transformChaCha20Poly1305GetKlass;
 
     xmlSecCryptoTransformGetKlassMethod          transformConcatKdfGetKlass;
 

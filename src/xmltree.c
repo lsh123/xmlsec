@@ -27,6 +27,7 @@
 #include <libxml/xmlversion.h>
 
 #include <xmlsec/xmlsec.h>
+#include <xmlsec/buffer.h>
 #include <xmlsec/xmltree.h>
 #include <xmlsec/parser.h>
 #include <xmlsec/private.h>
@@ -97,6 +98,40 @@ xmlSecGetNodeContentAndTrim(const xmlNodePtr cur) {
         memmove(content, bb, (size_t)xmlStrlen(bb) + 1);
     }
     return(content);
+}
+
+/**
+ * xmlSecGetNodeContentAsHex:
+ * @cur:            the pointer to XML node.
+ * @res:            the output buffer to store the decoded bytes.
+ *
+ * Reads @cur node content (whitespace-trimmed), hex-decodes it, and stores
+ * the result in @res. The buffer is emptied before writing.
+ *
+ * Returns: 0 on success or -1 on error.
+ */
+int
+xmlSecGetNodeContentAsHex(const xmlNodePtr cur, xmlSecBufferPtr res) {
+    xmlChar* content;
+    int ret;
+
+    xmlSecAssert2(cur != NULL, -1);
+    xmlSecAssert2(res != NULL, -1);
+
+    content = xmlSecGetNodeContentAndTrim(cur);
+    if(content == NULL) {
+        xmlSecInvalidNodeContentError(cur, NULL, "empty");
+        return(-1);
+    }
+
+    ret = xmlSecBufferHexRead(res, content);
+    xmlFree(content);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecBufferHexRead", NULL);
+        return(-1);
+    }
+
+    return(0);
 }
 
 /**

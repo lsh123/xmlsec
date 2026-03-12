@@ -361,6 +361,54 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecOpenSSLTransformKWCamellia256GetKl
 
 /********************************************************************
  *
+ * ChaCha20 transforms
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_CHACHA20
+
+/**
+ * xmlSecOpenSSLTransformChaCha20Id:
+ *
+ * The ChaCha20 stream cipher transform klass.
+ */
+#define xmlSecOpenSSLTransformChaCha20Id \
+        xmlSecOpenSSLTransformChaCha20GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecOpenSSLTransformChaCha20GetKlass(void);
+
+/**
+ * xmlSecOpenSSLTransformChaCha20Poly1305Id:
+ *
+ * The ChaCha20-Poly1305 AEAD transform klass.
+ */
+#define xmlSecOpenSSLTransformChaCha20Poly1305Id \
+        xmlSecOpenSSLTransformChaCha20Poly1305GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecOpenSSLTransformChaCha20Poly1305GetKlass(void);
+
+#endif /* XMLSEC_NO_CHACHA20 */
+
+/********************************************************************
+ *
+ * ChaCha20 key data
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_CHACHA20
+
+/**
+ * xmlSecOpenSSLKeyDataChaCha20Id:
+ *
+ * The ChaCha20 key data klass.
+ */
+#define xmlSecOpenSSLKeyDataChaCha20Id \
+        xmlSecOpenSSLKeyDataChaCha20GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataChaCha20GetKlass(void);
+XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeyDataChaCha20Set     (xmlSecKeyDataPtr data,
+                                                                             const xmlSecByte* buf,
+                                                                             xmlSecSize bufSize);
+
+#endif /* XMLSEC_NO_CHACHA20 */
+
+/********************************************************************
+ *
  * ConcatKDF key derivation transforms
  *
  *******************************************************************/

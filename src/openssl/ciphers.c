@@ -56,7 +56,7 @@ struct _xmlSecOpenSSLEvpBlockCipherCtx {
     xmlSecKeyDataId     keyId;
     EVP_CIPHER_CTX*     cipherCtx;
     int                 cbcMode;            /* cbc / stream or gcm / aead */
-    int                 ivLen;
+    xmlSecOpenSSLUInt   ivLen;
     int                 isIvPrepended;   /* iv is prepended to encrypted data or not */
     xmlSecSize          ivRandomOffset;
 

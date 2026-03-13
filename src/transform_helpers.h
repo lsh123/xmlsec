@@ -174,8 +174,7 @@ XMLSEC_EXPORT int   xmlSecTransformChaCha20ParamsRead               (xmlNodePtr 
                                                                      xmlSecByte *iv,
                                                                      xmlSecSize ivSize,
                                                                      xmlSecSize *ivSizeOut,
-                                                                     int *noncePresent,
-                                                                     int *counterPresent);
+                                                                     int *paramsPresent);
 
 XMLSEC_EXPORT int   xmlSecTransformChaCha20ParamsWrite              (xmlNodePtr node,
                                                                      const xmlSecByte *iv,

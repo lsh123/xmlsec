@@ -48,6 +48,9 @@ XMLSEC_EXPORT int               xmlSecGetNodeContentAsSize(const xmlNodePtr cur,
                                                          xmlSecSize* res);
 XMLSEC_EXPORT int               xmlSecGetNodeContentAsHex (const xmlNodePtr cur,
                                                          xmlSecBufferPtr res);
+XMLSEC_EXPORT int               xmlSecSetNodeContentAsHex (xmlNodePtr node,
+                                                         const xmlSecByte* data,
+                                                         xmlSecSize size);
 XMLSEC_EXPORT int               xmlSecCheckNodeName     (const xmlNodePtr cur,
                                                          const xmlChar *name,
                                                          const xmlChar *ns);

@@ -10,6 +10,7 @@
 
 #include <libxml/parser.h>
 #include <libxml/tree.h>
+#include <libxml/debugXML.h>
 
 #include "xmlsec_unit_tests.h"
 #include <xmlsec/strings.h>
@@ -68,7 +69,7 @@ test_xmlSecTransformChaCha20ParamsRead_missing_nonce(void) {
     xmlNodePtr node;
     xmlSecByte iv[XMLSEC_CHACHA20_IV_SIZE];
     xmlSecSize ivSize = 0;
-    int paramsPresent = -1;
+    int noncePresent = 0;
     int ret;
 
     testStart("ChaCha20 read missing nonce");
@@ -80,9 +81,11 @@ test_xmlSecTransformChaCha20ParamsRead_missing_nonce(void) {
     }
 
     memset(iv, 0xFF, sizeof(iv));
-    ret = xmlSecTransformChaCha20ParamsRead(node, iv, sizeof(iv), &ivSize, &paramsPresent);
-    if(ret >= 0) {
-        fprintf(stderr, "Error: ChaCha20 params read accepted nonce-only (missing counter)\n");
+    ret = xmlSecTransformChaCha20ParamsRead(node, iv, sizeof(iv), &ivSize, &noncePresent);
+    if((ret < 0) || (ivSize != XMLSEC_CHACHA20_IV_SIZE) || (noncePresent != 0) ||
+       (memcmp(iv, "\x01\x02\x03\x04", XMLSEC_CHACHA20_COUNTER_SIZE) != 0) ||
+       (memcmp(iv + XMLSEC_CHACHA20_COUNTER_SIZE, "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", XMLSEC_CHACHA20_NONCE_SIZE) != 0)) {
+        fprintf(stderr, "Error: ChaCha20 params read did not accept missing nonce with required counter\n");
         xmlFreeDoc(doc);
         testFinishedFailure();
         return;
@@ -103,7 +106,7 @@ test_xmlSecTransformChaCha20ParamsRead_missing_counter(void) {
     xmlNodePtr node;
     xmlSecByte iv[XMLSEC_CHACHA20_IV_SIZE];
     xmlSecSize ivSize = 0;
-    int paramsPresent = -1;
+    int noncePresent = 0;
     int ret;
 
     testStart("ChaCha20 read missing counter");
@@ -115,9 +118,9 @@ test_xmlSecTransformChaCha20ParamsRead_missing_counter(void) {
     }
 
     memset(iv, 0xFF, sizeof(iv));
-    ret = xmlSecTransformChaCha20ParamsRead(node, iv, sizeof(iv), &ivSize, &paramsPresent);
+    ret = xmlSecTransformChaCha20ParamsRead(node, iv, sizeof(iv), &ivSize, &noncePresent);
     if(ret >= 0) {
-        fprintf(stderr, "Error: ChaCha20 params read accepted nonce-only (missing counter)\n");
+        fprintf(stderr, "Error: ChaCha20 params read accepted missing counter\n");
         xmlFreeDoc(doc);
         testFinishedFailure();
         return;
@@ -137,6 +140,7 @@ test_xmlSecTransformChaCha20ParamsRead_missing_nonce_strict(void) {
     xmlDocPtr doc = NULL;
     xmlNodePtr node;
     xmlSecByte iv[XMLSEC_CHACHA20_IV_SIZE];
+    int noncePresent = 0;
     xmlSecSize ivSize = 0;
     int ret;
 
@@ -149,14 +153,15 @@ test_xmlSecTransformChaCha20ParamsRead_missing_nonce_strict(void) {
     }
 
     memset(iv, 0xFF, sizeof(iv));
-    ret = xmlSecTransformChaCha20ParamsRead(node, iv, sizeof(iv), &ivSize, NULL);
-    if(ret >= 0) {
-        fprintf(stderr, "Error: strict ChaCha20 params read accepted missing nonce\n");
+    ret = xmlSecTransformChaCha20ParamsRead(node, iv, sizeof(iv), &ivSize, &noncePresent);
+    if((ret < 0) || (ivSize != XMLSEC_CHACHA20_IV_SIZE) || (noncePresent != 0) ||
+       (memcmp(iv, "\x01\x02\x03\x04", XMLSEC_CHACHA20_COUNTER_SIZE) != 0) ||
+       (memcmp(iv + XMLSEC_CHACHA20_COUNTER_SIZE, "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", XMLSEC_CHACHA20_NONCE_SIZE) != 0)) {
+        fprintf(stderr, "Error: ChaCha20 params read did not accept missing nonce with required counter\n");
         xmlFreeDoc(doc);
         testFinishedFailure();
         return;
     }
-
     xmlFreeDoc(doc);
     testFinishedSuccess();
 }
@@ -179,6 +184,7 @@ test_xmlSecTransformChaCha20ParamsWrite_roundtrip(void) {
     xmlChar* counterContent;
     xmlSecByte ivRoundTrip[XMLSEC_CHACHA20_IV_SIZE];
     xmlSecSize ivSize = 0;
+    int noncePresent = 0;
     int ret;
 
     testStart("ChaCha20 write roundtrip");
@@ -221,7 +227,7 @@ test_xmlSecTransformChaCha20ParamsWrite_roundtrip(void) {
     xmlFree(nonceContent);
     xmlFree(counterContent);
 
-    ret = xmlSecTransformChaCha20ParamsRead(node, ivRoundTrip, sizeof(ivRoundTrip), &ivSize, NULL);
+    ret = xmlSecTransformChaCha20ParamsRead(node, ivRoundTrip, sizeof(ivRoundTrip), &ivSize, &noncePresent);
     if((ret < 0) || (ivSize != XMLSEC_CHACHA20_IV_SIZE) || (memcmp(ivRoundTrip, iv, sizeof(iv)) != 0)) {
         fprintf(stderr, "Error: ChaCha20 params write did not round-trip through strict read\n");
         xmlFreeDoc(doc);
@@ -249,6 +255,7 @@ test_xmlSecTransformChaCha20Poly1305ParamsWrite_roundtrip(void) {
     xmlSecBuffer aad;
     xmlSecByte ivRoundTrip[XMLSEC_CHACHA20_NONCE_SIZE];
     xmlSecSize ivSize = 0;
+    int noncePresent = 0;
     int ret;
 
     testStart("ChaCha20-Poly1305 write roundtrip");
@@ -278,6 +285,8 @@ test_xmlSecTransformChaCha20Poly1305ParamsWrite_roundtrip(void) {
     nonceContent = xmlNodeGetContent(nonceNode);
     if((nonceContent == NULL) || (xmlStrcmp(nonceContent, BAD_CAST "000102030405060708090a0b") != 0)) {
         fprintf(stderr, "Error: ChaCha20-Poly1305 params write serialized unexpected nonce\n");
+        xmlDebugDumpDocument(stdout, doc);
+
         xmlFree(nonceContent);
         xmlFreeDoc(doc);
         testFinishedFailure();
@@ -293,9 +302,10 @@ test_xmlSecTransformChaCha20Poly1305ParamsWrite_roundtrip(void) {
         return;
     }
 
-    ret = xmlSecTransformChaCha20Poly1305ParamsRead(node, &aad, ivRoundTrip, sizeof(ivRoundTrip), &ivSize, NULL);
+    ret = xmlSecTransformChaCha20Poly1305ParamsRead(node, &aad, ivRoundTrip, sizeof(ivRoundTrip), &ivSize, &noncePresent);
     xmlSecBufferFinalize(&aad);
-    if((ret < 0) || (ivSize != XMLSEC_CHACHA20_NONCE_SIZE) || (memcmp(ivRoundTrip, iv, sizeof(iv)) != 0)) {
+    if((ret < 0) || (ivSize != XMLSEC_CHACHA20_NONCE_SIZE) || (noncePresent != 1) ||
+       (memcmp(ivRoundTrip, iv, sizeof(iv)) != 0)) {
         fprintf(stderr, "Error: ChaCha20-Poly1305 params write did not round-trip through strict read\n");
         xmlFreeDoc(doc);
         testFinishedFailure();
@@ -307,7 +317,7 @@ test_xmlSecTransformChaCha20Poly1305ParamsWrite_roundtrip(void) {
 }
 
 static void
-test_xmlSecTransformChaCha20Poly1305ParamsRead_missing_nonce_strict(void) {
+test_xmlSecTransformChaCha20Poly1305ParamsRead_missing_nonce(void) {
     static const char xml[] =
         "<EncryptionMethod xmlns=\"http://www.w3.org/2001/04/xmlenc#\"/>";
     xmlDocPtr doc = NULL;
@@ -315,9 +325,10 @@ test_xmlSecTransformChaCha20Poly1305ParamsRead_missing_nonce_strict(void) {
     xmlSecBuffer aad;
     xmlSecByte iv[XMLSEC_CHACHA20_NONCE_SIZE];
     xmlSecSize ivSize = 0;
+    int noncePresent = 1;
     int ret;
 
-    testStart("ChaCha20-Poly1305 read missing nonce strict");
+    testStart("ChaCha20-Poly1305 read missing nonce");
 
     node = xmlSecUnitTestParseNode(xml, &doc);
     if(node == NULL) {
@@ -333,10 +344,12 @@ test_xmlSecTransformChaCha20Poly1305ParamsRead_missing_nonce_strict(void) {
         return;
     }
 
-    ret = xmlSecTransformChaCha20Poly1305ParamsRead(node, &aad, iv, sizeof(iv), &ivSize, NULL);
+    memset(iv, 0xFF, sizeof(iv));
+    ret = xmlSecTransformChaCha20Poly1305ParamsRead(node, &aad, iv, sizeof(iv), &ivSize, &noncePresent);
     xmlSecBufferFinalize(&aad);
-    if(ret >= 0) {
-        fprintf(stderr, "Error: strict ChaCha20-Poly1305 params read accepted missing nonce\n");
+    if((ret < 0) || (ivSize != XMLSEC_CHACHA20_NONCE_SIZE) || (noncePresent != 0) ||
+       (memcmp(iv, "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", XMLSEC_CHACHA20_NONCE_SIZE) != 0)) {
+        fprintf(stderr, "Error: ChaCha20-Poly1305 params read did not accept missing nonce\n");
         xmlFreeDoc(doc);
         testFinishedFailure();
         return;
@@ -357,7 +370,7 @@ test_transform_helpers(void) {
     test_xmlSecTransformChaCha20ParamsRead_missing_counter();
     test_xmlSecTransformChaCha20ParamsRead_missing_nonce_strict();
     test_xmlSecTransformChaCha20ParamsWrite_roundtrip();
-    test_xmlSecTransformChaCha20Poly1305ParamsRead_missing_nonce_strict();
+    test_xmlSecTransformChaCha20Poly1305ParamsRead_missing_nonce();
     test_xmlSecTransformChaCha20Poly1305ParamsWrite_roundtrip();
 
     return(testGroupFinished());

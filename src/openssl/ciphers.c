@@ -55,9 +55,10 @@ struct _xmlSecOpenSSLEvpBlockCipherCtx {
 #endif /* XMLSEC_OPENSSL_API_300 */
     xmlSecKeyDataId     keyId;
     EVP_CIPHER_CTX*     cipherCtx;
-    int                 cbcMode;        /* cbc / stream or gcm / aead */
+    int                 cbcMode;            /* cbc / stream or gcm / aead */
     int                 ivLen;
-    int                 isIvPrepended;  /* iv is prepended to encrypted data or not */
+    int                 isIvPrepended;   /* iv is prepended to encrypted data or not */
+    xmlSecSize          ivRandomOffset;
 
     xmlSecByte          key[EVP_MAX_KEY_LENGTH];
     xmlSecByte          iv[EVP_MAX_IV_LENGTH];
@@ -117,8 +118,10 @@ xmlSecOpenSSLEvpBlockCipherCtxInit(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
 
     if(!ctx->ivInitialized) {
         if(encrypt) {
+            xmlSecAssert2(ctx->ivRandomOffset < ivSize, -1);
+
             /* generate random iv */
-            ret = xmlSecOpenSSLGenerateRandomBytes(ctx->iv, ivSize);
+            ret = xmlSecOpenSSLGenerateRandomBytes(ctx->iv + ctx->ivRandomOffset, ivSize - ctx->ivRandomOffset);
             if(ret < 0) {
                 xmlSecInternalError("xmlSecOpenSSLGenerateRandom", cipherName);
                 return(-1);
@@ -870,6 +873,7 @@ xmlSecOpenSSLEvpBlockCipherInitialize(xmlSecTransformPtr transform) {
         ctx->ivLen = EVP_CIPHER_iv_length(ctx->cipher);
     }
 
+
     /* done */
     return(0);
 }
@@ -1262,7 +1266,7 @@ xmlSecOpenSSLChaCha20NodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
                                xmlSecTransformCtxPtr transformCtx) {
     xmlSecOpenSSLEvpBlockCipherCtxPtr ctx;
     xmlSecSize ivSize = 0;
-    int paramsPresent = 0;
+    int noncePresent = 0;
     int ret;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformChaCha20Id), -1);
@@ -1274,19 +1278,19 @@ xmlSecOpenSSLChaCha20NodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->ivInitialized == 0, -1);
 
-    ret = xmlSecTransformChaCha20ParamsRead(node, ctx->iv, sizeof(ctx->iv), &ivSize,
-        &paramsPresent);
+    ret = xmlSecTransformChaCha20ParamsRead(node, ctx->iv, sizeof(ctx->iv), &ivSize, &noncePresent);
     if((ret < 0) || (ivSize != XMLSEC_CHACHA20_IV_SIZE)) {
         xmlSecInternalError("xmlSecTransformChaCha20ParamsRead", xmlSecTransformGetName(transform));
         return(-1);
     }
 
-    if(paramsPresent != 0) {
+    if(noncePresent != 0) {
         /* both nonce and counter were present in XML: IV is ready */
         ctx->ivInitialized = 1;
+    } else {
+        /* add random nonce agter counter */
+        ctx->ivRandomOffset = XMLSEC_CHACHA20_COUNTER_SIZE;
     }
-    /* else: neither present — leave ivInitialized=0 so CtxInit generates a
-     * random IV for encryption and returns an error for decryption */
 
     /* done */
     return(0);

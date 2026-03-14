@@ -109,6 +109,17 @@ xmlSecMSCngDigestCheckId(xmlSecTransformPtr transform) {
         return(1);
     } else
 #endif /* XMLSEC_NO_SHA512 */
+#ifndef XMLSEC_NO_SHA3
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformSha3_256Id)) {
+        return(1);
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformSha3_384Id)) {
+        return(1);
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformSha3_512Id)) {
+        return(1);
+    } else
+#endif /* XMLSEC_NO_SHA3 */
 
     return(0);
 }
@@ -155,6 +166,18 @@ xmlSecMSCngDigestInitialize(xmlSecTransformPtr transform) {
         ctx->pszAlgId = BCRYPT_SHA512_ALGORITHM;
     } else
 #endif /* XMLSEC_NO_SHA512 */
+
+#ifndef XMLSEC_NO_SHA3
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformSha3_256Id)) {
+        ctx->pszAlgId = BCRYPT_SHA3_256_ALGORITHM;
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformSha3_384Id)) {
+        ctx->pszAlgId = BCRYPT_SHA3_384_ALGORITHM;
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformSha3_512Id)) {
+        ctx->pszAlgId = BCRYPT_SHA3_512_ALGORITHM;
+    } else
+#endif /* XMLSEC_NO_SHA3 */
 
     {
         xmlSecInvalidTransfromError(transform);
@@ -489,3 +512,62 @@ xmlSecMSCngTransformSha512GetKlass(void) {
     return(&xmlSecMSCngSha512Klass);
 }
 #endif /* XMLSEC_NO_SHA512 */
+
+#ifndef XMLSEC_NO_SHA3
+/******************************************************************************
+ *
+ * SHA3-256
+ *
+ *****************************************************************************/
+XMLSEC_MSCNG_DIGEST_KLASS_EX(Sha3_256)
+
+/**
+ * xmlSecMSCngTransformSha3_256GetKlass:
+ *
+ * SHA3-256 digest transform klass.
+ *
+ * Returns: pointer to SHA3-256 digest transform klass.
+ */
+xmlSecTransformId
+xmlSecMSCngTransformSha3_256GetKlass(void) {
+    return(&xmlSecMSCngSha3_256Klass);
+}
+
+/******************************************************************************
+ *
+ * SHA3-384
+ *
+ *****************************************************************************/
+XMLSEC_MSCNG_DIGEST_KLASS_EX(Sha3_384)
+
+/**
+ * xmlSecMSCngTransformSha3_384GetKlass:
+ *
+ * SHA3-384 digest transform klass.
+ *
+ * Returns: pointer to SHA3-384 digest transform klass.
+ */
+xmlSecTransformId
+xmlSecMSCngTransformSha3_384GetKlass(void) {
+    return(&xmlSecMSCngSha3_384Klass);
+}
+
+/******************************************************************************
+ *
+ * SHA3-512
+ *
+ *****************************************************************************/
+XMLSEC_MSCNG_DIGEST_KLASS_EX(Sha3_512)
+
+/**
+ * xmlSecMSCngTransformSha3_512GetKlass:
+ *
+ * SHA3-512 digest transform klass.
+ *
+ * Returns: pointer to SHA3-512 digest transform klass.
+ */
+xmlSecTransformId
+xmlSecMSCngTransformSha3_512GetKlass(void) {
+    return(&xmlSecMSCngSha3_512Klass);
+}
+#endif /* XMLSEC_NO_SHA3 */

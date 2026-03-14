@@ -34,6 +34,20 @@
 
 static xmlSecCryptoDLFunctionsPtr gXmlSecMSCngFunctions = NULL;
 
+/* Probe at runtime whether BCrypt supports a given algorithm. */
+static int
+xmlSecMSCngIsAlgorithmSupported(LPCWSTR pszAlgId) {
+    BCRYPT_ALG_HANDLE hAlg = NULL;
+    NTSTATUS status;
+
+    status = BCryptOpenAlgorithmProvider(&hAlg, pszAlgId, NULL, 0);
+    if(status != STATUS_SUCCESS) {
+        return(0);
+    }
+    BCryptCloseAlgorithmProvider(hAlg, 0);
+    return(1);
+}
+
 /**
  * xmlSecCryptoGetFunctions_mscng:
  *
@@ -44,6 +58,12 @@ static xmlSecCryptoDLFunctionsPtr gXmlSecMSCngFunctions = NULL;
 xmlSecCryptoDLFunctionsPtr
 xmlSecCryptoGetFunctions_mscng(void) {
     static xmlSecCryptoDLFunctions functions;
+
+#ifndef XMLSEC_NO_SHA3
+    int isSha3Supported = xmlSecMSCngIsAlgorithmSupported(BCRYPT_SHA3_256_ALGORITHM);
+#else /* XMLSEC_NO_SHA3 */
+    int isSha3Supported = 0; 
+#endif /* XMLSEC_NO_SHA3 */
 
     if(gXmlSecMSCngFunctions != NULL) {
         return(gXmlSecMSCngFunctions);
@@ -172,6 +192,14 @@ xmlSecCryptoGetFunctions_mscng(void) {
     gXmlSecMSCngFunctions->transformEcdsaSha512GetKlass         = xmlSecMSCngTransformEcdsaSha512GetKlass;
 #endif /* XMLSEC_NO_SHA512 */
 
+#ifndef XMLSEC_NO_SHA3
+    if(isSha3Supported != 0) {
+        gXmlSecMSCngFunctions->transformEcdsaSha3_256GetKlass       = xmlSecMSCngTransformEcdsaSha3_256GetKlass;
+        gXmlSecMSCngFunctions->transformEcdsaSha3_384GetKlass       = xmlSecMSCngTransformEcdsaSha3_384GetKlass;
+        gXmlSecMSCngFunctions->transformEcdsaSha3_512GetKlass       = xmlSecMSCngTransformEcdsaSha3_512GetKlass;
+    }
+#endif /* XMLSEC_NO_SHA3 */
+
     gXmlSecMSCngFunctions->transformEcdhGetKlass                = xmlSecMSCngTransformEcdhGetKlass;
 
 #endif /* XMLSEC_NO_EC */
@@ -247,6 +275,14 @@ xmlSecCryptoGetFunctions_mscng(void) {
     gXmlSecMSCngFunctions->transformRsaPssSha512GetKlass = xmlSecMSCngTransformRsaPssSha512GetKlass;
 #endif /* XMLSEC_NO_SHA512 */
 
+#ifndef XMLSEC_NO_SHA3
+    if(isSha3Supported != 0) {
+        gXmlSecMSCngFunctions->transformRsaPssSha3_256GetKlass = xmlSecMSCngTransformRsaPssSha3_256GetKlass;
+        gXmlSecMSCngFunctions->transformRsaPssSha3_384GetKlass = xmlSecMSCngTransformRsaPssSha3_384GetKlass;
+        gXmlSecMSCngFunctions->transformRsaPssSha3_512GetKlass = xmlSecMSCngTransformRsaPssSha3_512GetKlass;
+    }
+#endif /* XMLSEC_NO_SHA3 */
+
 #ifndef XMLSEC_NO_RSA_PKCS15
     gXmlSecMSCngFunctions->transformRsaPkcs1GetKlass            = xmlSecMSCngTransformRsaPkcs1GetKlass;
 #endif /* XMLSEC_NO_RSA_PKCS15 */
@@ -275,6 +311,14 @@ xmlSecCryptoGetFunctions_mscng(void) {
 #ifndef XMLSEC_NO_SHA512
     gXmlSecMSCngFunctions->transformSha512GetKlass              = xmlSecMSCngTransformSha512GetKlass;
 #endif /* XMLSEC_NO_SHA512 */
+
+#ifndef XMLSEC_NO_SHA3
+    if(isSha3Supported != 0) {
+        gXmlSecMSCngFunctions->transformSha3_256GetKlass            = xmlSecMSCngTransformSha3_256GetKlass;
+        gXmlSecMSCngFunctions->transformSha3_384GetKlass            = xmlSecMSCngTransformSha3_384GetKlass;
+        gXmlSecMSCngFunctions->transformSha3_512GetKlass            = xmlSecMSCngTransformSha3_512GetKlass;
+    }
+#endif /* XMLSEC_NO_SHA3 */
 
     /********************************************************************
      *

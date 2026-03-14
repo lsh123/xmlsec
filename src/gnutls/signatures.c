@@ -120,6 +120,12 @@ xmlSecGnuTLSSignatureCheckId(xmlSecTransformPtr transform) {
     }
 #endif /* XMLSEC_NO_SHA1 */
 
+#ifndef XMLSEC_NO_SHA224
+    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformEcdsaSha224Id)) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_SHA224 */
+
 #ifndef XMLSEC_NO_SHA256
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformEcdsaSha256Id)) {
         return(1);
@@ -139,6 +145,9 @@ xmlSecGnuTLSSignatureCheckId(xmlSecTransformPtr transform) {
 #endif /* XMLSEC_NO_SHA512 */
 
 #ifndef XMLSEC_NO_SHA3
+    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformEcdsaSha3_224Id)) {
+        return(1);
+    }
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformEcdsaSha3_256Id)) {
         return(1);
     }
@@ -201,6 +210,12 @@ xmlSecGnuTLSSignatureCheckId(xmlSecTransformPtr transform) {
         return(1);
     }
 #endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA224
+    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformRsaSha224Id)) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_SHA224 */
 
 #ifndef XMLSEC_NO_SHA256
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformRsaSha256Id)) {
@@ -291,6 +306,16 @@ xmlSecGnuTLSSignatureInitialize(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_SHA1 */
 
+#ifndef XMLSEC_NO_SHA224
+    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformEcdsaSha224Id)) {
+        ctx->keyId      = xmlSecGnuTLSKeyDataEcId;
+        ctx->dgstAlgo   = GNUTLS_DIG_SHA224;
+        ctx->signAlgo   = GNUTLS_SIGN_ECDSA_SHA224;
+        ctx->getPubKey  = xmlSecGnuTLSKeyDataEcGetPublicKey;
+        ctx->getPrivKey = xmlSecGnuTLSKeyDataEcGetPrivateKey;
+    } else
+#endif /* XMLSEC_NO_SHA224 */
+
 #ifndef XMLSEC_NO_SHA256
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformEcdsaSha256Id)) {
         ctx->keyId      = xmlSecGnuTLSKeyDataEcId;
@@ -323,6 +348,13 @@ xmlSecGnuTLSSignatureInitialize(xmlSecTransformPtr transform) {
 
 
 #ifndef XMLSEC_NO_SHA3
+    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformEcdsaSha3_224Id)) {
+        ctx->keyId      = xmlSecGnuTLSKeyDataEcId;
+        ctx->dgstAlgo   = GNUTLS_DIG_SHA3_224;
+        ctx->signAlgo   = GNUTLS_SIGN_ECDSA_SHA3_224;
+        ctx->getPubKey  = xmlSecGnuTLSKeyDataEcGetPublicKey;
+        ctx->getPrivKey = xmlSecGnuTLSKeyDataEcGetPrivateKey;
+    } else
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformEcdsaSha3_256Id)) {
         ctx->keyId      = xmlSecGnuTLSKeyDataEcId;
         ctx->dgstAlgo   = GNUTLS_DIG_SHA3_256;
@@ -434,6 +466,16 @@ xmlSecGnuTLSSignatureInitialize(xmlSecTransformPtr transform) {
         ctx->getPrivKey = xmlSecGnuTLSKeyDataRsaGetPrivateKey;
     } else
 #endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA224
+    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformRsaSha224Id)) {
+        ctx->keyId      = xmlSecGnuTLSKeyDataRsaId;
+        ctx->dgstAlgo   = GNUTLS_DIG_SHA224;
+        ctx->signAlgo   = GNUTLS_SIGN_RSA_SHA224;
+        ctx->getPubKey  = xmlSecGnuTLSKeyDataRsaGetPublicKey;
+        ctx->getPrivKey = xmlSecGnuTLSKeyDataRsaGetPrivateKey;
+    } else
+#endif /* XMLSEC_NO_SHA224 */
 
 #ifndef XMLSEC_NO_SHA256
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformRsaSha256Id)) {
@@ -893,9 +935,11 @@ xmlSecGnuTLSSignatureGetDerHalfSize(gnutls_sign_algorithm_t algo, xmlSecSize key
         /********************************* Key length (ECDSA-SHA*) *******************************/
 #ifndef XMLSEC_NO_EC
     case GNUTLS_SIGN_ECDSA_SHA1:
+    case GNUTLS_SIGN_ECDSA_SHA224:
     case GNUTLS_SIGN_ECDSA_SHA256:
     case GNUTLS_SIGN_ECDSA_SHA384:
     case GNUTLS_SIGN_ECDSA_SHA512:
+    case GNUTLS_SIGN_ECDSA_SHA3_224:
     case GNUTLS_SIGN_ECDSA_SHA3_256:
     case GNUTLS_SIGN_ECDSA_SHA3_384:
     case GNUTLS_SIGN_ECDSA_SHA3_512:
@@ -1355,6 +1399,29 @@ xmlSecGnuTLSTransformEcdsaSha1GetKlass(void) {
 #endif /* XMLSEC_NO_SHA1 */
 
 
+#ifndef XMLSEC_NO_SHA224
+/****************************************************************************
+ *
+ * ECDSA-SHA2-224 signature transform
+ *
+ ***************************************************************************/
+XMLSEC_GNUTLS_SIGNATURE_KLASS(EcdsaSha224)
+
+/**
+ * xmlSecGnuTLSTransformEcdsaSha224GetKlass:
+ *
+ * The ECDSA-SHA2-224 signature transform klass.
+ *
+ * Returns: ECDSA-SHA2-224 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecGnuTLSTransformEcdsaSha224GetKlass(void) {
+    return(&xmlSecGnuTLSEcdsaSha224Klass);
+}
+
+#endif /* XMLSEC_NO_SHA224 */
+
+
 #ifndef XMLSEC_NO_SHA256
 /****************************************************************************
  *
@@ -1424,6 +1491,25 @@ xmlSecGnuTLSTransformEcdsaSha512GetKlass(void) {
 
 
 #ifndef XMLSEC_NO_SHA3
+/****************************************************************************
+ *
+ * ECDSA-SHA3-224 signature transform
+ *
+ ***************************************************************************/
+XMLSEC_GNUTLS_SIGNATURE_KLASS(EcdsaSha3_224)
+
+/**
+ * xmlSecGnuTLSTransformEcdsaSha3_224GetKlass:
+ *
+ * The ECDSA-SHA3-224 signature transform klass.
+ *
+ * Returns: ECDSA-SHA3-224 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecGnuTLSTransformEcdsaSha3_224GetKlass(void) {
+    return(&xmlSecGnuTLSEcdsaSha3_224Klass);
+}
+
 /****************************************************************************
  *
  * ECDSA-SHA3-256 signature transform
@@ -1582,6 +1668,28 @@ xmlSecGnuTLSTransformRsaSha1GetKlass(void) {
     return(&xmlSecGnuTLSRsaSha1Klass);
 }
 #endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA224
+/****************************************************************************
+ *
+ * RSA-SHA2-224 signature transform
+ *
+ ***************************************************************************/
+
+XMLSEC_GNUTLS_SIGNATURE_KLASS(RsaSha224)
+
+/**
+ * xmlSecGnuTLSTransformRsaSha224GetKlass:
+ *
+ * The RSA-SHA2-224 signature transform klass.
+ *
+ * Returns: RSA-SHA2-224 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecGnuTLSTransformRsaSha224GetKlass(void) {
+    return(&xmlSecGnuTLSRsaSha224Klass);
+}
+#endif /* XMLSEC_NO_SHA224 */
 
 #ifndef XMLSEC_NO_SHA256
 /****************************************************************************

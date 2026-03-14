@@ -221,6 +221,12 @@ xmlSecGnuTLSSymKeyDataKlassCheck(xmlSecKeyDataKlass* klass) {
     }
 #endif /* XMLSEC_NO_HKDF */
 
+#ifndef XMLSEC_NO_CHACHA20
+    if(klass == xmlSecGnuTLSKeyDataChaCha20Id) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_CHACHA20 */
+
     return(0);
 }
 
@@ -588,3 +594,48 @@ xmlSecGnuTLSKeyDataHkdfSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecS
 }
 
 #endif /* XMLSEC_NO_HKDF */
+
+#ifndef XMLSEC_NO_CHACHA20
+/**************************************************************************
+ *
+ * <xmlsec:ChaCha20KeyValue> processing
+ *
+ *************************************************************************/
+XMLSEC_GNUTLS_SYMKEY_KLASS(ChaCha20, ChaCha20)
+
+/**
+ * xmlSecGnuTLSKeyDataChaCha20GetKlass:
+ *
+ * The ChaCha20 key data klass.
+ *
+ * Returns: ChaCha20 key data klass.
+ */
+xmlSecKeyDataId
+xmlSecGnuTLSKeyDataChaCha20GetKlass(void) {
+    return(&xmlSecGnuTLSKeyDataChaCha20Klass);
+}
+
+/**
+ * xmlSecGnuTLSKeyDataChaCha20Set:
+ * @data:               the pointer to ChaCha20 key data.
+ * @buf:                the pointer to key value.
+ * @bufSize:            the key value size (in bytes).
+ *
+ * Sets the value of ChaCha20 key data.
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecGnuTLSKeyDataChaCha20Set(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSize bufSize) {
+    xmlSecBufferPtr buffer;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataChaCha20Id), -1);
+    xmlSecAssert2(buf != NULL, -1);
+    xmlSecAssert2(bufSize > 0, -1);
+
+    buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
+    xmlSecAssert2(buffer != NULL, -1);
+
+    return(xmlSecBufferSetData(buffer, buf, bufSize));
+}
+#endif /* XMLSEC_NO_CHACHA20 */

@@ -21,8 +21,8 @@ libxmlsec1_gnutls_la_CPPFLAGS = \
 libxmlsec1_gnutls_la_SOURCES =\
 	app.c \
 	asymkeys.c \
-	ciphers_cbc.c \
-	ciphers_gcm.c \
+	ciphers_block.c \
+	ciphers_aead.c \
 	crypto.c \
 	der_encoded_value.c \
 	digests.c \

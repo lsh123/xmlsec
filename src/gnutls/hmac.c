@@ -86,6 +86,12 @@ xmlSecGnuTLSHmacCheckId(xmlSecTransformPtr transform) {
     }
 #endif /* XMLSEC_NO_SHA1 */
 
+#ifndef XMLSEC_NO_SHA224
+    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformHmacSha224Id)) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_SHA224 */
+
 #ifndef XMLSEC_NO_SHA256
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformHmacSha256Id)) {
         return(1);
@@ -125,6 +131,12 @@ xmlSecGnuTLSHmacInitialize(xmlSecTransformPtr transform) {
         ctx->hmacAlgo = GNUTLS_MAC_SHA1;
     } else
 #endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA224
+    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformHmacSha224Id)) {
+        ctx->hmacAlgo = GNUTLS_MAC_SHA224;
+    } else
+#endif /* XMLSEC_NO_SHA224 */
 
 #ifndef XMLSEC_NO_SHA256
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformHmacSha256Id)) {
@@ -421,6 +433,27 @@ xmlSecGnuTLSTransformHmacSha1GetKlass(void) {
     return(&xmlSecGnuTLSHmacSha1Klass);
 }
 #endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA224
+/******************************************************************************
+ *
+ * HMAC SHA224
+ *
+ ******************************************************************************/
+XMLSEC_GNUTLS_HMAC_KLASS(Sha224)
+
+/**
+ * xmlSecGnuTLSTransformHmacSha224GetKlass:
+ *
+ * The HMAC-SHA224 transform klass.
+ *
+ * Returns: the HMAC-SHA224 transform klass.
+ */
+xmlSecTransformId
+xmlSecGnuTLSTransformHmacSha224GetKlass(void) {
+    return(&xmlSecGnuTLSHmacSha224Klass);
+}
+#endif /* XMLSEC_NO_SHA224 */
 
 #ifndef XMLSEC_NO_SHA256
 /******************************************************************************

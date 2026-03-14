@@ -68,6 +68,50 @@ static int              xmlSecGnuTLSAsymKeyDataDuplicate        (xmlSecKeyDataPt
                                                                  xmlSecKeyDataPtr src);
 
 
+/* Helper macro to define the asymmetric key data klass */
+#define XMLSEC_GNUTLS_ASYMKEY_KLASS_EX(klassName, keyName,  href, usage, dataNodeName, dataNodeNs, generate, xmlRead, xmlWrite)     \
+static xmlSecKeyDataKlass xmlSecGnuTLSKeyData ## klassName ## Klass = {                                                             \
+    sizeof(xmlSecKeyDataKlass),                 /* xmlSecSize klassSize */                                                          \
+    xmlSecGnuTLSAsymKeyDataSize,                /* xmlSecSize objSize */                                                            \
+                                                                                                                                    \
+    /* data */                                                                                                                      \
+    keyName,                                    /* const xmlChar* name; */                                                          \
+    usage,                                      /* xmlSecKeyDataUsage usage; */                                                     \
+    href,                                       /* const xmlChar* href; */                                                          \
+    dataNodeName,                               /* const xmlChar* dataNodeName; */                                                  \
+    dataNodeNs,                                 /* const xmlChar* dataNodeNs; */                                                    \
+                                                                                                                                    \
+    /* constructors/destructor */                                                                                                   \
+    xmlSecGnuTLSAsymKeyDataInitialize,          /* xmlSecKeyDataInitializeMethod initialize; */                                     \
+    xmlSecGnuTLSAsymKeyDataDuplicate,           /* xmlSecKeyDataDuplicateMethod duplicate; */                                       \
+    xmlSecGnuTLSAsymKeyDataFinalize,            /* xmlSecKeyDataFinalizeMethod finalize; */                                         \
+    generate,                                   /* xmlSecKeyDataGenerateMethod generate; */                                         \
+                                                                                                                                    \
+    /* get info */                                                                                                                  \
+    xmlSecGnuTLSAsymKeyDataGetType,             /* xmlSecKeyDataGetTypeMethod getType; */                                           \
+    xmlSecGnuTLSAsymKeyDataGetSize,             /* xmlSecKeyDataGetSizeMethod getSize; */                                           \
+    NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */                          \
+                                                                                                                                    \
+    /* read/write */                                                                                                                \
+    xmlRead,                                    /* xmlSecKeyDataXmlReadMethod xmlRead; */                                           \
+    xmlWrite,                                   /* xmlSecKeyDataXmlWriteMethod xmlWrite; */                                         \
+    NULL,                                       /* xmlSecKeyDataBinReadMethod binRead; */                                           \
+    NULL,                                       /* xmlSecKeyDataBinWriteMethod binWrite; */                                         \
+                                                                                                                                    \
+    /* debug */                                                                                                                     \
+    xmlSecKeyDataDebugDumpImpl,                 /* xmlSecKeyDataDebugDumpMethod debugDump; */                                       \
+    xmlSecKeyDataDebugXmlDumpImpl,              /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */                                    \
+                                                                                                                                    \
+    /* reserved for the future */                                                                                                   \
+    NULL,                                       /* void* reserved0; */                                                              \
+    NULL,                                       /* void* reserved1; */                                                              \
+};
+
+#define XMLSEC_GNUTLS_ASYMKEY_KLASS(klassName, keyName, href)                                                                       \
+    XMLSEC_GNUTLS_ASYMKEY_KLASS_EX(klassName, keyName, href,                                                                        \
+        (xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageRetrievalMethodNodeXml),                                                \
+        NULL, NULL, NULL, NULL, NULL)
+
 static int
 xmlSecGnuTLSAsymKeyDataInitialize(xmlSecKeyDataPtr data) {
     xmlSecGnuTLSAsymKeyDataCtxPtr ctx;
@@ -500,18 +544,11 @@ xmlSecGCryptAsymetricKeyGetPriv(xmlSecKeyPtr key) {
  * The DSAKeyValue Element (http://www.w3.org/TR/xmldsig-core/#sec-DSAKeyValue)
  *
  **************************************************************************/
-
-static int              xmlSecGnuTLSKeyDataDsaInitialize        (xmlSecKeyDataPtr data);
-static void             xmlSecGnuTLSKeyDataDsaFinalize          (xmlSecKeyDataPtr data);
 static int              xmlSecGnuTLSKeyDataDsaGenerate          (xmlSecKeyDataPtr data,
                                                                  xmlSecSize sizeBits,
                                                                  xmlSecKeyDataType type);
-static int              xmlSecGnuTLSKeyDataDsaDuplicate         (xmlSecKeyDataPtr dst,
-                                                                 xmlSecKeyDataPtr src);
 
 
-static xmlSecKeyDataType xmlSecGnuTLSKeyDataDsaGetType          (xmlSecKeyDataPtr data);
-static xmlSecSize       xmlSecGnuTLSKeyDataDsaGetSize           (xmlSecKeyDataPtr data);
 static int              xmlSecGnuTLSKeyDataDsaXmlRead           (xmlSecKeyDataId id,
                                                                  xmlSecKeyPtr key,
                                                                  xmlNodePtr node,
@@ -530,48 +567,10 @@ static int              xmlSecGnuTLSKeyDataDsaWrite             (xmlSecKeyDataId
 
 static gnutls_pubkey_t  xmlSecGnuTLSKeyDataDsaPubKeyFromPrivKey (gnutls_privkey_t privkey);
 
-/* Helper macro to define the asymmetric key data klass */
-#define XMLSEC_GNUTLS_ASYMKEY_KLASS_EX(klassName, keyName, usage, href, dataNodeName, dataNodeNs, generate, xmlRead, xmlWrite)     \
-static xmlSecKeyDataKlass xmlSecGnuTLSKeyData ## klassName ## Klass = {                                                            \
-    sizeof(xmlSecKeyDataKlass),                 /* xmlSecSize klassSize */                                                         \
-    xmlSecGnuTLSAsymKeyDataSize,                /* xmlSecSize objSize */                                                           \
-                                                                                                                                    \
-    /* data */                                                                                                                      \
-    keyName,                                    /* const xmlChar* name; */                                                         \
-    usage,                                      /* xmlSecKeyDataUsage usage; */                                                    \
-    href,                                       /* const xmlChar* href; */                                                         \
-    dataNodeName,                               /* const xmlChar* dataNodeName; */                                                 \
-    dataNodeNs,                                 /* const xmlChar* dataNodeNs; */                                                   \
-                                                                                                                                    \
-    /* constructors/destructor */                                                                                                   \
-    xmlSecGnuTLSKeyData ## klassName ## Initialize,     /* xmlSecKeyDataInitializeMethod initialize; */                            \
-    xmlSecGnuTLSKeyData ## klassName ## Duplicate,      /* xmlSecKeyDataDuplicateMethod duplicate; */                              \
-    xmlSecGnuTLSKeyData ## klassName ## Finalize,       /* xmlSecKeyDataFinalizeMethod finalize; */                                \
-    generate,                                   /* xmlSecKeyDataGenerateMethod generate; */                                        \
-                                                                                                                                    \
-    /* get info */                                                                                                                  \
-    xmlSecGnuTLSKeyData ## klassName ## GetType,        /* xmlSecKeyDataGetTypeMethod getType; */                                  \
-    xmlSecGnuTLSKeyData ## klassName ## GetSize,        /* xmlSecKeyDataGetSizeMethod getSize; */                                  \
-    NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */                         \
-                                                                                                                                    \
-    /* read/write */                                                                                                                \
-    xmlRead,                                    /* xmlSecKeyDataXmlReadMethod xmlRead; */                                          \
-    xmlWrite,                                   /* xmlSecKeyDataXmlWriteMethod xmlWrite; */                                        \
-    NULL,                                       /* xmlSecKeyDataBinReadMethod binRead; */                                          \
-    NULL,                                       /* xmlSecKeyDataBinWriteMethod binWrite; */                                        \
-                                                                                                                                    \
-    /* debug */                                                                                                                     \
-    xmlSecKeyDataDebugDumpImpl,                         /* xmlSecKeyDataDebugDumpMethod debugDump; */                              \
-    xmlSecKeyDataDebugXmlDumpImpl,                      /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */                           \
-                                                                                                                                    \
-    /* reserved for the future */                                                                                                   \
-    NULL,                                       /* void* reserved0; */                                                             \
-    NULL,                                       /* void* reserved1; */                                                             \
-};
 
-XMLSEC_GNUTLS_ASYMKEY_KLASS_EX(Dsa, xmlSecNameDSAKeyValue,
+XMLSEC_GNUTLS_ASYMKEY_KLASS_EX(Dsa, xmlSecNameDSAKeyValue, xmlSecHrefDSAKeyValue,
     xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
-    xmlSecHrefDSAKeyValue, xmlSecNodeDSAKeyValue, xmlSecDSigNs,
+    xmlSecNodeDSAKeyValue, xmlSecDSigNs,
     xmlSecGnuTLSKeyDataDsaGenerate, xmlSecGnuTLSKeyDataDsaXmlRead, xmlSecGnuTLSKeyDataDsaXmlWrite)
 
 /**
@@ -660,28 +659,6 @@ xmlSecGnuTLSKeyDataDsaGetPrivateKey(xmlSecKeyDataPtr data) {
 }
 
 static int
-xmlSecGnuTLSKeyDataDsaInitialize(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataDsaId), -1);
-
-    return(xmlSecGnuTLSAsymKeyDataInitialize(data));
-}
-
-static void
-xmlSecGnuTLSKeyDataDsaFinalize(xmlSecKeyDataPtr data) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataDsaId));
-
-    xmlSecGnuTLSAsymKeyDataFinalize(data);
-}
-
-static int
-xmlSecGnuTLSKeyDataDsaDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecGnuTLSKeyDataDsaId), -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecGnuTLSKeyDataDsaId), -1);
-
-    return(xmlSecGnuTLSAsymKeyDataDuplicate(dst, src));
-}
-
-static int
 xmlSecGnuTLSKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKeyDataType type XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataDsaId), -1);
     xmlSecAssert2(sizeBits > 0, -1);
@@ -689,19 +666,6 @@ xmlSecGnuTLSKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSe
     return xmlSecGnuTLSAsymKeyDataGenerate(data, GNUTLS_PK_DSA, sizeBits);
 }
 
-static xmlSecKeyDataType
-xmlSecGnuTLSKeyDataDsaGetType(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataDsaId), xmlSecKeyDataTypeUnknown);
-
-    return xmlSecGnuTLSAsymKeyDataGetType(data);
-}
-
-static xmlSecSize
-xmlSecGnuTLSKeyDataDsaGetSize(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataDsaId), 0);
-
-    return xmlSecGnuTLSAsymKeyDataGetSize(data);
-}
 
 static int
 xmlSecGnuTLSKeyDataDsaXmlRead(xmlSecKeyDataId id,
@@ -1012,14 +976,6 @@ done:
  *
  *************************************************************************/
 
-static int              xmlSecGnuTLSKeyDataEcInitialize         (xmlSecKeyDataPtr data);
-static int              xmlSecGnuTLSKeyDataEcDuplicate          (xmlSecKeyDataPtr dst,
-                                                                 xmlSecKeyDataPtr src);
-static void             xmlSecGnuTLSKeyDataEcFinalize           (xmlSecKeyDataPtr data);
-
-static xmlSecKeyDataType xmlSecGnuTLSKeyDataEcGetType           (xmlSecKeyDataPtr data);
-static xmlSecSize       xmlSecGnuTLSKeyDataEcGetSize            (xmlSecKeyDataPtr data);
-
 static int              xmlSecGnuTLSKeyDataEcXmlRead            (xmlSecKeyDataId id,
                                                                  xmlSecKeyPtr key,
                                                                  xmlNodePtr node,
@@ -1037,9 +993,9 @@ static int              xmlSecGnuTLSKeyDataEcWrite              (xmlSecKeyDataId
 
 static gnutls_pubkey_t  xmlSecGnuTLSKeyDataEcPubKeyFromPrivKey  (gnutls_privkey_t privkey);
 
-XMLSEC_GNUTLS_ASYMKEY_KLASS_EX(Ec, xmlSecNameECKeyValue,
+XMLSEC_GNUTLS_ASYMKEY_KLASS_EX(Ec, xmlSecNameECKeyValue, xmlSecHrefECKeyValue,
     xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
-    xmlSecHrefECKeyValue, xmlSecNodeECKeyValue, xmlSecDSig11Ns,
+    xmlSecNodeECKeyValue, xmlSecDSig11Ns,
     NULL, xmlSecGnuTLSKeyDataEcXmlRead, xmlSecGnuTLSKeyDataEcXmlWrite)
 
 /**
@@ -1125,42 +1081,6 @@ gnutls_privkey_t
 xmlSecGnuTLSKeyDataEcGetPrivateKey(xmlSecKeyDataPtr data) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataEcId), NULL);
     return xmlSecGnuTLSAsymKeyDataGetPrivateKey(data);
-}
-
-static int
-xmlSecGnuTLSKeyDataEcInitialize(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataEcId), -1);
-
-    return(xmlSecGnuTLSAsymKeyDataInitialize(data));
-}
-
-static int
-xmlSecGnuTLSKeyDataEcDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecGnuTLSKeyDataEcId), -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecGnuTLSKeyDataEcId), -1);
-
-    return(xmlSecGnuTLSAsymKeyDataDuplicate(dst, src));
-}
-
-static void
-xmlSecGnuTLSKeyDataEcFinalize(xmlSecKeyDataPtr data) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataEcId));
-
-    xmlSecGnuTLSAsymKeyDataFinalize(data);
-}
-
-static xmlSecKeyDataType
-xmlSecGnuTLSKeyDataEcGetType(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataEcId), xmlSecKeyDataTypeUnknown);
-
-    return xmlSecGnuTLSAsymKeyDataGetType(data);
-}
-
-static xmlSecSize
-xmlSecGnuTLSKeyDataEcGetSize(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataEcId), 0);
-
-    return xmlSecGnuTLSAsymKeyDataGetSize(data);
 }
 
 static int
@@ -1420,18 +1340,9 @@ done:
  * The RSAKeyValue Element (http://www.w3.org/TR/xmldsig-core/#sec-RSAKeyValue)
  *
  **************************************************************************/
-
-static int              xmlSecGnuTLSKeyDataRsaInitialize        (xmlSecKeyDataPtr data);
-static void             xmlSecGnuTLSKeyDataRsaFinalize          (xmlSecKeyDataPtr data);
 static int              xmlSecGnuTLSKeyDataRsaGenerate          (xmlSecKeyDataPtr data,
                                                                  xmlSecSize sizeBits,
                                                                  xmlSecKeyDataType type);
-static int              xmlSecGnuTLSKeyDataRsaDuplicate         (xmlSecKeyDataPtr dst,
-                                                                 xmlSecKeyDataPtr src);
-
-
-static xmlSecKeyDataType xmlSecGnuTLSKeyDataRsaGetType          (xmlSecKeyDataPtr data);
-static xmlSecSize       xmlSecGnuTLSKeyDataRsaGetSize           (xmlSecKeyDataPtr data);
 static int              xmlSecGnuTLSKeyDataRsaXmlRead           (xmlSecKeyDataId id,
                                                                  xmlSecKeyPtr key,
                                                                  xmlNodePtr node,
@@ -1450,9 +1361,9 @@ static int              xmlSecGnuTLSKeyDataRsaWrite             (xmlSecKeyDataId
 
 static gnutls_pubkey_t  xmlSecGnuTLSKeyDataRsaPubKeyFromPrivKey  (gnutls_privkey_t privkey);
 
-XMLSEC_GNUTLS_ASYMKEY_KLASS_EX(Rsa, xmlSecNameRSAKeyValue,
+XMLSEC_GNUTLS_ASYMKEY_KLASS_EX(Rsa, xmlSecNameRSAKeyValue, xmlSecHrefRSAKeyValue,
     xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
-    xmlSecHrefRSAKeyValue, xmlSecNodeRSAKeyValue, xmlSecDSigNs,
+    xmlSecNodeRSAKeyValue, xmlSecDSigNs,
     xmlSecGnuTLSKeyDataRsaGenerate, xmlSecGnuTLSKeyDataRsaXmlRead, xmlSecGnuTLSKeyDataRsaXmlWrite)
 
 /**
@@ -1541,49 +1452,12 @@ xmlSecGnuTLSKeyDataRsaGetPrivateKey(xmlSecKeyDataPtr data) {
 }
 
 static int
-xmlSecGnuTLSKeyDataRsaInitialize(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataRsaId), -1);
-
-    return(xmlSecGnuTLSAsymKeyDataInitialize(data));
-}
-
-static void
-xmlSecGnuTLSKeyDataRsaFinalize(xmlSecKeyDataPtr data) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataRsaId));
-
-    xmlSecGnuTLSAsymKeyDataFinalize(data);
-}
-
-static int
-xmlSecGnuTLSKeyDataRsaDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecGnuTLSKeyDataRsaId), -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecGnuTLSKeyDataRsaId), -1);
-
-    return(xmlSecGnuTLSAsymKeyDataDuplicate(dst, src));
-}
-
-static int
 xmlSecGnuTLSKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKeyDataType type XMLSEC_ATTRIBUTE_UNUSED) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataRsaId), -1);
     xmlSecAssert2(sizeBits > 0, -1);
 
     return xmlSecGnuTLSAsymKeyDataGenerate(data, GNUTLS_PK_RSA, sizeBits);
 }
-
-static xmlSecKeyDataType
-xmlSecGnuTLSKeyDataRsaGetType(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataRsaId), xmlSecKeyDataTypeUnknown);
-
-    return xmlSecGnuTLSAsymKeyDataGetType(data);
-}
-
-static xmlSecSize
-xmlSecGnuTLSKeyDataRsaGetSize(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataRsaId), 0);
-
-    return xmlSecGnuTLSAsymKeyDataGetSize(data);
-}
-
 static int
 xmlSecGnuTLSKeyDataRsaXmlRead(xmlSecKeyDataId id,
                               xmlSecKeyPtr key,
@@ -1934,19 +1808,7 @@ xmlSecGnuTLSKeyDataGostAdoptKey(int algo, xmlSecKeyDataPtr data, gnutls_pubkey_t
  * GOST2001 XML key representation processing.
  *
  *************************************************************************/
-
-static int              xmlSecGnuTLSKeyDataGost2001Initialize   (xmlSecKeyDataPtr data);
-static int              xmlSecGnuTLSKeyDataGost2001Duplicate    (xmlSecKeyDataPtr dst,
-                                                                 xmlSecKeyDataPtr src);
-static void             xmlSecGnuTLSKeyDataGost2001Finalize     (xmlSecKeyDataPtr data);
-
-static xmlSecKeyDataType xmlSecGnuTLSKeyDataGost2001GetType     (xmlSecKeyDataPtr data);
-static xmlSecSize       xmlSecGnuTLSKeyDataGost2001GetSize      (xmlSecKeyDataPtr data);
-
-XMLSEC_GNUTLS_ASYMKEY_KLASS_EX(Gost2001, xmlSecNameGOST2001KeyValue,
-    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
-    xmlSecHrefGOST2001KeyValue, xmlSecNodeGOST2001KeyValue, xmlSecDSigNs,
-    NULL, NULL, NULL)
+XMLSEC_GNUTLS_ASYMKEY_KLASS(Gost2001, xmlSecNameGOST2001KeyValue, xmlSecHrefGOST2001KeyValue)
 
 /**
  * xmlSecGnuTLSKeyDataGost2001GetKlass:
@@ -2004,42 +1866,6 @@ xmlSecGnuTLSKeyDataGost2001GetPrivateKey(xmlSecKeyDataPtr data) {
     return xmlSecGnuTLSAsymKeyDataGetPrivateKey(data);
 }
 
-static int
-xmlSecGnuTLSKeyDataGost2001Initialize(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataGost2001Id), -1);
-
-    return(xmlSecGnuTLSAsymKeyDataInitialize(data));
-}
-
-static int
-xmlSecGnuTLSKeyDataGost2001Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecGnuTLSKeyDataGost2001Id), -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecGnuTLSKeyDataGost2001Id), -1);
-
-    return(xmlSecGnuTLSAsymKeyDataDuplicate(dst, src));
-}
-
-static void
-xmlSecGnuTLSKeyDataGost2001Finalize(xmlSecKeyDataPtr data) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataGost2001Id));
-
-    xmlSecGnuTLSAsymKeyDataFinalize(data);
-}
-
-static xmlSecKeyDataType
-xmlSecGnuTLSKeyDataGost2001GetType(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataGost2001Id), xmlSecKeyDataTypeUnknown);
-
-    return xmlSecGnuTLSAsymKeyDataGetType(data);
-}
-
-static xmlSecSize
-xmlSecGnuTLSKeyDataGost2001GetSize(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataGost2001Id), 0);
-
-    return xmlSecGnuTLSAsymKeyDataGetSize(data);
-}
-
 #endif /* XMLSEC_NO_GOST */
 
 
@@ -2050,18 +1876,8 @@ xmlSecGnuTLSKeyDataGost2001GetSize(xmlSecKeyDataPtr data) {
  * GOST R 34.10-2012 256 bit xml key representation processing
  *
  *************************************************************************/
-static int              xmlSecGnuTLSKeyDataGost2012_256Initialize   (xmlSecKeyDataPtr data);
-static int              xmlSecGnuTLSKeyDataGost2012_256Duplicate    (xmlSecKeyDataPtr dst,
-                                                                     xmlSecKeyDataPtr src);
-static void             xmlSecGnuTLSKeyDataGost2012_256Finalize     (xmlSecKeyDataPtr data);
 
-static xmlSecKeyDataType xmlSecGnuTLSKeyDataGost2012_256GetType     (xmlSecKeyDataPtr data);
-static xmlSecSize       xmlSecGnuTLSKeyDataGost2012_256GetSize      (xmlSecKeyDataPtr data);
-
-XMLSEC_GNUTLS_ASYMKEY_KLASS_EX(Gost2012_256, xmlSecNameGostR3410_2012_256KeyValue,
-    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
-    xmlSecHrefGostR3410_2012_256KeyValue, xmlSecNodeGostR3410_2012_256KeyValue, xmlSecDSigNs,
-    NULL, NULL, NULL)
+XMLSEC_GNUTLS_ASYMKEY_KLASS(Gost2012_256, xmlSecNameGostR3410_2012_256KeyValue, xmlSecHrefGostR3410_2012_256KeyValue)
 
 /**
  * xmlSecGnuTLSKeyDataGost2012_256GetKlass:
@@ -2119,59 +1935,12 @@ xmlSecGnuTLSKeyDataGost2012_256GetPrivateKey(xmlSecKeyDataPtr data) {
     return xmlSecGnuTLSAsymKeyDataGetPrivateKey(data);
 }
 
-static int
-xmlSecGnuTLSKeyDataGost2012_256Initialize(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataGost2012_256Id), -1);
-
-    return(xmlSecGnuTLSAsymKeyDataInitialize(data));
-}
-
-static int
-xmlSecGnuTLSKeyDataGost2012_256Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecGnuTLSKeyDataGost2012_256Id), -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecGnuTLSKeyDataGost2012_256Id), -1);
-
-    return(xmlSecGnuTLSAsymKeyDataDuplicate(dst, src));
-}
-
-static void
-xmlSecGnuTLSKeyDataGost2012_256Finalize(xmlSecKeyDataPtr data) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataGost2012_256Id));
-
-    xmlSecGnuTLSAsymKeyDataFinalize(data);
-}
-
-static xmlSecKeyDataType
-xmlSecGnuTLSKeyDataGost2012_256GetType(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataGost2012_256Id), xmlSecKeyDataTypeUnknown);
-
-    return xmlSecGnuTLSAsymKeyDataGetType(data);
-}
-
-static xmlSecSize
-xmlSecGnuTLSKeyDataGost2012_256GetSize(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataGost2012_256Id), 0);
-
-    return xmlSecGnuTLSAsymKeyDataGetSize(data);
-}
-
 /**************************************************************************
  *
  * GOST R 34.10-2012 512 bit xml key representation processing
  *
  *************************************************************************/
-static int              xmlSecGnuTLSKeyDataGost2012_512Initialize   (xmlSecKeyDataPtr data);
-static int              xmlSecGnuTLSKeyDataGost2012_512Duplicate    (xmlSecKeyDataPtr dst,
-                                                                     xmlSecKeyDataPtr src);
-static void             xmlSecGnuTLSKeyDataGost2012_512Finalize     (xmlSecKeyDataPtr data);
-
-static xmlSecKeyDataType xmlSecGnuTLSKeyDataGost2012_512GetType     (xmlSecKeyDataPtr data);
-static xmlSecSize       xmlSecGnuTLSKeyDataGost2012_512GetSize      (xmlSecKeyDataPtr data);
-
-XMLSEC_GNUTLS_ASYMKEY_KLASS_EX(Gost2012_512, xmlSecNameGostR3410_2012_512KeyValue,
-    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
-    xmlSecHrefGostR3410_2012_512KeyValue, xmlSecNodeGostR3410_2012_512KeyValue, xmlSecDSigNs,
-    NULL, NULL, NULL)
+XMLSEC_GNUTLS_ASYMKEY_KLASS(Gost2012_512, xmlSecNameGostR3410_2012_512KeyValue, xmlSecHrefGostR3410_2012_512KeyValue)
 
 /**
  * xmlSecGnuTLSKeyDataGost2012_512GetKlass:
@@ -2229,42 +1998,6 @@ xmlSecGnuTLSKeyDataGost2012_512GetPrivateKey(xmlSecKeyDataPtr data) {
     return xmlSecGnuTLSAsymKeyDataGetPrivateKey(data);
 }
 
-static int
-xmlSecGnuTLSKeyDataGost2012_512Initialize(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataGost2012_512Id), -1);
-
-    return(xmlSecGnuTLSAsymKeyDataInitialize(data));
-}
-
-static int
-xmlSecGnuTLSKeyDataGost2012_512Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecGnuTLSKeyDataGost2012_512Id), -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecGnuTLSKeyDataGost2012_512Id), -1);
-
-    return(xmlSecGnuTLSAsymKeyDataDuplicate(dst, src));
-}
-
-static void
-xmlSecGnuTLSKeyDataGost2012_512Finalize(xmlSecKeyDataPtr data) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataGost2012_512Id));
-
-    xmlSecGnuTLSAsymKeyDataFinalize(data);
-}
-
-static xmlSecKeyDataType
-xmlSecGnuTLSKeyDataGost2012_512GetType(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataGost2012_512Id), xmlSecKeyDataTypeUnknown);
-
-    return xmlSecGnuTLSAsymKeyDataGetType(data);
-}
-
-static xmlSecSize
-xmlSecGnuTLSKeyDataGost2012_512GetSize(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataGost2012_512Id), 0);
-
-    return xmlSecGnuTLSAsymKeyDataGetSize(data);
-}
-
 #endif /* XMLSEC_NO_GOST2012 */
 
 
@@ -2279,16 +2012,7 @@ xmlSecGnuTLSKeyDataGost2012_512GetSize(xmlSecKeyDataPtr data) {
  *
  **************************************************************************/
 
-static int              xmlSecGnuTLSKeyDataMLDSAInitialize      (xmlSecKeyDataPtr data);
-static void             xmlSecGnuTLSKeyDataMLDSAFinalize        (xmlSecKeyDataPtr data);
-static int              xmlSecGnuTLSKeyDataMLDSADuplicate       (xmlSecKeyDataPtr dst,
-                                                                 xmlSecKeyDataPtr src);
-static xmlSecKeyDataType xmlSecGnuTLSKeyDataMLDSAGetType        (xmlSecKeyDataPtr data);
-static xmlSecSize       xmlSecGnuTLSKeyDataMLDSAGetSize         (xmlSecKeyDataPtr data);
-XMLSEC_GNUTLS_ASYMKEY_KLASS_EX(MLDSA, xmlSecNameMLDSAKeyValue,
-    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageRetrievalMethodNodeXml,
-    xmlSecHrefMLDSAKeyValue, NULL, NULL,
-    NULL, NULL, NULL)
+XMLSEC_GNUTLS_ASYMKEY_KLASS(MLDSA, xmlSecNameMLDSAKeyValue, xmlSecHrefMLDSAKeyValue)
 
 /**
  * xmlSecGnuTLSKeyDataMLDSAGetKlass:
@@ -2423,42 +2147,6 @@ xmlSecGnuTLSKeyDataMLDSAGetKL(xmlSecKeyDataPtr data) {
     return(-1);
 }
 
-static int
-xmlSecGnuTLSKeyDataMLDSAInitialize(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataMLDSAId), -1);
-
-    return(xmlSecGnuTLSAsymKeyDataInitialize(data));
-}
-
-static int
-xmlSecGnuTLSKeyDataMLDSADuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecGnuTLSKeyDataMLDSAId), -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecGnuTLSKeyDataMLDSAId), -1);
-
-    return(xmlSecGnuTLSAsymKeyDataDuplicate(dst, src));
-}
-
-static void
-xmlSecGnuTLSKeyDataMLDSAFinalize(xmlSecKeyDataPtr data) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataMLDSAId));
-
-    xmlSecGnuTLSAsymKeyDataFinalize(data);
-}
-
-static xmlSecKeyDataType
-xmlSecGnuTLSKeyDataMLDSAGetType(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataMLDSAId), xmlSecKeyDataTypeUnknown);
-
-    return xmlSecGnuTLSAsymKeyDataGetType(data);
-}
-
-static xmlSecSize
-xmlSecGnuTLSKeyDataMLDSAGetSize(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataMLDSAId), 0);
-
-    return xmlSecGnuTLSAsymKeyDataGetSize(data);
-}
-
 #endif /* XMLSEC_NO_MLDSA */
 
 
@@ -2469,17 +2157,7 @@ xmlSecGnuTLSKeyDataMLDSAGetSize(xmlSecKeyDataPtr data) {
  * EdDSA key (Ed25519 and Ed448, RFC 8032)
  *
  **************************************************************************/
-
-static int              xmlSecGnuTLSKeyDataEdDSAInitialize      (xmlSecKeyDataPtr data);
-static void             xmlSecGnuTLSKeyDataEdDSAFinalize        (xmlSecKeyDataPtr data);
-static int              xmlSecGnuTLSKeyDataEdDSADuplicate       (xmlSecKeyDataPtr dst,
-                                                                 xmlSecKeyDataPtr src);
-static xmlSecKeyDataType xmlSecGnuTLSKeyDataEdDSAGetType        (xmlSecKeyDataPtr data);
-static xmlSecSize       xmlSecGnuTLSKeyDataEdDSAGetSize         (xmlSecKeyDataPtr data);
-XMLSEC_GNUTLS_ASYMKEY_KLASS_EX(EdDSA, xmlSecNameEdDSAKeyValue,
-    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageRetrievalMethodNodeXml,
-    xmlSecHrefEdDSAKeyValue, NULL, NULL,
-    NULL, NULL, NULL)
+XMLSEC_GNUTLS_ASYMKEY_KLASS(EdDSA, xmlSecNameEdDSAKeyValue, xmlSecHrefEdDSAKeyValue)
 
 /**
  * xmlSecGnuTLSKeyDataEdDSAGetKlass:
@@ -2557,42 +2235,6 @@ xmlSecGnuTLSKeyDataEdDSAGetPrivateKey(xmlSecKeyDataPtr data) {
     return xmlSecGnuTLSAsymKeyDataGetPrivateKey(data);
 }
 
-static int
-xmlSecGnuTLSKeyDataEdDSAInitialize(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataEdDSAId), -1);
-
-    return(xmlSecGnuTLSAsymKeyDataInitialize(data));
-}
-
-static int
-xmlSecGnuTLSKeyDataEdDSADuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecGnuTLSKeyDataEdDSAId), -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecGnuTLSKeyDataEdDSAId), -1);
-
-    return(xmlSecGnuTLSAsymKeyDataDuplicate(dst, src));
-}
-
-static void
-xmlSecGnuTLSKeyDataEdDSAFinalize(xmlSecKeyDataPtr data) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataEdDSAId));
-
-    xmlSecGnuTLSAsymKeyDataFinalize(data);
-}
-
-static xmlSecKeyDataType
-xmlSecGnuTLSKeyDataEdDSAGetType(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataEdDSAId), xmlSecKeyDataTypeUnknown);
-
-    return xmlSecGnuTLSAsymKeyDataGetType(data);
-}
-
-static xmlSecSize
-xmlSecGnuTLSKeyDataEdDSAGetSize(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataEdDSAId), 0);
-
-    return xmlSecGnuTLSAsymKeyDataGetSize(data);
-}
-
 #endif /* XMLSEC_NO_EDDSA */
 
 
@@ -2602,17 +2244,7 @@ xmlSecGnuTLSKeyDataEdDSAGetSize(xmlSecKeyDataPtr data) {
  * XDH key (X25519 and X448, RFC 7748)
  *
  **************************************************************************/
-
-static int              xmlSecGnuTLSKeyDataXdhInitialize        (xmlSecKeyDataPtr data);
-static void             xmlSecGnuTLSKeyDataXdhFinalize          (xmlSecKeyDataPtr data);
-static int              xmlSecGnuTLSKeyDataXdhDuplicate         (xmlSecKeyDataPtr dst,
-                                                                 xmlSecKeyDataPtr src);
-static xmlSecKeyDataType xmlSecGnuTLSKeyDataXdhGetType          (xmlSecKeyDataPtr data);
-static xmlSecSize       xmlSecGnuTLSKeyDataXdhGetSize           (xmlSecKeyDataPtr data);
-XMLSEC_GNUTLS_ASYMKEY_KLASS_EX(Xdh, xmlSecNameXDHKeyValue,
-    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageRetrievalMethodNodeXml,
-    xmlSecHrefXDHKeyValue, NULL, NULL,
-    NULL, NULL, NULL)
+XMLSEC_GNUTLS_ASYMKEY_KLASS(Xdh, xmlSecNameXDHKeyValue, xmlSecHrefXDHKeyValue)
 
 /**
  * xmlSecGnuTLSKeyDataXdhGetKlass:
@@ -2688,42 +2320,6 @@ gnutls_privkey_t
 xmlSecGnuTLSKeyDataXdhGetPrivateKey(xmlSecKeyDataPtr data) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataXdhId), NULL);
     return xmlSecGnuTLSAsymKeyDataGetPrivateKey(data);
-}
-
-static int
-xmlSecGnuTLSKeyDataXdhInitialize(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataXdhId), -1);
-
-    return(xmlSecGnuTLSAsymKeyDataInitialize(data));
-}
-
-static int
-xmlSecGnuTLSKeyDataXdhDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecGnuTLSKeyDataXdhId), -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecGnuTLSKeyDataXdhId), -1);
-
-    return(xmlSecGnuTLSAsymKeyDataDuplicate(dst, src));
-}
-
-static void
-xmlSecGnuTLSKeyDataXdhFinalize(xmlSecKeyDataPtr data) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataXdhId));
-
-    xmlSecGnuTLSAsymKeyDataFinalize(data);
-}
-
-static xmlSecKeyDataType
-xmlSecGnuTLSKeyDataXdhGetType(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataXdhId), xmlSecKeyDataTypeUnknown);
-
-    return xmlSecGnuTLSAsymKeyDataGetType(data);
-}
-
-static xmlSecSize
-xmlSecGnuTLSKeyDataXdhGetSize(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataXdhId), 0);
-
-    return xmlSecGnuTLSAsymKeyDataGetSize(data);
 }
 
 #endif /* XMLSEC_NO_XDH */

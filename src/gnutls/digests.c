@@ -75,6 +75,12 @@ xmlSecGnuTLSDigestCheckId(xmlSecTransformPtr transform) {
     }
 #endif /* XMLSEC_NO_SHA1 */
 
+#ifndef XMLSEC_NO_SHA224
+    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformSha224Id)) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_SHA224 */
+
 #ifndef XMLSEC_NO_SHA256
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformSha256Id)) {
         return(1);
@@ -94,6 +100,9 @@ xmlSecGnuTLSDigestCheckId(xmlSecTransformPtr transform) {
 #endif /* XMLSEC_NO_SHA512 */
 
 #ifndef XMLSEC_NO_SHA3
+    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformSha3_224Id)) {
+        return(1);
+    }
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformSha3_256Id)) {
         return(1);
     }
@@ -145,6 +154,12 @@ xmlSecGnuTLSDigestInitialize(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_SHA1 */
 
+#ifndef XMLSEC_NO_SHA224
+    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformSha224Id)) {
+        ctx->dgstAlgo = GNUTLS_DIG_SHA224;
+    } else
+#endif /* XMLSEC_NO_SHA224 */
+
 #ifndef XMLSEC_NO_SHA256
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformSha256Id)) {
         ctx->dgstAlgo = GNUTLS_DIG_SHA256;
@@ -164,6 +179,9 @@ xmlSecGnuTLSDigestInitialize(xmlSecTransformPtr transform) {
 #endif /* XMLSEC_NO_SHA512 */
 
 #ifndef XMLSEC_NO_SHA3
+    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformSha3_224Id)) {
+        ctx->dgstAlgo = GNUTLS_DIG_SHA3_224;
+    } else
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformSha3_256Id)) {
         ctx->dgstAlgo = GNUTLS_DIG_SHA3_256;
     } else
@@ -383,6 +401,27 @@ xmlSecGnuTLSTransformSha1GetKlass(void) {
 }
 #endif /* XMLSEC_NO_SHA1 */
 
+#ifndef XMLSEC_NO_SHA224
+/******************************************************************************
+ *
+ * SHA2-224 Digest transforms
+ *
+ *****************************************************************************/
+XMLSEC_GNUTLS_DIGEST_KLASS(Sha224)
+
+/**
+ * xmlSecGnuTLSTransformSha224GetKlass:
+ *
+ * SHA2-224 digest transform klass.
+ *
+ * Returns: pointer to SHA2-224 digest transform klass.
+ */
+xmlSecTransformId
+xmlSecGnuTLSTransformSha224GetKlass(void) {
+    return(&xmlSecGnuTLSSha224Klass);
+}
+#endif /* XMLSEC_NO_SHA224 */
+
 #ifndef XMLSEC_NO_SHA256
 /******************************************************************************
  *
@@ -449,6 +488,25 @@ xmlSecGnuTLSTransformSha512GetKlass(void) {
 
 
 #ifndef XMLSEC_NO_SHA3
+/******************************************************************************
+ *
+ * SHA3-224 Digest transforms
+ *
+ *****************************************************************************/
+XMLSEC_GNUTLS_DIGEST_KLASS(Sha3_224)
+
+/**
+ * xmlSecGnuTLSTransformSha3_224GetKlass:
+ *
+ * SHA3-224 digest transform klass.
+ *
+ * Returns: pointer to SHA3-224 digest transform klass.
+ */
+xmlSecTransformId
+xmlSecGnuTLSTransformSha3_224GetKlass(void) {
+    return(&xmlSecGnuTLSSha3_224Klass);
+}
+
 /******************************************************************************
  *
  * SHA3-256 Digest transforms

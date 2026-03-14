@@ -125,6 +125,10 @@ xmlSecCryptoGetFunctions_gnutls(void) {
     gXmlSecGnuTLSFunctions->keyDataHkdfGetKlass         = xmlSecGnuTLSKeyDataHkdfGetKlass;
 #endif /* XMLSEC_NO_HKDF */
 
+#ifndef XMLSEC_NO_CHACHA20
+    gXmlSecGnuTLSFunctions->keyDataChaCha20GetKlass     = xmlSecGnuTLSKeyDataChaCha20GetKlass;
+#endif /* XMLSEC_NO_CHACHA20 */
+
 #ifndef XMLSEC_NO_RSA
     gXmlSecGnuTLSFunctions->keyDataRsaGetKlass          = xmlSecGnuTLSKeyDataRsaGetKlass;
 #endif /* XMLSEC_NO_RSA */
@@ -165,6 +169,12 @@ xmlSecCryptoGetFunctions_gnutls(void) {
     gXmlSecGnuTLSFunctions->transformKWAes192GetKlass           = xmlSecGnuTLSTransformKWAes192GetKlass;
     gXmlSecGnuTLSFunctions->transformKWAes256GetKlass           = xmlSecGnuTLSTransformKWAes256GetKlass;
 #endif /* XMLSEC_NO_AES */
+
+    /******************************* ChaCha20 ********************************/
+#ifndef XMLSEC_NO_CHACHA20
+    gXmlSecGnuTLSFunctions->transformChaCha20GetKlass           = xmlSecGnuTLSTransformChaCha20GetKlass;
+    gXmlSecGnuTLSFunctions->transformChaCha20Poly1305GetKlass   = xmlSecGnuTLSTransformChaCha20Poly1305GetKlass;
+#endif /* XMLSEC_NO_CHACHA20 */
 
     /******************************* Camellia ********************************/
 #ifndef XMLSEC_NO_CAMELLIA

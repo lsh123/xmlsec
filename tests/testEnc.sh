@@ -716,6 +716,14 @@ execEncTest $res_success \
     "--chacha20-key:test-chacha20 $topfolder/aleksey-xmlenc-01/test-chacha20.bin --binary-data $topfolder/aleksey-xmlenc-01/enc-chacha20-keyname.data" \
     "--chacha20-key:test-chacha20 $topfolder/aleksey-xmlenc-01/test-chacha20.bin"
 
+execEncTest $res_success \
+    "" \
+    "aleksey-xmlenc-01/enc-chacha20-keyname-missing-nonce" \
+    "chacha20" \
+    "" \
+    "" \
+    "--keys-file $topfolder/keys/keys.xml --binary-data $topfolder/aleksey-xmlenc-01/enc-chacha20-keyname-missing-nonce.data" \
+    "--keys-file $topfolder/keys/keys.xml"
 
 execEncTest $res_success \
     "" \
@@ -724,6 +732,15 @@ execEncTest $res_success \
     "" \
     "--keys-file $topfolder/keys/keys.xml" \
     "--keys-file $topfolder/keys/keys.xml --binary-data $topfolder/aleksey-xmlenc-01/enc-chacha20poly1305-keyname.data" \
+    "--keys-file $topfolder/keys/keys.xml"
+
+execEncTest $res_success \
+    "" \
+    "aleksey-xmlenc-01/enc-chacha20poly1305-keyname-missing-nonce" \
+    "chacha20-poly1305" \
+    "" \
+    "" \
+    "--keys-file $topfolder/keys/keys.xml --binary-data $topfolder/aleksey-xmlenc-01/enc-chacha20poly1305-keyname-missing-nonce.data" \
     "--keys-file $topfolder/keys/keys.xml"
 
 execEncTest $res_success \

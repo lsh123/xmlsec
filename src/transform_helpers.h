@@ -173,13 +173,23 @@ XMLSEC_EXPORT int   xmlSecTransformHkdfParamsRead       (xmlSecTransformHkdfPara
 XMLSEC_EXPORT int   xmlSecTransformChaCha20ParamsRead               (xmlNodePtr node,
                                                                      xmlSecByte *iv,
                                                                      xmlSecSize ivSize,
-                                                                     xmlSecSize *ivSizeOut);
+                                                                     xmlSecSize *ivSizeOut,
+                                                                     int *noncePresent);
+
+XMLSEC_EXPORT int   xmlSecTransformChaCha20ParamsWrite              (xmlNodePtr node,
+                                                                     const xmlSecByte *iv,
+                                                                     xmlSecSize ivSize);
 
 XMLSEC_EXPORT int   xmlSecTransformChaCha20Poly1305ParamsRead       (xmlNodePtr node,
                                                                      xmlSecBufferPtr aad,
                                                                      xmlSecByte *iv,
                                                                      xmlSecSize ivSize,
-                                                                     xmlSecSize *ivSizeOut);
+                                                                     xmlSecSize *ivSizeOut,
+                                                                     int *noncePresent);
+
+XMLSEC_EXPORT int   xmlSecTransformChaCha20Poly1305ParamsWrite      (xmlNodePtr node,
+                                                                     const xmlSecByte *iv,
+                                                                     xmlSecSize ivSize);
 #endif /* XMLSEC_NO_CHACHA20 */
 
 

@@ -150,10 +150,12 @@ XMLSEC_APPS_OBJS_A = \
 
 XMLSEC_UNIT_TESTS_OBJS = \
 	$(XMLSEC_APPS_INTDIR)\unit_tests\base64_unit_tests.obj \
+	$(XMLSEC_APPS_INTDIR)\unit_tests\transform_helpers_unit_tests.obj \
 	$(XMLSEC_APPS_INTDIR)\unit_tests\x509_unit_tests.obj \
 	$(XMLSEC_APPS_INTDIR)\unit_tests\xmlsec_unit_tests.obj
 XMLSEC_UNIT_TESTS_OBJS_A = \
 	$(XMLSEC_APPS_INTDIR_A)\unit_tests\base64_unit_tests.obj \
+	$(XMLSEC_APPS_INTDIR_A)\unit_tests\transform_helpers_unit_tests.obj \
 	$(XMLSEC_APPS_INTDIR_A)\unit_tests\x509_unit_tests.obj \
 	$(XMLSEC_APPS_INTDIR_A)\unit_tests\xmlsec_unit_tests.obj
 

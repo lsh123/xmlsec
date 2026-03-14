@@ -601,6 +601,54 @@ xmlSecOpenSSLKeysMngrInit(xmlSecKeysMngrPtr mngr) {
     return(0);
 }
 
+#if defined(XMLSEC_OPENSSL_API_300)
+
+#define XMLSEC_OPENSSL_RAND_BYTES_STRENGTH     0
+
+int
+xmlSecOpenSSLGenerateRandomBytes(xmlSecByte* buffer, xmlSecSize size) {
+    int ret;
+
+    xmlSecAssert2(buffer != NULL, -1);
+    xmlSecAssert2(size > 0, -1);
+
+    /* get random data */
+    ret = RAND_priv_bytes_ex(xmlSecOpenSSLGetLibCtx(), buffer, size, XMLSEC_OPENSSL_RAND_BYTES_STRENGTH);
+    if(ret != 1) {
+        xmlSecOpenSSLError2("RAND_priv_bytes_ex", NULL, "size=" XMLSEC_SIZE_FMT, size);
+        return(-1);
+    }
+
+    /* done */
+    return(0);
+}
+
+#else /* XMLSEC_OPENSSL_API_300 */
+
+int
+xmlSecOpenSSLGenerateRandomBytes(xmlSecByte* buffer, xmlSecSize size) {
+    xmlSecOpenSSLSizeT num;
+    int ret;
+
+    xmlSecAssert2(buffer != NULL, -1);
+    xmlSecAssert2(size > 0, -1);
+
+    XMLSEC_OPENSSL_SAFE_CAST_SIZE_TO_SIZE_T(size, num, return(-1), NULL);
+
+    /* get random data */
+    ret = RAND_priv_bytes(buffer, num);
+    if(ret != 1) {
+        xmlSecOpenSSLError2("RAND_priv_bytes", NULL, "size=" XMLSEC_SIZE_FMT, size);
+        return(-1);
+    }
+
+    /* done */
+    return(0);
+
+}
+
+#endif /* XMLSEC_OPENSSL_API_300 */
+
 /**
  * xmlSecOpenSSLGenerateRandom:
  * @buffer:             the destination buffer.
@@ -619,19 +667,18 @@ xmlSecOpenSSLGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
 
     ret = xmlSecBufferSetSize(buffer, size);
     if(ret < 0) {
-        xmlSecInternalError2("xmlSecBufferSetSize", NULL,
-                             "size=" XMLSEC_SIZE_FMT, size);
+        xmlSecInternalError2("xmlSecBufferSetSize", NULL, "size=" XMLSEC_SIZE_FMT, size);
         return(-1);
     }
 
     /* get random data */
-    ret = RAND_priv_bytes_ex(xmlSecOpenSSLGetLibCtx(), (xmlSecByte*)xmlSecBufferGetData(buffer), size,
-                        XMLSEC_OPENSSL_RAND_BYTES_STRENGTH);
-    if(ret != 1) {
-        xmlSecOpenSSLError2("RAND_priv_bytes_ex", NULL,
-                            "size=" XMLSEC_SIZE_FMT, size);
+    ret = xmlSecOpenSSLGenerateRandomBytes(xmlSecBufferGetData(buffer), xmlSecBufferGetSize(buffer));
+    if(ret < 0) {
+        xmlSecInternalError2("xmlSecOpenSSLGenerateRandomBytes", NULL, "size =" XMLSEC_SIZE_FMT, size);
         return(-1);
     }
+
+    /* done */
     return(0);
 }
 

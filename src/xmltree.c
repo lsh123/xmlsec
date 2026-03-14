@@ -135,6 +135,44 @@ xmlSecGetNodeContentAsHex(const xmlNodePtr cur, xmlSecBufferPtr res) {
 }
 
 /**
+ * xmlSecSetNodeContentAsHex:
+ * @node:           the pointer to XML node.
+ * @data:           the input bytes.
+ * @size:           the input data size.
+ *
+ * Hex-encodes @data and stores the result as node content for @node.
+ *
+ * Returns: 0 on success or -1 on error.
+ */
+int
+xmlSecSetNodeContentAsHex(xmlNodePtr node, const xmlSecByte* data, xmlSecSize size) {
+    static const xmlChar hexDigits[] = "0123456789abcdef";
+    xmlChar* content;
+    xmlSecSize contentSize;
+    xmlSecSize ii;
+
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(data != NULL, -1);
+
+    contentSize = (2 * size) + 1;
+    content = (xmlChar*)xmlMalloc(contentSize);
+    if(content == NULL) {
+        xmlSecMallocError(contentSize, NULL);
+        return(-1);
+    }
+
+    for(ii = 0; ii < size; ++ii) {
+        content[(2 * ii)] = hexDigits[(data[ii] >> 4) & 0x0F];
+        content[(2 * ii) + 1] = hexDigits[data[ii] & 0x0F];
+    }
+    content[2 * size] = '\0';
+
+    xmlNodeSetContent(node, content);
+    xmlFree(content);
+    return(0);
+}
+
+/**
  * xmlSecGetNodeContentAsSize:
  * @cur:            the pointer to XML node.
  * @defValue:       the default value that will be returned in @res if there is no node content.

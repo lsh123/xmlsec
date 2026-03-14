@@ -326,9 +326,9 @@ xmlSecOpenSSLKWDes3GenerateRandom(xmlSecTransformPtr transform XMLSEC_ATTRIBUTE_
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize > 0, -1);
 
-    ret = RAND_priv_bytes_ex(xmlSecOpenSSLGetLibCtx(), out, outSize, XMLSEC_OPENSSL_RAND_BYTES_STRENGTH);
-    if(ret != 1) {
-        xmlSecOpenSSLError2("RAND_priv_bytes_ex", NULL, "size=" XMLSEC_SIZE_FMT, outSize);
+    ret = xmlSecOpenSSLGenerateRandomBytes(out, outSize);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecOpenSSLGenerateRandomBytes", NULL);
         return(-1);
     }
     (*outWritten) = outSize;

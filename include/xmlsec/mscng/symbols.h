@@ -45,6 +45,7 @@ extern "C" {
 #define xmlSecKeyDataRsaId                      xmlSecMSCngKeyDataRsaId
 #define xmlSecKeyDataX509Id                     xmlSecMSCngKeyDataX509Id
 #define xmlSecKeyDataRawX509CertId              xmlSecMSCngKeyDataRawX509CertId
+#define xmlSecKeyDataDEREncodedKeyValueId       xmlSecMSCngKeyDataDEREncodedKeyValueId
 
 /********************************************************************
  *

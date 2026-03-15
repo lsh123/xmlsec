@@ -13,7 +13,7 @@
  * @Short_description:
  * @Stability: Stable
  */
-#ifndef XMLSEC_NO_CONCATKDF2
+#ifndef XMLSEC_NO_CONCATKDF
 
 #include "globals.h"
 
@@ -76,11 +76,11 @@ static int      xmlSecMSCngConcatKdfExecute              (xmlSecTransformPtr tra
 
 static int
 xmlSecMSCngConcatKdfCheckId(xmlSecTransformPtr transform) {
-#ifndef XMLSEC_NO_CONCATKDF2
+#ifndef XMLSEC_NO_CONCATKDF
     if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformConcatKdfId)) {
         return(1);
     }
-#endif /* XMLSEC_NO_CONCATKDF2 */
+#endif /* XMLSEC_NO_CONCATKDF */
 
     /* not found */
     return(0);
@@ -548,9 +548,9 @@ xmlSecMSCngTransformConcatKdfGetKlass(void) {
     return(&xmlSecMSCngConcatKdfKlass);
 }
 
-#else /* defined(XMLSEC_NO_CONCATKDF2) */
+#else /* defined(XMLSEC_NO_CONCATKDF) */
 
 /* ISO C forbids an empty translation unit */
 typedef int make_iso_compilers_happy;
 
-#endif /* XMLSEC_NO_CONCATKDF2 */
+#endif /* XMLSEC_NO_CONCATKDF */

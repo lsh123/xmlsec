@@ -160,9 +160,8 @@ xmlSecMSCngKeyDataCertGetDsaPubkey(PCERT_PUBLIC_KEY_INFO spki, BCRYPT_KEY_HANDLE
     }
 
     qBlobSize = (qSize <= XMLSEC_MSCNG_DSA_MAX_Q_SIZE) ? XMLSEC_MSCNG_DSA_MAX_Q_SIZE : qSize;
-
-    if(qBlobSize == XMLSEC_MSCNG_DSA_MAX_Q_SIZE) {
-        /* V1: BCRYPT_DSA_KEY_BLOB for keys up to 1024-bit
+    if((pSize <= 128) && (qBlobSize == XMLSEC_MSCNG_DSA_MAX_Q_SIZE)) {
+        /* V1: BCRYPT_DSA_KEY_BLOB for keys up to 1024-bit (128 bytes)
          * layout: header + p[cbKey] + g[cbKey] + y[cbKey] */
         blobSize = (DWORD)sizeof(BCRYPT_DSA_KEY_BLOB) + pSize * 3U;
         blobData = (BYTE*)LocalAlloc(LMEM_ZEROINIT, blobSize);

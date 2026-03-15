@@ -338,6 +338,15 @@ execDSigTest $res_success \
     "--enabled-key-data der-encoded-key-value,key-name,ec $priv_key_option:secp256r1 $topfolder/keys/ec/ec-prime256v1-key.$priv_key_format --pwd secret123" \
     "--enabled-key-data der-encoded-key-value,ec"
 
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloping-sha256-dsa2048-der-encoded-key-value" \
+    "sha256 dsa-sha256" \
+    "der-encoded-key-value dsa" \
+    "--enabled-key-data der-encoded-key-value,dsa" \
+    "--enabled-key-data der-encoded-key-value,key-name,dsa $priv_key_option:TestKeyName-dsa-2048 $topfolder/keys/dsa/dsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-key-data der-encoded-key-value,dsa"
+
 
 if [ "z$xmlsec_feature_x509_data_lookup" = "zyes" ] ; then
     execDSigTest $res_success \

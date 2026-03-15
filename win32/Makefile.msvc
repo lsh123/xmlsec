@@ -357,7 +357,7 @@ XMLSEC_MSCNG_OBJS = \
 	$(XMLSEC_MSCNG_INTDIR)\kt_rsa.obj \
 	$(XMLSEC_MSCNG_INTDIR)\kw_rfc_3394.obj \
 	$(XMLSEC_MSCNG_INTDIR)\kw_des.obj \
-	$(XMLSEC_MSCNG_INTDIR)\pbkdf2.obj \
+	$(XMLSEC_MSCNG_INTDIR)\kdf.obj \
 	$(XMLSEC_MSCNG_INTDIR)\strings.obj\
 	$(XMLSEC_MSCNG_INTDIR)\signatures.obj\
 	$(XMLSEC_MSCNG_INTDIR)\x509.obj\
@@ -378,7 +378,7 @@ XMLSEC_MSCNG_OBJS_A = \
 	$(XMLSEC_MSCNG_INTDIR_A)\kt_rsa.obj \
 	$(XMLSEC_MSCNG_INTDIR_A)\kw_rfc_3394.obj \
 	$(XMLSEC_MSCNG_INTDIR_A)\kw_des.obj \
-	$(XMLSEC_MSCNG_INTDIR_A)\pbkdf2.obj \
+	$(XMLSEC_MSCNG_INTDIR_A)\kdf.obj \
 	$(XMLSEC_MSCNG_INTDIR_A)\strings.obj\
 	$(XMLSEC_MSCNG_INTDIR_A)\signatures.obj\
 	$(XMLSEC_MSCNG_INTDIR_A)\x509.obj\

@@ -378,6 +378,33 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformEcdhGetKlass(void);
 
 /********************************************************************
  *
+ * DH transforms
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_DH
+
+/**
+ * xmlSecMSCngKeyDataDhId:
+ *
+ * The DH key data klass.
+ */
+#define xmlSecMSCngKeyDataDhId \
+        xmlSecMSCngKeyDataDhGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId xmlSecMSCngKeyDataDhGetKlass(void);
+
+/**
+ * xmlSecMSCngTransformDhEsId:
+ *
+ * The DH-ES key agreement transform klass.
+ */
+#define xmlSecMSCngTransformDhEsId \
+       xmlSecMSCngTransformDhEsGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformDhEsGetKlass(void);
+
+#endif /* XMLSEC_NO_DH */
+
+/********************************************************************
+ *
  * DES transform
  *
  *******************************************************************/

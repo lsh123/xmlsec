@@ -21,10 +21,11 @@
 extern "C" {
 #endif /* __cplusplus */
 
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataPtr   xmlSecMSCngCertAdopt         (PCCERT_CONTEXT pCert,
-                                                                      xmlSecKeyDataType type);
-XMLSEC_CRYPTO_EXPORT BCRYPT_KEY_HANDLE  xmlSecMSCngKeyDataGetPubKey  (xmlSecKeyDataPtr data);
-XMLSEC_CRYPTO_EXPORT NCRYPT_KEY_HANDLE  xmlSecMSCngKeyDataGetPrivKey (xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataPtr   xmlSecMSCngCertAdopt            (PCCERT_CONTEXT pCert,
+                                                                         xmlSecKeyDataType type);
+XMLSEC_CRYPTO_EXPORT BCRYPT_KEY_HANDLE  xmlSecMSCngKeyDataGetPubKey     (xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT NCRYPT_KEY_HANDLE  xmlSecMSCngKeyDataGetPrivKey    (xmlSecKeyDataPtr data);
+
 
 #ifdef __cplusplus
 }

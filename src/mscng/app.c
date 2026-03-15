@@ -119,6 +119,8 @@ xmlSecMSCngAppGetCertStoreName(void) {
  *
  * Returns: pointer to the key or NULL if an error occurs.
  */
+
+
 xmlSecKeyPtr
 xmlSecMSCngAppKeyLoadEx(const char *filename, xmlSecKeyDataType type XMLSEC_ATTRIBUTE_UNUSED, xmlSecKeyDataFormat format,
     const char *pwd, void* pwdCallback, void* pwdCallbackCtx
@@ -165,6 +167,52 @@ xmlSecMSCngAppKeyLoadEx(const char *filename, xmlSecKeyDataType type XMLSEC_ATTR
         }
         xmlSecBufferFinalize(&buffer);
         break;
+    case xmlSecKeyDataFormatDer: {
+        xmlSecKeyDataPtr keyData = NULL;
+        xmlSecSize bufSize;
+        DWORD dwDataSize = 0;
+
+        ret = xmlSecBufferInitialize(&buffer, 0);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecBufferInitialize(DER)", NULL);
+            return(NULL);
+        }
+        ret = xmlSecBufferReadFile(&buffer, filename);
+        if(ret < 0) {
+            xmlSecInternalError2("xmlSecBufferReadFile(DER)", NULL,
+                "filename=%s", xmlSecErrorsSafeString(filename));
+            xmlSecBufferFinalize(&buffer);
+            return(NULL);
+        }
+        bufSize = xmlSecBufferGetSize(&buffer);
+        XMLSEC_SAFE_CAST_SIZE_TO_ULONG(bufSize, dwDataSize, {xmlSecBufferFinalize(&buffer); return(NULL);}, NULL);
+
+        /* try to read private key first and if no luck, try public key */
+        keyData = xmlSecMSCngAppKeyReadPrivKeyFromDer(xmlSecBufferGetData(&buffer), dwDataSize);
+        if(keyData == NULL) {
+            keyData = xmlSecMSCngAppKeyReadPubKeyFromDer(xmlSecBufferGetData(&buffer), dwDataSize);
+        }
+        if(keyData == NULL) {
+            xmlSecInternalError("xmlSecMSCngAppKeyReadPrivKeyFromDer and xmlSecMSCngAppKeyReadPubKeyFromDer", NULL);
+            xmlSecBufferFinalize(&buffer);
+            return(NULL);
+        }
+        xmlSecBufferFinalize(&buffer);
+        key = xmlSecKeyCreate();
+        if(key == NULL) {
+            xmlSecInternalError("xmlSecKeyCreate", NULL);
+            xmlSecKeyDataDestroy(keyData);
+            return(NULL);
+        }
+        ret = xmlSecKeySetValue(key, keyData);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecKeySetValue", NULL);
+            xmlSecKeyDataDestroy(keyData);
+            xmlSecKeyDestroy(key);
+            return(NULL);
+        }
+        break;
+    }
     default:
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_FORMAT, NULL,
             "format=" XMLSEC_ENUM_FMT, XMLSEC_ENUM_CAST(format));

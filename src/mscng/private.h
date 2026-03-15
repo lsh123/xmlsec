@@ -32,12 +32,84 @@ extern "C" {
  * Key data functions
  *
  ******************************************************************************/
-xmlSecKeyDataPtr   xmlSecMSCngKeyDataFromAlgorithm                 (LPSTR pszObjId);
-int                xmlSecMSCngKeyDataAdoptKey                      (xmlSecKeyDataPtr data,
-                                                                    BCRYPT_KEY_HANDLE hPubKey);
-int                xmlSecMSCngKeyDataCertGetPubkey                 (PCERT_PUBLIC_KEY_INFO spki,
-                                                                    BCRYPT_KEY_HANDLE* key);
- xmlSecSize         xmlSecMSCngCertKeyDataGetSize                       (xmlSecKeyDataPtr data);
+xmlSecKeyDataPtr   xmlSecMSCngKeyDataFromAlgorithm                  (LPSTR pszObjId);
+
+int                xmlSecMSCngKeyDataAdoptKey                       (xmlSecKeyDataPtr data,
+                                                                     BCRYPT_KEY_HANDLE hPubKey);
+int                xmlSecMSCngKeyDataCertGetPubkey                  (PCERT_PUBLIC_KEY_INFO spki,
+                                                                     BCRYPT_KEY_HANDLE* key);
+
+int                 xmlSecMSCngKeyDataAdoptBCryptPrivKey            (xmlSecKeyDataPtr data, 
+                                                                     BCRYPT_KEY_HANDLE hKey);                                                                    
+BCRYPT_KEY_HANDLE    xmlSecMSCngKeyDataGetBCryptPrivKey             (xmlSecKeyDataPtr data);
+
+
+xmlSecSize         xmlSecMSCngCertKeyDataGetSize                    (xmlSecKeyDataPtr data);
+
+
+xmlSecKeyDataPtr   xmlSecMSCngAppKeyReadPubKeyFromDer               (const xmlSecByte* derData,
+                                                                     DWORD derDataLen);
+xmlSecKeyDataPtr   xmlSecMSCngAppKeyReadPrivKeyFromDer              (const xmlSecByte* data,
+                                                                     DWORD dataSize);
+int                xmlSecMSCngCreateDerForBcryptPubkey              (xmlSecKeyDataPtr data,
+                                                                     LPVOID* ppDer,
+                                                                     DWORD* pcbDer);
+
+#ifndef XMLSEC_NO_DH
+
+#ifndef szOID_X942_DH
+#define szOID_X942_DH "1.2.840.10046.2.1"
+#endif /* szOID_X942_DH */
+
+int                xmlSecMSCngKeyDataSetDhQ                        (xmlSecKeyDataPtr data,
+                                                                     const xmlSecByte* q,
+                                                                     DWORD qLen);
+int                xmlSecMSCngKeyDataDhEnsureValidAgreement        (xmlSecKeyDataPtr myData,
+                                                                     xmlSecKeyDataPtr otherData);
+int                xmlSecMSCngKeyDataDuplicateBCryptDhPrivKey       (BCRYPT_KEY_HANDLE src,
+                                                                     BCRYPT_KEY_HANDLE* dst);
+const xmlSecByte*  xmlSecMSCngDerDecodeInteger                      (const xmlSecByte* p,
+                                                                     const xmlSecByte* end,
+                                                                     DWORD* pLen);
+int                xmlSecMSCngDhParseDhParameters                   (const xmlSecByte* params,
+                                                                     DWORD paramsLen,
+                                                                     const xmlSecByte** ppP,
+                                                                     DWORD* pPLen,
+                                                                     const xmlSecByte** ppG,
+                                                                     DWORD* pGLen,
+                                                                     const xmlSecByte** ppQ,
+                                                                     DWORD* pQLen);
+int                xmlSecMSCngDhBlobCopy                            (PUCHAR dest,
+                                                                     DWORD cbKey,
+                                                                     const xmlSecByte* val,
+                                                                     xmlSecSize valLen);
+xmlSecKeyDataPtr   xmlSecMSCngKeyDataDhRead                         (xmlSecKeyDataId id,
+                                                                     xmlSecKeyValueDhPtr dhValue);
+int                xmlSecMSCngKeyDataDhPubkeyWrite                  (BCRYPT_KEY_HANDLE pubkey,
+                                                                     xmlSecKeyValueDhPtr dhValue);
+xmlSecKeyDataPtr   xmlSecMSCngKeyDataDhReadFromPkcs8Der             (const xmlSecByte* derData,
+                                                                     DWORD derDataLen);
+#endif /* XMLSEC_NO_DH */
+
+#ifndef XMLSEC_NO_DSA
+
+#define XMLSEC_MSCNG_DSA_MAX_CBKEY_SIZE (512U)                      /*  4096 bits, which is 512 bytes */
+#define XMLSEC_MSCNG_DSA_MAX_P_SIZE     (512U)                      /*  4096 bits, which is 512 bytes */
+#define XMLSEC_MSCNG_DSA_MAX_Q_SIZE     (20U)
+#define XMLSEC_MSCNG_DSA_V2_Q_SIZE      (32U)
+
+int                xmlSecMSCngKeyDataCertGetDsaPubkey               (PCERT_PUBLIC_KEY_INFO spki,
+                                                                     BCRYPT_KEY_HANDLE* key);
+int                xmlSecMSCngDsaBuildSubjectPublicKeyInfoDer        (BCRYPT_KEY_HANDLE hKey,
+                                                                     LPVOID* ppDer,
+                                                                     DWORD* pcbDer);
+int                xmlSecMSCngIsDsaBcryptKey                        (BCRYPT_KEY_HANDLE hKey);
+xmlSecKeyDataPtr   xmlSecMSCngKeyDataDsaRead                        (xmlSecKeyDataId id,
+                                                                     xmlSecKeyValueDsaPtr dsaValue);
+int                xmlSecMSCngKeyDataDsaPubkeyWrite                 (BCRYPT_KEY_HANDLE pubkey,
+                                                                     xmlSecKeyValueDsaPtr dsaValue);
+
+#endif /* XMLSEC_NO_DSA */
 
 /******************************************************************************
  *

@@ -356,6 +356,69 @@ execDSigTest $res_success \
     "--enabled-key-data der-encoded-key-value,key-name,dsa $priv_key_option:TestKeyName-dsa-2048 $topfolder/keys/dsa/dsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123" \
     "--enabled-key-data der-encoded-key-value,dsa"
 
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloping-sha256-rsa2048-der-encoded-key-value" \
+    "sha256 rsa-sha256" \
+    "der-encoded-key-value rsa" \
+    "--enabled-key-data der-encoded-key-value,rsa" \
+    "--enabled-key-data der-encoded-key-value,key-name,rsa $priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-key-data der-encoded-key-value,rsa"
+
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloping-sha256-rsa4096-der-encoded-key-value" \
+    "sha256 rsa-sha256" \
+    "der-encoded-key-value rsa" \
+    "--enabled-key-data der-encoded-key-value,rsa" \
+    "--enabled-key-data der-encoded-key-value,key-name,rsa $priv_key_option:TestKeyName-rsa-4096 $topfolder/keys/rsa/rsa-4096-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-key-data der-encoded-key-value,rsa"
+
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloping-sha256-ec-prime256v1-der-encoded-key-value" \
+    "sha256 ecdsa-sha256" \
+    "der-encoded-key-value ec" \
+    "--enabled-key-data der-encoded-key-value,ec" \
+    "--enabled-key-data der-encoded-key-value,key-name,ec $priv_key_option:TestKeyName-ec-prime256v1 $topfolder/keys/ec/ec-prime256v1-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-key-data der-encoded-key-value,ec"
+
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloping-sha384-ec-prime384v1-der-encoded-key-value" \
+    "sha384 ecdsa-sha384" \
+    "der-encoded-key-value ec" \
+    "--enabled-key-data der-encoded-key-value,ec" \
+    "--enabled-key-data der-encoded-key-value,key-name,ec $priv_key_option:TestKeyName-ec-prime384v1 $topfolder/keys/ec/ec-prime384v1-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-key-data der-encoded-key-value,ec"
+
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloping-sha512-ec-prime521v1-der-encoded-key-value" \
+    "sha512 ecdsa-sha512" \
+    "der-encoded-key-value ec" \
+    "--enabled-key-data der-encoded-key-value,ec" \
+    "--enabled-key-data der-encoded-key-value,key-name,ec $priv_key_option:TestKeyName-ec-prime521v1 $topfolder/keys/ec/ec-prime521v1-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-key-data der-encoded-key-value,ec"
+
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloping-sha256-eddsa-ed25519-der-encoded-key-value" \
+    "sha256 eddsa-ed25519" \
+    "der-encoded-key-value eddsa" \
+    "--enabled-key-data der-encoded-key-value,eddsa" \
+    "--enabled-key-data der-encoded-key-value,key-name,eddsa $eddsa_priv_key_option:TestKeyName-eddsa-ed25519 $topfolder/keys/eddsa/eddsa-ed25519-key.$eddsa_priv_key_format --pwd secret123" \
+    "--enabled-key-data der-encoded-key-value,eddsa"
+
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloping-sha256-eddsa-ed448-der-encoded-key-value" \
+    "sha256 eddsa-ed448" \
+    "der-encoded-key-value eddsa" \
+    "--enabled-key-data der-encoded-key-value,eddsa" \
+    "--enabled-key-data der-encoded-key-value,key-name,eddsa $eddsa_priv_key_option:TestKeyName-eddsa-ed448 $topfolder/keys/eddsa/eddsa-ed448-key.$eddsa_priv_key_format --pwd secret123" \
+    "--enabled-key-data der-encoded-key-value,eddsa"
+
 
 if [ "z$xmlsec_feature_x509_data_lookup" = "zyes" ] ; then
     execDSigTest $res_success \

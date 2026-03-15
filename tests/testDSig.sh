@@ -340,6 +340,15 @@ execDSigTest $res_success \
 
 execDSigTest $res_success \
     "" \
+    "aleksey-xmldsig-01/enveloping-sha1-dsa1024-der-encoded-key-value" \
+    "sha1 dsa-sha1" \
+    "der-encoded-key-value dsa" \
+    "--enabled-key-data der-encoded-key-value,dsa" \
+    "--enabled-key-data der-encoded-key-value,key-name,dsa $priv_key_option:TestKeyName-dsa-1024 $topfolder/keys/dsa/dsa-1024-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-key-data der-encoded-key-value,dsa"
+
+execDSigTest $res_success \
+    "" \
     "aleksey-xmldsig-01/enveloping-sha256-dsa2048-der-encoded-key-value" \
     "sha256 dsa-sha256" \
     "der-encoded-key-value dsa" \

@@ -174,15 +174,9 @@ xmlSecMSCngKeyDataDEREncodedKeyValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key
         goto done;
     }
 
-    status = CryptImportPublicKeyInfoEx2(
-        X509_ASN_ENCODING,
-        (PCERT_PUBLIC_KEY_INFO)keyInfo,
-        0,
-        NULL,
-        &hPubkey
-    );
-    if((status != TRUE) || (hPubkey == 0)) {
-        xmlSecMSCngNtError("CryptDecodeObjectEx", xmlSecKeyDataKlassGetName(id), STATUS_SUCCESS);
+    ret = xmlSecMSCngKeyDataCertGetPubkey((PCERT_PUBLIC_KEY_INFO)keyInfo, &hPubkey);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecMSCngKeyDataCertGetPubkey", xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 

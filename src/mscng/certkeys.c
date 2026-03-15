@@ -86,8 +86,7 @@ xmlSecMSCngReverseBlob(CRYPT_UINT_BLOB* blob, DWORD* pSize) {
  * and construct the appropriate BCRYPT_DSA_KEY_BLOB (V1 <=1024-bit) or
  * BCRYPT_DSA_KEY_BLOB_V2 (>1024-bit) and call BCryptImportKeyPair directly. */
 static int
-xmlSecMSCngKeyDataCertGetDsaPubkey(PCCERT_CONTEXT cert, BCRYPT_KEY_HANDLE* key) {
-    CERT_PUBLIC_KEY_INFO* spki;
+xmlSecMSCngKeyDataCertGetDsaPubkey(PCERT_PUBLIC_KEY_INFO spki, BCRYPT_KEY_HANDLE* key) {
     CERT_DSS_PARAMETERS* pDssParams = NULL;
     DWORD cbDssParams = 0;
     CRYPT_UINT_BLOB* pYBlob = NULL;
@@ -103,10 +102,9 @@ xmlSecMSCngKeyDataCertGetDsaPubkey(PCCERT_CONTEXT cert, BCRYPT_KEY_HANDLE* key) 
     NTSTATUS status;
     int ret = -1;
 
-    xmlSecAssert2(cert != NULL, -1);
+    xmlSecAssert2(spki != NULL, -1);
     xmlSecAssert2(key != NULL, -1);
 
-    spki = &cert->pCertInfo->SubjectPublicKeyInfo;
     xmlSecAssert2(spki->Algorithm.Parameters.cbData != 0, -1);
     xmlSecAssert2(spki->Algorithm.Parameters.pbData != NULL, -1);
 
@@ -261,15 +259,15 @@ done:
 }
 #endif /* XMLSEC_NO_DSA */
 
-static int
-xmlSecMSCngKeyDataCertGetPubkey(PCCERT_CONTEXT cert, BCRYPT_KEY_HANDLE* key) {
-    xmlSecAssert2(cert != NULL, -1);
+int
+xmlSecMSCngKeyDataCertGetPubkey(PCERT_PUBLIC_KEY_INFO spki, BCRYPT_KEY_HANDLE* key) {
+    xmlSecAssert2(spki != NULL, -1);
     xmlSecAssert2(key != NULL, -1);
 
     /* Try the standard API first: works for RSA, EC, and DSA up to 1024-bit.
      * For DSA > 1024-bit it fails (E_INVALIDARG) due to legacy CryptoAPI limits. */
     if(CryptImportPublicKeyInfoEx2(X509_ASN_ENCODING,
-            &(cert->pCertInfo->SubjectPublicKeyInfo),
+            spki,
             0,
             NULL,
             key)) {
@@ -280,9 +278,9 @@ xmlSecMSCngKeyDataCertGetPubkey(PCCERT_CONTEXT cert, BCRYPT_KEY_HANDLE* key) {
     /* CryptImportPublicKeyInfoEx2 fails for DSA > 1024-bit. For large DSA keys
      * fall back to BCryptImportKeyPair with a manually constructed blob. */
     {
-        LPCSTR pszObjId = cert->pCertInfo->SubjectPublicKeyInfo.Algorithm.pszObjId;
+        LPCSTR pszObjId = spki->Algorithm.pszObjId;
         if((pszObjId != NULL) && (strcmp(pszObjId, szOID_X957_DSA) == 0)) {
-            return(xmlSecMSCngKeyDataCertGetDsaPubkey(cert, key));
+            return(xmlSecMSCngKeyDataCertGetDsaPubkey(spki, key));
         }
     }
 #endif /* XMLSEC_NO_DSA */
@@ -376,7 +374,7 @@ xmlSecMSCngKeyDataAdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert, xmlSecKe
         ctx->privkeyNeedsFree = needsFree;
     }
 
-    ret = xmlSecMSCngKeyDataCertGetPubkey(cert, &hPubKey);
+    ret = xmlSecMSCngKeyDataCertGetPubkey(&(cert->pCertInfo->SubjectPublicKeyInfo), &hPubKey);
     if(ret < 0) {
         xmlSecInternalError("xmlSecMSCngKeyDataCertGetPubkey", NULL);
         return(-1);
@@ -622,7 +620,7 @@ xmlSecMSCngCertKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
 
     if(dstCtx->cert != NULL) {
         /* avoid BCryptDuplicateKey() here as that works for symmetric keys only */
-        ret = xmlSecMSCngKeyDataCertGetPubkey(dstCtx->cert, &dstCtx->pubkey);
+        ret = xmlSecMSCngKeyDataCertGetPubkey(&(dstCtx->cert->pCertInfo->SubjectPublicKeyInfo), &dstCtx->pubkey);
         if(ret < 0) {
             xmlSecInternalError("xmlSecMSCngKeyDataCertGetPubkey", NULL);
             return(-1);

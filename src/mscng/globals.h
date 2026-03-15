@@ -52,6 +52,13 @@
 #define BCRYPT_PBKDF2_ALGORITHM          L"PBKDF2"
 #endif /* BCRYPT_PBKDF2_ALGORITHM */
 
+/* DSA v2 key blobs require newer bcrypt.h definitions. */
+#if defined(BCRYPT_DSA_PUBLIC_MAGIC_V2)
+#define XMLSEC_MSCNG_HAVE_DSA_V2         1
+#else
+#define XMLSEC_MSCNG_HAVE_DSA_V2         0
+#endif /* defined(BCRYPT_DSA_PUBLIC_MAGIC_V2) */
+
 #define IN_XMLSEC_CRYPTO
 #define XMLSEC_PRIVATE
 

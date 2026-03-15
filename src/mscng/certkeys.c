@@ -96,7 +96,9 @@ xmlSecMSCngKeyDataCertGetDsaPubkey(PCCERT_CONTEXT cert, BCRYPT_KEY_HANDLE* key) 
     DWORD pSize, qSize, gSize, ySize, qBlobSize;
     DWORD blobSize, offset;
     BCRYPT_DSA_KEY_BLOB* dsakey;
+#if XMLSEC_MSCNG_HAVE_DSA_V2
     BCRYPT_DSA_KEY_BLOB_V2* dsakey2;
+#endif /* XMLSEC_MSCNG_HAVE_DSA_V2 */
     BCRYPT_ALG_HANDLE hAlg = NULL;
     NTSTATUS status;
     int ret = -1;
@@ -159,7 +161,7 @@ xmlSecMSCngKeyDataCertGetDsaPubkey(PCCERT_CONTEXT cert, BCRYPT_KEY_HANDLE* key) 
         goto done;
     }
 
-    qBlobSize = (qSize <= XMLSEC_MSCNG_DSA_MAX_Q_SIZE) ? XMLSEC_MSCNG_DSA_MAX_Q_SIZE : XMLSEC_MSCNG_DSA_V2_Q_SIZE;
+    qBlobSize = (qSize <= XMLSEC_MSCNG_DSA_MAX_Q_SIZE) ? XMLSEC_MSCNG_DSA_MAX_Q_SIZE : qSize;
 
     if(qBlobSize == XMLSEC_MSCNG_DSA_MAX_Q_SIZE) {
         /* V1: BCRYPT_DSA_KEY_BLOB for keys up to 1024-bit
@@ -188,6 +190,7 @@ xmlSecMSCngKeyDataCertGetDsaPubkey(PCCERT_CONTEXT cert, BCRYPT_KEY_HANDLE* key) 
         /* y: right-align in pSize-byte field */
         memcpy(blobData + offset + (pSize - ySize), pYBlob->pbData, ySize);
     } else {
+#if XMLSEC_MSCNG_HAVE_DSA_V2
         /* V2: BCRYPT_DSA_KEY_BLOB_V2 for keys > 1024-bit (2048/3072-bit)
          * layout: header + seed[cbGroupSize] + q[cbGroupSize] + p[cbKey] + g[cbKey] + y[cbKey] */
         blobSize = (DWORD)sizeof(BCRYPT_DSA_KEY_BLOB_V2) + qBlobSize * 2U + pSize * 3U;
@@ -220,6 +223,10 @@ xmlSecMSCngKeyDataCertGetDsaPubkey(PCCERT_CONTEXT cert, BCRYPT_KEY_HANDLE* key) 
         offset += pSize;
         /* y: right-align */
         memcpy(blobData + offset + (pSize - ySize), pYBlob->pbData, ySize);
+    #else /* XMLSEC_MSCNG_HAVE_DSA_V2 */
+        xmlSecNotImplementedError("DSA keys with q > 20 bytes require newer Windows SDK bcrypt definitions");
+        goto done;
+    #endif /* XMLSEC_MSCNG_HAVE_DSA_V2 */
     }
 
     /* Open DSA algorithm provider and import the key blob */
@@ -657,7 +664,9 @@ xmlSecMSCngCertKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
         switch(((BCRYPT_KEY_BLOB*)pbBlob)->Magic) {
 #ifndef XMLSEC_NO_DSA
             case BCRYPT_DSA_PUBLIC_MAGIC:
+#if XMLSEC_MSCNG_HAVE_DSA_V2
             case BCRYPT_DSA_PUBLIC_MAGIC_V2:
+#endif /* XMLSEC_MSCNG_HAVE_DSA_V2 */
                 pszAlgId = BCRYPT_DSA_ALGORITHM;
                 break;
 #endif
@@ -832,7 +841,9 @@ xmlSecMSCngKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
     xmlSecSize offset, blobSize;
     DWORD dwBlobSize;
     BCRYPT_DSA_KEY_BLOB* dsakey;
+#if XMLSEC_MSCNG_HAVE_DSA_V2
     BCRYPT_DSA_KEY_BLOB_V2* dsakey2;
+#endif /* XMLSEC_MSCNG_HAVE_DSA_V2 */
     BCRYPT_KEY_HANDLE hKey = NULL;
     NTSTATUS status;
     BCRYPT_ALG_HANDLE hAlg = NULL;
@@ -869,7 +880,7 @@ xmlSecMSCngKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
     xmlSecAssert2(gSize <= pSize, NULL);
     xmlSecAssert2(ySize <= pSize, NULL);
 
-    qBlobSize = (qSize <= XMLSEC_MSCNG_DSA_MAX_Q_SIZE) ? XMLSEC_MSCNG_DSA_MAX_Q_SIZE : XMLSEC_MSCNG_DSA_V2_Q_SIZE;
+    qBlobSize = (qSize <= XMLSEC_MSCNG_DSA_MAX_Q_SIZE) ? XMLSEC_MSCNG_DSA_MAX_Q_SIZE : qSize;
 
     if(qBlobSize == XMLSEC_MSCNG_DSA_MAX_Q_SIZE) {
         /* V1: BCRYPT_DSA_KEY_BLOB for keys up to 1024-bit (q up to 20 bytes),
@@ -877,10 +888,15 @@ xmlSecMSCngKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
         offset = sizeof(BCRYPT_DSA_KEY_BLOB);
         blobSize = offset + pSize * 3;
     } else {
-        /* V2: BCRYPT_DSA_KEY_BLOB_V2 for larger keys (2048/3072-bit, q field is fixed at 32 bytes),
+#if XMLSEC_MSCNG_HAVE_DSA_V2
+        /* V2: BCRYPT_DSA_KEY_BLOB_V2 for larger keys (2048/3072-bit),
          * layout: header + seed[cbSeedLength] + q[cbGroupSize] + p[cbKey] + g[cbKey] + y[cbKey] */
         offset = sizeof(BCRYPT_DSA_KEY_BLOB_V2);
         blobSize = offset + qBlobSize + qBlobSize + pSize * 3; /* seed + q + p + g + y */
+#else /* XMLSEC_MSCNG_HAVE_DSA_V2 */
+        xmlSecNotImplementedError("DSA keys with q > 20 bytes require newer Windows SDK bcrypt definitions");
+        goto done;
+#endif /* XMLSEC_MSCNG_HAVE_DSA_V2 */
     }
 
     ret = xmlSecBufferInitialize(&blob, blobSize);
@@ -924,7 +940,8 @@ xmlSecMSCngKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
         memcpy(blobData + offset, xmlSecBufferGetData(&(dsaValue->y)), ySize);
         offset += pSize; /* ySize <= pSize */
     } else {
-        /* V2: BCRYPT_DSA_KEY_BLOB_V2 for 2048/3072-bit keys with a fixed 32-byte q field */
+#if XMLSEC_MSCNG_HAVE_DSA_V2
+        /* V2: BCRYPT_DSA_KEY_BLOB_V2 for 2048/3072-bit keys */
         DWORD dwQLen;
         dsakey2 = (BCRYPT_DSA_KEY_BLOB_V2*)blobData;
         dsakey2->dwMagic = BCRYPT_DSA_PUBLIC_MAGIC_V2;
@@ -955,6 +972,10 @@ xmlSecMSCngKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
         /*** y ***/
         memcpy(blobData + offset, xmlSecBufferGetData(&(dsaValue->y)), ySize);
         offset += pSize; /* ySize <= pSize */
+#else /* XMLSEC_MSCNG_HAVE_DSA_V2 */
+    xmlSecNotImplementedError("DSA keys with q > 20 bytes require newer Windows SDK bcrypt definitions");
+    goto done;
+#endif /* XMLSEC_MSCNG_HAVE_DSA_V2 */
     }
 
     /* import the key blob */
@@ -1131,7 +1152,9 @@ xmlSecMSCngKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
                 "keyLen=%lu", dsakey->cbKey);
             goto done;
         }
-    } else if(dsakey->dwMagic == BCRYPT_DSA_PUBLIC_MAGIC_V2) {
+    }
+#if XMLSEC_MSCNG_HAVE_DSA_V2
+    else if(dsakey->dwMagic == BCRYPT_DSA_PUBLIC_MAGIC_V2) {
         /* V2: BCRYPT_DSA_KEY_BLOB_V2 + seed[cbSeedLength] + q[cbGroupSize] + p[cbKey] + g[cbKey] + y[cbKey] */
         BCRYPT_DSA_KEY_BLOB_V2* dsakey2v;
         xmlSecByte* v2Data;
@@ -1185,7 +1208,9 @@ xmlSecMSCngKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
                 "keyLen=%lu", dsakey2v->cbKey);
             goto done;
         }
-    } else {
+    }
+#endif /* XMLSEC_MSCNG_HAVE_DSA_V2 */
+    else {
         xmlSecNotImplementedError2("Unexpected DSA blob magic: 0x%08lX",
             (unsigned long)dsakey->dwMagic);
         goto done;

@@ -13,7 +13,7 @@
  * @Short_description:
  * @Stability: Stable
  */
-#ifndef XMLSEC_NO_CONCATKDF2
+#ifndef XMLSEC_NO_CONCATKDF
 
 #include "globals.h"
 
@@ -76,11 +76,11 @@ static int      xmlSecMSCngConcatKdfExecute              (xmlSecTransformPtr tra
 
 static int
 xmlSecMSCngConcatKdfCheckId(xmlSecTransformPtr transform) {
-#ifndef XMLSEC_NO_CONCATKDF2
+#ifndef XMLSEC_NO_CONCATKDF
     if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformConcatKdfId)) {
         return(1);
     }
-#endif /* XMLSEC_NO_CONCATKDF2 */
+#endif /* XMLSEC_NO_CONCATKDF */
 
     /* not found */
     return(0);
@@ -231,6 +231,18 @@ xmlSecMSCngConcatKdfGetDigestFromHref(const xmlChar* href) {
         return(BCRYPT_SHA512_ALGORITHM);
     } else
 #endif /* XMLSEC_NO_SHA512 */
+
+#ifndef XMLSEC_NO_SHA3
+    if(xmlStrcmp(href, xmlSecHrefSha3_256) == 0) {
+        return(BCRYPT_SHA3_256_ALGORITHM);
+    } else
+    if(xmlStrcmp(href, xmlSecHrefSha3_384) == 0) {
+        return(BCRYPT_SHA3_384_ALGORITHM);
+    } else
+    if(xmlStrcmp(href, xmlSecHrefSha3_512) == 0) {
+        return(BCRYPT_SHA3_512_ALGORITHM);
+    } else
+#endif /* XMLSEC_NO_SHA3 */
 
     {
         xmlSecOtherError2(XMLSEC_ERRORS_R_INVALID_ALGORITHM, NULL,
@@ -536,9 +548,9 @@ xmlSecMSCngTransformConcatKdfGetKlass(void) {
     return(&xmlSecMSCngConcatKdfKlass);
 }
 
-#else /* defined(XMLSEC_NO_CONCATKDF2) */
+#else /* defined(XMLSEC_NO_CONCATKDF) */
 
 /* ISO C forbids an empty translation unit */
 typedef int make_iso_compilers_happy;
 
-#endif /* XMLSEC_NO_CONCATKDF2 */
+#endif /* XMLSEC_NO_CONCATKDF */

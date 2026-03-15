@@ -35,6 +35,8 @@ extern "C" {
 xmlSecKeyDataPtr   xmlSecMSCngKeyDataFromAlgorithm                 (LPSTR pszObjId);
 int                xmlSecMSCngKeyDataAdoptKey                      (xmlSecKeyDataPtr data,
                                                                     BCRYPT_KEY_HANDLE hPubKey);
+int                xmlSecMSCngKeyDataCertGetPubkey                 (PCERT_PUBLIC_KEY_INFO spki,
+                                                                    BCRYPT_KEY_HANDLE* key);
  xmlSecSize         xmlSecMSCngCertKeyDataGetSize                       (xmlSecKeyDataPtr data);
 
 /******************************************************************************

@@ -8,9 +8,7 @@ REM
 REM Aleksey Sanin <aleksey@aleksey.com>
 REM
 
-SET XMLSEC_CRYPTO=mscrypto
-
-
+SET XMLSEC_CRYPTO=mscng
 
 
 SET PREFIX=%USERHOME%\distro

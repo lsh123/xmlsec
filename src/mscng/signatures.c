@@ -125,6 +125,12 @@ static int xmlSecMSCngSignatureCheckId(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_SHA1 */
 
+#ifndef XMLSEC_NO_SHA256
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformDsaSha256Id)) {
+       return(1);
+    } else
+#endif /* XMLSEC_NO_SHA256 */
+
 #endif /* XMLSEC_NO_DSA */
 
 #ifndef XMLSEC_NO_RSA
@@ -183,6 +189,18 @@ static int xmlSecMSCngSignatureCheckId(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_SHA512 */
 
+#ifndef XMLSEC_NO_SHA3
+    if (xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaPssSha3_256Id)) {
+        return(1);
+    } else
+    if (xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaPssSha3_384Id)) {
+        return(1);
+    } else
+    if (xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaPssSha3_512Id)) {
+        return(1);
+    } else
+#endif /* XMLSEC_NO_SHA3 */
+
 #endif /* XMLSEC_NO_RSA */
 
 #ifndef XMLSEC_NO_EC
@@ -211,6 +229,18 @@ static int xmlSecMSCngSignatureCheckId(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_SHA512 */
 
+#ifndef XMLSEC_NO_SHA3
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformEcdsaSha3_256Id)) {
+       return(1);
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformEcdsaSha3_384Id)) {
+       return(1);
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformEcdsaSha3_512Id)) {
+       return(1);
+    } else
+#endif /* XMLSEC_NO_SHA3 */
+
 #endif /* XMLSEC_NO_EC */
 
     /* not found */
@@ -237,6 +267,14 @@ static int xmlSecMSCngSignatureInitialize(xmlSecTransformPtr transform) {
         ctx->signatureHalfSize = XMLSEC_MSCNG_SIGNATURE_DSA_SHA1_HALF_LEN;
     } else
 #endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA256
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformDsaSha256Id)) {
+        ctx->pszHashAlgId = BCRYPT_SHA256_ALGORITHM;
+        ctx->keyId = xmlSecMSCngKeyDataDsaId;
+        ctx->signatureHalfSize = XMLSEC_MSCNG_SIGNATURE_DSA_SHA256_HALF_LEN;
+    } else
+#endif /* XMLSEC_NO_SHA256 */
 
 #endif /* XMLSEC_NO_DSA */
 
@@ -318,6 +356,27 @@ static int xmlSecMSCngSignatureInitialize(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_SHA512 */
 
+#ifndef XMLSEC_NO_SHA3
+    if (xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaPssSha3_256Id)) {
+        ctx->pszHashAlgId = BCRYPT_SHA3_256_ALGORITHM;
+        ctx->keyId = xmlSecMSCngKeyDataRsaId;
+        ctx->dwInfoFlags = BCRYPT_PAD_PSS;
+        ctx->dwRsaPssSaltSize = 32; /* The default salt length is the length of the hash function. */
+    } else
+    if (xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaPssSha3_384Id)) {
+        ctx->pszHashAlgId = BCRYPT_SHA3_384_ALGORITHM;
+        ctx->keyId = xmlSecMSCngKeyDataRsaId;
+        ctx->dwInfoFlags = BCRYPT_PAD_PSS;
+        ctx->dwRsaPssSaltSize = 48; /* The default salt length is the length of the hash function. */
+    } else
+    if (xmlSecTransformCheckId(transform, xmlSecMSCngTransformRsaPssSha3_512Id)) {
+        ctx->pszHashAlgId = BCRYPT_SHA3_512_ALGORITHM;
+        ctx->keyId = xmlSecMSCngKeyDataRsaId;
+        ctx->dwInfoFlags = BCRYPT_PAD_PSS;
+        ctx->dwRsaPssSaltSize = 64; /* The default salt length is the length of the hash function. */
+    } else
+#endif /* XMLSEC_NO_SHA3 */
+
 #endif /* XMLSEC_NO_RSA */
 
 #ifndef XMLSEC_NO_EC
@@ -349,6 +408,21 @@ static int xmlSecMSCngSignatureInitialize(xmlSecTransformPtr transform) {
         ctx->keyId = xmlSecMSCngKeyDataEcId;
     } else
 #endif /* XMLSEC_NO_SHA512 */
+
+#ifndef XMLSEC_NO_SHA3
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformEcdsaSha3_256Id)) {
+        ctx->pszHashAlgId = BCRYPT_SHA3_256_ALGORITHM;
+        ctx->keyId = xmlSecMSCngKeyDataEcId;
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformEcdsaSha3_384Id)) {
+        ctx->pszHashAlgId = BCRYPT_SHA3_384_ALGORITHM;
+        ctx->keyId = xmlSecMSCngKeyDataEcId;
+    } else
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformEcdsaSha3_512Id)) {
+        ctx->pszHashAlgId = BCRYPT_SHA3_512_ALGORITHM;
+        ctx->keyId = xmlSecMSCngKeyDataEcId;
+    } else
+#endif /* XMLSEC_NO_SHA3 */
 
 #endif /* XMLSEC_NO_EC */
 
@@ -1159,6 +1233,27 @@ xmlSecMSCngTransformDsaSha1GetKlass(void) {
 }
 #endif /* XMLSEC_NO_SHA1 */
 
+#ifndef XMLSEC_NO_SHA256
+/****************************************************************************
+ *
+ * DSA-SHA2-256 signature transform
+ *
+ ***************************************************************************/
+XMLSEC_MSCNG_SIGNATURE_KLASS(DsaSha256)
+
+/**
+ * xmlSecMSCngTransformDsaSha256GetKlass:
+ *
+ * The DSA-SHA2-256 signature transform klass.
+ *
+ * Returns: DSA-SHA2-256 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecMSCngTransformDsaSha256GetKlass(void) {
+    return(&xmlSecMSCngDsaSha256Klass);
+}
+#endif /* XMLSEC_NO_SHA256 */
+
 #endif /* XMLSEC_NO_DSA */
 
 #ifndef XMLSEC_NO_RSA
@@ -1353,6 +1448,65 @@ xmlSecMSCngTransformRsaPssSha512GetKlass(void) {
 }
 #endif /* XMLSEC_NO_SHA512 */
 
+#ifndef XMLSEC_NO_SHA3
+/****************************************************************************
+ *
+ * RSA-PSS-SHA3-256 signature transform
+ *
+ ***************************************************************************/
+XMLSEC_MSCNG_SIGNATURE_KLASS(RsaPssSha3_256)
+
+/**
+ * xmlSecMSCngTransformRsaPssSha3_256GetKlass:
+ *
+ * The RSA-PSS-SHA3-256 signature transform klass.
+ *
+ * Returns: RSA-PSS-SHA3-256 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecMSCngTransformRsaPssSha3_256GetKlass(void) {
+    return(&xmlSecMSCngRsaPssSha3_256Klass);
+}
+
+/****************************************************************************
+ *
+ * RSA-PSS-SHA3-384 signature transform
+ *
+ ***************************************************************************/
+XMLSEC_MSCNG_SIGNATURE_KLASS(RsaPssSha3_384)
+
+/**
+ * xmlSecMSCngTransformRsaPssSha3_384GetKlass:
+ *
+ * The RSA-PSS-SHA3-384 signature transform klass.
+ *
+ * Returns: RSA-PSS-SHA3-384 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecMSCngTransformRsaPssSha3_384GetKlass(void) {
+    return(&xmlSecMSCngRsaPssSha3_384Klass);
+}
+
+/****************************************************************************
+ *
+ * RSA-PSS-SHA3-512 signature transform
+ *
+ ***************************************************************************/
+XMLSEC_MSCNG_SIGNATURE_KLASS(RsaPssSha3_512)
+
+/**
+ * xmlSecMSCngTransformRsaPssSha3_512GetKlass:
+ *
+ * The RSA-PSS-SHA3-512 signature transform klass.
+ *
+ * Returns: RSA-PSS-SHA3-512 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecMSCngTransformRsaPssSha3_512GetKlass(void) {
+    return(&xmlSecMSCngRsaPssSha3_512Klass);
+}
+#endif /* XMLSEC_NO_SHA3 */
+
 #endif /* XMLSEC_NO_RSA */
 
 #ifndef XMLSEC_NO_EC
@@ -1440,5 +1594,64 @@ xmlSecMSCngTransformEcdsaSha512GetKlass(void) {
     return(&xmlSecMSCngEcdsaSha512Klass);
 }
 #endif /* XMLSEC_NO_SHA512 */
+
+#ifndef XMLSEC_NO_SHA3
+/****************************************************************************
+ *
+ * ECDSA-SHA3-256 signature transform
+ *
+ ***************************************************************************/
+XMLSEC_MSCNG_SIGNATURE_KLASS(EcdsaSha3_256)
+
+/**
+ * xmlSecMSCngTransformEcdsaSha3_256GetKlass:
+ *
+ * The ECDSA-SHA3-256 signature transform klass.
+ *
+ * Returns: ECDSA-SHA3-256 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecMSCngTransformEcdsaSha3_256GetKlass(void) {
+    return(&xmlSecMSCngEcdsaSha3_256Klass);
+}
+
+/****************************************************************************
+ *
+ * ECDSA-SHA3-384 signature transform
+ *
+ ***************************************************************************/
+XMLSEC_MSCNG_SIGNATURE_KLASS(EcdsaSha3_384)
+
+/**
+ * xmlSecMSCngTransformEcdsaSha3_384GetKlass:
+ *
+ * The ECDSA-SHA3-384 signature transform klass.
+ *
+ * Returns: ECDSA-SHA3-384 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecMSCngTransformEcdsaSha3_384GetKlass(void) {
+    return(&xmlSecMSCngEcdsaSha3_384Klass);
+}
+
+/****************************************************************************
+ *
+ * ECDSA-SHA3-512 signature transform
+ *
+ ***************************************************************************/
+XMLSEC_MSCNG_SIGNATURE_KLASS(EcdsaSha3_512)
+
+/**
+ * xmlSecMSCngTransformEcdsaSha3_512GetKlass:
+ *
+ * The ECDSA-SHA3-512 signature transform klass.
+ *
+ * Returns: ECDSA-SHA3-512 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecMSCngTransformEcdsaSha3_512GetKlass(void) {
+    return(&xmlSecMSCngEcdsaSha3_512Klass);
+}
+#endif /* XMLSEC_NO_SHA3 */
 
 #endif /* XMLSEC_NO_EC */

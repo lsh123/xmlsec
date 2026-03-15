@@ -550,7 +550,7 @@
                         <!-- GnuTLS -->
                         <td valign="top" bgcolor="#C1E1C1">Yes</td>
                         <!-- MSCng -->
-                        <td valign="top">No</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#mscng-sha3"><sup>(10)</sup></a></td>
                         <!-- MSCrypto -->
                         <td valign="top">No</td>
                         <!-- GCrypt -->
@@ -570,7 +570,7 @@
                         <!-- GnuTLS -->
                         <td valign="top" bgcolor="#C1E1C1">Yes</td>
                         <!-- MSCng -->
-                        <td valign="top">No</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#mscng-sha3"><sup>(10)</sup></a></td>
                         <!-- MSCrypto -->
                         <td valign="top">No</td>
                         <!-- GCrypt -->
@@ -590,7 +590,7 @@
                         <!-- GnuTLS -->
                         <td valign="top" bgcolor="#C1E1C1">Yes</td>
                         <!-- MSCng -->
-                        <td valign="top">No</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#mscng-sha3"><sup>(10)</sup></a></td>
                         <!-- MSCrypto -->
                         <td valign="top">No</td>
                         <!-- GCrypt -->
@@ -879,7 +879,7 @@
                         <!-- GnuTLS -->
                         <td valign="top" bgcolor="#C1E1C1">Yes</td>
                         <!-- MSCng -->
-                        <td valign="top">No</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes</td>
                         <!-- MSCrypto -->
                         <td valign="top">No</td>
                         <!-- GCrypt -->
@@ -1179,7 +1179,7 @@
                         <!-- GnuTLS -->
                         <td valign="top" bgcolor="#C1E1C1">Yes</td>
                         <!-- MSCng -->
-                        <td valign="top">No</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#mscng-sha3"><sup>(10)</sup></a></td>
                         <!-- MSCrypto -->
                         <td valign="top">No</td>
                         <!-- GCrypt -->
@@ -1199,7 +1199,7 @@
                         <!-- GnuTLS -->
                         <td valign="top" bgcolor="#C1E1C1">Yes</td>
                         <!-- MSCng -->
-                        <td valign="top">No</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#mscng-sha3"><sup>(10)</sup></a></td>
                         <!-- MSCrypto -->
                         <td valign="top">No</td>
                         <!-- GCrypt -->
@@ -1219,7 +1219,7 @@
                         <!-- GnuTLS -->
                         <td valign="top" bgcolor="#C1E1C1">Yes</td>
                         <!-- MSCng -->
-                        <td valign="top">No</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#mscng-sha3"><sup>(10)</sup></a></td>
                         <!-- MSCrypto -->
                         <td valign="top">No</td>
                         <!-- GCrypt -->
@@ -1366,7 +1366,7 @@
                         <!-- GnuTLS -->
                         <td valign="top">No</td>
                         <!-- MSCng -->
-                        <td valign="top">No</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#mscng-sha3"><sup>(10)</sup></a></td>
                         <!-- MSCrypto -->
                         <td valign="top">No</td>
                         <!-- GCrypt -->
@@ -1387,7 +1387,7 @@
                         <!-- GnuTLS -->
                         <td valign="top">No</td>
                         <!-- MSCng -->
-                        <td valign="top">No</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#mscng-sha3"><sup>(10)</sup></a></td>
                         <!-- MSCrypto -->
                         <td valign="top">No</td>
                         <!-- GCrypt -->
@@ -1408,7 +1408,7 @@
                         <!-- GnuTLS -->
                         <td valign="top">No</td>
                         <!-- MSCng -->
-                        <td valign="top">No</td>
+                        <td valign="top" bgcolor="#C1E1C1">Yes <a href="#mscng-sha3"><sup>(10)</sup></a></td>
                         <!-- MSCrypto -->
                         <td valign="top">No</td>
                         <!-- GCrypt -->
@@ -1729,6 +1729,9 @@
                         </li>
                         <li>
                             <a id="eddsa-nss"></a><sup>(9)</sup> The xmlsec-nss library only supports Ed25519 (Ed448 is not supported). Additionally, NSS cannot import EdDSA private keys from PKCS#12 files; use unencrypted PKCS#8 DER format instead.
+                        </li>
+                        <li>
+                            <a id="mscng-sha3"></a><sup>(10)</sup> SHA3 digest algorithms in xmlsec-mscng require Windows 11 22H2 or later.
                         </li>
                     </ul>
                 </div>

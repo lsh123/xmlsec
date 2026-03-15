@@ -29,6 +29,36 @@
 #include <bcrypt.h>
 #include <ncrypt.h>
 
+/* SHA3 algorithm identifiers: available in Windows SDK 10.0.22621+ (Windows 11 22H2).
+ * Define fallback values so the code compiles with older SDK versions; the calls will fail
+ * at runtime on systems that do not support these algorithms. */
+#ifndef BCRYPT_SHA3_256_ALGORITHM
+#define BCRYPT_SHA3_256_ALGORITHM        L"SHA3-256"
+#endif /* BCRYPT_SHA3_256_ALGORITHM */
+#ifndef BCRYPT_SHA3_384_ALGORITHM
+#define BCRYPT_SHA3_384_ALGORITHM        L"SHA3-384"
+#endif /* BCRYPT_SHA3_384_ALGORITHM */
+#ifndef BCRYPT_SHA3_512_ALGORITHM
+#define BCRYPT_SHA3_512_ALGORITHM        L"SHA3-512"
+#endif /* BCRYPT_SHA3_512_ALGORITHM */
+
+/* ConcatKDF (SP800-56A) and PBKDF2 algorithm identifiers: available since Windows 8 / Windows Server 2012.
+ * Define fallback values so the code compiles with older SDK (e.g. MinGW) versions; the calls will fail
+ * at runtime on systems that do not support these algorithms. */
+#ifndef BCRYPT_SP80056A_CONCAT_ALGORITHM
+#define BCRYPT_SP80056A_CONCAT_ALGORITHM L"SP800_56A_CONCAT"
+#endif /* BCRYPT_SP80056A_CONCAT_ALGORITHM */
+#ifndef BCRYPT_PBKDF2_ALGORITHM
+#define BCRYPT_PBKDF2_ALGORITHM          L"PBKDF2"
+#endif /* BCRYPT_PBKDF2_ALGORITHM */
+
+/* DSA v2 key blobs require newer bcrypt.h definitions. */
+#if defined(BCRYPT_DSA_PUBLIC_MAGIC_V2)
+#define XMLSEC_MSCNG_HAVE_DSA_V2         1
+#else
+#define XMLSEC_MSCNG_HAVE_DSA_V2         0
+#endif /* defined(BCRYPT_DSA_PUBLIC_MAGIC_V2) */
+
 #define IN_XMLSEC_CRYPTO
 #define XMLSEC_PRIVATE
 

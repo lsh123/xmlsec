@@ -339,7 +339,7 @@ xmlSecMSCngDsaBuildSubjectPublicKeyInfoDer(BCRYPT_KEY_HANDLE hKey,
 
     /* Build SubjectPublicKeyInfo and encode as DER */
     memset(&spki, 0, sizeof(spki));
-    spki.Algorithm.pszObjId          = szOID_X957_DSA;
+    spki.Algorithm.pszObjId          = (LPSTR)szOID_X957_DSA;
     spki.Algorithm.Parameters.pbData = encodedParams;
     spki.Algorithm.Parameters.cbData = encodedParamsLen;
     spki.PublicKey.pbData             = encodedY;

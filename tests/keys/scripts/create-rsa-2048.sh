@@ -37,10 +37,8 @@ if [ $? -ne 0 ]; then
     exit $?
 fi
 
-### Revoke rsa-2048-cert and generate CRL
+### Revoke rsa-2048-cert
 openssl ca -config "${openssl_conf}" -cert ca2cert.pem -keyfile ca2key.pem -revoke "${keyname}-cert.pem"
-openssl ca -config "${openssl_conf}" -cert ca2cert.pem -keyfile ca2key.pem -gencrl -out "${keyname}-cert-revoked-crl.pem"
-openssl crl -in "${keyname}-cert-revoked-crl.pem" -inform PEM -outform DER -out "${keyname}-cert-revoked-crl.der"
 if [ $? -ne 0 ]; then
     exit $?
 fi

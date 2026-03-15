@@ -96,6 +96,7 @@ static xmlSecKeyDataStoreKlass xmlSecNssX509StoreKlass = {
 };
 
 static CERTCertificate*         xmlSecNssX509FindCert(CERTCertList* certsList, xmlSecNssX509FindCertCtxPtr findCertCtx);
+static int                      xmlSecNssX509VerifyCRLTimeValidity(CERTSignedCrl* crl, xmlSecKeyInfoCtxPtr keyInfoCtx);
 
 
 /**
@@ -287,6 +288,7 @@ xmlSecNssX509StoreFindBestCrl(xmlSecNssX509StoreCtxPtr x509StoreCtx, CERTCertifi
     xmlSecNssX509CrlNodePtr cur;
     PRTime lastUpdate = 0;
     PRTime resLastUpdate = 0;
+    int timeRet;
     SECStatus rv;
 
     xmlSecAssert2(x509StoreCtx != NULL, -1);
@@ -301,6 +303,15 @@ xmlSecNssX509StoreFindBestCrl(xmlSecNssX509StoreCtxPtr x509StoreCtx, CERTCertifi
             continue;
         }
         if (SECITEM_CompareItem(&(cert->derIssuer), &(cur->crl->crl.derName)) != SECEqual) {
+            continue;
+        }
+
+        /* skip CRLs that are not yet valid or have expired */
+        timeRet = xmlSecNssX509VerifyCRLTimeValidity(cur->crl, keyInfoCtx);
+        if(timeRet < 0) {
+            xmlSecInternalError("xmlSecNssX509VerifyCRLTimeValidity", NULL);
+            return(-1);
+        } else if(timeRet != 1) {
             continue;
         }
 
@@ -358,7 +369,7 @@ xmlSecNssX509StoreRemoveRevokedCerts(xmlSecNssX509StoreCtxPtr x509StoreCtx, CERT
         if(crl != NULL) {
             ret = xmlSecNssX509StoreCheckIfCertIsRevoked(cur->cert, crl, keyInfoCtx);
             if(ret < 0) {
-                xmlSecInternalError("xmlSecNssX509StoreFindBestCrl",  NULL);
+                xmlSecInternalError("xmlSecNssX509StoreCheckIfCertIsRevoked",  NULL);
                 return(-1);
             } else if(ret != 0) {
                 /* cert was revoked */

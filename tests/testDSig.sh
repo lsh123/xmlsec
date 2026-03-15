@@ -1372,6 +1372,11 @@ echo "--------- Certificate verification testing ----------"
 #
 
 # This should fail: expired cert (TODO: remove  the -verification-gmt-time option AFTER Mar 25, 2026)
+echo
+echo "***********************************************************************"
+echo "  TODO: remove  the -verification-gmt-time option AFTER Mar 25, 2026"
+echo "***********************************************************************"
+echo
 extra_message="Negative test: expired cert"
 execDSigTest $res_fail \
     "" \
@@ -1523,22 +1528,16 @@ if [ "z$xmlsec_feature_crl_load" = "zyes" ] ; then
         "--verification-gmt-time 2023-05-01+00:00:00 --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --crl-$cert_format $topfolder/keys/rsa/rsa-2048-cert-revoked-crl.$cert_format --enabled-key-data x509"
 
 
-    # GnuTLS doesn't allow CRL verification by time (https://github.com/lsh123/xmlsec/issues/579)
+    # NSS / GnuTLS doesn't allow CRL verification by time (https://github.com/lsh123/xmlsec/issues/579)
     if [ "z$xmlsec_feature_crl_check_skip_time" = "zyes" ] ; then
         # this should succeeed because CRL is not valid yet
-        # TODO: REGENERATE CRL AND REENABLE THIS TEST AFTER MARCH 10
-        # extra_message="CRL is not valid yet"
-        # execDSigTest $res_success \
-        #    "" \
-        #    "aleksey-xmldsig-01/enveloped-x509-missing-cert" \
-        #    "sha256 rsa-sha256" \
-        #    "x509" \
-        #    "--verification-gmt-time 2026-03-10+00:00:00 --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --crl-$cert_format $topfolder/keys/rsa/rsa-2048-cert-revoked-crl.$cert_format --enabled-key-data x509"
-        echo
-        echo "***********************************************************************"
-        echo "  TODO: SKIP: CRL is not valid yet test until after March 10"
-        echo "***********************************************************************"
-        echo
+        extra_message="CRL is not valid yet"
+        execDSigTest $res_success \
+            "" \
+            "aleksey-xmldsig-01/enveloped-x509-missing-cert" \
+            "sha256 rsa-sha256" \
+            "x509" \
+            "--verification-gmt-time 2026-03-10+00:00:00 --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --crl-$cert_format $topfolder/keys/rsa/rsa-2048-cert-revoked-crl.$cert_format --enabled-key-data x509"
     fi
 
     # this should succeeed too because we bypass all cert checks with --insecure mode
@@ -1569,7 +1568,7 @@ if [ "z$xmlsec_feature_crl_verification" = "zyes" ] ; then
             "aleksey-xmldsig-01/enveloped-x509-subjectname" \
             "sha512 rsa-sha512" \
             "rsa x509" \
-            "--verify-crls --verification-gmt-time 2026-03-10+00:00:00 --crl-$cert_format $topfolder/keys/rsa/rsa-2048-cert-revoked-crl.$cert_format --untrusted-$cert_format $topfolder/keys/rsa/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+            "--verify-crls --verification-gmt-time 2026-03-20+00:00:00 --crl-$cert_format $topfolder/keys/rsa/rsa-2048-cert-revoked-crl.$cert_format --untrusted-$cert_format $topfolder/keys/rsa/rsa-4096-cert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format --trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
     fi
 
     # this should fail because CRL is past due

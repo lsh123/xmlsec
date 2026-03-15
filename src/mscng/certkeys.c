@@ -94,6 +94,8 @@ xmlSecMSCngKeyDataCertGetDsaPubkey(PCERT_PUBLIC_KEY_INFO spki, BCRYPT_KEY_HANDLE
     BYTE* blobData = NULL;
     DWORD pSize, qSize, gSize, ySize, qBlobSize;
     DWORD blobSize, offset;
+    xmlSecSize qSizeSize;
+    xmlSecSize qMaxSize;
     BCRYPT_DSA_KEY_BLOB* dsakey;
 #if XMLSEC_MSCNG_HAVE_DSA_V2
     BCRYPT_DSA_KEY_BLOB_V2* dsakey2;
@@ -151,7 +153,9 @@ xmlSecMSCngKeyDataCertGetDsaPubkey(PCERT_PUBLIC_KEY_INFO spki, BCRYPT_KEY_HANDLE
     }
 
     if(qSize > XMLSEC_MSCNG_DSA_V2_Q_SIZE) {
-        xmlSecInvalidSizeMoreThanError("Q size", qSize, XMLSEC_MSCNG_DSA_V2_Q_SIZE, NULL);
+        XMLSEC_SAFE_CAST_ULONG_TO_SIZE(qSize, qSizeSize, goto done, NULL);
+        XMLSEC_SAFE_CAST_UINT_TO_SIZE(XMLSEC_MSCNG_DSA_V2_Q_SIZE, qMaxSize, goto done, NULL);
+        xmlSecInvalidSizeMoreThanError("Q size", qSizeSize, qMaxSize, NULL);
         goto done;
     }
     if((gSize > pSize) || (ySize > pSize)) {
@@ -835,6 +839,7 @@ xmlSecMSCngKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
     int blobInitialized = 0;
     xmlSecByte* blobData;
     xmlSecSize pSize, qSize, gSize, ySize, qBlobSize;
+    xmlSecSize qMaxSize;
     xmlSecSize offset, blobSize;
     DWORD dwBlobSize;
     BCRYPT_DSA_KEY_BLOB* dsakey;
@@ -870,8 +875,8 @@ xmlSecMSCngKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
      * distinguishes them.
      */
     if(qSize > XMLSEC_MSCNG_DSA_V2_Q_SIZE) {
-        xmlSecInvalidSizeMoreThanError("Q size", qSize, XMLSEC_MSCNG_DSA_V2_Q_SIZE,
-            xmlSecKeyDataKlassGetName(id));
+        XMLSEC_SAFE_CAST_UINT_TO_SIZE(XMLSEC_MSCNG_DSA_V2_Q_SIZE, qMaxSize, goto done, xmlSecKeyDataKlassGetName(id));
+        xmlSecInvalidSizeMoreThanError("Q size", qSize, qMaxSize, xmlSecKeyDataKlassGetName(id));
         goto done;
     }
     xmlSecAssert2(gSize <= pSize, NULL);

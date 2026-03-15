@@ -43,6 +43,9 @@ static int                      xmlSecMSCngKeyDataDEREncodedKeyValueXmlWrite(xml
     xmlSecKeyPtr key,
     xmlNodePtr node,
     xmlSecKeyInfoCtxPtr keyInfoCtx);
+static int                      xmlSecMSCngBuildSubjectPublicKeyInfoDer(BCRYPT_KEY_HANDLE hKey,
+    LPVOID* ppDer,
+    DWORD* pcbDer);
 
 
 
@@ -362,16 +365,105 @@ done:
 #endif /* XMLSEC_NO_DSA */
 
 static int
+xmlSecMSCngBuildSubjectPublicKeyInfoDer(BCRYPT_KEY_HANDLE hKey, LPVOID* ppDer, DWORD* pcbDer) {
+    PUCHAR pInfo = NULL;
+    DWORD cbInfo = 0;
+    BOOL status;
+
+    xmlSecAssert2(hKey != 0, -1);
+    xmlSecAssert2(ppDer != NULL, -1);
+    xmlSecAssert2(pcbDer != NULL, -1);
+
+    *ppDer = NULL;
+    *pcbDer = 0;
+
+#ifndef XMLSEC_NO_DSA
+    {
+        WCHAR algName[64] = {0};
+        ULONG algNameLen = 0;
+        NTSTATUS ntstatus;
+
+        ntstatus = BCryptGetProperty(hKey, BCRYPT_ALGORITHM_NAME,
+            (PUCHAR)algName, sizeof(algName) - sizeof(WCHAR), &algNameLen, 0);
+        if((ntstatus == STATUS_SUCCESS) &&
+                (wcsncmp(algName, BCRYPT_DSA_ALGORITHM, wcslen(BCRYPT_DSA_ALGORITHM)) == 0)) {
+            return xmlSecMSCngDsaBuildSubjectPublicKeyInfoDer(hKey, ppDer, pcbDer);
+        }
+    }
+#endif /* XMLSEC_NO_DSA */
+
+    status = CryptExportPublicKeyInfoFromBCryptKeyHandle(
+        hKey,
+        X509_ASN_ENCODING,
+        NULL,
+        0,
+        NULL,
+        NULL,
+        &cbInfo
+    );
+    if((status != TRUE) || (cbInfo <= 0)) {
+        xmlSecMSCngNtError("CryptExportPublicKeyInfoFromBCryptKeyHandle", NULL, STATUS_SUCCESS);
+        goto done;
+    }
+
+    pInfo = (PUCHAR)xmlMalloc(cbInfo);
+    if(pInfo == NULL) {
+        xmlSecMallocError(cbInfo, NULL);
+        goto done;
+    }
+
+    status = CryptExportPublicKeyInfoFromBCryptKeyHandle(
+        hKey,
+        X509_ASN_ENCODING,
+        NULL,
+        0,
+        NULL,
+        (PCERT_PUBLIC_KEY_INFO)pInfo,
+        &cbInfo
+    );
+    if((status != TRUE) || (cbInfo <= 0)) {
+        xmlSecMSCngNtError("CryptExportPublicKeyInfoFromBCryptKeyHandle", NULL, STATUS_SUCCESS);
+        goto done;
+    }
+
+    status = CryptEncodeObjectEx(
+        X509_ASN_ENCODING,
+        X509_PUBLIC_KEY_INFO,
+        pInfo,
+        CRYPT_ENCODE_ALLOC_FLAG,
+        NULL,
+        ppDer,
+        pcbDer
+    );
+    if((status != TRUE) || (*ppDer == NULL) || (*pcbDer <= 0)) {
+        xmlSecMSCngNtError("CryptEncodeObjectEx", NULL, STATUS_SUCCESS);
+        goto done;
+    }
+
+    xmlFree(pInfo);
+    return(0);
+
+done:
+    if(pInfo != NULL) {
+        xmlFree(pInfo);
+    }
+    if(*ppDer != NULL) {
+        LocalFree(*ppDer);
+        *ppDer = NULL;
+    }
+    *pcbDer = 0;
+    return(-1);
+}
+
+static int
 xmlSecMSCngKeyDataDEREncodedKeyValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecKeyDataPtr keyData;
     BCRYPT_KEY_HANDLE hPubkey;
-    PUCHAR pInfo = NULL;
-    DWORD cbInfo = 0;
     LPVOID keyDer = NULL;
     DWORD keyDerLen = 0;
     xmlChar* content = NULL;
-    BOOL status;
     int res = -1;
+    int ret;
 
     xmlSecAssert2(id == xmlSecMSCngKeyDataDEREncodedKeyValueId, -1);
     xmlSecAssert2(key != NULL, -1);
@@ -391,77 +483,13 @@ xmlSecMSCngKeyDataDEREncodedKeyValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr ke
         goto done;
     }
 
-    /* encode it: for DSA keys, CryptExportPublicKeyInfoFromBCryptKeyHandle reads
-     * V2 (>1024-bit) blobs at wrong offsets, producing garbled parameters.
-     * Use a manual encoder for DSA; fall back to the generic API for all other types. */
-#ifndef XMLSEC_NO_DSA
-    {
-        WCHAR algName[64] = {0};
-        ULONG algNameLen = 0;
-        NTSTATUS ntstatus;
-
-        ntstatus = BCryptGetProperty(hPubkey, BCRYPT_ALGORITHM_NAME,
-            (PUCHAR)algName, sizeof(algName) - sizeof(WCHAR), &algNameLen, 0);
-        if((ntstatus == STATUS_SUCCESS) &&
-                (wcsncmp(algName, BCRYPT_DSA_ALGORITHM, wcslen(BCRYPT_DSA_ALGORITHM)) == 0)) {
-            int dsaRet = xmlSecMSCngDsaBuildSubjectPublicKeyInfoDer(hPubkey, &keyDer, &keyDerLen);
-            if(dsaRet < 0) {
-                xmlSecInternalError("xmlSecMSCngDsaBuildSubjectPublicKeyInfoDer",
-                    xmlSecKeyDataKlassGetName(id));
-                goto done;
-            }
-            goto write_xml;
-        }
-    }
-#endif /* XMLSEC_NO_DSA */
-
-    status = CryptExportPublicKeyInfoFromBCryptKeyHandle(
-        hPubkey,
-        X509_ASN_ENCODING,
-        NULL,
-        0,
-        NULL,
-        NULL,
-        &cbInfo
-    );
-    if((status != TRUE) || (cbInfo <= 0)) {
-        xmlSecMSCngNtError("CryptExportPublicKeyInfoFromBCryptKeyHandle", xmlSecKeyDataKlassGetName(id), STATUS_SUCCESS);
-        goto done;
-    }
-    pInfo = (PUCHAR)xmlMalloc(cbInfo);
-    if(pInfo == NULL) {
-        xmlSecMallocError(cbInfo, xmlSecKeyDataKlassGetName(id));
-        goto done;
-    }
-    status = CryptExportPublicKeyInfoFromBCryptKeyHandle(
-        hPubkey,
-        X509_ASN_ENCODING,
-        NULL,
-        0,
-        NULL,
-        (PCERT_PUBLIC_KEY_INFO)pInfo,
-        &cbInfo
-    );
-    if((status != TRUE) || (cbInfo <= 0)) {
-        xmlSecMSCngNtError("CryptExportPublicKeyInfoFromBCryptKeyHandle", xmlSecKeyDataKlassGetName(id), STATUS_SUCCESS);
+    /* build DER encoded subject public key info */
+    ret = xmlSecMSCngBuildSubjectPublicKeyInfoDer(hPubkey, &keyDer, &keyDerLen);
+    if(ret < 0) {
+        xmlSecInternalError("xmlSecMSCngBuildSubjectPublicKeyInfoDer", xmlSecKeyDataKlassGetName(id));
         goto done;
     }
 
-    status = CryptEncodeObjectEx(
-        X509_ASN_ENCODING,
-        X509_PUBLIC_KEY_INFO,
-        pInfo,
-        CRYPT_ENCODE_ALLOC_FLAG,
-        NULL,
-        &keyDer,
-        &keyDerLen
-    );
-    if((status != TRUE) || (keyDer == NULL) || (keyDerLen <= 0)) {
-        xmlSecMSCngNtError("CryptEncodeObjectEx", xmlSecKeyDataKlassGetName(id), STATUS_SUCCESS);
-        goto done;
-    }
-
-write_xml:
     /* write to XML */
     content = xmlSecBase64Encode(keyDer, keyDerLen, xmlSecBase64GetDefaultLineSize());
     if(content == NULL) {
@@ -474,9 +502,6 @@ write_xml:
     res = 0;
 
 done:
-    if(pInfo != NULL) {
-        xmlFree(pInfo);
-    }
     if(keyDer != NULL) {
         LocalFree(keyDer);
     }

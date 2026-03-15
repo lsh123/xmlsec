@@ -29,12 +29,12 @@ libxmlsec1_mscng_la_SOURCES =\
 	digests.c \
 	globals.h \
 	hmac.c \
+	kdf.c \
 	key_agrmnt.c \
 	keysstore.c \
 	kt_rsa.c \
 	kw_rfc_3394.c \
 	kw_des.c \
-	pbkdf2.c \
 	private.h \
 	signatures.c \
 	symkeys.c \

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+  <SignedInfo>
+    <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+    <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha384"/>
+    <Reference URI="#object">
+      <DigestMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#sha384"/>
+      <DigestValue>uTx8AeqrTmv+nijRsWW7TOs1pCIuCudsFRVloP6hPin8Q4x9fFX2j/zj53XB37OG</DigestValue>
+    </Reference>
+  </SignedInfo>
+  <SignatureValue>GU6YcavS2Qwc3YOfdvbHxKZARNGOTWo7WLJBAZdLxbcN6+EohK4v7j6VDbfBQoWv
+VQjmne4pUhL3pXpvwHBuNNs5la4Q5eQm7pbv/cDgc5DpEtji+9lWeO4js0pG5DKW</SignatureValue>
+  <KeyInfo>
+    <KeyName>TestKeyName-ec-prime384v1</KeyName>
+    <dsig11:DEREncodedKeyValue xmlns:dsig11="http://www.w3.org/2009/xmldsig11#">MHYwEAYHKoZIzj0CAQYFK4EEACIDYgAE8VgyewK8owhQHP1tROvn2sia/PvJnY5y
+j3DQ4Eovimp/4SiNhAYx42P70n3rgP9pR9GHhin+ktiQLgdPxwNztOnZDwfbsElE
+DAYVZ1jjjM6bgkWzlm6ObYAOD3zsQu/G</dsig11:DEREncodedKeyValue>
+  </KeyInfo>
+  <Object Id="object">some text</Object>
+</Signature>

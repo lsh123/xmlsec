@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+  <SignedInfo>
+    <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+    <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha512"/>
+    <Reference URI="#object">
+      <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/>
+      <DigestValue>E2Jo801uUCgAIa65niLU7jPSWPWUbsgT+okPgBcw/h72V7bmI0J2faJ+8EbwVwah
+XDnbRaf22WqerzX1vL0QzA==</DigestValue>
+    </Reference>
+  </SignedInfo>
+  <SignatureValue>AQNCYDqfddgK58bdShE7W5MyJFuoYz5FBEPvbf/d7weS53oNBgu+VvhhgSSrCDV5
+Qg2QMiHvjeSDnTiZLd9F0n/fAShUHXW41GudtvI19/Nu5xVvmIm2wXWiNAz9zsy5
+H01E00d7lxzb44ttFJKxL+ZSZ0Mv6/LtFqSf/hVXcS26IcJR</SignatureValue>
+  <KeyInfo>
+    <KeyName>TestKeyName-ec-prime521v1</KeyName>
+    <dsig11:DEREncodedKeyValue xmlns:dsig11="http://www.w3.org/2009/xmldsig11#">MIGbMBAGByqGSM49AgEGBSuBBAAjA4GGAAQBr/AHhJsVuacixRwxwUVB7/ERZtvS
+Jx8Xqg8T9lwp2qag97WQVSbYEc6pft5WO46vP0xHfDlu8Dy9SMCRNvJP6kIBRmNK
+hgj0Hgsv9Ac/rYVlm/63cad5L0sslWiv3m6wT3crJQePmZRBGZ7d8hUB73vm/BbS
+ATM3JZVDq0LDcQGtpJs=</dsig11:DEREncodedKeyValue>
+  </KeyInfo>
+  <Object Id="object">some text</Object>
+</Signature>

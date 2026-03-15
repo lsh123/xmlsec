@@ -70,6 +70,13 @@ xmlSecMSCngSymKeyDataKlassCheck(xmlSecKeyDataKlass* klass) {
     else
 #endif /* XMLSEC_NO_PBKDF2 */
 
+#ifndef XMLSEC_NO_HKDF
+    if (klass == xmlSecMSCngKeyDataHkdfId) {
+        return(1);
+    }
+    else
+#endif /* XMLSEC_NO_HKDF */
+
     {
         return(0);
     }
@@ -353,3 +360,30 @@ xmlSecMSCngKeyDataPbkdf2GetKlass(void) {
     return(&xmlSecMSCngKeyDataPbkdf2Klass);
 }
 #endif /* XMLSEC_NO_PBKDF2 */
+
+
+#ifndef XMLSEC_NO_HKDF
+
+/**************************************************************************
+ *
+ * HKDF klass
+ *
+ *************************************************************************/
+XMLSEC_MSCNG_SYMKEY_KLASS_EX(Hkdf,
+    xmlSecNameHkdfKey,
+    NULL,
+    NULL,
+    NULL)
+
+/**
+ * xmlSecMSCngKeyDataHkdfGetKlass:
+ *
+ * The HKDF key data klass.
+ *
+ * Returns: HKDF key data klass.
+ */
+xmlSecKeyDataId
+xmlSecMSCngKeyDataHkdfGetKlass(void) {
+    return(&xmlSecMSCngKeyDataHkdfKlass);
+}
+#endif /* XMLSEC_NO_HKDF */

@@ -94,6 +94,11 @@ xmlSecCryptoGetFunctions_mscng(void) {
     int isPbkdf2Supported = xmlSecMSCngIsAlgorithmSupported(BCRYPT_PBKDF2_ALGORITHM, 0);
 #endif /* XMLSEC_NO_PBKDF2 */
 
+    /* HKDF requires Windows 10 1709+ (Redstone 3). */
+#ifndef XMLSEC_NO_HKDF
+    int isHkdfSupported = xmlSecMSCngIsAlgorithmSupported(BCRYPT_HKDF_ALGORITHM, 0);
+#endif /* XMLSEC_NO_HKDF */
+
 /* SHA3 support requires Windows 11 24H2+ or Windows Server 2025. */
 #ifndef XMLSEC_NO_SHA3
     int isSha3Supported = xmlSecMSCngIsAlgorithmSupported(BCRYPT_SHA3_256_ALGORITHM, 0);
@@ -151,6 +156,12 @@ xmlSecCryptoGetFunctions_mscng(void) {
         gXmlSecMSCngFunctions->keyDataPbkdf2GetKlass = xmlSecMSCngKeyDataPbkdf2GetKlass;
     }
 #endif /* XMLSEC_NO_PBKDF2 */
+
+#ifndef XMLSEC_NO_HKDF
+    if(isHkdfSupported != 0) {
+        gXmlSecMSCngFunctions->keyDataHkdfGetKlass = xmlSecMSCngKeyDataHkdfGetKlass;
+    }
+#endif /* XMLSEC_NO_HKDF */
 
 #ifndef XMLSEC_NO_RSA
     gXmlSecMSCngFunctions->keyDataRsaGetKlass           = xmlSecMSCngKeyDataRsaGetKlass;
@@ -282,6 +293,13 @@ xmlSecCryptoGetFunctions_mscng(void) {
         gXmlSecMSCngFunctions->transformPbkdf2GetKlass          = xmlSecMSCngTransformPbkdf2GetKlass;
     }
 #endif /* XMLSEC_NO_PBKDF2 */
+
+    /******************************* HKDF ********************************/
+#ifndef XMLSEC_NO_HKDF
+    if(isHkdfSupported != 0) {
+        gXmlSecMSCngFunctions->transformHkdfGetKlass            = xmlSecMSCngTransformHkdfGetKlass;
+    }
+#endif /* XMLSEC_NO_HKDF */
 
     /******************************* RSA ********************************/
 #ifndef XMLSEC_NO_RSA

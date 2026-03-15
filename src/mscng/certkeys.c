@@ -843,9 +843,6 @@ xmlSecMSCngKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
     xmlSecSize offset, blobSize;
     DWORD dwBlobSize;
     BCRYPT_DSA_KEY_BLOB* dsakey;
-#if XMLSEC_MSCNG_HAVE_DSA_V2
-    BCRYPT_DSA_KEY_BLOB_V2* dsakey2;
-#endif /* XMLSEC_MSCNG_HAVE_DSA_V2 */
     BCRYPT_KEY_HANDLE hKey = NULL;
     NTSTATUS status;
     BCRYPT_ALG_HANDLE hAlg = NULL;
@@ -945,6 +942,8 @@ xmlSecMSCngKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
 #if XMLSEC_MSCNG_HAVE_DSA_V2
         /* V2: BCRYPT_DSA_KEY_BLOB_V2 for 2048/3072-bit keys */
         DWORD dwQLen;
+        BCRYPT_DSA_KEY_BLOB_V2* dsakey2;
+
         dsakey2 = (BCRYPT_DSA_KEY_BLOB_V2*)blobData;
         dsakey2->dwMagic = BCRYPT_DSA_PUBLIC_MAGIC_V2;
         XMLSEC_SAFE_CAST_SIZE_TO_UINT(pSize, dsakey2->cbKey, goto done, xmlSecKeyDataKlassGetName(id));

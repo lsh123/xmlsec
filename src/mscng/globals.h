@@ -29,6 +29,11 @@
 #include <bcrypt.h>
 #include <ncrypt.h>
 
+/* HKDF support requires Windows 10 1709+ (SDK 10.0.16299+) */
+#if !defined(BCRYPT_HKDF_ALGORITHM)
+#define BCRYPT_HKDF_ALGORITHM   L"HKDF"
+#endif /* !defined(BCRYPT_HKDF_ALGORITHM) */
+
 /* SHA3 algorithm identifiers: available in Windows SDK 10.0.22621+ (Windows 11 22H2).
  * Define fallback values so the code compiles with older SDK versions; the calls will fail
  * at runtime on systems that do not support these algorithms. */

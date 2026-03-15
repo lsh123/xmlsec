@@ -42,6 +42,16 @@
 #define BCRYPT_SHA3_512_ALGORITHM        L"SHA3-512"
 #endif /* BCRYPT_SHA3_512_ALGORITHM */
 
+/* ConcatKDF (SP800-56A) and PBKDF2 algorithm identifiers: available since Windows 8 / Windows Server 2012.
+ * Define fallback values so the code compiles with older SDK (e.g. MinGW) versions; the calls will fail
+ * at runtime on systems that do not support these algorithms. */
+#ifndef BCRYPT_SP80056A_CONCAT_ALGORITHM
+#define BCRYPT_SP80056A_CONCAT_ALGORITHM L"SP800_56A_CONCAT"
+#endif /* BCRYPT_SP80056A_CONCAT_ALGORITHM */
+#ifndef BCRYPT_PBKDF2_ALGORITHM
+#define BCRYPT_PBKDF2_ALGORITHM          L"PBKDF2"
+#endif /* BCRYPT_PBKDF2_ALGORITHM */
+
 #define IN_XMLSEC_CRYPTO
 #define XMLSEC_PRIVATE
 

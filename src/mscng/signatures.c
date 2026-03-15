@@ -125,6 +125,12 @@ static int xmlSecMSCngSignatureCheckId(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_SHA1 */
 
+#ifndef XMLSEC_NO_SHA256
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformDsaSha256Id)) {
+       return(1);
+    } else
+#endif /* XMLSEC_NO_SHA256 */
+
 #endif /* XMLSEC_NO_DSA */
 
 #ifndef XMLSEC_NO_RSA
@@ -261,6 +267,14 @@ static int xmlSecMSCngSignatureInitialize(xmlSecTransformPtr transform) {
         ctx->signatureHalfSize = XMLSEC_MSCNG_SIGNATURE_DSA_SHA1_HALF_LEN;
     } else
 #endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA256
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformDsaSha256Id)) {
+        ctx->pszHashAlgId = BCRYPT_SHA256_ALGORITHM;
+        ctx->keyId = xmlSecMSCngKeyDataDsaId;
+        ctx->signatureHalfSize = XMLSEC_MSCNG_SIGNATURE_DSA_SHA256_HALF_LEN;
+    } else
+#endif /* XMLSEC_NO_SHA256 */
 
 #endif /* XMLSEC_NO_DSA */
 
@@ -1218,6 +1232,27 @@ xmlSecMSCngTransformDsaSha1GetKlass(void) {
     return(&xmlSecMSCngDsaSha1Klass);
 }
 #endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA256
+/****************************************************************************
+ *
+ * DSA-SHA2-256 signature transform
+ *
+ ***************************************************************************/
+XMLSEC_MSCNG_SIGNATURE_KLASS(DsaSha256)
+
+/**
+ * xmlSecMSCngTransformDsaSha256GetKlass:
+ *
+ * The DSA-SHA2-256 signature transform klass.
+ *
+ * Returns: DSA-SHA2-256 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecMSCngTransformDsaSha256GetKlass(void) {
+    return(&xmlSecMSCngDsaSha256Klass);
+}
+#endif /* XMLSEC_NO_SHA256 */
 
 #endif /* XMLSEC_NO_DSA */
 

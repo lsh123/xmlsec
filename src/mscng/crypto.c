@@ -36,14 +36,33 @@ static xmlSecCryptoDLFunctionsPtr gXmlSecMSCngFunctions = NULL;
 
 /* Probe at runtime whether BCrypt supports a given algorithm. */
 static int
-xmlSecMSCngIsAlgorithmSupported(LPCWSTR pszAlgId) {
+xmlSecMSCngIsAlgorithmSupported(LPCWSTR pszAlgId, DWORD dwMinLength) {
     BCRYPT_ALG_HANDLE hAlg = NULL;
     NTSTATUS status;
 
+    /* check if the algorithm is supported */
     status = BCryptOpenAlgorithmProvider(&hAlg, pszAlgId, NULL, 0);
     if(status != STATUS_SUCCESS) {
         return(0);
     }
+
+    /* check supported lengths if needed */
+    if(dwMinLength > 0) {
+        BCRYPT_KEY_LENGTHS_STRUCT keyLengths;
+        DWORD cbResult = 0;    
+
+        status = BCryptGetProperty(hAlg, BCRYPT_KEY_LENGTHS, (PBYTE)&keyLengths, sizeof(keyLengths), &cbResult, 0);
+        if(status != STATUS_SUCCESS) {
+            BCryptCloseAlgorithmProvider(hAlg, 0);
+            return(0);
+        } 
+        if(keyLengths.dwMaxLength < dwMinLength) {
+            BCryptCloseAlgorithmProvider(hAlg, 0);
+            return(0);
+        }
+    }
+
+    /* done */
     BCryptCloseAlgorithmProvider(hAlg, 0);
     return(1);
 }
@@ -59,10 +78,25 @@ xmlSecCryptoDLFunctionsPtr
 xmlSecCryptoGetFunctions_mscng(void) {
     static xmlSecCryptoDLFunctions functions;
 
+    /* DSA-SHA256 requirs Windows 8 / Windows Server 2012+. */
+#if !defined(XMLSEC_NO_DSA) && !defined(XMLSEC_NO_SHA256)
+    int isDsaSha256Supported = xmlSecMSCngIsAlgorithmSupported(BCRYPT_DSA_ALGORITHM, 2048);
+#endif /* !defined(XMLSEC_NO_DSA) && !defined(XMLSEC_NO_SHA256) */
+
+
+    /* ConcatKDF (SP800-56A) requirs Windows 8 / Windows Server 2012+. */
+#ifndef XMLSEC_NO_CONCATKDF
+    int isConcatKdfSupported = xmlSecMSCngIsAlgorithmSupported(BCRYPT_SP80056A_CONCAT_ALGORITHM, 0);
+#endif /* XMLSEC_NO_CONCATKDF */
+
+    /* PBKDF2 requires Windows 8 / Windows Server 2012+. */
+#ifndef XMLSEC_NO_PBKDF2
+    int isPbkdf2Supported = xmlSecMSCngIsAlgorithmSupported(BCRYPT_PBKDF2_ALGORITHM, 0);
+#endif /* XMLSEC_NO_PBKDF2 */
+
+/* SHA3 support requires Windows 11 24H2+ or Windows Server 2025. */
 #ifndef XMLSEC_NO_SHA3
-    int isSha3Supported = xmlSecMSCngIsAlgorithmSupported(BCRYPT_SHA3_256_ALGORITHM);
-#else /* XMLSEC_NO_SHA3 */
-    int isSha3Supported = 0; 
+    int isSha3Supported = xmlSecMSCngIsAlgorithmSupported(BCRYPT_SHA3_256_ALGORITHM, 0);
 #endif /* XMLSEC_NO_SHA3 */
 
     if(gXmlSecMSCngFunctions != NULL) {
@@ -91,7 +125,9 @@ xmlSecCryptoGetFunctions_mscng(void) {
 #endif /* XMLSEC_NO_AES */
 
 #ifndef XMLSEC_NO_CONCATKDF
-    gXmlSecMSCngFunctions->keyDataConcatKdfGetKlass     = xmlSecMSCngKeyDataConcatKdfGetKlass;
+    if(isConcatKdfSupported != 0) {
+        gXmlSecMSCngFunctions->keyDataConcatKdfGetKlass = xmlSecMSCngKeyDataConcatKdfGetKlass;
+    }
 #endif /* XMLSEC_NO_CONCATKDF */
 
 #ifndef XMLSEC_NO_DES
@@ -111,7 +147,9 @@ xmlSecCryptoGetFunctions_mscng(void) {
 #endif /* XMLSEC_NO_HMAC */
 
 #ifndef XMLSEC_NO_PBKDF2
-    gXmlSecMSCngFunctions->keyDataPbkdf2GetKlass        = xmlSecMSCngKeyDataPbkdf2GetKlass;
+    if(isPbkdf2Supported != 0) {
+        gXmlSecMSCngFunctions->keyDataPbkdf2GetKlass = xmlSecMSCngKeyDataPbkdf2GetKlass;
+    }
 #endif /* XMLSEC_NO_PBKDF2 */
 
 #ifndef XMLSEC_NO_RSA
@@ -131,7 +169,7 @@ xmlSecCryptoGetFunctions_mscng(void) {
      *
      ********************************************************************/
 #ifndef XMLSEC_NO_X509
-    gXmlSecMSCngFunctions->x509StoreGetKlass                    = xmlSecMSCngX509StoreGetKlass;
+    gXmlSecMSCngFunctions->x509StoreGetKlass           = xmlSecMSCngX509StoreGetKlass;
 #endif /* XMLSEC_NO_X509 */
 
     /********************************************************************
@@ -155,7 +193,9 @@ xmlSecCryptoGetFunctions_mscng(void) {
 
     /******************************* ConcatKDF ********************************/
 #ifndef XMLSEC_NO_CONCATKDF
-    gXmlSecMSCngFunctions->transformConcatKdfGetKlass = xmlSecMSCngTransformConcatKdfGetKlass;
+    if(isConcatKdfSupported != 0) {
+        gXmlSecMSCngFunctions->transformConcatKdfGetKlass = xmlSecMSCngTransformConcatKdfGetKlass;
+    }
 #endif /* XMLSEC_NO_CONCATKDF */
 
     /******************************* DES ********************************/
@@ -170,6 +210,12 @@ xmlSecCryptoGetFunctions_mscng(void) {
 #ifndef XMLSEC_NO_SHA1
     gXmlSecMSCngFunctions->transformDsaSha1GetKlass             = xmlSecMSCngTransformDsaSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
+
+#if !defined(XMLSEC_NO_DSA) && !defined(XMLSEC_NO_SHA256)
+    if(isDsaSha256Supported != 0) {
+        gXmlSecMSCngFunctions->transformDsaSha256GetKlass           = xmlSecMSCngTransformDsaSha256GetKlass;
+    }
+#endif /* !defined(XMLSEC_NO_DSA) && !defined(XMLSEC_NO_SHA256) */
 
 #endif /* XMLSEC_NO_DSA */
 
@@ -232,7 +278,9 @@ xmlSecCryptoGetFunctions_mscng(void) {
 
     /******************************* PBKDF2 ********************************/
 #ifndef XMLSEC_NO_PBKDF2
-    gXmlSecMSCngFunctions->transformPbkdf2GetKlass              = xmlSecMSCngTransformPbkdf2GetKlass;
+    if(isPbkdf2Supported != 0) {
+        gXmlSecMSCngFunctions->transformPbkdf2GetKlass          = xmlSecMSCngTransformPbkdf2GetKlass;
+    }
 #endif /* XMLSEC_NO_PBKDF2 */
 
     /******************************* RSA ********************************/

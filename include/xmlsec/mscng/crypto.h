@@ -86,6 +86,17 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId xmlSecMSCngKeyDataDsaGetKlass(void);
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformDsaSha1GetKlass(void);
 #endif /* XMLSEC_NO_SHA1 */
 
+#ifndef XMLSEC_NO_SHA256
+/**
+ * xmlSecMSCngTransformDsaSha256Id:
+ *
+ * The DSA-SHA2-256 signature transform klass.
+ */
+#define xmlSecMSCngTransformDsaSha256Id     \
+       xmlSecMSCngTransformDsaSha256GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformDsaSha256GetKlass(void);
+#endif /* XMLSEC_NO_SHA256 */
+
 #endif /* XMLSEC_NO_DSA */
 
 /********************************************************************

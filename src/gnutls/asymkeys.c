@@ -165,24 +165,26 @@ xmlSecGnuTLSAsymKeyDataAdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, g
         gnutls_privkey_deinit (ctx->privkey);
     }
 
-    ctx->pubkey = pubkey;
-    ctx->privkey = privkey;
-
     /* if pubkey is not available, try to extract it from privkey */
-    if((ctx->pubkey == NULL) && (ctx->privkey != NULL)) {
-        err = gnutls_pubkey_init(&ctx->pubkey);
+    if((pubkey == NULL) && (privkey != NULL)) {
+        err = gnutls_pubkey_init(&pubkey);
         if(err != GNUTLS_E_SUCCESS) {
             xmlSecGnuTLSError("gnutls_pubkey_init", err, NULL);
             return(-1);
         }
 
-        err = gnutls_pubkey_import_privkey(ctx->pubkey, ctx->privkey, 0, 0);
+        err = gnutls_pubkey_import_privkey(pubkey, privkey, 0, 0);
         if(err != GNUTLS_E_SUCCESS) {
             /* non-fatal: some key types may not support pubkey export */
-            gnutls_pubkey_deinit(ctx->pubkey);
-            ctx->pubkey = NULL;
+            gnutls_pubkey_deinit(pubkey);
+            pubkey = NULL;
         }
     }
+
+    /* set new keys */
+    ctx->pubkey = pubkey;
+    ctx->privkey = privkey;
+
 
     /* done */
     return(0);

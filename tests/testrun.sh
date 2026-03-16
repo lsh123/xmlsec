@@ -245,10 +245,11 @@ fi
 
 #
 # NSS cannot import XDH (X25519/X448) private keys from OpenSSL-3.x-generated
-# PKCS12 files (SEC_ERROR_PKCS12_UNABLE_TO_IMPORT_KEY).  Use unencrypted DER
-# (PrivateKeyInfo) format for XDH keys when running under NSS.
+# PKCS12 files (SEC_ERROR_PKCS12_UNABLE_TO_IMPORT_KEY).  MSCng cannot import
+# them either because PFXImportCertStore does not support Curve25519/Curve448.
+# Use unencrypted DER (PrivateKeyInfo) format for XDH keys in both cases.
 #
-if [ "z$crypto" = "znss" ] ; then
+if [ "z$crypto" = "znss" -o "z$crypto" = "zmscng" ] ; then
     xdh_priv_key_option="--privkey-der"
     xdh_priv_key_format="der"
 else

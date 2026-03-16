@@ -37,7 +37,7 @@
 #include "../cast_helpers.h"
 #include "../transform_helpers.h"
 
-#if !defined(XMLSEC_NO_EC) || !defined(XMLSEC_NO_DH)
+#if !defined(XMLSEC_NO_EC) || !defined(XMLSEC_NO_DH) || !defined(XMLSEC_NO_XDH)
 
 /* Mingw has old version of bcrypt.h file */
 #ifndef BCRYPT_ECDSA_PUBLIC_GENERIC_MAGIC
@@ -143,6 +143,11 @@ xmlSecMSCngKeyAgreementInitialize(xmlSecTransformPtr transform) {
         ctx->keyDataId = xmlSecMSCngKeyDataDhId;
     } else
 #endif /* XMLSEC_NO_DH */
+#ifndef XMLSEC_NO_XDH
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformX25519Id)) {
+        ctx->keyDataId = xmlSecMSCngKeyDataXdhId;
+    } else
+#endif /* XMLSEC_NO_XDH */
     {
         xmlSecInternalError("Unknown key agreement transform",
                             xmlSecTransformGetName(transform));
@@ -330,11 +335,16 @@ xmlSecMSCngKeyAgreementGetPublicKey(xmlSecMSCngKeyAgreementCtxPtr ctx, xmlSecKey
         ((BCRYPT_KEY_BLOB*)pbBlob)->Magic = BCRYPT_ECDH_PUBLIC_P521_MAGIC;
         break;
     case BCRYPT_ECDSA_PUBLIC_GENERIC_MAGIC:
-    case BCRYPT_ECDH_PUBLIC_GENERIC_MAGIC:
         pszBlobId = BCRYPT_ECCPUBLIC_BLOB;
         ((BCRYPT_KEY_BLOB*)pbBlob)->Magic = BCRYPT_ECDH_PUBLIC_GENERIC_MAGIC;
         break;
 #endif /* XMLSEC_NO_EC */
+#if !defined(XMLSEC_NO_EC) || !defined(XMLSEC_NO_XDH)
+    case BCRYPT_ECDH_PUBLIC_GENERIC_MAGIC:
+        pszBlobId = BCRYPT_ECCPUBLIC_BLOB;
+        ((BCRYPT_KEY_BLOB*)pbBlob)->Magic = BCRYPT_ECDH_PUBLIC_GENERIC_MAGIC;
+        break;
+#endif /* !defined(XMLSEC_NO_EC) || !defined(XMLSEC_NO_XDH) */
 #ifndef XMLSEC_NO_DH
     case BCRYPT_DH_PUBLIC_MAGIC:
         pszBlobId = BCRYPT_DH_PUBLIC_BLOB;
@@ -440,8 +450,10 @@ xmlSecMSCngKeyAgreementGenerateSecret(xmlSecMSCngKeyAgreementCtxPtr ctx, xmlSecT
             goto done;
         }
     }
+#endif /* XMLSEC_NO_DH */
 
-    /* BCrypt DH path: used when private key was loaded from DER (BCrypt, not NCrypt) */
+#if !defined(XMLSEC_NO_DH) || !defined(XMLSEC_NO_XDH)
+    /* BCrypt path: used when private key was loaded from DER/PKCS8 (BCrypt, not NCrypt) */
     {
         BCRYPT_KEY_HANDLE hMyBCryptPrivKey = xmlSecMSCngKeyDataGetBCryptPrivKey(myKeyValue);
         if(hMyBCryptPrivKey != NULL) {
@@ -516,7 +528,7 @@ xmlSecMSCngKeyAgreementGenerateSecret(xmlSecMSCngKeyAgreementCtxPtr ctx, xmlSecT
             goto done;
         }
     }
-#endif /* XMLSEC_NO_DH */
+#endif /* !defined(XMLSEC_NO_DH) || !defined(XMLSEC_NO_XDH) */
 
     hMyPrivKey = xmlSecMSCngKeyDataGetPrivKey(myKeyValue);
     if (hMyPrivKey == 0) {
@@ -797,4 +809,25 @@ xmlSecMSCngTransformDhEsGetKlass(void) {
 }
 #endif /* XMLSEC_NO_DH */
 
-#endif /* !defined(XMLSEC_NO_EC) || !defined(XMLSEC_NO_DH) */
+/********************************************************************
+ *
+ * X25519 key agreement klass
+ *
+ ********************************************************************/
+#ifndef XMLSEC_NO_XDH
+XMLSEC_MSCNG_KEY_AGREEMENT_KLASS_EX(X25519)
+
+/**
+ * xmlSecMSCngTransformX25519GetKlass:
+ *
+ * The X25519 key agreement transform klass.
+ *
+ * Returns: the X25519 key agreement transform klass.
+ */
+xmlSecTransformId
+xmlSecMSCngTransformX25519GetKlass(void) {
+    return(&xmlSecMSCngX25519Klass);
+}
+#endif /* XMLSEC_NO_XDH */
+
+#endif /* !defined(XMLSEC_NO_EC) || !defined(XMLSEC_NO_DH) || !defined(XMLSEC_NO_XDH) */

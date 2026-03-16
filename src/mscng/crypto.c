@@ -36,7 +36,7 @@ static xmlSecCryptoDLFunctionsPtr gXmlSecMSCngFunctions = NULL;
 
 /* Probe at runtime whether BCrypt supports a given algorithm. */
 static int
-xmlSecMSCngIsAlgorithmSupported(LPCWSTR pszAlgId, DWORD dwMinLength) {
+xmlSecMSCngIsAlgorithmSupported(LPCWSTR pszAlgId, DWORD dwMinLength, LPCWSTR curveName) {
     BCRYPT_ALG_HANDLE hAlg = NULL;
     NTSTATUS status;
 
@@ -62,6 +62,16 @@ xmlSecMSCngIsAlgorithmSupported(LPCWSTR pszAlgId, DWORD dwMinLength) {
         }
     }
 
+    /* check curve name if needed */
+    if(curveName != NULL) {
+        DWORD cbCurveName = (DWORD)((wcslen(curveName) + 1) * sizeof(WCHAR));
+        status = BCryptSetProperty(hAlg, BCRYPT_ECC_CURVE_NAME, (PUCHAR)curveName, cbCurveName, 0);
+        if(status != STATUS_SUCCESS) {
+            BCryptCloseAlgorithmProvider(hAlg, 0);
+            return(0);
+        }
+    }
+
     /* done */
     BCryptCloseAlgorithmProvider(hAlg, 0);
     return(1);
@@ -80,34 +90,39 @@ xmlSecCryptoGetFunctions_mscng(void) {
 
     /* DSA-SHA256 requirs Windows 8 / Windows Server 2012+. */
 #if !defined(XMLSEC_NO_DSA) && !defined(XMLSEC_NO_SHA256)
-    int isDsaSha256Supported = xmlSecMSCngIsAlgorithmSupported(BCRYPT_DSA_ALGORITHM, 2048);
+    int isDsaSha256Supported = xmlSecMSCngIsAlgorithmSupported(BCRYPT_DSA_ALGORITHM, 2048, NULL);
 #endif /* !defined(XMLSEC_NO_DSA) && !defined(XMLSEC_NO_SHA256) */
 
 
     /* ConcatKDF (SP800-56A) requirs Windows 8 / Windows Server 2012+. */
 #ifndef XMLSEC_NO_CONCATKDF
-    int isConcatKdfSupported = xmlSecMSCngIsAlgorithmSupported(BCRYPT_SP80056A_CONCAT_ALGORITHM, 0);
+    int isConcatKdfSupported = xmlSecMSCngIsAlgorithmSupported(BCRYPT_SP80056A_CONCAT_ALGORITHM, 0, NULL);
 #endif /* XMLSEC_NO_CONCATKDF */
 
     /* PBKDF2 requires Windows 8 / Windows Server 2012+. */
 #ifndef XMLSEC_NO_PBKDF2
-    int isPbkdf2Supported = xmlSecMSCngIsAlgorithmSupported(BCRYPT_PBKDF2_ALGORITHM, 0);
+    int isPbkdf2Supported = xmlSecMSCngIsAlgorithmSupported(BCRYPT_PBKDF2_ALGORITHM, 0, NULL);
 #endif /* XMLSEC_NO_PBKDF2 */
 
     /* HKDF requires Windows 10 1709+ (Redstone 3). */
 #ifndef XMLSEC_NO_HKDF
-    int isHkdfSupported = xmlSecMSCngIsAlgorithmSupported(BCRYPT_HKDF_ALGORITHM, 0);
+    int isHkdfSupported = xmlSecMSCngIsAlgorithmSupported(BCRYPT_HKDF_ALGORITHM, 0, NULL);
 #endif /* XMLSEC_NO_HKDF */
 
 /* SHA3 support requires Windows 11 24H2+ or Windows Server 2025. */
 #ifndef XMLSEC_NO_SHA3
-    int isSha3Supported = xmlSecMSCngIsAlgorithmSupported(BCRYPT_SHA3_256_ALGORITHM, 0);
+    int isSha3Supported = xmlSecMSCngIsAlgorithmSupported(BCRYPT_SHA3_256_ALGORITHM, 0, NULL);
 #endif /* XMLSEC_NO_SHA3 */
 
     /* DH key agreement is available on Windows Vista+. */
 #ifndef XMLSEC_NO_DH
-    int isDhSupported = xmlSecMSCngIsAlgorithmSupported(BCRYPT_DH_ALGORITHM, 0);
+    int isDhSupported = xmlSecMSCngIsAlgorithmSupported(BCRYPT_DH_ALGORITHM, 0, NULL);
 #endif /* XMLSEC_NO_DH */
+
+    /* X25519 (Curve25519 ECDH) requires Windows 10 1709+ (Fall Creators Update). */
+#ifndef XMLSEC_NO_XDH
+    int isX25519Supported = xmlSecMSCngIsAlgorithmSupported(BCRYPT_ECDH_ALGORITHM, 0, BCRYPT_ECC_CURVE_25519);
+#endif /* XMLSEC_NO_XDH */
 
     if(gXmlSecMSCngFunctions != NULL) {
         return(gXmlSecMSCngFunctions);
@@ -157,6 +172,12 @@ xmlSecCryptoGetFunctions_mscng(void) {
         gXmlSecMSCngFunctions->keyDataDhGetKlass         = xmlSecMSCngKeyDataDhGetKlass;
     }
 #endif /* XMLSEC_NO_DH */
+
+#ifndef XMLSEC_NO_XDH
+    if(isX25519Supported != 0) {
+        gXmlSecMSCngFunctions->keyDataXdhGetKlass        = xmlSecMSCngKeyDataXdhGetKlass;
+    }
+#endif /* XMLSEC_NO_XDH */
 
 #ifndef XMLSEC_NO_HMAC
     gXmlSecMSCngFunctions->keyDataHmacGetKlass          = xmlSecMSCngKeyDataHmacGetKlass;
@@ -279,6 +300,11 @@ xmlSecCryptoGetFunctions_mscng(void) {
     }
 #endif /* XMLSEC_NO_DH */
 
+#ifndef XMLSEC_NO_XDH
+    if(isX25519Supported != 0) {
+        gXmlSecMSCngFunctions->transformX25519GetKlass   = xmlSecMSCngTransformX25519GetKlass;
+    }
+#endif /* XMLSEC_NO_XDH */
 
     /******************************* HMAC ********************************/
 #ifndef XMLSEC_NO_HMAC

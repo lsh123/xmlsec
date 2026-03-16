@@ -66,6 +66,38 @@ int                xmlSecMSCngCreateDerForBcryptPubkey              (xmlSecKeyDa
 #define szOID_X942_DH "1.2.840.10046.2.1"
 #endif /* szOID_X942_DH */
 
+#endif /* XMLSEC_NO_DH */
+
+#ifndef XMLSEC_NO_XDH
+
+/* OID for X25519 public/private key (RFC 8410, id-X25519) */
+#ifndef szOID_X25519
+#define szOID_X25519 "1.3.101.110"
+#endif /* szOID_X25519 */
+
+/* BCrypt curve name for Curve25519 (may be missing in older MinGW bcrypt.h) */
+#ifndef BCRYPT_ECC_CURVE_25519
+#define BCRYPT_ECC_CURVE_25519          L"curve25519"
+#endif /* BCRYPT_ECC_CURVE_25519 */
+
+/* Generic ECDH key blob magics (may be missing in older MinGW bcrypt.h) */
+#ifndef BCRYPT_ECDH_PRIVATE_GENERIC_MAGIC
+#define BCRYPT_ECDH_PRIVATE_GENERIC_MAGIC   0x564B4345  /* ECKV */
+#endif /* BCRYPT_ECDH_PRIVATE_GENERIC_MAGIC */
+
+BCRYPT_KEY_HANDLE  xmlSecMSCngKeyDataXdhImportPublicKey             (const xmlSecByte* pubKeyBytes,
+                                                                     DWORD pubKeyLen);
+int                xmlSecMSCngKeyDataDuplicateBCryptXdhPrivKey       (BCRYPT_KEY_HANDLE src,
+                                                                     BCRYPT_KEY_HANDLE* dst);
+xmlSecKeyDataPtr   xmlSecMSCngKeyDataXdhReadFromPkcs8Der             (const xmlSecByte* derData,
+                                                                     DWORD derDataLen);
+int                xmlSecMSCngKeyDataCertGetXdhPubkey                (PCERT_PUBLIC_KEY_INFO spki,
+                                                                     BCRYPT_KEY_HANDLE* key);
+
+#endif /* XMLSEC_NO_XDH */
+
+#ifndef XMLSEC_NO_DH
+
 int                xmlSecMSCngKeyDataSetDhQ                        (xmlSecKeyDataPtr data,
                                                                      const xmlSecByte* q,
                                                                      DWORD qLen);

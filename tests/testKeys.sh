@@ -55,80 +55,77 @@ execKeysTestWithCryptoConfig() {
     # prepare
     setupTest
 
-    # gcrypt doesn't support pkcs12
-    if [ "z$crypto" != "zgcrypt" ] ; then
-        xmlsec_feature_pkcs12="yes"
-    else
-        xmlsec_feature_pkcs12="no"
+    xmlsec_feature_pkcs12="yes"
+    xmlsec_feature_pkcs12_persist="no"
+    xmlsec_feature_pkcs12_keyname="yes"
+    xmlsec_feature_pkcs8="yes"
+    xmlsec_feature_privkey_pem="yes"
+    xmlsec_feature_privkey_der="yes"
+    xmlsec_feature_pubkey_pem="yes"
+    xmlsec_feature_pubkey_der="yes"
+    xmlsec_feature_cert_pem="yes"
+    xmlsec_feature_cert_der="yes"
+    xmlsec_feature_gen_key="yes"
+
+    # NSS limitations
+    if [ "z$crypto" = "znss" ] ; then
+        xmlsec_feature_pkcs8="no"
+        xmlsec_feature_privkey_pem="no"
+        xmlsec_feature_privkey_der="no"
+        xmlsec_feature_pubkey_pem="no"
+
+        case "$alg_name" in
+            concatkdf-*|hkdf-*|pbkdf2-*)
+                xmlsec_feature_gen_key="no"
+                ;;
+            eddsa-ed25519)
+                xmlsec_feature_pkcs12="no"
+                xmlsec_feature_pkcs12_keyname="no"
+                ;;
+            eddsa-ed448)
+                xmlsec_feature_pkcs12="no"
+                xmlsec_feature_pkcs12_keyname="no"
+                xmlsec_feature_pubkey_der="no"
+                xmlsec_feature_cert_pem="no"
+                xmlsec_feature_cert_der="no"
+                ;;
+        esac
     fi
 
-    # only MSCNG supports both persistent and non persistent keys (pkcs12-persist flag)
+    # MSCNG limitations
     if [ "z$crypto" = "zmscng" ] ; then
         xmlsec_feature_pkcs12_persist="yes"
-    else
-        xmlsec_feature_pkcs12_persist="no"
-    fi
-
-    # gcrypt and mscrypto don't support keynames in pkcs12
-    if [ "z$crypto" != "zgcrypt" -a "z$crypto" != "zmscrypto" ] ; then
-        xmlsec_feature_pkcs12_keyname="yes"
-    else
-        xmlsec_feature_pkcs12_keyname="no"
-    fi
-
-    # gcrypt, mscrypto, mscng, nss don't support pkcs8
-    if [ "z$crypto" != "zgcrypt" -a "z$crypto" != "znss" -a "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" ] ; then
-        xmlsec_feature_pkcs8="yes"
-    else
         xmlsec_feature_pkcs8="no"
-    fi
-
-    # gcrypt doesn't support pem
-    # nss, mscrypto, mscng don't like private keys in pem / der
-    if [ "z$crypto" != "zgcrypt" -a "z$crypto" != "znss" -a "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" ] ; then
-        xmlsec_feature_privkey_pem="yes"
-    else
         xmlsec_feature_privkey_pem="no"
-    fi
-
-    # nss, mscrypto, mscng don't like private keys in pem / der
-    if [ "z$crypto" != "znss"  -a "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" ] ; then
-        xmlsec_feature_privkey_der="yes"
-    else
         xmlsec_feature_privkey_der="no"
-    fi
-
-    # nss, gcrypt don't support pem
-    # mscrypto, mscng don't support standalong pubkeys
-    if [ "z$crypto" != "zgcrypt" -a "z$crypto" != "znss" -a "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" ] ; then
-        xmlsec_feature_pubkey_pem="yes"
-    else
         xmlsec_feature_pubkey_pem="no"
-    fi
-
-    # mscrypto, mscng don't support standalong pubkeys
-    if [ "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" ] ; then
-        xmlsec_feature_pubkey_der="yes"
-    else
         xmlsec_feature_pubkey_der="no"
-    fi
-
-    # gcrypt doesn't support certs
-    # mscrypto, mscng don't support pem
-    if [ "z$crypto" != "zgcrypt" -a "z$crypto" != "zmscrypto" -a "z$crypto" != "zmscng" ] ; then
-        xmlsec_feature_cert_pem="yes"
-    else
         xmlsec_feature_cert_pem="no"
     fi
 
-    # gcrypt doesn't support certs
-    if [ "z$crypto" != "zgcrypt" ] ; then
-        xmlsec_feature_cert_der="yes"
-    else
+    # MSCRYPTO limitations
+    if [ "z$crypto" = "zmscrypto" ] ; then
+        xmlsec_feature_pkcs12_keyname="no"
+        xmlsec_feature_pkcs8="no"
+        xmlsec_feature_privkey_pem="no"
+        xmlsec_feature_privkey_der="no"
+        xmlsec_feature_pubkey_pem="no"
+        xmlsec_feature_pubkey_der="no"
+        xmlsec_feature_cert_pem="no"
+    fi
+
+    # Gcrypt limitations
+    if [ "z$crypto" = "zgcrypt" ] ; then
+        xmlsec_feature_pkcs12="no"
+        xmlsec_feature_pkcs12_keyname="no"
+        xmlsec_feature_pkcs8="no"
+        xmlsec_feature_privkey_pem="no"
+        xmlsec_feature_pubkey_pem="no"
+        xmlsec_feature_cert_pem="no"
         xmlsec_feature_cert_der="no"
     fi
 
-
+    # Keys file path
     if test "z$OS_ARCH" = "zCygwin" || test "z$OS_ARCH" = "zMsys" ; then
         keysfile=`cygpath -wa $crypto_config_folder/keys.xml`
     else
@@ -167,7 +164,7 @@ execKeysTestWithCryptoConfig() {
     # run tests
 
     # generate key
-    if [ -n "$alg_name" -a -n "$key_name" ]; then
+    if [ -n "$alg_name" -a -n "$key_name" -a "z$xmlsec_feature_gen_key" = "zyes" ]; then
         printf "    Creating new key                                      "
         params="--gen-key:$key_name $alg_name"
         if [ -f $keysfile ] ; then

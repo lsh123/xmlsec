@@ -205,7 +205,7 @@ xmlSecMSCngDhParseDhParameters(const xmlSecByte* params, DWORD paramsLen,
     }
 
     if(next != end) {
-        xmlSecInvalidSizeError("DH parameters trailing bytes", 0, (xmlSecSize)(end - next), NULL);
+        xmlSecInvalidSizeError("DH parameters trailing bytes", (xmlSecSize)0, (xmlSecSize)(end - next), NULL);
         return(-1);
     }
     return(0);
@@ -220,7 +220,7 @@ xmlSecMSCngDhBlobCopy(PUCHAR dest, DWORD cbKey, const xmlSecByte* val, xmlSecSiz
     xmlSecAssert2(valLen > 0, -1);
 
     if(valLen > cbKey) {
-        xmlSecInvalidSizeMoreThanError("DH parameter size", valLen, cbKey, NULL);
+        xmlSecInvalidSizeMoreThanError("DH parameter size", valLen, (xmlSecSize)cbKey, NULL);
         return(-1);
     }
 

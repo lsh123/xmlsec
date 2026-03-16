@@ -187,15 +187,14 @@ xmlSecMSCngSymKeyDataDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecKeyDataBinaryValueDebugXmlDump(data, output);
 }
 
-#define XMLSEC_MSCNG_SYMKEY_KLASS_EX(klassName, dataName, dataHref, dataNodeName, dataNodeNs) \
+#define XMLSEC_MSCNG_SYMKEY_KLASS_EX(klassName, dataName, dataHref, usage, dataNodeName, dataNodeNs, xmlRead, xmlWrite) \
 static xmlSecKeyDataKlass xmlSecMSCngKeyData ## klassName ## Klass = {                              \
     sizeof(xmlSecKeyDataKlass),                 /* xmlSecSize klassSize */                           \
     xmlSecKeyDataBinarySize,                    /* xmlSecSize objSize */                             \
                                                                                                      \
     /* data */                                                                                       \
     dataName,                                   /* const xmlChar* name; */                           \
-    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml, \
-                                                /* xmlSecKeyDataUsage usage; */                      \
+    usage,                                      /* xmlSecKeyDataUsage usage; */                      \
     dataHref,                                   /* const xmlChar* href; */                           \
     dataNodeName,                               /* const xmlChar* dataNodeName; */                   \
     dataNodeNs,                                 /* const xmlChar* dataNodeNs; */                     \
@@ -212,8 +211,8 @@ static xmlSecKeyDataKlass xmlSecMSCngKeyData ## klassName ## Klass = {          
     NULL,                                       /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */ \
                                                                                                      \
     /* read/write */                                                                               \
-    xmlSecMSCngSymKeyDataXmlRead,               /* xmlSecKeyDataXmlReadMethod xmlRead; */            \
-    xmlSecMSCngSymKeyDataXmlWrite,              /* xmlSecKeyDataXmlWriteMethod xmlWrite; */          \
+    xmlRead,                                    /* xmlSecKeyDataXmlReadMethod xmlRead; */            \
+    xmlWrite,                                   /* xmlSecKeyDataXmlWriteMethod xmlWrite; */          \
     xmlSecMSCngSymKeyDataBinRead,               /* xmlSecKeyDataBinReadMethod binRead; */            \
     xmlSecMSCngSymKeyDataBinWrite,              /* xmlSecKeyDataBinWriteMethod binWrite; */          \
                                                                                                      \
@@ -226,6 +225,15 @@ static xmlSecKeyDataKlass xmlSecMSCngKeyData ## klassName ## Klass = {          
     NULL,                                       /* void* reserved1; */                               \
 };
 
+#define XMLSEC_MSCNG_SYMKEY_WITH_XML(klassName, dataName, dataHref, dataNodeName, dataNodeNs) \
+    XMLSEC_MSCNG_SYMKEY_KLASS_EX(klassName, dataName, dataHref, \
+        xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml, \
+        dataNodeName, dataNodeNs, xmlSecMSCngSymKeyDataXmlRead, xmlSecMSCngSymKeyDataXmlWrite)
+
+#define XMLSEC_MSCNG_SYMKEY(klassName, dataName, dataHref) \
+    XMLSEC_MSCNG_SYMKEY_KLASS_EX(klassName, dataName, dataHref, \
+        xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageRetrievalMethodNodeXml, \
+        NULL, NULL, NULL, NULL)
 
 #ifndef XMLSEC_NO_AES
 /**************************************************************************
@@ -233,7 +241,7 @@ static xmlSecKeyDataKlass xmlSecMSCngKeyData ## klassName ## Klass = {          
  * <xmlsec:AESKeyValue> processing
  *
  *************************************************************************/
-XMLSEC_MSCNG_SYMKEY_KLASS_EX(Aes,
+XMLSEC_MSCNG_SYMKEY_WITH_XML(Aes,
     xmlSecNameAESKeyValue,
     xmlSecHrefAESKeyValue,
     xmlSecNodeAESKeyValue,
@@ -260,11 +268,7 @@ xmlSecMSCngKeyDataAesGetKlass(void) {
  * ConcatKdf klass
  *
  *************************************************************************/
-XMLSEC_MSCNG_SYMKEY_KLASS_EX(ConcatKdf,
-    xmlSecNameConcatKdfKey,
-    NULL,
-    NULL,
-    NULL)
+XMLSEC_MSCNG_SYMKEY(ConcatKdf, xmlSecNameConcatKdf, xmlSecHrefConcatKdf)
 
 /**
  * xmlSecMSCngKeyDataConcatKdfGetKlass:
@@ -287,7 +291,7 @@ xmlSecMSCngKeyDataConcatKdfGetKlass(void) {
  * <xmlsec:DESKeyValue> processing
  *
  *************************************************************************/
-XMLSEC_MSCNG_SYMKEY_KLASS_EX(Des,
+XMLSEC_MSCNG_SYMKEY_WITH_XML(Des,
     xmlSecNameDESKeyValue,
     xmlSecHrefDESKeyValue,
     xmlSecNodeDESKeyValue,
@@ -315,7 +319,7 @@ xmlSecMSCngKeyDataDesGetKlass(void) {
  * <xmlsec:HMACKeyValue> processing
  *
  *************************************************************************/
-XMLSEC_MSCNG_SYMKEY_KLASS_EX(Hmac,
+XMLSEC_MSCNG_SYMKEY_WITH_XML(Hmac,
     xmlSecNameHMACKeyValue,
     xmlSecHrefHMACKeyValue,
     xmlSecNodeHMACKeyValue,
@@ -342,11 +346,7 @@ xmlSecMSCngKeyDataHmacGetKlass(void) {
  * PBKDF2 klass
  *
  *************************************************************************/
-XMLSEC_MSCNG_SYMKEY_KLASS_EX(Pbkdf2,
-    xmlSecNamePbkdf2Key,
-    NULL,
-    NULL,
-    NULL)
+XMLSEC_MSCNG_SYMKEY(Pbkdf2, xmlSecNamePbkdf2, xmlSecHrefPbkdf2)
 
 /**
  * xmlSecMSCngKeyDataPbkdf2GetKlass:
@@ -369,11 +369,7 @@ xmlSecMSCngKeyDataPbkdf2GetKlass(void) {
  * HKDF klass
  *
  *************************************************************************/
-XMLSEC_MSCNG_SYMKEY_KLASS_EX(Hkdf,
-    xmlSecNameHkdfKey,
-    NULL,
-    NULL,
-    NULL)
+XMLSEC_MSCNG_SYMKEY(Hkdf, xmlSecNameHkdf, xmlSecHrefHkdf)
 
 /**
  * xmlSecMSCngKeyDataHkdfGetKlass:

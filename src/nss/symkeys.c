@@ -233,14 +233,14 @@ xmlSecNssSymKeyDataKlassCheck(xmlSecKeyDataKlass* klass) {
  * Symmetic keys Klasses
  *
  ****************************************************************************/
-#define XMLSEC_NSS_SYMKEY_KLASS_EX(name, keyName, keyHref, keyNodeName, keyNodeNs)                      \
+#define XMLSEC_NSS_SYMKEY_KLASS_EX(name, keyName, usage, keyHref, keyNodeName, keyNodeNs, xmlRead, xmlWrite) \
 static xmlSecKeyDataKlass xmlSecNss ## name ## Klass = {                                                 \
     sizeof(xmlSecKeyDataKlass),             /* xmlSecSize klassSize */                                   \
     xmlSecKeyDataBinarySize,                /* xmlSecSize objSize */                                     \
                                                                                                          \
     /* data */                                                                                           \
     keyName,                                /* const xmlChar* name; */                                   \
-    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml, /* xmlSecKeyDataUsage usage; */ \
+    usage,                                  /* xmlSecKeyDataUsage usage; */                              \
     keyHref,                                /* const xmlChar* href; */                                   \
     keyNodeName,                            /* const xmlChar* dataNodeName; */                           \
     keyNodeNs,                              /* const xmlChar* dataNodeNs; */                             \
@@ -257,8 +257,8 @@ static xmlSecKeyDataKlass xmlSecNss ## name ## Klass = {                        
     NULL,                                   /* DEPRECATED xmlSecKeyDataGetIdentifier getIdentifier; */  \
                                                                                                          \
     /* read/write */                                                                                     \
-    xmlSecNssSymKeyDataXmlRead,             /* xmlSecKeyDataXmlReadMethod xmlRead; */                    \
-    xmlSecNssSymKeyDataXmlWrite,            /* xmlSecKeyDataXmlWriteMethod xmlWrite; */                  \
+    xmlRead,                                /* xmlSecKeyDataXmlReadMethod xmlRead; */                    \
+    xmlWrite,                               /* xmlSecKeyDataXmlWriteMethod xmlWrite; */                  \
     xmlSecNssSymKeyDataBinRead,             /* xmlSecKeyDataBinReadMethod binRead; */                    \
     xmlSecNssSymKeyDataBinWrite,            /* xmlSecKeyDataBinWriteMethod binWrite; */                  \
                                                                                                          \
@@ -267,9 +267,30 @@ static xmlSecKeyDataKlass xmlSecNss ## name ## Klass = {                        
     xmlSecNssSymKeyDataDebugXmlDump,        /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */             \
                                                                                                          \
     /* reserved for the future */                                                                        \
-    NULL,                                   /* void* reserved0; */                                      \
-    NULL,                                   /* void* reserved1; */                                      \
+    NULL,                                   /* void* reserved0; */                                       \
+    NULL,                                   /* void* reserved1; */                                       \
 };
+
+#define XMLSEC_NSS_SYMKEY_WITH_XML_SUPPORT_KLASS(name, keyName, keyHref, keyNodeName, keyNodeNs)         \
+    XMLSEC_NSS_SYMKEY_KLASS_EX(name,                                                                     \
+        keyName,                                                                                         \
+        xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml, \
+        keyHref,                                                                                         \
+        keyNodeName,                                                                                     \
+        keyNodeNs,                                                                                       \
+        xmlSecNssSymKeyDataXmlRead,                                                                      \
+        xmlSecNssSymKeyDataXmlWrite)
+
+#define XMLSEC_NSS_SYMKEY_KLASS(name, keyName, keyHref)                                                  \
+    XMLSEC_NSS_SYMKEY_KLASS_EX(name,                                                                     \
+        keyName,                                                                                         \
+        xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageRetrievalMethodNodeXml,                       \
+        keyHref,                                                                                         \
+        NULL,                                                                                            \
+        NULL,                                                                                            \
+        NULL,                                                                                            \
+        NULL)
+
 
 #ifndef XMLSEC_NO_AES
 /**************************************************************************
@@ -277,7 +298,7 @@ static xmlSecKeyDataKlass xmlSecNss ## name ## Klass = {                        
  * <xmlsec:AESKeyValue> processing
  *
  *************************************************************************/
-XMLSEC_NSS_SYMKEY_KLASS_EX(KeyDataAes, xmlSecNameAESKeyValue, xmlSecHrefAESKeyValue, xmlSecNodeAESKeyValue, xmlSecNs)
+XMLSEC_NSS_SYMKEY_WITH_XML_SUPPORT_KLASS(KeyDataAes, xmlSecNameAESKeyValue, xmlSecHrefAESKeyValue, xmlSecNodeAESKeyValue, xmlSecNs)
 
 /**
  * xmlSecNssKeyDataAesGetKlass:
@@ -322,7 +343,7 @@ xmlSecNssKeyDataAesSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSize 
  * <xmlsec:CamelliaKeyValue> processing
  *
  *************************************************************************/
-XMLSEC_NSS_SYMKEY_KLASS_EX(KeyDataCamellia, xmlSecNameCamelliaKeyValue, xmlSecHrefCamelliaKeyValue, xmlSecNodeCamelliaKeyValue, xmlSecNs)
+XMLSEC_NSS_SYMKEY_WITH_XML_SUPPORT_KLASS(KeyDataCamellia, xmlSecNameCamelliaKeyValue, xmlSecHrefCamelliaKeyValue, xmlSecNodeCamelliaKeyValue, xmlSecNs)
 
 /**
  * xmlSecNssKeyDataCamelliaGetKlass:
@@ -367,7 +388,7 @@ xmlSecNssKeyDataCamelliaSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSec
  * <xmlsec:DESKeyValue> processing
  *
  *************************************************************************/
-XMLSEC_NSS_SYMKEY_KLASS_EX(KeyDataDes, xmlSecNameDESKeyValue, xmlSecHrefDESKeyValue, xmlSecNodeDESKeyValue, xmlSecNs)
+XMLSEC_NSS_SYMKEY_WITH_XML_SUPPORT_KLASS(KeyDataDes, xmlSecNameDESKeyValue, xmlSecHrefDESKeyValue, xmlSecNodeDESKeyValue, xmlSecNs)
 
 /**
  * xmlSecNssKeyDataDesGetKlass:
@@ -413,7 +434,7 @@ xmlSecNssKeyDataDesSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSize 
  * <xmlsec:ChaCha20KeyValue> processing
  *
  *************************************************************************/
-XMLSEC_NSS_SYMKEY_KLASS_EX(KeyDataChaCha20, xmlSecNameChaCha20KeyValue, xmlSecHrefChaCha20KeyValue, xmlSecNodeChaCha20KeyValue, xmlSecNs)
+XMLSEC_NSS_SYMKEY_WITH_XML_SUPPORT_KLASS(KeyDataChaCha20, xmlSecNameChaCha20KeyValue, xmlSecHrefChaCha20KeyValue, xmlSecNodeChaCha20KeyValue, xmlSecNs)
 
 /**
  * xmlSecNssKeyDataChaCha20GetKlass:
@@ -459,7 +480,7 @@ xmlSecNssKeyDataChaCha20Set(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSec
  * <xmlsec:HMACKeyValue> processing
  *
  *************************************************************************/
-XMLSEC_NSS_SYMKEY_KLASS_EX(KeyDataHmac, xmlSecNameHMACKeyValue, xmlSecHrefHMACKeyValue, xmlSecNodeHMACKeyValue, xmlSecNs)
+XMLSEC_NSS_SYMKEY_WITH_XML_SUPPORT_KLASS(KeyDataHmac, xmlSecNameHMACKeyValue, xmlSecHrefHMACKeyValue, xmlSecNodeHMACKeyValue, xmlSecNs)
 
 /**
  * xmlSecNssKeyDataHmacGetKlass:
@@ -505,7 +526,7 @@ xmlSecNssKeyDataHmacSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSize
  * PBKDF2 key
  *
  *************************************************************************/
-XMLSEC_NSS_SYMKEY_KLASS_EX(KeyDataPbkdf2, xmlSecNamePbkdf2Key, NULL, NULL, NULL)
+XMLSEC_NSS_SYMKEY_KLASS(KeyDataPbkdf2, xmlSecNamePbkdf2, xmlSecHrefPbkdf2)
 
 /**
  * xmlSecNssKeyDataPbkdf2GetKlass:
@@ -551,7 +572,7 @@ xmlSecNssKeyDataPbkdf2Set(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSi
  * ConcatKDF key
  *
  *************************************************************************/
-XMLSEC_NSS_SYMKEY_KLASS_EX(KeyDataConcatKdf, xmlSecNameConcatKdfKey, NULL, NULL, NULL)
+XMLSEC_NSS_SYMKEY_KLASS(KeyDataConcatKdf, xmlSecNameConcatKdf, xmlSecHrefConcatKdf)
 
 /**
  * xmlSecNssKeyDataConcatKdfGetKlass:
@@ -597,7 +618,7 @@ xmlSecNssKeyDataConcatKdfSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSe
  * HKDF key
  *
  *************************************************************************/
-XMLSEC_NSS_SYMKEY_KLASS_EX(KeyDataHkdf, xmlSecNameHkdfKey, NULL, NULL, NULL)
+XMLSEC_NSS_SYMKEY_KLASS(KeyDataHkdf, xmlSecNameHkdf, xmlSecHrefHkdf)
 
 /**
  * xmlSecNssKeyDataHkdfGetKlass:

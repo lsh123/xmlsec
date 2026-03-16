@@ -222,6 +222,7 @@ const xmlChar xmlSecAttrPrefixList[]            = "PrefixList";
  *
  ************************************************************************/
 const xmlChar xmlSecNameConcatKdfKey[]          = "concatkdf";
+const xmlChar xmlSecNodeConcatKdfKeyValue[]     = "ConcatKDFKeyValue";
 
 const xmlChar xmlSecNameConcatKdf[]             = "concatkdf";
 const xmlChar xmlSecHrefConcatKdf[]             = "http://www.w3.org/2009/xmlenc11#ConcatKDF";
@@ -632,6 +633,7 @@ const xmlChar xmlSecHrefMd5[]                   = "http://www.w3.org/2001/04/xml
  *
  ************************************************************************/
 const xmlChar xmlSecNamePbkdf2Key[]             = "pbkdf2";
+const xmlChar xmlSecNodePbkdf2KeyValue[]        = "PBKDF2KeyValue";
 
 const xmlChar xmlSecNamePbkdf2[]                = "pbkdf2";
 const xmlChar xmlSecHrefPbkdf2[]                = "http://www.w3.org/2009/xmlenc11#pbkdf2";
@@ -649,6 +651,7 @@ const xmlChar xmlSecNodePbkdf2PRF[]             = "PRF";
  *
  ************************************************************************/
 const xmlChar xmlSecNameHkdfKey[]               = "hkdf";
+const xmlChar xmlSecNodeHkdfKeyValue[]          = "HKDFKeyValue";
 
 const xmlChar xmlSecNameHkdf[]                  = "hkdf";
 const xmlChar xmlSecHrefHkdf[]                  = "http://www.w3.org/2021/04/xmldsig-more#hkdf";

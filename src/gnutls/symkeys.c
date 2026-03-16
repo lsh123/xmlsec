@@ -231,7 +231,7 @@ xmlSecGnuTLSSymKeyDataKlassCheck(xmlSecKeyDataKlass* klass) {
 }
 
 /* Helper macros to define the sym key data klass */
-#define XMLSEC_GNUTLS_SYMKEY_KLASS_EX(klassName, keyName, usage, href, dataNodeName, dataNodeNs)                  \
+#define XMLSEC_GNUTLS_SYMKEY_KLASS_EX(klassName, keyName, href, usage, dataNodeName, dataNodeNs)                  \
 static xmlSecKeyDataKlass xmlSecGnuTLSKeyData ## klassName ## Klass = {                                           \
     sizeof(xmlSecKeyDataKlass),                 /* xmlSecSize klassSize */                                        \
     xmlSecKeyDataBinarySize,                    /* xmlSecSize objSize */                                          \
@@ -271,8 +271,9 @@ static xmlSecKeyDataKlass xmlSecGnuTLSKeyData ## klassName ## Klass = {         
 
 #define XMLSEC_GNUTLS_SYMKEY_KLASS(klassName, xmlName)                                                            \
     XMLSEC_GNUTLS_SYMKEY_KLASS_EX(klassName, xmlSecName ## xmlName ## KeyValue,                                   \
+        xmlSecHref ## xmlName ## KeyValue,                                                                         \
         xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml, \
-        xmlSecHref ## xmlName ## KeyValue, xmlSecNode ## xmlName ## KeyValue, xmlSecNs)
+        xmlSecNode ## xmlName ## KeyValue, xmlSecNs)
 
 #ifndef XMLSEC_NO_AES
 /**************************************************************************
@@ -463,7 +464,7 @@ xmlSecGnuTLSKeyDataHmacSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecS
  * PBDKF2 key klass
  *
  *************************************************************************/
-XMLSEC_GNUTLS_SYMKEY_KLASS_EX(Pbkdf2, xmlSecNamePbkdf2Key, xmlSecKeyDataUsageReadFromFile, NULL, NULL, NULL)
+XMLSEC_GNUTLS_SYMKEY_KLASS_EX(Pbkdf2, xmlSecNamePbkdf2, xmlSecHrefPbkdf2, xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageRetrievalMethodNodeXml, NULL, NULL)
 
 /**
  * xmlSecGnuTLSKeyDataPbkdf2GetKlass:
@@ -509,7 +510,7 @@ xmlSecGnuTLSKeyDataPbkdf2Set(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSe
  * ConcatKDF key klass
  *
  *************************************************************************/
-XMLSEC_GNUTLS_SYMKEY_KLASS_EX(ConcatKdf, xmlSecNameConcatKdfKey, xmlSecKeyDataUsageReadFromFile, NULL, NULL, NULL)
+XMLSEC_GNUTLS_SYMKEY_KLASS_EX(ConcatKdf, xmlSecNameConcatKdf, xmlSecHrefConcatKdf, xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageRetrievalMethodNodeXml, NULL, NULL)
 
 /**
  * xmlSecGnuTLSKeyDataConcatKdfGetKlass:
@@ -555,7 +556,7 @@ xmlSecGnuTLSKeyDataConcatKdfSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xm
  * HKDF key klass
  *
  *************************************************************************/
-XMLSEC_GNUTLS_SYMKEY_KLASS_EX(Hkdf, xmlSecNameHkdfKey, xmlSecKeyDataUsageReadFromFile, NULL, NULL, NULL)
+XMLSEC_GNUTLS_SYMKEY_KLASS_EX(Hkdf, xmlSecNameHkdf, xmlSecHrefHkdf, xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageRetrievalMethodNodeXml, NULL, NULL)
 
 /**
  * xmlSecGnuTLSKeyDataHkdfGetKlass:

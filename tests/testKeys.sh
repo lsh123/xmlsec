@@ -75,9 +75,6 @@ execKeysTestWithCryptoConfig() {
         xmlsec_feature_pubkey_pem="no"
 
         case "$alg_name" in
-            concatkdf-*|hkdf-*|pbkdf2-*)
-                xmlsec_feature_gen_key="no"
-                ;;
             eddsa-ed25519)
                 xmlsec_feature_pkcs12="no"
                 xmlsec_feature_pkcs12_keyname="no"

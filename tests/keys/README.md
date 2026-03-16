@@ -233,7 +233,9 @@ mkdir ec
 ./scripts/create-ec-prime256v1.sh
 ./scripts/create-ec-prime256v1-second.sh
 ./scripts/create-ec-prime384v1.sh
+./scripts/create-ec-prime384v1-second.sh
 ./scripts/create-ec-prime521v1.sh
+./scripts/create-ec-prime521v1-second.sh
 ```
 
 ### Generate and sign DHX keys with second level CA

@@ -24,3 +24,5 @@ V	21260213024508Z		7735EE487F6862DAF1B3956D961CCB0FA6F34F64	unknown	/C=US/ST=Cal
 V	21260213024911Z		7735EE487F6862DAF1B3956D961CCB0FA6F34F65	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=Test Key gost-2012-512
 V	21260213165017Z		7735EE487F6862DAF1B3956D961CCB0FA6F34F66	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=Test Key eddsa-ed25519
 V	21260213165024Z		7735EE487F6862DAF1B3956D961CCB0FA6F34F67	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=Test Key eddsa-ed448
+V	21260219211737Z		7735EE487F6862DAF1B3956D961CCB0FA6F34F68	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=Test Key ec-prime384v1-second
+V	21260219211741Z		7735EE487F6862DAF1B3956D961CCB0FA6F34F69	unknown	/C=US/ST=California/O=XML Security Library (http:\/\/www.aleksey.com\/xmlsec)/CN=Test Key ec-prime521v1-second

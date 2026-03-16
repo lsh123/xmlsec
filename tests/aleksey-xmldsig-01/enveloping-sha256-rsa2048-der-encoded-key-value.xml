@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+  <SignedInfo>
+    <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+    <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
+    <Reference URI="#object">
+      <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+      <DigestValue>iDhYt78o294fA6pzQ7k44+eejrQMi+WX3l3UrUdtL1Q=</DigestValue>
+    </Reference>
+  </SignedInfo>
+  <SignatureValue>1UQLUaUhBSZLindLf9zDhunnNA/0yTP0GkjSVqxWw1NuhgjvSo17VygyjatZa+fm
+jU52ZSRGGjmpSygFwj5HwTFNAmzMLo2r8RdB+hSU9xLL+51pPCnK9oSJXs/dFmDh
+b0bwPDvlLVvP5XA4fCKy9ZObljCAh6yRzTjavqOt5XFEf+bf8NzC2afilfwOFUVn
+fKKIHmPyy3oYZGxbNP8RXRlqFz35779oftfAKGFP6jzks+gLQ3Lj9xsfZvqcCEMj
+yWufppGXTOM2ttiEcFEaRN8hUjeNsKsExFeLfikAijKp3UYRtiqphBibojsmahU3
+koRumVQ6L/tDhTJv9lf7dQ==</SignatureValue>
+  <KeyInfo>
+    <KeyName>TestKeyName-rsa-2048</KeyName>
+    <dsig11:DEREncodedKeyValue xmlns:dsig11="http://www.w3.org/2009/xmldsig11#">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3iVnhDXlgGiWvV2f21bC
+P4NAeTkwouWvN9K94SNeV01xzuvPg2GRb+ozF0/YbQ8jj7UDeuIgcLoBrC/jSMtp
+7gJp6zj3oHhX97NZVv5SBUmBOJRbB8efy3apTvTvWlzJQhO4WVXBRDqmA0dGHPRR
+uMB6l125wy+WBMWxO6BzUooe9m0OpQXjKokJKFcl9Zd4ht3EqXW8cuHgiyrtYzXT
+cO63W9+J6dFOi1DTYhKMkK53jMsModlleEUdqUHgTbxK0TBSYMa2sB1rGfcVq+Qa
+nOlsRHXAXiZM/BE6uPqlFq+g5osSZbHfH2qC/0G/wKKlWzIx0YPjQSBq/MbroodK
+LQIDAQAB</dsig11:DEREncodedKeyValue>
+  </KeyInfo>
+  <Object Id="object">some text</Object>
+</Signature>

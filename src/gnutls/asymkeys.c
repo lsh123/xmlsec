@@ -149,6 +149,7 @@ xmlSecGnuTLSAsymKeyDataFinalize(xmlSecKeyDataPtr data) {
 static int
 xmlSecGnuTLSAsymKeyDataAdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, gnutls_privkey_t privkey) {
     xmlSecGnuTLSAsymKeyDataCtxPtr ctx;
+    int err;
 
     xmlSecAssert2(xmlSecKeyDataIsValid(data), -1);
     xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecGnuTLSAsymKeyDataSize), -1);
@@ -159,13 +160,33 @@ xmlSecGnuTLSAsymKeyDataAdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, g
     /* deinit if anything */
     if(ctx->pubkey != NULL) {
         gnutls_pubkey_deinit(ctx->pubkey);
+        ctx->pubkey = NULL;
     }
     if(ctx->privkey != NULL) {
-        gnutls_privkey_deinit (ctx->privkey);
+        gnutls_privkey_deinit(ctx->privkey);
+        ctx->privkey = NULL;
     }
 
+    /* if pubkey is not available, try to extract it from privkey */
+    if((pubkey == NULL) && (privkey != NULL)) {
+        err = gnutls_pubkey_init(&pubkey);
+        if(err != GNUTLS_E_SUCCESS) {
+            xmlSecGnuTLSError("gnutls_pubkey_init", err, NULL);
+            return(-1);
+        }
+
+        err = gnutls_pubkey_import_privkey(pubkey, privkey, 0, 0);
+        if(err != GNUTLS_E_SUCCESS) {
+            /* non-fatal: some key types may not support pubkey export */
+            gnutls_pubkey_deinit(pubkey);
+            pubkey = NULL;
+        }
+    }
+
+    /* set new keys */
     ctx->pubkey = pubkey;
     ctx->privkey = privkey;
+
 
     /* done */
     return(0);
@@ -565,9 +586,6 @@ static int              xmlSecGnuTLSKeyDataDsaWrite             (xmlSecKeyDataId
                                                                  xmlSecKeyValueDsaPtr dsaValue,
                                                                  int writePrivateKey);
 
-static gnutls_pubkey_t  xmlSecGnuTLSKeyDataDsaPubKeyFromPrivKey (gnutls_privkey_t privkey);
-
-
 XMLSEC_GNUTLS_ASYMKEY_KLASS_EX(Dsa, xmlSecNameDSAKeyValue, xmlSecHrefDSAKeyValue,
     xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
     xmlSecNodeDSAKeyValue, xmlSecDSigNs,
@@ -613,15 +631,6 @@ xmlSecGnuTLSKeyDataDsaAdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, gn
         ret = gnutls_privkey_get_pk_algorithm(privkey, NULL);
         if(ret != GNUTLS_PK_DSA) {
             xmlSecInternalError2("Invalid privkey algorithm", NULL, "type=%d", ret);
-            return(-1);
-        }
-    }
-
-    /* create pub key if needed */
-    if((privkey != NULL) && (pubkey == NULL)) {
-        pubkey = xmlSecGnuTLSKeyDataDsaPubKeyFromPrivKey(privkey);
-        if(pubkey == NULL) {
-            xmlSecInternalError("xmlSecGnuTLSKeyDataDsaPubKeyFromPrivKey", NULL);
             return(-1);
         }
     }
@@ -913,59 +922,6 @@ done:
     return(res);
 }
 
-static gnutls_pubkey_t
-xmlSecGnuTLSKeyDataDsaPubKeyFromPrivKey(gnutls_privkey_t privkey) {
-    gnutls_pubkey_t pubkey = NULL;
-	gnutls_datum_t p = { NULL, 0 };
-    gnutls_datum_t q = { NULL, 0 };
-    gnutls_datum_t g = { NULL, 0 };
-    gnutls_datum_t y = { NULL, 0 };
-    gnutls_datum_t x = { NULL, 0 };
-    int err;
-
-    xmlSecAssert2(privkey != NULL, NULL);
-
-    err = gnutls_privkey_export_dsa_raw2(privkey,
-                &p, &q, &g, &y, &x,
-                0);
-    if(err != GNUTLS_E_SUCCESS) {
-        xmlSecGnuTLSError("gnutls_privkey_export_dsa_raw2", err, NULL);
-        goto done;
-    }
-
-    err = gnutls_pubkey_init(&pubkey);
-    if(err != GNUTLS_E_SUCCESS) {
-        xmlSecGnuTLSError("gnutls_pubkey_init", err, NULL);
-        goto done;
-    }
-
-    err = gnutls_pubkey_import_dsa_raw(pubkey, &p, &q, &g, &y);
-    if(err != GNUTLS_E_SUCCESS) {
-        xmlSecGnuTLSError("gnutls_pubkey_import_dsa_raw", err, NULL);
-        gnutls_pubkey_deinit(pubkey);
-        goto done;
-    }
-
-done:
-    if(p.data != NULL) {
-        gnutls_free(p.data);
-    }
-    if(q.data != NULL) {
-        gnutls_free(q.data);
-    }
-    if(g.data != NULL) {
-        gnutls_free(g.data);
-    }
-    if(y.data != NULL) {
-        gnutls_free(y.data);
-    }
-    if(x.data != NULL) {
-        gnutls_free(x.data);
-    }
-
-    return(pubkey);
-}
-
 #endif /* XMLSEC_NO_DSA */
 
 
@@ -990,8 +946,6 @@ static xmlSecKeyDataPtr xmlSecGnuTLSKeyDataEcRead               (xmlSecKeyDataId
 static int              xmlSecGnuTLSKeyDataEcWrite              (xmlSecKeyDataId id,
                                                                  xmlSecKeyDataPtr data,
                                                                  xmlSecKeyValueEcPtr ecValue);
-
-static gnutls_pubkey_t  xmlSecGnuTLSKeyDataEcPubKeyFromPrivKey  (gnutls_privkey_t privkey);
 
 XMLSEC_GNUTLS_ASYMKEY_KLASS_EX(Ec, xmlSecNameECKeyValue, xmlSecHrefECKeyValue,
     xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
@@ -1038,15 +992,6 @@ xmlSecGnuTLSKeyDataEcAdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, gnu
         ret = gnutls_privkey_get_pk_algorithm(privkey, NULL);
         if(ret != GNUTLS_PK_ECDSA) {
             xmlSecInternalError2("Invalid privkey algorithm", NULL, "type=%d", ret);
-            return(-1);
-        }
-    }
-
-    /* create pub key if needed */
-    if((privkey != NULL) && (pubkey == NULL)) {
-        pubkey = xmlSecGnuTLSKeyDataEcPubKeyFromPrivKey(privkey);
-        if(pubkey == NULL) {
-            xmlSecInternalError("xmlSecGnuTLSKeyDataEcPubKeyFromPrivKey", NULL);
             return(-1);
         }
     }
@@ -1283,51 +1228,6 @@ done:
     return(res);
 }
 
-static gnutls_pubkey_t
-xmlSecGnuTLSKeyDataEcPubKeyFromPrivKey(gnutls_privkey_t privkey) {
-    gnutls_pubkey_t pubkey = NULL;
-    gnutls_ecc_curve_t curve = GNUTLS_ECC_CURVE_INVALID;
-	gnutls_datum_t x = { NULL, 0 };
-    gnutls_datum_t y = { NULL, 0 };
-    gnutls_datum_t k = { NULL, 0 };
-    int err;
-
-    xmlSecAssert2(privkey != NULL, NULL);
-
-    err = gnutls_privkey_export_ecc_raw2(privkey,
-                &curve, &x, &y, &k,
-                0);
-    if((err != GNUTLS_E_SUCCESS) || (curve == GNUTLS_ECC_CURVE_INVALID)) {
-        xmlSecGnuTLSError("gnutls_privkey_export_ecc_raw2", err, NULL);
-        goto done;
-    }
-
-    err = gnutls_pubkey_init(&pubkey);
-    if(err != GNUTLS_E_SUCCESS) {
-        xmlSecGnuTLSError("gnutls_pubkey_init", err, NULL);
-        goto done;
-    }
-
-    err = gnutls_pubkey_import_ecc_raw(pubkey, curve, &x, &y);
-    if(err != GNUTLS_E_SUCCESS) {
-        xmlSecGnuTLSError("gnutls_pubkey_import_ecc_raw", err, NULL);
-        gnutls_pubkey_deinit(pubkey);
-        goto done;
-    }
-
-done:
-    if(x.data != NULL) {
-        gnutls_free(x.data);
-    }
-    if(y.data != NULL) {
-        gnutls_free(y.data);
-    }
-    if(k.data != NULL) {
-        gnutls_free(k.data);
-    }
-    return(pubkey);
-}
-
 #endif /* XMLSEC_NO_EC */
 
 
@@ -1358,8 +1258,6 @@ static int              xmlSecGnuTLSKeyDataRsaWrite             (xmlSecKeyDataId
                                                                  xmlSecKeyDataPtr data,
                                                                  xmlSecKeyValueRsaPtr rsaValue,
                                                                  int writePrivateKey);
-
-static gnutls_pubkey_t  xmlSecGnuTLSKeyDataRsaPubKeyFromPrivKey  (gnutls_privkey_t privkey);
 
 XMLSEC_GNUTLS_ASYMKEY_KLASS_EX(Rsa, xmlSecNameRSAKeyValue, xmlSecHrefRSAKeyValue,
     xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
@@ -1406,15 +1304,6 @@ xmlSecGnuTLSKeyDataRsaAdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, gn
         ret = gnutls_privkey_get_pk_algorithm(privkey, NULL);
         if(ret != GNUTLS_PK_RSA) {
             xmlSecInternalError2("Invalid privkey algorithm", NULL, "type=%d", ret);
-            return(-1);
-        }
-    }
-
-    /* create pub key if needed */
-    if((privkey != NULL) && (pubkey == NULL)) {
-        pubkey = xmlSecGnuTLSKeyDataRsaPubKeyFromPrivKey(privkey);
-        if(pubkey == NULL) {
-            xmlSecInternalError("xmlSecGnuTLSKeyDataRsaPubKeyFromPrivKey", NULL);
             return(-1);
         }
     }
@@ -1647,68 +1536,6 @@ done:
     return(res);
 }
 
-static gnutls_pubkey_t
-xmlSecGnuTLSKeyDataRsaPubKeyFromPrivKey(gnutls_privkey_t privkey) {
-    gnutls_pubkey_t pubkey = NULL;
-	gnutls_datum_t modulus = { NULL, 0 };
-    gnutls_datum_t publicExponent = { NULL, 0 };
-    gnutls_datum_t privateExponent = { NULL, 0 };
-    gnutls_datum_t p = { NULL, 0 };
-    gnutls_datum_t q = { NULL, 0 };
-    int err;
-
-    xmlSecAssert2(privkey != NULL, NULL);
-
-    err = gnutls_privkey_export_rsa_raw2(privkey,
-                &modulus,           /* m */
-                &publicExponent,    /* e */
-                &privateExponent,   /* d */
-                &p,                 /* p */
-                &q,                 /* q */
-                NULL,               /* u */
-                NULL,               /* e1 */
-                NULL,               /* e2 */
-                0);
-    if(err != GNUTLS_E_SUCCESS) {
-        xmlSecGnuTLSError("gnutls_privkey_export_rsa_raw2", err, NULL);
-        goto done;
-    }
-
-    err = gnutls_pubkey_init(&pubkey);
-    if(err != GNUTLS_E_SUCCESS) {
-        xmlSecGnuTLSError("gnutls_pubkey_init", err, NULL);
-        goto done;
-    }
-
-    err = gnutls_pubkey_import_rsa_raw(pubkey,
-                &modulus,           /* m */
-                &publicExponent     /* e */
-    );
-    if(err != GNUTLS_E_SUCCESS) {
-        xmlSecGnuTLSError("gnutls_pubkey_import_rsa_raw", err, NULL);
-        gnutls_pubkey_deinit(pubkey);
-        goto done;
-    }
-
-done:
-    if(modulus.data != NULL) {
-        gnutls_free(modulus.data);
-    }
-    if(publicExponent.data != NULL) {
-        gnutls_free(publicExponent.data);
-    }
-    if(privateExponent.data != NULL) {
-        gnutls_free(privateExponent.data);
-    }
-    if(p.data != NULL) {
-        gnutls_free(p.data);
-    }
-    if(q.data != NULL) {
-        gnutls_free(q.data);
-    }
-    return(pubkey);
-}
-
 #endif /* XMLSEC_NO_RSA */
 
 /**************************************************************************
@@ -1718,55 +1545,6 @@ done:
  *************************************************************************/
 
 #if !defined(XMLSEC_NO_GOST) || !defined(XMLSEC_NO_GOST2012)
-static gnutls_pubkey_t
-xmlSecGnuTLSKeyDataGostPubKeyFromPrivKey(gnutls_privkey_t privkey) {
-    gnutls_pubkey_t pubkey = NULL;
-    gnutls_ecc_curve_t curve = GNUTLS_ECC_CURVE_INVALID;
-    gnutls_digest_algorithm_t digest = GNUTLS_DIG_UNKNOWN;
-    gnutls_gost_paramset_t paramset = GNUTLS_GOST_PARAMSET_UNKNOWN;
-	gnutls_datum_t x = { NULL, 0 };
-    gnutls_datum_t y = { NULL, 0 };
-    gnutls_datum_t k = { NULL, 0 };
-    int err;
-
-    xmlSecAssert2(privkey != NULL, NULL);
-
-    err = gnutls_privkey_export_gost_raw2(privkey,
-        &curve, &digest, &paramset,
-        &x, &y, &k,
-        0);
-    if((err != GNUTLS_E_SUCCESS) || (curve == GNUTLS_ECC_CURVE_INVALID)) {
-        xmlSecGnuTLSError("gnutls_privkey_export_gost_raw2", err, NULL);
-        goto done;
-    }
-
-    err = gnutls_pubkey_init(&pubkey);
-    if(err != GNUTLS_E_SUCCESS) {
-        xmlSecGnuTLSError("gnutls_pubkey_init", err, NULL);
-        goto done;
-    }
-
-    err = gnutls_pubkey_import_gost_raw(pubkey,
-        curve, digest, paramset,
-        &x, &y);
-    if(err != GNUTLS_E_SUCCESS) {
-        xmlSecGnuTLSError("gnutls_pubkey_import_gost_raw", err, NULL);
-        gnutls_pubkey_deinit(pubkey);
-        goto done;
-    }
-
-done:
-    if(x.data != NULL) {
-        gnutls_free(x.data);
-    }
-    if(y.data != NULL) {
-        gnutls_free(y.data);
-    }
-    if(k.data != NULL) {
-        gnutls_free(k.data);
-    }
-    return(pubkey);
-}
 
 static int
 xmlSecGnuTLSKeyDataGostAdoptKey(int algo, xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, gnutls_privkey_t privkey) {
@@ -1788,14 +1566,6 @@ xmlSecGnuTLSKeyDataGostAdoptKey(int algo, xmlSecKeyDataPtr data, gnutls_pubkey_t
         }
     }
 
-    /* create pub key if needed */
-    if((privkey != NULL) && (pubkey == NULL)) {
-        pubkey = xmlSecGnuTLSKeyDataGostPubKeyFromPrivKey(privkey);
-        if(pubkey == NULL) {
-            xmlSecInternalError("xmlSecGnuTLSKeyDataGostPubKeyFromPrivKey", NULL);
-            return(-1);
-        }
-    }
 
     /* do the work */
     return xmlSecGnuTLSAsymKeyDataAdoptKey(data, pubkey, privkey);

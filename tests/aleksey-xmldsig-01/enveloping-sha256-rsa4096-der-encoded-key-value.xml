@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+  <SignedInfo>
+    <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+    <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
+    <Reference URI="#object">
+      <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+      <DigestValue>iDhYt78o294fA6pzQ7k44+eejrQMi+WX3l3UrUdtL1Q=</DigestValue>
+    </Reference>
+  </SignedInfo>
+  <SignatureValue>bPAk/73dEYhW6n14uOnx/q4+JsNG3V0pPL3GcfWraD6/k0L0hQqlHtcLyq2UmavY
+HzT+/xHBdOpAuIAB+gDKQHIZriZ87lstCrfn/6q7oNx+k7RhLSJJ/DN/rxYCk3NS
+ct1oXEZzQdnEqp5qszM48FYxS6F1GG2JKjNtPZUiDUM50KEP41s1OgdJimEL/Tb9
+S1TbsxVuAoyrZld01NpQubsJNYfv4zoQGd3kt8O65jDCGd1Wv2V+mZLlUORJbau2
+YAB0sQuc4VfAO5AG8KRq7OsOVUeh83ZPEpNZzFjLLozpUNG9iPBqlHGlfvZqZO0v
+kVvs9ZF+zrZG/8eLf5Ez5Qud4PCSIPfRcvq5H/vsCTIbUQKuzadSg/a52d2fvwLD
+26fmFOisjwMg7zmxw5ZMK+wZOKMx7VrGuveW3lqznYCn0p3nSiIKoCE8P9oeTqiF
+ie63AOV5vEBtQerzaN+zqy7FDRlTNuRRBknIadqSvPIC1/lbXIH02U4Oc35AVoWK
+UrE8DbZyTVVBoEq0u1RmrhyzvVnzRPdgRl2jKaeKmeQMrUPN2iW3bi2jVjtLpPRR
+jcz2nV0Z6PyPhobTXAFM2zu4whgEgWEDjT/2RuHoBqBxoCaPPo+Fi6+3XY9vi/jD
+PUezzRj3pKiAHO6TFERYiOwCnc8dvmEpl9K3E8XjiSI=</SignatureValue>
+  <KeyInfo>
+    <KeyName>TestKeyName-rsa-4096</KeyName>
+    <dsig11:DEREncodedKeyValue xmlns:dsig11="http://www.w3.org/2009/xmldsig11#">MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEApFht8oSsDMTV1GOWqg7o
+7NVllW2835GtOiLPJ/dnRy9vEQGYqB+KSSX9axIVyrFNfiS6SsH7Tam9A4bEHSBP
+6risPS9wyoTpyy7q2a31ZUETmI0pFej9db2vgAvpmx8DX3e8Y03SecMYqNLr2HLj
+7daWhu9/OY+xrd6q567NLFmG3335Hr8wHNwl/HbdCwmXBWaw16D1g1RSV0kkFvD1
+gHMZqAjANJsqmuKJogMj2waXFAy/KAsUK3cPDCDKu7KHxtATLZ0UWqPNgz8GLBPI
+87vmyxSGgbtw1XQWQa4zxdknz80qRGExROc8DMszs575N7+ZvjSusT+PT+CQxmDS
+yiqtp/v2OIQS3zAR7uFv0Xb3DS5Cs0VWkGU/N0mrdU1nd4WBecdTZCXbG959r1HK
+tqiWKa7nOOxKTrwHr9cDrlzSW2kyXb/1tvdEE5gy1HNOil07SVUv4Vi6CRvUa3Jv
+/B6ifb0lY9wp82gc42TOLv9Udx9xm7Barh8lfzqc4T+VR1ONjbHzeLyMC6aG54rZ
+ZpcorUOT7f6SfPHcbx2Jmz3T4g3UaML4nlJkBfpBSkBRloRpdKffhnpyru5OQEb7
+fLxlDePEAOkYrTNbBaHEXFqO1gKSxz3Mg+4gCA9mZOXP9yLCDz10S9vROUVSu9H4
+CT4ucUPT2cEg95X5H/2fqRMCAwEAAQ==</dsig11:DEREncodedKeyValue>
+  </KeyInfo>
+  <Object Id="object">some text</Object>
+</Signature>

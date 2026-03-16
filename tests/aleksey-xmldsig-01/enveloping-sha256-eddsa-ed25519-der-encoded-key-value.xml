@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+  <SignedInfo>
+    <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+    <SignatureMethod Algorithm="http://www.w3.org/2021/04/xmldsig-more#eddsa-ed25519"/>
+    <Reference URI="#object">
+      <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+      <DigestValue>iDhYt78o294fA6pzQ7k44+eejrQMi+WX3l3UrUdtL1Q=</DigestValue>
+    </Reference>
+  </SignedInfo>
+  <SignatureValue>55/1mfWC6/HsA9m7RNqNRjMJkmpVvQbYtl/Dm5s6JkddFoQ1o4X5gaW8VT8IAIay
+IewlOnA61tjgB36mT8S8CA==</SignatureValue>
+  <KeyInfo>
+    <KeyName>TestKeyName-eddsa-ed25519</KeyName>
+    <dsig11:DEREncodedKeyValue xmlns:dsig11="http://www.w3.org/2009/xmldsig11#">MCowBQYDK2VwAyEA1E7yPfYtY4qvjVJo4wh3qCzpbCwUfdeXAmrSEYQHQts=</dsig11:DEREncodedKeyValue>
+  </KeyInfo>
+  <Object Id="object">some text</Object>
+</Signature>

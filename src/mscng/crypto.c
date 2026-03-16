@@ -104,6 +104,11 @@ xmlSecCryptoGetFunctions_mscng(void) {
     int isSha3Supported = xmlSecMSCngIsAlgorithmSupported(BCRYPT_SHA3_256_ALGORITHM, 0);
 #endif /* XMLSEC_NO_SHA3 */
 
+    /* DH key agreement is available on Windows Vista+. */
+#ifndef XMLSEC_NO_DH
+    int isDhSupported = xmlSecMSCngIsAlgorithmSupported(BCRYPT_DH_ALGORITHM, 0);
+#endif /* XMLSEC_NO_DH */
+
     if(gXmlSecMSCngFunctions != NULL) {
         return(gXmlSecMSCngFunctions);
     }
@@ -146,6 +151,12 @@ xmlSecCryptoGetFunctions_mscng(void) {
 #ifndef XMLSEC_NO_EC
     gXmlSecMSCngFunctions->keyDataEcGetKlass             = xmlSecMSCngKeyDataEcGetKlass;
 #endif /* XMLSEC_NO_EC */
+
+#ifndef XMLSEC_NO_DH
+    if(isDhSupported != 0) {
+        gXmlSecMSCngFunctions->keyDataDhGetKlass         = xmlSecMSCngKeyDataDhGetKlass;
+    }
+#endif /* XMLSEC_NO_DH */
 
 #ifndef XMLSEC_NO_HMAC
     gXmlSecMSCngFunctions->keyDataHmacGetKlass          = xmlSecMSCngKeyDataHmacGetKlass;
@@ -260,6 +271,13 @@ xmlSecCryptoGetFunctions_mscng(void) {
     gXmlSecMSCngFunctions->transformEcdhGetKlass                = xmlSecMSCngTransformEcdhGetKlass;
 
 #endif /* XMLSEC_NO_EC */
+
+    /******************************* DH-ES ********************************/
+#ifndef XMLSEC_NO_DH
+    if(isDhSupported != 0) {
+        gXmlSecMSCngFunctions->transformDhEsGetKlass     = xmlSecMSCngTransformDhEsGetKlass;
+    }
+#endif /* XMLSEC_NO_DH */
 
 
     /******************************* HMAC ********************************/

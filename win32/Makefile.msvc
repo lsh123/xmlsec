@@ -344,6 +344,8 @@ XMLSEC_MSCRYPTO_OBJS_A = \
 XMLSEC_MSCNG_OBJS = \
 	$(XMLSEC_MSCNG_INTDIR)\app.obj\
 	$(XMLSEC_MSCNG_INTDIR)\certkeys.obj \
+	$(XMLSEC_MSCNG_INTDIR)\certkeys_dh.obj \
+	$(XMLSEC_MSCNG_INTDIR)\certkeys_dsa.obj \
 	$(XMLSEC_MSCNG_INTDIR)\der_encoded_value.obj \
 	$(XMLSEC_MSCNG_INTDIR)\ciphers_cbc.obj \
 	$(XMLSEC_MSCNG_INTDIR)\ciphers_gcm.obj \
@@ -365,6 +367,8 @@ XMLSEC_MSCNG_OBJS = \
 XMLSEC_MSCNG_OBJS_A = \
 	$(XMLSEC_MSCNG_INTDIR_A)\app.obj\
 	$(XMLSEC_MSCNG_INTDIR_A)\certkeys.obj \
+	$(XMLSEC_MSCNG_INTDIR_A)\certkeys_dh.obj \
+	$(XMLSEC_MSCNG_INTDIR_A)\certkeys_dsa.obj \
 	$(XMLSEC_MSCNG_INTDIR_A)\der_encoded_value.obj \
 	$(XMLSEC_MSCNG_INTDIR_A)\ciphers_cbc.obj \
 	$(XMLSEC_MSCNG_INTDIR_A)\ciphers_gcm.obj \

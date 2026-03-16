@@ -22,6 +22,11 @@
 
 #include "../keysdata_helpers.h"
 
+/* Mingw may ship an older bcrypt.h that lacks this KDF identifier. */
+#ifndef BCRYPT_KDF_RAW_SECRET
+#define BCRYPT_KDF_RAW_SECRET               L"TRUNCATE"
+#endif /* BCRYPT_KDF_RAW_SECRET */
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */

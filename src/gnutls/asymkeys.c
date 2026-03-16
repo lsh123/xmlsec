@@ -160,9 +160,11 @@ xmlSecGnuTLSAsymKeyDataAdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, g
     /* deinit if anything */
     if(ctx->pubkey != NULL) {
         gnutls_pubkey_deinit(ctx->pubkey);
+        ctx->pubkey = NULL;
     }
     if(ctx->privkey != NULL) {
-        gnutls_privkey_deinit (ctx->privkey);
+        gnutls_privkey_deinit(ctx->privkey);
+        ctx->privkey = NULL;
     }
 
     /* if pubkey is not available, try to extract it from privkey */

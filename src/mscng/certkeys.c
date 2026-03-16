@@ -73,6 +73,15 @@ xmlSecMSCngKeyDataCertGetPubkey(PCERT_PUBLIC_KEY_INFO spki, BCRYPT_KEY_HANDLE* k
     }
 #endif /* XMLSEC_NO_DSA */
 
+
+#ifndef XMLSEC_NO_XDH
+    /* X25519 (OID 1.3.101.110) uses a 32-byte raw u-coordinate in SubjectPublicKey;
+     * CryptImportPublicKeyInfoEx2 does not support this OID. */
+    if((spki->Algorithm.pszObjId != NULL) && (strcmp(spki->Algorithm.pszObjId, szOID_X25519) == 0)) {
+        return(xmlSecMSCngKeyDataCertGetXdhPubkey(spki, key));
+    }
+#endif /* XMLSEC_NO_XDH */
+
     xmlSecMSCngLastError("CryptImportPublicKeyInfoEx2", NULL);
     return(-1);
 }
@@ -307,6 +316,17 @@ xmlSecMSCngKeyDataFromAlgorithm(LPSTR pszObjId) {
     }
 #endif /* XMLSEC_NO_DH */
 
+#ifndef XMLSEC_NO_XDH
+    /* OID for X25519 public key (id-X25519, RFC 8410) */
+    if (!strcmp(pszObjId, szOID_X25519)) {
+        data = xmlSecKeyDataCreate(xmlSecMSCngKeyDataXdhId);
+        if (data == NULL) {
+            xmlSecInternalError("xmlSecKeyDataCreate(KeyDataXdhId)", NULL);
+            return(NULL);
+        }
+    }
+#endif /* XMLSEC_NO_XDH */
+
     if (data == NULL) {
         xmlSecInvalidStringTypeError("Algorithm",
             pszObjId,
@@ -471,6 +491,7 @@ xmlSecMSCngCertKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     PUCHAR pbBlob;
     BCRYPT_ALG_HANDLE hAlg = NULL;
     LPCWSTR pszAlgId;
+    LPCWSTR pszCurveName = NULL;  /* non-NULL iff a curve property must be set before import */
     int ret;
 
     xmlSecAssert2(xmlSecKeyDataIsValid(dst), -1);
@@ -583,6 +604,13 @@ xmlSecMSCngCertKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
                 break;
 #endif /* XMLSEC_NO_DH */
 
+#ifndef XMLSEC_NO_XDH
+            case BCRYPT_ECDH_PUBLIC_GENERIC_MAGIC:
+                pszAlgId = BCRYPT_ECDH_ALGORITHM;
+                pszCurveName = BCRYPT_ECC_CURVE_25519;
+                break;
+#endif /* XMLSEC_NO_XDH */
+
             default:
                 xmlSecNotImplementedError2("Unexpected key magic value: %llu", (unsigned long long)(((BCRYPT_KEY_BLOB*)pbBlob)->Magic));
                 xmlFree(pbBlob);
@@ -598,6 +626,18 @@ xmlSecMSCngCertKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
             xmlSecMSCngNtError("BCryptOpenAlgorithmProvider", NULL, status);
             xmlFree(pbBlob);
             return(-1);
+        }
+
+        /* For generic-curve algorithms (e.g. X25519), set the curve name property */
+        if(pszCurveName != NULL) {
+            status = BCryptSetProperty(hAlg, BCRYPT_ECC_CURVE_NAME,
+                (PUCHAR)pszCurveName, (ULONG)((wcslen(pszCurveName) + 1) * sizeof(WCHAR)), 0);
+            if(status != STATUS_SUCCESS) {
+                xmlSecMSCngNtError("BCryptSetProperty(BCRYPT_ECC_CURVE_NAME)", NULL, status);
+                xmlFree(pbBlob);
+                BCryptCloseAlgorithmProvider(hAlg, 0);
+                return(-1);
+            }
         }
 
         status = BCryptImportKeyPair(
@@ -620,9 +660,26 @@ xmlSecMSCngCertKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     }
 
     if(srcCtx->bcryptPrivkey != NULL) {
-        ret = xmlSecMSCngKeyDataDuplicateBCryptDhPrivKey(srcCtx->bcryptPrivkey, &dstCtx->bcryptPrivkey);
-        if(ret < 0) {
-            xmlSecInternalError("xmlSecMSCngKeyDataDuplicateBCryptDhPrivKey", NULL);
+#ifndef XMLSEC_NO_DH
+        if(xmlSecKeyDataCheckId(src, xmlSecMSCngKeyDataDhId)) {
+            ret = xmlSecMSCngKeyDataDuplicateBCryptDhPrivKey(srcCtx->bcryptPrivkey, &dstCtx->bcryptPrivkey);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecMSCngKeyDataDuplicateBCryptDhPrivKey", NULL);
+                return(-1);
+            }
+        } else
+#endif /* XMLSEC_NO_DH */
+#ifndef XMLSEC_NO_XDH
+        if(xmlSecKeyDataCheckId(src, xmlSecMSCngKeyDataXdhId)) {
+            ret = xmlSecMSCngKeyDataDuplicateBCryptXdhPrivKey(srcCtx->bcryptPrivkey, &dstCtx->bcryptPrivkey);
+            if(ret < 0) {
+                xmlSecInternalError("xmlSecMSCngKeyDataDuplicateBCryptXdhPrivKey", NULL);
+                return(-1);
+            }
+        } else
+#endif /* XMLSEC_NO_XDH */
+        {
+            xmlSecNotImplementedError("BCrypt private key duplication for unknown key type");
             return(-1);
         }
     }
@@ -2367,9 +2424,48 @@ xmlSecMSCngAppKeyReadPrivKeyFromDer(const xmlSecByte* data, DWORD dataSize) {
     xmlSecAssert2(dataSize > 0, NULL);
 
 #ifndef XMLSEC_NO_DH
-    return(xmlSecMSCngKeyDataDhReadFromPkcs8Der(data, dataSize));
-#else /* XMLSEC_NO_DH */
-    xmlSecNotImplementedError("Only DH private keys are supported in DER format");
-    return(NULL);
+{
+        xmlSecKeyDataPtr res;
+        res = xmlSecMSCngKeyDataDhReadFromPkcs8Der(data, dataSize);
+        if(res != NULL) { return(res); }
+    }
 #endif /* XMLSEC_NO_DH */
+
+#ifndef XMLSEC_NO_XDH
+    {
+        xmlSecKeyDataPtr res;
+        res = xmlSecMSCngKeyDataXdhReadFromPkcs8Der(data, dataSize);
+        if(res != NULL) { return(res); }
+    }
+#endif /* XMLSEC_NO_XDH */
+
+    xmlSecNotImplementedError("Only DH and XDH private keys are supported in DER format");
+    return(NULL);
 }
+
+/*****************************************************************************
+ * XDH (X25519) key data
+ *****************************************************************************/
+#ifndef XMLSEC_NO_XDH
+
+XMLSEC_MSCNG_CERTKEY_KLASS_EX(Xdh, XDH,
+    xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+    NULL,         /* dataNodeName */
+    NULL,         /* dataNodeNs */
+    NULL,         /* generate (not supported) */
+    NULL,         /* xmlRead */
+    NULL)         /* xmlWrite */
+
+/**
+ * xmlSecMSCngKeyDataXdhGetKlass:
+ *
+ * The MSCng XDH (X25519) key data klass.
+ *
+ * Returns: pointer to MSCng XDH key data klass.
+ */
+xmlSecKeyDataId
+xmlSecMSCngKeyDataXdhGetKlass(void) {
+    return(&xmlSecMSCngKeyDataXdhKlass);
+}
+
+#endif /* XMLSEC_NO_XDH */

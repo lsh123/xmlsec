@@ -405,6 +405,33 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformDhEsGetKlass(void);
 
 /********************************************************************
  *
+ * XDH key and transforms
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_XDH
+
+/**
+ * xmlSecMSCngKeyDataXdhId:
+ *
+ * The XDH key data klass (X25519 Diffie-Hellman).
+ */
+#define xmlSecMSCngKeyDataXdhId \
+        xmlSecMSCngKeyDataXdhGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId xmlSecMSCngKeyDataXdhGetKlass(void);
+
+/**
+ * xmlSecMSCngTransformX25519Id:
+ *
+ * The X25519 key agreement transform klass.
+ */
+#define xmlSecMSCngTransformX25519Id \
+       xmlSecMSCngTransformX25519GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCngTransformX25519GetKlass(void);
+
+#endif /* XMLSEC_NO_XDH */
+
+/********************************************************************
+ *
  * DES transform
  *
  *******************************************************************/

@@ -22,6 +22,7 @@ libxmlsec1_mscng_la_SOURCES =\
 	app.c \
 	certkeys.c \
 	certkeys_dh.c \
+	certkeys_xdh.c \
 	certkeys_dsa.c \
 	der_encoded_value.c \
 	ciphers_cbc.c \

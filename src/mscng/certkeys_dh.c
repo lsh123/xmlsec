@@ -673,13 +673,7 @@ xmlSecMSCngKeyDataDhReadFromPkcs8Der(const xmlSecByte* derData, DWORD derDataLen
                 goto done;
             }
             /* BCrypt returns little-endian; reverse to big-endian */
-            {
-                xmlSecByte *pS = pbYtmp, *pE = pbYtmp + cbY - 1;
-                while(pS < pE) {
-                    xmlSecByte tmp = *pS; *pS = *pE; *pE = tmp;
-                    pS++; pE--;
-                }
-            }
+            xmlSecMSCngReverseBytes(pbYtmp, cbY);
         }
         /* Destroy the placeholder private key handle; re-import with correct Y */
         BCryptDestroyKey(hPrivKey);

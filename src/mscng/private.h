@@ -27,6 +27,24 @@
 #define BCRYPT_KDF_RAW_SECRET               L"TRUNCATE"
 #endif /* BCRYPT_KDF_RAW_SECRET */
 
+/* Reverse @len bytes of @buf in-place (little-endian <-> big-endian conversion). */
+static inline void
+xmlSecMSCngReverseBytes(BYTE* buf, DWORD len) {
+    BYTE *lo = buf, *hi = buf + len - 1, tmp;
+    while(lo < hi) {
+        tmp = *lo; *lo++ = *hi; *hi-- = tmp;
+    }
+}
+
+/* Copy @len bytes from @src into @dst in reversed order (big-endian <-> little-endian). */
+static inline void
+xmlSecMSCngReverseCopy(BYTE* dst, const BYTE* src, DWORD len) {
+    DWORD ii;
+    for(ii = 0; ii < len; ii++) {
+        dst[ii] = src[len - 1 - ii];
+    }
+}
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */

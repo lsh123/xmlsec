@@ -32,13 +32,10 @@
 
 #ifndef XMLSEC_NO_DSA
 
-/* Reverses a CRYPT_UINT_BLOB in-place (little-endian → big-endian) and strips
+/* Reverses a CRYPT_UINT_BLOB in-place (little-endian -> big-endian) and strips
  * any leading zero bytes. Updates *pSize with the resulting byte count. */
 static void
 xmlSecMSCngReverseBlob(CRYPT_UINT_BLOB* blob, DWORD* pSize) {
-    BYTE tmp, *lo, *hi;
-    DWORD ii;
-
     xmlSecAssert(blob != NULL);
     xmlSecAssert(blob->pbData != NULL);
     xmlSecAssert(pSize != NULL);
@@ -47,11 +44,7 @@ xmlSecMSCngReverseBlob(CRYPT_UINT_BLOB* blob, DWORD* pSize) {
     if(*pSize == 0) {
         return;
     }
-    lo = blob->pbData;
-    hi = lo + *pSize - 1;
-    for(ii = 0; ii < *pSize / 2; ii++) {
-        tmp = *lo; *lo++ = *hi; *hi-- = tmp;
-    }
+    xmlSecMSCngReverseBytes(blob->pbData, *pSize);
     while(*pSize > 1 && blob->pbData[0] == 0) {
         blob->pbData++;
         (*pSize)--;
@@ -272,7 +265,6 @@ xmlSecMSCngDsaBuildSubjectPublicKeyInfoDer(BCRYPT_KEY_HANDLE hKey, LPVOID* ppDer
     DWORD encodedYLen = 0;
     CERT_PUBLIC_KEY_INFO spki;
     NTSTATUS status;
-    DWORD ii;
     int ret = -1;
 
     xmlSecAssert2(hKey != 0, -1);
@@ -337,10 +329,10 @@ xmlSecMSCngDsaBuildSubjectPublicKeyInfoDer(BCRYPT_KEY_HANDLE hKey, LPVOID* ppDer
         xmlSecMSCngLastError("LocalAlloc", NULL);
         goto done;
     }
-    for(ii = 0; ii < pSize; ii++) pLE[ii] = pBE[pSize - 1 - ii];
-    for(ii = 0; ii < qSize; ii++) qLE[ii] = qBE[qSize - 1 - ii];
-    for(ii = 0; ii < gSize; ii++) gLE[ii] = gBE[gSize - 1 - ii];
-    for(ii = 0; ii < ySize; ii++) yLE[ii] = yBE[ySize - 1 - ii];
+    xmlSecMSCngReverseCopy(pLE, pBE, pSize);
+    xmlSecMSCngReverseCopy(qLE, qBE, qSize);
+    xmlSecMSCngReverseCopy(gLE, gBE, gSize);
+    xmlSecMSCngReverseCopy(yLE, yBE, ySize);
 
     /* Encode DSS domain parameters: SEQUENCE { INTEGER p, INTEGER q, INTEGER g } */
     memset(&dssParams, 0, sizeof(dssParams));

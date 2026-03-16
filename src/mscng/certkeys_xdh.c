@@ -325,12 +325,7 @@ xmlSecMSCngKeyDataXdhReadFromPkcs8Der(const xmlSecByte* derData, DWORD derDataLe
     /* Write the correct public key u-coordinate into the blob.
      * BCryptDeriveKey(BCRYPT_KDF_RAW_SECRET) returns u in little-endian but
      * BCRYPT_ECCPRIVATE_BLOB expects the u-coordinate in big-endian.  Reverse. */
-    {
-        DWORD ii;
-        for(ii = 0; ii < 32; ii++) {
-            pbPrivBlob[sizeof(BCRYPT_ECCKEY_BLOB) + ii] = pubKeyU[31 - ii];
-        }
-    }
+    xmlSecMSCngReverseCopy(pbPrivBlob + sizeof(BCRYPT_ECCKEY_BLOB), pubKeyU, 32);
 
     /* Re-import with the correct public key */
     status = BCryptImportKeyPair(hAlg, NULL, BCRYPT_ECCPRIVATE_BLOB, &hPrivKey,

@@ -39,10 +39,6 @@
 
 #if !defined(XMLSEC_NO_EC) || !defined(XMLSEC_NO_DH) || !defined(XMLSEC_NO_XDH)
 
-/* Mingw has old version of bcrypt.h file */
-#ifndef BCRYPT_ECDSA_PUBLIC_GENERIC_MAGIC
-#define BCRYPT_ECDSA_PUBLIC_GENERIC_MAGIC   0x50444345  // ECDP
-#endif /* BCRYPT_ECDSA_PUBLIC_GENERIC_MAGIC */
 
 /**************************************************************************
  *

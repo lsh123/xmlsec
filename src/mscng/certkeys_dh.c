@@ -134,7 +134,7 @@ xmlSecMSCngDerDecodeInteger(const xmlSecByte* p, const xmlSecByte* end, DWORD* p
 }
 
 /* Parse DH AlgorithmIdentifier parameters: SEQUENCE { INTEGER p, INTEGER g [, INTEGER q] }
- * On success sets *ppP/*pPLen and *ppG/*pGLen (big-endian, no sign byte). */
+ * On success sets output pointers and lengths for p and g (big-endian, no sign byte). */
 int
 xmlSecMSCngDhParseDhParameters(const xmlSecByte* params, DWORD paramsLen,
     const xmlSecByte** ppP, DWORD* pPLen,

@@ -43,12 +43,6 @@
 #ifndef BCRYPT_ECDSA_PUBLIC_GENERIC_MAGIC
 #define BCRYPT_ECDSA_PUBLIC_GENERIC_MAGIC   0x50444345  // ECDP
 #endif /* BCRYPT_ECDSA_PUBLIC_GENERIC_MAGIC */
-#ifndef BCRYPT_ECDH_PUBLIC_GENERIC_MAGIC
-#define BCRYPT_ECDH_PUBLIC_GENERIC_MAGIC    0x504B4345  // ECKP
-#endif /* BCRYPT_ECDH_PUBLIC_GENERIC_MAGIC */
-#ifndef BCRYPT_KDF_RAW_SECRET
-#define BCRYPT_KDF_RAW_SECRET               L"TRUNCATE"
-#endif /* BCRYPT_KDF_RAW_SECRET */
 
 /**************************************************************************
  *

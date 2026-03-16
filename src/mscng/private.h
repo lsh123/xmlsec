@@ -78,6 +78,13 @@ int                xmlSecMSCngCreateDerForBcryptPubkey              (xmlSecKeyDa
                                                                      LPVOID* ppDer,
                                                                      DWORD* pcbDer);
 
+#ifndef XMLSEC_NO_EC
+/* Mingw has old version of bcrypt.h file */
+#ifndef BCRYPT_ECDSA_PUBLIC_GENERIC_MAGIC
+#define BCRYPT_ECDSA_PUBLIC_GENERIC_MAGIC   0x50444345  // ECDP
+#endif /* BCRYPT_ECDSA_PUBLIC_GENERIC_MAGIC */
+#endif /* XMLSEC_NO_EC */
+
 #ifndef XMLSEC_NO_DH
 
 #ifndef szOID_X942_DH
@@ -98,10 +105,19 @@ int                xmlSecMSCngCreateDerForBcryptPubkey              (xmlSecKeyDa
 #define BCRYPT_ECC_CURVE_25519          L"curve25519"
 #endif /* BCRYPT_ECC_CURVE_25519 */
 
-/* Generic ECDH key blob magics (may be missing in older MinGW bcrypt.h) */
+/* Generic ECDH definitions (may be missing in older MinGW bcrypt.h) */
+#ifndef BCRYPT_ECDH_PUBLIC_GENERIC_MAGIC
+#define BCRYPT_ECDH_PUBLIC_GENERIC_MAGIC    0x504B4345  /* ECKP */
+#endif /* BCRYPT_ECDH_PUBLIC_GENERIC_MAGIC */
 #ifndef BCRYPT_ECDH_PRIVATE_GENERIC_MAGIC
 #define BCRYPT_ECDH_PRIVATE_GENERIC_MAGIC   0x564B4345  /* ECKV */
 #endif /* BCRYPT_ECDH_PRIVATE_GENERIC_MAGIC */
+#ifndef BCRYPT_ECDH_ALGORITHM
+#define BCRYPT_ECDH_ALGORITHM               L"ECDH"
+#endif /* BCRYPT_ECDH_ALGORITHM */
+#ifndef BCRYPT_ECC_CURVE_NAME
+#define BCRYPT_ECC_CURVE_NAME               L"ECCCurveName"
+#endif /* BCRYPT_ECC_CURVE_NAME */
 
 BCRYPT_KEY_HANDLE  xmlSecMSCngKeyDataXdhImportPublicKey             (const xmlSecByte* pubKeyBytes,
                                                                      DWORD pubKeyLen);

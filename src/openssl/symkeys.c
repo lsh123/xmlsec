@@ -244,7 +244,7 @@ xmlSecOpenSSLSymKeyDataKlassCheck(xmlSecKeyDataKlass* klass) {
 }
 
 /* Helper macros to define the key data klass */
-#define XMLSEC_OPENSSL_SYMKEY_KLASS_EX(name, keyName, usage, href, node, ns, xmlRead, xmlWrite)     \
+#define XMLSEC_OPENSSL_SYMKEY_KLASS_EX(name, keyName, keyHref, usage, node, ns, xmlRead, xmlWrite)     \
 static xmlSecKeyDataKlass xmlSecOpenSSLKeyData ## name ## Klass = {                                  \
     sizeof(xmlSecKeyDataKlass),                 /* xmlSecSize klassSize */                           \
     xmlSecKeyDataBinarySize,                    /* xmlSecSize objSize */                             \
@@ -252,7 +252,7 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyData ## name ## Klass = {             
     /* data */                                                                                       \
     keyName,                                    /* const xmlChar* name; */                           \
     usage,                                      /* xmlSecKeyDataUsage usage; */                      \
-    href,                                       /* const xmlChar* href; */                           \
+    keyHref,                                    /* const xmlChar* href; */                           \
     node,                                       /* const xmlChar* dataNodeName; */                   \
     ns,                                         /* const xmlChar* dataNodeNs; */                     \
                                                                                                      \
@@ -285,8 +285,8 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyData ## name ## Klass = {             
 #define XMLSEC_OPENSSL_SYMKEY_KLASS(name, keyValueName)                                              \
     XMLSEC_OPENSSL_SYMKEY_KLASS_EX(name,                                                             \
         xmlSecName ## keyValueName ## KeyValue,                                                      \
-        xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml, \
         xmlSecHref ## keyValueName ## KeyValue,                                                      \
+        xmlSecKeyDataUsageReadFromFile | xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml, \
         xmlSecNode ## keyValueName ## KeyValue,                                                      \
         xmlSecNs,                                                                                    \
         xmlSecOpenSSLSymKeyDataXmlRead,                                                              \
@@ -435,9 +435,9 @@ xmlSecOpenSSLKeyDataChaCha20Set(xmlSecKeyDataPtr data, const xmlSecByte* buf, xm
  *
  *************************************************************************/
 XMLSEC_OPENSSL_SYMKEY_KLASS_EX(ConcatKdf,
-    xmlSecNameConcatKdfKey,
+    xmlSecNameConcatKdf,
+    xmlSecHrefConcatKdf,
     xmlSecKeyDataUsageReadFromFile,
-    NULL,
     NULL,
     NULL,
     NULL,
@@ -580,9 +580,9 @@ xmlSecOpenSSLKeyDataHmacSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSec
  *
  *************************************************************************/
 XMLSEC_OPENSSL_SYMKEY_KLASS_EX(Pbkdf2,
-    xmlSecNamePbkdf2Key,
+    xmlSecNamePbkdf2,
+    xmlSecHrefPbkdf2,
     xmlSecKeyDataUsageReadFromFile,
-    NULL,
     NULL,
     NULL,
     NULL,
@@ -632,9 +632,9 @@ xmlSecOpenSSLKeyDataPbkdf2Set(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlS
  *
  *************************************************************************/
 XMLSEC_OPENSSL_SYMKEY_KLASS_EX(Hkdf,
-    xmlSecNameHkdfKey,
+    xmlSecNameHkdf,
+    xmlSecHrefHkdf,
     xmlSecKeyDataUsageReadFromFile,
-    NULL,
     NULL,
     NULL,
     NULL,

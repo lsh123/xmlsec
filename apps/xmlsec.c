@@ -3041,7 +3041,7 @@ xmlSecAppLoadKeys(void) {
             xmlSecKeyInfoCtxDestroy(keyInfoCtx);
             return(-1);
         } else if(xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad(g_keysManager,
-                    (const char*)xmlSecNameConcatKdfKey, value->strValue, value->paramNameValue) < 0) {
+                    (const char*)xmlSecNameConcatKdf, value->strValue, value->paramNameValue) < 0) {
             fprintf(stderr, "Error: failed to load ConcatKDF key from \"%s\".\n",
                     value->strValue);
             xmlSecKeyInfoCtxDestroy(keyInfoCtx);
@@ -3095,7 +3095,7 @@ xmlSecAppLoadKeys(void) {
             xmlSecKeyInfoCtxDestroy(keyInfoCtx);
             return(-1);
         } else if(xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad(g_keysManager,
-                    (const char*)xmlSecNamePbkdf2Key, value->strValue, value->paramNameValue) < 0) {
+                    (const char*)xmlSecNamePbkdf2, value->strValue, value->paramNameValue) < 0) {
             fprintf(stderr, "Error: failed to load Pbkdf2 key from \"%s\".\n",
                     value->strValue);
             xmlSecKeyInfoCtxDestroy(keyInfoCtx);
@@ -3113,7 +3113,7 @@ xmlSecAppLoadKeys(void) {
             xmlSecKeyInfoCtxDestroy(keyInfoCtx);
             return(-1);
         } else if(xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad(g_keysManager,
-                    (const char*)xmlSecNameHkdfKey, value->strValue, value->paramNameValue) < 0) {
+                    (const char*)xmlSecNameHkdf, value->strValue, value->paramNameValue) < 0) {
             fprintf(stderr, "Error: failed to load HKDF key from \"%s\".\n",
                     value->strValue);
             xmlSecKeyInfoCtxDestroy(keyInfoCtx);

@@ -261,8 +261,8 @@ xmlSecMSCngKeyDataAesGetKlass(void) {
  *
  *************************************************************************/
 XMLSEC_MSCNG_SYMKEY_KLASS_EX(ConcatKdf,
-    xmlSecNameConcatKdfKey,
-    NULL,
+    xmlSecNameConcatKdf,
+    xmlSecHrefConcatKdf,
     NULL,
     NULL)
 
@@ -343,8 +343,8 @@ xmlSecMSCngKeyDataHmacGetKlass(void) {
  *
  *************************************************************************/
 XMLSEC_MSCNG_SYMKEY_KLASS_EX(Pbkdf2,
-    xmlSecNamePbkdf2Key,
-    NULL,
+    xmlSecNamePbkdf2,
+    xmlSecHrefPbkdf2,
     NULL,
     NULL)
 
@@ -370,8 +370,8 @@ xmlSecMSCngKeyDataPbkdf2GetKlass(void) {
  *
  *************************************************************************/
 XMLSEC_MSCNG_SYMKEY_KLASS_EX(Hkdf,
-    xmlSecNameHkdfKey,
-    NULL,
+    xmlSecNameHkdf,
+    xmlSecHrefHkdf,
     NULL,
     NULL)
 

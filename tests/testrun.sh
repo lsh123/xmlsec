@@ -329,17 +329,9 @@ fi
 
 # On Windows, we needs to specify Crypto Service Provider (CSP)
 # in the pkcs12 file to ensure it is loaded correctly to be used
-# with SHA2 algorithms. Worse, the CSP is different for XP and older
-# versions
+# with SHA2 algorithms
 if [ "z$crypto" = "zmscrypto" -o "z$crypto" = "zmscng" ] ; then
-    # Samples:
-    #   Cygwin	: CYGWIN_NT-5.1
-    #   Msys	: MINGW32_NT-5.1
-    if expr "$OS_KERNEL" : '.*_NT-5\.1' > /dev/null; then
-        priv_key_suffix="-winxp"
-    else
-        priv_key_suffix="-win"
-    fi
+    priv_key_suffix="-win"
 else
     priv_key_suffix=""
 fi

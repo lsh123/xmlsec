@@ -33,10 +33,11 @@
 #include <xmlsec/mscng/crypto.h>
 #include <xmlsec/mscng/certkeys.h>
 
+#include "private.h"
 #include "../cast_helpers.h"
 #include "../transform_helpers.h"
 
-#ifndef XMLSEC_NO_EC
+#if !defined(XMLSEC_NO_EC) || !defined(XMLSEC_NO_DH)
 
 /* Mingw has old version of bcrypt.h file */
 #ifndef BCRYPT_ECDSA_PUBLIC_GENERIC_MAGIC
@@ -56,10 +57,11 @@
  *
  *****************************************************************************/
 
-typedef struct _xmlSecMSCngEcdhCtx    xmlSecMSCngEcdhCtx, *xmlSecMSCngEcdhCtxPtr;
-struct _xmlSecMSCngEcdhCtx {
+typedef struct _xmlSecMSCngKeyAgreementCtx    xmlSecMSCngKeyAgreementCtx, *xmlSecMSCngKeyAgreementCtxPtr;
+struct _xmlSecMSCngKeyAgreementCtx {
     xmlSecTransformKeyAgreementParams params;
     xmlSecKeyPtr secretKey;
+    xmlSecKeyDataId keyDataId;          /* Key data type (EC or DH) */
 };
 
 /**************************************************************************
@@ -67,45 +69,91 @@ struct _xmlSecMSCngEcdhCtx {
  * ECDH KeyAgreement transforms
  *
  *****************************************************************************/
-XMLSEC_TRANSFORM_DECLARE(MSCngEcdh, xmlSecMSCngEcdhCtx)
-#define xmlSecMSCngEcdhSize XMLSEC_TRANSFORM_SIZE(MSCngEcdh)
+XMLSEC_TRANSFORM_DECLARE(MSCngKeyAgreement, xmlSecMSCngKeyAgreementCtx)
+#define xmlSecMSCngKeyAgreementSize XMLSEC_TRANSFORM_SIZE(MSCngKeyAgreement)
 
-static int      xmlSecMSCngEcdhInitialize                   (xmlSecTransformPtr transform);
-static void     xmlSecMSCngEcdhFinalize                     (xmlSecTransformPtr transform);
+static int      xmlSecMSCngKeyAgreementInitialize                   (xmlSecTransformPtr transform);
+static void     xmlSecMSCngKeyAgreementFinalize                     (xmlSecTransformPtr transform);
 
-static int      xmlSecMSCngEcdhNodeRead                     (xmlSecTransformPtr transform,
+static int      xmlSecMSCngKeyAgreementNodeRead                     (xmlSecTransformPtr transform,
                                                              xmlNodePtr node,
                                                              xmlSecTransformCtxPtr transformCtx);
-static int     xmlSecMSCngEcdhNodeWrite                     (xmlSecTransformPtr transform,
+static int     xmlSecMSCngKeyAgreementNodeWrite                     (xmlSecTransformPtr transform,
                                                              xmlNodePtr node,
                                                              xmlSecTransformCtxPtr transformCtx);
 
-static int      xmlSecMSCngEcdhSetKeyReq                    (xmlSecTransformPtr transform,
+static int      xmlSecMSCngKeyAgreementSetKeyReq                    (xmlSecTransformPtr transform,
                                                              xmlSecKeyReqPtr keyReq);
-static int      xmlSecMSCngEcdhSetKey                       (xmlSecTransformPtr transform,
+static int      xmlSecMSCngKeyAgreementSetKey                       (xmlSecTransformPtr transform,
                                                              xmlSecKeyPtr key);
-static int      xmlSecMSCngEcdhExecute                      (xmlSecTransformPtr transform,
+static int      xmlSecMSCngKeyAgreementExecute                      (xmlSecTransformPtr transform,
                                                              int last,
                                                              xmlSecTransformCtxPtr transformCtx);
 
+#define XMLSEC_MSCNG_KEY_AGREEMENT_KLASS_EX(name)                                                              \
+static xmlSecTransformKlass xmlSecMSCng ## name ## Klass = {                                                   \
+    /* klass/object sizes */                                                                                   \
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                                     \
+    xmlSecMSCngKeyAgreementSize,                /* xmlSecSize objSize */                                       \
+                                                                                                               \
+    xmlSecName ## name,                         /* const xmlChar* name; */                                     \
+    xmlSecHref ## name,                         /* const xmlChar* href; */                                     \
+    xmlSecTransformUsageAgreementMethod,        /* xmlSecTransformUsage usage; */                              \
+                                                                                                               \
+    xmlSecMSCngKeyAgreementInitialize,          /* xmlSecTransformInitializeMethod initialize; */              \
+    xmlSecMSCngKeyAgreementFinalize,            /* xmlSecTransformFinalizeMethod finalize; */                  \
+    xmlSecMSCngKeyAgreementNodeRead,            /* xmlSecTransformNodeReadMethod readNode; */                  \
+    xmlSecMSCngKeyAgreementNodeWrite,           /* xmlSecTransformNodeWriteMethod writeNode; */                \
+    xmlSecMSCngKeyAgreementSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */                \
+    xmlSecMSCngKeyAgreementSetKey,              /* xmlSecTransformSetKeyMethod setKey; */                      \
+    NULL,                                       /* xmlSecTransformValidateMethod validate; */                  \
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */            \
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */                    \
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */                      \
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */                    \
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */                      \
+    xmlSecMSCngKeyAgreementExecute,             /* xmlSecTransformExecuteMethod execute; */                    \
+                                                                                                               \
+    NULL,                                       /* void* reserved0; */                                         \
+    NULL,                                       /* void* reserved1; */                                         \
+};
+
 static int
-xmlSecMSCngEcdhInitialize(xmlSecTransformPtr transform) {
-    xmlSecMSCngEcdhCtxPtr ctx;
+xmlSecMSCngKeyAgreementInitialize(xmlSecTransformPtr transform) {
+    xmlSecMSCngKeyAgreementCtxPtr ctx;
     int ret;
 
-    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecMSCngTransformEcdhId), -1);
-    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngEcdhSize), -1);
+    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngKeyAgreementSize), -1);
 
-    ctx = xmlSecMSCngEcdhGetCtx(transform);
+    ctx = xmlSecMSCngKeyAgreementGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
     /* initialize context */
-    memset(ctx, 0, sizeof(xmlSecMSCngEcdhCtx));
+    memset(ctx, 0, sizeof(xmlSecMSCngKeyAgreementCtx));
+
+    /* initialize algorithm-specific configuration */
+#ifndef XMLSEC_NO_EC
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformEcdhId)) {
+        ctx->keyDataId = xmlSecMSCngKeyDataEcId;
+    } else
+#endif /* XMLSEC_NO_EC */
+#ifndef XMLSEC_NO_DH
+    if(xmlSecTransformCheckId(transform, xmlSecMSCngTransformDhEsId)) {
+        ctx->keyDataId = xmlSecMSCngKeyDataDhId;
+    } else
+#endif /* XMLSEC_NO_DH */
+    {
+        xmlSecInternalError("Unknown key agreement transform",
+                            xmlSecTransformGetName(transform));
+        xmlSecMSCngKeyAgreementFinalize(transform);
+        return(-1);
+    }
 
     ret = xmlSecTransformKeyAgreementParamsInitialize(&(ctx->params));
     if(ret < 0) {
         xmlSecInternalError("xmlSecTransformKeyAgreementParamsInitialize", NULL);
-        xmlSecMSCngEcdhFinalize(transform);
+        xmlSecMSCngKeyAgreementFinalize(transform);
         return(-1);
     }
 
@@ -114,68 +162,69 @@ xmlSecMSCngEcdhInitialize(xmlSecTransformPtr transform) {
 }
 
 static void
-xmlSecMSCngEcdhFinalize(xmlSecTransformPtr transform) {
-    xmlSecMSCngEcdhCtxPtr ctx;
+xmlSecMSCngKeyAgreementFinalize(xmlSecTransformPtr transform) {
+    xmlSecMSCngKeyAgreementCtxPtr ctx;
 
-    xmlSecAssert(xmlSecTransformCheckId(transform, xmlSecMSCngTransformEcdhId));
-    xmlSecAssert(xmlSecTransformCheckSize(transform, xmlSecMSCngEcdhSize));
+    xmlSecAssert(xmlSecTransformIsValid(transform));
+    xmlSecAssert(xmlSecTransformCheckSize(transform, xmlSecMSCngKeyAgreementSize));
 
-    ctx = xmlSecMSCngEcdhGetCtx(transform);
+    ctx = xmlSecMSCngKeyAgreementGetCtx(transform);
     xmlSecAssert(ctx != NULL);
 
     if(ctx->secretKey != NULL) {
         xmlSecKeyDestroy(ctx->secretKey);
+        ctx->secretKey = NULL;
     }
     xmlSecTransformKeyAgreementParamsFinalize(&(ctx->params));
-    memset(ctx, 0, sizeof(xmlSecMSCngEcdhCtx));
+    memset(ctx, 0, sizeof(xmlSecMSCngKeyAgreementCtx));
 }
 
 
 static int
-xmlSecMSCngEcdhSetKeyReq(xmlSecTransformPtr transform, xmlSecKeyReqPtr keyReq) {
-    xmlSecMSCngEcdhCtxPtr ctx;
+xmlSecMSCngKeyAgreementSetKeyReq(xmlSecTransformPtr transform, xmlSecKeyReqPtr keyReq) {
+    xmlSecMSCngKeyAgreementCtxPtr ctx;
 
-    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecMSCngTransformEcdhId), -1);
-    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngEcdhSize), -1);
+    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngKeyAgreementSize), -1);
     xmlSecAssert2(keyReq != NULL, -1);
 
-    ctx = xmlSecMSCngEcdhGetCtx(transform);
+    ctx = xmlSecMSCngKeyAgreementGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->params.kdfTransform != NULL, -1);
 
-    keyReq->keyId    = xmlSecMSCngKeyDataEcId;
+    keyReq->keyId    = ctx->keyDataId;
     keyReq->keyType  = xmlSecKeyDataTypePrivate;    /* we need 2 keys: private for ourselves and public for the other party */
     keyReq->keyUsage = xmlSecKeyUsageKeyAgreement;
     return(0);
 }
 
 static int
-xmlSecMSCngEcdhSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
-    xmlSecMSCngEcdhCtxPtr ctx;
+xmlSecMSCngKeyAgreementSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
+    xmlSecMSCngKeyAgreementCtxPtr ctx;
 
-    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecMSCngTransformEcdhId), -1);
-    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngEcdhSize), -1);
+    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngKeyAgreementSize), -1);
     xmlSecAssert2(key != NULL, -1);
 
-    ctx = xmlSecMSCngEcdhGetCtx(transform);
+    ctx = xmlSecMSCngKeyAgreementGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->params.kdfTransform != NULL, -1);
 
-    /* ecdh transform requires two keys which will be in ctx->params */
+    /* key agreement transform requires two keys which will be in ctx->params */
     return(0);
 }
 
 static int
-xmlSecMSCngEcdhNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransformCtxPtr transformCtx) {
-    xmlSecMSCngEcdhCtxPtr ctx;
+xmlSecMSCngKeyAgreementNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransformCtxPtr transformCtx) {
+    xmlSecMSCngKeyAgreementCtxPtr ctx;
     int ret;
 
-    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecMSCngTransformEcdhId), -1);
-    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngEcdhSize), -1);
+    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngKeyAgreementSize), -1);
     xmlSecAssert2(node!= NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
-    ctx = xmlSecMSCngEcdhGetCtx(transform);
+    ctx = xmlSecMSCngKeyAgreementGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->params.kdfTransform == NULL, -1);
 
@@ -190,16 +239,16 @@ xmlSecMSCngEcdhNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTra
 }
 
 static int
-xmlSecMSCngEcdhNodeWrite(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransformCtxPtr transformCtx) {
-    xmlSecMSCngEcdhCtxPtr ctx;
+xmlSecMSCngKeyAgreementNodeWrite(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransformCtxPtr transformCtx) {
+    xmlSecMSCngKeyAgreementCtxPtr ctx;
     int ret;
 
-    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecMSCngTransformEcdhId), -1);
-    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngEcdhSize), -1);
+    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngKeyAgreementSize), -1);
     xmlSecAssert2(node!= NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
-    ctx = xmlSecMSCngEcdhGetCtx(transform);
+    ctx = xmlSecMSCngKeyAgreementGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
     ret = xmlSecTransformKeyAgreementParamsWrite(&(ctx->params), node, transform, transformCtx);
@@ -212,7 +261,7 @@ xmlSecMSCngEcdhNodeWrite(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTr
 }
 
 static NCRYPT_KEY_HANDLE
-xmlSecMSCngEcdhGetPublicKey(xmlSecMSCngEcdhCtxPtr ctx, xmlSecKeyDataPtr keyValue, NCRYPT_KEY_HANDLE hPrivKey) {
+xmlSecMSCngKeyAgreementGetPublicKey(xmlSecMSCngKeyAgreementCtxPtr ctx, xmlSecKeyDataPtr keyValue, NCRYPT_KEY_HANDLE hPrivKey) {
     BCRYPT_KEY_HANDLE hBCryptKey = 0;
     NCRYPT_PROV_HANDLE hProvider = 0;
     NCRYPT_KEY_HANDLE hNCryptKey = 0;
@@ -261,7 +310,7 @@ xmlSecMSCngEcdhGetPublicKey(xmlSecMSCngEcdhCtxPtr ctx, xmlSecKeyDataPtr keyValue
         goto done;
     }
 
-    /* only support EC keys for now */
+    /* support EC and DH keys */
     pKeyBlob = (BCRYPT_KEY_BLOB*)pbBlob;
     switch (pKeyBlob->Magic) {
 #ifndef XMLSEC_NO_EC
@@ -286,6 +335,11 @@ xmlSecMSCngEcdhGetPublicKey(xmlSecMSCngEcdhCtxPtr ctx, xmlSecKeyDataPtr keyValue
         ((BCRYPT_KEY_BLOB*)pbBlob)->Magic = BCRYPT_ECDH_PUBLIC_GENERIC_MAGIC;
         break;
 #endif /* XMLSEC_NO_EC */
+#ifndef XMLSEC_NO_DH
+    case BCRYPT_DH_PUBLIC_MAGIC:
+        pszBlobId = BCRYPT_DH_PUBLIC_BLOB;
+        break;
+#endif /* XMLSEC_NO_DH */
     default:
         xmlSecNotImplementedError2("Unexpected key magic value: %llu", (unsigned long long)(pKeyBlob->Magic));
         goto done;
@@ -332,7 +386,7 @@ done:
 }
 
 static int
-xmlSecMSCngEcdhGenerateSecret(xmlSecMSCngEcdhCtxPtr ctx, xmlSecTransformOperation operation, xmlSecBufferPtr secret) {
+xmlSecMSCngKeyAgreementGenerateSecret(xmlSecMSCngKeyAgreementCtxPtr ctx, xmlSecTransformOperation operation, xmlSecBufferPtr secret) {
     xmlSecKeyDataPtr myKeyValue, otherKeyValue;
     NCRYPT_KEY_HANDLE hMyPrivKey = 0;
     NCRYPT_KEY_HANDLE hOtherPubKey = 0;
@@ -378,15 +432,101 @@ xmlSecMSCngEcdhGenerateSecret(xmlSecMSCngEcdhCtxPtr ctx, xmlSecTransformOperatio
     }
 
     /* get key handles */
+#ifndef XMLSEC_NO_DH
+    if(ctx->keyDataId == xmlSecMSCngKeyDataDhId) {
+        ret = xmlSecMSCngKeyDataDhEnsureValidAgreement(myKeyValue, otherKeyValue);
+        if(ret < 0) {
+            xmlSecInternalError("xmlSecMSCngKeyDataDhEnsureValidAgreement", NULL);
+            goto done;
+        }
+    }
+
+    /* BCrypt DH path: used when private key was loaded from DER (BCrypt, not NCrypt) */
+    {
+        BCRYPT_KEY_HANDLE hMyBCryptPrivKey = xmlSecMSCngKeyDataGetBCryptPrivKey(myKeyValue);
+        if(hMyBCryptPrivKey != NULL) {
+            BCRYPT_KEY_HANDLE hOtherBCryptPubKey = 0;
+            BCRYPT_SECRET_HANDLE hBCryptSecret = NULL;
+            DWORD dwBCryptSecretLen = 0;
+
+            hOtherBCryptPubKey = xmlSecMSCngKeyDataGetPubKey(otherKeyValue);
+            if(hOtherBCryptPubKey == 0) {
+                xmlSecInternalError("xmlSecMSCngKeyDataGetPubKey(BCrypt DH)", NULL);
+                goto done;
+            }
+
+            status = BCryptSecretAgreement(hMyBCryptPrivKey, hOtherBCryptPubKey, &hBCryptSecret, 0);
+            if((status != STATUS_SUCCESS) || (hBCryptSecret == NULL)) {
+                xmlSecMSCngNtError("BCryptSecretAgreement", NULL, status);
+                goto done;
+            }
+
+            /* get size */
+            status = BCryptDeriveKey(hBCryptSecret, BCRYPT_KDF_RAW_SECRET, NULL, NULL, 0, &dwBCryptSecretLen, 0);
+            if((status != STATUS_SUCCESS) || (dwBCryptSecretLen == 0)) {
+                xmlSecMSCngNtError("BCryptDeriveKey(size)", NULL, status);
+                BCryptDestroySecret(hBCryptSecret);
+                goto done;
+            }
+
+            XMLSEC_SAFE_CAST_UINT_TO_SIZE(dwBCryptSecretLen, secretSize, { BCryptDestroySecret(hBCryptSecret); goto done; }, NULL);
+            ret = xmlSecBufferSetSize(secret, secretSize);
+            if(ret < 0) {
+                xmlSecInternalError2("xmlSecBufferSetSize(BCrypt DH)", NULL,
+                    "size=" XMLSEC_SIZE_FMT, secretSize);
+                BCryptDestroySecret(hBCryptSecret);
+                goto done;
+            }
+            secretData = xmlSecBufferGetData(secret);
+            xmlSecAssert2(secretData != NULL, -1);
+
+            /* get key agreement secret */
+            status = BCryptDeriveKey(hBCryptSecret, BCRYPT_KDF_RAW_SECRET, NULL,
+                secretData, dwBCryptSecretLen, &dwBCryptSecretLen, 0);
+            BCryptDestroySecret(hBCryptSecret);
+            if((status != STATUS_SUCCESS) || (dwBCryptSecretLen == 0)) {
+                xmlSecMSCngNtError("BCryptDeriveKey(data)", NULL, status);
+                goto done;
+            }
+
+            /* set size again just in case */
+            XMLSEC_SAFE_CAST_UINT_TO_SIZE(dwBCryptSecretLen, secretSize, goto done, NULL);
+            ret = xmlSecBufferSetSize(secret, secretSize);
+            if(ret < 0) {
+                xmlSecInternalError2("xmlSecBufferSetSize2(BCrypt DH)", NULL,
+                    "size=" XMLSEC_SIZE_FMT, secretSize);
+                goto done;
+            }
+
+            /* BCrypt BCRYPT_KDF_RAW_SECRET returns the DH shared secret in little-endian
+             * (host) byte order. Reverse to get big-endian Z for ConcatKDF. */
+            {
+                xmlSecByte* pStart = secretData;
+                xmlSecByte* pEnd = secretData + secretSize - 1;
+                while(pStart < pEnd) {
+                    xmlSecByte tmp = *pStart;
+                    *pStart = *pEnd;
+                    *pEnd = tmp;
+                    pStart++;
+                    pEnd--;
+                }
+            }
+
+            res = 0;
+            goto done;
+        }
+    }
+#endif /* XMLSEC_NO_DH */
+
     hMyPrivKey = xmlSecMSCngKeyDataGetPrivKey(myKeyValue);
     if (hMyPrivKey == 0) {
         xmlSecInternalError("xmlSecMSCngKeyDataGetPrivKey", NULL);
         return(-1);
     }
     /* pubkey is BCRYPT handle, we need to convert it to NCRYPT handle */
-    hOtherPubKey = xmlSecMSCngEcdhGetPublicKey(ctx, otherKeyValue, hMyPrivKey);
+    hOtherPubKey = xmlSecMSCngKeyAgreementGetPublicKey(ctx, otherKeyValue, hMyPrivKey);
     if (hOtherPubKey == 0) {
-        xmlSecInternalError("xmlSecMSCngEcdhGetPublicKey", NULL);
+        xmlSecInternalError("xmlSecMSCngKeyAgreementGetPublicKey", NULL);
         return(-1);
     }
 
@@ -468,7 +608,7 @@ done:
 }
 
 static xmlSecKeyPtr
-xmlSecMSCngEcdhCreateKdfKey(xmlSecMSCngEcdhCtxPtr ctx, xmlSecBufferPtr secret) {
+xmlSecMSCngKeyAgreementCreateKdfKey(xmlSecMSCngKeyAgreementCtxPtr ctx, xmlSecBufferPtr secret) {
     xmlSecKeyPtr key = NULL;
     xmlSecKeyDataId keyId;
     xmlSecByte * secretData;
@@ -503,7 +643,7 @@ xmlSecMSCngEcdhCreateKdfKey(xmlSecMSCngEcdhCtxPtr ctx, xmlSecBufferPtr secret) {
 }
 
 static int
-xmlSecMSCngEcdhGenerateExecuteKdf(xmlSecMSCngEcdhCtxPtr ctx, xmlSecTransformOperation operation,
+xmlSecMSCngKeyAgreementGenerateExecuteKdf(xmlSecMSCngKeyAgreementCtxPtr ctx, xmlSecTransformOperation operation,
     xmlSecBufferPtr secret, xmlSecBufferPtr out, xmlSecSize expectedOutputSize,
     xmlSecTransformCtxPtr transformCtx)
 {
@@ -520,9 +660,9 @@ xmlSecMSCngEcdhGenerateExecuteKdf(xmlSecMSCngEcdhCtxPtr ctx, xmlSecTransformOper
     ctx->params.kdfTransform->operation = operation;
     ctx->params.kdfTransform->expectedOutputSize = expectedOutputSize;
 
-    ctx->secretKey = xmlSecMSCngEcdhCreateKdfKey(ctx, secret);
+    ctx->secretKey = xmlSecMSCngKeyAgreementCreateKdfKey(ctx, secret);
     if(ctx->secretKey == NULL) {
-        xmlSecInternalError("xmlSecMSCngEcdhCreateKdfKey", NULL);
+        xmlSecInternalError("xmlSecMSCngKeyAgreementCreateKdfKey", NULL);
         return(-1);
     }
 
@@ -550,20 +690,20 @@ xmlSecMSCngEcdhGenerateExecuteKdf(xmlSecMSCngEcdhCtxPtr ctx, xmlSecTransformOper
 }
 
 static int
-xmlSecMSCngEcdhExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
-    xmlSecMSCngEcdhCtxPtr ctx;
+xmlSecMSCngKeyAgreementExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
+    xmlSecMSCngKeyAgreementCtxPtr ctx;
     xmlSecBufferPtr in, out;
     int ret;
 
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
     xmlSecAssert2(((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt)), -1);
-    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngEcdhSize), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCngKeyAgreementSize), -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
     in = &(transform->inBuf);
     out = &(transform->outBuf);
 
-    ctx = xmlSecMSCngEcdhGetCtx(transform);
+    ctx = xmlSecMSCngKeyAgreementGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->params.kdfTransform != NULL, -1);
 
@@ -584,18 +724,18 @@ xmlSecMSCngEcdhExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
         }
 
         /* step 1: generate secret with ecdh */
-        ret = xmlSecMSCngEcdhGenerateSecret(ctx, transform->operation, &secret);
+        ret = xmlSecMSCngKeyAgreementGenerateSecret(ctx, transform->operation, &secret);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecMSCngEcdhGenerateSecret", xmlSecTransformGetName(transform));
+            xmlSecInternalError("xmlSecMSCngKeyAgreementGenerateSecret", xmlSecTransformGetName(transform));
             xmlSecBufferFinalize(&secret);
             return(-1);
         }
 
         /* step 2: generate key with kdf from secret */
-        ret = xmlSecMSCngEcdhGenerateExecuteKdf(ctx, transform->operation, &secret, out,
+        ret = xmlSecMSCngKeyAgreementGenerateExecuteKdf(ctx, transform->operation, &secret, out,
             transform->expectedOutputSize, transformCtx);
         if(ret < 0) {
-            xmlSecInternalError("xmlSecMSCngEcdhGenerateExecuteKdf", xmlSecTransformGetName(transform));
+            xmlSecInternalError("xmlSecMSCngKeyAgreementGenerateExecuteKdf", xmlSecTransformGetName(transform));
             xmlSecBufferFinalize(&secret);
             return(-1);
         }
@@ -617,35 +757,11 @@ xmlSecMSCngEcdhExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
 
 /********************************************************************
  *
- * Ecdh key derivation algorithm
+ * ECDH key agreement klass
  *
  ********************************************************************/
-static xmlSecTransformKlass xmlSecMSCngEcdhKlass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecMSCngEcdhSize,                      /* xmlSecSize objSize */
-
-    xmlSecNameEcdh,                             /* const xmlChar* name; */
-    xmlSecHrefEcdh,                             /* const xmlChar* href; */
-    xmlSecTransformUsageAgreementMethod,        /* xmlSecTransformUsage usage; */
-
-    xmlSecMSCngEcdhInitialize,                /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecMSCngEcdhFinalize,                  /* xmlSecTransformFinalizeMethod finalize; */
-    xmlSecMSCngEcdhNodeRead,                  /* xmlSecTransformNodeReadMethod readNode; */
-    xmlSecMSCngEcdhNodeWrite,                 /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCngEcdhSetKeyReq,                 /* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    xmlSecMSCngEcdhSetKey,                    /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecMSCngEcdhExecute,                   /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+#ifndef XMLSEC_NO_EC
+XMLSEC_MSCNG_KEY_AGREEMENT_KLASS_EX(Ecdh)
 
 /**
  * xmlSecMSCngTransformEcdhGetKlass:
@@ -658,5 +774,27 @@ xmlSecTransformId
 xmlSecMSCngTransformEcdhGetKlass(void) {
     return(&xmlSecMSCngEcdhKlass);
 }
-
 #endif /* XMLSEC_NO_EC */
+
+/********************************************************************
+ *
+ * DH-ES key agreement klass
+ *
+ ********************************************************************/
+#ifndef XMLSEC_NO_DH
+XMLSEC_MSCNG_KEY_AGREEMENT_KLASS_EX(DhEs)
+
+/**
+ * xmlSecMSCngTransformDhEsGetKlass:
+ *
+ * The DH-ES key agreement transform klass.
+ *
+ * Returns: the DH-ES key agreement transform klass.
+ */
+xmlSecTransformId
+xmlSecMSCngTransformDhEsGetKlass(void) {
+    return(&xmlSecMSCngDhEsKlass);
+}
+#endif /* XMLSEC_NO_DH */
+
+#endif /* !defined(XMLSEC_NO_EC) || !defined(XMLSEC_NO_DH) */

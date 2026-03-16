@@ -269,9 +269,9 @@ execEncTest $res_success \
     "xmlenc11-interop-2012/cipherText__DH-1024__aes128-gcm__kw-aes128__dh-es__ConcatKDF" \
     "aes128-gcm kw-aes128 concatkdf dh-es sha256" \
     "agreement-method enc-key dh" \
-    "--enabled-key-data agreement-method,enc-key,key-value,key-name,dh $priv_key_option:DH-1024 $topfolder/xmlenc11-interop-2012/DH-1024_SHA256WithDSA.$priv_key_format --pwd passwd" \
-    "--enabled-key-data agreement-method,enc-key,key-value,key-name,dh --session-key aes-128 --privkey-pem:dhx-rfc5114-3-first $topfolder/keys/dhx/dhx-rfc5114-3-first-key.pem --pubkey-pem:dhx-rfc5114-3-second $topfolder/keys/dhx/dhx-rfc5114-3-second-pubkey.pem --xml-data $topfolder/xmlenc11-interop-2012/cipherText__DH-1024__aes128-gcm__kw-aes128__dh-es__ConcatKDF.data" \
-    "--enabled-key-data agreement-method,enc-key,key-value,key-name,dh --privkey-pem:dhx-rfc5114-3-second $topfolder/keys/dhx/dhx-rfc5114-3-second-key.pem"
+    "--enabled-key-data agreement-method,enc-key,key-value,key-name,dh $dh_interop_priv_key_option:DH-1024 $topfolder/xmlenc11-interop-2012/DH-1024_SHA256WithDSA.$dh_interop_priv_key_format --pwd passwd" \
+    "--enabled-key-data agreement-method,enc-key,key-value,key-name,dh --session-key aes-128 --privkey-der:dhx-rfc5114-3-first $topfolder/keys/dhx/dhx-rfc5114-3-first-key.der --pubkey-der:dhx-rfc5114-3-second $topfolder/keys/dhx/dhx-rfc5114-3-second-pubkey.der --pwd secret123 --xml-data $topfolder/xmlenc11-interop-2012/cipherText__DH-1024__aes128-gcm__kw-aes128__dh-es__ConcatKDF.data" \
+    "--enabled-key-data agreement-method,enc-key,key-value,key-name,dh --privkey-der:dhx-rfc5114-3-second $topfolder/keys/dhx/dhx-rfc5114-3-second-key.der --pwd secret123"
 
 
 
@@ -390,9 +390,9 @@ execEncTest $res_success \
     "aleksey-xmlenc-01/enc_dh_concatkdf_sha256_kw_aes128_aes128gcm" \
     "aes128-gcm kw-aes128 concatkdf dh-es sha256" \
     "agreement-method enc-key dh" \
-    "--enabled-key-data agreement-method,enc-key,key-value,key-name,dh --privkey-pem:dhx-rfc5114-3-second $topfolder/keys/dhx/dhx-rfc5114-3-second-key.pem" \
-    "--enabled-key-data agreement-method,enc-key,key-value,key-name,dh --session-key aes-128 --privkey-pem:dhx-rfc5114-3-first $topfolder/keys/dhx/dhx-rfc5114-3-first-key.pem --pubkey-pem:dhx-rfc5114-3-second $topfolder/keys/dhx/dhx-rfc5114-3-second-pubkey.pem --xml-data $topfolder/aleksey-xmlenc-01/enc_dh_concatkdf_sha256_kw_aes128_aes128gcm.data" \
-    "--enabled-key-data agreement-method,enc-key,key-value,key-name,dh --privkey-pem:dhx-rfc5114-3-second $topfolder/keys/dhx/dhx-rfc5114-3-second-key.pem"
+    "--enabled-key-data agreement-method,enc-key,key-value,key-name,dh $dhx_priv_key_option:dhx-rfc5114-3-second $topfolder/keys/dhx/dhx-rfc5114-3-second-key.$dhx_priv_key_format" \
+    "--enabled-key-data agreement-method,enc-key,key-value,key-name,dh --session-key aes-128 $dhx_priv_key_option:dhx-rfc5114-3-first $topfolder/keys/dhx/dhx-rfc5114-3-first-key.$dhx_priv_key_format $dhx_pub_key_option:dhx-rfc5114-3-second $topfolder/keys/dhx/dhx-rfc5114-3-second-pubkey.$dhx_pub_key_format --xml-data $topfolder/aleksey-xmlenc-01/enc_dh_concatkdf_sha256_kw_aes128_aes128gcm.data" \
+    "--enabled-key-data agreement-method,enc-key,key-value,key-name,dh $dhx_priv_key_option:dhx-rfc5114-3-second $topfolder/keys/dhx/dhx-rfc5114-3-second-key.$dhx_priv_key_format"
 
 # ECDH + PBKDF2+SHA1
 execEncTest $res_success \

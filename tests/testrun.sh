@@ -356,6 +356,34 @@ else
 fi
 
 #
+# Windows MSCng cannot load X9.42 DH keys from OpenSSL-generated PKCS12 files.
+# Use unencrypted DER (PrivateKeyInfo/SubjectPublicKeyInfo) format instead.
+#
+if [ "z$crypto" = "zmscng" ] ; then
+    dh_interop_priv_key_option="--privkey-der"
+    dh_interop_priv_key_format="der"
+else
+    dh_interop_priv_key_option="$priv_key_option"
+    dh_interop_priv_key_format="$priv_key_format"
+fi
+
+#
+# Windows MSCng cannot load DHX private/public keys from PEM files.
+# Use unencrypted DER (PrivateKeyInfo/SubjectPublicKeyInfo) format instead.
+#
+if [ "z$crypto" = "zmscng" ] ; then
+    dhx_priv_key_option="--privkey-der"
+    dhx_priv_key_format="der"
+    dhx_pub_key_option="--pubkey-der"
+    dhx_pub_key_format="der"
+else
+    dhx_priv_key_option="--privkey-pem"
+    dhx_priv_key_format="pem"
+    dhx_pub_key_option="--pubkey-pem"
+    dhx_pub_key_format="pem"
+fi
+
+#
 # GCrypt only supports DER format for now, others are good to go with certs for public keys
 #
 if [ "z$crypto" != "zgcrypt" ] ; then

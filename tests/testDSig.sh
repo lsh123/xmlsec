@@ -512,6 +512,48 @@ execDSigTest $res_success \
 
 execDSigTest $res_success \
     "" \
+    "aleksey-xmldsig-01/enveloping-sha256-rsa2048-retrieval-method-rsa-key-value" \
+    "sha256 rsa-sha256" \
+    "retrieval-method rsa" \
+    "--enabled-key-data retrieval-method,key-name,rsa" \
+    "--enabled-key-data retrieval-method,key-name,rsa $priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--enabled-key-data retrieval-method,key-name,rsa"
+
+extra_message="Negative test: RSA is disabled, should fail"
+execDSigTest $res_fail \
+    "" \
+    "aleksey-xmldsig-01/enveloping-sha256-rsa2048-retrieval-method-rsa-key-value" \
+    "sha256 rsa-sha256" \
+    "retrieval-method rsa" \
+    "--enabled-key-data retrieval-method,key-name"
+
+extra_message="Negative test: KeyValue (including RSA is disabled by default), should fail"
+execDSigTest $res_fail \
+    "" \
+    "aleksey-xmldsig-01/enveloping-sha256-rsa2048-retrieval-method-rsa-key-value" \
+    "sha256 rsa-sha256" \
+    "retrieval-method rsa" \
+    " "
+
+execDSigTest $res_success \
+    "" \
+    "aleksey-xmldsig-01/enveloping-sha256-rsa2048-retrieval-method-x509-data" \
+    "sha256 rsa-sha256" \
+    "retrieval-method x509" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data retrieval-method,key-name,x509" \
+    "--enabled-key-data key-name $priv_key_option:TestKeyName-rsa-2048 $topfolder/keys/rsa/rsa-2048-key$priv_key_suffix.$priv_key_format --pwd secret123" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data retrieval-method,key-name,x509"
+
+extra_message="Negative test: cert is not trusted, should fail"
+execDSigTest $res_fail \
+    "" \
+    "aleksey-xmldsig-01/enveloping-sha256-rsa2048-retrieval-method-x509-data" \
+    "sha256 rsa-sha256" \
+    "retrieval-method x509" \
+    "--enabled-key-data retrieval-method,key-name,x509"
+
+execDSigTest $res_success \
+    "" \
     "aleksey-xmldsig-01/enveloping-sha256-ec-prime256v1-der-encoded-key-value" \
     "sha256 ecdsa-sha256" \
     "der-encoded-key-value ec" \

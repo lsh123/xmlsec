@@ -585,30 +585,33 @@ xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(struct _xmlSecCryptoDLFuncti
      * Register keys
      *
      ****************************************************************************/
-    XMLSEC_REGISTER_KEY_DATA(Aes);                  // keyDataAesGetKlass
-    XMLSEC_REGISTER_KEY_DATA(Camellia);             // keyDataCamelliaGetKlass
-    XMLSEC_REGISTER_KEY_DATA(ChaCha20);             // keyDataChaCha20GetKlass
-    XMLSEC_REGISTER_KEY_DATA(ConcatKdf);            // keyDataConcatKdfGetKlass
-    XMLSEC_REGISTER_KEY_DATA(Des);                  // keyDataDesGetKlass
-    XMLSEC_REGISTER_KEY_DATA(Dh);                   // keyDataDhGetKlass
-    XMLSEC_REGISTER_KEY_DATA(Dsa);                  // keyDataDsaGetKlass
-    XMLSEC_REGISTER_KEY_DATA(Ec);                   // keyDataEcGetKlass
-    XMLSEC_REGISTER_KEY_DATA(Gost2001);             // keyDataGost2001GetKlass
-    XMLSEC_REGISTER_KEY_DATA(GostR3410_2012_256);   // keyDataGostR3410_2012_256GetKlass
-    XMLSEC_REGISTER_KEY_DATA(GostR3410_2012_512);   // keyDataGetKlass
-    XMLSEC_REGISTER_KEY_DATA(Hmac);                 // keyDataHmacGetKlass
-    XMLSEC_REGISTER_KEY_DATA(Hkdf);                 // keyDataHkdfGetKlass
-    XMLSEC_REGISTER_KEY_DATA(MLDSA);                // keyDataMLDSAGetKlass
-    XMLSEC_REGISTER_KEY_DATA(Pbkdf2);               // keyDataPbkdf2GetKlass
-    XMLSEC_REGISTER_KEY_DATA(Rsa);                  // keyDataRsaGetKlass
-    XMLSEC_REGISTER_KEY_DATA(SLHDSA);               // keyDataSLHDSAGetKlass
-    XMLSEC_REGISTER_KEY_DATA(EdDSA);                // keyDataEdDSAGetKlass
-    XMLSEC_REGISTER_KEY_DATA(Xdh);                  // keyDataXdhGetKlass
-    XMLSEC_REGISTER_KEY_DATA(X509);                 // keyDataX509GetKlass
-    XMLSEC_REGISTER_KEY_DATA(RawX509Cert);          // keyDataRawX509CertGetKlass
+
+    /* raw key values should not be used in production w/o understanding of the security risks */
+    XMLSEC_REGISTER_DISABLED_KEY_DATA(Aes);                  // keyDataAesGetKlass
+    XMLSEC_REGISTER_DISABLED_KEY_DATA(Camellia);             // keyDataCamelliaGetKlass
+    XMLSEC_REGISTER_DISABLED_KEY_DATA(ChaCha20);             // keyDataChaCha20GetKlass
+    XMLSEC_REGISTER_DISABLED_KEY_DATA(ConcatKdf);            // keyDataConcatKdfGetKlass
+    XMLSEC_REGISTER_DISABLED_KEY_DATA(Des);                  // keyDataDesGetKlass
+    XMLSEC_REGISTER_DISABLED_KEY_DATA(Dh);                   // keyDataDhGetKlass
+    XMLSEC_REGISTER_DISABLED_KEY_DATA(Dsa);                  // keyDataDsaGetKlass
+    XMLSEC_REGISTER_DISABLED_KEY_DATA(Ec);                   // keyDataEcGetKlass
+    XMLSEC_REGISTER_DISABLED_KEY_DATA(Gost2001);             // keyDataGost2001GetKlass
+    XMLSEC_REGISTER_DISABLED_KEY_DATA(GostR3410_2012_256);   // keyDataGostR3410_2012_256GetKlass
+    XMLSEC_REGISTER_DISABLED_KEY_DATA(GostR3410_2012_512);   // keyDataGostR3410_2012_512GetKlass
+    XMLSEC_REGISTER_DISABLED_KEY_DATA(Hmac);                 // keyDataHmacGetKlass
+    XMLSEC_REGISTER_DISABLED_KEY_DATA(Hkdf);                 // keyDataHkdfGetKlass
+    XMLSEC_REGISTER_DISABLED_KEY_DATA(MLDSA);                // keyDataMLDSAGetKlass
+    XMLSEC_REGISTER_DISABLED_KEY_DATA(Pbkdf2);               // keyDataPbkdf2GetKlass
+    XMLSEC_REGISTER_DISABLED_KEY_DATA(Rsa);                  // keyDataRsaGetKlass
+    XMLSEC_REGISTER_DISABLED_KEY_DATA(SLHDSA);               // keyDataSLHDSAGetKlass
+    XMLSEC_REGISTER_DISABLED_KEY_DATA(EdDSA);                // keyDataEdDSAGetKlass
+    XMLSEC_REGISTER_DISABLED_KEY_DATA(Xdh);                  // keyDataXdhGetKlass
 
      /* DEREncodedKeyValue key data should not be used in production w/o understanding of the security risks */
     XMLSEC_REGISTER_DISABLED_KEY_DATA(DEREncodedKeyValue);   // keyDataDEREncodedKeyValueGetKlass
+
+    XMLSEC_REGISTER_KEY_DATA(X509);                          // keyDataX509GetKlass
+    XMLSEC_REGISTER_KEY_DATA(RawX509Cert);                   // keyDataRawX509CertGetKlass
 
 
     /****************************************************************************

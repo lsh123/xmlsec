@@ -1331,12 +1331,14 @@ static int                      xmlSecKeyDataKeyInfoReferenceReadXmlResult(xmlSe
  * The result of dereferencing a KeyInfoReference MUST be a KeyInfo element, or an XML
  * document with a KeyInfo element as the root.
  *
+ * |[<!-- language="XML" -->
  *      <!-- targetNamespace="http://www.w3.org/2009/xmldsig11#" -->
  *      <element name="KeyInfoReference" type="dsig11:KeyInfoReferenceType"/>
  *      <complexType name="KeyInfoReferenceType">
  *          <attribute name="URI" type="anyURI" use="required"/>
  *          <attribute name="Id" type="ID" use="optional"/>
  *      </complexType>
+ * ]|
  *
  * https://www.w3.org/TR/xmldsig-core1/#sec-KeyInfoReference
  *

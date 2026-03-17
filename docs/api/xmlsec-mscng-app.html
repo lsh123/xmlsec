@@ -1,20 +1,58 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<td class="parameter_description"><p>the pointer to the keys manager.</p></td>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>app: XML Security Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="XML Security Library Reference Manual">
 <link rel="up" href="xmlsec-msccng-ref.html" title="XML Security Library for Microsoft Cryptography API: Next Generation (CNG) Reference.">
-<td class="parameter_description"><p>the pointer to the key.</p></td>
+<link rel="prev" href="xmlsec-msccng-ref.html" title="XML Security Library for Microsoft Cryptography API: Next Generation (CNG) Reference.">
 <link rel="next" href="xmlsec-mscng-certkeys.html" title="certkeys">
 <meta name="generator" content="GTK-Doc V1.34.0 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<body><table width="100%" valign="top"><tr valign="top">
+<td valign="top" align="left" width="210">
+<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../download.html">Download</a></li>
+<ul><li><a href="../https://github.com/lsh123/xmlsec">GitHub</a></li></ul>
+<li><a href="../news.html">News</a></li>
+<li><a href="../documentation.html">Documentation</a></li>
+<ul>
+<li><a href="../faq.html">FAQ</a></li>
+<li><a href="../api/xmlsec-notes.html">Tutorial</a></li>
+<li><a href="../api/xmlsec-reference.html">API reference</a></li>
+<li><a href="../api/xmlsec-examples.html">Examples</a></li>
+</ul>
+<li><a href="../xmldsig.html">XML Digital Signature</a></li>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
+<li><a href="../bugs.html">Reporting Bugs</a></li>
+<li><a href="mailing-list.html">Mailing list</a></li>
+<li><a href="../related.html">Related</a></li>
+<li><a href="../authors.html">Authors</a></li>
+</ul>
+<table width="100%">
+<tr>
+<td width="15"></td>
+<td><a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a></td>
+</tr>
+<tr>
+<td width="15"></td>
+<td><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a></td>
+</tr>
+<tr>
+<td width="15"></td>
+<td><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a></td>
+</tr>
+<!--Links - start--><!--Links - end-->
+</table>
+</td>
+<td valign="top"><table width="80%" valign="top" style="margin-left:10px;"><tr><td valign="top" align="left" id="xmlsecContent">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
 <td width="100%" align="left" class="shortcuts">
-<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
                   <a href="#xmlsec-mscng-app.description" class="shortcut">Description</a></span>
 </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
@@ -33,7 +71,13 @@
 </tr></table></div>
 <div class="refsect1">
 <a name="xmlsec-mscng-app.stability-level"></a><h2>Stability Level</h2>
-<a href="http://foldoc.org/Stable"><span class="acronym">Stable</span></a>, unless otherwise indicated
+<acronym title="The intention of a Stable interface is to enable arbitrary third
+          parties to develop applications to these interfaces, release them, and
+          have confidence that they will run on all minor releases of the product
+          (after the one in which the interface was introduced, and within the same
+          major release). Even at a major release, incompatible changes are expected
+          to be rare, and to have strong justifications.
+          "><span class="acronym">Stable</span></acronym>, unless otherwise indicated
 </div>
 <div class="refsect1">
 <a name="xmlsec-mscng-app.functions"></a><h2>Functions</h2>
@@ -48,7 +92,7 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppInit" title="xmlSecMSCngAppInit ()">xmlSecMSCngAppInit</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppInit" title="xmlSecMSCngAppInit ()">xmlSecMSCngAppInit</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -56,7 +100,7 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppShutdown" title="xmlSecMSCngAppShutdown ()">xmlSecMSCngAppShutdown</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppShutdown" title="xmlSecMSCngAppShutdown ()">xmlSecMSCngAppShutdown</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -64,7 +108,7 @@
 <font><span class="returnvalue">LPCTSTR</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppGetCertStoreName" title="xmlSecMSCngAppGetCertStoreName ()">xmlSecMSCngAppGetCertStoreName</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppGetCertStoreName" title="xmlSecMSCngAppGetCertStoreName ()">xmlSecMSCngAppGetCertStoreName</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -72,7 +116,7 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppDefaultKeysMngrInit" title="xmlSecMSCngAppDefaultKeysMngrInit ()">xmlSecMSCngAppDefaultKeysMngrInit</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppDefaultKeysMngrInit" title="xmlSecMSCngAppDefaultKeysMngrInit ()">xmlSecMSCngAppDefaultKeysMngrInit</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -80,7 +124,7 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppDefaultKeysMngrAdoptKey" title="xmlSecMSCngAppDefaultKeysMngrAdoptKey ()">xmlSecMSCngAppDefaultKeysMngrAdoptKey</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppDefaultKeysMngrAdoptKey" title="xmlSecMSCngAppDefaultKeysMngrAdoptKey ()">xmlSecMSCngAppDefaultKeysMngrAdoptKey</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -88,7 +132,7 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppDefaultKeysMngrVerifyKey" title="xmlSecMSCngAppDefaultKeysMngrVerifyKey ()">xmlSecMSCngAppDefaultKeysMngrVerifyKey</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppDefaultKeysMngrVerifyKey" title="xmlSecMSCngAppDefaultKeysMngrVerifyKey ()">xmlSecMSCngAppDefaultKeysMngrVerifyKey</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -96,7 +140,7 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppDefaultKeysMngrLoad" title="xmlSecMSCngAppDefaultKeysMngrLoad ()">xmlSecMSCngAppDefaultKeysMngrLoad</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppDefaultKeysMngrLoad" title="xmlSecMSCngAppDefaultKeysMngrLoad ()">xmlSecMSCngAppDefaultKeysMngrLoad</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -104,7 +148,7 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppDefaultKeysMngrSave" title="xmlSecMSCngAppDefaultKeysMngrSave ()">xmlSecMSCngAppDefaultKeysMngrSave</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppDefaultKeysMngrSave" title="xmlSecMSCngAppDefaultKeysMngrSave ()">xmlSecMSCngAppDefaultKeysMngrSave</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -112,7 +156,7 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppKeysMngrCertLoad" title="xmlSecMSCngAppKeysMngrCertLoad ()">xmlSecMSCngAppKeysMngrCertLoad</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppKeysMngrCertLoad" title="xmlSecMSCngAppKeysMngrCertLoad ()">xmlSecMSCngAppKeysMngrCertLoad</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -120,7 +164,7 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppKeysMngrCertLoadMemory" title="xmlSecMSCngAppKeysMngrCertLoadMemory ()">xmlSecMSCngAppKeysMngrCertLoadMemory</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppKeysMngrCertLoadMemory" title="xmlSecMSCngAppKeysMngrCertLoadMemory ()">xmlSecMSCngAppKeysMngrCertLoadMemory</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -128,7 +172,7 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppKeysMngrCrlLoad" title="xmlSecMSCngAppKeysMngrCrlLoad ()">xmlSecMSCngAppKeysMngrCrlLoad</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppKeysMngrCrlLoad" title="xmlSecMSCngAppKeysMngrCrlLoad ()">xmlSecMSCngAppKeysMngrCrlLoad</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -136,7 +180,15 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppKeysMngrCrlLoadMemory" title="xmlSecMSCngAppKeysMngrCrlLoadMemory ()">xmlSecMSCngAppKeysMngrCrlLoadMemory</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppKeysMngrCrlLoadMemory" title="xmlSecMSCngAppKeysMngrCrlLoadMemory ()">xmlSecMSCngAppKeysMngrCrlLoadMemory</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppKeysMngrCrlLoadAndVerify" title="xmlSecMSCngAppKeysMngrCrlLoadAndVerify ()">xmlSecMSCngAppKeysMngrCrlLoadAndVerify</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -144,7 +196,7 @@
 <a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppKeyLoadEx" title="xmlSecMSCngAppKeyLoadEx ()">xmlSecMSCngAppKeyLoadEx</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppKeyLoadEx" title="xmlSecMSCngAppKeyLoadEx ()">xmlSecMSCngAppKeyLoadEx</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -152,7 +204,7 @@
 <a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppKeyLoadMemory" title="xmlSecMSCngAppKeyLoadMemory ()">xmlSecMSCngAppKeyLoadMemory</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppKeyLoadMemory" title="xmlSecMSCngAppKeyLoadMemory ()">xmlSecMSCngAppKeyLoadMemory</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -160,7 +212,7 @@
 <a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppPkcs12Load" title="xmlSecMSCngAppPkcs12Load ()">xmlSecMSCngAppPkcs12Load</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppPkcs12Load" title="xmlSecMSCngAppPkcs12Load ()">xmlSecMSCngAppPkcs12Load</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -168,7 +220,7 @@
 <a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppPkcs12LoadMemory" title="xmlSecMSCngAppPkcs12LoadMemory ()">xmlSecMSCngAppPkcs12LoadMemory</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppPkcs12LoadMemory" title="xmlSecMSCngAppPkcs12LoadMemory ()">xmlSecMSCngAppPkcs12LoadMemory</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -176,7 +228,7 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppKeyCertLoad" title="xmlSecMSCngAppKeyCertLoad ()">xmlSecMSCngAppKeyCertLoad</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppKeyCertLoad" title="xmlSecMSCngAppKeyCertLoad ()">xmlSecMSCngAppKeyCertLoad</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -184,15 +236,15 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppKeyCertLoadMemory" title="xmlSecMSCngAppKeyCertLoadMemory ()">xmlSecMSCngAppKeyCertLoadMemory</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppKeyCertLoadMemory" title="xmlSecMSCngAppKeyCertLoadMemory ()">xmlSecMSCngAppKeyCertLoadMemory</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
 <td class="function_type">
-<font><span class="returnvalue">void</span></font> *
+<font><span class="returnvalue">void</span></font> *
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppGetDefaultPwdCallback" title="xmlSecMSCngAppGetDefaultPwdCallback ()">xmlSecMSCngAppGetDefaultPwdCallback</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppGetDefaultPwdCallback" title="xmlSecMSCngAppGetDefaultPwdCallback ()">xmlSecMSCngAppGetDefaultPwdCallback</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 </tbody>
@@ -200,12 +252,12 @@
 </div>
 <div class="refsect1">
 <a name="xmlsec-mscng-app.description"></a><h2>Description</h2>
-<p>Common functions for the xmlsec1 command-line utility using the Microsoft Cryptography API: Next Generation (CNG).</p>
+<p>Common functions for the xmlsec1 command-line utility for the Microsoft Cryptography API: Next Generation (CNG).</p>
 </div>
 <div class="refsect1">
 <a name="xmlsec-mscng-app.functions_details"></a><h2>Functions</h2>
 <div class="refsect2">
-<a name="xmlSecMSCngAppInit"></a><h3>xmlSecMSCngAppInit ()</h3>
+<a name="xmlSecMSCngAppInit"></a><h3>xmlSecMSCngAppInit ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecMSCngAppInit (<em class="parameter"><code>const <font><span class="type">char</span></font> *config</code></em>);</pre>
 <p>General crypto engine initialization. This function is used
@@ -222,8 +274,8 @@ by the XMLSec command-line utility and is called before the
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>config</p></td>
-<td class="parameter_description"><p>the MSCng configuration path (unused).</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_description"><p>the path to MSCng configuration (unused).</p></td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
@@ -234,7 +286,7 @@ by the XMLSec command-line utility and is called before the
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecMSCngAppShutdown"></a><h3>xmlSecMSCngAppShutdown ()</h3>
+<a name="xmlSecMSCngAppShutdown"></a><h3>xmlSecMSCngAppShutdown ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecMSCngAppShutdown (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>General crypto engine shutdown. This function is used
@@ -248,24 +300,24 @@ by the XMLSec command-line utility and is called after the
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecMSCngAppGetCertStoreName"></a><h3>xmlSecMSCngAppGetCertStoreName ()</h3>
+<a name="xmlSecMSCngAppGetCertStoreName"></a><h3>xmlSecMSCngAppGetCertStoreName ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">LPCTSTR</span></font>
 xmlSecMSCngAppGetCertStoreName (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>Gets the MSCng certificate store name set by <em class="parameter"><code>xmlSecMSCngAppInit</code></em>
+<p>Gets the MS Cng certs store name set by <em class="parameter"><code>xmlSecMSCngAppInit</code></em>
  function.</p>
 <div class="refsect3">
 <a name="xmlSecMSCngAppGetCertStoreName.returns"></a><h4>Returns</h4>
-<p> the MSCng certificate store name used by xmlsec-mscng.</p>
+<p> the MS Cng certs name used by xmlsec-mscng.</p>
 </div>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecMSCngAppDefaultKeysMngrInit"></a><h3>xmlSecMSCngAppDefaultKeysMngrInit ()</h3>
+<a name="xmlSecMSCngAppDefaultKeysMngrInit"></a><h3>xmlSecMSCngAppDefaultKeysMngrInit ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecMSCngAppDefaultKeysMngrInit (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>);</pre>
 <p>Initializes <em class="parameter"><code>mngr</code></em>
- with the simple keys store <a class="link" href="xmlsec-keysmngr.html#xmlSecSimpleKeysStoreId" title="xmlSecSimpleKeysStoreId"><span class="type">xmlSecSimpleKeysStoreId</span></a>
-and the default MSCng crypto key data stores.</p>
+ with simple keys store <a class="link" href="xmlsec-keysmngr.html#xmlSecSimpleKeysStoreId" title="xmlSecSimpleKeysStoreId"><span class="type">xmlSecSimpleKeysStoreId</span></a>
+and a default MSCng crypto key data stores.</p>
 <div class="refsect3">
 <a name="xmlSecMSCngAppDefaultKeysMngrInit.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -276,8 +328,8 @@ and the default MSCng crypto key data stores.</p>
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>mngr</p></td>
-<td class="parameter_description"><p>the pointer to the keys manager.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_description"><p>the pointer to keys manager.</p></td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
@@ -288,13 +340,13 @@ and the default MSCng crypto key data stores.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecMSCngAppDefaultKeysMngrAdoptKey"></a><h3>xmlSecMSCngAppDefaultKeysMngrAdoptKey ()</h3>
+<a name="xmlSecMSCngAppDefaultKeysMngrAdoptKey"></a><h3>xmlSecMSCngAppDefaultKeysMngrAdoptKey ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecMSCngAppDefaultKeysMngrAdoptKey (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>,
                                        <em class="parameter"><code><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="type">xmlSecKeyPtr</span></a> key</code></em>);</pre>
 <p>Adds <em class="parameter"><code>key</code></em>
  to the keys manager <em class="parameter"><code>mngr</code></em>
- created with <a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppDefaultKeysMngrInit" title="xmlSecMSCngAppDefaultKeysMngrInit ()"><span class="type">xmlSecMSCngAppDefaultKeysMngrInit</span></a>
+ created with <a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppDefaultKeysMngrInit" title="xmlSecMSCngAppDefaultKeysMngrInit ()"><span class="type">xmlSecMSCngAppDefaultKeysMngrInit</span></a>
 function.</p>
 <div class="refsect3">
 <a name="xmlSecMSCngAppDefaultKeysMngrAdoptKey.parameters"></a><h4>Parameters</h4>
@@ -307,13 +359,13 @@ function.</p>
 <tbody>
 <tr>
 <td class="parameter_name"><p>mngr</p></td>
-<td class="parameter_description"><p>the pointer to the keys manager.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_description"><p>the pointer to keys manager.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>key</p></td>
-<td class="parameter_description"><p>the pointer to the key.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_description"><p>the pointer to key.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -325,7 +377,7 @@ function.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecMSCngAppDefaultKeysMngrVerifyKey"></a><h3>xmlSecMSCngAppDefaultKeysMngrVerifyKey ()</h3>
+<a name="xmlSecMSCngAppDefaultKeysMngrVerifyKey"></a><h3>xmlSecMSCngAppDefaultKeysMngrVerifyKey ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecMSCngAppDefaultKeysMngrVerifyKey
                                (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>,
@@ -333,7 +385,7 @@ xmlSecMSCngAppDefaultKeysMngrVerifyKey
                                 <em class="parameter"><code><a class="link" href="xmlsec-keyinfo.html#xmlSecKeyInfoCtx" title="struct xmlSecKeyInfoCtx"><span class="type">xmlSecKeyInfoCtxPtr</span></a> keyInfoCtx</code></em>);</pre>
 <p>Verifies <em class="parameter"><code>key</code></em>
  with the keys manager <em class="parameter"><code>mngr</code></em>
- created with <a class="link" href="xmlsec-app.html#xmlSecCryptoAppDefaultKeysMngrInit" title="xmlSecCryptoAppDefaultKeysMngrInit ()"><span class="type">xmlSecCryptoAppDefaultKeysMngrInit</span></a>
+ created with <a class="link" href="xmlsec-app.html#xmlSecCryptoAppDefaultKeysMngrInit" title="xmlSecCryptoAppDefaultKeysMngrInit ()"><span class="type">xmlSecCryptoAppDefaultKeysMngrInit</span></a>
 function:</p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem"><p>Checks that key certificate is present</p></li>
@@ -341,7 +393,7 @@ function:</p>
 </ul></div>
 <p>Adds <em class="parameter"><code>key</code></em>
  to the keys manager <em class="parameter"><code>mngr</code></em>
- created with <a class="link" href="xmlsec-app.html#xmlSecCryptoAppDefaultKeysMngrInit" title="xmlSecCryptoAppDefaultKeysMngrInit ()"><span class="type">xmlSecCryptoAppDefaultKeysMngrInit</span></a>
+ created with <a class="link" href="xmlsec-app.html#xmlSecCryptoAppDefaultKeysMngrInit" title="xmlSecCryptoAppDefaultKeysMngrInit ()"><span class="type">xmlSecCryptoAppDefaultKeysMngrInit</span></a>
 function.</p>
 <div class="refsect3">
 <a name="xmlSecMSCngAppDefaultKeysMngrVerifyKey.parameters"></a><h4>Parameters</h4>
@@ -354,18 +406,18 @@ function.</p>
 <tbody>
 <tr>
 <td class="parameter_name"><p>mngr</p></td>
-<td class="parameter_description"><p>the pointer to the keys manager.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_description"><p>the pointer to keys manager.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>key</p></td>
-<td class="parameter_description"><p>the pointer to the key.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_description"><p>the pointer to key.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>keyInfoCtx</p></td>
 <td class="parameter_description"><p>the key info context for verification.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -377,14 +429,14 @@ function.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecMSCngAppDefaultKeysMngrLoad"></a><h3>xmlSecMSCngAppDefaultKeysMngrLoad ()</h3>
+<a name="xmlSecMSCngAppDefaultKeysMngrLoad"></a><h3>xmlSecMSCngAppDefaultKeysMngrLoad ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecMSCngAppDefaultKeysMngrLoad (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>,
                                    <em class="parameter"><code>const <font><span class="type">char</span></font> *uri</code></em>);</pre>
-<p>Loads an XML keys file from <em class="parameter"><code>uri</code></em>
- into the keys manager <em class="parameter"><code>mngr</code></em>
+<p>Loads XML keys file from <em class="parameter"><code>uri</code></em>
+ to the keys manager <em class="parameter"><code>mngr</code></em>
  created
-with <a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppDefaultKeysMngrInit" title="xmlSecMSCngAppDefaultKeysMngrInit ()"><span class="type">xmlSecMSCngAppDefaultKeysMngrInit</span></a> function.</p>
+with <a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppDefaultKeysMngrInit" title="xmlSecMSCngAppDefaultKeysMngrInit ()"><span class="type">xmlSecMSCngAppDefaultKeysMngrInit</span></a> function.</p>
 <div class="refsect3">
 <a name="xmlSecMSCngAppDefaultKeysMngrLoad.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -396,13 +448,13 @@ with <a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppDefaultKeysMngrIn
 <tbody>
 <tr>
 <td class="parameter_name"><p>mngr</p></td>
-<td class="parameter_description"><p>the pointer to the keys manager.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_description"><p>the pointer to keys manager.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>uri</p></td>
-<td class="parameter_description"><p>the URI.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_description"><p>the uri.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -414,13 +466,13 @@ with <a class="link" href="xmlsec-mscng-app.html#xmlSecMSCngAppDefaultKeysMngrIn
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecMSCngAppDefaultKeysMngrSave"></a><h3>xmlSecMSCngAppDefaultKeysMngrSave ()</h3>
+<a name="xmlSecMSCngAppDefaultKeysMngrSave"></a><h3>xmlSecMSCngAppDefaultKeysMngrSave ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecMSCngAppDefaultKeysMngrSave (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>,
                                    <em class="parameter"><code>const <font><span class="type">char</span></font> *filename</code></em>,
                                    <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataType" title="xmlSecKeyDataType"><span class="type">xmlSecKeyDataType</span></a> type</code></em>);</pre>
 <p>Saves keys from <em class="parameter"><code>mngr</code></em>
- to an XML keys file.</p>
+ to  XML keys file.</p>
 <div class="refsect3">
 <a name="xmlSecMSCngAppDefaultKeysMngrSave.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -432,18 +484,18 @@ xmlSecMSCngAppDefaultKeysMngrSave (<em class="parameter"><code><a class="link" h
 <tbody>
 <tr>
 <td class="parameter_name"><p>mngr</p></td>
-<td class="parameter_description"><p>the pointer to the keys manager.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_description"><p>the pointer to keys manager.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>filename</p></td>
 <td class="parameter_description"><p>the destination filename.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>type</p></td>
 <td class="parameter_description"><p>the type of keys to save (public/private/symmetric).</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -455,15 +507,16 @@ xmlSecMSCngAppDefaultKeysMngrSave (<em class="parameter"><code><a class="link" h
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecMSCngAppKeysMngrCertLoad"></a><h3>xmlSecMSCngAppKeysMngrCertLoad ()</h3>
+<a name="xmlSecMSCngAppKeysMngrCertLoad"></a><h3>xmlSecMSCngAppKeysMngrCertLoad ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecMSCngAppKeysMngrCertLoad (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>,
                                 <em class="parameter"><code>const <font><span class="type">char</span></font> *filename</code></em>,
                                 <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataFormat" title="enum xmlSecKeyDataFormat"><span class="type">xmlSecKeyDataFormat</span></a> format</code></em>,
                                 <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataType" title="xmlSecKeyDataType"><span class="type">xmlSecKeyDataType</span></a> type</code></em>);</pre>
-<p>Reads the certificate from <em class="parameter"><code>filename</code></em>
- and adds it to the list of trusted or known
-untrusted certificates in the store.</p>
+<p>Reads cert from <em class="parameter"><code>filename</code></em>
+ and adds to the list of trusted or known
+untrusted certs in <em class="parameter"><code>store</code></em>
+.</p>
 <div class="refsect3">
 <a name="xmlSecMSCngAppKeysMngrCertLoad.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -476,23 +529,23 @@ untrusted certificates in the store.</p>
 <tr>
 <td class="parameter_name"><p>mngr</p></td>
 <td class="parameter_description"><p>the keys manager.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>filename</p></td>
 <td class="parameter_description"><p>the certificate file.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>format</p></td>
 <td class="parameter_description"><p>the certificate file format.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>type</p></td>
-<td class="parameter_description"><p>the flag that indicates whether the certificate in <em class="parameter"><code>filename</code></em>
-is trusted.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_description"><p>the flag that indicates is the certificate in <em class="parameter"><code>filename</code></em>
+trusted or not.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -504,16 +557,17 @@ is trusted.</p></td>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecMSCngAppKeysMngrCertLoadMemory"></a><h3>xmlSecMSCngAppKeysMngrCertLoadMemory ()</h3>
+<a name="xmlSecMSCngAppKeysMngrCertLoadMemory"></a><h3>xmlSecMSCngAppKeysMngrCertLoadMemory ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecMSCngAppKeysMngrCertLoadMemory (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>,
                                       <em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *data</code></em>,
                                       <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> dataSize</code></em>,
                                       <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataFormat" title="enum xmlSecKeyDataFormat"><span class="type">xmlSecKeyDataFormat</span></a> format</code></em>,
                                       <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataType" title="xmlSecKeyDataType"><span class="type">xmlSecKeyDataType</span></a> type</code></em>);</pre>
-<p>Reads the certificate from <em class="parameter"><code>data</code></em>
- and adds it to the list of trusted or known
-untrusted certificates in the store.</p>
+<p>Reads cert from <em class="parameter"><code>data</code></em>
+ and adds to the list of trusted or known
+untrusted certs in <em class="parameter"><code>store</code></em>
+</p>
 <div class="refsect3">
 <a name="xmlSecMSCngAppKeysMngrCertLoadMemory.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -525,28 +579,28 @@ untrusted certificates in the store.</p>
 <tbody>
 <tr>
 <td class="parameter_name"><p>mngr</p></td>
-<td class="parameter_description"><p>the pointer to the keys manager.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_description"><p>the pointer to keys manager.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>data</p></td>
 <td class="parameter_description"><p>the certificate data.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>dataSize</p></td>
 <td class="parameter_description"><p>the certificate data size.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>format</p></td>
 <td class="parameter_description"><p>the certificate format (PEM or DER).</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>type</p></td>
 <td class="parameter_description"><p>the certificate type (trusted/untrusted).</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -558,13 +612,14 @@ untrusted certificates in the store.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecMSCngAppKeysMngrCrlLoad"></a><h3>xmlSecMSCngAppKeysMngrCrlLoad ()</h3>
+<a name="xmlSecMSCngAppKeysMngrCrlLoad"></a><h3>xmlSecMSCngAppKeysMngrCrlLoad ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecMSCngAppKeysMngrCrlLoad (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>,
                                <em class="parameter"><code>const <font><span class="type">char</span></font> *filename</code></em>,
                                <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataFormat" title="enum xmlSecKeyDataFormat"><span class="type">xmlSecKeyDataFormat</span></a> format</code></em>);</pre>
-<p>Reads the certificate revocation lists (CRLs) from <em class="parameter"><code>filename</code></em>
- and adds them to the list of CRLs in the store.</p>
+<p>Reads crls from <em class="parameter"><code>filename</code></em>
+ and adds to the list of crls in <em class="parameter"><code>store</code></em>
+.</p>
 <div class="refsect3">
 <a name="xmlSecMSCngAppKeysMngrCrlLoad.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -577,17 +632,17 @@ xmlSecMSCngAppKeysMngrCrlLoad (<em class="parameter"><code><a class="link" href=
 <tr>
 <td class="parameter_name"><p>mngr</p></td>
 <td class="parameter_description"><p>the keys manager.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>filename</p></td>
 <td class="parameter_description"><p>the CRL file.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>format</p></td>
 <td class="parameter_description"><p>the CRL file format.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -599,14 +654,15 @@ xmlSecMSCngAppKeysMngrCrlLoad (<em class="parameter"><code><a class="link" href=
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecMSCngAppKeysMngrCrlLoadMemory"></a><h3>xmlSecMSCngAppKeysMngrCrlLoadMemory ()</h3>
+<a name="xmlSecMSCngAppKeysMngrCrlLoadMemory"></a><h3>xmlSecMSCngAppKeysMngrCrlLoadMemory ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecMSCngAppKeysMngrCrlLoadMemory (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>,
                                      <em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *data</code></em>,
                                      <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> dataSize</code></em>,
                                      <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataFormat" title="enum xmlSecKeyDataFormat"><span class="type">xmlSecKeyDataFormat</span></a> format</code></em>);</pre>
-<p>Reads the certificate revocation lists (CRLs) from <em class="parameter"><code>data</code></em>
- and adds them to the list of CRLs in the store.</p>
+<p>Reads crls from <em class="parameter"><code>data</code></em>
+ and adds to the list of crls in <em class="parameter"><code>store</code></em>
+</p>
 <div class="refsect3">
 <a name="xmlSecMSCngAppKeysMngrCrlLoadMemory.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -618,23 +674,23 @@ xmlSecMSCngAppKeysMngrCrlLoadMemory (<em class="parameter"><code><a class="link"
 <tbody>
 <tr>
 <td class="parameter_name"><p>mngr</p></td>
-<td class="parameter_description"><p>the pointer to the keys manager.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_description"><p>the pointer to keys manager.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>data</p></td>
 <td class="parameter_description"><p>the CRL data.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>dataSize</p></td>
 <td class="parameter_description"><p>the CRL data size.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>format</p></td>
 <td class="parameter_description"><p>the CRL format (PEM or DER).</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -646,7 +702,55 @@ xmlSecMSCngAppKeysMngrCrlLoadMemory (<em class="parameter"><code><a class="link"
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecMSCngAppKeyLoadEx"></a><h3>xmlSecMSCngAppKeyLoadEx ()</h3>
+<a name="xmlSecMSCngAppKeysMngrCrlLoadAndVerify"></a><h3>xmlSecMSCngAppKeysMngrCrlLoadAndVerify ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecMSCngAppKeysMngrCrlLoadAndVerify
+                               (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>,
+                                <em class="parameter"><code>const <font><span class="type">char</span></font> *filename</code></em>,
+                                <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataFormat" title="enum xmlSecKeyDataFormat"><span class="type">xmlSecKeyDataFormat</span></a> format</code></em>,
+                                <em class="parameter"><code><a class="link" href="xmlsec-keyinfo.html#xmlSecKeyInfoCtx" title="struct xmlSecKeyInfoCtx"><span class="type">xmlSecKeyInfoCtxPtr</span></a> keyInfoCtx</code></em>);</pre>
+<p>Atomically loads and verifies a CRL from <em class="parameter"><code>filename</code></em>
+.</p>
+<div class="refsect3">
+<a name="xmlSecMSCngAppKeysMngrCrlLoadAndVerify.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>mngr</p></td>
+<td class="parameter_description"><p>the keys manager.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>filename</p></td>
+<td class="parameter_description"><p>the CRL filename.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>format</p></td>
+<td class="parameter_description"><p>the CRL format (PEM or DER).</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>keyInfoCtx</p></td>
+<td class="parameter_description"><p>the key info context for verification parameters.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecMSCngAppKeysMngrCrlLoadAndVerify.returns"></a><h4>Returns</h4>
+<p> 0 on success or a negative value otherwise.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecMSCngAppKeyLoadEx"></a><h3>xmlSecMSCngAppKeyLoadEx ()</h3>
 <pre class="programlisting"><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
 xmlSecMSCngAppKeyLoadEx (<em class="parameter"><code>const <font><span class="type">char</span></font> *filename</code></em>,
                          <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataType" title="xmlSecKeyDataType"><span class="type">xmlSecKeyDataType</span></a> type</code></em>,
@@ -654,7 +758,7 @@ xmlSecMSCngAppKeyLoadEx (<em class="parameter"><code>const <font><span class="ty
                          <em class="parameter"><code>const <font><span class="type">char</span></font> *pwd</code></em>,
                          <em class="parameter"><code><font><span class="type">void</span></font> *pwdCallback</code></em>,
                          <em class="parameter"><code><font><span class="type">void</span></font> *pwdCallbackCtx</code></em>);</pre>
-<p>Reads the key from a file.</p>
+<p>Reads a key from a file.</p>
 <div class="refsect3">
 <a name="xmlSecMSCngAppKeyLoadEx.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -667,32 +771,32 @@ xmlSecMSCngAppKeyLoadEx (<em class="parameter"><code>const <font><span class="ty
 <tr>
 <td class="parameter_name"><p>filename</p></td>
 <td class="parameter_description"><p>the key filename.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>type</p></td>
 <td class="parameter_description"><p>the expected key type.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>format</p></td>
 <td class="parameter_description"><p>the key file format.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>pwd</p></td>
 <td class="parameter_description"><p>the key file password.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>pwdCallback</p></td>
 <td class="parameter_description"><p>the key password callback.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>pwdCallbackCtx</p></td>
 <td class="parameter_description"><p>the user context for password callback.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -704,7 +808,7 @@ xmlSecMSCngAppKeyLoadEx (<em class="parameter"><code>const <font><span class="ty
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecMSCngAppKeyLoadMemory"></a><h3>xmlSecMSCngAppKeyLoadMemory ()</h3>
+<a name="xmlSecMSCngAppKeyLoadMemory"></a><h3>xmlSecMSCngAppKeyLoadMemory ()</h3>
 <pre class="programlisting"><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
 xmlSecMSCngAppKeyLoadMemory (<em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *data</code></em>,
                              <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> dataSize</code></em>,
@@ -712,7 +816,7 @@ xmlSecMSCngAppKeyLoadMemory (<em class="parameter"><code>const <a class="link" h
                              <em class="parameter"><code>const <font><span class="type">char</span></font> *pwd</code></em>,
                              <em class="parameter"><code><font><span class="type">void</span></font> *pwdCallback</code></em>,
                              <em class="parameter"><code><font><span class="type">void</span></font> *pwdCallbackCtx</code></em>);</pre>
-<p>Reads the key from binary <em class="parameter"><code>data</code></em>
+<p>Reads a key from the binary <em class="parameter"><code>data</code></em>
 .</p>
 <div class="refsect3">
 <a name="xmlSecMSCngAppKeyLoadMemory.parameters"></a><h4>Parameters</h4>
@@ -726,32 +830,32 @@ xmlSecMSCngAppKeyLoadMemory (<em class="parameter"><code>const <a class="link" h
 <tr>
 <td class="parameter_name"><p>data</p></td>
 <td class="parameter_description"><p>the key binary data.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>dataSize</p></td>
 <td class="parameter_description"><p>the key binary data size.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>format</p></td>
 <td class="parameter_description"><p>the key data format.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>pwd</p></td>
 <td class="parameter_description"><p>the key data password.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>pwdCallback</p></td>
 <td class="parameter_description"><p>the key password callback.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>pwdCallbackCtx</p></td>
 <td class="parameter_description"><p>the user context for password callback.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -763,13 +867,13 @@ xmlSecMSCngAppKeyLoadMemory (<em class="parameter"><code>const <a class="link" h
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecMSCngAppPkcs12Load"></a><h3>xmlSecMSCngAppPkcs12Load ()</h3>
+<a name="xmlSecMSCngAppPkcs12Load"></a><h3>xmlSecMSCngAppPkcs12Load ()</h3>
 <pre class="programlisting"><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
 xmlSecMSCngAppPkcs12Load (<em class="parameter"><code>const <font><span class="type">char</span></font> *filename</code></em>,
                           <em class="parameter"><code>const <font><span class="type">char</span></font> *pwd</code></em>,
                           <em class="parameter"><code><font><span class="type">void</span></font> *pwdCallback</code></em>,
                           <em class="parameter"><code><font><span class="type">void</span></font> *pwdCallbackCtx</code></em>);</pre>
-<p>Reads the key and all associated certificates from the PKCS12 file.</p>
+<p>Reads a key and all associated certificates from the PKCS12 file.</p>
 <p>For uniformity, call <em class="parameter"><code>xmlSecMSCngAppKeyLoadEx</code></em>
  instead of this function. Pass
 in format=xmlSecKeyDataFormatPkcs12.</p>
@@ -785,22 +889,22 @@ in format=xmlSecKeyDataFormatPkcs12.</p>
 <tr>
 <td class="parameter_name"><p>filename</p></td>
 <td class="parameter_description"><p>the PKCS12 key filename.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>pwd</p></td>
 <td class="parameter_description"><p>the PKCS12 file password.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>pwdCallback</p></td>
 <td class="parameter_description"><p>the password callback.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>pwdCallbackCtx</p></td>
 <td class="parameter_description"><p>the user context for password callback.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -812,14 +916,14 @@ in format=xmlSecKeyDataFormatPkcs12.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecMSCngAppPkcs12LoadMemory"></a><h3>xmlSecMSCngAppPkcs12LoadMemory ()</h3>
+<a name="xmlSecMSCngAppPkcs12LoadMemory"></a><h3>xmlSecMSCngAppPkcs12LoadMemory ()</h3>
 <pre class="programlisting"><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
 xmlSecMSCngAppPkcs12LoadMemory (<em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *data</code></em>,
                                 <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> dataSize</code></em>,
                                 <em class="parameter"><code>const <font><span class="type">char</span></font> *pwd</code></em>,
                                 <em class="parameter"><code><font><span class="type">void</span></font> *pwdCallback</code></em>,
                                 <em class="parameter"><code><font><span class="type">void</span></font> *pwdCallbackCtx</code></em>);</pre>
-<p>Reads the key and all associated certificates from the PKCS12 binary data.
+<p>Reads a key and all associated certificates from the PKCS12 binary data.
 For uniformity, call <em class="parameter"><code>xmlSecMSCngAppKeyLoadEx</code></em>
  instead of this function. Pass
 in format=xmlSecKeyDataFormatPkcs12.</p>
@@ -835,27 +939,27 @@ in format=xmlSecKeyDataFormatPkcs12.</p>
 <tr>
 <td class="parameter_name"><p>data</p></td>
 <td class="parameter_description"><p>the key binary data.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>dataSize</p></td>
 <td class="parameter_description"><p>the key binary data size.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>pwd</p></td>
 <td class="parameter_description"><p>the PKCS12 password.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>pwdCallback</p></td>
 <td class="parameter_description"><p>the password callback.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>pwdCallbackCtx</p></td>
 <td class="parameter_description"><p>the user context for password callback.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -867,13 +971,13 @@ in format=xmlSecKeyDataFormatPkcs12.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecMSCngAppKeyCertLoad"></a><h3>xmlSecMSCngAppKeyCertLoad ()</h3>
+<a name="xmlSecMSCngAppKeyCertLoad"></a><h3>xmlSecMSCngAppKeyCertLoad ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecMSCngAppKeyCertLoad (<em class="parameter"><code><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="type">xmlSecKeyPtr</span></a> key</code></em>,
                            <em class="parameter"><code>const <font><span class="type">char</span></font> *filename</code></em>,
                            <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataFormat" title="enum xmlSecKeyDataFormat"><span class="type">xmlSecKeyDataFormat</span></a> format</code></em>);</pre>
-<p>Reads the certificate from <em class="parameter"><code>filename</code></em>
- and adds it to the key.</p>
+<p>Reads the certificate from $<em class="parameter"><code>filename</code></em>
+ and adds it to key.</p>
 <div class="refsect3">
 <a name="xmlSecMSCngAppKeyCertLoad.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -885,18 +989,18 @@ xmlSecMSCngAppKeyCertLoad (<em class="parameter"><code><a class="link" href="xml
 <tbody>
 <tr>
 <td class="parameter_name"><p>key</p></td>
-<td class="parameter_description"><p>the pointer to the key.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_description"><p>the pointer to key.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>filename</p></td>
 <td class="parameter_description"><p>the certificate filename.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>format</p></td>
 <td class="parameter_description"><p>the certificate file format.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -908,13 +1012,13 @@ xmlSecMSCngAppKeyCertLoad (<em class="parameter"><code><a class="link" href="xml
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecMSCngAppKeyCertLoadMemory"></a><h3>xmlSecMSCngAppKeyCertLoadMemory ()</h3>
+<a name="xmlSecMSCngAppKeyCertLoadMemory"></a><h3>xmlSecMSCngAppKeyCertLoadMemory ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecMSCngAppKeyCertLoadMemory (<em class="parameter"><code><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="type">xmlSecKeyPtr</span></a> key</code></em>,
                                  <em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *data</code></em>,
                                  <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> dataSize</code></em>,
                                  <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataFormat" title="enum xmlSecKeyDataFormat"><span class="type">xmlSecKeyDataFormat</span></a> format</code></em>);</pre>
-<p>Reads the certificate from a memory buffer and adds it to the key.</p>
+<p>Reads the certificate from memory buffer and adds it to key.</p>
 <div class="refsect3">
 <a name="xmlSecMSCngAppKeyCertLoadMemory.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -926,23 +1030,23 @@ xmlSecMSCngAppKeyCertLoadMemory (<em class="parameter"><code><a class="link" hre
 <tbody>
 <tr>
 <td class="parameter_name"><p>key</p></td>
-<td class="parameter_description"><p>the pointer to the key.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_description"><p>the pointer to key.</p></td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>data</p></td>
 <td class="parameter_description"><p>the certificate binary data.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>dataSize</p></td>
 <td class="parameter_description"><p>the certificate binary data size.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>format</p></td>
 <td class="parameter_description"><p>the certificate file format.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -954,18 +1058,19 @@ xmlSecMSCngAppKeyCertLoadMemory (<em class="parameter"><code><a class="link" hre
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecMSCngAppGetDefaultPwdCallback"></a><h3>xmlSecMSCngAppGetDefaultPwdCallback ()</h3>
-<pre class="programlisting"><font><span class="returnvalue">void</span></font> *
+<a name="xmlSecMSCngAppGetDefaultPwdCallback"></a><h3>xmlSecMSCngAppGetDefaultPwdCallback ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">void</span></font> *
 xmlSecMSCngAppGetDefaultPwdCallback (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<p>Gets the default password callback.</p>
+<p>Gets default password callback.</p>
 <div class="refsect3">
 <a name="xmlSecMSCngAppGetDefaultPwdCallback.returns"></a><h4>Returns</h4>
-<p> the default password callback.</p>
+<p> default password callback.</p>
 </div>
 </div>
 </div>
 </div>
 <div class="footer">
 <hr>Generated by GTK-Doc V1.34.0</div>
-</body>
+</td></tr></table></td>
+</tr></table></body>
 </html>

@@ -1,4 +1,3 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -11,10 +10,49 @@
 <meta name="generator" content="GTK-Doc V1.34.0 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<body><table width="100%" valign="top"><tr valign="top">
+<td valign="top" align="left" width="210">
+<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../download.html">Download</a></li>
+<ul><li><a href="../https://github.com/lsh123/xmlsec">GitHub</a></li></ul>
+<li><a href="../news.html">News</a></li>
+<li><a href="../documentation.html">Documentation</a></li>
+<ul>
+<li><a href="../faq.html">FAQ</a></li>
+<li><a href="../api/xmlsec-notes.html">Tutorial</a></li>
+<li><a href="../api/xmlsec-reference.html">API reference</a></li>
+<li><a href="../api/xmlsec-examples.html">Examples</a></li>
+</ul>
+<li><a href="../xmldsig.html">XML Digital Signature</a></li>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
+<li><a href="../bugs.html">Reporting Bugs</a></li>
+<li><a href="mailing-list.html">Mailing list</a></li>
+<li><a href="../related.html">Related</a></li>
+<li><a href="../authors.html">Authors</a></li>
+</ul>
+<table width="100%">
+<tr>
+<td width="15"></td>
+<td><a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a></td>
+</tr>
+<tr>
+<td width="15"></td>
+<td><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a></td>
+</tr>
+<tr>
+<td width="15"></td>
+<td><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a></td>
+</tr>
+<!--Links - start--><!--Links - end-->
+</table>
+</td>
+<td valign="top"><table width="80%" valign="top" style="margin-left:10px;"><tr><td valign="top" align="left" id="xmlsecContent">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
 <td width="100%" align="left" class="shortcuts">
-<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
                   <a href="#xmlsec-app.description" class="shortcut">Description</a></span>
 </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
@@ -33,7 +71,13 @@
 </tr></table></div>
 <div class="refsect1">
 <a name="xmlsec-app.stability-level"></a><h2>Stability Level</h2>
-<a href="http://foldoc.org/Stable"><span class="acronym">Stable</span></a>, unless otherwise indicated
+<acronym title="The intention of a Stable interface is to enable arbitrary third
+          parties to develop applications to these interfaces, release them, and
+          have confidence that they will run on all minor releases of the product
+          (after the one in which the interface was introduced, and within the same
+          major release). Even at a major release, incompatible changes are expected
+          to be rare, and to have strong justifications.
+          "><span class="acronym">Stable</span></acronym>, unless otherwise indicated
 </div>
 <div class="refsect1">
 <a name="xmlsec-app.functions"></a><h2>Functions</h2>
@@ -48,7 +92,7 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecCryptoInit" title="xmlSecCryptoInit ()">xmlSecCryptoInit</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecCryptoInit" title="xmlSecCryptoInit ()">xmlSecCryptoInit</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -56,7 +100,7 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecCryptoShutdown" title="xmlSecCryptoShutdown ()">xmlSecCryptoShutdown</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecCryptoShutdown" title="xmlSecCryptoShutdown ()">xmlSecCryptoShutdown</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -64,7 +108,7 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecCryptoKeysMngrInit" title="xmlSecCryptoKeysMngrInit ()">xmlSecCryptoKeysMngrInit</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecCryptoKeysMngrInit" title="xmlSecCryptoKeysMngrInit ()">xmlSecCryptoKeysMngrInit</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -72,7 +116,7 @@
 <font><span class="returnvalue">xmlSecKeyDataId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecKeyDataAesGetKlass" title="xmlSecKeyDataAesGetKlass ()">xmlSecKeyDataAesGetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecKeyDataAesGetKlass" title="xmlSecKeyDataAesGetKlass ()">xmlSecKeyDataAesGetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -80,7 +124,7 @@
 <font><span class="returnvalue">xmlSecKeyDataId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecKeyDataConcatKdfGetKlass" title="xmlSecKeyDataConcatKdfGetKlass ()">xmlSecKeyDataConcatKdfGetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecKeyDataConcatKdfGetKlass" title="xmlSecKeyDataConcatKdfGetKlass ()">xmlSecKeyDataConcatKdfGetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -88,7 +132,7 @@
 <font><span class="returnvalue">xmlSecKeyDataId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecKeyDataDesGetKlass" title="xmlSecKeyDataDesGetKlass ()">xmlSecKeyDataDesGetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecKeyDataDesGetKlass" title="xmlSecKeyDataDesGetKlass ()">xmlSecKeyDataDesGetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -96,7 +140,7 @@
 <font><span class="returnvalue">xmlSecKeyDataId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecKeyDataDhGetKlass" title="xmlSecKeyDataDhGetKlass ()">xmlSecKeyDataDhGetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecKeyDataDhGetKlass" title="xmlSecKeyDataDhGetKlass ()">xmlSecKeyDataDhGetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -104,7 +148,7 @@
 <font><span class="returnvalue">xmlSecKeyDataId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecKeyDataDsaGetKlass" title="xmlSecKeyDataDsaGetKlass ()">xmlSecKeyDataDsaGetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecKeyDataDsaGetKlass" title="xmlSecKeyDataDsaGetKlass ()">xmlSecKeyDataDsaGetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -112,7 +156,7 @@
 <font><span class="returnvalue">xmlSecKeyDataId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecKeyDataEcGetKlass" title="xmlSecKeyDataEcGetKlass ()">xmlSecKeyDataEcGetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecKeyDataEcGetKlass" title="xmlSecKeyDataEcGetKlass ()">xmlSecKeyDataEcGetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -120,7 +164,7 @@
 <font><span class="returnvalue">xmlSecKeyDataId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecKeyDataGost2001GetKlass" title="xmlSecKeyDataGost2001GetKlass ()">xmlSecKeyDataGost2001GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecKeyDataGost2001GetKlass" title="xmlSecKeyDataGost2001GetKlass ()">xmlSecKeyDataGost2001GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -128,7 +172,7 @@
 <font><span class="returnvalue">xmlSecKeyDataId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecKeyDataGostR3410-2012-256GetKlass" title="xmlSecKeyDataGostR3410_2012_256GetKlass ()">xmlSecKeyDataGostR3410_2012_256GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecKeyDataGostR3410-2012-256GetKlass" title="xmlSecKeyDataGostR3410_2012_256GetKlass ()">xmlSecKeyDataGostR3410_2012_256GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -136,7 +180,7 @@
 <font><span class="returnvalue">xmlSecKeyDataId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecKeyDataGostR3410-2012-512GetKlass" title="xmlSecKeyDataGostR3410_2012_512GetKlass ()">xmlSecKeyDataGostR3410_2012_512GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecKeyDataGostR3410-2012-512GetKlass" title="xmlSecKeyDataGostR3410_2012_512GetKlass ()">xmlSecKeyDataGostR3410_2012_512GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -144,7 +188,7 @@
 <font><span class="returnvalue">xmlSecKeyDataId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecKeyDataHmacGetKlass" title="xmlSecKeyDataHmacGetKlass ()">xmlSecKeyDataHmacGetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecKeyDataHmacGetKlass" title="xmlSecKeyDataHmacGetKlass ()">xmlSecKeyDataHmacGetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -152,7 +196,7 @@
 <font><span class="returnvalue">xmlSecKeyDataId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecKeyDataPbkdf2GetKlass" title="xmlSecKeyDataPbkdf2GetKlass ()">xmlSecKeyDataPbkdf2GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecKeyDataHkdfGetKlass" title="xmlSecKeyDataHkdfGetKlass ()">xmlSecKeyDataHkdfGetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -160,7 +204,7 @@
 <font><span class="returnvalue">xmlSecKeyDataId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecKeyDataRsaGetKlass" title="xmlSecKeyDataRsaGetKlass ()">xmlSecKeyDataRsaGetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecKeyDataMLDSAGetKlass" title="xmlSecKeyDataMLDSAGetKlass ()">xmlSecKeyDataMLDSAGetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -168,7 +212,7 @@
 <font><span class="returnvalue">xmlSecKeyDataId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecKeyDataX509GetKlass" title="xmlSecKeyDataX509GetKlass ()">xmlSecKeyDataX509GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecKeyDataPbkdf2GetKlass" title="xmlSecKeyDataPbkdf2GetKlass ()">xmlSecKeyDataPbkdf2GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -176,7 +220,7 @@
 <font><span class="returnvalue">xmlSecKeyDataId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecKeyDataRawX509CertGetKlass" title="xmlSecKeyDataRawX509CertGetKlass ()">xmlSecKeyDataRawX509CertGetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecKeyDataRsaGetKlass" title="xmlSecKeyDataRsaGetKlass ()">xmlSecKeyDataRsaGetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -184,7 +228,47 @@
 <font><span class="returnvalue">xmlSecKeyDataId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecKeyDataDEREncodedKeyValueGetKlass" title="xmlSecKeyDataDEREncodedKeyValueGetKlass ()">xmlSecKeyDataDEREncodedKeyValueGetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecKeyDataSLHDSAGetKlass" title="xmlSecKeyDataSLHDSAGetKlass ()">xmlSecKeyDataSLHDSAGetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecKeyDataId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-app.html#xmlSecKeyDataEdDSAGetKlass" title="xmlSecKeyDataEdDSAGetKlass ()">xmlSecKeyDataEdDSAGetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecKeyDataId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-app.html#xmlSecKeyDataXdhGetKlass" title="xmlSecKeyDataXdhGetKlass ()">xmlSecKeyDataXdhGetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecKeyDataId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-app.html#xmlSecKeyDataX509GetKlass" title="xmlSecKeyDataX509GetKlass ()">xmlSecKeyDataX509GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecKeyDataId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-app.html#xmlSecKeyDataRawX509CertGetKlass" title="xmlSecKeyDataRawX509CertGetKlass ()">xmlSecKeyDataRawX509CertGetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecKeyDataId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-app.html#xmlSecKeyDataDEREncodedKeyValueGetKlass" title="xmlSecKeyDataDEREncodedKeyValueGetKlass ()">xmlSecKeyDataDEREncodedKeyValueGetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -192,7 +276,7 @@
 <font><span class="returnvalue">xmlSecKeyDataStoreId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecX509StoreGetKlass" title="xmlSecX509StoreGetKlass ()">xmlSecX509StoreGetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecX509StoreGetKlass" title="xmlSecX509StoreGetKlass ()">xmlSecX509StoreGetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -200,7 +284,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformAes128CbcGetKlass" title="xmlSecTransformAes128CbcGetKlass ()">xmlSecTransformAes128CbcGetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformAes128CbcGetKlass" title="xmlSecTransformAes128CbcGetKlass ()">xmlSecTransformAes128CbcGetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -208,7 +292,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformAes192CbcGetKlass" title="xmlSecTransformAes192CbcGetKlass ()">xmlSecTransformAes192CbcGetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformAes192CbcGetKlass" title="xmlSecTransformAes192CbcGetKlass ()">xmlSecTransformAes192CbcGetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -216,7 +300,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformAes256CbcGetKlass" title="xmlSecTransformAes256CbcGetKlass ()">xmlSecTransformAes256CbcGetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformAes256CbcGetKlass" title="xmlSecTransformAes256CbcGetKlass ()">xmlSecTransformAes256CbcGetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -224,7 +308,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformAes128GcmGetKlass" title="xmlSecTransformAes128GcmGetKlass ()">xmlSecTransformAes128GcmGetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformAes128GcmGetKlass" title="xmlSecTransformAes128GcmGetKlass ()">xmlSecTransformAes128GcmGetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -232,7 +316,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformAes192GcmGetKlass" title="xmlSecTransformAes192GcmGetKlass ()">xmlSecTransformAes192GcmGetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformAes192GcmGetKlass" title="xmlSecTransformAes192GcmGetKlass ()">xmlSecTransformAes192GcmGetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -240,7 +324,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformAes256GcmGetKlass" title="xmlSecTransformAes256GcmGetKlass ()">xmlSecTransformAes256GcmGetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformAes256GcmGetKlass" title="xmlSecTransformAes256GcmGetKlass ()">xmlSecTransformAes256GcmGetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -248,7 +332,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformKWAes128GetKlass" title="xmlSecTransformKWAes128GetKlass ()">xmlSecTransformKWAes128GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformKWAes128GetKlass" title="xmlSecTransformKWAes128GetKlass ()">xmlSecTransformKWAes128GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -256,7 +340,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformKWAes192GetKlass" title="xmlSecTransformKWAes192GetKlass ()">xmlSecTransformKWAes192GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformKWAes192GetKlass" title="xmlSecTransformKWAes192GetKlass ()">xmlSecTransformKWAes192GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -264,7 +348,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformKWAes256GetKlass" title="xmlSecTransformKWAes256GetKlass ()">xmlSecTransformKWAes256GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformKWAes256GetKlass" title="xmlSecTransformKWAes256GetKlass ()">xmlSecTransformKWAes256GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -272,7 +356,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformConcatKdfGetKlass" title="xmlSecTransformConcatKdfGetKlass ()">xmlSecTransformConcatKdfGetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformConcatKdfGetKlass" title="xmlSecTransformConcatKdfGetKlass ()">xmlSecTransformConcatKdfGetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -280,7 +364,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformDes3CbcGetKlass" title="xmlSecTransformDes3CbcGetKlass ()">xmlSecTransformDes3CbcGetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformDes3CbcGetKlass" title="xmlSecTransformDes3CbcGetKlass ()">xmlSecTransformDes3CbcGetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -288,7 +372,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformKWDes3GetKlass" title="xmlSecTransformKWDes3GetKlass ()">xmlSecTransformKWDes3GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformKWDes3GetKlass" title="xmlSecTransformKWDes3GetKlass ()">xmlSecTransformKWDes3GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -296,7 +380,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformDhEsGetKlass" title="xmlSecTransformDhEsGetKlass ()">xmlSecTransformDhEsGetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformDhEsGetKlass" title="xmlSecTransformDhEsGetKlass ()">xmlSecTransformDhEsGetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -304,7 +388,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformDsaSha1GetKlass" title="xmlSecTransformDsaSha1GetKlass ()">xmlSecTransformDsaSha1GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformHkdfGetKlass" title="xmlSecTransformHkdfGetKlass ()">xmlSecTransformHkdfGetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -312,7 +396,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformDsaSha256GetKlass" title="xmlSecTransformDsaSha256GetKlass ()">xmlSecTransformDsaSha256GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformDsaSha1GetKlass" title="xmlSecTransformDsaSha1GetKlass ()">xmlSecTransformDsaSha1GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -320,7 +404,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformEcdhGetKlass" title="xmlSecTransformEcdhGetKlass ()">xmlSecTransformEcdhGetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformDsaSha256GetKlass" title="xmlSecTransformDsaSha256GetKlass ()">xmlSecTransformDsaSha256GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -328,7 +412,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformEcdsaSha1GetKlass" title="xmlSecTransformEcdsaSha1GetKlass ()">xmlSecTransformEcdsaSha1GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformEcdhGetKlass" title="xmlSecTransformEcdhGetKlass ()">xmlSecTransformEcdhGetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -336,7 +420,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformEcdsaSha224GetKlass" title="xmlSecTransformEcdsaSha224GetKlass ()">xmlSecTransformEcdsaSha224GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformX25519GetKlass" title="xmlSecTransformX25519GetKlass ()">xmlSecTransformX25519GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -344,7 +428,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformEcdsaSha256GetKlass" title="xmlSecTransformEcdsaSha256GetKlass ()">xmlSecTransformEcdsaSha256GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformX448GetKlass" title="xmlSecTransformX448GetKlass ()">xmlSecTransformX448GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -352,7 +436,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformEcdsaSha384GetKlass" title="xmlSecTransformEcdsaSha384GetKlass ()">xmlSecTransformEcdsaSha384GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformEcdsaSha1GetKlass" title="xmlSecTransformEcdsaSha1GetKlass ()">xmlSecTransformEcdsaSha1GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -360,7 +444,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformEcdsaSha512GetKlass" title="xmlSecTransformEcdsaSha512GetKlass ()">xmlSecTransformEcdsaSha512GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformEcdsaSha224GetKlass" title="xmlSecTransformEcdsaSha224GetKlass ()">xmlSecTransformEcdsaSha224GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -368,7 +452,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformEcdsaSha3-224GetKlass" title="xmlSecTransformEcdsaSha3_224GetKlass ()">xmlSecTransformEcdsaSha3_224GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformEcdsaSha256GetKlass" title="xmlSecTransformEcdsaSha256GetKlass ()">xmlSecTransformEcdsaSha256GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -376,7 +460,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformEcdsaSha3-256GetKlass" title="xmlSecTransformEcdsaSha3_256GetKlass ()">xmlSecTransformEcdsaSha3_256GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformEcdsaSha384GetKlass" title="xmlSecTransformEcdsaSha384GetKlass ()">xmlSecTransformEcdsaSha384GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -384,7 +468,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformEcdsaSha3-384GetKlass" title="xmlSecTransformEcdsaSha3_384GetKlass ()">xmlSecTransformEcdsaSha3_384GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformEcdsaSha512GetKlass" title="xmlSecTransformEcdsaSha512GetKlass ()">xmlSecTransformEcdsaSha512GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -392,7 +476,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformEcdsaSha3-512GetKlass" title="xmlSecTransformEcdsaSha3_512GetKlass ()">xmlSecTransformEcdsaSha3_512GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformEcdsaSha3-224GetKlass" title="xmlSecTransformEcdsaSha3_224GetKlass ()">xmlSecTransformEcdsaSha3_224GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -400,7 +484,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformEcdsaRipemd160GetKlass" title="xmlSecTransformEcdsaRipemd160GetKlass ()">xmlSecTransformEcdsaRipemd160GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformEcdsaSha3-256GetKlass" title="xmlSecTransformEcdsaSha3_256GetKlass ()">xmlSecTransformEcdsaSha3_256GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -408,7 +492,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformGost2001GostR3411-94GetKlass" title="xmlSecTransformGost2001GostR3411_94GetKlass ()">xmlSecTransformGost2001GostR3411_94GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformEcdsaSha3-384GetKlass" title="xmlSecTransformEcdsaSha3_384GetKlass ()">xmlSecTransformEcdsaSha3_384GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -416,7 +500,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformGostR3410-2012GostR3411-2012-256GetKlass" title="xmlSecTransformGostR3410_2012GostR3411_2012_256GetKlass ()">xmlSecTransformGostR3410_2012GostR3411_2012_256GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformEcdsaSha3-512GetKlass" title="xmlSecTransformEcdsaSha3_512GetKlass ()">xmlSecTransformEcdsaSha3_512GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -424,7 +508,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformGostR3410-2012GostR3411-2012-512GetKlass" title="xmlSecTransformGostR3410_2012GostR3411_2012_512GetKlass ()">xmlSecTransformGostR3410_2012GostR3411_2012_512GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformEcdsaRipemd160GetKlass" title="xmlSecTransformEcdsaRipemd160GetKlass ()">xmlSecTransformEcdsaRipemd160GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -432,7 +516,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformHmacMd5GetKlass" title="xmlSecTransformHmacMd5GetKlass ()">xmlSecTransformHmacMd5GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformGost2001GostR3411-94GetKlass" title="xmlSecTransformGost2001GostR3411_94GetKlass ()">xmlSecTransformGost2001GostR3411_94GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -440,7 +524,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformHmacRipemd160GetKlass" title="xmlSecTransformHmacRipemd160GetKlass ()">xmlSecTransformHmacRipemd160GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformGostR3410-2012GostR3411-2012-256GetKlass" title="xmlSecTransformGostR3410_2012GostR3411_2012_256GetKlass ()">xmlSecTransformGostR3410_2012GostR3411_2012_256GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -448,7 +532,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformHmacSha1GetKlass" title="xmlSecTransformHmacSha1GetKlass ()">xmlSecTransformHmacSha1GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformGostR3410-2012GostR3411-2012-512GetKlass" title="xmlSecTransformGostR3410_2012GostR3411_2012_512GetKlass ()">xmlSecTransformGostR3410_2012GostR3411_2012_512GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -456,7 +540,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformHmacSha224GetKlass" title="xmlSecTransformHmacSha224GetKlass ()">xmlSecTransformHmacSha224GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformHmacMd5GetKlass" title="xmlSecTransformHmacMd5GetKlass ()">xmlSecTransformHmacMd5GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -464,7 +548,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformHmacSha256GetKlass" title="xmlSecTransformHmacSha256GetKlass ()">xmlSecTransformHmacSha256GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformHmacRipemd160GetKlass" title="xmlSecTransformHmacRipemd160GetKlass ()">xmlSecTransformHmacRipemd160GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -472,7 +556,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformHmacSha384GetKlass" title="xmlSecTransformHmacSha384GetKlass ()">xmlSecTransformHmacSha384GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformHmacSha1GetKlass" title="xmlSecTransformHmacSha1GetKlass ()">xmlSecTransformHmacSha1GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -480,7 +564,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformHmacSha512GetKlass" title="xmlSecTransformHmacSha512GetKlass ()">xmlSecTransformHmacSha512GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformHmacSha224GetKlass" title="xmlSecTransformHmacSha224GetKlass ()">xmlSecTransformHmacSha224GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -488,7 +572,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformMd5GetKlass" title="xmlSecTransformMd5GetKlass ()">xmlSecTransformMd5GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformHmacSha256GetKlass" title="xmlSecTransformHmacSha256GetKlass ()">xmlSecTransformHmacSha256GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -496,7 +580,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformPbkdf2GetKlass" title="xmlSecTransformPbkdf2GetKlass ()">xmlSecTransformPbkdf2GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformHmacSha384GetKlass" title="xmlSecTransformHmacSha384GetKlass ()">xmlSecTransformHmacSha384GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -504,7 +588,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformRipemd160GetKlass" title="xmlSecTransformRipemd160GetKlass ()">xmlSecTransformRipemd160GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformHmacSha512GetKlass" title="xmlSecTransformHmacSha512GetKlass ()">xmlSecTransformHmacSha512GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -512,7 +596,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformRsaMd5GetKlass" title="xmlSecTransformRsaMd5GetKlass ()">xmlSecTransformRsaMd5GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformMd5GetKlass" title="xmlSecTransformMd5GetKlass ()">xmlSecTransformMd5GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -520,7 +604,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformRsaRipemd160GetKlass" title="xmlSecTransformRsaRipemd160GetKlass ()">xmlSecTransformRsaRipemd160GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformMLDSA44GetKlass" title="xmlSecTransformMLDSA44GetKlass ()">xmlSecTransformMLDSA44GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -528,7 +612,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformRsaSha1GetKlass" title="xmlSecTransformRsaSha1GetKlass ()">xmlSecTransformRsaSha1GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformMLDSA65GetKlass" title="xmlSecTransformMLDSA65GetKlass ()">xmlSecTransformMLDSA65GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -536,7 +620,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformRsaSha224GetKlass" title="xmlSecTransformRsaSha224GetKlass ()">xmlSecTransformRsaSha224GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformMLDSA87GetKlass" title="xmlSecTransformMLDSA87GetKlass ()">xmlSecTransformMLDSA87GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -544,7 +628,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformRsaSha256GetKlass" title="xmlSecTransformRsaSha256GetKlass ()">xmlSecTransformRsaSha256GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformPbkdf2GetKlass" title="xmlSecTransformPbkdf2GetKlass ()">xmlSecTransformPbkdf2GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -552,7 +636,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformRsaSha384GetKlass" title="xmlSecTransformRsaSha384GetKlass ()">xmlSecTransformRsaSha384GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformRipemd160GetKlass" title="xmlSecTransformRipemd160GetKlass ()">xmlSecTransformRipemd160GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -560,7 +644,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformRsaSha512GetKlass" title="xmlSecTransformRsaSha512GetKlass ()">xmlSecTransformRsaSha512GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformRsaMd5GetKlass" title="xmlSecTransformRsaMd5GetKlass ()">xmlSecTransformRsaMd5GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -568,7 +652,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformRsaPssSha1GetKlass" title="xmlSecTransformRsaPssSha1GetKlass ()">xmlSecTransformRsaPssSha1GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformRsaRipemd160GetKlass" title="xmlSecTransformRsaRipemd160GetKlass ()">xmlSecTransformRsaRipemd160GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -576,7 +660,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformRsaPssSha224GetKlass" title="xmlSecTransformRsaPssSha224GetKlass ()">xmlSecTransformRsaPssSha224GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformRsaSha1GetKlass" title="xmlSecTransformRsaSha1GetKlass ()">xmlSecTransformRsaSha1GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -584,7 +668,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformRsaPssSha256GetKlass" title="xmlSecTransformRsaPssSha256GetKlass ()">xmlSecTransformRsaPssSha256GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformRsaSha224GetKlass" title="xmlSecTransformRsaSha224GetKlass ()">xmlSecTransformRsaSha224GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -592,7 +676,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformRsaPssSha384GetKlass" title="xmlSecTransformRsaPssSha384GetKlass ()">xmlSecTransformRsaPssSha384GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformRsaSha256GetKlass" title="xmlSecTransformRsaSha256GetKlass ()">xmlSecTransformRsaSha256GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -600,7 +684,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformRsaPssSha512GetKlass" title="xmlSecTransformRsaPssSha512GetKlass ()">xmlSecTransformRsaPssSha512GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformRsaSha384GetKlass" title="xmlSecTransformRsaSha384GetKlass ()">xmlSecTransformRsaSha384GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -608,7 +692,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformRsaPssSha3-224GetKlass" title="xmlSecTransformRsaPssSha3_224GetKlass ()">xmlSecTransformRsaPssSha3_224GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformRsaSha512GetKlass" title="xmlSecTransformRsaSha512GetKlass ()">xmlSecTransformRsaSha512GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -616,7 +700,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformRsaPssSha3-256GetKlass" title="xmlSecTransformRsaPssSha3_256GetKlass ()">xmlSecTransformRsaPssSha3_256GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformRsaPssSha1GetKlass" title="xmlSecTransformRsaPssSha1GetKlass ()">xmlSecTransformRsaPssSha1GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -624,7 +708,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformRsaPssSha3-384GetKlass" title="xmlSecTransformRsaPssSha3_384GetKlass ()">xmlSecTransformRsaPssSha3_384GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformRsaPssSha224GetKlass" title="xmlSecTransformRsaPssSha224GetKlass ()">xmlSecTransformRsaPssSha224GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -632,7 +716,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformRsaPssSha3-512GetKlass" title="xmlSecTransformRsaPssSha3_512GetKlass ()">xmlSecTransformRsaPssSha3_512GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformRsaPssSha256GetKlass" title="xmlSecTransformRsaPssSha256GetKlass ()">xmlSecTransformRsaPssSha256GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -640,7 +724,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformRsaPkcs1GetKlass" title="xmlSecTransformRsaPkcs1GetKlass ()">xmlSecTransformRsaPkcs1GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformRsaPssSha384GetKlass" title="xmlSecTransformRsaPssSha384GetKlass ()">xmlSecTransformRsaPssSha384GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -648,7 +732,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformRsaOaepGetKlass" title="xmlSecTransformRsaOaepGetKlass ()">xmlSecTransformRsaOaepGetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformRsaPssSha512GetKlass" title="xmlSecTransformRsaPssSha512GetKlass ()">xmlSecTransformRsaPssSha512GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -656,7 +740,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformRsaOaepEnc11GetKlass" title="xmlSecTransformRsaOaepEnc11GetKlass ()">xmlSecTransformRsaOaepEnc11GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformRsaPssSha3-224GetKlass" title="xmlSecTransformRsaPssSha3_224GetKlass ()">xmlSecTransformRsaPssSha3_224GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -664,7 +748,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformGostR3411-94GetKlass" title="xmlSecTransformGostR3411_94GetKlass ()">xmlSecTransformGostR3411_94GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformRsaPssSha3-256GetKlass" title="xmlSecTransformRsaPssSha3_256GetKlass ()">xmlSecTransformRsaPssSha3_256GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -672,7 +756,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformGostR3411-2012-256GetKlass" title="xmlSecTransformGostR3411_2012_256GetKlass ()">xmlSecTransformGostR3411_2012_256GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformRsaPssSha3-384GetKlass" title="xmlSecTransformRsaPssSha3_384GetKlass ()">xmlSecTransformRsaPssSha3_384GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -680,7 +764,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformGostR3411-2012-512GetKlass" title="xmlSecTransformGostR3411_2012_512GetKlass ()">xmlSecTransformGostR3411_2012_512GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformRsaPssSha3-512GetKlass" title="xmlSecTransformRsaPssSha3_512GetKlass ()">xmlSecTransformRsaPssSha3_512GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -688,7 +772,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformSha1GetKlass" title="xmlSecTransformSha1GetKlass ()">xmlSecTransformSha1GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformRsaPkcs1GetKlass" title="xmlSecTransformRsaPkcs1GetKlass ()">xmlSecTransformRsaPkcs1GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -696,7 +780,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformSha224GetKlass" title="xmlSecTransformSha224GetKlass ()">xmlSecTransformSha224GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformRsaOaepGetKlass" title="xmlSecTransformRsaOaepGetKlass ()">xmlSecTransformRsaOaepGetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -704,7 +788,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformSha256GetKlass" title="xmlSecTransformSha256GetKlass ()">xmlSecTransformSha256GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformRsaOaepEnc11GetKlass" title="xmlSecTransformRsaOaepEnc11GetKlass ()">xmlSecTransformRsaOaepEnc11GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -712,7 +796,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformSha384GetKlass" title="xmlSecTransformSha384GetKlass ()">xmlSecTransformSha384GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformSLHDSA-SHA2-128fGetKlass" title="xmlSecTransformSLHDSA_SHA2_128fGetKlass ()">xmlSecTransformSLHDSA_SHA2_128fGetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -720,7 +804,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformSha512GetKlass" title="xmlSecTransformSha512GetKlass ()">xmlSecTransformSha512GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformSLHDSA-SHA2-128sGetKlass" title="xmlSecTransformSLHDSA_SHA2_128sGetKlass ()">xmlSecTransformSLHDSA_SHA2_128sGetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -728,7 +812,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformSha3-224GetKlass" title="xmlSecTransformSha3_224GetKlass ()">xmlSecTransformSha3_224GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformSLHDSA-SHA2-192fGetKlass" title="xmlSecTransformSLHDSA_SHA2_192fGetKlass ()">xmlSecTransformSLHDSA_SHA2_192fGetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -736,7 +820,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformSha3-256GetKlass" title="xmlSecTransformSha3_256GetKlass ()">xmlSecTransformSha3_256GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformSLHDSA-SHA2-192sGetKlass" title="xmlSecTransformSLHDSA_SHA2_192sGetKlass ()">xmlSecTransformSLHDSA_SHA2_192sGetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -744,7 +828,7 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformSha3-384GetKlass" title="xmlSecTransformSha3_384GetKlass ()">xmlSecTransformSha3_384GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformSLHDSA-SHA2-256fGetKlass" title="xmlSecTransformSLHDSA_SHA2_256fGetKlass ()">xmlSecTransformSLHDSA_SHA2_256fGetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -752,7 +836,143 @@
 <font><span class="returnvalue">xmlSecTransformId</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecTransformSha3-512GetKlass" title="xmlSecTransformSha3_512GetKlass ()">xmlSecTransformSha3_512GetKlass</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecTransformSLHDSA-SHA2-256sGetKlass" title="xmlSecTransformSLHDSA_SHA2_256sGetKlass ()">xmlSecTransformSLHDSA_SHA2_256sGetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-app.html#xmlSecTransformEdDSAEd25519GetKlass" title="xmlSecTransformEdDSAEd25519GetKlass ()">xmlSecTransformEdDSAEd25519GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-app.html#xmlSecTransformEdDSAEd25519ctxGetKlass" title="xmlSecTransformEdDSAEd25519ctxGetKlass ()">xmlSecTransformEdDSAEd25519ctxGetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-app.html#xmlSecTransformEdDSAEd25519phGetKlass" title="xmlSecTransformEdDSAEd25519phGetKlass ()">xmlSecTransformEdDSAEd25519phGetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-app.html#xmlSecTransformEdDSAEd448GetKlass" title="xmlSecTransformEdDSAEd448GetKlass ()">xmlSecTransformEdDSAEd448GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-app.html#xmlSecTransformEdDSAEd448phGetKlass" title="xmlSecTransformEdDSAEd448phGetKlass ()">xmlSecTransformEdDSAEd448phGetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-app.html#xmlSecTransformGostR3411-94GetKlass" title="xmlSecTransformGostR3411_94GetKlass ()">xmlSecTransformGostR3411_94GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-app.html#xmlSecTransformGostR3411-2012-256GetKlass" title="xmlSecTransformGostR3411_2012_256GetKlass ()">xmlSecTransformGostR3411_2012_256GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-app.html#xmlSecTransformGostR3411-2012-512GetKlass" title="xmlSecTransformGostR3411_2012_512GetKlass ()">xmlSecTransformGostR3411_2012_512GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-app.html#xmlSecTransformSha1GetKlass" title="xmlSecTransformSha1GetKlass ()">xmlSecTransformSha1GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-app.html#xmlSecTransformSha224GetKlass" title="xmlSecTransformSha224GetKlass ()">xmlSecTransformSha224GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-app.html#xmlSecTransformSha256GetKlass" title="xmlSecTransformSha256GetKlass ()">xmlSecTransformSha256GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-app.html#xmlSecTransformSha384GetKlass" title="xmlSecTransformSha384GetKlass ()">xmlSecTransformSha384GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-app.html#xmlSecTransformSha512GetKlass" title="xmlSecTransformSha512GetKlass ()">xmlSecTransformSha512GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-app.html#xmlSecTransformSha3-224GetKlass" title="xmlSecTransformSha3_224GetKlass ()">xmlSecTransformSha3_224GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-app.html#xmlSecTransformSha3-256GetKlass" title="xmlSecTransformSha3_256GetKlass ()">xmlSecTransformSha3_256GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-app.html#xmlSecTransformSha3-384GetKlass" title="xmlSecTransformSha3_384GetKlass ()">xmlSecTransformSha3_384GetKlass</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">xmlSecTransformId</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-app.html#xmlSecTransformSha3-512GetKlass" title="xmlSecTransformSha3_512GetKlass ()">xmlSecTransformSha3_512GetKlass</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -760,7 +980,7 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecCryptoAppInit" title="xmlSecCryptoAppInit ()">xmlSecCryptoAppInit</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecCryptoAppInit" title="xmlSecCryptoAppInit ()">xmlSecCryptoAppInit</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -768,7 +988,7 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecCryptoAppShutdown" title="xmlSecCryptoAppShutdown ()">xmlSecCryptoAppShutdown</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecCryptoAppShutdown" title="xmlSecCryptoAppShutdown ()">xmlSecCryptoAppShutdown</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -776,7 +996,7 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecCryptoAppDefaultKeysMngrInit" title="xmlSecCryptoAppDefaultKeysMngrInit ()">xmlSecCryptoAppDefaultKeysMngrInit</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecCryptoAppDefaultKeysMngrInit" title="xmlSecCryptoAppDefaultKeysMngrInit ()">xmlSecCryptoAppDefaultKeysMngrInit</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -784,7 +1004,7 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecCryptoAppDefaultKeysMngrAdoptKey" title="xmlSecCryptoAppDefaultKeysMngrAdoptKey ()">xmlSecCryptoAppDefaultKeysMngrAdoptKey</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecCryptoAppDefaultKeysMngrAdoptKey" title="xmlSecCryptoAppDefaultKeysMngrAdoptKey ()">xmlSecCryptoAppDefaultKeysMngrAdoptKey</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -792,7 +1012,7 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecCryptoAppDefaultKeysMngrVerifyKey" title="xmlSecCryptoAppDefaultKeysMngrVerifyKey ()">xmlSecCryptoAppDefaultKeysMngrVerifyKey</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecCryptoAppDefaultKeysMngrVerifyKey" title="xmlSecCryptoAppDefaultKeysMngrVerifyKey ()">xmlSecCryptoAppDefaultKeysMngrVerifyKey</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -800,7 +1020,7 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecCryptoAppDefaultKeysMngrLoad" title="xmlSecCryptoAppDefaultKeysMngrLoad ()">xmlSecCryptoAppDefaultKeysMngrLoad</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecCryptoAppDefaultKeysMngrLoad" title="xmlSecCryptoAppDefaultKeysMngrLoad ()">xmlSecCryptoAppDefaultKeysMngrLoad</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -808,7 +1028,7 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecCryptoAppDefaultKeysMngrSave" title="xmlSecCryptoAppDefaultKeysMngrSave ()">xmlSecCryptoAppDefaultKeysMngrSave</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecCryptoAppDefaultKeysMngrSave" title="xmlSecCryptoAppDefaultKeysMngrSave ()">xmlSecCryptoAppDefaultKeysMngrSave</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -816,7 +1036,7 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecCryptoAppKeysMngrCertLoad" title="xmlSecCryptoAppKeysMngrCertLoad ()">xmlSecCryptoAppKeysMngrCertLoad</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecCryptoAppKeysMngrCertLoad" title="xmlSecCryptoAppKeysMngrCertLoad ()">xmlSecCryptoAppKeysMngrCertLoad</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -824,7 +1044,7 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecCryptoAppKeysMngrCertLoadMemory" title="xmlSecCryptoAppKeysMngrCertLoadMemory ()">xmlSecCryptoAppKeysMngrCertLoadMemory</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecCryptoAppKeysMngrCertLoadMemory" title="xmlSecCryptoAppKeysMngrCertLoadMemory ()">xmlSecCryptoAppKeysMngrCertLoadMemory</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -832,7 +1052,7 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecCryptoAppKeysMngrCrlLoad" title="xmlSecCryptoAppKeysMngrCrlLoad ()">xmlSecCryptoAppKeysMngrCrlLoad</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecCryptoAppKeysMngrCrlLoad" title="xmlSecCryptoAppKeysMngrCrlLoad ()">xmlSecCryptoAppKeysMngrCrlLoad</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -840,7 +1060,15 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecCryptoAppKeysMngrCrlLoadMemory" title="xmlSecCryptoAppKeysMngrCrlLoadMemory ()">xmlSecCryptoAppKeysMngrCrlLoadMemory</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecCryptoAppKeysMngrCrlLoadMemory" title="xmlSecCryptoAppKeysMngrCrlLoadMemory ()">xmlSecCryptoAppKeysMngrCrlLoadMemory</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-app.html#xmlSecCryptoAppKeysMngrCrlLoadAndVerify" title="xmlSecCryptoAppKeysMngrCrlLoadAndVerify ()">xmlSecCryptoAppKeysMngrCrlLoadAndVerify</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -848,7 +1076,7 @@
 <a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecCryptoAppKeyLoadEx" title="xmlSecCryptoAppKeyLoadEx ()">xmlSecCryptoAppKeyLoadEx</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecCryptoAppKeyLoadEx" title="xmlSecCryptoAppKeyLoadEx ()">xmlSecCryptoAppKeyLoadEx</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -856,7 +1084,7 @@
 <a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecCryptoAppKeyLoadMemory" title="xmlSecCryptoAppKeyLoadMemory ()">xmlSecCryptoAppKeyLoadMemory</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecCryptoAppKeyLoadMemory" title="xmlSecCryptoAppKeyLoadMemory ()">xmlSecCryptoAppKeyLoadMemory</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -864,7 +1092,7 @@
 <a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecCryptoAppPkcs12Load" title="xmlSecCryptoAppPkcs12Load ()">xmlSecCryptoAppPkcs12Load</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecCryptoAppPkcs12Load" title="xmlSecCryptoAppPkcs12Load ()">xmlSecCryptoAppPkcs12Load</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -872,7 +1100,7 @@
 <a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecCryptoAppPkcs12LoadMemory" title="xmlSecCryptoAppPkcs12LoadMemory ()">xmlSecCryptoAppPkcs12LoadMemory</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecCryptoAppPkcs12LoadMemory" title="xmlSecCryptoAppPkcs12LoadMemory ()">xmlSecCryptoAppPkcs12LoadMemory</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -880,7 +1108,7 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecCryptoAppKeyCertLoad" title="xmlSecCryptoAppKeyCertLoad ()">xmlSecCryptoAppKeyCertLoad</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecCryptoAppKeyCertLoad" title="xmlSecCryptoAppKeyCertLoad ()">xmlSecCryptoAppKeyCertLoad</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
@@ -888,15 +1116,15 @@
 <font><span class="returnvalue">int</span></font>
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecCryptoAppKeyCertLoadMemory" title="xmlSecCryptoAppKeyCertLoadMemory ()">xmlSecCryptoAppKeyCertLoadMemory</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecCryptoAppKeyCertLoadMemory" title="xmlSecCryptoAppKeyCertLoadMemory ()">xmlSecCryptoAppKeyCertLoadMemory</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
 <td class="function_type">
-<font><span class="returnvalue">void</span></font> *
+<font><span class="returnvalue">void</span></font> *
 </td>
 <td class="function_name">
-<a class="link" href="xmlsec-app.html#xmlSecCryptoAppGetDefaultPwdCallback" title="xmlSecCryptoAppGetDefaultPwdCallback ()">xmlSecCryptoAppGetDefaultPwdCallback</a> <span class="c_punctuation">()</span>
+<a class="link" href="xmlsec-app.html#xmlSecCryptoAppGetDefaultPwdCallback" title="xmlSecCryptoAppGetDefaultPwdCallback ()">xmlSecCryptoAppGetDefaultPwdCallback</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 </tbody>
@@ -952,11 +1180,31 @@
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-app.html#xmlSecKeyDataHkdfId" title="xmlSecKeyDataHkdfId">xmlSecKeyDataHkdfId</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-app.html#xmlSecKeyDataMLDSAId" title="xmlSecKeyDataMLDSAId">xmlSecKeyDataMLDSAId</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
 <td class="function_name"><a class="link" href="xmlsec-app.html#xmlSecKeyDataPbkdf2Id" title="xmlSecKeyDataPbkdf2Id">xmlSecKeyDataPbkdf2Id</a></td>
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
 <td class="function_name"><a class="link" href="xmlsec-app.html#xmlSecKeyDataRsaId" title="xmlSecKeyDataRsaId">xmlSecKeyDataRsaId</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-app.html#xmlSecKeyDataSLHDSAId" title="xmlSecKeyDataSLHDSAId">xmlSecKeyDataSLHDSAId</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-app.html#xmlSecKeyDataEdDSAId" title="xmlSecKeyDataEdDSAId">xmlSecKeyDataEdDSAId</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-app.html#xmlSecKeyDataXdhId" title="xmlSecKeyDataXdhId">xmlSecKeyDataXdhId</a></td>
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
@@ -1028,6 +1276,10 @@
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-app.html#xmlSecTransformHkdfId" title="xmlSecTransformHkdfId">xmlSecTransformHkdfId</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
 <td class="function_name"><a class="link" href="xmlsec-app.html#xmlSecTransformDsaSha1Id" title="xmlSecTransformDsaSha1Id">xmlSecTransformDsaSha1Id</a></td>
 </tr>
 <tr>
@@ -1037,6 +1289,14 @@
 <tr>
 <td class="define_keyword">#define</td>
 <td class="function_name"><a class="link" href="xmlsec-app.html#xmlSecTransformEcdhId" title="xmlSecTransformEcdhId">xmlSecTransformEcdhId</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-app.html#xmlSecTransformX25519Id" title="xmlSecTransformX25519Id">xmlSecTransformX25519Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-app.html#xmlSecTransformX448Id" title="xmlSecTransformX448Id">xmlSecTransformX448Id</a></td>
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
@@ -1124,6 +1384,18 @@
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-app.html#xmlSecTransformMLDSA44Id" title="xmlSecTransformMLDSA44Id">xmlSecTransformMLDSA44Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-app.html#xmlSecTransformMLDSA65Id" title="xmlSecTransformMLDSA65Id">xmlSecTransformMLDSA65Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-app.html#xmlSecTransformMLDSA87Id" title="xmlSecTransformMLDSA87Id">xmlSecTransformMLDSA87Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
 <td class="function_name"><a class="link" href="xmlsec-app.html#xmlSecTransformPbkdf2Id" title="xmlSecTransformPbkdf2Id">xmlSecTransformPbkdf2Id</a></td>
 </tr>
 <tr>
@@ -1208,6 +1480,50 @@
 </tr>
 <tr>
 <td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-app.html#xmlSecTransformSLHDSA-SHA2-128f-Id" title="xmlSecTransformSLHDSA_SHA2_128f_Id">xmlSecTransformSLHDSA_SHA2_128f_Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-app.html#xmlSecTransformSLHDSA-SHA2-128s-Id" title="xmlSecTransformSLHDSA_SHA2_128s_Id">xmlSecTransformSLHDSA_SHA2_128s_Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-app.html#xmlSecTransformSLHDSA-SHA2-192f-Id" title="xmlSecTransformSLHDSA_SHA2_192f_Id">xmlSecTransformSLHDSA_SHA2_192f_Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-app.html#xmlSecTransformSLHDSA-SHA2-192s-Id" title="xmlSecTransformSLHDSA_SHA2_192s_Id">xmlSecTransformSLHDSA_SHA2_192s_Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-app.html#xmlSecTransformSLHDSA-SHA2-256f-Id" title="xmlSecTransformSLHDSA_SHA2_256f_Id">xmlSecTransformSLHDSA_SHA2_256f_Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-app.html#xmlSecTransformSLHDSA-SHA2-256s-Id" title="xmlSecTransformSLHDSA_SHA2_256s_Id">xmlSecTransformSLHDSA_SHA2_256s_Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-app.html#xmlSecTransformEdDSAEd25519Id" title="xmlSecTransformEdDSAEd25519Id">xmlSecTransformEdDSAEd25519Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-app.html#xmlSecTransformEdDSAEd25519ctxId" title="xmlSecTransformEdDSAEd25519ctxId">xmlSecTransformEdDSAEd25519ctxId</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-app.html#xmlSecTransformEdDSAEd25519phId" title="xmlSecTransformEdDSAEd25519phId">xmlSecTransformEdDSAEd25519phId</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-app.html#xmlSecTransformEdDSAEd448Id" title="xmlSecTransformEdDSAEd448Id">xmlSecTransformEdDSAEd448Id</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="xmlsec-app.html#xmlSecTransformEdDSAEd448phId" title="xmlSecTransformEdDSAEd448phId">xmlSecTransformEdDSAEd448phId</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
 <td class="function_name"><a class="link" href="xmlsec-app.html#xmlSecTransformGostR3411-94Id" title="xmlSecTransformGostR3411_94Id">xmlSecTransformGostR3411_94Id</a></td>
 </tr>
 <tr>
@@ -1264,7 +1580,7 @@
 <div class="refsect1">
 <a name="xmlsec-app.functions_details"></a><h2>Functions</h2>
 <div class="refsect2">
-<a name="xmlSecCryptoInit"></a><h3>xmlSecCryptoInit ()</h3>
+<a name="xmlSecCryptoInit"></a><h3>xmlSecCryptoInit ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecCryptoInit (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>XMLSec library specific crypto engine initialization.</p>
@@ -1275,7 +1591,7 @@ xmlSecCryptoInit (<em class="parameter"><code><span class="type">void</span></co
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecCryptoShutdown"></a><h3>xmlSecCryptoShutdown ()</h3>
+<a name="xmlSecCryptoShutdown"></a><h3>xmlSecCryptoShutdown ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecCryptoShutdown (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>XMLSec library specific crypto engine shutdown.</p>
@@ -1286,7 +1602,7 @@ xmlSecCryptoShutdown (<em class="parameter"><code><span class="type">void</span>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecCryptoKeysMngrInit"></a><h3>xmlSecCryptoKeysMngrInit ()</h3>
+<a name="xmlSecCryptoKeysMngrInit"></a><h3>xmlSecCryptoKeysMngrInit ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecCryptoKeysMngrInit (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>);</pre>
 <p>Adds crypto specific key data stores in keys manager.</p>
@@ -1301,7 +1617,7 @@ xmlSecCryptoKeysMngrInit (<em class="parameter"><code><a class="link" href="xmls
 <tbody><tr>
 <td class="parameter_name"><p>mngr</p></td>
 <td class="parameter_description"><p>the pointer to keys manager.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
@@ -1312,7 +1628,7 @@ xmlSecCryptoKeysMngrInit (<em class="parameter"><code><a class="link" href="xmls
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataAesGetKlass"></a><h3>xmlSecKeyDataAesGetKlass ()</h3>
+<a name="xmlSecKeyDataAesGetKlass"></a><h3>xmlSecKeyDataAesGetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
 xmlSecKeyDataAesGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The AES key data klass.</p>
@@ -1325,7 +1641,7 @@ klass is not implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataConcatKdfGetKlass"></a><h3>xmlSecKeyDataConcatKdfGetKlass ()</h3>
+<a name="xmlSecKeyDataConcatKdfGetKlass"></a><h3>xmlSecKeyDataConcatKdfGetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
 xmlSecKeyDataConcatKdfGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The ConcatKDF key data klass.</p>
@@ -1338,7 +1654,7 @@ klass is not implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataDesGetKlass"></a><h3>xmlSecKeyDataDesGetKlass ()</h3>
+<a name="xmlSecKeyDataDesGetKlass"></a><h3>xmlSecKeyDataDesGetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
 xmlSecKeyDataDesGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The DES key data klass.</p>
@@ -1351,7 +1667,7 @@ klass is not implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataDhGetKlass"></a><h3>xmlSecKeyDataDhGetKlass ()</h3>
+<a name="xmlSecKeyDataDhGetKlass"></a><h3>xmlSecKeyDataDhGetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
 xmlSecKeyDataDhGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The DH key data klass.</p>
@@ -1364,7 +1680,7 @@ klass is not implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataDsaGetKlass"></a><h3>xmlSecKeyDataDsaGetKlass ()</h3>
+<a name="xmlSecKeyDataDsaGetKlass"></a><h3>xmlSecKeyDataDsaGetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
 xmlSecKeyDataDsaGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The DSA key data klass.</p>
@@ -1377,7 +1693,7 @@ klass is not implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataEcGetKlass"></a><h3>xmlSecKeyDataEcGetKlass ()</h3>
+<a name="xmlSecKeyDataEcGetKlass"></a><h3>xmlSecKeyDataEcGetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
 xmlSecKeyDataEcGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The EC key data klass.</p>
@@ -1390,7 +1706,7 @@ klass is not implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataGost2001GetKlass"></a><h3>xmlSecKeyDataGost2001GetKlass ()</h3>
+<a name="xmlSecKeyDataGost2001GetKlass"></a><h3>xmlSecKeyDataGost2001GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
 xmlSecKeyDataGost2001GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The GOST2001 key data klass.</p>
@@ -1403,7 +1719,7 @@ klass is not implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataGostR3410-2012-256GetKlass"></a><h3>xmlSecKeyDataGostR3410_2012_256GetKlass ()</h3>
+<a name="xmlSecKeyDataGostR3410-2012-256GetKlass"></a><h3>xmlSecKeyDataGostR3410_2012_256GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
 xmlSecKeyDataGostR3410_2012_256GetKlass
                                (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
@@ -1417,7 +1733,7 @@ klass is not implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataGostR3410-2012-512GetKlass"></a><h3>xmlSecKeyDataGostR3410_2012_512GetKlass ()</h3>
+<a name="xmlSecKeyDataGostR3410-2012-512GetKlass"></a><h3>xmlSecKeyDataGostR3410_2012_512GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
 xmlSecKeyDataGostR3410_2012_512GetKlass
                                (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
@@ -1431,7 +1747,7 @@ klass is not implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataHmacGetKlass"></a><h3>xmlSecKeyDataHmacGetKlass ()</h3>
+<a name="xmlSecKeyDataHmacGetKlass"></a><h3>xmlSecKeyDataHmacGetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
 xmlSecKeyDataHmacGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The HMAC key data klass.</p>
@@ -1444,7 +1760,33 @@ klass is not implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataPbkdf2GetKlass"></a><h3>xmlSecKeyDataPbkdf2GetKlass ()</h3>
+<a name="xmlSecKeyDataHkdfGetKlass"></a><h3>xmlSecKeyDataHkdfGetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
+xmlSecKeyDataHkdfGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The HKDF key data klass.</p>
+<div class="refsect3">
+<a name="xmlSecKeyDataHkdfGetKlass.returns"></a><h4>Returns</h4>
+<p> HKDF key data klass or NULL if an error occurs
+(xmlsec-crypto library is not loaded or the HKDF key data
+klass is not implemented).</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecKeyDataMLDSAGetKlass"></a><h3>xmlSecKeyDataMLDSAGetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
+xmlSecKeyDataMLDSAGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The ML-DSA key data klass.</p>
+<div class="refsect3">
+<a name="xmlSecKeyDataMLDSAGetKlass.returns"></a><h4>Returns</h4>
+<p> ML-DSA key data klass or NULL if an error occurs
+(xmlsec-crypto library is not loaded or the ML-DSA key data
+klass is not implemented).</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecKeyDataPbkdf2GetKlass"></a><h3>xmlSecKeyDataPbkdf2GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
 xmlSecKeyDataPbkdf2GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The PBKDF2 key data klass.</p>
@@ -1457,7 +1799,7 @@ klass is not implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataRsaGetKlass"></a><h3>xmlSecKeyDataRsaGetKlass ()</h3>
+<a name="xmlSecKeyDataRsaGetKlass"></a><h3>xmlSecKeyDataRsaGetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
 xmlSecKeyDataRsaGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The RSA key data klass.</p>
@@ -1470,7 +1812,46 @@ klass is not implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataX509GetKlass"></a><h3>xmlSecKeyDataX509GetKlass ()</h3>
+<a name="xmlSecKeyDataSLHDSAGetKlass"></a><h3>xmlSecKeyDataSLHDSAGetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
+xmlSecKeyDataSLHDSAGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The SLH-DSA key data klass.</p>
+<div class="refsect3">
+<a name="xmlSecKeyDataSLHDSAGetKlass.returns"></a><h4>Returns</h4>
+<p> SLH-DSA key data klass or NULL if an error occurs
+(xmlsec-crypto library is not loaded or the SLH-DSA key data
+klass is not implemented).</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecKeyDataEdDSAGetKlass"></a><h3>xmlSecKeyDataEdDSAGetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
+xmlSecKeyDataEdDSAGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The EdDSA key data klass.</p>
+<div class="refsect3">
+<a name="xmlSecKeyDataEdDSAGetKlass.returns"></a><h4>Returns</h4>
+<p> EdDSA key data klass or NULL if an error occurs
+(xmlsec-crypto library is not loaded or the EdDSA key data
+klass is not implemented).</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecKeyDataXdhGetKlass"></a><h3>xmlSecKeyDataXdhGetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
+xmlSecKeyDataXdhGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The XDH key data klass.</p>
+<div class="refsect3">
+<a name="xmlSecKeyDataXdhGetKlass.returns"></a><h4>Returns</h4>
+<p> XDH key data klass or NULL if an error occurs
+(xmlsec-crypto library is not loaded or the XDH key data
+klass is not implemented).</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecKeyDataX509GetKlass"></a><h3>xmlSecKeyDataX509GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
 xmlSecKeyDataX509GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The X509 key data klass.</p>
@@ -1483,7 +1864,7 @@ klass is not implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataRawX509CertGetKlass"></a><h3>xmlSecKeyDataRawX509CertGetKlass ()</h3>
+<a name="xmlSecKeyDataRawX509CertGetKlass"></a><h3>xmlSecKeyDataRawX509CertGetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
 xmlSecKeyDataRawX509CertGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The raw X509 cert key data klass.</p>
@@ -1496,7 +1877,7 @@ klass is not implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecKeyDataDEREncodedKeyValueGetKlass"></a><h3>xmlSecKeyDataDEREncodedKeyValueGetKlass ()</h3>
+<a name="xmlSecKeyDataDEREncodedKeyValueGetKlass"></a><h3>xmlSecKeyDataDEREncodedKeyValueGetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataId</span></font>
 xmlSecKeyDataDEREncodedKeyValueGetKlass
                                (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
@@ -1510,7 +1891,7 @@ klass is not implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecX509StoreGetKlass"></a><h3>xmlSecX509StoreGetKlass ()</h3>
+<a name="xmlSecX509StoreGetKlass"></a><h3>xmlSecX509StoreGetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecKeyDataStoreId</span></font>
 xmlSecX509StoreGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The X509 certificates key data store klass.</p>
@@ -1523,7 +1904,7 @@ cert key data klass is not implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformAes128CbcGetKlass"></a><h3>xmlSecTransformAes128CbcGetKlass ()</h3>
+<a name="xmlSecTransformAes128CbcGetKlass"></a><h3>xmlSecTransformAes128CbcGetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformAes128CbcGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>AES 128 CBC encryption transform klass.</p>
@@ -1536,7 +1917,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformAes192CbcGetKlass"></a><h3>xmlSecTransformAes192CbcGetKlass ()</h3>
+<a name="xmlSecTransformAes192CbcGetKlass"></a><h3>xmlSecTransformAes192CbcGetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformAes192CbcGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>AES 192 CBC encryption transform klass.</p>
@@ -1549,7 +1930,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformAes256CbcGetKlass"></a><h3>xmlSecTransformAes256CbcGetKlass ()</h3>
+<a name="xmlSecTransformAes256CbcGetKlass"></a><h3>xmlSecTransformAes256CbcGetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformAes256CbcGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>AES 256 CBC encryption transform klass.</p>
@@ -1562,7 +1943,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformAes128GcmGetKlass"></a><h3>xmlSecTransformAes128GcmGetKlass ()</h3>
+<a name="xmlSecTransformAes128GcmGetKlass"></a><h3>xmlSecTransformAes128GcmGetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformAes128GcmGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>AES 128 GCM encryption transform klass.</p>
@@ -1575,7 +1956,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformAes192GcmGetKlass"></a><h3>xmlSecTransformAes192GcmGetKlass ()</h3>
+<a name="xmlSecTransformAes192GcmGetKlass"></a><h3>xmlSecTransformAes192GcmGetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformAes192GcmGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>AES 192 GCM encryption transform klass.</p>
@@ -1588,7 +1969,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformAes256GcmGetKlass"></a><h3>xmlSecTransformAes256GcmGetKlass ()</h3>
+<a name="xmlSecTransformAes256GcmGetKlass"></a><h3>xmlSecTransformAes256GcmGetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformAes256GcmGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>AES 256 GCM encryption transform klass.</p>
@@ -1601,7 +1982,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformKWAes128GetKlass"></a><h3>xmlSecTransformKWAes128GetKlass ()</h3>
+<a name="xmlSecTransformKWAes128GetKlass"></a><h3>xmlSecTransformKWAes128GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformKWAes128GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The AES-128 kew wrapper transform klass.</p>
@@ -1614,7 +1995,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformKWAes192GetKlass"></a><h3>xmlSecTransformKWAes192GetKlass ()</h3>
+<a name="xmlSecTransformKWAes192GetKlass"></a><h3>xmlSecTransformKWAes192GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformKWAes192GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The AES-192 kew wrapper transform klass.</p>
@@ -1627,7 +2008,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformKWAes256GetKlass"></a><h3>xmlSecTransformKWAes256GetKlass ()</h3>
+<a name="xmlSecTransformKWAes256GetKlass"></a><h3>xmlSecTransformKWAes256GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformKWAes256GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The AES-256 kew wrapper transform klass.</p>
@@ -1640,7 +2021,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformConcatKdfGetKlass"></a><h3>xmlSecTransformConcatKdfGetKlass ()</h3>
+<a name="xmlSecTransformConcatKdfGetKlass"></a><h3>xmlSecTransformConcatKdfGetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformConcatKdfGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>ConcatKDF key derivaton transform klass.</p>
@@ -1653,7 +2034,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformDes3CbcGetKlass"></a><h3>xmlSecTransformDes3CbcGetKlass ()</h3>
+<a name="xmlSecTransformDes3CbcGetKlass"></a><h3>xmlSecTransformDes3CbcGetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformDes3CbcGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>Triple DES CBC encryption transform klass.</p>
@@ -1666,7 +2047,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformKWDes3GetKlass"></a><h3>xmlSecTransformKWDes3GetKlass ()</h3>
+<a name="xmlSecTransformKWDes3GetKlass"></a><h3>xmlSecTransformKWDes3GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformKWDes3GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The Triple DES key wrapper transform klass.</p>
@@ -1679,7 +2060,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformDhEsGetKlass"></a><h3>xmlSecTransformDhEsGetKlass ()</h3>
+<a name="xmlSecTransformDhEsGetKlass"></a><h3>xmlSecTransformDhEsGetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformDhEsGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>DH-ES key agreement transform klass.</p>
@@ -1692,7 +2073,20 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformDsaSha1GetKlass"></a><h3>xmlSecTransformDsaSha1GetKlass ()</h3>
+<a name="xmlSecTransformHkdfGetKlass"></a><h3>xmlSecTransformHkdfGetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecTransformHkdfGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>HKDF key derivation transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecTransformHkdfGetKlass.returns"></a><h4>Returns</h4>
+<p> pointer to HKDF key derivation transform or NULL if an error
+occurs (the xmlsec-crypto library is not loaded or this transform is not
+implemented).</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformDsaSha1GetKlass"></a><h3>xmlSecTransformDsaSha1GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformDsaSha1GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The DSA-SHA1 signature transform klass.</p>
@@ -1705,7 +2099,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformDsaSha256GetKlass"></a><h3>xmlSecTransformDsaSha256GetKlass ()</h3>
+<a name="xmlSecTransformDsaSha256GetKlass"></a><h3>xmlSecTransformDsaSha256GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformDsaSha256GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The DSA-SHA2-256 signature transform klass.</p>
@@ -1718,7 +2112,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformEcdhGetKlass"></a><h3>xmlSecTransformEcdhGetKlass ()</h3>
+<a name="xmlSecTransformEcdhGetKlass"></a><h3>xmlSecTransformEcdhGetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformEcdhGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>ECDH key agreement transform klass.</p>
@@ -1731,7 +2125,33 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformEcdsaSha1GetKlass"></a><h3>xmlSecTransformEcdsaSha1GetKlass ()</h3>
+<a name="xmlSecTransformX25519GetKlass"></a><h3>xmlSecTransformX25519GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecTransformX25519GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>X25519 key agreement transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecTransformX25519GetKlass.returns"></a><h4>Returns</h4>
+<p> pointer to X25519 key agreement transform or NULL if an error
+occurs (the xmlsec-crypto library is not loaded or this transform is not
+implemented).</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformX448GetKlass"></a><h3>xmlSecTransformX448GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecTransformX448GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>X448 key agreement transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecTransformX448GetKlass.returns"></a><h4>Returns</h4>
+<p> pointer to X448 key agreement transform or NULL if an error
+occurs (the xmlsec-crypto library is not loaded or this transform is not
+implemented).</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformEcdsaSha1GetKlass"></a><h3>xmlSecTransformEcdsaSha1GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformEcdsaSha1GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The ECDSA-SHA1 signature transform klass.</p>
@@ -1744,7 +2164,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformEcdsaSha224GetKlass"></a><h3>xmlSecTransformEcdsaSha224GetKlass ()</h3>
+<a name="xmlSecTransformEcdsaSha224GetKlass"></a><h3>xmlSecTransformEcdsaSha224GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformEcdsaSha224GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The ECDSA-SHA2-224 signature transform klass.</p>
@@ -1757,7 +2177,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformEcdsaSha256GetKlass"></a><h3>xmlSecTransformEcdsaSha256GetKlass ()</h3>
+<a name="xmlSecTransformEcdsaSha256GetKlass"></a><h3>xmlSecTransformEcdsaSha256GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformEcdsaSha256GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The ECDSA-SHA2-256 signature transform klass.</p>
@@ -1770,7 +2190,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformEcdsaSha384GetKlass"></a><h3>xmlSecTransformEcdsaSha384GetKlass ()</h3>
+<a name="xmlSecTransformEcdsaSha384GetKlass"></a><h3>xmlSecTransformEcdsaSha384GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformEcdsaSha384GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The ECDSA-SHA2-384 signature transform klass.</p>
@@ -1783,7 +2203,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformEcdsaSha512GetKlass"></a><h3>xmlSecTransformEcdsaSha512GetKlass ()</h3>
+<a name="xmlSecTransformEcdsaSha512GetKlass"></a><h3>xmlSecTransformEcdsaSha512GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformEcdsaSha512GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The ECDSA-SHA2-512 signature transform klass.</p>
@@ -1796,7 +2216,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformEcdsaSha3-224GetKlass"></a><h3>xmlSecTransformEcdsaSha3_224GetKlass ()</h3>
+<a name="xmlSecTransformEcdsaSha3-224GetKlass"></a><h3>xmlSecTransformEcdsaSha3_224GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformEcdsaSha3_224GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The ECDSA-SHA3-224 signature transform klass.</p>
@@ -1809,7 +2229,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformEcdsaSha3-256GetKlass"></a><h3>xmlSecTransformEcdsaSha3_256GetKlass ()</h3>
+<a name="xmlSecTransformEcdsaSha3-256GetKlass"></a><h3>xmlSecTransformEcdsaSha3_256GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformEcdsaSha3_256GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The ECDSA-SHA3-256 signature transform klass.</p>
@@ -1822,7 +2242,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformEcdsaSha3-384GetKlass"></a><h3>xmlSecTransformEcdsaSha3_384GetKlass ()</h3>
+<a name="xmlSecTransformEcdsaSha3-384GetKlass"></a><h3>xmlSecTransformEcdsaSha3_384GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformEcdsaSha3_384GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The ECDSA-SHA3-384 signature transform klass.</p>
@@ -1835,7 +2255,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformEcdsaSha3-512GetKlass"></a><h3>xmlSecTransformEcdsaSha3_512GetKlass ()</h3>
+<a name="xmlSecTransformEcdsaSha3-512GetKlass"></a><h3>xmlSecTransformEcdsaSha3_512GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformEcdsaSha3_512GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The ECDSA-SHA3-512 signature transform klass.</p>
@@ -1848,7 +2268,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformEcdsaRipemd160GetKlass"></a><h3>xmlSecTransformEcdsaRipemd160GetKlass ()</h3>
+<a name="xmlSecTransformEcdsaRipemd160GetKlass"></a><h3>xmlSecTransformEcdsaRipemd160GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformEcdsaRipemd160GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The ECDSA-RIPEMD160 signature transform klass.</p>
@@ -1861,7 +2281,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformGost2001GostR3411-94GetKlass"></a><h3>xmlSecTransformGost2001GostR3411_94GetKlass ()</h3>
+<a name="xmlSecTransformGost2001GostR3411-94GetKlass"></a><h3>xmlSecTransformGost2001GostR3411_94GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformGost2001GostR3411_94GetKlass
                                (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
@@ -1875,7 +2295,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformGostR3410-2012GostR3411-2012-256GetKlass"></a><h3>xmlSecTransformGostR3410_2012GostR3411_2012_256GetKlass ()</h3>
+<a name="xmlSecTransformGostR3410-2012GostR3411-2012-256GetKlass"></a><h3>xmlSecTransformGostR3410_2012GostR3411_2012_256GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformGostR3410_2012GostR3411_2012_256GetKlass
                                (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
@@ -1889,7 +2309,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformGostR3410-2012GostR3411-2012-512GetKlass"></a><h3>xmlSecTransformGostR3410_2012GostR3411_2012_512GetKlass ()</h3>
+<a name="xmlSecTransformGostR3410-2012GostR3411-2012-512GetKlass"></a><h3>xmlSecTransformGostR3410_2012GostR3411_2012_512GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformGostR3410_2012GostR3411_2012_512GetKlass
                                (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
@@ -1903,7 +2323,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformHmacMd5GetKlass"></a><h3>xmlSecTransformHmacMd5GetKlass ()</h3>
+<a name="xmlSecTransformHmacMd5GetKlass"></a><h3>xmlSecTransformHmacMd5GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformHmacMd5GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The HMAC-MD5 transform klass.</p>
@@ -1916,7 +2336,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformHmacRipemd160GetKlass"></a><h3>xmlSecTransformHmacRipemd160GetKlass ()</h3>
+<a name="xmlSecTransformHmacRipemd160GetKlass"></a><h3>xmlSecTransformHmacRipemd160GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformHmacRipemd160GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The HMAC-RIPEMD160 transform klass.</p>
@@ -1929,7 +2349,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformHmacSha1GetKlass"></a><h3>xmlSecTransformHmacSha1GetKlass ()</h3>
+<a name="xmlSecTransformHmacSha1GetKlass"></a><h3>xmlSecTransformHmacSha1GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformHmacSha1GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The HMAC-SHA1 transform klass.</p>
@@ -1942,7 +2362,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformHmacSha224GetKlass"></a><h3>xmlSecTransformHmacSha224GetKlass ()</h3>
+<a name="xmlSecTransformHmacSha224GetKlass"></a><h3>xmlSecTransformHmacSha224GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformHmacSha224GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The HMAC-SHA224 transform klass.</p>
@@ -1955,7 +2375,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformHmacSha256GetKlass"></a><h3>xmlSecTransformHmacSha256GetKlass ()</h3>
+<a name="xmlSecTransformHmacSha256GetKlass"></a><h3>xmlSecTransformHmacSha256GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformHmacSha256GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The HMAC-SHA256 transform klass.</p>
@@ -1968,7 +2388,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformHmacSha384GetKlass"></a><h3>xmlSecTransformHmacSha384GetKlass ()</h3>
+<a name="xmlSecTransformHmacSha384GetKlass"></a><h3>xmlSecTransformHmacSha384GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformHmacSha384GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The HMAC-SHA384 transform klass.</p>
@@ -1981,7 +2401,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformHmacSha512GetKlass"></a><h3>xmlSecTransformHmacSha512GetKlass ()</h3>
+<a name="xmlSecTransformHmacSha512GetKlass"></a><h3>xmlSecTransformHmacSha512GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformHmacSha512GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The HMAC-SHA512 transform klass.</p>
@@ -1994,7 +2414,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformMd5GetKlass"></a><h3>xmlSecTransformMd5GetKlass ()</h3>
+<a name="xmlSecTransformMd5GetKlass"></a><h3>xmlSecTransformMd5GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformMd5GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>MD5 digest transform klass.</p>
@@ -2007,7 +2427,46 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformPbkdf2GetKlass"></a><h3>xmlSecTransformPbkdf2GetKlass ()</h3>
+<a name="xmlSecTransformMLDSA44GetKlass"></a><h3>xmlSecTransformMLDSA44GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecTransformMLDSA44GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The ML-DSA-44 signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecTransformMLDSA44GetKlass.returns"></a><h4>Returns</h4>
+<p> ML-DSA-44 signature transform klass or NULL if an error
+occurs (the xmlsec-crypto library is not loaded or this transform is not
+implemented).</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformMLDSA65GetKlass"></a><h3>xmlSecTransformMLDSA65GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecTransformMLDSA65GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The ML-DSA-65 signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecTransformMLDSA65GetKlass.returns"></a><h4>Returns</h4>
+<p> ML-DSA-65 signature transform klass or NULL if an error
+occurs (the xmlsec-crypto library is not loaded or this transform is not
+implemented).</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformMLDSA87GetKlass"></a><h3>xmlSecTransformMLDSA87GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecTransformMLDSA87GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The ML-DSA-87 signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecTransformMLDSA87GetKlass.returns"></a><h4>Returns</h4>
+<p> ML-DSA-87 signature transform klass or NULL if an error
+occurs (the xmlsec-crypto library is not loaded or this transform is not
+implemented).</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformPbkdf2GetKlass"></a><h3>xmlSecTransformPbkdf2GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformPbkdf2GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>PBKDF2 key derivaton transform klass.</p>
@@ -2020,7 +2479,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformRipemd160GetKlass"></a><h3>xmlSecTransformRipemd160GetKlass ()</h3>
+<a name="xmlSecTransformRipemd160GetKlass"></a><h3>xmlSecTransformRipemd160GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformRipemd160GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>RIPEMD-160 digest transform klass.</p>
@@ -2033,7 +2492,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformRsaMd5GetKlass"></a><h3>xmlSecTransformRsaMd5GetKlass ()</h3>
+<a name="xmlSecTransformRsaMd5GetKlass"></a><h3>xmlSecTransformRsaMd5GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformRsaMd5GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The RSA-MD5 signature transform klass.</p>
@@ -2046,7 +2505,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformRsaRipemd160GetKlass"></a><h3>xmlSecTransformRsaRipemd160GetKlass ()</h3>
+<a name="xmlSecTransformRsaRipemd160GetKlass"></a><h3>xmlSecTransformRsaRipemd160GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformRsaRipemd160GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The RSA-RIPEMD160 signature transform klass.</p>
@@ -2059,7 +2518,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformRsaSha1GetKlass"></a><h3>xmlSecTransformRsaSha1GetKlass ()</h3>
+<a name="xmlSecTransformRsaSha1GetKlass"></a><h3>xmlSecTransformRsaSha1GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformRsaSha1GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The RSA-SHA1 signature transform klass.</p>
@@ -2072,7 +2531,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformRsaSha224GetKlass"></a><h3>xmlSecTransformRsaSha224GetKlass ()</h3>
+<a name="xmlSecTransformRsaSha224GetKlass"></a><h3>xmlSecTransformRsaSha224GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformRsaSha224GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The RSA-SHA2-224 signature transform klass.</p>
@@ -2085,7 +2544,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformRsaSha256GetKlass"></a><h3>xmlSecTransformRsaSha256GetKlass ()</h3>
+<a name="xmlSecTransformRsaSha256GetKlass"></a><h3>xmlSecTransformRsaSha256GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformRsaSha256GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The RSA-SHA2-256 signature transform klass.</p>
@@ -2098,7 +2557,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformRsaSha384GetKlass"></a><h3>xmlSecTransformRsaSha384GetKlass ()</h3>
+<a name="xmlSecTransformRsaSha384GetKlass"></a><h3>xmlSecTransformRsaSha384GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformRsaSha384GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The RSA-SHA2-384 signature transform klass.</p>
@@ -2111,7 +2570,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformRsaSha512GetKlass"></a><h3>xmlSecTransformRsaSha512GetKlass ()</h3>
+<a name="xmlSecTransformRsaSha512GetKlass"></a><h3>xmlSecTransformRsaSha512GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformRsaSha512GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The RSA-SHA2-512 signature transform klass.</p>
@@ -2124,7 +2583,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformRsaPssSha1GetKlass"></a><h3>xmlSecTransformRsaPssSha1GetKlass ()</h3>
+<a name="xmlSecTransformRsaPssSha1GetKlass"></a><h3>xmlSecTransformRsaPssSha1GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformRsaPssSha1GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The RSA-PSS-SHA1 signature transform klass.</p>
@@ -2137,7 +2596,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformRsaPssSha224GetKlass"></a><h3>xmlSecTransformRsaPssSha224GetKlass ()</h3>
+<a name="xmlSecTransformRsaPssSha224GetKlass"></a><h3>xmlSecTransformRsaPssSha224GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformRsaPssSha224GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The RSA-PSS-SHA2-224 signature transform klass.</p>
@@ -2150,7 +2609,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformRsaPssSha256GetKlass"></a><h3>xmlSecTransformRsaPssSha256GetKlass ()</h3>
+<a name="xmlSecTransformRsaPssSha256GetKlass"></a><h3>xmlSecTransformRsaPssSha256GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformRsaPssSha256GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The RSA-PSS-SHA2-256 signature transform klass.</p>
@@ -2163,7 +2622,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformRsaPssSha384GetKlass"></a><h3>xmlSecTransformRsaPssSha384GetKlass ()</h3>
+<a name="xmlSecTransformRsaPssSha384GetKlass"></a><h3>xmlSecTransformRsaPssSha384GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformRsaPssSha384GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The RSA-PSS-SHA2-384 signature transform klass.</p>
@@ -2176,7 +2635,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformRsaPssSha512GetKlass"></a><h3>xmlSecTransformRsaPssSha512GetKlass ()</h3>
+<a name="xmlSecTransformRsaPssSha512GetKlass"></a><h3>xmlSecTransformRsaPssSha512GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformRsaPssSha512GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The RSA-PSS-SHA2-512 signature transform klass.</p>
@@ -2189,7 +2648,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformRsaPssSha3-224GetKlass"></a><h3>xmlSecTransformRsaPssSha3_224GetKlass ()</h3>
+<a name="xmlSecTransformRsaPssSha3-224GetKlass"></a><h3>xmlSecTransformRsaPssSha3_224GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformRsaPssSha3_224GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The RSA-PSS-SHA2-224 signature transform klass.</p>
@@ -2202,7 +2661,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformRsaPssSha3-256GetKlass"></a><h3>xmlSecTransformRsaPssSha3_256GetKlass ()</h3>
+<a name="xmlSecTransformRsaPssSha3-256GetKlass"></a><h3>xmlSecTransformRsaPssSha3_256GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformRsaPssSha3_256GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The RSA-PSS-SHA2-256 signature transform klass.</p>
@@ -2215,7 +2674,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformRsaPssSha3-384GetKlass"></a><h3>xmlSecTransformRsaPssSha3_384GetKlass ()</h3>
+<a name="xmlSecTransformRsaPssSha3-384GetKlass"></a><h3>xmlSecTransformRsaPssSha3_384GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformRsaPssSha3_384GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The RSA-PSS-SHA2-384 signature transform klass.</p>
@@ -2228,7 +2687,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformRsaPssSha3-512GetKlass"></a><h3>xmlSecTransformRsaPssSha3_512GetKlass ()</h3>
+<a name="xmlSecTransformRsaPssSha3-512GetKlass"></a><h3>xmlSecTransformRsaPssSha3_512GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformRsaPssSha3_512GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The RSA-PSS-SHA2-512 signature transform klass.</p>
@@ -2241,7 +2700,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformRsaPkcs1GetKlass"></a><h3>xmlSecTransformRsaPkcs1GetKlass ()</h3>
+<a name="xmlSecTransformRsaPkcs1GetKlass"></a><h3>xmlSecTransformRsaPkcs1GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformRsaPkcs1GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The RSA-PKCS1 key transport transform klass.</p>
@@ -2254,7 +2713,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformRsaOaepGetKlass"></a><h3>xmlSecTransformRsaOaepGetKlass ()</h3>
+<a name="xmlSecTransformRsaOaepGetKlass"></a><h3>xmlSecTransformRsaOaepGetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformRsaOaepGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The RSA-OAEP key transport transform klass (XMLEnc 1.0).</p>
@@ -2267,7 +2726,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformRsaOaepEnc11GetKlass"></a><h3>xmlSecTransformRsaOaepEnc11GetKlass ()</h3>
+<a name="xmlSecTransformRsaOaepEnc11GetKlass"></a><h3>xmlSecTransformRsaOaepEnc11GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformRsaOaepEnc11GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The RSA-OAEP key transport transform klass (XMLEnc 1.1).</p>
@@ -2280,7 +2739,157 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformGostR3411-94GetKlass"></a><h3>xmlSecTransformGostR3411_94GetKlass ()</h3>
+<a name="xmlSecTransformSLHDSA-SHA2-128fGetKlass"></a><h3>xmlSecTransformSLHDSA_SHA2_128fGetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecTransformSLHDSA_SHA2_128fGetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The SLH-DSA-SHA2-128f signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecTransformSLHDSA-SHA2-128fGetKlass.returns"></a><h4>Returns</h4>
+<p> SLH-DSA-SHA2-128f signature transform klass or NULL if an error
+occurs (the xmlsec-crypto library is not loaded or this transform is not
+implemented).</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformSLHDSA-SHA2-128sGetKlass"></a><h3>xmlSecTransformSLHDSA_SHA2_128sGetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecTransformSLHDSA_SHA2_128sGetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The SLH-DSA-SHA2-128s signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecTransformSLHDSA-SHA2-128sGetKlass.returns"></a><h4>Returns</h4>
+<p> SLH-DSA-SHA2-128s signature transform klass or NULL if an error
+occurs (the xmlsec-crypto library is not loaded or this transform is not
+implemented).</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformSLHDSA-SHA2-192fGetKlass"></a><h3>xmlSecTransformSLHDSA_SHA2_192fGetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecTransformSLHDSA_SHA2_192fGetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The SLH-DSA-SHA2-192f signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecTransformSLHDSA-SHA2-192fGetKlass.returns"></a><h4>Returns</h4>
+<p> SLH-DSA-SHA2-192f signature transform klass or NULL if an error
+occurs (the xmlsec-crypto library is not loaded or this transform is not
+implemented).</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformSLHDSA-SHA2-192sGetKlass"></a><h3>xmlSecTransformSLHDSA_SHA2_192sGetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecTransformSLHDSA_SHA2_192sGetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The SLH-DSA-SHA2-192s signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecTransformSLHDSA-SHA2-192sGetKlass.returns"></a><h4>Returns</h4>
+<p> SLH-DSA-SHA2-192s signature transform klass or NULL if an error
+occurs (the xmlsec-crypto library is not loaded or this transform is not
+implemented).</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformSLHDSA-SHA2-256fGetKlass"></a><h3>xmlSecTransformSLHDSA_SHA2_256fGetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecTransformSLHDSA_SHA2_256fGetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The SLH-DSA-SHA2-256f signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecTransformSLHDSA-SHA2-256fGetKlass.returns"></a><h4>Returns</h4>
+<p> SLH-DSA-SHA2-256f signature transform klass or NULL if an error
+occurs (the xmlsec-crypto library is not loaded or this transform is not
+implemented).</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformSLHDSA-SHA2-256sGetKlass"></a><h3>xmlSecTransformSLHDSA_SHA2_256sGetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecTransformSLHDSA_SHA2_256sGetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The SLH-DSA-SHA2-256s signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecTransformSLHDSA-SHA2-256sGetKlass.returns"></a><h4>Returns</h4>
+<p> SLH-DSA-SHA2-256s signature transform klass or NULL if an error
+occurs (the xmlsec-crypto library is not loaded or this transform is not
+implemented).</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformEdDSAEd25519GetKlass"></a><h3>xmlSecTransformEdDSAEd25519GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecTransformEdDSAEd25519GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The EdDSA-Ed25519 signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecTransformEdDSAEd25519GetKlass.returns"></a><h4>Returns</h4>
+<p> EdDSA-Ed25519 signature transform klass or NULL if an error
+occurs (the xmlsec-crypto library is not loaded or this transform is not
+implemented).</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformEdDSAEd25519ctxGetKlass"></a><h3>xmlSecTransformEdDSAEd25519ctxGetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecTransformEdDSAEd25519ctxGetKlass
+                               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The EdDSA-Ed25519ctx signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecTransformEdDSAEd25519ctxGetKlass.returns"></a><h4>Returns</h4>
+<p> EdDSA-Ed25519ctx signature transform klass or NULL if an error
+occurs (the xmlsec-crypto library is not loaded or this transform is not
+implemented).</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformEdDSAEd25519phGetKlass"></a><h3>xmlSecTransformEdDSAEd25519phGetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecTransformEdDSAEd25519phGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The EdDSA-Ed25519ph signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecTransformEdDSAEd25519phGetKlass.returns"></a><h4>Returns</h4>
+<p> EdDSA-Ed25519ph signature transform klass or NULL if an error
+occurs (the xmlsec-crypto library is not loaded or this transform is not
+implemented).</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformEdDSAEd448GetKlass"></a><h3>xmlSecTransformEdDSAEd448GetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecTransformEdDSAEd448GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The EdDSA-Ed448 signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecTransformEdDSAEd448GetKlass.returns"></a><h4>Returns</h4>
+<p> EdDSA-Ed448 signature transform klass or NULL if an error
+occurs (the xmlsec-crypto library is not loaded or this transform is not
+implemented).</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformEdDSAEd448phGetKlass"></a><h3>xmlSecTransformEdDSAEd448phGetKlass ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
+xmlSecTransformEdDSAEd448phGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>The EdDSA-Ed448ph signature transform klass.</p>
+<div class="refsect3">
+<a name="xmlSecTransformEdDSAEd448phGetKlass.returns"></a><h4>Returns</h4>
+<p> EdDSA-Ed448ph signature transform klass or NULL if an error
+occurs (the xmlsec-crypto library is not loaded or this transform is not
+implemented).</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformGostR3411-94GetKlass"></a><h3>xmlSecTransformGostR3411_94GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformGostR3411_94GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>GOSTR3411_94 digest transform klass.</p>
@@ -2293,7 +2902,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformGostR3411-2012-256GetKlass"></a><h3>xmlSecTransformGostR3411_2012_256GetKlass ()</h3>
+<a name="xmlSecTransformGostR3411-2012-256GetKlass"></a><h3>xmlSecTransformGostR3411_2012_256GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformGostR3411_2012_256GetKlass
                                (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
@@ -2307,7 +2916,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformGostR3411-2012-512GetKlass"></a><h3>xmlSecTransformGostR3411_2012_512GetKlass ()</h3>
+<a name="xmlSecTransformGostR3411-2012-512GetKlass"></a><h3>xmlSecTransformGostR3411_2012_512GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformGostR3411_2012_512GetKlass
                                (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
@@ -2321,7 +2930,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformSha1GetKlass"></a><h3>xmlSecTransformSha1GetKlass ()</h3>
+<a name="xmlSecTransformSha1GetKlass"></a><h3>xmlSecTransformSha1GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformSha1GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>SHA-1 digest transform klass.</p>
@@ -2334,7 +2943,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformSha224GetKlass"></a><h3>xmlSecTransformSha224GetKlass ()</h3>
+<a name="xmlSecTransformSha224GetKlass"></a><h3>xmlSecTransformSha224GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformSha224GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>SHA2-224 digest transform klass.</p>
@@ -2347,7 +2956,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformSha256GetKlass"></a><h3>xmlSecTransformSha256GetKlass ()</h3>
+<a name="xmlSecTransformSha256GetKlass"></a><h3>xmlSecTransformSha256GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformSha256GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>SHA2-256 digest transform klass.</p>
@@ -2360,7 +2969,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformSha384GetKlass"></a><h3>xmlSecTransformSha384GetKlass ()</h3>
+<a name="xmlSecTransformSha384GetKlass"></a><h3>xmlSecTransformSha384GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformSha384GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>SHA2-384 digest transform klass.</p>
@@ -2373,7 +2982,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformSha512GetKlass"></a><h3>xmlSecTransformSha512GetKlass ()</h3>
+<a name="xmlSecTransformSha512GetKlass"></a><h3>xmlSecTransformSha512GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformSha512GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>SHA2-512 digest transform klass.</p>
@@ -2386,7 +2995,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformSha3-224GetKlass"></a><h3>xmlSecTransformSha3_224GetKlass ()</h3>
+<a name="xmlSecTransformSha3-224GetKlass"></a><h3>xmlSecTransformSha3_224GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformSha3_224GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>SHA3-224 digest transform klass.</p>
@@ -2399,7 +3008,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformSha3-256GetKlass"></a><h3>xmlSecTransformSha3_256GetKlass ()</h3>
+<a name="xmlSecTransformSha3-256GetKlass"></a><h3>xmlSecTransformSha3_256GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformSha3_256GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>SHA3-256 digest transform klass.</p>
@@ -2412,7 +3021,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformSha3-384GetKlass"></a><h3>xmlSecTransformSha3_384GetKlass ()</h3>
+<a name="xmlSecTransformSha3-384GetKlass"></a><h3>xmlSecTransformSha3_384GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformSha3_384GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>SHA3-384 digest transform klass.</p>
@@ -2425,7 +3034,7 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecTransformSha3-512GetKlass"></a><h3>xmlSecTransformSha3_512GetKlass ()</h3>
+<a name="xmlSecTransformSha3-512GetKlass"></a><h3>xmlSecTransformSha3_512GetKlass ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformSha3_512GetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>SHA3-512 digest transform klass.</p>
@@ -2438,11 +3047,11 @@ implemented).</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecCryptoAppInit"></a><h3>xmlSecCryptoAppInit ()</h3>
+<a name="xmlSecCryptoAppInit"></a><h3>xmlSecCryptoAppInit ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecCryptoAppInit (<em class="parameter"><code>const <font><span class="type">char</span></font> *config</code></em>);</pre>
 <p>General crypto engine initialization. This function is used
-by XMLSec command line utility and called before
+by the XMLSec command-line utility and is called before the
 <em class="parameter"><code>xmlSecInit</code></em>
  function.</p>
 <div class="refsect3">
@@ -2456,7 +3065,7 @@ by XMLSec command line utility and called before
 <tbody><tr>
 <td class="parameter_name"><p>config</p></td>
 <td class="parameter_description"><p>the path to crypto library configuration.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
@@ -2467,11 +3076,11 @@ by XMLSec command line utility and called before
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecCryptoAppShutdown"></a><h3>xmlSecCryptoAppShutdown ()</h3>
+<a name="xmlSecCryptoAppShutdown"></a><h3>xmlSecCryptoAppShutdown ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecCryptoAppShutdown (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>General crypto engine shutdown. This function is used
-by XMLSec command line utility and called after
+by the XMLSec command-line utility and is called after the
 <em class="parameter"><code>xmlSecShutdown</code></em>
  function.</p>
 <div class="refsect3">
@@ -2481,7 +3090,7 @@ by XMLSec command line utility and called after
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecCryptoAppDefaultKeysMngrInit"></a><h3>xmlSecCryptoAppDefaultKeysMngrInit ()</h3>
+<a name="xmlSecCryptoAppDefaultKeysMngrInit"></a><h3>xmlSecCryptoAppDefaultKeysMngrInit ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecCryptoAppDefaultKeysMngrInit (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>);</pre>
 <p>Initializes <em class="parameter"><code>mngr</code></em>
@@ -2498,7 +3107,7 @@ and a default crypto key data stores.</p>
 <tbody><tr>
 <td class="parameter_name"><p>mngr</p></td>
 <td class="parameter_description"><p>the pointer to keys manager.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
 </div>
@@ -2509,14 +3118,14 @@ and a default crypto key data stores.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecCryptoAppDefaultKeysMngrAdoptKey"></a><h3>xmlSecCryptoAppDefaultKeysMngrAdoptKey ()</h3>
+<a name="xmlSecCryptoAppDefaultKeysMngrAdoptKey"></a><h3>xmlSecCryptoAppDefaultKeysMngrAdoptKey ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecCryptoAppDefaultKeysMngrAdoptKey
                                (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>,
                                 <em class="parameter"><code><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="type">xmlSecKeyPtr</span></a> key</code></em>);</pre>
 <p>Adds <em class="parameter"><code>key</code></em>
  to the keys manager <em class="parameter"><code>mngr</code></em>
- created with <a class="link" href="xmlsec-app.html#xmlSecCryptoAppDefaultKeysMngrInit" title="xmlSecCryptoAppDefaultKeysMngrInit ()"><span class="type">xmlSecCryptoAppDefaultKeysMngrInit</span></a>
+ created with <a class="link" href="xmlsec-app.html#xmlSecCryptoAppDefaultKeysMngrInit" title="xmlSecCryptoAppDefaultKeysMngrInit ()"><span class="type">xmlSecCryptoAppDefaultKeysMngrInit</span></a>
 function.</p>
 <div class="refsect3">
 <a name="xmlSecCryptoAppDefaultKeysMngrAdoptKey.parameters"></a><h4>Parameters</h4>
@@ -2530,12 +3139,12 @@ function.</p>
 <tr>
 <td class="parameter_name"><p>mngr</p></td>
 <td class="parameter_description"><p>the pointer to keys manager.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>key</p></td>
 <td class="parameter_description"><p>the pointer to key.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -2547,7 +3156,7 @@ function.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecCryptoAppDefaultKeysMngrVerifyKey"></a><h3>xmlSecCryptoAppDefaultKeysMngrVerifyKey ()</h3>
+<a name="xmlSecCryptoAppDefaultKeysMngrVerifyKey"></a><h3>xmlSecCryptoAppDefaultKeysMngrVerifyKey ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecCryptoAppDefaultKeysMngrVerifyKey
                                (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>,
@@ -2555,7 +3164,7 @@ xmlSecCryptoAppDefaultKeysMngrVerifyKey
                                 <em class="parameter"><code><a class="link" href="xmlsec-keyinfo.html#xmlSecKeyInfoCtx" title="struct xmlSecKeyInfoCtx"><span class="type">xmlSecKeyInfoCtxPtr</span></a> keyInfoCtx</code></em>);</pre>
 <p>Verifies <em class="parameter"><code>key</code></em>
  with the keys manager <em class="parameter"><code>mngr</code></em>
- created with <a class="link" href="xmlsec-app.html#xmlSecCryptoAppDefaultKeysMngrInit" title="xmlSecCryptoAppDefaultKeysMngrInit ()"><span class="type">xmlSecCryptoAppDefaultKeysMngrInit</span></a>
+ created with <a class="link" href="xmlsec-app.html#xmlSecCryptoAppDefaultKeysMngrInit" title="xmlSecCryptoAppDefaultKeysMngrInit ()"><span class="type">xmlSecCryptoAppDefaultKeysMngrInit</span></a>
 function:</p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem"><p>Checks that key certificate is present</p></li>
@@ -2563,7 +3172,7 @@ function:</p>
 </ul></div>
 <p>Adds <em class="parameter"><code>key</code></em>
  to the keys manager <em class="parameter"><code>mngr</code></em>
- created with <a class="link" href="xmlsec-app.html#xmlSecCryptoAppDefaultKeysMngrInit" title="xmlSecCryptoAppDefaultKeysMngrInit ()"><span class="type">xmlSecCryptoAppDefaultKeysMngrInit</span></a>
+ created with <a class="link" href="xmlsec-app.html#xmlSecCryptoAppDefaultKeysMngrInit" title="xmlSecCryptoAppDefaultKeysMngrInit ()"><span class="type">xmlSecCryptoAppDefaultKeysMngrInit</span></a>
 function.</p>
 <div class="refsect3">
 <a name="xmlSecCryptoAppDefaultKeysMngrVerifyKey.parameters"></a><h4>Parameters</h4>
@@ -2577,17 +3186,17 @@ function.</p>
 <tr>
 <td class="parameter_name"><p>mngr</p></td>
 <td class="parameter_description"><p>the pointer to keys manager.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>key</p></td>
 <td class="parameter_description"><p>the pointer to key.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>keyInfoCtx</p></td>
 <td class="parameter_description"><p>the key info context for verification.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -2599,14 +3208,14 @@ function.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecCryptoAppDefaultKeysMngrLoad"></a><h3>xmlSecCryptoAppDefaultKeysMngrLoad ()</h3>
+<a name="xmlSecCryptoAppDefaultKeysMngrLoad"></a><h3>xmlSecCryptoAppDefaultKeysMngrLoad ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecCryptoAppDefaultKeysMngrLoad (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>,
                                     <em class="parameter"><code>const <font><span class="type">char</span></font> *uri</code></em>);</pre>
 <p>Loads XML keys file from <em class="parameter"><code>uri</code></em>
  to the keys manager <em class="parameter"><code>mngr</code></em>
  created
-with <a class="link" href="xmlsec-app.html#xmlSecCryptoAppDefaultKeysMngrInit" title="xmlSecCryptoAppDefaultKeysMngrInit ()"><span class="type">xmlSecCryptoAppDefaultKeysMngrInit</span></a> function.</p>
+with <a class="link" href="xmlsec-app.html#xmlSecCryptoAppDefaultKeysMngrInit" title="xmlSecCryptoAppDefaultKeysMngrInit ()"><span class="type">xmlSecCryptoAppDefaultKeysMngrInit</span></a> function.</p>
 <div class="refsect3">
 <a name="xmlSecCryptoAppDefaultKeysMngrLoad.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -2619,12 +3228,12 @@ with <a class="link" href="xmlsec-app.html#xmlSecCryptoAppDefaultKeysMngrInit" t
 <tr>
 <td class="parameter_name"><p>mngr</p></td>
 <td class="parameter_description"><p>the pointer to keys manager.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>uri</p></td>
 <td class="parameter_description"><p>the uri.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -2636,7 +3245,7 @@ with <a class="link" href="xmlsec-app.html#xmlSecCryptoAppDefaultKeysMngrInit" t
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecCryptoAppDefaultKeysMngrSave"></a><h3>xmlSecCryptoAppDefaultKeysMngrSave ()</h3>
+<a name="xmlSecCryptoAppDefaultKeysMngrSave"></a><h3>xmlSecCryptoAppDefaultKeysMngrSave ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecCryptoAppDefaultKeysMngrSave (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>,
                                     <em class="parameter"><code>const <font><span class="type">char</span></font> *filename</code></em>,
@@ -2655,17 +3264,17 @@ xmlSecCryptoAppDefaultKeysMngrSave (<em class="parameter"><code><a class="link" 
 <tr>
 <td class="parameter_name"><p>mngr</p></td>
 <td class="parameter_description"><p>the pointer to keys manager.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>filename</p></td>
 <td class="parameter_description"><p>the destination filename.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>type</p></td>
 <td class="parameter_description"><p>the type of keys to save (public/private/symmetric).</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -2677,7 +3286,7 @@ xmlSecCryptoAppDefaultKeysMngrSave (<em class="parameter"><code><a class="link" 
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecCryptoAppKeysMngrCertLoad"></a><h3>xmlSecCryptoAppKeysMngrCertLoad ()</h3>
+<a name="xmlSecCryptoAppKeysMngrCertLoad"></a><h3>xmlSecCryptoAppKeysMngrCertLoad ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecCryptoAppKeysMngrCertLoad (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>,
                                  <em class="parameter"><code>const <font><span class="type">char</span></font> *filename</code></em>,
@@ -2699,23 +3308,23 @@ untrusted certs in <em class="parameter"><code>store</code></em>
 <tr>
 <td class="parameter_name"><p>mngr</p></td>
 <td class="parameter_description"><p>the keys manager.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>filename</p></td>
 <td class="parameter_description"><p>the certificate file.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>format</p></td>
 <td class="parameter_description"><p>the certificate file format.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>type</p></td>
 <td class="parameter_description"><p>the flag that indicates is the certificate in <em class="parameter"><code>filename</code></em>
 trusted or not.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -2727,7 +3336,7 @@ trusted or not.</p></td>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecCryptoAppKeysMngrCertLoadMemory"></a><h3>xmlSecCryptoAppKeysMngrCertLoadMemory ()</h3>
+<a name="xmlSecCryptoAppKeysMngrCertLoadMemory"></a><h3>xmlSecCryptoAppKeysMngrCertLoadMemory ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecCryptoAppKeysMngrCertLoadMemory (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>,
                                        <em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *data</code></em>,
@@ -2750,27 +3359,27 @@ untrusted certs in <em class="parameter"><code>store</code></em>
 <tr>
 <td class="parameter_name"><p>mngr</p></td>
 <td class="parameter_description"><p>the keys manager.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>data</p></td>
 <td class="parameter_description"><p>the certificate binary data.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>dataSize</p></td>
 <td class="parameter_description"><p>the certificate binary data size.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>format</p></td>
 <td class="parameter_description"><p>the certificate data format.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>type</p></td>
 <td class="parameter_description"><p>the flag that indicates is the certificate trusted or not.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -2782,7 +3391,7 @@ untrusted certs in <em class="parameter"><code>store</code></em>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecCryptoAppKeysMngrCrlLoad"></a><h3>xmlSecCryptoAppKeysMngrCrlLoad ()</h3>
+<a name="xmlSecCryptoAppKeysMngrCrlLoad"></a><h3>xmlSecCryptoAppKeysMngrCrlLoad ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecCryptoAppKeysMngrCrlLoad (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>,
                                 <em class="parameter"><code>const <font><span class="type">char</span></font> *filename</code></em>,
@@ -2802,17 +3411,17 @@ xmlSecCryptoAppKeysMngrCrlLoad (<em class="parameter"><code><a class="link" href
 <tr>
 <td class="parameter_name"><p>mngr</p></td>
 <td class="parameter_description"><p>the keys manager.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>filename</p></td>
 <td class="parameter_description"><p>the CRL file.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>format</p></td>
 <td class="parameter_description"><p>the CRL file format.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -2824,7 +3433,7 @@ xmlSecCryptoAppKeysMngrCrlLoad (<em class="parameter"><code><a class="link" href
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecCryptoAppKeysMngrCrlLoadMemory"></a><h3>xmlSecCryptoAppKeysMngrCrlLoadMemory ()</h3>
+<a name="xmlSecCryptoAppKeysMngrCrlLoadMemory"></a><h3>xmlSecCryptoAppKeysMngrCrlLoadMemory ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecCryptoAppKeysMngrCrlLoadMemory (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>,
                                       <em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *data</code></em>,
@@ -2845,22 +3454,22 @@ xmlSecCryptoAppKeysMngrCrlLoadMemory (<em class="parameter"><code><a class="link
 <tr>
 <td class="parameter_name"><p>mngr</p></td>
 <td class="parameter_description"><p>the keys manager.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>data</p></td>
 <td class="parameter_description"><p>the CRL binary data.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>dataSize</p></td>
 <td class="parameter_description"><p>the CRL binary data size.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>format</p></td>
 <td class="parameter_description"><p>the CRL data format.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -2872,7 +3481,57 @@ xmlSecCryptoAppKeysMngrCrlLoadMemory (<em class="parameter"><code><a class="link
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecCryptoAppKeyLoadEx"></a><h3>xmlSecCryptoAppKeyLoadEx ()</h3>
+<a name="xmlSecCryptoAppKeysMngrCrlLoadAndVerify"></a><h3>xmlSecCryptoAppKeysMngrCrlLoadAndVerify ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecCryptoAppKeysMngrCrlLoadAndVerify
+                               (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>,
+                                <em class="parameter"><code>const <font><span class="type">char</span></font> *filename</code></em>,
+                                <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataFormat" title="enum xmlSecKeyDataFormat"><span class="type">xmlSecKeyDataFormat</span></a> format</code></em>,
+                                <em class="parameter"><code><a class="link" href="xmlsec-keyinfo.html#xmlSecKeyInfoCtx" title="struct xmlSecKeyInfoCtx"><span class="type">xmlSecKeyInfoCtxPtr</span></a> keyInfoCtx</code></em>);</pre>
+<p>Reads and verifies the CRL from <em class="parameter"><code>filename</code></em>
+.  If verification is successful, the CRL is added to
+the keys manager <em class="parameter"><code>store</code></em>
+.</p>
+<div class="refsect3">
+<a name="xmlSecCryptoAppKeysMngrCrlLoadAndVerify.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>mngr</p></td>
+<td class="parameter_description"><p>the keys manager.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>filename</p></td>
+<td class="parameter_description"><p>the CRL file.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>format</p></td>
+<td class="parameter_description"><p>the CRL file format.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>keyInfoCtx</p></td>
+<td class="parameter_description"><p>the key info context for verification parameters.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecCryptoAppKeysMngrCrlLoadAndVerify.returns"></a><h4>Returns</h4>
+<p> 0 on success or a negative value if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecCryptoAppKeyLoadEx"></a><h3>xmlSecCryptoAppKeyLoadEx ()</h3>
 <pre class="programlisting"><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
 xmlSecCryptoAppKeyLoadEx (<em class="parameter"><code>const <font><span class="type">char</span></font> *filename</code></em>,
                           <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataType" title="xmlSecKeyDataType"><span class="type">xmlSecKeyDataType</span></a> type</code></em>,
@@ -2880,7 +3539,7 @@ xmlSecCryptoAppKeyLoadEx (<em class="parameter"><code>const <font><span class="t
                           <em class="parameter"><code>const <font><span class="type">char</span></font> *pwd</code></em>,
                           <em class="parameter"><code><font><span class="type">void</span></font> *pwdCallback</code></em>,
                           <em class="parameter"><code><font><span class="type">void</span></font> *pwdCallbackCtx</code></em>);</pre>
-<p>Reads key from the a file.</p>
+<p>Reads a key from a file.</p>
 <div class="refsect3">
 <a name="xmlSecCryptoAppKeyLoadEx.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -2893,32 +3552,32 @@ xmlSecCryptoAppKeyLoadEx (<em class="parameter"><code>const <font><span class="t
 <tr>
 <td class="parameter_name"><p>filename</p></td>
 <td class="parameter_description"><p>the key filename.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>type</p></td>
 <td class="parameter_description"><p>the key type (public / private).</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>format</p></td>
 <td class="parameter_description"><p>the key file format.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>pwd</p></td>
 <td class="parameter_description"><p>the key file password.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>pwdCallback</p></td>
 <td class="parameter_description"><p>the key password callback.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>pwdCallbackCtx</p></td>
 <td class="parameter_description"><p>the user context for password callback.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -2930,7 +3589,7 @@ xmlSecCryptoAppKeyLoadEx (<em class="parameter"><code>const <font><span class="t
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecCryptoAppKeyLoadMemory"></a><h3>xmlSecCryptoAppKeyLoadMemory ()</h3>
+<a name="xmlSecCryptoAppKeyLoadMemory"></a><h3>xmlSecCryptoAppKeyLoadMemory ()</h3>
 <pre class="programlisting"><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
 xmlSecCryptoAppKeyLoadMemory (<em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *data</code></em>,
                               <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> dataSize</code></em>,
@@ -2938,7 +3597,7 @@ xmlSecCryptoAppKeyLoadMemory (<em class="parameter"><code>const <a class="link" 
                               <em class="parameter"><code>const <font><span class="type">char</span></font> *pwd</code></em>,
                               <em class="parameter"><code><font><span class="type">void</span></font> *pwdCallback</code></em>,
                               <em class="parameter"><code><font><span class="type">void</span></font> *pwdCallbackCtx</code></em>);</pre>
-<p>Reads key from the memory buffer.</p>
+<p>Reads a key from the memory buffer.</p>
 <div class="refsect3">
 <a name="xmlSecCryptoAppKeyLoadMemory.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -2951,32 +3610,32 @@ xmlSecCryptoAppKeyLoadMemory (<em class="parameter"><code>const <a class="link" 
 <tr>
 <td class="parameter_name"><p>data</p></td>
 <td class="parameter_description"><p>the binary key data.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>dataSize</p></td>
 <td class="parameter_description"><p>the size of binary key.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>format</p></td>
 <td class="parameter_description"><p>the key file format.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>pwd</p></td>
 <td class="parameter_description"><p>the key file password.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>pwdCallback</p></td>
 <td class="parameter_description"><p>the key password callback.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>pwdCallbackCtx</p></td>
 <td class="parameter_description"><p>the user context for password callback.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -2988,13 +3647,13 @@ xmlSecCryptoAppKeyLoadMemory (<em class="parameter"><code>const <a class="link" 
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecCryptoAppPkcs12Load"></a><h3>xmlSecCryptoAppPkcs12Load ()</h3>
+<a name="xmlSecCryptoAppPkcs12Load"></a><h3>xmlSecCryptoAppPkcs12Load ()</h3>
 <pre class="programlisting"><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
 xmlSecCryptoAppPkcs12Load (<em class="parameter"><code>const <font><span class="type">char</span></font> *filename</code></em>,
                            <em class="parameter"><code>const <font><span class="type">char</span></font> *pwd</code></em>,
                            <em class="parameter"><code><font><span class="type">void</span></font> *pwdCallback</code></em>,
                            <em class="parameter"><code><font><span class="type">void</span></font> *pwdCallbackCtx</code></em>);</pre>
-<p>Reads key and all associated certificates from the PKCS12 file.
+<p>Reads a key and all associated certificates from the PKCS12 file.
 For uniformity, call xmlSecCryptoAppKeyLoadEx instead of this function. Pass
 in format=xmlSecKeyDataFormatPkcs12.</p>
 <div class="refsect3">
@@ -3009,22 +3668,22 @@ in format=xmlSecKeyDataFormatPkcs12.</p>
 <tr>
 <td class="parameter_name"><p>filename</p></td>
 <td class="parameter_description"><p>the PKCS12 key filename.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>pwd</p></td>
 <td class="parameter_description"><p>the PKCS12 file password.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>pwdCallback</p></td>
 <td class="parameter_description"><p>the password callback.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>pwdCallbackCtx</p></td>
 <td class="parameter_description"><p>the user context for password callback.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -3036,14 +3695,14 @@ in format=xmlSecKeyDataFormatPkcs12.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecCryptoAppPkcs12LoadMemory"></a><h3>xmlSecCryptoAppPkcs12LoadMemory ()</h3>
+<a name="xmlSecCryptoAppPkcs12LoadMemory"></a><h3>xmlSecCryptoAppPkcs12LoadMemory ()</h3>
 <pre class="programlisting"><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
 xmlSecCryptoAppPkcs12LoadMemory (<em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *data</code></em>,
                                  <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> dataSize</code></em>,
                                  <em class="parameter"><code>const <font><span class="type">char</span></font> *pwd</code></em>,
                                  <em class="parameter"><code><font><span class="type">void</span></font> *pwdCallback</code></em>,
                                  <em class="parameter"><code><font><span class="type">void</span></font> *pwdCallbackCtx</code></em>);</pre>
-<p>Reads key and all associated certificates from the PKCS12 data in memory buffer.
+<p>Reads a key and all associated certificates from the PKCS12 data in the memory buffer.
 For uniformity, call xmlSecCryptoAppKeyLoadMemory instead of this function. Pass
 in format=xmlSecKeyDataFormatPkcs12.</p>
 <div class="refsect3">
@@ -3058,27 +3717,27 @@ in format=xmlSecKeyDataFormatPkcs12.</p>
 <tr>
 <td class="parameter_name"><p>data</p></td>
 <td class="parameter_description"><p>the PKCS12 binary data.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>dataSize</p></td>
 <td class="parameter_description"><p>the PKCS12 binary data size.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>pwd</p></td>
 <td class="parameter_description"><p>the PKCS12 file password.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>pwdCallback</p></td>
 <td class="parameter_description"><p>the password callback.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>pwdCallbackCtx</p></td>
 <td class="parameter_description"><p>the user context for password callback.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -3090,7 +3749,7 @@ in format=xmlSecKeyDataFormatPkcs12.</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecCryptoAppKeyCertLoad"></a><h3>xmlSecCryptoAppKeyCertLoad ()</h3>
+<a name="xmlSecCryptoAppKeyCertLoad"></a><h3>xmlSecCryptoAppKeyCertLoad ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecCryptoAppKeyCertLoad (<em class="parameter"><code><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="type">xmlSecKeyPtr</span></a> key</code></em>,
                             <em class="parameter"><code>const <font><span class="type">char</span></font> *filename</code></em>,
@@ -3109,17 +3768,17 @@ xmlSecCryptoAppKeyCertLoad (<em class="parameter"><code><a class="link" href="xm
 <tr>
 <td class="parameter_name"><p>key</p></td>
 <td class="parameter_description"><p>the pointer to key.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>filename</p></td>
 <td class="parameter_description"><p>the certificate filename.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>format</p></td>
 <td class="parameter_description"><p>the certificate file format.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -3131,7 +3790,7 @@ xmlSecCryptoAppKeyCertLoad (<em class="parameter"><code><a class="link" href="xm
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecCryptoAppKeyCertLoadMemory"></a><h3>xmlSecCryptoAppKeyCertLoadMemory ()</h3>
+<a name="xmlSecCryptoAppKeyCertLoadMemory"></a><h3>xmlSecCryptoAppKeyCertLoadMemory ()</h3>
 <pre class="programlisting"><font><span class="returnvalue">int</span></font>
 xmlSecCryptoAppKeyCertLoadMemory (<em class="parameter"><code><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="type">xmlSecKeyPtr</span></a> key</code></em>,
                                   <em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *data</code></em>,
@@ -3150,22 +3809,22 @@ xmlSecCryptoAppKeyCertLoadMemory (<em class="parameter"><code><a class="link" hr
 <tr>
 <td class="parameter_name"><p>key</p></td>
 <td class="parameter_description"><p>the pointer to key.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>data</p></td>
 <td class="parameter_description"><p>the certificate binary data.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>dataSize</p></td>
 <td class="parameter_description"><p>the certificate binary data size.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>format</p></td>
 <td class="parameter_description"><p>the certificate file format.</p></td>
-<td class="parameter_annotations"> </td>
+<td class="parameter_annotations"> </td>
 </tr>
 </tbody>
 </table></div>
@@ -3177,8 +3836,8 @@ xmlSecCryptoAppKeyCertLoadMemory (<em class="parameter"><code><a class="link" hr
 </div>
 <hr>
 <div class="refsect2">
-<a name="xmlSecCryptoAppGetDefaultPwdCallback"></a><h3>xmlSecCryptoAppGetDefaultPwdCallback ()</h3>
-<pre class="programlisting"><font><span class="returnvalue">void</span></font> *
+<a name="xmlSecCryptoAppGetDefaultPwdCallback"></a><h3>xmlSecCryptoAppGetDefaultPwdCallback ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">void</span></font> *
 xmlSecCryptoAppGetDefaultPwdCallback (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>Gets default password callback.</p>
 <div class="refsect3">
@@ -3260,6 +3919,20 @@ xmlSecCryptoAppGetDefaultPwdCallback (<em class="parameter"><code><span class="t
 </div>
 <hr>
 <div class="refsect2">
+<a name="xmlSecKeyDataHkdfId"></a><h3>xmlSecKeyDataHkdfId</h3>
+<pre class="programlisting">#define xmlSecKeyDataHkdfId                     xmlSecKeyDataHkdfGetKlass()
+</pre>
+<p>The HKDF key klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecKeyDataMLDSAId"></a><h3>xmlSecKeyDataMLDSAId</h3>
+<pre class="programlisting">#define xmlSecKeyDataMLDSAId                    xmlSecKeyDataMLDSAGetKlass()
+</pre>
+<p>The ML-DSA key klass.</p>
+</div>
+<hr>
+<div class="refsect2">
 <a name="xmlSecKeyDataPbkdf2Id"></a><h3>xmlSecKeyDataPbkdf2Id</h3>
 <pre class="programlisting">#define xmlSecKeyDataPbkdf2Id                   xmlSecKeyDataPbkdf2GetKlass()
 </pre>
@@ -3271,6 +3944,27 @@ xmlSecCryptoAppGetDefaultPwdCallback (<em class="parameter"><code><span class="t
 <pre class="programlisting">#define xmlSecKeyDataRsaId                      xmlSecKeyDataRsaGetKlass()
 </pre>
 <p>The RSA key klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecKeyDataSLHDSAId"></a><h3>xmlSecKeyDataSLHDSAId</h3>
+<pre class="programlisting">#define xmlSecKeyDataSLHDSAId                   xmlSecKeyDataSLHDSAGetKlass()
+</pre>
+<p>The SLH-DSA key klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecKeyDataEdDSAId"></a><h3>xmlSecKeyDataEdDSAId</h3>
+<pre class="programlisting">#define xmlSecKeyDataEdDSAId                    xmlSecKeyDataEdDSAGetKlass()
+</pre>
+<p>The EdDSA key klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecKeyDataXdhId"></a><h3>xmlSecKeyDataXdhId</h3>
+<pre class="programlisting">#define xmlSecKeyDataXdhId                      xmlSecKeyDataXdhGetKlass()
+</pre>
+<p>The XDH key klass.</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -3393,6 +4087,13 @@ xmlSecCryptoAppGetDefaultPwdCallback (<em class="parameter"><code><span class="t
 </div>
 <hr>
 <div class="refsect2">
+<a name="xmlSecTransformHkdfId"></a><h3>xmlSecTransformHkdfId</h3>
+<pre class="programlisting">#define xmlSecTransformHkdfId                   xmlSecTransformHkdfGetKlass()
+</pre>
+<p>The HKDF key derivation transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
 <a name="xmlSecTransformDsaSha1Id"></a><h3>xmlSecTransformDsaSha1Id</h3>
 <pre class="programlisting">#define xmlSecTransformDsaSha1Id                xmlSecTransformDsaSha1GetKlass()
 </pre>
@@ -3411,6 +4112,20 @@ xmlSecCryptoAppGetDefaultPwdCallback (<em class="parameter"><code><span class="t
 <pre class="programlisting">#define xmlSecTransformEcdhId                   xmlSecTransformEcdhGetKlass()
 </pre>
 <p>The ECDH key agreement transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformX25519Id"></a><h3>xmlSecTransformX25519Id</h3>
+<pre class="programlisting">#define xmlSecTransformX25519Id                 xmlSecTransformX25519GetKlass()
+</pre>
+<p>The X25519 key agreement transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformX448Id"></a><h3>xmlSecTransformX448Id</h3>
+<pre class="programlisting">#define xmlSecTransformX448Id                   xmlSecTransformX448GetKlass()
+</pre>
+<p>The X448 key agreement transform klass.</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -3561,6 +4276,27 @@ xmlSecCryptoAppGetDefaultPwdCallback (<em class="parameter"><code><span class="t
 </div>
 <hr>
 <div class="refsect2">
+<a name="xmlSecTransformMLDSA44Id"></a><h3>xmlSecTransformMLDSA44Id</h3>
+<pre class="programlisting">#define xmlSecTransformMLDSA44Id                xmlSecTransformMLDSA44GetKlass()
+</pre>
+<p>The ML-DSA-44 signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformMLDSA65Id"></a><h3>xmlSecTransformMLDSA65Id</h3>
+<pre class="programlisting">#define xmlSecTransformMLDSA65Id                xmlSecTransformMLDSA65GetKlass()
+</pre>
+<p>The ML-DSA-65 signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformMLDSA87Id"></a><h3>xmlSecTransformMLDSA87Id</h3>
+<pre class="programlisting">#define xmlSecTransformMLDSA87Id                xmlSecTransformMLDSA87GetKlass()
+</pre>
+<p>The ML-DSA-87 signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
 <a name="xmlSecTransformPbkdf2Id"></a><h3>xmlSecTransformPbkdf2Id</h3>
 <pre class="programlisting">#define xmlSecTransformPbkdf2Id                 xmlSecTransformPbkdf2GetKlass()
 </pre>
@@ -3708,6 +4444,83 @@ xmlSecCryptoAppGetDefaultPwdCallback (<em class="parameter"><code><span class="t
 </div>
 <hr>
 <div class="refsect2">
+<a name="xmlSecTransformSLHDSA-SHA2-128f-Id"></a><h3>xmlSecTransformSLHDSA_SHA2_128f_Id</h3>
+<pre class="programlisting">#define xmlSecTransformSLHDSA_SHA2_128f_Id      xmlSecTransformSLHDSA_SHA2_128fGetKlass()
+</pre>
+<p>The SLH-DSA-SHA2-128f signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformSLHDSA-SHA2-128s-Id"></a><h3>xmlSecTransformSLHDSA_SHA2_128s_Id</h3>
+<pre class="programlisting">#define xmlSecTransformSLHDSA_SHA2_128s_Id      xmlSecTransformSLHDSA_SHA2_128sGetKlass()
+</pre>
+<p>The SLH-DSA-SHA2-128s signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformSLHDSA-SHA2-192f-Id"></a><h3>xmlSecTransformSLHDSA_SHA2_192f_Id</h3>
+<pre class="programlisting">#define xmlSecTransformSLHDSA_SHA2_192f_Id      xmlSecTransformSLHDSA_SHA2_192fGetKlass()
+</pre>
+<p>The SLH-DSA-SHA2-192f signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformSLHDSA-SHA2-192s-Id"></a><h3>xmlSecTransformSLHDSA_SHA2_192s_Id</h3>
+<pre class="programlisting">#define xmlSecTransformSLHDSA_SHA2_192s_Id      xmlSecTransformSLHDSA_SHA2_192sGetKlass()
+</pre>
+<p>The SLH-DSA-SHA2-192s signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformSLHDSA-SHA2-256f-Id"></a><h3>xmlSecTransformSLHDSA_SHA2_256f_Id</h3>
+<pre class="programlisting">#define xmlSecTransformSLHDSA_SHA2_256f_Id      xmlSecTransformSLHDSA_SHA2_256fGetKlass()
+</pre>
+<p>The SLH-DSA-SHA2-256f signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformSLHDSA-SHA2-256s-Id"></a><h3>xmlSecTransformSLHDSA_SHA2_256s_Id</h3>
+<pre class="programlisting">#define xmlSecTransformSLHDSA_SHA2_256s_Id      xmlSecTransformSLHDSA_SHA2_256sGetKlass()
+</pre>
+<p>The SLH-DSA-SHA2-256s signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformEdDSAEd25519Id"></a><h3>xmlSecTransformEdDSAEd25519Id</h3>
+<pre class="programlisting">#define xmlSecTransformEdDSAEd25519Id           xmlSecTransformEdDSAEd25519GetKlass()
+</pre>
+<p>The EdDSA-Ed25519 signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformEdDSAEd25519ctxId"></a><h3>xmlSecTransformEdDSAEd25519ctxId</h3>
+<pre class="programlisting">#define xmlSecTransformEdDSAEd25519ctxId        xmlSecTransformEdDSAEd25519ctxGetKlass()
+</pre>
+<p>The EdDSA-Ed25519ctx signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformEdDSAEd25519phId"></a><h3>xmlSecTransformEdDSAEd25519phId</h3>
+<pre class="programlisting">#define xmlSecTransformEdDSAEd25519phId         xmlSecTransformEdDSAEd25519phGetKlass()
+</pre>
+<p>The EdDSA-Ed25519ph signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformEdDSAEd448Id"></a><h3>xmlSecTransformEdDSAEd448Id</h3>
+<pre class="programlisting">#define xmlSecTransformEdDSAEd448Id             xmlSecTransformEdDSAEd448GetKlass()
+</pre>
+<p>The EdDSA-Ed448 signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecTransformEdDSAEd448phId"></a><h3>xmlSecTransformEdDSAEd448phId</h3>
+<pre class="programlisting">#define xmlSecTransformEdDSAEd448phId           xmlSecTransformEdDSAEd448phGetKlass()
+</pre>
+<p>The EdDSA-Ed448ph signature transform klass.</p>
+</div>
+<hr>
+<div class="refsect2">
 <a name="xmlSecTransformGostR3411-94Id"></a><h3>xmlSecTransformGostR3411_94Id</h3>
 <pre class="programlisting">#define xmlSecTransformGostR3411_94Id           xmlSecTransformGostR3411_94GetKlass()
 </pre>
@@ -3794,5 +4607,6 @@ xmlSecCryptoAppGetDefaultPwdCallback (<em class="parameter"><code><span class="t
 </div>
 <div class="footer">
 <hr>Generated by GTK-Doc V1.34.0</div>
-</body>
+</td></tr></table></td>
+</tr></table></body>
 </html>

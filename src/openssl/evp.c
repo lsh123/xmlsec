@@ -3931,7 +3931,7 @@ xmlSecOpenSSLKeyDataGostR3410_2012_512GetKlass(void) {
 
 
 #ifndef XMLSEC_NO_MLDSA
-/**
+/*
  * EXPERIMENTAL SUPPORT FOR ML-DSA
  */
 static int
@@ -4035,7 +4035,7 @@ xmlSecOpenSSLKeyDataMLDSAGetEvp(xmlSecKeyDataPtr data) {
 
 
 #ifndef XMLSEC_NO_SLHDSA
-/**
+/*
  * EXPERIMENTAL SUPPORT FOR SLH-DSA
  */
 static int
@@ -4109,7 +4109,7 @@ xmlSecOpenSSLKeyDataSLHDSAGetEvp(xmlSecKeyDataPtr data) {
 
 
 #ifndef XMLSEC_NO_EDDSA
-/**
+/*
  * EdDSA support
  */
 static int
@@ -4178,7 +4178,7 @@ xmlSecOpenSSLKeyDataEdDSAGetEvp(xmlSecKeyDataPtr data) {
 
 
 #ifndef XMLSEC_NO_XDH
-/**
+/*
  * XDH support (X25519 and X448 key agreement)
  */
 static int

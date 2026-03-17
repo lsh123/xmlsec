@@ -778,7 +778,7 @@ xmlSecTransformHmacVerify(const xmlSecByte* data, xmlSecSize dataSize,
 #ifndef XMLSEC_NO_MLDSA
 
 
-/**
+/*
  * THIS IS EXPERIMENTAL AND NON-STANDARD
  *
  * <SignatureMethod Algorithm="http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#ml-dsa-44">
@@ -826,7 +826,7 @@ xmlSecTransformMLDSAReadContextString(xmlNodePtr node, xmlSecBufferPtr res) {
 /********************************** SLH-DSA *******************************/
 #ifndef XMLSEC_NO_SLHDSA
 
-/**
+/*
  * THIS IS EXPERIMENTAL AND NON-STANDARD
  *
  * <SignatureMethod Algorithm="http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#ml-dsa-44">
@@ -874,7 +874,7 @@ xmlSecTransformSLHDSAReadContextString(xmlNodePtr node, xmlSecBufferPtr res) {
 /********************************** EdDSA *******************************/
 #ifndef XMLSEC_NO_EDDSA
 
-/**
+/*
  * THIS IS EXPERIMENTAL AND NON-STANDARD
  *
  * <SignatureMethod Algorithm="http://www.w3.org/2021/04/xmldsig-more#eddsa-ed25519ctx">

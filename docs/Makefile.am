@@ -11,7 +11,6 @@ EXTRA_DIST=\
 	$(builddir)/*.html     \
 	$(builddir)/*.ico      \
 	$(builddir)/xmlsec.xsl \
-	$(builddir)/xmlsec-ga.xsl \
 	$(NULL)
 
 XMLSEC1_MAN=$(top_builddir)/man/xmlsec1.1
@@ -21,11 +20,14 @@ all:
 	@echo "======= Run 'make docs' in the xmlsec/docs folder to rebuild docs"
 
 # docs is legacy
-docs: docs-copy man-docs docs-format
+docs: docs-api docs-copy man-docs docs-format
 
-docs-copy:
+docs-api:
+	make -C api docs
+
+docs-copy: docs-api
 	@( \
-		echo "Copying docs..."; \
+		echo "-- Copying docs..."; \
 		if [ z"$(srcdir)" != z"$(builddir)" -a z"`uname`" != z"Darwin" ]; \
 		then \
 		    $(CP) -ru $(srcdir)/*.html $(srcdir)/*.ico $(srcdir)/images $(srcdir)/css $(builddir)/  ; \
@@ -41,10 +43,11 @@ if BUILD_MAN_DOCS
 man-docs: $(XMLSEC_HTML) docs-copy
 
 $(XMLSEC_HTML): docs-copy $(XMLSEC1_MAN)
-	$(MAN2HTML) $(XMLSEC1_MAN) | \
+	@($(MAN2HTML) $(XMLSEC1_MAN) | \
 		  grep -v '^Content-type: text/html' | \
 		  tr "[:cntrl:]" " " > \
-		  $(XMLSEC_HTML)
+		  $(XMLSEC_HTML) \
+	)
 else
 # do nothing, we aready copied this file
 man-docs:
@@ -53,12 +56,12 @@ endif
 
 if HAS_XSLTPROC
 docs-format: docs-copy man-docs
-	@(echo "Formatting html documents"; \
+	@(echo "-- Formatting html documents"; \
 	for i in `find $(builddir) -name "*.html" -print`; \
 	do \
 	    top_folder=`echo $$i | sed 's#/[^/]*$$#/#' | sed 's#\./##' | \
 			sed 's#[^/]*/#../#g'`; \
-	    echo "Processing $$i (topfolder='$$top_folder')"; \
+	    echo "--- Processing $$i (topfolder='$$top_folder')"; \
 	    $(XSLTPROC) --html --stringparam topfolder "$$top_folder" \
 		     --output $$i.tmp $(srcdir)/xmlsec.xsl $$i; \
 	    if [ $$? != 0 ]; \
@@ -68,26 +71,14 @@ docs-format: docs-copy man-docs
 	    fi; \
 	    mv $$i.tmp $$i; \
 	done)
-	@(echo "Cleaning html documents"; \
+	@(echo "-- Cleaning html documents"; \
 	for i in `find $(builddir) -name "*.html" -print`; \
 	do \
-	    echo Cleaning $$i ; \
-	    sed 's/\xA0/ /g' $$i > $$i.tmp ; \
+	    echo "--- Cleaning $$i" ; \
+	    sed 's/\xC2\xA0/ /g' $$i > $$i.tmp ; \
 	    mv $$i.tmp $$i ; \
 	done)
-docs-format-ga:
-	@(echo "Formatting html documents to add Google Analytics"; \
-	for i in `find $(builddir) -name "*.html" -print`; \
-	do \
-	    echo "Processing $$i"; \
-	    $(XSLTPROC) --html --output $$i.tmp $(srcdir)/xmlsec-ga.xsl $$i; \
-	    if [ $$? != 0 ]; \
-	    then \
-			echo "ERROR: processing file $$i"; \
-			exit 1; \
-	    fi; \
-	    mv $$i.tmp $$i; \
-	done)
+
 else
 # do nothing
 docs-format: docs-copy man-docs
@@ -96,16 +87,16 @@ endif
 
 clean-local:
 	-rm -f *.stamp
-	( if [ z"$(srcdir)" != z"$(builddir)" ] ; then \
+	@( if [ z"$(srcdir)" != z"$(builddir)" ] ; then \
 		(chmod -R u+w $(builddir)/images || true) && rm -rf $(builddir)/images ; \
         (chmod -R u+w $(builddir)/css || true) && rm -rf $(builddir)/css ; \
 		(chmod -R u+w $(builddir)/src || true) && rm -rf $(builddir)/src ; \
 		(for i in `find $(builddir) -name "*.html" -print` ; do \
-			echo "Removing files '$$i' ... " ; \
+			echo "--- Removing files '$$i' ... " ; \
 			chmod -R u+w $$i && rm -f $$i ; \
 		done ) ; \
 		(for i in `find $(builddir) -name "*.ico" -print` ; do \
-			echo "Removing files '$$i' ... " ; \
+			echo "--- Removing files '$$i' ... " ; \
 			chmod -R u+w $$i && rm -f $$i ; \
 		done ) ; \
 	 fi ; )

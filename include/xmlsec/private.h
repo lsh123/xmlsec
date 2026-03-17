@@ -424,6 +424,8 @@ typedef int                     (*xmlSecCryptoAppKeyCertLoadMemoryMethod)(xmlSec
  * @cryptoShutdown:             the xmlsec-crypto library shutdown method.
  * @cryptoKeysMngrInit:         the xmlsec-crypto library keys manager init method.
  * @keyDataAesGetKlass:         the method to get pointer to AES key data klass.
+ * @keyDataCamelliaGetKlass:    the method to get pointer to Camellia key data klass.
+ * @keyDataChaCha20GetKlass:    the method to get pointer to ChaCha20 key data klass.
  * @keyDataConcatKdfGetKlass:   the method to get pointer to ConcatKDF key data klass.
  * @keyDataDesGetKlass:         the method to get pointer to DES key data klass.
  * @keyDataDhGetKlass:          the method to get pointer to DH key data klass.
@@ -438,6 +440,7 @@ typedef int                     (*xmlSecCryptoAppKeyCertLoadMemoryMethod)(xmlSec
  * @keyDataPbkdf2GetKlass:      the method to get pointer to PBKDF2 key data klass.
  * @keyDataRsaGetKlass:         the method to get pointer to RSA key data klass.
  * @keyDataSLHDSAGetKlass:      the method to get pointer to SLH-DSA key data klass.
+ * @keyDataEdDSAGetKlass:       the method to get pointer to EdDSA key data klass.
  * @keyDataXdhGetKlass:         the method to get pointer to XDH key data klass.
  * @keyDataX509GetKlass:        the method to get pointer to X509 key data klass.
  * @keyDataRawX509CertGetKlass: the method to get pointer to raw X509 cert key data klass.
@@ -455,6 +458,12 @@ typedef int                     (*xmlSecCryptoAppKeyCertLoadMemoryMethod)(xmlSec
  * @transformKWAes128GetKlass:  the method to get pointer to AES 128 key wrapper transform.
  * @transformKWAes192GetKlass:  the method to get pointer to AES 192 key wrapper transform.
  * @transformKWAes256GetKlass:  the method to get pointer to AES 256 key wrapper transform.
+ * @transformCamellia128CbcGetKlass: the method to get pointer to Camellia 128 CBC encryption transform.
+ * @transformCamellia192CbcGetKlass: the method to get pointer to Camellia 192 CBC encryption transform.
+ * @transformCamellia256CbcGetKlass: the method to get pointer to Camellia 256 CBC encryption transform.
+ * @transformKWCamellia128GetKlass:  the method to get pointer to Camellia 128 key wrapper transform.
+ * @transformKWCamellia192GetKlass:  the method to get pointer to Camellia 192 key wrapper transform.
+ * @transformKWCamellia256GetKlass:  the method to get pointer to Camellia 256 key wrapper transform.
  * @transformDes3CbcGetKlass:   the method to get pointer to Triple DES encryption transform.
  * @transformKWDes3GetKlass:    the method to get pointer to Triple DES key wrapper transform.
  * @transformDhEsGetKlass:      the method to get pointer to DH-ES key agreement transform.
@@ -512,12 +521,17 @@ typedef int                     (*xmlSecCryptoAppKeyCertLoadMemoryMethod)(xmlSec
  * @transformRsaPkcs1GetKlass:  the method to get pointer to RSA-PKCS1_5 key transport transform.
  * @transformRsaOaepGetKlass:   the method to get pointer to RSA-OAEP key transport transform (XMLEnc 1.0).
  * @transformRsaOaepEnc11GetKlass: the method to get pointer to RSA-OAEP key transport transform (XMLEnc 1.1).
- * @transformSLHDSA_SHA2_128sGetKlass:   the method to get pointer to SLH-DSA-SHA2-128s signature transform.
+ * @transformSLHDSA_SHA2_128fGetKlass:   the method to get pointer to SLH-DSA-SHA2-128f signature transform.
  * @transformSLHDSA_SHA2_128sGetKlass:   the method to get pointer to SLH-DSA-SHA2-128s signature transform.
  * @transformSLHDSA_SHA2_192fGetKlass:   the method to get pointer to SLH-DSA-SHA2-192f signature transform.
  * @transformSLHDSA_SHA2_192sGetKlass:   the method to get pointer to SLH-DSA-SHA2-192f signature transform.
  * @transformSLHDSA_SHA2_256fGetKlass:   the method to get pointer to SLH-DSA-SHA2-256f signature transform.
- * @transformSLHDSA_SHA2_256sGetKlass:   the method to get pointer to SLH-DSA-SHA2-256f signature transform.
+ * @transformSLHDSA_SHA2_256sGetKlass:   the method to get pointer to SLH-DSA-SHA2-256s signature transform.
+ * @transformEdDSAEd25519GetKlass:   the method to get pointer to EdDSA-Ed25519 signature transform.
+ * @transformEdDSAEd25519ctxGetKlass: the method to get pointer to EdDSA-Ed25519ctx signature transform.
+ * @transformEdDSAEd25519phGetKlass:  the method to get pointer to EdDSA-Ed25519ph signature transform.
+ * @transformEdDSAEd448GetKlass:      the method to get pointer to EdDSA-Ed448 signature transform.
+ * @transformEdDSAEd448phGetKlass:    the method to get pointer to EdDSA-Ed448ph signature transform.
  * @transformSha1GetKlass:      the method to get pointer to SHA1 digest transform.
  * @transformSha224GetKlass:    the method to get pointer to SHA2-224 digest transform.
  * @transformSha256GetKlass:    the method to get pointer to SHA2-256 digest transform.
@@ -537,6 +551,7 @@ typedef int                     (*xmlSecCryptoAppKeyCertLoadMemoryMethod)(xmlSec
  * @cryptoAppKeysMngrCertLoad:          the default keys manager file cert load method.
  * @cryptoAppKeysMngrCertLoadMemory:    the default keys manager memory cert load method.
  * @cryptoAppKeysMngrCrlLoad:           the default keys manager file crl load method.
+ * @cryptoAppKeysMngrCrlLoadAndVerify:  the default keys manager file crl load and verify method.
  * @cryptoAppKeysMngrCrlLoadMemory:     the default keys manager memory crl load method.
  * @cryptoAppKeyLoad:           the key file load method.
  * @cryptoAppKeyLoadEx:         the key file load method.

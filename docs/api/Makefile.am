@@ -37,7 +37,7 @@ SOURCE_FILES_TO_COPY = \
 	$(srcdir)/style.css \
 	$(srcdir)/*.html \
 	$(srcdir)/*.png \
-	$(NULL)	
+	$(NULL)
 
 CRYPTO_LIBS_LIST = \
         openssl \
@@ -61,7 +61,7 @@ SOURCE_CODE_FILES=\
 EXAMPLES_SOURCE_DIR=$(top_srcdir)/examples
 EXAMPLES_SOURCE_FILES=\
 	$(shell find $(EXAMPLES_SOURCE_DIR) -name '*.c' -print) \
-	$(shell find $(EXAMPLES_SOURCE_DIR) -name '*.xml' -print) 
+	$(shell find $(EXAMPLES_SOURCE_DIR) -name '*.xml' -print)
 
 #
 # This script removes gtkdoc crap from final html
@@ -79,39 +79,39 @@ docs: html-cleanup
 else
 docs:
 	@( \
-		echo "Copying api-docs..."; \
+		echo "-- Copying api-docs..."; \
 		if [ z"$(srcdir)" != z"$(builddir)" -a z"`uname`" != z"Darwin" ]; \
 		then \
-		    $(CP) -ru $(SOURCE_FILES_TO_COPY) $(builddir)/ ; \
+		    @$(CP) -ru $(SOURCE_FILES_TO_COPY) $(builddir)/ ; \
 		fi \
 	)
 endif
 
 html-cleanup: html
-	@( echo "Cleaning up result files"; \
+	@( echo "-- Cleaning up result files"; \
 	   $(PERL) $(REMOVE_GTKDOCLINK) `find . -name "*.html" -print` \
 	)
 
 # need to cleanup "bad" chars
 html: sgml $(MAIN_SGML_FILE) $(SGML_CHAPTERS_DIR) xmlsec-index
-	$(GTKDOC_MKHTML) xmlsec $(MAIN_SGML_FILE)
+	@$(GTKDOC_MKHTML) xmlsec $(MAIN_SGML_FILE)
 
 $(SGML_CHAPTERS_DIR): $(SGML_CHAPTERS_SRC_DIR) $(SGML_CHAPTERS_DIR)/.sentinel
-	$(CP) -ru $(SGML_CHAPTERS_SRC_DIR)/* $(SGML_CHAPTERS_DIR)
+	@$(CP) -ru $(SGML_CHAPTERS_SRC_DIR)/* $(SGML_CHAPTERS_DIR)
 
 $(MAIN_SGML_FILE): $(MAIN_SGML_SRC_FILE)
-	$(CP) -u $(MAIN_SGML_SRC_FILE) $(MAIN_SGML_FILE)
+	@$(CP) -u $(MAIN_SGML_SRC_FILE) $(MAIN_SGML_FILE)
 #
 # Prepeare sgml files from sources for each library. We are also
-# doing some "magic" here by automatically adding links to XML DSig and 
+# doing some "magic" here by automatically adding links to XML DSig and
 # XML Enc specification, we also remove "Ptr" from the end of the link
 # targets to make more references.
 #
-# We also fix a bunch of stupid errors from gtkdoc 
+# We also fix a bunch of stupid errors from gtkdoc
 #
 sgml: sgml-base
-	(for i in `find $(SGML_DIR) -name "*.sgml" -or -name "*.xml" -print` ; do \
-			echo "Fixing up '$$i'" ; \
+	@(for i in `find $(SGML_DIR) -name "*.sgml" -or -name "*.xml" -print` ; do \
+			echo "--- Fixing up '$$i'" ; \
 	        cat $$i | \
 	          sed 's!\(<dsig:\)\([^/]*\)\(\/>\)!\&lt;dsig:\2\/\&gt;!g' | \
 	          sed 's!\(<enc:\)\([^/]*\)\(\/>\)!\&lt;enc:\2\/\&gt;!g' | \
@@ -135,7 +135,7 @@ sgml: sgml-base
 # gtkdoc-mkdb doesn't support --output-dir thus we have to "hack" it a litle bit
 sgml-base: scan $(SGML_DIR)/.sentinel
 	@( \
-	    echo "Create DocBook files for xmlsec-core" ; \
+	    echo "-- Create DocBook files for xmlsec-core" ; \
 	    rm -rf $(GTKDOC_MKDB_OUTPUT_DIR) $(SGML_DIR)/base ; \
 	    $(GTKDOC_MKDB) --module=xmlsec \
 		--xml-mode \
@@ -145,7 +145,7 @@ sgml-base: scan $(SGML_DIR)/.sentinel
 	    mv $(GTKDOC_MKDB_OUTPUT_DIR) $(SGML_DIR)/base ; \
 	);
 	@(for i in $(CRYPTO_LIBS_LIST) ; do \
-	    echo "Create DocBook files for xmlsec-$$i" ; \
+	    echo "-- Create DocBook files for xmlsec-$$i" ; \
 	    rm -rf $(GTKDOC_MKDB_OUTPUT_DIR) $(SGML_DIR)/$$i ; \
 	    $(GTKDOC_MKDB) --module=xmlsec-$$i \
 		--xml-mode \
@@ -157,7 +157,7 @@ sgml-base: scan $(SGML_DIR)/.sentinel
 
 scan: SOURCE_CODEs example_sources
 	@( \
-	    echo "Scanning source code for xmlsec-core" ; \
+	    echo "-- Scanning source code for xmlsec-core" ; \
 	    $(GTKDOC_SCAN) --module=xmlsec \
 	            --rebuild-sections \
 		    --output-dir=$(SCAN_DIR) \
@@ -165,7 +165,7 @@ scan: SOURCE_CODEs example_sources
 		    --source-dir=$(SOURCE_CODE_DIR)/include/xmlsec/base ; \
 	);
 	@(for i in $(CRYPTO_LIBS_LIST) ; do \
-	    echo "Scanning source code for xmlsec-$$i" ; \
+	    echo "-- Scanning source code for xmlsec-$$i" ; \
 	    $(GTKDOC_SCAN) --module=xmlsec-$$i \
 	            --rebuild-sections \
 		    --output-dir=$(SCAN_DIR) \
@@ -174,11 +174,11 @@ scan: SOURCE_CODEs example_sources
 	done);
 
 #
-# Prepare source files by coping them to "code" folder and 
+# Prepare source files by coping them to "code" folder and
 # removing XMLSEC_EXPORT_* stuff that makes gtkdoc crazy
 #
 SOURCE_CODEs: $(SOURCE_CODE_FILES) $(SOURCE_CODE_DIR)/.sentinel SOURCE_CODEs_cleanup
-	@echo "Preprocessing source files into '$(SOURCE_CODE_DIR)' ..." 
+	@echo "-- Preprocessing source files into '$(SOURCE_CODE_DIR)' ..."
 	@mkdir -p $(SOURCE_CODE_DIR)/src/base $(SOURCE_CODE_DIR)/include/xmlsec/base
 	@( \
 	for i in $(SOURCE_CODE_FILES) ; do \
@@ -199,9 +199,12 @@ SOURCE_CODEs: $(SOURCE_CODE_FILES) $(SOURCE_CODE_DIR)/.sentinel SOURCE_CODEs_cle
 		    sed 's/XMLSEC_ERRORS_PRINTF_ATTRIBUTE//' > \
 		    $(SOURCE_CODE_DIR)/$$folder_name/$$file_name; \
 	done);
-	-@mv -f $(SOURCE_CODE_DIR)/src/*.c $(SOURCE_CODE_DIR)/src/base
-	-@mv -f $(SOURCE_CODE_DIR)/include/xmlsec/*.h $(SOURCE_CODE_DIR)/include/xmlsec/base
-	-@rm -f $(SOURCE_CODE_DIR)/include/xmlsec/*/symbols.h
+	@mv -f $(SOURCE_CODE_DIR)/src/*.c $(SOURCE_CODE_DIR)/src/base
+	@mv -f $(SOURCE_CODE_DIR)/include/xmlsec/*.h $(SOURCE_CODE_DIR)/include/xmlsec/base
+	@rm -f $(SOURCE_CODE_DIR)/include/xmlsec/*/symbols.h
+	@echo "-- Remove macros documented in openssl module to avoid duplicate IDs"
+	@sed -i '/^#define XMLSEC_NO_MD5\b/d; /^#define XMLSEC_NO_EDDSA\b/d; /^#define XMLSEC_NO_HKDF\b/d' \
+	    $(SOURCE_CODE_DIR)/include/xmlsec/nss/crypto.h
 
 SOURCE_CODEs_cleanup: $(SOURCE_CODE_DIR)/.sentinel
 	@rm -rf $(SOURCE_CODE_DIR)/*
@@ -221,16 +224,16 @@ xmlsec-index: scan $(SGML_DIR)/.sentinel
 #
 # The following code converts C example file to sgml RefEntry files.
 # We get file title from a string "XML Security Library example: ..."
-# which is usually placed at the top of the file. Also all "unsafe" xml 
-# characters (<, >, &) are escaped. 
+# which is usually placed at the top of the file. Also all "unsafe" xml
+# characters (<, >, &) are escaped.
 #
 example_sources: $(EXAMPLES_DIR)/.sentinel
-	@echo "Preprocessing example source files into '$(EXAMPLES_DIR)' ..." 
+	@echo "-- Preprocessing example source files into '$(EXAMPLES_DIR)' ..."
 	@rm -rf $(EXAMPLES_DIR)/*
 	@(for i in $(EXAMPLES_SOURCE_FILES) ; do \
 	    file_name=`echo $$i | sed 's#.*/##' | sed 's#\..*$$##'`; \
 	    file_ext=`echo $$i | sed 's#.*/##' | sed 's#.*\.##'`; \
-	    echo Converting $$file_name.$$file_ext to $$file_name.sgml ...; \
+	    echo "--- Converting $$file_name.$$file_ext to $$file_name.sgml ..."; \
 	    file_title=`cat $$i | grep 'XML Security Library example: ' | sed 's#^.*: *##'`; \
 	    echo "<sect2 id=\"xmlsec-example-$$file_name\" >" > \
 	        $(EXAMPLES_DIR)/$$file_name.sgml; \
@@ -249,12 +252,12 @@ example_sources: $(EXAMPLES_DIR)/.sentinel
 # otherwise make (annoyingly) deletes it
 .PRECIOUS: %/.sentinel
 %/.sentinel:
-	@echo "Creating folder '${@D}' ..."
-	mkdir -p ${@D}
-	touch $@
+	@echo "-- Creating folder '${@D}' ..."
+	@mkdir -p ${@D}
+	@touch $@
 
 dist-hook:
-	@cp -p $(srcdir)/*.html $(srcdir)/*.png $(distdir)/
+	@$(CP) -p $(srcdir)/*.html $(srcdir)/*.png $(distdir)/
 	(for i in `find $(distdir) -name ".sentinel" -print` ; do \
 		echo "Removing some files '$$i' before dist ... " ; \
 		rm $$i ; \
@@ -263,7 +266,7 @@ dist-hook:
 		echo "Removing some files '$$i' before dist ... " ; \
 		rm "$$i" ; \
 	done ; )
-	
+
 clean-local:
 	-rm -rf $(SOURCE_CODE_DIR) $(EXAMPLES_DIR) $(SCAN_DIR)/*.txt $(SGML_DIR) $(GTKDOC_MKDB_OUTPUT_DIR)
 	-rm -f *.stamp *.types index.sgml

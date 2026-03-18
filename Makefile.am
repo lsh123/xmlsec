@@ -95,12 +95,6 @@ CHECK_CRYPTO_LIST = \
 	$(XMLSEC_CHECK_CRYPTO_LIST) \
 	$(NULL)
 
-docs: docs-man
-	@(cd docs && $(MAKE) docs)
-
-docs-clean:
-	@(cd docs && $(MAKE) clean)
-
 docs-man:
 	@(cd man && $(MAKE) docs)
 

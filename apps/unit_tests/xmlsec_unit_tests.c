@@ -65,7 +65,7 @@ int main(int argc, const char **argv) {
     }
     if(argc == 2) {
 #if defined(XMLSEC_WINDOWS) && defined(UNICODE)
-        wcstombs(testGroupFilterBuf, argv[1], sizeof(testGroupFilterBuf) - 1);
+        wcstombs_s(NULL, testGroupFilterBuf, sizeof(testGroupFilterBuf), argv[1], sizeof(testGroupFilterBuf) - 1);
         g_testGroupFilter = testGroupFilterBuf;
 #else /* defined(XMLSEC_WINDOWS) && defined(UNICODE) */
         g_testGroupFilter = argv[1];

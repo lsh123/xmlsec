@@ -19,7 +19,6 @@ XMLSEC_HTML=$(builddir)/xmlsec-man.html
 all:
 	@echo "======= Run 'make docs' in the xmlsec/docs folder to rebuild docs"
 
-# docs is legacy
 docs: docs-api docs-copy man-docs docs-format
 
 docs-api:

@@ -19,6 +19,6 @@ fi
 echo "============== Starting memcheck for ${crypto} using source root '${top_dir}'"
 rm -rf /tmp/xmlsec-test*
 make distclean
-${top_dir}/autogen.sh --enable-development --with-default-crypto=${crypto} "$@"
+${top_dir}/autogen.sh --enable-development --enable-legacy-features --with-default-crypto=${crypto} "$@"
 make -j12
 make memcheck-crypto-${crypto}

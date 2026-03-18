@@ -68,9 +68,8 @@ EXAMPLES_SOURCE_FILES=\
 #
 REMOVE_GTKDOCLINK=$(top_srcdir)/scripts/remove-gtkdoclink.pl
 
-# docs is legacy
-all: docs
-
+all:
+	@echo "======= Run 'make docs' in the xmlsec/docs folder to rebuild docs"
 
 # if build API docs, then we also have xsltproc
 if BUILD_API_DOCS

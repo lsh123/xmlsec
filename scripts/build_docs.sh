@@ -4,14 +4,15 @@
 configure_options=""
 configure_options="$configure_options --enable-static-linking --enable-crypto-dl=no"
 configure_options="$configure_options --enable-manpages-build --enable-docs-build"
-configure_options="$configure_options --enable-md5 --enable-ripemd160"
+configure_options="$configure_options --enable-legacy-features"
 cur_pwd=`pwd`
 today=`date +%F-%H-%M-%S`
 
 echo "============= Building xmlsec"
 make distclean
 ./autogen.sh $configure_options
-make
+make -j12
+make -C docs docs
 
 echo "============== Cleanup"
 cd "$cur_pwd"

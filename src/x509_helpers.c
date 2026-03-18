@@ -1400,6 +1400,8 @@ xmlSecX509SerialNumberRead(const xmlChar *str, xmlSecByte *res, xmlSecSize resSi
         buf[start] = 0U;
     }
 
+    /* start is always in [0, sizeof(buf)-1] at this point */
+    xmlSecAssert2(start < sizeof(buf), -1);
     len = sizeof(buf) - start;
     xmlSecAssert2(len > 0, -1);
 

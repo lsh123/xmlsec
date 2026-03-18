@@ -47,7 +47,7 @@ test_xmlSecX509EscapedStringRead_success(
 
     ret = xmlSecX509EscapedStringRead(&inStr, &inSize, out, sizeof(out) - 1, &outSize, (xmlChar)delim, ingoreTrailingSpaces);
     if(ret < 0) {
-        fprintf(stderr, "Error: xmlSecX509EscapedStringRead failed for '%s'\n", str);
+        testLog("Error: xmlSecX509EscapedStringRead failed for '%s'\n", str);
         testFinishedFailure();
         return;
     }
@@ -55,13 +55,13 @@ test_xmlSecX509EscapedStringRead_success(
 
     /* check results */
     if(xmlStrcmp(inStr, BAD_CAST expectedIn) != 0) {
-        fprintf(stderr, "Error: xmlSecX509EscapedStringRead returned in='%s' (expected: '%s')\n", (const char*)inStr, expectedIn);
+        testLog("Error: xmlSecX509EscapedStringRead returned in='%s' (expected: '%s')\n", (const char*)inStr, expectedIn);
         testFinishedFailure();
         return;
     }
 
     if(xmlStrcmp(out, BAD_CAST expectedOut) != 0) {
-        fprintf(stderr, "Error: xmlSecX509EscapedStringRead returned out='%s' (expected: '%s')\n", (const char*)out, expectedOut);
+        testLog("Error: xmlSecX509EscapedStringRead returned out='%s' (expected: '%s')\n", (const char*)out, expectedOut);
         testFinishedFailure();
         return;
     }
@@ -96,7 +96,7 @@ test_xmlSecX509EscapedStringRead_failure(
 
     ret = xmlSecX509EscapedStringRead(&inStr, &inSize, out, sizeof(out) - 1, &outSize, (xmlChar)delim, ingoreTrailingSpaces);
     if(ret >= 0) {
-        fprintf(stderr, "Error: xmlSecX509EscapedStringRead expected to fail for '%s'\n", (str != NULL) ? str : "NULL");
+        testLog("Error: xmlSecX509EscapedStringRead expected to fail for '%s'\n", (str != NULL) ? str : "NULL");
         testFinishedFailure();
         return;
     }
@@ -162,7 +162,7 @@ test_xmlSecX509AttrValueStringRead_success(
 
     ret = xmlSecX509AttrValueStringRead(&inStr, &inSize, out, sizeof(out) - 1, &outSize, &type, (xmlChar)delim, ingoreTrailingSpaces);
     if(ret < 0) {
-        fprintf(stderr, "Error: xmlSecX509AttrValueStringRead failed for '%s'\n", str);
+        testLog("Error: xmlSecX509AttrValueStringRead failed for '%s'\n", str);
         testFinishedFailure();
         return;
     }
@@ -170,17 +170,17 @@ test_xmlSecX509AttrValueStringRead_success(
 
     /* check results */
     if(xmlStrcmp(inStr, BAD_CAST expectedIn) != 0) {
-        fprintf(stderr, "Error: xmlSecX509AttrValueStringRead returned in='%s' (expected: '%s')\n", (const char*)inStr, expectedIn);
+        testLog("Error: xmlSecX509AttrValueStringRead returned in='%s' (expected: '%s')\n", (const char*)inStr, expectedIn);
         testFinishedFailure();
         return;
     }
     if(xmlStrcmp(out, BAD_CAST expectedOut) != 0) {
-        fprintf(stderr, "Error: xmlSecX509AttrValueStringRead returned out='%s' (expected: '%s')\n", (const char*)out, expectedOut);
+        testLog("Error: xmlSecX509AttrValueStringRead returned out='%s' (expected: '%s')\n", (const char*)out, expectedOut);
         testFinishedFailure();
         return;
     }
     if(type != expectedType) {
-        fprintf(stderr, "Error: xmlSecX509AttrValueStringRead returned type='%d' (expected: '%d')\n", type, expectedType);
+        testLog("Error: xmlSecX509AttrValueStringRead returned type='%d' (expected: '%d')\n", type, expectedType);
         testFinishedFailure();
         return;
     }
@@ -216,7 +216,7 @@ test_xmlSecX509AttrValueStringRead_failure(
 
     ret = xmlSecX509AttrValueStringRead(&inStr, &inSize, out, sizeof(out) - 1, &outSize, &type, (xmlChar)delim, ingoreTrailingSpaces);
     if(ret >= 0) {
-        fprintf(stderr, "Error: xmlSecX509AttrValueStringRead expected to fail for '%s'\n", (str != NULL) ? str : "NULL");
+        testLog("Error: xmlSecX509AttrValueStringRead expected to fail for '%s'\n", (str != NULL) ? str : "NULL");
         testFinishedFailure();
         return;
     }
@@ -331,54 +331,54 @@ test_xmlSecX509NameRead_success(
     memset(&nms, 0, sizeof(nms));
     ret = xmlSecX509NameRead(BAD_CAST str, replacements, test_xmlSecX509NameReadCallback, &nms);
     if(ret < 0) {
-        fprintf(stderr, "Error: xmlSecX509NameRead failed for '%s'\n", str);
+        testLog("Error: xmlSecX509NameRead failed for '%s'\n", str);
         testFinishedFailure();
         return;
     }
 
     /* check results */
     if(nms.pos != expectedCount) {
-        fprintf(stderr, "Error: xmlSecX509NameRead returned type='%d' (expected: '%d')\n", nms.pos , expectedCount);
+        testLog("Error: xmlSecX509NameRead returned type='%d' (expected: '%d')\n", nms.pos , expectedCount);
         testFinishedFailure();
         return;
     }
     if(nms.pos > 0 && xmlStrcmp(nms.names[0], BAD_CAST name0) != 0) {
-        fprintf(stderr, "Error: xmlSecX509NameRead returned nms.names[0]='%s' (expected: '%s')\n", (const char*)nms.names[0], name0);
+        testLog("Error: xmlSecX509NameRead returned nms.names[0]='%s' (expected: '%s')\n", (const char*)nms.names[0], name0);
         testFinishedFailure();
         return;
     }
     if(nms.pos > 0 && xmlStrcmp(nms.values[0], BAD_CAST value0) != 0) {
-        fprintf(stderr, "Error: xmlSecX509NameRead returned nms.value[0]='%s' (expected: '%s')\n", (const char*)nms.values[0], value0);
+        testLog("Error: xmlSecX509NameRead returned nms.value[0]='%s' (expected: '%s')\n", (const char*)nms.values[0], value0);
         testFinishedFailure();
         return;
     }
     if(nms.pos > 0 && (int)(nms.valueSizes[0]) != xmlStrlen(BAD_CAST value0)) {
-        fprintf(stderr, "Error: xmlSecX509NameRead returned nms.valueSizes[0]='%d' (expected: '%d')\n", (int)(nms.valueSizes[0]), xmlStrlen(BAD_CAST value0));
+        testLog("Error: xmlSecX509NameRead returned nms.valueSizes[0]='%d' (expected: '%d')\n", (int)(nms.valueSizes[0]), xmlStrlen(BAD_CAST value0));
         testFinishedFailure();
         return;
     }
     if(nms.pos > 0 && nms.types[0] != type0) {
-        fprintf(stderr, "Error: xmlSecX509NameRead returned nms.types[0]='%d' (expected: '%d')\n", nms.types[0], type0);
+        testLog("Error: xmlSecX509NameRead returned nms.types[0]='%d' (expected: '%d')\n", nms.types[0], type0);
         testFinishedFailure();
         return;
     }
     if(nms.pos > 1 && xmlStrcmp(nms.names[1], BAD_CAST name1) != 0) {
-        fprintf(stderr, "Error: xmlSecX509NameRead returned nms.names[1]='%s' (expected: '%s')\n", (const char*)nms.names[1], name1);
+        testLog("Error: xmlSecX509NameRead returned nms.names[1]='%s' (expected: '%s')\n", (const char*)nms.names[1], name1);
         testFinishedFailure();
         return;
     }
     if(nms.pos > 1 && xmlStrcmp(nms.values[1], BAD_CAST value1) != 0) {
-        fprintf(stderr, "Error: xmlSecX509NameRead returned nms.value[1]='%s' (expected: '%s')\n", (const char*)nms.values[1], value1);
+        testLog("Error: xmlSecX509NameRead returned nms.value[1]='%s' (expected: '%s')\n", (const char*)nms.values[1], value1);
         testFinishedFailure();
         return;
     }
     if(nms.pos > 1 && (int)(nms.valueSizes[1]) != xmlStrlen(BAD_CAST value1)) {
-        fprintf(stderr, "Error: xmlSecX509NameRead returned nms.valueSizes[0]='%d' (expected: '%d')\n", (int)(nms.valueSizes[1]), xmlStrlen(BAD_CAST value1));
+        testLog("Error: xmlSecX509NameRead returned nms.valueSizes[0]='%d' (expected: '%d')\n", (int)(nms.valueSizes[1]), xmlStrlen(BAD_CAST value1));
         testFinishedFailure();
         return;
     }
     if(nms.pos > 1 && nms.types[1] != type1) {
-        fprintf(stderr, "Error: xmlSecX509NameRead returned nms.types[1]='%d' (expected: '%d')\n", nms.types[1], type1);
+        testLog("Error: xmlSecX509NameRead returned nms.types[1]='%d' (expected: '%d')\n", nms.types[1], type1);
         testFinishedFailure();
         return;
     }
@@ -407,7 +407,7 @@ test_xmlSecX509NameRead_failure(
     }
     ret = xmlSecX509NameRead(BAD_CAST str, replacements, test_xmlSecX509NameReadCallback, &names);
     if(ret >= 0) {
-        fprintf(stderr, "Error: xmlSecX509NameRead expected to fail for '%s'\n", (str != NULL) ? str : "NULL");
+        testLog("Error: xmlSecX509NameRead expected to fail for '%s'\n", (str != NULL) ? str : "NULL");
         testFinishedFailure();
         return;
     }

@@ -41,6 +41,8 @@ int test_transform_helpers(void);
 int test_xmlSecX509EscapedStringRead(void);
 int test_xmlSecX509AttrValueStringRead(void);
 int test_xmlSecX509NameRead(void);
+int test_xmltree(void);
+int test_templates(void);
 
 #ifdef __cplusplus
 }

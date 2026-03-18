@@ -90,6 +90,12 @@ int main(int argc, const char **argv) {
     if (test_xmlSecX509NameRead() != 1) {
         success = 0;
     }
+    if (test_xmltree() != 1) {
+        success = 0;
+    }
+    if (test_templates() != 1) {
+        success = 0;
+    }
 
 
     if(success == 1) {

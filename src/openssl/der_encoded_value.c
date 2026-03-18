@@ -97,6 +97,7 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataDEREncodedKeyValueKlass = {
  *
  * https://www.w3.org/TR/xmldsig-core1/#sec-DEREncodedKeyValue
  *
+ * |[<!-- language="XML" -->
  *      <!-- targetNamespace="http://www.w3.org/2009/xmldsig11#" -->
  *      <element name="DEREncodedKeyValue" type="dsig11:DEREncodedKeyValueType" />
  *      <complexType name="DEREncodedKeyValueType">
@@ -106,6 +107,7 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataDEREncodedKeyValueKlass = {
  *              </extension>
  *          </simpleContent>
  *      </complexType>
+ * ]|
  *
  * Returns: the &lt;dsig11:DEREncodedKeyValue/&gt;element processing key data klass.
  */

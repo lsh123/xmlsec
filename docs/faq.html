@@ -378,7 +378,7 @@
     by the other software package. XMLSec library tries to handle as many issues as possible automatically (e.g. missing or added leading
     zeros in the signature value in many Java implementations). Another known problem is using ASN1 encoding for ECDSA signatures and
     you can try <code>--enable-asn1-signatures-hack</code> option for <a href="xmlsec-man.html">xmlsec command line utility</a> or
-    set <code>dsigCtx->flags |= XMLSEC_DSIG_FLAGS_USE_ASN1_SIGNATURE_VALUES;</code> flag on the XML DSig context (this is a hack and
+    set <code>dsigCtx-&gt;flags |= XMLSEC_DSIG_FLAGS_USE_ASN1_SIGNATURE_VALUES;</code> flag on the XML DSig context (this is a hack and
     can cause interoperability problems). If nothing works, then you will need to reach out to the authors of another software packet
     and ask them to help you debug the issue. Use <code>--store-references</code> and <code>--store-signatures</code> options for
     the <a href="xmlsec-man.html">xmlsec command line utility</a> to get pre-digest and pre-signatures buffers from XMLSec and compare

@@ -73,11 +73,11 @@
 				<code>00FD D6A7 DFB8 1C88 F34B  9BF0 E63E CDEF 9E1D 829E</code>
 				(<a href="https://www.cyberciti.biz/faq/pgp-tarball-file-signature-keys-verification/">how to verify release tarball signature</a>).</p>
                             </div>
-                                <div align="left">
+<div align="left">
                                 <h2>Source code on GitHub</h2>
                                 <p>XML Security Library source code is available on <a href="https://github.com/lsh123/xmlsec">GitHub</a>.</p>
                                 </div>
-                                <div align="left">
+<div align="left">
                                 <h2>Requirements</h2>
                                 <p>The XML Security Library requires <a href="http://xmlsoft.org/downloads.html">LibXML2</a> 2.9.13 or newer, and optionally
                                     <a href="http://xmlsoft.org/XSLT/downloads.html">LibXSLT</a> 1.1.35 or newer. Plus one of the
@@ -97,8 +97,10 @@
                                             <td><b>xmlsec-openssl</b></td>
                                             <td>
                                                 <ul>
-                                                    <li><a href="http://www.openssl.org/">OpenSSL</a> 3.0.13 or newer (3.5.0 or newer is strongly recommended).</li>
-                                                    <li><a href="https://www.libressl.org/">LibreSSL</a> (3.9.0 or newer) and
+                                                    <li>
+<a href="http://www.openssl.org/">OpenSSL</a> 3.0.13 or newer (3.5.0 or newer is strongly recommended).</li>
+                                                    <li>
+<a href="https://www.libressl.org/">LibreSSL</a> (3.9.0 or newer) and
                                                         <a href="https://boringssl.googlesource.com/boringssl/">BoringSSL</a> (1.1.0 or newer)
                                                         should work but your mileage may vary as those libraries tend to change API / ABI
                                                         and break backward compaibility.
@@ -126,12 +128,15 @@
                                         </tr>
                                         <tr valign="top">
                                             <td><b>xmlsec-gnutls</b></td>
-                                            <td><a href="http://www.gnu.org/software/gnutls/">GnuTLS</a> 3.8.3 or newer</td>
+                                            <td>
+<a href="http://www.gnu.org/software/gnutls/">GnuTLS</a> 3.8.3 or newer</td>
                                             <!-- key formats -->
                                             <td>
                                                 <ul>
                                                     <li>Private keys: pkcs12, pkcs8 (pem/der), unencrypted keys (pem/der)</li>
                                                     <li>Public keys: x509 certificates (pem/der), standalone keys (pem/der)</li>
+                                                    <li>x509 certificates: pem/der</li>
+                                                    <li>x509 CRLs: pem/der</li>
                                                 </ul>
                                             </td>
                                             <!-- notes -->
@@ -140,7 +145,8 @@
                                         </tr>
                                         <tr valign="top">
                                             <td><b>xmlsec-nss</b></td>
-                                            <td><a href="http://www.mozilla.org/projects/security/pki/nss/">NSS</a> (Mozilla cryptographic library) 3.91 or newer
+                                            <td>
+<a href="http://www.mozilla.org/projects/security/pki/nss/">NSS</a> (Mozilla cryptographic library) 3.91 or newer
                                             </td>
                                             <!-- key formats -->
                                             <td>
@@ -166,7 +172,7 @@
                                                     <li>Private keys: pkcs12</li>
                                                     <li>Public keys: x509 certificates (der)</li>
                                                     <li>x509 certificates: der</li>
-                                                    <li>x509 CRLs: none</li>
+                                                    <li>x509 CRLs: der</li>
                                                 </ul>
                                             </td>
                                             <!-- notes -->

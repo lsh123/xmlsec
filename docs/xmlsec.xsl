@@ -30,7 +30,6 @@
     </xsl:template>
 
     <xsl:template match="/">
-
 <html>
 <head>
 <xsl:copy-of select="//head/*" />
@@ -191,6 +190,5 @@
 </tr></table>
 </body>
 </html>
-
 </xsl:template>
 </xsl:stylesheet>

@@ -2432,24 +2432,6 @@ execDSigTest $res_fail \
     "rsa x509" \
     "--trusted-$cert_format certs/rsa-ca-cert.$cert_format"
 
-##########################################################################
-#
-# test dynamic signature
-#
-##########################################################################
-if [ -n "$XMLSEC_TEST_NAME" -a "$XMLSEC_TEST_NAME" = "dsig-dynamic" ]; then
-echo "Dynamic signature template"
-printf "    Create new signature                                 "
-echo "$VALGRIND $xmlsec_app sign-tmpl $xmlsec_params --crypto-config $default_crypto_config --keys-file $topfolder/keys/keys.xml --output $tmpfile" >> $logfile
-$VALGRIND $xmlsec_app sign-tmpl $xmlsec_params --crypto-config $default_crypto_config --keys-file $topfolder/keys/keys.xml --output $tmpfile >> $logfile 2>> $logfile
-printRes $res_success $?
-printf "    Verify new signature                                 "
-echo "$VALGRIND $xmlsec_app verify --keys-file $topfolder/keys/keys.xml $tmpfile" >> $logfile
-$VALGRIND $xmlsec_app verify $xmlsec_params --crypto-config $default_crypto_config --keys-file $topfolder/keys/keys.xml $tmpfile >> $logfile 2>> $logfile
-printRes $res_success $?
-fi
-
-
 
 ##########################################################################
 ##########################################################################

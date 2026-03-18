@@ -47,7 +47,6 @@
 #include <xmlsec/xmldsig.h>
 #include <xmlsec/xmlenc.h>
 #include <xmlsec/parser.h>
-#include <xmlsec/templates.h>
 #include <xmlsec/errors.h>
 
 #include "crypto.h"
@@ -81,9 +80,6 @@ static const char helpCommands2[] =
 #ifndef XMLSEC_NO_XMLDSIG
     "  --sign      "    "\tsign data and output XML document\n"
     "  --verify    "    "\tverify signed document\n"
-#ifndef XMLSEC_NO_TMPL_TEST
-    "  --sign-tmpl "    "\tcreate and sign dynamicaly generated signature template\n"
-#endif /* XMLSEC_NO_TMPL_TEST */
 #endif /* XMLSEC_NO_XMLDSIG */
 #ifndef XMLSEC_NO_XMLENC
     "  --encrypt   "    "\tencrypt data and output XML document\n"
@@ -107,18 +103,9 @@ static const char helpVerify[] =
     "Usage: xmlsec verify [<options>] <file>\n"
     "Verifies XML Digital Signature in the <file>\n";
 
-static const char helpSignTmpl[] =
-    "Usage: xmlsec sign-tmpl [<options>]\n"
-    "Creates a simple dynamic template and calculates XML Digital Signature\n"
-    "(for testing only).\n";
-
 static const char helpEncrypt[] =
     "Usage: xmlsec encrypt [<options>] <file>\n"
     "Encrypts data and creates XML Encryption using template file <file>\n";
-
-static const char helpEncryptTmpl[] =
-    "Usage: xmlsec encrypt [<options>]\n"
-    "Creates a simple dynamic template and calculates XML Encryption\n";
 
 static const char helpDecrypt[] =
     "Usage: xmlsec decrypt [<options>] <file>\n"
@@ -1218,10 +1205,8 @@ typedef enum {
     xmlSecAppCommandKeys,
     xmlSecAppCommandSign,
     xmlSecAppCommandVerify,
-    xmlSecAppCommandSignTmpl,
     xmlSecAppCommandEncrypt,
-    xmlSecAppCommandDecrypt,
-    xmlSecAppCommandEncryptTmpl
+    xmlSecAppCommandDecrypt
 } xmlSecAppCommand;
 
 typedef struct _xmlSecAppXmlData                                xmlSecAppXmlData,
@@ -1253,9 +1238,6 @@ static int                      xmlSecAppPrepareKeyInfoCtx      (xmlSecKeyInfoCt
 static int                      xmlSecAppSignFile               (const char* inputFileName,
                                                                  const char* outputFileNameTmpl);
 static int                      xmlSecAppVerifyFile             (const char* inputFileName);
-#ifndef XMLSEC_NO_TMPL_TEST
-static int                      xmlSecAppSignTmpl               (const char* outputFileNameTmpl);
-#endif /* XMLSEC_NO_TMPL_TEST */
 static int                      xmlSecAppPrepareDSigCtx         (xmlSecDSigCtxPtr dsigCtx);
 static void                     xmlSecAppPrintDSigCtx           (xmlSecDSigCtxPtr dsigCtx);
 #endif /* XMLSEC_NO_XMLDSIG */
@@ -1265,9 +1247,6 @@ static int                      xmlSecAppEncryptFile            (const char* inp
                                                                  const char* outputFileNameTmpl);
 static int                      xmlSecAppDecryptFile            (const char* inputFileName,
                                                                  const char* outputFileNameTmpl);
-#ifndef XMLSEC_NO_TMPL_TEST
-static int                      xmlSecAppEncryptTmpl            (const char* outputFileNameTmpl);
-#endif /* XMLSEC_NO_TMPL_TEST */
 static int                      xmlSecAppPrepareEncCtx          (xmlSecEncCtxPtr encCtx);
 static void                     xmlSecAppPrintEncCtx            (xmlSecEncCtxPtr encCtx);
 #endif /* XMLSEC_NO_XMLENC */
@@ -1604,14 +1583,6 @@ xmlSecAppExecute(xmlSecAppCommand command, const char** utf8_argv, int argc) {
                 }
             }
             break;
-#ifndef XMLSEC_NO_TMPL_TEST
-        case xmlSecAppCommandSignTmpl:
-            if(xmlSecAppSignTmpl(gOutputFilename) < 0) {
-                fprintf(stderr, "Error: failed to create and sign template\n");
-                goto done;
-            }
-            break;
-#endif /* XMLSEC_NO_TMPL_TEST */
 #endif /* XMLSEC_NO_XMLDSIG */
 
 #ifndef XMLSEC_NO_XMLENC
@@ -1631,14 +1602,6 @@ xmlSecAppExecute(xmlSecAppCommand command, const char** utf8_argv, int argc) {
                 }
             }
             break;
-#ifndef XMLSEC_NO_TMPL_TEST
-        case xmlSecAppCommandEncryptTmpl:
-            if(xmlSecAppEncryptTmpl(gOutputFilename) < 0) {
-                fprintf(stderr, "Error: failed to create and encrypt template\n");
-                goto done;
-            }
-            break;
-#endif /* XMLSEC_NO_TMPL_TEST */
 #endif /* XMLSEC_NO_XMLENC */
 
         default:
@@ -1835,132 +1798,6 @@ done:
     }
     return(res);
 }
-
-#ifndef XMLSEC_NO_TMPL_TEST
-static int
-xmlSecAppSignTmpl(const char* outputFileNameTmpl) {
-    xmlDocPtr doc = NULL;
-    xmlNodePtr cur;
-    xmlSecDSigCtx dsigCtx;
-    clock_t start_time;
-    int res = -1;
-
-    if(xmlSecDSigCtxInitialize(&dsigCtx, g_keysManager) < 0) {
-        fprintf(stderr, "Error: dsig context initialization failed\n");
-        return(-1);
-    }
-    if(xmlSecAppPrepareDSigCtx(&dsigCtx) < 0) {
-        fprintf(stderr, "Error: dsig context preparation failed\n");
-        goto done;
-    }
-
-    /* prepare template */
-    doc = xmlNewDoc(BAD_CAST "1.0");
-    if(doc == NULL) {
-        fprintf(stderr, "Error: failed to create doc\n");
-        goto done;
-    }
-
-    cur = xmlSecTmplSignatureCreate(doc, xmlSecTransformInclC14NId,
-                                    xmlSecTransformHmacSha256Id, NULL);
-    if(cur == NULL) {
-        fprintf(stderr, "Error: failed to create Signature node\n");
-        goto done;
-    }
-    xmlDocSetRootElement(doc, cur);
-
-    /* set hmac signature length */
-    cur = xmlSecTmplSignatureGetSignMethodNode(xmlDocGetRootElement(doc));
-    if(cur == NULL) {
-        fprintf(stderr, "Error: failed to find SignatureMethod node\n");
-        goto done;
-    }
-    if(xmlSecTmplTransformAddHmacOutputLength(cur, 93) < 0) {
-        fprintf(stderr, "Error: failed to set hmac length\n");
-        goto done;
-    }
-
-    cur = xmlSecTmplSignatureAddReference(xmlDocGetRootElement(doc),
-                                    xmlSecTransformSha256Id,
-                                    BAD_CAST "ref1", NULL, NULL);
-    if(cur == NULL) {
-        fprintf(stderr, "Error: failed to add Reference node\n");
-        goto done;
-    }
-
-    cur = xmlSecTmplReferenceAddTransform(cur, xmlSecTransformXPath2Id);
-    if(cur == NULL) {
-        fprintf(stderr, "Error: failed to add XPath transform\n");
-        goto done;
-    }
-
-    if(xmlSecTmplTransformAddXPath2(cur, BAD_CAST "intersect",
-                                    BAD_CAST "//*[@Id='object1']", NULL) < 0) {
-        fprintf(stderr, "Error: failed to set XPath expression\n");
-        goto done;
-    }
-
-    cur = xmlSecTmplSignatureAddObject(xmlDocGetRootElement(doc),
-                                    BAD_CAST "object1", NULL, NULL);
-    if(cur == NULL) {
-        fprintf(stderr, "Error: failed to add Object node\n");
-        goto done;
-    }
-    xmlNodeSetContent(cur, BAD_CAST "This is signed data");
-
-    /* add key information */
-    cur = xmlSecTmplSignatureEnsureKeyInfo(xmlDocGetRootElement(doc), NULL);
-    if(cur == NULL) {
-        fprintf(stderr, "Error: failed to add KeyInfo node\n");
-        goto done;
-    }
-    if(xmlSecTmplKeyInfoAddKeyName(cur, NULL) == NULL) {
-        fprintf(stderr, "Error: failed to add KeyName node\n");
-        goto done;
-    }
-
-    /* sign */
-    start_time = clock();
-    if(xmlSecDSigCtxSign(&dsigCtx, xmlDocGetRootElement(doc)) < 0) {
-        /* caller will print the error */
-        goto done;
-    }
-    g_totalTime += clock() - start_time;
-
-    /* return an error if siganture failed */
-    if(dsigCtx.status != xmlSecDSigStatusSucceeded) {
-        goto done;
-    }
-
-    if(g_repeats <= 1) {
-        int ret;
-
-        ret = xmlSecAppWriteResult(NULL, outputFileNameTmpl, doc, NULL, doc->encoding);
-        if(ret < 0) {
-            goto done;
-        }
-    }
-
-    res = 0;
-
-done:
-
-    fprintf(stderr, "Signature status: %s\n", xmlSecDSigCtxGetStatusString(dsigCtx.status));
-    if((dsigCtx.status == xmlSecDSigStatusInvalid) && (dsigCtx.failureReason != xmlSecDSigFailureReasonUnknown)) {
-        fprintf(stderr, "Failure reason: %s\n", xmlSecDSigCtxGetFailureReasonString(dsigCtx.failureReason));
-    }
-
-    /* print debug info if requested */
-    if(xmlSecAppCmdLineParamIsSet(&verboseParam)) {
-        xmlSecAppPrintDSigCtx(&dsigCtx);
-    }
-    xmlSecDSigCtxFinalize(&dsigCtx);
-    if(doc != NULL) {
-        xmlFreeDoc(doc);
-    }
-    return(res);
-}
-#endif /* XMLSEC_NO_TMPL_TEST */
 
 static int
 xmlSecAppPrepareDSigCtx(xmlSecDSigCtxPtr dsigCtx) {
@@ -2217,96 +2054,6 @@ done:
     }
     return(res);
 }
-
-#ifndef XMLSEC_NO_TMPL_TEST
-static int
-xmlSecAppEncryptTmpl(const char* outputFileNameTmpl) {
-    const xmlChar data[] = "Hello, World!";
-    xmlSecEncCtx encCtx;
-    xmlDocPtr doc = NULL;
-    xmlNodePtr cur;
-    clock_t start_time;
-    int res = -1;
-
-    if(xmlSecEncCtxInitialize(&encCtx, g_keysManager) < 0) {
-        fprintf(stderr, "Error: enc context initialization failed\n");
-        return(-1);
-    }
-    if(xmlSecAppPrepareEncCtx(&encCtx) < 0) {
-        fprintf(stderr, "Error: enc context preparation failed\n");
-        goto done;
-    }
-
-    /* prepare template */
-    doc = xmlNewDoc(BAD_CAST "1.0");
-    if(doc == NULL) {
-        fprintf(stderr, "Error: failed to create doc\n");
-        goto done;
-    }
-
-    cur = xmlSecTmplEncDataCreate(doc, xmlSecTransformAes256CbcId,
-                                  NULL, NULL, NULL, NULL);
-    if(cur == NULL) {
-        fprintf(stderr, "Error: failed to encryption template\n");
-        goto done;
-    }
-    xmlDocSetRootElement(doc, cur);
-
-    if(xmlSecTmplEncDataEnsureCipherValue(xmlDocGetRootElement(doc)) == NULL) {
-        fprintf(stderr, "Error: failed to add CipherValue node\n");
-        goto done;
-    }
-
-    /* add key information */
-    cur = xmlSecTmplEncDataEnsureKeyInfo(xmlDocGetRootElement(doc), NULL);
-    if(cur == NULL) {
-        fprintf(stderr, "Error: failed to add KeyInfo node\n");
-        goto done;
-    }
-    if(xmlSecTmplKeyInfoAddKeyName(cur, NULL) == NULL) {
-        fprintf(stderr, "Error: failed to add KeyName node\n");
-        goto done;
-    }
-
-    /* encrypt */
-    start_time = clock();
-    if(xmlSecEncCtxBinaryEncrypt(&encCtx, xmlDocGetRootElement(doc),
-                                (const xmlSecByte*)data, xmlSecStrlen(data)) < 0) {
-        fprintf(stderr, "Error: failed to encrypt data\n");
-        goto done;
-    }
-    g_totalTime += clock() - start_time;
-
-    /* print out result only once per execution */
-    if(g_repeats <= 1) {
-        if(encCtx.resultReplaced) {
-            if(xmlSecAppWriteResult(NULL, outputFileNameTmpl, doc, NULL, doc->encoding) < 0) {
-                goto done;
-            }
-        } else {
-            if(xmlSecAppWriteResult(NULL, outputFileNameTmpl, NULL, encCtx.result, doc->encoding) < 0) {
-                goto done;
-            }
-        }
-    }
-    res = 0;
-
-done:
-    if(encCtx.failureReason != xmlSecEncFailureReasonUnknown) {
-        fprintf(stderr, "Failure reason: %s\n", xmlSecEncCtxGetFailureReasonString(encCtx.failureReason));
-    }
-
-    /* print debug info if requested */
-    if(xmlSecAppCmdLineParamIsSet(&verboseParam)) {
-        xmlSecAppPrintEncCtx(&encCtx);
-    }
-    xmlSecEncCtxFinalize(&encCtx);
-    if(doc != NULL) {
-        xmlFreeDoc(doc);
-    }
-    return(res);
-}
-#endif /* XMLSEC_NO_TMPL_TEST */
 
 static int
 xmlSecAppPrepareEncCtx(xmlSecEncCtxPtr encCtx) {
@@ -3668,17 +3415,6 @@ xmlSecAppParseCommand(const char* cmd, xmlSecAppCmdLineParamTopic* cmdLineTopics
             xmlSecAppCmdLineTopicX509Certs;
         return(xmlSecAppCommandVerify);
     } else
-#ifndef XMLSEC_NO_TMPL_TEST
-    if((strcmp(cmd, "sign-tmpl") == 0) || (strcmp(cmd, "--sign-tmpl") == 0)) {
-        (*cmdLineTopics) = xmlSecAppCmdLineTopicGeneral |
-            xmlSecAppCmdLineTopicCryptoConfig |
-            xmlSecAppCmdLineTopicDSigCommon |
-            xmlSecAppCmdLineTopicDSigSign |
-            xmlSecAppCmdLineTopicKeysMngr |
-            xmlSecAppCmdLineTopicX509Certs;
-        return(xmlSecAppCommandSignTmpl);
-    } else
-#endif /* XMLSEC_NO_TMPL_TEST */
 
 #endif /* XMLSEC_NO_XMLDSIG */
 
@@ -3703,17 +3439,6 @@ xmlSecAppParseCommand(const char* cmd, xmlSecAppCmdLineParamTopic* cmdLineTopics
         return(xmlSecAppCommandDecrypt);
     } else
 
-#ifndef XMLSEC_NO_TMPL_TEST
-    if((strcmp(cmd, "encrypt-tmpl") == 0) || (strcmp(cmd, "--encrypt-tmpl") == 0)) {
-        (*cmdLineTopics) = xmlSecAppCmdLineTopicGeneral |
-            xmlSecAppCmdLineTopicCryptoConfig |
-            xmlSecAppCmdLineTopicEncCommon |
-            xmlSecAppCmdLineTopicEncEncrypt |
-            xmlSecAppCmdLineTopicKeysMngr |
-            xmlSecAppCmdLineTopicX509Certs;
-        return(xmlSecAppCommandEncryptTmpl);
-    } else
-#endif /* XMLSEC_NO_TMPL_TEST */
 #endif /* XMLSEC_NO_XMLENC */
 
     if(1) {
@@ -3761,12 +3486,6 @@ xmlSecAppPrintHelp(xmlSecAppCommand command, xmlSecAppCmdLineParamTopic topics) 
         break;
     case xmlSecAppCommandDecrypt:
         fprintf(stdout, "%s\n", helpDecrypt);
-        break;
-    case xmlSecAppCommandSignTmpl:
-        fprintf(stdout, "%s\n", helpSignTmpl);
-        break;
-    case xmlSecAppCommandEncryptTmpl:
-        fprintf(stdout, "%s\n", helpEncryptTmpl);
         break;
     }
     if(topics != 0) {

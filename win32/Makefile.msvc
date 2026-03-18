@@ -152,11 +152,15 @@ XMLSEC_UNIT_TESTS_OBJS = \
 	$(XMLSEC_APPS_INTDIR)\unit_tests\base64_unit_tests.obj \
 	$(XMLSEC_APPS_INTDIR)\unit_tests\transform_helpers_unit_tests.obj \
 	$(XMLSEC_APPS_INTDIR)\unit_tests\x509_unit_tests.obj \
+	$(XMLSEC_APPS_INTDIR)\unit_tests\xmltree_unit_tests.obj \
+	$(XMLSEC_APPS_INTDIR)\unit_tests\templates_unit_tests.obj \
 	$(XMLSEC_APPS_INTDIR)\unit_tests\xmlsec_unit_tests.obj
 XMLSEC_UNIT_TESTS_OBJS_A = \
 	$(XMLSEC_APPS_INTDIR_A)\unit_tests\base64_unit_tests.obj \
 	$(XMLSEC_APPS_INTDIR_A)\unit_tests\transform_helpers_unit_tests.obj \
 	$(XMLSEC_APPS_INTDIR_A)\unit_tests\x509_unit_tests.obj \
+	$(XMLSEC_APPS_INTDIR_A)\unit_tests\xmltree_unit_tests.obj \
+	$(XMLSEC_APPS_INTDIR_A)\unit_tests\templates_unit_tests.obj \
 	$(XMLSEC_APPS_INTDIR_A)\unit_tests\xmlsec_unit_tests.obj
 
 XMLSEC_OBJS = \
@@ -487,8 +491,6 @@ CFLAGS = $(CFLAGS) /D "XMLSEC_DEFAULT_CRYPTO=\"$(XMLSEC_DEFAULT_CRYPTO)\""
 !if "$(STATIC)" == "1"
 CFLAGS 	= $(CFLAGS) /D "XMLSEC_NO_CRYPTO_DYNAMIC_LOADING"
 APP_CFLAGS = $(APP_CFLAGS) $(XMLSEC_CRYPTO_CFLAGS)
-# this disables TEMPLATE tests and helps with missing algorithms (hmac) in mscrypto
-APP_CFLAGS = $(APP_CFLAGS) /D "XMLSEC_NO_TMPL_TEST"
 !else
 CFLAGS = $(CFLAGS) /D "XMLSEC_DL_WIN32"
 APP_CFLAGS = $(APP_CFLAGS) /D "XMLSEC_CRYPTO_DYNAMIC_LOADING"

@@ -48,11 +48,39 @@
 <h1>XML Security Library News</h1>
 </div>
 <ul>
-    <li>TODO<br>
+    <li>April 2, 2026<br>
 		The <a href="download.html">XML Security Library 1.3.10</a> release includes the following changes:
         <ul>
-            <li>TODO</li>
-            <li>Several other small fixes (see <a href="https://github.com/lsh123/xmlsec/commits/master">more details</a>).</li>
+            <li>The minimum supported versions for dependencies are now: LibXML2 &gt;= 2.9.13 (February 19, 2022), LibXSLT &gt;= 1.1.35 (February 16, 2022),
+                OpenSSL &gt;= 3.0.13 (January 30, 2024), LibreSSL &gt;= 3.9.0 (March 9, 2024), NSS &gt;= 3.91 (June 26, 2023), NSPR &gt;= 4.34.1  (June 26, 2023),
+                GnuTLS &gt;= 3.8.3 (January 1, 2024).</li>
+
+            <li>(xmlsec-core) Disabled all key value data for all key types by default (use '--enabled-key-data' flag to re-enable if needed).</li>
+            <li>(xmlsec-core) Added '--enable-asn1-signatures-hack' option to allow generation / verification of ASN1 signature values.</li>
+            <li>(xmlsec-core) Added '--verify-crls' option to verify CRLs when loading from command line.</li>
+
+            <li>(xmlsec-openssl) Added support for EdDSA signature algorithm; XDH (X25519 and X448) key agreement algorithms;
+                HKDF key derivation algorithm; Camellia block cipher and key wrap algorithms; ChaCha20 and ChaCha20-Poly1305 encryption algorithms;
+                and <b>experimental</b> ML-DSA and SLH-DSA-SHA2 signature algorithms.
+            </li>
+
+            <li>(xmlsec-gnutls) Added support for EdDSA signature algorithms; ECDH and XDH (X25519 and X448) key agreement algorithms;
+                ConcatKDF, PBKDF2, and HKDF key derivation algorithms; ChaCha20 and ChaCha20-Poly1305 encryption algorithms;
+                SHA2-224 and SHA3-224 digest algorithms; and <b>experimental</b> support for ML-DSA signature algorithms.
+            </li>
+
+            <li>(xmlsec-nss) Added support for EdDSA (Ed25519) signature algorithms; ECDH and XDH (X25519) key agreement algorithms;
+                ConcatKDF and HKDF key derivation algorithms; and ChaCha20-Poly1305 encryption algorithm.
+                Camellia block cipher and key wrap algorithms.</li>
+
+            <li>(xmlsec-mscng) Added support for DSA-SHA256 signature algorithm; XDH (X25519) and DH (X9.42 DHX) key agreement algorithms;
+                HKDF key derivation algorithm; and SHA3 digest algorithms.
+            </li>
+            <li>(xmlsec-mscng) Added support for loading CRLs from command line.</li>
+
+            <li>(xmlsec-test) Created scripts to generate keys, regenerated all keys with standard names, and updated tests accordingly.</li>
+
+            <li>Several other small fixes (see <a href="https://github.com/lsh123/xmlsec/commits/xmlsec_1_3_10">more details</a>).</li>
         </ul>
 	</li>
 	<br>

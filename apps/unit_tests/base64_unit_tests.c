@@ -45,21 +45,21 @@ test_base64_success(
 
     ret = xmlSecBase64Decode_ex(BAD_CAST str, decoded, sizeof(decoded), &decodedSize);
     if(ret < 0) {
-        fprintf(stderr, "Error: base64 decode failed for '%s'\n", str);
+        testLog("Error: base64 decode failed for '%s'\n", str);
         testFinishedFailure();
         return;
     }
 
     encoded = xmlSecBase64Encode(decoded, decodedSize, columns);
     if(encoded == NULL) {
-        fprintf(stderr, "Error: base64 encode failed for '%s'\n", str);
+        testLog("Error: base64 encode failed for '%s'\n", str);
         testFinishedFailure();
         return;
     }
 
     /* check results */
     if(xmlStrcmp(encoded, (expected != NULL) ? BAD_CAST expected: BAD_CAST str) != 0) {
-        fprintf(stderr, "Error: base64 encode returned in='%s' (expected: '%s')\n", (const char*)encoded, (expected != NULL) ? expected : str);
+        testLog("Error: base64 encode returned in='%s' (expected: '%s')\n", (const char*)encoded, (expected != NULL) ? expected : str);
         testFinishedFailure();
         return;
     }
@@ -83,7 +83,7 @@ test_base64_failure(
 
     ret = xmlSecBase64Decode_ex(BAD_CAST str, decoded, sizeof(decoded), &decodedSize);
     if(ret >= 0) {
-        fprintf(stderr, "Error: base64 decode expected to fail for '%s'\n", (str != NULL) ? str : "NULL");
+        testLog("Error: base64 decode expected to fail for '%s'\n", (str != NULL) ? str : "NULL");
         testFinishedFailure();
         return;
     }

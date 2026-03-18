@@ -28,6 +28,7 @@ int  testGroupFinished(void);
 void testStart(const char * name);
 void testFinishedSuccess(void);
 void testFinishedFailure(void);
+void testLog(const char* fmt, ...);
 
 
 /* tests */

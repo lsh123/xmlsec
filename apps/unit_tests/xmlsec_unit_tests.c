@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <stdarg.h>
 
 #if !defined(_MSC_VER)
 #include <libgen.h>
@@ -23,6 +24,18 @@
 #include <crtdbg.h>
 #endif /*defined(_MSC_VER) && defined(_CRTDBG_MAP_ALLOC) */
 
+/* per-test log buffer (defined after main; forward-declared here for use in main) */
+static char *  g_testLogBuffer;
+static size_t  g_testLogBufferLen;
+static size_t  g_testLogBufferCap;
+static void testXmlSecErrorsCallback(const char* file, int line, const char* func,
+        const char* errorObject, const char* errorSubject,
+        int reason, const char* msg);
+
+/* test group filter: if non-NULL, only the matching group runs */
+static const char * g_testGroupFilter;
+static int g_testGroupSkip;
+
 #if defined(XMLSEC_WINDOWS) && defined(UNICODE) && defined(__MINGW32__)
 int wmain(int argc, wchar_t* argv[]);
 #endif /* defined(XMLSEC_WINDOWS) && defined(UNICODE) && defined(__MINGW32__) */
@@ -35,6 +48,9 @@ int main(int argc, const char **argv) {
 #endif /* defined(XMLSEC_WINDOWS) && defined(UNICODE) */
     int success = 1;
     int res = 1;
+#if defined(XMLSEC_WINDOWS) && defined(UNICODE)
+    char testGroupFilterBuf[256] = { '\0' };
+#endif /* defined(XMLSEC_WINDOWS) && defined(UNICODE) */
 
 #if defined(_MSC_VER) && defined(_CRTDBG_MAP_ALLOC)
     fprintf(stderr, "Enabling memory leaks detection\n");
@@ -43,11 +59,19 @@ int main(int argc, const char **argv) {
 
 
     /* check command line params */
-    if((argc > 1) || (argv == NULL)) {
-        fprintf(stderr, "Error: no command line parameters expected\n");
+    if((argc > 2) || (argv == NULL)) {
+        fprintf(stderr, "Error: usage: xmlsec_unit_tests [test-group-name]\n");
         goto done;
     }
-
+    if(argc == 2) {
+#if defined(XMLSEC_WINDOWS) && defined(UNICODE)
+        wcstombs(testGroupFilterBuf, argv[1], sizeof(testGroupFilterBuf) - 1);
+        g_testGroupFilter = testGroupFilterBuf;
+#else /* defined(XMLSEC_WINDOWS) && defined(UNICODE) */
+        g_testGroupFilter = argv[1];
+#endif /* defined(XMLSEC_WINDOWS) && defined(UNICODE) */
+    }
+    xmlSecErrorsSetCallback(testXmlSecErrorsCallback);
     /* run tests */
     fprintf(stdout, "=================== Checking xmlsec-core =================================\n");
 
@@ -89,9 +113,69 @@ done:
     _CrtDumpMemoryLeaks();
 #endif /*  defined(_MSC_VER) && defined(_CRTDBG_MAP_ALLOC) */
 
+    xmlSecErrorsSetCallback(xmlSecErrorsDefaultCallback);
+    free(g_testLogBuffer);
+    g_testLogBuffer = NULL;
+    g_testGroupFilter = NULL;
+
     return(res);
 }
 
+
+static void testLogReset(void) {
+    g_testLogBufferLen = 0;
+}
+
+static void testLogFlush(void) {
+    if (g_testLogBufferLen > 0) {
+        fwrite(g_testLogBuffer, 1, g_testLogBufferLen, stdout);
+        fflush(stdout);
+    }
+    g_testLogBufferLen = 0;
+}
+
+void testLog(const char* fmt, ...) {
+    char buf[8192];
+    va_list args;
+    int len;
+    char* newBuf;
+    size_t newCap;
+
+    if (fmt == NULL) return;
+
+    va_start(args, fmt);
+    len = vsnprintf(buf, sizeof(buf), fmt, args);
+    va_end(args);
+
+    if (len <= 0) return;
+    if ((size_t)len >= sizeof(buf)) {
+        len = (int)(sizeof(buf) - 1);
+    }
+
+    if (g_testLogBufferLen + (size_t)len + 1 > g_testLogBufferCap) {
+        newCap = g_testLogBufferLen + (size_t)len + 1 + 4096;
+        newBuf = (char*)realloc(g_testLogBuffer, newCap);
+        if (newBuf == NULL) return;
+        g_testLogBuffer = newBuf;
+        g_testLogBufferCap = newCap;
+    }
+    memcpy(g_testLogBuffer + g_testLogBufferLen, buf, (size_t)len);
+    g_testLogBufferLen += (size_t)len;
+    g_testLogBuffer[g_testLogBufferLen] = '\0';
+}
+
+static void testXmlSecErrorsCallback(const char* file, int line, const char* func,
+        const char* errorObject, const char* errorSubject,
+        int reason, const char* msg) {
+    testLog("xmlsec error: func=%s:file=%s:line=%d:obj=%s:subj=%s:error=%d:%s\n",
+        (func != NULL) ? func : "unknown",
+        (file != NULL) ? file : "unknown",
+        line,
+        (errorObject != NULL) ? errorObject : "unknown",
+        (errorSubject != NULL) ? errorSubject : "unknown",
+        reason,
+        (msg != NULL) ? msg : "");
+}
 
 static const char * testsGroupName = NULL;
 static const char * testsName = NULL;
@@ -106,11 +190,21 @@ void testGroupStart(const char * name) {
     testsStarted = 0;
     testsFinishedSuccess = 0;
     testFinishedFailed = 0;
+    if((g_testGroupFilter != NULL) && (strcmp(g_testGroupFilter, name) != 0)) {
+        g_testGroupSkip = 1;
+        return;
+    }
+    g_testGroupSkip = 0;
     fprintf(stdout, "=== STARTED TESTS FOR '%s'\n", testsGroupName);
 }
 
 int testGroupFinished(void) {
     xmlSecAssert2(testsGroupName != NULL, 0);
+    if(g_testGroupSkip) {
+        g_testGroupSkip = 0;
+        testsGroupName = NULL;
+        return 1;
+    }
     fprintf(stdout, "=== FINSIHED TESTS FOR '%s': TOTAL=%d, SUCCESS=%d, FAILURE=%d, NOT FIISHED=%d\n",
         testsGroupName,
         testsStarted,
@@ -125,19 +219,26 @@ int testGroupFinished(void) {
 void testStart(const char * name) {
     xmlSecAssert(name != NULL);
 
+    if(g_testGroupSkip) { return; }
     testsName = name;
     testsStarted += 1;
+    testLogReset();
+    testLog("    %s ...\n", testsName);
     fprintf(stdout, "    %s ...\n", testsName);
 }
 
 void testFinishedSuccess(void) {
+    if(g_testGroupSkip) { return; }
     fprintf(stdout, "    %s     OK\n", testsName);
+    testLogReset();
     testsFinishedSuccess += 1;
     testsName = NULL;
 }
 
 void testFinishedFailure(void) {
+    if(g_testGroupSkip) { return; }
     fprintf(stdout, "    %s     FAILED\n", testsName);
+    testLogFlush();
     testFinishedFailed += 1;
     testsName = NULL;
 }

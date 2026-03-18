@@ -82,7 +82,7 @@ docs:
 		echo "-- Copying api-docs..."; \
 		if [ z"$(srcdir)" != z"$(builddir)" -a z"`uname`" != z"Darwin" ]; \
 		then \
-		    @$(CP) -ru $(SOURCE_FILES_TO_COPY) $(builddir)/ ; \
+		    $(CP) -ru $(SOURCE_FILES_TO_COPY) $(builddir)/ ; \
 		fi \
 	)
 endif
@@ -97,10 +97,16 @@ html: sgml $(MAIN_SGML_FILE) $(SGML_CHAPTERS_DIR) xmlsec-index
 	@$(GTKDOC_MKHTML) xmlsec $(MAIN_SGML_FILE)
 
 $(SGML_CHAPTERS_DIR): $(SGML_CHAPTERS_SRC_DIR) $(SGML_CHAPTERS_DIR)/.sentinel
-	@$(CP) -ru $(SGML_CHAPTERS_SRC_DIR)/* $(SGML_CHAPTERS_DIR)
+	@( \
+		echo "-- Copying chaptres..." ; \
+		$(CP) -ru $(SGML_CHAPTERS_SRC_DIR)/* $(SGML_CHAPTERS_DIR) \
+	)
 
 $(MAIN_SGML_FILE): $(MAIN_SGML_SRC_FILE)
-	@$(CP) -u $(MAIN_SGML_SRC_FILE) $(MAIN_SGML_FILE)
+	@( \
+		echo "-- Copying main sgml file..."; \
+		$(CP) -u $(MAIN_SGML_SRC_FILE) $(MAIN_SGML_FILE) \
+	)
 #
 # Prepeare sgml files from sources for each library. We are also
 # doing some "magic" here by automatically adding links to XML DSig and
@@ -257,12 +263,15 @@ example_sources: $(EXAMPLES_DIR)/.sentinel
 	@touch $@
 
 dist-hook:
-	@$(CP) -p $(srcdir)/*.html $(srcdir)/*.png $(distdir)/
-	(for i in `find $(distdir) -name ".sentinel" -print` ; do \
+	@( \
+		echo "-- Copying html..." ; \
+		$(CP) -p $(srcdir)/*.html $(srcdir)/*.png $(distdir)/ \
+	)
+	@(for i in `find $(distdir) -name ".sentinel" -print` ; do \
 		echo "Removing some files '$$i' before dist ... " ; \
 		rm $$i ; \
 	done )
-	(for i in `find $(distdir) -name "*.sgml.bak" -print` ; do \
+	@(for i in `find $(distdir) -name "*.sgml.bak" -print` ; do \
 		echo "Removing some files '$$i' before dist ... " ; \
 		rm "$$i" ; \
 	done ; )

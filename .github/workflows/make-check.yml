@@ -21,7 +21,7 @@ jobs:
           # default build
           - config_flags:
           # default build with all legacy features
-          - config_flags: --enable-legacy-features --enable-ftp --enable-http
+          - config_flags: --enable-legacy-features --enable-ftp --enable-http --enable-gcrypt
           # static openssl build
           - config_flags: --enable-static --enable-static-linking --disable-openssl3-engines --without-nss --without-gnutls --without-gcrypt --enable-legacy-features
           # static gnutls build with GOST
@@ -183,11 +183,11 @@ jobs:
           # default build
           - msystem: MINGW64
             arch: x86_64
-            config_flags: --without-openssl --without-nss --without-gnutls --without-gcrypt
+            config_flags: --without-openssl --without-nss --without-gnutls --without-gcrypt --with-mscng --with-mscrypto
           # no unicode static build for mscng
           - msystem: MINGW64
             arch: x86_64
-            config_flags: --enable-static --enable-static-linking --enable-unicode=no --without-openssl --without-nss --without-gnutls --without-gcrypt --disable-mscrypto
+            config_flags: --enable-static --enable-static-linking --enable-unicode=no --without-openssl --without-nss --without-gnutls --without-gcrypt --without-mscrypto
     defaults:
       run:
         shell: msys2 {0}

@@ -17,7 +17,7 @@ today=`date +%F-%H-%M-%S`
 tar_file="xmlsec1-$version-$today.tar.gz"
 
 echo "============= Building xmlsec"
-"$script_pwd/../configure" --enable-legacy-features
+"$script_pwd/../configure" --enable-legacy-features --enable-ftp --enable-http --enable-gcrypt
 make clean
 rm -rf cov-int/
 cov-build --dir cov-int make -j4

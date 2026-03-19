@@ -10,7 +10,6 @@
 <!ENTITY chapter-using-x509-certs	SYSTEM "chapters/using-x509-certs.sgml">
 <!ENTITY chapter-using-transforms	SYSTEM "chapters/using-transforms.sgml">
 <!ENTITY chapter-using-contexts		SYSTEM "chapters/using-contexts.sgml">
-<!ENTITY chapter-new-crypto		SYSTEM "chapters/new-crypto.sgml">
 <!ENTITY chapter-examples		SYSTEM "chapters/examples.sgml">
 
 <!ENTITY xmlsec-index 			SYSTEM "xmlsec-index.sgml">
@@ -191,7 +190,6 @@
     &chapter-using-x509-certs;
     &chapter-using-transforms;
     &chapter-using-contexts;
-    &chapter-new-crypto;
     &chapter-examples;
 
     <chapter id="xmlsec-signature-klasses">

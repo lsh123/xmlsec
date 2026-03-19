@@ -42,15 +42,6 @@
       </sub>
       <sub name="Transforms and transforms chain." link="xmlsec-notes-transforms.html"/>
       <sub name="Using context objects." link="xmlsec-notes-contexts.html"/>
-      <sub name="Adding support for new cryptographic library." link="xmlsec-notes-new-crypto.html">
-        <sub name="Overview." link="xmlsec-notes-new-crypto.html#xmlsec-notes-new-crypto-overview"/>
-        <sub name="xmlSecCryptoApp* functions." link="xmlsec-notes-new-crypto-functions.html"/>
-        <sub name="Klasses and objects." link="xmlsec-notes-new-crypto-klasses.html"/>
-        <sub name="Cryptographic transforms." link="xmlsec-notes-new-crypto-transforms.html"/>
-        <sub name="Keys data and keys data stores." link="xmlsec-notes-new-crypto-keys.html"/>
-        <sub name="Default keys manager." link="xmlsec-notes-new-crypto-simple-keys-mngr.html"/>
-        <sub name="Sharing the results." link="xmlsec-notes-new-crypto-sharing-results.html"/>
-      </sub>
       <sub name="Examples." link="xmlsec-examples.html">
         <sub name="XML Security Library Examples." link="xmlsec-examples.html#xmlsec-examples-overview"/>
         <sub name="Signing a template file." link="xmlsec-examples-sign-template-file.html"/>

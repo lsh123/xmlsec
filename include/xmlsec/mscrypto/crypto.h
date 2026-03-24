@@ -583,5 +583,3 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformHmacSha512GetKlass
 #endif /* __cplusplus */
 
 #endif /* __XMLSEC_MSCRYPTO_CRYPTO_H__ */
-
-#define __XMLSEC_MSCRYPTO_CRYPTO_H__

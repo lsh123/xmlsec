@@ -35,15 +35,27 @@ extern "C" {
  *
  ********************************************************************/
 #define xmlSecKeyDataAesId                      xmlSecOpenSSLKeyDataAesId
+#define xmlSecKeyDataCamelliaId                 xmlSecOpenSSLKeyDataCamelliaId
+#define xmlSecKeyDataChaCha20Id                 xmlSecOpenSSLKeyDataChaCha20Id
+#define xmlSecKeyDataConcatKdfId                xmlSecOpenSSLKeyDataConcatKdfId
 #define xmlSecKeyDataDesId                      xmlSecOpenSSLKeyDataDesId
 #define xmlSecKeyDataDhId                       xmlSecOpenSSLKeyDataDhId
 #define xmlSecKeyDataDsaId                      xmlSecOpenSSLKeyDataDsaId
 #define xmlSecKeyDataEcdsaId                    xmlSecOpenSSLKeyDataEcId
 #define xmlSecKeyDataEcId                       xmlSecOpenSSLKeyDataEcId
+#define xmlSecKeyDataEdDSAId                    xmlSecOpenSSLKeyDataEdDSAId
+#define xmlSecKeyDataGost2001Id                 xmlSecOpenSSLKeyDataGost2001Id
+#define xmlSecKeyDataGostR3410_2012_256Id       xmlSecOpenSSLKeyDataGostR3410_2012_256Id
+#define xmlSecKeyDataGostR3410_2012_512Id       xmlSecOpenSSLKeyDataGostR3410_2012_512Id
+#define xmlSecKeyDataHkdfId                     xmlSecOpenSSLKeyDataHkdfId
 #define xmlSecKeyDataHmacId                     xmlSecOpenSSLKeyDataHmacId
+#define xmlSecKeyDataMLDSAId                    xmlSecOpenSSLKeyDataMLDSAId
+#define xmlSecKeyDataPbkdf2Id                   xmlSecOpenSSLKeyDataPbkdf2Id
 #define xmlSecKeyDataRsaId                      xmlSecOpenSSLKeyDataRsaId
+#define xmlSecKeyDataSLHDSAId                   xmlSecOpenSSLKeyDataSLHDSAId
 #define xmlSecKeyDataX509Id                     xmlSecOpenSSLKeyDataX509Id
 #define xmlSecKeyDataRawX509CertId              xmlSecOpenSSLKeyDataRawX509CertId
+#define xmlSecKeyDataXdhId                      xmlSecOpenSSLKeyDataXdhId
 
 /********************************************************************
  *
@@ -71,11 +83,21 @@ extern "C" {
 #define xmlSecTransformKWAes192Id               xmlSecOpenSSLTransformKWAes192Id
 #define xmlSecTransformKWAes256Id               xmlSecOpenSSLTransformKWAes256Id
 
+#define xmlSecTransformCamellia128CbcId         xmlSecOpenSSLTransformCamellia128CbcId
+#define xmlSecTransformCamellia192CbcId         xmlSecOpenSSLTransformCamellia192CbcId
+#define xmlSecTransformCamellia256CbcId         xmlSecOpenSSLTransformCamellia256CbcId
+
+#define xmlSecTransformKWCamellia128Id          xmlSecOpenSSLTransformKWCamellia128Id
+#define xmlSecTransformKWCamellia192Id          xmlSecOpenSSLTransformKWCamellia192Id
+#define xmlSecTransformKWCamellia256Id          xmlSecOpenSSLTransformKWCamellia256Id
+
 #define xmlSecTransformChaCha20Id               xmlSecOpenSSLTransformChaCha20Id
 #define xmlSecTransformChaCha20Poly1305Id       xmlSecOpenSSLTransformChaCha20Poly1305Id
 
 #define xmlSecTransformDes3CbcId                xmlSecOpenSSLTransformDes3CbcId
 #define xmlSecTransformKWDes3Id                 xmlSecOpenSSLTransformKWDes3Id
+
+#define xmlSecTransformDhEsId                   xmlSecOpenSSLTransformDhEsId
 
 #define xmlSecTransformDsaSha1Id                xmlSecOpenSSLTransformDsaSha1Id
 #define xmlSecTransformDsaSha256Id              xmlSecOpenSSLTransformDsaSha256Id
@@ -93,6 +115,8 @@ extern "C" {
 #define xmlSecTransformEcdsaSha3_256Id          xmlSecOpenSSLTransformEcdsaSha3_256Id
 #define xmlSecTransformEcdsaSha3_384Id          xmlSecOpenSSLTransformEcdsaSha3_384Id
 #define xmlSecTransformEcdsaSha3_512Id          xmlSecOpenSSLTransformEcdsaSha3_512Id
+
+#define xmlSecTransformEcdhId                   xmlSecOpenSSLTransformEcdhId
 
 #define xmlSecTransformHmacMd5Id                xmlSecOpenSSLTransformHmacMd5Id
 #define xmlSecTransformHmacRipemd160Id          xmlSecOpenSSLTransformHmacRipemd160Id
@@ -145,6 +169,36 @@ extern "C" {
 #define xmlSecTransformGostR3411_94Id           xmlSecOpenSSLTransformGostR3411_94Id
 #define xmlSecTransformGost2001GostR3411_94Id   xmlSecOpenSSLTransformGost2001GostR3411_94Id
 
+#define xmlSecTransformGostR3411_2012_256Id     xmlSecOpenSSLTransformGostR3411_2012_256Id
+#define xmlSecTransformGostR3411_2012_512Id     xmlSecOpenSSLTransformGostR3411_2012_512Id
+
+#define xmlSecTransformGostR3410_2012GostR3411_2012_256Id   xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_256Id
+#define xmlSecTransformGostR3410_2012GostR3411_2012_512Id   xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_512Id
+
+#define xmlSecTransformEdDSAEd25519Id           xmlSecOpenSSLTransformEdDSAEd25519Id
+#define xmlSecTransformEdDSAEd25519ctxId        xmlSecOpenSSLTransformEdDSAEd25519ctxId
+#define xmlSecTransformEdDSAEd25519phId         xmlSecOpenSSLTransformEdDSAEd25519phId
+#define xmlSecTransformEdDSAEd448Id             xmlSecOpenSSLTransformEdDSAEd448Id
+#define xmlSecTransformEdDSAEd448phId           xmlSecOpenSSLTransformEdDSAEd448phId
+
+#define xmlSecTransformX25519Id                 xmlSecOpenSSLTransformX25519Id
+#define xmlSecTransformX448Id                   xmlSecOpenSSLTransformX448Id
+
+#define xmlSecTransformMLDSA44Id                xmlSecOpenSSLTransformMLDSA44Id
+#define xmlSecTransformMLDSA65Id                xmlSecOpenSSLTransformMLDSA65Id
+#define xmlSecTransformMLDSA87Id                xmlSecOpenSSLTransformMLDSA87Id
+
+#define xmlSecTransformSLHDSA_SHA2_128f_Id      xmlSecOpenSSLTransformSLHDSA_SHA2_128fId
+#define xmlSecTransformSLHDSA_SHA2_128s_Id      xmlSecOpenSSLTransformSLHDSA_SHA2_128sId
+#define xmlSecTransformSLHDSA_SHA2_192f_Id      xmlSecOpenSSLTransformSLHDSA_SHA2_192fId
+#define xmlSecTransformSLHDSA_SHA2_192s_Id      xmlSecOpenSSLTransformSLHDSA_SHA2_192sId
+#define xmlSecTransformSLHDSA_SHA2_256f_Id      xmlSecOpenSSLTransformSLHDSA_SHA2_256fId
+#define xmlSecTransformSLHDSA_SHA2_256s_Id      xmlSecOpenSSLTransformSLHDSA_SHA2_256sId
+
+#define xmlSecTransformConcatKdfId              xmlSecOpenSSLTransformConcatKdfId
+#define xmlSecTransformHkdfId                   xmlSecOpenSSLTransformHkdfId
+#define xmlSecTransformPbkdf2Id                 xmlSecOpenSSLTransformPbkdf2Id
+
 
 /********************************************************************
  *
@@ -181,6 +235,4 @@ extern "C" {
 }
 #endif /* __cplusplus */
 
-#endif /* __XMLSEC_OPENSSL_CRYPTO_H__ */
-
-#define __XMLSEC_OPENSSL_CRYPTO_H__
+#endif /* __XMLSEC_OPENSSL_SYMBOLS_H__ */

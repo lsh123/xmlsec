@@ -41,11 +41,13 @@ extern "C" {
 #define xmlSecKeyDataDsaId                      xmlSecMSCngKeyDataDsaId
 #define xmlSecKeyDataEcdsaId                    xmlSecMSCngKeyDataEcId
 #define xmlSecKeyDataEcId                       xmlSecMSCngKeyDataEcId
+#define xmlSecKeyDataHkdfId                     xmlSecMSCngKeyDataHkdfId
 #define xmlSecKeyDataHmacId                     xmlSecMSCngKeyDataHmacId
 #define xmlSecKeyDataPbkdf2Id                   xmlSecMSCngKeyDataPbkdf2Id
 #define xmlSecKeyDataRsaId                      xmlSecMSCngKeyDataRsaId
 #define xmlSecKeyDataX509Id                     xmlSecMSCngKeyDataX509Id
 #define xmlSecKeyDataRawX509CertId              xmlSecMSCngKeyDataRawX509CertId
+#define xmlSecKeyDataXdhId                      xmlSecMSCngKeyDataXdhId
 #define xmlSecKeyDataDEREncodedKeyValueId       xmlSecMSCngKeyDataDEREncodedKeyValueId
 
 /********************************************************************
@@ -93,6 +95,10 @@ extern "C" {
 #define xmlSecTransformEcdsaSha3_384Id          xmlSecMSCngTransformEcdsaSha3_384Id
 #define xmlSecTransformEcdsaSha3_512Id          xmlSecMSCngTransformEcdsaSha3_512Id
 
+#define xmlSecTransformEcdhId                   xmlSecMSCngTransformEcdhId
+
+#define xmlSecTransformX25519Id                 xmlSecMSCngTransformX25519Id
+
 #define xmlSecTransformHmacMd5Id                xmlSecMSCngTransformHmacMd5Id
 #define xmlSecTransformHmacSha1Id               xmlSecMSCngTransformHmacSha1Id
 #define xmlSecTransformHmacSha256Id             xmlSecMSCngTransformHmacSha256Id
@@ -101,8 +107,10 @@ extern "C" {
 
 #define xmlSecTransformMd5Id                    xmlSecMSCngTransformMd5Id
 
+#define xmlSecTransformHkdfId                   xmlSecMSCngTransformHkdfId
 #define xmlSecTransformPbkdf2Id                 xmlSecMSCngTransformPbkdf2Id
 
+#define xmlSecTransformRsaMd5Id                 xmlSecMSCngTransformRsaMd5Id
 #define xmlSecTransformRsaSha1Id                xmlSecMSCngTransformRsaSha1Id
 #define xmlSecTransformRsaSha256Id              xmlSecMSCngTransformRsaSha256Id
 #define xmlSecTransformRsaSha384Id              xmlSecMSCngTransformRsaSha384Id
@@ -159,4 +167,4 @@ extern "C" {
 }
 #endif /* __cplusplus */
 
-#endif /* __XMLSEC_MSCNG_CRYPTO_H__ */
+#endif /* __XMLSEC_MSCNG_SYMBOLS_H__ */

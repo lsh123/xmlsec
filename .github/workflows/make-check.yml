@@ -108,6 +108,11 @@ jobs:
       working-directory: build.dir
       run: |
           make install
+    - name: make examples
+      working-directory: examples
+      run: |
+          export PATH=${GITHUB_WORKSPACE}/install.dir/bin:$PATH
+          make
 
   # macosx
   check-osx:
@@ -167,6 +172,11 @@ jobs:
       working-directory: build.dir
       run: |
           make install
+    - name: make examples
+      working-directory: examples
+      run: |
+          export PATH=${GITHUB_WORKSPACE}/install.dir/bin:$PATH
+          make
 
   # mingw
   check-mingw:
@@ -233,6 +243,11 @@ jobs:
       working-directory: build.dir
       run: |
           make install
+    - name: make examples
+      working-directory: examples
+      run: |
+          export PATH=${GITHUB_WORKSPACE}/install.dir/bin:$PATH
+          make
 
   # msvc
   check-msvc:

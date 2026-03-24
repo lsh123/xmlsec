@@ -976,5 +976,3 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId             xmlSecNssKeyDataDEREncodedKeyVa
 #endif /* __cplusplus */
 
 #endif /* __XMLSEC_NSS_CRYPTO_H__ */
-
-#define __XMLSEC_NSS_CRYPTO_H__

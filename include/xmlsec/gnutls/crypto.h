@@ -1159,5 +1159,3 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId             xmlSecGnuTLSKeyDataDEREncodedKe
 #endif /* __cplusplus */
 
 #endif /* __XMLSEC_GNUTLS_CRYPTO_H__ */
-
-#define __XMLSEC_GNUTLS_CRYPTO_H__

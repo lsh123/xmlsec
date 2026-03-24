@@ -1582,5 +1582,3 @@ XMLSEC_CRYPTO_EXPORT void       xmlSecOpenSSLErrorsDefaultCallback      (const c
 #endif /* __cplusplus */
 
 #endif /* __XMLSEC_OPENSSL_CRYPTO_H__ */
-
-#define __XMLSEC_OPENSSL_CRYPTO_H__

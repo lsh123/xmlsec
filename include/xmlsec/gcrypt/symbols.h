@@ -74,17 +74,18 @@ extern "C" {
 #define xmlSecTransformDsaSha1Id                xmlSecGCryptTransformDsaSha1Id
 
 #define xmlSecTransformHmacMd5Id                xmlSecGCryptTransformHmacMd5Id
+#define xmlSecTransformMd5Id                    xmlSecGCryptTransformMd5Id
 #define xmlSecTransformRipemd160Id              xmlSecGCryptTransformRipemd160Id
 
 #define xmlSecTransformEcdsaSha1Id              xmlSecGCryptTransformEcdsaSha1Id
 
 #define xmlSecTransformEcdsaSha256Id            xmlSecGCryptTransformEcdsaSha256Id
 #define xmlSecTransformEcdsaSha384Id            xmlSecGCryptTransformEcdsaSha384Id
-#define xmlSecTransformEcdsaSha512Id            xmlSecGCryptTransformRsaSha512Id
+#define xmlSecTransformEcdsaSha512Id            xmlSecGCryptTransformEcdsaSha512Id
 
 #define xmlSecTransformEcdsaSha3_256Id          xmlSecGCryptTransformEcdsaSha3_256Id
 #define xmlSecTransformEcdsaSha3_384Id          xmlSecGCryptTransformEcdsaSha3_384Id
-#define xmlSecTransformEcdsaSha3_512Id          xmlSecGCryptTransformRsaSha512Id
+#define xmlSecTransformEcdsaSha3_512Id          xmlSecGCryptTransformEcdsaSha3_512Id
 
 #define xmlSecTransformHmacSha256Id             xmlSecGCryptTransformHmacSha256Id
 #define xmlSecTransformHmacSha384Id             xmlSecGCryptTransformHmacSha384Id
@@ -92,6 +93,8 @@ extern "C" {
 #define xmlSecTransformHmacRipemd160Id          xmlSecGCryptTransformHmacRipemd160Id
 #define xmlSecTransformHmacSha1Id               xmlSecGCryptTransformHmacSha1Id
 
+#define xmlSecTransformRsaMd5Id                 xmlSecGCryptTransformRsaMd5Id
+#define xmlSecTransformRsaRipemd160Id           xmlSecGCryptTransformRsaRipemd160Id
 #define xmlSecTransformRsaSha1Id                xmlSecGCryptTransformRsaSha1Id
 #define xmlSecTransformRsaSha256Id              xmlSecGCryptTransformRsaSha256Id
 #define xmlSecTransformRsaSha384Id              xmlSecGCryptTransformRsaSha384Id
@@ -152,6 +155,4 @@ extern "C" {
 }
 #endif /* __cplusplus */
 
-#endif /* __XMLSEC_GCRYPT_CRYPTO_H__ */
-
-#define __XMLSEC_GCRYPT_CRYPTO_H__
+#endif /* __XMLSEC_GCRYPT_SYMBOLS_H__ */

@@ -37,13 +37,22 @@ extern "C" {
  *
  ********************************************************************/
 #define xmlSecKeyDataAesId                      xmlSecNssKeyDataAesId
+#define xmlSecKeyDataCamelliaId                 xmlSecNssKeyDataCamelliaId
+#define xmlSecKeyDataChaCha20Id                 xmlSecNssKeyDataChaCha20Id
 #define xmlSecKeyDataDesId                      xmlSecNssKeyDataDesId
 #define xmlSecKeyDataDsaId                      xmlSecNssKeyDataDsaId
+#define xmlSecKeyDataEcdsaId                    xmlSecNssKeyDataEcId
+#define xmlSecKeyDataEcId                       xmlSecNssKeyDataEcId
+#define xmlSecKeyDataEdDSAId                    xmlSecNssKeyDataEdDSAId
+#define xmlSecKeyDataXdhId                      xmlSecNssKeyDataXdhId
 #define xmlSecKeyDataHmacId                     xmlSecNssKeyDataHmacId
+#define xmlSecKeyDataConcatKdfId                xmlSecNssKeyDataConcatKdfId
+#define xmlSecKeyDataHkdfId                     xmlSecNssKeyDataHkdfId
 #define xmlSecKeyDataPbkdf2Id                   xmlSecNssKeyDataPbkdf2Id
 #define xmlSecKeyDataRsaId                      xmlSecNssKeyDataRsaId
 #define xmlSecKeyDataX509Id                     xmlSecNssKeyDataX509Id
 #define xmlSecKeyDataRawX509CertId              xmlSecNssKeyDataRawX509CertId
+#define xmlSecKeyDataDEREncodedKeyValueId       xmlSecNssKeyDataDEREncodedKeyValueId
 
 /********************************************************************
  *
@@ -72,14 +81,33 @@ extern "C" {
 #define xmlSecTransformKWAes192Id               xmlSecNssTransformKWAes192Id
 #define xmlSecTransformKWAes256Id               xmlSecNssTransformKWAes256Id
 
+#define xmlSecTransformCamellia128CbcId         xmlSecNssTransformCamellia128CbcId
+#define xmlSecTransformCamellia192CbcId         xmlSecNssTransformCamellia192CbcId
+#define xmlSecTransformCamellia256CbcId         xmlSecNssTransformCamellia256CbcId
+
+#define xmlSecTransformKWCamellia128Id          xmlSecNssTransformKWCamellia128Id
+#define xmlSecTransformKWCamellia192Id          xmlSecNssTransformKWCamellia192Id
+#define xmlSecTransformKWCamellia256Id          xmlSecNssTransformKWCamellia256Id
+
+#define xmlSecTransformChaCha20Poly1305Id       xmlSecNssTransformChaCha20Poly1305Id
+
 #define xmlSecTransformDes3CbcId                xmlSecNssTransformDes3CbcId
 #define xmlSecTransformKWDes3Id                 xmlSecNssTransformKWDes3Id
 
 #define xmlSecTransformDsaSha1Id                xmlSecNssTransformDsaSha1Id
+#define xmlSecTransformDsaSha256Id              xmlSecNssTransformDsaSha256Id
 
 #define xmlSecTransformEcdsaSha1Id              xmlSecNssTransformEcdsaSha1Id
+#define xmlSecTransformEcdsaSha224Id            xmlSecNssTransformEcdsaSha224Id
 #define xmlSecTransformEcdsaSha256Id            xmlSecNssTransformEcdsaSha256Id
+#define xmlSecTransformEcdsaSha384Id            xmlSecNssTransformEcdsaSha384Id
 #define xmlSecTransformEcdsaSha512Id            xmlSecNssTransformEcdsaSha512Id
+
+#define xmlSecTransformEcdhId                   xmlSecNssTransformEcdhId
+
+#define xmlSecTransformEdDSAEd25519Id           xmlSecNssTransformEdDSAEd25519Id
+
+#define xmlSecTransformX25519Id                 xmlSecNssTransformX25519Id
 
 #define xmlSecTransformHmacMd5Id                xmlSecNssTransformHmacMd5Id
 #define xmlSecTransformHmacRipemd160Id          xmlSecNssTransformHmacRipemd160Id
@@ -89,10 +117,13 @@ extern "C" {
 #define xmlSecTransformHmacSha384Id             xmlSecNssTransformHmacSha384Id
 #define xmlSecTransformHmacSha512Id             xmlSecNssTransformHmacSha512Id
 
+#define xmlSecTransformConcatKdfId              xmlSecNssTransformConcatKdfId
+#define xmlSecTransformHkdfId                   xmlSecNssTransformHkdfId
 #define xmlSecTransformPbkdf2Id                 xmlSecNssTransformPbkdf2Id
 
-#define xmlSecTransformRipemd160Id              xmlSecNssTransformRipemd160Id
+#define xmlSecTransformMd5Id                    xmlSecNssTransformMd5Id
 
+#define xmlSecTransformRsaMd5Id                 xmlSecNssTransformRsaMd5Id
 #define xmlSecTransformRsaSha1Id                xmlSecNssTransformRsaSha1Id
 #define xmlSecTransformRsaSha224Id              xmlSecNssTransformRsaSha224Id
 #define xmlSecTransformRsaSha256Id              xmlSecNssTransformRsaSha256Id
@@ -146,6 +177,4 @@ extern "C" {
 }
 #endif /* __cplusplus */
 
-#endif /* __XMLSEC_NSS_CRYPTO_H__ */
-
-#define __XMLSEC_NSS_CRYPTO_H__
+#endif /* __XMLSEC_NSS_SYMBOLS_H__ */

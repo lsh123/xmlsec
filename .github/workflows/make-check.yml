@@ -54,7 +54,7 @@ jobs:
       run: |
           make install
     - name: make examples
-      working-directory: build.dir/examples
+      working-directory: examples
       run: |
           export PATH=${GITHUB_WORKSPACE}/install.dir/bin:$PATH
           make

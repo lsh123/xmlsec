@@ -53,6 +53,11 @@ jobs:
       working-directory: build.dir
       run: |
           make install
+    - name: make examples
+      working-directory: build.dir/examples
+      run: |
+          export PATH=${GITHUB_WORKSPACE}/install.dir/bin:$PATH
+          make
 
   # linux: check AWS-LC
   check-ubuntu_aws_lc:
@@ -103,6 +108,7 @@ jobs:
       working-directory: build.dir
       run: |
           make install
+
   # macosx
   check-osx:
     runs-on: macos-26

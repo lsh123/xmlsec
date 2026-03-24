@@ -11,9 +11,8 @@ PROGRAMS = \
 	$(PROGRAMS_ENC) \
 	$(PROGRAMS_DEC)
 
-CC	= gcc
-CFLAGS	+= -g $(shell xmlsec1-config --cflags) -DUNIX_SOCKETS -Wall -Wextra
-LDLIBS	+= -g $(shell xmlsec1-config --libs)
+CFLAGS += -g $(shell xmlsec1-config --cflags) -DUNIX_SOCKETS -Wall -Wextra
+LDLIBS += -g $(shell xmlsec1-config --libs)
 
 all: $(PROGRAMS)
 

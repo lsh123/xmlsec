@@ -8,6 +8,7 @@ SOURCE_DIR2=$(top_builddir)/src
 INCLUDE_DIR=$(top_srcdir)/include
 INCLUDE_DIR2=$(top_builddir)/include
 
+TARGET_DIR=@XMLSEC_DOCDIR@/api
 
 SCAN_DIR=$(builddir)
 SGML_DIR=$(builddir)/sgml.tmp
@@ -73,9 +74,10 @@ all:
 
 # if build API docs, then we also have xsltproc
 if BUILD_API_DOCS
-docs: html-cleanup
+docs: html-cleanup copy-images
 
 else
+
 docs:
 	@( \
 		echo "-- Copying api-docs..."; \
@@ -253,6 +255,13 @@ example_sources: $(EXAMPLES_DIR)/.sentinel
 		    $(EXAMPLES_DIR)/$$file_name.sgml; \
 	done);
 
+copy-images:
+	@( if [ z"$(builddir)" != z"$(srcdir)" ] ; then \
+		echo "Copying images ..." ; \
+		mkdir -p $(builddir)/images ; \
+		cp $(srcdir)/images/*.png $(builddir)/images/ ; \
+	fi ; )
+
 # A single pattern rule will create all appropriate folders as required
 # otherwise make (annoyingly) deletes it
 .PRECIOUS: %/.sentinel
@@ -286,6 +295,19 @@ clean-local:
 
 distclean-local: clean-local
 
-maintainer-clean-local: clean-local
-	-rm -f *.html
+install-data-local:
+	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)
+	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)/images
+	@( if [ -f "$(builddir)/index.html" ] ; then \
+		echo "Installing docs from build folder: '$(builddir)' ..." ; \
+		@INSTALL@ -m 0644 $(builddir)/*.html $(builddir)/*.png $(builddir)/*.css $(DESTDIR)$(TARGET_DIR) ; \
+		@INSTALL@ -m 0644 $(builddir)/images/*.png $(DESTDIR)$(TARGET_DIR)/images ; \
+	else  \
+		echo "Installing docs from source folder: '$(srcdir)' ..." ; \
+		@INSTALL@ -m 0644 $(srcdir)/*.html $(srcdir)/*.png $(srcdir)/*.css $(DESTDIR)$(TARGET_DIR) ; \
+		@INSTALL@ -m 0644 $(srcdir)/images/*.png $(DESTDIR)$(TARGET_DIR)/images ; \
+	fi ; )
+
+uninstall-local:
+	@rm -rf $(DESTDIR)$(TARGET_DIR)
 

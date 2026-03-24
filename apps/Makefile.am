@@ -1,6 +1,7 @@
 NULL =
 
-bin_PROGRAMS = xmlsec1 xmlsec_unit_tests
+bin_PROGRAMS = xmlsec1
+noinst_PROGRAMS = xmlsec_unit_tests
 
 XMLSEC_LIBS = $(top_builddir)/src/libxmlsec1.la
 

@@ -84,7 +84,8 @@ To build from GitHub, run the following commands:
 ```
 git clone https://github.com/lsh123/xmlsec.git
 cd xmlsec
-./autogen.sh [possible configure options]
+autoreconf -i -f
+./configure [possible configure options]
 make
 make check
 make install

@@ -10,7 +10,8 @@ today=`date +%F-%H-%M-%S`
 
 echo "============= Building xmlsec"
 make distclean
-./autogen.sh $configure_options
+autoreconf -if
+./configure $configure_options
 make -j12
 make -C docs docs
 

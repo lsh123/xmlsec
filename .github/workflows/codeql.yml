@@ -89,7 +89,8 @@ jobs:
       shell: bash
       run: |
         mkdir install.dir
-        ./autogen.sh --prefix=${GITHUB_WORKSPACE}/install.dir --enable-werror --enable-pedantic --enable-legacy-features --enable-ftp --enable-http
+        autoreconf -i -f
+        ./configure --prefix=${GITHUB_WORKSPACE}/install.dir --enable-werror --enable-pedantic --enable-legacy-features --enable-ftp --enable-http
         make
 
     - name: Perform CodeQL Analysis

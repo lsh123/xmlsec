@@ -24,7 +24,6 @@ AC_SUBST(XMLSEC_VERSION_INFO)
 AC_CONFIG_MACRO_DIR(m4)
 AM_INIT_AUTOMAKE([1.7 tar-ustar subdir-objects -Wno-portability foreign])
 AC_CONFIG_HEADERS([config.h])
-AM_MAINTAINER_MODE
 
 # Support silent build rules, requires at least automake-1.11. Disable
 # by either passing --disable-silent-rules to configure or passing V=1

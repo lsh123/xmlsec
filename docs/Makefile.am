@@ -106,14 +106,19 @@ install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)
 	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)/images
 	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)/css
-	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)/api
-	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)/api/images
-	-@INSTALL@ -m 0644 $(builddir)/*.html $(DESTDIR)$(TARGET_DIR)
-	-@INSTALL@ -m 0644 $(builddir)/*.ico  $(DESTDIR)$(TARGET_DIR)
-	-@INSTALL@ -m 0644 $(builddir)/images/*.gif $(builddir)/images/*.png $(DESTDIR)$(TARGET_DIR)/images
-	-@INSTALL@ -m 0644 $(builddir)/css $(DESTDIR)$(TARGET_DIR)/css
-	-@INSTALL@ -m 0644 $(builddir)/api/*.html $(builddir)/api/*.png $(builddir)/api/*.sgml $(DESTDIR)$(TARGET_DIR)/api
-	-@INSTALL@ -m 0644 $(builddir)/api/images/*.png $(DESTDIR)$(TARGET_DIR)/api/images
+	@( if [ -f "$(builddir)/index.html" ] ; then \
+		echo "Installing docs from build folder: '$(builddir)' ..." ; \
+		@INSTALL@ -m 0644 $(builddir)/*.html $(DESTDIR)$(TARGET_DIR) ; \
+		@INSTALL@ -m 0644 $(builddir)/*.ico  $(DESTDIR)$(TARGET_DIR) ; \
+		@INSTALL@ -m 0644 $(builddir)/images/*.gif $(builddir)/images/*.png $(DESTDIR)$(TARGET_DIR)/images ; \
+		@INSTALL@ -m 0644 $(builddir)/css/*.css $(DESTDIR)$(TARGET_DIR)/css ; \
+	else  \
+		echo "Installing docs from source folder: '$(srcdir)' ..." ; \
+		@INSTALL@ -m 0644 $(srcdir)/*.html $(DESTDIR)$(TARGET_DIR) ; \
+		@INSTALL@ -m 0644 $(srcdir)/*.ico  $(DESTDIR)$(TARGET_DIR) ; \
+		@INSTALL@ -m 0644 $(srcdir)/images/*.gif $(srcdir)/images/*.png $(DESTDIR)$(TARGET_DIR)/images ; \
+		@INSTALL@ -m 0644 $(srcdir)/css/*.css $(DESTDIR)$(TARGET_DIR)/css ; \
+	fi ; )
 
 uninstall-local:
 	@rm -rf $(DESTDIR)$(TARGET_DIR)

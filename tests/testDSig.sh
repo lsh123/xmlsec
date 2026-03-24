@@ -1707,19 +1707,14 @@ echo "--------- Certificate verification testing ----------"
 # xmlsec1 sign --pkcs12 ./tests/keys/rsa/rsa-expired-key.p12 --pwd secret123 --output ./tests/aleksey-xmldsig-01/enveloping-expired-cert.xml ./tests/aleksey-xmldsig-01/enveloping-expired-cert.tmpl
 #
 
-# This should fail: expired cert (TODO: remove  the -verification-gmt-time option AFTER Mar 25, 2026)
-echo
-echo "***********************************************************************"
-echo "  TODO: remove  the -verification-gmt-time option AFTER Mar 25, 2026"
-echo "***********************************************************************"
-echo
+# This should fail: expired cert
 extra_message="Negative test: expired cert"
 execDSigTest $res_fail \
     "" \
     "aleksey-xmldsig-01/enveloping-expired-cert" \
     "sha1 rsa-sha1" \
     "rsa x509" \
-    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509 --verification-gmt-time 2026-03-25+00:00:00"
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 # Expired cert but there is verification time overwrite
 extra_message="Expired cert but there is verification timestamp overwrite"

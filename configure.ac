@@ -194,11 +194,6 @@ dnl ==========================================================================
 AC_MSG_CHECKING(for legacy features support)
 AC_ARG_ENABLE([legacy_features], [AS_HELP_STRING([--enable-legacy-features],[legacy features (no)])])
 if test "z$enable_legacy_features" = "zyes" ; then
-
-    dnl legacy crypto engines
-    enable_mscrypto="yes"
-    with_gcrypt="yes"
-
     dnl legacy crypto algos
     enable_md5="yes"
     enable_ripemd160="yes"

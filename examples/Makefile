@@ -11,9 +11,15 @@ PROGRAMS = \
 	$(PROGRAMS_ENC) \
 	$(PROGRAMS_DEC)
 
-CC	= gcc
-CFLAGS	+= -g $(shell xmlsec1-config --cflags) -DUNIX_SOCKETS -Wall -Wextra
-LDLIBS	+= -g $(shell xmlsec1-config --libs)
+define EXTRA_CCFLAGS
+	case `${CC} -v 2>&1 | grep -i version` in \
+	*gcc*|*GCC*|*clang*|*CLANG*) echo "-Wall -Wextra"  ;; \
+	*)  echo ""  ;; \
+	esac
+endef
+CFLAGS += -g $(shell xmlsec1-config --cflags) $(shell $(EXTRA_CCFLAGS))
+LDLIBS += -g $(shell xmlsec1-config --libs)
+
 
 all: $(PROGRAMS)
 

@@ -13,8 +13,7 @@ PROGRAMS = \
 
 define EXTRA_CCFLAGS
 	case `${CC} -v 2>&1 | grep -i version` in \
-	*gcc*|*GCC*|*clang*|*CLANG*) \
-		echo "-Wall -Wextra"  ;; \
+	*gcc*|*GCC*|*clang*|*CLANG*) echo "-Wall -Wextra"  ;; \
 	*)  echo ""  ;; \
 	esac
 endef

@@ -66,11 +66,6 @@ EXAMPLES_SOURCE_FILES=\
 	$(shell find $(EXAMPLES_SOURCE_DIR) -name '*.c' -print) \
 	$(shell find $(EXAMPLES_SOURCE_DIR) -name '*.xml' -print)
 
-#
-# This script removes gtkdoc crap from final html
-#
-REMOVE_GTKDOCLINK=$(top_srcdir)/scripts/remove-gtkdoclink.pl
-
 all: docs-copy
 	@echo "======= Run 'make docs' in the xmlsec/docs folder to rebuild docs"
 
@@ -97,7 +92,10 @@ docs-copy:
 
 html-cleanup: html
 	@( echo "-- Cleaning up result files"; \
-	   $(PERL) $(REMOVE_GTKDOCLINK) `find . -name "*.html" -print` \
+	   for f in `find . -name "*.html" -print` ; do \
+	       echo "-- Processing $$f..."; \
+	       $(SED) -i 's/<GTKDOCLINK[^>]*>/<font>/gI; s/<\/GTKDOCLINK[^>]*>/<\/font>/gI' "$$f" ; \
+	   done \
 	)
 
 html: docs-copy sgml $(MAIN_SGML_FILE) $(SGML_CHAPTERS_DIR) xmlsec-index
@@ -126,46 +124,45 @@ sgml: sgml-base
 	@(for i in `find $(SGML_DIR) -name "*.sgml" -or -name "*.xml" -print` ; do \
 			echo "--- Fixing up '$$i'" ; \
 	        cat $$i | \
-	          sed 's!\(<dsig:\)\([^/]*\)\(\/>\)!\&lt;dsig:\2\/\&gt;!g' | \
-	          sed 's!\(<enc:\)\([^/]*\)\(\/>\)!\&lt;enc:\2\/\&gt;!g' | \
-	          sed 's!\(<dsig:\)\(\w*\)\(>\)!\&lt;dsig:\2\/\&gt;!g' | \
-	          sed 's!\(<enc:\)\(\w*\)\(>\)!\&lt;enc:\2\/\&gt;!g' | \
-	          sed 's!\(&lt;dsig:\)\([^/]*\)\(\/&gt;\)!<ulink URL=\"http://www.w3.org/TR/xmldsig-core/#sec-\2\">\1\2\3</ulink>!g' | \
-	          sed 's!\(&lt;enc:\)\([^/]*\)\(\/&gt;\)!<ulink URL=\"http://www.w3.org/TR/xmlenc-core/#sec-\2\">\1\2\3</ulink>!g' | \
-	          sed 's!<para \/>!<para></para>!g' | \
-	          sed 's!linkend=\"\(.*\)Ptr\"!linkend=\"\1\"!g' | \
-	          sed 's!<colspec [^/]*\/>!!g' | \
-	          sed 's!<programlisting language="C"!<programlisting!g' | \
-	          sed 's!\%gtkdocentities;!!g' | \
-	          $(PERL) -pe 's!title>\n!title>!g' | \
-	          $(PERL) -pe 's!title>\n!title>!g' | \
-	          $(PERL) -pe 's!<\/title><\/refsect1>\n!<\/title><para><\/para><\/refsect1>!g' | \
-	          $(PERL) -pe 's!para>\n!para>!g' > \
+	          $(SED) 's!\(<dsig:\)\([^/]*\)\(\/>\)!\&lt;dsig:\2\/\&gt;!g' | \
+	          $(SED) 's!\(<enc:\)\([^/]*\)\(\/>\)!\&lt;enc:\2\/\&gt;!g' | \
+	          $(SED) 's!\(<dsig:\)\(\w*\)\(>\)!\&lt;dsig:\2\/\&gt;!g' | \
+	          $(SED) 's!\(<enc:\)\(\w*\)\(>\)!\&lt;enc:\2\/\&gt;!g' | \
+	          $(SED) 's!\(&lt;dsig:\)\([^/]*\)\(\/&gt;\)!<ulink URL=\"http://www.w3.org/TR/xmldsig-core/#sec-\2\">\1\2\3</ulink>!g' | \
+	          $(SED) 's!\(&lt;enc:\)\([^/]*\)\(\/&gt;\)!<ulink URL=\"http://www.w3.org/TR/xmlenc-core/#sec-\2\">\1\2\3</ulink>!g' | \
+	          $(SED) 's!<para \/>!<para></para>!g' | \
+	          $(SED) 's!linkend=\"\(.*\)Ptr\"!linkend=\"\1\"!g' | \
+	          $(SED) 's!<colspec [^/]*\/>!!g' | \
+	          $(SED) 's!<programlisting language="C"!<programlisting!g' | \
+	          $(SED) 's!\%gtkdocentities;!!g' | \
+	          $(SED) 's!title>\n!title>!g' | \
+			  $(SED) 's!<\/title><\/refsect1>\n!<\/title><para><\/para><\/refsect1>!g' | \
+			  $(SED) 's!para>\n!para>!g' > \
 	          $$i.tmp; \
-	        mv -f $$i.tmp $$i; \
+	        $(MV) -f $$i.tmp $$i; \
 	 done);
 
 # gtkdoc-mkdb doesn't support --output-dir thus we have to "hack" it a litle bit
 sgml-base: scan $(SGML_DIR)/.sentinel
 	@( \
 	    echo "-- Create DocBook files for xmlsec-core" ; \
-	    rm -rf $(GTKDOC_MKDB_OUTPUT_DIR) $(SGML_DIR)/base ; \
+	    $(RM) -rf $(GTKDOC_MKDB_OUTPUT_DIR) $(SGML_DIR)/base ; \
 	    $(GTKDOC_MKDB) --module=xmlsec \
 		--xml-mode \
 		--main-sgml-file=$(SGML_DIR)/xmlsec-base.sgml \
 		--source-dir=$(SOURCE_CODE_DIR)/src/base \
 		--source-dir=$(SOURCE_CODE_DIR)/include/xmlsec/base ; \
-	    mv $(GTKDOC_MKDB_OUTPUT_DIR) $(SGML_DIR)/base ; \
+	    $(MV) $(GTKDOC_MKDB_OUTPUT_DIR) $(SGML_DIR)/base ; \
 	);
 	@(for i in $(CRYPTO_LIBS_LIST) ; do \
 	    echo "-- Create DocBook files for xmlsec-$$i" ; \
-	    rm -rf $(GTKDOC_MKDB_OUTPUT_DIR) $(SGML_DIR)/$$i ; \
+	    $(RM) -rf $(GTKDOC_MKDB_OUTPUT_DIR) $(SGML_DIR)/$$i ; \
 	    $(GTKDOC_MKDB) --module=xmlsec-$$i \
 		--xml-mode \
 		--main-sgml-file=$(SGML_DIR)/xmlsec-$$i.sgml \
 		--source-dir=$(SOURCE_CODE_DIR)/src/$$i \
 		--source-dir=$(SOURCE_CODE_DIR)/include/xmlsec/$$i ; \
-	    mv $(GTKDOC_MKDB_OUTPUT_DIR) $(SGML_DIR)/$$i ; \
+	    $(MV) $(GTKDOC_MKDB_OUTPUT_DIR) $(SGML_DIR)/$$i ; \
 	done);
 
 scan: SOURCE_CODEs example_sources
@@ -196,42 +193,42 @@ SOURCE_CODEs: $(SOURCE_CODE_FILES) $(SOURCE_CODE_DIR)/.sentinel SOURCE_CODEs_cle
 	@( \
 	for i in $(SOURCE_CODE_FILES) ; do \
 		folder_name=`echo "$$i" | \
-			sed 's#$(top_srcdir)/##' | \
-			sed 's#$(top_builddir)/##' | \
-			sed 's#/[^/]*$$##'`; \
+	        $(SED) 's#$(top_srcdir)/##' | \
+	        $(SED) 's#$(top_builddir)/##' | \
+	        $(SED) 's#/[^/]*$$##'`; \
 	    file_name=`echo "$$i" | \
-	    	sed 's#.*/##'`; \
+	        $(SED) 's#.*/##'`; \
 	    mkdir -p "$(SOURCE_CODE_DIR)/$$folder_name"; \
 	    cat "$$i" | \
-		    sed 's/#if.*//' | \
-		    sed 's/#el.*//' | \
-		    sed 's/#end.*//' | \
-		    sed 's/XMLSEC_CRYPTO_EXPORT//' | \
-		    sed 's/XMLSEC_EXPORT_VAR//' | \
-		    sed 's/XMLSEC_EXPORT//' | \
-		    sed 's/XMLSEC_ERRORS_PRINTF_ATTRIBUTE//' > \
-		    $(SOURCE_CODE_DIR)/$$folder_name/$$file_name; \
+	        $(SED) 's/#if.*//' | \
+	        $(SED) 's/#el.*//' | \
+	        $(SED) 's/#end.*//' | \
+	        $(SED) 's/XMLSEC_CRYPTO_EXPORT//' | \
+	        $(SED) 's/XMLSEC_EXPORT_VAR//' | \
+	        $(SED) 's/XMLSEC_EXPORT//' | \
+	        $(SED) 's/XMLSEC_ERRORS_PRINTF_ATTRIBUTE//' > \
+	        $(SOURCE_CODE_DIR)/$$folder_name/$$file_name; \
 	done);
-	@mv -f $(SOURCE_CODE_DIR)/src/*.c $(SOURCE_CODE_DIR)/src/base
-	@mv -f $(SOURCE_CODE_DIR)/include/xmlsec/*.h $(SOURCE_CODE_DIR)/include/xmlsec/base
-	@rm -f $(SOURCE_CODE_DIR)/include/xmlsec/*/symbols.h
+	@$(MV) -f $(SOURCE_CODE_DIR)/src/*.c $(SOURCE_CODE_DIR)/src/base
+	@$(MV) -f $(SOURCE_CODE_DIR)/include/xmlsec/*.h $(SOURCE_CODE_DIR)/include/xmlsec/base
+	@$(RM) -f $(SOURCE_CODE_DIR)/include/xmlsec/*/symbols.h
 	@echo "-- Remove macros documented in openssl module to avoid duplicate IDs"
-	@sed -i '/^#define XMLSEC_NO_MD5\b/d; /^#define XMLSEC_NO_EDDSA\b/d; /^#define XMLSEC_NO_HKDF\b/d' \
+	@$(SED) -i '/^#define XMLSEC_NO_MD5\b/d; /^#define XMLSEC_NO_EDDSA\b/d; /^#define XMLSEC_NO_HKDF\b/d' \
 	    $(SOURCE_CODE_DIR)/include/xmlsec/nss/crypto.h
 
 SOURCE_CODEs_cleanup: $(SOURCE_CODE_DIR)/.sentinel
-	@rm -rf $(SOURCE_CODE_DIR)/*
+	@$(RM) -rf $(SOURCE_CODE_DIR)/*
 
 #
 # Create index for all functions. For macros and defines need to add -CAPS suffix
 #
 xmlsec-index: scan $(SGML_DIR)/.sentinel
-	@grep -h '<NAME>.*</NAME>' $(SCAN_DIR)/xmlsec-*decl.txt | \
-		grep -v '<NAME>extern</NAME>' | \
-		sort -u | \
-		sed 's#_#-#g' | \
-		sed 's#<NAME>\([^-]*\)-\([^<]*\)</NAME>#<listitem><para><link linkend=\"\1-\2-CAPS\">\1-\2</link></para></listitem>#g' | \
-		sed 's#<NAME>\([^<]*\)</NAME>#<listitem><para><link linkend=\"\1\">\1</link></para></listitem>#g' > \
+	@$(GREP) -h '<NAME>.*</NAME>' $(SCAN_DIR)/xmlsec-*decl.txt | \
+		$(GREP) -v '<NAME>extern</NAME>' | \
+		$(SORT) -u | \
+		$(SED) 's#_#-#g' | \
+		$(SED) 's#<NAME>\([^-]*\)-\([^<]*\)</NAME>#<listitem><para><link linkend=\"\1-\2-CAPS\">\1-\2</link></para></listitem>#g' | \
+		$(SED) 's#<NAME>\([^<]*\)</NAME>#<listitem><para><link linkend=\"\1\">\1</link></para></listitem>#g' > \
 		$(SGML_DIR)/xmlsec-index.sgml
 
 #
@@ -242,20 +239,20 @@ xmlsec-index: scan $(SGML_DIR)/.sentinel
 #
 example_sources: $(EXAMPLES_DIR)/.sentinel
 	@echo "-- Preprocessing example source files into '$(EXAMPLES_DIR)' ..."
-	@rm -rf $(EXAMPLES_DIR)/*
+	@$(RM) -rf $(EXAMPLES_DIR)/*
 	@(for i in $(EXAMPLES_SOURCE_FILES) ; do \
-	    file_name=`echo $$i | sed 's#.*/##' | sed 's#\..*$$##'`; \
-	    file_ext=`echo $$i | sed 's#.*/##' | sed 's#.*\.##'`; \
+	    file_name=`echo $$i | $(SED) 's#.*/##' | $(SED) 's#\..*$$##'`; \
+	    file_ext=`echo $$i | $(SED) 's#.*/##' | $(SED) 's#.*\.##'`; \
 	    echo "--- Converting $$file_name.$$file_ext to $$file_name.sgml ..."; \
-	    file_title=`cat $$i | grep 'XML Security Library example: ' | sed 's#^.*: *##'`; \
+	    file_title=`cat $$i | $(GREP) 'XML Security Library example: ' | $(SED) 's#^.*: *##'`; \
 	    echo "<sect2 id=\"xmlsec-example-$$file_name\" >" > \
 	        $(EXAMPLES_DIR)/$$file_name.sgml; \
 	    echo "<title>$$file_name.$$file_ext</title><para><informalexample><programlisting>" >> \
 		    $(EXAMPLES_DIR)/$$file_name.sgml; \
 	    cat $$i | \
-		sed "s#&#\&amp;#g" | \
-		sed "s#<#\&lt;#g" | \
-		sed "s#>#\&gt;#g" >> \
+		$(SED) "s#&#\&amp;#g" | \
+		$(SED) "s#<#\&lt;#g" | \
+		$(SED) "s#>#\&gt;#g" >> \
 		    $(EXAMPLES_DIR)/$$file_name.sgml; \
 	    echo "</programlisting></informalexample></para></sect2>" >> \
 		    $(EXAMPLES_DIR)/$$file_name.sgml; \
@@ -273,21 +270,21 @@ example_sources: $(EXAMPLES_DIR)/.sentinel
 dist-hook:
 	@(for i in `find $(distdir) -name ".sentinel" -print` ; do \
 		echo "Removing some files '$$i' before dist ... " ; \
-		rm $$i ; \
+		$(RM) $$i ; \
 	done )
 	@(for i in `find $(distdir) -name "*.sgml.bak" -print` ; do \
 		echo "Removing some files '$$i' before dist ... " ; \
-		rm "$$i" ; \
+		$(RM) "$$i" ; \
 	done ; )
 
 clean-local:
-	@rm -rf $(SOURCE_CODE_DIR) $(EXAMPLES_DIR) $(SCAN_DIR)/*.txt $(SGML_DIR) $(GTKDOC_MKDB_OUTPUT_DIR)
-	@rm -f *.stamp *.types index.sgml
+	@$(RM) -rf $(SOURCE_CODE_DIR) $(EXAMPLES_DIR) $(SCAN_DIR)/*.txt $(SGML_DIR) $(GTKDOC_MKDB_OUTPUT_DIR)
+	@$(RM) -f *.stamp *.types index.sgml
 	@( \
 		if [ z"$(builddir)" != z"$(srcdir)" ] ; \
 		then \
 			(chmod -Rf u+w $(builddir)/xmlsec.devhelp2 $(EXTRA_DIST) 2>/dev/null || true) ; \
-			rm -rf $(builddir)/xmlsec.devhelp2 $(EXTRA_DIST) ; \
+			$(RM) -rf $(builddir)/xmlsec.devhelp2 $(EXTRA_DIST) ; \
 	 	fi ; \
 	)
 
@@ -301,5 +298,5 @@ install-data-local:
 	@INSTALL@ -m 0644 $(builddir)/images/*.png $(DESTDIR)$(TARGET_DIR)/images
 
 uninstall-local:
-	@rm -rf $(DESTDIR)$(TARGET_DIR)
+	@$(RM) -rf $(DESTDIR)$(TARGET_DIR)
 

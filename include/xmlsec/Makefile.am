@@ -53,7 +53,7 @@ remove-old-headers:
 	    echo; \
 	    echo "----------------------------------------------------------------------"; \
 	    echo; \
-	    rm -rf "$(includedir)/xmlsec"; \
+	    $(RM) -rf "$(includedir)/xmlsec"; \
 	fi
 
 install-exec-hook: remove-old-headers

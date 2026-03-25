@@ -171,13 +171,13 @@ check-enc: $(TEST_APP)
 	)
 
 memcheck-res:
-	@grep -i 'ERROR SUMMARY' /tmp/xmlsec-test*/*.log | sed 's/.*==.*== *//' | sort -u
-	@grep -i 'in use at exit' /tmp/xmlsec-test*/*.log | sed 's/.*==.*== *//' | sort -u
-	@grep -i 'definitely lost:' /tmp/xmlsec-test*/*.log | sed 's/.*==.*== *//' | sort -u
-	@grep -i 'indirectly lost:' /tmp/xmlsec-test*/*.log | sed 's/.*==.*== *//' | sort -u
-	@grep -i 'possibly lost:' /tmp/xmlsec-test*/*.log | sed 's/.*==.*== *//' | sort -u
-	@grep -i 'still reachable:' /tmp/xmlsec-test*/*.log | sed 's/.*==.*== *//' | sort -u
-	@grep -i 'used_suppression:' /tmp/xmlsec-test*/*.log | sed 's/.*--.*-- *//' | sort -u
+	@$(GREP) -i 'ERROR SUMMARY' /tmp/xmlsec-test*/*.log | $(SED) 's/.*==.*== *//' | $(SORT) -u
+	@$(GREP) -i 'in use at exit' /tmp/xmlsec-test*/*.log | $(SED) 's/.*==.*== *//' | $(SORT) -u
+	@$(GREP) -i 'definitely lost:' /tmp/xmlsec-test*/*.log | $(SED) 's/.*==.*== *//' | $(SORT) -u
+	@$(GREP) -i 'indirectly lost:' /tmp/xmlsec-test*/*.log | $(SED) 's/.*==.*== *//' | $(SORT) -u
+	@$(GREP) -i 'possibly lost:' /tmp/xmlsec-test*/*.log | $(SED) 's/.*==.*== *//' | $(SORT) -u
+	@$(GREP) -i 'still reachable:' /tmp/xmlsec-test*/*.log | $(SED) 's/.*==.*== *//' | $(SORT) -u
+	@$(GREP) -i 'used_suppression:' /tmp/xmlsec-test*/*.log | $(SED) 's/.*--.*-- *//' | $(SORT) -u
 
 memcheck: $(TEST_APP)
 	@(export DEBUG_MEMORY=1 && $(MAKE) check && $(MAKE) memcheck-res)

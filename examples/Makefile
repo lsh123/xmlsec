@@ -17,8 +17,10 @@ define EXTRA_CCFLAGS
 	*)  echo ""  ;; \
 	esac
 endef
-CFLAGS += -g $(shell xmlsec1-config --cflags) $(shell $(EXTRA_CCFLAGS))
-LDLIBS += -g $(shell xmlsec1-config --libs)
+
+PKG_CONFIG ?= pkg-config
+CFLAGS += -g $(shell $(PKG_CONFIG) xmlsec1 --cflags) $(shell $(EXTRA_CCFLAGS))
+LDLIBS += -g $(shell $(PKG_CONFIG) xmlsec1 --libs)
 
 
 all: $(PROGRAMS)

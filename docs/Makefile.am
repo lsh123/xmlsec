@@ -37,6 +37,7 @@ docs-copy:
 		echo "-- Copying docs..."; \
 		if [ z"$(srcdir)" != z"$(builddir)" ]; \
 		then \
+		    (chmod -Rf u+w $(EXTRA_DIST)  2>/dev/null || true) ; \
 		    $(CP) -r $(SOURCE_FILES_TO_COPY) $(builddir)/  ; \
 		fi \
 	)
@@ -99,7 +100,7 @@ clean-local:
 		rm -f *.stamp ; \
 		if [ z"$(srcdir)" != z"$(builddir)" ] ; \
 		then \
-			(chmod -R u+w $(EXTRA_DIST)  || true) ; \
+			(chmod -Rf u+w $(EXTRA_DIST)  2>/dev/null || true) ; \
 			rm -rf $(EXTRA_DIST) ; \
 		fi ; \
 	 )

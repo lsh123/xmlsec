@@ -90,7 +90,8 @@ docs-copy:
 		echo "-- Copying api docs..."; \
 		if [ z"$(srcdir)" != z"$(builddir)" ]; \
 		then \
-		    $(CP) -r $(SOURCE_FILES_TO_COPY) $(builddir)/ ; \
+			(chmod -Rf u+w $(EXTRA_DIST)  2>/dev/null || true) ; \
+			$(CP) -r $(SOURCE_FILES_TO_COPY) $(builddir)/ ; \
 		fi \
 	)
 
@@ -285,8 +286,8 @@ clean-local:
 	@( \
 		if [ z"$(builddir)" != z"$(srcdir)" ] ; \
 		then \
-			(chmod -R u+w $(builddir)/xmlsec.devhelp2 $(EXTRA_DIST)  || true) ; \
-    		rm -rf $(builddir)/xmlsec.devhelp2 $(EXTRA_DIST) ; \
+			(chmod -Rf u+w $(builddir)/xmlsec.devhelp2 $(EXTRA_DIST) 2>/dev/null || true) ; \
+			rm -rf $(builddir)/xmlsec.devhelp2 $(EXTRA_DIST) ; \
 	 	fi ; \
 	)
 

@@ -42,7 +42,8 @@ cd xmlsec
 find . -name ".git" | xargs rm -r
 
 echo "============== Building xmlsec1-${full_version}"
-./autogen.sh --prefix=/usr --sysconfdir=/etc
+autoreconf -i -f
+./configure --prefix=/usr --sysconfdir=/etc
 make tar-release
 # Cannot build RPM on Ubuntu.
 # make rpm-release

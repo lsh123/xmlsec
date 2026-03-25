@@ -5,18 +5,26 @@ SUBDIRS=api
 TARGET_DIR=@XMLSEC_DOCDIR@
 
 # we copy over all folders to builddir to make it easier to test docs
-EXTRA_DIST=\
-	$(builddir)/images     \
-	$(builddir)/css        \
-	$(builddir)/*.html     \
-	$(builddir)/*.ico      \
-	$(builddir)/xmlsec.xsl \
-	$(NULL)
+EXTRA_DIST=	                \
+    $(builddir)/images      \
+    $(builddir)/css         \
+    $(builddir)/*.html      \
+    $(builddir)/*.ico       \
+    $(builddir)/*.xsl       \
+    $(NULL)
+
+SOURCE_FILES_TO_COPY=       \
+    $(srcdir)/images        \
+    $(srcdir)/css           \
+    $(srcdir)/*.html        \
+    $(srcdir)/*.ico         \
+    $(srcdir)/*.xsl         \
+    $(NULL)
 
 XMLSEC1_MAN=$(top_builddir)/man/xmlsec1.1
 XMLSEC_HTML=$(builddir)/xmlsec-man.html
 
-all:
+all: docs-copy
 	@echo "======= Run 'make docs' in the xmlsec/docs folder to rebuild docs"
 
 docs: docs-api docs-copy man-docs docs-format
@@ -24,16 +32,12 @@ docs: docs-api docs-copy man-docs docs-format
 docs-api:
 	make -C api docs
 
-docs-copy: docs-api
+docs-copy: $(builddir)/index.html
 	@( \
 		echo "-- Copying docs..."; \
-		if [ z"$(srcdir)" != z"$(builddir)" -a z"`uname`" != z"Darwin" ]; \
+		if [ z"$(srcdir)" != z"$(builddir)" ]; \
 		then \
-		    $(CP) -ru $(srcdir)/*.html $(srcdir)/*.ico $(srcdir)/images $(srcdir)/css $(builddir)/  ; \
-		    (chmod u+w $(builddir)/*.html || true) ; \
-		    (chmod u+w $(builddir)/*.ico || true) ; \
-		    (chmod -R u+w $(builddir)/images || true) ; \
-		    (chmod -R u+w $(builddir)/css || true) ; \
+		    $(CP) -r $(SOURCE_FILES_TO_COPY) $(builddir)/  ; \
 		fi \
 	)
 
@@ -85,40 +89,26 @@ docs-format: docs-copy man-docs
 endif
 
 clean-local:
-	-rm -f *.stamp
-	@( if [ z"$(srcdir)" != z"$(builddir)" ] ; then \
-		(chmod -R u+w $(builddir)/images || true) && rm -rf $(builddir)/images ; \
-        (chmod -R u+w $(builddir)/css || true) && rm -rf $(builddir)/css ; \
-		(chmod -R u+w $(builddir)/src || true) && rm -rf $(builddir)/src ; \
-		(for i in `find $(builddir) -name "*.html" -print` ; do \
-			echo "--- Removing files '$$i' ... " ; \
-			chmod -R u+w $$i && rm -f $$i ; \
-		done ) ; \
-		(for i in `find $(builddir) -name "*.ico" -print` ; do \
-			echo "--- Removing files '$$i' ... " ; \
-			chmod -R u+w $$i && rm -f $$i ; \
-		done ) ; \
-	 fi ; )
+	@( \
+		rm -f *.stamp ; \
+		if [ z"$(srcdir)" != z"$(builddir)" ] ; \
+		then \
+			(chmod -R u+w $(EXTRA_DIST)  || true) ; \
+			rm -rf $(EXTRA_DIST) ; \
+		fi ; \
+	 )
 
 distclean-local: clean-local
 
 install-data-local:
-	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)
-	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)/images
-	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)/css
-	@( if [ -f "$(builddir)/index.html" ] ; then \
-		echo "Installing docs from build folder: '$(builddir)' ..." ; \
-		@INSTALL@ -m 0644 $(builddir)/*.html $(DESTDIR)$(TARGET_DIR) ; \
-		@INSTALL@ -m 0644 $(builddir)/*.ico  $(DESTDIR)$(TARGET_DIR) ; \
-		@INSTALL@ -m 0644 $(builddir)/images/*.gif $(builddir)/images/*.png $(DESTDIR)$(TARGET_DIR)/images ; \
-		@INSTALL@ -m 0644 $(builddir)/css/*.css $(DESTDIR)$(TARGET_DIR)/css ; \
-	else  \
-		echo "Installing docs from source folder: '$(srcdir)' ..." ; \
-		@INSTALL@ -m 0644 $(srcdir)/*.html $(DESTDIR)$(TARGET_DIR) ; \
-		@INSTALL@ -m 0644 $(srcdir)/*.ico  $(DESTDIR)$(TARGET_DIR) ; \
-		@INSTALL@ -m 0644 $(srcdir)/images/*.gif $(srcdir)/images/*.png $(DESTDIR)$(TARGET_DIR)/images ; \
-		@INSTALL@ -m 0644 $(srcdir)/css/*.css $(DESTDIR)$(TARGET_DIR)/css ; \
-	fi ; )
+	@echo "Installing docs ..."
+	@$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)
+	@$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)/images
+	@$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)/css
+	@INSTALL@ -m 0644 $(builddir)/*.html $(DESTDIR)$(TARGET_DIR)
+	@INSTALL@ -m 0644 $(builddir)/*.ico  $(DESTDIR)$(TARGET_DIR)
+	@INSTALL@ -m 0644 $(builddir)/images/*.gif $(builddir)/images/*.png $(DESTDIR)$(TARGET_DIR)/images
+	@INSTALL@ -m 0644 $(builddir)/css/*.css $(DESTDIR)$(TARGET_DIR)/css
 
 uninstall-local:
 	@rm -rf $(DESTDIR)$(TARGET_DIR)

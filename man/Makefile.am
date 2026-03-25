@@ -35,7 +35,7 @@ $(XMLSEC1_MAN):
 		echo "Copying xmlsec1 manpage ..."; \
 		if [ z"$(XMLSEC1_MAN_SRC)" != z"$(XMLSEC1_MAN)" ]; \
 		then \
-		   $(CP) -u $(XMLSEC1_MAN_SRC) $(XMLSEC1_MAN) ; \
+		   $(CP) $(XMLSEC1_MAN_SRC) $(XMLSEC1_MAN) ; \
 		fi \
 	)
 endif
@@ -52,7 +52,7 @@ $(XMLSEC1_CONFIG_MAN):
 	@( \
 		echo "Copying xmlsec1-config manpage ..."; \
 		if [ z"$(XMLSEC1_CONFIG_MAN_SRC)" != z"$(XMLSEC1_CONFIG_MAN)" ]; then \
-		    $(CP) -u $(XMLSEC1_CONFIG_MAN_SRC) $(XMLSEC1_CONFIG_MAN) ; \
+		    $(CP) $(XMLSEC1_CONFIG_MAN_SRC) $(XMLSEC1_CONFIG_MAN) ; \
 		fi \
 	)
 endif

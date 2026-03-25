@@ -27,27 +27,29 @@ SGML_CHAPTERS_SRC_DIR=$(srcdir)/src/chapters
 
 
 EXTRA_DIST = \
-	$(srcdir)/src \
-	$(srcdir)/images \
-	$(srcdir)/style.css \
+	$(builddir)/src \
+	$(builddir)/images \
+	$(builddir)/*.css \
+	$(builddir)/*.html  \
+	$(builddir)/*.png \
 	$(NULL)
 
 SOURCE_FILES_TO_COPY = \
 	$(srcdir)/src \
 	$(srcdir)/images \
-	$(srcdir)/style.css \
+	$(srcdir)/*.css \
 	$(srcdir)/*.html \
 	$(srcdir)/*.png \
 	$(NULL)
 
 CRYPTO_LIBS_LIST = \
-        openssl \
-        nss \
-        gnutls \
-        gcrypt \
-        mscrypto \
-        mscng \
-        $(NULL)
+	openssl \
+	nss \
+	gnutls \
+	mscng \
+	mscrypto \
+	gcrypt \
+	$(NULL)
 
 #
 # We need to pre-process original source files
@@ -69,24 +71,28 @@ EXAMPLES_SOURCE_FILES=\
 #
 REMOVE_GTKDOCLINK=$(top_srcdir)/scripts/remove-gtkdoclink.pl
 
-all:
+all: docs-copy
 	@echo "======= Run 'make docs' in the xmlsec/docs folder to rebuild docs"
 
 # if build API docs, then we also have xsltproc
 if BUILD_API_DOCS
-docs: html-cleanup copy-images
+docs: docs-copy html-cleanup copy-images
 
 else
 
-docs:
+docs: docs-copy
+	@echo "To build API docs, pass '--enable-docs-build' to './configure' script and make sure all necessary tools are installed"
+
+endif
+
+docs-copy:
 	@( \
 		echo "-- Copying api-docs..."; \
-		if [ z"$(srcdir)" != z"$(builddir)" -a z"`uname`" != z"Darwin" ]; \
+		if [ z"$(srcdir)" != z"$(builddir)" ]; \
 		then \
-		    $(CP) -ru $(SOURCE_FILES_TO_COPY) $(builddir)/ ; \
+		    $(CP) -r $(SOURCE_FILES_TO_COPY) $(builddir)/ ; \
 		fi \
 	)
-endif
 
 html-cleanup: html
 	@( echo "-- Cleaning up result files"; \
@@ -100,13 +106,13 @@ html: sgml $(MAIN_SGML_FILE) $(SGML_CHAPTERS_DIR) xmlsec-index
 $(SGML_CHAPTERS_DIR): $(SGML_CHAPTERS_SRC_DIR) $(SGML_CHAPTERS_DIR)/.sentinel
 	@( \
 		echo "-- Copying chaptres..." ; \
-		$(CP) -ru $(SGML_CHAPTERS_SRC_DIR)/* $(SGML_CHAPTERS_DIR) \
+		$(CP) -r $(SGML_CHAPTERS_SRC_DIR)/* $(SGML_CHAPTERS_DIR) \
 	)
 
 $(MAIN_SGML_FILE): $(MAIN_SGML_SRC_FILE)
 	@( \
 		echo "-- Copying main sgml file..."; \
-		$(CP) -u $(MAIN_SGML_SRC_FILE) $(MAIN_SGML_FILE) \
+		$(CP) $(MAIN_SGML_SRC_FILE) $(MAIN_SGML_FILE) \
 	)
 #
 # Prepeare sgml files from sources for each library. We are also
@@ -271,10 +277,6 @@ copy-images:
 	@touch $@
 
 dist-hook:
-	@( \
-		echo "-- Copying html..." ; \
-		$(CP) -p $(srcdir)/*.html $(srcdir)/*.png $(distdir)/ \
-	)
 	@(for i in `find $(distdir) -name ".sentinel" -print` ; do \
 		echo "Removing some files '$$i' before dist ... " ; \
 		rm $$i ; \
@@ -285,28 +287,24 @@ dist-hook:
 	done ; )
 
 clean-local:
-	-rm -rf $(SOURCE_CODE_DIR) $(EXAMPLES_DIR) $(SCAN_DIR)/*.txt $(SGML_DIR) $(GTKDOC_MKDB_OUTPUT_DIR)
-	-rm -f *.stamp *.types index.sgml
-	@( if [ z"$(builddir)" != z"$(srcdir)" ] ; then \
-    	(chmod -R u+w $(builddir)/src || true) && rm -rf $(builddir)/src ; \
-    	(chmod -R u+w $(builddir)/images || true) && rm -rf $(builddir)/images ; \
-    	(chmod -R u+w $(builddir)/*.png || true) && rm -rf $(builddir)/*.png ; \
-	 fi ; )
+	@rm -rf $(SOURCE_CODE_DIR) $(EXAMPLES_DIR) $(SCAN_DIR)/*.txt $(SGML_DIR) $(GTKDOC_MKDB_OUTPUT_DIR)
+	@rm -f *.stamp *.types index.sgml
+	@( \
+		if [ z"$(builddir)" != z"$(srcdir)" ] ; \
+		then \
+			(chmod -R u+w $(builddir)/xmlsec.devhelp2 $(EXTRA_DIST)  || true) ; \
+    		rm -rf $(builddir)/xmlsec.devhelp2 $(EXTRA_DIST) ; \
+	 	fi ; \
+	)
 
 distclean-local: clean-local
 
 install-data-local:
-	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)
-	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)/images
-	@( if [ -f "$(builddir)/index.html" ] ; then \
-		echo "Installing docs from build folder: '$(builddir)' ..." ; \
-		@INSTALL@ -m 0644 $(builddir)/*.html $(builddir)/*.png $(builddir)/*.css $(DESTDIR)$(TARGET_DIR) ; \
-		@INSTALL@ -m 0644 $(builddir)/images/*.png $(DESTDIR)$(TARGET_DIR)/images ; \
-	else  \
-		echo "Installing docs from source folder: '$(srcdir)' ..." ; \
-		@INSTALL@ -m 0644 $(srcdir)/*.html $(srcdir)/*.png $(srcdir)/*.css $(DESTDIR)$(TARGET_DIR) ; \
-		@INSTALL@ -m 0644 $(srcdir)/images/*.png $(DESTDIR)$(TARGET_DIR)/images ; \
-	fi ; )
+	@echo "Installing api docs ..."
+	@$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)
+	@$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)/images
+	@INSTALL@ -m 0644 $(builddir)/*.html $(builddir)/*.png $(builddir)/*.css $(DESTDIR)$(TARGET_DIR)
+	@INSTALL@ -m 0644 $(builddir)/images/*.png $(DESTDIR)$(TARGET_DIR)/images
 
 uninstall-local:
 	@rm -rf $(DESTDIR)$(TARGET_DIR)

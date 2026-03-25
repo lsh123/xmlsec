@@ -147,6 +147,35 @@ function usage()
 	WScript.Echo(txt);
 }
 
+/* Parses AC_INIT([name],[version],[url]) and extracts version components.
+   Returns an array [major, minor, subminor]. */
+function parseAcInit(str)
+{
+	var match = str.match(/AC_INIT\(\[([^\]]*)\],\[(\d+)\.(\d+)\.(\d+)\],\[([^\]]*)\]\)/);
+	if (match == null) {
+		return null;
+	}
+	return [match[2], match[3], match[4]];
+}
+
+function parseConfigureAc(fso) {
+	var cf, ln, s, ver;
+
+	/* Parse version from AC_INIT */
+	cf = fso.OpenTextFile(configFile, 1);
+	while (cf.AtEndOfStream != true) {
+		ln = cf.ReadLine();
+		ver = parseAcInit(ln);
+		if (ver != null) {
+			break;
+		}
+	}
+	cf.Close();
+
+	/* done */
+	return ver;
+}
+
 /* Discovers the version we are working with by reading the apropriate
    configuration file. Despite its name, this also writes the configuration
    file included by our makefile. */
@@ -155,27 +184,25 @@ function discoverVersion()
 	var fso, cf, vf, ln, s;
 
 	fso = new ActiveXObject("Scripting.FileSystemObject");
-	cf = fso.OpenTextFile(configFile, 1);
+
+	/* get version from configure.ac AC_INIT */
+	ver = parseConfigureAc(fso);
+	if (ver == null) {
+		error = 1;
+		return;
+	}
+	verMajorXmlSec = ver[0];
+	verMinorXmlSec = ver[1];
+	verMicroXmlSec = ver[2];
+
+	/* Write the configuration file for the Makefile. */
 	vf = fso.CreateTextFile(versionFile, true);
 	vf.WriteLine("# " + versionFile);
 	vf.WriteLine("# This file is generated automatically by " + WScript.ScriptName + ".");
 	vf.WriteBlankLines(1);
-	while (cf.AtEndOfStream != true) {
-		ln = cf.ReadLine();
-		s = new String(ln);
-		if (s.search(/^XMLSEC_VERSION_MAJOR/) != -1) {
-			WScript.Echo(verMajorXmlSec);
-			vf.WriteLine(s);
-			verMajorXmlSec = s.substring(s.indexOf("=") + 1, s.length)
-		} else if(s.search(/^XMLSEC_VERSION_MINOR/) != -1) {
-			vf.WriteLine(s);
-			verMinorXmlSec = s.substring(s.indexOf("=") + 1, s.length)
-		} else if(s.search(/^XMLSEC_VERSION_SUBMINOR/) != -1) {
-			vf.WriteLine(s);
-			verMicroXmlSec = s.substring(s.indexOf("=") + 1, s.length)
-		}
-	}
-	cf.Close();
+	vf.WriteLine("XMLSEC_VERSION_MAJOR=" + verMajorXmlSec);
+	vf.WriteLine("XMLSEC_VERSION_MINOR=" + verMinorXmlSec);
+	vf.WriteLine("XMLSEC_VERSION_SUBMINOR=" + verMicroXmlSec);
 	vf.WriteLine("BASEDIR=" + baseDir);
 	vf.WriteLine("XMLSEC_SRCDIR=" + srcDir);
 	vf.WriteLine("APPS_SRCDIR=" + srcDirApps);

@@ -54,6 +54,10 @@ jobs:
       working-directory: build.dir
       run: |
           make install
+    - name: make distcheck
+      working-directory: build.dir
+      run: |
+          make distcheck
     - name: make examples
       working-directory: examples
       run: |

@@ -21,7 +21,7 @@ SOURCE_FILES_TO_COPY=       \
     $(srcdir)/*.xsl         \
     $(NULL)
 
-XMLSEC1_MAN=$(top_builddir)/man/xmlsec1.1
+XMLSEC1_MAN=$(builddir)/../man/xmlsec1.1
 XMLSEC_HTML=$(builddir)/xmlsec-man.html
 
 all: docs-copy
@@ -32,33 +32,38 @@ docs: docs-api docs-copy man-docs docs-format
 docs-api:
 	make -C api docs
 
-docs-copy: $(builddir)/index.html
+docs-copy:
 	@( \
 		echo "-- Copying docs..."; \
 		if [ z"$(srcdir)" != z"$(builddir)" ]; \
 		then \
+		    (chmod -Rf u+w $(EXTRA_DIST)  2>/dev/null || true) ; \
 		    $(CP) -r $(SOURCE_FILES_TO_COPY) $(builddir)/  ; \
 		fi \
 	)
 
-# if we build docs then we also have xsltproc
 if BUILD_MAN_DOCS
-man-docs: $(XMLSEC_HTML) docs-copy
+man-docs: $(XMLSEC_HTML)
 
 $(XMLSEC_HTML): docs-copy $(XMLSEC1_MAN)
+	@echo "-- Building docs for man page ..."
 	@($(MAN2HTML) $(XMLSEC1_MAN) | \
 		  grep -v '^Content-type: text/html' | \
 		  tr "[:cntrl:]" " " > \
 		  $(XMLSEC_HTML) \
 	)
 else
+
 # do nothing, we aready copied this file
-man-docs:
+man-docs: docs-copy
 
 endif
 
-if HAS_XSLTPROC
-docs-format: docs-copy man-docs
+
+# if we build api docs then we also have xsltproc
+if BUILD_API_DOCS
+
+docs-format: man-docs
 	@(echo "-- Formatting html documents"; \
 	for i in `find $(builddir) -name "*.html" -print`; \
 	do \
@@ -83,17 +88,19 @@ docs-format: docs-copy man-docs
 	done)
 
 else
-# do nothing
-docs-format: docs-copy man-docs
+
+# do nothing, we aready copied this file
+docs-format: man-docs
 
 endif
+
 
 clean-local:
 	@( \
 		rm -f *.stamp ; \
 		if [ z"$(srcdir)" != z"$(builddir)" ] ; \
 		then \
-			(chmod -R u+w $(EXTRA_DIST)  || true) ; \
+			(chmod -Rf u+w $(EXTRA_DIST)  2>/dev/null || true) ; \
 			rm -rf $(EXTRA_DIST) ; \
 		fi ; \
 	 )

@@ -35,7 +35,7 @@ docs-api:
 docs-copy: $(builddir)/index.html
 	@( \
 		echo "-- Copying docs..."; \
-		if [ z"$(srcdir)" != z"$(builddir)" -a z"`uname`" != z"Darwin" ]; \
+		if [ z"$(srcdir)" != z"$(builddir)" ]; \
 		then \
 		    $(CP) -ru $(SOURCE_FILES_TO_COPY) $(builddir)/  ; \
 		fi \

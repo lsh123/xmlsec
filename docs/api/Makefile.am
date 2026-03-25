@@ -88,9 +88,9 @@ endif
 docs-copy:
 	@( \
 		echo "-- Copying api-docs..."; \
-		if [ z"$(srcdir)" != z"$(builddir)" -a z"`uname`" != z"Darwin" ]; \
+		if [ z"$(srcdir)" != z"$(builddir)" ]; \
 		then \
-		    $(CP) -ru $(SOURCE_FILES_TO_COPY) $(builddir)/ ; \
+		    $(CP) -r $(SOURCE_FILES_TO_COPY) $(builddir)/ ; \
 		fi \
 	)
 
@@ -106,13 +106,13 @@ html: sgml $(MAIN_SGML_FILE) $(SGML_CHAPTERS_DIR) xmlsec-index
 $(SGML_CHAPTERS_DIR): $(SGML_CHAPTERS_SRC_DIR) $(SGML_CHAPTERS_DIR)/.sentinel
 	@( \
 		echo "-- Copying chaptres..." ; \
-		$(CP) -ru $(SGML_CHAPTERS_SRC_DIR)/* $(SGML_CHAPTERS_DIR) \
+		$(CP) -r $(SGML_CHAPTERS_SRC_DIR)/* $(SGML_CHAPTERS_DIR) \
 	)
 
 $(MAIN_SGML_FILE): $(MAIN_SGML_SRC_FILE)
 	@( \
 		echo "-- Copying main sgml file..."; \
-		$(CP) -u $(MAIN_SGML_SRC_FILE) $(MAIN_SGML_FILE) \
+		$(CP) $(MAIN_SGML_SRC_FILE) $(MAIN_SGML_FILE) \
 	)
 #
 # Prepeare sgml files from sources for each library. We are also

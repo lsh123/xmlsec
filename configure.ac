@@ -53,6 +53,14 @@ AC_PATH_PROG(MV, mv, /bin/mv)
 AC_PATH_PROG(TAR, tar, /bin/tar)
 AC_PATH_PROG(PERL, perl)
 
+# Mac OSX doesn't have "-u" (update older) option for 'cp'
+if test z"`uname`" != z"Darwin" ; then
+    CP_U="$CP" -u
+else
+    CP_U="$CP"
+fi
+AC_SUBST(CP_U)
+
 dnl Programs for man pages and HTML docs
 AC_PATH_PROG(HELP2MAN, help2man)
 AC_PATH_PROG(XSLTPROC, xsltproc)

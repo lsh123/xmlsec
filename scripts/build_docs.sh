@@ -3,7 +3,6 @@
 # Configuration options.
 configure_options=""
 configure_options="$configure_options --enable-static-linking --enable-crypto-dl=no"
-configure_options="$configure_options --enable-manpages-build --enable-docs-build"
 configure_options="$configure_options --enable-legacy-features"
 cur_pwd=`pwd`
 today=`date +%F-%H-%M-%S`

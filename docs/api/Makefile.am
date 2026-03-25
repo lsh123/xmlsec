@@ -76,18 +76,18 @@ all: docs-copy
 
 # if build API docs, then we also have xsltproc
 if BUILD_API_DOCS
-docs: docs-copy html-cleanup copy-images
+docs: html-cleanup
 
 else
 
 docs: docs-copy
-	@echo "To build API docs, pass '--enable-docs-build' to './configure' script and make sure all necessary tools are installed"
+	@echo "ERROR: To build API docs, make sure all necessary tools are installed"
 
 endif
 
 docs-copy:
 	@( \
-		echo "-- Copying api-docs..."; \
+		echo "-- Copying api docs..."; \
 		if [ z"$(srcdir)" != z"$(builddir)" ]; \
 		then \
 		    $(CP) -r $(SOURCE_FILES_TO_COPY) $(builddir)/ ; \
@@ -99,8 +99,7 @@ html-cleanup: html
 	   $(PERL) $(REMOVE_GTKDOCLINK) `find . -name "*.html" -print` \
 	)
 
-# need to cleanup "bad" chars
-html: sgml $(MAIN_SGML_FILE) $(SGML_CHAPTERS_DIR) xmlsec-index
+html: docs-copy sgml $(MAIN_SGML_FILE) $(SGML_CHAPTERS_DIR) xmlsec-index
 	@$(GTKDOC_MKHTML) xmlsec $(MAIN_SGML_FILE)
 
 $(SGML_CHAPTERS_DIR): $(SGML_CHAPTERS_SRC_DIR) $(SGML_CHAPTERS_DIR)/.sentinel
@@ -261,12 +260,6 @@ example_sources: $(EXAMPLES_DIR)/.sentinel
 		    $(EXAMPLES_DIR)/$$file_name.sgml; \
 	done);
 
-copy-images:
-	@( if [ z"$(builddir)" != z"$(srcdir)" ] ; then \
-		echo "Copying images ..." ; \
-		mkdir -p $(builddir)/images ; \
-		cp $(srcdir)/images/*.png $(builddir)/images/ ; \
-	fi ; )
 
 # A single pattern rule will create all appropriate folders as required
 # otherwise make (annoyingly) deletes it

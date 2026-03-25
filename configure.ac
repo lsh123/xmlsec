@@ -61,9 +61,8 @@ AC_PATH_PROG(MAN2HTML, man2html)
 AC_PATH_PROG(GTKDOC_MKHTML, gtkdoc-mkhtml)
 AC_PATH_PROG(GTKDOC_MKDB,   gtkdoc-mkdb)
 AC_PATH_PROG(GTKDOC_SCAN,   gtkdoc-scan)
-AM_CONDITIONAL(HAS_HELP2MAN, [test x"$HELP2MAN" != x])
-AM_CONDITIONAL(HAS_MAN2HTML, [test x"$MAN2HTML" != x])
-AM_CONDITIONAL(HAS_XSLTPROC, [test x"$XSLTPROC" != x])
+AM_CONDITIONAL(BUILD_MAN_DOCS, [test x"$PERL" != x && test x"$XSLTPROC" != x && test x"$MAN2HTML" != x])
+AM_CONDITIONAL(BUILD_API_DOCS, [test x"$PERL" != x && test x"$XSLTPROC" != x && test x"$GTKDOC_MKHTML" != x && test x"$GTKDOC_MKDB" != x && test x"$GTKDOC_SCAN" != x])
 
 dnl Checks for header files.
 AC_HEADER_DIRENT
@@ -179,8 +178,6 @@ if test "z$enable_development" = "zyes" ; then
     enable_debugging="yes"
     enable_pedantic="yes"
     enable_static_linking="yes"
-    enable_manpages_build="no"
-    enable_docs_build="no"
     enable_crypto_dl="no"
     enable_legacy_features="yes"
     AC_MSG_RESULT([yes])
@@ -217,34 +214,6 @@ if test "z$enable_experimental_features" = "zyes" ; then
     AC_MSG_RESULT([yes])
 else
     AC_MSG_RESULT([no])
-fi
-
-dnl ==========================================================================
-dnl Do we want to build manpages?
-dnl ==========================================================================
-AC_MSG_CHECKING(for man pages build)
-AC_ARG_ENABLE([manpages_build], [AS_HELP_STRING([--enable-manpages-build],[man pages build (no)])])
-if test "z$enable_manpages_build" = "zyes" ; then
-    AM_CONDITIONAL(BUILD_MANPAGES, [test x"$HELP2MAN" != x])
-    AC_MSG_RESULT([yes])
-else
-    AM_CONDITIONAL(BUILD_MANPAGES, [test "x" = "y"])
-    AC_MSG_RESULT([disabled])
-fi
-
-dnl ==========================================================================
-dnl Do we want to build docs?
-dnl ==========================================================================
-AC_MSG_CHECKING(for docs build)
-AC_ARG_ENABLE([docs_build], [AS_HELP_STRING([--enable-docs-build],[docs build (no)])])
-if test "z$enable_docs_build" = "zyes" ; then
-    AM_CONDITIONAL(BUILD_MAN_DOCS, [test x"$PERL" != x && test x"$XSLTPROC" != x && test x"$MAN2HTML" != x])
-    AM_CONDITIONAL(BUILD_API_DOCS, [test x"$PERL" != x && test x"$XSLTPROC" != x && test x"$GTKDOC_MKHTML" != x && test x"$GTKDOC_MKDB" != x && test x"$GTKDOC_SCAN" != x])
-    AC_MSG_RESULT([yes])
-else
-    AM_CONDITIONAL(BUILD_MAN_DOCS, [test "x" = "y"])
-    AM_CONDITIONAL(BUILD_API_DOCS, [test "x" = "y"])
-    AC_MSG_RESULT([disabled])
 fi
 
 dnl ==========================================================================

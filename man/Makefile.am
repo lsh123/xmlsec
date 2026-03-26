@@ -21,8 +21,8 @@ XMLSEC_CONFIG_PROGRAM=$(top_builddir)/xmlsec1-config
 
 all: $(man_MANS)
 
-$(XMLSEC1_MAN): $(XMLSEC_PROGRAM)
-	@if test "z$(HELP2MAN)" = "z" ; then \
+$(XMLSEC1_MAN):
+	@if test "z$(HELP2MAN)" = "z" -o ! -f $(XMLSEC_PROGRAM) ; then \
 		echo "Copying xmlsec1 manpage ..."; \
 		if [ z"$(XMLSEC1_MAN_SRC)" != z"$(XMLSEC1_MAN)" ]; \
 		then \
@@ -37,8 +37,8 @@ $(XMLSEC1_MAN): $(XMLSEC_PROGRAM)
 		  $(XMLSEC_PROGRAM) ; \
 	fi
 
-$(XMLSEC1_CONFIG_MAN): $(XMLSEC_CONFIG_PROGRAM)
-	@if test "z$(HELP2MAN)" = "z" ; then \
+$(XMLSEC1_CONFIG_MAN):
+	@if test "z$(HELP2MAN)" = "z" -o ! -f $(XMLSEC_CONFIG_PROGRAM) ; then \
 		echo "Copying xmlsec1-config manpage ..."; \
 		if [ z"$(XMLSEC1_CONFIG_MAN_SRC)" != z"$(XMLSEC1_CONFIG_MAN)" ]; then \
 		    $(CP) $(XMLSEC1_CONFIG_MAN_SRC) $(XMLSEC1_CONFIG_MAN) ; \

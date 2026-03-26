@@ -1,5 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
+AC_PREREQ([2.69])
 AC_INIT([xmlsec1],[1.3.10],[http://www.aleksey.com/xmlsec])
+AM_INIT_AUTOMAKE([1.7 tar-ustar subdir-objects -Wno-portability foreign])
 
 dnl Get package and version information from AC_INIT()
 XMLSEC_PACKAGE="$PACKAGE_NAME"
@@ -24,10 +26,6 @@ XMLSEC_VERSION_SAFE="${XMLSEC_VERSION_MAJOR}_${XMLSEC_VERSION_MINOR}_${XMLSEC_VE
 XMLSEC_VERSION_CURRENT=$((10000 * XMLSEC_VERSION_MAJOR + 100 * XMLSEC_VERSION_MINOR + XMLSEC_VERSION_SUBMINOR))
 XMLSEC_VERSION_INFO="${XMLSEC_VERSION_CURRENT}:0:0"
 
-AC_PREREQ([2.69])
-AC_LANG(C)
-AC_CANONICAL_HOST
-
 AC_SUBST(XMLSEC_VERSION)
 AC_SUBST(XMLSEC_PACKAGE)
 AC_SUBST(XMLSEC_VERSION_SAFE)
@@ -37,7 +35,6 @@ AC_SUBST(XMLSEC_VERSION_SUBMINOR)
 AC_SUBST(XMLSEC_VERSION_INFO)
 
 AC_CONFIG_MACRO_DIR(m4)
-AM_INIT_AUTOMAKE([1.7 tar-ustar subdir-objects -Wno-portability foreign])
 AC_CONFIG_HEADERS([config.h])
 
 # Support silent build rules, requires at least automake-1.11. Disable
@@ -48,6 +45,8 @@ m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 dnl
 dnl Check the environment
 dnl
+AC_LANG(C)
+AC_CANONICAL_HOST
 AC_PROG_CC
 AC_EGREP_CPP(yes, foo)
 AC_PROG_INSTALL

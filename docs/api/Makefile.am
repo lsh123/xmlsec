@@ -25,22 +25,11 @@ MAIN_SGML_SRC_FILE=$(srcdir)/src/xmlsec.sgml
 SGML_CHAPTERS_DIR=$(SGML_DIR)/chapters
 SGML_CHAPTERS_SRC_DIR=$(srcdir)/src/chapters
 
-
-EXTRA_DIST = \
-	$(builddir)/src \
-	$(builddir)/images \
-	$(builddir)/*.css \
-	$(builddir)/*.html  \
-	$(builddir)/*.png \
-	$(NULL)
-
-SOURCE_FILES_TO_COPY = \
-	$(srcdir)/src \
-	$(srcdir)/images \
-	$(srcdir)/*.css \
-	$(srcdir)/*.html \
-	$(srcdir)/*.png \
-	$(NULL)
+# files that are copied from sources
+EXTRA_DIST := \
+    $(srcdir)/src    \
+    $(srcdir)/images \
+    $(NULL)
 
 CRYPTO_LIBS_LIST = \
 	openssl \
@@ -66,39 +55,30 @@ EXAMPLES_SOURCE_FILES=\
 	$(shell find $(EXAMPLES_SOURCE_DIR) -name '*.c' -print) \
 	$(shell find $(EXAMPLES_SOURCE_DIR) -name '*.xml' -print)
 
-all: docs-copy
+.PHONY: all docs html sgml sgml-base scan
+
+all:
 	@echo "======= Run 'make docs' in the xmlsec/docs folder to rebuild docs"
 
 # if build API docs, then we also have xsltproc
 if BUILD_API_DOCS
-docs: html-cleanup
 
-else
-
-docs: docs-copy
-	@echo "ERROR: To build API docs, make sure all necessary tools are installed"
-
-endif
-
-docs-copy:
-	@( \
-		echo "-- Copying api docs..."; \
-		if [ z"$(srcdir)" != z"$(builddir)" ]; \
-		then \
-			(chmod -Rf u+w $(EXTRA_DIST)  2>/dev/null || true) ; \
-			$(CP) -r $(SOURCE_FILES_TO_COPY) $(builddir)/ ; \
-		fi \
-	)
-
-html-cleanup: html
+docs: html
 	@( echo "-- Cleaning up result files"; \
 	   for f in `find . -name "*.html" -print` ; do \
 	       echo "-- Processing $$f..."; \
 	       $(SED) -i 's/<GTKDOCLINK[^>]*>/<font>/gI; s/<\/GTKDOCLINK[^>]*>/<\/font>/gI' "$$f" ; \
 	   done \
 	)
+else
 
-html: docs-copy sgml $(MAIN_SGML_FILE) $(SGML_CHAPTERS_DIR) xmlsec-index
+docs:
+	@(echo "=== ERROR: To build API docs, make sure all necessary tools are installed" ; exit 1; )
+endif
+
+
+
+html: sgml $(MAIN_SGML_FILE) $(SGML_CHAPTERS_DIR) xmlsec-index
 	@$(GTKDOC_MKHTML) xmlsec $(MAIN_SGML_FILE)
 
 $(SGML_CHAPTERS_DIR): $(SGML_CHAPTERS_SRC_DIR) $(SGML_CHAPTERS_DIR)/.sentinel
@@ -268,34 +248,59 @@ example_sources: $(EXAMPLES_DIR)/.sentinel
 	@touch $@
 
 dist-hook:
-	@(for i in `find $(distdir) -name ".sentinel" -print` ; do \
-		echo "Removing some files '$$i' before dist ... " ; \
-		$(RM) $$i ; \
-	done )
-	@(for i in `find $(distdir) -name "*.sgml.bak" -print` ; do \
-		echo "Removing some files '$$i' before dist ... " ; \
-		$(RM) "$$i" ; \
-	done ; )
+	@( \
+		if test -f $(builddir)/index.html ; then  \
+			echo "-- Copying to dist builddir html docs, css, png ..." ; \
+			$(CP) $(builddir)/*.html $(distdir)/ ; \
+			$(CP) $(builddir)/*.css $(distdir)/ ; \
+			$(CP) $(builddir)/*.png $(distdir)/ ; \
+		else \
+			echo "-- Copying to dist source html docs, css, png ..." ; \
+			$(CP) $(srcdir)/*.html $(distdir)/ ; \
+			$(CP) $(srcdir)/*.css $(distdir)/ ; \
+			$(CP) $(srcdir)/*.png $(distdir)/ ; \
+		fi ; \
+	)
 
 clean-local:
 	@$(RM) -rf $(SOURCE_CODE_DIR) $(EXAMPLES_DIR) $(SCAN_DIR)/*.txt $(SGML_DIR) $(GTKDOC_MKDB_OUTPUT_DIR)
-	@$(RM) -f *.stamp *.types index.sgml
+	@$(RM) -f *.stamp *.types *.bak index.sgml
 	@( \
 		if [ z"$(builddir)" != z"$(srcdir)" ] ; \
 		then \
-			(chmod -Rf u+w $(builddir)/xmlsec.devhelp2 $(EXTRA_DIST) 2>/dev/null || true) ; \
-			$(RM) -rf $(builddir)/xmlsec.devhelp2 $(EXTRA_DIST) ; \
+			(chmod -Rf u+w $(builddir)/*.html 2>/dev/null || true) ; \
+			$(RM) -rf $(builddir)/*.html ; \
+			(chmod -Rf u+w $(builddir)/*.css 2>/dev/null || true) ; \
+			$(RM) -rf $(builddir)/*.css ; \
+			(chmod -Rf u+w $(builddir)/*.png 2>/dev/null || true) ; \
+			$(RM) -rf $(builddir)/*.png ; \
+			(chmod -Rf u+w $(builddir)/xmlsec.devhelp2 2>/dev/null || true) ; \
+			$(RM) -rf $(builddir)/xmlsec.devhelp2 ; \
 	 	fi ; \
 	)
 
 distclean-local: clean-local
 
 install-data-local:
-	@echo "Installing api docs ..."
-	@$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)
-	@$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)/images
-	@INSTALL@ -m 0644 $(builddir)/*.html $(builddir)/*.png $(builddir)/*.css $(DESTDIR)$(TARGET_DIR)
-	@INSTALL@ -m 0644 $(builddir)/images/*.png $(DESTDIR)$(TARGET_DIR)/images
+	@( \
+		$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR) ; \
+		if test -f $(builddir)/index.html ; then  \
+			echo "-- Installing builddir api html docs, css, png ..." ; \
+			@INSTALL@ -m 0644 $(builddir)/*.html $(DESTDIR)$(TARGET_DIR) ; \
+			@INSTALL@ -m 0644 $(builddir)/*.css $(DESTDIR)$(TARGET_DIR) ; \
+			@INSTALL@ -m 0644 $(builddir)/*.png $(DESTDIR)$(TARGET_DIR) ; \
+		else \
+			echo "-- Installing srcdir api html docs, css, png ..." ; \
+			@INSTALL@ -m 0644 $(srcdir)/*.html $(DESTDIR)$(TARGET_DIR) ; \
+			@INSTALL@ -m 0644 $(srcdir)/*.css $(DESTDIR)$(TARGET_DIR) ; \
+			@INSTALL@ -m 0644 $(srcdir)/*.png $(DESTDIR)$(TARGET_DIR) ; \
+		fi ; \
+	)
+	@( \
+		echo "-- Installing additional api images ..." ; \
+		$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)/images ; \
+		@INSTALL@ -m 0644 $(srcdir)/images/*.png $(DESTDIR)$(TARGET_DIR)/images/ ; \
+	)
 
 uninstall-local:
 	@$(RM) -rf $(DESTDIR)$(TARGET_DIR)

@@ -60,6 +60,45 @@ jobs:
           export PATH=${GITHUB_WORKSPACE}/install.dir/bin:$PATH
           make
 
+  # linux: docs + distcheck (separate from above to prevent running tests twice for all permutations)
+  check-distcheck:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # default build
+          - config_flags:
+    steps:
+    - name: install dependencies
+      run: |
+          sudo apt update
+          sudo apt install automake autoconf libtool libtool-bin libltdl-dev libltdl7
+          sudo apt install libxml2 libxml2-dev libxslt1.1 libxslt1-dev
+          sudo apt install libssl3 libssl-dev libnspr4 libnspr4-dev libnss3 libnss3-dev libnss3-tools libgcrypt20 libgcrypt20-dev libgnutls28-dev
+          sudo apt install help2man man2html gtk-doc-tools
+    - uses: actions/checkout@v2
+    - name: create-build-dirs
+      run: |
+          mkdir build.dir install.dir
+    - name: configure
+      working-directory: build.dir
+      run: |
+          autoreconf -i -f ..
+          ../configure --prefix=${GITHUB_WORKSPACE}/install.dir --enable-werror --enable-pedantic ${{ matrix.config_flags }}
+    - name: make
+      working-directory: build.dir
+      run: |
+          make
+    - name: make docs
+      working-directory: build.dir
+      run: |
+          make -C docs docs
+    - name: make distcheck
+      working-directory: build.dir
+      run: |
+          make distcheck
+
   # linux: check AWS-LC
   check-ubuntu_aws_lc:
     runs-on: ubuntu-latest

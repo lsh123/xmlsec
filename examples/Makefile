@@ -11,16 +11,33 @@ PROGRAMS = \
 	$(PROGRAMS_ENC) \
 	$(PROGRAMS_DEC)
 
-define EXTRA_CCFLAGS
-	case `${CC} -v 2>&1 | grep -i version` in \
-	*gcc*|*GCC*|*clang*|*CLANG*) echo "-Wall -Wextra"  ;; \
-	*)  echo ""  ;; \
-	esac
-endef
-CFLAGS += -g $(shell xmlsec1-config --cflags) $(shell $(EXTRA_CCFLAGS))
-LDLIBS += -g $(shell xmlsec1-config --libs)
+# try to find pkg-config, if available
+XMLSEC_PKG_CONFIG = "xmlsec1"
+PKG_CONFIG := $(shell command -v pkg-config 2> /dev/null)
+XMLSEC_CHECK := $(shell $(PKG_CONFIG) --exists $(XMLSEC_PKG_CONFIG) 2> /dev/null && echo "found")
 
+# retrieve flags if installed
+ifeq ($(XMLSEC_CHECK),found)
+    CFLAGS += $(shell $(PKG_CONFIG) --cflags $(XMLSEC_PKG_CONFIG))
+    LDLIBS += $(shell $(PKG_CONFIG) --libs $(XMLSEC_PKG_CONFIG))
+else
+	CFLAGS := $(CFLAGS) $(shell xmlsec1-config --cflags)
+	LDLIBS := $(LDLIBS) $(shell xmlsec1-config --libs)
+endif
 
+# add compiler specific flags
+CC_VERSION := $(shell $(CC) -v 2>&1)
+ifeq ($(CC_VERSION),)
+	CC_VERSION :=  $(shell $(CC) --version 2>&1)
+endif
+ifeq ($(findstring gcc, $(CC_VERSION)), gcc)
+	CFLAGS := $(CFLAGS) -g -Wall -Wextra -Werror
+endif
+ifeq ($(findstring clang, $(CC_VERSION)), clang)
+	CFLAGS := $(CFLAGS) -g -Wall -Wextra -Werror
+endif
+
+# rules
 all: $(PROGRAMS)
 
 clean:

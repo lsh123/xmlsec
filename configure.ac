@@ -653,7 +653,7 @@ AC_MSG_RESULT([$LIBXSLT_FOUND])
 dnl Finally set variables
 if test "z$LIBXSLT_FOUND" = "zyes" ; then
     XMLSEC_NO_LIBXSLT="0"
-    LIBXSLT_PC_FILE_COND="libxslt >= $LIBXSLT_MIN_VERSION"
+    LIBXSLT_PC_FILE_COND=", libxslt >= $LIBXSLT_MIN_VERSION"
 else
     XMLSEC_NO_LIBXSLT="1"
     LIBXSLT_PC_FILE_COND=""

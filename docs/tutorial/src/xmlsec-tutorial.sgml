@@ -52,7 +52,7 @@
 <!ENTITY xmlsec-example-encrypt3-doc	SYSTEM "examples/encrypt3-doc.sgml">
 <!ENTITY xmlsec-example-encrypt3-res	SYSTEM "examples/encrypt3-res.sgml">
 ]>
-<book id="index">
+<book id="book">
   <bookinfo>
     <title>XML Security Library Tutorial</title>
     <authorgroup>
@@ -94,9 +94,9 @@
     </abstract>
   </bookinfo>
 
-  <part id="xmlsec-notes">
+  <part id="index">
     <title>XML Security Library Tutorial</title>
-    <chapter id="xmlsec-notes-overview">
+    <chapter id="overview">
 	<title>Overview.</title>
 	<para>XML Security Library provides support for XML Digital Signature
 	and XML Encryption. It is based on LibXML/LibXSLT and can use
@@ -105,7 +105,7 @@
 	Next Generation (CNG), GnuTLS, GCrypt and NSS).
 	</para>
     </chapter>
-    <chapter id="xmlsec-notes-structure">
+    <chapter id="structure">
 	<title>XML Security Library Structure.</title>
 	<para>In order to provide the an ability to use different crypto engines,
 	the XML Security Library is splitted in two parts: core library (xmlsec)

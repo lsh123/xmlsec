@@ -1,4 +1,4 @@
-<chapter id="xmlsec-notes-transforms">
+<chapter id="transforms">
     <title>Transforms and transforms chain.</title>
     <para>XML Digital Signature and XML Encryption standards are
 	very flexible and provide an XML developer many different ways to

@@ -87,7 +87,7 @@
 			</li>
 			<li>
 			<xsl:call-template name="linkto">
-				<xsl:with-param name="href">tutorial/xmlsec-notes.html</xsl:with-param>
+				<xsl:with-param name="href">tutorial/index.html</xsl:with-param>
 				<xsl:with-param name="text">Tutorial</xsl:with-param>
 			</xsl:call-template>
 			</li>

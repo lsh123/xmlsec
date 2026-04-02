@@ -1,15 +1,15 @@
-<chapter id="xmlsec-notes-sign-encrypt">
+<chapter id="sign-encrypt">
     <title>Signing and encrypting documents.</title>
-    <sect1 id="xmlsec-notes-sign-encrypt-overview">
-        <title>Overview.</title>    
-	<para>XML Security Library performs signature or encryption by processing 
-	input xml or binary data and a template that specifies a signature or 
-	encryption skeleton: the transforms, algorithms, the key selection 
-	process. A template has the same structure as the desired result but 
-	some of the nodes are empty. XML Security Library gets the key for 
-	signature/encryption from keys managers using the information from 
-	the template, does necessary computations and puts the results in 
-	the template. Signature or encryption context controls the whole 
+    <sect1 id="sign-encrypt-overview">
+        <title>Overview.</title>
+	<para>XML Security Library performs signature or encryption by processing
+	input xml or binary data and a template that specifies a signature or
+	encryption skeleton: the transforms, algorithms, the key selection
+	process. A template has the same structure as the desired result but
+	some of the nodes are empty. XML Security Library gets the key for
+	signature/encryption from keys managers using the information from
+	the template, does necessary computations and puts the results in
+	the template. Signature or encryption context controls the whole
 	process and stores the required temporary data.
 	  <figure>
 	    <title>The signature or encryption processing model.</title>
@@ -17,8 +17,8 @@
 	  </figure>
 	</para>
     </sect1>
-    
-    <sect1 id="xmlsec-notes-sign" >
+
+    <sect1 id="sign" >
 	<title>Signing a document.</title>
 	<para>The typical signature process includes following steps:
 	  <itemizedlist>
@@ -37,13 +37,13 @@
 		functions.
 	    </para></listitem>
 	    <listitem><para>
-		Load signature key in <link linkend="xmlSecKeysMngr">keys manager</link> 
-		or generate a session key and set it in the signature context 
-		(<structfield>signKey</structfield> member of 
+		Load signature key in <link linkend="xmlSecKeysMngr">keys manager</link>
+		or generate a session key and set it in the signature context
+		(<structfield>signKey</structfield> member of
 		<link linkend="xmlSecDSigCtx">xmlSecDSigCtx</link> structure).
 	    </para></listitem>
 	    <listitem><para>
-		Sign data by calling <link linkend="xmlSecDSigCtxSign">xmlSecDSigCtxSign</link> 
+		Sign data by calling <link linkend="xmlSecDSigCtxSign">xmlSecDSigCtxSign</link>
 		function.
 	    </para></listitem>
 	    <listitem><para>
@@ -61,7 +61,7 @@
 	     <example>
 		<title>Signing a template.</title>
 		<programlisting><![CDATA[
-/** 
+/**
  * sign_file:
  * @tmpl_file:		the signature template file name.
  * @key_file:		the PEM private key file name.
@@ -70,13 +70,13 @@
  *
  * Returns 0 on success or a negative value if an error occurs.
  */
-int 
+int
 sign_file(const char* tmpl_file, const char* key_file) {
     xmlDocPtr doc = NULL;
     xmlNodePtr node = NULL;
     xmlSecDSigCtxPtr dsigCtx = NULL;
     int res = -1;
-    
+
     assert(tmpl_file);
     assert(key_file);
 
@@ -84,14 +84,14 @@ sign_file(const char* tmpl_file, const char* key_file) {
     doc = xmlParseFile(tmpl_file);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
 	fprintf(stderr, "Error: unable to parse file \"%s\"\n", tmpl_file);
-	goto done;	
+	goto done;
     }
-    
+
     /* find start node */
     node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeSignature, xmlSecDSigNs);
     if(node == NULL) {
 	fprintf(stderr, "Error: start node not found in \"%s\"\n", tmpl_file);
-	goto done;	
+	goto done;
     }
 
     /* create signature context, we don't need keys manager in this example */
@@ -119,21 +119,21 @@ sign_file(const char* tmpl_file, const char* key_file) {
         fprintf(stderr,"Error: signature failed\n");
 	goto done;
     }
-        
+
     /* print signed document to stdout */
     xmlDocDump(stdout, doc);
-    
+
     /* success */
     res = 0;
 
-done:    
+done:
     /* cleanup */
     if(dsigCtx != NULL) {
 	xmlSecDSigCtxDestroy(dsigCtx);
     }
-    
+
     if(doc != NULL) {
-	xmlFreeDoc(doc); 
+	xmlFreeDoc(doc);
     }
     return(res);
 }
@@ -143,8 +143,8 @@ done:
 	    </example>
 	</para>
     </sect1>
-	
-    <sect1 id="xmlsec-notes-encrypt">
+
+    <sect1 id="encrypt">
 	<title>Encrypting data.</title>
 	<para>The typical encryption process includes following steps:
 	  <itemizedlist>
@@ -162,9 +162,9 @@ done:
 		functions.
 	    </para></listitem>
 	    <listitem><para>
-		Load encryption key in <link linkend="xmlSecKeysMngr">keys manager</link> 
+		Load encryption key in <link linkend="xmlSecKeysMngr">keys manager</link>
 		or generate a session key and set it in the encryption context
-		(<structfield>encKey</structfield> member of 
+		(<structfield>encKey</structfield> member of
 		<link linkend="xmlSecEncCtx">xmlSecEncCtx</link> structure).
 	    </para></listitem>
 	    <listitem><para>
@@ -208,13 +208,13 @@ done:
  *
  * Returns 0 on success or a negative value if an error occurs.
  */
-int 
+int
 encrypt_file(const char* tmpl_file, const char* key_file, const unsigned char* data, size_t dataSize) {
     xmlDocPtr doc = NULL;
     xmlNodePtr node = NULL;
     xmlSecEncCtxPtr encCtx = NULL;
     int res = -1;
-    
+
     assert(tmpl_file);
     assert(key_file);
     assert(data);
@@ -223,14 +223,14 @@ encrypt_file(const char* tmpl_file, const char* key_file, const unsigned char* d
     doc = xmlParseFile(tmpl_file);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
 	fprintf(stderr, "Error: unable to parse file \"%s\"\n", tmpl_file);
-	goto done;	
+	goto done;
     }
-    
+
     /* find start node */
     node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeEncryptedData, xmlSecEncNs);
     if(node == NULL) {
 	fprintf(stderr, "Error: start node not found in \"%s\"\n", tmpl_file);
-	goto done;	
+	goto done;
     }
 
     /* create encryption context, we don't need keys manager in this example */
@@ -258,21 +258,21 @@ encrypt_file(const char* tmpl_file, const char* key_file, const unsigned char* d
         fprintf(stderr,"Error: encryption failed\n");
     	goto done;
     }
-        
+
     /* print encrypted data with document to stdout */
     xmlDocDump(stdout, doc);
-    
+
     /* success */
     res = 0;
 
-done:    
+done:
     /* cleanup */
     if(encCtx != NULL) {
 	xmlSecEncCtxDestroy(encCtx);
     }
-    
+
     if(doc != NULL) {
-	xmlFreeDoc(doc); 
+	xmlFreeDoc(doc);
     }
     return(res);
 }
@@ -283,4 +283,4 @@ done:
 	</para>
     </sect1>
 </chapter>
-	
+

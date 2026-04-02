@@ -1,24 +1,24 @@
-<chapter id="xmlsec-notes-verify-decrypt">
+<chapter id="verify-decrypt">
     <title>Verifing and decrypting documents.</title>
-    <sect1 id="xmlsec-notes-verify-decrypt-overview">
+    <sect1 id="verify-decrypt-overview">
         <title>Overview.</title>
-        <para>Since the template is just an XML file, it might be created in advance 
-	and saved in a file. It's also possible for application to create 
-	templates without using XML Security Library functions. Also in some 
-	cases template should be inserted in the signed or encrypted data 
-	(for example, if you want to create an enveloped or enveloping 
+        <para>Since the template is just an XML file, it might be created in advance
+	and saved in a file. It's also possible for application to create
+	templates without using XML Security Library functions. Also in some
+	cases template should be inserted in the signed or encrypted data
+	(for example, if you want to create an enveloped or enveloping
 	signature).</para>
-	<para>Signature verification and data decryption do not require template 
-	because all the necessary information is provided in the signed or 
+	<para>Signature verification and data decryption do not require template
+	because all the necessary information is provided in the signed or
 	encrypted document.
     	  <figure>
 	    <title>The verification or decryption processing model.</title>
 	    <graphic fileref="images/verif-dec-model.png" align="center"></graphic>
-	  </figure>	 
+	  </figure>
 	</para>
     </sect1>
-    
-    <sect1 id="xmlsec-notes-verify" >
+
+    <sect1 id="verify" >
 	<title>Verifying a signed document</title>
 	<para>The typical signature verification process includes following steps:
 	  <itemizedlist>
@@ -32,12 +32,12 @@
 		functions.
 	    </para></listitem>
 	    <listitem><para>
-		Select start verification 
+		Select start verification
     		<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink>
 		node in the signed XML document.
 	    </para></listitem>
 	    <listitem><para>
-		Verify signature by calling <link linkend="xmlSecDSigCtxVerify">xmlSecDSigCtxVerify</link> 
+		Verify signature by calling <link linkend="xmlSecDSigCtxVerify">xmlSecDSigCtxVerify</link>
 		function.
 	    </para></listitem>
 	    <listitem><para>
@@ -57,7 +57,7 @@
 	     <example>
 		<title>Verifying a document.</title>
 		<programlisting><![CDATA[
-/** 
+/**
  * verify_file:
  * @xml_file:		the signed XML file name.
  * @key_file:		the PEM public key file name.
@@ -66,13 +66,13 @@
  *
  * Returns 0 on success or a negative value if an error occurs.
  */
-int 
+int
 verify_file(const char* xml_file, const char* key_file) {
     xmlDocPtr doc = NULL;
     xmlNodePtr node = NULL;
     xmlSecDSigCtxPtr dsigCtx = NULL;
     int res = -1;
-    
+
     assert(xml_file);
     assert(key_file);
 
@@ -80,14 +80,14 @@ verify_file(const char* xml_file, const char* key_file) {
     doc = xmlParseFile(xml_file);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
 	fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
-	goto done;	
+	goto done;
     }
-    
+
     /* find start node */
     node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeSignature, xmlSecDSigNs);
     if(node == NULL) {
 	fprintf(stderr, "Error: start node not found in \"%s\"\n", xml_file);
-	goto done;	
+	goto done;
     }
 
     /* create signature context, we don't need keys manager in this example */
@@ -115,25 +115,25 @@ verify_file(const char* xml_file, const char* key_file) {
         fprintf(stderr,"Error: signature verify\n");
 	goto done;
     }
-        
+
     /* print verification result to stdout */
     if(dsigCtx->status == xmlSecDSigStatusSucceeded) {
 	fprintf(stdout, "Signature is OK\n");
     } else {
 	fprintf(stdout, "Signature is INVALID\n");
-    }    
+    }
 
     /* success */
     res = 0;
 
-done:    
+done:
     /* cleanup */
     if(dsigCtx != NULL) {
 	xmlSecDSigCtxDestroy(dsigCtx);
     }
-    
+
     if(doc != NULL) {
-	xmlFreeDoc(doc); 
+	xmlFreeDoc(doc);
     }
     return(res);
 }
@@ -143,7 +143,7 @@ done:
 	</para>
     </sect1>
 
-    <sect1 id="xmlsec-notes-decrypt" >
+    <sect1 id="decrypt" >
 	<title>Decrypting an encrypted document</title>
 	<para>The typical decryption process includes following steps:
 	  <itemizedlist>
@@ -160,7 +160,7 @@ done:
 		Select start decryption &lt;enc:EncryptedData&gt; node.
 	    </para></listitem>
 	    <listitem><para>
-		Decrypt by calling <link linkend="xmlSecEncCtxDecrypt">xmlSecencCtxDecrypt</link> 
+		Decrypt by calling <link linkend="xmlSecEncCtxDecrypt">xmlSecencCtxDecrypt</link>
 		function.
 	    </para></listitem>
 	    <listitem><para>
@@ -178,13 +178,13 @@ done:
 	     <example>
 		<title>Decrypting a document.</title>
 		<programlisting><![CDATA[
-int 
+int
 decrypt_file(const char* enc_file, const char* key_file) {
     xmlDocPtr doc = NULL;
     xmlNodePtr node = NULL;
     xmlSecEncCtxPtr encCtx = NULL;
     int res = -1;
-    
+
     assert(enc_file);
     assert(key_file);
 
@@ -192,14 +192,14 @@ decrypt_file(const char* enc_file, const char* key_file) {
     doc = xmlParseFile(enc_file);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
 	fprintf(stderr, "Error: unable to parse file \"%s\"\n", enc_file);
-	goto done;	
+	goto done;
     }
-    
+
     /* find start node */
     node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeEncryptedData, xmlSecEncNs);
     if(node == NULL) {
 	fprintf(stderr, "Error: start node not found in \"%s\"\n", enc_file);
-	goto done;	
+	goto done;
     }
 
     /* create encryption context, we don't need keys manager in this example */
@@ -227,7 +227,7 @@ decrypt_file(const char* enc_file, const char* key_file) {
         fprintf(stderr,"Error: decryption failed\n");
 	goto done;
     }
-        
+
     /* print decrypted data to stdout */
     if(encCtx->resultReplaced != 0) {
 	fprintf(stdout, "Decrypted XML data:\n");
@@ -235,25 +235,25 @@ decrypt_file(const char* enc_file, const char* key_file) {
     } else {
 	fprintf(stdout, "Decrypted binary data (%d bytes):\n", xmlSecBufferGetSize(encCtx->result));
 	if(xmlSecBufferGetData(encCtx->result) != NULL) {
-	    fwrite(xmlSecBufferGetData(encCtx->result), 
-	          1, 
+	    fwrite(xmlSecBufferGetData(encCtx->result),
+	          1,
 	          xmlSecBufferGetSize(encCtx->result),
 	          stdout);
 	}
     }
     fprintf(stdout, "\n");
-        
+
     /* success */
     res = 0;
 
-done:    
+done:
     /* cleanup */
     if(encCtx != NULL) {
 	xmlSecEncCtxDestroy(encCtx);
     }
-    
+
     if(doc != NULL) {
-	xmlFreeDoc(doc); 
+	xmlFreeDoc(doc);
     }
     return(res);
 }

@@ -1,20 +1,20 @@
-<chapter id="xmlsec-notes-templates">
+<chapter id="templates">
     <title>Creating dynamic templates.</title>
-    <sect1 id="xmlsec-notes-templates-overview">
+    <sect1 id="templates-overview">
         <title>Overview.</title>
 	<para>The XML Security Library uses templates to describe
         how and what data should be signed or encrypted. The template
         is a regular XML file. You can create templates in advance
         using your favorite XML files editor, load them from a file
-        and use for creating signature or encrypting data. You can 
+        and use for creating signature or encrypting data. You can
         also create templates dynamicaly. The XML Security Library
         provides helper functions to quickly create dynamic templates
         inside your application.</para>
     </sect1>
-    <sect1 id="xmlsec-notes-dynamic-signature-templates">
+    <sect1 id="dynamic-signature-templates">
 	<title>Creating dynamic signature templates.</title>
-	<para>The signature template has structure similar 
-	to the XML Digital Signature structure as it is described in 
+	<para>The signature template has structure similar
+	to the XML Digital Signature structure as it is described in
 	<ulink URL="http://www.w3.org/TR/xmldsig-core">specification</ulink>.
 	The only difference is that some nodes (for example,
 	&lt;dsig:DigestValue/&gt; or &lt;SignatureValue/&gt;)
@@ -24,7 +24,7 @@
 	<figure>
 	    <title>XML Digital Signature structure</title>
 	    <programlisting>
-&lt;dsig:Signature ID?&gt; 
+&lt;dsig:Signature ID?&gt;
     &lt;dsig:SignedInfo&gt;
         &lt;dsig:CanonicalizationMethod Algorithm /&gt;
         &lt;dsig:SignatureMethod Algorithm /&gt;
@@ -36,7 +36,7 @@
 	    &lt;dsig:DigestValue&gt;
 	&lt;/dsig:Reference&gt;)+
     &lt;/dsig:SignedInfo&gt;
-    &lt;dsig:SignatureValue&gt; 
+    &lt;dsig:SignatureValue&gt;
     (&lt;dsig:KeyInfo&gt;
 	&lt;dsig:KeyName&gt;?
 	&lt;dsig:KeyValue&gt;?
@@ -57,7 +57,7 @@
 	     <example>
 		<title>Creating dynamic signature template.</title>
 		<programlisting><![CDATA[
-/** 
+/**
  * sign_file:
  * @xml_file:		the XML file name.
  * @key_file:		the PEM private key file name.
@@ -67,7 +67,7 @@
  *
  * Returns 0 on success or a negative value if an error occurs.
  */
-int 
+int
 sign_file(const char* xml_file, const char* key_file) {
     xmlDocPtr doc = NULL;
     xmlNodePtr signNode = NULL;
@@ -75,7 +75,7 @@ sign_file(const char* xml_file, const char* key_file) {
     xmlNodePtr keyInfoNode = NULL;
     xmlSecDSigCtxPtr dsigCtx = NULL;
     int res = -1;
-    
+
     assert(xml_file);
     assert(key_file);
 
@@ -83,44 +83,44 @@ sign_file(const char* xml_file, const char* key_file) {
     doc = xmlParseFile(xml_file);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
 	fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
-	goto done;	
+	goto done;
     }
-    
+
     /* create signature template for RSA-SHA1 enveloped signature */
     signNode = xmlSecTmplSignatureCreate(doc, xmlSecTransformExclC14NId,
 				         xmlSecTransformRsaSha1Id, NULL);
     if(signNode == NULL) {
 	fprintf(stderr, "Error: failed to create signature template\n");
-	goto done;		
+	goto done;
     }
 
     /* add <dsig:Signature/> node to the doc */
     xmlAddChild(xmlDocGetRootElement(doc), signNode);
-    
+
     /* add reference */
     refNode = xmlSecTmplSignatureAddReference(signNode, xmlSecTransformSha1Id,
 					NULL, NULL, NULL);
     if(refNode == NULL) {
 	fprintf(stderr, "Error: failed to add reference to signature template\n");
-	goto done;		
+	goto done;
     }
 
     /* add enveloped transform */
     if(xmlSecTmplReferenceAddTransform(refNode, xmlSecTransformEnvelopedId) == NULL) {
 	fprintf(stderr, "Error: failed to add enveloped transform to reference\n");
-	goto done;		
+	goto done;
     }
 
     /* add <dsig:KeyInfo/> and <dsig:KeyName/> nodes to put key name in the signed document */
     keyInfoNode = xmlSecTmplSignatureEnsureKeyInfo(signNode, NULL);
     if(keyInfoNode == NULL) {
 	fprintf(stderr, "Error: failed to add key info\n");
-	goto done;		
+	goto done;
     }
 
     if(xmlSecTmplKeyInfoAddKeyName(keyInfoNode, NULL) == NULL) {
 	fprintf(stderr, "Error: failed to add key name\n");
-	goto done;		
+	goto done;
     }
 
     /* create signature context, we don't need keys manager in this example */
@@ -148,21 +148,21 @@ sign_file(const char* xml_file, const char* key_file) {
         fprintf(stderr,"Error: signature failed\n");
 	goto done;
     }
-        
+
     /* print signed document to stdout */
     xmlDocDump(stdout, doc);
-    
+
     /* success */
     res = 0;
 
-done:    
+done:
     /* cleanup */
     if(dsigCtx != NULL) {
 	xmlSecDSigCtxDestroy(dsigCtx);
     }
-    
+
     if(doc != NULL) {
-	xmlFreeDoc(doc); 
+	xmlFreeDoc(doc);
     }
     return(res);
 }
@@ -171,11 +171,11 @@ done:
 	    </example>
 	</para>
     </sect1>
-        
-    <sect1 id="xmlsec-notes-dynamic-encryption-templates">
+
+    <sect1 id="dynamic-encryption-templates">
 	<title>Creating dynamic encryption templates.</title>
-	<para>The encryption template has structure similar 
-	to the XML Encryption structure as it is described in 
+	<para>The encryption template has structure similar
+	to the XML Encryption structure as it is described in
 	<ulink URL="http://www.w3.org/TR/xmlenc-core">specification</ulink>.
 	The only difference is that some nodes (for example,
 	&lt;enc:CipherValue/&gt;)
@@ -204,7 +204,7 @@ done:
 	&lt;enc:CipherReference URI?&gt;?
     &lt;/enc:CipherData&gt;
     &lt;enc:EncryptionProperties&gt;?
-&lt;/enc:EncryptedData&gt;	
+&lt;/enc:EncryptedData&gt;
 	    </programlisting>
 	</figure>
 	<para>
@@ -221,14 +221,14 @@ done:
  *
  * Returns 0 on success or a negative value if an error occurs.
  */
-int 
+int
 encrypt_file(const char* xml_file, const char* key_file) {
     xmlDocPtr doc = NULL;
     xmlNodePtr encDataNode = NULL;
     xmlNodePtr keyInfoNode = NULL;
     xmlSecEncCtxPtr encCtx = NULL;
     int res = -1;
-    
+
     assert(xml_file);
     assert(key_file);
 
@@ -236,34 +236,34 @@ encrypt_file(const char* xml_file, const char* key_file) {
     doc = xmlParseFile(xml_file);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
 	fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
-	goto done;	
+	goto done;
     }
-    
-    /* create encryption template to encrypt XML file and replace 
+
+    /* create encryption template to encrypt XML file and replace
      * its content with encryption result */
     encDataNode = xmlSecTmplEncDataCreate(doc, xmlSecTransformDes3CbcId,
 				NULL, xmlSecTypeEncElement, NULL, NULL);
     if(encDataNode == NULL) {
 	fprintf(stderr, "Error: failed to create encryption template\n");
-	goto done;   
+	goto done;
     }
 
     /* we want to put encrypted data in the <enc:CipherValue/> node */
     if(xmlSecTmplEncDataEnsureCipherValue(encDataNode) == NULL) {
 	fprintf(stderr, "Error: failed to add CipherValue node\n");
-	goto done;   
+	goto done;
     }
 
     /* add <dsig:KeyInfo/> and <dsig:KeyName/> nodes to put key name in the signed document */
     keyInfoNode = xmlSecTmplEncDataEnsureKeyInfo(encDataNode, NULL);
     if(keyInfoNode == NULL) {
 	fprintf(stderr, "Error: failed to add key info\n");
-	goto done;		
+	goto done;
     }
 
     if(xmlSecTmplKeyInfoAddKeyName(keyInfoNode, NULL) == NULL) {
 	fprintf(stderr, "Error: failed to add key name\n");
-	goto done;		
+	goto done;
     }
 
     /* create encryption context, we don't need keys manager in this example */
@@ -291,17 +291,17 @@ encrypt_file(const char* xml_file, const char* key_file) {
         fprintf(stderr,"Error: encryption failed\n");
 	goto done;
     }
-    
+
     /* we template is inserted in the doc */
     encDataNode = NULL;
-        
+
     /* print encrypted data with document to stdout */
     xmlDocDump(stdout, doc);
-    
+
     /* success */
     res = 0;
 
-done:    
+done:
 
     /* cleanup */
     if(encCtx != NULL) {
@@ -311,9 +311,9 @@ done:
     if(encDataNode != NULL) {
 	xmlFreeNode(encDataNode);
     }
-        
+
     if(doc != NULL) {
-	xmlFreeDoc(doc); 
+	xmlFreeDoc(doc);
     }
     return(res);
 }

@@ -101,7 +101,6 @@ docs-fix-links:
 	     echo "--- Fixing API html links to tutorial pages..."; \
 	     for f in `find $$API_DIR -name "*.html" -print`; do \
 	         $(SED) -i \
-	             -e 's|href="xmlsec-notes|href="../tutorial/xmlsec-notes|g' \
 	             -e 's|href="xmlsec-examples|href="../tutorial/xmlsec-examples|g' \
 	             -e 's|href="xmlsec-signature-klasses|href="../tutorial/xmlsec-signature-klasses|g' \
 	             -e 's|href="xmlsec-encryption-klasses|href="../tutorial/xmlsec-encryption-klasses|g' \

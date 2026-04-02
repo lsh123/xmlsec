@@ -1,20 +1,20 @@
-<chapter id="xmlsec-notes-compiling">
+<chapter id="compiling">
     <title>Building the application with XML Security Library.</title>
-    <sect1 id="xmlsec-notes-compiling-overview">
+    <sect1 id="compiling-overview">
         <title>Overview.</title>
         <para>Compiling and linking application with XML Security
-	Library requires specifying correct compilation flags, library files 
-        and paths to include and library files. As we discussed before, 
-	XML Security Library consist of the core xmlsec library and several 
-	xmlsec-crypto libraries. Application has a choice of selecting crypto 
+	Library requires specifying correct compilation flags, library files
+        and paths to include and library files. As we discussed before,
+	XML Security Library consist of the core xmlsec library and several
+	xmlsec-crypto libraries. Application has a choice of selecting crypto
 	library at link time or dynamicaly loading it at run time. Please note,
 	that loading crypto engines dynamicaly may introduce security problems
-	on some platforms. 
+	on some platforms.
 	</para>
     </sect1>
-    <sect1 id="xmlsec-notes-include-files" >
+    <sect1 id="include-files" >
 	<title>Include files.</title>
-	<para>In order to use XML Security Library an application should include 
+	<para>In order to use XML Security Library an application should include
 	one or more of the following files:
 	<itemizedlist>
 	    <listitem>
@@ -23,11 +23,11 @@
 		</para>
 	    </listitem>
 	    <listitem>
-		<para><link linkend="XMLSEC-XMLDSIG">xmlsec/xmldsig.h</link> - 
+		<para><link linkend="XMLSEC-XMLDSIG">xmlsec/xmldsig.h</link> -
 		XML Digital Signature functions;</para>
 	    </listitem>
 	    <listitem>
-		<para><link linkend="XMLSEC-XMLENC">xmlsec/xmlenc.h</link> - 
+		<para><link linkend="XMLSEC-XMLENC">xmlsec/xmlenc.h</link> -
 		XML Encryption functions;</para>
 	    </listitem>
 	    <listitem>
@@ -37,7 +37,7 @@
 	    </listitem>
 	    <listitem>
 		<para><link linkend="XMLSEC-TEMPLATES">xmlsec/templates.h</link> -
-		helper functions for dynamic XML Digital Signature and 
+		helper functions for dynamic XML Digital Signature and
 		XML Encryption templates creation;
 		</para>
 	    </listitem>
@@ -48,7 +48,7 @@
 	    </listitem>
 	</itemizedlist>
 	</para>
-	<para>If necessary, the application should also include LibXML, 
+	<para>If necessary, the application should also include LibXML,
 	LibXSLT and crypto library header files.
 	</para>
 	<para>
@@ -73,20 +73,20 @@
 	</example>
 	</para>
     </sect1>
-    <sect1 id="xmlsec-notes-compiling-unix" >
+    <sect1 id="compiling-unix" >
 	<title>Compiling and linking on Unix.</title>
 	<para>There are several ways to get necessary compilation
 	and linking information on Unix and application can use
 	any of these methods to do crypto engine selection either
 	at linking or run time.
-	
+
 	<itemizedlist>
 	    <listitem><para>PKG_CHECK_MODULES() macro
 		<example>
 		    <title>Using PKG_CHECK_MODULES() macro in a configure.in file
 		    to select crypto engine (openssl) at linking time.</title>
 		    <programlisting><![CDATA[
-dnl 
+dnl
 dnl Check for xmlsec and friends
 dnl
 PKG_CHECK_MODULES(XMLSEC, xmlsec1-openssl >= 1.0.0 xml2 libxslt,,exit)
@@ -100,7 +100,7 @@ LDFLAGS="$LDFLAGS $XMLSEC_LIBS"
 		    <title>Using PKG_CHECK_MODULES() macro in a configure.in file
 		    to enable dynamical loading of xmlsec-crypto library.</title>
 		    <programlisting><![CDATA[
-dnl 
+dnl
 dnl Check for xmlsec and friends
 dnl
 PKG_CHECK_MODULES(XMLSEC, xmlsec1 >= 1.0.0 xml2 libxslt,,exit)
@@ -123,11 +123,11 @@ PROGRAM_FILES = test.c
 
 CFLAGS	+= -g $(shell pkg-config --cflags xmlsec1-nss)
 LDFLAGS	+= -g
-LIBS 	+= $(shell pkg-config --libs xmlsec1-nss) 
+LIBS 	+= $(shell pkg-config --libs xmlsec1-nss)
 
 all: $(PROGRAM)
 
-%: %.c 
+%: %.c
 	$(cc) $(PROGRAM_FILES) $(CFLAGS) $(LDFLAGS) -o $(PROGRAM) $(LIBS)
 
 clean:
@@ -145,11 +145,11 @@ PROGRAM_FILES = test.c
 
 CFLAGS	+= -g $(shell pkg-config --cflags xmlsec1)
 LDFLAGS	+= -g
-LIBS 	+= $(shell pkg-config --libs xmlsec1) 
+LIBS 	+= $(shell pkg-config --libs xmlsec1)
 
 all: $(PROGRAM)
 
-%: %.c 
+%: %.c
 	$(cc) $(PROGRAM_FILES) $(CFLAGS) $(LDFLAGS) -o $(PROGRAM) $(LIBS)
 
 clean:
@@ -168,11 +168,11 @@ PROGRAM_FILES = test.c
 
 CFLAGS	+= -g $(shell xmlsec1-config --crypto gnutls --cflags)
 LDFLAGS	+= -g
-LIBS 	+= $(shell xmlsec1-config --crypto gnutls --libs) 
+LIBS 	+= $(shell xmlsec1-config --crypto gnutls --libs)
 
 all: $(PROGRAM)
 
-%: %.c 
+%: %.c
 	$(cc) $(PROGRAM_FILES) $(CFLAGS) $(LDFLAGS) -o $(PROGRAM) $(LIBS)
 
 clean:
@@ -189,11 +189,11 @@ PROGRAM_FILES = test.c
 
 CFLAGS	+= -g $(shell xmlsec1-config --cflags)
 LDFLAGS	+= -g
-LIBS 	+= $(shell xmlsec1-config --libs) 
+LIBS 	+= $(shell xmlsec1-config --libs)
 
 all: $(PROGRAM)
 
-%: %.c 
+%: %.c
 	$(cc) $(PROGRAM_FILES) $(CFLAGS) $(LDFLAGS) -o $(PROGRAM) $(LIBS)
 
 clean:
@@ -204,30 +204,30 @@ clean:
 	</itemizedlist>
 	</para>
     </sect1>
-    <sect1 id="xmlsec-notes-compiling-windows" >
+    <sect1 id="compiling-windows" >
 	<title>Compiling and linking on Windows.</title>
 	<para>On Windows there is no such simple and elegant solution.
 	Please check <filename>README</filename> file in <filename>win32</filename>
 	folder of the library package for latest instructions.
 	However, there are few general things, that you need to remember:
 	<itemizedlist>
-	    <listitem><para>	
+	    <listitem><para>
 	     <emphasis>All libraries linked to your application must be compiled
 	    with the same Microsoft Runtime Libraries.</emphasis>
 	    </para></listitem>
-	    <listitem><para>	
-	     <emphasis>Static linking with XML Security Library requires 
+	    <listitem><para>
+	     <emphasis>Static linking with XML Security Library requires
 	     additional global defines:</emphasis>
 	      <informalexample><programlisting>
 #define LIBXML_STATIC
 #define LIBXSLT_STATIC
-#define XMLSEC_STATIC	    
+#define XMLSEC_STATIC
 	     </programlisting></informalexample>
 	    </para></listitem>
 	    <listitem><para>
 	    If you do not want to dynamicaly load xmlsec-crypto library
 	    and prefer to select crypto engine at linking then you should
-	    link your application with xmlsec and at least one of 
+	    link your application with xmlsec and at least one of
 	    xmlsec-crypto libraries.
 	    </para></listitem>
 	    <listitem><para>
@@ -235,15 +235,15 @@ clean:
 	    you should add additional global define:
 	      <informalexample><programlisting>
 #define XMLSEC_CRYPTO_DYNAMIC_LOADING
-	     </programlisting></informalexample>	    
+	     </programlisting></informalexample>
 	    </para></listitem>
 	</itemizedlist>
 	</para>
     </sect1>
-    <sect1 id="xmlsec-notes-compiling-others">
+    <sect1 id="compiling-others">
 	<title>Compiling and linking on other systems.</title>
-	<para>Well, nothing is impossible, it's only software (you managed to 
-	compile the library itself, do you?). 
+	<para>Well, nothing is impossible, it's only software (you managed to
+	compile the library itself, do you?).
 	I'll be happy to include in this manual your expirience with
 	compiling and linking applications with XML Security Library
 	on other platforms (if you would like to share it).

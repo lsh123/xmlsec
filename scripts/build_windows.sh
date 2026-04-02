@@ -7,7 +7,7 @@
 libxml2_version="2.15.2"
 libxslt_version="1.1.45"
 openssl_version="3.6.1"
-xmlsec_version="1.3.10-rc-1"
+xmlsec_version="1.3.11-rc1"
 
 pwd=`pwd`
 script_dir=`dirname $0`

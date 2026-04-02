@@ -7,29 +7,20 @@ MODULE=xmlsec
 TARGET_DIR=@XMLSEC_DOCDIR@/tutorial
 
 SGML_DIR=$(builddir)/sgml.tmp
-EXAMPLES_DIR=$(SGML_DIR)/examples
 
 # We need to copy some files to make gtkdoc happy that
 # everything is in one folder
 MAIN_SGML_FILE=$(SGML_DIR)/xmlsec-tutorial.sgml
-MAIN_SGML_SRC_FILE=$(srcdir)/src/xmlsec-tutorial.sgml
-
-SGML_CHAPTERS_DIR=$(SGML_DIR)/chapters
-SGML_CHAPTERS_SRC_DIR=$(srcdir)/src/chapters
+SGML_SRC_DIR=$(srcdir)/sgml
 
 # API devhelp2 file used for cross-reference fixing
 API_DEVHELP=$(top_builddir)/docs/api/xmlsec.devhelp2
 
 # files that are copied from sources
 EXTRA_DIST := \
-    $(srcdir)/src    \
+    $(srcdir)/sgml    \
     $(srcdir)/images \
     $(NULL)
-
-EXAMPLES_SOURCE_DIR=$(top_srcdir)/examples
-EXAMPLES_SOURCE_FILES=\
-	$(shell find $(EXAMPLES_SOURCE_DIR) -name '*.c' -print) \
-	$(shell find $(EXAMPLES_SOURCE_DIR) -name '*.xml' -print)
 
 .PHONY: all docs html sgml
 
@@ -78,19 +69,13 @@ endif
 
 
 
-html: sgml $(MAIN_SGML_FILE) $(SGML_CHAPTERS_DIR) example_sources
+html: sgml $(MAIN_SGML_FILE)
 	@$(GTKDOC_MKHTML) xmlsec $(MAIN_SGML_FILE)
 
-$(SGML_CHAPTERS_DIR): $(SGML_CHAPTERS_SRC_DIR) $(SGML_CHAPTERS_DIR)/.sentinel
+$(MAIN_SGML_FILE): $(SGML_SRC_DIR)/xmlsec-tutorial.sgml $(SGML_DIR)/.sentinel
 	@( \
-		echo "-- Copying chapters..." ; \
-		$(CP) -r $(SGML_CHAPTERS_SRC_DIR)/* $(SGML_CHAPTERS_DIR) \
-	)
-
-$(MAIN_SGML_FILE): $(MAIN_SGML_SRC_FILE)
-	@( \
-		echo "-- Copying main sgml file..."; \
-		$(CP) $(MAIN_SGML_SRC_FILE) $(MAIN_SGML_FILE) \
+		echo "-- Copying sgml source files..."; \
+		$(CP) $(SGML_SRC_DIR)/*.sgml $(SGML_DIR)/ \
 	)
 
 #
@@ -119,33 +104,6 @@ sgml: $(SGML_DIR)/.sentinel
 	        $(MV) -f $$i.tmp $$i; \
 	 done);
 
-#
-# The following code converts C example file to sgml RefEntry files.
-# We get file title from a string "XML Security Library example: ..."
-# which is usually placed at the top of the file. Also all "unsafe" xml
-# characters (<, >, &) are escaped.
-#
-example_sources: $(EXAMPLES_DIR)/.sentinel
-	@echo "-- Preprocessing example source files into '$(EXAMPLES_DIR)' ..."
-	@$(RM) -rf $(EXAMPLES_DIR)/*
-	@(for i in $(EXAMPLES_SOURCE_FILES) ; do \
-	    file_name=`echo $$i | $(SED) 's#.*/##' | $(SED) 's#\..*$$##'`; \
-	    file_ext=`echo $$i | $(SED) 's#.*/##' | $(SED) 's#.*\.##'`; \
-	    echo "--- Converting $$file_name.$$file_ext to $$file_name.sgml ..."; \
-	    file_title=`cat $$i | $(GREP) 'XML Security Library example: ' | $(SED) 's#^.*: *##'`; \
-	    echo "<sect2 id=\"xmlsec-example-$$file_name\" >" > \
-	        $(EXAMPLES_DIR)/$$file_name.sgml; \
-	    echo "<title>$$file_name.$$file_ext</title><para><informalexample><programlisting>" >> \
-		    $(EXAMPLES_DIR)/$$file_name.sgml; \
-	    cat $$i | \
-		$(SED) "s#&#\&amp;#g" | \
-		$(SED) "s#<#\&lt;#g" | \
-		$(SED) "s#>#\&gt;#g" >> \
-		    $(EXAMPLES_DIR)/$$file_name.sgml; \
-	    echo "</programlisting></informalexample></para></sect2>" >> \
-		    $(EXAMPLES_DIR)/$$file_name.sgml; \
-	done);
-
 
 # A single pattern rule will create all appropriate folders as required
 # otherwise make (annoyingly) deletes it
@@ -171,7 +129,7 @@ dist-hook:
 	)
 
 clean-local:
-	@$(RM) -rf $(EXAMPLES_DIR) $(SGML_DIR)
+	@$(RM) -rf $(SGML_DIR)
 	@$(RM) -f *.stamp *.bak
 	@( \
 		if [ z"$(builddir)" != z"$(srcdir)" ] ; \

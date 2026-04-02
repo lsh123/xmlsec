@@ -2826,6 +2826,7 @@ apps/Makefile
 docs/Makefile
 docs/api/Makefile
 docs/tutorial/Makefile
+docs/examples/Makefile
 man/Makefile
 xmlsec1-openssl.pc:xmlsec-openssl.pc.in
 xmlsec1-gnutls.pc:xmlsec-gnutls.pc.in

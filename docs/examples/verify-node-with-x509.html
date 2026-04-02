@@ -1,12 +1,12 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Verifying a signature with keys manager.: XML Security Library Tutorial</title>
+<title>Verifying a signature of a node with X509 certificates.: XML Security Library Tutorial</title>
 <meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
-<link rel="home" href="index.html" title="XML Security Library Tutorial">
-<link rel="up" href="xmlsec-examples.html" title="Examples.">
-<link rel="prev" href="xmlsec-verify-with-key.html" title="Verifying a signature with a single key.">
-<link rel="next" href="xmlsec-verify-enveloped-with-x509.html" title="Verifying an enveloped signature with X509 certificates.">
+<link rel="home" href="../tutorial/index.html" title="XML Security Library Tutorial">
+<link rel="up" href="examples.html" title="Examples.">
+<link rel="prev" href="verify-enveloped-with-x509.html" title="Verifying an enveloped signature with X509 certificates.">
+<link rel="next" href="verify-with-restrictions.html" title="Verifying a signature with additional restrictions.">
 <meta name="generator" content="GTK-Doc V1.34.0 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
@@ -23,7 +23,7 @@
 <li><a href="../faq.html">FAQ</a></li>
 <li><a href="../tutorial/index.html">Tutorial</a></li>
 <li><a href="../api/xmlsec-reference.html">API reference</a></li>
-<li><a href="../tutorial/xmlsec-examples.html">Examples</a></li>
+<li><a href="examples.html">Examples</a></li>
 </ul>
 <li><a href="../xmldsig.html">XML Digital Signature</a></li>
 <li><a href="../xmlenc.html">XML Encryption</a></li>
@@ -52,29 +52,31 @@
 <td valign="top"><table width="80%" valign="top" style="margin-left:10px;"><tr><td valign="top" align="left" id="xmlsecContent">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
 <td width="100%" align="left" class="shortcuts"></td>
-<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
-<td><a accesskey="u" href="xmlsec-examples.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
-<td><a accesskey="p" href="xmlsec-verify-with-key.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="n" href="xmlsec-verify-enveloped-with-x509.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+<td><a accesskey="h" href="../tutorial/index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="examples.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="verify-enveloped-with-x509.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="verify-with-restrictions.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="sect1">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="xmlsec-verify-with-keys-mngr"></a>Verifying a signature with keys manager.</h2></div></div></div>
+<a name="verify-node-with-x509"></a>Verifying a signature of a node with X509 certificates.</h2></div></div></div>
 <div class="sect2">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="xmlsec-example-verify2"></a>verify2.c</h3></div></div></div>
+<a name="xmlsec-example-verify4"></a>verify4.c</h3></div></div></div>
 <div class="informalexample"><pre class="programlisting">
 /**
- * XML Security Library example: Verifying a file using keys manager.
+ * XML Security Library example: Verifying a file signed with X509 certificate
  *
- * Verifies a file using keys manager
+ * Verifies a file signed with X509 certificate.
+ *
+ * This example was developed and tested with OpenSSL crypto library. The
+ * certificates management policies for another crypto library may break it.
  *
  * Usage:
- *      verify2 &lt;signed-file&gt; &lt;public-pem-key1&gt; [&lt;public-pem-key2&gt; [...]]
+ *      verify4 &lt;signed-file&gt; &lt;id-attribute-to-verify&gt; &lt;trusted-cert-pem-file1&gt; [&lt;trusted-cert-pem-file2&gt; [...]]
  *
  * Example:
- *      ./verify2 sign1-res.xml rsapub.pem
- *      ./verify2 sign2-res.xml rsapub.pem
+ *      ./verify4 sign4-res.xml "data" ca2cert.pem cacert.pem
  *
  * This is free software; see the Copyright file in the source
  * distribution for precise wording.
@@ -99,23 +101,22 @@
 #include &lt;xmlsec/xmldsig.h&gt;
 #include &lt;xmlsec/crypto.h&gt;
 
-xmlSecKeysMngrPtr load_keys(char** files, int files_size);
-int verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file);
-int verify_signature_results(xmlSecDSigCtxPtr dsigCtx);
+xmlSecKeysMngrPtr load_trusted_certs(char** files, int files_size);
+int verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* id_attr);
+int verify_signature_results(xmlSecDSigCtxPtr dsigCtx, const char* id_attr);
 
 int
 main(int argc, char **argv) {
 #ifndef XMLSEC_NO_XSLT
     xsltSecurityPrefsPtr xsltSecPrefs = NULL;
 #endif /* XMLSEC_NO_XSLT */
-
     xmlSecKeysMngrPtr mngr;
 
     assert(argv);
 
-    if(argc &lt; 3) {
+    if(argc &lt; 4) {
         fprintf(stderr, "Error: wrong number of arguments.\n");
-        fprintf(stderr, "Usage: %s &lt;xml-file&gt; &lt;key-file1&gt; [&lt;key-file2&gt; [...]]\n", argv[0]);
+        fprintf(stderr, "Usage: %s &lt;xml-file&gt; &lt;id-attribute-to-verify&gt; &lt;cert-file1&gt; [&lt;cert-file2&gt; [...]]\n", argv[0]);
         return(1);
     }
 
@@ -173,14 +174,14 @@ main(int argc, char **argv) {
         return(-1);
     }
 
-    /* create keys manager and load keys */
-    mngr = load_keys(&amp;(argv[2]), argc - 2);
+    /* create keys manager and load trusted certificates */
+    mngr = load_trusted_certs(&amp;(argv[3]), argc - 3);
     if(mngr == NULL) {
         return(-1);
     }
 
     /* verify file */
-    if(verify_file(mngr, argv[1]) &lt; 0) {
+    if(verify_file(mngr, argv[1], argv[2]) &lt; 0) {
         xmlSecKeysMngrDestroy(mngr);
         return(-1);
     }
@@ -208,11 +209,11 @@ main(int argc, char **argv) {
 }
 
 /**
- * load_keys:
+ * load_trusted_certs:
  * @files:              the list of filenames.
  * @files_size:         the number of filenames in #files.
  *
- * Creates simple keys manager and load PEM keys from #files in it.
+ * Creates simple keys manager and load trusted certificates from PEM #files.
  * The caller is responsible for destroying returned keys manager using
  * @xmlSecKeysMngrDestroy.
  *
@@ -220,9 +221,8 @@ main(int argc, char **argv) {
  * occurs.
  */
 xmlSecKeysMngrPtr
-load_keys(char** files, int files_size) {
+load_trusted_certs(char** files, int files_size) {
     xmlSecKeysMngrPtr mngr;
-    xmlSecKeyPtr key;
     int i;
 
     assert(files);
@@ -246,28 +246,9 @@ load_keys(char** files, int files_size) {
     for(i = 0; i &lt; files_size; ++i) {
         assert(files[i]);
 
-        /* load key */
-        key = xmlSecCryptoAppKeyLoadEx(files[i], xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
-        if(key == NULL) {
-            fprintf(stderr,"Error: failed to load pem key from \"%s\"\n", files[i]);
-            xmlSecKeysMngrDestroy(mngr);
-            return(NULL);
-        }
-
-        /* set key name to the file name, this is just an example! */
-        if(xmlSecKeySetName(key, BAD_CAST files[i]) &lt; 0) {
-            fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", files[i]);
-            xmlSecKeyDestroy(key);
-            xmlSecKeysMngrDestroy(mngr);
-            return(NULL);
-        }
-
-        /* add key to keys manager, from now on keys manager is responsible
-         * for destroying key
-         */
-        if(xmlSecCryptoAppDefaultKeysMngrAdoptKey(mngr, key) &lt; 0) {
-            fprintf(stderr,"Error: failed to add key from \"%s\" to keys manager\n", files[i]);
-            xmlSecKeyDestroy(key);
+        /* load trusted cert */
+        if(xmlSecCryptoAppKeysMngrCertLoad(mngr, files[i], xmlSecKeyDataFormatPem, xmlSecKeyDataTypeTrusted) &lt; 0) {
+            fprintf(stderr,"Error: failed to load pem certificate from \"%s\"\n", files[i]);
             xmlSecKeysMngrDestroy(mngr);
             return(NULL);
         }
@@ -280,13 +261,15 @@ load_keys(char** files, int files_size) {
  * verify_file:
  * @mngr:               the pointer to keys manager.
  * @xml_file:           the signed XML file name.
+ * @id__attr:           the expected ID attribute for the node that was signed
  *
  * Verifies XML signature in #xml_file.
  *
  * Returns 0 on success or a negative value if an error occurs.
  */
 int
-verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
+verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* id_attr) {
+    const xmlChar* id_attributes[] = { BAD_CAST "id", BAD_CAST "ID", NULL };
     xmlDocPtr doc = NULL;
     xmlNodePtr node = NULL;
     xmlSecDSigCtxPtr dsigCtx = NULL;
@@ -294,13 +277,17 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
 
     assert(mngr);
     assert(xml_file);
+    assert(id_attr);
 
     /* load file */
-    doc = xmlReadFile(xml_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET | XML_PARSE_NOENT);
+    doc = xmlReadFile(xml_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
         fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
         goto done;
     }
+
+    /* add ID attributes to the doc context since we don't have DTDs */
+    xmlSecAddIDs(doc, NULL, id_attributes);
 
     /* find start node */
     node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeSignature, xmlSecDSigNs);
@@ -323,7 +310,7 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
     }
 
     /* verif results and print outcome to stdout */
-    if(verify_signature_results(dsigCtx) == 0) {
+    if(verify_signature_results(dsigCtx, id_attr) == 0) {
         fprintf(stdout, "Signature is OK\n");
     } else {
         fprintf(stdout, "Signature is INVALID\n");
@@ -344,10 +331,10 @@ done:
     return(res);
 }
 
-
 /**
  * verify_signature_results:
  * @dsigCtx:            the XMLDSig context
+ * @id__attr:           the expected ID attribute for the node that was signed
  *
  * Verifies XML signature results to ensure that signature was applied
  * to the expected data.
@@ -355,11 +342,13 @@ done:
  * Returns 0 on success or a negative value if an error occurs.
  */
 int
-verify_signature_results(xmlSecDSigCtxPtr dsigCtx) {
+verify_signature_results(xmlSecDSigCtxPtr dsigCtx, const char* id_attr) {
     xmlSecDSigReferenceCtxPtr dsigRefCtx;
     xmlSecTransformPtr transform;
+    char uri[1024];
 
     assert(dsigCtx);
+    assert(id_attr);
 
     /* check that signature verification succeeded */
     if(dsigCtx-&gt;status != xmlSecDSigStatusSucceeded) {
@@ -380,20 +369,19 @@ verify_signature_results(xmlSecDSigCtxPtr dsigCtx) {
     }
 
     /* check URI */
-    if(!xmlStrEqual(dsigRefCtx-&gt;uri, BAD_CAST "")) {
+    if (strlen(id_attr) + 2 &gt; sizeof(uri)) {
+        fprintf(stderr, "Error: id attribute is too long\n");
+        return(-1);
+    }
+    sprintf(uri, "#%s", id_attr);
+
+    if(!xmlStrEqual(dsigRefCtx-&gt;uri, BAD_CAST uri)) {
         fprintf(stderr,"Error: Reference URI value doesn't match expected one\n");
         return(-1);
     }
 
-    /* check transforms: we expect only one "enveloped signature" transform */
+    /* check transforms: all transforms should be inserted by XMLSec */
     transform = dsigRefCtx-&gt;transformCtx.first;
-    if((transform == NULL) || (!xmlStrEqual(transform-&gt;id-&gt;name, xmlSecNameEnveloped))) {
-        fprintf(stderr,"Error: First Transform name '%s' doesn't match expected '%s'\n", (transform != NULL ? transform-&gt;id-&gt;name : BAD_CAST "NULL"), xmlSecNameEnveloped);
-        return(-1);
-    }
-
-    /* all other transforms should be inserted by XMLSec */
-    transform = transform-&gt;next;
     while(transform != NULL) {
         if((transform-&gt;flags &amp; XMLSEC_TRANSFORM_FLAGS_USER_SPECIFIED) != 0) {
             fprintf(stderr,"Error: Found unexpected Transform name '%s'\n", transform-&gt;id-&gt;name);

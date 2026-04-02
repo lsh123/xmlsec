@@ -1,12 +1,12 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Encrypting data with a dynamicaly created template.: XML Security Library Tutorial</title>
+<title>Decrypting data with keys manager.: XML Security Library Tutorial</title>
 <meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
-<link rel="home" href="index.html" title="XML Security Library Tutorial">
-<link rel="up" href="xmlsec-examples.html" title="Examples.">
-<link rel="prev" href="xmlsec-encrypt-template-file.html" title="Encrypting data with a template file.">
-<link rel="next" href="xmlsec-encrypt-with-session-key.html" title="Encrypting data with a session key.">
+<link rel="home" href="../tutorial/index.html" title="XML Security Library Tutorial">
+<link rel="up" href="examples.html" title="Examples.">
+<link rel="prev" href="decrypt-with-signle-key.html" title="Decrypting data with a single key.">
+<link rel="next" href="custom-keys-manager.html" title="Writing a custom keys manager.">
 <meta name="generator" content="GTK-Doc V1.34.0 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
@@ -23,7 +23,7 @@
 <li><a href="../faq.html">FAQ</a></li>
 <li><a href="../tutorial/index.html">Tutorial</a></li>
 <li><a href="../api/xmlsec-reference.html">API reference</a></li>
-<li><a href="../tutorial/xmlsec-examples.html">Examples</a></li>
+<li><a href="examples.html">Examples</a></li>
 </ul>
 <li><a href="../xmldsig.html">XML Digital Signature</a></li>
 <li><a href="../xmlenc.html">XML Encryption</a></li>
@@ -52,32 +52,30 @@
 <td valign="top"><table width="80%" valign="top" style="margin-left:10px;"><tr><td valign="top" align="left" id="xmlsecContent">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
 <td width="100%" align="left" class="shortcuts"></td>
-<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
-<td><a accesskey="u" href="xmlsec-examples.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
-<td><a accesskey="p" href="xmlsec-encrypt-template-file.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="n" href="xmlsec-encrypt-with-session-key.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+<td><a accesskey="h" href="../tutorial/index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="examples.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="decrypt-with-signle-key.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="custom-keys-manager.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="sect1">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="xmlsec-encrypt-dynamic-template"></a>Encrypting data with a dynamicaly created template.</h2></div></div></div>
+<a name="decrypt-with-keys-mngr"></a>Decrypting data with keys manager.</h2></div></div></div>
 <div class="sect2">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="xmlsec-example-encrypt2"></a>encrypt2.c</h3></div></div></div>
+<a name="xmlsec-example-decrypt2"></a>decrypt2.c</h3></div></div></div>
 <div class="informalexample"><pre class="programlisting">
 /**
- * XML Security Library example: Encrypting XML file with a dynamicaly created template.
+ * XML Security Library example: Decrypting an encrypted file using keys manager.
  *
- * Encrypts XML file using a dynamicaly created template file and a DES key
- * from a binary file
+ * Decrypts encrypted XML file using keys manager and a list of
+ * DES key from a binary file
  *
  * Usage:
- *      ./encrypt2 &lt;xml-doc&gt; &lt;des-key-file&gt;
+ *      ./decrypt2 &lt;xml-enc&gt; &lt;des-key-file1&gt; [&lt;des-key-file2&gt; [...]]
  *
  * Example:
- *      ./encrypt2 encrypt2-doc.xml deskey.bin &gt; encrypt2-res.xml
- *
- * The result could be decrypted with decrypt1 example:
- *      ./decrypt1 encrypt2-res.xml deskey.bin
+ *      ./decrypt2 encrypt1-res.xml deskey.bin
+ *      ./decrypt2 encrypt2-res.xml deskey.bin
  *
  * This is free software; see the Copyright file in the source
  * distribution for precise wording.
@@ -100,13 +98,14 @@
 #include &lt;xmlsec/xmlsec.h&gt;
 #include &lt;xmlsec/xmltree.h&gt;
 #include &lt;xmlsec/xmlenc.h&gt;
-#include &lt;xmlsec/templates.h&gt;
 #include &lt;xmlsec/crypto.h&gt;
 
-int encrypt_file(const char* xml_file, const char* key_file);
+xmlSecKeysMngrPtr load_des_keys(char** files, int files_size);
+int decrypt_file(xmlSecKeysMngrPtr mngr, const char* enc_file);
 
 int
 main(int argc, char **argv) {
+    xmlSecKeysMngrPtr mngr;
 #ifndef XMLSEC_NO_XSLT
     xsltSecurityPrefsPtr xsltSecPrefs = NULL;
 #endif /* XMLSEC_NO_XSLT */
@@ -115,7 +114,7 @@ main(int argc, char **argv) {
 
     if(argc != 3) {
         fprintf(stderr, "Error: wrong number of arguments.\n");
-        fprintf(stderr, "Usage: %s &lt;xml-file&gt; &lt;key-file&gt;\n", argv[0]);
+        fprintf(stderr, "Usage: %s &lt;enc-file&gt; &lt;key-file1&gt; [&lt;key-file2&gt; [...]]\n", argv[0]);
         return(1);
     }
 
@@ -134,6 +133,7 @@ main(int argc, char **argv) {
     xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_NETWORK,    xsltSecurityForbid);
     xsltSetDefaultSecurityPrefs(xsltSecPrefs);
 #endif /* XMLSEC_NO_XSLT */
+
 
     /* Init xmlsec library */
     if(xmlSecInit() &lt; 0) {
@@ -173,9 +173,19 @@ main(int argc, char **argv) {
         return(-1);
     }
 
-    if(encrypt_file(argv[1], argv[2]) &lt; 0) {
+    /* create keys manager and load keys */
+    mngr = load_des_keys(&amp;(argv[2]), argc - 2);
+    if(mngr == NULL) {
         return(-1);
     }
+
+    if(decrypt_file(mngr, argv[1]) &lt; 0) {
+        xmlSecKeysMngrDestroy(mngr);
+        return(-1);
+    }
+
+    /* destroy keys manager */
+    xmlSecKeysMngrDestroy(mngr);
 
     /* Shutdown xmlsec-crypto library */
     xmlSecCryptoShutdown();
@@ -197,104 +207,144 @@ main(int argc, char **argv) {
 }
 
 /**
- * encrypt_file:
- * @xml_file:           the encryption template file name.
- * @key_file:           the Triple DES key file.
+ * load_des_keys:
+ * @files:              the list of filenames.
+ * @files_size:         the number of filenames in #files.
  *
- * Encrypts #xml_file using a dynamicaly created template and DES key from
- * #key_file.
+ * Creates simple keys manager and load DES keys from #files in it.
+ * The caller is responsible for destroying returned keys manager using
+ * @xmlSecKeysMngrDestroy.
+ *
+ * Returns the pointer to newly created keys manager or NULL if an error
+ * occurs.
+ */
+xmlSecKeysMngrPtr
+load_des_keys(char** files, int files_size) {
+    xmlSecKeysMngrPtr mngr;
+    xmlSecKeyPtr key;
+    int i;
+
+    assert(files);
+    assert(files_size &gt; 0);
+
+    /* create and initialize keys manager, we use a simple list based
+     * keys manager, implement your own xmlSecKeysStore klass if you need
+     * something more sophisticated
+     */
+    mngr = xmlSecKeysMngrCreate();
+    if(mngr == NULL) {
+        fprintf(stderr, "Error: failed to create keys manager.\n");
+        return(NULL);
+    }
+    if(xmlSecCryptoAppDefaultKeysMngrInit(mngr) &lt; 0) {
+        fprintf(stderr, "Error: failed to initialize keys manager.\n");
+        xmlSecKeysMngrDestroy(mngr);
+        return(NULL);
+    }
+
+    for(i = 0; i &lt; files_size; ++i) {
+        assert(files[i]);
+
+        /* load DES key */
+        key = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, files[i]);
+        if(key == NULL) {
+            fprintf(stderr,"Error: failed to load des key from binary file \"%s\"\n", files[i]);
+            xmlSecKeysMngrDestroy(mngr);
+            return(NULL);
+        }
+
+        /* set key name to the file name, this is just an example! */
+        if(xmlSecKeySetName(key, BAD_CAST files[i]) &lt; 0) {
+            fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", files[i]);
+            xmlSecKeyDestroy(key);
+            xmlSecKeysMngrDestroy(mngr);
+            return(NULL);
+        }
+
+        /* add key to keys manager, from now on keys manager is responsible
+         * for destroying key
+         */
+        if(xmlSecCryptoAppDefaultKeysMngrAdoptKey(mngr, key) &lt; 0) {
+            fprintf(stderr,"Error: failed to add key from \"%s\" to keys manager\n", files[i]);
+            xmlSecKeyDestroy(key);
+            xmlSecKeysMngrDestroy(mngr);
+            return(NULL);
+        }
+    }
+
+    return(mngr);
+}
+
+/**
+ * decrypt_file:
+ * @mngr:               the pointer to keys manager.
+ * @enc_file:           the encrypted XML  file name.
+ *
+ * Decrypts the XML file #enc_file using DES key from #key_file and
+ * prints results to stdout.
  *
  * Returns 0 on success or a negative value if an error occurs.
  */
 int
-encrypt_file(const char* xml_file, const char* key_file) {
+decrypt_file(xmlSecKeysMngrPtr mngr, const char* enc_file) {
     xmlDocPtr doc = NULL;
-    xmlNodePtr encDataNode = NULL;
-    xmlNodePtr keyInfoNode = NULL;
+    xmlNodePtr node = NULL;
     xmlSecEncCtxPtr encCtx = NULL;
     int res = -1;
 
-    assert(xml_file);
-    assert(key_file);
+    assert(mngr);
+    assert(enc_file);
 
     /* load template */
-    doc = xmlReadFile(xml_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET | XML_PARSE_NOENT);
+    doc = xmlReadFile(enc_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET | XML_PARSE_NOENT);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
-        fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
+        fprintf(stderr, "Error: unable to parse file \"%s\"\n", enc_file);
         goto done;
     }
 
-    /* create encryption template to encrypt XML file and replace
-     * its content with encryption result */
-    encDataNode = xmlSecTmplEncDataCreate(doc, xmlSecTransformDes3CbcId,
-                                NULL, xmlSecTypeEncElement, NULL, NULL);
-    if(encDataNode == NULL) {
-        fprintf(stderr, "Error: failed to create encryption template\n");
+    /* find start node */
+    node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeEncryptedData, xmlSecEncNs);
+    if(node == NULL) {
+        fprintf(stderr, "Error: start node not found in \"%s\"\n", enc_file);
         goto done;
     }
 
-    /* we want to put encrypted data in the &lt;enc:CipherValue/&gt; node */
-    if(xmlSecTmplEncDataEnsureCipherValue(encDataNode) == NULL) {
-        fprintf(stderr, "Error: failed to add CipherValue node\n");
-        goto done;
-    }
-
-    /* add &lt;dsig:KeyInfo/&gt; and &lt;dsig:KeyName/&gt; nodes to put key name in the signed document */
-    keyInfoNode = xmlSecTmplEncDataEnsureKeyInfo(encDataNode, NULL);
-    if(keyInfoNode == NULL) {
-        fprintf(stderr, "Error: failed to add key info\n");
-        goto done;
-    }
-
-    if(xmlSecTmplKeyInfoAddKeyName(keyInfoNode, NULL) == NULL) {
-        fprintf(stderr, "Error: failed to add key name\n");
-        goto done;
-    }
-
-    /* create encryption context, we don't need keys manager in this example */
-    encCtx = xmlSecEncCtxCreate(NULL);
+    /* create encryption context */
+    encCtx = xmlSecEncCtxCreate(mngr);
     if(encCtx == NULL) {
         fprintf(stderr,"Error: failed to create encryption context\n");
         goto done;
     }
 
-    /* load DES key, assuming that there is not password */
-    encCtx-&gt;encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, key_file);
-    if(encCtx-&gt;encKey == NULL) {
-        fprintf(stderr,"Error: failed to load des key from binary file \"%s\"\n", key_file);
+    /* decrypt the data */
+    if((xmlSecEncCtxDecrypt(encCtx, node) &lt; 0) || (encCtx-&gt;result == NULL)) {
+        fprintf(stderr,"Error: decryption failed\n");
         goto done;
     }
 
-    /* set key name to the file name, this is just an example! */
-    if(xmlSecKeySetName(encCtx-&gt;encKey, BAD_CAST key_file) &lt; 0) {
-        fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
-        goto done;
+    /* print decrypted data to stdout */
+    if(encCtx-&gt;resultReplaced != 0) {
+        fprintf(stdout, "Decrypted XML data:\n");
+        xmlDocDump(stdout, doc);
+    } else {
+        fprintf(stdout, "Decrypted binary data (" XMLSEC_SIZE_FMT " bytes):\n",
+            xmlSecBufferGetSize(encCtx-&gt;result));
+        if(xmlSecBufferGetData(encCtx-&gt;result) != NULL) {
+            fwrite(xmlSecBufferGetData(encCtx-&gt;result),
+                  1,
+                  xmlSecBufferGetSize(encCtx-&gt;result),
+                  stdout);
+        }
     }
-
-    /* encrypt the data */
-    if(xmlSecEncCtxXmlEncrypt(encCtx, encDataNode, xmlDocGetRootElement(doc)) &lt; 0) {
-        fprintf(stderr,"Error: encryption failed\n");
-        goto done;
-    }
-
-    /* we template is inserted in the doc */
-    encDataNode = NULL;
-
-    /* print encrypted data with document to stdout */
-    xmlDocDump(stdout, doc);
+    fprintf(stdout, "\n");
 
     /* success */
     res = 0;
 
 done:
-
     /* cleanup */
     if(encCtx != NULL) {
         xmlSecEncCtxDestroy(encCtx);
-    }
-
-    if(encDataNode != NULL) {
-        xmlFreeNode(encDataNode);
     }
 
     if(doc != NULL) {
@@ -302,41 +352,6 @@ done:
     }
     return(res);
 }
-</pre></div>
-</div>
-<div class="sect2">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="xmlsec-example-encrypt2-doc"></a>encrypt2-doc.xml</h3></div></div></div>
-<div class="informalexample"><pre class="programlisting">
-&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;!-- 
-XML Security Library example: Original XML doc file before encryption (encrypt2 example). 
---&gt;
-&lt;Envelope xmlns="urn:envelope"&gt;
-  &lt;Data&gt;
-	Hello, World!
-  &lt;/Data&gt;
-&lt;/Envelope&gt;
-</pre></div>
-</div>
-<div class="sect2">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="xmlsec-example-encrypt2-res"></a>encrypt2-res.xml</h3></div></div></div>
-<div class="informalexample"><pre class="programlisting">
-&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;!-- 
-XML Security Library example: Encrypted XML file (encrypt2 example). 
---&gt;
-&lt;EncryptedData xmlns="http://www.w3.org/2001/04/xmlenc#" Type="http://www.w3.org/2001/04/xmlenc#Element"&gt;
-&lt;EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#tripledes-cbc"/&gt;
-&lt;KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#"&gt;
-&lt;KeyName&gt;deskey.bin&lt;/KeyName&gt;
-&lt;/KeyInfo&gt;
-&lt;CipherData&gt;
-&lt;CipherValue&gt;WXlDyktaADlUe+PywKwS3KdKlahCteEKxi/hRlHcXNQlGwNGrYKy8aQ6dLtX1bKg
-IgL/XoAQN3B27zD91b1ZLGh6QQ9CjnVD98+hYJ9TPp4piPnII4vGUA==&lt;/CipherValue&gt;
-&lt;/CipherData&gt;
-&lt;/EncryptedData&gt;
 </pre></div>
 </div>
 </div>

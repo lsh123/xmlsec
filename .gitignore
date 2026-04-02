@@ -71,6 +71,7 @@ docs/api/xmlsec-*.txt
 docs/api/*.bak
 docs/api/*.types
 docs/api/sgml.stamp
+docs/tutorial/sgml.tmp
 docs/html.stamp
 .vscode/
 .vs/

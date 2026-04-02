@@ -16,20 +16,20 @@
 <ul>
 <li><a href="../index.html">Home</a></li>
 <li><a href="../download.html">Download</a></li>
-<ul><li><a href="../https://github.com/lsh123/xmlsec">GitHub</a></li></ul>
+<ul><li><a href="https://github.com/lsh123/xmlsec">GitHub</a></li></ul>
 <li><a href="../news.html">News</a></li>
 <li><a href="../documentation.html">Documentation</a></li>
 <ul>
 <li><a href="../faq.html">FAQ</a></li>
-<li><a href="../api/xmlsec-notes.html">Tutorial</a></li>
+<li><a href="../tutorial/index.html">Tutorial</a></li>
 <li><a href="../api/xmlsec-reference.html">API reference</a></li>
-<li><a href="../api/xmlsec-examples.html">Examples</a></li>
+<li><a href="../tutorial/xmlsec-examples.html">Examples</a></li>
 </ul>
 <li><a href="../xmldsig.html">XML Digital Signature</a></li>
 <li><a href="../xmlenc.html">XML Encryption</a></li>
 <li><a href="../c14n.html">XML Canonicalization</a></li>
 <li><a href="../bugs.html">Reporting Bugs</a></li>
-<li><a href="mailing-list.html">Mailing list</a></li>
+<li><a href="../mailing-list.html">Mailing list</a></li>
 <li><a href="../related.html">Related</a></li>
 <li><a href="../authors.html">Authors</a></li>
 </ul>
@@ -52,7 +52,7 @@
 <td valign="top"><table width="80%" valign="top" style="margin-left:10px;"><tr><td valign="top" align="left" id="xmlsecContent">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
 <td width="100%" align="left" class="shortcuts">
-<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span>
                   <a href="#xmlsec-transforms.description" class="shortcut">Description</a></span>
 </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
@@ -1073,7 +1073,6 @@
 </div>
 <div class="refsect1">
 <a name="xmlsec-transforms.description"></a><h2>Description</h2>
-<p></p>
 </div>
 <div class="refsect1">
 <a name="xmlsec-transforms.functions_details"></a><h2>Functions</h2>
@@ -4001,7 +4000,7 @@ xmlSecTransformXPath2GetKlass (<em class="parameter"><code><span class="type">vo
 <pre class="programlisting"><font><span class="returnvalue">xmlSecTransformId</span></font>
 xmlSecTransformXPointerGetKlass (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>The XPointer transform klass
-(http://www.ietf.org/internet-drafts/draft-eastlake-xmldsig-uri-02.txt).</p>
+(https://www.rfc-editor.org/rfc/rfc9231.html).</p>
 <div class="refsect3">
 <a name="xmlSecTransformXPointerGetKlass.returns"></a><h4>Returns</h4>
 <p> XPointer transform klass.</p>
@@ -4246,27 +4245,37 @@ might create a security vulnerability and is not recommended.</p>
 <tbody>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecTransformStatusNone"></a>xmlSecTransformStatusNone</p></td>
-<td class="enum_member_description"><p>the status unknown.</p></td>
+<td class="enum_member_description">
+<p>the status unknown.</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecTransformStatusWorking"></a>xmlSecTransformStatusWorking</p></td>
-<td class="enum_member_description"><p>the transform is executed.</p></td>
+<td class="enum_member_description">
+<p>the transform is executed.</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecTransformStatusFinished"></a>xmlSecTransformStatusFinished</p></td>
-<td class="enum_member_description"><p>the transform finished</p></td>
+<td class="enum_member_description">
+<p>the transform finished</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecTransformStatusOk"></a>xmlSecTransformStatusOk</p></td>
-<td class="enum_member_description"><p>the transform succeeded.</p></td>
+<td class="enum_member_description">
+<p>the transform succeeded.</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecTransformStatusFail"></a>xmlSecTransformStatusFail</p></td>
-<td class="enum_member_description"><p>the transform failed (an error occur).</p></td>
+<td class="enum_member_description">
+<p>the transform failed (an error occur).</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
@@ -4288,17 +4297,23 @@ might create a security vulnerability and is not recommended.</p>
 <tbody>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecTransformModeNone"></a>xmlSecTransformModeNone</p></td>
-<td class="enum_member_description"><p>the mode is unknown.</p></td>
+<td class="enum_member_description">
+<p>the mode is unknown.</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecTransformModePush"></a>xmlSecTransformModePush</p></td>
-<td class="enum_member_description"><p>pushing data thru transform.</p></td>
+<td class="enum_member_description">
+<p>pushing data thru transform.</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecTransformModePop"></a>xmlSecTransformModePop</p></td>
-<td class="enum_member_description"><p>popping data from transform.</p></td>
+<td class="enum_member_description">
+<p>popping data from transform.</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
@@ -4320,37 +4335,51 @@ might create a security vulnerability and is not recommended.</p>
 <tbody>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecTransformOperationNone"></a>xmlSecTransformOperationNone</p></td>
-<td class="enum_member_description"><p>the operation is unknown.</p></td>
+<td class="enum_member_description">
+<p>the operation is unknown.</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecTransformOperationEncode"></a>xmlSecTransformOperationEncode</p></td>
-<td class="enum_member_description"><p>the encode operation (for base64 transform).</p></td>
+<td class="enum_member_description">
+<p>the encode operation (for base64 transform).</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecTransformOperationDecode"></a>xmlSecTransformOperationDecode</p></td>
-<td class="enum_member_description"><p>the decode operation (for base64 transform).</p></td>
+<td class="enum_member_description">
+<p>the decode operation (for base64 transform).</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecTransformOperationSign"></a>xmlSecTransformOperationSign</p></td>
-<td class="enum_member_description"><p>the sign or digest operation.</p></td>
+<td class="enum_member_description">
+<p>the sign or digest operation.</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecTransformOperationVerify"></a>xmlSecTransformOperationVerify</p></td>
-<td class="enum_member_description"><p>the verification of signature or digest operation.</p></td>
+<td class="enum_member_description">
+<p>the verification of signature or digest operation.</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecTransformOperationEncrypt"></a>xmlSecTransformOperationEncrypt</p></td>
-<td class="enum_member_description"><p>the encryption operation.</p></td>
+<td class="enum_member_description">
+<p>the encryption operation.</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecTransformOperationDecrypt"></a>xmlSecTransformOperationDecrypt</p></td>
-<td class="enum_member_description"><p>the decryption operation.</p></td>
+<td class="enum_member_description">
+<p>the decryption operation.</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 </tbody>

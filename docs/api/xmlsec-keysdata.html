@@ -16,20 +16,20 @@
 <ul>
 <li><a href="../index.html">Home</a></li>
 <li><a href="../download.html">Download</a></li>
-<ul><li><a href="../https://github.com/lsh123/xmlsec">GitHub</a></li></ul>
+<ul><li><a href="https://github.com/lsh123/xmlsec">GitHub</a></li></ul>
 <li><a href="../news.html">News</a></li>
 <li><a href="../documentation.html">Documentation</a></li>
 <ul>
 <li><a href="../faq.html">FAQ</a></li>
-<li><a href="../api/xmlsec-notes.html">Tutorial</a></li>
+<li><a href="../tutorial/index.html">Tutorial</a></li>
 <li><a href="../api/xmlsec-reference.html">API reference</a></li>
-<li><a href="../api/xmlsec-examples.html">Examples</a></li>
+<li><a href="../tutorial/xmlsec-examples.html">Examples</a></li>
 </ul>
 <li><a href="../xmldsig.html">XML Digital Signature</a></li>
 <li><a href="../xmlenc.html">XML Encryption</a></li>
 <li><a href="../c14n.html">XML Canonicalization</a></li>
 <li><a href="../bugs.html">Reporting Bugs</a></li>
-<li><a href="mailing-list.html">Mailing list</a></li>
+<li><a href="../mailing-list.html">Mailing list</a></li>
 <li><a href="../related.html">Related</a></li>
 <li><a href="../authors.html">Authors</a></li>
 </ul>
@@ -685,7 +685,6 @@
 </div>
 <div class="refsect1">
 <a name="xmlsec-keysdata.description"></a><h2>Description</h2>
-<p></p>
 </div>
 <div class="refsect1">
 <a name="xmlsec-keysdata.functions_details"></a><h2>Functions</h2>
@@ -2588,57 +2587,79 @@ in any format.</p>
 <tbody>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecKeyDataFormatUnknown"></a>xmlSecKeyDataFormatUnknown</p></td>
-<td class="enum_member_description"><p>the key data format is unknown.</p></td>
+<td class="enum_member_description">
+<p>the key data format is unknown.</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecKeyDataFormatBinary"></a>xmlSecKeyDataFormatBinary</p></td>
-<td class="enum_member_description"><p>the binary key data.</p></td>
+<td class="enum_member_description">
+<p>the binary key data.</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecKeyDataFormatPem"></a>xmlSecKeyDataFormatPem</p></td>
-<td class="enum_member_description"><p>the PEM key data (cert or public/private key).</p></td>
+<td class="enum_member_description">
+<p>the PEM key data (cert or public/private key).</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecKeyDataFormatDer"></a>xmlSecKeyDataFormatDer</p></td>
-<td class="enum_member_description"><p>the DER key data (cert or public/private key).</p></td>
+<td class="enum_member_description">
+<p>the DER key data (cert or public/private key).</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecKeyDataFormatPkcs8Pem"></a>xmlSecKeyDataFormatPkcs8Pem</p></td>
-<td class="enum_member_description"><p>the PKCS8 PEM private key.</p></td>
+<td class="enum_member_description">
+<p>the PKCS8 PEM private key.</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecKeyDataFormatPkcs8Der"></a>xmlSecKeyDataFormatPkcs8Der</p></td>
-<td class="enum_member_description"><p>the PKCS8 DER private key.</p></td>
+<td class="enum_member_description">
+<p>the PKCS8 DER private key.</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecKeyDataFormatPkcs12"></a>xmlSecKeyDataFormatPkcs12</p></td>
-<td class="enum_member_description"><p>the PKCS12 format (bag of keys and certs)</p></td>
+<td class="enum_member_description">
+<p>the PKCS12 format (bag of keys and certs)</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecKeyDataFormatCertPem"></a>xmlSecKeyDataFormatCertPem</p></td>
-<td class="enum_member_description"><p>the PEM cert.</p></td>
+<td class="enum_member_description">
+<p>the PEM cert.</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecKeyDataFormatCertDer"></a>xmlSecKeyDataFormatCertDer</p></td>
-<td class="enum_member_description"><p>the DER cert.</p></td>
+<td class="enum_member_description">
+<p>the DER cert.</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecKeyDataFormatEngine"></a>xmlSecKeyDataFormatEngine</p></td>
-<td class="enum_member_description"><p>the crypto engine (e.g. OpenSSL ENGINE).</p></td>
+<td class="enum_member_description">
+<p>the crypto engine (e.g. OpenSSL ENGINE).</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecKeyDataFormatStore"></a>xmlSecKeyDataFormatStore</p></td>
-<td class="enum_member_description"><p>the crypto store (e.g. OpenSSL ossl_store).</p></td>
+<td class="enum_member_description">
+<p>the crypto store (e.g. OpenSSL ossl_store).</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 </tbody>

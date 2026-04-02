@@ -1,0 +1,196 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Signing a document.: XML Security Library Tutorial</title>
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
+<link rel="home" href="index.html" title="XML Security Library Tutorial">
+<link rel="up" href="sign-encrypt.html" title="Signing and encrypting documents.">
+<link rel="prev" href="sign-encrypt.html" title="Signing and encrypting documents.">
+<link rel="next" href="encrypt.html" title="Encrypting data.">
+<meta name="generator" content="GTK-Doc V1.34.0 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body><table width="100%" valign="top"><tr valign="top">
+<td valign="top" align="left" width="210">
+<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../download.html">Download</a></li>
+<ul><li><a href="https://github.com/lsh123/xmlsec">GitHub</a></li></ul>
+<li><a href="../news.html">News</a></li>
+<li><a href="../documentation.html">Documentation</a></li>
+<ul>
+<li><a href="../faq.html">FAQ</a></li>
+<li><a href="../tutorial/index.html">Tutorial</a></li>
+<li><a href="../api/xmlsec-reference.html">API reference</a></li>
+<li><a href="../tutorial/xmlsec-examples.html">Examples</a></li>
+</ul>
+<li><a href="../xmldsig.html">XML Digital Signature</a></li>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
+<li><a href="../bugs.html">Reporting Bugs</a></li>
+<li><a href="../mailing-list.html">Mailing list</a></li>
+<li><a href="../related.html">Related</a></li>
+<li><a href="../authors.html">Authors</a></li>
+</ul>
+<table width="100%">
+<tr>
+<td width="15"></td>
+<td><a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a></td>
+</tr>
+<tr>
+<td width="15"></td>
+<td><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a></td>
+</tr>
+<tr>
+<td width="15"></td>
+<td><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a></td>
+</tr>
+<!--Links - start--><!--Links - end-->
+</table>
+</td>
+<td valign="top"><table width="80%" valign="top" style="margin-left:10px;"><tr><td valign="top" align="left" id="xmlsecContent">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts"></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="sign-encrypt.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="sign-encrypt.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="encrypt.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="sect1">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="sign"></a>Signing a document.</h2></div></div></div>
+<p>The typical signature process includes following steps:
+	  </p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem"><p>
+		Prepare data for signature.
+	    </p></li>
+<li class="listitem"><p>
+		Create or load signature template and select start
+    		<a class="ulink" href="" target="_top">&lt;dsig:Signature/&gt;</a>
+		node.
+	    </p></li>
+<li class="listitem"><p>
+		Create signature context <a href="../api/xmlsec-xmldsig.html#xmlSecDSigCtx.userData">xmlSecDSigCtx</a>
+		using <a href="../api/xmlsec-xmldsig.html#xmlSecDSigCtxCreate">xmlSecDSigCtxCreate</a> or
+		<a href="../api/xmlsec-xmldsig.html#xmlSecDSigCtxInitialize">xmlSecDSigCtxInitialize</a>
+		functions.
+	    </p></li>
+<li class="listitem"><p>
+		Load signature key in <a href="../api/xmlsec-keysmngr.html#xmlSecKeysMngr.keysStore">keys manager</a>
+		or generate a session key and set it in the signature context
+		(<em class="structfield"><code>signKey</code></em> member of
+		<a href="../api/xmlsec-xmldsig.html#xmlSecDSigCtx.userData">xmlSecDSigCtx</a> structure).
+	    </p></li>
+<li class="listitem"><p>
+		Sign data by calling <a href="../api/xmlsec-xmldsig.html#xmlSecDSigCtxSign">xmlSecDSigCtxSign</a>
+		function.
+	    </p></li>
+<li class="listitem"><p>
+		Check returned value and consume signed data.
+	    </p></li>
+<li class="listitem"><p>
+		Destroy signature context <a href="../api/xmlsec-xmldsig.html#xmlSecDSigCtx.userData">xmlSecDSigCtx</a>
+		using <a href="../api/xmlsec-xmldsig.html#xmlSecDSigCtxDestroy">xmlSecDSigCtxDestroy</a> or
+		<a href="../api/xmlsec-xmldsig.html#xmlSecDSigCtxFinalize">xmlSecDSigCtxFinalize</a>
+		functions.
+	    </p></li>
+</ul></div>
+<p>
+	</p>
+<p>
+	     </p>
+<div class="example">
+<a name="id-1.2.6.3.3.1"></a><p class="title"><b>Example 10. Signing a template.</b></p>
+<div class="example-contents">
+<pre class="programlisting">
+/**
+ * sign_file:
+ * @tmpl_file:		the signature template file name.
+ * @key_file:		the PEM private key file name.
+ *
+ * Signs the #tmpl_file using private key from #key_file.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
+int
+sign_file(const char* tmpl_file, const char* key_file) {
+    xmlDocPtr doc = NULL;
+    xmlNodePtr node = NULL;
+    xmlSecDSigCtxPtr dsigCtx = NULL;
+    int res = -1;
+
+    assert(tmpl_file);
+    assert(key_file);
+
+    /* load template */
+    doc = xmlParseFile(tmpl_file);
+    if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
+	fprintf(stderr, "Error: unable to parse file \"%s\"\n", tmpl_file);
+	goto done;
+    }
+
+    /* find start node */
+    node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeSignature, xmlSecDSigNs);
+    if(node == NULL) {
+	fprintf(stderr, "Error: start node not found in \"%s\"\n", tmpl_file);
+	goto done;
+    }
+
+    /* create signature context, we don't need keys manager in this example */
+    dsigCtx = xmlSecDSigCtxCreate(NULL);
+    if(dsigCtx == NULL) {
+        fprintf(stderr,"Error: failed to create signature context\n");
+	goto done;
+    }
+
+    /* load private key, assuming that there is not password */
+    dsigCtx-&gt;signKey = xmlSecCryptoAppKeyLoad(key_file, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
+    if(dsigCtx-&gt;signKey == NULL) {
+        fprintf(stderr,"Error: failed to load private pem key from \"%s\"\n", key_file);
+	goto done;
+    }
+
+    /* set key name to the file name, this is just an example! */
+    if(xmlSecKeySetName(dsigCtx-&gt;signKey, key_file) &lt; 0) {
+    	fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
+	goto done;
+    }
+
+    /* sign the template */
+    if(xmlSecDSigCtxSign(dsigCtx, node) &lt; 0) {
+        fprintf(stderr,"Error: signature failed\n");
+	goto done;
+    }
+
+    /* print signed document to stdout */
+    xmlDocDump(stdout, doc);
+
+    /* success */
+    res = 0;
+
+done:
+    /* cleanup */
+    if(dsigCtx != NULL) {
+	xmlSecDSigCtxDestroy(dsigCtx);
+    }
+
+    if(doc != NULL) {
+	xmlFreeDoc(doc);
+    }
+    return(res);
+}
+		</pre>
+<p><a class="link" href="xmlsec-examples-sign-template-file.html#xmlsec-example-sign1" title="sign1.c">Full program listing</a></p>
+<p><a class="link" href="xmlsec-examples-sign-template-file.html#xmlsec-example-sign1-tmpl" title="sign1-tmpl.xml">Simple signature template file</a></p>
+</div>
+</div>
+<p><br class="example-break">
+	</p>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.34.0</div>
+</td></tr></table></td>
+</tr></table></body>
+</html>

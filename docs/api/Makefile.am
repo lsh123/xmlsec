@@ -12,7 +12,6 @@ TARGET_DIR=@XMLSEC_DOCDIR@/api
 
 SCAN_DIR=$(builddir)
 SGML_DIR=$(builddir)/sgml.tmp
-EXAMPLES_DIR=$(SGML_DIR)/examples
 SOURCE_CODE_DIR=$(builddir)/code
 
 GTKDOC_MKDB_OUTPUT_DIR=$(builddir)/xml
@@ -22,13 +21,9 @@ GTKDOC_MKDB_OUTPUT_DIR=$(builddir)/xml
 MAIN_SGML_FILE=$(SGML_DIR)/xmlsec.sgml
 MAIN_SGML_SRC_FILE=$(srcdir)/src/xmlsec.sgml
 
-SGML_CHAPTERS_DIR=$(SGML_DIR)/chapters
-SGML_CHAPTERS_SRC_DIR=$(srcdir)/src/chapters
-
 # files that are copied from sources
 EXTRA_DIST := \
     $(srcdir)/src    \
-    $(srcdir)/images \
     $(NULL)
 
 CRYPTO_LIBS_LIST = \
@@ -49,11 +44,6 @@ SOURCE_CODE_FILES=\
 	$(shell find $(SOURCE_DIR2) -name '*.c' -print )  \
 	$(shell find $(INCLUDE_DIR) -name '*.h' -a ! -name "symbols.h" -print ) \
 	$(shell find $(INCLUDE_DIR2) -name '*.h' -a ! -name "symbols.h" -print )
-
-EXAMPLES_SOURCE_DIR=$(top_srcdir)/examples
-EXAMPLES_SOURCE_FILES=\
-	$(shell find $(EXAMPLES_SOURCE_DIR) -name '*.c' -print) \
-	$(shell find $(EXAMPLES_SOURCE_DIR) -name '*.xml' -print)
 
 .PHONY: all docs html sgml sgml-base scan
 
@@ -78,14 +68,8 @@ endif
 
 
 
-html: sgml $(MAIN_SGML_FILE) $(SGML_CHAPTERS_DIR) xmlsec-index
+html: sgml $(MAIN_SGML_FILE) xmlsec-index
 	@$(GTKDOC_MKHTML) xmlsec $(MAIN_SGML_FILE)
-
-$(SGML_CHAPTERS_DIR): $(SGML_CHAPTERS_SRC_DIR) $(SGML_CHAPTERS_DIR)/.sentinel
-	@( \
-		echo "-- Copying chaptres..." ; \
-		$(CP) -r $(SGML_CHAPTERS_SRC_DIR)/* $(SGML_CHAPTERS_DIR) \
-	)
 
 $(MAIN_SGML_FILE): $(MAIN_SGML_SRC_FILE)
 	@( \
@@ -145,7 +129,7 @@ sgml-base: scan $(SGML_DIR)/.sentinel
 	    $(MV) $(GTKDOC_MKDB_OUTPUT_DIR) $(SGML_DIR)/$$i ; \
 	done);
 
-scan: SOURCE_CODEs example_sources
+scan: SOURCE_CODEs
 	@( \
 	    echo "-- Scanning source code for xmlsec-core" ; \
 	    $(GTKDOC_SCAN) --module=xmlsec \
@@ -211,34 +195,6 @@ xmlsec-index: scan $(SGML_DIR)/.sentinel
 		$(SED) 's#<NAME>\([^<]*\)</NAME>#<listitem><para><link linkend=\"\1\">\1</link></para></listitem>#g' > \
 		$(SGML_DIR)/xmlsec-index.sgml
 
-#
-# The following code converts C example file to sgml RefEntry files.
-# We get file title from a string "XML Security Library example: ..."
-# which is usually placed at the top of the file. Also all "unsafe" xml
-# characters (<, >, &) are escaped.
-#
-example_sources: $(EXAMPLES_DIR)/.sentinel
-	@echo "-- Preprocessing example source files into '$(EXAMPLES_DIR)' ..."
-	@$(RM) -rf $(EXAMPLES_DIR)/*
-	@(for i in $(EXAMPLES_SOURCE_FILES) ; do \
-	    file_name=`echo $$i | $(SED) 's#.*/##' | $(SED) 's#\..*$$##'`; \
-	    file_ext=`echo $$i | $(SED) 's#.*/##' | $(SED) 's#.*\.##'`; \
-	    echo "--- Converting $$file_name.$$file_ext to $$file_name.sgml ..."; \
-	    file_title=`cat $$i | $(GREP) 'XML Security Library example: ' | $(SED) 's#^.*: *##'`; \
-	    echo "<sect2 id=\"xmlsec-example-$$file_name\" >" > \
-	        $(EXAMPLES_DIR)/$$file_name.sgml; \
-	    echo "<title>$$file_name.$$file_ext</title><para><informalexample><programlisting>" >> \
-		    $(EXAMPLES_DIR)/$$file_name.sgml; \
-	    cat $$i | \
-		$(SED) "s#&#\&amp;#g" | \
-		$(SED) "s#<#\&lt;#g" | \
-		$(SED) "s#>#\&gt;#g" >> \
-		    $(EXAMPLES_DIR)/$$file_name.sgml; \
-	    echo "</programlisting></informalexample></para></sect2>" >> \
-		    $(EXAMPLES_DIR)/$$file_name.sgml; \
-	done);
-
-
 # A single pattern rule will create all appropriate folders as required
 # otherwise make (annoyingly) deletes it
 .PRECIOUS: %/.sentinel
@@ -263,7 +219,7 @@ dist-hook:
 	)
 
 clean-local:
-	@$(RM) -rf $(SOURCE_CODE_DIR) $(EXAMPLES_DIR) $(SCAN_DIR)/*.txt $(SGML_DIR) $(GTKDOC_MKDB_OUTPUT_DIR)
+	@$(RM) -rf $(SOURCE_CODE_DIR) $(SCAN_DIR)/*.txt $(SGML_DIR) $(GTKDOC_MKDB_OUTPUT_DIR)
 	@$(RM) -f *.stamp *.types *.bak index.sgml
 	@( \
 		if [ z"$(builddir)" != z"$(srcdir)" ] ; \
@@ -296,12 +252,4 @@ install-data-local:
 			@INSTALL@ -m 0644 $(srcdir)/*.png $(DESTDIR)$(TARGET_DIR) ; \
 		fi ; \
 	)
-	@( \
-		echo "-- Installing additional api images ..." ; \
-		$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)/images ; \
-		@INSTALL@ -m 0644 $(srcdir)/images/*.png $(DESTDIR)$(TARGET_DIR)/images/ ; \
-	)
-
-uninstall-local:
-	@$(RM) -rf $(DESTDIR)$(TARGET_DIR)
 

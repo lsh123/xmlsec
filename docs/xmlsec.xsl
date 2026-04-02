@@ -87,7 +87,7 @@
 			</li>
 			<li>
 			<xsl:call-template name="linkto">
-				<xsl:with-param name="href">api/xmlsec-notes.html</xsl:with-param>
+				<xsl:with-param name="href">tutorial/xmlsec-notes.html</xsl:with-param>
 				<xsl:with-param name="text">Tutorial</xsl:with-param>
 			</xsl:call-template>
 			</li>
@@ -99,7 +99,7 @@
 			</li>
 			<li>
 			<xsl:call-template name="linkto">
-				<xsl:with-param name="href">api/xmlsec-examples.html</xsl:with-param>
+				<xsl:with-param name="href">tutorial/xmlsec-examples.html</xsl:with-param>
 				<xsl:with-param name="text">Examples</xsl:with-param>
 			</xsl:call-template>
 			</li>

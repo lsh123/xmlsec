@@ -21,9 +21,9 @@
 <li><a href="../documentation.html">Documentation</a></li>
 <ul>
 <li><a href="../faq.html">FAQ</a></li>
-<li><a href="../api/xmlsec-notes.html">Tutorial</a></li>
+<li><a href="../tutorial/xmlsec-notes.html">Tutorial</a></li>
 <li><a href="../api/xmlsec-reference.html">API reference</a></li>
-<li><a href="../api/xmlsec-examples.html">Examples</a></li>
+<li><a href="../tutorial/xmlsec-examples.html">Examples</a></li>
 </ul>
 <li><a href="../xmldsig.html">XML Digital Signature</a></li>
 <li><a href="../xmlenc.html">XML Encryption</a></li>
@@ -1073,7 +1073,6 @@
 </div>
 <div class="refsect1">
 <a name="xmlsec-transforms.description"></a><h2>Description</h2>
-<p></p>
 </div>
 <div class="refsect1">
 <a name="xmlsec-transforms.functions_details"></a><h2>Functions</h2>
@@ -4246,27 +4245,37 @@ might create a security vulnerability and is not recommended.</p>
 <tbody>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecTransformStatusNone"></a>xmlSecTransformStatusNone</p></td>
-<td class="enum_member_description"><p>the status unknown.</p></td>
+<td class="enum_member_description">
+<p>the status unknown.</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecTransformStatusWorking"></a>xmlSecTransformStatusWorking</p></td>
-<td class="enum_member_description"><p>the transform is executed.</p></td>
+<td class="enum_member_description">
+<p>the transform is executed.</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecTransformStatusFinished"></a>xmlSecTransformStatusFinished</p></td>
-<td class="enum_member_description"><p>the transform finished</p></td>
+<td class="enum_member_description">
+<p>the transform finished</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecTransformStatusOk"></a>xmlSecTransformStatusOk</p></td>
-<td class="enum_member_description"><p>the transform succeeded.</p></td>
+<td class="enum_member_description">
+<p>the transform succeeded.</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecTransformStatusFail"></a>xmlSecTransformStatusFail</p></td>
-<td class="enum_member_description"><p>the transform failed (an error occur).</p></td>
+<td class="enum_member_description">
+<p>the transform failed (an error occur).</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
@@ -4288,17 +4297,23 @@ might create a security vulnerability and is not recommended.</p>
 <tbody>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecTransformModeNone"></a>xmlSecTransformModeNone</p></td>
-<td class="enum_member_description"><p>the mode is unknown.</p></td>
+<td class="enum_member_description">
+<p>the mode is unknown.</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecTransformModePush"></a>xmlSecTransformModePush</p></td>
-<td class="enum_member_description"><p>pushing data thru transform.</p></td>
+<td class="enum_member_description">
+<p>pushing data thru transform.</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecTransformModePop"></a>xmlSecTransformModePop</p></td>
-<td class="enum_member_description"><p>popping data from transform.</p></td>
+<td class="enum_member_description">
+<p>popping data from transform.</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 </tbody>
@@ -4320,37 +4335,51 @@ might create a security vulnerability and is not recommended.</p>
 <tbody>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecTransformOperationNone"></a>xmlSecTransformOperationNone</p></td>
-<td class="enum_member_description"><p>the operation is unknown.</p></td>
+<td class="enum_member_description">
+<p>the operation is unknown.</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecTransformOperationEncode"></a>xmlSecTransformOperationEncode</p></td>
-<td class="enum_member_description"><p>the encode operation (for base64 transform).</p></td>
+<td class="enum_member_description">
+<p>the encode operation (for base64 transform).</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecTransformOperationDecode"></a>xmlSecTransformOperationDecode</p></td>
-<td class="enum_member_description"><p>the decode operation (for base64 transform).</p></td>
+<td class="enum_member_description">
+<p>the decode operation (for base64 transform).</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecTransformOperationSign"></a>xmlSecTransformOperationSign</p></td>
-<td class="enum_member_description"><p>the sign or digest operation.</p></td>
+<td class="enum_member_description">
+<p>the sign or digest operation.</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecTransformOperationVerify"></a>xmlSecTransformOperationVerify</p></td>
-<td class="enum_member_description"><p>the verification of signature or digest operation.</p></td>
+<td class="enum_member_description">
+<p>the verification of signature or digest operation.</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecTransformOperationEncrypt"></a>xmlSecTransformOperationEncrypt</p></td>
-<td class="enum_member_description"><p>the encryption operation.</p></td>
+<td class="enum_member_description">
+<p>the encryption operation.</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 <tr>
 <td class="enum_member_name"><p><a name="xmlSecTransformOperationDecrypt"></a>xmlSecTransformOperationDecrypt</p></td>
-<td class="enum_member_description"><p>the decryption operation.</p></td>
+<td class="enum_member_description">
+<p>the decryption operation.</p>
+</td>
 <td class="enum_member_annotations"> </td>
 </tr>
 </tbody>

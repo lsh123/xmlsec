@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<book xmlns="http://www.devhelp.net/book" title="XML Security Library Tutorial" link="index.html" author="Aleksey Sanin" name="xmlsec" version="2" language="c">
+  <chapters>
+    <sub name="XML Security Library Tutorial" link="index.html">
+      <sub name="Overview." link="overview.html"/>
+      <sub name="XML Security Library Structure." link="structure.html"/>
+      <sub name="Building the application with XML Security Library." link="compiling.html">
+        <sub name="Overview." link="compiling.html#compiling-overview"/>
+        <sub name="Include files." link="include-files.html"/>
+        <sub name="Compiling and linking on Unix." link="compiling-unix.html"/>
+        <sub name="Compiling and linking on Windows." link="compiling-windows.html"/>
+        <sub name="Compiling and linking on other systems." link="compiling-others.html"/>
+      </sub>
+      <sub name="Initialization and shutdown." link="init-shutdown.html"/>
+      <sub name="Signing and encrypting documents." link="sign-encrypt.html">
+        <sub name="Overview." link="sign-encrypt.html#sign-encrypt-overview"/>
+        <sub name="Signing a document." link="sign.html"/>
+        <sub name="Encrypting data." link="encrypt.html"/>
+      </sub>
+      <sub name="Creating dynamic templates." link="templates.html">
+        <sub name="Overview." link="templates.html#templates-overview"/>
+        <sub name="Creating dynamic signature templates." link="dynamic-signature-templates.html"/>
+        <sub name="Creating dynamic encryption templates." link="dynamic-encryption-templates.html"/>
+      </sub>
+      <sub name="Verifing and decrypting documents." link="verify-decrypt.html">
+        <sub name="Overview." link="verify-decrypt.html#verify-decrypt-overview"/>
+        <sub name="Verifying a signed document" link="verify.html"/>
+        <sub name="Decrypting an encrypted document" link="decrypt.html"/>
+      </sub>
+      <sub name="Keys." link="keys.html"/>
+      <sub name="Keys manager." link="keysmngr.html">
+        <sub name="Overview." link="keysmngr.html#keysmngr-overview"/>
+        <sub name="Simple keys store." link="simple-keys-store.html"/>
+        <sub name="Using keys manager for signatures/encryption." link="keys-manager-sign-enc.html"/>
+        <sub name="Using keys manager for verification/decryption." link="keys-mngr-verify-decrypt.html"/>
+        <sub name="Implementing a custom keys store." link="custom-keys-store.html"/>
+      </sub>
+      <sub name="Using X509 Certificates." link="x509.html">
+        <sub name="Overview." link="x509.html#x509-overview"/>
+        <sub name="Signing data with X509 certificate." link="sign-x509.html"/>
+        <sub name="Verifing document signed with X509 certificates." link="verify-x509.html"/>
+      </sub>
+      <sub name="Transforms and transforms chain." link="transforms.html"/>
+      <sub name="Using context objects." link="contexts.html"/>
+      <sub name="Examples." link="xmlsec-examples.html">
+        <sub name="XML Security Library Examples." link="xmlsec-examples.html#xmlsec-examples-overview"/>
+        <sub name="Signing a template file." link="xmlsec-examples-sign-template-file.html"/>
+        <sub name="Signing a dynamicaly created template." link="xmlsec-examples-sign-dynamimc-template.html"/>
+        <sub name="Signing enveloped signature with X509 certificate." link="xmlsec-examples-sign-enveloped-x509.html"/>
+        <sub name="Signing a node by ID with X509 certificate." link="xmlsec-examples-sign-id-attr-x509.html"/>
+        <sub name="Verifying a signature with a single key." link="xmlsec-verify-with-key.html"/>
+        <sub name="Verifying a signature with keys manager." link="xmlsec-verify-with-keys-mngr.html"/>
+        <sub name="Verifying an enveloped signature with X509 certificates." link="xmlsec-verify-enveloped-with-x509.html"/>
+        <sub name="Verifying a signature of a node with X509 certificates." link="xmlsec-verify-node-with-x509.html"/>
+        <sub name="Verifying a signature with additional restrictions." link="xmlsec-verify-with-restrictions.html"/>
+        <sub name="Encrypting data with a template file." link="xmlsec-encrypt-template-file.html"/>
+        <sub name="Encrypting data with a dynamicaly created template." link="xmlsec-encrypt-dynamic-template.html"/>
+        <sub name="Encrypting data with a session key." link="xmlsec-encrypt-with-session-key.html"/>
+        <sub name="Decrypting data with a single key." link="xmlsec-decrypt-with-signle-key.html"/>
+        <sub name="Decrypting data with keys manager." link="xmlsec-decrypt-with-keys-mngr.html"/>
+        <sub name="Writing a custom keys manager." link="xmlsec-custom-keys-manager.html"/>
+      </sub>
+      <sub name="APPENDIX A. XML Security Library Signature Klasses." link="xmlsec-signature-klasses.html"/>
+      <sub name="APPENDIX B. XML Security Library Encryption Klasses." link="xmlsec-encryption-klasses.html"/>
+    </sub>
+  </chapters>
+  <functions/>
+</book>

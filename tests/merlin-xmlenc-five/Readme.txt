@@ -4,7 +4,7 @@ Transform[4]
 
 [1] http://www.w3.org/TR/2002/REC-xmldsig-core-20020212/
 [2] http://www.w3.org/Encryption/2001/Drafts/xmlenc-core/
-[3] http://www.ietf.org/internet-drafts/draft-eastlake-xmldsig-uri-02.txt
+[3] https://www.rfc-editor.org/rfc/rfc9231.html
 [4] http://www.w3.org/TR/xmlenc-decrypt
 
 ***

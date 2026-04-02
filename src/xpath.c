@@ -734,7 +734,7 @@ static xmlSecTransformKlass xmlSecTransformXPointerKlass = {
  * xmlSecTransformXPointerGetKlass:
  *
  * The XPointer transform klass
- * (http://www.ietf.org/internet-drafts/draft-eastlake-xmldsig-uri-02.txt).
+ * (https://www.rfc-editor.org/rfc/rfc9231.html).
  *
  * Returns: XPointer transform klass.
  */

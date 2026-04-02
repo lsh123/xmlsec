@@ -62,7 +62,9 @@ docs-manpages: docs-copy $(XMLSEC1_MAN)
 	@echo "-- Building docs for man page ..."
 	@($(MAN2HTML) $(XMLSEC1_MAN) | \
 		  $(GREP) -v '^Content-type: text/html' | \
-		  tr "[:cntrl:]" " " > \
+		  tr "[:cntrl:]" " " | \
+		  $(SED) -e 's|<a href="/cgi-bin/man/man2html">Return to Main Contents</a>||g' \
+		         -e 's|<a href="/cgi-bin/man/man2html">\([^<]*\)</a>|\1|g' > \
 		  $(XMLSEC_HTML) \
 	)
 else

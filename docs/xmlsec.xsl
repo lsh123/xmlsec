@@ -7,8 +7,15 @@
 	<xsl:param name="text"/>
 	<xsl:element name="a">
 	    <xsl:attribute name="href">
-		<xsl:value-of select="$topfolder"/>
-		<xsl:value-of select="$href"/>
+		<xsl:choose>
+		    <xsl:when test="starts-with($href, 'http://') or starts-with($href, 'https://')">
+			<xsl:value-of select="$href"/>
+		    </xsl:when>
+		    <xsl:otherwise>
+			<xsl:value-of select="$topfolder"/>
+			<xsl:value-of select="$href"/>
+		    </xsl:otherwise>
+		</xsl:choose>
 	    </xsl:attribute>
 	    <xsl:value-of select="$text"/>
 	</xsl:element>
@@ -128,7 +135,12 @@
 		    <xsl:with-param name="text">Reporting Bugs</xsl:with-param>
 		</xsl:call-template>
 	    </li>
-            <li><a href="mailing-list.html">Mailing list</a></li>
+	    <li>
+		<xsl:call-template name="linkto">
+		    <xsl:with-param name="href">mailing-list.html</xsl:with-param>
+		    <xsl:with-param name="text">Mailing list</xsl:with-param>
+		</xsl:call-template>
+	    </li>
 	    <li>
 		<xsl:call-template name="linkto">
 		    <xsl:with-param name="href">related.html</xsl:with-param>

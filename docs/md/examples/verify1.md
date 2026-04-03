@@ -1,10 +1,8 @@
 # Verifying a signature with a single key
 
-
 Verifies an XML Digital Signature using a single public key loaded from a PEM file.
 
 ## Source: `verify1.c`
-
 
 ```c
 /**

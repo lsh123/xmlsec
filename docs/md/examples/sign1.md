@@ -1,10 +1,8 @@
 # Signing a template file
 
-
 Signs an XML document using a pre-created signature template file and a PEM private key.
 
 ## Source: `sign1.c`
-
 
 ```c
 /**
@@ -217,7 +215,6 @@ done:
 
 ## Template: `sign1-tmpl.xml`
 
-
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
@@ -245,10 +242,10 @@ XML Security Library example: Simple signature template file for sign1 example.
     </KeyInfo>
   </Signature>
 </Envelope>
+
 ```
 
 ## Result: `sign1-res.xml`
-
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>

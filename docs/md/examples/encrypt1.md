@@ -1,10 +1,8 @@
 # Encrypting data with a template file
 
-
 Encrypts binary data using a pre-created encryption template file.
 
 ## Source: `encrypt1.c`
-
 
 ```c
 /**
@@ -224,7 +222,6 @@ done:
 
 ## Template: `encrypt1-tmpl.xml`
 
-
 ```xml
 <?xml version="1.0"?>
 <!--
@@ -242,7 +239,6 @@ XML Security Library example: Simple encryption template file for encrypt1 examp
 ```
 
 ## Result: `encrypt1-res.xml`
-
 
 ```xml
 <?xml version="1.0"?>

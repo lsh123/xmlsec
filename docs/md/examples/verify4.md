@@ -1,10 +1,8 @@
 # Verifying a signature of a node with X509 certificates
 
-
 Verifies a node signature with X509 certificates.
 
 ## Source: `verify4.c`
-
 
 ```c
 /**

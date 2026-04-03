@@ -1,10 +1,8 @@
 # Signing a dynamically created template
 
-
 Signs an XML document using a dynamically created signature template.
 
 ## Source: `sign2.c`
-
 
 ```c
 /**
@@ -253,7 +251,6 @@ done:
 
 ## Input Document: `sign2-doc.xml`
 
-
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
@@ -267,7 +264,6 @@ XML Security Library example: Original XML doc file for sign2 example.
 ```
 
 ## Result: `sign2-res.xml`
-
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>

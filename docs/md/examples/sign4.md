@@ -1,10 +1,8 @@
 # Signing a node by ID with X509 certificate
 
-
 Signs a specific XML node referenced by ID attribute using an X509 certificate.
 
 ## Source: `sign4.c`
-
 
 ```c
 /**
@@ -283,7 +281,6 @@ done:
 
 ## Input Document: `sign4-doc.xml`
 
-
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
@@ -297,7 +294,6 @@ XML Security Library example: Original XML doc file for sign3 example.
 ```
 
 ## Result: `sign4-res.xml`
-
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>

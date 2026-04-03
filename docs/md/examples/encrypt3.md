@@ -1,10 +1,8 @@
 # Encrypting data with a session key
 
-
 Encrypts an XML document using a session key wrapped with an RSA key from the keys manager.
 
 ## Source: `encrypt3.c`
-
 
 ```c
 /**
@@ -346,7 +344,6 @@ done:
 
 ## Input Document: `encrypt3-doc.xml`
 
-
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
@@ -360,7 +357,6 @@ XML Security Library example: Original XML doc file before encryption (encrypt3 
 ```
 
 ## Result: `encrypt3-res.xml`
-
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>

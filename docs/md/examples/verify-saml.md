@@ -1,10 +1,8 @@
 # Verifying a signature with additional restrictions
 
-
 Verifies an XML Digital Signature with additional restrictions (SAML-style).
 
 ## Source: `verify-saml.c`
-
 
 ```c
 /**
@@ -380,7 +378,6 @@ verify_signature_results(xmlSecDSigCtxPtr dsigCtx) {
 
 ## Valid Template: `verify-saml-tmpl.xml`
 
-
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
@@ -433,7 +430,6 @@ Sign it using the following command (replace __ with double dashes):
 ```
 
 ## Valid Result: `verify-saml-res.xml`
-
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -511,7 +507,6 @@ fBjXssrERn05kpBcrRfzou4r3DCgQFPhjxga
 
 ## Invalid Template: `verify-saml-bad-tmpl.xml`
 
-
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
@@ -571,7 +566,6 @@ Sign it using the following command (replace __ with double dashes):
 ```
 
 ## Invalid Result: `verify-saml-bad-res.xml`
-
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>

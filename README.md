@@ -57,7 +57,7 @@ apt install libgnutls30
 apt install libgcrypt20 libgcrypt20-dev
 
 # required for building man pages and docs
-apt install help2man man2html gtk-doc-tools
+apt install help2man man2html gtk-doc-tools pandoc
 ```
 
 ### Building XMLSec on Linux, Unix, MacOSX, MinGW, Cygwin, etc

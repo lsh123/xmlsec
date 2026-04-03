@@ -1,10 +1,8 @@
 # Decrypting data with keys manager
 
-
 Decrypts encrypted XML data using a keys manager loaded with DES keys.
 
 ## Source: `decrypt2.c`
-
 
 ```c
 /**

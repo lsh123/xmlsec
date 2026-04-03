@@ -1,10 +1,8 @@
 # Verifying an enveloped signature with X509 certificates
 
-
 Verifies an enveloped XML Digital Signature using X509 certificate chain verification.
 
 ## Source: `verify3.c`
-
 
 ```c
 /**

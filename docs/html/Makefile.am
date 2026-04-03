@@ -79,6 +79,8 @@ docs-copy:
 		echo "-- Copying source html to build folder ..." ; \
 		if [ z"$(srcdir)" != z"$(builddir)" ] ; then  \
 			$(CP)  $(srcdir)/*.html $(builddir)/ ; \
+			$(CP) -r $(srcdir)/images $(builddir)/images ; \
+			$(CP) -r $(srcdir)/css $(builddir)/css ; \
 		fi ; \
 	)
 
@@ -132,6 +134,8 @@ clean-local:
 		if [ z"$(srcdir)" != z"$(builddir)" ] ; then \
 			(chmod -Rf u+w $(builddir)/*.html 2>/dev/null || true) ; \
 			$(RM) -rf $(builddir)/*.html ; \
+			$(RM) -rf $(builddir)/images ; \
+			$(RM) -rf $(builddir)/css ; \
 		fi ; \
 	 )
 

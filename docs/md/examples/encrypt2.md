@@ -1,10 +1,8 @@
 # Encrypting data with a dynamically created template
 
-
 Encrypts an XML document using a dynamically created encryption template.
 
 ## Source: `encrypt2.c`
-
 
 ```c
 /**
@@ -249,7 +247,6 @@ done:
 
 ## Input Document: `encrypt2-doc.xml`
 
-
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
@@ -263,7 +260,6 @@ XML Security Library example: Original XML doc file before encryption (encrypt2 
 ```
 
 ## Result: `encrypt2-res.xml`
-
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>

@@ -1,6 +1,7 @@
 #
 # docs/sgml/Makefile.am
-# SGML source files and SGML preparation logic for api, tutorial, and examples.
+# SGML source files and SGML preparation logic for API documentation.
+# Tutorial and examples are now generated from Markdown (docs/md/).
 # HTML generation is handled by docs/html/.
 #
 NULL =
@@ -24,26 +25,6 @@ API_SOURCE_CODE_DIR        = $(abs_builddir)/api/code
 API_MAIN_SGML_SRC_FILE = $(srcdir)/api/xmlsec.sgml
 API_MAIN_SGML_FILE     = $(API_SGML_DIR)/xmlsec.sgml
 
-##############################################################################
-# Tutorial SGML variables
-##############################################################################
-TUTORIAL_SGML_SRC_DIR  = $(srcdir)/tutorial
-TUTORIAL_SGML_DIR      = $(builddir)/tutorial/sgml.tmp
-TUTORIAL_MAIN_SGML_FILE = $(TUTORIAL_SGML_DIR)/xmlsec-tutorial.sgml
-
-##############################################################################
-# Examples SGML variables
-##############################################################################
-EXAMPLES_SGML_SRC_DIR  = $(srcdir)/examples
-EXAMPLES_SGML_DIR      = $(builddir)/examples/sgml.tmp
-EXAMPLES_EXAMPLES_DIR  = $(EXAMPLES_SGML_DIR)/examples
-EXAMPLES_MAIN_SGML_FILE = $(EXAMPLES_SGML_DIR)/xmlsec-examples.sgml
-
-EXAMPLES_SOURCE_DIR = $(top_srcdir)/examples
-EXAMPLES_SOURCE_FILES = \
-	$(shell find $(EXAMPLES_SOURCE_DIR) -name '*.c' -print) \
-	$(shell find $(EXAMPLES_SOURCE_DIR) -name '*.xml' -print)
-
 CRYPTO_LIBS_LIST = \
 	openssl \
 	nss \
@@ -66,21 +47,18 @@ SOURCE_CODE_FILES = \
 # files that are distributed from sources
 EXTRA_DIST := \
 	$(srcdir)/api      \
-	$(srcdir)/tutorial \
-	$(srcdir)/examples \
 	$(NULL)
 
-.PHONY: all docs api-docs tutorial-docs examples-docs \
-        api-sgml api-sgml-base api-scan api-xmlsec-index \
-        tutorial-sgml examples-sgml examples-sources
+.PHONY: all docs api-docs \
+        api-sgml api-sgml-base api-scan api-xmlsec-index
 
 all:
 	@echo "======= Run 'make docs' in the xmlsec/docs folder to rebuild docs"
 
-# if we have the build tools, run all three SGML prep steps
+# if we have the build tools, run the API SGML prep step
 if BUILD_API_DOCS
 
-docs: api-docs tutorial-docs examples-docs
+docs: api-docs
 
 else
 
@@ -222,109 +200,6 @@ api-xmlsec-index: api-scan $(API_SGML_DIR)/.sentinel
 
 
 ##############################################################################
-# Tutorial SGML preparation
-##############################################################################
-
-tutorial-docs: tutorial-sgml
-
-#
-# Fix up SGML files (same fixups as API).
-#
-tutorial-sgml: $(TUTORIAL_MAIN_SGML_FILE) $(TUTORIAL_SGML_DIR)/.sentinel
-	@(for i in `find $(TUTORIAL_SGML_DIR) -name "*.sgml" -or -name "*.xml" -print` ; do \
-			echo "--- Fixing up '$$i'" ; \
-	        cat $$i | \
-	          $(SED) 's!\(<dsig:\)\([^/]*\)\(\/>\)!\&lt;dsig:\2\/\&gt;!g' | \
-	          $(SED) 's!\(<enc:\)\([^/]*\)\(\/>\)!\&lt;enc:\2\/\&gt;!g' | \
-	          $(SED) 's!\(<dsig:\)\(\w*\)\(>\)!\&lt;dsig:\2\/\&gt;!g' | \
-	          $(SED) 's!\(<enc:\)\(\w*\)\(>\)!\&lt;enc:\2\/\&gt;!g' | \
-	          $(SED) 's!\(&lt;dsig:\)\([^/]*\)\(\/&gt;\)!<ulink URL=\"http://www.w3.org/TR/xmldsig-core/#sec-\2\">\1\2\3</ulink>!g' | \
-	          $(SED) 's!\(&lt;enc:\)\([^/]*\)\(\/&gt;\)!<ulink URL=\"http://www.w3.org/TR/xmlenc-core/#sec-\2\">\1\2\3</ulink>!g' | \
-	          $(SED) 's!<para \/>!<para></para>!g' | \
-	          $(SED) 's!linkend=\"\(.*\)Ptr\"!linkend=\"\1\"!g' | \
-	          $(SED) 's!<colspec [^/]*\/>!!g' | \
-	          $(SED) 's!<programlisting language="C"!<programlisting!g' | \
-	          $(SED) 's!\%gtkdocentities;!!g' | \
-	          $(SED) 's!title>\n!title>!g' | \
-		  $(SED) 's!<\/title><\/refsect1>\n!<\/title><para><\/para><\/refsect1>!g' | \
-		  $(SED) 's!para>\n!para>!g' > \
-	          $$i.tmp; \
-	        $(MV) -f $$i.tmp $$i; \
-	 done);
-
-$(TUTORIAL_MAIN_SGML_FILE): $(TUTORIAL_SGML_SRC_DIR)/xmlsec-tutorial.sgml $(TUTORIAL_SGML_DIR)/.sentinel
-	@( \
-		echo "-- Copying sgml source files..."; \
-		$(CP) $(TUTORIAL_SGML_SRC_DIR)/*.sgml $(TUTORIAL_SGML_DIR)/ \
-	)
-
-
-##############################################################################
-# Examples SGML preparation
-##############################################################################
-
-examples-docs: examples-sgml
-
-#
-# Fix up SGML files (same fixups as API).
-#
-examples-sgml: $(EXAMPLES_MAIN_SGML_FILE) examples-sources $(EXAMPLES_SGML_DIR)/.sentinel
-	@(for i in `find $(EXAMPLES_SGML_DIR) -name "*.sgml" -or -name "*.xml" -print` ; do \
-			echo "--- Fixing up '$$i'" ; \
-	        cat $$i | \
-	          $(SED) 's!\(<dsig:\)\([^/]*\)\(\/>\)!\&lt;dsig:\2\/\&gt;!g' | \
-	          $(SED) 's!\(<enc:\)\([^/]*\)\(\/>\)!\&lt;enc:\2\/\&gt;!g' | \
-	          $(SED) 's!\(<dsig:\)\(\w*\)\(>\)!\&lt;dsig:\2\/\&gt;!g' | \
-	          $(SED) 's!\(<enc:\)\(\w*\)\(>\)!\&lt;enc:\2\/\&gt;!g' | \
-	          $(SED) 's!\(&lt;dsig:\)\([^/]*\)\(\/&gt;\)!<ulink URL=\"http://www.w3.org/TR/xmldsig-core/#sec-\2\">\1\2\3</ulink>!g' | \
-	          $(SED) 's!\(&lt;enc:\)\([^/]*\)\(\/&gt;\)!<ulink URL=\"http://www.w3.org/TR/xmlenc-core/#sec-\2\">\1\2\3</ulink>!g' | \
-	          $(SED) 's!<para \/>!<para></para>!g' | \
-	          $(SED) 's!linkend=\"\(.*\)Ptr\"!linkend=\"\1\"!g' | \
-	          $(SED) 's!<colspec [^/]*\/>!!g' | \
-	          $(SED) 's!<programlisting language="C"!<programlisting!g' | \
-	          $(SED) 's!\%gtkdocentities;!!g' | \
-	          $(SED) 's!title>\n!title>!g' | \
-		  $(SED) 's!<\/title><\/refsect1>\n!<\/title><para><\/para><\/refsect1>!g' | \
-		  $(SED) 's!para>\n!para>!g' > \
-	          $$i.tmp; \
-	        $(MV) -f $$i.tmp $$i; \
-	 done);
-
-$(EXAMPLES_MAIN_SGML_FILE): $(EXAMPLES_SGML_SRC_DIR)/xmlsec-examples.sgml $(EXAMPLES_SGML_SRC_DIR)/examples.sgml $(EXAMPLES_SGML_DIR)/.sentinel
-	@( \
-		echo "-- Copying sgml source files..."; \
-		$(CP) $(EXAMPLES_SGML_SRC_DIR)/*.sgml $(EXAMPLES_SGML_DIR)/ \
-	)
-
-#
-# Convert C example files to SGML RefEntry files.
-# We get the file title from the string "XML Security Library example: ..."
-# which is usually at the top of each file. Also, "unsafe" xml characters are
-# escaped.
-#
-examples-sources: $(EXAMPLES_EXAMPLES_DIR)/.sentinel
-	@echo "-- Preprocessing example source files into '$(EXAMPLES_EXAMPLES_DIR)' ..."
-	@$(RM) -rf $(EXAMPLES_EXAMPLES_DIR)/*
-	@(for i in $(EXAMPLES_SOURCE_FILES) ; do \
-	    file_name=`echo $$i | $(SED) 's#.*/##' | $(SED) 's#\..*$$##'`; \
-	    file_ext=`echo $$i | $(SED) 's#.*/##' | $(SED) 's#.*\.##'`; \
-	    echo "--- Converting $$file_name.$$file_ext to $$file_name.sgml ..."; \
-	    file_title=`cat $$i | $(GREP) 'XML Security Library example: ' | $(SED) 's#^.*: *##'`; \
-	    echo "<sect2 id=\"xmlsec-example-$$file_name\" >" > \
-	        $(EXAMPLES_EXAMPLES_DIR)/$$file_name.sgml; \
-	    echo "<title>$$file_name.$$file_ext</title><para><informalexample><programlisting>" >> \
-		    $(EXAMPLES_EXAMPLES_DIR)/$$file_name.sgml; \
-	    cat $$i | \
-		$(SED) "s#&#\&amp;#g" | \
-		$(SED) "s#<#\&lt;#g" | \
-		$(SED) "s#>#\&gt;#g" >> \
-		    $(EXAMPLES_EXAMPLES_DIR)/$$file_name.sgml; \
-	    echo "</programlisting></informalexample></para></sect2>" >> \
-		    $(EXAMPLES_EXAMPLES_DIR)/$$file_name.sgml; \
-	done);
-
-
-##############################################################################
 # Sentinel pattern — creates directories as needed
 ##############################################################################
 
@@ -344,7 +219,5 @@ examples-sources: $(EXAMPLES_EXAMPLES_DIR)/.sentinel
 clean-local:
 	@$(RM) -rf $(API_SOURCE_CODE_DIR) $(API_SGML_DIR) $(API_GTKDOC_MKDB_OUTPUT_DIR)
 	@$(RM) -f $(API_SCAN_DIR)/*.txt $(API_SCAN_DIR)/*.types $(API_SCAN_DIR)/*.bak $(API_SCAN_DIR)/index.sgml
-	@$(RM) -rf $(TUTORIAL_SGML_DIR)
-	@$(RM) -rf $(EXAMPLES_SGML_DIR)
 
 distclean-local: clean-local

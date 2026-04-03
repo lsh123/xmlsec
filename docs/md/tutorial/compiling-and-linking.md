@@ -37,33 +37,38 @@ If necessary, the application should also include LibXML, LibXSLT and crypto lib
 ## Compiling and linking on Unix
 
 There are several ways to get necessary compilation and linking information on Unix and application can use any of these methods to do crypto engine selection either at linking or run time.
-- PKG_CHECK_MODULES() macro
-  **Example: Using PKG_CHECK_MODULES() macro in a configure.in file
-		    to select crypto engine (openssl) at linking time**
-  ```
+
+### PKG_CHECK_MODULES() macro
+
+**Example: Using PKG_CHECK_MODULES() macro in a configure.in file to select crypto engine (openssl) at linking time**
+
+```autoconf
 dnl
 dnl Check for xmlsec and friends
 dnl
-PKG_CHECK_MODULES(XMLSEC, xmlsec1-openssl >= 1.0.0 xml2 libxslt,,exit)
+PKG_CHECK_MODULES(XMLSEC, xmlsec1-openssl >= 1.3.0 xml2 libxslt,,exit)
 CFLAGS="$CFLAGS $XMLSEC_CFLAGS"
 CPPFLAGS="$CPPFLAGS $XMLSEC_CFLAGS"
 LDFLAGS="$LDFLAGS $XMLSEC_LIBS"
 ```
-  **Example: Using PKG_CHECK_MODULES() macro in a configure.in file
-		    to enable dynamical loading of xmlsec-crypto library**
-  ```
+
+**Example: Using PKG_CHECK_MODULES() macro in a configure.in file to enable dynamical loading of xmlsec-crypto library**
+
+```autoconf
 dnl
 dnl Check for xmlsec and friends
 dnl
-PKG_CHECK_MODULES(XMLSEC, xmlsec1 >= 1.0.0 xml2 libxslt,,exit)
+PKG_CHECK_MODULES(XMLSEC, xmlsec1 >= 1.3.0 xml2 libxslt,,exit)
 CFLAGS="$CFLAGS $XMLSEC_CFLAGS"
 CPPFLAGS="$CPPFLAGS $XMLSEC_CFLAGS"
 LDFLAGS="$LDFLAGS $XMLSEC_LIBS"
 ```
-- pkg-config script
-  **Example: Using pkg-config script in a Makefile
-		    to select crypto engine (nss) at linking time**
-  ```
+
+### pkg-config script
+
+**Example: Using pkg-config script in a Makefile to select crypto engine (nss) at linking time**
+
+```makefile
 PROGRAM = test
 PROGRAM_FILES = test.c
 
@@ -79,9 +84,10 @@ all: $(PROGRAM)
 clean:
 	@rm -rf $(PROGRAM)
 ```
-  **Example: Using pkg-config script in a Makefile
-		    to enable dynamical loading of xmlsec-crypto library**
-  ```
+
+**Example: Using pkg-config script in a Makefile to enable dynamical loading of xmlsec-crypto library**
+
+```makefile
 PROGRAM = test
 PROGRAM_FILES = test.c
 
@@ -97,10 +103,12 @@ all: $(PROGRAM)
 clean:
 	@rm -rf $(PROGRAM)
 ```
-- xmlsec1-config script
-  **Example: Using xmlsec1-config script in a Makefile
-		    to select crypto engine (e.g. gnutls) at linking time**
-  ```
+
+### xmlsec1-config script
+
+**Example: Using xmlsec1-config script in a Makefile to select crypto engine (e.g. gnutls) at linking time**
+
+```makefile
 PROGRAM = test
 PROGRAM_FILES = test.c
 
@@ -116,9 +124,10 @@ all: $(PROGRAM)
 clean:
 	@rm -rf $(PROGRAM)
 ```
-  **Example: Using xmlsec1-config script in a Makefile
-		    to enable dynamical loading of xmlsec-crypto library**
-  ```
+
+**Example: Using xmlsec1-config script in a Makefile to enable dynamical loading of xmlsec-crypto library**
+
+```makefile
 PROGRAM = test
 PROGRAM_FILES = test.c
 
@@ -138,16 +147,22 @@ clean:
 ## Compiling and linking on Windows
 
 On Windows there is no such simple and elegant solution. Please check `README` file in `win32` folder of the library package for latest instructions. However, there are few general things, that you need to remember:
+
 - *All libraries linked to your application must be compiled with the same Microsoft Runtime Libraries.*
+
 - *Static linking with XML Security Library requires additional global defines:*
-  ```
+
+```c
 #define LIBXML_STATIC
 #define LIBXSLT_STATIC
 #define XMLSEC_STATIC
 ```
+
 - If you do not want to dynamicaly load xmlsec-crypto library and prefer to select crypto engine at linking then you should link your application with xmlsec and at least one of xmlsec-crypto libraries.
+
 - In order to enable dynamic loading for xmlsec-crypto library you should add additional global define:
-  ```
+
+```c
 #define XMLSEC_CRYPTO_DYNAMIC_LOADING
 ```
 

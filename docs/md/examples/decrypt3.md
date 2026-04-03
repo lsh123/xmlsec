@@ -1,10 +1,8 @@
 # Writing a custom keys manager
 
-
 Demonstrates implementing a custom file-based keys store for decryption.
 
 ## Source: `decrypt3.c`
-
 
 ```c
 /**

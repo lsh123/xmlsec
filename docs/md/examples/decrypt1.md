@@ -1,10 +1,8 @@
 # Decrypting data with a single key
 
-
 Decrypts encrypted XML data using a single DES key loaded from a binary file.
 
 ## Source: `decrypt1.c`
-
 
 ```c
 /**

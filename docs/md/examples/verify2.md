@@ -1,10 +1,8 @@
 # Verifying a signature with keys manager
 
-
 Verifies an XML Digital Signature using a keys manager loaded with multiple keys.
 
 ## Source: `verify2.c`
-
 
 ```c
 /**

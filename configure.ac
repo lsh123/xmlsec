@@ -2824,9 +2824,11 @@ include/xmlsec/Makefile
 src/Makefile
 apps/Makefile
 docs/Makefile
-docs/api/Makefile
-docs/tutorial/Makefile
-docs/examples/Makefile
+docs/sgml/Makefile
+docs/html/Makefile
+docs/html/api/Makefile
+docs/html/tutorial/Makefile
+docs/html/examples/Makefile
 man/Makefile
 xmlsec1-openssl.pc:xmlsec-openssl.pc.in
 xmlsec1-gnutls.pc:xmlsec-gnutls.pc.in

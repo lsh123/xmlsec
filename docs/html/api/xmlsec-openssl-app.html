@@ -1,0 +1,1464 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>app: XML Security Library Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
+<link rel="home" href="index.html" title="XML Security Library Reference Manual">
+<link rel="up" href="xmlsec-openssl-ref.html" title="XML Security Library for OpenSLL API Reference">
+<link rel="prev" href="xmlsec-openssl-ref.html" title="XML Security Library for OpenSLL API Reference">
+<link rel="next" href="xmlsec-openssl-crypto.html" title="crypto">
+<meta name="generator" content="GTK-Doc V1.34.0 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body><table width="100%" valign="top"><tr valign="top">
+<td valign="top" align="left" width="210">
+<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../download.html">Download</a></li>
+<ul><li><a href="https://github.com/lsh123/xmlsec">GitHub</a></li></ul>
+<li><a href="../news.html">News</a></li>
+<li><a href="../documentation.html">Documentation</a></li>
+<ul>
+<li><a href="../faq.html">FAQ</a></li>
+<li><a href="../tutorial/index.html">Tutorial</a></li>
+<li><a href="../examples/index.html">Examples</a></li>
+<li><a href="../api/xmlsec-reference.html">API reference</a></li>
+</ul>
+<li><a href="../xmldsig.html">XML Digital Signature</a></li>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
+<li><a href="../bugs.html">Reporting Bugs</a></li>
+<li><a href="../mailing-list.html">Mailing list</a></li>
+<li><a href="../related.html">Related</a></li>
+<li><a href="../authors.html">Authors</a></li>
+</ul>
+<table width="100%">
+<tr>
+<td width="15"></td>
+<td><a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a></td>
+</tr>
+<tr>
+<td width="15"></td>
+<td><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a></td>
+</tr>
+<tr>
+<td width="15"></td>
+<td><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a></td>
+</tr>
+<!--Links - start--><!--Links - end-->
+</table>
+</td>
+<td valign="top"><table width="80%" valign="top" style="margin-left:10px;"><tr><td valign="top" align="left" id="xmlsecContent">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#xmlsec-openssl-app.description" class="shortcut">Description</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="xmlsec-openssl-ref.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="xmlsec-openssl-ref.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="xmlsec-openssl-crypto.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry">
+<a name="xmlsec-openssl-app"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="xmlsec-openssl-app.top_of_page"></a>app</span></h2>
+<p>app — Application support functions for OpenSSL.</p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="xmlsec-openssl-app.stability-level"></a><h2>Stability Level</h2>
+<acronym title="The intention of a Stable interface is to enable arbitrary third
+          parties to develop applications to these interfaces, release them, and
+          have confidence that they will run on all minor releases of the product
+          (after the one in which the interface was introduced, and within the same
+          major release). Even at a major release, incompatible changes are expected
+          to be rare, and to have strong justifications.
+          "><span class="acronym">Stable</span></acronym>, unless otherwise indicated
+</div>
+<div class="refsect1">
+<a name="xmlsec-openssl-app.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-app.html#xmlSecOpenSSLAppInit" title="xmlSecOpenSSLAppInit ()">xmlSecOpenSSLAppInit</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-app.html#xmlSecOpenSSLAppShutdown" title="xmlSecOpenSSLAppShutdown ()">xmlSecOpenSSLAppShutdown</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-app.html#xmlSecOpenSSLAppDefaultKeysMngrInit" title="xmlSecOpenSSLAppDefaultKeysMngrInit ()">xmlSecOpenSSLAppDefaultKeysMngrInit</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-app.html#xmlSecOpenSSLAppDefaultKeysMngrAdoptKey" title="xmlSecOpenSSLAppDefaultKeysMngrAdoptKey ()">xmlSecOpenSSLAppDefaultKeysMngrAdoptKey</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-app.html#xmlSecOpenSSLAppDefaultKeysMngrVerifyKey" title="xmlSecOpenSSLAppDefaultKeysMngrVerifyKey ()">xmlSecOpenSSLAppDefaultKeysMngrVerifyKey</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-app.html#xmlSecOpenSSLAppDefaultKeysMngrLoad" title="xmlSecOpenSSLAppDefaultKeysMngrLoad ()">xmlSecOpenSSLAppDefaultKeysMngrLoad</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-app.html#xmlSecOpenSSLAppDefaultKeysMngrSave" title="xmlSecOpenSSLAppDefaultKeysMngrSave ()">xmlSecOpenSSLAppDefaultKeysMngrSave</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-app.html#xmlSecOpenSSLAppKeysMngrCertLoad" title="xmlSecOpenSSLAppKeysMngrCertLoad ()">xmlSecOpenSSLAppKeysMngrCertLoad</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-app.html#xmlSecOpenSSLAppKeysMngrCertLoadMemory" title="xmlSecOpenSSLAppKeysMngrCertLoadMemory ()">xmlSecOpenSSLAppKeysMngrCertLoadMemory</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-app.html#xmlSecOpenSSLAppKeysMngrCertLoadBIO" title="xmlSecOpenSSLAppKeysMngrCertLoadBIO ()">xmlSecOpenSSLAppKeysMngrCertLoadBIO</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-app.html#xmlSecOpenSSLAppKeysMngrCrlLoad" title="xmlSecOpenSSLAppKeysMngrCrlLoad ()">xmlSecOpenSSLAppKeysMngrCrlLoad</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-app.html#xmlSecOpenSSLAppKeysMngrCrlLoadMemory" title="xmlSecOpenSSLAppKeysMngrCrlLoadMemory ()">xmlSecOpenSSLAppKeysMngrCrlLoadMemory</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-app.html#xmlSecOpenSSLAppKeysMngrCrlLoadBIO" title="xmlSecOpenSSLAppKeysMngrCrlLoadBIO ()">xmlSecOpenSSLAppKeysMngrCrlLoadBIO</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-app.html#xmlSecOpenSSLAppKeysMngrCrlLoadAndVerify" title="xmlSecOpenSSLAppKeysMngrCrlLoadAndVerify ()">xmlSecOpenSSLAppKeysMngrCrlLoadAndVerify</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-app.html#xmlSecOpenSSLAppKeysMngrAddCertsPath" title="xmlSecOpenSSLAppKeysMngrAddCertsPath ()">xmlSecOpenSSLAppKeysMngrAddCertsPath</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-app.html#xmlSecOpenSSLAppKeysMngrAddCertsFile" title="xmlSecOpenSSLAppKeysMngrAddCertsFile ()">xmlSecOpenSSLAppKeysMngrAddCertsFile</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-app.html#xmlSecOpenSSLAppKeyLoadEx" title="xmlSecOpenSSLAppKeyLoadEx ()">xmlSecOpenSSLAppKeyLoadEx</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-app.html#xmlSecOpenSSLAppKeyLoadMemory" title="xmlSecOpenSSLAppKeyLoadMemory ()">xmlSecOpenSSLAppKeyLoadMemory</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-app.html#xmlSecOpenSSLAppKeyLoadBIO" title="xmlSecOpenSSLAppKeyLoadBIO ()">xmlSecOpenSSLAppKeyLoadBIO</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-app.html#xmlSecOpenSSLAppPkcs12Load" title="xmlSecOpenSSLAppPkcs12Load ()">xmlSecOpenSSLAppPkcs12Load</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-app.html#xmlSecOpenSSLAppPkcs12LoadMemory" title="xmlSecOpenSSLAppPkcs12LoadMemory ()">xmlSecOpenSSLAppPkcs12LoadMemory</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-app.html#xmlSecOpenSSLAppPkcs12LoadBIO" title="xmlSecOpenSSLAppPkcs12LoadBIO ()">xmlSecOpenSSLAppPkcs12LoadBIO</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-app.html#xmlSecOpenSSLAppKeyCertLoad" title="xmlSecOpenSSLAppKeyCertLoad ()">xmlSecOpenSSLAppKeyCertLoad</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-app.html#xmlSecOpenSSLAppKeyCertLoadMemory" title="xmlSecOpenSSLAppKeyCertLoadMemory ()">xmlSecOpenSSLAppKeyCertLoadMemory</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">int</span></font>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-app.html#xmlSecOpenSSLAppKeyCertLoadBIO" title="xmlSecOpenSSLAppKeyCertLoadBIO ()">xmlSecOpenSSLAppKeyCertLoadBIO</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-app.html#xmlSecOpenSSLAppKeyFromCertLoadBIO" title="xmlSecOpenSSLAppKeyFromCertLoadBIO ()">xmlSecOpenSSLAppKeyFromCertLoadBIO</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<font><span class="returnvalue">void</span></font> *
+</td>
+<td class="function_name">
+<a class="link" href="xmlsec-openssl-app.html#xmlSecOpenSSLAppGetDefaultPwdCallback" title="xmlSecOpenSSLAppGetDefaultPwdCallback ()">xmlSecOpenSSLAppGetDefaultPwdCallback</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="xmlsec-openssl-app.description"></a><h2>Description</h2>
+<p>Common functions for the xmlsec1 command-line utility for OpenSSL.</p>
+</div>
+<div class="refsect1">
+<a name="xmlsec-openssl-app.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="xmlSecOpenSSLAppInit"></a><h3>xmlSecOpenSSLAppInit ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecOpenSSLAppInit (<em class="parameter"><code>const <font><span class="type">char</span></font> *config</code></em>);</pre>
+<p>General crypto engine initialization. This function is used
+by the XMLSec command-line utility and is called before the
+<em class="parameter"><code>xmlSecInit</code></em>
+ function.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLAppInit.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>config</p></td>
+<td class="parameter_description"><p>the path to certs.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecOpenSSLAppInit.returns"></a><h4>Returns</h4>
+<p> 0 on success or a negative value otherwise.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLAppShutdown"></a><h3>xmlSecOpenSSLAppShutdown ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecOpenSSLAppShutdown (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>General crypto engine shutdown. This function is used
+by the XMLSec command-line utility and is called after the
+<em class="parameter"><code>xmlSecShutdown</code></em>
+ function.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLAppShutdown.returns"></a><h4>Returns</h4>
+<p> 0 on success or a negative value otherwise.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLAppDefaultKeysMngrInit"></a><h3>xmlSecOpenSSLAppDefaultKeysMngrInit ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecOpenSSLAppDefaultKeysMngrInit (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>);</pre>
+<p>Initializes <em class="parameter"><code>mngr</code></em>
+ with openssl keys store <font><span class="type">xmlSecOpenSSLKeysStoreId</span></font>
+and a default OpenSSL crypto key data stores.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLAppDefaultKeysMngrInit.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>mngr</p></td>
+<td class="parameter_description"><p>the pointer to keys manager.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecOpenSSLAppDefaultKeysMngrInit.returns"></a><h4>Returns</h4>
+<p> 0 on success or a negative value otherwise.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLAppDefaultKeysMngrAdoptKey"></a><h3>xmlSecOpenSSLAppDefaultKeysMngrAdoptKey ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecOpenSSLAppDefaultKeysMngrAdoptKey
+                               (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>,
+                                <em class="parameter"><code><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="type">xmlSecKeyPtr</span></a> key</code></em>);</pre>
+<p>Adds <em class="parameter"><code>key</code></em>
+ to the keys manager <em class="parameter"><code>mngr</code></em>
+ created with <a class="link" href="xmlsec-openssl-app.html#xmlSecOpenSSLAppDefaultKeysMngrInit" title="xmlSecOpenSSLAppDefaultKeysMngrInit ()"><span class="type">xmlSecOpenSSLAppDefaultKeysMngrInit</span></a>
+function.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLAppDefaultKeysMngrAdoptKey.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>mngr</p></td>
+<td class="parameter_description"><p>the pointer to keys manager.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>key</p></td>
+<td class="parameter_description"><p>the pointer to key.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecOpenSSLAppDefaultKeysMngrAdoptKey.returns"></a><h4>Returns</h4>
+<p> 0 on success or a negative value otherwise.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLAppDefaultKeysMngrVerifyKey"></a><h3>xmlSecOpenSSLAppDefaultKeysMngrVerifyKey ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecOpenSSLAppDefaultKeysMngrVerifyKey
+                               (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>,
+                                <em class="parameter"><code><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="type">xmlSecKeyPtr</span></a> key</code></em>,
+                                <em class="parameter"><code><a class="link" href="xmlsec-keyinfo.html#xmlSecKeyInfoCtx" title="struct xmlSecKeyInfoCtx"><span class="type">xmlSecKeyInfoCtxPtr</span></a> keyInfoCtx</code></em>);</pre>
+<p>Verifies <em class="parameter"><code>key</code></em>
+ with the keys manager <em class="parameter"><code>mngr</code></em>
+ created with <a class="link" href="xmlsec-app.html#xmlSecCryptoAppDefaultKeysMngrInit" title="xmlSecCryptoAppDefaultKeysMngrInit ()"><span class="type">xmlSecCryptoAppDefaultKeysMngrInit</span></a>
+function:</p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem"><p>Checks that key certificate is present</p></li>
+<li class="listitem"><p>Checks that key certificate is valid</p></li>
+</ul></div>
+<p>Adds <em class="parameter"><code>key</code></em>
+ to the keys manager <em class="parameter"><code>mngr</code></em>
+ created with <a class="link" href="xmlsec-app.html#xmlSecCryptoAppDefaultKeysMngrInit" title="xmlSecCryptoAppDefaultKeysMngrInit ()"><span class="type">xmlSecCryptoAppDefaultKeysMngrInit</span></a>
+function.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLAppDefaultKeysMngrVerifyKey.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>mngr</p></td>
+<td class="parameter_description"><p>the pointer to keys manager.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>key</p></td>
+<td class="parameter_description"><p>the pointer to key.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>keyInfoCtx</p></td>
+<td class="parameter_description"><p>the key info context for verification.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecOpenSSLAppDefaultKeysMngrVerifyKey.returns"></a><h4>Returns</h4>
+<p> 1 if key is verified, 0 otherwise, or a negative value if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLAppDefaultKeysMngrLoad"></a><h3>xmlSecOpenSSLAppDefaultKeysMngrLoad ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecOpenSSLAppDefaultKeysMngrLoad (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>,
+                                     <em class="parameter"><code>const <font><span class="type">char</span></font> *uri</code></em>);</pre>
+<p>Loads XML keys file from <em class="parameter"><code>uri</code></em>
+ to the keys manager <em class="parameter"><code>mngr</code></em>
+ created
+with <a class="link" href="xmlsec-openssl-app.html#xmlSecOpenSSLAppDefaultKeysMngrInit" title="xmlSecOpenSSLAppDefaultKeysMngrInit ()"><span class="type">xmlSecOpenSSLAppDefaultKeysMngrInit</span></a> function.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLAppDefaultKeysMngrLoad.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>mngr</p></td>
+<td class="parameter_description"><p>the pointer to keys manager.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>uri</p></td>
+<td class="parameter_description"><p>the uri.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecOpenSSLAppDefaultKeysMngrLoad.returns"></a><h4>Returns</h4>
+<p> 0 on success or a negative value otherwise.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLAppDefaultKeysMngrSave"></a><h3>xmlSecOpenSSLAppDefaultKeysMngrSave ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecOpenSSLAppDefaultKeysMngrSave (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>,
+                                     <em class="parameter"><code>const <font><span class="type">char</span></font> *filename</code></em>,
+                                     <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataType" title="xmlSecKeyDataType"><span class="type">xmlSecKeyDataType</span></a> type</code></em>);</pre>
+<p>Saves keys from <em class="parameter"><code>mngr</code></em>
+ to  XML keys file.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLAppDefaultKeysMngrSave.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>mngr</p></td>
+<td class="parameter_description"><p>the pointer to keys manager.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>filename</p></td>
+<td class="parameter_description"><p>the destination filename.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>type</p></td>
+<td class="parameter_description"><p>the type of keys to save (public/private/symmetric).</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecOpenSSLAppDefaultKeysMngrSave.returns"></a><h4>Returns</h4>
+<p> 0 on success or a negative value otherwise.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLAppKeysMngrCertLoad"></a><h3>xmlSecOpenSSLAppKeysMngrCertLoad ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecOpenSSLAppKeysMngrCertLoad (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>,
+                                  <em class="parameter"><code>const <font><span class="type">char</span></font> *filename</code></em>,
+                                  <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataFormat" title="enum xmlSecKeyDataFormat"><span class="type">xmlSecKeyDataFormat</span></a> format</code></em>,
+                                  <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataType" title="xmlSecKeyDataType"><span class="type">xmlSecKeyDataType</span></a> type</code></em>);</pre>
+<p>Reads cert from <em class="parameter"><code>filename</code></em>
+ and adds to the list of trusted or known
+untrusted certs in <em class="parameter"><code>store</code></em>
+.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLAppKeysMngrCertLoad.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>mngr</p></td>
+<td class="parameter_description"><p>the keys manager.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>filename</p></td>
+<td class="parameter_description"><p>the certificate file.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>format</p></td>
+<td class="parameter_description"><p>the certificate file format.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>type</p></td>
+<td class="parameter_description"><p>the flag that indicates is the certificate in <em class="parameter"><code>filename</code></em>
+trusted or not.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecOpenSSLAppKeysMngrCertLoad.returns"></a><h4>Returns</h4>
+<p> 0 on success or a negative value otherwise.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLAppKeysMngrCertLoadMemory"></a><h3>xmlSecOpenSSLAppKeysMngrCertLoadMemory ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecOpenSSLAppKeysMngrCertLoadMemory
+                               (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>,
+                                <em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *data</code></em>,
+                                <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> dataSize</code></em>,
+                                <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataFormat" title="enum xmlSecKeyDataFormat"><span class="type">xmlSecKeyDataFormat</span></a> format</code></em>,
+                                <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataType" title="xmlSecKeyDataType"><span class="type">xmlSecKeyDataType</span></a> type</code></em>);</pre>
+<p>Reads cert from binary buffer <em class="parameter"><code>data</code></em>
+ and adds to the list of trusted or known
+untrusted certs in <em class="parameter"><code>store</code></em>
+.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLAppKeysMngrCertLoadMemory.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>mngr</p></td>
+<td class="parameter_description"><p>the keys manager.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>data</p></td>
+<td class="parameter_description"><p>the certificate binary data.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>dataSize</p></td>
+<td class="parameter_description"><p>the certificate binary data size.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>format</p></td>
+<td class="parameter_description"><p>the certificate file format.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>type</p></td>
+<td class="parameter_description"><p>the flag that indicates is the certificate trusted or not.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecOpenSSLAppKeysMngrCertLoadMemory.returns"></a><h4>Returns</h4>
+<p> 0 on success or a negative value otherwise.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLAppKeysMngrCertLoadBIO"></a><h3>xmlSecOpenSSLAppKeysMngrCertLoadBIO ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecOpenSSLAppKeysMngrCertLoadBIO (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>,
+                                     <em class="parameter"><code><font><span class="type">BIO</span></font> *bio</code></em>,
+                                     <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataFormat" title="enum xmlSecKeyDataFormat"><span class="type">xmlSecKeyDataFormat</span></a> format</code></em>,
+                                     <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataType" title="xmlSecKeyDataType"><span class="type">xmlSecKeyDataType</span></a> type</code></em>);</pre>
+<p>Reads cert from an OpenSSL BIO object and adds to the list of trusted or known
+untrusted certs in <em class="parameter"><code>store</code></em>
+.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLAppKeysMngrCertLoadBIO.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>mngr</p></td>
+<td class="parameter_description"><p>the keys manager.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>bio</p></td>
+<td class="parameter_description"><p>the certificate BIO.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>format</p></td>
+<td class="parameter_description"><p>the certificate file format.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>type</p></td>
+<td class="parameter_description"><p>the flag that indicates is the certificate trusted or not.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecOpenSSLAppKeysMngrCertLoadBIO.returns"></a><h4>Returns</h4>
+<p> 0 on success or a negative value otherwise.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLAppKeysMngrCrlLoad"></a><h3>xmlSecOpenSSLAppKeysMngrCrlLoad ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecOpenSSLAppKeysMngrCrlLoad (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>,
+                                 <em class="parameter"><code>const <font><span class="type">char</span></font> *filename</code></em>,
+                                 <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataFormat" title="enum xmlSecKeyDataFormat"><span class="type">xmlSecKeyDataFormat</span></a> format</code></em>);</pre>
+<p>Reads crl from <em class="parameter"><code>filename</code></em>
+ and adds to the list of crls in <em class="parameter"><code>store</code></em>
+.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLAppKeysMngrCrlLoad.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>mngr</p></td>
+<td class="parameter_description"><p>the keys manager.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>filename</p></td>
+<td class="parameter_description"><p>the CRL file.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>format</p></td>
+<td class="parameter_description"><p>the CRL file format..</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecOpenSSLAppKeysMngrCrlLoad.returns"></a><h4>Returns</h4>
+<p> 0 on success or a negative value otherwise.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLAppKeysMngrCrlLoadMemory"></a><h3>xmlSecOpenSSLAppKeysMngrCrlLoadMemory ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecOpenSSLAppKeysMngrCrlLoadMemory (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>,
+                                       <em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *data</code></em>,
+                                       <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> dataSize</code></em>,
+                                       <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataFormat" title="enum xmlSecKeyDataFormat"><span class="type">xmlSecKeyDataFormat</span></a> format</code></em>);</pre>
+<p>Reads crl from binary buffer <em class="parameter"><code>data</code></em>
+ and adds to the list of crls in <em class="parameter"><code>store</code></em>
+.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLAppKeysMngrCrlLoadMemory.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>mngr</p></td>
+<td class="parameter_description"><p>the keys manager.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>data</p></td>
+<td class="parameter_description"><p>the CRL binary data.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>dataSize</p></td>
+<td class="parameter_description"><p>the CRL binary data size.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>format</p></td>
+<td class="parameter_description"><p>the CRL format.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecOpenSSLAppKeysMngrCrlLoadMemory.returns"></a><h4>Returns</h4>
+<p> 0 on success or a negative value otherwise.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLAppKeysMngrCrlLoadBIO"></a><h3>xmlSecOpenSSLAppKeysMngrCrlLoadBIO ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecOpenSSLAppKeysMngrCrlLoadBIO (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>,
+                                    <em class="parameter"><code><font><span class="type">BIO</span></font> *bio</code></em>,
+                                    <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataFormat" title="enum xmlSecKeyDataFormat"><span class="type">xmlSecKeyDataFormat</span></a> format</code></em>);</pre>
+<p>Reads crl from an OpenSSL BIO object and adds to the list of crls in <em class="parameter"><code>store</code></em>
+.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLAppKeysMngrCrlLoadBIO.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>mngr</p></td>
+<td class="parameter_description"><p>the keys manager.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>bio</p></td>
+<td class="parameter_description"><p>the CRL BIO.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>format</p></td>
+<td class="parameter_description"><p>the CRL file format.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecOpenSSLAppKeysMngrCrlLoadBIO.returns"></a><h4>Returns</h4>
+<p> 0 on success or a negative value otherwise.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLAppKeysMngrCrlLoadAndVerify"></a><h3>xmlSecOpenSSLAppKeysMngrCrlLoadAndVerify ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecOpenSSLAppKeysMngrCrlLoadAndVerify
+                               (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>,
+                                <em class="parameter"><code>const <font><span class="type">char</span></font> *filename</code></em>,
+                                <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataFormat" title="enum xmlSecKeyDataFormat"><span class="type">xmlSecKeyDataFormat</span></a> format</code></em>,
+                                <em class="parameter"><code><a class="link" href="xmlsec-keyinfo.html#xmlSecKeyInfoCtx" title="struct xmlSecKeyInfoCtx"><span class="type">xmlSecKeyInfoCtxPtr</span></a> keyInfoCtx</code></em>);</pre>
+<p>Atomically loads and verifies a CRL from <em class="parameter"><code>filename</code></em>
+. This function eliminates
+TOCTOU (Time-of-Check/Time-of-Use) vulnerabilities by loading the CRL once into memory,
+verifying it, and then adopting it to the store.</p>
+<p>The CRL is verified by:</p>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem"><p>Checking the signature against the issuer's certificate in the store</p></li>
+<li class="listitem"><p>Validating thisUpdate and nextUpdate times</p></li>
+</ol></div>
+<div class="refsect3">
+<a name="xmlSecOpenSSLAppKeysMngrCrlLoadAndVerify.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>mngr</p></td>
+<td class="parameter_description"><p>the keys manager.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>filename</p></td>
+<td class="parameter_description"><p>the CRL filename.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>format</p></td>
+<td class="parameter_description"><p>the CRL format (PEM or DER).</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>keyInfoCtx</p></td>
+<td class="parameter_description"><p>the key info context for verification parameters.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecOpenSSLAppKeysMngrCrlLoadAndVerify.returns"></a><h4>Returns</h4>
+<p> 0 on success or a negative value on error.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLAppKeysMngrAddCertsPath"></a><h3>xmlSecOpenSSLAppKeysMngrAddCertsPath ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecOpenSSLAppKeysMngrAddCertsPath (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>,
+                                      <em class="parameter"><code>const <font><span class="type">char</span></font> *path</code></em>);</pre>
+<p>Reads cert from <em class="parameter"><code>path</code></em>
+ and adds to the list of trusted certificates.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLAppKeysMngrAddCertsPath.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>mngr</p></td>
+<td class="parameter_description"><p>the keys manager.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>path</p></td>
+<td class="parameter_description"><p>the path to trusted certificates.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecOpenSSLAppKeysMngrAddCertsPath.returns"></a><h4>Returns</h4>
+<p> 0 on success or a negative value otherwise.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLAppKeysMngrAddCertsFile"></a><h3>xmlSecOpenSSLAppKeysMngrAddCertsFile ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecOpenSSLAppKeysMngrAddCertsFile (<em class="parameter"><code><a class="link" href="xmlsec-keysmngr.html#xmlSecKeysMngr" title="struct xmlSecKeysMngr"><span class="type">xmlSecKeysMngrPtr</span></a> mngr</code></em>,
+                                      <em class="parameter"><code>const <font><span class="type">char</span></font> *filename</code></em>);</pre>
+<p>Reads certs from <em class="parameter"><code>file</code></em>
+ and adds to the list of trusted certificates.
+It is possible for <em class="parameter"><code>file</code></em>
+ to contain multiple certs.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLAppKeysMngrAddCertsFile.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>mngr</p></td>
+<td class="parameter_description"><p>the keys manager.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>filename</p></td>
+<td class="parameter_description"><p>the file containing trusted certificates.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecOpenSSLAppKeysMngrAddCertsFile.returns"></a><h4>Returns</h4>
+<p> 0 on success or a negative value otherwise.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLAppKeyLoadEx"></a><h3>xmlSecOpenSSLAppKeyLoadEx ()</h3>
+<pre class="programlisting"><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
+xmlSecOpenSSLAppKeyLoadEx (<em class="parameter"><code>const <font><span class="type">char</span></font> *filename</code></em>,
+                           <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataType" title="xmlSecKeyDataType"><span class="type">xmlSecKeyDataType</span></a> type</code></em>,
+                           <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataFormat" title="enum xmlSecKeyDataFormat"><span class="type">xmlSecKeyDataFormat</span></a> format</code></em>,
+                           <em class="parameter"><code>const <font><span class="type">char</span></font> *pwd</code></em>,
+                           <em class="parameter"><code><font><span class="type">void</span></font> *pwdCallback</code></em>,
+                           <em class="parameter"><code><font><span class="type">void</span></font> *pwdCallbackCtx</code></em>);</pre>
+<p>Reads a key from a file.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLAppKeyLoadEx.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>filename</p></td>
+<td class="parameter_description"><p>the key filename.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>type</p></td>
+<td class="parameter_description"><p>the expected key type.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>format</p></td>
+<td class="parameter_description"><p>the key file format.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>pwd</p></td>
+<td class="parameter_description"><p>the key file password.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>pwdCallback</p></td>
+<td class="parameter_description"><p>the key password callback.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>pwdCallbackCtx</p></td>
+<td class="parameter_description"><p>the user context for password callback.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecOpenSSLAppKeyLoadEx.returns"></a><h4>Returns</h4>
+<p> pointer to the key or NULL if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLAppKeyLoadMemory"></a><h3>xmlSecOpenSSLAppKeyLoadMemory ()</h3>
+<pre class="programlisting"><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
+xmlSecOpenSSLAppKeyLoadMemory (<em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *data</code></em>,
+                               <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> dataSize</code></em>,
+                               <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataFormat" title="enum xmlSecKeyDataFormat"><span class="type">xmlSecKeyDataFormat</span></a> format</code></em>,
+                               <em class="parameter"><code>const <font><span class="type">char</span></font> *pwd</code></em>,
+                               <em class="parameter"><code><font><span class="type">void</span></font> *pwdCallback</code></em>,
+                               <em class="parameter"><code><font><span class="type">void</span></font> *pwdCallbackCtx</code></em>);</pre>
+<p>Reads a key from the memory buffer.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLAppKeyLoadMemory.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>data</p></td>
+<td class="parameter_description"><p>the binary key data.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>dataSize</p></td>
+<td class="parameter_description"><p>the size of binary key.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>format</p></td>
+<td class="parameter_description"><p>the key file format.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>pwd</p></td>
+<td class="parameter_description"><p>the key file password.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>pwdCallback</p></td>
+<td class="parameter_description"><p>the key password callback.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>pwdCallbackCtx</p></td>
+<td class="parameter_description"><p>the user context for password callback.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecOpenSSLAppKeyLoadMemory.returns"></a><h4>Returns</h4>
+<p> pointer to the key or NULL if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLAppKeyLoadBIO"></a><h3>xmlSecOpenSSLAppKeyLoadBIO ()</h3>
+<pre class="programlisting"><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
+xmlSecOpenSSLAppKeyLoadBIO (<em class="parameter"><code><font><span class="type">BIO</span></font> *bio</code></em>,
+                            <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataFormat" title="enum xmlSecKeyDataFormat"><span class="type">xmlSecKeyDataFormat</span></a> format</code></em>,
+                            <em class="parameter"><code>const <font><span class="type">char</span></font> *pwd</code></em>,
+                            <em class="parameter"><code><font><span class="type">void</span></font> *pwdCallback</code></em>,
+                            <em class="parameter"><code><font><span class="type">void</span></font> *pwdCallbackCtx</code></em>);</pre>
+<p>Reads a key from an OpenSSL BIO object.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLAppKeyLoadBIO.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>bio</p></td>
+<td class="parameter_description"><p>the key BIO.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>format</p></td>
+<td class="parameter_description"><p>the key file format.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>pwd</p></td>
+<td class="parameter_description"><p>the key file password.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>pwdCallback</p></td>
+<td class="parameter_description"><p>the key password callback.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>pwdCallbackCtx</p></td>
+<td class="parameter_description"><p>the user context for password callback.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecOpenSSLAppKeyLoadBIO.returns"></a><h4>Returns</h4>
+<p> pointer to the key or NULL if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLAppPkcs12Load"></a><h3>xmlSecOpenSSLAppPkcs12Load ()</h3>
+<pre class="programlisting"><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
+xmlSecOpenSSLAppPkcs12Load (<em class="parameter"><code>const <font><span class="type">char</span></font> *filename</code></em>,
+                            <em class="parameter"><code>const <font><span class="type">char</span></font> *pwd</code></em>,
+                            <em class="parameter"><code><font><span class="type">void</span></font> *pwdCallback</code></em>,
+                            <em class="parameter"><code><font><span class="type">void</span></font> *pwdCallbackCtx</code></em>);</pre>
+<p>Reads a key and all associated certificates from the PKCS12 file.
+For uniformity, call <em class="parameter"><code>xmlSecOpenSSLAppKeyLoadEX</code></em>
+ instead of this function. Pass
+in format=xmlSecKeyDataFormatPkcs12.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLAppPkcs12Load.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>filename</p></td>
+<td class="parameter_description"><p>the PKCS12 key filename.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>pwd</p></td>
+<td class="parameter_description"><p>the PKCS12 file password.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>pwdCallback</p></td>
+<td class="parameter_description"><p>the password callback.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>pwdCallbackCtx</p></td>
+<td class="parameter_description"><p>the user context for password callback.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecOpenSSLAppPkcs12Load.returns"></a><h4>Returns</h4>
+<p> pointer to the key or NULL if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLAppPkcs12LoadMemory"></a><h3>xmlSecOpenSSLAppPkcs12LoadMemory ()</h3>
+<pre class="programlisting"><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
+xmlSecOpenSSLAppPkcs12LoadMemory (<em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *data</code></em>,
+                                  <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> dataSize</code></em>,
+                                  <em class="parameter"><code>const <font><span class="type">char</span></font> *pwd</code></em>,
+                                  <em class="parameter"><code><font><span class="type">void</span></font> *pwdCallback</code></em>,
+                                  <em class="parameter"><code><font><span class="type">void</span></font> *pwdCallbackCtx</code></em>);</pre>
+<p>Reads a key and all associated certificates from the PKCS12 data in the memory buffer.
+For uniformity, call <em class="parameter"><code>xmlSecOpenSSLAppKeyLoadEx</code></em>
+ instead of this function. Pass
+in format=xmlSecKeyDataFormatPkcs12.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLAppPkcs12LoadMemory.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>data</p></td>
+<td class="parameter_description"><p>the PKCS12 binary data.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>dataSize</p></td>
+<td class="parameter_description"><p>the PKCS12 binary data size.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>pwd</p></td>
+<td class="parameter_description"><p>the PKCS12 file password.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>pwdCallback</p></td>
+<td class="parameter_description"><p>the password callback.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>pwdCallbackCtx</p></td>
+<td class="parameter_description"><p>the user context for password callback.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecOpenSSLAppPkcs12LoadMemory.returns"></a><h4>Returns</h4>
+<p> pointer to the key or NULL if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLAppPkcs12LoadBIO"></a><h3>xmlSecOpenSSLAppPkcs12LoadBIO ()</h3>
+<pre class="programlisting"><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
+xmlSecOpenSSLAppPkcs12LoadBIO (<em class="parameter"><code><font><span class="type">BIO</span></font> *bio</code></em>,
+                               <em class="parameter"><code>const <font><span class="type">char</span></font> *pwd</code></em>,
+                               <em class="parameter"><code><font><span class="type">void</span></font> *pwdCallback</code></em>,
+                               <em class="parameter"><code><font><span class="type">void</span></font> *pwdCallbackCtx</code></em>);</pre>
+<p>Reads a key and all associated certificates from the PKCS12 data in an OpenSSL BIO object.
+For uniformity, call <em class="parameter"><code>xmlSecOpenSSLAppKeyLoadEx</code></em>
+ instead of this function. Pass
+in format=xmlSecKeyDataFormatPkcs12.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLAppPkcs12LoadBIO.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>bio</p></td>
+<td class="parameter_description"><p>the PKCS12 key bio.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>pwd</p></td>
+<td class="parameter_description"><p>the PKCS12 file password.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>pwdCallback</p></td>
+<td class="parameter_description"><p>the password callback.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>pwdCallbackCtx</p></td>
+<td class="parameter_description"><p>the user context for password callback.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecOpenSSLAppPkcs12LoadBIO.returns"></a><h4>Returns</h4>
+<p> pointer to the key or NULL if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLAppKeyCertLoad"></a><h3>xmlSecOpenSSLAppKeyCertLoad ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecOpenSSLAppKeyCertLoad (<em class="parameter"><code><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="type">xmlSecKeyPtr</span></a> key</code></em>,
+                             <em class="parameter"><code>const <font><span class="type">char</span></font> *filename</code></em>,
+                             <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataFormat" title="enum xmlSecKeyDataFormat"><span class="type">xmlSecKeyDataFormat</span></a> format</code></em>);</pre>
+<p>Reads the certificate from $<em class="parameter"><code>filename</code></em>
+ and adds it to key.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLAppKeyCertLoad.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>key</p></td>
+<td class="parameter_description"><p>the pointer to key.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>filename</p></td>
+<td class="parameter_description"><p>the certificate filename.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>format</p></td>
+<td class="parameter_description"><p>the certificate file format.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecOpenSSLAppKeyCertLoad.returns"></a><h4>Returns</h4>
+<p> 0 on success or a negative value otherwise.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLAppKeyCertLoadMemory"></a><h3>xmlSecOpenSSLAppKeyCertLoadMemory ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecOpenSSLAppKeyCertLoadMemory (<em class="parameter"><code><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="type">xmlSecKeyPtr</span></a> key</code></em>,
+                                   <em class="parameter"><code>const <a class="link" href="xmlsec-xmlsec.html#xmlSecByte" title="xmlSecByte"><span class="type">xmlSecByte</span></a> *data</code></em>,
+                                   <em class="parameter"><code><a class="link" href="xmlsec-xmlsec.html#xmlSecSize" title="xmlSecSize"><span class="type">xmlSecSize</span></a> dataSize</code></em>,
+                                   <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataFormat" title="enum xmlSecKeyDataFormat"><span class="type">xmlSecKeyDataFormat</span></a> format</code></em>);</pre>
+<p>Reads the certificate from memory buffer and adds it to key.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLAppKeyCertLoadMemory.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>key</p></td>
+<td class="parameter_description"><p>the pointer to key.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>data</p></td>
+<td class="parameter_description"><p>the certificate binary data.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>dataSize</p></td>
+<td class="parameter_description"><p>the certificate binary data size.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>format</p></td>
+<td class="parameter_description"><p>the certificate file format.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecOpenSSLAppKeyCertLoadMemory.returns"></a><h4>Returns</h4>
+<p> 0 on success or a negative value otherwise.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLAppKeyCertLoadBIO"></a><h3>xmlSecOpenSSLAppKeyCertLoadBIO ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">int</span></font>
+xmlSecOpenSSLAppKeyCertLoadBIO (<em class="parameter"><code><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="type">xmlSecKeyPtr</span></a> key</code></em>,
+                                <em class="parameter"><code><font><span class="type">BIO</span></font> *bio</code></em>,
+                                <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataFormat" title="enum xmlSecKeyDataFormat"><span class="type">xmlSecKeyDataFormat</span></a> format</code></em>);</pre>
+<p>Reads the certificate from memory buffer and adds it to key.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLAppKeyCertLoadBIO.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>key</p></td>
+<td class="parameter_description"><p>the pointer to key.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>bio</p></td>
+<td class="parameter_description"><p>the certificate bio.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>format</p></td>
+<td class="parameter_description"><p>the certificate file format.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecOpenSSLAppKeyCertLoadBIO.returns"></a><h4>Returns</h4>
+<p> 0 on success or a negative value otherwise.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLAppKeyFromCertLoadBIO"></a><h3>xmlSecOpenSSLAppKeyFromCertLoadBIO ()</h3>
+<pre class="programlisting"><a class="link" href="xmlsec-keys.html#xmlSecKey" title="struct xmlSecKey"><span class="returnvalue">xmlSecKeyPtr</span></a>
+xmlSecOpenSSLAppKeyFromCertLoadBIO (<em class="parameter"><code><font><span class="type">BIO</span></font> *bio</code></em>,
+                                    <em class="parameter"><code><a class="link" href="xmlsec-keysdata.html#xmlSecKeyDataFormat" title="enum xmlSecKeyDataFormat"><span class="type">xmlSecKeyDataFormat</span></a> format</code></em>);</pre>
+<p>Loads public key from cert.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLAppKeyFromCertLoadBIO.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>bio</p></td>
+<td class="parameter_description"><p>the BIO.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>format</p></td>
+<td class="parameter_description"><p>the cert format.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="xmlSecOpenSSLAppKeyFromCertLoadBIO.returns"></a><h4>Returns</h4>
+<p> pointer to key or NULL if an error occurs.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="xmlSecOpenSSLAppGetDefaultPwdCallback"></a><h3>xmlSecOpenSSLAppGetDefaultPwdCallback ()</h3>
+<pre class="programlisting"><font><span class="returnvalue">void</span></font> *
+xmlSecOpenSSLAppGetDefaultPwdCallback (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Gets default password callback.</p>
+<div class="refsect3">
+<a name="xmlSecOpenSSLAppGetDefaultPwdCallback.returns"></a><h4>Returns</h4>
+<p> default password callback.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.34.0</div>
+</td></tr></table></td>
+</tr></table></body>
+</html>

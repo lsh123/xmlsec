@@ -1,5 +1,5 @@
 <chapter id="contexts">
-    <title>Using context objects.</title>
+    <title>Using context objects</title>
     <para>The great flexibility of XML Digital Signature and XML Encryption
     specification is one of the most interesting and in the same time,
     most dangerouse feature for an application developer.
@@ -26,7 +26,7 @@
     </para>
     <para>
 	<example>
-	    <title>SAML signature validation.</title>
+	    <title>SAML signature validation</title>
 	    <programlisting><![CDATA[
 /**
  * verify_file:

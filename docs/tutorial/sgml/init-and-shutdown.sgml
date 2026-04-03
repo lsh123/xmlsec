@@ -1,5 +1,5 @@
 <chapter id="init-shutdown">
-    <title>Initialization and shutdown.</title>
+    <title>Initialization and shutdown</title>
     <para>XML Security Library initialization/shutdown
 	process includes initialization and shutdown of the
 	dependent libraries:
@@ -28,7 +28,7 @@
 	</para>
 	<para>
 	     <example>
-		<title>Initializing application.</title>
+		<title>Initializing application</title>
 		<programlisting><![CDATA[
     /* Init libxml and libxslt libraries */
     xmlInitParser();
@@ -82,7 +82,7 @@
 
 	<para>
 	     <example>
-		<title>Shutting down application.</title>
+		<title>Shutting down application</title>
 		<programlisting><![CDATA[
     /* Shutdown xmlsec-crypto library */
     xmlSecCryptoShutdown();

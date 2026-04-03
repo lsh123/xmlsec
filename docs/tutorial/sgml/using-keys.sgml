@@ -1,5 +1,5 @@
 <chapter id="keys">
-    <title>Keys.</title>
+    <title>Keys</title>
     <para>A key in XML Security Library is a representation of the
 	<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink>
 	element and consist of several key data objects.
@@ -13,7 +13,7 @@
 	and PGP key data.
     </para>
     <figure>
-	<title>The key structure.</title>
+	<title>The key structure</title>
 	<graphic fileref="images/key.png" align="center"></graphic>
     </figure>
     <para>XML Security Library has several "invisible" key data classes.

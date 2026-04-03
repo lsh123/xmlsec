@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <book xmlns="http://www.devhelp.net/book" title="XML Security Library Reference Manual" link="index.html" author="Aleksey Sanin" name="xmlsec" version="2" language="c">
   <chapters>
-    <sub name="XML Security Library API Reference." link="xmlsec-reference.html">
-      <sub name="XML Security Core Library API Reference." link="xmlsec-ref.html">
+    <sub name="XML Security Library API Reference" link="xmlsec-reference.html">
+      <sub name="XML Security Core Library API Reference" link="xmlsec-ref.html">
         <sub name="app" link="xmlsec-app.html"/>
         <sub name="base64" link="xmlsec-base64.html"/>
         <sub name="bn" link="xmlsec-bn.html"/>
@@ -26,36 +26,36 @@
         <sub name="xmlsec" link="xmlsec-xmlsec.html"/>
         <sub name="xmltree" link="xmlsec-xmltree.html"/>
       </sub>
-      <sub name="XML Security Library for OpenSLL API Reference." link="xmlsec-openssl-ref.html">
+      <sub name="XML Security Library for OpenSLL API Reference" link="xmlsec-openssl-ref.html">
         <sub name="app" link="xmlsec-openssl-app.html"/>
         <sub name="crypto" link="xmlsec-openssl-crypto.html"/>
         <sub name="evp" link="xmlsec-openssl-evp.html"/>
         <sub name="x509" link="xmlsec-openssl-x509.html"/>
       </sub>
-      <sub name="XML Security Library for GnuTLS API Reference." link="xmlsec-gnutls-ref.html">
+      <sub name="XML Security Library for GnuTLS API Reference" link="xmlsec-gnutls-ref.html">
         <sub name="app" link="xmlsec-gnutls-app.html"/>
         <sub name="crypto" link="xmlsec-gnutls-crypto.html"/>
         <sub name="x509" link="xmlsec-gnutls-x509.html"/>
       </sub>
-      <sub name="XML Security Library for GCrypt API Reference." link="xmlsec-gcrypt-ref.html">
+      <sub name="XML Security Library for GCrypt API Reference" link="xmlsec-gcrypt-ref.html">
         <sub name="app" link="xmlsec-gcrypt-app.html"/>
         <sub name="crypto" link="xmlsec-gcrypt-crypto.html"/>
       </sub>
-      <sub name="XML Security Library for NSS API Reference." link="xmlsec-nss-ref.html">
+      <sub name="XML Security Library for NSS API Reference" link="xmlsec-nss-ref.html">
         <sub name="app" link="xmlsec-nss-app.html"/>
         <sub name="crypto" link="xmlsec-nss-crypto.html"/>
         <sub name="keysstore" link="xmlsec-nss-keysstore.html"/>
         <sub name="pkikeys" link="xmlsec-nss-pkikeys.html"/>
         <sub name="x509" link="xmlsec-nss-x509.html"/>
       </sub>
-      <sub name="XML Security Library for Microsoft Crypto API Reference." link="xmlsec-mscrypto-ref.html">
+      <sub name="XML Security Library for Microsoft Crypto API Reference" link="xmlsec-mscrypto-ref.html">
         <sub name="app" link="xmlsec-mscrypto-app.html"/>
         <sub name="certkeys" link="xmlsec-mscrypto-certkeys.html"/>
         <sub name="crypto" link="xmlsec-mscrypto-crypto.html"/>
         <sub name="keysstore" link="xmlsec-mscrypto-keysstore.html"/>
         <sub name="x509" link="xmlsec-mscrypto-x509.html"/>
       </sub>
-      <sub name="XML Security Library for Microsoft Cryptography API: Next Generation (CNG) Reference." link="xmlsec-msccng-ref.html">
+      <sub name="XML Security Library for Microsoft Cryptography API: Next Generation (CNG) Reference" link="xmlsec-msccng-ref.html">
         <sub name="app" link="xmlsec-mscng-app.html"/>
         <sub name="certkeys" link="xmlsec-mscng-certkeys.html"/>
         <sub name="crypto" link="xmlsec-mscng-crypto.html"/>

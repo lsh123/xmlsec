@@ -1,7 +1,7 @@
 <chapter id="x509">
-    <title>Using X509 Certificates.</title>
+    <title>Using X509 Certificates</title>
     <sect1 id="x509-overview">
-        <title>Overview.</title>
+        <title>Overview</title>
         <para>X509 certificate is one of many possible keys data object that can be
         associated with a key. Application may read and write X509 data
 	from/to XML file. The X509 certificates management policies significantly
@@ -13,7 +13,7 @@
     </sect1>
 
     <sect1 id="sign-x509" >
-	<title>Signing data with X509 certificate.</title>
+	<title>Signing data with X509 certificate</title>
 	<para>To sign a file using X509 certificate,
 	an application need to associate the certificate (or certificates)
 	with the private key using one of the following functions:
@@ -34,7 +34,7 @@
 	    </para></listitem>
 	</itemizedlist>
 	<example>
-	    <title>Loading private key and X509 certificate.</title>
+	    <title>Loading private key and X509 certificate</title>
 	    <programlisting><![CDATA[
     /* load private key, assuming that there is not password */
     key = xmlSecCryptoAppKeyLoad(key_file, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
@@ -58,7 +58,7 @@
 	children of the &lt;dsig:X509Data/&gt; element and writes to result XML document
 	all the certificates associated with the signature key.
 	<example>
-	    <title>Dynamicaly creating a signature template for signing document using X509 certificate.</title>
+	    <title>Dynamicaly creating a signature template for signing document using X509 certificate</title>
 	    <programlisting><![CDATA[
     /* create signature template for RSA-SHA1 enveloped signature */
     signNode = xmlSecTmplSignatureCreate(doc, xmlSecTransformExclC14NId,
@@ -103,7 +103,7 @@
     </sect1>
 
     <sect1 id="verify-x509" >
-	<title>Verifing document signed with X509 certificates.</title>
+	<title>Verifing document signed with X509 certificates</title>
 	<para>
 	If the document is signed with an X509 certificate then the signature
 	verification consist of two steps:
@@ -117,7 +117,7 @@
 	Certificates chain is constructed from certificates in a way that
 	each certificate in the chain is signed with previous one:
 	<figure>
-	    <title>Certificates chain.</title>
+	    <title>Certificates chain</title>
 	    <programlisting>
 Certificate A (signed with B) &lt;- Certificate B (signed with C) &lt;- ... &lt;- Root Certificate (signed by itself)
 	    </programlisting>
@@ -138,7 +138,7 @@ Certificate A (signed with B) &lt;- Certificate B (signed with C) &lt;- ... &lt;
 	or specified in crypto engine configuration files.
 	Check XML Security Library API reference for more details.
 	<example>
-	    <title>Loading trusted X509 certificate.</title>
+	    <title>Loading trusted X509 certificate</title>
 	    <programlisting><![CDATA[
 /**
  * load_trusted_certs:

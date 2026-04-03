@@ -1,5 +1,5 @@
 <chapter id="transforms">
-    <title>Transforms and transforms chain.</title>
+    <title>Transforms and transforms chain</title>
     <para>XML Digital Signature and XML Encryption standards are
 	very flexible and provide an XML developer many different ways to
 	sign or encrypt any part (or even parts) of an XML document.
@@ -35,7 +35,7 @@
 	directly is more efficient.
     </para>
     <figure>
-	<title>The XML Security Library transform.</title>
+	<title>The XML Security Library transform</title>
 	<graphic fileref="images/transform.png" align="center"></graphic>
     </figure>
     <para>XML Security Library constructs transforms chain according to the
@@ -51,7 +51,7 @@
 	in the chain.
     </para>
     <figure>
-	<title>Transforms chain created for &lt;dsig:Reference/&gt; element processing.</title>
+	<title>Transforms chain created for &lt;dsig:Reference/&gt; element processing</title>
 	<graphic fileref="images/transforms-chain.png" align="center"></graphic>
     </figure>
 </chapter>

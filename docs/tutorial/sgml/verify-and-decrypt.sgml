@@ -1,7 +1,7 @@
 <chapter id="verify-decrypt">
-    <title>Verifing and decrypting documents.</title>
+    <title>Verifing and decrypting documents</title>
     <sect1 id="verify-decrypt-overview">
-        <title>Overview.</title>
+        <title>Overview</title>
         <para>Since the template is just an XML file, it might be created in advance
 	and saved in a file. It's also possible for application to create
 	templates without using XML Security Library functions. Also in some
@@ -12,7 +12,7 @@
 	because all the necessary information is provided in the signed or
 	encrypted document.
     	  <figure>
-	    <title>The verification or decryption processing model.</title>
+	    <title>The verification or decryption processing model</title>
 	    <graphic fileref="images/verif-dec-model.png" align="center"></graphic>
 	  </figure>
 	</para>
@@ -55,7 +55,7 @@
 	</para>
 	<para>
 	     <example>
-		<title>Verifying a document.</title>
+		<title>Verifying a document</title>
 		<programlisting><![CDATA[
 /**
  * verify_file:
@@ -176,7 +176,7 @@ done:
 	</para>
 	<para>
 	     <example>
-		<title>Decrypting a document.</title>
+		<title>Decrypting a document</title>
 		<programlisting><![CDATA[
 int
 decrypt_file(const char* enc_file, const char* key_file) {

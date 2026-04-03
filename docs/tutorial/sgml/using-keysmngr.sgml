@@ -1,7 +1,7 @@
 <chapter id="keysmngr">
-    <title>Keys manager.</title>
+    <title>Keys manager</title>
     <sect1 id="keysmngr-overview">
-        <title>Overview.</title>
+        <title>Overview</title>
         <para>Processing some of the key data objects require additional
 	information which is global across the application (or in the
 	particular area of the application). For example, X509 certificates
@@ -11,7 +11,7 @@
 	"keys manager".
         </para>
 	<figure>
-	    <title>The keys manager structure.</title>
+	    <title>The keys manager structure</title>
 	    <graphic fileref="images/keysmngr.png" align="center"></graphic>
 	</figure>
         <para>Keys manager has a special "keys store" which lists the keys
@@ -37,7 +37,7 @@
     </sect1>
 
     <sect1 id="simple-keys-store">
-	<title>Simple keys store.</title>
+	<title>Simple keys store</title>
 	<para>
 	XML Security Library has a built-in simple keys store
 	implemented using a keys list. You can use it in your application
@@ -48,7 +48,7 @@
 	</para>
 	<para>
 	     <example>
-		<title>Initializing keys manager and loading keys from PEM files.</title>
+		<title>Initializing keys manager and loading keys from PEM files</title>
 		<programlisting><![CDATA[
 /**
  * load_keys:
@@ -125,7 +125,7 @@ load_keys(char** files, int files_size) {
     </sect1>
 
     <sect1 id="keys-manager-sign-enc">
-	<title>Using keys manager for signatures/encryption.</title>
+	<title>Using keys manager for signatures/encryption</title>
 	<para>Instead of specifiying signature or encryption key in the
 	corresponding context object (<structfield>signKey</structfield>
 	member of <link linkend="xmlSecDSigCtx">xmlSecDSigCtx</link>
@@ -143,7 +143,7 @@ load_keys(char** files, int files_size) {
 	</para>
 	<para>
 	     <example>
-		<title>Encrypting file using a session key and a permanent key from keys manager.</title>
+		<title>Encrypting file using a session key and a permanent key from keys manager</title>
 		<programlisting><![CDATA[
 /**
  * load_rsa_keys:
@@ -342,7 +342,7 @@ done:
     </sect1>
 
     <sect1 id="keys-mngr-verify-decrypt">
-	<title>Using keys manager for verification/decryption.</title>
+	<title>Using keys manager for verification/decryption</title>
 	<para>If more than one key could be used for signature or encryption,
 	then using <structfield>signKey</structfield> member of
 	<link linkend="xmlSecDSigCtx">xmlSecDSigCtx</link> structure or
@@ -354,7 +354,7 @@ done:
 	</para>
 	<para>
 	     <example>
-		<title>Initializing keys manager and loading DES keys from binary files.</title>
+		<title>Initializing keys manager and loading DES keys from binary files</title>
 		<programlisting><![CDATA[
 /**
  * load_des_keys:
@@ -431,7 +431,7 @@ load_des_keys(char** files, int files_size) {
     </sect1>
 
     <sect1 id="custom-keys-store">
-	<title>Implementing a custom keys store.</title>
+	<title>Implementing a custom keys store</title>
 	<para>In many cases, a default built-in list based keys store
 	is not good enough. For example, XML Security Library (and
 	the built-in default keys store) have no synchronization and
@@ -439,7 +439,7 @@ load_des_keys(char** files, int files_size) {
 	add or remove keys while other threads use the store.</para>
 	<para>
 	     <example>
-		<title>Creating a custom keys manager.</title>
+		<title>Creating a custom keys manager</title>
 		<programlisting><![CDATA[
 /**
  * create_files_keys_mngr:

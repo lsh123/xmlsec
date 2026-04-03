@@ -1,7 +1,7 @@
 <chapter id="sign-encrypt">
-    <title>Signing and encrypting documents.</title>
+    <title>Signing and encrypting documents</title>
     <sect1 id="sign-encrypt-overview">
-        <title>Overview.</title>
+        <title>Overview</title>
 	<para>XML Security Library performs signature or encryption by processing
 	input xml or binary data and a template that specifies a signature or
 	encryption skeleton: the transforms, algorithms, the key selection
@@ -12,14 +12,14 @@
 	the template. Signature or encryption context controls the whole
 	process and stores the required temporary data.
 	  <figure>
-	    <title>The signature or encryption processing model.</title>
+	    <title>The signature or encryption processing model</title>
 	    <graphic fileref="images/sign-enc-model.png" align="center"></graphic>
 	  </figure>
 	</para>
     </sect1>
 
     <sect1 id="sign" >
-	<title>Signing a document.</title>
+	<title>Signing a document</title>
 	<para>The typical signature process includes following steps:
 	  <itemizedlist>
 	    <listitem><para>
@@ -59,7 +59,7 @@
 	</para>
 	<para>
 	     <example>
-		<title>Signing a template.</title>
+		<title>Signing a template</title>
 		<programlisting><![CDATA[
 /**
  * sign_file:
@@ -145,7 +145,7 @@ done:
     </sect1>
 
     <sect1 id="encrypt">
-	<title>Encrypting data.</title>
+	<title>Encrypting data</title>
 	<para>The typical encryption process includes following steps:
 	  <itemizedlist>
 	    <listitem><para>
@@ -194,7 +194,7 @@ done:
 	</para>
 	<para>
 	     <example>
-		<title>Encrypting binary data with a template.</title>
+		<title>Encrypting binary data with a template</title>
 		<programlisting><![CDATA[
 /**
  * encrypt_file:

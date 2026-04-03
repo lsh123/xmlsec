@@ -1,7 +1,7 @@
 <chapter id="templates">
-    <title>Creating dynamic templates.</title>
+    <title>Creating dynamic templates</title>
     <sect1 id="templates-overview">
-        <title>Overview.</title>
+        <title>Overview</title>
 	<para>The XML Security Library uses templates to describe
         how and what data should be signed or encrypted. The template
         is a regular XML file. You can create templates in advance
@@ -12,7 +12,7 @@
         inside your application.</para>
     </sect1>
     <sect1 id="dynamic-signature-templates">
-	<title>Creating dynamic signature templates.</title>
+	<title>Creating dynamic signature templates</title>
 	<para>The signature template has structure similar
 	to the XML Digital Signature structure as it is described in
 	<ulink URL="http://www.w3.org/TR/xmldsig-core">specification</ulink>.
@@ -55,7 +55,7 @@
 	</figure>
 	<para>
 	     <example>
-		<title>Creating dynamic signature template.</title>
+		<title>Creating dynamic signature template</title>
 		<programlisting><![CDATA[
 /**
  * sign_file:
@@ -173,7 +173,7 @@ done:
     </sect1>
 
     <sect1 id="dynamic-encryption-templates">
-	<title>Creating dynamic encryption templates.</title>
+	<title>Creating dynamic encryption templates</title>
 	<para>The encryption template has structure similar
 	to the XML Encryption structure as it is described in
 	<ulink URL="http://www.w3.org/TR/xmlenc-core">specification</ulink>.
@@ -209,7 +209,7 @@ done:
 	</figure>
 	<para>
 	     <example>
-		<title>Creating dynamic encrytion template.</title>
+		<title>Creating dynamic encrytion template</title>
 		<programlisting><![CDATA[
 /**
  * encrypt_file:

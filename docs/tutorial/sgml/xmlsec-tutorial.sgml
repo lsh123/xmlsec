@@ -58,7 +58,7 @@
   <part id="index">
     <title>XML Security Library Tutorial</title>
     <chapter id="overview">
-	<title>Overview.</title>
+	<title>Overview</title>
 	<para>XML Security Library provides support for XML Digital Signature
 	and XML Encryption. It is based on LibXML/LibXSLT and can use
 	practicaly any crypto library (currently there is "out of the box"
@@ -67,13 +67,13 @@
 	</para>
     </chapter>
     <chapter id="structure">
-	<title>XML Security Library Structure.</title>
+	<title>XML Security Library Structure</title>
 	<para>In order to provide the an ability to use different crypto engines,
 	the XML Security Library is splitted in two parts: core library (xmlsec)
 	and crypto library (xmlsec-openssl, xmlsec-mscrypt, xmlsec-mscng, xmlsec-gnutls,
 	xmlsec-gcrypt, xmlsec-nss, ...).
 	<figure>
-	    <title>The library structure and dependencies.</title>
+	    <title>The library structure and dependencies</title>
 	    <graphic fileref="images/structure.png" align="center"></graphic>
 	</figure>
 	</para>
@@ -100,16 +100,16 @@
     &chapter-using-contexts;
 
     <chapter id="xmlsec-signature-klasses">
-    <title>APPENDIX A. XML Security Library Signature Klasses.</title>
+    <title>APPENDIX A. XML Security Library Signature Klasses</title>
 	<figure>
-	    <title>XML Security Library Signature Klasses.</title>
+	    <title>XML Security Library Signature Klasses</title>
 	    <graphic fileref="images/signature-structure.png" align="center"></graphic>
 	</figure></chapter>
 
     <chapter id="xmlsec-encryption-klasses">
-    <title>APPENDIX B. XML Security Library Encryption Klasses.</title>
+    <title>APPENDIX B. XML Security Library Encryption Klasses</title>
 	<figure>
-	    <title>XML Security Library Encryption Klasses.</title>
+	    <title>XML Security Library Encryption Klasses</title>
 	    <graphic fileref="images/encryption-structure.png" align="center"></graphic>
 	</figure>
     </chapter>

@@ -38,6 +38,7 @@ html:
 		title=$$(head -1 $$md | $(SED) 's/^# //'); \
 		echo "--- Converting $$base.md -> $$base.html"; \
 		$(PANDOC) -f gfm -t html5 --standalone --wrap=none \
+			--template=$(top_srcdir)/docs/html/pandoc-template.html5 \
 			-M title="XML Security Library: $$title" \
 			-o $(builddir)/$$base.html $$md || exit 1; \
 		$(SED) -i \

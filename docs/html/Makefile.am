@@ -10,6 +10,7 @@ EXTRA_DIST := \
 	$(srcdir)/images 					\
 	$(srcdir)/css 						\
 	$(srcdir)/xmlsec.xsl				\
+	$(srcdir)/pandoc-template.html5		\
 	$(srcdir)/favicon.ico				\
     $(NULL)
 

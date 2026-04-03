@@ -1,0 +1,176 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XML Security Library: Using X509 Certificates</title>
+<link rel="stylesheet" href="../css/main.css">
+<link rel="stylesheet" href="../css/pandoc.css">
+</head>
+<body><table width="100%" valign="top"><tr valign="top">
+<td valign="top" align="left" width="210">
+<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../download.html">Download</a></li>
+<ul><li><a href="https://github.com/lsh123/xmlsec">GitHub</a></li></ul>
+<li><a href="../news.html">News</a></li>
+<li><a href="../documentation.html">Documentation</a></li>
+<ul>
+<li><a href="../faq.html">FAQ</a></li>
+<li><a href="../tutorial/index.html">Tutorial</a></li>
+<li><a href="../examples/index.html">Examples</a></li>
+<li><a href="../api/xmlsec-reference.html">API reference</a></li>
+</ul>
+<li><a href="../xmldsig.html">XML Digital Signature</a></li>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
+<li><a href="../bugs.html">Reporting Bugs</a></li>
+<li><a href="../mailing-list.html">Mailing list</a></li>
+<li><a href="../related.html">Related</a></li>
+<li><a href="../authors.html">Authors</a></li>
+</ul>
+<table width="100%">
+<tr>
+<td width="15"></td>
+<td><a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a></td>
+</tr>
+<tr>
+<td width="15"></td>
+<td><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a></td>
+</tr>
+<tr>
+<td width="15"></td>
+<td><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a></td>
+</tr>
+<!--Links - start--><!--Links - end-->
+</table>
+</td>
+<td valign="top"><table width="80%" valign="top" style="margin-left:10px;"><tr><td valign="top" align="left" id="xmlsecContent">
+<h1 id="using-x509-certificates">Using X509 Certificates</h1>
+<h2 id="overview">Overview</h2>
+<p>X509 certificate is one of many possible keys data object that can be associated with a key. Application may read and write X509 data from/to XML file. The X509 certificates management policies significantly vary from one crypto library to another. The examples in this chapter were tested with OpenSSL and they might be broken if anither crypto engine is used. Check API reference documentation for more specific information about your crypto engine.</p>
+<h2 id="signing-data-with-x509-certificate">Signing data with X509 certificate</h2>
+<p>To sign a file using X509 certificate, an application need to associate the certificate (or certificates) with the private key using one of the following functions:</p>
+<ul>
+<li>
+<a href="#xmlsecopensslappkeycertload">xmlSecOpenSSLAppKeyCertLoad</a> - loads certificate from a file and adds to the key;</li>
+<li>
+<a href="#xmlsecopensslapppkcs12load">xmlSecOpenSSLAppPkcs12Load</a> - loads private key and all the certificates associated with it from a PKCS12 file;</li>
+<li>
+<a href="#xmlseckeyadoptdata">xmlSecKeyAdoptData</a> - low level function to add key data (including X509 key data) to the key. <strong>Example: Loading private key and X509 certificate</strong>
+</li>
+</ul>
+<pre><code>    /* load private key, assuming that there is not password */
+    key = xmlSecCryptoAppKeyLoad(key_file, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
+    if(key == NULL) {
+        fprintf(stderr,"Error: failed to load private pem key from \"%s\"\n", key_file);
+    goto done;
+    }
+
+    /* load certificate and add to the key */
+    if(xmlSecCryptoAppKeyCertLoad(key, cert_file, xmlSecKeyDataFormatPem) &lt; 0) {
+        fprintf(stderr,"Error: failed to load pem certificate \"%s\"\n", cert_file);
+    goto done;
+    }</code></pre>
+<p><a href="#xmlsec-example-sign3">Full program listing</a></p>
+<p>Next step is to prepare signature template with <code>dsig:X509Data/</code> child of the <code>dsig:KeyInfo/</code> element. When XML Security Library finds this node in the template, it automatically creates <code>dsig:X509Certificate/</code> children of the <code>dsig:X509Data/</code> element and writes to result XML document all the certificates associated with the signature key. <strong>Example: Dynamicaly creating a signature template for signing document using X509 certificate</strong></p>
+<pre><code>    /* create signature template for RSA-SHA1 enveloped signature */
+    signNode = xmlSecTmplSignatureCreate(doc, xmlSecTransformExclC14NId,
+                         xmlSecTransformRsaSha1Id, NULL);
+    if(signNode == NULL) {
+    fprintf(stderr, "Error: failed to create signature template\n");
+    goto done;
+    }
+
+    /* add &lt;dsig:Signature/&gt; node to the doc */
+    xmlAddChild(xmlDocGetRootElement(doc), signNode);
+
+    /* add reference */
+    refNode = xmlSecTmplSignatureAddReference(signNode, xmlSecTransformSha1Id,
+                    NULL, NULL, NULL);
+    if(refNode == NULL) {
+    fprintf(stderr, "Error: failed to add reference to signature template\n");
+    goto done;
+    }
+
+    /* add enveloped transform */
+    if(xmlSecTmplReferenceAddTransform(refNode, xmlSecTransformEnvelopedId) == NULL) {
+    fprintf(stderr, "Error: failed to add enveloped transform to reference\n");
+    goto done;
+    }
+
+    /* add &lt;dsig:KeyInfo/&gt; and &lt;dsig:X509Data/&gt; */
+    keyInfoNode = xmlSecTmplSignatureEnsureKeyInfo(signNode, NULL);
+    if(keyInfoNode == NULL) {
+    fprintf(stderr, "Error: failed to add key info\n");
+    goto done;
+    }
+
+    if(xmlSecTmplKeyInfoAddX509Data(keyInfoNode) == NULL) {
+    fprintf(stderr, "Error: failed to add X509Data node\n");
+    goto done;
+    }</code></pre>
+<p><a href="#xmlsec-example-sign3">Full program listing</a></p>
+<h2 id="verifing-document-signed-with-x509-certificates">Verifing document signed with X509 certificates</h2>
+<p>If the document is signed with an X509 certificate then the signature verification consist of two steps:</p>
+<ul>
+<li>Creating and verifing X509 certificates chain.</li>
+<li>Verifing signature itself using key exrtacted from a certificate verified on previous step. Certificates chain is constructed from certificates in a way that each certificate in the chain is signed with previous one: <strong>Certificates chain</strong>
+</li>
+</ul>
+<pre><code>Certificate A (signed with B) &lt;- Certificate B (signed with C) &lt;- ... &lt;- Root Certificate (signed by itself)</code></pre>
+<p>At the end of the chain there is a "Root Certificate" which is signed by itself. There is no way to verify the validity of the root certificate and application have to "trust" it (another name for root certificates is "trusted" certificates).</p>
+<p>Application can use <a href="#xmlseccryptoappkeysmngrcertload">xmlSecCryptoAppKeysMngrCertLoad</a> function to load both "trusted" and "un-trusted" certificates. However, the selection of "trusted" certificates is very sensitive process and this function might be not implemented for some crypto engines. In this case, the "trusted" certificates list is loaded during initialization or specified in crypto engine configuration files. Check XML Security Library API reference for more details. <strong>Example: Loading trusted X509 certificate</strong></p>
+<pre><code>/**
+ * load_trusted_certs:
+ * @files:      the list of filenames.
+ * @files_size:     the number of filenames in #files.
+ *
+ * Creates simple keys manager and load trusted certificates from PEM #files.
+ * The caller is responsible for destroing returned keys manager using
+ * @xmlSecKeysMngrDestroy.
+ *
+ * Returns the pointer to newly created keys manager or NULL if an error
+ * occurs.
+ */
+xmlSecKeysMngrPtr
+load_trusted_certs(char** files, int files_size) {
+    xmlSecKeysMngrPtr mngr;
+    int i;
+
+    assert(files);
+    assert(files_size &gt; 0);
+
+    /* create and initialize keys manager, we use a simple list based
+     * keys manager, implement your own xmlSecKeysStore klass if you need
+     * something more sophisticated
+     */
+    mngr = xmlSecKeysMngrCreate();
+    if(mngr == NULL) {
+    fprintf(stderr, "Error: failed to create keys manager.\n");
+    return(NULL);
+    }
+    if(xmlSecCryptoAppDefaultKeysMngrInit(mngr) &lt; 0) {
+    fprintf(stderr, "Error: failed to initialize keys manager.\n");
+    xmlSecKeysMngrDestroy(mngr);
+    return(NULL);
+    }
+
+    for(i = 0; i &lt; files_size; ++i) {
+    assert(files[i]);
+
+    /* load trusted cert */
+    if(xmlSecCryptoAppKeysMngrCertLoad(mngr, files[i], xmlSecKeyDataFormatPem, xmlSecKeyDataTypeTrusted) &lt; 0) {
+            fprintf(stderr,"Error: failed to load pem certificate from \"%s\"\n", files[i]);
+        xmlSecKeysMngrDestroy(mngr);
+        return(NULL);
+    }
+    }
+
+    return(mngr);
+}</code></pre>
+<p><a href="#xmlsec-example-verify3">Full program listing</a></p>
+</td></tr></table></td>
+</tr></table></body>
+</html>

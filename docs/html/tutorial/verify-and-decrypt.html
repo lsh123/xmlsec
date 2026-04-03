@@ -1,0 +1,242 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XML Security Library: Verifing and decrypting documents</title>
+<link rel="stylesheet" href="../css/main.css">
+<link rel="stylesheet" href="../css/pandoc.css">
+</head>
+<body><table width="100%" valign="top"><tr valign="top">
+<td valign="top" align="left" width="210">
+<img src="../images/logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../download.html">Download</a></li>
+<ul><li><a href="https://github.com/lsh123/xmlsec">GitHub</a></li></ul>
+<li><a href="../news.html">News</a></li>
+<li><a href="../documentation.html">Documentation</a></li>
+<ul>
+<li><a href="../faq.html">FAQ</a></li>
+<li><a href="../tutorial/index.html">Tutorial</a></li>
+<li><a href="../examples/index.html">Examples</a></li>
+<li><a href="../api/xmlsec-reference.html">API reference</a></li>
+</ul>
+<li><a href="../xmldsig.html">XML Digital Signature</a></li>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
+<li><a href="../bugs.html">Reporting Bugs</a></li>
+<li><a href="../mailing-list.html">Mailing list</a></li>
+<li><a href="../related.html">Related</a></li>
+<li><a href="../authors.html">Authors</a></li>
+</ul>
+<table width="100%">
+<tr>
+<td width="15"></td>
+<td><a href="http://xmlsoft.org/"><img src="../images/libxml2-logo.png" alt="LibXML2" border="0"></a></td>
+</tr>
+<tr>
+<td width="15"></td>
+<td><a href="http://xmlsoft.org/XSLT"><img src="../images/libxslt-logo.png" alt="LibXSLT" border="0"></a></td>
+</tr>
+<tr>
+<td width="15"></td>
+<td><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a></td>
+</tr>
+<!--Links - start--><!--Links - end-->
+</table>
+</td>
+<td valign="top"><table width="80%" valign="top" style="margin-left:10px;"><tr><td valign="top" align="left" id="xmlsecContent">
+<h1 id="verifing-and-decrypting-documents">Verifing and decrypting documents</h1>
+<h2 id="overview">Overview</h2>
+<p>Since the template is just an XML file, it might be created in advance and saved in a file. It's also possible for application to create templates without using XML Security Library functions. Also in some cases template should be inserted in the signed or encrypted data (for example, if you want to create an enveloped or enveloping signature).</p>
+<p>Signature verification and data decryption do not require template because all the necessary information is provided in the signed or encrypted document.</p>
+<blockquote>
+<p><strong>Figure: The verification or decryption processing model</strong> <img src="images/verif-dec-model.png" alt="The verification or decryption processing model"></p>
+</blockquote>
+<h2 id="verifying-a-signed-document">Verifying a signed document</h2>
+<p>The typical signature verification process includes following steps:</p>
+<ul>
+<li>Load keys, X509 certificates, etc. in the <a href="#xmlseckeysmngr">keys manager</a> .</li>
+<li>Create signature context <a href="#xmlsecdsigctx">xmlSecDSigCtx</a> using <a href="#xmlsecdsigctxcreate">xmlSecDSigCtxCreate</a> or <a href="#xmlsecdsigctxinitialize">xmlSecDSigCtxInitialize</a> functions.</li>
+<li>Select start verification <a href="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><span>dsig:Signature/</span></a> node in the signed XML document.</li>
+<li>Verify signature by calling <a href="#xmlsecdsigctxverify">xmlSecDSigCtxVerify</a> function.</li>
+<li>Check returned value and verification status ( <code>status</code> member of <a href="#xmlsecdsigctx">xmlSecDSigCtx</a> structure). If necessary, consume returned data from the <a href="#xmlsecdsigctx">context</a> .</li>
+<li>Destroy signature context <a href="#xmlsecdsigctx">xmlSecDSigCtx</a> using <a href="#xmlsecdsigctxdestroy">xmlSecDSigCtxDestroy</a> or <a href="#xmlsecdsigctxfinalize">xmlSecDSigCtxFinalize</a> functions.</li>
+</ul>
+<p><strong>Example: Verifying a document</strong></p>
+<pre><code>/**
+ * verify_file:
+ * @xml_file:       the signed XML file name.
+ * @key_file:       the PEM public key file name.
+ *
+ * Verifies XML signature in #xml_file using public key from #key_file.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
+int
+verify_file(const char* xml_file, const char* key_file) {
+    xmlDocPtr doc = NULL;
+    xmlNodePtr node = NULL;
+    xmlSecDSigCtxPtr dsigCtx = NULL;
+    int res = -1;
+
+    assert(xml_file);
+    assert(key_file);
+
+    /* load file */
+    doc = xmlParseFile(xml_file);
+    if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
+    fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
+    goto done;
+    }
+
+    /* find start node */
+    node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeSignature, xmlSecDSigNs);
+    if(node == NULL) {
+    fprintf(stderr, "Error: start node not found in \"%s\"\n", xml_file);
+    goto done;
+    }
+
+    /* create signature context, we don't need keys manager in this example */
+    dsigCtx = xmlSecDSigCtxCreate(NULL);
+    if(dsigCtx == NULL) {
+        fprintf(stderr,"Error: failed to create signature context\n");
+    goto done;
+    }
+
+    /* load public key */
+    dsigCtx-&gt;signKey = xmlSecCryptoAppKeyLoad(key_file,xmlSecKeyDataFormatPem, NULL, NULL, NULL);
+    if(dsigCtx-&gt;signKey == NULL) {
+        fprintf(stderr,"Error: failed to load public pem key from \"%s\"\n", key_file);
+    goto done;
+    }
+
+    /* set key name to the file name, this is just an example! */
+    if(xmlSecKeySetName(dsigCtx-&gt;signKey, key_file) &lt; 0) {
+        fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
+    goto done;
+    }
+
+    /* Verify signature */
+    if(xmlSecDSigCtxVerify(dsigCtx, node) &lt; 0) {
+        fprintf(stderr,"Error: signature verify\n");
+    goto done;
+    }
+
+    /* print verification result to stdout */
+    if(dsigCtx-&gt;status == xmlSecDSigStatusSucceeded) {
+    fprintf(stdout, "Signature is OK\n");
+    } else {
+    fprintf(stdout, "Signature is INVALID\n");
+    }
+
+    /* success */
+    res = 0;
+
+done:
+    /* cleanup */
+    if(dsigCtx != NULL) {
+    xmlSecDSigCtxDestroy(dsigCtx);
+    }
+
+    if(doc != NULL) {
+    xmlFreeDoc(doc);
+    }
+    return(res);
+}</code></pre>
+<p><a href="#xmlsec-example-verify1">Full Program Listing</a></p>
+<h2 id="decrypting-an-encrypted-document">Decrypting an encrypted document</h2>
+<p>The typical decryption process includes following steps:</p>
+<ul>
+<li>Load keys, X509 certificates, etc. in the <a href="#xmlseckeysmngr">keys manager</a> .</li>
+<li>Create encryption context <a href="#xmlsecencctx">xmlSecEncCtx</a> using <a href="#xmlsecencctxcreate">xmlSecEncCtxCreate</a> or <a href="#xmlsecencctxinitialize">xmlSecEncCtxInitialize</a> functions.</li>
+<li>Select start decryption <code>enc:EncryptedData</code> node.</li>
+<li>Decrypt by calling <a href="#xmlsecencctxdecrypt">xmlSecencCtxDecrypt</a> function.</li>
+<li>Check returned value and if necessary consume encrypted data.</li>
+<li>Destroy encryption context <a href="#xmlsecencctx">xmlSecEncCtx</a> using <a href="#xmlsecencctxdestroy">xmlSecEncCtxDestroy</a> or <a href="#xmlsecencctxfinalize">xmlSecEncCtxFinalize</a> functions.</li>
+</ul>
+<p><strong>Example: Decrypting a document</strong></p>
+<pre><code>int
+decrypt_file(const char* enc_file, const char* key_file) {
+    xmlDocPtr doc = NULL;
+    xmlNodePtr node = NULL;
+    xmlSecEncCtxPtr encCtx = NULL;
+    int res = -1;
+
+    assert(enc_file);
+    assert(key_file);
+
+    /* load template */
+    doc = xmlParseFile(enc_file);
+    if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
+    fprintf(stderr, "Error: unable to parse file \"%s\"\n", enc_file);
+    goto done;
+    }
+
+    /* find start node */
+    node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeEncryptedData, xmlSecEncNs);
+    if(node == NULL) {
+    fprintf(stderr, "Error: start node not found in \"%s\"\n", enc_file);
+    goto done;
+    }
+
+    /* create encryption context, we don't need keys manager in this example */
+    encCtx = xmlSecEncCtxCreate(NULL);
+    if(encCtx == NULL) {
+        fprintf(stderr,"Error: failed to create encryption context\n");
+    goto done;
+    }
+
+    /* load DES key */
+    encCtx-&gt;encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, key_file);
+    if(encCtx-&gt;encKey == NULL) {
+        fprintf(stderr,"Error: failed to load des key from binary file \"%s\"\n", key_file);
+    goto done;
+    }
+
+    /* set key name to the file name, this is just an example! */
+    if(xmlSecKeySetName(encCtx-&gt;encKey, key_file) &lt; 0) {
+        fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
+    goto done;
+    }
+
+    /* decrypt the data */
+    if((xmlSecEncCtxDecrypt(encCtx, node) &lt; 0) || (encCtx-&gt;result == NULL)) {
+        fprintf(stderr,"Error: decryption failed\n");
+    goto done;
+    }
+
+    /* print decrypted data to stdout */
+    if(encCtx-&gt;resultReplaced != 0) {
+    fprintf(stdout, "Decrypted XML data:\n");
+    xmlDocDump(stdout, doc);
+    } else {
+    fprintf(stdout, "Decrypted binary data (%d bytes):\n", xmlSecBufferGetSize(encCtx-&gt;result));
+    if(xmlSecBufferGetData(encCtx-&gt;result) != NULL) {
+        fwrite(xmlSecBufferGetData(encCtx-&gt;result),
+              1,
+              xmlSecBufferGetSize(encCtx-&gt;result),
+              stdout);
+    }
+    }
+    fprintf(stdout, "\n");
+
+    /* success */
+    res = 0;
+
+done:
+    /* cleanup */
+    if(encCtx != NULL) {
+    xmlSecEncCtxDestroy(encCtx);
+    }
+
+    if(doc != NULL) {
+    xmlFreeDoc(doc);
+    }
+    return(res);
+}</code></pre>
+<p><a href="#xmlsec-example-decrypt1">Full Program Listing</a></p>
+</td></tr></table></td>
+</tr></table></body>
+</html>

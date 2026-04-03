@@ -20,3 +20,10 @@ table.CALSTABLE > tbody > tr:nth-child(1) > td:nth-child(1) {
     color: initial;
 }
 
+h1 {
+    text-align: center !important;
+}
+
+#xmlsecContent {
+    padding-left: 8em;
+}

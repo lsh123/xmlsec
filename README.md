@@ -19,11 +19,11 @@ XMLSec library is released under the MIT Licence (see the [Copyright file](Copyr
 
 ### Prerequisites
 XMLSec requires the following libraries:
-- [LibXML2](http://xmlsoft.org) >= 2.9.13
-- [LibXSLT](http://xmlsoft.org/XSLT/) >= 1.1.35 (optional)
+- [LibXML2](https://gitlab.gnome.org/GNOME/libxml2) >= 2.9.13
+- [LibXSLT](https://gitlab.gnome.org/GNOME/libxslt) >= 1.1.35 (optional)
 
 And at least one of the following cryptographic libraries:
-- [OpenSSL](http://www.openssl.org) >= 3.0.13 (>= 3.5.0 is recommended)
+- [OpenSSL](https://www.openssl.org) >= 3.0.13 (>= 3.5.0 is recommended)
 - [LibreSSL](https://www.libressl.org/) >= 3.9.0
 - [BoringSSL](https://boringssl.googlesource.com/boringssl/) >= 1.1.0
 - [NSS](https://firefox-source-docs.mozilla.org/security/nss/index.html) >= 3.91 (with [NSPR](https://firefox-source-docs.mozilla.org/nspr/index.html) >= 4.34.1)

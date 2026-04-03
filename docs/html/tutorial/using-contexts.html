@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="generator" content="pandoc">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>XML Security Library: XML Security Library Examples</title>
+<title>XML Security Library: Using context objects</title>
 <style>
     html {
       color: #1a1a1a;
@@ -209,54 +209,112 @@
 </td>
 <td valign="top"><table width="80%" valign="top" style="margin-left:10px;"><tr><td valign="top" align="left" id="xmlsecContent">
 <header id="title-block-header">
-<h1 class="title">XML Security Library: XML Security Library Examples</h1>
-</header><h1 id="xml-security-library-examples">XML Security Library Examples</h1>
-<p>This section contains several examples of using XML Security Library to sign, verify, encrypt or decrypt XML documents. For the XML Security Library tutorial and API reference, see the <a href="../tutorial/index.html">XML Security Library Tutorial</a>.</p>
-<h2 id="signing-a-template-file">Signing a template file</h2>
-<p>Signs an XML document using a pre-created signature template file and a PEM private key.</p>
-<p><a href="sign1.html">Read more →</a></p>
-<h2 id="signing-a-dynamically-created-template">Signing a dynamically created template</h2>
-<p>Signs an XML document using a dynamically created signature template.</p>
-<p><a href="sign2.html">Read more →</a></p>
-<h2 id="signing-enveloped-signature-with-x509-certificate">Signing enveloped signature with X509 certificate</h2>
-<p>Creates an enveloped XML Digital Signature using an X509 certificate.</p>
-<p><a href="sign3.html">Read more →</a></p>
-<h2 id="signing-a-node-by-id-with-x509-certificate">Signing a node by ID with X509 certificate</h2>
-<p>Signs a specific XML node referenced by ID attribute using an X509 certificate.</p>
-<p><a href="sign4.html">Read more →</a></p>
-<h2 id="verifying-a-signature-with-a-single-key">Verifying a signature with a single key</h2>
-<p>Verifies an XML Digital Signature using a single public key loaded from a PEM file.</p>
-<p><a href="verify1.html">Read more →</a></p>
-<h2 id="verifying-a-signature-with-keys-manager">Verifying a signature with keys manager</h2>
-<p>Verifies an XML Digital Signature using a keys manager loaded with multiple keys.</p>
-<p><a href="verify2.html">Read more →</a></p>
-<h2 id="verifying-an-enveloped-signature-with-x509-certificates">Verifying an enveloped signature with X509 certificates</h2>
-<p>Verifies an enveloped XML Digital Signature using X509 certificate chain verification.</p>
-<p><a href="verify3.html">Read more →</a></p>
-<h2 id="verifying-a-signature-of-a-node-with-x509-certificates">Verifying a signature of a node with X509 certificates</h2>
-<p>Verifies a node signature with X509 certificates.</p>
-<p><a href="verify4.html">Read more →</a></p>
-<h2 id="verifying-a-signature-with-additional-restrictions">Verifying a signature with additional restrictions</h2>
-<p>Verifies an XML Digital Signature with additional restrictions (SAML-style).</p>
-<p><a href="verify-saml.html">Read more →</a></p>
-<h2 id="encrypting-data-with-a-template-file">Encrypting data with a template file</h2>
-<p>Encrypts binary data using a pre-created encryption template file.</p>
-<p><a href="encrypt1.html">Read more →</a></p>
-<h2 id="encrypting-data-with-a-dynamically-created-template">Encrypting data with a dynamically created template</h2>
-<p>Encrypts an XML document using a dynamically created encryption template.</p>
-<p><a href="encrypt2.html">Read more →</a></p>
-<h2 id="encrypting-data-with-a-session-key">Encrypting data with a session key</h2>
-<p>Encrypts an XML document using a session key wrapped with an RSA key from the keys manager.</p>
-<p><a href="encrypt3.html">Read more →</a></p>
-<h2 id="decrypting-data-with-a-single-key">Decrypting data with a single key</h2>
-<p>Decrypts encrypted XML data using a single DES key loaded from a binary file.</p>
-<p><a href="decrypt1.html">Read more →</a></p>
-<h2 id="decrypting-data-with-keys-manager">Decrypting data with keys manager</h2>
-<p>Decrypts encrypted XML data using a keys manager loaded with DES keys.</p>
-<p><a href="decrypt2.html">Read more →</a></p>
-<h2 id="writing-a-custom-keys-manager">Writing a custom keys manager</h2>
-<p>Demonstrates implementing a custom file-based keys store for decryption.</p>
-<p><a href="decrypt3.html">Read more →</a></p>
+<h1 class="title">XML Security Library: Using context objects</h1>
+</header><h1 id="using-context-objects">Using context objects</h1>
+<p>The great flexibility of XML Digital Signature and XML Encryption specification is one of the most interesting and in the same time, most dangerouse feature for an application developer. For example, XPath and XSLT transform can make it very difficult to find out what exactly was signed by just looking at the transforms and the input data. Many protocols based on XML Digital Signature and XML Encryption restrict allowed key data types, allowed transforms or possible input data. For example, signature in a simple SAML Response should have only one <code>dsig:Reference/</code> element with an empty or NULL URI attribute and only one enveloped transform. XML Security Library uses "context" objects to let application enable or disable particular features, return the result data and the information collected during the processing. Also all the context objects defined in XML Security library have a special <code>userData</code> member which could be used by application to pass application specific data around. XML Security Library never use this field. The application creates a new <a href="#xmlsecdsigctx">xmlSecDSigCtx</a> or <a href="#xmlsecencctx">xmlSecEncCtx</a> object for each operation, sets necessary options and consumes result returned in the context after signature, verification, encryption or decryption.</p>
+<p><strong>Example: SAML signature validation</strong></p>
+<pre><code>/**
+ * verify_file:
+ * @mngr:       the pointer to keys manager.
+ * @xml_file:       the signed XML file name.
+ *
+ * Verifies XML signature in #xml_file.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
+int
+verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
+    xmlDocPtr doc = NULL;
+    xmlNodePtr node = NULL;
+    xmlSecDSigCtxPtr dsigCtx = NULL;
+    int res = -1;
+
+    assert(mngr);
+    assert(xml_file);
+
+    /* load file */
+    doc = xmlParseFile(xml_file);
+    if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
+    fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
+    goto done;
+    }
+
+    /* find start node */
+    node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeSignature, xmlSecDSigNs);
+    if(node == NULL) {
+    fprintf(stderr, "Error: start node not found in \"%s\"\n", xml_file);
+    goto done;
+    }
+
+    /* create signature context */
+    dsigCtx = xmlSecDSigCtxCreate(mngr);
+    if(dsigCtx == NULL) {
+        fprintf(stderr,"Error: failed to create signature context\n");
+    goto done;
+    }
+
+    /* limit the Reference URI attributes to empty or NULL */
+    dsigCtx-&gt;enabledReferenceUris = xmlSecTransformUriTypeEmpty;
+
+    /* limit allowed transforms for signature and reference processing */
+    if((xmlSecDSigCtxEnableSignatureTransform(dsigCtx, xmlSecTransformInclC14NId) &lt; 0) ||
+       (xmlSecDSigCtxEnableSignatureTransform(dsigCtx, xmlSecTransformExclC14NId) &lt; 0) ||
+       (xmlSecDSigCtxEnableSignatureTransform(dsigCtx, xmlSecTransformSha1Id) &lt; 0) ||
+       (xmlSecDSigCtxEnableSignatureTransform(dsigCtx, xmlSecTransformRsaSha1Id) &lt; 0)) {
+
+        fprintf(stderr,"Error: failed to limit allowed signature transforms\n");
+    goto done;
+    }
+    if((xmlSecDSigCtxEnableReferenceTransform(dsigCtx, xmlSecTransformInclC14NId) &lt; 0) ||
+       (xmlSecDSigCtxEnableReferenceTransform(dsigCtx, xmlSecTransformExclC14NId) &lt; 0) ||
+       (xmlSecDSigCtxEnableReferenceTransform(dsigCtx, xmlSecTransformSha1Id) &lt; 0) ||
+       (xmlSecDSigCtxEnableReferenceTransform(dsigCtx, xmlSecTransformEnvelopedId) &lt; 0)) {
+
+        fprintf(stderr,"Error: failed to limit allowed reference transforms\n");
+    goto done;
+    }
+
+    /* in addition, limit possible key data to valid X509 certificates only */
+    if(xmlSecPtrListAdd(&amp;(dsigCtx-&gt;keyInfoReadCtx.enabledKeyData), BAD_CAST xmlSecKeyDataX509Id) &lt; 0) {
+        fprintf(stderr,"Error: failed to limit allowed key data\n");
+    goto done;
+    }
+
+    /* Verify signature */
+    if(xmlSecDSigCtxVerify(dsigCtx, node) &lt; 0) {
+        fprintf(stderr,"Error: signature verify\n");
+    goto done;
+    }
+
+    /* check that we have only one Reference */
+    if((dsigCtx-&gt;status == xmlSecDSigStatusSucceeded) &amp;&amp;
+        (xmlSecPtrListGetSize(&amp;(dsigCtx-&gt;signedInfoReferences)) != 1)) {
+
+        fprintf(stderr,"Error: only one reference is allowed\n");
+    goto done;
+    }
+
+    /* print verification result to stdout */
+    if(dsigCtx-&gt;status == xmlSecDSigStatusSucceeded) {
+    fprintf(stdout, "Signature is OK\n");
+    } else {
+    fprintf(stdout, "Signature is INVALID\n");
+    }
+
+    /* success */
+    res = 0;
+
+done:
+    /* cleanup */
+    if(dsigCtx != NULL) {
+    xmlSecDSigCtxDestroy(dsigCtx);
+    }
+
+    if(doc != NULL) {
+    xmlFreeDoc(doc);
+    }
+    return(res);
+}</code></pre>
 </td></tr></table></td>
 </tr></table></body>
 </html>

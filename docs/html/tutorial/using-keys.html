@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="generator" content="pandoc">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>XML Security Library: XML Security Library Examples</title>
+<title>XML Security Library: Keys</title>
 <style>
     html {
       color: #1a1a1a;
@@ -209,54 +209,13 @@
 </td>
 <td valign="top"><table width="80%" valign="top" style="margin-left:10px;"><tr><td valign="top" align="left" id="xmlsecContent">
 <header id="title-block-header">
-<h1 class="title">XML Security Library: XML Security Library Examples</h1>
-</header><h1 id="xml-security-library-examples">XML Security Library Examples</h1>
-<p>This section contains several examples of using XML Security Library to sign, verify, encrypt or decrypt XML documents. For the XML Security Library tutorial and API reference, see the <a href="../tutorial/index.html">XML Security Library Tutorial</a>.</p>
-<h2 id="signing-a-template-file">Signing a template file</h2>
-<p>Signs an XML document using a pre-created signature template file and a PEM private key.</p>
-<p><a href="sign1.html">Read more →</a></p>
-<h2 id="signing-a-dynamically-created-template">Signing a dynamically created template</h2>
-<p>Signs an XML document using a dynamically created signature template.</p>
-<p><a href="sign2.html">Read more →</a></p>
-<h2 id="signing-enveloped-signature-with-x509-certificate">Signing enveloped signature with X509 certificate</h2>
-<p>Creates an enveloped XML Digital Signature using an X509 certificate.</p>
-<p><a href="sign3.html">Read more →</a></p>
-<h2 id="signing-a-node-by-id-with-x509-certificate">Signing a node by ID with X509 certificate</h2>
-<p>Signs a specific XML node referenced by ID attribute using an X509 certificate.</p>
-<p><a href="sign4.html">Read more →</a></p>
-<h2 id="verifying-a-signature-with-a-single-key">Verifying a signature with a single key</h2>
-<p>Verifies an XML Digital Signature using a single public key loaded from a PEM file.</p>
-<p><a href="verify1.html">Read more →</a></p>
-<h2 id="verifying-a-signature-with-keys-manager">Verifying a signature with keys manager</h2>
-<p>Verifies an XML Digital Signature using a keys manager loaded with multiple keys.</p>
-<p><a href="verify2.html">Read more →</a></p>
-<h2 id="verifying-an-enveloped-signature-with-x509-certificates">Verifying an enveloped signature with X509 certificates</h2>
-<p>Verifies an enveloped XML Digital Signature using X509 certificate chain verification.</p>
-<p><a href="verify3.html">Read more →</a></p>
-<h2 id="verifying-a-signature-of-a-node-with-x509-certificates">Verifying a signature of a node with X509 certificates</h2>
-<p>Verifies a node signature with X509 certificates.</p>
-<p><a href="verify4.html">Read more →</a></p>
-<h2 id="verifying-a-signature-with-additional-restrictions">Verifying a signature with additional restrictions</h2>
-<p>Verifies an XML Digital Signature with additional restrictions (SAML-style).</p>
-<p><a href="verify-saml.html">Read more →</a></p>
-<h2 id="encrypting-data-with-a-template-file">Encrypting data with a template file</h2>
-<p>Encrypts binary data using a pre-created encryption template file.</p>
-<p><a href="encrypt1.html">Read more →</a></p>
-<h2 id="encrypting-data-with-a-dynamically-created-template">Encrypting data with a dynamically created template</h2>
-<p>Encrypts an XML document using a dynamically created encryption template.</p>
-<p><a href="encrypt2.html">Read more →</a></p>
-<h2 id="encrypting-data-with-a-session-key">Encrypting data with a session key</h2>
-<p>Encrypts an XML document using a session key wrapped with an RSA key from the keys manager.</p>
-<p><a href="encrypt3.html">Read more →</a></p>
-<h2 id="decrypting-data-with-a-single-key">Decrypting data with a single key</h2>
-<p>Decrypts encrypted XML data using a single DES key loaded from a binary file.</p>
-<p><a href="decrypt1.html">Read more →</a></p>
-<h2 id="decrypting-data-with-keys-manager">Decrypting data with keys manager</h2>
-<p>Decrypts encrypted XML data using a keys manager loaded with DES keys.</p>
-<p><a href="decrypt2.html">Read more →</a></p>
-<h2 id="writing-a-custom-keys-manager">Writing a custom keys manager</h2>
-<p>Demonstrates implementing a custom file-based keys store for decryption.</p>
-<p><a href="decrypt3.html">Read more →</a></p>
+<h1 class="title">XML Security Library: Keys</h1>
+</header><h1 id="keys">Keys</h1>
+<p>A key in XML Security Library is a representation of the <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><span>dsig:KeyInfo/</span></a> element and consist of several key data objects. The "value" key data usually contains raw key material (or handlers to key material) required to execute particular crypto transform. Other key data objects may contain any additional information about the key. All the key data objects in the key are associated with the same key material. For example, if a DSA key material has both an X509 certificate and a PGP data associated with it then such a key can have a DSA key "value" and two key data objects for X509 certificate and PGP key data.</p>
+<blockquote>
+<p><strong>Figure: The key structure</strong> <img src="images/key.png" alt="The key structure"></p>
+</blockquote>
+<p>XML Security Library has several "invisible" key data classes. These classes never show up in the keys data list of a key but are used for <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><span>dsig:KeyInfo/</span></a> children processing ( <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"><span>dsig:KeyName/</span></a> , <code>enc:EncryptedKey/</code>, ...). As with transforms, application might add any new key data objects or replace the default ones.</p>
 </td></tr></table></td>
 </tr></table></body>
 </html>

@@ -47,7 +47,8 @@ html:
 	done
 	@if [ -d $(MD_SRC_DIR)/images ]; then \
 		echo "-- Copying tutorial images ..."; \
-		$(CP) -r $(MD_SRC_DIR)/images $(builddir)/images; \
+		$(mkinstalldirs) $(builddir)/images; \
+		$(CP) -r $(MD_SRC_DIR)/images/* $(builddir)/images/; \
 	fi
 
 dist-hook:

@@ -106,7 +106,7 @@
 			</li>
 			<li>
 			<xsl:call-template name="linkto">
-				<xsl:with-param name="href">tutorial/xmlsec-examples.html</xsl:with-param>
+				<xsl:with-param name="href">examples/index.html</xsl:with-param>
 				<xsl:with-param name="text">Examples</xsl:with-param>
 			</xsl:call-template>
 			</li>

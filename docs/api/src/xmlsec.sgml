@@ -97,10 +97,10 @@
   </bookinfo>
 
   <part id="xmlsec-reference">
-    <title>XML Security Library API Reference.</title>
+    <title>XML Security Library API Reference</title>
 
     <chapter id="xmlsec-ref">
-    <title>XML Security Core Library API Reference.</title>
+    <title>XML Security Core Library API Reference</title>
     <para>This section contains the API reference for xmlsec. All
     the public interfaces are documented here. This reference guide is
     build by extracting comments from the code sources. </para>
@@ -130,7 +130,7 @@
     </chapter>
 
     <chapter id="xmlsec-openssl-ref">
-    <title>XML Security Library for OpenSLL API Reference.</title>
+    <title>XML Security Library for OpenSLL API Reference</title>
     <para>This section contains the API reference for xmlsec-openssl. All
     the public interfaces are documented here. This reference guide is
     build by extracting comments from the code sources. </para>
@@ -142,7 +142,7 @@
     </chapter>
 
     <chapter id="xmlsec-gnutls-ref">
-    <title>XML Security Library for GnuTLS API Reference.</title>
+    <title>XML Security Library for GnuTLS API Reference</title>
     <para>This section contains the API reference for xmlsec-gnutls. All
     the public interfaces are documented here. This reference guide is
     build by extracting comments from the code sources. </para>
@@ -153,7 +153,7 @@
     </chapter>
 
     <chapter id="xmlsec-gcrypt-ref">
-    <title>XML Security Library for GCrypt API Reference.</title>
+    <title>XML Security Library for GCrypt API Reference</title>
     <para>This section contains the API reference for xmlsec-gcrypt. All
     the public interfaces are documented here. This reference guide is
     build by extracting comments from the code sources. </para>
@@ -163,7 +163,7 @@
     </chapter>
 
     <chapter id="xmlsec-nss-ref">
-    <title>XML Security Library for NSS API Reference.</title>
+    <title>XML Security Library for NSS API Reference</title>
     <para>This section contains the API reference for xmlsec-nss. All
     the public interfaces are documented here. This reference guide is
     build by extracting comments from the code sources. </para>
@@ -176,7 +176,7 @@
     </chapter>
 
     <chapter id="xmlsec-mscrypto-ref">
-    <title>XML Security Library for Microsoft Crypto API Reference.</title>
+    <title>XML Security Library for Microsoft Crypto API Reference</title>
     <para>This section contains the API reference for xmlsec-mscrypto (based on
     Microsoft Crypto API). All the public interfaces are documented here.
     This reference guide is build by extracting comments from the code sources.
@@ -191,7 +191,7 @@
 
 
     <chapter id="xmlsec-msccng-ref">
-    <title>XML Security Library for Microsoft Cryptography API: Next Generation (CNG) Reference.</title>
+    <title>XML Security Library for Microsoft Cryptography API: Next Generation (CNG) Reference</title>
     <para>This section contains the API reference for xmlsec-mscng (based on
     <ulink url="https://msdn.microsoft.com/en-us/library/windows/desktop/aa376210(v=vs.85).aspx">Microsoft
     Cryptography API: Next Generation (CNG)</ulink>). All the public interfaces are

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN" "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
+<!ENTITY chapter-examples		SYSTEM "examples.sgml">
+
+<!ENTITY xmlsec-example-sign1 		SYSTEM "examples/sign1.sgml">
+<!ENTITY xmlsec-example-sign2 		SYSTEM "examples/sign2.sgml">
+<!ENTITY xmlsec-example-sign3 		SYSTEM "examples/sign3.sgml">
+<!ENTITY xmlsec-example-sign4 		SYSTEM "examples/sign4.sgml">
+
+<!ENTITY xmlsec-example-verify1 	SYSTEM "examples/verify1.sgml">
+<!ENTITY xmlsec-example-verify2 	SYSTEM "examples/verify2.sgml">
+<!ENTITY xmlsec-example-verify3 	SYSTEM "examples/verify3.sgml">
+<!ENTITY xmlsec-example-verify4 	SYSTEM "examples/verify4.sgml">
+<!ENTITY xmlsec-example-verify-saml 	SYSTEM "examples/verify-saml.sgml">
+
+
+<!ENTITY xmlsec-example-encrypt1 	SYSTEM "examples/encrypt1.sgml">
+<!ENTITY xmlsec-example-encrypt2 	SYSTEM "examples/encrypt2.sgml">
+<!ENTITY xmlsec-example-encrypt3 	SYSTEM "examples/encrypt3.sgml">
+
+<!ENTITY xmlsec-example-decrypt1 	SYSTEM "examples/decrypt1.sgml">
+<!ENTITY xmlsec-example-decrypt2 	SYSTEM "examples/decrypt2.sgml">
+<!ENTITY xmlsec-example-decrypt3 	SYSTEM "examples/decrypt3.sgml">
+
+<!ENTITY xmlsec-example-sign1-tmpl	SYSTEM "examples/sign1-tmpl.sgml">
+<!ENTITY xmlsec-example-sign1-res	SYSTEM "examples/sign1-res.sgml">
+<!ENTITY xmlsec-example-sign2-doc	SYSTEM "examples/sign2-doc.sgml">
+<!ENTITY xmlsec-example-sign2-res	SYSTEM "examples/sign2-res.sgml">
+<!ENTITY xmlsec-example-sign3-doc	SYSTEM "examples/sign3-doc.sgml">
+<!ENTITY xmlsec-example-sign3-res	SYSTEM "examples/sign3-res.sgml">
+<!ENTITY xmlsec-example-sign4-doc	SYSTEM "examples/sign4-doc.sgml">
+<!ENTITY xmlsec-example-sign4-res	SYSTEM "examples/sign4-res.sgml">
+<!ENTITY xmlsec-example-verify-saml-res 	   SYSTEM "examples/verify-saml-res.sgml">
+<!ENTITY xmlsec-example-verify-saml-tmpl 	   SYSTEM "examples/verify-saml-tmpl.sgml">
+<!ENTITY xmlsec-example-verify-saml-bad-res  SYSTEM "examples/verify-saml-bad-res.sgml">
+<!ENTITY xmlsec-example-verify-saml-bad-tmpl SYSTEM "examples/verify-saml-bad-tmpl.sgml">
+
+<!ENTITY xmlsec-example-encrypt1-tmpl	SYSTEM "examples/encrypt1-tmpl.sgml">
+<!ENTITY xmlsec-example-encrypt1-res	SYSTEM "examples/encrypt1-res.sgml">
+<!ENTITY xmlsec-example-encrypt2-doc	SYSTEM "examples/encrypt2-doc.sgml">
+<!ENTITY xmlsec-example-encrypt2-res	SYSTEM "examples/encrypt2-res.sgml">
+<!ENTITY xmlsec-example-encrypt3-doc	SYSTEM "examples/encrypt3-doc.sgml">
+<!ENTITY xmlsec-example-encrypt3-res	SYSTEM "examples/encrypt3-res.sgml">
+]>
+<book id="book">
+  <bookinfo>
+    <title>XML Security Library Examples</title>
+    <authorgroup>
+      <author>
+        <firstname>Aleksey</firstname>
+        <surname>Sanin</surname>
+        <affiliation>
+	  <address>
+	    <email>aleksey@aleksey.com</email>
+	  </address>
+        </affiliation>
+      </author>
+    </authorgroup>
+    <copyright>
+      <year>2002-2024</year>
+      <holder>Aleksey Sanin</holder>
+    </copyright>
+    <legalnotice>
+      <para>Permission is granted to make and distribute verbatim
+      copies of this manual provided the copyright notice and this
+      permission notice are preserved on all copies.</para>
+      <para>Permission is granted to copy and distribute modified
+      versions of this manual under the conditions for verbatim
+      copying, provided also that the entire resulting derived work is
+      distributed under the terms of a permission notice identical to
+      this one.</para>
+
+      <para>Permission is granted to copy and distribute translations
+      of this manual into another language, under the above conditions
+      for modified versions.</para>
+    </legalnotice>
+
+    <abstract>
+      <para>This section contains several examples of using XML Security Library
+      to sign, verify, encrypt or decrypt XML documents.
+      For the XML Security Library tutorial and API reference, see the
+      <ulink url="../tutorial/index.html">XML Security Library Tutorial</ulink>.
+      </para>
+    </abstract>
+  </bookinfo>
+
+  <part id="index">
+    <title>XML Security Library Examples</title>
+    &chapter-examples;
+  </part>
+
+</book>

@@ -47,18 +47,18 @@ are:
 an ASCII decimal string. Once NSS is fixed, the function `xmlSecNssX509SerialNumberRead`
 in src/nss/x509.c needs to be re-implemented using NSS APIs (the write direction
 is now handled by `xmlSecX509SerialNumberWrite` in src/x509.c). Also see:
-    - [NSS bug](http://bugzilla.mozilla.org/show_bug.cgi?id=212864)
+    - [NSS bug](https://bugzilla.mozilla.org/show_bug.cgi?id=212864)
 
 2) `CERT_FindCertByNameString` does not work in all cases. Also see:
-    - [NSS bug](http://bugzilla.mozilla.org/show_bug.cgi?id=210709)
+    - [NSS bug](https://bugzilla.mozilla.org/show_bug.cgi?id=210709)
 
 3) `CERT_FindCertBySubjectKeyID` does not work in all cases. Also see:
-    - [NSS bug](http://bugzilla.mozilla.org/show_bug.cgi?id=211051)
+    - [NSS bug](https://bugzilla.mozilla.org/show_bug.cgi?id=211051)
 
 4) AES Key wrap algorithm is implemented in NSS but not exposed due to
 some bug src/nss/kw_aes.c uses a workaround which should be removed
 when the bug is fixed. Also see:
-    - [NSS bug](http://bugzilla.mozilla.org/show_bug.cgi?id=213795)
+    - [NSS bug](https://bugzilla.mozilla.org/show_bug.cgi?id=213795)
     - [xmlsec bug](https://github.com/lsh123/xmlsec/issues/6)
 
 5) Not all file formats are supported

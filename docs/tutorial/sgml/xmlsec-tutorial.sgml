@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN" "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
+<!ENTITY chapter-compiling-and-linking 	SYSTEM "compiling-and-linking.sgml">
+<!ENTITY chapter-init-and-shutdown 	SYSTEM "init-and-shutdown.sgml">
+<!ENTITY chapter-sign-and-encrypt 	SYSTEM "sign-and-encrypt.sgml">
+<!ENTITY chapter-verify-and-decrypt 	SYSTEM "verify-and-decrypt.sgml">
+<!ENTITY chapter-creating-templates 	SYSTEM "creating-templates.sgml">
+<!ENTITY chapter-using-keys		SYSTEM "using-keys.sgml">
+<!ENTITY chapter-using-keysmngr 	SYSTEM "using-keysmngr.sgml">
+<!ENTITY chapter-using-x509-certs	SYSTEM "using-x509-certs.sgml">
+<!ENTITY chapter-using-transforms	SYSTEM "using-transforms.sgml">
+<!ENTITY chapter-using-contexts		SYSTEM "using-contexts.sgml">
+]>
+<book id="book">
+  <bookinfo>
+    <title>XML Security Library Tutorial</title>
+    <authorgroup>
+      <author>
+        <firstname>Aleksey</firstname>
+        <surname>Sanin</surname>
+        <affiliation>
+	  <address>
+	    <email>aleksey@aleksey.com</email>
+	  </address>
+        </affiliation>
+      </author>
+    </authorgroup>
+    <copyright>
+      <year>2002-2024</year>
+      <holder>Aleksey Sanin</holder>
+    </copyright>
+    <legalnotice>
+      <para>Permission is granted to make and distribute verbatim
+      copies of this manual provided the copyright notice and this
+      permission notice are preserved on all copies.</para>
+      <para>Permission is granted to copy and distribute modified
+      versions of this manual under the conditions for verbatim
+      copying, provided also that the entire resulting derived work is
+      distributed under the terms of a permission notice identical to
+      this one.</para>
+
+      <para>Permission is granted to copy and distribute translations
+      of this manual into another language, under the above conditions
+      for modified versions.</para>
+    </legalnotice>
+
+    <abstract>
+      <para>This manual provides a tutorial for the xmlsec library,
+      describing how to use XML Digital Signature and XML Encryption.
+      For the complete API reference, see the
+      <ulink url="../api/index.html">XML Security Library API Reference</ulink>.
+      For code examples, see the
+      <ulink url="../examples/index.html">XML Security Library Examples</ulink>.
+      </para>
+    </abstract>
+  </bookinfo>
+
+  <part id="index">
+    <title>XML Security Library Tutorial</title>
+    <chapter id="overview">
+	<title>Overview</title>
+	<para>XML Security Library provides support for XML Digital Signature
+	and XML Encryption. It is based on LibXML/LibXSLT and can use
+	practicaly any crypto library (currently there is "out of the box"
+	support for OpenSSL, Microsoft Crypto API, Microsoft Cryptography API:
+	Next Generation (CNG), GnuTLS, GCrypt and NSS).
+	</para>
+    </chapter>
+    <chapter id="structure">
+	<title>XML Security Library Structure</title>
+	<para>In order to provide the an ability to use different crypto engines,
+	the XML Security Library is splitted in two parts: core library (xmlsec)
+	and crypto library (xmlsec-openssl, xmlsec-mscrypt, xmlsec-mscng, xmlsec-gnutls,
+	xmlsec-gcrypt, xmlsec-nss, ...).
+	<figure>
+	    <title>The library structure and dependencies</title>
+	    <graphic fileref="images/structure.png" align="center"></graphic>
+	</figure>
+	</para>
+	<para>The core library has no dependency on any crypto library and provides
+	implementation of all the engines as well as support for all the non
+	crypto transforms (xml parser, c14n transforms, xpath and xslt
+	transforms,...). The XML Security Crypto library provides
+	implementations for crypto transforms, crypto keys data and key
+	data stores. Application is linked with particular XML Security
+	Crypto library (or even libraries), but the actual application
+	code might be general enough so switching crypto engine would be
+	a matter of changing several #include directives.</para>
+    </chapter>
+
+    &chapter-compiling-and-linking;
+    &chapter-init-and-shutdown;
+    &chapter-sign-and-encrypt;
+    &chapter-creating-templates;
+    &chapter-verify-and-decrypt;
+    &chapter-using-keys;
+    &chapter-using-keysmngr;
+    &chapter-using-x509-certs;
+    &chapter-using-transforms;
+    &chapter-using-contexts;
+
+    <chapter id="xmlsec-signature-klasses">
+    <title>APPENDIX A. XML Security Library Signature Klasses</title>
+	<figure>
+	    <title>XML Security Library Signature Klasses</title>
+	    <graphic fileref="images/signature-structure.png" align="center"></graphic>
+	</figure></chapter>
+
+    <chapter id="xmlsec-encryption-klasses">
+    <title>APPENDIX B. XML Security Library Encryption Klasses</title>
+	<figure>
+	    <title>XML Security Library Encryption Klasses</title>
+	    <graphic fileref="images/encryption-structure.png" align="center"></graphic>
+	</figure>
+    </chapter>
+  </part>
+
+</book>

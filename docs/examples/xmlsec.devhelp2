@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<book xmlns="http://www.devhelp.net/book" title="XML Security Library Examples" link="index.html" author="Aleksey Sanin" name="xmlsec" version="2" language="c">
+  <chapters>
+    <sub name="XML Security Library Examples" link="index.html">
+      <sub name="Examples" link="index.html">
+        <sub name="XML Security Library Examples" link="index.html#examples-overview"/>
+        <sub name="Signing a template file" link="examples-sign-template-file.html"/>
+        <sub name="Signing a dynamicaly created template" link="examples-sign-dynamimc-template.html"/>
+        <sub name="Signing enveloped signature with X509 certificate" link="examples-sign-enveloped-x509.html"/>
+        <sub name="Signing a node by ID with X509 certificate" link="examples-sign-id-attr-x509.html"/>
+        <sub name="Verifying a signature with a single key" link="verify-with-key.html"/>
+        <sub name="Verifying a signature with keys manager" link="verify-with-keys-mngr.html"/>
+        <sub name="Verifying an enveloped signature with X509 certificates" link="verify-enveloped-with-x509.html"/>
+        <sub name="Verifying a signature of a node with X509 certificates" link="verify-node-with-x509.html"/>
+        <sub name="Verifying a signature with additional restrictions" link="verify-with-restrictions.html"/>
+        <sub name="Encrypting data with a template file" link="encrypt-template-file.html"/>
+        <sub name="Encrypting data with a dynamicaly created template" link="encrypt-dynamic-template.html"/>
+        <sub name="Encrypting data with a session key" link="encrypt-with-session-key.html"/>
+        <sub name="Decrypting data with a single key" link="decrypt-with-signle-key.html"/>
+        <sub name="Decrypting data with keys manager" link="decrypt-with-keys-mngr.html"/>
+        <sub name="Writing a custom keys manager" link="custom-keys-manager.html"/>
+      </sub>
+    </sub>
+  </chapters>
+  <functions/>
+</book>

@@ -9,12 +9,9 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:certkeys
- * @Short_description: Certificate keys support functions for Microsoft Crypto API.
- * @Stability: Stable
- *
+ * @addtogroup xmlsec_mscrypto_certkeys
+ * @brief Certificate keys support functions for Microsoft Crypto API.
  */
-
 #include "globals.h"
 
 #include <string.h>
@@ -49,11 +46,11 @@
 
 #define XMLSEC_MSCRYPTO_DSA_MAX_Q_SIZE     ((xmlSecSize)0x14U)
 
-/**************************************************************************
+/******************************************************************************
  *
  * Internal MSCrypto PCCERT_CONTEXT key CTX
  *
- *************************************************************************/
+  *****************************************************************************/
 typedef struct _xmlSecMSCryptoKeyDataCtx xmlSecMSCryptoKeyDataCtx,
                                                 *xmlSecMSCryptoKeyDataCtxPtr;
 
@@ -104,7 +101,7 @@ struct _xmlSecMSCryptoKeyDataCtx {
 
 #ifndef XMLSEC_MSCRYPTO_CUSTOM_REFCOUNT
 
-/******************************** Provider *****************************************/
+/****************************************************************************** Provider  *****************************************************************************/
 #define xmlSecMSCryptoKeyDataCtxGetProvider(ctx)            (ctx)->hProv
 
 static int
@@ -158,7 +155,7 @@ xmlSecMSCryptoKeyDataCtxDuplicateProvider(xmlSecMSCryptoKeyDataCtxPtr ctxDst, xm
 }
 
 
-/******************************** Key *****************************************/
+/****************************************************************************** Key  *****************************************************************************/
 #define xmlSecMSCryptoKeyDataCtxGetKey(ctx)            ((ctx)->hKey)
 
 static int
@@ -206,7 +203,7 @@ xmlSecMSCryptoKeyDataCtxDuplicateKey(xmlSecMSCryptoKeyDataCtxPtr ctxDst, xmlSecM
 
 #else /* XMLSEC_MSCRYPTO_CUSTOM_REFCOUNT */
 
-/******************************** Provider *****************************************/
+/****************************************************************************** Provider  *****************************************************************************/
 #define xmlSecMSCryptoKeyDataCtxGetProvider(ctx)            (((ctx)->p_prov) ? ((ctx)->p_prov->hProv) : 0)
 
 static int
@@ -282,7 +279,7 @@ xmlSecMSCryptoKeyDataCtxDuplicateProvider(xmlSecMSCryptoKeyDataCtxPtr ctxDst, xm
     return(0);
 }
 
-/********************************  Key  *****************************************/
+/******************************************************************************  Key   *****************************************************************************/
 #define xmlSecMSCryptoKeyDataCtxGetKey(ctx)            (((ctx)->p_key) ? ((ctx)->p_key->hKey) : 0)
 
 static int
@@ -353,7 +350,7 @@ xmlSecMSCryptoKeyDataCtxDuplicateKey(xmlSecMSCryptoKeyDataCtxPtr ctxDst, xmlSecM
 
 #endif /* XMLSEC_MSCRYPTO_CUSTOM_REFCOUNT */
 
-/******************************** Cert *****************************************/
+/****************************************************************************** Cert  *****************************************************************************/
 #define xmlSecMSCryptoKeyDataCtxGetCert(ctx)            ((ctx)->pCert)
 
 static void
@@ -402,7 +399,7 @@ xmlSecMSCryptoKeyDataCtxDuplicateCert(xmlSecMSCryptoKeyDataCtxPtr ctxDst, xmlSec
  *
  * xmlSecMSCryptoKeyData
  *
- *****************************************************************************/
+  *****************************************************************************/
 XMLSEC_KEY_DATA_DECLARE(MSCryptoKeyData, xmlSecMSCryptoKeyDataCtx)
 #define xmlSecMSCryptoKeyDataSize XMLSEC_KEY_DATA_SIZE(MSCryptoKeyData)
 
@@ -411,13 +408,11 @@ static void       xmlSecMSCryptoKeyDataFinalize   (xmlSecKeyDataPtr data);
 static xmlSecSize xmlSecMSCryptoKeyDataGetSize    (xmlSecKeyDataPtr data);
 
 /**
- * xmlSecMSCryptoKeyDataAdoptCert:
- * @data:               the pointer to MSCrypto pccert data.
- * @pCert:              the pointer to PCCERT key.
- *
- * Sets the value of key data.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Sets the value of key data.
+ * @param data the pointer to MSCrypto pccert data.
+ * @param pCert the pointer to PCCERT key.
+ * @param type the certificate type (trusted/untrusted).
+ * @return 0 on success or a negative value otherwise.
  */
 static int
 xmlSecMSCryptoKeyDataAdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT pCert, xmlSecKeyDataType type) {
@@ -554,14 +549,13 @@ xmlSecMSCryptoKeyDataAdoptKey(xmlSecKeyDataPtr data,
 }
 
 /**
- * xmlSecMSCryptoKeyDataGetKey:
- * @data:               the key data to retrieve certificate from.
- * @type:              type of key requested (public/private)
+ * @brief Native MSCrypto key retrieval from xmlsec keydata. The
+ * @param data the key data to retrieve certificate from.
+ * @param type type of key requested (public/private)
  *
- * Native MSCrypto key retrieval from xmlsec keydata. The
  * returned HKEY must not be destroyed by the caller.
  *
- * Returns: HKEY on success or NULL otherwise.
+ * @return HKEY on success or NULL otherwise.
  */
 HCRYPTKEY
 xmlSecMSCryptoKeyDataGetKey(xmlSecKeyDataPtr data, xmlSecKeyDataType type) {
@@ -578,13 +572,12 @@ xmlSecMSCryptoKeyDataGetKey(xmlSecKeyDataPtr data, xmlSecKeyDataType type) {
 }
 
 /**
- * xmlSecMSCryptoKeyDataGetDecryptKey:
- * @data:       the key data pointer
+ * @brief Native MSCrypto decrypt key retrieval from xmlsec keydata. The
+ * @param data the key data pointer
  *
- * Native MSCrypto decrypt key retrieval from xmlsec keydata. The
  * returned HKEY must not be destroyed by the caller.
  *
- * Returns: HKEY on success or NULL otherwise.
+ * @return HKEY on success or NULL otherwise.
  */
 HCRYPTKEY
 xmlSecMSCryptoKeyDataGetDecryptKey(xmlSecKeyDataPtr data) {
@@ -605,13 +598,12 @@ xmlSecMSCryptoKeyDataGetDecryptKey(xmlSecKeyDataPtr data) {
 }
 
 /**
- * xmlSecMSCryptoKeyDataGetCert:
- * @data:               the key data to retrieve certificate from.
+ * @brief Native MSCrypto certificate retrieval from xmlsec keydata. The
+ * @param data the key data to retrieve certificate from.
  *
- * Native MSCrypto certificate retrieval from xmlsec keydata. The
  * returned PCCERT_CONTEXT must not be released by the caller.
  *
- * Returns: PCCERT_CONTEXT on success or NULL otherwise.
+ * @return PCCERT_CONTEXT on success or NULL otherwise.
  */
 PCCERT_CONTEXT
 xmlSecMSCryptoKeyDataGetCert(xmlSecKeyDataPtr data) {
@@ -627,12 +619,9 @@ xmlSecMSCryptoKeyDataGetCert(xmlSecKeyDataPtr data) {
 }
 
 /**
- * xmlSecMSCryptoKeyDataGetMSCryptoProvider:
- * @data:              the key data
- *
- * Gets crypto provider handle
- *
- * Returns: the crypto provider handler or 0 if there is an error.
+ * @brief Gets crypto provider handle
+ * @param data the key data
+ * @return the crypto provider handler or 0 if there is an error.
  */
 HCRYPTPROV
 xmlSecMSCryptoKeyDataGetMSCryptoProvider(xmlSecKeyDataPtr data) {
@@ -648,12 +637,9 @@ xmlSecMSCryptoKeyDataGetMSCryptoProvider(xmlSecKeyDataPtr data) {
 }
 
 /**
- * xmlSecMSCryptoKeyDataGetMSCryptoKeySpec:
- * @data:              the key data
- *
- * Gets key spec info.
- *
- * Returns: the key spec info from key data
+ * @brief Gets key spec info.
+ * @param data the key data
+ * @return the key spec info from key data
  */
 DWORD
 xmlSecMSCryptoKeyDataGetMSCryptoKeySpec(xmlSecKeyDataPtr data) {
@@ -669,12 +655,9 @@ xmlSecMSCryptoKeyDataGetMSCryptoKeySpec(xmlSecKeyDataPtr data) {
 }
 
 /**
- * xmlSecMSCryptoKeyDataGetMSCryptoProviderInfo:
- * @data:              the key data
- *
- * Gets key provider info.
- *
- * Returns: the key provider info.
+ * @brief Gets key provider info.
+ * @param data the key data
+ * @return the key provider info.
  */
 PCRYPT_KEY_PROV_INFO
 xmlSecMSCryptoKeyDataGetMSCryptoProviderInfo(xmlSecKeyDataPtr data) {
@@ -848,12 +831,11 @@ xmlSecMSCryptoKeyDataGetType(xmlSecKeyDataPtr data) {
 }
 
 /**
- * xmlSecMSCryptoCertDup:
- * @pCert:              the pointer to cert.
+ * @brief Duplicates the @p pCert.
+ * @param pCert the pointer to cert.
  *
- * Duplicates the @pCert.
  *
- * Returns: pointer to newly created PCCERT_CONTEXT object or
+ * @return pointer to newly created PCCERT_CONTEXT object or
  * NULL if an error occurs.
  */
 PCCERT_CONTEXT xmlSecMSCryptoCertDup(PCCERT_CONTEXT pCert) {
@@ -872,13 +854,10 @@ PCCERT_CONTEXT xmlSecMSCryptoCertDup(PCCERT_CONTEXT pCert) {
 
 
 /**
- * xmlSecMSCryptoCertAdopt:
- * @pCert:              the pointer to cert.
- * @type:               the expected key type.
- *
- * Creates key data value from the cert.
- *
- * Returns: pointer to newly created xmlsec key or NULL if an error occurs.
+ * @brief Creates key data value from the cert.
+ * @param pCert the pointer to cert.
+ * @param type the expected key type.
+ * @return pointer to newly created xmlsec key or NULL if an error occurs.
  */
 xmlSecKeyDataPtr
 xmlSecMSCryptoCertAdopt(PCCERT_CONTEXT pCert, xmlSecKeyDataType type) {
@@ -959,7 +938,7 @@ xmlSecMSCryptoCertAdopt(PCCERT_CONTEXT pCert, xmlSecKeyDataType type) {
 
 
 #ifndef XMLSEC_NO_RSA
-/**************************************************************************
+/******************************************************************************
  *
  * &lt;dsig:RSAKeyValue/&gt; processing
  *
@@ -998,7 +977,7 @@ xmlSecMSCryptoCertAdopt(PCCERT_CONTEXT pCert, xmlSecKeyDataType type) {
  * ============================================================================
  *
  *
- *************************************************************************/
+  *****************************************************************************/
 
 static int          xmlSecMSCryptoKeyDataRsaInitialize      (xmlSecKeyDataPtr data);
 static int          xmlSecMSCryptoKeyDataRsaDuplicate       (xmlSecKeyDataPtr dst,
@@ -1080,11 +1059,8 @@ static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Rsa[] = {
 };
 
 /**
- * xmlSecMSCryptoKeyDataRsaGetKlass:
- *
- * The MSCrypto RSA CertKey data klass.
- *
- * Returns: pointer to MSCrypto RSA key data klass.
+ * @brief The MSCrypto RSA CertKey data klass.
+ * @return pointer to MSCrypto RSA key data klass.
  */
 xmlSecKeyDataId
 xmlSecMSCryptoKeyDataRsaGetKlass(void) {
@@ -1472,7 +1448,7 @@ xmlSecMSCryptoKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     }
     blob += sizeof(PUBLICKEYSTRUC) + sizeof(RSAPUBKEY);
 
-    /*** Modulus ***/
+    /****************************************************************************** Modulus  *****************************************************************************/
     ret = xmlSecBufferSetData(&(rsaValue->modulus), blob, modulusLen);
     if (ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetData(modulus)", xmlSecKeyDataKlassGetName(id),
@@ -1480,7 +1456,7 @@ xmlSecMSCryptoKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
         goto done;
     }
 
-    /*** Exponent:  Remove leading zero's (from least significant end) ***/
+    /****************************************************************************** Exponent:  Remove leading zero's (from least significant end)  *****************************************************************************/
     blob = (xmlSecByte*)(&(pubKey->pubexp));
     exponentLen = sizeof(pubKey->pubexp);
     while (exponentLen > 0 && blob[exponentLen - 1] == 0) {
@@ -1516,7 +1492,7 @@ done:
 #endif /* XMLSEC_NO_RSA */
 
 #ifndef XMLSEC_NO_DSA
-/**************************************************************************
+/******************************************************************************
  *
  * &lt;dsig:DSAKeyValue/&gt; processing
  *
@@ -1589,7 +1565,7 @@ done:
  * The current implementation does not support Seed and PgenCounter!
  * by this the P, Q and G are *required*!
  *
- *************************************************************************/
+  *****************************************************************************/
 static int               xmlSecMSCryptoKeyDataDsaInitialize (xmlSecKeyDataPtr data);
 static int               xmlSecMSCryptoKeyDataDsaDuplicate  (xmlSecKeyDataPtr dst,
                                                             xmlSecKeyDataPtr src);
@@ -1671,11 +1647,8 @@ static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Dss[] = {
 
 
 /**
- * xmlSecMSCryptoKeyDataDsaGetKlass:
- *
- * The DSA key data klass.
- *
- * Returns: pointer to DSA key data klass.
+ * @brief The DSA key data klass.
+ * @return pointer to DSA key data klass.
  */
 xmlSecKeyDataId
 xmlSecMSCryptoKeyDataDsaGetKlass(void) {
@@ -2119,7 +2092,7 @@ xmlSecMSCryptoKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     }
     blob += sizeof(PUBLICKEYSTRUC) + sizeof(DSSPUBKEY);
 
-    /*** p ***/
+    /****************************************************************************** p  *****************************************************************************/
     ret = xmlSecBufferSetData(&(dsaValue->p), blob, keyLen);
     if (ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetData(p)", xmlSecKeyDataKlassGetName(id),
@@ -2128,7 +2101,7 @@ xmlSecMSCryptoKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     }
     blob += keyLen;
 
-    /*** q (we assume that the size of q is XMLSEC_MSCRYPTO_DSA_MAX_Q_SIZE, skip trailing zeros) ***/
+    /****************************************************************************** q (we assume that the size of q is XMLSEC_MSCRYPTO_DSA_MAX_Q_SIZE, skip trailing zeros)  *****************************************************************************/
     for (len = XMLSEC_MSCRYPTO_DSA_MAX_Q_SIZE; len > 0 && blob[len - 1] == 0; --len);
     ret = xmlSecBufferSetData(&(dsaValue->q), blob, len);
     if (ret < 0) {
@@ -2138,7 +2111,7 @@ xmlSecMSCryptoKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     }
     blob += XMLSEC_MSCRYPTO_DSA_MAX_Q_SIZE;
 
-    /*** g ***/
+    /****************************************************************************** g  *****************************************************************************/
     for (len = keyLen; len > 0 && blob[len - 1] == 0; --len);
     ret = xmlSecBufferSetData(&(dsaValue->g), blob, keyLen);
     if (ret < 0) {
@@ -2151,7 +2124,7 @@ xmlSecMSCryptoKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     /* X is REQUIRED for private key but MSCrypto does not support it,
      * so we just ignore it */
 
-     /*** y ***/
+     /****************************************************************************** y  *****************************************************************************/
     for (len = keyLen; len > 0 && blob[len - 1] == 0; --len);
     ret = xmlSecBufferSetData(&(dsaValue->y), blob, keyLen);
     if (ret < 0) {
@@ -2182,11 +2155,11 @@ done:
 
 
 #ifndef XMLSEC_NO_GOST
-/**************************************************************************
+/******************************************************************************
  *
  * GOST2001 xml key representation processing. Contain errors.
  *
- *************************************************************************/
+  *****************************************************************************/
 static int              xmlSecMSCryptoKeyDataGost2001Initialize(xmlSecKeyDataPtr data);
 static int              xmlSecMSCryptoKeyDataGost2001Duplicate(xmlSecKeyDataPtr dst,
                                                          xmlSecKeyDataPtr src);
@@ -2260,11 +2233,8 @@ static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Gost[] = {
 };
 
 /**
- * xmlSecMSCryptoKeyDataGost2001GetKlass:
- *
- * The GOST2001 key data klass.
- *
- * Returns: pointer to GOST2001 key data klass.
+ * @brief The GOST2001 key data klass.
+ * @return pointer to GOST2001 key data klass.
  */
 xmlSecKeyDataId
 xmlSecMSCryptoKeyDataGost2001GetKlass(void) {
@@ -2342,11 +2312,11 @@ xmlSecMSCryptoKeyDataGost2001DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
 
 #ifndef XMLSEC_NO_GOST2012
 
-/**************************************************************************
+/******************************************************************************
  *
  * GOST2012 256 xml key representation processing.
  *
- *************************************************************************/
+  *****************************************************************************/
 static int              xmlSecMSCryptoKeyDataGost2012_256Initialize(xmlSecKeyDataPtr data);
 static int              xmlSecMSCryptoKeyDataGost2012_256Duplicate(xmlSecKeyDataPtr dst,
                                                          xmlSecKeyDataPtr src);
@@ -2419,11 +2389,8 @@ static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Gost2012_256[] = {
 };
 
 /**
- * xmlSecMSCryptoKeyDataGost2012_256GetKlass:
- *
- * The GOST2012_256 key data klass.
- *
- * Returns: pointer to GOST2012_256 key data klass.
+ * @brief The GOST2012_256 key data klass.
+ * @return pointer to GOST2012_256 key data klass.
  */
 xmlSecKeyDataId
 xmlSecMSCryptoKeyDataGost2012_256GetKlass(void) {
@@ -2497,11 +2464,11 @@ xmlSecMSCryptoKeyDataGost2012_256DebugXmlDump(xmlSecKeyDataPtr data, FILE* outpu
 }
 
 
-/**************************************************************************
+/******************************************************************************
  *
  * GOST2012 512 xml key representation processing.
  *
- *************************************************************************/
+  *****************************************************************************/
 static int              xmlSecMSCryptoKeyDataGost2012_512Initialize(xmlSecKeyDataPtr data);
 static int              xmlSecMSCryptoKeyDataGost2012_512Duplicate(xmlSecKeyDataPtr dst,
                                                          xmlSecKeyDataPtr src);
@@ -2574,11 +2541,8 @@ static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Gost2012_512[] = {
 };
 
 /**
- * xmlSecMSCryptoKeyDataGost2012_512GetKlass:
- *
- * The GOST2012_512 key data klass.
- *
- * Returns: pointer to GOST2012_512 key data klass.
+ * @brief The GOST2012_512 key data klass.
+ * @return pointer to GOST2012_512 key data klass.
  */
 xmlSecKeyDataId
 xmlSecMSCryptoKeyDataGost2012_512GetKlass(void) {

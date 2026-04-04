@@ -38,11 +38,11 @@
 
 
 
-/*********************************************************************
+/******************************************************************************
  *
  * Helper transform functions
  *
- ********************************************************************/
+  *****************************************************************************/
 
 #ifndef XMLSEC_NO_CONCATKDF
 
@@ -298,7 +298,7 @@ xmlSecTransformConcatKdfParamsGetFixedInfo(xmlSecTransformConcatKdfParamsPtr par
 
 #endif /* XMLSEC_NO_CONCATKDF */
 
-/**************************** Common Key Agreement Params ********************************/
+/****************************************************************************** Common Key Agreement Params  *****************************************************************************/
 int
 xmlSecTransformKeyAgreementParamsInitialize(xmlSecTransformKeyAgreementParamsPtr params) {
     int ret;
@@ -612,11 +612,9 @@ done:
 static xmlSecSize g_xmlsec_transform_hmac_min_output_bits_size = 80;
 
 /**
- * xmlSecTransformHmacGetMinOutputBitsSize:
+ * @brief Gets the minimum size in bits for HMAC output.
  *
- * Gets the minimum size in bits for HMAC output.
- *
- * Returns: the min HMAC output size in bits.
+ * @return the min HMAC output size in bits.
  */
 xmlSecSize
 xmlSecTransformHmacGetMinOutputBitsSize(void) {
@@ -624,11 +622,10 @@ xmlSecTransformHmacGetMinOutputBitsSize(void) {
 }
 
 /**
- * xmlSecTransformHmacSetMinOutputBitsSize:
- * @val: the new min hmac output size in bits.
- *
- * Sets the min HMAC output size in bits. Low value for min output size
+ * @brief Sets the min HMAC output size in bits.
+ * @details Sets the min HMAC output size in bits. Low value for min output size
  * might create a security vulnerability and is not recommended.
+ * @param val the new min hmac output size in bits.
  */
 void xmlSecTransformHmacSetMinOutputBitsSize(xmlSecSize val) {
     g_xmlsec_transform_hmac_min_output_bits_size = val;
@@ -774,7 +771,7 @@ xmlSecTransformHmacVerify(const xmlSecByte* data, xmlSecSize dataSize,
 #endif /* XMLSEC_NO_HMAC */
 
 
-/********************************** ML-DSA *******************************/
+/****************************************************************************** ML-DSA  *****************************************************************************/
 #ifndef XMLSEC_NO_MLDSA
 
 
@@ -823,7 +820,7 @@ xmlSecTransformMLDSAReadContextString(xmlNodePtr node, xmlSecBufferPtr res) {
 #endif /* XMLSEC_NO_MLDSA */
 
 
-/********************************** SLH-DSA *******************************/
+/****************************************************************************** SLH-DSA  *****************************************************************************/
 #ifndef XMLSEC_NO_SLHDSA
 
 /*
@@ -871,7 +868,7 @@ xmlSecTransformSLHDSAReadContextString(xmlNodePtr node, xmlSecBufferPtr res) {
 #endif /* XMLSEC_NO_SLHDSA */
 
 
-/********************************** EdDSA *******************************/
+/****************************************************************************** EdDSA  *****************************************************************************/
 #ifndef XMLSEC_NO_EDDSA
 
 /*
@@ -919,7 +916,7 @@ xmlSecTransformEdDSAReadContextString(xmlNodePtr node, xmlSecBufferPtr res) {
 #endif /* XMLSEC_NO_EDDSA */
 
 
-/********************************** PBKDF2 *******************************/
+/****************************************************************************** PBKDF2  *****************************************************************************/
 
 #ifndef XMLSEC_NO_PBKDF2
 
@@ -1098,11 +1095,11 @@ xmlSecTransformPbkdf2ParamsRead(xmlSecTransformPbkdf2ParamsPtr params, xmlNodePt
 
 #ifndef XMLSEC_NO_HKDF
 
-/**************************************************************************
+/******************************************************************************
  *
  * HKDF params
  *
- **************************************************************************/
+  *****************************************************************************/
 int
 xmlSecTransformHkdfParamsInitialize(xmlSecTransformHkdfParamsPtr params) {
     int ret;
@@ -1204,7 +1201,7 @@ xmlSecTransformHkdfParamsRead(xmlSecTransformHkdfParamsPtr params, xmlNodePtr no
 #endif /* XMLSEC_NO_HKDF */
 
 
-/********************************** ChaCha20 *******************************/
+/****************************************************************************** ChaCha20  *****************************************************************************/
 #ifndef XMLSEC_NO_CHACHA20
 
 

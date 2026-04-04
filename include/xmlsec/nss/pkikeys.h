@@ -9,6 +9,13 @@
 #ifndef __XMLSEC_NSS_PKIKEYS_H__
 #define __XMLSEC_NSS_PKIKEYS_H__
 
+/**
+ * @defgroup xmlsec_nss_pkikeys NSS PKI Keys
+ * @ingroup xmlsec_nss
+ * @brief PKI key-data handling for the NSS back-end.
+ * @{
+ */
+
 #include <nspr.h>
 #include <nss.h>
 
@@ -38,5 +45,7 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecNssPKIKeyDataDuplicate    (xmlSecK
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
+
+/** @} */ /** xmlsec_nss_pkikeys */
 
 #endif /* __XMLSEC_NSS_PKIKEYS_H__ */

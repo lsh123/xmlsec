@@ -9,6 +9,13 @@
 #ifndef __XMLSEC_GNUTLS_APP_H__
 #define __XMLSEC_GNUTLS_APP_H__
 
+/**
+ * @defgroup xmlsec_gnutls_app GnuTLS Application Helpers
+ * @ingroup xmlsec_gnutls
+ * @brief High-level application helpers for the GnuTLS back-end.
+ * @{
+ */
+
 #include <gnutls/abstract.h>
 #include <gnutls/gnutls.h>
 
@@ -22,19 +29,19 @@
 extern "C" {
 #endif /* __cplusplus */
 
-/********************************************************************
+/******************************************************************************
  *
  * Init/shutdown
  *
- ********************************************************************/
+  *****************************************************************************/
 XMLSEC_CRYPTO_EXPORT int        xmlSecGnuTLSAppInit                     (const char* config);
 XMLSEC_CRYPTO_EXPORT int        xmlSecGnuTLSAppShutdown                 (void);
 
-/********************************************************************
+/******************************************************************************
  *
  * Keys Manager
  *
- ********************************************************************/
+  *****************************************************************************/
 XMLSEC_CRYPTO_EXPORT int        xmlSecGnuTLSAppDefaultKeysMngrInit      (xmlSecKeysMngrPtr mngr);
 XMLSEC_CRYPTO_EXPORT int        xmlSecGnuTLSAppDefaultKeysMngrAdoptKey  (xmlSecKeysMngrPtr mngr,
                                                                          xmlSecKeyPtr key);
@@ -70,11 +77,11 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSAppKeysMngrCrlLoadAndVerify(
 #endif /* XMLSEC_NO_X509 */
 
 
-/********************************************************************
+/******************************************************************************
  *
  * Keys
  *
- ********************************************************************/
+  *****************************************************************************/
 
 XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecGnuTLSAppKeyLoadEx             (const char *filename,
                                                                          xmlSecKeyDataType type,
@@ -111,5 +118,7 @@ XMLSEC_CRYPTO_EXPORT void*      xmlSecGnuTLSAppGetDefaultPwdCallback    (void);
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
+
+/** @} */ /** xmlsec_gnutls_app */
 
 #endif /* __XMLSEC_GNUTLS_APP_H__ */

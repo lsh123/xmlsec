@@ -9,9 +9,8 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:crypto
+ * @addtogroup xmlsec_nss_crypto
  */
-
 #include "globals.h"
 
 #include <string.h>
@@ -44,11 +43,11 @@
 
 
 
-/**************************************************************************
+/******************************************************************************
  *
  * Internal Nss AEAD cipher CTX (GCM, ChaCha20-Poly1305)
  *
- *****************************************************************************/
+  *****************************************************************************/
 typedef struct _xmlSecNssAeadCipherCtx           xmlSecNssAeadCipherCtx,
                                                 *xmlSecNssAeadCipherCtxPtr;
 
@@ -89,7 +88,7 @@ struct _xmlSecNssAeadCipherCtx {
  *
  * Cipher transforms
  *
- *****************************************************************************/
+  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(NssAeadCipher, xmlSecNssAeadCipherCtx)
 #define xmlSecNssAeadCipherSize XMLSEC_TRANSFORM_SIZE(NssAeadCipher)
 
@@ -596,11 +595,11 @@ xmlSecNssAeadCipherExecute(xmlSecTransformPtr transform, int last, xmlSecTransfo
 }
 
 #ifndef XMLSEC_NO_AES
-/*********************************************************************
+/******************************************************************************
  *
  * AES GCM cipher transforms
  *
- ********************************************************************/
+  *****************************************************************************/
 static int
 xmlSecNssAeadCipherCtxSetupParamsGcm(xmlSecNssAeadCipherCtxPtr ctx, SECItem* param) {
     xmlSecAssert2(ctx != NULL, -1);
@@ -623,11 +622,8 @@ xmlSecNssAeadCipherCtxSetupParamsGcm(xmlSecNssAeadCipherCtxPtr ctx, SECItem* par
 XMLSEC_NSS_CIPHER_AEAD_KLASS_EX(Aes128Gcm, NULL, NULL)
 
 /**
- * xmlSecNssTransformAes128GcmGetKlass:
- *
- * AES 128 GCM encryption transform klass.
- *
- * Returns: pointer to AES 128 GCM encryption transform.
+ * @brief AES 128 GCM encryption transform klass.
+ * @return pointer to AES 128 GCM encryption transform.
  */
 xmlSecTransformId
 xmlSecNssTransformAes128GcmGetKlass(void) {
@@ -637,11 +633,8 @@ xmlSecNssTransformAes128GcmGetKlass(void) {
 XMLSEC_NSS_CIPHER_AEAD_KLASS_EX(Aes192Gcm, NULL, NULL)
 
 /**
- * xmlSecNssTransformAes192GcmGetKlass:
- *
- * AES 192 GCM encryption transform klass.
- *
- * Returns: pointer to AES 192 GCM encryption transform.
+ * @brief AES 192 GCM encryption transform klass.
+ * @return pointer to AES 192 GCM encryption transform.
  */
 xmlSecTransformId
 xmlSecNssTransformAes192GcmGetKlass(void) {
@@ -651,11 +644,8 @@ xmlSecNssTransformAes192GcmGetKlass(void) {
 XMLSEC_NSS_CIPHER_AEAD_KLASS_EX(Aes256Gcm, NULL, NULL)
 
 /**
- * xmlSecNssTransformAes256GcmGetKlass:
- *
- * AES 256 GCM encryption transform klass.
- *
- * Returns: pointer to AES 256 GCM encryption transform.
+ * @brief AES 256 GCM encryption transform klass.
+ * @return pointer to AES 256 GCM encryption transform.
  */
 xmlSecTransformId
 xmlSecNssTransformAes256GcmGetKlass(void) {
@@ -665,11 +655,11 @@ xmlSecNssTransformAes256GcmGetKlass(void) {
 #endif /* XMLSEC_NO_AES */
 
 #ifndef XMLSEC_NO_CHACHA20
-/*********************************************************************
+/******************************************************************************
  *
  * ChaCha20-Poly1305 AEAD cipher transform
  *
- ********************************************************************/
+  *****************************************************************************/
 static int
 xmlSecNssAeadCipherCtxSetupParamsChaCha20Poly1305(xmlSecNssAeadCipherCtxPtr ctx, SECItem* param) {
     xmlSecAssert2(ctx != NULL, -1);
@@ -746,11 +736,8 @@ xmlSecNssAeadCipherNodeWriteChaCha20Poly1305(xmlSecTransformPtr transform, xmlNo
 XMLSEC_NSS_CIPHER_AEAD_KLASS_EX(ChaCha20Poly1305, xmlSecNssAeadCipherNodeReadChaCha20Poly1305, xmlSecNssAeadCipherNodeWriteChaCha20Poly1305)
 
 /**
- * xmlSecNssTransformChaCha20Poly1305GetKlass:
- *
- * ChaCha20-Poly1305 AEAD encryption transform klass.
- *
- * Returns: pointer to ChaCha20-Poly1305 encryption transform.
+ * @brief ChaCha20-Poly1305 AEAD encryption transform klass.
+ * @return pointer to ChaCha20-Poly1305 encryption transform.
  */
 xmlSecTransformId
 xmlSecNssTransformChaCha20Poly1305GetKlass(void) {

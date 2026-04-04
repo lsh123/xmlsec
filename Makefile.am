@@ -11,9 +11,6 @@ endif
 if XMLSEC_DOCS
 SUBDIRS += docs
 endif
-if BUILD_DOXYGEN_DOCS
-SUBDIRS += docs.doxygen
-endif
 TEST_APP 	    = apps/xmlsec1$(EXEEXT)
 UNIT_TEST_APP 	= apps/xmlsec_unit_tests$(EXEEXT)
 DEFAULT_CRYPTO	= @XMLSEC_DEFAULT_CRYPTO@

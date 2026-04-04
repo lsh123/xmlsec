@@ -11,6 +11,13 @@
 #ifndef __XMLSEC_IO_H__
 #define __XMLSEC_IO_H__
 
+/**
+ * @defgroup xmlsec_core_io I/O
+ * @ingroup xmlsec_core
+ * @brief Input/output helper functions.
+ * @{
+ */
+
 #include <libxml/tree.h>
 #include <libxml/xmlIO.h>
 
@@ -31,15 +38,13 @@ XMLSEC_EXPORT int       xmlSecIORegisterCallbacks               (xmlInputMatchCa
                                                                  xmlInputReadCallback readFunc,
                                                                  xmlInputCloseCallback closeFunc);
 
-/********************************************************************
+/******************************************************************************
  *
  * Input URI transform
  *
- *******************************************************************/
+  *****************************************************************************/
 /**
- * xmlSecTransformInputURIId:
- *
- * The Input URI transform id.
+ * @brief The Input URI transform id.
  */
 #define xmlSecTransformInputURIId \
         xmlSecTransformInputURIGetKlass()
@@ -51,5 +56,7 @@ XMLSEC_EXPORT int       xmlSecTransformInputURIClose            (xmlSecTransform
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
+
+/** @} */ /** xmlsec_core_io */
 
 #endif /* __XMLSEC_IO_H__ */

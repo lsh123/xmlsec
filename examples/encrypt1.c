@@ -15,7 +15,7 @@
  * This is free software; see the Copyright file in the source
  * distribution for precise wording.
  *
- * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2024 Aleksey Sanin <aleksey#aleksey.com>. All Rights Reserved.
  */
 #include <stdlib.h>
 #include <string.h>
@@ -130,16 +130,14 @@ main(int argc, char **argv) {
 }
 
 /**
- * encrypt_file:
- * @tmpl_file:          the encryption template file name.
- * @key_file:           the Triple DES key file.
- * @data:               the binary data to encrypt.
- * @dataSize:           the binary data size.
- *
- * Encrypts binary #data using template from #tmpl_file and DES key from
+ * @brief Encrypts binary data using a DES key and a template file.
+ * @details Encrypts binary #data using template from #tmpl_file and DES key from
  * #key_file.
- *
- * Returns 0 on success or a negative value if an error occurs.
+ * @param tmpl_file the encryption template file name.
+ * @param key_file the Triple DES key file.
+ * @param data the binary data to encrypt.
+ * @param dataSize the binary data size.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 encrypt_file(const char* tmpl_file, const char* key_file,

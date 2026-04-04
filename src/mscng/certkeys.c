@@ -8,12 +8,9 @@
  * Copyright (C) 2018 Miklos Vajna. All Rights Reserved.
  */
 /**
- * SECTION:certkeys
- * @Short_description: Certificate keys support functions for Microsoft Cryptography API: Next Generation (CNG).
- * @Stability: Stable
- *
+ * @addtogroup xmlsec_mscng_certkeys
+ * @brief Certificate keys support functions for Microsoft Cryptography API: Next Generation (CNG).
  */
-
 #include "globals.h"
 
 #include <string.h>
@@ -131,13 +128,11 @@ xmlSecMSCngKeyDataCertGetPrivkey(PCCERT_CONTEXT cert, NCRYPT_KEY_HANDLE* key, BO
 }
 
 /**
- * xmlSecMSCngKeyDataAdoptCert:
- * @data:               the pointer to MSCng pccert data.
- * @cert:               the pointer to PCCERT key.
- *
- * Sets the value of key data.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Sets the value of key data.
+ * @param data the pointer to MSCng pccert data.
+ * @param cert the pointer to PCCERT key.
+ * @param type the certificate type (trusted/untrusted).
+ * @return 0 on success or a negative value otherwise.
  */
 static int
 xmlSecMSCngKeyDataAdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert, xmlSecKeyDataType type) {
@@ -217,13 +212,12 @@ xmlSecMSCngKeyDataAdoptBCryptPrivKey(xmlSecKeyDataPtr data, BCRYPT_KEY_HANDLE hK
 }
 
 /**
- * xmlSecMSCngKeyDataGetBCryptPrivKey:
- * @data: the key data.
+ * @brief BCrypt DH private key retrieval (for keys loaded from DER/PKCS8).
+ * @param data the key data.
  *
- * BCrypt DH private key retrieval (for keys loaded from DER/PKCS8).
  * The returned key must not be destroyed by the caller.
  *
- * Returns: key handle on success or NULL otherwise.
+ * @return key handle on success or NULL otherwise.
  */
 BCRYPT_KEY_HANDLE
 xmlSecMSCngKeyDataGetBCryptPrivKey(xmlSecKeyDataPtr data) {
@@ -339,13 +333,10 @@ xmlSecMSCngKeyDataFromAlgorithm(LPSTR pszObjId) {
 }
 
 /**
- * xmlSecMSCngCertAdopt:
- * @pCert:              the pointer to cert.
- * @type:               the expected key type.
- *
- * Creates key data value from the cert.
- *
- * Returns: pointer to newly created xmlsec key or NULL if an error occurs.
+ * @brief Creates key data value from the cert.
+ * @param pCert the pointer to cert.
+ * @param type the expected key type.
+ * @return pointer to newly created xmlsec key or NULL if an error occurs.
  */
 xmlSecKeyDataPtr
 xmlSecMSCngCertAdopt(PCCERT_CONTEXT pCert, xmlSecKeyDataType type) {
@@ -373,13 +364,12 @@ xmlSecMSCngCertAdopt(PCCERT_CONTEXT pCert, xmlSecKeyDataType type) {
 }
 
 /**
- * xmlSecMSCngKeyDataGetPubKey:
- * @data: the key data to retrieve certificate from.
+ * @brief Native MSCng public key retrieval from xmlsec keydata. The returned key must
+ * @param data the key data to retrieve certificate from.
  *
- * Native MSCng public key retrieval from xmlsec keydata. The returned key must
  * not be destroyed by the caller.
  *
- * Returns: key on success or 0 otherwise.
+ * @return key on success or 0 otherwise.
  */
 BCRYPT_KEY_HANDLE
 xmlSecMSCngKeyDataGetPubKey(xmlSecKeyDataPtr data) {
@@ -395,13 +385,12 @@ xmlSecMSCngKeyDataGetPubKey(xmlSecKeyDataPtr data) {
 }
 
 /**
- * xmlSecMSCngKeyDataGetPrivKey:
- * @data: the key data to retrieve certificate from.
+ * @brief Native MSCng private key retrieval from xmlsec keydata. The returned key
+ * @param data the key data to retrieve certificate from.
  *
- * Native MSCng private key retrieval from xmlsec keydata. The returned key
  * must not be destroyed by the caller.
  *
- * Returns: key on success or 0 otherwise.
+ * @return key on success or 0 otherwise.
  */
 NCRYPT_KEY_HANDLE
 xmlSecMSCngKeyDataGetPrivKey(xmlSecKeyDataPtr data) {
@@ -916,11 +905,8 @@ XMLSEC_MSCNG_CERTKEY_KLASS_EX(Dsa, DSA,
     xmlSecMSCngKeyDataDsaXmlWrite)
 
 /**
- * xmlSecMSCngKeyDataDsaGetKlass:
- *
- * The MSCng DSA CertKey data klass.
- *
- * Returns: pointer to MSCng DSA key data klass.
+ * @brief The MSCng DSA CertKey data klass.
+ * @return pointer to MSCng DSA key data klass.
  */
 xmlSecKeyDataId
 xmlSecMSCngKeyDataDsaGetKlass(void) {
@@ -989,11 +975,11 @@ xmlSecMSCngKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(mSize, rsakey->cbModulus, goto done, xmlSecKeyDataKlassGetName(id));
     offset = sizeof(BCRYPT_RSAKEY_BLOB);
 
-    /*** public exponent ***/
+    /****************************************************************************** public exponent  *****************************************************************************/
     memcpy(blobData + offset, xmlSecBufferGetData(&(rsaValue->publicExponent)), peSize);
     offset += peSize;
 
-    /*** modulus ***/
+    /****************************************************************************** modulus  *****************************************************************************/
     memcpy(blobData + offset, xmlSecBufferGetData(&(rsaValue->modulus)), mSize);
     offset += mSize;
 
@@ -1145,7 +1131,7 @@ xmlSecMSCngKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     }
     bufData += sizeof(BCRYPT_RSAKEY_BLOB);
 
-    /*** public exponent ***/
+    /****************************************************************************** public exponent  *****************************************************************************/
     ret = xmlSecBufferSetData(&(rsaValue->publicExponent), bufData, rsakey->cbPublicExp);
     if (ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetData(publicExponent)", xmlSecKeyDataKlassGetName(id),
@@ -1154,7 +1140,7 @@ xmlSecMSCngKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     }
     bufData += rsakey->cbPublicExp;
 
-    /*** modulus ***/
+    /****************************************************************************** modulus  *****************************************************************************/
     ret = xmlSecBufferSetData(&(rsaValue->modulus), bufData, rsakey->cbModulus);
     if (ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetData(modulus)", xmlSecKeyDataKlassGetName(id),
@@ -1266,11 +1252,8 @@ XMLSEC_MSCNG_CERTKEY_KLASS_EX(Rsa, RSA,
     xmlSecMSCngKeyDataRsaXmlWrite)
 
 /**
- * xmlSecMSCngKeyDataRsaGetKlass:
- *
- * The MSCng RSA CertKey data klass.
- *
- * Returns: pointer to MSCng RSA key data klass.
+ * @brief The MSCng RSA CertKey data klass.
+ * @return pointer to MSCng RSA key data klass.
  */
 xmlSecKeyDataId
 xmlSecMSCngKeyDataRsaGetKlass(void) {
@@ -1590,11 +1573,8 @@ XMLSEC_MSCNG_CERTKEY_KLASS_EX(Ec, EC,
     xmlSecMSCngKeyDataEcXmlWrite)
 
 /**
- * xmlSecMSCngKeyDataEcGetKlass:
- *
- * The MSCng EC CertKey data klass.
- *
- * Returns: pointer to MSCng EC key data klass.
+ * @brief The MSCng EC CertKey data klass.
+ * @return pointer to MSCng EC key data klass.
  */
 xmlSecKeyDataId
 xmlSecMSCngKeyDataEcGetKlass(void) {
@@ -1603,11 +1583,11 @@ xmlSecMSCngKeyDataEcGetKlass(void) {
 
 #endif /* XMLSEC_NO_EC */
 
-/********************************************************************
+/******************************************************************************
  *
  * DH key data
  *
- ********************************************************************/
+  *****************************************************************************/
 #ifndef XMLSEC_NO_DH
 
 static int
@@ -1674,11 +1654,8 @@ XMLSEC_MSCNG_CERTKEY_KLASS_EX(Dh, DH,
     xmlSecMSCngKeyDataDhXmlWrite)
 
 /**
- * xmlSecMSCngKeyDataDhGetKlass:
- *
- * The MSCng DH CertKey data klass.
- *
- * Returns: pointer to MSCng DH key data klass.
+ * @brief The MSCng DH CertKey data klass.
+ * @return pointer to MSCng DH key data klass.
  */
 xmlSecKeyDataId
 xmlSecMSCngKeyDataDhGetKlass(void) {
@@ -2115,14 +2092,12 @@ done:
 #endif /* XMLSEC_NO_DH */
 
 /**
- * xmlSecMSCngCreateDerForBcryptPubkey:
- * @data: the MSCng key data.
- * @ppDer: output pointer for the DER-encoded SubjectPublicKeyInfo blob (caller must LocalFree).
- * @pcbDer: output length of the DER blob.
- *
- * Exports a BCrypt public key as a DER-encoded SubjectPublicKeyInfo blob.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Exports a BCrypt public key as DER SPKI blob.
+ * @details Exports a BCrypt public key as a DER-encoded SubjectPublicKeyInfo blob.
+ * @param data the MSCng key data.
+ * @param ppDer output pointer for the DER-encoded SubjectPublicKeyInfo blob (caller must LocalFree).
+ * @param pcbDer output length of the DER blob.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecMSCngCreateDerForBcryptPubkey(xmlSecKeyDataPtr data, LPVOID* ppDer, DWORD* pcbDer) {
@@ -2222,14 +2197,13 @@ done:
 
 
 /**
- * xmlSecMSCngAppKeyReadPubKeyFromDer:
- * @derData: DER-encoded SubjectPublicKeyInfo.
- * @derDataLen: length of @derData.
+ * @brief Loads a public key of any supported type (RSA, DSA, EC, DH) from a raw
+ * @param derData DER-encoded SubjectPublicKeyInfo.
+ * @param derDataLen length of @p derData.
  *
- * Loads a public key of any supported type (RSA, DSA, EC, DH) from a raw
  * SubjectPublicKeyInfo DER blob.
  *
- * Returns: new key data or NULL on failure.
+ * @return new key data or NULL on failure.
  */
 xmlSecKeyDataPtr
 xmlSecMSCngAppKeyReadPubKeyFromDer(const xmlSecByte* derData, DWORD derDataLen) {
@@ -2409,14 +2383,13 @@ done:
 
 
 /**
- * xmlSecMSCngAppKeyReadPrivKeyFromDer:
- * @data: DER-encoded PKCS8 PrivateKeyInfo blob.
- * @dataSize: length of @data.
+ * @brief Loads a private key from a raw PKCS8 PrivateKeyInfo DER blob.
+ * @param data DER-encoded PKCS8 PrivateKeyInfo blob.
+ * @param dataSize length of @p data.
  *
- * Loads a private key from a raw PKCS8 PrivateKeyInfo DER blob.
  * Currently only DH private keys are supported.
  *
- * Returns: new key data or NULL on failure.
+ * @return new key data or NULL on failure.
  */
 xmlSecKeyDataPtr
 xmlSecMSCngAppKeyReadPrivKeyFromDer(const xmlSecByte* data, DWORD dataSize) {
@@ -2443,9 +2416,9 @@ xmlSecMSCngAppKeyReadPrivKeyFromDer(const xmlSecByte* data, DWORD dataSize) {
     return(NULL);
 }
 
-/*****************************************************************************
+/******************************************************************************
  * XDH (X25519) key data
- *****************************************************************************/
+  *****************************************************************************/
 #ifndef XMLSEC_NO_XDH
 
 XMLSEC_MSCNG_CERTKEY_KLASS_EX(Xdh, XDH,
@@ -2457,11 +2430,8 @@ XMLSEC_MSCNG_CERTKEY_KLASS_EX(Xdh, XDH,
     NULL)         /* xmlWrite */
 
 /**
- * xmlSecMSCngKeyDataXdhGetKlass:
- *
- * The MSCng XDH (X25519) key data klass.
- *
- * Returns: pointer to MSCng XDH key data klass.
+ * @brief The MSCng XDH (X25519) key data klass.
+ * @return pointer to MSCng XDH key data klass.
  */
 xmlSecKeyDataId
 xmlSecMSCngKeyDataXdhGetKlass(void) {

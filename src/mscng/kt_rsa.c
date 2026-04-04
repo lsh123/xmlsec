@@ -10,9 +10,8 @@
  * Copyright (C) 2018 Miklos Vajna. All Rights Reserved.
  */
 /**
- * SECTION:crypto
+ * @addtogroup xmlsec_mscng_crypto
  */
-
 #include "globals.h"
 
 #ifndef XMLSEC_NO_RSA
@@ -33,11 +32,11 @@
 #include "../cast_helpers.h"
 #include "../transform_helpers.h"
 
-/**************************************************************************
+/******************************************************************************
  *
  * Internal MSCNG RSA PKCS1 CTX
  *
- *************************************************************************/
+  *****************************************************************************/
 typedef struct _xmlSecMSCngRsaPkcs1OaepCtx xmlSecMSCngRsaPkcs1OaepCtx, *xmlSecMSCngRsaPkcs1OaepCtxPtr;
 
 struct _xmlSecMSCngRsaPkcs1OaepCtx {
@@ -46,11 +45,11 @@ struct _xmlSecMSCngRsaPkcs1OaepCtx {
     LPCWSTR pszDigestAlgId;
 };
 
-/*********************************************************************
+/******************************************************************************
  *
  * RSA PKCS1 key transport transform
  *
- ********************************************************************/
+  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(MSCngRsaPkcs1Oaep, xmlSecMSCngRsaPkcs1OaepCtx)
 #define xmlSeccMSCngRsaPkcs1OaepSize XMLSEC_TRANSFORM_SIZE(MSCngRsaPkcs1Oaep)
 
@@ -591,11 +590,9 @@ static xmlSecTransformKlass xmlSecMSCngRsaOaepKlass = {
 };
 
 /**
- * xmlSecMSCngTransformRsaOaepGetKlass:
- *
- * The RSA-OAEP key transport transform klass (XMLEnc 1.0).
- *
- * Returns: RSA-OAEP key transport transform klass.
+ * @brief RSA-OAEP key transport klass (XMLEnc 1.0).
+ * @details The RSA-OAEP key transport transform klass (XMLEnc 1.0).
+ * @return RSA-OAEP key transport transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformRsaOaepGetKlass(void) {
@@ -631,11 +628,9 @@ static xmlSecTransformKlass xmlSecMSCngRsaOaepEnc11Klass = {
 };
 
 /**
- * xmlSecMSCngTransformRsaOaepEnc11GetKlass:
- *
- * The RSA-OAEP key transport transform klass (XMLEnc 1.1).
- *
- * Returns: RSA-OAEP key transport transform klass.
+ * @brief RSA-OAEP key transport klass (XMLEnc 1.1).
+ * @details The RSA-OAEP key transport transform klass (XMLEnc 1.1).
+ * @return RSA-OAEP key transport transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformRsaOaepEnc11GetKlass(void) {
@@ -645,11 +640,11 @@ xmlSecMSCngTransformRsaOaepEnc11GetKlass(void) {
 
 #ifndef XMLSEC_NO_RSA_PKCS15
 
-/**********************************************************************
+/******************************************************************************
  *
  * RSA/PKCS1 transform
  *
- **********************************************************************/
+  *****************************************************************************/
 static xmlSecTransformKlass xmlSecMSCngRsaPkcs1Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -678,11 +673,8 @@ static xmlSecTransformKlass xmlSecMSCngRsaPkcs1Klass = {
 };
 
 /**
- * xmlSecMSCngTransformRsaPkcs1GetKlass:
- *
- * The RSA-PKCS1 key transport transform klass.
- *
- * Returns: RSA-PKCS1 key transport transform klass.
+ * @brief The RSA-PKCS1 key transport transform klass.
+ * @return RSA-PKCS1 key transport transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformRsaPkcs1GetKlass(void) {

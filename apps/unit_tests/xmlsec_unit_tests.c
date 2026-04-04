@@ -5,7 +5,7 @@
  *
  * See Copyright for the status of this software.
  *
- * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2024 Aleksey Sanin <aleksey#aleksey.com>. All Rights Reserved.
  */
 #include <stdlib.h>
 #include <string.h>

@@ -1,6 +1,6 @@
 PROJECT_NAME           = xmlsec
 PROJECT_NUMBER         = @VERSION@
-OUTPUT_DIRECTORY       = @abs_top_builddir@/docs.doxygen
+OUTPUT_DIRECTORY       = @abs_top_builddir@/docs/xml/api
 CREATE_SUBDIRS         = NO
 ALLOW_UNICODE_NAMES    = NO
 OUTPUT_LANGUAGE        = English
@@ -18,7 +18,7 @@ INHERIT_DOCS           = YES
 SEPARATE_MEMBER_PAGES  = NO
 TAB_SIZE               = 8
 OPTIMIZE_OUTPUT_FOR_C  = YES
-TYPEDEF_HIDES_STRUCT   = NO
+TYPEDEF_HIDES_STRUCT   = YES
 EXTRACT_ALL            = NO
 EXTRACT_PRIVATE        = NO
 EXTRACT_PRIV_VIRTUAL   = NO
@@ -45,12 +45,12 @@ SORT_GROUP_NAMES       = YES
 SORT_BY_SCOPE_NAME     = NO
 STRICT_PROTO_MATCHING  = NO
 GENERATE_HTML          = YES
-HTML_OUTPUT            = html
 GENERATE_LATEX         = NO
 GENERATE_MAN           = NO
 GENERATE_RTF           = NO
 GENERATE_DOCBOOK       = NO
-GENERATE_XML           = NO
+GENERATE_XML           = YES
+XML_OUTPUT             = @abs_top_builddir@/docs/xml/api
 INPUT                  = @abs_top_srcdir@/include \
                          @abs_top_srcdir@/src
 FILE_PATTERNS          = *.h \
@@ -58,7 +58,9 @@ FILE_PATTERNS          = *.h \
 RECURSIVE              = YES
 EXCLUDE_PATTERNS       = */.libs/* \
                          */Makefile* \
-                         */version.h.in
+                         */version.h.in \
+                         */src/*.h \
+                         */src/*/*.h
 EXAMPLE_PATH           = @abs_top_srcdir@/examples
 QUIET                  = YES
 WARNINGS               = YES
@@ -86,7 +88,8 @@ ENABLE_PREPROCESSING   = YES
 MACRO_EXPANSION        = YES
 EXPAND_ONLY_PREDEF     = NO
 SEARCH_INCLUDES        = YES
-INCLUDE_PATH           = @abs_top_srcdir@/include \
+INCLUDE_PATH           = @abs_top_srcdir@/docs/xml/api \
+                         @abs_top_srcdir@/include \
                          @abs_top_srcdir@/src
 INCLUDE_FILE_PATTERNS  = *.h
 PREDEFINED             = XMLSEC_EXPORT= \
@@ -94,7 +97,27 @@ PREDEFINED             = XMLSEC_EXPORT= \
                          XMLSEC_CRYPTO_EXPORT= \
                          XMLSEC_PRIVATE= \
                          XMLSEC_DEPRECATED= \
-                         XMLSEC_ERRORS_PRINTF_ATTRIBUTE(x,y)=
+                         XMLSEC_ERRORS_PRINTF_ATTRIBUTE(x,y)= \
+                         HCERTSTORE=void* \
+                         HCRYPTKEY=void* \
+                         HCRYPTPROV=void* \
+                         PCCERT_CONTEXT=void* \
+                         LPTSTR=char* \
+                         LPCTSTR=const\ char* \
+                         LPWSTR=wchar_t* \
+                         LPCWSTR=const\ wchar_t* \
+                         BOOL=int \
+                         DWORD=unsigned\ long \
+                         PBYTE=unsigned\ char* \
+                         BYTE=unsigned\ char \
+                         BCRYPT_ALG_HANDLE=void* \
+                         BCRYPT_KEY_HANDLE=void* \
+                         NCRYPT_KEY_HANDLE=void* \
+                         NCRYPT_PROV_HANDLE=void* \
+                         __WIN32__=1 \
+                         _WIN32=1 \
+                         __GNUC__=1 \
+                         XMLSEC_ATTRIBUTE_UNUSED=
 EXPAND_AS_DEFINED      =
 SKIP_FUNCTION_MACROS   = YES
 TAGFILES               =

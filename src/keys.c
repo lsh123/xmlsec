@@ -8,12 +8,9 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:keys
- * @Short_description: Crypto key object functions.
- * @Stability: Stable
- *
+ * @addtogroup xmlsec_core_keys
+ * @brief Crypto key object functions.
  */
-
 #include "globals.h"
 
 #include <stdlib.h>
@@ -32,18 +29,16 @@
 
 #include "cast_helpers.h"
 
-/**************************************************************************
+/******************************************************************************
  *
  * xmlSecKeyUseWith
  *
- *************************************************************************/
+  *****************************************************************************/
 /**
- * xmlSecKeyUseWithInitialize:
- * @keyUseWith:         the pointer to information about key application/user.
+ * @brief Initializes @p keyUseWith object.
+ * @param keyUseWith the pointer to information about key application/user.
  *
- * Initializes @keyUseWith object.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecKeyUseWithInitialize(xmlSecKeyUseWithPtr keyUseWith) {
@@ -54,10 +49,8 @@ xmlSecKeyUseWithInitialize(xmlSecKeyUseWithPtr keyUseWith) {
 }
 
 /**
- * xmlSecKeyUseWithFinalize:
- * @keyUseWith:         the pointer to information about key application/user.
- *
- * Finalizes @keyUseWith object.
+ * @brief Finalizes @p keyUseWith object.
+ * @param keyUseWith the pointer to information about key application/user.
  */
 void
 xmlSecKeyUseWithFinalize(xmlSecKeyUseWithPtr keyUseWith) {
@@ -68,10 +61,9 @@ xmlSecKeyUseWithFinalize(xmlSecKeyUseWithPtr keyUseWith) {
 }
 
 /**
- * xmlSecKeyUseWithReset:
- * @keyUseWith:         the pointer to information about key application/user.
- *
- * Resets the @keyUseWith to its state after initialization.
+ * @brief Resets a keyUseWith to its initial state.
+ * @details Resets the @p keyUseWith to its state after initialization.
+ * @param keyUseWith the pointer to information about key application/user.
  */
 void
 xmlSecKeyUseWithReset(xmlSecKeyUseWithPtr keyUseWith) {
@@ -81,13 +73,11 @@ xmlSecKeyUseWithReset(xmlSecKeyUseWithPtr keyUseWith) {
 }
 
 /**
- * xmlSecKeyUseWithCopy:
- * @dst:         the pointer to destination object.
- * @src:         the pointer to source object.
+ * @brief Copies information from @p dst to @p src.
+ * @param dst the pointer to destination object.
+ * @param src the pointer to source object.
  *
- * Copies information from @dst to @src.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecKeyUseWithCopy(xmlSecKeyUseWithPtr dst, xmlSecKeyUseWithPtr src) {
@@ -98,14 +88,13 @@ xmlSecKeyUseWithCopy(xmlSecKeyUseWithPtr dst, xmlSecKeyUseWithPtr src) {
 }
 
 /**
- * xmlSecKeyUseWithCreate:
- * @application:        the application value.
- * @identifier:         the identifier value.
+ * @brief Creates a new xmlSecKeyUseWith object.
+ * @details Creates new xmlSecKeyUseWith object. The caller is responsible for destroying
+ * returned object with #xmlSecKeyUseWithDestroy function.
+ * @param application the application value.
+ * @param identifier the identifier value.
  *
- * Creates new xmlSecKeyUseWith object. The caller is responsible for destroying
- * returned object with @xmlSecKeyUseWithDestroy function.
- *
- * Returns: pointer to newly created object or NULL if an error occurs.
+ * @return pointer to newly created object or NULL if an error occurs.
  */
 xmlSecKeyUseWithPtr
 xmlSecKeyUseWithCreate(const xmlChar* application, const xmlChar* identifier) {
@@ -138,13 +127,12 @@ xmlSecKeyUseWithCreate(const xmlChar* application, const xmlChar* identifier) {
 }
 
 /**
- * xmlSecKeyUseWithDuplicate:
- * @keyUseWith:         the pointer to information about key application/user.
+ * @brief Duplicates a keyUseWith object.
+ * @details Duplicates @p keyUseWith object. The caller is responsible for destroying
+ * returned object with #xmlSecKeyUseWithDestroy function.
+ * @param keyUseWith the pointer to information about key application/user.
  *
- * Duplicates @keyUseWith object. The caller is responsible for destroying
- * returned object with @xmlSecKeyUseWithDestroy function.
- *
- * Returns: pointer to newly created object or NULL if an error occurs.
+ * @return pointer to newly created object or NULL if an error occurs.
  */
 xmlSecKeyUseWithPtr
 xmlSecKeyUseWithDuplicate(xmlSecKeyUseWithPtr keyUseWith) {
@@ -171,11 +159,10 @@ xmlSecKeyUseWithDuplicate(xmlSecKeyUseWithPtr keyUseWith) {
 }
 
 /**
- * xmlSecKeyUseWithDestroy:
- * @keyUseWith:         the pointer to information about key application/user.
- *
- * Destroys @keyUseWith created with @xmlSecKeyUseWithCreate or @xmlSecKeyUseWithDuplicate
+ * @brief Destroys a keyUseWith object.
+ * @details Destroys @p keyUseWith created with #xmlSecKeyUseWithCreate or #xmlSecKeyUseWithDuplicate
  * functions.
+ * @param keyUseWith the pointer to information about key application/user.
  */
 void
 xmlSecKeyUseWithDestroy(xmlSecKeyUseWithPtr keyUseWith) {
@@ -186,14 +173,13 @@ xmlSecKeyUseWithDestroy(xmlSecKeyUseWithPtr keyUseWith) {
 }
 
 /**
- * xmlSecKeyUseWithSet:
- * @keyUseWith:         the pointer to information about key application/user.
- * @application:        the new application value.
- * @identifier:         the new identifier value.
+ * @brief Sets application and identifier in a keyUseWith object.
+ * @details Sets @p application and @p identifier in the @p keyUseWith.
+ * @param keyUseWith the pointer to information about key application/user.
+ * @param application the new application value.
+ * @param identifier the new identifier value.
  *
- * Sets @application and @identifier in the @keyUseWith.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecKeyUseWithSet(xmlSecKeyUseWithPtr keyUseWith, const xmlChar* application, const xmlChar* identifier) {
@@ -227,11 +213,10 @@ xmlSecKeyUseWithSet(xmlSecKeyUseWithPtr keyUseWith, const xmlChar* application, 
 }
 
 /**
- * xmlSecKeyUseWithDebugDump:
- * @keyUseWith:         the pointer to information about key application/user.
- * @output:             the pointer to output FILE.
- *
- * Prints xmlSecKeyUseWith debug information to a file @output.
+ * @brief Prints keyUseWith debug information to a file.
+ * @details Prints xmlSecKeyUseWith debug information to a file @p output.
+ * @param keyUseWith the pointer to information about key application/user.
+ * @param output the pointer to output FILE.
  */
 void
 xmlSecKeyUseWithDebugDump(xmlSecKeyUseWithPtr keyUseWith, FILE* output) {
@@ -244,11 +229,10 @@ xmlSecKeyUseWithDebugDump(xmlSecKeyUseWithPtr keyUseWith, FILE* output) {
 }
 
 /**
- * xmlSecKeyUseWithDebugXmlDump:
- * @keyUseWith:         the pointer to information about key application/user.
- * @output:             the pointer to output FILE.
- *
- * Prints xmlSecKeyUseWith debug information to a file @output in XML format.
+ * @brief Prints keyUseWith debug information in XML format.
+ * @details Prints xmlSecKeyUseWith debug information to a file @p output in XML format.
+ * @param keyUseWith the pointer to information about key application/user.
+ * @param output the pointer to output FILE.
  */
 void
 xmlSecKeyUseWithDebugXmlDump(xmlSecKeyUseWithPtr keyUseWith, FILE* output) {
@@ -268,11 +252,11 @@ xmlSecKeyUseWithDebugXmlDump(xmlSecKeyUseWithPtr keyUseWith, FILE* output) {
     fprintf(output, "</KeyUseWith>\n");
 }
 
-/***********************************************************************
+/******************************************************************************
  *
  * KeyUseWith list
  *
- **********************************************************************/
+  *****************************************************************************/
 static xmlSecPtrListKlass xmlSecKeyUseWithPtrListKlass = {
     BAD_CAST "key-use-with-list",
     (xmlSecPtrDuplicateItemMethod)xmlSecKeyUseWithDuplicate,    /* xmlSecPtrDuplicateItemMethod duplicateItem; */
@@ -282,30 +266,27 @@ static xmlSecPtrListKlass xmlSecKeyUseWithPtrListKlass = {
 };
 
 /**
- * xmlSecKeyUseWithPtrListGetKlass:
+ * @brief The key data list klass.
  *
- * The key data list klass.
- *
- * Returns: pointer to the key data list klass.
+ * @return pointer to the key data list klass.
  */
 xmlSecPtrListId
 xmlSecKeyUseWithPtrListGetKlass(void) {
     return(&xmlSecKeyUseWithPtrListKlass);
 }
 
-/**************************************************************************
+/******************************************************************************
  *
  * xmlSecKeyReq - what key are we looking for?
  *
- *************************************************************************/
+  *****************************************************************************/
 /**
- * xmlSecKeyReqInitialize:
- * @keyReq:             the pointer to key requirements object.
- *
- * Initialize key requirements object. Caller is responsible for
+ * @brief Initializes a key requirements object.
+ * @details Initialize key requirements object. Caller is responsible for
  * cleaning it with #xmlSecKeyReqFinalize function.
+ * @param keyReq the pointer to key requirements object.
  *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecKeyReqInitialize(xmlSecKeyReqPtr keyReq) {
@@ -327,11 +308,10 @@ xmlSecKeyReqInitialize(xmlSecKeyReqPtr keyReq) {
 }
 
 /**
- * xmlSecKeyReqFinalize:
- * @keyReq:             the pointer to key requirements object.
- *
- * Cleans the key requirements object initialized with #xmlSecKeyReqInitialize
+ * @brief Cleans up a key requirements object.
+ * @details Cleans the key requirements object initialized with #xmlSecKeyReqInitialize
  * function.
+ * @param keyReq the pointer to key requirements object.
  */
 void
 xmlSecKeyReqFinalize(xmlSecKeyReqPtr keyReq) {
@@ -342,10 +322,9 @@ xmlSecKeyReqFinalize(xmlSecKeyReqPtr keyReq) {
 }
 
 /**
- * xmlSecKeyReqReset:
- * @keyReq:             the pointer to key requirements object.
- *
- * Resets key requirements object for new key search.
+ * @brief Resets key requirements for a new key search.
+ * @details Resets key requirements object for new key search.
+ * @param keyReq the pointer to key requirements object.
  */
 void
 xmlSecKeyReqReset(xmlSecKeyReqPtr keyReq) {
@@ -359,13 +338,12 @@ xmlSecKeyReqReset(xmlSecKeyReqPtr keyReq) {
 }
 
 /**
- * xmlSecKeyReqCopy:
- * @dst:                the pointer to destination object.
- * @src:                the pointer to source object.
+ * @brief Copies key requirements between objects.
+ * @details Copies key requirements from @p src object to @p dst object.
+ * @param dst the pointer to destination object.
+ * @param src the pointer to source object.
  *
- * Copies key requirements from @src object to @dst object.
- *
- * Returns: 0 on success and a negative value if an error occurs.
+ * @return 0 on success and a negative value if an error occurs.
  */
 int
 xmlSecKeyReqCopy(xmlSecKeyReqPtr dst, xmlSecKeyReqPtr src) {
@@ -389,13 +367,12 @@ xmlSecKeyReqCopy(xmlSecKeyReqPtr dst, xmlSecKeyReqPtr src) {
 }
 
 /**
- * xmlSecKeyReqMatchKey:
- * @keyReq:             the pointer to key requirements object.
- * @key:                the pointer to key.
+ * @brief Checks whether a key matches the given requirements.
+ * @details Checks whether @p key matches key requirements @p keyReq.
+ * @param keyReq the pointer to key requirements object.
+ * @param key the pointer to key.
  *
- * Checks whether @key matches key requirements @keyReq.
- *
- * Returns: 1 if key matches requirements, 0 if not and a negative value
+ * @return 1 if key matches requirements, 0 if not and a negative value
  * if an error occurs.
  */
 int
@@ -414,13 +391,12 @@ xmlSecKeyReqMatchKey(xmlSecKeyReqPtr keyReq, xmlSecKeyPtr key) {
 }
 
 /**
- * xmlSecKeyReqMatchKeyValue:
- * @keyReq:             the pointer to key requirements.
- * @value:              the pointer to key value.
+ * @brief Checks whether a key value matches the given requirements.
+ * @details Checks whether @p keyValue matches key requirements @p keyReq.
+ * @param keyReq the pointer to key requirements.
+ * @param value the pointer to key value.
  *
- * Checks whether @keyValue matches key requirements @keyReq.
- *
- * Returns: 1 if key value matches requirements, 0 if not and a negative value
+ * @return 1 if key value matches requirements, 0 if not and a negative value
  * if an error occurs.
  */
 int
@@ -441,11 +417,10 @@ xmlSecKeyReqMatchKeyValue(xmlSecKeyReqPtr keyReq, xmlSecKeyDataPtr value) {
 }
 
 /**
- * xmlSecKeyReqDebugDump:
- * @keyReq:             the pointer to key requirements object.
- * @output:             the pointer to output FILE.
- *
- * Prints debug information about @keyReq into @output.
+ * @brief Prints key requirements debug information.
+ * @details Prints debug information about @p keyReq into @p output.
+ * @param keyReq the pointer to key requirements object.
+ * @param output the pointer to output FILE.
  */
 void
 xmlSecKeyReqDebugDump(xmlSecKeyReqPtr keyReq, FILE* output) {
@@ -464,11 +439,10 @@ xmlSecKeyReqDebugDump(xmlSecKeyReqPtr keyReq, FILE* output) {
 }
 
 /**
- * xmlSecKeyReqDebugXmlDump:
- * @keyReq:             the pointer to key requirements object.
- * @output:             the pointer to output FILE.
- *
- * Prints debug information about @keyReq into @output in XML format.
+ * @brief Prints key requirements debug information in XML format.
+ * @details Prints debug information about @p keyReq into @p output in XML format.
+ * @param keyReq the pointer to key requirements object.
+ * @param output the pointer to output FILE.
  */
 void
 xmlSecKeyReqDebugXmlDump(xmlSecKeyReqPtr keyReq, FILE* output) {
@@ -489,18 +463,17 @@ xmlSecKeyReqDebugXmlDump(xmlSecKeyReqPtr keyReq, FILE* output) {
 }
 
 
-/**************************************************************************
+/******************************************************************************
  *
  * xmlSecKey
  *
- *************************************************************************/
+  *****************************************************************************/
 /**
- * xmlSecKeyCreate:
- *
- * Allocates and initializes new key. Caller is responsible for
+ * @brief Allocates and initializes a new key object.
+ * @details Allocates and initializes new key. Caller is responsible for
  * freeing returned object with #xmlSecKeyDestroy function.
  *
- * Returns: the pointer to newly allocated @xmlSecKey structure
+ * @return the pointer to newly allocated xmlSecKey structure
  * or NULL if an error occurs.
  */
 xmlSecKeyPtr
@@ -519,10 +492,8 @@ xmlSecKeyCreate(void)  {
 }
 
 /**
- * xmlSecKeyEmpty:
- * @key:                the pointer to key.
- *
- * Clears the @key data.
+ * @brief Clears the @p key data.
+ * @param key the pointer to key.
  */
 void
 xmlSecKeyEmpty(xmlSecKeyPtr key) {
@@ -542,10 +513,9 @@ xmlSecKeyEmpty(xmlSecKeyPtr key) {
 }
 
 /**
- * xmlSecKeyDestroy:
- * @key:                the pointer to key.
- *
- * Destroys the key created using #xmlSecKeyCreate function.
+ * @brief Destroys a key object.
+ * @details Destroys the key created using #xmlSecKeyCreate function.
+ * @param key the pointer to key.
  */
 void
 xmlSecKeyDestroy(xmlSecKeyPtr key) {
@@ -556,13 +526,11 @@ xmlSecKeyDestroy(xmlSecKeyPtr key) {
 }
 
 /**
- * xmlSecKeyCopy:
- * @keyDst:             the destination key.
- * @keySrc:             the source key.
+ * @brief Copies key data from @p keySrc to @p keyDst.
+ * @param keyDst the destination key.
+ * @param keySrc the source key.
  *
- * Copies key data from @keySrc to @keyDst.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecKeyCopy(xmlSecKeyPtr keyDst, xmlSecKeyPtr keySrc) {
@@ -611,13 +579,11 @@ xmlSecKeyCopy(xmlSecKeyPtr keyDst, xmlSecKeyPtr keySrc) {
     }
 
 /**
- * xmlSecKeySwap:
- * @key1:             the first key.
- * @key2:             the second key.
+ * @brief Swaps key data for @p key1 and#key2
+ * @param key1 the first key.
+ * @param key2 the second key.
  *
- * Swaps key data for @key1 and@key2
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecKeySwap(xmlSecKeyPtr key1, xmlSecKeyPtr key2) {
@@ -635,12 +601,10 @@ xmlSecKeySwap(xmlSecKeyPtr key1, xmlSecKeyPtr key2) {
 }
 
 /**
- * xmlSecKeyDuplicate:
- * @key:                the pointer to the #xmlSecKey structure.
+ * @brief Creates a duplicate of the given @p key.
+ * @param key the pointer to the xmlSecKey structure.
  *
- * Creates a duplicate of the given @key.
- *
- * Returns: the pointer to newly allocated #xmlSecKey structure
+ * @return the pointer to newly allocated xmlSecKey structure
  * or NULL if an error occurs.
  */
 xmlSecKeyPtr
@@ -667,14 +631,13 @@ xmlSecKeyDuplicate(xmlSecKeyPtr key) {
 }
 
 /**
- * xmlSecKeyMatch:
- * @key:                the pointer to key.
- * @name:               the pointer to key name (may be NULL).
- * @keyReq:             the pointer to key requirements.
+ * @brief Checks whether a key matches the given criteria.
+ * @details Checks whether the @p key matches the given criteria.
+ * @param key the pointer to key.
+ * @param name the pointer to key name (may be NULL).
+ * @param keyReq the pointer to key requirements.
  *
- * Checks whether the @key matches the given criteria.
- *
- * Returns: 1 if the key satisfies the given criteria or 0 otherwise.
+ * @return 1 if the key satisfies the given criteria or 0 otherwise.
  */
 int
 xmlSecKeyMatch(xmlSecKeyPtr key, const xmlChar *name, xmlSecKeyReqPtr keyReq) {
@@ -688,12 +651,10 @@ xmlSecKeyMatch(xmlSecKeyPtr key, const xmlChar *name, xmlSecKeyReqPtr keyReq) {
 }
 
 /**
- * xmlSecKeyGetType:
- * @key:                the pointer to key.
+ * @brief Gets @p key type.
+ * @param key the pointer to key.
  *
- * Gets @key type.
- *
- * Returns: key type.
+ * @return key type.
  */
 xmlSecKeyDataType
 xmlSecKeyGetType(xmlSecKeyPtr key) {
@@ -709,12 +670,11 @@ xmlSecKeyGetType(xmlSecKeyPtr key) {
 }
 
 /**
- * xmlSecKeyGetName:
- * @key:                the pointer to key.
+ * @brief Gets the key name.
+ * @details Gets key name (see also #xmlSecKeySetName function).
+ * @param key the pointer to key.
  *
- * Gets key name (see also #xmlSecKeySetName function).
- *
- * Returns: key name.
+ * @return key name.
  */
 const xmlChar*
 xmlSecKeyGetName(xmlSecKeyPtr key) {
@@ -724,13 +684,12 @@ xmlSecKeyGetName(xmlSecKeyPtr key) {
 }
 
 /**
- * xmlSecKeySetName:
- * @key:                the pointer to key.
- * @name:               the new key name.
+ * @brief Sets the key name.
+ * @details Sets key name (see also #xmlSecKeyGetName function).
+ * @param key the pointer to key.
+ * @param name the new key name.
  *
- * Sets key name (see also #xmlSecKeyGetName function).
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecKeySetName(xmlSecKeyPtr key, const xmlChar* name) {
@@ -753,14 +712,13 @@ xmlSecKeySetName(xmlSecKeyPtr key, const xmlChar* name) {
 }
 
 /**
- * xmlSecKeySetNameEx:
- * @key:                the pointer to key.
- * @name:               the new key name.
- * @nameSize:           the size of @name.
+ * @brief Sets the key name with a specific length.
+ * @details Sets key name (see also #xmlSecKeyGetName function).
+ * @param key the pointer to key.
+ * @param name the new key name.
+ * @param nameSize the size of @p name.
  *
- * Sets key name (see also #xmlSecKeyGetName function).
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecKeySetNameEx(xmlSecKeyPtr key, const xmlChar* name, xmlSecSize nameSize) {
@@ -786,12 +744,11 @@ xmlSecKeySetNameEx(xmlSecKeyPtr key, const xmlChar* name, xmlSecSize nameSize) {
 }
 
 /**
- * xmlSecKeyGetValue:
- * @key:                the pointer to key.
+ * @brief Gets the key value (crypto material).
+ * @details Gets key value (see also #xmlSecKeySetValue function).
+ * @param key the pointer to key.
  *
- * Gets key value (see also #xmlSecKeySetValue function).
- *
- * Returns: key value (crypto material).
+ * @return key value (crypto material).
  */
 xmlSecKeyDataPtr
 xmlSecKeyGetValue(xmlSecKeyPtr key) {
@@ -801,13 +758,12 @@ xmlSecKeyGetValue(xmlSecKeyPtr key) {
 }
 
 /**
- * xmlSecKeySetValue:
- * @key:                the pointer to key.
- * @value:              the new value.
+ * @brief Sets the key value (crypto material).
+ * @details Sets key value (see also #xmlSecKeyGetValue function).
+ * @param key the pointer to key.
+ * @param value the new value.
  *
- * Sets key value (see also #xmlSecKeyGetValue function).
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecKeySetValue(xmlSecKeyPtr key, xmlSecKeyDataPtr value) {
@@ -823,12 +779,11 @@ xmlSecKeySetValue(xmlSecKeyPtr key, xmlSecKeyDataPtr value) {
 }
 
 /**
- * xmlSecKeyGetSize:
- * @key:                the pointer to key.
+ * @brief Gets the key size in bits.
+ * @details Gets key size (in bits). Also see #xmlSecKeyDataGetSize function.
+ * @param key the pointer to key.
  *
- * Gets key size (in bits). Also see #xmlSecKeyDataGetSize function.
- *
- * Returns: key size (in bits).
+ * @return key size (in bits).
  */
 xmlSecSize
 xmlSecKeyGetSize(xmlSecKeyPtr key) {
@@ -841,13 +796,11 @@ xmlSecKeyGetSize(xmlSecKeyPtr key) {
 }
 
 /**
- * xmlSecKeyGetData:
- * @key:                the pointer to key.
- * @dataId:             the requested data klass.
+ * @brief Gets key's data.
+ * @param key the pointer to key.
+ * @param dataId the requested data klass.
  *
- * Gets key's data.
- *
- * Returns: additional data associated with the @key (see also
+ * @return additional data associated with the @p key (see also
  * #xmlSecKeyAdoptData function).
  */
 xmlSecKeyDataPtr
@@ -875,13 +828,12 @@ xmlSecKeyGetData(xmlSecKeyPtr key, xmlSecKeyDataId dataId) {
 }
 
 /**
- * xmlSecKeyEnsureData:
- * @key:                the pointer to key.
- * @dataId:             the requested data klass.
+ * @brief Ensures key data of the requested klass exists.
+ * @details If necessary, creates key data of @p dataId klass and adds to @p key.
+ * @param key the pointer to key.
+ * @param dataId the requested data klass.
  *
- * If necessary, creates key data of @dataId klass and adds to @key.
- *
- * Returns: pointer to key data or NULL if an error occurs.
+ * @return pointer to key data or NULL if an error occurs.
  */
 xmlSecKeyDataPtr
 xmlSecKeyEnsureData(xmlSecKeyPtr key, xmlSecKeyDataId dataId) {
@@ -917,14 +869,13 @@ xmlSecKeyEnsureData(xmlSecKeyPtr key, xmlSecKeyDataId dataId) {
 }
 
 /**
- * xmlSecKeyAdoptData:
- * @key:                the pointer to key.
- * @data:               the pointer to key data.
+ * @brief Adds key data to a key object (takes ownership).
+ * @details Adds @p data to the @p key. The @p data object will be destroyed
+ * by @p key.
+ * @param key the pointer to key.
+ * @param data the pointer to key data.
  *
- * Adds @data to the @key. The @data object will be destroyed
- * by @key.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecKeyAdoptData(xmlSecKeyPtr key, xmlSecKeyDataPtr data) {
@@ -964,11 +915,10 @@ xmlSecKeyAdoptData(xmlSecKeyPtr key, xmlSecKeyDataPtr data) {
 }
 
 /**
- * xmlSecKeyDebugDump:
- * @key:                the pointer to key.
- * @output:             the pointer to output FILE.
- *
- * Prints the information about the @key to the @output.
+ * @brief Prints key information for debugging.
+ * @details Prints the information about the @p key to the @p output.
+ * @param key the pointer to key.
+ * @param output the pointer to output FILE.
  */
 void
 xmlSecKeyDebugDump(xmlSecKeyPtr key, FILE *output) {
@@ -1010,11 +960,10 @@ xmlSecKeyDebugDump(xmlSecKeyPtr key, FILE *output) {
 }
 
 /**
- * xmlSecKeyDebugXmlDump:
- * @key:                the pointer to key.
- * @output:             the pointer to output FILE.
- *
- * Prints the information about the @key to the @output in XML format.
+ * @brief Prints key information in XML format for debugging.
+ * @details Prints the information about the @p key to the @p output in XML format.
+ * @param key the pointer to key.
+ * @param output the pointer to output FILE.
  */
 void
 xmlSecKeyDebugXmlDump(xmlSecKeyPtr key, FILE *output) {
@@ -1060,14 +1009,13 @@ xmlSecKeyDebugXmlDump(xmlSecKeyPtr key, FILE *output) {
 }
 
 /**
- * xmlSecKeyGenerate:
- * @dataId:             the requested key klass (rsa, dsa, aes, ...).
- * @sizeBits:           the new key size (in bits!).
- * @type:               the new key type (session, permanent, ...).
+ * @brief Generates a new key of the requested klass and type.
+ * @details Generates new key of requested klass @p dataId and @p type.
+ * @param dataId the requested key klass (rsa, dsa, aes, ...).
+ * @param sizeBits the new key size (in bits!).
+ * @param type the new key type (session, permanent, ...).
  *
- * Generates new key of requested klass @dataId and @type.
- *
- * Returns: pointer to newly created key or NULL if an error occurs.
+ * @return pointer to newly created key or NULL if an error occurs.
  */
 xmlSecKeyPtr
 xmlSecKeyGenerate(xmlSecKeyDataId dataId, xmlSecSize sizeBits, xmlSecKeyDataType type) {
@@ -1114,14 +1062,13 @@ xmlSecKeyGenerate(xmlSecKeyDataId dataId, xmlSecSize sizeBits, xmlSecKeyDataType
 }
 
 /**
- * xmlSecKeyGenerateByName:
- * @name:               the requested key klass name (rsa, dsa, aes, ...).
- * @sizeBits:           the new key size (in bits!).
- * @type:               the new key type (session, permanent, ...).
+ * @brief Generates a new key by klass name and type.
+ * @details Generates new key of requested @p klass and @p type.
+ * @param name the requested key klass name (rsa, dsa, aes, ...).
+ * @param sizeBits the new key size (in bits!).
+ * @param type the new key type (session, permanent, ...).
  *
- * Generates new key of requested @klass and @type.
- *
- * Returns: pointer to newly created key or NULL if an error occurs.
+ * @return pointer to newly created key or NULL if an error occurs.
  */
 xmlSecKeyPtr
 xmlSecKeyGenerateByName(const xmlChar* name, xmlSecSize sizeBits, xmlSecKeyDataType type) {
@@ -1139,13 +1086,12 @@ xmlSecKeyGenerateByName(const xmlChar* name, xmlSecSize sizeBits, xmlSecKeyDataT
 }
 
 /**
- * xmlSecKeyReadBuffer:
- * @dataId:             the key value data klass.
- * @buffer:             the buffer that contains the binary data.
+ * @brief Reads a key value from a buffer.
+ * @details Reads the key value of klass @p dataId from a buffer.
+ * @param dataId the key value data klass.
+ * @param buffer the buffer that contains the binary data.
  *
- * Reads the key value of klass @dataId from a buffer.
- *
- * Returns: pointer to newly created key or NULL if an error occurs.
+ * @return pointer to newly created key or NULL if an error occurs.
  */
 xmlSecKeyPtr
 xmlSecKeyReadBuffer(xmlSecKeyDataId dataId, xmlSecBuffer* buffer) {
@@ -1190,13 +1136,12 @@ xmlSecKeyReadBuffer(xmlSecKeyDataId dataId, xmlSecBuffer* buffer) {
 }
 
 /**
- * xmlSecKeyReadBinaryFile:
- * @dataId:             the key value data klass.
- * @filename:           the key binary filename.
+ * @brief Reads a key value from a binary file.
+ * @details Reads the key value of klass @p dataId from a binary file @p filename.
+ * @param dataId the key value data klass.
+ * @param filename the key binary filename.
  *
- * Reads the key value of klass @dataId from a binary file @filename.
- *
- * Returns: pointer to newly created key or NULL if an error occurs.
+ * @return pointer to newly created key or NULL if an error occurs.
  */
 xmlSecKeyPtr
 xmlSecKeyReadBinaryFile(xmlSecKeyDataId dataId, const char* filename) {
@@ -1240,14 +1185,13 @@ xmlSecKeyReadBinaryFile(xmlSecKeyDataId dataId, const char* filename) {
 }
 
 /**
- * xmlSecKeyReadMemory:
- * @dataId:             the key value data klass.
- * @data:               the memory containing the key
- * @dataSize:           the size of the memory block
+ * @brief Reads a key value from a memory block.
+ * @details Reads the key value of klass @p dataId from a memory block @p data.
+ * @param dataId the key value data klass.
+ * @param data the memory containing the key
+ * @param dataSize the size of the memory block
  *
- * Reads the key value of klass @dataId from a memory block @data.
- *
- * Returns: pointer to newly created key or NULL if an error occurs.
+ * @return pointer to newly created key or NULL if an error occurs.
  */
 xmlSecKeyPtr
 xmlSecKeyReadMemory(xmlSecKeyDataId dataId, const xmlSecByte* data, xmlSecSize dataSize) {
@@ -1287,13 +1231,12 @@ xmlSecKeyReadMemory(xmlSecKeyDataId dataId, const xmlSecByte* data, xmlSecSize d
 }
 
 /**
- * xmlSecKeysMngrGetKey:
- * @keyInfoNode:        the pointer to &lt;dsig:KeyInfo/&gt; node.
- * @keyInfoCtx:         the pointer to &lt;dsig:KeyInfo/&gt; node processing context.
+ * @brief Reads a KeyInfo node and extracts the key.
+ * @details Reads the &lt;dsig:KeyInfo/&gt; node @p keyInfoNode and extracts the key.
+ * @param keyInfoNode the pointer to &lt;dsig:KeyInfo/&gt; node.
+ * @param keyInfoCtx the pointer to &lt;dsig:KeyInfo/&gt; node processing context.
  *
- * Reads the &lt;dsig:KeyInfo/&gt; node @keyInfoNode and extracts the key.
- *
- * Returns: the pointer to key or NULL if the key is not found or
+ * @return the pointer to key or NULL if the key is not found or
  * an error occurs.
  */
 xmlSecKeyPtr
@@ -1345,11 +1288,11 @@ xmlSecKeysMngrGetKey(xmlNodePtr keyInfoNode, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     return(NULL);
 }
 
-/***********************************************************************
+/******************************************************************************
  *
  * Keys list
  *
- **********************************************************************/
+  *****************************************************************************/
 static xmlSecPtrListKlass xmlSecKeyPtrListKlass = {
     BAD_CAST "keys-list",
     (xmlSecPtrDuplicateItemMethod)xmlSecKeyDuplicate,   /* xmlSecPtrDuplicateItemMethod duplicateItem; */
@@ -1359,11 +1302,9 @@ static xmlSecPtrListKlass xmlSecKeyPtrListKlass = {
 };
 
 /**
- * xmlSecKeyPtrListGetKlass:
+ * @brief The keys list klass.
  *
- * The keys list klass.
- *
- * Returns: keys list id.
+ * @return keys list id.
  */
 xmlSecPtrListId
 xmlSecKeyPtrListGetKlass(void) {

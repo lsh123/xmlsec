@@ -9,6 +9,13 @@
 #ifndef __XMLSEC_NSS_X509_H__
 #define __XMLSEC_NSS_X509_H__
 
+/**
+ * @defgroup xmlsec_nss_x509 NSS X.509 Support
+ * @ingroup xmlsec_nss
+ * @brief X.509 certificate handling for the NSS back-end.
+ * @{
+ */
+
 #ifndef XMLSEC_NO_X509
 
 #include <nspr.h>
@@ -25,9 +32,7 @@ extern "C" {
 #endif /* __cplusplus */
 
 /**
- * xmlSecNssKeyDataX509Id:
- *
- * The NSS X509 data klass.
+ * @brief The NSS X509 data klass.
  */
 #define xmlSecNssKeyDataX509Id \
         xmlSecNssKeyDataX509GetKlass()
@@ -52,18 +57,14 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataPtr   xmlSecNssX509CertGetKey         (CERTCer
 
 
 /**
- * xmlSecNssKeyDataRawX509CertId:
- *
- * The NSS raw X509 certificate klass.
+ * @brief The NSS raw X509 certificate klass.
  */
 #define xmlSecNssKeyDataRawX509CertId \
         xmlSecNssKeyDataRawX509CertGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecNssKeyDataRawX509CertGetKlass(void);
 
 /**
- * xmlSecNssX509StoreId:
- *
- * The NSS X509 store klass.
+ * @brief The NSS X509 store klass.
  */
 #define xmlSecNssX509StoreId \
         xmlSecNssX509StoreGetKlass()
@@ -80,11 +81,11 @@ XMLSEC_CRYPTO_EXPORT int                        xmlSecNssX509StoreAdoptCrl  (xml
                                                                              CERTSignedCrl* crl);
 
 
-/***********************************************************************
+/******************************************************************************
  *
  * DEPRECATED
  *
- **********************************************************************/
+  *****************************************************************************/
 XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED CERTCertificate*  xmlSecNssX509StoreFindCert      (xmlSecKeyDataStorePtr store,
                                                                                  xmlChar *subjectName,
                                                                                  xmlChar *issuerName,
@@ -103,5 +104,7 @@ XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED CERTCertificate*  xmlSecNssX509StoreFindC
 #endif /* __cplusplus */
 
 #endif /* XMLSEC_NO_X509 */
+
+/** @} */ /** xmlsec_nss_x509 */
 
 #endif /* __XMLSEC_NSS_X509_H__ */

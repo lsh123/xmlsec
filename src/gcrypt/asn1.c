@@ -9,9 +9,8 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:crypto
+ * @addtogroup xmlsec_gcrypt_crypto
  */
-
 #include "globals.h"
 
 #include <string.h>
@@ -27,11 +26,11 @@
 #include "asn1.h"
 #include "../cast_helpers.h"
 
-/**************************************************************************
+/******************************************************************************
  *
  * ASN.1 parser is taken from GCrypt tests
  *
- *************************************************************************/
+  *****************************************************************************/
 
 /* ASN.1 classes.  */
 enum

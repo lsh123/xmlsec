@@ -10,9 +10,8 @@
  * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
 /**
- * SECTION:crypto
+ * @addtogroup xmlsec_nss_crypto
  */
-
 #ifndef XMLSEC_NO_HMAC
 #include "globals.h"
 
@@ -36,17 +35,17 @@
 #include "../keysdata_helpers.h"
 #include "../transform_helpers.h"
 
-/**************************************************************************
+/******************************************************************************
  *
  * Configuration
  *
- *****************************************************************************/
+  *****************************************************************************/
 
-/**************************************************************************
+/******************************************************************************
  *
  * Internal NSS HMAC CTX
  *
- *****************************************************************************/
+  *****************************************************************************/
 typedef struct _xmlSecNssHmacCtx                xmlSecNssHmacCtx, *xmlSecNssHmacCtxPtr;
 struct _xmlSecNssHmacCtx {
     CK_MECHANISM_TYPE   digestType;
@@ -61,7 +60,7 @@ struct _xmlSecNssHmacCtx {
  *
  * xmlSecTransform + xmlSecNssHmacCtx
  *
- *****************************************************************************/
+  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(NssHmac, xmlSecNssHmacCtx)
 #define xmlSecNssHmacSize XMLSEC_TRANSFORM_SIZE(NssHmac)
 
@@ -482,15 +481,12 @@ static xmlSecTransformKlass xmlSecNssHmac ## name ## Klass = {                  
  *
  * HMAC Ripemd160
  *
- ******************************************************************************/
+  *****************************************************************************/
 XMLSEC_NSS_HMAC_KLASS(Ripemd160)
 
 /**
- * xmlSecNssTransformHmacRipemd160GetKlass:
- *
- * The HMAC-RIPEMD160 transform klass.
- *
- * Returns: the HMAC-RIPEMD160 transform klass.
+ * @brief The HMAC-RIPEMD160 transform klass.
+ * @return the HMAC-RIPEMD160 transform klass.
  */
 xmlSecTransformId
 xmlSecNssTransformHmacRipemd160GetKlass(void) {
@@ -503,15 +499,12 @@ xmlSecNssTransformHmacRipemd160GetKlass(void) {
  *
  * HMAC MD5
  *
- ******************************************************************************/
+  *****************************************************************************/
 XMLSEC_NSS_HMAC_KLASS(Md5)
 
 /**
- * xmlSecNssTransformHmacMd5GetKlass:
- *
- * The HMAC-MD5 transform klass.
- *
- * Returns: the HMAC-MD5 transform klass.
+ * @brief The HMAC-MD5 transform klass.
+ * @return the HMAC-MD5 transform klass.
  */
 xmlSecTransformId
 xmlSecNssTransformHmacMd5GetKlass(void) {
@@ -524,15 +517,12 @@ xmlSecNssTransformHmacMd5GetKlass(void) {
  *
  * HMAC SHA1
  *
- ******************************************************************************/
+  *****************************************************************************/
 XMLSEC_NSS_HMAC_KLASS(Sha1)
 
 /**
- * xmlSecNssTransformHmacSha1GetKlass:
- *
- * The HMAC-SHA1 transform klass.
- *
- * Returns: the HMAC-SHA1 transform klass.
+ * @brief The HMAC-SHA1 transform klass.
+ * @return the HMAC-SHA1 transform klass.
  */
 xmlSecTransformId
 xmlSecNssTransformHmacSha1GetKlass(void) {
@@ -545,15 +535,12 @@ xmlSecNssTransformHmacSha1GetKlass(void) {
  *
  * HMAC SHA224
  *
- ******************************************************************************/
+  *****************************************************************************/
 XMLSEC_NSS_HMAC_KLASS(Sha224)
 
 /**
- * xmlSecNssTransformHmacSha224GetKlass:
- *
- * The HMAC-SHA224 transform klass.
- *
- * Returns: the HMAC-SHA224 transform klass.
+ * @brief The HMAC-SHA224 transform klass.
+ * @return the HMAC-SHA224 transform klass.
  */
 xmlSecTransformId
 xmlSecNssTransformHmacSha224GetKlass(void) {
@@ -566,15 +553,12 @@ xmlSecNssTransformHmacSha224GetKlass(void) {
  *
  * HMAC SHA256
  *
- ******************************************************************************/
+  *****************************************************************************/
 XMLSEC_NSS_HMAC_KLASS(Sha256)
 
 /**
- * xmlSecNssTransformHmacSha256GetKlass:
- *
- * The HMAC-SHA256 transform klass.
- *
- * Returns: the HMAC-SHA256 transform klass.
+ * @brief The HMAC-SHA256 transform klass.
+ * @return the HMAC-SHA256 transform klass.
  */
 xmlSecTransformId
 xmlSecNssTransformHmacSha256GetKlass(void) {
@@ -587,15 +571,12 @@ xmlSecNssTransformHmacSha256GetKlass(void) {
  *
  * HMAC SHA384
  *
- ******************************************************************************/
+  *****************************************************************************/
 XMLSEC_NSS_HMAC_KLASS(Sha384)
 
 /**
- * xmlSecNssTransformHmacSha384GetKlass:
- *
- * The HMAC-SHA384 transform klass.
- *
- * Returns: the HMAC-SHA384 transform klass.
+ * @brief The HMAC-SHA384 transform klass.
+ * @return the HMAC-SHA384 transform klass.
  */
 xmlSecTransformId
 xmlSecNssTransformHmacSha384GetKlass(void) {
@@ -608,15 +589,12 @@ xmlSecNssTransformHmacSha384GetKlass(void) {
  *
  * HMAC SHA512
  *
- ******************************************************************************/
+  *****************************************************************************/
 XMLSEC_NSS_HMAC_KLASS(Sha512)
 
 /**
- * xmlSecNssTransformHmacSha512GetKlass:
- *
- * The HMAC-SHA512 transform klass.
- *
- * Returns: the HMAC-SHA512 transform klass.
+ * @brief The HMAC-SHA512 transform klass.
+ * @return the HMAC-SHA512 transform klass.
  */
 xmlSecTransformId
 xmlSecNssTransformHmacSha512GetKlass(void) {

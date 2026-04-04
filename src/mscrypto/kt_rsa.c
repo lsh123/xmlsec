@@ -10,9 +10,8 @@
  * Copyright (C) 2003 Cordys R&D BV, All rights reserved.
  */
 /**
- * SECTION:crypto
+ * @addtogroup xmlsec_mscrypto_crypto
  */
-
 #include "globals.h"
 
 #ifndef XMLSEC_NO_RSA
@@ -36,11 +35,11 @@
 #include "../cast_helpers.h"
 #include "../transform_helpers.h"
 
-/**************************************************************************
+/******************************************************************************
  *
  * Internal MSCRYPTO RSA PKCS1 CTX
  *
- *************************************************************************/
+  *****************************************************************************/
 typedef struct _xmlSecMSCryptoRsaPkcs1OaepCtx    xmlSecMSCryptoRsaPkcs1OaepCtx,
                                                 *xmlSecMSCryptoRsaPkcs1OaepCtxPtr;
 struct _xmlSecMSCryptoRsaPkcs1OaepCtx {
@@ -49,11 +48,11 @@ struct _xmlSecMSCryptoRsaPkcs1OaepCtx {
     xmlSecBuffer        oaepParams;
 };
 
-/*********************************************************************
+/******************************************************************************
  *
  * RSA PKCS1 key transport transform
  *
- ********************************************************************/
+  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(MSCryptoRsaPkcs1Oaep, xmlSecMSCryptoRsaPkcs1OaepCtx)
 #define xmlSecMSCryptoRsaPkcs1OaepSize XMLSEC_TRANSFORM_SIZE(MSCryptoRsaPkcs1Oaep)
 
@@ -412,11 +411,11 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform) {
 }
 
 #ifndef XMLSEC_NO_RSA_PKCS15
-/**********************************************************************
+/******************************************************************************
  *
  * RSA/PKCS1 transform
  *
- **********************************************************************/
+  *****************************************************************************/
 static xmlSecTransformKlass xmlSecMSCryptoRsaPkcs1Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -446,11 +445,8 @@ static xmlSecTransformKlass xmlSecMSCryptoRsaPkcs1Klass = {
 
 
 /**
- * xmlSecMSCryptoTransformRsaPkcs1GetKlass:
- *
- * The RSA-PKCS1 key transport transform klass.
- *
- * Returns: RSA-PKCS1 key transport transform klass.
+ * @brief The RSA-PKCS1 key transport transform klass.
+ * @return RSA-PKCS1 key transport transform klass.
  */
 xmlSecTransformId
 xmlSecMSCryptoTransformRsaPkcs1GetKlass(void) {
@@ -460,11 +456,11 @@ xmlSecMSCryptoTransformRsaPkcs1GetKlass(void) {
 
 
 #ifndef XMLSEC_NO_RSA_OAEP
-/**********************************************************************
+/******************************************************************************
  *
  * RSA/OAEP transform: only SHA1 is supported for digest and MGF1!
  *
- **********************************************************************/
+  *****************************************************************************/
 
 static int          xmlSecMSCryptoRsaOaepNodeRead               (xmlSecTransformPtr transform,
                                                                  xmlNodePtr node,
@@ -499,11 +495,8 @@ static xmlSecTransformKlass xmlSecMSCryptoRsaOaepKlass = {
 
 
 /**
- * xmlSecMSCryptoTransformRsaOaepGetKlass:
- *
- * The RSA-OAEP key transport transform klass.
- *
- * Returns: RSA-OAEP key transport transform klass.
+ * @brief The RSA-OAEP key transport transform klass.
+ * @return RSA-OAEP key transport transform klass.
  */
 xmlSecTransformId
 xmlSecMSCryptoTransformRsaOaepGetKlass(void) {

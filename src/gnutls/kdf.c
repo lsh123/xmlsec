@@ -9,9 +9,7 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:crypto
- * @Short_description:
- * @Stability: Stable
+ * @addtogroup xmlsec_gnutls_crypto
  */
 #include "globals.h"
 
@@ -38,11 +36,11 @@
 #include "../transform_helpers.h"
 
 
-/***********************************************************************************************************
+/******************************************************************************
  *
  * Internal KDF CTX
  *
- **********************************************************************************************************/
+  *****************************************************************************/
 
 #define XMLSEC_GNUTLS_KDF_DEFAULT_BUF_SIZE          64
 #define XMLSEC_GNUTLS_KDF_MAX_HASH_SIZE             64   /* SHA-512 output = 64 bytes */
@@ -357,12 +355,12 @@ static xmlSecTransformKlass xmlSecGnuTLS ## name ## Klass = {                   
 
 #ifndef XMLSEC_NO_CONCATKDF
 
-/**************************************************************************
+/******************************************************************************
  *
  * ConcatKDF (SP 800-56A single-step KDF) transform
- * https://www.w3.org/TR/xmlenc-core1/#sec-ConcatKDF
+ * https://www.w3.org/TR/xmlenc-core1e/#sec-ConcatKDF
  *
- *****************************************************************************/
+  *****************************************************************************/
 
 static int      xmlSecGnuTLSConcatKdfNodeRead           (xmlSecTransformPtr transform,
                                                          xmlNodePtr node,
@@ -605,19 +603,16 @@ xmlSecGnuTLSConcatKdfGenerateKey(xmlSecGnuTLSKdfCtxPtr ctx, xmlSecSize outLen, x
     return(0);
 }
 
-/********************************************************************
+/******************************************************************************
  *
  * ConcatKDF key derivation transform klass
  *
- ********************************************************************/
+  *****************************************************************************/
 XMLSEC_GNUTLS_KDF_KLASS(ConcatKdf, xmlSecGnuTLSConcatKdfNodeRead)
 
 /**
- * xmlSecGnuTLSTransformConcatKdfGetKlass:
- *
- * The ConcatKDF key derivation transform klass.
- *
- * Returns: the ConcatKDF key derivation transform klass.
+ * @brief The ConcatKDF key derivation transform klass.
+ * @return the ConcatKDF key derivation transform klass.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformConcatKdfGetKlass(void) {
@@ -631,11 +626,11 @@ xmlSecGnuTLSTransformConcatKdfGetKlass(void) {
 
 #ifndef XMLSEC_NO_PBKDF2
 
-/**************************************************************************
+/******************************************************************************
  *
  * PBKDF2 transform (https://gnutls.org/reference/gnutls-crypto.html#gnutls-pbkdf2)
  *
- *****************************************************************************/
+  *****************************************************************************/
 
 static int      xmlSecGnuTLSPbkdf2NodeRead              (xmlSecTransformPtr transform,
                                                          xmlNodePtr node,
@@ -783,19 +778,16 @@ xmlSecGnuTLSPbkdf2GenerateKey(xmlSecGnuTLSKdfCtxPtr ctx, xmlSecBufferPtr out) {
     return(0);
 }
 
-/********************************************************************
+/******************************************************************************
  *
  * PBKDF2 key derivation algorithm
  *
- ********************************************************************/
+  *****************************************************************************/
 XMLSEC_GNUTLS_KDF_KLASS(Pbkdf2, xmlSecGnuTLSPbkdf2NodeRead)
 
 /**
- * xmlSecGnuTLSTransformPbkdf2GetKlass:
- *
- * The PBKDF2 key derivation  transform klass.
- *
- * Returns: the PBKDF2 key derivation transform klass.
+ * @brief The PBKDF2 key derivation transform klass.
+ * @return the PBKDF2 key derivation transform klass.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformPbkdf2GetKlass(void) {
@@ -809,11 +801,11 @@ xmlSecGnuTLSTransformPbkdf2GetKlass(void) {
 
 #ifndef XMLSEC_NO_HKDF
 
-/**************************************************************************
+/******************************************************************************
  *
  * HKDF transform (https://gnutls.org/reference/gnutls-crypto.html#gnutls-hkdf-extract)
  *
- *****************************************************************************/
+  *****************************************************************************/
 
 static int      xmlSecGnuTLSHkdfNodeRead                (xmlSecTransformPtr transform,
                                                          xmlNodePtr node,
@@ -1049,19 +1041,16 @@ xmlSecGnuTLSHkdfGenerateKey(xmlSecGnuTLSKdfCtxPtr ctx, xmlSecSize outLen, xmlSec
     return(0);
 }
 
-/********************************************************************
+/******************************************************************************
  *
  * HKDF key derivation algorithm
  *
- ********************************************************************/
+  *****************************************************************************/
 XMLSEC_GNUTLS_KDF_KLASS(Hkdf, xmlSecGnuTLSHkdfNodeRead)
 
 /**
- * xmlSecGnuTLSTransformHkdfGetKlass:
- *
- * The HKDF key derivation transform klass.
- *
- * Returns: the HKDF key derivation transform klass.
+ * @brief The HKDF key derivation transform klass.
+ * @return the HKDF key derivation transform klass.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformHkdfGetKlass(void) {
@@ -1073,11 +1062,11 @@ xmlSecGnuTLSTransformHkdfGetKlass(void) {
 
 
 
-/***********************************************************************************************************
+/******************************************************************************
  *
  * Common KDF Execute
  *
- **********************************************************************************************************/
+  *****************************************************************************/
 
 static int
 xmlSecGnuTLSKdfExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {

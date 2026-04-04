@@ -1,20 +1,16 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- *
  * This is free software; see the Copyright file in the source
  * distribution for precise wording.
  *
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:xmlsec
- * @Short_description: Utility functions.
- * @Stability: Stable
- *
+ * @addtogroup xmlsec_core_helpers
+ * @brief Utility functions.
  * Various utility functions.
  */
-
 #include "globals.h"
 
 #include <stdlib.h>
@@ -61,10 +57,8 @@ xmlSecNoXxeExternalEntityLoader(const char *URL, const char *ID,
 #endif /* LIBXML_VERSION < 21300 */
 
 /**
- * xmlSecSetExternalEntityLoader:
- * @entityLoader:       the new entity resolver function, or NULL to restore libxml2's default handler
- *
- * Wrapper for xmlSetExternalEntityLoader.
+ * @brief Wrapper for xmlSetExternalEntityLoader.
+ * @param entityLoader the new entity resolver function, or NULL to restore libxml2's default handler
  */
 void
 xmlSecSetExternalEntityLoader(xmlExternalEntityLoader entityLoader) {
@@ -76,12 +70,11 @@ xmlSecSetExternalEntityLoader(xmlExternalEntityLoader entityLoader) {
 
 
 /**
- * xmlSecInit:
- *
- * Initializes XML Security Library. The depended libraries
+ * @brief Initializes XML Security Library.
+ * @details Initializes XML Security Library. The depended libraries
  * (LibXML and LibXSLT) must be initialized before.
  *
- * Returns: 0 on success or a negative value otherwise.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecInit(void) {
@@ -121,11 +114,9 @@ xmlSecInit(void) {
 }
 
 /**
- * xmlSecShutdown:
+ * @brief Clean ups the XML Security Library.
  *
- * Clean ups the XML Security Library.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecShutdown(void) {
@@ -154,26 +145,23 @@ done:
 }
 
 /**
- * xmlSecGetDefaultCrypto:
+ * @brief Gets the default crypto engine for the XML Security Library.
+ * @details Gets the default crypto engine ("openssl", "nss", etc.) for the XML Security Library.
  *
- * Gets the default crypto engine ("openssl", "nss", etc.) for the XML Security Library.
- *
- * Returns: the default crypto engine ("openssl", "nss", etc.).
+ * @return the default crypto engine ("openssl", "nss", etc.).
  */
 const xmlChar * xmlSecGetDefaultCrypto(void) {
     return BAD_CAST XMLSEC_DEFAULT_CRYPTO;
 }
 
 /**
- * xmlSecCheckVersionExt:
- * @major:              the major version number.
- * @minor:              the minor version number.
- * @subminor:           the subminor version number.
- * @mode:               the version check mode.
+ * @brief Checks if the loaded version of xmlsec library could be used.
+ * @param major the major version number.
+ * @param minor the minor version number.
+ * @param subminor the subminor version number.
+ * @param mode the version check mode.
  *
- * Checks if the loaded version of xmlsec library could be used.
- *
- * Returns: 1 if the loaded xmlsec library version is OK to use
+ * @return 1 if the loaded xmlsec library version is OK to use
  * 0 if it is not or a negative value if an error occurs.
  */
 int
@@ -210,12 +198,10 @@ xmlSecCheckVersionExt(int major, int minor, int subminor, xmlSecCheckVersionMode
 }
 
 /**
- * xmlSecStrlen:
- * @str:                the string.
+ * @brief Calculates the length of the string.
+ * @param str the string.
  *
- * Calcaulates the lenght of the string.
- *
- * Returns: the length of the string.
+ * @return the length of the string.
  */
 xmlSecSize
 xmlSecStrlen(const xmlChar* str) {

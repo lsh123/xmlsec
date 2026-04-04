@@ -11,6 +11,13 @@
 #ifndef __XMLSEC_NSS_KEYSSTORE_H__
 #define __XMLSEC_NSS_KEYSSTORE_H__
 
+/**
+ * @defgroup xmlsec_nss_keysstore NSS Keys Store
+ * @ingroup xmlsec_nss
+ * @brief NSS-specific key store implementation.
+ * @{
+ */
+
 #include <xmlsec/exports.h>
 #include <xmlsec/xmlsec.h>
 
@@ -18,15 +25,13 @@
 extern "C" {
 #endif /* __cplusplus */
 
-/****************************************************************************
+/******************************************************************************
  *
  * Nss Keys Store
  *
- ***************************************************************************/
+  *****************************************************************************/
 /**
- * xmlSecNssKeysStoreId:
- *
- * A Nss keys store klass id.
+ * @brief A Nss keys store klass id.
  */
 #define xmlSecNssKeysStoreId            xmlSecNssKeysStoreGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyStoreId   xmlSecNssKeysStoreGetKlass      (void);
@@ -42,5 +47,7 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecNssKeysStoreSave  (xmlSecKeyStoreP
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
+
+/** @} */ /** xmlsec_nss_keysstore */
 
 #endif /* __XMLSEC_NSS_KEYSSTORE_H__ */

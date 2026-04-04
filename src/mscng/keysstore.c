@@ -8,12 +8,9 @@
  * Copyright (C) 2018 Miklos Vajna. All Rights Reserved.
  */
 /**
- * SECTION:keysstore
- * @Short_description: Keys store implementation for Microsoft Cryptography API: Next Generation (CNG).
- * @Stability: Stable
- *
+ * @addtogroup xmlsec_mscng_keysstore
+ * @brief Keys store implementation for Microsoft Cryptography API: Next Generation (CNG).
  */
-
 #include "globals.h"
 
 #include <string.h>
@@ -37,11 +34,11 @@
 
 #define XMLSEC_MSCNG_APP_DEFAULT_CERT_STORE_NAME TEXT("MY")
 
-/****************************************************************************
+/******************************************************************************
  *
  * MSCng Keys Store. Uses Simple Keys Store under the hood
  *
- ***************************************************************************/
+  *****************************************************************************/
 XMLSEC_KEY_STORE_DECLARE(MSCngKeysStore, xmlSecKeyStorePtr)
 #define xmlSecMSCngKeysStoreSize XMLSEC_KEY_STORE_SIZE(MSCngKeysStore)
 
@@ -420,7 +417,7 @@ xmlSecMSCngKeysStoreFindKeyFromX509Data(xmlSecKeyStorePtr store, xmlSecKeyX509Da
     }
 
     /* TODO: search simple keys store? */
-    /* 
+    /*
     simplekeystore = xmlSecMSCngKeysStoreGetCtx(store);
     xmlSecAssert2(((simplekeystore != NULL) && (*simplekeystore != NULL)), NULL);
 
@@ -464,11 +461,8 @@ static xmlSecKeyStoreKlass xmlSecMSCngKeysStoreKlass = {
 };
 
 /**
- * xmlSecMSCngKeysStoreGetKlass:
- *
- * The MSCng list based keys store klass.
- *
- * Returns: MSCng list based keys store klass.
+ * @brief The MSCng list based keys store klass.
+ * @return MSCng list based keys store klass.
  */
 xmlSecKeyStoreId
 xmlSecMSCngKeysStoreGetKlass(void) {
@@ -476,13 +470,10 @@ xmlSecMSCngKeysStoreGetKlass(void) {
 }
 
 /**
- * xmlSecMSCngKeysStoreAdoptKey:
- * @store:              the pointer to MSCng keys store.
- * @key:                the pointer to key.
- *
- * Adds @key to the @store.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Adds @p key to the @p store.
+ * @param store the pointer to MSCng keys store.
+ * @param key the pointer to key.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecMSCngKeysStoreAdoptKey(xmlSecKeyStorePtr store, xmlSecKeyPtr key) {
@@ -500,14 +491,11 @@ xmlSecMSCngKeysStoreAdoptKey(xmlSecKeyStorePtr store, xmlSecKeyPtr key) {
 }
 
 /**
- * xmlSecMSCngKeysStoreLoad:
- * @store:              the pointer to MSCng keys store.
- * @uri:                the filename.
- * @keysMngr:           the pointer to associated keys manager.
- *
- * Reads keys from an XML file.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Reads keys from an XML file.
+ * @param store the pointer to MSCng keys store.
+ * @param uri the filename.
+ * @param keysMngr the pointer to associated keys manager.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecMSCngKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri, xmlSecKeysMngrPtr keysMngr) {
@@ -515,14 +503,11 @@ xmlSecMSCngKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri, xmlSecKeysMng
 }
 
 /**
- * xmlSecMSCngKeysStoreSave:
- * @store:              the pointer to MSCng keys store.
- * @filename:           the filename.
- * @type:               the saved keys type (public, private, ...).
- *
- * Writes keys from @store to an XML file.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Writes keys from @p store to an XML file.
+ * @param store the pointer to MSCng keys store.
+ * @param filename the filename.
+ * @param type the saved keys type (public, private, ...).
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecMSCngKeysStoreSave(xmlSecKeyStorePtr store, const char *filename, xmlSecKeyDataType type) {

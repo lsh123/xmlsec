@@ -9,7 +9,7 @@
  * Copyright (C) 2018 Miklos Vajna. All Rights Reserved.
  */
 /**
- * SECTION:crypto
+ * @addtogroup xmlsec_mscng_crypto
  */
 #include "globals.h"
 
@@ -27,11 +27,11 @@
 #include "../cast_helpers.h"
 #include "../keysdata_helpers.h"
 
-/**************************************************************************
+/******************************************************************************
  *
  * Internal MSCng CBC Block cipher CTX
  *
- *****************************************************************************/
+  *****************************************************************************/
 typedef struct _xmlSecMSCngCbcBlockCipherCtx xmlSecMSCngCbcBlockCipherCtx, *xmlSecMSCngCbcBlockCipherCtxPtr;
 
 struct _xmlSecMSCngCbcBlockCipherCtx {
@@ -786,11 +786,8 @@ xmlSecMSCngCbcBlockCipherExecute(xmlSecTransformPtr transform, int last,
 XMLSEC_MSCNG_CBC_CIPHER_KLASS(Aes128Cbc)
 
 /**
- * xmlSecMSCngTransformAes128CbcGetKlass:
- *
- * AES 128 CBC encryption transform klass.
- *
- * Returns: pointer to AES 128 CBC encryption transform.
+ * @brief AES 128 CBC encryption transform klass.
+ * @return pointer to AES 128 CBC encryption transform.
  */
 xmlSecTransformId
 xmlSecMSCngTransformAes128CbcGetKlass(void) {
@@ -801,11 +798,8 @@ xmlSecMSCngTransformAes128CbcGetKlass(void) {
 XMLSEC_MSCNG_CBC_CIPHER_KLASS(Aes192Cbc)
 
 /**
- * xmlSecMSCngTransformAes192CbcGetKlass:
- *
- * AES 192 CBC encryption transform klass.
- *
- * Returns: pointer to AES 192 CBC encryption transform.
+ * @brief AES 192 CBC encryption transform klass.
+ * @return pointer to AES 192 CBC encryption transform.
  */
 xmlSecTransformId
 xmlSecMSCngTransformAes192CbcGetKlass(void) {
@@ -816,11 +810,8 @@ xmlSecMSCngTransformAes192CbcGetKlass(void) {
 XMLSEC_MSCNG_CBC_CIPHER_KLASS(Aes256Cbc)
 
 /**
- * xmlSecMSCngTransformAes256CbcGetKlass:
- *
- * AES 256 CBC encryption transform klass.
- *
- * Returns: pointer to AES 256 CBC encryption transform.
+ * @brief AES 256 CBC encryption transform klass.
+ * @return pointer to AES 256 CBC encryption transform.
  */
 xmlSecTransformId
 xmlSecMSCngTransformAes256CbcGetKlass(void) {
@@ -835,11 +826,8 @@ xmlSecMSCngTransformAes256CbcGetKlass(void) {
 XMLSEC_MSCNG_CBC_CIPHER_KLASS(Des3Cbc)
 
 /**
- * xmlSecMSCngTransformDes3CbcGetKlass:
- *
- * Triple DES CBC encryption transform klass.
- *
- * Returns: pointer to Triple DES encryption transform.
+ * @brief Triple DES CBC encryption transform klass.
+ * @return pointer to Triple DES encryption transform.
  */
 xmlSecTransformId
 xmlSecMSCngTransformDes3CbcGetKlass(void) {

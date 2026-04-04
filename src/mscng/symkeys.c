@@ -10,9 +10,8 @@
  * Copyright (C) 2018 Miklos Vajna. All Rights Reserved.
  */
 /**
- * SECTION:crypto
+ * @addtogroup xmlsec_mscng_crypto
  */
-
 #include "globals.h"
 
 #include <string.h>
@@ -236,11 +235,11 @@ static xmlSecKeyDataKlass xmlSecMSCngKeyData ## klassName ## Klass = {          
         NULL, NULL, NULL, NULL)
 
 #ifndef XMLSEC_NO_AES
-/**************************************************************************
+/******************************************************************************
  *
  * <xmlsec:AESKeyValue> processing
  *
- *************************************************************************/
+  *****************************************************************************/
 XMLSEC_MSCNG_SYMKEY_WITH_XML(Aes,
     xmlSecNameAESKeyValue,
     xmlSecHrefAESKeyValue,
@@ -248,11 +247,8 @@ XMLSEC_MSCNG_SYMKEY_WITH_XML(Aes,
     xmlSecNs)
 
 /**
- * xmlSecMSCngKeyDataAesGetKlass:
- *
- * The AES key data klass.
- *
- * Returns: AES key data klass.
+ * @brief The AES key data klass.
+ * @return AES key data klass.
  */
 xmlSecKeyDataId
 xmlSecMSCngKeyDataAesGetKlass(void) {
@@ -263,19 +259,16 @@ xmlSecMSCngKeyDataAesGetKlass(void) {
 
 #ifndef XMLSEC_NO_CONCATKDF
 
-/**************************************************************************
+/******************************************************************************
  *
  * ConcatKdf klass
  *
- *************************************************************************/
+  *****************************************************************************/
 XMLSEC_MSCNG_SYMKEY(ConcatKdf, xmlSecNameConcatKdf, xmlSecHrefConcatKdf)
 
 /**
- * xmlSecMSCngKeyDataConcatKdfGetKlass:
- *
- * The ConcatKdf key data klass.
- *
- * Returns: ConcatKdf key data klass.
+ * @brief The ConcatKdf key data klass.
+ * @return ConcatKdf key data klass.
  */
 xmlSecKeyDataId
 xmlSecMSCngKeyDataConcatKdfGetKlass(void) {
@@ -286,11 +279,11 @@ xmlSecMSCngKeyDataConcatKdfGetKlass(void) {
 
 #ifndef XMLSEC_NO_DES
 
-/**************************************************************************
+/******************************************************************************
  *
  * <xmlsec:DESKeyValue> processing
  *
- *************************************************************************/
+  *****************************************************************************/
 XMLSEC_MSCNG_SYMKEY_WITH_XML(Des,
     xmlSecNameDESKeyValue,
     xmlSecHrefDESKeyValue,
@@ -298,11 +291,8 @@ XMLSEC_MSCNG_SYMKEY_WITH_XML(Des,
     xmlSecNs)
 
 /**
- * xmlSecMSCngKeyDataDesGetKlass:
- *
- * The DES key data klass.
- *
- * Returns: DES key data klass.
+ * @brief The DES key data klass.
+ * @return DES key data klass.
  */
 xmlSecKeyDataId
 xmlSecMSCngKeyDataDesGetKlass(void) {
@@ -314,11 +304,11 @@ xmlSecMSCngKeyDataDesGetKlass(void) {
 
 #ifndef XMLSEC_NO_HMAC
 
-/**************************************************************************
+/******************************************************************************
  *
  * <xmlsec:HMACKeyValue> processing
  *
- *************************************************************************/
+  *****************************************************************************/
 XMLSEC_MSCNG_SYMKEY_WITH_XML(Hmac,
     xmlSecNameHMACKeyValue,
     xmlSecHrefHMACKeyValue,
@@ -326,11 +316,8 @@ XMLSEC_MSCNG_SYMKEY_WITH_XML(Hmac,
     xmlSecNs)
 
 /**
- * xmlSecMSCngKeyDataHmacGetKlass:
- *
- * The HMAC key data klass.
- *
- * Returns: HMAC key data klass.
+ * @brief The HMAC key data klass.
+ * @return HMAC key data klass.
  */
 xmlSecKeyDataId
 xmlSecMSCngKeyDataHmacGetKlass(void) {
@@ -341,19 +328,16 @@ xmlSecMSCngKeyDataHmacGetKlass(void) {
 
 #ifndef XMLSEC_NO_PBKDF2
 
-/**************************************************************************
+/******************************************************************************
  *
  * PBKDF2 klass
  *
- *************************************************************************/
+  *****************************************************************************/
 XMLSEC_MSCNG_SYMKEY(Pbkdf2, xmlSecNamePbkdf2, xmlSecHrefPbkdf2)
 
 /**
- * xmlSecMSCngKeyDataPbkdf2GetKlass:
- *
- * The PBKDF2 key data klass.
- *
- * Returns: PBKDF2 key data klass.
+ * @brief The PBKDF2 key data klass.
+ * @return PBKDF2 key data klass.
  */
 xmlSecKeyDataId
 xmlSecMSCngKeyDataPbkdf2GetKlass(void) {
@@ -364,19 +348,16 @@ xmlSecMSCngKeyDataPbkdf2GetKlass(void) {
 
 #ifndef XMLSEC_NO_HKDF
 
-/**************************************************************************
+/******************************************************************************
  *
  * HKDF klass
  *
- *************************************************************************/
+  *****************************************************************************/
 XMLSEC_MSCNG_SYMKEY(Hkdf, xmlSecNameHkdf, xmlSecHrefHkdf)
 
 /**
- * xmlSecMSCngKeyDataHkdfGetKlass:
- *
- * The HKDF key data klass.
- *
- * Returns: HKDF key data klass.
+ * @brief The HKDF key data klass.
+ * @return HKDF key data klass.
  */
 xmlSecKeyDataId
 xmlSecMSCngKeyDataHkdfGetKlass(void) {

@@ -9,9 +9,8 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:crypto
+ * @addtogroup xmlsec_gcrypt_crypto
  */
-
 #include "globals.h"
 
 #include <string.h>
@@ -28,11 +27,11 @@
 
 #include "../cast_helpers.h"
 
-/**************************************************************************
+/******************************************************************************
  *
  * Internal GCRYPT Digest CTX
  *
- *****************************************************************************/
+  *****************************************************************************/
 typedef struct _xmlSecGCryptDigestCtx           xmlSecGCryptDigestCtx, *xmlSecGCryptDigestCtxPtr;
 struct _xmlSecGCryptDigestCtx {
     int                 digest;
@@ -47,7 +46,7 @@ struct _xmlSecGCryptDigestCtx {
  *
  * xmlSecTransform + xmlSecGCryptDigestCtx
  *
- *****************************************************************************/
+  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(GCryptDigest, xmlSecGCryptDigestCtx)
 #define xmlSecGCryptDigestSize XMLSEC_TRANSFORM_SIZE(GCryptDigest)
 
@@ -336,7 +335,7 @@ xmlSecGCryptDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
  *
  * MD5 Digest transforms
  *
- *****************************************************************************/
+  *****************************************************************************/
 static xmlSecTransformKlass xmlSecGCryptMd5Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -367,11 +366,8 @@ static xmlSecTransformKlass xmlSecGCryptMd5Klass = {
 };
 
 /**
- * xmlSecGCryptTransformMd5GetKlass:
- *
- * MD5 digest transform klass.
- *
- * Returns: pointer to MD5 digest transform klass.
+ * @brief MD5 digest transform klass.
+ * @return pointer to MD5 digest transform klass.
  */
 xmlSecTransformId
 xmlSecGCryptTransformMd5GetKlass(void) {
@@ -384,7 +380,7 @@ xmlSecGCryptTransformMd5GetKlass(void) {
  *
  * RIPEMD160 Digest transforms
  *
- *****************************************************************************/
+  *****************************************************************************/
 static xmlSecTransformKlass xmlSecGCryptRipemd160Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -415,11 +411,8 @@ static xmlSecTransformKlass xmlSecGCryptRipemd160Klass = {
 };
 
 /**
- * xmlSecGCryptTransformRipemd160GetKlass:
- *
- * RIPEMD160 digest transform klass.
- *
- * Returns: pointer to RIPEMD160 digest transform klass.
+ * @brief RIPEMD160 digest transform klass.
+ * @return pointer to RIPEMD160 digest transform klass.
  */
 xmlSecTransformId
 xmlSecGCryptTransformRipemd160GetKlass(void) {
@@ -433,7 +426,7 @@ xmlSecGCryptTransformRipemd160GetKlass(void) {
  *
  * SHA1 Digest transforms
  *
- *****************************************************************************/
+  *****************************************************************************/
 static xmlSecTransformKlass xmlSecGCryptSha1Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -464,11 +457,8 @@ static xmlSecTransformKlass xmlSecGCryptSha1Klass = {
 };
 
 /**
- * xmlSecGCryptTransformSha1GetKlass:
- *
- * SHA-1 digest transform klass.
- *
- * Returns: pointer to SHA-1 digest transform klass.
+ * @brief SHA-1 digest transform klass.
+ * @return pointer to SHA-1 digest transform klass.
  */
 xmlSecTransformId
 xmlSecGCryptTransformSha1GetKlass(void) {
@@ -482,7 +472,7 @@ xmlSecGCryptTransformSha1GetKlass(void) {
  *
  * SHA2-256 Digest transforms
  *
- *****************************************************************************/
+  *****************************************************************************/
 static xmlSecTransformKlass xmlSecGCryptSha256Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -513,11 +503,8 @@ static xmlSecTransformKlass xmlSecGCryptSha256Klass = {
 };
 
 /**
- * xmlSecGCryptTransformSha256GetKlass:
- *
- * SHA2-256 digest transform klass.
- *
- * Returns: pointer to SHA2-256 digest transform klass.
+ * @brief SHA2-256 digest transform klass.
+ * @return pointer to SHA2-256 digest transform klass.
  */
 xmlSecTransformId
 xmlSecGCryptTransformSha256GetKlass(void) {
@@ -530,7 +517,7 @@ xmlSecGCryptTransformSha256GetKlass(void) {
  *
  * SHA2-384 Digest transforms
  *
- *****************************************************************************/
+  *****************************************************************************/
 static xmlSecTransformKlass xmlSecGCryptSha384Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -561,11 +548,8 @@ static xmlSecTransformKlass xmlSecGCryptSha384Klass = {
 };
 
 /**
- * xmlSecGCryptTransformSha384GetKlass:
- *
- * SHA2-384 digest transform klass.
- *
- * Returns: pointer to SHA2-384 digest transform klass.
+ * @brief SHA2-384 digest transform klass.
+ * @return pointer to SHA2-384 digest transform klass.
  */
 xmlSecTransformId
 xmlSecGCryptTransformSha384GetKlass(void) {
@@ -578,7 +562,7 @@ xmlSecGCryptTransformSha384GetKlass(void) {
  *
  * SHA2-512 Digest transforms
  *
- *****************************************************************************/
+  *****************************************************************************/
 static xmlSecTransformKlass xmlSecGCryptSha512Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -609,11 +593,8 @@ static xmlSecTransformKlass xmlSecGCryptSha512Klass = {
 };
 
 /**
- * xmlSecGCryptTransformSha512GetKlass:
- *
- * SHA2-512 digest transform klass.
- *
- * Returns: pointer to SHA2-512 digest transform klass.
+ * @brief SHA2-512 digest transform klass.
+ * @return pointer to SHA2-512 digest transform klass.
  */
 xmlSecTransformId
 xmlSecGCryptTransformSha512GetKlass(void) {
@@ -627,7 +608,7 @@ xmlSecGCryptTransformSha512GetKlass(void) {
  *
  * SHA3-256 Digest transforms
  *
- *****************************************************************************/
+  *****************************************************************************/
 static xmlSecTransformKlass xmlSecGCryptSha3_256Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -658,11 +639,8 @@ static xmlSecTransformKlass xmlSecGCryptSha3_256Klass = {
 };
 
 /**
- * xmlSecGCryptTransformSha3_256GetKlass:
- *
- * SHA3-256 digest transform klass.
- *
- * Returns: pointer to SHA3-256 digest transform klass.
+ * @brief SHA3-256 digest transform klass.
+ * @return pointer to SHA3-256 digest transform klass.
  */
 xmlSecTransformId
 xmlSecGCryptTransformSha3_256GetKlass(void) {
@@ -673,7 +651,7 @@ xmlSecGCryptTransformSha3_256GetKlass(void) {
  *
  * SHA3-384 Digest transforms
  *
- *****************************************************************************/
+  *****************************************************************************/
 static xmlSecTransformKlass xmlSecGCryptSha3_384Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -704,11 +682,8 @@ static xmlSecTransformKlass xmlSecGCryptSha3_384Klass = {
 };
 
 /**
- * xmlSecGCryptTransformSha3_384GetKlass:
- *
- * SHA3-384 digest transform klass.
- *
- * Returns: pointer to SHA3-384 digest transform klass.
+ * @brief SHA3-384 digest transform klass.
+ * @return pointer to SHA3-384 digest transform klass.
  */
 xmlSecTransformId
 xmlSecGCryptTransformSha3_384GetKlass(void) {
@@ -719,7 +694,7 @@ xmlSecGCryptTransformSha3_384GetKlass(void) {
  *
  * SHA3-512 Digest transforms
  *
- *****************************************************************************/
+  *****************************************************************************/
 static xmlSecTransformKlass xmlSecGCryptSha3_512Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -750,11 +725,8 @@ static xmlSecTransformKlass xmlSecGCryptSha3_512Klass = {
 };
 
 /**
- * xmlSecGCryptTransformSha3_512GetKlass:
- *
- * SHA3-512 digest transform klass.
- *
- * Returns: pointer to SHA3-512 digest transform klass.
+ * @brief SHA3-512 digest transform klass.
+ * @return pointer to SHA3-512 digest transform klass.
  */
 xmlSecTransformId
 xmlSecGCryptTransformSha3_512GetKlass(void) {

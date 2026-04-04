@@ -8,12 +8,9 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:xmltree
- * @Short_description: XML tree functions.
- * @Stability: Stable
- *
+ * @addtogroup xmlsec_core_xmltree
+ * @brief XML tree functions.
  */
-
 #include "globals.h"
 
 #include <stdlib.h>
@@ -39,11 +36,8 @@
 static const xmlChar*    g_xmlsec_xmltree_default_linefeed = xmlSecStringCR;
 
 /**
- * xmlSecGetDefaultLineFeed:
- *
- * Gets the current default linefeed.
- *
- * Returns: the current default linefeed.
+ * @brief Gets the current default linefeed.
+ * @return the current default linefeed.
  */
 const xmlChar*
 xmlSecGetDefaultLineFeed(void)
@@ -52,11 +46,10 @@ xmlSecGetDefaultLineFeed(void)
 }
 
 /**
- * xmlSecSetDefaultLineFeed:
- * @linefeed: default linefeed.
- *
- * Sets the current default linefeed. The caller must ensure that the linefeed
+ * @brief Sets the current default linefeed.
+ * @details The caller must ensure that the linefeed
  * string exists for the lifetime of the program or until the new linefeed is set.
+ * @param linefeed default linefeed.
  */
 void
 xmlSecSetDefaultLineFeed(const xmlChar *linefeed)
@@ -66,12 +59,10 @@ xmlSecSetDefaultLineFeed(const xmlChar *linefeed)
 
 
 /**
- * xmlSecGetNodeContentAndTrim:
- * @cur:            the pointer to XML node.
- *
- * Reads @cur node content and trims it (both sides).
- *
- * Returns: trimmed node content or NULL if an error occurs.
+ * @brief Reads and trims XML node content.
+ * @details Reads @p cur node content and trims it (both sides).
+ * @param cur the pointer to XML node.
+ * @return trimmed node content or NULL if an error occurs.
  */
 xmlChar*
 xmlSecGetNodeContentAndTrim(const xmlNodePtr cur) {
@@ -101,14 +92,12 @@ xmlSecGetNodeContentAndTrim(const xmlNodePtr cur) {
 }
 
 /**
- * xmlSecGetNodeContentAsHex:
- * @cur:            the pointer to XML node.
- * @res:            the output buffer to store the decoded bytes.
- *
- * Reads @cur node content (whitespace-trimmed), hex-decodes it, and stores
- * the result in @res. The buffer is emptied before writing.
- *
- * Returns: 0 on success or -1 on error.
+ * @brief Reads node content and hex-decodes it into a buffer.
+ * @details Reads @p cur node content (whitespace-trimmed), hex-decodes it, and stores
+ * the result in @p res. The buffer is emptied before writing.
+ * @param cur the pointer to XML node.
+ * @param res the output buffer to store the decoded bytes.
+ * @return 0 on success or -1 on error.
  */
 int
 xmlSecGetNodeContentAsHex(const xmlNodePtr cur, xmlSecBufferPtr res) {
@@ -135,14 +124,12 @@ xmlSecGetNodeContentAsHex(const xmlNodePtr cur, xmlSecBufferPtr res) {
 }
 
 /**
- * xmlSecSetNodeContentAsHex:
- * @node:           the pointer to XML node.
- * @data:           the input bytes.
- * @size:           the input data size.
- *
- * Hex-encodes @data and stores the result as node content for @node.
- *
- * Returns: 0 on success or -1 on error.
+ * @brief Hex-encodes data and sets it as node content.
+ * @details Hex-encodes @p data and stores the result as node content for @p node.
+ * @param node the pointer to XML node.
+ * @param data the input bytes.
+ * @param size the input data size.
+ * @return 0 on success or -1 on error.
  */
 int
 xmlSecSetNodeContentAsHex(xmlNodePtr node, const xmlSecByte* data, xmlSecSize size) {
@@ -173,14 +160,12 @@ xmlSecSetNodeContentAsHex(xmlNodePtr node, const xmlSecByte* data, xmlSecSize si
 }
 
 /**
- * xmlSecGetNodeContentAsSize:
- * @cur:            the pointer to XML node.
- * @defValue:       the default value that will be returned in @res if there is no node content.
- * @res:            the pointer to the result value.
- *
- * Reads @cur node content and converts it to xmlSecSize value.
- *
- * Returns: 0 on success or -1 on error.
+ * @brief Reads node content and converts it to an xmlSecSize.
+ * @details Reads @p cur node content and converts it to xmlSecSize value.
+ * @param cur the pointer to XML node.
+ * @param defValue the default value that will be returned in @p res if there is no node content.
+ * @param res the pointer to the result value.
+ * @return 0 on success or -1 on error.
  */
 int
 xmlSecGetNodeContentAsSize(const xmlNodePtr cur, xmlSecSize defValue, xmlSecSize* res) {
@@ -221,15 +206,13 @@ xmlSecGetNodeContentAsSize(const xmlNodePtr cur, xmlSecSize defValue, xmlSecSize
 }
 
 /**
- * xmlSecFindSibling:
- * @cur:                the pointer to XML node.
- * @name:               the name.
- * @ns:                 the namespace href (may be NULL).
- *
- * Searches @cur and the next siblings of the @cur node having given name and
+ * @brief Searches a node and its next siblings by name and namespace.
+ * @details Searches @p cur and the next siblings of the @p cur node having given name and
  * namespace href.
- *
- * Returns: the pointer to the found node or NULL if an error occurs or
+ * @param cur the pointer to XML node.
+ * @param name the name.
+ * @param ns the namespace href (may be NULL).
+ * @return the pointer to the found node or NULL if an error occurs or
  * node is not found.
  */
 xmlNodePtr
@@ -248,15 +231,13 @@ xmlSecFindSibling(const xmlNodePtr cur, const xmlChar *name, const xmlChar *ns) 
 }
 
 /**
- * xmlSecFindChild:
- * @parent:             the pointer to XML node.
- * @name:               the name.
- * @ns:                 the namespace href (may be NULL).
- *
- * Searches a direct child of the @parent node having given name and
+ * @brief Finds a direct child node by name and namespace.
+ * @details Searches a direct child of the @p parent node having given name and
  * namespace href.
- *
- * Returns: the pointer to the found node or NULL if an error occurs or
+ * @param parent the pointer to XML node.
+ * @param name the name.
+ * @param ns the namespace href (may be NULL).
+ * @return the pointer to the found node or NULL if an error occurs or
  * node is not found.
  */
 xmlNodePtr
@@ -268,15 +249,13 @@ xmlSecFindChild(const xmlNodePtr parent, const xmlChar *name, const xmlChar *ns)
 }
 
 /**
- * xmlSecFindParent:
- * @cur:                the pointer to an XML node.
- * @name:               the name.
- * @ns:                 the namespace href (may be NULL).
- *
- * Searches the ancestors axis of the @cur node for a node having given name
+ * @brief Searches ancestor nodes by name and namespace.
+ * @details Searches the ancestors axis of the @p cur node for a node having given name
  * and namespace href.
- *
- * Returns: the pointer to the found node or NULL if an error occurs or
+ * @param cur the pointer to an XML node.
+ * @param name the name.
+ * @param ns the namespace href (may be NULL).
+ * @return the pointer to the found node or NULL if an error occurs or
  * node is not found.
  */
 xmlNodePtr
@@ -293,15 +272,13 @@ xmlSecFindParent(const xmlNodePtr cur, const xmlChar *name, const xmlChar *ns) {
 }
 
 /**
- * xmlSecFindNode:
- * @parent:             the pointer to XML node.
- * @name:               the name.
- * @ns:                 the namespace href (may be NULL).
- *
- * Searches all children of the @parent node having given name and
+ * @brief Recursively searches child nodes by name and namespace.
+ * @details Searches all children of the @p parent node having given name and
  * namespace href.
- *
- * Returns: the pointer to the found node or NULL if an error occurs or
+ * @param parent the pointer to XML node.
+ * @param name the name.
+ * @param ns the namespace href (may be NULL).
+ * @return the pointer to the found node or NULL if an error occurs or
  * node is not found.
  */
 xmlNodePtr
@@ -328,12 +305,9 @@ xmlSecFindNode(const xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) 
 }
 
 /**
- * xmlSecGetNodeNsHref:
- * @cur:                the pointer to node.
- *
- * Get's node's namespace href.
- *
- * Returns: node's namespace href.
+ * @brief Gets the node's namespace href.
+ * @param cur the pointer to node.
+ * @return node's namespace href.
  */
 const xmlChar*
 xmlSecGetNodeNsHref(const xmlNodePtr cur) {
@@ -356,14 +330,12 @@ xmlSecGetNodeNsHref(const xmlNodePtr cur) {
 }
 
 /**
- * xmlSecCheckNodeName:
- * @cur:                the pointer to an XML node.
- * @name:               the name,
- * @ns:                 the namespace href.
- *
- * Checks that the node has a given name and a given namespace href.
- *
- * Returns: 1 if the node matches or 0 otherwise.
+ * @brief Checks if a node has the given name and namespace.
+ * @details Checks that the node has a given name and a given namespace href.
+ * @param cur the pointer to an XML node.
+ * @param name the name,
+ * @param ns the namespace href.
+ * @return 1 if the node matches or 0 otherwise.
  */
 int
 xmlSecCheckNodeName(const xmlNodePtr cur, const xmlChar *name, const xmlChar *ns) {
@@ -374,14 +346,12 @@ xmlSecCheckNodeName(const xmlNodePtr cur, const xmlChar *name, const xmlChar *ns
 }
 
 /**
- * xmlSecAddChild:
- * @parent:             the pointer to an XML node.
- * @name:               the new node name.
- * @ns:                 the new node namespace.
- *
- * Adds a child to the node @parent with given @name and namespace @ns.
- *
- * Returns: pointer to the new node or NULL if an error occurs.
+ * @brief Adds a new child element with the given name and namespace.
+ * @details Adds a child to the node @p parent with given @p name and namespace @p ns.
+ * @param parent the pointer to an XML node.
+ * @param name the new node name.
+ * @param ns the new node namespace.
+ * @return pointer to the new node or NULL if an error occurs.
  */
 xmlNodePtr
 xmlSecAddChild(xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
@@ -435,13 +405,10 @@ xmlSecAddChild(xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
 }
 
 /**
- * xmlSecAddChildNode:
- * @parent:             the pointer to an XML node.
- * @child:              the new node.
- *
- * Adds @child node to the @parent node.
- *
- * Returns: pointer to the new node or NULL if an error occurs.
+ * @brief Adds @p child node to the @p parent node.
+ * @param parent the pointer to an XML node.
+ * @param child the new node.
+ * @return pointer to the new node or NULL if an error occurs.
  */
 xmlNodePtr
 xmlSecAddChildNode(xmlNodePtr parent, xmlNodePtr child) {
@@ -474,16 +441,14 @@ xmlSecAddChildNode(xmlNodePtr parent, xmlNodePtr child) {
 }
 
 /**
- * xmlSecEnsureEmptyChild:
- * @parent:             the pointer to XML node.
- * @name:               the name.
- * @ns:                 the namespace href (may be NULL).
- *
- * Searches a direct child of the @parent node having given name and
+ * @brief Finds or creates an empty child element by name and namespace.
+ * @details Searches a direct child of the @p parent node having given name and
  * namespace href. If not found then element node with given name / namespace
  * is added.
- *
- * Returns: the pointer to the found or created node; or NULL if an error occurs.
+ * @param parent the pointer to XML node.
+ * @param name the name.
+ * @param ns the namespace href (may be NULL).
+ * @return the pointer to the found or created node; or NULL if an error occurs.
  */
 xmlNodePtr
 xmlSecEnsureEmptyChild(xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
@@ -518,14 +483,12 @@ xmlSecEnsureEmptyChild(xmlNodePtr parent, const xmlChar *name, const xmlChar *ns
 }
 
 /**
- * xmlSecAddNextSibling
- * @node:               the pointer to an XML node.
- * @name:               the new node name.
- * @ns:                 the new node namespace.
- *
- * Adds next sibling to the node @node with given @name and namespace @ns.
- *
- * Returns: pointer to the new node or NULL if an error occurs.
+ * @brief Adds a new next-sibling element with the given name and namespace.
+ * @details Adds next sibling to the node @p node with given @p name and namespace @p ns.
+ * @param node the pointer to an XML node.
+ * @param name the new node name.
+ * @param ns the new node namespace.
+ * @return pointer to the new node or NULL if an error occurs.
  */
 xmlNodePtr
 xmlSecAddNextSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
@@ -566,14 +529,12 @@ xmlSecAddNextSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
 }
 
 /**
- * xmlSecAddPrevSibling
- * @node:               the pointer to an XML node.
- * @name:               the new node name.
- * @ns:                 the new node namespace.
- *
- * Adds prev sibling to the node @node with given @name and namespace @ns.
- *
- * Returns: pointer to the new node or NULL if an error occurs.
+ * @brief Adds a new previous-sibling element with the given name and namespace.
+ * @details Adds prev sibling to the node @p node with given @p name and namespace @p ns.
+ * @param node the pointer to an XML node.
+ * @param name the new node name.
+ * @param ns the new node namespace.
+ * @return pointer to the new node or NULL if an error occurs.
  */
 xmlNodePtr
 xmlSecAddPrevSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
@@ -614,12 +575,9 @@ xmlSecAddPrevSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
 }
 
 /**
- * xmlSecGetNextElementNode:
- * @cur:                the pointer to an XML node.
- *
- * Seraches for the next element node.
- *
- * Returns: the pointer to next element node or NULL if it is not found.
+ * @brief Searches for the next element node.
+ * @param cur the pointer to an XML node.
+ * @return the pointer to next element node or NULL if it is not found.
  */
 xmlNodePtr
 xmlSecGetNextElementNode(xmlNodePtr cur) {
@@ -631,13 +589,11 @@ xmlSecGetNextElementNode(xmlNodePtr cur) {
 }
 
 /**
- * xmlSecReplaceNode:
- * @node:               the current node.
- * @newNode:            the new node.
- *
- * Swaps the @node and @newNode in the XML tree.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Swaps a node with a new node in the XML tree.
+ * @details Swaps the @p node and @p newNode in the XML tree.
+ * @param node the current node.
+ * @param newNode the new node.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecReplaceNode(xmlNodePtr node, xmlNodePtr newNode) {
@@ -645,14 +601,12 @@ xmlSecReplaceNode(xmlNodePtr node, xmlNodePtr newNode) {
 }
 
 /**
- * xmlSecReplaceNodeAndReturn:
- * @node:               the current node.
- * @newNode:            the new node.
- * @replaced:           the replaced node, or release it if NULL is given
- *
- * Swaps the @node and @newNode in the XML tree.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Swaps a node with another and optionally returns the replaced node.
+ * @details Swaps the @p node and @p newNode in the XML tree.
+ * @param node the current node.
+ * @param newNode the new node.
+ * @param replaced the replaced node, or release it if NULL is given
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecReplaceNodeAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr* replaced) {
@@ -692,13 +646,10 @@ xmlSecReplaceNodeAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr* repl
 }
 
 /**
- * xmlSecReplaceContent
- * @node:               the current node.
- * @newNode:            the new node.
- *
- * Swaps the content of @node and @newNode.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Swaps the content of @p node and @p newNode.
+ * @param node the current node.
+ * @param newNode the new node.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecReplaceContent(xmlNodePtr node, xmlNodePtr newNode) {
@@ -706,14 +657,11 @@ xmlSecReplaceContent(xmlNodePtr node, xmlNodePtr newNode) {
 }
 
 /**
- * xmlSecReplaceContentAndReturn
- * @node:               the current node.
- * @newNode:            the new node.
- * @replaced:           the replaced nodes, or release them if NULL is given
- *
- * Swaps the content of @node and @newNode.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Swaps the content of @p node and @p newNode, optionally returning replaced nodes.
+ * @param node the current node.
+ * @param newNode the new node.
+ * @param replaced the replaced nodes, or release them if NULL is given
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecReplaceContentAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr *replaced) {
@@ -750,14 +698,12 @@ xmlSecReplaceContentAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr *r
 }
 
 /**
- * xmlSecReplaceNodeBuffer:
- * @node:               the current node.
- * @buffer:             the XML data.
- * @size:               the XML data size.
- *
- * Swaps the @node and the parsed XML data from the @buffer in the XML tree.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Replaces a node with parsed XML data from a buffer.
+ * @details Swaps the @p node and the parsed XML data from the @p buffer in the XML tree.
+ * @param node the current node.
+ * @param buffer the XML data.
+ * @param size the XML data size.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecReplaceNodeBuffer(xmlNodePtr node, const xmlSecByte *buffer, xmlSecSize size) {
@@ -765,15 +711,13 @@ xmlSecReplaceNodeBuffer(xmlNodePtr node, const xmlSecByte *buffer, xmlSecSize si
 }
 
 /**
- * xmlSecReplaceNodeBufferAndReturn:
- * @node:               the current node.
- * @buffer:             the XML data.
- * @size:               the XML data size.
- * @replaced:           the replaced nodes, or release them if NULL is given
- *
- * Swaps the @node and the parsed XML data from the @buffer in the XML tree.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Replaces a node with parsed XML data from a buffer, optionally returning replaced nodes.
+ * @details Swaps the @p node and the parsed XML data from the @p buffer in the XML tree.
+ * @param node the current node.
+ * @param buffer the XML data.
+ * @param size the XML data size.
+ * @param replaced the replaced nodes, or release them if NULL is given
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecReplaceNodeBufferAndReturn(xmlNodePtr node, const xmlSecByte *buffer, xmlSecSize size, xmlNodePtr *replaced) {
@@ -823,14 +767,12 @@ xmlSecReplaceNodeBufferAndReturn(xmlNodePtr node, const xmlSecByte *buffer, xmlS
 }
 
 /**
- * xmlSecNodeEncodeAndSetContent:
- * @node:                   the pointer to an XML node.
- * @buffer:             the pointer to the node content.
- *
- * Encodes "special" characters in the @buffer and sets the result
+ * @brief Encodes special characters in a buffer and sets it as node content.
+ * @details Encodes "special" characters in the @p buffer and sets the result
  * as the node content.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @param node the pointer to an XML node.
+ * @param buffer the pointer to the node content.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecNodeEncodeAndSetContent(xmlNodePtr node, const xmlChar * buffer) {
@@ -853,13 +795,12 @@ xmlSecNodeEncodeAndSetContent(xmlNodePtr node, const xmlChar * buffer) {
 }
 
 /**
- * xmlSecAddIDs:
- * @doc:                the pointer to an XML document.
- * @cur:                the pointer to an XML node.
- * @ids:                the pointer to a NULL terminated list of ID attributes.
- *
- * Walks thru all children of the @cur node and adds all attributes
- * from the @ids list to the @doc document IDs attributes hash.
+ * @brief Registers ID attributes from a node subtree in the document's ID table.
+ * @details Walks thru all children of the @p cur node and adds all attributes
+ * from the @p ids list to the @p doc document IDs attributes hash.
+ * @param doc the pointer to an XML document.
+ * @param cur the pointer to an XML node.
+ * @param ids the pointer to a NULL terminated list of ID attributes.
  */
 void
 xmlSecAddIDs(xmlDocPtr doc, xmlNodePtr cur, const xmlChar** ids) {
@@ -906,13 +847,11 @@ xmlSecAddIDs(xmlDocPtr doc, xmlNodePtr cur, const xmlChar** ids) {
 }
 
 /**
- * xmlSecCreateTree:
- * @rootNodeName:       the root node name.
- * @rootNodeNs:         the root node namespace (optional).
- *
- * Creates a new XML tree with one root node @rootNodeName.
- *
- * Returns: pointer to the newly created tree or NULL if an error occurs.
+ * @brief Creates a new XML document with a single root node.
+ * @details Creates a new XML tree with one root node @p rootNodeName.
+ * @param rootNodeName the root node name.
+ * @param rootNodeNs the root node namespace (optional).
+ * @return pointer to the newly created tree or NULL if an error occurs.
  */
 xmlDocPtr
 xmlSecCreateTree(const xmlChar* rootNodeName, const xmlChar* rootNodeNs) {
@@ -953,12 +892,10 @@ xmlSecCreateTree(const xmlChar* rootNodeName, const xmlChar* rootNodeNs) {
 }
 
 /**
- * xmlSecIsEmptyNode:
- * @node:               the node to check
- *
- * Checks whether the @node is empty (i.e. has only whitespaces children).
- *
- * Returns: 1 if @node is empty, 0 otherwise or a negative value if an error occurs.
+ * @brief Checks whether a node is empty (whitespace only).
+ * @details Checks whether the @p node is empty (i.e. has only whitespaces children).
+ * @param node the node to check
+ * @return 1 if @p node is empty, 0 otherwise or a negative value if an error occurs.
  */
 int
 xmlSecIsEmptyNode(xmlNodePtr node) {
@@ -982,12 +919,10 @@ xmlSecIsEmptyNode(xmlNodePtr node) {
 }
 
 /**
- * xmlSecIsEmptyString:
- * @str:                the string to check
- *
- * Checks whether the @str is empty (i.e. has only whitespaces children).
- *
- * Returns: 1 if @str is empty, 0 otherwise or a negative value if an error occurs.
+ * @brief Checks whether a string contains only whitespace.
+ * @details Checks whether the @p str is empty (i.e. has only whitespaces children).
+ * @param str the string to check
+ * @return 1 if @p str is empty, 0 otherwise or a negative value if an error occurs.
  */
 int
 xmlSecIsEmptyString(const xmlChar* str) {
@@ -1002,13 +937,11 @@ xmlSecIsEmptyString(const xmlChar* str) {
 }
 
 /**
- * xmlSecPrintXmlString:
- * @fd:                the file descriptor to write the XML string to
- * @str:               the string
- *
- * Encodes the @str (e.g. replaces '&' with '&amp;') and writes it to @fd.
- *
- * Returns: he number of bytes transmitted or a negative value if an error occurs.
+ * @brief Encodes an XML string and writes it to a file descriptor.
+ * @details Encodes the @p str (e.g. replaces '&' with '&amp;') and writes it to @p fd.
+ * @param fd the file descriptor to write the XML string to
+ * @param str the string
+ * @return he number of bytes transmitted or a negative value if an error occurs.
  */
 int
 xmlSecPrintXmlString(FILE * fd, const xmlChar * str) {
@@ -1037,15 +970,13 @@ xmlSecPrintXmlString(FILE * fd, const xmlChar * str) {
 }
 
 /**
- * xmlSecGetQName:
- * @node:               the context node.
- * @href:               the QName href (can be NULL).
- * @local:              the QName local part.
- *
- * Creates QName (prefix:local) from @href and @local in the context of the @node.
+ * @brief Creates a QName string from a namespace href and a local name.
+ * @details Creates QName (prefix:local) from @p href and @p local in the context of the @p node.
  * Caller is responsible for freeing returned string with xmlFree.
- *
- * Returns: qname or NULL if an error occurs.
+ * @param node the context node.
+ * @param href the QName href (can be NULL).
+ * @param local the QName local part.
+ * @return qname or NULL if an error occurs.
  */
 xmlChar*
 xmlSecGetQName(xmlNodePtr node, const xmlChar* href, const xmlChar* local) {
@@ -1097,19 +1028,16 @@ xmlSecGetQName(xmlNodePtr node, const xmlChar* href, const xmlChar* local) {
 }
 
 
-/*************************************************************************
+/******************************************************************************
  *
  * QName <-> Integer mapping
  *
- ************************************************************************/
+  *****************************************************************************/
 /**
- * xmlSecQName2IntegerGetInfo:
- * @info:               the qname<->integer mapping information.
- * @intValue:           the integer value.
- *
- * Maps integer @intValue to a QName prefix.
- *
- * Returns: the QName info that is mapped to @intValue or NULL if such value
+ * @brief Maps integer @p intValue to a QName prefix.
+ * @param info the qname<->integer mapping information.
+ * @param intValue the integer value.
+ * @return the QName info that is mapped to @p intValue or NULL if such value
  * is not found.
  */
 xmlSecQName2IntegerInfoConstPtr
@@ -1128,15 +1056,13 @@ xmlSecQName2IntegerGetInfo(xmlSecQName2IntegerInfoConstPtr info, int intValue) {
 }
 
 /**
- * xmlSecQName2IntegerGetInteger:
- * @info:               the qname<->integer mapping information.
- * @qnameHref:          the qname href value.
- * @qnameLocalPart:     the qname local part value.
- * @intValue:           the pointer to result integer value.
- *
- * Maps qname qname to an integer and returns it in @intValue.
- *
- * Returns: 0 on success or a negative value if an error occurs,
+ * @brief Maps a QName to an integer value.
+ * @details Maps qname qname to an integer and returns it in @p intValue.
+ * @param info the qname<->integer mapping information.
+ * @param qnameHref the qname href value.
+ * @param qnameLocalPart the qname local part value.
+ * @param intValue the pointer to result integer value.
+ * @return 0 on success or a negative value if an error occurs,
  */
 int
 xmlSecQName2IntegerGetInteger(xmlSecQName2IntegerInfoConstPtr info,
@@ -1160,15 +1086,13 @@ xmlSecQName2IntegerGetInteger(xmlSecQName2IntegerInfoConstPtr info,
 }
 
 /**
- * xmlSecQName2IntegerGetIntegerFromString:
- * @info:               the qname<->integer mapping information.
- * @node:               the pointer to node.
- * @qname:              the qname string.
- * @intValue:           the pointer to result integer value.
- *
- * Converts @qname into integer in context of @node.
- *
- * Returns: 0 on success or a negative value if an error occurs,
+ * @brief Converts a QName string to an integer value.
+ * @details Converts @p qname into integer in context of @p node.
+ * @param info the qname<->integer mapping information.
+ * @param node the pointer to node.
+ * @param qname the qname string.
+ * @param intValue the pointer to result integer value.
+ * @return 0 on success or a negative value if an error occurs,
  */
 int
 xmlSecQName2IntegerGetIntegerFromString(xmlSecQName2IntegerInfoConstPtr info,
@@ -1235,15 +1159,13 @@ xmlSecQName2IntegerGetIntegerFromString(xmlSecQName2IntegerInfoConstPtr info,
 
 
 /**
- * xmlSecQName2IntegerGetStringFromInteger:
- * @info:               the qname<->integer mapping information.
- * @node:               the pointer to node.
- * @intValue:           the integer value.
- *
- * Creates qname string for @intValue in context of given @node. Caller
- * is responsible for freeing returned string with @xmlFree.
- *
- * Returns: pointer to newly allocated string on success or NULL if an error occurs,
+ * @brief Creates a QName string from an integer value.
+ * @details Creates qname string for @p intValue in context of given @p node. Caller
+ * is responsible for freeing returned string with @p xmlFree.
+ * @param info the qname<->integer mapping information.
+ * @param node the pointer to node.
+ * @param intValue the integer value.
+ * @return pointer to newly allocated string on success or NULL if an error occurs,
  */
 xmlChar*
 xmlSecQName2IntegerGetStringFromInteger(xmlSecQName2IntegerInfoConstPtr info,
@@ -1266,15 +1188,13 @@ xmlSecQName2IntegerGetStringFromInteger(xmlSecQName2IntegerInfoConstPtr info,
 }
 
 /**
- * xmlSecQName2IntegerNodeRead:
- * @info:               the qname<->integer mapping information.
- * @node:               the pointer to node.
- * @intValue:           the pointer to result integer value.
- *
- * Reads the content of @node and converts it to an integer using mapping
- * from @info.
- *
- * Returns: 0 on success or a negative value if an error occurs,
+ * @brief Reads a node's content and converts it to an integer using QName mapping.
+ * @details Reads the content of @p node and converts it to an integer using mapping
+ * from @p info.
+ * @param info the qname<->integer mapping information.
+ * @param node the pointer to node.
+ * @param intValue the pointer to result integer value.
+ * @return 0 on success or a negative value if an error occurs,
  */
 int
 xmlSecQName2IntegerNodeRead(xmlSecQName2IntegerInfoConstPtr info, xmlNodePtr node, int* intValue) {
@@ -1307,16 +1227,14 @@ xmlSecQName2IntegerNodeRead(xmlSecQName2IntegerInfoConstPtr info, xmlNodePtr nod
 }
 
 /**
- * xmlSecQName2IntegerNodeWrite:
- * @info:               the qname<->integer mapping information.
- * @node:               the parent node.
- * @nodeName:           the child node name.
- * @nodeNs:             the child node namespace.
- * @intValue:           the integer value.
- *
- * Creates new child node in @node and sets its value to @intValue.
- *
- * Returns: 0 on success or a negative value if an error occurs,
+ * @brief Creates a child node holding a QName string for an integer value.
+ * @details Creates new child node in @p node and sets its value to @p intValue.
+ * @param info the qname<->integer mapping information.
+ * @param node the parent node.
+ * @param nodeName the child node name.
+ * @param nodeNs the child node namespace.
+ * @param intValue the integer value.
+ * @return 0 on success or a negative value if an error occurs,
  */
 int
 xmlSecQName2IntegerNodeWrite(xmlSecQName2IntegerInfoConstPtr info, xmlNodePtr node,
@@ -1354,16 +1272,14 @@ xmlSecQName2IntegerNodeWrite(xmlSecQName2IntegerInfoConstPtr info, xmlNodePtr no
 }
 
 /**
- * xmlSecQName2IntegerAttributeRead:
- * @info:               the qname<->integer mapping information.
- * @node:               the element node.
- * @attrName:           the attribute name.
- * @intValue:           the pointer to result integer value.
- *
- * Gets the value of @attrName atrtibute from @node and converts it to integer
- * according to @info.
- *
- * Returns: 0 on success or a negative value if an error occurs,
+ * @brief Reads an attribute's QName value and converts it to an integer.
+ * @details Gets the value of @p attrName atrtibute from @p node and converts it to integer
+ * according to @p info.
+ * @param info the qname<->integer mapping information.
+ * @param node the element node.
+ * @param attrName the attribute name.
+ * @param intValue the pointer to result integer value.
+ * @return 0 on success or a negative value if an error occurs,
  */
 int
 xmlSecQName2IntegerAttributeRead(xmlSecQName2IntegerInfoConstPtr info, xmlNodePtr node,
@@ -1399,16 +1315,14 @@ xmlSecQName2IntegerAttributeRead(xmlSecQName2IntegerInfoConstPtr info, xmlNodePt
 }
 
 /**
- * xmlSecQName2IntegerAttributeWrite:
- * @info:               the qname<->integer mapping information.
- * @node:               the parent node.
- * @attrName:           the name of attribute.
- * @intValue:           the integer value.
- *
- * Converts @intValue to a qname and sets it to the value of
- * attribute @attrName in @node.
- *
- * Returns: 0 on success or a negative value if an error occurs,
+ * @brief Converts an integer to a QName and sets it as an attribute value.
+ * @details Converts @p intValue to a qname and sets it to the value of
+ * attribute @p attrName in @p node.
+ * @param info the qname<->integer mapping information.
+ * @param node the parent node.
+ * @param attrName the name of attribute.
+ * @param intValue the integer value.
+ * @return 0 on success or a negative value if an error occurs,
  */
 int
 xmlSecQName2IntegerAttributeWrite(xmlSecQName2IntegerInfoConstPtr info, xmlNodePtr node,
@@ -1447,13 +1361,11 @@ xmlSecQName2IntegerAttributeWrite(xmlSecQName2IntegerInfoConstPtr info, xmlNodeP
 }
 
 /**
- * xmlSecQName2IntegerDebugDump:
- * @info:               the qname<->integer mapping information.
- * @intValue:           the integer value.
- * @name:               the value name to print.
- * @output:             the pointer to output FILE.
- *
- * Prints @intValue into @output.
+ * @brief Prints @p intValue into @p output.
+ * @param info the qname<->integer mapping information.
+ * @param intValue the integer value.
+ * @param name the value name to print.
+ * @param output the pointer to output FILE.
  */
 void
 xmlSecQName2IntegerDebugDump(xmlSecQName2IntegerInfoConstPtr info, int intValue,
@@ -1473,13 +1385,11 @@ xmlSecQName2IntegerDebugDump(xmlSecQName2IntegerInfoConstPtr info, int intValue,
 }
 
 /**
- * xmlSecQName2IntegerDebugXmlDump:
- * @info:               the qname<->integer mapping information.
- * @intValue:           the integer value.
- * @name:               the value name to print.
- * @output:             the pointer to output FILE.
- *
- * Prints @intValue into @output in XML format.
+ * @brief Prints @p intValue into @p output in XML format.
+ * @param info the qname<->integer mapping information.
+ * @param intValue the integer value.
+ * @param name the value name to print.
+ * @param output the pointer to output FILE.
  */
 void
 xmlSecQName2IntegerDebugXmlDump(xmlSecQName2IntegerInfoConstPtr info, int intValue,
@@ -1500,19 +1410,16 @@ xmlSecQName2IntegerDebugXmlDump(xmlSecQName2IntegerInfoConstPtr info, int intVal
 }
 
 
-/*************************************************************************
+/******************************************************************************
  *
  * QName <-> Bits mask mapping
  *
- ************************************************************************/
+  *****************************************************************************/
 /**
- * xmlSecQName2BitMaskGetInfo:
- * @info:               the qname<->bit mask mapping information.
- * @mask:               the bit mask.
- *
- * Converts @mask to qname.
- *
- * Returns: pointer to the qname info for @mask or NULL if mask is unknown.
+ * @brief Converts @p mask to qname.
+ * @param info the qname<->bit mask mapping information.
+ * @param mask the bit mask.
+ * @return pointer to the qname info for @p mask or NULL if mask is unknown.
  */
 xmlSecQName2BitMaskInfoConstPtr
 xmlSecQName2BitMaskGetInfo(xmlSecQName2BitMaskInfoConstPtr info, xmlSecBitMask mask) {
@@ -1531,15 +1438,12 @@ xmlSecQName2BitMaskGetInfo(xmlSecQName2BitMaskInfoConstPtr info, xmlSecBitMask m
 }
 
 /**
- * xmlSecQName2BitMaskGetBitMask:
- * @info:               the qname<->bit mask mapping information.
- * @qnameHref:          the qname Href value.
- * @qnameLocalPart:     the qname LocalPart value.
- * @mask:               the pointer to result mask.
- *
- * Converts @qnameLocalPart to @mask.
- *
- * Returns: 0 on success or a negative value if an error occurs,
+ * @brief Converts @p qnameLocalPart to @p mask.
+ * @param info the qname<->bit mask mapping information.
+ * @param qnameHref the qname Href value.
+ * @param qnameLocalPart the qname LocalPart value.
+ * @param mask the pointer to result mask.
+ * @return 0 on success or a negative value if an error occurs,
  */
 int
 xmlSecQName2BitMaskGetBitMask(xmlSecQName2BitMaskInfoConstPtr info,
@@ -1565,15 +1469,13 @@ xmlSecQName2BitMaskGetBitMask(xmlSecQName2BitMaskInfoConstPtr info,
 }
 
 /**
- * xmlSecQName2BitMaskGetBitMaskFromString:
- * @info:               the qname<->integer mapping information.
- * @node:               the pointer to node.
- * @qname:              the qname string.
- * @mask:               the pointer to result msk value.
- *
- * Converts @qname into integer in context of @node.
- *
- * Returns: 0 on success or a negative value if an error occurs,
+ * @brief Converts a QName string to a bit mask value.
+ * @details Converts @p qname into integer in context of @p node.
+ * @param info the qname<->integer mapping information.
+ * @param node the pointer to node.
+ * @param qname the qname string.
+ * @param mask the pointer to result msk value.
+ * @return 0 on success or a negative value if an error occurs,
  */
 int
 xmlSecQName2BitMaskGetBitMaskFromString(xmlSecQName2BitMaskInfoConstPtr info,
@@ -1640,15 +1542,13 @@ xmlSecQName2BitMaskGetBitMaskFromString(xmlSecQName2BitMaskInfoConstPtr info,
 
 
 /**
- * xmlSecQName2BitMaskGetStringFromBitMask:
- * @info:               the qname<->integer mapping information.
- * @node:               the pointer to node.
- * @mask:               the mask.
- *
- * Creates qname string for @mask in context of given @node. Caller
- * is responsible for freeing returned string with @xmlFree.
- *
- * Returns: pointer to newly allocated string on success or NULL if an error occurs,
+ * @brief Creates a QName string from a bit mask value.
+ * @details Creates qname string for @p mask in context of given @p node. Caller
+ * is responsible for freeing returned string with xmlFree.
+ * @param info the qname<->integer mapping information.
+ * @param node the pointer to node.
+ * @param mask the mask.
+ * @return pointer to newly allocated string on success or NULL if an error occurs,
  */
 xmlChar*
 xmlSecQName2BitMaskGetStringFromBitMask(xmlSecQName2BitMaskInfoConstPtr info,
@@ -1669,20 +1569,18 @@ xmlSecQName2BitMaskGetStringFromBitMask(xmlSecQName2BitMaskInfoConstPtr info,
 }
 
 /**
- * xmlSecQName2BitMaskNodesRead:
- * @info:               the qname<->bit mask mapping information.
- * @node:               the start.
- * @nodeName:           the mask nodes name.
- * @nodeNs:             the mask nodes namespace.
- * @stopOnUnknown:      if this flag is set then function exits if unknown
+ * @brief Reads QName elements and accumulates their values into a bit mask.
+ * @details Reads <@p nodeNs:@p nodeName> elements and puts the result bit mask
+ * into @p mask. When function exits, @p node points to the first element node
+ * after all the <@p nodeNs:@p nodeName> elements.
+ * @param info the qname<->bit mask mapping information.
+ * @param node the start.
+ * @param nodeName the mask nodes name.
+ * @param nodeNs the mask nodes namespace.
+ * @param stopOnUnknown if this flag is set then function exits if unknown
  *                      value was found.
- * @mask:               the pointer to result mask.
- *
- * Reads <@nodeNs:@nodeName> elements and puts the result bit mask
- * into @mask. When function exits, @node points to the first element node
- * after all the <@nodeNs:@nodeName> elements.
- *
- * Returns: 0 on success or a negative value if an error occurs,
+ * @param mask the pointer to result mask.
+ * @return 0 on success or a negative value if an error occurs,
  */
 int
 xmlSecQName2BitMaskNodesRead(xmlSecQName2BitMaskInfoConstPtr info, xmlNodePtr* node,
@@ -1732,16 +1630,14 @@ xmlSecQName2BitMaskNodesRead(xmlSecQName2BitMaskInfoConstPtr info, xmlNodePtr* n
 }
 
 /**
- * xmlSecQName2BitMaskNodesWrite:
- * @info:               the qname<->bit mask mapping information.
- * @node:               the parent element for mask nodes.
- * @nodeName:           the mask nodes name.
- * @nodeNs:             the mask nodes namespace.
- * @mask:               the bit mask.
- *
- * Writes <@nodeNs:@nodeName> elemnts with values from @mask to @node.
- *
- * Returns: 0 on success or a negative value if an error occurs,
+ * @brief Writes bit mask values as QName child elements.
+ * @details Writes <@p nodeNs:@p nodeName> elemnts with values from @p mask to @p node.
+ * @param info the qname<->bit mask mapping information.
+ * @param node the parent element for mask nodes.
+ * @param nodeName the mask nodes name.
+ * @param nodeNs the mask nodes namespace.
+ * @param mask the bit mask.
+ * @return 0 on success or a negative value if an error occurs,
  */
 int
 xmlSecQName2BitMaskNodesWrite(xmlSecQName2BitMaskInfoConstPtr info, xmlNodePtr node,
@@ -1783,13 +1679,12 @@ xmlSecQName2BitMaskNodesWrite(xmlSecQName2BitMaskInfoConstPtr info, xmlNodePtr n
 }
 
 /**
- * xmlSecQName2BitMaskDebugDump:
- * @info:               the qname<->bit mask mapping information.
- * @mask:               the bit mask.
- * @name:               the value name to print.
- * @output:             the pointer to output FILE.
- *
- * Prints debug information about @mask to @output.
+ * @brief Prints debug information about a bit mask.
+ * @details Prints debug information about @p mask to @p output.
+ * @param info the qname<->bit mask mapping information.
+ * @param mask the bit mask.
+ * @param name the value name to print.
+ * @param output the pointer to output FILE.
  */
 void
 xmlSecQName2BitMaskDebugDump(xmlSecQName2BitMaskInfoConstPtr info, xmlSecBitMask mask,
@@ -1816,13 +1711,12 @@ xmlSecQName2BitMaskDebugDump(xmlSecQName2BitMaskInfoConstPtr info, xmlSecBitMask
 }
 
 /**
- * xmlSecQName2BitMaskDebugXmlDump:
- * @info:               the qname<->bit mask mapping information.
- * @mask:               the bit mask.
- * @name:               the value name to print.
- * @output:             the pointer to output FILE.
- *
- * Prints debug information about @mask to @output in XML format.
+ * @brief Prints debug information about a bit mask in XML format.
+ * @details Prints debug information about @p mask to @p output in XML format.
+ * @param info the qname<->bit mask mapping information.
+ * @param mask the bit mask.
+ * @param name the value name to print.
+ * @param output the pointer to output FILE.
  */
 void
 xmlSecQName2BitMaskDebugXmlDump(xmlSecQName2BitMaskInfoConstPtr info, xmlSecBitMask mask,
@@ -1849,20 +1743,17 @@ xmlSecQName2BitMaskDebugXmlDump(xmlSecQName2BitMaskInfoConstPtr info, xmlSecBitM
     fprintf(output, "</%sList>\n", name);
 }
 
-/*************************************************************************
+/******************************************************************************
  *
  * Windows string conversions
  *
- ************************************************************************/
+  *****************************************************************************/
 #if defined(XMLSEC_WINDOWS)
 
 /**
- * xmlSecWin32ConvertUtf8ToUnicode:
- * @str:         the string to convert.
- *
- * Converts input string from UTF8 to Unicode.
- *
- * Returns: a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.
+ * @brief Converts input string from UTF8 to Unicode.
+ * @param str the string to convert.
+ * @return a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.
  */
 LPWSTR
 xmlSecWin32ConvertUtf8ToUnicode(const xmlChar* str) {
@@ -1900,12 +1791,9 @@ xmlSecWin32ConvertUtf8ToUnicode(const xmlChar* str) {
 }
 
 /**
- * xmlSecWin32ConvertUnicodeToUtf8:
- * @str:         the string to convert.
- *
- * Converts input string from Unicode to UTF8.
- *
- * Returns: a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.
+ * @brief Converts input string from Unicode to UTF8.
+ * @param str the string to convert.
+ * @return a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.
  */
 xmlChar*
 xmlSecWin32ConvertUnicodeToUtf8(LPCWSTR str) {
@@ -1943,12 +1831,9 @@ xmlSecWin32ConvertUnicodeToUtf8(LPCWSTR str) {
 }
 
 /**
- * xmlSecWin32ConvertLocaleToUnicode:
- * @str:         the string to convert.
- *
- * Converts input string from current system locale to Unicode.
- *
- * Returns: a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.
+ * @brief Converts input string from current system locale to Unicode.
+ * @param str the string to convert.
+ * @return a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.
  */
 LPWSTR
 xmlSecWin32ConvertLocaleToUnicode(const char* str) {
@@ -1986,12 +1871,9 @@ xmlSecWin32ConvertLocaleToUnicode(const char* str) {
 }
 
 /**
- * xmlSecWin32ConvertLocaleToUtf8:
- * @str:         the string to convert.
- *
- * Converts input string from locale to UTF8.
- *
- * Returns: a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.
+ * @brief Converts input string from locale to UTF8.
+ * @param str the string to convert.
+ * @return a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.
  */
 xmlChar*
 xmlSecWin32ConvertLocaleToUtf8(const char * str) {
@@ -2039,12 +1921,9 @@ xmlSecWin32ConvertLocaleToUtf8(const char * str) {
 }
 
 /**
- * xmlSecWin32ConvertUtf8ToLocale:
- * @str:         the string to convert.
- *
- * Converts input string from UTF8 to locale.
- *
- * Returns: a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.
+ * @brief Converts input string from UTF8 to locale.
+ * @param str the string to convert.
+ * @return a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.
  */
 char *
 xmlSecWin32ConvertUtf8ToLocale(const xmlChar* str) {
@@ -2092,12 +1971,10 @@ xmlSecWin32ConvertUtf8ToLocale(const xmlChar* str) {
 }
 
 /**
- * xmlSecWin32ConvertTstrToUtf8:
- * @str:         the string to convert.
- *
- * Converts input string from TSTR (locale or Unicode) to UTF8.
- *
- * Returns: a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.
+ * @brief Converts a TSTR string (locale or Unicode) to UTF-8.
+ * @details Converts input string from TSTR (locale or Unicode) to UTF8.
+ * @param str the string to convert.
+ * @return a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.
  */
 xmlChar*
 xmlSecWin32ConvertTstrToUtf8(LPCTSTR str) {
@@ -2109,12 +1986,10 @@ xmlSecWin32ConvertTstrToUtf8(LPCTSTR str) {
 }
 
 /**
- * xmlSecWin32ConvertUtf8ToTstr:
- * @str:         the string to convert.
- *
- * Converts input string from UTF8 to TSTR (locale or Unicode).
- *
- * Returns: a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.
+ * @brief Converts a UTF-8 string to TSTR (locale or Unicode).
+ * @details Converts input string from UTF8 to TSTR (locale or Unicode).
+ * @param str the string to convert.
+ * @return a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.
  */
 LPTSTR
 xmlSecWin32ConvertUtf8ToTstr(const xmlChar*  str) {

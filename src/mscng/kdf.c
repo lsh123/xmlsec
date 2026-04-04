@@ -9,9 +9,7 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:crypto
- * @Short_description:
- * @Stability: Stable
+ * @addtogroup xmlsec_mscng_crypto
  */
 #if !defined(XMLSEC_NO_PBKDF2) || !defined(XMLSEC_NO_HKDF)
 
@@ -62,11 +60,11 @@
 #endif /* !defined(BCRYPT_HKDF_SALT_AND_FINALIZE) */
 
 
-/**************************************************************************
+/******************************************************************************
  *
  * Unified KDF transform context (used for both PBKDF2 and HKDF)
  *
- *****************************************************************************/
+  *****************************************************************************/
 #define XMLSEC_MSCNG_KDF_DEFAULT_BUF_SIZE 64
 
 typedef struct _xmlSecMSCngKdfCtx    xmlSecMSCngKdfCtx, *xmlSecMSCngKdfCtxPtr;
@@ -113,11 +111,11 @@ static int      xmlSecMSCngHkdfDerive                      (xmlSecMSCngKdfCtxPtr
 #endif /* XMLSEC_NO_HKDF */
 
 
-/**************************************************************************
+/******************************************************************************
  *
  * Shared KDF functions
  *
- *****************************************************************************/
+  *****************************************************************************/
 
 static int
 xmlSecMSCngKdfCheckId(xmlSecTransformPtr transform) {
@@ -280,11 +278,11 @@ xmlSecMSCngKdfSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 }
 
 
-/**************************************************************************
+/******************************************************************************
  *
  * PBKDF2 specific functions
  *
- *****************************************************************************/
+  *****************************************************************************/
 #ifndef XMLSEC_NO_PBKDF2
 
 /* convert PRF algorithm href to MSCng mac algo */
@@ -534,11 +532,11 @@ xmlSecMSCngPbkdf2Derive(xmlSecMSCngKdfCtxPtr ctx, xmlSecBufferPtr out) {
 #endif /* XMLSEC_NO_PBKDF2 */
 
 
-/**************************************************************************
+/******************************************************************************
  *
  * HKDF specific functions
  *
- *****************************************************************************/
+  *****************************************************************************/
 #ifndef XMLSEC_NO_HKDF
 
 /* convert PRF algorithm href to MSCng hash algo */
@@ -826,11 +824,11 @@ xmlSecMSCngHkdfDerive(xmlSecMSCngKdfCtxPtr ctx, xmlSecBufferPtr out, xmlSecSize 
 #endif /* XMLSEC_NO_HKDF */
 
 
-/**************************************************************************
+/******************************************************************************
  *
  * Unified KDF execute function
  *
- *****************************************************************************/
+  *****************************************************************************/
 
 static int
 xmlSecMSCngKdfExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
@@ -918,18 +916,18 @@ xmlSecMSCngKdfExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtx
 }
 
 
-/**************************************************************************
+/******************************************************************************
  *
  * PBKDF2 key derivation algorithm klass
  *
- *****************************************************************************/
+  *****************************************************************************/
 #ifndef XMLSEC_NO_PBKDF2
 
-/********************************************************************
+/******************************************************************************
  *
  * PBKDF2 key derivation algorithm
  *
- ********************************************************************/
+  *****************************************************************************/
 static xmlSecTransformKlass xmlSecMSCngPbkdf2Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),                   /* xmlSecSize klassSize */
@@ -959,11 +957,8 @@ static xmlSecTransformKlass xmlSecMSCngPbkdf2Klass = {
 };
 
 /**
- * xmlSecMSCngTransformPbkdf2GetKlass:
- *
- * The PBKDF2 key derivation  transform klass.
- *
- * Returns: the PBKDF2 key derivation transform klass.
+ * @brief The PBKDF2 key derivation transform klass.
+ * @return the PBKDF2 key derivation transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformPbkdf2GetKlass(void) {
@@ -973,18 +968,18 @@ xmlSecMSCngTransformPbkdf2GetKlass(void) {
 #endif /* XMLSEC_NO_PBKDF2 */
 
 
-/**************************************************************************
+/******************************************************************************
  *
  * HKDF key derivation algorithm klass
  *
- *****************************************************************************/
+  *****************************************************************************/
 #ifndef XMLSEC_NO_HKDF
 
-/********************************************************************
+/******************************************************************************
  *
  * HKDF key derivation algorithm
  *
- ********************************************************************/
+  *****************************************************************************/
 static xmlSecTransformKlass xmlSecMSCngHkdfKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),                   /* xmlSecSize klassSize */
@@ -1014,11 +1009,8 @@ static xmlSecTransformKlass xmlSecMSCngHkdfKlass = {
 };
 
 /**
- * xmlSecMSCngTransformHkdfGetKlass:
- *
- * The HKDF key derivation transform klass.
- *
- * Returns: the HKDF key derivation transform klass.
+ * @brief The HKDF key derivation transform klass.
+ * @return the HKDF key derivation transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformHkdfGetKlass(void) {

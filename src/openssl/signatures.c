@@ -9,9 +9,8 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:crypto
+ * @addtogroup xmlsec_openssl_crypto
  */
-
 #include "globals.h"
 
 
@@ -60,11 +59,11 @@
 #include <openssl/ec.h>
 #endif /* XMLSEC_NO_EC */
 
-/**************************************************************************
+/******************************************************************************
  *
  * Internal OpenSSL evp signatures ctx
  *
- *****************************************************************************/
+  *****************************************************************************/
 
 typedef enum {
     xmlSecOpenSSLEvpSignatureFormat_DoNothing,        /* do nothing */
@@ -126,7 +125,7 @@ static int      xmlSecOpenSSLEvpSignatureEcdsa_OpenSSL2XmlDSig  (xmlSecTransform
  *
  * EVP Signature transforms
  *
- *****************************************************************************/
+  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(OpenSSLEvpSignature, xmlSecOpenSSLEvpSignatureCtx)
 #define xmlSecOpenSSLEvpSignatureSize XMLSEC_TRANSFORM_SIZE(OpenSSLEvpSignature)
 
@@ -177,11 +176,11 @@ static xmlSecTransformKlass xmlSecOpenSSL ## name ## Klass = {                  
 
 static int
 xmlSecOpenSSLEvpSignatureCheckId(xmlSecTransformPtr transform) {
-    /*************************************************************************
+    /******************************************************************************
      *
      * RSA
      *
-     ************************************************************************/
+      *****************************************************************************/
 #ifndef XMLSEC_NO_RSA
 
 #ifndef XMLSEC_NO_MD5
@@ -274,11 +273,11 @@ xmlSecOpenSSLEvpSignatureCheckId(xmlSecTransformPtr transform) {
 #endif /* XMLSEC_NO_RSA */
 
 
-    /*************************************************************************
+    /******************************************************************************
      *
      * DSA
      *
-     ************************************************************************/
+      *****************************************************************************/
 #ifndef XMLSEC_NO_DSA
 
 #ifndef XMLSEC_NO_SHA1
@@ -295,11 +294,11 @@ xmlSecOpenSSLEvpSignatureCheckId(xmlSecTransformPtr transform) {
 
 #endif /* XMLSEC_NO_DSA */
 
-    /*************************************************************************
+    /******************************************************************************
      *
      * EC
      *
-     ************************************************************************/
+      *****************************************************************************/
 #ifndef XMLSEC_NO_EC
 
 #ifndef XMLSEC_NO_RIPEMD160
@@ -355,11 +354,11 @@ xmlSecOpenSSLEvpSignatureCheckId(xmlSecTransformPtr transform) {
 
 #endif /* XMLSEC_NO_EC */
 
-    /*************************************************************************
+    /******************************************************************************
      *
      * GOST
      *
-     ************************************************************************/
+      *****************************************************************************/
 #ifndef XMLSEC_NO_GOST
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformGost2001GostR3411_94Id)) {
         return(1);
@@ -375,11 +374,11 @@ xmlSecOpenSSLEvpSignatureCheckId(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_GOST2012 */
 
-    /*************************************************************************
+    /******************************************************************************
      *
      * ML-DSA
      *
-     ************************************************************************/
+      *****************************************************************************/
 #ifndef XMLSEC_NO_MLDSA
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformMLDSA44Id)) {
         return(1);
@@ -392,11 +391,11 @@ xmlSecOpenSSLEvpSignatureCheckId(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_MLDSA */
 
-    /*************************************************************************
+    /******************************************************************************
      *
      * SLH-DSA
      *
-     ************************************************************************/
+      *****************************************************************************/
 #ifndef XMLSEC_NO_SLHDSA
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSLHDSA_SHA2_128fId)) {
         return(1);
@@ -418,11 +417,11 @@ xmlSecOpenSSLEvpSignatureCheckId(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_SLHDSA */
 
-    /*************************************************************************
+    /******************************************************************************
      *
      * EdDSA
      *
-     ************************************************************************/
+      *****************************************************************************/
 #ifndef XMLSEC_NO_EDDSA
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformEdDSAEd25519Id)) {
         return(1);
@@ -441,11 +440,11 @@ xmlSecOpenSSLEvpSignatureCheckId(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_EDDSA */
 
-    /*************************************************************************
+    /******************************************************************************
      *
      * Unknown
      *
-     ************************************************************************/
+      *****************************************************************************/
     {
         return(0);
     }
@@ -524,11 +523,11 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
 
     memset(ctx, 0, sizeof(xmlSecOpenSSLEvpSignatureCtx));
 
-    /*************************************************************************
+    /******************************************************************************
      *
      * RSA
      *
-     ************************************************************************/
+      *****************************************************************************/
 #ifndef XMLSEC_NO_RSA
 
 #ifndef XMLSEC_NO_MD5
@@ -667,11 +666,11 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
 
 #endif /* XMLSEC_NO_RSA */
 
-    /*************************************************************************
+    /******************************************************************************
      *
      * DSA
      *
-     ************************************************************************/
+      *****************************************************************************/
 #ifndef XMLSEC_NO_DSA
 
 #ifndef XMLSEC_NO_SHA1
@@ -692,11 +691,11 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
 
 #endif /* XMLSEC_NO_DSA */
 
-    /*************************************************************************
+    /******************************************************************************
      *
      * EC
      *
-     ************************************************************************/
+      *****************************************************************************/
 
 #ifndef XMLSEC_NO_EC
 
@@ -774,11 +773,11 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
 #endif /* XMLSEC_NO_EC */
 
 
-    /*************************************************************************
+    /******************************************************************************
      *
      * ML-DSA
      *
-     ************************************************************************/
+      *****************************************************************************/
 #ifndef XMLSEC_NO_MLDSA
     /* ML-DSA uses hard coded  SHAKE-128 and SHAKE-256 so no need to have digest here */
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformMLDSA44Id)) {
@@ -796,11 +795,11 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_MLDSA */
 
-    /*************************************************************************
+    /******************************************************************************
      *
      * SLH-DSA
      *
-     ************************************************************************/
+      *****************************************************************************/
 #ifndef XMLSEC_NO_SLHDSA
     /* SLH-DSA uses hard coded SHA2 so no need to have digest here */
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSLHDSA_SHA2_128fId)) {
@@ -835,11 +834,11 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_SLHDSA */
 
-    /*************************************************************************
+    /******************************************************************************
      *
      * EdDSA
      *
-     ************************************************************************/
+      *****************************************************************************/
 #ifndef XMLSEC_NO_EDDSA
     /* EdDSA does not use a separate digest */
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformEdDSAEd25519Id)) {
@@ -869,11 +868,11 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_EDDSA */
 
-    /*************************************************************************
+    /******************************************************************************
      *
      * GOST
      *
-     ************************************************************************/
+      *****************************************************************************/
 #ifndef XMLSEC_NO_GOST
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformGost2001GostR3411_94Id)) {
         XMLSEC_OPENSSL_EVP_SIGNATURE_SET_GOST_DIGEST(transform, ctx, XMLSEC_OPENSSL_DIGEST_NAME_GOST94);
@@ -899,22 +898,22 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_GOST2012 */
 
-    /*************************************************************************
+    /******************************************************************************
      *
      * Unknown
      *
-     ************************************************************************/
+      *****************************************************************************/
     if(1) {
         xmlSecInvalidTransfromError(transform);
         xmlSecOpenSSLEvpSignatureFinalize(transform);
         return(-1);
     }
 
-    /*************************************************************************
+    /******************************************************************************
      *
      * Finish setup
      *
-     ************************************************************************/
+      *****************************************************************************/
 
     /* create digest CTX if needed */
     if(ctx->digest != NULL) {
@@ -1588,11 +1587,11 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
 }
 
 
-/*************************************************************************
+/******************************************************************************
  *
  * RSA
  *
- ************************************************************************/
+  *****************************************************************************/
 
 #ifndef XMLSEC_NO_RSA
 
@@ -1601,11 +1600,8 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
 XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS(RsaMd5)
 
 /**
- * xmlSecOpenSSLTransformRsaMd5GetKlass:
- *
- * The RSA-MD5 signature transform klass.
- *
- * Returns: RSA-MD5 signature transform klass.
+ * @brief The RSA-MD5 signature transform klass.
+ * @return RSA-MD5 signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformRsaMd5GetKlass(void) {
@@ -1619,11 +1615,8 @@ xmlSecOpenSSLTransformRsaMd5GetKlass(void) {
 XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS(RsaRipemd160)
 
 /**
- * xmlSecOpenSSLTransformRsaRipemd160GetKlass:
- *
- * The RSA-RIPEMD160 signature transform klass.
- *
- * Returns: RSA-RIPEMD160 signature transform klass.
+ * @brief The RSA-RIPEMD160 signature transform klass.
+ * @return RSA-RIPEMD160 signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformRsaRipemd160GetKlass(void) {
@@ -1637,11 +1630,8 @@ xmlSecOpenSSLTransformRsaRipemd160GetKlass(void) {
 XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS(RsaSha1)
 
 /**
- * xmlSecOpenSSLTransformRsaSha1GetKlass:
- *
- * The RSA-SHA1 signature transform klass.
- *
- * Returns: RSA-SHA1 signature transform klass.
+ * @brief The RSA-SHA1 signature transform klass.
+ * @return RSA-SHA1 signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformRsaSha1GetKlass(void) {
@@ -1655,11 +1645,8 @@ xmlSecOpenSSLTransformRsaSha1GetKlass(void) {
 XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS(RsaSha224)
 
 /**
- * xmlSecOpenSSLTransformRsaSha224GetKlass:
- *
- * The RSA-SHA2-224 signature transform klass.
- *
- * Returns: RSA-SHA2-224 signature transform klass.
+ * @brief The RSA-SHA2-224 signature transform klass.
+ * @return RSA-SHA2-224 signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformRsaSha224GetKlass(void) {
@@ -1673,11 +1660,8 @@ xmlSecOpenSSLTransformRsaSha224GetKlass(void) {
 XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS(RsaSha256)
 
 /**
- * xmlSecOpenSSLTransformRsaSha256GetKlass:
- *
- * The RSA-SHA2-256 signature transform klass.
- *
- * Returns: RSA-SHA2-256 signature transform klass.
+ * @brief The RSA-SHA2-256 signature transform klass.
+ * @return RSA-SHA2-256 signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformRsaSha256GetKlass(void) {
@@ -1691,11 +1675,8 @@ xmlSecOpenSSLTransformRsaSha256GetKlass(void) {
 XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS(RsaSha384)
 
 /**
- * xmlSecOpenSSLTransformRsaSha384GetKlass:
- *
- * The RSA-SHA2-384 signature transform klass.
- *
- * Returns: RSA-SHA2-384 signature transform klass.
+ * @brief The RSA-SHA2-384 signature transform klass.
+ * @return RSA-SHA2-384 signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformRsaSha384GetKlass(void) {
@@ -1709,11 +1690,8 @@ xmlSecOpenSSLTransformRsaSha384GetKlass(void) {
 XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS(RsaSha512)
 
 /**
- * xmlSecOpenSSLTransformRsaSha512GetKlass:
- *
- * The RSA-SHA2-512 signature transform klass.
- *
- * Returns: RSA-SHA2-512 signature transform klass.
+ * @brief The RSA-SHA2-512 signature transform klass.
+ * @return RSA-SHA2-512 signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformRsaSha512GetKlass(void) {
@@ -1727,11 +1705,8 @@ xmlSecOpenSSLTransformRsaSha512GetKlass(void) {
 XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS(RsaPssSha1)
 
 /**
- * xmlSecOpenSSLTransformRsaPssSha1GetKlass:
- *
- * The RSA-PSS-SHA1 signature transform klass.
- *
- * Returns: RSA-PSS-SHA1 signature transform klass.
+ * @brief The RSA-PSS-SHA1 signature transform klass.
+ * @return RSA-PSS-SHA1 signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformRsaPssSha1GetKlass(void) {
@@ -1746,11 +1721,8 @@ xmlSecOpenSSLTransformRsaPssSha1GetKlass(void) {
 XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS(RsaPssSha224)
 
 /**
- * xmlSecOpenSSLTransformRsaPssSha224GetKlass:
- *
- * The RSA-PSS-SHA2-224 signature transform klass.
- *
- * Returns: RSA-PSS-SHA2-224 signature transform klass.
+ * @brief The RSA-PSS-SHA2-224 signature transform klass.
+ * @return RSA-PSS-SHA2-224 signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformRsaPssSha224GetKlass(void) {
@@ -1764,11 +1736,8 @@ xmlSecOpenSSLTransformRsaPssSha224GetKlass(void) {
 XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS(RsaPssSha256)
 
 /**
- * xmlSecOpenSSLTransformRsaPssSha256GetKlass:
- *
- * The RSA-PSS-SHA2-256 signature transform klass.
- *
- * Returns: RSA-PSS-SHA2-256 signature transform klass.
+ * @brief The RSA-PSS-SHA2-256 signature transform klass.
+ * @return RSA-PSS-SHA2-256 signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformRsaPssSha256GetKlass(void) {
@@ -1782,11 +1751,8 @@ xmlSecOpenSSLTransformRsaPssSha256GetKlass(void) {
 XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS(RsaPssSha384)
 
 /**
- * xmlSecOpenSSLTransformRsaPssSha384GetKlass:
- *
- * The RSA-PSS-SHA2-384 signature transform klass.
- *
- * Returns: RSA-PSS-SHA2-384 signature transform klass.
+ * @brief The RSA-PSS-SHA2-384 signature transform klass.
+ * @return RSA-PSS-SHA2-384 signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformRsaPssSha384GetKlass(void) {
@@ -1800,11 +1766,8 @@ xmlSecOpenSSLTransformRsaPssSha384GetKlass(void) {
 XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS(RsaPssSha512)
 
 /**
- * xmlSecOpenSSLTransformRsaPssSha512GetKlass:
- *
- * The RSA-PSS-SHA2-512 signature transform klass.
- *
- * Returns: RSA-PSS-SHA2-512 signature transform klass.
+ * @brief The RSA-PSS-SHA2-512 signature transform klass.
+ * @return RSA-PSS-SHA2-512 signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformRsaPssSha512GetKlass(void) {
@@ -1820,11 +1783,8 @@ XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS(RsaPssSha3_224)
 
 
 /**
- * xmlSecOpenSSLTransformRsaPssSha3_224GetKlass:
- *
- * The RSA-PSS-SHA3-224 signature transform klass.
- *
- * Returns: RSA-PSS-SHA3-224 signature transform klass.
+ * @brief The RSA-PSS-SHA3-224 signature transform klass.
+ * @return RSA-PSS-SHA3-224 signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformRsaPssSha3_224GetKlass(void) {
@@ -1835,11 +1795,8 @@ xmlSecOpenSSLTransformRsaPssSha3_224GetKlass(void) {
 XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS(RsaPssSha3_256)
 
 /**
- * xmlSecOpenSSLTransformRsaPssSha3_256GetKlass:
- *
- * The RSA-PSS-SHA3-256 signature transform klass.
- *
- * Returns: RSA-PSS-SHA3-256 signature transform klass.
+ * @brief The RSA-PSS-SHA3-256 signature transform klass.
+ * @return RSA-PSS-SHA3-256 signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformRsaPssSha3_256GetKlass(void) {
@@ -1850,11 +1807,8 @@ xmlSecOpenSSLTransformRsaPssSha3_256GetKlass(void) {
 XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS(RsaPssSha3_384)
 
 /**
- * xmlSecOpenSSLTransformRsaPssSha3_384GetKlass:
- *
- * The RSA-PSS-SHA3-384 signature transform klass.
- *
- * Returns: RSA-PSS-SHA3-384 signature transform klass.
+ * @brief The RSA-PSS-SHA3-384 signature transform klass.
+ * @return RSA-PSS-SHA3-384 signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformRsaPssSha3_384GetKlass(void) {
@@ -1865,11 +1819,8 @@ xmlSecOpenSSLTransformRsaPssSha3_384GetKlass(void) {
 XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS(RsaPssSha3_512)
 
 /**
- * xmlSecOpenSSLTransformRsaPssSha3_512GetKlass:
- *
- * The RSA-PSS-SHA3-512 signature transform klass.
- *
- * Returns: RSA-PSS-SHA3-512 signature transform klass.
+ * @brief The RSA-PSS-SHA3-512 signature transform klass.
+ * @return RSA-PSS-SHA3-512 signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformRsaPssSha3_512GetKlass(void) {
@@ -1880,16 +1831,16 @@ xmlSecOpenSSLTransformRsaPssSha3_512GetKlass(void) {
 
 #endif /* XMLSEC_NO_RSA */
 
-/*************************************************************************
+/******************************************************************************
  *
  * DSA EVP
  *
- * https://www.w3.org/TR/xmldsig-core1/#sec-DSA
+ * https://www.w3.org/TR/xmldsig-core1e/#sec-DSA
  * The output of the DSA algorithm consists of a pair of integers usually referred by the pair (r, s).
  * DSA-SHA1: Integer to octet-stream conversion must be done according to the I2OSP operation defined
  *           in the RFC 3447 [PKCS1] specification with a l parameter equal to 20
  * DSA-SHA256: The pairs (2048, 256) and (3072, 256) correspond to the algorithm DSAwithSHA256
- ************************************************************************/
+  *****************************************************************************/
 
 #define XMLSEC_OPENSSL_EVP_SIGNATURE_DSA_SHA1_HALF_LEN              20
 #define XMLSEC_OPENSSL_EVP_SIGNATURE_DSA_SHA256_HALF_LEN            (256 / 8)
@@ -2101,11 +2052,8 @@ done:
 XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS(DsaSha1)
 
 /**
- * xmlSecOpenSSLTransformDsaSha1GetKlass:
- *
- * The DSA-SHA1 signature transform klass.
- *
- * Returns: DSA-SHA1 signature transform klass.
+ * @brief The DSA-SHA1 signature transform klass.
+ * @return DSA-SHA1 signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformDsaSha1GetKlass(void) {
@@ -2119,11 +2067,8 @@ xmlSecOpenSSLTransformDsaSha1GetKlass(void) {
 XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS(DsaSha256)
 
 /**
- * xmlSecOpenSSLTransformDsaSha256GetKlass:
- *
- * The DSA-SHA2-256 signature transform klass.
- *
- * Returns: DSA-SHA2-256 signature transform klass.
+ * @brief The DSA-SHA2-256 signature transform klass.
+ * @return DSA-SHA2-256 signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformDsaSha256GetKlass(void) {
@@ -2134,11 +2079,11 @@ xmlSecOpenSSLTransformDsaSha256GetKlass(void) {
 
 #endif /* XMLSEC_NO_DSA */
 
-/*************************************************************************
+/******************************************************************************
  *
  * ECDSA EVP
  *
- * https://www.w3.org/TR/xmldsig-core1/#sec-ECDSA
+ * https://www.w3.org/TR/xmldsig-core1e/#sec-ECDSA
  *
  * The output of the ECDSA algorithm consists of a pair of integers usually
  * referred by the pair (r, s). The signature value consists of the base64
@@ -2149,7 +2094,7 @@ xmlSecOpenSSLTransformDsaSha256GetKlass(void) {
  * the base point order of the curve in bytes (e.g. 32 for the P-256 curve and 66
  * for the P-521 curve).
  *
- ************************************************************************/
+  *****************************************************************************/
 #ifndef XMLSEC_NO_EC
 
 /* however some implementations (e.g. Java) just put ASN1 structure in the signature
@@ -2382,11 +2327,8 @@ done:
 XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS(EcdsaRipemd160)
 
 /**
- * xmlSecOpenSSLTransformEcdsaRipemd160GetKlass:
- *
- * The ECDSA-RIPEMD160 signature transform klass.
- *
- * Returns: ECDSA-RIPEMD160 signature transform klass.
+ * @brief The ECDSA-RIPEMD160 signature transform klass.
+ * @return ECDSA-RIPEMD160 signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformEcdsaRipemd160GetKlass(void) {
@@ -2400,11 +2342,8 @@ xmlSecOpenSSLTransformEcdsaRipemd160GetKlass(void) {
 XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS(EcdsaSha1)
 
 /**
- * xmlSecOpenSSLTransformEcdsaSha1GetKlass:
- *
- * The ECDSA-SHA1 signature transform klass.
- *
- * Returns: ECDSA-SHA1 signature transform klass.
+ * @brief The ECDSA-SHA1 signature transform klass.
+ * @return ECDSA-SHA1 signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformEcdsaSha1GetKlass(void) {
@@ -2418,11 +2357,8 @@ xmlSecOpenSSLTransformEcdsaSha1GetKlass(void) {
 XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS(EcdsaSha224)
 
 /**
- * xmlSecOpenSSLTransformEcdsaSha224GetKlass:
- *
- * The ECDSA-SHA2-224 signature transform klass.
- *
- * Returns: ECDSA-SHA2-224 signature transform klass.
+ * @brief The ECDSA-SHA2-224 signature transform klass.
+ * @return ECDSA-SHA2-224 signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformEcdsaSha224GetKlass(void) {
@@ -2436,11 +2372,8 @@ xmlSecOpenSSLTransformEcdsaSha224GetKlass(void) {
 XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS(EcdsaSha256)
 
 /**
- * xmlSecOpenSSLTransformEcdsaSha256GetKlass:
- *
- * The ECDSA-SHA2-256 signature transform klass.
- *
- * Returns: ECDSA-SHA2-256 signature transform klass.
+ * @brief The ECDSA-SHA2-256 signature transform klass.
+ * @return ECDSA-SHA2-256 signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformEcdsaSha256GetKlass(void) {
@@ -2454,11 +2387,8 @@ xmlSecOpenSSLTransformEcdsaSha256GetKlass(void) {
 XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS(EcdsaSha384)
 
 /**
- * xmlSecOpenSSLTransformEcdsaSha384GetKlass:
- *
- * The ECDSA-SHA2-384 signature transform klass.
- *
- * Returns: ECDSA-SHA2-384 signature transform klass.
+ * @brief The ECDSA-SHA2-384 signature transform klass.
+ * @return ECDSA-SHA2-384 signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformEcdsaSha384GetKlass(void) {
@@ -2472,11 +2402,8 @@ xmlSecOpenSSLTransformEcdsaSha384GetKlass(void) {
 XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS(EcdsaSha512)
 
 /**
- * xmlSecOpenSSLTransformEcdsaSha512GetKlass:
- *
- * The ECDSA-SHA2-512 signature transform klass.
- *
- * Returns: ECDSA-SHA2-512 signature transform klass.
+ * @brief The ECDSA-SHA2-512 signature transform klass.
+ * @return ECDSA-SHA2-512 signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformEcdsaSha512GetKlass(void) {
@@ -2491,11 +2418,8 @@ xmlSecOpenSSLTransformEcdsaSha512GetKlass(void) {
 XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS(EcdsaSha3_224)
 
 /**
- * xmlSecOpenSSLTransformEcdsaSha3_224GetKlass:
- *
- * The ECDSA-SHA3-224 signature transform klass.
- *
- * Returns: ECDSA-SHA3-224 signature transform klass.
+ * @brief The ECDSA-SHA3-224 signature transform klass.
+ * @return ECDSA-SHA3-224 signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformEcdsaSha3_224GetKlass(void) {
@@ -2506,11 +2430,8 @@ xmlSecOpenSSLTransformEcdsaSha3_224GetKlass(void) {
 XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS(EcdsaSha3_256)
 
 /**
- * xmlSecOpenSSLTransformEcdsaSha3_256GetKlass:
- *
- * The ECDSA-SHA3-256 signature transform klass.
- *
- * Returns: ECDSA-SHA3-256 signature transform klass.
+ * @brief The ECDSA-SHA3-256 signature transform klass.
+ * @return ECDSA-SHA3-256 signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformEcdsaSha3_256GetKlass(void) {
@@ -2521,11 +2442,8 @@ xmlSecOpenSSLTransformEcdsaSha3_256GetKlass(void) {
 XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS(EcdsaSha3_384)
 
 /**
- * xmlSecOpenSSLTransformEcdsaSha3_384GetKlass:
- *
- * The ECDSA-SHA3-384 signature transform klass.
- *
- * Returns: ECDSA-SHA3-384 signature transform klass.
+ * @brief The ECDSA-SHA3-384 signature transform klass.
+ * @return ECDSA-SHA3-384 signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformEcdsaSha3_384GetKlass(void) {
@@ -2537,11 +2455,8 @@ XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS(EcdsaSha3_512)
 
 
 /**
- * xmlSecOpenSSLTransformEcdsaSha3_512GetKlass:
- *
- * The ECDSA-SHA3-512 signature transform klass.
- *
- * Returns: ECDSA-SHA3-512 signature transform klass.
+ * @brief The ECDSA-SHA3-512 signature transform klass.
+ * @return ECDSA-SHA3-512 signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformEcdsaSha3_512GetKlass(void) {
@@ -2553,11 +2468,11 @@ xmlSecOpenSSLTransformEcdsaSha3_512GetKlass(void) {
 #endif /* XMLSEC_NO_EC */
 
 
-/*************************************************************************
+/******************************************************************************
  *
  * ML-DSA
  *
- ************************************************************************/
+  *****************************************************************************/
 
 #ifndef XMLSEC_NO_MLDSA
 
@@ -2599,11 +2514,8 @@ xmlSecOpenSSLTransformMLDSANodeRead(
 XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS_EX(MLDSA44, xmlSecOpenSSLTransformMLDSANodeRead)
 
 /**
- * xmlSecOpenSSLTransformMLDSA44GetKlass:
- *
- * The ML-DSA-44 signature transform klass.
- *
- * Returns: ML-DSA-44 signature transform klass.
+ * @brief The ML-DSA-44 signature transform klass.
+ * @return ML-DSA-44 signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformMLDSA44GetKlass(void) {
@@ -2616,11 +2528,8 @@ xmlSecOpenSSLTransformMLDSA44GetKlass(void) {
 XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS_EX(MLDSA65, xmlSecOpenSSLTransformMLDSANodeRead)
 
 /**
- * xmlSecOpenSSLTransformMLDSA65GetKlass:
- *
- * The ML-DSA-65 signature transform klass.
- *
- * Returns: ML-DSA-65 signature transform klass.
+ * @brief The ML-DSA-65 signature transform klass.
+ * @return ML-DSA-65 signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformMLDSA65GetKlass(void) {
@@ -2630,12 +2539,9 @@ xmlSecOpenSSLTransformMLDSA65GetKlass(void) {
 /* ML-DSA-87 signature transform: xmlSecOpenSSLMLDSA87Klass */
 XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS_EX(MLDSA87, xmlSecOpenSSLTransformMLDSANodeRead)
 
-/**enveloped-sha512-mldsa44.tmp
- * xmlSecOpenSSLTransformMLDSA87GetKlass:
- *
- * The ML-DSA-87 signature transform klass.
- *
- * Returns: ML-DSA-87 signature transform klass.
+/**
+ * @brief The ML-DSA-87 signature transform klass.
+ * @return ML-DSA-87 signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformMLDSA87GetKlass(void) {
@@ -2645,11 +2551,11 @@ xmlSecOpenSSLTransformMLDSA87GetKlass(void) {
 #endif /* XMLSEC_NO_MLDSA */
 
 
-/*************************************************************************
+/******************************************************************************
  *
  * SLH-DSA
  *
- ************************************************************************/
+  *****************************************************************************/
 
 #ifndef XMLSEC_NO_SLHDSA
 
@@ -2691,11 +2597,8 @@ xmlSecOpenSSLTransformSLHDSANodeRead(
 XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS_EX(SLHDSA_SHA2_128f, xmlSecOpenSSLTransformSLHDSANodeRead)
 
 /**
- * xmlSecOpenSSLTransformSLHDSA_SHA2_128fGetKlass:
- *
- * The SLH-DSA-SHA2-128f signature transform klass.
- *
- * Returns: SLH-DSA-SHA2-128f signature transform klass.
+ * @brief The SLH-DSA-SHA2-128f signature transform klass.
+ * @return SLH-DSA-SHA2-128f signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformSLHDSA_SHA2_128fGetKlass(void) {
@@ -2706,11 +2609,8 @@ xmlSecOpenSSLTransformSLHDSA_SHA2_128fGetKlass(void) {
 XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS_EX(SLHDSA_SHA2_128s, xmlSecOpenSSLTransformSLHDSANodeRead)
 
 /**
- * xmlSecOpenSSLTransformSLHDSA_SHA2_128sGetKlass:
- *
- * The SLH-DSA-SHA2-128s signature transform klass.
- *
- * Returns: SLH-DSA-SHA2-128s signature transform klass.
+ * @brief The SLH-DSA-SHA2-128s signature transform klass.
+ * @return SLH-DSA-SHA2-128s signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformSLHDSA_SHA2_128sGetKlass(void) {
@@ -2721,11 +2621,8 @@ xmlSecOpenSSLTransformSLHDSA_SHA2_128sGetKlass(void) {
 XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS_EX(SLHDSA_SHA2_192f, xmlSecOpenSSLTransformSLHDSANodeRead)
 
 /**
- * xmlSecOpenSSLTransformSLHDSA_SHA2_192fGetKlass:
- *
- * The SLH-DSA-SHA2-192f signature transform klass.
- *
- * Returns: SLH-DSA-SHA2-192f signature transform klass.
+ * @brief The SLH-DSA-SHA2-192f signature transform klass.
+ * @return SLH-DSA-SHA2-192f signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformSLHDSA_SHA2_192fGetKlass(void) {
@@ -2736,11 +2633,8 @@ xmlSecOpenSSLTransformSLHDSA_SHA2_192fGetKlass(void) {
 XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS_EX(SLHDSA_SHA2_192s, xmlSecOpenSSLTransformSLHDSANodeRead)
 
 /**
- * xmlSecOpenSSLTransformSLHDSA_SHA2_192sGetKlass:
- *
- * The SLH-DSA-SHA2-192s signature transform klass.
- *
- * Returns: SLH-DSA-SHA2-192s signature transform klass.
+ * @brief The SLH-DSA-SHA2-192s signature transform klass.
+ * @return SLH-DSA-SHA2-192s signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformSLHDSA_SHA2_192sGetKlass(void) {
@@ -2751,11 +2645,8 @@ xmlSecOpenSSLTransformSLHDSA_SHA2_192sGetKlass(void) {
 XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS_EX(SLHDSA_SHA2_256f, xmlSecOpenSSLTransformSLHDSANodeRead)
 
 /**
- * xmlSecOpenSSLTransformSLHDSA_SHA2_256fGetKlass:
- *
- * The SLH-DSA-SHA2-256f signature transform klass.
- *
- * Returns: SLH-DSA-SHA2-256f signature transform klass.
+ * @brief The SLH-DSA-SHA2-256f signature transform klass.
+ * @return SLH-DSA-SHA2-256f signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformSLHDSA_SHA2_256fGetKlass(void) {
@@ -2766,11 +2657,8 @@ xmlSecOpenSSLTransformSLHDSA_SHA2_256fGetKlass(void) {
 XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS_EX(SLHDSA_SHA2_256s, xmlSecOpenSSLTransformSLHDSANodeRead)
 
 /**
- * xmlSecOpenSSLTransformSLHDSA_SHA2_256sGetKlass:
- *
- * The SLH-DSA-SHA2-256s signature transform klass.
- *
- * Returns: SLH-DSA-SHA2-256s signature transform klass.
+ * @brief The SLH-DSA-SHA2-256s signature transform klass.
+ * @return SLH-DSA-SHA2-256s signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformSLHDSA_SHA2_256sGetKlass(void) {
@@ -2781,11 +2669,11 @@ xmlSecOpenSSLTransformSLHDSA_SHA2_256sGetKlass(void) {
 
 
 
-/*************************************************************************
+/******************************************************************************
  *
  * EdDSA
  *
- ************************************************************************/
+  *****************************************************************************/
 
 #ifndef XMLSEC_NO_EDDSA
 
@@ -2827,11 +2715,8 @@ xmlSecOpenSSLTransformEdDSANodeRead(
 XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS(EdDSAEd25519)
 
 /**
- * xmlSecOpenSSLTransformEdDSAEd25519GetKlass:
- *
- * The EdDSA-Ed25519 signature transform klass.
- *
- * Returns: EdDSA-Ed25519 signature transform klass.
+ * @brief The EdDSA-Ed25519 signature transform klass.
+ * @return EdDSA-Ed25519 signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformEdDSAEd25519GetKlass(void) {
@@ -2842,11 +2727,8 @@ xmlSecOpenSSLTransformEdDSAEd25519GetKlass(void) {
 XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS_EX(EdDSAEd25519ctx, xmlSecOpenSSLTransformEdDSANodeRead)
 
 /**
- * xmlSecOpenSSLTransformEdDSAEd25519ctxGetKlass:
- *
- * The EdDSA-Ed25519ctx signature transform klass.
- *
- * Returns: EdDSA-Ed25519ctx signature transform klass.
+ * @brief The EdDSA-Ed25519ctx signature transform klass.
+ * @return EdDSA-Ed25519ctx signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformEdDSAEd25519ctxGetKlass(void) {
@@ -2857,11 +2739,8 @@ xmlSecOpenSSLTransformEdDSAEd25519ctxGetKlass(void) {
 XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS_EX(EdDSAEd25519ph, xmlSecOpenSSLTransformEdDSANodeRead)
 
 /**
- * xmlSecOpenSSLTransformEdDSAEd25519phGetKlass:
- *
- * The EdDSA-Ed25519ph signature transform klass.
- *
- * Returns: EdDSA-Ed25519ph signature transform klass.
+ * @brief The EdDSA-Ed25519ph signature transform klass.
+ * @return EdDSA-Ed25519ph signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformEdDSAEd25519phGetKlass(void) {
@@ -2872,11 +2751,8 @@ xmlSecOpenSSLTransformEdDSAEd25519phGetKlass(void) {
 XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS(EdDSAEd448)
 
 /**
- * xmlSecOpenSSLTransformEdDSAEd448GetKlass:
- *
- * The EdDSA-Ed448 signature transform klass.
- *
- * Returns: EdDSA-Ed448 signature transform klass.
+ * @brief The EdDSA-Ed448 signature transform klass.
+ * @return EdDSA-Ed448 signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformEdDSAEd448GetKlass(void) {
@@ -2887,11 +2763,8 @@ xmlSecOpenSSLTransformEdDSAEd448GetKlass(void) {
 XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS_EX(EdDSAEd448ph, xmlSecOpenSSLTransformEdDSANodeRead)
 
 /**
- * xmlSecOpenSSLTransformEdDSAEd448phGetKlass:
- *
- * The EdDSA-Ed448ph signature transform klass.
- *
- * Returns: EdDSA-Ed448ph signature transform klass.
+ * @brief The EdDSA-Ed448ph signature transform klass.
+ * @return EdDSA-Ed448ph signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformEdDSAEd448phGetKlass(void) {
@@ -2902,21 +2775,19 @@ xmlSecOpenSSLTransformEdDSAEd448phGetKlass(void) {
 
 
 
-/*************************************************************************
+/******************************************************************************
  *
  * GOST
  *
- ************************************************************************/
+  *****************************************************************************/
 #ifndef XMLSEC_NO_GOST
 /* GOST2001-GOSTR3411_94 signature transform: xmlSecOpenSSLGost2001GostR3411_94Klass */
 XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS(Gost2001GostR3411_94)
 
 /**
- * xmlSecOpenSSLTransformGost2001GostR3411_94GetKlass:
- *
- * The GOST2001-GOSTR3411_94 signature transform klass.
- *
- * Returns: GOST2001-GOSTR3411_94 signature transform klass.
+ * @brief GOST2001-GOSTR3411_94 signature transform klass.
+ * @details The GOST2001-GOSTR3411_94 signature transform klass.
+ * @return GOST2001-GOSTR3411_94 signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformGost2001GostR3411_94GetKlass(void) {
@@ -2930,11 +2801,9 @@ xmlSecOpenSSLTransformGost2001GostR3411_94GetKlass(void) {
 XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS(GostR3410_2012GostR3411_2012_256)
 
 /**
- * xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_256GetKlass:
- *
- * The GOST R 34.10-2012 - GOST R 34.11-2012 256 bit signature transform klass.
- *
- * Returns: GOST R 34.10-2012 - GOST R 34.11-2012 256 bit signature transform klass.
+ * @brief GOST R 34.10-2012 signature klass (256 bit).
+ * @details The GOST R 34.10-2012 - GOST R 34.11-2012 256 bit signature transform klass.
+ * @return GOST R 34.10-2012 - GOST R 34.11-2012 256 bit signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_256GetKlass(void) {
@@ -2945,11 +2814,9 @@ xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_256GetKlass(void) {
 XMLSEC_OPENSSL_EVP_SIGNATURE_KLASS(GostR3410_2012GostR3411_2012_512)
 
 /**
- * xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_512GetKlass:
- *
- * The GOST R 34.10-2012 - GOST R 34.11-2012 512 bit signature transform klass.
- *
- * Returns: GOST R 34.10-2012 - GOST R 34.11-2012 512 bit signature transform klass.
+ * @brief GOST R 34.10-2012 signature klass (512 bit).
+ * @details The GOST R 34.10-2012 - GOST R 34.11-2012 512 bit signature transform klass.
+ * @return GOST R 34.10-2012 - GOST R 34.11-2012 512 bit signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_512GetKlass(void) {

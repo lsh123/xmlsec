@@ -9,10 +9,8 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:crypto
+ * @addtogroup xmlsec_mscrypto_crypto
  */
-
-
 #ifndef XMLSEC_NO_HMAC
 #include "globals.h"
 
@@ -35,11 +33,11 @@
 #include "../transform_helpers.h"
 
 
-/**************************************************************************
+/******************************************************************************
  *
  * Configuration
  *
- *****************************************************************************/
+  *****************************************************************************/
 
 /******************************************************************************
  *
@@ -50,13 +48,13 @@
  * as a parameter; if the parameter is not specified then all the bits of the
  * hash are output. An example of an HMAC SignatureMethod element:
  *
- * |[<!-- language="XML" -->
+ * @code{.xml}
  * <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#hmac-sha1">
  *   <HMACOutputLength>128</HMACOutputLength>
  * </SignatureMethod>
- * |]
+ * @endcode
 
- *****************************************************************************/
+  *****************************************************************************/
 typedef struct _xmlSecMSCryptoHmacCtx            xmlSecMSCryptoHmacCtx, *xmlSecMSCryptoHmacCtxPtr;
 struct _xmlSecMSCryptoHmacCtx {
     HCRYPTPROV      provider;
@@ -75,7 +73,7 @@ struct _xmlSecMSCryptoHmacCtx {
  *
  * HMAC transforms
  *
- *****************************************************************************/
+  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(MSCryptoHmac, xmlSecMSCryptoHmacCtx)
 #define xmlSecMSCryptoHmacSize XMLSEC_TRANSFORM_SIZE(MSCryptoHmac)
 
@@ -504,7 +502,7 @@ xmlSecMSCryptoHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
  *
  * HMAC MD5
  *
- ******************************************************************************/
+  *****************************************************************************/
 static xmlSecTransformKlass xmlSecMSCryptoHmacMd5Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -533,11 +531,8 @@ static xmlSecTransformKlass xmlSecMSCryptoHmacMd5Klass = {
 };
 
 /**
- * xmlSecMSCryptoTransformHmacMd5GetKlass:
- *
- * The HMAC-MD5 transform klass.
- *
- * Returns: the HMAC-MD5 transform klass.
+ * @brief The HMAC-MD5 transform klass.
+ * @return the HMAC-MD5 transform klass.
  */
 xmlSecTransformId
 xmlSecMSCryptoTransformHmacMd5GetKlass(void) {
@@ -552,7 +547,7 @@ xmlSecMSCryptoTransformHmacMd5GetKlass(void) {
  *
  * HMAC RIPEMD160
  *
- ******************************************************************************/
+  *****************************************************************************/
 static xmlSecTransformKlass xmlSecMSCryptoHmacRipemd160Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -581,11 +576,8 @@ static xmlSecTransformKlass xmlSecMSCryptoHmacRipemd160Klass = {
 };
 
 /**
- * xmlSecMSCryptoTransformHmacRipemd160GetKlass:
- *
- * The HMAC-RIPEMD160 transform klass.
- *
- * Returns: the HMAC-RIPEMD160 transform klass.
+ * @brief The HMAC-RIPEMD160 transform klass.
+ * @return the HMAC-RIPEMD160 transform klass.
  */
 xmlSecTransformId
 xmlSecMSCryptoTransformHmacRipemd160GetKlass(void) {
@@ -598,7 +590,7 @@ xmlSecMSCryptoTransformHmacRipemd160GetKlass(void) {
  *
  * HMAC SHA1
  *
- ******************************************************************************/
+  *****************************************************************************/
 static xmlSecTransformKlass xmlSecMSCryptoHmacSha1Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -627,11 +619,8 @@ static xmlSecTransformKlass xmlSecMSCryptoHmacSha1Klass = {
 };
 
 /**
- * xmlSecMSCryptoTransformHmacSha1GetKlass:
- *
- * The HMAC-SHA1 transform klass.
- *
- * Returns: the HMAC-SHA1 transform klass.
+ * @brief The HMAC-SHA1 transform klass.
+ * @return the HMAC-SHA1 transform klass.
  */
 xmlSecTransformId
 xmlSecMSCryptoTransformHmacSha1GetKlass(void) {
@@ -645,7 +634,7 @@ xmlSecMSCryptoTransformHmacSha1GetKlass(void) {
  *
  * HMAC SHA224
  *
- ******************************************************************************/
+  *****************************************************************************/
 static xmlSecTransformKlass xmlSecMSCryptoHmacSha224Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -674,11 +663,8 @@ static xmlSecTransformKlass xmlSecMSCryptoHmacSha224Klass = {
 };
 
 /**
- * xmlSecMSCryptoTransformHmacSha224GetKlass:
- *
- * The HMAC-SHA224 transform klass.
- *
- * Returns: the HMAC-SHA224 transform klass.
+ * @brief The HMAC-SHA224 transform klass.
+ * @return the HMAC-SHA224 transform klass.
  */
 xmlSecTransformId
 xmlSecMSCryptoTransformHmacSha224GetKlass(void) {
@@ -692,7 +678,7 @@ xmlSecMSCryptoTransformHmacSha224GetKlass(void) {
  *
  * HMAC SHA256
  *
- ******************************************************************************/
+  *****************************************************************************/
 static xmlSecTransformKlass xmlSecMSCryptoHmacSha256Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -721,11 +707,8 @@ static xmlSecTransformKlass xmlSecMSCryptoHmacSha256Klass = {
 };
 
 /**
- * xmlSecMSCryptoTransformHmacSha256GetKlass:
- *
- * The HMAC-SHA256 transform klass.
- *
- * Returns: the HMAC-SHA256 transform klass.
+ * @brief The HMAC-SHA256 transform klass.
+ * @return the HMAC-SHA256 transform klass.
  */
 xmlSecTransformId
 xmlSecMSCryptoTransformHmacSha256GetKlass(void) {
@@ -739,7 +722,7 @@ xmlSecMSCryptoTransformHmacSha256GetKlass(void) {
  *
  * HMAC SHA384
  *
- ******************************************************************************/
+  *****************************************************************************/
 static xmlSecTransformKlass xmlSecMSCryptoHmacSha384Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -768,11 +751,8 @@ static xmlSecTransformKlass xmlSecMSCryptoHmacSha384Klass = {
 };
 
 /**
- * xmlSecMSCryptoTransformHmacSha384GetKlass:
- *
- * The HMAC-SHA384 transform klass.
- *
- * Returns: the HMAC-SHA384 transform klass.
+ * @brief The HMAC-SHA384 transform klass.
+ * @return the HMAC-SHA384 transform klass.
  */
 xmlSecTransformId
 xmlSecMSCryptoTransformHmacSha384GetKlass(void) {
@@ -786,7 +766,7 @@ xmlSecMSCryptoTransformHmacSha384GetKlass(void) {
  *
  * HMAC SHA512
  *
- ******************************************************************************/
+  *****************************************************************************/
 static xmlSecTransformKlass xmlSecMSCryptoHmacSha512Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -815,11 +795,8 @@ static xmlSecTransformKlass xmlSecMSCryptoHmacSha512Klass = {
 };
 
 /**
- * xmlSecMSCryptoTransformHmacSha512GetKlass:
- *
- * The HMAC-SHA512 transform klass.
- *
- * Returns: the HMAC-SHA512 transform klass.
+ * @brief The HMAC-SHA512 transform klass.
+ * @return the HMAC-SHA512 transform klass.
  */
 xmlSecTransformId
 xmlSecMSCryptoTransformHmacSha512GetKlass(void) {

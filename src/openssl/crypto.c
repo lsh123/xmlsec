@@ -9,13 +9,10 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:crypto
- * @Short_description: Crypto key dat and transforms implementation for OpenSSL.
- * @Stability: Stable
- *
+ * @addtogroup xmlsec_openssl_crypto
+ * @brief Crypto key dat and transforms implementation for OpenSSL.
  * Implementation of keys and tranforms for OpenSSL.
  */
-
 #include "globals.h"
 
 #include <string.h>
@@ -60,11 +57,9 @@ static ERR_STRING_DATA xmlSecOpenSSLStrReasons[XMLSEC_ERRORS_MAX_NUMBER + 1];
 #endif /* !defined(XMLSEC_OPENSSL_API_300) && !defined(OPENSSL_IS_BORINGSSL) && !defined(OPENSSL_NO_ERR) */
 
 /**
- * xmlSecCryptoGetFunctions_openssl:
- *
- * Gets the pointer to xmlsec-openssl functions table.
- *
- * Returns: the xmlsec-openssl functions table or NULL if an error occurs.
+ * @brief Gets the xmlsec-openssl functions table.
+ * @details Gets the pointer to xmlsec-openssl functions table.
+ * @return the xmlsec-openssl functions table or NULL if an error occurs.
  */
 xmlSecCryptoDLFunctionsPtr
 xmlSecCryptoGetFunctions_openssl(void) {
@@ -77,20 +72,20 @@ xmlSecCryptoGetFunctions_openssl(void) {
     memset(&functions, 0, sizeof(functions));
     gXmlSecOpenSSLFunctions = &functions;
 
-    /********************************************************************
+    /******************************************************************************
      *
      * Crypto Init/shutdown
      *
-     ********************************************************************/
+      *****************************************************************************/
     gXmlSecOpenSSLFunctions->cryptoInit                 = xmlSecOpenSSLInit;
     gXmlSecOpenSSLFunctions->cryptoShutdown             = xmlSecOpenSSLShutdown;
     gXmlSecOpenSSLFunctions->cryptoKeysMngrInit         = xmlSecOpenSSLKeysMngrInit;
 
-    /********************************************************************
+    /******************************************************************************
      *
      * Key data ids
      *
-     ********************************************************************/
+      *****************************************************************************/
 #ifndef XMLSEC_NO_AES
     gXmlSecOpenSSLFunctions->keyDataAesGetKlass         = xmlSecOpenSSLKeyDataAesGetKlass;
 #endif /* XMLSEC_NO_AES */
@@ -171,22 +166,22 @@ xmlSecCryptoGetFunctions_openssl(void) {
 
     gXmlSecOpenSSLFunctions->keyDataDEREncodedKeyValueGetKlass = xmlSecOpenSSLKeyDataDEREncodedKeyValueGetKlass;
 
-    /********************************************************************
+    /******************************************************************************
      *
      * Key data store ids
      *
-     ********************************************************************/
+      *****************************************************************************/
 #ifndef XMLSEC_NO_X509
     gXmlSecOpenSSLFunctions->x509StoreGetKlass          = xmlSecOpenSSLX509StoreGetKlass;
 #endif /* XMLSEC_NO_X509 */
 
-    /********************************************************************
+    /******************************************************************************
      *
      * Crypto transforms ids
      *
-     ********************************************************************/
+      *****************************************************************************/
 
-    /******************************* AES ********************************/
+    /****************************************************************************** AES  *****************************************************************************/
 #ifndef XMLSEC_NO_AES
     gXmlSecOpenSSLFunctions->transformAes128CbcGetKlass         = xmlSecOpenSSLTransformAes128CbcGetKlass;
     gXmlSecOpenSSLFunctions->transformAes192CbcGetKlass         = xmlSecOpenSSLTransformAes192CbcGetKlass;
@@ -200,7 +195,7 @@ xmlSecCryptoGetFunctions_openssl(void) {
 #endif /* XMLSEC_NO_AES */
 
 
-    /******************************* CAMELLIA ********************************/
+    /****************************************************************************** CAMELLIA  *****************************************************************************/
 #ifndef XMLSEC_NO_CAMELLIA
     gXmlSecOpenSSLFunctions->transformCamellia128CbcGetKlass    = xmlSecOpenSSLTransformCamellia128CbcGetKlass;
     gXmlSecOpenSSLFunctions->transformCamellia192CbcGetKlass    = xmlSecOpenSSLTransformCamellia192CbcGetKlass;
@@ -211,31 +206,31 @@ xmlSecCryptoGetFunctions_openssl(void) {
 #endif /* XMLSEC_NO_CAMELLIA */
 
 
-    /******************************* CHACHA20 ********************************/
+    /****************************************************************************** CHACHA20  *****************************************************************************/
 #ifndef XMLSEC_NO_CHACHA20
     gXmlSecOpenSSLFunctions->transformChaCha20GetKlass          = xmlSecOpenSSLTransformChaCha20GetKlass;
     gXmlSecOpenSSLFunctions->transformChaCha20Poly1305GetKlass  = xmlSecOpenSSLTransformChaCha20Poly1305GetKlass;
 #endif /* XMLSEC_NO_CHACHA20 */
 
 
-    /******************************* CONCATKDF ********************************/
+    /****************************************************************************** CONCATKDF  *****************************************************************************/
 #ifndef XMLSEC_NO_CONCATKDF
     gXmlSecOpenSSLFunctions->transformConcatKdfGetKlass         = xmlSecOpenSSLTransformConcatKdfGetKlass;
 #endif /* XMLSEC_NO_CONCATKDF */
 
-    /******************************* DES ********************************/
+    /****************************************************************************** DES  *****************************************************************************/
 #ifndef XMLSEC_NO_DES
     gXmlSecOpenSSLFunctions->transformDes3CbcGetKlass           = xmlSecOpenSSLTransformDes3CbcGetKlass;
     gXmlSecOpenSSLFunctions->transformKWDes3GetKlass            = xmlSecOpenSSLTransformKWDes3GetKlass;
 #endif /* XMLSEC_NO_DES */
 
 
-    /******************************* DH ********************************/
+    /****************************************************************************** DH  *****************************************************************************/
 #ifndef XMLSEC_NO_DH
     gXmlSecOpenSSLFunctions->transformDhEsGetKlass              = xmlSecOpenSSLTransformDhEsGetKlass;
 #endif /* XMLSEC_NO_DH */
 
-    /******************************* DSA ********************************/
+    /****************************************************************************** DSA  *****************************************************************************/
 #ifndef XMLSEC_NO_DSA
 
 #ifndef XMLSEC_NO_SHA1
@@ -248,7 +243,7 @@ xmlSecCryptoGetFunctions_openssl(void) {
 
 #endif /* XMLSEC_NO_DSA */
 
-    /******************************* ECDSA ********************************/
+    /****************************************************************************** ECDSA  *****************************************************************************/
 #ifndef XMLSEC_NO_EC
     gXmlSecOpenSSLFunctions->transformEcdhGetKlass              = xmlSecOpenSSLTransformEcdhGetKlass;
 
@@ -286,13 +281,13 @@ xmlSecCryptoGetFunctions_openssl(void) {
 
 #endif /* XMLSEC_NO_EC */
 
-    /******************************* XDH ********************************/
+    /****************************************************************************** XDH  *****************************************************************************/
 #ifndef XMLSEC_NO_XDH
     gXmlSecOpenSSLFunctions->transformX25519GetKlass            = xmlSecOpenSSLTransformX25519GetKlass;
     gXmlSecOpenSSLFunctions->transformX448GetKlass              = xmlSecOpenSSLTransformX448GetKlass;
 #endif /* XMLSEC_NO_XDH */
 
-    /******************************* GOST ********************************/
+    /****************************************************************************** GOST  *****************************************************************************/
 #ifndef XMLSEC_NO_GOST
     gXmlSecOpenSSLFunctions->transformGost2001GostR3411_94GetKlass     = xmlSecOpenSSLTransformGost2001GostR3411_94GetKlass;
     gXmlSecOpenSSLFunctions->transformGostR3411_94GetKlass             = xmlSecOpenSSLTransformGostR3411_94GetKlass;
@@ -306,7 +301,7 @@ xmlSecCryptoGetFunctions_openssl(void) {
     gXmlSecOpenSSLFunctions->transformGostR3410_2012GostR3411_2012_512GetKlass = xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_512GetKlass;
 #endif /* XMLSEC_NO_GOST2012 */
 
-    /******************************* HMAC ********************************/
+    /****************************************************************************** HMAC  *****************************************************************************/
 #ifndef XMLSEC_NO_HMAC
 
 #ifndef XMLSEC_NO_MD5
@@ -339,12 +334,12 @@ xmlSecCryptoGetFunctions_openssl(void) {
 
 #endif /* XMLSEC_NO_HMAC */
 
-    /******************************* MD5 ********************************/
+    /****************************************************************************** MD5  *****************************************************************************/
 #ifndef XMLSEC_NO_MD5
     gXmlSecOpenSSLFunctions->transformMd5GetKlass               = xmlSecOpenSSLTransformMd5GetKlass;
 #endif /* XMLSEC_NO_MD5 */
 
-    /******************************* ML-DSA ********************************/
+    /****************************************************************************** ML-DSA  *****************************************************************************/
 #ifndef XMLSEC_NO_MLDSA
     gXmlSecOpenSSLFunctions->transformMLDSA44GetKlass            = xmlSecOpenSSLTransformMLDSA44GetKlass;
     gXmlSecOpenSSLFunctions->transformMLDSA65GetKlass            = xmlSecOpenSSLTransformMLDSA65GetKlass;
@@ -352,22 +347,22 @@ xmlSecCryptoGetFunctions_openssl(void) {
 #endif /* XMLSEC_NO_MLDSA */
 
 
-    /******************************* PBKDF2 ********************************/
+    /****************************************************************************** PBKDF2  *****************************************************************************/
 #ifndef XMLSEC_NO_PBKDF2
     gXmlSecOpenSSLFunctions->transformPbkdf2GetKlass            = xmlSecOpenSSLTransformPbkdf2GetKlass;
 #endif /* XMLSEC_NO_PBKDF2 */
 
-    /******************************* HKDF ********************************/
+    /****************************************************************************** HKDF  *****************************************************************************/
 #ifndef XMLSEC_NO_HKDF
     gXmlSecOpenSSLFunctions->transformHkdfGetKlass              = xmlSecOpenSSLTransformHkdfGetKlass;
 #endif /* XMLSEC_NO_HKDF */
 
-    /******************************* RIPEMD160 ********************************/
+    /****************************************************************************** RIPEMD160  *****************************************************************************/
 #ifndef XMLSEC_NO_RIPEMD160
     gXmlSecOpenSSLFunctions->transformRipemd160GetKlass         = xmlSecOpenSSLTransformRipemd160GetKlass;
 #endif /* XMLSEC_NO_RIPEMD160 */
 
-    /******************************* RSA ********************************/
+    /****************************************************************************** RSA  *****************************************************************************/
 #ifndef XMLSEC_NO_RSA
 
 #ifndef XMLSEC_NO_MD5
@@ -439,7 +434,7 @@ xmlSecCryptoGetFunctions_openssl(void) {
 
 #endif /* XMLSEC_NO_RSA */
 
-    /******************************* SLH-DSA ********************************/
+    /****************************************************************************** SLH-DSA  *****************************************************************************/
 #ifndef XMLSEC_NO_SLHDSA
     gXmlSecOpenSSLFunctions->transformSLHDSA_SHA2_128fGetKlass = xmlSecOpenSSLTransformSLHDSA_SHA2_128fGetKlass;
     gXmlSecOpenSSLFunctions->transformSLHDSA_SHA2_128sGetKlass = xmlSecOpenSSLTransformSLHDSA_SHA2_128sGetKlass;
@@ -458,7 +453,7 @@ xmlSecCryptoGetFunctions_openssl(void) {
 #endif /* XMLSEC_NO_EDDSA */
 
 
-    /******************************* SHA ********************************/
+    /****************************************************************************** SHA  *****************************************************************************/
 #ifndef XMLSEC_NO_SHA1
     gXmlSecOpenSSLFunctions->transformSha1GetKlass              = xmlSecOpenSSLTransformSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
@@ -487,11 +482,11 @@ xmlSecCryptoGetFunctions_openssl(void) {
     gXmlSecOpenSSLFunctions->transformSha3_512GetKlass          = xmlSecOpenSSLTransformSha3_512GetKlass;
 #endif /* XMLSEC_NO_SHA3 */
 
-    /********************************************************************
+    /******************************************************************************
      *
      * High-level routines for the xmlsec command-line utility
      *
-     ********************************************************************/
+      *****************************************************************************/
     gXmlSecOpenSSLFunctions->cryptoAppInit                      = xmlSecOpenSSLAppInit;
     gXmlSecOpenSSLFunctions->cryptoAppShutdown                  = xmlSecOpenSSLAppShutdown;
     gXmlSecOpenSSLFunctions->cryptoAppDefaultKeysMngrInit       = xmlSecOpenSSLAppDefaultKeysMngrInit;
@@ -518,11 +513,9 @@ xmlSecCryptoGetFunctions_openssl(void) {
 }
 
 /**
- * xmlSecOpenSSLInit:
- *
- * XMLSec library specific crypto engine initialization.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Initializes the OpenSSL crypto engine.
+ * @details XMLSec library specific crypto engine initialization.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecOpenSSLInit (void)  {
@@ -547,11 +540,8 @@ xmlSecOpenSSLInit (void)  {
 }
 
 /**
- * xmlSecOpenSSLShutdown:
- *
- * XMLSec library specific crypto engine shutdown.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief XMLSec library specific crypto engine shutdown.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecOpenSSLShutdown(void) {
@@ -561,12 +551,10 @@ xmlSecOpenSSLShutdown(void) {
 }
 
 /**
- * xmlSecOpenSSLKeysMngrInit:
- * @mngr:               the pointer to keys manager.
- *
- * Adds OpenSSL specific key data stores in keys manager.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Adds OpenSSL specific key data stores.
+ * @details Adds OpenSSL specific key data stores in keys manager.
+ * @param mngr the pointer to keys manager.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecOpenSSLKeysMngrInit(xmlSecKeysMngrPtr mngr) {
@@ -650,13 +638,11 @@ xmlSecOpenSSLGenerateRandomBytes(xmlSecByte* buffer, xmlSecSize size) {
 #endif /* XMLSEC_OPENSSL_API_300 */
 
 /**
- * xmlSecOpenSSLGenerateRandom:
- * @buffer:             the destination buffer.
- * @size:               the numer of bytes to generate.
- *
- * Generates @size random bytes and puts result in @buffer.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Generates random bytes into @p buffer.
+ * @details Generates @p size random bytes and puts result in @p buffer.
+ * @param buffer the destination buffer.
+ * @param size the numer of bytes to generate.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecOpenSSLGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
@@ -683,16 +669,15 @@ xmlSecOpenSSLGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
 }
 
 /**
- * xmlSecOpenSSLErrorsDefaultCallback:
- * @file:               the error location file name (__FILE__ macro).
- * @line:               the error location line number (__LINE__ macro).
- * @func:               the error location function name (__FUNCTION__ macro).
- * @errorObject:        the error specific error object
- * @errorSubject:       the error specific error subject.
- * @reason:             the error code.
- * @msg:                the additional error message.
+ * @brief The errors reporting callback function.
+ * @param file the error location file name (__FILE__ macro).
+ * @param line the error location line number (__LINE__ macro).
+ * @param func the error location function name (__FUNCTION__ macro).
+ * @param errorObject the error specific error object
+ * @param errorSubject the error specific error subject.
+ * @param reason the error code.
+ * @param msg the additional error message.
  *
- * The errors reporting callback function.
  */
 void
 xmlSecOpenSSLErrorsDefaultCallback(const char* file, int line, const char* func,
@@ -761,12 +746,9 @@ xmlSecOpenSSLErrorsShutdown(void) {
 }
 
 /**
- * xmlSecOpenSSLSetDefaultTrustedCertsFolder:
- * @path:       the default trusted certs path.
- *
- * Sets the default trusted certs folder.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Sets the default trusted certs folder.
+ * @param path the default trusted certs path.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecOpenSSLSetDefaultTrustedCertsFolder(const xmlChar* path) {
@@ -787,11 +769,8 @@ xmlSecOpenSSLSetDefaultTrustedCertsFolder(const xmlChar* path) {
 }
 
 /**
- * xmlSecOpenSSLGetDefaultTrustedCertsFolder:
- *
- * Gets the default trusted certs folder.
- *
- * Returns: the default trusted cert folder.
+ * @brief Gets the default trusted certs folder.
+ * @return the default trusted cert folder.
  */
 const xmlChar*
 xmlSecOpenSSLGetDefaultTrustedCertsFolder(void) {
@@ -803,14 +782,13 @@ xmlSecOpenSSLGetDefaultTrustedCertsFolder(void) {
 static OSSL_LIB_CTX* gXmlSecOpenSSLLibCtx = NULL;
 
 /**
- * xmlSecOpenSSLSetLibCtx:
- * @libctx:           the OSSL_LIB_CTX object to be used by xmlsec-openssl
+ * @param libctx the OSSL_LIB_CTX object to be used by xmlsec-openssl
  *                    or NULL to use default.
  *
  * Sets the OSSL_LIB_CTX object to be used by xmlsec-openssl. The caller is
  * responsible for lifetime of this object.
  *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecOpenSSLSetLibCtx(OSSL_LIB_CTX* libctx) {
@@ -819,12 +797,10 @@ xmlSecOpenSSLSetLibCtx(OSSL_LIB_CTX* libctx) {
 }
 
 /**
- * xmlSecOpenSSLGetLibCtx:
- *
- * Gets the current OSSL_LIB_CTX object to be used by xmlsec-openssl or
+ * @brief Gets the current OSSL_LIB_CTX object to be used by xmlsec-openssl or
  * NULL if the default one is used.
  *
- * Returns: the current OSSL_LIB_CTX object or NULL if default is used.
+ * @return the current OSSL_LIB_CTX object or NULL if default is used.
  */
 OSSL_LIB_CTX*
 xmlSecOpenSSLGetLibCtx(void) {
@@ -832,18 +808,16 @@ xmlSecOpenSSLGetLibCtx(void) {
 }
 #endif /* XMLSEC_OPENSSL_API_300 */
 
-/********************************************************************
+/******************************************************************************
  *
  * BIO helpers
  *
- ********************************************************************/
+  *****************************************************************************/
 
 /**
- * xmlSecOpenSSLCreateMemBio:
- *
- * Creates a memory BIO using xmlSecOpenSSLGetLibCtx() for OpenSSL 3.0.
- *
- * Returns: the pointer to BIO object or NULL if an error occurs/
+ * @brief Creates a memory BIO for OpenSSL 3.0.
+ * @details Creates a memory BIO using xmlSecOpenSSLGetLibCtx() for OpenSSL 3.0.
+ * @return the pointer to BIO object or NULL if an error occurs.
  */
 BIO*
 xmlSecOpenSSLCreateMemBio(void) {
@@ -858,14 +832,13 @@ xmlSecOpenSSLCreateMemBio(void) {
 }
 
 /**
- * xmlSecOpenSSLCreateMemBufBio:
- * @buf:      the data
- * @bufSize:  the data size
+ * @brief Creates a read-only memory BIO using xmlSecOpenSSLGetLibCtx() for
+ * @param buf the data
+ * @param bufSize the data size
  *
- * Creates a read-only memory BIO using xmlSecOpenSSLGetLibCtx() for
- * OpenSSL 3.0 containing @len bytes of data from @buf.
+ * OpenSSL 3.0 containing @p len bytes of data from @p buf.
  *
- * Returns: the pointer to BIO object or NULL if an error occurs/
+ * @return the pointer to BIO object or NULL if an error occurs/
  */
 BIO*
 xmlSecOpenSSLCreateMemBufBio(const xmlSecByte *buf, xmlSecSize bufSize) {
@@ -885,13 +858,12 @@ xmlSecOpenSSLCreateMemBufBio(const xmlSecByte *buf, xmlSecSize bufSize) {
 }
 
 /**
- * xmlSecOpenSSLCreateReadFileBio:
- * @path:     the file path
+ * @brief Creates a read-only file BIO using xmlSecOpenSSLGetLibCtx() for
+ * @param path the file path
  *
- * Creates a read-only file BIO using xmlSecOpenSSLGetLibCtx() for
  * OpenSSL 3.0.
  *
- * Returns: the pointer to BIO object or NULL if an error occurs/
+ * @return the pointer to BIO object or NULL if an error occurs/
  */
 BIO*
 xmlSecOpenSSLCreateReadFileBio(const char* path) {

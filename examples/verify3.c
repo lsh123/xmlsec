@@ -15,7 +15,7 @@
  * This is free software; see the Copyright file in the source
  * distribution for precise wording.
  *
- * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2024 Aleksey Sanin <aleksey#aleksey.com>. All Rights Reserved.
  */
 #include <stdlib.h>
 #include <string.h>
@@ -143,15 +143,13 @@ main(int argc, char **argv) {
 }
 
 /**
- * load_trusted_certs:
- * @files:              the list of filenames.
- * @files_size:         the number of filenames in #files.
- *
- * Creates simple keys manager and load trusted certificates from PEM #files.
+ * @brief Creates a keys manager and loads trusted X.509 certificates.
+ * @details Creates simple keys manager and load trusted certificates from PEM #files.
  * The caller is responsible for destroying returned keys manager using
- * @xmlSecKeysMngrDestroy.
- *
- * Returns the pointer to newly created keys manager or NULL if an error
+ * #xmlSecKeysMngrDestroy.
+ * @param files the list of filenames.
+ * @param files_size the number of filenames in #files.
+ * @return the pointer to newly created keys manager or NULL if an error
  * occurs.
  */
 xmlSecKeysMngrPtr
@@ -192,13 +190,10 @@ load_trusted_certs(char** files, int files_size) {
 }
 
 /**
- * verify_file:
- * @mngr:               the pointer to keys manager.
- * @xml_file:           the signed XML file name.
- *
- * Verifies XML signature in #xml_file.
- *
- * Returns 0 on success or a negative value if an error occurs.
+ * @brief Verifies XML signature in #xml_file.
+ * @param mngr the pointer to keys manager.
+ * @param xml_file the signed XML file name.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
@@ -260,13 +255,11 @@ done:
 }
 
 /**
- * verify_signature_results:
- * @dsigCtx:            the XMLDSig context
- *
- * Verifies XML signature results to ensure that signature was applied
+ * @brief Verifies XML signature results match expected data.
+ * @details Verifies XML signature results to ensure that signature was applied
  * to the expected data.
- *
- * Returns 0 on success or a negative value if an error occurs.
+ * @param dsigCtx the XMLDSig context
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 verify_signature_results(xmlSecDSigCtxPtr dsigCtx) {

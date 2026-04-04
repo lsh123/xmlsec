@@ -10,13 +10,10 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:x509
- * @Short_description: X509 certificates implementation for GnuTLS.
- * @Stability: Stable
- *
+ * @addtogroup xmlsec_gnutls_x509
+ * @brief X509 certificates implementation for GnuTLS.
  * X509 certificates implementation for GnuTLS.
  */
-
 #include "globals.h"
 
 #ifndef XMLSEC_NO_X509
@@ -49,20 +46,20 @@
 #include "../cast_helpers.h"
 #include "../x509_helpers.h"
 
-/*************************************************************************
+/******************************************************************************
  *
  * X509 utility functions
  *
- ************************************************************************/
+  *****************************************************************************/
 static int              xmlSecGnuTLSKVerifyAndAdoptX509KeyData  (xmlSecKeyPtr key,
                                                                  xmlSecKeyDataPtr data,
                                                                  xmlSecKeyInfoCtxPtr keyInfoCtx);
 
-/*************************************************************************
+/******************************************************************************
  *
  * Internal GnuTLS X509 data CTX
  *
- ************************************************************************/
+  *****************************************************************************/
 typedef struct _xmlSecGnuTLSX509DataCtx                         xmlSecGnuTLSX509DataCtx,
                                                                 *xmlSecGnuTLSX509DataCtxPtr;
 struct _xmlSecGnuTLSX509DataCtx {
@@ -72,11 +69,11 @@ struct _xmlSecGnuTLSX509DataCtx {
 };
 
 
-/**************************************************************************
+/******************************************************************************
  *
  * &lt;dsig:X509Data/&gt; processing (http://www.w3.org/TR/xmldsig-core/#sec-X509Data)
  *
- *************************************************************************/
+  *****************************************************************************/
 XMLSEC_KEY_DATA_DECLARE(GnuTLSX509Data, xmlSecGnuTLSX509DataCtx)
 #define xmlSecGnuTLSX509DataSize XMLSEC_KEY_DATA_SIZE(GnuTLSX509Data)
 
@@ -157,11 +154,9 @@ static xmlSecKeyDataKlass xmlSecGnuTLSKeyDataX509Klass = {
 };
 
 /**
- * xmlSecGnuTLSKeyDataX509GetKlass:
- *
- * The GnuTLS X509 key data klass (http://www.w3.org/TR/xmldsig-core/#sec-X509Data).
- *
- * Returns: the X509 data klass.
+ * @brief The GnuTLS X509 key data klass.
+ * @details The GnuTLS X509 key data klass (http://www.w3.org/TR/xmldsig-core/#sec-X509Data).
+ * @return the X509 data klass.
  */
 xmlSecKeyDataId
 xmlSecGnuTLSKeyDataX509GetKlass(void) {
@@ -169,12 +164,11 @@ xmlSecGnuTLSKeyDataX509GetKlass(void) {
 }
 
 /**
- * xmlSecGnuTLSKeyDataX509GetKeyCert:
- * @data:               the pointer to X509 key data.
+ * @brief Gets the certificate from which the key was extracted.
+ * @param data the pointer to X509 key data.
  *
- * Gets the certificate from which the key was extracted.
  *
- * Returns: the key's certificate or NULL if key data was not used for key
+ * @return the key's certificate or NULL if key data was not used for key
  * extraction or an error occurs.
  */
 gnutls_x509_crt_t
@@ -260,14 +254,13 @@ xmlSecGnuTLSKeyDataX509AddCertInternal(xmlSecGnuTLSX509DataCtxPtr ctx, gnutls_x5
 }
 
 /**
- * xmlSecGnuTLSKeyDataX509AdoptKeyCert:
- * @data:               the pointer to X509 key data.
- * @cert:               the pointer to GnuTLS X509 certificate.
+ * @brief Adds certificate to the X509 key data and sets the it as the key's
+ * @param data the pointer to X509 key data.
+ * @param cert the pointer to GnuTLS X509 certificate.
  *
- * Adds certificate to the X509 key data and sets the it as the key's
- * certificate in @data. On success, the @data owns the cert.
+ * certificate in @p data. On success, the @p data owns the cert.
  *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecGnuTLSKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, gnutls_x509_crt_t cert) {
@@ -299,13 +292,10 @@ xmlSecGnuTLSKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, gnutls_x509_crt_t cer
 }
 
 /**
- * xmlSecGnuTLSKeyDataX509AdoptCert:
- * @data:               the pointer to X509 key data.
- * @cert:               the pointer to GnuTLS X509 certificate.
- *
- * Adds certificate to the X509 key data.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Adds certificate to the X509 key data.
+ * @param data the pointer to X509 key data.
+ * @param cert the pointer to GnuTLS X509 certificate.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecGnuTLSKeyDataX509AdoptCert(xmlSecKeyDataPtr data, gnutls_x509_crt_t cert) {
@@ -326,14 +316,13 @@ xmlSecGnuTLSKeyDataX509AdoptCert(xmlSecKeyDataPtr data, gnutls_x509_crt_t cert) 
 }
 
 /**
- * xmlSecGnuTLSKeyDataX509GetCert:
- * @data:               the pointer to X509 key data.
- * @pos:                the desired certificate position.
+ * @brief Gets a certificate from X509 key data.
+ * @param data the pointer to X509 key data.
+ * @param pos the desired certificate position.
  *
- * Gets a certificate from X509 key data.
  *
- * Returns: the pointer to certificate or NULL if @pos is larger than the
- * number of certificates in @data or an error occurs.
+ * @return the pointer to certificate or NULL if @p pos is larger than the
+ * number of certificates in @p data or an error occurs.
  */
 gnutls_x509_crt_t
 xmlSecGnuTLSKeyDataX509GetCert(xmlSecKeyDataPtr data, xmlSecSize pos) {
@@ -350,12 +339,9 @@ xmlSecGnuTLSKeyDataX509GetCert(xmlSecKeyDataPtr data, xmlSecSize pos) {
 }
 
 /**
- * xmlSecGnuTLSKeyDataX509GetCertsSize:
- * @data:               the pointer to X509 key data.
- *
- * Gets the number of certificates in @data.
- *
- * Returns: te number of certificates in @data.
+ * @brief Gets the number of certificates in @p data.
+ * @param data the pointer to X509 key data.
+ * @return te number of certificates in @p data.
  */
 xmlSecSize
 xmlSecGnuTLSKeyDataX509GetCertsSize(xmlSecKeyDataPtr data) {
@@ -370,13 +356,10 @@ xmlSecGnuTLSKeyDataX509GetCertsSize(xmlSecKeyDataPtr data) {
 }
 
 /**
- * xmlSecGnuTLSKeyDataX509AdoptCrl:
- * @data:               the pointer to X509 key data.
- * @crl:                the pointer to GnuTLS X509 crl.
- *
- * Adds crl to the X509 key data.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Adds crl to the X509 key data.
+ * @param data the pointer to X509 key data.
+ * @param crl the pointer to GnuTLS X509 crl.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecGnuTLSKeyDataX509AdoptCrl(xmlSecKeyDataPtr data, gnutls_x509_crl_t crl) {
@@ -400,14 +383,13 @@ xmlSecGnuTLSKeyDataX509AdoptCrl(xmlSecKeyDataPtr data, gnutls_x509_crl_t crl) {
 }
 
 /**
- * xmlSecGnuTLSKeyDataX509GetCrl:
- * @data:               the pointer to X509 key data.
- * @pos:                the desired crl position.
+ * @brief Gets a crl from X509 key data.
+ * @param data the pointer to X509 key data.
+ * @param pos the desired crl position.
  *
- * Gets a crl from X509 key data.
  *
- * Returns: the pointer to crl or NULL if @pos is larger than the
- * number of crls in @data or an error occurs.
+ * @return the pointer to crl or NULL if @p pos is larger than the
+ * number of crls in @p data or an error occurs.
  */
 gnutls_x509_crl_t
 xmlSecGnuTLSKeyDataX509GetCrl(xmlSecKeyDataPtr data, xmlSecSize pos) {
@@ -422,12 +404,9 @@ xmlSecGnuTLSKeyDataX509GetCrl(xmlSecKeyDataPtr data, xmlSecSize pos) {
 }
 
 /**
- * xmlSecGnuTLSKeyDataX509GetCrlsSize:
- * @data:               the pointer to X509 key data.
- *
- * Gets the number of crls in @data.
- *
- * Returns: te number of crls in @data.
+ * @brief Gets the number of crls in @p data.
+ * @param data the pointer to X509 key data.
+ * @return te number of crls in @p data.
  */
 xmlSecSize
 xmlSecGnuTLSKeyDataX509GetCrlsSize(xmlSecKeyDataPtr data) {
@@ -1075,12 +1054,9 @@ xmlSecGnuTLSKVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data, 
 }
 
 /**
- * xmlSecGnuTLSX509CertGetKey:
- * @cert:               the certificate.
- *
- * Extracts public key from the @cert.
- *
- * Returns: public key value or NULL if an error occurs.
+ * @brief Extracts public key from the @p cert.
+ * @param cert the certificate.
+ * @return public key value or NULL if an error occurs.
  */
 xmlSecKeyDataPtr
 xmlSecGnuTLSX509CertGetKey(gnutls_x509_crt_t cert) {
@@ -1116,12 +1092,12 @@ xmlSecGnuTLSX509CertGetKey(gnutls_x509_crt_t cert) {
 }
 
 
-/**************************************************************************
+/******************************************************************************
  *
  * Raw X509 Certificate processing
  *
  *
- *************************************************************************/
+  *****************************************************************************/
 static int              xmlSecGnuTLSKeyDataRawX509CertBinRead  (xmlSecKeyDataId id,
                                                                  xmlSecKeyPtr key,
                                                                  const xmlSecByte* buf,
@@ -1167,11 +1143,8 @@ static xmlSecKeyDataKlass xmlSecGnuTLSKeyDataRawX509CertKlass = {
 };
 
 /**
- * xmlSecGnuTLSKeyDataRawX509CertGetKlass:
- *
- * The raw X509 certificates key data klass.
- *
- * Returns: raw X509 certificates key data klass.
+ * @brief The raw X509 certificates key data klass.
+ * @return raw X509 certificates key data klass.
  */
 xmlSecKeyDataId
 xmlSecGnuTLSKeyDataRawX509CertGetKlass(void) {

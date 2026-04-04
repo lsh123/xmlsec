@@ -8,11 +8,8 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:app
- * @Short_description: Application support functions for GCrypt.
- * @Stability: Stable
- *
- * Application support functions for GCrypt.
+ * @addtogroup xmlsec_gcrypt_app
+ * @brief Application support functions for GCrypt.
  */
 #include "globals.h"
 
@@ -33,14 +30,13 @@
 #include "../cast_helpers.h"
 
 /**
- * xmlSecGCryptAppInit:
- * @config:             the path to GCrypt configuration (unused).
- *
- * General crypto engine initialization. This function is used
+ * @brief Initializes the GCrypt crypto engine.
+ * @details General crypto engine initialization. This function is used
  * by the XMLSec command-line utility and is called before the
- * @xmlSecInit function.
+ * #xmlSecInit function.
  *
- * Returns: 0 on success or a negative value otherwise.
+ * @param config the path to GCrypt configuration (unused).
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecGCryptAppInit(const char* config XMLSEC_ATTRIBUTE_UNUSED) {
@@ -125,13 +121,12 @@ Noteworthy changes in version 1.4.3 (2008-09-18)
 }
 
 /**
- * xmlSecGCryptAppShutdown:
- *
- * General crypto engine shutdown. This function is used
+ * @brief Shuts down the GCrypt crypto engine.
+ * @details General crypto engine shutdown. This function is used
  * by the XMLSec command-line utility and is called after the
- * @xmlSecShutdown function.
+ * #xmlSecShutdown function.
  *
- * Returns: 0 on success or a negative value otherwise.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecGCryptAppShutdown(void) {
@@ -148,17 +143,14 @@ xmlSecGCryptAppShutdown(void) {
 }
 
 /**
- * xmlSecGCryptAppKeyLoadEx:
- * @filename:           the key filename.
- * @type:               the expected key type.
- * @format:             the key file format.
- * @pwd:                the key file password.
- * @pwdCallback:        the key password callback.
- * @pwdCallbackCtx:     the user context for password callback.
- *
- * Reads a key from a file.
- *
- * Returns: pointer to the key or NULL if an error occurs.
+ * @brief Reads a key from a file.
+ * @param filename the key filename.
+ * @param type the expected key type.
+ * @param format the key file format.
+ * @param pwd the key file password.
+ * @param pwdCallback the key password callback.
+ * @param pwdCallbackCtx the user context for password callback.
+ * @return pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
 xmlSecGCryptAppKeyLoadEx(const char *filename, xmlSecKeyDataType type XMLSEC_ATTRIBUTE_UNUSED, xmlSecKeyDataFormat format,
@@ -202,17 +194,14 @@ xmlSecGCryptAppKeyLoadEx(const char *filename, xmlSecKeyDataType type XMLSEC_ATT
 }
 
 /**
- * xmlSecGCryptAppKeyLoadMemory:
- * @data:               the binary key data.
- * @dataSize:           the size of binary key.
- * @format:             the key file format.
- * @pwd:                the key file password.
- * @pwdCallback:        the key password callback.
- * @pwdCallbackCtx:     the user context for password callback.
- *
- * Reads a key from the memory buffer.
- *
- * Returns: pointer to the key or NULL if an error occurs.
+ * @brief Reads a key from the memory buffer.
+ * @param data the binary key data.
+ * @param dataSize the size of binary key.
+ * @param format the key file format.
+ * @param pwd the key file password.
+ * @param pwdCallback the key password callback.
+ * @param pwdCallbackCtx the user context for password callback.
+ * @return pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
 xmlSecGCryptAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
@@ -276,15 +265,13 @@ xmlSecGCryptAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
 
 #ifndef XMLSEC_NO_X509
 /**
- * xmlSecGCryptAppKeyCertLoad:
- * @key:                the pointer to key.
- * @filename:           the certificate filename.
- * @format:             the certificate file format.
+ * @brief GCrypt does not support X509 certificates.
+ * @details Reads the certificate from @p filename and adds it to key.
  *
- * Placeholder. GCrypt  does not support X509 certificates.
- * Reads the certificate from $@filename and adds it to key.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @param key the pointer to key.
+ * @param filename the certificate filename.
+ * @param format the certificate file format.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecGCryptAppKeyCertLoad(xmlSecKeyPtr key, const char* filename,
@@ -298,16 +285,14 @@ xmlSecGCryptAppKeyCertLoad(xmlSecKeyPtr key, const char* filename,
 }
 
 /**
- * xmlSecGCryptAppKeyCertLoadMemory:
- * @key:                the pointer to key.
- * @data:               the certificate binary data.
- * @dataSize:           the certificate binary data size.
- * @format:             the certificate file format.
+ * @brief GCrypt does not support X509 certificates.
+ * @details Reads the certificate from memory buffer and adds it to key.
  *
- * Placeholder. GCrypt  does not support X509 certificates.
- * Reads the certificate from memory buffer and adds it to key.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @param key the pointer to key.
+ * @param data the certificate binary data.
+ * @param dataSize the certificate binary data size.
+ * @param format the certificate file format.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecGCryptAppKeyCertLoadMemory(xmlSecKeyPtr key,
@@ -324,19 +309,16 @@ xmlSecGCryptAppKeyCertLoadMemory(xmlSecKeyPtr key,
 }
 
 /**
- * xmlSecGCryptAppPkcs12Load:
- * @filename:           the PKCS12 key filename.
- * @pwd:                the PKCS12 file password.
- * @pwdCallback:        the password callback.
- * @pwdCallbackCtx:     the user context for password callback.
- *
- * Placeholder. GCrypt  does not support X509 certificates.
- * Reads a key and all associated certificates from the PKCS12 file.
- *
- * For uniformity, call @xmlSecGCryptAppKeyLoadEx instead of this function. Pass
+ * @brief GCrypt does not support X509 certificates.
+ * @details Reads a key and all associated certificates from the PKCS12 file.
+ * For uniformity, call #xmlSecGCryptAppKeyLoadEx instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
  *
- * Returns: pointer to the key or NULL if an error occurs.
+ * @param filename the PKCS12 key filename.
+ * @param pwd the PKCS12 file password.
+ * @param pwdCallback the password callback.
+ * @param pwdCallbackCtx the user context for password callback.
+ * @return pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
 xmlSecGCryptAppPkcs12Load(const char *filename,
@@ -350,20 +332,17 @@ xmlSecGCryptAppPkcs12Load(const char *filename,
 }
 
 /**
- * xmlSecGCryptAppPkcs12LoadMemory:
- * @data:               the PKCS12 binary data.
- * @dataSize:           the PKCS12 binary data size.
- * @pwd:                the PKCS12 file password.
- * @pwdCallback:        the password callback.
- * @pwdCallbackCtx:     the user context for password callback.
- *
- * Placeholder. GCrypt  does not support X509 certificates.
- *
- * Reads a key and all associated certificates from the PKCS12 data in the memory buffer.
+ * @brief GCrypt does not support X509 certificates.
+ * @details Reads a key and all associated certificates from the PKCS12 data in the memory buffer.
  * For uniformity, call xmlSecGCryptAppKeyLoadMemory instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
  *
- * Returns: pointer to the key or NULL if an error occurs.
+ * @param data the PKCS12 binary data.
+ * @param dataSize the PKCS12 binary data size.
+ * @param pwd the PKCS12 file password.
+ * @param pwdCallback the password callback.
+ * @param pwdCallbackCtx the user context for password callback.
+ * @return pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
 xmlSecGCryptAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
@@ -378,19 +357,16 @@ xmlSecGCryptAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
 }
 
 /**
- * xmlSecGCryptAppKeysMngrCertLoad:
- * @mngr:               the keys manager.
- * @filename:           the certificate file.
- * @format:             the certificate file format.
- * @type:               the flag that indicates is the certificate in @filename
+ * @brief GCrypt does not support X509 certificates.
+ * @details Reads cert from @p filename and adds to the list of trusted or known
+ * untrusted certs in @p store.
+ *
+ * @param mngr the keys manager.
+ * @param filename the certificate file.
+ * @param format the certificate file format.
+ * @param type the flag that indicates is the certificate in @p filename
  *                      trusted or not.
- *
- * Placeholder. GCrypt  does not support X509 certificates.
- *
- * Reads cert from @filename and adds to the list of trusted or known
- * untrusted certs in @store.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecGCryptAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr,
@@ -406,16 +382,13 @@ xmlSecGCryptAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr,
 }
 
 /**
- * xmlSecGCryptAppKeysMngrCrlLoad:
- * @mngr:               the keys manager.
- * @filename:           the CRL file.
- * @format:             the CRL file format.
+ * @brief GCrypt does not support X509 certificates.
+ * @details Reads crls from @p filename and adds to the list of crls in @p store.
  *
- * Placeholder. GCrypt  does not support X509 certificates.
- *
- * Reads crls from @filename and adds to the list of crls in @store.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @param mngr the keys manager.
+ * @param filename the CRL file.
+ * @param format the CRL file format.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecGCryptAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, xmlSecKeyDataFormat format) {
@@ -428,17 +401,14 @@ xmlSecGCryptAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, xml
 }
 
 /**
- * xmlSecGCryptAppKeysMngrCrlLoadAndVerify:
- * @mngr:               the keys manager.
- * @filename:           the CRL filename.
- * @format:             the CRL format (PEM or DER).
- * @keyInfoCtx:         the key info context for verification parameters.
+ * @brief GCrypt does not support X509 certificates.
+ * @details Atomically loads and verifies a CRL from @p filename.
  *
- * Placeholder. GCrypt does not support X509 certificates.
- *
- * Atomically loads and verifies a CRL from @filename.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @param mngr the keys manager.
+ * @param filename the CRL filename.
+ * @param format the CRL format (PEM or DER).
+ * @param keyInfoCtx the key info context for verification parameters.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecGCryptAppKeysMngrCrlLoadAndVerify(xmlSecKeysMngrPtr mngr, const char *filename,
@@ -453,19 +423,16 @@ xmlSecGCryptAppKeysMngrCrlLoadAndVerify(xmlSecKeysMngrPtr mngr, const char *file
 }
 
 /**
- * xmlSecGCryptAppKeysMngrCertLoadMemory:
- * @mngr:               the keys manager.
- * @data:               the certificate binary data.
- * @dataSize:           the certificate binary data size.
- * @format:             the certificate file format.
- * @type:               the flag that indicates is the certificate trusted or not.
+ * @brief GCrypt does not support X509 certificates.
+ * @details Reads cert from binary buffer @p data and adds to the list of trusted or known
+ * untrusted certs in @p store.
  *
- * Placeholder. GCrypt  does not support X509 certificates.
- *
- * Reads cert from binary buffer @data and adds to the list of trusted or known
- * untrusted certs in @store.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @param mngr the keys manager.
+ * @param data the certificate binary data.
+ * @param dataSize the certificate binary data size.
+ * @param format the certificate file format.
+ * @param type the flag that indicates is the certificate trusted or not.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecGCryptAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr,
@@ -485,13 +452,12 @@ xmlSecGCryptAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr,
 #endif /* XMLSEC_NO_X509 */
 
 /**
- * xmlSecGCryptAppDefaultKeysMngrInit:
- * @mngr:               the pointer to keys manager.
- *
- * Initializes @mngr with simple keys store #xmlSecSimpleKeysStoreId
+ * @brief Initializes the default key manager for GCrypt.
+ * @details Initializes @p mngr with simple keys store #xmlSecSimpleKeysStoreId
  * and a default GCrypt crypto key data stores.
  *
- * Returns: 0 on success or a negative value otherwise.
+ * @param mngr the pointer to keys manager.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecGCryptAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
@@ -528,14 +494,13 @@ xmlSecGCryptAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
 }
 
 /**
- * xmlSecGCryptAppDefaultKeysMngrAdoptKey:
- * @mngr:               the pointer to keys manager.
- * @key:                the pointer to key.
- *
- * Adds @key to the keys manager @mngr created with #xmlSecGCryptAppDefaultKeysMngrInit
+ * @brief Adds @p key to the keys manager.
+ * @details Adds @p key to the keys manager @p mngr created with #xmlSecGCryptAppDefaultKeysMngrInit
  * function.
  *
- * Returns: 0 on success or a negative value otherwise.
+ * @param mngr the pointer to keys manager.
+ * @param key the pointer to key.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecGCryptAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key) {
@@ -561,20 +526,19 @@ xmlSecGCryptAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key)
 }
 
 /**
- * xmlSecGCryptAppDefaultKeysMngrVerifyKey:
- * @mngr:               the pointer to keys manager.
- * @key:                the pointer to key.
- * @keyInfoCtx:         the key info context for verification.
- *
- * Verifies @key with the keys manager @mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
+ * @brief Verifies @p key using the keys manager.
+ * @details Verifies @p key with the keys manager @p mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
  * function:
  * - Checks that key certificate is present
  * - Checks that key certificate is valid
  *
- * Adds @key to the keys manager @mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
+ * Adds @p key to the keys manager @p mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
  * function.
  *
- * Returns: 1 if key is verified, 0 otherwise, or a negative value if an error occurs.
+ * @param mngr the pointer to keys manager.
+ * @param key the pointer to key.
+ * @param keyInfoCtx the key info context for verification.
+ * @return 1 if key is verified, 0 otherwise, or a negative value if an error occurs.
  */
 int
 xmlSecGCryptAppDefaultKeysMngrVerifyKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key, xmlSecKeyInfoCtxPtr keyInfoCtx) {
@@ -588,14 +552,13 @@ xmlSecGCryptAppDefaultKeysMngrVerifyKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key
 }
 
 /**
- * xmlSecGCryptAppDefaultKeysMngrLoad:
- * @mngr:               the pointer to keys manager.
- * @uri:                the uri.
- *
- * Loads XML keys file from @uri to the keys manager @mngr created
+ * @brief Loads the XML keys file into the keys manager.
+ * @details Loads XML keys file from @p uri to the keys manager @p mngr created
  * with #xmlSecGCryptAppDefaultKeysMngrInit function.
  *
- * Returns: 0 on success or a negative value otherwise.
+ * @param mngr the pointer to keys manager.
+ * @param uri the uri.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecGCryptAppDefaultKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
@@ -622,14 +585,11 @@ xmlSecGCryptAppDefaultKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
 }
 
 /**
- * xmlSecGCryptAppDefaultKeysMngrSave:
- * @mngr:               the pointer to keys manager.
- * @filename:           the destination filename.
- * @type:               the type of keys to save (public/private/symmetric).
- *
- * Saves keys from @mngr to  XML keys file.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Saves keys from @p mngr to XML keys file.
+ * @param mngr the pointer to keys manager.
+ * @param filename the destination filename.
+ * @param type the type of keys to save (public/private/symmetric).
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecGCryptAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename, xmlSecKeyDataType type) {
@@ -656,11 +616,9 @@ xmlSecGCryptAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename,
 }
 
 /**
- * xmlSecGCryptAppGetDefaultPwdCallback:
+ * @brief Gets default password callback.
  *
- * Gets default password callback.
- *
- * Returns: default password callback.
+ * @return default password callback.
  */
 void*
 xmlSecGCryptAppGetDefaultPwdCallback(void) {

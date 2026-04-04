@@ -21,7 +21,7 @@
  * This is free software; see the Copyright file in the source
  * distribution for precise wording.
  *
- * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2024 Aleksey Sanin <aleksey#aleksey.com>. All Rights Reserved.
  */
 #include <stdlib.h>
 #include <string.h>
@@ -136,16 +136,14 @@ main(int argc, char **argv) {
 }
 
 /**
- * sign_file:
- * @xml_file:           the XML file name.
- * @key_file:           the PEM private key file name.
- * @cert_file:          the x509 certificate PEM file.
- *
- * Signs the @xml_file using private key from @key_file and dynamicaly
- * created enveloped signature template. The certificate from @cert_file
+ * @brief Signs an XML file using a private key and X.509 certificate.
+ * @details Signs the #xml_file using private key from #key_file and dynamicaly
+ * created enveloped signature template. The certificate from #cert_file
  * is placed in the <dsig:X509Data/> node.
- *
- * Returns 0 on success or a negative value if an error occurs.
+ * @param xml_file the XML file name.
+ * @param key_file the PEM private key file name.
+ * @param cert_file the x509 certificate PEM file.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 sign_file(const char* xml_file, const char* key_file, const char* cert_file) {

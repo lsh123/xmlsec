@@ -15,7 +15,7 @@
  * This is free software; see the Copyright file in the source
  * distribution for precise wording.
  *
- * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2024 Aleksey Sanin <aleksey#aleksey.com>. All Rights Reserved.
  */
 #include <stdlib.h>
 #include <string.h>
@@ -143,14 +143,12 @@ main(int argc, char **argv) {
 }
 
 /**
- * decrypt_file:
- * @mngr:               the pointer to keys manager.
- * @enc_file:           the encrypted XML  file name.
- *
- * Decrypts the XML file #enc_file using DES key from #key_file and
+ * @brief Decrypts an encrypted XML file using a DES key from keys manager.
+ * @details Decrypts the XML file #enc_file using DES key from #key_file and
  * prints results to stdout.
- *
- * Returns 0 on success or a negative value if an error occurs.
+ * @param mngr the pointer to keys manager.
+ * @param enc_file the encrypted XML  file name.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 decrypt_file(xmlSecKeysMngrPtr mngr, const char* enc_file) {
@@ -221,12 +219,10 @@ done:
 }
 
 /**
- * create_files_keys_mngr:
- *
- * Creates a files based keys manager: we assume that key name is
- * the key file name,
- *
- * Returns pointer to newly created keys manager or NULL if an error occurs.
+ * @brief Creates a files-based keys manager.
+ * @details Creates a files based keys manager: we assume that key name is
+ * the key file name.
+ * @return pointer to newly created keys manager or NULL if an error occurs.
  */
 xmlSecKeysMngrPtr
 create_files_keys_mngr(void) {
@@ -268,14 +264,14 @@ create_files_keys_mngr(void) {
     return(mngr);
 }
 
-/****************************************************************************
+/******************************************************************************
  *
  * Files Keys Store: we assume that key's name (content of the
  * <dsig:KeyName/> element is a name of the file with a key (in the
  * current folder).
  * Attention: this probably not a good solution for high traffic systems.
  *
- ***************************************************************************/
+  *****************************************************************************/
 static xmlSecKeyPtr             files_keys_store_find_key       (xmlSecKeyStorePtr store,
                                                                  const xmlChar* name,
                                                                  xmlSecKeyInfoCtxPtr keyInfoCtx);
@@ -293,12 +289,10 @@ static xmlSecKeyStoreKlass files_keys_store_klass = {
 };
 
 /**
- * files_keys_store_get_klass:
- *
- * The files based keys store klass: we assume that key name is the
- * key file name,
- *
- * Returns files based keys store klass.
+ * @brief Gets the files-based keys store klass.
+ * @details The files based keys store klass: we assume that key name is the
+ * key file name.
+ * @return files based keys store klass.
  */
 xmlSecKeyStoreId
 files_keys_store_get_klass(void) {
@@ -306,15 +300,13 @@ files_keys_store_get_klass(void) {
 }
 
 /**
- * files_keys_store_find_key:
- * @store:              the pointer to simple keys store.
- * @name:               the desired key name.
- * @keyInfoCtx:         the pointer to <dsig:KeyInfo/> node processing context.
- *
- * Lookups key in the @store. The caller is responsible for destroying
+ * @brief Finds a key in the files-based keys store.
+ * @details Lookups key in the #store. The caller is responsible for destroying
  * returned key with #xmlSecKeyDestroy function.
- *
- * Returns pointer to key or NULL if key not found or an error occurs.
+ * @param store the pointer to simple keys store.
+ * @param name the desired key name.
+ * @param keyInfoCtx the pointer to <dsig:KeyInfo/> node processing context.
+ * @return pointer to key or NULL if key not found or an error occurs.
  */
 static xmlSecKeyPtr
 files_keys_store_find_key(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKeyInfoCtxPtr keyInfoCtx) {

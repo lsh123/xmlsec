@@ -9,10 +9,8 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:keysstore
- * @Short_description: Keys store implementation for Microsoft Crypto API.
- * @Stability: Stable
- *
+ * @addtogroup xmlsec_mscrypto_keysstore
+ * @brief Keys store implementation for Microsoft Crypto API.
  * MSCrypto keys store that uses Simple Keys Store under the hood. Uses the
  * MS Certificate store as a backing store for the finding keys, but the
  * MS Certificate store not written to by the keys store.
@@ -21,7 +19,6 @@
  * Thus, the MS Certificate store can be used to pre-load keys and becomes
  * an alternate source of keys for xmlsec.
  */
-
 #include "globals.h"
 
 #include <stdlib.h>
@@ -51,11 +48,11 @@
 #define XMLSEC_MSCRYPTO_APP_DEFAULT_CERT_STORE_NAME XMLSEC_MSCRYPTO_APP_DEFAULT_CERT_STORE_NAME_A
 #endif /* UNICODE */
 
-/****************************************************************************
+/******************************************************************************
  *
  * MSCrypto Keys Store. Uses Simple Keys Store under the hood
  *
- ***************************************************************************/
+  *****************************************************************************/
 XMLSEC_KEY_STORE_DECLARE(MSCryptoKeysStore, xmlSecKeyStorePtr)
 #define xmlSecMSCryptoKeysStoreSize XMLSEC_KEY_STORE_SIZE(MSCryptoKeysStore)
 
@@ -83,11 +80,8 @@ static xmlSecKeyStoreKlass xmlSecMSCryptoKeysStoreKlass = {
 };
 
 /**
- * xmlSecMSCryptoKeysStoreGetKlass:
- *
- * The MSCrypto list based keys store klass.
- *
- * Returns: MSCrypto list based keys store klass.
+ * @brief The MSCrypto list based keys store klass.
+ * @return MSCrypto list based keys store klass.
  */
 xmlSecKeyStoreId
 xmlSecMSCryptoKeysStoreGetKlass(void) {
@@ -95,13 +89,10 @@ xmlSecMSCryptoKeysStoreGetKlass(void) {
 }
 
 /**
- * xmlSecMSCryptoKeysStoreAdoptKey:
- * @store:              the pointer to MSCrypto keys store.
- * @key:                the pointer to key.
- *
- * Adds @key to the @store.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Adds @p key to the @p store.
+ * @param store the pointer to MSCrypto keys store.
+ * @param key the pointer to key.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecMSCryptoKeysStoreAdoptKey(xmlSecKeyStorePtr store, xmlSecKeyPtr key) {
@@ -118,14 +109,11 @@ xmlSecMSCryptoKeysStoreAdoptKey(xmlSecKeyStorePtr store, xmlSecKeyPtr key) {
 }
 
 /**
- * xmlSecMSCryptoKeysStoreLoad:
- * @store:              the pointer to MSCrypto keys store.
- * @uri:                the filename.
- * @keysMngr:           the pointer to associated keys manager.
- *
- * Reads keys from an XML file.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Reads keys from an XML file.
+ * @param store the pointer to MSCrypto keys store.
+ * @param uri the filename.
+ * @param keysMngr the pointer to associated keys manager.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecMSCryptoKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
@@ -135,14 +123,11 @@ xmlSecMSCryptoKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
 }
 
 /**
- * xmlSecMSCryptoKeysStoreSave:
- * @store:              the pointer to MSCrypto keys store.
- * @filename:           the filename.
- * @type:               the saved keys type (public, private, ...).
- *
- * Writes keys from @store to an XML file.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Writes keys from @p store to an XML file.
+ * @param store the pointer to MSCrypto keys store.
+ * @param filename the filename.
+ * @param type the saved keys type (public, private, ...).
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecMSCryptoKeysStoreSave(xmlSecKeyStorePtr store, const char *filename, xmlSecKeyDataType type) {

@@ -9,9 +9,8 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:transforms
+ * @addtogroup xmlsec_core_transforms
  */
-
 #include "globals.h"
 
 #include <stdlib.h>
@@ -30,11 +29,11 @@
 #ifndef XMLSEC_NO_DES
 
 
-/*********************************************************************
+/******************************************************************************
 *
 * Triple DES helper functions
 *
-********************************************************************/
+ *****************************************************************************/
 static int      xmlSecKWDes3Encode                             (xmlSecKWDes3Id kwDes3Id,
                                                                 xmlSecTransformPtr transform,
                                                                 const xmlSecByte* in,
@@ -52,11 +51,11 @@ static int      xmlSecKWDes3Decode                              (xmlSecKWDes3Id 
 static int      xmlSecKWDes3BufferReverse                       (xmlSecByte *buf,
                                                                  xmlSecSize size);
 
-/*********************************************************************
+/******************************************************************************
  *
  * Triple DES Key Wrap transform
  *
- ********************************************************************/
+  *****************************************************************************/
 int
 xmlSecTransformKWDes3Initialize(xmlSecTransformPtr transform, xmlSecTransformKWDes3CtxPtr ctx,
                     xmlSecKWDes3Id kwDes3Id, xmlSecKeyDataId keyId) {
@@ -237,11 +236,11 @@ xmlSecTransformKWDes3Execute(xmlSecTransformPtr transform, xmlSecTransformKWDes3
 
 
 
-/********************************************************************
+/******************************************************************************
  *
  * CMS Triple DES Key Wrap
  *
- * http://www.w3.org/TR/xmlenc-core/#sec-Alg-SymmetricKeyWrap
+ * http://www.w3.org/TR/xmlenc-coree/#sec-Alg-SymmetricKeyWrap
  *
  * The following algorithm wraps (encrypts) a key (the wrapped key, WK)
  * under a TRIPLEDES key-encryption-key (KEK) as specified in [CMS-Algorithms]:
@@ -281,7 +280,7 @@ xmlSecTransformKWDes3Execute(xmlSecTransformPtr transform, xmlSecTransformKWDes3
  *    error.
  * 8. WK is the wrapped key, now extracted for use in data decryption.
  *
- ********************************************************************/
+  *****************************************************************************/
 static xmlSecByte xmlSecKWDes3Iv[XMLSEC_KW_DES3_IV_LENGTH] = {
     0x4a, 0xdd, 0xa2, 0x2c, 0x79, 0xe8, 0x21, 0x05
 };
@@ -687,11 +686,11 @@ xmlSecTransformKWRfc3394Execute(xmlSecTransformPtr transform, xmlSecTransformKWR
 }
 
 
-/********************************************************************
+/******************************************************************************
  *
  * KW RFC 3394
  *
- * http://www.w3.org/TR/xmlenc-core/#sec-Alg-SymmetricKeyWrap:
+ * http://www.w3.org/TR/xmlenc-coree/#sec-Alg-SymmetricKeyWrap:
  *
  * Assume that the data to be wrapped consists of N 64-bit data blocks
  * denoted P(1), P(2), P(3) ... P(N). The result of wrapping will be N+1
@@ -758,7 +757,7 @@ xmlSecTransformKWRfc3394Execute(xmlSecTransformPtr transform, xmlSecTransformKWR
  *            P(i)=R(i)
  *          * If A is 0xA6A6A6A6A6A6A6A6, return success. Otherwise, return
  *            an integrity check failure error.
- ********************************************************************/
+  *****************************************************************************/
 static const xmlSecByte xmlSecKWRfc3394MagicBlock[XMLSEC_KW_RFC3394_MAGIC_BLOCK_SIZE] = {
     0xA6,  0xA6,  0xA6,  0xA6,  0xA6,  0xA6,  0xA6,  0xA6
 };

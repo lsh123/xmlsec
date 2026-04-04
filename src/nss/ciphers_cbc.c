@@ -10,9 +10,8 @@
  * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
 /**
- * SECTION:crypto
+ * @addtogroup xmlsec_nss_crypto
  */
-
 #include "globals.h"
 
 #include <string.h>
@@ -36,11 +35,11 @@
 #define XMLSEC_NSS_CBC_CIPHER_MAX_IV_SIZE          32
 #define XMLSEC_NSS_CBC_CIPHER_MAX_BLOCK_SIZE       32
 
-/**************************************************************************
+/******************************************************************************
  *
  * Internal Nss Block cipher CTX
  *
- *****************************************************************************/
+  *****************************************************************************/
 typedef struct _xmlSecNssCbcCipherCtx                   xmlSecNssCbcCipherCtx,
                                                         *xmlSecNssCbcCipherCtxPtr;
 struct _xmlSecNssCbcCipherCtx {
@@ -383,7 +382,7 @@ xmlSecNssCbcCipherCtxFinal(xmlSecNssCbcCipherCtxPtr ctx,
  *
  * xmlSecTransform + xmlSecNssCbcCipherCtx
  *
- *****************************************************************************/
+  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(NssCbcCipher, xmlSecNssCbcCipherCtx)
 #define xmlSecNssCbcCipherSize XMLSEC_TRANSFORM_SIZE(NssCbcCipher)
 
@@ -671,19 +670,16 @@ static xmlSecTransformKlass xmlSecNss ## name ## Klass = {                      
 
 
 #ifndef XMLSEC_NO_AES
-/*********************************************************************
+/******************************************************************************
  *
  * AES CBC cipher transforms
  *
- ********************************************************************/
+  *****************************************************************************/
 XMLSEC_NSS_CIPHER_CBC_KLASS(Aes128Cbc)
 
 /**
- * xmlSecNssTransformAes128CbcGetKlass:
- *
- * AES 128 CBC encryption transform klass.
- *
- * Returns: pointer to AES 128 CBC encryption transform.
+ * @brief AES 128 CBC encryption transform klass.
+ * @return pointer to AES 128 CBC encryption transform.
  */
 xmlSecTransformId
 xmlSecNssTransformAes128CbcGetKlass(void) {
@@ -693,11 +689,8 @@ xmlSecNssTransformAes128CbcGetKlass(void) {
 XMLSEC_NSS_CIPHER_CBC_KLASS(Aes192Cbc)
 
 /**
- * xmlSecNssTransformAes192CbcGetKlass:
- *
- * AES 192 CBC encryption transform klass.
- *
- * Returns: pointer to AES 192 CBC encryption transform.
+ * @brief AES 192 CBC encryption transform klass.
+ * @return pointer to AES 192 CBC encryption transform.
  */
 xmlSecTransformId
 xmlSecNssTransformAes192CbcGetKlass(void) {
@@ -707,11 +700,8 @@ xmlSecNssTransformAes192CbcGetKlass(void) {
 XMLSEC_NSS_CIPHER_CBC_KLASS(Aes256Cbc)
 
 /**
- * xmlSecNssTransformAes256CbcGetKlass:
- *
- * AES 256 CBC encryption transform klass.
- *
- * Returns: pointer to AES 256 CBC encryption transform.
+ * @brief AES 256 CBC encryption transform klass.
+ * @return pointer to AES 256 CBC encryption transform.
  */
 xmlSecTransformId
 xmlSecNssTransformAes256CbcGetKlass(void) {
@@ -721,19 +711,16 @@ xmlSecNssTransformAes256CbcGetKlass(void) {
 #endif /* XMLSEC_NO_AES */
 
 #ifndef XMLSEC_NO_CAMELLIA
-/*********************************************************************
+/******************************************************************************
  *
  * Camellia CBC cipher transforms
  *
- ********************************************************************/
+  *****************************************************************************/
 XMLSEC_NSS_CIPHER_CBC_KLASS(Camellia128Cbc)
 
 /**
- * xmlSecNssTransformCamellia128CbcGetKlass:
- *
- * Camellia 128 CBC encryption transform klass.
- *
- * Returns: pointer to Camellia 128 CBC encryption transform.
+ * @brief Camellia 128 CBC encryption transform klass.
+ * @return pointer to Camellia 128 CBC encryption transform.
  */
 xmlSecTransformId
 xmlSecNssTransformCamellia128CbcGetKlass(void) {
@@ -743,11 +730,8 @@ xmlSecNssTransformCamellia128CbcGetKlass(void) {
 XMLSEC_NSS_CIPHER_CBC_KLASS(Camellia192Cbc)
 
 /**
- * xmlSecNssTransformCamellia192CbcGetKlass:
- *
- * Camellia 192 CBC encryption transform klass.
- *
- * Returns: pointer to Camellia 192 CBC encryption transform.
+ * @brief Camellia 192 CBC encryption transform klass.
+ * @return pointer to Camellia 192 CBC encryption transform.
  */
 xmlSecTransformId
 xmlSecNssTransformCamellia192CbcGetKlass(void) {
@@ -757,11 +741,8 @@ xmlSecNssTransformCamellia192CbcGetKlass(void) {
 XMLSEC_NSS_CIPHER_CBC_KLASS(Camellia256Cbc)
 
 /**
- * xmlSecNssTransformCamellia256CbcGetKlass:
- *
- * Camellia 256 CBC encryption transform klass.
- *
- * Returns: pointer to Camellia 256 CBC encryption transform.
+ * @brief Camellia 256 CBC encryption transform klass.
+ * @return pointer to Camellia 256 CBC encryption transform.
  */
 xmlSecTransformId
 xmlSecNssTransformCamellia256CbcGetKlass(void) {
@@ -774,11 +755,8 @@ xmlSecNssTransformCamellia256CbcGetKlass(void) {
 XMLSEC_NSS_CIPHER_CBC_KLASS(Des3Cbc)
 
 /**
- * xmlSecNssTransformDes3CbcGetKlass:
- *
- * Triple DES CBC encryption transform klass.
- *
- * Returns: pointer to Triple DES encryption transform.
+ * @brief Triple DES CBC encryption transform klass.
+ * @return pointer to Triple DES encryption transform.
  */
 xmlSecTransformId
 xmlSecNssTransformDes3CbcGetKlass(void) {

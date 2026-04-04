@@ -5,7 +5,7 @@
  *
  * See Copyright for the status of this software.
  *
- * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2024 Aleksey Sanin <aleksey#aleksey.com>. All Rights Reserved.
  */
 #include <stdlib.h>
 #include <string.h>
@@ -17,7 +17,7 @@
 #include "xmlsec_unit_tests.h"
 #include "../src/x509_helpers.h"
 
-/*********************************** test_xmlSecX509EscapedStringRead ***********************************/
+/****************************************************************************** test_xmlSecX509EscapedStringRead  *****************************************************************************/
 static void
 test_xmlSecX509EscapedStringRead_success(
     const char * name,
@@ -130,7 +130,7 @@ test_xmlSecX509EscapedStringRead(void) {
 }
 
 
-/*********************************** test_xmlSecX509AttrValueStringRead ***********************************/
+/****************************************************************************** test_xmlSecX509AttrValueStringRead  *****************************************************************************/
 static void
 test_xmlSecX509AttrValueStringRead_success(
     const char * name,
@@ -261,7 +261,7 @@ test_xmlSecX509AttrValueStringRead(void) {
 }
 
 
-/*********************************** test_xmlSecX509NameRead ***********************************/
+/****************************************************************************** test_xmlSecX509NameRead  *****************************************************************************/
 #define TEST_X509_NAME_MAX_COUNT 16
 
 typedef struct test_X509Name {

@@ -9,9 +9,8 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:crypto
+ * @addtogroup xmlsec_openssl_crypto
  */
-
 #include "globals.h"
 
 #include <stdlib.h>
@@ -42,11 +41,11 @@
 #endif /* XMLSEC_NO_CAMELLIA */
 
 
-/*********************************************************************
+/******************************************************************************
  *
  * Unified RFC 3394 KW implementation
  *
- *********************************************************************/
+  *****************************************************************************/
 #if !defined(XMLSEC_NO_AES) || !defined(XMLSEC_NO_CAMELLIA)
 
 static int        xmlSecOpenSSLKWRfc3394BlockEncrypt            (xmlSecTransformPtr transform,
@@ -78,11 +77,11 @@ typedef struct _xmlSecOpenSSLKWRfc3394Ctx   xmlSecOpenSSLKWRfc3394Ctx,
                                             *xmlSecOpenSSLKWRfc3394CtxPtr;
 
 
-/*********************************************************************
+/******************************************************************************
  *
  * Unified callback for old OpenSSL versions
  *
- ********************************************************************/
+  *****************************************************************************/
 #ifndef XMLSEC_OPENSSL_API_300
 
 /* Function pointer type for encrypt/decrypt operations */
@@ -119,11 +118,11 @@ static int      xmlSecOpenSSLKWCamelliaEncryptDecrypt          (xmlSecOpenSSLKWR
 #endif /* XMLSEC_OPENSSL_API_300 */
 
 
-/*********************************************************************
+/******************************************************************************
  *
  * Unified RFC 3394 KW transforms context
  *
- ********************************************************************/
+  *****************************************************************************/
 
 struct _xmlSecOpenSSLKWRfc3394Ctx {
     xmlSecTransformKWRfc3394Ctx parentCtx;
@@ -147,11 +146,11 @@ struct _xmlSecOpenSSLKWRfc3394Ctx {
 #endif /* XMLSEC_OPENSSL_API_300 */
 
 
-/*********************************************************************
+/******************************************************************************
  *
  * Unified RFC 3394 KW transforms
  *
- ********************************************************************/
+  *****************************************************************************/
 
 
 XMLSEC_TRANSFORM_DECLARE(OpenSSLKWRfc3394, xmlSecOpenSSLKWRfc3394Ctx)
@@ -171,11 +170,11 @@ static int      xmlSecOpenSSLKWRfc3394Execute                  (xmlSecTransformP
 
 
 
- /*********************************************************************
+ /******************************************************************************
  *
  * Unified RFC 3394 KW transform class macro
  *
- *********************************************************************/
+  *****************************************************************************/
 #define XMLSEC_OPENSSL_KW_RFC3394_KLASS(name)                                                           \
 static xmlSecTransformKlass xmlSecOpenSSLKW ## name ## Klass = {                                        \
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */                              \
@@ -379,11 +378,11 @@ xmlSecOpenSSLKWRfc3394Execute(xmlSecTransformPtr transform, int last,
 }
 
 
-/*********************************************************************
+/******************************************************************************
  *
  * RFC 3394 KW encrypt/decrypt implementation
  *
- *********************************************************************/
+  *****************************************************************************/
 #ifdef XMLSEC_OPENSSL_API_300
 
 static int
@@ -576,11 +575,11 @@ xmlSecOpenSSLKWRfc3394BlockDecrypt(xmlSecTransformPtr transform, const xmlSecByt
 
 
 
-/*********************************************************************
+/******************************************************************************
  *
  * AES KW transform classes
  *
- *********************************************************************/
+  *****************************************************************************/
 #ifndef XMLSEC_NO_AES
 
 #ifndef XMLSEC_OPENSSL_API_300
@@ -643,11 +642,8 @@ done:
 XMLSEC_OPENSSL_KW_RFC3394_KLASS(Aes128)
 
 /**
- * xmlSecOpenSSLTransformKWAes128GetKlass:
- *
- * The AES-128 kew wrapper transform klass.
- *
- * Returns: AES-128 kew wrapper transform klass.
+ * @brief The AES-128 key wrapper transform klass.
+ * @return AES-128 key wrapper transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformKWAes128GetKlass(void) {
@@ -658,11 +654,8 @@ XMLSEC_OPENSSL_KW_RFC3394_KLASS(Aes192)
 
 
 /**
- * xmlSecOpenSSLTransformKWAes192GetKlass:
- *
- * The AES-192 kew wrapper transform klass.
- *
- * Returns: AES-192 kew wrapper transform klass.
+ * @brief The AES-192 key wrapper transform klass.
+ * @return AES-192 key wrapper transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformKWAes192GetKlass(void) {
@@ -672,11 +665,8 @@ xmlSecOpenSSLTransformKWAes192GetKlass(void) {
 XMLSEC_OPENSSL_KW_RFC3394_KLASS(Aes256)
 
 /**
- * xmlSecOpenSSLTransformKWAes256GetKlass:
- *
- * The AES-256 kew wrapper transform klass.
- *
- * Returns: AES-256 kew wrapper transform klass.
+ * @brief The AES-256 key wrapper transform klass.
+ * @return AES-256 key wrapper transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformKWAes256GetKlass(void) {
@@ -685,11 +675,11 @@ xmlSecOpenSSLTransformKWAes256GetKlass(void) {
 #endif /* XMLSEC_NO_AES */
 
 
-/*********************************************************************
+/******************************************************************************
  *
  * Camellia KW transform classes
  *
- *********************************************************************/
+  *****************************************************************************/
 #ifndef XMLSEC_NO_CAMELLIA
 
 #ifndef XMLSEC_OPENSSL_API_300
@@ -742,11 +732,8 @@ xmlSecOpenSSLKWCamelliaEncryptDecrypt(xmlSecOpenSSLKWRfc3394CtxPtr ctx, const xm
 XMLSEC_OPENSSL_KW_RFC3394_KLASS(Camellia128)
 
 /**
- * xmlSecOpenSSLTransformKWCamellia128GetKlass:
- *
- * The Camellia-128 key wrapper transform klass.
- *
- * Returns: Camellia-128 key wrapper transform klass.
+ * @brief The Camellia-128 key wrapper transform klass.
+ * @return Camellia-128 key wrapper transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformKWCamellia128GetKlass(void) {
@@ -756,11 +743,8 @@ xmlSecOpenSSLTransformKWCamellia128GetKlass(void) {
 XMLSEC_OPENSSL_KW_RFC3394_KLASS(Camellia192)
 
 /**
- * xmlSecOpenSSLTransformKWCamellia192GetKlass:
- *
- * The Camellia-192 key wrapper transform klass.
- *
- * Returns: Camellia-192 key wrapper transform klass.
+ * @brief The Camellia-192 key wrapper transform klass.
+ * @return Camellia-192 key wrapper transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformKWCamellia192GetKlass(void) {
@@ -770,11 +754,8 @@ xmlSecOpenSSLTransformKWCamellia192GetKlass(void) {
 XMLSEC_OPENSSL_KW_RFC3394_KLASS(Camellia256)
 
 /**
- * xmlSecOpenSSLTransformKWCamellia256GetKlass:
- *
- * The Camellia-256 key wrapper transform klass.
- *
- * Returns: Camellia-256 key wrapper transform klass.
+ * @brief The Camellia-256 key wrapper transform klass.
+ * @return Camellia-256 key wrapper transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformKWCamellia256GetKlass(void) {

@@ -9,9 +9,8 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:transforms
+ * @addtogroup xmlsec_core_transforms
  */
-
 #include "globals.h"
 
 #include <stdlib.h>
@@ -31,17 +30,14 @@
 
 #include "cast_helpers.h"
 
-/**************************************************************************
- *
- * xmlSecXPathHereFunction:
- * @ctxt:               the ponter to XPath context.
- * @nargs:              the arguments number.
- *
- * The implementation of XPath "here()" function.
+/**
+ * @brief Implements the XPath here() function.
+ * @details The implementation of XPath "here()" function.
  * See xmlXPtrHereFunction() in xpointer.c. the only change is that
  * we return NodeSet instead of NodeInterval.
- *
- *****************************************************************************/
+ * @param ctxt the ponter to XPath context.
+ * @param nargs the arguments number.
+ */
 static void
 xmlSecXPathHereFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     CHECK_ARITY(0);
@@ -52,11 +48,11 @@ xmlSecXPathHereFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     valuePush(ctxt, xmlXPathNewNodeSet(ctxt->context->here));
 }
 
-/**************************************************************************
+/******************************************************************************
  *
  * XPath/XPointer data
  *
- *****************************************************************************/
+  *****************************************************************************/
 typedef struct _xmlSecXPathData                 xmlSecXPathData,
                                                 *xmlSecXPathDataPtr;
 typedef enum {
@@ -278,11 +274,11 @@ xmlSecXPathDataExecute(xmlSecXPathDataPtr data, xmlDocPtr doc, xmlNodePtr hereNo
 }
 
 
-/**************************************************************************
+/******************************************************************************
  *
  * XPath data list
  *
- *****************************************************************************/
+  *****************************************************************************/
 #define xmlSecXPathDataListId   \
         xmlSecXPathDataListGetKlass()
 static xmlSecPtrListId  xmlSecXPathDataListGetKlass             (void);
@@ -358,7 +354,7 @@ xmlSecXPathDataListExecute(xmlSecPtrListPtr dataList, xmlDocPtr doc,
  *
  * xmlSecTransform + xmlSecXPathDataList
  *
- *****************************************************************************/
+  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(XPath, xmlSecPtrList)
 #define xmlSecXPathSize XMLSEC_TRANSFORM_SIZE(XPath)
 
@@ -437,7 +433,7 @@ xmlSecTransformXPathExecute(xmlSecTransformPtr transform, int last,
  *
  * XPath transform
  *
- *****************************************************************************/
+  *****************************************************************************/
 static int              xmlSecTransformXPathNodeRead    (xmlSecTransformPtr transform,
                                                          xmlNodePtr node,
                                                          xmlSecTransformCtxPtr transformCtx);
@@ -470,13 +466,11 @@ static xmlSecTransformKlass xmlSecTransformXPathKlass = {
 };
 
 /**
- * xmlSecTransformXPathGetKlass:
- *
- * The XPath transform evaluates given XPath expression and
+ * @brief Gets the XPath transform klass.
+ * @details The XPath transform evaluates given XPath expression and
  * intersects the result with the previous nodes set. See
  * http://www.w3.org/TR/xmldsig-core/#sec-XPath for more details.
- *
- * Returns: XPath transform id.
+ * @return XPath transform id.
  */
 xmlSecTransformId
 xmlSecTransformXPathGetKlass(void) {
@@ -573,7 +567,7 @@ xmlSecTransformXPathNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlS
  *
  * XPath2 transform
  *
- *****************************************************************************/
+  *****************************************************************************/
 static int              xmlSecTransformXPath2NodeRead   (xmlSecTransformPtr transform,
                                                          xmlNodePtr node,
                                                          xmlSecTransformCtxPtr transformCtx);
@@ -605,11 +599,9 @@ static xmlSecTransformKlass xmlSecTransformXPath2Klass = {
 };
 
 /**
- * xmlSecTransformXPath2GetKlass:
- *
- * The XPath2 transform (http://www.w3.org/TR/xmldsig-filter2/).
- *
- * Returns: XPath2 transform klass.
+ * @brief Gets the XPath2 transform klass.
+ * @details The XPath2 transform (http://www.w3.org/TR/xmldsig-filter2/).
+ * @return XPath2 transform klass.
  */
 xmlSecTransformId
 xmlSecTransformXPath2GetKlass(void) {
@@ -699,7 +691,7 @@ xmlSecTransformXPath2NodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xml
  *
  * XPointer transform
  *
- *****************************************************************************/
+  *****************************************************************************/
 static int              xmlSecTransformXPointerNodeRead (xmlSecTransformPtr transform,
                                                          xmlNodePtr node,
                                                          xmlSecTransformCtxPtr transformCtx);
@@ -731,12 +723,10 @@ static xmlSecTransformKlass xmlSecTransformXPointerKlass = {
 };
 
 /**
- * xmlSecTransformXPointerGetKlass:
- *
- * The XPointer transform klass
+ * @brief Gets the XPointer transform klass.
+ * @details The XPointer transform klass
  * (https://www.rfc-editor.org/rfc/rfc9231.html).
- *
- * Returns: XPointer transform klass.
+ * @return XPointer transform klass.
  */
 xmlSecTransformId
 xmlSecTransformXPointerGetKlass(void) {
@@ -744,15 +734,13 @@ xmlSecTransformXPointerGetKlass(void) {
 }
 
 /**
- * xmlSecTransformXPointerSetExpr:
- * @transform:          the pointer to XPointer transform.
- * @expr:               the XPointer expression.
- * @nodeSetType:        the type of evaluated XPointer expression.
- * @hereNode:           the pointer to "here" node.
- *
- * Sets the XPointer expression for an XPointer @transform.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Sets the XPointer expression for a transform.
+ * @details Sets the XPointer expression for an XPointer @p transform.
+ * @param transform the pointer to XPointer transform.
+ * @param expr the XPointer expression.
+ * @param nodeSetType the type of evaluated XPointer expression.
+ * @param hereNode the pointer to "here" node.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecTransformXPointerSetExpr(xmlSecTransformPtr transform, const xmlChar* expr,
@@ -879,7 +867,7 @@ xmlSecTransformXPointerNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, x
  *
  * xmlSecTransform + xmlChar* (pointer to ID)
  *
- *****************************************************************************/
+  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(Visa3DHack, xmlChar*)
 #define xmlSecVisa3DHackSize XMLSEC_TRANSFORM_SIZE(Visa3DHack)
 
@@ -920,14 +908,12 @@ static xmlSecTransformKlass xmlSecTransformVisa3DHackKlass = {
 };
 
 /**
- * xmlSecTransformVisa3DHackGetKlass:
- *
- * The Visa3DHack transform klass. The only reason why we need this
+ * @brief Gets the Visa3DHack transform klass.
+ * @details The Visa3DHack transform klass. The only reason why we need this
  * is Visa3D protocol. It doesn't follow XML/XPointer/XMLDSig specs and allows
  * invalid XPointer expressions in the URI attribute. Since we couldn't evaluate
  * such expressions thru XPath/XPointer engine, we need to have this hack here.
- *
- * Returns: Visa3DHack transform klass.
+ * @return Visa3DHack transform klass.
  */
 xmlSecTransformId
 xmlSecTransformVisa3DHackGetKlass(void) {
@@ -935,13 +921,10 @@ xmlSecTransformVisa3DHackGetKlass(void) {
 }
 
 /**
- * xmlSecTransformVisa3DHackSetID:
- * @transform:          the pointer to Visa3DHack transform.
- * @id:                 the ID value.
- *
- * Sets the ID value for an Visa3DHack @transform.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Sets the ID value for an Visa3DHack @p transform.
+ * @param transform the pointer to Visa3DHack transform.
+ * @param id the ID value.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecTransformVisa3DHackSetID(xmlSecTransformPtr transform, const xmlChar* id) {

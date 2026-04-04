@@ -9,9 +9,8 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:crypto
+ * @addtogroup xmlsec_gnutls_crypto
  */
-
 #include "globals.h"
 
 #include <string.h>
@@ -35,11 +34,11 @@
 #include "../keysdata_helpers.h"
 #include "private.h"
 
-/**************************************************************************
+/******************************************************************************
  *
  * Internal GnuTLS asym key CTX
  *
- *************************************************************************/
+  *****************************************************************************/
 typedef struct _xmlSecGnuTLSAsymKeyDataCtx       xmlSecGnuTLSAsymKeyDataCtx,
                                                 *xmlSecGnuTLSAsymKeyDataCtxPtr;
 struct _xmlSecGnuTLSAsymKeyDataCtx {
@@ -51,7 +50,7 @@ struct _xmlSecGnuTLSAsymKeyDataCtx {
  *
  * GnuTLS asym key data (dsa/rsa/ec)
  *
- *****************************************************************************/
+  *****************************************************************************/
 XMLSEC_KEY_DATA_DECLARE(GnuTLSAsymKeyData, xmlSecGnuTLSAsymKeyDataCtx)
 #define xmlSecGnuTLSAsymKeyDataSize XMLSEC_KEY_DATA_SIZE(GnuTLSAsymKeyData)
 
@@ -393,19 +392,16 @@ xmlSecGnuTLSAsymKeyDataGetSize(xmlSecKeyDataPtr data) {
     return(0);
 }
 
-/********************************************************************
+/******************************************************************************
  *
  * Asymetric keys helpers
  *
- *******************************************************************/
+  *****************************************************************************/
 
 /**
- * xmlSecGnuTLSAsymmetricKeyCreatePub:
- * @pubkey:             the pointer to GnuTLS public key.
- *
- * Creates XMLSec key from GnuTLS public key.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Creates XMLSec key from GnuTLS public key.
+ * @param pubkey the pointer to GnuTLS public key.
+ * @return 0 on success or a negative value otherwise.
  */
 xmlSecKeyPtr
 xmlSecGnuTLSAsymmetricKeyCreatePub(gnutls_pubkey_t pubkey) {
@@ -443,6 +439,12 @@ xmlSecGnuTLSAsymmetricKeyCreatePub(gnutls_pubkey_t pubkey) {
     return(key);
 }
 
+/**
+ * @brief Creates XMLSec key from GnuTLS public key.
+ * @details Creates XMLSec key from GnuTLS public key (deprecated, use xmlSecGnuTLSAsymmetricKeyCreatePub() instead).
+ * @param pubkey the pointer to GnuTLS public key.
+ * @return pointer to newly created key or NULL if an error occurs.
+ */
 xmlSecKeyPtr
 xmlSecGCryptAsymetricKeyCreatePub(gnutls_pubkey_t pubkey) {
     return(xmlSecGnuTLSAsymmetricKeyCreatePub(pubkey));
@@ -450,12 +452,9 @@ xmlSecGCryptAsymetricKeyCreatePub(gnutls_pubkey_t pubkey) {
 
 
 /**
- * xmlSecGnuTLSAsymmetricKeyCreatePriv:
- * @privkey:             the pointer to GnuTLS private key.
- *
- * Creates XMLSec key from GnuTLS private key.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Creates XMLSec key from GnuTLS private key.
+ * @param privkey the pointer to GnuTLS private key.
+ * @return 0 on success or a negative value otherwise.
  */
 xmlSecKeyPtr
 xmlSecGnuTLSAsymmetricKeyCreatePriv(gnutls_privkey_t privkey) {
@@ -493,6 +492,12 @@ xmlSecGnuTLSAsymmetricKeyCreatePriv(gnutls_privkey_t privkey) {
     return(key);
 }
 
+/**
+ * @brief Creates XMLSec key from GnuTLS private key.
+ * @details Creates XMLSec key from GnuTLS private key (deprecated, use xmlSecGnuTLSAsymmetricKeyCreatePriv() instead).
+ * @param privkey the pointer to GnuTLS private key.
+ * @return pointer to newly created key or NULL if an error occurs.
+ */
 xmlSecKeyPtr
 xmlSecGCryptAsymetricKeyCreatePriv(gnutls_privkey_t privkey) {
     return(xmlSecGnuTLSAsymmetricKeyCreatePriv(privkey));
@@ -500,12 +505,9 @@ xmlSecGCryptAsymetricKeyCreatePriv(gnutls_privkey_t privkey) {
 
 
 /**
- * xmlSecGnuTLSAsymmetricKeyGetPub:
- * @key:             the pointer to XMLSec key.
- *
- * Gets GnuTLS public key from an XMLSec @key .
- *
- * Returns: GnuTLS public key on success or a NULL value otherwise.
+ * @brief Gets GnuTLS public key from an XMLSec @p key.
+ * @param key the pointer to XMLSec key.
+ * @return GnuTLS public key on success or a NULL value otherwise.
  */
 gnutls_pubkey_t
 xmlSecGnuTLSAsymmetricKeyGetPub(xmlSecKeyPtr key) {
@@ -522,18 +524,21 @@ xmlSecGnuTLSAsymmetricKeyGetPub(xmlSecKeyPtr key) {
     return(xmlSecGnuTLSAsymKeyDataGetPublicKey(keyData));
 }
 
+/**
+ * @brief Gets GnuTLS public key from an XMLSec @p key.
+ * @details Gets GnuTLS public key from an XMLSec @p key (deprecated, use xmlSecGnuTLSAsymmetricKeyGetPub() instead).
+ * @param key the pointer to XMLSec key.
+ * @return GnuTLS public key on success or a NULL value otherwise.
+ */
 gnutls_pubkey_t
 xmlSecGCryptAsymetricKeyGetPub(xmlSecKeyPtr key) {
     return(xmlSecGnuTLSAsymmetricKeyGetPub(key));
 }
 
 /**
- * xmlSecGnuTLSAsymmetricKeyGetPriv:
- * @key:             the pointer to XMLSec key.
- *
- * Gets GnuTLS private key from an XMLSec @key .
- *
- * Returns: GnuTLS private key on success or a NULL value otherwise.
+ * @brief Gets GnuTLS private key from an XMLSec @p key.
+ * @param key the pointer to XMLSec key.
+ * @return GnuTLS private key on success or a NULL value otherwise.
  */
 gnutls_privkey_t
 xmlSecGnuTLSAsymmetricKeyGetPriv(xmlSecKeyPtr key) {
@@ -550,6 +555,12 @@ xmlSecGnuTLSAsymmetricKeyGetPriv(xmlSecKeyPtr key) {
     return(xmlSecGnuTLSAsymKeyDataGetPrivateKey(keyData));
 }
 
+/**
+ * @brief Gets GnuTLS private key from an XMLSec @p key.
+ * @details Gets GnuTLS private key from an XMLSec @p key (deprecated, use xmlSecGnuTLSAsymmetricKeyGetPriv() instead).
+ * @param key the pointer to XMLSec key.
+ * @return GnuTLS private key on success or a NULL value otherwise.
+ */
 gnutls_privkey_t
 xmlSecGCryptAsymetricKeyGetPriv(xmlSecKeyPtr key) {
     return(xmlSecGnuTLSAsymmetricKeyGetPriv(key));
@@ -557,14 +568,14 @@ xmlSecGCryptAsymetricKeyGetPriv(xmlSecKeyPtr key) {
 
 
 #ifndef XMLSEC_NO_DSA
-/**************************************************************************
+/******************************************************************************
  *
  * &lt;dsig:DSAKeyValue/&gt; processing
  *
  *
  * The DSAKeyValue Element (http://www.w3.org/TR/xmldsig-core/#sec-DSAKeyValue)
  *
- **************************************************************************/
+  *****************************************************************************/
 static int              xmlSecGnuTLSKeyDataDsaGenerate          (xmlSecKeyDataPtr data,
                                                                  xmlSecSize sizeBits,
                                                                  xmlSecKeyDataType type);
@@ -592,11 +603,8 @@ XMLSEC_GNUTLS_ASYMKEY_KLASS_EX(Dsa, xmlSecNameDSAKeyValue, xmlSecHrefDSAKeyValue
     xmlSecGnuTLSKeyDataDsaGenerate, xmlSecGnuTLSKeyDataDsaXmlRead, xmlSecGnuTLSKeyDataDsaXmlWrite)
 
 /**
- * xmlSecGnuTLSKeyDataDsaGetKlass:
- *
- * The DSA key data klass.
- *
- * Returns: pointer to DSA key data klass.
+ * @brief The DSA key data klass.
+ * @return pointer to DSA key data klass.
  */
 xmlSecKeyDataId
 xmlSecGnuTLSKeyDataDsaGetKlass(void) {
@@ -604,14 +612,12 @@ xmlSecGnuTLSKeyDataDsaGetKlass(void) {
 }
 
 /**
- * xmlSecGnuTLSKeyDataDsaAdoptKey:
- * @data:               the pointer to DSA key data.
- * @pubkey:             the pointer to GnuTLS DSA key.
- * @privkey:            the pointer to GnuTLS DSA key.
- *
- * Sets the value of DSA key data. The @pubkey and @privkey will be owned by the @data on success.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Sets the value of DSA key data.
+ * @details Sets the value of DSA key data. The @p pubkey and @p privkey will be owned by the @p data on success.
+ * @param data the pointer to DSA key data.
+ * @param pubkey the pointer to GnuTLS DSA key.
+ * @param privkey the pointer to GnuTLS DSA key.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecGnuTLSKeyDataDsaAdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, gnutls_privkey_t privkey) {
@@ -640,12 +646,9 @@ xmlSecGnuTLSKeyDataDsaAdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, gn
 }
 
 /**
- * xmlSecGnuTLSKeyDataDsaGetPublicKey:
- * @data:               the pointer to DSA key data.
- *
- * Gets the GnuTLS DSA public key from DSA key data.
- *
- * Returns: pointer to GnuTLS public DSA key or NULL if an error occurs.
+ * @brief Gets the GnuTLS DSA public key from DSA key data.
+ * @param data the pointer to DSA key data.
+ * @return pointer to GnuTLS public DSA key or NULL if an error occurs.
  */
 gnutls_pubkey_t
 xmlSecGnuTLSKeyDataDsaGetPublicKey(xmlSecKeyDataPtr data) {
@@ -654,12 +657,9 @@ xmlSecGnuTLSKeyDataDsaGetPublicKey(xmlSecKeyDataPtr data) {
 }
 
 /**
- * xmlSecGnuTLSKeyDataDsaGetPrivateKey:
- * @data:               the pointer to DSA key data.
- *
- * Gets the GnuTLS DSA private key from DSA key data.
- *
- * Returns: pointer to GnuTLS private DSA key or NULL if an error occurs.
+ * @brief Gets the GnuTLS DSA private key from DSA key data.
+ * @param data the pointer to DSA key data.
+ * @return pointer to GnuTLS private DSA key or NULL if an error occurs.
  */
 gnutls_privkey_t
 xmlSecGnuTLSKeyDataDsaGetPrivateKey(xmlSecKeyDataPtr data) {
@@ -710,27 +710,27 @@ xmlSecGnuTLSKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
     xmlSecAssert2(id == xmlSecGnuTLSKeyDataDsaId, NULL);
     xmlSecAssert2(dsaValue != NULL, NULL);
 
-    /*** p ***/
+    /****************************************************************************** p  *****************************************************************************/
     size = xmlSecBufferGetSize(&(dsaValue->p));
     p.data = xmlSecBufferGetData(&(dsaValue->p));
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, p.size,  goto done, xmlSecKeyDataKlassGetName(id));
 
-    /*** q ***/
+    /****************************************************************************** q  *****************************************************************************/
     size = xmlSecBufferGetSize(&(dsaValue->q));
     q.data = xmlSecBufferGetData(&(dsaValue->q));
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, q.size,  goto done, xmlSecKeyDataKlassGetName(id));
 
-    /*** g ***/
+    /****************************************************************************** g  *****************************************************************************/
     size = xmlSecBufferGetSize(&(dsaValue->g));
     g.data = xmlSecBufferGetData(&(dsaValue->g));
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, g.size,  goto done, xmlSecKeyDataKlassGetName(id));
 
-    /*** y ***/
+    /****************************************************************************** y  *****************************************************************************/
     size = xmlSecBufferGetSize(&(dsaValue->y));
     y.data = xmlSecBufferGetData(&(dsaValue->y));
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, y.size,  goto done, xmlSecKeyDataKlassGetName(id));
 
-    /*** x (only for private key) ***/
+    /****************************************************************************** x (only for private key)  *****************************************************************************/
     size = xmlSecBufferGetSize(&(dsaValue->x));
     if(size > 0) {
         gnutls_datum_t x;
@@ -886,7 +886,7 @@ xmlSecGnuTLSKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
         goto done;
     }
 
-    /*** x (only if available and requested) ***/
+    /****************************************************************************** x (only if available and requested)  *****************************************************************************/
     if((writePrivateKey != 0) && (privkey != NULL)) {
         if((x.data == NULL) || (x.size <= 0)) {
             xmlSecInternalError("DSA x parameter is NULL", xmlSecKeyDataKlassGetName(id));
@@ -926,11 +926,11 @@ done:
 
 
 #ifndef XMLSEC_NO_EC
-/**************************************************************************
+/******************************************************************************
  *
  * EC XML key representation processing.
  *
- *************************************************************************/
+  *****************************************************************************/
 
 static int              xmlSecGnuTLSKeyDataEcXmlRead            (xmlSecKeyDataId id,
                                                                  xmlSecKeyPtr key,
@@ -953,11 +953,8 @@ XMLSEC_GNUTLS_ASYMKEY_KLASS_EX(Ec, xmlSecNameECKeyValue, xmlSecHrefECKeyValue,
     NULL, xmlSecGnuTLSKeyDataEcXmlRead, xmlSecGnuTLSKeyDataEcXmlWrite)
 
 /**
- * xmlSecGnuTLSKeyDataEcGetKlass:
- *
- * The GnuTLS EC key data klass.
- *
- * Returns: pointer to GnuTLS EC key data klass.
+ * @brief The GnuTLS EC key data klass.
+ * @return pointer to GnuTLS EC key data klass.
  */
 xmlSecKeyDataId
 xmlSecGnuTLSKeyDataEcGetKlass(void) {
@@ -965,14 +962,12 @@ xmlSecGnuTLSKeyDataEcGetKlass(void) {
 }
 
 /**
- * xmlSecGnuTLSKeyDataEcAdoptKey:
- * @data:               the pointer to EC key data.
- * @pubkey:             the pointer to GnuTLS EC key.
- * @privkey:            the pointer to GnuTLS EC key.
- *
- * Sets the value of EC key data. The @pubkey and @privkey will be owned by the @data on success.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Sets the value of EC key data.
+ * @details Sets the value of EC key data. The @p pubkey and @p privkey will be owned by the @p data on success.
+ * @param data the pointer to EC key data.
+ * @param pubkey the pointer to GnuTLS EC key.
+ * @param privkey the pointer to GnuTLS EC key.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecGnuTLSKeyDataEcAdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, gnutls_privkey_t privkey) {
@@ -1001,12 +996,9 @@ xmlSecGnuTLSKeyDataEcAdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, gnu
 }
 
 /**
- * xmlSecGnuTLSKeyDataEcGetPublicKey:
- * @data:               the pointer to EC key data.
- *
- * Gets the GnuTLS EC public key from EC key data.
- *
- * Returns: pointer to GnuTLS public EC key or NULL if an error occurs.
+ * @brief Gets the GnuTLS EC public key from EC key data.
+ * @param data the pointer to EC key data.
+ * @return pointer to GnuTLS public EC key or NULL if an error occurs.
  */
 gnutls_pubkey_t
 xmlSecGnuTLSKeyDataEcGetPublicKey(xmlSecKeyDataPtr data) {
@@ -1015,12 +1007,9 @@ xmlSecGnuTLSKeyDataEcGetPublicKey(xmlSecKeyDataPtr data) {
 }
 
 /**
- * xmlSecGnuTLSKeyDataEcGetPrivateKey:
- * @data:               the pointer to EC key data.
- *
- * Gets the GnuTLS EC private key from EC key data.
- *
- * Returns: pointer to GnuTLS private EC key or NULL if an error occurs.
+ * @brief Gets the GnuTLS EC private key from EC key data.
+ * @param data the pointer to EC key data.
+ * @return pointer to GnuTLS private EC key or NULL if an error occurs.
  */
 gnutls_privkey_t
 xmlSecGnuTLSKeyDataEcGetPrivateKey(xmlSecKeyDataPtr data) {
@@ -1077,12 +1066,12 @@ xmlSecGnuTLSKeyDataEcRead(xmlSecKeyDataId id, xmlSecKeyValueEcPtr ecValue) {
         goto done;
     }
 
-    /*** pub: x ***/
+    /****************************************************************************** pub: x  *****************************************************************************/
     size = xmlSecBufferGetSize(&(ecValue->pub_x));
     pub_x.data = xmlSecBufferGetData(&(ecValue->pub_x));
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, pub_x.size,  goto done, xmlSecKeyDataKlassGetName(id));
 
-    /*** pub: y ***/
+    /****************************************************************************** pub: y  *****************************************************************************/
     size = xmlSecBufferGetSize(&(ecValue->pub_y));
     pub_y.data = xmlSecBufferGetData(&(ecValue->pub_y));
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, pub_y.size,  goto done, xmlSecKeyDataKlassGetName(id));
@@ -1232,14 +1221,14 @@ done:
 
 
 #ifndef XMLSEC_NO_RSA
-/**************************************************************************
+/******************************************************************************
  *
  * &lt;dsig:RSAKeyValue/&gt; processing
  *
  *
  * The RSAKeyValue Element (http://www.w3.org/TR/xmldsig-core/#sec-RSAKeyValue)
  *
- **************************************************************************/
+  *****************************************************************************/
 static int              xmlSecGnuTLSKeyDataRsaGenerate          (xmlSecKeyDataPtr data,
                                                                  xmlSecSize sizeBits,
                                                                  xmlSecKeyDataType type);
@@ -1265,11 +1254,8 @@ XMLSEC_GNUTLS_ASYMKEY_KLASS_EX(Rsa, xmlSecNameRSAKeyValue, xmlSecHrefRSAKeyValue
     xmlSecGnuTLSKeyDataRsaGenerate, xmlSecGnuTLSKeyDataRsaXmlRead, xmlSecGnuTLSKeyDataRsaXmlWrite)
 
 /**
- * xmlSecGnuTLSKeyDataRsaGetKlass:
- *
- * The RSA key data klass.
- *
- * Returns: pointer to RSA key data klass.
+ * @brief The RSA key data klass.
+ * @return pointer to RSA key data klass.
  */
 xmlSecKeyDataId
 xmlSecGnuTLSKeyDataRsaGetKlass(void) {
@@ -1277,14 +1263,12 @@ xmlSecGnuTLSKeyDataRsaGetKlass(void) {
 }
 
 /**
- * xmlSecGnuTLSKeyDataRsaAdoptKey:
- * @data:               the pointer to RSA key data.
- * @pubkey:             the pointer to GnuTLS RSA key.
- * @privkey:            the pointer to GnuTLS RSA key.
- *
- * Sets the value of RSA key data. The @pubkey and @privkey will be owned by the @data on success.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Sets the value of RSA key data.
+ * @details Sets the value of RSA key data. The @p pubkey and @p privkey will be owned by the @p data on success.
+ * @param data the pointer to RSA key data.
+ * @param pubkey the pointer to GnuTLS RSA key.
+ * @param privkey the pointer to GnuTLS RSA key.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecGnuTLSKeyDataRsaAdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, gnutls_privkey_t privkey) {
@@ -1313,12 +1297,9 @@ xmlSecGnuTLSKeyDataRsaAdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, gn
 }
 
 /**
- * xmlSecGnuTLSKeyDataRsaGetPublicKey:
- * @data:               the pointer to RSA key data.
- *
- * Gets the GnuTLS RSA public key from RSA key data.
- *
- * Returns: pointer to GnuTLS public RSA key or NULL if an error occurs.
+ * @brief Gets the GnuTLS RSA public key from RSA key data.
+ * @param data the pointer to RSA key data.
+ * @return pointer to GnuTLS public RSA key or NULL if an error occurs.
  */
 gnutls_pubkey_t
 xmlSecGnuTLSKeyDataRsaGetPublicKey(xmlSecKeyDataPtr data) {
@@ -1327,12 +1308,9 @@ xmlSecGnuTLSKeyDataRsaGetPublicKey(xmlSecKeyDataPtr data) {
 }
 
 /**
- * xmlSecGnuTLSKeyDataRsaGetPrivateKey:
- * @data:               the pointer to RSA key data.
- *
- * Gets the GnuTLS RSA private key from RSA key data.
- *
- * Returns: pointer to GnuTLS private RSA key or NULL if an error occurs.
+ * @brief Gets the GnuTLS RSA private key from RSA key data.
+ * @param data the pointer to RSA key data.
+ * @return pointer to GnuTLS private RSA key or NULL if an error occurs.
  */
 gnutls_privkey_t
 xmlSecGnuTLSKeyDataRsaGetPrivateKey(xmlSecKeyDataPtr data) {
@@ -1380,17 +1358,17 @@ xmlSecGnuTLSKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
     xmlSecAssert2(id == xmlSecGnuTLSKeyDataRsaId, NULL);
     xmlSecAssert2(rsaValue != NULL, NULL);
 
-    /*** modulus ***/
+    /****************************************************************************** modulus  *****************************************************************************/
     size = xmlSecBufferGetSize(&(rsaValue->modulus));
     modulus.data = xmlSecBufferGetData(&(rsaValue->modulus));
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, modulus.size,  goto done, xmlSecKeyDataKlassGetName(id));
 
-    /*** publicExponent ***/
+    /****************************************************************************** publicExponent  *****************************************************************************/
     size = xmlSecBufferGetSize(&(rsaValue->publicExponent));
     publicExponent.data = xmlSecBufferGetData(&(rsaValue->publicExponent));
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, publicExponent.size,  goto done, xmlSecKeyDataKlassGetName(id));
 
-    /*** privateExponent (only for private key) ***/
+    /****************************************************************************** privateExponent (only for private key)  *****************************************************************************/
     size = xmlSecBufferGetSize(&(rsaValue->privateExponent));
     if(size > 0) {
         xmlSecGnuTLSError("GnuTLS doesn't support reading private keys from RSAKeyValue", GNUTLS_E_SUCCESS, xmlSecKeyDataKlassGetName(id));
@@ -1514,7 +1492,7 @@ xmlSecGnuTLSKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
         goto done;
     }
 
-    /*** GnuTLS doesn't support private exponent  ***/
+    /****************************************************************************** GnuTLS doesn't support private exponent   *****************************************************************************/
     if((writePrivateKey != 0) && (privkey != NULL)) {
         /* do nothing */
     }
@@ -1538,11 +1516,11 @@ done:
 
 #endif /* XMLSEC_NO_RSA */
 
-/**************************************************************************
+/******************************************************************************
  *
  * Shared GOST2001 and GOST2012 keys functions
  *
- *************************************************************************/
+  *****************************************************************************/
 
 #if !defined(XMLSEC_NO_GOST) || !defined(XMLSEC_NO_GOST2012)
 
@@ -1573,19 +1551,16 @@ xmlSecGnuTLSKeyDataGostAdoptKey(int algo, xmlSecKeyDataPtr data, gnutls_pubkey_t
 #endif /* !defined(XMLSEC_NO_GOST) || !defined(XMLSEC_NO_GOST2012) */
 
 #ifndef XMLSEC_NO_GOST
-/**************************************************************************
+/******************************************************************************
  *
  * GOST2001 XML key representation processing.
  *
- *************************************************************************/
+  *****************************************************************************/
 XMLSEC_GNUTLS_ASYMKEY_KLASS(Gost2001, xmlSecNameGOST2001KeyValue, xmlSecHrefGOST2001KeyValue)
 
 /**
- * xmlSecGnuTLSKeyDataGost2001GetKlass:
- *
- * The GnuTLS GOST 2001 key data klass.
- *
- * Returns: pointer to GnuTLS GOST 2001 key data klass.
+ * @brief The GnuTLS GOST 2001 key data klass.
+ * @return pointer to GnuTLS GOST 2001 key data klass.
  */
 xmlSecKeyDataId
 xmlSecGnuTLSKeyDataGost2001GetKlass(void) {
@@ -1593,14 +1568,12 @@ xmlSecGnuTLSKeyDataGost2001GetKlass(void) {
 }
 
 /**
- * xmlSecGnuTLSKeyDataGost2001AdoptKey:
- * @data:               the pointer to GOST 2001 key data.
- * @pubkey:             the pointer to GnuTLS GOST 2001 key.
- * @privkey:            the pointer to GnuTLS GOST 2001 key.
- *
- * Sets the value of GOST 2001 key data. The @pubkey and @privkey will be owned by the @data on success.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Sets the value of GOST 2001 key data.
+ * @details Sets the value of GOST 2001 key data. The @p pubkey and @p privkey will be owned by the @p data on success.
+ * @param data the pointer to GOST 2001 key data.
+ * @param pubkey the pointer to GnuTLS GOST 2001 key.
+ * @param privkey the pointer to GnuTLS GOST 2001 key.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecGnuTLSKeyDataGost2001AdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, gnutls_privkey_t privkey) {
@@ -1609,12 +1582,10 @@ xmlSecGnuTLSKeyDataGost2001AdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubke
 }
 
 /**
- * xmlSecGnuTLSKeyDataGost2001GetPublicKey:
- * @data:               the pointer to GOST 2001 key data.
- *
- * Gets the GnuTLS GOST 2001 public key from GOST 2001 key data.
- *
- * Returns: pointer to GnuTLS public GOST 2001 key or NULL if an error occurs.
+ * @brief Gets the GOST 2001 public key from key data.
+ * @details Gets the GnuTLS GOST 2001 public key from GOST 2001 key data.
+ * @param data the pointer to GOST 2001 key data.
+ * @return pointer to GnuTLS public GOST 2001 key or NULL if an error occurs.
  */
 gnutls_pubkey_t
 xmlSecGnuTLSKeyDataGost2001GetPublicKey(xmlSecKeyDataPtr data) {
@@ -1623,12 +1594,10 @@ xmlSecGnuTLSKeyDataGost2001GetPublicKey(xmlSecKeyDataPtr data) {
 }
 
 /**
- * xmlSecGnuTLSKeyDataGost2001GetPrivateKey:
- * @data:               the pointer to GOST 2001 key data.
- *
- * Gets the GnuTLS GOST 2001 private key from GOST 2001 key data.
- *
- * Returns: pointer to GnuTLS private GOST 2001 key or NULL if an error occurs.
+ * @brief Gets the GOST 2001 private key from key data.
+ * @details Gets the GnuTLS GOST 2001 private key from GOST 2001 key data.
+ * @param data the pointer to GOST 2001 key data.
+ * @return pointer to GnuTLS private GOST 2001 key or NULL if an error occurs.
  */
 gnutls_privkey_t
 xmlSecGnuTLSKeyDataGost2001GetPrivateKey(xmlSecKeyDataPtr data) {
@@ -1641,20 +1610,17 @@ xmlSecGnuTLSKeyDataGost2001GetPrivateKey(xmlSecKeyDataPtr data) {
 
 
 #ifndef XMLSEC_NO_GOST2012
-/**************************************************************************
+/******************************************************************************
  *
  * GOST R 34.10-2012 256 bit xml key representation processing
  *
- *************************************************************************/
+  *****************************************************************************/
 
 XMLSEC_GNUTLS_ASYMKEY_KLASS(Gost2012_256, xmlSecNameGostR3410_2012_256KeyValue, xmlSecHrefGostR3410_2012_256KeyValue)
 
 /**
- * xmlSecGnuTLSKeyDataGost2012_256GetKlass:
- *
- * The GnuTLS GOST 2012 (256 bits) key data klass.
- *
- * Returns: pointer to GnuTLS GOST 2012 (256 bits) key data klass.
+ * @brief The GnuTLS GOST 2012 (256 bits) key data klass.
+ * @return pointer to GnuTLS GOST 2012 (256 bits) key data klass.
  */
 xmlSecKeyDataId
 xmlSecGnuTLSKeyDataGost2012_256GetKlass(void) {
@@ -1662,14 +1628,12 @@ xmlSecGnuTLSKeyDataGost2012_256GetKlass(void) {
 }
 
 /**
- * xmlSecGnuTLSKeyDataGost2012_256AdoptKey:
- * @data:               the pointer to GOST 2012 (256 bits) key data.
- * @pubkey:             the pointer to GnuTLS GOST 2012 (256 bits) key.
- * @privkey:            the pointer to GnuTLS GOST 2012 (256 bits) key.
- *
- * Sets the value of GOST 2012 (256 bits) key data. The @pubkey and @privkey will be owned by the @data on success.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Sets the value of GOST 2012 (256 bits) key data.
+ * @details Sets the value of GOST 2012 (256 bits) key data. The @p pubkey and @p privkey will be owned by the @p data on success.
+ * @param data the pointer to GOST 2012 (256 bits) key data.
+ * @param pubkey the pointer to GnuTLS GOST 2012 (256 bits) key.
+ * @param privkey the pointer to GnuTLS GOST 2012 (256 bits) key.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecGnuTLSKeyDataGost2012_256AdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, gnutls_privkey_t privkey) {
@@ -1678,12 +1642,10 @@ xmlSecGnuTLSKeyDataGost2012_256AdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t p
 }
 
 /**
- * xmlSecGnuTLSKeyDataGost2012_256GetPublicKey:
- * @data:               the pointer to GOST 2012 (256 bits) key data.
- *
- * Gets the GnuTLS GOST 2012 (256 bits) public key from GOST 2012 (256 bits) key data.
- *
- * Returns: pointer to GnuTLS public GOST 2012 (256 bits) key or NULL if an error occurs.
+ * @brief Gets the GOST 2012 (256 bits) public key.
+ * @details Gets the GnuTLS GOST 2012 (256 bits) public key from GOST 2012 (256 bits) key data.
+ * @param data the pointer to GOST 2012 (256 bits) key data.
+ * @return pointer to GnuTLS public GOST 2012 (256 bits) key or NULL if an error occurs.
  */
 gnutls_pubkey_t
 xmlSecGnuTLSKeyDataGost2012_256GetPublicKey(xmlSecKeyDataPtr data) {
@@ -1692,12 +1654,10 @@ xmlSecGnuTLSKeyDataGost2012_256GetPublicKey(xmlSecKeyDataPtr data) {
 }
 
 /**
- * xmlSecGnuTLSKeyDataGost2012_256GetPrivateKey:
- * @data:               the pointer to GOST 2012 (256 bits) key data.
- *
- * Gets the GnuTLS GOST 2012 (256 bits) private key from GOST 2012 (256 bits) key data.
- *
- * Returns: pointer to GnuTLS private GOST 2012 (256 bits) key or NULL if an error occurs.
+ * @brief Gets the GOST 2012 (256 bits) private key.
+ * @details Gets the GnuTLS GOST 2012 (256 bits) private key from GOST 2012 (256 bits) key data.
+ * @param data the pointer to GOST 2012 (256 bits) key data.
+ * @return pointer to GnuTLS private GOST 2012 (256 bits) key or NULL if an error occurs.
  */
 gnutls_privkey_t
 xmlSecGnuTLSKeyDataGost2012_256GetPrivateKey(xmlSecKeyDataPtr data) {
@@ -1705,19 +1665,16 @@ xmlSecGnuTLSKeyDataGost2012_256GetPrivateKey(xmlSecKeyDataPtr data) {
     return xmlSecGnuTLSAsymKeyDataGetPrivateKey(data);
 }
 
-/**************************************************************************
+/******************************************************************************
  *
  * GOST R 34.10-2012 512 bit xml key representation processing
  *
- *************************************************************************/
+  *****************************************************************************/
 XMLSEC_GNUTLS_ASYMKEY_KLASS(Gost2012_512, xmlSecNameGostR3410_2012_512KeyValue, xmlSecHrefGostR3410_2012_512KeyValue)
 
 /**
- * xmlSecGnuTLSKeyDataGost2012_512GetKlass:
- *
- * The GnuTLS GOST 2012 (512 bits) key data klass.
- *
- * Returns: pointer to GnuTLS GOST 2012 (512 bits) key data klass.
+ * @brief The GnuTLS GOST 2012 (512 bits) key data klass.
+ * @return pointer to GnuTLS GOST 2012 (512 bits) key data klass.
  */
 xmlSecKeyDataId
 xmlSecGnuTLSKeyDataGost2012_512GetKlass(void) {
@@ -1725,14 +1682,12 @@ xmlSecGnuTLSKeyDataGost2012_512GetKlass(void) {
 }
 
 /**
- * xmlSecGnuTLSKeyDataGost2012_512AdoptKey:
- * @data:               the pointer to GOST 2012 (512 bits) key data.
- * @pubkey:             the pointer to GnuTLS GOST 2012 (512 bits) key.
- * @privkey:            the pointer to GnuTLS GOST 2012 (512 bits) key.
- *
- * Sets the value of GOST 2012 (512 bits) key data. The @pubkey and @privkey will be owned by the @data on success.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Sets the value of GOST 2012 (512 bits) key data.
+ * @details Sets the value of GOST 2012 (512 bits) key data. The @p pubkey and @p privkey will be owned by the @p data on success.
+ * @param data the pointer to GOST 2012 (512 bits) key data.
+ * @param pubkey the pointer to GnuTLS GOST 2012 (512 bits) key.
+ * @param privkey the pointer to GnuTLS GOST 2012 (512 bits) key.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecGnuTLSKeyDataGost2012_512AdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, gnutls_privkey_t privkey) {
@@ -1741,12 +1696,10 @@ xmlSecGnuTLSKeyDataGost2012_512AdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t p
 }
 
 /**
- * xmlSecGnuTLSKeyDataGost2012_512GetPublicKey:
- * @data:               the pointer to GOST 2012 (512 bits) key data.
- *
- * Gets the GnuTLS GOST 2012 (512 bits) public key from GOST 2012 (512 bits) key data.
- *
- * Returns: pointer to GnuTLS public GOST 2012 (512 bits) key or NULL if an error occurs.
+ * @brief Gets the GOST 2012 (512 bits) public key.
+ * @details Gets the GnuTLS GOST 2012 (512 bits) public key from GOST 2012 (512 bits) key data.
+ * @param data the pointer to GOST 2012 (512 bits) key data.
+ * @return pointer to GnuTLS public GOST 2012 (512 bits) key or NULL if an error occurs.
  */
 gnutls_pubkey_t
 xmlSecGnuTLSKeyDataGost2012_512GetPublicKey(xmlSecKeyDataPtr data) {
@@ -1755,12 +1708,10 @@ xmlSecGnuTLSKeyDataGost2012_512GetPublicKey(xmlSecKeyDataPtr data) {
 }
 
 /**
- * xmlSecGnuTLSKeyDataGost2012_512GetPrivateKey:
- * @data:               the pointer to GOST 2012 (512 bits) key data.
- *
- * Gets the GnuTLS GOST 2012 (512 bits) private key from GOST 2012 (512 bits) key data.
- *
- * Returns: pointer to GnuTLS private GOST 2012 (512 bits) key or NULL if an error occurs.
+ * @brief Gets the GOST 2012 (512 bits) private key.
+ * @details Gets the GnuTLS GOST 2012 (512 bits) private key from GOST 2012 (512 bits) key data.
+ * @param data the pointer to GOST 2012 (512 bits) key data.
+ * @return pointer to GnuTLS private GOST 2012 (512 bits) key or NULL if an error occurs.
  */
 gnutls_privkey_t
 xmlSecGnuTLSKeyDataGost2012_512GetPrivateKey(xmlSecKeyDataPtr data) {
@@ -1773,23 +1724,20 @@ xmlSecGnuTLSKeyDataGost2012_512GetPrivateKey(xmlSecKeyDataPtr data) {
 
 
 #ifndef XMLSEC_NO_MLDSA
-/**************************************************************************
+/******************************************************************************
  *
  * ML-DSA key (https://csrc.nist.gov/pubs/fips/204/final)
  *
  * ML-DSA is a post-quantum digital signature algorithm standardized in FIPS 204.
  * Three parameter sets are defined: ML-DSA-44, ML-DSA-65, and ML-DSA-87.
  *
- **************************************************************************/
+  *****************************************************************************/
 
 XMLSEC_GNUTLS_ASYMKEY_KLASS(MLDSA, xmlSecNameMLDSAKeyValue, xmlSecHrefMLDSAKeyValue)
 
 /**
- * xmlSecGnuTLSKeyDataMLDSAGetKlass:
- *
- * The GnuTLS ML-DSA key data klass.
- *
- * Returns: pointer to GnuTLS ML-DSA key data klass.
+ * @brief The GnuTLS ML-DSA key data klass.
+ * @return pointer to GnuTLS ML-DSA key data klass.
  */
 xmlSecKeyDataId
 xmlSecGnuTLSKeyDataMLDSAGetKlass(void) {
@@ -1797,14 +1745,12 @@ xmlSecGnuTLSKeyDataMLDSAGetKlass(void) {
 }
 
 /**
- * xmlSecGnuTLSKeyDataMLDSAAdoptKey:
- * @data:               the pointer to ML-DSA key data.
- * @pubkey:             the pointer to GnuTLS ML-DSA key.
- * @privkey:            the pointer to GnuTLS ML-DSA key.
- *
- * Sets the value of ML-DSA key data. The @pubkey and @privkey will be owned by the @data on success.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Sets the value of ML-DSA key data.
+ * @details Sets the value of ML-DSA key data. The @p pubkey and @p privkey will be owned by the @p data on success.
+ * @param data the pointer to ML-DSA key data.
+ * @param pubkey the pointer to GnuTLS ML-DSA key.
+ * @param privkey the pointer to GnuTLS ML-DSA key.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecGnuTLSKeyDataMLDSAAdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, gnutls_privkey_t privkey) {
@@ -1833,12 +1779,10 @@ xmlSecGnuTLSKeyDataMLDSAAdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, 
 }
 
 /**
- * xmlSecGnuTLSKeyDataMLDSAGetPublicKey:
- * @data:               the pointer to ML-DSA key data.
- *
- * Gets the GnuTLS ML-DSA public key from ML-DSA key data.
- *
- * Returns: pointer to GnuTLS public ML-DSA key or NULL if an error occurs.
+ * @brief Gets the GnuTLS ML-DSA public key.
+ * @details Gets the GnuTLS ML-DSA public key from ML-DSA key data.
+ * @param data the pointer to ML-DSA key data.
+ * @return pointer to GnuTLS public ML-DSA key or NULL if an error occurs.
  */
 gnutls_pubkey_t
 xmlSecGnuTLSKeyDataMLDSAGetPublicKey(xmlSecKeyDataPtr data) {
@@ -1847,12 +1791,10 @@ xmlSecGnuTLSKeyDataMLDSAGetPublicKey(xmlSecKeyDataPtr data) {
 }
 
 /**
- * xmlSecGnuTLSKeyDataMLDSAGetPrivateKey:
- * @data:               the pointer to ML-DSA key data.
- *
- * Gets the GnuTLS ML-DSA private key from ML-DSA key data.
- *
- * Returns: pointer to GnuTLS private ML-DSA key or NULL if an error occurs.
+ * @brief Gets the GnuTLS ML-DSA private key.
+ * @details Gets the GnuTLS ML-DSA private key from ML-DSA key data.
+ * @param data the pointer to ML-DSA key data.
+ * @return pointer to GnuTLS private ML-DSA key or NULL if an error occurs.
  */
 gnutls_privkey_t
 xmlSecGnuTLSKeyDataMLDSAGetPrivateKey(xmlSecKeyDataPtr data) {
@@ -1861,13 +1803,12 @@ xmlSecGnuTLSKeyDataMLDSAGetPrivateKey(xmlSecKeyDataPtr data) {
 }
 
 /**
- * xmlSecGnuTLSKeyDataMLDSAGetKL:
- * @data:               the pointer to ML-DSA key data.
+ * @brief Gets ML-DSA key (k, l) value: 44 corresponds to (4,4),
+ * @param data the pointer to ML-DSA key data.
  *
- * Gets ML-DSA key (k, l) value: 44 corresponds to (4,4),
  * 65 to (6,5) or 87 to (8,7).
  *
- * Returns: 44, 65, or 87 on success or a negative value otherwise.
+ * @return 44, 65, or 87 on success or a negative value otherwise.
  */
 int
 xmlSecGnuTLSKeyDataMLDSAGetKL(xmlSecKeyDataPtr data) {
@@ -1922,19 +1863,16 @@ xmlSecGnuTLSKeyDataMLDSAGetKL(xmlSecKeyDataPtr data) {
 
 
 #ifndef XMLSEC_NO_EDDSA
-/**************************************************************************
+/******************************************************************************
  *
  * EdDSA key (Ed25519 and Ed448, RFC 8032)
  *
- **************************************************************************/
+  *****************************************************************************/
 XMLSEC_GNUTLS_ASYMKEY_KLASS(EdDSA, xmlSecNameEdDSAKeyValue, xmlSecHrefEdDSAKeyValue)
 
 /**
- * xmlSecGnuTLSKeyDataEdDSAGetKlass:
- *
- * The GnuTLS EdDSA key data klass.
- *
- * Returns: pointer to GnuTLS EdDSA key data klass.
+ * @brief The GnuTLS EdDSA key data klass.
+ * @return pointer to GnuTLS EdDSA key data klass.
  */
 xmlSecKeyDataId
 xmlSecGnuTLSKeyDataEdDSAGetKlass(void) {
@@ -1942,14 +1880,12 @@ xmlSecGnuTLSKeyDataEdDSAGetKlass(void) {
 }
 
 /**
- * xmlSecGnuTLSKeyDataEdDSAAdoptKey:
- * @data:               the pointer to EdDSA key data.
- * @pubkey:             the pointer to GnuTLS EdDSA public key.
- * @privkey:            the pointer to GnuTLS EdDSA private key.
- *
- * Sets the value of EdDSA key data. The @pubkey and @privkey will be owned by the @data on success.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Sets the value of EdDSA key data.
+ * @details Sets the value of EdDSA key data. The @p pubkey and @p privkey will be owned by the @p data on success.
+ * @param data the pointer to EdDSA key data.
+ * @param pubkey the pointer to GnuTLS EdDSA public key.
+ * @param privkey the pointer to GnuTLS EdDSA private key.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecGnuTLSKeyDataEdDSAAdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, gnutls_privkey_t privkey) {
@@ -1978,12 +1914,10 @@ xmlSecGnuTLSKeyDataEdDSAAdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, 
 }
 
 /**
- * xmlSecGnuTLSKeyDataEdDSAGetPublicKey:
- * @data:               the pointer to EdDSA key data.
- *
- * Gets the GnuTLS EdDSA public key from EdDSA key data.
- *
- * Returns: pointer to GnuTLS public EdDSA key or NULL if an error occurs.
+ * @brief Gets the GnuTLS EdDSA public key.
+ * @details Gets the GnuTLS EdDSA public key from EdDSA key data.
+ * @param data the pointer to EdDSA key data.
+ * @return pointer to GnuTLS public EdDSA key or NULL if an error occurs.
  */
 gnutls_pubkey_t
 xmlSecGnuTLSKeyDataEdDSAGetPublicKey(xmlSecKeyDataPtr data) {
@@ -1992,12 +1926,10 @@ xmlSecGnuTLSKeyDataEdDSAGetPublicKey(xmlSecKeyDataPtr data) {
 }
 
 /**
- * xmlSecGnuTLSKeyDataEdDSAGetPrivateKey:
- * @data:               the pointer to EdDSA key data.
- *
- * Gets the GnuTLS EdDSA private key from EdDSA key data.
- *
- * Returns: pointer to GnuTLS private EdDSA key or NULL if an error occurs.
+ * @brief Gets the GnuTLS EdDSA private key.
+ * @details Gets the GnuTLS EdDSA private key from EdDSA key data.
+ * @param data the pointer to EdDSA key data.
+ * @return pointer to GnuTLS private EdDSA key or NULL if an error occurs.
  */
 gnutls_privkey_t
 xmlSecGnuTLSKeyDataEdDSAGetPrivateKey(xmlSecKeyDataPtr data) {
@@ -2009,19 +1941,16 @@ xmlSecGnuTLSKeyDataEdDSAGetPrivateKey(xmlSecKeyDataPtr data) {
 
 
 #ifndef XMLSEC_NO_XDH
-/**************************************************************************
+/******************************************************************************
  *
  * XDH key (X25519 and X448, RFC 7748)
  *
- **************************************************************************/
+  *****************************************************************************/
 XMLSEC_GNUTLS_ASYMKEY_KLASS(Xdh, xmlSecNameXDHKeyValue, xmlSecHrefXDHKeyValue)
 
 /**
- * xmlSecGnuTLSKeyDataXdhGetKlass:
- *
- * The GnuTLS XDH key data klass (X25519 and X448).
- *
- * Returns: pointer to GnuTLS XDH key data klass.
+ * @brief The GnuTLS XDH key data klass (X25519 and X448).
+ * @return pointer to GnuTLS XDH key data klass.
  */
 xmlSecKeyDataId
 xmlSecGnuTLSKeyDataXdhGetKlass(void) {
@@ -2029,14 +1958,12 @@ xmlSecGnuTLSKeyDataXdhGetKlass(void) {
 }
 
 /**
- * xmlSecGnuTLSKeyDataXdhAdoptKey:
- * @data:               the pointer to XDH key data.
- * @pubkey:             the pointer to GnuTLS XDH public key.
- * @privkey:            the pointer to GnuTLS XDH private key.
- *
- * Sets the value of XDH key data. The @pubkey and @privkey will be owned by the @data on success.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Sets the value of XDH key data.
+ * @details Sets the value of XDH key data. The @p pubkey and @p privkey will be owned by the @p data on success.
+ * @param data the pointer to XDH key data.
+ * @param pubkey the pointer to GnuTLS XDH public key.
+ * @param privkey the pointer to GnuTLS XDH private key.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecGnuTLSKeyDataXdhAdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, gnutls_privkey_t privkey) {
@@ -2065,12 +1992,9 @@ xmlSecGnuTLSKeyDataXdhAdoptKey(xmlSecKeyDataPtr data, gnutls_pubkey_t pubkey, gn
 }
 
 /**
- * xmlSecGnuTLSKeyDataXdhGetPublicKey:
- * @data:               the pointer to XDH key data.
- *
- * Gets the GnuTLS XDH public key from XDH key data.
- *
- * Returns: pointer to GnuTLS public XDH key or NULL if an error occurs.
+ * @brief Gets the GnuTLS XDH public key from XDH key data.
+ * @param data the pointer to XDH key data.
+ * @return pointer to GnuTLS public XDH key or NULL if an error occurs.
  */
 gnutls_pubkey_t
 xmlSecGnuTLSKeyDataXdhGetPublicKey(xmlSecKeyDataPtr data) {
@@ -2079,12 +2003,9 @@ xmlSecGnuTLSKeyDataXdhGetPublicKey(xmlSecKeyDataPtr data) {
 }
 
 /**
- * xmlSecGnuTLSKeyDataXdhGetPrivateKey:
- * @data:               the pointer to XDH key data.
- *
- * Gets the GnuTLS XDH private key from XDH key data.
- *
- * Returns: pointer to GnuTLS private XDH key or NULL if an error occurs.
+ * @brief Gets the GnuTLS XDH private key from XDH key data.
+ * @param data the pointer to XDH key data.
+ * @return pointer to GnuTLS private XDH key or NULL if an error occurs.
  */
 gnutls_privkey_t
 xmlSecGnuTLSKeyDataXdhGetPrivateKey(xmlSecKeyDataPtr data) {
@@ -2095,11 +2016,11 @@ xmlSecGnuTLSKeyDataXdhGetPrivateKey(xmlSecKeyDataPtr data) {
 #endif /* XMLSEC_NO_XDH */
 
 
-/**************************************************************************
+/******************************************************************************
  *
  * Internal helper functions
  *
- **************************************************************************/
+  *****************************************************************************/
 xmlSecKeyDataPtr
 xmlSecGnuTLSAsymKeyDataCreate(gnutls_pubkey_t pubkey, gnutls_privkey_t privkey) {
     int pubkey_algo = GNUTLS_PK_UNKNOWN;

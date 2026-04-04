@@ -14,7 +14,7 @@
  * This is free software; see the Copyright file in the source
  * distribution for precise wording.
  *
- * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2024 Aleksey Sanin <aleksey#aleksey.com>. All Rights Reserved.
  */
 #include <stdlib.h>
 #include <string.h>
@@ -141,15 +141,13 @@ main(int argc, char **argv) {
 }
 
 /**
- * load_des_keys:
- * @files:              the list of filenames.
- * @files_size:         the number of filenames in #files.
- *
- * Creates simple keys manager and load DES keys from #files in it.
+ * @brief Creates a keys manager and loads DES keys from files.
+ * @details Creates simple keys manager and load DES keys from #files in it.
  * The caller is responsible for destroying returned keys manager using
- * @xmlSecKeysMngrDestroy.
- *
- * Returns the pointer to newly created keys manager or NULL if an error
+ * #xmlSecKeysMngrDestroy.
+ * @param files the list of filenames.
+ * @param files_size the number of filenames in #files.
+ * @return the pointer to newly created keys manager or NULL if an error
  * occurs.
  */
 xmlSecKeysMngrPtr
@@ -210,14 +208,12 @@ load_des_keys(char** files, int files_size) {
 }
 
 /**
- * decrypt_file:
- * @mngr:               the pointer to keys manager.
- * @enc_file:           the encrypted XML  file name.
- *
- * Decrypts the XML file #enc_file using DES key from #key_file and
+ * @brief Decrypts an encrypted XML file using a DES key from keys manager.
+ * @details Decrypts the XML file #enc_file using DES key from #key_file and
  * prints results to stdout.
- *
- * Returns 0 on success or a negative value if an error occurs.
+ * @param mngr the pointer to keys manager.
+ * @param enc_file the encrypted XML  file name.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 decrypt_file(xmlSecKeysMngrPtr mngr, const char* enc_file) {

@@ -9,10 +9,8 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:crypto
+ * @addtogroup xmlsec_gnutls_crypto
  */
-
-
 #include "globals.h"
 
 #ifndef XMLSEC_NO_RSA
@@ -35,11 +33,11 @@
 #include "../cast_helpers.h"
 #include "../transform_helpers.h"
 
-/*********************************************************************
+/******************************************************************************
  *
  * Key transport transforms context
  *
- ********************************************************************/
+  *****************************************************************************/
 typedef struct _xmlSecGnuTLSKeyTransportCtx       xmlSecGnuTLSKeyTransportCtx;
 typedef struct _xmlSecGnuTLSKeyTransportCtx*      xmlSecGnuTLSKeyTransportCtxPtr;
 
@@ -54,11 +52,11 @@ struct _xmlSecGnuTLSKeyTransportCtx {
     xmlSecKeyDataPtr    keyData;
 };
 
-/*********************************************************************
+/******************************************************************************
  *
  * Key transport transform
  *
- ********************************************************************/
+  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(GnuTLSKeyTransport, xmlSecGnuTLSKeyTransportCtx)
 #define xmlSecGnuTLSKeyTransportSize XMLSEC_TRANSFORM_SIZE(GnuTLSKeyTransport)
 
@@ -381,11 +379,8 @@ static xmlSecTransformKlass xmlSecGnuTLSRsaPkcs1Klass = {
 };
 
 /**
- * xmlSecGnuTLSTransformRsaPkcs1GetKlass:
- *
- * The RSA-PKCS1 key transport transform klass.
- *
- * Returns: RSA-PKCS1 key transport transform klass.
+ * @brief The RSA-PKCS1 key transport transform klass.
+ * @return RSA-PKCS1 key transport transform klass.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformRsaPkcs1GetKlass(void) {

@@ -9,9 +9,8 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:crypto
+ * @addtogroup xmlsec_gnutls_crypto
  */
-
 #include "globals.h"
 
 #include <string.h>
@@ -39,11 +38,11 @@
 #define XMLSEC_GNUTLS_BLOCK_CIPHER_MAX_BLOCK_SIZE             32
 #define XMLSEC_GNUTLS_BLOCK_CIPHER_PAD_SIZE                   (2 * XMLSEC_GNUTLS_BLOCK_CIPHER_MAX_BLOCK_SIZE)
 
-/**************************************************************************
+/******************************************************************************
  *
  * Internal GnuTLS Block cipher CTX
  *
- *****************************************************************************/
+  *****************************************************************************/
 typedef struct _xmlSecGnuTLSBlockCipherCtx          xmlSecGnuTLSBlockCipherCtx,
                                                   *xmlSecGnuTLSBlockCipherCtxPtr;
 struct _xmlSecGnuTLSBlockCipherCtx {
@@ -393,7 +392,7 @@ xmlSecGnuTLSBlockCipherCtxFinal(xmlSecGnuTLSBlockCipherCtxPtr ctx, xmlSecBufferP
  *
  * Cipher transforms
  *
- *****************************************************************************/
+  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(GnuTLSBlockCipher, xmlSecGnuTLSBlockCipherCtx)
 #define xmlSecGnuTLSBlockCipherSize XMLSEC_TRANSFORM_SIZE(GnuTLSBlockCipher)
 
@@ -789,19 +788,16 @@ static xmlSecTransformKlass xmlSecGnuTLS ## name ## Klass = {                   
 };
 
 #ifndef XMLSEC_NO_AES
-/*********************************************************************
+/******************************************************************************
  *
  * AES CBC cipher transforms
  *
- ********************************************************************/
+  *****************************************************************************/
 XMLSEC_GNUTLS_BLOCK_CIPHER_KLASS(Aes128Cbc)
 
 /**
- * xmlSecGnuTLSTransformAes128CbcGetKlass:
- *
- * AES 128 CBC encryption transform klass.
- *
- * Returns: pointer to AES 128 CBC encryption transform.
+ * @brief AES 128 CBC encryption transform klass.
+ * @return pointer to AES 128 CBC encryption transform.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformAes128CbcGetKlass(void) {
@@ -811,11 +807,8 @@ xmlSecGnuTLSTransformAes128CbcGetKlass(void) {
 XMLSEC_GNUTLS_BLOCK_CIPHER_KLASS(Aes192Cbc)
 
 /**
- * xmlSecGnuTLSTransformAes192CbcGetKlass:
- *
- * AES 192 CBC encryption transform klass.
- *
- * Returns: pointer to AES 192 CBC encryption transform.
+ * @brief AES 192 CBC encryption transform klass.
+ * @return pointer to AES 192 CBC encryption transform.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformAes192CbcGetKlass(void) {
@@ -825,11 +818,8 @@ xmlSecGnuTLSTransformAes192CbcGetKlass(void) {
 XMLSEC_GNUTLS_BLOCK_CIPHER_KLASS(Aes256Cbc)
 
 /**
- * xmlSecGnuTLSTransformAes256CbcGetKlass:
- *
- * AES 256 CBC encryption transform klass.
- *
- * Returns: pointer to AES 256 CBC encryption transform.
+ * @brief AES 256 CBC encryption transform klass.
+ * @return pointer to AES 256 CBC encryption transform.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformAes256CbcGetKlass(void) {
@@ -839,19 +829,16 @@ xmlSecGnuTLSTransformAes256CbcGetKlass(void) {
 #endif /* XMLSEC_NO_AES */
 
 #ifndef XMLSEC_NO_CAMELLIA
-/*********************************************************************
+/******************************************************************************
  *
  * Camellia CBC cipher transforms
  *
- ********************************************************************/
+  *****************************************************************************/
 XMLSEC_GNUTLS_BLOCK_CIPHER_KLASS(Camellia128Cbc)
 
 /**
- * xmlSecGnuTLSTransformCamellia128CbcGetKlass:
- *
- * Camellia 128 CBC encryption transform klass.
- *
- * Returns: pointer to Camellia 128 CBC encryption transform.
+ * @brief Camellia 128 CBC encryption transform klass.
+ * @return pointer to Camellia 128 CBC encryption transform.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformCamellia128CbcGetKlass(void) {
@@ -861,11 +848,8 @@ xmlSecGnuTLSTransformCamellia128CbcGetKlass(void) {
 XMLSEC_GNUTLS_BLOCK_CIPHER_KLASS(Camellia192Cbc)
 
 /**
- * xmlSecGnuTLSTransformCamellia192CbcGetKlass:
- *
- * Camellia 192 CBC encryption transform klass.
- *
- * Returns: pointer to Camellia 192 CBC encryption transform.
+ * @brief Camellia 192 CBC encryption transform klass.
+ * @return pointer to Camellia 192 CBC encryption transform.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformCamellia192CbcGetKlass(void) {
@@ -875,11 +859,8 @@ xmlSecGnuTLSTransformCamellia192CbcGetKlass(void) {
 XMLSEC_GNUTLS_BLOCK_CIPHER_KLASS(Camellia256Cbc)
 
 /**
- * xmlSecGnuTLSTransformCamellia256CbcGetKlass:
- *
- * Camellia 256 CBC encryption transform klass.
- *
- * Returns: pointer to Camellia 256 CBC encryption transform.
+ * @brief Camellia 256 CBC encryption transform klass.
+ * @return pointer to Camellia 256 CBC encryption transform.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformCamellia256CbcGetKlass(void) {
@@ -892,11 +873,8 @@ xmlSecGnuTLSTransformCamellia256CbcGetKlass(void) {
 XMLSEC_GNUTLS_BLOCK_CIPHER_KLASS(Des3Cbc)
 
 /**
- * xmlSecGnuTLSTransformDes3CbcGetKlass:
- *
- * Triple DES CBC encryption transform klass.
- *
- * Returns: pointer to Triple DES encryption transform.
+ * @brief Triple DES CBC encryption transform klass.
+ * @return pointer to Triple DES encryption transform.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformDes3CbcGetKlass(void) {
@@ -905,7 +883,7 @@ xmlSecGnuTLSTransformDes3CbcGetKlass(void) {
 #endif /* XMLSEC_NO_DES */
 
 #ifndef XMLSEC_NO_CHACHA20
-/*********************************************************************
+/******************************************************************************
  *
  * ChaCha20 stream cipher transform
  *
@@ -913,7 +891,7 @@ xmlSecGnuTLSTransformDes3CbcGetKlass(void) {
  * IV layout: counter[4 bytes] + nonce[12 bytes] = 16 bytes total.
  * NodeRead/NodeWrite handle XML parameter reading/writing.
  *
- ********************************************************************/
+  *****************************************************************************/
 static int
 xmlSecGnuTLSChaCha20BlockCipherNodeRead(xmlSecTransformPtr transform, xmlNodePtr node,
                                         xmlSecTransformCtxPtr transformCtx)
@@ -980,11 +958,8 @@ XMLSEC_GNUTLS_BLOCK_CIPHER_KLASS_EX(ChaCha20,
     xmlSecGnuTLSChaCha20BlockCipherNodeWrite)
 
 /**
- * xmlSecGnuTLSTransformChaCha20GetKlass:
- *
- * ChaCha20 stream cipher transform.
- *
- * Returns: pointer to ChaCha20 transform.
+ * @brief ChaCha20 stream cipher transform.
+ * @return pointer to ChaCha20 transform.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformChaCha20GetKlass(void) {

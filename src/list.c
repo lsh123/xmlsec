@@ -7,12 +7,9 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:list
- * @Short_description: Generic list structure functions.
- * @Stability: Stable
- *
+ * @addtogroup xmlsec_core_list
+ * @brief Generic list structure functions.
  */
-
 #include "globals.h"
 
 #include <stdlib.h>
@@ -33,11 +30,10 @@ static xmlSecAllocMode gAllocMode = xmlSecAllocModeDouble;
 static xmlSecSize gInitialSize = 64;
 
 /**
- * xmlSecPtrListSetDefaultAllocMode:
- * @defAllocMode:       the new default memory allocation mode.
- * @defInitialSize:     the new default minimal initial size.
- *
- * Sets new default allocation mode and minimal initial list size.
+ * @brief Sets the default allocation mode and initial list size.
+ * @details Sets new default allocation mode and minimal initial list size.
+ * @param defAllocMode the new default memory allocation mode.
+ * @param defInitialSize the new default minimal initial size.
  */
 void
 xmlSecPtrListSetDefaultAllocMode(xmlSecAllocMode defAllocMode, xmlSecSize defInitialSize) {
@@ -48,13 +44,11 @@ xmlSecPtrListSetDefaultAllocMode(xmlSecAllocMode defAllocMode, xmlSecSize defIni
 }
 
 /**
- * xmlSecPtrListCreate:
- * @id:                 the list klass.
- *
- * Creates new list object. Caller is responsible for freeing returned list
+ * @brief Creates a new list object.
+ * @details Creates new list object. Caller is responsible for freeing returned list
  * by calling #xmlSecPtrListDestroy function.
- *
- * Returns: pointer to newly allocated list or NULL if an error occurs.
+ * @param id the list klass.
+ * @return pointer to newly allocated list or NULL if an error occurs.
  */
 xmlSecPtrListPtr
 xmlSecPtrListCreate(xmlSecPtrListId id) {
@@ -83,10 +77,9 @@ xmlSecPtrListCreate(xmlSecPtrListId id) {
 }
 
 /**
- * xmlSecPtrListDestroy:
- * @list:               the pointer to list.
- *
- * Destroys @list created with #xmlSecPtrListCreate function.
+ * @brief Destroys a list object.
+ * @details Destroys @p list created with #xmlSecPtrListCreate function.
+ * @param list the pointer to list.
  */
 void
 xmlSecPtrListDestroy(xmlSecPtrListPtr list) {
@@ -96,14 +89,12 @@ xmlSecPtrListDestroy(xmlSecPtrListPtr list) {
 }
 
 /**
- * xmlSecPtrListInitialize:
- * @list:               the pointer to list.
- * @id:                 the list klass.
- *
- * Initializes the list of given klass. Caller is responsible
+ * @brief Initializes a list object.
+ * @details Initializes the list of given klass. Caller is responsible
  * for cleaning up by calling #xmlSecPtrListFinalize function.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @param list the pointer to list.
+ * @param id the list klass.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecPtrListInitialize(xmlSecPtrListPtr list, xmlSecPtrListId id) {
@@ -118,11 +109,9 @@ xmlSecPtrListInitialize(xmlSecPtrListPtr list, xmlSecPtrListId id) {
 }
 
 /**
- * xmlSecPtrListFinalize:
- * @list:               the pointer to list.
- *
- * Cleans up the list initialized with #xmlSecPtrListInitialize
- * function.
+ * @brief Cleans up a list object.
+ * @details Cleans up the list initialized with #xmlSecPtrListInitialize function.
+ * @param list the pointer to list.
  */
 void
 xmlSecPtrListFinalize(xmlSecPtrListPtr list) {
@@ -133,10 +122,8 @@ xmlSecPtrListFinalize(xmlSecPtrListPtr list) {
 }
 
 /**
- * xmlSecPtrListEmpty:
- * @list:               the pointer to list.
- *
- * Remove all items from @list (if any).
+ * @brief Remove all items from @p list (if any).
+ * @param list the pointer to list.
  */
 void
 xmlSecPtrListEmpty(xmlSecPtrListPtr list) {
@@ -163,15 +150,13 @@ xmlSecPtrListEmpty(xmlSecPtrListPtr list) {
 }
 
 /**
- * xmlSecPtrListCopy:
- * @dst:                the pointer to destination list.
- * @src:                the pointer to source list.
- *
- * Copies @src list items to @dst list using #duplicateItem method
- * of the list klass. If #duplicateItem method is NULL then
+ * @brief Copies items from one list to another.
+ * @details Copies @p src list items to @p dst list using duplicateItem method
+ * of the list klass. If duplicateItem method is NULL then
  * we jsut copy pointers to items.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @param dst the pointer to destination list.
+ * @param src the pointer to source list.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecPtrListCopy(xmlSecPtrListPtr dst, xmlSecPtrListPtr src) {
@@ -210,12 +195,9 @@ xmlSecPtrListCopy(xmlSecPtrListPtr dst, xmlSecPtrListPtr src) {
 }
 
 /**
- * xmlSecPtrListDuplicate:
- * @list:               the pointer to list.
- *
- * Creates a new copy of @list and all its items.
- *
- * Returns: pointer to newly allocated list or NULL if an error occurs.
+ * @brief Creates a new copy of @p list and all its items.
+ * @param list the pointer to list.
+ * @return pointer to newly allocated list or NULL if an error occurs.
  */
 xmlSecPtrListPtr
 xmlSecPtrListDuplicate(xmlSecPtrListPtr list) {
@@ -242,12 +224,9 @@ xmlSecPtrListDuplicate(xmlSecPtrListPtr list) {
 }
 
 /**
- * xmlSecPtrListGetSize:
- * @list:               the pointer to list.
- *
- * Gets list size.
- *
- * Returns: the number of items in @list.
+ * @brief Gets list size.
+ * @param list the pointer to list.
+ * @return the number of items in @p list.
  */
 xmlSecSize
 xmlSecPtrListGetSize(xmlSecPtrListPtr list) {
@@ -257,13 +236,10 @@ xmlSecPtrListGetSize(xmlSecPtrListPtr list) {
 }
 
 /**
- * xmlSecPtrListGetItem:
- * @list:               the pointer to list.
- * @pos:                the item position.
- *
- * Gets item from the list.
- *
- * Returns: the list item at position @pos or NULL if @pos is greater
+ * @brief Gets item from the list.
+ * @param list the pointer to list.
+ * @param pos the item position.
+ * @return the list item at position @p pos or NULL if @p pos is greater
  * than the number of items in the list or an error occurs.
  */
 xmlSecPtr
@@ -276,13 +252,10 @@ xmlSecPtrListGetItem(xmlSecPtrListPtr list, xmlSecSize pos) {
 }
 
 /**
- * xmlSecPtrListAdd:
- * @list:               the pointer to list.
- * @item:               the item.
- *
- * Adds @item to the end of the @list.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Adds @p item to the end of the @p list.
+ * @param list the pointer to list.
+ * @param item the item.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecPtrListAdd(xmlSecPtrListPtr list, xmlSecPtr item) {
@@ -302,14 +275,12 @@ xmlSecPtrListAdd(xmlSecPtrListPtr list, xmlSecPtr item) {
 }
 
 /**
- * xmlSecPtrListInsert:
- * @list:               the pointer to list.
- * @item:               the item.
- * @pos:                the position to insert at.
- *
- * Inserts @item at the position @pos in the @list.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Inserts an item at the given position.
+ * @details Inserts @p item at the position @p pos in the @p list.
+ * @param list the pointer to list.
+ * @param item the item.
+ * @param pos the position to insert at.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecPtrListInsert(xmlSecPtrListPtr list, xmlSecPtr item, xmlSecSize pos) {
@@ -340,15 +311,13 @@ xmlSecPtrListInsert(xmlSecPtrListPtr list, xmlSecPtr item, xmlSecSize pos) {
 
 
 /**
- * xmlSecPtrListSet:
- * @list:               the pointer to list.
- * @item:               the item.
- * @pos:                the pos.
- *
- * Sets the value of list item at position @pos. The old value
+ * @brief Sets a list item at the given position.
+ * @details Sets the value of list item at position @p pos. The old value
  * is destroyed.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @param list the pointer to list.
+ * @param item the item.
+ * @param pos the pos.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecPtrListSet(xmlSecPtrListPtr list, xmlSecPtr item, xmlSecSize pos) {
@@ -364,13 +333,11 @@ xmlSecPtrListSet(xmlSecPtrListPtr list, xmlSecPtr item, xmlSecSize pos) {
 }
 
 /**
- * xmlSecPtrListRemove:
- * @list:               the pointer to list.
- * @pos:                the position.
- *
- * Destroys list item at the position @pos and sets it value to NULL.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Destroys a list item at the given position.
+ * @details Destroys list item at the position @p pos and sets it value to NULL.
+ * @param list the pointer to list.
+ * @param pos the position.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecPtrListRemove(xmlSecPtrListPtr list, xmlSecSize pos) {
@@ -389,13 +356,11 @@ xmlSecPtrListRemove(xmlSecPtrListPtr list, xmlSecSize pos) {
 }
 
 /**
- * xmlSecPtrListRemoveAndReturn:
- * @list:               the pointer to list.
- * @pos:                the position.
- *
- * Remove the list item at the position @pos and return it back.
- *
- * Returns: the pointer to the list item.
+ * @brief Removes and returns a list item.
+ * @details Remove the list item at the position @p pos and return it back.
+ * @param list the pointer to list.
+ * @param pos the position.
+ * @return the pointer to the list item.
  */
 xmlSecPtr
 xmlSecPtrListRemoveAndReturn(xmlSecPtrListPtr list, xmlSecSize pos) {
@@ -415,11 +380,10 @@ xmlSecPtrListRemoveAndReturn(xmlSecPtrListPtr list, xmlSecSize pos) {
 
 
 /**
- * xmlSecPtrListDebugDump:
- * @list:               the pointer to list.
- * @output:             the pointer to output FILE.
- *
- * Prints debug information about @list to the @output.
+ * @brief Prints debug info about a list.
+ * @details Prints debug information about @p list to the @p output.
+ * @param list the pointer to list.
+ * @param output the pointer to output FILE.
  */
 void
 xmlSecPtrListDebugDump(xmlSecPtrListPtr list, FILE* output) {
@@ -440,11 +404,10 @@ xmlSecPtrListDebugDump(xmlSecPtrListPtr list, FILE* output) {
 }
 
 /**
- * xmlSecPtrListDebugXmlDump:
- * @list:               the pointer to list.
- * @output:             the pointer to output FILE.
- *
- * Prints debug information about @list to the @output in XML format.
+ * @brief Prints debug info about a list in XML format.
+ * @details Prints debug information about @p list to the @p output in XML format.
+ * @param list the pointer to list.
+ * @param output the pointer to output FILE.
  */
 void
 xmlSecPtrListDebugXmlDump(xmlSecPtrListPtr list, FILE* output) {
@@ -506,11 +469,11 @@ xmlSecPtrListEnsureSize(xmlSecPtrListPtr list, xmlSecSize size) {
     return(0);
 }
 
-/***********************************************************************
+/******************************************************************************
  *
  * strings list
  *
- **********************************************************************/
+  *****************************************************************************/
 static xmlSecPtr        xmlSecStringListDuplicateItem           (xmlSecPtr ptr);
 static void             xmlSecStringListDestroyItem             (xmlSecPtr ptr);
 
@@ -523,11 +486,8 @@ static xmlSecPtrListKlass xmlSecStringListKlass = {
 };
 
 /**
- * xmlSecStringListGetKlass:
- *
- * The strings list class.
- *
- * Returns: strings list klass.
+ * @brief The strings list class.
+ * @return strings list klass.
  */
 xmlSecPtrListId
 xmlSecStringListGetKlass(void) {

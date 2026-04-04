@@ -10,9 +10,8 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:x509
+ * @addtogroup xmlsec_mscrypto_x509
  */
-
 #include "globals.h"
 
 #ifndef XMLSEC_NO_X509
@@ -41,11 +40,11 @@
 #include "../x509_helpers.h"
 
 
-/**************************************************************************
+/******************************************************************************
  *
  * Internal MSCRYPTO X509 store CTX
  *
- *************************************************************************/
+  *****************************************************************************/
 typedef struct _xmlSecMSCryptoX509StoreCtx    xmlSecMSCryptoX509StoreCtx,
                         *xmlSecMSCryptoX509StoreCtxPtr;
 struct _xmlSecMSCryptoX509StoreCtx {
@@ -54,11 +53,11 @@ struct _xmlSecMSCryptoX509StoreCtx {
     int        dont_use_system_trusted_certs;
 };
 
-/****************************************************************************
+/******************************************************************************
  *
  * xmlSecMSCryptoKeyDataStoreX509Id:
  *
- ***************************************************************************/
+  *****************************************************************************/
 XMLSEC_KEY_DATA_STORE_DECLARE(MSCryptoX509Store, xmlSecMSCryptoX509StoreCtx)
 #define xmlSecMSCryptoX509StoreSize XMLSEC_KEY_DATA_STORE_SIZE(MSCryptoX509Store)
 
@@ -88,11 +87,9 @@ static PCCERT_CONTEXT xmlSecMSCryptoX509FindCert(HCERTSTORE store,
 
 
 /**
- * xmlSecMSCryptoX509StoreGetKlass:
- *
- * The MSCrypto X509 certificates key data store klass.
- *
- * Returns: pointer to MSCrypto X509 certificates key data store klass.
+ * @brief The MSCrypto X509 certificates store klass.
+ * @details The MSCrypto X509 certificates key data store klass.
+ * @return pointer to MSCrypto X509 certificates key data store klass.
  */
 xmlSecKeyDataStoreId
 xmlSecMSCryptoX509StoreGetKlass(void) {
@@ -100,17 +97,16 @@ xmlSecMSCryptoX509StoreGetKlass(void) {
 }
 
 /**
- * xmlSecMSCryptoX509StoreFindCert:
- * @store:          the pointer to X509 key data store klass.
- * @subjectName:    the desired certificate name.
- * @issuerName:     the desired certificate issuer name.
- * @issuerSerial:   the desired certificate issuer serial number.
- * @ski:            the desired certificate SKI.
- * @keyInfoCtx:     the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
+ * @brief Searches @p store for a certificate that matches given criteria.
+ * @param store the pointer to X509 key data store klass.
+ * @param subjectName the desired certificate name.
+ * @param issuerName the desired certificate issuer name.
+ * @param issuerSerial the desired certificate issuer serial number.
+ * @param ski the desired certificate SKI.
+ * @param keyInfoCtx the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
  *
- * Searches @store for a certificate that matches given criteria.
  *
- * Returns: pointer to found certificate or NULL if certificate is not found
+ * @return pointer to found certificate or NULL if certificate is not found
  * or an error occurs.
  */
 PCCERT_CONTEXT
@@ -140,18 +136,17 @@ xmlSecMSCryptoX509StoreFindCert(xmlSecKeyDataStorePtr store, xmlChar *subjectNam
 }
 
 /**
- * xmlSecMSCryptoX509StoreFindCert_ex:
- * @store:          the pointer to X509 key data store klass.
- * @subjectName:    the desired certificate name.
- * @issuerName:     the desired certificate issuer name.
- * @issuerSerial:   the desired certificate issuer serial number.
- * @ski:            the desired certificate SKI.
- * @skiSize:        the desired certificate SKI size.
- * @keyInfoCtx:     the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
+ * @brief Searches @p store for a certificate that matches given criteria.
+ * @param store the pointer to X509 key data store klass.
+ * @param subjectName the desired certificate name.
+ * @param issuerName the desired certificate issuer name.
+ * @param issuerSerial the desired certificate issuer serial number.
+ * @param ski the desired certificate SKI.
+ * @param skiSize the desired certificate SKI size.
+ * @param keyInfoCtx the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
  *
- * Searches @store for a certificate that matches given criteria.
  *
- * Returns: pointer to found certificate or NULL if certificate is not found
+ * @return pointer to found certificate or NULL if certificate is not found
  * or an error occurs.
  */
 PCCERT_CONTEXT
@@ -234,15 +229,12 @@ xmlSecMSCryptoCheckRevocation(HCERTSTORE hStore, PCCERT_CONTEXT pCert) {
 
 
 /**
- * xmlSecBuildChainUsingWinapi:
- * @cert: the certificate we check
- * @pfTime: pointer to FILETIME that we are interested in
- * @store_untrusted: untrusted certificates added via API
- * @store_doc: untrusted certificates/CRLs extracted from a document
- *
- * Builds certificates chain using Windows API.
- *
- * Returns: TRUE on success or FALSE otherwise.
+ * @brief Builds certificates chain using Windows API.
+ * @param cert the certificate we check
+ * @param pfTime pointer to FILETIME that we are interested in
+ * @param store_untrusted untrusted certificates added via API
+ * @param store_doc untrusted certificates/CRLs extracted from a document
+ * @return TRUE on success or FALSE otherwise.
  */
 static BOOL
 xmlSecBuildChainUsingWinapi (PCCERT_CONTEXT cert, LPFILETIME pfTime,
@@ -392,17 +384,14 @@ xmlSecMSCryptoX509StoreContainsCert(HCERTSTORE store, CERT_NAME_BLOB* name,
 
 
 /**
- * xmlSecMSCryptoBuildCertChainManually:
- * @cert: the certificate we check
- * @pfTime: pointer to FILETIME that we are interested in
- * @store_trusted: trusted certificates added via API
- * @store_untrusted: untrusted certificates added via API
- * @certs: untrusted certificates/CRLs extracted from a document
- * @store: pointer to store klass passed to error functions
- *
- * Builds certificates chain manually.
- *
- * Returns: TRUE on success or FALSE otherwise.
+ * @brief Builds certificates chain manually.
+ * @param cert the certificate we check
+ * @param pfTime pointer to FILETIME that we are interested in
+ * @param store_trusted trusted certificates added via API
+ * @param store_untrusted untrusted certificates added via API
+ * @param certs untrusted certificates/CRLs extracted from a document
+ * @param store pointer to store klass passed to error functions
+ * @return TRUE on success or FALSE otherwise.
  */
 static BOOL
 xmlSecMSCryptoBuildCertChainManually (PCCERT_CONTEXT cert, LPFILETIME pfTime,
@@ -572,14 +561,11 @@ xmlSecMSCryptoX509StoreConstructCertsChain(xmlSecKeyDataStorePtr store, PCCERT_C
 }
 
 /**
- * xmlSecMSCryptoX509StoreVerify:
- * @store:        the pointer to X509 certificate context store klass.
- * @certs:        the untrusted certificates stack.
- * @keyInfoCtx:        the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
- *
- * Verifies @certs list.
- *
- * Returns: pointer to the first verified certificate from @certs.
+ * @brief Verifies @p certs list.
+ * @param store the pointer to X509 certificate context store klass.
+ * @param certs the untrusted certificates stack.
+ * @param keyInfoCtx the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
+ * @return pointer to the first verified certificate from @p certs.
  */
 PCCERT_CONTEXT
 xmlSecMSCryptoX509StoreVerify(xmlSecKeyDataStorePtr store, HCERTSTORE certs,
@@ -626,14 +612,12 @@ xmlSecMSCryptoX509StoreVerify(xmlSecKeyDataStorePtr store, HCERTSTORE certs,
 }
 
 /**
- * xmlSecMSCryptoX509StoreAdoptCert:
- * @store:              the pointer to X509 key data store klass.
- * @cert:               the pointer to PCCERT_CONTEXT X509 certificate.
- * @type:               the certificate type (trusted/untrusted).
- *
- * Adds trusted (root) or untrusted certificate to the store.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Adds trusted or untrusted certificate to the store.
+ * @details Adds trusted (root) or untrusted certificate to the store.
+ * @param store the pointer to X509 key data store klass.
+ * @param pCert the pointer to PCCERT_CONTEXT X509 certificate.
+ * @param type the certificate type (trusted/untrusted).
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecMSCryptoX509StoreAdoptCert(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT pCert, xmlSecKeyDataType type) {
@@ -674,13 +658,10 @@ xmlSecMSCryptoX509StoreAdoptCert(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT pCe
 
 
 /**
- * xmlSecMSCryptoX509StoreAdoptKeyStore:
- * @store:              the pointer to X509 key data store klass.
- * @keyStore:           the pointer to keys store.
- *
- * Adds @keyStore to the list of key stores.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Adds @p keyStore to the list of key stores.
+ * @param store the pointer to X509 key data store klass.
+ * @param keyStore the pointer to keys store.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecMSCryptoX509StoreAdoptKeyStore (xmlSecKeyDataStorePtr store, HCERTSTORE keyStore) {
@@ -703,13 +684,11 @@ xmlSecMSCryptoX509StoreAdoptKeyStore (xmlSecKeyDataStorePtr store, HCERTSTORE ke
 }
 
 /**
- * xmlSecMSCryptoX509StoreAdoptTrustedStore:
- * @store:              the pointer to X509 key data store klass.
- * @trustedStore:       the pointer to certs store.
- *
- * Adds @trustedStore to the list of trusted certs stores.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Adds @p trustedStore to the trusted certs list.
+ * @details Adds @p trustedStore to the list of trusted certs stores.
+ * @param store the pointer to X509 key data store klass.
+ * @param trustedStore the pointer to certs store.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecMSCryptoX509StoreAdoptTrustedStore (xmlSecKeyDataStorePtr store, HCERTSTORE trustedStore) {
@@ -732,13 +711,11 @@ xmlSecMSCryptoX509StoreAdoptTrustedStore (xmlSecKeyDataStorePtr store, HCERTSTOR
 }
 
 /**
- * xmlSecMSCryptoX509StoreAdoptUntrustedStore:
- * @store:              the pointer to X509 key data store klass.
- * @untrustedStore:     the pointer to certs store.
- *
- * Adds @trustedStore to the list of un-trusted certs stores.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Adds @p trustedStore to the untrusted certs list.
+ * @details Adds @p trustedStore to the list of un-trusted certs stores.
+ * @param store the pointer to X509 key data store klass.
+ * @param untrustedStore the pointer to certs store.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecMSCryptoX509StoreAdoptUntrustedStore (xmlSecKeyDataStorePtr store, HCERTSTORE untrustedStore) {
@@ -761,11 +738,10 @@ xmlSecMSCryptoX509StoreAdoptUntrustedStore (xmlSecKeyDataStorePtr store, HCERTST
 }
 
 /**
- * xmlSecMSCryptoX509StoreEnableSystemTrustedCerts:
- * @store:              the pointer to X509 key data store klass.
- * @val:                the enable/disable flag
+ * @brief Enables/disables the system trusted certs.
+ * @param store the pointer to X509 key data store klass.
+ * @param val the enable/disable flag
  *
- * Enables/disables the system trusted certs.
  */
 void
 xmlSecMSCryptoX509StoreEnableSystemTrustedCerts (xmlSecKeyDataStorePtr store, int val) {
@@ -896,21 +872,19 @@ xmlSecMSCryptoX509StoreFinalize(xmlSecKeyDataStorePtr store) {
 }
 
 
-/*****************************************************************************
+/******************************************************************************
  *
  * Low-level x509 functions
  *
- *****************************************************************************/
+  *****************************************************************************/
 /**
- * xmlSecMSCryptoCertStrToName:
- * @dwCertEncodingType:         the encoding used.
- * @pszX500:                    the string to convert.
- * @dwStrType:                  the string type.
- * @len:                        the result len.
- *
- * Converts input string to name by calling @CertStrToName function.
- *
- * Returns: a pointer to newly allocated string or NULL if an error occurs.
+ * @brief Converts an input string to a cert name.
+ * @details Converts input string to name by calling CertStrToName function.
+ * @param dwCertEncodingType the encoding used.
+ * @param pszX500 the string to convert.
+ * @param dwStrType the string type.
+ * @param len the result len.
+ * @return a pointer to newly allocated string or NULL if an error occurs.
  */
 static BYTE*
 xmlSecMSCryptoCertStrToName(DWORD dwCertEncodingType, LPTSTR pszX500, DWORD dwStrType, DWORD* len) {
@@ -945,14 +919,12 @@ xmlSecMSCryptoCertStrToName(DWORD dwCertEncodingType, LPTSTR pszX500, DWORD dwSt
 
 
 /**
- * xmlSecMSCryptoX509FindCertBySubject:
- * @store:              the pointer to certs store
- * @wcSubject:          the cert subject (Unicode)
- * @dwCertEncodingType: the cert encoding type
- *
- * Searches for a cert with given @subject in the @store
- *
- * Returns: cert handle on success or NULL otherwise
+ * @brief Searches for a cert by @p subject in the @p store.
+ * @details Searches for a cert with given @p subject in the @p store
+ * @param store the pointer to certs store
+ * @param wcSubject the cert subject (Unicode)
+ * @param dwCertEncodingType the cert encoding type
+ * @return cert handle on success or NULL otherwise
  */
 PCCERT_CONTEXT
 xmlSecMSCryptoX509FindCertBySubject(HCERTSTORE store, const LPTSTR wcSubject, DWORD dwCertEncodingType) {
@@ -1050,15 +1022,13 @@ xmlSecMSCryptoX509FindCertBySubject(HCERTSTORE store, const LPTSTR wcSubject, DW
 }
 
 /**
- * xmlSecMSCryptoX509FindCertByIssuer:
- * @store:              the pointer to certs store
- * @wcIssuer:           the cert issuer (Unicode)
- * @issuerSerialBn:     the cert issuer serial
- * @dwCertEncodingType: the cert encoding type
- *
- * Searches for a cert with given @subject in the @store
- *
- * Returns: cert handle on success or NULL otherwise
+ * @brief Searches for a cert by @p issuer in the @p store.
+ * @details Searches for a cert with given @p subject in the @p store
+ * @param store the pointer to certs store
+ * @param wcIssuer the cert issuer (Unicode)
+ * @param issuerSerialBn the cert issuer serial
+ * @param dwCertEncodingType the cert encoding type
+ * @return cert handle on success or NULL otherwise
  */
 static PCCERT_CONTEXT
 xmlSecMSCryptoX509FindCertByIssuer(HCERTSTORE store, const LPTSTR wcIssuer,
@@ -1307,15 +1277,13 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store, const xmlChar *subjectName,
 
 
 /**
- * xmlSecMSCryptoX509GetNameString:
- * @pCertContext:   the pointer to cert
- * @dwType:         the type (see CertGetNameString description in MSDN)
- * @dwFlags:        the flags (see CertGetNameString description in MSDN)
- * @pvTypePara:     the type parameter (see CertGetNameString description in MSDN)
- *
- * Gets the name string for certificate (see CertGetNameString description in MSDN).
- *
- * Returns: name string (should be freed with xmlFree) or NULL if failed.
+ * @brief Gets the certificate name string.
+ * @details Gets the name string for certificate (see CertGetNameString description in MSDN).
+ * @param pCertContext the pointer to cert
+ * @param dwType the type (see CertGetNameString description in MSDN)
+ * @param dwFlags the flags (see CertGetNameString description in MSDN)
+ * @param pvTypePara the type parameter (see CertGetNameString description in MSDN)
+ * @return name string (should be freed with xmlFree) or NULL if failed.
  */
 xmlChar *
 xmlSecMSCryptoX509GetNameString(PCCERT_CONTEXT pCertContext, DWORD dwType, DWORD dwFlags, void *pvTypePara) {

@@ -8,12 +8,9 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:errors
- * @Short_description: Error reporting and logging functions.
- * @Stability: Stable
- *
+ * @addtogroup xmlsec_core_errors
+ * @brief Error reporting and logging functions.
  */
-
 #include "globals.h"
 
 #include <stdlib.h>
@@ -104,9 +101,8 @@ static int  xmlSecPrintErrorMessages = 1;       /* whether the error messages wi
 static int gXmlSecErrorsPrintCryptoLibraryLogOnExitIsEnabled = 0;
 
 /**
- * xmlSecErrorsInit:
- *
- * Initializes the errors reporting. It is called from #xmlSecInit function.
+ * @brief Initializes the errors reporting.
+ * @details Initializes the errors reporting. It is called from #xmlSecInit function.
  * and applications must not call this function directly.
  */
 void
@@ -114,9 +110,8 @@ xmlSecErrorsInit(void) {
 }
 
 /**
- * xmlSecErrorsShutdown:
- *
- * Cleanups the errors reporting. It is called from #xmlSecShutdown function.
+ * @brief Cleanups the errors reporting.
+ * @details Cleanups the errors reporting. It is called from #xmlSecShutdown function.
  * and applications must not call this function directly.
  */
 void
@@ -124,11 +119,10 @@ xmlSecErrorsShutdown(void) {
 }
 
 /**
- * xmlSecErrorsSetCallback:
- * @callback:           the new errors callback function.
- *
- * Sets the errors callback function to @callback that will be called
+ * @brief Sets the errors callback function.
+ * @details Sets the errors callback function to @p callback that will be called
  * every time an error occurs.
+ * @param callback the new errors callback function.
  */
 void
 xmlSecErrorsSetCallback(xmlSecErrorsCallback callback) {
@@ -136,17 +130,16 @@ xmlSecErrorsSetCallback(xmlSecErrorsCallback callback) {
 }
 
 /**
- * xmlSecErrorsDefaultCallback:
- * @file:               the error location file name (__FILE__ macro).
- * @line:               the error location line number (__LINE__ macro).
- * @func:               the error location function name (__FUNCTION__ macro).
- * @errorObject:        the error specific error object
- * @errorSubject:       the error specific error subject.
- * @reason:             the error code.
- * @msg:                the additional error message.
- *
- * The default error reporting callback that utilizes LibXML
- * error reporting #xmlGenericError function.
+ * @brief The default error reporting callback using LibXML.
+ * @details The default error reporting callback that utilizes LibXML
+ * error reporting xmlGenericError function.
+ * @param file the error location file name (__FILE__ macro).
+ * @param line the error location line number (__LINE__ macro).
+ * @param func the error location function name (__FUNCTION__ macro).
+ * @param errorObject the error specific error object
+ * @param errorSubject the error specific error subject.
+ * @param reason the error code.S
+ * @param msg the additional error message.
  */
 void
 xmlSecErrorsDefaultCallback(const char* file, int line, const char* func,
@@ -176,11 +169,10 @@ xmlSecErrorsDefaultCallback(const char* file, int line, const char* func,
 }
 
 /**
- * xmlSecErrorsDefaultCallbackEnableOutput:
- * @enabled:            the flag.
- *
- * Enables or disables calling LibXML2 callback from the default
+ * @brief Enables or disables output from the default errors callback.
+ * @details Enables or disables calling LibXML2 callback from the default
  * errors callback.
+ * @param enabled the flag.
  */
 void
 xmlSecErrorsDefaultCallbackEnableOutput(int enabled) {
@@ -188,12 +180,9 @@ xmlSecErrorsDefaultCallbackEnableOutput(int enabled) {
 }
 
 /**
- * xmlSecErrorsGetCode:
- * @pos:                the error position.
- *
- * Gets the known error code at position @pos.
- *
- * Returns: the known error code or 0 if @pos is greater than
+ * @brief Gets the known error code at position @p pos.
+ * @param pos the error position.
+ * @return the known error code or 0 if @p pos is greater than
  * total number of known error codes.
  */
 int
@@ -206,12 +195,9 @@ xmlSecErrorsGetCode(xmlSecSize pos) {
 }
 
 /**
- * xmlSecErrorsGetMsg:
- * @pos:                the error position.
- *
- * Gets the known error message at position @pos.
- *
- * Returns: the known error message or NULL if @pos is greater than
+ * @brief Gets the known error message at position @p pos.
+ * @param pos the error position.
+ * @return the known error message or NULL if @p pos is greater than
  * total number of known error codes.
  */
 const char*
@@ -224,19 +210,18 @@ xmlSecErrorsGetMsg(xmlSecSize pos) {
 }
 
 /**
- * xmlSecError:
- * @file:               the error location filename (__FILE__).
- * @line:               the error location line number (__LINE__).
- * @func:               the error location function (__FUNCTION__).
- * @errorObject:        the error specific error object (e.g. transform, key data, etc).
- * @errorSubject:       the error specific error subject (e.g. failed function name).
- * @reason:             the error code.
- * @msg:                the error message in printf format.
- * @...:                the parameters for the @msg.
- *
- * Reports an error to the default (#xmlSecErrorsDefaultCallback) or
+ * @brief Reports an error to the error callback.
+ * @details Reports an error to the default (#xmlSecErrorsDefaultCallback) or
  * application specific callback installed using #xmlSecErrorsSetCallback
  * function.
+ * @param file the error location filename (__FILE__).
+ * @param line the error location line number (__LINE__).
+ * @param func the error location function (__FUNCTION__).
+ * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param errorSubject the error specific error subject (e.g. failed function name).
+ * @param reason the error code.
+ * @param msg the error message in printf format.
+ * @param ... the parameters for the @p msg.
  */
 void
 xmlSecError(const char* file, int line, const char* func,
@@ -265,10 +250,9 @@ xmlSecError(const char* file, int line, const char* func,
 }
 
 /**
- * xmlSecErrorsPrintCryptoLibraryLogOnExitSet:
- * @enabled:                the flag
- *
- * Enables or disables the crypto library error log dump on exit (only supported by OpenSSL).
+ * @brief Enables or disables the crypto library error log dump on exit.
+ * @details Enables or disables the crypto library error log dump on exit (only supported by OpenSSL).
+ * @param enabled the flag
  */
 void
 xmlSecErrorsPrintCryptoLibraryLogOnExitSet(int enabled) {
@@ -276,10 +260,8 @@ xmlSecErrorsPrintCryptoLibraryLogOnExitSet(int enabled) {
 }
 
 /**
- * xmlSecErrorsPrintCryptoLibraryLogOnExitIsEnabled:
- * @enabled:                the flag
- *
- * Returns 1 if the crypto library error log dump on exit is enabled or 0 otherwise (only supported by OpenSSL).
+ * @brief Returns 1 if the crypto library error log dump on exit is enabled.
+ * @details Returns 1 if the crypto library error log dump on exit is enabled or 0 otherwise (only supported by OpenSSL).
  */
 int
 xmlSecErrorsPrintCryptoLibraryLogOnExitIsEnabled(void) {

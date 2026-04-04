@@ -26,11 +26,11 @@ extern "C" {
 #endif /* __cplusplus */
 
 #ifndef XMLSEC_NO_DES
-/********************************************************************
+/******************************************************************************
  *
  * KT DES
  *
- ********************************************************************/
+  *****************************************************************************/
 #define XMLSEC_KW_DES3_KEY_LENGTH                   ((xmlSecSize)24)
 #define XMLSEC_KW_DES3_IV_LENGTH                    ((xmlSecSize)8)
 #define XMLSEC_KW_DES3_BLOCK_LENGTH                 ((xmlSecSize)8)
@@ -89,11 +89,11 @@ typedef const struct _xmlSecKWDes3Klass              xmlSecKWDes3Klass,
     )
 
 
-/*********************************************************************
+/******************************************************************************
  *
  * Triple DES Key Wrap transform
  *
- ********************************************************************/
+  *****************************************************************************/
 
 typedef struct _xmlSecTransformKWDes3Ctx     xmlSecTransformKWDes3Ctx,
                                             *xmlSecTransformKWDes3CtxPtr;
@@ -121,11 +121,11 @@ XMLSEC_EXPORT int      xmlSecTransformKWDes3Execute             (xmlSecTransform
 #endif /* XMLSEC_NO_DES */
 
 #if !defined(XMLSEC_NO_AES) || !defined(XMLSEC_NO_CAMELLIA)
-/********************************************************************
+/******************************************************************************
  *
  * KW RFC 3394 (AES and Camellia)
  *
- ********************************************************************/
+  *****************************************************************************/
 #define XMLSEC_KW_RFC3394_IN_SIZE_MULTIPLY              ((xmlSecSize)8)
 #define XMLSEC_KW_RFC3394_MAGIC_BLOCK_SIZE              ((xmlSecSize)8)
 #define XMLSEC_KW_RFC3394_BLOCK_SIZE                    ((xmlSecSize)16)
@@ -158,11 +158,11 @@ struct _xmlSecKWRfc3394Klass {
 typedef const struct _xmlSecKWRfc3394Klass          xmlSecKWRfc3394Klass,
                                                     *xmlSecKWRfc3394Id;
 
-/*********************************************************************
+/******************************************************************************
  *
  * RFC 3394 KW transforms context (AES and Camellia)
  *
- ********************************************************************/
+  *****************************************************************************/
 typedef struct _xmlSecTransformKWRfc3394Ctx xmlSecTransformKWRfc3394Ctx,
                                            *xmlSecTransformKWRfc3394CtxPtr;
 struct _xmlSecTransformKWRfc3394Ctx {

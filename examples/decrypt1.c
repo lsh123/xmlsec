@@ -13,7 +13,7 @@
  * This is free software; see the Copyright file in the source
  * distribution for precise wording.
  *
- * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2024 Aleksey Sanin <aleksey#aleksey.com>. All Rights Reserved.
  */
 #include <stdlib.h>
 #include <string.h>
@@ -127,14 +127,12 @@ main(int argc, char **argv) {
 }
 
 /**
- * decrypt_file:
- * @enc_file:           the encrypted XML  file name.
- * @key_file:           the Triple DES key file.
- *
- * Decrypts the XML file #enc_file using DES key from #key_file and
+ * @brief Decrypts an encrypted XML file using a DES key.
+ * @details Decrypts the XML file #enc_file using DES key from #key_file and
  * prints results to stdout.
- *
- * Returns 0 on success or a negative value if an error occurs.
+ * @param enc_file the encrypted XML  file name.
+ * @param key_file the Triple DES key file.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 decrypt_file(const char* enc_file, const char* key_file) {

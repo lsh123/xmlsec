@@ -10,13 +10,10 @@
  * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
 /**
- * SECTION:x509
- * @Short_description: X509 certificates implementation for NSS.
- * @Stability: Stable
- *
+ * @addtogroup xmlsec_nss_x509
+ * @brief X509 certificates implementation for NSS.
  * X509 certificates implementation for NSS.
  */
-
 #include "globals.h"
 
 #ifndef XMLSEC_NO_X509
@@ -54,11 +51,11 @@
 #include "../x509_helpers.h"
 #include "private.h"
 
-/*************************************************************************
+/******************************************************************************
  *
  * X509 utility functions
  *
- ************************************************************************/
+  *****************************************************************************/
 static int              xmlSecNssVerifyAndAdoptX509KeyData     (xmlSecKeyPtr key,
                                                                 xmlSecKeyDataPtr data,
                                                                 xmlSecKeyInfoCtxPtr keyInfoCtx);
@@ -76,11 +73,11 @@ static void             xmlSecNssX509CertDebugXmlDump           (CERTCertificate
                                                                  FILE* output);
 
 
-/*************************************************************************
+/******************************************************************************
  *
  * Internal NSS X509 data CTX
  *
- ************************************************************************/
+  *****************************************************************************/
 typedef struct _xmlSecNssX509DataCtx {
     CERTCertificate*  keyCert;  /* OWNED BY certsList */
 
@@ -91,11 +88,11 @@ typedef struct _xmlSecNssX509DataCtx {
     unsigned int     numCrls;
 } xmlSecNssX509DataCtx, *xmlSecNssX509DataCtxPtr;
 
-/**************************************************************************
+/******************************************************************************
  *
  * &lt;dsig:X509Data/&gt; processing (http://www.w3.org/TR/xmldsig-core/#sec-X509Data)
  *
- *************************************************************************/
+  *****************************************************************************/
 XMLSEC_KEY_DATA_DECLARE(NssX509Data, xmlSecNssX509DataCtx)
 #define xmlSecNssX509DataSize XMLSEC_KEY_DATA_SIZE(NssX509Data)
 
@@ -172,11 +169,9 @@ static xmlSecKeyDataKlass xmlSecNssKeyDataX509Klass = {
 };
 
 /**
- * xmlSecNssKeyDataX509GetKlass:
- *
- * The NSS X509 key data klass (http://www.w3.org/TR/xmldsig-core/#sec-X509Data).
- *
- * Returns: the X509 data klass.
+ * @brief The NSS X509 key data klass.
+ * @details The NSS X509 key data klass (http://www.w3.org/TR/xmldsig-core/#sec-X509Data).
+ * @return the X509 data klass.
  */
 xmlSecKeyDataId
 xmlSecNssKeyDataX509GetKlass(void) {
@@ -184,12 +179,11 @@ xmlSecNssKeyDataX509GetKlass(void) {
 }
 
 /**
- * xmlSecNssKeyDataX509GetKeyCert:
- * @data:               the pointer to X509 key data.
+ * @brief Gets the certificate from which the key was extracted.
+ * @param data the pointer to X509 key data.
  *
- * Gets the certificate from which the key was extracted.
  *
- * Returns: the key's certificate or NULL if key data was not used for key
+ * @return the key's certificate or NULL if key data was not used for key
  * extraction or an error occurs.
  */
 CERTCertificate*
@@ -290,14 +284,13 @@ xmlSecNssKeyDataX509AddCertInternal(xmlSecNssX509DataCtxPtr ctx, CERTCertificate
 }
 
 /**
- * xmlSecNssKeyDataX509AdoptKeyCert:
- * @data:               the pointer to X509 key data.
- * @cert:               the pointer to NSS X509 certificate.
+ * @brief Adds certificate to the X509 key data and sets the it as the key's
+ * @param data the pointer to X509 key data.
+ * @param cert the pointer to NSS X509 certificate.
  *
- * Adds certificate to the X509 key data and sets the it as the key's
- * certificate in @data. On success, the @data owns the cert.
+ * certificate in @p data. On success, the @p data owns the cert.
  *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecNssKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, CERTCertificate* cert) {
@@ -329,13 +322,10 @@ xmlSecNssKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, CERTCertificate* cert) {
 }
 
 /**
- * xmlSecNssKeyDataX509AdoptCert:
- * @data:               the pointer to X509 key data.
- * @cert:               the pointer to NSS X509 certificate.
- *
- * Adds certificate to the X509 key data.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Adds certificate to the X509 key data.
+ * @param data the pointer to X509 key data.
+ * @param cert the pointer to NSS X509 certificate.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecNssKeyDataX509AdoptCert(xmlSecKeyDataPtr data, CERTCertificate* cert) {
@@ -356,14 +346,13 @@ xmlSecNssKeyDataX509AdoptCert(xmlSecKeyDataPtr data, CERTCertificate* cert) {
 }
 
 /**
- * xmlSecNssKeyDataX509GetCert:
- * @data:               the pointer to X509 key data.
- * @pos:                the desired certificate position.
+ * @brief Gets a certificate from X509 key data.
+ * @param data the pointer to X509 key data.
+ * @param pos the desired certificate position.
  *
- * Gets a certificate from X509 key data.
  *
- * Returns: the pointer to certificate or NULL if @pos is larger than the
- * number of certificates in @data or an error occurs.
+ * @return the pointer to certificate or NULL if @p pos is larger than the
+ * number of certificates in @p data or an error occurs.
  */
 CERTCertificate*
 xmlSecNssKeyDataX509GetCert(xmlSecKeyDataPtr data, xmlSecSize pos) {
@@ -391,12 +380,9 @@ xmlSecNssKeyDataX509GetCert(xmlSecKeyDataPtr data, xmlSecSize pos) {
 }
 
 /**
- * xmlSecNssKeyDataX509GetCertsSize:
- * @data:               the pointer to X509 key data.
- *
- * Gets the number of certificates in @data.
- *
- * Returns: te number of certificates in @data.
+ * @brief Gets the number of certificates in @p data.
+ * @param data the pointer to X509 key data.
+ * @return te number of certificates in @p data.
  */
 xmlSecSize
 xmlSecNssKeyDataX509GetCertsSize(xmlSecKeyDataPtr data) {
@@ -410,13 +396,10 @@ xmlSecNssKeyDataX509GetCertsSize(xmlSecKeyDataPtr data) {
 }
 
 /**
- * xmlSecNssKeyDataX509AdoptCrl:
- * @data:               the pointer to X509 key data.
- * @crl:                the pointer to NSS X509 CRL.
- *
- * Adds CRL to the X509 key data.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Adds CRL to the X509 key data.
+ * @param data the pointer to X509 key data.
+ * @param crl the pointer to NSS X509 CRL.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecNssKeyDataX509AdoptCrl(xmlSecKeyDataPtr data, CERTSignedCrl* crl) {
@@ -440,14 +423,13 @@ xmlSecNssKeyDataX509AdoptCrl(xmlSecKeyDataPtr data, CERTSignedCrl* crl) {
 }
 
 /**
- * xmlSecNssKeyDataX509GetCrl:
- * @data:               the pointer to X509 key data.
- * @pos:                the desired CRL position.
+ * @brief Gets a CRL from X509 key data.
+ * @param data the pointer to X509 key data.
+ * @param pos the desired CRL position.
  *
- * Gets a CRL from X509 key data.
  *
- * Returns: the pointer to CRL or NULL if @pos is larger than the
- * number of CRLs in @data or an error occurs.
+ * @return the pointer to CRL or NULL if @p pos is larger than the
+ * number of CRLs in @p data or an error occurs.
  */
 CERTSignedCrl *
 xmlSecNssKeyDataX509GetCrl(xmlSecKeyDataPtr data, xmlSecSize pos) {
@@ -472,12 +454,9 @@ xmlSecNssKeyDataX509GetCrl(xmlSecKeyDataPtr data, xmlSecSize pos) {
 }
 
 /**
- * xmlSecNssKeyDataX509GetCrlsSize:
- * @data:               the pointer to X509 key data.
- *
- * Gets the number of CRLs in @data.
- *
- * Returns: te number of CRLs in @data.
+ * @brief Gets the number of CRLs in @p data.
+ * @param data the pointer to X509 key data.
+ * @return te number of CRLs in @p data.
  */
 xmlSecSize
 xmlSecNssKeyDataX509GetCrlsSize(xmlSecKeyDataPtr data) {
@@ -1071,12 +1050,9 @@ xmlSecNssX509CertGetTime(PRTime* t, time_t* res) {
 }
 
 /**
- * xmlSecNssX509CertGetKey:
- * @cert:               the certificate.
- *
- * Extracts public key from the @cert.
- *
- * Returns: public key value or NULL if an error occurs.
+ * @brief Extracts public key from the @p cert.
+ * @param cert the certificate.
+ * @return public key value or NULL if an error occurs.
  */
 xmlSecKeyDataPtr
 xmlSecNssX509CertGetKey(CERTCertificate* cert) {
@@ -1431,12 +1407,12 @@ xmlSecNssX509CrlListAdoptCrl(xmlSecNssX509CrlNodePtr * head, CERTSignedCrl* crl)
     return(0);
 }
 
-/**************************************************************************
+/******************************************************************************
  *
  * Raw X509 Certificate processing
  *
  *
- *************************************************************************/
+  *****************************************************************************/
 static int              xmlSecNssKeyDataRawX509CertBinRead      (xmlSecKeyDataId id,
                                                                  xmlSecKeyPtr key,
                                                                  const xmlSecByte* buf,
@@ -1482,11 +1458,8 @@ static xmlSecKeyDataKlass xmlSecNssKeyDataRawX509CertKlass = {
 };
 
 /**
- * xmlSecNssKeyDataRawX509CertGetKlass:
- *
- * The raw X509 certificates key data klass.
- *
- * Returns: raw X509 certificates key data klass.
+ * @brief The raw X509 certificates key data klass.
+ * @return raw X509 certificates key data klass.
  */
 xmlSecKeyDataId
 xmlSecNssKeyDataRawX509CertGetKlass(void) {

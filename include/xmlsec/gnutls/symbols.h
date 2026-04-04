@@ -19,21 +19,21 @@ extern "C" {
 
 #ifdef XMLSEC_CRYPTO_GNUTLS
 
-/********************************************************************
+/******************************************************************************
  *
  * Crypto Init/shutdown
  *
- ********************************************************************/
+  *****************************************************************************/
 #define xmlSecCryptoInit                        xmlSecGnuTLSInit
 #define xmlSecCryptoShutdown                    xmlSecGnuTLSShutdown
 
 #define xmlSecCryptoKeysMngrInit                xmlSecGnuTLSKeysMngrInit
 
-/********************************************************************
+/******************************************************************************
  *
  * Key data ids
  *
- ********************************************************************/
+  *****************************************************************************/
 #define xmlSecKeyDataAesId                      xmlSecGnuTLSKeyDataAesId
 #define xmlSecKeyDataCamelliaId                 xmlSecGnuTLSKeyDataCamelliaId
 #define xmlSecKeyDataChaCha20Id                 xmlSecGnuTLSKeyDataChaCha20Id
@@ -56,21 +56,21 @@ extern "C" {
 #define xmlSecKeyDataRawX509CertId              xmlSecGnuTLSKeyDataRawX509CertId
 #define xmlSecKeyDataDEREncodedKeyValueId       xmlSecGnuTLSKeyDataDEREncodedKeyValueId
 
-/********************************************************************
+/******************************************************************************
  *
  * Key data store ids
  *
- ********************************************************************/
+  *****************************************************************************/
 #define xmlSecX509StoreId                       xmlSecGnuTLSX509StoreId
 
-/********************************************************************
+/******************************************************************************
  *
  * Crypto transforms ids
  *
  * https://www.aleksey.com/xmlsec/xmldsig.html
  * https://www.aleksey.com/xmlsec/xmlenc.html
  *
- ********************************************************************/
+  *****************************************************************************/
 #define xmlSecTransformAes128CbcId              xmlSecGnuTLSTransformAes128CbcId
 #define xmlSecTransformAes192CbcId              xmlSecGnuTLSTransformAes192CbcId
 #define xmlSecTransformAes256CbcId              xmlSecGnuTLSTransformAes256CbcId
@@ -163,11 +163,11 @@ extern "C" {
 #define xmlSecTransformSha3_384Id               xmlSecGnuTLSTransformSha3_384Id
 #define xmlSecTransformSha3_512Id               xmlSecGnuTLSTransformSha3_512Id
 
-/********************************************************************
+/******************************************************************************
  *
  * High-level routines for the xmlsec command-line utility
  *
- ********************************************************************/
+  *****************************************************************************/
 #define xmlSecCryptoAppInit                     xmlSecGnuTLSAppInit
 #define xmlSecCryptoAppShutdown                 xmlSecGnuTLSAppShutdown
 #define xmlSecCryptoAppDefaultKeysMngrInit      xmlSecGnuTLSAppDefaultKeysMngrInit

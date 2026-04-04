@@ -10,9 +10,8 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:crypto
+ * @addtogroup xmlsec_nss_crypto
  */
-
 #ifndef XMLSEC_NO_DES
 #include "globals.h"
 
@@ -35,11 +34,11 @@
 #include "../kw_helpers.h"
 #include "../cast_helpers.h"
 
-/*********************************************************************
+/******************************************************************************
  *
  * DES KW implementation
  *
- *********************************************************************/
+  *****************************************************************************/
 static int       xmlSecNssKWDes3GenerateRandom                  (xmlSecTransformPtr transform,
                                                                  xmlSecByte * out,
                                                                  xmlSecSize outSize,
@@ -91,19 +90,19 @@ static int      xmlSecNssKWDes3Encrypt                          (const xmlSecByt
                                                                  int enc);
 
 
-/*********************************************************************
+/******************************************************************************
  *
  * Triple DES Key Wrap transform context
  *
- ********************************************************************/
+  *****************************************************************************/
 typedef xmlSecTransformKWDes3Ctx  xmlSecNssKWDes3Ctx,
                                  *xmlSecNssKWDes3CtxPtr;
 
-/*********************************************************************
+/******************************************************************************
  *
  * Triple DES Key Wrap transform
  *
- ********************************************************************/
+  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(NssKWDes3, xmlSecNssKWDes3Ctx)
 #define xmlSecNssKWDes3Size XMLSEC_TRANSFORM_SIZE(NssKWDes3)
 
@@ -144,11 +143,8 @@ static xmlSecTransformKlass xmlSecNssKWDes3Klass = {
 };
 
 /**
- * xmlSecNssTransformKWDes3GetKlass:
- *
- * The Triple DES key wrapper transform klass.
- *
- * Returns: Triple DES key wrapper transform klass.
+ * @brief The Triple DES key wrapper transform klass.
+ * @return Triple DES key wrapper transform klass.
  */
 xmlSecTransformId
 xmlSecNssTransformKWDes3GetKlass(void) {
@@ -249,11 +245,11 @@ xmlSecNssKWDes3Execute(xmlSecTransformPtr transform, int last,
     return(0);
 }
 
-/*********************************************************************
+/******************************************************************************
  *
  * DES KW implementation
  *
- *********************************************************************/
+  *****************************************************************************/
 static int
 xmlSecNssKWDes3Sha1(xmlSecTransformPtr transform XMLSEC_ATTRIBUTE_UNUSED,
                     const xmlSecByte * in, xmlSecSize inSize,

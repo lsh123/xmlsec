@@ -9,9 +9,8 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:x509
+ * @addtogroup xmlsec_openssl_x509
  */
-
 #include "globals.h"
 
 #ifndef XMLSEC_NO_X509
@@ -45,11 +44,11 @@
 #include "openssl_compat.h"
 #include "private.h"
 
-/**************************************************************************
+/******************************************************************************
  *
  * Internal OpenSSL X509 store CTX
  *
- *************************************************************************/
+  *****************************************************************************/
 typedef struct _xmlSecOpenSSLX509StoreCtx               xmlSecOpenSSLX509StoreCtx,
                                                         *xmlSecOpenSSLX509StoreCtxPtr;
 struct _xmlSecOpenSSLX509StoreCtx {
@@ -59,11 +58,11 @@ struct _xmlSecOpenSSLX509StoreCtx {
     X509_VERIFY_PARAM * vpm;
 };
 
-/****************************************************************************
+/******************************************************************************
  *
  * xmlSecOpenSSLKeyDataStoreX509Id:
  *
- ***************************************************************************/
+  *****************************************************************************/
 XMLSEC_KEY_DATA_STORE_DECLARE(OpenSSLX509Store, xmlSecOpenSSLX509StoreCtx)
 #define xmlSecOpenSSLX509StoreSize XMLSEC_KEY_DATA_STORE_SIZE(OpenSSLX509Store)
 
@@ -108,11 +107,9 @@ static int              xmlSecOpenSSLX509_NAME_ENTRY_cmp                (const X
 static STACK_OF(X509)*  xmlSecOpenSSLX509StoreCombineCerts              (STACK_OF(X509)* certs1,
                                                                          STACK_OF(X509)* certs2);
 /**
- * xmlSecOpenSSLX509StoreGetKlass:
- *
- * The OpenSSL X509 certificates key data store klass.
- *
- * Returns: pointer to OpenSSL X509 certificates key data store klass.
+ * @brief The OpenSSL X509 certificates store klass.
+ * @details The OpenSSL X509 certificates key data store klass.
+ * @return pointer to OpenSSL X509 certificates key data store klass.
  */
 xmlSecKeyDataStoreId
 xmlSecOpenSSLX509StoreGetKlass(void) {
@@ -120,17 +117,16 @@ xmlSecOpenSSLX509StoreGetKlass(void) {
 }
 
 /**
- * xmlSecOpenSSLX509StoreFindCert:
- * @store:              the pointer to X509 key data store klass.
- * @subjectName:        the desired certificate name.
- * @issuerName:         the desired certificate issuer name.
- * @issuerSerial:       the desired certificate issuer serial number.
- * @ski:                the desired certificate SKI.
- * @keyInfoCtx:         the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
+ * @brief Deprecated. Searches @p store for a certificate that matches given criteria.
+ * @param store the pointer to X509 key data store klass.
+ * @param subjectName the desired certificate name.
+ * @param issuerName the desired certificate issuer name.
+ * @param issuerSerial the desired certificate issuer serial number.
+ * @param ski the desired certificate SKI.
+ * @param keyInfoCtx the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
  *
- * Deprecated. Searches @store for a certificate that matches given criteria.
  *
- * Returns: pointer to found certificate or NULL if certificate is not found
+ * @return pointer to found certificate or NULL if certificate is not found
  * or an error occurs.
  */
 X509*
@@ -159,18 +155,17 @@ xmlSecOpenSSLX509StoreFindCert(xmlSecKeyDataStorePtr store, xmlChar *subjectName
 }
 
 /**
- * xmlSecOpenSSLX509StoreFindCert_ex:
- * @store:              the pointer to X509 key data store klass.
- * @subjectName:        the desired certificate name.
- * @issuerName:         the desired certificate issuer name.
- * @issuerSerial:       the desired certificate issuer serial number.
- * @ski:                the desired certificate SKI.
- * @skiSize:            the desired certificate SKI size.
- * @keyInfoCtx:         the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
+ * @brief Deprecated. Searches @p store for a certificate that matches given criteria.
+ * @param store the pointer to X509 key data store klass.
+ * @param subjectName the desired certificate name.
+ * @param issuerName the desired certificate issuer name.
+ * @param issuerSerial the desired certificate issuer serial number.
+ * @param ski the desired certificate SKI.
+ * @param skiSize the desired certificate SKI size.
+ * @param keyInfoCtx the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
  *
- * Deprecated. Searches @store for a certificate that matches given criteria.
  *
- * Returns: pointer to found certificate or NULL if certificate is not found
+ * @return pointer to found certificate or NULL if certificate is not found
  * or an error occurs.
  */
 X509*
@@ -864,15 +859,12 @@ xmlSecOpenSSLX509FilterCrlsByTime(STACK_OF(X509_CRL)* crls, xmlSecKeyInfoCtx* ke
 }
 
 /**
- * xmlSecOpenSSLX509StoreVerify:
- * @store:              the pointer to X509 key data store klass.
- * @certs:              the untrusted certificates stack.
- * @crls:               the crls stack.
- * @keyInfoCtx:         the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
- *
- * Verifies @certs list.
- *
- * Returns: pointer to the first verified certificate from @certs.
+ * @brief Verifies @p certs list.
+ * @param store the pointer to X509 key data store klass.
+ * @param certs the untrusted certificates stack.
+ * @param crls the crls stack.
+ * @param keyInfoCtx the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
+ * @return pointer to the first verified certificate from @p certs.
  */
 X509*
 xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* certs, XMLSEC_STACK_OF_X509_CRL* crls, xmlSecKeyInfoCtx* keyInfoCtx) {
@@ -990,20 +982,19 @@ done:
 }
 
 /**
- * xmlSecOpenSSLX509StoreVerifyKey:
- * @store:              the pointer to X509 key data store klass.
- * @key:                the pointer to key.
- * @keyInfoCtx:         the key info context for verification.
+ * @brief Verifies @p key with the keys manager @p mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
+ * @param store the pointer to X509 key data store klass.
+ * @param key the pointer to key.
+ * @param keyInfoCtx the key info context for verification.
  *
- * Verifies @key with the keys manager @mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
  * function:
  * - Checks that key certificate is present
  * - Checks that key certificate is valid
  *
- * Adds @key to the keys manager @mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
+ * Adds @p key to the keys manager @p mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
  * function.
  *
- * Returns: 1 if key is verified, 0 otherwise, or a negative value if an error occurs.
+ * @return 1 if key is verified, 0 otherwise, or a negative value if an error occurs.
  */
 int
 xmlSecOpenSSLX509StoreVerifyKey(xmlSecKeyDataStorePtr store, xmlSecKeyPtr key, xmlSecKeyInfoCtxPtr keyInfoCtx) {
@@ -1111,16 +1102,15 @@ done:
 }
 
 /**
- * xmlSecOpenSSLX509StoreVerifyCrl:
- * @store:              the pointer to X509 key data store klass.
- * @crl:                the CRL to verify.
- * @keyInfoCtx:         the key info context for verification parameters.
+ * @brief Verifies @p crl by checking:
+ * @param store the pointer to X509 key data store klass.
+ * @param crl the CRL to verify.
+ * @param keyInfoCtx the key info context for verification parameters.
  *
- * Verifies @crl by checking:
  * 1. Signature is valid (signed by issuer cert in store)
  * 2. thisUpdate <= verification_time <= nextUpdate
  *
- * Returns: 1 if verified, 0 if not verified, or a negative value on error.
+ * @return 1 if verified, 0 if not verified, or a negative value on error.
  */
 int
 xmlSecOpenSSLX509StoreVerifyCrl(xmlSecKeyDataStorePtr store, X509_CRL* crl,
@@ -1173,14 +1163,12 @@ done:
 }
 
 /**
- * xmlSecOpenSSLX509StoreAdoptCert:
- * @store:              the pointer to X509 key data store klass.
- * @cert:               the pointer to OpenSSL X509 certificate.
- * @type:               the certificate type (trusted/untrusted).
- *
- * Adds trusted (root) or untrusted certificate to the store.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Adds cert to the trusted or untrusted store.
+ * @details Adds trusted (root) or untrusted certificate to the store.
+ * @param store the pointer to X509 key data store klass.
+ * @param cert the pointer to OpenSSL X509 certificate.
+ * @param type the certificate type (trusted/untrusted).
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecOpenSSLX509StoreAdoptCert(xmlSecKeyDataStorePtr store, X509* cert, xmlSecKeyDataType type) {
@@ -1220,13 +1208,10 @@ xmlSecOpenSSLX509StoreAdoptCert(xmlSecKeyDataStorePtr store, X509* cert, xmlSecK
 }
 
 /**
- * xmlSecOpenSSLX509StoreAdoptCrl:
- * @store:              the pointer to X509 key data store klass.
- * @crl:                the pointer to OpenSSL X509_CRL.
- *
- * Adds X509 CRL to the store.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Adds X509 CRL to the store.
+ * @param store the pointer to X509 key data store klass.
+ * @param crl the pointer to OpenSSL X509_CRL.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecOpenSSLX509StoreAdoptCrl(xmlSecKeyDataStorePtr store, X509_CRL* crl) {
@@ -1250,14 +1235,13 @@ xmlSecOpenSSLX509StoreAdoptCrl(xmlSecKeyDataStorePtr store, X509_CRL* crl) {
 }
 
 /**
- * xmlSecOpenSSLX509StoreAddCertsPath:
- * @store: the pointer to OpenSSL x509 store.
- * @path: the path to the certs dir.
+ * @brief Adds all certs in the @p path to the list of trusted certs
+ * @param store the pointer to OpenSSL x509 store.
+ * @param path the path to the certs dir.
  *
- * Adds all certs in the @path to the list of trusted certs
- * in @store.
+ * in @p store.
  *
- * Returns: 0 on success or a negative value otherwise.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecOpenSSLX509StoreAddCertsPath(xmlSecKeyDataStorePtr store, const char *path) {
@@ -1288,14 +1272,13 @@ xmlSecOpenSSLX509StoreAddCertsPath(xmlSecKeyDataStorePtr store, const char *path
 }
 
 /**
- * xmlSecOpenSSLX509StoreAddCertsFile:
- * @store: the pointer to OpenSSL x509 store.
- * @filename: the certs file.
+ * @brief Adds all certs in the file to the list of trusted certs
+ * @param store the pointer to OpenSSL x509 store.
+ * @param filename the certs file.
  *
- * Adds all certs in @file to the list of trusted certs
- * in @store. It is possible for @file to contain multiple certs.
+ * in @p store. It is possible for the file to contain multiple certs.
  *
- * Returns: 0 on success or a negative value otherwise.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecOpenSSLX509StoreAddCertsFile(xmlSecKeyDataStorePtr store, const char *filename) {
@@ -1431,11 +1414,11 @@ xmlSecOpenSSLX509StoreFinalize(xmlSecKeyDataStorePtr store) {
 }
 
 
-/*****************************************************************************
+/******************************************************************************
  *
  * Low-level x509 functions
  *
- *****************************************************************************/
+  *****************************************************************************/
 static X509*
 xmlSecOpenSSLX509FindTrustedIssuer(X509_STORE* xst, X509_NAME* issuer) {
     STACK_OF(X509_OBJECT)* objects = NULL;
@@ -2325,9 +2308,7 @@ int xmlSecOpenSSLX509_NAME_ENTRIES_cmp(STACK_OF(X509_NAME_ENTRY)* a,  STACK_OF(X
 
 
 /**
- * xmlSecOpenSSLX509NamesCompare:
- *
- * We have to sort X509_NAME entries to get correct results.
+ * @brief We have to sort X509_NAME entries to get correct results.
  * This is ugly but OpenSSL does not support it
  *
  * Returns 0 if equal

@@ -2833,8 +2833,9 @@ docs/html/Makefile
 docs/html/api/Makefile
 docs/html/tutorial/Makefile
 docs/html/examples/Makefile
-docs.doxygen/Makefile
-docs.doxygen/Doxyfile:docs.doxygen/Doxyfile.in
+docs/xml/Makefile
+docs/xml/api/Makefile
+docs/xml/api/Doxyfile:docs/xml/api/Doxyfile.in
 man/Makefile
 xmlsec1-openssl.pc:xmlsec-openssl.pc.in
 xmlsec1-gnutls.pc:xmlsec-gnutls.pc.in

@@ -36,7 +36,7 @@
 #define XMLSEC_X509_NAME_READ_STATE_AFTER_SLASH2    2
 #define XMLSEC_X509_NAME_READ_STATE_DELIMETER       3
 
-/**************************************************************************
+/******************************************************************************
  *
  * Helper functions to read/write &lt;dsig:X509Data/&gt;
  *
@@ -122,7 +122,7 @@
  *    <!ELEMENT X509CRL (#PCDATA) >
  * ]]></programlisting>
  *
- *************************************************************************/
+  *****************************************************************************/
 #define XMLSEC_KEY_DATA_X509_INIT_BUF_SIZE     512
 
 static int                      xmlSecKeyX509DataValueInitialize            (xmlSecKeyX509DataValuePtr x509Value);
@@ -138,17 +138,14 @@ static int                      xmlSecKeyX509DataValueXmlWrite              (xml
                                                                              int addLineBreaks);
 
 /**
- * xmlSecKeyDataX509XmlRead:
- * @key:                the resulting key
- * @data:               the X509 key data.
- * @node:               the pointer to data's value XML node.
- * @keyInfoCtx:         the &lt;dsig:KeyInfo/&gt; node processing context.
- * @readFunc:           the pointer to the function that converts
- *                      @xmlSecKeyX509DataValue to @xmlSecKeyData.
- *
- * X509 Key data method for reading XML node.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief X509 Key data method for reading XML node.
+ * @param key the resulting key
+ * @param data the X509 key data.
+ * @param node the pointer to data's value XML node.
+ * @param keyInfoCtx the &lt;dsig:KeyInfo/&gt; node processing context.
+ * @param readFunc the pointer to the function that converts
+ *                      xmlSecKeyX509DataValue to xmlSecKeyData.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecKeyDataX509XmlRead(xmlSecKeyPtr key, xmlSecKeyDataPtr data, xmlNodePtr node,
@@ -294,19 +291,16 @@ xmlSecX509DataGetNodeContent(xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx, xm
 }
 
 /**
- * xmlSecKeyDataDsaXmlWrite:
- * @data:               the x509 key data.
- * @x509ObjNum:         the number of X509 objects in @data.
- * @node:               the pointer to data's value XML node.
- * @keyInfoCtx:         the &lt;dsig:KeyInfo/&gt; node processing context.
- * @base64LineSize:     the base64 max line size.
- * @addLineBreaks:      the flag indicating if we need to add line breaks around base64 output.
- * @writeFunc:          the pointer to the function that converts
- *                      @xmlSecKeyData to  @xmlSecKeyValueDsa.
- *
- * DSA Key data  method for writing XML node.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief DSA Key data  method for writing XML node.
+ * @param data the x509 key data.
+ * @param node the pointer to data's value XML node.
+ * @param keyInfoCtx the &lt;dsig:KeyInfo/&gt; node processing context.
+ * @param base64LineSize the base64 max line size.
+ * @param addLineBreaks the flag indicating if we need to add line breaks around base64 output.
+ * @param writeFunc the pointer to the function that converts
+ *                      xmlSecKeyData to  xmlSecKeyValueDsa.
+ * @param writeFuncContext the context passed to @p writeFunc.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecKeyDataX509XmlWrite(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx,
@@ -844,21 +838,19 @@ xmlSecKeyX509DataValueXmlWrite(xmlSecKeyX509DataValuePtr x509Value, xmlNodePtr n
 }
 
 /**
- * xmlSecX509EscapedStringRead:
- * @in:                     the in/out pointer to the parsed string.
- * @inSize:                 the in/out size of the parsed string.
- * @out:                    the pointer to output string.
- * @outSize:                the size of the output string.
- * @outWritten:             the number of characters written to the output string.
- * @delim:                  the delimiter (stop char).
- * @ingoreTrailingSpaces:   the flag indicating if trailing spaces should not be copied to output.
- *
- * Reads X509 escaped string (see https://datatracker.ietf.org/doc/html/rfc4514#section-3).
- * The function parses the string in the @in paramter until end of string or @delim is encountered.
- * The @in and @inSize parameters are moved to the next character (e.g. delimeter if it was encountered
+ * @brief Reads X509 escaped string.
+ * @details Reads X509 escaped string (see https://datatracker.ietf.org/doc/html/rfc4514#section-3).
+ * The function parses the string in the @p in paramter until end of string or @p delim is encountered.
+ * The @p in and @p inSize parameters are moved to the next character (e.g. delimeter if it was encountered
  * during parsing).
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @param in the in/out pointer to the parsed string.
+ * @param inSize the in/out size of the parsed string.
+ * @param out the pointer to output string.
+ * @param outSize the size of the output string.
+ * @param outWritten the number of characters written to the output string.
+ * @param delim the delimiter (stop char).
+ * @param ingoreTrailingSpaces the flag indicating if trailing spaces should not be copied to output.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecX509EscapedStringRead(const xmlChar **in, xmlSecSize *inSize,
@@ -966,26 +958,24 @@ xmlSecX509EscapedStringRead(const xmlChar **in, xmlSecSize *inSize,
 }
 
 /**
- * xmlSecX509AttrValueStringRead:
- * @in:                     the in/out pointer to the parsed string.
- * @inSize:                 the in/out size of the parsed string.
- * @out:                    the pointer to output string.
- * @outSize:                the size of the output string.
- * @outWritten:             the number of characters written to the output string.
- * @outType:                the type of string (UTF8 or octet).
- * @delim:                  the delimiter (stop char).
- * @ingoreTrailingSpaces:   the flag indicating if trailing spaces should not be copied to output.
- *
- * Reads X509 attr value string (see https://datatracker.ietf.org/doc/html/rfc4514#section-3) of one of the
+ * @brief Reads X509 attr value string.
+ * @details Reads X509 attr value string (see https://datatracker.ietf.org/doc/html/rfc4514#section-3) of one of the
  * three types:
  *   - string (eg 'abc')
  *   - quoted string (eg '"abc"')
- *   - hexstring (eg '#A0B0')
- * The function parses the string in the @in paramter until end of string or @delim is encountered.
- * The @in and @inSize parameters are moved to the next character (e.g. delimeter if it was encountered
+ *   - hexstring (eg '@p A0B0')
+ * The function parses the string in the @p in paramter until end of string or @p delim is encountered.
+ * The @p in and @p inSize parameters are moved to the next character (e.g. delimeter if it was encountered
  * during parsing).
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @param in the in/out pointer to the parsed string.
+ * @param inSize the in/out size of the parsed string.
+ * @param out the pointer to output string.
+ * @param outSize the size of the output string.
+ * @param outWritten the number of characters written to the output string.
+ * @param outType the type of string (UTF8 or octet).
+ * @param delim the delimiter (stop char).
+ * @param ingoreTrailingSpaces the flag indicating if trailing spaces should not be copied to output.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecX509AttrValueStringRead(
@@ -1093,15 +1083,14 @@ xmlSecX509AttrValueStringRead(
 }
 
 /**
- * xmlSecX509NameRead:
- * @str:                    the pointer to the parsed string.
- * @callback:               the callback to be called on every found name / value pair.
- * @context:                the context to be passed to callback.
- *
- * Reads X509 name (see https://datatracker.ietf.org/doc/html/rfc4514#section-3) and calls
- * @callback on every name / value pair found.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Reads X509 name and calls callback on every found name/value pair.
+ * @details Reads X509 name (see https://datatracker.ietf.org/doc/html/rfc4514#section-3) and calls
+ * @p callback on every name / value pair found.
+ * @param str the pointer to the parsed string.
+ * @param replacements the optional replacements table (can be NULL).
+ * @param callback the callback to be called on every found name / value pair.
+ * @param context the context to be passed to callback.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecX509NameRead(const xmlChar *str, xmlSecx509NameReplacements *replacements, xmlSecX509NameReadCallback callback, void * context) {
@@ -1191,14 +1180,12 @@ xmlSecX509NameRead(const xmlChar *str, xmlSecx509NameReplacements *replacements,
 }
 
 /**
- * xmlSecX509SerialNumberWrite:
- * @data:       the serial number bytes (big-endian, unsigned).
- * @dataSize:   the number of bytes in @data.
- *
- * Converts a DER-encoded ASN.1 INTEGER (serial number) to its decimal string
+ * @brief Converts DER-encoded serial number to decimal string.
+ * @details Converts a DER-encoded ASN.1 INTEGER (serial number) to its decimal string
  * representation.
- *
- * Returns: the decimal string on success or NULL if an error occurs.
+ * @param data the serial number bytes (big-endian, unsigned).
+ * @param dataSize the number of bytes in @p data.
+ * @return the decimal string on success or NULL if an error occurs.
  * Caller is responsible for freeing the returned string with xmlFree().
  */
 xmlChar*
@@ -1313,17 +1300,15 @@ done:
 }
 
 /**
- * xmlSecX509SerialNumberRead:
- * @str:        the decimal string representation of the serial number.
- * @res:        the output buffer for the DER-encoded big-endian bytes.
- * @resSize:    the size of @res in bytes (must be >= XMLSEC_X509_MAX_SERIAL_NUMBER_BYTES).
- * @written:    the number of bytes written to @res.
- *
- * Converts a decimal string serial number to its DER-encoded ASN.1 INTEGER
+ * @brief Converts decimal string serial number to DER-encoded ASN.1 INTEGER bytes.
+ * @details Converts a decimal string serial number to its DER-encoded ASN.1 INTEGER
  * byte representation (big-endian, with a leading 0x00 byte prepended when
  * the most-significant bit is set, per RFC 5280).
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @param str the decimal string representation of the serial number.
+ * @param res the output buffer for the DER-encoded big-endian bytes.
+ * @param resSize the size of @p res in bytes (must be >= XMLSEC_X509_MAX_SERIAL_NUMBER_BYTES).
+ * @param written the number of bytes written to @p res.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecX509SerialNumberRead(const xmlChar *str, xmlSecByte *res, xmlSecSize resSize, xmlSecSize *written) {

@@ -11,6 +11,13 @@
 #ifndef __XMLSEC_OPENSSL_KEYSSTORE_H__
 #define __XMLSEC_OPENSSL_KEYSSTORE_H__
 
+/**
+ * @defgroup xmlsec_openssl_keysstore OpenSSL Keys Store
+ * @ingroup xmlsec_openssl
+ * @brief OpenSSL-specific key store implementation.
+ * @{
+ */
+
 #include <xmlsec/exports.h>
 #include <xmlsec/xmlsec.h>
 
@@ -18,15 +25,13 @@
 extern "C" {
 #endif /* __cplusplus */
 
-/****************************************************************************
+/******************************************************************************
  *
  * OpenSSL Keys Store
  *
- ***************************************************************************/
+  *****************************************************************************/
 /**
- * xmlSecOpenSSLKeysStoreId:
- *
- * A OpenSSL keys store klass id.
+ * @brief A OpenSSL keys store klass id.
  */
 #define xmlSecOpenSSLKeysStoreId        xmlSecOpenSSLKeysStoreGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyStoreId   xmlSecOpenSSLKeysStoreGetKlass(void);
@@ -43,5 +48,7 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeysStoreSave    (xmlSecKey
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
+
+/** @} */ /** xmlsec_openssl_keysstore */
 
 #endif /* __XMLSEC_OPENSSL_KEYSSTORE_H__ */

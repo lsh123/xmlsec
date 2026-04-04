@@ -5,7 +5,7 @@
  *
  * See Copyright for the status of this software.
  *
- * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2024 Aleksey Sanin <aleksey#aleksey.com>. All Rights Reserved.
  */
 #include <stdlib.h>
 #include <string.h>
@@ -29,9 +29,9 @@
  * require the crypto backend to be initialized.
  */
 
-/*************************************************************************
+/******************************************************************************
  * xmlSecTmplSignatureCreate
- *************************************************************************/
+  *****************************************************************************/
 static void
 test_xmlSecTmplSignatureCreate_structure(void) {
     xmlNodePtr signNode = NULL;
@@ -151,9 +151,9 @@ test_xmlSecTmplSignatureCreate_with_id(void) {
     testFinishedSuccess();
 }
 
-/*************************************************************************
+/******************************************************************************
  * xmlSecTmplSignatureCreateNsPref
- *************************************************************************/
+  *****************************************************************************/
 static void
 test_xmlSecTmplSignatureCreateNsPref_prefix_applied(void) {
     xmlNodePtr signNode = NULL;
@@ -219,9 +219,9 @@ test_xmlSecTmplSignatureCreateNsPref_null_prefix(void) {
     testFinishedSuccess();
 }
 
-/*************************************************************************
+/******************************************************************************
  * xmlSecTmplSignatureGetSignMethodNode / xmlSecTmplSignatureGetC14NMethodNode
- *************************************************************************/
+  *****************************************************************************/
 static void
 test_xmlSecTmplSignatureGetSignMethodNode(void) {
     xmlNodePtr signNode = NULL;
@@ -310,9 +310,9 @@ test_xmlSecTmplSignatureGetC14NMethodNode(void) {
     testFinishedSuccess();
 }
 
-/*************************************************************************
+/******************************************************************************
  * xmlSecTmplSignatureEnsureKeyInfo
- *************************************************************************/
+  *****************************************************************************/
 static void
 test_xmlSecTmplSignatureEnsureKeyInfo_adds_node(void) {
     xmlNodePtr signNode = NULL;
@@ -386,9 +386,9 @@ test_xmlSecTmplSignatureEnsureKeyInfo_idempotent(void) {
     testFinishedSuccess();
 }
 
-/*************************************************************************
+/******************************************************************************
  * xmlSecTmplSignatureAddReference
- *************************************************************************/
+  *****************************************************************************/
 static void
 test_xmlSecTmplSignatureAddReference_with_uri(void) {
     xmlNodePtr signNode = NULL;
@@ -504,9 +504,9 @@ test_xmlSecTmplSignatureAddReference_multiple(void) {
     testFinishedSuccess();
 }
 
-/*************************************************************************
+/******************************************************************************
  * xmlSecTmplEncDataCreate
- *************************************************************************/
+  *****************************************************************************/
 static void
 test_xmlSecTmplEncDataCreate_structure(void) {
     xmlNodePtr encNode = NULL;
@@ -614,9 +614,9 @@ test_xmlSecTmplEncDataCreate_null_method(void) {
     testFinishedSuccess();
 }
 
-/*************************************************************************
+/******************************************************************************
  * xmlSecTmplEncDataEnsureCipherValue
- *************************************************************************/
+  *****************************************************************************/
 static void
 test_xmlSecTmplEncDataEnsureCipherValue_adds_node(void) {
     xmlNodePtr encNode = NULL;
@@ -676,9 +676,9 @@ test_xmlSecTmplEncDataEnsureCipherValue_idempotent(void) {
     testFinishedSuccess();
 }
 
-/*************************************************************************
+/******************************************************************************
  * xmlSecTmplEncDataEnsureKeyInfo
- *************************************************************************/
+  *****************************************************************************/
 static void
 test_xmlSecTmplEncDataEnsureKeyInfo_adds_node(void) {
     xmlNodePtr encNode = NULL;
@@ -746,9 +746,9 @@ test_xmlSecTmplEncDataEnsureKeyInfo_idempotent(void) {
     testFinishedSuccess();
 }
 
-/*************************************************************************
+/******************************************************************************
  * xmlSecTmplKeyInfoAddKeyName
- *************************************************************************/
+  *****************************************************************************/
 static void
 test_xmlSecTmplKeyInfoAddKeyName_with_name(void) {
     xmlDocPtr doc = NULL;
@@ -858,9 +858,9 @@ test_xmlSecTmplKeyInfoAddKeyName_null_name(void) {
     testFinishedSuccess();
 }
 
-/*************************************************************************
+/******************************************************************************
  * exported entry point
- *************************************************************************/
+  *****************************************************************************/
 int
 test_templates(void) {
     int success = 1;

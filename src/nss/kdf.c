@@ -9,11 +9,8 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:crypto
- * @Short_description:
- * @Stability: Stable
+ * @addtogroup xmlsec_nss_crypto
  */
-
 #include "globals.h"
 
 #if !defined(XMLSEC_NO_PBKDF2) || !defined(XMLSEC_NO_CONCATKDF) || !defined(XMLSEC_NO_HKDF)
@@ -37,11 +34,11 @@
 #include "../cast_helpers.h"
 #include "../transform_helpers.h"
 
-/***********************************************************************************************************
+/******************************************************************************
  *
  * Internal KDF context
  *
- **********************************************************************************************************/
+  *****************************************************************************/
 
 #define XMLSEC_NSS_KDF_DEFAULT_BUF_SIZE      64
 #define XMLSEC_NSS_KDF_MAX_HASH_SIZE         64
@@ -1118,6 +1115,10 @@ static xmlSecTransformKlass xmlSecNssConcatKdfKlass = {
     NULL,
 };
 
+/**
+ * @brief The ConcatKDF key derivation transform klass.
+ * @return the ConcatKDF key derivation transform klass.
+ */
 xmlSecTransformId
 xmlSecNssTransformConcatKdfGetKlass(void) {
     return(&xmlSecNssConcatKdfKlass);
@@ -1151,6 +1152,10 @@ static xmlSecTransformKlass xmlSecNssPbkdf2Klass = {
     NULL,
 };
 
+/**
+ * @brief The PBKDF2 key derivation transform klass.
+ * @return the PBKDF2 key derivation transform klass.
+ */
 xmlSecTransformId
 xmlSecNssTransformPbkdf2GetKlass(void) {
     return(&xmlSecNssPbkdf2Klass);

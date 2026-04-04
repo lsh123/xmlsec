@@ -8,14 +8,10 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:crypto
- * @Short_description: Core crypto functions for GCrypt.
- * @Stability: Stable
- *
- *
+ * @addtogroup xmlsec_gcrypt_crypto
+ * @brief Core crypto functions for GCrypt.
  * Core crypto functions for GCrypt.
  */
-
 #include "globals.h"
 
 #include <string.h>
@@ -35,11 +31,8 @@
 static xmlSecCryptoDLFunctionsPtr gXmlSecGCryptFunctions = NULL;
 
 /**
- * xmlSecCryptoGetFunctions_gcrypt:
- *
- * Gets the pointer to xmlsec-gcrypt functions table.
- *
- * Returns: the xmlsec-gcrypt functions table or NULL if an error occurs.
+ * @brief Gets the pointer to xmlsec-gcrypt functions table.
+ * @return the xmlsec-gcrypt functions table or NULL if an error occurs.
  */
 xmlSecCryptoDLFunctionsPtr
 xmlSecCryptoGetFunctions_gcrypt(void) {
@@ -52,20 +45,20 @@ xmlSecCryptoGetFunctions_gcrypt(void) {
     memset(&functions, 0, sizeof(functions));
     gXmlSecGCryptFunctions = &functions;
 
-    /********************************************************************
+    /******************************************************************************
      *
      * Crypto Init/shutdown
      *
-     ********************************************************************/
+      *****************************************************************************/
     gXmlSecGCryptFunctions->cryptoInit                  = xmlSecGCryptInit;
     gXmlSecGCryptFunctions->cryptoShutdown              = xmlSecGCryptShutdown;
     gXmlSecGCryptFunctions->cryptoKeysMngrInit          = xmlSecGCryptKeysMngrInit;
 
-    /********************************************************************
+    /******************************************************************************
      *
      * Key data ids
      *
-     ********************************************************************/
+      *****************************************************************************/
 #ifndef XMLSEC_NO_AES
     gXmlSecGCryptFunctions->keyDataAesGetKlass          = xmlSecGCryptKeyDataAesGetKlass;
 #endif /* XMLSEC_NO_AES */
@@ -91,19 +84,19 @@ xmlSecCryptoGetFunctions_gcrypt(void) {
 #endif /* XMLSEC_NO_RSA */
 
 
-    /********************************************************************
+    /******************************************************************************
      *
      * Key data store ids
      *
-     ********************************************************************/
+      *****************************************************************************/
 
-    /********************************************************************
+    /******************************************************************************
      *
      * Crypto transforms ids
      *
-     ********************************************************************/
+      *****************************************************************************/
 
-    /******************************* AES ********************************/
+    /****************************************************************************** AES  *****************************************************************************/
 #ifndef XMLSEC_NO_AES
     gXmlSecGCryptFunctions->transformAes128CbcGetKlass          = xmlSecGCryptTransformAes128CbcGetKlass;
     gXmlSecGCryptFunctions->transformAes192CbcGetKlass          = xmlSecGCryptTransformAes192CbcGetKlass;
@@ -113,13 +106,13 @@ xmlSecCryptoGetFunctions_gcrypt(void) {
     gXmlSecGCryptFunctions->transformKWAes256GetKlass           = xmlSecGCryptTransformKWAes256GetKlass;
 #endif /* XMLSEC_NO_AES */
 
-    /******************************* DES ********************************/
+    /****************************************************************************** DES  *****************************************************************************/
 #ifndef XMLSEC_NO_DES
     gXmlSecGCryptFunctions->transformDes3CbcGetKlass            = xmlSecGCryptTransformDes3CbcGetKlass;
     gXmlSecGCryptFunctions->transformKWDes3GetKlass             = xmlSecGCryptTransformKWDes3GetKlass;
 #endif /* XMLSEC_NO_DES */
 
-    /******************************* DSA ********************************/
+    /****************************************************************************** DSA  *****************************************************************************/
 #ifndef XMLSEC_NO_DSA
 
 #ifndef XMLSEC_NO_SHA1
@@ -128,7 +121,7 @@ xmlSecCryptoGetFunctions_gcrypt(void) {
 
 #endif /* XMLSEC_NO_DSA */
 
-    /******************************* ECDSA ********************************/
+    /****************************************************************************** ECDSA  *****************************************************************************/
 #ifndef XMLSEC_NO_EC
 
 #ifndef XMLSEC_NO_SHA1
@@ -157,7 +150,7 @@ xmlSecCryptoGetFunctions_gcrypt(void) {
 #endif /* XMLSEC_NO_EC */
 
 
-    /******************************* HMAC ********************************/
+    /****************************************************************************** HMAC  *****************************************************************************/
 #ifndef XMLSEC_NO_HMAC
 
 #ifndef XMLSEC_NO_MD5
@@ -186,17 +179,17 @@ xmlSecCryptoGetFunctions_gcrypt(void) {
 
 #endif /* XMLSEC_NO_HMAC */
 
-    /******************************* MD5 ********************************/
+    /****************************************************************************** MD5  *****************************************************************************/
 #ifndef XMLSEC_NO_MD5
     gXmlSecGCryptFunctions->transformMd5GetKlass                = xmlSecGCryptTransformMd5GetKlass;
 #endif /* XMLSEC_NO_MD5 */
 
-    /******************************* RIPEMD160 ********************************/
+    /****************************************************************************** RIPEMD160  *****************************************************************************/
 #ifndef XMLSEC_NO_RIPEMD160
     gXmlSecGCryptFunctions->transformRipemd160GetKlass          = xmlSecGCryptTransformRipemd160GetKlass;
 #endif /* XMLSEC_NO_RIPEMD160 */
 
-    /******************************* RSA ********************************/
+    /****************************************************************************** RSA  *****************************************************************************/
 #ifndef XMLSEC_NO_RSA
 
 #ifndef XMLSEC_NO_MD5
@@ -257,7 +250,7 @@ xmlSecCryptoGetFunctions_gcrypt(void) {
 
 #endif /* XMLSEC_NO_RSA */
 
-    /******************************* SHA ********************************/
+    /****************************************************************************** SHA  *****************************************************************************/
 #ifndef XMLSEC_NO_SHA1
     gXmlSecGCryptFunctions->transformSha1GetKlass               = xmlSecGCryptTransformSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
@@ -280,11 +273,11 @@ xmlSecCryptoGetFunctions_gcrypt(void) {
     gXmlSecGCryptFunctions->transformSha3_512GetKlass           = xmlSecGCryptTransformSha3_512GetKlass;
 #endif /* XMLSEC_NO_SHA3 */
 
-    /********************************************************************
+    /******************************************************************************
      *
      * High-level routines for the xmlsec command-line utility
      *
-     ********************************************************************/
+      *****************************************************************************/
     gXmlSecGCryptFunctions->cryptoAppInit                       = xmlSecGCryptAppInit;
     gXmlSecGCryptFunctions->cryptoAppShutdown                   = xmlSecGCryptAppShutdown;
     gXmlSecGCryptFunctions->cryptoAppDefaultKeysMngrInit        = xmlSecGCryptAppDefaultKeysMngrInit;
@@ -307,11 +300,9 @@ xmlSecCryptoGetFunctions_gcrypt(void) {
 
 
 /**
- * xmlSecGCryptInit:
- *
- * XMLSec library specific crypto engine initialization.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Initializes the GCrypt crypto engine.
+ * @details XMLSec library specific crypto engine initialization.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecGCryptInit (void)  {
@@ -331,11 +322,8 @@ xmlSecGCryptInit (void)  {
 }
 
 /**
- * xmlSecGCryptShutdown:
- *
- * XMLSec library specific crypto engine shutdown.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief XMLSec library specific crypto engine shutdown.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecGCryptShutdown(void) {
@@ -343,12 +331,10 @@ xmlSecGCryptShutdown(void) {
 }
 
 /**
- * xmlSecGCryptKeysMngrInit:
- * @mngr:               the pointer to keys manager.
- *
- * Adds GCrypt specific key data stores in keys manager.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Adds GCrypt specific key data stores.
+ * @details Adds GCrypt specific key data stores in keys manager.
+ * @param mngr the pointer to keys manager.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecGCryptKeysMngrInit(xmlSecKeysMngrPtr mngr) {
@@ -357,13 +343,11 @@ xmlSecGCryptKeysMngrInit(xmlSecKeysMngrPtr mngr) {
 }
 
 /**
- * xmlSecGCryptGenerateRandom:
- * @buffer:             the destination buffer.
- * @size:               the numer of bytes to generate.
- *
- * Generates @size random bytes and puts result in @buffer.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Generates random bytes into @p buffer.
+ * @details Generates @p size random bytes and puts result in @p buffer.
+ * @param buffer the destination buffer.
+ * @param size the numer of bytes to generate.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecGCryptGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {

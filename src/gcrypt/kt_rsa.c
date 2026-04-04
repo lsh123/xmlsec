@@ -9,9 +9,8 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:crypto
+ * @addtogroup xmlsec_gcrypt_crypto
  */
-
 #ifndef XMLSEC_NO_RSA
 #include "globals.h"
 
@@ -33,11 +32,11 @@
 #include "../transform_helpers.h"
 
 
-/**************************************************************************
+/******************************************************************************
  *
  * Helper functions for GCrypt RSA encrypt/decrypt KT
  *
- *************************************************************************/
+  *****************************************************************************/
 static int
 xmlSecGCryptRsaExtractData(gcry_sexp_t s_data, const char* name, xmlSecBufferPtr out) {
     gcry_sexp_t s_tmp;
@@ -170,22 +169,22 @@ done:
 
 #ifndef XMLSEC_NO_RSA_PKCS15
 
-/**************************************************************************
+/******************************************************************************
  *
  * Internal GCrypt RSA PKCS1 CTX
  *
- *************************************************************************/
+  *****************************************************************************/
 typedef struct _xmlSecGCryptRsaPkcs1Ctx        xmlSecGCryptRsaPkcs1Ctx,
                                                 *xmlSecGCryptRsaPkcs1CtxPtr;
 struct _xmlSecGCryptRsaPkcs1Ctx {
     xmlSecKeyDataPtr            keyData;
 };
 
-/*********************************************************************
+/******************************************************************************
  *
  * RSA PKCS1 key transport transform
  *
- ********************************************************************/
+  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(GCryptRsaPkcs1, xmlSecGCryptRsaPkcs1Ctx)
 #define xmlSecGCryptRsaPkcs1Size XMLSEC_TRANSFORM_SIZE(GCryptRsaPkcs1)
 
@@ -227,11 +226,9 @@ static xmlSecTransformKlass xmlSecGCryptRsaPkcs1Klass = {
 };
 
 /**
- * xmlSecGCryptTransformRsaPkcs1GetKlass:
+ * @brief The RSA-PKCS1 key transport transform klass.
  *
- * The RSA-PKCS1 key transport transform klass.
- *
- * Returns: RSA-PKCS1 key transport transform klass.
+ * @return RSA-PKCS1 key transport transform klass.
  */
 xmlSecTransformId
 xmlSecGCryptTransformRsaPkcs1GetKlass(void) {
@@ -495,11 +492,11 @@ xmlSecGCryptRsaPkcs1Execute(xmlSecTransformPtr transform, int last,
 #endif /* XMLSEC_NO_RSA_PKCS15 */
 
 #ifndef XMLSEC_NO_RSA_OAEP
-/**************************************************************************
+/******************************************************************************
  *
  * Internal GCrypt RSA OAEP CTX
  *
- *************************************************************************/
+  *****************************************************************************/
 typedef struct _xmlSecGCryptRsaOaepCtx        xmlSecGCryptRsaOaepCtx,
                                                 *xmlSecGCryptRsaOaepCtxPtr;
 struct _xmlSecGCryptRsaOaepCtx {
@@ -514,11 +511,11 @@ struct _xmlSecGCryptRsaOaepCtx {
 #define XMLSEC_GCRYPT_RSA_OAEP_HASH_SHA384      "sha384"
 #define XMLSEC_GCRYPT_RSA_OAEP_HASH_SHA512      "sha512"
 
-/*********************************************************************
+/******************************************************************************
  *
  * RSA OAEP key transport transform (both XMLEnc 1.0 and XMLEnc 1.1)
  *
- ********************************************************************/
+  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(GCryptRsaOaep, xmlSecGCryptRsaOaepCtx)
 #define xmlSecGCryptRsaOaepSize XMLSEC_TRANSFORM_SIZE(GCryptRsaOaep)
 
@@ -563,11 +560,9 @@ static xmlSecTransformKlass xmlSecGCryptRsaOaepKlass = {
 };
 
 /**
- * xmlSecGCryptTransformRsaOaepGetKlass:
+ * @brief The RSA-OAEP key transport transform klass (XMLEnc 1.0).
  *
- * The RSA-OAEP key transport transform klass (XMLEnc 1.0).
- *
- * Returns: RSA-OAEP key transport transform klass.
+ * @return RSA-OAEP key transport transform klass.
  */
 xmlSecTransformId
 xmlSecGCryptTransformRsaOaepGetKlass(void) {
@@ -602,11 +597,9 @@ static xmlSecTransformKlass xmlSecGCryptRsaOaepEnc11Klass = {
 };
 
 /**
- * xmlSecGCryptTransformRsaOaepEnc11GetKlass:
+ * @brief The RSA-OAEP key transport transform klass (XMLEnc 1.1).
  *
- * The RSA-OAEP key transport transform klass (XMLEnc 1.1).
- *
- * Returns: RSA-OAEP key transport transform klass.
+ * @return RSA-OAEP key transport transform klass.
  */
 xmlSecTransformId
 xmlSecGCryptTransformRsaOaepEnc11GetKlass(void) {

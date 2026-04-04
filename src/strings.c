@@ -8,10 +8,7 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:strings
- * @Short_description: The strings constants.
- * @Stability: Stable
- *
+ * @brief The strings constants.
  */
 #include "globals.h"
 
@@ -19,11 +16,11 @@
 
 #include <xmlsec/xmlsec.h>
 
-/*************************************************************************
+/******************************************************************************
  *
  * Global Namespaces
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecNs[]                        = "http://www.aleksey.com/xmlsec/2002";
 const xmlChar xmlSecDSigNs[]                    = "http://www.w3.org/2000/09/xmldsig#";
 const xmlChar xmlSecDSig11Ns[]                  = "http://www.w3.org/2009/xmldsig11#";
@@ -34,11 +31,11 @@ const xmlChar xmlSecXPath2Ns[]                  = "http://www.w3.org/2002/06/xml
 const xmlChar xmlSecXPointerNs[]                = "http://www.w3.org/2001/04/xmldsig-more/xptr";
 const xmlChar xmlSecXmldsig2021MoreNs[]         = "http://www.w3.org/2021/04/xmldsig-more#";
 
-/*************************************************************************
+/******************************************************************************
  *
  * DSig Nodes
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecNodeSignature[]             = "Signature";
 const xmlChar xmlSecNodeSignedInfo[]            = "SignedInfo";
 const xmlChar xmlSecNodeCanonicalizationMethod[]= "CanonicalizationMethod";
@@ -50,11 +47,11 @@ const xmlChar xmlSecNodeObject[]                = "Object";
 const xmlChar xmlSecNodeManifest[]              = "Manifest";
 const xmlChar xmlSecNodeSignatureProperties[]   = "SignatureProperties";
 
-/*************************************************************************
+/******************************************************************************
  *
  * Encryption Nodes
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecNodeEncryptedData[]         = "EncryptedData";
 const xmlChar xmlSecNodeEncryptionMethod[]      = "EncryptionMethod";
 const xmlChar xmlSecNodeEncryptionProperties[]  = "EncryptionProperties";
@@ -71,21 +68,21 @@ const xmlChar xmlSecNodeCarriedKeyName[]        = "CarriedKeyName";
 const xmlChar xmlSecTypeEncContent[]            = "http://www.w3.org/2001/04/xmlenc#Content";
 const xmlChar xmlSecTypeEncElement[]            = "http://www.w3.org/2001/04/xmlenc#Element";
 
-/*************************************************************************
+/******************************************************************************
  *
  * KeyInfo Nodes
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecNodeKeyInfo[]               = "KeyInfo";
 const xmlChar xmlSecNodeReference[]             = "Reference";
 const xmlChar xmlSecNodeTransforms[]            = "Transforms";
 const xmlChar xmlSecNodeTransform[]             = "Transform";
 
-/*************************************************************************
+/******************************************************************************
  *
  * Attributes
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecAttrId[]                    = "Id";
 const xmlChar xmlSecAttrURI[]                   = "URI";
 const xmlChar xmlSecAttrType[]                  = "Type";
@@ -96,11 +93,11 @@ const xmlChar xmlSecAttrFilter[]                = "Filter";
 const xmlChar xmlSecAttrRecipient[]             = "Recipient";
 const xmlChar xmlSecAttrTarget[]                = "Target";
 
-/*************************************************************************
+/******************************************************************************
  *
  * AES strings
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecNameAESKeyValue[]           = "aes";
 const xmlChar xmlSecNodeAESKeyValue[]           = "AESKeyValue";
 const xmlChar xmlSecHrefAESKeyValue[]           = "http://www.aleksey.com/xmlsec/2002#AESKeyValue";
@@ -132,11 +129,11 @@ const xmlChar xmlSecHrefKWAes192[]              = "http://www.w3.org/2001/04/xml
 const xmlChar xmlSecNameKWAes256[]              = "kw-aes256";
 const xmlChar xmlSecHrefKWAes256[]              = "http://www.w3.org/2001/04/xmlenc#kw-aes256";
 
-/*************************************************************************
+/******************************************************************************
  *
  * Camellia strings
  *
- ************************************************************************/
+  *****************************************************************************/
 #ifndef XMLSEC_NO_CAMELLIA
 const xmlChar xmlSecNameCamelliaKeyValue[]      = "camellia";
 const xmlChar xmlSecNodeCamelliaKeyValue[]      = "CamelliaKeyValue";
@@ -161,11 +158,11 @@ const xmlChar xmlSecNameKWCamellia256[]         = "kw-camellia256";
 const xmlChar xmlSecHrefKWCamellia256[]         = "http://www.w3.org/2001/04/xmldsig-more#kw-camellia256";
 #endif /* XMLSEC_NO_CAMELLIA */
 
-/*************************************************************************
+/******************************************************************************
  *
  * ChaCha20 strings
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecNameChaCha20[]              = "chacha20";
 const xmlChar xmlSecHrefChaCha20[]              = "http://www.w3.org/2021/04/xmldsig-more#chacha20";
 const xmlChar xmlSecNodeChaCha20Nonce[]         = "Nonce";
@@ -178,19 +175,19 @@ const xmlChar xmlSecNameChaCha20Poly1305[]      = "chacha20-poly1305";
 const xmlChar xmlSecHrefChaCha20Poly1305[]      = "http://www.w3.org/2021/04/xmldsig-more#chacha20poly1305";
 const xmlChar xmlSecNodeChaCha20Poly1305AAD[]   = "AAD";
 
-/*************************************************************************
+/******************************************************************************
  *
  * BASE64 strings
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecNameBase64[]                = "base64";
 const xmlChar xmlSecHrefBase64[]                = "http://www.w3.org/2000/09/xmldsig#base64";
 
-/*************************************************************************
+/******************************************************************************
  *
  * C14N strings
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecNameC14N[]                  = "c14n";
 const xmlChar xmlSecHrefC14N[]                  = "http://www.w3.org/TR/2001/REC-xml-c14n-20010315";
 
@@ -216,11 +213,11 @@ const xmlChar xmlSecNodeInclusiveNamespaces[]   = "InclusiveNamespaces";
 const xmlChar xmlSecAttrPrefixList[]            = "PrefixList";
 
 
-/*************************************************************************
+/******************************************************************************
  *
  * ConcatKDF strings
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecNameConcatKdfKey[]          = "concatkdf";
 const xmlChar xmlSecNodeConcatKdfKeyValue[]     = "ConcatKDFKeyValue";
 
@@ -234,20 +231,20 @@ const xmlChar xmlSecNodeConcatKDFAttrPartyVInfo[]   = "PartyVInfo";
 const xmlChar xmlSecNodeConcatKDFAttrSuppPubInfo[]  = "SuppPubInfo";
 const xmlChar xmlSecNodeConcatKDFAttrSuppPrivInfo[] = "SuppPrivInfo";
 
-/*************************************************************************
+/******************************************************************************
  *
  * DEREncodedKeyValue strings
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecNameDEREncodedKeyValue[]        = "der-encoded-key-value";
 const xmlChar xmlSecNodeDEREncodedKeyValue[]        = "DEREncodedKeyValue";
 const xmlChar xmlSecHrefDEREncodedKeyValue[]        = "http://www.w3.org/2009/xmldsig11#DEREncodedKeyValue";
 
-/*************************************************************************
+/******************************************************************************
  *
  * DES strings
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecNameDESKeyValue[]           = "des";
 const xmlChar xmlSecNodeDESKeyValue[]           = "DESKeyValue";
 const xmlChar xmlSecHrefDESKeyValue[]           = "http://www.aleksey.com/xmlsec/2002#DESKeyValue";
@@ -258,11 +255,11 @@ const xmlChar xmlSecHrefDes3Cbc[]               = "http://www.w3.org/2001/04/xml
 const xmlChar xmlSecNameKWDes3[]                = "kw-tripledes";
 const xmlChar xmlSecHrefKWDes3[]                = "http://www.w3.org/2001/04/xmlenc#kw-tripledes";
 
-/*************************************************************************
+/******************************************************************************
  *
  * GOST2001 strings
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecNameGOST2001KeyValue[]              = "gost2001";
 const xmlChar xmlSecNodeGOST2001KeyValue[]              = "gostr34102001-gostr3411";
 const xmlChar xmlSecHrefGOST2001KeyValue[]              = "http://www.w3.org/2001/04/xmldsig-more#gostr34102001-gostr3411";
@@ -270,11 +267,11 @@ const xmlChar xmlSecHrefGOST2001KeyValue[]              = "http://www.w3.org/200
 const xmlChar xmlSecNameGost2001GostR3411_94[]          = "gostr34102001-gostr3411";
 const xmlChar xmlSecHrefGost2001GostR3411_94[]          = "http://www.w3.org/2001/04/xmldsig-more#gostr34102001-gostr3411";
 
-/*************************************************************************
+/******************************************************************************
  *
  * GOST R 34.10-2012 strings
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecNameGostR3410_2012_256KeyValue[]              = "gostr34102012-256";
 const xmlChar xmlSecNodeGostR3410_2012_256KeyValue[]              = "gostr34102012-256";
 const xmlChar xmlSecHrefGostR3410_2012_256KeyValue[]              = "urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34102012-256";
@@ -290,11 +287,11 @@ const xmlChar xmlSecHrefGostR3410_2012GostR3411_2012_256[]    = "urn:ietf:params
 const xmlChar xmlSecNameGostR3410_2012GostR3411_2012_512[]    = "gostr34102012-gostr34112012-512";
 const xmlChar xmlSecHrefGostR3410_2012GostR3411_2012_512[]    = "urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34102012-gostr34112012-512";
 
-/*************************************************************************
+/******************************************************************************
  *
  * DH key strings
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecNameDHKeyValue[]            = "dh";
 const xmlChar xmlSecNodeDHKeyValue[]            = "DHKeyValue";
 const xmlChar xmlSecHrefDHKeyValue[]            = "http://www.w3.org/2001/04/xmlenc#DHKeyValue";
@@ -305,19 +302,19 @@ const xmlChar xmlSecNodeDHPublic[]              = "Public";
 const xmlChar xmlSecNodeDHSeed[]                = "Seed";
 const xmlChar xmlSecNodeDHPgenCounter[]         = "pgenCounter";
 
-/*************************************************************************
+/******************************************************************************
  *
  * DH-ES key agreement strings
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecNameDhEs[]                  = "dh-es";
 const xmlChar xmlSecHrefDhEs[]                  = "http://www.w3.org/2009/xmlenc11#dh-es";
 
-/*************************************************************************
+/******************************************************************************
  *
  * DSA strings
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecNameDSAKeyValue[]           = "dsa";
 const xmlChar xmlSecNodeDSAKeyValue[]           = "DSAKeyValue";
 const xmlChar xmlSecHrefDSAKeyValue[]           = "http://www.w3.org/2000/09/xmldsig#DSAKeyValue";
@@ -337,11 +334,11 @@ const xmlChar xmlSecNameDsaSha256[]             = "dsa-sha256";
 const xmlChar xmlSecHrefDsaSha256[]             = "http://www.w3.org/2009/xmldsig11#dsa-sha256";
 
 
-/*************************************************************************
+/******************************************************************************
  *
  * EC key strings
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecNameECKeyValue[]            = "ec";
 const xmlChar xmlSecNodeECKeyValue[]            = "ECKeyValue";
 const xmlChar xmlSecHrefECKeyValue[]            = "http://www.w3.org/2009/xmldsig11#ECKeyValue";
@@ -349,45 +346,45 @@ const xmlChar xmlSecHrefECKeyValue[]            = "http://www.w3.org/2009/xmldsi
 const xmlChar xmlSecNodeNamedCurve[]            = "NamedCurve";
 const xmlChar xmlSecNodePublicKey[]             = "PublicKey";
 
-/*************************************************************************
+/******************************************************************************
  *
  * ECDH key agreement strings
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecNameEcdh[]                  = "ecdh-es";
 const xmlChar xmlSecHrefEcdh[]                  = "http://www.w3.org/2009/xmlenc11#ECDH-ES";
 
-/*************************************************************************
+/******************************************************************************
  *
  * X25519 key agreement strings
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecNameX25519[]                = "x25519";
 const xmlChar xmlSecHrefX25519[]                = "http://www.w3.org/2021/04/xmldsig-more#x25519";
 
-/*************************************************************************
+/******************************************************************************
  *
  * X448 key agreement strings
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecNameX448[]                  = "x448";
 const xmlChar xmlSecHrefX448[]                  = "http://www.w3.org/2021/04/xmldsig-more#x448";
 
-/*************************************************************************
+/******************************************************************************
  *
  * XDH key strings
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecNameXDHKeyValue[]           = "xdh";
 const xmlChar xmlSecHrefXDHKeyValue[]           = "http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#xdh";
 
-/*************************************************************************
+/******************************************************************************
  *
  * ECDSA sigantures strings
  *
- * https://www.ietf.org/rfc/rfc9231.html#name-ecdsa-sha-ecdsa-ripemd160-e
+ * https://www.ietf.org/rfc/rfc9231.html@p name-ecdsa-sha-ecdsa-ripemd160-e
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecNameEcdsaRipemd160[]        = "ecdsa-ripemd160";
 const xmlChar xmlSecHrefEcdsaRipemd160[]        = "http://www.w3.org/2007/05/xmldsig-more#ecdsa-ripemd160";
 
@@ -418,19 +415,19 @@ const xmlChar xmlSecHrefEcdsaSha3_384[]         = "http://www.w3.org/2021/04/xml
 const xmlChar xmlSecNameEcdsaSha3_512[]         = "ecdsa-sha3-512";
 const xmlChar xmlSecHrefEcdsaSha3_512[]         = "http://www.w3.org/2021/04/xmldsig-more#ecdsa-sha3-512";
 
-/*************************************************************************
+/******************************************************************************
  *
  * ML-DSA key strings
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecNameMLDSAKeyValue[]       = "ml-dsa";
 const xmlChar xmlSecHrefMLDSAKeyValue[]       = "http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#ml-dsa";
 
-/*************************************************************************
+/******************************************************************************
  *
  * ML-DSA signature trasnsform strings
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecMLDSANs[]                 = "http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#";
 const xmlChar xmlSecNodeMLDSAContextString[]  = "MLDSAContextString";
 
@@ -444,19 +441,19 @@ const xmlChar xmlSecNameMLDSA87[]             = "ml-dsa-87";
 const xmlChar xmlSecHrefMLDSA87[]             = "http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#ml-dsa-87";
 
 
-/*************************************************************************
+/******************************************************************************
  *
  * SLH-DSA key strings
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecNameSLHDSAKeyValue[]      = "slh-dsa";
 const xmlChar xmlSecHrefSLHDSAKeyValue[]      = "http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#slh-dsa";
 
-/*************************************************************************
+/******************************************************************************
  *
  * SLH-DSA signature trasnsform strings
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecSLHDSANs[]                = "http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#";
 const xmlChar xmlSecNodeSLHDSAContextString[] = "SLHDSAContextString";
 
@@ -479,19 +476,19 @@ const xmlChar xmlSecNameSLHDSA_SHA2_256s[]    = "slh-dsa-sha2-256s";
 const xmlChar xmlSecHrefSLHDSA_SHA2_256s[]    = "http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#slh-dsa-sha2-256s";
 
 
-/*************************************************************************
+/******************************************************************************
  *
  * EdDSA key strings
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecNameEdDSAKeyValue[]       = "eddsa";
 const xmlChar xmlSecHrefEdDSAKeyValue[]       = "http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#eddsa";
 
-/*************************************************************************
+/******************************************************************************
  *
  * EdDSA signature transform strings
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecEdDSANs[]                 = "http://www.aleksey.com/xmlsec/2025/12/xmldsig-more#";
 const xmlChar xmlSecNodeEdDSAContextString[]  = "EdDSAContextString";
 
@@ -511,20 +508,20 @@ const xmlChar xmlSecNameEdDSAEd448ph[]        = "eddsa-ed448ph";
 const xmlChar xmlSecHrefEdDSAEd448ph[]        = "http://www.w3.org/2021/04/xmldsig-more#eddsa-ed448ph";
 
 
-/*************************************************************************
+/******************************************************************************
  *
  * EncryptedKey
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecNameEncryptedKey[]          = "enc-key";
 const xmlChar xmlSecNodeEncryptedKey[]          = "EncryptedKey";
 const xmlChar xmlSecHrefEncryptedKey[]          = "http://www.w3.org/2001/04/xmlenc#EncryptedKey";
 
-/*************************************************************************
+/******************************************************************************
  *
  * DerivedKey
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecNameDerivedKey[]            = "derived-key";
 const xmlChar xmlSecNodeDerivedKey[]            = "DerivedKey";
 const xmlChar xmlSecHrefDerivedKey[]            = "http://www.w3.org/2009/xmlenc11#DerivedKey";
@@ -533,11 +530,11 @@ const xmlChar xmlSecNodeKeyDerivationMethod[]   = "KeyDerivationMethod";
 const xmlChar xmlSecNodeDerivedKeyName[]        = "DerivedKeyName";
 const xmlChar xmlSecNodeMasterKeyName[]         = "MasterKeyName";
 
-/*************************************************************************
+/******************************************************************************
  *
  * AgreementMethod
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecNameAgreementMethod[]       = "agreement-method";
 const xmlChar xmlSecNodeAgreementMethod[]       = "AgreementMethod";
 const xmlChar xmlSecHrefAgreementMethod[]       = "http://www.w3.org/2000/09/xmldsig#AgreementMethod";
@@ -546,19 +543,19 @@ const xmlChar xmlSecNodeOriginatorKeyInfo[]     = "OriginatorKeyInfo";
 const xmlChar xmlSecNodeRecipientKeyInfo[]      = "RecipientKeyInfo";
 
 
-/*************************************************************************
+/******************************************************************************
  *
  * Enveloped transform strings
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecNameEnveloped[]             = "enveloped-signature";
 const xmlChar xmlSecHrefEnveloped[]             = "http://www.w3.org/2000/09/xmldsig#enveloped-signature";
 
-/*************************************************************************
+/******************************************************************************
  *
  * HMAC strings
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecNameHMACKeyValue[]          = "hmac";
 const xmlChar xmlSecNodeHMACKeyValue[]          = "HMACKeyValue";
 const xmlChar xmlSecHrefHMACKeyValue[]          = "http://www.aleksey.com/xmlsec/2002#HMACKeyValue";
@@ -587,51 +584,51 @@ const xmlChar xmlSecNameHmacSha512[]            = "hmac-sha512";
 const xmlChar xmlSecHrefHmacSha512[]            = "http://www.w3.org/2001/04/xmldsig-more#hmac-sha512";
 
 
-/*************************************************************************
+/******************************************************************************
  *
  * KeyInfoReference
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecNameKeyInfoReference[]      = "key-info-reference";
 const xmlChar xmlSecNodeKeyInfoReference[]      = "KeyInfoReference";
 
 
-/*************************************************************************
+/******************************************************************************
  *
  * KeyName strings
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecNameKeyName[]               = "key-name";
 const xmlChar xmlSecNodeKeyName[]               = "KeyName";
 
-/*************************************************************************
+/******************************************************************************
  *
  * KeyValue strings
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecNameKeyValue[]              = "key-value";
 const xmlChar xmlSecNodeKeyValue[]              = "KeyValue";
 
-/*************************************************************************
+/******************************************************************************
  *
  * Memory Buffer strings
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecNameMemBuf[]                = "membuf-transform";
 
-/*************************************************************************
+/******************************************************************************
  *
  * MD5 strings
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecNameMd5[]                   = "md5";
 const xmlChar xmlSecHrefMd5[]                   = "http://www.w3.org/2001/04/xmldsig-more#md5";
 
-/*************************************************************************
+/******************************************************************************
  *
  * PBKDF2
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecNamePbkdf2Key[]             = "pbkdf2";
 const xmlChar xmlSecNodePbkdf2KeyValue[]        = "PBKDF2KeyValue";
 
@@ -645,11 +642,11 @@ const xmlChar xmlSecNodePbkdf2IterationCount[]  = "IterationCount";
 const xmlChar xmlSecNodePbkdf2KeyLength[]       = "KeyLength";
 const xmlChar xmlSecNodePbkdf2PRF[]             = "PRF";
 
-/*************************************************************************
+/******************************************************************************
  *
  * HKDF strings
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecNameHkdfKey[]               = "hkdf";
 const xmlChar xmlSecNodeHkdfKeyValue[]          = "HKDFKeyValue";
 
@@ -662,27 +659,27 @@ const xmlChar xmlSecNodeHkdfSalt[]              = "Salt";
 const xmlChar xmlSecNodeHkdfInfo[]              = "Info";
 const xmlChar xmlSecNodeHkdfKeyLength[]         = "KeyLength";
 
-/*************************************************************************
+/******************************************************************************
  *
  * RetrievalMethod
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecNameRetrievalMethod[]       = "retrieval-method";
 const xmlChar xmlSecNodeRetrievalMethod[]       = "RetrievalMethod";
 
-/*************************************************************************
+/******************************************************************************
  *
  * RIPEMD160 strings
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecNameRipemd160[]             = "ripemd160";
 const xmlChar xmlSecHrefRipemd160[]             = "http://www.w3.org/2001/04/xmlenc#ripemd160";
 
-/*************************************************************************
+/******************************************************************************
  *
  * RSA strings
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecNameRSAKeyValue[]           = "rsa";
 const xmlChar xmlSecNodeRSAKeyValue[]           = "RSAKeyValue";
 const xmlChar xmlSecHrefRSAKeyValue[]           = "http://www.w3.org/2000/09/xmldsig#RSAKeyValue";
@@ -723,7 +720,7 @@ const xmlChar xmlSecHrefRsaOaepEnc11[]          = "http://www.w3.org/2009/xmlenc
 const xmlChar xmlSecNodeRsaOAEPparams[]         = "OAEPparams";
 const xmlChar xmlSecNodeRsaMGF[]                = "MGF";
 
-/* MGF1 urls (https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP) */
+/* MGF1 urls (https://www.w3.org/TR/xmlenc-core1e/#sec-RSA-OAEP) */
 const xmlChar xmlSecHrefMgf1Sha1[]              = "http://www.w3.org/2009/xmlenc11#mgf1sha1";
 const xmlChar xmlSecHrefMgf1Sha224[]            = "http://www.w3.org/2009/xmlenc11#mgf1sha224";
 const xmlChar xmlSecHrefMgf1Sha256[]            = "http://www.w3.org/2009/xmlenc11#mgf1sha256";
@@ -758,19 +755,19 @@ const xmlChar xmlSecHrefRsaPssSha3_384[]        = "http://www.w3.org/2007/05/xml
 const xmlChar xmlSecNameRsaPssSha3_512[]        = "rsa-pss-sha3-512";
 const xmlChar xmlSecHrefRsaPssSha3_512[]        = "http://www.w3.org/2007/05/xmldsig-more#sha3-512-rsa-MGF1";
 
-/*************************************************************************
+/******************************************************************************
  *
  * GOSTR3411_94 strings
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecNameGostR3411_94[]                  = "gostr3411";
 const xmlChar xmlSecHrefGostR3411_94[]                  = "http://www.w3.org/2001/04/xmldsig-more#gostr3411";
 
-/*************************************************************************
+/******************************************************************************
  *
  * GOST R 34.11-2012 strings
  *
- ************************************************************************/
+  *****************************************************************************/
 
 /* see http://tools.ietf.org/html/draft-chudov-cryptopro-cpxmldsig-09#section-6.2 */
 const xmlChar xmlSecNameGostR3411_2012_256[]                  = "gostr34112012-256";
@@ -780,19 +777,19 @@ const xmlChar xmlSecNameGostR3411_2012_512[]                  = "gostr34112012-5
 const xmlChar xmlSecHrefGostR3411_2012_512[]                  = "urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34112012-512";
 
 
-/*************************************************************************
+/******************************************************************************
  *
  * SHA1 strings
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecNameSha1[]                  = "sha1";
 const xmlChar xmlSecHrefSha1[]                  = "http://www.w3.org/2000/09/xmldsig#sha1";
 
-/*************************************************************************
+/******************************************************************************
  *
  * SHA2 strings
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecNameSha224[]                = "sha224";
 const xmlChar xmlSecHrefSha224[]                = "http://www.w3.org/2001/04/xmldsig-more#sha224";
 
@@ -805,11 +802,11 @@ const xmlChar xmlSecHrefSha384[]                = "http://www.w3.org/2001/04/xml
 const xmlChar xmlSecNameSha512[]                = "sha512";
 const xmlChar xmlSecHrefSha512[]                = "http://www.w3.org/2001/04/xmlenc#sha512";
 
-/*************************************************************************
+/******************************************************************************
  *
  * SHA3 strings
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecNameSha3_224[]              = "sha3-224";
 const xmlChar xmlSecHrefSha3_224[]              = "http://www.w3.org/2007/05/xmldsig-more#sha3-224";
 
@@ -822,11 +819,11 @@ const xmlChar xmlSecHrefSha3_384[]              = "http://www.w3.org/2007/05/xml
 const xmlChar xmlSecNameSha3_512[]              = "sha3-512";
 const xmlChar xmlSecHrefSha3_512[]              = "http://www.w3.org/2007/05/xmldsig-more#sha3-512";
 
-/*************************************************************************
+/******************************************************************************
  *
  * X509 strings
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecNameX509Data[]              = "x509";
 const xmlChar xmlSecNodeX509Data[]              = "X509Data";
 const xmlChar xmlSecHrefX509Data[]              = "http://www.w3.org/2000/09/xmldsig#X509Data";
@@ -845,29 +842,29 @@ const xmlChar xmlSecHrefRawX509Cert[]           = "http://www.w3.org/2000/09/xml
 
 const xmlChar xmlSecNameX509Store[]             = "x509-store";
 
-/*************************************************************************
+/******************************************************************************
  *
  * PGP strings
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecNamePGPData[]               = "pgp";
 const xmlChar xmlSecNodePGPData[]               = "PGPData";
 const xmlChar xmlSecHrefPGPData[]               = "http://www.w3.org/2000/09/xmldsig#PGPData";
 
-/*************************************************************************
+/******************************************************************************
  *
  * SPKI strings
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecNameSPKIData[]              = "spki";
 const xmlChar xmlSecNodeSPKIData[]              = "SPKIData";
 const xmlChar xmlSecHrefSPKIData[]              = "http://www.w3.org/2000/09/xmldsig#SPKIData";
 
-/*************************************************************************
+/******************************************************************************
  *
  * XPath/XPointer strings
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecNameXPath[]                 = "xpath";
 const xmlChar xmlSecNodeXPath[]                 = "XPath";
 
@@ -880,11 +877,11 @@ const xmlChar xmlSecXPath2FilterUnion[]         = "union";
 const xmlChar xmlSecNameXPointer[]              = "xpointer";
 const xmlChar xmlSecNodeXPointer[]              = "XPointer";
 
-/*************************************************************************
+/******************************************************************************
  *
  * Relationship strings
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecNameRelationship[]          = "relationship";
 const xmlChar xmlSecHrefRelationship[]          = "http://schemas.openxmlformats.org/package/2006/RelationshipTransform";
 const xmlChar xmlSecNodeRelationship[]          = "Relationship";
@@ -895,18 +892,18 @@ const xmlChar xmlSecRelationshipAttrId[]        = "Id";
 const xmlChar xmlSecRelationshipAttrSourceId[]  = "SourceId";
 const xmlChar xmlSecRelationshipAttrTargetMode[]= "TargetMode";
 
-/*************************************************************************
+/******************************************************************************
  *
  * Xslt strings
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecNameXslt[]                  = "xslt";
 const xmlChar xmlSecHrefXslt[]                  = "http://www.w3.org/TR/1999/REC-xslt-19991116";
 
-/*************************************************************************
+/******************************************************************************
  *
  * Utility strings
  *
- ************************************************************************/
+  *****************************************************************************/
 const xmlChar xmlSecStringEmpty[]               = "";
 const xmlChar xmlSecStringCR[]                  = "\n";

@@ -9,6 +9,13 @@
 #ifndef __XMLSEC_OPENSSL_X509_H__
 #define __XMLSEC_OPENSSL_X509_H__
 
+/**
+ * @defgroup xmlsec_openssl_x509 OpenSSL X.509 Support
+ * @ingroup xmlsec_openssl
+ * @brief X.509 certificate handling for the OpenSSL back-end.
+ * @{
+ */
+
 #ifndef XMLSEC_NO_X509
 
 #include <openssl/x509.h>
@@ -23,23 +30,17 @@ extern "C" {
 #endif /* __cplusplus */
 
 /**
- * XMLSEC_STACK_OF_X509:
- *
- * Macro. To make docbook happy.
+ * @brief Macro. To make docbook happy.
  */
 #define XMLSEC_STACK_OF_X509            STACK_OF(X509)
 
 /**
- * XMLSEC_STACK_OF_X509_CRL:
- *
- * Macro. To make docbook happy.
+ * @brief Macro. To make docbook happy.
  */
 #define XMLSEC_STACK_OF_X509_CRL        STACK_OF(X509_CRL)
 
 /**
- * xmlSecOpenSSLKeyDataX509Id:
- *
- * The OpenSSL X509 data klass.
+ * @brief The OpenSSL X509 data klass.
  */
 #define xmlSecOpenSSLKeyDataX509Id \
         xmlSecOpenSSLKeyDataX509GetKlass()
@@ -65,21 +66,18 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataPtr   xmlSecOpenSSLX509CertGetKey     (X509* c
 
 
 /**
- * xmlSecOpenSSLKeyDataRawX509CertId:
- *
- * The OpenSSL raw X509 certificate klass.
+ * @brief The OpenSSL raw X509 certificate klass.
  */
 #define xmlSecOpenSSLKeyDataRawX509CertId \
         xmlSecOpenSSLKeyDataRawX509CertGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataRawX509CertGetKlass(void);
 
 /**
- * xmlSecOpenSSLX509StoreId:
- *
- * The OpenSSL X509 store klass.
+ * @brief The OpenSSL X509 store klass.
  */
 #define xmlSecOpenSSLX509StoreId \
         xmlSecOpenSSLX509StoreGetKlass()
+/** @brief The OpenSSL X509 certificates key data store klass. @return the store klass. */
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataStoreId xmlSecOpenSSLX509StoreGetKlass(void);
 XMLSEC_CRYPTO_EXPORT X509*              xmlSecOpenSSLX509StoreVerify    (xmlSecKeyDataStorePtr store,
                                                                          XMLSEC_STACK_OF_X509* certs,
@@ -101,11 +99,11 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLX509StoreAddCertsPath(xmlSe
 XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLX509StoreAddCertsFile(xmlSecKeyDataStorePtr store,
                                                                          const char* filename);
 
-/***********************************************************************
+/******************************************************************************
  *
  * DEPRECATED
  *
- **********************************************************************/
+  *****************************************************************************/
 XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED X509* xmlSecOpenSSLX509StoreFindCert  (xmlSecKeyDataStorePtr store,
                                                                          xmlChar *subjectName,
                                                                          xmlChar *issuerName,
@@ -125,5 +123,7 @@ XMLSEC_CRYPTO_EXPORT XMLSEC_DEPRECATED X509* xmlSecOpenSSLX509StoreFindCert_ex(x
 #endif /* __cplusplus */
 
 #endif /* XMLSEC_NO_X509 */
+
+/** @} */ /** xmlsec_openssl_x509 */
 
 #endif /* __XMLSEC_OPENSSL_X509_H__ */

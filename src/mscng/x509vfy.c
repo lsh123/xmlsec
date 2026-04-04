@@ -10,9 +10,8 @@
  * Copyright (C) 2018 Miklos Vajna. All Rights Reserved.
  */
 /**
- * SECTION:x509
+ * @addtogroup xmlsec_mscng_x509
  */
-
 #include "globals.h"
 
 #ifndef XMLSEC_NO_X509
@@ -157,13 +156,10 @@ xmlSecMSCngX509StoreFinalize(xmlSecKeyDataStorePtr store) {
 }
 
 /**
- * xmlSecMSCngX509StoreAdoptKeyStore:
- * @store:              the pointer to X509 key data store klass.
- * @keyStore:           the pointer to keys store.
- *
- * Adds @keyStore to the list of key stores.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Adds @p keyStore to the list of key stores.
+ * @param store the pointer to X509 key data store klass.
+ * @param keyStore the pointer to keys store.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecMSCngX509StoreAdoptKeyStore(xmlSecKeyDataStorePtr store, HCERTSTORE keyStore) {
@@ -188,13 +184,11 @@ xmlSecMSCngX509StoreAdoptKeyStore(xmlSecKeyDataStorePtr store, HCERTSTORE keySto
 }
 
 /**
- * xmlSecMSCngX509StoreAdoptTrustedStore:
- * @store:              the pointer to X509 key data store klass.
- * @trustedStore:       the pointer to certs store.
- *
- * Adds @trustedStore to the list of trusted certs stores.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Adds @p trustedStore to the trusted certs list.
+ * @details Adds @p trustedStore to the list of trusted certs stores.
+ * @param store the pointer to X509 key data store klass.
+ * @param trustedStore the pointer to certs store.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecMSCngX509StoreAdoptTrustedStore(xmlSecKeyDataStorePtr store, HCERTSTORE trustedStore) {
@@ -219,13 +213,11 @@ xmlSecMSCngX509StoreAdoptTrustedStore(xmlSecKeyDataStorePtr store, HCERTSTORE tr
 }
 
 /**
- * xmlSecMSCngX509StoreAdoptUntrustedStore:
- * @store:              the pointer to X509 key data store klass.
- * @untrustedStore:     the pointer to certs store.
- *
- * Adds @trustedStore to the list of untrusted certs stores.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Adds @p trustedStore to the untrusted certs list.
+ * @details Adds @p trustedStore to the list of untrusted certs stores.
+ * @param store the pointer to X509 key data store klass.
+ * @param untrustedStore the pointer to certs store.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecMSCngX509StoreAdoptUntrustedStore(xmlSecKeyDataStorePtr store, HCERTSTORE untrustedStore) {
@@ -368,11 +360,8 @@ static xmlSecKeyDataStoreKlass xmlSecMSCngX509StoreKlass = {
 };
 
 /**
- * xmlSecMSCngX509StoreGetKlass:
- *
- * The MSCng X509 certificates key data store klass.
- *
- * Returns: pointer to MSCng X509 certificates key data store klass.
+ * @brief The MSCng X509 certificates key data store klass.
+ * @return pointer to MSCng X509 certificates key data store klass.
  */
 xmlSecKeyDataStoreId
 xmlSecMSCngX509StoreGetKlass(void) {
@@ -380,14 +369,12 @@ xmlSecMSCngX509StoreGetKlass(void) {
 }
 
 /**
- * xmlSecMSCngX509StoreAdoptCert:
- * @store:              the pointer to X509 key data store klass.
- * @cert:               the pointer to PCCERT_CONTEXT X509 certificate.
- * @type:               the certificate type (trusted/untrusted).
- *
- * Adds trusted (root) or untrusted certificate to the store.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Adds trusted or untrusted certificate to the store.
+ * @details Adds trusted (root) or untrusted certificate to the store.
+ * @param store the pointer to X509 key data store klass.
+ * @param pCert the pointer to PCCERT_CONTEXT X509 certificate.
+ * @param type the certificate type (trusted/untrusted).
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecMSCngX509StoreAdoptCert(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT pCert, xmlSecKeyDataType type) {
@@ -427,13 +414,10 @@ xmlSecMSCngX509StoreAdoptCert(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT pCert,
 }
 
 /**
- * xmlSecMSCngX509StoreAdoptCrl:
- * @store:              the pointer to X509 key data store klass.
- * @crl:               the pointer to PCCRL_CONTEXT X509 CRL.
- *
- * Adds CRL to the store for revocation checking.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Adds CRL to the store for revocation checking.
+ * @param store the pointer to X509 key data store klass.
+ * @param crl the pointer to PCCRL_CONTEXT X509 CRL.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecMSCngX509StoreAdoptCrl(xmlSecKeyDataStorePtr store, PCCRL_CONTEXT crl) {
@@ -456,13 +440,11 @@ xmlSecMSCngX509StoreAdoptCrl(xmlSecKeyDataStorePtr store, PCCRL_CONTEXT crl) {
 }
 
 /**
- * xmlSecMSCngCheckRevocation:
- * @store: may contain a CRL
- * @cert: the certificate that is revoked (or not)
- *
- * Checks if @cert is in the CRL of @store.
- *
- * Returns: 0 on success or a negative value if an errors occurs.
+ * @brief Checks if @p cert is in the CRL of @p store.
+ * @param store may contain a CRL
+ * @param cert the certificate that is revoked (or not)
+ * @param time the time for CRL validity check (can be NULL)
+ * @return 0 on success or a negative value if an errors occurs.
  */
 static int
 xmlSecMSCngCheckRevocation(HCERTSTORE store, PCCERT_CONTEXT cert, LPFILETIME time) {
@@ -542,14 +524,13 @@ xmlSecMSCngX509StoreVerifySubject(PCCERT_CONTEXT cert, PCCERT_CONTEXT issuerCert
 }
 
 /**
- * xmlSecMSCngX509StoreContainsCert:
- * @store: the certificate store
- * @subject: the name of the subject or issuer to find
- * @cert: the certificate
+ * @brief Determines if cert is found in store.
+ * @param store the certificate store
+ * @param name the name of the subject or issuer to find
+ * @param cert the certificate
  *
- * Determines if cert is found in store.
  *
- * Returns: 1 and 0 if find does or does not succeed, or a negative value if an
+ * @return 1 and 0 if find does or does not succeed, or a negative value if an
  * error occurs.
  */
 static int
@@ -616,16 +597,14 @@ xmlSecMSCngVerifyCertTime(PCCERT_CONTEXT cert, LPFILETIME time) {
 }
 
 /**
- * xmlSecMSCngX509StoreVerifyCertificateOwn:
- * @cert: the certificate to verify.
- * @time: pointer to FILETIME that we are interested in (if NULL, don't check certificate notBefore/notAfter)
- * @trustedStore: trusted certificates added via xmlSecMSCngX509StoreAdoptCert().
- * @certStore: the untrusted certificates stack.
- * @store: key data store, name used for error reporting only.
- *
- * Verifies @cert based on trustedStore (ignoring system trusted certificates).
- *
- * Returns: 1 on success (cert verified), 0 if cert can't be verified, or a negative value if an error occurs.
+ * @brief Verifies @p cert against the trusted store.
+ * @details Verifies @p cert based on trustedStore (ignoring system trusted certificates).
+ * @param cert the certificate to verify.
+ * @param time pointer to FILETIME that we are interested in (if NULL, don't check certificate notBefore/notAfter)
+ * @param trustedStore trusted certificates added via xmlSecMSCngX509StoreAdoptCert().
+ * @param untrustedStore untrusted certificates stack.
+ * @param certStore the certificates stack from the document.
+ * @return 1 on success (cert verified), 0 if cert can't be verified, or a negative value if an error occurs.
  */
 static int
 xmlSecMSCngX509StoreVerifyCertificateOwn(PCCERT_CONTEXT cert, FILETIME* time,
@@ -761,15 +740,14 @@ xmlSecMSCngX509StoreVerifyCertificateOwn(PCCERT_CONTEXT cert, FILETIME* time,
 }
 
 /**
- * xmlSecMSCngX509StoreVerifyCertificateSystem:
- * @cert: the certificate we check
- * @time: pointer to FILETIME that we are interested in (can be NULL, don't check certificate notBefore/notAfter)
- * @untrustedStore: untrusted certificates added via API
- * @docStore: untrusted certificates/CRLs extracted from a document
- *
- * Verifies @cert based on system trusted certificates.
- *
- * Returns: 1 on success (cert verified), 0 if cert can't be verified, or a negative value if an error occurs.
+ * @brief Verifies @p cert against system trusted certs.
+ * @details Verifies @p cert based on system trusted certificates.
+ * @param cert the certificate we check
+ * @param time pointer to FILETIME that we are interested in (can be NULL, don't check certificate notBefore/notAfter)
+ * @param untrustedStore untrusted certificates added via API
+ * @param docStore untrusted certificates/CRLs extracted from a document
+ * @param crlStore CRLs store (can be NULL)
+ * @return 1 on success (cert verified), 0 if cert can't be verified, or a negative value if an error occurs.
  */
 static int
 xmlSecMSCngX509StoreVerifyCertificateSystem(PCCERT_CONTEXT cert, FILETIME* time,
@@ -860,9 +838,7 @@ done:
 }
 
 /**
- * xmlSecMSCngUnixTimeToFileTime:
- *
- * Converts time_t into FILETIME timestamp. See xmlSecMSCngX509CertGetTime()
+ * @brief Converts time_t into FILETIME timestamp. See xmlSecMSCngX509CertGetTime()
  * for details.
  */
 static int
@@ -882,15 +858,12 @@ xmlSecMSCngUnixTimeToFileTime(time_t in, LPFILETIME out) {
 }
 
 /**
- * xmlSecMSCngX509StoreVerifyCertificate:
- * @store: the pointer to X509 certificate context store klass.
- * @cert: the certificate to verify.
- * @certStore: the untrusted certificates stack.
- * @keyInfoCtx: the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
- *
- * Verifies @cert.
- *
- * Returns: 1 on success (cert verified), 0 if cert can't be verified, or a negative value if an error occurs.
+ * @brief Verifies @p cert.
+ * @param ctx the pointer to X509 certificate context store klass.
+ * @param cert the certificate to verify.
+ * @param certStore the untrusted certificates stack.
+ * @param keyInfoCtx the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
+ * @return 1 on success (cert verified), 0 if cert can't be verified, or a negative value if an error occurs.
  */
 static int
 xmlSecMSCngX509StoreVerifyCertificate(xmlSecMSCngX509StoreCtxPtr ctx, PCCERT_CONTEXT cert,
@@ -950,20 +923,19 @@ xmlSecMSCngX509StoreVerifyCertificate(xmlSecMSCngX509StoreCtxPtr ctx, PCCERT_CON
 }
 
 /**
- * xmlSecMSCngX509StoreVerifyKey:
- * @store:              the pointer to X509 key data store klass.
- * @key:                the pointer to key.
- * @keyInfoCtx:         the key info context for verification.
+ * @brief Verifies @p key with the keys manager @p mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
+ * @param store the pointer to X509 key data store klass.
+ * @param key the pointer to key.
+ * @param keyInfoCtx the key info context for verification.
  *
- * Verifies @key with the keys manager @mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
  * function:
  * - Checks that key certificate is present
  * - Checks that key certificate is valid
  *
- * Adds @key to the keys manager @mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
+ * Adds @p key to the keys manager @p mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
  * function.
  *
- * Returns: 1 if key is verified, 0 otherwise, or a negative value if an error occurs.
+ * @return 1 if key is verified, 0 otherwise, or a negative value if an error occurs.
  */
 int
 xmlSecMSCngX509StoreVerifyKey(xmlSecKeyDataStorePtr store, xmlSecKeyPtr key, xmlSecKeyInfoCtxPtr keyInfoCtx) {
@@ -1011,16 +983,15 @@ xmlSecMSCngX509StoreVerifyKey(xmlSecKeyDataStorePtr store, xmlSecKeyPtr key, xml
 }
 
 /**
- * xmlSecMSCngX509StoreVerifyCrl:
- * @store:              the pointer to X509 key data store klass.
- * @crl:               the CRL to verify.
- * @keyInfoCtx:         the key info context for verification parameters.
+ * @brief Verifies @p crl by checking:
+ * @param store the pointer to X509 key data store klass.
+ * @param crl the CRL to verify.
+ * @param keyInfoCtx the key info context for verification parameters.
  *
- * Verifies @crl by checking:
  * - The CRL signature is valid (signed by a trusted issuer certificate)
  * - thisUpdate <= verification_time <= nextUpdate
  *
- * Returns: 1 if verified, 0 if not verified, or a negative value if an error occurs.
+ * @return 1 if verified, 0 if not verified, or a negative value if an error occurs.
  */
 int
 xmlSecMSCngX509StoreVerifyCrl(xmlSecKeyDataStorePtr store, PCCRL_CONTEXT crl,
@@ -1145,14 +1116,11 @@ xmlSecMSCngX509StoreVerifyCrl(xmlSecKeyDataStorePtr store, PCCRL_CONTEXT crl,
 }
 
 /**
- * xmlSecMSCngX509StoreVerify:
- * @store: the pointer to X509 certificate context store klass.
- * @certs: the untrusted certificates stack.
- * @keyInfoCtx: the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
- *
- * Verifies @certs list.
- *
- * Returns: pointer to the first verified certificate from @certs.
+ * @brief Verifies @p certs list.
+ * @param store the pointer to X509 certificate context store klass.
+ * @param certs the untrusted certificates stack.
+ * @param keyInfoCtx the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
+ * @return pointer to the first verified certificate from @p certs.
  */
 PCCERT_CONTEXT
 xmlSecMSCngX509StoreVerify(xmlSecKeyDataStorePtr store, HCERTSTORE certs, xmlSecKeyInfoCtx* keyInfoCtx) {
@@ -1508,17 +1476,16 @@ xmlSecMSCngX509GetFriendlyNameUtf8(PCCERT_CONTEXT cert) {
 }
 
 /**
- * xmlSecMSCngX509StoreFindCert:
- * @store:          the pointer to X509 key data store klass.
- * @subjectName:    the desired certificate name.
- * @issuerName:     the desired certificate issuer name.
- * @issuerSerial:   the desired certificate issuer serial number.
- * @ski:            the desired certificate SKI.
- * @keyInfoCtx:     the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
+ * @brief Searches @p store for a certificate that matches given criteria.
+ * @param store the pointer to X509 key data store klass.
+ * @param subjectName the desired certificate name.
+ * @param issuerName the desired certificate issuer name.
+ * @param issuerSerial the desired certificate issuer serial number.
+ * @param ski the desired certificate SKI.
+ * @param keyInfoCtx the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
  *
- * Searches @store for a certificate that matches given criteria.
  *
- * Returns: pointer to found certificate or NULL if certificate is not found
+ * @return pointer to found certificate or NULL if certificate is not found
  * or an error occurs.
  */
 PCCERT_CONTEXT
@@ -1547,18 +1514,17 @@ xmlSecMSCngX509StoreFindCert(xmlSecKeyDataStorePtr store, xmlChar *subjectName,
 }
 
 /**
- * xmlSecMSCngX509StoreFindCert_ex:
- * @store:          the pointer to X509 key data store klass.
- * @subjectName:    the desired certificate name.
- * @issuerName:     the desired certificate issuer name.
- * @issuerSerial:   the desired certificate issuer serial number.
- * @ski:            the desired certificate SKI.
- * @skiSize:        the desired certificate SKI size.
- * @keyInfoCtx:     the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
+ * @brief Searches @p store for a certificate that matches given criteria.
+ * @param store the pointer to X509 key data store klass.
+ * @param subjectName the desired certificate name.
+ * @param issuerName the desired certificate issuer name.
+ * @param issuerSerial the desired certificate issuer serial number.
+ * @param ski the desired certificate SKI.
+ * @param skiSize the desired certificate SKI size.
+ * @param keyInfoCtx the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
  *
- * Searches @store for a certificate that matches given criteria.
  *
- * Returns: pointer to found certificate or NULL if certificate is not found
+ * @return pointer to found certificate or NULL if certificate is not found
  * or an error occurs.
  */
 PCCERT_CONTEXT
@@ -1639,14 +1605,12 @@ xmlSecMSCngX509StoreFindCertByValue(xmlSecKeyDataStorePtr store, xmlSecKeyX509Da
 }
 
 /**
- * xmlSecMSCngX509FindCertBySubject:
- * @store:              the pointer to certs store
- * @wcSubject:          the cert subject (Unicode)
- * @dwCertEncodingType: the cert encoding type
- *
- * Searches for a cert with given @subject in the @store
- *
- * Returns: cert handle on success or NULL otherwise
+ * @brief Searches for a cert by @p subject in the store.
+ * @details Searches for a cert with given @p subject in the @p store
+ * @param store the pointer to certs store
+ * @param wcSubject the cert subject (Unicode)
+ * @param dwCertEncodingType the cert encoding type
+ * @return cert handle on success or NULL otherwise
  */
 PCCERT_CONTEXT
 xmlSecMSCngX509FindCertBySubject(HCERTSTORE store, LPTSTR wcSubject,
@@ -1747,7 +1711,7 @@ xmlSecMSCngX509FindCertBySubject(HCERTSTORE store, LPTSTR wcSubject,
  *
  * xmlSecMSCngX509FindCert functions
  *
- ******************************************************************************/
+  *****************************************************************************/
 int
 xmlSecMSCngX509FindCertCtxInitialize(xmlSecMSCngX509FindCertCtxPtr ctx,
     const xmlChar* subjectName,

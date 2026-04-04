@@ -8,12 +8,9 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:certkeys
- * @Short_description: XDH (X25519) key support functions for Microsoft Cryptography API: Next Generation (CNG).
- * @Stability: Stable
- *
+ * @addtogroup xmlsec_mscng_certkeys
+ * @brief XDH (X25519) key support functions for Microsoft Cryptography API: Next Generation (CNG).
  */
-
 #include "globals.h"
 
 #include <string.h>
@@ -34,13 +31,11 @@
 #ifndef XMLSEC_NO_XDH
 
 /**
- * xmlSecMSCngKeyDataXdhImportPublicKey:
- * @pubKeyBytes: pointer to 32-byte X25519 public key (u-coordinate, little-endian).
- * @pubKeyLen:   must be 32.
- *
- * Imports a raw 32-byte Curve25519 u-coordinate as a BCrypt X25519 public key handle.
- *
- * Returns: BCrypt key handle on success, or 0 on failure.
+ * @brief Imports an X25519 public key into a BCrypt handle.
+ * @details Imports a raw 32-byte Curve25519 u-coordinate as a BCrypt X25519 public key handle.
+ * @param pubKeyBytes pointer to 32-byte X25519 public key (u-coordinate, little-endian).
+ * @param pubKeyLen must be 32.
+ * @return BCrypt key handle on success, or 0 on failure.
  */
 BCRYPT_KEY_HANDLE
 xmlSecMSCngKeyDataXdhImportPublicKey(const xmlSecByte* pubKeyBytes, DWORD pubKeyLen) {
@@ -103,13 +98,11 @@ done:
 }
 
 /**
- * xmlSecMSCngKeyDataDuplicateBCryptXdhPrivKey:
- * @src:  source BCrypt X25519 private key handle.
- * @dst:  destination pointer; receives the duplicated key handle on success.
- *
- * Duplicates a BCrypt Curve25519 private key by export and re-import.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Duplicates a BCrypt X25519 private key.
+ * @details Duplicates a BCrypt Curve25519 private key by export and re-import.
+ * @param src source BCrypt X25519 private key handle.
+ * @param dst destination pointer; receives the duplicated key handle on success.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecMSCngKeyDataDuplicateBCryptXdhPrivKey(BCRYPT_KEY_HANDLE src, BCRYPT_KEY_HANDLE* dst) {
@@ -168,13 +161,11 @@ xmlSecMSCngKeyDataDuplicateBCryptXdhPrivKey(BCRYPT_KEY_HANDLE src, BCRYPT_KEY_HA
 }
 
 /**
- * xmlSecMSCngKeyDataXdhReadFromPkcs8Der:
- * @derData:    DER-encoded PKCS8 OneAsymmetricKey for an X25519 key (RFC 8410).
- * @derDataLen: length of @derData.
- *
- * Loads an X25519 private key (and derives the public key) from a PKCS8 DER blob.
- *
- * Returns: new key data on success, or NULL on failure.
+ * @brief Loads an X25519 private key from a PKCS8 DER blob.
+ * @details Loads an X25519 private key (and derives the public key) from a PKCS8 DER blob.
+ * @param derData DER-encoded PKCS8 OneAsymmetricKey for an X25519 key (RFC 8410).
+ * @param derDataLen length of @p derData.
+ * @return new key data on success, or NULL on failure.
  */
 xmlSecKeyDataPtr
 xmlSecMSCngKeyDataXdhReadFromPkcs8Der(const xmlSecByte* derData, DWORD derDataLen) {

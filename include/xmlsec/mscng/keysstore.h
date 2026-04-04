@@ -9,6 +9,13 @@
 #ifndef __XMLSEC_MSCNG_KEYSSTORE_H__
 #define __XMLSEC_MSCNG_KEYSSTORE_H__
 
+/**
+ * @defgroup xmlsec_mscng_keysstore MsCng Keys Store
+ * @ingroup xmlsec_mscng
+ * @brief MsCng-specific key store implementation.
+ * @{
+ */
+
 #include <xmlsec/exports.h>
 #include <xmlsec/xmlsec.h>
 
@@ -17,9 +24,7 @@ extern "C" {
 #endif /* __cplusplus */
 
 /**
- * xmlSecMSCngKeysStoreId:
- *
- * A MSCng keys store klass id.
+ * @brief A MSCng keys store klass id.
  */
 #define xmlSecMSCngKeysStoreId xmlSecMSCngKeysStoreGetKlass()
 
@@ -36,5 +41,7 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecMSCngKeysStoreSave    (xmlSecKeySt
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
+
+/** @} */ /** xmlsec_mscng_keysstore */
 
 #endif /* __XMLSEC_MSCNG_KEYSSTORE_H__ */

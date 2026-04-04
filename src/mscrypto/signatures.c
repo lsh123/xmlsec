@@ -11,9 +11,8 @@
  * Copyright (c) 2005-2006 Cryptocom LTD (http://www.cryptocom.ru).
  */
 /**
- * SECTION:crypto
+ * @addtogroup xmlsec_mscrypto_crypto
  */
-
 #include "globals.h"
 
 #include <string.h>
@@ -37,11 +36,11 @@
 #include "../cast_helpers.h"
 
 
-/**************************************************************************
+/******************************************************************************
  *
  * Internal MSCrypto signatures ctx
  *
- *****************************************************************************/
+  *****************************************************************************/
 typedef struct _xmlSecMSCryptoSignatureCtx      xmlSecMSCryptoSignatureCtx,
                                                 *xmlSecMSCryptoSignatureCtxPtr;
 struct _xmlSecMSCryptoSignatureCtx {
@@ -57,7 +56,7 @@ struct _xmlSecMSCryptoSignatureCtx {
  *
  * Signature transforms
  *
- *****************************************************************************/
+  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(MSCryptoSignature, xmlSecMSCryptoSignatureCtx)
 #define xmlSecMSCryptoSignatureSize XMLSEC_TRANSFORM_SIZE(MSCryptoSignature)
 
@@ -675,11 +674,11 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
 #ifndef XMLSEC_NO_RSA
 
 #ifndef XMLSEC_NO_MD5
-/****************************************************************************
+/******************************************************************************
  *
  * RSA-MD5 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 static xmlSecTransformKlass xmlSecMSCryptoRsaMd5Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -708,11 +707,8 @@ static xmlSecTransformKlass xmlSecMSCryptoRsaMd5Klass = {
 };
 
 /**
- * xmlSecMSCryptoTransformRsaMd5GetKlass:
- *
- * The RSA-MD5 signature transform klass.
- *
- * Returns: RSA-MD5 signature transform klass.
+ * @brief The RSA-MD5 signature transform klass.
+ * @return RSA-MD5 signature transform klass.
  */
 xmlSecTransformId
 xmlSecMSCryptoTransformRsaMd5GetKlass(void) {
@@ -721,11 +717,11 @@ xmlSecMSCryptoTransformRsaMd5GetKlass(void) {
 #endif /* XMLSEC_NO_MD5 */
 
 #ifndef XMLSEC_NO_SHA1
-/****************************************************************************
+/******************************************************************************
  *
  * RSA-SHA1 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 static xmlSecTransformKlass xmlSecMSCryptoRsaSha1Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -754,11 +750,8 @@ static xmlSecTransformKlass xmlSecMSCryptoRsaSha1Klass = {
 };
 
 /**
- * xmlSecMSCryptoTransformRsaSha1GetKlass:
- *
- * The RSA-SHA1 signature transform klass.
- *
- * Returns: RSA-SHA1 signature transform klass.
+ * @brief The RSA-SHA1 signature transform klass.
+ * @return RSA-SHA1 signature transform klass.
  */
 xmlSecTransformId
 xmlSecMSCryptoTransformRsaSha1GetKlass(void) {
@@ -767,11 +760,11 @@ xmlSecMSCryptoTransformRsaSha1GetKlass(void) {
 #endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_SHA256
-/****************************************************************************
+/******************************************************************************
  *
  * RSA-SHA2-256 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 static xmlSecTransformKlass xmlSecMSCryptoRsaSha256Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),              /* xmlSecSize klassSize */
@@ -800,11 +793,8 @@ static xmlSecTransformKlass xmlSecMSCryptoRsaSha256Klass = {
 };
 
 /**
- * xmlSecMSCryptoTransformRsaSha256GetKlass:
- *
- * The RSA-SHA2-256 signature transform klass.
- *
- * Returns: RSA-SHA2-256 signature transform klass.
+ * @brief The RSA-SHA2-256 signature transform klass.
+ * @return RSA-SHA2-256 signature transform klass.
  */
 xmlSecTransformId
 xmlSecMSCryptoTransformRsaSha256GetKlass(void) {
@@ -813,11 +803,11 @@ xmlSecMSCryptoTransformRsaSha256GetKlass(void) {
 #endif /* XMLSEC_NO_SHA256 */
 
 #ifndef XMLSEC_NO_SHA384
-/****************************************************************************
+/******************************************************************************
  *
  * RSA-SHA2-384 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 static xmlSecTransformKlass xmlSecMSCryptoRsaSha384Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),              /* xmlSecSize klassSize */
@@ -846,11 +836,8 @@ static xmlSecTransformKlass xmlSecMSCryptoRsaSha384Klass = {
 };
 
 /**
- * xmlSecMSCryptoTransformRsaSha384GetKlass:
- *
- * The RSA-SHA2-384 signature transform klass.
- *
- * Returns: RSA-SHA2-384 signature transform klass.
+ * @brief The RSA-SHA2-384 signature transform klass.
+ * @return RSA-SHA2-384 signature transform klass.
  */
 xmlSecTransformId
 xmlSecMSCryptoTransformRsaSha384GetKlass(void) {
@@ -859,11 +846,11 @@ xmlSecMSCryptoTransformRsaSha384GetKlass(void) {
 #endif /* XMLSEC_NO_SHA384 */
 
 #ifndef XMLSEC_NO_SHA512
-/****************************************************************************
+/******************************************************************************
  *
  * RSA-SHA2512 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 static xmlSecTransformKlass xmlSecMSCryptoRsaSha512Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),              /* xmlSecSize klassSize */
@@ -892,11 +879,8 @@ static xmlSecTransformKlass xmlSecMSCryptoRsaSha512Klass = {
 };
 
 /**
- * xmlSecMSCryptoTransformRsaSha512GetKlass:
- *
- * The RSA-SHA2-512 signature transform klass.
- *
- * Returns: RSA-SHA2-512 signature transform klass.
+ * @brief The RSA-SHA2-512 signature transform klass.
+ * @return RSA-SHA2-512 signature transform klass.
  */
 xmlSecTransformId
 xmlSecMSCryptoTransformRsaSha512GetKlass(void) {
@@ -907,11 +891,11 @@ xmlSecMSCryptoTransformRsaSha512GetKlass(void) {
 #endif /* XMLSEC_NO_RSA */
 
 #ifndef XMLSEC_NO_DSA
-/****************************************************************************
+/******************************************************************************
  *
  * DSA-SHA1 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 
 static xmlSecTransformKlass xmlSecMSCryptoDsaSha1Klass = {
     /* klass/object sizes */
@@ -941,11 +925,8 @@ static xmlSecTransformKlass xmlSecMSCryptoDsaSha1Klass = {
 };
 
 /**
- * xmlSecMSCryptoTransformDsaSha1GetKlass:
- *
- * The DSA-SHA1 signature transform klass.
- *
- * Returns: DSA-SHA1 signature transform klass.
+ * @brief The DSA-SHA1 signature transform klass.
+ * @return DSA-SHA1 signature transform klass.
  */
 xmlSecTransformId
 xmlSecMSCryptoTransformDsaSha1GetKlass(void) {
@@ -955,11 +936,11 @@ xmlSecMSCryptoTransformDsaSha1GetKlass(void) {
 #endif /* XMLSEC_NO_DSA */
 
 #ifndef XMLSEC_NO_GOST
-/****************************************************************************
+/******************************************************************************
  *
  * GOST2001-GOSTR3411_94 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 
 static xmlSecTransformKlass xmlSecMSCryptoGost2001GostR3411_94Klass = {
     /* klass/object sizes */
@@ -989,11 +970,9 @@ static xmlSecTransformKlass xmlSecMSCryptoGost2001GostR3411_94Klass = {
 };
 
 /**
- * xmlSecMSCryptoTransformGost2001GostR3411_94GetKlass:
- *
- * The GOST2001-GOSTR3411_94 signature transform klass.
- *
- * Returns: GOST2001-GOSTR3411_94 signature transform klass.
+ * @brief The GOST2001-GOSTR3411_94 signature transform klass.
+ * @details The GOST2001-GOSTR3411_94 signature transform klass.
+ * @return GOST2001-GOSTR3411_94 signature transform klass.
  */
 xmlSecTransformId
 xmlSecMSCryptoTransformGost2001GostR3411_94GetKlass(void) {
@@ -1005,11 +984,11 @@ xmlSecMSCryptoTransformGost2001GostR3411_94GetKlass(void) {
 
 #ifndef XMLSEC_NO_GOST2012
 
-/****************************************************************************
+/******************************************************************************
  *
  * GOST R 34.10-2012 256 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 
 static xmlSecTransformKlass xmlSecMSCryptoGost2012_256Klass = {
     /* klass/object sizes */
@@ -1039,22 +1018,19 @@ static xmlSecTransformKlass xmlSecMSCryptoGost2012_256Klass = {
 };
 
 /**
- * xmlSecMSCryptoTransformGost2012_256GetKlass:
- *
- * The GOST R 34.10-2012 signature transform klass.
- *
- * Returns: GOST2001-GOST R 34.10-2012 signature transform klass.
+ * @brief The GOST R 34.10-2012 signature transform klass.
+ * @return GOST2001-GOST R 34.10-2012 signature transform klass.
  */
 xmlSecTransformId
 xmlSecMSCryptoTransformGost2012_256GetKlass(void) {
     return(&xmlSecMSCryptoGost2012_256Klass);
 }
 
-/****************************************************************************
+/******************************************************************************
  *
  * GOST R 34.10-2012 512 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 
 static xmlSecTransformKlass xmlSecMSCryptoGost2012_512Klass = {
     /* klass/object sizes */
@@ -1084,11 +1060,8 @@ static xmlSecTransformKlass xmlSecMSCryptoGost2012_512Klass = {
 };
 
 /**
- * xmlSecMSCryptoTransformGost2012_512GetKlass:
- *
- * The GOST R 34.10-2012 signature transform klass.
- *
- * Returns: GOST2001-GOST R 34.10-2012 signature transform klass.
+ * @brief The GOST R 34.10-2012 signature transform klass.
+ * @return GOST2001-GOST R 34.10-2012 signature transform klass.
  */
 xmlSecTransformId
 xmlSecMSCryptoTransformGost2012_512GetKlass(void) {

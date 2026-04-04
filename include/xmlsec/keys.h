@@ -11,6 +11,13 @@
 #ifndef __XMLSEC_KEYS_H__
 #define __XMLSEC_KEYS_H__
 
+/**
+ * @defgroup xmlsec_core_keys Keys
+ * @ingroup xmlsec_core
+ * @brief Key objects and key management.
+ * @{
+ */
+
 #include <time.h>
 
 #include <xmlsec/exports.h>
@@ -23,74 +30,56 @@ extern "C" {
 #endif /* __cplusplus */
 
 /**
- * xmlSecKeyUsage:
- *
- * The key usage.
+ * @brief The key usage.
  */
 typedef unsigned int                    xmlSecKeyUsage;
 
 /**
- * xmlSecKeyUsageSign:
- *
- * Key for signing.
+ * @brief Key for signing.
  */
 #define xmlSecKeyUsageSign              0x00000001
 
 /**
- * xmlSecKeyUsageVerify:
- *
- * Key for signature verification.
+ * @brief Key for signature verification.
  */
 #define xmlSecKeyUsageVerify            0x00000002
 
 /**
- * xmlSecKeyUsageEncrypt:
- *
- * An encryption key.
+ * @brief An encryption key.
  */
 #define xmlSecKeyUsageEncrypt           0x00000004
 
 /**
- * xmlSecKeyUsageDecrypt:
- *
- * A decryption key.
+ * @brief A decryption key.
  */
 #define xmlSecKeyUsageDecrypt           0x00000008
 
 /**
- * xmlSecKeyUsageKeyExchange:
- *
- * Deprecated. The key is used for key exchange.
+ * @brief Deprecated. The key is used for key exchange.
  */
 #define xmlSecKeyUsageKeyExchange       0x00000010
 
 /**
- * xmlSecKeyUsageKeyDerive:
- *
- * The key is used for key derivation.
+ * @brief The key is used for key derivation.
  */
 #define xmlSecKeyUsageKeyDerive         0x00000020
 
 /**
- * xmlSecKeyUsageKeyAgreement:
- *
- * The key is used for key agreement.
+ * @brief The key is used for key agreement.
  */
 #define xmlSecKeyUsageKeyAgreement      0x00000040
 
 /**
- * xmlSecKeyUsageAny:
- *
- * Key can be used in any way.
+ * @brief Key can be used in any way.
  */
 #define xmlSecKeyUsageAny               0xFFFFFFFF
 
 
-/**************************************************************************
+/******************************************************************************
  *
  * xmlSecKeyUseWith
  *
- *************************************************************************/
+  *****************************************************************************/
 typedef struct _xmlSecKeyUseWith                xmlSecKeyUseWith, *xmlSecKeyUseWithPtr;
 XMLSEC_EXPORT int       xmlSecKeyUseWithInitialize              (xmlSecKeyUseWithPtr keyUseWith);
 XMLSEC_EXPORT void      xmlSecKeyUseWithFinalize                (xmlSecKeyUseWithPtr keyUseWith);
@@ -110,58 +99,41 @@ XMLSEC_EXPORT void      xmlSecKeyUseWithDebugXmlDump            (xmlSecKeyUseWit
                                                                  FILE* output);
 
 /**
- * xmlSecKeyUseWith:
- * @application:        the application.
- * @identifier:         the identifier.
- * @reserved1:          reserved for future use.
- * @reserved2:          reserved for future use.
- *
- * Information about application and user of the key.
+ * @brief Information about application and user of the key.
  */
 struct _xmlSecKeyUseWith {
-    xmlChar*                    application;
-    xmlChar*                    identifier;
+    xmlChar*                    application;  /**< the application. */
+    xmlChar*                    identifier;  /**< the identifier. */
 
-    void*                       reserved1;
-    void*                       reserved2;
+    void*                       reserved1;  /**< reserved for future use. */
+    void*                       reserved2;  /**< reserved for future use. */
 };
 
 /**
- * xmlSecKeyUseWithPtrListId:
- *
- * The keys list klass.
+ * @brief The keys list klass.
  */
 #define xmlSecKeyUseWithPtrListId       xmlSecKeyUseWithPtrListGetKlass()
 XMLSEC_EXPORT xmlSecPtrListId   xmlSecKeyUseWithPtrListGetKlass (void);
 
-/**************************************************************************
+/******************************************************************************
  *
  * xmlSecKeyReq - what key are we looking for?
  *
- *************************************************************************/
+  *****************************************************************************/
 typedef struct _xmlSecKeyReq                    xmlSecKeyReq, *xmlSecKeyReqPtr;
 
 /**
- * xmlSecKeyReq:
- * @keyId:              the desired key value klass.
- * @keyType:            the desired key type.
- * @keyUsage:           the desired key usage.
- * @keyBitsSize:        the desired key size (in bits!).
- * @keyUseWithList:     the desired key use with application/identifier information.
- * @reserved1:          reserved for future use.
- * @reserved2:          reserved for future use.
- *
- * The key requirements information.
+ * @brief The key requirements information.
  */
 struct _xmlSecKeyReq {
-    xmlSecKeyDataId             keyId;
-    xmlSecKeyDataType           keyType;
-    xmlSecKeyUsage              keyUsage;
-    xmlSecSize                  keyBitsSize;
-    xmlSecPtrList               keyUseWithList;
+    xmlSecKeyDataId             keyId;  /**< the desired key value klass. */
+    xmlSecKeyDataType           keyType;  /**< the desired key type. */
+    xmlSecKeyUsage              keyUsage;  /**< the desired key usage. */
+    xmlSecSize                  keyBitsSize;  /**< the desired key size (in bits!). */
+    xmlSecPtrList               keyUseWithList;  /**< the desired key use with application/identifier information. */
 
-    void*                       reserved1;
-    void*                       reserved2;
+    void*                       reserved1;  /**< reserved for future use. */
+    void*                       reserved2;  /**< reserved for future use. */
 };
 
 XMLSEC_EXPORT int       xmlSecKeyReqInitialize                  (xmlSecKeyReqPtr keyReq);
@@ -179,23 +151,15 @@ XMLSEC_EXPORT void      xmlSecKeyReqDebugXmlDump                (xmlSecKeyReqPtr
                                                                  FILE* output);
 
 /**
- * xmlSecKey:
- * @name:               the key name.
- * @value:              the key value.
- * @dataList:           the key data list.
- * @usage:              the key usage.
- * @notValidBefore:     the start key validity interval.
- * @notValidAfter:      the end key validity interval.
- *
- * The key.
+ * @brief The key.
  */
 struct _xmlSecKey {
-    xmlChar*                            name;
-    xmlSecKeyDataPtr                    value;
-    xmlSecPtrListPtr                    dataList;
-    xmlSecKeyUsage                      usage;
-    time_t                              notValidBefore;
-    time_t                              notValidAfter;
+    xmlChar*                            name;  /**< the key name. */
+    xmlSecKeyDataPtr                    value;  /**< the key value. */
+    xmlSecPtrListPtr                    dataList;  /**< the key data list. */
+    xmlSecKeyUsage                      usage;  /**< the key usage. */
+    time_t                              notValidBefore;  /**< the start key validity interval. */
+    time_t                              notValidAfter;  /**< the end key validity interval. */
 };
 
 XMLSEC_EXPORT xmlSecKeyPtr      xmlSecKeyCreate         (void);
@@ -254,37 +218,33 @@ XMLSEC_EXPORT xmlSecKeyPtr      xmlSecKeyReadMemory     (xmlSecKeyDataId dataId,
 
 
 /**
- * xmlSecKeyIsValid:
- * @key: the pointer to key.
- *
- * Macro. Returns 1 if @key is not NULL and @key->id is not NULL
+ * @brief Macro. Returns 1 if @p key is valid.
+ * @details Macro. Returns 1 if @p key is not NULL and @p key->id is not NULL
  * or 0 otherwise.
+ * @param key the pointer to key.
  */
 #define xmlSecKeyIsValid(key) \
         ((( key ) != NULL) && \
          (( key )->value != NULL) && \
          ((( key )->value->id) != NULL))
 /**
- * xmlSecKeyCheckId:
- * @key: the pointer to key.
- * @keyId: the key Id.
- *
- * Macro. Returns 1 if @key is valid and @key's id is equal to @keyId.
+ * @brief Macro. Returns 1 if @p key's id equals @p keyId.
+ * @details Macro. Returns 1 if @p key is valid and @p key's id is equal to @p keyId.
+ * @param key the pointer to key.
+ * @param keyId the key Id.
  */
 #define xmlSecKeyCheckId(key, keyId) \
         (xmlSecKeyIsValid(( key )) && \
         ((( key )->value->id) == ( keyId )))
 
 
-/***********************************************************************
+/******************************************************************************
  *
  * Keys list
  *
- **********************************************************************/
+  *****************************************************************************/
 /**
- * xmlSecKeyPtrListId:
- *
- * The keys list klass.
+ * @brief The keys list klass.
  */
 #define xmlSecKeyPtrListId      xmlSecKeyPtrListGetKlass()
 XMLSEC_EXPORT xmlSecPtrListId   xmlSecKeyPtrListGetKlass                (void);
@@ -292,5 +252,7 @@ XMLSEC_EXPORT xmlSecPtrListId   xmlSecKeyPtrListGetKlass                (void);
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
+
+/** @} */ /** xmlsec_core_keys */
 
 #endif /* __XMLSEC_KEYS_H__ */

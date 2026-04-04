@@ -9,10 +9,8 @@
  * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
 /**
- * SECTION:keysstore
- * @Short_description: Keys store implementation for GNUTLS.
- * @Stability: Stable
- *
+ * @addtogroup xmlsec_gnutls_keysstore
+ * @brief Keys store implementation for GNUTLS.
  * GnuTLS keys store that uses Simple Keys Store under the hood.
  */
 #include "globals.h"
@@ -34,13 +32,13 @@
 #include "../cast_helpers.h"
 #include "private.h"
 
-/****************************************************************************
+/******************************************************************************
  *
  * GnuTLS Keys Store. Uses Simple Keys Store under the hood
  *
  * xmlSecKeyStore +  xmlSecKeyStorePtr(Simple Keys Store ptr)
  *
- ***************************************************************************/
+  *****************************************************************************/
 XMLSEC_KEY_STORE_DECLARE(GnuTLSKeysStore, xmlSecKeyStorePtr)
 #define xmlSecGnuTLSKeysStoreSize XMLSEC_KEY_STORE_SIZE(GnuTLSKeysStore)
 
@@ -72,11 +70,8 @@ static xmlSecKeyStoreKlass xmlSecGnuTLSKeysStoreKlass = {
 };
 
 /**
- * xmlSecGnuTLSKeysStoreGetKlass:
- *
- * The GnuTLS list based keys store klass.
- *
- * Returns: GnuTLS list based keys store klass.
+ * @brief The GnuTLS list based keys store klass.
+ * @return GnuTLS list based keys store klass.
  */
 xmlSecKeyStoreId
 xmlSecGnuTLSKeysStoreGetKlass(void) {
@@ -174,13 +169,10 @@ xmlSecGnuTLSKeysStoreFindKeyFromX509Data(xmlSecKeyStorePtr store, xmlSecKeyX509D
 }
 
 /**
- * xmlSecGnuTLSKeysStoreAdoptKey:
- * @store:              the pointer to GnuTLS keys store.
- * @key:                the pointer to key.
- *
- * Adds @key to the @store.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Adds @p key to the @p store.
+ * @param store the pointer to GnuTLS keys store.
+ * @param key the pointer to key.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecGnuTLSKeysStoreAdoptKey(xmlSecKeyStorePtr store, xmlSecKeyPtr key) {
@@ -197,14 +189,11 @@ xmlSecGnuTLSKeysStoreAdoptKey(xmlSecKeyStorePtr store, xmlSecKeyPtr key) {
 }
 
 /**
- * xmlSecGnuTLSKeysStoreLoad:
- * @store:              the pointer to GnuTLS keys store.
- * @uri:                the filename.
- * @keysMngr:           the pointer to associated keys manager.
- *
- * Reads keys from an XML file.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Reads keys from an XML file.
+ * @param store the pointer to GnuTLS keys store.
+ * @param uri the filename.
+ * @param keysMngr the pointer to associated keys manager.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecGnuTLSKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
@@ -214,14 +203,11 @@ xmlSecGnuTLSKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
 }
 
 /**
- * xmlSecGnuTLSKeysStoreSave:
- * @store:              the pointer to GnuTLS keys store.
- * @filename:           the filename.
- * @type:               the saved keys type (public, private, ...).
- *
- * Writes keys from @store to an XML file.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Writes keys from @p store to an XML file.
+ * @param store the pointer to GnuTLS keys store.
+ * @param filename the filename.
+ * @param type the saved keys type (public, private, ...).
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecGnuTLSKeysStoreSave(xmlSecKeyStorePtr store, const char *filename, xmlSecKeyDataType type) {

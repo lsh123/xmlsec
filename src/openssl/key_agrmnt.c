@@ -9,11 +9,8 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:crypto
- * @Short_description:
- * @Stability: Stable
+ * @addtogroup xmlsec_openssl_crypto
  */
-
 #include "globals.h"
 
 #include <stdlib.h>
@@ -38,12 +35,12 @@
 #include "../transform_helpers.h"
 
 
-/**************************************************************************
+/******************************************************************************
  *
  * Generic Key Agreement Framework
  * - Unified implementation for ECDH, DH, and XDH (X25519/X448) key agreements
  *
- *****************************************************************************/
+  *****************************************************************************/
 
 typedef struct _xmlSecOpenSSLKeyAgreementCtx    xmlSecOpenSSLKeyAgreementCtx, *xmlSecOpenSSLKeyAgreementCtxPtr;
 struct _xmlSecOpenSSLKeyAgreementCtx {
@@ -87,15 +84,15 @@ static int              xmlSecOpenSSLKeyAgreementGenerateExecuteKdf     (xmlSecO
  *
  * Key Agreement transforms - unified context structure
  *
- *****************************************************************************/
+  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(OpenSSLKeyAgreement, xmlSecOpenSSLKeyAgreementCtx)
 #define xmlSecOpenSSLKeyAgreementSize XMLSEC_TRANSFORM_SIZE(OpenSSLKeyAgreement)
 
-/**************************************************************************
+/******************************************************************************
  *
  * Unified transform lifecycle functions (used by ECDH, DH, and XDH)
  *
- *****************************************************************************/
+  *****************************************************************************/
 
 static int
 xmlSecOpenSSLKeyAgreementInitialize(xmlSecTransformPtr transform) {
@@ -572,27 +569,24 @@ static xmlSecTransformKlass xmlSecOpenSSL ## name ## Klass = {                  
 
 #ifndef XMLSEC_NO_EC
 
-/**************************************************************************
+/******************************************************************************
  *
  * ECDH KeyAgreement context.
  * - OpenSSL doc: https://wiki.openssl.org/index.php/Elliptic_Curve_Diffie_Hellman
- * - XMLEnc spec: https://www.w3.org/TR/xmlenc-core1/#sec-ECDH-ES
+ * - XMLEnc spec: https://www.w3.org/TR/xmlenc-core1e/#sec-ECDH-ES
  *
- *****************************************************************************/
+  *****************************************************************************/
 
-/********************************************************************
+/******************************************************************************
  *
  * Ecdh key derivation algorithm
  *
- ********************************************************************/
+  *****************************************************************************/
 XMLSEC_OPENSSL_KEY_AGREEMENT_KLASS(Ecdh)
 
 /**
- * xmlSecOpenSSLTransformEcdhGetKlass:
- *
- * The ECDH key agreement transform klass.
- *
- * Returns: the ECDH key agreement transform klass.
+ * @brief The ECDH key agreement transform klass.
+ * @return the ECDH key agreement transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformEcdhGetKlass(void) {
@@ -604,27 +598,24 @@ xmlSecOpenSSLTransformEcdhGetKlass(void) {
 
 #ifndef XMLSEC_NO_DH
 
-/**************************************************************************
+/******************************************************************************
  *
  * DH KeyAgreement context.
  * - OpenSSL doc: https://wiki.openssl.org/index.php/Diffie_Hellman
- * - XMLEnc spec: https://www.w3.org/TR/xmlenc-core1/#sec-DHKeyAgreementExplicitKDF
+ * - XMLEnc spec: https://www.w3.org/TR/xmlenc-core1e/#sec-DHKeyAgreementExplicitKDF
  *
- *****************************************************************************/
+  *****************************************************************************/
 
-/********************************************************************
+/******************************************************************************
  *
  * Dh key derivation algorithm
  *
- ********************************************************************/
+  *****************************************************************************/
 XMLSEC_OPENSSL_KEY_AGREEMENT_KLASS_EX(Dh, xmlSecNameDhEs, xmlSecHrefDhEs)
 
 /**
- * xmlSecOpenSSLTransformDhEsGetKlass:
- *
- * The DH key agreement transform klass.
- *
- * Returns: the DH key agreement transform klass.
+ * @brief The DH key agreement transform klass.
+ * @return the DH key agreement transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformDhEsGetKlass(void) {
@@ -636,21 +627,18 @@ xmlSecOpenSSLTransformDhEsGetKlass(void) {
 
 #ifndef XMLSEC_NO_XDH
 
-/**************************************************************************
+/******************************************************************************
  *
  * XDH KeyAgreement context (X25519 and X448)
  *
- *****************************************************************************/
+  *****************************************************************************/
 
 /* X25519 Transform Klass */
 XMLSEC_OPENSSL_KEY_AGREEMENT_KLASS(X25519)
 
 /**
- * xmlSecOpenSSLTransformX25519GetKlass:
- *
- * The X25519 key agreement transform klass.
- *
- * Returns: the X25519 key agreement transform klass.
+ * @brief The X25519 key agreement transform klass.
+ * @return the X25519 key agreement transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformX25519GetKlass(void) {
@@ -661,11 +649,8 @@ xmlSecOpenSSLTransformX25519GetKlass(void) {
 XMLSEC_OPENSSL_KEY_AGREEMENT_KLASS(X448)
 
 /**
- * xmlSecOpenSSLTransformX448GetKlass:
- *
- * The X448 key agreement transform klass.
- *
- * Returns: the X448 key agreement transform klass.
+ * @brief The X448 key agreement transform klass.
+ * @return the X448 key agreement transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformX448GetKlass(void) {

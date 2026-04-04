@@ -9,6 +9,13 @@
 #ifndef __XMLSEC_MSCRYPTO_CERTKEYS_H__
 #define __XMLSEC_MSCRYPTO_CERTKEYS_H__
 
+/**
+ * @defgroup xmlsec_mscrypto_certkeys MsCrypto Certificate Keys
+ * @ingroup xmlsec_mscrypto
+ * @brief Certificate-based key handling for the MsCrypto back-end.
+ * @{
+ */
+
 #include <xmlsec/exports.h>
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
@@ -37,5 +44,7 @@ XMLSEC_CRYPTO_EXPORT PCRYPT_KEY_PROV_INFO xmlSecMSCryptoKeyDataGetMSCryptoProvid
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
+
+/** @} */ /** xmlsec_mscrypto_certkeys */
 
 #endif /* __XMLSEC_MSCRYPTO_CERTKEYS_H__ */

@@ -16,7 +16,7 @@
  * This is free software; see the Copyright file in the source
  * distribution for precise wording.
  *
- * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2024 Aleksey Sanin <aleksey#aleksey.com>. All Rights Reserved.
  */
 #include <stdlib.h>
 #include <string.h>
@@ -131,14 +131,12 @@ main(int argc, char **argv) {
 }
 
 /**
- * encrypt_file:
- * @xml_file:           the encryption template file name.
- * @key_file:           the Triple DES key file.
- *
- * Encrypts #xml_file using a dynamicaly created template and DES key from
+ * @brief Encrypts an XML file using a dynamically created template and DES key.
+ * @details Encrypts #xml_file using a dynamicaly created template and DES key from
  * #key_file.
- *
- * Returns 0 on success or a negative value if an error occurs.
+ * @param xml_file the encryption template file name.
+ * @param key_file the Triple DES key file.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 encrypt_file(const char* xml_file, const char* key_file) {

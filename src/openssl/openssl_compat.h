@@ -21,7 +21,7 @@ int             xmlSecOpenSSLGenerateRandomBytes             (xmlSecByte* data, 
  *
  * boringssl and aws-lc compatibility
  *
- *****************************************************************************/
+  *****************************************************************************/
 #if defined(OPENSSL_IS_BORINGSSL) || defined(OPENSSL_IS_AWSLC)
 
 /* Not implemented by LibreSSL (yet?) */
@@ -122,7 +122,7 @@ typedef int xmlSecOpenSSLSizeT;
  *
  * LibreSSL compatibility (implements most of OpenSSL 1.1 API)
  *
- *****************************************************************************/
+  *****************************************************************************/
 #if defined(LIBRESSL_VERSION_NUMBER)
 
 /* Not implemented by LibreSSL (yet?) */
@@ -147,7 +147,7 @@ typedef int xmlSecOpenSSLSizeT;
  *
  * OpenSSL 3.5.0 compatibility
  *
- *****************************************************************************/
+  *****************************************************************************/
 #if !defined(XMLSEC_OPENSSL_API_350)
 #define XMLSEC_NO_MLDSA                     1
 #define XMLSEC_NO_SLHDSA                    1
@@ -159,7 +159,7 @@ typedef int xmlSecOpenSSLSizeT;
  *
  * OpenSSL 3.0.0 compatibility
  *
- *****************************************************************************/
+  *****************************************************************************/
 #if !defined(XMLSEC_OPENSSL_API_300)
 
 /* ConcatKDF (SSKDF) key derivation algorithm is only available on OpenSSL 3.0.0 or newer
@@ -199,7 +199,7 @@ typedef int xmlSecOpenSSLSizeT;
  *
  * Common constants that aren't defined anywhere.
  *xmlSecOpenSSLGenerateRandom
- *****************************************************************************/
+  *****************************************************************************/
 #ifndef XMLSEC_NO_GOST
 #define XMLSEC_OPENSSL_DIGEST_NAME_GOST94       "md_gost94"
 #endif /* XMLSEC_NO_GOST*/

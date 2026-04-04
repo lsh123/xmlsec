@@ -9,9 +9,8 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:crypto
+ * @addtogroup xmlsec_gcrypt_crypto
  */
-
 #ifndef XMLSEC_NO_AES
 #include "globals.h"
 
@@ -32,11 +31,11 @@
 #include "../kw_helpers.h"
 #include "../cast_helpers.h"
 
-/*********************************************************************
+/******************************************************************************
  *
  * AES KW implementation
  *
- *********************************************************************/
+  *****************************************************************************/
 static int        xmlSecGCryptKWAesBlockEncrypt                 (xmlSecTransformPtr transform,
                                                                  const xmlSecByte * in,
                                                                  xmlSecSize inSize,
@@ -60,11 +59,11 @@ static xmlSecKWRfc3394Klass xmlSecGCryptKWAesKlass = {
 };
 
 
-/*********************************************************************
+/******************************************************************************
  *
  * AES KW transform context
  *
- ********************************************************************/
+  *****************************************************************************/
 typedef struct _xmlSecGCryptKWAesCtx              xmlSecGCryptKWAesCtx,
                                                   *xmlSecGCryptKWAesCtxPtr;
 struct _xmlSecGCryptKWAesCtx {
@@ -82,7 +81,7 @@ struct _xmlSecGCryptKWAesCtx {
  *
  * xmlSecTransform + xmlSecGCryptKWAesCtx
  *
- *****************************************************************************/
+  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(GCryptKWAes, xmlSecGCryptKWAesCtx)
 #define xmlSecGCryptKWAesSize XMLSEC_TRANSFORM_SIZE(GCryptKWAes)
 
@@ -253,11 +252,8 @@ static xmlSecTransformKlass xmlSecGCryptKWAes128Klass = {
 };
 
 /**
- * xmlSecGCryptTransformKWAes128GetKlass:
- *
- * The AES-128 kew wrapper transform klass.
- *
- * Returns: AES-128 kew wrapper transform klass.
+ * @brief The AES-128 key wrapper transform klass.
+ * @return AES-128 key wrapper transform klass.
  */
 xmlSecTransformId
 xmlSecGCryptTransformKWAes128GetKlass(void) {
@@ -293,11 +289,8 @@ static xmlSecTransformKlass xmlSecGCryptKWAes192Klass = {
 
 
 /**
- * xmlSecGCryptTransformKWAes192GetKlass:
- *
- * The AES-192 kew wrapper transform klass.
- *
- * Returns: AES-192 kew wrapper transform klass.
+ * @brief The AES-192 key wrapper transform klass.
+ * @return AES-192 key wrapper transform klass.
  */
 xmlSecTransformId
 xmlSecGCryptTransformKWAes192GetKlass(void) {
@@ -332,22 +325,19 @@ static xmlSecTransformKlass xmlSecGCryptKWAes256Klass = {
 };
 
 /**
- * xmlSecGCryptTransformKWAes256GetKlass:
- *
- * The AES-256 kew wrapper transform klass.
- *
- * Returns: AES-256 kew wrapper transform klass.
+ * @brief The AES-256 key wrapper transform klass.
+ * @return AES-256 key wrapper transform klass.
  */
 xmlSecTransformId
 xmlSecGCryptTransformKWAes256GetKlass(void) {
     return(&xmlSecGCryptKWAes256Klass);
 }
 
-/*********************************************************************
+/******************************************************************************
  *
  * AES KW implementation
  *
- *********************************************************************/
+  *****************************************************************************/
 static unsigned char g_zero_iv[XMLSEC_KW_RFC3394_BLOCK_SIZE] =
     { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 static int

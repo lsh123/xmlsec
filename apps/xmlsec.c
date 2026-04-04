@@ -5,7 +5,7 @@
  *
  * See Copyright for the status of this software.
  *
- * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2024 Aleksey Sanin <aleksey#aleksey.com>. All Rights Reserved.
  */
 #include <stdlib.h>
 #include <string.h>
@@ -141,11 +141,11 @@ static const char helpCheckTransforms[] =
 #define xmlSecAppCmdLineTopicCryptoConfig       0x8000
 #define xmlSecAppCmdLineTopicAll                0xFFFF
 
-/****************************************************************
+/******************************************************************************
  *
  * General configuration params
  *
- ***************************************************************/
+  *****************************************************************************/
 static xmlSecAppCmdLineParam helpParam = {
     xmlSecAppCmdLineTopicGeneral,
     "--help",
@@ -238,11 +238,11 @@ static xmlSecAppCmdLineParam printCryptoErrorsParam = {
 };
 
 
-/****************************************************************
+/******************************************************************************
  *
  * Keys Manager params
  *
- ***************************************************************/
+  *****************************************************************************/
 static xmlSecAppCmdLineParam genKeyParam = {
     xmlSecAppCmdLineTopicKeysMngr,
     "--gen-key",
@@ -598,11 +598,11 @@ static xmlSecAppCmdLineParam verifyCrlsParam = {
     NULL
 };
 
-/****************************************************************
+/******************************************************************************
  *
  * Common params
  *
- ***************************************************************/
+  *****************************************************************************/
 static xmlSecAppCmdLineParam sessionKeyParam = {
     xmlSecAppCmdLineTopicDSigSign | xmlSecAppCmdLineTopicEncEncrypt,
     "--session-key",
@@ -759,11 +759,11 @@ static xmlSecAppCmdLineParam urlMapParam = {
 };
 
 
-/****************************************************************
+/******************************************************************************
  *
  * Common dsig params
  *
- ***************************************************************/
+  *****************************************************************************/
 #ifndef XMLSEC_NO_XMLDSIG
 static xmlSecAppCmdLineParam ignoreManifestsParam = {
     xmlSecAppCmdLineTopicDSigCommon,
@@ -842,11 +842,11 @@ static xmlSecAppCmdLineParam enableAsn1SignaturesHackParam = {
 
 #endif /* XMLSEC_NO_XMLDSIG */
 
-/****************************************************************
+/******************************************************************************
  *
  * Enc params
  *
- ***************************************************************/
+  *****************************************************************************/
 #ifndef XMLSEC_NO_XMLENC
 static xmlSecAppCmdLineParam enabledCipherRefUrisParam = {
     xmlSecAppCmdLineTopicEncCommon,
@@ -885,11 +885,11 @@ static xmlSecAppCmdLineParam xmlDataParam = {
 #endif /* XMLSEC_NO_XMLENC */
 
 
-/****************************************************************
+/******************************************************************************
  *
  * X509 params
  *
- ***************************************************************/
+  *****************************************************************************/
 #ifndef XMLSEC_NO_X509
 static xmlSecAppCmdLineParam pkcs12Param = {
     xmlSecAppCmdLineTopicKeysMngr,
@@ -2285,11 +2285,11 @@ xmlSecAppLoadKeys(void) {
     }
 
 
-    /******************************************************************************************
+    /******************************************************************************
      *
      * FIRST, READ ALL CERTIFICATES
      *
-     ******************************************************************************************/
+      *****************************************************************************/
 
 #ifndef XMLSEC_NO_X509
     /* read all trusted certs */
@@ -2403,11 +2403,11 @@ xmlSecAppLoadKeys(void) {
     }
 #endif /* XMLSEC_NO_X509 */
 
-    /******************************************************************************************
+    /******************************************************************************
      *
      * XMLSEC KEY FILE
      *
-     ******************************************************************************************/
+      *****************************************************************************/
     for(value = keysFileParam.value; value != NULL; value = value->next) {
         if(value->strValue == NULL) {
             fprintf(stderr, "Error: invalid value for option \"%s\".\n", keysFileParam.fullName);
@@ -2420,11 +2420,11 @@ xmlSecAppLoadKeys(void) {
         }
     }
 
-    /******************************************************************************************
+    /******************************************************************************
      *
      * PRIVATE KEYS
      *
-     ******************************************************************************************/
+      *****************************************************************************/
     for(value = privkeyParam.value; value != NULL; value = value->next) {
         if(value->strListValue == NULL) {
             fprintf(stderr, "Error: invalid value for option \"%s\".\n",
@@ -2580,11 +2580,11 @@ xmlSecAppLoadKeys(void) {
         }
     }
 
-    /******************************************************************************************
+    /******************************************************************************
      *
      * PUBLIC KEYS
      *
-     ******************************************************************************************/
+      *****************************************************************************/
     for(value = pubkeyParam.value; value != NULL; value = value->next) {
         if(value->strListValue == NULL) {
             fprintf(stderr, "Error: invalid value for option \"%s\".\n",
@@ -2719,11 +2719,11 @@ xmlSecAppLoadKeys(void) {
     }
 #endif /* XMLSEC_NO_X509 */
 
-    /******************************************************************************************
+    /******************************************************************************
      *
      * SYMMETRICAL KEYS
      *
-     ******************************************************************************************/
+      *****************************************************************************/
 
 #ifndef XMLSEC_NO_AES
     /* read all AES keys */

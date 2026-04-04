@@ -9,9 +9,8 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:x509
+ * @addtogroup xmlsec_gnutls_x509
  */
-
 #include "globals.h"
 
 #ifndef XMLSEC_NO_X509
@@ -44,11 +43,11 @@
 #include "../cast_helpers.h"
 #include "../x509_helpers.h"
 
-/**************************************************************************
+/******************************************************************************
  *
  * X509 crt list
  *
- *****************************************************************************/
+  *****************************************************************************/
 static xmlSecPtr        xmlSecGnuTLSX509CrtListDuplicateItem    (xmlSecPtr ptr);
 static void             xmlSecGnuTLSX509CrtListDestroyItem      (xmlSecPtr ptr);
 static void             xmlSecGnuTLSX509CrtListDebugDumpItem    (xmlSecPtr ptr,
@@ -100,11 +99,11 @@ xmlSecGnuTLSX509CrtListDebugXmlDumpItem(xmlSecPtr ptr, FILE* output) {
     xmlSecGnuTLSX509CertDebugXmlDump((gnutls_x509_crt_t)ptr, output);
 }
 
-/**************************************************************************
+/******************************************************************************
  *
  * X509 crl list
  *
- *****************************************************************************/
+  *****************************************************************************/
 static xmlSecPtr        xmlSecGnuTLSX509CrlListDuplicateItem    (xmlSecPtr ptr);
 static void             xmlSecGnuTLSX509CrlListDestroyItem      (xmlSecPtr ptr);
 static void             xmlSecGnuTLSX509CrlListDebugDumpItem    (xmlSecPtr ptr,
@@ -156,11 +155,11 @@ xmlSecGnuTLSX509CrlListDebugXmlDumpItem(xmlSecPtr ptr, FILE* output) {
     xmlSecGnuTLSX509CrlDebugXmlDump((gnutls_x509_crl_t)ptr, output);
 }
 
-/*************************************************************************
+/******************************************************************************
  *
  * x509 certs utils/helpers
  *
- ************************************************************************/
+  *****************************************************************************/
 
 /* HACK: gnutls doesn't have cert duplicate function, so we simply
  write cert out and then read it back */
@@ -510,11 +509,11 @@ xmlSecGnuTLSX509CertDebugXmlDump(gnutls_x509_crt_t cert, FILE* output) {
 }
 
 
-/*************************************************************************
+/******************************************************************************
  *
  * x509 certs search ctx
  *
- ************************************************************************/
+  *****************************************************************************/
 int xmlSecGnuTLSX509FindCertCtxInitialize(xmlSecGnuTLSX509FindCertCtxPtr ctx,
     const xmlChar *subjectName,
     const xmlChar *issuerName, const xmlChar *issuerSerial,
@@ -797,11 +796,11 @@ xmlSecGnuTLSX509GetDigestFromAlgorithm(const xmlChar* href) {
     }
 }
 
-/*************************************************************************
+/******************************************************************************
  *
  * x509 crls utils/helpers
  *
- ************************************************************************/
+  *****************************************************************************/
 
 /* HACK: gnutls doesn't have crl duplicate function, so we simply
  write crl out and then read it back */
@@ -992,11 +991,11 @@ xmlSecGnuTLSX509CrlDebugXmlDump(gnutls_x509_crl_t crl, FILE* output) {
     }
 }
 
-/*************************************************************************
+/******************************************************************************
  *
  * pkcs12 utils/helpers
  *
- ************************************************************************/
+  *****************************************************************************/
 int
 xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, const char *pwd,
     gnutls_x509_privkey_t * priv_key, gnutls_x509_crt_t * key_cert, xmlSecPtrListPtr certsList,
@@ -1244,11 +1243,11 @@ done:
     return(res);
 }
 
-/*************************************************************************
+/******************************************************************************
  *
  * LDAP DN parser
  *
- ************************************************************************/
+  *****************************************************************************/
 void
 xmlSecGnuTLSDnAttrsInitialize(xmlSecGnuTLSDnAttr * attrs, xmlSecSize attrsSize) {
     xmlSecAssert(attrs != NULL);

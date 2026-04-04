@@ -9,9 +9,8 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:crypto
+ * @addtogroup xmlsec_openssl_crypto
  */
-
 #include "globals.h"
 
 #include <stdlib.h>
@@ -32,11 +31,11 @@
 #include "openssl_compat.h"
 #include "../keysdata_helpers.h"
 
-/*****************************************************************************
+/******************************************************************************
  *
  * Symmetic (binary) keys - just a wrapper for xmlSecKeyDataBinary
  *
- ****************************************************************************/
+  *****************************************************************************/
 static int      xmlSecOpenSSLSymKeyDataInitialize       (xmlSecKeyDataPtr data);
 static int      xmlSecOpenSSLSymKeyDataDuplicate        (xmlSecKeyDataPtr dst,
                                                          xmlSecKeyDataPtr src);
@@ -293,19 +292,16 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyData ## name ## Klass = {             
         xmlSecOpenSSLSymKeyDataXmlWrite)
 
 #ifndef XMLSEC_NO_AES
-/**************************************************************************
+/******************************************************************************
  *
  * <xmlsec:AESKeyValue> processing
  *
- *************************************************************************/
+  *****************************************************************************/
 XMLSEC_OPENSSL_SYMKEY_KLASS(Aes, AES)
 
 /**
- * xmlSecOpenSSLKeyDataAesGetKlass:
- *
- * The AES key data klass.
- *
- * Returns: AES key data klass.
+ * @brief The AES key data klass.
+ * @return AES key data klass.
  */
 xmlSecKeyDataId
 xmlSecOpenSSLKeyDataAesGetKlass(void) {
@@ -313,14 +309,11 @@ xmlSecOpenSSLKeyDataAesGetKlass(void) {
 }
 
 /**
- * xmlSecOpenSSLKeyDataAesSet:
- * @data:               the pointer to AES key data.
- * @buf:                the pointer to key value.
- * @bufSize:            the key value size (in bytes).
- *
- * Sets the value of AES key data.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Sets the value of AES key data.
+ * @param data the pointer to AES key data.
+ * @param buf the pointer to key value.
+ * @param bufSize the key value size (in bytes).
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecOpenSSLKeyDataAesSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSize bufSize) {
@@ -338,19 +331,16 @@ xmlSecOpenSSLKeyDataAesSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecS
 #endif /* XMLSEC_NO_AES */
 
 #ifndef XMLSEC_NO_CAMELLIA
-/**************************************************************************
+/******************************************************************************
  *
  * <xmlsec:CamelliaKeyValue> processing
  *
- *************************************************************************/
+  *****************************************************************************/
 XMLSEC_OPENSSL_SYMKEY_KLASS(Camellia, Camellia)
 
 /**
- * xmlSecOpenSSLKeyDataCamelliaGetKlass:
- *
- * The Camellia key data klass.
- *
- * Returns: Camellia key data klass.
+ * @brief The Camellia key data klass.
+ * @return Camellia key data klass.
  */
 xmlSecKeyDataId
 xmlSecOpenSSLKeyDataCamelliaGetKlass(void) {
@@ -358,14 +348,11 @@ xmlSecOpenSSLKeyDataCamelliaGetKlass(void) {
 }
 
 /**
- * xmlSecOpenSSLKeyDataCamelliaSet:
- * @data:               the pointer to Camellia key data.
- * @buf:                the pointer to key value.
- * @bufSize:            the key value size (in bytes).
- *
- * Sets the value of Camellia key data.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Sets the value of Camellia key data.
+ * @param data the pointer to Camellia key data.
+ * @param buf the pointer to key value.
+ * @param bufSize the key value size (in bytes).
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecOpenSSLKeyDataCamelliaSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSize bufSize) {
@@ -383,19 +370,16 @@ xmlSecOpenSSLKeyDataCamelliaSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xm
 #endif /* XMLSEC_NO_CAMELLIA */
 
 #ifndef XMLSEC_NO_CHACHA20
-/**************************************************************************
+/******************************************************************************
  *
  * <xmlsec:ChaCha20KeyValue> processing
  *
- *************************************************************************/
+  *****************************************************************************/
 XMLSEC_OPENSSL_SYMKEY_KLASS(ChaCha20, ChaCha20)
 
 /**
- * xmlSecOpenSSLKeyDataChaCha20GetKlass:
- *
- * The ChaCha20 key data klass.
- *
- * Returns: ChaCha20 key data klass.
+ * @brief The ChaCha20 key data klass.
+ * @return ChaCha20 key data klass.
  */
 xmlSecKeyDataId
 xmlSecOpenSSLKeyDataChaCha20GetKlass(void) {
@@ -403,14 +387,11 @@ xmlSecOpenSSLKeyDataChaCha20GetKlass(void) {
 }
 
 /**
- * xmlSecOpenSSLKeyDataChaCha20Set:
- * @data:               the pointer to ChaCha20 key data.
- * @buf:                the pointer to key value.
- * @bufSize:            the key value size (in bytes).
- *
- * Sets the value of ChaCha20 key data.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Sets the value of ChaCha20 key data.
+ * @param data the pointer to ChaCha20 key data.
+ * @param buf the pointer to key value.
+ * @param bufSize the key value size (in bytes).
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecOpenSSLKeyDataChaCha20Set(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSize bufSize) {
@@ -429,11 +410,11 @@ xmlSecOpenSSLKeyDataChaCha20Set(xmlSecKeyDataPtr data, const xmlSecByte* buf, xm
 
 
 #ifndef XMLSEC_NO_CONCATKDF
-/**************************************************************************
+/******************************************************************************
  *
  * The ConcatKDF key derivation key
  *
- *************************************************************************/
+  *****************************************************************************/
 XMLSEC_OPENSSL_SYMKEY_KLASS_EX(ConcatKdf,
     xmlSecNameConcatKdf,
     xmlSecHrefConcatKdf,
@@ -444,11 +425,8 @@ XMLSEC_OPENSSL_SYMKEY_KLASS_EX(ConcatKdf,
     NULL)
 
 /**
- * xmlSecOpenSSLKeyDataConcatKdfGetKlass:
- *
- * The ConcatKdf key data klass.
- *
- * Returns: ConcatKdf key data klass.
+ * @brief The ConcatKdf key data klass.
+ * @return ConcatKdf key data klass.
  */
 xmlSecKeyDataId
 xmlSecOpenSSLKeyDataConcatKdfGetKlass(void) {
@@ -456,14 +434,11 @@ xmlSecOpenSSLKeyDataConcatKdfGetKlass(void) {
 }
 
 /**
- * xmlSecOpenSSLKeyDataConcatKdfSet:
- * @data:               the pointer to ConcatKdf key data.
- * @buf:                the pointer to key value.
- * @bufSize:            the key value size (in bytes).
- *
- * Sets the value of ConcatKdf key data.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Sets the value of ConcatKdf key data.
+ * @param data the pointer to ConcatKdf key data.
+ * @param buf the pointer to key value.
+ * @param bufSize the key value size (in bytes).
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecOpenSSLKeyDataConcatKdfSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSize bufSize) {
@@ -482,19 +457,16 @@ xmlSecOpenSSLKeyDataConcatKdfSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, x
 
 
 #ifndef XMLSEC_NO_DES
-/**************************************************************************
+/******************************************************************************
  *
  * <xmlsec:DESKeyValue> processing
  *
- *************************************************************************/
+  *****************************************************************************/
 XMLSEC_OPENSSL_SYMKEY_KLASS(Des, DES)
 
 /**
- * xmlSecOpenSSLKeyDataDesGetKlass:
- *
- * The DES key data klass.
- *
- * Returns: DES key data klass.
+ * @brief The DES key data klass.
+ * @return DES key data klass.
  */
 xmlSecKeyDataId
 xmlSecOpenSSLKeyDataDesGetKlass(void) {
@@ -502,14 +474,11 @@ xmlSecOpenSSLKeyDataDesGetKlass(void) {
 }
 
 /**
- * xmlSecOpenSSLKeyDataDesSet:
- * @data:               the pointer to DES key data.
- * @buf:                the pointer to key value.
- * @bufSize:            the key value size (in bytes).
- *
- * Sets the value of DES key data.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Sets the value of DES key data.
+ * @param data the pointer to DES key data.
+ * @param buf the pointer to key value.
+ * @param bufSize the key value size (in bytes).
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecOpenSSLKeyDataDesSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSize bufSize) {
@@ -528,19 +497,16 @@ xmlSecOpenSSLKeyDataDesSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecS
 #endif /* XMLSEC_NO_DES */
 
 #ifndef XMLSEC_NO_HMAC
-/**************************************************************************
+/******************************************************************************
  *
  * <xmlsec:HMACKeyValue> processing
  *
- *************************************************************************/
+  *****************************************************************************/
 XMLSEC_OPENSSL_SYMKEY_KLASS(Hmac, HMAC)
 
 /**
- * xmlSecOpenSSLKeyDataHmacGetKlass:
- *
- * The HMAC key data klass.
- *
- * Returns: HMAC key data klass.
+ * @brief The HMAC key data klass.
+ * @return HMAC key data klass.
  */
 xmlSecKeyDataId
 xmlSecOpenSSLKeyDataHmacGetKlass(void) {
@@ -548,14 +514,11 @@ xmlSecOpenSSLKeyDataHmacGetKlass(void) {
 }
 
 /**
- * xmlSecOpenSSLKeyDataHmacSet:
- * @data:               the pointer to HMAC key data.
- * @buf:                the pointer to key value.
- * @bufSize:            the key value size (in bytes).
- *
- * Sets the value of HMAC key data.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Sets the value of HMAC key data.
+ * @param data the pointer to HMAC key data.
+ * @param buf the pointer to key value.
+ * @param bufSize the key value size (in bytes).
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecOpenSSLKeyDataHmacSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSize bufSize) {
@@ -574,11 +537,11 @@ xmlSecOpenSSLKeyDataHmacSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSec
 #endif /* XMLSEC_NO_HMAC */
 
 #ifndef XMLSEC_NO_PBKDF2
-/**************************************************************************
+/******************************************************************************
  *
  * The PBKDF2 key derivation key
  *
- *************************************************************************/
+  *****************************************************************************/
 XMLSEC_OPENSSL_SYMKEY_KLASS_EX(Pbkdf2,
     xmlSecNamePbkdf2,
     xmlSecHrefPbkdf2,
@@ -589,11 +552,8 @@ XMLSEC_OPENSSL_SYMKEY_KLASS_EX(Pbkdf2,
     NULL)
 
 /**
- * xmlSecOpenSSLKeyDataPbkdf2GetKlass:
- *
- * The PBKDF2 key data klass.
- *
- * Returns: PBKDF2 key data klass.
+ * @brief The PBKDF2 key data klass.
+ * @return PBKDF2 key data klass.
  */
 xmlSecKeyDataId
 xmlSecOpenSSLKeyDataPbkdf2GetKlass(void) {
@@ -601,14 +561,11 @@ xmlSecOpenSSLKeyDataPbkdf2GetKlass(void) {
 }
 
 /**
- * xmlSecOpenSSLKeyDataPbkdf2Set:
- * @data:               the pointer to Pbkdf2 key data.
- * @buf:                the pointer to key value.
- * @bufSize:            the key value size (in bytes).
- *
- * Sets the value of PBKDF2 key data.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Sets the value of PBKDF2 key data.
+ * @param data the pointer to Pbkdf2 key data.
+ * @param buf the pointer to key value.
+ * @param bufSize the key value size (in bytes).
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecOpenSSLKeyDataPbkdf2Set(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSize bufSize) {
@@ -626,11 +583,11 @@ xmlSecOpenSSLKeyDataPbkdf2Set(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlS
 #endif /* XMLSEC_NO_PBKDF2 */
 
 #ifndef XMLSEC_NO_HKDF
-/**************************************************************************
+/******************************************************************************
  *
  * The HKDF key derivation key
  *
- *************************************************************************/
+  *****************************************************************************/
 XMLSEC_OPENSSL_SYMKEY_KLASS_EX(Hkdf,
     xmlSecNameHkdf,
     xmlSecHrefHkdf,
@@ -641,11 +598,8 @@ XMLSEC_OPENSSL_SYMKEY_KLASS_EX(Hkdf,
     NULL)
 
 /**
- * xmlSecOpenSSLKeyDataHkdfGetKlass:
- *
- * The HKDF key data klass.
- *
- * Returns: HKDF key data klass.
+ * @brief The HKDF key data klass.
+ * @return HKDF key data klass.
  */
 xmlSecKeyDataId
 xmlSecOpenSSLKeyDataHkdfGetKlass(void) {
@@ -653,14 +607,11 @@ xmlSecOpenSSLKeyDataHkdfGetKlass(void) {
 }
 
 /**
- * xmlSecOpenSSLKeyDataHkdfSet:
- * @data:               the pointer to Hkdf key data.
- * @buf:                the pointer to key value.
- * @bufSize:            the key value size (in bytes).
- *
- * Sets the value of HKDF key data (IKM).
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Sets the value of HKDF key data (IKM).
+ * @param data the pointer to Hkdf key data.
+ * @param buf the pointer to key value.
+ * @param bufSize the key value size (in bytes).
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecOpenSSLKeyDataHkdfSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSize bufSize) {

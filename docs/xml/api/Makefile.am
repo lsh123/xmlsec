@@ -1,19 +1,19 @@
 NULL =
 
 DOXYFILE    = Doxyfile
-HTML_OUTDIR = html
+XML_OUTDIR  = xml
 
 .PHONY: all docs clean-docs
 
 all:
-	@echo "======= Run 'make docs' in the xmlsec/docs.doxygen folder to rebuild doxygen docs"
+	@echo "======= Run 'make docs' in the xmlsec/docs/xml/api folder to rebuild doxygen docs"
 
 if BUILD_DOXYGEN_DOCS
 
 docs:
-	@echo "-- Generating doxygen HTML API docs..."
+	@echo "-- Generating doxygen XML API docs..."
 	@$(DOXYGEN) $(builddir)/$(DOXYFILE)
-	@echo "-- Done. HTML output: $(abs_top_builddir)/docs.doxygen/$(HTML_OUTDIR)"
+	@echo "-- Done. XML output: $(abs_top_builddir)/docs/xml/api/$(XML_OUTDIR)"
 
 else
 
@@ -23,7 +23,7 @@ docs:
 endif
 
 clean-local:
-	-rm -rf "$(abs_top_builddir)/docs.doxygen/$(HTML_OUTDIR)"
+	-rm -rf "$(abs_top_builddir)/docs/xml/api/$(XML_OUTDIR)"
 
 DISTCLEANFILES = \
     $(DOXYFILE) \
@@ -31,4 +31,6 @@ DISTCLEANFILES = \
 
 EXTRA_DIST = \
     Doxyfile.in \
+    wincrypt.h \
+    windows.h \
     $(NULL)

@@ -9,9 +9,7 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:crypto
- * @Short_description:
- * @Stability: Stable
+ * @addtogroup xmlsec_gnutls_crypto
  */
 #if !defined(XMLSEC_NO_XDH) || !defined(XMLSEC_NO_EC)
 
@@ -41,13 +39,13 @@
 #include "../transform_helpers.h"
 
 
-/**************************************************************************
+/******************************************************************************
  *
  * Key Agreement context (ECDH and XDH)
- * - ECDH spec: https://www.w3.org/TR/xmlenc-core1/#sec-ECDH-ES
+ * - ECDH spec: https://www.w3.org/TR/xmlenc-core1e/#sec-ECDH-ES
  * - XDH spec: https://www.w3.org/2021/04/xmldsig-more
  *
- *****************************************************************************/
+  *****************************************************************************/
 
 typedef struct _xmlSecGnuTLSKeyAgreementCtx    xmlSecGnuTLSKeyAgreementCtx, *xmlSecGnuTLSKeyAgreementCtxPtr;
 struct _xmlSecGnuTLSKeyAgreementCtx {
@@ -90,15 +88,15 @@ static int              xmlSecGnuTLSKeyAgreementExecuteKdf      (xmlSecGnuTLSKey
  *
  * Key Agreement unified context
  *
- *****************************************************************************/
+  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(GnuTLSKeyAgreement, xmlSecGnuTLSKeyAgreementCtx)
 #define xmlSecGnuTLSKeyAgreementSize XMLSEC_TRANSFORM_SIZE(GnuTLSKeyAgreement)
 
-/**************************************************************************
+/******************************************************************************
  *
  * Unified transform lifecycle functions
  *
- *****************************************************************************/
+  *****************************************************************************/
 
 static int
 xmlSecGnuTLSKeyAgreementInitialize(xmlSecTransformPtr transform) {
@@ -564,20 +562,17 @@ static xmlSecTransformKlass xmlSecGnuTLS ## name ## Klass = {                   
     XMLSEC_GNUTLS_KEY_AGREEMENT_KLASS_EX(name, xmlSecName ## name, xmlSecHref ## name)
 
 
-/**************************************************************************
+/******************************************************************************
  *
  * ECDH key agreement transform
  *
- **************************************************************************/
+  *****************************************************************************/
 #ifndef XMLSEC_NO_EC
 XMLSEC_GNUTLS_KEY_AGREEMENT_KLASS(Ecdh)
 
 /**
- * xmlSecGnuTLSTransformEcdhGetKlass:
- *
- * The ECDH-ES key agreement transform klass.
- *
- * Returns: the ECDH-ES key agreement transform klass.
+ * @brief The ECDH-ES key agreement transform klass.
+ * @return the ECDH-ES key agreement transform klass.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformEcdhGetKlass(void) {
@@ -585,20 +580,17 @@ xmlSecGnuTLSTransformEcdhGetKlass(void) {
 }
 #endif /* XMLSEC_NO_EC */
 
-/**************************************************************************
+/******************************************************************************
  *
  * X25519 key agreement transform
  *
- **************************************************************************/
+  *****************************************************************************/
 #ifndef XMLSEC_NO_XDH
 XMLSEC_GNUTLS_KEY_AGREEMENT_KLASS(X25519)
 
 /**
- * xmlSecGnuTLSTransformX25519GetKlass:
- *
- * The X25519 key agreement transform klass.
- *
- * Returns: the X25519 key agreement transform klass.
+ * @brief The X25519 key agreement transform klass.
+ * @return the X25519 key agreement transform klass.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformX25519GetKlass(void) {
@@ -606,19 +598,16 @@ xmlSecGnuTLSTransformX25519GetKlass(void) {
 }
 
 
-/**************************************************************************
+/******************************************************************************
  *
  * X448 key agreement transform
  *
- **************************************************************************/
+  *****************************************************************************/
 XMLSEC_GNUTLS_KEY_AGREEMENT_KLASS(X448)
 
 /**
- * xmlSecGnuTLSTransformX448GetKlass:
- *
- * The X448 key agreement transform klass.
- *
- * Returns: the X448 key agreement transform klass.
+ * @brief The X448 key agreement transform klass.
+ * @return the X448 key agreement transform klass.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformX448GetKlass(void) {

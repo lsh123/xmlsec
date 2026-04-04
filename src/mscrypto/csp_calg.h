@@ -32,13 +32,6 @@
 #define ALG_SID_DH_EL_SF                                36
 #define ALG_SID_DH_EL_EPHEM                             37
 
-/*! \defgroup CALG_MAGPRO CALG_MAGPRO
- *  \brief The description of CALG_MAGPRO
- *
- * @{
- */
-
-
 #define CALG_MAGPRO_SIGN_R3410_94       (ALG_CLASS_SIGNATURE | ALG_TYPE_GR3410 | ALG_SID_MAGPRO_R3410_94)
 
 #define CALG_MAGPRO_SIGN_R3410_2001     (ALG_CLASS_SIGNATURE | ALG_TYPE_GR3410 | ALG_SID_MAGPRO_R3410_2001)
@@ -72,12 +65,6 @@
 
 #define CALG_DH_EL_EPHEM                                (ALG_CLASS_KEY_EXCHANGE | ALG_TYPE_DH | ALG_SID_DH_EL_EPHEM)
 
-/*! @} */
-/*! \defgroup PROV_TYPE PROV_TYPE
- *  \brief The description of PROV_MAGPRO_GOST
- *
- * @{
- */
 #define PROV_MAGPRO_GOST            501
 #define MAGPRO_CSP_A                "MagPro CSP"
 #define MAGPRO_CSP_W                L"MagPro CSP"
@@ -106,16 +93,10 @@
 #define CRYPTOPRO_CSP_512 CRYPTOPRO_CSP_512_A
 #endif
 
-/*! @} */
-/*! \defgroup PP_MAGPRO PP_MAGPRO
- *
- * @{
- */
 
 #define PP_RNGTYPE                      201
 #define PP_RNGSHARED            202
 #define PP_SETUP_UI                     203
 
-/*! @} */
 
 #endif //CRYPTOCOM_CSP_CALG_H

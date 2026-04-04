@@ -77,9 +77,11 @@ AC_PATH_PROG(GTKDOC_MKHTML, gtkdoc-mkhtml)
 AC_PATH_PROG(GTKDOC_MKDB,   gtkdoc-mkdb)
 AC_PATH_PROG(GTKDOC_SCAN,   gtkdoc-scan)
 AC_PATH_PROG(PANDOC,  pandoc)
-AM_CONDITIONAL(BUILD_MAN_DOCS, [test x"$XSLTPROC" != x && test x"$MAN2HTML" != x])
-AM_CONDITIONAL(BUILD_API_DOCS, [test x"$SED" != x && test x"$SORT" != x && test x"$XSLTPROC" != x && test x"$GTKDOC_MKHTML" != x && test x"$GTKDOC_MKDB" != x && test x"$GTKDOC_SCAN" != x])
-AM_CONDITIONAL(BUILD_MD_DOCS,  [test x"$PANDOC" != x])
+AC_PATH_PROG(DOXYGEN, doxygen)
+AM_CONDITIONAL(BUILD_MAN_DOCS,     [test x"$XSLTPROC" != x && test x"$MAN2HTML" != x])
+AM_CONDITIONAL(BUILD_API_DOCS,     [test x"$SED" != x && test x"$SORT" != x && test x"$XSLTPROC" != x && test x"$GTKDOC_MKHTML" != x && test x"$GTKDOC_MKDB" != x && test x"$GTKDOC_SCAN" != x])
+AM_CONDITIONAL(BUILD_MD_DOCS,      [test x"$PANDOC" != x])
+AM_CONDITIONAL(BUILD_DOXYGEN_DOCS, [test x"$DOXYGEN" != x])
 
 dnl Checks for header files.
 AC_HEADER_DIRENT
@@ -2831,6 +2833,8 @@ docs/html/Makefile
 docs/html/api/Makefile
 docs/html/tutorial/Makefile
 docs/html/examples/Makefile
+docs.doxygen/Makefile
+docs.doxygen/Doxyfile:docs.doxygen/Doxyfile.in
 man/Makefile
 xmlsec1-openssl.pc:xmlsec-openssl.pc.in
 xmlsec1-gnutls.pc:xmlsec-gnutls.pc.in

@@ -9,7 +9,7 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:crypto
+ * @addtogroup xmlsec_openssl_crypto
  */
 /*
  * The ECDSA signature were added to EVP interface in 3.0.0
@@ -39,11 +39,11 @@
 
 #if !defined(XMLSEC_OPENSSL_API_300) && !defined(XMLSEC_NO_EC)
 
-/**************************************************************************
+/******************************************************************************
  *
  * Internal OpenSSL signatures ctx: forward declarations
  *
- *****************************************************************************/
+  *****************************************************************************/
 typedef struct _xmlSecOpenSSLSignatureLegacyCtx    xmlSecOpenSSLSignatureLegacyCtx,
                                                   *xmlSecOpenSSLSignatureLegacyCtxPtr;
 
@@ -58,11 +58,11 @@ static int  xmlSecOpenSSLSignatureLegacyEcdsaVerify          (xmlSecOpenSSLSigna
                                                               xmlSecSize signSize);
 
 
-/**************************************************************************
+/******************************************************************************
  *
  * Sign/verify callbacks
  *
- *****************************************************************************/
+  *****************************************************************************/
 typedef int  (*xmlSecOpenSSLSignatureLegacySignCallback)     (xmlSecOpenSSLSignatureLegacyCtxPtr ctx,
                                                               xmlSecTransformCtxPtr transformCtx,
                                                               xmlSecBufferPtr out);
@@ -71,11 +71,11 @@ typedef int  (*xmlSecOpenSSLSignatureLegacyVerifyCallback)   (xmlSecOpenSSLSigna
                                                               const xmlSecByte* signData,
                                                               xmlSecSize signSize);
 
-/**************************************************************************
+/******************************************************************************
  *
  * Internal OpenSSL signatures ctx
  *
- *****************************************************************************/
+  *****************************************************************************/
 struct _xmlSecOpenSSLSignatureLegacyCtx {
     const EVP_MD*                        digest;
     EVP_MD_CTX*                          digestCtx;
@@ -93,7 +93,7 @@ struct _xmlSecOpenSSLSignatureLegacyCtx {
  *
  * Signature transforms
  *
- *****************************************************************************/
+  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(OpenSSLSignatureLegacy, xmlSecOpenSSLSignatureLegacyCtx)
 #define xmlSecOpenSSLSignatureLegacySize XMLSEC_TRANSFORM_SIZE(OpenSSLSignatureLegacy)
 
@@ -529,7 +529,7 @@ xmlSecOpenSSLSignatureLegacyExecute(xmlSecTransformPtr transform, int last, xmlS
 }
 
 
-/****************************************************************************
+/******************************************************************************
  *
  * ECDSA EVP
  *
@@ -547,7 +547,7 @@ xmlSecOpenSSLSignatureLegacyExecute(xmlSecTransformPtr transform, int last, xmlS
  * to the size of the base point order of the curve in bytes (32 for the
  * P-256 curve and 66 for the P-521 curve).
  *
- ***************************************************************************/
+  *****************************************************************************/
 static xmlSecOpenSSLSizeT
 xmlSecOpenSSLSignatureLegacyEcdsaSignatureHalfLen(EVP_PKEY* pKey) {
     const EC_GROUP *group = NULL;
@@ -939,20 +939,17 @@ xmlSecOpenSSLSignatureLegacyEcdsaVerify(
 }
 
 #ifndef XMLSEC_NO_RIPEMD160
-/****************************************************************************
+/******************************************************************************
  *
  * ECDSA-RIPEMD160 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 
 XMLSEC_OPENSSL_EVP_SIGNATURE_LEGACY_KLASS(EcdsaRipemd160)
 
 /**
- * xmlSecOpenSSLTransformEcdsaRipemd160GetKlass:
- *
- * The ECDSA-RIPEMD160 signature transform klass.
- *
- * Returns: ECDSA-RIPEMD160 signature transform klass.
+ * @brief The ECDSA-RIPEMD160 signature transform klass.
+ * @return ECDSA-RIPEMD160 signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformEcdsaRipemd160GetKlass(void) {
@@ -962,20 +959,17 @@ xmlSecOpenSSLTransformEcdsaRipemd160GetKlass(void) {
 #endif /* XMLSEC_NO_RIPEMD160 */
 
 #ifndef XMLSEC_NO_SHA1
-/****************************************************************************
+/******************************************************************************
  *
  * ECDSA-SHA1 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 
 XMLSEC_OPENSSL_EVP_SIGNATURE_LEGACY_KLASS(EcdsaSha1)
 
 /**
- * xmlSecOpenSSLTransformEcdsaSha1GetKlass:
- *
- * The ECDSA-SHA1 signature transform klass.
- *
- * Returns: ECDSA-SHA1 signature transform klass.
+ * @brief The ECDSA-SHA1 signature transform klass.
+ * @return ECDSA-SHA1 signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformEcdsaSha1GetKlass(void) {
@@ -985,20 +979,17 @@ xmlSecOpenSSLTransformEcdsaSha1GetKlass(void) {
 #endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_SHA224
-/****************************************************************************
+/******************************************************************************
  *
  * ECDSA-SHA2-224 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 
 XMLSEC_OPENSSL_EVP_SIGNATURE_LEGACY_KLASS(EcdsaSha224)
 
 /**
- * xmlSecOpenSSLTransformEcdsaSha224GetKlass:
- *
- * The ECDSA-SHA2-224 signature transform klass.
- *
- * Returns: ECDSA-SHA2-224 signature transform klass.
+ * @brief The ECDSA-SHA2-224 signature transform klass.
+ * @return ECDSA-SHA2-224 signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformEcdsaSha224GetKlass(void) {
@@ -1008,20 +999,17 @@ xmlSecOpenSSLTransformEcdsaSha224GetKlass(void) {
 #endif /* XMLSEC_NO_SHA224 */
 
 #ifndef XMLSEC_NO_SHA256
-/****************************************************************************
+/******************************************************************************
  *
  * ECDSA-SHA2-256 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 
 XMLSEC_OPENSSL_EVP_SIGNATURE_LEGACY_KLASS(EcdsaSha256)
 
 /**
- * xmlSecOpenSSLTransformEcdsaSha256GetKlass:
- *
- * The ECDSA-SHA2-256 signature transform klass.
- *
- * Returns: ECDSA-SHA2-256 signature transform klass.
+ * @brief The ECDSA-SHA2-256 signature transform klass.
+ * @return ECDSA-SHA2-256 signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformEcdsaSha256GetKlass(void) {
@@ -1031,20 +1019,17 @@ xmlSecOpenSSLTransformEcdsaSha256GetKlass(void) {
 #endif /* XMLSEC_NO_SHA256 */
 
 #ifndef XMLSEC_NO_SHA384
-/****************************************************************************
+/******************************************************************************
  *
  * ECDSA-SHA2-384 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 
 XMLSEC_OPENSSL_EVP_SIGNATURE_LEGACY_KLASS(EcdsaSha384)
 
 /**
- * xmlSecOpenSSLTransformEcdsaSha384GetKlass:
- *
- * The ECDSA-SHA2-384 signature transform klass.
- *
- * Returns: ECDSA-SHA2-384 signature transform klass.
+ * @brief The ECDSA-SHA2-384 signature transform klass.
+ * @return ECDSA-SHA2-384 signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformEcdsaSha384GetKlass(void) {
@@ -1054,20 +1039,17 @@ xmlSecOpenSSLTransformEcdsaSha384GetKlass(void) {
 #endif /* XMLSEC_NO_SHA384 */
 
 #ifndef XMLSEC_NO_SHA512
-/****************************************************************************
+/******************************************************************************
  *
  * ECDSA-SHA2-512 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 
 XMLSEC_OPENSSL_EVP_SIGNATURE_LEGACY_KLASS(EcdsaSha512)
 
 /**
- * xmlSecOpenSSLTransformEcdsaSha512GetKlass:
- *
- * The ECDSA-SHA2-512 signature transform klass.
- *
- * Returns: ECDSA-SHA2-512 signature transform klass.
+ * @brief The ECDSA-SHA2-512 signature transform klass.
+ * @return ECDSA-SHA2-512 signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformEcdsaSha512GetKlass(void) {
@@ -1078,20 +1060,17 @@ xmlSecOpenSSLTransformEcdsaSha512GetKlass(void) {
 
 
 #ifndef XMLSEC_NO_SHA3
-/****************************************************************************
+/******************************************************************************
  *
  * ECDSA-SHA3-224 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 
 XMLSEC_OPENSSL_EVP_SIGNATURE_LEGACY_KLASS(EcdsaSha3_224)
 
 /**
- * xmlSecOpenSSLTransformEcdsaSha3_224GetKlass:
- *
- * The ECDSA-SHA3-224 signature transform klass.
- *
- * Returns: ECDSA-SHA3-224 signature transform klass.
+ * @brief The ECDSA-SHA3-224 signature transform klass.
+ * @return ECDSA-SHA3-224 signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformEcdsaSha3_224GetKlass(void) {
@@ -1101,11 +1080,8 @@ xmlSecOpenSSLTransformEcdsaSha3_224GetKlass(void) {
 XMLSEC_OPENSSL_EVP_SIGNATURE_LEGACY_KLASS(EcdsaSha3_256)
 
 /**
- * xmlSecOpenSSLTransformEcdsaSha3_256GetKlass:
- *
- * The ECDSA-SHA3-256 signature transform klass.
- *
- * Returns: ECDSA-SHA3-256 signature transform klass.
+ * @brief The ECDSA-SHA3-256 signature transform klass.
+ * @return ECDSA-SHA3-256 signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformEcdsaSha3_256GetKlass(void) {
@@ -1115,11 +1091,8 @@ xmlSecOpenSSLTransformEcdsaSha3_256GetKlass(void) {
 XMLSEC_OPENSSL_EVP_SIGNATURE_LEGACY_KLASS(EcdsaSha3_384)
 
 /**
- * xmlSecOpenSSLTransformEcdsaSha3_384GetKlass:
- *
- * The ECDSA-SHA3-384 signature transform klass.
- *
- * Returns: ECDSA-SHA3-384 signature transform klass.
+ * @brief The ECDSA-SHA3-384 signature transform klass.
+ * @return ECDSA-SHA3-384 signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformEcdsaSha3_384GetKlass(void) {
@@ -1129,11 +1102,8 @@ xmlSecOpenSSLTransformEcdsaSha3_384GetKlass(void) {
 XMLSEC_OPENSSL_EVP_SIGNATURE_LEGACY_KLASS(EcdsaSha3_512)
 
 /**
- * xmlSecOpenSSLTransformEcdsaSha3_512GetKlass:
- *
- * The ECDSA-SHA3-512 signature transform klass.
- *
- * Returns: ECDSA-SHA3-512 signature transform klass.
+ * @brief The ECDSA-SHA3-512 signature transform klass.
+ * @return ECDSA-SHA3-512 signature transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformEcdsaSha3_512GetKlass(void) {

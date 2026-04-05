@@ -9,9 +9,8 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:crypto
+ * @addtogroup xmlsec_openssl_crypto
  */
-
 #include "globals.h"
 
 #ifndef XMLSEC_NO_RSA
@@ -47,11 +46,11 @@
 
 #ifndef XMLSEC_NO_RSA_PKCS15
 
-/**************************************************************************
+/******************************************************************************
  *
  * Internal OpenSSL RSA PKCS1 CTX
  *
- *************************************************************************/
+  *****************************************************************************/
 typedef struct _xmlSecOpenSSLRsaPkcs1Ctx        xmlSecOpenSSLRsaPkcs1Ctx,
                                                 *xmlSecOpenSSLRsaPkcs1CtxPtr;
 struct _xmlSecOpenSSLRsaPkcs1Ctx {
@@ -63,11 +62,11 @@ struct _xmlSecOpenSSLRsaPkcs1Ctx {
     xmlSecSize          keySize;
 };
 
-/*********************************************************************
+/******************************************************************************
  *
  * RSA PKCS1 key transport transform
  *
- ********************************************************************/
+  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(OpenSSLRsaPkcs1, xmlSecOpenSSLRsaPkcs1Ctx)
 #define xmlSecOpenSSLRsaPkcs1Size XMLSEC_TRANSFORM_SIZE(OpenSSLRsaPkcs1)
 
@@ -110,11 +109,8 @@ static xmlSecTransformKlass xmlSecOpenSSLRsaPkcs1Klass = {
 };
 
 /**
- * xmlSecOpenSSLTransformRsaPkcs1GetKlass:
- *
- * The RSA-PKCS1 key transport transform klass.
- *
- * Returns: RSA-PKCS1 key transport transform klass.
+ * @brief The RSA-PKCS1 key transport transform klass.
+ * @return RSA-PKCS1 key transport transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformRsaPkcs1GetKlass(void) {
@@ -514,11 +510,11 @@ xmlSecOpenSSLRsaPkcs1Process(xmlSecTransformPtr transform) {
 #endif /* XMLSEC_NO_RSA_PKCS15 */
 
 #ifndef XMLSEC_NO_RSA_OAEP
-/**************************************************************************
+/******************************************************************************
  *
  * Internal OpenSSL RSA OAEP CTX
  *
- *************************************************************************/
+  *****************************************************************************/
 typedef struct _xmlSecOpenSSLRsaOaepCtx         xmlSecOpenSSLRsaOaepCtx,
                                                 *xmlSecOpenSSLRsaOaepCtxPtr;
 struct _xmlSecOpenSSLRsaOaepCtx {
@@ -536,11 +532,11 @@ struct _xmlSecOpenSSLRsaOaepCtx {
     xmlSecBuffer        oaepParams;
 };
 
-/*********************************************************************
+/******************************************************************************
  *
  * RSA OAEP key transport transform (both XMLEnc 1.0 and XMLEnc 1.1)
  *
- ********************************************************************/
+  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(OpenSSLRsaOaep, xmlSecOpenSSLRsaOaepCtx)
 #define xmlSecOpenSSLRsaOaepSize XMLSEC_TRANSFORM_SIZE(OpenSSLRsaOaep)
 
@@ -588,11 +584,9 @@ static xmlSecTransformKlass xmlSecOpenSSLRsaOaepKlass = {
 };
 
 /**
- * xmlSecOpenSSLTransformRsaOaepGetKlass:
- *
- * The RSA-OAEP key transport transform klass (XMLEnc 1.0).
- *
- * Returns: RSA-OAEP key transport transform klass.
+ * @brief RSA-OAEP key transport klass (XMLEnc 1.0).
+ * @details The RSA-OAEP key transport transform klass (XMLEnc 1.0).
+ * @return RSA-OAEP key transport transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformRsaOaepGetKlass(void) {
@@ -627,11 +621,9 @@ static xmlSecTransformKlass xmlSecOpenSSLRsaOaepEnc11Klass = {
 };
 
 /**
- * xmlSecOpenSSLTransformRsaOaepEnc11GetKlass:
- *
- * The RSA-OAEP key transport transform klass (XMLEnc 1.1).
- *
- * Returns: RSA-OAEP key transport transform klass.
+ * @brief RSA-OAEP key transport klass (XMLEnc 1.1).
+ * @details The RSA-OAEP key transport transform klass (XMLEnc 1.1).
+ * @return RSA-OAEP key transport transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformRsaOaepEnc11GetKlass(void) {

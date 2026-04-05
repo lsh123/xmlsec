@@ -8,12 +8,9 @@
  * Copyright (C) 2018 Miklos Vajna. All Rights Reserved.
  */
 /**
- * SECTION:certkeys
- * @Short_description: DH key support functions for Microsoft Cryptography API: Next Generation (CNG).
- * @Stability: Stable
- *
+ * @addtogroup xmlsec_mscng_certkeys
+ * @brief DH key support functions for Microsoft Cryptography API: Next Generation (CNG).
  */
-
 #include "globals.h"
 
 #include <string.h>
@@ -322,15 +319,15 @@ xmlSecMSCngKeyDataDhRead(xmlSecKeyDataId id, xmlSecKeyValueDhPtr dhValue) {
     dhkey->dwMagic = BCRYPT_DH_PUBLIC_MAGIC;
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(pSize, dhkey->cbKey, goto done, NULL);
 
-    /*** P ***/
+    /****************************************************************************** P  *****************************************************************************/
     memcpy(blobData + offset, xmlSecBufferGetData(&(dhValue->p)), pSize);
     offset += pSize;
 
-    /*** G (right-justified with leading zeros for small generators like g=2) ***/
+    /****************************************************************************** G (right-justified with leading zeros for small generators like g=2)  *****************************************************************************/
     memcpy(blobData + offset + (pSize - gSize), xmlSecBufferGetData(&(dhValue->generator)), gSize);
     offset += pSize;
 
-    /*** Public (right-justified) ***/
+    /****************************************************************************** Public (right-justified)  *****************************************************************************/
     memcpy(blobData + offset + (pSize - publicSize), xmlSecBufferGetData(&(dhValue->public)), publicSize);
     offset += pSize;
 
@@ -489,14 +486,13 @@ done:
 }
 
 /**
- * xmlSecMSCngKeyDataDhReadFromPkcs8Der:
- * @derData: DER-encoded PKCS8 PrivateKeyInfo for an X9.42 DH key.
- * @derDataLen: length of @derData.
+ * @brief Loads an X9.42 DH private key (and derives public key) from a PKCS8 DER blob.
+ * @param derData DER-encoded PKCS8 PrivateKeyInfo for an X9.42 DH key.
+ * @param derDataLen length of @p derData.
  *
- * Loads an X9.42 DH private key (and derives public key) from a PKCS8 DER blob.
  * Windows CNG does not support PKCS12 loading of X9.42 DH keys, so DER is used.
  *
- * Returns: new key data or NULL on failure.
+ * @return new key data or NULL on failure.
  */
 xmlSecKeyDataPtr
 xmlSecMSCngKeyDataDhReadFromPkcs8Der(const xmlSecByte* derData, DWORD derDataLen) {

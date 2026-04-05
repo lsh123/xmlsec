@@ -22,7 +22,7 @@
 #include <xmlsec/transforms.h>
 
 
-/**************************** Common Key Agreement params ********************************/
+/****************************************************************************** Common Key Agreement params  *****************************************************************************/
 struct _xmlSecTransformKeyAgreementParams {
     xmlSecTransformPtr  kdfTransform;
     xmlSecKeyInfoCtx    kdfKeyInfoCtx;
@@ -46,7 +46,7 @@ XMLSEC_EXPORT int   xmlSecTransformKeyAgreementParamsWrite         (xmlSecTransf
                                                                     xmlSecTransformCtxPtr transformCtx);
 
 
-/**************************** ConcatKDF ********************************/
+/****************************************************************************** ConcatKDF  *****************************************************************************/
 #ifndef XMLSEC_NO_CONCATKDF
 
 struct _xmlSecTransformConcatKdfParams {
@@ -69,7 +69,7 @@ XMLSEC_EXPORT int   xmlSecTransformConcatKdfParamsGetFixedInfo  (xmlSecTransform
 #endif /* XMLSEC_NO_CONCATKDF */
 
 
-/********************************** HMAC *******************************/
+/****************************************************************************** HMAC  *****************************************************************************/
 #ifndef XMLSEC_NO_HMAC
 
 /* max HMAC output size in bytes */
@@ -92,7 +92,7 @@ XMLSEC_EXPORT int xmlSecTransformHmacVerify             (const xmlSecByte* data,
 
 #endif /* XMLSEC_NO_HMAC */
 
-/********************************** ML-DSA *******************************/
+/****************************************************************************** ML-DSA  *****************************************************************************/
 #ifndef XMLSEC_NO_MLDSA
 
 #define XMLSEC_MLDSA_MAX_SIZE   ((xmlSecSize)255)
@@ -102,7 +102,7 @@ XMLSEC_EXPORT int xmlSecTransformMLDSAReadContextString(xmlNodePtr node,
 #endif /* XMLSEC_NO_MLDSA */
 
 
-/********************************** SLH-DSA *******************************/
+/****************************************************************************** SLH-DSA  *****************************************************************************/
 #ifndef XMLSEC_NO_SLHDSA
 
 #define XMLSEC_SLHDSA_MAX_SIZE  ((xmlSecSize)255)
@@ -112,7 +112,7 @@ XMLSEC_EXPORT int xmlSecTransformSLHDSAReadContextString(xmlNodePtr node,
 #endif /* XMLSEC_NO_SLHDSA */
 
 
-/********************************** EdDSA *******************************/
+/****************************************************************************** EdDSA  *****************************************************************************/
 #ifndef XMLSEC_NO_EDDSA
 
 #define XMLSEC_EDDSA_MAX_SIZE   ((xmlSecSize)255)
@@ -122,7 +122,7 @@ XMLSEC_EXPORT int xmlSecTransformEdDSAReadContextString(xmlNodePtr node,
 #endif /* XMLSEC_NO_EDDSA */
 
 
-/**************************** PBKDF2 ********************************/
+/****************************************************************************** PBKDF2  *****************************************************************************/
 #ifndef XMLSEC_NO_PBKDF2
 
 struct _xmlSecTransformPbkdf2Params {
@@ -141,7 +141,7 @@ XMLSEC_EXPORT int   xmlSecTransformPbkdf2ParamsRead          (xmlSecTransformPbk
 #endif /* XMLSEC_NO_PBKDF2 */
 
 
-/********************************** HKDF *******************************/
+/****************************************************************************** HKDF  *****************************************************************************/
 #ifndef XMLSEC_NO_HKDF
 
 struct _xmlSecTransformHkdfParams {
@@ -160,7 +160,7 @@ XMLSEC_EXPORT int   xmlSecTransformHkdfParamsRead       (xmlSecTransformHkdfPara
 #endif /* XMLSEC_NO_HKDF */
 
 
-/********************************** ChaCha20 *******************************/
+/****************************************************************************** ChaCha20  *****************************************************************************/
 #ifndef XMLSEC_NO_CHACHA20
 
 #define XMLSEC_CHACHA20_NONCE_SIZE          ((xmlSecSize)12)
@@ -193,7 +193,7 @@ XMLSEC_EXPORT int   xmlSecTransformChaCha20Poly1305ParamsWrite      (xmlNodePtr 
 #endif /* XMLSEC_NO_CHACHA20 */
 
 
-/********************************** RSA *******************************/
+/****************************************************************************** RSA  *****************************************************************************/
 #ifndef XMLSEC_NO_RSA
 
 /* All OAEP params in one place */

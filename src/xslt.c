@@ -11,9 +11,8 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:transforms
+ * @addtogroup xmlsec_core_transforms
  */
-
 #include "globals.h"
 
 #ifndef XMLSEC_NO_XSLT
@@ -38,24 +37,24 @@
 
 #include "cast_helpers.h"
 
-/**************************************************************************
+/******************************************************************************
  *
  * Internal xslt ctx
  *
- *****************************************************************************/
+  *****************************************************************************/
 typedef struct _xmlSecXsltCtx                   xmlSecXsltCtx, *xmlSecXsltCtxPtr;
 struct _xmlSecXsltCtx {
     xsltStylesheetPtr   xslt;
     xmlParserCtxtPtr    parserCtx;
 };
 
-/****************************************************************************
+/******************************************************************************
  *
  * XSLT transform
  *
  * xmlSecTransform + xmlSecXsltCtx
  *
- ***************************************************************************/
+  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(Xslt, xmlSecXsltCtx)
 #define xmlSecXsltSize XMLSEC_TRANSFORM_SIZE(Xslt)
 
@@ -131,11 +130,10 @@ void xmlSecTransformXsltShutdown(void) {
 }
 
 /**
- * xmlSecTransformXsltSetDefaultSecurityPrefs:
- * @sec: the new security preferences
- *
- * Sets the new default security preferences. The xmlsec default security policy is
+ * @brief Sets the default XSLT security preferences.
+ * @details Sets the new default security preferences. The xmlsec default security policy is
  * to disable everything.
+ * @param sec the new security preferences
  */
 void
 xmlSecTransformXsltSetDefaultSecurityPrefs(xsltSecurityPrefsPtr sec) {
@@ -151,9 +149,8 @@ xmlSecTransformXsltSetDefaultSecurityPrefs(xsltSecurityPrefsPtr sec) {
 }
 
 /**
- * xmlSecTransformXsltGetKlass:
- *
- * XSLT transform klass (http://www.w3.org/TR/xmldsig-core/#sec-XSLT):
+ * @brief Gets the XSLT transform klass.
+ * @details XSLT transform klass (http://www.w3.org/TR/xmldsig-core/#sec-XSLT):
  *
  * The normative specification for XSL Transformations is [XSLT].
  * Specification of a namespace-qualified stylesheet element, which MUST be
@@ -179,8 +176,7 @@ xmlSecTransformXsltSetDefaultSecurityPrefs(xsltSecurityPrefsPtr sec) {
  * to ensure interoperability of the resulting signatures among applications
  * that support the XSLT transform. Note that if the output is actually HTML,
  * then the result of these steps is logically equivalent [XHTML].
- *
- * Returns: pointer to XSLT transform klass.
+ * @return pointer to XSLT transform klass.
  */
 xmlSecTransformId
 xmlSecTransformXsltGetKlass(void) {

@@ -8,9 +8,8 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:crypto
+ * @addtogroup xmlsec_gcrypt_crypto
  */
-
 #include "globals.h"
 
 #include <stdlib.h>
@@ -28,11 +27,11 @@
 #include "../keysdata_helpers.h"
 
 
-/*****************************************************************************
+/******************************************************************************
  *
  * Symmetic (binary) keys - just a wrapper for xmlSecKeyDataBinary
  *
- ****************************************************************************/
+  *****************************************************************************/
 static int      xmlSecGCryptSymKeyDataInitialize        (xmlSecKeyDataPtr data);
 static int      xmlSecGCryptSymKeyDataDuplicate         (xmlSecKeyDataPtr dst,
                                                          xmlSecKeyDataPtr src);
@@ -198,11 +197,11 @@ xmlSecGCryptSymKeyDataKlassCheck(xmlSecKeyDataKlass* klass) {
 }
 
 #ifndef XMLSEC_NO_AES
-/**************************************************************************
+/******************************************************************************
  *
  * <xmlsec:AESKeyValue> processing
  *
- *************************************************************************/
+  *****************************************************************************/
 static xmlSecKeyDataKlass xmlSecGCryptKeyDataAesKlass = {
     sizeof(xmlSecKeyDataKlass),
     xmlSecKeyDataBinarySize,
@@ -242,11 +241,8 @@ static xmlSecKeyDataKlass xmlSecGCryptKeyDataAesKlass = {
 };
 
 /**
- * xmlSecGCryptKeyDataAesGetKlass:
- *
- * The AES key data klass.
- *
- * Returns: AES key data klass.
+ * @brief The AES key data klass.
+ * @return AES key data klass.
  */
 xmlSecKeyDataId
 xmlSecGCryptKeyDataAesGetKlass(void) {
@@ -254,14 +250,11 @@ xmlSecGCryptKeyDataAesGetKlass(void) {
 }
 
 /**
- * xmlSecGCryptKeyDataAesSet:
- * @data:               the pointer to AES key data.
- * @buf:                the pointer to key value.
- * @bufSize:            the key value size (in bytes).
- *
- * Sets the value of AES key data.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Sets the value of AES key data.
+ * @param data the pointer to AES key data.
+ * @param buf the pointer to key value.
+ * @param bufSize the key value size (in bytes).
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecGCryptKeyDataAesSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSize bufSize) {
@@ -279,11 +272,11 @@ xmlSecGCryptKeyDataAesSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSi
 #endif /* XMLSEC_NO_AES */
 
 #ifndef XMLSEC_NO_DES
-/**************************************************************************
+/******************************************************************************
  *
  * <xmlsec:DESKeyValue> processing
  *
- *************************************************************************/
+  *****************************************************************************/
 static xmlSecKeyDataKlass xmlSecGCryptKeyDataDesKlass = {
     sizeof(xmlSecKeyDataKlass),
     xmlSecKeyDataBinarySize,
@@ -323,11 +316,8 @@ static xmlSecKeyDataKlass xmlSecGCryptKeyDataDesKlass = {
 };
 
 /**
- * xmlSecGCryptKeyDataDesGetKlass:
- *
- * The DES key data klass.
- *
- * Returns: DES key data klass.
+ * @brief The DES key data klass.
+ * @return DES key data klass.
  */
 xmlSecKeyDataId
 xmlSecGCryptKeyDataDesGetKlass(void) {
@@ -335,14 +325,11 @@ xmlSecGCryptKeyDataDesGetKlass(void) {
 }
 
 /**
- * xmlSecGCryptKeyDataDesSet:
- * @data:               the pointer to DES key data.
- * @buf:                the pointer to key value.
- * @bufSize:            the key value size (in bytes).
- *
- * Sets the value of DES key data.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Sets the value of DES key data.
+ * @param data the pointer to DES key data.
+ * @param buf the pointer to key value.
+ * @param bufSize the key value size (in bytes).
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecGCryptKeyDataDesSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSize bufSize) {
@@ -361,11 +348,11 @@ xmlSecGCryptKeyDataDesSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSi
 #endif /* XMLSEC_NO_DES */
 
 #ifndef XMLSEC_NO_HMAC
-/**************************************************************************
+/******************************************************************************
  *
  * <xmlsec:HMACKeyValue> processing
  *
- *************************************************************************/
+  *****************************************************************************/
 static xmlSecKeyDataKlass xmlSecGCryptKeyDataHmacKlass = {
     sizeof(xmlSecKeyDataKlass),
     xmlSecKeyDataBinarySize,
@@ -405,11 +392,8 @@ static xmlSecKeyDataKlass xmlSecGCryptKeyDataHmacKlass = {
 };
 
 /**
- * xmlSecGCryptKeyDataHmacGetKlass:
- *
- * The HMAC key data klass.
- *
- * Returns: HMAC key data klass.
+ * @brief The HMAC key data klass.
+ * @return HMAC key data klass.
  */
 xmlSecKeyDataId
 xmlSecGCryptKeyDataHmacGetKlass(void) {
@@ -417,14 +401,11 @@ xmlSecGCryptKeyDataHmacGetKlass(void) {
 }
 
 /**
- * xmlSecGCryptKeyDataHmacSet:
- * @data:               the pointer to HMAC key data.
- * @buf:                the pointer to key value.
- * @bufSize:            the key value size (in bytes).
- *
- * Sets the value of HMAC key data.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Sets the value of HMAC key data.
+ * @param data the pointer to HMAC key data.
+ * @param buf the pointer to key value.
+ * @param bufSize the key value size (in bytes).
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecGCryptKeyDataHmacSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSize bufSize) {

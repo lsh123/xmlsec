@@ -9,9 +9,8 @@
  * Copyright (C) 2018 Miklos Vajna. All Rights Reserved.
  */
 /**
- * SECTION:crypto
+ * @addtogroup xmlsec_mscng_crypto
  */
-
 #ifndef XMLSEC_NO_HMAC
 #include "globals.h"
 
@@ -72,7 +71,7 @@ static xmlSecTransformKlass xmlSecMSCng ## name ## Klass = {                    
     NULL,                                       /* void* reserved1; */                              \
 };
 
-/* 80 is a minimum value from: https://www.w3.org/TR/xmldsig-core1/#sec-SignatureMethod */
+/* 80 is a minimum value from: https://www.w3.org/TR/xmldsig-core1e/#sec-SignatureMethod */
 #define XMLSEC_MSCNG_HMAC_MIN_LENGTH                     80
 
 static int
@@ -433,15 +432,12 @@ xmlSecMSCngHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
  *
  * HMAC MD5
  *
- ******************************************************************************/
+  *****************************************************************************/
 XMLSEC_MSCNG_HMAC_KLASS_EX(HmacMd5, xmlSecMSCngHmacNodeRead)
 
 /**
- * xmlSecMSCngTransformHmacMd5GetKlass:
- *
- * The HMAC-MD5 transform klass.
- *
- * Returns: the HMAC-MD5 transform klass.
+ * @brief The HMAC-MD5 transform klass.
+ * @return the HMAC-MD5 transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformHmacMd5GetKlass(void) {
@@ -455,15 +451,12 @@ xmlSecMSCngTransformHmacMd5GetKlass(void) {
  *
  * HMAC SHA1
  *
- ******************************************************************************/
+  *****************************************************************************/
 XMLSEC_MSCNG_HMAC_KLASS_EX(HmacSha1, xmlSecMSCngHmacNodeRead)
 
 /**
- * xmlSecMSCngTransformHmacSha1GetKlass:
- *
- * The HMAC-SHA1 transform klass.
- *
- * Returns: the HMAC-SHA1 transform klass.
+ * @brief The HMAC-SHA1 transform klass.
+ * @return the HMAC-SHA1 transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformHmacSha1GetKlass(void) {
@@ -477,15 +470,12 @@ xmlSecMSCngTransformHmacSha1GetKlass(void) {
  *
  * HMAC SHA256
  *
- ******************************************************************************/
+  *****************************************************************************/
 XMLSEC_MSCNG_HMAC_KLASS_EX(HmacSha256, xmlSecMSCngHmacNodeRead)
 
 /**
- * xmlSecMSCngTransformHmacSha256GetKlass:
- *
- * The HMAC-SHA256 transform klass.
- *
- * Returns: the HMAC-SHA256 transform klass.
+ * @brief The HMAC-SHA256 transform klass.
+ * @return the HMAC-SHA256 transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformHmacSha256GetKlass(void) {
@@ -499,15 +489,12 @@ xmlSecMSCngTransformHmacSha256GetKlass(void) {
  *
  * HMAC SHA384
  *
- ******************************************************************************/
+  *****************************************************************************/
 XMLSEC_MSCNG_HMAC_KLASS_EX(HmacSha384, xmlSecMSCngHmacNodeRead)
 
 /**
- * xmlSecMSCngTransformHmacSha384GetKlass:
- *
- * The HMAC-SHA384 transform klass.
- *
- * Returns: the HMAC-SHA384 transform klass.
+ * @brief The HMAC-SHA384 transform klass.
+ * @return the HMAC-SHA384 transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformHmacSha384GetKlass(void) {
@@ -521,15 +508,12 @@ xmlSecMSCngTransformHmacSha384GetKlass(void) {
  *
  * HMAC SHA512
  *
- ******************************************************************************/
+  *****************************************************************************/
 XMLSEC_MSCNG_HMAC_KLASS_EX(HmacSha512, xmlSecMSCngHmacNodeRead)
 
 /**
- * xmlSecMSCngTransformHmacSha512GetKlass:
- *
- * The HMAC-SHA512 transform klass.
- *
- * Returns: the HMAC-SHA512 transform klass.
+ * @brief The HMAC-SHA512 transform klass.
+ * @return the HMAC-SHA512 transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformHmacSha512GetKlass(void) {

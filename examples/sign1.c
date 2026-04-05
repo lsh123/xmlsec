@@ -15,7 +15,7 @@
  * This is free software; see the Copyright file in the source
  * distribution for precise wording.
  *
- * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2024 Aleksey Sanin <aleksey#aleksey.com>. All Rights Reserved.
  */
 #include <stdlib.h>
 #include <string.h>
@@ -129,13 +129,11 @@ main(int argc, char **argv) {
 }
 
 /**
- * sign_file:
- * @tmpl_file:          the signature template file name.
- * @key_file:           the PEM private key file name.
- *
- * Signs the #tmpl_file using private key from #key_file.
- *
- * Returns 0 on success or a negative value if an error occurs.
+ * @brief Signs an XML template file using a private key.
+ * @details Signs the #tmpl_file using private key from #key_file.
+ * @param tmpl_file the signature template file name.
+ * @param key_file the PEM private key file name.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 sign_file(const char* tmpl_file, const char* key_file) {

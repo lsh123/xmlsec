@@ -9,7 +9,7 @@
  * Copyright (C) 2018 Miklos Vajna. All Rights Reserved.
  */
 /**
- * SECTION:crypto
+ * @addtogroup xmlsec_mscng_crypto
  */
 #include "globals.h"
 
@@ -30,11 +30,11 @@
 #include "../kw_helpers.h"
 #include "../cast_helpers.h"
 
- /*********************************************************************
+ /******************************************************************************
   *
   * AES KW implementation
   *
-  *********************************************************************/
+   *****************************************************************************/
 static int        xmlSecMSCngKWAesBlockEncrypt              (xmlSecTransformPtr transform,
                                                             const xmlSecByte* in,
                                                             xmlSecSize inSize,
@@ -48,11 +48,11 @@ static int        xmlSecMSCngKWAesBlockDecrypt              (xmlSecTransformPtr 
                                                             xmlSecSize outSize,
                                                             xmlSecSize* outWritten);
 
-/**************************************************************************
+/******************************************************************************
  *
  * Internal MSCng KW AES cipher CTX
  *
- *****************************************************************************/
+  *****************************************************************************/
 typedef struct _xmlSecMSCngKWAesCtx xmlSecMSCngKWAesCtx, *xmlSecMSCngKWAesCtxPtr;
 struct _xmlSecMSCngKWAesCtx {
     xmlSecTransformKWRfc3394Ctx parentCtx;
@@ -64,7 +64,7 @@ struct _xmlSecMSCngKWAesCtx {
  *
  *  KW AES transforms
  *
- *****************************************************************************/
+  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(MSCngKWAes, xmlSecMSCngKWAesCtx)
 #define xmlSecMSCngKWAesSize XMLSEC_TRANSFORM_SIZE(MSCngKWAes)
 
@@ -254,11 +254,8 @@ xmlSecMSCngKWAesExecute(xmlSecTransformPtr transform, int last,
 XMLSEC_MSCNG_KW_AES_KLASS_EX(KWAes128)
 
 /**
- * xmlSecMSCngTransformKWAes128GetKlass:
- *
- * The AES-128 key wrapper transform klass.
- *
- * Returns: AES-128 key wrapper transform klass.
+ * @brief The AES-128 key wrapper transform klass.
+ * @return AES-128 key wrapper transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformKWAes128GetKlass(void) {
@@ -271,11 +268,8 @@ xmlSecMSCngTransformKWAes128GetKlass(void) {
 XMLSEC_MSCNG_KW_AES_KLASS_EX(KWAes192)
 
 /**
- * xmlSecMSCngTransformKWAes192GetKlass:
- *
- * The AES-192 key wrapper transform klass.
- *
- * Returns: AES-192 key wrapper transform klass.
+ * @brief The AES-192 key wrapper transform klass.
+ * @return AES-192 key wrapper transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformKWAes192GetKlass(void) {
@@ -288,11 +282,8 @@ xmlSecMSCngTransformKWAes192GetKlass(void) {
 XMLSEC_MSCNG_KW_AES_KLASS_EX(KWAes256)
 
 /**
- * xmlSecMSCngTransformKWAes256GetKlass:
- *
- * The AES-256 key wrapper transform klass.
- *
- * Returns: AES-256 key wrapper transform klass.
+ * @brief The AES-256 key wrapper transform klass.
+ * @return AES-256 key wrapper transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformKWAes256GetKlass(void) {
@@ -300,11 +291,11 @@ xmlSecMSCngTransformKWAes256GetKlass(void) {
 }
 
 
-/*********************************************************************
+/******************************************************************************
  *
  * AES KW implementation
  *
- ********************************************************************/
+  *****************************************************************************/
 static int
 xmlSecMSCngKWAesBlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte* in, xmlSecSize inSize,
                              xmlSecByte* out, xmlSecSize outSize,

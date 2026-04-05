@@ -9,9 +9,7 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:crypto
- * @Short_description:
- * @Stability: Stable
+ * @addtogroup xmlsec_mscng_crypto
  */
 #ifndef XMLSEC_NO_CONCATKDF
 
@@ -40,11 +38,11 @@
 #define KDF_GENERIC_PARAMETER 0x11
 #endif /* !defined(KDF_GENERIC_PARAMETER) */
 
-/**************************************************************************
+/******************************************************************************
  *
  * CONCATKDF2 transform
  *
- *****************************************************************************/
+  *****************************************************************************/
 #define XMLSEC_MSCNG_KDF_DEFAULT_BUF_SIZE 64
 
 typedef struct _xmlSecMSCngConcatKdfCtx    xmlSecMSCngConcatKdfCtx, *xmlSecMSCngConcatKdfCtxPtr;
@@ -503,11 +501,11 @@ xmlSecMSCngConcatKdfExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
     return(0);
 }
 
-/********************************************************************
+/******************************************************************************
  *
  * CONCATKDF2 key derivation algorithm
  *
- ********************************************************************/
+  *****************************************************************************/
 static xmlSecTransformKlass xmlSecMSCngConcatKdfKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),                   /* xmlSecSize klassSize */
@@ -537,11 +535,8 @@ static xmlSecTransformKlass xmlSecMSCngConcatKdfKlass = {
 };
 
 /**
- * xmlSecMSCngTransformConcatKdfGetKlass:
- *
- * The CONCATKDF2 key derivation  transform klass.
- *
- * Returns: the CONCATKDF2 key derivation transform klass.
+ * @brief The CONCATKDF2 key derivation transform klass.
+ * @return the CONCATKDF2 key derivation transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformConcatKdfGetKlass(void) {

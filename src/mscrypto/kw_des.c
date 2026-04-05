@@ -9,9 +9,8 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:crypto
+ * @addtogroup xmlsec_mscrypto_crypto
  */
-
 #ifndef XMLSEC_NO_DES
 #include "globals.h"
 
@@ -32,11 +31,11 @@
 #include "../kw_helpers.h"
 #include "../cast_helpers.h"
 
-/*********************************************************************
+/******************************************************************************
  *
  * DES KW implementation
  *
- *********************************************************************/
+  *****************************************************************************/
 static int       xmlSecMSCryptoKWDes3GenerateRandom              (xmlSecTransformPtr transform,
                                                                  xmlSecByte * out,
                                                                  xmlSecSize outSize,
@@ -76,11 +75,11 @@ static xmlSecKWDes3Klass xmlSecMSCryptoKWDes3ImplKlass = {
     NULL,                                   /* void*                               reserved1; */
 };
 
-/*********************************************************************
+/******************************************************************************
  *
  * Triple DES Key Wrap transform context
  *
- ********************************************************************/
+  *****************************************************************************/
 typedef struct _xmlSecMSCryptoKWDes3Ctx              xmlSecMSCryptoKWDes3Ctx,
                                                   *xmlSecMSCryptoKWDes3CtxPtr;
 struct _xmlSecMSCryptoKWDes3Ctx {
@@ -96,11 +95,11 @@ struct _xmlSecMSCryptoKWDes3Ctx {
     HCRYPTKEY                           pubPrivKey;
 };
 
-/*********************************************************************
+/******************************************************************************
  *
  * Triple DES Key Wrap transform
  *
- ********************************************************************/
+  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(MSCryptoKWDes3, xmlSecMSCryptoKWDes3Ctx)
 #define xmlSecMSCryptoKWDes3Size XMLSEC_TRANSFORM_SIZE(MSCryptoKWDes3)
 
@@ -141,11 +140,8 @@ static xmlSecTransformKlass xmlSecMSCryptoKWDes3Klass = {
 };
 
 /**
- * xmlSecMSCryptoTransformKWDes3GetKlass:
- *
- * The Triple DES key wrapper transform klass.
- *
- * Returns: Triple DES key wrapper transform klass.
+ * @brief The Triple DES key wrapper transform klass.
+ * @return Triple DES key wrapper transform klass.
  */
 xmlSecTransformId
 xmlSecMSCryptoTransformKWDes3GetKlass(void) {
@@ -307,11 +303,11 @@ xmlSecMSCryptoKWDes3Execute(xmlSecTransformPtr transform, int last,
     return(0);
 }
 
-/*********************************************************************
+/******************************************************************************
  *
  * DES KW implementation
  *
- *********************************************************************/
+  *****************************************************************************/
 static int
 xmlSecMSCryptoKWDes3Sha1(xmlSecTransformPtr transform,
                        const xmlSecByte * in, xmlSecSize inSize,

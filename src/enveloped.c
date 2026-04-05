@@ -8,10 +8,7 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:transforms
- * @Short_description:
- * @Stability: Stable
- *
+ * @addtogroup xmlsec_core_transforms
  */
 #include "globals.h"
 
@@ -28,11 +25,11 @@
 #include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
 
-/**************************************************************************
+/******************************************************************************
  *
  *  Enveloped transform
  *
- *************************************************************************/
+  *****************************************************************************/
 static int      xmlSecTransformEnvelopedExecute         (xmlSecTransformPtr transform,
                                                          int last,
                                                          xmlSecTransformCtxPtr transformCtx);
@@ -66,9 +63,8 @@ static xmlSecTransformKlass xmlSecTransformEnvelopedKlass = {
 };
 
 /**
- * xmlSecTransformEnvelopedGetKlass:
- *
- * The enveloped transform klass (http://www.w3.org/TR/xmldsig-core/#sec-EnvelopedSignature):
+ * @brief Gets the enveloped signature transform klass.
+ * @details The enveloped transform klass (http://www.w3.org/TR/xmldsig-core/#sec-EnvelopedSignature):
  *
  * An enveloped signature transform T removes the whole Signature element
  * containing T from the digest calculation of the Reference element
@@ -78,13 +74,13 @@ static xmlSecTransformKlass xmlSecTransformEnvelopedKlass = {
  * result from replacing T with an XPath transform containing the following
  * XPath parameter element:
  *
- * |[<!-- language="XML" -->
+ * @code{.xml}
  *   <XPath xmlns:dsig="...">
  *     count(ancestor-or-self::dsig:Signature |
  *     here()/ancestor::dsig:Signature[1]) >
  *     count(ancestor-or-self::dsig:Signature)
  *   </XPath>
- * ]|
+ * @endcode
  *
  * The input and output requirements of this transform are identical to
  * those of the XPath transform, but may only be applied to a node-set from
@@ -93,7 +89,7 @@ static xmlSecTransformKlass xmlSecTransformEnvelopedKlass = {
  * MUST produce output in exactly the same manner as the XPath transform
  * parameterized by the XPath expression above.
  *
- * Returns: enveloped transform id.
+ * @return enveloped transform id.
  */
 xmlSecTransformId
 xmlSecTransformEnvelopedGetKlass(void) {

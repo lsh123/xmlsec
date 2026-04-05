@@ -10,9 +10,8 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:crypto
+ * @addtogroup xmlsec_mscrypto_crypto
  */
-
 #include "globals.h"
 
 #include <string.h>
@@ -33,11 +32,11 @@
 
 #ifndef XMLSEC_NO_AES
 
-/*********************************************************************
+/******************************************************************************
  *
  * AES KW implementation
  *
- *********************************************************************/
+  *****************************************************************************/
 static int      xmlSecMSCryptoKWAesBlockEncrypt         (xmlSecTransformPtr transform,
                                                          const xmlSecByte * in,
                                                          xmlSecSize inSize,
@@ -62,11 +61,11 @@ static xmlSecKWRfc3394Klass xmlSecMSCryptoKWAesKlass = {
     NULL                                    /* void*                               reserved1; */
 };
 
-/**************************************************************************
+/******************************************************************************
  *
  * Internal MSCrypto KW AES cipher CTX
  *
- *****************************************************************************/
+  *****************************************************************************/
 typedef struct _xmlSecMSCryptoKWAesCtx                  xmlSecMSCryptoKWAesCtx,
                                                         *xmlSecMSCryptoKWAesCtxPtr;
 struct _xmlSecMSCryptoKWAesCtx {
@@ -82,7 +81,7 @@ struct _xmlSecMSCryptoKWAesCtx {
  *
  *  KW AES transforms
  *
- *****************************************************************************/
+  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(MSCryptoKWAes, xmlSecMSCryptoKWAesCtx)
 #define xmlSecMSCryptoKWAesSize XMLSEC_TRANSFORM_SIZE(MSCryptoKWAes)
 
@@ -265,11 +264,11 @@ xmlSecMSCryptoKWAesExecute(xmlSecTransformPtr transform, int last,
 }
 
 
-/*********************************************************************
+/******************************************************************************
  *
  * AES KW implementation
  *
- ********************************************************************/
+  *****************************************************************************/
 static int
 xmlSecMSCryptoKWAesBlockEncrypt(xmlSecTransformPtr transform, const xmlSecByte * in, xmlSecSize inSize,
                                 xmlSecByte * out, xmlSecSize outSize,
@@ -410,11 +409,11 @@ done:
     return(res);
 }
 
-/*********************************************************************
+/******************************************************************************
  *
  * AES KW cipher transforms
  *
- ********************************************************************/
+  *****************************************************************************/
 
 /*
  * The AES-128 kew wrapper transform klass.
@@ -447,11 +446,8 @@ static xmlSecTransformKlass xmlSecMSCryptoKWAes128Klass = {
 };
 
 /**
- * xmlSecMSCryptoTransformKWAes128GetKlass:
- *
- * The AES-128 kew wrapper transform klass.
- *
- * Returns: AES-128 kew wrapper transform klass.
+ * @brief The AES-128 key wrapper transform klass.
+ * @return AES-128 key wrapper transform klass.
  */
 xmlSecTransformId
 xmlSecMSCryptoTransformKWAes128GetKlass(void) {
@@ -490,11 +486,8 @@ static xmlSecTransformKlass xmlSecMSCryptoKWAes192Klass = {
 };
 
 /**
- * xmlSecMSCryptoTransformKWAes192GetKlass:
- *
- * The AES-192 kew wrapper transform klass.
- *
- * Returns: AES-192 kew wrapper transform klass.
+ * @brief The AES-192 key wrapper transform klass.
+ * @return AES-192 key wrapper transform klass.
  */
 xmlSecTransformId
 xmlSecMSCryptoTransformKWAes192GetKlass(void) {
@@ -532,11 +525,8 @@ static xmlSecTransformKlass xmlSecMSCryptoKWAes256Klass = {
 };
 
 /**
- * xmlSecMSCryptoTransformKWAes256GetKlass:
- *
- * The AES-256 kew wrapper transform klass.
- *
- * Returns: AES-256 kew wrapper transform klass.
+ * @brief The AES-256 key wrapper transform klass.
+ * @return AES-256 key wrapper transform klass.
  */
 xmlSecTransformId
 xmlSecMSCryptoTransformKWAes256GetKlass(void) {

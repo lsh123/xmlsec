@@ -9,7 +9,7 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:crypto
+ * @addtogroup xmlsec_gnutls_crypto
  */
 #if !defined(XMLSEC_NO_AES) || !defined(XMLSEC_NO_CAMELLIA)
 #include "globals.h"
@@ -33,11 +33,11 @@
 #include "../kw_helpers.h"
 #include "../cast_helpers.h"
 
-/*********************************************************************
+/******************************************************************************
  *
  * AES/Camellia KW implementation (RFC 3394)
  *
- *********************************************************************/
+  *****************************************************************************/
 static int        xmlSecGnuTLSKWRfc3394BlockEncrypt            (xmlSecTransformPtr transform,
                                                                  const xmlSecByte * in,
                                                                  xmlSecSize inSize,
@@ -60,11 +60,11 @@ static xmlSecKWRfc3394Klass xmlSecGnuTLSKWRfc3394Klass = {
     NULL                                    /* void*                               reserved1; */
 };
 
-/*********************************************************************
+/******************************************************************************
  *
  * AES/Camellia KW transforms context
  *
- ********************************************************************/
+  *****************************************************************************/
 typedef struct _xmlSecGnuTLSKWRfc3394Ctx   xmlSecGnuTLSKWRfc3394Ctx,
                                             *xmlSecGnuTLSKWRfc3394CtxPtr;
 struct _xmlSecGnuTLSKWRfc3394Ctx {
@@ -76,11 +76,11 @@ struct _xmlSecGnuTLSKWRfc3394Ctx {
     gnutls_cipher_hd_t          cipher;
 };
 
-/*********************************************************************
+/******************************************************************************
  *
  * AES/Camellia KW transforms
  *
- ********************************************************************/
+  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(GnuTLSKWRfc3394, xmlSecGnuTLSKWRfc3394Ctx)
 #define xmlSecGnuTLSKWRfc3394Size XMLSEC_TRANSFORM_SIZE(GnuTLSKWRfc3394)
 
@@ -421,19 +421,16 @@ xmlSecGnuTLSKWRfc3394BlockDecrypt(xmlSecTransformPtr transform, const xmlSecByte
 }
 
 #ifndef XMLSEC_NO_AES
-/*********************************************************************
+/******************************************************************************
  *
  * AES KW transforms
  *
- ********************************************************************/
+  *****************************************************************************/
 XMLSEC_GNUTLS_KW_RFC3394_KLASS(KWAes128)
 
 /**
- * xmlSecGnuTLSTransformKWAes128GetKlass:
- *
- * The AES-128 key wrapper transform klass.
- *
- * Returns: AES-128 key  wrapper transform klass.
+ * @brief The AES-128 key wrapper transform klass.
+ * @return AES-128 key wrapper transform klass.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformKWAes128GetKlass(void) {
@@ -444,11 +441,8 @@ XMLSEC_GNUTLS_KW_RFC3394_KLASS(KWAes192)
 
 
 /**
- * xmlSecGnuTLSTransformKWAes192GetKlass:
- *
- * The AES-192 kew wrapper transform klass.
- *
- * Returns: AES-192 kew wrapper transform klass.
+ * @brief The AES-192 key wrapper transform klass.
+ * @return AES-192 key wrapper transform klass.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformKWAes192GetKlass(void) {
@@ -458,11 +452,8 @@ xmlSecGnuTLSTransformKWAes192GetKlass(void) {
 XMLSEC_GNUTLS_KW_RFC3394_KLASS(KWAes256)
 
 /**
- * xmlSecGnuTLSTransformKWAes256GetKlass:
- *
- * The AES-256 kew wrapper transform klass.
- *
- * Returns: AES-256 kew wrapper transform klass.
+ * @brief The AES-256 key wrapper transform klass.
+ * @return AES-256 key wrapper transform klass.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformKWAes256GetKlass(void) {
@@ -473,19 +464,16 @@ xmlSecGnuTLSTransformKWAes256GetKlass(void) {
 
 
 #ifndef XMLSEC_NO_CAMELLIA
-/*********************************************************************
+/******************************************************************************
  *
  * Camellia KW transforms
  *
- ********************************************************************/
+  *****************************************************************************/
 XMLSEC_GNUTLS_KW_RFC3394_KLASS(KWCamellia128)
 
 /**
- * xmlSecGnuTLSTransformKWCamellia128GetKlass:
- *
- * The Camellia-128 kew wrapper transform klass.
- *
- * Returns: Camellia-128 kew wrapper transform klass.
+ * @brief The Camellia-128 key wrapper transform klass.
+ * @return Camellia-128 key wrapper transform klass.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformKWCamellia128GetKlass(void) {
@@ -495,11 +483,8 @@ xmlSecGnuTLSTransformKWCamellia128GetKlass(void) {
 XMLSEC_GNUTLS_KW_RFC3394_KLASS(KWCamellia192)
 
 /**
- * xmlSecGnuTLSTransformKWCamellia192GetKlass:
- *
- * The Camellia-192 kew wrapper transform klass.
- *
- * Returns: Camellia-192 kew wrapper transform klass.
+ * @brief The Camellia-192 key wrapper transform klass.
+ * @return Camellia-192 key wrapper transform klass.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformKWCamellia192GetKlass(void) {
@@ -509,11 +494,8 @@ xmlSecGnuTLSTransformKWCamellia192GetKlass(void) {
 XMLSEC_GNUTLS_KW_RFC3394_KLASS(KWCamellia256)
 
 /**
- * xmlSecGnuTLSTransformKWCamellia256GetKlass:
- *
- * The Camellia-256 kew wrapper transform klass.
- *
- * Returns: Camellia-256 kew wrapper transform klass.
+ * @brief The Camellia-256 key wrapper transform klass.
+ * @return Camellia-256 key wrapper transform klass.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformKWCamellia256GetKlass(void) {

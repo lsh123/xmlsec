@@ -9,10 +9,8 @@
  * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
 /**
- * SECTION:keysstore
- * @Short_description: Keys store implementation for OPENSSL.
- * @Stability: Stable
- *
+ * @addtogroup xmlsec_openssl_keysstore
+ * @brief Keys store implementation for OPENSSL.
  * OpenSSL keys store that uses Simple Keys Store under the hood.
  */
 #include "globals.h"
@@ -34,13 +32,13 @@
 #include "../cast_helpers.h"
 #include "private.h"
 
-/****************************************************************************
+/******************************************************************************
  *
  * OpenSSL Keys Store. Uses Simple Keys Store under the hood
  *
  * xmlSecKeyStore +  xmlSecKeyStorePtr(Simple Keys Store ptr)
  *
- ***************************************************************************/
+  *****************************************************************************/
 XMLSEC_KEY_STORE_DECLARE(OpenSSLKeysStore, xmlSecKeyStorePtr)
 #define xmlSecOpenSSLKeysStoreSize XMLSEC_KEY_STORE_SIZE(OpenSSLKeysStore)
 
@@ -72,11 +70,8 @@ static xmlSecKeyStoreKlass xmlSecOpenSSLKeysStoreKlass = {
 };
 
 /**
- * xmlSecOpenSSLKeysStoreGetKlass:
- *
- * The OpenSSL list based keys store klass.
- *
- * Returns: OpenSSL list based keys store klass.
+ * @brief The OpenSSL list based keys store klass.
+ * @return OpenSSL list based keys store klass.
  */
 xmlSecKeyStoreId
 xmlSecOpenSSLKeysStoreGetKlass(void) {
@@ -175,13 +170,10 @@ xmlSecOpenSSLKeysStoreFindKeyFromX509Data(xmlSecKeyStorePtr store, xmlSecKeyX509
 }
 
 /**
- * xmlSecOpenSSLKeysStoreAdoptKey:
- * @store:              the pointer to OpenSSL keys store.
- * @key:                the pointer to key.
- *
- * Adds @key to the @store.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Adds @p key to the @p store.
+ * @param store the pointer to OpenSSL keys store.
+ * @param key the pointer to key.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecOpenSSLKeysStoreAdoptKey(xmlSecKeyStorePtr store, xmlSecKeyPtr key) {
@@ -198,14 +190,11 @@ xmlSecOpenSSLKeysStoreAdoptKey(xmlSecKeyStorePtr store, xmlSecKeyPtr key) {
 }
 
 /**
- * xmlSecOpenSSLKeysStoreLoad:
- * @store:              the pointer to OpenSSL keys store.
- * @uri:                the filename.
- * @keysMngr:           the pointer to associated keys manager.
- *
- * Reads keys from an XML file.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Reads keys from an XML file.
+ * @param store the pointer to OpenSSL keys store.
+ * @param uri the filename.
+ * @param keysMngr the pointer to associated keys manager.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecOpenSSLKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
@@ -215,14 +204,11 @@ xmlSecOpenSSLKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
 }
 
 /**
- * xmlSecOpenSSLKeysStoreSave:
- * @store:              the pointer to OpenSSL keys store.
- * @filename:           the filename.
- * @type:               the saved keys type (public, private, ...).
- *
- * Writes keys from @store to an XML file.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Writes keys from @p store to an XML file.
+ * @param store the pointer to OpenSSL keys store.
+ * @param filename the filename.
+ * @param type the saved keys type (public, private, ...).
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecOpenSSLKeysStoreSave(xmlSecKeyStorePtr store, const char *filename, xmlSecKeyDataType type) {

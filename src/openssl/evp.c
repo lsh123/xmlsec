@@ -1,8 +1,5 @@
-/*
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
- *
- * Private/public (EVP) keys implementation for OpenSSL.
- *
  *
  * This is free software; see the Copyright file in the source
  * distribution for precise wording.
@@ -10,7 +7,8 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:crypto
+ * @addtogroup xmlsec_openssl_crypto
+ * @brief Private/public (EVP) keys implementation for OpenSSL.
  */
 #include "globals.h"
 
@@ -112,11 +110,11 @@ xmlSecOpenSSLSetBNValue(const BIGNUM *bigNum, xmlSecBufferPtr buf) {
     return(0);
 }
 
-/**************************************************************************
+/******************************************************************************
  *
  * Internal OpenSSL EVP key CTX
  *
- *************************************************************************/
+  *****************************************************************************/
 typedef struct _xmlSecOpenSSLEvpKeyDataCtx      xmlSecOpenSSLEvpKeyDataCtx,
                                                 *xmlSecOpenSSLEvpKeyDataCtxPtr;
 struct _xmlSecOpenSSLEvpKeyDataCtx {
@@ -127,7 +125,7 @@ struct _xmlSecOpenSSLEvpKeyDataCtx {
  *
  * EVP key data
  *
- *****************************************************************************/
+  *****************************************************************************/
 XMLSEC_KEY_DATA_DECLARE(OpenSSLEvpKeyData, xmlSecOpenSSLEvpKeyDataCtx)
 #define xmlSecOpenSSLEvpKeyDataSize XMLSEC_KEY_DATA_SIZE(OpenSSLEvpKeyData)
 
@@ -141,13 +139,10 @@ static xmlSecKeyDataType xmlSecOpenSSLEvpKeyDataGetType          (xmlSecKeyDataP
 
 
 /**
- * xmlSecOpenSSLEvpKeyDataAdoptEvp:
- * @data:               the pointer to OpenSSL EVP key data.
- * @pKey:               the pointer to EVP key.
- *
- * Sets the value of key data.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Sets the value of key data.
+ * @param data the pointer to OpenSSL EVP key data.
+ * @param pKey the pointer to EVP key.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecOpenSSLEvpKeyDataAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
@@ -168,12 +163,9 @@ xmlSecOpenSSLEvpKeyDataAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
 }
 
 /**
- * xmlSecOpenSSLEvpKeyDataGetEvp:
- * @data:               the pointer to OpenSSL EVP data.
- *
- * Gets the EVP_PKEY from the key data.
- *
- * Returns: pointer to EVP_PKEY or NULL if an error occurs.
+ * @brief Gets the EVP_PKEY from the key data.
+ * @param data the pointer to OpenSSL EVP data.
+ * @return pointer to EVP_PKEY or NULL if an error occurs.
  */
 EVP_PKEY*
 xmlSecOpenSSLEvpKeyDataGetEvp(xmlSecKeyDataPtr data) {
@@ -189,12 +181,9 @@ xmlSecOpenSSLEvpKeyDataGetEvp(xmlSecKeyDataPtr data) {
 }
 
 /**
- * xmlSecOpenSSLKeyGetEvp:
- * @key:               the pointer to OpenSSL EVP key.
- *
- * Gets the EVP_PKEY from the key.
- *
- * Returns: pointer to EVP_PKEY or NULL if an error occurs.
+ * @brief Gets the EVP_PKEY from the key.
+ * @param key the pointer to OpenSSL EVP key.
+ * @return pointer to EVP_PKEY or NULL if an error occurs.
  */
 EVP_PKEY*
 xmlSecOpenSSLKeyGetEvp(xmlSecKeyPtr key) {
@@ -620,14 +609,11 @@ xmlSecOpenSSLEvpKeyDataGetType(xmlSecKeyDataPtr data) {
  *
  * EVP helper functions
  *
- *****************************************************************************/
+  *****************************************************************************/
 /**
- * xmlSecOpenSSLEvpKeyDup:
- * @pKey:               the pointer to EVP_PKEY.
- *
- * Duplicates @pKey.
- *
- * Returns: pointer to newly created EVP_PKEY object or NULL if an error occurs.
+ * @brief Duplicates @p pKey.
+ * @param pKey the pointer to EVP_PKEY.
+ * @return pointer to newly created EVP_PKEY object or NULL if an error occurs.
  */
 EVP_PKEY*
 xmlSecOpenSSLEvpKeyDup(EVP_PKEY* pKey) {
@@ -775,12 +761,9 @@ xmlSecOpenSSLEvpKeyGetKeyDataId(EVP_PKEY *pKey) {
 }
 
 /**
- * xmlSecOpenSSLEvpKeyAdopt:
- * @pKey:               the pointer to EVP_PKEY.
- *
- * Creates xmlsec key object from OpenSSL key object.
- *
- * Returns: pointer to newly created xmlsec key or NULL if an error occurs.
+ * @brief Creates xmlsec key object from OpenSSL key object.
+ * @param pKey the pointer to EVP_PKEY.
+ * @return pointer to newly created xmlsec key or NULL if an error occurs.
  */
 xmlSecKeyDataPtr
 xmlSecOpenSSLEvpKeyAdopt(EVP_PKEY *pKey) {
@@ -861,7 +844,7 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyData ## klassName ## Klass = {        
 
 #ifndef XMLSEC_NO_DSA
 
-/**************************************************************************
+/******************************************************************************
  *
  * &lt;dsig:DSAKeyValue/&gt; processing
  *
@@ -934,12 +917,12 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyData ## klassName ## Klass = {        
  * The current implementation does not support Seed and PgenCounter!
  * by this the P, Q and G are *required*!
  *
- *************************************************************************/
+  *****************************************************************************/
 
 #define XMLSEC_OPENSSL_DSA_EVP_NAME              "DSA"
 
-/*
- * @xmlSecOpenSSLKeyValueDsa: holds the parts of OpenSSL DSA key
+/**
+ * @brief Holds the parts of OpenSSL DSA key.
  */
 typedef struct _xmlSecOpenSSLKeyValueDsa {
     BIGNUM* p;
@@ -1008,11 +991,8 @@ XMLSEC_OPENSSL_EVP_KEY_KLASS_EX(Dsa, DSA,
     xmlSecOpenSSLKeyDataDsaXmlWrite)
 
 /**
- * xmlSecOpenSSLKeyDataDsaGetKlass:
- *
- * The DSA key data klass.
- *
- * Returns: pointer to DSA key data klass.
+ * @brief The DSA key data klass.
+ * @return pointer to DSA key data klass.
  */
 xmlSecKeyDataId
 xmlSecOpenSSLKeyDataDsaGetKlass(void) {
@@ -1020,13 +1000,10 @@ xmlSecOpenSSLKeyDataDsaGetKlass(void) {
 }
 
 /**
- * xmlSecOpenSSLKeyDataDsaAdoptEvp:
- * @data:               the pointer to DSA key data.
- * @pKey:               the pointer to OpenSSL EVP key.
- *
- * Sets the DSA key data value to OpenSSL EVP key.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Sets the DSA key data value to OpenSSL EVP key.
+ * @param data the pointer to DSA key data.
+ * @param pKey the pointer to OpenSSL EVP key.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecOpenSSLKeyDataDsaAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
@@ -1038,12 +1015,9 @@ xmlSecOpenSSLKeyDataDsaAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
 }
 
 /**
- * xmlSecOpenSSLKeyDataDsaGetEvp:
- * @data:               the pointer to DSA key data.
- *
- * Gets the OpenSSL EVP key from DSA key data.
- *
- * Returns: pointer to OpenSSL EVP key or NULL if an error occurs.
+ * @brief Gets the OpenSSL EVP key from DSA key data.
+ * @param data the pointer to DSA key data.
+ * @return pointer to OpenSSL EVP key or NULL if an error occurs.
  */
 EVP_PKEY*
 xmlSecOpenSSLKeyDataDsaGetEvp(xmlSecKeyDataPtr data) {
@@ -1535,37 +1509,37 @@ xmlSecOpenSSLKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
         goto done;
     }
 
-    /*** p ***/
+    /****************************************************************************** p  *****************************************************************************/
     ret = xmlSecOpenSSLGetBNValue(&(dsaValue->p), &(dsaKeyValue.p));
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLGetBNValue(p)",
             xmlSecKeyDataKlassGetName(id));
         goto done;
     }
-    /*** q ***/
+    /****************************************************************************** q  *****************************************************************************/
     ret = xmlSecOpenSSLGetBNValue(&(dsaValue->q), &(dsaKeyValue.q));
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLGetBNValue(q)",
             xmlSecKeyDataKlassGetName(id));
         goto done;
     }
-    /*** q ***/
+    /****************************************************************************** q  *****************************************************************************/
     ret = xmlSecOpenSSLGetBNValue(&(dsaValue->g), &(dsaKeyValue.g));
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLGetBNValue(g)",
             xmlSecKeyDataKlassGetName(id));
         goto done;
     }
-    /*** y ***/
+    /****************************************************************************** y  *****************************************************************************/
     ret = xmlSecOpenSSLGetBNValue(&(dsaValue->y), &(dsaKeyValue.pub_key));
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLGetBNValue(y)",
             xmlSecKeyDataKlassGetName(id));
         goto done;
     }
-    /*** x (only for private key) ***/
+    /****************************************************************************** x (only for private key)  *****************************************************************************/
     if(xmlSecBufferGetSize(&(dsaValue->x)) > 0) {
-        /*** p ***/
+        /****************************************************************************** p  *****************************************************************************/
         ret = xmlSecOpenSSLGetBNValue(&(dsaValue->x), &(dsaKeyValue.priv_key));
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLGetBNValue(x)",
@@ -1627,7 +1601,7 @@ xmlSecOpenSSLKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
         goto done;
     }
 
-    /*** p ***/
+    /****************************************************************************** p  *****************************************************************************/
     xmlSecAssert2(dsaKeyValue.p != NULL, -1);
     ret = xmlSecOpenSSLSetBNValue(dsaKeyValue.p, &(dsaValue->p));
     if(ret < 0) {
@@ -1636,7 +1610,7 @@ xmlSecOpenSSLKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
         goto done;
     }
 
-    /*** q ***/
+    /****************************************************************************** q  *****************************************************************************/
     xmlSecAssert2(dsaKeyValue.q != NULL, -1);
     ret = xmlSecOpenSSLSetBNValue(dsaKeyValue.q, &(dsaValue->q));
     if(ret < 0) {
@@ -1645,7 +1619,7 @@ xmlSecOpenSSLKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
         goto done;
     }
 
-    /*** g ***/
+    /****************************************************************************** g  *****************************************************************************/
     xmlSecAssert2(dsaKeyValue.g != NULL, -1);
     ret = xmlSecOpenSSLSetBNValue(dsaKeyValue.g, &(dsaValue->g));
     if(ret < 0) {
@@ -1654,7 +1628,7 @@ xmlSecOpenSSLKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
         goto done;
     }
 
-    /*** y ***/
+    /****************************************************************************** y  *****************************************************************************/
     xmlSecAssert2(dsaKeyValue.pub_key != NULL, -1);
     ret = xmlSecOpenSSLSetBNValue(dsaKeyValue.pub_key, &(dsaValue->y));
     if(ret < 0) {
@@ -1663,7 +1637,7 @@ xmlSecOpenSSLKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
         goto done;
     }
 
-    /*** x (only if availabel and requested) ***/
+    /****************************************************************************** x (only if availabel and requested)  *****************************************************************************/
     if((writePrivateKey != 0) && (dsaKeyValue.priv_key != NULL)) {
         ret = xmlSecOpenSSLSetBNValue(dsaKeyValue.priv_key, &(dsaValue->x));
         if(ret < 0) {
@@ -1686,15 +1660,15 @@ done:
 
 #ifndef XMLSEC_NO_DH
 
-/**************************************************************************
+/******************************************************************************
  *
  * <xenc11:DHKeyValue> processing
  *
  *
- *************************************************************************/
+  *****************************************************************************/
 
-/*
- * @xmlSecOpenSSLKeyValueDh: holds the parts of OpenSSL DH key
+/**
+ * @brief Holds the parts of OpenSSL DH key.
  */
 typedef struct _xmlSecOpenSSLKeyValueDh {
     BIGNUM* p;
@@ -1779,11 +1753,8 @@ XMLSEC_OPENSSL_EVP_KEY_KLASS_EX(Dh, DH,
     xmlSecOpenSSLKeyDataDhXmlWrite)
 
 /**
- * xmlSecOpenSSLKeyDataDhGetKlass:
- *
- * The DH key data klass.
- *
- * Returns: pointer to DH key data klass.
+ * @brief The DH key data klass.
+ * @return pointer to DH key data klass.
  */
 xmlSecKeyDataId
 xmlSecOpenSSLKeyDataDhGetKlass(void) {
@@ -1791,13 +1762,10 @@ xmlSecOpenSSLKeyDataDhGetKlass(void) {
 }
 
 /**
- * xmlSecOpenSSLKeyDataDhAdoptEvp:
- * @data:               the pointer to DH key data.
- * @pKey:               the pointer to OpenSSL EVP key.
- *
- * Sets the DH key data value to OpenSSL EVP key.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Sets the DH key data value to OpenSSL EVP key.
+ * @param data the pointer to DH key data.
+ * @param pKey the pointer to OpenSSL EVP key.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecOpenSSLKeyDataDhAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
@@ -1809,12 +1777,9 @@ xmlSecOpenSSLKeyDataDhAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
 }
 
 /**
- * xmlSecOpenSSLKeyDataDhGetEvp:
- * @data:               the pointer to DH key data.
- *
- * Gets the OpenSSL EVP key from DH key data.
- *
- * Returns: pointer to OpenSSL EVP key or NULL if an error occurs.
+ * @brief Gets the OpenSSL EVP key from DH key data.
+ * @param data the pointer to DH key data.
+ * @return pointer to OpenSSL EVP key or NULL if an error occurs.
  */
 EVP_PKEY*
 xmlSecOpenSSLKeyDataDhGetEvp(xmlSecKeyDataPtr data) {
@@ -2337,7 +2302,7 @@ xmlSecOpenSSLKeyDataDhRead(xmlSecKeyDataId id, xmlSecKeyValueDhPtr dhValue) {
         goto done;
     }
 
-    /*** p: optional ***/
+    /****************************************************************************** p: optional  *****************************************************************************/
     if (xmlSecBufferGetSize(&(dhValue->p)) > 0) {
         ret = xmlSecOpenSSLGetBNValue(&(dhValue->p), &(dhKeyValue.p));
         if(ret < 0) {
@@ -2346,7 +2311,7 @@ xmlSecOpenSSLKeyDataDhRead(xmlSecKeyDataId id, xmlSecKeyValueDhPtr dhValue) {
             goto done;
         }
     }
-    /*** q: optional ***/
+    /****************************************************************************** q: optional  *****************************************************************************/
     if (xmlSecBufferGetSize(&(dhValue->q)) > 0) {
         ret = xmlSecOpenSSLGetBNValue(&(dhValue->q), &(dhKeyValue.q));
         if(ret < 0) {
@@ -2355,7 +2320,7 @@ xmlSecOpenSSLKeyDataDhRead(xmlSecKeyDataId id, xmlSecKeyValueDhPtr dhValue) {
             goto done;
         }
     }
-    /*** generator: optional ***/
+    /****************************************************************************** generator: optional  *****************************************************************************/
     if (xmlSecBufferGetSize(&(dhValue->generator)) > 0) {
         ret = xmlSecOpenSSLGetBNValue(&(dhValue->generator), &(dhKeyValue.generator));
         if(ret < 0) {
@@ -2364,14 +2329,14 @@ xmlSecOpenSSLKeyDataDhRead(xmlSecKeyDataId id, xmlSecKeyValueDhPtr dhValue) {
             goto done;
         }
     }
-    /*** public: required ***/
+    /****************************************************************************** public: required  *****************************************************************************/
     ret = xmlSecOpenSSLGetBNValue(&(dhValue->public), &(dhKeyValue.public));
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLGetBNValue(public)",
             xmlSecKeyDataKlassGetName(id));
         goto done;
     }
-    /*** seed: optional ***/
+    /****************************************************************************** seed: optional  *****************************************************************************/
     if (xmlSecBufferGetSize(&(dhValue->seed)) > 0) {
         ret = xmlSecOpenSSLGetBNValue(&(dhValue->seed), &(dhKeyValue.seed));
         if(ret < 0) {
@@ -2380,7 +2345,7 @@ xmlSecOpenSSLKeyDataDhRead(xmlSecKeyDataId id, xmlSecKeyValueDhPtr dhValue) {
             goto done;
         }
     }
-    /*** pgenCounter: optional ***/
+    /****************************************************************************** pgenCounter: optional  *****************************************************************************/
     if (xmlSecBufferGetSize(&(dhValue->pgenCounter)) > 0) {
         ret = xmlSecOpenSSLGetBNValue(&(dhValue->pgenCounter), &(dhKeyValue.pgenCounter));
         if(ret < 0) {
@@ -2445,7 +2410,7 @@ xmlSecOpenSSLKeyDataDhWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKey
         goto done;
     }
 
-    /*** p: optional ***/
+    /****************************************************************************** p: optional  *****************************************************************************/
     if(dhKeyValue.p != NULL) {
         ret = xmlSecOpenSSLSetBNValue(dhKeyValue.p, &(dhValue->p));
         if(ret < 0) {
@@ -2455,7 +2420,7 @@ xmlSecOpenSSLKeyDataDhWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKey
         }
     }
 
-    /*** q: optional ***/
+    /****************************************************************************** q: optional  *****************************************************************************/
     if(dhKeyValue.q != NULL) {
         ret = xmlSecOpenSSLSetBNValue(dhKeyValue.q, &(dhValue->q));
         if(ret < 0) {
@@ -2465,7 +2430,7 @@ xmlSecOpenSSLKeyDataDhWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKey
         }
     }
 
-    /*** generator: optional ***/
+    /****************************************************************************** generator: optional  *****************************************************************************/
     if(dhKeyValue.generator != NULL) {
         ret = xmlSecOpenSSLSetBNValue(dhKeyValue.generator, &(dhValue->generator));
         if(ret < 0) {
@@ -2475,7 +2440,7 @@ xmlSecOpenSSLKeyDataDhWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKey
         }
     }
 
-    /*** public: required ***/
+    /****************************************************************************** public: required  *****************************************************************************/
     ret = xmlSecOpenSSLSetBNValue(dhKeyValue.public, &(dhValue->public));
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLSetBNValue(public)",
@@ -2483,7 +2448,7 @@ xmlSecOpenSSLKeyDataDhWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKey
         goto done;
     }
 
-    /*** seed: optional ***/
+    /****************************************************************************** seed: optional  *****************************************************************************/
     if(dhKeyValue.seed != NULL) {
         ret = xmlSecOpenSSLSetBNValue(dhKeyValue.seed, &(dhValue->seed));
         if(ret < 0) {
@@ -2493,7 +2458,7 @@ xmlSecOpenSSLKeyDataDhWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKey
         }
     }
 
-    /*** pgenCounter: optional ***/
+    /****************************************************************************** pgenCounter: optional  *****************************************************************************/
     if(dhKeyValue.pgenCounter != NULL) {
         ret = xmlSecOpenSSLSetBNValue(dhKeyValue.pgenCounter, &(dhValue->pgenCounter));
         if(ret < 0) {
@@ -2515,7 +2480,7 @@ done:
 
 
 #ifndef XMLSEC_NO_EC
-/**************************************************************************
+/******************************************************************************
  *
  * EC XML key representation processing.
  *
@@ -2527,7 +2492,7 @@ done:
  * therefore, EC keys SHOULD NOT be provided through a &lt;dsig:KeyValue/&gt;
  * element.
  *
- *************************************************************************/
+  *****************************************************************************/
 
 #define XMLSEC_OPENSSL_EC_EVP_NAME                  "EC"
 
@@ -2562,11 +2527,8 @@ XMLSEC_OPENSSL_EVP_KEY_KLASS_EX(Ec, EC,
     xmlSecOpenSSLKeyDataEcXmlWrite)
 
 /**
- * xmlSecOpenSSLKeyDataEcGetKlass:
- *
- * The EC key data klass.
- *
- * Returns: pointer to EC key data klass.
+ * @brief The EC key data klass.
+ * @return pointer to EC key data klass.
  */
 xmlSecKeyDataId
 xmlSecOpenSSLKeyDataEcGetKlass(void) {
@@ -2574,13 +2536,10 @@ xmlSecOpenSSLKeyDataEcGetKlass(void) {
 }
 
 /**
- * xmlSecOpenSSLKeyDataEcAdoptEvp:
- * @data:               the pointer to EC key data.
- * @pKey:               the pointer to OpenSSL EVP key.
- *
- * Sets the EC key data value to OpenSSL EVP key.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Sets the EC key data value to OpenSSL EVP key.
+ * @param data the pointer to EC key data.
+ * @param pKey the pointer to OpenSSL EVP key.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecOpenSSLKeyDataEcAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
@@ -2591,12 +2550,9 @@ xmlSecOpenSSLKeyDataEcAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
 }
 
 /**
- * xmlSecOpenSSLKeyDataEcGetEvp:
- * @data:               the pointer to EC key data.
- *
- * Gets the OpenSSL EVP key from EC key data.
- *
- * Returns: pointer to OpenSSL EVP key or NULL if an error occurs.
+ * @brief Gets the OpenSSL EVP key from EC key data.
+ * @param data the pointer to EC key data.
+ * @return pointer to OpenSSL EVP key or NULL if an error occurs.
  */
 EVP_PKEY*
 xmlSecOpenSSLKeyDataEcGetEvp(xmlSecKeyDataPtr data) {
@@ -3121,10 +3077,9 @@ done:
 #ifndef XMLSEC_NO_RSA
 
 /**
- * xmlSecOpenSSLKeyValueRsaCheckKeyType:
- * @pKey: the EVP key to check
+ * @brief Returns 0 if @p pKey is a valid RSA key type, 1 if it is not, or a negative value if an error occurs.
+ * @param pKey the EVP key to check
  *
- * Returns 0 if @pKey is a valid RSA key type, 1 if it is not, or a negative value if an error occurs.
  */
 int
 xmlSecOpenSSLKeyValueRsaCheckKeyType(EVP_PKEY* pKey) {
@@ -3140,8 +3095,8 @@ xmlSecOpenSSLKeyValueRsaCheckKeyType(EVP_PKEY* pKey) {
     }
 }
 
-/*
- * @xmlSecOpenSSLKeyValueRsa: holds the parts of OpenSSL RSA key
+/**
+ * @brief Holds the parts of OpenSSL RSA key.
  */
 typedef struct _xmlSecOpenSSLKeyValueRsa {
     BIGNUM* n;
@@ -3173,7 +3128,7 @@ xmlSecOpenSSLKeyValueRsaFinalize(xmlSecOpenSSLKeyValueRsaPtr rsaKeyValue) {
     memset(rsaKeyValue, 0, sizeof(*rsaKeyValue));
 }
 
-/**************************************************************************
+/******************************************************************************
  *
  * &lt;dsig:RSAKeyValue/&gt; processing
  *
@@ -3214,7 +3169,7 @@ xmlSecOpenSSLKeyValueRsaFinalize(xmlSecOpenSSLKeyValueRsaPtr rsaKeyValue) {
  * To support reading/writing private keys an PrivateExponent element is added
  * to the end
  *
- *************************************************************************/
+  *****************************************************************************/
 #define XMLSEC_OPENSSL_RSA_EVP_NAME                  "RSA"
 
 static int              xmlSecOpenSSLKeyDataRsaXmlRead          (xmlSecKeyDataId id,
@@ -3244,11 +3199,8 @@ XMLSEC_OPENSSL_EVP_KEY_KLASS_EX(Rsa, RSA,
     xmlSecOpenSSLKeyDataRsaXmlWrite)
 
 /**
- * xmlSecOpenSSLKeyDataRsaGetKlass:
- *
- * The OpenSSL RSA key data klass.
- *
- * Returns: pointer to OpenSSL RSA key data klass.
+ * @brief The OpenSSL RSA key data klass.
+ * @return pointer to OpenSSL RSA key data klass.
  */
 xmlSecKeyDataId
 xmlSecOpenSSLKeyDataRsaGetKlass(void) {
@@ -3258,13 +3210,10 @@ xmlSecOpenSSLKeyDataRsaGetKlass(void) {
 
 
 /**
- * xmlSecOpenSSLKeyDataRsaAdoptEvp:
- * @data:               the pointer to RSA key data.
- * @pKey:               the pointer to OpenSSL EVP key.
- *
- * Sets the RSA key data value to OpenSSL EVP key.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Sets the RSA key data value to OpenSSL EVP key.
+ * @param data the pointer to RSA key data.
+ * @param pKey the pointer to OpenSSL EVP key.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecOpenSSLKeyDataRsaAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
@@ -3276,12 +3225,9 @@ xmlSecOpenSSLKeyDataRsaAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
 }
 
 /**
- * xmlSecOpenSSLKeyDataRsaGetEvp:
- * @data:               the pointer to RSA key data.
- *
- * Gets the OpenSSL EVP key from RSA key data.
- *
- * Returns: pointer to OpenSSL EVP key or NULL if an error occurs.
+ * @brief Gets the OpenSSL EVP key from RSA key data.
+ * @param data the pointer to RSA key data.
+ * @return pointer to OpenSSL EVP key or NULL if an error occurs.
  */
 EVP_PKEY*
 xmlSecOpenSSLKeyDataRsaGetEvp(xmlSecKeyDataPtr data) {
@@ -3744,7 +3690,7 @@ xmlSecOpenSSLKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
         goto done;
     }
 
-    /*** Modulus ***/
+    /****************************************************************************** Modulus  *****************************************************************************/
     ret = xmlSecOpenSSLGetBNValue(&(rsaValue->modulus), &(rsaKeyValue.n));
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLGetBNValue(Modulus)",
@@ -3752,16 +3698,16 @@ xmlSecOpenSSLKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
         goto done;
     }
 
-    /*** Exponent ***/
+    /****************************************************************************** Exponent  *****************************************************************************/
     ret = xmlSecOpenSSLGetBNValue(&(rsaValue->publicExponent), &(rsaKeyValue.e));
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLGetBNValue(Exponent)",
             xmlSecKeyDataKlassGetName(id));
         goto done;
     }
-    /*** PrivateExponent (only for private key) ***/
+    /****************************************************************************** PrivateExponent (only for private key)  *****************************************************************************/
     if(xmlSecBufferGetSize(&(rsaValue->privateExponent)) > 0) {
-        /*** p ***/
+        /****************************************************************************** p  *****************************************************************************/
         ret = xmlSecOpenSSLGetBNValue(&(rsaValue->privateExponent), &(rsaKeyValue.d));
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLGetBNValue(x)",
@@ -3823,7 +3769,7 @@ xmlSecOpenSSLKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
         goto done;
     }
 
-    /*** Modulus ***/
+    /****************************************************************************** Modulus  *****************************************************************************/
     xmlSecAssert2(rsaKeyValue.n != NULL, -1);
     ret = xmlSecOpenSSLSetBNValue(rsaKeyValue.n, &(rsaValue->modulus));
     if(ret < 0) {
@@ -3832,7 +3778,7 @@ xmlSecOpenSSLKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
         goto done;
     }
 
-    /*** Exponent ***/
+    /****************************************************************************** Exponent  *****************************************************************************/
     xmlSecAssert2(rsaKeyValue.e != NULL, -1);
     ret = xmlSecOpenSSLSetBNValue(rsaKeyValue.e, &(rsaValue->publicExponent));
     if(ret < 0) {
@@ -3841,7 +3787,7 @@ xmlSecOpenSSLKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
         goto done;
     }
 
-    /*** PrivateExponent (only if availabel and requested) ***/
+    /****************************************************************************** PrivateExponent (only if availabel and requested)  *****************************************************************************/
     if((writePrivateKey != 0) && (rsaKeyValue.d != NULL)) {
         ret = xmlSecOpenSSLSetBNValue(rsaKeyValue.d, &(rsaValue->privateExponent));
         if(ret < 0) {
@@ -3861,20 +3807,17 @@ done:
 #endif /* XMLSEC_NO_RSA */
 
 #ifndef XMLSEC_NO_GOST
-/**************************************************************************
+/******************************************************************************
  *
  * GOST2001 xml key representation processing
  *
- *************************************************************************/
+  *****************************************************************************/
 
 XMLSEC_OPENSSL_EVP_KEY_KLASS(Gost2001, GOST2001)
 
 /**
- * xmlSecOpenSSLKeyDataGost2001GetKlass:
- *
- * The GOST2001 key data klass.
- *
- * Returns: pointer to GOST2001 key data klass.
+ * @brief The GOST2001 key data klass.
+ * @return pointer to GOST2001 key data klass.
  */
 xmlSecKeyDataId
 xmlSecOpenSSLKeyDataGost2001GetKlass(void) {
@@ -3885,20 +3828,17 @@ xmlSecOpenSSLKeyDataGost2001GetKlass(void) {
 
 #ifndef XMLSEC_NO_GOST2012
 
-/**************************************************************************
+/******************************************************************************
  *
  * GOST R 34.10-2012 256 bit xml key representation processing
  *
- *************************************************************************/
+  *****************************************************************************/
 
 XMLSEC_OPENSSL_EVP_KEY_KLASS(GostR3410_2012_256, GostR3410_2012_256)
 
 /**
- * xmlSecOpenSSLKeyDataGostR3410_2012_256GetKlass:
- *
- * The GOST R 34.10-2012 256 bit key data klass.
- *
- * Returns: pointer to GOST R 34.10-2012 256 bit key data klass.
+ * @brief The GOST R 34.10-2012 256 bit key data klass.
+ * @return pointer to GOST R 34.10-2012 256 bit key data klass.
  */
 xmlSecKeyDataId
 xmlSecOpenSSLKeyDataGostR3410_2012_256GetKlass(void) {
@@ -3906,21 +3846,18 @@ xmlSecOpenSSLKeyDataGostR3410_2012_256GetKlass(void) {
 }
 
 
-/**************************************************************************
+/******************************************************************************
  *
  * GOST R 34.10-2012 512 bit xml key representation processing
  *
- *************************************************************************/
+  *****************************************************************************/
 \
 
 XMLSEC_OPENSSL_EVP_KEY_KLASS(GostR3410_2012_512, GostR3410_2012_512)
 
 /**
- * xmlSecOpenSSLKeyDataGostR3410_2012_512GetKlass:
- *
- * The GOST R 34.10-2012 512 bit key data klass.
- *
- * Returns: pointer to GOST R 34.10-2012 512 bit key data klass.
+ * @brief The GOST R 34.10-2012 512 bit key data klass.
+ * @return pointer to GOST R 34.10-2012 512 bit key data klass.
  */
 xmlSecKeyDataId
 xmlSecOpenSSLKeyDataGostR3410_2012_512GetKlass(void) {
@@ -3952,11 +3889,8 @@ xmlSecOpenSSLKeyValueMLDSACheckKeyType(EVP_PKEY* pKey)
 XMLSEC_OPENSSL_EVP_KEY_KLASS(MLDSA, MLDSA)
 
 /**
- * xmlSecOpenSSLKeyDataMLDSAGetKlass:
- *
- * The OpenSSL ML-DSA data klass.
- *
- * Returns: pointer to OpenSSL ML-DSA key data klass.
+ * @brief The OpenSSL ML-DSA data klass.
+ * @return pointer to OpenSSL ML-DSA key data klass.
  */
 xmlSecKeyDataId
 xmlSecOpenSSLKeyDataMLDSAGetKlass(void) {
@@ -3964,13 +3898,10 @@ xmlSecOpenSSLKeyDataMLDSAGetKlass(void) {
 }
 
 /**
- * xmlSecOpenSSLKeyDataMLDSAAdoptEvp:
- * @data:               the pointer to MLDSA key data.
- * @pKey:               the pointer to OpenSSL EVP key.
- *
- * Sets the MLDSA key data value to OpenSSL EVP key.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Sets the MLDSA key data value to OpenSSL EVP key.
+ * @param data the pointer to MLDSA key data.
+ * @param pKey the pointer to OpenSSL EVP key.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecOpenSSLKeyDataMLDSAAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
@@ -3982,13 +3913,12 @@ xmlSecOpenSSLKeyDataMLDSAAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
 }
 
 /**
- * xmlSecOpenSSLKeyDataMLDSAGetKL:
- * @data:               the pointer to MLDSA key data.
+ * @brief Gets ML-DSA key (k, l) value: 44 corresponds to (4,4),
+ * @param data the pointer to MLDSA key data.
  *
- * Gets ML-DSA key (k, l) value: 44 corresponds to (4,4),
  * 65 to (6,5) or 87 to (8,7).
  *
- * Returns: 44, 65, or 87 on success or a negative value
+ * @return 44, 65, or 87 on success or a negative value
  * otherwise.
  */
 int
@@ -4015,12 +3945,9 @@ xmlSecOpenSSLKeyDataMLDSAGetKL(xmlSecKeyDataPtr data) {
 }
 
 /**
- * xmlSecOpenSSLKeyDataMLDSAGetEvp:
- * @data:               the pointer to MLDSA key data.
- *
- * Gets the OpenSSL EVP key from MLDSA key data.
- *
- * Returns: pointer to OpenSSL EVP key or NULL if an error occurs.
+ * @brief Gets the OpenSSL EVP key from MLDSA key data.
+ * @param data the pointer to MLDSA key data.
+ * @return pointer to OpenSSL EVP key or NULL if an error occurs.
  */
 EVP_PKEY*
 xmlSecOpenSSLKeyDataMLDSAGetEvp(xmlSecKeyDataPtr data) {
@@ -4059,11 +3986,8 @@ xmlSecOpenSSLKeyValueSLHDSACheckKeyType(EVP_PKEY* pKey)
 XMLSEC_OPENSSL_EVP_KEY_KLASS(SLHDSA, SLHDSA)
 
 /**
- * xmlSecOpenSSLKeyDataSLHDSAGetKlass:
- *
- * The OpenSSL SLH-DSA data klass.
- *
- * Returns: pointer to OpenSSL SLH-DSA key data klass.
+ * @brief The OpenSSL SLH-DSA data klass.
+ * @return pointer to OpenSSL SLH-DSA key data klass.
  */
 xmlSecKeyDataId
 xmlSecOpenSSLKeyDataSLHDSAGetKlass(void) {
@@ -4071,13 +3995,10 @@ xmlSecOpenSSLKeyDataSLHDSAGetKlass(void) {
 }
 
 /**
- * xmlSecOpenSSLKeyDataSLHDSAAdoptEvp:
- * @data:               the pointer to SLHDSA key data.
- * @pKey:               the pointer to OpenSSL EVP key.
- *
- * Sets the SLHDSA key data value to OpenSSL EVP key.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Sets the SLHDSA key data value to OpenSSL EVP key.
+ * @param data the pointer to SLHDSA key data.
+ * @param pKey the pointer to OpenSSL EVP key.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecOpenSSLKeyDataSLHDSAAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
@@ -4089,12 +4010,9 @@ xmlSecOpenSSLKeyDataSLHDSAAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
 }
 
 /**
- * xmlSecOpenSSLKeyDataSLHDSAGetEvp:
- * @data:               the pointer to SLHDSA key data.
- *
- * Gets the OpenSSL EVP key from SLHDSA key data.
- *
- * Returns: pointer to OpenSSL EVP key or NULL if an error occurs.
+ * @brief Gets the OpenSSL EVP key from SLHDSA key data.
+ * @param data the pointer to SLHDSA key data.
+ * @return pointer to OpenSSL EVP key or NULL if an error occurs.
  */
 EVP_PKEY*
 xmlSecOpenSSLKeyDataSLHDSAGetEvp(xmlSecKeyDataPtr data) {
@@ -4129,11 +4047,8 @@ xmlSecOpenSSLKeyValueEdDSACheckKeyType(EVP_PKEY* pKey)
 XMLSEC_OPENSSL_EVP_KEY_KLASS(EdDSA, EdDSA)
 
 /**
- * xmlSecOpenSSLKeyDataEdDSAGetKlass:
- *
- * The OpenSSL EdDSA data klass.
- *
- * Returns: pointer to OpenSSL EdDSA key data klass.
+ * @brief The OpenSSL EdDSA data klass.
+ * @return pointer to OpenSSL EdDSA key data klass.
  */
 xmlSecKeyDataId
 xmlSecOpenSSLKeyDataEdDSAGetKlass(void) {
@@ -4141,13 +4056,10 @@ xmlSecOpenSSLKeyDataEdDSAGetKlass(void) {
 }
 
 /**
- * xmlSecOpenSSLKeyDataEdDSAAdoptEvp:
- * @data:               the pointer to EdDSA key data.
- * @pKey:               the pointer to OpenSSL EVP key.
- *
- * Sets the EdDSA key data value to OpenSSL EVP key.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Sets the EdDSA key data value to OpenSSL EVP key.
+ * @param data the pointer to EdDSA key data.
+ * @param pKey the pointer to OpenSSL EVP key.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecOpenSSLKeyDataEdDSAAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
@@ -4159,12 +4071,9 @@ xmlSecOpenSSLKeyDataEdDSAAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
 }
 
 /**
- * xmlSecOpenSSLKeyDataEdDSAGetEvp:
- * @data:               the pointer to EdDSA key data.
- *
- * Gets the OpenSSL EVP key from EdDSA key data.
- *
- * Returns: pointer to OpenSSL EVP key or NULL if an error occurs.
+ * @brief Gets the OpenSSL EVP key from EdDSA key data.
+ * @param data the pointer to EdDSA key data.
+ * @return pointer to OpenSSL EVP key or NULL if an error occurs.
  */
 EVP_PKEY*
 xmlSecOpenSSLKeyDataEdDSAGetEvp(xmlSecKeyDataPtr data) {
@@ -4198,11 +4107,8 @@ xmlSecOpenSSLKeyValueXdhCheckKeyType(EVP_PKEY* pKey)
 XMLSEC_OPENSSL_EVP_KEY_KLASS(Xdh, XDH)
 
 /**
- * xmlSecOpenSSLKeyDataXdhGetKlass:
- *
- * The OpenSSL XDH data klass.
- *
- * Returns: pointer to OpenSSL XDH key data klass.
+ * @brief The OpenSSL XDH data klass.
+ * @return pointer to OpenSSL XDH key data klass.
  */
 xmlSecKeyDataId
 xmlSecOpenSSLKeyDataXdhGetKlass(void) {
@@ -4210,13 +4116,10 @@ xmlSecOpenSSLKeyDataXdhGetKlass(void) {
 }
 
 /**
- * xmlSecOpenSSLKeyDataXdhAdoptEvp:
- * @data:               the pointer to XDH key data.
- * @pKey:               the pointer to OpenSSL EVP key.
- *
- * Sets the XDH key data value to OpenSSL EVP key.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Sets the XDH key data value to OpenSSL EVP key.
+ * @param data the pointer to XDH key data.
+ * @param pKey the pointer to OpenSSL EVP key.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecOpenSSLKeyDataXdhAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
@@ -4238,12 +4141,9 @@ xmlSecOpenSSLKeyDataXdhAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
 
 
 /**
- * xmlSecOpenSSLKeyDataXdhGetEvp:
- * @data:               the pointer to XDH key data.
- *
- * Gets the OpenSSL EVP key from XDH key data.
- *
- * Returns: pointer to OpenSSL EVP key or NULL if an error occurs.
+ * @brief Gets the OpenSSL EVP key from XDH key data.
+ * @param data the pointer to XDH key data.
+ * @return pointer to OpenSSL EVP key or NULL if an error occurs.
  */
 EVP_PKEY*
 xmlSecOpenSSLKeyDataXdhGetEvp(xmlSecKeyDataPtr data) {

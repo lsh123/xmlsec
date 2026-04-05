@@ -9,13 +9,10 @@
  * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
 /**
- * SECTION:pkikeys
- * @Short_description: Private/public keys implementation for NSS.
- * @Stability: Stable
- *
+ * @addtogroup xmlsec_nss_pkikeys
+ * @brief Private/public keys implementation for NSS.
  * Private/public keys implementation for NSS.
  */
-
 #include "globals.h"
 
 #include <string.h>
@@ -40,11 +37,11 @@
 #include "../keysdata_helpers.h"
 
 
-/**************************************************************************
+/******************************************************************************
  *
  * Internal NSS PKI key CTX
  *
- *************************************************************************/
+  *****************************************************************************/
 typedef struct _xmlSecNssPKIKeyDataCtx  xmlSecNssPKIKeyDataCtx,
                                                 *xmlSecNssPKIKeyDataCtxPtr;
 struct _xmlSecNssPKIKeyDataCtx {
@@ -56,7 +53,7 @@ struct _xmlSecNssPKIKeyDataCtx {
  *
  * PKI key data (dsa/rsa/ec)
  *
- *****************************************************************************/
+  *****************************************************************************/
 XMLSEC_KEY_DATA_DECLARE(NssPKIKeyData, xmlSecNssPKIKeyDataCtx)
 #define xmlSecNssPKIKeyDataSize XMLSEC_KEY_DATA_SIZE(NssPKIKeyData)
 
@@ -205,14 +202,13 @@ xmlSecNssPKIKeyDataAdoptKey(xmlSecKeyDataPtr data,
 }
 
 /**
- * xmlSecNssPKIAdoptKey:
- * @privkey:        the NSS Private Key handle
- * @pubkey:         the NSS Public Key handle
+ * @brief Build a KeyData object from the given Private Key and Public
+ * @param privkey the NSS Private Key handle
+ * @param pubkey the NSS Public Key handle
  *
- * Build a KeyData object from the given Private Key and Public
  * Key handles.
  *
- * Returns: pointer to KeyData object or NULL if an error occurs.
+ * @return pointer to KeyData object or NULL if an error occurs.
  */
 xmlSecKeyDataPtr
 xmlSecNssPKIAdoptKey(SECKEYPrivateKey *privkey,
@@ -302,12 +298,11 @@ xmlSecNssPKIAdoptKey(SECKEYPrivateKey *privkey,
 }
 
 /**
- * xmlSecNssPKIKeyDataGetPubKey:
- * @data:               the pointer to NSS Key data.
+ * @brief Gets the Public Key from the key data.
+ * @param data the pointer to NSS Key data.
  *
- * Gets the Public Key from the key data.
  *
- * Returns: pointer to SECKEYPublicKey or NULL if an error occurs.
+ * @return pointer to SECKEYPublicKey or NULL if an error occurs.
  * Caller is responsible for freeing the key when done
  */
 SECKEYPublicKey *
@@ -327,12 +322,11 @@ xmlSecNssPKIKeyDataGetPubKey(xmlSecKeyDataPtr data) {
 }
 
 /**
- * xmlSecNssPKIKeyDataGetPrivKey:
- * @data:               the pointer to NSS Key data.
+ * @brief Gets the Private Key from the key data.
+ * @param data the pointer to NSS Key data.
  *
- * Gets the Private Key from the key data.
  *
- * Returns: pointer to SECKEYPrivateKey or NULL if an error occurs.
+ * @return pointer to SECKEYPrivateKey or NULL if an error occurs.
  * Caller is responsible for freeing the key when done
  */
 SECKEYPrivateKey*
@@ -352,12 +346,9 @@ xmlSecNssPKIKeyDataGetPrivKey(xmlSecKeyDataPtr data) {
 }
 
 /**
- * xmlSecNssPKIKeyDataGetKeyType:
- * @data:               the pointer to NSS Key data.
- *
- * Gets the Key Type from the key data.
- *
- * Returns: Key Type
+ * @brief Gets the Key Type from the key data.
+ * @param data the pointer to NSS Key data.
+ * @return Key Type
  */
 KeyType
 xmlSecNssPKIKeyDataGetKeyType(xmlSecKeyDataPtr data) {
@@ -380,12 +371,12 @@ xmlSecNssPKIKeyDataGetKeyType(xmlSecKeyDataPtr data) {
 
 /**
  * xmlSecNssPKIKeyDataDuplicate
- * @dst:               the pointer to NSS Key data to copy to.
- * @src:               the pointer to NSS Key data to copy from.
+ * @param dst the pointer to NSS Key data to copy to.
+ * @param src the pointer to NSS Key data to copy from.
  *
- * Duplicates the keydata from src to dst
+ * @brief Duplicates the keydata from src to dst
  *
- * Returns: -1 on error, 0 on success
+ * @return -1 on error, 0 on success
  */
 int
 xmlSecNssPKIKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
@@ -459,11 +450,11 @@ xmlSecNssPKIKeyDataGetSize(xmlSecKeyDataPtr data) {
     return(0);
 }
 
-/**************************************************************************
+/******************************************************************************
  *
  * Helpers
  *
- *************************************************************************/
+  *****************************************************************************/
 static int
 xmlSecNssGetBigNumValue(xmlSecBufferPtr buf, PRArenaPool *arena, SECItem *val) {
     xmlSecByte* data;
@@ -513,7 +504,7 @@ xmlSecNssSetBigNumValue(const SECItem *val, xmlSecBufferPtr buf) {
  *
  * Helper macro to declare PKI key data klass (dsa/rsa/ec)
  *
- *****************************************************************************/
+  *****************************************************************************/
 #define XMLSEC_NSS_PKI_KEY_KLASS_EX(lcname, ucname, ns, generate, xmlRead, xmlWrite)           \
 static xmlSecKeyDataKlass xmlSecNssKeyData ## lcname ## Klass = {                               \
     sizeof(xmlSecKeyDataKlass),                 /* xmlSecSize klassSize */                       \
@@ -549,7 +540,7 @@ static xmlSecKeyDataKlass xmlSecNssKeyData ## lcname ## Klass = {               
 
 
 #ifndef XMLSEC_NO_DSA
-/**************************************************************************
+/******************************************************************************
  *
  * &lt;dsig:DSAKeyValue/&gt; processing
  *
@@ -622,7 +613,7 @@ static xmlSecKeyDataKlass xmlSecNssKeyData ## lcname ## Klass = {               
  * The current implementation does not support Seed and PgenCounter!
  * by this the P, Q and G are *required*!
  *
- *************************************************************************/
+  *****************************************************************************/
 static int              xmlSecNssKeyDataDsaXmlRead      (xmlSecKeyDataId id,
                                                          xmlSecKeyPtr key,
                                                          xmlNodePtr node,
@@ -649,11 +640,8 @@ XMLSEC_NSS_PKI_KEY_KLASS_EX(Dsa, DSA, xmlSecDSigNs,
     xmlSecNssKeyDataDsaXmlWrite)
 
 /**
- * xmlSecNssKeyDataDsaGetKlass:
- *
- * The DSA key data klass.
- *
- * Returns: pointer to DSA key data klass.
+ * @brief The DSA key data klass.
+ * @return pointer to DSA key data klass.
  */
 xmlSecKeyDataId
 xmlSecNssKeyDataDsaGetKlass(void) {
@@ -804,7 +792,7 @@ xmlSecNssKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
     pubkey->keyType = dsaKey;
     arena = NULL; /* owned by pubkey */
 
-    /*** p ***/
+    /****************************************************************************** p  *****************************************************************************/
     ret = xmlSecNssGetBigNumValue(&(dsaValue->p), pubkey->arena, &(pubkey->u.dsa.params.prime));
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssGetBigNumValue(p)",
@@ -812,7 +800,7 @@ xmlSecNssKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
         goto done;
     }
 
-    /*** q ***/
+    /****************************************************************************** q  *****************************************************************************/
     ret = xmlSecNssGetBigNumValue(&(dsaValue->q), pubkey->arena, &(pubkey->u.dsa.params.subPrime));
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssGetBigNumValue(q)",
@@ -820,7 +808,7 @@ xmlSecNssKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
         goto done;
     }
 
-    /*** g ***/
+    /****************************************************************************** g  *****************************************************************************/
     ret = xmlSecNssGetBigNumValue(&(dsaValue->g), pubkey->arena, &(pubkey->u.dsa.params.base));
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssGetBigNumValue(g)",
@@ -830,7 +818,7 @@ xmlSecNssKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
 
     /* next is X (priv key). NSS does not support it, we just ignore it */
 
-    /*** y ***/
+    /****************************************************************************** y  *****************************************************************************/
     ret = xmlSecNssGetBigNumValue(&(dsaValue->y), pubkey->arena, &(pubkey->u.dsa.publicValue));
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssGetBigNumValue(y)",
@@ -899,7 +887,7 @@ xmlSecNssKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     xmlSecAssert2(ctx->pubkey != NULL, -1);
     xmlSecAssert2(SECKEY_GetPublicKeyType(ctx->pubkey) == dsaKey, -1);
 
-    /*** p ***/
+    /****************************************************************************** p  *****************************************************************************/
     ret = xmlSecNssSetBigNumValue(&(ctx->pubkey->u.dsa.params.prime), &(dsaValue->p));
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssNodeSetBigNumValue(p)",
@@ -907,7 +895,7 @@ xmlSecNssKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
         return(-1);
     }
 
-    /*** q ***/
+    /****************************************************************************** q  *****************************************************************************/
     ret = xmlSecNssSetBigNumValue(&(ctx->pubkey->u.dsa.params.subPrime), &(dsaValue->q));
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssNodeSetBigNumValue(q)",
@@ -915,7 +903,7 @@ xmlSecNssKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
         return(-1);
     }
 
-    /*** g ***/
+    /****************************************************************************** g  *****************************************************************************/
     ret = xmlSecNssSetBigNumValue(&(ctx->pubkey->u.dsa.params.base), &(dsaValue->g));
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssNodeSetBigNumValue(g)",
@@ -923,9 +911,9 @@ xmlSecNssKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
         return(-1);
     }
 
-    /*** x: not supported in NSS ***/
+    /****************************************************************************** x: not supported in NSS  *****************************************************************************/
 
-    /*** y ***/
+    /****************************************************************************** y  *****************************************************************************/
     ret = xmlSecNssSetBigNumValue(&(ctx->pubkey->u.dsa.publicValue), &(dsaValue->y));
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssNodeSetBigNumValue(y)",
@@ -940,7 +928,7 @@ xmlSecNssKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
 #endif /* XMLSEC_NO_DSA */
 
 #ifndef XMLSEC_NO_RSA
-/**************************************************************************
+/******************************************************************************
  *
  * &lt;dsig:RSAKeyValue/&gt; processing
  *
@@ -981,7 +969,7 @@ xmlSecNssKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
  * To support reading/writing private keys an PrivateExponent element is added
  * to the end
  *
- *************************************************************************/
+  *****************************************************************************/
 
 static int              xmlSecNssKeyDataRsaXmlRead      (xmlSecKeyDataId id,
                                                          xmlSecKeyPtr key,
@@ -1008,11 +996,8 @@ XMLSEC_NSS_PKI_KEY_KLASS_EX(Rsa, RSA, xmlSecDSigNs,
     xmlSecNssKeyDataRsaXmlWrite)
 
 /**
- * xmlSecNssKeyDataRsaGetKlass:
- *
- * The RSA key data klass.
- *
- * Returns: pointer to RSA key data klass.
+ * @brief The RSA key data klass.
+ * @return pointer to RSA key data klass.
  */
 xmlSecKeyDataId
 xmlSecNssKeyDataRsaGetKlass(void) {
@@ -1070,7 +1055,7 @@ xmlSecNssKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
     pubkey->keyType = rsaKey;
     arena = NULL; /* owned by pubkey */
 
-    /*** Modulus ***/
+    /****************************************************************************** Modulus  *****************************************************************************/
     ret = xmlSecNssGetBigNumValue(&(rsaValue->modulus), pubkey->arena, &(pubkey->u.rsa.modulus));
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssGetBigNumValue(Modulus)",
@@ -1078,7 +1063,7 @@ xmlSecNssKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
         goto done;
     }
 
-    /*** Exponent ***/
+    /****************************************************************************** Exponent  *****************************************************************************/
     ret = xmlSecNssGetBigNumValue(&(rsaValue->publicExponent), pubkey->arena, &(pubkey->u.rsa.publicExponent));
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssGetBigNumValue(Exponent)",
@@ -1144,7 +1129,7 @@ xmlSecNssKeyDataRsaWrite(xmlSecKeyDataId id,xmlSecKeyDataPtr data,
     xmlSecAssert2(ctx->pubkey != NULL, -1);
     xmlSecAssert2(SECKEY_GetPublicKeyType(ctx->pubkey) == rsaKey, -1);
 
-    /*** Modulus ***/
+    /****************************************************************************** Modulus  *****************************************************************************/
     ret = xmlSecNssSetBigNumValue(&(ctx->pubkey->u.rsa.modulus), &(rsaValue->modulus));
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssNodeSetBigNumValue(Modulus)",
@@ -1152,7 +1137,7 @@ xmlSecNssKeyDataRsaWrite(xmlSecKeyDataId id,xmlSecKeyDataPtr data,
         return(-1);
     }
 
-    /*** Exponent ***/
+    /****************************************************************************** Exponent  *****************************************************************************/
     ret = xmlSecNssSetBigNumValue(&(ctx->pubkey->u.rsa.publicExponent), &(rsaValue->publicExponent));
     if(ret < 0) {
         xmlSecInternalError("xmlSecNssNodeSetBigNumValue(Exponent)",
@@ -1252,11 +1237,8 @@ XMLSEC_NSS_PKI_KEY_KLASS_EX(Ec, EC, xmlSecDSig11Ns,
     xmlSecNssKeyDataEcXmlWrite)
 
 /**
- * xmlSecNsskeyDataEcGetKlass:
- *
- * The EC key data klass.
- *
- * Returns: pointer to EC key data klass.
+ * @brief The EC key data klass.
+ * @return pointer to EC key data klass.
  */
 xmlSecKeyDataId
 xmlSecNsskeyDataEcGetKlass(void) {
@@ -1520,11 +1502,11 @@ xmlSecNssKeyDataEcWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKeyValu
 #endif /* XMLSEC_NO_EC */
 
 #ifndef XMLSEC_NO_EDDSA
-/**************************************************************************
+/******************************************************************************
  *
  * EdDSA key data (Ed25519 and Ed448)
  *
- **************************************************************************/
+  *****************************************************************************/
 
 /* EdDSA klass: no XML KeyValue representation, load from file/DER/PEM only */
 #define XMLSEC_NSS_PKI_KEY_KLASS_EDDSA(lcname, ucname, generate)                          \
@@ -1563,11 +1545,8 @@ static xmlSecKeyDataKlass xmlSecNssKeyData ## lcname ## Klass = {               
 XMLSEC_NSS_PKI_KEY_KLASS_EDDSA(EdDSA, EdDSA, NULL)
 
 /**
- * xmlSecNssKeyDataEdDSAGetKlass:
- *
- * The EdDSA key data klass (Ed25519 and Ed448).
- *
- * Returns: pointer to EdDSA key data klass.
+ * @brief The EdDSA key data klass (Ed25519 and Ed448).
+ * @return pointer to EdDSA key data klass.
  */
 xmlSecKeyDataId
 xmlSecNssKeyDataEdDSAGetKlass(void) {
@@ -1577,11 +1556,11 @@ xmlSecNssKeyDataEdDSAGetKlass(void) {
 #endif /* XMLSEC_NO_EDDSA */
 
 #ifndef XMLSEC_NO_XDH
-/**************************************************************************
+/******************************************************************************
  *
  * XDH key data (X25519 and X448, RFC 7748)
  *
- **************************************************************************/
+  *****************************************************************************/
 
 /* XDH klass: no XML KeyValue representation, load from file/DER/PEM only */
 #define XMLSEC_NSS_PKI_KEY_KLASS_XDH(lcname, ucname, generate)                          \
@@ -1620,11 +1599,8 @@ static xmlSecKeyDataKlass xmlSecNssKeyData ## lcname ## Klass = {               
 XMLSEC_NSS_PKI_KEY_KLASS_XDH(Xdh, XDH, NULL)
 
 /**
- * xmlSecNssKeyDataXdhGetKlass:
- *
- * The XDH key data klass (X25519 and X448).
- *
- * Returns: pointer to XDH key data klass.
+ * @brief The XDH key data klass (X25519 and X448).
+ * @return pointer to XDH key data klass.
  */
 xmlSecKeyDataId
 xmlSecNssKeyDataXdhGetKlass(void) {

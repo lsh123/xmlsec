@@ -10,12 +10,9 @@
  * Copyright (c) 2005-2006 Cryptocom LTD (http://www.cryptocom.ru).
  */
 /**
- * SECTION:crypto
- * @Short_description: Crypto transforms implementation for Microsoft Crypto API.
- * @Stability: Stable
- *
+ * @addtogroup xmlsec_mscrypto_crypto
+ * @brief Crypto transforms implementation for Microsoft Crypto API.
  */
-
 #include "globals.h"
 
 #include <string.h>
@@ -47,11 +44,8 @@
 static xmlSecCryptoDLFunctionsPtr gXmlSecMSCryptoFunctions = NULL;
 
 /**
- * xmlSecCryptoGetFunctions_mscrypto:
- *
- * Gets MSCrypto specific functions table.
- *
- * Returns: xmlsec-mscrypto functions table.
+ * @brief Gets MSCrypto specific functions table.
+ * @return xmlsec-mscrypto functions table.
  */
 xmlSecCryptoDLFunctionsPtr
 xmlSecCryptoGetFunctions_mscrypto(void) {
@@ -64,20 +58,20 @@ xmlSecCryptoGetFunctions_mscrypto(void) {
     memset(&functions, 0, sizeof(functions));
     gXmlSecMSCryptoFunctions = &functions;
 
-    /********************************************************************
+    /******************************************************************************
      *
      * Crypto Init/shutdown
      *
-     ********************************************************************/
+      *****************************************************************************/
     gXmlSecMSCryptoFunctions->cryptoInit                        = xmlSecMSCryptoInit;
     gXmlSecMSCryptoFunctions->cryptoShutdown                    = xmlSecMSCryptoShutdown;
     gXmlSecMSCryptoFunctions->cryptoKeysMngrInit                = xmlSecMSCryptoKeysMngrInit;
 
-    /********************************************************************
+    /******************************************************************************
      *
      * Key data ids
      *
-     ********************************************************************/
+      *****************************************************************************/
 #ifndef XMLSEC_NO_DES
     gXmlSecMSCryptoFunctions->keyDataDesGetKlass                = xmlSecMSCryptoKeyDataDesGetKlass;
 #endif /* XMLSEC_NO_DES */
@@ -112,22 +106,22 @@ xmlSecCryptoGetFunctions_mscrypto(void) {
     gXmlSecMSCryptoFunctions->keyDataRawX509CertGetKlass        = xmlSecMSCryptoKeyDataRawX509CertGetKlass;
 #endif /* XMLSEC_NO_X509 */
 
-    /********************************************************************
+    /******************************************************************************
      *
      * Key data store ids
      *
-     ********************************************************************/
+      *****************************************************************************/
 #ifndef XMLSEC_NO_X509
     gXmlSecMSCryptoFunctions->x509StoreGetKlass                 = xmlSecMSCryptoX509StoreGetKlass;
 #endif /* XMLSEC_NO_X509 */
 
-    /********************************************************************
+    /******************************************************************************
      *
      * Crypto transforms ids
      *
-     ********************************************************************/
+      *****************************************************************************/
 
-    /******************************* AES ********************************/
+    /****************************************************************************** AES  *****************************************************************************/
 #ifndef XMLSEC_NO_AES
     gXmlSecMSCryptoFunctions->transformAes128CbcGetKlass        = xmlSecMSCryptoTransformAes128CbcGetKlass;
     gXmlSecMSCryptoFunctions->transformAes192CbcGetKlass        = xmlSecMSCryptoTransformAes192CbcGetKlass;
@@ -137,18 +131,18 @@ xmlSecCryptoGetFunctions_mscrypto(void) {
     gXmlSecMSCryptoFunctions->transformKWAes256GetKlass         = xmlSecMSCryptoTransformKWAes256GetKlass;
 #endif /* XMLSEC_NO_AES */
 
-    /******************************* DES ********************************/
+    /****************************************************************************** DES  *****************************************************************************/
 #ifndef XMLSEC_NO_DES
     gXmlSecMSCryptoFunctions->transformDes3CbcGetKlass          = xmlSecMSCryptoTransformDes3CbcGetKlass;
     gXmlSecMSCryptoFunctions->transformKWDes3GetKlass           = xmlSecMSCryptoTransformKWDes3GetKlass;
 #endif /* XMLSEC_NO_DES */
 
-    /******************************* DSA ********************************/
+    /****************************************************************************** DSA  *****************************************************************************/
 #ifndef XMLSEC_NO_DSA
     gXmlSecMSCryptoFunctions->transformDsaSha1GetKlass          = xmlSecMSCryptoTransformDsaSha1GetKlass;
 #endif /* XMLSEC_NO_DSA */
 
-    /******************************* GOST ********************************/
+    /****************************************************************************** GOST  *****************************************************************************/
 #ifndef XMLSEC_NO_GOST
     gXmlSecMSCryptoFunctions->transformGost2001GostR3411_94GetKlass             = xmlSecMSCryptoTransformGost2001GostR3411_94GetKlass;
 #endif /* XMLSEC_NO_GOST */
@@ -165,7 +159,7 @@ xmlSecCryptoGetFunctions_mscrypto(void) {
     gXmlSecMSCryptoFunctions->transformGostR3411_94GetKlass             = xmlSecMSCryptoTransformGostR3411_94GetKlass;
 #endif /* XMLSEC_NO_GOST */
 
-    /******************************* HMAC ********************************/
+    /****************************************************************************** HMAC  *****************************************************************************/
 #ifndef XMLSEC_NO_HMAC
 
 #ifndef XMLSEC_NO_MD5
@@ -190,12 +184,12 @@ xmlSecCryptoGetFunctions_mscrypto(void) {
 
 #endif /* XMLSEC_NO_HMAC */
 
-    /******************************* MD5 ********************************/
+    /****************************************************************************** MD5  *****************************************************************************/
 #ifndef XMLSEC_NO_MD5
     gXmlSecMSCryptoFunctions->transformMd5GetKlass             = xmlSecMSCryptoTransformMd5GetKlass;
 #endif /* XMLSEC_NO_MD5 */
 
-    /******************************* RSA ********************************/
+    /****************************************************************************** RSA  *****************************************************************************/
 #ifndef XMLSEC_NO_RSA
 
 #ifndef XMLSEC_NO_MD5
@@ -228,7 +222,7 @@ xmlSecCryptoGetFunctions_mscrypto(void) {
 
 #endif /* XMLSEC_NO_RSA */
 
-    /******************************* SHA ********************************/
+    /****************************************************************************** SHA  *****************************************************************************/
 #ifndef XMLSEC_NO_SHA1
     gXmlSecMSCryptoFunctions->transformSha1GetKlass             = xmlSecMSCryptoTransformSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
@@ -242,11 +236,11 @@ xmlSecCryptoGetFunctions_mscrypto(void) {
     gXmlSecMSCryptoFunctions->transformSha512GetKlass          = xmlSecMSCryptoTransformSha512GetKlass;
 #endif /* XMLSEC_NO_SHA512 */
 
-    /********************************************************************
+    /******************************************************************************
      *
      * High-level routines for the xmlsec command-line utility
      *
-     ********************************************************************/
+      *****************************************************************************/
     gXmlSecMSCryptoFunctions->cryptoAppInit                     = xmlSecMSCryptoAppInit;
     gXmlSecMSCryptoFunctions->cryptoAppShutdown                 = xmlSecMSCryptoAppShutdown;
     gXmlSecMSCryptoFunctions->cryptoAppDefaultKeysMngrInit      = xmlSecMSCryptoAppDefaultKeysMngrInit;
@@ -273,11 +267,9 @@ xmlSecCryptoGetFunctions_mscrypto(void) {
 }
 
 /**
- * xmlSecMSCryptoInit:
- *
- * XMLSec library specific crypto engine initialization.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Initializes the MSCrypto crypto engine.
+ * @details XMLSec library specific crypto engine initialization.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecMSCryptoInit (void)  {
@@ -299,11 +291,8 @@ xmlSecMSCryptoInit (void)  {
 }
 
 /**
- * xmlSecMSCryptoShutdown:
- *
- * XMLSec library specific crypto engine shutdown.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief XMLSec library specific crypto engine shutdown.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecMSCryptoShutdown(void) {
@@ -312,12 +301,10 @@ xmlSecMSCryptoShutdown(void) {
 }
 
 /**
- * xmlSecMSCryptoKeysMngrInit:
- * @mngr:               the pointer to keys manager.
- *
- * Adds MSCrypto specific key data stores in keys manager.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Adds MSCrypto specific key data stores.
+ * @details Adds MSCrypto specific key data stores in keys manager.
+ * @param mngr the pointer to keys manager.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecMSCryptoKeysMngrInit(xmlSecKeysMngrPtr mngr) {
@@ -355,13 +342,11 @@ static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Random[] = {
 };
 
 /**
- * xmlSecMSCryptoGenerateRandom:
- * @buffer:             the destination buffer.
- * @size:               the numer of bytes to generate.
- *
- * Generates @size random bytes and puts result in @buffer.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Generates @p size random bytes into @p buffer.
+ * @details Generates @p size random bytes and puts result in @p buffer.
+ * @param buffer the destination buffer.
+ * @param size the numer of bytes to generate.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecMSCryptoGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
@@ -402,12 +387,11 @@ done:
 }
 
 /**
- * xmlSecMSCryptoGetErrorMessage:
- * @dwError:            the error code.
- * @out:                the output buffer.
- * $outSize:            the output buffer size.
+ * @brief Returns the system error message for the give error code.
+ * @param dwError the error code.
+ * @param out the output buffer.
+ * @param outLen the output buffer size.
  *
- * Returns the system error message for the give error code.
  */
 void
 xmlSecMSCryptoGetErrorMessage(DWORD dwError, xmlChar * out, int outLen) {
@@ -462,16 +446,15 @@ done:
 
 
 /**
- * xmlSecMSCryptoErrorsDefaultCallback:
- * @file:               the error location file name (__FILE__ macro).
- * @line:               the error location line number (__LINE__ macro).
- * @func:               the error location function name (__FUNCTION__ macro).
- * @errorObject:        the error specific error object
- * @errorSubject:       the error specific error subject.
- * @reason:             the error code.
- * @msg:                the additional error message.
+ * @brief The default errors reporting callback function. Just a pass through to the default callback.
+ * @param file the error location file name (__FILE__ macro).
+ * @param line the error location line number (__LINE__ macro).
+ * @param func the error location function name (__FUNCTION__ macro).
+ * @param errorObject the error specific error object
+ * @param errorSubject the error specific error subject.
+ * @param reason the error code.
+ * @param msg the additional error message.
  *
- * The default errors reporting callback function. Just a pass through to the default callback.
  */
 void
 xmlSecMSCryptoErrorsDefaultCallback(const char* file, int line, const char* func,
@@ -480,21 +463,18 @@ xmlSecMSCryptoErrorsDefaultCallback(const char* file, int line, const char* func
     xmlSecErrorsDefaultCallback(file, line, func, errorObject, errorSubject, reason, msg);
 }
 
-/********************************************************************
+/******************************************************************************
  *
  * Crypto Providers
  *
- ********************************************************************/
+  *****************************************************************************/
 /**
- * xmlSecMSCryptoFindProvider:
- * @providers:           the pointer to list of providers, last provider should have NULL for name.
- * @pszContainer:        the container name for CryptAcquireContext call
- * @dwFlags:             the flags for CryptAcquireContext call
- * @bUseXmlSecContainer: the flag to indicate whether we should try to use XmlSec container if default fails
- *
- * Finds the first provider from the list
- *
- * Returns: provider handle on success or NULL for error.
+ * @brief Finds the first provider from the list
+ * @param providers the pointer to list of providers, last provider should have NULL for name.
+ * @param pszContainer the container name for CryptAcquireContext call
+ * @param dwFlags the flags for CryptAcquireContext call
+ * @param bUseXmlSecContainer the flag to indicate whether we should try to use XmlSec container if default fails
+ * @return provider handle on success or NULL for error.
  */
 HCRYPTPROV
 xmlSecMSCryptoFindProvider(const xmlSecMSCryptoProviderInfo * providers,
@@ -572,11 +552,11 @@ xmlSecMSCryptoFindProvider(const xmlSecMSCryptoProviderInfo * providers,
 }
 
 
-/********************************************************************
+/******************************************************************************
  *
  * Utils
  *
- ********************************************************************/
+  *****************************************************************************/
 int
 ConvertEndian(const xmlSecByte * src, xmlSecByte * dst, xmlSecSize size) {
     xmlSecByte * p;

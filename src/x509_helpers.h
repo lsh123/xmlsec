@@ -21,22 +21,20 @@
 #include <xmlsec/keysdata.h>
 #include <xmlsec/x509.h>
 
-/**************************************************************************
+/******************************************************************************
  *
  * Helper functions to read/write X509 Keys
  *
- *************************************************************************/
+  *****************************************************************************/
 
 
 /**
- * xmlSecKeyDataX509Read:
- * @data:               the pointer to X509 key data
- * @x509Value:          the pointer to input @xmlSecKeyX509DataValue.
- * @keysMngr:           the pointer to @xmlSecKeysMngr.
- * @flags:              the flags for certs processing.
- *
- *
- * Returns: 0 on success and a negative value otherwise.
+ * @brief Reads a key from X509 data value.
+ * @param data the pointer to X509 key data
+ * @param x509Value the pointer to input xmlSecKeyX509DataValue.
+ * @param keysMngr the pointer to @xmlSecKeysMngr.
+ * @param flags the flags for certs processing.
+ * @return 0 on success and a negative value otherwise.
  */
 typedef int                    (*xmlSecKeyDataX509Read)                 (xmlSecKeyDataPtr data,
                                                                          xmlSecKeyX509DataValuePtr x509Value,
@@ -44,16 +42,13 @@ typedef int                    (*xmlSecKeyDataX509Read)                 (xmlSecK
                                                                          unsigned int flags);
 
 /**
- * xmlSecKeyDataX509Write:
- * @data:               the pointer to result @xmlSecKeyData.
- * @x509Value:          the pointer to result @xmlSecKeyX509DataValue.
- * @content:            the bitmask of what should be output to @x509Value.
- * @context:            the writer function context.
- *
- * If available, writes the next X509 object (cert or crl) into @x509Value.
- *
- * Returns: 1 on success, 0 if no more certs/crls are available, or a negative
- * value if an error occurs.
+ * @brief Writes the next X509 object (cert or crl) into x509Value.
+ * @details If available, writes the next X509 object (cert or crl) into #x509Value.
+ * @param data the pointer to result xmlSecKeyData.
+ * @param x509Value the pointer to result xmlSecKeyX509DataValue.
+ * @param content the bitmask of what should be output to @x509Value.
+ * @param context the writer function context.
+ * @return 1 on success, 0 if no more certs/crls are available, or a negative value if an error occurs.
  */
 typedef int                    (*xmlSecKeyDataX509Write)                (xmlSecKeyDataPtr data,
                                                                          xmlSecKeyX509DataValuePtr x509Value,

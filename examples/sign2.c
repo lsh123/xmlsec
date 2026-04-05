@@ -17,7 +17,7 @@
  * This is free software; see the Copyright file in the source
  * distribution for precise wording.
  *
- * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2024 Aleksey Sanin <aleksey#aleksey.com>. All Rights Reserved.
  */
 #include <stdlib.h>
 #include <string.h>
@@ -132,14 +132,12 @@ main(int argc, char **argv) {
 }
 
 /**
- * sign_file:
- * @xml_file:           the XML file name.
- * @key_file:           the PEM private key file name.
- *
- * Signs the #xml_file using private key from #key_file and dynamicaly
+ * @brief Signs an XML file using a dynamically created enveloped signature template.
+ * @details Signs the #xml_file using private key from #key_file and dynamicaly
  * created enveloped signature template.
- *
- * Returns 0 on success or a negative value if an error occurs.
+ * @param xml_file the XML file name.
+ * @param key_file the PEM private key file name.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 sign_file(const char* xml_file, const char* key_file) {

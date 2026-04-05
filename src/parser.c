@@ -8,12 +8,9 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:parser
- * @Short_description: XML parser functions and the XML parser transform implementation.
- * @Stability: Stable
- *
+ * @addtogroup xmlsec_core_parser
+ * @brief XML parser functions and the XML parser transform implementation.
  */
-
 #include "globals.h"
 
 #include <stdlib.h>
@@ -37,24 +34,24 @@
 #define xmlCtxtPushInput    inputPush
 #endif /* (LIBXML_VERSION < 21500) */
 
-/**************************************************************************
+/******************************************************************************
  *
  * Internal parser
  *
- *****************************************************************************/
+  *****************************************************************************/
 typedef struct _xmlSecParserCtx                                 xmlSecParserCtx,
                                                                 *xmlSecParserCtxPtr;
 struct _xmlSecParserCtx {
     xmlParserCtxtPtr    parserCtx;
 };
 
-/**************************************************************************
+/******************************************************************************
  *
  * XML Parser transform
  *
  * xmlSecTransform + xmlSecParserCtx
  *
- ***************************************************************************/
+  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(Parser, xmlSecParserCtx)
 #define xmlSecParserSize XMLSEC_TRANSFORM_SIZE(Parser)
 
@@ -98,11 +95,8 @@ static xmlSecTransformKlass xmlSecParserKlass = {
 
 
 /**
- * xmlSecTransformXmlParserGetKlass:
- *
- * The XML parser transform.
- *
- * Returns: XML parser transform klass.
+ * @brief The XML parser transform.
+ * @return XML parser transform klass.
  */
 xmlSecTransformId
 xmlSecTransformXmlParserGetKlass(void) {
@@ -327,11 +321,11 @@ xmlSecParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes,
     return(0);
 }
 
-/**************************************************************************
+/******************************************************************************
  *
  * XML Parser functions
  *
- *************************************************************************/
+  *****************************************************************************/
 typedef struct _xmlSecExtMemoryParserCtx {
     const xmlSecByte    *prefix;
     xmlSecSize                  prefixSize;
@@ -342,13 +336,11 @@ typedef struct _xmlSecExtMemoryParserCtx {
 } xmlSecExtMemoryParserCtx, *xmlSecExtMemoryParserCtxPtr;
 
 /**
- * xmlSecParseFile:
- * @filename:           the filename.
- *
- * Loads XML Doc from file @filename. We need a special version because of
+ * @brief Loads an XML document from a file.
+ * @details Loads XML Doc from file @p filename. We need a special version because of
  * c14n issue. The code is copied from xmlSAXParseFileWithData() function.
- *
- * Returns: pointer to the loaded XML document or NULL if an error occurs.
+ * @param filename the filename.
+ * @return pointer to the loaded XML document or NULL if an error occurs.
  */
 xmlDocPtr
 xmlSecParseFile(const char *filename) {
@@ -404,17 +396,15 @@ done:
 }
 
 /**
- * xmlSecParseMemoryExt:
- * @prefix:             the first part of the input.
- * @prefixSize:         the size of the first part of the input.
- * @buffer:             the second part of the input.
- * @bufferSize:         the size of the second part of the input.
- * @postfix:            the third part of the input.
- * @postfixSize:        the size of the third part of the input.
- *
- * Loads XML Doc from 3 chunks of memory: @prefix, @buffer and @postfix.
- *
- * Returns: pointer to the loaded XML document or NULL if an error occurs.
+ * @brief Loads an XML document from 3 memory chunks.
+ * @details Loads XML Doc from 3 chunks of memory: @p prefix, @p buffer and @p postfix.
+ * @param prefix the first part of the input.
+ * @param prefixSize the size of the first part of the input.
+ * @param buffer the second part of the input.
+ * @param bufferSize the size of the second part of the input.
+ * @param postfix the third part of the input.
+ * @param postfixSize the size of the third part of the input.
+ * @return pointer to the loaded XML document or NULL if an error occurs.
  */
 xmlDocPtr
 xmlSecParseMemoryExt(const xmlSecByte *prefix, xmlSecSize prefixSize,
@@ -490,15 +480,13 @@ done:
 
 
 /**
- * xmlSecParseMemory:
- * @buffer:             the input buffer.
- * @size:               the input buffer size.
- * @recovery:           the flag.
- *
- * Loads XML Doc from memory. We need a special version because of
+ * @brief Loads an XML document from memory.
+ * @details Loads XML Doc from memory. We need a special version because of
  * c14n issue. The code is copied from xmlSAXParseMemory() function.
- *
- * Returns: pointer to the loaded XML document or NULL if an error occurs.
+ * @param buffer the input buffer.
+ * @param size the input buffer size.
+ * @param recovery the flag.
+ * @return pointer to the loaded XML document or NULL if an error occurs.
  */
 xmlDocPtr
 xmlSecParseMemory(const xmlSecByte *buffer, xmlSecSize size, int recovery) {
@@ -546,10 +534,9 @@ xmlSecParseMemory(const xmlSecByte *buffer, xmlSecSize size, int recovery) {
 }
 
 /**
- * xmlSecParsePrepareCtxt:
- * @ctxt:               the parser context
- *
- * Prepares parser context for parsing XML for XMLSec.
+ * @brief Prepares parser context for XML parsing.
+ * @details Prepares parser context for parsing XML for XMLSec.
+ * @param ctxt the parser context
  */
 void
 xmlSecParsePrepareCtxt(xmlParserCtxtPtr ctxt) {
@@ -589,11 +576,8 @@ static int g_xmlsec_parser_default_options = XML_PARSE_NONET | XML_PARSE_NOENT |
 static int g_xmlsec_parser_default_options = XML_PARSE_NO_XXE | XML_PARSE_NONET | XML_PARSE_NOENT | XML_PARSE_DTDLOAD | XML_PARSE_DTDATTR | XML_PARSE_NODICT | XML_PARSE_HUGE;
 #endif /* LIBXML_VERSION < 21300 */
 /**
- * xmlSecParserGetDefaultOptions:
- *
- * Gets default LibXML2 parser options.
- *
- * Returns: the current default LibXML2 parser options.
+ * @brief Gets default LibXML2 parser options.
+ * @return the current default LibXML2 parser options.
  */
 int
 xmlSecParserGetDefaultOptions(void) {
@@ -601,10 +585,8 @@ xmlSecParserGetDefaultOptions(void) {
 }
 
 /**
- * xmlSecParserSetDefaultOptions:
- * @options:            the new parser options.
- *
- * Sets default LibXML2 parser options.
+ * @brief Sets default LibXML2 parser options.
+ * @param options the new parser options.
  */
 void xmlSecParserSetDefaultOptions(int options) {
     g_xmlsec_parser_default_options = options;

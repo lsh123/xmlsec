@@ -11,6 +11,13 @@
 #ifndef __XMLSEC_PARSER_H__
 #define __XMLSEC_PARSER_H__
 
+/**
+ * @defgroup xmlsec_core_parser XML Parser
+ * @ingroup xmlsec_core
+ * @brief XML parsing helper functions.
+ * @{
+ */
+
 #include <libxml/tree.h>
 
 #include <xmlsec/exports.h>
@@ -38,9 +45,7 @@ XMLSEC_EXPORT void              xmlSecParserSetDefaultOptions(int options);
 
 
 /**
- * xmlSecTransformXmlParserId:
- *
- * The XML Parser transform klass.
+ * @brief The XML Parser transform klass.
  */
 #define xmlSecTransformXmlParserId \
         xmlSecTransformXmlParserGetKlass()
@@ -50,5 +55,7 @@ XMLSEC_EXPORT xmlSecTransformId xmlSecTransformXmlParserGetKlass        (void);
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
+
+/** @} */ /** xmlsec_core_parser */
 
 #endif /* __XMLSEC_PARSER_H__ */

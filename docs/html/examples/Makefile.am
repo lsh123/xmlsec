@@ -1,31 +1,23 @@
 #
 # docs/html/examples/Makefile.am
 # HTML generation for the examples documentation from Markdown files.
-# Example Markdown files are generated from C/XML source files, then
-# converted to HTML with pandoc. One HTML file per Markdown source file.
+# Example Markdown files are generated into the build directory by
+# docs/md/examples/Makefile.am (which runs before this step).
+# One HTML file is produced per Markdown source file.
 #
 NULL =
 MODULE = xmlsec
 
 TARGET_DIR = @XMLSEC_DOCDIR@/examples
 
-# Markdown source directory (generated files are kept in the source tree)
-MD_SRC_DIR = $(top_srcdir)/docs/md/examples
-
-# Script that generates example Markdown files from C/XML source
-GEN_EXAMPLES_MD = $(top_srcdir)/scripts/gen-examples-md.sh
-
-# C and XML source files used as inputs for examples-md
-EXAMPLES_SOURCE_DIR = $(top_srcdir)/examples
-EXAMPLES_SOURCE_FILES = \
-	$(shell find $(EXAMPLES_SOURCE_DIR) -name '*.c' -print) \
-	$(shell find $(EXAMPLES_SOURCE_DIR) -name '*.xml' -print)
+# Markdown source directory (generated ditorectobuild in the ry by docs/)
+MD_SRC_DIR = $(top_builddir)/docs/md/examples
 
 # files that are distributed from sources
 EXTRA_DIST := \
     $(NULL)
 
-.PHONY: all docs html examples-md
+.PHONY: all docs html
 
 all:
 	@echo "======= Run 'make docs' in the xmlsec/docs folder to rebuild docs"
@@ -41,16 +33,7 @@ docs:
 
 endif
 
-#
-# Generate (or refresh) the per-example Markdown files from C/XML sources.
-# The resulting files live in the source tree so they are always available
-# even without a build; make clean does NOT remove them.
-#
-examples-md: $(EXAMPLES_SOURCE_FILES)
-	@echo "-- Generating examples Markdown files ..."
-	@sh $(GEN_EXAMPLES_MD) $(EXAMPLES_SOURCE_DIR) $(top_srcdir)/docs/md/examples
-
-html: examples-md
+html:
 	@echo "-- Generating examples HTML from Markdown ..."
 	@for md in $(MD_SRC_DIR)/*.md; do \
 		base=$$(basename $$md .md); \

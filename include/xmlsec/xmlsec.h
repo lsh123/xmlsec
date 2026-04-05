@@ -11,6 +11,11 @@
 #ifndef __XMLSEC_H__
 #define __XMLSEC_H__
 
+/**
+ * @defgroup xmlsec_core XML Security Core Library
+ * @brief API reference for the xmlsec core library.
+ */
+
 #include <libxml/tree.h>
 #include <libxml/parser.h>
 
@@ -23,9 +28,14 @@ extern "C" {
 #endif /* __cplusplus */
 
 /**
- * XMLSEC_DEPRECATED:
- *
- * Marks function as deprecated.
+ * @defgroup xmlsec_core_helpers XML Security Init/Shutdown
+ * @ingroup xmlsec_core
+ * @brief Library initialisation, shutdown, configuration, and other helper functions and macros.
+ * @{
+ */
+
+/**
+ * @brief Marks function as deprecated.
  */
 #if !defined(IN_XMLSEC) && !defined(IN_XMLSEC_CRYPTO)
 #if defined(__GNUC__)
@@ -42,23 +52,20 @@ extern "C" {
 #define XMLSEC_DEPRECATED
 #endif /* !defined(IN_XMLSEC) && !defined(IN_XMLSEC_CRYPTO) */
 
-/***********************************************************************
+/******************************************************************************
  *
  * Basic types to make ports to exotic platforms easier
  *
- ***********************************************************************/
+ *****************************************************************************/
 /**
- * xmlSecPtr:
- *
- * Void pointer.
+ * @brief Void pointer.
  */
 typedef void*                                   xmlSecPtr;
 
 
 /**
- * XMLSEC_SIZE_T_FMT:
- *
- * The only reason we need this is that MinGW doesn't recognize "%zu"
+ * @brief The printf format specifier for size_t.
+ * @details The only reason we need this is that MinGW doesn't recognize "%zu"
  * despite the fact that MSVC runtime supports it for 10+ years.
  */
 #if defined(__MINGW64__)
@@ -70,29 +77,33 @@ typedef void*                                   xmlSecPtr;
 #endif /* defined(__MINGW32__) */
 
 /**
- * xmlSecSize:
- *
- * Size of something.
+ * @brief Size of something.
  */
-
 typedef size_t xmlSecSize;
-#define xmlSecSize                              size_t
+
+/**
+ * @brief The minimum value of #xmlSecSize (0).
+ */
 #define XMLSEC_SIZE_MIN                         ((xmlSecSize)0)
+/**
+ * @brief The maximum value of #xmlSecSize.
+ */
 #define XMLSEC_SIZE_MAX                         SIZE_MAX
+/**
+ * @brief The printf format specifier for #xmlSecSize.
+ */
 #define XMLSEC_SIZE_FMT                         XMLSEC_SIZE_T_FMT
 
 /**
- * xmlSecByte:
- *
- * One byte.
+ * @brief One byte.
  */
 typedef unsigned char xmlSecByte;
 
-/***********************************************************************
+/******************************************************************************
  *
  * Forward declarations
  *
- ***********************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecKeyData                   xmlSecKeyData, *xmlSecKeyDataPtr;
 typedef struct _xmlSecKeyDataStore              xmlSecKeyDataStore, *xmlSecKeyDataStorePtr;
 typedef struct _xmlSecKeyInfoCtx                xmlSecKeyInfoCtx, *xmlSecKeyInfoCtxPtr;
@@ -119,15 +130,14 @@ XMLSEC_EXPORT xmlSecSize                        xmlSecStrlen            (const x
 
 
 
-/***********************************************************************
+/******************************************************************************
  *
  * Version checking
  *
- ***********************************************************************/
+ *****************************************************************************/
 /**
- * xmlSecCheckVersionExact:
- *
- * Macro. Returns 1 if the loaded xmlsec library version exactly matches
+ * @brief Checks if loaded library version exactly matches.
+ * @details Macro. Returns 1 if the loaded xmlsec library version exactly matches
  * the one used to compile the caller, 0 if it does not or a negative
  * value if an error occurs.
  */
@@ -135,9 +145,8 @@ XMLSEC_EXPORT xmlSecSize                        xmlSecStrlen            (const x
     xmlSecCheckVersionExt(XMLSEC_VERSION_MAJOR, XMLSEC_VERSION_MINOR, XMLSEC_VERSION_SUBMINOR, xmlSecCheckVersionExactMatch)
 
 /**
- * xmlSecCheckVersion:
- *
- * Macro. Returns 1 if the loaded xmlsec library version ABI compatible with
+ * @brief Checks if loaded library version is ABI compatible.
+ * @details Macro. Returns 1 if the loaded xmlsec library version ABI compatible with
  * the one used to compile the caller, 0 if it does not or a negative
  * value if an error occurs.
  */
@@ -145,21 +154,19 @@ XMLSEC_EXPORT xmlSecSize                        xmlSecStrlen            (const x
     xmlSecCheckVersionExt(XMLSEC_VERSION_MAJOR, XMLSEC_VERSION_MINOR, XMLSEC_VERSION_SUBMINOR, xmlSecCheckVersionABICompatible)
 
 /**
- * xmlSecCheckVersionMode:
- * @xmlSecCheckVersionExactMatch:       the version should match exactly.
- * @xmlSecCheckVersionABICompatible:    the version should be ABI compatible.
- *
- * The xmlsec library version mode.
+ * @brief The xmlsec library version mode.
  */
 typedef enum {
-    xmlSecCheckVersionExactMatch = 0,
-    xmlSecCheckVersionABICompatible
+    xmlSecCheckVersionExactMatch = 0,  /**< the version should match exactly. */
+    xmlSecCheckVersionABICompatible  /**< the version should be ABI compatible. */
 } xmlSecCheckVersionMode;
 
 XMLSEC_EXPORT int       xmlSecCheckVersionExt   (int major,
                                                  int minor,
                                                  int subminor,
                                                  xmlSecCheckVersionMode mode);
+
+/** @} */ /* xmlsec_core_helpers */
 
 #ifdef __cplusplus
 }

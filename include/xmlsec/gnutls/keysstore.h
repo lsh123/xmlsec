@@ -11,6 +11,13 @@
 #ifndef __XMLSEC_GNUTLS_KEYSSTORE_H__
 #define __XMLSEC_GNUTLS_KEYSSTORE_H__
 
+/**
+ * @defgroup xmlsec_gnutls_keysstore GnuTLS Keys Store
+ * @ingroup xmlsec_gnutls
+ * @brief GnuTLS-specific key store implementation.
+ * @{
+ */
+
 #include <xmlsec/exports.h>
 #include <xmlsec/xmlsec.h>
 
@@ -18,15 +25,13 @@
 extern "C" {
 #endif /* __cplusplus */
 
-/****************************************************************************
+/******************************************************************************
  *
  * GnuTLS Keys Store
  *
- ***************************************************************************/
+  *****************************************************************************/
 /**
- * xmlSecGnuTLSKeysStoreId:
- *
- * A GnuTLS keys store klass id.
+ * @brief A GnuTLS keys store klass id.
  */
 #define xmlSecGnuTLSKeysStoreId        xmlSecGnuTLSKeysStoreGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyStoreId   xmlSecGnuTLSKeysStoreGetKlass(void);
@@ -43,5 +48,7 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeysStoreSave     (xmlSecKey
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
+
+/** @} */ /** xmlsec_gnutls_keysstore */
 
 #endif /* __XMLSEC_GNUTLS_KEYSSTORE_H__ */

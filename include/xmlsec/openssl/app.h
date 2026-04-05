@@ -9,6 +9,13 @@
 #ifndef __XMLSEC_OPENSSL_APP_H__
 #define __XMLSEC_OPENSSL_APP_H__
 
+/**
+ * @defgroup xmlsec_openssl_app OpenSSL Application Helpers
+ * @ingroup xmlsec_openssl
+ * @brief High-level application helpers for the OpenSSL back-end.
+ * @{
+ */
+
 #include <openssl/pem.h>
 #include <openssl/bio.h>
 
@@ -22,20 +29,20 @@
 extern "C" {
 #endif /* __cplusplus */
 
-/********************************************************************
+/******************************************************************************
  *
  * Init/shutdown
  *
- ********************************************************************/
+  *****************************************************************************/
 XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLAppInit            (const char* config);
 XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLAppShutdown        (void);
 
 
-/********************************************************************
+/******************************************************************************
  *
  * Keys Manager
  *
- *******************************************************************/
+  *****************************************************************************/
 XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr);
 XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr,
                                                                          xmlSecKeyPtr key);
@@ -85,11 +92,11 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLAppKeysMngrAddCertsFile(xml
 #endif /* XMLSEC_NO_X509 */
 
 
-/********************************************************************
+/******************************************************************************
  *
  * Keys
  *
- ********************************************************************/
+  *****************************************************************************/
 XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr       xmlSecOpenSSLAppKeyLoadEx       (const char *filename,
                                                                          xmlSecKeyDataType type,
                                                                          xmlSecKeyDataFormat format,
@@ -142,5 +149,7 @@ XMLSEC_CRYPTO_EXPORT void*              xmlSecOpenSSLAppGetDefaultPwdCallback(vo
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
+
+/** @} */
 
 #endif /* __XMLSEC_OPENSSL_APP_H__ */

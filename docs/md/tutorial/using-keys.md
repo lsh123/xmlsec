@@ -5,5 +5,5 @@ A key in XML Security Library is a representation of the [<dsig:KeyInfo/>](http:
 > **Figure: The key structure**
 > ![The key structure](images/key.png)
 
-XML Security Library has several "invisible" key data classes. These classes never show up in the keys data list of a key but are used for [<dsig:KeyInfo/>](http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo) children processing ( [<dsig:KeyName/>](http://www.w3.org/TR/xmldsig-core/#sec-KeyName) , <enc:EncryptedKey/>, ...). As with transforms, application might add any new key data objects or replace the default ones.
+XML Security Library has several "invisible" key data classes. These classes never show up in the keys data list of a key but are used for [<dsig:KeyInfo/>](http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo) children processing ( [<dsig:KeyName/>](http://www.w3.org/TR/xmldsig-core/#sec-KeyName) , [<enc:EncryptedKey/>](http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey), ...). As with transforms, application might add any new key data objects or replace the default ones.
 

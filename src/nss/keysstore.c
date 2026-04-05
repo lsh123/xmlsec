@@ -9,10 +9,8 @@
  * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
 /**
- * SECTION:keysstore
- * @Short_description: Keys store implementation for NSS.
- * @Stability: Stable
- *
+ * @addtogroup xmlsec_nss_keysstore
+ * @brief Keys store implementation for NSS.
  * Nss keys store that uses Simple Keys Store under the hood. Uses the
  * Nss DB as a backing store for the finding keys, but the NSS DB is
  * not written to by the keys store.
@@ -48,13 +46,13 @@
 #include "private.h"
 #include "../cast_helpers.h"
 
-/****************************************************************************
+/******************************************************************************
  *
  * Nss Keys Store. Uses Simple Keys Store under the hood
  *
  * xmlSecKeyStore +  xmlSecKeyStorePtr(Simple Keys Store ptr)
  *
- ***************************************************************************/
+  *****************************************************************************/
 XMLSEC_KEY_STORE_DECLARE(NssKeysStore, xmlSecKeyStorePtr)
 #define xmlSecNssKeysStoreSize XMLSEC_KEY_STORE_SIZE(NssKeysStore)
 
@@ -85,11 +83,8 @@ static xmlSecKeyStoreKlass xmlSecNssKeysStoreKlass = {
 };
 
 /**
- * xmlSecNssKeysStoreGetKlass:
- *
- * The Nss list based keys store klass.
- *
- * Returns: Nss list based keys store klass.
+ * @brief The Nss list based keys store klass.
+ * @return Nss list based keys store klass.
  */
 xmlSecKeyStoreId
 xmlSecNssKeysStoreGetKlass(void) {
@@ -97,13 +92,10 @@ xmlSecNssKeysStoreGetKlass(void) {
 }
 
 /**
- * xmlSecNssKeysStoreAdoptKey:
- * @store:              the pointer to Nss keys store.
- * @key:                the pointer to key.
- *
- * Adds @key to the @store.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Adds @p key to the @p store.
+ * @param store the pointer to Nss keys store.
+ * @param key the pointer to key.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecNssKeysStoreAdoptKey(xmlSecKeyStorePtr store, xmlSecKeyPtr key) {
@@ -120,14 +112,11 @@ xmlSecNssKeysStoreAdoptKey(xmlSecKeyStorePtr store, xmlSecKeyPtr key) {
 }
 
 /**
- * xmlSecNssKeysStoreLoad:
- * @store:              the pointer to Nss keys store.
- * @uri:                the filename.
- * @keysMngr:           the pointer to associated keys manager.
- *
- * Reads keys from an XML file.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Reads keys from an XML file.
+ * @param store the pointer to Nss keys store.
+ * @param uri the filename.
+ * @param keysMngr the pointer to associated keys manager.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecNssKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
@@ -137,14 +126,11 @@ xmlSecNssKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
 }
 
 /**
- * xmlSecNssKeysStoreSave:
- * @store:              the pointer to Nss keys store.
- * @filename:           the filename.
- * @type:               the saved keys type (public, private, ...).
- *
- * Writes keys from @store to an XML file.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Writes keys from @p store to an XML file.
+ * @param store the pointer to Nss keys store.
+ * @param filename the filename.
+ * @param type the saved keys type (public, private, ...).
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecNssKeysStoreSave(xmlSecKeyStorePtr store, const char *filename, xmlSecKeyDataType type) {

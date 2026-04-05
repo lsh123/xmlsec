@@ -50,19 +50,17 @@ xmlSecKeyDataDebugXmlDumpImpl(xmlSecKeyDataPtr data, FILE* output) {
         xmlSecKeyDataGetSize(data));
 }
 
-/**************************************************************************
+/******************************************************************************
  *
  * xmlSecKeyDataBinary methods
  *
- *************************************************************************/
+  *****************************************************************************/
 
 /**
- * xmlSecKeyDataBinaryValueInitialize:
- * @data:               the pointer to binary key data.
+ * @brief Initializes binary key data.
+ * @param data the pointer to binary key data.
  *
- * Initializes binary key data.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecKeyDataBinaryValueInitialize(xmlSecKeyDataPtr data) {
@@ -87,13 +85,11 @@ xmlSecKeyDataBinaryValueInitialize(xmlSecKeyDataPtr data) {
 }
 
 /**
- * xmlSecKeyDataBinaryValueDuplicate:
- * @dst:                the pointer to destination binary key data.
- * @src:                the pointer to source binary key data.
+ * @brief Copies binary key data from @p src to @p dst.
+ * @param dst the pointer to destination binary key data.
+ * @param src the pointer to source binary key data.
  *
- * Copies binary key data from @src to @dst.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecKeyDataBinaryValueDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
@@ -122,10 +118,8 @@ xmlSecKeyDataBinaryValueDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
 }
 
 /**
- * xmlSecKeyDataBinaryValueFinalize:
- * @data:               the pointer to binary key data.
- *
- * Cleans up binary key data.
+ * @brief Cleans up binary key data.
+ * @param data the pointer to binary key data.
  */
 void
 xmlSecKeyDataBinaryValueFinalize(xmlSecKeyDataPtr data) {
@@ -142,15 +136,14 @@ xmlSecKeyDataBinaryValueFinalize(xmlSecKeyDataPtr data) {
 }
 
 /**
- * xmlSecKeyDataBinaryValueXmlRead:
- * @id:                 the data klass.
- * @key:                the pointer to destination key.
- * @node:               the pointer to an XML node.
- * @keyInfoCtx:         the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
+ * @brief Reads binary key data from an XML node (base64 decoded).
+ * @details Reads binary key data from @p node to the key by base64 decoding the @p node content.
+ * @param id the data klass.
+ * @param key the pointer to destination key.
+ * @param node the pointer to an XML node.
+ * @param keyInfoCtx the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
  *
- * Reads binary key data from @node to the key by base64 decoding the @node content.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecKeyDataBinaryValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
@@ -256,16 +249,15 @@ done:
 }
 
 /**
- * xmlSecKeyDataBinaryValueXmlWrite:
- * @id:                 the data klass.
- * @key:                the pointer to source key.
- * @node:               the pointer to an XML node.
- * @keyInfoCtx:         the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
+ * @brief Base64 encodes key data and writes to an XML node.
+ * @details Base64 encodes binary key data of klass @p id from the @p key and
+ * sets to the @p node content.
+ * @param id the data klass.
+ * @param key the pointer to source key.
+ * @param node the pointer to an XML node.
+ * @param keyInfoCtx the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
  *
- * Base64 encodes binary key data of klass @id from the @key and
- * sets to the @node content.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecKeyDataBinaryValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
@@ -304,16 +296,15 @@ xmlSecKeyDataBinaryValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 }
 
 /**
- * xmlSecKeyDataBinaryValueBinRead:
- * @id:                 the data klass.
- * @key:                the pointer to destination key.
- * @buf:                the source binary buffer.
- * @bufSize:            the source binary buffer size.
- * @keyInfoCtx:         the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
+ * @brief Reads binary key data from a binary buffer into a key.
+ * @details Reads binary key data of the klass @p id from @p buf to the @p key.
+ * @param id the data klass.
+ * @param key the pointer to destination key.
+ * @param buf the source binary buffer.
+ * @param bufSize the source binary buffer size.
+ * @param keyInfoCtx the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
  *
- * Reads binary key data of the klass @id from @buf to the @key.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecKeyDataBinaryValueBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
@@ -398,16 +389,15 @@ xmlSecKeyDataBinaryValueBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 }
 
 /**
- * xmlSecKeyDataBinaryValueBinWrite:
- * @id:                 the data klass.
- * @key:                the pointer to source key.
- * @buf:                the destination binary buffer.
- * @bufSize:            the destination binary buffer size.
- * @keyInfoCtx:         the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
+ * @brief Writes binary key data from a key into a binary buffer.
+ * @details Writes binary key data of klass @p id from the @p key to @p buf.
+ * @param id the data klass.
+ * @param key the pointer to source key.
+ * @param buf the destination binary buffer.
+ * @param bufSize the destination binary buffer size.
+ * @param keyInfoCtx the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
  *
- * Writes binary key data of klass @id from the @key to @buf.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecKeyDataBinaryValueBinWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
@@ -445,11 +435,10 @@ xmlSecKeyDataBinaryValueBinWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 }
 
 /**
- * xmlSecKeyDataBinaryValueDebugDump:
- * @data:               the pointer to binary key data.
- * @output:             the pointer to output FILE.
- *
- * Prints binary key data debug information to @output.
+ * @brief Prints binary key data debug information.
+ * @details Prints binary key data debug information to @p output.
+ * @param data the pointer to binary key data.
+ * @param output the pointer to output FILE.
  */
 void
 xmlSecKeyDataBinaryValueDebugDump(xmlSecKeyDataPtr data, FILE* output) {
@@ -469,11 +458,10 @@ xmlSecKeyDataBinaryValueDebugDump(xmlSecKeyDataPtr data, FILE* output) {
 }
 
 /**
- * xmlSecKeyDataBinaryValueDebugXmlDump:
- * @data:               the pointer to binary key data.
- * @output:             the pointer to output FILE.
- *
- * Prints binary key data debug information to @output in XML format.
+ * @brief Prints binary key data debug information in XML format.
+ * @details Prints binary key data debug information to @p output in XML format.
+ * @param data the pointer to binary key data.
+ * @param output the pointer to output FILE.
  */
 void
 xmlSecKeyDataBinaryValueDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
@@ -493,12 +481,10 @@ xmlSecKeyDataBinaryValueDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
 }
 
 /**
- * xmlSecKeyDataBinaryValueGetSize:
- * @data:               the pointer to binary key data.
+ * @brief Gets the binary key data size.
+ * @param data the pointer to binary key data.
  *
- * Gets the binary key data size.
- *
- * Returns: binary key data size in bits.
+ * @return binary key data size in bits.
  */
 xmlSecSize
 xmlSecKeyDataBinaryValueGetSize(xmlSecKeyDataPtr data) {
@@ -515,12 +501,10 @@ xmlSecKeyDataBinaryValueGetSize(xmlSecKeyDataPtr data) {
 }
 
 /**
- * xmlSecKeyDataBinaryValueGetBuffer:
- * @data:               the pointer to binary key data.
+ * @brief Gets the binary key data buffer.
+ * @param data the pointer to binary key data.
  *
- * Gets the binary key data buffer.
- *
- * Returns: pointer to binary key data buffer.
+ * @return pointer to binary key data buffer.
  */
 xmlSecBufferPtr
 xmlSecKeyDataBinaryValueGetBuffer(xmlSecKeyDataPtr data) {
@@ -531,14 +515,12 @@ xmlSecKeyDataBinaryValueGetBuffer(xmlSecKeyDataPtr data) {
 }
 
 /**
- * xmlSecKeyDataBinaryValueSetBuffer:
- * @data:               the pointer to binary key data.
- * @buf:                the pointer to binary buffer.
- * @bufSize:            the binary buffer size.
+ * @brief Sets the value of @p data to @p buf.
+ * @param data the pointer to binary key data.
+ * @param buf the pointer to binary buffer.
+ * @param bufSize the binary buffer size.
  *
- * Sets the value of @data to @buf.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecKeyDataBinaryValueSetBuffer(xmlSecKeyDataPtr data,
@@ -557,11 +539,11 @@ xmlSecKeyDataBinaryValueSetBuffer(xmlSecKeyDataPtr data,
 }
 
 #if !defined(XMLSEC_NO_EC)
-/**************************************************************************
+/******************************************************************************
  *
  * Helper functions to read/write EC keys
  *
- *************************************************************************/
+  *****************************************************************************/
 #define XMLSEC_KEY_DATA_EC_INIT_BUF_SIZE                               256
 
 static int                      xmlSecKeyValueEcInitialize              (xmlSecKeyValueEcPtr data);
@@ -574,17 +556,15 @@ static int                      xmlSecKeyValueEcXmlWrite                (xmlSecK
                                                                          int addLineBreaks);
 
 /**
- * xmlSecKeyDataEcXmlRead:
- * @id:                 the data id.
- * @key:                the key.
- * @node:               the pointer to data's value XML node.
- * @keyInfoCtx:         the &lt;dsig:KeyInfo/&gt; node processing context.
- * @readFunc:           the pointer to the function that converts
- *                      @xmlSecKeyValueEc to @xmlSecKeyData.
+ * @brief EC Key data method for reading XML node.
+ * @param id the data id.
+ * @param key the key.
+ * @param node the pointer to data's value XML node.
+ * @param keyInfoCtx the &lt;dsig:KeyInfo/&gt; node processing context.
+ * @param readFunc the pointer to the function that converts
+ *                      xmlSecKeyValueEc to xmlSecKeyData.
  *
- * DSA Key data method for reading XML node.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecKeyDataEcXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
@@ -655,19 +635,17 @@ done:
 }
 
 /**
- * xmlSecKeyDataEcXmlWrite:
- * @id:                 the data id.
- * @key:                the key.
- * @node:               the pointer to data's value XML node.
- * @keyInfoCtx:         the &lt;dsig:KeyInfo/&gt; node processing context.
- * @base64LineSize:     the base64 max line size.
- * @addLineBreaks:      the flag indicating if we need to add line breaks around base64 output.
- * @writeFunc:          the pointer to the function that converts
- *                      @xmlSecKeyData to  @xmlSecKeyValueEc.
+ * @brief EC Key data method for writing XML node.
+ * @param id the data id.
+ * @param key the key.
+ * @param node the pointer to data's value XML node.
+ * @param keyInfoCtx the &lt;dsig:KeyInfo/&gt; node processing context.
+ * @param base64LineSize the base64 max line size.
+ * @param addLineBreaks the flag indicating if we need to add line breaks around base64 output.
+ * @param writeFunc the pointer to the function that converts
+ *                      xmlSecKeyData to  xmlSecKeyValueEc.
  *
- * DSA Key data  method for writing XML node.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecKeyDataEcXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
@@ -1024,7 +1002,7 @@ xmlSecKeyValueEcXmlWrite(xmlSecKeyValueEcPtr data, xmlNodePtr node,  int base64L
 #endif /* !defined(XMLSEC_NO_EC) */
 
 #if !defined(XMLSEC_NO_DH)
-/**************************************************************************
+/******************************************************************************
  *
  * Helper functions to read/write DH keys
  *
@@ -1044,7 +1022,7 @@ xmlSecKeyValueEcXmlWrite(xmlSecKeyValueEcPtr data, xmlNodePtr node,  int base64L
  *      </sequence>
  *  </complexType>
  *
- *************************************************************************/
+  *****************************************************************************/
 #define XMLSEC_KEY_DATA_DH_INIT_BUF_SIZE                               512
 
 static int                      xmlSecKeyValueDhInitialize             (xmlSecKeyValueDhPtr data);
@@ -1057,17 +1035,15 @@ static int                      xmlSecKeyValueDhXmlWrite               (xmlSecKe
                                                                         int addLineBreaks);
 
 /**
- * xmlSecKeyDataDhXmlRead:
- * @id:                 the data id.
- * @key:                the key.
- * @node:               the pointer to data's value XML node.
- * @keyInfoCtx:         the &lt;dsig:KeyInfo/&gt; node processing context.
- * @readFunc:           the pointer to the function that converts
- *                      @xmlSecKeyValueDh to @xmlSecKeyData.
+ * @brief DH Key data method for reading XML node.
+ * @param id the data id.
+ * @param key the key.
+ * @param node the pointer to data's value XML node.
+ * @param keyInfoCtx the &lt;dsig:KeyInfo/&gt; node processing context.
+ * @param readFunc the pointer to the function that converts
+ *                      xmlSecKeyValueDh to xmlSecKeyData.
  *
- * DH Key data method for reading XML node.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecKeyDataDhXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
@@ -1138,19 +1114,17 @@ done:
 }
 
 /**
- * xmlSecKeyDataDhXmlWrite:
- * @id:                 the data id.
- * @key:                the key.
- * @node:               the pointer to data's value XML node.
- * @keyInfoCtx:         the &lt;dsig:KeyInfo/&gt; node processing context.
- * @base64LineSize:     the base64 max line size.
- * @addLineBreaks:      the flag indicating if we need to add line breaks around base64 output.
- * @writeFunc:          the pointer to the function that converts
- *                      @xmlSecKeyData to  @xmlSecKeyValueDh.
+ * @brief DH Key data method for writing XML node.
+ * @param id the data id.
+ * @param key the key.
+ * @param node the pointer to data's value XML node.
+ * @param keyInfoCtx the &lt;dsig:KeyInfo/&gt; node processing context.
+ * @param base64LineSize the base64 max line size.
+ * @param addLineBreaks the flag indicating if we need to add line breaks around base64 output.
+ * @param writeFunc the pointer to the function that converts
+ *                      xmlSecKeyData to  xmlSecKeyValueDh.
  *
- * DH Key data  method for writing XML node.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecKeyDataDhXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
@@ -1501,11 +1475,11 @@ xmlSecKeyValueDhXmlWrite(xmlSecKeyValueDhPtr data, xmlNodePtr node, int base64Li
 
 
 #if !defined(XMLSEC_NO_DSA)
-/**************************************************************************
+/******************************************************************************
  *
  * Helper functions to read/write DSA keys
  *
- *************************************************************************/
+  *****************************************************************************/
 #define XMLSEC_KEY_DATA_DSA_INIT_BUF_SIZE                               512
 
 static int                      xmlSecKeyValueDsaInitialize             (xmlSecKeyValueDsaPtr data);
@@ -1519,17 +1493,15 @@ static int                      xmlSecKeyValueDsaXmlWrite               (xmlSecK
                                                                          int addLineBreaks);
 
 /**
- * xmlSecKeyDataDsaXmlRead:
- * @id:                 the data id.
- * @key:                the key.
- * @node:               the pointer to data's value XML node.
- * @keyInfoCtx:         the &lt;dsig:KeyInfo/&gt; node processing context.
- * @readFunc:           the pointer to the function that converts
- *                      @xmlSecKeyValueDsa to @xmlSecKeyData.
+ * @brief DSA Key data method for reading XML node.
+ * @param id the data id.
+ * @param key the key.
+ * @param node the pointer to data's value XML node.
+ * @param keyInfoCtx the &lt;dsig:KeyInfo/&gt; node processing context.
+ * @param readFunc the pointer to the function that converts
+ *                      xmlSecKeyValueDsa to xmlSecKeyData.
  *
- * DSA Key data method for reading XML node.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
@@ -1599,19 +1571,17 @@ done:
 }
 
 /**
- * xmlSecKeyDataDsaXmlWrite:
- * @id:                 the data id.
- * @key:                the key.
- * @node:               the pointer to data's value XML node.
- * @keyInfoCtx:         the &lt;dsig:KeyInfo/&gt; node processing context.
- * @base64LineSize:     the base64 max line size.
- * @addLineBreaks:      the flag indicating if we need to add line breaks around base64 output.
- * @writeFunc:          the pointer to the function that converts
- *                      @xmlSecKeyData to  @xmlSecKeyValueDsa.
+ * @brief DSA Key data method for writing XML node.
+ * @param id the data id.
+ * @param key the key.
+ * @param node the pointer to data's value XML node.
+ * @param keyInfoCtx the &lt;dsig:KeyInfo/&gt; node processing context.
+ * @param base64LineSize the base64 max line size.
+ * @param addLineBreaks the flag indicating if we need to add line breaks around base64 output.
+ * @param writeFunc the pointer to the function that converts
+ *                      xmlSecKeyData to  xmlSecKeyValueDsa.
  *
- * DSA Key data  method for writing XML node.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
@@ -1951,11 +1921,11 @@ xmlSecKeyValueDsaXmlWrite(xmlSecKeyValueDsaPtr data, xmlNodePtr node,
 
 
 #if !defined(XMLSEC_NO_RSA)
-/**************************************************************************
+/******************************************************************************
  *
  * Helper functions to read/write RSA keys
  *
- *************************************************************************/
+  *****************************************************************************/
 #define XMLSEC_KEY_DATA_RSA_INIT_BUF_SIZE     512
 
 static int                      xmlSecKeyValueRsaInitialize             (xmlSecKeyValueRsaPtr data);
@@ -1969,17 +1939,15 @@ static int                      xmlSecKeyValueRsaXmlWrite               (xmlSecK
                                                                          int addLineBreaks);
 
 /**
- * xmlSecKeyDataRsaXmlRead:
- * @id:                 the data id.
- * @key:                the key.
- * @node:               the pointer to data's value XML node.
- * @keyInfoCtx:         the &lt;dsig:KeyInfo/&gt; node processing context.
- * @readFunc:           the pointer to the function that converts
- *                      @xmlSecKeyValueRsa to @xmlSecKeyData.
+ * @brief RSA Key data method for reading XML node.
+ * @param id the data id.
+ * @param key the key.
+ * @param node the pointer to data's value XML node.
+ * @param keyInfoCtx the &lt;dsig:KeyInfo/&gt; node processing context.
+ * @param readFunc the pointer to the function that converts
+ *                      xmlSecKeyValueRsa to xmlSecKeyData.
  *
- * DSA Key data method for reading XML node.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
@@ -2049,19 +2017,17 @@ done:
 }
 
 /**
- * xmlSecKeyDataRsaXmlWrite:
- * @id:                 the data id.
- * @key:                the key.
- * @node:               the pointer to data's value XML node.
- * @keyInfoCtx:         the &lt;dsig:KeyInfo/&gt; node processing context.
- * @base64LineSize:     the base64 max line size.
- * @addLineBreaks:      the flag indicating if we need to add line breaks around base64 output.
- * @writeFunc:          the pointer to the function that converts
- *                      @xmlSecKeyData to  @xmlSecKeyValueRsa.
+ * @brief RSA Key data method for writing XML node.
+ * @param id the data id.
+ * @param key the key.
+ * @param node the pointer to data's value XML node.
+ * @param keyInfoCtx the &lt;dsig:KeyInfo/&gt; node processing context.
+ * @param base64LineSize the base64 max line size.
+ * @param addLineBreaks the flag indicating if we need to add line breaks around base64 output.
+ * @param writeFunc the pointer to the function that converts
+ *                      xmlSecKeyData to  xmlSecKeyValueRsa.
  *
- * DSA Key data  method for writing XML node.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,

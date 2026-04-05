@@ -4,7 +4,7 @@
  *
  * See Copyright for the status of this software.
  *
- * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2024 Aleksey Sanin <aleksey#aleksey.com>. All Rights Reserved.
  */
 #ifndef __XMLSEC_APPS_CRYPTO_H__
 #define __XMLSEC_APPS_CRYPTO_H__
@@ -27,11 +27,11 @@ xmlSecKeyPtr xmlSecAppCryptoKeyGenerate                         (const char* key
                                                                  const char* name,
                                                                  xmlSecKeyDataType type);
 
-/*****************************************************************************
+/******************************************************************************
  *
  * Simple keys manager
  *
- ****************************************************************************/
+  *****************************************************************************/
 int     xmlSecAppCryptoSimpleKeysMngrInit                       (xmlSecKeysMngrPtr mngr);
 int     xmlSecAppCryptoSimpleKeysMngrLoad                       (xmlSecKeysMngrPtr mngr,
                                                                  const char* filename);

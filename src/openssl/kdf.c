@@ -1,17 +1,14 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * KDF (key derivation) transforms implementation for OpenSSL.
- *
  * This is free software; see the Copyright file in the source
  * distribution for precise wording.
  *
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:crypto
- * @Short_description:
- * @Stability: Stable
+ * @addtogroup xmlsec_openssl_crypto
+ * @brief OpenSSL KDF (key derivation) transforms implementation.
  */
 #include "globals.h"
 
@@ -41,11 +38,11 @@
 #include <openssl/core_names.h>
 #include <openssl/param_build.h>
 
-/***********************************************************************************************************
+/******************************************************************************
  *
  * Internal KDF CTX FOR OpenSSL 3.0 or newer (https://www.openssl.org/docs/man3.0/man3/EVP_KDF_CTX_new.html)
  *
- **********************************************************************************************************/
+  *****************************************************************************/
 
 #define XMLSEC_OPENSSL_KDF_DEFAULT_BUF_SIZE     64
 #define XMLSEC_OPENSSL_KDF_MAX_PARAMS           16
@@ -387,11 +384,11 @@ static xmlSecTransformKlass xmlSecOpenSSL ## name ## Klass = {                  
 
 #ifndef XMLSEC_NO_CONCATKDF
 
-/**************************************************************************
+/******************************************************************************
  *
  * ConcatKDF (SSKDF) transform (https://www.openssl.org/docs/man3.0/man7/EVP_KDF-SS.html)
  *
- *****************************************************************************/
+  *****************************************************************************/
 
 
 static int      xmlSecOpenSSLConcatKdfNodeRead           (xmlSecTransformPtr transform,
@@ -569,19 +566,16 @@ done:
     return(res);
 }
 
-/********************************************************************
+/******************************************************************************
  *
  * ConcatKDF key derivation algorithm
  *
- ********************************************************************/
+  *****************************************************************************/
 XMLSEC_OPENSSL_KDF_KLASS_EX(ConcatKdf, xmlSecOpenSSLConcatKdfNodeRead)
 
 /**
- * xmlSecOpenSSLTransformConcatKdfGetKlass:
- *
- * The ConcatKDF key derivation  transform klass.
- *
- * Returns: the ConcatKDF key derivation transform klass.
+ * @brief The ConcatKDF key derivation transform klass.
+ * @return the ConcatKDF key derivation transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformConcatKdfGetKlass(void) {
@@ -592,14 +586,13 @@ xmlSecOpenSSLTransformConcatKdfGetKlass(void) {
 
 
 
-
 #ifndef XMLSEC_NO_PBKDF2
 
-/**************************************************************************
+/******************************************************************************
  *
  * PBKDF2 transform (https://www.openssl.org/docs/man3.0/man7/EVP_KDF-PBKDF2.html)
  *
- *****************************************************************************/
+  *****************************************************************************/
 
 
 static int      xmlSecOpenSSLPbkdf2NodeRead               (xmlSecTransformPtr transform,
@@ -789,19 +782,16 @@ done:
     return(res);
 }
 
-/********************************************************************
+/******************************************************************************
  *
  * PBKDF2 key derivation algorithm
  *
- ********************************************************************/
+  *****************************************************************************/
 XMLSEC_OPENSSL_KDF_KLASS_EX(Pbkdf2, xmlSecOpenSSLPbkdf2NodeRead)
 
 /**
- * xmlSecOpenSSLTransformPbkdf2GetKlass:
- *
- * The PBKDF2 key derivation  transform klass.
- *
- * Returns: the PBKDF2 key derivation transform klass.
+ * @brief The PBKDF2 key derivation transform klass.
+ * @return the PBKDF2 key derivation transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformPbkdf2GetKlass(void) {
@@ -813,11 +803,11 @@ xmlSecOpenSSLTransformPbkdf2GetKlass(void) {
 
 #ifndef XMLSEC_NO_HKDF
 
-/**************************************************************************
+/******************************************************************************
  *
  * HKDF transform (https://www.openssl.org/docs/man3.0/man7/EVP_KDF-HKDF.html)
  *
- *****************************************************************************/
+  *****************************************************************************/
 
 static int      xmlSecOpenSSLHkdfNodeRead               (xmlSecTransformPtr transform,
                                                          xmlNodePtr node,
@@ -1007,19 +997,16 @@ done:
     return(res);
 }
 
-/********************************************************************
+/******************************************************************************
  *
  * HKDF key derivation algorithm
  *
- ********************************************************************/
+  *****************************************************************************/
 XMLSEC_OPENSSL_KDF_KLASS_EX(Hkdf, xmlSecOpenSSLHkdfNodeRead)
 
 /**
- * xmlSecOpenSSLTransformHkdfGetKlass:
- *
- * The HKDF key derivation transform klass.
- *
- * Returns: the HKDF key derivation transform klass.
+ * @brief The HKDF key derivation transform klass.
+ * @return the HKDF key derivation transform klass.
  */
 xmlSecTransformId
 xmlSecOpenSSLTransformHkdfGetKlass(void) {

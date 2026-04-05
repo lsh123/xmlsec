@@ -11,6 +11,13 @@
 #ifndef __XMLSEC_BN_H__
 #define __XMLSEC_BN_H__
 
+/**
+ * @defgroup xmlsec_core_bn Big Numbers
+ * @ingroup xmlsec_core
+ * @brief Big-number (arbitrary-precision integer) utility functions.
+ * @{
+ */
+
 #include <libxml/tree.h>
 
 #include <xmlsec/exports.h>
@@ -21,21 +28,22 @@
 extern "C" {
 #endif /* __cplusplus */
 
-typedef xmlSecBuffer                                            xmlSecBn,
-                                                                *xmlSecBnPtr;
+/**
+ * @brief Big Number (arbitrary-precision integer).
+ */
+typedef xmlSecBuffer                                            xmlSecBn;
+/**
+ * @brief Pointer to #xmlSecBn.
+ */
+typedef xmlSecBn                                                *xmlSecBnPtr;
 
 /**
- * xmlSecBnFormat:
- * @xmlSecBnBase64:             the base64 decoded binary blob.
- * @xmlSecBnHex:                the hex number.
- * @xmlSecBnDec:                the decimal number.
- *
- * The big numbers formats.
+ * @brief The big numbers formats.
  */
 typedef enum {
-    xmlSecBnBase64,
-    xmlSecBnHex,
-    xmlSecBnDec
+    xmlSecBnBase64,  /**< the base64 decoded binary blob. */
+    xmlSecBnHex,  /**< the hex number. */
+    xmlSecBnDec  /**< the decimal number. */
 } xmlSecBnFormat;
 
 XMLSEC_EXPORT xmlSecBnPtr       xmlSecBnCreate                  (xmlSecSize size);
@@ -96,5 +104,7 @@ XMLSEC_EXPORT int               xmlSecBnBlobSetNodeValue        (const xmlSecByt
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
+
+/** @} */ /** xmlsec_core_bn */
 
 #endif /* __XMLSEC_BN_H__ */

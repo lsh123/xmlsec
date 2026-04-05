@@ -9,9 +9,7 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:crypto
- * @Short_description:
- * @Stability: Stable
+ * @addtogroup xmlsec_nss_crypto
  */
 #include "globals.h"
 
@@ -45,12 +43,12 @@
  * SEC_ERROR_INVALID_ALGORITHM at runtime.  Use CKM_ECDH1_DERIVE instead.
  */
 
-/**************************************************************************
+/******************************************************************************
  *
  * XDH KeyAgreement context (X25519 and X448, RFC 7748)
  * - XMLDSig spec: https://www.w3.org/2021/04/xmldsig-more
  *
- *****************************************************************************/
+  *****************************************************************************/
 
 typedef struct _xmlSecNssKeyAgreementCtx    xmlSecNssKeyAgreementCtx, *xmlSecNssKeyAgreementCtxPtr;
 struct _xmlSecNssKeyAgreementCtx {
@@ -93,15 +91,15 @@ static int              xmlSecNssKeyAgreementExecuteKdf         (xmlSecNssKeyAgr
  *
  * Key Agreement unified context
  *
- *****************************************************************************/
+  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(NssKeyAgreement, xmlSecNssKeyAgreementCtx)
 #define xmlSecNssKeyAgreementSize XMLSEC_TRANSFORM_SIZE(NssKeyAgreement)
 
-/**************************************************************************
+/******************************************************************************
  *
  * Unified transform lifecycle functions
  *
- *****************************************************************************/
+  *****************************************************************************/
 
 static int
 xmlSecNssKeyAgreementInitialize(xmlSecTransformPtr transform) {
@@ -583,20 +581,17 @@ static xmlSecTransformKlass xmlSecNss ## name ## Klass = {                      
     XMLSEC_NSS_KEY_AGREEMENT_KLASS_EX(name, xmlSecName ## name, xmlSecHref ## name)
 
 
-/**************************************************************************
+/******************************************************************************
  *
  * ECDH key agreement transform
  *
- **************************************************************************/
+  *****************************************************************************/
 #ifndef XMLSEC_NO_EC
 XMLSEC_NSS_KEY_AGREEMENT_KLASS(Ecdh)
 
 /**
- * xmlSecNssTransformEcdhGetKlass:
- *
- * The ECDH key agreement transform klass.
- *
- * Returns: the ECDH key agreement transform klass.
+ * @brief The ECDH key agreement transform klass.
+ * @return the ECDH key agreement transform klass.
  */
 xmlSecTransformId
 xmlSecNssTransformEcdhGetKlass(void) {
@@ -605,20 +600,17 @@ xmlSecNssTransformEcdhGetKlass(void) {
 #endif /* XMLSEC_NO_EC */
 
 
-/**************************************************************************
+/******************************************************************************
  *
  * X25519 key agreement transform
  *
- **************************************************************************/
+  *****************************************************************************/
 #ifndef XMLSEC_NO_XDH
 XMLSEC_NSS_KEY_AGREEMENT_KLASS(X25519)
 
 /**
- * xmlSecNssTransformX25519GetKlass:
- *
- * The X25519 key agreement transform klass.
- *
- * Returns: the X25519 key agreement transform klass.
+ * @brief The X25519 key agreement transform klass.
+ * @return the X25519 key agreement transform klass.
  */
 xmlSecTransformId
 xmlSecNssTransformX25519GetKlass(void) {

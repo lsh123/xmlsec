@@ -11,6 +11,13 @@
 #ifndef __XMLSEC_MSCRYPTO_KEYSSTORE_H__
 #define __XMLSEC_MSCRYPTO_KEYSSTORE_H__
 
+/**
+ * @defgroup xmlsec_mscrypto_keysstore MsCrypto Keys Store
+ * @ingroup xmlsec_mscrypto
+ * @brief MsCrypto-specific key store implementation.
+ * @{
+ */
+
 #include <xmlsec/exports.h>
 #include <xmlsec/xmlsec.h>
 
@@ -18,15 +25,13 @@
 extern "C" {
 #endif /* __cplusplus */
 
-/****************************************************************************
+/******************************************************************************
  *
  * MSCrypto Keys Store
  *
- ***************************************************************************/
+  *****************************************************************************/
 /**
- * xmlSecMSCryptoKeysStoreId:
- *
- * A MSCrypto keys store klass id.
+ * @brief A MSCrypto keys store klass id.
  */
 #define xmlSecMSCryptoKeysStoreId       xmlSecMSCryptoKeysStoreGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyStoreId   xmlSecMSCryptoKeysStoreGetKlass (void);
@@ -44,5 +49,7 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecMSCryptoKeysStoreSave     (xmlSecK
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
+
+/** @} */ /** xmlsec_mscrypto_keysstore */
 
 #endif /* __XMLSEC_MSCRYPTO_KEYSSTORE_H__ */

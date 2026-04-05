@@ -34,6 +34,7 @@ And at least one of the following cryptographic libraries:
 
 For example, the following packages need to be installed on Ubuntu to build
 XMLSec library:
+
 ```
 # common build tools
 apt install automake autoconf libtool libtool-bin gcc
@@ -57,7 +58,7 @@ apt install libgnutls30
 apt install libgcrypt20 libgcrypt20-dev
 
 # required for building man pages and docs
-apt install help2man man2html gtk-doc-tools pandoc
+apt install help2man man2html gtk-doc-tools pandoc doxygen python3
 ```
 
 ### Building XMLSec on Linux, Unix, MacOSX, MinGW, Cygwin, etc

@@ -9,6 +9,13 @@
 #ifndef __XMLSEC_MSCRYPTO_APP_H__
 #define __XMLSEC_MSCRYPTO_APP_H__
 
+/**
+ * @defgroup xmlsec_mscrypto_app MsCrypto Application Helpers
+ * @ingroup xmlsec_mscrypto
+ * @brief High-level application helpers for the MsCrypto back-end.
+ * @{
+ */
+
 #include <xmlsec/exports.h>
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
@@ -22,20 +29,20 @@
 extern "C" {
 #endif /* __cplusplus */
 
-/********************************************************************
+/******************************************************************************
  *
  * Init/shutdown
  *
- ********************************************************************/
+  *****************************************************************************/
 XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppInit                           (const char* config);
 XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppShutdown                       (void);
 XMLSEC_CRYPTO_EXPORT LPCTSTR    xmlSecMSCryptoAppGetCertStoreName               (void);
 
-/********************************************************************
+/******************************************************************************
  *
  * Keys Manager
  *
- ********************************************************************/
+  *****************************************************************************/
 XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppDefaultKeysMngrInit            (xmlSecKeysMngrPtr mngr);
 XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppDefaultKeysMngrAdoptKey        (xmlSecKeysMngrPtr mngr,
                                                                                  xmlSecKeyPtr key);
@@ -87,11 +94,11 @@ XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppKeysMngrCrlLoadAndVerify       
 #endif /* XMLSEC_NO_X509 */
 
 
-/********************************************************************
+/******************************************************************************
  *
  * Keys
  *
- ********************************************************************/
+  *****************************************************************************/
 XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecMSCryptoAppKeyLoadEx            (const char *filename,
                                                                          xmlSecKeyDataType type,
                                                                          xmlSecKeyDataFormat format,
@@ -127,5 +134,7 @@ XMLSEC_CRYPTO_EXPORT void*      xmlSecMSCryptoAppGetDefaultPwdCallback  (void);
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
+
+/** @} */ /** xmlsec_mscrypto_app */
 
 #endif /* __XMLSEC_MSCRYPTO_APP_H__ */

@@ -16,7 +16,8 @@ Keys manager is the only object in XML Security Library which is supposed to be 
 XML Security Library has a built-in simple keys store implemented using a keys list. You can use it in your application if you have a small number of keys. However, this might be not a best option from performance point of view if you have a lot of keys. In this case, you probably should implement your own keys store using an SQL database or some other keys storage.
 
 **Example: Initializing keys manager and loading keys from PEM files**
-```
+
+```c
 /**
  * load_keys:
  * @files:		the list of filenames.
@@ -86,14 +87,16 @@ load_keys(char** files, int files_size) {
     return(mngr);
 }
 ```
-[Full program listing](#xmlsec-example-verify2)
+
+[Full program listing](../examples/verify2.md)
 
 ## Using keys manager for signatures/encryption
 
-Instead of specifiying signature or encryption key in the corresponding context object ( `signKey` member of [xmlSecDSigCtx](#xmlsecdsigctx) structure or `encKey` member of [xmlSecEncCtx](#xmlsecencctx) structure), the application can use keys manager to select the signature or encryption key. This is especialy useful when you are encrypting or signing something with a session key which is by itself should be encrypted. The key for the session key encryption in the [<EncryptedKey/>](http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey) node could be selected using [<dsig:KeyName/>](http://www.w3.org/TR/xmldsig-core/#sec-KeyName) node in the template.
+Instead of specifiying signature or encryption key in the corresponding context object ( `signKey` member of [xmlSecDSigCtx](../api/xmlsec_core_xmldsig.md#xmlsecdsigctxcreate) structure or `encKey` member of [xmlSecEncCtx](../api/xmlsec_core_xmlenc.md#xmlsecencctxcreate) structure), the application can use keys manager to select the signature or encryption key. This is especialy useful when you are encrypting or signing something with a session key which is by itself should be encrypted. The key for the session key encryption in the [<EncryptedKey/>](http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey) node could be selected using [<dsig:KeyName/>](http://www.w3.org/TR/xmldsig-core/#sec-KeyName) node in the template.
 
 **Example: Encrypting file using a session key and a permanent key from keys manager**
-```
+
+```c
 /**
  * load_rsa_keys:
  * @key_file:		the key filename.
@@ -284,14 +287,15 @@ done:
     return(res);
 }
 ```
-[Full program listing](#xmlsec-example-encrypt3)
+[Full program listing](../examples/encrypt3.md)
 
 ## Using keys manager for verification/decryption
 
-If more than one key could be used for signature or encryption, then using `signKey` member of [xmlSecDSigCtx](#xmlsecdsigctx) structure or `encKey` member of [xmlSecEncCtx](#xmlsecencctx) structure is not possible. Instead, the application should load known keys in the keys manager and use <dsig:KeyName/> element to specify the key name.
+If more than one key could be used for signature or encryption, then using `signKey` member of [xmlSecDSigCtx](../api/xmlsec_core_xmldsig.md#xmlsecdsigctxcreate) structure or `encKey` member of [xmlSecEncCtx](../api/xmlsec_core_xmlenc.md#xmlsecencctxcreate) structure is not possible. Instead, the application should load known keys in the keys manager and use [<dsig:KeyName/>](http://www.w3.org/TR/xmldsig-core/#sec-KeyName) element to specify the key name.
 
 **Example: Initializing keys manager and loading DES keys from binary files**
-```
+
+```c
 /**
  * load_des_keys:
  * @files:		the list of filenames.
@@ -361,14 +365,15 @@ load_des_keys(char** files, int files_size) {
     return(mngr);
 }
 ```
-[Full program listing](#xmlsec-example-decrypt2)
+[Full program listing](../examples/decrypt2.md)
 
 ## Implementing a custom keys store
 
 In many cases, a default built-in list based keys store is not good enough. For example, XML Security Library (and the built-in default keys store) have no synchronization and you'll need to implement a custom keys store if you want to add or remove keys while other threads use the store.
 
 **Example: Creating a custom keys manager**
-```
+
+```c
 /**
  * create_files_keys_mngr:
  *
@@ -423,7 +428,7 @@ create_files_keys_mngr(void) {
  * <dsig:KeyName/> element is a name of the file with a key.
  * Attention: this probably not a good solution for high traffic systems.
  *
- ***************************************************************************/
+ *****************************************************************************/
 static xmlSecKeyPtr		files_keys_store_find_key	(xmlSecKeyStorePtr store,
 								 const xmlChar* name,
 								 xmlSecKeyInfoCtxPtr keyInfoCtx);
@@ -513,5 +518,5 @@ files_keys_store_find_key(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
     return(key);
 }
 ```
-[Full program listing](#xmlsec-example-decrypt3)
+[Full program listing](../examples/decrypt3.md)
 

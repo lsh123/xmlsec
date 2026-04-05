@@ -10,6 +10,13 @@
 #ifndef __XMLSEC_NSS_APP_H__
 #define __XMLSEC_NSS_APP_H__
 
+/**
+ * @defgroup xmlsec_nss_app NSS Application Helpers
+ * @ingroup xmlsec_nss
+ * @brief High-level application helpers for the NSS back-end.
+ * @{
+ */
+
 #include <nspr.h>
 #include <nss.h>
 
@@ -23,19 +30,19 @@
 extern "C" {
 #endif /* __cplusplus */
 
-/********************************************************************
+/******************************************************************************
  *
  * Init/shutdown
  *
- ********************************************************************/
+  *****************************************************************************/
 XMLSEC_CRYPTO_EXPORT int                xmlSecNssAppInit                (const char* config);
 XMLSEC_CRYPTO_EXPORT int                xmlSecNssAppShutdown            (void);
 
-/********************************************************************
+/******************************************************************************
  *
  * Keys Manager
  *
- ********************************************************************/
+  *****************************************************************************/
 XMLSEC_CRYPTO_EXPORT int                xmlSecNssAppDefaultKeysMngrInit (xmlSecKeysMngrPtr mngr);
 XMLSEC_CRYPTO_EXPORT int                xmlSecNssAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr,
                                                                             xmlSecKeyPtr key);
@@ -76,11 +83,11 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecNssAppKeysMngrCrlLoadAndVerify(xml
 #endif /* XMLSEC_NO_X509 */
 
 
-/********************************************************************
+/******************************************************************************
  *
  * Keys
  *
- ********************************************************************/
+  *****************************************************************************/
 XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr       xmlSecNssAppKeyLoadEx           (const char *filename,
                                                                          xmlSecKeyDataType type,
                                                                          xmlSecKeyDataFormat format,
@@ -130,5 +137,7 @@ XMLSEC_CRYPTO_EXPORT void*              xmlSecNssAppGetDefaultPwdCallback(void);
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
+
+/** @} */ /** xmlsec_nss_app */
 
 #endif /* __XMLSEC_NSS_APP_H__ */

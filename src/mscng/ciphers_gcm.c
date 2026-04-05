@@ -9,7 +9,7 @@
  * Copyright (C) 2018 Miklos Vajna. All Rights Reserved.
  */
 /**
- * SECTION:crypto
+ * @addtogroup xmlsec_mscng_crypto
  */
 #include "globals.h"
 
@@ -27,11 +27,11 @@
 #include "../cast_helpers.h"
 #include "../keysdata_helpers.h"
 
-/**************************************************************************
+/******************************************************************************
  *
  * Internal MSCng Block cipher CTX
  *
- *****************************************************************************/
+  *****************************************************************************/
 typedef struct _xmlSecMSCngGcmBlockCipherCtx xmlSecMSCngGcmBlockCipherCtx, *xmlSecMSCngGcmBlockCipherCtxPtr;
 
 struct _xmlSecMSCngGcmBlockCipherCtx {
@@ -373,7 +373,7 @@ xmlSecMSCngGcmBlockCipherCtxInit(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
     ctx->authInfo.cbNonce = xmlSecMSCngAesGcmNonceLengthInBytes;
 
     /* Tag length is 128 bits */
-    /* See http://www.w3.org/TR/xmlenc-core1/#sec-AES-GCM */
+    /* See http://www.w3.org/TR/xmlenc-core1e/#sec-AES-GCM */
     if (ctx->authInfo.pbTag == NULL) {
         ctx->authInfo.pbTag = xmlMalloc(xmlSecMSCngAesGcmTagLengthInBytes);
         if (ctx->authInfo.pbTag == NULL) {
@@ -424,7 +424,7 @@ xmlSecMSCngGcmBlockCipherCtxInit(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
     if (encrypt) {
 
         /* allocate space for nonce in the output buffer - it is 96 bits for GCM mode */
-        /* See http://www.w3.org/TR/xmlenc-core1/#sec-AES-GCM */
+        /* See http://www.w3.org/TR/xmlenc-core1e/#sec-AES-GCM */
         bufferSize = xmlSecBufferGetSize(out);
         ret = xmlSecBufferSetSize(out, bufferSize + xmlSecMSCngAesGcmNonceLengthInBytes);
         if (ret < 0) {
@@ -826,11 +826,8 @@ xmlSecMSCngGcmBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecT
 XMLSEC_MSCNG_GCM_CIPHER_KLASS(Aes128Gcm)
 
 /**
- * xmlSecMSCngTransformAes128GcmGetKlass:
- *
- * AES 128 GCM encryption transform klass.
- *
- * Returns: pointer to AES 128 GCM encryption transform.
+ * @brief AES 128 GCM encryption transform klass.
+ * @return pointer to AES 128 GCM encryption transform.
  */
 xmlSecTransformId
 xmlSecMSCngTransformAes128GcmGetKlass(void) {
@@ -841,11 +838,8 @@ xmlSecMSCngTransformAes128GcmGetKlass(void) {
 XMLSEC_MSCNG_GCM_CIPHER_KLASS(Aes192Gcm)
 
 /**
- * xmlSecMSCngTransformAes192GcmGetKlass:
- *
- * AES 192 GCM encryption transform klass.
- *
- * Returns: pointer to AES 192 GCM encryption transform.
+ * @brief AES 192 GCM encryption transform klass.
+ * @return pointer to AES 192 GCM encryption transform.
  */
 xmlSecTransformId
 xmlSecMSCngTransformAes192GcmGetKlass(void) {
@@ -856,11 +850,8 @@ xmlSecMSCngTransformAes192GcmGetKlass(void) {
 XMLSEC_MSCNG_GCM_CIPHER_KLASS(Aes256Gcm)
 
 /**
- * xmlSecMSCngTransformAes256GcmGetKlass:
- *
- * AES 256 GCM encryption transform klass.
- *
- * Returns: pointer to AES 256 GCM encryption transform.
+ * @brief AES 256 GCM encryption transform klass.
+ * @return pointer to AES 256 GCM encryption transform.
  */
 xmlSecTransformId
 xmlSecMSCngTransformAes256GcmGetKlass(void) {

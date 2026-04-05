@@ -9,7 +9,7 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:crypto
+ * @addtogroup xmlsec_nss_crypto
  */
 #include "globals.h"
 
@@ -30,11 +30,11 @@
 #include "../cast_helpers.h"
 
 
-/**************************************************************************
+/******************************************************************************
  *
  * <dsig11:DEREncodedKeyValue /> processing
  *
- *************************************************************************/
+  *****************************************************************************/
 static int                      xmlSecNssKeyDataDEREncodedKeyValueXmlRead(xmlSecKeyDataId id,
                                                                  xmlSecKeyPtr key,
                                                                  xmlNodePtr node,
@@ -84,26 +84,25 @@ static xmlSecKeyDataKlass xmlSecNssKeyDataDEREncodedKeyValueKlass = {
 };
 
 /**
- * xmlSecNssKeyDataDEREncodedKeyValueGetKlass:
  * The public key algorithm and value are DER-encoded in accordance with the value that would be used
  * in the Subject Public Key Info field of an X.509 certificate, per section 4.1.2.7 of [RFC5280].
  * The DER-encoded value is then base64-encoded.
  *
- * https://www.w3.org/TR/xmldsig-core1/#sec-DEREncodedKeyValue
+ * https://www.w3.org/TR/xmldsig-core1e/#sec-DEREncodedKeyValue
  *
- * |[<!-- language="XML" -->
+ * @code{.xml}
  *      <!-- targetNamespace="http://www.w3.org/2009/xmldsig11#" -->
  *      <element name="DEREncodedKeyValue" type="dsig11:DEREncodedKeyValueType" />
  *      <complexType name="DEREncodedKeyValueType">
  *          <simpleContent>
  *              <extension base="base64Binary">
- *                  <attribute name="Id" type="ID" use="optional"/>
+ *                  <attribute name=&quot;Id&quot; type="ID" use="optional"/>
  *              </extension>
  *          </simpleContent>
  *      </complexType>
- * ]|
+ * @endcode
  *
- * Returns: the &lt;dsig11:DEREncodedKeyValue/&gt;element processing key data klass.
+ * @return the &lt;dsig11:DEREncodedKeyValue/&gt;element processing key data klass.
  */
 xmlSecKeyDataId
 xmlSecNssKeyDataDEREncodedKeyValueGetKlass(void) {

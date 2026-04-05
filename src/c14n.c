@@ -9,7 +9,7 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:transforms
+ * @addtogroup xmlsec_core_transforms
  */
 #include "globals.h"
 
@@ -35,7 +35,7 @@
  *
  * xmlSecTransform + xmlSecStringList (inclusive namespaces list for ExclC14N).
  *
- *****************************************************************************/
+  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(C14N, xmlSecPtrList)
 #define xmlSecC14NSize XMLSEC_TRANSFORM_SIZE(C14N)
 
@@ -399,11 +399,11 @@ xmlSecTransformC14NExecute(xmlSecTransformId id, xmlSecNodeSetPtr nodes, xmlSecP
     return(0);
 }
 
-/***************************************************************************
+/******************************************************************************
  *
  * C14N
  *
- ***************************************************************************/
+  *****************************************************************************/
 static xmlSecTransformKlass xmlSecTransformInclC14NKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -433,24 +433,22 @@ static xmlSecTransformKlass xmlSecTransformInclC14NKlass = {
 };
 
 /**
- * xmlSecTransformInclC14NGetKlass:
- *
- * Inclusive (regular) canonicalization that omits comments transform klass
+ * @brief Gets the inclusive C14N transform klass.
+ * @details Inclusive (regular) canonicalization that omits comments transform klass
  * (http://www.w3.org/TR/xmldsig-core/#sec-c14nAlg and
  * http://www.w3.org/TR/2001/REC-xml-c14n-20010315).
- *
- * Returns: c14n transform id.
+ * @return c14n transform id.
  */
 xmlSecTransformId
 xmlSecTransformInclC14NGetKlass(void) {
     return(&xmlSecTransformInclC14NKlass);
 }
 
-/***************************************************************************
+/******************************************************************************
  *
  * C14N With Comments
  *
- ***************************************************************************/
+  *****************************************************************************/
 static xmlSecTransformKlass xmlSecTransformInclC14NWithCommentsKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -481,24 +479,22 @@ static xmlSecTransformKlass xmlSecTransformInclC14NWithCommentsKlass = {
 };
 
 /**
- * xmlSecTransformInclC14NWithCommentsGetKlass:
- *
- * Inclusive (regular) canonicalization that includes comments transform klass
+ * @brief Gets the inclusive C14N with comments transform klass.
+ * @details Inclusive (regular) canonicalization that includes comments transform klass
  * (http://www.w3.org/TR/xmldsig-core/#sec-c14nAlg and
  * http://www.w3.org/TR/2001/REC-xml-c14n-20010315).
- *
- * Returns: c14n with comments transform id.
+ * @return c14n with comments transform id.
  */
 xmlSecTransformId
 xmlSecTransformInclC14NWithCommentsGetKlass(void) {
     return(&xmlSecTransformInclC14NWithCommentsKlass);
 }
 
-/***************************************************************************
+/******************************************************************************
  *
  * C14N v1.1
  *
- ***************************************************************************/
+  *****************************************************************************/
 static xmlSecTransformKlass xmlSecTransformInclC14N11Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -528,22 +524,20 @@ static xmlSecTransformKlass xmlSecTransformInclC14N11Klass = {
 };
 
 /**
- * xmlSecTransformInclC14N11GetKlass:
- *
- * C14N version 1.1 (http://www.w3.org/TR/xml-c14n11)
- *
- * Returns: c14n v1.1 transform id.
+ * @brief Gets the C14N v1.1 transform klass.
+ * @details C14N version 1.1 (http://www.w3.org/TR/xml-c14n11)
+ * @return c14n v1.1 transform id.
  */
 xmlSecTransformId
 xmlSecTransformInclC14N11GetKlass(void) {
     return(&xmlSecTransformInclC14N11Klass);
 }
 
-/***************************************************************************
+/******************************************************************************
  *
  * C14N v1.1 With Comments
  *
- ***************************************************************************/
+  *****************************************************************************/
 static xmlSecTransformKlass xmlSecTransformInclC14N11WithCommentsKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -574,11 +568,9 @@ static xmlSecTransformKlass xmlSecTransformInclC14N11WithCommentsKlass = {
 };
 
 /**
- * xmlSecTransformInclC14N11WithCommentsGetKlass:
- *
- * C14N version 1.1 (http://www.w3.org/TR/xml-c14n11) with comments
- *
- * Returns: c14n v1.1 with comments transform id.
+ * @brief Gets the C14N v1.1 with comments transform klass.
+ * @details C14N version 1.1 (http://www.w3.org/TR/xml-c14n11) with comments
+ * @return c14n v1.1 with comments transform id.
  */
 xmlSecTransformId
 xmlSecTransformInclC14N11WithCommentsGetKlass(void) {
@@ -586,11 +578,11 @@ xmlSecTransformInclC14N11WithCommentsGetKlass(void) {
 }
 
 
-/***************************************************************************
+/******************************************************************************
  *
  * Excl C14N
  *
- ***************************************************************************/
+  *****************************************************************************/
 static xmlSecTransformKlass xmlSecTransformExclC14NKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -620,23 +612,21 @@ static xmlSecTransformKlass xmlSecTransformExclC14NKlass = {
 };
 
 /**
- * xmlSecTransformExclC14NGetKlass:
- *
- * Exclusive canoncicalization that omits comments transform klass
+ * @brief Gets the exclusive C14N transform klass.
+ * @details Exclusive canoncicalization that omits comments transform klass
  * (http://www.w3.org/TR/xml-exc-c14n/).
- *
- * Returns: exclusive c14n transform id.
+ * @return exclusive c14n transform id.
  */
 xmlSecTransformId
 xmlSecTransformExclC14NGetKlass(void) {
     return(&xmlSecTransformExclC14NKlass);
 }
 
-/***************************************************************************
+/******************************************************************************
  *
  * Excl C14N With Comments
  *
- ***************************************************************************/
+  *****************************************************************************/
 static xmlSecTransformKlass xmlSecTransformExclC14NWithCommentsKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -666,23 +656,21 @@ static xmlSecTransformKlass xmlSecTransformExclC14NWithCommentsKlass = {
 };
 
 /**
- * xmlSecTransformExclC14NWithCommentsGetKlass:
- *
- * Exclusive canoncicalization that includes comments transform klass
+ * @brief Gets the exclusive C14N with comments transform klass.
+ * @details Exclusive canoncicalization that includes comments transform klass
  * (http://www.w3.org/TR/xml-exc-c14n/).
- *
- * Returns: exclusive c14n with comments transform id.
+ * @return exclusive c14n with comments transform id.
  */
 xmlSecTransformId
 xmlSecTransformExclC14NWithCommentsGetKlass(void) {
     return(&xmlSecTransformExclC14NWithCommentsKlass);
 }
 
-/***************************************************************************
+/******************************************************************************
  *
  * Remove XML tags C14N
  *
- ***************************************************************************/
+  *****************************************************************************/
 static xmlSecTransformKlass xmlSecTransformRemoveXmlTagsC14NKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -712,9 +700,8 @@ static xmlSecTransformKlass xmlSecTransformRemoveXmlTagsC14NKlass = {
 };
 
 /**
- * xmlSecTransformRemoveXmlTagsC14NGetKlass:
- *
- * The "remove xml tags" transform klass (http://www.w3.org/TR/xmldsig-core/#sec-Base-64):
+ * @brief Gets the 'remove xml tags' transform klass.
+ * @details The "remove xml tags" transform klass (http://www.w3.org/TR/xmldsig-core/#sec-Base-64):
  * Base64 transform requires an octet stream for input. If an XPath node-set
  * (or sufficiently functional alternative) is given as input, then it is
  * converted to an octet stream by performing operations logically equivalent
@@ -725,8 +712,7 @@ static xmlSecTransformKlass xmlSecTransformRemoveXmlTagsC14NKlass = {
  * automatically strips away the start and end tags of the identified element
  * and any of its descendant elements as well as any descendant comments and
  * processing instructions. The output of this transform is an octet stream.
- *
- * Returns: "remove xml tags" transform id.
+ * @return "remove xml tags" transform id.
  */
 xmlSecTransformId
 xmlSecTransformRemoveXmlTagsC14NGetKlass(void) {

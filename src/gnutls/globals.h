@@ -29,12 +29,11 @@
 #define XMLSEC_GNUTLS_MAX_DIGEST_SIZE 128
 
 /**
- * xmlSecGnuTLSError:
- * @errorFunction:      the failed function name.
- * @errCode:            the GnuTLS error code.
- * @errorObject:        the error specific error object (e.g. transform, key data, etc).
- *
- * Macro. The XMLSec library macro for reporting GnuTLS errors.
+ * @brief Macro. Reports GnuTLS crypto errors.
+ * @details Macro. The XMLSec library macro for reporting GnuTLS errors.
+ * @param errorFunction the failed function name.
+ * @param errCode the GnuTLS error code.
+ * @param errorObject the error specific error object (e.g. transform, key data, etc).
  */
 #define xmlSecGnuTLSError(errorFunction, errCode, errorObject)  \
     {                                                       \
@@ -50,14 +49,13 @@
     }
 
 /**
- * xmlSecGnuTLSError2:
- * @errorFunction:      the failed function name.
- * @errCode:            the GnuTLS error code.
- * @errorObject:        the error specific error object (e.g. transform, key data, etc).
- * @msg:                the extra message.
- * @param:              the extra message param.
- *
- * Macro. The XMLSec library macro for reporting GnuTLS errors.
+ * @brief Macro. Reports GnuTLS crypto errors.
+ * @details Macro. The XMLSec library macro for reporting GnuTLS errors.
+ * @param errorFunction the failed function name.
+ * @param errCode the GnuTLS error code.
+ * @param errorObject the error specific error object (e.g. transform, key data, etc).
+ * @param msg the extra message.
+ * @param param the extra message param.
  */
 #define xmlSecGnuTLSError2(errorFunction, errCode, errorObject, msg, param)  \
     {                                                       \

@@ -8,13 +8,10 @@
  * Copyright (C) 2018 Miklos Vajna. All Rights Reserved.
  */
 /**
- * SECTION:app
- * @Short_description: Application support functions for Microsoft Cryptography API: Next Generation (CNG).
- * @Stability: Stable
- *
- * Common functions for the xmlsec1 command-line utility for the Microsoft Cryptography API: Next Generation (CNG).
+ * @addtogroup xmlsec_mscng_app
+ * @brief Application support functions for MSCng.
+ * @details Common functions for the xmlsec1 command-line utility for the Microsoft Cryptography API: Next Generation (CNG).
  */
-
 #include "globals.h"
 
 #include <string.h>
@@ -41,14 +38,13 @@
 static LPTSTR gXmlSecMSCngAppCertStoreName = NULL;
 
 /**
- * xmlSecMSCngAppInit:
- * @config:             the path to MSCng configuration (unused).
- *
- * General crypto engine initialization. This function is used
+ * @brief Initializes the MSCng crypto engine.
+ * @details General crypto engine initialization. This function is used
  * by the XMLSec command-line utility and is called before the
- * @xmlSecInit function.
+ * #xmlSecInit function.
  *
- * Returns: 0 on success or a negative value otherwise.
+ * @param config the path to MSCng configuration (unused).
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecMSCngAppInit(const char* config) {
@@ -76,13 +72,12 @@ xmlSecMSCngAppInit(const char* config) {
 }
 
 /**
- * xmlSecMSCngAppShutdown:
- *
- * General crypto engine shutdown. This function is used
+ * @brief Shuts down the MSCng crypto engine.
+ * @details General crypto engine shutdown. This function is used
  * by the XMLSec command-line utility and is called after the
- * @xmlSecShutdown function.
+ * #xmlSecShutdown function.
  *
- * Returns: 0 on success or a negative value otherwise.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecMSCngAppShutdown(void) {
@@ -95,11 +90,10 @@ xmlSecMSCngAppShutdown(void) {
 }
 
 /**
- * xmlSecMSCngAppGetCertStoreName:
+ * @brief Gets the MSCng certs store name.
+ * @details Gets the MS Cng certs store name set by #xmlSecMSCngAppInit function.
  *
- * Gets the MS Cng certs store name set by @xmlSecMSCngAppInit function.
- *
- * Returns: the MS Cng certs name used by xmlsec-mscng.
+ * @return the MS Cng certs name used by xmlsec-mscng.
  */
 LPCTSTR
 xmlSecMSCngAppGetCertStoreName(void) {
@@ -107,17 +101,14 @@ xmlSecMSCngAppGetCertStoreName(void) {
 }
 
 /**
- * xmlSecMSCngAppKeyLoadEx:
- * @filename:           the key filename.
- * @type:               the expected key type.
- * @format:             the key file format.
- * @pwd:                the key file password.
- * @pwdCallback:        the key password callback.
- * @pwdCallbackCtx:     the user context for password callback.
- *
- * Reads a key from a file.
- *
- * Returns: pointer to the key or NULL if an error occurs.
+ * @brief Reads a key from a file.
+ * @param filename the key filename.
+ * @param type the expected key type.
+ * @param format the key file format.
+ * @param pwd the key file password.
+ * @param pwdCallback the key password callback.
+ * @param pwdCallbackCtx the user context for password callback.
+ * @return pointer to the key or NULL if an error occurs.
  */
 
 
@@ -224,17 +215,14 @@ xmlSecMSCngAppKeyLoadEx(const char *filename, xmlSecKeyDataType type XMLSEC_ATTR
 }
 
 /**
- * xmlSecMSCngAppKeyLoadMemory:
- * @data:               the key binary data.
- * @dataSize:           the key binary data size.
- * @format:             the key data format.
- * @pwd:                the key data password.
- * @pwdCallback:        the key password callback.
- * @pwdCallbackCtx:     the user context for password callback.
- *
- * Reads a key from the binary @data.
- *
- * Returns: pointer to the key or NULL if an error occurs.
+ * @brief Reads a key from the binary @p data.
+ * @param data the key binary data.
+ * @param dataSize the key binary data size.
+ * @param format the key data format.
+ * @param pwd the key data password.
+ * @param pwdCallback the key password callback.
+ * @param pwdCallbackCtx the user context for password callback.
+ * @return pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
 xmlSecMSCngAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlSecKeyDataFormat format,
@@ -338,14 +326,13 @@ done:
 
 #ifndef XMLSEC_NO_X509
 /**
- * xmlSecMSCngAppKeyCertLoad:
- * @key:                the pointer to key.
- * @filename:           the certificate filename.
- * @format:             the certificate file format.
+ * @brief Reads the certificate from a file and adds to key.
+ * @details Reads the certificate from @p filename and adds it to key.
  *
- * Reads the certificate from $@filename and adds it to key.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @param key the pointer to key.
+ * @param filename the certificate filename.
+ * @param format the certificate file format.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecMSCngAppKeyCertLoad(xmlSecKeyPtr key, const char* filename,
@@ -359,15 +346,14 @@ xmlSecMSCngAppKeyCertLoad(xmlSecKeyPtr key, const char* filename,
 }
 
 /**
- * xmlSecMSCngAppKeyCertLoadMemory:
- * @key:                the pointer to key.
- * @data:               the certificate binary data.
- * @dataSize:           the certificate binary data size.
- * @format:             the certificate file format.
+ * @brief Reads the certificate from memory and adds to key.
+ * @details Reads the certificate from memory buffer and adds it to key.
  *
- * Reads the certificate from memory buffer and adds it to key.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @param key the pointer to key.
+ * @param data the certificate binary data.
+ * @param dataSize the certificate binary data size.
+ * @param format the certificate file format.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecMSCngAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSecSize dataSize,
@@ -382,19 +368,16 @@ xmlSecMSCngAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSec
 }
 
 /**
- * xmlSecMSCngAppPkcs12Load:
- * @filename:           the PKCS12 key filename.
- * @pwd:                the PKCS12 file password.
- * @pwdCallback:        the password callback.
- * @pwdCallbackCtx:     the user context for password callback.
- *
- * Reads a key and all associated certificates from the PKCS12 file.
- *
- * For uniformity, call @xmlSecMSCngAppKeyLoadEx instead of this function. Pass
+ * @brief Reads key and certificates from PKCS12 file.
+ * @details Reads a key and all associated certificates from the PKCS12 file.
+ * For uniformity, call #xmlSecMSCngAppKeyLoadEx instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
  *
- *
- * Returns: pointer to the key or NULL if an error occurs.
+ * @param filename the PKCS12 key filename.
+ * @param pwd the PKCS12 file password.
+ * @param pwdCallback the password callback.
+ * @param pwdCallbackCtx the user context for password callback.
+ * @return pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
 xmlSecMSCngAppPkcs12Load(const char *filename,
@@ -456,18 +439,17 @@ xmlSecMSCngIsPrivateKeyCert(PCCERT_CONTEXT cert, BOOL isPersistentKey) {
 }
 
 /**
- * xmlSecMSCngAppPkcs12LoadMemory:
- * @data:               the key binary data.
- * @dataSize:           the key binary data size.
- * @pwd:                the PKCS12 password.
- * @pwdCallback:        the password callback.
- * @pwdCallbackCtx:     the user context for password callback.
- *
- * Reads a key and all associated certificates from the PKCS12 binary data.
- * For uniformity, call @xmlSecMSCngAppKeyLoadEx instead of this function. Pass
+ * @brief Reads key and certs from PKCS12 binary data.
+ * @details Reads a key and all associated certificates from the PKCS12 binary data.
+ * For uniformity, call #xmlSecMSCngAppKeyLoadEx instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
  *
- * Returns: pointer to the key or NULL if an error occurs.
+ * @param data the key binary data.
+ * @param dataSize the key binary data size.
+ * @param pwd the PKCS12 password.
+ * @param pwdCallback the password callback.
+ * @param pwdCallbackCtx the user context for password callback.
+ * @return pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
 xmlSecMSCngAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, const char *pwd,
@@ -646,17 +628,16 @@ cleanup:
 }
 
 /**
- * xmlSecMSCngAppKeysMngrCertLoad:
- * @mngr:               the keys manager.
- * @filename:           the certificate file.
- * @format:             the certificate file format.
- * @type:               the flag that indicates is the certificate in @filename
+ * @brief Reads a cert from a file and adds to the key store.
+ * @details Reads cert from @p filename and adds to the list of trusted or known
+ * untrusted certs in @p store.
+ *
+ * @param mngr the keys manager.
+ * @param filename the certificate file.
+ * @param format the certificate file format.
+ * @param type the flag that indicates is the certificate in @p filename
  *                      trusted or not.
- *
- * Reads cert from @filename and adds to the list of trusted or known
- * untrusted certs in @store.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecMSCngAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
@@ -697,17 +678,16 @@ xmlSecMSCngAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
 }
 
 /**
- * xmlSecMSCngAppKeysMngrCertLoadMemory:
- * @mngr:               the pointer to keys manager.
- * @data:               the certificate data.
- * @dataSize:           the certificate data size.
- * @format:             the certificate format (PEM or DER).
- * @type:               the certificate type (trusted/untrusted).
+ * @brief Reads cert from buffer and adds to the key store.
+ * @details Reads cert from @p data and adds to the list of trusted or known
+ * untrusted certs in @p store.
  *
- * Reads cert from @data and adds to the list of trusted or known
- * untrusted certs in @store
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @param mngr the pointer to keys manager.
+ * @param data the certificate data.
+ * @param dataSize the certificate data size.
+ * @param format the certificate format (PEM or DER).
+ * @param type the certificate type (trusted/untrusted).
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecMSCngAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* data,
@@ -759,14 +739,13 @@ xmlSecMSCngAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* d
 }
 
 /**
- * xmlSecMSCngAppKeysMngrCrlLoad:
- * @mngr:               the keys manager.
- * @filename:           the CRL file.
- * @format:             the CRL file format.
+ * @brief Reads CRLs from a file and adds to the store.
+ * @details Reads crls from @p filename and adds to the list of crls in @p store.
  *
- * Reads crls from @filename and adds to the list of crls in @store.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @param mngr the keys manager.
+ * @param filename the CRL file.
+ * @param format the CRL file format.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecMSCngAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, xmlSecKeyDataFormat format) {
@@ -837,15 +816,14 @@ xmlSecMSCngReadCrlFromBuffer(const xmlSecByte* data, xmlSecSize dataSize,
 }
 
 /**
- * xmlSecMSCngAppKeysMngrCrlLoadAndVerify:
- * @mngr:               the keys manager.
- * @filename:           the CRL filename.
- * @format:             the CRL format (PEM or DER).
- * @keyInfoCtx:         the key info context for verification parameters.
+ * @brief Loads and verifies a CRL from a file.
+ * @details Atomically loads and verifies a CRL from @p filename.
  *
- * Atomically loads and verifies a CRL from @filename.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @param mngr the keys manager.
+ * @param filename the CRL filename.
+ * @param format the CRL format (PEM or DER).
+ * @param keyInfoCtx the key info context for verification parameters.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecMSCngAppKeysMngrCrlLoadAndVerify(xmlSecKeysMngrPtr mngr, const char *filename,
@@ -911,15 +889,14 @@ done:
 }
 
 /**
- * xmlSecMSCngAppKeysMngrCrlLoadMemory:
- * @mngr:               the pointer to keys manager.
- * @data:               the CRL data.
- * @dataSize:           the CRL data size.
- * @format:             the CRL format (PEM or DER).
+ * @brief Reads CRLs from memory and adds to the store.
+ * @details Reads crls from @p data and adds to the list of crls in @p store.
  *
- * Reads crls from @data and adds to the list of crls in @store
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @param mngr the pointer to keys manager.
+ * @param data the CRL data.
+ * @param dataSize the CRL data size.
+ * @param format the CRL format (PEM or DER).
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecMSCngAppKeysMngrCrlLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* data, xmlSecSize dataSize, xmlSecKeyDataFormat format) {
@@ -959,13 +936,12 @@ xmlSecMSCngAppKeysMngrCrlLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* da
 #endif /* XMLSEC_NO_X509 */
 
 /**
- * xmlSecMSCngAppDefaultKeysMngrInit:
- * @mngr:               the pointer to keys manager.
- *
- * Initializes @mngr with simple keys store #xmlSecSimpleKeysStoreId
+ * @brief Initializes the default key manager for MSCng.
+ * @details Initializes @p mngr with simple keys store #xmlSecSimpleKeysStoreId
  * and a default MSCng crypto key data stores.
  *
- * Returns: 0 on success or a negative value otherwise.
+ * @param mngr the pointer to keys manager.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecMSCngAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
@@ -1002,14 +978,13 @@ xmlSecMSCngAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
 }
 
 /**
- * xmlSecMSCngAppDefaultKeysMngrAdoptKey:
- * @mngr:               the pointer to keys manager.
- * @key:                the pointer to key.
- *
- * Adds @key to the keys manager @mngr created with #xmlSecMSCngAppDefaultKeysMngrInit
+ * @brief Adds @p key to the keys manager.
+ * @details Adds @p key to the keys manager @p mngr created with #xmlSecMSCngAppDefaultKeysMngrInit
  * function.
  *
- * Returns: 0 on success or a negative value otherwise.
+ * @param mngr the pointer to keys manager.
+ * @param key the pointer to key.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecMSCngAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key) {
@@ -1035,20 +1010,19 @@ xmlSecMSCngAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key) 
 }
 
 /**
- * xmlSecMSCngAppDefaultKeysMngrVerifyKey:
- * @mngr:               the pointer to keys manager.
- * @key:                the pointer to key.
- * @keyInfoCtx:         the key info context for verification.
- *
- * Verifies @key with the keys manager @mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
+ * @brief Verifies @p key using the keys manager.
+ * @details Verifies @p key with the keys manager @p mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
  * function:
  * - Checks that key certificate is present
  * - Checks that key certificate is valid
  *
- * Adds @key to the keys manager @mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
+ * Adds @p key to the keys manager @p mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
  * function.
  *
- * Returns: 1 if key is verified, 0 otherwise, or a negative value if an error occurs.
+ * @param mngr the pointer to keys manager.
+ * @param key the pointer to key.
+ * @param keyInfoCtx the key info context for verification.
+ * @return 1 if key is verified, 0 otherwise, or a negative value if an error occurs.
  */
 int
 xmlSecMSCngAppDefaultKeysMngrVerifyKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key, xmlSecKeyInfoCtxPtr keyInfoCtx) {
@@ -1080,14 +1054,13 @@ xmlSecMSCngAppDefaultKeysMngrVerifyKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key,
 }
 
 /**
- * xmlSecMSCngAppDefaultKeysMngrLoad:
- * @mngr:               the pointer to keys manager.
- * @uri:                the uri.
- *
- * Loads XML keys file from @uri to the keys manager @mngr created
+ * @brief Loads the XML keys file into the keys manager.
+ * @details Loads XML keys file from @p uri to the keys manager @p mngr created
  * with #xmlSecMSCngAppDefaultKeysMngrInit function.
  *
- * Returns: 0 on success or a negative value otherwise.
+ * @param mngr the pointer to keys manager.
+ * @param uri the uri.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecMSCngAppDefaultKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
@@ -1114,14 +1087,11 @@ xmlSecMSCngAppDefaultKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
 }
 
 /**
- * xmlSecMSCngAppDefaultKeysMngrSave:
- * @mngr:               the pointer to keys manager.
- * @filename:           the destination filename.
- * @type:               the type of keys to save (public/private/symmetric).
- *
- * Saves keys from @mngr to  XML keys file.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Saves keys from @p mngr to XML keys file.
+ * @param mngr the pointer to keys manager.
+ * @param filename the destination filename.
+ * @param type the type of keys to save (public/private/symmetric).
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecMSCngAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename, xmlSecKeyDataType type) {
@@ -1148,11 +1118,9 @@ xmlSecMSCngAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename, 
 }
 
 /**
- * xmlSecMSCngAppGetDefaultPwdCallback:
+ * @brief Gets default password callback.
  *
- * Gets default password callback.
- *
- * Returns: default password callback.
+ * @return default password callback.
  */
 void*
 xmlSecMSCngAppGetDefaultPwdCallback(void) {

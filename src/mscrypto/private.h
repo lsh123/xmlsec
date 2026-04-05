@@ -24,22 +24,22 @@
 extern "C" {
 #endif /* __cplusplus */
 
-/********************************************************************
+/******************************************************************************
  *
  * Utils
  *
- ********************************************************************/
+  *****************************************************************************/
 int                ConvertEndian                    (const xmlSecByte * src,
                                                      xmlSecByte * dst,
                                                      xmlSecSize size);
 int                ConvertEndianInPlace             (xmlSecByte * buf,
                                                      xmlSecSize size);
 
-/********************************************************************
+/******************************************************************************
  *
  * Crypto Providers
  *
- ********************************************************************/
+  *****************************************************************************/
 
 /* We need to redefine both to ensure that we can pick the right one at runtime (instead of compile time) */
 #define XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV_PROTOTYPE_A     "Microsoft Enhanced RSA and AES Cryptographic Provider (Prototype)"
@@ -59,9 +59,7 @@ int                ConvertEndianInPlace             (xmlSecByte * buf,
 #endif
 
 /**
- * xmlSecMSCryptoProviderInfo:
- *
- * Contains information for looking up provider from MS Crypto.
+ * @brief Contains information for looking up provider from MS Crypto.
  */
 typedef struct _xmlSecMSCryptoProviderInfo {
     LPCTSTR                 providerName;
@@ -83,7 +81,7 @@ HCRYPTPROV         xmlSecMSCryptoFindProvider                   (const xmlSecMSC
  * just like that. These functions are based upon MS kb article #228786
  * and "Base Provider Key BLOBs" article for priv key blob format.
  *
- ******************************************************************************/
+  *****************************************************************************/
 BOOL               xmlSecMSCryptoCreatePrivateExponentOneKey    (HCRYPTPROV hProv,
                                                                  HCRYPTKEY *hPrivateKey);
 
@@ -99,7 +97,7 @@ BOOL               xmlSecMSCryptoImportPlainSessionBlob         (HCRYPTPROV hPro
  *
  * X509 Util functions
  *
- ******************************************************************************/
+  *****************************************************************************/
 #ifndef XMLSEC_NO_X509
 PCCERT_CONTEXT     xmlSecMSCryptoX509FindCertBySubject          (HCERTSTORE store,
                                                                  const LPTSTR wcSubject,

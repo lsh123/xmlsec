@@ -11,6 +11,13 @@
 #ifndef __XMLSEC_NODESET_H__
 #define __XMLSEC_NODESET_H__
 
+/**
+ * @defgroup xmlsec_core_nodeset XML Node Sets
+ * @ingroup xmlsec_core
+ * @brief XML node-set implementation used during transformations.
+ * @{
+ */
+
 #include <libxml/tree.h>
 #include <libxml/xpath.h>
 
@@ -24,81 +31,49 @@ extern "C" {
 typedef struct _xmlSecNodeSet   xmlSecNodeSet, *xmlSecNodeSetPtr;
 
 /**
- * xmlSecNodeSetType:
- * @xmlSecNodeSetNormal:        nodes set = nodes in the list.
- * @xmlSecNodeSetInvert:        nodes set = all document nodes minus nodes in the list.
- * @xmlSecNodeSetTree:          nodes set = nodes in the list and all their subtress.
- * @xmlSecNodeSetTreeWithoutComments:           nodes set = nodes in the list and
- *                              all their subtress but no comment nodes.
- * @xmlSecNodeSetTreeInvert:    nodes set = all document nodes minus nodes in the
- *                              list and all their subtress.
- * @xmlSecNodeSetTreeWithoutCommentsInvert:     nodes set = all document nodes
- *                              minus (nodes in the list and all their subtress
- *                              plus all comment nodes).
- * @xmlSecNodeSetList:          nodes set = all nodes in the children list of nodes sets.
- *
- * The basic nodes sets types.
+ * @brief The basic nodes sets types.
  */
 typedef enum {
-    xmlSecNodeSetNormal = 0,
-    xmlSecNodeSetInvert,
-    xmlSecNodeSetTree,
-    xmlSecNodeSetTreeWithoutComments,
-    xmlSecNodeSetTreeInvert,
-    xmlSecNodeSetTreeWithoutCommentsInvert,
-    xmlSecNodeSetList
+    xmlSecNodeSetNormal = 0,  /**< nodes set = nodes in the list. */
+    xmlSecNodeSetInvert,  /**< nodes set = all document nodes minus nodes in the list. */
+    xmlSecNodeSetTree,  /**< nodes set = nodes in the list and all their subtress. */
+    xmlSecNodeSetTreeWithoutComments,  /**< nodes set = nodes in the list and all their subtress but no comment nodes. */
+    xmlSecNodeSetTreeInvert,  /**< nodes set = all document nodes minus nodes in the list and all their subtress. */
+    xmlSecNodeSetTreeWithoutCommentsInvert,  /**< nodes set = all document nodes minus (nodes in the list and all their subtress plus all comment nodes). */
+    xmlSecNodeSetList  /**< nodes set = all nodes in the children list of nodes sets. */
 } xmlSecNodeSetType;
 
 /**
- * xmlSecNodeSetOp:
- * @xmlSecNodeSetIntersection:  intersection.
- * @xmlSecNodeSetSubtraction:   subtraction.
- * @xmlSecNodeSetUnion:         union.
- *
- * The simple nodes sets operations.
+ * @brief The simple nodes sets operations.
  */
 typedef enum {
-    xmlSecNodeSetIntersection = 0,
-    xmlSecNodeSetSubtraction,
-    xmlSecNodeSetUnion
+    xmlSecNodeSetIntersection = 0,  /**< intersection. */
+    xmlSecNodeSetSubtraction,  /**< subtraction. */
+    xmlSecNodeSetUnion  /**< union. */
 } xmlSecNodeSetOp;
 
 /**
- * xmlSecNodeSet:
- * @nodes:                      the nodes list.
- * @doc:                        the parent XML document.
- * @destroyDoc:                 the flag: if set to 1 then @doc will
- *                              be destroyed when node set is destroyed.
- * @type:                       the nodes set type.
- * @op:                         the operation type.
- * @next:                       the next nodes set.
- * @prev:                       the previous nodes set.
- * @children:                   the children list (valid only if type
- *                              equal to #xmlSecNodeSetList).
- *
- * The enhanced nodes set.
+ * @brief The enhanced nodes set.
  */
 struct _xmlSecNodeSet {
-    xmlNodeSetPtr       nodes;
-    xmlDocPtr           doc;
-    int                 destroyDoc;
-    xmlSecNodeSetType   type;
-    xmlSecNodeSetOp     op;
-    xmlSecNodeSetPtr    next;
-    xmlSecNodeSetPtr    prev;
-    xmlSecNodeSetPtr    children;
+    xmlNodeSetPtr       nodes;  /**< the nodes list. */
+    xmlDocPtr           doc;  /**< the parent XML document. */
+    int                 destroyDoc;  /**< the flag: if set to 1 then @p doc will be destroyed when node set is destroyed. */
+    xmlSecNodeSetType   type;  /**< the nodes set type. */
+    xmlSecNodeSetOp     op;  /**< the operation type. */
+    xmlSecNodeSetPtr    next;  /**< the next nodes set. */
+    xmlSecNodeSetPtr    prev;  /**< the previous nodes set. */
+    xmlSecNodeSetPtr    children;  /**< the children list (valid only if type equal to #xmlSecNodeSetList). */
 };
 
 /**
- * xmlSecNodeSetWalkCallback:
- * @nset:                       the pointer to #xmlSecNodeSet structure.
- * @cur:                        the pointer current XML node.
- * @parent:                     the pointer to the @cur parent node.
- * @data:                       the pointer to application specific data.
- *
- * The callback function called once per each node in the nodes set.
- *
- * Returns: 0 on success or a negative value if an error occurs
+ * @brief Node walk callback, called once per node in the nodes set.
+ * @details The callback function called once per each node in the nodes set.
+ * @param nset the pointer to xmlSecNodeSet structure.
+ * @param cur the pointer current XML node.
+ * @param parent the pointer to the @p cur parent node.
+ * @param data the pointer to application specific data.
+ * @return 0 on success or a negative value if an error occurs
  * an walk procedure should be interrupted.
  */
 typedef int (*xmlSecNodeSetWalkCallback)                (xmlSecNodeSetPtr nset,
@@ -135,5 +110,7 @@ XMLSEC_EXPORT void              xmlSecNodeSetDebugDump  (xmlSecNodeSetPtr nset,
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
+
+/** @} */ /** xmlsec_core_nodeset */
 
 #endif /* __XMLSEC_NODESET_H__ */

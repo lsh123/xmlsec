@@ -31,7 +31,7 @@
   * Main macros to help with casting, we assume that LL and ULL are the largest
   * possible types. All these macros assume that srcType is "bigger" than dstType.
   *
-  *****************************************************************************/
+   *****************************************************************************/
 #define XMLSEC_SAFE_CAST_MIN_MAX_CHECK(srcType, srcVal, srcFmt, dstType, dstVal, dstFmt, dstMin, dstMax, errorAction, errorObject) \
     if(((srcVal) < (srcType)(dstMin)) || ((srcVal) > (srcType)(dstMax))) {     \
         xmlSecImpossibleCastError(srcType, (srcVal), srcFmt,                   \
@@ -64,7 +64,7 @@
  *
  *  TO_BYTE
  *
- *****************************************************************************/
+  *****************************************************************************/
 
 /* Safe cast with limits check: int -> xmlSecByte (assume int >= byte) */
 #define XMLSEC_SAFE_CAST_INT_TO_BYTE(srcVal, dstVal, errorAction, errorObject) \
@@ -88,7 +88,7 @@
  *
  *  TO_INT
  *
- *****************************************************************************/
+  *****************************************************************************/
 
 /* Safe cast with limits check: unsigned int -> int (assume uint >= 0 and uint_max >= int_max) */
 #define XMLSEC_SAFE_CAST_UINT_TO_INT(srcVal, dstVal, errorAction, errorObject) \
@@ -154,7 +154,7 @@
  *
  *  TO_UINT
  *
- *****************************************************************************/
+  *****************************************************************************/
 
 /* Safe cast with limits check: int -> unsigned int (assume uint >= 0 and uint_max >= int_max) */
 #define XMLSEC_SAFE_CAST_INT_TO_UINT(srcVal, dstVal, errorAction, errorObject) \
@@ -196,7 +196,7 @@
  *
  *  TO_LONG
  *
- *****************************************************************************/
+  *****************************************************************************/
 
  /* Safe cast with limits check: unsigned int -> long (assume uint >= 0) */
 #if (UINT_MAX > LONG_MAX)
@@ -249,7 +249,7 @@
  *
  *  TO_ULONG
  *
- *****************************************************************************/
+  *****************************************************************************/
 
 /* Safe cast with limits check: xmlSecSize -> unsigned long (assume ulong >= 0) */
 #if (XMLSEC_SIZE_MAX > ULONG_MAX)
@@ -287,7 +287,7 @@
  *
  *  TO_SIZE (to xmlSecSize)
  *
- *****************************************************************************/
+  *****************************************************************************/
 
 /* Safe cast with limits check: int -> xmlSecSize (assume xmlSecSize >= 0) */
 #if (INT_MAX > XMLSEC_SIZE_MAX)
@@ -363,7 +363,7 @@
  *
  *  Helpers to create child struct with context
  *
- *****************************************************************************/
+  *****************************************************************************/
 #define XMLSEC_CHILD_STRUCT_DECLARE(name, postfix, baseType, ctxType, checkSizeFunc) \
 typedef struct _ ## xmlSec ## name ## postfix {                                    \
     baseType base;                                                                 \
@@ -385,7 +385,7 @@ static inline ctxType* xmlSec ## name ## GetCtx(baseType* obj) {                
  *
  *  Helpers to create transform struct and cast to transform context
  *
- *****************************************************************************/
+  *****************************************************************************/
 #define XMLSEC_TRANSFORM_DECLARE(name, ctxType)  \
     XMLSEC_CHILD_STRUCT_DECLARE(name, Transform, xmlSecTransform, ctxType, xmlSecTransformCheckSize)
 #define XMLSEC_TRANSFORM_SIZE(name) \
@@ -395,7 +395,7 @@ static inline ctxType* xmlSec ## name ## GetCtx(baseType* obj) {                
  *
  *  Helpers to create key data struct and cast to key data context
  *
- *****************************************************************************/
+  *****************************************************************************/
 #define XMLSEC_KEY_DATA_DECLARE(name, ctxType)  \
     XMLSEC_CHILD_STRUCT_DECLARE(name, KeyData, xmlSecKeyData, ctxType, xmlSecKeyDataCheckSize)
 #define XMLSEC_KEY_DATA_SIZE(name) \
@@ -405,7 +405,7 @@ static inline ctxType* xmlSec ## name ## GetCtx(baseType* obj) {                
  *
  *  Helpers to create key data store struct and cast to key store context
  *
- *****************************************************************************/
+  *****************************************************************************/
 #define XMLSEC_KEY_DATA_STORE_DECLARE(name, ctxType)  \
     XMLSEC_CHILD_STRUCT_DECLARE(name, KeyDataStore, xmlSecKeyDataStore, ctxType, xmlSecKeyDataStoreCheckSize)
 #define XMLSEC_KEY_DATA_STORE_SIZE(name) \
@@ -415,7 +415,7 @@ static inline ctxType* xmlSec ## name ## GetCtx(baseType* obj) {                
  *
  *  Helpers to create key store struct and cast to key store context
  *
- *****************************************************************************/
+  *****************************************************************************/
 #define XMLSEC_KEY_STORE_DECLARE(name, ctxType) \
     XMLSEC_CHILD_STRUCT_DECLARE(name, KeyStore, xmlSecKeyStore, ctxType, xmlSecKeyStoreCheckSize)
 #define XMLSEC_KEY_STORE_SIZE(name) \

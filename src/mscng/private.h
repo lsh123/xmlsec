@@ -54,7 +54,7 @@ extern "C" {
  *
  * Key data functions
  *
- ******************************************************************************/
+  *****************************************************************************/
 xmlSecKeyDataPtr   xmlSecMSCngKeyDataFromAlgorithm                  (LPSTR pszObjId);
 
 int                xmlSecMSCngKeyDataAdoptKey                       (xmlSecKeyDataPtr data,
@@ -62,8 +62,8 @@ int                xmlSecMSCngKeyDataAdoptKey                       (xmlSecKeyDa
 int                xmlSecMSCngKeyDataCertGetPubkey                  (PCERT_PUBLIC_KEY_INFO spki,
                                                                      BCRYPT_KEY_HANDLE* key);
 
-int                 xmlSecMSCngKeyDataAdoptBCryptPrivKey            (xmlSecKeyDataPtr data, 
-                                                                     BCRYPT_KEY_HANDLE hKey);                                                                    
+int                 xmlSecMSCngKeyDataAdoptBCryptPrivKey            (xmlSecKeyDataPtr data,
+                                                                     BCRYPT_KEY_HANDLE hKey);
 BCRYPT_KEY_HANDLE    xmlSecMSCngKeyDataGetBCryptPrivKey             (xmlSecKeyDataPtr data);
 
 
@@ -186,7 +186,7 @@ int                xmlSecMSCngKeyDataDsaPubkeyWrite                 (BCRYPT_KEY_
  *
  * X509 Util functions
  *
- ******************************************************************************/
+  *****************************************************************************/
 #ifndef XMLSEC_NO_X509
 
 int                 xmlSecMSCngX509StoreVerifyKey                    (xmlSecKeyDataStorePtr store,

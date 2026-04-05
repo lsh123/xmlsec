@@ -9,9 +9,8 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:x509
+ * @addtogroup xmlsec_gnutls_x509
  */
-
 #include "globals.h"
 
 #ifndef XMLSEC_NO_X509
@@ -36,11 +35,11 @@
 #include "private.h"
 #include "../cast_helpers.h"
 
-/**************************************************************************
+/******************************************************************************
  *
  * Internal GnuTLS X509 store CTX
  *
- *************************************************************************/
+  *****************************************************************************/
 typedef struct _xmlSecGnuTLSX509StoreCtx                xmlSecGnuTLSX509StoreCtx,
                                                         *xmlSecGnuTLSX509StoreCtxPtr;
 struct _xmlSecGnuTLSX509StoreCtx {
@@ -49,11 +48,11 @@ struct _xmlSecGnuTLSX509StoreCtx {
     xmlSecPtrList crls;
 };
 
-/****************************************************************************
+/******************************************************************************
  *
  * xmlSecGnuTLSKeyDataStoreX509Id:
  *
- ***************************************************************************/
+  *****************************************************************************/
 XMLSEC_KEY_DATA_STORE_DECLARE(GnuTLSX509Store, xmlSecGnuTLSX509StoreCtx)
 #define xmlSecGnuTLSX509StoreSize XMLSEC_KEY_DATA_STORE_SIZE(GnuTLSX509Store)
 
@@ -93,11 +92,8 @@ static int              xmlSecGnuTLSX509StoreVerifyCert                 (xmlSecG
 
 
 /**
- * xmlSecGnuTLSX509StoreGetKlass:
- *
- * The GnuTLS X509 certificates key data store klass.
- *
- * Returns: pointer to GnuTLS X509 certificates key data store klass.
+ * @brief The GnuTLS X509 certificates key data store klass.
+ * @return pointer to GnuTLS X509 certificates key data store klass.
  */
 xmlSecKeyDataStoreId
 xmlSecGnuTLSX509StoreGetKlass(void) {
@@ -559,20 +555,19 @@ xmlSecGnuTLSX509StoreVerifyCert(xmlSecGnuTLSX509StoreCtxPtr ctx,
 }
 
 /**
- * xmlSecGnuTLSX509StoreVerifyKey:
- * @store:              the pointer to X509 key data store klass.
- * @key:                the pointer to key.
- * @keyInfoCtx:         the key info context for verification.
+ * @brief Verifies @p key with the keys manager @p mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
+ * @param store the pointer to X509 key data store klass.
+ * @param key the pointer to key.
+ * @param keyInfoCtx the key info context for verification.
  *
- * Verifies @key with the keys manager @mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
  * function:
  * - Checks that key certificate is present
  * - Checks that key certificate is valid
  *
- * Adds @key to the keys manager @mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
+ * Adds @p key to the keys manager @p mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
  * function.
  *
- * Returns: 1 if key is verified, 0 otherwise, or a negative value if an error occurs.
+ * @return 1 if key is verified, 0 otherwise, or a negative value if an error occurs.
  */
 int
 xmlSecGnuTLSX509StoreVerifyKey(xmlSecKeyDataStorePtr store, xmlSecKeyPtr key, xmlSecKeyInfoCtxPtr keyInfoCtx) {
@@ -686,15 +681,12 @@ done:
 
 
 /**
- * xmlSecGnuTLSX509StoreVerify:
- * @store:              the pointer to X509 key data store klass.
- * @certs:              the untrusted certificates.
- * @crls:               the crls.
- * @keyInfoCtx:         the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
- *
- * Verifies @certs list.
- *
- * Returns: pointer to the first verified certificate from @certs.
+ * @brief Verifies @p certs list.
+ * @param store the pointer to X509 key data store klass.
+ * @param certs the untrusted certificates.
+ * @param crls the crls.
+ * @param keyInfoCtx the pointer to &lt;dsig:KeyInfo/&gt; element processing context.
+ * @return pointer to the first verified certificate from @p certs.
  */
 gnutls_x509_crt_t
 xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
@@ -815,14 +807,12 @@ done:
 }
 
 /**
- * xmlSecGnuTLSX509StoreAdoptCert:
- * @store:              the pointer to X509 key data store klass.
- * @cert:               the pointer to GnuTLS X509 certificate.
- * @type:               the certificate type (trusted/untrusted).
- *
- * Adds trusted (root) or untrusted certificate to the store.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Adds cert to the trusted or untrusted store.
+ * @details Adds trusted (root) or untrusted certificate to the store.
+ * @param store the pointer to X509 key data store klass.
+ * @param cert the pointer to GnuTLS X509 certificate.
+ * @param type the certificate type (trusted/untrusted).
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecGnuTLSX509StoreAdoptCert(xmlSecKeyDataStorePtr store, gnutls_x509_crt_t cert, xmlSecKeyDataType type) {
@@ -857,13 +847,10 @@ xmlSecGnuTLSX509StoreAdoptCert(xmlSecKeyDataStorePtr store, gnutls_x509_crt_t ce
 
 
 /**
- * xmlSecGnuTLSX509StoreAdoptCrl:
- * @store:              the pointer to X509 key data store klass.
- * @crl:                the pointer to GnuTLS X509 CRL.
- *
- * Adds CRL to the store.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Adds CRL to the store.
+ * @param store the pointer to X509 key data store klass.
+ * @param crl the pointer to GnuTLS X509 CRL.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecGnuTLSX509StoreAdoptCrl(xmlSecKeyDataStorePtr store, gnutls_x509_crl_t crl) {
@@ -1059,16 +1046,15 @@ done:
 }
 
 /**
- * xmlSecGnuTLSX509StoreVerifyCrl:
- * @store:              the pointer to X509 key data store klass.
- * @crl:                the CRL to verify.
- * @keyInfoCtx:         the key info context for verification parameters.
+ * @brief Verifies @p crl by checking:
+ * @param store the pointer to X509 key data store klass.
+ * @param crl the CRL to verify.
+ * @param keyInfoCtx the key info context for verification parameters.
  *
- * Verifies @crl by checking:
  * 1. Signature is valid (signed by issuer cert in store)
  * 2. thisUpdate <= verification_time <= nextUpdate
  *
- * Returns: 1 if verified, 0 if not verified, or a negative value on error.
+ * @return 1 if verified, 0 if not verified, or a negative value on error.
  */
 int
 xmlSecGnuTLSX509StoreVerifyCrl(xmlSecKeyDataStorePtr store, gnutls_x509_crl_t crl,
@@ -1166,11 +1152,11 @@ xmlSecGnuTLSX509StoreFinalize(xmlSecKeyDataStorePtr store) {
 }
 
 
-/*****************************************************************************
+/******************************************************************************
  *
  * Low-level x509 functions
  *
- *****************************************************************************/
+  *****************************************************************************/
 #define XMLSEC_GNUTLS_DN_ATTRS_SIZE             1024
 
 int
@@ -1225,9 +1211,7 @@ done:
 
 
 /**
- * xmlSecGnuTLSX509CertCompareSKI:
- *
- * Returns 0 if SKI matches, 1 if SKI doesn't match and a negative value if an error occurs.
+ * @brief Returns 0 if SKI matches, 1 if SKI doesn't match and a negative value if an error occurs.
  */
 int
 xmlSecGnuTLSX509CertCompareSKI(gnutls_x509_crt_t cert, const xmlSecByte * ski, xmlSecSize skiSize) {

@@ -13,7 +13,7 @@
  * This is free software; see the Copyright file in the source
  * distribution for precise wording.
  *
- * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2024 Aleksey Sanin <aleksey#aleksey.com>. All Rights Reserved.
  */
 #include <stdlib.h>
 #include <string.h>
@@ -128,13 +128,11 @@ main(int argc, char **argv) {
 }
 
 /**
- * verify_file:
- * @xml_file:           the signed XML file name.
- * @key_file:           the PEM public key file name.
- *
- * Verifies XML signature in #xml_file using public key from #key_file.
- *
- * Returns 0 on success or a negative value if an error occurs.
+ * @brief Verifies XML signature in a file using a public key.
+ * @details Verifies XML signature in #xml_file using public key from #key_file.
+ * @param xml_file the signed XML file name.
+ * @param key_file the PEM public key file name.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 verify_file(const char* xml_file, const char* key_file) {
@@ -209,13 +207,11 @@ done:
 }
 
 /**
- * verify_signature_results:
- * @dsigCtx:            the XMLDSig context
- *
- * Verifies XML signature results to ensure that signature was applied
+ * @brief Verifies XML signature results match expected data.
+ * @details Verifies XML signature results to ensure that signature was applied
  * to the expected data.
- *
- * Returns 0 on success or a negative value if an error occurs.
+ * @param dsigCtx the XMLDSig context
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 verify_signature_results(xmlSecDSigCtxPtr dsigCtx) {

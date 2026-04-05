@@ -8,12 +8,9 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:app
- * @Short_description: Crypto-engine independent application support functions.
- * @Stability: Stable
- *
+ * @addtogroup xmlsec_core_app
+ * @brief Crypto-engine independent application support functions.
  */
-
 #include "globals.h"
 
 #ifndef XMLSEC_NO_CRYPTO_DYNAMIC_LOADING
@@ -43,13 +40,11 @@ static const char missingMethodError[] = "Method is missing in the dynamically l
  *
  * Crypto Init/shutdown
  *
- *****************************************************************************/
+  *****************************************************************************/
 /**
- * xmlSecCryptoInit:
- *
- * XMLSec library specific crypto engine initialization.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Initializes the XMLSec crypto engine.
+ * @details XMLSec library specific crypto engine initialization.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecCryptoInit(void) {
@@ -62,11 +57,8 @@ xmlSecCryptoInit(void) {
 }
 
 /**
- * xmlSecCryptoShutdown:
- *
- * XMLSec library specific crypto engine shutdown.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief XMLSec library specific crypto engine shutdown.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecCryptoShutdown(void) {
@@ -79,12 +71,10 @@ xmlSecCryptoShutdown(void) {
 }
 
 /**
- * xmlSecCryptoKeysMngrInit:
- * @mngr:               the pointer to keys manager.
- *
- * Adds crypto specific key data stores in keys manager.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Adds crypto key data stores to the keys manager.
+ * @details Adds crypto specific key data stores in keys manager.
+ * @param mngr the pointer to keys manager.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecCryptoKeysMngrInit(xmlSecKeysMngrPtr mngr) {
@@ -100,13 +90,10 @@ xmlSecCryptoKeysMngrInit(xmlSecKeysMngrPtr mngr) {
  *
  * Key data ids
  *
- *****************************************************************************/
+  *****************************************************************************/
 /**
- * xmlSecKeyDataAesGetKlass:
- *
- * The AES key data klass.
- *
- * Returns: AES key data klass or NULL if an error occurs
+ * @brief The AES key data klass.
+ * @return AES key data klass or NULL if an error occurs
  * (xmlsec-crypto library is not loaded or the AES key data
  * klass is not implemented).
  */
@@ -121,11 +108,8 @@ xmlSecKeyDataAesGetKlass(void) {
 }
 
 /**
- * xmlSecKeyDataConcatKdfGetKlass:
- *
- * The ConcatKDF key data klass.
- *
- * Returns: ConcatKDF key data klass or NULL if an error occurs
+ * @brief The ConcatKDF key data klass.
+ * @return ConcatKDF key data klass or NULL if an error occurs
  * (xmlsec-crypto library is not loaded or the HMAC key data
  * klass is not implemented).
  */
@@ -140,11 +124,8 @@ xmlSecKeyDataConcatKdfGetKlass(void) {
 }
 
 /**
- * xmlSecKeyDataDesGetKlass:
- *
- * The DES key data klass.
- *
- * Returns: DES key data klass or NULL if an error occurs
+ * @brief The DES key data klass.
+ * @return DES key data klass or NULL if an error occurs
  * (xmlsec-crypto library is not loaded or the DES key data
  * klass is not implemented).
  */
@@ -159,11 +140,8 @@ xmlSecKeyDataDesGetKlass(void) {
 }
 
 /**
- * xmlSecKeyDataDhGetKlass:
- *
- * The DH key data klass.
- *
- * Returns: DH key data klass or NULL if an error occurs
+ * @brief The DH key data klass.
+ * @return DH key data klass or NULL if an error occurs
  * (xmlsec-crypto library is not loaded or the DH key data
  * klass is not implemented).
  */
@@ -178,11 +156,8 @@ xmlSecKeyDataDhGetKlass(void) {
 }
 
 /**
- * xmlSecKeyDataDsaGetKlass:
- *
- * The DSA key data klass.
- *
- * Returns: DSA key data klass or NULL if an error occurs
+ * @brief The DSA key data klass.
+ * @return DSA key data klass or NULL if an error occurs
  * (xmlsec-crypto library is not loaded or the DSA key data
  * klass is not implemented).
  */
@@ -197,11 +172,8 @@ xmlSecKeyDataDsaGetKlass(void) {
 }
 
 /**
- * xmlSecKeyDataEcGetKlass:
- *
- * The EC key data klass.
- *
- * Returns: EC key data klass or NULL if an error occurs
+ * @brief The EC key data klass.
+ * @return EC key data klass or NULL if an error occurs
  * (xmlsec-crypto library is not loaded or the EC key data
  * klass is not implemented).
  */
@@ -216,11 +188,8 @@ xmlSecKeyDataEcGetKlass(void) {
 }
 
 /**
- * xmlSecKeyDataGost2001GetKlass:
- *
- * The GOST2001 key data klass.
- *
- * Returns: GOST2001 key data klass or NULL if an error occurs
+ * @brief The GOST2001 key data klass.
+ * @return GOST2001 key data klass or NULL if an error occurs
  * (xmlsec-crypto library is not loaded or the GOST2001 key data
  * klass is not implemented).
  */
@@ -235,11 +204,8 @@ xmlSecKeyDataGost2001GetKlass(void) {
 }
 
 /**
- * xmlSecKeyDataGostR3410_2012_256GetKlass:
- *
- * The GOST R 34.10-2012 256 bit key data klass.
- *
- * Returns: GOST R 34.10-2012 256 bit key data klass or NULL if an error occurs
+ * @brief The GOST R 34.10-2012 256 bit key data klass.
+ * @return GOST R 34.10-2012 256 bit key data klass or NULL if an error occurs
  * (xmlsec-crypto library is not loaded or the GOST R 34.10-2012 key data
  * klass is not implemented).
  */
@@ -254,11 +220,8 @@ xmlSecKeyDataGostR3410_2012_256GetKlass(void) {
 }
 
 /**
- * xmlSecKeyDataGostR3410_2012_512GetKlass:
- *
- * The GOST R 34.10-2012 512 bit key data klass.
- *
- * Returns: GOST R 34.10-2012 512 bit key data klass or NULL if an error occurs
+ * @brief The GOST R 34.10-2012 512 bit key data klass.
+ * @return GOST R 34.10-2012 512 bit key data klass or NULL if an error occurs
  * (xmlsec-crypto library is not loaded or the GOST R 34.10-2012 key data
  * klass is not implemented).
  */
@@ -273,11 +236,8 @@ xmlSecKeyDataGostR3410_2012_512GetKlass(void) {
 }
 
 /**
- * xmlSecKeyDataHmacGetKlass:
- *
- * The HMAC key data klass.
- *
- * Returns: HMAC key data klass or NULL if an error occurs
+ * @brief The HMAC key data klass.
+ * @return HMAC key data klass or NULL if an error occurs
  * (xmlsec-crypto library is not loaded or the HMAC key data
  * klass is not implemented).
  */
@@ -292,11 +252,8 @@ xmlSecKeyDataHmacGetKlass(void) {
 }
 
 /**
- * xmlSecKeyDataHkdfGetKlass:
- *
- * The HKDF key data klass.
- *
- * Returns: HKDF key data klass or NULL if an error occurs
+ * @brief The HKDF key data klass.
+ * @return HKDF key data klass or NULL if an error occurs
  * (xmlsec-crypto library is not loaded or the HKDF key data
  * klass is not implemented).
  */
@@ -311,11 +268,8 @@ xmlSecKeyDataHkdfGetKlass(void) {
 }
 
 /**
- * xmlSecKeyDataPbkdf2GetKlass:
- *
- * The PBKDF2 key data klass.
- *
- * Returns: PBKDF2 key data klass or NULL if an error occurs
+ * @brief The PBKDF2 key data klass.
+ * @return PBKDF2 key data klass or NULL if an error occurs
  * (xmlsec-crypto library is not loaded or the HMAC key data
  * klass is not implemented).
  */
@@ -329,11 +283,8 @@ xmlSecKeyDataPbkdf2GetKlass(void) {
     return(xmlSecCryptoDLGetFunctions()->keyDataPbkdf2GetKlass());
 }
 /**
- * xmlSecKeyDataRsaGetKlass:
- *
- * The RSA key data klass.
- *
- * Returns: RSA key data klass or NULL if an error occurs
+ * @brief The RSA key data klass.
+ * @return RSA key data klass or NULL if an error occurs
  * (xmlsec-crypto library is not loaded or the RSA key data
  * klass is not implemented).
  */
@@ -347,11 +298,8 @@ xmlSecKeyDataRsaGetKlass(void) {
     return(xmlSecCryptoDLGetFunctions()->keyDataRsaGetKlass());
 }
 /**
- * xmlSecKeyDataMLDSAGetKlass:
- *
- * The ML-DSA key data klass.
- *
- * Returns: ML-DSA key data klass or NULL if an error occurs
+ * @brief The ML-DSA key data klass.
+ * @return ML-DSA key data klass or NULL if an error occurs
  * (xmlsec-crypto library is not loaded or the ML-DSA key data
  * klass is not implemented).
  */
@@ -365,11 +313,8 @@ xmlSecKeyDataMLDSAGetKlass(void) {
     return(xmlSecCryptoDLGetFunctions()->keyDataMLDSAGetKlass());
 }
 /**
- * xmlSecKeyDataSLHDSAGetKlass:
- *
- * The SLH-DSA key data klass.
- *
- * Returns: SLH-DSA key data klass or NULL if an error occurs
+ * @brief The SLH-DSA key data klass.
+ * @return SLH-DSA key data klass or NULL if an error occurs
  * (xmlsec-crypto library is not loaded or the SLH-DSA key data
  * klass is not implemented).
  */
@@ -384,11 +329,8 @@ xmlSecKeyDataSLHDSAGetKlass(void) {
 }
 
 /**
- * xmlSecKeyDataEdDSAGetKlass:
- *
- * The EdDSA key data klass.
- *
- * Returns: EdDSA key data klass or NULL if an error occurs
+ * @brief The EdDSA key data klass.
+ * @return EdDSA key data klass or NULL if an error occurs
  * (xmlsec-crypto library is not loaded or the EdDSA key data
  * klass is not implemented).
  */
@@ -403,11 +345,8 @@ xmlSecKeyDataEdDSAGetKlass(void) {
 }
 
 /**
- * xmlSecKeyDataXdhGetKlass:
- *
- * The XDH key data klass.
- *
- * Returns: XDH key data klass or NULL if an error occurs
+ * @brief The XDH key data klass.
+ * @return XDH key data klass or NULL if an error occurs
  * (xmlsec-crypto library is not loaded or the XDH key data
  * klass is not implemented).
  */
@@ -422,11 +361,8 @@ xmlSecKeyDataXdhGetKlass(void) {
 }
 
 /**
- * xmlSecKeyDataX509GetKlass:
- *
- * The X509 key data klass.
- *
- * Returns: X509 key data klass or NULL if an error occurs
+ * @brief The X509 key data klass.
+ * @return X509 key data klass or NULL if an error occurs
  * (xmlsec-crypto library is not loaded or the X509 key data
  * klass is not implemented).
  */
@@ -441,11 +377,8 @@ xmlSecKeyDataX509GetKlass(void) {
 }
 
 /**
- * xmlSecKeyDataRawX509CertGetKlass:
- *
- * The raw X509 cert key data klass.
- *
- * Returns: raw x509 cert key data klass or NULL if an error occurs
+ * @brief The raw X509 cert key data klass.
+ * @return raw x509 cert key data klass or NULL if an error occurs
  * (xmlsec-crypto library is not loaded or the raw X509 cert key data
  * klass is not implemented).
  */
@@ -461,11 +394,8 @@ xmlSecKeyDataRawX509CertGetKlass(void) {
 
 
 /**
- * xmlSecKeyDataDEREncodedKeyValueGetKlass:
- *
- * The DEREncodedKeyValue key data klass.
- *
- * Returns: X5DEREncodedKeyValue09 key data klass or NULL if an error occurs
+ * @brief The DEREncodedKeyValue key data klass.
+ * @return X5DEREncodedKeyValue09 key data klass or NULL if an error occurs
  * (xmlsec-crypto library is not loaded or the DEREncodedKeyValue key data
  * klass is not implemented).
  */
@@ -482,13 +412,10 @@ xmlSecKeyDataDEREncodedKeyValueGetKlass(void) {
  *
  * Key data store ids
  *
- *****************************************************************************/
+  *****************************************************************************/
 /**
- * xmlSecX509StoreGetKlass:
- *
- * The X509 certificates key data store klass.
- *
- * Returns: pointer to X509 certificates key data store klass or NULL if
+ * @brief The X509 certificates key data store klass.
+ * @return pointer to X509 certificates key data store klass or NULL if
  * an error occurs (xmlsec-crypto library is not loaded or the raw X509
  * cert key data klass is not implemented).
  */
@@ -506,13 +433,10 @@ xmlSecX509StoreGetKlass(void) {
  *
  * Crypto transforms ids
  *
- *****************************************************************************/
+  *****************************************************************************/
 /**
- * xmlSecTransformAes128CbcGetKlass:
- *
- * AES 128 CBC encryption transform klass.
- *
- * Returns: pointer to AES 128 CBC encryption transform or NULL if an error
+ * @brief AES 128 CBC encryption transform klass.
+ * @return pointer to AES 128 CBC encryption transform or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -527,11 +451,8 @@ xmlSecTransformAes128CbcGetKlass(void) {
 }
 
 /**
- * xmlSecTransformAes192CbcGetKlass:
- *
- * AES 192 CBC encryption transform klass.
- *
- * Returns: pointer to AES 192 CBC encryption transform or NULL if an error
+ * @brief AES 192 CBC encryption transform klass.
+ * @return pointer to AES 192 CBC encryption transform or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -546,11 +467,8 @@ xmlSecTransformAes192CbcGetKlass(void) {
 }
 
 /**
- * xmlSecTransformAes256CbcGetKlass:
- *
- * AES 256 CBC encryption transform klass.
- *
- * Returns: pointer to AES 256 CBC encryption transform or NULL if an error
+ * @brief AES 256 CBC encryption transform klass.
+ * @return pointer to AES 256 CBC encryption transform or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -565,14 +483,11 @@ xmlSecTransformAes256CbcGetKlass(void) {
 }
 
 /**
-* xmlSecTransformAes128GcmGetKlass:
-*
-* AES 128 GCM encryption transform klass.
-*
-* Returns: pointer to AES 128 GCM encryption transform or NULL if an error
-* occurs (the xmlsec-crypto library is not loaded or this transform is not
-* implemented).
-*/
+ * @brief AES 128 GCM encryption transform klass.
+ * @return pointer to AES 128 GCM encryption transform or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
 xmlSecTransformId
 xmlSecTransformAes128GcmGetKlass(void)
 {
@@ -585,14 +500,11 @@ xmlSecTransformAes128GcmGetKlass(void)
 }
 
 /**
-* xmlSecTransformAes192GcmGetKlass:
-*
-* AES 192 GCM encryption transform klass.
-*
-* Returns: pointer to AES 192 GCM encryption transform or NULL if an error
-* occurs (the xmlsec-crypto library is not loaded or this transform is not
-* implemented).
-*/
+ * @brief AES 192 GCM encryption transform klass.
+ * @return pointer to AES 192 GCM encryption transform or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
 xmlSecTransformId
 xmlSecTransformAes192GcmGetKlass(void)
 {
@@ -605,14 +517,11 @@ xmlSecTransformAes192GcmGetKlass(void)
 }
 
 /**
-* xmlSecTransformAes256GcmGetKlass:
-*
-* AES 256 GCM encryption transform klass.
-*
-* Returns: pointer to AES 256 GCM encryption transform or NULL if an error
-* occurs (the xmlsec-crypto library is not loaded or this transform is not
-* implemented).
-*/
+ * @brief AES 256 GCM encryption transform klass.
+ * @return pointer to AES 256 GCM encryption transform or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
 xmlSecTransformId
 xmlSecTransformAes256GcmGetKlass(void)
 {
@@ -625,14 +534,11 @@ xmlSecTransformAes256GcmGetKlass(void)
 }
 
 /**
-* xmlSecTransformConcatKdfGetKlass:
-*
-* ConcatKDF key derivaton transform klass.
-*
-* Returns: pointer to ConcatKDF key derivaton transform or NULL if an error
-* occurs (the xmlsec-crypto library is not loaded or this transform is not
-* implemented).
-*/
+ * @brief ConcatKDF key derivaton transform klass.
+ * @return pointer to ConcatKDF key derivaton transform or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
 xmlSecTransformId
 xmlSecTransformConcatKdfGetKlass(void)
 {
@@ -645,11 +551,8 @@ xmlSecTransformConcatKdfGetKlass(void)
 }
 
 /**
- * xmlSecTransformKWAes128GetKlass:
- *
- * The AES-128 kew wrapper transform klass.
- *
- * Returns: AES-128 kew wrapper transform klass or NULL if an error
+ * @brief The AES-128 key wrapper transform klass.
+ * @return AES-128 kew wrapper transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -664,11 +567,8 @@ xmlSecTransformKWAes128GetKlass(void) {
 }
 
 /**
- * xmlSecTransformKWAes192GetKlass:
- *
- * The AES-192 kew wrapper transform klass.
- *
- * Returns: AES-192 kew wrapper transform klass or NULL if an error
+ * @brief The AES-192 key wrapper transform klass.
+ * @return AES-192 kew wrapper transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -683,11 +583,8 @@ xmlSecTransformKWAes192GetKlass(void) {
 }
 
 /**
- * xmlSecTransformKWAes256GetKlass:
- *
- * The AES-256 kew wrapper transform klass.
- *
- * Returns: AES-256 kew wrapper transform klass or NULL if an error
+ * @brief The AES-256 key wrapper transform klass.
+ * @return AES-256 kew wrapper transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -702,11 +599,8 @@ xmlSecTransformKWAes256GetKlass(void) {
 }
 
 /**
- * xmlSecTransformDes3CbcGetKlass:
- *
- * Triple DES CBC encryption transform klass.
- *
- * Returns: pointer to Triple DES encryption transform or NULL if an error
+ * @brief Triple DES CBC encryption transform klass.
+ * @return pointer to Triple DES encryption transform or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -721,11 +615,8 @@ xmlSecTransformDes3CbcGetKlass(void) {
 }
 
 /**
- * xmlSecTransformKWDes3GetKlass:
- *
- * The Triple DES key wrapper transform klass.
- *
- * Returns: Triple DES key wrapper transform klass or NULL if an error
+ * @brief The Triple DES key wrapper transform klass.
+ * @return Triple DES key wrapper transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -740,14 +631,11 @@ xmlSecTransformKWDes3GetKlass(void) {
 }
 
 /**
-* xmlSecTransformDhEsGetKlass:
-*
-* DH-ES key agreement transform klass.
-*
-* Returns: pointer to DH-ES key agreement transform or NULL if an error
-* occurs (the xmlsec-crypto library is not loaded or this transform is not
-* implemented).
-*/
+ * @brief DH-ES key agreement transform klass.
+ * @return pointer to DH-ES key agreement transform or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
 xmlSecTransformId
 xmlSecTransformDhEsGetKlass(void)
 {
@@ -760,11 +648,8 @@ xmlSecTransformDhEsGetKlass(void)
 }
 
 /**
- * xmlSecTransformDsaSha1GetKlass:
- *
- * The DSA-SHA1 signature transform klass.
- *
- * Returns: DSA-SHA1 signature transform klass or NULL if an error
+ * @brief The DSA-SHA1 signature transform klass.
+ * @return DSA-SHA1 signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -779,11 +664,8 @@ xmlSecTransformDsaSha1GetKlass(void) {
 }
 
 /**
- * xmlSecTransformHkdfGetKlass:
- *
- * HKDF key derivation transform klass.
- *
- * Returns: pointer to HKDF key derivation transform or NULL if an error
+ * @brief HKDF key derivation transform klass.
+ * @return pointer to HKDF key derivation transform or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -798,11 +680,8 @@ xmlSecTransformHkdfGetKlass(void) {
 }
 
 /**
- * xmlSecTransformDsaSha256GetKlass:
- *
- * The DSA-SHA2-256 signature transform klass.
- *
- * Returns: DSA-SHA2-256 signature transform klass or NULL if an error
+ * @brief The DSA-SHA2-256 signature transform klass.
+ * @return DSA-SHA2-256 signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -817,14 +696,11 @@ xmlSecTransformDsaSha256GetKlass(void) {
 }
 
 /**
-* xmlSecTransformEcdhGetKlass:
-*
-* ECDH key agreement transform klass.
-*
-* Returns: pointer to ECDH key agreement transform or NULL if an error
-* occurs (the xmlsec-crypto library is not loaded or this transform is not
-* implemented).
-*/
+ * @brief ECDH key agreement transform klass.
+ * @return pointer to ECDH key agreement transform or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
 xmlSecTransformId
 xmlSecTransformEcdhGetKlass(void)
 {
@@ -837,11 +713,8 @@ xmlSecTransformEcdhGetKlass(void)
 }
 
 /**
- * xmlSecTransformX25519GetKlass:
- *
- * X25519 key agreement transform klass.
- *
- * Returns: pointer to X25519 key agreement transform or NULL if an error
+ * @brief X25519 key agreement transform klass.
+ * @return pointer to X25519 key agreement transform or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -857,11 +730,8 @@ xmlSecTransformX25519GetKlass(void)
 }
 
 /**
- * xmlSecTransformX448GetKlass:
- *
- * X448 key agreement transform klass.
- *
- * Returns: pointer to X448 key agreement transform or NULL if an error
+ * @brief X448 key agreement transform klass.
+ * @return pointer to X448 key agreement transform or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -877,11 +747,8 @@ xmlSecTransformX448GetKlass(void)
 }
 
 /**
- * xmlSecTransformEcdsaRipemd160GetKlass:
- *
- * The ECDSA-RIPEMD160 signature transform klass.
- *
- * Returns: ECDSA-RIPEMD160 signature transform klass or NULL if an error
+ * @brief The ECDSA-RIPEMD160 signature transform klass.
+ * @return ECDSA-RIPEMD160 signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -896,11 +763,8 @@ xmlSecTransformEcdsaRipemd160GetKlass(void) {
 }
 
 /**
- * xmlSecTransformEcdsaSha1GetKlass:
- *
- * The ECDSA-SHA1 signature transform klass.
- *
- * Returns: ECDSA-SHA1 signature transform klass or NULL if an error
+ * @brief The ECDSA-SHA1 signature transform klass.
+ * @return ECDSA-SHA1 signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -915,11 +779,8 @@ xmlSecTransformEcdsaSha1GetKlass(void) {
 }
 
 /**
- * xmlSecTransformEcdsaSha224GetKlass:
- *
- * The ECDSA-SHA2-224 signature transform klass.
- *
- * Returns: ECDSA-SHA2-224 signature transform klass or NULL if an error
+ * @brief The ECDSA-SHA2-224 signature transform klass.
+ * @return ECDSA-SHA2-224 signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -934,11 +795,8 @@ xmlSecTransformEcdsaSha224GetKlass(void) {
 }
 
 /**
- * xmlSecTransformEcdsaSha256GetKlass:
- *
- * The ECDSA-SHA2-256 signature transform klass.
- *
- * Returns: ECDSA-SHA2-256 signature transform klass or NULL if an error
+ * @brief The ECDSA-SHA2-256 signature transform klass.
+ * @return ECDSA-SHA2-256 signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -953,11 +811,8 @@ xmlSecTransformEcdsaSha256GetKlass(void) {
 }
 
 /**
- * xmlSecTransformEcdsaSha384GetKlass:
- *
- * The ECDSA-SHA2-384 signature transform klass.
- *
- * Returns: ECDSA-SHA2-384 signature transform klass or NULL if an error
+ * @brief The ECDSA-SHA2-384 signature transform klass.
+ * @return ECDSA-SHA2-384 signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -972,11 +827,8 @@ xmlSecTransformEcdsaSha384GetKlass(void) {
 }
 
 /**
- * xmlSecTransformEcdsaSha512GetKlass:
- *
- * The ECDSA-SHA2-512 signature transform klass.
- *
- * Returns: ECDSA-SHA2-512 signature transform klass or NULL if an error
+ * @brief The ECDSA-SHA2-512 signature transform klass.
+ * @return ECDSA-SHA2-512 signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -992,11 +844,8 @@ xmlSecTransformEcdsaSha512GetKlass(void) {
 
 
 /**
- * xmlSecTransformEcdsaSha3_224GetKlass:
- *
- * The ECDSA-SHA3-224 signature transform klass.
- *
- * Returns: ECDSA-SHA3-224 signature transform klass or NULL if an error
+ * @brief The ECDSA-SHA3-224 signature transform klass.
+ * @return ECDSA-SHA3-224 signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1011,11 +860,8 @@ xmlSecTransformEcdsaSha3_224GetKlass(void) {
 }
 
 /**
- * xmlSecTransformEcdsaSha3_256GetKlass:
- *
- * The ECDSA-SHA3-256 signature transform klass.
- *
- * Returns: ECDSA-SHA3-256 signature transform klass or NULL if an error
+ * @brief The ECDSA-SHA3-256 signature transform klass.
+ * @return ECDSA-SHA3-256 signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1030,11 +876,8 @@ xmlSecTransformEcdsaSha3_256GetKlass(void) {
 }
 
 /**
- * xmlSecTransformEcdsaSha3_384GetKlass:
- *
- * The ECDSA-SHA3-384 signature transform klass.
- *
- * Returns: ECDSA-SHA3-384 signature transform klass or NULL if an error
+ * @brief The ECDSA-SHA3-384 signature transform klass.
+ * @return ECDSA-SHA3-384 signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1049,11 +892,8 @@ xmlSecTransformEcdsaSha3_384GetKlass(void) {
 }
 
 /**
- * xmlSecTransformEcdsaSha3_512GetKlass:
- *
- * The ECDSA-SHA3-512 signature transform klass.
- *
- * Returns: ECDSA-SHA3-512 signature transform klass or NULL if an error
+ * @brief The ECDSA-SHA3-512 signature transform klass.
+ * @return ECDSA-SHA3-512 signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1068,11 +908,9 @@ xmlSecTransformEcdsaSha3_512GetKlass(void) {
 }
 
 /**
- * xmlSecTransformGost2001GostR3411_94GetKlass:
- *
- * The GOST2001-GOSTR3411_94 signature transform klass.
- *
- * Returns: GOST2001-GOSTR3411_94 signature transform klass or NULL if an error
+ * @brief Gets the GOST2001-GOSTR3411_94 signature transform klass.
+ * @details The GOST2001-GOSTR3411_94 signature transform klass.
+ * @return GOST2001-GOSTR3411_94 signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1087,11 +925,9 @@ xmlSecTransformGost2001GostR3411_94GetKlass(void) {
 }
 
 /**
- * xmlSecTransformGostR3410_2012GostR3411_2012_256GetKlass:
- *
- * The GOST R 34.10-2012 - GOST R 34.11-2012 256 bit signature transform klass.
- *
- * Returns: GOST R 34.10-2012 - GOST R 34.11-2012 256 bit signature transform klass or NULL if an error
+ * @brief Gets GOST R 34.10-2012/R 34.11-2012 256-bit signature klass.
+ * @details The GOST R 34.10-2012 - GOST R 34.11-2012 256 bit signature transform klass.
+ * @return GOST R 34.10-2012 - GOST R 34.11-2012 256 bit signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1106,11 +942,9 @@ xmlSecTransformGostR3410_2012GostR3411_2012_256GetKlass(void) {
 }
 
 /**
- * xmlSecTransformGostR3410_2012GostR3411_2012_512GetKlass:
- *
- * The GOST R 34.10-2012 - GOST R 34.11-2012 512 bit signature transform klass.
- *
- * Returns: GOST R 34.10-2012 - GOST R 34.11-2012 512 bit signature transform klass or NULL if an error
+ * @brief Gets GOST R 34.10-2012/R 34.11-2012 512-bit signature klass.
+ * @details The GOST R 34.10-2012 - GOST R 34.11-2012 512 bit signature transform klass.
+ * @return GOST R 34.10-2012 - GOST R 34.11-2012 512 bit signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1126,11 +960,9 @@ xmlSecTransformGostR3410_2012GostR3411_2012_512GetKlass(void) {
 
 
 /**
- * xmlSecTransformRsaOaepEnc11GetKlass:
- *
- * The RSA-OAEP key transport transform klass (XMLEnc 1.1).
- *
- * Returns: RSA-OAEP key transport transform klass or NULL if an error
+ * @brief Gets the RSA-OAEP transform klass (XMLEnc 1.1).
+ * @details The RSA-OAEP key transport transform klass (XMLEnc 1.1).
+ * @return RSA-OAEP key transport transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1146,11 +978,8 @@ xmlSecTransformRsaOaepEnc11GetKlass(void) {
 
 
 /**
- * xmlSecTransformGostR3411_94GetKlass:
- *
- * GOSTR3411_94 digest transform klass.
- *
- * Returns: pointer to GOSTR3411_94 digest transform klass or NULL if an error
+ * @brief GOSTR3411_94 digest transform klass.
+ * @return pointer to GOSTR3411_94 digest transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1165,11 +994,8 @@ xmlSecTransformGostR3411_94GetKlass(void) {
 }
 
 /**
- * xmlSecTransformGostR3411_2012_256GetKlass:
- *
- * GOST R 34.11-2012 256 bit digest transform klass.
- *
- * Returns: pointer to GOST R 34.11-2012 256 bit digest transform klass or NULL if an error
+ * @brief GOST R 34.11-2012 256 bit digest transform klass.
+ * @return pointer to GOST R 34.11-2012 256 bit digest transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1185,11 +1011,8 @@ xmlSecTransformGostR3411_2012_256GetKlass(void) {
 }
 
 /**
- * xmlSecTransformHmacMd5GetKlass:
- *
- * The HMAC-MD5 transform klass.
- *
- * Returns: the HMAC-MD5 transform klass or NULL if an error
+ * @brief The HMAC-MD5 transform klass.
+ * @return the HMAC-MD5 transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1204,11 +1027,8 @@ xmlSecTransformHmacMd5GetKlass(void) {
 }
 
 /**
- * xmlSecTransformHmacRipemd160GetKlass:
- *
- * The HMAC-RIPEMD160 transform klass.
- *
- * Returns: the HMAC-RIPEMD160 transform klass or NULL if an error
+ * @brief The HMAC-RIPEMD160 transform klass.
+ * @return the HMAC-RIPEMD160 transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1223,11 +1043,8 @@ xmlSecTransformHmacRipemd160GetKlass(void) {
 }
 
 /**
- * xmlSecTransformHmacSha1GetKlass:
- *
- * The HMAC-SHA1 transform klass.
- *
- * Returns: the HMAC-SHA1 transform klass or NULL if an error
+ * @brief The HMAC-SHA1 transform klass.
+ * @return the HMAC-SHA1 transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1242,11 +1059,8 @@ xmlSecTransformHmacSha1GetKlass(void) {
 }
 
 /**
- * xmlSecTransformHmacSha224GetKlass:
- *
- * The HMAC-SHA224 transform klass.
- *
- * Returns: the HMAC-SHA224 transform klass or NULL if an error
+ * @brief The HMAC-SHA224 transform klass.
+ * @return the HMAC-SHA224 transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1261,11 +1075,8 @@ xmlSecTransformHmacSha224GetKlass(void) {
 }
 
 /**
- * xmlSecTransformHmacSha256GetKlass:
- *
- * The HMAC-SHA256 transform klass.
- *
- * Returns: the HMAC-SHA256 transform klass or NULL if an error
+ * @brief The HMAC-SHA256 transform klass.
+ * @return the HMAC-SHA256 transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1280,11 +1091,8 @@ xmlSecTransformHmacSha256GetKlass(void) {
 }
 
 /**
- * xmlSecTransformHmacSha384GetKlass:
- *
- * The HMAC-SHA384 transform klass.
- *
- * Returns: the HMAC-SHA384 transform klass or NULL if an error
+ * @brief The HMAC-SHA384 transform klass.
+ * @return the HMAC-SHA384 transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1299,11 +1107,8 @@ xmlSecTransformHmacSha384GetKlass(void) {
 }
 
 /**
- * xmlSecTransformHmacSha512GetKlass:
- *
- * The HMAC-SHA512 transform klass.
- *
- * Returns: the HMAC-SHA512 transform klass or NULL if an error
+ * @brief The HMAC-SHA512 transform klass.
+ * @return the HMAC-SHA512 transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1318,11 +1123,8 @@ xmlSecTransformHmacSha512GetKlass(void) {
 }
 
 /**
- * xmlSecTransformMd5GetKlass:
- *
- * MD5 digest transform klass.
- *
- * Returns: pointer to MD5 digest transform klass or NULL if an error
+ * @brief MD5 digest transform klass.
+ * @return pointer to MD5 digest transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1337,11 +1139,8 @@ xmlSecTransformMd5GetKlass(void) {
 }
 
 /**
- * xmlSecTransformMLDSA44GetKlass:
- *
- * The ML-DSA-44 signature transform klass.
- *
- * Returns: ML-DSA-44 signature transform klass or NULL if an error
+ * @brief The ML-DSA-44 signature transform klass.
+ * @return ML-DSA-44 signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1356,11 +1155,8 @@ xmlSecTransformMLDSA44GetKlass(void) {
 }
 
 /**
- * xmlSecTransformMLDSA65GetKlass:
- *
- * The ML-DSA-65 signature transform klass.
- *
- * Returns: ML-DSA-65 signature transform klass or NULL if an error
+ * @brief The ML-DSA-65 signature transform klass.
+ * @return ML-DSA-65 signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1375,11 +1171,8 @@ xmlSecTransformMLDSA65GetKlass(void) {
 }
 
 /**
- * xmlSecTransformMLDSA87GetKlass:
- *
- * The ML-DSA-87 signature transform klass.
- *
- * Returns: ML-DSA-87 signature transform klass or NULL if an error
+ * @brief The ML-DSA-87 signature transform klass.
+ * @return ML-DSA-87 signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1393,14 +1186,11 @@ xmlSecTransformMLDSA87GetKlass(void) {
     return(xmlSecCryptoDLGetFunctions()->transformMLDSA87GetKlass());
 }
 /**
-* xmlSecTransformPbkdf2GetKlass:
-*
-* PBKDF2 key derivaton transform klass.
-*
-* Returns: pointer to PBKDF2 key derivaton transform or NULL if an error
-* occurs (the xmlsec-crypto library is not loaded or this transform is not
-* implemented).
-*/
+ * @brief PBKDF2 key derivaton transform klass.
+ * @return pointer to PBKDF2 key derivaton transform or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
 xmlSecTransformId
 xmlSecTransformPbkdf2GetKlass(void)
 {
@@ -1414,11 +1204,8 @@ xmlSecTransformPbkdf2GetKlass(void)
 
 
 /**
- * xmlSecTransformRipemd160GetKlass:
- *
- * RIPEMD-160 digest transform klass.
- *
- * Returns: pointer to RIPEMD-160 digest transform klass or NULL if an error
+ * @brief RIPEMD-160 digest transform klass.
+ * @return pointer to RIPEMD-160 digest transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1433,11 +1220,8 @@ xmlSecTransformRipemd160GetKlass(void) {
 }
 
 /**
- * xmlSecTransformRsaMd5GetKlass:
- *
- * The RSA-MD5 signature transform klass.
- *
- * Returns: RSA-MD5 signature transform klass or NULL if an error
+ * @brief The RSA-MD5 signature transform klass.
+ * @return RSA-MD5 signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1452,11 +1236,8 @@ xmlSecTransformRsaMd5GetKlass(void) {
 }
 
 /**
- * xmlSecTransformRsaRipemd160GetKlass:
- *
- * The RSA-RIPEMD160 signature transform klass.
- *
- * Returns: RSA-RIPEMD160 signature transform klass or NULL if an error
+ * @brief The RSA-RIPEMD160 signature transform klass.
+ * @return RSA-RIPEMD160 signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1471,11 +1252,8 @@ xmlSecTransformRsaRipemd160GetKlass(void) {
 }
 
 /**
- * xmlSecTransformRsaSha1GetKlass:
- *
- * The RSA-SHA1 signature transform klass.
- *
- * Returns: RSA-SHA1 signature transform klass or NULL if an error
+ * @brief The RSA-SHA1 signature transform klass.
+ * @return RSA-SHA1 signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1490,11 +1268,8 @@ xmlSecTransformRsaSha1GetKlass(void) {
 }
 
 /**
- * xmlSecTransformRsaSha224GetKlass:
- *
- * The RSA-SHA2-224 signature transform klass.
- *
- * Returns: RSA-SHA2-224 signature transform klass or NULL if an error
+ * @brief The RSA-SHA2-224 signature transform klass.
+ * @return RSA-SHA2-224 signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1509,11 +1284,8 @@ xmlSecTransformRsaSha224GetKlass(void) {
 }
 
 /**
- * xmlSecTransformRsaSha256GetKlass:
- *
- * The RSA-SHA2-256 signature transform klass.
- *
- * Returns: RSA-SHA2-256 signature transform klass or NULL if an error
+ * @brief The RSA-SHA2-256 signature transform klass.
+ * @return RSA-SHA2-256 signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1528,11 +1300,8 @@ xmlSecTransformRsaSha256GetKlass(void) {
 }
 
 /**
- * xmlSecTransformRsaSha384GetKlass:
- *
- * The RSA-SHA2-384 signature transform klass.
- *
- * Returns: RSA-SHA2-384 signature transform klass or NULL if an error
+ * @brief The RSA-SHA2-384 signature transform klass.
+ * @return RSA-SHA2-384 signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1547,11 +1316,8 @@ xmlSecTransformRsaSha384GetKlass(void) {
 }
 
 /**
- * xmlSecTransformRsaSha512GetKlass:
- *
- * The RSA-SHA2-512 signature transform klass.
- *
- * Returns: RSA-SHA2-512 signature transform klass or NULL if an error
+ * @brief The RSA-SHA2-512 signature transform klass.
+ * @return RSA-SHA2-512 signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1567,11 +1333,8 @@ xmlSecTransformRsaSha512GetKlass(void) {
 
 
 /**
- * xmlSecTransformRsaPssSha1GetKlass:
- *
- * The RSA-PSS-SHA1 signature transform klass.
- *
- * Returns: RSA-PSS-SHA1 signature transform klass or NULL if an error
+ * @brief The RSA-PSS-SHA1 signature transform klass.
+ * @return RSA-PSS-SHA1 signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1586,11 +1349,8 @@ xmlSecTransformRsaPssSha1GetKlass(void) {
 }
 
 /**
- * xmlSecTransformRsaPssSha224GetKlass:
- *
- * The RSA-PSS-SHA2-224 signature transform klass.
- *
- * Returns: RSA-PSS-SHA2-224 signature transform klass or NULL if an error
+ * @brief The RSA-PSS-SHA2-224 signature transform klass.
+ * @return RSA-PSS-SHA2-224 signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1605,11 +1365,8 @@ xmlSecTransformRsaPssSha224GetKlass(void) {
 }
 
 /**
- * xmlSecTransformRsaPssSha256GetKlass:
- *
- * The RSA-PSS-SHA2-256 signature transform klass.
- *
- * Returns: RSA-PSS-SHA2-256 signature transform klass or NULL if an error
+ * @brief The RSA-PSS-SHA2-256 signature transform klass.
+ * @return RSA-PSS-SHA2-256 signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1624,11 +1381,8 @@ xmlSecTransformRsaPssSha256GetKlass(void) {
 }
 
 /**
- * xmlSecTransformRsaPssSha384GetKlass:
- *
- * The RSA-PSS-SHA2-384 signature transform klass.
- *
- * Returns: RSA-PSS-SHA2-384 signature transform klass or NULL if an error
+ * @brief The RSA-PSS-SHA2-384 signature transform klass.
+ * @return RSA-PSS-SHA2-384 signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1643,11 +1397,8 @@ xmlSecTransformRsaPssSha384GetKlass(void) {
 }
 
 /**
- * xmlSecTransformRsaPssSha512GetKlass:
- *
- * The RSA-PSS-SHA2-512 signature transform klass.
- *
- * Returns: RSA-PSS-SHA2-512 signature transform klass or NULL if an error
+ * @brief The RSA-PSS-SHA2-512 signature transform klass.
+ * @return RSA-PSS-SHA2-512 signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1663,11 +1414,8 @@ xmlSecTransformRsaPssSha512GetKlass(void) {
 
 
 /**
- * xmlSecTransformRsaPssSha3_224GetKlass:
- *
- * The RSA-PSS-SHA2-224 signature transform klass.
- *
- * Returns: RSA-PSS-SHA2-224 signature transform klass or NULL if an error
+ * @brief The RSA-PSS-SHA2-224 signature transform klass.
+ * @return RSA-PSS-SHA3-224 signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1682,11 +1430,8 @@ xmlSecTransformRsaPssSha3_224GetKlass(void) {
 }
 
 /**
- * xmlSecTransformRsaPssSha3_256GetKlass:
- *
- * The RSA-PSS-SHA2-256 signature transform klass.
- *
- * Returns: RSA-PSS-SHA2-256 signature transform klass or NULL if an error
+ * @brief The RSA-PSS-SHA2-256 signature transform klass.
+ * @return RSA-PSS-SHA3-256 signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1701,11 +1446,8 @@ xmlSecTransformRsaPssSha3_256GetKlass(void) {
 }
 
 /**
- * xmlSecTransformRsaPssSha3_384GetKlass:
- *
- * The RSA-PSS-SHA2-384 signature transform klass.
- *
- * Returns: RSA-PSS-SHA2-384 signature transform klass or NULL if an error
+ * @brief The RSA-PSS-SHA2-384 signature transform klass.
+ * @return RSA-PSS-SHA3-384 signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1720,11 +1462,8 @@ xmlSecTransformRsaPssSha3_384GetKlass(void) {
 }
 
 /**
- * xmlSecTransformRsaPssSha3_512GetKlass:
- *
- * The RSA-PSS-SHA2-512 signature transform klass.
- *
- * Returns: RSA-PSS-SHA2-512 signature transform klass or NULL if an error
+ * @brief The RSA-PSS-SHA2-512 signature transform klass.
+ * @return RSA-PSS-SHA3-512 signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1740,11 +1479,8 @@ xmlSecTransformRsaPssSha3_512GetKlass(void) {
 
 
 /**
- * xmlSecTransformRsaPkcs1GetKlass:
- *
- * The RSA-PKCS1 key transport transform klass.
- *
- * Returns: RSA-PKCS1 key transport transform klass or NULL if an error
+ * @brief The RSA-PKCS1 key transport transform klass.
+ * @return RSA-PKCS1 key transport transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1759,11 +1495,9 @@ xmlSecTransformRsaPkcs1GetKlass(void) {
 }
 
 /**
- * xmlSecTransformRsaOaepGetKlass:
- *
- * The RSA-OAEP key transport transform klass (XMLEnc 1.0).
- *
- * Returns: RSA-OAEP key transport transform klass or NULL if an error
+ * @brief Gets the RSA-OAEP key transport transform klass (XMLEnc 1.0).
+ * @details The RSA-OAEP key transport transform klass (XMLEnc 1.0).
+ * @return RSA-OAEP key transport (XMLEnc 1.0) transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1778,11 +1512,8 @@ xmlSecTransformRsaOaepGetKlass(void) {
 }
 
 /**
- * xmlSecTransformSLHDSA_SHA2_128fGetKlass:
- *
- * The SLH-DSA-SHA2-128f signature transform klass.
- *
- * Returns: SLH-DSA-SHA2-128f signature transform klass or NULL if an error
+ * @brief The SLH-DSA-SHA2-128f signature transform klass.
+ * @return SLH-DSA-SHA2-128f signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1797,11 +1528,8 @@ xmlSecTransformSLHDSA_SHA2_128fGetKlass(void) {
 }
 
 /**
- * xmlSecTransformSLHDSA_SHA2_128sGetKlass:
- *
- * The SLH-DSA-SHA2-128s signature transform klass.
- *
- * Returns: SLH-DSA-SHA2-128s signature transform klass or NULL if an error
+ * @brief The SLH-DSA-SHA2-128s signature transform klass.
+ * @return SLH-DSA-SHA2-128s signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1816,11 +1544,8 @@ xmlSecTransformSLHDSA_SHA2_128sGetKlass(void) {
 }
 
 /**
- * xmlSecTransformSLHDSA_SHA2_192fGetKlass:
- *
- * The SLH-DSA-SHA2-192f signature transform klass.
- *
- * Returns: SLH-DSA-SHA2-192f signature transform klass or NULL if an error
+ * @brief The SLH-DSA-SHA2-192f signature transform klass.
+ * @return SLH-DSA-SHA2-192f signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1835,11 +1560,8 @@ xmlSecTransformSLHDSA_SHA2_192fGetKlass(void) {
 }
 
 /**
- * xmlSecTransformSLHDSA_SHA2_192sGetKlass:
- *
- * The SLH-DSA-SHA2-192s signature transform klass.
- *
- * Returns: SLH-DSA-SHA2-192s signature transform klass or NULL if an error
+ * @brief The SLH-DSA-SHA2-192s signature transform klass.
+ * @return SLH-DSA-SHA2-192s signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1854,11 +1576,8 @@ xmlSecTransformSLHDSA_SHA2_192sGetKlass(void) {
 }
 
 /**
- * xmlSecTransformSLHDSA_SHA2_256fGetKlass:
- *
- * The SLH-DSA-SHA2-256f signature transform klass.
- *
- * Returns: SLH-DSA-SHA2-256f signature transform klass or NULL if an error
+ * @brief The SLH-DSA-SHA2-256f signature transform klass.
+ * @return SLH-DSA-SHA2-256f signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1873,11 +1592,8 @@ xmlSecTransformSLHDSA_SHA2_256fGetKlass(void) {
 }
 
 /**
- * xmlSecTransformSLHDSA_SHA2_256sGetKlass:
- *
- * The SLH-DSA-SHA2-256s signature transform klass.
- *
- * Returns: SLH-DSA-SHA2-256s signature transform klass or NULL if an error
+ * @brief The SLH-DSA-SHA2-256s signature transform klass.
+ * @return SLH-DSA-SHA2-256s signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1893,11 +1609,8 @@ xmlSecTransformSLHDSA_SHA2_256sGetKlass(void) {
 
 
 /**
- * xmlSecTransformEdDSAEd25519GetKlass:
- *
- * The EdDSA-Ed25519 signature transform klass.
- *
- * Returns: EdDSA-Ed25519 signature transform klass or NULL if an error
+ * @brief The EdDSA-Ed25519 signature transform klass.
+ * @return EdDSA-Ed25519 signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1912,11 +1625,8 @@ xmlSecTransformEdDSAEd25519GetKlass(void) {
 }
 
 /**
- * xmlSecTransformEdDSAEd25519ctxGetKlass:
- *
- * The EdDSA-Ed25519ctx signature transform klass.
- *
- * Returns: EdDSA-Ed25519ctx signature transform klass or NULL if an error
+ * @brief The EdDSA-Ed25519ctx signature transform klass.
+ * @return EdDSA-Ed25519ctx signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1931,11 +1641,8 @@ xmlSecTransformEdDSAEd25519ctxGetKlass(void) {
 }
 
 /**
- * xmlSecTransformEdDSAEd25519phGetKlass:
- *
- * The EdDSA-Ed25519ph signature transform klass.
- *
- * Returns: EdDSA-Ed25519ph signature transform klass or NULL if an error
+ * @brief The EdDSA-Ed25519ph signature transform klass.
+ * @return EdDSA-Ed25519ph signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1950,11 +1657,8 @@ xmlSecTransformEdDSAEd25519phGetKlass(void) {
 }
 
 /**
- * xmlSecTransformEdDSAEd448GetKlass:
- *
- * The EdDSA-Ed448 signature transform klass.
- *
- * Returns: EdDSA-Ed448 signature transform klass or NULL if an error
+ * @brief The EdDSA-Ed448 signature transform klass.
+ * @return EdDSA-Ed448 signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1969,11 +1673,8 @@ xmlSecTransformEdDSAEd448GetKlass(void) {
 }
 
 /**
- * xmlSecTransformEdDSAEd448phGetKlass:
- *
- * The EdDSA-Ed448ph signature transform klass.
- *
- * Returns: EdDSA-Ed448ph signature transform klass or NULL if an error
+ * @brief The EdDSA-Ed448ph signature transform klass.
+ * @return EdDSA-Ed448ph signature transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -1989,11 +1690,8 @@ xmlSecTransformEdDSAEd448phGetKlass(void) {
 
 
 /**
- * xmlSecTransformGostR3411_2012_512GetKlass:
- *
- * GOST R 34.11-2012 512 bit digest transform klass.
- *
- * Returns: pointer to GOST R 34.11-2012 512 bit digest transform klass or NULL if an error
+ * @brief GOST R 34.11-2012 512 bit digest transform klass.
+ * @return pointer to GOST R 34.11-2012 512 bit digest transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -2007,11 +1705,8 @@ xmlSecTransformGostR3411_2012_512GetKlass(void) {
     return(xmlSecCryptoDLGetFunctions()->transformGostR3411_2012_512GetKlass());
 }
 /**
- * xmlSecTransformSha1GetKlass:
- *
- * SHA-1 digest transform klass.
- *
- * Returns: pointer to SHA-1 digest transform klass or NULL if an error
+ * @brief SHA-1 digest transform klass.
+ * @return pointer to SHA-1 digest transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -2026,11 +1721,8 @@ xmlSecTransformSha1GetKlass(void) {
 }
 
 /**
- * xmlSecTransformSha224GetKlass:
- *
- * SHA2-224 digest transform klass.
- *
- * Returns: pointer to SHA2-224 digest transform klass or NULL if an error
+ * @brief SHA2-224 digest transform klass.
+ * @return pointer to SHA2-224 digest transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -2045,11 +1737,8 @@ xmlSecTransformSha224GetKlass(void) {
 }
 
 /**
- * xmlSecTransformSha256GetKlass:
- *
- * SHA2-256 digest transform klass.
- *
- * Returns: pointer to SHA2-256 digest transform klass or NULL if an error
+ * @brief SHA2-256 digest transform klass.
+ * @return pointer to SHA2-256 digest transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -2064,11 +1753,8 @@ xmlSecTransformSha256GetKlass(void) {
 }
 
 /**
- * xmlSecTransformSha384GetKlass:
- *
- * SHA2-384 digest transform klass.
- *
- * Returns: pointer to SHA2-384 digest transform klass or NULL if an error
+ * @brief SHA2-384 digest transform klass.
+ * @return pointer to SHA2-384 digest transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -2083,11 +1769,8 @@ xmlSecTransformSha384GetKlass(void) {
 }
 
 /**
- * xmlSecTransformSha512GetKlass:
- *
- * SHA2-512 digest transform klass.
- *
- * Returns: pointer to SHA2-512 digest transform klass or NULL if an error
+ * @brief SHA2-512 digest transform klass.
+ * @return pointer to SHA2-512 digest transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -2103,11 +1786,8 @@ xmlSecTransformSha512GetKlass(void) {
 
 
 /**
- * xmlSecTransformSha3_224GetKlass:
- *
- * SHA3-224 digest transform klass.
- *
- * Returns: pointer to SHA3-224 digest transform klass or NULL if an error
+ * @brief SHA3-224 digest transform klass.
+ * @return pointer to SHA3-224 digest transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -2122,11 +1802,8 @@ xmlSecTransformSha3_224GetKlass(void) {
 }
 
 /**
- * xmlSecTransformSha3_256GetKlass:
- *
- * SHA3-256 digest transform klass.
- *
- * Returns: pointer to SHA3-256 digest transform klass or NULL if an error
+ * @brief SHA3-256 digest transform klass.
+ * @return pointer to SHA3-256 digest transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -2141,11 +1818,8 @@ xmlSecTransformSha3_256GetKlass(void) {
 }
 
 /**
- * xmlSecTransformSha3_384GetKlass:
- *
- * SHA3-384 digest transform klass.
- *
- * Returns: pointer to SHA3-384 digest transform klass or NULL if an error
+ * @brief SHA3-384 digest transform klass.
+ * @return pointer to SHA3-384 digest transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -2160,11 +1834,8 @@ xmlSecTransformSha3_384GetKlass(void) {
 }
 
 /**
- * xmlSecTransformSha3_512GetKlass:
- *
- * SHA3-512 digest transform klass.
- *
- * Returns: pointer to SHA3-512 digest transform klass or NULL if an error
+ * @brief SHA3-512 digest transform klass.
+ * @return pointer to SHA3-512 digest transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
@@ -2183,16 +1854,14 @@ xmlSecTransformSha3_512GetKlass(void) {
  *
  * High-level routines for the xmlsec command-line utility
  *
- *****************************************************************************/
+  *****************************************************************************/
 /**
- * xmlSecCryptoAppInit:
- * @config:             the path to crypto library configuration.
- *
- * General crypto engine initialization. This function is used
+ * @brief Initializes the crypto engine for the command-line utility.
+ * @details General crypto engine initialization. This function is used
  * by the XMLSec command-line utility and is called before the
- * @xmlSecInit function.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * #xmlSecInit function.
+ * @param config the path to crypto library configuration.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecCryptoAppInit(const char* config) {
@@ -2206,13 +1875,11 @@ xmlSecCryptoAppInit(const char* config) {
 
 
 /**
- * xmlSecCryptoAppShutdown:
- *
- * General crypto engine shutdown. This function is used
+ * @brief Shuts down the crypto engine for the command-line utility.
+ * @details General crypto engine shutdown. This function is used
  * by the XMLSec command-line utility and is called after the
- * @xmlSecShutdown function.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * #xmlSecShutdown function.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecCryptoAppShutdown(void) {
@@ -2225,13 +1892,11 @@ xmlSecCryptoAppShutdown(void) {
 }
 
 /**
- * xmlSecCryptoAppDefaultKeysMngrInit:
- * @mngr:               the pointer to keys manager.
- *
- * Initializes @mngr with simple keys store #xmlSecSimpleKeysStoreId
+ * @brief Initializes the keys manager with default stores.
+ * @details Initializes @p mngr with simple keys store #xmlSecSimpleKeysStoreId
  * and a default crypto key data stores.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @param mngr the pointer to keys manager.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecCryptoAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
@@ -2244,14 +1909,12 @@ xmlSecCryptoAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
 }
 
 /**
- * xmlSecCryptoAppDefaultKeysMngrAdoptKey:
- * @mngr:               the pointer to keys manager.
- * @key:                the pointer to key.
- *
- * Adds @key to the keys manager @mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
+ * @brief Adds a key to the keys manager.
+ * @details Adds @p key to the keys manager @p mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
  * function.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @param mngr the pointer to keys manager.
+ * @param key the pointer to key.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecCryptoAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key) {
@@ -2265,20 +1928,18 @@ xmlSecCryptoAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key)
 
 
 /**
- * xmlSecCryptoAppDefaultKeysMngrVerifyKey:
- * @mngr:               the pointer to keys manager.
- * @key:                the pointer to key.
- * @keyInfoCtx:         the key info context for verification.
- *
- * Verifies @key with the keys manager @mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
+ * @brief Verifies a key using the keys manager.
+ * @details Verifies @p key with the keys manager @p mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
  * function:
  * - Checks that key certificate is present
  * - Checks that key certificate is valid
  *
- * Adds @key to the keys manager @mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
+ * Adds @p key to the keys manager @p mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
  * function.
- *
- * Returns: 1 if key is verified, 0 otherwise, or a negative value if an error occurs.
+ * @param mngr the pointer to keys manager.
+ * @param key the pointer to key.
+ * @param keyInfoCtx the key info context for verification.
+ * @return 1 if key is verified, 0 otherwise, or a negative value if an error occurs.
  */
 int
 xmlSecCryptoAppDefaultKeysMngrVerifyKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key, xmlSecKeyInfoCtxPtr keyInfoCtx) {
@@ -2291,14 +1952,12 @@ xmlSecCryptoAppDefaultKeysMngrVerifyKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key
 }
 
 /**
- * xmlSecCryptoAppDefaultKeysMngrLoad:
- * @mngr:               the pointer to keys manager.
- * @uri:                the uri.
- *
- * Loads XML keys file from @uri to the keys manager @mngr created
+ * @brief Loads a keys file into the keys manager.
+ * @details Loads XML keys file from @p uri to the keys manager @p mngr created
  * with #xmlSecCryptoAppDefaultKeysMngrInit function.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @param mngr the pointer to keys manager.
+ * @param uri the uri.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecCryptoAppDefaultKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
@@ -2311,14 +1970,11 @@ xmlSecCryptoAppDefaultKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
 }
 
 /**
- * xmlSecCryptoAppDefaultKeysMngrSave:
- * @mngr:               the pointer to keys manager.
- * @filename:           the destination filename.
- * @type:               the type of keys to save (public/private/symmetric).
- *
- * Saves keys from @mngr to  XML keys file.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Saves keys from @p mngr to  XML keys file.
+ * @param mngr the pointer to keys manager.
+ * @param filename the destination filename.
+ * @param type the type of keys to save (public/private/symmetric).
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecCryptoAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename,
@@ -2332,17 +1988,15 @@ xmlSecCryptoAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename,
 }
 
 /**
- * xmlSecCryptoAppKeysMngrCertLoad:
- * @mngr:               the keys manager.
- * @filename:           the certificate file.
- * @format:             the certificate file format.
- * @type:               the flag that indicates is the certificate in @filename
+ * @brief Loads a certificate into the keys manager.
+ * @details Reads cert from @p filename and adds to the list of trusted or known
+ * untrusted certs in @p store.
+ * @param mngr the keys manager.
+ * @param filename the certificate file.
+ * @param format the certificate file format.
+ * @param type the flag that indicates is the certificate in @p filename
  *                      trusted or not.
- *
- * Reads cert from @filename and adds to the list of trusted or known
- * untrusted certs in @store.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecCryptoAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
@@ -2356,17 +2010,15 @@ xmlSecCryptoAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
 }
 
 /**
- * xmlSecCryptoAppKeysMngrCertLoadMemory:
- * @mngr:               the keys manager.
- * @data:               the certificate binary data.
- * @dataSize:           the certificate binary data size.
- * @format:             the certificate data format.
- * @type:               the flag that indicates is the certificate trusted or not.
- *
- * Reads cert from binary buffer @data and adds to the list of trusted or known
- * untrusted certs in @store.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Loads a certificate from memory into the keys manager.
+ * @details Reads cert from binary buffer @p data and adds to the list of trusted or known
+ * untrusted certs in @p store.
+ * @param mngr the keys manager.
+ * @param data the certificate binary data.
+ * @param dataSize the certificate binary data size.
+ * @param format the certificate data format.
+ * @param type the flag that indicates is the certificate trusted or not.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecCryptoAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* data,
@@ -2381,14 +2033,12 @@ xmlSecCryptoAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* 
 }
 
 /**
- * xmlSecCryptoAppKeysMngrCrlLoad:
- * @mngr:               the keys manager.
- * @filename:           the CRL file.
- * @format:             the CRL file format.
- *
- * Reads crls from @filename and adds to the list of crls in @store.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Loads CRLs from a file into the keys manager.
+ * @details Reads crls from @p filename and adds to the list of crls in @p store.
+ * @param mngr the keys manager.
+ * @param filename the CRL file.
+ * @param format the CRL file format.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecCryptoAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, xmlSecKeyDataFormat format) {
@@ -2402,16 +2052,14 @@ xmlSecCryptoAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, xml
 
 
 /**
- * xmlSecCryptoAppKeysMngrCrlLoadAndVerify:
- * @mngr:               the keys manager.
- * @filename:           the CRL file.
- * @format:             the CRL file format.
- * @keyInfoCtx:         the key info context for verification parameters.
- *
- * Reads and verifies the CRL from @filename.  If verification is successful, the CRL is added to
- * the keys manager @store.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Loads and verifies a CRL into the keys manager.
+ * @details Reads and verifies the CRL from @p filename.  If verification is successful, the CRL is added to
+ * the keys manager @p store.
+ * @param mngr the keys manager.
+ * @param filename the CRL file.
+ * @param format the CRL file format.
+ * @param keyInfoCtx the key info context for verification parameters.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecCryptoAppKeysMngrCrlLoadAndVerify(xmlSecKeysMngrPtr mngr, const char *filename,
@@ -2426,15 +2074,13 @@ xmlSecCryptoAppKeysMngrCrlLoadAndVerify(xmlSecKeysMngrPtr mngr, const char *file
 }
 
 /**
- * xmlSecCryptoAppKeysMngrCrlLoadMemory:
- * @mngr:               the keys manager.
- * @data:               the CRL binary data.
- * @dataSize:           the CRL binary data size.
- * @format:             the CRL data format.
- *
- * Reads crl from binary buffer @data and adds to the list of crls in @store.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Loads CRLs from memory into the keys manager.
+ * @details Reads crl from binary buffer @p data and adds to the list of crls in @p store.
+ * @param mngr the keys manager.
+ * @param data the CRL binary data.
+ * @param dataSize the CRL binary data size.
+ * @param format the CRL data format.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecCryptoAppKeysMngrCrlLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* data, xmlSecSize dataSize,
@@ -2450,17 +2096,14 @@ xmlSecCryptoAppKeysMngrCrlLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* d
 
 
 /**
- * xmlSecCryptoAppKeyLoadEx:
- * @filename:           the key filename.
- * @type:               the key type (public / private).
- * @format:             the key file format.
- * @pwd:                the key file password.
- * @pwdCallback:        the key password callback.
- * @pwdCallbackCtx:     the user context for password callback.
- *
- * Reads a key from a file.
- *
- * Returns: pointer to the key or NULL if an error occurs.
+ * @brief Reads a key from a file.
+ * @param filename the key filename.
+ * @param type the key type (public / private).
+ * @param format the key file format.
+ * @param pwd the key file password.
+ * @param pwdCallback the key password callback.
+ * @param pwdCallbackCtx the user context for password callback.
+ * @return pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
 xmlSecCryptoAppKeyLoadEx(const char *filename, xmlSecKeyDataType type, xmlSecKeyDataFormat format,
@@ -2474,17 +2117,14 @@ xmlSecCryptoAppKeyLoadEx(const char *filename, xmlSecKeyDataType type, xmlSecKey
 }
 
 /**
- * xmlSecCryptoAppKeyLoadMemory:
- * @data:               the binary key data.
- * @dataSize:           the size of binary key.
- * @format:             the key file format.
- * @pwd:                the key file password.
- * @pwdCallback:        the key password callback.
- * @pwdCallbackCtx:     the user context for password callback.
- *
- * Reads a key from the memory buffer.
- *
- * Returns: pointer to the key or NULL if an error occurs.
+ * @brief Reads a key from the memory buffer.
+ * @param data the binary key data.
+ * @param dataSize the size of binary key.
+ * @param format the key file format.
+ * @param pwd the key file password.
+ * @param pwdCallback the key password callback.
+ * @param pwdCallbackCtx the user context for password callback.
+ * @return pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
 xmlSecCryptoAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlSecKeyDataFormat format,
@@ -2498,17 +2138,15 @@ xmlSecCryptoAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlSec
 }
 
 /**
- * xmlSecCryptoAppPkcs12Load:
- * @filename:           the PKCS12 key filename.
- * @pwd:                the PKCS12 file password.
- * @pwdCallback:        the password callback.
- * @pwdCallbackCtx:     the user context for password callback.
- *
- * Reads a key and all associated certificates from the PKCS12 file.
+ * @brief Reads a key and certificates from a PKCS12 file.
+ * @details Reads a key and all associated certificates from the PKCS12 file.
  * For uniformity, call xmlSecCryptoAppKeyLoadEx instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
- *
- * Returns: pointer to the key or NULL if an error occurs.
+ * @param filename the PKCS12 key filename.
+ * @param pwd the PKCS12 file password.
+ * @param pwdCallback the password callback.
+ * @param pwdCallbackCtx the user context for password callback.
+ * @return pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
 xmlSecCryptoAppPkcs12Load(const char* filename, const char* pwd, void* pwdCallback,
@@ -2522,18 +2160,16 @@ xmlSecCryptoAppPkcs12Load(const char* filename, const char* pwd, void* pwdCallba
 }
 
 /**
- * xmlSecCryptoAppPkcs12LoadMemory:
- * @data:               the PKCS12 binary data.
- * @dataSize:           the PKCS12 binary data size.
- * @pwd:                the PKCS12 file password.
- * @pwdCallback:        the password callback.
- * @pwdCallbackCtx:     the user context for password callback.
- *
- * Reads a key and all associated certificates from the PKCS12 data in the memory buffer.
+ * @brief Reads a key and certificates from PKCS12 memory buffer.
+ * @details Reads a key and all associated certificates from the PKCS12 data in the memory buffer.
  * For uniformity, call xmlSecCryptoAppKeyLoadMemory instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
- *
- * Returns: pointer to the key or NULL if an error occurs.
+ * @param data the PKCS12 binary data.
+ * @param dataSize the PKCS12 binary data size.
+ * @param pwd the PKCS12 file password.
+ * @param pwdCallback the password callback.
+ * @param pwdCallbackCtx the user context for password callback.
+ * @return pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
 xmlSecCryptoAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
@@ -2548,14 +2184,12 @@ xmlSecCryptoAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
 }
 
 /**
- * xmlSecCryptoAppKeyCertLoad:
- * @key:                the pointer to key.
- * @filename:           the certificate filename.
- * @format:             the certificate file format.
- *
- * Reads the certificate from $@filename and adds it to key.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Loads a certificate and adds it to a key.
+ * @details Reads the certificate from $@p filename and adds it to key.
+ * @param key the pointer to key.
+ * @param filename the certificate filename.
+ * @param format the certificate file format.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecCryptoAppKeyCertLoad(xmlSecKeyPtr key, const char* filename, xmlSecKeyDataFormat format) {
@@ -2568,15 +2202,13 @@ xmlSecCryptoAppKeyCertLoad(xmlSecKeyPtr key, const char* filename, xmlSecKeyData
 }
 
 /**
- * xmlSecCryptoAppKeyCertLoadMemory:
- * @key:                the pointer to key.
- * @data:               the certificate binary data.
- * @dataSize:           the certificate binary data size.
- * @format:             the certificate file format.
- *
- * Reads the certificate from memory buffer and adds it to key.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Loads a certificate from memory and adds it to a key.
+ * @details Reads the certificate from memory buffer and adds it to key.
+ * @param key the pointer to key.
+ * @param data the certificate binary data.
+ * @param dataSize the certificate binary data size.
+ * @param format the certificate file format.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecCryptoAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSecSize dataSize,
@@ -2590,11 +2222,8 @@ xmlSecCryptoAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSe
 }
 
 /**
- * xmlSecCryptoAppGetDefaultPwdCallback:
- *
- * Gets default password callback.
- *
- * Returns: default password callback.
+ * @brief Gets default password callback.
+ * @return default password callback.
  */
 void*
 xmlSecCryptoAppGetDefaultPwdCallback(void) {

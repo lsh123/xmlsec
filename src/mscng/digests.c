@@ -9,9 +9,8 @@
  * Copyright (C) 2018 Miklos Vajna. All Rights Reserved.
  */
 /**
- * SECTION:crypto
+ * @addtogroup xmlsec_mscng_crypto
  */
-
 #include "globals.h"
 
 #include <string.h>
@@ -40,7 +39,7 @@ struct _xmlSecMSCngDigestCtx {
  *
  * MSCng Digest transforms
  *
- *****************************************************************************/
+  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(MSCngDigest, xmlSecMSCngDigestCtx)
 #define xmlSecMSCngDigestSize XMLSEC_TRANSFORM_SIZE(MSCngDigest)
 
@@ -413,15 +412,12 @@ xmlSecMSCngDigestExecute(xmlSecTransformPtr transform,
  *
  * MD5
  *
- *****************************************************************************/
+  *****************************************************************************/
 XMLSEC_MSCNG_DIGEST_KLASS_EX(Md5)
 
 /**
- * xmlSecMSCngTransformMd5GetKlass:
- *
- * MD-5 digest transform klass.
- *
- * Returns: pointer to MD-5 digest transform klass.
+ * @brief MD-5 digest transform klass.
+ * @return pointer to MD-5 digest transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformMd5GetKlass(void) {
@@ -434,15 +430,12 @@ xmlSecMSCngTransformMd5GetKlass(void) {
  *
  * SHA1
  *
- *****************************************************************************/
+  *****************************************************************************/
 XMLSEC_MSCNG_DIGEST_KLASS_EX(Sha1)
 
 /**
- * xmlSecMSCngTransformSha1GetKlass:
- *
- * SHA-1 digest transform klass.
- *
- * Returns: pointer to SHA-1 digest transform klass.
+ * @brief SHA-1 digest transform klass.
+ * @return pointer to SHA-1 digest transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformSha1GetKlass(void) {
@@ -455,15 +448,12 @@ xmlSecMSCngTransformSha1GetKlass(void) {
  *
  * SHA256
  *
- *****************************************************************************/
+  *****************************************************************************/
 XMLSEC_MSCNG_DIGEST_KLASS_EX(Sha256)
 
 /**
- * xmlSecMSCngTransformSha256GetKlass:
- *
- * SHA-256 digest transform klass.
- *
- * Returns: pointer to SHA-256 digest transform klass.
+ * @brief SHA-256 digest transform klass.
+ * @return pointer to SHA-256 digest transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformSha256GetKlass(void) {
@@ -476,15 +466,12 @@ xmlSecMSCngTransformSha256GetKlass(void) {
  *
  * SHA384
  *
- *****************************************************************************/
+  *****************************************************************************/
 XMLSEC_MSCNG_DIGEST_KLASS_EX(Sha384)
 
 /**
- * xmlSecMSCngTransformSha384GetKlass:
- *
- * SHA-256 digest transform klass.
- *
- * Returns: pointer to SHA-256 digest transform klass.
+ * @brief SHA-384 digest transform klass.
+ * @return pointer to SHA-256 digest transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformSha384GetKlass(void) {
@@ -497,15 +484,12 @@ xmlSecMSCngTransformSha384GetKlass(void) {
  *
  * SHA512
  *
- *****************************************************************************/
+  *****************************************************************************/
 XMLSEC_MSCNG_DIGEST_KLASS_EX(Sha512)
 
 /**
- * xmlSecMSCngTransformSha512GetKlass:
- *
- * SHA-512 digest transform klass.
- *
- * Returns: pointer to SHA-512 digest transform klass.
+ * @brief SHA-512 digest transform klass.
+ * @return pointer to SHA-512 digest transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformSha512GetKlass(void) {
@@ -518,15 +502,12 @@ xmlSecMSCngTransformSha512GetKlass(void) {
  *
  * SHA3-256
  *
- *****************************************************************************/
+  *****************************************************************************/
 XMLSEC_MSCNG_DIGEST_KLASS_EX(Sha3_256)
 
 /**
- * xmlSecMSCngTransformSha3_256GetKlass:
- *
- * SHA3-256 digest transform klass.
- *
- * Returns: pointer to SHA3-256 digest transform klass.
+ * @brief SHA3-256 digest transform klass.
+ * @return pointer to SHA3-256 digest transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformSha3_256GetKlass(void) {
@@ -537,15 +518,12 @@ xmlSecMSCngTransformSha3_256GetKlass(void) {
  *
  * SHA3-384
  *
- *****************************************************************************/
+  *****************************************************************************/
 XMLSEC_MSCNG_DIGEST_KLASS_EX(Sha3_384)
 
 /**
- * xmlSecMSCngTransformSha3_384GetKlass:
- *
- * SHA3-384 digest transform klass.
- *
- * Returns: pointer to SHA3-384 digest transform klass.
+ * @brief SHA3-384 digest transform klass.
+ * @return pointer to SHA3-384 digest transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformSha3_384GetKlass(void) {
@@ -556,15 +534,12 @@ xmlSecMSCngTransformSha3_384GetKlass(void) {
  *
  * SHA3-512
  *
- *****************************************************************************/
+  *****************************************************************************/
 XMLSEC_MSCNG_DIGEST_KLASS_EX(Sha3_512)
 
 /**
- * xmlSecMSCngTransformSha3_512GetKlass:
- *
- * SHA3-512 digest transform klass.
- *
- * Returns: pointer to SHA3-512 digest transform klass.
+ * @brief SHA3-512 digest transform klass.
+ * @return pointer to SHA3-512 digest transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformSha3_512GetKlass(void) {

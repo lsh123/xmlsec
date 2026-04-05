@@ -9,6 +9,13 @@
 #ifndef __XMLSEC_MSCRYPTO_X509_H__
 #define __XMLSEC_MSCRYPTO_X509_H__
 
+/**
+ * @defgroup xmlsec_mscrypto_x509 MsCrypto X.509 Support
+ * @ingroup xmlsec_mscrypto
+ * @brief X.509 certificate handling for the MsCrypto back-end.
+ * @{
+ */
+
 #ifndef XMLSEC_NO_X509
 
 #include <xmlsec/exports.h>
@@ -24,9 +31,7 @@ extern "C" {
 #endif /* __cplusplus */
 
 /**
- * xmlSecMSCryptoKeyDataX509Id:
- *
- * The MSCrypto X509 data klass.
+ * @brief The MSCrypto X509 data klass.
  */
 #define xmlSecMSCryptoKeyDataX509Id \
         xmlSecMSCryptoKeyDataX509GetKlass()
@@ -49,18 +54,14 @@ XMLSEC_CRYPTO_EXPORT xmlSecSize         xmlSecMSCryptoKeyDataX509GetCrlsSize    
 
 
 /**
- * xmlSecMSCryptoKeyDataRawX509CertId:
- *
- * The MSCrypto raw X509 certificate klass.
+ * @brief The MSCrypto raw X509 certificate klass.
  */
 #define xmlSecMSCryptoKeyDataRawX509CertId \
         xmlSecMSCryptoKeyDataRawX509CertGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecMSCryptoKeyDataRawX509CertGetKlass(void);
 
 /**
- * xmlSecMSCryptoX509StoreId:
- *
- * The MSCrypto X509 store klass.
+ * @brief The MSCrypto X509 store klass.
  */
 #define xmlSecMSCryptoX509StoreId \
         xmlSecMSCryptoX509StoreGetKlass()
@@ -89,5 +90,7 @@ XMLSEC_CRYPTO_EXPORT void               xmlSecMSCryptoX509StoreEnableSystemTrust
 #endif /* __cplusplus */
 
 #endif /* XMLSEC_NO_X509 */
+
+/** @} */ /** xmlsec_mscrypto_x509 */
 
 #endif /* __XMLSEC_MSCRYPTO_X509_H__ */

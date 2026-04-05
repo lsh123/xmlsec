@@ -24,6 +24,7 @@ If something does not work, check the README file in the top level
 ### sign1: signing with a template file
 
 Files:
+
 ```
 sign1.c             The source code
 sign1-tmpl.xml      The template file for sign1 example
@@ -31,6 +32,7 @@ sign1-res.xml       The result of processing sign1_tmpl.xml by sign1.c
 ```
 
 To run this example:
+
 ```
 ./sign1 sign1-tmpl.xml rsakey.pem
 ```

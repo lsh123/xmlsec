@@ -9,9 +9,8 @@
  * Copyright (C) 2018 Miklos Vajna. All Rights Reserved.
  */
 /**
- * SECTION:crypto
+ * @addtogroup xmlsec_mscng_crypto
  */
-
 #include "globals.h"
 
 #ifndef XMLSEC_NO_DES
@@ -31,19 +30,19 @@
 #include "../kw_helpers.h"
 #include "../cast_helpers.h"
 
-/*********************************************************************
+/******************************************************************************
  *
  * Triple DES Key Wrap transform context
  *
- ********************************************************************/
+  *****************************************************************************/
 typedef xmlSecTransformKWDes3Ctx xmlSecMSCngKWDes3Ctx,
                                 *xmlSecMSCngKWDes3CtxPtr;
 
-/*********************************************************************
+/******************************************************************************
  *
  * Triple DES Key Wrap transform
  *
- ********************************************************************/
+  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(MSCngKWDes3, xmlSecMSCngKWDes3Ctx)
 #define xmlSecMSCngKWDes3Size XMLSEC_TRANSFORM_SIZE(MSCngKWDes3)
 
@@ -684,11 +683,8 @@ static xmlSecTransformKlass xmlSecMSCngKWDes3Klass = {
 };
 
 /**
- * xmlSecMSCngTransformKWDes3GetKlass:
- *
- * The Triple DES key wrapper transform klass.
- *
- * Returns: Triple DES key wrapper transform klass.
+ * @brief The Triple DES key wrapper transform klass.
+ * @return Triple DES key wrapper transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformKWDes3GetKlass(void) {

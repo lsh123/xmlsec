@@ -10,9 +10,8 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:crypto
+ * @addtogroup xmlsec_mscrypto_crypto
  */
-
 #include "globals.h"
 
 #include <string.h>
@@ -28,11 +27,11 @@
 #include "../cast_helpers.h"
 #include "../keysdata_helpers.h"
 
-/**************************************************************************
+/******************************************************************************
  *
  * Internal MSCrypto Block cipher CTX
  *
- *****************************************************************************/
+  *****************************************************************************/
 typedef struct _xmlSecMSCryptoBlockCipherCtx            xmlSecMSCryptoBlockCipherCtx,
                                                         *xmlSecMSCryptoBlockCipherCtxPtr;
 struct _xmlSecMSCryptoBlockCipherCtx {
@@ -359,7 +358,7 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
  *
  *  Block Cipher transforms
  *
- *****************************************************************************/
+  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(MSCryptoBlockCipher, xmlSecMSCryptoBlockCipherCtx)
 #define xmlSecMSCryptoBlockCipherSize XMLSEC_TRANSFORM_SIZE(MSCryptoBlockCipher)
 
@@ -657,11 +656,11 @@ xmlSecMSCryptoBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecT
 }
 
 #ifndef XMLSEC_NO_AES
-/*********************************************************************
+/******************************************************************************
  *
  * AES CBC cipher transforms
  *
- ********************************************************************/
+  *****************************************************************************/
 static xmlSecTransformKlass xmlSecMSCryptoAes128CbcKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -690,11 +689,8 @@ static xmlSecTransformKlass xmlSecMSCryptoAes128CbcKlass = {
 };
 
 /**
- * xmlSecMSCryptoTransformAes128CbcGetKlass:
- *
- * AES 128 CBC encryption transform klass.
- *
- * Returns: pointer to AES 128 CBC encryption transform.
+ * @brief AES 128 CBC encryption transform klass.
+ * @return pointer to AES 128 CBC encryption transform.
  */
 xmlSecTransformId
 xmlSecMSCryptoTransformAes128CbcGetKlass(void) {
@@ -729,11 +725,8 @@ static xmlSecTransformKlass xmlSecMSCryptoAes192CbcKlass = {
 };
 
 /**
- * xmlSecMSCryptoTransformAes192CbcGetKlass:
- *
- * AES 192 CBC encryption transform klass.
- *
- * Returns: pointer to AES 192 CBC encryption transform.
+ * @brief AES 192 CBC encryption transform klass.
+ * @return pointer to AES 192 CBC encryption transform.
  */
 xmlSecTransformId
 xmlSecMSCryptoTransformAes192CbcGetKlass(void) {
@@ -768,11 +761,8 @@ static xmlSecTransformKlass xmlSecMSCryptoAes256CbcKlass = {
 };
 
 /**
- * xmlSecMSCryptoTransformAes256CbcGetKlass:
- *
- * AES 256 CBC encryption transform klass.
- *
- * Returns: pointer to AES 256 CBC encryption transform.
+ * @brief AES 256 CBC encryption transform klass.
+ * @return pointer to AES 256 CBC encryption transform.
  */
 xmlSecTransformId
 xmlSecMSCryptoTransformAes256CbcGetKlass(void) {
@@ -811,11 +801,8 @@ static xmlSecTransformKlass xmlSecMSCryptoDes3CbcKlass = {
 };
 
 /**
- * xmlSecMSCryptoTransformDes3CbcGetKlass:
- *
- * Triple DES CBC encryption transform klass.
- *
- * Returns: pointer to Triple DES encryption transform.
+ * @brief Triple DES CBC encryption transform klass.
+ * @return pointer to Triple DES encryption transform.
  */
 xmlSecTransformId
 xmlSecMSCryptoTransformDes3CbcGetKlass(void) {

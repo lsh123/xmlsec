@@ -9,6 +9,13 @@
 #ifndef __XMLSEC_GCRYPT_APP_H__
 #define __XMLSEC_GCRYPT_APP_H__
 
+/**
+ * @defgroup xmlsec_gcrypt_app GCrypt Application Helpers
+ * @ingroup xmlsec_gcrypt
+ * @brief High-level application helpers for the GCrypt back-end.
+ * @{
+ */
+
 #include <xmlsec/exports.h>
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
@@ -19,19 +26,19 @@
 extern "C" {
 #endif /* __cplusplus */
 
-/********************************************************************
+/******************************************************************************
  *
  * Init/shutdown
  *
- ********************************************************************/
+  *****************************************************************************/
 XMLSEC_CRYPTO_EXPORT int        xmlSecGCryptAppInit                     (const char* config);
 XMLSEC_CRYPTO_EXPORT int        xmlSecGCryptAppShutdown                 (void);
 
-/********************************************************************
+/******************************************************************************
  *
  * Keys Manager
  *
- ********************************************************************/
+  *****************************************************************************/
 XMLSEC_CRYPTO_EXPORT int        xmlSecGCryptAppDefaultKeysMngrInit      (xmlSecKeysMngrPtr mngr);
 XMLSEC_CRYPTO_EXPORT int        xmlSecGCryptAppDefaultKeysMngrAdoptKey  (xmlSecKeysMngrPtr mngr,
                                                                          xmlSecKeyPtr key);
@@ -63,11 +70,11 @@ XMLSEC_CRYPTO_EXPORT int        xmlSecGCryptAppKeysMngrCertLoadMemory   (xmlSecK
 #endif /* XMLSEC_NO_X509 */
 
 
-/********************************************************************
+/******************************************************************************
  *
  * Keys
  *
- ********************************************************************/
+  *****************************************************************************/
 XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecGCryptAppKeyLoadEx              (const char *filename,
                                                                          xmlSecKeyDataType type,
                                                                          xmlSecKeyDataFormat format,
@@ -103,5 +110,7 @@ XMLSEC_CRYPTO_EXPORT void*      xmlSecGCryptAppGetDefaultPwdCallback    (void);
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
+
+/** @} */ /** xmlsec_gcrypt_app */
 
 #endif /* __XMLSEC_GCRYPT_APP_H__ */

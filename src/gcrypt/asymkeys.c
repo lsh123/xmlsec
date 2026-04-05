@@ -9,9 +9,8 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:crypto
+ * @addtogroup xmlsec_gcrypt_crypto
  */
-
 #include "globals.h"
 
 #include <string.h>
@@ -31,19 +30,19 @@
 #include "../cast_helpers.h"
 #include "../keysdata_helpers.h"
 
-/**************************************************************************
+/******************************************************************************
  *
  * Helpers
  *
- *************************************************************************/
+  *****************************************************************************/
 static gcry_sexp_t             xmlSecGCryptAsymSExpDup    (gcry_sexp_t sexp);
 
 
-/**************************************************************************
+/******************************************************************************
  *
  * Internal GCrypt asym key CTX
  *
- *************************************************************************/
+  *****************************************************************************/
 typedef struct _xmlSecGCryptAsymKeyDataCtx       xmlSecGCryptAsymKeyDataCtx,
                                                 *xmlSecGCryptAsymKeyDataCtxPtr;
 struct _xmlSecGCryptAsymKeyDataCtx {
@@ -55,7 +54,7 @@ struct _xmlSecGCryptAsymKeyDataCtx {
  *
  * GCrypt asym key data (dsa/rsa/ec)
  *
- *****************************************************************************/
+  *****************************************************************************/
 XMLSEC_KEY_DATA_DECLARE(GCryptAsymKeyData, xmlSecGCryptAsymKeyDataCtx)
 #define xmlSecGCryptAsymKeyDataSize XMLSEC_KEY_DATA_SIZE(GCryptAsymKeyData)
 
@@ -355,7 +354,7 @@ xmlSecGCryptAsymKeyDataGetSize(xmlSecKeyDataPtr data) {
  *
  * helper functions
  *
- *****************************************************************************/
+  *****************************************************************************/
 static gcry_sexp_t
 xmlSecGCryptAsymSExpDup(gcry_sexp_t pKey) {
     gcry_sexp_t res = NULL;
@@ -398,18 +397,14 @@ done:
 }
 
 /**
- * xmlSecGCryptSetSExpTokValue:
- * @sexp: the sexp
- * @tok:  the token
- * @buf:  the output buffer.
- * @addLineBreaks: if the flag is equal to 1 then
- *              linebreaks will be added before and after
- *              new buffer content.
+ * @brief Converts MPI to CryptoBinary string
+ * @param sexp the sexp
+ * @param tok the token
+ * @param buf the output buffer.
  *
- * Converts MPI to CryptoBinary string
  * (http://www.w3.org/TR/xmldsig-core/#sec-CryptoBinary).
  *
- * Returns: 0 on success or -1 otherwise.
+ * @return 0 on success or -1 otherwise.
  */
 static int
 xmlSecGCryptSetSExpTokValue(const gcry_sexp_t sexp, const char * tok,
@@ -494,7 +489,7 @@ done:
 }
 
 #ifndef XMLSEC_NO_DSA
-/**************************************************************************
+/******************************************************************************
  *
  * &lt;dsig:DSAKeyValue/&gt; processing
  *
@@ -567,7 +562,7 @@ done:
  * The current implementation does not support Seed and PgenCounter!
  * by this the P, Q and G are *required*!
  *
- *************************************************************************/
+  *****************************************************************************/
 static int              xmlSecGCryptKeyDataDsaInitialize        (xmlSecKeyDataPtr data);
 static int              xmlSecGCryptKeyDataDsaDuplicate         (xmlSecKeyDataPtr dst,
                                                                  xmlSecKeyDataPtr src);
@@ -637,11 +632,8 @@ static xmlSecKeyDataKlass xmlSecGCryptKeyDataDsaKlass = {
 };
 
 /**
- * xmlSecGCryptKeyDataDsaGetKlass:
- *
- * The DSA key data klass.
- *
- * Returns: pointer to DSA key data klass.
+ * @brief The DSA key data klass.
+ * @return pointer to DSA key data klass.
  */
 xmlSecKeyDataId
 xmlSecGCryptKeyDataDsaGetKlass(void) {
@@ -649,13 +641,10 @@ xmlSecGCryptKeyDataDsaGetKlass(void) {
 }
 
 /**
- * xmlSecGCryptKeyDataDsaAdoptKey:
- * @data:               the pointer to DSA key data.
- * @dsa_key:            the pointer to GCrypt DSA key.
- *
- * Sets the value of DSA key data.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Sets the value of DSA key data.
+ * @param data the pointer to DSA key data.
+ * @param dsa_key the pointer to GCrypt DSA key.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecGCryptKeyDataDsaAdoptKey(xmlSecKeyDataPtr data, gcry_sexp_t dsa_key) {
@@ -667,14 +656,11 @@ xmlSecGCryptKeyDataDsaAdoptKey(xmlSecKeyDataPtr data, gcry_sexp_t dsa_key) {
 
 
 /**
- * xmlSecGCryptKeyDataDsaAdoptKeyPair:
- * @data:               the pointer to DSA key data.
- * @pub_key:            the pointer to GCrypt DSA pub key.
- * @priv_key:           the pointer to GCrypt DSA priv key.
- *
- * Sets the value of DSA key data.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Sets the value of DSA key data.
+ * @param data the pointer to DSA key data.
+ * @param pub_key the pointer to GCrypt DSA pub key.
+ * @param priv_key the pointer to GCrypt DSA priv key.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecGCryptKeyDataDsaAdoptKeyPair(xmlSecKeyDataPtr data, gcry_sexp_t pub_key, gcry_sexp_t priv_key) {
@@ -685,12 +671,9 @@ xmlSecGCryptKeyDataDsaAdoptKeyPair(xmlSecKeyDataPtr data, gcry_sexp_t pub_key, g
 }
 
 /**
- * xmlSecGCryptKeyDataDsaGetPublicKey:
- * @data:               the pointer to DSA key data.
- *
- * Gets the GCrypt DSA public key from DSA key data.
- *
- * Returns: pointer to GCrypt public DSA key or NULL if an error occurs.
+ * @brief Gets the GCrypt DSA public key from DSA key data.
+ * @param data the pointer to DSA key data.
+ * @return pointer to GCrypt public DSA key or NULL if an error occurs.
  */
 gcry_sexp_t
 xmlSecGCryptKeyDataDsaGetPublicKey(xmlSecKeyDataPtr data) {
@@ -699,12 +682,9 @@ xmlSecGCryptKeyDataDsaGetPublicKey(xmlSecKeyDataPtr data) {
 }
 
 /**
- * xmlSecGCryptKeyDataDsaGetPrivateKey:
- * @data:               the pointer to DSA key data.
- *
- * Gets the GCrypt DSA private key from DSA key data.
- *
- * Returns: pointer to GCrypt private DSA key or NULL if an error occurs.
+ * @brief Gets the GCrypt DSA private key from DSA key data.
+ * @param data the pointer to DSA key data.
+ * @return pointer to GCrypt private DSA key or NULL if an error occurs.
  */
 gcry_sexp_t
 xmlSecGCryptKeyDataDsaGetPrivateKey(xmlSecKeyDataPtr data) {
@@ -811,7 +791,7 @@ xmlSecGCryptKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
     xmlSecAssert2(id == xmlSecGCryptKeyDataDsaId, NULL);
     xmlSecAssert2(dsaValue != NULL, NULL);
 
-    /*** p ***/
+    /****************************************************************************** p  *****************************************************************************/
     err = gcry_mpi_scan(&p, GCRYMPI_FMT_USG,
         xmlSecBufferGetData(&(dsaValue->p)), xmlSecBufferGetSize(&(dsaValue->p)),
         NULL);
@@ -821,7 +801,7 @@ xmlSecGCryptKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
         goto done;
     }
 
-    /*** q ***/
+    /****************************************************************************** q  *****************************************************************************/
     err = gcry_mpi_scan(&q, GCRYMPI_FMT_USG,
         xmlSecBufferGetData(&(dsaValue->q)), xmlSecBufferGetSize(&(dsaValue->q)),
         NULL);
@@ -831,7 +811,7 @@ xmlSecGCryptKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
         goto done;
     }
 
-    /*** g ***/
+    /****************************************************************************** g  *****************************************************************************/
     err = gcry_mpi_scan(&g, GCRYMPI_FMT_USG,
         xmlSecBufferGetData(&(dsaValue->g)), xmlSecBufferGetSize(&(dsaValue->g)),
         NULL);
@@ -841,7 +821,7 @@ xmlSecGCryptKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
         goto done;
     }
 
-    /*** x (only for private key) ***/
+    /****************************************************************************** x (only for private key)  *****************************************************************************/
     if(xmlSecBufferGetSize(&(dsaValue->x)) > 0) {
         err = gcry_mpi_scan(&x, GCRYMPI_FMT_USG,
             xmlSecBufferGetData(&(dsaValue->x)), xmlSecBufferGetSize(&(dsaValue->x)),
@@ -853,7 +833,7 @@ xmlSecGCryptKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
         }
     }
 
-    /*** y ***/
+    /****************************************************************************** y  *****************************************************************************/
     err = gcry_mpi_scan(&y, GCRYMPI_FMT_USG,
         xmlSecBufferGetData(&(dsaValue->y)), xmlSecBufferGetSize(&(dsaValue->y)),
         NULL);
@@ -980,7 +960,7 @@ xmlSecGCryptKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
         goto done;
     }
 
-    /*** p ***/
+    /****************************************************************************** p  *****************************************************************************/
     ret = xmlSecGCryptSetSExpTokValue(dsa, "p", &(dsaValue->p));
     if(ret < 0) {
         xmlSecInternalError("xmlSecGCryptSetSExpTokValue(p)",
@@ -988,7 +968,7 @@ xmlSecGCryptKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
         goto done;
     }
 
-    /*** q ***/
+    /****************************************************************************** q  *****************************************************************************/
     ret = xmlSecGCryptSetSExpTokValue(dsa, "q", &(dsaValue->q));
     if(ret < 0) {
         xmlSecInternalError("xmlSecGCryptSetSExpTokValue(q)",
@@ -996,7 +976,7 @@ xmlSecGCryptKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
         goto done;
     }
 
-    /*** g ***/
+    /****************************************************************************** g  *****************************************************************************/
     ret = xmlSecGCryptSetSExpTokValue(dsa, "g", &(dsaValue->g));
     if(ret < 0) {
         xmlSecInternalError("xmlSecGCryptSetSExpTokValue(g)",
@@ -1004,7 +984,7 @@ xmlSecGCryptKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
         goto done;
     }
 
-    /*** x (only if available and requested) ***/
+    /****************************************************************************** x (only if available and requested)  *****************************************************************************/
     if((writePrivateKey != 0) && (private != 0)) {
         ret = xmlSecGCryptSetSExpTokValue(dsa, "x", &(dsaValue->x));
         if(ret < 0) {
@@ -1014,7 +994,7 @@ xmlSecGCryptKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
         }
     }
 
-    /*** y ***/
+    /****************************************************************************** y  *****************************************************************************/
     ret = xmlSecGCryptSetSExpTokValue(dsa, "y", &(dsaValue->y));
     if(ret < 0) {
         xmlSecInternalError("xmlSecGCryptSetSExpTokValue(y)",
@@ -1037,7 +1017,7 @@ done:
 
 
 #ifndef XMLSEC_NO_RSA
-/**************************************************************************
+/******************************************************************************
  *
  * &lt;dsig:RSAKeyValue/&gt; processing
  *
@@ -1078,7 +1058,7 @@ done:
  * To support reading/writing private keys an PrivateExponent element is added
  * to the end
  *
- *************************************************************************/
+  *****************************************************************************/
 
 static int              xmlSecGCryptKeyDataRsaInitialize       (xmlSecKeyDataPtr data);
 static int              xmlSecGCryptKeyDataRsaDuplicate        (xmlSecKeyDataPtr dst,
@@ -1149,11 +1129,8 @@ static xmlSecKeyDataKlass xmlSecGCryptKeyDataRsaKlass = {
 };
 
 /**
- * xmlSecGCryptKeyDataRsaGetKlass:
- *
- * The GCrypt RSA key data klass.
- *
- * Returns: pointer to GCrypt RSA key data klass.
+ * @brief The GCrypt RSA key data klass.
+ * @return pointer to GCrypt RSA key data klass.
  */
 xmlSecKeyDataId
 xmlSecGCryptKeyDataRsaGetKlass(void) {
@@ -1161,13 +1138,10 @@ xmlSecGCryptKeyDataRsaGetKlass(void) {
 }
 
 /**
- * xmlSecGCryptKeyDataRsaAdoptKey:
- * @data:               the pointer to RSA key data.
- * @rsa_key:            the pointer to GCrypt RSA key.
- *
- * Sets the value of RSA key data.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Sets the value of RSA key data.
+ * @param data the pointer to RSA key data.
+ * @param rsa_key the pointer to GCrypt RSA key.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecGCryptKeyDataRsaAdoptKey(xmlSecKeyDataPtr data, gcry_sexp_t rsa_key) {
@@ -1179,14 +1153,11 @@ xmlSecGCryptKeyDataRsaAdoptKey(xmlSecKeyDataPtr data, gcry_sexp_t rsa_key) {
 
 
 /**
- * xmlSecGCryptKeyDataRsaAdoptKeyPair:
- * @data:               the pointer to RSA key data.
- * @pub_key:            the pointer to GCrypt RSA pub key.
- * @priv_key:           the pointer to GCrypt RSA priv key.
- *
- * Sets the value of RSA key data.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Sets the value of RSA key data.
+ * @param data the pointer to RSA key data.
+ * @param pub_key the pointer to GCrypt RSA pub key.
+ * @param priv_key the pointer to GCrypt RSA priv key.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecGCryptKeyDataRsaAdoptKeyPair(xmlSecKeyDataPtr data, gcry_sexp_t pub_key, gcry_sexp_t priv_key) {
@@ -1197,12 +1168,9 @@ xmlSecGCryptKeyDataRsaAdoptKeyPair(xmlSecKeyDataPtr data, gcry_sexp_t pub_key, g
 }
 
 /**
- * xmlSecGCryptKeyDataRsaGetPublicKey:
- * @data:               the pointer to RSA key data.
- *
- * Gets the GCrypt RSA public key from RSA key data.
- *
- * Returns: pointer to GCrypt public RSA key or NULL if an error occurs.
+ * @brief Gets the GCrypt RSA public key from RSA key data.
+ * @param data the pointer to RSA key data.
+ * @return pointer to GCrypt public RSA key or NULL if an error occurs.
  */
 gcry_sexp_t
 xmlSecGCryptKeyDataRsaGetPublicKey(xmlSecKeyDataPtr data) {
@@ -1211,12 +1179,9 @@ xmlSecGCryptKeyDataRsaGetPublicKey(xmlSecKeyDataPtr data) {
 }
 
 /**
- * xmlSecGCryptKeyDataRsaGetPrivateKey:
- * @data:               the pointer to RSA key data.
- *
- * Gets the GCrypt RSA private key from RSA key data.
- *
- * Returns: pointer to GCrypt private RSA key or NULL if an error occurs.
+ * @brief Gets the GCrypt RSA private key from RSA key data.
+ * @param data the pointer to RSA key data.
+ * @return pointer to GCrypt private RSA key or NULL if an error occurs.
  */
 gcry_sexp_t
 xmlSecGCryptKeyDataRsaGetPrivateKey(xmlSecKeyDataPtr data) {
@@ -1317,7 +1282,7 @@ xmlSecGCryptKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
     xmlSecAssert2(id == xmlSecGCryptKeyDataRsaId, NULL);
     xmlSecAssert2(rsaValue != NULL, NULL);
 
-    /*** Modulus ***/
+    /****************************************************************************** Modulus  *****************************************************************************/
     err = gcry_mpi_scan(&modulus, GCRYMPI_FMT_USG,
         xmlSecBufferGetData(&(rsaValue->modulus)),
         xmlSecBufferGetSize(&(rsaValue->modulus)),
@@ -1328,7 +1293,7 @@ xmlSecGCryptKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
         goto done;
     }
 
-    /*** Exponent ***/
+    /****************************************************************************** Exponent  *****************************************************************************/
     err = gcry_mpi_scan(&publicExponent, GCRYMPI_FMT_USG,
         xmlSecBufferGetData(&(rsaValue->publicExponent)),
         xmlSecBufferGetSize(&(rsaValue->publicExponent)),
@@ -1339,7 +1304,7 @@ xmlSecGCryptKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
         goto done;
     }
 
-    /*** PrivateExponent (only for private key) ***/
+    /****************************************************************************** PrivateExponent (only for private key)  *****************************************************************************/
     if(xmlSecBufferGetSize(&(rsaValue->privateExponent)) > 0) {
         err = gcry_mpi_scan(&privateExponent, GCRYMPI_FMT_USG,
             xmlSecBufferGetData(&(rsaValue->privateExponent)),
@@ -1455,7 +1420,7 @@ xmlSecGCryptKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
         goto done;
     }
 
-    /*** Modulus ***/
+    /****************************************************************************** Modulus  *****************************************************************************/
     ret = xmlSecGCryptSetSExpTokValue(rsa, "n", &(rsaValue->modulus));
     if(ret < 0) {
         xmlSecInternalError("xmlSecGCryptSetSExpTokValue(Modulus)",
@@ -1463,7 +1428,7 @@ xmlSecGCryptKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
         goto done;
     }
 
-    /*** Exponent ***/
+    /****************************************************************************** Exponent  *****************************************************************************/
     ret = xmlSecGCryptSetSExpTokValue(rsa, "e", &(rsaValue->publicExponent));
     if(ret < 0) {
         xmlSecInternalError("xmlSecGCryptSetSExpTokValue(Exponent)",
@@ -1471,7 +1436,7 @@ xmlSecGCryptKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
         goto done;
     }
 
-    /*** PrivateExponent (only if available and requested) ***/
+    /****************************************************************************** PrivateExponent (only if available and requested)  *****************************************************************************/
     if((writePrivateKey != 0) && (private != 0)) {
         ret = xmlSecGCryptSetSExpTokValue(rsa, "d", &(rsaValue->privateExponent));
         if(ret < 0) {
@@ -1496,11 +1461,11 @@ done:
 
 
 #ifndef XMLSEC_NO_EC
-/**************************************************************************
+/******************************************************************************
  *
  * EC Keys.
  *
- *************************************************************************/
+  *****************************************************************************/
 
 static int              xmlSecGCryptKeyDataEcInitialize         (xmlSecKeyDataPtr data);
 static int              xmlSecGCryptKeyDataEcDuplicate          (xmlSecKeyDataPtr dst,
@@ -1568,11 +1533,8 @@ static xmlSecKeyDataKlass xmlSecGCryptKeyDataEcKlass = {
 };
 
 /**
- * xmlSecGCryptkeyDataEcGetKlass:
- *
- * The GCrypt EC key data klass.
- *
- * Returns: pointer to GCrypt EC key data klass.
+ * @brief The GCrypt EC key data klass.
+ * @return pointer to GCrypt EC key data klass.
  */
 xmlSecKeyDataId
 xmlSecGCryptkeyDataEcGetKlass(void) {
@@ -1580,13 +1542,10 @@ xmlSecGCryptkeyDataEcGetKlass(void) {
 }
 
 /**
- * xmlSecGCryptKeyDataEcAdoptKey:
- * @data:               the pointer to EC key data.
- * @ec_key:            the pointer to GCrypt EC key.
- *
- * Sets the value of EC key data.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Sets the value of EC key data.
+ * @param data the pointer to EC key data.
+ * @param ec_key the pointer to GCrypt EC key.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecGCryptKeyDataEcAdoptKey(xmlSecKeyDataPtr data, gcry_sexp_t ec_key) {
@@ -1596,14 +1555,11 @@ xmlSecGCryptKeyDataEcAdoptKey(xmlSecKeyDataPtr data, gcry_sexp_t ec_key) {
 }
 
 /**
- * xmlSecGCryptKeyDataEcAdoptKeyPair:
- * @data:               the pointer to EC key data.
- * @pub_key:            the pointer to GCrypt EC pub key.
- * @priv_key:           the pointer to GCrypt EC priv key.
- *
- * Sets the value of EC key data.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Sets the value of EC key data.
+ * @param data the pointer to EC key data.
+ * @param pub_key the pointer to GCrypt EC pub key.
+ * @param priv_key the pointer to GCrypt EC priv key.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecGCryptKeyDataEcAdoptKeyPair(xmlSecKeyDataPtr data, gcry_sexp_t pub_key, gcry_sexp_t priv_key) {
@@ -1613,12 +1569,9 @@ xmlSecGCryptKeyDataEcAdoptKeyPair(xmlSecKeyDataPtr data, gcry_sexp_t pub_key, gc
 }
 
 /**
- * xmlSecGCryptKeyDataEcGetPublicKey:
- * @data:               the pointer to EC key data.
- *
- * Gets the GCrypt EC public key from EC key data.
- *
- * Returns: pointer to GCrypt public EC key or NULL if an error occurs.
+ * @brief Gets the GCrypt EC public key from EC key data.
+ * @param data the pointer to EC key data.
+ * @return pointer to GCrypt public EC key or NULL if an error occurs.
  */
 gcry_sexp_t
 xmlSecGCryptKeyDataEcGetPublicKey(xmlSecKeyDataPtr data) {
@@ -1627,12 +1580,9 @@ xmlSecGCryptKeyDataEcGetPublicKey(xmlSecKeyDataPtr data) {
 }
 
 /**
- * xmlSecGCryptKeyDataEcGetPrivateKey:
- * @data:               the pointer to EC key data.
- *
- * Gets the GCrypt EC private key from EC key data.
- *
- * Returns: pointer to GCrypt private EC key or NULL if an error occurs.
+ * @brief Gets the GCrypt EC private key from EC key data.
+ * @param data the pointer to EC key data.
+ * @return pointer to GCrypt private EC key or NULL if an error occurs.
  */
 gcry_sexp_t
 xmlSecGCryptKeyDataEcGetPrivateKey(xmlSecKeyDataPtr data) {

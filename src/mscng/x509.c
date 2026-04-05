@@ -10,13 +10,10 @@
  * Copyright (C) 2018 Miklos Vajna. All Rights Reserved.
  */
 /**
- * SECTION:x509
- * @Short_description: X509 certificates implementation for MSCng.
- * @Stability: Stable
- *
+ * @addtogroup xmlsec_mscng_x509
+ * @brief X509 certificates implementation for MSCng.
  * X509 certificates implementation for MSCng.
  */
-
 #include "globals.h"
 
 #ifndef XMLSEC_NO_X509
@@ -145,9 +142,7 @@ xmlSecMSCngKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
 }
 
 /**
- * xmlSecMSCngX509CertDerRead:
- *
- * The MSCng reader for the binary (DER-encoded) X509 certificate content.
+ * @brief The MSCng reader for the binary (DER-encoded) X509 certificate content.
  */
 static PCCERT_CONTEXT
 xmlSecMSCngX509CertDerRead(const xmlSecByte* buf, xmlSecSize size) {
@@ -187,14 +182,13 @@ xmlSecMSCngKeyDataX509AddCertInternal(xmlSecMSCngX509DataCtxPtr ctx, PCCERT_CONT
 }
 
 /**
- * xmlSecMSCngKeyDataX509AdoptKeyCert:
- * @data:    the pointer to key data.
- * @cert:    the pointer to certificates.
+ * @brief Adds certificate to the X509 key data and sets the it as the key's
+ * @param data the pointer to key data.
+ * @param cert the pointer to certificates.
  *
- * Adds certificate to the X509 key data and sets the it as the key's
- * certificate in @data. On success, the @data owns the cert.
+ * certificate in @p data. On success, the @p data owns the cert.
  *
- * Returns: 0 on success or a negative value otherwise.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecMSCngKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert) {
@@ -226,13 +220,11 @@ xmlSecMSCngKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert) {
 }
 
 /**
- * xmlSecMSCngKeyDataX509AdoptCert:
- * @data:    the pointer to key data.
- * @cert:    the pointer to certificates.
- *
- * Adds @cert to @data as a certificate. On success, @data owns the @cert.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Adds a certificate to @p data.
+ * @details Adds @p cert to @p data as a certificate. On success, @p data owns the @p cert.
+ * @param data the pointer to key data.
+ * @param cert the pointer to certificates.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecMSCngKeyDataX509AdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert) {
@@ -254,13 +246,10 @@ xmlSecMSCngKeyDataX509AdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert) {
 }
 
 /**
- * xmlSecMSCngKeyDataX509AdoptCrl:
- * @data:               the pointer to X509 key data.
- * @crl:                the pointer to MSCng X509 CRL.
- *
- * Adds CRL to the X509 key data.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Adds CRL to the X509 key data.
+ * @param data the pointer to X509 key data.
+ * @param crl the pointer to MSCng X509 CRL.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecMSCngKeyDataX509AdoptCrl(xmlSecKeyDataPtr data, PCCRL_CONTEXT crl) {
@@ -283,12 +272,11 @@ xmlSecMSCngKeyDataX509AdoptCrl(xmlSecKeyDataPtr data, PCCRL_CONTEXT crl) {
 }
 
 /**
- * xmlSecMSCngKeyDataX509GetKeyCert:
- * @data:               the pointer to X509 key data.
+ * @brief Gets the certificate from which the key was extracted.
+ * @param data the pointer to X509 key data.
  *
- * Gets the certificate from which the key was extracted.
  *
- * Returns: the key's certificate or NULL if key data was not used for key
+ * @return the key's certificate or NULL if key data was not used for key
  * extraction or an error occurs.
  */
 PCCERT_CONTEXT
@@ -335,9 +323,7 @@ xmlSecMSCngX509CrlDerRead(const xmlSecByte* buf, xmlSecSize size) {
 }
 
 /**
- * xmlSecMSCngX509CertGetTime:
- *
- * Converts FILETIME timestamp into time_t. See
+ * @brief Converts FILETIME timestamp into time_t. See
  * <https://msdn.microsoft.com/en-us/library/windows/desktop/ms724284(v=vs.85).aspx>
  * for details.
  */
@@ -1111,23 +1097,20 @@ static xmlSecKeyDataKlass xmlSecMSCngKeyDataX509Klass = {
 };
 
 /**
- * xmlSecMSCngKeyDataX509GetKlass:
- *
- * The MSCng X509 key data klass.
- *
- * Returns: the X509 data klass.
+ * @brief The MSCng X509 key data klass.
+ * @return the X509 data klass.
  */
 xmlSecKeyDataId
 xmlSecMSCngKeyDataX509GetKlass(void) {
     return(&xmlSecMSCngKeyDataX509Klass);
 }
 
-/**************************************************************************
+/******************************************************************************
  *
  * Raw X509 Certificate processing
  *
  *
- *************************************************************************/
+  *****************************************************************************/
 static int
 xmlSecMSCngKeyDataRawX509CertBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
         const xmlSecByte* buf, xmlSecSize bufSize,
@@ -1219,11 +1202,8 @@ static xmlSecKeyDataKlass xmlSecMSCngKeyDataRawX509CertKlass = {
 };
 
 /**
- * xmlSecMSCngKeyDataRawX509CertGetKlass:
- *
- * The raw X509 certificates key data klass.
- *
- * Returns: raw X509 certificates key data klass.
+ * @brief The raw X509 certificates key data klass.
+ * @return raw X509 certificates key data klass.
  */
 xmlSecKeyDataId
 xmlSecMSCngKeyDataRawX509CertGetKlass(void) {

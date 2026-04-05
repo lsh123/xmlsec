@@ -11,6 +11,13 @@
 #ifndef __XMLSEC_TREE_H__
 #define __XMLSEC_TREE_H__
 
+/**
+ * @defgroup xmlsec_core_xmltree XML Tree Utilities
+ * @ingroup xmlsec_core
+ * @brief XML-tree navigation and manipulation helper functions.
+ * @{
+ */
+
 #include <stdio.h>
 
 #include <libxml/tree.h>
@@ -30,10 +37,8 @@ extern "C" {
 #endif /* __cplusplus */
 
 /**
- * xmlSecNodeGetName:
- * @node:               the pointer to node.
- *
- * Macro. Returns node's name.
+ * @brief Macro. Returns node's name.
+ * @param node the pointer to node.
  */
 #define xmlSecNodeGetName(node) \
     (((node)) ? ((const char*)((node)->name)) : NULL)
@@ -121,10 +126,9 @@ XMLSEC_EXPORT int               xmlSecPrintXmlString    (FILE * fd,
                                                          const xmlChar * str);
 
 /**
- * xmlSecIsHex:
- * @c:                  the character.
- *
- * Macro. Returns 1 if @c is a hex digit or 0 other wise.
+ * @brief Returns 1 if the character is a hex digit.
+ * @details Macro. Returns 1 if @c is a hex digit or 0 other wise.
+ * @param c the character.
  */
 #define xmlSecIsHex(c) \
     (( (('0' <= (c)) && ((c) <= '9')) || \
@@ -132,18 +136,15 @@ XMLSEC_EXPORT int               xmlSecPrintXmlString    (FILE * fd,
        (('A' <= (c)) && ((c) <= 'F')) ) ? 1 : 0)
 
 /**
- * xmlSecGetHex:
- * @ch:                 the character,
- *
- * Deprecated. Macro. Returns the hex value of the @ch.
+ * @brief Deprecated. Returns the hex value of a character.
+ * @details Deprecated. Macro. Returns the hex value of the @p ch.
+ * @param ch the character,
  */
 #define xmlSecGetHex(ch)         xmlSecFromHex(ch)
 
 /**
- * xmlSecFromHex:
- * @ch:                  the character,
- *
- * Macro. Returns the hex value of the @ch.
+ * @brief Macro. Returns the hex value of the @p ch.
+ * @param ch the character,
  */
 #define xmlSecFromHex(ch)                                                       \
         ((xmlSecByte)(                                                          \
@@ -157,19 +158,16 @@ XMLSEC_EXPORT int               xmlSecPrintXmlString    (FILE * fd,
         ))
 
 /**
- * xmlSecFromHex2:
- * @ch1:                  the first character,
- * @ch2:                  the second character,
- *
- * Macro. Returns the hex value of the pair (@c1 @c2).
+ * @brief Returns the hex value of a two-character pair.
+ * @details Macro. Returns the hex value of the pair (@p c1 @p c2).
+ * @param ch1 the first character,
+ * @param ch2 the second character,
  */
 #define xmlSecFromHex2(ch1, ch2)   ((xmlSecByte)((xmlSecFromHex(ch1) << 4) | (xmlSecFromHex(ch2))))
 
 /**
- * xmlSecToHex:
- * @vv:                  the value,
- *
- * Macro. Returns the hex character of the @vv.
+ * @brief Macro. Returns the hex character of the @p vv.
+ * @param vv the value,
  */
 #define xmlSecToHex(vv)                                                 \
         ((xmlChar)(                                                     \
@@ -181,31 +179,25 @@ XMLSEC_EXPORT int               xmlSecPrintXmlString    (FILE * fd,
 
 
 
-/*************************************************************************
+/******************************************************************************
  *
  * QName <-> Integer mapping
  *
- ************************************************************************/
+  *****************************************************************************/
 
 /**
- * xmlSecQName2IntegerInfo:
- * @qnameHref:          the QName href
- * @qnameLocalPart:     the QName local
- * @intValue:           the integer value
- *
- * QName <-> Integer conversion definition.
+ * @brief QName <-> Integer conversion definition.
  */
 typedef struct _xmlSecQName2IntegerInfo         xmlSecQName2IntegerInfo, *xmlSecQName2IntegerInfoPtr;
 struct _xmlSecQName2IntegerInfo {
-    const xmlChar*      qnameHref;
-    const xmlChar*      qnameLocalPart;
-    int                 intValue;
+    const xmlChar*      qnameHref;  /**< the QName href */
+    const xmlChar*      qnameLocalPart;  /**< the QName local */
+    int                 intValue;  /**< the integer value */
 };
 
 /**
- * xmlSecQName2IntegerInfoConstPtr:
- *
- * Pointer to constant QName <-> Integer conversion definition.
+ * @brief Pointer to constant QName <-> Integer conversion.
+ * @details Pointer to constant QName <-> Integer conversion definition.
  */
 typedef const xmlSecQName2IntegerInfo *         xmlSecQName2IntegerInfoConstPtr;
 
@@ -250,39 +242,31 @@ XMLSEC_EXPORT void              xmlSecQName2IntegerDebugXmlDump(xmlSecQName2Inte
                                                                  const xmlChar* name,
                                                                  FILE* output);
 
-/*************************************************************************
+/******************************************************************************
  *
  * QName <-> Bitmask mapping
  *
- ************************************************************************/
+  *****************************************************************************/
 
 /**
- * xmlSecBitMask:
- *
- * Bitmask datatype.
+ * @brief Bitmask datatype.
  */
 typedef unsigned int                                    xmlSecBitMask;
 
 /**
- * xmlSecQName2BitMaskInfo:
- * @qnameHref:          the QName href
- * @qnameLocalPart:     the QName local
- * @mask:               the bitmask value
- *
- * QName <-> Bitmask conversion definition.
+ * @brief QName <-> Bitmask conversion definition.
  */
 typedef struct _xmlSecQName2BitMaskInfo         xmlSecQName2BitMaskInfo, *xmlSecQName2BitMaskInfoPtr;
 
 struct _xmlSecQName2BitMaskInfo {
-    const xmlChar*      qnameHref;
-    const xmlChar*      qnameLocalPart;
-    xmlSecBitMask       mask;
+    const xmlChar*      qnameHref;  /**< the QName href */
+    const xmlChar*      qnameLocalPart;  /**< the QName local */
+    xmlSecBitMask       mask;  /**< the bitmask value */
 };
 
 /**
- * xmlSecQName2BitMaskInfoConstPtr:
- *
- * Pointer to constant QName <-> Bitmask conversion definition.
+ * @brief Pointer to constant QName <-> Bitmask conversion.
+ * @details Pointer to constant QName <-> Bitmask conversion definition.
  */
 typedef const xmlSecQName2BitMaskInfo*          xmlSecQName2BitMaskInfoConstPtr;
 
@@ -323,11 +307,11 @@ XMLSEC_EXPORT void              xmlSecQName2BitMaskDebugXmlDump(xmlSecQName2BitM
                                                                  FILE* output);
 
 
-/*************************************************************************
+/******************************************************************************
  *
  * Windows string conversions
  *
- ************************************************************************/
+  *****************************************************************************/
 #if defined(XMLSEC_WINDOWS)
 XMLSEC_EXPORT LPWSTR             xmlSecWin32ConvertLocaleToUnicode(const char* str);
 
@@ -345,5 +329,7 @@ XMLSEC_EXPORT LPTSTR             xmlSecWin32ConvertUtf8ToTstr     (const xmlChar
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
+
+/** @} */ /** xmlsec_core_xmltree */
 
 #endif /* __XMLSEC_TREE_H__ */

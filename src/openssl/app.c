@@ -1,22 +1,16 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- *
- * Application support functions for OpenSSL.
- *
  * This is free software; see the Copyright file in the source
  * distribution for precise wording.
  *
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:app
- * @Short_description: Application support functions for OpenSSL.
- * @Stability: Stable
- *
- * Common functions for the xmlsec1 command-line utility for OpenSSL.
+ * @addtogroup xmlsec_openssl_app
+ * @brief Application support functions for OpenSSL.
+ * @details Common functions for the xmlsec1 command-line utility for OpenSSL.
  */
-
 #include "globals.h"
 
 #include <string.h>
@@ -118,14 +112,13 @@ XMLSEC_FUNC_TO_PTR_IMPL(pem_password_cb)
 #endif /* XMLSEC_OPENSSL_API_300 */
 
 /**
- * xmlSecOpenSSLAppInit:
- * @config:             the path to certs.
- *
- * General crypto engine initialization. This function is used
+ * @brief Initializes the OpenSSL crypto engine.
+ * @details General crypto engine initialization. This function is used
  * by the XMLSec command-line utility and is called before the
- * @xmlSecInit function.
+ * #xmlSecInit function.
  *
- * Returns: 0 on success or a negative value otherwise.
+ * @param config the path to certs.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecOpenSSLAppInit(const char* config) {
@@ -179,13 +172,12 @@ error:
 }
 
 /**
- * xmlSecOpenSSLAppShutdown:
- *
- * General crypto engine shutdown. This function is used
+ * @brief Shuts down the OpenSSL crypto engine.
+ * @details General crypto engine shutdown. This function is used
  * by the XMLSec command-line utility and is called after the
- * @xmlSecShutdown function.
+ * #xmlSecShutdown function.
  *
- * Returns: 0 on success or a negative value otherwise.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecOpenSSLAppShutdown(void) {
@@ -200,17 +192,14 @@ xmlSecOpenSSLAppShutdown(void) {
 }
 
 /**
- * xmlSecOpenSSLAppKeyLoadEx:
- * @filename:           the key filename.
- * @type:               the expected key type.
- * @format:             the key file format.
- * @pwd:                the key file password.
- * @pwdCallback:        the key password callback.
- * @pwdCallbackCtx:     the user context for password callback.
- *
- * Reads a key from a file.
- *
- * Returns: pointer to the key or NULL if an error occurs.
+ * @brief Reads a key from a file.
+ * @param filename the key filename.
+ * @param type the expected key type.
+ * @param format the key file format.
+ * @param pwd the key file password.
+ * @param pwdCallback the key password callback.
+ * @param pwdCallbackCtx the user context for password callback.
+ * @return pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
 xmlSecOpenSSLAppKeyLoadEx(const char *filename, xmlSecKeyDataType type, xmlSecKeyDataFormat format,
@@ -286,17 +275,14 @@ xmlSecOpenSSLAppKeyLoadEx(const char *filename, xmlSecKeyDataType type, xmlSecKe
 }
 
 /**
- * xmlSecOpenSSLAppKeyLoadMemory:
- * @data:               the binary key data.
- * @dataSize:           the size of binary key.
- * @format:             the key file format.
- * @pwd:                the key file password.
- * @pwdCallback:        the key password callback.
- * @pwdCallbackCtx:     the user context for password callback.
- *
- * Reads a key from the memory buffer.
- *
- * Returns: pointer to the key or NULL if an error occurs.
+ * @brief Reads a key from the memory buffer.
+ * @param data the binary key data.
+ * @param dataSize the size of binary key.
+ * @param format the key file format.
+ * @param pwd the key file password.
+ * @param pwdCallback the key password callback.
+ * @param pwdCallbackCtx the user context for password callback.
+ * @return pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
 xmlSecOpenSSLAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
@@ -329,16 +315,13 @@ xmlSecOpenSSLAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
 
 
 /**
- * xmlSecOpenSSLAppKeyLoadBIO:
- * @bio:                the key BIO.
- * @format:             the key file format.
- * @pwd:                the key file password.
- * @pwdCallback:        the key password callback.
- * @pwdCallbackCtx:     the user context for password callback.
- *
- * Reads a key from an OpenSSL BIO object.
- *
- * Returns: pointer to the key or NULL if an error occurs.
+ * @brief Reads a key from an OpenSSL BIO object.
+ * @param bio the key BIO.
+ * @param format the key file format.
+ * @param pwd the key file password.
+ * @param pwdCallback the key password callback.
+ * @param pwdCallbackCtx the user context for password callback.
+ * @return pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
 xmlSecOpenSSLAppKeyLoadBIO(BIO* bio, xmlSecKeyDataFormat format,
@@ -996,14 +979,13 @@ done:
 #ifndef XMLSEC_NO_X509
 
 /**
- * xmlSecOpenSSLAppKeyCertLoad:
- * @key:                the pointer to key.
- * @filename:           the certificate filename.
- * @format:             the certificate file format.
+ * @brief Reads the certificate from a file and adds to key.
+ * @details Reads the certificate from @p filename and adds it to key.
  *
- * Reads the certificate from $@filename and adds it to key.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @param key the pointer to key.
+ * @param filename the certificate filename.
+ * @param format the certificate file format.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecOpenSSLAppKeyCertLoad(xmlSecKeyPtr key, const char* filename, xmlSecKeyDataFormat format) {
@@ -1034,15 +1016,14 @@ xmlSecOpenSSLAppKeyCertLoad(xmlSecKeyPtr key, const char* filename, xmlSecKeyDat
 }
 
 /**
- * xmlSecOpenSSLAppKeyCertLoadMemory:
- * @key:                the pointer to key.
- * @data:               the certificate binary data.
- * @dataSize:           the certificate binary data size.
- * @format:             the certificate file format.
+ * @brief Reads the certificate from memory and adds to key.
+ * @details Reads the certificate from memory buffer and adds it to key.
  *
- * Reads the certificate from memory buffer and adds it to key.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @param key the pointer to key.
+ * @param data the certificate binary data.
+ * @param dataSize the certificate binary data size.
+ * @param format the certificate file format.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecOpenSSLAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSecSize dataSize,
@@ -1074,14 +1055,13 @@ xmlSecOpenSSLAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlS
 }
 
 /**
- * xmlSecOpenSSLAppKeyCertLoadBIO:
- * @key:                the pointer to key.
- * @bio:                the certificate bio.
- * @format:             the certificate file format.
+ * @brief Reads the certificate from a BIO and adds to key.
+ * @details Reads the certificate from a BIO object and adds it to key.
  *
- * Reads the certificate from memory buffer and adds it to key.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @param key the pointer to key.
+ * @param bio the certificate bio.
+ * @param format the certificate file format.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecOpenSSLAppKeyCertLoadBIO(xmlSecKeyPtr key, BIO* bio, xmlSecKeyDataFormat format) {
@@ -1167,17 +1147,16 @@ done:
 }
 
 /**
- * xmlSecOpenSSLAppPkcs12Load:
- * @filename:           the PKCS12 key filename.
- * @pwd:                the PKCS12 file password.
- * @pwdCallback:        the password callback.
- * @pwdCallbackCtx:     the user context for password callback.
- *
- * Reads a key and all associated certificates from the PKCS12 file.
- * For uniformity, call @xmlSecOpenSSLAppKeyLoadEX instead of this function. Pass
+ * @brief Reads key and certificates from PKCS12 file.
+ * @details Reads a key and all associated certificates from the PKCS12 file.
+ * For uniformity, call xmlSecOpenSSLAppKeyLoadEx instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
  *
- * Returns: pointer to the key or NULL if an error occurs.
+ * @param filename the PKCS12 key filename.
+ * @param pwd the PKCS12 file password.
+ * @param pwdCallback the password callback.
+ * @param pwdCallbackCtx the user context for password callback.
+ * @return pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
 xmlSecOpenSSLAppPkcs12Load(const char *filename, const char *pwd,
@@ -1207,18 +1186,17 @@ xmlSecOpenSSLAppPkcs12Load(const char *filename, const char *pwd,
 }
 
 /**
- * xmlSecOpenSSLAppPkcs12LoadMemory:
- * @data:               the PKCS12 binary data.
- * @dataSize:           the PKCS12 binary data size.
- * @pwd:                the PKCS12 file password.
- * @pwdCallback:        the password callback.
- * @pwdCallbackCtx:     the user context for password callback.
- *
- * Reads a key and all associated certificates from the PKCS12 data in the memory buffer.
- * For uniformity, call @xmlSecOpenSSLAppKeyLoadEx instead of this function. Pass
+ * @brief Reads key and certs from PKCS12 memory buffer.
+ * @details Reads a key and all associated certificates from the PKCS12 data in the memory buffer.
+ * For uniformity, call #xmlSecOpenSSLAppKeyLoadEx instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
  *
- * Returns: pointer to the key or NULL if an error occurs.
+ * @param data the PKCS12 binary data.
+ * @param dataSize the PKCS12 binary data size.
+ * @param pwd the PKCS12 file password.
+ * @param pwdCallback the password callback.
+ * @param pwdCallbackCtx the user context for password callback.
+ * @return pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
 xmlSecOpenSSLAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
@@ -1249,17 +1227,16 @@ xmlSecOpenSSLAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
 }
 
 /**
- * xmlSecOpenSSLAppPkcs12LoadBIO:
- * @bio:                the PKCS12 key bio.
- * @pwd:                the PKCS12 file password.
- * @pwdCallback:        the password callback.
- * @pwdCallbackCtx:     the user context for password callback.
- *
- * Reads a key and all associated certificates from the PKCS12 data in an OpenSSL BIO object.
- * For uniformity, call @xmlSecOpenSSLAppKeyLoadEx instead of this function. Pass
+ * @brief Reads key and certs from PKCS12 BIO object.
+ * @details Reads a key and all associated certificates from the PKCS12 data in an OpenSSL BIO object.
+ * For uniformity, call #xmlSecOpenSSLAppKeyLoadEx instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
  *
- * Returns: pointer to the key or NULL if an error occurs.
+ * @param bio the PKCS12 key bio.
+ * @param pwd the PKCS12 file password.
+ * @param pwdCallback the password callback.
+ * @param pwdCallbackCtx the user context for password callback.
+ * @return pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
 xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
@@ -1345,13 +1322,10 @@ done:
 }
 
 /**
- * xmlSecOpenSSLAppKeyFromCertLoadBIO:
- * @bio:                the BIO.
- * @format:             the cert format.
- *
- * Loads public key from cert.
- *
- * Returns: pointer to key or NULL if an error occurs.
+ * @brief Loads public key from cert.
+ * @param bio the BIO.
+ * @param format the cert format.
+ * @return pointer to key or NULL if an error occurs.
  */
 xmlSecKeyPtr
 xmlSecOpenSSLAppKeyFromCertLoadBIO(BIO* bio, xmlSecKeyDataFormat format) {
@@ -1423,17 +1397,16 @@ done:
 }
 
 /**
- * xmlSecOpenSSLAppKeysMngrCertLoad:
- * @mngr:               the keys manager.
- * @filename:           the certificate file.
- * @format:             the certificate file format.
- * @type:               the flag that indicates is the certificate in @filename
+ * @brief Reads a cert from a file and adds to the key store.
+ * @details Reads cert from @p filename and adds to the list of trusted or known
+ * untrusted certs in @p store.
+ *
+ * @param mngr the keys manager.
+ * @param filename the certificate file.
+ * @param format the certificate file format.
+ * @param type the flag that indicates is the certificate in @p filename
  *                      trusted or not.
- *
- * Reads cert from @filename and adds to the list of trusted or known
- * untrusted certs in @store.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecOpenSSLAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
@@ -1465,17 +1438,16 @@ xmlSecOpenSSLAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
 }
 
 /**
- * xmlSecOpenSSLAppKeysMngrCertLoadMemory:
- * @mngr:               the keys manager.
- * @data:               the certificate binary data.
- * @dataSize:           the certificate binary data size.
- * @format:             the certificate file format.
- * @type:               the flag that indicates is the certificate trusted or not.
+ * @brief Reads cert from buffer and adds to the key store.
+ * @details Reads cert from binary buffer @p data and adds to the list of trusted or known
+ * untrusted certs in @p store.
  *
- * Reads cert from binary buffer @data and adds to the list of trusted or known
- * untrusted certs in @store.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @param mngr the keys manager.
+ * @param data the certificate binary data.
+ * @param dataSize the certificate binary data size.
+ * @param format the certificate file format.
+ * @param type the flag that indicates is the certificate trusted or not.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecOpenSSLAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* data,
@@ -1509,16 +1481,15 @@ xmlSecOpenSSLAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte*
 }
 
 /**
- * xmlSecOpenSSLAppKeysMngrCertLoadBIO:
- * @mngr:               the keys manager.
- * @bio:                the certificate BIO.
- * @format:             the certificate file format.
- * @type:               the flag that indicates is the certificate trusted or not.
+ * @brief Reads cert from BIO and adds to the key store.
+ * @details Reads cert from an OpenSSL BIO object and adds to the list of trusted or known
+ * untrusted certs in @p store.
  *
- * Reads cert from an OpenSSL BIO object and adds to the list of trusted or known
- * untrusted certs in @store.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @param mngr the keys manager.
+ * @param bio the certificate BIO.
+ * @param format the certificate file format.
+ * @param type the flag that indicates is the certificate trusted or not.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecOpenSSLAppKeysMngrCertLoadBIO(xmlSecKeysMngrPtr mngr, BIO* bio, xmlSecKeyDataFormat format, xmlSecKeyDataType type) {
@@ -1554,14 +1525,13 @@ xmlSecOpenSSLAppKeysMngrCertLoadBIO(xmlSecKeysMngrPtr mngr, BIO* bio, xmlSecKeyD
 
 
 /**
- * xmlSecOpenSSLAppKeysMngrCrlLoad:
- * @mngr:               the keys manager.
- * @filename:           the CRL file.
- * @format:             the CRL file format..
+ * @brief Reads CRLs from a file and adds to the store.
+ * @details Reads crl from @p filename and adds to the list of crls in @p store.
  *
- * Reads crl from @filename and adds to the list of crls in @store.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @param mngr the keys manager.
+ * @param filename the CRL file.
+ * @param format the CRL file format..
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecOpenSSLAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, xmlSecKeyDataFormat format) {
@@ -1592,15 +1562,14 @@ xmlSecOpenSSLAppKeysMngrCrlLoad(xmlSecKeysMngrPtr mngr, const char *filename, xm
 }
 
 /**
- * xmlSecOpenSSLAppKeysMngrCrlLoadMemory:
- * @mngr:               the keys manager.
- * @data:               the CRL binary data.
- * @dataSize:           the CRL binary data size.
- * @format:             the CRL format.
+ * @brief Reads CRLs from memory and adds to the store.
+ * @details Reads crl from binary buffer @p data and adds to the list of crls in @p store.
  *
- * Reads crl from binary buffer @data and adds to the list of crls in @store.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @param mngr the keys manager.
+ * @param data the CRL binary data.
+ * @param dataSize the CRL binary data size.
+ * @param format the CRL format.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecOpenSSLAppKeysMngrCrlLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* data, xmlSecSize dataSize, xmlSecKeyDataFormat format) {
@@ -1632,14 +1601,13 @@ xmlSecOpenSSLAppKeysMngrCrlLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* 
 }
 
 /**
- * xmlSecOpenSSLAppKeysMngrCrlLoadBIO:
- * @mngr:               the keys manager.
- * @bio:                the CRL BIO.
- * @format:             the CRL file format.
+ * @brief Reads CRLs from BIO and adds to the store.
+ * @details Reads crl from an OpenSSL BIO object and adds to the list of crls in @p store.
  *
- * Reads crl from an OpenSSL BIO object and adds to the list of crls in @store.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @param mngr the keys manager.
+ * @param bio the CRL BIO.
+ * @param format the CRL file format.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecOpenSSLAppKeysMngrCrlLoadBIO(xmlSecKeysMngrPtr mngr, BIO* bio, xmlSecKeyDataFormat format) {
@@ -1674,13 +1642,8 @@ xmlSecOpenSSLAppKeysMngrCrlLoadBIO(xmlSecKeysMngrPtr mngr, BIO* bio, xmlSecKeyDa
 }
 
 /**
- * xmlSecOpenSSLAppKeysMngrCrlLoadAndVerify:
- * @mngr:               the keys manager.
- * @filename:           the CRL filename.
- * @format:             the CRL format (PEM or DER).
- * @keyInfoCtx:         the key info context for verification parameters.
- *
- * Atomically loads and verifies a CRL from @filename. This function eliminates
+ * @brief Loads and verifies a CRL from a file.
+ * @details Atomically loads and verifies a CRL from @p filename. This function eliminates
  * TOCTOU (Time-of-Check/Time-of-Use) vulnerabilities by loading the CRL once into memory,
  * verifying it, and then adopting it to the store.
  *
@@ -1688,7 +1651,11 @@ xmlSecOpenSSLAppKeysMngrCrlLoadBIO(xmlSecKeysMngrPtr mngr, BIO* bio, xmlSecKeyDa
  * 1. Checking the signature against the issuer's certificate in the store
  * 2. Validating thisUpdate and nextUpdate times
  *
- * Returns: 0 on success or a negative value on error.
+ * @param mngr the keys manager.
+ * @param filename the CRL filename.
+ * @param format the CRL format (PEM or DER).
+ * @param keyInfoCtx the key info context for verification parameters.
+ * @return 0 on success or a negative value on error.
  */
 int
 xmlSecOpenSSLAppKeysMngrCrlLoadAndVerify(xmlSecKeysMngrPtr mngr, const char *filename,
@@ -1761,13 +1728,12 @@ done:
 }
 
 /**
- * xmlSecOpenSSLAppKeysMngrAddCertsPath:
- * @mngr:               the keys manager.
- * @path:               the path to trusted certificates.
+ * @brief Reads certs from a path and adds to the store.
+ * @details Reads cert from @p path and adds to the list of trusted certificates.
  *
- * Reads cert from @path and adds to the list of trusted certificates.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @param mngr the keys manager.
+ * @param path the path to trusted certificates.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecOpenSSLAppKeysMngrAddCertsPath(xmlSecKeysMngrPtr mngr, const char *path) {
@@ -1794,14 +1760,13 @@ xmlSecOpenSSLAppKeysMngrAddCertsPath(xmlSecKeysMngrPtr mngr, const char *path) {
 }
 
 /**
- * xmlSecOpenSSLAppKeysMngrAddCertsFile:
- * @mngr:               the keys manager.
- * @filename:           the file containing trusted certificates.
+ * @brief Reads certs from file and adds to the store.
+ * @details Reads certs from the file and adds to the list of trusted certificates.
+ * It is possible for the file to contain multiple certs.
  *
- * Reads certs from @file and adds to the list of trusted certificates.
- * It is possible for @file to contain multiple certs.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @param mngr the keys manager.
+ * @param filename the file containing trusted certificates.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecOpenSSLAppKeysMngrAddCertsFile(xmlSecKeysMngrPtr mngr, const char *filename) {
@@ -1831,13 +1796,12 @@ xmlSecOpenSSLAppKeysMngrAddCertsFile(xmlSecKeysMngrPtr mngr, const char *filenam
 #endif /* XMLSEC_NO_X509 */
 
 /**
- * xmlSecOpenSSLAppDefaultKeysMngrInit:
- * @mngr:               the pointer to keys manager.
- *
- * Initializes @mngr with openssl keys store #xmlSecOpenSSLKeysStoreId
+ * @brief Initializes the default key manager for OpenSSL.
+ * @details Initializes @p mngr with openssl keys store #xmlSecOpenSSLKeysStoreId
  * and a default OpenSSL crypto key data stores.
  *
- * Returns: 0 on success or a negative value otherwise.
+ * @param mngr the pointer to keys manager.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecOpenSSLAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
@@ -1874,14 +1838,13 @@ xmlSecOpenSSLAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
 }
 
 /**
- * xmlSecOpenSSLAppDefaultKeysMngrAdoptKey:
- * @mngr:               the pointer to keys manager.
- * @key:                the pointer to key.
- *
- * Adds @key to the keys manager @mngr created with #xmlSecOpenSSLAppDefaultKeysMngrInit
+ * @brief Adds @p key to the keys manager.
+ * @details Adds @p key to the keys manager @p mngr created with #xmlSecOpenSSLAppDefaultKeysMngrInit
  * function.
  *
- * Returns: 0 on success or a negative value otherwise.
+ * @param mngr the pointer to keys manager.
+ * @param key the pointer to key.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecOpenSSLAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key) {
@@ -1900,20 +1863,19 @@ xmlSecOpenSSLAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key
 }
 
 /**
- * xmlSecOpenSSLAppDefaultKeysMngrVerifyKey:
- * @mngr:               the pointer to keys manager.
- * @key:                the pointer to key.
- * @keyInfoCtx:         the key info context for verification.
- *
- * Verifies @key with the keys manager @mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
+ * @brief Verifies @p key using the keys manager.
+ * @details Verifies @p key with the keys manager @p mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
  * function:
  * - Checks that key certificate is present
  * - Checks that key certificate is valid
  *
- * Adds @key to the keys manager @mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
+ * Adds @p key to the keys manager @p mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
  * function.
  *
- * Returns: 1 if key is verified, 0 otherwise, or a negative value if an error occurs.
+ * @param mngr the pointer to keys manager.
+ * @param key the pointer to key.
+ * @param keyInfoCtx the key info context for verification.
+ * @return 1 if key is verified, 0 otherwise, or a negative value if an error occurs.
  */
 int
 xmlSecOpenSSLAppDefaultKeysMngrVerifyKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key, xmlSecKeyInfoCtxPtr keyInfoCtx) {
@@ -1946,14 +1908,13 @@ xmlSecOpenSSLAppDefaultKeysMngrVerifyKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr ke
 
 
 /**
- * xmlSecOpenSSLAppDefaultKeysMngrLoad:
- * @mngr:               the pointer to keys manager.
- * @uri:                the uri.
- *
- * Loads XML keys file from @uri to the keys manager @mngr created
+ * @brief Loads the XML keys file into the keys manager.
+ * @details Loads XML keys file from @p uri to the keys manager @p mngr created
  * with #xmlSecOpenSSLAppDefaultKeysMngrInit function.
  *
- * Returns: 0 on success or a negative value otherwise.
+ * @param mngr the pointer to keys manager.
+ * @param uri the uri.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecOpenSSLAppDefaultKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
@@ -1980,14 +1941,11 @@ xmlSecOpenSSLAppDefaultKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
 }
 
 /**
- * xmlSecOpenSSLAppDefaultKeysMngrSave:
- * @mngr:               the pointer to keys manager.
- * @filename:           the destination filename.
- * @type:               the type of keys to save (public/private/symmetric).
- *
- * Saves keys from @mngr to  XML keys file.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Saves keys from @p mngr to XML keys file.
+ * @param mngr the pointer to keys manager.
+ * @param filename the destination filename.
+ * @param type the type of keys to save (public/private/symmetric).
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecOpenSSLAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename,
@@ -2015,11 +1973,9 @@ xmlSecOpenSSLAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename
 }
 
 /**
- * xmlSecOpenSSLAppGetDefaultPwdCallback:
+ * @brief Gets default password callback.
  *
- * Gets default password callback.
- *
- * Returns: default password callback.
+ * @return default password callback.
  */
 void*
 xmlSecOpenSSLAppGetDefaultPwdCallback(void) {

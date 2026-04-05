@@ -11,6 +11,13 @@
 #ifndef __XMLSEC_MEMBUF_H__
 #define __XMLSEC_MEMBUF_H__
 
+/**
+ * @defgroup xmlsec_core_membuf Memory Buffer Transform
+ * @ingroup xmlsec_core
+ * @brief In-memory buffer transform for capturing transform output.
+ * @{
+ */
+
 #include <libxml/tree.h>
 
 #include <xmlsec/exports.h>
@@ -22,15 +29,13 @@
 extern "C" {
 #endif /* __cplusplus */
 
-/********************************************************************
+/******************************************************************************
  *
  * Memory Buffer transform
  *
- *******************************************************************/
+  *****************************************************************************/
 /**
- * xmlSecTransformMemBufId:
- *
- * The Memory Buffer transform klass.
+ * @brief The Memory Buffer transform klass.
  */
 #define xmlSecTransformMemBufId \
         xmlSecTransformMemBufGetKlass()
@@ -40,5 +45,7 @@ XMLSEC_EXPORT xmlSecBufferPtr   xmlSecTransformMemBufGetBuffer          (xmlSecT
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
+
+/** @} */ /** xmlsec_core_membuf */
 
 #endif /* __XMLSEC_MEMBUF_H__ */

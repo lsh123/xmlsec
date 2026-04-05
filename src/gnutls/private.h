@@ -22,11 +22,11 @@ extern "C" {
 
 
 
-/**************************************************************************
+/******************************************************************************
  *
  * Keys
  *
- *****************************************************************************/
+  *****************************************************************************/
 xmlSecKeyDataPtr        xmlSecGnuTLSAsymKeyDataCreate           (gnutls_pubkey_t pubkey,
                                                                  gnutls_privkey_t privkey);
 
@@ -38,20 +38,20 @@ xmlSecSize              xmlSecGnuTLSAsymKeyDataGetSize          (xmlSecKeyDataPt
 
 #ifndef XMLSEC_NO_X509
 
-/**************************************************************************
+/******************************************************************************
  *
  * X509 certs list
  *
- *****************************************************************************/
+  *****************************************************************************/
 #define xmlSecGnuTLSX509CrtListId   \
         xmlSecGnuTLSX509CrtListGetKlass()
 xmlSecPtrListId         xmlSecGnuTLSX509CrtListGetKlass         (void);
 
-/**************************************************************************
+/******************************************************************************
  *
  * X509 crls list
  *
- *****************************************************************************/
+  *****************************************************************************/
 #define xmlSecGnuTLSX509CrlListId   \
         xmlSecGnuTLSX509CrlListGetKlass()
 xmlSecPtrListId         xmlSecGnuTLSX509CrlListGetKlass         (void);
@@ -60,11 +60,11 @@ xmlSecPtrListId         xmlSecGnuTLSX509CrlListGetKlass         (void);
 xmlSecPtrListPtr        xmlSecGnuTLSKeyDataX509GetCerts         (xmlSecKeyDataPtr data);
 xmlSecPtrListPtr        xmlSecGnuTLSKeyDataX509GetCrls          (xmlSecKeyDataPtr data);
 
-/*************************************************************************
+/******************************************************************************
  *
  * x509 certs utils/helpers
  *
- ************************************************************************/
+  *****************************************************************************/
 gnutls_x509_crt_t       xmlSecGnuTLSX509CertDup                 (gnutls_x509_crt_t src);
 int                     xmlSecGnuTLSX509CertIsSelfSigned        (gnutls_x509_crt_t cert);
 xmlChar *               xmlSecGnuTLSX509CertGetSubjectDN        (gnutls_x509_crt_t cert);
@@ -94,11 +94,11 @@ xmlSecKeyPtr            xmlSecGnuTLSX509FindKeyByValue          (xmlSecPtrListPt
 
 gnutls_digest_algorithm_t  xmlSecGnuTLSX509GetDigestFromAlgorithm(const xmlChar* href);
 
-/*************************************************************************
+/******************************************************************************
  *
  * x509 certs search ctx
  *
- ************************************************************************/
+  *****************************************************************************/
 typedef struct _xmlSecGnuTLSX509FindCertCtx {
     const xmlChar *subjectName;         /* NOT OWNED */
 
@@ -130,11 +130,11 @@ int         xmlSecGnuTLSX509StoreVerifyKey                  (xmlSecKeyDataStoreP
                                                              xmlSecKeyPtr key,
                                                              xmlSecKeyInfoCtxPtr keyInfoCtx);
 
-/*************************************************************************
+/******************************************************************************
  *
  * x509 crls utils/helpers
  *
- ************************************************************************/
+  *****************************************************************************/
 gnutls_x509_crl_t       xmlSecGnuTLSX509CrlDup                  (gnutls_x509_crl_t src);
 xmlChar *               xmlSecGnuTLSX509CrlGetIssuerDN          (gnutls_x509_crl_t crl);
 gnutls_x509_crl_t       xmlSecGnuTLSX509CrlRead                 (const xmlSecByte* buf,
@@ -148,22 +148,22 @@ void                    xmlSecGnuTLSX509CrlDebugXmlDump         (gnutls_x509_crl
                                                                  FILE* output);
 
 
-/*************************************************************************
+/******************************************************************************
  *
  * Misc. utils/helpers
  *
- ************************************************************************/
+  *****************************************************************************/
 int                     xmlSecGnuTLSX509DnsEqual                (const xmlChar * ll,
                                                                  const xmlChar * rr);
 int                     xmlSecGnuTLSX509CertCompareSKI          (gnutls_x509_crt_t cert,
                                                                  const xmlSecByte * ski,
                                                                   xmlSecSize skiSize);
 
-/*************************************************************************
+/******************************************************************************
  *
  * pkcs12 utils/helpers
  *
- ************************************************************************/
+  *****************************************************************************/
 int                     xmlSecGnuTLSPkcs12LoadMemory            (const xmlSecByte* data,
                                                                  xmlSecSize dataSize,
                                                                  const char *pwd,
@@ -172,11 +172,11 @@ int                     xmlSecGnuTLSPkcs12LoadMemory            (const xmlSecByt
                                                                  xmlSecPtrListPtr certsList,
                                                                  xmlChar ** keyName);
 
-/*************************************************************************
+/******************************************************************************
  *
  * LDAP DN parser
  *
- ************************************************************************/
+  *****************************************************************************/
 typedef struct _xmlSecGnuTLSDnAttr {
     xmlChar * key;
     xmlChar * value;

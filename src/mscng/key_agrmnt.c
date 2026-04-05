@@ -9,11 +9,8 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:crypto
- * @Short_description:
- * @Stability: Stable
+ * @addtogroup xmlsec_mscng_crypto
  */
-
 #include "globals.h"
 
 #include <stdlib.h>
@@ -40,12 +37,12 @@
 #if !defined(XMLSEC_NO_EC) || !defined(XMLSEC_NO_DH) || !defined(XMLSEC_NO_XDH)
 
 
-/**************************************************************************
+/******************************************************************************
  *
  * ECDH KeyAgreement context.
- * - XMLEnc spec: https://www.w3.org/TR/xmlenc-core1/#sec-ECDH-ES
+ * - XMLEnc spec: https://www.w3.org/TR/xmlenc-core1e/#sec-ECDH-ES
  *
- *****************************************************************************/
+  *****************************************************************************/
 
 typedef struct _xmlSecMSCngKeyAgreementCtx    xmlSecMSCngKeyAgreementCtx, *xmlSecMSCngKeyAgreementCtxPtr;
 struct _xmlSecMSCngKeyAgreementCtx {
@@ -54,11 +51,11 @@ struct _xmlSecMSCngKeyAgreementCtx {
     xmlSecKeyDataId keyDataId;          /* Key data type (EC or DH) */
 };
 
-/**************************************************************************
+/******************************************************************************
  *
  * ECDH KeyAgreement transforms
  *
- *****************************************************************************/
+  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(MSCngKeyAgreement, xmlSecMSCngKeyAgreementCtx)
 #define xmlSecMSCngKeyAgreementSize XMLSEC_TRANSFORM_SIZE(MSCngKeyAgreement)
 
@@ -757,20 +754,17 @@ xmlSecMSCngKeyAgreementExecute(xmlSecTransformPtr transform, int last, xmlSecTra
     return(0);
 }
 
-/********************************************************************
+/******************************************************************************
  *
  * ECDH key agreement klass
  *
- ********************************************************************/
+  *****************************************************************************/
 #ifndef XMLSEC_NO_EC
 XMLSEC_MSCNG_KEY_AGREEMENT_KLASS_EX(Ecdh)
 
 /**
- * xmlSecMSCngTransformEcdhGetKlass:
- *
- * The ECDH key agreement transform klass.
- *
- * Returns: the ECDH key agreement transform klass.
+ * @brief The ECDH key agreement transform klass.
+ * @return the ECDH key agreement transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformEcdhGetKlass(void) {
@@ -778,20 +772,17 @@ xmlSecMSCngTransformEcdhGetKlass(void) {
 }
 #endif /* XMLSEC_NO_EC */
 
-/********************************************************************
+/******************************************************************************
  *
  * DH-ES key agreement klass
  *
- ********************************************************************/
+  *****************************************************************************/
 #ifndef XMLSEC_NO_DH
 XMLSEC_MSCNG_KEY_AGREEMENT_KLASS_EX(DhEs)
 
 /**
- * xmlSecMSCngTransformDhEsGetKlass:
- *
- * The DH-ES key agreement transform klass.
- *
- * Returns: the DH-ES key agreement transform klass.
+ * @brief The DH-ES key agreement transform klass.
+ * @return the DH-ES key agreement transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformDhEsGetKlass(void) {
@@ -799,20 +790,17 @@ xmlSecMSCngTransformDhEsGetKlass(void) {
 }
 #endif /* XMLSEC_NO_DH */
 
-/********************************************************************
+/******************************************************************************
  *
  * X25519 key agreement klass
  *
- ********************************************************************/
+  *****************************************************************************/
 #ifndef XMLSEC_NO_XDH
 XMLSEC_MSCNG_KEY_AGREEMENT_KLASS_EX(X25519)
 
 /**
- * xmlSecMSCngTransformX25519GetKlass:
- *
- * The X25519 key agreement transform klass.
- *
- * Returns: the X25519 key agreement transform klass.
+ * @brief The X25519 key agreement transform klass.
+ * @return the X25519 key agreement transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformX25519GetKlass(void) {

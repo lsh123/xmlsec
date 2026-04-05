@@ -9,9 +9,8 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:crypto
+ * @addtogroup xmlsec_gnutls_crypto
  */
-
 #ifndef XMLSEC_NO_HMAC
 #include "globals.h"
 
@@ -34,11 +33,11 @@
 #include "../transform_helpers.h"
 
 
-/**************************************************************************
+/******************************************************************************
  *
  * Internal GNUTLS HMAC CTX
  *
- *****************************************************************************/
+  *****************************************************************************/
 typedef struct _xmlSecGnuTLSHmacCtx                xmlSecGnuTLSHmacCtx, *xmlSecGnuTLSHmacCtxPtr;
 struct _xmlSecGnuTLSHmacCtx {
     gnutls_hmac_hd_t            hmac;
@@ -53,7 +52,7 @@ struct _xmlSecGnuTLSHmacCtx {
  *
  * xmlSecTransform + xmlSecGnuTLSHmacCtx
  *
- *****************************************************************************/
+  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(GnuTLSHmac, xmlSecGnuTLSHmacCtx)
 #define xmlSecGnuTLSHmacSize XMLSEC_TRANSFORM_SIZE(GnuTLSHmac)
 
@@ -418,15 +417,12 @@ static xmlSecTransformKlass xmlSecGnuTLSHmac ## name ## Klass = {               
  *
  * HMAC SHA1
  *
- ******************************************************************************/
+  *****************************************************************************/
 XMLSEC_GNUTLS_HMAC_KLASS(Sha1)
 
 /**
- * xmlSecGnuTLSTransformHmacSha1GetKlass:
- *
- * The HMAC-SHA1 transform klass.
- *
- * Returns: the HMAC-SHA1 transform klass.
+ * @brief The HMAC-SHA1 transform klass.
+ * @return the HMAC-SHA1 transform klass.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformHmacSha1GetKlass(void) {
@@ -439,15 +435,12 @@ xmlSecGnuTLSTransformHmacSha1GetKlass(void) {
  *
  * HMAC SHA224
  *
- ******************************************************************************/
+  *****************************************************************************/
 XMLSEC_GNUTLS_HMAC_KLASS(Sha224)
 
 /**
- * xmlSecGnuTLSTransformHmacSha224GetKlass:
- *
- * The HMAC-SHA224 transform klass.
- *
- * Returns: the HMAC-SHA224 transform klass.
+ * @brief The HMAC-SHA224 transform klass.
+ * @return the HMAC-SHA224 transform klass.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformHmacSha224GetKlass(void) {
@@ -460,15 +453,12 @@ xmlSecGnuTLSTransformHmacSha224GetKlass(void) {
  *
  * HMAC SHA256
  *
- ******************************************************************************/
+  *****************************************************************************/
 XMLSEC_GNUTLS_HMAC_KLASS(Sha256)
 
 /**
- * xmlSecGnuTLSTransformHmacSha256GetKlass:
- *
- * The HMAC-SHA256 transform klass.
- *
- * Returns: the HMAC-SHA256 transform klass.
+ * @brief The HMAC-SHA256 transform klass.
+ * @return the HMAC-SHA256 transform klass.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformHmacSha256GetKlass(void) {
@@ -481,15 +471,12 @@ xmlSecGnuTLSTransformHmacSha256GetKlass(void) {
  *
  * HMAC SHA384
  *
- ******************************************************************************/
+  *****************************************************************************/
 XMLSEC_GNUTLS_HMAC_KLASS(Sha384)
 
 /**
- * xmlSecGnuTLSTransformHmacSha384GetKlass:
- *
- * The HMAC-SHA384 transform klass.
- *
- * Returns: the HMAC-SHA384 transform klass.
+ * @brief The HMAC-SHA384 transform klass.
+ * @return the HMAC-SHA384 transform klass.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformHmacSha384GetKlass(void) {
@@ -502,15 +489,12 @@ xmlSecGnuTLSTransformHmacSha384GetKlass(void) {
  *
  * HMAC SHA512
  *
- ******************************************************************************/
+  *****************************************************************************/
 XMLSEC_GNUTLS_HMAC_KLASS(Sha512)
 
 /**
- * xmlSecGnuTLSTransformHmacSha512GetKlass:
- *
- * The HMAC-SHA512 transform klass.
- *
- * Returns: the HMAC-SHA512 transform klass.
+ * @brief The HMAC-SHA512 transform klass.
+ * @return the HMAC-SHA512 transform klass.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformHmacSha512GetKlass(void) {

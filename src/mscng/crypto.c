@@ -8,12 +8,9 @@
  * Copyright (C) 2018 Miklos Vajna. All Rights Reserved.
  */
 /**
- * SECTION:crypto
- * @Short_description: Crypto transforms implementation for Microsoft Cryptography API: Next Generation (CNG).
- * @Stability: Stable
- *
+ * @addtogroup xmlsec_mscng_crypto
+ * @brief Crypto transforms implementation for Microsoft Cryptography API: Next Generation (CNG).
  */
-
 #include "globals.h"
 
 #include <string.h>
@@ -50,13 +47,13 @@ xmlSecMSCngIsAlgorithmSupported(LPCWSTR pszAlgId, DWORD dwMinLength, LPCWSTR cur
     /* check supported lengths if needed */
     if(dwMinLength > 0) {
         BCRYPT_KEY_LENGTHS_STRUCT keyLengths;
-        DWORD cbResult = 0;    
+        DWORD cbResult = 0;
 
         status = BCryptGetProperty(hAlg, BCRYPT_KEY_LENGTHS, (PBYTE)&keyLengths, sizeof(keyLengths), &cbResult, 0);
         if(status != STATUS_SUCCESS) {
             BCryptCloseAlgorithmProvider(hAlg, 0);
             return(0);
-        } 
+        }
         if(keyLengths.dwMaxLength < dwMinLength) {
             BCryptCloseAlgorithmProvider(hAlg, 0);
             return(0);
@@ -79,11 +76,8 @@ xmlSecMSCngIsAlgorithmSupported(LPCWSTR pszAlgId, DWORD dwMinLength, LPCWSTR cur
 }
 
 /**
- * xmlSecCryptoGetFunctions_mscng:
- *
- * Gets the pointer to xmlsec-mscng functions table.
- *
- * Returns: the xmlsec-mscng functions table or NULL if an error occurs.
+ * @brief Gets the pointer to xmlsec-mscng functions table.
+ * @return the xmlsec-mscng functions table or NULL if an error occurs.
  */
 xmlSecCryptoDLFunctionsPtr
 xmlSecCryptoGetFunctions_mscng(void) {
@@ -132,20 +126,20 @@ xmlSecCryptoGetFunctions_mscng(void) {
     memset(&functions, 0, sizeof(functions));
     gXmlSecMSCngFunctions = &functions;
 
-    /********************************************************************
+    /******************************************************************************
      *
      * Crypto Init/shutdown
      *
-     ********************************************************************/
+      *****************************************************************************/
     gXmlSecMSCngFunctions->cryptoInit                   = xmlSecMSCngInit;
     gXmlSecMSCngFunctions->cryptoShutdown               = xmlSecMSCngShutdown;
     gXmlSecMSCngFunctions->cryptoKeysMngrInit           = xmlSecMSCngKeysMngrInit;
 
-    /********************************************************************
+    /******************************************************************************
      *
      * Key data ids
      *
-     ********************************************************************/
+      *****************************************************************************/
 #ifndef XMLSEC_NO_AES
     gXmlSecMSCngFunctions->keyDataAesGetKlass           = xmlSecMSCngKeyDataAesGetKlass;
 #endif /* XMLSEC_NO_AES */
@@ -207,22 +201,22 @@ xmlSecCryptoGetFunctions_mscng(void) {
 
     gXmlSecMSCngFunctions->keyDataDEREncodedKeyValueGetKlass = xmlSecMSCngKeyDataDEREncodedKeyValueGetKlass;
 
-    /********************************************************************
+    /******************************************************************************
      *
      * Key data store ids
      *
-     ********************************************************************/
+      *****************************************************************************/
 #ifndef XMLSEC_NO_X509
     gXmlSecMSCngFunctions->x509StoreGetKlass           = xmlSecMSCngX509StoreGetKlass;
 #endif /* XMLSEC_NO_X509 */
 
-    /********************************************************************
+    /******************************************************************************
      *
      * Crypto transforms ids
      *
-     ********************************************************************/
+      *****************************************************************************/
 
-    /******************************* AES ********************************/
+    /****************************************************************************** AES  *****************************************************************************/
 #ifndef XMLSEC_NO_AES
     gXmlSecMSCngFunctions->transformAes128CbcGetKlass           = xmlSecMSCngTransformAes128CbcGetKlass;
     gXmlSecMSCngFunctions->transformAes192CbcGetKlass           = xmlSecMSCngTransformAes192CbcGetKlass;
@@ -235,20 +229,20 @@ xmlSecCryptoGetFunctions_mscng(void) {
     gXmlSecMSCngFunctions->transformKWAes256GetKlass            = xmlSecMSCngTransformKWAes256GetKlass;
 #endif /* XMLSEC_NO_AES */
 
-    /******************************* ConcatKDF ********************************/
+    /****************************************************************************** ConcatKDF  *****************************************************************************/
 #ifndef XMLSEC_NO_CONCATKDF
     if(isConcatKdfSupported != 0) {
         gXmlSecMSCngFunctions->transformConcatKdfGetKlass = xmlSecMSCngTransformConcatKdfGetKlass;
     }
 #endif /* XMLSEC_NO_CONCATKDF */
 
-    /******************************* DES ********************************/
+    /****************************************************************************** DES  *****************************************************************************/
 #ifndef XMLSEC_NO_DES
     gXmlSecMSCngFunctions->transformDes3CbcGetKlass             = xmlSecMSCngTransformDes3CbcGetKlass;
     gXmlSecMSCngFunctions->transformKWDes3GetKlass              = xmlSecMSCngTransformKWDes3GetKlass;
 #endif /* XMLSEC_NO_DES */
 
-    /******************************* DSA ********************************/
+    /****************************************************************************** DSA  *****************************************************************************/
 #ifndef XMLSEC_NO_DSA
 
 #ifndef XMLSEC_NO_SHA1
@@ -263,7 +257,7 @@ xmlSecCryptoGetFunctions_mscng(void) {
 
 #endif /* XMLSEC_NO_DSA */
 
-    /******************************* ECDSA ********************************/
+    /****************************************************************************** ECDSA  *****************************************************************************/
 #ifndef XMLSEC_NO_EC
 
 #ifndef XMLSEC_NO_SHA1
@@ -294,7 +288,7 @@ xmlSecCryptoGetFunctions_mscng(void) {
 
 #endif /* XMLSEC_NO_EC */
 
-    /******************************* DH-ES ********************************/
+    /****************************************************************************** DH-ES  *****************************************************************************/
 #ifndef XMLSEC_NO_DH
     if(isDhSupported != 0) {
         gXmlSecMSCngFunctions->transformDhEsGetKlass     = xmlSecMSCngTransformDhEsGetKlass;
@@ -307,7 +301,7 @@ xmlSecCryptoGetFunctions_mscng(void) {
     }
 #endif /* XMLSEC_NO_XDH */
 
-    /******************************* HMAC ********************************/
+    /****************************************************************************** HMAC  *****************************************************************************/
 #ifndef XMLSEC_NO_HMAC
 
 #ifndef XMLSEC_NO_MD5
@@ -332,21 +326,21 @@ xmlSecCryptoGetFunctions_mscng(void) {
 
 #endif /* XMLSEC_NO_HMAC */
 
-    /******************************* PBKDF2 ********************************/
+    /****************************************************************************** PBKDF2  *****************************************************************************/
 #ifndef XMLSEC_NO_PBKDF2
     if(isPbkdf2Supported != 0) {
         gXmlSecMSCngFunctions->transformPbkdf2GetKlass          = xmlSecMSCngTransformPbkdf2GetKlass;
     }
 #endif /* XMLSEC_NO_PBKDF2 */
 
-    /******************************* HKDF ********************************/
+    /****************************************************************************** HKDF  *****************************************************************************/
 #ifndef XMLSEC_NO_HKDF
     if(isHkdfSupported != 0) {
         gXmlSecMSCngFunctions->transformHkdfGetKlass            = xmlSecMSCngTransformHkdfGetKlass;
     }
 #endif /* XMLSEC_NO_HKDF */
 
-    /******************************* RSA ********************************/
+    /****************************************************************************** RSA  *****************************************************************************/
 #ifndef XMLSEC_NO_RSA
 
 #ifndef XMLSEC_NO_MD5
@@ -409,7 +403,7 @@ xmlSecCryptoGetFunctions_mscng(void) {
     gXmlSecMSCngFunctions->transformMd5GetKlass                = xmlSecMSCngTransformMd5GetKlass;
 #endif /* XMLSEC_NO_MD5 */
 
-    /******************************* SHA1 ********************************/
+    /****************************************************************************** SHA1  *****************************************************************************/
 #ifndef XMLSEC_NO_SHA1
     gXmlSecMSCngFunctions->transformSha1GetKlass                = xmlSecMSCngTransformSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
@@ -431,11 +425,11 @@ xmlSecCryptoGetFunctions_mscng(void) {
     }
 #endif /* XMLSEC_NO_SHA3 */
 
-    /********************************************************************
+    /******************************************************************************
      *
      * High-level routines for the xmlsec command-line utility
      *
-     ********************************************************************/
+      *****************************************************************************/
     gXmlSecMSCngFunctions->cryptoAppInit                        = xmlSecMSCngAppInit;
     gXmlSecMSCngFunctions->cryptoAppShutdown                    = xmlSecMSCngAppShutdown;
     gXmlSecMSCngFunctions->cryptoAppDefaultKeysMngrInit         = xmlSecMSCngAppDefaultKeysMngrInit;
@@ -463,11 +457,9 @@ xmlSecCryptoGetFunctions_mscng(void) {
 
 
 /**
- * xmlSecMSCngInit:
- *
- * XMLSec library specific crypto engine initialization.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Initializes the MSCng crypto engine.
+ * @details XMLSec library specific crypto engine initialization.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecMSCngInit (void)  {
@@ -488,11 +480,8 @@ xmlSecMSCngInit (void)  {
 }
 
 /**
- * xmlSecMSCngShutdown:
- *
- * XMLSec library specific crypto engine shutdown.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief XMLSec library specific crypto engine shutdown.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecMSCngShutdown(void) {
@@ -501,13 +490,11 @@ xmlSecMSCngShutdown(void) {
 }
 
 /**
- * xmlSecMSCngGenerateRandom:
- * @buffer:             the destination buffer.
- * @size:               the numer of bytes to generate.
- *
- * Generates @size random bytes and puts result in @buffer.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Generates @p size random bytes into @p buffer.
+ * @details Generates @p size random bytes and puts result in @p buffer.
+ * @param buffer the destination buffer.
+ * @param size the numer of bytes to generate.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecMSCngGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
@@ -539,12 +526,10 @@ xmlSecMSCngGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
 }
 
 /**
- * xmlSecMSCngKeysMngrInit:
- * @mngr:               the pointer to keys manager.
- *
- * Adds MSCng specific key data stores in keys manager.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Adds MSCng specific key data stores.
+ * @details Adds MSCng specific key data stores in keys manager.
+ * @param mngr the pointer to keys manager.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecMSCngKeysMngrInit(xmlSecKeysMngrPtr mngr) {

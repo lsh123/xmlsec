@@ -9,13 +9,10 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:x509
- * @Short_description: X509 certificates implementation for OpenSSL.
- * @Stability: Stable
- *
- *  X509 key data implementation.
+ * @addtogroup xmlsec_openssl_x509
+ * @brief X509 certificates implementation for OpenSSL.
+ * @details X509 key data implementation.
  */
-
 #include "globals.h"
 
 #ifndef XMLSEC_NO_X509
@@ -60,11 +57,11 @@
 #include "private.h"
 #include "openssl_compat.h"
 
-/*************************************************************************
+/******************************************************************************
  *
  * X509 utility functions
  *
- ************************************************************************/
+  *****************************************************************************/
 static int              xmlSecOpenSSLVerifyAndAdoptX509KeyData  (xmlSecKeyPtr key,
                                                                  xmlSecKeyDataPtr data,
                                                                  xmlSecKeyInfoCtxPtr keyInfoCtx);
@@ -77,11 +74,11 @@ static void             xmlSecOpenSSLX509CertDebugDump          (X509* cert,
 static void             xmlSecOpenSSLX509CertDebugXmlDump       (X509* cert,
                                                                  FILE* output);
 
-/*************************************************************************
+/******************************************************************************
  *
  * Internal OpenSSL X509 data CTX
  *
- ************************************************************************/
+  *****************************************************************************/
 typedef struct _xmlSecOpenSSLX509DataCtx                xmlSecOpenSSLX509DataCtx,
                                                         *xmlSecOpenSSLX509DataCtxPtr;
 struct _xmlSecOpenSSLX509DataCtx {
@@ -90,11 +87,11 @@ struct _xmlSecOpenSSLX509DataCtx {
     STACK_OF(X509_CRL)* crlsList;
 };
 
-/**************************************************************************
+/******************************************************************************
  *
  * &lt;dsig:X509Data/&gt; processing (http://www.w3.org/TR/xmldsig-core/#sec-X509Data)
  *
- *************************************************************************/
+  *****************************************************************************/
 XMLSEC_KEY_DATA_DECLARE(OpenSSLX509Data, xmlSecOpenSSLX509DataCtx)
 #define xmlSecOpenSSLX509DataSize XMLSEC_KEY_DATA_SIZE(OpenSSLX509Data)
 
@@ -173,11 +170,9 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataX509Klass = {
 };
 
 /**
- * xmlSecOpenSSLKeyDataX509GetKlass:
- *
- * The OpenSSL X509 key data klass (http://www.w3.org/TR/xmldsig-core/#sec-X509Data).
- *
- * Returns: the X509 data klass.
+ * @brief The OpenSSL X509 key data klass.
+ * @details The OpenSSL X509 key data klass (http://www.w3.org/TR/xmldsig-core/#sec-X509Data).
+ * @return the X509 data klass.
  */
 xmlSecKeyDataId
 xmlSecOpenSSLKeyDataX509GetKlass(void) {
@@ -185,12 +180,11 @@ xmlSecOpenSSLKeyDataX509GetKlass(void) {
 }
 
 /**
- * xmlSecOpenSSLKeyDataX509GetKeyCert:
- * @data:               the pointer to X509 key data.
+ * @brief Gets the certificate from which the key was extracted.
+ * @param data the pointer to X509 key data.
  *
- * Gets the certificate from which the key was extracted.
  *
- * Returns: the key's certificate or NULL if key data was not used for key
+ * @return the key's certificate or NULL if key data was not used for key
  * extraction or an error occurs.
  */
 X509*
@@ -248,16 +242,15 @@ xmlSecOpenSSLKeyDataX509AddCertInternal(xmlSecOpenSSLX509DataCtxPtr ctx, X509* c
 }
 
 /**
- * xmlSecOpenSSLKeyDataX509AdoptKeyCert:
- * @data:               the pointer to X509 key data.
- * @cert:               the pointer to OpenSSL X509 certificate.
+ * @brief Adds certificate to the X509 key data and sets the it as the key's
+ * @param data the pointer to X509 key data.
+ * @param cert the pointer to OpenSSL X509 certificate.
  *
- * Adds certificate to the X509 key data and sets the it as the key's
- * certificate in @data. On success, the @data owns the cert.
+ * certificate in @p data. On success, the @p data owns the cert.
  * This function DOES NOT check if the key matches the key cert
- * (use @xmlSecOpenSSLAppKeyCertLoadBIO that performs this check).
+ * (use #xmlSecOpenSSLAppKeyCertLoadBIO that performs this check).
  *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecOpenSSLKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, X509* cert) {
@@ -290,13 +283,11 @@ xmlSecOpenSSLKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, X509* cert) {
 }
 
 /**
- * xmlSecOpenSSLKeyDataX509AdoptCert:
- * @data:               the pointer to X509 key data.
- * @cert:               the pointer to OpenSSL X509 certificate.
- *
- * Adds certificate to the X509 key data. On success, the @data owns the cert.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Adds certificate to the X509 key data.
+ * @details Adds certificate to the X509 key data. On success, the @p data owns the cert.
+ * @param data the pointer to X509 key data.
+ * @param cert the pointer to OpenSSL X509 certificate.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecOpenSSLKeyDataX509AdoptCert(xmlSecKeyDataPtr data, X509* cert) {
@@ -318,14 +309,13 @@ xmlSecOpenSSLKeyDataX509AdoptCert(xmlSecKeyDataPtr data, X509* cert) {
 }
 
 /**
- * xmlSecOpenSSLKeyDataX509GetCert:
- * @data:               the pointer to X509 key data.
- * @pos:                the desired certificate position.
+ * @brief Gets a certificate from X509 key data.
+ * @param data the pointer to X509 key data.
+ * @param pos the desired certificate position.
  *
- * Gets a certificate from X509 key data.
  *
- * Returns: the pointer to certificate or NULL if @pos is larger than the
- * number of certificates in @data or an error occurs.
+ * @return the pointer to certificate or NULL if @p pos is larger than the
+ * number of certificates in @p data or an error occurs.
  */
 X509*
 xmlSecOpenSSLKeyDataX509GetCert(xmlSecKeyDataPtr data, xmlSecSize pos) {
@@ -346,12 +336,9 @@ xmlSecOpenSSLKeyDataX509GetCert(xmlSecKeyDataPtr data, xmlSecSize pos) {
 }
 
 /**
- * xmlSecOpenSSLKeyDataX509GetCertsSize:
- * @data:               the pointer to X509 key data.
- *
- * Gets the number of certificates in @data.
- *
- * Returns: te number of certificates in @data.
+ * @brief Gets the number of certificates in @p data.
+ * @param data the pointer to X509 key data.
+ * @return te number of certificates in @p data.
  */
 xmlSecSize
 xmlSecOpenSSLKeyDataX509GetCertsSize(xmlSecKeyDataPtr data) {
@@ -374,13 +361,10 @@ xmlSecOpenSSLKeyDataX509GetCertsSize(xmlSecKeyDataPtr data) {
 }
 
 /**
- * xmlSecOpenSSLKeyDataX509AdoptCrl:
- * @data:               the pointer to X509 key data.
- * @crl:                the pointer to OpenSSL X509 CRL.
- *
- * Adds CRL to the X509 key data.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Adds CRL to the X509 key data.
+ * @param data the pointer to X509 key data.
+ * @param crl the pointer to OpenSSL X509 CRL.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecOpenSSLKeyDataX509AdoptCrl(xmlSecKeyDataPtr data, X509_CRL* crl) {
@@ -411,14 +395,13 @@ xmlSecOpenSSLKeyDataX509AdoptCrl(xmlSecKeyDataPtr data, X509_CRL* crl) {
 }
 
 /**
- * xmlSecOpenSSLKeyDataX509GetCrl:
- * @data:               the pointer to X509 key data.
- * @pos:                the desired CRL position.
+ * @brief Gets a CRL from X509 key data.
+ * @param data the pointer to X509 key data.
+ * @param pos the desired CRL position.
  *
- * Gets a CRL from X509 key data.
  *
- * Returns: the pointer to CRL or NULL if @pos is larger than the
- * number of CRLs in @data or an error occurs.
+ * @return the pointer to CRL or NULL if @p pos is larger than the
+ * number of CRLs in @p data or an error occurs.
  */
 X509_CRL*
 xmlSecOpenSSLKeyDataX509GetCrl(xmlSecKeyDataPtr data, xmlSecSize pos) {
@@ -438,12 +421,9 @@ xmlSecOpenSSLKeyDataX509GetCrl(xmlSecKeyDataPtr data, xmlSecSize pos) {
 }
 
 /**
- * xmlSecOpenSSLKeyDataX509GetCrlsSize:
- * @data:               the pointer to X509 key data.
- *
- * Gets the number of CRLs in @data.
- *
- * Returns: te number of CRLs in @data.
+ * @brief Gets the number of CRLs in @p data.
+ * @param data the pointer to X509 key data.
+ * @return te number of CRLs in @p data.
  */
 xmlSecSize
 xmlSecOpenSSLKeyDataX509GetCrlsSize(xmlSecKeyDataPtr data) {
@@ -1636,12 +1616,9 @@ xmlSecOpenSSLVerifyAndAdoptX509KeyData(xmlSecKeyPtr key, xmlSecKeyDataPtr data, 
 }
 
 /**
- * xmlSecOpenSSLX509CertGetKey:
- * @cert:               the certificate.
- *
- * Extracts public key from the @cert.
- *
- * Returns: public key value or NULL if an error occurs.
+ * @brief Extracts public key from the @p cert.
+ * @param cert the certificate.
+ * @return public key value or NULL if an error occurs.
  */
 xmlSecKeyDataPtr
 xmlSecOpenSSLX509CertGetKey(X509* cert) {
@@ -1902,12 +1879,12 @@ xmlSecOpenSSLX509CertDebugXmlDump(X509* cert, FILE* output) {
 }
 
 
-/**************************************************************************
+/******************************************************************************
  *
  * Raw X509 Certificate processing
  *
  *
- *************************************************************************/
+  *****************************************************************************/
 static int              xmlSecOpenSSLKeyDataRawX509CertBinRead  (xmlSecKeyDataId id,
                                                                  xmlSecKeyPtr key,
                                                                  const xmlSecByte* buf,
@@ -1953,11 +1930,8 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataRawX509CertKlass = {
 };
 
 /**
- * xmlSecOpenSSLKeyDataRawX509CertGetKlass:
- *
- * The raw X509 certificates key data klass.
- *
- * Returns: raw X509 certificates key data klass.
+ * @brief The raw X509 certificates key data klass.
+ * @return raw X509 certificates key data klass.
  */
 xmlSecKeyDataId
 xmlSecOpenSSLKeyDataRawX509CertGetKlass(void) {

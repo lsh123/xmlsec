@@ -10,9 +10,8 @@
  * Copyright (c) 2005-2006 Cryptocom LTD (http://www.cryptocom.ru).
  */
 /**
- * SECTION:crypto
+ * @addtogroup xmlsec_mscrypto_crypto
  */
-
 #include "globals.h"
 
 #include <string.h>
@@ -47,7 +46,7 @@ struct _xmlSecMSCryptoDigestCtx {
  *
  * MSCrypto Digest transforms
  *
- *****************************************************************************/
+  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(MSCryptoDigest, xmlSecMSCryptoDigestCtx)
 #define xmlSecMSCryptoDigestSize XMLSEC_TRANSFORM_SIZE(MSCryptoDigest)
 
@@ -402,7 +401,7 @@ xmlSecMSCryptoDigestExecute(xmlSecTransformPtr transform,
  *
  * MD5
  *
- *****************************************************************************/
+  *****************************************************************************/
 static xmlSecTransformKlass xmlSecMSCryptoMd5Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* size_t klassSize */
@@ -429,11 +428,8 @@ static xmlSecTransformKlass xmlSecMSCryptoMd5Klass = {
 };
 
 /**
- * xmlSecMSCryptoTransformMd5GetKlass:
- *
- * SHA-1 digest transform klass.
- *
- * Returns: pointer to SHA-1 digest transform klass.
+ * @brief SHA-1 digest transform klass.
+ * @return pointer to SHA-1 digest transform klass.
  */
 xmlSecTransformId
 xmlSecMSCryptoTransformMd5GetKlass(void) {
@@ -446,7 +442,7 @@ xmlSecMSCryptoTransformMd5GetKlass(void) {
  *
  * SHA1
  *
- *****************************************************************************/
+  *****************************************************************************/
 static xmlSecTransformKlass xmlSecMSCryptoSha1Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* size_t klassSize */
@@ -473,11 +469,8 @@ static xmlSecTransformKlass xmlSecMSCryptoSha1Klass = {
 };
 
 /**
- * xmlSecMSCryptoTransformSha1GetKlass:
- *
- * SHA-1 digest transform klass.
- *
- * Returns: pointer to SHA-1 digest transform klass.
+ * @brief SHA-1 digest transform klass.
+ * @return pointer to SHA-1 digest transform klass.
  */
 xmlSecTransformId
 xmlSecMSCryptoTransformSha1GetKlass(void) {
@@ -490,7 +483,7 @@ xmlSecMSCryptoTransformSha1GetKlass(void) {
  *
  * SHA256
  *
- *****************************************************************************/
+  *****************************************************************************/
 static xmlSecTransformKlass xmlSecMSCryptoSha256Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),              /* size_t klassSize */
@@ -517,11 +510,8 @@ static xmlSecTransformKlass xmlSecMSCryptoSha256Klass = {
 };
 
 /**
- * xmlSecMSCryptoTransformSha256GetKlass:
- *
- * SHA-256 digest transform klass.
- *
- * Returns: pointer to SHA-256 digest transform klass.
+ * @brief SHA-256 digest transform klass.
+ * @return pointer to SHA-256 digest transform klass.
  */
 xmlSecTransformId
 xmlSecMSCryptoTransformSha256GetKlass(void) {
@@ -534,7 +524,7 @@ xmlSecMSCryptoTransformSha256GetKlass(void) {
  *
  * SHA384
  *
- *****************************************************************************/
+  *****************************************************************************/
 static xmlSecTransformKlass xmlSecMSCryptoSha384Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),              /* size_t klassSize */
@@ -561,11 +551,8 @@ static xmlSecTransformKlass xmlSecMSCryptoSha384Klass = {
 };
 
 /**
- * xmlSecMSCryptoTransformSha384GetKlass:
- *
- * SHA-384 digest transform klass.
- *
- * Returns: pointer to SHA-384 digest transform klass.
+ * @brief SHA-384 digest transform klass.
+ * @return pointer to SHA-384 digest transform klass.
  */
 xmlSecTransformId
 xmlSecMSCryptoTransformSha384GetKlass(void) {
@@ -578,7 +565,7 @@ xmlSecMSCryptoTransformSha384GetKlass(void) {
  *
  * SHA512
  *
- *****************************************************************************/
+  *****************************************************************************/
 static xmlSecTransformKlass xmlSecMSCryptoSha512Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),              /* size_t klassSize */
@@ -605,11 +592,8 @@ static xmlSecTransformKlass xmlSecMSCryptoSha512Klass = {
 };
 
 /**
- * xmlSecMSCryptoTransformSha512GetKlass:
- *
- * SHA-512 digest transform klass.
- *
- * Returns: pointer to SHA-512 digest transform klass.
+ * @brief SHA-512 digest transform klass.
+ * @return pointer to SHA-512 digest transform klass.
  */
 xmlSecTransformId
 xmlSecMSCryptoTransformSha512GetKlass(void) {
@@ -622,7 +606,7 @@ xmlSecMSCryptoTransformSha512GetKlass(void) {
  *
  * GOSTR3411_94
  *
- *****************************************************************************/
+  *****************************************************************************/
 static xmlSecTransformKlass xmlSecMSCryptoGostR3411_94Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* size_t klassSize */
@@ -649,11 +633,8 @@ static xmlSecTransformKlass xmlSecMSCryptoGostR3411_94Klass = {
 };
 
 /**
- * xmlSecMSCryptoTransformGostR3411_94GetKlass:
- *
- * GOSTR3411_94 digest transform klass.
- *
- * Returns: pointer to GOSTR3411_94 digest transform klass.
+ * @brief GOSTR3411_94 digest transform klass.
+ * @return pointer to GOSTR3411_94 digest transform klass.
  */
 xmlSecTransformId
 xmlSecMSCryptoTransformGostR3411_94GetKlass(void) {
@@ -664,7 +645,7 @@ xmlSecMSCryptoTransformGostR3411_94GetKlass(void) {
  *
  * GOSTR3411-2012/256
  *
- *****************************************************************************/
+  *****************************************************************************/
 static xmlSecTransformKlass xmlSecMSCryptoGostR3411_2012_256Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* size_t klassSize */
@@ -691,11 +672,8 @@ static xmlSecTransformKlass xmlSecMSCryptoGostR3411_2012_256Klass = {
 };
 
 /**
- * xmlSecMSCryptoTransformGostR3411_2012_256GetKlass:
- *
- * GOSTR3411_2012_256 digest transform klass.
- *
- * Returns: pointer to GOSTR3411_2012_256 digest transform klass.
+ * @brief GOSTR3411_2012_256 digest transform klass.
+ * @return pointer to GOSTR3411_2012_256 digest transform klass.
  */
 xmlSecTransformId
 xmlSecMSCryptoTransformGostR3411_2012_256GetKlass(void) {
@@ -707,7 +685,7 @@ xmlSecMSCryptoTransformGostR3411_2012_256GetKlass(void) {
  *
  * GOSTR3411-2012/512
  *
- *****************************************************************************/
+  *****************************************************************************/
 static xmlSecTransformKlass xmlSecMSCryptoGostR3411_2012_512Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* size_t klassSize */
@@ -734,11 +712,8 @@ static xmlSecTransformKlass xmlSecMSCryptoGostR3411_2012_512Klass = {
 };
 
 /**
- * xmlSecMSCryptoTransformGostR3411_2012_512GetKlass:
- *
- * GOSTR3411_2012_512 digest transform klass.
- *
- * Returns: pointer to GOSTR3411_2012_512 digest transform klass.
+ * @brief GOSTR3411_2012_512 digest transform klass.
+ * @return pointer to GOSTR3411_2012_512 digest transform klass.
  */
 xmlSecTransformId
 xmlSecMSCryptoTransformGostR3411_2012_512GetKlass(void) {

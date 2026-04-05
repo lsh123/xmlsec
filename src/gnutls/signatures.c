@@ -9,9 +9,8 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:crypto
+ * @addtogroup xmlsec_gnutls_crypto
  */
-
 #include "globals.h"
 
 #include <string.h>
@@ -39,11 +38,11 @@
 #define XMLSEC_GNUTLS_SIGNATURE_DSA_SHA1_HALF_LEN              20
 #define XMLSEC_GNUTLS_SIGNATURE_DSA_SHA256_HALF_LEN            (256 / 8)
 
-/**************************************************************************
+/******************************************************************************
  *
  * Internal GNUTLS signatures ctx
  *
- *****************************************************************************/
+  *****************************************************************************/
 typedef gnutls_pubkey_t     (*xmlSecGnuTLSKeyDataGetPublicKeyMethod)      (xmlSecKeyDataPtr data);
 typedef gnutls_privkey_t    (*xmlSecGnuTLSKeyDataGetPrivateKeyMethod)     (xmlSecKeyDataPtr data);
 
@@ -71,7 +70,7 @@ struct _xmlSecGnuTLSSignatureCtx {
  *
  * Signature transforms
  *
- *****************************************************************************/
+  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(GnuTLSSignature, xmlSecGnuTLSSignatureCtx)
 #define xmlSecGnuTLSSignatureSize XMLSEC_TRANSFORM_SIZE(GnuTLSSignature)
 
@@ -94,7 +93,7 @@ static int      xmlSecGnuTLSSignatureExecute                    (xmlSecTransform
 
 static int
 xmlSecGnuTLSSignatureCheckId(xmlSecTransformPtr transform) {
-    /********************************* DSA *******************************/
+    /****************************************************************************** DSA  *****************************************************************************/
 #ifndef XMLSEC_NO_DSA
 
 #ifndef XMLSEC_NO_SHA1
@@ -111,7 +110,7 @@ xmlSecGnuTLSSignatureCheckId(xmlSecTransformPtr transform) {
 
 #endif /* XMLSEC_NO_DSA */
 
-    /********************************* ECDSA *******************************/
+    /****************************************************************************** ECDSA  *****************************************************************************/
 #ifndef XMLSEC_NO_EC
 
 #ifndef XMLSEC_NO_SHA1
@@ -161,7 +160,7 @@ xmlSecGnuTLSSignatureCheckId(xmlSecTransformPtr transform) {
 
 #endif /* XMLSEC_NO_EC */
 
-    /********************************* GOST 2001 *******************************/
+    /****************************************************************************** GOST 2001  *****************************************************************************/
 #ifndef XMLSEC_NO_GOST
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformGost2001GostR3411_94Id)) {
         return(1);
@@ -178,7 +177,7 @@ xmlSecGnuTLSSignatureCheckId(xmlSecTransformPtr transform) {
     }
 #endif /* XMLSEC_NO_GOST2012 */
 
-    /********************************* ML-DSA *******************************/
+    /****************************************************************************** ML-DSA  *****************************************************************************/
 #ifndef XMLSEC_NO_MLDSA
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformMLDSA44Id)) {
         return(1);
@@ -191,7 +190,7 @@ xmlSecGnuTLSSignatureCheckId(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_MLDSA */
 
-    /********************************* EdDSA *******************************/
+    /****************************************************************************** EdDSA  *****************************************************************************/
 #ifndef XMLSEC_NO_EDDSA
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformEdDSAEd25519Id)) {
         return(1);
@@ -201,7 +200,7 @@ xmlSecGnuTLSSignatureCheckId(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_EDDSA */
 
-    /********************************* RSA *******************************/
+    /****************************************************************************** RSA  *****************************************************************************/
 
 #ifndef XMLSEC_NO_RSA
 
@@ -270,7 +269,7 @@ xmlSecGnuTLSSignatureInitialize(xmlSecTransformPtr transform) {
 
     memset(ctx, 0, sizeof(xmlSecGnuTLSSignatureCtx));
 
-    /********************************* DSA *******************************/
+    /****************************************************************************** DSA  *****************************************************************************/
 #ifndef XMLSEC_NO_DSA
 
 #ifndef XMLSEC_NO_SHA1
@@ -295,7 +294,7 @@ xmlSecGnuTLSSignatureInitialize(xmlSecTransformPtr transform) {
 
 #endif /* XMLSEC_NO_DSA */
 
-    /********************************* ECDSA *******************************/
+    /****************************************************************************** ECDSA  *****************************************************************************/
 #ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformEcdsaSha1Id)) {
         ctx->keyId      = xmlSecGnuTLSKeyDataEcId;
@@ -378,7 +377,7 @@ xmlSecGnuTLSSignatureInitialize(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_SHA3 */
 
-    /********************************* GOST 2001 *******************************/
+    /****************************************************************************** GOST 2001  *****************************************************************************/
 #ifndef XMLSEC_NO_GOST
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformGost2001GostR3411_94Id)) {
         ctx->keyId      = xmlSecGnuTLSKeyDataGost2001Id;
@@ -390,7 +389,7 @@ xmlSecGnuTLSSignatureInitialize(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_GOST */
 
-    /********************************* GOST 2012 *******************************/
+    /****************************************************************************** GOST 2012  *****************************************************************************/
 #ifndef XMLSEC_NO_GOST2012
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformGostR3410_2012GostR3411_2012_256Id)) {
         ctx->keyId      = xmlSecGnuTLSKeyDataGost2012_256Id;
@@ -409,7 +408,7 @@ xmlSecGnuTLSSignatureInitialize(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_GOST2012 */
 
-    /********************************* ML-DSA *******************************/
+    /****************************************************************************** ML-DSA  *****************************************************************************/
 #ifndef XMLSEC_NO_MLDSA
     /* ML-DSA uses hard coded SHAKE-128 and SHAKE-256 so no need to have digest here */
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformMLDSA44Id)) {
@@ -435,7 +434,7 @@ xmlSecGnuTLSSignatureInitialize(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_MLDSA */
 
-    /********************************* EdDSA *******************************/
+    /****************************************************************************** EdDSA  *****************************************************************************/
 #ifndef XMLSEC_NO_EDDSA
     /* EdDSA uses its own internally defined hash so no need to have digest here */
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformEdDSAEd25519Id)) {
@@ -454,7 +453,7 @@ xmlSecGnuTLSSignatureInitialize(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_EDDSA */
 
-    /********************************* RSA *******************************/
+    /****************************************************************************** RSA  *****************************************************************************/
 #ifndef XMLSEC_NO_RSA
 
 #ifndef XMLSEC_NO_SHA1
@@ -922,7 +921,7 @@ xmlSecGnuTLSSignatureGetDerHalfSize(gnutls_sign_algorithm_t algo, xmlSecSize key
     xmlSecAssert2(res != 0, -1);
 
     switch(algo) {
-        /********************************* Fixed length (DSA-SHA*) *******************************/
+        /****************************************************************************** Fixed length (DSA-SHA*)  *****************************************************************************/
 #ifndef XMLSEC_NO_DSA
     case GNUTLS_SIGN_DSA_SHA1:
         (*res) = XMLSEC_GNUTLS_SIGNATURE_DSA_SHA1_HALF_LEN;
@@ -932,7 +931,7 @@ xmlSecGnuTLSSignatureGetDerHalfSize(gnutls_sign_algorithm_t algo, xmlSecSize key
         break;
 #endif /* XMLSEC_NO_DSA */
 
-        /********************************* Key length (ECDSA-SHA*) *******************************/
+        /****************************************************************************** Key length (ECDSA-SHA*)  *****************************************************************************/
 #ifndef XMLSEC_NO_EC
     case GNUTLS_SIGN_ECDSA_SHA1:
     case GNUTLS_SIGN_ECDSA_SHA224:
@@ -1314,24 +1313,21 @@ static xmlSecTransformKlass xmlSecGnuTLS ## name ## Klass = {                   
     XMLSEC_GNUTLS_SIGNATURE_KLASS_EX(name, NULL)
 
 
-/********************************* DSA *******************************/
+/****************************************************************************** DSA  *****************************************************************************/
 #ifndef XMLSEC_NO_DSA
 
 #ifndef XMLSEC_NO_SHA1
-/****************************************************************************
+/******************************************************************************
  *
  * DSA-SHA1 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 
 XMLSEC_GNUTLS_SIGNATURE_KLASS(DsaSha1)
 
 /**
- * xmlSecGnuTLSTransformDsaSha1GetKlass:
- *
- * The DSA-SHA1 signature transform klass.
- *
- * Returns: DSA-SHA1 signature transform klass.
+ * @brief The DSA-SHA1 signature transform klass.
+ * @return DSA-SHA1 signature transform klass.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformDsaSha1GetKlass(void) {
@@ -1341,20 +1337,17 @@ xmlSecGnuTLSTransformDsaSha1GetKlass(void) {
 
 
 #ifndef XMLSEC_NO_SHA256
-/****************************************************************************
+/******************************************************************************
  *
  * DSA-SHA2-256 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 
 XMLSEC_GNUTLS_SIGNATURE_KLASS(DsaSha256)
 
 /**
- * xmlSecGnuTLSTransformDsaSha256GetKlass:
- *
- * The DSA-SHA2-256 signature transform klass.
- *
- * Returns: DSA-SHA2-256 signature transform klass.
+ * @brief The DSA-SHA2-256 signature transform klass.
+ * @return DSA-SHA2-256 signature transform klass.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformDsaSha256GetKlass(void) {
@@ -1364,7 +1357,7 @@ xmlSecGnuTLSTransformDsaSha256GetKlass(void) {
 
 #endif /* XMLSEC_NO_DSA */
 
-/********************************* EC *******************************/
+/****************************************************************************** EC  *****************************************************************************/
 #ifndef XMLSEC_NO_EC
 /*
  * https://www.w3.org/TR/xmldsig-core1/#sec-ECDSA
@@ -1377,19 +1370,16 @@ xmlSecGnuTLSTransformDsaSha256GetKlass(void) {
  */
 
 #ifndef XMLSEC_NO_SHA1
-/****************************************************************************
+/******************************************************************************
  *
  * ECDSA-SHA1 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 XMLSEC_GNUTLS_SIGNATURE_KLASS(EcdsaSha1)
 
 /**
- * xmlSecGnuTLSTransformEcdsaSha1GetKlass:
- *
- * The ECDSA-SHA1 signature transform klass.
- *
- * Returns: ECDSA-SHA1 signature transform klass.
+ * @brief The ECDSA-SHA1 signature transform klass.
+ * @return ECDSA-SHA1 signature transform klass.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformEcdsaSha1GetKlass(void) {
@@ -1400,19 +1390,16 @@ xmlSecGnuTLSTransformEcdsaSha1GetKlass(void) {
 
 
 #ifndef XMLSEC_NO_SHA224
-/****************************************************************************
+/******************************************************************************
  *
  * ECDSA-SHA2-224 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 XMLSEC_GNUTLS_SIGNATURE_KLASS(EcdsaSha224)
 
 /**
- * xmlSecGnuTLSTransformEcdsaSha224GetKlass:
- *
- * The ECDSA-SHA2-224 signature transform klass.
- *
- * Returns: ECDSA-SHA2-224 signature transform klass.
+ * @brief The ECDSA-SHA2-224 signature transform klass.
+ * @return ECDSA-SHA2-224 signature transform klass.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformEcdsaSha224GetKlass(void) {
@@ -1423,19 +1410,16 @@ xmlSecGnuTLSTransformEcdsaSha224GetKlass(void) {
 
 
 #ifndef XMLSEC_NO_SHA256
-/****************************************************************************
+/******************************************************************************
  *
  * ECDSA-SHA2-256 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 XMLSEC_GNUTLS_SIGNATURE_KLASS(EcdsaSha256)
 
 /**
- * xmlSecGnuTLSTransformEcdsaSha256GetKlass:
- *
- * The ECDSA-SHA2-256 signature transform klass.
- *
- * Returns: ECDSA-SHA2-256 signature transform klass.
+ * @brief The ECDSA-SHA2-256 signature transform klass.
+ * @return ECDSA-SHA2-256 signature transform klass.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformEcdsaSha256GetKlass(void) {
@@ -1445,19 +1429,16 @@ xmlSecGnuTLSTransformEcdsaSha256GetKlass(void) {
 #endif /* XMLSEC_NO_SHA256 */
 
 #ifndef XMLSEC_NO_SHA384
-/****************************************************************************
+/******************************************************************************
  *
  * ECDSA-SHA2-384 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 XMLSEC_GNUTLS_SIGNATURE_KLASS(EcdsaSha384)
 
 /**
- * xmlSecGnuTLSTransformEcdsaSha384GetKlass:
- *
- * The ECDSA-SHA2-384 signature transform klass.
- *
- * Returns: ECDSA-SHA2-384 signature transform klass.
+ * @brief The ECDSA-SHA2-384 signature transform klass.
+ * @return ECDSA-SHA2-384 signature transform klass.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformEcdsaSha384GetKlass(void) {
@@ -1467,19 +1448,16 @@ xmlSecGnuTLSTransformEcdsaSha384GetKlass(void) {
 #endif /* XMLSEC_NO_SHA384 */
 
 #ifndef XMLSEC_NO_SHA512
-/****************************************************************************
+/******************************************************************************
  *
  * ECDSA-SHA2-512 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 XMLSEC_GNUTLS_SIGNATURE_KLASS(EcdsaSha512)
 
 /**
- * xmlSecGnuTLSTransformEcdsaSha512GetKlass:
- *
- * The ECDSA-SHA2-512 signature transform klass.
- *
- * Returns: ECDSA-SHA2-512 signature transform klass.
+ * @brief The ECDSA-SHA2-512 signature transform klass.
+ * @return ECDSA-SHA2-512 signature transform klass.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformEcdsaSha512GetKlass(void) {
@@ -1491,76 +1469,64 @@ xmlSecGnuTLSTransformEcdsaSha512GetKlass(void) {
 
 
 #ifndef XMLSEC_NO_SHA3
-/****************************************************************************
+/******************************************************************************
  *
  * ECDSA-SHA3-224 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 XMLSEC_GNUTLS_SIGNATURE_KLASS(EcdsaSha3_224)
 
 /**
- * xmlSecGnuTLSTransformEcdsaSha3_224GetKlass:
- *
- * The ECDSA-SHA3-224 signature transform klass.
- *
- * Returns: ECDSA-SHA3-224 signature transform klass.
+ * @brief The ECDSA-SHA3-224 signature transform klass.
+ * @return ECDSA-SHA3-224 signature transform klass.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformEcdsaSha3_224GetKlass(void) {
     return(&xmlSecGnuTLSEcdsaSha3_224Klass);
 }
 
-/****************************************************************************
+/******************************************************************************
  *
  * ECDSA-SHA3-256 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 XMLSEC_GNUTLS_SIGNATURE_KLASS(EcdsaSha3_256)
 
 /**
- * xmlSecGnuTLSTransformEcdsaSha3_256GetKlass:
- *
- * The ECDSA-SHA3-256 signature transform klass.
- *
- * Returns: ECDSA-SHA3-256 signature transform klass.
+ * @brief The ECDSA-SHA3-256 signature transform klass.
+ * @return ECDSA-SHA3-256 signature transform klass.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformEcdsaSha3_256GetKlass(void) {
     return(&xmlSecGnuTLSEcdsaSha3_256Klass);
 }
 
-/****************************************************************************
+/******************************************************************************
  *
  * ECDSA-SHA3-384 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 XMLSEC_GNUTLS_SIGNATURE_KLASS(EcdsaSha3_384)
 
 /**
- * xmlSecGnuTLSTransformEcdsaSha3_384GetKlass:
- *
- * The ECDSA-SHA3-384 signature transform klass.
- *
- * Returns: ECDSA-SHA3-384 signature transform klass.
+ * @brief The ECDSA-SHA3-384 signature transform klass.
+ * @return ECDSA-SHA3-384 signature transform klass.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformEcdsaSha3_384GetKlass(void) {
     return(&xmlSecGnuTLSEcdsaSha3_384Klass);
 }
 
-/****************************************************************************
+/******************************************************************************
  *
  * ECDSA-SHA3-512 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 XMLSEC_GNUTLS_SIGNATURE_KLASS(EcdsaSha3_512)
 
 /**
- * xmlSecGnuTLSTransformEcdsaSha3_512GetKlass:
- *
- * The ECDSA-SHA3-512 signature transform klass.
- *
- * Returns: ECDSA-SHA3-512 signature transform klass.
+ * @brief The ECDSA-SHA3-512 signature transform klass.
+ * @return ECDSA-SHA3-512 signature transform klass.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformEcdsaSha3_512GetKlass(void) {
@@ -1573,22 +1539,20 @@ xmlSecGnuTLSTransformEcdsaSha3_512GetKlass(void) {
 
 
 
-/********************************* GOST 2001 *******************************/
+/****************************************************************************** GOST 2001  *****************************************************************************/
 #ifndef XMLSEC_NO_GOST
 
-/****************************************************************************
+/******************************************************************************
  *
  * GOST2001 GOSTR3411_94 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 XMLSEC_GNUTLS_SIGNATURE_KLASS(Gost2001GostR3411_94)
 
 /**
- * xmlSecGnuTLSTransformGost2001GostR3411_94GetKlass:
- *
- * The GOST2001 GOSTR3411_94 signature transform klass.
- *
- * Returns: GOST2001 GOSTR3411_94 signature transform klass.
+ * @brief GOST2001 GOSTR3411_94 signature transform klass.
+ * @details The GOST2001 GOSTR3411_94 signature transform klass.
+ * @return GOST2001 GOSTR3411_94 signature transform klass.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformGost2001GostR3411_94GetKlass(void) {
@@ -1598,41 +1562,37 @@ xmlSecGnuTLSTransformGost2001GostR3411_94GetKlass(void) {
 #endif /* XMLSEC_NO_GOST */
 
 
-/********************************* GOST 2012 *******************************/
+/****************************************************************************** GOST 2012  *****************************************************************************/
 #ifndef XMLSEC_NO_GOST2012
 
-/****************************************************************************
+/******************************************************************************
  *
  * GOST R 34.10-2012 - GOST R 34.11-2012 256 bit signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 XMLSEC_GNUTLS_SIGNATURE_KLASS(GostR3410_2012GostR3411_2012_256)
 
 /**
- * xmlSecGnuTLSTransformGostR3410_2012GostR3411_2012_256GetKlass:
- *
- * The GOST R 34.10-2012 - GOST R 34.11-2012 256 bit  signature transform klass.
- *
- * Returns: GOST R 34.10-2012 - GOST R 34.11-2012 256 bit  signature transform klass.
+ * @brief GOST R 34.10-2012 signature klass (256 bit).
+ * @details The GOST R 34.10-2012 - GOST R 34.11-2012 256 bit signature transform klass.
+ * @return GOST R 34.10-2012 - GOST R 34.11-2012 256 bit signature transform klass.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformGostR3410_2012GostR3411_2012_256GetKlass(void) {
     return(&xmlSecGnuTLSGostR3410_2012GostR3411_2012_256Klass);
 }
 
-/****************************************************************************
+/******************************************************************************
  *
  * GOST R 34.10-2012 - GOST R 34.11-2012 512 bit signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 XMLSEC_GNUTLS_SIGNATURE_KLASS(GostR3410_2012GostR3411_2012_512)
 
 /**
- * xmlSecGnuTLSTransformGostR3410_2012GostR3411_2012_512GetKlass:
- *
- * The GOST R 34.10-2012 - GOST R 34.11-2012 512 bit  signature transform klass.
- *
- * Returns: GOST R 34.10-2012 - GOST R 34.11-2012 512 bit  signature transform klass.
+ * @brief GOST R 34.10-2012 signature klass (512 bit).
+ * @details The GOST R 34.10-2012 - GOST R 34.11-2012 512 bit signature transform klass.
+ * @return GOST R 34.10-2012 - GOST R 34.11-2012 512 bit signature transform klass.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformGostR3410_2012GostR3411_2012_512GetKlass(void) {
@@ -1643,25 +1603,22 @@ xmlSecGnuTLSTransformGostR3410_2012GostR3411_2012_512GetKlass(void) {
 #endif /* XMLSEC_NO_GOST2012 */
 
 
-/********************************* RSA *******************************/
+/****************************************************************************** RSA  *****************************************************************************/
 
 #ifndef XMLSEC_NO_RSA
 
 #ifndef XMLSEC_NO_SHA1
-/****************************************************************************
+/******************************************************************************
  *
  * RSA-SHA1 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 
 XMLSEC_GNUTLS_SIGNATURE_KLASS(RsaSha1)
 
 /**
- * xmlSecGnuTLSTransformRsaSha1GetKlass:
- *
- * The RSA-SHA1 signature transform klass.
- *
- * Returns: RSA-SHA1 signature transform klass.
+ * @brief The RSA-SHA1 signature transform klass.
+ * @return RSA-SHA1 signature transform klass.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformRsaSha1GetKlass(void) {
@@ -1670,20 +1627,17 @@ xmlSecGnuTLSTransformRsaSha1GetKlass(void) {
 #endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_SHA224
-/****************************************************************************
+/******************************************************************************
  *
  * RSA-SHA2-224 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 
 XMLSEC_GNUTLS_SIGNATURE_KLASS(RsaSha224)
 
 /**
- * xmlSecGnuTLSTransformRsaSha224GetKlass:
- *
- * The RSA-SHA2-224 signature transform klass.
- *
- * Returns: RSA-SHA2-224 signature transform klass.
+ * @brief The RSA-SHA2-224 signature transform klass.
+ * @return RSA-SHA2-224 signature transform klass.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformRsaSha224GetKlass(void) {
@@ -1692,20 +1646,17 @@ xmlSecGnuTLSTransformRsaSha224GetKlass(void) {
 #endif /* XMLSEC_NO_SHA224 */
 
 #ifndef XMLSEC_NO_SHA256
-/****************************************************************************
+/******************************************************************************
  *
  * RSA-SHA2-256 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 
 XMLSEC_GNUTLS_SIGNATURE_KLASS(RsaSha256)
 
 /**
- * xmlSecGnuTLSTransformRsaSha256GetKlass:
- *
- * The RSA-SHA2-256 signature transform klass.
- *
- * Returns: RSA-SHA2-256 signature transform klass.
+ * @brief The RSA-SHA2-256 signature transform klass.
+ * @return RSA-SHA2-256 signature transform klass.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformRsaSha256GetKlass(void) {
@@ -1715,20 +1666,17 @@ xmlSecGnuTLSTransformRsaSha256GetKlass(void) {
 
 
 #ifndef XMLSEC_NO_SHA384
-/****************************************************************************
+/******************************************************************************
  *
  * RSA-SHA2-384 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 
 XMLSEC_GNUTLS_SIGNATURE_KLASS(RsaSha384)
 
 /**
- * xmlSecGnuTLSTransformRsaSha384GetKlass:
- *
- * The RSA-SHA2-384 signature transform klass.
- *
- * Returns: RSA-SHA2-384 signature transform klass.
+ * @brief The RSA-SHA2-384 signature transform klass.
+ * @return RSA-SHA2-384 signature transform klass.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformRsaSha384GetKlass(void) {
@@ -1738,20 +1686,17 @@ xmlSecGnuTLSTransformRsaSha384GetKlass(void) {
 
 
 #ifndef XMLSEC_NO_SHA512
-/****************************************************************************
+/******************************************************************************
  *
  * RSA-SHA2-512 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 
 XMLSEC_GNUTLS_SIGNATURE_KLASS(RsaSha512)
 
 /**
- * xmlSecGnuTLSTransformRsaSha512GetKlass:
- *
- * The RSA-SHA2-512 signature transform klass.
- *
- * Returns: RSA-SHA2-512 signature transform klass.
+ * @brief The RSA-SHA2-512 signature transform klass.
+ * @return RSA-SHA2-512 signature transform klass.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformRsaSha512GetKlass(void) {
@@ -1762,20 +1707,17 @@ xmlSecGnuTLSTransformRsaSha512GetKlass(void) {
 
 
 #ifndef XMLSEC_NO_SHA256
-/****************************************************************************
+/******************************************************************************
  *
  * RSA-PSS-SHA2-256 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 
 XMLSEC_GNUTLS_SIGNATURE_KLASS(RsaPssSha256)
 
 /**
- * xmlSecGnuTLSTransformRsaPssSha256GetKlass:
- *
- * The RSA-PSS-SHA2-256 signature transform klass.
- *
- * Returns: RSA-PSS-SHA2-256 signature transform klass.
+ * @brief The RSA-PSS-SHA2-256 signature transform klass.
+ * @return RSA-PSS-SHA2-256 signature transform klass.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformRsaPssSha256GetKlass(void) {
@@ -1785,20 +1727,17 @@ xmlSecGnuTLSTransformRsaPssSha256GetKlass(void) {
 
 
 #ifndef XMLSEC_NO_SHA384
-/****************************************************************************
+/******************************************************************************
  *
  * RSA-PSS-SHA2-384 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 
 XMLSEC_GNUTLS_SIGNATURE_KLASS(RsaPssSha384)
 
 /**
- * xmlSecGnuTLSTransformRsaPssSha384GetKlass:
- *
- * The RSA-PSS-SHA2-384 signature transform klass.
- *
- * Returns: RSA-PSS-SHA2-384 signature transform klass.
+ * @brief The RSA-PSS-SHA2-384 signature transform klass.
+ * @return RSA-PSS-SHA2-384 signature transform klass.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformRsaPssSha384GetKlass(void) {
@@ -1808,20 +1747,17 @@ xmlSecGnuTLSTransformRsaPssSha384GetKlass(void) {
 
 
 #ifndef XMLSEC_NO_SHA512
-/****************************************************************************
+/******************************************************************************
  *
  * RSA-PSS-SHA2-512 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 
 XMLSEC_GNUTLS_SIGNATURE_KLASS(RsaPssSha512)
 
 /**
- * xmlSecGnuTLSTransformRsaPssSha512GetKlass:
- *
- * The RSA-PSS-SHA2-512 signature transform klass.
- *
- * Returns: RSA-PSS-SHA2-512 signature transform klass.
+ * @brief The RSA-PSS-SHA2-512 signature transform klass.
+ * @return RSA-PSS-SHA2-512 signature transform klass.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformRsaPssSha512GetKlass(void) {
@@ -1832,27 +1768,24 @@ xmlSecGnuTLSTransformRsaPssSha512GetKlass(void) {
 #endif /* XMLSEC_NO_RSA */
 
 
-/********************************************************************
+/******************************************************************************
  *
  * ML-DSA signatures
  *
- *******************************************************************/
+  *****************************************************************************/
 #ifndef XMLSEC_NO_MLDSA
 
-/****************************************************************************
+/******************************************************************************
  *
  * ML-DSA-44 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 
 XMLSEC_GNUTLS_SIGNATURE_KLASS(MLDSA44)
 
 /**
- * xmlSecGnuTLSTransformMLDSA44GetKlass:
- *
- * The ML-DSA-44 signature transform klass.
- *
- * Returns: ML-DSA-44 signature transform klass.
+ * @brief The ML-DSA-44 signature transform klass.
+ * @return ML-DSA-44 signature transform klass.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformMLDSA44GetKlass(void) {
@@ -1860,20 +1793,17 @@ xmlSecGnuTLSTransformMLDSA44GetKlass(void) {
 }
 
 
-/****************************************************************************
+/******************************************************************************
  *
  * ML-DSA-65 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 
 XMLSEC_GNUTLS_SIGNATURE_KLASS(MLDSA65)
 
 /**
- * xmlSecGnuTLSTransformMLDSA65GetKlass:
- *
- * The ML-DSA-65 signature transform klass.
- *
- * Returns: ML-DSA-65 signature transform klass.
+ * @brief The ML-DSA-65 signature transform klass.
+ * @return ML-DSA-65 signature transform klass.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformMLDSA65GetKlass(void) {
@@ -1881,20 +1811,17 @@ xmlSecGnuTLSTransformMLDSA65GetKlass(void) {
 }
 
 
-/****************************************************************************
+/******************************************************************************
  *
  * ML-DSA-87 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 
 XMLSEC_GNUTLS_SIGNATURE_KLASS(MLDSA87)
 
 /**
- * xmlSecGnuTLSTransformMLDSA87GetKlass:
- *
- * The ML-DSA-87 signature transform klass.
- *
- * Returns: ML-DSA-87 signature transform klass.
+ * @brief The ML-DSA-87 signature transform klass.
+ * @return ML-DSA-87 signature transform klass.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformMLDSA87GetKlass(void) {
@@ -1904,27 +1831,24 @@ xmlSecGnuTLSTransformMLDSA87GetKlass(void) {
 #endif /* XMLSEC_NO_MLDSA */
 
 
-/********************************************************************
+/******************************************************************************
  *
  * EdDSA signatures
  *
- *******************************************************************/
+  *****************************************************************************/
 #ifndef XMLSEC_NO_EDDSA
 
-/****************************************************************************
+/******************************************************************************
  *
  * EdDSA-Ed25519 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 
 XMLSEC_GNUTLS_SIGNATURE_KLASS(EdDSAEd25519)
 
 /**
- * xmlSecGnuTLSTransformEdDSAEd25519GetKlass:
- *
- * The EdDSA-Ed25519 signature transform klass.
- *
- * Returns: EdDSA-Ed25519 signature transform klass.
+ * @brief The EdDSA-Ed25519 signature transform klass.
+ * @return EdDSA-Ed25519 signature transform klass.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformEdDSAEd25519GetKlass(void) {
@@ -1932,20 +1856,17 @@ xmlSecGnuTLSTransformEdDSAEd25519GetKlass(void) {
 }
 
 
-/****************************************************************************
+/******************************************************************************
  *
  * EdDSA-Ed448 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 
 XMLSEC_GNUTLS_SIGNATURE_KLASS(EdDSAEd448)
 
 /**
- * xmlSecGnuTLSTransformEdDSAEd448GetKlass:
- *
- * The EdDSA-Ed448 signature transform klass.
- *
- * Returns: EdDSA-Ed448 signature transform klass.
+ * @brief The EdDSA-Ed448 signature transform klass.
+ * @return EdDSA-Ed448 signature transform klass.
  */
 xmlSecTransformId
 xmlSecGnuTLSTransformEdDSAEd448GetKlass(void) {

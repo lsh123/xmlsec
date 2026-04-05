@@ -9,6 +9,13 @@
 #ifndef __XMLSEC_MSCNG_CERTKEYS_H__
 #define __XMLSEC_MSCNG_CERTKEYS_H__
 
+/**
+ * @defgroup xmlsec_mscng_certkeys MsCng Certificate Keys
+ * @ingroup xmlsec_mscng
+ * @brief Certificate-based key handling for the MsCng back-end.
+ * @{
+ */
+
 #include <xmlsec/exports.h>
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
@@ -30,5 +37,7 @@ XMLSEC_CRYPTO_EXPORT NCRYPT_KEY_HANDLE  xmlSecMSCngKeyDataGetPrivKey    (xmlSecK
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
+
+/** @} */ /** xmlsec_mscng_certkeys */
 
 #endif /* __XMLSEC_MSCNG_CERTKEYS_H__ */

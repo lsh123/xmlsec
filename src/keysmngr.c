@@ -8,10 +8,8 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:keysmngr
- * @Short_description: Keys manager object functions.
- * @Stability: Stable
- *
+ * @addtogroup xmlsec_core_keysmngr
+ * @brief Keys manager object functions.
  */
 #include "globals.h"
 
@@ -35,18 +33,17 @@
 
 #include "cast_helpers.h"
 
-/****************************************************************************
+/******************************************************************************
  *
  * Keys Manager
  *
- ***************************************************************************/
+  *****************************************************************************/
 /**
- * xmlSecKeysMngrCreate:
- *
- * Creates new keys manager. Caller is responsible for freeing it with
+ * @brief Creates a new keys manager.
+ * @details Creates new keys manager. Caller is responsible for freeing it with
  * #xmlSecKeysMngrDestroy function.
  *
- * Returns: the pointer to newly allocated keys manager or NULL if
+ * @return the pointer to newly allocated keys manager or NULL if
  * an error occurs.
  */
 xmlSecKeysMngrPtr
@@ -72,10 +69,9 @@ xmlSecKeysMngrCreate(void) {
 }
 
 /**
- * xmlSecKeysMngrDestroy:
- * @mngr:               the pointer to keys manager.
- *
- * Destroys keys manager created with #xmlSecKeysMngrCreate function.
+ * @brief Destroys a keys manager.
+ * @details Destroys keys manager created with #xmlSecKeysMngrCreate function.
+ * @param mngr the pointer to keys manager.
  */
 void
 xmlSecKeysMngrDestroy(xmlSecKeysMngrPtr mngr) {
@@ -94,15 +90,14 @@ xmlSecKeysMngrDestroy(xmlSecKeysMngrPtr mngr) {
 }
 
 /**
- * xmlSecKeysMngrFindKey:
- * @mngr:               the pointer to keys manager.
- * @name:               the desired key name.
- * @keyInfoCtx:         the pointer to &lt;dsig:KeyInfo/&gt; node processing context.
- *
- * Lookups key in the keys manager keys store. The caller is responsible
+ * @brief Looks up a key in the keys manager keys store.
+ * @details Lookups key in the keys manager keys store. The caller is responsible
  * for destroying the returned key using #xmlSecKeyDestroy method.
+ * @param mngr the pointer to keys manager.
+ * @param name the desired key name.
+ * @param keyInfoCtx the pointer to &lt;dsig:KeyInfo/&gt; node processing context.
  *
- * Returns: the pointer to a key or NULL if key is not found or an error occurs.
+ * @return the pointer to a key or NULL if key is not found or an error occurs.
  */
 xmlSecKeyPtr
 xmlSecKeysMngrFindKey(xmlSecKeysMngrPtr mngr, const xmlChar* name, xmlSecKeyInfoCtxPtr keyInfoCtx) {
@@ -121,15 +116,14 @@ xmlSecKeysMngrFindKey(xmlSecKeysMngrPtr mngr, const xmlChar* name, xmlSecKeyInfo
 }
 
 /**
- * xmlSecKeysMngrFindKeyFromX509Data:
- * @mngr:               the pointer to keys manager.
- * @x509Data:           the X509 data to use for searching the keys.
- * @keyInfoCtx:         the pointer to &lt;dsig:KeyInfo/&gt; node processing context.
- *
- * Lookups key in the keys manager keys store. The caller is responsible
+ * @brief Looks up a key by X.509 data in the keys manager keys store.
+ * @details Lookups key in the keys manager keys store. The caller is responsible
  * for destroying the returned key using #xmlSecKeyDestroy method.
+ * @param mngr the pointer to keys manager.
+ * @param x509Data the X509 data to use for searching the keys.
+ * @param keyInfoCtx the pointer to &lt;dsig:KeyInfo/&gt; node processing context.
  *
- * Returns: the pointer to a key or NULL if key is not found or an error occurs.
+ * @return the pointer to a key or NULL if key is not found or an error occurs.
  */
 xmlSecKeyPtr
 xmlSecKeysMngrFindKeyFromX509Data(xmlSecKeysMngrPtr mngr, xmlSecKeyX509DataValuePtr x509Data, xmlSecKeyInfoCtxPtr keyInfoCtx) {
@@ -150,13 +144,11 @@ xmlSecKeysMngrFindKeyFromX509Data(xmlSecKeysMngrPtr mngr, xmlSecKeyX509DataValue
 
 
 /**
- * xmlSecKeysMngrAdoptKeysStore:
- * @mngr:               the pointer to keys manager.
- * @store:              the pointer to keys store.
+ * @brief Adopts keys store in the keys manager @p mngr.
+ * @param mngr the pointer to keys manager.
+ * @param store the pointer to keys store.
  *
- * Adopts keys store in the keys manager @mngr.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecKeysMngrAdoptKeysStore(xmlSecKeysMngrPtr mngr, xmlSecKeyStorePtr store) {
@@ -172,12 +164,10 @@ xmlSecKeysMngrAdoptKeysStore(xmlSecKeysMngrPtr mngr, xmlSecKeyStorePtr store) {
 }
 
 /**
- * xmlSecKeysMngrGetKeysStore:
- * @mngr:               the pointer to keys manager.
+ * @brief Gets the keys store.
+ * @param mngr the pointer to keys manager.
  *
- * Gets the keys store.
- *
- * Returns: the keys store in the keys manager @mngr or NULL if
+ * @return the keys store in the keys manager @p mngr or NULL if
  * there is no store or an error occurs.
  */
 xmlSecKeyStorePtr
@@ -188,13 +178,11 @@ xmlSecKeysMngrGetKeysStore(xmlSecKeysMngrPtr mngr) {
 }
 
 /**
- * xmlSecKeysMngrAdoptDataStore:
- * @mngr:               the pointer to keys manager.
- * @store:              the pointer to data store.
+ * @brief Adopts data store in the keys manager.
+ * @param mngr the pointer to keys manager.
+ * @param store the pointer to data store.
  *
- * Adopts data store in the keys manager.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecKeysMngrAdoptDataStore(xmlSecKeysMngrPtr mngr, xmlSecKeyDataStorePtr store) {
@@ -217,13 +205,12 @@ xmlSecKeysMngrAdoptDataStore(xmlSecKeysMngrPtr mngr, xmlSecKeyDataStorePtr store
 
 
 /**
- * xmlSecKeysMngrGetDataStore:
- * @mngr:               the pointer to keys manager.
- * @id:                 the desired data store klass.
+ * @brief Looks up a data store by klass in the keys manager.
+ * @details Lookups the data store of given klass @p id in the keys manager.
+ * @param mngr the pointer to keys manager.
+ * @param id the desired data store klass.
  *
- * Lookups the data store of given klass @id in the keys manager.
- *
- * Returns: pointer to data store or NULL if it is not found or an error
+ * @return pointer to data store or NULL if it is not found or an error
  * occurs.
  */
 xmlSecKeyDataStorePtr
@@ -245,19 +232,18 @@ xmlSecKeysMngrGetDataStore(xmlSecKeysMngrPtr mngr, xmlSecKeyDataStoreId id) {
     return(NULL);
 }
 
-/**************************************************************************
+/******************************************************************************
  *
  * xmlSecKeyStore functions
  *
- *************************************************************************/
+  *****************************************************************************/
 /**
- * xmlSecKeyStoreCreate:
- * @id:                 the key store klass.
- *
- * Creates new store of the specified klass @klass. Caller is responsible
+ * @brief Creates a new keys store of the specified klass.
+ * @details Creates new store of the specified klass @p klass. Caller is responsible
  * for freeing the returned store by calling #xmlSecKeyStoreDestroy function.
+ * @param id the key store klass.
  *
- * Returns: the pointer to newly allocated keys store or NULL if an error occurs.
+ * @return the pointer to newly allocated keys store or NULL if an error occurs.
  */
 xmlSecKeyStorePtr
 xmlSecKeyStoreCreate(xmlSecKeyStoreId id)  {
@@ -291,10 +277,9 @@ xmlSecKeyStoreCreate(xmlSecKeyStoreId id)  {
 }
 
 /**
- * xmlSecKeyStoreDestroy:
- * @store:              the pointer to keys store.
- *
- * Destroys the store created with #xmlSecKeyStoreCreate function.
+ * @brief Destroys a keys store.
+ * @details Destroys the store created with #xmlSecKeyStoreCreate function.
+ * @param store the pointer to keys store.
  */
 void
 xmlSecKeyStoreDestroy(xmlSecKeyStorePtr store) {
@@ -309,15 +294,14 @@ xmlSecKeyStoreDestroy(xmlSecKeyStorePtr store) {
 }
 
 /**
- * xmlSecKeyStoreFindKey:
- * @store:              the pointer to keys store.
- * @name:               the desired key name.
- * @keyInfoCtx:         the pointer to &lt;dsig:KeyInfo/&gt; node processing context.
- *
- * Lookups key in the store. The caller is responsible for destroying
+ * @brief Looks up a key in the store by name.
+ * @details Lookups key in the store. The caller is responsible for destroying
  * the returned key using #xmlSecKeyDestroy method.
+ * @param store the pointer to keys store.
+ * @param name the desired key name.
+ * @param keyInfoCtx the pointer to &lt;dsig:KeyInfo/&gt; node processing context.
  *
- * Returns: the pointer to a key or NULL if key is not found or an error occurs.
+ * @return the pointer to a key or NULL if key is not found or an error occurs.
  */
 xmlSecKeyPtr
 xmlSecKeyStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKeyInfoCtxPtr keyInfoCtx) {
@@ -331,15 +315,14 @@ xmlSecKeyStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKeyInf
 }
 
 /**
- * xmlSecKeyStoreFindKeyFromX509Data:
- * @store:              the pointer to keys store.
- * @x509Data:           the X509 data to use for search.
- * @keyInfoCtx:         the pointer to &lt;dsig:KeyInfo/&gt; node processing context.
- *
- * Lookups key in the store. The caller is responsible for destroying
+ * @brief Looks up a key by X.509 data in the store.
+ * @details Lookups key in the store. The caller is responsible for destroying
  * the returned key using #xmlSecKeyDestroy method.
+ * @param store the pointer to keys store.
+ * @param x509Data the X509 data to use for search.
+ * @param keyInfoCtx the pointer to &lt;dsig:KeyInfo/&gt; node processing context.
  *
- * Returns: the pointer to a key or NULL if key is not found or an error occurs.
+ * @return the pointer to a key or NULL if key is not found or an error occurs.
  */
 xmlSecKeyPtr
 xmlSecKeyStoreFindKeyFromX509Data(xmlSecKeyStorePtr store, xmlSecKeyX509DataValuePtr x509Data, xmlSecKeyInfoCtxPtr keyInfoCtx) {
@@ -353,13 +336,13 @@ xmlSecKeyStoreFindKeyFromX509Data(xmlSecKeyStorePtr store, xmlSecKeyX509DataValu
     return(store->id->findKeyFromX509Data(store, x509Data, keyInfoCtx));
 }
 
-/****************************************************************************
+/******************************************************************************
  *
  * Simple Keys Store
  *
  * xmlSecKeyStore + xmlSecPtrList (keys list)
  *
- ***************************************************************************/
+  *****************************************************************************/
 XMLSEC_KEY_STORE_DECLARE(SimpleKeysStore, xmlSecPtrList)
 #define xmlSecSimpleKeysStoreSize XMLSEC_KEY_STORE_SIZE(SimpleKeysStore)
 
@@ -387,11 +370,9 @@ static xmlSecKeyStoreKlass xmlSecSimpleKeysStoreKlass = {
 };
 
 /**
- * xmlSecSimpleKeysStoreGetKlass:
+ * @brief The simple list based keys store klass.
  *
- * The simple list based keys store klass.
- *
- * Returns: simple list based keys store klass.
+ * @return simple list based keys store klass.
  */
 xmlSecKeyStoreId
 xmlSecSimpleKeysStoreGetKlass(void) {
@@ -399,13 +380,11 @@ xmlSecSimpleKeysStoreGetKlass(void) {
 }
 
 /**
- * xmlSecSimpleKeysStoreAdoptKey:
- * @store:              the pointer to simple keys store.
- * @key:                the pointer to key.
+ * @brief Adds @p key to the @p store.
+ * @param store the pointer to simple keys store.
+ * @param key the pointer to key.
  *
- * Adds @key to the @store.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecSimpleKeysStoreAdoptKey(xmlSecKeyStorePtr store, xmlSecKeyPtr key) {
@@ -429,14 +408,12 @@ xmlSecSimpleKeysStoreAdoptKey(xmlSecKeyStorePtr store, xmlSecKeyPtr key) {
 }
 
 /**
- * xmlSecSimpleKeysStoreLoad:
- * @store:              the pointer to simple keys store.
- * @uri:                the filename.
- * @keysMngr:           the pointer to associated keys manager.
+ * @brief Reads keys from an XML file.
+ * @param store the pointer to simple keys store.
+ * @param uri the filename.
+ * @param keysMngr the pointer to associated keys manager.
  *
- * Reads keys from an XML file.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecSimpleKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
@@ -476,15 +453,14 @@ xmlSecSimpleKeysStoreEnableAllKeyData(xmlSecKeyInfoCtxPtr keyInfoCtx) {
 }
 
 /**
- * xmlSecSimpleKeysStoreLoad_ex:
- * @store:              the pointer to simple keys store.
- * @uri:                the filename.
- * @keysMngr:           the pointer to associated keys manager.
- * @adoptKeyFunc:       the callback to add the key to keys manager.
+ * @brief Reads keys from an XML file using a custom adopt callback.
+ * @details Reads keys from an XML file.
+ * @param store the pointer to simple keys store.
+ * @param uri the filename.
+ * @param keysMngr the pointer to associated keys manager.
+ * @param adoptKeyFunc the callback to add the key to keys manager.
  *
- * Reads keys from an XML file.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecSimpleKeysStoreLoad_ex(xmlSecKeyStorePtr store, const char *uri,
@@ -590,14 +566,12 @@ xmlSecSimpleKeysStoreLoad_ex(xmlSecKeyStorePtr store, const char *uri,
 }
 
 /**
- * xmlSecSimpleKeysStoreSave:
- * @store:              the pointer to simple keys store.
- * @filename:           the filename.
- * @type:               the saved keys type (public, private, ...).
+ * @brief Writes keys from @p store to an XML file.
+ * @param store the pointer to simple keys store.
+ * @param filename the filename.
+ * @param type the saved keys type (public, private, ...).
  *
- * Writes keys from @store to an XML file.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecSimpleKeysStoreSave(xmlSecKeyStorePtr store, const char *filename, xmlSecKeyDataType type) {
@@ -721,12 +695,10 @@ xmlSecSimpleKeysStoreSave(xmlSecKeyStorePtr store, const char *filename, xmlSecK
 }
 
 /**
- * xmlSecSimpleKeysStoreGetKeys:
- * @store:              the pointer to simple keys store.
+ * @brief Gets list of keys from simple keys store.
+ * @param store the pointer to simple keys store.
  *
- * Gets list of keys from simple keys store.
- *
- * Returns: pointer to the list of keys stored in the keys store or NULL
+ * @return pointer to the list of keys stored in the keys store or NULL
  * if an error occurs.
  */
 xmlSecPtrListPtr

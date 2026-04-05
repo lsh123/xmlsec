@@ -1,8 +1,6 @@
 /*
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * Base64 encode/decode transform and utility functions.
- *
  * This is free software; see the Copyright file in the source
  * distribution for precise wording.
  *
@@ -10,6 +8,14 @@
  */
 #ifndef __XMLSEC_BASE64_H__
 #define __XMLSEC_BASE64_H__
+
+/**
+ * @brief Base64 encoding/decoding functions and transform implementation.
+ * @defgroup xmlsec_core_base64 Base64 Encode/Decode
+ * @ingroup xmlsec_core
+ *
+ * @{
+ */
 
 #include <libxml/tree.h>
 
@@ -21,18 +27,18 @@
 extern "C" {
 #endif /* __cplusplus */
 
+
 /**
- * XMLSEC_BASE64_LINESIZE:
- *
- * The default maximum base64 encoded line size.
+ * @brief The default maximum base64 encoded line size.
  */
 #define XMLSEC_BASE64_LINESIZE                          64
 
 XMLSEC_EXPORT int               xmlSecBase64GetDefaultLineSize  (void);
 XMLSEC_EXPORT void              xmlSecBase64SetDefaultLineSize  (int columns);
 
-
-/* Base64 Context */
+/**
+ * @brief Base64 Context
+ */
 typedef struct _xmlSecBase64Ctx                                 xmlSecBase64Ctx,
                                                                 *xmlSecBase64CtxPtr;
 
@@ -49,7 +55,6 @@ XMLSEC_EXPORT int               xmlSecBase64CtxUpdate_ex        (xmlSecBase64Ctx
                                                                  xmlSecByte* out,
                                                                  xmlSecSize outSize,
                                                                  xmlSecSize* outWritten);
-
 XMLSEC_EXPORT int                xmlSecBase64CtxFinal_ex        (xmlSecBase64CtxPtr ctx,
                                                                  xmlSecByte* out,
                                                                  xmlSecSize outSize,
@@ -69,5 +74,7 @@ XMLSEC_EXPORT int                xmlSecBase64DecodeInPlace      (xmlChar* str,
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
+
+/** @} */  /* xmlsec_core_base64 */
 
 #endif /* __XMLSEC_BASE64_H__ */

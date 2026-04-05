@@ -1,6 +1,5 @@
-/*
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
- *
  *
  * This is free software; see the Copyright file in the source
  * distribution for precise wording.
@@ -8,10 +7,8 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:dl
- * @Short_description: Dynamic crypto-engine library loading functions.
- * @Stability: Stable
- *
+ * @addtogroup xmlsec_core_dl
+ * @brief Dynamic crypto-engine library loading functions.
  */
 #include "globals.h"
 
@@ -47,11 +44,11 @@
 
 #include "cast_helpers.h"
 
-/***********************************************************************
+/******************************************************************************
  *
  * loaded libraries list
  *
- **********************************************************************/
+  *****************************************************************************/
 typedef struct _xmlSecCryptoDLLibrary                                   xmlSecCryptoDLLibrary,
                                                                         *xmlSecCryptoDLLibraryPtr;
 struct _xmlSecCryptoDLLibrary {
@@ -339,17 +336,15 @@ xmlSecCryptoDLLibrariesListFindByName(xmlSecPtrListPtr list, const xmlChar* name
  *
  * Dynamic load functions
  *
- *****************************************************************************/
+  *****************************************************************************/
 static xmlSecCryptoDLFunctionsPtr gXmlSecCryptoDLFunctions = NULL;
 static xmlSecPtrList gXmlSecCryptoDLLibraries;
 
 /**
- * xmlSecCryptoDLInit:
- *
- * Initializes dynamic loading engine. This is an internal function
+ * @brief Initializes the dynamic library loading engine.
+ * @details Initializes dynamic loading engine. This is an internal function
  * and should not be called by application directly.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecCryptoDLInit(void) {
@@ -376,12 +371,10 @@ xmlSecCryptoDLInit(void) {
 
 
 /**
- * xmlSecCryptoDLShutdown:
- *
- * Shutdowns dynamic loading engine. This is an internal function
+ * @brief Shuts down the dynamic library loading engine.
+ * @details Shutdowns dynamic loading engine. This is an internal function
  * and should not be called by application directly.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecCryptoDLShutdown(void) {
@@ -403,15 +396,13 @@ xmlSecCryptoDLShutdown(void) {
 }
 
 /**
- * xmlSecCryptoDLLoadLibrary:
- * @crypto:             the desired crypto library name ("openssl", "nss", ...). If NULL
- *                      then the default crypto engine will be used.
- *
- * Loads the xmlsec-$crypto library. This function is NOT thread safe,
+ * @brief Loads a crypto library.
+ * @details Loads the xmlsec-$crypto library. This function is NOT thread safe,
  * application MUST NOT call #xmlSecCryptoDLLoadLibrary, #xmlSecCryptoDLGetLibraryFunctions,
  * and #xmlSecCryptoDLUnloadLibrary functions from multiple threads.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @param crypto the desired crypto library name ("openssl", "nss", ...). If NULL
+ *                      then the default crypto engine will be used.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecCryptoDLLoadLibrary(const xmlChar* crypto) {
@@ -435,14 +426,12 @@ xmlSecCryptoDLLoadLibrary(const xmlChar* crypto) {
 }
 
 /**
- * xmlSecCryptoDLGetLibraryFunctions:
- * @crypto:             the desired crypto library name ("openssl", "nss", ...).
- *
- * Loads the xmlsec-$crypto library and gets global crypto functions/transforms/keys data/keys store
+ * @brief Loads a crypto library and returns its function table.
+ * @details Loads the xmlsec-$crypto library and gets global crypto functions/transforms/keys data/keys store
  * table. This function is NOT thread safe, application MUST NOT call #xmlSecCryptoDLLoadLibrary,
  * #xmlSecCryptoDLGetLibraryFunctions, and #xmlSecCryptoDLUnloadLibrary functions from multiple threads.
- *
- * Returns: the table or NULL if an error occurs.
+ * @param crypto the desired crypto library name ("openssl", "nss", ...).
+ * @return the table or NULL if an error occurs.
  */
 xmlSecCryptoDLFunctionsPtr
 xmlSecCryptoDLGetLibraryFunctions(const xmlChar* crypto) {
@@ -479,15 +468,13 @@ xmlSecCryptoDLGetLibraryFunctions(const xmlChar* crypto) {
 }
 
 /**
- * xmlSecCryptoDLUnloadLibrary:
- * @crypto:             the desired crypto library name ("openssl", "nss", ...).
- *
- * Unloads the xmlsec-$crypto library. All pointers to this library
+ * @brief Unloads a crypto library.
+ * @details Unloads the xmlsec-$crypto library. All pointers to this library
  * functions tables became invalid. This function is NOT thread safe,
  * application MUST NOT call #xmlSecCryptoDLLoadLibrary, #xmlSecCryptoDLGetLibraryFunctions,
  * and #xmlSecCryptoDLUnloadLibrary functions from multiple threads.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @param crypto the desired crypto library name ("openssl", "nss", ...).
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecCryptoDLUnloadLibrary(const xmlChar* crypto) {
@@ -518,12 +505,10 @@ xmlSecCryptoDLUnloadLibrary(const xmlChar* crypto) {
 }
 
 /**
- * xmlSecCryptoDLSetFunctions:
- * @functions:          the new table
- *
- * Sets global crypto functions/transforms/keys data/keys store table.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Sets global crypto function table.
+ * @details Sets global crypto functions/transforms/keys data/keys store table.
+ * @param functions the new table
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecCryptoDLSetFunctions(xmlSecCryptoDLFunctionsPtr functions) {
@@ -535,11 +520,9 @@ xmlSecCryptoDLSetFunctions(xmlSecCryptoDLFunctionsPtr functions) {
 }
 
 /**
- * xmlSecCryptoDLGetFunctions:
- *
- * Gets global crypto functions/transforms/keys data/keys store table.
- *
- * Returns: the table.
+ * @brief Gets global crypto function table.
+ * @details Gets global crypto functions/transforms/keys data/keys store table.
+ * @return the table.
  */
 xmlSecCryptoDLFunctionsPtr
 xmlSecCryptoDLGetFunctions(void) {
@@ -569,22 +552,20 @@ xmlSecCryptoDLGetFunctions(void) {
 
 
 /**
- * xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms:
- * @functions:          the functions table.
- *
- * Registers the key data and transforms klasses from @functions table in xmlsec.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Registers key data and transforms from a crypto library.
+ * @details Registers the key data and transforms klasses from @p functions table in xmlsec.
+ * @param functions the functions table.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(struct _xmlSecCryptoDLFunctions* functions) {
     xmlSecAssert2(functions != NULL, -1);
 
-    /****************************************************************************
+    /******************************************************************************
      *
      * Register keys
      *
-     ****************************************************************************/
+      *****************************************************************************/
 
     /* raw key values should not be used in production w/o understanding of the security risks */
     XMLSEC_REGISTER_DISABLED_KEY_DATA(Aes);                  // keyDataAesGetKlass
@@ -614,11 +595,11 @@ xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(struct _xmlSecCryptoDLFuncti
     XMLSEC_REGISTER_KEY_DATA(RawX509Cert);                   // keyDataRawX509CertGetKlass
 
 
-    /****************************************************************************
+    /******************************************************************************
      *
      * Register transforms
      *
-     ****************************************************************************/
+      *****************************************************************************/
     XMLSEC_REGISTER_TRANSFORM(Aes128Cbc);                           // transformAes128CbcGetKlass
     XMLSEC_REGISTER_TRANSFORM(Aes192Cbc);                           // transformAes192CbcGetKlass
     XMLSEC_REGISTER_TRANSFORM(Aes192Cbc);                           // transformAes192CbcGetKlass

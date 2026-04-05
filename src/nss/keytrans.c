@@ -9,9 +9,8 @@
  * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
 /**
- * SECTION:crypto
+ * @addtogroup xmlsec_nss_crypto
  */
-
 #include "globals.h"
 
 #include <stdlib.h>
@@ -35,11 +34,11 @@
 #include "../cast_helpers.h"
 #include "../transform_helpers.h"
 
-/*********************************************************************
+/******************************************************************************
  *
  * Key transport transforms context
  *
- ********************************************************************/
+  *****************************************************************************/
 typedef struct _xmlSecNssKeyTransportCtx       xmlSecNssKeyTransportCtx;
 typedef struct _xmlSecNssKeyTransportCtx*      xmlSecNssKeyTransportCtxPtr;
 
@@ -58,11 +57,11 @@ struct _xmlSecNssKeyTransportCtx {
 #endif /* XMLSEC_NO_RSA_OAEP */
 };
 
-/*********************************************************************
+/******************************************************************************
  *
  * Key transport transform
  *
- ********************************************************************/
+  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(NssKeyTransport, xmlSecNssKeyTransportCtx)
 #define xmlSecNssKeyTransportSize XMLSEC_TRANSFORM_SIZE(NssKeyTransport)
 
@@ -707,11 +706,8 @@ static xmlSecTransformKlass xmlSecNssRsaPkcs1Klass = {
 };
 
 /**
- * xmlSecNssTransformRsaPkcs1GetKlass:
- *
- * The RSA-PKCS1 key transport transform klass.
- *
- * Returns: RSA-PKCS1 key transport transform klass.
+ * @brief The RSA-PKCS1 key transport transform klass.
+ * @return RSA-PKCS1 key transport transform klass.
  */
 xmlSecTransformId
 xmlSecNssTransformRsaPkcs1GetKlass(void) {
@@ -753,11 +749,9 @@ static xmlSecTransformKlass xmlSecNssRsaOaepKlass = {
 };
 
 /**
- * xmlSecNssTransformRsaOaepGetKlass:
- *
- * The RSA-PKCS1 key transport transform klass (XMLEnc 1.0).
- *
- * Returns: RSA-PKCS1 key transport transform klass.
+ * @brief RSA-PKCS1 key transport klass for XMLEnc 1.0.
+ * @details The RSA-PKCS1 key transport transform klass (XMLEnc 1.0).
+ * @return RSA-PKCS1 key transport transform klass.
  */
 xmlSecTransformId
 xmlSecNssTransformRsaOaepGetKlass(void) {
@@ -792,11 +786,9 @@ static xmlSecTransformKlass xmlSecNssRsaOaepEnc11Klass = {
 };
 
 /**
- * xmlSecNssTransformRsaOaepEnc11GetKlass:
- *
- * The RSA-PKCS1 key transport transform klass (XMLEnc 1.1).
- *
- * Returns: RSA-PKCS1 key transport transform klass.
+ * @brief RSA-PKCS1 key transport klass for XMLEnc 1.1.
+ * @details The RSA-PKCS1 key transport transform klass (XMLEnc 1.1).
+ * @return RSA-PKCS1 key transport transform klass.
  */
 xmlSecTransformId
 xmlSecNssTransformRsaOaepEnc11GetKlass(void) {

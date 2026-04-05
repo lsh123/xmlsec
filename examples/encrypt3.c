@@ -17,7 +17,7 @@
  * This is free software; see the Copyright file in the source
  * distribution for precise wording.
  *
- * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2024 Aleksey Sanin <aleksey#aleksey.com>. All Rights Reserved.
  */
 #include <stdlib.h>
 #include <string.h>
@@ -145,14 +145,12 @@ main(int argc, char **argv) {
 }
 
 /**
- * load_rsa_keys:
- * @key_file:           the key filename.
- *
- * Creates simple keys manager and load RSA key from #key_file in it.
+ * @brief Creates a keys manager and loads an RSA key from a file.
+ * @details Creates simple keys manager and load RSA key from #key_file in it.
  * The caller is responsible for destroying returned keys manager using
- * @xmlSecKeysMngrDestroy.
- *
- * Returns the pointer to newly created keys manager or NULL if an error
+ * #xmlSecKeysMngrDestroy.
+ * @param key_file the key filename.
+ * @return the pointer to newly created keys manager or NULL if an error
  * occurs.
  */
 xmlSecKeysMngrPtr
@@ -207,15 +205,13 @@ load_rsa_keys(char* key_file) {
 }
 
 /**
- * encrypt_file:
- * @mngr:               the pointer to keys manager.
- * @xml_file:           the encryption template file name.
- * @key_name:           the RSA key name.
- *
- * Encrypts #xml_file using a dynamicaly created template, a session DES key
+ * @brief Encrypts an XML file using a session DES key and RSA key transport.
+ * @details Encrypts #xml_file using a dynamicaly created template, a session DES key
  * and an RSA key from keys manager.
- *
- * Returns 0 on success or a negative value if an error occurs.
+ * @param mngr the pointer to keys manager.
+ * @param xml_file the encryption template file name.
+ * @param key_name the RSA key name.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* key_name) {

@@ -8,12 +8,9 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:membuf
- * @Short_description:  Memory buffer transform functions.
- * @Stability: Stable
- *
+ * @addtogroup xmlsec_core_membuf
+ * @brief Memory buffer transform functions.
  */
-
 #include "globals.h"
 
 #include <stdlib.h>
@@ -32,13 +29,13 @@
 
 #include "cast_helpers.h"
 
-/*****************************************************************************
+/******************************************************************************
  *
  * Memory Buffer Transform
  *
  * xmlSecTransform + xmlSecBuffer
  *
- ****************************************************************************/
+  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(MemBuf, xmlSecBuffer)
 #define xmlSecMemBufSize XMLSEC_TRANSFORM_SIZE(MemBuf)
 
@@ -75,11 +72,9 @@ static xmlSecTransformKlass xmlSecTransformMemBufKlass = {
 };
 
 /**
- * xmlSecTransformMemBufGetKlass:
+ * @brief The memory buffer transform (used to store the data that go through it).
  *
- * The memory buffer transform (used to store the data that go through it).
- *
- * Returns: memory buffer transform klass.
+ * @return memory buffer transform klass.
  */
 xmlSecTransformId
 xmlSecTransformMemBufGetKlass(void) {
@@ -87,12 +82,10 @@ xmlSecTransformMemBufGetKlass(void) {
 }
 
 /**
- * xmlSecTransformMemBufGetBuffer:
- * @transform:          the pointer to memory buffer transform.
+ * @brief Gets the pointer to memory buffer transform buffer.
+ * @param transform the pointer to memory buffer transform.
  *
- * Gets the pointer to memory buffer transform buffer.
- *
- * Returns: pointer to the transform's #xmlSecBuffer.
+ * @return pointer to the transform's xmlSecBuffer.
  */
 xmlSecBufferPtr
 xmlSecTransformMemBufGetBuffer(xmlSecTransformPtr transform) {

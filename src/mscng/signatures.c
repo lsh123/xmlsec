@@ -9,9 +9,8 @@
  * Copyright (C) 2018 Miklos Vajna. All Rights Reserved.
  */
 /**
- * SECTION:crypto
+ * @addtogroup xmlsec_mscng_crypto
  */
-
 #include "globals.h"
 
 #include <string.h>
@@ -27,24 +26,24 @@
 #include "../cast_helpers.h"
 #include "private.h"
 
- /*************************************************************************
+ /******************************************************************************
   *
   * DSA EVP
   *
-  * https://www.w3.org/TR/xmldsig-core1/#sec-DSA
+  * https://www.w3.org/TR/xmldsig-core1e/#sec-DSA
   * The output of the DSA algorithm consists of a pair of integers usually referred by the pair (r, s).
   * DSA-SHA1: Integer to octet-stream conversion must be done according to the I2OSP operation defined
   *           in the RFC 3447 [PKCS1] specification with a l parameter equal to 20
   * DSA-SHA256: The pairs (2048, 256) and (3072, 256) correspond to the algorithm DSAwithSHA256
-  ************************************************************************/
+   *****************************************************************************/
 #define XMLSEC_MSCNG_SIGNATURE_DSA_SHA1_HALF_LEN              20
 #define XMLSEC_MSCNG_SIGNATURE_DSA_SHA256_HALF_LEN            (256 / 8)
 
-/**************************************************************************
+/******************************************************************************
  *
  * Internal MSCng signatures ctx
  *
- *****************************************************************************/
+  *****************************************************************************/
 typedef struct _xmlSecMSCngSignatureCtx      xmlSecMSCngSignatureCtx,
                                              *xmlSecMSCngSignatureCtxPtr;
 struct _xmlSecMSCngSignatureCtx {
@@ -65,7 +64,7 @@ struct _xmlSecMSCngSignatureCtx {
  *
  * Signature transforms
  *
- *****************************************************************************/
+  *****************************************************************************/
 XMLSEC_TRANSFORM_DECLARE(MSCngSignature, xmlSecMSCngSignatureCtx)
 #define xmlSecMSCngSignatureSize XMLSEC_TRANSFORM_SIZE(MSCngSignature)
 
@@ -799,7 +798,7 @@ xmlSecMSCngSignatureVerify(xmlSecTransformPtr transform,
             dataSize = fixedDataSize;
         }
     }
-    
+
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(dataSize, dwDataSize, goto done, xmlSecTransformGetName(transform));
     status = BCryptVerifySignature(
         pubkey,
@@ -837,7 +836,7 @@ done:
 static int
 xmlSecMSCngSignatureConvertToASN1(xmlSecMSCngSignatureCtxPtr ctx, xmlSecBufferPtr buf) {
     xmlSecByte* data;
-    xmlSecSize dataSize, halfSize; 
+    xmlSecSize dataSize, halfSize;
     CERT_ECC_SIGNATURE eccSignature;
     xmlSecByte* encodedData = NULL;
     DWORD encodedDataSize = 0;
@@ -846,13 +845,13 @@ xmlSecMSCngSignatureConvertToASN1(xmlSecMSCngSignatureCtxPtr ctx, xmlSecBufferPt
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(buf != NULL, -1);
-    
+
     /* only ECDSA signatures are supported for ASN1 */
     if (ctx->keyId != xmlSecMSCngKeyDataEcId) {
         xmlSecNotImplementedError("MSCNG only supports ASN1 signature values for ECDSA");
         return(-1);
     }
-    
+
     /* MSCng expect little-endian */
     data = xmlSecBufferGetData(buf);
     dataSize = xmlSecBufferGetSize(buf);
@@ -992,7 +991,7 @@ xmlSecMSCngSignatureSign(
 
 static int
 xmlSecMSCngSignatureStartHash(
-    xmlSecTransformPtr transform, 
+    xmlSecTransformPtr transform,
     xmlSecMSCngSignatureCtxPtr ctx)
 {
     NTSTATUS status;
@@ -1213,19 +1212,16 @@ xmlSecMSCngSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
 #ifndef XMLSEC_NO_DSA
 
 #ifndef XMLSEC_NO_SHA1
-/****************************************************************************
+/******************************************************************************
  *
  * DSA-SHA1 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 XMLSEC_MSCNG_SIGNATURE_KLASS(DsaSha1)
 
 /**
- * xmlSecMSCngTransformDsaSha1GetKlass:
- *
- * The DSA-SHA1 signature transform klass.
- *
- * Returns: DSA-SHA1 signature transform klass.
+ * @brief The DSA-SHA1 signature transform klass.
+ * @return DSA-SHA1 signature transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformDsaSha1GetKlass(void) {
@@ -1234,19 +1230,16 @@ xmlSecMSCngTransformDsaSha1GetKlass(void) {
 #endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_SHA256
-/****************************************************************************
+/******************************************************************************
  *
  * DSA-SHA2-256 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 XMLSEC_MSCNG_SIGNATURE_KLASS(DsaSha256)
 
 /**
- * xmlSecMSCngTransformDsaSha256GetKlass:
- *
- * The DSA-SHA2-256 signature transform klass.
- *
- * Returns: DSA-SHA2-256 signature transform klass.
+ * @brief The DSA-SHA2-256 signature transform klass.
+ * @return DSA-SHA2-256 signature transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformDsaSha256GetKlass(void) {
@@ -1259,19 +1252,16 @@ xmlSecMSCngTransformDsaSha256GetKlass(void) {
 #ifndef XMLSEC_NO_RSA
 
 #ifndef XMLSEC_NO_MD5
-/****************************************************************************
+/******************************************************************************
  *
  * RSA-MD5 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 XMLSEC_MSCNG_SIGNATURE_KLASS(RsaMd5)
 
 /**
- * xmlSecMSCngTransformRsaMd5GetKlass:
- *
- * The RSA-MD5 signature transform klass.
- *
- * Returns: RSA-MD5 signature transform klass.
+ * @brief The RSA-MD5 signature transform klass.
+ * @return RSA-MD5 signature transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformRsaMd5GetKlass(void) {
@@ -1280,19 +1270,16 @@ xmlSecMSCngTransformRsaMd5GetKlass(void) {
 #endif /* XMLSEC_NO_MD5 */
 
 #ifndef XMLSEC_NO_SHA1
-/****************************************************************************
+/******************************************************************************
  *
  * RSA-SHA1 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 XMLSEC_MSCNG_SIGNATURE_KLASS(RsaSha1)
 
 /**
- * xmlSecMSCngTransformRsaSha1GetKlass:
- *
- * The RSA-SHA1 signature transform klass.
- *
- * Returns: RSA-SHA1 signature transform klass.
+ * @brief The RSA-SHA1 signature transform klass.
+ * @return RSA-SHA1 signature transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformRsaSha1GetKlass(void) {
@@ -1301,19 +1288,16 @@ xmlSecMSCngTransformRsaSha1GetKlass(void) {
 #endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_SHA256
-/****************************************************************************
+/******************************************************************************
  *
  * RSA-SHA2-256 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 XMLSEC_MSCNG_SIGNATURE_KLASS(RsaSha256)
 
 /**
- * xmlSecMSCngTransformRsaSha256GetKlass:
- *
- * The RSA-SHA2-256 signature transform klass.
- *
- * Returns: RSA-SHA2-256 signature transform klass.
+ * @brief The RSA-SHA2-256 signature transform klass.
+ * @return RSA-SHA2-256 signature transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformRsaSha256GetKlass(void) {
@@ -1322,19 +1306,16 @@ xmlSecMSCngTransformRsaSha256GetKlass(void) {
 #endif /* XMLSEC_NO_SHA256 */
 
 #ifndef XMLSEC_NO_SHA384
-/****************************************************************************
+/******************************************************************************
  *
  * RSA-SHA2-384 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 XMLSEC_MSCNG_SIGNATURE_KLASS(RsaSha384)
 
 /**
- * xmlSecMSCngTransformRsaSha384GetKlass:
- *
- * The RSA-SHA2-384 signature transform klass.
- *
- * Returns: RSA-SHA2-384 signature transform klass.
+ * @brief The RSA-SHA2-384 signature transform klass.
+ * @return RSA-SHA2-384 signature transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformRsaSha384GetKlass(void) {
@@ -1343,19 +1324,16 @@ xmlSecMSCngTransformRsaSha384GetKlass(void) {
 #endif /* XMLSEC_NO_SHA384 */
 
 #ifndef XMLSEC_NO_SHA512
-/****************************************************************************
+/******************************************************************************
  *
  * RSA-SHA2-512 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 XMLSEC_MSCNG_SIGNATURE_KLASS(RsaSha512)
 
 /**
- * xmlSecMSCngTransformRsaSha512GetKlass:
- *
- * The RSA-SHA2-512 signature transform klass.
- *
- * Returns: RSA-SHA2-512 signature transform klass.
+ * @brief The RSA-SHA2-512 signature transform klass.
+ * @return RSA-SHA2-512 signature transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformRsaSha512GetKlass(void) {
@@ -1365,19 +1343,16 @@ xmlSecMSCngTransformRsaSha512GetKlass(void) {
 
 
 #ifndef XMLSEC_NO_SHA1
-/****************************************************************************
+/******************************************************************************
  *
  * RSA-PSS-SHA1 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 XMLSEC_MSCNG_SIGNATURE_KLASS(RsaPssSha1)
 
 /**
- * xmlSecMSCngTransformRsaPssSha1GetKlass:
- *
- * The RSA-PSS-SHA1 signature transform klass.
- *
- * Returns: RSA-PSS-SHA1 signature transform klass.
+ * @brief The RSA-PSS-SHA1 signature transform klass.
+ * @return RSA-PSS-SHA1 signature transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformRsaPssSha1GetKlass(void) {
@@ -1386,19 +1361,16 @@ xmlSecMSCngTransformRsaPssSha1GetKlass(void) {
 #endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_SHA256
-/****************************************************************************
+/******************************************************************************
  *
  * RSA-PSS-SHA2-256 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 XMLSEC_MSCNG_SIGNATURE_KLASS(RsaPssSha256)
 
 /**
- * xmlSecMSCngTransformRsaPssSha256GetKlass:
- *
- * The RSA-PSS-SHA2-256 signature transform klass.
- *
- * Returns: RSA-PSS-SHA2-256 signature transform klass.
+ * @brief The RSA-PSS-SHA2-256 signature transform klass.
+ * @return RSA-PSS-SHA2-256 signature transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformRsaPssSha256GetKlass(void) {
@@ -1407,19 +1379,16 @@ xmlSecMSCngTransformRsaPssSha256GetKlass(void) {
 #endif /* XMLSEC_NO_SHA256 */
 
 #ifndef XMLSEC_NO_SHA384
-/****************************************************************************
+/******************************************************************************
  *
  * RSA-PSS-SHA2-384 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 XMLSEC_MSCNG_SIGNATURE_KLASS(RsaPssSha384)
 
 /**
- * xmlSecMSCngTransformRsaPssSha384GetKlass:
- *
- * The RSA-PSS-SHA2-384 signature transform klass.
- *
- * Returns: RSA-PSS-SHA2-384 signature transform klass.
+ * @brief The RSA-PSS-SHA2-384 signature transform klass.
+ * @return RSA-PSS-SHA2-384 signature transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformRsaPssSha384GetKlass(void) {
@@ -1428,19 +1397,16 @@ xmlSecMSCngTransformRsaPssSha384GetKlass(void) {
 #endif /* XMLSEC_NO_SHA384 */
 
 #ifndef XMLSEC_NO_SHA512
-/****************************************************************************
+/******************************************************************************
  *
  * RSA-PSS-SHA2-512 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 XMLSEC_MSCNG_SIGNATURE_KLASS(RsaPssSha512)
 
 /**
- * xmlSecMSCngTransformRsaPssSha512GetKlass:
- *
- * The RSA-PSS-SHA2-512 signature transform klass.
- *
- * Returns: RSA-PSS-SHA2-512 signature transform klass.
+ * @brief The RSA-PSS-SHA2-512 signature transform klass.
+ * @return RSA-PSS-SHA2-512 signature transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformRsaPssSha512GetKlass(void) {
@@ -1449,57 +1415,48 @@ xmlSecMSCngTransformRsaPssSha512GetKlass(void) {
 #endif /* XMLSEC_NO_SHA512 */
 
 #ifndef XMLSEC_NO_SHA3
-/****************************************************************************
+/******************************************************************************
  *
  * RSA-PSS-SHA3-256 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 XMLSEC_MSCNG_SIGNATURE_KLASS(RsaPssSha3_256)
 
 /**
- * xmlSecMSCngTransformRsaPssSha3_256GetKlass:
- *
- * The RSA-PSS-SHA3-256 signature transform klass.
- *
- * Returns: RSA-PSS-SHA3-256 signature transform klass.
+ * @brief The RSA-PSS-SHA3-256 signature transform klass.
+ * @return RSA-PSS-SHA3-256 signature transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformRsaPssSha3_256GetKlass(void) {
     return(&xmlSecMSCngRsaPssSha3_256Klass);
 }
 
-/****************************************************************************
+/******************************************************************************
  *
  * RSA-PSS-SHA3-384 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 XMLSEC_MSCNG_SIGNATURE_KLASS(RsaPssSha3_384)
 
 /**
- * xmlSecMSCngTransformRsaPssSha3_384GetKlass:
- *
- * The RSA-PSS-SHA3-384 signature transform klass.
- *
- * Returns: RSA-PSS-SHA3-384 signature transform klass.
+ * @brief The RSA-PSS-SHA3-384 signature transform klass.
+ * @return RSA-PSS-SHA3-384 signature transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformRsaPssSha3_384GetKlass(void) {
     return(&xmlSecMSCngRsaPssSha3_384Klass);
 }
 
-/****************************************************************************
+/******************************************************************************
  *
  * RSA-PSS-SHA3-512 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 XMLSEC_MSCNG_SIGNATURE_KLASS(RsaPssSha3_512)
 
 /**
- * xmlSecMSCngTransformRsaPssSha3_512GetKlass:
- *
- * The RSA-PSS-SHA3-512 signature transform klass.
- *
- * Returns: RSA-PSS-SHA3-512 signature transform klass.
+ * @brief The RSA-PSS-SHA3-512 signature transform klass.
+ * @return RSA-PSS-SHA3-512 signature transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformRsaPssSha3_512GetKlass(void) {
@@ -1512,19 +1469,16 @@ xmlSecMSCngTransformRsaPssSha3_512GetKlass(void) {
 #ifndef XMLSEC_NO_EC
 
 #ifndef XMLSEC_NO_SHA1
-/****************************************************************************
+/******************************************************************************
  *
  * ECDSA-SHA1 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 XMLSEC_MSCNG_SIGNATURE_KLASS(EcdsaSha1)
 
 /**
- * xmlSecMSCngTransformEcdsaSha1GetKlass:
- *
- * The ECDSA-SHA1 signature transform klass.
- *
- * Returns: ECDSA-SHA1 signature transform klass.
+ * @brief The ECDSA-SHA1 signature transform klass.
+ * @return ECDSA-SHA1 signature transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformEcdsaSha1GetKlass(void) {
@@ -1533,19 +1487,16 @@ xmlSecMSCngTransformEcdsaSha1GetKlass(void) {
 #endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_SHA256
-/****************************************************************************
+/******************************************************************************
  *
  * ECDSA-SHA2-256 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 XMLSEC_MSCNG_SIGNATURE_KLASS(EcdsaSha256)
 
 /**
- * xmlSecMSCngTransformEcdsaSha256GetKlass:
- *
- * The ECDSA-SHA2-256 signature transform klass.
- *
- * Returns: ECDSA-SHA2-256 signature transform klass.
+ * @brief The ECDSA-SHA2-256 signature transform klass.
+ * @return ECDSA-SHA2-256 signature transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformEcdsaSha256GetKlass(void) {
@@ -1554,19 +1505,16 @@ xmlSecMSCngTransformEcdsaSha256GetKlass(void) {
 #endif /* XMLSEC_NO_SHA256 */
 
 #ifndef XMLSEC_NO_SHA384
-/****************************************************************************
+/******************************************************************************
  *
  * ECDSA-SHA2-384 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 XMLSEC_MSCNG_SIGNATURE_KLASS(EcdsaSha384)
 
 /**
- * xmlSecMSCngTransformEcdsaSha384GetKlass:
- *
- * The ECDSA-SHA2-384 signature transform klass.
- *
- * Returns: ECDSA-SHA2-384 signature transform klass.
+ * @brief The ECDSA-SHA2-384 signature transform klass.
+ * @return ECDSA-SHA2-384 signature transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformEcdsaSha384GetKlass(void) {
@@ -1575,19 +1523,16 @@ xmlSecMSCngTransformEcdsaSha384GetKlass(void) {
 #endif /* XMLSEC_NO_SHA384 */
 
 #ifndef XMLSEC_NO_SHA512
-/****************************************************************************
+/******************************************************************************
  *
  * ECDSA-SHA2-512 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 XMLSEC_MSCNG_SIGNATURE_KLASS(EcdsaSha512)
 
 /**
- * xmlSecMSCngTransformEcdsaSha512GetKlass:
- *
- * The ECDSA-SHA2-512 signature transform klass.
- *
- * Returns: ECDSA-SHA2-512 signature transform klass.
+ * @brief The ECDSA-SHA2-512 signature transform klass.
+ * @return ECDSA-SHA2-512 signature transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformEcdsaSha512GetKlass(void) {
@@ -1596,57 +1541,48 @@ xmlSecMSCngTransformEcdsaSha512GetKlass(void) {
 #endif /* XMLSEC_NO_SHA512 */
 
 #ifndef XMLSEC_NO_SHA3
-/****************************************************************************
+/******************************************************************************
  *
  * ECDSA-SHA3-256 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 XMLSEC_MSCNG_SIGNATURE_KLASS(EcdsaSha3_256)
 
 /**
- * xmlSecMSCngTransformEcdsaSha3_256GetKlass:
- *
- * The ECDSA-SHA3-256 signature transform klass.
- *
- * Returns: ECDSA-SHA3-256 signature transform klass.
+ * @brief The ECDSA-SHA3-256 signature transform klass.
+ * @return ECDSA-SHA3-256 signature transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformEcdsaSha3_256GetKlass(void) {
     return(&xmlSecMSCngEcdsaSha3_256Klass);
 }
 
-/****************************************************************************
+/******************************************************************************
  *
  * ECDSA-SHA3-384 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 XMLSEC_MSCNG_SIGNATURE_KLASS(EcdsaSha3_384)
 
 /**
- * xmlSecMSCngTransformEcdsaSha3_384GetKlass:
- *
- * The ECDSA-SHA3-384 signature transform klass.
- *
- * Returns: ECDSA-SHA3-384 signature transform klass.
+ * @brief The ECDSA-SHA3-384 signature transform klass.
+ * @return ECDSA-SHA3-384 signature transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformEcdsaSha3_384GetKlass(void) {
     return(&xmlSecMSCngEcdsaSha3_384Klass);
 }
 
-/****************************************************************************
+/******************************************************************************
  *
  * ECDSA-SHA3-512 signature transform
  *
- ***************************************************************************/
+  *****************************************************************************/
 XMLSEC_MSCNG_SIGNATURE_KLASS(EcdsaSha3_512)
 
 /**
- * xmlSecMSCngTransformEcdsaSha3_512GetKlass:
- *
- * The ECDSA-SHA3-512 signature transform klass.
- *
- * Returns: ECDSA-SHA3-512 signature transform klass.
+ * @brief The ECDSA-SHA3-512 signature transform klass.
+ * @return ECDSA-SHA3-512 signature transform klass.
  */
 xmlSecTransformId
 xmlSecMSCngTransformEcdsaSha3_512GetKlass(void) {

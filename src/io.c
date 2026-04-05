@@ -9,12 +9,9 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:io
- * @Short_description: Input/output functions.
- * @Stability: Stable
- *
+ * @addtogroup xmlsec_core_io
+ * @brief Input/output functions.
  */
-
 #include "globals.h"
 
 #include <stdlib.h>
@@ -51,11 +48,11 @@
 
 #include "cast_helpers.h"
 
-/*******************************************************************
+/******************************************************************************
  *
  * Input I/O callback sets
  *
- ******************************************************************/
+  *****************************************************************************/
 typedef struct _xmlSecIOCallback {
     xmlInputMatchCallback matchcallback;
     xmlInputOpenCallback opencallback;
@@ -100,11 +97,11 @@ xmlSecIOCallbackDestroy(void* callbacks) {
     xmlFree(callbacks);
 }
 
-/*******************************************************************
+/******************************************************************************
  *
  * Input I/O callback list
  *
- ******************************************************************/
+  *****************************************************************************/
 static xmlSecPtrListKlass xmlSecIOCallbackPtrListKlass = {
     BAD_CAST "io-callbacks-list",
     NULL,                       /* xmlSecPtrDuplicateItemMethod duplicateItem; */
@@ -119,11 +116,8 @@ static xmlSecIOCallbackPtr              xmlSecIOCallbackPtrListFind     (xmlSecP
                                                                          const char* uri);
 
 /**
- * xmlSecIOCallbackPtrListGetKlass:
- *
- * The keys list klass.
- *
- * Returns: keys list id.
+ * @brief The keys list klass.
+ * @return keys list id.
  */
 static xmlSecPtrListId
 xmlSecIOCallbackPtrListGetKlass(void) {
@@ -155,12 +149,10 @@ xmlSecIOCallbackPtrListFind(xmlSecPtrListPtr list, const char* uri) {
 static xmlSecPtrList xmlSecAllIOCallbacks;
 
 /**
- * xmlSecIOInit:
- *
- * The IO initialization (called from #xmlSecInit function).
+ * @brief Initializes the IO subsystem.
+ * @details The IO initialization (called from #xmlSecInit function).
  * Applications should not call this function directly.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecIOInit(void) {
@@ -191,9 +183,8 @@ xmlSecIOInit(void) {
 }
 
 /**
- * xmlSecIOShutdown:
- *
- * The IO cleanup (called from #xmlSecShutdown function).
+ * @brief Shuts down the IO subsystem.
+ * @details The IO cleanup (called from #xmlSecShutdown function).
  * Applications should not call this function directly.
  */
 void
@@ -211,9 +202,8 @@ xmlSecIOShutdown(void) {
 }
 
 /**
- * xmlSecIOCleanupCallbacks:
- *
- * Clears the entire input callback table. this includes the
+ * @brief Clears all input callbacks.
+ * @details Clears the entire input callback table. this includes the
  * compiled-in I/O.
  */
 void
@@ -222,15 +212,13 @@ xmlSecIOCleanupCallbacks(void) {
 }
 
 /**
- * xmlSecIORegisterCallbacks:
- * @matchFunc:          the protocol match callback.
- * @openFunc:           the open stream callback.
- * @readFunc:           the read from stream callback.
- * @closeFunc:          the close stream callback.
- *
- * Register a new set of I/O callback for handling parser input.
- *
- * Returns: the 0 on success or a negative value if an error occurs.
+ * @brief Registers I/O callbacks for parser input.
+ * @details Register a new set of I/O callback for handling parser input.
+ * @param matchFunc the protocol match callback.
+ * @param openFunc the open stream callback.
+ * @param readFunc the read from stream callback.
+ * @param closeFunc the close stream callback.
+ * @return the 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecIORegisterCallbacks(xmlInputMatchCallback matchFunc,
@@ -402,11 +390,8 @@ xmlSecIOFilClose(void* context) {
 }
 
 /**
- * xmlSecIORegisterDefaultCallbacks:
- *
- * Registers the default compiled-in I/O handlers.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Registers the default compiled-in I/O handlers.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecIORegisterDefaultCallbacks(void) {
@@ -448,13 +433,13 @@ xmlSecIORegisterDefaultCallbacks(void) {
     return(0);
 }
 
-/**************************************************************
+/******************************************************************************
  *
  * Input URI Transform
  *
  * xmlSecTransform + xmlSecInputURICtx
  *
- **************************************************************/
+  *****************************************************************************/
 typedef struct _xmlSecInputURICtx                               xmlSecInputURICtx,
                                                                 *xmlSecInputURICtxPtr;
 struct _xmlSecInputURICtx {
@@ -501,11 +486,9 @@ static xmlSecTransformKlass xmlSecTransformInputURIKlass = {
 };
 
 /**
- * xmlSecTransformInputURIGetKlass:
- *
- * The input uri transform klass. Reads binary data from an uri.
- *
- * Returns: input URI transform id.
+ * @brief Gets the input URI transform klass.
+ * @details The input uri transform klass. Reads binary data from an uri.
+ * @return input URI transform id.
  */
 xmlSecTransformId
 xmlSecTransformInputURIGetKlass(void) {
@@ -513,13 +496,10 @@ xmlSecTransformInputURIGetKlass(void) {
 }
 
 /**
- * xmlSecTransformInputURIOpen:
- * @transform:          the pointer to IO transform.
- * @uri:                the URL to open.
- *
- * Opens the given @uri for reading.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Opens the given @p uri for reading.
+ * @param transform the pointer to IO transform.
+ * @param uri the URL to open.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecTransformInputURIOpen(xmlSecTransformPtr transform, const xmlChar *uri) {
@@ -573,12 +553,10 @@ xmlSecTransformInputURIOpen(xmlSecTransformPtr transform, const xmlChar *uri) {
 
 
 /**
- * xmlSecTransformInputURIClose:
- * @transform:          the pointer to IO transform.
- *
- * Closes the given @transform and frees up resources.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Closes the given @p transform.
+ * @details Closes the given @p transform and frees up resources.
+ * @param transform the pointer to IO transform.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecTransformInputURIClose(xmlSecTransformPtr transform) {

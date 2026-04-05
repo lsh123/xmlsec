@@ -9,6 +9,13 @@
 #ifndef __XMLSEC_GNUTLS_X509_H__
 #define __XMLSEC_GNUTLS_X509_H__
 
+/**
+ * @defgroup xmlsec_gnutls_x509 GnuTLS X.509 Support
+ * @ingroup xmlsec_gnutls
+ * @brief X.509 certificate handling for the GnuTLS back-end.
+ * @{
+ */
+
 #ifndef XMLSEC_NO_X509
 
 #include <gnutls/gnutls.h>
@@ -23,15 +30,13 @@
 extern "C" {
 #endif /* __cplusplus */
 
-/**************************************************************************
+/******************************************************************************
  *
  * X509 Key Data
  *
- *****************************************************************************/
+  *****************************************************************************/
 /**
- * xmlSecGnuTLSKeyDataX509Id:
- *
- * The GnuTLS X509 data klass.
+ * @brief The GnuTLS X509 data klass.
  */
 #define xmlSecGnuTLSKeyDataX509Id \
         xmlSecGnuTLSKeyDataX509GetKlass()
@@ -56,29 +61,25 @@ XMLSEC_CRYPTO_EXPORT xmlSecSize         xmlSecGnuTLSKeyDataX509GetCrlsSize      
 
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataPtr   xmlSecGnuTLSX509CertGetKey              (gnutls_x509_crt_t cert);
 
-/**************************************************************************
+/******************************************************************************
  *
  * X509 raw cert
  *
- *****************************************************************************/
+  *****************************************************************************/
 /**
- * xmlSecGnuTLSKeyDataRawX509CertId:
- *
- * The GnuTLS raw X509 certificate klass.
+ * @brief The GnuTLS raw X509 certificate klass.
  */
 #define xmlSecGnuTLSKeyDataRawX509CertId \
         xmlSecGnuTLSKeyDataRawX509CertGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecGnuTLSKeyDataRawX509CertGetKlass  (void);
 
-/**************************************************************************
+/******************************************************************************
  *
  * X509 certs store
  *
- *****************************************************************************/
+  *****************************************************************************/
 /**
- * xmlSecGnuTLSX509StoreId:
- *
- * The GnuTLS X509 store klass.
+ * @brief The GnuTLS X509 store klass.
  */
 #define xmlSecGnuTLSX509StoreId \
         xmlSecGnuTLSX509StoreGetKlass()
@@ -103,5 +104,7 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSX509StoreAdoptCrl  (xmlSecKe
 #endif /* __cplusplus */
 
 #endif /* XMLSEC_NO_X509 */
+
+/** @} */ /** xmlsec_gnutls_x509 */
 
 #endif /* __XMLSEC_GNUTLS_X509_H__ */

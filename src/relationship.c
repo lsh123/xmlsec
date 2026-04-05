@@ -9,9 +9,8 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:transforms
+ * @addtogroup xmlsec_core_transforms
  */
-
 #include "globals.h"
 
 #include <stdlib.h>
@@ -31,7 +30,7 @@
 #include "cast_helpers.h"
 
 
-/**************************************************************************
+/******************************************************************************
  *
  * XML Relationshi transform
  *
@@ -97,7 +96,7 @@
  *
  * xmlSecTransform + xmlSecRelationshipCtx
  *
- ***************************************************************************/
+  *****************************************************************************/
 typedef struct _xmlSecRelationshipCtx           xmlSecRelationshipCtx,
                                                 *xmlSecRelationshipCtxPtr;
 struct _xmlSecRelationshipCtx {
@@ -154,11 +153,9 @@ static xmlSecTransformKlass xmlSecRelationshipKlass = {
 };
 
 /**
- * xmlSecTransformRelationshipGetKlass:
+ * @brief Gets the Relationship transform klass.
  *
- * Gets the Relationship transform klass.
- *
- * Returns: Relationship transform klass.
+ * @return Relationship transform klass.
  */
 xmlSecTransformId
 xmlSecTransformRelationshipGetKlass(void) {

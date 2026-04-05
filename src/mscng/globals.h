@@ -72,11 +72,9 @@
 
 
 /**
- * xmlSecMSCngLastError:
- * @errorFunction:      the failed function name.
- * @errorObject:        the error specific error object (e.g. transform, key data, etc).
- *
- * Macro. The XMLSec library macro for reporting crypro errors from GetLastError().
+ * @brief The XMLSec library macro for reporting crypro errors from GetLastError().
+ * @param errorFunction the failed function name.
+ * @param errorObject the error specific error object (e.g. transform, key data, etc).
  */
 #define xmlSecMSCngLastError(errorFunction, errorObject) \
     {                                                    \
@@ -91,13 +89,11 @@
     }
 
  /**
-  * xmlSecMSCngLastError2:
-  * @errorFunction:      the failed function name.
-  * @errorObject:        the error specific error object (e.g. transform, key data, etc).
-  * @msg:                the extra message.
-  * @param:              the extra message param.
-  *
-  * Macro. The XMLSec library macro for reporting crypro errors from GetLastError().
+  * @brief The XMLSec library macro for reporting crypro errors from GetLastError().
+  * @param errorFunction the failed function name.
+  * @param errorObject the error specific error object (e.g. transform, key data, etc).
+  * @param msg the extra message.
+  * @param param the extra message param.
   */
 #define xmlSecMSCngLastError2(errorFunction, errorObject, msg, param) \
     {                                                    \
@@ -113,12 +109,11 @@
     }
 
 /**
- * xmlSecMSCngNtError:
- * @errorFunction:      the failed function name.
- * @errorObject:        the error specific error object (e.g. transform, key data, etc).
- *
- * Macro. The XMLSec library macro for reporting crypro errors from NTSTATUS.
+ * @brief Macro. Reports crypto errors from NTSTATUS.
+ * @details Macro. The XMLSec library macro for reporting crypro errors from NTSTATUS.
  * See e.g. <http://errorco.de/win32/ntstatus-h/> to look up the matching define.
+ * @param errorFunction the failed function name.
+ * @param errorObject the error specific error object (e.g. transform, key data, etc).
  */
 #define xmlSecMSCngNtError(errorFunction, errorObject, status) \
     {                                                          \
@@ -132,14 +127,13 @@
     }
 
  /**
-  * xmlSecMSCngNtError2:
-  * @errorFunction:      the failed function name.
-  * @errorObject:        the error specific error object (e.g. transform, key data, etc).
-  * @msg:                the extra message.
-  * @param:              the extra message param.
-  *
-  * Macro. The XMLSec library macro for reporting crypro errors from NTSTATUS.
+  * @brief Macro. Reports crypto errors from NTSTATUS.
+  * @details Macro. The XMLSec library macro for reporting crypro errors from NTSTATUS.
   * See e.g. <http://errorco.de/win32/ntstatus-h/> to look up the matching define.
+  * @param errorFunction the failed function name.
+  * @param errorObject the error specific error object (e.g. transform, key data, etc).
+  * @param msg the extra message.
+  * @param param the extra message param.
   */
 #define xmlSecMSCngNtError2(errorFunction, errorObject, status, msg, param) \
     {                                                          \
@@ -154,15 +148,14 @@
     }
 
   /**
-   * xmlSecMSCngNtError3:
-   * @errorFunction:      the failed function name.
-   * @errorObject:        the error specific error object (e.g. transform, key data, etc).
-   * @msg:                the extra message.
-   * @param1:             the extra message param1.
-   * @param2:             the extra message param2.
-   *
-   * Macro. The XMLSec library macro for reporting crypro errors from NTSTATUS.
+   * @brief Macro. Reports crypto errors from NTSTATUS.
+   * @details Macro. The XMLSec library macro for reporting crypro errors from NTSTATUS.
    * See e.g. <http://errorco.de/win32/ntstatus-h/> to look up the matching define.
+   * @param errorFunction the failed function name.
+   * @param errorObject the error specific error object (e.g. transform, key data, etc).
+   * @param msg the extra message.
+   * @param param1 the extra message param1.
+   * @param param2 the extra message param2.
    */
 #define xmlSecMSCngNtError3(errorFunction, errorObject, status, msg, param1, param2) \
     {                                                          \

@@ -8,12 +8,9 @@
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
- * SECTION:nodeset
- * @Short_description: XML nodes set functions
- * @Stability: Stable
- *
+ * @addtogroup xmlsec_core_nodeset
+ * @brief XML nodes set functions
  */
-
 #include "globals.h"
 
 #include <stdlib.h>
@@ -45,15 +42,13 @@ static int      xmlSecNodeSetWalkRecursive              (xmlSecNodeSetPtr nset,
                                                          xmlNodePtr parent);
 
 /**
- * xmlSecNodeSetCreate:
- * @doc:                the pointer to parent XML document.
- * @nodes:              the list of nodes.
- * @type:               the nodes set type.
- *
- * Creates new nodes set. Caller is responsible for freeing returned object
+ * @brief Creates a new nodes set.
+ * @details Creates new nodes set. Caller is responsible for freeing returned object
  * by calling #xmlSecNodeSetDestroy function.
- *
- * Returns: pointer to newly allocated node set or NULL if an error occurs.
+ * @param doc the pointer to parent XML document.
+ * @param nodes the list of nodes.
+ * @param type the nodes set type.
+ * @return pointer to newly allocated node set or NULL if an error occurs.
  */
 xmlSecNodeSetPtr
 xmlSecNodeSetCreate(xmlDocPtr doc, xmlNodeSetPtr nodes, xmlSecNodeSetType type) {
@@ -74,10 +69,9 @@ xmlSecNodeSetCreate(xmlDocPtr doc, xmlNodeSetPtr nodes, xmlSecNodeSetType type) 
 }
 
 /**
- * xmlSecNodeSetDestroy:
- * @nset:               the pointer to node set.
- *
- * Destroys the nodes set created with #xmlSecNodeSetCreate function.
+ * @brief Destroys a nodes set.
+ * @details Destroys the nodes set created with #xmlSecNodeSetCreate function.
+ * @param nset the pointer to node set.
  */
 void
 xmlSecNodeSetDestroy(xmlSecNodeSetPtr nset) {
@@ -117,10 +111,9 @@ xmlSecNodeSetDestroy(xmlSecNodeSetPtr nset) {
 }
 
 /**
- * xmlSecNodeSetDocDestroy:
- * @nset:               the pointer to node set.
- *
- * Instructs node set to destroy nodes parent doc when node set is destroyed.
+ * @brief Marks node set to destroy the parent document.
+ * @details Instructs node set to destroy nodes parent doc when node set is destroyed.
+ * @param nset the pointer to node set.
  */
 void
 xmlSecNodeSetDocDestroy(xmlSecNodeSetPtr nset) {
@@ -203,14 +196,12 @@ xmlSecNodeSetOneContains(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr pare
 }
 
 /**
- * xmlSecNodeSetContains:
- * @nset:               the pointer to node set.
- * @node:               the pointer to XML node to check.
- * @parent:             the pointer to @node parent node.
- *
- * Checks whether the @node is in the nodes set or not.
- *
- * Returns: 1 if the @node is in the nodes set @nset, 0 if it is not
+ * @brief Checks if a node is in the nodes set.
+ * @details Checks whether the @p node is in the nodes set or not.
+ * @param nset the pointer to node set.
+ * @param node the pointer to XML node to check.
+ * @param parent the pointer to @p node parent node.
+ * @return 1 if the @p node is in the nodes set @p nset, 0 if it is not
  * and a negative value if an error occurs.
  */
 int
@@ -256,14 +247,12 @@ xmlSecNodeSetContains(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr parent)
 }
 
 /**
- * xmlSecNodeSetAdd:
- * @nset:               the pointer to current nodes set (or NULL).
- * @newNSet:            the pointer to new nodes set.
- * @op:                 the operation type.
- *
- * Adds @newNSet to the @nset using operation @op.
- *
- * Returns: the pointer to combined nodes set or NULL if an error
+ * @brief Adds a nodes set to another with an operation.
+ * @details Adds @p newNSet to the @p nset using operation @p op.
+ * @param nset the pointer to current nodes set (or NULL).
+ * @param newNSet the pointer to new nodes set.
+ * @param op the operation type.
+ * @return the pointer to combined nodes set or NULL if an error
  * occurs.
  */
 xmlSecNodeSetPtr
@@ -288,14 +277,12 @@ xmlSecNodeSetAdd(xmlSecNodeSetPtr nset, xmlSecNodeSetPtr newNSet,
 }
 
 /**
- * xmlSecNodeSetAddList:
- * @nset:               the pointer to current nodes set (or NULL).
- * @newNSet:            the pointer to new nodes set.
- * @op:                 the operation type.
- *
- * Adds @newNSet to the @nset as child using operation @op.
- *
- * Returns: the pointer to combined nodes set or NULL if an error
+ * @brief Adds a nodes set as a child list.
+ * @details Adds @p newNSet to the @p nset as child using operation @p op.
+ * @param nset the pointer to current nodes set (or NULL).
+ * @param newNSet the pointer to new nodes set.
+ * @param op the operation type.
+ * @return the pointer to combined nodes set or NULL if an error
  * occurs.
  */
 xmlSecNodeSetPtr
@@ -322,16 +309,14 @@ xmlSecNodeSetAddList(xmlSecNodeSetPtr nset, xmlSecNodeSetPtr newNSet, xmlSecNode
 
 
 /**
- * xmlSecNodeSetWalk:
- * @nset:               the pointer to node set.
- * @walkFunc:           the callback functions.
- * @data:               the application specific data passed to the @walkFunc.
- *
- * Calls the function @walkFunc once per each node in the nodes set @nset.
- * If the @walkFunc returns a negative value, then the walk procedure
+ * @brief Walks all nodes in a set calling a callback function.
+ * @details Calls the function @p walkFunc once per each node in the nodes set @p nset.
+ * If the @p walkFunc returns a negative value, then the walk procedure
  * is interrupted.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @param nset the pointer to node set.
+ * @param walkFunc the callback functions.
+ * @param data the application specific data passed to the @p walkFunc.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecNodeSetWalk(xmlSecNodeSetPtr nset, xmlSecNodeSetWalkCallback walkFunc, void* data) {
@@ -436,24 +421,22 @@ xmlSecNodeSetWalkRecursive(xmlSecNodeSetPtr nset, xmlSecNodeSetWalkCallback walk
 }
 
 /**
- * xmlSecNodeSetGetChildren:
- * @doc:                the pointer to an XML document.
- * @parent:             the pointer to parent XML node or NULL if we want to include all document nodes.
- * @withComments:       the flag include  comments or not.
- * @invert:             the "invert" flag.
- *
- * Creates a new nodes set that contains:
- *  - if @withComments is not 0 and @invert is 0:
- *    all nodes in the @parent subtree;
- *  - if @withComments is 0 and @invert is 0:
- *    all nodes in the @parent subtree except comment nodes;
- *  - if @withComments is not 0 and @invert not is 0:
- *    all nodes in the @doc except nodes in the @parent subtree;
- *  - if @withComments is 0 and @invert is 0:
- *    all nodes in the @doc except nodes in the @parent subtree
+ * @brief Creates a nodes set from parent subtree children.
+ * @details Creates a new nodes set that contains:
+ *  - if @p withComments is not 0 and @p invert is 0:
+ *    all nodes in the @p parent subtree;
+ *  - if @p withComments is 0 and @p invert is 0:
+ *    all nodes in the @p parent subtree except comment nodes;
+ *  - if @p withComments is not 0 and @p invert not is 0:
+ *    all nodes in the @p doc except nodes in the @p parent subtree;
+ *  - if @p withComments is 0 and @p invert is 0:
+ *    all nodes in the @p doc except nodes in the @p parent subtree
  *    and comment nodes.
- *
- * Returns: pointer to the newly created #xmlSecNodeSet structure
+ * @param doc the pointer to an XML document.
+ * @param parent the pointer to parent XML node or NULL if we want to include all document nodes.
+ * @param withComments the flag include  comments or not.
+ * @param invert the "invert" flag.
+ * @return pointer to the newly created xmlSecNodeSet structure
  * or NULL if an error occurs.
  */
 xmlSecNodeSetPtr
@@ -516,13 +499,11 @@ xmlSecNodeSetDumpTextNodesWalkCallback(xmlSecNodeSetPtr nset, xmlNodePtr cur,
 }
 
 /**
- * xmlSecNodeSetDumpTextNodes:
- * @nset:               the pointer to node set.
- * @out:                the output buffer.
- *
- * Dumps content of all the text nodes from @nset to @out.
- *
- * Returns: 0 on success or a negative value otherwise.
+ * @brief Dumps text node content from a nodes set.
+ * @details Dumps content of all the text nodes from @p nset to @p out.
+ * @param nset the pointer to node set.
+ * @param out the output buffer.
+ * @return 0 on success or a negative value otherwise.
  */
 int
 xmlSecNodeSetDumpTextNodes(xmlSecNodeSetPtr nset, xmlOutputBufferPtr out) {
@@ -533,11 +514,9 @@ xmlSecNodeSetDumpTextNodes(xmlSecNodeSetPtr nset, xmlOutputBufferPtr out) {
 }
 
 /**
- * xmlSecNodeSetDebugDump:
- * @nset:               the pointer to node set.
- * @output:             the pointer to output FILE.
- *
- * Prints information about @nset to the @output.
+ * @brief Prints information about @p nset to the @p output.
+ * @param nset the pointer to node set.
+ * @param output the pointer to output FILE.
  */
 void
 xmlSecNodeSetDebugDump(xmlSecNodeSetPtr nset, FILE *output) {

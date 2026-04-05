@@ -11,6 +11,13 @@
 #ifndef __XMLSEC_LIST_H__
 #define __XMLSEC_LIST_H__
 
+/**
+ * @defgroup xmlsec_core_list Generic List
+ * @ingroup xmlsec_core
+ * @brief Generic doubly-linked list implementation.
+ * @{
+ */
+
 #include <xmlsec/exports.h>
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/buffer.h>
@@ -19,28 +26,27 @@
 extern "C" {
 #endif /* __cplusplus */
 
-typedef const struct _xmlSecPtrListKlass                        xmlSecPtrListKlass,
-                                                                *xmlSecPtrListId;
+/**
+ * @brief The pointer list klass.
+ */
+typedef const struct _xmlSecPtrListKlass                        xmlSecPtrListKlass;
+/**
+ * @brief Pointer to #xmlSecPtrListKlass.
+ */
+typedef const struct _xmlSecPtrListKlass                        *xmlSecPtrListId;
 typedef struct _xmlSecPtrList                                   xmlSecPtrList,
                                                                 *xmlSecPtrListPtr;
 
 /**
- * xmlSecPtrList:
- * @id:                         the list items description.
- * @data:                       the list data.
- * @use:                        the current list size.
- * @max:                        the max (allocated) list size.
- * @allocMode:                  the memory allocation mode.
- *
- * The pointers list.
+ * @brief The pointers list.
  */
 struct _xmlSecPtrList {
-    xmlSecPtrListId             id;
+    xmlSecPtrListId             id;  /**< the list items description. */
 
-    xmlSecPtr*                  data;
-    xmlSecSize                  use;
-    xmlSecSize                  max;
-    xmlSecAllocMode             allocMode;
+    xmlSecPtr*                  data;  /**< the list data. */
+    xmlSecSize                  use;  /**< the current list size. */
+    xmlSecSize                  max;  /**< the max (allocated) list size. */
+    xmlSecAllocMode             allocMode;  /**< the memory allocation mode. */
 };
 
 XMLSEC_EXPORT void              xmlSecPtrListSetDefaultAllocMode(xmlSecAllocMode defAllocMode,
@@ -79,112 +85,86 @@ XMLSEC_EXPORT void              xmlSecPtrListDebugXmlDump       (xmlSecPtrListPt
                                                                  FILE* output);
 
 /**
- * xmlSecPtrListGetName:
- * @list:               the ponter to list.
- *
- * Macro. Returns lists's name.
+ * @brief Macro. Returns lists's name.
+ * @param list the ponter to list.
  */
 #define xmlSecPtrListGetName(list) \
         (((list) != NULL) ? xmlSecPtrListKlassGetName((list)->id) : NULL)
 
 /**
- * xmlSecPtrListIsValid:
- * @list:               the pointer to list.
- *
- * Macro. Returns 1 if @list is not NULL and @list->id is not NULL
- * or 0 otherwise.
+ * @brief Macro. Returns 1 if list is not NULL and list->id is not NULL.
+ * @details Macro. Returns 1 if @p list is not NULL and @p list->id is not NULL or 0 otherwise.
+ * @param list the pointer to list.
  */
 #define xmlSecPtrListIsValid(list) \
         ((( list ) != NULL) && ((( list )->id) != NULL))
 /**
- * xmlSecPtrListCheckId:
- * @list:               the pointer to list.
- * @dataId:             the list Id.
- *
- * Macro. Returns 1 if @list is valid and @list's id is equal to @dataId.
+ * @brief Macro. Returns 1 if list is valid and list's id matches dataId.
+ * @details Macro. Returns 1 if @p list is valid and @p list's id is equal to @p dataId.
+ * @param list the pointer to list.
+ * @param dataId the list Id.
  */
 #define xmlSecPtrListCheckId(list, dataId) \
         (xmlSecPtrListIsValid(( list )) && \
         ((( list )->id) == ( dataId )))
 
 
-/**************************************************************************
+/******************************************************************************
  *
  * List klass
  *
- *************************************************************************/
+  *****************************************************************************/
 /**
- * xmlSecPtrListIdUnknown:
- *
- * The "unknown" id.
+ * @brief The "unknown" id.
  */
 #define xmlSecPtrListIdUnknown                  NULL
 
 /**
- * xmlSecPtrDuplicateItemMethod:
- * @ptr:                the poinetr to list item.
- *
- * Duplicates item @ptr.
- *
- * Returns: pointer to new item copy or NULL if an error occurs.
+ * @brief Duplicates item @p ptr.
+ * @param ptr the poinetr to list item.
+ * @return pointer to new item copy or NULL if an error occurs.
  */
 typedef xmlSecPtr               (*xmlSecPtrDuplicateItemMethod) (xmlSecPtr ptr);
 
 /**
- * xmlSecPtrDestroyItemMethod:
- * @ptr:                the poinetr to list item.
- *
- * Destroys list item @ptr.
+ * @brief Destroys list item @p ptr.
+ * @param ptr the poinetr to list item.
  */
 typedef void                    (*xmlSecPtrDestroyItemMethod)   (xmlSecPtr ptr);
 
 /**
- * xmlSecPtrDebugDumpItemMethod:
- * @ptr:                the poinetr to list item.
- * @output:             the output FILE.
- *
- * Prints debug information about @item to @output.
+ * @brief Prints debug information about @p item to @p output.
+ * @param ptr the poinetr to list item.
+ * @param output the output FILE.
  */
 typedef void                    (*xmlSecPtrDebugDumpItemMethod) (xmlSecPtr ptr,
                                                                  FILE* output);
 
 /**
- * xmlSecPtrListKlass:
- * @name:               the list klass name.
- * @duplicateItem:      the duplicate item method.
- * @destroyItem:        the destroy item method.
- * @debugDumpItem:      the debug dump item method.
- * @debugXmlDumpItem:   the debug dump item in xml format method.
- *
- * List klass.
+ * @brief List klass.
  */
 struct _xmlSecPtrListKlass {
-    const xmlChar*                      name;
-    xmlSecPtrDuplicateItemMethod        duplicateItem;
-    xmlSecPtrDestroyItemMethod          destroyItem;
-    xmlSecPtrDebugDumpItemMethod        debugDumpItem;
-    xmlSecPtrDebugDumpItemMethod        debugXmlDumpItem;
+    const xmlChar*                      name;  /**< the list klass name. */
+    xmlSecPtrDuplicateItemMethod        duplicateItem;  /**< the duplicate item method. */
+    xmlSecPtrDestroyItemMethod          destroyItem;  /**< the destroy item method. */
+    xmlSecPtrDebugDumpItemMethod        debugDumpItem;  /**< the debug dump item method. */
+    xmlSecPtrDebugDumpItemMethod        debugXmlDumpItem;  /**< the debug dump item in xml format method. */
 };
 
 /**
- * xmlSecPtrListKlassGetName:
- * @klass:              the list klass.
- *2
-
- * Macro. Returns the list klass name.
+ * @brief Macro. Returns the list klass name.
+ * @param klass the list klass.
  */
 #define xmlSecPtrListKlassGetName(klass) \
         (((klass) != NULL) ? ((klass)->name) : NULL)
 
-/**************************************************************************
+/******************************************************************************
  *
  * xmlSecStringListKlass
  *
- *************************************************************************/
+  *****************************************************************************/
 /**
- * xmlSecStringListId:
- *
- * Strings list klass.
+ * @brief Strings list klass.
  */
 #define xmlSecStringListId \
         xmlSecStringListGetKlass()
@@ -193,5 +173,7 @@ XMLSEC_EXPORT xmlSecPtrListId   xmlSecStringListGetKlass        (void);
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
+
+/** @} */ /** xmlsec_core_list */
 
 #endif /* __XMLSEC_LIST_H__ */

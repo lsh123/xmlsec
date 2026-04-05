@@ -9,12 +9,9 @@
  * Copyright (C) 2003 Cordys R&D BV, All rights reserved.
  */
 /**
- * SECTION:bn
- * @Short_description: Big numbers support functions.
- * @Stability: Stable
- *
+ * @addtogroup xmlsec_core_bn
+ * @brief Big numbers support functions.
  */
-
 #include "globals.h"
 
 #include <stdlib.h>
@@ -59,19 +56,17 @@ static const xmlChar xmlSecBnRevLookupTable[XMLSEC_BN_REV_MAX] =
     '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
 };
 
-/*****************************************************************************
+/******************************************************************************
  *
  * xmlSecBn
  *
- ****************************************************************************/
+  *****************************************************************************/
 /**
- * xmlSecBnCreate:
- * @size:       the initial allocated BN size.
- *
- * Creates a new BN object. Caller is responsible for destroying it
- * by calling @xmlSecBnDestroy function.
- *
- * Returns: the newly BN or a NULL if an error occurs.
+ * @brief Creates a new BN object.
+ * @details Creates a new BN object. Caller is responsible for destroying it
+ * by calling #xmlSecBnDestroy function.
+ * @param size the initial allocated BN size.
+ * @return the newly BN or a NULL if an error occurs.
  */
 xmlSecBnPtr
 xmlSecBnCreate(xmlSecSize size) {
@@ -79,10 +74,9 @@ xmlSecBnCreate(xmlSecSize size) {
 }
 
 /**
- * xmlSecBnDestroy:
- * @bn:         the pointer to BN.
- *
- * Destroys @bn object created with @xmlSecBnCreate function.
+ * @brief Destroys @p bn object.
+ * @details Destroys @p bn object created with #xmlSecBnCreate function.
+ * @param bn the pointer to BN.
  */
 void
 xmlSecBnDestroy(xmlSecBnPtr bn) {
@@ -90,14 +84,12 @@ xmlSecBnDestroy(xmlSecBnPtr bn) {
 }
 
 /**
- * xmlSecBnInitialize:
- * @bn:         the pointer to BN.
- * @size:       the initial allocated BN size.
- *
- * Initializes a BN object. Caller is responsible for destroying it
- * by calling @xmlSecBnFinalize function.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Initializes a BN object.
+ * @details Initializes a BN object. Caller is responsible for destroying it
+ * by calling #xmlSecBnFinalize function.
+ * @param bn the pointer to BN.
+ * @param size the initial allocated BN size.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecBnInitialize(xmlSecBnPtr bn, xmlSecSize size) {
@@ -105,10 +97,9 @@ xmlSecBnInitialize(xmlSecBnPtr bn, xmlSecSize size) {
 }
 
 /**
- * xmlSecBnFinalize:
- * @bn:         the pointer to BN.
- *
- * Destroys @bn object created with @xmlSecBnInitialize function.
+ * @brief Destroys @p bn object.
+ * @details Destroys @p bn object created with #xmlSecBnInitialize function.
+ * @param bn the pointer to BN.
  */
 void
 xmlSecBnFinalize(xmlSecBnPtr bn) {
@@ -116,12 +107,9 @@ xmlSecBnFinalize(xmlSecBnPtr bn) {
 }
 
 /**
- * xmlSecBnGetData:
- * @bn:         the pointer to BN.
- *
- * Gets pointer to the binary @bn representation.
- *
- * Returns: pointer to binary BN data or NULL if an error occurs.
+ * @brief Gets pointer to the binary @p bn representation.
+ * @param bn the pointer to BN.
+ * @return pointer to binary BN data or NULL if an error occurs.
  */
 xmlSecByte*
 xmlSecBnGetData(xmlSecBnPtr bn) {
@@ -129,14 +117,11 @@ xmlSecBnGetData(xmlSecBnPtr bn) {
 }
 
 /**
- * xmlSecBnSetData:
- * @bn:         the pointer to BN.
- * @data:       the pointer to new BN binary data.
- * @size:       the size of new BN data.
- *
- * Sets the value of @bn to @data.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Sets the value of @p bn to @p data.
+ * @param bn the pointer to BN.
+ * @param data the pointer to new BN binary data.
+ * @param size the size of new BN data.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecBnSetData(xmlSecBnPtr bn, const xmlSecByte* data, xmlSecSize size) {
@@ -144,12 +129,9 @@ xmlSecBnSetData(xmlSecBnPtr bn, const xmlSecByte* data, xmlSecSize size) {
 }
 
 /**
- * xmlSecBnGetSize:
- * @bn:         the pointer to BN.
- *
- * Gets the size of binary data in @bn.
- *
- * Returns: the size of binary data.
+ * @brief Gets the size of binary data in @p bn.
+ * @param bn the pointer to BN.
+ * @return the size of binary data.
  */
 xmlSecSize
 xmlSecBnGetSize(xmlSecBnPtr bn) {
@@ -157,10 +139,8 @@ xmlSecBnGetSize(xmlSecBnPtr bn) {
 }
 
 /**
- * xmlSecBnZero:
- * @bn:         the pointer to BN.
- *
- * Sets the value of @bn to zero.
+ * @brief Sets the value of @p bn to zero.
+ * @param bn the pointer to BN.
  */
 void
 xmlSecBnZero(xmlSecBnPtr bn) {
@@ -168,14 +148,12 @@ xmlSecBnZero(xmlSecBnPtr bn) {
 }
 
 /**
- * xmlSecBnFromString:
- * @bn:         the pointer to BN.
- * @str:        the string with BN.
- * @base:       the base for @str.
- *
- * Reads @bn from string @str assuming it has base @base.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Reads @p bn from string @p str in given base.
+ * @details Reads @p bn from string @p str assuming it has base @p base.
+ * @param bn the pointer to BN.
+ * @param str the string with BN.
+ * @param base the base for @p str.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecBnFromString(xmlSecBnPtr bn, const xmlChar* str, xmlSecSize base) {
@@ -298,14 +276,12 @@ xmlSecBnFromString(xmlSecBnPtr bn, const xmlChar* str, xmlSecSize base) {
 }
 
 /**
- * xmlSecBnToString:
- * @bn:         the pointer to BN.
- * @base:       the base for returned string.
- *
- * Writes @bn to string with base @base. Caller is responsible for
- * freeing returned string with @xmlFree.
- *
- * Returns: the string represenataion if BN or a NULL if an error occurs.
+ * @brief Writes @p bn to string with given base.
+ * @details Writes @p bn to string with base @p base. Caller is responsible for
+ * freeing returned string with xmlFree.
+ * @param bn the pointer to BN.
+ * @param base the base for returned string.
+ * @return the string represenataion if BN or a NULL if an error occurs.
  */
 xmlChar*
 xmlSecBnToString(xmlSecBnPtr bn, xmlSecSize base) {
@@ -411,13 +387,10 @@ xmlSecBnToString(xmlSecBnPtr bn, xmlSecSize base) {
 }
 
 /**
- * xmlSecBnFromHexString:
- * @bn:         the pointer to BN.
- * @str:        the string with BN.
- *
- * Reads @bn from hex string @str.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Reads @p bn from hex string @p str.
+ * @param bn the pointer to BN.
+ * @param str the string with BN.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecBnFromHexString(xmlSecBnPtr bn, const xmlChar* str) {
@@ -425,13 +398,11 @@ xmlSecBnFromHexString(xmlSecBnPtr bn, const xmlChar* str) {
 }
 
 /**
- * xmlSecBnToHexString:
- * @bn:         the pointer to BN.
- *
- * Writes @bn to hex string. Caller is responsible for
- * freeing returned string with @xmlFree.
- *
- * Returns: the string represenataion if BN or a NULL if an error occurs.
+ * @brief Writes @p bn to hex string.
+ * @details Writes @p bn to hex string. Caller is responsible for
+ * freeing returned string with xmlFree.
+ * @param bn the pointer to BN.
+ * @return the string represenataion if BN or a NULL if an error occurs.
  */
 xmlChar*
 xmlSecBnToHexString(xmlSecBnPtr bn) {
@@ -439,13 +410,10 @@ xmlSecBnToHexString(xmlSecBnPtr bn) {
 }
 
 /**
- * xmlSecBnFromDecString:
- * @bn:         the pointer to BN.
- * @str:        the string with BN.
- *
- * Reads @bn from decimal string @str.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Reads @p bn from decimal string @p str.
+ * @param bn the pointer to BN.
+ * @param str the string with BN.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecBnFromDecString(xmlSecBnPtr bn, const xmlChar* str) {
@@ -453,13 +421,11 @@ xmlSecBnFromDecString(xmlSecBnPtr bn, const xmlChar* str) {
 }
 
 /**
- * xmlSecBnToDecString:
- * @bn:         the pointer to BN.
- *
- * Writes @bn to decimal string. Caller is responsible for
- * freeing returned string with @xmlFree.
- *
- * Returns: the string represenataion if BN or a NULL if an error occurs.
+ * @brief Writes @p bn to decimal string.
+ * @details Writes @p bn to decimal string. Caller is responsible for
+ * freeing returned string with xmlFree.
+ * @param bn the pointer to BN.
+ * @return the string represenataion if BN or a NULL if an error occurs.
  */
 xmlChar*
 xmlSecBnToDecString(xmlSecBnPtr bn) {
@@ -467,13 +433,10 @@ xmlSecBnToDecString(xmlSecBnPtr bn) {
 }
 
 /**
- * xmlSecBnMul:
- * @bn:                 the pointer to BN.
- * @multiplier:         the multiplier.
- *
- * Multiplies @bn with @multiplier.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Multiplies @p bn with @p multiplier.
+ * @param bn the pointer to BN.
+ * @param multiplier the multiplier.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecBnMul(xmlSecBnPtr bn, int multiplier) {
@@ -516,14 +479,12 @@ xmlSecBnMul(xmlSecBnPtr bn, int multiplier) {
 }
 
 /**
- * xmlSecBnDiv:
- * @bn:         the pointer to BN.
- * @divider:    the divider
- * @mod:        the pointer for modulus result.
- *
- * Divides @bn by @divider and places modulus into @mod.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Divides @p bn by @p divider.
+ * @details Divides @p bn by @p divider and places modulus into @p mod.
+ * @param bn the pointer to BN.
+ * @param divider the divider
+ * @param mod the pointer for modulus result.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecBnDiv(xmlSecBnPtr bn, int divider, int* mod) {
@@ -571,13 +532,10 @@ xmlSecBnDiv(xmlSecBnPtr bn, int divider, int* mod) {
 }
 
 /**
- * xmlSecBnAdd:
- * @bn:         the pointer to BN.
- * @delta:      the delta.
- *
- * Adds @delta to @bn.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Adds @p delta to @p bn.
+ * @param bn the pointer to BN.
+ * @param delta the delta.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecBnAdd(xmlSecBnPtr bn, int delta) {
@@ -630,12 +588,9 @@ xmlSecBnAdd(xmlSecBnPtr bn, int delta) {
 }
 
 /**
- * xmlSecBnReverse:
- * @bn:         the pointer to BN.
- *
- * Reverses bytes order in @bn.
- *
- * Returns: 0 on success or a negative value if an error occurs.
+ * @brief Reverses bytes order in @p bn.
+ * @param bn the pointer to BN.
+ * @return 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecBnReverse(xmlSecBnPtr bn) {
@@ -643,15 +598,12 @@ xmlSecBnReverse(xmlSecBnPtr bn) {
 }
 
 /**
- * xmlSecBnCompare:
- * @bn:         the pointer to BN.
- * @data:       the data to compare BN to.
- * @dataSize:   the @data size.
- *
- * Compares the @bn with @data.
- *
- * Returns: 0 if data is equal, negative value if @bn is less or positive value if @bn
- * is greater than @data.
+ * @brief Compares the @p bn with @p data.
+ * @param bn the pointer to BN.
+ * @param data the data to compare BN to.
+ * @param dataSize the @p data size.
+ * @return 0 if data is equal, negative value if @p bn is less or positive value if @p bn
+ * is greater than @p data.
  */
 int
 xmlSecBnCompare(xmlSecBnPtr bn, const xmlSecByte* data, xmlSecSize dataSize) {
@@ -693,15 +645,12 @@ xmlSecBnCompare(xmlSecBnPtr bn, const xmlSecByte* data, xmlSecSize dataSize) {
 }
 
 /**
- * xmlSecBnCompareReverse:
- * @bn:         the pointer to BN.
- * @data:       the data to compare BN to.
- * @dataSize:   the @data size.
- *
- * Compares the @bn with reverse @data.
- *
- * Returns: 0 if data is equal, negative value if @bn is less or positive value if @bn
- * is greater than @data.
+ * @brief Compares the @p bn with reverse @p data.
+ * @param bn the pointer to BN.
+ * @param data the data to compare BN to.
+ * @param dataSize the @p data size.
+ * @return 0 if data is equal, negative value if @p bn is less or positive value if @p bn
+ * is greater than @p data.
  */
 int
 xmlSecBnCompareReverse(xmlSecBnPtr bn, const xmlSecByte* data, xmlSecSize dataSize) {
@@ -750,15 +699,13 @@ xmlSecBnCompareReverse(xmlSecBnPtr bn, const xmlSecByte* data, xmlSecSize dataSi
 }
 
 /**
- * xmlSecBnGetNodeValue:
- * @bn:         the pointer to BN.
- * @cur:        the pointer to an XML node.
- * @format:     the BN format.
- * @reverse:    if set then reverse read buffer after reading.
- *
- * Converts the node content from @format to @bn.
- *
- * Returns: 0 on success and a negative values if an error occurs.
+ * @brief Converts node content to BN value.
+ * @details Converts the node content from @p format to @p bn.
+ * @param bn the pointer to BN.
+ * @param cur the pointer to an XML node.
+ * @param format the BN format.
+ * @param reverse if set then reverse read buffer after reading.
+ * @return 0 on success and a negative values if an error occurs.
  */
 int
 xmlSecBnGetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int reverse) {
@@ -817,16 +764,13 @@ xmlSecBnGetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int 
 }
 
 /**
- * xmlSecBnSetNodeValue:
- * @bn:                 the pointer to BN.
- * @cur:                the pointer to an XML node.
- * @format:             the BN format.
- * @reverse:            the flag that indicates whether to reverse the buffer before writing.
- * @addLineBreaks:      the flag; it is equal to 1 then linebreaks will be added before and after new buffer content.
- *
- * Converts the @bn and sets it to node content.
- *
- * Returns: 0 on success and a negative values if an error occurs.
+ * @brief Converts the @p bn and sets it to node content.
+ * @param bn the pointer to BN.
+ * @param cur the pointer to an XML node.
+ * @param format the BN format.
+ * @param reverse the flag that indicates whether to reverse the buffer before writing.
+ * @param addLineBreaks the flag; it is equal to 1 then linebreaks will be added before and after new buffer content.
+ * @return 0 on success and a negative values if an error occurs.
  */
 int
 xmlSecBnSetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int reverse, int addLineBreaks) {
@@ -886,19 +830,16 @@ xmlSecBnSetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int 
 }
 
 /**
- * xmlSecBnBlobSetNodeValue:
- * @data:       the pointer to BN blob.
- * @dataSize:   the size of BN blob.
- * @cur:        the pointer to an XML node.
- * @format:     the BN format.
- * @reverse:    the flag that indicates whether to reverse the buffer before writing.
- * @addLineBreaks:  if the flag is equal to 1 then
+ * @brief Converts the @p blob and sets it to node content.
+ * @param data the pointer to BN blob.
+ * @param dataSize the size of BN blob.
+ * @param cur the pointer to an XML node.
+ * @param format the BN format.
+ * @param reverse the flag that indicates whether to reverse the buffer before writing.
+ * @param addLineBreaks if the flag is equal to 1 then
  *              linebreaks will be added before and after
  *              new buffer content.
- *
- * Converts the @blob and sets it to node content.
- *
- * Returns: 0 on success and a negative values if an error occurs.
+ * @return 0 on success and a negative values if an error occurs.
  */
 int
 xmlSecBnBlobSetNodeValue(const xmlSecByte* data, xmlSecSize dataSize,

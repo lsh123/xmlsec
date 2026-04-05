@@ -428,7 +428,7 @@ create_files_keys_mngr(void) {
  * <dsig:KeyName/> element is a name of the file with a key.
  * Attention: this probably not a good solution for high traffic systems.
  *
- ***************************************************************************/
+ *****************************************************************************/
 static xmlSecKeyPtr		files_keys_store_find_key	(xmlSecKeyStorePtr store,
 								 const xmlChar* name,
 								 xmlSecKeyInfoCtxPtr keyInfoCtx);

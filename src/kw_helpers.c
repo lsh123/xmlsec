@@ -240,7 +240,7 @@ xmlSecTransformKWDes3Execute(xmlSecTransformPtr transform, xmlSecTransformKWDes3
  *
  * CMS Triple DES Key Wrap
  *
- * http://www.w3.org/TR/xmlenc-coree/#sec-Alg-SymmetricKeyWrap
+ * http://www.w3.org/TR/xmlenc-core/#sec-Alg-SymmetricKeyWrap
  *
  * The following algorithm wraps (encrypts) a key (the wrapped key, WK)
  * under a TRIPLEDES key-encryption-key (KEK) as specified in [CMS-Algorithms]:
@@ -690,7 +690,7 @@ xmlSecTransformKWRfc3394Execute(xmlSecTransformPtr transform, xmlSecTransformKWR
  *
  * KW RFC 3394
  *
- * http://www.w3.org/TR/xmlenc-coree/#sec-Alg-SymmetricKeyWrap:
+ * http://www.w3.org/TR/xmlenc-core/#sec-Alg-SymmetricKeyWrap:
  *
  * Assume that the data to be wrapped consists of N 64-bit data blocks
  * denoted P(1), P(2), P(3) ... P(N). The result of wrapping will be N+1

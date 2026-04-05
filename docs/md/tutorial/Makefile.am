@@ -48,14 +48,7 @@ tutorial-md:
 	fi
 
 dist-hook: tutorial-md
-	@echo "-- Copying tutorial Markdown files to dist ..."
-	@for f in $(TUTORIAL_MD_FILES) ; do \
-		$(CP) $(builddir)/$$f $(distdir)/$$f ; \
-	done
-	@$(MKDIR_P) $(distdir)/images
-	@for f in $(TUTORIAL_IMAGE_FILES) ; do \
-		$(CP) $(builddir)/$$f $(distdir)/$$f ; \
-	done
+	echo "--- All tutoria Markdown files are already copied"
 
 clean-local:
 	@( \

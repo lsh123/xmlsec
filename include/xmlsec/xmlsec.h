@@ -56,7 +56,7 @@ extern "C" {
  *
  * Basic types to make ports to exotic platforms easier
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief Void pointer.
  */
@@ -79,12 +79,8 @@ typedef void*                                   xmlSecPtr;
 /**
  * @brief Size of something.
  */
-
 typedef size_t xmlSecSize;
-/**
- * @brief Alias macro for size_t.
- */
-#define xmlSecSize                              size_t
+
 /**
  * @brief The minimum value of #xmlSecSize (0).
  */
@@ -107,7 +103,7 @@ typedef unsigned char xmlSecByte;
  *
  * Forward declarations
  *
-  *****************************************************************************/
+ *****************************************************************************/
 typedef struct _xmlSecKeyData                   xmlSecKeyData, *xmlSecKeyDataPtr;
 typedef struct _xmlSecKeyDataStore              xmlSecKeyDataStore, *xmlSecKeyDataStorePtr;
 typedef struct _xmlSecKeyInfoCtx                xmlSecKeyInfoCtx, *xmlSecKeyInfoCtxPtr;
@@ -138,7 +134,7 @@ XMLSEC_EXPORT xmlSecSize                        xmlSecStrlen            (const x
  *
  * Version checking
  *
-  *****************************************************************************/
+ *****************************************************************************/
 /**
  * @brief Checks if loaded library version exactly matches.
  * @details Macro. Returns 1 if the loaded xmlsec library version exactly matches

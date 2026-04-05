@@ -10,7 +10,7 @@
 /**
  * @addtogroup xmlsec_core_keyinfo
  * @brief &lt;dsig:KeyInfo/&gt; node parser functions.
- * [KeyInfo](https://www.w3.org/TR/xmldsig-coree/#sec-KeyInfo) is an
+ * [KeyInfo](https://www.w3.org/TR/xmldsig-core/#sec-KeyInfo) is an
  * optional element that enables the recipient(s) to obtain
  * the key needed to validate the signature.  KeyInfo may contain keys,
  * names, certificates and other public key management information, such as
@@ -1527,7 +1527,7 @@ static xmlSecKeyDataKlass xmlSecKeyDataEncryptedKeyKlass = {
 /**
  * @brief Gets the EncryptedKey element key data klass.
  * @details The &lt;enc:EncryptedKey/&gt; element key data klass
- * (http://www.w3.org/TR/xmlenc-coree/#sec-EncryptedKey):
+ * (http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey):
  *
  * The EncryptedKey element is used to transport encryption keys from
  * the originator to a known recipient(s). It may be used as a stand-alone

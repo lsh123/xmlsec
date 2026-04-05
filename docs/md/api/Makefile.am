@@ -40,6 +40,10 @@ endif
 #
 api-md:
 	@echo "-- Generating API Markdown files ..."
+	@if [ ! -d "$(XML_API_DIR)" ]; then \
+		echo "-- XML API directory not found, generating XML files first ..."; \
+		$(MAKE) $(AM_MAKEFLAGS) -C $(abs_top_builddir)/docs/xml/api docs; \
+	fi
 	@$(PYTHON3) $(GEN_API_MD) "$(XML_API_DIR)" "$(builddir)"
 
 dist-hook: api-md

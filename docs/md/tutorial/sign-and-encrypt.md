@@ -11,14 +11,15 @@ XML Security Library performs signature or encryption by processing input xml or
 The typical signature process includes following steps:
 - Prepare data for signature.
 - Create or load signature template and select start [<dsig:Signature/>](http://www.w3.org/TR/xmldsig-core/#sec-Signature) node.
-- Create signature context [xmlSecDSigCtx](#xmlsecdsigctx) using [xmlSecDSigCtxCreate](#xmlsecdsigctxcreate) or [xmlSecDSigCtxInitialize](#xmlsecdsigctxinitialize) functions.
-- Load signature key in [keys manager](#xmlseckeysmngr) or generate a session key and set it in the signature context ( `signKey` member of [xmlSecDSigCtx](#xmlsecdsigctx) structure).
-- Sign data by calling [xmlSecDSigCtxSign](#xmlsecdsigctxsign) function.
+- Create signature context [xmlSecDSigCtx](../api/xmlsec_core_xmldsig.md#xmlsecdsigctxcreate) using [xmlSecDSigCtxCreate](../api/xmlsec_core_xmldsig.md#xmlsecdsigctxcreate) or [xmlSecDSigCtxInitialize](../api/xmlsec_core_xmldsig.md#xmlsecdsigctxinitialize) functions.
+- Load signature key in [keys manager](../api/xmlsec_core_keysmngr.md#xmlseckeysmngrcreate) or generate a session key and set it in the signature context ( `signKey` member of [xmlSecDSigCtx](../api/xmlsec_core_xmldsig.md#xmlsecdsigctxcreate) structure).
+- Sign data by calling [xmlSecDSigCtxSign](../api/xmlsec_core_xmldsig.md#xmlsecdsigctxsign) function.
 - Check returned value and consume signed data.
-- Destroy signature context [xmlSecDSigCtx](#xmlsecdsigctx) using [xmlSecDSigCtxDestroy](#xmlsecdsigctxdestroy) or [xmlSecDSigCtxFinalize](#xmlsecdsigctxfinalize) functions.
+- Destroy signature context [xmlSecDSigCtx](../api/xmlsec_core_xmldsig.md#xmlsecdsigctxcreate) using [xmlSecDSigCtxDestroy](../api/xmlsec_core_xmldsig.md#xmlsecdsigctxdestroy) or [xmlSecDSigCtxFinalize](../api/xmlsec_core_xmldsig.md#xmlsecdsigctxfinalize) functions.
 
 **Example: Signing a template**
-```
+
+```c
 /**
  * sign_file:
  * @tmpl_file:		the signature template file name.
@@ -96,25 +97,26 @@ done:
     return(res);
 }
 ```
-[Full program listing](#xmlsec-example-sign1)
-[Simple signature template file](#xmlsec-example-sign1-tmpl)
+[Full program listing](../examples/sign1.md)
+[Simple signature template file](../examples/sign1.md)
 
 ## Encrypting data
 
 The typical encryption process includes following steps:
 - Prepare data for encryption.
-- Create or load encryption template and select start <enc:EncryptedData/> node.
-- Create encryption context [xmlSecEncCtx](#xmlsecencctx) using [xmlSecEncCtxCreate](#xmlsecencctxcreate) or [xmlSecEncCtxInitialize](#xmlsecencctxinitialize) functions.
-- Load encryption key in [keys manager](#xmlseckeysmngr) or generate a session key and set it in the encryption context ( `encKey` member of [xmlSecEncCtx](#xmlsecencctx) structure).
+- Create or load encryption template and select start [<enc:EncryptedData/>](http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData) node.
+- Create encryption context [xmlSecEncCtx](../api/xmlsec_core_xmlenc.md#xmlsecencctxcreate) using [xmlSecEncCtxCreate](../api/xmlsec_core_xmlenc.md#xmlsecencctxcreate) or [xmlSecEncCtxInitialize](../api/xmlsec_core_xmlenc.md#xmlsecencctxinitialize) functions.
+- Load encryption key in [keys manager](../api/xmlsec_core_keysmngr.md#xmlseckeysmngrcreate) or generate a session key and set it in the encryption context ( `encKey` member of [xmlSecEncCtx](../api/xmlsec_core_xmlenc.md#xmlsecencctxcreate) structure).
 - Encrypt data by calling one of the following functions:
-  - [xmlSecEncCtxBinaryEncrypt](#xmlsecencctxbinaryencrypt)
-  - [xmlSecEncCtxXmlEncrypt](#xmlsecencctxxmlencrypt)
-  - [xmlSecEncCtxUriEncrypt](#xmlsecencctxuriencrypt)
+  - [xmlSecEncCtxBinaryEncrypt](../api/xmlsec_core_xmlenc.md#xmlsecencctxbinaryencrypt)
+  - [xmlSecEncCtxXmlEncrypt](../api/xmlsec_core_xmlenc.md#xmlsecencctxxmlencrypt)
+  - [xmlSecEncCtxUriEncrypt](../api/xmlsec_core_xmlenc.md#xmlsecencctxuriencrypt)
 - Check returned value and if necessary consume encrypted data.
-- Destroy encryption context [xmlSecEncCtx](#xmlsecencctx) using [xmlSecEncCtxDestroy](#xmlsecencctxdestroy) or [xmlSecEncCtxFinalize](#xmlsecencctxfinalize) functions.
+- Destroy encryption context [xmlSecEncCtx](../api/xmlsec_core_xmlenc.md#xmlsecencctxcreate) using [xmlSecEncCtxDestroy](../api/xmlsec_core_xmlenc.md#xmlsecencctxdestroy) or [xmlSecEncCtxFinalize](../api/xmlsec_core_xmlenc.md#xmlsecencctxfinalize) functions.
 
 **Example: Encrypting binary data with a template**
-```
+
+```c
 /**
  * encrypt_file:
  * @tmpl_file:		the encryption template file name.
@@ -196,6 +198,6 @@ done:
     return(res);
 }
 ```
-[Full program listing](#xmlsec-example-encrypt1)
-[Simple encryption template file](#xmlsec-example-encrypt1-tmpl)
+[Full program listing](../examples/encrypt1.md)
+[Simple encryption template file](../examples/encrypt1.md)
 

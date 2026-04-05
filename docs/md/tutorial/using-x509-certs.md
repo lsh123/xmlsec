@@ -7,11 +7,13 @@ X509 certificate is one of many possible keys data object that can be associated
 ## Signing data with X509 certificate
 
 To sign a file using X509 certificate, an application need to associate the certificate (or certificates) with the private key using one of the following functions:
-- [xmlSecOpenSSLAppKeyCertLoad](#xmlsecopensslappkeycertload) - loads certificate from a file and adds to the key;
-- [xmlSecOpenSSLAppPkcs12Load](#xmlsecopensslapppkcs12load) - loads private key and all the certificates associated with it from a PKCS12 file;
-- [xmlSecKeyAdoptData](#xmlseckeyadoptdata) - low level function to add key data (including X509 key data) to the key.
+- [xmlSecOpenSSLAppKeyCertLoad](../api/xmlsec_openssl_app.md#xmlsecopensslappkeycertload) - loads certificate from a file and adds to the key;
+- [xmlSecOpenSSLAppPkcs12Load](../api/xmlsec_openssl_app.md#xmlsecopensslapppkcs12load) - loads private key and all the certificates associated with it from a PKCS12 file;
+- [xmlSecKeyAdoptData](../api/xmlsec_core_keys.md#xmlseckeyadoptdata) - low level function to add key data (including X509 key data) to the key.
+
 **Example: Loading private key and X509 certificate**
-```
+
+```c
     /* load private key, assuming that there is not password */
     key = xmlSecCryptoAppKeyLoad(key_file, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
     if(key == NULL) {
@@ -25,11 +27,13 @@ To sign a file using X509 certificate, an application need to associate the cert
 	goto done;
     }
 ```
-[Full program listing](#xmlsec-example-sign3)
+[Full program listing](../examples/sign3.md)
 
-Next step is to prepare signature template with <dsig:X509Data/> child of the <dsig:KeyInfo/> element. When XML Security Library finds this node in the template, it automatically creates <dsig:X509Certificate/> children of the <dsig:X509Data/> element and writes to result XML document all the certificates associated with the signature key.
+Next step is to prepare signature template with [<dsig:X509Data/>](http://www.w3.org/TR/xmldsig-core/#sec-X509Data) child of the [<dsig:KeyInfo/>](http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo) element. When XML Security Library finds this node in the template, it automatically creates [<dsig:X509Certificate/>](http://www.w3.org/TR/xmldsig-core/#sec-X509Data) children of the [<dsig:X509Data/>](http://www.w3.org/TR/xmldsig-core/#sec-X509Data) element and writes to result XML document all the certificates associated with the signature key.
+
 **Example: Dynamicaly creating a signature template for signing document using X509 certificate**
-```
+
+```c
     /* create signature template for RSA-SHA1 enveloped signature */
     signNode = xmlSecTmplSignatureCreate(doc, xmlSecTransformExclC14NId,
 				         xmlSecTransformRsaSha1Id, NULL);
@@ -67,7 +71,7 @@ Next step is to prepare signature template with <dsig:X509Data/> child of the <d
 	goto done;
     }
 ```
-[Full program listing](#xmlsec-example-sign3)
+[Full program listing](../examples/sign3.md)
 
 ## Verifing document signed with X509 certificates
 
@@ -75,15 +79,20 @@ If the document is signed with an X509 certificate then the signature verificati
 - Creating and verifing X509 certificates chain.
 - Verifing signature itself using key exrtacted from a certificate verified on previous step.
 Certificates chain is constructed from certificates in a way that each certificate in the chain is signed with previous one:
+
 **Certificates chain**
+
 ```
 Certificate A (signed with B) <- Certificate B (signed with C) <- ... <- Root Certificate (signed by itself)
 ```
+
 At the end of the chain there is a "Root Certificate" which is signed by itself. There is no way to verify the validity of the root certificate and application have to "trust" it (another name for root certificates is "trusted" certificates).
 
-Application can use [xmlSecCryptoAppKeysMngrCertLoad](#xmlseccryptoappkeysmngrcertload) function to load both "trusted" and "un-trusted" certificates. However, the selection of "trusted" certificates is very sensitive process and this function might be not implemented for some crypto engines. In this case, the "trusted" certificates list is loaded during initialization or specified in crypto engine configuration files. Check XML Security Library API reference for more details.
+Application can use [xmlSecCryptoAppKeysMngrCertLoad](../api/xmlsec_core_app.md#xmlseccryptoappkeysmngrcertload) function to load both "trusted" and "un-trusted" certificates. However, the selection of "trusted" certificates is very sensitive process and this function might be not implemented for some crypto engines. In this case, the "trusted" certificates list is loaded during initialization or specified in crypto engine configuration files. Check XML Security Library API reference for more details.
+
 **Example: Loading trusted X509 certificate**
-```
+
+```c
 /**
  * load_trusted_certs:
  * @files:		the list of filenames.
@@ -133,5 +142,5 @@ load_trusted_certs(char** files, int files_size) {
     return(mngr);
 }
 ```
-[Full program listing](#xmlsec-example-verify3)
+[Full program listing](../examples/verify3.md)
 

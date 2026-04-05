@@ -1,0 +1,3 @@
+# Generated Markdown files — produced by make docs / make dist.
+# Do not commit these to git.
+*.md

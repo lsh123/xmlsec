@@ -1,6 +1,6 @@
 NULL =
 
-SUBDIRS = sgml xml md html
+SUBDIRS = xml md html
 
 .PHONY: all docs
 
@@ -9,6 +9,6 @@ all:
 
 docs:
 	@$(MAKE) $(AM_MAKEFLAGS) -C xml docs
-	@$(MAKE) $(AM_MAKEFLAGS) -C sgml docs
 	@$(MAKE) $(AM_MAKEFLAGS) -C md docs
 	@$(MAKE) $(AM_MAKEFLAGS) -C html docs
+

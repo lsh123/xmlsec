@@ -50,7 +50,8 @@ GENERATE_MAN           = NO
 GENERATE_RTF           = NO
 GENERATE_DOCBOOK       = NO
 GENERATE_XML           = YES
-XML_OUTPUT             = @abs_top_builddir@/docs/xml/api
+HTML_OUTPUT            = html
+XML_OUTPUT             = xml
 INPUT                  = @abs_top_srcdir@/include \
                          @abs_top_srcdir@/src
 FILE_PATTERNS          = *.h \

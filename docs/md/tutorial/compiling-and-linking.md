@@ -7,17 +7,18 @@ Compiling and linking application with XML Security Library requires specifying 
 ## Include files
 
 In order to use XML Security Library an application should include one or more of the following files:
-- [xmlsec/xmlsec.h](#xmlsec-xmlsec) - XML Security Library initialization and shutdown functions;
-- [xmlsec/xmldsig.h](#xmlsec-xmldsig) - XML Digital Signature functions;
-- [xmlsec/xmlenc.h](#xmlsec-xmlenc) - XML Encryption functions;
-- [xmlsec/xmltree.h](#xmlsec-xmltree) - helper functions for XML documents manipulation;
-- [xmlsec/templates.h](#xmlsec-templates) - helper functions for dynamic XML Digital Signature and XML Encryption templates creation;
-- [xmlsec/crypto.h](#xmlsec-crypto) - automatic XML Security Crypto Library selection.
+- `xmlsec/xmlsec.h` - XML Security Library initialization and shutdown functions;
+- `xmlsec/xmldsig.h` - XML Digital Signature functions;
+- `xmlsec/xmlenc.h` - XML Encryption functions;
+- `xmlsec/xmltree.h` - helper functions for XML documents manipulation;
+- `xmlsec/templates.h` - helper functions for dynamic XML Digital Signature and XML Encryption templates creation;
+- `xmlsec/crypto.h` - automatic XML Security Crypto Library selection.
 
 If necessary, the application should also include LibXML, LibXSLT and crypto library header files.
 
 **Example: Example includes file section**
-```
+
+```c
 #include <libxml/tree.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>

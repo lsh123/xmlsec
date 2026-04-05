@@ -11,15 +11,16 @@ Signature verification and data decryption do not require template because all t
 ## Verifying a signed document
 
 The typical signature verification process includes following steps:
-- Load keys, X509 certificates, etc. in the [keys manager](#xmlseckeysmngr) .
-- Create signature context [xmlSecDSigCtx](#xmlsecdsigctx) using [xmlSecDSigCtxCreate](#xmlsecdsigctxcreate) or [xmlSecDSigCtxInitialize](#xmlsecdsigctxinitialize) functions.
+- Load keys, X509 certificates, etc. in the [keys manager](../api/xmlsec_core_keysmngr.md#xmlseckeysmngrcreate) .
+- Create signature context [xmlSecDSigCtx](../api/xmlsec_core_xmldsig.md#xmlsecdsigctxcreate) using [xmlSecDSigCtxCreate](../api/xmlsec_core_xmldsig.md#xmlsecdsigctxcreate) or [xmlSecDSigCtxInitialize](../api/xmlsec_core_xmldsig.md#xmlsecdsigctxinitialize) functions.
 - Select start verification [<dsig:Signature/>](http://www.w3.org/TR/xmldsig-core/#sec-Signature) node in the signed XML document.
-- Verify signature by calling [xmlSecDSigCtxVerify](#xmlsecdsigctxverify) function.
-- Check returned value and verification status ( `status` member of [xmlSecDSigCtx](#xmlsecdsigctx) structure). If necessary, consume returned data from the [context](#xmlsecdsigctx) .
-- Destroy signature context [xmlSecDSigCtx](#xmlsecdsigctx) using [xmlSecDSigCtxDestroy](#xmlsecdsigctxdestroy) or [xmlSecDSigCtxFinalize](#xmlsecdsigctxfinalize) functions.
+- Verify signature by calling [xmlSecDSigCtxVerify](../api/xmlsec_core_xmldsig.md#xmlsecdsigctxverify) function.
+- Check returned value and verification status ( `status` member of [xmlSecDSigCtx](../api/xmlsec_core_xmldsig.md#xmlsecdsigctxcreate) structure). If necessary, consume returned data from the [context](../api/xmlsec_core_xmldsig.md#xmlsecdsigctxcreate) .
+- Destroy signature context [xmlSecDSigCtx](../api/xmlsec_core_xmldsig.md#xmlsecdsigctxcreate) using [xmlSecDSigCtxDestroy](../api/xmlsec_core_xmldsig.md#xmlsecdsigctxdestroy) or [xmlSecDSigCtxFinalize](../api/xmlsec_core_xmldsig.md#xmlsecdsigctxfinalize) functions.
 
 **Example: Verifying a document**
-```
+
+```c
 /**
  * verify_file:
  * @xml_file:		the signed XML file name.
@@ -101,20 +102,21 @@ done:
     return(res);
 }
 ```
-[Full Program Listing](#xmlsec-example-verify1)
+[Full Program Listing](../examples/verify1.md)
 
 ## Decrypting an encrypted document
 
 The typical decryption process includes following steps:
-- Load keys, X509 certificates, etc. in the [keys manager](#xmlseckeysmngr) .
-- Create encryption context [xmlSecEncCtx](#xmlsecencctx) using [xmlSecEncCtxCreate](#xmlsecencctxcreate) or [xmlSecEncCtxInitialize](#xmlsecencctxinitialize) functions.
-- Select start decryption <enc:EncryptedData> node.
-- Decrypt by calling [xmlSecencCtxDecrypt](#xmlsecencctxdecrypt) function.
+- Load keys, X509 certificates, etc. in the [keys manager](../api/xmlsec_core_keysmngr.md#xmlseckeysmngrcreate) .
+- Create encryption context [xmlSecEncCtx](../api/xmlsec_core_xmlenc.md#xmlsecencctxcreate) using [xmlSecEncCtxCreate](../api/xmlsec_core_xmlenc.md#xmlsecencctxcreate) or [xmlSecEncCtxInitialize](../api/xmlsec_core_xmlenc.md#xmlsecencctxinitialize) functions.
+- Select start decryption [<enc:EncryptedData/>](http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData) node.
+- Decrypt by calling [xmlSecEncCtxDecrypt](../api/xmlsec_core_xmlenc.md#xmlsecencctxdecrypt) function.
 - Check returned value and if necessary consume encrypted data.
-- Destroy encryption context [xmlSecEncCtx](#xmlsecencctx) using [xmlSecEncCtxDestroy](#xmlsecencctxdestroy) or [xmlSecEncCtxFinalize](#xmlsecencctxfinalize) functions.
+- Destroy encryption context [xmlSecEncCtx](../api/xmlsec_core_xmlenc.md#xmlsecencctxcreate) using [xmlSecEncCtxDestroy](../api/xmlsec_core_xmlenc.md#xmlsecencctxdestroy) or [xmlSecEncCtxFinalize](../api/xmlsec_core_xmlenc.md#xmlsecencctxfinalize) functions.
 
 **Example: Decrypting a document**
-```
+
+```c
 int
 decrypt_file(const char* enc_file, const char* key_file) {
     xmlDocPtr doc = NULL;
@@ -195,5 +197,5 @@ done:
     return(res);
 }
 ```
-[Full Program Listing](#xmlsec-example-decrypt1)
+[Full Program Listing](../examples/decrypt1.md)
 

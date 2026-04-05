@@ -1,6 +1,6 @@
 NULL =
 
-SUBDIRS = api tutorial examples
+SUBDIRS = tutorial examples
 
 TARGET_DIR = @XMLSEC_DOCDIR@
 
@@ -17,7 +17,7 @@ EXTRA_DIST := \
 XMLSEC1_MAN  = $(top_builddir)/man/xmlsec1.1
 XMLSEC_HTML  = $(builddir)/xmlsec-man.html
 
-.PHONY: all docs docs-api docs-tutorial docs-examples docs-manpages docs-copy docs-fix-links
+.PHONY: all docs docs-tutorial docs-examples docs-manpages docs-copy docs-fix-links
 
 all:
 	@echo "======= Run 'make docs' in the xmlsec/docs folder to rebuild docs"
@@ -26,7 +26,7 @@ all:
 # if we build api docs then we also have xsltproc
 if BUILD_API_DOCS
 
-docs: docs-manpages docs-api docs-tutorial docs-examples docs-copy
+docs: docs-manpages docs-tutorial docs-examples docs-copy
 	@(echo "-- Formatting html documents"; \
 	for i in `find $(builddir) -name "*.html" -print`; \
 	do \
@@ -53,7 +53,7 @@ docs: docs-manpages docs-api docs-tutorial docs-examples docs-copy
 
 else
 
-docs: docs-manpages docs-api docs-tutorial docs-examples
+docs: docs-manpages docs-tutorial docs-examples
 	@(echo "=== ERROR: To build docs, make sure all necessary tools are installed" ; exit 1; )
 
 endif
@@ -84,9 +84,6 @@ docs-copy:
 			$(CP) -r $(srcdir)/css $(builddir)/css ; \
 		fi ; \
 	)
-
-docs-api:
-	make -C api docs
 
 docs-tutorial:
 	make -C tutorial docs

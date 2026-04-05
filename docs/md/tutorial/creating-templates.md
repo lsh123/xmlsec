@@ -6,10 +6,11 @@ The XML Security Library uses templates to describe how and what data should be 
 
 ## Creating dynamic signature templates
 
-The signature template has structure similar to the XML Digital Signature structure as it is described in [specification](http://www.w3.org/TR/xmldsig-core) . The only difference is that some nodes (for example, <dsig:DigestValue/> or <SignatureValue/>) are empty. The XML Security Library sets the content of these nodes after doing necessary calculations.
+The signature template has structure similar to the XML Digital Signature structure as it is described in [specification](http://www.w3.org/TR/xmldsig-core) . The only difference is that some nodes (for example, [<dsig:DigestValue/>](http://www.w3.org/TR/xmldsig-core/#sec-DigestValue) or <SignatureValue/>) are empty. The XML Security Library sets the content of these nodes after doing necessary calculations.
 
 **XML Digital Signature structure**
-```
+
+```xml
 <dsig:Signature ID?>
     <dsig:SignedInfo>
         <dsig:CanonicalizationMethod Algorithm />
@@ -40,7 +41,8 @@ The signature template has structure similar to the XML Digital Signature struct
 ```
 
 **Example: Creating dynamic signature template**
-```
+
+```c
 /**
  * sign_file:
  * @xml_file:		the XML file name.
@@ -151,14 +153,15 @@ done:
     return(res);
 }
 ```
-[Full program listing](#xmlsec-example-sign2)
+[Full program listing](../examples/sign2.md)
 
 ## Creating dynamic encryption templates
 
-The encryption template has structure similar to the XML Encryption structure as it is described in [specification](http://www.w3.org/TR/xmlenc-core) . The only difference is that some nodes (for example, <enc:CipherValue/>) are empty. The XML Security Library sets the content of these nodes after doing necessary calculations.
+The encryption template has structure similar to the XML Encryption structure as it is described in [specification](http://www.w3.org/TR/xmlenc-core) . The only difference is that some nodes (for example, [<enc:CipherValue/>](http://www.w3.org/TR/xmlenc-core/#sec-CipherData)) are empty. The XML Security Library sets the content of these nodes after doing necessary calculations.
 
 **XML Encryption structure**
-```
+
+```xml
 <enc:EncryptedData Id? Type? MimeType? Encoding?>
     <enc:EncryptionMethod Algorithm />?
     (<dsig:KeyInfo>
@@ -182,7 +185,8 @@ The encryption template has structure similar to the XML Encryption structure as
 ```
 
 **Example: Creating dynamic encrytion template**
-```
+
+```c
 /**
  * encrypt_file:
  * @xml_file:		the encryption template file name.
@@ -290,5 +294,5 @@ done:
     return(res);
 }
 ```
-[Full program listing](#xmlsec-example-encrypt2)
+[Full program listing](../examples/encrypt2.md)
 

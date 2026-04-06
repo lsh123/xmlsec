@@ -57,9 +57,9 @@ else
 docs: docs-manpages
 	@( \
 		echo "=== ERROR: To build docs, make sure all necessary tools are installed" ; \
-		echo "SED:      $SED" ; \
-		echo "SORT:     $SORT" ; \
-		echo "XSLTPROC: $XSLTPROC" ; \
+		echo "SED:      $(SED)" ; \
+		echo "SORT:     $(SORT)" ; \
+		echo "XSLTPROC: $(XSLTPROC)" ; \
 		exit 1; \
 	)
 

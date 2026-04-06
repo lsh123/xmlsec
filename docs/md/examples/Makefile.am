@@ -63,9 +63,11 @@ install-data-local:
 		if test -f $(builddir)/index.md ; then  \
 			echo "-- Installing builddir API docs ..." ; \
 			@INSTALL@ -m 0644 $(builddir)/*.md $(DESTDIR)$(TARGET_DIR) ; \
-		else \
+		elif test -f $(srcdir)/index.md ; then  \
 			echo "-- Installing srcdir API docs ..." ; \
 			@INSTALL@ -m 0644 $(srcdir)/*.md $(DESTDIR)$(TARGET_DIR) ; \
+		else \
+			echo "WARNING: Skipping examples docs installation: missing necessary tools to build examples docs" ; \
 		fi ; \
 	)
 

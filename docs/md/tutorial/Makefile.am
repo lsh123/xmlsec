@@ -69,10 +69,12 @@ install-data-local:
 			echo "-- Installing builddir tutorial docs ..." ; \
 			@INSTALL@ -m 0644 $(builddir)/*.md $(DESTDIR)$(TARGET_DIR) ; \
 			@INSTALL@ -m 0644 $(builddir)/images/*.png $(DESTDIR)$(TARGET_DIR)/images/ ; \
-	else \
+		elif test -f $(srcdir)/index.md ; then  \
 			echo "-- Installing srcdir tutorial docs ..." ; \
 			@INSTALL@ -m 0644 $(srcdir)/*.md $(DESTDIR)$(TARGET_DIR) ; \
     		@INSTALL@ -m 0644 $(srcdir)/images/*.png $(DESTDIR)$(TARGET_DIR)/images/ ; \
+		else \
+			echo "WARNING: Skipping tutorial docs installation: missing necessary tools to build tutorial docs" ; \
 		fi ; \
 	)
 

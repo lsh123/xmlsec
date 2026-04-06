@@ -7,6 +7,9 @@
 NULL =
 MODULE = xmlsec
 
+# target installation directory
+TARGET_DIR = @XMLSEC_DOCDIR@/api
+
 # Script that generates API Markdown files from Doxygen XML group files
 GEN_API_MD = $(srcdir)/gen-api-md.py
 
@@ -44,7 +47,7 @@ api-md:
 		echo "-- XML API directory not found, generating XML files first ..."; \
 		$(MAKE) $(AM_MAKEFLAGS) -C $(abs_top_builddir)/docs/xml/api docs; \
 	fi
-	@$(PYTHON3) $(GEN_API_MD) "$(XML_API_DIR)" "$(builddir)"
+	@$(PYTHON3) $(GEN_API_MD) "$(PACKAGE_VERSION)" "$(XML_API_DIR)" "$(builddir)"
 
 dist-hook: api-md
 	@echo "-- Copying API Markdown files to dist ..."
@@ -56,3 +59,20 @@ clean-local:
 			$(RM) -f $(builddir)/*.md ; \
 		fi ; \
 	)
+
+install-data-local:
+	@( \
+		$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR) ; \
+		if test -f $(builddir)/index.md ; then  \
+			echo "-- Installing builddir API docs ..." ; \
+			@INSTALL@ -m 0644 $(builddir)/*.md $(DESTDIR)$(TARGET_DIR) ; \
+		elif test -f $(srcdir)/index.md ; then  \
+			echo "-- Installing srcdir API docs ..." ; \
+			@INSTALL@ -m 0644 $(srcdir)/*.md $(DESTDIR)$(TARGET_DIR) ; \
+		else \
+			echo "WARNING: Skipping API docs installation: missing necessary tools to build API docs" ; \
+		fi ; \
+	)
+
+uninstall-local:
+	@$(RM) -rf $(DESTDIR)$(TARGET_DIR)

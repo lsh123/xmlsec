@@ -6,6 +6,9 @@
 NULL =
 MODULE = xmlsec
 
+# target installation directory
+TARGET_DIR = @XMLSEC_DOCDIR@/tutorial
+
 TUTORIAL_MD_FILES = $(notdir $(wildcard $(srcdir)/*.md))
 
 TUTORIAL_IMAGE_FILES = $(addprefix images/,$(notdir $(wildcard $(srcdir)/images/*.png)))
@@ -48,7 +51,7 @@ tutorial-md:
 	fi
 
 dist-hook: tutorial-md
-	echo "--- All tutoria Markdown files are already copied"
+	echo "--- All tutorial Markdown files are already copied"
 
 clean-local:
 	@( \
@@ -57,3 +60,23 @@ clean-local:
 			$(RM) -f $(builddir)/images/*.png ; \
 		fi ; \
 	)
+
+install-data-local:
+	@( \
+		$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR) ; \
+		$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)/images ; \
+		if test -f $(builddir)/index.md ; then  \
+			echo "-- Installing builddir tutorial docs ..." ; \
+			@INSTALL@ -m 0644 $(builddir)/*.md $(DESTDIR)$(TARGET_DIR) ; \
+			@INSTALL@ -m 0644 $(builddir)/images/*.png $(DESTDIR)$(TARGET_DIR)/images/ ; \
+		elif test -f $(srcdir)/index.md ; then  \
+			echo "-- Installing srcdir tutorial docs ..." ; \
+			@INSTALL@ -m 0644 $(srcdir)/*.md $(DESTDIR)$(TARGET_DIR) ; \
+    		@INSTALL@ -m 0644 $(srcdir)/images/*.png $(DESTDIR)$(TARGET_DIR)/images/ ; \
+		else \
+			echo "WARNING: Skipping tutorial docs installation: missing necessary tools to build tutorial docs" ; \
+		fi ; \
+	)
+
+uninstall-local:
+	@$(RM) -rf $(DESTDIR)$(TARGET_DIR)

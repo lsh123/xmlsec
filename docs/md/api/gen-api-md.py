@@ -3,7 +3,7 @@
 # gen-api-md.py — Generate Markdown API documentation from Doxygen XML group files.
 #
 # Usage:
-#   python3 gen-api-md.py <xml_input_dir> <md_output_dir>
+#   python3 gen-api-md.py <xmlsec_version> <xml_input_dir> <md_output_dir>
 #
 # Reads group__*.xml files from <xml_input_dir> (Doxygen XML output) and writes
 # one Markdown file per group into <md_output_dir>.
@@ -479,9 +479,10 @@ def _group_id_to_filename(group_id: str) -> str:
     return f"{name}.md"
 
 
-def generate_group_md(xml_path: str, out_dir: str) -> tuple[str, GroupInfo] | None:
-    """Parse *xml_path* and write a Markdown file to *out_dir*.
-    Returns a (output_path, GroupInfo) tuple on success, None on fatal parse error."""
+def _parse_group_xml(xml_path: str) -> tuple[list[str], GroupInfo] | None:
+    """Parse *xml_path* and build the Markdown content for a group.
+    Returns a (md_parts, GroupInfo) tuple on success, None on fatal parse error.
+    The caller is responsible for writing the file."""
     ctx = os.path.basename(xml_path)
 
     # --- Parse ---
@@ -513,6 +514,7 @@ def generate_group_md(xml_path: str, out_dir: str) -> tuple[str, GroupInfo] | No
     # --- Build output ---
     md_parts: list[str] = []
 
+    # Heading placeholder — caller may replace with a versioned heading
     md_parts.append(f"# {title}\n")
     md_parts.append(f"**API Group:** `{group_name}`\n")
 
@@ -549,28 +551,22 @@ def generate_group_md(xml_path: str, out_dir: str) -> tuple[str, GroupInfo] | No
             if rendered.strip():
                 md_parts.append(rendered)
 
-    # --- Write ---
-    out_filename = _group_id_to_filename(group_id)
-    out_path = os.path.join(out_dir, out_filename)
-    with open(out_path, "w", encoding="utf-8") as f:
-        f.write("\n".join(md_parts))
-
     info = GroupInfo(
         group_id=group_id,
         group_name=group_name,
         title=title,
         brief=_description_to_md(compound.find("briefdescription")),
-        filename=out_filename,
+        filename=_group_id_to_filename(group_id),
         children=[ig.get("refid", "") for ig in compound.findall("innergroup")],
     )
-    return out_path, info
+    return md_parts, info
 
 
 # ---------------------------------------------------------------------------
 # Index generation
 # ---------------------------------------------------------------------------
 
-def generate_index_md(groups: dict[str, GroupInfo], out_dir: str) -> str:
+def generate_index_md(groups: dict[str, GroupInfo], out_dir: str, version: str = "") -> str:
     """Build index.md with a hierarchical table of contents.
 
     Top-level groups (those not referenced as a child by any other group) are
@@ -584,7 +580,7 @@ def generate_index_md(groups: dict[str, GroupInfo], out_dir: str) -> str:
     roots = sorted(
         [gid for gid in groups if gid not in all_children],
         # deprecated groups sort last; within each tier, sort alphabetically
-        key=lambda gid: (1 if "[DEPRECATED]" in groups[gid].title else 0, groups[gid].title.lower()),
+        key=lambda gid: (1 if "(DEPRECATED)" in groups[gid].title else 0, groups[gid].title.lower()),
     )
 
     # Warn about any child references that have no corresponding parsed file
@@ -595,7 +591,10 @@ def generate_index_md(groups: dict[str, GroupInfo], out_dir: str) -> str:
     rendered: set[str] = set()
 
     lines: list[str] = []
-    lines.append("# XML Security Library – API Reference\n")
+    heading = "# XML Security Library – API Reference"
+    if version:
+        heading += f" ({version})"
+    lines.append(heading + "\n")
     lines.append(
         "This index lists all API groups. "
         "Each group links to a page describing its macros, types, "
@@ -654,15 +653,16 @@ def generate_index_md(groups: dict[str, GroupInfo], out_dir: str) -> str:
 # ---------------------------------------------------------------------------
 
 def main() -> int:
-    if len(sys.argv) != 3:
+    if len(sys.argv) != 4:
         print(
-            f"Usage: {sys.argv[0]} <xml_input_dir> <md_output_dir>",
+            f"Usage: {sys.argv[0]} <xmlsec_version> <xml_input_dir> <md_output_dir>",
             file=sys.stderr,
         )
         return 2
 
-    xml_dir = sys.argv[1]
-    out_dir = sys.argv[2]
+    version = sys.argv[1]
+    xml_dir = sys.argv[2]
+    out_dir = sys.argv[3]
 
     # Validate input directory
     if not os.path.isdir(xml_dir):
@@ -682,25 +682,42 @@ def main() -> int:
 
     print(f"-- Found {len(group_files)} group XML file(s) in {xml_dir}")
 
+    # Phase 1: parse all XML files to collect md_parts and GroupInfo
+    parsed: dict[str, tuple[list[str], GroupInfo]] = {}
+    for xml_path in group_files:
+        result = _parse_group_xml(xml_path)
+        if result:
+            md_parts, info = result
+            parsed[info.group_id] = (md_parts, info)
+        else:
+            _error(f"Failed to parse {xml_path}")
+
+    # Determine root groups: those not referenced as a child by any other group
+    all_children: set[str] = {c for _, info in parsed.values() for c in info.children}
+    root_ids: set[str] = {gid for gid in parsed if gid not in all_children}
+
+    # Phase 2: write files, adding version to the heading for root groups
     os.makedirs(out_dir, exist_ok=True)
 
     generated: list[str] = []
     groups: dict[str, GroupInfo] = {}
-    for xml_path in group_files:
-        result = generate_group_md(xml_path, out_dir)
-        if result:
-            out_path, info = result
-            print(f"Generated {out_path}")
-            generated.append(out_path)
-            groups[info.group_id] = info
+    for group_id, (md_parts, info) in parsed.items():
+        if version and group_id in root_ids:
+            md_parts_out = [f"# {info.title} ({version})\n"] + md_parts[1:]
         else:
-            _error(f"Failed to generate Markdown for {xml_path}")
+            md_parts_out = md_parts
+        out_path = os.path.join(out_dir, info.filename)
+        with open(out_path, "w", encoding="utf-8") as f:
+            f.write("\n".join(md_parts_out))
+        print(f"Generated {out_path}")
+        generated.append(out_path)
+        groups[group_id] = info
 
     print(f"-- Generated {len(generated)} Markdown file(s) in {out_dir}")
 
     # Generate index.md
     if groups:
-        index_path = generate_index_md(groups, out_dir)
+        index_path = generate_index_md(groups, out_dir, version)
         print(f"Generated {index_path}")
 
     if _errors:

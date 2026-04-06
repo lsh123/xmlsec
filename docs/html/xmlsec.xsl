@@ -94,20 +94,20 @@
 			</li>
 			<li>
 			<xsl:call-template name="linkto">
-				<xsl:with-param name="href">tutorial/index.html</xsl:with-param>
+				<xsl:with-param name="href">https://github.com/lsh123/xmlsec/wiki/Tutorial-Index</xsl:with-param>
 				<xsl:with-param name="text">Tutorial</xsl:with-param>
 			</xsl:call-template>
 			</li>
 			<li>
 			<xsl:call-template name="linkto">
-				<xsl:with-param name="href">examples/index.html</xsl:with-param>
+				<xsl:with-param name="href">https://github.com/lsh123/xmlsec/wiki/Examples-Index</xsl:with-param>
 				<xsl:with-param name="text">Examples</xsl:with-param>
 			</xsl:call-template>
 			</li>
 			<li>
 			<xsl:call-template name="linkto">
-				<xsl:with-param name="href">api/xmlsec-reference.html</xsl:with-param>
-				<xsl:with-param name="text">API reference</xsl:with-param>
+				<xsl:with-param name="href">https://github.com/lsh123/xmlsec/wiki/API-Index</xsl:with-param>
+				<xsl:with-param name="text">API Reference</xsl:with-param>
 			</xsl:call-template>
 			</li>
 	    </ul>

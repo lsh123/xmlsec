@@ -7,6 +7,9 @@
 NULL =
 MODULE = xmlsec
 
+# target installation directory
+TARGET_DIR = @XMLSEC_DOCDIR@/examples
+
 # Script that generates example Markdown files from C/XML source
 GEN_EXAMPLES_MD = $(srcdir)/gen-examples-md.py
 
@@ -54,3 +57,19 @@ clean-local:
 			$(RM) -f $(builddir)/*.md ; \
 		fi ; \
 	)
+install-data-local:
+	@( \
+		$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR) ; \
+		if test -f $(builddir)/index.md ; then  \
+			echo "-- Installing builddir API docs ..." ; \
+			@INSTALL@ -m 0644 $(builddir)/*.md $(DESTDIR)$(TARGET_DIR) ; \
+		elif test -f $(srcdir)/index.md ; then  \
+			echo "-- Installing srcdir API docs ..." ; \
+			@INSTALL@ -m 0644 $(srcdir)/*.md $(DESTDIR)$(TARGET_DIR) ; \
+		else \
+			echo "WARNING: Skipping examples docs installation: missing necessary tools to build examples docs" ; \
+		fi ; \
+	)
+
+uninstall-local:
+	@$(RM) -rf $(DESTDIR)$(TARGET_DIR)

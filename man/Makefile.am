@@ -1,14 +1,14 @@
 NULL =
 
-XMLSEC1_MAN=$(builddir)/xmlsec1.1
-XMLSEC1_CONFIG_MAN=$(builddir)/xmlsec1-config.1
+XMLSEC1_MAN=xmlsec1.1
+XMLSEC1_CONFIG_MAN=xmlsec1-config.1
 
 XMLSEC1_MAN_SRC=$(srcdir)/xmlsec1.1
 XMLSEC1_CONFIG_MAN_SRC=$(srcdir)/xmlsec1-config.1
 
 man_MANS = \
-	$(XMLSEC1_MAN) \
-	$(XMLSEC1_CONFIG_MAN) \
+	$(abs_builddir)/$(XMLSEC1_MAN) \
+	$(abs_builddir)/$(XMLSEC1_CONFIG_MAN) \
 	$(NULL)
 
 EXTRA_DIST = \
@@ -21,7 +21,7 @@ XMLSEC_CONFIG_PROGRAM=$(top_builddir)/xmlsec1-config
 
 all: $(man_MANS)
 
-$(XMLSEC1_MAN):
+$(abs_builddir)/$(XMLSEC1_MAN):
 	@if test "z$(HELP2MAN)" = "z" -o ! -f $(XMLSEC_PROGRAM) ; then \
 		echo "Copying xmlsec1 manpage ..."; \
 		if [ z"$(XMLSEC1_MAN_SRC)" != z"$(XMLSEC1_MAN)" ]; \
@@ -37,7 +37,7 @@ $(XMLSEC1_MAN):
 		  $(XMLSEC_PROGRAM) ; \
 	fi
 
-$(XMLSEC1_CONFIG_MAN):
+$(abs_builddir)/$(XMLSEC1_CONFIG_MAN):
 	@if test "z$(HELP2MAN)" = "z" -o ! -f $(XMLSEC_CONFIG_PROGRAM) ; then \
 		echo "Copying xmlsec1-config manpage ..."; \
 		if [ z"$(XMLSEC1_CONFIG_MAN_SRC)" != z"$(XMLSEC1_CONFIG_MAN)" ]; then \
@@ -51,12 +51,6 @@ $(XMLSEC1_CONFIG_MAN):
 		  --output=$(XMLSEC1_CONFIG_MAN) \
 		  $(XMLSEC_CONFIG_PROGRAM) ; \
 	fi
-
-$(XMLSEC_PROGRAM):
-	@cd ../apps;make
-
-$(XMLSEC_CONFIG_PROGRAM):
-
 
 clean-local:
 	@( if [ z"$(XMLSEC1_MAN_SRC)" != z"$(XMLSEC1_MAN)" ]; then \

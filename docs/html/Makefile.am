@@ -55,7 +55,13 @@ docs: docs-manpages docs-copy
 else
 
 docs: docs-manpages
-	@(echo "=== ERROR: To build docs, make sure all necessary tools are installed" ; exit 1; )
+	@( \
+		echo "=== ERROR: To build docs, make sure all necessary tools are installed" ; \
+		echo "SED:      $SED" ; \
+		echo "SORT:     $SORT" ; \
+		echo "XSLTPROC: $XSLTPROC" ; \
+		exit 1; \
+	)
 
 endif
 
@@ -81,8 +87,10 @@ docs-copy:
 		echo "-- Copying source html to build folder ..." ; \
 		if [ z"$(srcdir)" != z"$(builddir)" ] ; then  \
 			$(CP)  $(srcdir)/*.html $(builddir)/ ; \
-			$(CP) -r $(srcdir)/images $(builddir)/images ; \
-			$(CP) -r $(srcdir)/css $(builddir)/css ; \
+			$(CP)  $(srcdir)/*.ico $(builddir)/ ; \
+			mkdir -p  $(builddir)/images $(builddir)/css ; \
+			$(CP) -r $(srcdir)/images/* $(builddir)/images/ ; \
+			$(CP) -r $(srcdir)/css/* $(builddir)/css/ ; \
 		fi ; \
 	)
 
@@ -111,29 +119,3 @@ dist-hook:
 
 distclean-local: clean-local
 
-install-data-local:
-	@( \
-		$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR) ; \
-		if test -f $(builddir)/index.html ; then  \
-			echo "-- Installing builddir html docs ..." ; \
-			@INSTALL@ -m 0644 $(builddir)/*.html $(DESTDIR)$(TARGET_DIR) ; \
-		else \
-			echo "-- Installing srcdir html docs ..." ; \
-			@INSTALL@ -m 0644 $(srcdir)/*.html $(DESTDIR)$(TARGET_DIR) ; \
-		fi ; \
-	)
-	@( \
-		echo "-- Installing images ..." ; \
-		$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)/images ; \
-		@INSTALL@ -m 0644 $(srcdir)/*.ico  $(DESTDIR)$(TARGET_DIR) ; \
-		@INSTALL@ -m 0644 $(srcdir)/images/*.gif $(DESTDIR)$(TARGET_DIR)/images/ ; \
-		@INSTALL@ -m 0644 $(srcdir)/images/*.png $(DESTDIR)$(TARGET_DIR)/images/ ; \
-	)
-	@( \
-		echo "-- Installing css ..." ; \
-		$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)/css ; \
-		@INSTALL@ -m 0644 $(srcdir)/css/*.css $(DESTDIR)$(TARGET_DIR)/css/ ; \
-	)
-
-uninstall-local:
-	@$(RM) -rf $(DESTDIR)$(TARGET_DIR)

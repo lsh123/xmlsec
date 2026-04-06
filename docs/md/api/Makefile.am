@@ -7,6 +7,9 @@
 NULL =
 MODULE = xmlsec
 
+# target installation directory
+TARGET_DIR = @XMLSEC_DOCDIR@/api
+
 # Script that generates API Markdown files from Doxygen XML group files
 GEN_API_MD = $(srcdir)/gen-api-md.py
 
@@ -56,3 +59,18 @@ clean-local:
 			$(RM) -f $(builddir)/*.md ; \
 		fi ; \
 	)
+
+install-data-local:
+	@( \
+		$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR) ; \
+		if test -f $(builddir)/index.md ; then  \
+			echo "-- Installing builddir API docs ..." ; \
+			@INSTALL@ -m 0644 $(builddir)/*.md $(DESTDIR)$(TARGET_DIR) ; \
+		else \
+			echo "-- Installing srcdir API docs ..." ; \
+			@INSTALL@ -m 0644 $(srcdir)/*.md $(DESTDIR)$(TARGET_DIR) ; \
+		fi ; \
+	)
+
+uninstall-local:
+	@$(RM) -rf $(DESTDIR)$(TARGET_DIR)

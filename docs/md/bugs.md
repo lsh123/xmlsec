@@ -1,7 +1,3 @@
----
-title: "XML Security Library: Reporting Bugs"
----
-
 # XML Security Library: Reporting Bugs and Getting Help
 
 The best way to report a bug is to use the [XMLSec GitHub Issues Tracker](https://github.com/lsh123/xmlsec/issues)

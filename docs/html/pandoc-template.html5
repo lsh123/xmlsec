@@ -10,16 +10,12 @@
 <table width="100%" valign="top">
 <tr valign="top">
   <!-- top navigation menu start -->
-  <td valign="top" align="left" width="210">
+  <td valign="top" align="left" width="300em">
     <img src="images/logo.gif" alt="XML Security Library" border="0"/>
     <p/>
     <ul>
       <li><a href="index.html">Home</a></li>
       <li><a href="download.html">Download</a></li>
-        <ul>
-          <li><a href="https://github.com/lsh123/xmlsec">GitHub</a></li>
-        </ul>
-      <li><a href="news.html">News</a></li>
       <li><a href="documentation.html">Documentation</a></li>
         <ul>
           <li><a href="faq.html">FAQ</a></li>
@@ -27,12 +23,16 @@
           <li><a href="https://github.com/lsh123/xmlsec/wiki/Examples-Index">Examples</a></li>
           <li><a href="https://github.com/lsh123/xmlsec/wiki/API-Index">API Reference</a></li>
         </ul>
-      <li><a href="xmldsig.html">XML Digital Signature</a></li>
-      <li><a href="xmlenc.html">XML Encryption</a></li>
-      <li><a href="c14n.html">XML Canonicalization</a></li>
+      <li>Supported features:
+        <ul>
+          <li><a href="xmldsig.html">XML Digital Signature</a></li>
+          <li><a href="xmlenc.html">XML Encryption</a></li>
+          <li><a href="c14n.html">XML Canonicalization</a></li>
+        </ul>
+      </li>
+      <li><a href="news.html">News</a></li>
       <li><a href="bugs.html">Reporting Bugs</a></li>
       <li><a href="related.html">Related</a></li>
-      <li><a href="authors.html">Authors</a></li>
     </ul>
     <table width="100%">
       <tr><td width="15"></td><td>

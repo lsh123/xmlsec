@@ -1,6 +1,3 @@
----
-title: "XML Security Library: News"
----
 # XML Security Library: News
 
 - TODO

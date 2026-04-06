@@ -1,7 +1,3 @@
----
-title: "XML Security Library: Frequently Asked Questions"
----
-
 # XML Security Library: Frequently Asked Questions
 
 ## 0. Where can I read more about XML Signature and XML Encryption?

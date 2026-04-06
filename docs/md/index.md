@@ -1,7 +1,3 @@
----
-title: "XML Security Library"
----
-
 # XML Security Library
 
 XML Security Library is a C library based on [LibXML2](http://xmlsoft.org/).

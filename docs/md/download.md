@@ -1,8 +1,8 @@
----
-title: "XML Security Library: Download"
----
-
 # XML Security Library: Download
+
+## Source code on GitHub
+
+XML Security Library source code is available on [GitHub](https://github.com/lsh123/xmlsec).
 
 ## Stable releases
 
@@ -24,9 +24,6 @@ The releases [signature key](https://www.aleksey.com/xmlsec/download/aleksey%40a
 fingerprint is: `00FD D6A7 DFB8 1C88 F34B  9BF0 E63E CDEF 9E1D 829E`
 ([how to verify release tarball signature](https://www.cyberciti.biz/faq/pgp-tarball-file-signature-keys-verification/)).
 
-## Source code on GitHub
-
-XML Security Library source code is available on [GitHub](https://github.com/lsh123/xmlsec).
 
 ## Requirements
 

@@ -36,17 +36,20 @@ docs-build-html: $(MD_SRC_FILES)
 	@echo "-- Generating HTML from Markdown files in $(MD_SRCDIR) ..."
 	@for f in $(MD_SRC_FILES); do \
 		out=$(builddir)/`basename $$f .md`.html ; \
-		echo "--- Converting $$f -> $$out" ; \
+		title=`grep -m1 '^# ' $$f | sed -E 's/^# //'` ; \
+		echo "--- Converting $$f -> $$out (title: $$title)" ; \
 		$(PANDOC) \
 			--standalone \
 			--template=$(srcdir)/pandoc-template.html5 \
 			--from=markdown --to=html5 \
+			--metadata title="$$title" \
 			--output=$$out \
 			$$f ; \
 		$(SED) -E -i 's|href="(\.\./)*api/index\.md(#[^"]*)?"|href="https://github.com/lsh123/xmlsec/wiki/API-Index\2"|g' $$out ; \
 		$(SED) -E -i 's|href="(\.\./)*tutorial/index\.md(#[^"]*)?"|href="https://github.com/lsh123/xmlsec/wiki/Tutorial-Index\2"|g' $$out ; \
 		$(SED) -E -i 's|href="(\.\./)*examples/index\.md(#[^"]*)?"|href="https://github.com/lsh123/xmlsec/wiki/Examples-Index\2"|g' $$out ; \
 		$(SED) -E -i 's|href="([^"#:]*)\.md(#[^"]*)?"|href="\1.html\2"|g' $$out ; \
+		$(SED) -E -i 's|<td([^>]*)>(Yes)|<td class="supported-feature"\1>\2|g' $$out ; \
 	done
 else
 docs-build-html:

@@ -1,7 +1,3 @@
----
-title: "XML Security Library: XML Encryption Interoperability Report"
----
-
 # XML Security Library: XML Encryption Interoperability Report
 
 XML Security library supports the following features as defined in

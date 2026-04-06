@@ -1,7 +1,3 @@
----
-title: "XML Security Library: Related"
----
-
 # XML Security Library: Related
 
 ### Books

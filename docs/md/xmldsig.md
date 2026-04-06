@@ -1,7 +1,3 @@
----
-title: "XML Security Library: XML Digital Signature Interoperability Report"
----
-
 # XML Security Library: XML Digital Signature Interoperability Report
 
 XML Security library supports the following features as defined in

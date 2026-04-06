@@ -1317,7 +1317,7 @@ static int                      xmlSecKeyDataKeyInfoReferenceReadXmlResult(xmlSe
  *      </complexType>
  * @endcode
  *
- * https://www.w3.org/TR/xmldsig-core1e/#sec-KeyInfoReference
+ * https://www.w3.org/TR/xmldsig-core1/#sec-KeyInfoReference
  *
  * @return the&lt;dsig11:KeyInfoReference/&gt; element processing key data klass.
  */
@@ -1751,7 +1751,7 @@ static xmlSecKeyDataKlass xmlSecKeyDataDerivedKeyKlass = {
 /**
  * @brief Gets the DerivedKey element key data klass.
  * @details The&lt;enc11:DerivedKey/&gt; element key data klass
- * (https://www.w3.org/TR/xmlenc-core1e/#sec-DerivedKey)
+ * (https://www.w3.org/TR/xmlenc-core1/#sec-DerivedKey)
  *
  * The DerivedKey element is used to transport information about
  * a derived key from the originator to recipient(s). It may be

@@ -723,7 +723,7 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRsaOaepEnc11[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeRsaOAEPparams[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeRsaMGF[];
 
-/* MGF1 urls (https://www.w3.org/TR/xmlenc-core1e/#sec-RSA-OAEP) */
+/* MGF1 urls (https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP) */
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefMgf1Sha1[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefMgf1Sha224[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefMgf1Sha256[];

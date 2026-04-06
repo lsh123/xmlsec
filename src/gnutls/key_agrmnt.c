@@ -42,7 +42,7 @@
 /******************************************************************************
  *
  * Key Agreement context (ECDH and XDH)
- * - ECDH spec: https://www.w3.org/TR/xmlenc-core1e/#sec-ECDH-ES
+ * - ECDH spec: https://www.w3.org/TR/xmlenc-core1/#sec-ECDH-ES
  * - XDH spec: https://www.w3.org/2021/04/xmldsig-more
  *
   *****************************************************************************/

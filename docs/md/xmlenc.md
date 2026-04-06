@@ -31,7 +31,7 @@ XML Security library supports the following features as defined in
 | [The ReferenceList Element](https://www.w3.org/TR/xmlenc-core1/#sec-ReferenceList) | Optional | Yes |
 | [The EncryptionProperties Element](https://www.w3.org/TR/xmlenc-core1/#sec-EncryptionProperties) | Optional | Yes |
 | **Transforms** | | |
-| [XML Canonicalization](https://www.w3.org/TR/xmlenc-core1/#sec-Alg-Canonicalition) | | See [XMLDsig Report](xmldsig.html) |
+| [XML Canonicalization](https://www.w3.org/TR/xmlenc-core1/#sec-Alg-Canonicalition) | | See [XMLDsig Report](xmldsig.md) |
 
 ### XMLSec Cryptographic Libraries features {#algorithms}
 
@@ -77,7 +77,7 @@ XML Security library supports the following features as defined in
 | [Camellia-192 KeyWrap](https://www.ietf.org/rfc/rfc9231.html#section-2.3.3) | Optional | Yes | Yes | Yes | No | No | No |
 | [Camellia-256 KeyWrap](https://www.ietf.org/rfc/rfc9231.html#section-2.3.3) | Optional | Yes | Yes | Yes | No | No | No |
 | **Message Digest** | | | | | | | |
-| [Message Digest Algorithms](https://www.w3.org/TR/xmlenc-core1/#sec-Alg-MessageDigest) | | See [XMLDsig Report](xmldsig.html) | | | | | |
+| [Message Digest Algorithms](https://www.w3.org/TR/xmlenc-core1/#sec-Alg-MessageDigest) | | See [XMLDsig Report](xmldsig.md) | | | | | |
 
 ### Notes {#notes}
 

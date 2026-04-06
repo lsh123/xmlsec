@@ -676,12 +676,12 @@ xmlSecTransformCtxNodesListRead(xmlSecTransformCtxPtr ctx, xmlNodePtr node, xmlS
  *
  * - `URI="http://example.com/bar.xml"`
  * identifies the octets that represent the external resource
- * 'http://example.com/bar.xml', that is probably an XML document given
+ * `http://example.com/bar.xml`, that is probably an XML document given
  * its file extension.
  *
  * - `URI="http://example.com/bar.xml#chapter1"`
  * identifies the element with ID attribute value 'chapter1' of the
- * external XML resource 'http://example.com/bar.xml', provided as an
+ * external XML resource `http://example.com/bar.xml`, provided as an
  * octet stream. Again, for the sake of interoperability, the element
  * identified as 'chapter1' should be obtained using an XPath transform
  * rather than a URI fragment (barename XPointer resolution in external

@@ -98,7 +98,6 @@ done:
 }
 ```
 [Full program listing](../examples/sign1.md)
-[Simple signature template file](../examples/sign1.md)
 
 ## Encrypting data
 
@@ -199,5 +198,4 @@ done:
 }
 ```
 [Full program listing](../examples/encrypt1.md)
-[Simple encryption template file](../examples/encrypt1.md)
 

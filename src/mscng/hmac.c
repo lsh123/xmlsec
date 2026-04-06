@@ -71,7 +71,7 @@ static xmlSecTransformKlass xmlSecMSCng ## name ## Klass = {                    
     NULL,                                       /* void* reserved1; */                              \
 };
 
-/* 80 is a minimum value from: https://www.w3.org/TR/xmldsig-core1e/#sec-SignatureMethod */
+/* 80 is a minimum value from: https://www.w3.org/TR/xmldsig-core1/#sec-SignatureMethod */
 #define XMLSEC_MSCNG_HMAC_MIN_LENGTH                     80
 
 static int

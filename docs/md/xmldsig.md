@@ -34,7 +34,7 @@ XML Security library supports the following features as defined in
 | [The KeyValue Element](https://www.w3.org/TR/xmldsig-core1/#sec-KeyValue) | Optional | Yes (disabled by default; also see [algorithms section](#algorithms)) |
 | [The RetrievalMethod Element](https://www.w3.org/TR/xmldsig-core1/#sec-RetrievalMethod) | Optional | Yes |
 | [The MgmtData Element](https://www.w3.org/TR/xmldsig-core1/#sec-MgmtData) | NOT RECOMMENDED and SHOULD NOT be used | Yes |
-| [XML Encryption EncryptedKey and DerivedKey Elements](https://www.w3.org/TR/xmlenc-core1/#sec-Extensions-to-KeyInfo) | Optional | Yes (see [XML Encryption report](xmlenc.html)) |
+| [XML Encryption EncryptedKey and DerivedKey Elements](https://www.w3.org/TR/xmlenc-core1/#sec-Extensions-to-KeyInfo) | Optional | Yes (see [XML Encryption report](xmlenc.md)) |
 | [The KeyInfoReference Element](https://www.w3.org/TR/xmldsig-core1/#sec-KeyInfoReference) | Optional | Yes |
 | [The Object Element](https://www.w3.org/TR/xmldsig-core1/#sec-Object) | Optional | Yes (only the Manifest element is supported) |
 | [The Manifest Element](https://www.w3.org/TR/xmldsig-core1/#sec-Manifest) | Optional | Yes |
@@ -138,9 +138,9 @@ XML Security library supports the following features as defined in
 8. <a id="eddsa-ctx"></a> Ed25519ctx requires a non-empty context string (per RFC 8032).
 9. <a id="eddsa-nss"></a> The xmlsec-nss library only supports Ed25519 (Ed448 is not supported). Additionally, NSS cannot import EdDSA private keys from PKCS#12 files; use unencrypted PKCS#8 DER format instead.
 10. <a id="mscng-sha3"></a> SHA3 digest algorithms in xmlsec-mscng require Windows 11 22H2 or later.
-11. <a id="mscng-xdh"></a> The xmlsec-mscng library supports XDH (X25519) key data (X448 is not supported); see the [XML Encryption Interoperability Report](xmlenc.html) for key agreement support details.
+11. <a id="mscng-xdh"></a> The xmlsec-mscng library supports XDH (X25519) key data (X448 is not supported); see the [XML Encryption Interoperability Report](xmlenc.md) for key agreement support details.
 
 ### Test vectors {#test-vectors}
 
-- [XML Signature 1.0 interop (2001)](http://www.w3.org/Signature/2001/04/05-xmldsig.html)
+- [XML Signature 1.0 interop (2001)](http://www.w3.org/Signature/2001/04/05-xmldsig.md)
 - [XML Signature 1.1 interop (2012)](https://www.w3.org/TR/2012/NOTE-xmldsig-core1-interop-20121113/)

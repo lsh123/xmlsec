@@ -7,9 +7,9 @@ title: "XML Security Library: Reporting Bugs"
 The best way to report a bug is to use the [XMLSec GitHub Issues Tracker](https://github.com/lsh123/xmlsec/issues)
 or if you have a question -- [XMLSec GitHub Discussions](https://github.com/lsh123/xmlsec/discussions).
 
-Before writing bug reports or questions, do not hesitate to check the [FAQ](faq.html).
+Before writing bug reports or questions, do not hesitate to check the [FAQ](faq.md).
 If you are writing your own code based on the XMLSec library, then you should
-try to reproduce your problem with the [xmlsec command-line utility](xmlsec-man.html)
+try to reproduce your problem with the [xmlsec command-line utility](xmlsec-man.md)
 first. And if it works just fine then you know whom to blame, don't you? :)
 
 If you completed all the steps above and still think that you found something

@@ -1189,7 +1189,7 @@ xmlSecEncCtxGenerateKey(xmlSecEncCtxPtr encCtx, xmlSecKeyDataId keyId, xmlSecKey
 
 /**
  * @brief Generates (derives) a key from the DerivedKey node.
- * @details Generates (derives) key from @p node (https://www.w3.org/TR/xmlenc-core1e/#sec-DerivedKey):
+ * @details Generates (derives) key from @p node (https://www.w3.org/TR/xmlenc-core1/#sec-DerivedKey):
  * @code{.xml}
  *  <element name="DerivedKey" type="xenc11:DerivedKeyType"/>
  *  <complexType name="DerivedKeyType">
@@ -1360,7 +1360,7 @@ done:
 
 /**
  * @brief Generates a key from the AgreementMethod node.
- * @details Generates (derives) key from @p node (https://www.w3.org/TR/xmlenc-core1e/#sec-AgreementMethod):
+ * @details Generates (derives) key from @p node (https://www.w3.org/TR/xmlenc-core1/#sec-AgreementMethod):
  *
  * @code{.xml}
  *  <element name="AgreementMethod" type="xenc:AgreementMethodType"/>

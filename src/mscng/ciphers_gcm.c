@@ -373,7 +373,7 @@ xmlSecMSCngGcmBlockCipherCtxInit(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
     ctx->authInfo.cbNonce = xmlSecMSCngAesGcmNonceLengthInBytes;
 
     /* Tag length is 128 bits */
-    /* See http://www.w3.org/TR/xmlenc-core1e/#sec-AES-GCM */
+    /* See http://www.w3.org/TR/xmlenc-core1/#sec-AES-GCM */
     if (ctx->authInfo.pbTag == NULL) {
         ctx->authInfo.pbTag = xmlMalloc(xmlSecMSCngAesGcmTagLengthInBytes);
         if (ctx->authInfo.pbTag == NULL) {
@@ -424,7 +424,7 @@ xmlSecMSCngGcmBlockCipherCtxInit(xmlSecMSCngGcmBlockCipherCtxPtr ctx,
     if (encrypt) {
 
         /* allocate space for nonce in the output buffer - it is 96 bits for GCM mode */
-        /* See http://www.w3.org/TR/xmlenc-core1e/#sec-AES-GCM */
+        /* See http://www.w3.org/TR/xmlenc-core1/#sec-AES-GCM */
         bufferSize = xmlSecBufferGetSize(out);
         ret = xmlSecBufferSetSize(out, bufferSize + xmlSecMSCngAesGcmNonceLengthInBytes);
         if (ret < 0) {

@@ -7,7 +7,7 @@ title: "XML Security Library: Frequently Asked Questions"
 ## 0. Where can I read more about XML Signature and XML Encryption?
 
 First of all, read the original specifications: [XML Digital Signature](http://www.w3.org/Signature/) and
-[XML Encryption](http://www.w3.org/Encryption/). Also there are [several books](related.html#books)
+[XML Encryption](http://www.w3.org/Encryption/). Also there are [several books](related.md)
 available that can help you to get started.
 
 ## 1. License(s).
@@ -24,7 +24,7 @@ Probably, you will need to ask a lawyer. But IANAL answer can be found in the fo
 | XML Security Library module | Dependencies | Dependencies Licenses | Using with proprietary code | Using with MIT/BSD code | Using with GPL code |
 |---|---|---|---|---|---|
 | xmlsec-core | [LibXML2](http://xmlsoft.org), [LibXSLT](http://xmlsoft.org/XSLT) | MIT License | Yes | Yes | Yes |
-| xmlsec-openssl | [OpenSSL](http://www.openssl.org) | [OpenSSL licenses](https://www.openssl.org/source/license.html) | Yes | Yes | It's complicated, see [OpenSSL FAQ](https://www.openssl.org/docs/faq.html#LEGAL) for more details |
+| xmlsec-openssl | [OpenSSL](http://www.openssl.org) | [OpenSSL licenses](https://www.openssl.org/source/license.html) | Yes | Yes | It's complicated, see [OpenSSL FAQ](https://www.openssl.org/docs/faq.md) for more details |
 | xmlsec-nss | [NSS](http://www.mozilla.org/projects/security/pki/nss/) | MPLv2 | Yes | Yes | Yes |
 | xmlsec-gnutls | [GnuTLS](http://www.gnu.org/software/gnutls/) | LGPLv2.1+ | It's complicated, talk to a lawyer | Yes | Yes |
 | xmlsec-mscrypto and xmlsec-mscng | Windows OS | Microsoft licensing, part of Windows OS. | It's complicated, talk to a lawyer | It's complicated, talk to a lawyer | It's complicated, talk to a lawyer |
@@ -60,7 +60,7 @@ the `xmlsec-<version>/win32` folder.
 
 ### 2.3. What other libraries are needed to compile/install xmlsec? {#section_2_3}
 
-See [Download page](download.html) for detailed list.
+See [Download page](download.md) for detailed list.
 
 ### 2.4. Why does make check fail for some tests? {#section_2_4}
 
@@ -130,13 +130,13 @@ have name "ID", "Id" or "id". It can be anything you want! There are several way
   ```
 
   The DTD might be directly included in the XML file or located in a standalone file. In the second case, you might
-  load the DTD in [xmlsec command line utility](xmlsec-man.html) with the `--dtd-file` option.
+  load the DTD in [xmlsec command line utility](xmlsec-man.md) with the `--dtd-file` option.
 
 - **Use xml:id.** The [xml:id](http://www.w3.org/TR/xml-id/) spec allows to declare
   an ID attribute in the schema or DTD.
 
-- **Use --id-attr for [xmlsec command line utility](xmlsec-man.html).** The `--id-attr` command
-  line option allows to quickly declare an ID attribute for [xmlsec command line utility](xmlsec-man.html).
+- **Use --id-attr for [xmlsec command line utility](xmlsec-man.md).** The `--id-attr` command
+  line option allows to quickly declare an ID attribute for [xmlsec command line utility](xmlsec-man.md).
 
 - **Use xmlAddID function.** If you are writing an application, you can declare an ID attribute using
   the `xmlAddID` LibXML2 function.
@@ -160,10 +160,10 @@ for this problem is to change Visa 3D protocol. As a practical solution, try (on
 in xmlsec:
 
 - First, register ID attributes manually (using either `xmlAddID` function or
-  `--id-attr` option for [xmlsec command line utility](xmlsec-man.html)).
+  `--id-attr` option for [xmlsec command line utility](xmlsec-man.md)).
 
 - Second, enable the "Visa 3D hack" in XML DSig context (using either `dsigCtx->flags |= XMLSEC_DSIG_FLAGS_USE_VISA3D_HACK`
-  or `--enable-visa3d-hack` option for [xmlsec command line utility](xmlsec-man.html)).
+  or `--enable-visa3d-hack` option for [xmlsec command line utility](xmlsec-man.md)).
 
 **This is a hack. You are warned!**
 
@@ -180,7 +180,7 @@ There might be multiple reasons for the "key cannot be found error":
   `DEREncodedKeyValue` nodes are disabled by default. Yet, in some use cases the use of these nodes in XML file
   can be appropriate. If you verify that these nodes do not present security concerns for your application, then you can
   re-enable `KeyValue` and `DEREncodedKeyValue` nodes using the `--enabled-key-data` option
-  for the [xmlsec command line utility](xmlsec-man.html), or by setting the `keyInfoCtx->enabledKeyData`
+  for the [xmlsec command line utility](xmlsec-man.md), or by setting the `keyInfoCtx->enabledKeyData`
   parameter in your application.
   For example, `--enabled-key-data rsa,key-value,x509` will populate an `<RSAKeyValue>` element (and keep
   `<X509Data>` enabled) when the template contains matching `<KeyValue/>` and `<X509Data/>` placeholders.
@@ -191,7 +191,7 @@ There might be multiple reasons for the "key cannot be found error":
   during the XML signature process and its integrity is validated during XML signature verification). Yet, in some use cases not
   using the `KeyInfo` node to specify the key can be appropriate. If you verify that this does not present a security
   concern for your application, then you can enable "lax" key search mode by using `--lax-key-search` option for the
-  [xmlsec command line utility](xmlsec-man.html), or by setting `keyInfoCtx->flags |= XMLSEC_KEYINFO_FLAGS_LAX_KEY_SEARCH;`
+  [xmlsec command line utility](xmlsec-man.md), or by setting `keyInfoCtx->flags |= XMLSEC_KEYINFO_FLAGS_LAX_KEY_SEARCH;`
   flag in your application.
   **THIS IS NOT SECURE AND NOT RECOMMENDED.**
 
@@ -217,11 +217,11 @@ There might be several reasons why XMLSec library cannot verify a certificate:
 - Older certificates that use MD5 or SHA1 hashes might be rejected by newer cryptographic libraries because these
   algorithms are no longer considered secure. If you verify that this does not present a security concern for your
   application, then you can re-enable these algorithms (and also skip some other strict certificate verification
-  checks) by using the `--X509-skip-strict-checks` option for the [xmlsec command line utility](xmlsec-man.html),
+  checks) by using the `--X509-skip-strict-checks` option for the [xmlsec command line utility](xmlsec-man.md),
   or by setting `keyInfoCtx->flags |= XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_STRICT_CHECKS;` flag in your application.
   **THIS IS NOT SECURE AND NOT RECOMMENDED.**
 
-- Lastly, you can use the `--insecure` option for the [xmlsec command line utility](xmlsec-man.html),
+- Lastly, you can use the `--insecure` option for the [xmlsec command line utility](xmlsec-man.md),
   or set `keyInfoCtx->flags |= XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS;` flag in your application to
   completely disable the certificates verification. Disabling certificate verification creates a security risk because
   there is no mechanism to verify the key origin (and for example, this enables to create "fake" signatures).
@@ -245,11 +245,11 @@ There might be many reasons for the failures and most likely cause is the incorr
 XMLDSig specification by the other software package. XMLSec library tries to handle as many issues as possible
 automatically (e.g. missing or added leading zeros in the signature value in many Java implementations).
 Another known problem is using ASN1 encoding for ECDSA signatures and you can try
-`--enable-asn1-signatures-hack` option for [xmlsec command line utility](xmlsec-man.html) or set
+`--enable-asn1-signatures-hack` option for [xmlsec command line utility](xmlsec-man.md) or set
 `dsigCtx->flags |= XMLSEC_DSIG_FLAGS_USE_ASN1_SIGNATURE_VALUES;` flag on the XML DSig context (this is a hack
 and can cause interoperability problems). If nothing works, then you will need to reach out to the authors of
 another software packet and ask them to help you debug the issue. Use `--store-references` and
-`--store-signatures` options for the [xmlsec command line utility](xmlsec-man.html) to get pre-digest and
+`--store-signatures` options for the [xmlsec command line utility](xmlsec-man.md) to get pre-digest and
 pre-signatures buffers from XMLSec and compare those against the similar buffers from the another software as
 a first step in debugging process.
 

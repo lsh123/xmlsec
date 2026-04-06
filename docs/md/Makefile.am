@@ -6,7 +6,13 @@
 NULL =
 MODULE = xmlsec
 
+# target installation directory
+TARGET_DIR = @XMLSEC_DOCDIR@
+
 SUBDIRS = examples api tutorial
+
+XMLSEC1_MAN = $(top_builddir)/man/xmlsec1.1
+XMLSEC1_MAN_MD = $(builddir)/xmlsec-man.md
 
 # Top-level Markdown source files distributed from here
 TOPLEVEL_MD_FILES = $(notdir $(wildcard $(srcdir)/*.md))
@@ -15,9 +21,6 @@ TOPLEVEL_MD_FILES = $(notdir $(wildcard $(srcdir)/*.md))
 EXTRA_DIST := \
 	$(TOPLEVEL_MD_FILES) \
 	$(NULL)
-
-XMLSEC1_MAN = $(top_builddir)/man/xmlsec1.1
-XMLSEC1_MAN_MD = $(builddir)/xmlsec-man.md
 
 .PHONY: all docs docs-manpages
 
@@ -49,3 +52,20 @@ docs-manpages:
 	@echo "-- Skipping building docs for man page (pandoc not available) ..."
 
 endif
+
+install-data-local:
+	@( \
+		$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR) ; \
+		echo "-- Installing top level docs ..." ; \
+		@INSTALL@ -m 0644 $(srcdir)/*.md $(DESTDIR)$(TARGET_DIR) ; \
+		if test -f $(XMLSEC1_MAN_MD) ; then  \
+			echo "-- Installing manpage docs ..." ; \
+			@INSTALL@ -m 0644 $(XMLSEC1_MAN_MD) $(DESTDIR)$(TARGET_DIR) ; \
+		else \
+			echo "WARNING: Skipping manpage docs installation: missing necessary tools to build manpage docs" ; \
+		fi ; \
+	)
+
+uninstall-local:
+	@$(RM) -rf $(DESTDIR)$(TARGET_DIR)
+

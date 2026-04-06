@@ -47,7 +47,7 @@ api-md:
 		echo "-- XML API directory not found, generating XML files first ..."; \
 		$(MAKE) $(AM_MAKEFLAGS) -C $(abs_top_builddir)/docs/xml/api docs; \
 	fi
-	@$(PYTHON3) $(GEN_API_MD) "$(XML_API_DIR)" "$(builddir)"
+	@$(PYTHON3) $(GEN_API_MD) "$(PACKAGE_VERSION)" "$(XML_API_DIR)" "$(builddir)"
 
 dist-hook: api-md
 	@echo "-- Copying API Markdown files to dist ..."

@@ -1,11 +1,12 @@
 /**
- * XMLSec library
+ * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * Command line parsing routines
- *
- * See Copyright for the status of this software.
+ * This is free software; see the Copyright file in the source distribution for precise wording.
  *
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey#aleksey.com>. All Rights Reserved.
+ */
+/**
+ * @brief XML Security Library command line utility: command line parsing routines.
  */
 #ifndef __XMLSEC_APPS_CMDLINE_H__
 #define __XMLSEC_APPS_CMDLINE_H__

@@ -1,11 +1,12 @@
 /**
- * XMLSec library
+ * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * Unit tests
- *
- * See Copyright for the status of this software.
+ * This is free software; see the Copyright file in the source distribution for precise wording.
  *
  * Copyright (C) 2002-2024 Aleksey Sanin <aleksey#aleksey.com>. All Rights Reserved.
+ */
+/**
+ * @brief XML Security Library unit tests helpers.
  */
 #ifndef __XMLSEC_UNIT_TESTS_H__
 #define __XMLSEC_UNIT_TESTS_H__

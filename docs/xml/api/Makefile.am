@@ -11,7 +11,7 @@ HTML_OUTDIR = html
 all:
 	@echo "======= Run 'make docs' in the xmlsec/docs/xml/api folder to rebuild doxygen docs"
 
-if BUILD_DOXYGEN_DOCS
+if BUILD_XML_API_DOCS
 
 docs:
 	@echo "-- Generating doxygen XML API docs..."

@@ -71,15 +71,12 @@ AC_PATH_PROG(TAR,  tar,  /bin/tar)
 
 dnl Programs for man pages and HTML docs
 AC_PATH_PROG(HELP2MAN, help2man)
-AC_PATH_PROG(XSLTPROC, xsltproc)
-AC_PATH_PROG(MAN2HTML, man2html)
 AC_PATH_PROG(PANDOC,  pandoc)
 AC_PATH_PROG(PYTHON3, python3)
 AC_PATH_PROG(DOXYGEN, doxygen)
-AM_CONDITIONAL(BUILD_MAN_DOCS,     [test x"$XSLTPROC" != x && test x"$MAN2HTML" != x])
+AM_CONDITIONAL(BUILD_XML_API_DOCS, [test x"$DOXYGEN" != x])
 AM_CONDITIONAL(BUILD_MD_DOCS,      [test x"$PANDOC" != x && test x"$PYTHON3" != x])
-AM_CONDITIONAL(BUILD_DOXYGEN_DOCS, [test x"$DOXYGEN" != x])
-AM_CONDITIONAL(BUILD_HTML_DOCS,    [test x"$SED" != x && test x"$SORT" != x && test x"$XSLTPROC" != x ])
+AM_CONDITIONAL(BUILD_HTML_DOCS,    [test x"$SED" != x && test x"$PANDOC" != x ])
 
 dnl Checks for header files.
 AC_HEADER_DIRENT

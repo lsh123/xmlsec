@@ -573,7 +573,7 @@ static xmlSecTransformKlass xmlSecOpenSSL ## name ## Klass = {                  
  *
  * ECDH KeyAgreement context.
  * - OpenSSL doc: https://wiki.openssl.org/index.php/Elliptic_Curve_Diffie_Hellman
- * - XMLEnc spec: https://www.w3.org/TR/xmlenc-core1e/#sec-ECDH-ES
+ * - XMLEnc spec: https://www.w3.org/TR/xmlenc-core1/#sec-ECDH-ES
  *
   *****************************************************************************/
 
@@ -602,7 +602,7 @@ xmlSecOpenSSLTransformEcdhGetKlass(void) {
  *
  * DH KeyAgreement context.
  * - OpenSSL doc: https://wiki.openssl.org/index.php/Diffie_Hellman
- * - XMLEnc spec: https://www.w3.org/TR/xmlenc-core1e/#sec-DHKeyAgreementExplicitKDF
+ * - XMLEnc spec: https://www.w3.org/TR/xmlenc-core1/#sec-DHKeyAgreementExplicitKDF
  *
   *****************************************************************************/
 

@@ -720,7 +720,7 @@ const xmlChar xmlSecHrefRsaOaepEnc11[]          = "http://www.w3.org/2009/xmlenc
 const xmlChar xmlSecNodeRsaOAEPparams[]         = "OAEPparams";
 const xmlChar xmlSecNodeRsaMGF[]                = "MGF";
 
-/* MGF1 urls (https://www.w3.org/TR/xmlenc-core1e/#sec-RSA-OAEP) */
+/* MGF1 urls (https://www.w3.org/TR/xmlenc-core1/#sec-RSA-OAEP) */
 const xmlChar xmlSecHrefMgf1Sha1[]              = "http://www.w3.org/2009/xmlenc11#mgf1sha1";
 const xmlChar xmlSecHrefMgf1Sha224[]            = "http://www.w3.org/2009/xmlenc11#mgf1sha224";
 const xmlChar xmlSecHrefMgf1Sha256[]            = "http://www.w3.org/2009/xmlenc11#mgf1sha256";

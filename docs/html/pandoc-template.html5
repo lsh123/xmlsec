@@ -4,10 +4,59 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>$title$</title>
-  <link rel="stylesheet" href="../css/main.css" />
-  <link rel="stylesheet" href="../css/pandoc.css" />
+  <link rel="stylesheet" href="css/main.css" />
 </head>
 <body>
+<table width="100%" valign="top">
+<tr valign="top">
+  <!-- top navigation menu start -->
+  <td valign="top" align="left" width="300em">
+    <img src="images/logo.gif" alt="XML Security Library" border="0"/>
+    <p/>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="download.html">Download</a></li>
+      <li><a href="documentation.html">Documentation</a></li>
+        <ul>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="https://github.com/lsh123/xmlsec/wiki/Tutorial-Index">Tutorial</a></li>
+          <li><a href="https://github.com/lsh123/xmlsec/wiki/Examples-Index">Examples</a></li>
+          <li><a href="https://github.com/lsh123/xmlsec/wiki/API-Index">API Reference</a></li>
+        </ul>
+      <li>Supported features:
+        <ul>
+          <li><a href="xmldsig.html">XML Digital Signature</a></li>
+          <li><a href="xmlenc.html">XML Encryption</a></li>
+          <li><a href="c14n.html">XML Canonicalization</a></li>
+        </ul>
+      </li>
+      <li><a href="news.html">News</a></li>
+      <li><a href="bugs.html">Reporting Bugs</a></li>
+      <li><a href="related.html">Related</a></li>
+    </ul>
+    <table width="100%">
+      <tr><td width="15"></td><td>
+        <a href="http://xmlsoft.org/"><img src="images/libxml2-logo.png" alt="LibXML2" border="0"/></a>
+      </td></tr>
+      <tr><td width="15"></td><td>
+        <a href="http://xmlsoft.org/XSLT"><img src="images/libxslt-logo.png" alt="LibXSLT" border="0"/></a>
+      </td></tr>
+      <tr><td width="15"></td><td>
+        <a href="http://www.openssl.org/"><img src="images/openssl-logo.png" alt="OpenSSL" border="0"/></a>
+      </td></tr>
+      <!--Links - start-->
+      <!--Links - end-->
+    </table>
+  </td>
+  <!-- top navigation menu end -->
+  <td valign="top">
+    <table width="80%" valign="top" style="margin-left:10px;">
+      <tr><td valign="top" align="left" id="xmlsecContent">
 $body$
+      </td></tr>
+    </table>
+  </td>
+</tr>
+</table>
 </body>
 </html>

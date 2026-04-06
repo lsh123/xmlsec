@@ -358,7 +358,7 @@ static xmlSecTransformKlass xmlSecGnuTLS ## name ## Klass = {                   
 /******************************************************************************
  *
  * ConcatKDF (SP 800-56A single-step KDF) transform
- * https://www.w3.org/TR/xmlenc-core1e/#sec-ConcatKDF
+ * https://www.w3.org/TR/xmlenc-core1/#sec-ConcatKDF
  *
   *****************************************************************************/
 

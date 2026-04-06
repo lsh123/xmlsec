@@ -1835,7 +1835,7 @@ xmlSecOpenSSLTransformRsaPssSha3_512GetKlass(void) {
  *
  * DSA EVP
  *
- * https://www.w3.org/TR/xmldsig-core1e/#sec-DSA
+ * https://www.w3.org/TR/xmldsig-core1/#sec-DSA
  * The output of the DSA algorithm consists of a pair of integers usually referred by the pair (r, s).
  * DSA-SHA1: Integer to octet-stream conversion must be done according to the I2OSP operation defined
  *           in the RFC 3447 [PKCS1] specification with a l parameter equal to 20
@@ -2083,7 +2083,7 @@ xmlSecOpenSSLTransformDsaSha256GetKlass(void) {
  *
  * ECDSA EVP
  *
- * https://www.w3.org/TR/xmldsig-core1e/#sec-ECDSA
+ * https://www.w3.org/TR/xmldsig-core1/#sec-ECDSA
  *
  * The output of the ECDSA algorithm consists of a pair of integers usually
  * referred by the pair (r, s). The signature value consists of the base64

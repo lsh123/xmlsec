@@ -40,7 +40,7 @@
 /******************************************************************************
  *
  * ECDH KeyAgreement context.
- * - XMLEnc spec: https://www.w3.org/TR/xmlenc-core1e/#sec-ECDH-ES
+ * - XMLEnc spec: https://www.w3.org/TR/xmlenc-core1/#sec-ECDH-ES
  *
   *****************************************************************************/
 

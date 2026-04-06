@@ -94,7 +94,7 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataDEREncodedKeyValueKlass = {
  * in the Subject Public Key Info field of an X.509 certificate, per section 4.1.2.7 of [RFC5280].
  * The DER-encoded value is then base64-encoded.
  *
- * https://www.w3.org/TR/xmldsig-core1e/#sec-DEREncodedKeyValue
+ * https://www.w3.org/TR/xmldsig-core1/#sec-DEREncodedKeyValue
  *
  * @code{.xml}
  *      <!-- targetNamespace="http://www.w3.org/2009/xmldsig11#" -->

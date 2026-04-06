@@ -177,7 +177,3 @@ cscript configure.js crypto=openssl,mscng xslt=yes unicode=yes static=no pedanti
 nmake
 nmake install
 ```
-
-## Authors
-- March 2002, Igor Zlatkovic <igor@stud.fh-frankfurt.de>
-- July, 2022, Aleksey Sanin <aleksey@aleksey.com>

@@ -136,7 +136,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-, root, root)
 
-%doc AUTHORS ChangeLog NEWS README Copyright
+%doc AUTHORS.md ChangeLog NEWS README Copyright
 %doc %{_mandir}/man1/xmlsec1.1*
 
 %{prefix}/lib/libxmlsec1.so.*
@@ -154,7 +154,7 @@ rm -rf $RPM_BUILD_ROOT
 %{prefix}/lib/xmlsec1Conf.sh
 %{prefix}/share/doc/xmlsec1/*
 %{prefix}/share/aclocal/xmlsec1.m4
-%doc AUTHORS HACKING ChangeLog NEWS README Copyright
+%doc AUTHORS.md HACKING ChangeLog NEWS README Copyright
 %doc %{_mandir}/man1/xmlsec1-config.1*
 
 %files openssl

@@ -27,3 +27,17 @@ h1 {
 #xmlsecContent {
     padding-left: 8em;
 }
+
+#xmlsecContent table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#xmlsecContent th, #xmlsecContent td {
+  border: 1px solid black;
+  padding: 8px;
+}
+
+#xmlsecContent td.supported-feature {
+  background-color: #C1E1C1; /* Light green */
+}

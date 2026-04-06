@@ -56,9 +56,13 @@ echo "============== Signing tar file"
 gpg --output "${sig_file}" --detach-sig "${tar_file}"
 
 echo "============== Tagging the release ${full_version} on GitHub"
-echo "RUN MANUALLY: git tag -a "${full_version}" -m 'XMLSec release ${full_version}'"
-echo "RUN MANUALLY: git tag -a "xmlsec_${git_version_tag}" -m 'XMLSec release ${full_version}'"
+git tag -a "${full_version}" -f -m 'XMLSec release ${full_version}'
+git tag -a "xmlsec_${git_version_tag}" -f -m 'XMLSec release ${full_version}'
 echo "RUN MANUALLY: git push --follow-tags"
+
+echo "======== Publish the release docs to the github wiki:"
+echo "RUN MANUALLY: ./scripts/gen-github-wiki.py ../xmlsec.wiki/"
+echo "RUN MANUALLY: cd ../xmlsec.wiki/ && git add . && git commit -m 'Update wiki for release ${full_version}' && git push"
 
 echo "======== Publish the release to the website:"
 echo "RUN MANUALLY: scp ${tar_file} ${sig_file} smtp.aleksey.com:"

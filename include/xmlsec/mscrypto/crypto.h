@@ -10,7 +10,7 @@
 #define __XMLSEC_MSCRYPTO_CRYPTO_H__
 
 /**
- * @defgroup xmlsec_mscrypto [DEPRECATED] XML Security Library for Microsoft CryptoAPI
+ * @defgroup xmlsec_mscrypto (DEPRECATED) XML Security Library for Microsoft CryptoAPI
  * @brief API reference for the xmlsec-mscrypto back-end (Microsoft CryptoAPI).
  */
 

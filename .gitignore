@@ -75,3 +75,4 @@ docs/html/html.stamp
 .vscode/
 .vs/
 build-*/*
+scripts/__pycache__

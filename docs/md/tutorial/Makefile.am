@@ -48,7 +48,7 @@ tutorial-md:
 	fi
 
 dist-hook: tutorial-md
-	echo "--- All tutoria Markdown files are already copied"
+	echo "--- All tutorial Markdown files are already copied"
 
 clean-local:
 	@( \

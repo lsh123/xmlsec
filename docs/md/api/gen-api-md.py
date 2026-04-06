@@ -584,7 +584,7 @@ def generate_index_md(groups: dict[str, GroupInfo], out_dir: str) -> str:
     roots = sorted(
         [gid for gid in groups if gid not in all_children],
         # deprecated groups sort last; within each tier, sort alphabetically
-        key=lambda gid: (1 if "[DEPRECATED]" in groups[gid].title else 0, groups[gid].title.lower()),
+        key=lambda gid: (1 if "(DEPRECATED)" in groups[gid].title else 0, groups[gid].title.lower()),
     )
 
     # Warn about any child references that have no corresponding parsed file

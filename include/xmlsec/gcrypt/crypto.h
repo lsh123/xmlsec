@@ -10,7 +10,7 @@
 #define __XMLSEC_GCRYPT_CRYPTO_H__
 
 /**
- * @defgroup xmlsec_gcrypt [DEPRECATED] XML Security Library for GCrypt
+ * @defgroup xmlsec_gcrypt (DEPRECATED) XML Security Library for GCrypt
  * @brief API reference for the xmlsec-gcrypt back-end.
  */
 

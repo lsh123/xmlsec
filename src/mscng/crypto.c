@@ -216,7 +216,7 @@ xmlSecCryptoGetFunctions_mscng(void) {
      *
       *****************************************************************************/
 
-    /****************************************************************************** AES  *****************************************************************************/
+    /* AES */
 #ifndef XMLSEC_NO_AES
     gXmlSecMSCngFunctions->transformAes128CbcGetKlass           = xmlSecMSCngTransformAes128CbcGetKlass;
     gXmlSecMSCngFunctions->transformAes192CbcGetKlass           = xmlSecMSCngTransformAes192CbcGetKlass;
@@ -229,20 +229,20 @@ xmlSecCryptoGetFunctions_mscng(void) {
     gXmlSecMSCngFunctions->transformKWAes256GetKlass            = xmlSecMSCngTransformKWAes256GetKlass;
 #endif /* XMLSEC_NO_AES */
 
-    /****************************************************************************** ConcatKDF  *****************************************************************************/
+    /* ConcatKDF */
 #ifndef XMLSEC_NO_CONCATKDF
     if(isConcatKdfSupported != 0) {
         gXmlSecMSCngFunctions->transformConcatKdfGetKlass = xmlSecMSCngTransformConcatKdfGetKlass;
     }
 #endif /* XMLSEC_NO_CONCATKDF */
 
-    /****************************************************************************** DES  *****************************************************************************/
+    /* DES */
 #ifndef XMLSEC_NO_DES
     gXmlSecMSCngFunctions->transformDes3CbcGetKlass             = xmlSecMSCngTransformDes3CbcGetKlass;
     gXmlSecMSCngFunctions->transformKWDes3GetKlass              = xmlSecMSCngTransformKWDes3GetKlass;
 #endif /* XMLSEC_NO_DES */
 
-    /****************************************************************************** DSA  *****************************************************************************/
+    /* DSA */
 #ifndef XMLSEC_NO_DSA
 
 #ifndef XMLSEC_NO_SHA1
@@ -257,7 +257,7 @@ xmlSecCryptoGetFunctions_mscng(void) {
 
 #endif /* XMLSEC_NO_DSA */
 
-    /****************************************************************************** ECDSA  *****************************************************************************/
+    /* ECDSA */
 #ifndef XMLSEC_NO_EC
 
 #ifndef XMLSEC_NO_SHA1
@@ -288,7 +288,7 @@ xmlSecCryptoGetFunctions_mscng(void) {
 
 #endif /* XMLSEC_NO_EC */
 
-    /****************************************************************************** DH-ES  *****************************************************************************/
+    /* DH-ES */
 #ifndef XMLSEC_NO_DH
     if(isDhSupported != 0) {
         gXmlSecMSCngFunctions->transformDhEsGetKlass     = xmlSecMSCngTransformDhEsGetKlass;
@@ -301,7 +301,7 @@ xmlSecCryptoGetFunctions_mscng(void) {
     }
 #endif /* XMLSEC_NO_XDH */
 
-    /****************************************************************************** HMAC  *****************************************************************************/
+    /* HMAC */
 #ifndef XMLSEC_NO_HMAC
 
 #ifndef XMLSEC_NO_MD5
@@ -326,21 +326,21 @@ xmlSecCryptoGetFunctions_mscng(void) {
 
 #endif /* XMLSEC_NO_HMAC */
 
-    /****************************************************************************** PBKDF2  *****************************************************************************/
+    /* PBKDF2 */
 #ifndef XMLSEC_NO_PBKDF2
     if(isPbkdf2Supported != 0) {
         gXmlSecMSCngFunctions->transformPbkdf2GetKlass          = xmlSecMSCngTransformPbkdf2GetKlass;
     }
 #endif /* XMLSEC_NO_PBKDF2 */
 
-    /****************************************************************************** HKDF  *****************************************************************************/
+    /* HKDF */
 #ifndef XMLSEC_NO_HKDF
     if(isHkdfSupported != 0) {
         gXmlSecMSCngFunctions->transformHkdfGetKlass            = xmlSecMSCngTransformHkdfGetKlass;
     }
 #endif /* XMLSEC_NO_HKDF */
 
-    /****************************************************************************** RSA  *****************************************************************************/
+    /* RSA */
 #ifndef XMLSEC_NO_RSA
 
 #ifndef XMLSEC_NO_MD5
@@ -403,7 +403,7 @@ xmlSecCryptoGetFunctions_mscng(void) {
     gXmlSecMSCngFunctions->transformMd5GetKlass                = xmlSecMSCngTransformMd5GetKlass;
 #endif /* XMLSEC_NO_MD5 */
 
-    /****************************************************************************** SHA1  *****************************************************************************/
+    /* SHA1 */
 #ifndef XMLSEC_NO_SHA1
     gXmlSecMSCngFunctions->transformSha1GetKlass                = xmlSecMSCngTransformSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */

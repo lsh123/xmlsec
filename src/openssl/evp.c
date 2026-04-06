@@ -1509,37 +1509,37 @@ xmlSecOpenSSLKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
         goto done;
     }
 
-    /****************************************************************************** p  *****************************************************************************/
+    /* p */
     ret = xmlSecOpenSSLGetBNValue(&(dsaValue->p), &(dsaKeyValue.p));
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLGetBNValue(p)",
             xmlSecKeyDataKlassGetName(id));
         goto done;
     }
-    /****************************************************************************** q  *****************************************************************************/
+    /* q */
     ret = xmlSecOpenSSLGetBNValue(&(dsaValue->q), &(dsaKeyValue.q));
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLGetBNValue(q)",
             xmlSecKeyDataKlassGetName(id));
         goto done;
     }
-    /****************************************************************************** q  *****************************************************************************/
+    /* q */
     ret = xmlSecOpenSSLGetBNValue(&(dsaValue->g), &(dsaKeyValue.g));
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLGetBNValue(g)",
             xmlSecKeyDataKlassGetName(id));
         goto done;
     }
-    /****************************************************************************** y  *****************************************************************************/
+    /* y */
     ret = xmlSecOpenSSLGetBNValue(&(dsaValue->y), &(dsaKeyValue.pub_key));
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLGetBNValue(y)",
             xmlSecKeyDataKlassGetName(id));
         goto done;
     }
-    /****************************************************************************** x (only for private key)  *****************************************************************************/
+    /* x (only for private key) */
     if(xmlSecBufferGetSize(&(dsaValue->x)) > 0) {
-        /****************************************************************************** p  *****************************************************************************/
+        /* p */
         ret = xmlSecOpenSSLGetBNValue(&(dsaValue->x), &(dsaKeyValue.priv_key));
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLGetBNValue(x)",
@@ -1601,7 +1601,7 @@ xmlSecOpenSSLKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
         goto done;
     }
 
-    /****************************************************************************** p  *****************************************************************************/
+    /* p */
     xmlSecAssert2(dsaKeyValue.p != NULL, -1);
     ret = xmlSecOpenSSLSetBNValue(dsaKeyValue.p, &(dsaValue->p));
     if(ret < 0) {
@@ -1610,7 +1610,7 @@ xmlSecOpenSSLKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
         goto done;
     }
 
-    /****************************************************************************** q  *****************************************************************************/
+    /* q */
     xmlSecAssert2(dsaKeyValue.q != NULL, -1);
     ret = xmlSecOpenSSLSetBNValue(dsaKeyValue.q, &(dsaValue->q));
     if(ret < 0) {
@@ -1619,7 +1619,7 @@ xmlSecOpenSSLKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
         goto done;
     }
 
-    /****************************************************************************** g  *****************************************************************************/
+    /* g */
     xmlSecAssert2(dsaKeyValue.g != NULL, -1);
     ret = xmlSecOpenSSLSetBNValue(dsaKeyValue.g, &(dsaValue->g));
     if(ret < 0) {
@@ -1628,7 +1628,7 @@ xmlSecOpenSSLKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
         goto done;
     }
 
-    /****************************************************************************** y  *****************************************************************************/
+    /* y */
     xmlSecAssert2(dsaKeyValue.pub_key != NULL, -1);
     ret = xmlSecOpenSSLSetBNValue(dsaKeyValue.pub_key, &(dsaValue->y));
     if(ret < 0) {
@@ -1637,7 +1637,7 @@ xmlSecOpenSSLKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
         goto done;
     }
 
-    /****************************************************************************** x (only if availabel and requested)  *****************************************************************************/
+    /* x (only if availabel and requested) */
     if((writePrivateKey != 0) && (dsaKeyValue.priv_key != NULL)) {
         ret = xmlSecOpenSSLSetBNValue(dsaKeyValue.priv_key, &(dsaValue->x));
         if(ret < 0) {
@@ -2302,7 +2302,7 @@ xmlSecOpenSSLKeyDataDhRead(xmlSecKeyDataId id, xmlSecKeyValueDhPtr dhValue) {
         goto done;
     }
 
-    /****************************************************************************** p: optional  *****************************************************************************/
+    /* p: optional */
     if (xmlSecBufferGetSize(&(dhValue->p)) > 0) {
         ret = xmlSecOpenSSLGetBNValue(&(dhValue->p), &(dhKeyValue.p));
         if(ret < 0) {
@@ -2311,7 +2311,7 @@ xmlSecOpenSSLKeyDataDhRead(xmlSecKeyDataId id, xmlSecKeyValueDhPtr dhValue) {
             goto done;
         }
     }
-    /****************************************************************************** q: optional  *****************************************************************************/
+    /* q: optional */
     if (xmlSecBufferGetSize(&(dhValue->q)) > 0) {
         ret = xmlSecOpenSSLGetBNValue(&(dhValue->q), &(dhKeyValue.q));
         if(ret < 0) {
@@ -2320,7 +2320,7 @@ xmlSecOpenSSLKeyDataDhRead(xmlSecKeyDataId id, xmlSecKeyValueDhPtr dhValue) {
             goto done;
         }
     }
-    /****************************************************************************** generator: optional  *****************************************************************************/
+    /* generator: optional */
     if (xmlSecBufferGetSize(&(dhValue->generator)) > 0) {
         ret = xmlSecOpenSSLGetBNValue(&(dhValue->generator), &(dhKeyValue.generator));
         if(ret < 0) {
@@ -2329,14 +2329,14 @@ xmlSecOpenSSLKeyDataDhRead(xmlSecKeyDataId id, xmlSecKeyValueDhPtr dhValue) {
             goto done;
         }
     }
-    /****************************************************************************** public: required  *****************************************************************************/
+    /* public: required */
     ret = xmlSecOpenSSLGetBNValue(&(dhValue->public), &(dhKeyValue.public));
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLGetBNValue(public)",
             xmlSecKeyDataKlassGetName(id));
         goto done;
     }
-    /****************************************************************************** seed: optional  *****************************************************************************/
+    /* seed: optional */
     if (xmlSecBufferGetSize(&(dhValue->seed)) > 0) {
         ret = xmlSecOpenSSLGetBNValue(&(dhValue->seed), &(dhKeyValue.seed));
         if(ret < 0) {
@@ -2345,7 +2345,7 @@ xmlSecOpenSSLKeyDataDhRead(xmlSecKeyDataId id, xmlSecKeyValueDhPtr dhValue) {
             goto done;
         }
     }
-    /****************************************************************************** pgenCounter: optional  *****************************************************************************/
+    /* pgenCounter: optional */
     if (xmlSecBufferGetSize(&(dhValue->pgenCounter)) > 0) {
         ret = xmlSecOpenSSLGetBNValue(&(dhValue->pgenCounter), &(dhKeyValue.pgenCounter));
         if(ret < 0) {
@@ -2410,7 +2410,7 @@ xmlSecOpenSSLKeyDataDhWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKey
         goto done;
     }
 
-    /****************************************************************************** p: optional  *****************************************************************************/
+    /* p: optional */
     if(dhKeyValue.p != NULL) {
         ret = xmlSecOpenSSLSetBNValue(dhKeyValue.p, &(dhValue->p));
         if(ret < 0) {
@@ -2420,7 +2420,7 @@ xmlSecOpenSSLKeyDataDhWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKey
         }
     }
 
-    /****************************************************************************** q: optional  *****************************************************************************/
+    /* q: optional */
     if(dhKeyValue.q != NULL) {
         ret = xmlSecOpenSSLSetBNValue(dhKeyValue.q, &(dhValue->q));
         if(ret < 0) {
@@ -2430,7 +2430,7 @@ xmlSecOpenSSLKeyDataDhWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKey
         }
     }
 
-    /****************************************************************************** generator: optional  *****************************************************************************/
+    /* generator: optional */
     if(dhKeyValue.generator != NULL) {
         ret = xmlSecOpenSSLSetBNValue(dhKeyValue.generator, &(dhValue->generator));
         if(ret < 0) {
@@ -2440,7 +2440,7 @@ xmlSecOpenSSLKeyDataDhWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKey
         }
     }
 
-    /****************************************************************************** public: required  *****************************************************************************/
+    /* public: required */
     ret = xmlSecOpenSSLSetBNValue(dhKeyValue.public, &(dhValue->public));
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLSetBNValue(public)",
@@ -2448,7 +2448,7 @@ xmlSecOpenSSLKeyDataDhWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKey
         goto done;
     }
 
-    /****************************************************************************** seed: optional  *****************************************************************************/
+    /* seed: optional */
     if(dhKeyValue.seed != NULL) {
         ret = xmlSecOpenSSLSetBNValue(dhKeyValue.seed, &(dhValue->seed));
         if(ret < 0) {
@@ -2458,7 +2458,7 @@ xmlSecOpenSSLKeyDataDhWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data, xmlSecKey
         }
     }
 
-    /****************************************************************************** pgenCounter: optional  *****************************************************************************/
+    /* pgenCounter: optional */
     if(dhKeyValue.pgenCounter != NULL) {
         ret = xmlSecOpenSSLSetBNValue(dhKeyValue.pgenCounter, &(dhValue->pgenCounter));
         if(ret < 0) {
@@ -3690,7 +3690,7 @@ xmlSecOpenSSLKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
         goto done;
     }
 
-    /****************************************************************************** Modulus  *****************************************************************************/
+    /* Modulus */
     ret = xmlSecOpenSSLGetBNValue(&(rsaValue->modulus), &(rsaKeyValue.n));
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLGetBNValue(Modulus)",
@@ -3698,16 +3698,16 @@ xmlSecOpenSSLKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
         goto done;
     }
 
-    /****************************************************************************** Exponent  *****************************************************************************/
+    /* Exponent */
     ret = xmlSecOpenSSLGetBNValue(&(rsaValue->publicExponent), &(rsaKeyValue.e));
     if(ret < 0) {
         xmlSecInternalError("xmlSecOpenSSLGetBNValue(Exponent)",
             xmlSecKeyDataKlassGetName(id));
         goto done;
     }
-    /****************************************************************************** PrivateExponent (only for private key)  *****************************************************************************/
+    /* PrivateExponent (only for private key) */
     if(xmlSecBufferGetSize(&(rsaValue->privateExponent)) > 0) {
-        /****************************************************************************** p  *****************************************************************************/
+        /* p */
         ret = xmlSecOpenSSLGetBNValue(&(rsaValue->privateExponent), &(rsaKeyValue.d));
         if(ret < 0) {
             xmlSecInternalError("xmlSecOpenSSLGetBNValue(x)",
@@ -3769,7 +3769,7 @@ xmlSecOpenSSLKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
         goto done;
     }
 
-    /****************************************************************************** Modulus  *****************************************************************************/
+    /* Modulus */
     xmlSecAssert2(rsaKeyValue.n != NULL, -1);
     ret = xmlSecOpenSSLSetBNValue(rsaKeyValue.n, &(rsaValue->modulus));
     if(ret < 0) {
@@ -3778,7 +3778,7 @@ xmlSecOpenSSLKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
         goto done;
     }
 
-    /****************************************************************************** Exponent  *****************************************************************************/
+    /* Exponent */
     xmlSecAssert2(rsaKeyValue.e != NULL, -1);
     ret = xmlSecOpenSSLSetBNValue(rsaKeyValue.e, &(rsaValue->publicExponent));
     if(ret < 0) {
@@ -3787,7 +3787,7 @@ xmlSecOpenSSLKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
         goto done;
     }
 
-    /****************************************************************************** PrivateExponent (only if availabel and requested)  *****************************************************************************/
+    /* PrivateExponent (only if availabel and requested) */
     if((writePrivateKey != 0) && (rsaKeyValue.d != NULL)) {
         ret = xmlSecOpenSSLSetBNValue(rsaKeyValue.d, &(rsaValue->privateExponent));
         if(ret < 0) {

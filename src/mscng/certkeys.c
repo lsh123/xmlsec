@@ -975,11 +975,11 @@ xmlSecMSCngKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
     XMLSEC_SAFE_CAST_SIZE_TO_ULONG(mSize, rsakey->cbModulus, goto done, xmlSecKeyDataKlassGetName(id));
     offset = sizeof(BCRYPT_RSAKEY_BLOB);
 
-    /****************************************************************************** public exponent  *****************************************************************************/
+    /* public exponent */
     memcpy(blobData + offset, xmlSecBufferGetData(&(rsaValue->publicExponent)), peSize);
     offset += peSize;
 
-    /****************************************************************************** modulus  *****************************************************************************/
+    /* modulus */
     memcpy(blobData + offset, xmlSecBufferGetData(&(rsaValue->modulus)), mSize);
     offset += mSize;
 
@@ -1131,7 +1131,7 @@ xmlSecMSCngKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     }
     bufData += sizeof(BCRYPT_RSAKEY_BLOB);
 
-    /****************************************************************************** public exponent  *****************************************************************************/
+    /* public exponent */
     ret = xmlSecBufferSetData(&(rsaValue->publicExponent), bufData, rsakey->cbPublicExp);
     if (ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetData(publicExponent)", xmlSecKeyDataKlassGetName(id),
@@ -1140,7 +1140,7 @@ xmlSecMSCngKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     }
     bufData += rsakey->cbPublicExp;
 
-    /****************************************************************************** modulus  *****************************************************************************/
+    /* modulus */
     ret = xmlSecBufferSetData(&(rsaValue->modulus), bufData, rsakey->cbModulus);
     if (ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetData(modulus)", xmlSecKeyDataKlassGetName(id),

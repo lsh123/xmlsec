@@ -181,7 +181,7 @@ xmlSecCryptoGetFunctions_openssl(void) {
      *
       *****************************************************************************/
 
-    /****************************************************************************** AES  *****************************************************************************/
+    /* AES */
 #ifndef XMLSEC_NO_AES
     gXmlSecOpenSSLFunctions->transformAes128CbcGetKlass         = xmlSecOpenSSLTransformAes128CbcGetKlass;
     gXmlSecOpenSSLFunctions->transformAes192CbcGetKlass         = xmlSecOpenSSLTransformAes192CbcGetKlass;
@@ -195,7 +195,7 @@ xmlSecCryptoGetFunctions_openssl(void) {
 #endif /* XMLSEC_NO_AES */
 
 
-    /****************************************************************************** CAMELLIA  *****************************************************************************/
+    /* CAMELLIA */
 #ifndef XMLSEC_NO_CAMELLIA
     gXmlSecOpenSSLFunctions->transformCamellia128CbcGetKlass    = xmlSecOpenSSLTransformCamellia128CbcGetKlass;
     gXmlSecOpenSSLFunctions->transformCamellia192CbcGetKlass    = xmlSecOpenSSLTransformCamellia192CbcGetKlass;
@@ -206,31 +206,31 @@ xmlSecCryptoGetFunctions_openssl(void) {
 #endif /* XMLSEC_NO_CAMELLIA */
 
 
-    /****************************************************************************** CHACHA20  *****************************************************************************/
+    /* CHACHA20 */
 #ifndef XMLSEC_NO_CHACHA20
     gXmlSecOpenSSLFunctions->transformChaCha20GetKlass          = xmlSecOpenSSLTransformChaCha20GetKlass;
     gXmlSecOpenSSLFunctions->transformChaCha20Poly1305GetKlass  = xmlSecOpenSSLTransformChaCha20Poly1305GetKlass;
 #endif /* XMLSEC_NO_CHACHA20 */
 
 
-    /****************************************************************************** CONCATKDF  *****************************************************************************/
+    /* CONCATKDF */
 #ifndef XMLSEC_NO_CONCATKDF
     gXmlSecOpenSSLFunctions->transformConcatKdfGetKlass         = xmlSecOpenSSLTransformConcatKdfGetKlass;
 #endif /* XMLSEC_NO_CONCATKDF */
 
-    /****************************************************************************** DES  *****************************************************************************/
+    /* DES */
 #ifndef XMLSEC_NO_DES
     gXmlSecOpenSSLFunctions->transformDes3CbcGetKlass           = xmlSecOpenSSLTransformDes3CbcGetKlass;
     gXmlSecOpenSSLFunctions->transformKWDes3GetKlass            = xmlSecOpenSSLTransformKWDes3GetKlass;
 #endif /* XMLSEC_NO_DES */
 
 
-    /****************************************************************************** DH  *****************************************************************************/
+    /* DH */
 #ifndef XMLSEC_NO_DH
     gXmlSecOpenSSLFunctions->transformDhEsGetKlass              = xmlSecOpenSSLTransformDhEsGetKlass;
 #endif /* XMLSEC_NO_DH */
 
-    /****************************************************************************** DSA  *****************************************************************************/
+    /* DSA */
 #ifndef XMLSEC_NO_DSA
 
 #ifndef XMLSEC_NO_SHA1
@@ -243,7 +243,7 @@ xmlSecCryptoGetFunctions_openssl(void) {
 
 #endif /* XMLSEC_NO_DSA */
 
-    /****************************************************************************** ECDSA  *****************************************************************************/
+    /* ECDSA */
 #ifndef XMLSEC_NO_EC
     gXmlSecOpenSSLFunctions->transformEcdhGetKlass              = xmlSecOpenSSLTransformEcdhGetKlass;
 
@@ -281,13 +281,13 @@ xmlSecCryptoGetFunctions_openssl(void) {
 
 #endif /* XMLSEC_NO_EC */
 
-    /****************************************************************************** XDH  *****************************************************************************/
+    /* XDH */
 #ifndef XMLSEC_NO_XDH
     gXmlSecOpenSSLFunctions->transformX25519GetKlass            = xmlSecOpenSSLTransformX25519GetKlass;
     gXmlSecOpenSSLFunctions->transformX448GetKlass              = xmlSecOpenSSLTransformX448GetKlass;
 #endif /* XMLSEC_NO_XDH */
 
-    /****************************************************************************** GOST  *****************************************************************************/
+    /* GOST */
 #ifndef XMLSEC_NO_GOST
     gXmlSecOpenSSLFunctions->transformGost2001GostR3411_94GetKlass     = xmlSecOpenSSLTransformGost2001GostR3411_94GetKlass;
     gXmlSecOpenSSLFunctions->transformGostR3411_94GetKlass             = xmlSecOpenSSLTransformGostR3411_94GetKlass;
@@ -301,7 +301,7 @@ xmlSecCryptoGetFunctions_openssl(void) {
     gXmlSecOpenSSLFunctions->transformGostR3410_2012GostR3411_2012_512GetKlass = xmlSecOpenSSLTransformGostR3410_2012GostR3411_2012_512GetKlass;
 #endif /* XMLSEC_NO_GOST2012 */
 
-    /****************************************************************************** HMAC  *****************************************************************************/
+    /* HMAC */
 #ifndef XMLSEC_NO_HMAC
 
 #ifndef XMLSEC_NO_MD5
@@ -334,12 +334,12 @@ xmlSecCryptoGetFunctions_openssl(void) {
 
 #endif /* XMLSEC_NO_HMAC */
 
-    /****************************************************************************** MD5  *****************************************************************************/
+    /* MD5 */
 #ifndef XMLSEC_NO_MD5
     gXmlSecOpenSSLFunctions->transformMd5GetKlass               = xmlSecOpenSSLTransformMd5GetKlass;
 #endif /* XMLSEC_NO_MD5 */
 
-    /****************************************************************************** ML-DSA  *****************************************************************************/
+    /* ML-DSA */
 #ifndef XMLSEC_NO_MLDSA
     gXmlSecOpenSSLFunctions->transformMLDSA44GetKlass            = xmlSecOpenSSLTransformMLDSA44GetKlass;
     gXmlSecOpenSSLFunctions->transformMLDSA65GetKlass            = xmlSecOpenSSLTransformMLDSA65GetKlass;
@@ -347,22 +347,22 @@ xmlSecCryptoGetFunctions_openssl(void) {
 #endif /* XMLSEC_NO_MLDSA */
 
 
-    /****************************************************************************** PBKDF2  *****************************************************************************/
+    /* PBKDF2 */
 #ifndef XMLSEC_NO_PBKDF2
     gXmlSecOpenSSLFunctions->transformPbkdf2GetKlass            = xmlSecOpenSSLTransformPbkdf2GetKlass;
 #endif /* XMLSEC_NO_PBKDF2 */
 
-    /****************************************************************************** HKDF  *****************************************************************************/
+    /* HKDF */
 #ifndef XMLSEC_NO_HKDF
     gXmlSecOpenSSLFunctions->transformHkdfGetKlass              = xmlSecOpenSSLTransformHkdfGetKlass;
 #endif /* XMLSEC_NO_HKDF */
 
-    /****************************************************************************** RIPEMD160  *****************************************************************************/
+    /* RIPEMD160 */
 #ifndef XMLSEC_NO_RIPEMD160
     gXmlSecOpenSSLFunctions->transformRipemd160GetKlass         = xmlSecOpenSSLTransformRipemd160GetKlass;
 #endif /* XMLSEC_NO_RIPEMD160 */
 
-    /****************************************************************************** RSA  *****************************************************************************/
+    /* RSA */
 #ifndef XMLSEC_NO_RSA
 
 #ifndef XMLSEC_NO_MD5
@@ -434,7 +434,7 @@ xmlSecCryptoGetFunctions_openssl(void) {
 
 #endif /* XMLSEC_NO_RSA */
 
-    /****************************************************************************** SLH-DSA  *****************************************************************************/
+    /* SLH-DSA */
 #ifndef XMLSEC_NO_SLHDSA
     gXmlSecOpenSSLFunctions->transformSLHDSA_SHA2_128fGetKlass = xmlSecOpenSSLTransformSLHDSA_SHA2_128fGetKlass;
     gXmlSecOpenSSLFunctions->transformSLHDSA_SHA2_128sGetKlass = xmlSecOpenSSLTransformSLHDSA_SHA2_128sGetKlass;
@@ -453,7 +453,7 @@ xmlSecCryptoGetFunctions_openssl(void) {
 #endif /* XMLSEC_NO_EDDSA */
 
 
-    /****************************************************************************** SHA  *****************************************************************************/
+    /* SHA */
 #ifndef XMLSEC_NO_SHA1
     gXmlSecOpenSSLFunctions->transformSha1GetKlass              = xmlSecOpenSSLTransformSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */

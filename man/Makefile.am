@@ -1,7 +1,7 @@
 NULL =
 
-XMLSEC1_MAN=$(builddir)/xmlsec1.1
-XMLSEC1_CONFIG_MAN=$(builddir)/xmlsec1-config.1
+XMLSEC1_MAN=$(abs_builddir)/xmlsec1.1
+XMLSEC1_CONFIG_MAN=$(abs_builddir)/xmlsec1-config.1
 
 XMLSEC1_MAN_SRC=$(srcdir)/xmlsec1.1
 XMLSEC1_CONFIG_MAN_SRC=$(srcdir)/xmlsec1-config.1

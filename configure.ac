@@ -73,16 +73,13 @@ dnl Programs for man pages and HTML docs
 AC_PATH_PROG(HELP2MAN, help2man)
 AC_PATH_PROG(XSLTPROC, xsltproc)
 AC_PATH_PROG(MAN2HTML, man2html)
-AC_PATH_PROG(GTKDOC_MKHTML, gtkdoc-mkhtml)
-AC_PATH_PROG(GTKDOC_MKDB,   gtkdoc-mkdb)
-AC_PATH_PROG(GTKDOC_SCAN,   gtkdoc-scan)
 AC_PATH_PROG(PANDOC,  pandoc)
 AC_PATH_PROG(PYTHON3, python3)
 AC_PATH_PROG(DOXYGEN, doxygen)
 AM_CONDITIONAL(BUILD_MAN_DOCS,     [test x"$XSLTPROC" != x && test x"$MAN2HTML" != x])
-AM_CONDITIONAL(BUILD_API_DOCS,     [test x"$SED" != x && test x"$SORT" != x && test x"$XSLTPROC" != x && test x"$GTKDOC_MKHTML" != x && test x"$GTKDOC_MKDB" != x && test x"$GTKDOC_SCAN" != x])
 AM_CONDITIONAL(BUILD_MD_DOCS,      [test x"$PANDOC" != x && test x"$PYTHON3" != x])
 AM_CONDITIONAL(BUILD_DOXYGEN_DOCS, [test x"$DOXYGEN" != x])
+AM_CONDITIONAL(BUILD_HTML_DOCS,    [test x"$SED" != x && test x"$SORT" != x && test x"$XSLTPROC" != x ])
 
 dnl Checks for header files.
 AC_HEADER_DIRENT
@@ -2837,8 +2834,6 @@ docs/md/api/Makefile
 docs/md/examples/Makefile
 docs/md/tutorial/Makefile
 docs/html/Makefile
-docs/html/examples/Makefile
-docs/html/tutorial/Makefile
 man/Makefile
 xmlsec1-openssl.pc:xmlsec-openssl.pc.in
 xmlsec1-gnutls.pc:xmlsec-gnutls.pc.in

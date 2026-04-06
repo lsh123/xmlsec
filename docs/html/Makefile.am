@@ -1,6 +1,7 @@
 NULL =
 
-SUBDIRS = tutorial examples
+SUBDIRS = \
+	$(NULL)
 
 TARGET_DIR = @XMLSEC_DOCDIR@
 
@@ -17,16 +18,16 @@ EXTRA_DIST := \
 XMLSEC1_MAN  = $(top_builddir)/man/xmlsec1.1
 XMLSEC_HTML  = $(builddir)/xmlsec-man.html
 
-.PHONY: all docs docs-tutorial docs-examples docs-manpages docs-copy docs-fix-links
+.PHONY: all docs docs-manpages docs-copy
 
 all:
 	@echo "======= Run 'make docs' in the xmlsec/docs folder to rebuild docs"
 
 
-# if we build api docs then we also have xsltproc
-if BUILD_API_DOCS
+# if we build html docs then we need to have xsltproc
+if BUILD_HTML_DOCS
 
-docs: docs-manpages docs-tutorial docs-examples docs-copy
+docs: docs-manpages docs-copy
 	@(echo "-- Formatting html documents"; \
 	for i in `find $(builddir) -name "*.html" -print`; \
 	do \
@@ -49,11 +50,11 @@ docs: docs-manpages docs-tutorial docs-examples docs-copy
 	    $(SED) 's/\xC2\xA0/ /g' $$i > $$i.tmp ; \
 	    $(MV) $$i.tmp $$i ; \
 	done)
-	@$(MAKE) $(AM_MAKEFLAGS) docs-fix-links
+	@$(MAKE) $(AM_MAKEFLAGS)
 
 else
 
-docs: docs-manpages docs-tutorial docs-examples
+docs: docs-manpages
 	@(echo "=== ERROR: To build docs, make sure all necessary tools are installed" ; exit 1; )
 
 endif
@@ -85,46 +86,6 @@ docs-copy:
 		fi ; \
 	)
 
-docs-tutorial:
-	make -C tutorial docs
-
-docs-examples:
-	make -C examples docs
-
-#
-# Fix cross-links between tutorial/examples HTML and API HTML:
-#   - In API HTML: links to tutorial pages get ../tutorial/ prefix
-#   - In API HTML: links to examples pages get ../examples/ prefix
-#   - In tutorial HTML: links to API pages already have ../api/ prefix from
-#     the tutorial's own fixxref step; this step handles any navigation links
-#     added by XSLT that need adjustment.
-#
-docs-fix-links:
-	@(echo "-- Fixing cross-links between tutorial, examples and api html..."; \
-	 API_DIR=$(builddir)/api ; \
-	 TUTORIAL_DIR=$(builddir)/tutorial ; \
-	 EXAMPLES_DIR=$(builddir)/examples ; \
-	 if test -d $$API_DIR -a -d $$TUTORIAL_DIR; then \
-	     echo "--- Fixing API html links to tutorial and examples pages..."; \
-	     for f in `find $$API_DIR -name "*.html" -print`; do \
-	         $(SED) -i \
-	             -e 's|href="examples\.html|href="../examples/index.html|g' \
-	             -e 's|href="examples-sign-|href="../examples/examples-sign-|g' \
-	             -e 's|href="verify-with-|href="../examples/verify-with-|g' \
-	             -e 's|href="verify-enveloped-|href="../examples/verify-enveloped-|g' \
-	             -e 's|href="verify-node-|href="../examples/verify-node-|g' \
-	             -e 's|href="encrypt-template-|href="../examples/encrypt-template-|g' \
-	             -e 's|href="encrypt-dynamic-|href="../examples/encrypt-dynamic-|g' \
-	             -e 's|href="encrypt-with-|href="../examples/encrypt-with-|g' \
-	             -e 's|href="decrypt-with-|href="../examples/decrypt-with-|g' \
-	             -e 's|href="custom-keys-|href="../examples/custom-keys-|g' \
-	             -e 's|href="xmlsec-signature-klasses|href="../tutorial/xmlsec-signature-klasses|g' \
-	             -e 's|href="xmlsec-encryption-klasses|href="../tutorial/xmlsec-encryption-klasses|g' \
-	             "$$f" ; \
-	     done; \
-	     echo "--- Done fixing API html links"; \
-	 fi \
-	)
 
 clean-local:
 	@( \

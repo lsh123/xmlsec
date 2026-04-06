@@ -22,18 +22,24 @@ EXTRA_DIST := \
 	$(TOPLEVEL_MD_FILES) \
 	$(NULL)
 
-.PHONY: all docs docs-manpages
+.PHONY: all docs docs-copy docs-manpages
 
 all:
 	@echo "======= Run 'make docs' in the xmlsec/docs folder to rebuild docs"
 
-if BUILD_MD_DOCS
 
-docs:
+docs: docs-manpages docs-copy
 	@$(MAKE) $(AM_MAKEFLAGS) -C examples docs
 	@$(MAKE) $(AM_MAKEFLAGS) -C api docs
 	@$(MAKE) $(AM_MAKEFLAGS) -C tutorial docs
-	@$(MAKE) $(AM_MAKEFLAGS) docs-manpages
+
+docs-copy:
+	@if [ z"$(builddir)" != z"$(srcdir)" ] ; then \
+		echo "-- Copying top-level Markdown files to build dir ..." ; \
+		$(CP) $(srcdir)/*.md $(builddir)/ ; \
+	fi
+
+if BUILD_MD_DOCS
 
 docs-manpages: $(XMLSEC1_MAN)
 	@echo "-- Building docs for man page ..."
@@ -45,11 +51,8 @@ docs-manpages: $(XMLSEC1_MAN)
 
 else
 
-docs:
-	@(echo "=== ERROR: To build Markdown docs, make sure pandoc and python3 are installed" ; exit 1; )
-
 docs-manpages:
-	@echo "-- Skipping building docs for man page (pandoc not available) ..."
+	@(echo "=== ERROR: To build Markdown docs, make sure pandoc and python3 are installed" ; exit 1; )
 
 endif
 
@@ -57,13 +60,7 @@ install-data-local:
 	@( \
 		$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR) ; \
 		echo "-- Installing top level docs ..." ; \
-		@INSTALL@ -m 0644 $(srcdir)/*.md $(DESTDIR)$(TARGET_DIR) ; \
-		if test -f $(XMLSEC1_MAN_MD) ; then  \
-			echo "-- Installing manpage docs ..." ; \
-			@INSTALL@ -m 0644 $(XMLSEC1_MAN_MD) $(DESTDIR)$(TARGET_DIR) ; \
-		else \
-			echo "WARNING: Skipping manpage docs installation: missing necessary tools to build manpage docs" ; \
-		fi ; \
+		@INSTALL@ -m 0644 $(builddir)/*.md $(DESTDIR)$(TARGET_DIR) ; \
 	)
 
 uninstall-local:

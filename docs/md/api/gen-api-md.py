@@ -24,6 +24,7 @@ import xml.etree.ElementTree as ET
 
 _errors: list[str] = []
 _warnings: list[str] = []
+_version: str = ""
 
 
 def _error(msg: str) -> None:
@@ -240,6 +241,28 @@ def _description_to_md(parent: ET.Element | None) -> str:
 
 
 # ---------------------------------------------------------------------------
+# GitHub source link helper
+# ---------------------------------------------------------------------------
+
+_GITHUB_BASE = "https://github.com/lsh123/xmlsec/blob"
+
+
+def _github_source_link(src_file: str, src_line: str) -> str:
+    """Return a Markdown source-location string, linking to GitHub when a version is set."""
+    if not src_file:
+        return ""
+    if _version:
+        url = f"{_GITHUB_BASE}/{_version}/{src_file}"
+        if src_line:
+            url += f"#L{src_line}"
+        return f"[{src_file}]({url})"
+    loc_str = f"`{src_file}`"
+    if src_line:
+        loc_str += f" (line {src_line})"
+    return loc_str
+
+
+# ---------------------------------------------------------------------------
 # Type/signature helpers
 # ---------------------------------------------------------------------------
 
@@ -338,10 +361,7 @@ def _render_defines(section: ET.Element) -> str:
         if initializer:
             lines.append(f"*Defined as:* `{initializer}`\n")
         if src_file:
-            loc_str = f"`{src_file}`"
-            if src_line:
-                loc_str += f" (line {src_line})"
-            lines.append(f"*Source:* {loc_str}\n")
+            lines.append(f"*Source:* {_github_source_link(src_file, src_line)}\n")
         if brief:
             lines.append(f"{brief}\n")
         if detail and detail != brief:
@@ -364,10 +384,7 @@ def _render_typedefs(section: ET.Element) -> str:
         lines.append(f"### `{name}`\n")
         lines.append(f"```c\n{sig}\n```\n")
         if src_file:
-            loc_str = f"`{src_file}`"
-            if src_line:
-                loc_str += f" (line {src_line})"
-            lines.append(f"*Source:* {loc_str}\n")
+            lines.append(f"*Source:* {_github_source_link(src_file, src_line)}\n")
         if brief:
             lines.append(f"{brief}\n")
         if detail and detail != brief:
@@ -388,10 +405,7 @@ def _render_enums(section: ET.Element) -> str:
 
         lines.append(f"### `{name}`\n")
         if src_file:
-            loc_str = f"`{src_file}`"
-            if src_line:
-                loc_str += f" (line {src_line})"
-            lines.append(f"*Source:* {loc_str}\n")
+            lines.append(f"*Source:* {_github_source_link(src_file, src_line)}\n")
         if brief:
             lines.append(f"{brief}\n")
         if detail and detail != brief:
@@ -429,10 +443,7 @@ def _render_functions(section: ET.Element) -> str:
         lines.append(f"### `{name}`\n")
         lines.append(f"```c\n{sig}\n```\n")
         if src_file:
-            loc_str = f"`{src_file}`"
-            if src_line:
-                loc_str += f" (line {src_line})"
-            lines.append(f"*Source:* {loc_str}\n")
+            lines.append(f"*Source:* {_github_source_link(src_file, src_line)}\n")
         if brief:
             lines.append(f"{brief}\n")
         if detail and detail != brief:
@@ -663,6 +674,9 @@ def main() -> int:
     version = sys.argv[1]
     xml_dir = sys.argv[2]
     out_dir = sys.argv[3]
+
+    global _version
+    _version = version
 
     # Validate input directory
     if not os.path.isdir(xml_dir):

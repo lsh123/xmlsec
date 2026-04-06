@@ -47,6 +47,35 @@ def camel_case_name(folder, filename):
     return f"{folder_part}-{file_part}{ext}"
 
 
+def camel_case_top_level_name(filename):
+    """
+    Convert a top-level filename (no folder prefix) to a wiki page name.
+    e.g. "index.md" -> "Home.md"
+    e.g. "getting-started.md" -> "Getting-Started.md"
+    """
+    if filename.lower() == "index.md":
+        return "Home.md"
+    WORD_MAP = {
+        "Api":       "API",
+        "Certkeys":  "CertKeys",
+        "Gcrypt":    "GCrypt",
+        "Gnutls":    "GnuTLS",
+        "Keysmngr":  "KeysMngr",
+        "Keysstore": "KeysStore",
+        "Mscng":     "MSCng",
+        "Mscrypto":  "MSCrypto",
+        "Nss":       "NSS",
+        "Openssl":   "OpenSSL",
+        "Xmlsec":    "XMLSec",
+        "Xmldsig":   "XMLDSig",
+        "Xmlenc":    "XMLEnc",
+    }
+    base, ext = os.path.splitext(filename)
+    parts = [WORD_MAP.get(p.capitalize(), p.capitalize())
+             for p in re.split(r"[-_]", base) if p]
+    return "-".join(parts) + ext
+
+
 def flatten_path_to_wiki_name(rel_path):
     """
     Convert a relative path like 'api/index.md' to 'Api-Index.md'.
@@ -69,13 +98,17 @@ def resolve_link_target(source_folder, link_target):
     """
     Given the source folder (e.g. 'tutorial') and a relative link target
     (e.g. '../api/index.md'), resolve it to a repo-relative path like 'api/index.md'.
-    Returns None if it cannot be resolved to a docs/md subfolder.
+    Returns (folder, filename) where folder is '' for top-level files,
+    or (None, None) if it cannot be resolved to a docs/md file.
     """
     # Join the source folder with the link to get a normalized relative path
     joined = os.path.normpath(os.path.join(source_folder, link_target))
-    # joined should now look like 'api/index.md' or similar
+    # joined should now look like 'api/index.md', 'faq.md', or similar
     parts = joined.replace("\\", "/").split("/")
-    # We expect exactly <subfolder>/<file>
+    # Top-level file (e.g. faq.md)
+    if len(parts) == 1:
+        return "", parts[0]
+    # Subfolder file (e.g. api/index.md)
     if len(parts) == 2:
         return parts[0], parts[1]
     return None, None
@@ -125,8 +158,11 @@ def fix_md_links(content, source_folder, image_dest_prefix="images/"):
         _, ext = os.path.splitext(path)
         if ext.lower() == ".md":
             folder, filename = resolve_link_target(source_folder, path)
-            if folder and filename:
-                wiki_name = os.path.splitext(camel_case_name(folder, filename))[0]
+            if filename is not None:
+                if folder:
+                    wiki_name = os.path.splitext(camel_case_name(folder, filename))[0]
+                else:
+                    wiki_name = os.path.splitext(camel_case_top_level_name(filename))[0]
                 return f"{prefix}{text}]({wiki_name}{anchor})"
 
         return m.group(0)
@@ -200,7 +236,7 @@ def main():
         # Run autogen.sh from srcdir inside tmp_dir
         print("\n--- Running autogen.sh ---")
         run_command(
-            f"{autogen_sh} && make -C docs docs",
+            f"{autogen_sh} && make -j12 && make -C docs docs",
             cwd=tmp_dir,
             description=f"cd {tmp_dir} && {autogen_sh} && make -C docs docs",
         )
@@ -246,6 +282,16 @@ def main():
                     continue
                 wiki_name = camel_case_name(subfolder, filename)
                 wiki_files[wiki_name] = (subfolder, src_path)
+
+        # Process top-level .md files directly in build_md_folder
+        for filename in sorted(os.listdir(build_md_folder)):
+            if not filename.endswith(".md"):
+                continue
+            src_path = os.path.join(build_md_folder, filename)
+            if not os.path.isfile(src_path):
+                continue
+            wiki_name = camel_case_top_level_name(filename)
+            wiki_files[wiki_name] = (".", src_path)
 
         if not wiki_files:
             print(f"ERROR: No markdown files found under {build_md_folder}", file=sys.stderr)

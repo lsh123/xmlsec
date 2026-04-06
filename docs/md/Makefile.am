@@ -43,11 +43,11 @@ if BUILD_MD_DOCS
 
 docs-manpages: $(XMLSEC1_MAN)
 	@echo "-- Building docs for man page ..."
+	@printf '# XML Security Library: Command Line Utility\n\n' > $(XMLSEC1_MAN_MD)
 	@$(PANDOC) \
 		--from=man \
 		--to=markdown \
-		--output=$(XMLSEC1_MAN_MD) \
-		$(XMLSEC1_MAN)
+		$(XMLSEC1_MAN) >> $(XMLSEC1_MAN_MD)
 
 else
 
@@ -59,8 +59,15 @@ endif
 install-data-local:
 	@( \
 		$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR) ; \
-		echo "-- Installing top level docs ..." ; \
-		@INSTALL@ -m 0644 $(builddir)/*.md $(DESTDIR)$(TARGET_DIR) ; \
+		if test -f $(builddir)/index.md ; then  \
+			echo "-- Installing builddir top level docs ..." ; \
+			@INSTALL@ -m 0644 $(builddir)/*.md $(DESTDIR)$(TARGET_DIR) ; \
+		elif test -f $(srcdir)/index.md ; then  \
+			echo "-- Installing srcdir top level docs ..." ; \
+			@INSTALL@ -m 0644 $(srcdir)/*.md $(DESTDIR)$(TARGET_DIR) ; \
+		else \
+			echo "WARNING: Skipping top level docs installation: missing necessary tools to build docs" ; \
+		fi ; \
 	)
 
 uninstall-local:

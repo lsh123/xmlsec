@@ -137,12 +137,6 @@
 	    </li>
 	    <li>
 		<xsl:call-template name="linkto">
-		    <xsl:with-param name="href">mailing-list.html</xsl:with-param>
-		    <xsl:with-param name="text">Mailing list</xsl:with-param>
-		</xsl:call-template>
-	    </li>
-	    <li>
-		<xsl:call-template name="linkto">
 		    <xsl:with-param name="href">related.html</xsl:with-param>
 		    <xsl:with-param name="text">Related</xsl:with-param>
 		</xsl:call-template>

@@ -5,6 +5,9 @@ SUBDIRS = \
 
 TARGET_DIR = @XMLSEC_DOCDIR@
 
+# Markdown source files for generated HTML pages (all *.md in docs/md/)
+MD_SRCDIR     = $(top_srcdir)/docs/md
+MD_SRC_FILES  = $(wildcard $(MD_SRCDIR)/*.md)
 
 # files that are copied from sources
 EXTRA_DIST := \
@@ -15,10 +18,7 @@ EXTRA_DIST := \
 	$(srcdir)/favicon.ico				\
     $(NULL)
 
-XMLSEC1_MAN  = $(top_builddir)/man/xmlsec1.1
-XMLSEC_HTML  = $(builddir)/xmlsec-man.html
-
-.PHONY: all docs docs-manpages docs-copy
+.PHONY: all docs docs-copy docs-md
 
 all:
 	@echo "======= Run 'make docs' in the xmlsec/docs folder to rebuild docs"
@@ -27,7 +27,7 @@ all:
 # if we build html docs then we need to have xsltproc
 if BUILD_HTML_DOCS
 
-docs: docs-manpages docs-copy
+docs: docs-copy docs-md
 	@(echo "-- Formatting html documents"; \
 	for i in `find $(builddir) -name "*.html" -print`; \
 	do \
@@ -54,7 +54,7 @@ docs: docs-manpages docs-copy
 
 else
 
-docs: docs-manpages
+docs: docs-copy docs-md
 	@( \
 		echo "=== ERROR: To build docs, make sure all necessary tools are installed" ; \
 		echo "SED:      $(SED)" ; \
@@ -65,21 +65,25 @@ docs: docs-manpages
 
 endif
 
-if BUILD_MAN_DOCS
-docs-manpages: docs-copy $(XMLSEC1_MAN)
-	@echo "-- Building docs for man page ..."
-	@($(MAN2HTML) $(XMLSEC1_MAN) | \
-		  $(GREP) -v '^Content-type: text/html' | \
-		  tr "[:cntrl:]" " " | \
-		  $(SED) -e 's|<a href="/cgi-bin/man/man2html">Return to Main Contents</a>||ig' \
-		         -e 's|<a href="/cgi-bin/man/man2html">\([^<]*\)</a>|\1|ig' > \
-		  $(XMLSEC_HTML) \
-	)
+# Convert all *.md files from docs/md/ to HTML using pandoc.
+# The pandoc template adds the <head> structure; xsltproc (above) then wraps
+# each output with the navigation panel just like all other HTML pages.
+if BUILD_MD_DOCS
+docs-md: $(MD_SRC_FILES)
+	@echo "-- Generating HTML from Markdown files in $(MD_SRCDIR) ..."
+	@for f in $(MD_SRC_FILES); do \
+		out=$(builddir)/`basename $$f .md`.html ; \
+		echo "--- Converting $$f -> $$out" ; \
+		$(PANDOC) \
+			--standalone \
+			--template=$(srcdir)/pandoc-template.html5 \
+			--from=markdown --to=html5 \
+			--output=$$out \
+			$$f ; \
+	done
 else
-
-docs-manpages: docs-copy
-	@echo "-- Skipping building docs for man page ..."
-
+docs-md:
+	@echo "-- Note: Skipping Markdown-to-HTML generation (pandoc not available)"
 endif
 
 docs-copy:

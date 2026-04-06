@@ -58,7 +58,7 @@ apt install libgnutls30
 apt install libgcrypt20 libgcrypt20-dev
 
 # required for building man pages and docs
-apt install help2man man2html xsltproc pandoc doxygen python3
+apt install help2man xsltproc pandoc doxygen python3
 ```
 
 ### Building XMLSec on Linux, Unix, MacOSX, MinGW, Cygwin, etc

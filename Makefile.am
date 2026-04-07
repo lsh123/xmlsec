@@ -1,16 +1,14 @@
+#
+# make all 			: builds everything
+# make check    	: runs all tests
+# make docs-build	: builds all docs (requires additional tools installed)
+# make tar-release  : builds distribution tar.gz (including docs)
+#
 NULL =
+SUBDIRS 	    = include src apps man docs
 
 SAFE_VERSION	= @XMLSEC_VERSION_SAFE@
-SUBDIRS 	    = include src
-if XMLSEC_APPS
-SUBDIRS += apps
-endif
-if XMLSEC_MANS
-SUBDIRS += man
-endif
-if XMLSEC_DOCS
-SUBDIRS += docs
-endif
+
 TEST_APP 	    = apps/xmlsec1$(EXEEXT)
 UNIT_TEST_APP 	= apps/xmlsec_unit_tests$(EXEEXT)
 DEFAULT_CRYPTO	= @XMLSEC_DEFAULT_CRYPTO@
@@ -18,10 +16,10 @@ DEFAULT_CRYPTO	= @XMLSEC_DEFAULT_CRYPTO@
 bin_SCRIPTS 	= xmlsec1-config
 pkgconfig_DATA 	= xmlsec1.pc @XMLSEC_CRYPTO_PC_FILES_LIST@
 pkgconfigdir 	= $(libdir)/pkgconfig
-confexecdir	= $(libdir)
+confexecdir		= $(libdir)
 confexec_DATA 	= xmlsec1Conf.sh
-m4datadir	= $(datadir)/aclocal
-m4data_DATA	= xmlsec1.m4
+m4datadir		= $(datadir)/aclocal
+m4data_DATA		= xmlsec1.m4
 
 ACLOCAL_AMFLAGS	= -I m4
 
@@ -92,12 +90,15 @@ PRECHECK_COMMANDS= \
 	cd $(ABS_SRCDIR) \
 	$(NULL)
 endif
+
 CHECK_CRYPTO_LIST = \
 	$(XMLSEC_CHECK_CRYPTO_LIST) \
 	$(NULL)
 
-docs-man:
-	@(cd man && $(MAKE) docs)
+
+.PHONY: all check check-all check-info check-keys check-dsig check-enc docs-build
+
+all:
 
 check: check-all check-info
 
@@ -181,23 +182,22 @@ memcheck-res:
 	@$(GREP) -i 'used_suppression:' /tmp/xmlsec-test*/*.log | $(SED) 's/.*--.*-- *//' | $(SORT) -u
 
 memcheck: $(TEST_APP)
-	@(export DEBUG_MEMORY=1 && $(MAKE) check && $(MAKE) memcheck-res)
+	@(export DEBUG_MEMORY=1 && $(MAKE) $(AM_MAKEFLAGS) check && $(MAKE) $(AM_MAKEFLAGS) memcheck-res)
 
 memcheck-crypto-%: $(TEST_APP)
-	@(export DEBUG_MEMORY=1 && $(MAKE) check-crypto-$* && $(MAKE) memcheck-res)
+	@(export DEBUG_MEMORY=1 && $(MAKE) $(AM_MAKEFLAGS) check-crypto-$* && $(MAKE) $(AM_MAKEFLAGS) memcheck-res)
 
 perfcheck: $(TEST_APP)
-	@(export PERF_TEST=10 && $(MAKE) check)
+	@(export PERF_TEST=10 && $(MAKE) $(AM_MAKEFLAGS) check)
 
-dist-hook:
+# build docs before running make dist
+tar-release: docs-build
+	@(unset CDPATH && $(MAKE) $(AM_MAKEFLAGS) dist)
 
 cleantar:
 	@($(RM) -f xmlsec*.tar.gz COPYING.LIB)
 
-tar-release: clean cleantar
-	@(unset CDPATH && $(MAKE) dist)
 
-rpm: cleantar tar-release
-	@(unset CDPATH && rpmbuild -ta $(distdir).tar.gz)
-
-rpm-release: clean cleantar rpm
+docs-build: all
+	@$(MAKE) $(AM_MAKEFLAGS) -C man docs
+	@$(MAKE) $(AM_MAKEFLAGS) -C docs docs

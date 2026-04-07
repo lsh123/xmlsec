@@ -1,11 +1,10 @@
 #
-# docs/md/api/Makefile.am
-# Generate per-group API Markdown files from Doxygen XML output.
-# Files are generated into the build directory ($(builddir)).
-# make clean removes them; make dist includes them via dist-hook.
+# make all 		: prints info message
+# make docs		: regenerates the MD files (if necessary tools are present) or prints error
+# make install  : tries to copy MD files to install dir first from builddir, then srcdir, then prints warning
+# make dist     : tries to copy MD files to dist dir first from builddir, then srcdir, then prints warning
 #
 NULL =
-MODULE = xmlsec
 
 # target installation directory
 TARGET_DIR = @XMLSEC_DOCDIR@/api
@@ -21,14 +20,27 @@ EXTRA_DIST := \
 	$(srcdir)/gen-api-md.py \
 	$(NULL)
 
-.PHONY: all docs api-md
+.PHONY: all docs
 
+#
+# Docs are not built as part of normal build
+#
 all:
 	@echo "======= Run 'make docs' in the xmlsec/docs folder to rebuild docs"
 
+#
+# Generate per-group API Markdown files from Doxygen XML into $(builddir).
+# The xml docs target must run first to produce the XML input files.
+#
 if BUILD_MD_DOCS
 
-docs: api-md
+docs:
+	@echo "-- Generating API Markdown files ..."
+	@if [ ! -d "$(XML_API_DIR)" ]; then \
+		echo "-- XML API directory not found, generating XML files first ..."; \
+		$(MAKE) $(AM_MAKEFLAGS) -C $(abs_top_builddir)/docs/xml/api docs; \
+	fi
+	@$(PYTHON3) $(GEN_API_MD) "$(PACKAGE_VERSION)" "$(XML_API_DIR)" "$(builddir)"
 
 else
 
@@ -37,22 +49,6 @@ docs:
 
 endif
 
-#
-# Generate per-group API Markdown files from Doxygen XML into $(builddir).
-# The xml docs target must run first to produce the XML input files.
-#
-api-md:
-	@echo "-- Generating API Markdown files ..."
-	@if [ ! -d "$(XML_API_DIR)" ]; then \
-		echo "-- XML API directory not found, generating XML files first ..."; \
-		$(MAKE) $(AM_MAKEFLAGS) -C $(abs_top_builddir)/docs/xml/api docs; \
-	fi
-	@$(PYTHON3) $(GEN_API_MD) "$(PACKAGE_VERSION)" "$(XML_API_DIR)" "$(builddir)"
-
-dist-hook: api-md
-	@echo "-- Copying API Markdown files to dist ..."
-	@$(CP) $(builddir)/*.md $(distdir)/
-
 clean-local:
 	@( \
 		if [ z"$(builddir)" != z"$(srcdir)" ] ; then \
@@ -60,6 +56,11 @@ clean-local:
 		fi ; \
 	)
 
+distclean-local: clean-local
+
+#
+# Tries to copy MD files to install dir first from builddir, then srcdir, then prints warning
+#
 install-data-local:
 	@( \
 		$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR) ; \
@@ -76,3 +77,22 @@ install-data-local:
 
 uninstall-local:
 	@$(RM) -rf $(DESTDIR)$(TARGET_DIR)
+
+
+#
+# Tries to copy MD files to dist dir first from builddir, then srcdir, then prints warning
+#
+dist-hook:
+	@( \
+		if test -f $(builddir)/index.md ; then  \
+			echo "-- Copying builddir API docs ..." ; \
+			$(CP) $(builddir)/*.md $(distdir)/ ; \
+		elif test -f $(srcdir)/index.md ; then  \
+			echo "-- Copying srcdir API docs ..." ; \
+			$(CP) $(srcdir)/*.md $(distdir)/ ; \
+		else \
+			echo "WARNING: Skipping API docs dist (rebuild docs with 'make -C docs docs')" ; \
+		fi ; \
+	)
+
+

@@ -1,11 +1,10 @@
 #
-# docs/md/examples/Makefile.am
-# Logic to generate per-example Markdown files from C/XML source files.
-# Files are generated into the build directory ($(builddir)).
-# make clean removes them; make dist includes them via dist-hook.
+# make all 		: prints info message
+# make docs		: generates the MD files (if necessary tools are present) or prints error
+# make install  : tries to copy MD files to install dir first from builddir, then srcdir, then prints warning
+# make dist     : tries to copy MD files to dist dir first from builddir, then srcdir, then prints warning
 #
 NULL =
-MODULE = xmlsec
 
 # target installation directory
 TARGET_DIR = @XMLSEC_DOCDIR@/examples
@@ -24,14 +23,23 @@ EXTRA_DIST := \
 	$(srcdir)/gen-examples-md.py \
 	$(NULL)
 
-.PHONY: all docs examples-md
+.PHONY: all docs
 
+#
+# Docs are not built as part of normal build
+#
 all:
 	@echo "======= Run 'make docs' in the xmlsec/docs folder to rebuild docs"
 
+
+#
+# Generate per-example Markdown files from C/XML sources into $(builddir).
+#
 if BUILD_MD_DOCS
 
-docs: examples-md
+docs: $(EXAMPLES_SOURCE_FILES)
+	@echo "-- Generating examples Markdown files ..."
+	@$(PYTHON3) $(GEN_EXAMPLES_MD) $(EXAMPLES_SOURCE_DIR) $(builddir)
 
 else
 
@@ -40,36 +48,48 @@ docs:
 
 endif
 
-#
-# Generate per-example Markdown files from C/XML sources into $(builddir).
-#
-examples-md: $(EXAMPLES_SOURCE_FILES)
-	@echo "-- Generating examples Markdown files ..."
-	@$(PYTHON3) $(GEN_EXAMPLES_MD) $(EXAMPLES_SOURCE_DIR) $(builddir)
-
-dist-hook: examples-md
-	@echo "-- Copying examples Markdown files to dist ..."
-	@$(CP) $(builddir)/*.md $(distdir)/
-
 clean-local:
 	@( \
 		if [ z"$(builddir)" != z"$(srcdir)" ] ; then \
 			$(RM) -f $(builddir)/*.md ; \
 		fi ; \
 	)
+
+distclean-local: clean-local
+
+#
+# Tries to copy MD files to install dir first from builddir, then srcdir, then prints warning
+#
 install-data-local:
 	@( \
 		$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR) ; \
 		if test -f $(builddir)/index.md ; then  \
-			echo "-- Installing builddir API docs ..." ; \
+			echo "-- Installing builddir examples docs ..." ; \
 			@INSTALL@ -m 0644 $(builddir)/*.md $(DESTDIR)$(TARGET_DIR) ; \
 		elif test -f $(srcdir)/index.md ; then  \
-			echo "-- Installing srcdir API docs ..." ; \
+			echo "-- Installing srcdir examples docs ..." ; \
 			@INSTALL@ -m 0644 $(srcdir)/*.md $(DESTDIR)$(TARGET_DIR) ; \
 		else \
-			echo "WARNING: Skipping examples docs installation: missing necessary tools to build examples docs" ; \
+			echo "WARNING: Skipping examples docs installation (rebuild docs with 'make -C docs docs')" ; \
 		fi ; \
 	)
 
 uninstall-local:
 	@$(RM) -rf $(DESTDIR)$(TARGET_DIR)
+
+#
+# Tries to copy MD files to dist dir first from builddir, then srcdir, then prints warning
+#
+dist-hook:
+	@( \
+		if test -f $(builddir)/index.md ; then  \
+			echo "-- Copying builddir examples docs ..." ; \
+			$(CP) $(builddir)/*.md $(distdir)/ ; \
+		elif test -f $(srcdir)/index.md ; then  \
+			echo "-- Copying srcdir examples docs ..." ; \
+			$(CP) $(srcdir)/*.md $(distdir)/ ; \
+		else \
+			echo "WARNING: Skipping examples docs dist (rebuild docs with 'make -C docs docs')" ; \
+		fi ; \
+	)
+

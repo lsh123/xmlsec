@@ -1,12 +1,9 @@
-/*
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * OpenSSL keys store
+ * This is free software; see the Copyright file in the source distribution for precise wording.
  *
- * This is free software; see the Copyright file in the source
- * distribution for precise wording.
- *
- * Copyright (c) 2003 America Online, Inc. All rights reserved
+ * Copyright (C) 2003-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 #ifndef __XMLSEC_OPENSSL_KEYSSTORE_H__
 #define __XMLSEC_OPENSSL_KEYSSTORE_H__

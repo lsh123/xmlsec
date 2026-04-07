@@ -1,23 +1,33 @@
 /**
- * XML Security Library example: Signing a file with a dynamicaly created template.
+ * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * Signs a file using a dynamicaly created template and key from PEM file.
+ * This is free software; see the Copyright file in the source distribution for precise wording.
+ *
+ * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ */
+/**
+ * @brief XML Security Library example: Signing a file with a dynamicaly created template.
+ * @details Signs a file using a dynamicaly created template and key from PEM file.
  * The signature has one reference with one enveloped transform to sign
  * the whole document except the <dsig:Signature/> node itself.
  *
  * Usage:
+ *
+ * \code{.sh}
  *      sign2 <xml-doc> <pem-key>
+ * \endcode
  *
  * Example:
+ *
+ * \code{.sh}
  *      ./sign2 sign2-doc.xml rsakey.pem > sign2-res.xml
+ * \endcode
  *
  * The result signature could be validated using verify1 example:
+ *
+ * \code{.sh}
  *      ./verify1 sign2-res.xml rsapub.pem
- *
- * This is free software; see the Copyright file in the source
- * distribution for precise wording.
- *
- * Copyright (C) 2002-2024 Aleksey Sanin <aleksey#aleksey.com>. All Rights Reserved.
+ * \endcode
  */
 #include <stdlib.h>
 #include <string.h>

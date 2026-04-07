@@ -1,12 +1,10 @@
-/*
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- *
- * This is free software; see the Copyright file in the source
- * distribution for precise wording.
+ * This is free software; see the Copyright file in the source distribution for precise wording.
  *
  * Copyright (C) 2003 Cordys R&D BV, All rights reserved.
- * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * @addtogroup xmlsec_mscrypto_certkeys
@@ -101,7 +99,7 @@ struct _xmlSecMSCryptoKeyDataCtx {
 
 #ifndef XMLSEC_MSCRYPTO_CUSTOM_REFCOUNT
 
-/****************************************************************************** Provider  *****************************************************************************/
+/* Provider */
 #define xmlSecMSCryptoKeyDataCtxGetProvider(ctx)            (ctx)->hProv
 
 static int
@@ -155,7 +153,7 @@ xmlSecMSCryptoKeyDataCtxDuplicateProvider(xmlSecMSCryptoKeyDataCtxPtr ctxDst, xm
 }
 
 
-/****************************************************************************** Key  *****************************************************************************/
+/* Key */
 #define xmlSecMSCryptoKeyDataCtxGetKey(ctx)            ((ctx)->hKey)
 
 static int
@@ -203,7 +201,7 @@ xmlSecMSCryptoKeyDataCtxDuplicateKey(xmlSecMSCryptoKeyDataCtxPtr ctxDst, xmlSecM
 
 #else /* XMLSEC_MSCRYPTO_CUSTOM_REFCOUNT */
 
-/****************************************************************************** Provider  *****************************************************************************/
+/* Provider */
 #define xmlSecMSCryptoKeyDataCtxGetProvider(ctx)            (((ctx)->p_prov) ? ((ctx)->p_prov->hProv) : 0)
 
 static int
@@ -279,7 +277,7 @@ xmlSecMSCryptoKeyDataCtxDuplicateProvider(xmlSecMSCryptoKeyDataCtxPtr ctxDst, xm
     return(0);
 }
 
-/******************************************************************************  Key   *****************************************************************************/
+/*  Key  */
 #define xmlSecMSCryptoKeyDataCtxGetKey(ctx)            (((ctx)->p_key) ? ((ctx)->p_key->hKey) : 0)
 
 static int
@@ -350,7 +348,7 @@ xmlSecMSCryptoKeyDataCtxDuplicateKey(xmlSecMSCryptoKeyDataCtxPtr ctxDst, xmlSecM
 
 #endif /* XMLSEC_MSCRYPTO_CUSTOM_REFCOUNT */
 
-/****************************************************************************** Cert  *****************************************************************************/
+/* Cert */
 #define xmlSecMSCryptoKeyDataCtxGetCert(ctx)            ((ctx)->pCert)
 
 static void
@@ -1448,7 +1446,7 @@ xmlSecMSCryptoKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     }
     blob += sizeof(PUBLICKEYSTRUC) + sizeof(RSAPUBKEY);
 
-    /****************************************************************************** Modulus  *****************************************************************************/
+    /* Modulus */
     ret = xmlSecBufferSetData(&(rsaValue->modulus), blob, modulusLen);
     if (ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetData(modulus)", xmlSecKeyDataKlassGetName(id),
@@ -1456,7 +1454,7 @@ xmlSecMSCryptoKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
         goto done;
     }
 
-    /****************************************************************************** Exponent:  Remove leading zero's (from least significant end)  *****************************************************************************/
+    /* Exponent:  Remove leading zero's (from least significant end) */
     blob = (xmlSecByte*)(&(pubKey->pubexp));
     exponentLen = sizeof(pubKey->pubexp);
     while (exponentLen > 0 && blob[exponentLen - 1] == 0) {
@@ -2092,7 +2090,7 @@ xmlSecMSCryptoKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     }
     blob += sizeof(PUBLICKEYSTRUC) + sizeof(DSSPUBKEY);
 
-    /****************************************************************************** p  *****************************************************************************/
+    /* p */
     ret = xmlSecBufferSetData(&(dsaValue->p), blob, keyLen);
     if (ret < 0) {
         xmlSecInternalError2("xmlSecBufferSetData(p)", xmlSecKeyDataKlassGetName(id),
@@ -2101,7 +2099,7 @@ xmlSecMSCryptoKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     }
     blob += keyLen;
 
-    /****************************************************************************** q (we assume that the size of q is XMLSEC_MSCRYPTO_DSA_MAX_Q_SIZE, skip trailing zeros)  *****************************************************************************/
+    /* q (we assume that the size of q is XMLSEC_MSCRYPTO_DSA_MAX_Q_SIZE, skip trailing zeros) */
     for (len = XMLSEC_MSCRYPTO_DSA_MAX_Q_SIZE; len > 0 && blob[len - 1] == 0; --len);
     ret = xmlSecBufferSetData(&(dsaValue->q), blob, len);
     if (ret < 0) {
@@ -2111,7 +2109,7 @@ xmlSecMSCryptoKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     }
     blob += XMLSEC_MSCRYPTO_DSA_MAX_Q_SIZE;
 
-    /****************************************************************************** g  *****************************************************************************/
+    /* g */
     for (len = keyLen; len > 0 && blob[len - 1] == 0; --len);
     ret = xmlSecBufferSetData(&(dsaValue->g), blob, keyLen);
     if (ret < 0) {
@@ -2124,7 +2122,7 @@ xmlSecMSCryptoKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
     /* X is REQUIRED for private key but MSCrypto does not support it,
      * so we just ignore it */
 
-     /****************************************************************************** y  *****************************************************************************/
+     /* y */
     for (len = keyLen; len > 0 && blob[len - 1] == 0; --len);
     ret = xmlSecBufferSetData(&(dsaValue->y), blob, keyLen);
     if (ret < 0) {

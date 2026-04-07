@@ -1,15 +1,14 @@
-/*
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * HMAC transforms implementation for MSCng.
+ * This is free software; see the Copyright file in the source distribution for precise wording.
  *
- * This is free software; see the Copyright file in the source
- * distribution for precise wording.
- *
+ * Copyright (C) 2018-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  * Copyright (C) 2018 Miklos Vajna. All Rights Reserved.
  */
 /**
  * @addtogroup xmlsec_mscng_crypto
+ * @brief HMAC transforms implementation for MSCng.
  */
 #ifndef XMLSEC_NO_HMAC
 #include "globals.h"

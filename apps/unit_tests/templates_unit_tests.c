@@ -1,11 +1,12 @@
 /**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * templates unit tests
+ * This is free software; see the Copyright file in the source distribution for precise wording.
  *
- * See Copyright for the status of this software.
- *
- * Copyright (C) 2002-2024 Aleksey Sanin <aleksey#aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ */
+/**
+ * @brief XML Security Library templates unit tests.
  */
 #include <stdlib.h>
 #include <string.h>

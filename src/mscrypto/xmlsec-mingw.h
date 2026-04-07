@@ -1,10 +1,13 @@
-/*
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * This is free software; see the Copyright file in the source
- * distribution for precise wording.
+ * This is free software; see the Copyright file in the source distribution for precise wording.
  *
+ * Copyright (C) 2007-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  * Copyright (C) 2007,2010 Roumen Petrov.
+ */
+/**
+ * @brief Internal MinGW compatibility definitions for MSCrypto.
  */
 
 #ifndef __XMLSEC_MSCRYPTO_XMLSEC_MINGW_H__

@@ -1,15 +1,13 @@
-/*
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * Signatures implementation for GnuTLS.
+ * This is free software; see the Copyright file in the source distribution for precise wording.
  *
- * This is free software; see the Copyright file in the source
- * distribution for precise wording.
- *
- * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * @addtogroup xmlsec_gnutls_crypto
+ * @brief Signatures implementation for GnuTLS.
  */
 #include "globals.h"
 
@@ -93,7 +91,7 @@ static int      xmlSecGnuTLSSignatureExecute                    (xmlSecTransform
 
 static int
 xmlSecGnuTLSSignatureCheckId(xmlSecTransformPtr transform) {
-    /****************************************************************************** DSA  *****************************************************************************/
+    /*  DSA */
 #ifndef XMLSEC_NO_DSA
 
 #ifndef XMLSEC_NO_SHA1
@@ -110,7 +108,7 @@ xmlSecGnuTLSSignatureCheckId(xmlSecTransformPtr transform) {
 
 #endif /* XMLSEC_NO_DSA */
 
-    /****************************************************************************** ECDSA  *****************************************************************************/
+    /*  ECDSA */
 #ifndef XMLSEC_NO_EC
 
 #ifndef XMLSEC_NO_SHA1
@@ -160,7 +158,7 @@ xmlSecGnuTLSSignatureCheckId(xmlSecTransformPtr transform) {
 
 #endif /* XMLSEC_NO_EC */
 
-    /****************************************************************************** GOST 2001  *****************************************************************************/
+    /*  GOST 2001  */
 #ifndef XMLSEC_NO_GOST
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformGost2001GostR3411_94Id)) {
         return(1);
@@ -177,7 +175,7 @@ xmlSecGnuTLSSignatureCheckId(xmlSecTransformPtr transform) {
     }
 #endif /* XMLSEC_NO_GOST2012 */
 
-    /****************************************************************************** ML-DSA  *****************************************************************************/
+    /*  ML-DSA  */
 #ifndef XMLSEC_NO_MLDSA
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformMLDSA44Id)) {
         return(1);
@@ -190,7 +188,7 @@ xmlSecGnuTLSSignatureCheckId(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_MLDSA */
 
-    /****************************************************************************** EdDSA  *****************************************************************************/
+    /*  EdDSA  */
 #ifndef XMLSEC_NO_EDDSA
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformEdDSAEd25519Id)) {
         return(1);
@@ -200,8 +198,7 @@ xmlSecGnuTLSSignatureCheckId(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_EDDSA */
 
-    /****************************************************************************** RSA  *****************************************************************************/
-
+    /*  RSA  */
 #ifndef XMLSEC_NO_RSA
 
 #ifndef XMLSEC_NO_SHA1
@@ -269,7 +266,7 @@ xmlSecGnuTLSSignatureInitialize(xmlSecTransformPtr transform) {
 
     memset(ctx, 0, sizeof(xmlSecGnuTLSSignatureCtx));
 
-    /****************************************************************************** DSA  *****************************************************************************/
+    /*  DSA  */
 #ifndef XMLSEC_NO_DSA
 
 #ifndef XMLSEC_NO_SHA1
@@ -294,7 +291,7 @@ xmlSecGnuTLSSignatureInitialize(xmlSecTransformPtr transform) {
 
 #endif /* XMLSEC_NO_DSA */
 
-    /****************************************************************************** ECDSA  *****************************************************************************/
+    /*  ECDSA */
 #ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformEcdsaSha1Id)) {
         ctx->keyId      = xmlSecGnuTLSKeyDataEcId;
@@ -345,7 +342,7 @@ xmlSecGnuTLSSignatureInitialize(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_SHA512 */
 
-
+    /*  ECDSA SHA3 */
 #ifndef XMLSEC_NO_SHA3
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformEcdsaSha3_224Id)) {
         ctx->keyId      = xmlSecGnuTLSKeyDataEcId;
@@ -377,7 +374,7 @@ xmlSecGnuTLSSignatureInitialize(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_SHA3 */
 
-    /****************************************************************************** GOST 2001  *****************************************************************************/
+    /*  GOST 2001  */
 #ifndef XMLSEC_NO_GOST
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformGost2001GostR3411_94Id)) {
         ctx->keyId      = xmlSecGnuTLSKeyDataGost2001Id;
@@ -389,7 +386,7 @@ xmlSecGnuTLSSignatureInitialize(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_GOST */
 
-    /****************************************************************************** GOST 2012  *****************************************************************************/
+    /*  GOST 2012  */
 #ifndef XMLSEC_NO_GOST2012
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformGostR3410_2012GostR3411_2012_256Id)) {
         ctx->keyId      = xmlSecGnuTLSKeyDataGost2012_256Id;
@@ -408,7 +405,7 @@ xmlSecGnuTLSSignatureInitialize(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_GOST2012 */
 
-    /****************************************************************************** ML-DSA  *****************************************************************************/
+    /*  ML-DSA  */
 #ifndef XMLSEC_NO_MLDSA
     /* ML-DSA uses hard coded SHAKE-128 and SHAKE-256 so no need to have digest here */
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformMLDSA44Id)) {
@@ -434,7 +431,7 @@ xmlSecGnuTLSSignatureInitialize(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_MLDSA */
 
-    /****************************************************************************** EdDSA  *****************************************************************************/
+    /*  EdDSA  */
 #ifndef XMLSEC_NO_EDDSA
     /* EdDSA uses its own internally defined hash so no need to have digest here */
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformEdDSAEd25519Id)) {
@@ -453,7 +450,7 @@ xmlSecGnuTLSSignatureInitialize(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_EDDSA */
 
-    /****************************************************************************** RSA  *****************************************************************************/
+    /*  RSA  */
 #ifndef XMLSEC_NO_RSA
 
 #ifndef XMLSEC_NO_SHA1
@@ -921,7 +918,7 @@ xmlSecGnuTLSSignatureGetDerHalfSize(gnutls_sign_algorithm_t algo, xmlSecSize key
     xmlSecAssert2(res != 0, -1);
 
     switch(algo) {
-        /****************************************************************************** Fixed length (DSA-SHA*)  *****************************************************************************/
+        /*  Fixed length (DSA-SHA*)  */
 #ifndef XMLSEC_NO_DSA
     case GNUTLS_SIGN_DSA_SHA1:
         (*res) = XMLSEC_GNUTLS_SIGNATURE_DSA_SHA1_HALF_LEN;
@@ -931,7 +928,7 @@ xmlSecGnuTLSSignatureGetDerHalfSize(gnutls_sign_algorithm_t algo, xmlSecSize key
         break;
 #endif /* XMLSEC_NO_DSA */
 
-        /****************************************************************************** Key length (ECDSA-SHA*)  *****************************************************************************/
+        /*  Key length (ECDSA-SHA*)  */
 #ifndef XMLSEC_NO_EC
     case GNUTLS_SIGN_ECDSA_SHA1:
     case GNUTLS_SIGN_ECDSA_SHA224:
@@ -1313,7 +1310,7 @@ static xmlSecTransformKlass xmlSecGnuTLS ## name ## Klass = {                   
     XMLSEC_GNUTLS_SIGNATURE_KLASS_EX(name, NULL)
 
 
-/****************************************************************************** DSA  *****************************************************************************/
+/*  DSA  */
 #ifndef XMLSEC_NO_DSA
 
 #ifndef XMLSEC_NO_SHA1
@@ -1357,7 +1354,7 @@ xmlSecGnuTLSTransformDsaSha256GetKlass(void) {
 
 #endif /* XMLSEC_NO_DSA */
 
-/****************************************************************************** EC  *****************************************************************************/
+/*  EC */
 #ifndef XMLSEC_NO_EC
 /*
  * https://www.w3.org/TR/xmldsig-core1/#sec-ECDSA
@@ -1538,8 +1535,7 @@ xmlSecGnuTLSTransformEcdsaSha3_512GetKlass(void) {
 #endif /* XMLSEC_NO_EC */
 
 
-
-/****************************************************************************** GOST 2001  *****************************************************************************/
+/*  GOST 2001  */
 #ifndef XMLSEC_NO_GOST
 
 /******************************************************************************
@@ -1562,7 +1558,7 @@ xmlSecGnuTLSTransformGost2001GostR3411_94GetKlass(void) {
 #endif /* XMLSEC_NO_GOST */
 
 
-/****************************************************************************** GOST 2012  *****************************************************************************/
+/*  GOST 2012  */
 #ifndef XMLSEC_NO_GOST2012
 
 /******************************************************************************
@@ -1603,7 +1599,7 @@ xmlSecGnuTLSTransformGostR3410_2012GostR3411_2012_512GetKlass(void) {
 #endif /* XMLSEC_NO_GOST2012 */
 
 
-/****************************************************************************** RSA  *****************************************************************************/
+/*  RSA  */
 
 #ifndef XMLSEC_NO_RSA
 

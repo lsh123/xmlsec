@@ -1,13 +1,16 @@
-/*
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * This is free software; see the Copyright file in the source
- * distribution for precise wording.
+ * This is free software; see the Copyright file in the source distribution for precise wording.
  *
+ * Copyright (C) 2018-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  * Copyright (C) 2018 Miklos Vajna. All Rights Reserved.
  */
 #ifndef __XMLSEC_MSCNG_SYMBOLS_H__
 #define __XMLSEC_MSCNG_SYMBOLS_H__
+/**
+ * @brief MsCng back-end function symbol mappings.
+ */
 
 #if !defined(IN_XMLSEC) && defined(XMLSEC_CRYPTO_DYNAMIC_LOADING)
 #error To disable dynamic loading of xmlsec-crypto libraries undefine XMLSEC_CRYPTO_DYNAMIC_LOADING

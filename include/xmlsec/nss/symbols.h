@@ -1,14 +1,16 @@
-/*
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * This is free software; see the Copyright file in the source
- * distribution for precise wording.
+ * This is free software; see the Copyright file in the source distribution for precise wording.
  *
- * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
 #ifndef __XMLSEC_NSS_SYMBOLS_H__
 #define __XMLSEC_NSS_SYMBOLS_H__
+/**
+ * @brief NSS back-end function symbol mappings.
+ */
 
 #if !defined(IN_XMLSEC) && defined(XMLSEC_CRYPTO_DYNAMIC_LOADING)
 #error To disable dynamic loading of xmlsec-crypto libraries undefine XMLSEC_CRYPTO_DYNAMIC_LOADING

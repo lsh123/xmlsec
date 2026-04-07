@@ -1,12 +1,13 @@
-/*
- * XML Security Library
+/**
+ * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * globals.h: internal header only used during the compilation
+ * This is free software; see the Copyright file in the source distribution for precise wording.
  *
- * This is free software; see the Copyright file in the source
- * distribution for precise wording.
- *
+ * Copyright (C) 2018-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  * Copyright (C) 2018 Miklos Vajna. All Rights Reserved.
+ */
+/**
+ * @brief Internal global header for MSCng used during compilation.
  */
 #ifndef __XMLSEC_GLOBALS_H__
 #define __XMLSEC_GLOBALS_H__

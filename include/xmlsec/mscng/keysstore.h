@@ -1,9 +1,9 @@
-/*
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * This is free software; see the Copyright file in the source
- * distribution for precise wording.
+ * This is free software; see the Copyright file in the source distribution for precise wording.
  *
+ * Copyright (C) 2018-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  * Copyright (C) 2018 Miklos Vajna. All Rights Reserved.
  */
 #ifndef __XMLSEC_MSCNG_KEYSSTORE_H__

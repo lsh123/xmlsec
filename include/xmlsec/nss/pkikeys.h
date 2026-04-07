@@ -1,9 +1,9 @@
-/*
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * This is free software; see the Copyright file in the source
- * distribution for precise wording.
+ * This is free software; see the Copyright file in the source distribution for precise wording.
  *
+ * Copyright (C) 2003-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
 #ifndef __XMLSEC_NSS_PKIKEYS_H__

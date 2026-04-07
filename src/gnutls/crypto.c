@@ -1,10 +1,9 @@
-/*
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * This is free software; see the Copyright file in the source
- * distribution for precise wording.
+ * This is free software; see the Copyright file in the source distribution for precise wording.
  *
- * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * @addtogroup xmlsec_gnutls_crypto
@@ -148,7 +147,7 @@ xmlSecCryptoGetFunctions_gnutls(void) {
      *
       *****************************************************************************/
 
-    /****************************************************************************** AES  *****************************************************************************/
+    /* AES */
 #ifndef XMLSEC_NO_AES
     gXmlSecGnuTLSFunctions->transformAes128CbcGetKlass          = xmlSecGnuTLSTransformAes128CbcGetKlass;
     gXmlSecGnuTLSFunctions->transformAes192CbcGetKlass          = xmlSecGnuTLSTransformAes192CbcGetKlass;
@@ -163,13 +162,13 @@ xmlSecCryptoGetFunctions_gnutls(void) {
     gXmlSecGnuTLSFunctions->transformKWAes256GetKlass           = xmlSecGnuTLSTransformKWAes256GetKlass;
 #endif /* XMLSEC_NO_AES */
 
-    /****************************************************************************** ChaCha20  *****************************************************************************/
+    /* ChaCha20 */
 #ifndef XMLSEC_NO_CHACHA20
     gXmlSecGnuTLSFunctions->transformChaCha20GetKlass           = xmlSecGnuTLSTransformChaCha20GetKlass;
     gXmlSecGnuTLSFunctions->transformChaCha20Poly1305GetKlass   = xmlSecGnuTLSTransformChaCha20Poly1305GetKlass;
 #endif /* XMLSEC_NO_CHACHA20 */
 
-    /****************************************************************************** Camellia  *****************************************************************************/
+    /* Camellia */
 #ifndef XMLSEC_NO_CAMELLIA
     gXmlSecGnuTLSFunctions->transformCamellia128CbcGetKlass     = xmlSecGnuTLSTransformCamellia128CbcGetKlass;
     gXmlSecGnuTLSFunctions->transformCamellia192CbcGetKlass     = xmlSecGnuTLSTransformCamellia192CbcGetKlass;
@@ -180,13 +179,13 @@ xmlSecCryptoGetFunctions_gnutls(void) {
     gXmlSecGnuTLSFunctions->transformKWCamellia256GetKlass      = xmlSecGnuTLSTransformKWCamellia256GetKlass;
 #endif /* XMLSEC_NO_CAMELLIA */
 
-    /****************************************************************************** DES  *****************************************************************************/
+    /* DES */
 #ifndef XMLSEC_NO_DES
     gXmlSecGnuTLSFunctions->transformDes3CbcGetKlass            = xmlSecGnuTLSTransformDes3CbcGetKlass;
     gXmlSecGnuTLSFunctions->transformKWDes3GetKlass             = xmlSecGnuTLSTransformKWDes3GetKlass;
 #endif /* XMLSEC_NO_DES */
 
-    /****************************************************************************** DSA  *****************************************************************************/
+    /* DSA */
 #ifndef XMLSEC_NO_DSA
 
 #ifndef XMLSEC_NO_SHA1
@@ -196,7 +195,7 @@ xmlSecCryptoGetFunctions_gnutls(void) {
 
 #endif /* XMLSEC_NO_DSA */
 
-    /****************************************************************************** ECDSA  *****************************************************************************/
+    /* ECDSA */
 #ifndef XMLSEC_NO_EC
 
 #ifndef XMLSEC_NO_SHA1
@@ -228,13 +227,13 @@ xmlSecCryptoGetFunctions_gnutls(void) {
 
 #endif /* XMLSEC_NO_EC */
 
-    /****************************************************************************** GOST 2001  *****************************************************************************/
+    /* GOST 2001 */
 #ifndef XMLSEC_NO_GOST
     gXmlSecGnuTLSFunctions->transformGost2001GostR3411_94GetKlass     = xmlSecGnuTLSTransformGost2001GostR3411_94GetKlass;
     gXmlSecGnuTLSFunctions->transformGostR3411_94GetKlass             = xmlSecGnuTLSTransformGostR3411_94GetKlass;
 #endif /* XMLSEC_NO_GOST */
 
-    /****************************************************************************** GOST 2012  *****************************************************************************/
+    /* GOST 2012 */
 #ifndef XMLSEC_NO_GOST2012
     gXmlSecGnuTLSFunctions->transformGostR3411_2012_256GetKlass       = xmlSecGnuTLSTransformGostR3411_2012_256GetKlass;
     gXmlSecGnuTLSFunctions->transformGostR3411_2012_512GetKlass       = xmlSecGnuTLSTransformGostR3411_2012_512GetKlass;
@@ -243,37 +242,37 @@ xmlSecCryptoGetFunctions_gnutls(void) {
     gXmlSecGnuTLSFunctions->transformGostR3410_2012GostR3411_2012_512GetKlass = xmlSecGnuTLSTransformGostR3410_2012GostR3411_2012_512GetKlass;
 #endif /* XMLSEC_NO_GOST2012 */
 
-    /****************************************************************************** ML-DSA  *****************************************************************************/
+    /* ML-DSA */
 #ifndef XMLSEC_NO_MLDSA
     gXmlSecGnuTLSFunctions->transformMLDSA44GetKlass            = xmlSecGnuTLSTransformMLDSA44GetKlass;
     gXmlSecGnuTLSFunctions->transformMLDSA65GetKlass            = xmlSecGnuTLSTransformMLDSA65GetKlass;
     gXmlSecGnuTLSFunctions->transformMLDSA87GetKlass            = xmlSecGnuTLSTransformMLDSA87GetKlass;
 #endif /* XMLSEC_NO_MLDSA */
 
-    /****************************************************************************** EdDSA  *****************************************************************************/
+    /* EdDSA */
 #ifndef XMLSEC_NO_EDDSA
     gXmlSecGnuTLSFunctions->transformEdDSAEd25519GetKlass       = xmlSecGnuTLSTransformEdDSAEd25519GetKlass;
     gXmlSecGnuTLSFunctions->transformEdDSAEd448GetKlass         = xmlSecGnuTLSTransformEdDSAEd448GetKlass;
 #endif /* XMLSEC_NO_EDDSA */
 
-    /****************************************************************************** XDH  *****************************************************************************/
+    /* XDH */
 #ifndef XMLSEC_NO_XDH
     gXmlSecGnuTLSFunctions->transformX25519GetKlass             = xmlSecGnuTLSTransformX25519GetKlass;
     gXmlSecGnuTLSFunctions->transformX448GetKlass               = xmlSecGnuTLSTransformX448GetKlass;
 #endif /* XMLSEC_NO_XDH */
 
-    /****************************************************************************** ECDH  *****************************************************************************/
+    /* ECDH */
 #ifndef XMLSEC_NO_EC
     gXmlSecGnuTLSFunctions->transformEcdhGetKlass               = xmlSecGnuTLSTransformEcdhGetKlass;
 #endif /* XMLSEC_NO_EC */
 
-    /****************************************************************************** ConcatKDF  *****************************************************************************/
+    /* ConcatKDF */
 #ifndef XMLSEC_NO_CONCATKDF
     gXmlSecGnuTLSFunctions->transformConcatKdfGetKlass          = xmlSecGnuTLSTransformConcatKdfGetKlass;
 #endif /* XMLSEC_NO_CONCATKDF */
 
 
-    /****************************************************************************** HMAC  *****************************************************************************/
+    /* HMAC */
 #ifndef XMLSEC_NO_HMAC
 
 #ifndef XMLSEC_NO_SHA1
@@ -298,17 +297,17 @@ xmlSecCryptoGetFunctions_gnutls(void) {
 
 #endif /* XMLSEC_NO_HMAC */
 
-    /****************************************************************************** PBKDF2  *****************************************************************************/
+    /* PBKDF2 */
 #ifndef XMLSEC_NO_PBKDF2
     gXmlSecGnuTLSFunctions->transformPbkdf2GetKlass             = xmlSecGnuTLSTransformPbkdf2GetKlass;
 #endif /* XMLSEC_NO_PBKDF2 */
 
-    /****************************************************************************** HKDF  *****************************************************************************/
+    /* HKDF */
 #ifndef XMLSEC_NO_HKDF
     gXmlSecGnuTLSFunctions->transformHkdfGetKlass               = xmlSecGnuTLSTransformHkdfGetKlass;
 #endif /* XMLSEC_NO_HKDF */
 
-    /****************************************************************************** RSA  *****************************************************************************/
+    /* RSA */
 #ifndef XMLSEC_NO_RSA
 
 #ifndef XMLSEC_NO_SHA1
@@ -349,7 +348,7 @@ xmlSecCryptoGetFunctions_gnutls(void) {
 
 #endif /* XMLSEC_NO_RSA */
 
-    /****************************************************************************** SHA  *****************************************************************************/
+    /* SHA */
 #ifndef XMLSEC_NO_SHA1
     gXmlSecGnuTLSFunctions->transformSha1GetKlass               = xmlSecGnuTLSTransformSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */

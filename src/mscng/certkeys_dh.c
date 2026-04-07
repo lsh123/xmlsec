@@ -1,10 +1,9 @@
-/*
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * This is free software; see the Copyright file in the source distribution for precise wording.
  *
- * This is free software; see the Copyright file in the source
- * distribution for precise wording.
- *
+ * Copyright (C) 2018-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  * Copyright (C) 2018 Miklos Vajna. All Rights Reserved.
  */
 /**
@@ -319,15 +318,15 @@ xmlSecMSCngKeyDataDhRead(xmlSecKeyDataId id, xmlSecKeyValueDhPtr dhValue) {
     dhkey->dwMagic = BCRYPT_DH_PUBLIC_MAGIC;
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(pSize, dhkey->cbKey, goto done, NULL);
 
-    /****************************************************************************** P  *****************************************************************************/
+    /*  P  */
     memcpy(blobData + offset, xmlSecBufferGetData(&(dhValue->p)), pSize);
     offset += pSize;
 
-    /****************************************************************************** G (right-justified with leading zeros for small generators like g=2)  *****************************************************************************/
+    /*  G (right-justified with leading zeros for small generators like g=2)  */
     memcpy(blobData + offset + (pSize - gSize), xmlSecBufferGetData(&(dhValue->generator)), gSize);
     offset += pSize;
 
-    /****************************************************************************** Public (right-justified)  *****************************************************************************/
+    /*  Public (right-justified)  */
     memcpy(blobData + offset + (pSize - publicSize), xmlSecBufferGetData(&(dhValue->public)), publicSize);
     offset += pSize;
 

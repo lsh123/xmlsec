@@ -1,14 +1,9 @@
-/*
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * "XML Digital Signature" implementation
- *  http://www.w3.org/TR/xmldsig-core/
- *  http://www.w3.org/Signature/Overview.html
+ * This is free software; see the Copyright file in the source distribution for precise wording.
  *
- * This is free software; see the Copyright file in the source
- * distribution for precise wording.
- *
- * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 #ifndef __XMLSEC_XMLDSIG_H__
 #define __XMLSEC_XMLDSIG_H__

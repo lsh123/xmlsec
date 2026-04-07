@@ -1,16 +1,14 @@
-/*
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * AES/Camellia Key Transport (RFC 3394) implementation for NSS.
- *
- * This is free software; see the Copyright file in the source
- * distribution for precise wording.
+ * This is free software; see the Copyright file in the source distribution for precise wording.
  *
  * Copyright (c) 2003 America Online, Inc.  All rights reserved.
- * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * @addtogroup xmlsec_nss_crypto
+ * @brief AES/Camellia Key Transport (RFC 3394) implementation for NSS.
  */
 #if !defined(XMLSEC_NO_AES) || !defined(XMLSEC_NO_CAMELLIA)
 

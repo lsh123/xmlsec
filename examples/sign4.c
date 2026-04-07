@@ -1,7 +1,13 @@
 /**
- * XML Security Library example: Signing a file with a dynamicaly created template and an X509 certificate.
+ * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * Signs a file using a dynamicaly created template, key from PEM file and
+ * This is free software; see the Copyright file in the source distribution for precise wording.
+ *
+ * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ */
+/**
+ * @brief XML Security Library example: Signing a file with a dynamicaly created template and an X509 certificate.
+ * @details Signs a file using a dynamicaly created template, key from PEM file and
  * an X509 certificate. The signature has one reference using "ID" attribute
  * of the node to be signed. The key certificate is written in the <dsig:X509Data/> node.
  *
@@ -9,18 +15,22 @@
  * certificates management policies for another crypto library may break it.
  *
  * Usage:
+ *
+ * \code{.sh}
  *      sign4 <xml-doc> <id-attribute-to-sign> <pem-key-file> <pem-cert-file>
+ * \endcode
  *
  * Example:
+ *
+ * \code{.sh}
  *      ./sign4 sign4-doc.xml "data" rsakey.pem rsacert.pem > sign4-res.xml
+ * \endcode
  *
  * The result signature could be validated using verify3 example:
+ *
+ * \code{.sh}
  *      ./verify3 sign4-res.xml ca2cert.pem cacert.pem
- *
- * This is free software; see the Copyright file in the source
- * distribution for precise wording.
- *
- * Copyright (C) 2002-2024 Aleksey Sanin <aleksey#aleksey.com>. All Rights Reserved.
+ * \endcode
  */
 #include <stdlib.h>
 #include <string.h>

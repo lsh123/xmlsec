@@ -1,12 +1,10 @@
-/*
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- *
- * This is free software; see the Copyright file in the source
- * distribution for precise wording.
+ * This is free software; see the Copyright file in the source distribution for precise wording.
  *
  * Copyright (C) 2003 Cordys R&D BV, All rights reserved.
- * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  * Copyright (c) 2005-2006 Cryptocom LTD (http://www.cryptocom.ru).
  */
 /**
@@ -121,7 +119,7 @@ xmlSecCryptoGetFunctions_mscrypto(void) {
      *
       *****************************************************************************/
 
-    /****************************************************************************** AES  *****************************************************************************/
+    /* AES */
 #ifndef XMLSEC_NO_AES
     gXmlSecMSCryptoFunctions->transformAes128CbcGetKlass        = xmlSecMSCryptoTransformAes128CbcGetKlass;
     gXmlSecMSCryptoFunctions->transformAes192CbcGetKlass        = xmlSecMSCryptoTransformAes192CbcGetKlass;
@@ -131,18 +129,18 @@ xmlSecCryptoGetFunctions_mscrypto(void) {
     gXmlSecMSCryptoFunctions->transformKWAes256GetKlass         = xmlSecMSCryptoTransformKWAes256GetKlass;
 #endif /* XMLSEC_NO_AES */
 
-    /****************************************************************************** DES  *****************************************************************************/
+    /* DES */
 #ifndef XMLSEC_NO_DES
     gXmlSecMSCryptoFunctions->transformDes3CbcGetKlass          = xmlSecMSCryptoTransformDes3CbcGetKlass;
     gXmlSecMSCryptoFunctions->transformKWDes3GetKlass           = xmlSecMSCryptoTransformKWDes3GetKlass;
 #endif /* XMLSEC_NO_DES */
 
-    /****************************************************************************** DSA  *****************************************************************************/
+    /* DSA */
 #ifndef XMLSEC_NO_DSA
     gXmlSecMSCryptoFunctions->transformDsaSha1GetKlass          = xmlSecMSCryptoTransformDsaSha1GetKlass;
 #endif /* XMLSEC_NO_DSA */
 
-    /****************************************************************************** GOST  *****************************************************************************/
+    /* GOST */
 #ifndef XMLSEC_NO_GOST
     gXmlSecMSCryptoFunctions->transformGost2001GostR3411_94GetKlass             = xmlSecMSCryptoTransformGost2001GostR3411_94GetKlass;
 #endif /* XMLSEC_NO_GOST */
@@ -159,7 +157,7 @@ xmlSecCryptoGetFunctions_mscrypto(void) {
     gXmlSecMSCryptoFunctions->transformGostR3411_94GetKlass             = xmlSecMSCryptoTransformGostR3411_94GetKlass;
 #endif /* XMLSEC_NO_GOST */
 
-    /****************************************************************************** HMAC  *****************************************************************************/
+    /* HMAC */
 #ifndef XMLSEC_NO_HMAC
 
 #ifndef XMLSEC_NO_MD5
@@ -184,12 +182,12 @@ xmlSecCryptoGetFunctions_mscrypto(void) {
 
 #endif /* XMLSEC_NO_HMAC */
 
-    /****************************************************************************** MD5  *****************************************************************************/
+    /* MD5 */
 #ifndef XMLSEC_NO_MD5
     gXmlSecMSCryptoFunctions->transformMd5GetKlass             = xmlSecMSCryptoTransformMd5GetKlass;
 #endif /* XMLSEC_NO_MD5 */
 
-    /****************************************************************************** RSA  *****************************************************************************/
+    /* RSA */
 #ifndef XMLSEC_NO_RSA
 
 #ifndef XMLSEC_NO_MD5
@@ -222,7 +220,7 @@ xmlSecCryptoGetFunctions_mscrypto(void) {
 
 #endif /* XMLSEC_NO_RSA */
 
-    /****************************************************************************** SHA  *****************************************************************************/
+    /* SHA */
 #ifndef XMLSEC_NO_SHA1
     gXmlSecMSCryptoFunctions->transformSha1GetKlass             = xmlSecMSCryptoTransformSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */

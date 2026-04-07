@@ -1,21 +1,28 @@
 /**
- * XML Security Library example: Verifying a file signed with X509 certificate
+ * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * Verifies a file signed with X509 certificate.
+ * This is free software; see the Copyright file in the source distribution for precise wording.
+ *
+ * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ */
+/**
+ * @brief XML Security Library example: Verifying a file signed with X509 certificate
+ * @details Verifies a file signed with X509 certificate.
  *
  * This example was developed and tested with OpenSSL crypto library. The
  * certificates management policies for another crypto library may break it.
  *
  * Usage:
+ *
+ * \code{.sh}
  *      verify4 <signed-file> <id-attribute-to-verify> <trusted-cert-pem-file1> [<trusted-cert-pem-file2> [...]]
+ * \endcode
  *
  * Example:
+ *
+ * \code{.sh}
  *      ./verify4 sign4-res.xml "data" ca2cert.pem cacert.pem
- *
- * This is free software; see the Copyright file in the source
- * distribution for precise wording.
- *
- * Copyright (C) 2002-2024 Aleksey Sanin <aleksey#aleksey.com>. All Rights Reserved.
+ * \endcode
  */
 #include <stdlib.h>
 #include <string.h>

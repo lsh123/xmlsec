@@ -1,12 +1,12 @@
-/*
- * XML Security Library
+/**
+ * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * gcrypt/asn1.h: internal header only used during the compilation
+ * This is free software; see the Copyright file in the source distribution for precise wording.
  *
- * This is free software; see the Copyright file in the source
- * distribution for precise wording.
- *
- * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ */
+/**
+ * @brief Internal ASN1 helper functions for GCrypt.
  */
 #ifndef __XMLSEC_GCRYPT_ASN1_H__
 #define __XMLSEC_GCRYPT_ASN1_H__

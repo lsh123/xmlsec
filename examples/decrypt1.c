@@ -1,19 +1,26 @@
 /**
- * XML Security Library example: Decrypting an encrypted file using a single key.
+ * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * Decrypts encrypted XML file using a single DES key from a binary file
+ * This is free software; see the Copyright file in the source distribution for precise wording.
+ *
+ * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ */
+/**
+ * @brief XML Security Library example: Decrypting an encrypted file using a single key.
+ * @details Decrypts encrypted XML file using a single DES key from a binary file
  *
  * Usage:
+ *
+ * \code{.sh}
  *      ./decrypt1 <xml-enc> <des-key-file>
+ * \endcode
  *
  * Example:
+ *
+ * \code{.sh}
  *      ./decrypt1 encrypt1-res.xml deskey.bin
  *      ./decrypt1 encrypt2-res.xml deskey.bin
- *
- * This is free software; see the Copyright file in the source
- * distribution for precise wording.
- *
- * Copyright (C) 2002-2024 Aleksey Sanin <aleksey#aleksey.com>. All Rights Reserved.
+ * \endcode
  */
 #include <stdlib.h>
 #include <string.h>

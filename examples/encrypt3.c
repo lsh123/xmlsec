@@ -1,23 +1,33 @@
 /**
- * XML Security Library example: Encrypting XML file with a session key and dynamicaly created template.
+ * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * Encrypts XML file using a dynamicaly created template file and a session
+ * This is free software; see the Copyright file in the source distribution for precise wording.
+ *
+ * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ */
+/**
+ * @brief XML Security Library example: Encrypting XML file with a session key and dynamicaly created template.
+ * @details Encrypts XML file using a dynamicaly created template file and a session
  * DES key (encrypted with an RSA key).
  *
  * Usage:
+ *
+ * \code{.sh}
  *      ./encrypt3 <xml-doc> <rsa-pem-key-file>
+ * \endcode
  *
  * Example (note: we are using the private key here instead of the public
  * key to make decrypt3 example work):
+ *
+ * \code{.sh}
  *      ./encrypt3 encrypt3-doc.xml rsakey.pem > encrypt3-res.xml
+ * \endcode
  *
  * The result could be decrypted with decrypt3 example:
+ *
+ * \code{.sh}
  *      ./decrypt3 encrypt3-res.xml
- *
- * This is free software; see the Copyright file in the source
- * distribution for precise wording.
- *
- * Copyright (C) 2002-2024 Aleksey Sanin <aleksey#aleksey.com>. All Rights Reserved.
+ * \endcode
  */
 #include <stdlib.h>
 #include <string.h>

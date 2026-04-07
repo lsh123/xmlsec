@@ -1,19 +1,26 @@
 /**
- * XML Security Library example: Verifying a file using keys manager.
+ * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * Verifies a file using keys manager
+ * This is free software; see the Copyright file in the source distribution for precise wording.
+ *
+ * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ */
+/**
+ * @brief XML Security Library example: Verifying a file using keys manager.
+ * @details Verifies a file using keys manager
  *
  * Usage:
+ *
+ * \code{.sh}
  *      verify2 <signed-file> <public-pem-key1> [<public-pem-key2> [...]]
+ * \endcode
  *
  * Example:
+ *
+ * \code{.sh}
  *      ./verify2 sign1-res.xml rsapub.pem
  *      ./verify2 sign2-res.xml rsapub.pem
- *
- * This is free software; see the Copyright file in the source
- * distribution for precise wording.
- *
- * Copyright (C) 2002-2024 Aleksey Sanin <aleksey#aleksey.com>. All Rights Reserved.
+ * \endcode
  */
 #include <stdlib.h>
 #include <string.h>

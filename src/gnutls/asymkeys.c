@@ -1,15 +1,13 @@
-/*
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * Private/public keys implementation for GnuTLS.
+ * This is free software; see the Copyright file in the source distribution for precise wording.
  *
- * This is free software; see the Copyright file in the source
- * distribution for precise wording.
- *
- * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * @addtogroup xmlsec_gnutls_crypto
+ * @brief Private/public keys implementation for GnuTLS.
  */
 #include "globals.h"
 
@@ -710,27 +708,28 @@ xmlSecGnuTLSKeyDataDsaRead(xmlSecKeyDataId id, xmlSecKeyValueDsaPtr dsaValue) {
     xmlSecAssert2(id == xmlSecGnuTLSKeyDataDsaId, NULL);
     xmlSecAssert2(dsaValue != NULL, NULL);
 
-    /****************************************************************************** p  *****************************************************************************/
+    /* p */
     size = xmlSecBufferGetSize(&(dsaValue->p));
     p.data = xmlSecBufferGetData(&(dsaValue->p));
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, p.size,  goto done, xmlSecKeyDataKlassGetName(id));
 
-    /****************************************************************************** q  *****************************************************************************/
+    /* q */
     size = xmlSecBufferGetSize(&(dsaValue->q));
     q.data = xmlSecBufferGetData(&(dsaValue->q));
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, q.size,  goto done, xmlSecKeyDataKlassGetName(id));
 
-    /****************************************************************************** g  *****************************************************************************/
+    /* g */
     size = xmlSecBufferGetSize(&(dsaValue->g));
     g.data = xmlSecBufferGetData(&(dsaValue->g));
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, g.size,  goto done, xmlSecKeyDataKlassGetName(id));
 
-    /****************************************************************************** y  *****************************************************************************/
+    /* y */
+
     size = xmlSecBufferGetSize(&(dsaValue->y));
     y.data = xmlSecBufferGetData(&(dsaValue->y));
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, y.size,  goto done, xmlSecKeyDataKlassGetName(id));
 
-    /****************************************************************************** x (only for private key)  *****************************************************************************/
+    /* x (only for private key) */
     size = xmlSecBufferGetSize(&(dsaValue->x));
     if(size > 0) {
         gnutls_datum_t x;
@@ -886,7 +885,7 @@ xmlSecGnuTLSKeyDataDsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
         goto done;
     }
 
-    /****************************************************************************** x (only if available and requested)  *****************************************************************************/
+    /* x (only if available and requested) */
     if((writePrivateKey != 0) && (privkey != NULL)) {
         if((x.data == NULL) || (x.size <= 0)) {
             xmlSecInternalError("DSA x parameter is NULL", xmlSecKeyDataKlassGetName(id));
@@ -1066,12 +1065,12 @@ xmlSecGnuTLSKeyDataEcRead(xmlSecKeyDataId id, xmlSecKeyValueEcPtr ecValue) {
         goto done;
     }
 
-    /****************************************************************************** pub: x  *****************************************************************************/
+    /* pub: x  */
     size = xmlSecBufferGetSize(&(ecValue->pub_x));
     pub_x.data = xmlSecBufferGetData(&(ecValue->pub_x));
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, pub_x.size,  goto done, xmlSecKeyDataKlassGetName(id));
 
-    /****************************************************************************** pub: y  *****************************************************************************/
+    /* pub: y  */
     size = xmlSecBufferGetSize(&(ecValue->pub_y));
     pub_y.data = xmlSecBufferGetData(&(ecValue->pub_y));
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, pub_y.size,  goto done, xmlSecKeyDataKlassGetName(id));
@@ -1358,17 +1357,17 @@ xmlSecGnuTLSKeyDataRsaRead(xmlSecKeyDataId id, xmlSecKeyValueRsaPtr rsaValue) {
     xmlSecAssert2(id == xmlSecGnuTLSKeyDataRsaId, NULL);
     xmlSecAssert2(rsaValue != NULL, NULL);
 
-    /****************************************************************************** modulus  *****************************************************************************/
+    /* modulus */
     size = xmlSecBufferGetSize(&(rsaValue->modulus));
     modulus.data = xmlSecBufferGetData(&(rsaValue->modulus));
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, modulus.size,  goto done, xmlSecKeyDataKlassGetName(id));
 
-    /****************************************************************************** publicExponent  *****************************************************************************/
+    /* publicExponent */
     size = xmlSecBufferGetSize(&(rsaValue->publicExponent));
     publicExponent.data = xmlSecBufferGetData(&(rsaValue->publicExponent));
     XMLSEC_SAFE_CAST_SIZE_TO_UINT(size, publicExponent.size,  goto done, xmlSecKeyDataKlassGetName(id));
 
-    /****************************************************************************** privateExponent (only for private key)  *****************************************************************************/
+    /* privateExponent (only for private key) */
     size = xmlSecBufferGetSize(&(rsaValue->privateExponent));
     if(size > 0) {
         xmlSecGnuTLSError("GnuTLS doesn't support reading private keys from RSAKeyValue", GNUTLS_E_SUCCESS, xmlSecKeyDataKlassGetName(id));
@@ -1492,7 +1491,7 @@ xmlSecGnuTLSKeyDataRsaWrite(xmlSecKeyDataId id, xmlSecKeyDataPtr data,
         goto done;
     }
 
-    /****************************************************************************** GnuTLS doesn't support private exponent   *****************************************************************************/
+    /* GnuTLS doesn't support private exponent */
     if((writePrivateKey != 0) && (privkey != NULL)) {
         /* do nothing */
     }

@@ -1,15 +1,13 @@
-/*
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * C14N transform implementation.
+ * This is free software; see the Copyright file in the source distribution for precise wording.
  *
- * This is free software; see the Copyright file in the source
- * distribution for precise wording.
- *
- * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * @addtogroup xmlsec_core_transforms
+ * @brief C14N canonicalization transform implementation.
  */
 #include "globals.h"
 

@@ -1,13 +1,13 @@
-/*
- * XML Security Library
+/**
+ * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * THIS IS A PRIVATE XMLSEC HEADER FILE
- * DON'T USE IT IN YOUR APPLICATION
+ * This is free software; see the Copyright file in the source distribution for precise wording.
  *
- * This is free software; see the Copyright file in the source
- * distribution for precise wording.
- *
+ * Copyright (C) 2003-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  * Copyright (C) 2003 Cordys R&D BV, All rights reserved.
+ */
+/**
+ * @brief Internal global header for MSCrypto used during compilation.
  */
 #ifndef __XMLSEC_GLOBALS_H__
 #define __XMLSEC_GLOBALS_H__

@@ -1,9 +1,12 @@
 /**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * transform helpers unit tests
+ * This is free software; see the Copyright file in the source distribution for precise wording.
  *
- * See Copyright for the status of this software.
+ * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ */
+/**
+ * @brief XML Security Library transform helpers unit tests.
  */
 #include <stdlib.h>
 #include <string.h>

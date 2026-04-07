@@ -1,25 +1,20 @@
-/*
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * Keys store implementation for NSS.
+ * This is free software; see the Copyright file in the source distribution for precise wording.
  *
- * This is free software; see the Copyright file in the source
- * distribution for precise wording.
- *
+ * Copyright (C) 2003-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
 /**
  * @addtogroup xmlsec_nss_keysstore
  * @brief Keys store implementation for NSS.
- * Nss keys store that uses Simple Keys Store under the hood. Uses the
- * Nss DB as a backing store for the finding keys, but the NSS DB is
- * not written to by the keys store.
- * So, if store->findkey is done and the key is not found in the simple
- * keys store, the NSS DB is looked up.
- * If store is called to adopt a key, that key is not written to the NSS
- * DB.
- * Thus, the NSS DB can be used to pre-load keys and becomes an alternate
- * source of keys for xmlsec
+ * @details Nss keys store that uses Simple Keys Store under the hood.
+ * Uses the NSS DB as a backing store for the finding keys, but the NSS DB is
+ * not written to by the keys store. So, if store->findkey is done and the key is
+ * not found in the simple keys store, the NSS DB is looked up. If store is called
+ * to adopt a key, that key is not written to the NSS DB. Thus, the NSS DB can be
+ * used to pre-load keys and becomes an alternate source of keys for xmlsec
  */
 #include "globals.h"
 

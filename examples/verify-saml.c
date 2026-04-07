@@ -1,7 +1,13 @@
 /**
- * XML Security Library example: Verifying a simple SAML response with X509 certificate
+ * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * Verifies a simple SAML response. In addition to regular verification
+ * This is free software; see the Copyright file in the source distribution for precise wording.
+ *
+ * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ */
+/**
+ * @brief XML Security Library example: Verifying a simple SAML response with X509 certificate
+ * @details Verifies a simple SAML response. In addition to regular verification
  * we ensure that the signature has only one <dsig:Reference/> element
  * with an empty or NULL URI attribute and one enveloped signature transform
  * as it is required by SAML specification.
@@ -10,20 +16,28 @@
  * certificates management policies for another crypto library may break it.
  *
  * Usage:
+ *
+ * \code{.sh}
  *      verify-saml <signed-file> <trusted-cert-pem-file1> [<trusted-cert-pem-file2> [...]]
+ * \endcode
  *
  * Example (success):
+ *
+ * \code{.sh}
  *      ./verify-saml verify-saml-res.xml ca2cert.pem cacert.pem
+ * \endcode
  *
  * Example (failure):
+ *
+ * \code{.sh}
  *      ./verify-saml verify-saml-bad-res.xml ca2cert.pem cacert.pem
+ * \endcode
+ *
  * In the same time, verify3 example successfully verifies this signature:
+ *
+ * \code{.sh}
  *      ./verify3 verify-saml-bad-res.xml ca2cert.pem cacert.pem
- *
- * This is free software; see the Copyright file in the source
- * distribution for precise wording.
- *
- * Copyright (C) 2002-2024 Aleksey Sanin <aleksey#aleksey.com>. All Rights Reserved.
+ * \endcode
  */
 #include <stdlib.h>
 #include <string.h>

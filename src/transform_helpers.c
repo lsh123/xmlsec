@@ -1,12 +1,12 @@
-/*
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * Helper functions for transform implementations.
+ * This is free software; see the Copyright file in the source distribution for precise wording.
  *
- * This is free software; see the Copyright file in the source
- * distribution for precise wording.
- *
- * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ */
+/**
+ * @brief Helper functions for transform implementations.
  */
 
 #include "globals.h"
@@ -298,7 +298,9 @@ xmlSecTransformConcatKdfParamsGetFixedInfo(xmlSecTransformConcatKdfParamsPtr par
 
 #endif /* XMLSEC_NO_CONCATKDF */
 
-/****************************************************************************** Common Key Agreement Params  *****************************************************************************/
+/******************************************************************************
+ * Common Key Agreement Params
+ *****************************************************************************/
 int
 xmlSecTransformKeyAgreementParamsInitialize(xmlSecTransformKeyAgreementParamsPtr params) {
     int ret;
@@ -771,7 +773,7 @@ xmlSecTransformHmacVerify(const xmlSecByte* data, xmlSecSize dataSize,
 #endif /* XMLSEC_NO_HMAC */
 
 
-/****************************************************************************** ML-DSA  *****************************************************************************/
+/* ML-DSA */
 #ifndef XMLSEC_NO_MLDSA
 
 
@@ -820,7 +822,7 @@ xmlSecTransformMLDSAReadContextString(xmlNodePtr node, xmlSecBufferPtr res) {
 #endif /* XMLSEC_NO_MLDSA */
 
 
-/****************************************************************************** SLH-DSA  *****************************************************************************/
+/* SLH-DSA */
 #ifndef XMLSEC_NO_SLHDSA
 
 /*
@@ -868,7 +870,7 @@ xmlSecTransformSLHDSAReadContextString(xmlNodePtr node, xmlSecBufferPtr res) {
 #endif /* XMLSEC_NO_SLHDSA */
 
 
-/****************************************************************************** EdDSA  *****************************************************************************/
+/* EdDSA */
 #ifndef XMLSEC_NO_EDDSA
 
 /*
@@ -916,7 +918,7 @@ xmlSecTransformEdDSAReadContextString(xmlNodePtr node, xmlSecBufferPtr res) {
 #endif /* XMLSEC_NO_EDDSA */
 
 
-/****************************************************************************** PBKDF2  *****************************************************************************/
+/* PBKDF2 */
 
 #ifndef XMLSEC_NO_PBKDF2
 
@@ -1201,7 +1203,7 @@ xmlSecTransformHkdfParamsRead(xmlSecTransformHkdfParamsPtr params, xmlNodePtr no
 #endif /* XMLSEC_NO_HKDF */
 
 
-/****************************************************************************** ChaCha20  *****************************************************************************/
+/* ChaCha20 */
 #ifndef XMLSEC_NO_CHACHA20
 
 

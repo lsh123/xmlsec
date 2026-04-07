@@ -1,19 +1,26 @@
 /**
- * XML Security Library example: Verifying a file using a single key.
+ * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * Verifies a file using a key from PEM file.
+ * This is free software; see the Copyright file in the source distribution for precise wording.
+ *
+ * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ */
+/**
+ * @brief XML Security Library example: Verifying a file using a single key.
+ * @details Verifies a file using a key from PEM file.
  *
  * Usage:
+ *
+ * \code{.sh}
  *      verify1 <signed-file> <pem-key>
+ * \endcode
  *
  * Example:
+ *
+ * \code{.sh}
  *      ./verify1 sign1-res.xml rsapub.pem
  *      ./verify1 sign2-res.xml rsapub.pem
- *
- * This is free software; see the Copyright file in the source
- * distribution for precise wording.
- *
- * Copyright (C) 2002-2024 Aleksey Sanin <aleksey#aleksey.com>. All Rights Reserved.
+ * \endcode
  */
 #include <stdlib.h>
 #include <string.h>

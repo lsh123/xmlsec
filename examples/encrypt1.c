@@ -1,21 +1,31 @@
 /**
- * XML Security Library example: Encrypting data using a template file.
+ * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * Encrypts binary data using a template file and a DES key from a binary file
+ * This is free software; see the Copyright file in the source distribution for precise wording.
+ *
+ * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ */
+/**
+ * @brief XML Security Library example: Encrypting data using a template file.
+ * @details Encrypts binary data using a template file and a DES key from a binary file
  *
  * Usage:
+ *
+ * \code{.sh}
  *      ./encrypt1 <xml-tmpl> <des-key-file>
+ * \endcode
  *
  * Example:
+ *
+ * \code{.sh}
  *      ./encrypt1 encrypt1-tmpl.xml deskey.bin > encrypt1-res.xml
+ * \endcode
  *
  * The result could be decrypted with decrypt1 example:
+ *
+ * \code{.sh}
  *      ./decrypt1 encrypt1-res.xml deskey.bin
- *
- * This is free software; see the Copyright file in the source
- * distribution for precise wording.
- *
- * Copyright (C) 2002-2024 Aleksey Sanin <aleksey#aleksey.com>. All Rights Reserved.
+ * \endcode
  */
 #include <stdlib.h>
 #include <string.h>

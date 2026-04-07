@@ -1,15 +1,14 @@
-/*
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * RSA Key Transport transforms implementation for NSS.
+ * This is free software; see the Copyright file in the source distribution for precise wording.
  *
- * This is free software; see the Copyright file in the source
- * distribution for precise wording.
- *
+ * Copyright (C) 2003-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
 /**
  * @addtogroup xmlsec_nss_crypto
+ * @brief RSA Key Transport transforms implementation for NSS.
  */
 #include "globals.h"
 

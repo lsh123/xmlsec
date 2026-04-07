@@ -1,16 +1,15 @@
-/*
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * Digests transforms implementation for Microsoft Crypto API.
+ * This is free software; see the Copyright file in the source distribution for precise wording.
  *
- * This is free software; see the Copyright file in the source
- * distribution for precise wording.
- *
+ * Copyright (C) 2003-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  * Copyright (C) 2003 Cordys R&D BV, All rights reserved.
  * Copyright (c) 2005-2006 Cryptocom LTD (http://www.cryptocom.ru).
  */
 /**
  * @addtogroup xmlsec_mscrypto_crypto
+ * @brief Digests transforms implementation for MSCrypto.
  */
 #include "globals.h"
 

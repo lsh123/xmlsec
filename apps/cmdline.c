@@ -1,11 +1,12 @@
 /**
+ * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * XMLSec library
+ * This is free software; see the Copyright file in the source distribution for precise wording.
  *
- *
- * See Copyright for the status of this software.
- *
- * Copyright (C) 2002-2024 Aleksey Sanin <aleksey#aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ */
+/**
+ * @brief XML Security Library command line utility: command line parsing routines.
  */
 #if defined(_MSC_VER) && _MSC_VER < 1900
 #define snprintf _snprintf

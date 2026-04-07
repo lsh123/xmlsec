@@ -1,7 +1,12 @@
 /**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * This file provides a compatibility layer for various OpenSSL versions.
+ * This is free software; see the Copyright file in the source distribution for precise wording.
+ *
+ * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ */
+/**
+ * @brief Compatibility layer for various OpenSSL versions.
  */
 
 #ifndef __XMLSEC_OPENSSL_OPENSSL_COMPAT_H__

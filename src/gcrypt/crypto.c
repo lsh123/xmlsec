@@ -1,11 +1,9 @@
-/*
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * This is free software; see the Copyright file in the source distribution for precise wording.
  *
- * This is free software; see the Copyright file in the source
- * distribution for precise wording.
- *
- * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * @addtogroup xmlsec_gcrypt_crypto
@@ -96,7 +94,7 @@ xmlSecCryptoGetFunctions_gcrypt(void) {
      *
       *****************************************************************************/
 
-    /****************************************************************************** AES  *****************************************************************************/
+    /* AES */
 #ifndef XMLSEC_NO_AES
     gXmlSecGCryptFunctions->transformAes128CbcGetKlass          = xmlSecGCryptTransformAes128CbcGetKlass;
     gXmlSecGCryptFunctions->transformAes192CbcGetKlass          = xmlSecGCryptTransformAes192CbcGetKlass;
@@ -106,13 +104,13 @@ xmlSecCryptoGetFunctions_gcrypt(void) {
     gXmlSecGCryptFunctions->transformKWAes256GetKlass           = xmlSecGCryptTransformKWAes256GetKlass;
 #endif /* XMLSEC_NO_AES */
 
-    /****************************************************************************** DES  *****************************************************************************/
+    /* DES */
 #ifndef XMLSEC_NO_DES
     gXmlSecGCryptFunctions->transformDes3CbcGetKlass            = xmlSecGCryptTransformDes3CbcGetKlass;
     gXmlSecGCryptFunctions->transformKWDes3GetKlass             = xmlSecGCryptTransformKWDes3GetKlass;
 #endif /* XMLSEC_NO_DES */
 
-    /****************************************************************************** DSA  *****************************************************************************/
+    /* DSA */
 #ifndef XMLSEC_NO_DSA
 
 #ifndef XMLSEC_NO_SHA1
@@ -121,7 +119,7 @@ xmlSecCryptoGetFunctions_gcrypt(void) {
 
 #endif /* XMLSEC_NO_DSA */
 
-    /****************************************************************************** ECDSA  *****************************************************************************/
+    /* ECDSA */
 #ifndef XMLSEC_NO_EC
 
 #ifndef XMLSEC_NO_SHA1
@@ -150,7 +148,7 @@ xmlSecCryptoGetFunctions_gcrypt(void) {
 #endif /* XMLSEC_NO_EC */
 
 
-    /****************************************************************************** HMAC  *****************************************************************************/
+    /* HMAC */
 #ifndef XMLSEC_NO_HMAC
 
 #ifndef XMLSEC_NO_MD5
@@ -179,17 +177,17 @@ xmlSecCryptoGetFunctions_gcrypt(void) {
 
 #endif /* XMLSEC_NO_HMAC */
 
-    /****************************************************************************** MD5  *****************************************************************************/
+    /* MD5 */
 #ifndef XMLSEC_NO_MD5
     gXmlSecGCryptFunctions->transformMd5GetKlass                = xmlSecGCryptTransformMd5GetKlass;
 #endif /* XMLSEC_NO_MD5 */
 
-    /****************************************************************************** RIPEMD160  *****************************************************************************/
+    /* RIPEMD160 */
 #ifndef XMLSEC_NO_RIPEMD160
     gXmlSecGCryptFunctions->transformRipemd160GetKlass          = xmlSecGCryptTransformRipemd160GetKlass;
 #endif /* XMLSEC_NO_RIPEMD160 */
 
-    /****************************************************************************** RSA  *****************************************************************************/
+    /* RSA */
 #ifndef XMLSEC_NO_RSA
 
 #ifndef XMLSEC_NO_MD5
@@ -250,7 +248,7 @@ xmlSecCryptoGetFunctions_gcrypt(void) {
 
 #endif /* XMLSEC_NO_RSA */
 
-    /****************************************************************************** SHA  *****************************************************************************/
+    /* SHA */
 #ifndef XMLSEC_NO_SHA1
     gXmlSecGCryptFunctions->transformSha1GetKlass               = xmlSecGCryptTransformSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */

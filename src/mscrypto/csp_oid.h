@@ -1,11 +1,13 @@
-/*
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * This is free software; see the Copyright file in the source
- * distribution for precise wording.
+ * This is free software; see the Copyright file in the source distribution for precise wording.
  *
- * Copyright (c) 2005-2006 Cryptocom LTD (http://www.cryptocom.ru).
- * All rights reserved.
+ * Copyright (C) 2005-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (c) 2005-2006 Cryptocom LTD (http://www.cryptocom.ru). All rights reserved.
+ */
+/**
+ * @brief GOST cryptographic OID definitions for MSCrypto.
  */
 #ifndef CRYPTOCOM_OIDS_csp_H
 #define CRYPTOCOM_OIDS_csp_H

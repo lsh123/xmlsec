@@ -1,21 +1,31 @@
 /**
- * XML Security Library example: Signing a template file.
+ * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * Signs a template file using a key from PEM file
+ * This is free software; see the Copyright file in the source distribution for precise wording.
+ *
+ * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ */
+/**
+ * @brief XML Security Library example: Signing a template file.
+ * @details Signs a template file using a key from PEM file
  *
  * Usage:
+ *
+ * \code{.sh}
  *      ./sign1 <xml-tmpl> <pem-key>
+ * \endcode
  *
  * Example:
+ *
+ * \code{.sh}
  *      ./sign1 sign1-tmpl.xml rsakey.pem > sign1-res.xml
+ * \endcode
  *
  * The result signature could be validated using verify1 example:
+ *
+ * \code{.sh}
  *      ./verify1 sign1-res.xml rsapub.pem
- *
- * This is free software; see the Copyright file in the source
- * distribution for precise wording.
- *
- * Copyright (C) 2002-2024 Aleksey Sanin <aleksey#aleksey.com>. All Rights Reserved.
+ * \endcode
  */
 #include <stdlib.h>
 #include <string.h>

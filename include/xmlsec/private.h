@@ -1,16 +1,15 @@
-/*
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * These are internal private declarations. You don't want to use this file
- * unless you are building xmlsec or xmlsec-$crypto library.
+ * This is free software; see the Copyright file in the source distribution for precise wording.
  *
- * This is free software; see the Copyright file in the source
- * distribution for precise wording.
- *
- * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 #ifndef __XMLSEC_PRIVATE_H__
 #define __XMLSEC_PRIVATE_H__
+/**
+ * @brief Internal declarations — do not use outside of xmlsec.
+ */
 
 #ifndef XMLSEC_PRIVATE
 #error "this file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-$crypto libraries"

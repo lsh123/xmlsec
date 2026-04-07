@@ -1,22 +1,32 @@
 /**
- * XML Security Library example: Encrypting XML file with a dynamicaly created template.
+ * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * Encrypts XML file using a dynamicaly created template file and a DES key
+ * This is free software; see the Copyright file in the source distribution for precise wording.
+ *
+ * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ */
+/**
+ * @brief XML Security Library example: Encrypting XML file with a dynamicaly created template.
+ * @details Encrypts XML file using a dynamicaly created template file and a DES key
  * from a binary file
  *
  * Usage:
+ *
+ * \code{.sh}
  *      ./encrypt2 <xml-doc> <des-key-file>
+ * \endcode
  *
  * Example:
+ *
+ * \code{.sh}
  *      ./encrypt2 encrypt2-doc.xml deskey.bin > encrypt2-res.xml
+ * \endcode
  *
  * The result could be decrypted with decrypt1 example:
+ *
+ * \code{.sh}
  *      ./decrypt1 encrypt2-res.xml deskey.bin
- *
- * This is free software; see the Copyright file in the source
- * distribution for precise wording.
- *
- * Copyright (C) 2002-2024 Aleksey Sanin <aleksey#aleksey.com>. All Rights Reserved.
+ * \endcode
  */
 #include <stdlib.h>
 #include <string.h>

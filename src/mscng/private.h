@@ -1,13 +1,12 @@
-/*
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * THIS IS A PRIVATE XMLSEC HEADER FILE
- * DON'T USE IT IN YOUR APPLICATION
+ * This is free software; see the Copyright file in the source distribution for precise wording.
  *
- * This is free software; see the Copyright file in the source
- * distribution for precise wording.
- *
- * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2018-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ */
+/**
+ * @brief Internal private header for MSCng.
  */
 #ifndef __XMLSEC_OPENSSL_PRIVATE_H__
 #define __XMLSEC_OPENSSL_PRIVATE_H__

@@ -1,15 +1,12 @@
-/*
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * THIS IS A PRIVATE XMLSEC HEADER FILE
- * DON'T USE IT IN YOUR APPLICATION
+ * This is free software; see the Copyright file in the source distribution for precise wording.
  *
- * Implementation of AES/DES Key Transport algorithm
- *
- * This is free software; see the Copyright file in the source
- * distribution for precise wording.
- *
- * Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ */
+/**
+ * @brief Internal helper functions for AES/DES key wrap implementations.
  */
 #ifndef __XMLSEC_KT_AES_DES_H__
 #define __XMLSEC_KT_AES_DES_H__

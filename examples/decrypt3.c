@@ -1,21 +1,28 @@
 /**
- * XML Security Library example: Decrypting an encrypted file using a custom keys manager.
+ * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * Decrypts encrypted XML file using a custom files based keys manager.
+ * This is free software; see the Copyright file in the source distribution for precise wording.
+ *
+ * Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ */
+/**
+ * @brief XML Security Library example: Decrypting an encrypted file using a custom keys manager.
+ * @details Decrypts encrypted XML file using a custom files based keys manager.
  * We assume that key's name in <dsig:KeyName/> element is just
  * key's file name in the current folder.
  *
  * Usage:
+ *
+ * \code{.sh}
  *      ./decrypt3 <xml-enc>
+ * \endcode
  *
  * Example:
+ *
+ * \code{.sh}
  *      ./decrypt3 encrypt1-res.xml
  *      ./decrypt3 encrypt2-res.xml
- *
- * This is free software; see the Copyright file in the source
- * distribution for precise wording.
- *
- * Copyright (C) 2002-2024 Aleksey Sanin <aleksey#aleksey.com>. All Rights Reserved.
+ * \endcode
  */
 #include <stdlib.h>
 #include <string.h>

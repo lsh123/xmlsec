@@ -1,15 +1,14 @@
-/*
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * X509 certificates verification support functions for NSS.
+ * This is free software; see the Copyright file in the source distribution for precise wording.
  *
- * This is free software; see the Copyright file in the source
- * distribution for precise wording.
- *
+ * Copyright (C) 2003-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
 /**
  * @addtogroup xmlsec_nss_x509
+ * @brief X509 certificates verification support functions for NSS.
  */
 #include "globals.h"
 

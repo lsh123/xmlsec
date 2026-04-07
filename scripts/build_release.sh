@@ -43,10 +43,10 @@ find . -name ".git" | xargs rm -r
 
 echo "============== Building xmlsec1-${full_version}"
 autoreconf -i -f
-./configure --prefix=/usr --sysconfdir=/etc
+mkdir build.dir
+cd build.dir
+../configure --prefix=/usr --sysconfdir=/etc
 make tar-release
-# Cannot build RPM on Ubuntu.
-# make rpm-release
 
 echo "============== Moving tar file"
 mv "${build_tar_file}" "${cur_pwd}/${tar_file}"

@@ -1,66 +1,46 @@
 #
-# docs/md/tutorial/Makefile.am
-# Tutorial Markdown source files for the XML Security Library documentation.
-# Files are copied from $(srcdir) to $(builddir) when they differ.
+# make all 		: prints info message
+# make docs		: generates the MD files (if necessary tools are present) or prints error
+# make install  : tries to copy MD files to install dir first from builddir, then srcdir, then prints warning
+# make dist     : tries to copy MD files to dist dir first from builddir, then srcdir, then prints warning
 #
 NULL =
-MODULE = xmlsec
 
 # target installation directory
 TARGET_DIR = @XMLSEC_DOCDIR@/tutorial
 
-TUTORIAL_MD_FILES = $(notdir $(wildcard $(srcdir)/*.md))
+.PHONY: all docs
 
-TUTORIAL_IMAGE_FILES = $(addprefix images/,$(notdir $(wildcard $(srcdir)/images/*.png)))
-
-# files that are distributed from sources
-EXTRA_DIST := \
-	$(TUTORIAL_MD_FILES) \
-	$(TUTORIAL_IMAGE_FILES) \
-	$(NULL)
-
-.PHONY: all docs tutorial-md
-
+#
+# Docs are not built as part of normal build
+#
 all:
 	@echo "======= Run 'make docs' in the xmlsec/docs folder to rebuild docs"
-
-if BUILD_MD_DOCS
-
-docs: tutorial-md
-
-else
-
-docs:
-	@(echo "=== ERROR: To build Markdown docs, make sure pandoc and python3 are installed" ; exit 1; )
-
-endif
 
 #
 # Copy tutorial Markdown and image files from $(srcdir) to $(builddir) when they differ.
 #
-tutorial-md:
+docs:
 	@if [ z"$(builddir)" != z"$(srcdir)" ] ; then \
-		echo "-- Copying tutorial Markdown files to build dir ..." ; \
+		echo "-- Copying tutorial files to build dir ..." ; \
 		$(MKDIR_P) $(builddir)/images ; \
-		for f in $(TUTORIAL_MD_FILES) ; do \
-			$(CP) $(srcdir)/$$f $(builddir)/$$f ; \
-		done ; \
-		for f in $(TUTORIAL_IMAGE_FILES) ; do \
-			$(CP) $(srcdir)/$$f $(builddir)/$$f ; \
-		done ; \
+		$(CP) $(srcdir)/*.md $(builddir)/ ; \
+		$(CP) $(srcdir)/images/*.png $(builddir)/images/ ; \
 	fi
-
-dist-hook: tutorial-md
-	echo "--- All tutorial Markdown files are already copied"
 
 clean-local:
 	@( \
 		if [ z"$(builddir)" != z"$(srcdir)" ] ; then \
 			$(RM) -f $(builddir)/*.md ; \
-			$(RM) -f $(builddir)/images/*.png ; \
+			$(RM) -rf $(builddir)/images ; \
 		fi ; \
 	)
 
+distclean-local: clean-local
+
+#
+# Tries to copy MD files to install dir first from builddir, then srcdir, then prints warning
+#
 install-data-local:
 	@( \
 		$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR) ; \
@@ -80,3 +60,25 @@ install-data-local:
 
 uninstall-local:
 	@$(RM) -rf $(DESTDIR)$(TARGET_DIR)
+
+
+#
+# Tries to copy MD files to dist dir first from builddir, then srcdir, then prints warning
+#
+dist-hook:
+	@( \
+		mkdir -p  $(distdir)/images ; \
+		if test -f $(builddir)/index.md ; then  \
+			echo "-- Copying builddir tutorial docs ..." ; \
+			$(CP) $(builddir)/*.md $(distdir)/ ; \
+			$(CP) $(builddir)/images/* $(distdir)/images/ ; \
+		elif test -f $(srcdir)/index.md ; then  \
+			echo "-- Copying srcdir tutorial docs ..." ; \
+			$(CP) $(srcdir)/*.md $(distdir)/ ; \
+			$(CP) $(srcdir)/images/* $(distdir)/images/ ; \
+		else \
+			echo "WARNING: Skipping tutorial docs dist (rebuild docs with 'make -C docs docs')" ; \
+		fi ; \
+	)
+
+

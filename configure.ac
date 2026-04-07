@@ -74,6 +74,7 @@ AC_PATH_PROG(HELP2MAN, help2man)
 AC_PATH_PROG(PANDOC,  pandoc)
 AC_PATH_PROG(PYTHON3, python3)
 AC_PATH_PROG(DOXYGEN, doxygen)
+AM_CONDITIONAL(BUILD_MAN_DOCS,     [test x"$HELP2MAN" != x])
 AM_CONDITIONAL(BUILD_XML_API_DOCS, [test x"$DOXYGEN" != x])
 AM_CONDITIONAL(BUILD_MD_DOCS,      [test x"$PANDOC" != x && test x"$PYTHON3" != x])
 AM_CONDITIONAL(BUILD_HTML_DOCS,    [test x"$SED" != x && test x"$PANDOC" != x ])
@@ -2414,51 +2415,6 @@ AM_CONDITIONAL(XMLSEC_NO_XMLENC, test "z$XMLSEC_NO_XMLENC" = "z1")
 AC_SUBST(XMLSEC_NO_XMLENC)
 
 dnl ==========================================================================
-dnl Check if we need mans
-dnl ==========================================================================
-AC_MSG_CHECKING(for mans)
-AC_ARG_ENABLE([mans], [AS_HELP_STRING([--enable-mans],[enable manual pages (yes)])])
-if test "z$enable_mans" = "zno" ; then
-    XMLSEC_MANS="0"
-    AC_MSG_RESULT([disabled])
-else
-    XMLSEC_MANS="1"
-    AC_MSG_RESULT([yes])
-fi
-AM_CONDITIONAL(XMLSEC_MANS, test "z$XMLSEC_MANS" = "z1")
-AC_SUBST(XMLSEC_MANS)
-
-dnl ==========================================================================
-dnl Check if we need docs
-dnl ==========================================================================
-AC_MSG_CHECKING(for docs)
-AC_ARG_ENABLE([docs], [AS_HELP_STRING([--enable-docs],[enable documentation (yes)])])
-if test "z$enable_docs" = "zno" ; then
-    XMLSEC_DOCS="0"
-    AC_MSG_RESULT([disabled])
-else
-    XMLSEC_DOCS="1"
-    AC_MSG_RESULT([yes])
-fi
-AM_CONDITIONAL(XMLSEC_DOCS, test "z$XMLSEC_DOCS" = "z1")
-AC_SUBST(XMLSEC_DOCS)
-
-dnl ==========================================================================
-dnl See if we need apps
-dnl ==========================================================================
-AC_MSG_CHECKING(for apps)
-AC_ARG_ENABLE([apps], [AS_HELP_STRING([--enable-apps],[enable applications (yes)])])
-if test "z$enable_apps" = "zno" ; then
-    XMLSEC_APPS="0"
-    AC_MSG_RESULT([disabled])
-else
-    XMLSEC_APPS="1"
-    AC_MSG_RESULT([yes])
-fi
-AM_CONDITIONAL(XMLSEC_APPS, test "z$XMLSEC_APPS" = "z1")
-AC_SUBST(XMLSEC_APPS)
-
-dnl ==========================================================================
 dnl Static linking (implies enable_crypto_dl="no")
 dnl ==========================================================================
 XMLSEC_STATIC_BINARIES=""
@@ -2605,17 +2561,33 @@ dnl ==========================================================================
 dnl Where do we want to install docs
 dnl ==========================================================================
 AC_MSG_CHECKING(for docs folder)
-AC_ARG_WITH([html-dir], [AS_HELP_STRING([--with-html-dir=PATH],[path to installed docs])])
-if test "z$with_html_dir" != "z" ; then
-    XMLSEC_DOCDIR="$with_html_dir"
-elif test "z$htmldir" != "z" ; then
-    XMLSEC_DOCDIR='$(htmldir)'
+AC_ARG_WITH([docs-dir], [AS_HELP_STRING([--with-docs-dir=PATH],[path to installed docs])])
+if test "z$with_docs_dir" != "z" ; then
+    XMLSEC_DOCDIR="$with_docs_dir"
+elif test "z$docsdir" != "z" ; then
+    XMLSEC_DOCDIR='$(docsdir)'
 else
     XMLSEC_DOCDIR='$(datadir)/doc/xmlsec1'
 fi
 
 AC_MSG_RESULT([$XMLSEC_DOCDIR])
 AC_SUBST(XMLSEC_DOCDIR)
+
+dnl ==========================================================================
+dnl Where do we want to install man pages
+dnl ==========================================================================
+AC_MSG_CHECKING(for man pages folder)
+AC_ARG_WITH([man-dir], [AS_HELP_STRING([--with-man-dir=PATH],[path to installed man pages])])
+if test "z$with_man_dir" != "z" ; then
+    XMLSEC_MANDIR="$with_man_dir"
+elif test "z$mandir" != "z" ; then
+    XMLSEC_MANDIR='$(mandir)/man1/'
+else
+    XMLSEC_MANDIR='$(datadir)/man/man1/'
+fi
+
+AC_MSG_RESULT([$XMLSEC_MANDIR])
+AC_SUBST(XMLSEC_MANDIR)
 
 dnl ==========================================================================
 dnl Check if we need Simple Keys Manager

@@ -1,9 +1,8 @@
+#
+# make all 		: prints info message
+# make docs		: generates the html files (if necessary tools are present) or prints error
+#
 NULL =
-
-SUBDIRS = \
-	$(NULL)
-
-TARGET_DIR = @XMLSEC_DOCDIR@
 
 # Markdown source files for generated HTML pages (all *.md in docs/md/)
 MD_SRCDIR     = $(top_srcdir)/docs/md
@@ -23,16 +22,21 @@ EXTRA_DIST := \
 
 .PHONY: all docs docs-copy docs-build-html
 
+#
+# Docs are not built as part of normal build
+#
 all:
 	@echo "======= Run 'make docs' in the xmlsec/docs folder to rebuild docs"
 
-docs: docs-copy docs-build-html
-
-
-if BUILD_HTML_DOCS
+#
 # Convert all *.md files from docs/md/ to HTML using pandoc.
 # The pandoc template adds the navigation panel and <head> structure.
-docs-build-html: $(MD_SRC_FILES)
+#
+
+if BUILD_HTML_DOCS
+
+docs: $(MD_SRC_FILES)
+
 	@echo "-- Generating HTML from Markdown files in $(MD_SRCDIR) ..."
 	@for f in $(MD_SRC_FILES); do \
 		out=$(builddir)/`basename $$f .md`.html ; \
@@ -51,8 +55,17 @@ docs-build-html: $(MD_SRC_FILES)
 		$(SED) -E -i 's|href="([^"#:]*)\.md(#[^"]*)?"|href="\1.html\2"|g' $$out ; \
 		$(SED) -E -i 's|<td([^>]*)>(Yes)|<td class="supported-feature"\1>\2|g' $$out ; \
 	done
+	@echo "-- Copying source html to build folder ..."
+	@if [ z"$(srcdir)" != z"$(builddir)" ] ; then  \
+		$(CP)  $(srcdir)/*.ico $(builddir)/ ; \
+		mkdir -p  $(builddir)/images $(builddir)/css ; \
+		$(CP) -r $(srcdir)/images/* $(builddir)/images/ ; \
+		$(CP) -r $(srcdir)/css/* $(builddir)/css/ ; \
+	fi
+
 else
-docs-build-html:
+
+docs:
 	@( \
 		echo "=== ERROR: To build docs, make sure all necessary tools are installed" ; \
 		echo "SED:      $(SED)" ; \
@@ -63,27 +76,16 @@ docs-build-html:
 
 endif
 
-docs-copy:
-	@( \
-		echo "-- Copying source html to build folder ..." ; \
-		if [ z"$(srcdir)" != z"$(builddir)" ] ; then  \
-			$(CP)  $(srcdir)/*.ico $(builddir)/ ; \
-			mkdir -p  $(builddir)/images $(builddir)/css ; \
-			$(CP) -r $(srcdir)/images/* $(builddir)/images/ ; \
-			$(CP) -r $(srcdir)/css/* $(builddir)/css/ ; \
-		fi ; \
-	)
-
-
 clean-local:
 	@( \
 		$(RM) -f *.stamp ; \
 		$(RM) -rf $(builddir)/*.html ; \
 		if [ z"$(srcdir)" != z"$(builddir)" ] ; then \
-			(chmod -Rf u+w $(builddir)/*.html 2>/dev/null || true) ; \
 			$(RM) -rf $(builddir)/*.ico ; \
 			$(RM) -rf $(builddir)/images ; \
 			$(RM) -rf $(builddir)/css ; \
 		fi ; \
 	 )
+
+distclean-local: clean-local
 

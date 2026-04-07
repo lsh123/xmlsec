@@ -1,7 +1,5 @@
-/*
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
- *
- * Transform object functions.
  *
  * This is free software; see the Copyright file in the source distribution for precise wording.
  *
@@ -10,7 +8,7 @@
 /**
  * @addtogroup xmlsec_core_transforms
  * @brief XMLDsig and XMLEnc transforms.
- * The [Transforms Element](http://www.w3.org/TR/xmldsig-core/#sec-Transforms)
+ * @details The [Transforms Element](http://www.w3.org/TR/xmldsig-core/#sec-Transforms)
  * contains an ordered list of Transform elements; these describe how the signer
  * obtained the data object that was digested.
  * Schema Definition:

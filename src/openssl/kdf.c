@@ -1,4 +1,4 @@
-/*
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  * This is free software; see the Copyright file in the source distribution for precise wording.

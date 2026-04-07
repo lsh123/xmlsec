@@ -3,7 +3,7 @@
  *
  * This is free software; see the Copyright file in the source distribution for precise wording.
  *
- * Copyright (C) 2007-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2007-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  * Copyright (C) 2007,2010 Roumen Petrov.
  */
 /**

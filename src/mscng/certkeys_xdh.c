@@ -3,7 +3,7 @@
  *
  * This is free software; see the Copyright file in the source distribution for precise wording.
  *
- * Copyright (C) 2018-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2018-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  */
 /**
  * @addtogroup xmlsec_mscng_certkeys

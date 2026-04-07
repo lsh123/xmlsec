@@ -1,7 +1,8 @@
+------------------------------------------------------------------------------
 xmlsec, xmlsec-openssl, xmlsec-gnutls, xmlsec-gcrypt libraries
 ------------------------------------------------------------------------------
 
-Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -24,10 +25,10 @@ Except as contained in this notice, the name of Aleksey Sanin shall not
 be used in advertising or otherwise to promote the sale, use or other deal-
 ings in this Software without prior written authorization from him.
 
-
+------------------------------------------------------------------------------
 xmlsec-nss library
 ------------------------------------------------------------------------------
-Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
 Copyright (c) 2003 America Online, Inc.  All rights reserved.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -58,10 +59,11 @@ be used in advertising or otherwise to promote the sale, use or other deal-
 ings in this Software without prior written authorization from him.
 
 
+------------------------------------------------------------------------------
 xmlsec-mscrypto library
 ------------------------------------------------------------------------------
 
-Copyright (C) 2002-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+Copyright (C) 2002-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
 Copyright (C) 2003 Cordys R&D BV, All rights reserved.
 Copyright (C) 2007 Roumen Petrov.
 Copyright (c) 2005-2006 Cryptocom LTD (http://www.cryptocom.ru).
@@ -89,10 +91,11 @@ be used in advertising or otherwise to promote the sale, use or other deal-
 ings in this Software without prior written authorization from him.
 
 
+------------------------------------------------------------------------------
 xmlsec-mscng library
 ------------------------------------------------------------------------------
 
-Copyright (C) 2018-2024 Aleksey Sanin. All Rights Reserved.
+Copyright (C) 2018-2026 Aleksey Sanin. All Rights Reserved.
 Copyright (C) 2018 Miklos Vajna. All Rights Reserved.
 
 
@@ -117,9 +120,15 @@ Except as contained in this notice, the name of Aleksey Sanin shall not
 be used in advertising or otherwise to promote the sale, use or other deal-
 ings in this Software without prior written authorization from him.
 
+------------------------------------------------------------------------------
+Additional copyright information
+------------------------------------------------------------------------------
+See individual source files for any additional copyright information
+
+
+------------------------------------------------------------------------------
 References
 ------------------------------------------------------------------------------
-
 * AOL
 http://www.aleksey.com/pipermail/xmlsec/2003/005488.html
 http://www.aleksey.com/pipermail/xmlsec/attachments/20030729/0e25648e/attachment.htm

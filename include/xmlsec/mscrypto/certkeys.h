@@ -3,7 +3,7 @@
  *
  * This is free software; see the Copyright file in the source distribution for precise wording.
  *
- * Copyright (C) 2003-2024 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
+ * Copyright (C) 2003-2026 Aleksey Sanin <aleksey@aleksey.com>. All Rights Reserved.
  * Copyright (C) 2003 Cordys R&D BV, All rights reserved.
  */
 #ifndef __XMLSEC_MSCRYPTO_CERTKEYS_H__

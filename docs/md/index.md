@@ -69,7 +69,7 @@ see the Copyright file in the distribution for details.
 
 - **February 11, 2025**
   The [XML Security Library 1.3.7](download.md) release includes the following changes:
-  - (xmlsec-core) Added `XMLSEC_TRANSFORM_FLAGS_USER_SPECIFIED` flag to `xmlSecTransform` to differentiate transforms specified in the input XML file vs transforms automatically added by XMLSec library.
+  - (xmlsec-core) Added `XMLSEC_TRANSFORM_FLAGS_USER_SPECIFIED` flag to `xmlSecTransform` to differentiate transforms specified in the input XML file vs transforms automatically added by XML Security Library.
   - (xmlsec-core) Added signature result verification to the examples to demonstrate the need to ensure the correct data is actually signed.
   - (xmlsec-core) Disabled old crypto algorithms (MD5, RIPEMD160) and the old crypto engines (MSCrypto, GCrypt) by default (use `--with-legacy-features` option to reenable everything).
   - (xmlsec-openssl) Fixed excess padding in ECDSA signature generation.

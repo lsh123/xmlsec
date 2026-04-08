@@ -62,11 +62,11 @@ main(int argc, char **argv) {
         return(1);
     }
 
-    /* Init libxml and libxslt libraries */
+    /* Init LibXML2 */
     xmlInitParser();
     LIBXML_TEST_VERSION
 
-    /* Init libxslt */
+    /* Init LibXSLT */
 #ifndef XMLSEC_NO_XSLT
     /* disable everything */
     xsltSecPrefs = xsltNewSecurityPrefs();
@@ -78,7 +78,7 @@ main(int argc, char **argv) {
     xsltSetDefaultSecurityPrefs(xsltSecPrefs);
 #endif /* XMLSEC_NO_XSLT */
 
-    /* Init xmlsec library */
+    /* Init XMLSec */
     if(xmlSecInit() < 0) {
         fprintf(stderr, "Error: xmlsec initialization failed.\n");
         return(-1);
@@ -126,10 +126,10 @@ main(int argc, char **argv) {
     /* Shutdown crypto library */
     xmlSecCryptoAppShutdown();
 
-    /* Shutdown xmlsec library */
+    /* Shutdown XMLSec */
     xmlSecShutdown();
 
-    /* Shutdown libxslt/libxml */
+    /* Shutdown LibXSLT / LibXML2*/
 #ifndef XMLSEC_NO_XSLT
     xsltFreeSecurityPrefs(xsltSecPrefs);
     xsltCleanupGlobals();
@@ -182,7 +182,7 @@ encrypt_file(const char* tmpl_file, const char* key_file,
         goto done;
     }
 
-    /* load DES key, assuming that there is not password */
+    /* load DES key, assuming that there is no password */
     encCtx->encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, key_file);
     if(encCtx->encKey == NULL) {
         fprintf(stderr,"Error: failed to load des key from binary file \"%s\"\n", key_file);

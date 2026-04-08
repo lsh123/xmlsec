@@ -54,7 +54,7 @@
 
 - February 11, 2025
   The [XML Security Library 1.3.7](download.md) release includes the following changes:
-  - (xmlsec-core) Added XMLSEC_TRANSFORM_FLAGS_USER_SPECIFIED flag to the xmlSecTransform to differentiate transforms specified in the input XML file vs transforms automatically added by XMLSec library.
+  - (xmlsec-core) Added XMLSEC_TRANSFORM_FLAGS_USER_SPECIFIED flag to the xmlSecTransform to differentiate transforms specified in the input XML file vs transforms automatically added by XML Security Library.
   - (xmlsec-core) Added signature result verification to the examples to demonstrate the need to ensure the correct data is actually signed.
   - (xmlsec-core) Disabled old crypto algorithms (MD5, RIPEMD160) and the old crypto engines (MSCrypto, GCrypt) by default (use "--with-legacy-features" option to reenable everything).
   - (xmlsec-openssl) Fixed excess padding in ECDSA signature generation.
@@ -100,7 +100,7 @@
     (also see [question 3.5 in the FAQ](faq.md)).
   - (xmlsec-core) Removed '--enable-size-t' ('size_t' for MSVC builds) option and made 'xmlSecSize' to always be the same as 'size_t'.
   - (xmlsec-core) Removed previously deprecated functions, defines, etc.
-  - (xmlsec-core) Fixed build for libxml2 v2.12.0.
+  - (xmlsec-core) Fixed build for LibXML2 library v2.12.0.
   - (xmlsec-openssl) Removed support for OpenSSL 1.1.0 ([end of life in Aug 2016](https://endoflife.date/openssl)).
     The minimum OpenSSL supported version is 1.1.1; the version 3.0.0 or greater is recommended.
   - (xmlsec-nss) Added runtime check for the enabled algorithms in NSS.
@@ -254,11 +254,11 @@
 - October 25, 2022
   The [XML Security Library 1.2.35](download.md) release includes the following changes:
   - Migration to OpenSSL 3.0 API (based on PR by @snargit). Note that OpenSSL engines
-    are disabled by default when XMLSec library is compiled against OpenSSL 3.0.
+    are disabled by default when XML Security Library is compiled against OpenSSL 3.0.
     To re-enable OpenSSL engines, use "--enable-openssl3-engines" configure flag
     (there will be a lot of deprecation warnings).
   - The OpenSSL before 1.1.0 and LibreSSL before 2.7.0 are now deprecated and
-    will be removed in the future versions of XMLSec Library.
+    will be removed in the future versions of XML Security Library.
   - Refactored all the integer casts to ensure cast-safety. Fixed all warnings
     and enabled "-Werror" and "-pedantic" flags on CI builds.
   - Added configure flag to use size_t for xmlSecSize (currently disabled by default
@@ -343,7 +343,7 @@
   - Fixed a few Coverity-discovered bugs ([report](https://scan.coverity.com/projects/xmlsec)).
   - Several other small fixes ([more details](https://github.com/lsh123/xmlsec/commits/master)).
 
-  Please note that OpenSSL 0.9.8 support will be removed in the next release of XMLSec library.
+  Please note that OpenSSL 0.9.8 support will be removed in the next release of XML Security Library.
 
 - October 16, 2016
   The [XML Security Library 1.2.23](download.md) release includes the following changes:
@@ -385,7 +385,7 @@
 
 - March 31, 2011
   Changes in [XML Security Library 1.2.17](download.md) release:
-  - Fixed security issue with libxslt (CVE-2011-1425, reported by Nicolas Gregoire).
+  - Fixed security issue with LibXSLT library (CVE-2011-1425, reported by Nicolas Gregoire).
   - Fixed a number of build configuration problems, pkcs12 file loading, and gcrypt init/shutdown.
 
 - May 26, 2010
@@ -413,7 +413,7 @@
 
 - December 5, 2009
   Changes in [XML Security Library 1.2.14](download.md) release:
-  - XMLSec library is switched from built-in LTDL library to the system
+  - XML Security Library is switched from built-in LTDL library to the system
     LTDL library on Linux/Unix and native calls on Windows to fix a
     [security issue](https://bugzilla.redhat.com/show_bug.cgi?id=CVE-2009-3736) in LTDL.
   - Fixed minor bugs (see [commits log](https://github.com/lsh123/xmlsec/commits/master) for complete list).

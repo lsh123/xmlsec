@@ -48,6 +48,7 @@
 #include <xmlsec/crypto.h>
 
 int encrypt_file(const char* xml_file, const char* key_file);
+xmlNodePtr create_encryption_template(xmlDocPtr doc);
 
 int
 main(int argc, char **argv) {
@@ -63,11 +64,11 @@ main(int argc, char **argv) {
         return(1);
     }
 
-    /* Init libxml and libxslt libraries */
+    /* Init LibXML2 */
     xmlInitParser();
     LIBXML_TEST_VERSION
 
-    /* Init libxslt */
+    /* Init LibXSLT */
 #ifndef XMLSEC_NO_XSLT
     /* disable everything */
     xsltSecPrefs = xsltNewSecurityPrefs();
@@ -79,7 +80,7 @@ main(int argc, char **argv) {
     xsltSetDefaultSecurityPrefs(xsltSecPrefs);
 #endif /* XMLSEC_NO_XSLT */
 
-    /* Init xmlsec library */
+    /* Init XMLSec */
     if(xmlSecInit() < 0) {
         fprintf(stderr, "Error: xmlsec initialization failed.\n");
         return(-1);
@@ -127,10 +128,10 @@ main(int argc, char **argv) {
     /* Shutdown crypto library */
     xmlSecCryptoAppShutdown();
 
-    /* Shutdown xmlsec library */
+    /* Shutdown XMLSec */
     xmlSecShutdown();
 
-    /* Shutdown libxslt/libxml */
+    /* Shutdown LibXSLT / LibXML2*/
 #ifndef XMLSEC_NO_XSLT
     xsltFreeSecurityPrefs(xsltSecPrefs);
     xsltCleanupGlobals();
@@ -138,6 +139,46 @@ main(int argc, char **argv) {
     xmlCleanupParser();
 
     return(0);
+}
+
+/**
+ * @brief Creates encryption template to encrypt the XML file.
+ * @param doc the XML document.
+ * @return pointer to the <enc:EncryptedData/> node or NULL if an error occurs.
+ */
+xmlNodePtr
+create_encryption_template(xmlDocPtr doc) {
+    xmlNodePtr encDataNode = NULL;
+    xmlNodePtr keyInfoNode = NULL;
+
+    assert(doc);
+
+    /* add <enc:EncryptedData/> node to encrypt XML file and replace its content with encryption result */
+    encDataNode = xmlSecTmplEncDataCreate(doc, xmlSecTransformDes3CbcId, NULL, xmlSecTypeEncElement, NULL, NULL);
+    if(encDataNode == NULL) {
+        fprintf(stderr, "Error: failed to create encryption template\n");
+        return(NULL);
+    }
+
+    /* add <enc:CipherValue/> node */
+    if(xmlSecTmplEncDataEnsureCipherValue(encDataNode) == NULL) {
+        fprintf(stderr, "Error: failed to add CipherValue node\n");
+        return(NULL);
+    }
+
+    /* add <dsig:KeyInfo/> and <dsig:KeyName/> nodes to put key name in the signed document */
+    keyInfoNode = xmlSecTmplEncDataEnsureKeyInfo(encDataNode, NULL);
+    if(keyInfoNode == NULL) {
+        fprintf(stderr, "Error: failed to add key info\n");
+        return(NULL);
+    }
+    if(xmlSecTmplKeyInfoAddKeyName(keyInfoNode, NULL) == NULL) {
+        fprintf(stderr, "Error: failed to add key name\n");
+        return(NULL);
+    }
+
+    /* done */
+    return(encDataNode);
 }
 
 /**
@@ -152,7 +193,6 @@ int
 encrypt_file(const char* xml_file, const char* key_file) {
     xmlDocPtr doc = NULL;
     xmlNodePtr encDataNode = NULL;
-    xmlNodePtr keyInfoNode = NULL;
     xmlSecEncCtxPtr encCtx = NULL;
     int res = -1;
 
@@ -166,30 +206,10 @@ encrypt_file(const char* xml_file, const char* key_file) {
         goto done;
     }
 
-    /* create encryption template to encrypt XML file and replace
-     * its content with encryption result */
-    encDataNode = xmlSecTmplEncDataCreate(doc, xmlSecTransformDes3CbcId,
-                                NULL, xmlSecTypeEncElement, NULL, NULL);
+    /* create encryption template */
+    encDataNode = create_encryption_template(doc);
     if(encDataNode == NULL) {
-        fprintf(stderr, "Error: failed to create encryption template\n");
-        goto done;
-    }
-
-    /* we want to put encrypted data in the <enc:CipherValue/> node */
-    if(xmlSecTmplEncDataEnsureCipherValue(encDataNode) == NULL) {
-        fprintf(stderr, "Error: failed to add CipherValue node\n");
-        goto done;
-    }
-
-    /* add <dsig:KeyInfo/> and <dsig:KeyName/> nodes to put key name in the signed document */
-    keyInfoNode = xmlSecTmplEncDataEnsureKeyInfo(encDataNode, NULL);
-    if(keyInfoNode == NULL) {
-        fprintf(stderr, "Error: failed to add key info\n");
-        goto done;
-    }
-
-    if(xmlSecTmplKeyInfoAddKeyName(keyInfoNode, NULL) == NULL) {
-        fprintf(stderr, "Error: failed to add key name\n");
+            fprintf(stderr,"Error: failed to create encryption context\n");
         goto done;
     }
 
@@ -200,7 +220,7 @@ encrypt_file(const char* xml_file, const char* key_file) {
         goto done;
     }
 
-    /* load DES key, assuming that there is not password */
+    /* load DES key, assuming that there is no password */
     encCtx->encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, key_file);
     if(encCtx->encKey == NULL) {
         fprintf(stderr,"Error: failed to load des key from binary file \"%s\"\n", key_file);

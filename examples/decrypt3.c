@@ -62,11 +62,11 @@ main(int argc, char **argv) {
         return(1);
     }
 
-    /* Init libxml and libxslt libraries */
+    /* Init LibXML2 */
     xmlInitParser();
     LIBXML_TEST_VERSION
 
-    /* Init libxslt */
+    /* Init LibXSLT */
 #ifndef XMLSEC_NO_XSLT
     /* disable everything */
     xsltSecPrefs = xsltNewSecurityPrefs();
@@ -78,7 +78,7 @@ main(int argc, char **argv) {
     xsltSetDefaultSecurityPrefs(xsltSecPrefs);
 #endif /* XMLSEC_NO_XSLT */
 
-    /* Init xmlsec library */
+    /* Init XMLSec */
     if(xmlSecInit() < 0) {
         fprintf(stderr, "Error: xmlsec initialization failed.\n");
         return(-1);
@@ -136,10 +136,10 @@ main(int argc, char **argv) {
     /* Shutdown crypto library */
     xmlSecCryptoAppShutdown();
 
-    /* Shutdown xmlsec library */
+    /* Shutdown XMLSec */
     xmlSecShutdown();
 
-    /* Shutdown libxslt/libxml */
+    /* Shutdown LibXSLT / LibXML2*/
 #ifndef XMLSEC_NO_XSLT
     xsltFreeSecurityPrefs(xsltSecPrefs);
     xsltCleanupGlobals();

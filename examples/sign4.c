@@ -67,11 +67,11 @@ main(int argc, char **argv) {
         return(1);
     }
 
-    /* Init libxml and libxslt libraries */
+    /* Init LibXML2 */
     xmlInitParser();
     LIBXML_TEST_VERSION
 
-    /* Init libxslt */
+    /* Init LibXSLT */
 #ifndef XMLSEC_NO_XSLT
     /* disable everything */
     xsltSecPrefs = xsltNewSecurityPrefs();
@@ -83,7 +83,7 @@ main(int argc, char **argv) {
     xsltSetDefaultSecurityPrefs(xsltSecPrefs);
 #endif /* XMLSEC_NO_XSLT */
 
-    /* Init xmlsec library */
+    /* Init XMLSec */
     if(xmlSecInit() < 0) {
         fprintf(stderr, "Error: xmlsec initialization failed.\n");
         return(-1);
@@ -131,10 +131,10 @@ main(int argc, char **argv) {
     /* Shutdown crypto library */
     xmlSecCryptoAppShutdown();
 
-    /* Shutdown xmlsec library */
+    /* Shutdown XMLSec */
     xmlSecShutdown();
 
-    /* Shutdown libxslt/libxml */
+    /* Shutdown LibXSLT / LibXML2*/
 #ifndef XMLSEC_NO_XSLT
     xsltFreeSecurityPrefs(xsltSecPrefs);
     xsltCleanupGlobals();
@@ -236,8 +236,13 @@ sign_file(const char* xml_file, const char* id_attr, const char* key_file, const
         goto done;
     }
 
-    /* load private key, assuming that there is not password */
-    dsigCtx->signKey = xmlSecCryptoAppKeyLoadEx(key_file, xmlSecKeyDataTypePrivate, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
+    /* load private key, assuming that there is no password */
+    dsigCtx->signKey = xmlSecCryptoAppKeyLoadEx(key_file,
+        xmlSecKeyDataTypePrivate,
+        xmlSecKeyDataFormatPem,
+        NULL,
+        NULL,
+        NULL);
     if(dsigCtx->signKey == NULL) {
         fprintf(stderr,"Error: failed to load private pem key from \"%s\"\n", key_file);
         goto done;
